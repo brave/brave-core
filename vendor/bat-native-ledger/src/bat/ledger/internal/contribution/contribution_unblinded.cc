@@ -23,8 +23,8 @@ namespace {
 bool GetStatisticalVotingWinner(
     double dart,
     const double amount,
-    const std::vector<ledger::ContributionPublisher>& list,
-    braveledger_contribution::Winners* winners) {
+    const std::vector<ledger::type::ContributionPublisher>& list,
+    ledger::contribution::Winners* winners) {
   DCHECK(winners);
 
   double upper = 0.0;
@@ -53,17 +53,17 @@ bool GetStatisticalVotingWinner(
 void GetStatisticalVotingWinners(
     uint32_t total_votes,
     const double amount,
-    const ledger::ContributionPublisherList& list,
-    braveledger_contribution::Winners* winners) {
+    const ledger::type::ContributionPublisherList& list,
+    ledger::contribution::Winners* winners) {
   DCHECK(winners);
-  std::vector<ledger::ContributionPublisher> converted_list;
+  std::vector<ledger::type::ContributionPublisher> converted_list;
 
   if (total_votes == 0 || list.empty()) {
     return;
   }
 
   for (auto& item : list) {
-    ledger::ContributionPublisher new_item;
+    ledger::type::ContributionPublisher new_item;
     new_item.total_amount = item->total_amount;
     new_item.publisher_key = item->publisher_key;
     converted_list.push_back(new_item);
@@ -79,28 +79,29 @@ void GetStatisticalVotingWinners(
 
 }  // namespace
 
-namespace braveledger_contribution {
+namespace ledger {
+namespace contribution {
 
-Unblinded::Unblinded(bat_ledger::LedgerImpl* ledger) : ledger_(ledger) {
+Unblinded::Unblinded(LedgerImpl* ledger) : ledger_(ledger) {
   DCHECK(ledger_);
-  credentials_promotion_ = braveledger_credentials::CredentialsFactory::Create(
+  credentials_promotion_ = credential::CredentialsFactory::Create(
       ledger_,
-      ledger::CredsBatchType::PROMOTION);
-  credentials_sku_ = braveledger_credentials::CredentialsFactory::Create(
+      type::CredsBatchType::PROMOTION);
+  credentials_sku_ = credential::CredentialsFactory::Create(
       ledger_,
-      ledger::CredsBatchType::SKU);
+      type::CredsBatchType::SKU);
   DCHECK(credentials_promotion_ && credentials_sku_);
 }
 
 Unblinded::~Unblinded() = default;
 
 void Unblinded::Start(
-    const std::vector<ledger::CredsBatchType>& types,
+    const std::vector<type::CredsBatchType>& types,
     const std::string& contribution_id,
     ledger::ResultCallback callback) {
   if (contribution_id.empty()) {
     BLOG(0, "Contribution id is empty");
-    callback(ledger::Result::LEDGER_ERROR);
+    callback(type::Result::LEDGER_ERROR);
     return;
   }
 
@@ -115,7 +116,7 @@ void Unblinded::Start(
 }
 
 void Unblinded::GetContributionInfoAndUnblindedTokens(
-    const std::vector<ledger::CredsBatchType>& types,
+    const std::vector<type::CredsBatchType>& types,
     const std::string& contribution_id,
     GetContributionInfoAndUnblindedTokensCallback callback) {
   auto get_callback = std::bind(&Unblinded::OnUnblindedTokens,
@@ -129,14 +130,14 @@ void Unblinded::GetContributionInfoAndUnblindedTokens(
 }
 
 void Unblinded::OnUnblindedTokens(
-    ledger::UnblindedTokenList list,
+    type::UnblindedTokenList list,
     const std::string& contribution_id,
     GetContributionInfoAndUnblindedTokensCallback callback) {
   BLOG_IF(1, list.empty(), "Token list is empty");
 
-  std::vector<ledger::UnblindedToken> converted_list;
+  std::vector<type::UnblindedToken> converted_list;
   for (const auto& item : list) {
-    ledger::UnblindedToken new_item;
+    type::UnblindedToken new_item;
     new_item.id = item->id;
     new_item.token_value = item->token_value;
     new_item.public_key = item->public_key;
@@ -169,14 +170,14 @@ void Unblinded::GetContributionInfoAndReservedUnblindedTokens(
 }
 
 void Unblinded::OnReservedUnblindedTokens(
-    ledger::UnblindedTokenList list,
+    type::UnblindedTokenList list,
     const std::string& contribution_id,
     GetContributionInfoAndUnblindedTokensCallback callback) {
   BLOG_IF(1, list.empty(), "Token list is empty");
 
-  std::vector<ledger::UnblindedToken> converted_list;
+  std::vector<type::UnblindedToken> converted_list;
   for (const auto& item : list) {
-    ledger::UnblindedToken new_item;
+    type::UnblindedToken new_item;
     new_item.id = item->id;
     new_item.token_value = item->token_value;
     new_item.public_key = item->public_key;
@@ -196,31 +197,31 @@ void Unblinded::OnReservedUnblindedTokens(
 }
 
 void Unblinded::OnGetContributionInfo(
-    ledger::ContributionInfoPtr contribution,
-    const std::vector<ledger::UnblindedToken>& list,
+    type::ContributionInfoPtr contribution,
+    const std::vector<type::UnblindedToken>& list,
     GetContributionInfoAndUnblindedTokensCallback callback) {
   callback(std::move(contribution), list);
 }
 
 void Unblinded::PrepareTokens(
-    ledger::ContributionInfoPtr contribution,
-    const std::vector<ledger::UnblindedToken>& list,
-    const std::vector<ledger::CredsBatchType>& types,
+    type::ContributionInfoPtr contribution,
+    const std::vector<type::UnblindedToken>& list,
+    const std::vector<type::CredsBatchType>& types,
     ledger::ResultCallback callback) {
   if (!contribution) {
     BLOG(0, "Contribution not found");
-    callback(ledger::Result::LEDGER_ERROR);
+    callback(type::Result::LEDGER_ERROR);
     return;
   }
 
   if (list.empty()) {
     BLOG(0, "Not enough funds");
-    callback(ledger::Result::NOT_ENOUGH_FUNDS);
+    callback(type::Result::NOT_ENOUGH_FUNDS);
     return;
   }
 
   double current_amount = 0.0;
-  std::vector<ledger::UnblindedToken> token_list;
+  std::vector<type::UnblindedToken> token_list;
   for (const auto& item : list) {
     if (current_amount >= contribution->amount) {
       break;
@@ -231,7 +232,7 @@ void Unblinded::PrepareTokens(
   }
 
   if (current_amount < contribution->amount) {
-    callback(ledger::Result::NOT_ENOUGH_FUNDS);
+    callback(type::Result::NOT_ENOUGH_FUNDS);
     BLOG(0, "Not enough funds");
     return;
   }
@@ -248,7 +249,7 @@ void Unblinded::PrepareTokens(
       this,
       _1,
       std::move(token_list),
-      std::make_shared<ledger::ContributionInfoPtr>(contribution->Clone()),
+      std::make_shared<type::ContributionInfoPtr>(contribution->Clone()),
       types,
       callback);
 
@@ -259,21 +260,21 @@ void Unblinded::PrepareTokens(
 }
 
 void Unblinded::OnMarkUnblindedTokensAsReserved(
-    const ledger::Result result,
-    const std::vector<ledger::UnblindedToken>& list,
-    std::shared_ptr<ledger::ContributionInfoPtr> shared_contribution,
-    const std::vector<ledger::CredsBatchType>& types,
+    const type::Result result,
+    const std::vector<type::UnblindedToken>& list,
+    std::shared_ptr<type::ContributionInfoPtr> shared_contribution,
+    const std::vector<type::CredsBatchType>& types,
     ledger::ResultCallback callback) {
-  if (result != ledger::Result::LEDGER_OK) {
+  if (result != type::Result::LEDGER_OK) {
     BLOG(0, "Failed to reserve unblinded tokens");
-    callback(ledger::Result::LEDGER_ERROR);
+    callback(type::Result::LEDGER_ERROR);
     return;
   }
 
 
   if (!shared_contribution) {
     BLOG(0, "Contribution was not converted successfully");
-    callback(ledger::Result::LEDGER_ERROR);
+    callback(type::Result::LEDGER_ERROR);
     return;
   }
 
@@ -281,23 +282,23 @@ void Unblinded::OnMarkUnblindedTokensAsReserved(
 }
 
 void Unblinded::PreparePublishers(
-    const std::vector<ledger::UnblindedToken>& list,
-    ledger::ContributionInfoPtr contribution,
-    const std::vector<ledger::CredsBatchType>& types,
+    const std::vector<type::UnblindedToken>& list,
+    type::ContributionInfoPtr contribution,
+    const std::vector<type::CredsBatchType>& types,
     ledger::ResultCallback callback) {
   if (!contribution) {
     BLOG(0, "Contribution not found");
-    callback(ledger::Result::LEDGER_ERROR);
+    callback(type::Result::LEDGER_ERROR);
     return;
   }
 
-  if (contribution->type == ledger::RewardsType::AUTO_CONTRIBUTE) {
+  if (contribution->type == type::RewardsType::AUTO_CONTRIBUTE) {
     auto publisher_list =
         PrepareAutoContribution(list, contribution->Clone());
 
     if (publisher_list.empty()) {
       BLOG(0, "Publisher list empty");
-      callback(ledger::Result::AC_TABLE_EMPTY);
+      callback(type::Result::AC_TABLE_EMPTY);
       return;
     }
 
@@ -325,13 +326,13 @@ void Unblinded::PreparePublishers(
 
   ledger_->database()->UpdateContributionInfoStep(
       contribution->contribution_id,
-      ledger::ContributionStep::STEP_PREPARE,
+      type::ContributionStep::STEP_PREPARE,
       save_callback);
 }
 
-ledger::ContributionPublisherList Unblinded::PrepareAutoContribution(
-    const std::vector<ledger::UnblindedToken>& list,
-    ledger::ContributionInfoPtr contribution) {
+type::ContributionPublisherList Unblinded::PrepareAutoContribution(
+    const std::vector<type::UnblindedToken>& list,
+    type::ContributionInfoPtr contribution) {
   if (!contribution) {
     BLOG(0, "Contribution is null");
     return {};
@@ -355,14 +356,14 @@ ledger::ContributionPublisherList Unblinded::PrepareAutoContribution(
       std::move(contribution->publishers),
       &winners);
 
-  ledger::ContributionPublisherList publisher_list;
+  type::ContributionPublisherList publisher_list;
   for (auto & winner : winners) {
     if (winner.second == 0) {
       continue;
     }
 
     const std::string publisher_key = winner.first;
-    auto publisher = ledger::ContributionPublisher::New();
+    auto publisher = type::ContributionPublisher::New();
     publisher->contribution_id = contribution->contribution_id;
     publisher->publisher_key = publisher_key;
     publisher->total_amount =
@@ -375,13 +376,13 @@ ledger::ContributionPublisherList Unblinded::PrepareAutoContribution(
 }
 
 void Unblinded::OnPrepareAutoContribution(
-    const ledger::Result result,
-    const std::vector<ledger::CredsBatchType>& types,
+    const type::Result result,
+    const std::vector<type::CredsBatchType>& types,
     const std::string& contribution_id,
     ledger::ResultCallback callback) {
-  if (result != ledger::Result::LEDGER_OK) {
+  if (result != type::Result::LEDGER_OK) {
     BLOG(0, "Contribution not saved");
-    callback(ledger::Result::RETRY);
+    callback(type::Result::RETRY);
     return;
   }
 
@@ -394,18 +395,18 @@ void Unblinded::OnPrepareAutoContribution(
 
   ledger_->database()->UpdateContributionInfoStep(
       contribution_id,
-      ledger::ContributionStep::STEP_PREPARE,
+      type::ContributionStep::STEP_PREPARE,
       save_callback);
 }
 
 void Unblinded::PrepareStepSaved(
-    const ledger::Result result,
-    const std::vector<ledger::CredsBatchType>& types,
+    const type::Result result,
+    const std::vector<type::CredsBatchType>& types,
     const std::string& contribution_id,
     ledger::ResultCallback callback) {
-  if (result != ledger::Result::LEDGER_OK) {
+  if (result != type::Result::LEDGER_OK) {
     BLOG(0, "Prepare step was not saved");
-    callback(ledger::Result::RETRY);
+    callback(type::Result::RETRY);
     return;
   }
 
@@ -413,7 +414,7 @@ void Unblinded::PrepareStepSaved(
 }
 
 void Unblinded::ProcessTokens(
-    const std::vector<ledger::CredsBatchType>& types,
+    const std::vector<type::CredsBatchType>& types,
     const std::string& contribution_id,
     ledger::ResultCallback callback) {
   auto get_callback =  std::bind(&Unblinded::OnProcessTokens,
@@ -425,12 +426,12 @@ void Unblinded::ProcessTokens(
 }
 
 void Unblinded::OnProcessTokens(
-    ledger::ContributionInfoPtr contribution,
-    const std::vector<ledger::UnblindedToken>& list,
+    type::ContributionInfoPtr contribution,
+    const std::vector<type::UnblindedToken>& list,
     ledger::ResultCallback callback) {
   if (!contribution || contribution->publishers.empty()) {
     BLOG(0, "Contribution not found");
-    callback(ledger::Result::LEDGER_ERROR);
+    callback(type::Result::LEDGER_ERROR);
     return;
   }
 
@@ -446,7 +447,7 @@ void Unblinded::OnProcessTokens(
       final_publisher = true;
     }
 
-    std::vector<ledger::UnblindedToken> token_list;
+    std::vector<type::UnblindedToken> token_list;
     double current_amount = 0.0;
     for (auto& item : list) {
       if (current_amount >= (*publisher)->total_amount) {
@@ -465,15 +466,15 @@ void Unblinded::OnProcessTokens(
         final_publisher,
         callback);
 
-    braveledger_credentials::CredentialsRedeem redeem;
+    credential::CredentialsRedeem redeem;
     redeem.publisher_key = (*publisher)->publisher_key;
     redeem.type = contribution->type;
     redeem.processor = contribution->processor;
     redeem.token_list = token_list;
     redeem.contribution_id = contribution->contribution_id;
 
-    if (redeem.processor == ledger::ContributionProcessor::UPHOLD ||
-        redeem.processor == ledger::ContributionProcessor::BRAVE_USER_FUNDS) {
+    if (redeem.processor == type::ContributionProcessor::UPHOLD ||
+        redeem.processor == type::ContributionProcessor::BRAVE_USER_FUNDS) {
       credentials_sku_->RedeemTokens(redeem, redeem_callback);
       return;
     }
@@ -483,18 +484,18 @@ void Unblinded::OnProcessTokens(
   }
 
   // we processed all publishers
-  callback(ledger::Result::LEDGER_OK);
+  callback(type::Result::LEDGER_OK);
 }
 
 void Unblinded::TokenProcessed(
-    const ledger::Result result,
+    const type::Result result,
     const std::string& contribution_id,
     const std::string& publisher_key,
     const bool final_publisher,
     ledger::ResultCallback callback) {
-  if (result != ledger::Result::LEDGER_OK) {
+  if (result != type::Result::LEDGER_OK) {
     BLOG(0, "Tokens were not processed correctly");
-    callback(ledger::Result::RETRY);
+    callback(type::Result::RETRY);
     return;
   }
 
@@ -512,7 +513,7 @@ void Unblinded::TokenProcessed(
 }
 
 void Unblinded::ContributionAmountSaved(
-    const ledger::Result result,
+    const type::Result result,
     const std::string& contribution_id,
     const bool final_publisher,
     ledger::ResultCallback callback) {
@@ -521,64 +522,64 @@ void Unblinded::ContributionAmountSaved(
     return;
   }
 
-  callback(ledger::Result::RETRY_LONG);
+  callback(type::Result::RETRY_LONG);
 }
 
 void Unblinded::Retry(
-    const std::vector<ledger::CredsBatchType>& types,
-    ledger::ContributionInfoPtr contribution,
+    const std::vector<type::CredsBatchType>& types,
+    type::ContributionInfoPtr contribution,
     ledger::ResultCallback callback) {
   if (!contribution) {
     BLOG(0, "Contribution is null");
-    callback(ledger::Result::LEDGER_ERROR);
+    callback(type::Result::LEDGER_ERROR);
     return;
   }
 
   const bool is_not_tokens =
-      contribution->processor != ledger::ContributionProcessor::BRAVE_TOKENS;
+      contribution->processor != type::ContributionProcessor::BRAVE_TOKENS;
 
   const bool is_not_uphold_ac =
-      contribution->processor == ledger::ContributionProcessor::UPHOLD &&
-      contribution->type != ledger::RewardsType::AUTO_CONTRIBUTE;
+      contribution->processor == type::ContributionProcessor::UPHOLD &&
+      contribution->type != type::RewardsType::AUTO_CONTRIBUTE;
 
   if (is_not_tokens && is_not_uphold_ac) {
     BLOG(0, "Retry is not for this func");
-    callback(ledger::Result::LEDGER_ERROR);
+    callback(type::Result::LEDGER_ERROR);
     return;
   }
 
   switch (contribution->step) {
-    case ledger::ContributionStep::STEP_START: {
+    case type::ContributionStep::STEP_START: {
       Start(types, contribution->contribution_id, callback);
       return;
     }
-    case ledger::ContributionStep::STEP_PREPARE: {
+    case type::ContributionStep::STEP_PREPARE: {
       ProcessTokens(types, contribution->contribution_id, callback);
       return;
     }
-    case ledger::ContributionStep::STEP_RESERVE: {
+    case type::ContributionStep::STEP_RESERVE: {
       auto get_callback = std::bind(
           &Unblinded::OnReservedUnblindedTokensForRetryAttempt,
           this,
           _1,
           types,
-          std::make_shared<ledger::ContributionInfoPtr>(contribution->Clone()),
+          std::make_shared<type::ContributionInfoPtr>(contribution->Clone()),
           callback);
       ledger_->database()->GetReservedUnblindedTokens(
           contribution->contribution_id,
           get_callback);
       return;
     }
-    case ledger::ContributionStep::STEP_RETRY_COUNT:
-    case ledger::ContributionStep::STEP_REWARDS_OFF:
-    case ledger::ContributionStep::STEP_AC_OFF:
-    case ledger::ContributionStep::STEP_AC_TABLE_EMPTY:
-    case ledger::ContributionStep::STEP_CREDS:
-    case ledger::ContributionStep::STEP_EXTERNAL_TRANSACTION:
-    case ledger::ContributionStep::STEP_NOT_ENOUGH_FUNDS:
-    case ledger::ContributionStep::STEP_FAILED:
-    case ledger::ContributionStep::STEP_COMPLETED:
-    case ledger::ContributionStep::STEP_NO: {
+    case type::ContributionStep::STEP_RETRY_COUNT:
+    case type::ContributionStep::STEP_REWARDS_OFF:
+    case type::ContributionStep::STEP_AC_OFF:
+    case type::ContributionStep::STEP_AC_TABLE_EMPTY:
+    case type::ContributionStep::STEP_CREDS:
+    case type::ContributionStep::STEP_EXTERNAL_TRANSACTION:
+    case type::ContributionStep::STEP_NOT_ENOUGH_FUNDS:
+    case type::ContributionStep::STEP_FAILED:
+    case type::ContributionStep::STEP_COMPLETED:
+    case type::ContributionStep::STEP_NO: {
       BLOG(0, "Step not correct " << contribution->step);
       NOTREACHED();
       return;
@@ -587,25 +588,25 @@ void Unblinded::Retry(
 }
 
 void Unblinded::OnReservedUnblindedTokensForRetryAttempt(
-    const ledger::UnblindedTokenList& list,
-    const std::vector<ledger::CredsBatchType>& types,
-    std::shared_ptr<ledger::ContributionInfoPtr> shared_contribution,
+    const type::UnblindedTokenList& list,
+    const std::vector<type::CredsBatchType>& types,
+    std::shared_ptr<type::ContributionInfoPtr> shared_contribution,
     ledger::ResultCallback callback) {
   if (list.empty()) {
     BLOG(0, "Token list is empty");
-    callback(ledger::Result::LEDGER_ERROR);
+    callback(type::Result::LEDGER_ERROR);
     return;
   }
 
   if (!shared_contribution) {
     BLOG(0, "Contribution was not converted successfully");
-    callback(ledger::Result::LEDGER_ERROR);
+    callback(type::Result::LEDGER_ERROR);
     return;
   }
 
-  std::vector<ledger::UnblindedToken> converted_list;
+  std::vector<type::UnblindedToken> converted_list;
   for (const auto& item : list) {
-    ledger::UnblindedToken new_item;
+    type::UnblindedToken new_item;
     new_item.id = item->id;
     new_item.token_value = item->token_value;
     new_item.public_key = item->public_key;
@@ -623,4 +624,5 @@ void Unblinded::OnReservedUnblindedTokensForRetryAttempt(
       callback);
 }
 
-}  // namespace braveledger_contribution
+}  // namespace contribution
+}  // namespace ledger

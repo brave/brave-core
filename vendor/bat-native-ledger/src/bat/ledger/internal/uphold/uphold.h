@@ -16,17 +16,14 @@
 #include "bat/ledger/internal/uphold/uphold_user.h"
 #include "bat/ledger/ledger.h"
 
-namespace bat_ledger {
-class LedgerImpl;
-}
-
 namespace ledger {
+class LedgerImpl;
+
 namespace endpoint {
 class UpholdServer;
 }
-}
 
-namespace braveledger_uphold {
+namespace uphold {
 
 struct Transaction {
   std::string address;
@@ -39,13 +36,13 @@ class UpholdCard;
 class UpholdAuthorization;
 class UpholdWallet;
 
-using FetchBalanceCallback = std::function<void(ledger::Result, double)>;
+using FetchBalanceCallback = std::function<void(type::Result, double)>;
 using CreateCardCallback =
-    std::function<void(ledger::Result, const std::string&)>;
+    std::function<void(type::Result, const std::string&)>;
 
 class Uphold {
  public:
-  explicit Uphold(bat_ledger::LedgerImpl* ledger);
+  explicit Uphold(LedgerImpl* ledger);
 
   ~Uphold();
 
@@ -53,7 +50,7 @@ class Uphold {
 
   void StartContribution(
       const std::string& contribution_id,
-      ledger::ServerPublisherInfoPtr info,
+      type::ServerPublisherInfoPtr info,
       const double amount,
       ledger::ResultCallback callback);
 
@@ -62,7 +59,7 @@ class Uphold {
   void TransferFunds(
       const double amount,
       const std::string& address,
-      ledger::TransactionCallback callback);
+      client::TransactionCallback callback);
 
   void WalletAuthorization(
       const std::map<std::string, std::string>& args,
@@ -78,7 +75,7 @@ class Uphold {
 
  private:
   void ContributionCompleted(
-      const ledger::Result result,
+      const type::Result result,
       const std::string& transaction_id,
       const std::string& contribution_id,
       const double fee,
@@ -86,20 +83,20 @@ class Uphold {
       ledger::ResultCallback callback);
 
   void OnFetchBalance(
-      const ledger::Result result,
+      const type::Result result,
       const double available,
       FetchBalanceCallback callback);
 
-  void SaveTransferFee(ledger::TransferFeePtr transfer_fee);
+  void SaveTransferFee(type::TransferFeePtr transfer_fee);
 
   void StartTransferFeeTimer(const std::string& fee_id);
 
   void OnTransferFeeCompleted(
-      const ledger::Result result,
+      const type::Result result,
       const std::string& transaction_id,
-      const ledger::TransferFee& transfer_fee);
+      const type::TransferFee& transfer_fee);
 
-  void TransferFee(const ledger::TransferFee& transfer_fee);
+  void TransferFee(const type::TransferFee& transfer_fee);
 
   void OnTransferFeeTimerElapsed(const std::string& id);
 
@@ -108,10 +105,11 @@ class Uphold {
   std::unique_ptr<UpholdUser> user_;
   std::unique_ptr<UpholdAuthorization> authorization_;
   std::unique_ptr<UpholdWallet> wallet_;
-  std::unique_ptr<ledger::endpoint::UpholdServer> uphold_server_;
-  bat_ledger::LedgerImpl* ledger_;  // NOT OWNED
+  std::unique_ptr<endpoint::UpholdServer> uphold_server_;
+  LedgerImpl* ledger_;  // NOT OWNED
   std::map<std::string, base::OneShotTimer> transfer_fee_timers_;
 };
 
-}  // namespace braveledger_uphold
+}  // namespace uphold
+}  // namespace ledger
 #endif  // BRAVELEDGER_UPHOLD_UPHOLD_H_

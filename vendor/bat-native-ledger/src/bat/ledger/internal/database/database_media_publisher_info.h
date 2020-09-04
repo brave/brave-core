@@ -10,11 +10,12 @@
 
 #include "bat/ledger/internal/database/database_table.h"
 
-namespace braveledger_database {
+namespace ledger {
+namespace database {
 
 class DatabaseMediaPublisherInfo: public DatabaseTable {
  public:
-  explicit DatabaseMediaPublisherInfo(bat_ledger::LedgerImpl* ledger);
+  explicit DatabaseMediaPublisherInfo(LedgerImpl* ledger);
   ~DatabaseMediaPublisherInfo() override;
 
   void InsertOrUpdate(
@@ -28,10 +29,11 @@ class DatabaseMediaPublisherInfo: public DatabaseTable {
 
  private:
   void OnGetRecord(
-      ledger::DBCommandResponsePtr response,
+      type::DBCommandResponsePtr response,
       ledger::PublisherInfoCallback callback);
 };
 
-}  // namespace braveledger_database
+}  // namespace database
+}  // namespace ledger
 
 #endif  // BRAVELEDGER_DATABASE_DATABASE_MEDIA_PUBLISHER_INFO_H_

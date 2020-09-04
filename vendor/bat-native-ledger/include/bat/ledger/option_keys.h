@@ -9,8 +9,11 @@
 #include <string>
 
 namespace ledger {
-  const char kOptionPublisherListRefreshInterval[] =
-      "publisher_list_refresh_interval";
+namespace option {
+
+const char kPublisherListRefreshInterval[] = "publisher_list_refresh_interval";
+
+}  // namespace option
 }  // namespace ledger
 
 #endif  // BRAVELEDGER_OPTION_KEYS_H_

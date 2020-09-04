@@ -13,17 +13,14 @@
 #include "bat/ledger/internal/uphold/uphold.h"
 #include "bat/ledger/ledger.h"
 
-namespace bat_ledger {
-class LedgerImpl;
-}
-
 namespace ledger {
+class LedgerImpl;
+
 namespace endpoint {
 class UpholdServer;
 }
-}
 
-namespace braveledger_uphold {
+namespace uphold {
 
 const char kCardName[] = "Brave Browser";
 
@@ -37,11 +34,11 @@ struct UpdateCard {
 };
 
 using GetCardAddressesCallback =
-    std::function<void(ledger::Result, std::map<std::string, std::string>)>;
+    std::function<void(type::Result, std::map<std::string, std::string>)>;
 
 class UpholdCard {
  public:
-  explicit UpholdCard(bat_ledger::LedgerImpl* ledger, Uphold* uphold);
+  explicit UpholdCard(LedgerImpl* ledger, Uphold* uphold);
 
   ~UpholdCard();
 
@@ -49,19 +46,19 @@ class UpholdCard {
 
  private:
   void OnCreateIfNecessary(
-      const ledger::Result result,
+      const type::Result result,
       const std::string& id,
       CreateCardCallback callback);
 
   void Create(CreateCardCallback callback);
 
   void OnCreate(
-      const ledger::Result result,
+      const type::Result result,
       const std::string& id,
       CreateCardCallback callback);
 
   void OnCreateUpdate(
-      const ledger::Result result,
+      const type::Result result,
       const std::string& address,
       CreateCardCallback callback);
 
@@ -70,16 +67,17 @@ class UpholdCard {
       ledger::ResultCallback callback);
 
   void OnUpdate(
-      const ledger::Result result,
+      const type::Result result,
       ledger::ResultCallback callback);
 
   std::map<std::string, std::string> ParseGetCardAddressResponse(
       const std::string& response);
 
-  bat_ledger::LedgerImpl* ledger_;  // NOT OWNED
+  LedgerImpl* ledger_;  // NOT OWNED
   Uphold* uphold_;  // NOT OWNED
-  std::unique_ptr<ledger::endpoint::UpholdServer> uphold_server_;
+  std::unique_ptr<endpoint::UpholdServer> uphold_server_;
 };
 
-}  // namespace braveledger_uphold
+}  // namespace uphold
+}  // namespace ledger
 #endif  // BRAVELEDGER_UPHOLD_UPHOLD_CARD_H_

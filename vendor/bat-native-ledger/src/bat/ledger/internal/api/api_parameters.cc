@@ -14,11 +14,12 @@
 using std::placeholders::_1;
 using std::placeholders::_2;
 
-namespace braveledger_api {
+namespace ledger {
+namespace api {
 
-APIParameters::APIParameters(bat_ledger::LedgerImpl* ledger) :
+APIParameters::APIParameters(LedgerImpl* ledger) :
     ledger_(ledger),
-    api_server_(std::make_unique<ledger::endpoint::APIServer>(ledger)) {
+    api_server_(std::make_unique<endpoint::APIServer>(ledger)) {
   DCHECK(ledger_ && api_server_);
 }
 
@@ -26,7 +27,7 @@ APIParameters::~APIParameters() = default;
 
 void APIParameters::Initialize() {
   if (ledger_->state()->GetRewardsMainEnabled()) {
-    Fetch([](ledger::RewardsParametersPtr) {});
+    Fetch([](type::RewardsParametersPtr) {});
   }
 }
 
@@ -49,15 +50,15 @@ void APIParameters::Fetch(ledger::GetRewardsParametersCallback callback) {
 }
 
 void APIParameters::OnFetch(
-    const ledger::Result result,
-    const ledger::RewardsParameters& parameters) {
-  if (result == ledger::Result::RETRY_SHORT) {
+    const type::Result result,
+    const type::RewardsParameters& parameters) {
+  if (result == type::Result::RETRY_SHORT) {
     RunCallbacks();
     SetRefreshTimer(base::TimeDelta::FromSeconds(90));
     return;
   }
 
-  if (result != ledger::Result::LEDGER_OK) {
+  if (result != type::Result::LEDGER_OK) {
     BLOG(1, "Couldn't parse response");
     RunCallbacks();
     SetRefreshTimer(base::TimeDelta::FromMinutes(10));
@@ -93,14 +94,15 @@ void APIParameters::SetRefreshTimer(
   }
 
   base::TimeDelta start_in =
-      base_delay + braveledger_time_util::GetRandomizedDelay(delay);
+      base_delay + util::GetRandomizedDelay(delay);
 
   BLOG(1, "Params timer set for " << start_in);
 
   refresh_timer_.Start(FROM_HERE, start_in,
       base::BindOnce(&APIParameters::Fetch,
           base::Unretained(this),
-          [](ledger::RewardsParametersPtr) {}));
+          [](type::RewardsParametersPtr) {}));
 }
 
-}  // namespace braveledger_api
+}  // namespace api
+}  // namespace ledger

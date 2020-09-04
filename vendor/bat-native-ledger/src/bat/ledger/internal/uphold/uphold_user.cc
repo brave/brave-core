@@ -17,7 +17,8 @@ using std::placeholders::_1;
 using std::placeholders::_2;
 using std::placeholders::_3;
 
-namespace braveledger_uphold {
+namespace ledger {
+namespace uphold {
 
 User::User() :
   name(""),
@@ -28,9 +29,9 @@ User::User() :
 
 User::~User() = default;
 
-UpholdUser::UpholdUser(bat_ledger::LedgerImpl* ledger) :
+UpholdUser::UpholdUser(LedgerImpl* ledger) :
     ledger_(ledger),
-    uphold_server_(std::make_unique<ledger::endpoint::UpholdServer>(ledger)) {
+    uphold_server_(std::make_unique<endpoint::UpholdServer>(ledger)) {
 }
 
 UpholdUser::~UpholdUser() = default;
@@ -42,7 +43,7 @@ void UpholdUser::Get(GetUserCallback callback) {
   if (!wallet) {
     User user;
     BLOG(0, "Wallet is null");
-    callback(ledger::Result::LEDGER_ERROR, user);
+    callback(type::Result::LEDGER_ERROR, user);
     return;
   }
 
@@ -56,22 +57,23 @@ void UpholdUser::Get(GetUserCallback callback) {
 }
 
 void UpholdUser::OnGet(
-    const ledger::Result result,
+    const type::Result result,
     const User& user,
     GetUserCallback callback) {
-  if (result == ledger::Result::EXPIRED_TOKEN) {
+  if (result == type::Result::EXPIRED_TOKEN) {
     BLOG(0, "Expired token");
-    callback(ledger::Result::EXPIRED_TOKEN, user);
+    callback(type::Result::EXPIRED_TOKEN, user);
     return;
   }
 
-  if (result != ledger::Result::LEDGER_OK) {
+  if (result != type::Result::LEDGER_OK) {
     BLOG(0, "Couldn't get user");
-    callback(ledger::Result::LEDGER_ERROR, user);
+    callback(type::Result::LEDGER_ERROR, user);
     return;
   }
 
-  callback(ledger::Result::LEDGER_OK, user);
+  callback(type::Result::LEDGER_OK, user);
 }
 
-}  // namespace braveledger_uphold
+}  // namespace uphold
+}  // namespace ledger

@@ -56,45 +56,43 @@
 //   ]
 // }
 
-namespace bat_ledger {
-class LedgerImpl;
-}
-
 namespace ledger {
+class LedgerImpl;
+
 namespace endpoint {
 namespace payment {
 
 using PostOrderCallback = std::function<void(
-    const ledger::Result result,
-    ledger::SKUOrderPtr order)>;
+    const type::Result result,
+    type::SKUOrderPtr order)>;
 
 class PostOrder {
  public:
-  explicit PostOrder(bat_ledger::LedgerImpl* ledger);
+  explicit PostOrder(LedgerImpl* ledger);
   ~PostOrder();
 
   void Request(
-      const std::vector<ledger::SKUOrderItem>& items,
+      const std::vector<type::SKUOrderItem>& items,
       PostOrderCallback callback);
 
  private:
   std::string GetUrl();
 
-  std::string GeneratePayload(const std::vector<ledger::SKUOrderItem>& items);
+  std::string GeneratePayload(const std::vector<type::SKUOrderItem>& items);
 
-  ledger::Result CheckStatusCode(const int status_code);
+  type::Result CheckStatusCode(const int status_code);
 
-  ledger::Result ParseBody(
+  type::Result ParseBody(
       const std::string& body,
-      const std::vector<ledger::SKUOrderItem>& order_items,
-      ledger::SKUOrder* order);
+      const std::vector<type::SKUOrderItem>& order_items,
+      type::SKUOrder* order);
 
   void OnRequest(
-      const ledger::UrlResponse& response,
-      const std::vector<ledger::SKUOrderItem>& items,
+      const type::UrlResponse& response,
+      const std::vector<type::SKUOrderItem>& items,
       PostOrderCallback callback);
 
-  bat_ledger::LedgerImpl* ledger_;  // NOT OWNED
+  LedgerImpl* ledger_;  // NOT OWNED
 };
 
 }  // namespace payment

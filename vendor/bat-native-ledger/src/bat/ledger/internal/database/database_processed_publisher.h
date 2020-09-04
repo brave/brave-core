@@ -11,11 +11,12 @@
 
 #include "bat/ledger/internal/database/database_table.h"
 
-namespace braveledger_database {
+namespace ledger {
+namespace database {
 
 class DatabaseProcessedPublisher : public DatabaseTable {
  public:
-  explicit DatabaseProcessedPublisher(bat_ledger::LedgerImpl* ledger);
+  explicit DatabaseProcessedPublisher(LedgerImpl* ledger);
   ~DatabaseProcessedPublisher() override;
 
   void InsertOrUpdateList(
@@ -28,10 +29,11 @@ class DatabaseProcessedPublisher : public DatabaseTable {
 
  private:
   void OnWasProcessed(
-      ledger::DBCommandResponsePtr response,
+      type::DBCommandResponsePtr response,
       ledger::ResultCallback callback);
 };
 
-}  // namespace braveledger_database
+}  // namespace database
+}  // namespace ledger
 
 #endif  // BRAVELEDGER_DATABASE_DATABASE_PROCESSED_PUBLISHER_H_

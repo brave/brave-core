@@ -11,9 +11,10 @@
 
 using std::placeholders::_1;
 
-namespace braveledger_state {
+namespace ledger {
+namespace state {
 
-StateMigrationV1::StateMigrationV1(bat_ledger::LedgerImpl* ledger) :
+StateMigrationV1::StateMigrationV1(LedgerImpl* ledger) :
     ledger_(ledger) {
 }
 
@@ -21,7 +22,7 @@ StateMigrationV1::~StateMigrationV1() = default;
 
 void StateMigrationV1::Migrate(ledger::ResultCallback callback) {
   legacy_publisher_ =
-      std::make_unique<braveledger_publisher::LegacyPublisherState>(ledger_);
+      std::make_unique<publisher::LegacyPublisherState>(ledger_);
 
   auto load_callback = std::bind(&StateMigrationV1::OnLoadState,
       this,
@@ -32,45 +33,47 @@ void StateMigrationV1::Migrate(ledger::ResultCallback callback) {
 }
 
 void StateMigrationV1::OnLoadState(
-    const ledger::Result result,
+    const type::Result result,
     ledger::ResultCallback callback) {
-  if (result == ledger::Result::NO_PUBLISHER_STATE) {
+  if (result == type::Result::NO_PUBLISHER_STATE) {
     BLOG(1, "No publisher state");
     ledger_->publisher()->CalcScoreConsts(
-        ledger_->ledger_client()->GetIntegerState(ledger::kStateMinVisitTime));
+        ledger_->ledger_client()->GetIntegerState(
+            kMinVisitTime));
 
-    callback(ledger::Result::LEDGER_OK);
+    callback(type::Result::LEDGER_OK);
     return;
   }
 
-  if (result != ledger::Result::LEDGER_OK) {
+  if (result != type::Result::LEDGER_OK) {
     ledger_->publisher()->CalcScoreConsts(
-        ledger_->ledger_client()->GetIntegerState(ledger::kStateMinVisitTime));
+        ledger_->ledger_client()->GetIntegerState(
+            kMinVisitTime));
 
     BLOG(0, "Failed to load publisher state file, setting default values");
-    callback(ledger::Result::LEDGER_OK);
+    callback(type::Result::LEDGER_OK);
     return;
   }
 
   ledger_->ledger_client()->SetIntegerState(
-      ledger::kStateMinVisitTime,
+      kMinVisitTime,
       static_cast<int>(legacy_publisher_->GetPublisherMinVisitTime()));
   ledger_->publisher()->CalcScoreConsts(
-      ledger_->ledger_client()->GetIntegerState(ledger::kStateMinVisitTime));
+      ledger_->ledger_client()->GetIntegerState(kMinVisitTime));
 
   ledger_->ledger_client()->SetIntegerState(
-      ledger::kStateMinVisits,
+      kMinVisits,
       static_cast<int>(legacy_publisher_->GetPublisherMinVisits()));
 
   ledger_->ledger_client()->SetBooleanState(
-      ledger::kStateAllowNonVerified,
+      kAllowNonVerified,
       legacy_publisher_->GetPublisherAllowNonVerified());
 
   ledger_->ledger_client()->SetBooleanState(
-      ledger::kStateAllowVideoContribution,
+      kAllowVideoContribution,
       legacy_publisher_->GetPublisherAllowVideos());
 
-  ledger::BalanceReportInfoList reports;
+  type::BalanceReportInfoList reports;
   legacy_publisher_->GetAllBalanceReports(&reports);
   if (!reports.empty()) {
     auto save_callback = std::bind(&StateMigrationV1::BalanceReportsSaved,
@@ -88,9 +91,9 @@ void StateMigrationV1::OnLoadState(
 }
 
 void StateMigrationV1::BalanceReportsSaved(
-    const ledger::Result result,
+    const type::Result result,
     ledger::ResultCallback callback) {
-  if (result != ledger::Result::LEDGER_OK) {
+  if (result != type::Result::LEDGER_OK) {
     BLOG(0, "Balance report save failed");
     callback(result);
     return;
@@ -112,15 +115,16 @@ void StateMigrationV1::SaveProcessedPublishers(
 }
 
 void StateMigrationV1::ProcessedPublisherSaved(
-    const ledger::Result result,
+    const type::Result result,
     ledger::ResultCallback callback) {
-  if (result != ledger::Result::LEDGER_OK) {
+  if (result != type::Result::LEDGER_OK) {
     BLOG(0, "Processed publisher save failed");
     callback(result);
     return;
   }
 
-  callback(ledger::Result::LEDGER_OK);
+  callback(type::Result::LEDGER_OK);
 }
 
-}  // namespace braveledger_state
+}  // namespace state
+}  // namespace ledger

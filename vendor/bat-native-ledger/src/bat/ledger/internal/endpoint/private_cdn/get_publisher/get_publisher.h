@@ -21,21 +21,19 @@
 // Response body:
 // See https://github.com/brave/brave-core/blob/master/vendor/bat-native-ledger/src/bat/ledger/internal/publisher/protos/channel_response.proto
 
-namespace bat_ledger {
-class LedgerImpl;
-}
-
 namespace ledger {
+class LedgerImpl;
+
 namespace endpoint {
 namespace private_cdn {
 
 using GetPublisherCallback = std::function<void(
-    const ledger::Result result,
-    ledger::ServerPublisherInfoPtr info)>;
+    const type::Result result,
+    type::ServerPublisherInfoPtr info)>;
 
 class GetPublisher {
  public:
-  explicit GetPublisher(bat_ledger::LedgerImpl* ledger);
+  explicit GetPublisher(LedgerImpl* ledger);
   ~GetPublisher();
 
   void Request(
@@ -46,19 +44,19 @@ class GetPublisher {
  private:
   std::string GetUrl(const std::string& hash_prefix);
 
-  ledger::Result CheckStatusCode(const int status_code);
+  type::Result CheckStatusCode(const int status_code);
 
-  ledger::Result ParseBody(
+  type::Result ParseBody(
       const std::string& body,
       const std::string& publisher_key,
-      ledger::ServerPublisherInfo* info);
+      type::ServerPublisherInfo* info);
 
   void OnRequest(
-      const ledger::UrlResponse& response,
+      const type::UrlResponse& response,
       const std::string& publisher_key,
       GetPublisherCallback callback);
 
-  bat_ledger::LedgerImpl* ledger_;  // NOT OWNED
+  LedgerImpl* ledger_;  // NOT OWNED
 };
 
 }  // namespace private_cdn

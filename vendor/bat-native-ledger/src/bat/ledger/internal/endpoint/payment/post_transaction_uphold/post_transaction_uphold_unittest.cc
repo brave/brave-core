@@ -31,13 +31,13 @@ class PostTransactionUpholdTest : public testing::Test {
 
  protected:
   std::unique_ptr<ledger::MockLedgerClient> mock_ledger_client_;
-  std::unique_ptr<bat_ledger::MockLedgerImpl> mock_ledger_impl_;
+  std::unique_ptr<ledger::MockLedgerImpl> mock_ledger_impl_;
   std::unique_ptr<PostTransactionUphold> order_;
 
   PostTransactionUpholdTest() {
     mock_ledger_client_ = std::make_unique<ledger::MockLedgerClient>();
     mock_ledger_impl_ =
-        std::make_unique<bat_ledger::MockLedgerImpl>(mock_ledger_client_.get());
+        std::make_unique<ledger::MockLedgerImpl>(mock_ledger_client_.get());
     order_ = std::make_unique<PostTransactionUphold>(mock_ledger_impl_.get());
   }
 };
@@ -46,21 +46,21 @@ TEST_F(PostTransactionUpholdTest, ServerOK) {
   ON_CALL(*mock_ledger_client_, LoadURL(_, _))
       .WillByDefault(
           Invoke([](
-              ledger::UrlRequestPtr request,
-              ledger::LoadURLCallback callback) {
-            ledger::UrlResponse response;
+              type::UrlRequestPtr request,
+              client::LoadURLCallback callback) {
+            type::UrlResponse response;
             response.status_code = 201;
             response.url = request->url;
             response.body = "";
             callback(response);
           }));
 
-  ledger::SKUTransaction transaction;
+  type::SKUTransaction transaction;
   transaction.order_id = "f2e6494e-fb21-44d1-90e9-b5408799acd8";
   transaction.external_transaction_id = "d382d3ae-8462-4b2c-9b60-b669539f41b2";
 
-  order_->Request(transaction, [](const ledger::Result result) {
-    EXPECT_EQ(result, ledger::Result::LEDGER_OK);
+  order_->Request(transaction, [](const type::Result result) {
+    EXPECT_EQ(result, type::Result::LEDGER_OK);
   });
 }
 
@@ -68,21 +68,21 @@ TEST_F(PostTransactionUpholdTest, ServerError400) {
   ON_CALL(*mock_ledger_client_, LoadURL(_, _))
       .WillByDefault(
           Invoke([](
-              ledger::UrlRequestPtr request,
-              ledger::LoadURLCallback callback) {
-            ledger::UrlResponse response;
+              type::UrlRequestPtr request,
+              client::LoadURLCallback callback) {
+            type::UrlResponse response;
             response.status_code = 400;
             response.url = request->url;
             response.body = "";
             callback(response);
           }));
 
-  ledger::SKUTransaction transaction;
+  type::SKUTransaction transaction;
   transaction.order_id = "f2e6494e-fb21-44d1-90e9-b5408799acd8";
   transaction.external_transaction_id = "d382d3ae-8462-4b2c-9b60-b669539f41b2";
 
-  order_->Request(transaction, [](const ledger::Result result) {
-    EXPECT_EQ(result, ledger::Result::LEDGER_ERROR);
+  order_->Request(transaction, [](const type::Result result) {
+    EXPECT_EQ(result, type::Result::LEDGER_ERROR);
   });
 }
 
@@ -90,21 +90,21 @@ TEST_F(PostTransactionUpholdTest, ServerError404) {
   ON_CALL(*mock_ledger_client_, LoadURL(_, _))
       .WillByDefault(
           Invoke([](
-              ledger::UrlRequestPtr request,
-              ledger::LoadURLCallback callback) {
-            ledger::UrlResponse response;
+              type::UrlRequestPtr request,
+              client::LoadURLCallback callback) {
+            type::UrlResponse response;
             response.status_code = 404;
             response.url = request->url;
             response.body = "";
             callback(response);
           }));
 
-  ledger::SKUTransaction transaction;
+  type::SKUTransaction transaction;
   transaction.order_id = "f2e6494e-fb21-44d1-90e9-b5408799acd8";
   transaction.external_transaction_id = "d382d3ae-8462-4b2c-9b60-b669539f41b2";
 
-  order_->Request(transaction, [](const ledger::Result result) {
-    EXPECT_EQ(result, ledger::Result::NOT_FOUND);
+  order_->Request(transaction, [](const type::Result result) {
+    EXPECT_EQ(result, type::Result::NOT_FOUND);
   });
 }
 
@@ -112,21 +112,21 @@ TEST_F(PostTransactionUpholdTest, ServerError409) {
   ON_CALL(*mock_ledger_client_, LoadURL(_, _))
       .WillByDefault(
           Invoke([](
-              ledger::UrlRequestPtr request,
-              ledger::LoadURLCallback callback) {
-            ledger::UrlResponse response;
+              type::UrlRequestPtr request,
+              client::LoadURLCallback callback) {
+            type::UrlResponse response;
             response.status_code = 409;
             response.url = request->url;
             response.body = "";
             callback(response);
           }));
 
-  ledger::SKUTransaction transaction;
+  type::SKUTransaction transaction;
   transaction.order_id = "f2e6494e-fb21-44d1-90e9-b5408799acd8";
   transaction.external_transaction_id = "d382d3ae-8462-4b2c-9b60-b669539f41b2";
 
-  order_->Request(transaction, [](const ledger::Result result) {
-    EXPECT_EQ(result, ledger::Result::LEDGER_ERROR);
+  order_->Request(transaction, [](const type::Result result) {
+    EXPECT_EQ(result, type::Result::LEDGER_ERROR);
   });
 }
 
@@ -134,21 +134,21 @@ TEST_F(PostTransactionUpholdTest, ServerError500) {
   ON_CALL(*mock_ledger_client_, LoadURL(_, _))
       .WillByDefault(
           Invoke([](
-              ledger::UrlRequestPtr request,
-              ledger::LoadURLCallback callback) {
-            ledger::UrlResponse response;
+              type::UrlRequestPtr request,
+              client::LoadURLCallback callback) {
+            type::UrlResponse response;
             response.status_code = 500;
             response.url = request->url;
             response.body = "";
             callback(response);
           }));
 
-  ledger::SKUTransaction transaction;
+  type::SKUTransaction transaction;
   transaction.order_id = "f2e6494e-fb21-44d1-90e9-b5408799acd8";
   transaction.external_transaction_id = "d382d3ae-8462-4b2c-9b60-b669539f41b2";
 
-  order_->Request(transaction, [](const ledger::Result result) {
-    EXPECT_EQ(result, ledger::Result::LEDGER_ERROR);
+  order_->Request(transaction, [](const type::Result result) {
+    EXPECT_EQ(result, type::Result::LEDGER_ERROR);
   });
 }
 
@@ -156,21 +156,21 @@ TEST_F(PostTransactionUpholdTest, ServerErrorRandom) {
   ON_CALL(*mock_ledger_client_, LoadURL(_, _))
       .WillByDefault(
           Invoke([](
-              ledger::UrlRequestPtr request,
-              ledger::LoadURLCallback callback) {
-            ledger::UrlResponse response;
+              type::UrlRequestPtr request,
+              client::LoadURLCallback callback) {
+            type::UrlResponse response;
             response.status_code = 453;
             response.url = request->url;
             response.body = "";
             callback(response);
           }));
 
-  ledger::SKUTransaction transaction;
+  type::SKUTransaction transaction;
   transaction.order_id = "f2e6494e-fb21-44d1-90e9-b5408799acd8";
   transaction.external_transaction_id = "d382d3ae-8462-4b2c-9b60-b669539f41b2";
 
-  order_->Request(transaction, [](const ledger::Result result) {
-    EXPECT_EQ(result, ledger::Result::LEDGER_ERROR);
+  order_->Request(transaction, [](const type::Result result) {
+    EXPECT_EQ(result, type::Result::LEDGER_ERROR);
   });
 }
 

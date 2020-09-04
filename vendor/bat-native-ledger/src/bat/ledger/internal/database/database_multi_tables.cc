@@ -13,9 +13,10 @@
 
 using std::placeholders::_1;
 
-namespace braveledger_database {
+namespace ledger {
+namespace database {
 
-DatabaseMultiTables::DatabaseMultiTables(bat_ledger::LedgerImpl* ledger) {
+DatabaseMultiTables::DatabaseMultiTables(LedgerImpl* ledger) {
   DCHECK(ledger);
   ledger_ = ledger;
 }
@@ -23,7 +24,7 @@ DatabaseMultiTables::DatabaseMultiTables(bat_ledger::LedgerImpl* ledger) {
 DatabaseMultiTables::~DatabaseMultiTables() = default;
 
 void DatabaseMultiTables::GetTransactionReport(
-    const ledger::ActivityMonth month,
+    const type::ActivityMonth month,
     const int year,
     ledger::GetTransactionReportCallback callback) {
   auto promotion_callback = std::bind(
@@ -37,16 +38,16 @@ void DatabaseMultiTables::GetTransactionReport(
 }
 
 void DatabaseMultiTables::OnGetTransactionReportPromotion(
-    ledger::PromotionMap promotions,
-    const ledger::ActivityMonth month,
+    type::PromotionMap promotions,
+    const type::ActivityMonth month,
     const int year,
     ledger::GetTransactionReportCallback callback) {
   const auto converted_month = static_cast<int>(month);
-  ledger::TransactionReportInfoList list;
+  type::TransactionReportInfoList list;
 
   for (const auto& promotion : promotions) {
     if (!promotion.second ||
-        promotion.second->status != ledger::PromotionStatus::FINISHED ||
+        promotion.second->status != type::PromotionStatus::FINISHED ||
         promotion.second->claimed_at == 0) {
       continue;
     }
@@ -58,8 +59,8 @@ void DatabaseMultiTables::OnGetTransactionReportPromotion(
       continue;
     }
 
-    auto report = ledger::TransactionReportInfo::New();
-    report->type = braveledger_promotion::ConvertPromotionTypeToReportType(
+    auto report = type::TransactionReportInfo::New();
+    report->type = promotion::ConvertPromotionTypeToReportType(
         promotion.second->type);
     report->amount = promotion.second->approximate_value;
     report->created_at = promotion.second->claimed_at;
@@ -69,4 +70,5 @@ void DatabaseMultiTables::OnGetTransactionReportPromotion(
   callback(std::move(list));
 }
 
-}  // namespace braveledger_database
+}  // namespace database
+}  // namespace ledger

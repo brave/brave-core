@@ -12,9 +12,10 @@
 
 using std::placeholders::_1;
 
-namespace braveledger_state {
+namespace ledger {
+namespace state {
 
-StateMigrationV2::StateMigrationV2(bat_ledger::LedgerImpl* ledger) :
+StateMigrationV2::StateMigrationV2(LedgerImpl* ledger) :
     ledger_(ledger) {
 }
 
@@ -33,64 +34,65 @@ void StateMigrationV2::Migrate(ledger::ResultCallback callback) {
 }
 
 void StateMigrationV2::OnLoadState(
-    const ledger::Result result,
+    const type::Result result,
     ledger::ResultCallback callback) {
-  if (result == ledger::Result::NO_LEDGER_STATE) {
+  if (result == type::Result::NO_LEDGER_STATE) {
     BLOG(1, "No ledger state");
-    callback(ledger::Result::LEDGER_OK);
+    callback(type::Result::LEDGER_OK);
     return;
   }
 
-  if (result != ledger::Result::LEDGER_OK) {
+  if (result != type::Result::LEDGER_OK) {
     BLOG(0, "Failed to load ledger state file, setting default values");
-    callback(ledger::Result::LEDGER_OK);
+    callback(type::Result::LEDGER_OK);
     return;
   }
 
   ledger_->ledger_client()->SetBooleanState(
-      ledger::kStateEnabled,
+      kEnabled,
       legacy_state_->GetRewardsMainEnabled());
 
   ledger_->ledger_client()->SetBooleanState(
-      ledger::kStateAutoContributeEnabled,
+      kAutoContributeEnabled,
       legacy_state_->GetAutoContributeEnabled());
 
   if (legacy_state_->GetUserChangedContribution()) {
     ledger_->ledger_client()->SetDoubleState(
-      ledger::kStateAutoContributeAmount,
+      kAutoContributeAmount,
       legacy_state_->GetAutoContributionAmount());
   }
 
   ledger_->ledger_client()->SetUint64State(
-      ledger::kStateNextReconcileStamp,
+      kNextReconcileStamp,
       legacy_state_->GetReconcileStamp());
 
   ledger_->ledger_client()->SetUint64State(
-      ledger::kStateCreationStamp,
+      kCreationStamp,
       legacy_state_->GetCreationStamp());
 
   const auto seed = legacy_state_->GetRecoverySeed();
   ledger_->ledger_client()->SetStringState(
-      ledger::kStateRecoverySeed,
+      kRecoverySeed,
       base::Base64Encode(seed));
 
   ledger_->ledger_client()->SetStringState(
-      ledger::kStatePaymentId,
+      kPaymentId,
       legacy_state_->GetPaymentId());
 
   ledger_->ledger_client()->SetBooleanState(
-      ledger::kStateInlineTipRedditEnabled,
+      kInlineTipRedditEnabled,
       legacy_state_->GetInlineTipSetting("reddit"));
 
   ledger_->ledger_client()->SetBooleanState(
-      ledger::kStateInlineTipTwitterEnabled,
+      kInlineTipTwitterEnabled,
       legacy_state_->GetInlineTipSetting("twitter"));
 
   ledger_->ledger_client()->SetBooleanState(
-      ledger::kStateInlineTipGithubEnabled,
+      kInlineTipGithubEnabled,
       legacy_state_->GetInlineTipSetting("github"));
 
-  callback(ledger::Result::LEDGER_OK);
+  callback(type::Result::LEDGER_OK);
 }
 
-}  // namespace braveledger_state
+}  // namespace state
+}  // namespace ledger

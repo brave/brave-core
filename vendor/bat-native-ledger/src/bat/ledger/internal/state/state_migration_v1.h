@@ -12,39 +12,39 @@
 #include "bat/ledger/internal/legacy/publisher_state.h"
 #include "bat/ledger/ledger.h"
 
-namespace bat_ledger {
+namespace ledger {
 class LedgerImpl;
-}
 
-namespace braveledger_state {
+namespace state {
 
 class StateMigrationV1 {
  public:
-  explicit StateMigrationV1(bat_ledger::LedgerImpl* ledger);
+  explicit StateMigrationV1(LedgerImpl* ledger);
   ~StateMigrationV1();
 
   void Migrate(ledger::ResultCallback callback);
 
  private:
   void OnLoadState(
-      const ledger::Result result,
+      const type::Result result,
       ledger::ResultCallback callback);
 
   void BalanceReportsSaved(
-      const ledger::Result result,
+      const type::Result result,
       ledger::ResultCallback callback);
 
   void SaveProcessedPublishers(ledger::ResultCallback callback);
 
   void ProcessedPublisherSaved(
-      const ledger::Result result,
+      const type::Result result,
       ledger::ResultCallback callback);
 
-  std::unique_ptr<braveledger_publisher::LegacyPublisherState>
+  std::unique_ptr<publisher::LegacyPublisherState>
   legacy_publisher_;
-  bat_ledger::LedgerImpl* ledger_;  // NOT OWNED
+  LedgerImpl* ledger_;  // NOT OWNED
 };
 
-}  // namespace braveledger_state
+}  // namespace state
+}  // namespace ledger
 
 #endif  // BRAVELEDGER_BAT_STATE_STATE_MIGRATION_V1_H_

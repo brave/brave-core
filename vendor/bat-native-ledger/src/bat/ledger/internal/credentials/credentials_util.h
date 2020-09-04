@@ -19,47 +19,50 @@
 using challenge_bypass_ristretto::Token;
 using challenge_bypass_ristretto::BlindedToken;
 
-namespace braveledger_credentials {
-  std::vector<Token> GenerateCreds(const int count);
+namespace ledger {
+namespace credential {
 
-  std::string GetCredsJSON(const std::vector<Token>& creds);
+std::vector<Token> GenerateCreds(const int count);
 
-  std::vector<BlindedToken> GenerateBlindCreds(
-      const std::vector<Token>& tokens);
+std::string GetCredsJSON(const std::vector<Token>& creds);
 
-  std::string GetBlindedCredsJSON(const std::vector<BlindedToken>& blinded);
+std::vector<BlindedToken> GenerateBlindCreds(
+    const std::vector<Token>& tokens);
 
-  std::unique_ptr<base::ListValue> ParseStringToBaseList(
-      const std::string& string_list);
+std::string GetBlindedCredsJSON(const std::vector<BlindedToken>& blinded);
 
-  bool UnBlindCreds(
-      const ledger::CredsBatch& creds,
-      std::vector<std::string>* unblinded_encoded_creds,
-      std::string* error);
+std::unique_ptr<base::ListValue> ParseStringToBaseList(
+    const std::string& string_list);
 
-  bool UnBlindCredsMock(
-      const ledger::CredsBatch& creds,
-      std::vector<std::string>* unblinded_encoded_creds);
+bool UnBlindCreds(
+    const type::CredsBatch& creds,
+    std::vector<std::string>* unblinded_encoded_creds,
+    std::string* error);
 
-  std::string ConvertRewardTypeToString(const ledger::RewardsType type);
+bool UnBlindCredsMock(
+    const type::CredsBatch& creds,
+    std::vector<std::string>* unblinded_encoded_creds);
 
-  void GenerateCredentials(
-      const std::vector<ledger::UnblindedToken>& token_list,
-      const std::string& body,
-      base::Value* credentials);
+std::string ConvertRewardTypeToString(const type::RewardsType type);
 
-  bool GenerateSuggestion(
-      const std::string& token_value,
-      const std::string& public_key,
-      const std::string& suggestion_encoded,
-      base::Value* result);
+void GenerateCredentials(
+    const std::vector<type::UnblindedToken>& token_list,
+    const std::string& body,
+    base::Value* credentials);
 
-  bool GenerateSuggestionMock(
-      const std::string& token_value,
-      const std::string& public_key,
-      const std::string& suggestion_encoded,
-      base::Value* result);
+bool GenerateSuggestion(
+    const std::string& token_value,
+    const std::string& public_key,
+    const std::string& suggestion_encoded,
+    base::Value* result);
 
-}  // namespace braveledger_credentials
+bool GenerateSuggestionMock(
+    const std::string& token_value,
+    const std::string& public_key,
+    const std::string& suggestion_encoded,
+    base::Value* result);
+
+}  // namespace credential
+}  // namespace ledger
 
 #endif  // BRAVELEDGER_CREDENTIALS_CREDENTIALS_UTIL_H_

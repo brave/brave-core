@@ -15,9 +15,10 @@
 using std::placeholders::_1;
 using std::placeholders::_2;
 
-namespace braveledger_report {
+namespace ledger {
+namespace report {
 
-Report::Report(bat_ledger::LedgerImpl* ledger):
+Report::Report(LedgerImpl* ledger):
     ledger_(ledger) {
   DCHECK(ledger_);
 }
@@ -25,7 +26,7 @@ Report::Report(bat_ledger::LedgerImpl* ledger):
 Report::~Report() = default;
 
 void Report::GetMonthly(
-    const ledger::ActivityMonth month,
+    const type::ActivityMonth month,
     const int year,
     ledger::GetMonthlyReportCallback callback) {
   auto balance_callback = std::bind(&Report::OnBalance,
@@ -40,18 +41,18 @@ void Report::GetMonthly(
 }
 
 void Report::OnBalance(
-    const ledger::Result result,
-    ledger::BalanceReportInfoPtr balance_report,
-    const ledger::ActivityMonth month,
+    const type::Result result,
+    type::BalanceReportInfoPtr balance_report,
+    const type::ActivityMonth month,
     const uint32_t year,
     ledger::GetMonthlyReportCallback callback) {
-  if (result != ledger::Result::LEDGER_OK || !balance_report) {
+  if (result != type::Result::LEDGER_OK || !balance_report) {
     BLOG(0, "Could not get balance report");
     callback(result, nullptr);
     return;
   }
 
-  auto monthly_report = ledger::MonthlyReportInfo::New();
+  auto monthly_report = type::MonthlyReportInfo::New();
   monthly_report->balance = std::move(balance_report);
 
   auto transaction_callback = std::bind(&Report::OnTransactions,
@@ -59,21 +60,21 @@ void Report::OnBalance(
       _1,
       month,
       year,
-      std::make_shared<ledger::MonthlyReportInfoPtr>(std::move(monthly_report)),
+      std::make_shared<type::MonthlyReportInfoPtr>(std::move(monthly_report)),
       callback);
 
   ledger_->database()->GetTransactionReport(month, year, transaction_callback);
 }
 
 void Report::OnTransactions(
-    ledger::TransactionReportInfoList transaction_report,
-    const ledger::ActivityMonth month,
+    type::TransactionReportInfoList transaction_report,
+    const type::ActivityMonth month,
     const uint32_t year,
-    std::shared_ptr<ledger::MonthlyReportInfoPtr> shared_report,
+    std::shared_ptr<type::MonthlyReportInfoPtr> shared_report,
     ledger::GetMonthlyReportCallback callback) {
   if (!shared_report) {
     BLOG(0, "Could not parse monthly report");
-    callback(ledger::Result::LEDGER_ERROR, nullptr);
+    callback(type::Result::LEDGER_ERROR, nullptr);
     return;
   }
 
@@ -92,18 +93,18 @@ void Report::OnTransactions(
 }
 
 void Report::OnContributions(
-    ledger::ContributionReportInfoList contribution_report,
-    std::shared_ptr<ledger::MonthlyReportInfoPtr> shared_report,
+    type::ContributionReportInfoList contribution_report,
+    std::shared_ptr<type::MonthlyReportInfoPtr> shared_report,
     ledger::GetMonthlyReportCallback callback) {
   if (!shared_report) {
     BLOG(0, "Could not parse monthly report");
-    callback(ledger::Result::LEDGER_ERROR, nullptr);
+    callback(type::Result::LEDGER_ERROR, nullptr);
     return;
   }
 
   (*shared_report)->contributions = std::move(contribution_report);
 
-  callback(ledger::Result::LEDGER_OK, std::move(*shared_report));
+  callback(type::Result::LEDGER_OK, std::move(*shared_report));
 }
 
 // This will be removed when we move reports in database and just order in db
@@ -144,7 +145,7 @@ void Report::GetAllMonthlyIds(ledger::GetAllMonthlyReportIdsCallback callback) {
 }
 
 void Report::OnGetAllBalanceReports(
-    ledger::BalanceReportInfoList reports,
+    type::BalanceReportInfoList reports,
     ledger::GetAllMonthlyReportIdsCallback callback) {
   if (reports.empty()) {
     callback({});
@@ -162,4 +163,5 @@ void Report::OnGetAllBalanceReports(
   callback(ids);
 }
 
-}  // namespace braveledger_report
+}  // namespace report
+}  // namespace ledger

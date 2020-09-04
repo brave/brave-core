@@ -12,29 +12,30 @@
 #include "bat/ledger/internal/uphold/uphold_util.h"
 #include "crypto/random.h"
 
-namespace braveledger_uphold {
+namespace ledger {
+namespace uphold {
 
 std::string GetClientId() {
-  return ledger::_environment == ledger::Environment::PRODUCTION
+  return ledger::_environment == type::Environment::PRODUCTION
       ? kClientIdProduction
       : kClientIdStaging;
 }
 
 std::string GetUrl() {
-  return ledger::_environment == ledger::Environment::PRODUCTION
+  return ledger::_environment == type::Environment::PRODUCTION
       ? kUrlProduction
       : kUrlStaging;
 }
 
 std::string GetFeeAddress() {
-  return ledger::_environment == ledger::Environment::PRODUCTION
+  return ledger::_environment == type::Environment::PRODUCTION
       ? kFeeAddressProduction
       : kFeeAddressStaging;
 }
 
 
 std::string GetACAddress() {
-  return ledger::_environment == ledger::Environment::PRODUCTION
+  return ledger::_environment == type::Environment::PRODUCTION
       ? kACAddressProduction
       : kACAddressStaging;
 }
@@ -100,10 +101,10 @@ std::string GetSecondStepVerify() {
       id.c_str());
 }
 
-ledger::ExternalWalletPtr GetWallet(
-    std::map<std::string, ledger::ExternalWalletPtr> wallets) {
+type::ExternalWalletPtr GetWallet(
+    std::map<std::string, type::ExternalWalletPtr> wallets) {
   for (auto& wallet : wallets) {
-    if (wallet.first == ledger::kWalletUphold) {
+    if (wallet.first == constant::kWalletUphold) {
       return std::move(wallet.second);
     }
   }
@@ -132,30 +133,30 @@ std::string GetAccountUrl() {
       url.c_str());
 }
 
-ledger::ExternalWalletPtr GenerateLinks(ledger::ExternalWalletPtr wallet) {
+type::ExternalWalletPtr GenerateLinks(type::ExternalWalletPtr wallet) {
   if (!wallet) {
     return nullptr;
   }
 
   switch (wallet->status) {
-    case ledger::WalletStatus::PENDING: {
+    case type::WalletStatus::PENDING: {
       wallet->add_url = GetSecondStepVerify();
       wallet->withdraw_url = GetSecondStepVerify();
       break;
     }
-    case ledger::WalletStatus::CONNECTED: {
+    case type::WalletStatus::CONNECTED: {
       wallet->add_url = GetAddUrl(wallet->address);
       wallet->withdraw_url = GetSecondStepVerify();
       break;
     }
-    case ledger::WalletStatus::VERIFIED: {
+    case type::WalletStatus::VERIFIED: {
       wallet->add_url = GetAddUrl(wallet->address);
       wallet->withdraw_url = GetWithdrawUrl(wallet->address);
       break;
     }
-    case ledger::WalletStatus::NOT_CONNECTED:
-    case ledger::WalletStatus::DISCONNECTED_VERIFIED:
-    case ledger::WalletStatus::DISCONNECTED_NOT_VERIFIED: {
+    case type::WalletStatus::NOT_CONNECTED:
+    case type::WalletStatus::DISCONNECTED_VERIFIED:
+    case type::WalletStatus::DISCONNECTED_NOT_VERIFIED: {
       wallet->add_url = "";
       wallet->withdraw_url = "";
       break;
@@ -169,24 +170,24 @@ ledger::ExternalWalletPtr GenerateLinks(ledger::ExternalWalletPtr wallet) {
   return wallet;
 }
 
-std::string GenerateVerifyLink(ledger::ExternalWalletPtr wallet) {
+std::string GenerateVerifyLink(type::ExternalWalletPtr wallet) {
   std::string url;
   if (!wallet) {
     return url;
   }
 
   switch (wallet->status) {
-    case ledger::WalletStatus::PENDING:
-    case ledger::WalletStatus::CONNECTED: {
+    case type::WalletStatus::PENDING:
+    case type::WalletStatus::CONNECTED: {
       url = GetSecondStepVerify();
       break;
     }
-    case ledger::WalletStatus::VERIFIED: {
+    case type::WalletStatus::VERIFIED: {
       break;
     }
-    case ledger::WalletStatus::NOT_CONNECTED:
-    case ledger::WalletStatus::DISCONNECTED_VERIFIED:
-    case ledger::WalletStatus::DISCONNECTED_NOT_VERIFIED: {
+    case type::WalletStatus::NOT_CONNECTED:
+    case type::WalletStatus::DISCONNECTED_VERIFIED:
+    case type::WalletStatus::DISCONNECTED_NOT_VERIFIED: {
       url = GetAuthorizeUrl(wallet->one_time_string, true);
       break;
     }
@@ -195,4 +196,5 @@ std::string GenerateVerifyLink(ledger::ExternalWalletPtr wallet) {
   return url;
 }
 
-}  // namespace braveledger_uphold
+}  // namespace uphold
+}  // namespace ledger

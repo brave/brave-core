@@ -12,28 +12,28 @@
 #include "bat/ledger/internal/legacy/bat_state.h"
 #include "bat/ledger/ledger.h"
 
-namespace bat_ledger {
+namespace ledger {
 class LedgerImpl;
-}
 
-namespace braveledger_state {
+namespace state {
 
 class StateMigrationV2 {
  public:
-  explicit StateMigrationV2(bat_ledger::LedgerImpl* ledger);
+  explicit StateMigrationV2(LedgerImpl* ledger);
   ~StateMigrationV2();
 
   void Migrate(ledger::ResultCallback callback);
 
  private:
   void OnLoadState(
-      const ledger::Result result,
+      const type::Result result,
       ledger::ResultCallback callback);
 
   std::unique_ptr<braveledger_bat_state::LegacyBatState> legacy_state_;
-  bat_ledger::LedgerImpl* ledger_;  // NOT OWNED
+  LedgerImpl* ledger_;  // NOT OWNED
 };
 
-}  // namespace braveledger_state
+}  // namespace state
+}  // namespace ledger
 
 #endif  // BRAVELEDGER_BAT_STATE_STATE_MIGRATION_V2_H_

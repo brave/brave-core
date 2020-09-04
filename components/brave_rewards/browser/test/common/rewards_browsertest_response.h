@@ -38,7 +38,7 @@ class RewardsBrowserTestResponse {
 
   void ClearRequests();
 
-  void SetSKUOrder(ledger::SKUOrderPtr order);
+  void SetSKUOrder(ledger::type::SKUOrderPtr order);
 
   void SetPromotionEmptyKey(const bool empty);
 
@@ -72,7 +72,7 @@ class RewardsBrowserTestResponse {
   std::vector<Request> requests_;
   bool empty_promotion_key_ = false;
   bool alternative_publisher_list_ = false;
-  ledger::SKUOrderPtr order_;
+  ledger::type::SKUOrderPtr order_;
   bool verified_wallet_ = false;
   std::string external_balance_ = "0.0";
   bool user_funds_balance_ = false;

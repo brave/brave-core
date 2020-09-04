@@ -8,7 +8,9 @@
 
 #include "base/test/task_environment.h"
 #include "bat/ledger/internal/contribution/contribution_unblinded.h"
+#include "bat/ledger/internal/database/database_contribution_info.h"
 #include "bat/ledger/internal/database/database_mock.h"
+#include "bat/ledger/internal/database/database_unblinded_token.h"
 #include "bat/ledger/internal/ledger_client_mock.h"
 #include "bat/ledger/internal/ledger_impl_mock.h"
 
@@ -21,7 +23,8 @@ namespace {
   const char contribution_id[] = "60770beb-3cfb-4550-a5db-deccafb5c790";
 }  // namespace
 
-namespace braveledger_contribution {
+namespace ledger {
+namespace contribution {
 
 class UnblindedTest : public ::testing::Test {
  private:
@@ -29,16 +32,16 @@ class UnblindedTest : public ::testing::Test {
 
  protected:
   std::unique_ptr<ledger::MockLedgerClient> mock_ledger_client_;
-  std::unique_ptr<bat_ledger::MockLedgerImpl> mock_ledger_impl_;
+  std::unique_ptr<ledger::MockLedgerImpl> mock_ledger_impl_;
   std::unique_ptr<Unblinded> unblinded_;
-  std::unique_ptr<braveledger_database::MockDatabase> mock_database_;
+  std::unique_ptr<database::MockDatabase> mock_database_;
 
   UnblindedTest() {
       mock_ledger_client_ = std::make_unique<ledger::MockLedgerClient>();
-      mock_ledger_impl_ = std::make_unique<bat_ledger::MockLedgerImpl>
+      mock_ledger_impl_ = std::make_unique<ledger::MockLedgerImpl>
           (mock_ledger_client_.get());
       unblinded_ = std::make_unique<Unblinded>(mock_ledger_impl_.get());
-      mock_database_ = std::make_unique<braveledger_database::MockDatabase>(
+      mock_database_ = std::make_unique<database::MockDatabase>(
         mock_ledger_impl_.get());
   }
 
@@ -50,12 +53,12 @@ class UnblindedTest : public ::testing::Test {
     .WillByDefault(
       Invoke([](
           const std::string& id,
-          ledger::GetContributionInfoCallback callback) {
-        auto info = ledger::ContributionInfo::New();
+          database::GetContributionInfoCallback callback) {
+        auto info = type::ContributionInfo::New();
         info->contribution_id = contribution_id;
         info->amount = 5.0;
-        info->type = ledger::RewardsType::ONE_TIME_TIP;
-        info->step = ledger::ContributionStep::STEP_NO;
+        info->type = type::RewardsType::ONE_TIME_TIP;
+        info->step = type::ContributionStep::STEP_NO;
         info->retry_count = 0;
 
         callback(std::move(info));
@@ -68,10 +71,10 @@ TEST_F(UnblindedTest, NotEnoughFunds) {
     .WillByDefault(
       Invoke([](
           const std::string&,
-          ledger::GetUnblindedTokenListCallback callback) {
-        ledger::UnblindedTokenList list;
+          database::GetUnblindedTokenListCallback callback) {
+        type::UnblindedTokenList list;
 
-        auto info = ledger::UnblindedToken::New();
+        auto info = type::UnblindedToken::New();
         info->id = 1;
         info->token_value = "asdfasdfasdfsad=";
         info->value = 2;
@@ -82,11 +85,12 @@ TEST_F(UnblindedTest, NotEnoughFunds) {
       }));
 
   unblinded_->Start(
-      {ledger::CredsBatchType::PROMOTION},
+      {type::CredsBatchType::PROMOTION},
       contribution_id,
-      [](const ledger::Result result) {
-        ASSERT_EQ(result, ledger::Result::NOT_ENOUGH_FUNDS);
+      [](const type::Result result) {
+        ASSERT_EQ(result, type::Result::NOT_ENOUGH_FUNDS);
       });
 }
 
-}  // namespace braveledger_contribution
+}  // namespace contribution
+}  // namespace ledger

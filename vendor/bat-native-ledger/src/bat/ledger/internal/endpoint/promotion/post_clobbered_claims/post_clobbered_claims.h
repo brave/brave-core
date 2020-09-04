@@ -30,20 +30,18 @@ CLAIMS_POST_CLOBBERED_CLAIMS_H_
 // Response body:
 // {Empty}
 
-namespace bat_ledger {
-class LedgerImpl;
-}
-
 namespace ledger {
+class LedgerImpl;
+
 namespace endpoint {
 namespace promotion {
 
 using PostClobberedClaimsCallback = std::function<void(
-    const ledger::Result result)>;
+    const type::Result result)>;
 
 class PostClobberedClaims {
  public:
-  explicit PostClobberedClaims(bat_ledger::LedgerImpl* ledger);
+  explicit PostClobberedClaims(LedgerImpl* ledger);
   ~PostClobberedClaims();
 
   void Request(
@@ -55,13 +53,13 @@ class PostClobberedClaims {
 
   std::string GeneratePayload(base::Value corrupted_claims);
 
-  ledger::Result CheckStatusCode(const int status_code);
+  type::Result CheckStatusCode(const int status_code);
 
   void OnRequest(
-      const ledger::UrlResponse& response,
+      const type::UrlResponse& response,
       PostClobberedClaimsCallback callback);
 
-  bat_ledger::LedgerImpl* ledger_;  // NOT OWNED
+  LedgerImpl* ledger_;  // NOT OWNED
 };
 
 }  // namespace promotion

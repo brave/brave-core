@@ -8,10 +8,10 @@
 
 #include "base/json/json_reader.h"
 #include "base/strings/stringprintf.h"
-#include "bat/ledger/internal/common/security_helper.h"
+#include "bat/ledger/internal/common/security_util.h"
 #include "bat/ledger/internal/endpoint/promotion/promotions_util.h"
 #include "bat/ledger/internal/ledger_impl.h"
-#include "bat/ledger/internal/request/request_util.h"
+#include "bat/ledger/internal/common/request_util.h"
 #include "net/http/http_status_code.h"
 
 using std::placeholders::_1;
@@ -20,7 +20,7 @@ namespace ledger {
 namespace endpoint {
 namespace promotion {
 
-PostWalletBrave::PostWalletBrave(bat_ledger::LedgerImpl* ledger):
+PostWalletBrave::PostWalletBrave(LedgerImpl* ledger):
     ledger_(ledger) {
   DCHECK(ledger_);
 }
@@ -31,25 +31,25 @@ std::string PostWalletBrave::GetUrl() {
   return GetServerUrl("/v3/wallet/brave");
 }
 
-ledger::Result PostWalletBrave::CheckStatusCode(const int status_code) {
+type::Result PostWalletBrave::CheckStatusCode(const int status_code) {
   if (status_code == net::HTTP_BAD_REQUEST) {
     BLOG(0, "Invalid request");
-    return ledger::Result::LEDGER_ERROR;
+    return type::Result::LEDGER_ERROR;
   }
 
   if (status_code == net::HTTP_SERVICE_UNAVAILABLE) {
     BLOG(0, "No conversion rate yet in ratios service");
-    return ledger::Result::BAD_REGISTRATION_RESPONSE;
+    return type::Result::BAD_REGISTRATION_RESPONSE;
   }
 
   if (status_code != net::HTTP_CREATED) {
-    return ledger::Result::LEDGER_ERROR;
+    return type::Result::LEDGER_ERROR;
   }
 
-  return ledger::Result::LEDGER_OK;
+  return type::Result::LEDGER_OK;
 }
 
-ledger::Result PostWalletBrave::ParseBody(
+type::Result PostWalletBrave::ParseBody(
     const std::string& body,
     std::string* payment_id) {
   DCHECK(payment_id);
@@ -57,33 +57,33 @@ ledger::Result PostWalletBrave::ParseBody(
   base::Optional<base::Value> value = base::JSONReader::Read(body);
   if (!value || !value->is_dict()) {
     BLOG(0, "Invalid JSON");
-    return ledger::Result::LEDGER_ERROR;
+    return type::Result::LEDGER_ERROR;
   }
 
   base::DictionaryValue* dictionary = nullptr;
   if (!value->GetAsDictionary(&dictionary)) {
     BLOG(0, "Invalid JSON");
-    return ledger::Result::LEDGER_ERROR;
+    return type::Result::LEDGER_ERROR;
   }
 
   const auto* payment_id_string = dictionary->FindStringKey("paymentId");
   if (!payment_id_string || payment_id_string->empty()) {
     BLOG(1, "Payment id is wrong");
-    return ledger::Result::LEDGER_ERROR;
+    return type::Result::LEDGER_ERROR;
   }
 
   *payment_id = *payment_id_string;
 
-  return ledger::Result::LEDGER_OK;
+  return type::Result::LEDGER_OK;
 }
 
 void PostWalletBrave::Request(
     PostWalletBraveCallback callback) {
   const auto seed = ledger_->state()->GetRecoverySeed();
-  const auto headers = braveledger_request_util::BuildSignHeaders(
+  const auto headers = util::BuildSignHeaders(
       "post /v3/wallet/brave",
       "",
-      braveledger_helper::Security::GetPublicKeyHexFromSeed(seed),
+      util::Security::GetPublicKeyHexFromSeed(seed),
       seed);
 
   auto url_callback = std::bind(&PostWalletBrave::OnRequest,
@@ -91,22 +91,22 @@ void PostWalletBrave::Request(
       _1,
       callback);
 
-  auto request = ledger::UrlRequest::New();
+  auto request = type::UrlRequest::New();
   request->url = GetUrl();
   request->headers = headers;
-  request->method = ledger::UrlMethod::POST;
+  request->method = type::UrlMethod::POST;
   ledger_->LoadURL(std::move(request), url_callback);
 }
 
 void PostWalletBrave::OnRequest(
-    const ledger::UrlResponse& response,
+    const type::UrlResponse& response,
     PostWalletBraveCallback callback) {
   ledger::LogUrlResponse(__func__, response);
 
   std::string payment_id;
-  ledger::Result result = CheckStatusCode(response.status_code);
+  type::Result result = CheckStatusCode(response.status_code);
 
-  if (result != ledger::Result::LEDGER_OK) {
+  if (result != type::Result::LEDGER_OK) {
     callback(result, payment_id);
     return;
   }

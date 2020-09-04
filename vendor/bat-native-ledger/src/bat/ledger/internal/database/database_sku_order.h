@@ -12,29 +12,32 @@
 #include "bat/ledger/internal/database/database_sku_order_items.h"
 #include "bat/ledger/internal/database/database_table.h"
 
-namespace braveledger_database {
+namespace ledger {
+namespace database {
+
+using GetSKUOrderCallback = std::function<void(type::SKUOrderPtr)>;
 
 class DatabaseSKUOrder: public DatabaseTable {
  public:
-  explicit DatabaseSKUOrder(bat_ledger::LedgerImpl* ledger);
+  explicit DatabaseSKUOrder(LedgerImpl* ledger);
   ~DatabaseSKUOrder() override;
 
   void InsertOrUpdate(
-      ledger::SKUOrderPtr info,
+      type::SKUOrderPtr info,
       ledger::ResultCallback callback);
 
   void UpdateStatus(
       const std::string& order_id,
-      const ledger::SKUOrderStatus status,
+      const type::SKUOrderStatus status,
       ledger::ResultCallback callback);
 
   void GetRecord(
       const std::string& order_id,
-      ledger::GetSKUOrderCallback callback);
+      GetSKUOrderCallback callback);
 
   void GetRecordByContributionId(
       const std::string& contribution_id,
-      ledger::GetSKUOrderCallback callback);
+      GetSKUOrderCallback callback);
 
   void SaveContributionIdForSKUOrder(
       const std::string& order_id,
@@ -43,17 +46,18 @@ class DatabaseSKUOrder: public DatabaseTable {
 
  private:
   void OnGetRecord(
-      ledger::DBCommandResponsePtr response,
-      ledger::GetSKUOrderCallback callback);
+      type::DBCommandResponsePtr response,
+      GetSKUOrderCallback callback);
 
   void OnGetRecordItems(
-      ledger::SKUOrderItemList list,
-      std::shared_ptr<ledger::SKUOrderPtr> shared_order,
-      ledger::GetSKUOrderCallback callback);
+      type::SKUOrderItemList list,
+      std::shared_ptr<type::SKUOrderPtr> shared_order,
+      GetSKUOrderCallback callback);
 
   std::unique_ptr<DatabaseSKUOrderItems> items_;
 };
 
-}  // namespace braveledger_database
+}  // namespace database
+}  // namespace ledger
 
 #endif  // BRAVELEDGER_DATABASE_DATABASE_ORDER_H_

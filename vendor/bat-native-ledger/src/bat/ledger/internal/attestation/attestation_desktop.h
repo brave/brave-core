@@ -13,16 +13,14 @@
 #include "bat/ledger/internal/attestation/attestation.h"
 #include "bat/ledger/internal/endpoint/promotion/promotion_server.h"
 
-namespace bat_ledger {
-class LedgerImpl;
-}
-
 namespace ledger {
+class LedgerImpl;
+
 namespace attestation {
 
 class AttestationDesktop : public Attestation {
  public:
-  explicit AttestationDesktop(bat_ledger::LedgerImpl* ledger);
+  explicit AttestationDesktop(LedgerImpl* ledger);
   ~AttestationDesktop() override;
 
   void Start(const std::string& payload, StartCallback callback) override;
@@ -32,27 +30,27 @@ class AttestationDesktop : public Attestation {
       ConfirmCallback callback) override;
 
  private:
-  ledger::Result ParseClaimSolution(
+  type::Result ParseClaimSolution(
       const std::string& response,
       int* x,
       int* y,
       std::string* captcha_id);
 
   void DownloadCaptchaImage(
-      const ledger::Result result,
+      const type::Result result,
       const std::string& hint,
       const std::string& captcha_id,
       StartCallback callback);
 
   void OnDownloadCaptchaImage(
-      const ledger::Result result,
+      const type::Result result,
       const std::string& image,
       const std::string& hint,
       const std::string& captcha_id,
       StartCallback callback);
 
   void OnConfirm(
-      const ledger::Result result,
+      const type::Result result,
       ConfirmCallback callback);
 
   std::unique_ptr<endpoint::PromotionServer> promotion_server_;

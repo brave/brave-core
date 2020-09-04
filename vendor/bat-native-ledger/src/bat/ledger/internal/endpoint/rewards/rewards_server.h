@@ -11,16 +11,14 @@
 #include "bat/ledger/ledger.h"
 #include "bat/ledger/internal/endpoint/rewards/get_prefix_list/get_prefix_list.h"
 
-namespace bat_ledger {
-class LedgerImpl;
-}
-
 namespace ledger {
+class LedgerImpl;
+
 namespace endpoint {
 
 class RewardsServer {
  public:
-  explicit RewardsServer(bat_ledger::LedgerImpl* ledger);
+  explicit RewardsServer(LedgerImpl* ledger);
   ~RewardsServer();
 
   rewards::GetPrefixList* get_prefix_list() const;

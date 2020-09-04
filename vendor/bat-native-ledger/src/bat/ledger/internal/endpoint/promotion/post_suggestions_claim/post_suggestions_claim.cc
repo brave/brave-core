@@ -8,11 +8,11 @@
 
 #include "base/json/json_writer.h"
 #include "base/strings/stringprintf.h"
-#include "bat/ledger/internal/common/security_helper.h"
+#include "bat/ledger/internal/common/security_util.h"
 #include "bat/ledger/internal/credentials/credentials_util.h"
 #include "bat/ledger/internal/endpoint/promotion/promotions_util.h"
 #include "bat/ledger/internal/ledger_impl.h"
-#include "bat/ledger/internal/request/request_util.h"
+#include "bat/ledger/internal/common/request_util.h"
 #include "net/http/http_status_code.h"
 
 using std::placeholders::_1;
@@ -21,7 +21,7 @@ namespace ledger {
 namespace endpoint {
 namespace promotion {
 
-PostSuggestionsClaim::PostSuggestionsClaim(bat_ledger::LedgerImpl* ledger):
+PostSuggestionsClaim::PostSuggestionsClaim(LedgerImpl* ledger):
     ledger_(ledger) {
   DCHECK(ledger_);
 }
@@ -33,10 +33,10 @@ std::string PostSuggestionsClaim::GetUrl() {
 }
 
 std::string PostSuggestionsClaim::GeneratePayload(
-    const braveledger_credentials::CredentialsRedeem& redeem) {
+    const credential::CredentialsRedeem& redeem) {
   const std::string payment_id = ledger_->state()->GetPaymentId();
   base::Value credentials(base::Value::Type::LIST);
-  braveledger_credentials::GenerateCredentials(
+  credential::GenerateCredentials(
       redeem.token_list,
       payment_id,
       &credentials);
@@ -50,26 +50,26 @@ std::string PostSuggestionsClaim::GeneratePayload(
   return json;
 }
 
-ledger::Result PostSuggestionsClaim::CheckStatusCode(const int status_code) {
+type::Result PostSuggestionsClaim::CheckStatusCode(const int status_code) {
   if (status_code == net::HTTP_BAD_REQUEST) {
     BLOG(0, "Invalid request");
-    return ledger::Result::LEDGER_ERROR;
+    return type::Result::LEDGER_ERROR;
   }
 
   if (status_code == net::HTTP_SERVICE_UNAVAILABLE) {
     BLOG(0, "No conversion rate yet in ratios service");
-    return ledger::Result::BAD_REGISTRATION_RESPONSE;
+    return type::Result::BAD_REGISTRATION_RESPONSE;
   }
 
   if (status_code != net::HTTP_OK) {
-    return ledger::Result::LEDGER_ERROR;
+    return type::Result::LEDGER_ERROR;
   }
 
-  return ledger::Result::LEDGER_OK;
+  return type::Result::LEDGER_OK;
 }
 
 void PostSuggestionsClaim::Request(
-    const braveledger_credentials::CredentialsRedeem& redeem,
+    const credential::CredentialsRedeem& redeem,
     PostSuggestionsClaimCallback callback) {
   auto url_callback = std::bind(&PostSuggestionsClaim::OnRequest,
       this,
@@ -78,23 +78,23 @@ void PostSuggestionsClaim::Request(
 
   const std::string payload = GeneratePayload(redeem);
 
-  auto headers = braveledger_request_util::BuildSignHeaders(
+  auto headers = util::BuildSignHeaders(
       "post /v1/suggestions/claim",
       payload,
       ledger_->state()->GetPaymentId(),
       ledger_->state()->GetRecoverySeed());
 
-  auto request = ledger::UrlRequest::New();
+  auto request = type::UrlRequest::New();
   request->url = GetUrl();
   request->content = payload;
   request->headers = headers;
   request->content_type = "application/json; charset=utf-8";
-  request->method = ledger::UrlMethod::POST;
+  request->method = type::UrlMethod::POST;
   ledger_->LoadURL(std::move(request), url_callback);
 }
 
 void PostSuggestionsClaim::OnRequest(
-    const ledger::UrlResponse& response,
+    const type::UrlResponse& response,
     PostSuggestionsClaimCallback callback) {
   ledger::LogUrlResponse(__func__, response);
   callback(CheckStatusCode(response.status_code));

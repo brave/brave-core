@@ -20,7 +20,7 @@ namespace ledger {
 namespace endpoint {
 namespace uphold {
 
-PostCards::PostCards(bat_ledger::LedgerImpl* ledger):
+PostCards::PostCards(LedgerImpl* ledger):
     ledger_(ledger) {
   DCHECK(ledger_);
 }
@@ -33,7 +33,7 @@ std::string PostCards::GetUrl() {
 
 std::string PostCards::GeneratePayload() {
   base::Value payload(base::Value::Type::DICTIONARY);
-  payload.SetStringKey("label", braveledger_uphold::kCardName);
+  payload.SetStringKey("label", ::ledger::uphold::kCardName);
   payload.SetStringKey("currency", "BAT");
 
   std::string json;
@@ -41,19 +41,19 @@ std::string PostCards::GeneratePayload() {
   return json;
 }
 
-ledger::Result PostCards::CheckStatusCode(const int status_code) {
+type::Result PostCards::CheckStatusCode(const int status_code) {
   if (status_code == net::HTTP_UNAUTHORIZED) {
-    return ledger::Result::EXPIRED_TOKEN;
+    return type::Result::EXPIRED_TOKEN;
   }
 
   if (status_code != net::HTTP_OK) {
-    return ledger::Result::LEDGER_ERROR;
+    return type::Result::LEDGER_ERROR;
   }
 
-  return ledger::Result::LEDGER_OK;
+  return type::Result::LEDGER_OK;
 }
 
-ledger::Result PostCards::ParseBody(
+type::Result PostCards::ParseBody(
     const std::string& body,
     std::string* id) {
   DCHECK(id);
@@ -61,24 +61,24 @@ ledger::Result PostCards::ParseBody(
   base::Optional<base::Value> value = base::JSONReader::Read(body);
   if (!value || !value->is_dict()) {
     BLOG(0, "Invalid JSON");
-    return ledger::Result::LEDGER_ERROR;
+    return type::Result::LEDGER_ERROR;
   }
 
   base::DictionaryValue* dictionary = nullptr;
   if (!value->GetAsDictionary(&dictionary)) {
     BLOG(0, "Invalid JSON");
-    return ledger::Result::LEDGER_ERROR;
+    return type::Result::LEDGER_ERROR;
   }
 
   const auto* id_str = dictionary->FindStringKey("id");
   if (!id_str) {
     BLOG(0, "Missing id");
-    return ledger::Result::LEDGER_ERROR;
+    return type::Result::LEDGER_ERROR;
   }
 
   *id = *id_str;
 
-  return ledger::Result::LEDGER_OK;
+  return type::Result::LEDGER_OK;
 }
 
 void PostCards::Request(
@@ -89,23 +89,23 @@ void PostCards::Request(
       _1,
       callback);
 
-  auto request = ledger::UrlRequest::New();
+  auto request = type::UrlRequest::New();
   request->url = GetUrl();
   request->content = GeneratePayload();
   request->headers = RequestAuthorization(token);
   request->content_type = "application/json; charset=utf-8";
-  request->method = ledger::UrlMethod::POST;
+  request->method = type::UrlMethod::POST;
   ledger_->LoadURL(std::move(request), url_callback);
 }
 
 void PostCards::OnRequest(
-    const ledger::UrlResponse& response,
+    const type::UrlResponse& response,
     PostCardsCallback callback) {
   ledger::LogUrlResponse(__func__, response, true);
 
-  ledger::Result result = CheckStatusCode(response.status_code);
+  type::Result result = CheckStatusCode(response.status_code);
 
-  if (result != ledger::Result::LEDGER_OK) {
+  if (result != type::Result::LEDGER_OK) {
     callback(result, "");
     return;
   }

@@ -9,7 +9,8 @@
 #include "bat/ledger/internal/sku/sku_util.h"
 #include "bat/ledger/ledger.h"
 
-namespace braveledger_sku {
+namespace ledger {
+namespace sku {
 
 const char kAnonCardDestinationDev[] =
     "9094c3f2-b3ae-438f-bd59-92aaad92de5c";
@@ -26,11 +27,11 @@ const char kUpholdDestinationProduction[] =
     "5d4be2ad-1c65-4802-bea1-e0f3a3a487cb";
 
 std::string GetBraveDestination(const std::string& wallet_type) {
-  if (wallet_type == ledger::kWalletUphold) {
+  if (wallet_type == constant::kWalletUphold) {
     return GetUpholdDestination();
   }
 
-  if (wallet_type == ledger::kWalletAnonymous) {
+  if (wallet_type == constant::kWalletAnonymous) {
     return GetAnonCardDestination();
   }
 
@@ -39,15 +40,15 @@ std::string GetBraveDestination(const std::string& wallet_type) {
 }
 
 std::string GetAnonCardDestination() {
-  if (ledger::_environment == ledger::Environment::PRODUCTION) {
+  if (ledger::_environment == type::Environment::PRODUCTION) {
     return kAnonCardDestinationProduction;
   }
 
-  if (ledger::_environment == ledger::Environment::STAGING) {
+  if (ledger::_environment == type::Environment::STAGING) {
     return kAnonCardDestinationStaging;
   }
 
-  if (ledger::_environment == ledger::Environment::DEVELOPMENT) {
+  if (ledger::_environment == type::Environment::DEVELOPMENT) {
     return kAnonCardDestinationDev;
   }
 
@@ -56,15 +57,15 @@ std::string GetAnonCardDestination() {
 }
 
 std::string GetUpholdDestination() {
-  if (ledger::_environment == ledger::Environment::PRODUCTION) {
+  if (ledger::_environment == type::Environment::PRODUCTION) {
     return kUpholdDestinationProduction;
   }
 
-  if (ledger::_environment == ledger::Environment::STAGING) {
+  if (ledger::_environment == type::Environment::STAGING) {
     return kUpholdDestinationStaging;
   }
 
-  if (ledger::_environment == ledger::Environment::DEVELOPMENT) {
+  if (ledger::_environment == type::Environment::DEVELOPMENT) {
     return kUpholdDestinationDev;
   }
 
@@ -72,4 +73,5 @@ std::string GetUpholdDestination() {
   return kUpholdDestinationDev;
 }
 
-}  // namespace braveledger_sku
+}  // namespace sku
+}  // namespace ledger

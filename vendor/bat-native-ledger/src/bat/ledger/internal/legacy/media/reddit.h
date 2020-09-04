@@ -14,7 +14,7 @@
 #include "bat/ledger/internal/legacy/media/helper.h"
 #include "bat/ledger/ledger.h"
 
-namespace bat_ledger {
+namespace ledger {
 class LedgerImpl;
 }
 
@@ -22,13 +22,13 @@ namespace braveledger_media {
 
 class Reddit {
  public:
-  explicit Reddit(bat_ledger::LedgerImpl* ledger);
+  explicit Reddit(ledger::LedgerImpl* ledger);
 
   ~Reddit();
 
   void ProcessActivityFromUrl(
       uint64_t window_id,
-      const ledger::VisitData& visit_data);
+      const ledger::type::VisitData& visit_data);
 
   void SaveMediaInfo(
       const std::map<std::string, std::string>& data,
@@ -36,45 +36,45 @@ class Reddit {
 
  private:
   void OnMediaActivityError(
-      const ledger::VisitData& visit_data,
+      const ledger::type::VisitData& visit_data,
       uint64_t window_id);
 
   void UserPath(
       uint64_t window_id,
-      const ledger::VisitData& visit_data);
+      const ledger::type::VisitData& visit_data);
 
   void OnUserActivity(
       uint64_t window_id,
-      const ledger::VisitData& visit_data,
-      ledger::Result result,
-      ledger::PublisherInfoPtr publisher_info);
+      const ledger::type::VisitData& visit_data,
+      ledger::type::Result result,
+      ledger::type::PublisherInfoPtr publisher_info);
 
   void FetchDataFromUrl(
       const std::string& url,
-      ledger::LoadURLCallback callback);
+      ledger::client::LoadURLCallback callback);
 
   void GetPublisherPanelInfo(
       uint64_t window_id,
-      const ledger::VisitData& visit_data,
+      const ledger::type::VisitData& visit_data,
       const std::string& publisher_key);
 
   void OnUserPage(
       uint64_t window_id,
-      const ledger::VisitData& visit_data,
-      const ledger::UrlResponse& response);
+      const ledger::type::VisitData& visit_data,
+      const ledger::type::UrlResponse& response);
 
   void OnPublisherPanelInfo(
       uint64_t window_id,
-      const ledger::VisitData& visit_data,
+      const ledger::type::VisitData& visit_data,
       const std::string& publisher_key,
-      ledger::Result result,
-      ledger::PublisherInfoPtr info);
+      ledger::type::Result result,
+      ledger::type::PublisherInfoPtr info);
 
   void OnMediaPublisherInfo(
       const std::string& user_name,
       ledger::PublisherInfoCallback callback,
-      ledger::Result result,
-      ledger::PublisherInfoPtr publisher_info);
+      ledger::type::Result result,
+      ledger::type::PublisherInfoPtr publisher_info);
 
   void SavePublisherInfo(
       uint64_t window_id,
@@ -83,8 +83,8 @@ class Reddit {
       const std::string& data);
 
   void OnRedditSaved(
-      ledger::Result result,
-      ledger::PublisherInfoPtr publisher_info);
+      ledger::type::Result result,
+      ledger::type::PublisherInfoPtr publisher_info);
 
   static std::string GetUserNameFromUrl(const std::string& path);
 
@@ -101,9 +101,9 @@ class Reddit {
   void OnPageDataFetched(
       const std::string& user_name,
       ledger::PublisherInfoCallback callback,
-      const ledger::UrlResponse& response);
+      const ledger::type::UrlResponse& response);
 
-  bat_ledger::LedgerImpl* ledger_;  // NOT OWNED
+  ledger::LedgerImpl* ledger_;  // NOT OWNED
 
   // For testing purposes
   friend class MediaRedditTest;

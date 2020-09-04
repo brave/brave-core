@@ -35,19 +35,17 @@
 //   "code": 401
 // }
 
-namespace bat_ledger {
-class LedgerImpl;
-}
-
 namespace ledger {
+class LedgerImpl;
+
 namespace endpoint {
 namespace promotion {
 
-using PutDevicecheckCallback = std::function<void(const ledger::Result result)>;
+using PutDevicecheckCallback = std::function<void(const type::Result result)>;
 
 class PutDevicecheck {
  public:
-  explicit PutDevicecheck(bat_ledger::LedgerImpl* ledger);
+  explicit PutDevicecheck(LedgerImpl* ledger);
   ~PutDevicecheck();
 
   void Request(
@@ -63,13 +61,13 @@ class PutDevicecheck {
       const std::string& blob,
       const std::string& signature);
 
-  ledger::Result CheckStatusCode(const int status_code);
+  type::Result CheckStatusCode(const int status_code);
 
   void OnRequest(
-      const ledger::UrlResponse& response,
+      const type::UrlResponse& response,
       PutDevicecheckCallback callback);
 
-  bat_ledger::LedgerImpl* ledger_;  // NOT OWNED
+  LedgerImpl* ledger_;  // NOT OWNED
 };
 
 }  // namespace promotion

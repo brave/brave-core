@@ -13,20 +13,21 @@
 #include "bat/ledger/internal/database/database_server_publisher_banner.h"
 #include "bat/ledger/internal/database/database_table.h"
 
-namespace braveledger_database {
+namespace ledger {
+namespace database {
 
 class DatabaseServerPublisherInfo: public DatabaseTable {
  public:
-  explicit DatabaseServerPublisherInfo(bat_ledger::LedgerImpl* ledger);
+  explicit DatabaseServerPublisherInfo(LedgerImpl* ledger);
   ~DatabaseServerPublisherInfo() override;
 
   void InsertOrUpdate(
-      const ledger::ServerPublisherInfo& server_info,
+      const type::ServerPublisherInfo& server_info,
       ledger::ResultCallback callback);
 
   void GetRecord(
       const std::string& publisher_key,
-      ledger::GetServerPublisherInfoCallback callback);
+      client::GetServerPublisherInfoCallback callback);
 
   void DeleteExpiredRecords(
       const int64_t max_age_seconds,
@@ -34,23 +35,24 @@ class DatabaseServerPublisherInfo: public DatabaseTable {
 
  private:
   void OnGetRecordBanner(
-      ledger::PublisherBannerPtr banner,
+      type::PublisherBannerPtr banner,
       const std::string& publisher_key,
-      ledger::GetServerPublisherInfoCallback callback);
+      client::GetServerPublisherInfoCallback callback);
 
   void OnGetRecord(
-      ledger::DBCommandResponsePtr response,
+      type::DBCommandResponsePtr response,
       const std::string& publisher_key,
-      const ledger::PublisherBanner& banner,
-      ledger::GetServerPublisherInfoCallback callback);
+      const type::PublisherBanner& banner,
+      client::GetServerPublisherInfoCallback callback);
 
   void OnExpiredRecordsSelected(
-      ledger::DBCommandResponsePtr response,
+      type::DBCommandResponsePtr response,
       ledger::ResultCallback callback);
 
   std::unique_ptr<DatabaseServerPublisherBanner> banner_;
 };
 
-}  // namespace braveledger_database
+}  // namespace database
+}  // namespace ledger
 
 #endif  // BRAVELEDGER_DATABASE_DATABASE_SERVER_PUBLISHER_INFO_H_

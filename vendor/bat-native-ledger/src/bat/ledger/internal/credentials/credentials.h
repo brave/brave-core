@@ -9,11 +9,12 @@
 #include <map>
 #include <string>
 
-#include "bat/ledger/ledger.h"
+#include "bat/ledger/mojom_structs.h"
 #include "bat/ledger/internal/credentials/credentials_redeem.h"
 #include "bat/ledger/internal/credentials/credentials_trigger.h"
 
-namespace braveledger_credentials {
+namespace ledger {
+namespace credential {
 
 class Credentials {
  public:
@@ -33,21 +34,22 @@ class Credentials {
       ledger::ResultCallback callback) = 0;
 
   virtual void Claim(
-      ledger::CredsBatchPtr creds,
+      type::CredsBatchPtr creds,
       const CredentialsTrigger& trigger,
       ledger::ResultCallback callback) = 0;
 
   virtual void Unblind(
-      ledger::CredsBatchPtr creds,
+      type::CredsBatchPtr creds,
       const CredentialsTrigger& trigger,
       ledger::ResultCallback callback) = 0;
 
   virtual void Completed(
-      const ledger::Result result,
+      const type::Result result,
       const CredentialsTrigger& trigger,
       ledger::ResultCallback callback) = 0;
 };
 
-}  // namespace braveledger_credentials
+}  // namespace credential
+}  // namespace ledger
 
 #endif  // BRAVELEDGER_CREDENTIALS_H_

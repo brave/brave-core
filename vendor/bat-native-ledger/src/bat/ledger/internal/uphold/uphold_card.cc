@@ -19,7 +19,8 @@ using std::placeholders::_1;
 using std::placeholders::_2;
 using std::placeholders::_3;
 
-namespace braveledger_uphold {
+namespace ledger {
+namespace uphold {
 
 UpdateCard::UpdateCard() :
   label(""),
@@ -28,10 +29,10 @@ UpdateCard::UpdateCard() :
 
 UpdateCard::~UpdateCard() = default;
 
-UpholdCard::UpholdCard(bat_ledger::LedgerImpl* ledger, Uphold* uphold) :
+UpholdCard::UpholdCard(LedgerImpl* ledger, Uphold* uphold) :
     ledger_(ledger),
     uphold_(uphold),
-    uphold_server_(std::make_unique<ledger::endpoint::UpholdServer>(ledger)) {
+    uphold_server_(std::make_unique<endpoint::UpholdServer>(ledger)) {
 }
 
 UpholdCard::~UpholdCard() = default;
@@ -41,7 +42,7 @@ void UpholdCard::CreateIfNecessary(CreateCardCallback callback) {
   auto wallet = GetWallet(std::move(wallets));
   if (!wallet) {
     BLOG(0, "Wallet is null");
-    callback(ledger::Result::LEDGER_ERROR, "");
+    callback(type::Result::LEDGER_ERROR, "");
     return;
   }
 
@@ -55,17 +56,17 @@ void UpholdCard::CreateIfNecessary(CreateCardCallback callback) {
 }
 
 void UpholdCard::OnCreateIfNecessary(
-    const ledger::Result result,
+    const type::Result result,
     const std::string& id,
     CreateCardCallback callback) {
-  if (result == ledger::Result::EXPIRED_TOKEN) {
-    callback(ledger::Result::EXPIRED_TOKEN, "");
+  if (result == type::Result::EXPIRED_TOKEN) {
+    callback(type::Result::EXPIRED_TOKEN, "");
     uphold_->DisconnectWallet();
     return;
   }
 
-  if (result == ledger::Result::LEDGER_OK && !id.empty()) {
-    callback(ledger::Result::LEDGER_OK, id);
+  if (result == type::Result::LEDGER_OK && !id.empty()) {
+    callback(type::Result::LEDGER_OK, id);
     return;
   }
 
@@ -78,7 +79,7 @@ void UpholdCard::Create(
   auto wallet = GetWallet(std::move(wallets));
   if (!wallet) {
     BLOG(0, "Wallet is null");
-    callback(ledger::Result::LEDGER_ERROR, "");
+    callback(type::Result::LEDGER_ERROR, "");
     return;
   }
 
@@ -92,19 +93,19 @@ void UpholdCard::Create(
 }
 
 void UpholdCard::OnCreate(
-    const ledger::Result result,
+    const type::Result result,
     const std::string& id,
     CreateCardCallback callback) {
-  if (result == ledger::Result::EXPIRED_TOKEN) {
+  if (result == type::Result::EXPIRED_TOKEN) {
     BLOG(0, "Expired token");
-    callback(ledger::Result::EXPIRED_TOKEN, "");
+    callback(type::Result::EXPIRED_TOKEN, "");
     uphold_->DisconnectWallet();
     return;
   }
 
-  if (result != ledger::Result::LEDGER_OK || id.empty()) {
+  if (result != type::Result::LEDGER_OK || id.empty()) {
     BLOG(0, "Couldn't create anon card address");
-    callback(ledger::Result::LEDGER_ERROR, "");
+    callback(type::Result::LEDGER_ERROR, "");
     return;
   }
 
@@ -112,12 +113,12 @@ void UpholdCard::OnCreate(
   auto wallet_ptr = GetWallet(std::move(wallets));
   if (!wallet_ptr) {
     BLOG(0, "Wallet is null");
-    callback(ledger::Result::LEDGER_ERROR, "");
+    callback(type::Result::LEDGER_ERROR, "");
     return;
   }
   wallet_ptr->address = id;
   ledger_->ledger_client()->SaveExternalWallet(
-      ledger::kWalletUphold,
+      constant::kWalletUphold,
       wallet_ptr->Clone());
 
   auto update_callback = std::bind(&UpholdCard::OnCreateUpdate,
@@ -132,10 +133,10 @@ void UpholdCard::OnCreate(
 }
 
 void UpholdCard::OnCreateUpdate(
-    const ledger::Result result,
+    const type::Result result,
     const std::string& address,
     CreateCardCallback callback) {
-  if (result != ledger::Result::LEDGER_OK) {
+  if (result != type::Result::LEDGER_OK) {
     BLOG(0, "Card update failed");
     callback(result, "");
     return;
@@ -151,7 +152,7 @@ void UpholdCard::Update(
   auto wallet = GetWallet(std::move(wallets));
   if (!wallet) {
     BLOG(0, "Wallet is null");
-    callback(ledger::Result::LEDGER_ERROR);
+    callback(type::Result::LEDGER_ERROR);
     return;
   }
 
@@ -168,22 +169,23 @@ void UpholdCard::Update(
 }
 
 void UpholdCard::OnUpdate(
-    const ledger::Result result,
+    const type::Result result,
     ledger::ResultCallback callback) {
-  if (result == ledger::Result::EXPIRED_TOKEN) {
+  if (result == type::Result::EXPIRED_TOKEN) {
     BLOG(0, "Expired token");
-    callback(ledger::Result::EXPIRED_TOKEN);
+    callback(type::Result::EXPIRED_TOKEN);
     uphold_->DisconnectWallet();
     return;
   }
 
-  if (result != ledger::Result::LEDGER_OK) {
+  if (result != type::Result::LEDGER_OK) {
     BLOG(0, "Couldn't update rewards card");
-    callback(ledger::Result::LEDGER_ERROR);
+    callback(type::Result::LEDGER_ERROR);
     return;
   }
 
-  callback(ledger::Result::LEDGER_OK);
+  callback(type::Result::LEDGER_OK);
 }
 
-}  // namespace braveledger_uphold
+}  // namespace uphold
+}  // namespace ledger

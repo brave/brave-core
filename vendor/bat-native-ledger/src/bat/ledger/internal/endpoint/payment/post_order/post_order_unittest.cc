@@ -31,13 +31,13 @@ class PostOrderTest : public testing::Test {
 
  protected:
   std::unique_ptr<ledger::MockLedgerClient> mock_ledger_client_;
-  std::unique_ptr<bat_ledger::MockLedgerImpl> mock_ledger_impl_;
+  std::unique_ptr<ledger::MockLedgerImpl> mock_ledger_impl_;
   std::unique_ptr<PostOrder> order_;
 
   PostOrderTest() {
     mock_ledger_client_ = std::make_unique<ledger::MockLedgerClient>();
     mock_ledger_impl_ =
-        std::make_unique<bat_ledger::MockLedgerImpl>(mock_ledger_client_.get());
+        std::make_unique<ledger::MockLedgerImpl>(mock_ledger_client_.get());
     order_ = std::make_unique<PostOrder>(mock_ledger_impl_.get());
   }
 };
@@ -46,9 +46,9 @@ TEST_F(PostOrderTest, ServerOK) {
   ON_CALL(*mock_ledger_client_, LoadURL(_, _))
       .WillByDefault(
           Invoke([](
-              ledger::UrlRequestPtr request,
-              ledger::LoadURLCallback callback) {
-            ledger::UrlResponse response;
+              type::UrlRequestPtr request,
+              client::LoadURLCallback callback) {
+            type::UrlResponse response;
             response.status_code = 201;
             response.url = request->url;
             response.body = R"({
@@ -79,33 +79,33 @@ TEST_F(PostOrderTest, ServerOK) {
             callback(response);
           }));
 
-  ledger::SKUOrderItem item;
+  type::SKUOrderItem item;
   item.quantity = 4;
   item.sku = "asdfasfasfdsdf";
-  item.type = ledger::SKUOrderItemType::SINGLE_USE;
-  std::vector<ledger::SKUOrderItem> items;
+  item.type = type::SKUOrderItemType::SINGLE_USE;
+  std::vector<type::SKUOrderItem> items;
   items.push_back(item);
 
   order_->Request(
       items,
-      [](const ledger::Result result, ledger::SKUOrderPtr order) {
-        auto expected_order_item = ledger::SKUOrderItem::New();
+      [](const type::Result result, type::SKUOrderPtr order) {
+        auto expected_order_item = type::SKUOrderItem::New();
         expected_order_item->order_id = "f2e6494e-fb21-44d1-90e9-b5408799acd8";
         expected_order_item->sku = "asdfasfasfdsdf";
-        expected_order_item->type = ledger::SKUOrderItemType::SINGLE_USE;
+        expected_order_item->type = type::SKUOrderItemType::SINGLE_USE;
         expected_order_item->order_item_id =
             "9c9aed7f-b349-452e-80a8-95faf2b1600d";
         expected_order_item->quantity = 4;
         expected_order_item->price = 0.25;
 
-        ledger::SKUOrder expected_order;
+        type::SKUOrder expected_order;
         expected_order.order_id = "f2e6494e-fb21-44d1-90e9-b5408799acd8";
         expected_order.total_amount = 1;
         expected_order.location = "brave.com";
-        expected_order.status = ledger::SKUOrderStatus::PENDING;
+        expected_order.status = type::SKUOrderStatus::PENDING;
         expected_order.items.push_back(std::move(expected_order_item));
 
-        EXPECT_EQ(result, ledger::Result::LEDGER_OK);
+        EXPECT_EQ(result, type::Result::LEDGER_OK);
         EXPECT_TRUE(expected_order.Equals(*order));
       });
 }
@@ -114,26 +114,26 @@ TEST_F(PostOrderTest, ServerError400) {
   ON_CALL(*mock_ledger_client_, LoadURL(_, _))
       .WillByDefault(
           Invoke([](
-              ledger::UrlRequestPtr request,
-              ledger::LoadURLCallback callback) {
-            ledger::UrlResponse response;
+              type::UrlRequestPtr request,
+              client::LoadURLCallback callback) {
+            type::UrlResponse response;
             response.status_code = 400;
             response.url = request->url;
             response.body = "";
             callback(response);
           }));
 
-  ledger::SKUOrderItem item;
+  type::SKUOrderItem item;
   item.quantity = 4;
   item.sku = "asdfasfasfdsdf";
-  item.type = ledger::SKUOrderItemType::SINGLE_USE;
-  std::vector<ledger::SKUOrderItem> items;
+  item.type = type::SKUOrderItemType::SINGLE_USE;
+  std::vector<type::SKUOrderItem> items;
   items.push_back(item);
 
   order_->Request(
       items,
-      [](const ledger::Result result, ledger::SKUOrderPtr order) {
-        EXPECT_EQ(result, ledger::Result::RETRY_SHORT);
+      [](const type::Result result, type::SKUOrderPtr order) {
+        EXPECT_EQ(result, type::Result::RETRY_SHORT);
         EXPECT_TRUE(!order);
       });
 }
@@ -142,26 +142,26 @@ TEST_F(PostOrderTest, ServerError500) {
   ON_CALL(*mock_ledger_client_, LoadURL(_, _))
       .WillByDefault(
           Invoke([](
-              ledger::UrlRequestPtr request,
-              ledger::LoadURLCallback callback) {
-            ledger::UrlResponse response;
+              type::UrlRequestPtr request,
+              client::LoadURLCallback callback) {
+            type::UrlResponse response;
             response.status_code = 500;
             response.url = request->url;
             response.body = "";
             callback(response);
           }));
 
-  ledger::SKUOrderItem item;
+  type::SKUOrderItem item;
   item.quantity = 4;
   item.sku = "asdfasfasfdsdf";
-  item.type = ledger::SKUOrderItemType::SINGLE_USE;
-  std::vector<ledger::SKUOrderItem> items;
+  item.type = type::SKUOrderItemType::SINGLE_USE;
+  std::vector<type::SKUOrderItem> items;
   items.push_back(item);
 
   order_->Request(
       items,
-      [](const ledger::Result result, ledger::SKUOrderPtr order) {
-        EXPECT_EQ(result, ledger::Result::RETRY_SHORT);
+      [](const type::Result result, type::SKUOrderPtr order) {
+        EXPECT_EQ(result, type::Result::RETRY_SHORT);
         EXPECT_TRUE(!order);
       });
 }
@@ -170,26 +170,26 @@ TEST_F(PostOrderTest, ServerErrorRandom) {
   ON_CALL(*mock_ledger_client_, LoadURL(_, _))
       .WillByDefault(
           Invoke([](
-              ledger::UrlRequestPtr request,
-              ledger::LoadURLCallback callback) {
-            ledger::UrlResponse response;
+              type::UrlRequestPtr request,
+              client::LoadURLCallback callback) {
+            type::UrlResponse response;
             response.status_code = 453;
             response.url = request->url;
             response.body = "";
             callback(response);
           }));
 
-  ledger::SKUOrderItem item;
+  type::SKUOrderItem item;
   item.quantity = 4;
   item.sku = "asdfasfasfdsdf";
-  item.type = ledger::SKUOrderItemType::SINGLE_USE;
-  std::vector<ledger::SKUOrderItem> items;
+  item.type = type::SKUOrderItemType::SINGLE_USE;
+  std::vector<type::SKUOrderItem> items;
   items.push_back(item);
 
   order_->Request(
       items,
-      [](const ledger::Result result, ledger::SKUOrderPtr order) {
-        EXPECT_EQ(result, ledger::Result::LEDGER_ERROR);
+      [](const type::Result result, type::SKUOrderPtr order) {
+        EXPECT_EQ(result, type::Result::LEDGER_ERROR);
         EXPECT_TRUE(!order);
       });
 }

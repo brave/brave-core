@@ -30,13 +30,13 @@ class PatchCardTest : public testing::Test {
 
  protected:
   std::unique_ptr<ledger::MockLedgerClient> mock_ledger_client_;
-  std::unique_ptr<bat_ledger::MockLedgerImpl> mock_ledger_impl_;
+  std::unique_ptr<ledger::MockLedgerImpl> mock_ledger_impl_;
   std::unique_ptr<PatchCard> card_;
 
   PatchCardTest() {
     mock_ledger_client_ = std::make_unique<ledger::MockLedgerClient>();
     mock_ledger_impl_ =
-        std::make_unique<bat_ledger::MockLedgerImpl>(mock_ledger_client_.get());
+        std::make_unique<ledger::MockLedgerImpl>(mock_ledger_client_.get());
     card_ = std::make_unique<PatchCard>(mock_ledger_impl_.get());
   }
 };
@@ -45,9 +45,9 @@ TEST_F(PatchCardTest, ServerOK) {
   ON_CALL(*mock_ledger_client_, LoadURL(_, _))
       .WillByDefault(
           Invoke([](
-              ledger::UrlRequestPtr request,
-              ledger::LoadURLCallback callback) {
-            ledger::UrlResponse response;
+              type::UrlRequestPtr request,
+              client::LoadURLCallback callback) {
+            type::UrlResponse response;
             response.status_code = 200;
             response.url = request->url;
             response.body = R"({
@@ -103,7 +103,7 @@ TEST_F(PatchCardTest, ServerOK) {
             callback(response);
           }));
 
-  braveledger_uphold::UpdateCard card;
+  ::ledger::uphold::UpdateCard card;
   card.label = "Brave Browser";
   card.position = -1;
   card.starred = true;
@@ -111,8 +111,8 @@ TEST_F(PatchCardTest, ServerOK) {
       "193a77cf-02e8-4e10-8127-8a1b5a8bfece",
       "4c2b665ca060d912fec5c735c734859a06118cc8",
       card,
-      [](const ledger::Result result) {
-        EXPECT_EQ(result, ledger::Result::LEDGER_OK);
+      [](const type::Result result) {
+        EXPECT_EQ(result, type::Result::LEDGER_OK);
       });
 }
 
@@ -120,16 +120,16 @@ TEST_F(PatchCardTest, ServerError401) {
   ON_CALL(*mock_ledger_client_, LoadURL(_, _))
       .WillByDefault(
           Invoke([](
-              ledger::UrlRequestPtr request,
-              ledger::LoadURLCallback callback) {
-            ledger::UrlResponse response;
+              type::UrlRequestPtr request,
+              client::LoadURLCallback callback) {
+            type::UrlResponse response;
             response.status_code = 401;
             response.url = request->url;
             response.body = "";
             callback(response);
           }));
 
-  braveledger_uphold::UpdateCard card;
+  ::ledger::uphold::UpdateCard card;
   card.label = "Brave Browser";
   card.position = -1;
   card.starred = true;
@@ -137,8 +137,8 @@ TEST_F(PatchCardTest, ServerError401) {
       "193a77cf-02e8-4e10-8127-8a1b5a8bfece",
       "4c2b665ca060d912fec5c735c734859a06118cc8",
       card,
-      [](const ledger::Result result) {
-        EXPECT_EQ(result, ledger::Result::EXPIRED_TOKEN);
+      [](const type::Result result) {
+        EXPECT_EQ(result, type::Result::EXPIRED_TOKEN);
       });
 }
 
@@ -146,16 +146,16 @@ TEST_F(PatchCardTest, ServerErrorRandom) {
   ON_CALL(*mock_ledger_client_, LoadURL(_, _))
       .WillByDefault(
           Invoke([](
-              ledger::UrlRequestPtr request,
-              ledger::LoadURLCallback callback) {
-            ledger::UrlResponse response;
+              type::UrlRequestPtr request,
+              client::LoadURLCallback callback) {
+            type::UrlResponse response;
             response.status_code = 453;
             response.url = request->url;
             response.body = "";
             callback(response);
           }));
 
-  braveledger_uphold::UpdateCard card;
+  ::ledger::uphold::UpdateCard card;
   card.label = "Brave Browser";
   card.position = -1;
   card.starred = true;
@@ -163,8 +163,8 @@ TEST_F(PatchCardTest, ServerErrorRandom) {
       "193a77cf-02e8-4e10-8127-8a1b5a8bfece",
       "4c2b665ca060d912fec5c735c734859a06118cc8",
       card,
-      [](const ledger::Result result) {
-        EXPECT_EQ(result, ledger::Result::LEDGER_ERROR);
+      [](const type::Result result) {
+        EXPECT_EQ(result, type::Result::LEDGER_ERROR);
       });
 }
 

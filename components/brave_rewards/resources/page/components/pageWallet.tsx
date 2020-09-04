@@ -379,7 +379,7 @@ class PageWallet extends React.Component<Props, State> {
     }
 
     switch (externalWallet.status) {
-      // ledger::WalletStatus::CONNECTED
+      // ledger::type::WalletStatus::CONNECTED
       case 1:
         return 'connected'
       // WalletStatus::VERIFIED
@@ -391,7 +391,7 @@ class PageWallet extends React.Component<Props, State> {
       // WalletStatus::DISCONNECTED_VERIFIED
       case 4:
         return 'disconnected_verified'
-      // ledger::WalletStatus::PENDING
+      // ledger::type::WalletStatus::PENDING
       case 5:
         return 'pending'
       default:
@@ -754,7 +754,7 @@ class PageWallet extends React.Component<Props, State> {
       return ''
     }
 
-    // ledger::Result::CORRUPTED_DATA
+    // ledger::type::Result::CORRUPTED_DATA
     if (walletRecoveryStatus === 17) {
       return <span dangerouslySetInnerHTML={{ __html: getLocale('walletRecoveryOutdated') }} />
     }

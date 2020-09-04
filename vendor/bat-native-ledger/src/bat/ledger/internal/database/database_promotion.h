@@ -12,24 +12,27 @@
 
 #include "bat/ledger/internal/database/database_table.h"
 
-namespace braveledger_database {
+namespace ledger {
+namespace database {
+
+using GetPromotionCallback = std::function<void(type::PromotionPtr)>;
 
 class DatabasePromotion: public DatabaseTable {
  public:
-  explicit DatabasePromotion(bat_ledger::LedgerImpl* ledger);
+  explicit DatabasePromotion(LedgerImpl* ledger);
   ~DatabasePromotion() override;
 
   void InsertOrUpdate(
-      ledger::PromotionPtr info,
+      type::PromotionPtr info,
       ledger::ResultCallback callback);
 
   void GetRecord(
       const std::string& id,
-      ledger::GetPromotionCallback callback);
+      GetPromotionCallback callback);
 
   void GetRecords(
       const std::vector<std::string>& ids,
-      ledger::GetPromotionListCallback callback);
+      client::GetPromotionListCallback callback);
 
   void GetAllRecords(
       ledger::GetAllPromotionsCallback callback);
@@ -41,12 +44,12 @@ class DatabasePromotion: public DatabaseTable {
 
   void UpdateStatus(
       const std::string& promotion_id,
-      const ledger::PromotionStatus status,
+      const type::PromotionStatus status,
       ledger::ResultCallback callback);
 
   void UpdateRecordsStatus(
       const std::vector<std::string>& ids,
-      const ledger::PromotionStatus status,
+      const type::PromotionStatus status,
       ledger::ResultCallback callback);
 
   void CredentialCompleted(
@@ -54,8 +57,8 @@ class DatabasePromotion: public DatabaseTable {
       ledger::ResultCallback callback);
 
   void GetRecordsByType(
-      const std::vector<ledger::PromotionType>& types,
-      ledger::GetPromotionListCallback callback);
+      const std::vector<type::PromotionType>& types,
+      client::GetPromotionListCallback callback);
 
   void UpdateRecordsBlankPublicKey(
       const std::vector<std::string>& ids,
@@ -63,18 +66,19 @@ class DatabasePromotion: public DatabaseTable {
 
  private:
   void OnGetRecord(
-      ledger::DBCommandResponsePtr response,
-      ledger::GetPromotionCallback callback);
+      type::DBCommandResponsePtr response,
+      GetPromotionCallback callback);
 
   void OnGetAllRecords(
-      ledger::DBCommandResponsePtr response,
+      type::DBCommandResponsePtr response,
       ledger::GetAllPromotionsCallback callback);
 
   void OnGetRecords(
-      ledger::DBCommandResponsePtr response,
-      ledger::GetPromotionListCallback callback);
+      type::DBCommandResponsePtr response,
+      client::GetPromotionListCallback callback);
 };
 
-}  // namespace braveledger_database
+}  // namespace database
+}  // namespace ledger
 
 #endif  // BRAVELEDGER_DATABASE_DATABASE_PROMOTION_H_

@@ -8,7 +8,8 @@
 
 #include "bat/ledger/ledger.h"
 
-namespace braveledger_state {
+namespace ledger {
+namespace state {
 
 class StateMigrationV3 {
  public:
@@ -18,6 +19,7 @@ class StateMigrationV3 {
   void Migrate(ledger::ResultCallback callback);
 };
 
-}  // namespace braveledger_state
+}  // namespace state
+}  // namespace ledger
 
 #endif  // BRAVELEDGER_BAT_STATE_STATE_MIGRATION_V3_H_

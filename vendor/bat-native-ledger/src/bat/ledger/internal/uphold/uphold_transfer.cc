@@ -16,24 +16,25 @@ using std::placeholders::_1;
 using std::placeholders::_2;
 using std::placeholders::_3;
 
-namespace braveledger_uphold {
+namespace ledger {
+namespace uphold {
 
-UpholdTransfer::UpholdTransfer(bat_ledger::LedgerImpl* ledger, Uphold* uphold) :
+UpholdTransfer::UpholdTransfer(LedgerImpl* ledger, Uphold* uphold) :
     ledger_(ledger),
     uphold_(uphold),
-    uphold_server_(std::make_unique<ledger::endpoint::UpholdServer>(ledger)) {
+    uphold_server_(std::make_unique<endpoint::UpholdServer>(ledger)) {
 }
 
 UpholdTransfer::~UpholdTransfer() = default;
 
 void UpholdTransfer::Start(
     const Transaction& transaction,
-    ledger::TransactionCallback callback) {
+    client::TransactionCallback callback) {
   auto wallets = ledger_->ledger_client()->GetExternalWallets();
   auto wallet = GetWallet(std::move(wallets));
   if (!wallet) {
     BLOG(0, "Wallet is null");
-    callback(ledger::Result::LEDGER_ERROR, "");
+    callback(type::Result::LEDGER_ERROR, "");
     return;
   }
 
@@ -50,18 +51,18 @@ void UpholdTransfer::Start(
 }
 
 void UpholdTransfer::OnCreateTransaction(
-    const ledger::Result result,
+    const type::Result result,
     const std::string& id,
-    ledger::TransactionCallback callback) {
-  if (result == ledger::Result::EXPIRED_TOKEN) {
-    callback(ledger::Result::EXPIRED_TOKEN, "");
+    client::TransactionCallback callback) {
+  if (result == type::Result::EXPIRED_TOKEN) {
+    callback(type::Result::EXPIRED_TOKEN, "");
     uphold_->DisconnectWallet();
     return;
   }
 
-  if (result != ledger::Result::LEDGER_OK) {
+  if (result != type::Result::LEDGER_OK) {
     // TODO(nejczdovc): add retry logic to all errors in this function
-    callback(ledger::Result::LEDGER_ERROR, "");
+    callback(type::Result::LEDGER_ERROR, "");
     return;
   }
 
@@ -70,18 +71,18 @@ void UpholdTransfer::OnCreateTransaction(
 
 void UpholdTransfer::CommitTransaction(
     const std::string& transaction_id,
-    ledger::TransactionCallback callback) {
+    client::TransactionCallback callback) {
   auto wallets = ledger_->ledger_client()->GetExternalWallets();
   auto wallet = GetWallet(std::move(wallets));
   if (!wallet) {
     BLOG(0, "Wallet is null");
-    callback(ledger::Result::LEDGER_ERROR, "");
+    callback(type::Result::LEDGER_ERROR, "");
     return;
   }
 
   if (transaction_id.empty()) {
     BLOG(0, "Transaction id not found");
-    callback(ledger::Result::LEDGER_ERROR, "");
+    callback(type::Result::LEDGER_ERROR, "");
     return;
   }
 
@@ -98,21 +99,22 @@ void UpholdTransfer::CommitTransaction(
 }
 
 void UpholdTransfer::OnCommitTransaction(
-    const ledger::Result result,
+    const type::Result result,
     const std::string& transaction_id,
-    ledger::TransactionCallback callback) {
-  if (result == ledger::Result::EXPIRED_TOKEN) {
-    callback(ledger::Result::EXPIRED_TOKEN, "");
+    client::TransactionCallback callback) {
+  if (result == type::Result::EXPIRED_TOKEN) {
+    callback(type::Result::EXPIRED_TOKEN, "");
     uphold_->DisconnectWallet();
     return;
   }
 
-  if (result != ledger::Result::LEDGER_OK) {
-    callback(ledger::Result::LEDGER_ERROR, "");
+  if (result != type::Result::LEDGER_OK) {
+    callback(type::Result::LEDGER_ERROR, "");
     return;
   }
 
-  callback(ledger::Result::LEDGER_OK, transaction_id);
+  callback(type::Result::LEDGER_OK, transaction_id);
 }
 
-}  // namespace braveledger_uphold
+}  // namespace uphold
+}  // namespace ledger

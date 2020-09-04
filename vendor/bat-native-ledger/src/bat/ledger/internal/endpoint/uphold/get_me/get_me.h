@@ -109,21 +109,19 @@
 //   "tier": "other"
 // }
 
-namespace bat_ledger {
-class LedgerImpl;
-}
-
 namespace ledger {
+class LedgerImpl;
+
 namespace endpoint {
 namespace uphold {
 
 using GetMeCallback = std::function<void(
-    const ledger::Result result,
-    const braveledger_uphold::User& user)>;
+    const type::Result result,
+    const ::ledger::uphold::User& user)>;
 
 class GetMe {
  public:
-  explicit GetMe(bat_ledger::LedgerImpl* ledger);
+  explicit GetMe(LedgerImpl* ledger);
   ~GetMe();
 
   void Request(
@@ -133,17 +131,17 @@ class GetMe {
  private:
   std::string GetUrl();
 
-  ledger::Result CheckStatusCode(const int status_code);
+  type::Result CheckStatusCode(const int status_code);
 
-  ledger::Result ParseBody(
+  type::Result ParseBody(
       const std::string& body,
-      braveledger_uphold::User* user);
+      ::ledger::uphold::User* user);
 
   void OnRequest(
-      const ledger::UrlResponse& response,
+      const type::UrlResponse& response,
       GetMeCallback callback);
 
-  bat_ledger::LedgerImpl* ledger_;  // NOT OWNED
+  LedgerImpl* ledger_;  // NOT OWNED
 };
 
 }  // namespace uphold

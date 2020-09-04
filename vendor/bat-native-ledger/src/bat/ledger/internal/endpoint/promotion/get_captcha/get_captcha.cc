@@ -18,7 +18,7 @@ namespace ledger {
 namespace endpoint {
 namespace promotion {
 
-GetCaptcha::GetCaptcha(bat_ledger::LedgerImpl* ledger):
+GetCaptcha::GetCaptcha(LedgerImpl* ledger):
     ledger_(ledger) {
   DCHECK(ledger_);
 }
@@ -33,30 +33,30 @@ std::string GetCaptcha::GetUrl(const std::string& captcha_id) {
   return GetServerUrl(path);
 }
 
-ledger::Result GetCaptcha::CheckStatusCode(const int status_code) {
+type::Result GetCaptcha::CheckStatusCode(const int status_code) {
   if (status_code == net::HTTP_BAD_REQUEST) {
     BLOG(0, "Invalid captcha id");
-    return ledger::Result::LEDGER_ERROR;
+    return type::Result::LEDGER_ERROR;
   }
 
   if (status_code == net::HTTP_NOT_FOUND) {
     BLOG(0, "Unrecognized captcha id");
-    return ledger::Result::NOT_FOUND;
+    return type::Result::NOT_FOUND;
   }
 
   if (status_code == net::HTTP_INTERNAL_SERVER_ERROR) {
     BLOG(0, "Failed to generate the captcha image");
-    return ledger::Result::LEDGER_ERROR;
+    return type::Result::LEDGER_ERROR;
   }
 
   if (status_code != net::HTTP_OK) {
-    return ledger::Result::LEDGER_ERROR;
+    return type::Result::LEDGER_ERROR;
   }
 
-  return ledger::Result::LEDGER_OK;
+  return type::Result::LEDGER_OK;
 }
 
-ledger::Result GetCaptcha::ParseBody(
+type::Result GetCaptcha::ParseBody(
     const std::string& body,
     std::string* image) {
   DCHECK(image);
@@ -66,7 +66,7 @@ ledger::Result GetCaptcha::ParseBody(
   *image =
       base::StringPrintf("data:image/jpeg;base64,%s", encoded_image.c_str());
 
-  return ledger::Result::LEDGER_OK;
+  return type::Result::LEDGER_OK;
 }
 
 void GetCaptcha::Request(
@@ -77,20 +77,20 @@ void GetCaptcha::Request(
       _1,
       callback);
 
-  auto request = ledger::UrlRequest::New();
+  auto request = type::UrlRequest::New();
   request->url = GetUrl(captcha_id);
   ledger_->LoadURL(std::move(request), url_callback);
 }
 
 void GetCaptcha::OnRequest(
-    const ledger::UrlResponse& response,
+    const type::UrlResponse& response,
     GetCaptchaCallback callback) {
   ledger::LogUrlResponse(__func__, response, true);
 
   std::string image;
-  ledger::Result result = CheckStatusCode(response.status_code);
+  type::Result result = CheckStatusCode(response.status_code);
 
-  if (result != ledger::Result::LEDGER_OK) {
+  if (result != type::Result::LEDGER_OK) {
     callback(result, image);
     return;
   }

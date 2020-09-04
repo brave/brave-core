@@ -14,25 +14,24 @@
 #include "bat/ledger/internal/sku/sku_transaction.h"
 #include "bat/ledger/ledger.h"
 
-namespace bat_ledger {
+namespace ledger {
 class LedgerImpl;
-}
 
-namespace braveledger_sku {
+namespace sku {
 
 class SKUCommon {
  public:
-  explicit SKUCommon(bat_ledger::LedgerImpl* ledger);
+  explicit SKUCommon(LedgerImpl* ledger);
   ~SKUCommon();
 
   void CreateOrder(
-      const std::vector<ledger::SKUOrderItem>& items,
+      const std::vector<type::SKUOrderItem>& items,
       ledger::SKUOrderCallback callback);
 
   void CreateTransaction(
-      ledger::SKUOrderPtr order,
+      type::SKUOrderPtr order,
       const std::string& destination,
-      const ledger::ExternalWallet& wallet,
+      const type::ExternalWallet& wallet,
       ledger::SKUOrderCallback callback);
 
   void SendExternalTransaction(
@@ -41,19 +40,20 @@ class SKUCommon {
 
  private:
   void OnTransactionCompleted(
-      const ledger::Result result,
+      const type::Result result,
       const std::string& order_id,
       ledger::SKUOrderCallback callback);
 
   void GetSKUTransactionByOrderId(
-      ledger::SKUTransactionPtr transaction,
+      type::SKUTransactionPtr transaction,
       ledger::SKUOrderCallback callback);
 
-  bat_ledger::LedgerImpl* ledger_;  // NOT OWNED
+  LedgerImpl* ledger_;  // NOT OWNED
   std::unique_ptr<SKUOrder> order_;
   std::unique_ptr<SKUTransaction> transaction_;
 };
 
-}  // namespace braveledger_sku
+}  // namespace sku
+}  // namespace ledger
 
 #endif  // BRAVELEDGER_SKU_COMMON_H_

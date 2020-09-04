@@ -31,21 +31,19 @@
 //   "nonce": "c4645786-052f-402f-8593-56af2f7a21ce"
 // }
 
-namespace bat_ledger {
-class LedgerImpl;
-}
-
 namespace ledger {
+class LedgerImpl;
+
 namespace endpoint {
 namespace promotion {
 
 using PostSafetynetCallback = std::function<void(
-    const ledger::Result result,
+    const type::Result result,
     const std::string& nonce)>;
 
 class PostSafetynet {
  public:
-  explicit PostSafetynet(bat_ledger::LedgerImpl* ledger);
+  explicit PostSafetynet(LedgerImpl* ledger);
   ~PostSafetynet();
 
   void Request(PostSafetynetCallback callback);
@@ -55,17 +53,17 @@ class PostSafetynet {
 
   std::string GeneratePayload();
 
-  ledger::Result CheckStatusCode(const int status_code);
+  type::Result CheckStatusCode(const int status_code);
 
-  ledger::Result ParseBody(
+  type::Result ParseBody(
       const std::string& body,
       std::string* nonce);
 
   void OnRequest(
-      const ledger::UrlResponse& response,
+      const type::UrlResponse& response,
       PostSafetynetCallback callback);
 
-  bat_ledger::LedgerImpl* ledger_;  // NOT OWNED
+  LedgerImpl* ledger_;  // NOT OWNED
 };
 
 }  // namespace promotion

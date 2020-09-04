@@ -9,7 +9,7 @@
 #include "base/strings/stringprintf.h"
 #include "bat/ledger/internal/endpoint/promotion/promotions_util.h"
 #include "bat/ledger/internal/ledger_impl.h"
-#include "bat/ledger/internal/request/request_util.h"
+#include "bat/ledger/internal/common/request_util.h"
 #include "net/http/http_status_code.h"
 
 using std::placeholders::_1;
@@ -18,7 +18,7 @@ namespace ledger {
 namespace endpoint {
 namespace promotion {
 
-PostBatLoss::PostBatLoss(bat_ledger::LedgerImpl* ledger):
+PostBatLoss::PostBatLoss(LedgerImpl* ledger):
     ledger_(ledger) {
   DCHECK(ledger_);
 }
@@ -39,17 +39,17 @@ std::string PostBatLoss::GeneratePayload(const double amount) {
   return base::StringPrintf(R"({"amount": %f})", amount);
 }
 
-ledger::Result PostBatLoss::CheckStatusCode(const int status_code) {
+type::Result PostBatLoss::CheckStatusCode(const int status_code) {
   if (status_code == net::HTTP_INTERNAL_SERVER_ERROR) {
     BLOG(0, "Internal server error");
-    return ledger::Result::LEDGER_ERROR;
+    return type::Result::LEDGER_ERROR;
   }
 
   if (status_code != net::HTTP_OK) {
-    return ledger::Result::LEDGER_ERROR;
+    return type::Result::LEDGER_ERROR;
   }
 
-  return ledger::Result::LEDGER_OK;
+  return type::Result::LEDGER_OK;
 }
 
 void PostBatLoss::Request(
@@ -64,7 +64,7 @@ void PostBatLoss::Request(
       payment_id.c_str(),
       version);
 
-  const auto headers = braveledger_request_util::BuildSignHeaders(
+  const auto headers = util::BuildSignHeaders(
       header_url,
       payload,
       payment_id,
@@ -75,17 +75,17 @@ void PostBatLoss::Request(
       _1,
       callback);
 
-  auto request = ledger::UrlRequest::New();
+  auto request = type::UrlRequest::New();
   request->url = GetUrl(version);
   request->content = payload;
   request->headers = headers;
   request->content_type = "application/json; charset=utf-8";
-  request->method = ledger::UrlMethod::POST;
+  request->method = type::UrlMethod::POST;
   ledger_->LoadURL(std::move(request), url_callback);
 }
 
 void PostBatLoss::OnRequest(
-    const ledger::UrlResponse& response,
+    const type::UrlResponse& response,
     PostBatLossCallback callback) {
   ledger::LogUrlResponse(__func__, response);
   callback(CheckStatusCode(response.status_code));

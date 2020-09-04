@@ -7,32 +7,33 @@
 
 #include "base/task/post_task.h"
 #include "base/task/thread_pool/thread_pool_instance.h"
-#include "bat/ledger/internal/common/security_helper.h"
+#include "bat/ledger/internal/common/security_util.h"
 #include "bat/ledger/internal/common/time_util.h"
 #include "bat/ledger/internal/ledger_impl.h"
 #include "bat/ledger/internal/legacy/media/helper.h"
+#include "bat/ledger/internal/legacy/static_values.h"
 #include "bat/ledger/internal/publisher/publisher_status_helper.h"
 #include "bat/ledger/internal/sku/sku_factory.h"
 #include "bat/ledger/internal/sku/sku_merchant.h"
-#include "bat/ledger/internal/static_values.h"
+#include "bat/ledger/internal/constants.h"
 
 using std::placeholders::_1;
 
-namespace bat_ledger {
+namespace ledger {
 
 LedgerImpl::LedgerImpl(ledger::LedgerClient* client) :
     ledger_client_(client),
-    promotion_(std::make_unique<braveledger_promotion::Promotion>(this)),
-    publisher_(std::make_unique<braveledger_publisher::Publisher>(this)),
+    promotion_(std::make_unique<promotion::Promotion>(this)),
+    publisher_(std::make_unique<publisher::Publisher>(this)),
     media_(std::make_unique<braveledger_media::Media>(this)),
     contribution_(
-        std::make_unique<braveledger_contribution::Contribution>(this)),
-    wallet_(std::make_unique<ledger::wallet::Wallet>(this)),
-    database_(std::make_unique<braveledger_database::Database>(this)),
-    report_(std::make_unique<braveledger_report::Report>(this)),
-    state_(std::make_unique<braveledger_state::State>(this)),
-    api_(std::make_unique<braveledger_api::API>(this)),
-    recovery_(std::make_unique<ledger::recovery::Recovery>(this)),
+        std::make_unique<contribution::Contribution>(this)),
+    wallet_(std::make_unique<wallet::Wallet>(this)),
+    database_(std::make_unique<database::Database>(this)),
+    report_(std::make_unique<report::Report>(this)),
+    state_(std::make_unique<state::State>(this)),
+    api_(std::make_unique<api::API>(this)),
+    recovery_(std::make_unique<recovery::Recovery>(this)),
     initialized_task_scheduler_(false),
     initializing_(false),
     last_tab_active_time_(0),
@@ -52,9 +53,9 @@ LedgerImpl::LedgerImpl(ledger::LedgerClient* client) :
       {base::ThreadPool(), base::MayBlock(), base::TaskPriority::BEST_EFFORT,
        base::TaskShutdownBehavior::BLOCK_SHUTDOWN});
 
-  sku_ = braveledger_sku::SKUFactory::Create(
+  sku_ = sku::SKUFactory::Create(
       this,
-      braveledger_sku::SKUType::kMerchant);
+      sku::SKUType::kMerchant);
   DCHECK(sku_);
 }
 
@@ -69,15 +70,15 @@ ledger::LedgerClient* LedgerImpl::ledger_client() const {
   return ledger_client_;
 }
 
-braveledger_state::State* LedgerImpl::state() const {
+state::State* LedgerImpl::state() const {
   return state_.get();
 }
 
-braveledger_promotion::Promotion* LedgerImpl::promotion() const {
+promotion::Promotion* LedgerImpl::promotion() const {
   return promotion_.get();
 }
 
-braveledger_publisher::Publisher* LedgerImpl::publisher() const {
+publisher::Publisher* LedgerImpl::publisher() const {
   return publisher_.get();
 }
 
@@ -85,33 +86,33 @@ braveledger_media::Media* LedgerImpl::media() const {
   return media_.get();
 }
 
-braveledger_contribution::Contribution* LedgerImpl::contribution() const {
+contribution::Contribution* LedgerImpl::contribution() const {
   return contribution_.get();
 }
 
-ledger::wallet::Wallet* LedgerImpl::wallet() const {
+wallet::Wallet* LedgerImpl::wallet() const {
   return wallet_.get();
 }
 
-braveledger_report::Report* LedgerImpl::report() const {
+report::Report* LedgerImpl::report() const {
   return report_.get();
 }
 
-braveledger_sku::SKU* LedgerImpl::sku() const {
+sku::SKU* LedgerImpl::sku() const {
   return sku_.get();
 }
 
-braveledger_api::API* LedgerImpl::api() const {
+api::API* LedgerImpl::api() const {
   return api_.get();
 }
 
-braveledger_database::Database* LedgerImpl::database() const {
+database::Database* LedgerImpl::database() const {
   return database_.get();
 }
 
 void LedgerImpl::LoadURL(
-    ledger::UrlRequestPtr request,
-    ledger::LoadURLCallback callback) {
+    type::UrlRequestPtr request,
+    client::LoadURLCallback callback) {
   DCHECK(request);
   if (shutting_down_) {
     BLOG(1, request->url + " will not be executed as we are shutting down");
@@ -174,11 +175,11 @@ void LedgerImpl::InitializeDatabase(
 }
 
 void LedgerImpl::OnInitialized(
-    const ledger::Result result,
+    const type::Result result,
     ledger::ResultCallback callback) {
   initializing_ = false;
 
-  if (result == ledger::Result::LEDGER_OK) {
+  if (result == type::Result::LEDGER_OK) {
     StartServices();
   } else {
     BLOG(0, "Failed to initialize wallet " << result);
@@ -188,9 +189,9 @@ void LedgerImpl::OnInitialized(
 }
 
 void LedgerImpl::OnDatabaseInitialized(
-    const ledger::Result result,
+    const type::Result result,
     ledger::ResultCallback callback) {
-  if (result != ledger::Result::LEDGER_OK) {
+  if (result != type::Result::LEDGER_OK) {
     BLOG(0, "Database could not be initialized. Error: " << result);
     callback(result);
     return;
@@ -205,20 +206,20 @@ void LedgerImpl::OnDatabaseInitialized(
 }
 
 void LedgerImpl::OnStateInitialized(
-    const ledger::Result result,
+    const type::Result result,
     ledger::ResultCallback callback) {
-  if (result != ledger::Result::LEDGER_OK) {
+  if (result != type::Result::LEDGER_OK) {
     BLOG(0, "Failed to initialize state");
     return;
   }
 
-  callback(ledger::Result::LEDGER_OK);
+  callback(type::Result::LEDGER_OK);
 }
 
 void LedgerImpl::CreateWallet(ledger::ResultCallback callback) {
   wallet()->CreateWalletIfNecessary([this, callback](
-      const ledger::Result result) {
-    if (result == ledger::Result::WALLET_CREATED) {
+      const type::Result result) {
+    if (result == type::Result::WALLET_CREATED) {
       StartServices();
     }
 
@@ -234,7 +235,7 @@ void LedgerImpl::OneTimeTip(
 }
 
 void LedgerImpl::OnLoad(
-    ledger::VisitDataPtr visit_data,
+    type::VisitDataPtr visit_data,
     const uint64_t& current_time) {
   if (!visit_data.get()) {
     return;
@@ -302,7 +303,7 @@ void LedgerImpl::OnHide(uint32_t tab_id, const uint64_t& current_time) {
       iter->second,
       duration,
       0,
-      [](ledger::Result, ledger::PublisherInfoPtr){});
+      [](type::Result, type::PublisherInfoPtr){});
 }
 
 void LedgerImpl::OnForeground(uint32_t tab_id, const uint64_t& current_time) {
@@ -322,7 +323,7 @@ void LedgerImpl::OnXHRLoad(
     const std::map<std::string, std::string>& parts,
     const std::string& first_party_url,
     const std::string& referrer,
-    ledger::VisitDataPtr visit_data) {
+    type::VisitDataPtr visit_data) {
   std::string type = media()->GetLinkType(
       url,
       first_party_url,
@@ -340,7 +341,7 @@ void LedgerImpl::OnPostData(
     const std::string& first_party_url,
     const std::string& referrer,
     const std::string& post_data,
-    ledger::VisitDataPtr visit_data) {
+    type::VisitDataPtr visit_data) {
   std::string type = media()->GetLinkType(
       url,
       first_party_url,
@@ -378,7 +379,7 @@ std::string LedgerImpl::URIEncode(const std::string& value) {
 void LedgerImpl::GetActivityInfoList(
     uint32_t start,
     uint32_t limit,
-    ledger::ActivityInfoFilterPtr filter,
+    type::ActivityInfoFilterPtr filter,
     ledger::PublisherInfoListCallback callback) {
   database()->GetActivityInfoList(
       start,
@@ -490,7 +491,7 @@ std::string LedgerImpl::GetWalletPassphrase() const {
 }
 
 void LedgerImpl::GetBalanceReport(
-    const ledger::ActivityMonth month,
+    const type::ActivityMonth month,
     const int year,
     ledger::GetBalanceReportCallback callback) const {
   database()->GetBalanceReportInfo(month, year, callback);
@@ -501,8 +502,8 @@ void LedgerImpl::GetAllBalanceReports(
   database()->GetAllBalanceReports(callback);
 }
 
-ledger::AutoContributePropertiesPtr LedgerImpl::GetAutoContributeProperties() {
-  auto props = ledger::AutoContributeProperties::New();
+type::AutoContributePropertiesPtr LedgerImpl::GetAutoContributeProperties() {
+  auto props = type::AutoContributeProperties::New();
   props->enabled_contribute = state()->GetAutoContributeEnabled();
   props->contribution_min_time = state()->GetPublisherMinVisitTime();
   props->contribution_min_visits = state()->GetPublisherMinVisits();
@@ -520,7 +521,7 @@ void LedgerImpl::RecoverWallet(
 
 void LedgerImpl::SetPublisherExclude(
     const std::string& publisher_id,
-    const ledger::PublisherExclude& exclude,
+    const type::PublisherExclude& exclude,
     ledger::ResultCallback callback) {
   publisher()->SetPublisherExclude(publisher_id, exclude, callback);
 }
@@ -536,7 +537,7 @@ bool LedgerImpl::IsWalletCreated() {
 
 void LedgerImpl::GetPublisherActivityFromUrl(
     uint64_t windowId,
-    ledger::VisitDataPtr visit_data,
+    type::VisitDataPtr visit_data,
     const std::string& publisher_blob) {
   publisher()->GetPublisherActivityFromUrl(
       windowId,
@@ -567,7 +568,7 @@ void LedgerImpl::HasSufficientBalanceToReconcile(
 
 void LedgerImpl::GetRewardsInternalsInfo(
     ledger::RewardsInternalsInfoCallback callback) {
-  ledger::RewardsInternalsInfoPtr info = ledger::RewardsInternalsInfo::New();
+  type::RewardsInternalsInfoPtr info = type::RewardsInternalsInfo::New();
 
   // Retrieve the payment id.
   info->payment_id = state()->GetPaymentId();
@@ -577,15 +578,15 @@ void LedgerImpl::GetRewardsInternalsInfo(
 
   // Retrieve the key info seed and validate it.
   const auto seed = state()->GetRecoverySeed();
-  if (!braveledger_helper::Security::IsSeedValid(seed)) {
+  if (!util::Security::IsSeedValid(seed)) {
     info->is_key_info_seed_valid = false;
   } else {
     std::vector<uint8_t> secret_key =
-        braveledger_helper::Security::GetHKDF(seed);
+        util::Security::GetHKDF(seed);
     std::vector<uint8_t> public_key;
     std::vector<uint8_t> new_secret_key;
     info->is_key_info_seed_valid =
-        braveledger_helper::Security::GetPublicKeyFromSeed(
+        util::Security::GetPublicKeyFromSeed(
             secret_key,
             &public_key,
             &new_secret_key);
@@ -595,7 +596,7 @@ void LedgerImpl::GetRewardsInternalsInfo(
 }
 
 void LedgerImpl::SaveRecurringTip(
-    ledger::RecurringTipPtr info,
+    type::RecurringTipPtr info,
     ledger::ResultCallback callback) {
   database()->SaveRecurringTip(std::move(info), callback);
 }
@@ -606,8 +607,8 @@ void LedgerImpl::GetRecurringTips(ledger::PublisherInfoListCallback callback) {
 
 void LedgerImpl::GetOneTimeTips(ledger::PublisherInfoListCallback callback) {
   database()->GetOneTimeTips(
-      braveledger_time_util::GetCurrentMonth(),
-      braveledger_time_util::GetCurrentYear(),
+      util::GetCurrentMonth(),
+      util::GetCurrentYear(),
       callback);
 }
 
@@ -629,13 +630,13 @@ void LedgerImpl::SaveMediaInfo(
 }
 
 void LedgerImpl::SetInlineTippingPlatformEnabled(
-    const ledger::InlineTipsPlatforms platform,
+    const type::InlineTipsPlatforms platform,
     bool enabled) {
   state()->SetInlineTippingPlatformEnabled(platform, enabled);
 }
 
 bool LedgerImpl::GetInlineTippingPlatformEnabled(
-    const ledger::InlineTipsPlatforms platform) {
+    const type::InlineTipsPlatforms platform) {
   return state()->GetInlineTippingPlatformEnabled(platform);
 }
 
@@ -648,10 +649,10 @@ std::string LedgerImpl::GetShareURL(
 void LedgerImpl::GetPendingContributions(
     ledger::PendingContributionInfoListCallback callback) {
   database()->GetPendingContributions([this, callback](
-      ledger::PendingContributionInfoList list) {
+      type::PendingContributionInfoList list) {
     // The publisher status field may be expired. Attempt to refresh
     // expired publisher status values before executing callback.
-    braveledger_publisher::RefreshPublisherStatus(
+    publisher::RefreshPublisherStatus(
         this,
         std::move(list),
         callback);
@@ -710,14 +711,14 @@ void LedgerImpl::GetAnonWalletStatus(ledger::ResultCallback callback) {
 }
 
 void LedgerImpl::GetTransactionReport(
-    const ledger::ActivityMonth month,
+    const type::ActivityMonth month,
     const int year,
     ledger::GetTransactionReportCallback callback) {
   database()->GetTransactionReport(month, year, callback);
 }
 
 void LedgerImpl::GetContributionReport(
-    const ledger::ActivityMonth month,
+    const type::ActivityMonth month,
     const int year,
     ledger::GetContributionReportCallback callback) {
   database()->GetContributionReport(month, year, callback);
@@ -729,13 +730,13 @@ void LedgerImpl::GetAllContributions(
 }
 
 void LedgerImpl::SavePublisherInfo(
-    ledger::PublisherInfoPtr info,
+    type::PublisherInfoPtr info,
     ledger::ResultCallback callback) {
   database()->SavePublisherInfo(std::move(info), callback);
 }
 
 void LedgerImpl::GetMonthlyReport(
-    const ledger::ActivityMonth month,
+    const type::ActivityMonth month,
     const int year,
     ledger::GetMonthlyReportCallback callback) {
   report()->GetMonthly(month, year, callback);
@@ -747,8 +748,8 @@ void LedgerImpl::GetAllMonthlyReportIds(
 }
 
 void LedgerImpl::ProcessSKU(
-    const std::vector<ledger::SKUOrderItem>& items,
-    ledger::ExternalWalletPtr wallet,
+    const std::vector<type::SKUOrderItem>& items,
+    type::ExternalWalletPtr wallet,
     ledger::SKUOrderCallback callback) {
   sku()->Process(items, std::move(wallet), callback);
 }
@@ -758,10 +759,10 @@ void LedgerImpl::Shutdown(ledger::ResultCallback callback) {
   ledger_client_->ClearAllNotifications();
 
   wallet()->DisconnectAllWallets([this, callback](
-      const ledger::Result result){
+      const type::Result result){
     BLOG_IF(
       1,
-      result != ledger::Result::LEDGER_OK,
+      result != type::Result::LEDGER_OK,
       "Not all wallets were disconnected");
     auto finish_callback = std::bind(&LedgerImpl::OnAllDone,
         this,
@@ -772,7 +773,7 @@ void LedgerImpl::Shutdown(ledger::ResultCallback callback) {
 }
 
 void LedgerImpl::OnAllDone(
-    const ledger::Result result,
+    const type::Result result,
     ledger::ResultCallback callback) {
   database()->Close(callback);
 }
@@ -781,4 +782,4 @@ void LedgerImpl::GetEventLogs(ledger::GetEventLogsCallback callback) {
   database()->GetLastEventLogs(callback);
 }
 
-}  // namespace bat_ledger
+}  // namespace ledger

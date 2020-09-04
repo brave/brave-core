@@ -10,15 +10,16 @@
 
 #include "bat/ledger/internal/database/database_table.h"
 
-namespace braveledger_database {
+namespace ledger {
+namespace database {
 
 class DatabasePublisherInfo: public DatabaseTable {
  public:
-  explicit DatabasePublisherInfo(bat_ledger::LedgerImpl* ledger);
+  explicit DatabasePublisherInfo(LedgerImpl* ledger);
   ~DatabasePublisherInfo() override;
 
   void InsertOrUpdate(
-      ledger::PublisherInfoPtr info,
+      type::PublisherInfoPtr info,
       ledger::ResultCallback callback);
 
   void GetRecord(
@@ -26,7 +27,7 @@ class DatabasePublisherInfo: public DatabaseTable {
       ledger::PublisherInfoCallback callback);
 
   void GetPanelRecord(
-      ledger::ActivityInfoFilterPtr filter,
+      type::ActivityInfoFilterPtr filter,
       ledger::PublisherInfoCallback callback);
 
   void RestorePublishers(ledger::ResultCallback callback);
@@ -35,18 +36,19 @@ class DatabasePublisherInfo: public DatabaseTable {
 
  private:
   void OnGetRecord(
-      ledger::DBCommandResponsePtr response,
+      type::DBCommandResponsePtr response,
       ledger::PublisherInfoCallback callback);
 
   void OnGetPanelRecord(
-      ledger::DBCommandResponsePtr response,
+      type::DBCommandResponsePtr response,
       ledger::PublisherInfoCallback callback);
 
   void OnGetExcludedList(
-      ledger::DBCommandResponsePtr response,
+      type::DBCommandResponsePtr response,
       ledger::PublisherInfoListCallback callback);
 };
 
-}  // namespace braveledger_database
+}  // namespace database
+}  // namespace ledger
 
 #endif  // BRAVELEDGER_DATABASE_DATABASE_PUBLISHER_INFO_H_

@@ -12,7 +12,7 @@
 
 namespace android_util {
 
-ledger::ClientInfoPtr GetAndroidClientInfo();
+ledger::type::ClientInfoPtr GetAndroidClientInfo();
 
 }  // namespace android_util
 

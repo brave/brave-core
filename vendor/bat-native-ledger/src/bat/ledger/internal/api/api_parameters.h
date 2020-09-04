@@ -13,15 +13,14 @@
 #include "bat/ledger/ledger.h"
 #include "bat/ledger/internal/endpoint/api/api_server.h"
 
-namespace bat_ledger {
+namespace ledger {
 class LedgerImpl;
-}
 
-namespace braveledger_api {
+namespace api {
 
 class APIParameters {
  public:
-  explicit APIParameters(bat_ledger::LedgerImpl* ledger);
+  explicit APIParameters(LedgerImpl* ledger);
   ~APIParameters();
 
   void Initialize();
@@ -30,8 +29,8 @@ class APIParameters {
 
  private:
   void OnFetch(
-      const ledger::Result result,
-      const ledger::RewardsParameters& parameters);
+      const type::Result result,
+      const type::RewardsParameters& parameters);
 
   void RunCallbacks();
 
@@ -39,12 +38,13 @@ class APIParameters {
       base::TimeDelta delay,
       base::TimeDelta base_delay = base::TimeDelta());
 
-  bat_ledger::LedgerImpl* ledger_;  // NOT OWNED
+  LedgerImpl* ledger_;  // NOT OWNED
   base::OneShotTimer refresh_timer_;
   std::vector<ledger::GetRewardsParametersCallback> callbacks_;
-  std::unique_ptr<ledger::endpoint::APIServer> api_server_;
+  std::unique_ptr<endpoint::APIServer> api_server_;
 };
 
-}  // namespace braveledger_api
+}  // namespace api
+}  // namespace ledger
 
 #endif  // BRAVELEDGER_API_API_PARAMETERS_H_

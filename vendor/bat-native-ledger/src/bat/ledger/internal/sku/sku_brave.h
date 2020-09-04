@@ -14,56 +14,56 @@
 #include "bat/ledger/internal/sku/sku_common.h"
 #include "bat/ledger/ledger.h"
 
-namespace bat_ledger {
+namespace ledger {
 class LedgerImpl;
-}
 
-namespace braveledger_sku {
+namespace sku {
 
 class SKUBrave : public SKU  {
  public:
-  explicit SKUBrave(bat_ledger::LedgerImpl* ledger);
+  explicit SKUBrave(LedgerImpl* ledger);
   ~SKUBrave() override;
 
   void Process(
-      const std::vector<ledger::SKUOrderItem>& items,
-      ledger::ExternalWalletPtr wallet,
+      const std::vector<type::SKUOrderItem>& items,
+      type::ExternalWalletPtr wallet,
       ledger::SKUOrderCallback callback,
       const std::string& contribution_id = "") override;
 
   void Retry(
       const std::string& order_id,
-      ledger::ExternalWalletPtr wallet,
+      type::ExternalWalletPtr wallet,
       ledger::SKUOrderCallback callback) override;
 
  private:
   void OrderCreated(
-      const ledger::Result result,
+      const type::Result result,
       const std::string& order_id,
-      const ledger::ExternalWallet& wallet,
+      const type::ExternalWallet& wallet,
       const std::string& contribution_id,
       ledger::SKUOrderCallback callback);
 
   void ContributionIdSaved(
-      const ledger::Result result,
+      const type::Result result,
       const std::string& order_id,
-      const ledger::ExternalWallet& wallet,
+      const type::ExternalWallet& wallet,
       ledger::SKUOrderCallback callback);
 
   void CreateTransaction(
-      ledger::SKUOrderPtr order,
-      const ledger::ExternalWallet& wallet,
+      type::SKUOrderPtr order,
+      const type::ExternalWallet& wallet,
       ledger::SKUOrderCallback callback);
 
   void OnOrder(
-      ledger::SKUOrderPtr order,
-      const ledger::ExternalWallet& wallet,
+      type::SKUOrderPtr order,
+      const type::ExternalWallet& wallet,
       ledger::SKUOrderCallback callback);
 
-  bat_ledger::LedgerImpl* ledger_;  // NOT OWNED
+  LedgerImpl* ledger_;  // NOT OWNED
   std::unique_ptr<SKUCommon> common_;
 };
 
-}  // namespace braveledger_sku
+}  // namespace sku
+}  // namespace ledger
 
 #endif  // BRAVELEDGER_SKU_BRAVE_H_

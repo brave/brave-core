@@ -14,7 +14,7 @@
 #include "bat/ledger/internal/state/state.h"
 #include "bat/ledger/internal/state/state_keys.h"
 #include "bat/ledger/internal/state/state_migration.h"
-#include "bat/ledger/internal/static_values.h"
+#include "bat/ledger/internal/constants.h"
 
 namespace {
 
@@ -53,18 +53,18 @@ std::vector<double> StringToVectorDouble(const std::string& items_string) {
 }
 
 std::string ConvertInlineTipPlatformToKey(
-    const ledger::InlineTipsPlatforms platform) {
+    const ledger::type::InlineTipsPlatforms platform) {
   switch (platform) {
-    case ledger::InlineTipsPlatforms::REDDIT: {
-      return ledger::kStateInlineTipRedditEnabled;
+    case ledger::type::InlineTipsPlatforms::REDDIT: {
+      return ledger::state::kInlineTipRedditEnabled;
     }
-    case ledger::InlineTipsPlatforms::TWITTER: {
-      return ledger::kStateInlineTipTwitterEnabled;
+    case ledger::type::InlineTipsPlatforms::TWITTER: {
+      return ledger::state::kInlineTipTwitterEnabled;
     }
-    case ledger::InlineTipsPlatforms::GITHUB: {
-      return ledger::kStateInlineTipGithubEnabled;
+    case ledger::type::InlineTipsPlatforms::GITHUB: {
+      return ledger::state::kInlineTipGithubEnabled;
     }
-    case ledger::InlineTipsPlatforms::NONE: {
+    case ledger::type::InlineTipsPlatforms::NONE: {
       NOTREACHED();
       return "";
     }
@@ -73,9 +73,10 @@ std::string ConvertInlineTipPlatformToKey(
 
 }  // namespace
 
-namespace braveledger_state {
+namespace ledger {
+namespace state {
 
-State::State(bat_ledger::LedgerImpl* ledger) :
+State::State(LedgerImpl* ledger) :
     ledger_(ledger),
     migration_(std::make_unique<StateMigration>(ledger)) {
   DCHECK(ledger_);
@@ -88,124 +89,100 @@ void State::Initialize(ledger::ResultCallback callback) {
 }
 
 void State::SetVersion(const int version) {
-  ledger_->database()->SaveEventLog(
-      ledger::kStateVersion,
-      std::to_string(version));
-  ledger_->ledger_client()->SetIntegerState(ledger::kStateVersion,  version);
+  ledger_->database()->SaveEventLog(kVersion, std::to_string(version));
+  ledger_->ledger_client()->SetIntegerState(kVersion,  version);
 }
 
 int State::GetVersion() {
-  return ledger_->ledger_client()->GetIntegerState(ledger::kStateVersion);
+  return ledger_->ledger_client()->GetIntegerState(kVersion);
 }
 
 void State::SetPublisherMinVisitTime(const int duration) {
-  ledger_->database()->SaveEventLog(
-      ledger::kStateMinVisitTime,
-      std::to_string(duration));
-  ledger_->ledger_client()->SetIntegerState(
-      ledger::kStateMinVisitTime,
-      duration);
+  ledger_->database()->SaveEventLog(kMinVisitTime, std::to_string(duration));
+  ledger_->ledger_client()->SetIntegerState(kMinVisitTime, duration);
   ledger_->publisher()->CalcScoreConsts(duration);
   ledger_->publisher()->SynopsisNormalizer();
 }
 
 int State::GetPublisherMinVisitTime() {
-  return ledger_->ledger_client()->GetIntegerState(ledger::kStateMinVisitTime);
+  return ledger_->ledger_client()->GetIntegerState(kMinVisitTime);
 }
 
 void State::SetPublisherMinVisits(const int visits) {
-  ledger_->database()->SaveEventLog(
-      ledger::kStateMinVisits,
-      std::to_string(visits));
-  ledger_->ledger_client()->SetIntegerState(ledger::kStateMinVisits, visits);
+  ledger_->database()->SaveEventLog(kMinVisits, std::to_string(visits));
+  ledger_->ledger_client()->SetIntegerState(kMinVisits, visits);
   ledger_->publisher()->SynopsisNormalizer();
 }
 
 int State::GetPublisherMinVisits() {
-  return ledger_->ledger_client()->GetIntegerState(ledger::kStateMinVisits);
+  return ledger_->ledger_client()->GetIntegerState(kMinVisits);
 }
 
 void State::SetPublisherAllowNonVerified(const bool allow) {
-  ledger_->database()->SaveEventLog(
-      ledger::kStateAllowNonVerified,
-      std::to_string(allow));
-  ledger_->ledger_client()->SetBooleanState(
-      ledger::kStateAllowNonVerified,
-      allow);
+  ledger_->database()->SaveEventLog(kAllowNonVerified, std::to_string(allow));
+  ledger_->ledger_client()->SetBooleanState(kAllowNonVerified, allow);
   ledger_->publisher()->SynopsisNormalizer();
 }
 
 bool State::GetPublisherAllowNonVerified() {
-  return ledger_->ledger_client()->GetBooleanState(
-      ledger::kStateAllowNonVerified);
+  return ledger_->ledger_client()->GetBooleanState(kAllowNonVerified);
 }
 
 void State::SetPublisherAllowVideos(const bool allow) {
   ledger_->database()->SaveEventLog(
-      ledger::kStateAllowVideoContribution,
+      kAllowVideoContribution,
       std::to_string(allow));
-  ledger_->ledger_client()->SetBooleanState(
-      ledger::kStateAllowVideoContribution,
-      allow);
+  ledger_->ledger_client()->SetBooleanState(kAllowVideoContribution, allow);
   ledger_->publisher()->SynopsisNormalizer();
 }
 
 bool State::GetPublisherAllowVideos() {
-  return ledger_->ledger_client()->GetBooleanState(
-      ledger::kStateAllowVideoContribution);
+  return ledger_->ledger_client()->GetBooleanState(kAllowVideoContribution);
 }
 
 void State::SetScoreValues(double a, double b) {
-  ledger_->database()->SaveEventLog(ledger::kStateScoreA, std::to_string(a));
-  ledger_->database()->SaveEventLog(ledger::kStateScoreB, std::to_string(b));
-  ledger_->ledger_client()->SetDoubleState(ledger::kStateScoreA, a);
-  ledger_->ledger_client()->SetDoubleState(ledger::kStateScoreB, b);
+  ledger_->database()->SaveEventLog(kScoreA, std::to_string(a));
+  ledger_->database()->SaveEventLog(kScoreB, std::to_string(b));
+  ledger_->ledger_client()->SetDoubleState(kScoreA, a);
+  ledger_->ledger_client()->SetDoubleState(kScoreB, b);
 }
 
 void State::GetScoreValues(double* a, double* b) {
   DCHECK(a && b);
-  *a = ledger_->ledger_client()->GetDoubleState(ledger::kStateScoreA);
-  *b = ledger_->ledger_client()->GetDoubleState(ledger::kStateScoreB);
+  *a = ledger_->ledger_client()->GetDoubleState(kScoreA);
+  *b = ledger_->ledger_client()->GetDoubleState(kScoreB);
 }
 
 void State::SetRewardsMainEnabled(bool enabled) {
-  ledger_->database()->SaveEventLog(
-      ledger::kStateEnabled,
-      std::to_string(enabled));
-  ledger_->ledger_client()->SetBooleanState(ledger::kStateEnabled, enabled);
+  ledger_->database()->SaveEventLog(kEnabled, std::to_string(enabled));
+  ledger_->ledger_client()->SetBooleanState(kEnabled, enabled);
 }
 
 bool State::GetRewardsMainEnabled() {
-  return ledger_->ledger_client()->GetBooleanState(ledger::kStateEnabled);
+  return ledger_->ledger_client()->GetBooleanState(kEnabled);
 }
 
 void State::SetAutoContributeEnabled(bool enabled) {
   ledger_->database()->SaveEventLog(
-      ledger::kStateAutoContributeEnabled,
+      kAutoContributeEnabled,
       std::to_string(enabled));
-  ledger_->ledger_client()->SetBooleanState(
-      ledger::kStateAutoContributeEnabled,
-      enabled);
+  ledger_->ledger_client()->SetBooleanState(kAutoContributeEnabled, enabled);
 }
 
 bool State::GetAutoContributeEnabled() {
-  return ledger_->ledger_client()->GetBooleanState(
-      ledger::kStateAutoContributeEnabled);
+  return ledger_->ledger_client()->GetBooleanState(kAutoContributeEnabled);
 }
 
 void State::SetAutoContributionAmount(const double amount) {
   ledger_->database()->SaveEventLog(
-      ledger::kStateAutoContributeAmount,
+      kAutoContributeAmount,
       std::to_string(amount));
-  ledger_->ledger_client()->SetDoubleState(
-      ledger::kStateAutoContributeAmount,
-      amount);
+  ledger_->ledger_client()->SetDoubleState(kAutoContributeAmount, amount);
 }
 
 double State::GetAutoContributionAmount() {
   double amount =
-      ledger_->ledger_client()->GetDoubleState(
-          ledger::kStateAutoContributeAmount);
+      ledger_->ledger_client()->GetDoubleState(kAutoContributeAmount);
   if (amount == 0.0) {
     amount = GetAutoContributeChoice();
   }
@@ -214,30 +191,28 @@ double State::GetAutoContributionAmount() {
 }
 
 uint64_t State::GetReconcileStamp() {
-  auto stamp = ledger_->ledger_client()->GetUint64State(
-      ledger::kStateNextReconcileStamp);
+  auto stamp = ledger_->ledger_client()->GetUint64State(kNextReconcileStamp);
   if (stamp == 0) {
     ResetReconcileStamp();
-    stamp = ledger_->ledger_client()->GetUint64State(
-        ledger::kStateNextReconcileStamp);
+    stamp = ledger_->ledger_client()->GetUint64State(kNextReconcileStamp);
   }
 
   return stamp;
 }
 
 void State::SetReconcileStamp(const int reconcile_interval) {
-  uint64_t reconcile_stamp = braveledger_time_util::GetCurrentTimeStamp();
+  uint64_t reconcile_stamp = util::GetCurrentTimeStamp();
   if (reconcile_interval > 0) {
     reconcile_stamp += reconcile_interval * 60;
   } else {
-    reconcile_stamp += braveledger_ledger::_reconcile_default_interval;
+    reconcile_stamp += constant::kReconcileInterval;
   }
 
   ledger_->database()->SaveEventLog(
-      ledger::kStateNextReconcileStamp,
+      kNextReconcileStamp,
       std::to_string(reconcile_stamp));
   ledger_->ledger_client()->SetUint64State(
-      ledger::kStateNextReconcileStamp,
+      kNextReconcileStamp,
       reconcile_stamp);
   ledger_->ledger_client()->ReconcileStampReset();
 }
@@ -246,19 +221,17 @@ void State::ResetReconcileStamp() {
 }
 
 uint64_t State::GetCreationStamp() {
-  return ledger_->ledger_client()->GetUint64State(ledger::kStateCreationStamp);
+  return ledger_->ledger_client()->GetUint64State(kCreationStamp);
 }
 
 void State::SetCreationStamp(const uint64_t stamp) {
-  ledger_->database()->SaveEventLog(
-      ledger::kStateCreationStamp,
-      std::to_string(stamp));
-  ledger_->ledger_client()->SetUint64State(ledger::kStateCreationStamp, stamp);
+  ledger_->database()->SaveEventLog(kCreationStamp, std::to_string(stamp));
+  ledger_->ledger_client()->SetUint64State(kCreationStamp, stamp);
 }
 
 std::vector<uint8_t> State::GetRecoverySeed() {
-  const std::string& seed = ledger_->ledger_client()->GetStringState(
-      ledger::kStateRecoverySeed);
+  const std::string& seed =
+      ledger_->ledger_client()->GetStringState(kRecoverySeed);
   std::string decoded_seed;
   if (!base::Base64Decode(seed, &decoded_seed)) {
     BLOG(0, "Problem decoding recovery seed");
@@ -277,57 +250,51 @@ void State::SetRecoverySeed(const std::vector<uint8_t>& seed) {
   if (seed.size() > 1) {
     event_string = std::to_string(seed[0]+seed[1]);
   }
-  ledger_->database()->SaveEventLog(ledger::kStateRecoverySeed, event_string);
-  ledger_->ledger_client()->SetStringState(
-      ledger::kStateRecoverySeed,
-      seed_string);
+  ledger_->database()->SaveEventLog(kRecoverySeed, event_string);
+  ledger_->ledger_client()->SetStringState(kRecoverySeed, seed_string);
 }
 
 std::string State::GetPaymentId() {
-  return ledger_->ledger_client()->GetStringState(ledger::kStatePaymentId);
+  return ledger_->ledger_client()->GetStringState(kPaymentId);
 }
 
 void State::SetPaymentId(const std::string& id) {
-  ledger_->database()->SaveEventLog(ledger::kStatePaymentId, id);
-  ledger_->ledger_client()->SetStringState(ledger::kStatePaymentId, id);
+  ledger_->database()->SaveEventLog(kPaymentId, id);
+  ledger_->ledger_client()->SetStringState(kPaymentId, id);
 }
 
 bool State::GetInlineTippingPlatformEnabled(
-    const ledger::InlineTipsPlatforms platform) {
+    const type::InlineTipsPlatforms platform) {
   return ledger_->ledger_client()->GetBooleanState(
       ConvertInlineTipPlatformToKey(platform));
 }
 
 void State::SetInlineTippingPlatformEnabled(
-    const ledger::InlineTipsPlatforms platform,
+    const type::InlineTipsPlatforms platform,
     const bool enabled) {
   const std::string platform_string = ConvertInlineTipPlatformToKey(platform);
   ledger_->database()->SaveEventLog(platform_string, std::to_string(enabled));
-  ledger_->ledger_client()->SetBooleanState(
-      platform_string,
-      enabled);
+  ledger_->ledger_client()->SetBooleanState(platform_string, enabled);
 }
 
-void State::SetRewardsParameters(const ledger::RewardsParameters& parameters) {
+void State::SetRewardsParameters(const type::RewardsParameters& parameters) {
+  ledger_->ledger_client()->SetDoubleState(kParametersRate, parameters.rate);
   ledger_->ledger_client()->SetDoubleState(
-      ledger::kStateParametersRate,
-      parameters.rate);
-  ledger_->ledger_client()->SetDoubleState(
-      ledger::kStateParametersAutoContributeChoice,
+      kParametersAutoContributeChoice,
       parameters.auto_contribute_choice);
   ledger_->ledger_client()->SetStringState(
-      ledger::kStateParametersAutoContributeChoices,
+      kParametersAutoContributeChoices,
       VectorDoubleToString(parameters.auto_contribute_choices));
   ledger_->ledger_client()->SetStringState(
-      ledger::kStateParametersTipChoices,
+      kParametersTipChoices,
       VectorDoubleToString(parameters.tip_choices));
   ledger_->ledger_client()->SetStringState(
-      ledger::kStateParametersMonthlyTipChoices,
+      kParametersMonthlyTipChoices,
       VectorDoubleToString(parameters.monthly_tip_choices));
 }
 
-ledger::RewardsParametersPtr State::GetRewardsParameters() {
-  auto parameters = ledger::RewardsParameters::New();
+type::RewardsParametersPtr State::GetRewardsParameters() {
+  auto parameters = type::RewardsParameters::New();
   parameters->rate = GetRate();
   parameters->auto_contribute_choice = GetAutoContributeChoice();
   parameters->auto_contribute_choices = GetAutoContributeChoices();
@@ -338,17 +305,17 @@ ledger::RewardsParametersPtr State::GetRewardsParameters() {
 }
 
 double State::GetRate() {
-  return ledger_->ledger_client()->GetDoubleState(ledger::kStateParametersRate);
+  return ledger_->ledger_client()->GetDoubleState(kParametersRate);
 }
 
 double State::GetAutoContributeChoice() {
   return ledger_->ledger_client()->GetDoubleState(
-      ledger::kStateParametersAutoContributeChoice);
+      kParametersAutoContributeChoice);
 }
 
 std::vector<double> State::GetAutoContributeChoices() {
   const std::string amounts_string = ledger_->ledger_client()->GetStringState(
-      ledger::kStateParametersAutoContributeChoices);
+      kParametersAutoContributeChoices);
   std::vector<double> amounts = StringToVectorDouble(amounts_string);
 
   const double current_amount = GetAutoContributionAmount();
@@ -360,9 +327,10 @@ std::vector<double> State::GetAutoContributeChoices() {
   if (contains_amount == amounts.end()) {
     amounts.push_back(current_amount);
     std::sort(amounts.begin(), amounts.end());
+
     ledger_->ledger_client()->SetStringState(
-      ledger::kStateParametersAutoContributeChoices,
-      VectorDoubleToString(amounts));
+        kParametersAutoContributeChoices,
+        VectorDoubleToString(amounts));
   }
 
   return amounts;
@@ -370,90 +338,73 @@ std::vector<double> State::GetAutoContributeChoices() {
 
 std::vector<double> State::GetTipChoices() {
   return StringToVectorDouble(ledger_->ledger_client()->GetStringState(
-      ledger::kStateParametersTipChoices));
+      kParametersTipChoices));
 }
 
 std::vector<double> State::GetMonthlyTipChoices() {
   return StringToVectorDouble(ledger_->ledger_client()->GetStringState(
-      ledger::kStateParametersMonthlyTipChoices));
+      kParametersMonthlyTipChoices));
 }
 
 void State::SetFetchOldBalanceEnabled(bool enabled) {
-  ledger_->database()->SaveEventLog(
-      ledger::kStateFetchOldBalance,
-      std::to_string(enabled));
-  ledger_->ledger_client()->SetBooleanState(
-      ledger::kStateFetchOldBalance,
-      enabled);
+  ledger_->database()->SaveEventLog(kFetchOldBalance, std::to_string(enabled));
+  ledger_->ledger_client()->SetBooleanState(kFetchOldBalance, enabled);
 }
 
 bool State::GetFetchOldBalanceEnabled() {
-  return ledger_->ledger_client()->GetBooleanState(
-      ledger::kStateFetchOldBalance);
+  return ledger_->ledger_client()->GetBooleanState(kFetchOldBalance);
 }
 
 void State::SetEmptyBalanceChecked(const bool checked) {
   ledger_->database()->SaveEventLog(
-      ledger::kStateEmptyBalanceChecked,
+      kEmptyBalanceChecked,
       std::to_string(checked));
-  ledger_->ledger_client()->SetBooleanState(
-      ledger::kStateEmptyBalanceChecked,
-      checked);
+  ledger_->ledger_client()->SetBooleanState(kEmptyBalanceChecked, checked);
 }
 
 bool State::GetEmptyBalanceChecked() {
-  return ledger_->ledger_client()->GetBooleanState(
-      ledger::kStateEmptyBalanceChecked);
+  return ledger_->ledger_client()->GetBooleanState(kEmptyBalanceChecked);
 }
 
 void State::SetServerPublisherListStamp(const uint64_t stamp) {
-  ledger_->ledger_client()->SetUint64State(
-      ledger::kStateServerPublisherListStamp,
-      stamp);
+  ledger_->ledger_client()->SetUint64State(kServerPublisherListStamp, stamp);
 }
 
 uint64_t State::GetServerPublisherListStamp() {
-  return ledger_->ledger_client()->GetUint64State(
-      ledger::kStateServerPublisherListStamp);
+  return ledger_->ledger_client()->GetUint64State(kServerPublisherListStamp);
 }
 
 void State::SetPromotionCorruptedMigrated(const bool migrated) {
   ledger_->database()->SaveEventLog(
-      ledger::kStatePromotionCorruptedMigrated,
+      kPromotionCorruptedMigrated,
       std::to_string(migrated));
   ledger_->ledger_client()->SetBooleanState(
-      ledger::kStatePromotionCorruptedMigrated,
+      kPromotionCorruptedMigrated,
       migrated);
 }
 
 bool State::GetPromotionCorruptedMigrated() {
-  return ledger_->ledger_client()->GetBooleanState(
-      ledger::kStatePromotionCorruptedMigrated);
+  return ledger_->ledger_client()->GetBooleanState(kPromotionCorruptedMigrated);
 }
 
 void State::SetPromotionLastFetchStamp(const uint64_t stamp) {
-  ledger_->ledger_client()->SetUint64State(
-      ledger::kStatePromotionLastFetchStamp,
-      stamp);
+  ledger_->ledger_client()->SetUint64State(kPromotionLastFetchStamp, stamp);
 }
 
 uint64_t State::GetPromotionLastFetchStamp() {
-  return ledger_->ledger_client()->GetUint64State(
-      ledger::kStatePromotionLastFetchStamp);
+  return ledger_->ledger_client()->GetUint64State(kPromotionLastFetchStamp);
 }
 
 void State::SetAnonTransferChecked(const bool checked) {
   ledger_->database()->SaveEventLog(
-      ledger::kStateAnonTransferChecked,
+      kAnonTransferChecked,
       std::to_string(checked));
-  ledger_->ledger_client()->SetBooleanState(
-      ledger::kStateAnonTransferChecked,
-      checked);
+  ledger_->ledger_client()->SetBooleanState(kAnonTransferChecked, checked);
 }
 
 bool State::GetAnonTransferChecked() {
-  return ledger_->ledger_client()->GetBooleanState(
-      ledger::kStateAnonTransferChecked);
+  return ledger_->ledger_client()->GetBooleanState(kAnonTransferChecked);
 }
 
-}  // namespace braveledger_state
+}  // namespace state
+}  // namespace ledger

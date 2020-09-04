@@ -30,13 +30,13 @@ class GetMeTest : public testing::Test {
 
  protected:
   std::unique_ptr<ledger::MockLedgerClient> mock_ledger_client_;
-  std::unique_ptr<bat_ledger::MockLedgerImpl> mock_ledger_impl_;
+  std::unique_ptr<ledger::MockLedgerImpl> mock_ledger_impl_;
   std::unique_ptr<GetMe> me_;
 
   GetMeTest() {
     mock_ledger_client_ = std::make_unique<ledger::MockLedgerClient>();
     mock_ledger_impl_ =
-        std::make_unique<bat_ledger::MockLedgerImpl>(mock_ledger_client_.get());
+        std::make_unique<ledger::MockLedgerImpl>(mock_ledger_client_.get());
     me_ = std::make_unique<GetMe>(mock_ledger_impl_.get());
   }
 };
@@ -45,9 +45,9 @@ TEST_F(GetMeTest, ServerOK) {
   ON_CALL(*mock_ledger_client_, LoadURL(_, _))
       .WillByDefault(
           Invoke([](
-              ledger::UrlRequestPtr request,
-              ledger::LoadURLCallback callback) {
-            ledger::UrlResponse response;
+              type::UrlRequestPtr request,
+              client::LoadURLCallback callback) {
+            type::UrlResponse response;
             response.status_code = 200;
             response.url = request->url;
             response.body = R"({
@@ -141,18 +141,18 @@ TEST_F(GetMeTest, ServerOK) {
             callback(response);
           }));
 
-  braveledger_uphold::User expected_user;
+  ::ledger::uphold::User expected_user;
 
 
   me_->Request(
       "4c2b665ca060d912fec5c735c734859a06118cc8",
-      [&](const ledger::Result result, const braveledger_uphold::User& user) {
-        EXPECT_EQ(result, ledger::Result::LEDGER_OK);
+      [&](const type::Result result, const ::ledger::uphold::User& user) {
+        EXPECT_EQ(result, type::Result::LEDGER_OK);
         EXPECT_EQ(user.name, "John");
         EXPECT_EQ(user.member_at, "2019-07-27T11:32:33.310Z");
         EXPECT_EQ(user.verified, true);
         EXPECT_EQ(user.bat_not_allowed, false);
-        EXPECT_EQ(user.status, braveledger_uphold::UserStatus::OK);
+        EXPECT_EQ(user.status, ::ledger::uphold::UserStatus::OK);
       });
 }
 
@@ -160,20 +160,20 @@ TEST_F(GetMeTest, ServerError401) {
   ON_CALL(*mock_ledger_client_, LoadURL(_, _))
       .WillByDefault(
           Invoke([](
-              ledger::UrlRequestPtr request,
-              ledger::LoadURLCallback callback) {
-            ledger::UrlResponse response;
+              type::UrlRequestPtr request,
+              client::LoadURLCallback callback) {
+            type::UrlResponse response;
             response.status_code = 401;
             response.url = request->url;
             response.body = "";
             callback(response);
           }));
 
-  braveledger_uphold::User expected_user;
+  ::ledger::uphold::User expected_user;
   me_->Request(
       "4c2b665ca060d912fec5c735c734859a06118cc8",
-      [&](const ledger::Result result, const braveledger_uphold::User& user) {
-        EXPECT_EQ(result, ledger::Result::EXPIRED_TOKEN);
+      [&](const type::Result result, const ::ledger::uphold::User& user) {
+        EXPECT_EQ(result, type::Result::EXPIRED_TOKEN);
       });
 }
 
@@ -181,20 +181,20 @@ TEST_F(GetMeTest, ServerErrorRandom) {
   ON_CALL(*mock_ledger_client_, LoadURL(_, _))
       .WillByDefault(
           Invoke([](
-              ledger::UrlRequestPtr request,
-              ledger::LoadURLCallback callback) {
-            ledger::UrlResponse response;
+              type::UrlRequestPtr request,
+              client::LoadURLCallback callback) {
+            type::UrlResponse response;
             response.status_code = 453;
             response.url = request->url;
             response.body = "";
             callback(response);
           }));
 
-  braveledger_uphold::User expected_user;
+  ::ledger::uphold::User expected_user;
   me_->Request(
       "4c2b665ca060d912fec5c735c734859a06118cc8",
-      [&](const ledger::Result result, const braveledger_uphold::User& user) {
-        EXPECT_EQ(result, ledger::Result::LEDGER_ERROR);
+      [&](const type::Result result, const ::ledger::uphold::User& user) {
+        EXPECT_EQ(result, type::Result::LEDGER_ERROR);
       });
 }
 

@@ -9,20 +9,21 @@
 #include "bat/ledger/internal/logging/event_log_keys.h"
 #include "bat/ledger/internal/promotion/promotion_transfer.h"
 #include "bat/ledger/internal/promotion/promotion_util.h"
-#include "bat/ledger/internal/static_values.h"
+#include "bat/ledger/internal/constants.h"
 
 using std::placeholders::_1;
 using std::placeholders::_2;
 using std::placeholders::_3;
 
-namespace braveledger_promotion {
+namespace ledger {
+namespace promotion {
 
-PromotionTransfer::PromotionTransfer(bat_ledger::LedgerImpl* ledger) :
+PromotionTransfer::PromotionTransfer(LedgerImpl* ledger) :
     ledger_(ledger) {
   DCHECK(ledger_);
-  credentials_ = braveledger_credentials::CredentialsFactory::Create(
+  credentials_ = credential::CredentialsFactory::Create(
       ledger_,
-      ledger::CredsBatchType::PROMOTION);
+      type::CredsBatchType::PROMOTION);
   DCHECK(credentials_);
 }
 
@@ -40,7 +41,7 @@ void PromotionTransfer::Start(ledger::ResultCallback callback) {
 }
 
 void PromotionTransfer::GetEligibleTokens(
-    ledger::PromotionList promotions,
+    type::PromotionList promotions,
     ledger::ResultCallback callback) {
   auto tokens_callback = std::bind(&PromotionTransfer::OnGetEligibleTokens,
       this,
@@ -62,36 +63,37 @@ void PromotionTransfer::GetEligibleTokens(
 }
 
 void PromotionTransfer::OnGetEligibleTokens(
-    ledger::UnblindedTokenList list,
+    type::UnblindedTokenList list,
     ledger::ResultCallback callback) {
   if (list.empty()) {
     BLOG(1, "No eligible tokens");
-    callback(ledger::Result::LEDGER_OK);
+    callback(type::Result::LEDGER_OK);
     return;
   }
 
-  std::vector<ledger::UnblindedToken> token_list;
+  std::vector<type::UnblindedToken> token_list;
   for (auto& item : list) {
     token_list.push_back(*item);
   }
 
-  braveledger_credentials::CredentialsRedeem redeem;
-  redeem.type = ledger::RewardsType::TRANSFER;
-  redeem.processor = ledger::ContributionProcessor::BRAVE_TOKENS;
+  credential::CredentialsRedeem redeem;
+  redeem.type = type::RewardsType::TRANSFER;
+  redeem.processor = type::ContributionProcessor::BRAVE_TOKENS;
   redeem.token_list = token_list;
 
   const double transfer_amount =
-      token_list.size() * braveledger_ledger::_vote_price;
+      token_list.size() * constant::kVotePrice;
   credentials_->RedeemTokens(
       redeem,
-      [this, transfer_amount, callback](const ledger::Result result) {
-        if (result == ledger::Result::LEDGER_OK) {
+      [this, transfer_amount, callback](const type::Result result) {
+        if (result == type::Result::LEDGER_OK) {
             ledger_->database()->SaveEventLog(
-                ledger::log::kPromotionsClaimed,
+                log::kPromotionsClaimed,
                 std::to_string(transfer_amount));
         }
         callback(result);
       });
 }
 
-}  // namespace braveledger_promotion
+}  // namespace promotion
+}  // namespace ledger

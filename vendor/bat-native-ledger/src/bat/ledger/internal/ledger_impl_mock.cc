@@ -5,7 +5,7 @@
 
 #include "bat/ledger/internal/ledger_impl_mock.h"
 
-namespace bat_ledger {
+namespace ledger {
 
 MockLedgerImpl::MockLedgerImpl(ledger::LedgerClient* client) :
     LedgerImpl(client)  {
@@ -13,4 +13,4 @@ MockLedgerImpl::MockLedgerImpl(ledger::LedgerClient* client) :
 
 MockLedgerImpl::~MockLedgerImpl() = default;
 
-}  // namespace bat_ledger
+}  // namespace ledger

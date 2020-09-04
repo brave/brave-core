@@ -12,17 +12,16 @@
 #include "bat/ledger/ledger.h"
 #include "bat/ledger/internal/uphold/uphold.h"
 
-namespace bat_ledger {
+namespace ledger {
 class LedgerImpl;
-}
 
-namespace braveledger_contribution {
+namespace contribution {
 
 class ContributionExternalWallet {
  public:
   explicit ContributionExternalWallet(
-      bat_ledger::LedgerImpl* ledger,
-      braveledger_uphold::Uphold* uphold);
+      LedgerImpl* ledger,
+      uphold::Uphold* uphold);
 
   ~ContributionExternalWallet();
 
@@ -31,38 +30,39 @@ class ContributionExternalWallet {
       ledger::ResultCallback callback);
 
   void Retry(
-      ledger::ContributionInfoPtr contribution,
+      type::ContributionInfoPtr contribution,
       ledger::ResultCallback callback);
 
  private:
   void ContributionInfo(
-      ledger::ContributionInfoPtr contribution,
-      const ledger::ExternalWallet& wallet,
+      type::ContributionInfoPtr contribution,
+      const type::ExternalWallet& wallet,
       ledger::ResultCallback callback);
 
   void OnAC(
-      const ledger::Result result,
+      const type::Result result,
       const std::string& contribution_id);
 
   void OnSavePendingContribution(
-      const ledger::Result result);
+      const type::Result result);
 
   void OnServerPublisherInfo(
-      ledger::ServerPublisherInfoPtr info,
+      type::ServerPublisherInfoPtr info,
       const std::string& contribution_id,
       const double amount,
-      const ledger::RewardsType type,
+      const type::RewardsType type,
       const bool single_publisher,
       ledger::ResultCallback callback);
 
   void Completed(
-      const ledger::Result result,
+      const type::Result result,
       const bool single_publisher,
       ledger::ResultCallback callback);
 
-  bat_ledger::LedgerImpl* ledger_;  // NOT OWNED
-  braveledger_uphold::Uphold* uphold_;  // NOT OWNED
+  LedgerImpl* ledger_;  // NOT OWNED
+  uphold::Uphold* uphold_;  // NOT OWNED
 };
 
-}  // namespace braveledger_contribution
+}  // namespace contribution
+}  // namespace ledger
 #endif  // BRAVELEDGER_CONTRIBUTION_CONTRIBUTION_EXTERNAL_WALLET_H_

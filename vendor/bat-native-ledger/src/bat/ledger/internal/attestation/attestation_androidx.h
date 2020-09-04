@@ -13,16 +13,14 @@
 #include "bat/ledger/internal/attestation/attestation.h"
 #include "bat/ledger/internal/endpoint/promotion/promotion_server.h"
 
-namespace bat_ledger {
-class LedgerImpl;
-}
-
 namespace ledger {
+class LedgerImpl;
+
 namespace attestation {
 
 class AttestationAndroid : public Attestation {
  public:
-  explicit AttestationAndroid(bat_ledger::LedgerImpl* ledger);
+  explicit AttestationAndroid(LedgerImpl* ledger);
   ~AttestationAndroid() override;
 
   void Start(const std::string& payload, StartCallback callback) override;
@@ -38,12 +36,12 @@ class AttestationAndroid : public Attestation {
       std::string* nonce);
 
   void OnStart(
-      const ledger::Result result,
+      const type::Result result,
       const std::string& confirmation,
       StartCallback callback);
 
   void OnConfirm(
-      const ledger::Result result,
+      const type::Result result,
       ConfirmCallback callback);
 
   std::unique_ptr<endpoint::PromotionServer> promotion_server_;

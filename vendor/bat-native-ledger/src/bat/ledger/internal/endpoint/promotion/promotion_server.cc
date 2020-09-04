@@ -9,7 +9,7 @@
 namespace ledger {
 namespace endpoint {
 
-PromotionServer::PromotionServer(bat_ledger::LedgerImpl* ledger):
+PromotionServer::PromotionServer(LedgerImpl* ledger):
     get_available_(std::make_unique<promotion::GetAvailable>(ledger)),
     post_creds_(std::make_unique<promotion::PostCreds>(ledger)),
     get_signed_creds_(std::make_unique<promotion::GetSignedCreds>(ledger)),

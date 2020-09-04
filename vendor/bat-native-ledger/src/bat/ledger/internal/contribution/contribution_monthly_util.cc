@@ -5,17 +5,18 @@
 
 #include "bat/ledger/internal/contribution/contribution_monthly_util.h"
 
-namespace braveledger_contribution {
+namespace ledger {
+namespace contribution {
 
 double GetTotalFromVerifiedTips(
-    const ledger::PublisherInfoList& publisher_list) {
+    const type::PublisherInfoList& publisher_list) {
   double total_amount = 0.0;
   for (const auto& publisher : publisher_list) {
     if (!publisher || publisher->id.empty()) {
       continue;
     }
 
-    if (publisher->status == ledger::PublisherStatus::VERIFIED) {
+    if (publisher->status == type::PublisherStatus::VERIFIED) {
       total_amount += publisher->weight;
     }
   }
@@ -23,4 +24,5 @@ double GetTotalFromVerifiedTips(
   return total_amount;
 }
 
-}  // namespace braveledger_contribution
+}  // namespace contribution
+}  // namespace ledger

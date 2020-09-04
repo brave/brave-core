@@ -18,16 +18,14 @@
 #include "bat/ledger/internal/endpoint/uphold/post_transaction_commit/post_transaction_commit.h"
 #include "bat/ledger/ledger.h"
 
-namespace bat_ledger {
-class LedgerImpl;
-}
-
 namespace ledger {
+class LedgerImpl;
+
 namespace endpoint {
 
 class UpholdServer {
  public:
-  explicit UpholdServer(bat_ledger::LedgerImpl* ledger);
+  explicit UpholdServer(LedgerImpl* ledger);
   ~UpholdServer();
 
   uphold::PostOauth* post_oauth() const;

@@ -8,7 +8,7 @@
 #include <vector>
 
 #include "base/json/json_reader.h"
-#include "bat/ledger/internal/common/security_helper.h"
+#include "bat/ledger/internal/common/security_util.h"
 #include "bat/ledger/internal/common/time_util.h"
 #include "bat/ledger/internal/ledger_impl.h"
 
@@ -18,7 +18,7 @@ using std::placeholders::_2;
 namespace ledger {
 namespace wallet {
 
-WalletCreate::WalletCreate(bat_ledger::LedgerImpl* ledger) :
+WalletCreate::WalletCreate(LedgerImpl* ledger) :
     ledger_(ledger),
     promotion_server_(std::make_unique<endpoint::PromotionServer>(ledger)) {
   DCHECK(ledger_);
@@ -31,11 +31,11 @@ void WalletCreate::Start(ledger::ResultCallback callback) {
 
   if (!payment_id.empty()) {
     BLOG(1, "Wallet already exists");
-    callback(ledger::Result::WALLET_CREATED);
+    callback(type::Result::WALLET_CREATED);
     return;
   }
 
-  const auto key_info_seed = braveledger_helper::Security::GenerateSeed();
+  const auto key_info_seed = util::Security::GenerateSeed();
   ledger_->state()->SetRecoverySeed(key_info_seed);
 
   auto url_callback = std::bind(&WalletCreate::OnCreate,
@@ -48,10 +48,10 @@ void WalletCreate::Start(ledger::ResultCallback callback) {
 }
 
 void WalletCreate::OnCreate(
-    const ledger::Result result,
+    const type::Result result,
     const std::string& payment_id,
     ledger::ResultCallback callback) {
-  if (result != ledger::Result::LEDGER_OK) {
+  if (result != type::Result::LEDGER_OK) {
     callback(result);
     return;
   }
@@ -67,17 +67,17 @@ void WalletCreate::OnCreate(
     ledger_->state()->SetPromotionCorruptedMigrated(true);
   }
   ledger_->state()->SetCreationStamp(
-      braveledger_time_util::GetCurrentTimeStamp());
+      util::GetCurrentTimeStamp());
   ledger_->state()->SetInlineTippingPlatformEnabled(
-      ledger::InlineTipsPlatforms::REDDIT,
+      type::InlineTipsPlatforms::REDDIT,
       true);
   ledger_->state()->SetInlineTippingPlatformEnabled(
-      ledger::InlineTipsPlatforms::TWITTER,
+      type::InlineTipsPlatforms::TWITTER,
       true);
   ledger_->state()->SetInlineTippingPlatformEnabled(
-      ledger::InlineTipsPlatforms::GITHUB,
+      type::InlineTipsPlatforms::GITHUB,
       true);
-  callback(ledger::Result::WALLET_CREATED);
+  callback(type::Result::WALLET_CREATED);
 }
 
 }  // namespace wallet

@@ -8,60 +8,60 @@
 namespace brave_rewards {
 namespace prefs {
 
-const char kHideBraveRewardsButton[] = "brave.hide_brave_rewards_button";
-const char kBraveRewardsEnabled[] = "brave.rewards.enabled";
-const char kRewardsNotifications[] = "brave.rewards.notifications";
-const char kRewardsNotificationTimerInterval[]=
+const char kHideButton[] = "brave.hide_brave_rewards_button";
+const char kEnabled[] = "brave.rewards.enabled";
+const char kNotifications[] = "brave.rewards.notifications";
+const char kNotificationTimerInterval[]=
     "brave.rewards.notification_timer_interval";
-const char kRewardsBackupNotificationInterval[] =
+const char kBackupNotificationInterval[] =
     "brave.rewards.backup_notification_interval";
-const char kRewardsBackupSucceeded[] = "brave.rewards.backup_succeeded";
-const char kRewardsUserHasFunded[] = "brave.rewards.user_has_funded";
-const char kRewardsAddFundsNotification[] =
+const char kBackupSucceeded[] = "brave.rewards.backup_succeeded";
+const char kUserHasFunded[] = "brave.rewards.user_has_funded";
+const char kAddFundsNotification[] =
     "brave.rewards.add_funds_notification";
-const char kRewardsNotificationStartupDelay[] =
+const char kNotificationStartupDelay[] =
     "brave.rewards.notification_startup_delay";
-const char kRewardsExternalWallets[] = "brave.rewards.external_wallets";
-const char kStateServerPublisherListStamp[] =
+const char kExternalWallets[] = "brave.rewards.external_wallets";
+const char kServerPublisherListStamp[] =
     "brave.rewards.publisher_prefix_list_stamp";
-const char kStateUpholdAnonAddress[] =
+const char kUpholdAnonAddress[] =
     "brave.rewards.uphold_anon_address";
-const char kRewardsBadgeText[] = "brave.rewards.badge_text";
+const char kBadgeText[] = "brave.rewards.badge_text";
 const char kUseRewardsStagingServer[] = "brave.rewards.use_staging_server";
-const char kStatePromotionLastFetchStamp[] =
+const char kPromotionLastFetchStamp[] =
     "brave.rewards.promotion_last_fetch_stamp";
-const char kStatePromotionCorruptedMigrated[] =
+const char kPromotionCorruptedMigrated[] =
     "brave.rewards.promotion_corrupted_migrated2";
-const char kStateAnonTransferChecked[] =  "brave.rewards.anon_transfer_checked";
-const char kStateVersion[] =  "brave.rewards.version";
-const char kStateMinVisitTime[] =  "brave.rewards.ac.min_visit_time";
-const char kStateMinVisits[] =  "brave.rewards.ac.min_visits";
-const char kStateAllowNonVerified[] =  "brave.rewards.ac.allow_non_verified";
-const char kStateAllowVideoContribution[] =
+const char kAnonTransferChecked[] =  "brave.rewards.anon_transfer_checked";
+const char kVersion[] =  "brave.rewards.version";
+const char kMinVisitTime[] =  "brave.rewards.ac.min_visit_time";
+const char kMinVisits[] =  "brave.rewards.ac.min_visits";
+const char kAllowNonVerified[] =  "brave.rewards.ac.allow_non_verified";
+const char kAllowVideoContribution[] =
     "brave.rewards.ac.allow_video_contributions";
-const char kStateScoreA[] = "brave.rewards.ac.score.a";
-const char kStateScoreB[] = "brave.rewards.ac.score.b";
-const char kStateAutoContributeEnabled[] = "brave.rewards.ac.enabled";
-const char kStateAutoContributeAmount[] = "brave.rewards.ac.amount";
-const char kStateNextReconcileStamp[] = "brave.rewards.ac.next_reconcile_stamp";
-const char kStateCreationStamp[] = "brave.rewards.creation_stamp";
-const char kStateRecoverySeed[] = "brave.rewards.wallet.seed";
-const char kStatePaymentId[] = "brave.rewards.wallet.payment_id";
-const char kStateInlineTipRedditEnabled[] = "brave.rewards.inline_tip.reddit";
-const char kStateInlineTipTwitterEnabled[] = "brave.rewards.inline_tip.twitter";
-const char kStateInlineTipGithubEnabled[] = "brave.rewards.inline_tip.github";
-const char kStateParametersRate[] = "brave.rewards.parameters.rate";
-const char kStateParametersAutoContributeChoice[] =
+const char kScoreA[] = "brave.rewards.ac.score.a";
+const char kScoreB[] = "brave.rewards.ac.score.b";
+const char kAutoContributeEnabled[] = "brave.rewards.ac.enabled";
+const char kAutoContributeAmount[] = "brave.rewards.ac.amount";
+const char kNextReconcileStamp[] = "brave.rewards.ac.next_reconcile_stamp";
+const char kCreationStamp[] = "brave.rewards.creation_stamp";
+const char kRecoverySeed[] = "brave.rewards.wallet.seed";
+const char kPaymentId[] = "brave.rewards.wallet.payment_id";
+const char kInlineTipRedditEnabled[] = "brave.rewards.inline_tip.reddit";
+const char kInlineTipTwitterEnabled[] = "brave.rewards.inline_tip.twitter";
+const char kInlineTipGithubEnabled[] = "brave.rewards.inline_tip.github";
+const char kParametersRate[] = "brave.rewards.parameters.rate";
+const char kParametersAutoContributeChoice[] =
     "brave.rewards.parameters.ac.choice";
-const char kStateParametersAutoContributeChoices[] =
+const char kParametersAutoContributeChoices[] =
     "brave.rewards.parameters.ac.choices";
-const char kStateParametersTipChoices[] =
+const char kParametersTipChoices[] =
     "brave.rewards.parameters.tip.choices";
-const char kStateParametersMonthlyTipChoices[] =
+const char kParametersMonthlyTipChoices[] =
     "brave.rewards.parameters.tip.monthly_choices";
-const char kStateFetchOldBalance[] =
+const char kFetchOldBalance[] =
     "brave.rewards.fetch_old_balance";
-const char kStateEmptyBalanceChecked[] =
+const char kEmptyBalanceChecked[] =
     "brave.rewards.empty_balance_checked";
 }  // namespace prefs
 }  // namespace brave_rewards

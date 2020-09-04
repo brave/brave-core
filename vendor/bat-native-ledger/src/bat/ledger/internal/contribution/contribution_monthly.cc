@@ -13,9 +13,10 @@
 using std::placeholders::_1;
 using std::placeholders::_2;
 
-namespace braveledger_contribution {
+namespace ledger {
+namespace contribution {
 
-ContributionMonthly::ContributionMonthly(bat_ledger::LedgerImpl* ledger) :
+ContributionMonthly::ContributionMonthly(LedgerImpl* ledger) :
     ledger_(ledger) {
   DCHECK(ledger_);
 }
@@ -32,59 +33,59 @@ void ContributionMonthly::Process(ledger::ResultCallback callback) {
 }
 
 void ContributionMonthly::PrepareTipList(
-    ledger::PublisherInfoList list,
+    type::PublisherInfoList list,
     ledger::ResultCallback callback) {
-  ledger::PublisherInfoList verified_list;
+  type::PublisherInfoList verified_list;
   GetVerifiedTipList(list, &verified_list);
 
-  ledger::ContributionQueuePtr queue;
-  ledger::ContributionQueuePublisherPtr publisher;
+  type::ContributionQueuePtr queue;
+  type::ContributionQueuePublisherPtr publisher;
   for (const auto &item : verified_list) {
-    ledger::ContributionQueuePublisherList queue_list;
-    publisher = ledger::ContributionQueuePublisher::New();
+    type::ContributionQueuePublisherList queue_list;
+    publisher = type::ContributionQueuePublisher::New();
     publisher->publisher_key = item->id;
     publisher->amount_percent = 100.0;
     queue_list.push_back(std::move(publisher));
 
-    queue = ledger::ContributionQueue::New();
+    queue = type::ContributionQueue::New();
     queue->id = base::GenerateGUID();
-    queue->type = ledger::RewardsType::RECURRING_TIP;
+    queue->type = type::RewardsType::RECURRING_TIP;
     queue->amount = item->weight;
     queue->partial = false;
     queue->publishers = std::move(queue_list);
 
     ledger_->database()->SaveContributionQueue(
         std::move(queue),
-        [](const ledger::Result _){});
+        [](const type::Result _){});
   }
 
   // TODO(https://github.com/brave/brave-browser/issues/8804):
   // we should change this logic and do batch insert with callback
   ledger_->contribution()->CheckContributionQueue();
-  callback(ledger::Result::LEDGER_OK);
+  callback(type::Result::LEDGER_OK);
 }
 
 void ContributionMonthly::GetVerifiedTipList(
-    const ledger::PublisherInfoList& list,
-    ledger::PublisherInfoList* verified_list) {
+    const type::PublisherInfoList& list,
+    type::PublisherInfoList* verified_list) {
   DCHECK(verified_list);
-  ledger::PendingContributionList non_verified;
+  type::PendingContributionList non_verified;
 
   for (const auto& publisher : list) {
     if (!publisher || publisher->id.empty() || publisher->weight == 0.0) {
       continue;
     }
 
-    if (publisher->status != ledger::PublisherStatus::NOT_VERIFIED) {
+    if (publisher->status != type::PublisherStatus::NOT_VERIFIED) {
       verified_list->push_back(publisher->Clone());
       continue;
     }
 
-    auto contribution = ledger::PendingContribution::New();
+    auto contribution = type::PendingContribution::New();
     contribution->amount = publisher->weight;
     contribution->publisher_key = publisher->id;
     contribution->viewing_id = "";
-    contribution->type = ledger::RewardsType::RECURRING_TIP;
+    contribution->type = type::RewardsType::RECURRING_TIP;
 
     non_verified.push_back(std::move(contribution));
   }
@@ -103,8 +104,8 @@ void ContributionMonthly::GetVerifiedTipList(
 }
 
 void ContributionMonthly::OnSavePendingContribution(
-    const ledger::Result result) {
-  if (result != ledger::Result::LEDGER_OK) {
+    const type::Result result) {
+  if (result != type::Result::LEDGER_OK) {
     BLOG(0, "Problem saving pending");
   }
 
@@ -124,10 +125,10 @@ void ContributionMonthly::HasSufficientBalance(
 }
 
 void ContributionMonthly::OnSufficientBalanceWallet(
-    const ledger::Result result,
-    ledger::BalancePtr info,
+    const type::Result result,
+    type::BalancePtr info,
     ledger::HasSufficientBalanceToReconcileCallback callback) {
-  if (result != ledger::Result::LEDGER_OK || !info) {
+  if (result != type::Result::LEDGER_OK || !info) {
     BLOG(0, "Problem getting balance");
     return;
   }
@@ -142,7 +143,7 @@ void ContributionMonthly::OnSufficientBalanceWallet(
 }
 
 void ContributionMonthly::OnHasSufficientBalance(
-    const ledger::PublisherInfoList& publisher_list,
+    const type::PublisherInfoList& publisher_list,
     const double balance,
     ledger::HasSufficientBalanceToReconcileCallback callback) {
   if (publisher_list.empty()) {
@@ -155,4 +156,5 @@ void ContributionMonthly::OnHasSufficientBalance(
   callback(balance >= total);
 }
 
-}  // namespace braveledger_contribution
+}  // namespace contribution
+}  // namespace ledger

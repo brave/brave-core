@@ -16,9 +16,10 @@ const int kCurrentVersionNumber = 5;
 
 }  // namespace
 
-namespace braveledger_state {
+namespace ledger {
+namespace state {
 
-StateMigration::StateMigration(bat_ledger::LedgerImpl* ledger) :
+StateMigration::StateMigration(LedgerImpl* ledger) :
     v1_(std::make_unique<StateMigrationV1>(ledger)),
     v2_(std::make_unique<StateMigrationV2>(ledger)),
     v3_(std::make_unique<StateMigrationV3>()),
@@ -35,7 +36,7 @@ void StateMigration::Migrate(ledger::ResultCallback callback) {
   const int new_version = current_version + 1;
 
   if (current_version == kCurrentVersionNumber) {
-    callback(ledger::Result::LEDGER_OK);
+    callback(type::Result::LEDGER_OK);
     return;
   }
 
@@ -73,13 +74,13 @@ void StateMigration::Migrate(ledger::ResultCallback callback) {
 }
 
 void StateMigration::OnMigration(
-    ledger::Result result,
+    type::Result result,
     const int version,
     ledger::ResultCallback callback) {
-  if (result != ledger::Result::LEDGER_OK) {
+  if (result != type::Result::LEDGER_OK) {
     BLOG(0, "State: Error with migration from " << (version - 1) <<
         " to " << version);
-    callback(ledger::Result::LEDGER_ERROR);
+    callback(type::Result::LEDGER_ERROR);
     return;
   }
 
@@ -89,4 +90,5 @@ void StateMigration::OnMigration(
   Migrate(callback);
 }
 
-}  // namespace braveledger_state
+}  // namespace state
+}  // namespace ledger

@@ -66,7 +66,7 @@ IN_PROC_BROWSER_TEST_F(BraveProfilePrefsBrowserTest, MiscBravePrefs) {
       browser()->profile()->GetPrefs()->GetBoolean(kHangoutsEnabled));
   EXPECT_FALSE(
       browser()->profile()->GetPrefs()->GetBoolean(
-          brave_rewards::prefs::kHideBraveRewardsButton));
+          brave_rewards::prefs::kHideButton));
 #if BUILDFLAG(IPFS_ENABLED)
   EXPECT_EQ(
       browser()->profile()->GetPrefs()->GetInteger(kIPFSResolveMethod),

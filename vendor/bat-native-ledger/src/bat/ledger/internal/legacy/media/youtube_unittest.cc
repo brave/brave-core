@@ -6,8 +6,9 @@
 #include <map>
 #include <utility>
 
+#include "bat/ledger/internal/constants.h"
 #include "bat/ledger/internal/legacy/media/youtube.h"
-#include "bat/ledger/internal/static_values.h"
+#include "bat/ledger/internal/legacy/static_values.h"
 #include "bat/ledger/ledger.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
@@ -20,7 +21,7 @@ class MediaYouTubeTest : public testing::Test {
 
 TEST(MediaYouTubeTest, GetMediaIdFromUrl) {
   // missing video id
-  ledger::VisitData data;
+  ledger::type::VisitData data;
   data.url = "https://www.youtube.com/watch";
 
   std::string media =

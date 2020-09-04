@@ -6,9 +6,10 @@
 #include "bat/ledger/internal/api/api.h"
 #include "bat/ledger/internal/ledger_impl.h"
 
-namespace braveledger_api {
+namespace ledger {
+namespace api {
 
-API::API(bat_ledger::LedgerImpl* ledger) :
+API::API(LedgerImpl* ledger) :
     ledger_(ledger),
     parameters_(std::make_unique<APIParameters>(ledger)) {
   DCHECK(ledger_ && parameters_);
@@ -24,4 +25,5 @@ void API::FetchParameters(ledger::GetRewardsParametersCallback callback) {
   parameters_->Fetch(callback);
 }
 
-}  // namespace braveledger_api
+}  // namespace api
+}  // namespace ledger

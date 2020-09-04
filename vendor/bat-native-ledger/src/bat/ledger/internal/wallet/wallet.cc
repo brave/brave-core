@@ -20,13 +20,13 @@
 namespace ledger {
 namespace wallet {
 
-Wallet::Wallet(bat_ledger::LedgerImpl* ledger) :
+Wallet::Wallet(LedgerImpl* ledger) :
     ledger_(ledger),
     create_(std::make_unique<WalletCreate>(ledger)),
     recover_(std::make_unique<WalletRecover>(ledger)),
     balance_(std::make_unique<WalletBalance>(ledger)),
     claim_(std::make_unique<WalletClaim>(ledger)),
-    uphold_(std::make_unique<braveledger_uphold::Uphold>(ledger)) {
+    uphold_(std::make_unique<uphold::Uphold>(ledger)) {
 }
 
 Wallet::~Wallet() = default;
@@ -67,10 +67,10 @@ void Wallet::RecoverWallet(
     ledger::ResultCallback callback) {
   recover_->Start(
       pass_phrase,
-      [this, callback](const ledger::Result result) {
-        if (result == ledger::Result::LEDGER_OK) {
+      [this, callback](const type::Result result) {
+        if (result == type::Result::LEDGER_OK) {
           ledger_->database()->DeleteAllBalanceReports(
-              [](const ledger::Result _) {});
+              [](const type::Result _) {});
           DisconnectAllWallets(callback);
           return;
         }
@@ -85,24 +85,24 @@ void Wallet::FetchBalance(ledger::FetchBalanceCallback callback) {
 void Wallet::GetExternalWallet(
     const std::string& wallet_type,
     ledger::ExternalWalletCallback callback) {
-  if (wallet_type == ledger::kWalletUphold) {
+  if (wallet_type == constant::kWalletUphold) {
     uphold_->GenerateExternalWallet(
-        [this, callback, wallet_type](const ledger::Result result) {
-          if (result != ledger::Result::LEDGER_OK &&
-              result != ledger::Result::CONTINUE) {
+        [this, callback, wallet_type](const type::Result result) {
+          if (result != type::Result::LEDGER_OK &&
+              result != type::Result::CONTINUE) {
             callback(result, nullptr);
             return;
           }
 
           auto wallets = ledger_->ledger_client()->GetExternalWallets();
           auto wallet = GetWallet(wallet_type, std::move(wallets));
-          callback(ledger::Result::LEDGER_OK, std::move(wallet));
+          callback(type::Result::LEDGER_OK, std::move(wallet));
         });
     return;
   }
 
   NOTREACHED();
-  callback(ledger::Result::LEDGER_ERROR, nullptr);
+  callback(type::Result::LEDGER_ERROR, nullptr);
 }
 
 void Wallet::ExternalWalletAuthorization(
@@ -113,17 +113,17 @@ void Wallet::ExternalWalletAuthorization(
 
   if (wallets.empty()) {
     BLOG(0, "No wallets");
-    callback(ledger::Result::LEDGER_ERROR, {});
+    callback(type::Result::LEDGER_ERROR, {});
     return;
   }
 
-  if (wallet_type == ledger::kWalletUphold) {
+  if (wallet_type == constant::kWalletUphold) {
     uphold_->WalletAuthorization(args, callback);
     return;
   }
 
   NOTREACHED();
-  callback(ledger::Result::LEDGER_ERROR, {});
+  callback(type::Result::LEDGER_ERROR, {});
 }
 
 void Wallet::DisconnectWallet(
@@ -133,7 +133,7 @@ void Wallet::DisconnectWallet(
 
   if (wallets.empty()) {
     BLOG(0, "No wallets");
-    callback(ledger::Result::LEDGER_ERROR);
+    callback(type::Result::LEDGER_ERROR);
     return;
   }
 
@@ -141,13 +141,13 @@ void Wallet::DisconnectWallet(
 
   if (!wallet_ptr) {
     BLOG(0, "Wallet is null");
-    callback(ledger::Result::LEDGER_ERROR);
+    callback(type::Result::LEDGER_ERROR);
     return;
   }
 
   if (!wallet_ptr->address.empty()) {
     ledger_->database()->SaveEventLog(
-        ledger::log::kWalletDisconnected,
+        log::kWalletDisconnected,
         static_cast<std::string>(wallet_type) + "/" +
             wallet_ptr->address.substr(0, 5));
   }
@@ -156,29 +156,29 @@ void Wallet::DisconnectWallet(
   ledger_->ledger_client()->SaveExternalWallet(
       wallet_type,
       std::move(wallet_ptr));
-  callback(ledger::Result::LEDGER_OK);
+  callback(type::Result::LEDGER_OK);
 }
 
 void Wallet::ClaimFunds(ledger::ResultCallback callback) {
   // Anonymous funds claim
-  claim_->Start([this, callback](const ledger::Result result) {
-    if (result != ledger::Result::LEDGER_OK &&
-        result != ledger::Result::ALREADY_EXISTS) {
+  claim_->Start([this, callback](const type::Result result) {
+    if (result != type::Result::LEDGER_OK &&
+        result != type::Result::ALREADY_EXISTS) {
       BLOG(0, "Claiming anon funds failed");
-      callback(ledger::Result::CONTINUE);
+      callback(type::Result::CONTINUE);
       return;
     }
 
     // tokens claim
     ledger_->promotion()->TransferTokens(
-        [callback](const ledger::Result result) {
-          if (result != ledger::Result::LEDGER_OK) {
+        [callback](const type::Result result) {
+          if (result != type::Result::LEDGER_OK) {
             BLOG(0, "Claiming tokens failed");
-            callback(ledger::Result::CONTINUE);
+            callback(type::Result::CONTINUE);
             return;
           }
 
-          callback(ledger::Result::LEDGER_OK);
+          callback(type::Result::LEDGER_OK);
         });
   });
 }
@@ -189,17 +189,17 @@ void Wallet::GetAnonWalletStatus(ledger::ResultCallback callback) {
   const uint64_t stamp = ledger_->state()->GetCreationStamp();
 
   if (!payment_id.empty() && stamp != 0) {
-    callback(ledger::Result::WALLET_CREATED);
+    callback(type::Result::WALLET_CREATED);
     return;
   }
 
   if (payment_id.empty() || passphrase.empty()) {
     BLOG(0, "Wallet is corrupted");
-    callback(ledger::Result::CORRUPTED_DATA);
+    callback(type::Result::CORRUPTED_DATA);
     return;
   }
 
-  callback(ledger::Result::LEDGER_OK);
+  callback(type::Result::LEDGER_OK);
 }
 
 void Wallet::DisconnectAllWallets(ledger::ResultCallback callback) {
@@ -207,7 +207,7 @@ void Wallet::DisconnectAllWallets(ledger::ResultCallback callback) {
 
   if (wallets.empty()) {
     BLOG(1, "No wallets");
-    callback(ledger::Result::LEDGER_OK);
+    callback(type::Result::LEDGER_OK);
     return;
   }
 
@@ -222,7 +222,7 @@ void Wallet::DisconnectAllWallets(ledger::ResultCallback callback) {
         std::move(wallet_new));
   }
 
-  callback(ledger::Result::LEDGER_OK);
+  callback(type::Result::LEDGER_OK);
 }
 
 }  // namespace wallet

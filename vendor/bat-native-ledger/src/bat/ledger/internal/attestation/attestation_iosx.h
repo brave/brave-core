@@ -13,16 +13,14 @@
 #include "bat/ledger/internal/attestation/attestation.h"
 #include "bat/ledger/internal/endpoint/promotion/promotion_server.h"
 
-namespace bat_ledger {
-class LedgerImpl;
-}
-
 namespace ledger {
+class LedgerImpl;
+
 namespace attestation {
 
 class AttestationIOS : public Attestation {
  public:
-  explicit AttestationIOS(bat_ledger::LedgerImpl* ledger);
+  explicit AttestationIOS(LedgerImpl* ledger);
   ~AttestationIOS() override;
 
   void Start(const std::string& payload, StartCallback callback) override;
@@ -35,19 +33,19 @@ class AttestationIOS : public Attestation {
   std::string ParseStartPayload(
       const std::string& response);
 
-  ledger::Result ParseClaimSolution(
+  type::Result ParseClaimSolution(
       const std::string& response,
       std::string* nonce,
       std::string* blob,
       std::string* signature);
 
   void OnStart(
-      const ledger::Result result,
+      const type::Result result,
       const std::string& nonce,
       StartCallback callback);
 
   void OnConfirm(
-      const ledger::Result result,
+      const type::Result result,
       ConfirmCallback callback);
 
   std::unique_ptr<endpoint::PromotionServer> promotion_server_;

@@ -3,7 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#include "bat/ledger/internal/common/brotli_helpers.h"
+#include "bat/ledger/internal/common/brotli_util.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
 // npm run test -- brave_unit_tests --filter='BraveLedgerBrotliHelpersTest.*'
@@ -27,7 +27,8 @@ constexpr char kUncompressed[] =
 
 }  // namespace
 
-namespace braveledger_helpers {
+namespace ledger {
+namespace util {
 
 class BraveLedgerBrotliHelpersTest : public testing::Test {
  protected:
@@ -68,4 +69,5 @@ TEST_F(BraveLedgerBrotliHelpersTest, TestDecodeWithBuffer) {
   EXPECT_FALSE(DecodeBrotliStringWithBuffer("not brotli", 16, &s));
 }
 
-}  // namespace braveledger_helpers
+}  // namespace util
+}  // namespace ledger

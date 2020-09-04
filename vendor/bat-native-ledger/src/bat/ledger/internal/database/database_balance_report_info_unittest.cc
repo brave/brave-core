@@ -18,7 +18,8 @@
 using ::testing::_;
 using ::testing::Invoke;
 
-namespace braveledger_database {
+namespace ledger {
+namespace database {
 
 class DatabaseBalanceReportTest : public ::testing::Test {
  private:
@@ -26,14 +27,14 @@ class DatabaseBalanceReportTest : public ::testing::Test {
 
  protected:
   std::unique_ptr<ledger::MockLedgerClient> mock_ledger_client_;
-  std::unique_ptr<bat_ledger::MockLedgerImpl> mock_ledger_impl_;
+  std::unique_ptr<ledger::MockLedgerImpl> mock_ledger_impl_;
   std::string execute_script_;
   std::unique_ptr<DatabaseBalanceReport> balance_report_;
 
   DatabaseBalanceReportTest() {
     mock_ledger_client_ = std::make_unique<ledger::MockLedgerClient>();
     mock_ledger_impl_ =
-        std::make_unique<bat_ledger::MockLedgerImpl>(mock_ledger_client_.get());
+        std::make_unique<ledger::MockLedgerImpl>(mock_ledger_client_.get());
     balance_report_ =
         std::make_unique<DatabaseBalanceReport>(mock_ledger_impl_.get());
   }
@@ -42,7 +43,7 @@ class DatabaseBalanceReportTest : public ::testing::Test {
 };
 
 TEST_F(DatabaseBalanceReportTest, InsertOrUpdateOk) {
-  auto info = ledger::BalanceReportInfo::New();
+  auto info = type::BalanceReportInfo::New();
   info->id = "2020_05";
   info->grants = 1.0;
   info->earning_from_ads = 1.0;
@@ -59,20 +60,20 @@ TEST_F(DatabaseBalanceReportTest, InsertOrUpdateOk) {
   ON_CALL(*mock_ledger_client_, RunDBTransaction(_, _))
       .WillByDefault(
         Invoke([&](
-            ledger::DBTransactionPtr transaction,
-            ledger::RunDBTransactionCallback callback) {
+            type::DBTransactionPtr transaction,
+            ledger::client::RunDBTransactionCallback callback) {
           ASSERT_TRUE(transaction);
           ASSERT_EQ(transaction->commands.size(), 1u);
           ASSERT_EQ(
               transaction->commands[0]->type,
-              ledger::DBCommand::Type::RUN);
+              type::DBCommand::Type::RUN);
           ASSERT_EQ(transaction->commands[0]->command, query);
           ASSERT_EQ(transaction->commands[0]->bindings.size(), 6u);
         }));
 
   balance_report_->InsertOrUpdate(
       std::move(info),
-      [](const ledger::Result){});
+      [](const type::Result){});
 }
 
 TEST_F(DatabaseBalanceReportTest, GetAllRecordsOk) {
@@ -86,19 +87,19 @@ TEST_F(DatabaseBalanceReportTest, GetAllRecordsOk) {
   ON_CALL(*mock_ledger_client_, RunDBTransaction(_, _))
       .WillByDefault(
         Invoke([&](
-            ledger::DBTransactionPtr transaction,
-            ledger::RunDBTransactionCallback callback) {
+            type::DBTransactionPtr transaction,
+            ledger::client::RunDBTransactionCallback callback) {
           ASSERT_TRUE(transaction);
           ASSERT_EQ(transaction->commands.size(), 1u);
           ASSERT_EQ(
               transaction->commands[0]->type,
-              ledger::DBCommand::Type::READ);
+              type::DBCommand::Type::READ);
           ASSERT_EQ(transaction->commands[0]->command, query);
           ASSERT_EQ(transaction->commands[0]->record_bindings.size(), 6u);
           ASSERT_EQ(transaction->commands[0]->bindings.size(), 0u);
         }));
 
-  balance_report_->GetAllRecords([](ledger::BalanceReportInfoList) {});
+  balance_report_->GetAllRecords([](type::BalanceReportInfoList) {});
 }
 
 TEST_F(DatabaseBalanceReportTest, GetRecordOk) {
@@ -113,22 +114,22 @@ TEST_F(DatabaseBalanceReportTest, GetRecordOk) {
   ON_CALL(*mock_ledger_client_, RunDBTransaction(_, _))
       .WillByDefault(
         Invoke([&](
-            ledger::DBTransactionPtr transaction,
-            ledger::RunDBTransactionCallback callback) {
+            type::DBTransactionPtr transaction,
+            ledger::client::RunDBTransactionCallback callback) {
           ASSERT_TRUE(transaction);
           ASSERT_EQ(transaction->commands.size(), 2u);
           ASSERT_EQ(
               transaction->commands[1]->type,
-              ledger::DBCommand::Type::READ);
+              type::DBCommand::Type::READ);
           ASSERT_EQ(transaction->commands[1]->command, query);
           ASSERT_EQ(transaction->commands[1]->record_bindings.size(), 6u);
           ASSERT_EQ(transaction->commands[1]->bindings.size(), 1u);
         }));
 
   balance_report_->GetRecord(
-      ledger::ActivityMonth::MAY,
+      type::ActivityMonth::MAY,
       2020,
-      [](ledger::Result, ledger::BalanceReportInfoPtr) {});
+      [](type::Result, type::BalanceReportInfoPtr) {});
 }
 
 TEST_F(DatabaseBalanceReportTest, DeleteAllRecordsOk) {
@@ -140,19 +141,20 @@ TEST_F(DatabaseBalanceReportTest, DeleteAllRecordsOk) {
   ON_CALL(*mock_ledger_client_, RunDBTransaction(_, _))
       .WillByDefault(
         Invoke([&](
-            ledger::DBTransactionPtr transaction,
-            ledger::RunDBTransactionCallback callback) {
+            type::DBTransactionPtr transaction,
+            ledger::client::RunDBTransactionCallback callback) {
           ASSERT_TRUE(transaction);
           ASSERT_EQ(transaction->commands.size(), 1u);
           ASSERT_EQ(
               transaction->commands[0]->type,
-              ledger::DBCommand::Type::EXECUTE);
+              type::DBCommand::Type::EXECUTE);
           ASSERT_EQ(transaction->commands[0]->command, query);
           ASSERT_EQ(transaction->commands[0]->record_bindings.size(), 0u);
           ASSERT_EQ(transaction->commands[0]->bindings.size(), 0u);
         }));
 
-  balance_report_->DeleteAllRecords([](ledger::Result) {});
+  balance_report_->DeleteAllRecords([](type::Result) {});
 }
 
-}  // namespace braveledger_database
+}  // namespace database
+}  // namespace ledger

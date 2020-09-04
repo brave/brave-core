@@ -11,18 +11,19 @@
 
 #include "bat/ledger/internal/database/database_table.h"
 
-namespace braveledger_database {
+namespace ledger {
+namespace database {
 
-using GetSKUOrderItemsCallback = std::function<void(ledger::SKUOrderItemList)>;
+using GetSKUOrderItemsCallback = std::function<void(type::SKUOrderItemList)>;
 
 class DatabaseSKUOrderItems: public DatabaseTable {
  public:
-  explicit DatabaseSKUOrderItems(bat_ledger::LedgerImpl* ledger);
+  explicit DatabaseSKUOrderItems(LedgerImpl* ledger);
   ~DatabaseSKUOrderItems() override;
 
   void InsertOrUpdateList(
-      ledger::DBTransaction* transaction,
-      ledger::SKUOrderItemList list);
+      type::DBTransaction* transaction,
+      type::SKUOrderItemList list);
 
   void GetRecordsByOrderId(
       const std::string& order_id,
@@ -30,10 +31,11 @@ class DatabaseSKUOrderItems: public DatabaseTable {
 
  private:
   void OnGetRecordsByOrderId(
-      ledger::DBCommandResponsePtr response,
+      type::DBCommandResponsePtr response,
       GetSKUOrderItemsCallback callback);
 };
 
-}  // namespace braveledger_database
+}  // namespace database
+}  // namespace ledger
 
 #endif  // BRAVELEDGER_DATABASE_DATABASE_SKU_ORDER_ITEMS_H_

@@ -32,24 +32,24 @@ class PostCredsTest : public testing::Test {
 
  protected:
   std::unique_ptr<ledger::MockLedgerClient> mock_ledger_client_;
-  std::unique_ptr<bat_ledger::MockLedgerImpl> mock_ledger_impl_;
+  std::unique_ptr<ledger::MockLedgerImpl> mock_ledger_impl_;
   std::unique_ptr<PostCreds> creds_;
 
   PostCredsTest() {
     mock_ledger_client_ = std::make_unique<ledger::MockLedgerClient>();
     mock_ledger_impl_ =
-        std::make_unique<bat_ledger::MockLedgerImpl>(mock_ledger_client_.get());
+        std::make_unique<ledger::MockLedgerImpl>(mock_ledger_client_.get());
     creds_ = std::make_unique<PostCreds>(mock_ledger_impl_.get());
   }
 
   void SetUp() override {
     const std::string payment_id = "this_is_id";
-    ON_CALL(*mock_ledger_client_, GetStringState(ledger::kStatePaymentId))
+    ON_CALL(*mock_ledger_client_, GetStringState(state::kPaymentId))
       .WillByDefault(testing::Return(payment_id));
 
     const std::string wallet_passphrase =
         "AN6DLuI2iZzzDxpzywf+IKmK1nzFRarNswbaIDI3pQg=";
-    ON_CALL(*mock_ledger_client_, GetStringState(ledger::kStateRecoverySeed))
+    ON_CALL(*mock_ledger_client_, GetStringState(state::kRecoverySeed))
       .WillByDefault(testing::Return(wallet_passphrase));
   }
 };
@@ -58,9 +58,9 @@ TEST_F(PostCredsTest, ServerOK) {
   ON_CALL(*mock_ledger_client_, LoadURL(_, _))
       .WillByDefault(
           Invoke([](
-              ledger::UrlRequestPtr request,
-              ledger::LoadURLCallback callback) {
-            ledger::UrlResponse response;
+              type::UrlRequestPtr request,
+              client::LoadURLCallback callback) {
+            type::UrlResponse response;
             response.status_code = 200;
             response.url = request->url;
             response.body = R"({
@@ -75,8 +75,8 @@ TEST_F(PostCredsTest, ServerOK) {
   creds_->Request(
       "ff50981d-47de-4210-848d-995e186901a1",
       std::move(creds),
-      [](const ledger::Result result, const std::string& claim_id) {
-        EXPECT_EQ(result, ledger::Result::LEDGER_OK);
+      [](const type::Result result, const std::string& claim_id) {
+        EXPECT_EQ(result, type::Result::LEDGER_OK);
         EXPECT_EQ(claim_id, "53714048-9675-419e-baa3-369d85a2facb");
       });
 }
@@ -85,9 +85,9 @@ TEST_F(PostCredsTest, ServerError400) {
   ON_CALL(*mock_ledger_client_, LoadURL(_, _))
       .WillByDefault(
           Invoke([](
-              ledger::UrlRequestPtr request,
-              ledger::LoadURLCallback callback) {
-            ledger::UrlResponse response;
+              type::UrlRequestPtr request,
+              client::LoadURLCallback callback) {
+            type::UrlResponse response;
             response.status_code = 400;
             response.url = request->url;
             response.body = "";
@@ -100,8 +100,8 @@ TEST_F(PostCredsTest, ServerError400) {
   creds_->Request(
       "ff50981d-47de-4210-848d-995e186901a1",
       std::move(creds),
-      [](const ledger::Result result, const std::string& claim_id) {
-        EXPECT_EQ(result, ledger::Result::LEDGER_ERROR);
+      [](const type::Result result, const std::string& claim_id) {
+        EXPECT_EQ(result, type::Result::LEDGER_ERROR);
       });
 }
 
@@ -109,9 +109,9 @@ TEST_F(PostCredsTest, ServerError403) {
   ON_CALL(*mock_ledger_client_, LoadURL(_, _))
       .WillByDefault(
           Invoke([](
-              ledger::UrlRequestPtr request,
-              ledger::LoadURLCallback callback) {
-            ledger::UrlResponse response;
+              type::UrlRequestPtr request,
+              client::LoadURLCallback callback) {
+            type::UrlResponse response;
             response.status_code = 403;
             response.url = request->url;
             response.body = "";
@@ -124,8 +124,8 @@ TEST_F(PostCredsTest, ServerError403) {
   creds_->Request(
       "ff50981d-47de-4210-848d-995e186901a1",
       std::move(creds),
-      [](const ledger::Result result, const std::string& claim_id) {
-        EXPECT_EQ(result, ledger::Result::LEDGER_ERROR);
+      [](const type::Result result, const std::string& claim_id) {
+        EXPECT_EQ(result, type::Result::LEDGER_ERROR);
       });
 }
 
@@ -133,9 +133,9 @@ TEST_F(PostCredsTest, ServerError409) {
   ON_CALL(*mock_ledger_client_, LoadURL(_, _))
       .WillByDefault(
           Invoke([](
-              ledger::UrlRequestPtr request,
-              ledger::LoadURLCallback callback) {
-            ledger::UrlResponse response;
+              type::UrlRequestPtr request,
+              client::LoadURLCallback callback) {
+            type::UrlResponse response;
             response.status_code = 409;
             response.url = request->url;
             response.body = "";
@@ -148,8 +148,8 @@ TEST_F(PostCredsTest, ServerError409) {
   creds_->Request(
       "ff50981d-47de-4210-848d-995e186901a1",
       std::move(creds),
-      [](const ledger::Result result, const std::string& claim_id) {
-        EXPECT_EQ(result, ledger::Result::LEDGER_ERROR);
+      [](const type::Result result, const std::string& claim_id) {
+        EXPECT_EQ(result, type::Result::LEDGER_ERROR);
       });
 }
 
@@ -157,9 +157,9 @@ TEST_F(PostCredsTest, ServerError410) {
   ON_CALL(*mock_ledger_client_, LoadURL(_, _))
       .WillByDefault(
           Invoke([](
-              ledger::UrlRequestPtr request,
-              ledger::LoadURLCallback callback) {
-            ledger::UrlResponse response;
+              type::UrlRequestPtr request,
+              client::LoadURLCallback callback) {
+            type::UrlResponse response;
             response.status_code = 410;
             response.url = request->url;
             response.body = "";
@@ -172,8 +172,8 @@ TEST_F(PostCredsTest, ServerError410) {
   creds_->Request(
       "ff50981d-47de-4210-848d-995e186901a1",
       std::move(creds),
-      [](const ledger::Result result, const std::string& claim_id) {
-        EXPECT_EQ(result, ledger::Result::NOT_FOUND);
+      [](const type::Result result, const std::string& claim_id) {
+        EXPECT_EQ(result, type::Result::NOT_FOUND);
       });
 }
 
@@ -181,9 +181,9 @@ TEST_F(PostCredsTest, ServerError500) {
   ON_CALL(*mock_ledger_client_, LoadURL(_, _))
       .WillByDefault(
           Invoke([](
-              ledger::UrlRequestPtr request,
-              ledger::LoadURLCallback callback) {
-            ledger::UrlResponse response;
+              type::UrlRequestPtr request,
+              client::LoadURLCallback callback) {
+            type::UrlResponse response;
             response.status_code = 500;
             response.url = request->url;
             response.body = "";
@@ -196,8 +196,8 @@ TEST_F(PostCredsTest, ServerError500) {
   creds_->Request(
       "ff50981d-47de-4210-848d-995e186901a1",
       std::move(creds),
-      [](const ledger::Result result, const std::string& claim_id) {
-        EXPECT_EQ(result, ledger::Result::LEDGER_ERROR);
+      [](const type::Result result, const std::string& claim_id) {
+        EXPECT_EQ(result, type::Result::LEDGER_ERROR);
       });
 }
 
@@ -205,9 +205,9 @@ TEST_F(PostCredsTest, ServerErrorRandom) {
   ON_CALL(*mock_ledger_client_, LoadURL(_, _))
       .WillByDefault(
           Invoke([](
-              ledger::UrlRequestPtr request,
-              ledger::LoadURLCallback callback) {
-            ledger::UrlResponse response;
+              type::UrlRequestPtr request,
+              client::LoadURLCallback callback) {
+            type::UrlResponse response;
             response.status_code = 453;
             response.url = request->url;
             response.body = "";
@@ -220,8 +220,8 @@ TEST_F(PostCredsTest, ServerErrorRandom) {
   creds_->Request(
       "ff50981d-47de-4210-848d-995e186901a1",
       std::move(creds),
-      [](const ledger::Result result, const std::string& claim_id) {
-        EXPECT_EQ(result, ledger::Result::LEDGER_ERROR);
+      [](const type::Result result, const std::string& claim_id) {
+        EXPECT_EQ(result, type::Result::LEDGER_ERROR);
       });
 }
 

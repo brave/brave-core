@@ -13,14 +13,13 @@
 
 #include "bat/ledger/ledger.h"
 
-namespace bat_ledger {
+namespace ledger {
 class LedgerImpl;
-}
 
-namespace braveledger_database {
+namespace database {
 
 using ContributionPublisherInfoPair =
-    std::pair<std::string, ledger::PublisherInfoPtr>;
+    std::pair<std::string, type::PublisherInfoPtr>;
 
 using ServerPublisherLinksCallback =
     std::function<void(const std::map<std::string, std::string>& links)>;
@@ -29,23 +28,24 @@ using ServerPublisherAmountsCallback =
     std::function<void(const std::vector<double>& amounts)>;
 
 using ContributionQueuePublishersListCallback =
-    std::function<void(ledger::ContributionQueuePublisherList)>;
+    std::function<void(type::ContributionQueuePublisherList)>;
 
 using ContributionPublisherListCallback =
-    std::function<void(ledger::ContributionPublisherList)>;
+    std::function<void(type::ContributionPublisherList)>;
 
 using ContributionPublisherPairListCallback =
     std::function<void(std::vector<ContributionPublisherInfoPair>)>;
 
 class DatabaseTable {
  public:
-  explicit DatabaseTable(bat_ledger::LedgerImpl* ledger);
+  explicit DatabaseTable(LedgerImpl* ledger);
   virtual ~DatabaseTable();
 
  protected:
-  bat_ledger::LedgerImpl* ledger_;  // NOT OWNED
+  LedgerImpl* ledger_;  // NOT OWNED
 };
 
-}  // namespace braveledger_database
+}  // namespace database
+}  // namespace ledger
 
 #endif  // BRAVELEDGER_DATABASE_DATABASE_TABLE_H_

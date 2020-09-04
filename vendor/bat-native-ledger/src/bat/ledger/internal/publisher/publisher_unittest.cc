@@ -20,17 +20,18 @@ using ::testing::Invoke;
 
 // npm run test -- brave_unit_tests --filter=PublisherTest.*
 
-namespace braveledger_publisher {
+namespace ledger {
+namespace publisher {
 
 class PublisherTest : public testing::Test {
  private:
   base::test::TaskEnvironment scoped_task_environment_;
 
  protected:
-  void CreatePublisherInfoList(ledger::PublisherInfoList* list) {
+  void CreatePublisherInfoList(type::PublisherInfoList* list) {
     double prev_score;
     for (int ix = 0; ix < 50; ix++) {
-      ledger::PublisherInfoPtr info = ledger::PublisherInfo::New();
+      type::PublisherInfoPtr info = type::PublisherInfo::New();
       info->id = "example" + std::to_string(ix) + ".com";
       info->duration = 50;
       if (ix == 0) {
@@ -46,16 +47,16 @@ class PublisherTest : public testing::Test {
   }
 
   std::unique_ptr<ledger::MockLedgerClient> mock_ledger_client_;
-  std::unique_ptr<bat_ledger::MockLedgerImpl> mock_ledger_impl_;
+  std::unique_ptr<ledger::MockLedgerImpl> mock_ledger_impl_;
   std::unique_ptr<Publisher> publisher_;
-  std::unique_ptr<braveledger_database::MockDatabase> mock_database_;
+  std::unique_ptr<database::MockDatabase> mock_database_;
 
   PublisherTest() {
     mock_ledger_client_ = std::make_unique<ledger::MockLedgerClient>();
     mock_ledger_impl_ =
-        std::make_unique<bat_ledger::MockLedgerImpl>(mock_ledger_client_.get());
+        std::make_unique<ledger::MockLedgerImpl>(mock_ledger_client_.get());
     publisher_ = std::make_unique<Publisher>(mock_ledger_impl_.get());
-    mock_database_ = std::make_unique<braveledger_database::MockDatabase>(
+    mock_database_ = std::make_unique<database::MockDatabase>(
         mock_ledger_impl_.get());
   }
 
@@ -63,13 +64,13 @@ class PublisherTest : public testing::Test {
     ON_CALL(*mock_ledger_impl_, database())
       .WillByDefault(testing::Return(mock_database_.get()));
 
-    ON_CALL(*mock_ledger_client_, GetDoubleState(ledger::kStateScoreA))
+    ON_CALL(*mock_ledger_client_, GetDoubleState(state::kScoreA))
       .WillByDefault(
           Invoke([this](const std::string& key) {
             return a_;
           }));
 
-    ON_CALL(*mock_ledger_client_, GetDoubleState(ledger::kStateScoreB))
+    ON_CALL(*mock_ledger_client_, GetDoubleState(state::kScoreB))
       .WillByDefault(
           Invoke([this](const std::string& key) {
             return b_;
@@ -80,12 +81,12 @@ class PublisherTest : public testing::Test {
         Invoke([this](
             const std::string& key,
             double value) {
-          if (key == ledger::kStateScoreA) {
+          if (key == state::kScoreA) {
             a_ = value;
             return;
           }
 
-          if (key == ledger::kStateScoreB) {
+          if (key == state::kScoreB) {
             b_ = value;
             return;
           }
@@ -148,27 +149,27 @@ TEST_F(PublisherTest, concaveScore) {
 
 TEST_F(PublisherTest, synopsisNormalizerInternal) {
   // create test PublisherInfo list
-  ledger::PublisherInfoList new_list;
-  ledger::PublisherInfoList list;
+  type::PublisherInfoList new_list;
+  type::PublisherInfoList list;
   CreatePublisherInfoList(&list);
   publisher_->synopsisNormalizerInternal(
       &new_list, &list, 0);
 
   // simulate exclude and re-normalize
   new_list.erase(new_list.begin() + 3);
-  ledger::PublisherInfoList new_list2;
+  type::PublisherInfoList new_list2;
   publisher_->synopsisNormalizerInternal(
       &new_list2, &new_list, 0);
   new_list2.erase(new_list2.begin() + 4);
-  ledger::PublisherInfoList new_list3;
+  type::PublisherInfoList new_list3;
   publisher_->synopsisNormalizerInternal(
       &new_list3, &new_list2, 0);
   new_list3.erase(new_list3.begin() + 5);
-  ledger::PublisherInfoList new_list4;
+  type::PublisherInfoList new_list4;
   publisher_->synopsisNormalizerInternal(
       &new_list4, &new_list3, 0);
   new_list4.erase(new_list4.begin() + 6);
-  ledger::PublisherInfoList new_list5;
+  type::PublisherInfoList new_list5;
   publisher_->synopsisNormalizerInternal(
       &new_list5, &new_list4, 0);
   for (const auto& element : new_list5) {
@@ -177,4 +178,5 @@ TEST_F(PublisherTest, synopsisNormalizerInternal) {
   }
 }
 
-}  // namespace braveledger_publisher
+}  // namespace publisher
+}  // namespace ledger

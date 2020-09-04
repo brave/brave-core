@@ -37,19 +37,17 @@
 //   "code": 401
 // }
 
-namespace bat_ledger {
-class LedgerImpl;
-}
-
 namespace ledger {
+class LedgerImpl;
+
 namespace endpoint {
 namespace promotion {
 
-using PutCaptchaCallback = std::function<void(const ledger::Result result)>;
+using PutCaptchaCallback = std::function<void(const type::Result result)>;
 
 class PutCaptcha {
  public:
-  explicit PutCaptcha(bat_ledger::LedgerImpl* ledger);
+  explicit PutCaptcha(LedgerImpl* ledger);
   ~PutCaptcha();
 
   void Request(
@@ -63,13 +61,13 @@ class PutCaptcha {
 
   std::string GeneratePayload(const int x, const int y);
 
-  ledger::Result CheckStatusCode(const int status_code);
+  type::Result CheckStatusCode(const int status_code);
 
   void OnRequest(
-      const ledger::UrlResponse& response,
+      const type::UrlResponse& response,
       PutCaptchaCallback callback);
 
-  bat_ledger::LedgerImpl* ledger_;  // NOT OWNED
+  LedgerImpl* ledger_;  // NOT OWNED
 };
 
 }  // namespace promotion

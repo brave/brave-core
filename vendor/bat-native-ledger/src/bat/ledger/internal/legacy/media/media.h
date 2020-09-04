@@ -18,7 +18,7 @@
 #include "bat/ledger/internal/legacy/media/youtube.h"
 #include "bat/ledger/ledger.h"
 
-namespace bat_ledger {
+namespace ledger {
 class LedgerImpl;
 }
 
@@ -26,7 +26,7 @@ namespace braveledger_media {
 
 class Media {
  public:
-  explicit Media(bat_ledger::LedgerImpl* ledger);
+  explicit Media(ledger::LedgerImpl* ledger);
 
   ~Media();
 
@@ -36,10 +36,10 @@ class Media {
 
   void ProcessMedia(const std::map<std::string, std::string>& parts,
                     const std::string& type,
-                    ledger::VisitDataPtr visit_data);
+                    ledger::type::VisitDataPtr visit_data);
 
   void GetMediaActivityFromUrl(uint64_t windowId,
-                               ledger::VisitDataPtr visit_data,
+                               ledger::type::VisitDataPtr visit_data,
                                const std::string& type,
                                const std::string& publisher_blob);
 
@@ -52,11 +52,11 @@ class Media {
       const std::map<std::string, std::string>& args);
 
  private:
-  void OnMediaActivityError(ledger::VisitDataPtr visit_data,
+  void OnMediaActivityError(ledger::type::VisitDataPtr visit_data,
                           const std::string& type,
                           uint64_t windowId);
 
-  bat_ledger::LedgerImpl* ledger_;  // NOT OWNED
+  ledger::LedgerImpl* ledger_;  // NOT OWNED
   std::unique_ptr<braveledger_media::YouTube> media_youtube_;
   std::unique_ptr<braveledger_media::Twitch> media_twitch_;
   std::unique_ptr<braveledger_media::Twitter> media_twitter_;

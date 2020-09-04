@@ -10,17 +10,16 @@
 #include <string>
 #include <vector>
 
-namespace bat_ledger {
+namespace ledger {
 class LedgerImpl;
-}
 
-namespace braveledger_state {
+namespace state {
 
 class StateMigration;
 
 class State {
  public:
-  explicit State(bat_ledger::LedgerImpl* ledger);
+  explicit State(LedgerImpl* ledger);
   ~State();
 
   void Initialize(ledger::ResultCallback callback);
@@ -80,15 +79,15 @@ class State {
   void SetPaymentId(const std::string& id);
 
   bool GetInlineTippingPlatformEnabled(
-      const ledger::InlineTipsPlatforms platform);
+      const type::InlineTipsPlatforms platform);
 
   void SetInlineTippingPlatformEnabled(
-      const ledger::InlineTipsPlatforms platform,
+      const type::InlineTipsPlatforms platform,
       const bool enabled);
 
-  void SetRewardsParameters(const ledger::RewardsParameters& parameters);
+  void SetRewardsParameters(const type::RewardsParameters& parameters);
 
-  ledger::RewardsParametersPtr GetRewardsParameters();
+  type::RewardsParametersPtr GetRewardsParameters();
 
   double GetRate();
 
@@ -125,10 +124,11 @@ class State {
   bool GetAnonTransferChecked();
 
  private:
-  bat_ledger::LedgerImpl* ledger_;  // NOT OWNED
+  LedgerImpl* ledger_;  // NOT OWNED
   std::unique_ptr<StateMigration> migration_;
 };
 
-}  // namespace braveledger_state
+}  // namespace state
+}  // namespace ledger
 
 #endif  // BRAVELEDGER_BAT_STATE_STATE_H_

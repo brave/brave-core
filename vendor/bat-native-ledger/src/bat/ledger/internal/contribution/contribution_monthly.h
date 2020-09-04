@@ -8,15 +8,14 @@
 
 #include "bat/ledger/ledger.h"
 
-namespace bat_ledger {
+namespace ledger {
 class LedgerImpl;
-}
 
-namespace braveledger_contribution {
+namespace contribution {
 
 class ContributionMonthly {
  public:
-  explicit ContributionMonthly(bat_ledger::LedgerImpl* ledger);
+  explicit ContributionMonthly(LedgerImpl* ledger);
 
   ~ContributionMonthly();
 
@@ -27,27 +26,28 @@ class ContributionMonthly {
 
  private:
   void PrepareTipList(
-      ledger::PublisherInfoList list,
+      type::PublisherInfoList list,
       ledger::ResultCallback callback);
 
   void GetVerifiedTipList(
-      const ledger::PublisherInfoList& list,
-      ledger::PublisherInfoList* verified_list);
+      const type::PublisherInfoList& list,
+      type::PublisherInfoList* verified_list);
 
-  void OnSavePendingContribution(const ledger::Result result);
+  void OnSavePendingContribution(const type::Result result);
 
   void OnSufficientBalanceWallet(
-      const ledger::Result result,
-      ledger::BalancePtr info,
+      const type::Result result,
+      type::BalancePtr info,
       ledger::HasSufficientBalanceToReconcileCallback callback);
 
   void OnHasSufficientBalance(
-      const ledger::PublisherInfoList& publisher_list,
+      const type::PublisherInfoList& publisher_list,
       const double balance,
       ledger::HasSufficientBalanceToReconcileCallback callback);
 
-  bat_ledger::LedgerImpl* ledger_;  // NOT OWNED
+  LedgerImpl* ledger_;  // NOT OWNED
 };
 
-}  // namespace braveledger_contribution
+}  // namespace contribution
+}  // namespace ledger
 #endif  // BRAVELEDGER_CONTRIBUTION_CONTRIBUTION_MONTHLY_H_

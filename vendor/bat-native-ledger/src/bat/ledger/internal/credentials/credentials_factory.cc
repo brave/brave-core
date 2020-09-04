@@ -8,26 +8,28 @@
 #include "bat/ledger/internal/credentials/credentials_sku.h"
 #include "bat/ledger/internal/ledger_impl.h"
 
-namespace braveledger_credentials {
+namespace ledger {
+namespace credential {
 
 std::unique_ptr<Credentials> CredentialsFactory::Create(
-    bat_ledger::LedgerImpl* ledger,
-    const ledger::CredsBatchType trigger_type) {
+    LedgerImpl* ledger,
+    const type::CredsBatchType trigger_type) {
   DCHECK(ledger);
 
   switch (trigger_type) {
-    case ledger::CredsBatchType::NONE: {
+    case type::CredsBatchType::NONE: {
       return nullptr;
     }
 
-    case ledger::CredsBatchType::PROMOTION: {
+    case type::CredsBatchType::PROMOTION: {
       return std::make_unique<CredentialsPromotion>(ledger);
     }
 
-    case ledger::CredsBatchType::SKU: {
+    case type::CredsBatchType::SKU: {
       return std::make_unique<CredentialsSKU>(ledger);
     }
   }
 }
 
-}  // namespace braveledger_credentials
+}  // namespace credential
+}  // namespace ledger

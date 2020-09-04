@@ -12,14 +12,15 @@
 
 #include "wrapper.hpp"  // NOLINT
 
+namespace ledger {
+namespace credential {
+
 using challenge_bypass_ristretto::BatchDLEQProof;
 using challenge_bypass_ristretto::PublicKey;
 using challenge_bypass_ristretto::SignedToken;
 using challenge_bypass_ristretto::UnblindedToken;
 using challenge_bypass_ristretto::VerificationKey;
 using challenge_bypass_ristretto::VerificationSignature;
-
-namespace braveledger_credentials {
 
 std::vector<Token> GenerateCreds(const int count) {
   DCHECK_GT(count, 0);
@@ -85,7 +86,7 @@ std::unique_ptr<base::ListValue> ParseStringToBaseList(
 }
 
 bool UnBlindCreds(
-    const ledger::CredsBatch& creds_batch,
+    const type::CredsBatch& creds_batch,
     std::vector<std::string>* unblinded_encoded_creds,
     std::string* error) {
   DCHECK(error && unblinded_encoded_creds);
@@ -169,7 +170,7 @@ bool UnBlindCreds(
 }
 
 bool UnBlindCredsMock(
-    const ledger::CredsBatch& creds,
+    const type::CredsBatch& creds,
     std::vector<std::string>* unblinded_encoded_creds) {
   DCHECK(unblinded_encoded_creds);
 
@@ -182,28 +183,28 @@ bool UnBlindCredsMock(
   return true;
 }
 
-std::string ConvertRewardTypeToString(const ledger::RewardsType type) {
+std::string ConvertRewardTypeToString(const type::RewardsType type) {
   switch (type) {
-    case ledger::RewardsType::AUTO_CONTRIBUTE: {
+    case type::RewardsType::AUTO_CONTRIBUTE: {
       return "auto-contribute";
     }
-    case ledger::RewardsType::ONE_TIME_TIP: {
+    case type::RewardsType::ONE_TIME_TIP: {
       return "oneoff-tip";
     }
-    case ledger::RewardsType::RECURRING_TIP: {
+    case type::RewardsType::RECURRING_TIP: {
       return "recurring-tip";
     }
-    case ledger::RewardsType::PAYMENT: {
+    case type::RewardsType::PAYMENT: {
       return "payment";
     }
-    case ledger::RewardsType::TRANSFER: {
+    case type::RewardsType::TRANSFER: {
       return "";
     }
   }
 }
 
 void GenerateCredentials(
-    const std::vector<ledger::UnblindedToken>& token_list,
+    const std::vector<type::UnblindedToken>& token_list,
     const std::string& body,
     base::Value* credentials) {
   DCHECK(credentials);
@@ -272,4 +273,5 @@ bool GenerateSuggestionMock(
   return true;
 }
 
-}  // namespace braveledger_credentials
+}  // namespace credential
+}  // namespace ledger

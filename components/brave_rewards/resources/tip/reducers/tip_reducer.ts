@@ -105,7 +105,7 @@ const publishersReducer: Reducer<RewardsTip.State> = (state: RewardsTip.State = 
       break
     case types.ON_BALANCE: {
       state = { ...state }
-      // on ledger::Result::LEDGER_OK
+      // on ledger::type::Result::LEDGER_OK
       if (payload.status !== 1) {
         state.balance = payload.balance
       }

@@ -13,115 +13,115 @@
 #include "bat/ledger/internal/credentials/credentials_factory.h"
 #include "bat/ledger/internal/sku/sku_factory.h"
 
-namespace bat_ledger {
+namespace ledger {
 class LedgerImpl;
-}
 
-namespace braveledger_contribution {
+namespace contribution {
 
 class ContributionSKU {
  public:
-  explicit ContributionSKU(bat_ledger::LedgerImpl* ledger);
+  explicit ContributionSKU(LedgerImpl* ledger);
   ~ContributionSKU();
 
   void AutoContribution(
       const std::string& contribution_id,
-      ledger::ExternalWalletPtr wallet,
+      type::ExternalWalletPtr wallet,
       ledger::ResultCallback callback);
 
   void AnonUserFunds(
       const std::string& contribution_id,
-      ledger::ExternalWalletPtr wallet,
+      type::ExternalWalletPtr wallet,
       ledger::ResultCallback callback);
 
   void Merchant(
-      const ledger::SKUTransaction& transaction,
-      ledger::TransactionCallback callback);
+      const type::SKUTransaction& transaction,
+      client::TransactionCallback callback);
 
   void Retry(
-      const ledger::ContributionInfoPtr contribution,
+      const type::ContributionInfoPtr contribution,
       ledger::ResultCallback callback);
 
  private:
   void Start(
       const std::string& contribution_id,
-      const ledger::SKUOrderItem& item,
-      ledger::ExternalWalletPtr wallet,
+      const type::SKUOrderItem& item,
+      type::ExternalWalletPtr wallet,
       ledger::ResultCallback callback);
 
   void GetContributionInfo(
-      ledger::ContributionInfoPtr contribution,
-      const ledger::SKUOrderItem& item,
-      const ledger::ExternalWallet& wallet,
+      type::ContributionInfoPtr contribution,
+      const type::SKUOrderItem& item,
+      const type::ExternalWallet& wallet,
       ledger::ResultCallback callback);
 
   void GetOrder(
-      const ledger::Result result,
+      const type::Result result,
       const std::string& order_id,
       const std::string& contribution_id,
       ledger::ResultCallback callback);
 
   void OnGetOrder(
-      ledger::SKUOrderPtr order,
+      type::SKUOrderPtr order,
       const std::string& contribution_id,
       ledger::ResultCallback callback);
 
   void TransactionStepSaved(
-      const ledger::Result result,
-      std::shared_ptr<ledger::SKUOrderPtr> shared_order,
+      const type::Result result,
+      std::shared_ptr<type::SKUOrderPtr> shared_order,
       ledger::ResultCallback callback);
 
   void Completed(
-      const ledger::Result result,
+      const type::Result result,
       const std::string& contribution_id,
-      const ledger::RewardsType type,
+      const type::RewardsType type,
       ledger::ResultCallback callback);
 
   void CredsStepSaved(
-      const ledger::Result result,
+      const type::Result result,
       const std::string& contribution_id,
       ledger::ResultCallback callback);
 
   void GetUnblindedTokens(
-      ledger::UnblindedTokenList list,
-      const ledger::SKUTransaction& transaction,
-      ledger::TransactionCallback callback);
+      type::UnblindedTokenList list,
+      const type::SKUTransaction& transaction,
+      client::TransactionCallback callback);
 
   void GetOrderMerchant(
-      ledger::SKUOrderPtr order,
-      const braveledger_credentials::CredentialsRedeem& redeem,
-      ledger::TransactionCallback callback);
+      type::SKUOrderPtr order,
+      const credential::CredentialsRedeem& redeem,
+      client::TransactionCallback callback);
 
   void OnRedeemTokens(
-      const ledger::Result result,
-      ledger::TransactionCallback callback);
+      const type::Result result,
+      client::TransactionCallback callback);
 
   void OnOrder(
-      ledger::SKUOrderPtr order,
-      std::shared_ptr<ledger::ContributionInfoPtr> shared_contribution,
+      type::SKUOrderPtr order,
+      std::shared_ptr<type::ContributionInfoPtr> shared_contribution,
       ledger::ResultCallback callback);
 
   void RetryStartStep(
-      ledger::ContributionInfoPtr contribution,
-      ledger::SKUOrderPtr order,
+      type::ContributionInfoPtr contribution,
+      type::SKUOrderPtr order,
       ledger::ResultCallback callback);
 
   void RetryStartStepExternalWallet(
-      const ledger::Result result,
-      ledger::ExternalWalletPtr wallet,
+      const type::Result result,
+      type::ExternalWalletPtr wallet,
       const std::string& order_id,
       const std::string& contribution_id,
       ledger::ResultCallback callback);
 
   void RetryExternalTransactionStep(
-      ledger::ContributionInfoPtr contribution,
-      ledger::SKUOrderPtr order,
+      type::ContributionInfoPtr contribution,
+      type::SKUOrderPtr order,
       ledger::ResultCallback callback);
 
-  bat_ledger::LedgerImpl* ledger_;  // NOT OWNED
-  std::unique_ptr<braveledger_credentials::Credentials> credentials_;
-  std::unique_ptr<braveledger_sku::SKU> sku_;
+  LedgerImpl* ledger_;  // NOT OWNED
+  std::unique_ptr<credential::Credentials> credentials_;
+  std::unique_ptr<sku::SKU> sku_;
 };
 
-}  // namespace braveledger_contribution
+}  // namespace contribution
+}  // namespace ledger
 #endif  // BRAVELEDGER_CONTRIBUTION_CONTRIBUTION_SKU_H_

@@ -16,7 +16,7 @@
 #include "bat/ledger/internal/legacy/media/helper.h"
 #include "bat/ledger/ledger.h"
 
-namespace bat_ledger {
+namespace ledger {
 class LedgerImpl;
 }
 
@@ -24,7 +24,7 @@ namespace braveledger_media {
 
 class Vimeo {
  public:
-  explicit Vimeo(bat_ledger::LedgerImpl* ledger);
+  explicit Vimeo(ledger::LedgerImpl* ledger);
 
   ~Vimeo();
 
@@ -33,7 +33,7 @@ class Vimeo {
   static std::string GetLinkType(const std::string& url);
 
   void ProcessActivityFromUrl(uint64_t window_id,
-                              const ledger::VisitData& visit_data);
+                              const ledger::type::VisitData& visit_data);
 
  private:
   static std::string GetVideoUrl(const std::string& video_id);
@@ -53,8 +53,8 @@ class Vimeo {
 
   static bool AllowedEvent(const std::string& event);
 
-  static uint64_t GetDuration(const ledger::MediaEventInfo& old_event,
-                              const ledger::MediaEventInfo& new_event);
+  static uint64_t GetDuration(const ledger::type::MediaEventInfo& old_event,
+                              const ledger::type::MediaEventInfo& new_event);
 
   static bool IsExcludedPath(const std::string& path);
 
@@ -66,27 +66,27 @@ class Vimeo {
 
   void FetchDataFromUrl(
     const std::string& url,
-    ledger::LoadURLCallback callback);
+    ledger::client::LoadURLCallback callback);
 
   void OnMediaActivityError(uint64_t window_id = 0);
 
   void OnEmbedResponse(
-    const ledger::VisitData& visit_data,
+    const ledger::type::VisitData& visit_data,
     const uint64_t window_id,
-    const ledger::UrlResponse& response);
+    const ledger::type::UrlResponse& response);
 
   void OnPublisherPage(
     const std::string& media_key,
     const std::string& publisher_url,
     const std::string& publisher_name,
-    const ledger::VisitData& visit_data,
+    const ledger::type::VisitData& visit_data,
     const uint64_t window_id,
-    const ledger::UrlResponse& response);
+    const ledger::type::UrlResponse& response);
 
   void OnUnknownPage(
-    const ledger::VisitData& visit_data,
+    const ledger::type::VisitData& visit_data,
     const uint64_t window_id,
-    const ledger::UrlResponse& response);
+    const ledger::type::UrlResponse& response);
 
   void OnPublisherPanleInfo(
     const std::string& media_key,
@@ -94,8 +94,8 @@ class Vimeo {
     const std::string& publisher_url,
     const std::string& publisher_name,
     const std::string& user_id,
-    ledger::Result result,
-    ledger::PublisherInfoPtr info);
+    ledger::type::Result result,
+    ledger::type::PublisherInfoPtr info);
 
   void GetPublisherPanleInfo(
     const std::string& media_key,
@@ -108,14 +108,14 @@ class Vimeo {
   void OnMediaPublisherInfo(
     const std::string& media_id,
     const std::string& media_key,
-    const ledger::MediaEventInfo& event_info,
-    ledger::Result result,
-    ledger::PublisherInfoPtr publisher_info);
+    const ledger::type::MediaEventInfo& event_info,
+    ledger::type::Result result,
+    ledger::type::PublisherInfoPtr publisher_info);
 
   void OnPublisherVideoPage(
     const std::string& media_key,
-    ledger::MediaEventInfo event_info,
-    const ledger::UrlResponse& response);
+    ledger::type::MediaEventInfo event_info,
+    const ledger::type::UrlResponse& response);
 
   void SavePublisherInfo(
     const std::string& media_key,
@@ -127,8 +127,8 @@ class Vimeo {
     const std::string& publisher_key = "",
     const std::string& publisher_favicon = "");
 
-  bat_ledger::LedgerImpl* ledger_;  // NOT OWNED
-  std::map<std::string, ledger::MediaEventInfo> events;
+  ledger::LedgerImpl* ledger_;  // NOT OWNED
+  std::map<std::string, ledger::type::MediaEventInfo> events;
 
   // For testing purposes
   friend class VimeoTest;

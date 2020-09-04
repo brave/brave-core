@@ -18,18 +18,19 @@ const char kTableName[] = "server_publisher_links";
 
 }  // namespace
 
-namespace braveledger_database {
+namespace ledger {
+namespace database {
 
 DatabaseServerPublisherLinks::DatabaseServerPublisherLinks(
-    bat_ledger::LedgerImpl* ledger) :
+    LedgerImpl* ledger) :
     DatabaseTable(ledger) {
 }
 
 DatabaseServerPublisherLinks::~DatabaseServerPublisherLinks() = default;
 
 void DatabaseServerPublisherLinks::InsertOrUpdate(
-    ledger::DBTransaction* transaction,
-    const ledger::ServerPublisherInfo& server_info) {
+    type::DBTransaction* transaction,
+    const type::ServerPublisherInfo& server_info) {
   DCHECK(transaction && !server_info.publisher_key.empty());
 
   if (!server_info.banner || server_info.banner->links.empty()) {
@@ -55,8 +56,8 @@ void DatabaseServerPublisherLinks::InsertOrUpdate(
   // Remove trailing comma
   value_list.pop_back();
 
-  auto command = ledger::DBCommand::New();
-  command->type = ledger::DBCommand::Type::RUN;
+  auto command = type::DBCommand::New();
+  command->type = type::DBCommand::Type::RUN;
   command->command = base::StringPrintf(
       "INSERT OR REPLACE INTO %s VALUES %s",
       kTableName,
@@ -66,15 +67,15 @@ void DatabaseServerPublisherLinks::InsertOrUpdate(
 }
 
 void DatabaseServerPublisherLinks::DeleteRecords(
-    ledger::DBTransaction* transaction,
+    type::DBTransaction* transaction,
     const std::string& publisher_key_list) {
   DCHECK(transaction);
   if (publisher_key_list.empty()) {
     return;
   }
 
-  auto command = ledger::DBCommand::New();
-  command->type = ledger::DBCommand::Type::RUN;
+  auto command = type::DBCommand::New();
+  command->type = type::DBCommand::Type::RUN;
   command->command = base::StringPrintf(
       "DELETE FROM %s WHERE publisher_key IN (%s)",
       kTableName,
@@ -92,20 +93,20 @@ void DatabaseServerPublisherLinks::GetRecord(
     return;
   }
 
-  auto transaction = ledger::DBTransaction::New();
+  auto transaction = type::DBTransaction::New();
   const std::string query = base::StringPrintf(
       "SELECT provider, link FROM %s WHERE publisher_key=?",
       kTableName);
 
-  auto command = ledger::DBCommand::New();
-  command->type = ledger::DBCommand::Type::READ;
+  auto command = type::DBCommand::New();
+  command->type = type::DBCommand::Type::READ;
   command->command = query;
 
   BindString(command.get(), 0, publisher_key);
 
   command->record_bindings = {
-      ledger::DBCommand::RecordBindingType::STRING_TYPE,
-      ledger::DBCommand::RecordBindingType::STRING_TYPE
+      type::DBCommand::RecordBindingType::STRING_TYPE,
+      type::DBCommand::RecordBindingType::STRING_TYPE
   };
 
   transaction->commands.push_back(std::move(command));
@@ -122,10 +123,10 @@ void DatabaseServerPublisherLinks::GetRecord(
 }
 
 void DatabaseServerPublisherLinks::OnGetRecord(
-    ledger::DBCommandResponsePtr response,
+    type::DBCommandResponsePtr response,
     ServerPublisherLinksCallback callback) {
   if (!response ||
-      response->status != ledger::DBCommandResponse::Status::RESPONSE_OK) {
+      response->status != type::DBCommandResponse::Status::RESPONSE_OK) {
     BLOG(0, "Response is wrong");
     callback({});
     return;
@@ -143,4 +144,5 @@ void DatabaseServerPublisherLinks::OnGetRecord(
   callback(links);
 }
 
-}  // namespace braveledger_database
+}  // namespace database
+}  // namespace ledger

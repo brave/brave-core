@@ -11,7 +11,7 @@
 #include "bat/ledger/internal/endpoint/promotion/post_creds/post_creds.h"
 #include "bat/ledger/internal/endpoint/promotion/promotions_util.h"
 #include "bat/ledger/internal/ledger_impl.h"
-#include "bat/ledger/internal/request/request_util.h"
+#include "bat/ledger/internal/common/request_util.h"
 #include "net/http/http_status_code.h"
 
 using std::placeholders::_1;
@@ -20,7 +20,7 @@ namespace ledger {
 namespace endpoint {
 namespace promotion {
 
-PostCreds::PostCreds(bat_ledger::LedgerImpl* ledger):
+PostCreds::PostCreds(LedgerImpl* ledger):
     ledger_(ledger) {
   DCHECK(ledger_);
 }
@@ -47,40 +47,40 @@ std::string PostCreds::GeneratePayload(
   return json;
 }
 
-ledger::Result PostCreds::CheckStatusCode(const int status_code) {
+type::Result PostCreds::CheckStatusCode(const int status_code) {
   if (status_code == net::HTTP_BAD_REQUEST) {
     BLOG(0, "Invalid request");
-    return ledger::Result::LEDGER_ERROR;
+    return type::Result::LEDGER_ERROR;
   }
 
   if (status_code == net::HTTP_FORBIDDEN) {
     BLOG(0, "Signature validation failed");
-    return ledger::Result::LEDGER_ERROR;
+    return type::Result::LEDGER_ERROR;
   }
 
   if (status_code == net::HTTP_CONFLICT) {
     BLOG(0, "Incorrect blinded credentials");
-    return ledger::Result::LEDGER_ERROR;
+    return type::Result::LEDGER_ERROR;
   }
 
   if (status_code == net::HTTP_GONE) {
     BLOG(0, "Promotion is gone");
-    return ledger::Result::NOT_FOUND;
+    return type::Result::NOT_FOUND;
   }
 
   if (status_code == net::HTTP_INTERNAL_SERVER_ERROR) {
     BLOG(0, "Internal server error");
-    return ledger::Result::LEDGER_ERROR;
+    return type::Result::LEDGER_ERROR;
   }
 
   if (status_code != net::HTTP_OK) {
-    return ledger::Result::LEDGER_ERROR;
+    return type::Result::LEDGER_ERROR;
   }
 
-  return ledger::Result::LEDGER_OK;
+  return type::Result::LEDGER_OK;
 }
 
-ledger::Result PostCreds::ParseBody(
+type::Result PostCreds::ParseBody(
     const std::string& body,
     std::string* claim_id) {
   DCHECK(claim_id);
@@ -88,24 +88,24 @@ ledger::Result PostCreds::ParseBody(
   base::Optional<base::Value> value = base::JSONReader::Read(body);
   if (!value || !value->is_dict()) {
     BLOG(0, "Invalid JSON");
-    return ledger::Result::LEDGER_ERROR;
+    return type::Result::LEDGER_ERROR;
   }
 
   base::DictionaryValue* dictionary = nullptr;
   if (!value->GetAsDictionary(&dictionary)) {
     BLOG(0, "Invalid JSON");
-    return ledger::Result::LEDGER_ERROR;
+    return type::Result::LEDGER_ERROR;
   }
 
   auto* id = dictionary->FindStringKey("claimId");
   if (!id || id->empty()) {
     BLOG(0, "Claim id is missing");
-    return ledger::Result::LEDGER_ERROR;
+    return type::Result::LEDGER_ERROR;
   }
 
   *claim_id = *id;
 
-  return ledger::Result::LEDGER_OK;
+  return type::Result::LEDGER_OK;
 }
 
 void PostCreds::Request(
@@ -114,13 +114,13 @@ void PostCreds::Request(
     PostCredsCallback callback) {
   if (!blinded_creds) {
     BLOG(0, "Blinded creds are null");
-    callback(ledger::Result::LEDGER_ERROR, "");
+    callback(type::Result::LEDGER_ERROR, "");
     return;
   }
 
   const std::string& payload = GeneratePayload(std::move(blinded_creds));
 
-  const auto headers = braveledger_request_util::BuildSignHeaders(
+  const auto headers = util::BuildSignHeaders(
       "post /v1/promotions/" + promotion_id,
       payload,
       ledger_->state()->GetPaymentId(),
@@ -131,24 +131,24 @@ void PostCreds::Request(
       _1,
       callback);
 
-  auto request = ledger::UrlRequest::New();
+  auto request = type::UrlRequest::New();
   request->url = GetUrl(promotion_id);
   request->content = payload;
   request->headers = headers;
   request->content_type = "application/json; charset=utf-8";
-  request->method = ledger::UrlMethod::POST;
+  request->method = type::UrlMethod::POST;
   ledger_->LoadURL(std::move(request), url_callback);
 }
 
 void PostCreds::OnRequest(
-    const ledger::UrlResponse& response,
+    const type::UrlResponse& response,
     PostCredsCallback callback) {
   ledger::LogUrlResponse(__func__, response);
 
   std::string claim_id;
-  ledger::Result result = CheckStatusCode(response.status_code);
+  type::Result result = CheckStatusCode(response.status_code);
 
-  if (result != ledger::Result::LEDGER_OK) {
+  if (result != type::Result::LEDGER_OK) {
     callback(result, claim_id);
     return;
   }

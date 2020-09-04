@@ -14,28 +14,29 @@
 
 using std::placeholders::_1;
 
-namespace braveledger_database {
+namespace ledger {
+namespace database {
 
 namespace {
 
 const char kTableName[] = "contribution_info";
 const char kChildTableName[] = "contribution_info_publishers";
 
-ledger::ReportType ConvertRewardsTypeToReportType(
-    const ledger::RewardsType type) {
+type::ReportType ConvertRewardsTypeToReportType(
+    const type::RewardsType type) {
   switch (type) {
-    case ledger::RewardsType::AUTO_CONTRIBUTE: {
-      return ledger::ReportType::AUTO_CONTRIBUTION;
+    case type::RewardsType::AUTO_CONTRIBUTE: {
+      return type::ReportType::AUTO_CONTRIBUTION;
     }
-    case ledger::RewardsType::ONE_TIME_TIP: {
-      return ledger::ReportType::TIP;
+    case type::RewardsType::ONE_TIME_TIP: {
+      return type::ReportType::TIP;
     }
-    case ledger::RewardsType::RECURRING_TIP: {
-      return ledger::ReportType::TIP_RECURRING;
+    case type::RewardsType::RECURRING_TIP: {
+      return type::ReportType::TIP_RECURRING;
     }
     default: {
       NOTREACHED();
-      return ledger::ReportType::TIP;
+      return type::ReportType::TIP;
     }
   }
 }
@@ -43,7 +44,7 @@ ledger::ReportType ConvertRewardsTypeToReportType(
 }  // namespace
 
 DatabaseContributionInfo::DatabaseContributionInfo(
-    bat_ledger::LedgerImpl* ledger) :
+    LedgerImpl* ledger) :
     DatabaseTable(ledger),
     publishers_(std::make_unique<DatabaseContributionInfoPublishers>(ledger)) {
 }
@@ -51,20 +52,20 @@ DatabaseContributionInfo::DatabaseContributionInfo(
 DatabaseContributionInfo::~DatabaseContributionInfo() = default;
 
 void DatabaseContributionInfo::InsertOrUpdate(
-    ledger::ContributionInfoPtr info,
+    type::ContributionInfoPtr info,
     ledger::ResultCallback callback) {
   if (!info) {
     BLOG(1, "Info is null");
-    callback(ledger::Result::LEDGER_ERROR);
+    callback(type::Result::LEDGER_ERROR);
     return;
   }
 
   auto created_at = info->created_at;
   if (info->created_at == 0) {
-    created_at = braveledger_time_util::GetCurrentTimeStamp();
+    created_at = util::GetCurrentTimeStamp();
   }
 
-  auto transaction = ledger::DBTransaction::New();
+  auto transaction = type::DBTransaction::New();
 
   const std::string query = base::StringPrintf(
       "INSERT OR REPLACE INTO %s "
@@ -73,8 +74,8 @@ void DatabaseContributionInfo::InsertOrUpdate(
       "VALUES (?, ?, ?, ?, ?, ?, ?)",
     kTableName);
 
-  auto command = ledger::DBCommand::New();
-  command->type = ledger::DBCommand::Type::RUN;
+  auto command = type::DBCommand::New();
+  command->type = type::DBCommand::Type::RUN;
   command->command = query;
 
   BindString(command.get(), 0, info->contribution_id);
@@ -100,8 +101,8 @@ void DatabaseContributionInfo::InsertOrUpdate(
 
 void DatabaseContributionInfo::GetRecord(
     const std::string& contribution_id,
-    ledger::GetContributionInfoCallback callback) {
-  auto transaction = ledger::DBTransaction::New();
+    GetContributionInfoCallback callback) {
+  auto transaction = type::DBTransaction::New();
 
   const std::string query = base::StringPrintf(
     "SELECT ci.contribution_id, ci.amount, ci.type, ci.step, ci.retry_count, "
@@ -110,19 +111,19 @@ void DatabaseContributionInfo::GetRecord(
     "WHERE ci.contribution_id = ?",
     kTableName);
 
-  auto command = ledger::DBCommand::New();
-  command->type = ledger::DBCommand::Type::READ;
+  auto command = type::DBCommand::New();
+  command->type = type::DBCommand::Type::READ;
   command->command = query;
 
   BindString(command.get(), 0, contribution_id);
 
   command->record_bindings = {
-      ledger::DBCommand::RecordBindingType::STRING_TYPE,
-      ledger::DBCommand::RecordBindingType::DOUBLE_TYPE,
-      ledger::DBCommand::RecordBindingType::INT64_TYPE,
-      ledger::DBCommand::RecordBindingType::INT_TYPE,
-      ledger::DBCommand::RecordBindingType::INT_TYPE,
-      ledger::DBCommand::RecordBindingType::INT_TYPE
+      type::DBCommand::RecordBindingType::STRING_TYPE,
+      type::DBCommand::RecordBindingType::DOUBLE_TYPE,
+      type::DBCommand::RecordBindingType::INT64_TYPE,
+      type::DBCommand::RecordBindingType::INT_TYPE,
+      type::DBCommand::RecordBindingType::INT_TYPE,
+      type::DBCommand::RecordBindingType::INT_TYPE
   };
 
   transaction->commands.push_back(std::move(command));
@@ -139,10 +140,10 @@ void DatabaseContributionInfo::GetRecord(
 }
 
 void DatabaseContributionInfo::OnGetRecord(
-    ledger::DBCommandResponsePtr response,
-    ledger::GetContributionInfoCallback callback) {
+    type::DBCommandResponsePtr response,
+    GetContributionInfoCallback callback) {
   if (!response ||
-      response->status != ledger::DBCommandResponse::Status::RESPONSE_OK) {
+      response->status != type::DBCommandResponse::Status::RESPONSE_OK) {
     BLOG(0, "Response is not ok");
     callback(nullptr);
     return;
@@ -157,20 +158,20 @@ void DatabaseContributionInfo::OnGetRecord(
 
   auto* record = response->result->get_records()[0].get();
 
-  auto info = ledger::ContributionInfo::New();
+  auto info = type::ContributionInfo::New();
   info->contribution_id = GetStringColumn(record, 0);
   info->amount = GetDoubleColumn(record, 1);
-  info->type = static_cast<ledger::RewardsType>(GetInt64Column(record, 2));
-  info->step = static_cast<ledger::ContributionStep>(GetIntColumn(record, 3));
+  info->type = static_cast<type::RewardsType>(GetInt64Column(record, 2));
+  info->step = static_cast<type::ContributionStep>(GetIntColumn(record, 3));
   info->retry_count = GetIntColumn(record, 4);
   info->processor =
-      static_cast<ledger::ContributionProcessor>(GetIntColumn(record, 5));
+      static_cast<type::ContributionProcessor>(GetIntColumn(record, 5));
 
   auto publishers_callback =
     std::bind(&DatabaseContributionInfo::OnGetPublishers,
         this,
         _1,
-        std::make_shared<ledger::ContributionInfoPtr>(info->Clone()),
+        std::make_shared<type::ContributionInfoPtr>(info->Clone()),
         callback);
 
   publishers_->GetRecordByContributionList(
@@ -179,9 +180,9 @@ void DatabaseContributionInfo::OnGetRecord(
 }
 
 void DatabaseContributionInfo::OnGetPublishers(
-    ledger::ContributionPublisherList list,
-    std::shared_ptr<ledger::ContributionInfoPtr> shared_contribution,
-    ledger::GetContributionInfoCallback callback) {
+    type::ContributionPublisherList list,
+    std::shared_ptr<type::ContributionInfoPtr> shared_contribution,
+    GetContributionInfoCallback callback) {
   auto contribution = std::move(*shared_contribution);
   if (!contribution) {
     BLOG(1, "Contribution is null");
@@ -195,7 +196,7 @@ void DatabaseContributionInfo::OnGetPublishers(
 
 void DatabaseContributionInfo::GetAllRecords(
     ledger::ContributionInfoListCallback callback) {
-  auto transaction = ledger::DBTransaction::New();
+  auto transaction = type::DBTransaction::New();
 
   const std::string query = base::StringPrintf(
     "SELECT ci.contribution_id, ci.amount, ci.type, ci.step, ci.retry_count,"
@@ -203,18 +204,18 @@ void DatabaseContributionInfo::GetAllRecords(
     "FROM %s as ci ",
     kTableName);
 
-  auto command = ledger::DBCommand::New();
-  command->type = ledger::DBCommand::Type::READ;
+  auto command = type::DBCommand::New();
+  command->type = type::DBCommand::Type::READ;
   command->command = query;
 
   command->record_bindings = {
-      ledger::DBCommand::RecordBindingType::STRING_TYPE,
-      ledger::DBCommand::RecordBindingType::DOUBLE_TYPE,
-      ledger::DBCommand::RecordBindingType::INT64_TYPE,
-      ledger::DBCommand::RecordBindingType::INT_TYPE,
-      ledger::DBCommand::RecordBindingType::INT_TYPE,
-      ledger::DBCommand::RecordBindingType::INT_TYPE,
-      ledger::DBCommand::RecordBindingType::INT64_TYPE
+      type::DBCommand::RecordBindingType::STRING_TYPE,
+      type::DBCommand::RecordBindingType::DOUBLE_TYPE,
+      type::DBCommand::RecordBindingType::INT64_TYPE,
+      type::DBCommand::RecordBindingType::INT_TYPE,
+      type::DBCommand::RecordBindingType::INT_TYPE,
+      type::DBCommand::RecordBindingType::INT_TYPE,
+      type::DBCommand::RecordBindingType::INT64_TYPE
   };
 
   transaction->commands.push_back(std::move(command));
@@ -231,7 +232,7 @@ void DatabaseContributionInfo::GetAllRecords(
 }
 
 void DatabaseContributionInfo::GetOneTimeTips(
-    const ledger::ActivityMonth month,
+    const type::ActivityMonth month,
     const int year,
     ledger::PublisherInfoListCallback callback) {
   if (year == 0) {
@@ -240,7 +241,7 @@ void DatabaseContributionInfo::GetOneTimeTips(
     return;
   }
 
-  auto transaction = ledger::DBTransaction::New();
+  auto transaction = type::DBTransaction::New();
 
   const std::string query = base::StringPrintf(
       "SELECT pi.publisher_id, pi.name, pi.url, pi.favIcon, "
@@ -257,8 +258,8 @@ void DatabaseContributionInfo::GetOneTimeTips(
       kTableName,
       kChildTableName);
 
-  auto command = ledger::DBCommand::New();
-  command->type = ledger::DBCommand::Type::READ;
+  auto command = type::DBCommand::New();
+  command->type = type::DBCommand::Type::READ;
   command->command = query;
 
   const std::string formatted_month = base::StringPrintf("%02d", month);
@@ -266,20 +267,20 @@ void DatabaseContributionInfo::GetOneTimeTips(
   BindString(command.get(), 0, formatted_month);
   BindString(command.get(), 1, std::to_string(year));
   BindInt(command.get(), 2,
-      static_cast<int>(ledger::RewardsType::ONE_TIME_TIP));
+      static_cast<int>(type::RewardsType::ONE_TIME_TIP));
   BindInt(command.get(), 3,
-      static_cast<int>(ledger::ContributionStep::STEP_COMPLETED));
+      static_cast<int>(type::ContributionStep::STEP_COMPLETED));
 
   command->record_bindings = {
-      ledger::DBCommand::RecordBindingType::STRING_TYPE,
-      ledger::DBCommand::RecordBindingType::STRING_TYPE,
-      ledger::DBCommand::RecordBindingType::STRING_TYPE,
-      ledger::DBCommand::RecordBindingType::STRING_TYPE,
-      ledger::DBCommand::RecordBindingType::DOUBLE_TYPE,
-      ledger::DBCommand::RecordBindingType::INT64_TYPE,
-      ledger::DBCommand::RecordBindingType::INT64_TYPE,
-      ledger::DBCommand::RecordBindingType::INT64_TYPE,
-      ledger::DBCommand::RecordBindingType::STRING_TYPE
+      type::DBCommand::RecordBindingType::STRING_TYPE,
+      type::DBCommand::RecordBindingType::STRING_TYPE,
+      type::DBCommand::RecordBindingType::STRING_TYPE,
+      type::DBCommand::RecordBindingType::STRING_TYPE,
+      type::DBCommand::RecordBindingType::DOUBLE_TYPE,
+      type::DBCommand::RecordBindingType::INT64_TYPE,
+      type::DBCommand::RecordBindingType::INT64_TYPE,
+      type::DBCommand::RecordBindingType::INT64_TYPE,
+      type::DBCommand::RecordBindingType::STRING_TYPE
   };
 
   transaction->commands.push_back(std::move(command));
@@ -296,18 +297,18 @@ void DatabaseContributionInfo::GetOneTimeTips(
 }
 
 void DatabaseContributionInfo::OnGetOneTimeTips(
-    ledger::DBCommandResponsePtr response,
+    type::DBCommandResponsePtr response,
     ledger::PublisherInfoListCallback callback) {
   if (!response ||
-      response->status != ledger::DBCommandResponse::Status::RESPONSE_OK) {
+      response->status != type::DBCommandResponse::Status::RESPONSE_OK) {
     BLOG(0, "Response is not ok");
     callback({});
     return;
   }
 
-  ledger::PublisherInfoList list;
+  type::PublisherInfoList list;
   for (auto const& record : response->result->get_records()) {
-    auto info = ledger::PublisherInfo::New();
+    auto info = type::PublisherInfo::New();
     auto* record_pointer = record.get();
 
     info->id = GetStringColumn(record_pointer, 0);
@@ -316,7 +317,7 @@ void DatabaseContributionInfo::OnGetOneTimeTips(
     info->favicon_url = GetStringColumn(record_pointer, 3);
     info->weight = GetDoubleColumn(record_pointer, 4);
     info->reconcile_stamp = GetInt64Column(record_pointer, 5);
-    info->status = static_cast<ledger::mojom::PublisherStatus>(
+    info->status = static_cast<type::PublisherStatus>(
         GetInt64Column(record_pointer, 6));
     info->status_updated_at = GetInt64Column(record_pointer, 7);
     info->provider = GetStringColumn(record_pointer, 8);
@@ -328,7 +329,7 @@ void DatabaseContributionInfo::OnGetOneTimeTips(
 }
 
 void DatabaseContributionInfo::GetContributionReport(
-    const ledger::ActivityMonth month,
+    const type::ActivityMonth month,
     const int year,
     ledger::GetContributionReportCallback callback) {
   if (year == 0) {
@@ -337,7 +338,7 @@ void DatabaseContributionInfo::GetContributionReport(
     return;
   }
 
-  auto transaction = ledger::DBTransaction::New();
+  auto transaction = type::DBTransaction::New();
 
   const std::string query = base::StringPrintf(
       "SELECT ci.contribution_id, ci.amount, ci.type, ci.created_at, "
@@ -346,8 +347,8 @@ void DatabaseContributionInfo::GetContributionReport(
       "strftime('%%Y', datetime(ci.created_at, 'unixepoch')) = ? AND step = ?",
       kTableName);
 
-  auto command = ledger::DBCommand::New();
-  command->type = ledger::DBCommand::Type::READ;
+  auto command = type::DBCommand::New();
+  command->type = type::DBCommand::Type::READ;
   command->command = query;
 
   const std::string formatted_month = base::StringPrintf("%02d", month);
@@ -355,14 +356,14 @@ void DatabaseContributionInfo::GetContributionReport(
   BindString(command.get(), 0, formatted_month);
   BindString(command.get(), 1, std::to_string(year));
   BindInt(command.get(), 2,
-      static_cast<int>(ledger::ContributionStep::STEP_COMPLETED));
+      static_cast<int>(type::ContributionStep::STEP_COMPLETED));
 
   command->record_bindings = {
-      ledger::DBCommand::RecordBindingType::STRING_TYPE,
-      ledger::DBCommand::RecordBindingType::DOUBLE_TYPE,
-      ledger::DBCommand::RecordBindingType::INT64_TYPE,
-      ledger::DBCommand::RecordBindingType::INT64_TYPE,
-      ledger::DBCommand::RecordBindingType::INT_TYPE
+      type::DBCommand::RecordBindingType::STRING_TYPE,
+      type::DBCommand::RecordBindingType::DOUBLE_TYPE,
+      type::DBCommand::RecordBindingType::INT64_TYPE,
+      type::DBCommand::RecordBindingType::INT64_TYPE,
+      type::DBCommand::RecordBindingType::INT_TYPE
   };
 
   transaction->commands.push_back(std::move(command));
@@ -379,27 +380,27 @@ void DatabaseContributionInfo::GetContributionReport(
 }
 
 void DatabaseContributionInfo::OnGetContributionReport(
-    ledger::DBCommandResponsePtr response,
+    type::DBCommandResponsePtr response,
     ledger::GetContributionReportCallback callback) {
   if (!response ||
-      response->status != ledger::DBCommandResponse::Status::RESPONSE_OK) {
+      response->status != type::DBCommandResponse::Status::RESPONSE_OK) {
     BLOG(0, "Response is not ok");
     callback({});
     return;
   }
 
-  ledger::ContributionInfoList list;
+  type::ContributionInfoList list;
   std::vector<std::string> contribution_ids;
   for (auto const& record : response->result->get_records()) {
-    auto info = ledger::ContributionInfo::New();
+    auto info = type::ContributionInfo::New();
     auto* record_pointer = record.get();
 
     info->contribution_id = GetStringColumn(record_pointer, 0);
     info->amount = GetDoubleColumn(record_pointer, 1);
-    info->type = static_cast<ledger::RewardsType>(
+    info->type = static_cast<type::RewardsType>(
         GetInt64Column(record_pointer, 2));
     info->created_at = GetInt64Column(record_pointer, 3);
-    info->processor = static_cast<ledger::ContributionProcessor>(
+    info->processor = static_cast<type::ContributionProcessor>(
         GetIntColumn(record_pointer, 4));
 
     contribution_ids.push_back(info->contribution_id);
@@ -410,7 +411,7 @@ void DatabaseContributionInfo::OnGetContributionReport(
       std::bind(&DatabaseContributionInfo::OnGetContributionReportPublishers,
           this,
           _1,
-          std::make_shared<ledger::ContributionInfoList>(
+          std::make_shared<type::ContributionInfoList>(
               std::move(list)),
           callback);
 
@@ -421,11 +422,11 @@ void DatabaseContributionInfo::OnGetContributionReport(
 
 void DatabaseContributionInfo::OnGetContributionReportPublishers(
     std::vector<ContributionPublisherInfoPair> publisher_pair_list,
-    std::shared_ptr<ledger::ContributionInfoList> shared_contributions,
+    std::shared_ptr<type::ContributionInfoList> shared_contributions,
     ledger::GetContributionReportCallback callback) {
-  ledger::ContributionReportInfoList report_list;
+  type::ContributionReportInfoList report_list;
   for (const auto& contribution : *shared_contributions) {
-    auto report = ledger::ContributionReportInfo::New();
+    auto report = type::ContributionReportInfo::New();
     report->contribution_id = contribution->contribution_id;
     report->amount = contribution->amount;
     report->type = ConvertRewardsTypeToReportType(contribution->type);
@@ -450,7 +451,7 @@ void DatabaseContributionInfo::OnGetContributionReportPublishers(
 
 void DatabaseContributionInfo::GetNotCompletedRecords(
     ledger::ContributionInfoListCallback callback) {
-  auto transaction = ledger::DBTransaction::New();
+  auto transaction = type::DBTransaction::New();
 
   const std::string query = base::StringPrintf(
       "SELECT ci.contribution_id, ci.amount, ci.type, ci.step, ci.retry_count, "
@@ -458,18 +459,18 @@ void DatabaseContributionInfo::GetNotCompletedRecords(
       "FROM %s as ci WHERE ci.step > 0",
       kTableName);
 
-  auto command = ledger::DBCommand::New();
-  command->type = ledger::DBCommand::Type::READ;
+  auto command = type::DBCommand::New();
+  command->type = type::DBCommand::Type::READ;
   command->command = query;
 
   command->record_bindings = {
-      ledger::DBCommand::RecordBindingType::STRING_TYPE,
-      ledger::DBCommand::RecordBindingType::DOUBLE_TYPE,
-      ledger::DBCommand::RecordBindingType::INT64_TYPE,
-      ledger::DBCommand::RecordBindingType::INT_TYPE,
-      ledger::DBCommand::RecordBindingType::INT_TYPE,
-      ledger::DBCommand::RecordBindingType::INT_TYPE,
-      ledger::DBCommand::RecordBindingType::INT64_TYPE
+      type::DBCommand::RecordBindingType::STRING_TYPE,
+      type::DBCommand::RecordBindingType::DOUBLE_TYPE,
+      type::DBCommand::RecordBindingType::INT64_TYPE,
+      type::DBCommand::RecordBindingType::INT_TYPE,
+      type::DBCommand::RecordBindingType::INT_TYPE,
+      type::DBCommand::RecordBindingType::INT_TYPE,
+      type::DBCommand::RecordBindingType::INT64_TYPE
   };
 
   transaction->commands.push_back(std::move(command));
@@ -486,10 +487,10 @@ void DatabaseContributionInfo::GetNotCompletedRecords(
 }
 
 void DatabaseContributionInfo::OnGetList(
-    ledger::DBCommandResponsePtr response,
+    type::DBCommandResponsePtr response,
     ledger::ContributionInfoListCallback callback) {
   if (!response ||
-      response->status != ledger::DBCommandResponse::Status::RESPONSE_OK) {
+      response->status != type::DBCommandResponse::Status::RESPONSE_OK) {
     BLOG(0, "Response is not ok");
     callback({});
     return;
@@ -500,20 +501,20 @@ void DatabaseContributionInfo::OnGetList(
     return;
   }
 
-  ledger::ContributionInfoList list;
+  type::ContributionInfoList list;
   std::vector<std::string> contribution_ids;
   for (const auto& record : response->result->get_records()) {
-    auto info = ledger::ContributionInfo::New();
+    auto info = type::ContributionInfo::New();
     auto* record_pointer = record.get();
 
     info->contribution_id = GetStringColumn(record_pointer, 0);
     info->amount = GetDoubleColumn(record_pointer, 1);
-    info->type = static_cast<ledger::RewardsType>(
+    info->type = static_cast<type::RewardsType>(
         GetInt64Column(record_pointer, 2));
-    info->step = static_cast<ledger::ContributionStep>(
+    info->step = static_cast<type::ContributionStep>(
         GetIntColumn(record_pointer, 3));
     info->retry_count = GetIntColumn(record_pointer, 4);
-    info->processor = static_cast<ledger::ContributionProcessor>(
+    info->processor = static_cast<type::ContributionProcessor>(
         GetIntColumn(record_pointer, 5));
     info->created_at = GetInt64Column(record_pointer, 6);
 
@@ -525,7 +526,7 @@ void DatabaseContributionInfo::OnGetList(
       std::bind(&DatabaseContributionInfo::OnGetListPublishers,
           this,
           _1,
-          std::make_shared<ledger::ContributionInfoList>(
+          std::make_shared<type::ContributionInfoList>(
               std::move(list)),
           callback);
 
@@ -535,8 +536,8 @@ void DatabaseContributionInfo::OnGetList(
 }
 
 void DatabaseContributionInfo::OnGetListPublishers(
-    ledger::ContributionPublisherList list,
-    std::shared_ptr<ledger::ContributionInfoList> shared_contributions,
+    type::ContributionPublisherList list,
+    std::shared_ptr<type::ContributionInfoList> shared_contributions,
     ledger::ContributionInfoListCallback callback) {
   for (const auto& contribution : *shared_contributions) {
     for (const auto& item : list) {
@@ -553,22 +554,22 @@ void DatabaseContributionInfo::OnGetListPublishers(
 
 void DatabaseContributionInfo::UpdateStep(
     const std::string& contribution_id,
-    const ledger::ContributionStep step,
+    const type::ContributionStep step,
     ledger::ResultCallback callback) {
   if (contribution_id.empty()) {
     BLOG(1, "Contribution id is empty");
-    callback(ledger::Result::LEDGER_ERROR);
+    callback(type::Result::LEDGER_ERROR);
     return;
   }
 
-  auto transaction = ledger::DBTransaction::New();
+  auto transaction = type::DBTransaction::New();
 
   const std::string query = base::StringPrintf(
     "UPDATE %s SET step=?, retry_count=0 WHERE contribution_id = ?",
     kTableName);
 
-  auto command = ledger::DBCommand::New();
-  command->type = ledger::DBCommand::Type::RUN;
+  auto command = type::DBCommand::New();
+  command->type = type::DBCommand::Type::RUN;
   command->command = query;
 
   BindInt(command.get(), 0, static_cast<int>(step));
@@ -587,23 +588,23 @@ void DatabaseContributionInfo::UpdateStep(
 
 void DatabaseContributionInfo::UpdateStepAndCount(
     const std::string& contribution_id,
-    const ledger::ContributionStep step,
+    const type::ContributionStep step,
     const int32_t retry_count,
     ledger::ResultCallback callback) {
   if (contribution_id.empty()) {
     BLOG(1, "Contribution id is empty");
-    callback(ledger::Result::LEDGER_ERROR);
+    callback(type::Result::LEDGER_ERROR);
     return;
   }
 
-  auto transaction = ledger::DBTransaction::New();
+  auto transaction = type::DBTransaction::New();
 
   const std::string query = base::StringPrintf(
     "UPDATE %s SET step=?, retry_count=? WHERE contribution_id = ?;",
     kTableName);
 
-  auto command = ledger::DBCommand::New();
-  command->type = ledger::DBCommand::Type::RUN;
+  auto command = type::DBCommand::New();
+  command->type = type::DBCommand::Type::RUN;
   command->command = query;
 
   BindInt(command.get(), 0, static_cast<int>(step));
@@ -633,19 +634,19 @@ void DatabaseContributionInfo::UpdateContributedAmount(
 
 void DatabaseContributionInfo::FinishAllInProgressRecords(
     ledger::ResultCallback callback) {
-  auto transaction = ledger::DBTransaction::New();
+  auto transaction = type::DBTransaction::New();
   const std::string query = base::StringPrintf(
     "UPDATE %s SET step = ?, retry_count = 0 WHERE step >= 0",
     kTableName);
 
-  auto command = ledger::DBCommand::New();
-  command->type = ledger::DBCommand::Type::RUN;
+  auto command = type::DBCommand::New();
+  command->type = type::DBCommand::Type::RUN;
   command->command = query;
 
   BindInt(
       command.get(),
       0,
-      static_cast<int>(ledger::ContributionStep::STEP_REWARDS_OFF));
+      static_cast<int>(type::ContributionStep::STEP_REWARDS_OFF));
 
   transaction->commands.push_back(std::move(command));
 
@@ -658,4 +659,5 @@ void DatabaseContributionInfo::FinishAllInProgressRecords(
       transaction_callback);
 }
 
-}  // namespace braveledger_database
+}  // namespace database
+}  // namespace ledger

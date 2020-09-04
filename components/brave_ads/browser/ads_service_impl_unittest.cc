@@ -114,7 +114,7 @@ class MockRewardsService : public RewardsService {
       const std::string&,
       double,
       bool,
-      ledger::PublisherInfoPtr publisher));
+      ledger::type::PublisherInfoPtr publisher));
   MOCK_METHOD1(RemoveRecurringTip, void(const std::string&));
   MOCK_METHOD1(GetRecurringTips,
       void(brave_rewards::GetRecurringTipsCallback));

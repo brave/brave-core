@@ -19,7 +19,8 @@
 using ::testing::_;
 using ::testing::Invoke;
 
-namespace braveledger_database {
+namespace ledger {
+namespace database {
 
 class DatabaseActivityInfoTest : public ::testing::Test {
  private:
@@ -27,17 +28,17 @@ class DatabaseActivityInfoTest : public ::testing::Test {
 
  protected:
   std::unique_ptr<ledger::MockLedgerClient> mock_ledger_client_;
-  std::unique_ptr<bat_ledger::MockLedgerImpl> mock_ledger_impl_;
+  std::unique_ptr<ledger::MockLedgerImpl> mock_ledger_impl_;
   std::string execute_script_;
   std::unique_ptr<DatabaseActivityInfo> activity_;
-  std::unique_ptr<braveledger_database::MockDatabase> mock_database_;
+  std::unique_ptr<database::MockDatabase> mock_database_;
 
   DatabaseActivityInfoTest() {
     mock_ledger_client_ = std::make_unique<ledger::MockLedgerClient>();
     mock_ledger_impl_ =
-        std::make_unique<bat_ledger::MockLedgerImpl>(mock_ledger_client_.get());
+        std::make_unique<ledger::MockLedgerImpl>(mock_ledger_client_.get());
     activity_ = std::make_unique<DatabaseActivityInfo>(mock_ledger_impl_.get());
-    mock_database_ = std::make_unique<braveledger_database::MockDatabase>(
+    mock_database_ = std::make_unique<database::MockDatabase>(
         mock_ledger_impl_.get());
   }
 
@@ -52,14 +53,14 @@ class DatabaseActivityInfoTest : public ::testing::Test {
 TEST_F(DatabaseActivityInfoTest, InsertOrUpdateNull) {
   EXPECT_CALL(*mock_ledger_client_, RunDBTransaction(_, _)).Times(0);
 
-  ledger::PublisherInfoList list;
+  type::PublisherInfoList list;
   list.push_back(nullptr);
 
-  activity_->InsertOrUpdate(nullptr, [](const ledger::Result){});
+  activity_->InsertOrUpdate(nullptr, [](const type::Result){});
 }
 
 TEST_F(DatabaseActivityInfoTest, InsertOrUpdateOk) {
-  auto info = ledger::PublisherInfo::New();
+  auto info = type::PublisherInfo::New();
   info->id = "publisher_2";
   info->duration = 10;
   info->score = 1.1;
@@ -76,26 +77,26 @@ TEST_F(DatabaseActivityInfoTest, InsertOrUpdateOk) {
   ON_CALL(*mock_ledger_client_, RunDBTransaction(_, _))
       .WillByDefault(
         Invoke([&](
-            ledger::DBTransactionPtr transaction,
-            ledger::RunDBTransactionCallback callback) {
+            type::DBTransactionPtr transaction,
+            ledger::client::RunDBTransactionCallback callback) {
           ASSERT_TRUE(transaction);
           ASSERT_EQ(transaction->commands.size(), 1u);
           ASSERT_EQ(
               transaction->commands[0]->type,
-              ledger::DBCommand::Type::RUN);
+              type::DBCommand::Type::RUN);
           ASSERT_EQ(transaction->commands[0]->command, query);
           ASSERT_EQ(transaction->commands[0]->bindings.size(), 7u);
         }));
 
   activity_->InsertOrUpdate(
       std::move(info),
-      [](const ledger::Result){});
+      [](const type::Result){});
 }
 
 TEST_F(DatabaseActivityInfoTest, GetRecordsListNull) {
   EXPECT_CALL(*mock_ledger_client_, RunDBTransaction(_, _)).Times(0);
 
-  activity_->GetRecordsList(0, 0, nullptr, [](ledger::PublisherInfoList){});
+  activity_->GetRecordsList(0, 0, nullptr, [](type::PublisherInfoList){});
 }
 
 TEST_F(DatabaseActivityInfoTest, GetRecordsListEmpty) {
@@ -116,25 +117,25 @@ TEST_F(DatabaseActivityInfoTest, GetRecordsListEmpty) {
   ON_CALL(*mock_ledger_client_, RunDBTransaction(_, _))
       .WillByDefault(
         Invoke([&](
-            ledger::DBTransactionPtr transaction,
-            ledger::RunDBTransactionCallback callback) {
+            type::DBTransactionPtr transaction,
+            ledger::client::RunDBTransactionCallback callback) {
           ASSERT_TRUE(transaction);
           ASSERT_EQ(transaction->commands.size(), 1u);
           ASSERT_EQ(
               transaction->commands[0]->type,
-              ledger::DBCommand::Type::READ);
+              type::DBCommand::Type::READ);
           ASSERT_EQ(transaction->commands[0]->command, query);
           ASSERT_EQ(transaction->commands[0]->record_bindings.size(), 14u);
           ASSERT_EQ(transaction->commands[0]->bindings.size(), 1u);
         }));
 
-  auto filter = ledger::ActivityInfoFilter::New();
+  auto filter = type::ActivityInfoFilter::New();
 
   activity_->GetRecordsList(
       0,
       0,
       std::move(filter),
-      [](ledger::PublisherInfoList){});
+      [](type::PublisherInfoList){});
 }
 
 TEST_F(DatabaseActivityInfoTest, GetRecordsListOk) {
@@ -155,26 +156,26 @@ TEST_F(DatabaseActivityInfoTest, GetRecordsListOk) {
   ON_CALL(*mock_ledger_client_, RunDBTransaction(_, _))
       .WillByDefault(
         Invoke([&](
-            ledger::DBTransactionPtr transaction,
-            ledger::RunDBTransactionCallback callback) {
+            type::DBTransactionPtr transaction,
+            ledger::client::RunDBTransactionCallback callback) {
           ASSERT_TRUE(transaction);
           ASSERT_EQ(transaction->commands.size(), 1u);
           ASSERT_EQ(
               transaction->commands[0]->type,
-              ledger::DBCommand::Type::READ);
+              type::DBCommand::Type::READ);
           ASSERT_EQ(transaction->commands[0]->command, query);
           ASSERT_EQ(transaction->commands[0]->record_bindings.size(), 14u);
           ASSERT_EQ(transaction->commands[0]->bindings.size(), 2u);
         }));
 
-  auto filter = ledger::ActivityInfoFilter::New();
+  auto filter = type::ActivityInfoFilter::New();
   filter->id = "publisher_key";
 
   activity_->GetRecordsList(
       0,
       0,
       std::move(filter),
-      [](ledger::PublisherInfoList){});
+      [](type::PublisherInfoList){});
 }
 
 TEST_F(DatabaseActivityInfoTest, DeleteRecordEmpty) {
@@ -183,7 +184,7 @@ TEST_F(DatabaseActivityInfoTest, DeleteRecordEmpty) {
   const std::string query =
       "DELETE FROM %s WHERE publisher_id = ? AND reconcile_stamp = ?";
 
-  activity_->DeleteRecord("", [](const ledger::Result){});
+  activity_->DeleteRecord("", [](const type::Result){});
 }
 
 TEST_F(DatabaseActivityInfoTest, DeleteRecordOk) {
@@ -199,18 +200,19 @@ TEST_F(DatabaseActivityInfoTest, DeleteRecordOk) {
   ON_CALL(*mock_ledger_client_, RunDBTransaction(_, _))
       .WillByDefault(
         Invoke([&](
-            ledger::DBTransactionPtr transaction,
-            ledger::RunDBTransactionCallback callback) {
+            type::DBTransactionPtr transaction,
+            ledger::client::RunDBTransactionCallback callback) {
           ASSERT_TRUE(transaction);
           ASSERT_EQ(transaction->commands.size(), 1u);
           ASSERT_EQ(
               transaction->commands[0]->type,
-              ledger::DBCommand::Type::RUN);
+              type::DBCommand::Type::RUN);
           ASSERT_EQ(transaction->commands[0]->command, query);
           ASSERT_EQ(transaction->commands[0]->bindings.size(), 2u);
         }));
 
-  activity_->DeleteRecord("publisher_key", [](const ledger::Result){});
+  activity_->DeleteRecord("publisher_key", [](const type::Result){});
 }
 
-}  // namespace braveledger_database
+}  // namespace database
+}  // namespace ledger

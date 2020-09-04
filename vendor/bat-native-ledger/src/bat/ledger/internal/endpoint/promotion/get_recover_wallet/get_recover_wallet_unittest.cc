@@ -30,13 +30,13 @@ class GetRecoverWalletTest : public testing::Test {
 
  protected:
   std::unique_ptr<ledger::MockLedgerClient> mock_ledger_client_;
-  std::unique_ptr<bat_ledger::MockLedgerImpl> mock_ledger_impl_;
+  std::unique_ptr<ledger::MockLedgerImpl> mock_ledger_impl_;
   std::unique_ptr<GetRecoverWallet> wallet_;
 
   GetRecoverWalletTest() {
     mock_ledger_client_ = std::make_unique<ledger::MockLedgerClient>();
     mock_ledger_impl_ =
-        std::make_unique<bat_ledger::MockLedgerImpl>(mock_ledger_client_.get());
+        std::make_unique<ledger::MockLedgerImpl>(mock_ledger_client_.get());
     wallet_ = std::make_unique<GetRecoverWallet>(mock_ledger_impl_.get());
   }
 };
@@ -45,9 +45,9 @@ TEST_F(GetRecoverWalletTest, ServerOK) {
   ON_CALL(*mock_ledger_client_, LoadURL(_, _))
       .WillByDefault(
           Invoke([](
-              ledger::UrlRequestPtr request,
-              ledger::LoadURLCallback callback) {
-            ledger::UrlResponse response;
+              type::UrlRequestPtr request,
+              client::LoadURLCallback callback) {
+            type::UrlResponse response;
             response.status_code = 200;
             response.url = request->url;
             response.body = R"({
@@ -64,8 +64,8 @@ TEST_F(GetRecoverWalletTest, ServerOK) {
 
   wallet_->Request(
       "79d7da2a756cc8d9403d0353a64fae5698e01b44a2c2745",
-      [](const ledger::Result result, const std::string& payment_id) {
-        EXPECT_EQ(result, ledger::Result::LEDGER_OK);
+      [](const type::Result result, const std::string& payment_id) {
+        EXPECT_EQ(result, type::Result::LEDGER_OK);
         EXPECT_EQ(payment_id, "d59d4b69-f66e-4ee8-9c88-1c522e02ffd3");
       });
 }
@@ -74,9 +74,9 @@ TEST_F(GetRecoverWalletTest, ServerError400) {
   ON_CALL(*mock_ledger_client_, LoadURL(_, _))
       .WillByDefault(
           Invoke([](
-              ledger::UrlRequestPtr request,
-              ledger::LoadURLCallback callback) {
-            ledger::UrlResponse response;
+              type::UrlRequestPtr request,
+              client::LoadURLCallback callback) {
+            type::UrlResponse response;
             response.status_code = 400;
             response.url = request->url;
             response.body = "";
@@ -85,8 +85,8 @@ TEST_F(GetRecoverWalletTest, ServerError400) {
 
   wallet_->Request(
       "79d7da2a756cc8d9403d0353a64fae5698e01b44a2c2745",
-      [](const ledger::Result result, const std::string& payment_id) {
-        EXPECT_EQ(result, ledger::Result::LEDGER_ERROR);
+      [](const type::Result result, const std::string& payment_id) {
+        EXPECT_EQ(result, type::Result::LEDGER_ERROR);
         EXPECT_EQ(payment_id, "");
       });
 }
@@ -95,9 +95,9 @@ TEST_F(GetRecoverWalletTest, ServerError404) {
   ON_CALL(*mock_ledger_client_, LoadURL(_, _))
       .WillByDefault(
           Invoke([](
-              ledger::UrlRequestPtr request,
-              ledger::LoadURLCallback callback) {
-            ledger::UrlResponse response;
+              type::UrlRequestPtr request,
+              client::LoadURLCallback callback) {
+            type::UrlResponse response;
             response.status_code = 404;
             response.url = request->url;
             response.body = "";
@@ -106,8 +106,8 @@ TEST_F(GetRecoverWalletTest, ServerError404) {
 
   wallet_->Request(
       "79d7da2a756cc8d9403d0353a64fae5698e01b44a2c2745",
-      [](const ledger::Result result, const std::string& payment_id) {
-        EXPECT_EQ(result, ledger::Result::NOT_FOUND);
+      [](const type::Result result, const std::string& payment_id) {
+        EXPECT_EQ(result, type::Result::NOT_FOUND);
         EXPECT_EQ(payment_id, "");
       });
 }
@@ -116,9 +116,9 @@ TEST_F(GetRecoverWalletTest, ServerErrorRandom) {
   ON_CALL(*mock_ledger_client_, LoadURL(_, _))
       .WillByDefault(
           Invoke([](
-              ledger::UrlRequestPtr request,
-              ledger::LoadURLCallback callback) {
-            ledger::UrlResponse response;
+              type::UrlRequestPtr request,
+              client::LoadURLCallback callback) {
+            type::UrlResponse response;
             response.status_code = 453;
             response.url = request->url;
             response.body = "";
@@ -127,8 +127,8 @@ TEST_F(GetRecoverWalletTest, ServerErrorRandom) {
 
   wallet_->Request(
       "79d7da2a756cc8d9403d0353a64fae5698e01b44a2c2745",
-      [](const ledger::Result result, const std::string& payment_id) {
-        EXPECT_EQ(result, ledger::Result::LEDGER_ERROR);
+      [](const type::Result result, const std::string& payment_id) {
+        EXPECT_EQ(result, type::Result::LEDGER_ERROR);
         EXPECT_EQ(payment_id, "");
       });
 }

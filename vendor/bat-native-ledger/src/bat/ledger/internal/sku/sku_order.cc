@@ -15,22 +15,23 @@ using std::placeholders::_1;
 using std::placeholders::_2;
 using std::placeholders::_3;
 
-namespace braveledger_sku {
+namespace ledger {
+namespace sku {
 
-SKUOrder::SKUOrder(bat_ledger::LedgerImpl* ledger) :
+SKUOrder::SKUOrder(LedgerImpl* ledger) :
     ledger_(ledger),
-    payment_server_(std::make_unique<ledger::endpoint::PaymentServer>(ledger)) {
+    payment_server_(std::make_unique<endpoint::PaymentServer>(ledger)) {
   DCHECK(ledger_);
 }
 
 SKUOrder::~SKUOrder() = default;
 
 void SKUOrder::Create(
-    const std::vector<ledger::SKUOrderItem>& items,
+    const std::vector<type::SKUOrderItem>& items,
     ledger::SKUOrderCallback callback) {
   if (items.empty()) {
     BLOG(0, "List is empty");
-    callback(ledger::Result::LEDGER_ERROR, "");
+    callback(type::Result::LEDGER_ERROR, "");
     return;
   }
 
@@ -44,12 +45,12 @@ void SKUOrder::Create(
 }
 
 void SKUOrder::OnCreate(
-    const ledger::Result result,
-    ledger::SKUOrderPtr order,
+    const type::Result result,
+    type::SKUOrderPtr order,
     ledger::SKUOrderCallback callback) {
-  if (result != ledger::Result::LEDGER_OK) {
+  if (result != type::Result::LEDGER_OK) {
     BLOG(0, "Order response could not be parsed");
-    callback(ledger::Result::LEDGER_ERROR, "");
+    callback(type::Result::LEDGER_ERROR, "");
     return;
   }
 
@@ -63,16 +64,17 @@ void SKUOrder::OnCreate(
 }
 
 void SKUOrder::OnCreateSave(
-    const ledger::Result result,
+    const type::Result result,
     const std::string& order_id,
     ledger::SKUOrderCallback callback) {
-  if (result != ledger::Result::LEDGER_OK) {
+  if (result != type::Result::LEDGER_OK) {
     BLOG(0, "Order couldn't be saved");
     callback(result, "");
     return;
   }
 
-  callback(ledger::Result::LEDGER_OK, order_id);
+  callback(type::Result::LEDGER_OK, order_id);
 }
 
-}  // namespace braveledger_sku
+}  // namespace sku
+}  // namespace ledger

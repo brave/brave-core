@@ -30,10 +30,10 @@ class ExtensionRewardsServiceObserver : public RewardsServiceObserver,
   // RewardsServiceObserver implementation
   void OnWalletInitialized(
       RewardsService* rewards_service,
-      const ledger::Result result) override;
+      const ledger::type::Result result) override;
   void OnPublisherListNormalized(
       RewardsService* rewards_service,
-      ledger::PublisherInfoList list) override;
+      ledger::type::PublisherInfoList list) override;
   void OnExcludedSitesChanged(RewardsService* rewards_service,
                               std::string publisher_key,
                               bool excluded) override;
@@ -46,19 +46,19 @@ class ExtensionRewardsServiceObserver : public RewardsServiceObserver,
 
   void OnPendingContributionRemoved(
       RewardsService* rewards_service,
-      const ledger::Result result) override;
+      const ledger::type::Result result) override;
 
   void OnReconcileComplete(
       RewardsService* rewards_service,
-      const ledger::Result result,
+      const ledger::type::Result result,
       const std::string& contribution_id,
       const double amount,
-      const ledger::RewardsType type,
-      const ledger::ContributionProcessor processor) override;
+      const ledger::type::RewardsType type,
+      const ledger::type::ContributionProcessor processor) override;
 
   void OnDisconnectWallet(
       brave_rewards::RewardsService* rewards_service,
-      const ledger::Result result,
+      const ledger::type::Result result,
       const std::string& wallet_type) override;
 
   void OnUnblindedTokensReady(
@@ -67,25 +67,25 @@ class ExtensionRewardsServiceObserver : public RewardsServiceObserver,
   // RewardsServicePrivateObserver implementation
   void OnPanelPublisherInfo(
       RewardsService* rewards_service,
-      const ledger::Result result,
-      const ledger::PublisherInfo* info,
+      const ledger::type::Result result,
+      const ledger::type::PublisherInfo* info,
       uint64_t windowId) override;
   void OnFetchPromotions(
       RewardsService* rewards_service,
-      const ledger::Result result,
-      const ledger::PromotionList& list) override;
+      const ledger::type::Result result,
+      const ledger::type::PromotionList& list) override;
 
   void OnPromotionFinished(
       RewardsService* rewards_service,
-      const ledger::Result result,
-      ledger::PromotionPtr promotion) override;
+      const ledger::type::Result result,
+      ledger::type::PromotionPtr promotion) override;
 
   void OnRewardsMainEnabled(RewardsService* rewards_service,
                             bool rewards_main_enabled) override;
 
   void OnPendingContributionSaved(
       RewardsService* rewards_service,
-      const ledger::Result result) override;
+      const ledger::type::Result result) override;
 
   void OnAdsEnabled(RewardsService* rewards_service,
                             bool ads_enabled) override;

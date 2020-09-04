@@ -12,7 +12,7 @@
 #include "base/strings/stringprintf.h"
 #include "bat/ledger/internal/endpoint/payment/payment_util.h"
 #include "bat/ledger/internal/ledger_impl.h"
-#include "bat/ledger/internal/request/request_util.h"
+#include "bat/ledger/internal/common/request_util.h"
 #include "net/http/http_status_code.h"
 
 using std::placeholders::_1;
@@ -21,7 +21,7 @@ namespace ledger {
 namespace endpoint {
 namespace payment {
 
-PostTransactionAnon::PostTransactionAnon(bat_ledger::LedgerImpl* ledger):
+PostTransactionAnon::PostTransactionAnon(LedgerImpl* ledger):
     ledger_(ledger) {
   DCHECK(ledger_);
 }
@@ -51,7 +51,7 @@ std::string PostTransactionAnon::GeneratePayload(
   std::string octets_json;
   base::JSONWriter::Write(octets, &octets_json);
 
-  const auto sign_headers = braveledger_request_util::GetSignHeaders(
+  const auto sign_headers = util::GetSignHeaders(
       order_id,
       octets_json,
       "primary",
@@ -82,32 +82,32 @@ std::string PostTransactionAnon::GeneratePayload(
   return json;
 }
 
-ledger::Result PostTransactionAnon::CheckStatusCode(const int status_code) {
+type::Result PostTransactionAnon::CheckStatusCode(const int status_code) {
   if (status_code == net::HTTP_BAD_REQUEST) {
     BLOG(0, "Invalid request");
-    return ledger::Result::LEDGER_ERROR;
+    return type::Result::LEDGER_ERROR;
   }
 
   if (status_code == net::HTTP_NOT_FOUND) {
     BLOG(0, "Unrecognized transaction suffix");
-    return ledger::Result::NOT_FOUND;
+    return type::Result::NOT_FOUND;
   }
 
   if (status_code == net::HTTP_CONFLICT) {
     BLOG(0, "External transaction id already submitted");
-    return ledger::Result::LEDGER_ERROR;
+    return type::Result::LEDGER_ERROR;
   }
 
   if (status_code == net::HTTP_INTERNAL_SERVER_ERROR) {
     BLOG(0, "Internal server error");
-    return ledger::Result::LEDGER_ERROR;
+    return type::Result::LEDGER_ERROR;
   }
 
   if (status_code != net::HTTP_CREATED) {
-    return ledger::Result::LEDGER_ERROR;
+    return type::Result::LEDGER_ERROR;
   }
 
-  return ledger::Result::LEDGER_OK;
+  return type::Result::LEDGER_OK;
 }
 
 void PostTransactionAnon::Request(
@@ -120,16 +120,16 @@ void PostTransactionAnon::Request(
       _1,
       callback);
 
-  auto request = ledger::UrlRequest::New();
+  auto request = type::UrlRequest::New();
   request->url = GetUrl(order_id);
   request->content = GeneratePayload(amount, order_id, destination);
   request->content_type = "application/json; charset=utf-8";
-  request->method = ledger::UrlMethod::POST;
+  request->method = type::UrlMethod::POST;
   ledger_->LoadURL(std::move(request), url_callback);
 }
 
 void PostTransactionAnon::OnRequest(
-    const ledger::UrlResponse& response,
+    const type::UrlResponse& response,
     PostTransactionAnonCallback callback) {
   ledger::LogUrlResponse(__func__, response);
   callback(CheckStatusCode(response.status_code));

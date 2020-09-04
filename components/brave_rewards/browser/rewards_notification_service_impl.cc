@@ -142,7 +142,7 @@ RewardsNotificationServiceImpl::GenerateRewardsNotificationTimestamp() const {
 
 void RewardsNotificationServiceImpl::ReadRewardsNotificationsJSON() {
   std::string json =
-      profile_->GetPrefs()->GetString(prefs::kRewardsNotifications);
+      profile_->GetPrefs()->GetString(prefs::kNotifications);
   if (json.empty())
     return;
   base::Optional<base::Value> dictionary = base::JSONReader::Read(json);
@@ -248,7 +248,7 @@ void RewardsNotificationServiceImpl::StoreRewardsNotifications() {
     return;
   }
 
-  profile_->GetPrefs()->SetString(prefs::kRewardsNotifications, result);
+  profile_->GetPrefs()->SetString(prefs::kNotifications, result);
 }
 
 bool RewardsNotificationServiceImpl::Exists(RewardsNotificationID id) const {
@@ -314,12 +314,12 @@ void RewardsNotificationServiceImpl::OnGetAllNotifications(
 }
 
 bool RewardsNotificationServiceImpl::IsAds(
-    const ledger::PromotionType promotion_type) {
-  return promotion_type == ledger::PromotionType::ADS;
+    const ledger::type::PromotionType promotion_type) {
+  return promotion_type == ledger::type::PromotionType::ADS;
 }
 
 std::string RewardsNotificationServiceImpl::GetPromotionIdPrefix(
-    const ledger::PromotionType promotion_type) {
+    const ledger::type::PromotionType promotion_type) {
   return IsAds(promotion_type)
       ? "rewards_notification_grant_ads_"
       : "rewards_notification_grant_";
@@ -327,14 +327,15 @@ std::string RewardsNotificationServiceImpl::GetPromotionIdPrefix(
 
 void RewardsNotificationServiceImpl::OnFetchPromotions(
     RewardsService* rewards_service,
-    const ledger::Result result,
-    const ledger::PromotionList& list) {
-  if (static_cast<ledger::Result>(result) != ledger::Result::LEDGER_OK) {
+    const ledger::type::Result result,
+    const ledger::type::PromotionList& list) {
+  if (static_cast<ledger::type::Result>(result) !=
+      ledger::type::Result::LEDGER_OK) {
     return;
   }
 
   for (const auto& item : list) {
-    if (item->status == ledger::PromotionStatus::FINISHED) {
+    if (item->status == ledger::type::PromotionStatus::FINISHED) {
       continue;
     }
 
@@ -360,8 +361,8 @@ void RewardsNotificationServiceImpl::OnFetchPromotions(
 
 void RewardsNotificationServiceImpl::OnPromotionFinished(
     RewardsService* rewards_service,
-    const ledger::Result result,
-    ledger::PromotionPtr promotion) {
+    const ledger::type::Result result,
+    ledger::type::PromotionPtr promotion) {
   std::string prefix = GetPromotionIdPrefix(promotion->type);
   DeleteNotification(prefix + promotion->id);
 
@@ -373,23 +374,23 @@ void RewardsNotificationServiceImpl::OnPromotionFinished(
 
 void RewardsNotificationServiceImpl::OnReconcileComplete(
     RewardsService* rewards_service,
-    const ledger::Result result,
+    const ledger::type::Result result,
     const std::string& contribution_id,
     const double amount,
-    const ledger::RewardsType type,
-    const ledger::ContributionProcessor processor) {
-  if (type == ledger::RewardsType::ONE_TIME_TIP) {
+    const ledger::type::RewardsType type,
+    const ledger::type::ContributionProcessor processor) {
+  if (type == ledger::type::RewardsType::ONE_TIME_TIP) {
     return;
   }
 
   const bool completed_auto_contribute =
-      result == ledger::Result::LEDGER_OK &&
-      type == ledger::RewardsType::AUTO_CONTRIBUTE;
+      result == ledger::type::Result::LEDGER_OK &&
+      type == ledger::type::RewardsType::AUTO_CONTRIBUTE;
 
   if (completed_auto_contribute ||
-      result == ledger::Result::NOT_ENOUGH_FUNDS ||
-      result == ledger::Result::LEDGER_ERROR ||
-      result == ledger::Result::TIP_ERROR) {
+      result == ledger::type::Result::NOT_ENOUGH_FUNDS ||
+      result == ledger::type::Result::LEDGER_ERROR ||
+      result == ledger::type::Result::TIP_ERROR) {
     RewardsNotificationService::RewardsNotificationArgs args;
     args.push_back(contribution_id);
     args.push_back(std::to_string(static_cast<int>(result)));

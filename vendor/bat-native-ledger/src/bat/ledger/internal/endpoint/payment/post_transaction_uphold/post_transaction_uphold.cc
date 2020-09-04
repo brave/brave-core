@@ -19,7 +19,7 @@ namespace ledger {
 namespace endpoint {
 namespace payment {
 
-PostTransactionUphold::PostTransactionUphold(bat_ledger::LedgerImpl* ledger):
+PostTransactionUphold::PostTransactionUphold(LedgerImpl* ledger):
     ledger_(ledger) {
   DCHECK(ledger_);
 }
@@ -35,7 +35,7 @@ std::string PostTransactionUphold::GetUrl(const std::string& order_id) {
 }
 
 std::string PostTransactionUphold::GeneratePayload(
-    const ledger::SKUTransaction& transaction) {
+    const type::SKUTransaction& transaction) {
   base::Value body(base::Value::Type::DICTIONARY);
   body.SetStringKey(
       "externalTransactionId",
@@ -47,52 +47,52 @@ std::string PostTransactionUphold::GeneratePayload(
   return json;
 }
 
-ledger::Result PostTransactionUphold::CheckStatusCode(const int status_code) {
+type::Result PostTransactionUphold::CheckStatusCode(const int status_code) {
   if (status_code == net::HTTP_BAD_REQUEST) {
     BLOG(0, "Invalid request");
-    return ledger::Result::LEDGER_ERROR;
+    return type::Result::LEDGER_ERROR;
   }
 
   if (status_code == net::HTTP_NOT_FOUND) {
     BLOG(0, "Unrecognized transaction suffix");
-    return ledger::Result::NOT_FOUND;
+    return type::Result::NOT_FOUND;
   }
 
   if (status_code == net::HTTP_CONFLICT) {
     BLOG(0, "External transaction id already submitted");
-    return ledger::Result::LEDGER_ERROR;
+    return type::Result::LEDGER_ERROR;
   }
 
   if (status_code == net::HTTP_INTERNAL_SERVER_ERROR) {
     BLOG(0, "Internal server error");
-    return ledger::Result::LEDGER_ERROR;
+    return type::Result::LEDGER_ERROR;
   }
 
   if (status_code != net::HTTP_CREATED) {
-    return ledger::Result::LEDGER_ERROR;
+    return type::Result::LEDGER_ERROR;
   }
 
-  return ledger::Result::LEDGER_OK;
+  return type::Result::LEDGER_OK;
 }
 
 void PostTransactionUphold::Request(
-    const ledger::SKUTransaction& transaction,
+    const type::SKUTransaction& transaction,
     PostTransactionUpholdCallback callback) {
   auto url_callback = std::bind(&PostTransactionUphold::OnRequest,
       this,
       _1,
       callback);
 
-  auto request = ledger::UrlRequest::New();
+  auto request = type::UrlRequest::New();
   request->url = GetUrl(transaction.order_id);
   request->content = GeneratePayload(transaction);
   request->content_type = "application/json; charset=utf-8";
-  request->method = ledger::UrlMethod::POST;
+  request->method = type::UrlMethod::POST;
   ledger_->LoadURL(std::move(request), url_callback);
 }
 
 void PostTransactionUphold::OnRequest(
-    const ledger::UrlResponse& response,
+    const type::UrlResponse& response,
     PostTransactionUpholdCallback callback) {
   ledger::LogUrlResponse(__func__, response);
   callback(CheckStatusCode(response.status_code));

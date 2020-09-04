@@ -8,27 +8,27 @@
 
 #include "bat/ledger/ledger.h"
 
-namespace bat_ledger {
+namespace ledger {
 class LedgerImpl;
-}
 
-namespace braveledger_contribution {
+namespace contribution {
 
 class ContributionAC {
  public:
-  explicit ContributionAC(bat_ledger::LedgerImpl* ledger);
+  explicit ContributionAC(LedgerImpl* ledger);
 
   ~ContributionAC();
 
   void Process(const uint64_t reconcile_stamp);
 
  private:
-  void PreparePublisherList(ledger::PublisherInfoList list);
+  void PreparePublisherList(type::PublisherInfoList list);
 
-  void QueueSaved(const ledger::Result result);
+  void QueueSaved(const type::Result result);
 
-  bat_ledger::LedgerImpl* ledger_;  // NOT OWNED
+  LedgerImpl* ledger_;  // NOT OWNED
 };
 
-}  // namespace braveledger_contribution
+}  // namespace contribution
+}  // namespace ledger
 #endif  // BRAVELEDGER_CONTRIBUTION_CONTRIBUTION_AC_H_

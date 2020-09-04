@@ -11,11 +11,9 @@
 
 #include "bat/ledger/internal/attestation/attestation.h"
 
-namespace bat_ledger {
-class LedgerImpl;
-}
-
 namespace ledger {
+class LedgerImpl;
+
 namespace attestation {
 
 class AttestationDesktop;
@@ -24,7 +22,7 @@ class AttestationIOS;
 
 class AttestationImpl : public Attestation {
  public:
-  explicit AttestationImpl(bat_ledger::LedgerImpl* ledger);
+  explicit AttestationImpl(LedgerImpl* ledger);
   ~AttestationImpl() override;
 
   void Start(const std::string& payload, StartCallback callback) override;

@@ -37,40 +37,37 @@ POST_SUGGESTIONS_CLAIM_H_
 // Response body:
 // {Empty}
 
-
-namespace bat_ledger {
-class LedgerImpl;
-}
-
 namespace ledger {
+class LedgerImpl;
+
 namespace endpoint {
 namespace promotion {
 
 using PostSuggestionsClaimCallback = std::function<void(
-    const ledger::Result result)>;
+    const type::Result result)>;
 
 class PostSuggestionsClaim {
  public:
-  explicit PostSuggestionsClaim(bat_ledger::LedgerImpl* ledger);
+  explicit PostSuggestionsClaim(LedgerImpl* ledger);
   ~PostSuggestionsClaim();
 
   void Request(
-      const braveledger_credentials::CredentialsRedeem& redeem,
+      const credential::CredentialsRedeem& redeem,
       PostSuggestionsClaimCallback callback);
 
  private:
   std::string GetUrl();
 
   std::string GeneratePayload(
-      const braveledger_credentials::CredentialsRedeem& redeem);
+      const credential::CredentialsRedeem& redeem);
 
-  ledger::Result CheckStatusCode(const int status_code);
+  type::Result CheckStatusCode(const int status_code);
 
   void OnRequest(
-      const ledger::UrlResponse& response,
+      const type::UrlResponse& response,
       PostSuggestionsClaimCallback callback);
 
-  bat_ledger::LedgerImpl* ledger_;  // NOT OWNED
+  LedgerImpl* ledger_;  // NOT OWNED
 };
 
 }  // namespace promotion

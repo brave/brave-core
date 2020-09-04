@@ -14,32 +14,32 @@
 #include "bat/ledger/internal/credentials/credentials_factory.h"
 #include "bat/ledger/ledger.h"
 
-namespace bat_ledger {
+namespace ledger {
 class LedgerImpl;
-}
 
-namespace braveledger_promotion {
+namespace promotion {
 
 class PromotionTransfer {
  public:
-  explicit PromotionTransfer(bat_ledger::LedgerImpl* ledger);
+  explicit PromotionTransfer(LedgerImpl* ledger);
   ~PromotionTransfer();
 
   void Start(ledger::ResultCallback callback);
 
  private:
   void GetEligibleTokens(
-      ledger::PromotionList promotions,
+      type::PromotionList promotions,
       ledger::ResultCallback callback);
 
   void OnGetEligibleTokens(
-      ledger::UnblindedTokenList list,
+      type::UnblindedTokenList list,
       ledger::ResultCallback callback);
 
-  bat_ledger::LedgerImpl* ledger_;  // NOT OWNED
-  std::unique_ptr<braveledger_credentials::Credentials> credentials_;
+  LedgerImpl* ledger_;  // NOT OWNED
+  std::unique_ptr<credential::Credentials> credentials_;
 };
 
-}  // namespace braveledger_promotion
+}  // namespace promotion
+}  // namespace ledger
 
 #endif  // BRAVELEDGER_PROMOTION_TRANSFER_H_

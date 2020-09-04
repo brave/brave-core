@@ -6,12 +6,14 @@
 #include "bat/ledger/internal/database/database_table.h"
 #include "bat/ledger/internal/ledger_impl.h"
 
-namespace braveledger_database {
+namespace ledger {
+namespace database {
 
-DatabaseTable::DatabaseTable(bat_ledger::LedgerImpl* ledger): ledger_(ledger) {
+DatabaseTable::DatabaseTable(LedgerImpl* ledger): ledger_(ledger) {
   DCHECK(ledger_);
 }
 
 DatabaseTable::~DatabaseTable() = default;
 
-}  // namespace braveledger_database
+}  // namespace database
+}  // namespace ledger

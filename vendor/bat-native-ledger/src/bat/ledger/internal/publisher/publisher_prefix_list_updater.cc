@@ -25,18 +25,19 @@ constexpr int64_t kMaxRetryAfterFailureDelay = 4 * base::Time::kSecondsPerHour;
 
 }  // namespace
 
-namespace braveledger_publisher {
+namespace ledger {
+namespace publisher {
 
 PublisherPrefixListUpdater::PublisherPrefixListUpdater(
-    bat_ledger::LedgerImpl* ledger)
+    LedgerImpl* ledger)
       : ledger_(ledger),
       rewards_server_(
-          std::make_unique<ledger::endpoint::RewardsServer>(ledger)) {}
+          std::make_unique<endpoint::RewardsServer>(ledger)) {}
 
 PublisherPrefixListUpdater::~PublisherPrefixListUpdater() = default;
 
 void PublisherPrefixListUpdater::StartAutoUpdate(
-    ledger::PublisherPrefixListUpdatedCallback callback) {
+    PublisherPrefixListUpdatedCallback callback) {
   on_updated_callback_ = callback;
   auto_update_ = true;
   if (!timer_.IsRunning()) {
@@ -70,9 +71,9 @@ void PublisherPrefixListUpdater::OnFetchTimerElapsed() {
 }
 
 void PublisherPrefixListUpdater::OnFetchCompleted(
-    const ledger::Result result,
+    const type::Result result,
     const std::string& body) {
-  if (result != ledger::Result::LEDGER_OK) {
+  if (result != type::Result::LEDGER_OK) {
     BLOG(0, "Invalid server response for publisher prefix list");
     StartFetchTimer(FROM_HERE, GetRetryAfterFailureDelay());
     return;
@@ -107,20 +108,20 @@ void PublisherPrefixListUpdater::OnFetchCompleted(
 }
 
 void PublisherPrefixListUpdater::OnPrefixListInserted(
-    const ledger::Result result) {
+    const type::Result result) {
   // At this point we have received a valid response from the server
   // and we've attempted to insert it into the database. Store the last
   // successful fetch time for calculation of next refresh interval.
   // In order to avoid unecessary server load, do not attempt to retry
   // using a failure delay if the database insert was unsuccessful.
   ledger_->state()->SetServerPublisherListStamp(
-      braveledger_time_util::GetCurrentTimeStamp());
+      util::GetCurrentTimeStamp());
 
   if (auto_update_) {
     StartFetchTimer(FROM_HERE, GetAutoUpdateDelay());
   }
 
-  if (result != ledger::Result::LEDGER_OK) {
+  if (result != type::Result::LEDGER_OK) {
     BLOG(0, "Error updating publisher prefix list table: " << result);
     return;
   }
@@ -133,7 +134,7 @@ void PublisherPrefixListUpdater::OnPrefixListInserted(
 base::TimeDelta PublisherPrefixListUpdater::GetAutoUpdateDelay() {
   uint64_t last_fetch_sec = ledger_->state()->GetServerPublisherListStamp();
   uint64_t interval_sec = ledger_->ledger_client()->GetUint64Option(
-      ledger::kOptionPublisherListRefreshInterval);
+      option::kPublisherListRefreshInterval);
 
   auto now = base::Time::Now();
   auto fetch_time = base::Time::FromDoubleT(
@@ -150,10 +151,11 @@ base::TimeDelta PublisherPrefixListUpdater::GetAutoUpdateDelay() {
 }
 
 base::TimeDelta PublisherPrefixListUpdater::GetRetryAfterFailureDelay() {
-  return braveledger_time_util::GetRandomizedDelayWithBackoff(
+  return util::GetRandomizedDelayWithBackoff(
       base::TimeDelta::FromSeconds(kRetryAfterFailureDelay),
       base::TimeDelta::FromSeconds(kMaxRetryAfterFailureDelay),
       retry_count_++);
 }
 
-}  // namespace braveledger_publisher
+}  // namespace publisher
+}  // namespace ledger

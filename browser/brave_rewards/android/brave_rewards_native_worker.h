@@ -26,7 +26,7 @@ class RewardsService;
 namespace chrome {
 namespace android {
 
-typedef std::map<uint64_t, ledger::PublisherInfoPtr> PublishersInfoMap;
+typedef std::map<uint64_t, ledger::type::PublisherInfoPtr> PublishersInfoMap;
 
 class BraveRewardsNativeWorker : public brave_rewards::RewardsServiceObserver,
     public brave_rewards::RewardsServicePrivateObserver,
@@ -42,7 +42,7 @@ class BraveRewardsNativeWorker : public brave_rewards::RewardsServiceObserver,
     void CreateWallet(JNIEnv* env,
         const base::android::JavaParamRef<jobject>& jcaller);
 
-    void OnCreateWallet(const ledger::Result result);
+    void OnCreateWallet(const ledger::type::Result result);
 
     void WalletExist(JNIEnv* env,
         const base::android::JavaParamRef<jobject>& jcaller);
@@ -183,7 +183,7 @@ class BraveRewardsNativeWorker : public brave_rewards::RewardsServiceObserver,
     void OnGetGetReconcileStamp(uint64_t timestamp);
 
     void OnGetAutoContributeProperties(
-        ledger::AutoContributePropertiesPtr properties);
+        ledger::type::AutoContributePropertiesPtr properties);
 
     void OnGetRewardsMainEnabled(bool enabled);
 
@@ -193,22 +193,22 @@ class BraveRewardsNativeWorker : public brave_rewards::RewardsServiceObserver,
 
     void OnWalletInitialized(
         brave_rewards::RewardsService* rewards_service,
-        const ledger::Result result) override;
+        const ledger::type::Result result) override;
 
     void OnPanelPublisherInfo(
         brave_rewards::RewardsService* rewards_service,
-        const ledger::Result result,
-        const ledger::PublisherInfo* info,
+        const ledger::type::Result result,
+        const ledger::type::PublisherInfo* info,
         uint64_t tabId) override;
 
     void OnGetCurrentBalanceReport(
         brave_rewards::RewardsService* rewards_service,
-        const ledger::Result result,
-        ledger::BalanceReportInfoPtr report);
+        const ledger::type::Result result,
+        ledger::type::BalanceReportInfoPtr report);
 
     void OnGetRewardsParameters(
         brave_rewards::RewardsService* rewards_service,
-        ledger::RewardsParametersPtr parameters);
+        ledger::type::RewardsParametersPtr parameters);
 
     void OnNotificationAdded(
       brave_rewards::RewardsNotificationService* rewards_notification_service,
@@ -227,10 +227,10 @@ class BraveRewardsNativeWorker : public brave_rewards::RewardsServiceObserver,
 
     void OnPromotionFinished(
         brave_rewards::RewardsService* rewards_service,
-        const ledger::Result result,
-        ledger::PromotionPtr promotion) override;
+        const ledger::type::Result result,
+        ledger::type::PromotionPtr promotion) override;
 
-    void OnGetRecurringTips(ledger::PublisherInfoList list);
+    void OnGetRecurringTips(ledger::type::PublisherInfoList list);
 
     void OnRewardsMainEnabled(brave_rewards::RewardsService* rewards_service,
         bool rewards_main_enabled) override;
@@ -239,46 +239,49 @@ class BraveRewardsNativeWorker : public brave_rewards::RewardsServiceObserver,
         const base::android::JavaParamRef<jobject>& jcaller);
 
     void OnClaimPromotion(
-        const ledger::Result result,
-        ledger::PromotionPtr promotion);
+        const ledger::type::Result result,
+        ledger::type::PromotionPtr promotion);
 
     void OnGetExternalWallet(
-        const ledger::Result result,
-        ledger::ExternalWalletPtr wallet);
+        const ledger::type::Result result,
+        ledger::type::ExternalWalletPtr wallet);
 
     void OnDisconnectWallet(
       brave_rewards::RewardsService* rewards_service,
-      const ledger::Result result,
+      const ledger::type::Result result,
       const std::string& wallet_type) override;
 
     void OnProcessRewardsPageUrl(
-        const ledger::Result result,
+        const ledger::type::Result result,
         const std::string& wallet_type,
         const std::string& action,
         const std::map<std::string, std::string>& args);
 
     void OnRecoverWallet(
         brave_rewards::RewardsService* rewards_service,
-        const ledger::Result result) override;
+        const ledger::type::Result result) override;
 
     void OnRefreshPublisher(
-        const ledger::PublisherStatus status,
+        const ledger::type::PublisherStatus status,
         const std::string& publisher_key);
 
  private:
     std::string StdStrStrMapToJsonString(
         const std::map<std::string, std::string>& args);
 
-    void OnBalance(const ledger::Result result, ledger::BalancePtr balance);
+    void OnBalance(
+        const ledger::type::Result result,
+        ledger::type::BalancePtr balance);
     JavaObjectWeakGlobalRef weak_java_brave_rewards_native_worker_;
     brave_rewards::RewardsService* brave_rewards_service_;
-    ledger::RewardsParameters parameters_;
-    ledger::Balance balance_;
-    ledger::AutoContributePropertiesPtr auto_contrib_properties_;
+    ledger::type::RewardsParameters parameters_;
+    ledger::type::Balance balance_;
+    ledger::type::AutoContributePropertiesPtr auto_contrib_properties_;
     PublishersInfoMap map_publishers_info_;
-    std::map<std::string, ledger::PublisherInfoPtr> map_recurrent_publishers_;
+    std::map<std::string, ledger::type::PublisherInfoPtr>
+      map_recurrent_publishers_;
     std::map<std::string, std::string> addresses_;
-    ledger::PromotionList promotions_;
+    ledger::type::PromotionList promotions_;
     base::WeakPtrFactory<BraveRewardsNativeWorker> weak_factory_;
 };
 }  // namespace android

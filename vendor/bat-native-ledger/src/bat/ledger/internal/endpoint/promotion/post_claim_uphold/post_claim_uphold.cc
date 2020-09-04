@@ -12,7 +12,7 @@
 #include "base/json/json_writer.h"
 #include "base/strings/string_number_conversions.h"
 #include "base/strings/stringprintf.h"
-#include "bat/ledger/internal/common/security_helper.h"
+#include "bat/ledger/internal/common/security_util.h"
 #include "bat/ledger/internal/endpoint/promotion/promotions_util.h"
 #include "bat/ledger/internal/ledger_impl.h"
 #include "bat/ledger/internal/uphold/uphold_util.h"
@@ -24,7 +24,7 @@ namespace ledger {
 namespace endpoint {
 namespace promotion {
 
-PostClaimUphold::PostClaimUphold(bat_ledger::LedgerImpl* ledger):
+PostClaimUphold::PostClaimUphold(LedgerImpl* ledger):
     ledger_(ledger) {
   DCHECK(ledger_);
 }
@@ -42,7 +42,7 @@ std::string PostClaimUphold::GetUrl() {
 
 std::string PostClaimUphold::GeneratePayload(const double user_funds) {
   auto wallets = ledger_->ledger_client()->GetExternalWallets();
-  auto wallet_ptr = braveledger_uphold::GetWallet(std::move(wallets));
+  auto wallet_ptr = uphold::GetWallet(std::move(wallets));
   if (!wallet_ptr) {
     BLOG(0, "Wallet is null");
     return "";
@@ -59,12 +59,12 @@ std::string PostClaimUphold::GeneratePayload(const double user_funds) {
   base::JSONWriter::Write(octets, &octets_json);
 
   const std::string header_digest =
-      braveledger_helper::Security::DigestValue(octets_json);
+      util::Security::DigestValue(octets_json);
 
   std::vector<std::map<std::string, std::string>> headers;
   headers.push_back({{"digest", header_digest}});
 
-  const std::string header_signature = braveledger_helper::Security::Sign(
+  const std::string header_signature = util::Security::Sign(
       headers,
       "primary",
       ledger_->state()->GetRecoverySeed());
@@ -92,37 +92,37 @@ std::string PostClaimUphold::GeneratePayload(const double user_funds) {
   return json;
 }
 
-ledger::Result PostClaimUphold::CheckStatusCode(const int status_code) {
+type::Result PostClaimUphold::CheckStatusCode(const int status_code) {
   if (status_code == net::HTTP_BAD_REQUEST) {
     BLOG(0, "Invalid request");
-    return ledger::Result::LEDGER_ERROR;
+    return type::Result::LEDGER_ERROR;
   }
 
   if (status_code == net::HTTP_FORBIDDEN) {
     BLOG(0, "Forbidden");
-    return ledger::Result::LEDGER_ERROR;
+    return type::Result::LEDGER_ERROR;
   }
 
   if (status_code == net::HTTP_NOT_FOUND) {
     BLOG(0, "Not found");
-    return ledger::Result::NOT_FOUND;
+    return type::Result::NOT_FOUND;
   }
 
   if (status_code == net::HTTP_CONFLICT) {
     BLOG(0, "Not found");
-    return ledger::Result::ALREADY_EXISTS;
+    return type::Result::ALREADY_EXISTS;
   }
 
   if (status_code == net::HTTP_INTERNAL_SERVER_ERROR) {
     BLOG(0, "Internal server error");
-    return ledger::Result::LEDGER_ERROR;
+    return type::Result::LEDGER_ERROR;
   }
 
   if (status_code != net::HTTP_OK) {
-    return ledger::Result::LEDGER_ERROR;
+    return type::Result::LEDGER_ERROR;
   }
 
-  return ledger::Result::LEDGER_OK;
+  return type::Result::LEDGER_OK;
 }
 
 void PostClaimUphold::Request(
@@ -134,16 +134,16 @@ void PostClaimUphold::Request(
       callback);
   const std::string& payload = GeneratePayload(user_funds);
 
-  auto request = ledger::UrlRequest::New();
+  auto request = type::UrlRequest::New();
   request->url = GetUrl();
   request->content = payload;
   request->content_type = "application/json; charset=utf-8";
-  request->method = ledger::UrlMethod::POST;
+  request->method = type::UrlMethod::POST;
   ledger_->LoadURL(std::move(request), url_callback);
 }
 
 void PostClaimUphold::OnRequest(
-    const ledger::UrlResponse& response,
+    const type::UrlResponse& response,
     PostClaimUpholdCallback callback) {
   ledger::LogUrlResponse(__func__, response);
   callback(CheckStatusCode(response.status_code));

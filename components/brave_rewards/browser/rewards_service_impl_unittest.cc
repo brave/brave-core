@@ -25,29 +25,30 @@ using ::testing::_;
 class MockRewardsServiceObserver : public RewardsServiceObserver {
  public:
   MOCK_METHOD2(OnWalletInitialized,
-      void(RewardsService*, const ledger::Result));
+      void(RewardsService*, const ledger::type::Result));
   MOCK_METHOD3(OnFetchPromotions, void(RewardsService*,
-      const ledger::Result result,
-      const ledger::PromotionList& list));
-  MOCK_METHOD2(OnRecoverWallet, void(RewardsService*, const ledger::Result));
+      const ledger::type::Result result,
+      const ledger::type::PromotionList& list));
+  MOCK_METHOD2(OnRecoverWallet,
+      void(RewardsService*, const ledger::type::Result));
   MOCK_METHOD3(OnPromotionFinished, void(
       RewardsService*,
-      const ledger::Result,
-      ledger::PromotionPtr));
+      const ledger::type::Result,
+      ledger::type::PromotionPtr));
   MOCK_METHOD1(OnContentSiteUpdated, void(RewardsService*));
   MOCK_METHOD6(OnReconcileComplete, void(
       RewardsService*,
-      const ledger::Result,
+      const ledger::type::Result,
       const std::string&,
       const double,
-      const ledger::RewardsType,
-      const ledger::ContributionProcessor));
+      const ledger::type::RewardsType,
+      const ledger::type::ContributionProcessor));
   MOCK_METHOD2(OnGetRecurringTips,
-      void(RewardsService*, ledger::PublisherInfoList list));
+      void(RewardsService*, ledger::type::PublisherInfoList list));
   MOCK_METHOD2(OnPublisherBanner,
-      void(RewardsService*, ledger::PublisherBannerPtr banner));
+      void(RewardsService*, ledger::type::PublisherBannerPtr banner));
   MOCK_METHOD4(OnPanelPublisherInfo,
-      void(RewardsService*, int, ledger::PublisherInfoPtr, uint64_t));
+      void(RewardsService*, int, ledger::type::PublisherInfoPtr, uint64_t));
   MOCK_METHOD2(OnAdsEnabled, void(RewardsService*, bool));
 };
 

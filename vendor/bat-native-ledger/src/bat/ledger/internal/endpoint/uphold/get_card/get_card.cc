@@ -21,7 +21,7 @@ namespace ledger {
 namespace endpoint {
 namespace uphold {
 
-GetCard::GetCard(bat_ledger::LedgerImpl* ledger):
+GetCard::GetCard(LedgerImpl* ledger):
     ledger_(ledger) {
   DCHECK(ledger_);
 }
@@ -32,21 +32,21 @@ std::string GetCard::GetUrl(const std::string& address) {
   return GetServerUrl("/v0/me/cards/" + address);
 }
 
-ledger::Result GetCard::CheckStatusCode(const int status_code) {
+type::Result GetCard::CheckStatusCode(const int status_code) {
   if (status_code == net::HTTP_UNAUTHORIZED ||
       status_code == net::HTTP_NOT_FOUND ||
       status_code == net::HTTP_FORBIDDEN) {
-    return ledger::Result::EXPIRED_TOKEN;
+    return type::Result::EXPIRED_TOKEN;
   }
 
   if (status_code != net::HTTP_OK) {
-    return ledger::Result::LEDGER_ERROR;
+    return type::Result::LEDGER_ERROR;
   }
 
-  return ledger::Result::LEDGER_OK;
+  return type::Result::LEDGER_OK;
 }
 
-ledger::Result GetCard::ParseBody(
+type::Result GetCard::ParseBody(
     const std::string& body,
     double* available) {
   DCHECK(available);
@@ -54,19 +54,19 @@ ledger::Result GetCard::ParseBody(
   base::Optional<base::Value> value = base::JSONReader::Read(body);
   if (!value || !value->is_dict()) {
     BLOG(0, "Invalid JSON");
-    return ledger::Result::LEDGER_ERROR;
+    return type::Result::LEDGER_ERROR;
   }
 
   base::DictionaryValue* dictionary = nullptr;
   if (!value->GetAsDictionary(&dictionary)) {
     BLOG(0, "Invalid JSON");
-    return ledger::Result::LEDGER_ERROR;
+    return type::Result::LEDGER_ERROR;
   }
 
   const auto* available_str = dictionary->FindStringKey("available");
   if (!available_str) {
     BLOG(0, "Missing available");
-    return ledger::Result::LEDGER_ERROR;
+    return type::Result::LEDGER_ERROR;
   }
 
   const bool success = base::StringToDouble(*available_str, available);
@@ -74,7 +74,7 @@ ledger::Result GetCard::ParseBody(
     *available = 0.0;
   }
 
-  return ledger::Result::LEDGER_OK;
+  return type::Result::LEDGER_OK;
 }
 
 void GetCard::Request(
@@ -85,20 +85,20 @@ void GetCard::Request(
       this,
       _1,
       callback);
-  auto request = ledger::UrlRequest::New();
+  auto request = type::UrlRequest::New();
   request->url = GetUrl(address);
   request->headers = RequestAuthorization(token);
   ledger_->LoadURL(std::move(request), url_callback);
 }
 
 void GetCard::OnRequest(
-    const ledger::UrlResponse& response,
+    const type::UrlResponse& response,
     GetCardCallback callback) {
   ledger::LogUrlResponse(__func__, response);
 
-  ledger::Result result = CheckStatusCode(response.status_code);
+  type::Result result = CheckStatusCode(response.status_code);
 
-  if (result != ledger::Result::LEDGER_OK) {
+  if (result != type::Result::LEDGER_OK) {
     callback(result, 0.0);
     return;
   }

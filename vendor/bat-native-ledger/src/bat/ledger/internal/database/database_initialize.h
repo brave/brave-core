@@ -12,15 +12,14 @@
 #include "bat/ledger/ledger.h"
 #include "bat/ledger/internal/database/database_migration.h"
 
-namespace bat_ledger {
+namespace ledger {
 class LedgerImpl;
-}
 
-namespace braveledger_database {
+namespace database {
 
 class DatabaseInitialize {
  public:
-  explicit DatabaseInitialize(bat_ledger::LedgerImpl* ledger);
+  explicit DatabaseInitialize(LedgerImpl* ledger);
   ~DatabaseInitialize();
 
   void Start(
@@ -29,7 +28,7 @@ class DatabaseInitialize {
 
  private:
   void OnInitialize(
-      ledger::DBCommandResponsePtr response,
+      type::DBCommandResponsePtr response,
       const bool execute_create_script,
       ledger::ResultCallback callback);
 
@@ -45,14 +44,15 @@ class DatabaseInitialize {
       ledger::ResultCallback callback);
 
   void OnExecuteCreateScript(
-      ledger::DBCommandResponsePtr response,
+      type::DBCommandResponsePtr response,
       const int table_version,
       ledger::ResultCallback callback);
 
   std::unique_ptr<ledger::database::DatabaseMigration> migration_;
-  bat_ledger::LedgerImpl* ledger_;  // NOT OWNED
+  LedgerImpl* ledger_;  // NOT OWNED
 };
 
-}  // namespace braveledger_database
+}  // namespace database
+}  // namespace ledger
 
 #endif  // BRAVELEDGER_DATABASE_DATABASE_INITIALIZE_H_

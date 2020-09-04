@@ -12,9 +12,10 @@
 #include "bat/ledger/internal/state/state_keys.h"
 #include "bat/ledger/internal/state/state_migration_v4.h"
 
-namespace braveledger_state {
+namespace ledger {
+namespace state {
 
-StateMigrationV5::StateMigrationV5(bat_ledger::LedgerImpl* ledger) :
+StateMigrationV5::StateMigrationV5(LedgerImpl* ledger) :
     ledger_(ledger) {
   DCHECK(ledger_);
 }
@@ -23,9 +24,9 @@ StateMigrationV5::~StateMigrationV5() = default;
 
 void StateMigrationV5::Migrate(ledger::ResultCallback callback) {
   const auto seed = ledger_->ledger_client()->GetStringState(
-      ledger::kStateRecoverySeed);
+      kRecoverySeed);
   if (seed.empty()) {
-    callback(ledger::Result::LEDGER_OK);
+    callback(type::Result::LEDGER_OK);
     return;
   }
 
@@ -33,41 +34,43 @@ void StateMigrationV5::Migrate(ledger::ResultCallback callback) {
 
   // Auto contribute
   auto enabled = ledger_->ledger_client()->GetBooleanState(
-      ledger::kStateAutoContributeEnabled);
+      kAutoContributeEnabled);
   events.insert(std::make_pair(
-      ledger::kStateAutoContributeEnabled,
+      kAutoContributeEnabled,
       std::to_string(enabled)));
 
   // Seed
   if (seed.size() > 1) {
     const std::string event_string = seed.substr(0, 2);
-    events.insert(std::make_pair(ledger::kStateRecoverySeed, event_string));
+    events.insert(std::make_pair(kRecoverySeed, event_string));
   }
 
   // Payment id
   events.insert(std::make_pair(
-      ledger::kStatePaymentId,
-      ledger_->ledger_client()->GetStringState(ledger::kStatePaymentId)));
+      kPaymentId,
+      ledger_->ledger_client()->GetStringState(kPaymentId)));
 
   // Enabled
-  enabled = ledger_->ledger_client()->GetBooleanState(ledger::kStateEnabled);
-  events.insert(std::make_pair(ledger::kStateEnabled, std::to_string(enabled)));
+  enabled = ledger_->ledger_client()->GetBooleanState(kEnabled);
+  events.insert(
+      std::make_pair(kEnabled, std::to_string(enabled)));
 
   // Next reconcile
   const auto reconcile_stamp = ledger_->ledger_client()->GetUint64State(
-      ledger::kStateNextReconcileStamp);
+      kNextReconcileStamp);
   events.insert(std::make_pair(
-      ledger::kStateNextReconcileStamp,
+      kNextReconcileStamp,
       std::to_string(reconcile_stamp)));
 
   // Creation stamp
   const auto creation_stamp =
-      ledger_->ledger_client()->GetUint64State(ledger::kStateCreationStamp);
+      ledger_->ledger_client()->GetUint64State(kCreationStamp);
   events.insert(std::make_pair(
-      ledger::kStateCreationStamp,
+      kCreationStamp,
       std::to_string(creation_stamp)));
 
   ledger_->database()->SaveEventLogs(events, callback);
 }
 
-}  // namespace braveledger_state
+}  // namespace state
+}  // namespace ledger

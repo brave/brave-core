@@ -28,7 +28,7 @@ class BraveRewardsCreateWalletFunction : public ExtensionFunction {
   ResponseAction Run() override;
  private:
   base::WeakPtrFactory<BraveRewardsCreateWalletFunction> weak_factory_;
-  void OnCreateWallet(const ledger::Result result);
+  void OnCreateWallet(const ledger::type::Result result);
 };
 
 class BraveRewardsOpenBrowserActionUIFunction :
@@ -65,7 +65,7 @@ class BraveRewardsTipTwitterUserFunction
 
  private:
   base::WeakPtrFactory<BraveRewardsTipTwitterUserFunction> weak_factory_;
-  void OnTwitterPublisherInfoSaved(ledger::PublisherInfoPtr publisher);
+  void OnTwitterPublisherInfoSaved(ledger::type::PublisherInfoPtr publisher);
 };
 
 class BraveRewardsTipGitHubUserFunction : public ExtensionFunction {
@@ -79,7 +79,7 @@ class BraveRewardsTipGitHubUserFunction : public ExtensionFunction {
   ResponseAction Run() override;
  private:
   base::WeakPtrFactory<BraveRewardsTipGitHubUserFunction> weak_factory_;
-  void OnGitHubPublisherInfoSaved(ledger::PublisherInfoPtr publisher);
+  void OnGitHubPublisherInfoSaved(ledger::type::PublisherInfoPtr publisher);
 };
 
 class BraveRewardsTipRedditUserFunction : public ExtensionFunction {
@@ -93,7 +93,7 @@ class BraveRewardsTipRedditUserFunction : public ExtensionFunction {
   ResponseAction Run() override;
  private:
   base::WeakPtrFactory<BraveRewardsTipRedditUserFunction> weak_factory_;
-  void OnRedditPublisherInfoSaved(ledger::PublisherInfoPtr publisher);
+  void OnRedditPublisherInfoSaved(ledger::type::PublisherInfoPtr publisher);
 };
 
 class BraveRewardsGetPublisherDataFunction : public ExtensionFunction {
@@ -116,7 +116,7 @@ class BraveRewardsGetRewardsParametersFunction : public ExtensionFunction {
   ResponseAction Run() override;
 
  private:
-  void OnGet(ledger::RewardsParametersPtr parameters);
+  void OnGet(ledger::type::RewardsParametersPtr parameters);
 };
 
 class BraveRewardsGetBalanceReportFunction : public ExtensionFunction {
@@ -130,8 +130,8 @@ class BraveRewardsGetBalanceReportFunction : public ExtensionFunction {
 
  private:
   void OnBalanceReport(
-      const ledger::Result result,
-      ledger::BalanceReportInfoPtr report);
+      const ledger::type::Result result,
+      ledger::type::BalanceReportInfoPtr report);
 };
 
 class BraveRewardsIncludeInAutoContributionFunction : public ExtensionFunction {
@@ -166,7 +166,7 @@ class BraveRewardsClaimPromotionFunction : public ExtensionFunction {
  private:
   void OnClaimPromotion(
       const std::string& promotion_id,
-      const ledger::Result result,
+      const ledger::type::Result result,
       const std::string& captcha_image,
       const std::string& hint,
       const std::string& captcha_id);
@@ -184,8 +184,8 @@ class BraveRewardsAttestPromotionFunction : public ExtensionFunction {
  private:
   void OnAttestPromotion(
       const std::string& promotion_id,
-      const ledger::Result result,
-      ledger::PromotionPtr promotion);
+      const ledger::type::Result result,
+      ledger::type::PromotionPtr promotion);
 };
 
 class BraveRewardsGetPendingContributionsTotalFunction
@@ -284,7 +284,7 @@ class BraveRewardsGetRecurringTipsFunction : public ExtensionFunction {
   ResponseAction Run() override;
 
  private:
-    void OnGetRecurringTips(ledger::PublisherInfoList list);
+    void OnGetRecurringTips(ledger::type::PublisherInfoList list);
 };
 
 class BraveRewardsGetPublisherBannerFunction : public ExtensionFunction {
@@ -298,7 +298,7 @@ class BraveRewardsGetPublisherBannerFunction : public ExtensionFunction {
   ResponseAction Run() override;
 
  private:
-  void OnPublisherBanner(ledger::PublisherBannerPtr banner);
+  void OnPublisherBanner(ledger::type::PublisherBannerPtr banner);
 };
 
 class BraveRewardsRefreshPublisherFunction : public ExtensionFunction {
@@ -312,7 +312,7 @@ class BraveRewardsRefreshPublisherFunction : public ExtensionFunction {
 
  private:
   void OnRefreshPublisher(
-      const ledger::PublisherStatus status,
+      const ledger::type::PublisherStatus status,
       const std::string& publisher_key);
 };
 
@@ -353,8 +353,8 @@ class BraveRewardsFetchBalanceFunction : public ExtensionFunction {
 
  private:
   void OnBalance(
-      const ledger::Result result,
-      ledger::BalancePtr balance);
+      const ledger::type::Result result,
+      ledger::type::BalancePtr balance);
 };
 
 class BraveRewardsGetExternalWalletFunction : public ExtensionFunction {
@@ -368,8 +368,8 @@ class BraveRewardsGetExternalWalletFunction : public ExtensionFunction {
 
  private:
   void OnExternalWalet(
-      const ledger::Result result,
-      ledger::ExternalWalletPtr wallet);
+      const ledger::type::Result result,
+      ledger::type::ExternalWalletPtr wallet);
 };
 
 class BraveRewardsDisconnectWalletFunction : public ExtensionFunction {
@@ -455,7 +455,7 @@ class BraveRewardsGetAnonWalletStatusFunction
   ResponseAction Run() override;
 
  private:
-  void OnGetAnonWalletStatus(const ledger::Result result);
+  void OnGetAnonWalletStatus(const ledger::type::Result result);
 };
 
 class BraveRewardsIsInitializedFunction : public ExtensionFunction {

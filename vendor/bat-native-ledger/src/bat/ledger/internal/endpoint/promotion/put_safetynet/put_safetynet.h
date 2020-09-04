@@ -34,19 +34,17 @@
 //   "code": 401
 // }
 
-namespace bat_ledger {
-class LedgerImpl;
-}
-
 namespace ledger {
+class LedgerImpl;
+
 namespace endpoint {
 namespace promotion {
 
-using PutSafetynetCallback = std::function<void(const ledger::Result result)>;
+using PutSafetynetCallback = std::function<void(const type::Result result)>;
 
 class PutSafetynet {
  public:
-  explicit PutSafetynet(bat_ledger::LedgerImpl* ledger);
+  explicit PutSafetynet(LedgerImpl* ledger);
   ~PutSafetynet();
 
   void Request(
@@ -59,13 +57,13 @@ class PutSafetynet {
 
   std::string GeneratePayload(const std::string& token);
 
-  ledger::Result CheckStatusCode(const int status_code);
+  type::Result CheckStatusCode(const int status_code);
 
   void OnRequest(
-      const ledger::UrlResponse& response,
+      const type::UrlResponse& response,
       PutSafetynetCallback callback);
 
-  bat_ledger::LedgerImpl* ledger_;  // NOT OWNED
+  LedgerImpl* ledger_;  // NOT OWNED
 };
 
 }  // namespace promotion

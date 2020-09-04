@@ -16,15 +16,14 @@
 #include "base/timer/timer.h"
 #include "bat/ledger/ledger.h"
 
-namespace bat_ledger {
+namespace ledger {
 class LedgerImpl;
-}
 
-namespace braveledger_contribution {
+namespace contribution {
 
 class Unverified {
  public:
-  explicit Unverified(bat_ledger::LedgerImpl* ledger);
+  explicit Unverified(LedgerImpl* ledger);
 
   ~Unverified();
 
@@ -32,32 +31,33 @@ class Unverified {
 
  private:
   void WasPublisherProcessed(
-      const ledger::Result result,
+      const type::Result result,
       const std::string& publisher_key,
       const std::string& name);
 
   void ProcessedPublisherSaved(
-      const ledger::Result result,
+      const type::Result result,
       const std::string& publisher_key,
       const std::string& name);
 
-  void OnRemovePendingContribution(ledger::Result result);
+  void OnRemovePendingContribution(type::Result result);
 
   void OnContributeUnverifiedBalance(
-      ledger::Result result,
-      ledger::BalancePtr properties);
+      type::Result result,
+      type::BalancePtr properties);
 
   void OnContributeUnverifiedPublishers(
       double balance,
-      const ledger::PendingContributionInfoList& list);
+      const type::PendingContributionInfoList& list);
 
   void QueueSaved(
-      const ledger::Result result,
+      const type::Result result,
       const uint64_t pending_contribution_id);
 
-  bat_ledger::LedgerImpl* ledger_;  // NOT OWNED
+  LedgerImpl* ledger_;  // NOT OWNED
   base::OneShotTimer unverified_publishers_timer_;
 };
 
-}  // namespace braveledger_contribution
+}  // namespace contribution
+}  // namespace ledger
 #endif  // BRAVELEDGER_CONTRIBUTION_UNVERIFIED_H_

@@ -12,6 +12,7 @@
 #include "bat/ledger/internal/legacy/bat_helper.h"
 #include "bat/ledger/internal/legacy/media/helper.h"
 #include "bat/ledger/internal/legacy/media/youtube.h"
+#include "bat/ledger/internal/legacy/static_values.h"
 #include "net/http/http_status_code.h"
 
 using std::placeholders::_1;
@@ -20,7 +21,7 @@ using std::placeholders::_3;
 
 namespace braveledger_media {
 
-YouTube::YouTube(bat_ledger::LedgerImpl* ledger):
+YouTube::YouTube(ledger::LedgerImpl* ledger):
   ledger_(ledger) {
 }
 
@@ -318,20 +319,20 @@ std::string YouTube::GetUserFromUrl(const std::string& path) {
   return params[0];
 }
 
-void YouTube::OnMediaActivityError(const ledger::VisitData& visit_data,
+void YouTube::OnMediaActivityError(const ledger::type::VisitData& visit_data,
                                         uint64_t window_id) {
   std::string url = YOUTUBE_TLD;
   std::string name = YOUTUBE_MEDIA_TYPE;
 
   if (!url.empty()) {
-    ledger::VisitData new_visit_data;
+    ledger::type::VisitData new_visit_data;
     new_visit_data.domain = url;
     new_visit_data.url = "https://" + url;
     new_visit_data.path = "/";
     new_visit_data.name = name;
 
     ledger_->publisher()->GetPublisherActivityFromUrl(
-        window_id, ledger::VisitData::New(new_visit_data), std::string());
+        window_id, ledger::type::VisitData::New(new_visit_data), std::string());
   } else {
       BLOG(0, "Media activity error for " << YOUTUBE_MEDIA_TYPE << " (name: "
           << name << ", url: " << visit_data.url << ")");
@@ -339,7 +340,7 @@ void YouTube::OnMediaActivityError(const ledger::VisitData& visit_data,
 }
 
 void YouTube::ProcessMedia(const std::map<std::string, std::string>& parts,
-                                const ledger::VisitData& visit_data) {
+                                const ledger::type::VisitData& visit_data) {
   std::string media_id = GetMediaIdFromParts(parts);
   if (media_id.empty()) {
     return;
@@ -364,7 +365,7 @@ void YouTube::ProcessMedia(const std::map<std::string, std::string>& parts,
 
 void YouTube::ProcessActivityFromUrl(
     uint64_t window_id,
-    const ledger::VisitData& visit_data) {
+    const ledger::type::VisitData& visit_data) {
   if (visit_data.path.find("/watch?") != std::string::npos) {
     WatchPath(window_id, visit_data);
     return;
@@ -385,7 +386,7 @@ void YouTube::ProcessActivityFromUrl(
                         visit_data,
                         std::string(),
                         true,
-                        ledger::Result::NOT_FOUND,
+                        ledger::type::Result::NOT_FOUND,
                         nullptr);
     return;
   }
@@ -397,12 +398,12 @@ void YouTube::OnMediaPublisherInfo(
     const std::string& media_id,
     const std::string& media_key,
     const uint64_t duration,
-    const ledger::VisitData& visit_data,
+    const ledger::type::VisitData& visit_data,
     const uint64_t window_id,
-    ledger::Result result,
-    ledger::PublisherInfoPtr publisher_info) {
-  if (result != ledger::Result::LEDGER_OK &&
-      result != ledger::Result::NOT_FOUND) {
+    ledger::type::Result result,
+    ledger::type::PublisherInfoPtr publisher_info) {
+  if (result != ledger::type::Result::LEDGER_OK &&
+      result != ledger::type::Result::NOT_FOUND) {
     BLOG(0, "Failed to get publisher info");
     return;
   }
@@ -425,7 +426,7 @@ void YouTube::OnMediaPublisherInfo(
 
     FetchDataFromUrl(url, callback);
   } else {
-    ledger::VisitData new_visit_data;
+    ledger::type::VisitData new_visit_data;
     new_visit_data.name = publisher_info->name;
     new_visit_data.url = publisher_info->url;
     new_visit_data.provider = YOUTUBE_MEDIA_TYPE;
@@ -437,7 +438,7 @@ void YouTube::OnMediaPublisherInfo(
         new_visit_data,
         duration,
         window_id,
-        [](ledger::Result, ledger::PublisherInfoPtr) {});
+        [](ledger::type::Result, ledger::type::PublisherInfoPtr) {});
   }
 }
 
@@ -445,9 +446,9 @@ void YouTube::OnEmbedResponse(
     const uint64_t duration,
     const std::string& media_key,
     const std::string& media_url,
-    const ledger::VisitData& visit_data,
+    const ledger::type::VisitData& visit_data,
     const uint64_t window_id,
-    const ledger::UrlResponse& response) {
+    const ledger::type::UrlResponse& response) {
   if (response.status_code != net::HTTP_OK) {
     // embedding disabled, need to scrape
     if (response.status_code == net::HTTP_UNAUTHORIZED) {
@@ -494,9 +495,9 @@ void YouTube::OnPublisherPage(
     const std::string& media_key,
     std::string publisher_url,
     std::string publisher_name,
-    const ledger::VisitData& visit_data,
+    const ledger::type::VisitData& visit_data,
     const uint64_t window_id,
-    const ledger::UrlResponse& response) {
+    const ledger::type::UrlResponse& response) {
   if (response.status_code != net::HTTP_OK && publisher_name.empty()) {
     OnMediaActivityError(visit_data, window_id);
     return;
@@ -529,7 +530,7 @@ void YouTube::SavePublisherInfo(const uint64_t duration,
                                      const std::string& media_key,
                                      const std::string& publisher_url,
                                      const std::string& publisher_name,
-                                     const ledger::VisitData& visit_data,
+                                     const ledger::type::VisitData& visit_data,
                                      const uint64_t window_id,
                                      const std::string& fav_icon,
                                      const std::string& channel_id) {
@@ -547,7 +548,7 @@ void YouTube::SavePublisherInfo(const uint64_t duration,
     return;
   }
 
-  ledger::VisitData new_visit_data;
+  ledger::type::VisitData new_visit_data;
   if (fav_icon.length() > 0) {
     new_visit_data.favicon_url = fav_icon;
   }
@@ -561,27 +562,27 @@ void YouTube::SavePublisherInfo(const uint64_t duration,
       new_visit_data,
       duration,
       window_id,
-      [](ledger::Result, ledger::PublisherInfoPtr) {});
+      [](ledger::type::Result, ledger::type::PublisherInfoPtr) {});
 
   if (!media_key.empty()) {
     ledger_->database()->SaveMediaPublisherInfo(
         media_key,
         publisher_id,
-        [](const ledger::Result) {});
+        [](const ledger::type::Result) {});
   }
 }
 
 void YouTube::FetchDataFromUrl(
     const std::string& url,
-    ledger::LoadURLCallback callback) {
-  auto request = ledger::UrlRequest::New();
+    ledger::client::LoadURLCallback callback) {
+  auto request = ledger::type::UrlRequest::New();
   request->url = url;
   request->skip_log = true;
   ledger_->LoadURL(std::move(request), callback);
 }
 
 void YouTube::WatchPath(uint64_t window_id,
-                             const ledger::VisitData& visit_data) {
+                             const ledger::type::VisitData& visit_data) {
   std::string media_id = GetMediaIdFromUrl(visit_data.url);
   std::string media_key = braveledger_media::GetMediaKey(media_id,
                                                          YOUTUBE_MEDIA_TYPE);
@@ -603,19 +604,19 @@ void YouTube::WatchPath(uint64_t window_id,
 }
 
 void YouTube::OnMediaPublisherActivity(
-    ledger::Result result,
-    ledger::PublisherInfoPtr info,
+    ledger::type::Result result,
+    ledger::type::PublisherInfoPtr info,
     uint64_t window_id,
-    const ledger::VisitData& visit_data,
+    const ledger::type::VisitData& visit_data,
     const std::string& media_key,
     const std::string& media_id) {
-  if (result != ledger::Result::LEDGER_OK &&
-      result != ledger::Result::NOT_FOUND) {
+  if (result != ledger::type::Result::LEDGER_OK &&
+      result != ledger::type::Result::NOT_FOUND) {
     OnMediaActivityError(visit_data, window_id);
     return;
   }
 
-  if (!info || result == ledger::Result::NOT_FOUND) {
+  if (!info || result == ledger::type::Result::NOT_FOUND) {
     OnMediaPublisherInfo(media_id,
                          media_key,
                          0,
@@ -633,12 +634,12 @@ void YouTube::OnMediaPublisherActivity(
 
 void YouTube::GetPublisherPanleInfo(
     uint64_t window_id,
-    const ledger::VisitData& visit_data,
+    const ledger::type::VisitData& visit_data,
     const std::string& publisher_key,
     bool is_custom_path) {
   auto filter = ledger_->publisher()->CreateActivityFilter(
     publisher_key,
-    ledger::ExcludeFilter::FILTER_ALL,
+    ledger::type::ExcludeFilter::FILTER_ALL,
     false,
     ledger_->state()->GetReconcileStamp(),
     true,
@@ -656,12 +657,12 @@ void YouTube::GetPublisherPanleInfo(
 
 void YouTube::OnPublisherPanleInfo(
     uint64_t window_id,
-    const ledger::VisitData& visit_data,
+    const ledger::type::VisitData& visit_data,
     const std::string& publisher_key,
     bool is_custom_path,
-    ledger::Result result,
-    ledger::PublisherInfoPtr info) {
-  if (!info || result == ledger::Result::NOT_FOUND) {
+    ledger::type::Result result,
+    ledger::type::PublisherInfoPtr info) {
+  if (!info || result == ledger::type::Result::NOT_FOUND) {
     FetchDataFromUrl(visit_data.url,
                      std::bind(&YouTube::GetChannelHeadlineVideo,
                                this,
@@ -680,9 +681,9 @@ void YouTube::OnPublisherPanleInfo(
 // TODO(nejczdovc): name can be better
 void YouTube::GetChannelHeadlineVideo(
     uint64_t window_id,
-    const ledger::VisitData& visit_data,
+    const ledger::type::VisitData& visit_data,
     bool is_custom_path,
-    const ledger::UrlResponse& response) {
+    const ledger::type::UrlResponse& response) {
   if (response.status_code != net::HTTP_OK) {
     OnMediaActivityError(visit_data, window_id);
     return;
@@ -706,7 +707,7 @@ void YouTube::GetChannelHeadlineVideo(
     std::string title = GetNameFromChannel(response.body);
     std::string favicon = GetFavIconUrl(response.body);
     std::string channel_id = GetChannelIdFromCustomPathPage(response.body);
-    ledger::VisitData new_visit_data;
+    ledger::type::VisitData new_visit_data;
     new_visit_data.path = "/channel/" + channel_id;
     GetPublisherPanleInfo(window_id,
                           new_visit_data,
@@ -718,7 +719,7 @@ void YouTube::GetChannelHeadlineVideo(
 }
 
 void YouTube::ChannelPath(uint64_t window_id,
-                               const ledger::VisitData& visit_data) {
+                               const ledger::type::VisitData& visit_data) {
   std::string key = GetPublisherKeyFromUrl(visit_data.path);
   if (!key.empty()) {
     std::string publisher_key = GetPublisherKey(key);
@@ -732,7 +733,7 @@ void YouTube::ChannelPath(uint64_t window_id,
 }
 
 void YouTube::UserPath(uint64_t window_id,
-                            const ledger::VisitData& visit_data) {
+                            const ledger::type::VisitData& visit_data) {
   std::string user = GetUserFromUrl(visit_data.path);
 
   if (user.empty()) {
@@ -754,17 +755,17 @@ void YouTube::UserPath(uint64_t window_id,
 
 void YouTube::OnUserActivity(
     uint64_t window_id,
-    const ledger::VisitData& visit_data,
+    const ledger::type::VisitData& visit_data,
     const std::string& media_key,
-    ledger::Result result,
-    ledger::PublisherInfoPtr info) {
-  if (result != ledger::Result::LEDGER_OK  &&
-      result != ledger::Result::NOT_FOUND) {
+    ledger::type::Result result,
+    ledger::type::PublisherInfoPtr info) {
+  if (result != ledger::type::Result::LEDGER_OK  &&
+      result != ledger::type::Result::NOT_FOUND) {
     OnMediaActivityError(visit_data, window_id);
     return;
   }
 
-  if (!info || result == ledger::Result::NOT_FOUND) {
+  if (!info || result == ledger::type::Result::NOT_FOUND) {
     FetchDataFromUrl(visit_data.url,
                      std::bind(&YouTube::OnChannelIdForUser,
                                this,
@@ -783,9 +784,9 @@ void YouTube::OnUserActivity(
 
 void YouTube::OnChannelIdForUser(
     uint64_t window_id,
-    const ledger::VisitData& visit_data,
+    const ledger::type::VisitData& visit_data,
     const std::string& media_key,
-    const ledger::UrlResponse& response) {
+    const ledger::type::UrlResponse& response) {
   std::string channelId = GetChannelId(response.body);
   if (!channelId.empty()) {
     std::string path = "/channel/" + channelId;
@@ -795,9 +796,9 @@ void YouTube::OnChannelIdForUser(
     ledger_->database()->SaveMediaPublisherInfo(
         media_key,
         publisher_key,
-        [](const ledger::Result) {});
+        [](const ledger::type::Result) {});
 
-    ledger::VisitData new_visit_data;
+    ledger::type::VisitData new_visit_data;
     new_visit_data.path = path;
     new_visit_data.url = url;
     new_visit_data.name = std::string();

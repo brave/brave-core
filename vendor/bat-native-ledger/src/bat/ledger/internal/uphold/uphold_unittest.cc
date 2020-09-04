@@ -19,7 +19,8 @@ using ::testing::_;
 using std::placeholders::_1;
 using std::placeholders::_2;
 
-namespace braveledger_uphold {
+namespace ledger {
+namespace uphold {
 
 class UpholdTest : public testing::Test {
  private:
@@ -27,13 +28,13 @@ class UpholdTest : public testing::Test {
 
  protected:
   std::unique_ptr<ledger::MockLedgerClient> mock_ledger_client_;
-  std::unique_ptr<bat_ledger::MockLedgerImpl> mock_ledger_impl_;
+  std::unique_ptr<ledger::MockLedgerImpl> mock_ledger_impl_;
   std::unique_ptr<Uphold> uphold_;
 
   UpholdTest() {
     mock_ledger_client_ = std::make_unique<ledger::MockLedgerClient>();
     mock_ledger_impl_ =
-        std::make_unique<bat_ledger::MockLedgerImpl>(mock_ledger_client_.get());
+        std::make_unique<ledger::MockLedgerImpl>(mock_ledger_client_.get());
     uphold_ = std::make_unique<Uphold>(mock_ledger_impl_.get());
   }
 };
@@ -41,19 +42,19 @@ class UpholdTest : public testing::Test {
 TEST_F(UpholdTest, FetchBalanceConnectedWallet) {
   EXPECT_CALL(*mock_ledger_client_, LoadURL(_, _)).Times(0);
 
-  std::map<std::string, ledger::ExternalWalletPtr> wallets;
-  auto wallet = ledger::ExternalWallet::New();
-  wallet->status = ledger::WalletStatus::CONNECTED;
+  std::map<std::string, type::ExternalWalletPtr> wallets;
+  auto wallet = type::ExternalWallet::New();
+  wallet->status = type::WalletStatus::CONNECTED;
   wallet->token = "token";
   wallet->address = "address";
-  wallets.insert(std::make_pair(ledger::kWalletUphold, std::move(wallet)));
+  wallets.insert(std::make_pair(constant::kWalletUphold, std::move(wallet)));
   EXPECT_CALL(*mock_ledger_client_, GetExternalWallets())
     .WillOnce(testing::Return(testing::ByMove(std::move(wallets))));
 
   FetchBalanceCallback callback =
       std::bind(
-          [&](ledger::Result result, double balance) {
-            ASSERT_EQ(result, ledger::Result::LEDGER_OK);
+          [&](type::Result result, double balance) {
+            ASSERT_EQ(result, type::Result::LEDGER_OK);
             ASSERT_EQ(balance, 0.0);
           },
           _1,
@@ -62,4 +63,5 @@ TEST_F(UpholdTest, FetchBalanceConnectedWallet) {
   uphold_->FetchBalance(callback);
 }
 
-}  // namespace braveledger_uphold
+}  // namespace uphold
+}  // namespace ledger

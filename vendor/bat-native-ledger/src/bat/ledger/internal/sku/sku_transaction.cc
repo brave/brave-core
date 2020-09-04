@@ -19,53 +19,54 @@ using std::placeholders::_3;
 
 namespace {
 
-ledger::SKUTransactionType GetTransactionTypeFromWalletType(
+ledger::type::SKUTransactionType GetTransactionTypeFromWalletType(
     const std::string& wallet_type) {
-  if (wallet_type == ledger::kWalletUphold) {
-    return ledger::SKUTransactionType::UPHOLD;
+  if (wallet_type == ledger::constant::kWalletUphold) {
+    return ledger::type::SKUTransactionType::UPHOLD;
   }
 
-  if (wallet_type == ledger::kWalletAnonymous) {
-    return ledger::SKUTransactionType::ANONYMOUS_CARD;
+  if (wallet_type == ledger::constant::kWalletAnonymous) {
+    return ledger::type::SKUTransactionType::ANONYMOUS_CARD;
   }
 
-  if (wallet_type == ledger::kWalletUnBlinded) {
-    return ledger::SKUTransactionType::TOKENS;
+  if (wallet_type == ledger::constant::kWalletUnBlinded) {
+    return ledger::type::SKUTransactionType::TOKENS;
   }
 
   NOTREACHED();
-  return ledger::SKUTransactionType::ANONYMOUS_CARD;
+  return ledger::type::SKUTransactionType::ANONYMOUS_CARD;
 }
 
 }  // namespace
 
-namespace braveledger_sku {
+namespace ledger {
+namespace sku {
 
-SKUTransaction::SKUTransaction(bat_ledger::LedgerImpl* ledger) :
+SKUTransaction::SKUTransaction(LedgerImpl* ledger) :
     ledger_(ledger),
-    payment_server_(std::make_unique<ledger::endpoint::PaymentServer>(ledger)) {
+    payment_server_(std::make_unique<endpoint::PaymentServer>(ledger)) {
   DCHECK(ledger_);
 }
 
 SKUTransaction::~SKUTransaction() = default;
 
 void SKUTransaction::Create(
-    ledger::SKUOrderPtr order,
+    type::SKUOrderPtr order,
     const std::string& destination,
-    const ledger::ExternalWallet& wallet,
+    const type::ExternalWallet& wallet,
     ledger::ResultCallback callback) {
   if (!order) {
     BLOG(0, "Order is null");
-    callback(ledger::Result::LEDGER_ERROR);
+    callback(type::Result::LEDGER_ERROR);
     return;
   }
 
-  auto transaction = ledger::SKUTransaction::New();
+  auto transaction = type::SKUTransaction::New();
   transaction->transaction_id = base::GenerateGUID();
   transaction->order_id = order->order_id;
   transaction->type = GetTransactionTypeFromWalletType(wallet.type);
   transaction->amount = order->total_amount;
-  transaction->status = ledger::SKUTransactionStatus::CREATED;
+  transaction->status = type::SKUTransactionStatus::CREATED;
 
   auto save_callback = std::bind(&SKUTransaction::OnTransactionSaved,
       this,
@@ -79,12 +80,12 @@ void SKUTransaction::Create(
 }
 
 void SKUTransaction::OnTransactionSaved(
-    const ledger::Result result,
-    const ledger::SKUTransaction& transaction,
+    const type::Result result,
+    const type::SKUTransaction& transaction,
     const std::string& destination,
-    const ledger::ExternalWallet& wallet,
+    const type::ExternalWallet& wallet,
     ledger::ResultCallback callback) {
-  if (result != ledger::Result::LEDGER_OK) {
+  if (result != type::Result::LEDGER_OK) {
     BLOG(0, "Transaction was not saved");
     callback(result);
     return;
@@ -100,23 +101,23 @@ void SKUTransaction::OnTransactionSaved(
   ledger_->contribution()->TransferFunds(
       transaction,
       destination,
-      ledger::ExternalWallet::New(wallet),
+      type::ExternalWallet::New(wallet),
       transfer_callback);
 }
 
 void SKUTransaction::OnTransfer(
-    const ledger::Result result,
+    const type::Result result,
     const std::string& external_transaction_id,
-    const ledger::SKUTransaction& transaction,
+    const type::SKUTransaction& transaction,
     ledger::ResultCallback callback) {
-  if (result != ledger::Result::LEDGER_OK) {
+  if (result != type::Result::LEDGER_OK) {
     BLOG(0, "Transaction for order failed " << transaction.order_id);
     callback(result);
     return;
   }
 
   if (external_transaction_id.empty()) {
-    callback(ledger::Result::LEDGER_OK);
+    callback(type::Result::LEDGER_OK);
     return;
   }
 
@@ -137,10 +138,10 @@ void SKUTransaction::OnTransfer(
 }
 
 void SKUTransaction::OnSaveSKUExternalTransaction(
-    const ledger::Result result,
-    const ledger::SKUTransaction& transaction,
+    const type::Result result,
+    const type::SKUTransaction& transaction,
     ledger::ResultCallback callback) {
-  if (result != ledger::Result::LEDGER_OK) {
+  if (result != type::Result::LEDGER_OK) {
     BLOG(0, "External transaction was not saved");
     callback(result);
     return;
@@ -154,17 +155,17 @@ void SKUTransaction::OnSaveSKUExternalTransaction(
 
   ledger_->database()->UpdateSKUOrderStatus(
       transaction.order_id,
-      ledger::SKUOrderStatus::PAID,
+      type::SKUOrderStatus::PAID,
       save_callback);
 }
 
 void SKUTransaction::SendExternalTransaction(
-    const ledger::Result result,
-    const ledger::SKUTransaction& transaction,
+    const type::Result result,
+    const type::SKUTransaction& transaction,
     ledger::ResultCallback callback) {
-  if (result != ledger::Result::LEDGER_OK) {
+  if (result != type::Result::LEDGER_OK) {
     BLOG(0, "Order status not updated");
-    callback(ledger::Result::RETRY);
+    callback(type::Result::RETRY);
     return;
   }
 
@@ -173,7 +174,7 @@ void SKUTransaction::SendExternalTransaction(
   if (transaction.external_transaction_id.empty()) {
     BLOG(0, "External transaction id is empty for transaction id "
         << transaction.transaction_id);
-    callback(ledger::Result::LEDGER_OK);
+    callback(type::Result::LEDGER_OK);
     return;
   }
 
@@ -183,13 +184,13 @@ void SKUTransaction::SendExternalTransaction(
       callback);
 
   switch (transaction.type) {
-    case ledger::SKUTransactionType::NONE:
-    case ledger::SKUTransactionType::TOKENS:
-    case ledger::SKUTransactionType::ANONYMOUS_CARD: {
+    case type::SKUTransactionType::NONE:
+    case type::SKUTransactionType::TOKENS:
+    case type::SKUTransactionType::ANONYMOUS_CARD: {
       NOTREACHED();
       return;
     }
-    case ledger::SKUTransactionType::UPHOLD: {
+    case type::SKUTransactionType::UPHOLD: {
       payment_server_->post_transaction_uphold()->Request(
           transaction,
           url_callback);
@@ -199,15 +200,16 @@ void SKUTransaction::SendExternalTransaction(
 }
 
 void SKUTransaction::OnSendExternalTransaction(
-    const ledger::Result result,
+    const type::Result result,
     ledger::ResultCallback callback) {
-  if (result != ledger::Result::LEDGER_OK) {
+  if (result != type::Result::LEDGER_OK) {
     BLOG(0, "External transaction not sent");
-    callback(ledger::Result::RETRY);
+    callback(type::Result::RETRY);
     return;
   }
 
-  callback(ledger::Result::LEDGER_OK);
+  callback(type::Result::LEDGER_OK);
 }
 
-}  // namespace braveledger_sku
+}  // namespace sku
+}  // namespace ledger

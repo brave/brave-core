@@ -60,24 +60,24 @@ class RewardsTipDOMHandler : public WebUIMessageHandler,
   void GetRecurringTips(const base::ListValue* args);
   void GetReconcileStamp(const base::ListValue* args);
   void OnReconcileStamp(uint64_t reconcile_stamp);
-  void OnGetRecurringTips(ledger::PublisherInfoList list);
+  void OnGetRecurringTips(ledger::type::PublisherInfoList list);
   void TweetTip(const base::ListValue *args);
   void OnlyAnonWallet(const base::ListValue* args);
   void GetExternalWallet(const base::ListValue* args);
   void OnExternalWallet(
-      const ledger::Result result,
-      ledger::ExternalWalletPtr wallet);
+      const ledger::type::Result result,
+      ledger::type::ExternalWalletPtr wallet);
 
-  void OnPublisherBanner(ledger::PublisherBannerPtr banner);
+  void OnPublisherBanner(ledger::type::PublisherBannerPtr banner);
 
   void OnTwitterShareURL(const std::string& url);
 
   void FetchBalance(const base::ListValue* args);
   void OnFetchBalance(
-    const ledger::Result result,
-    ledger::BalancePtr balance);
+    const ledger::type::Result result,
+    ledger::type::BalancePtr balance);
 
-  void OnGetRewardsParameters(ledger::RewardsParametersPtr parameters);
+  void OnGetRewardsParameters(ledger::type::RewardsParametersPtr parameters);
 
   // RewardsServiceObserver implementation
   void OnRecurringTipSaved(brave_rewards::RewardsService* rewards_service,
@@ -88,11 +88,11 @@ class RewardsTipDOMHandler : public WebUIMessageHandler,
 
   void OnReconcileComplete(
       brave_rewards::RewardsService* rewards_service,
-      const ledger::Result result,
+      const ledger::type::Result result,
       const std::string& contribution_id,
       const double amount,
-      const ledger::RewardsType type,
-      const ledger::ContributionProcessor processor) override;
+      const ledger::type::RewardsType type,
+      const ledger::type::ContributionProcessor processor) override;
 
   brave_rewards::RewardsService* rewards_service_;  // NOT OWNED
   base::WeakPtrFactory<RewardsTipDOMHandler> weak_factory_;
@@ -185,7 +185,7 @@ static std::unique_ptr<base::ListValue> CreateListOfDoubles(
 }
 
 void RewardsTipDOMHandler::OnGetRewardsParameters(
-    ledger::RewardsParametersPtr parameters) {
+    ledger::type::RewardsParametersPtr parameters) {
   if (!web_ui()->CanCallJavascript()) {
     return;
   }
@@ -232,7 +232,8 @@ void RewardsTipDOMHandler::GetRecurringTips(
   }
 }
 
-void RewardsTipDOMHandler::OnGetRecurringTips(ledger::PublisherInfoList list) {
+void RewardsTipDOMHandler::OnGetRecurringTips(
+    ledger::type::PublisherInfoList list) {
   if (!web_ui()->CanCallJavascript()) {
     return;
   }
@@ -251,7 +252,7 @@ void RewardsTipDOMHandler::OnGetRecurringTips(ledger::PublisherInfoList list) {
 }
 
 void RewardsTipDOMHandler::OnPublisherBanner(
-    ledger::PublisherBannerPtr banner) {
+    ledger::type::PublisherBannerPtr banner) {
   if (!web_ui()->CanCallJavascript()) {
      return;
   }
@@ -394,8 +395,8 @@ void RewardsTipDOMHandler::OnTwitterShareURL(const std::string& url) {
 }
 
 void RewardsTipDOMHandler::OnFetchBalance(
-    const ledger::Result result,
-    ledger::BalancePtr balance) {
+    const ledger::type::Result result,
+    ledger::type::BalancePtr balance) {
   if (!web_ui()->CanCallJavascript()) {
     return;
   }
@@ -404,7 +405,7 @@ void RewardsTipDOMHandler::OnFetchBalance(
   data.SetInteger("status", static_cast<int>(result));
   auto balance_value = std::make_unique<base::DictionaryValue>();
 
-  if (result == ledger::Result::LEDGER_OK && balance) {
+  if (result == ledger::type::Result::LEDGER_OK && balance) {
     balance_value->SetDouble("total", balance->total);
 
     auto wallets = std::make_unique<base::DictionaryValue>();
@@ -442,8 +443,8 @@ void RewardsTipDOMHandler::GetExternalWallet(
 }
 
 void RewardsTipDOMHandler::OnExternalWallet(
-    const ledger::Result result,
-    ledger::ExternalWalletPtr wallet) {
+    const ledger::type::Result result,
+    ledger::type::ExternalWalletPtr wallet) {
   if (!web_ui()->CanCallJavascript()) {
     return;
   }
@@ -481,11 +482,11 @@ void RewardsTipDOMHandler::OnlyAnonWallet(const base::ListValue* args) {
 
 void RewardsTipDOMHandler::OnReconcileComplete(
     brave_rewards::RewardsService* rewards_service,
-    const ledger::Result result,
+    const ledger::type::Result result,
     const std::string& contribution_id,
     const double amount,
-    const ledger::RewardsType type,
-    const ledger::ContributionProcessor processor) {
+    const ledger::type::RewardsType type,
+    const ledger::type::ContributionProcessor processor) {
   if (!web_ui()->CanCallJavascript()) {
      return;
   }

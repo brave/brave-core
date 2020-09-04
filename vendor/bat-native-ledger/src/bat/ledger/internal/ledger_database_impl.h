@@ -27,24 +27,24 @@ class LedgerDatabaseImpl : public LedgerDatabase {
   ~LedgerDatabaseImpl() override;
 
   void RunTransaction(
-      DBTransactionPtr transaction,
-      DBCommandResponse* command_response) override;
+      type::DBTransactionPtr transaction,
+      type::DBCommandResponse* command_response) override;
 
  private:
-  DBCommandResponse::Status Initialize(
+  type::DBCommandResponse::Status Initialize(
       int32_t version,
       int32_t compatible_version,
-      DBCommandResponse* command_response);
+      type::DBCommandResponse* command_response);
 
-  DBCommandResponse::Status Execute(DBCommand* command);
+  type::DBCommandResponse::Status Execute(type::DBCommand* command);
 
-  DBCommandResponse::Status Run(DBCommand* command);
+  type::DBCommandResponse::Status Run(type::DBCommand* command);
 
-  DBCommandResponse::Status Read(
-      DBCommand* command,
-      DBCommandResponse* command_response);
+  type::DBCommandResponse::Status Read(
+      type::DBCommand* command,
+      type::DBCommandResponse* command_response);
 
-  DBCommandResponse::Status Migrate(
+  type::DBCommandResponse::Status Migrate(
       int32_t version,
       int32_t compatible_version);
 

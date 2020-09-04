@@ -14,8 +14,6 @@
 #include "base/strings/stringprintf.h"
 #include "base/memory/weak_ptr.h"
 #include "base/test/bind_test_util.h"
-#include "bat/ledger/internal/request/request_util.h"
-#include "bat/ledger/internal/static_values.h"
 #include "bat/ledger/ledger.h"
 #include "brave/common/brave_paths.h"
 #include "brave/browser/brave_rewards/rewards_service_factory.h"
@@ -211,7 +209,7 @@ class BraveAdsBrowserTest
   }
 
   bool IsRewardsEnabled() const {
-    return GetPrefs()->GetBoolean(brave_rewards::prefs::kBraveRewardsEnabled);
+    return GetPrefs()->GetBoolean(brave_rewards::prefs::kEnabled);
   }
 
   bool IsAdsEnabled() {
@@ -459,8 +457,8 @@ class BraveAdsBrowserTest
     base::RunLoop run_loop;
     bool wallet_created = false;
     rewards_service_->CreateWallet(
-        base::BindLambdaForTesting([&](const ledger::Result result) {
-          wallet_created = result == ledger::Result::WALLET_CREATED;
+        base::BindLambdaForTesting([&](const ledger::type::Result result) {
+          wallet_created = result == ledger::type::Result::WALLET_CREATED;
           run_loop.Quit();
         }));
 
@@ -472,7 +470,7 @@ class BraveAdsBrowserTest
     ASSERT_TRUE(IsRewardsEnabled());
   }
 
-  MOCK_METHOD1(OnGetEnvironment, void(ledger::Environment));
+  MOCK_METHOD1(OnGetEnvironment, void(ledger::type::Environment));
   MOCK_METHOD1(OnGetDebug, void(bool));
   MOCK_METHOD1(OnGetReconcileTime, void(int32_t));
   MOCK_METHOD1(OnGetShortRetries, void(bool));

@@ -14,12 +14,13 @@
 
 // npm run test -- brave_unit_tests --filter=PromotionUtilTest.*
 
-namespace braveledger_credentials {
+namespace ledger {
+namespace credential {
 
 class PromotionUtilTest : public testing::Test {
  public:
-  ledger::CredsBatch GetCredsBatch() {
-    ledger::CredsBatch creds;
+  type::CredsBatch GetCredsBatch() {
+    type::CredsBatch creds;
 
     creds.creds = R"([
           "CeP4v0VvyP92xaaVz7SU5eUpFZvEyWYyTJvxep12aXH3uPhgovM81vtyi+ryoJeXDaUOJtxz1irzCp81Z0KAUqQSfv5CwjaK4mkrILvOEvD/Wfx6KjZvT+sYmlmlEJEM",
@@ -121,4 +122,5 @@ TEST_F(PromotionUtilTest, UnBlindCredsCredsNotCorrect) {
   EXPECT_EQ(unblinded_encoded_tokens.size(), 0u);
 }
 
-}  // namespace braveledger_credentials
+}  // namespace credential
+}  // namespace ledger

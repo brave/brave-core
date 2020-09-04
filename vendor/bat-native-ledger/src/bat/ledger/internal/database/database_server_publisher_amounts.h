@@ -11,19 +11,20 @@
 
 #include "bat/ledger/internal/database/database_table.h"
 
-namespace braveledger_database {
+namespace ledger {
+namespace database {
 
 class DatabaseServerPublisherAmounts: public DatabaseTable {
  public:
-  explicit DatabaseServerPublisherAmounts(bat_ledger::LedgerImpl* ledger);
+  explicit DatabaseServerPublisherAmounts(LedgerImpl* ledger);
   ~DatabaseServerPublisherAmounts() override;
 
   void InsertOrUpdate(
-      ledger::DBTransaction* transaction,
-      const ledger::ServerPublisherInfo& server_info);
+      type::DBTransaction* transaction,
+      const type::ServerPublisherInfo& server_info);
 
   void DeleteRecords(
-      ledger::DBTransaction* transaction,
+      type::DBTransaction* transaction,
       const std::string& publisher_key_list);
 
   void GetRecord(
@@ -32,10 +33,11 @@ class DatabaseServerPublisherAmounts: public DatabaseTable {
 
  private:
   void OnGetRecord(
-      ledger::DBCommandResponsePtr response,
+      type::DBCommandResponsePtr response,
       ServerPublisherAmountsCallback callback);
 };
 
-}  // namespace braveledger_database
+}  // namespace database
+}  // namespace ledger
 
 #endif  // BRAVELEDGER_DATABASE_DATABASE_SERVER_PUBLISHER_AMOUNTS_H_

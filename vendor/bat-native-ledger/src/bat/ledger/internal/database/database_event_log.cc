@@ -14,7 +14,8 @@
 
 using std::placeholders::_1;
 
-namespace braveledger_database {
+namespace ledger {
+namespace database {
 
 namespace {
 
@@ -23,7 +24,7 @@ const char kTableName[] = "event_log";
 }  // namespace
 
 DatabaseEventLog::DatabaseEventLog(
-    bat_ledger::LedgerImpl* ledger) :
+    LedgerImpl* ledger) :
     DatabaseTable(ledger) {
 }
 
@@ -38,27 +39,27 @@ void DatabaseEventLog::Insert(
     return;
   }
 
-  auto transaction = ledger::DBTransaction::New();
+  auto transaction = type::DBTransaction::New();
 
   const std::string query = base::StringPrintf(
       "INSERT INTO %s (event_log_id, key, value, created_at) "
       "VALUES (?, ?, ?, ?)",
       kTableName);
 
-  auto command = ledger::DBCommand::New();
-  command->type = ledger::DBCommand::Type::RUN;
+  auto command = type::DBCommand::New();
+  command->type = type::DBCommand::Type::RUN;
   command->command = query;
 
   BindString(command.get(), 0, base::GenerateGUID());
   BindString(command.get(), 1, key);
   BindString(command.get(), 2, value);
-  BindInt64(command.get(), 3, braveledger_time_util::GetCurrentTimeStamp());
+  BindInt64(command.get(), 3, util::GetCurrentTimeStamp());
 
   transaction->commands.push_back(std::move(command));
 
   ledger_->ledger_client()->RunDBTransaction(
       std::move(transaction),
-      [](ledger::DBCommandResponsePtr response){});
+      [](type::DBCommandResponsePtr response){});
 }
 
 void DatabaseEventLog::InsertRecords(
@@ -66,12 +67,12 @@ void DatabaseEventLog::InsertRecords(
     ledger::ResultCallback callback) {
   if (records.empty()) {
     BLOG(0, "No records");
-    callback(ledger::Result::NOT_FOUND);
+    callback(type::Result::NOT_FOUND);
     return;
   }
 
-  auto transaction = ledger::DBTransaction::New();
-  auto time = braveledger_time_util::GetCurrentTimeStamp();
+  auto transaction = type::DBTransaction::New();
+  auto time = util::GetCurrentTimeStamp();
   const std::string base_query = base::StringPrintf(
       "INSERT INTO %s (event_log_id, key, value, created_at) VALUES ",
       kTableName);
@@ -87,8 +88,8 @@ void DatabaseEventLog::InsertRecords(
   }
 
   query.pop_back();
-  auto command = ledger::DBCommand::New();
-  command->type = ledger::DBCommand::Type::EXECUTE;
+  auto command = type::DBCommand::New();
+  command->type = type::DBCommand::Type::EXECUTE;
   command->command = query;
 
   transaction->commands.push_back(std::move(command));
@@ -103,22 +104,22 @@ void DatabaseEventLog::InsertRecords(
 }
 
 void DatabaseEventLog::GetLastRecords(ledger::GetEventLogsCallback callback) {
-  auto transaction = ledger::DBTransaction::New();
+  auto transaction = type::DBTransaction::New();
 
   const std::string query = base::StringPrintf(
     "SELECT event_log_id, key, value, created_at "
     "FROM %s ORDER BY created_at DESC LIMIT 2000",
     kTableName);
 
-  auto command = ledger::DBCommand::New();
-  command->type = ledger::DBCommand::Type::READ;
+  auto command = type::DBCommand::New();
+  command->type = type::DBCommand::Type::READ;
   command->command = query;
 
   command->record_bindings = {
-      ledger::DBCommand::RecordBindingType::STRING_TYPE,
-      ledger::DBCommand::RecordBindingType::STRING_TYPE,
-      ledger::DBCommand::RecordBindingType::STRING_TYPE,
-      ledger::DBCommand::RecordBindingType::INT64_TYPE,
+      type::DBCommand::RecordBindingType::STRING_TYPE,
+      type::DBCommand::RecordBindingType::STRING_TYPE,
+      type::DBCommand::RecordBindingType::STRING_TYPE,
+      type::DBCommand::RecordBindingType::INT64_TYPE,
   };
 
   transaction->commands.push_back(std::move(command));
@@ -134,18 +135,18 @@ void DatabaseEventLog::GetLastRecords(ledger::GetEventLogsCallback callback) {
 }
 
 void DatabaseEventLog::OnGetAllRecords(
-    ledger::DBCommandResponsePtr response,
+    type::DBCommandResponsePtr response,
     ledger::GetEventLogsCallback callback) {
   if (!response ||
-      response->status != ledger::DBCommandResponse::Status::RESPONSE_OK) {
+      response->status != type::DBCommandResponse::Status::RESPONSE_OK) {
     BLOG(0, "Response is wrong");
     callback({});
     return;
   }
 
-  ledger::EventLogs list;
+  type::EventLogs list;
   for (auto const& record : response->result->get_records()) {
-    auto info = ledger::EventLog::New();
+    auto info = type::EventLog::New();
     auto* record_pointer = record.get();
 
     info->event_log_id = GetStringColumn(record_pointer, 0);
@@ -159,4 +160,5 @@ void DatabaseEventLog::OnGetAllRecords(
   callback(std::move(list));
 }
 
-}  // namespace braveledger_database
+}  // namespace database
+}  // namespace ledger

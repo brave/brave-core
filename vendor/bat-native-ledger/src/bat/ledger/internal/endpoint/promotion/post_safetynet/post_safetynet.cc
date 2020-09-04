@@ -19,7 +19,7 @@ namespace ledger {
 namespace endpoint {
 namespace promotion {
 
-PostSafetynet::PostSafetynet(bat_ledger::LedgerImpl* ledger):
+PostSafetynet::PostSafetynet(LedgerImpl* ledger):
     ledger_(ledger) {
   DCHECK(ledger_);
 }
@@ -44,25 +44,25 @@ std::string PostSafetynet::GeneratePayload() {
   return json;
 }
 
-ledger::Result PostSafetynet::CheckStatusCode(const int status_code) {
+type::Result PostSafetynet::CheckStatusCode(const int status_code) {
   if (status_code == net::HTTP_BAD_REQUEST) {
     BLOG(0, "Invalid request");
-    return ledger::Result::LEDGER_ERROR;
+    return type::Result::LEDGER_ERROR;
   }
 
   if (status_code == net::HTTP_UNAUTHORIZED) {
     BLOG(0, "Invalid token");
-    return ledger::Result::LEDGER_ERROR;
+    return type::Result::LEDGER_ERROR;
   }
 
   if (status_code != net::HTTP_OK) {
-    return ledger::Result::LEDGER_ERROR;
+    return type::Result::LEDGER_ERROR;
   }
 
-  return ledger::Result::LEDGER_OK;
+  return type::Result::LEDGER_OK;
 }
 
-ledger::Result PostSafetynet::ParseBody(
+type::Result PostSafetynet::ParseBody(
     const std::string& body,
     std::string* nonce) {
   DCHECK(nonce);
@@ -70,23 +70,23 @@ ledger::Result PostSafetynet::ParseBody(
   base::Optional<base::Value> value = base::JSONReader::Read(body);
   if (!value || !value->is_dict()) {
     BLOG(0, "Invalid JSON");
-    return ledger::Result::LEDGER_ERROR;
+    return type::Result::LEDGER_ERROR;
   }
 
   base::DictionaryValue* dictionary = nullptr;
   if (!value->GetAsDictionary(&dictionary)) {
     BLOG(0, "Invalid JSON");
-    return ledger::Result::LEDGER_ERROR;
+    return type::Result::LEDGER_ERROR;
   }
 
   auto* nonce_string = dictionary->FindStringKey("nonce");
   if (!nonce_string) {
     BLOG(0, "Nonce is wrong");
-    return ledger::Result::LEDGER_ERROR;
+    return type::Result::LEDGER_ERROR;
   }
 
   *nonce = *nonce_string;
-  return ledger::Result::LEDGER_OK;
+  return type::Result::LEDGER_OK;
 }
 
 void PostSafetynet::Request(PostSafetynetCallback callback) {
@@ -95,23 +95,23 @@ void PostSafetynet::Request(PostSafetynetCallback callback) {
       _1,
       callback);
 
-  auto request = ledger::UrlRequest::New();
+  auto request = type::UrlRequest::New();
   request->url = GetUrl();
   request->content = GeneratePayload();
   request->content_type = "application/json; charset=utf-8";
-  request->method = ledger::UrlMethod::POST;
+  request->method = type::UrlMethod::POST;
   ledger_->LoadURL(std::move(request), url_callback);
 }
 
 void PostSafetynet::OnRequest(
-    const ledger::UrlResponse& response,
+    const type::UrlResponse& response,
     PostSafetynetCallback callback) {
   ledger::LogUrlResponse(__func__, response);
 
   std::string nonce;
-  ledger::Result result = CheckStatusCode(response.status_code);
+  type::Result result = CheckStatusCode(response.status_code);
 
-  if (result != ledger::Result::LEDGER_OK) {
+  if (result != type::Result::LEDGER_OK) {
     callback(result, nonce);
     return;
   }

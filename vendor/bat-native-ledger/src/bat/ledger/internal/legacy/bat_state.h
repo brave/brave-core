@@ -15,7 +15,7 @@
 #include "bat/ledger/internal/legacy/client_properties.h"
 #include "bat/ledger/internal/legacy/wallet_info_properties.h"
 
-namespace bat_ledger {
+namespace ledger {
 class LedgerImpl;
 }
 
@@ -23,7 +23,7 @@ namespace braveledger_bat_state {
 
 class LegacyBatState {
  public:
-  explicit LegacyBatState(bat_ledger::LedgerImpl* ledger);
+  explicit LegacyBatState(ledger::LedgerImpl* ledger);
   ~LegacyBatState();
 
   void Load(ledger::ResultCallback callback);
@@ -50,11 +50,11 @@ class LegacyBatState {
 
  private:
   void OnLoad(
-      const ledger::Result result,
+      const ledger::type::Result result,
       const std::string& data,
       ledger::ResultCallback callback);
 
-  bat_ledger::LedgerImpl* ledger_;  // NOT OWNED
+  ledger::LedgerImpl* ledger_;  // NOT OWNED
   std::unique_ptr<ledger::ClientProperties> state_;
 };
 

@@ -30,21 +30,19 @@
 //   "nonce": "c4645786-052f-402f-8593-56af2f7a21ce"
 // }
 
-namespace bat_ledger {
-class LedgerImpl;
-}
-
 namespace ledger {
+class LedgerImpl;
+
 namespace endpoint {
 namespace promotion {
 
 using PostDevicecheckCallback = std::function<void(
-    const ledger::Result result,
+    const type::Result result,
     const std::string& nonce)>;
 
 class PostDevicecheck {
  public:
-  explicit PostDevicecheck(bat_ledger::LedgerImpl* ledger);
+  explicit PostDevicecheck(LedgerImpl* ledger);
   ~PostDevicecheck();
 
   void Request(const std::string& key, PostDevicecheckCallback callback);
@@ -54,17 +52,17 @@ class PostDevicecheck {
 
   std::string GeneratePayload(const std::string& key);
 
-  ledger::Result CheckStatusCode(const int status_code);
+  type::Result CheckStatusCode(const int status_code);
 
-  ledger::Result ParseBody(
+  type::Result ParseBody(
       const std::string& body,
       std::string* nonce);
 
   void OnRequest(
-      const ledger::UrlResponse& response,
+      const type::UrlResponse& response,
       PostDevicecheckCallback callback);
 
-  bat_ledger::LedgerImpl* ledger_;  // NOT OWNED
+  LedgerImpl* ledger_;  // NOT OWNED
 };
 
 }  // namespace promotion

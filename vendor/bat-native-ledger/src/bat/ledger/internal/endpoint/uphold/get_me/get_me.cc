@@ -17,24 +17,24 @@ using std::placeholders::_1;
 
 namespace {
 
-braveledger_uphold::UserStatus GetUserStatus(const std::string& status) {
+ledger::uphold::UserStatus GetUserStatus(const std::string& status) {
   if (status == "pending") {
-    return braveledger_uphold::UserStatus::PENDING;
+    return ledger::uphold::UserStatus::PENDING;
   }
 
   if (status == "restricted") {
-    return braveledger_uphold::UserStatus::RESTRICTED;
+    return ledger::uphold::UserStatus::RESTRICTED;
   }
 
   if (status == "blocked") {
-    return braveledger_uphold::UserStatus::BLOCKED;
+    return ledger::uphold::UserStatus::BLOCKED;
   }
 
   if (status == "ok") {
-    return braveledger_uphold::UserStatus::OK;
+    return ledger::uphold::UserStatus::OK;
   }
 
-  return braveledger_uphold::UserStatus::EMPTY;
+  return ledger::uphold::UserStatus::EMPTY;
 }
 
 }  // namespace
@@ -43,7 +43,7 @@ namespace ledger {
 namespace endpoint {
 namespace uphold {
 
-GetMe::GetMe(bat_ledger::LedgerImpl* ledger):
+GetMe::GetMe(LedgerImpl* ledger):
     ledger_(ledger) {
   DCHECK(ledger_);
 }
@@ -54,33 +54,33 @@ std::string GetMe::GetUrl() {
   return GetServerUrl("/v0/me");
 }
 
-ledger::Result GetMe::CheckStatusCode(const int status_code) {
+type::Result GetMe::CheckStatusCode(const int status_code) {
   if (status_code == net::HTTP_UNAUTHORIZED) {
-    return ledger::Result::EXPIRED_TOKEN;
+    return type::Result::EXPIRED_TOKEN;
   }
 
   if (status_code != net::HTTP_OK) {
-    return ledger::Result::LEDGER_ERROR;
+    return type::Result::LEDGER_ERROR;
   }
 
-  return ledger::Result::LEDGER_OK;
+  return type::Result::LEDGER_OK;
 }
 
-ledger::Result GetMe::ParseBody(
+type::Result GetMe::ParseBody(
     const std::string& body,
-    braveledger_uphold::User* user) {
+    ::ledger::uphold::User* user) {
   DCHECK(user);
 
   base::Optional<base::Value> value = base::JSONReader::Read(body);
   if (!value || !value->is_dict()) {
     BLOG(0, "Invalid JSON");
-    return ledger::Result::LEDGER_ERROR;
+    return type::Result::LEDGER_ERROR;
   }
 
   base::DictionaryValue* dictionary = nullptr;
   if (!value->GetAsDictionary(&dictionary)) {
     BLOG(0, "Invalid JSON");
-    return ledger::Result::LEDGER_ERROR;
+    return type::Result::LEDGER_ERROR;
   }
 
   const auto* name = dictionary->FindStringKey("firstName");
@@ -109,7 +109,7 @@ ledger::Result GetMe::ParseBody(
     user->status = GetUserStatus(*status);
   }
 
-  return ledger::Result::LEDGER_OK;
+  return type::Result::LEDGER_OK;
 }
 
 void GetMe::Request(
@@ -120,20 +120,20 @@ void GetMe::Request(
       _1,
       callback);
 
-  auto request = ledger::UrlRequest::New();
+  auto request = type::UrlRequest::New();
   request->url = GetUrl();
   request->headers = RequestAuthorization(token);
   ledger_->LoadURL(std::move(request), url_callback);
 }
 
 void GetMe::OnRequest(
-    const ledger::UrlResponse& response,
+    const type::UrlResponse& response,
     GetMeCallback callback) {
   ledger::LogUrlResponse(__func__, response, true);
 
-  braveledger_uphold::User user;
-  ledger::Result result = CheckStatusCode(response.status_code);
-  if (result != ledger::Result::LEDGER_OK) {
+  ::ledger::uphold::User user;
+  type::Result result = CheckStatusCode(response.status_code);
+  if (result != type::Result::LEDGER_OK) {
     callback(result, user);
     return;
   }

@@ -366,14 +366,14 @@ IN_PROC_BROWSER_TEST_F(
   contribution_->TipViaCode(
       "duckduckgo.com",
       20.0,
-      ledger::PublisherStatus::VERIFIED,
+      ledger::type::PublisherStatus::VERIFIED,
       0,
       true);
 
   contribution_->TipViaCode(
       "brave.com",
       50.0,
-      ledger::PublisherStatus::NOT_VERIFIED,
+      ledger::type::PublisherStatus::NOT_VERIFIED,
       0,
       true);
 
@@ -401,14 +401,14 @@ IN_PROC_BROWSER_TEST_F(
   contribution_->TipViaCode(
       "duckduckgo.com",
       50.0,
-      ledger::PublisherStatus::VERIFIED,
+      ledger::type::PublisherStatus::VERIFIED,
       0,
       true);
 
   contribution_->TipViaCode(
       "brave.com",
       50.0,
-      ledger::PublisherStatus::NOT_VERIFIED,
+      ledger::type::PublisherStatus::NOT_VERIFIED,
       0,
       true);
 

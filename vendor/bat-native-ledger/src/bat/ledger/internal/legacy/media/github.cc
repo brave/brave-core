@@ -14,7 +14,8 @@
 #include "base/strings/utf_string_conversions.h"
 #include "bat/ledger/internal/ledger_impl.h"
 #include "bat/ledger/internal/legacy/media/github.h"
-#include "bat/ledger/internal/static_values.h"
+#include "bat/ledger/internal/legacy/static_values.h"
+#include "bat/ledger/internal/constants.h"
 #include "net/http/http_status_code.h"
 
 using std::placeholders::_1;
@@ -23,7 +24,7 @@ using std::placeholders::_3;
 
 namespace braveledger_media {
 
-GitHub::GitHub(bat_ledger::LedgerImpl* ledger) : ledger_(ledger) {
+GitHub::GitHub(ledger::LedgerImpl* ledger) : ledger_(ledger) {
 }
 
 GitHub::~GitHub() {
@@ -200,7 +201,7 @@ bool GitHub::IsExcludedPath(const std::string& path) {
   return false;
 }
 void GitHub::ProcessActivityFromUrl(uint64_t window_id,
-    const ledger::VisitData& visit_data) {
+    const ledger::type::VisitData& visit_data) {
   if (IsExcludedPath(visit_data.path)) {
     OnMediaActivityError(window_id);
     return;
@@ -228,7 +229,7 @@ void GitHub::ProcessActivityFromUrl(uint64_t window_id,
 
 void GitHub::ProcessMedia(
     const std::map<std::string, std::string> parts,
-    const ledger::VisitData& visit_data) {
+    const ledger::type::VisitData& visit_data) {
   const std::string user_name = GetUserNameFromURL(visit_data.path);
   const std::string url = GetProfileAPIURL(user_name);
   auto iter = parts.find("duration");
@@ -249,18 +250,18 @@ void GitHub::ProcessMedia(
 }
 
 void GitHub::OnMediaPublisherActivity(
-    ledger::Result result,
-    ledger::PublisherInfoPtr info,
+    ledger::type::Result result,
+    ledger::type::PublisherInfoPtr info,
     uint64_t window_id,
-    const ledger::VisitData& visit_data,
+    const ledger::type::VisitData& visit_data,
     const std::string& media_key) {
-  if (result != ledger::Result::LEDGER_OK &&
-      result != ledger::Result::NOT_FOUND) {
+  if (result != ledger::type::Result::LEDGER_OK &&
+      result != ledger::type::Result::NOT_FOUND) {
     OnMediaActivityError(window_id);
     return;
   }
 
-  if (!info || result == ledger::Result::NOT_FOUND) {
+  if (!info || result == ledger::type::Result::NOT_FOUND) {
     const std::string user_name = GetUserNameFromURL(visit_data.path);
     const std::string url = GetProfileAPIURL(user_name);
 
@@ -285,24 +286,24 @@ void GitHub::OnMediaActivityError(uint64_t window_id) {
 
   DCHECK(!url.empty());
 
-  ledger::VisitData new_visit_data;
+  ledger::type::VisitData new_visit_data;
   new_visit_data.domain = url;
   new_visit_data.url = "https://" + url;
   new_visit_data.path = "/";
   new_visit_data.name = name;
 
   ledger_->publisher()->GetPublisherActivityFromUrl(
-      window_id, ledger::VisitData::New(new_visit_data), "");
+      window_id, ledger::type::VisitData::New(new_visit_data), "");
 }
 
 // Gets publisher panel info where we know that publisher info exists
 void GitHub::GetPublisherPanelInfo(
     uint64_t window_id,
-    const ledger::VisitData& visit_data,
+    const ledger::type::VisitData& visit_data,
     const std::string& publisher_key) {
   auto filter = ledger_->publisher()->CreateActivityFilter(
     publisher_key,
-    ledger::ExcludeFilter::FILTER_ALL,
+    ledger::type::ExcludeFilter::FILTER_ALL,
     false,
     ledger_->state()->GetReconcileStamp(),
     true,
@@ -319,11 +320,11 @@ void GitHub::GetPublisherPanelInfo(
 
 void GitHub::OnPublisherPanelInfo(
     uint64_t window_id,
-    const ledger::VisitData& visit_data,
+    const ledger::type::VisitData& visit_data,
     const std::string& publisher_key,
-    ledger::Result result,
-    ledger::PublisherInfoPtr info) {
-  if (!info || result == ledger::Result::NOT_FOUND) {
+    ledger::type::Result result,
+    ledger::type::PublisherInfoPtr info) {
+  if (!info || result == ledger::type::Result::NOT_FOUND) {
     const std::string user_name = GetUserNameFromURL(visit_data.path);
     const std::string url = GetProfileAPIURL(user_name);
 
@@ -344,8 +345,8 @@ void GitHub::OnPublisherPanelInfo(
 
 void GitHub::FetchDataFromUrl(
     const std::string& url,
-    ledger::LoadURLCallback callback) {
-  auto request = ledger::UrlRequest::New();
+    ledger::client::LoadURLCallback callback) {
+  auto request = ledger::type::UrlRequest::New();
   request->url = url;
   request->skip_log = true;
   ledger_->LoadURL(std::move(request), callback);
@@ -354,8 +355,8 @@ void GitHub::FetchDataFromUrl(
 void GitHub::OnUserPage(
     const uint64_t duration,
     uint64_t window_id,
-    const ledger::VisitData& visit_data,
-    const ledger::UrlResponse& response) {
+    const ledger::type::VisitData& visit_data,
+    const ledger::type::UrlResponse& response) {
   if (response.status_code != net::HTTP_OK) {
     OnMediaActivityError(window_id);
     return;
@@ -373,7 +374,7 @@ void GitHub::OnUserPage(
       publisher_name,
       profile_picture,
       window_id,
-      [](ledger::Result, ledger::PublisherInfoPtr) {});
+      [](ledger::type::Result, ledger::type::PublisherInfoPtr) {});
 }
 
 void GitHub::SavePublisherInfo(
@@ -388,14 +389,14 @@ void GitHub::SavePublisherInfo(
   const std::string media_key = GetMediaKey(screen_name);
 
   if (publisher_key.empty()) {
-    callback(ledger::Result::LEDGER_ERROR, nullptr);
+    callback(ledger::type::Result::LEDGER_ERROR, nullptr);
     BLOG(0, "Publisher key is missing for: " << media_key);
     return;
   }
 
   const std::string url = GetProfileURL(screen_name);
 
-  ledger::VisitData visit_data;
+  ledger::type::VisitData visit_data;
   visit_data.provider = GITHUB_MEDIA_TYPE;
   visit_data.url = url;
   visit_data.favicon_url = profile_picture;
@@ -412,7 +413,7 @@ void GitHub::SavePublisherInfo(
     ledger_->database()->SaveMediaPublisherInfo(
         media_key,
         publisher_key,
-        [](const ledger::Result) {});
+        [](const ledger::type::Result) {});
   }
 }
 
@@ -423,15 +424,15 @@ void GitHub::OnMediaPublisherInfo(
     const std::string& publisher_name,
     const std::string& profile_picture,
     ledger::PublisherInfoCallback callback,
-    ledger::Result result,
-    ledger::PublisherInfoPtr publisher_info) {
-  if (result != ledger::Result::LEDGER_OK  &&
-    result != ledger::Result::NOT_FOUND) {
-    callback(ledger::Result::LEDGER_ERROR, nullptr);
+    ledger::type::Result result,
+    ledger::type::PublisherInfoPtr publisher_info) {
+  if (result != ledger::type::Result::LEDGER_OK  &&
+    result != ledger::type::Result::NOT_FOUND) {
+    callback(ledger::type::Result::LEDGER_ERROR, nullptr);
     return;
   }
 
-  if (!publisher_info || result == ledger::Result::NOT_FOUND) {
+  if (!publisher_info || result == ledger::type::Result::NOT_FOUND) {
     SavePublisherInfo(0,
                       user_id,
                       screen_name,
@@ -448,9 +449,9 @@ void GitHub::OnMediaPublisherInfo(
 
 void GitHub::OnMetaDataGet(
       ledger::PublisherInfoCallback callback,
-      const ledger::UrlResponse& response) {
+      const ledger::type::UrlResponse& response) {
   if (response.status_code != net::HTTP_OK) {
-    callback(ledger::Result::TIP_ERROR, nullptr);
+    callback(ledger::type::Result::TIP_ERROR, nullptr);
     return;
   }
 
@@ -485,7 +486,7 @@ void GitHub::SaveMediaInfo(
       std::move(callback),
       _1);
 
-  auto request = ledger::UrlRequest::New();
+  auto request = ledger::type::UrlRequest::New();
   request->url = url;
   request->skip_log = true;
   ledger_->LoadURL(std::move(request), url_callback);

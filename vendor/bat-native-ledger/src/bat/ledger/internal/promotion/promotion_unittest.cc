@@ -25,7 +25,8 @@ using ::testing::Invoke;
 using std::placeholders::_1;
 using std::placeholders::_2;
 
-namespace braveledger_promotion {
+namespace ledger {
+namespace promotion {
 
 std::string GetResponse(const std::string& url) {
   std::map<std::string, std::string> response;
@@ -58,27 +59,27 @@ class PromotionTest : public testing::Test {
 
  protected:
   std::unique_ptr<ledger::MockLedgerClient> mock_ledger_client_;
-  std::unique_ptr<bat_ledger::MockLedgerImpl> mock_ledger_impl_;
+  std::unique_ptr<ledger::MockLedgerImpl> mock_ledger_impl_;
   std::unique_ptr<Promotion> promotion_;
-  std::unique_ptr<braveledger_database::MockDatabase> mock_database_;
+  std::unique_ptr<database::MockDatabase> mock_database_;
 
   PromotionTest() {
     mock_ledger_client_ = std::make_unique<ledger::MockLedgerClient>();
     mock_ledger_impl_ =
-        std::make_unique<bat_ledger::MockLedgerImpl>(mock_ledger_client_.get());
+        std::make_unique<ledger::MockLedgerImpl>(mock_ledger_client_.get());
     promotion_ = std::make_unique<Promotion>(mock_ledger_impl_.get());
-    mock_database_ = std::make_unique<braveledger_database::MockDatabase>(
+    mock_database_ = std::make_unique<database::MockDatabase>(
         mock_ledger_impl_.get());
   }
 
   void SetUp() override {
     const std::string payment_id = "this_is_id";
-    ON_CALL(*mock_ledger_client_, GetStringState(ledger::kStatePaymentId))
+    ON_CALL(*mock_ledger_client_, GetStringState(state::kPaymentId))
       .WillByDefault(testing::Return(payment_id));
 
     const std::string wallet_passphrase =
         "AN6DLuI2iZzzDxpzywf+IKmK1nzFRarNswbaIDI3pQg=";
-    ON_CALL(*mock_ledger_client_, GetStringState(ledger::kStateRecoverySeed))
+    ON_CALL(*mock_ledger_client_, GetStringState(state::kRecoverySeed))
       .WillByDefault(testing::Return(wallet_passphrase));
 
     ON_CALL(*mock_ledger_impl_, database())
@@ -87,9 +88,9 @@ class PromotionTest : public testing::Test {
     ON_CALL(*mock_ledger_client_, LoadURL(_, _))
       .WillByDefault(
         Invoke([](
-            ledger::UrlRequestPtr request,
-            ledger::LoadURLCallback callback) {
-          ledger::UrlResponse response;
+            type::UrlRequestPtr request,
+            client::LoadURLCallback callback) {
+          type::UrlResponse response;
           response.status_code = 200;
           response.url = request->url;
           response.body = GetResponse(request->url);
@@ -100,8 +101,8 @@ class PromotionTest : public testing::Test {
 TEST_F(PromotionTest, LegacyPromotionIsNotOverwritten) {
   ledger::FetchPromotionCallback fetch_promotion_callback =
       std::bind(
-          [&](ledger::Result result,
-              ledger::PromotionList promotions) {
+          [&](type::Result result,
+              type::PromotionList promotions) {
           },
       _1,
       _2);
@@ -110,15 +111,15 @@ TEST_F(PromotionTest, LegacyPromotionIsNotOverwritten) {
   ON_CALL(*mock_database_, GetAllPromotions(_))
     .WillByDefault(
         Invoke([&inserted](ledger::GetAllPromotionsCallback callback) {
-          auto promotion = ledger::Promotion::New();
-          ledger::PromotionMap map;
+          auto promotion = type::Promotion::New();
+          type::PromotionMap map;
           if (inserted) {
             const std::string id = "36baa4c3-f92d-4121-b6d9-db44cb273a02";
             promotion->id = id;
             promotion->public_keys =
                 "[\"vNnt88kCh650dFFHt+48SS4d4skQ2FYSxmmlzmKDgkE=\"]";
             promotion->legacy_claimed = true;
-            promotion->status = ledger::PromotionStatus::ATTESTED;
+            promotion->status = type::PromotionStatus::ATTESTED;
             map.insert(std::make_pair(id, std::move(promotion)));
           }
 
@@ -133,4 +134,5 @@ TEST_F(PromotionTest, LegacyPromotionIsNotOverwritten) {
 }
 
 
-}  // namespace braveledger_promotion
+}  // namespace promotion
+}  // namespace ledger

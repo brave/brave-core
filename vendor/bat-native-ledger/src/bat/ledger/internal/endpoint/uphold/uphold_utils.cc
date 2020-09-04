@@ -21,7 +21,7 @@ const char kClientSecretProduction[] =
     "de1aa4196c8d4aa50c6bc1371734e3f57f781f72";
 
 std::string GetClientSecret() {
-  return ledger::_environment == ledger::Environment::PRODUCTION
+  return ledger::_environment == type::Environment::PRODUCTION
       ? kClientSecretProduction
       : kClientSecretStaging;
 }
@@ -34,7 +34,7 @@ std::vector<std::string> RequestAuthorization(const std::string& token) {
     return headers;
   }
 
-  const std::string id = braveledger_uphold::GetClientId();
+  const std::string id = ::ledger::uphold::GetClientId();
   const std::string secret = GetClientSecret();
 
   std::string user;
@@ -54,7 +54,7 @@ std::string GetServerUrl(const std::string& path) {
   DCHECK(!path.empty());
 
   std::string url;
-  if (ledger::_environment == ledger::Environment::PRODUCTION) {
+  if (ledger::_environment == type::Environment::PRODUCTION) {
     url = kProduction;
   } else {
     url = kStaging;

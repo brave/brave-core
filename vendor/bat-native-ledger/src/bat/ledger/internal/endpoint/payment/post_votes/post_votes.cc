@@ -21,7 +21,7 @@ namespace ledger {
 namespace endpoint {
 namespace payment {
 
-PostVotes::PostVotes(bat_ledger::LedgerImpl* ledger):
+PostVotes::PostVotes(LedgerImpl* ledger):
     ledger_(ledger) {
   DCHECK(ledger_);
 }
@@ -33,11 +33,11 @@ std::string PostVotes::GetUrl() {
 }
 
 std::string PostVotes::GeneratePayload(
-    const braveledger_credentials::CredentialsRedeem& redeem) {
+    const credential::CredentialsRedeem& redeem) {
   base::Value data(base::Value::Type::DICTIONARY);
   data.SetStringKey(
       "type",
-      braveledger_credentials::ConvertRewardTypeToString(redeem.type));
+      credential::ConvertRewardTypeToString(redeem.type));
   if (!redeem.order_id.empty()) {
     data.SetStringKey("orderId", redeem.order_id);
   }
@@ -49,7 +49,7 @@ std::string PostVotes::GeneratePayload(
   base::Base64Encode(data_json, &data_encoded);
 
   base::Value credentials(base::Value::Type::LIST);
-  braveledger_credentials::GenerateCredentials(
+  credential::GenerateCredentials(
       redeem.token_list,
       data_encoded,
       &credentials);
@@ -63,42 +63,42 @@ std::string PostVotes::GeneratePayload(
   return json;
 }
 
-ledger::Result PostVotes::CheckStatusCode(const int status_code) {
+type::Result PostVotes::CheckStatusCode(const int status_code) {
   if (status_code == net::HTTP_BAD_REQUEST) {
     BLOG(0, "Invalid request");
-    return ledger::Result::RETRY_SHORT;
+    return type::Result::RETRY_SHORT;
   }
 
   if (status_code == net::HTTP_INTERNAL_SERVER_ERROR) {
     BLOG(0, "Internal server error");
-    return ledger::Result::RETRY_SHORT;
+    return type::Result::RETRY_SHORT;
   }
 
   if (status_code != net::HTTP_OK) {
-    return ledger::Result::LEDGER_ERROR;
+    return type::Result::LEDGER_ERROR;
   }
 
-  return ledger::Result::LEDGER_OK;
+  return type::Result::LEDGER_OK;
 }
 
 void PostVotes::Request(
-    const braveledger_credentials::CredentialsRedeem& redeem,
+    const credential::CredentialsRedeem& redeem,
     PostVotesCallback callback) {
   auto url_callback = std::bind(&PostVotes::OnRequest,
       this,
       _1,
       callback);
 
-  auto request = ledger::UrlRequest::New();
+  auto request = type::UrlRequest::New();
   request->url = GetUrl();
   request->content = GeneratePayload(redeem);
   request->content_type = "application/json; charset=utf-8";
-  request->method = ledger::UrlMethod::POST;
+  request->method = type::UrlMethod::POST;
   ledger_->LoadURL(std::move(request), url_callback);
 }
 
 void PostVotes::OnRequest(
-    const ledger::UrlResponse& response,
+    const type::UrlResponse& response,
     PostVotesCallback callback) {
   ledger::LogUrlResponse(__func__, response);
   callback(CheckStatusCode(response.status_code));

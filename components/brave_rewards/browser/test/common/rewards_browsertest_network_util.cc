@@ -6,7 +6,7 @@
 #include <utility>
 
 #include "base/strings/stringprintf.h"
-#include "bat/ledger/internal/request/request_util.h"
+#include "bat/ledger/internal/common/request_util.h"
 #include "brave/components/brave_rewards/browser/test/common/rewards_browsertest_network_util.h"
 #include "content/public/test/browser_test_utils.h"
 
@@ -132,7 +132,7 @@ std::string GetUpholdCard(
       address.c_str());
 }
 
-std::string GetOrderCreateResponse(ledger::SKUOrderPtr sku_order) {
+std::string GetOrderCreateResponse(ledger::type::SKUOrderPtr sku_order) {
   DCHECK(sku_order);
   std::string items;
   for (const auto& item : sku_order->items) {

@@ -12,7 +12,8 @@
 
 #include "bat/ledger/ledger.h"
 
-namespace braveledger_sku {
+namespace ledger {
+namespace sku {
 
 class SKU {
  public:
@@ -20,16 +21,17 @@ class SKU {
 
   virtual void Retry(
       const std::string& order_id,
-      ledger::ExternalWalletPtr wallet,
+      type::ExternalWalletPtr wallet,
       ledger::SKUOrderCallback callback) = 0;
 
   virtual void Process(
-      const std::vector<ledger::SKUOrderItem>& items,
-      ledger::ExternalWalletPtr wallet,
+      const std::vector<type::SKUOrderItem>& items,
+      type::ExternalWalletPtr wallet,
       ledger::SKUOrderCallback callback,
       const std::string& contribution_id = "") = 0;
 };
 
-}  // namespace braveledger_sku
+}  // namespace sku
+}  // namespace ledger
 
 #endif  // BRAVELEDGER_SKU_H_

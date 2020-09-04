@@ -30,13 +30,13 @@ class PostDevicecheckTest : public testing::Test {
 
  protected:
   std::unique_ptr<ledger::MockLedgerClient> mock_ledger_client_;
-  std::unique_ptr<bat_ledger::MockLedgerImpl> mock_ledger_impl_;
+  std::unique_ptr<ledger::MockLedgerImpl> mock_ledger_impl_;
   std::unique_ptr<PostDevicecheck> devicecheck_;
 
   PostDevicecheckTest() {
     mock_ledger_client_ = std::make_unique<ledger::MockLedgerClient>();
     mock_ledger_impl_ =
-        std::make_unique<bat_ledger::MockLedgerImpl>(mock_ledger_client_.get());
+        std::make_unique<ledger::MockLedgerImpl>(mock_ledger_client_.get());
     devicecheck_ =
         std::make_unique<PostDevicecheck>(mock_ledger_impl_.get());
   }
@@ -46,9 +46,9 @@ TEST_F(PostDevicecheckTest, ServerOK) {
   ON_CALL(*mock_ledger_client_, LoadURL(_, _))
       .WillByDefault(
           Invoke([](
-              ledger::UrlRequestPtr request,
-              ledger::LoadURLCallback callback) {
-            ledger::UrlResponse response;
+              type::UrlRequestPtr request,
+              client::LoadURLCallback callback) {
+            type::UrlResponse response;
             response.status_code = 200;
             response.url = request->url;
             response.body = R"({
@@ -59,8 +59,8 @@ TEST_F(PostDevicecheckTest, ServerOK) {
 
   devicecheck_->Request(
       "ff50981d-47de-4210-848d-995e186901a1",
-      [](const ledger::Result result, const std::string& nonce) {
-        EXPECT_EQ(result, ledger::Result::LEDGER_OK);
+      [](const type::Result result, const std::string& nonce) {
+        EXPECT_EQ(result, type::Result::LEDGER_OK);
         EXPECT_EQ(nonce, "c4645786-052f-402f-8593-56af2f7a21ce");
       });
 }
@@ -69,9 +69,9 @@ TEST_F(PostDevicecheckTest, ServerError400) {
   ON_CALL(*mock_ledger_client_, LoadURL(_, _))
       .WillByDefault(
           Invoke([](
-              ledger::UrlRequestPtr request,
-              ledger::LoadURLCallback callback) {
-            ledger::UrlResponse response;
+              type::UrlRequestPtr request,
+              client::LoadURLCallback callback) {
+            type::UrlResponse response;
             response.status_code = 400;
             response.url = request->url;
             response.body = "";
@@ -80,8 +80,8 @@ TEST_F(PostDevicecheckTest, ServerError400) {
 
   devicecheck_->Request(
       "ff50981d-47de-4210-848d-995e186901a1",
-      [](const ledger::Result result, const std::string& nonce) {
-        EXPECT_EQ(result, ledger::Result::LEDGER_ERROR);
+      [](const type::Result result, const std::string& nonce) {
+        EXPECT_EQ(result, type::Result::LEDGER_ERROR);
         EXPECT_EQ(nonce, "");
       });
 }
@@ -90,9 +90,9 @@ TEST_F(PostDevicecheckTest, ServerError401) {
   ON_CALL(*mock_ledger_client_, LoadURL(_, _))
       .WillByDefault(
           Invoke([](
-              ledger::UrlRequestPtr request,
-              ledger::LoadURLCallback callback) {
-            ledger::UrlResponse response;
+              type::UrlRequestPtr request,
+              client::LoadURLCallback callback) {
+            type::UrlResponse response;
             response.status_code = 401;
             response.url = request->url;
             response.body = "";
@@ -101,8 +101,8 @@ TEST_F(PostDevicecheckTest, ServerError401) {
 
   devicecheck_->Request(
       "ff50981d-47de-4210-848d-995e186901a1",
-      [](const ledger::Result result, const std::string& nonce) {
-        EXPECT_EQ(result, ledger::Result::LEDGER_ERROR);
+      [](const type::Result result, const std::string& nonce) {
+        EXPECT_EQ(result, type::Result::LEDGER_ERROR);
         EXPECT_EQ(nonce, "");
       });
 }
@@ -111,9 +111,9 @@ TEST_F(PostDevicecheckTest, ServerErrorRandom) {
   ON_CALL(*mock_ledger_client_, LoadURL(_, _))
       .WillByDefault(
           Invoke([](
-              ledger::UrlRequestPtr request,
-              ledger::LoadURLCallback callback) {
-            ledger::UrlResponse response;
+              type::UrlRequestPtr request,
+              client::LoadURLCallback callback) {
+            type::UrlResponse response;
             response.status_code = 453;
             response.url = request->url;
             response.body = "";
@@ -122,8 +122,8 @@ TEST_F(PostDevicecheckTest, ServerErrorRandom) {
 
   devicecheck_->Request(
       "ff50981d-47de-4210-848d-995e186901a1",
-      [](const ledger::Result result, const std::string& nonce) {
-        EXPECT_EQ(result, ledger::Result::LEDGER_ERROR);
+      [](const type::Result result, const std::string& nonce) {
+        EXPECT_EQ(result, type::Result::LEDGER_ERROR);
         EXPECT_EQ(nonce, "");
       });
 }

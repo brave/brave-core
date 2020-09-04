@@ -19,33 +19,33 @@ namespace {
 
 void HandleBinding(
     sql::Statement* statement,
-    const DBCommandBinding& binding) {
+    const type::DBCommandBinding& binding) {
   if (!statement) {
     return;
   }
 
   switch (binding.value->which()) {
-    case DBValue::Tag::STRING_VALUE: {
+    case type::DBValue::Tag::STRING_VALUE: {
       statement->BindString(binding.index, binding.value->get_string_value());
       return;
     }
-    case DBValue::Tag::INT_VALUE: {
+    case type::DBValue::Tag::INT_VALUE: {
       statement->BindInt(binding.index, binding.value->get_int_value());
       return;
     }
-    case DBValue::Tag::INT64_VALUE: {
+    case type::DBValue::Tag::INT64_VALUE: {
       statement->BindInt64(binding.index, binding.value->get_int64_value());
       return;
     }
-    case DBValue::Tag::DOUBLE_VALUE: {
+    case type::DBValue::Tag::DOUBLE_VALUE: {
       statement->BindDouble(binding.index, binding.value->get_double_value());
       return;
     }
-    case DBValue::Tag::BOOL_VALUE: {
+    case type::DBValue::Tag::BOOL_VALUE: {
       statement->BindBool(binding.index, binding.value->get_bool_value());
       return;
     }
-    case DBValue::Tag::NULL_VALUE: {
+    case type::DBValue::Tag::NULL_VALUE: {
       statement->BindNull(binding.index);
       return;
     }
@@ -55,10 +55,10 @@ void HandleBinding(
   }
 }
 
-DBRecordPtr CreateRecord(
+type::DBRecordPtr CreateRecord(
     sql::Statement* statement,
-    const std::vector<DBCommand::RecordBindingType>& bindings) {
-  auto record = DBRecord::New();
+    const std::vector<type::DBCommand::RecordBindingType>& bindings) {
+  auto record = type::DBRecord::New();
   int column = 0;
 
   if (!statement) {
@@ -66,25 +66,25 @@ DBRecordPtr CreateRecord(
   }
 
   for (const auto& binding : bindings) {
-    auto value = DBValue::New();
+    auto value = type::DBValue::New();
     switch (binding) {
-      case DBCommand::RecordBindingType::STRING_TYPE: {
+      case type::DBCommand::RecordBindingType::STRING_TYPE: {
         value->set_string_value(statement->ColumnString(column));
         break;
       }
-      case DBCommand::RecordBindingType::INT_TYPE: {
+      case type::DBCommand::RecordBindingType::INT_TYPE: {
         value->set_int_value(statement->ColumnInt(column));
         break;
       }
-      case DBCommand::RecordBindingType::INT64_TYPE: {
+      case type::DBCommand::RecordBindingType::INT64_TYPE: {
         value->set_int64_value(statement->ColumnInt64(column));
         break;
       }
-      case DBCommand::RecordBindingType::DOUBLE_TYPE: {
+      case type::DBCommand::RecordBindingType::DOUBLE_TYPE: {
         value->set_double_value(statement->ColumnDouble(column));
         break;
       }
-      case DBCommand::RecordBindingType::BOOL_TYPE: {
+      case type::DBCommand::RecordBindingType::BOOL_TYPE: {
         value->set_bool_value(statement->ColumnBool(column));
         break;
       }
@@ -110,8 +110,8 @@ LedgerDatabaseImpl::LedgerDatabaseImpl(const base::FilePath& path) :
 LedgerDatabaseImpl::~LedgerDatabaseImpl() = default;
 
 void LedgerDatabaseImpl::RunTransaction(
-    DBTransactionPtr transaction,
-    DBCommandResponse* command_response) {
+    type::DBTransactionPtr transaction,
+    type::DBCommandResponse* command_response) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
 
   if (!command_response) {
@@ -119,71 +119,73 @@ void LedgerDatabaseImpl::RunTransaction(
   }
 
   if (!db_.is_open() && !db_.Open(db_path_)) {
-    command_response->status = DBCommandResponse::Status::INITIALIZATION_ERROR;
+    command_response->status =
+        type::DBCommandResponse::Status::INITIALIZATION_ERROR;
     return;
   }
 
   // Close command must always be sent as single command in transaction
   if (transaction->commands.size() == 1 &&
-      transaction->commands[0]->type == DBCommand::Type::CLOSE) {
+      transaction->commands[0]->type == type::DBCommand::Type::CLOSE) {
     db_.Close();
     initialized_ = false;
-    command_response->status = DBCommandResponse::Status::RESPONSE_OK;
+    command_response->status = type::DBCommandResponse::Status::RESPONSE_OK;
     return;
   }
 
   sql::Transaction committer(&db_);
   if (!committer.Begin()) {
-    command_response->status = DBCommandResponse::Status::TRANSACTION_ERROR;
+    command_response->status =
+        type::DBCommandResponse::Status::TRANSACTION_ERROR;
     return;
   }
 
   bool vacuum_requested = false;
 
   for (auto const& command : transaction->commands) {
-    DBCommandResponse::Status status;
+    type::DBCommandResponse::Status status;
 
     BLOG(8, "Query: " << command->command);
 
     switch (command->type) {
-      case DBCommand::Type::INITIALIZE: {
+      case type::DBCommand::Type::INITIALIZE: {
         status = Initialize(
             transaction->version,
             transaction->compatible_version,
             command_response);
         break;
       }
-      case DBCommand::Type::READ: {
+      case type::DBCommand::Type::READ: {
         status = Read(command.get(), command_response);
         break;
       }
-      case DBCommand::Type::EXECUTE: {
+      case type::DBCommand::Type::EXECUTE: {
         status = Execute(command.get());
         break;
       }
-      case DBCommand::Type::RUN: {
+      case type::DBCommand::Type::RUN: {
         status = Run(command.get());
         break;
       }
-      case DBCommand::Type::MIGRATE: {
+      case type::DBCommand::Type::MIGRATE: {
         status = Migrate(
             transaction->version,
             transaction->compatible_version);
         break;
       }
-      case DBCommand::Type::VACUUM: {
+      case type::DBCommand::Type::VACUUM: {
         vacuum_requested = true;
-        status = DBCommandResponse::Status::RESPONSE_OK;
+        status = type::DBCommandResponse::Status::RESPONSE_OK;
         break;
       }
-      case DBCommand::Type::CLOSE: {
+      case type::DBCommand::Type::CLOSE: {
         NOTREACHED();
-        status = DBCommandResponse::Status::COMMAND_ERROR;
+        status = type::DBCommandResponse::Status::COMMAND_ERROR;
         break;
       }
     }
 
-    if (status != DBCommandResponse::Status::RESPONSE_OK) {
+    if (status != type::DBCommandResponse::Status::RESPONSE_OK) {
       committer.Rollback();
       command_response->status = status;
       return;
@@ -191,7 +193,8 @@ void LedgerDatabaseImpl::RunTransaction(
   }
 
   if (!committer.Commit()) {
-    command_response->status = DBCommandResponse::Status::TRANSACTION_ERROR;
+    command_response->status =
+        type::DBCommandResponse::Status::TRANSACTION_ERROR;
     return;
   }
 
@@ -205,14 +208,14 @@ void LedgerDatabaseImpl::RunTransaction(
   }
 }
 
-DBCommandResponse::Status LedgerDatabaseImpl::Initialize(
+type::DBCommandResponse::Status LedgerDatabaseImpl::Initialize(
     const int32_t version,
     const int32_t compatible_version,
-    DBCommandResponse* command_response) {
+    type::DBCommandResponse* command_response) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
 
   if (!command_response) {
-    return DBCommandResponse::Status::RESPONSE_ERROR;
+    return type::DBCommandResponse::Status::RESPONSE_ERROR;
   }
 
   int table_version = 0;
@@ -223,7 +226,7 @@ DBCommandResponse::Status LedgerDatabaseImpl::Initialize(
     }
 
     if (!meta_table_.Init(&db_, version, compatible_version)) {
-      return DBCommandResponse::Status::INITIALIZATION_ERROR;
+      return type::DBCommandResponse::Status::INITIALIZATION_ERROR;
     }
 
     if (table_exists) {
@@ -239,41 +242,43 @@ DBCommandResponse::Status LedgerDatabaseImpl::Initialize(
     table_version = meta_table_.GetVersionNumber();
   }
 
-  auto value = DBValue::New();
+  auto value = type::DBValue::New();
   value->set_int_value(table_version);
-  auto result = DBCommandResult::New();
+  auto result = type::DBCommandResult::New();
   result->set_value(std::move(value));
   command_response->result = std::move(result);
 
-  return DBCommandResponse::Status::RESPONSE_OK;
+  return type::DBCommandResponse::Status::RESPONSE_OK;
 }
 
-DBCommandResponse::Status LedgerDatabaseImpl::Execute(DBCommand* command) {
+type::DBCommandResponse::Status LedgerDatabaseImpl::Execute(
+    type::DBCommand* command) {
   if (!initialized_) {
-    return DBCommandResponse::Status::INITIALIZATION_ERROR;
+    return type::DBCommandResponse::Status::INITIALIZATION_ERROR;
   }
 
   if (!command) {
-    return DBCommandResponse::Status::RESPONSE_ERROR;
+    return type::DBCommandResponse::Status::RESPONSE_ERROR;
   }
 
   bool result = db_.Execute(command->command.c_str());
 
   if (!result) {
     BLOG(0, "DB Execute error: " << db_.GetErrorMessage());
-    return DBCommandResponse::Status::COMMAND_ERROR;
+    return type::DBCommandResponse::Status::COMMAND_ERROR;
   }
 
-  return DBCommandResponse::Status::RESPONSE_OK;
+  return type::DBCommandResponse::Status::RESPONSE_OK;
 }
 
-DBCommandResponse::Status LedgerDatabaseImpl::Run(DBCommand* command) {
+type::DBCommandResponse::Status LedgerDatabaseImpl::Run(
+    type::DBCommand* command) {
   if (!initialized_) {
-    return DBCommandResponse::Status::INITIALIZATION_ERROR;
+    return type::DBCommandResponse::Status::INITIALIZATION_ERROR;
   }
 
   if (!command) {
-    return DBCommandResponse::Status::RESPONSE_ERROR;
+    return type::DBCommandResponse::Status::RESPONSE_ERROR;
   }
 
   sql::Statement statement(db_.GetUniqueStatement(command->command.c_str()));
@@ -285,21 +290,21 @@ DBCommandResponse::Status LedgerDatabaseImpl::Run(DBCommand* command) {
   if (!statement.Run()) {
     BLOG(0, "DB Run error: " << db_.GetErrorMessage() <<
         " (" << db_.GetErrorCode() << ")");
-    return DBCommandResponse::Status::COMMAND_ERROR;
+    return type::DBCommandResponse::Status::COMMAND_ERROR;
   }
 
-  return DBCommandResponse::Status::RESPONSE_OK;
+  return type::DBCommandResponse::Status::RESPONSE_OK;
 }
 
-DBCommandResponse::Status LedgerDatabaseImpl::Read(
-    DBCommand* command,
-    DBCommandResponse* command_response) {
+type::DBCommandResponse::Status LedgerDatabaseImpl::Read(
+    type::DBCommand* command,
+    type::DBCommandResponse* command_response) {
   if (!initialized_) {
-    return DBCommandResponse::Status::INITIALIZATION_ERROR;
+    return type::DBCommandResponse::Status::INITIALIZATION_ERROR;
   }
 
   if (!command || !command_response) {
-    return DBCommandResponse::Status::RESPONSE_ERROR;
+    return type::DBCommandResponse::Status::RESPONSE_ERROR;
   }
 
   sql::Statement statement(
@@ -309,28 +314,28 @@ DBCommandResponse::Status LedgerDatabaseImpl::Read(
     HandleBinding(&statement, *binding.get());
   }
 
-  auto result = DBCommandResult::New();
-  result->set_records(std::vector<DBRecordPtr>());
+  auto result = type::DBCommandResult::New();
+  result->set_records(std::vector<type::DBRecordPtr>());
   command_response->result = std::move(result);
   while (statement.Step()) {
     command_response->result->get_records().push_back(
         CreateRecord(&statement, command->record_bindings));
   }
 
-  return DBCommandResponse::Status::RESPONSE_OK;
+  return type::DBCommandResponse::Status::RESPONSE_OK;
 }
 
-DBCommandResponse::Status LedgerDatabaseImpl::Migrate(
+type::DBCommandResponse::Status LedgerDatabaseImpl::Migrate(
     const int32_t version,
     const int32_t compatible_version) {
   if (!initialized_) {
-    return DBCommandResponse::Status::INITIALIZATION_ERROR;
+    return type::DBCommandResponse::Status::INITIALIZATION_ERROR;
   }
 
   meta_table_.SetVersionNumber(version);
   meta_table_.SetCompatibleVersionNumber(compatible_version);
 
-  return DBCommandResponse::Status::RESPONSE_OK;
+  return type::DBCommandResponse::Status::RESPONSE_OK;
 }
 
 void LedgerDatabaseImpl::OnMemoryPressure(

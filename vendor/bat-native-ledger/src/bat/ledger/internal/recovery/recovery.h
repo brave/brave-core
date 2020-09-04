@@ -10,22 +10,20 @@
 
 #include "bat/ledger/internal/recovery/recovery_empty_balance.h"
 
-namespace bat_ledger {
-class LedgerImpl;
-}
-
 namespace ledger {
+class LedgerImpl;
+
 namespace recovery {
 
 class Recovery {
  public:
-  explicit Recovery(bat_ledger::LedgerImpl* ledger);
+  explicit Recovery(LedgerImpl* ledger);
   ~Recovery();
 
   void Check();
 
  private:
-  bat_ledger::LedgerImpl* ledger_;  // NOT OWNED
+  LedgerImpl* ledger_;  // NOT OWNED
   std::unique_ptr<EmptyBalance> empty_balance_;
 };
 

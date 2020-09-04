@@ -16,16 +16,14 @@
 #include "bat/ledger/internal/uphold/uphold.h"
 #include "bat/ledger/ledger.h"
 
-namespace bat_ledger {
-class LedgerImpl;
-}
-
 namespace ledger {
+class LedgerImpl;
+
 namespace wallet {
 
 class WalletBalance {
  public:
-  explicit WalletBalance(bat_ledger::LedgerImpl* ledger);
+  explicit WalletBalance(LedgerImpl* ledger);
   ~WalletBalance();
 
   void Fetch(ledger::FetchBalanceCallback callback);
@@ -36,31 +34,31 @@ class WalletBalance {
 
  private:
   void OnFetch(
-      const ledger::Result result,
-      ledger::BalancePtr balance,
+      const type::Result result,
+      type::BalancePtr balance,
       ledger::FetchBalanceCallback callback);
 
   void GetUnblindedTokens(
-      ledger::BalancePtr balance,
+      type::BalancePtr balance,
       ledger::FetchBalanceCallback callback);
 
   void OnGetUnblindedTokens(
-      ledger::Balance info,
+      type::Balance info,
       ledger::FetchBalanceCallback callback,
-      ledger::UnblindedTokenList list);
+      type::UnblindedTokenList list);
 
   void ExternalWallets(
-      ledger::BalancePtr balance,
+      type::BalancePtr balance,
       ledger::FetchBalanceCallback callback);
 
   void OnUpholdFetchBalance(
-      ledger::Balance info,
+      type::Balance info,
       ledger::FetchBalanceCallback callback,
-      const ledger::Result result,
+      const type::Result result,
       const double balance);
 
-  bat_ledger::LedgerImpl* ledger_;  // NOT OWNED
-  std::unique_ptr<braveledger_uphold::Uphold> uphold_;
+  LedgerImpl* ledger_;  // NOT OWNED
+  std::unique_ptr<uphold::Uphold> uphold_;
   std::unique_ptr<endpoint::PromotionServer> promotion_server_;
 };
 

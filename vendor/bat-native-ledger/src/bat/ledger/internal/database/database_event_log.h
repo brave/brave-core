@@ -11,11 +11,12 @@
 
 #include "bat/ledger/internal/database/database_table.h"
 
-namespace braveledger_database {
+namespace ledger {
+namespace database {
 
 class DatabaseEventLog: public DatabaseTable {
  public:
-  explicit DatabaseEventLog(bat_ledger::LedgerImpl* ledger);
+  explicit DatabaseEventLog(LedgerImpl* ledger);
   ~DatabaseEventLog() override;
 
   void Insert(const std::string& key, const std::string& value);
@@ -29,10 +30,11 @@ class DatabaseEventLog: public DatabaseTable {
 
  private:
   void OnGetAllRecords(
-      ledger::DBCommandResponsePtr response,
+      type::DBCommandResponsePtr response,
       ledger::GetEventLogsCallback callback);
 };
 
-}  // namespace braveledger_database
+}  // namespace database
+}  // namespace ledger
 
 #endif  // BRAVELEDGER_DATABASE_DATABASE_EVENT_LOG_H_

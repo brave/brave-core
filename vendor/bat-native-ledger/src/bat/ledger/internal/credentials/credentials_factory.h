@@ -11,19 +11,19 @@
 #include "bat/ledger/internal/credentials/credentials.h"
 #include "bat/ledger/ledger.h"
 
-namespace bat_ledger {
+namespace ledger {
 class LedgerImpl;
-}
 
-namespace braveledger_credentials {
+namespace credential {
 
 class CredentialsFactory {
  public:
   static std::unique_ptr<Credentials> Create(
-      bat_ledger::LedgerImpl* ledger,
-      const ledger::CredsBatchType trigger_type);
+      LedgerImpl* ledger,
+      const type::CredsBatchType trigger_type);
 };
 
-}  // namespace braveledger_credentials
+}  // namespace credential
+}  // namespace ledger
 
 #endif  // BRAVELEDGER_CREDENTIALS_FACTORY_H_

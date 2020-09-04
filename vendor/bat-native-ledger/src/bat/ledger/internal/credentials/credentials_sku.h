@@ -14,11 +14,12 @@
 #include "bat/ledger/internal/credentials/credentials_common.h"
 #include "bat/ledger/internal/endpoint/payment/payment_server.h"
 
-namespace braveledger_credentials {
+namespace ledger {
+namespace credential {
 
 class CredentialsSKU : public Credentials {
  public:
-  explicit CredentialsSKU(bat_ledger::LedgerImpl* ledger);
+  explicit CredentialsSKU(LedgerImpl* ledger);
   ~CredentialsSKU() override;
 
   void Start(
@@ -31,7 +32,7 @@ class CredentialsSKU : public Credentials {
 
  private:
   void OnStart(
-      ledger::CredsBatchPtr creds,
+      type::CredsBatchPtr creds,
       const CredentialsTrigger& trigger,
       ledger::ResultCallback callback);
 
@@ -40,26 +41,26 @@ class CredentialsSKU : public Credentials {
       ledger::ResultCallback callback) override;
 
   void OnBlind(
-      const ledger::Result result,
+      const type::Result result,
       const CredentialsTrigger& trigger,
       ledger::ResultCallback callback);
 
   void RetryPreviousStepSaved(
-      const ledger::Result result,
+      const type::Result result,
       ledger::ResultCallback callback);
 
   void Claim(
-      ledger::CredsBatchPtr creds,
+      type::CredsBatchPtr creds,
       const CredentialsTrigger& trigger,
       ledger::ResultCallback callback) override;
 
   void OnClaim(
-      const ledger::Result result,
+      const type::Result result,
       const CredentialsTrigger& trigger,
       ledger::ResultCallback callback);
 
   void ClaimStatusSaved(
-      const ledger::Result result,
+      const type::Result result,
       const CredentialsTrigger& trigger,
       ledger::ResultCallback callback);
 
@@ -68,37 +69,38 @@ class CredentialsSKU : public Credentials {
       ledger::ResultCallback callback);
 
   void OnFetchSignedCreds(
-      const ledger::Result result,
-      ledger::CredsBatchPtr batch,
+      const type::Result result,
+      type::CredsBatchPtr batch,
       const CredentialsTrigger& trigger,
       ledger::ResultCallback callback);
 
   void SignedCredsSaved(
-      const ledger::Result result,
+      const type::Result result,
       const CredentialsTrigger& trigger,
       ledger::ResultCallback callback);
 
   void Unblind(
-      ledger::CredsBatchPtr creds,
+      type::CredsBatchPtr creds,
       const CredentialsTrigger& trigger,
       ledger::ResultCallback callback) override;
 
   void Completed(
-      const ledger::Result result,
+      const type::Result result,
       const CredentialsTrigger& trigger,
       ledger::ResultCallback callback) override;
 
   void OnRedeemTokens(
-      const ledger::Result result,
+      const type::Result result,
       const std::vector<std::string>& token_id_list,
       const CredentialsRedeem& redeem,
       ledger::ResultCallback callback);
 
-  bat_ledger::LedgerImpl* ledger_;  // NOT OWNED
+  LedgerImpl* ledger_;  // NOT OWNED
   std::unique_ptr<CredentialsCommon> common_;
-  std::unique_ptr<ledger::endpoint::PaymentServer> payment_server_;
+  std::unique_ptr<endpoint::PaymentServer> payment_server_;
 };
 
-}  // namespace braveledger_credentials
+}  // namespace credential
+}  // namespace ledger
 
 #endif  // BRAVELEDGER_CREDENTIALS_SKU_H_

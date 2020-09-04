@@ -10,7 +10,8 @@
 #include <string>
 #include <vector>
 
-namespace braveledger_request_util {
+namespace ledger {
+namespace util {
 
 std::map<std::string, std::string> GetSignHeaders(
     const std::string& url,
@@ -25,6 +26,7 @@ std::vector<std::string> BuildSignHeaders(
     const std::string& key_id,
     const std::vector<uint8_t>& private_key);
 
-}  // namespace braveledger_request_util
+}  // namespace util
+}  // namespace ledger
 
 #endif  // BRAVELEDGER_COMMON_REQUEST_UTIL_H_

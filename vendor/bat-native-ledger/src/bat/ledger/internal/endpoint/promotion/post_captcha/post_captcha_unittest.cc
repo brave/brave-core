@@ -30,13 +30,13 @@ class PostCaptchaTest : public testing::Test {
 
  protected:
   std::unique_ptr<ledger::MockLedgerClient> mock_ledger_client_;
-  std::unique_ptr<bat_ledger::MockLedgerImpl> mock_ledger_impl_;
+  std::unique_ptr<ledger::MockLedgerImpl> mock_ledger_impl_;
   std::unique_ptr<PostCaptcha> captcha_;
 
   PostCaptchaTest() {
     mock_ledger_client_ = std::make_unique<ledger::MockLedgerClient>();
     mock_ledger_impl_ =
-        std::make_unique<bat_ledger::MockLedgerImpl>(mock_ledger_client_.get());
+        std::make_unique<ledger::MockLedgerImpl>(mock_ledger_client_.get());
     captcha_ =
         std::make_unique<PostCaptcha>(mock_ledger_impl_.get());
   }
@@ -46,9 +46,9 @@ TEST_F(PostCaptchaTest, ServerOK) {
   ON_CALL(*mock_ledger_client_, LoadURL(_, _))
       .WillByDefault(
           Invoke([](
-              ledger::UrlRequestPtr request,
-              ledger::LoadURLCallback callback) {
-            ledger::UrlResponse response;
+              type::UrlRequestPtr request,
+              client::LoadURLCallback callback) {
+            type::UrlResponse response;
             response.status_code = 200;
             response.url = request->url;
             response.body = R"({
@@ -60,10 +60,10 @@ TEST_F(PostCaptchaTest, ServerOK) {
 
   captcha_->Request(
       [](
-          const ledger::Result result,
+          const type::Result result,
           const std::string& hint,
           const std::string& captcha_id) {
-        EXPECT_EQ(result, ledger::Result::LEDGER_OK);
+        EXPECT_EQ(result, type::Result::LEDGER_OK);
         EXPECT_EQ(hint, "circle");
         EXPECT_EQ(captcha_id, "d155d2d2-2627-425b-9be8-44ae9f541762");
       });
@@ -73,9 +73,9 @@ TEST_F(PostCaptchaTest, ServerError400) {
   ON_CALL(*mock_ledger_client_, LoadURL(_, _))
       .WillByDefault(
           Invoke([](
-              ledger::UrlRequestPtr request,
-              ledger::LoadURLCallback callback) {
-            ledger::UrlResponse response;
+              type::UrlRequestPtr request,
+              client::LoadURLCallback callback) {
+            type::UrlResponse response;
             response.status_code = 400;
             response.url = request->url;
             response.body = "";
@@ -84,10 +84,10 @@ TEST_F(PostCaptchaTest, ServerError400) {
 
   captcha_->Request(
       [](
-          const ledger::Result result,
+          const type::Result result,
           const std::string& hint,
           const std::string& captcha_id) {
-        EXPECT_EQ(result, ledger::Result::LEDGER_ERROR);
+        EXPECT_EQ(result, type::Result::LEDGER_ERROR);
       });
 }
 
@@ -95,9 +95,9 @@ TEST_F(PostCaptchaTest, ServerErrorRandom) {
   ON_CALL(*mock_ledger_client_, LoadURL(_, _))
       .WillByDefault(
           Invoke([](
-              ledger::UrlRequestPtr request,
-              ledger::LoadURLCallback callback) {
-            ledger::UrlResponse response;
+              type::UrlRequestPtr request,
+              client::LoadURLCallback callback) {
+            type::UrlResponse response;
             response.status_code = 453;
             response.url = request->url;
             response.body = "";
@@ -106,10 +106,10 @@ TEST_F(PostCaptchaTest, ServerErrorRandom) {
 
   captcha_->Request(
       [](
-          const ledger::Result result,
+          const type::Result result,
           const std::string& hint,
           const std::string& captcha_id) {
-        EXPECT_EQ(result, ledger::Result::LEDGER_ERROR);
+        EXPECT_EQ(result, type::Result::LEDGER_ERROR);
       });
 }
 

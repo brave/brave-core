@@ -13,9 +13,10 @@
 using std::placeholders::_1;
 using std::placeholders::_2;
 
-namespace braveledger_contribution {
+namespace ledger {
+namespace contribution {
 
-ContributionAC::ContributionAC(bat_ledger::LedgerImpl* ledger) :
+ContributionAC::ContributionAC(LedgerImpl* ledger) :
     ledger_(ledger) {
   DCHECK(ledger_);
 }
@@ -33,7 +34,7 @@ void ContributionAC::Process(const uint64_t reconcile_stamp) {
 
   auto filter = ledger_->publisher()->CreateActivityFilter(
       "",
-      ledger::ExcludeFilter::FILTER_ALL_EXCEPT_EXCLUDED,
+      type::ExcludeFilter::FILTER_ALL_EXCEPT_EXCLUDED,
       true,
       reconcile_stamp,
       false,
@@ -50,8 +51,8 @@ void ContributionAC::Process(const uint64_t reconcile_stamp) {
       get_callback);
 }
 
-void ContributionAC::PreparePublisherList(ledger::PublisherInfoList list) {
-  ledger::PublisherInfoList normalized_list;
+void ContributionAC::PreparePublisherList(type::PublisherInfoList list) {
+  type::PublisherInfoList normalized_list;
 
   ledger_->publisher()->NormalizeContributeWinners(&normalized_list, &list, 0);
 
@@ -60,14 +61,14 @@ void ContributionAC::PreparePublisherList(ledger::PublisherInfoList list) {
     return;
   }
 
-  ledger::ContributionQueuePublisherList queue_list;
-  ledger::ContributionQueuePublisherPtr publisher;
+  type::ContributionQueuePublisherList queue_list;
+  type::ContributionQueuePublisherPtr publisher;
   for (const auto &item : normalized_list) {
     if (!item || item->percent == 0) {
       continue;
     }
 
-    publisher = ledger::ContributionQueuePublisher::New();
+    publisher = type::ContributionQueuePublisher::New();
     publisher->publisher_key = item->id;
     publisher->amount_percent =  item->weight;
     queue_list.push_back(std::move(publisher));
@@ -78,15 +79,15 @@ void ContributionAC::PreparePublisherList(ledger::PublisherInfoList list) {
     return;
   }
 
-  auto queue = ledger::ContributionQueue::New();
+  auto queue = type::ContributionQueue::New();
   queue->id = base::GenerateGUID();
-  queue->type = ledger::RewardsType::AUTO_CONTRIBUTE;
+  queue->type = type::RewardsType::AUTO_CONTRIBUTE;
   queue->amount = ledger_->state()->GetAutoContributionAmount();
   queue->partial = true;
   queue->publishers = std::move(queue_list);
 
   ledger_->database()->SaveEventLog(
-      ledger::log::kACAddedToQueue,
+      log::kACAddedToQueue,
       std::to_string(queue->amount));
 
   auto save_callback = std::bind(&ContributionAC::QueueSaved,
@@ -96,8 +97,8 @@ void ContributionAC::PreparePublisherList(ledger::PublisherInfoList list) {
   ledger_->database()->SaveContributionQueue(std::move(queue), save_callback);
 }
 
-void ContributionAC::QueueSaved(const ledger::Result result) {
-  if (result != ledger::Result::LEDGER_OK) {
+void ContributionAC::QueueSaved(const type::Result result) {
+  if (result != type::Result::LEDGER_OK) {
     BLOG(0, "Queue was not saved");
     return;
   }
@@ -105,4 +106,5 @@ void ContributionAC::QueueSaved(const ledger::Result result) {
   ledger_->contribution()->CheckContributionQueue();
 }
 
-}  // namespace braveledger_contribution
+}  // namespace contribution
+}  // namespace ledger

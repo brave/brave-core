@@ -18,11 +18,12 @@ using std::placeholders::_1;
 using std::placeholders::_2;
 using std::placeholders::_3;
 
-namespace braveledger_contribution {
+namespace ledger {
+namespace contribution {
 
-ContributionAnonCard::ContributionAnonCard(bat_ledger::LedgerImpl* ledger) :
+ContributionAnonCard::ContributionAnonCard(LedgerImpl* ledger) :
     ledger_(ledger),
-    payment_server_(std::make_unique<ledger::endpoint::PaymentServer>(ledger)) {
+    payment_server_(std::make_unique<endpoint::PaymentServer>(ledger)) {
   DCHECK(ledger_);
 }
 
@@ -32,7 +33,7 @@ void ContributionAnonCard::SendTransaction(
     const double amount,
     const std::string& order_id,
     const std::string& destination,
-    ledger::TransactionCallback callback) {
+    client::TransactionCallback callback) {
   auto url_callback = std::bind(&ContributionAnonCard::OnSendTransaction,
       this,
       _1,
@@ -46,15 +47,16 @@ void ContributionAnonCard::SendTransaction(
 }
 
 void ContributionAnonCard::OnSendTransaction(
-    const ledger::Result result,
-    ledger::TransactionCallback callback) {
-  if (result != ledger::Result::LEDGER_OK) {
+    const type::Result result,
+    client::TransactionCallback callback) {
+  if (result != type::Result::LEDGER_OK) {
     BLOG(0, "Problem sending transaction");
-    callback(ledger::Result::LEDGER_ERROR, "");
+    callback(type::Result::LEDGER_ERROR, "");
     return;
   }
 
-  callback(ledger::Result::LEDGER_OK, "");
+  callback(type::Result::LEDGER_OK, "");
 }
 
-}  // namespace braveledger_contribution
+}  // namespace contribution
+}  // namespace ledger

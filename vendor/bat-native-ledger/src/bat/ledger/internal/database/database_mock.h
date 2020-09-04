@@ -12,30 +12,32 @@
 #include "bat/ledger/internal/database/database.h"
 #include "testing/gmock/include/gmock/gmock.h"
 
-namespace braveledger_database {
+namespace ledger {
+namespace database {
 
 class MockDatabase : public Database {
  public:
-  explicit MockDatabase(bat_ledger::LedgerImpl* ledger);
+  explicit MockDatabase(LedgerImpl* ledger);
 
   ~MockDatabase() override;
 
   MOCK_METHOD2(GetContributionInfo, void(
       const std::string& contribution_id,
-      ledger::GetContributionInfoCallback callback));
+      GetContributionInfoCallback callback));
 
   MOCK_METHOD2(GetReservedUnblindedTokens, void(
       const std::string& redeem_id,
-      ledger::GetUnblindedTokenListCallback callback));
+      GetUnblindedTokenListCallback callback));
 
   MOCK_METHOD2(SavePromotion, void(
-      ledger::PromotionPtr info,
+      type::PromotionPtr info,
       ledger::ResultCallback callback));
 
   MOCK_METHOD1(GetAllPromotions,
       void(ledger::GetAllPromotionsCallback callback));
 };
 
-}  // namespace braveledger_database
+}  // namespace database
+}  // namespace ledger
 
 #endif  // BAT_LEDGER_DATABASE_DATABASE_MOCK_H_

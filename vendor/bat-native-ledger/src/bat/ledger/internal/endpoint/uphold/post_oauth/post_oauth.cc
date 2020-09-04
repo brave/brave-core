@@ -19,7 +19,7 @@ namespace ledger {
 namespace endpoint {
 namespace uphold {
 
-PostOauth::PostOauth(bat_ledger::LedgerImpl* ledger):
+PostOauth::PostOauth(LedgerImpl* ledger):
     ledger_(ledger) {
   DCHECK(ledger_);
 }
@@ -36,19 +36,19 @@ std::string PostOauth::GeneratePayload(const std::string& code) {
       code.c_str());
 }
 
-ledger::Result PostOauth::CheckStatusCode(const int status_code) {
+type::Result PostOauth::CheckStatusCode(const int status_code) {
   if (status_code == net::HTTP_UNAUTHORIZED) {
-    return ledger::Result::EXPIRED_TOKEN;
+    return type::Result::EXPIRED_TOKEN;
   }
 
   if (status_code != net::HTTP_OK) {
-    return ledger::Result::LEDGER_ERROR;
+    return type::Result::LEDGER_ERROR;
   }
 
-  return ledger::Result::LEDGER_OK;
+  return type::Result::LEDGER_OK;
 }
 
-ledger::Result PostOauth::ParseBody(
+type::Result PostOauth::ParseBody(
     const std::string& body,
     std::string* token) {
   DCHECK(token);
@@ -56,24 +56,24 @@ ledger::Result PostOauth::ParseBody(
   base::Optional<base::Value> value = base::JSONReader::Read(body);
   if (!value || !value->is_dict()) {
     BLOG(0, "Invalid JSON");
-    return ledger::Result::LEDGER_ERROR;
+    return type::Result::LEDGER_ERROR;
   }
 
   base::DictionaryValue* dictionary = nullptr;
   if (!value->GetAsDictionary(&dictionary)) {
     BLOG(0, "Invalid JSON");
-    return ledger::Result::LEDGER_ERROR;
+    return type::Result::LEDGER_ERROR;
   }
 
   const auto* access_token = dictionary->FindStringKey("access_token");
   if (!access_token) {
     BLOG(0, "Missing access token");
-    return ledger::Result::LEDGER_ERROR;
+    return type::Result::LEDGER_ERROR;
   }
 
   *token = *access_token;
 
-  return ledger::Result::LEDGER_OK;
+  return type::Result::LEDGER_OK;
 }
 
 void PostOauth::Request(
@@ -84,23 +84,23 @@ void PostOauth::Request(
       _1,
       callback);
 
-  auto request = ledger::UrlRequest::New();
+  auto request = type::UrlRequest::New();
   request->url = GetUrl();
   request->content = GeneratePayload(code);
   request->headers = RequestAuthorization();
   request->content_type = "application/x-www-form-urlencoded";
-  request->method = ledger::UrlMethod::POST;
+  request->method = type::UrlMethod::POST;
   ledger_->LoadURL(std::move(request), url_callback);
 }
 
 void PostOauth::OnRequest(
-    const ledger::UrlResponse& response,
+    const type::UrlResponse& response,
     PostOauthCallback callback) {
   ledger::LogUrlResponse(__func__, response, true);
 
-  ledger::Result result = CheckStatusCode(response.status_code);
+  type::Result result = CheckStatusCode(response.status_code);
 
-  if (result != ledger::Result::LEDGER_OK) {
+  if (result != type::Result::LEDGER_OK) {
     callback(result, "");
     return;
   }

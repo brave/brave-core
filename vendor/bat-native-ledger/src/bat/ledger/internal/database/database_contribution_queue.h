@@ -12,18 +12,22 @@
 #include "bat/ledger/internal/database/database_contribution_queue_publishers.h"
 #include "bat/ledger/internal/database/database_table.h"
 
-namespace braveledger_database {
+namespace ledger {
+namespace database {
+
+using GetFirstContributionQueueCallback =
+    std::function<void(type::ContributionQueuePtr)>;
 
 class DatabaseContributionQueue: public DatabaseTable {
  public:
-  explicit DatabaseContributionQueue(bat_ledger::LedgerImpl* ledger);
+  explicit DatabaseContributionQueue(LedgerImpl* ledger);
   ~DatabaseContributionQueue() override;
 
   void InsertOrUpdate(
-      ledger::ContributionQueuePtr info,
+      type::ContributionQueuePtr info,
       ledger::ResultCallback callback);
 
-  void GetFirstRecord(ledger::GetFirstContributionQueueCallback callback);
+  void GetFirstRecord(GetFirstContributionQueueCallback callback);
 
   void MarkRecordAsComplete(
       const std::string& id,
@@ -31,22 +35,23 @@ class DatabaseContributionQueue: public DatabaseTable {
 
  private:
   void OnInsertOrUpdate(
-      ledger::DBCommandResponsePtr response,
-      std::shared_ptr<ledger::ContributionQueuePtr> shared_queue,
+      type::DBCommandResponsePtr response,
+      std::shared_ptr<type::ContributionQueuePtr> shared_queue,
       ledger::ResultCallback callback);
 
   void OnGetFirstRecord(
-      ledger::DBCommandResponsePtr response,
-      ledger::GetFirstContributionQueueCallback callback);
+      type::DBCommandResponsePtr response,
+      GetFirstContributionQueueCallback callback);
 
   void OnGetPublishers(
-      ledger::ContributionQueuePublisherList list,
-      std::shared_ptr<ledger::ContributionQueuePtr> shared_queue,
-      ledger::GetFirstContributionQueueCallback callback);
+      type::ContributionQueuePublisherList list,
+      std::shared_ptr<type::ContributionQueuePtr> shared_queue,
+      GetFirstContributionQueueCallback callback);
 
   std::unique_ptr<DatabaseContributionQueuePublishers> publishers_;
 };
 
-}  // namespace braveledger_database
+}  // namespace database
+}  // namespace ledger
 
 #endif  // BRAVELEDGER_DATABASE_DATABASE_CONTRIBUTION_QUEUE_H_

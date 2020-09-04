@@ -451,7 +451,7 @@ public abstract class BraveToolbarLayout extends ToolbarLayout implements OnClic
 
   private boolean checkForRewardsOnboarding() {
     return PackageUtils.isFirstInstall(getContext())
-           && (ChromeFeatureList.isEnabled(BraveFeatureList.BRAVE_REWARDS) && !PrefServiceBridge.getInstance().getBoolean(BravePref.BRAVE_REWARDS_ENABLED))
+           && (ChromeFeatureList.isEnabled(BraveFeatureList.BRAVE_REWARDS) && !PrefServiceBridge.getInstance().getBoolean(BravePref.ENABLED))
            && !BraveAdsNativeHelper.nativeIsBraveAdsEnabled(Profile.getLastUsedRegularProfile())
            && !OnboardingPrefManager.getInstance().isOnboardingShown();
   }
@@ -724,7 +724,7 @@ public abstract class BraveToolbarLayout extends ToolbarLayout implements OnClic
 
   @Override
   public void OnNotificationsCount(int count) {
-    boolean rewardsEnabled = PrefServiceBridge.getInstance().getBoolean(BravePref.BRAVE_REWARDS_ENABLED);
+    boolean rewardsEnabled = PrefServiceBridge.getInstance().getBoolean(BravePref.ENABLED);
     if (mBraveRewardsNotificationsCount != null && rewardsEnabled) {
       if (count != 0) {
         String value = Integer.toString(count);

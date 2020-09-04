@@ -18,7 +18,7 @@ namespace ledger {
 namespace endpoint {
 namespace promotion {
 
-PutCaptcha::PutCaptcha(bat_ledger::LedgerImpl* ledger):
+PutCaptcha::PutCaptcha(LedgerImpl* ledger):
     ledger_(ledger) {
   DCHECK(ledger_);
 }
@@ -45,27 +45,27 @@ std::string PutCaptcha::GeneratePayload(const int x, const int y) {
   return payload;
 }
 
-ledger::Result PutCaptcha::CheckStatusCode(const int status_code) {
+type::Result PutCaptcha::CheckStatusCode(const int status_code) {
   if (status_code == net::HTTP_BAD_REQUEST) {
     BLOG(0, "Invalid request");
-    return ledger::Result::CAPTCHA_FAILED;
+    return type::Result::CAPTCHA_FAILED;
   }
 
   if (status_code == net::HTTP_UNAUTHORIZED) {
     BLOG(0, "Invalid solution");
-    return ledger::Result::CAPTCHA_FAILED;
+    return type::Result::CAPTCHA_FAILED;
   }
 
   if (status_code == net::HTTP_INTERNAL_SERVER_ERROR) {
     BLOG(0, "Failed to verify captcha solution");
-    return ledger::Result::LEDGER_ERROR;
+    return type::Result::LEDGER_ERROR;
   }
 
   if (status_code != net::HTTP_OK) {
-    return ledger::Result::LEDGER_ERROR;
+    return type::Result::LEDGER_ERROR;
   }
 
-  return ledger::Result::LEDGER_OK;
+  return type::Result::LEDGER_OK;
 }
 
 void PutCaptcha::Request(
@@ -78,16 +78,16 @@ void PutCaptcha::Request(
       _1,
       callback);
 
-  auto request = ledger::UrlRequest::New();
+  auto request = type::UrlRequest::New();
   request->url = GetUrl(captcha_id);
   request->content = GeneratePayload(x, y);
   request->content_type = "application/json; charset=utf-8";
-  request->method = ledger::UrlMethod::PUT;
+  request->method = type::UrlMethod::PUT;
   ledger_->LoadURL(std::move(request), url_callback);
 }
 
 void PutCaptcha::OnRequest(
-    const ledger::UrlResponse& response,
+    const type::UrlResponse& response,
     PutCaptchaCallback callback) {
   ledger::LogUrlResponse(__func__, response);
   callback(CheckStatusCode(response.status_code));

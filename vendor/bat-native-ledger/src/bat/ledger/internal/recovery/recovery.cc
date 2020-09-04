@@ -9,7 +9,7 @@
 namespace ledger {
 namespace recovery {
 
-Recovery::Recovery(bat_ledger::LedgerImpl* ledger):
+Recovery::Recovery(LedgerImpl* ledger):
     ledger_(ledger),
     empty_balance_(std::make_unique<EmptyBalance>(ledger)) {
   DCHECK(ledger_);

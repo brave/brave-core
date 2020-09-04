@@ -10,15 +10,18 @@
 
 #include "bat/ledger/internal/database/database_table.h"
 
-namespace braveledger_database {
+namespace ledger {
+namespace database {
+
+using GetSKUTransactionCallback = std::function<void(type::SKUTransactionPtr)>;
 
 class DatabaseSKUTransaction: public DatabaseTable {
  public:
-  explicit DatabaseSKUTransaction(bat_ledger::LedgerImpl* ledger);
+  explicit DatabaseSKUTransaction(LedgerImpl* ledger);
   ~DatabaseSKUTransaction() override;
 
   void InsertOrUpdate(
-      ledger::SKUTransactionPtr info,
+      type::SKUTransactionPtr info,
       ledger::ResultCallback callback);
 
   void SaveExternalTransaction(
@@ -28,14 +31,15 @@ class DatabaseSKUTransaction: public DatabaseTable {
 
   void GetRecordByOrderId(
       const std::string& order_id,
-      ledger::GetSKUTransactionCallback callback);
+      GetSKUTransactionCallback callback);
 
  private:
   void OnGetRecord(
-      ledger::DBCommandResponsePtr response,
-      ledger::GetSKUTransactionCallback callback);
+      type::DBCommandResponsePtr response,
+      GetSKUTransactionCallback callback);
 };
 
-}  // namespace braveledger_database
+}  // namespace database
+}  // namespace ledger
 
 #endif  // BRAVELEDGER_DATABASE_DATABASE_SKU_TRANSACTION_H_

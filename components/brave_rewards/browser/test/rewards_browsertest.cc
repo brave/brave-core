@@ -258,7 +258,7 @@ IN_PROC_BROWSER_TEST_F(RewardsBrowserTest, DISABLED_NotVerifiedWallet) {
     const GURL current_url = contents()->GetURL();
     ASSERT_TRUE(base::StartsWith(
         current_url.spec(),
-        braveledger_uphold::GetUrl() + "/authorize/",
+        ledger::uphold::GetUrl() + "/authorize/",
         base::CompareCase::INSENSITIVE_ASCII));
   }
 
@@ -272,7 +272,7 @@ IN_PROC_BROWSER_TEST_F(RewardsBrowserTest, DISABLED_NotVerifiedWallet) {
     const GURL current_url = contents()->GetURL();
     ASSERT_TRUE(base::StartsWith(
         current_url.spec(),
-        braveledger_uphold::GetUrl() + "/signup/step2",
+        ledger::uphold::GetUrl() + "/signup/step2",
         base::CompareCase::INSENSITIVE_ASCII));
   }
 }
@@ -341,10 +341,10 @@ IN_PROC_BROWSER_TEST_F(RewardsBrowserTest, ZeroBalanceWalletClaimNotCalled) {
   base::RunLoop run_loop;
   auto test_callback =
       [&](
-          const ledger::Result result,
-          ledger::ExternalWalletPtr wallet) {
+          const ledger::type::Result result,
+          ledger::type::ExternalWalletPtr wallet) {
         auto requests = response_->GetRequests();
-        EXPECT_EQ(result, ledger::Result::LEDGER_OK);
+        EXPECT_EQ(result, ledger::type::Result::LEDGER_OK);
         EXPECT_FALSE(requests.empty());
 
         // Should not attempt to call /v2/wallet/UUID/claim endpoint

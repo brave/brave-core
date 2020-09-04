@@ -10,7 +10,8 @@
 
 #include "bat/ledger/internal/publisher/prefix_iterator.h"
 
-namespace braveledger_publisher {
+namespace ledger {
+namespace publisher {
 
 // Parses publisher prefix list files and exposes iterators
 // over the prefixes stored in the list
@@ -65,6 +66,7 @@ class PrefixListReader {
   std::string prefixes_;
 };
 
-}  // namespace braveledger_publisher
+}  // namespace publisher
+}  // namespace ledger
 
 #endif  // BRAVELEDGER_PUBLISHER_PREFIX_LIST_READER_H_

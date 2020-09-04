@@ -14,20 +14,19 @@
 #include "bat/ledger/internal/endpoint/private_cdn/private_cdn_server.h"
 #include "bat/ledger/ledger.h"
 
-namespace bat_ledger {
+namespace ledger {
 class LedgerImpl;
-}
 
-namespace braveledger_publisher {
+namespace publisher {
 
 using FetchCallbackVector =
-    std::vector<ledger::GetServerPublisherInfoCallback>;
+    std::vector<client::GetServerPublisherInfoCallback>;
 
 // Fetches server publisher info and provides methods for determining
 // whether a server publisher info record is expired
 class ServerPublisherFetcher {
  public:
-  explicit ServerPublisherFetcher(bat_ledger::LedgerImpl* ledger);
+  explicit ServerPublisherFetcher(LedgerImpl* ledger);
 
   ServerPublisherFetcher(const ServerPublisherFetcher&) = delete;
   ServerPublisherFetcher& operator=(const ServerPublisherFetcher&) = delete;
@@ -36,33 +35,34 @@ class ServerPublisherFetcher {
 
   // Returns a value indicating whether a server info record with
   // the specified last update time is expired
-  bool IsExpired(ledger::ServerPublisherInfo* server_info);
+  bool IsExpired(type::ServerPublisherInfo* server_info);
 
   // Fetches server publisher info for the specified publisher key
   void Fetch(
       const std::string& publisher_key,
-      ledger::GetServerPublisherInfoCallback callback);
+      client::GetServerPublisherInfoCallback callback);
 
   // Purges expired records from the backing database
   void PurgeExpiredRecords();
 
  private:
   void OnFetchCompleted(
-      const ledger::Result result,
-      ledger::ServerPublisherInfoPtr info,
+      const type::Result result,
+      type::ServerPublisherInfoPtr info,
       const std::string& publisher_key);
 
   FetchCallbackVector GetCallbacks(const std::string& publisher_key);
 
   void RunCallbacks(
       const std::string& publisher_key,
-      ledger::ServerPublisherInfoPtr server_info);
+      type::ServerPublisherInfoPtr server_info);
 
-  bat_ledger::LedgerImpl* ledger_;  // NOT OWNED
+  LedgerImpl* ledger_;  // NOT OWNED
   std::map<std::string, FetchCallbackVector> callback_map_;
-  std::unique_ptr<ledger::endpoint::PrivateCDNServer> private_cdn_server_;
+  std::unique_ptr<endpoint::PrivateCDNServer> private_cdn_server_;
 };
 
-}  // namespace braveledger_publisher
+}  // namespace publisher
+}  // namespace ledger
 
 #endif  // BRAVELEDGER_PUBLISHER_SERVER_PUBLISHER_FETCHER_H_

@@ -26,23 +26,24 @@ namespace {
 
 constexpr size_t kQueryPrefixBytes = 2;
 
-int64_t GetCacheExpiryInSeconds(bat_ledger::LedgerImpl* ledger) {
+int64_t GetCacheExpiryInSeconds(ledger::LedgerImpl* ledger) {
   DCHECK(ledger);
   // NOTE: We are reusing the publisher prefix list refresh interval for
   // determining the cache lifetime of publisher details. At a later
   // time we may want to introduce an additional option for this value.
   return ledger->ledger_client()->GetUint64Option(
-      ledger::kOptionPublisherListRefreshInterval);
+      ledger::option::kPublisherListRefreshInterval);
 }
 
 }  // namespace
 
-namespace braveledger_publisher {
+namespace ledger {
+namespace publisher {
 
-ServerPublisherFetcher::ServerPublisherFetcher(bat_ledger::LedgerImpl* ledger) :
+ServerPublisherFetcher::ServerPublisherFetcher(LedgerImpl* ledger) :
     ledger_(ledger),
     private_cdn_server_(
-        std::make_unique<ledger::endpoint::PrivateCDNServer>(ledger)) {
+        std::make_unique<endpoint::PrivateCDNServer>(ledger)) {
   DCHECK(ledger);
 }
 
@@ -50,7 +51,7 @@ ServerPublisherFetcher::~ServerPublisherFetcher() = default;
 
 void ServerPublisherFetcher::Fetch(
     const std::string& publisher_key,
-    ledger::GetServerPublisherInfoCallback callback) {
+    client::GetServerPublisherInfoCallback callback) {
   FetchCallbackVector& callbacks = callback_map_[publisher_key];
   callbacks.push_back(callback);
   if (callbacks.size() > 1) {
@@ -74,23 +75,23 @@ void ServerPublisherFetcher::Fetch(
 }
 
 void ServerPublisherFetcher::OnFetchCompleted(
-    const ledger::Result result,
-    ledger::ServerPublisherInfoPtr info,
+    const type::Result result,
+    type::ServerPublisherInfoPtr info,
     const std::string& publisher_key) {
-  if (result != ledger::Result::LEDGER_OK) {
+  if (result != type::Result::LEDGER_OK) {
     RunCallbacks(publisher_key, nullptr);
     return;
   }
 
   // Create a shared pointer to a mojo struct so that it can be copied
   // into a callback.
-  auto shared_info = std::make_shared<ledger::ServerPublisherInfoPtr>(
+  auto shared_info = std::make_shared<type::ServerPublisherInfoPtr>(
       std::move(info));
 
   // Store the result for subsequent lookups.
   ledger_->database()->InsertServerPublisherInfo(**shared_info,
-      [this, publisher_key, shared_info](ledger::Result result) {
-        if (result != ledger::Result::LEDGER_OK) {
+      [this, publisher_key, shared_info](type::Result result) {
+        if (result != type::Result::LEDGER_OK) {
           BLOG(0, "Error saving server publisher info record");
         }
         RunCallbacks(publisher_key, std::move(*shared_info));
@@ -98,7 +99,7 @@ void ServerPublisherFetcher::OnFetchCompleted(
 }
 
 bool ServerPublisherFetcher::IsExpired(
-    ledger::ServerPublisherInfo* server_info) {
+    type::ServerPublisherInfo* server_info) {
   if (!server_info) {
     return true;
   }
@@ -139,7 +140,7 @@ FetchCallbackVector ServerPublisherFetcher::GetCallbacks(
 
 void ServerPublisherFetcher::RunCallbacks(
     const std::string& publisher_key,
-    ledger::ServerPublisherInfoPtr server_info) {
+    type::ServerPublisherInfoPtr server_info) {
   FetchCallbackVector callbacks = GetCallbacks(publisher_key);
   DCHECK(!callbacks.empty());
   for (auto& callback : callbacks) {
@@ -147,4 +148,5 @@ void ServerPublisherFetcher::RunCallbacks(
   }
 }
 
-}  // namespace braveledger_publisher
+}  // namespace publisher
+}  // namespace ledger

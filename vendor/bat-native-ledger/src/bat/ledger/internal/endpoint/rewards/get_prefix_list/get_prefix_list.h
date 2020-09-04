@@ -18,21 +18,19 @@
 // Response body:
 // blob
 
-namespace bat_ledger {
-class LedgerImpl;
-}
-
 namespace ledger {
+class LedgerImpl;
+
 namespace endpoint {
 namespace rewards {
 
 using GetPrefixListCallback = std::function<void(
-    const ledger::Result result,
+    const type::Result result,
     const std::string& body)>;
 
 class GetPrefixList {
  public:
-  explicit GetPrefixList(bat_ledger::LedgerImpl* ledger);
+  explicit GetPrefixList(LedgerImpl* ledger);
   ~GetPrefixList();
 
   void Request(GetPrefixListCallback callback);
@@ -40,13 +38,13 @@ class GetPrefixList {
  private:
   std::string GetUrl();
 
-  ledger::Result CheckStatusCode(const int status_code);
+  type::Result CheckStatusCode(const int status_code);
 
   void OnRequest(
-      const ledger::UrlResponse& response,
+      const type::UrlResponse& response,
       GetPrefixListCallback callback);
 
-  bat_ledger::LedgerImpl* ledger_;  // NOT OWNED
+  LedgerImpl* ledger_;  // NOT OWNED
 };
 
 }  // namespace rewards

@@ -29,22 +29,20 @@
 //   "captchaId": "d155d2d2-2627-425b-9be8-44ae9f541762"
 // }
 
-namespace bat_ledger {
-class LedgerImpl;
-}
-
 namespace ledger {
+class LedgerImpl;
+
 namespace endpoint {
 namespace promotion {
 
 using PostCaptchaCallback = std::function<void(
-    const ledger::Result result,
+    const type::Result result,
     const std::string& hint,
     const std::string& captcha_id)>;
 
 class PostCaptcha {
  public:
-  explicit PostCaptcha(bat_ledger::LedgerImpl* ledger);
+  explicit PostCaptcha(LedgerImpl* ledger);
   ~PostCaptcha();
 
   void Request(PostCaptchaCallback callback);
@@ -54,18 +52,18 @@ class PostCaptcha {
 
   std::string GeneratePayload();
 
-  ledger::Result CheckStatusCode(const int status_code);
+  type::Result CheckStatusCode(const int status_code);
 
-  ledger::Result ParseBody(
+  type::Result ParseBody(
       const std::string& body,
       std::string* hint,
       std::string* captcha_id);
 
   void OnRequest(
-      const ledger::UrlResponse& response,
+      const type::UrlResponse& response,
       PostCaptchaCallback callback);
 
-  bat_ledger::LedgerImpl* ledger_;  // NOT OWNED
+  LedgerImpl* ledger_;  // NOT OWNED
 };
 
 }  // namespace promotion

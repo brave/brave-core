@@ -12,7 +12,7 @@
 
 #include "bat/ledger/global_constants.h"
 #include "bat/ledger/internal/ledger_impl.h"
-#include "bat/ledger/internal/static_values.h"
+#include "bat/ledger/internal/constants.h"
 
 using std::placeholders::_1;
 using std::placeholders::_2;
@@ -20,9 +20,9 @@ using std::placeholders::_2;
 namespace ledger {
 namespace wallet {
 
-WalletBalance::WalletBalance(bat_ledger::LedgerImpl* ledger) :
+WalletBalance::WalletBalance(LedgerImpl* ledger) :
     ledger_(ledger),
-    uphold_(std::make_unique<braveledger_uphold::Uphold>(ledger)),
+    uphold_(std::make_unique<uphold::Uphold>(ledger)),
     promotion_server_(std::make_unique<endpoint::PromotionServer>(ledger)) {
 }
 
@@ -32,14 +32,14 @@ void WalletBalance::Fetch(ledger::FetchBalanceCallback callback) {
   // if we don't have user funds in anon card anymore
   // we can skip balance server ping
   if (!ledger_->state()->GetFetchOldBalanceEnabled()) {
-    auto balance = ledger::Balance::New();
+    auto balance = type::Balance::New();
     GetUnblindedTokens(std::move(balance), callback);
     return;
   }
 
   if (ledger_->state()->GetPaymentId().empty()) {
     BLOG(0, "Payment ID is empty");
-    callback(ledger::Result::LEDGER_ERROR, nullptr);
+    callback(type::Result::LEDGER_ERROR, nullptr);
     return;
   }
 
@@ -53,12 +53,12 @@ void WalletBalance::Fetch(ledger::FetchBalanceCallback callback) {
 }
 
 void WalletBalance::OnFetch(
-    const ledger::Result result,
-    ledger::BalancePtr balance,
+    const type::Result result,
+    type::BalancePtr balance,
     ledger::FetchBalanceCallback callback) {
-  if (result != ledger::Result::LEDGER_OK || !balance) {
+  if (result != type::Result::LEDGER_OK || !balance) {
     BLOG(0, "Couldn't fetch wallet balance");
-    callback(ledger::Result::LEDGER_ERROR, nullptr);
+    callback(type::Result::LEDGER_ERROR, nullptr);
     return;
   }
 
@@ -70,11 +70,11 @@ void WalletBalance::OnFetch(
 }
 
 void WalletBalance::GetUnblindedTokens(
-    ledger::BalancePtr balance,
+    type::BalancePtr balance,
     ledger::FetchBalanceCallback callback) {
   if (!balance) {
     BLOG(0, "Balance is null");
-    callback(ledger::Result::LEDGER_ERROR, std::move(balance));
+    callback(type::Result::LEDGER_ERROR, std::move(balance));
     return;
   }
 
@@ -84,37 +84,37 @@ void WalletBalance::GetUnblindedTokens(
       callback,
       _1);
   ledger_->database()->GetSpendableUnblindedTokensByBatchTypes(
-      {ledger::CredsBatchType::PROMOTION},
+      {type::CredsBatchType::PROMOTION},
       tokens_callback);
 }
 
 void WalletBalance::OnGetUnblindedTokens(
-    ledger::Balance info,
+    type::Balance info,
     ledger::FetchBalanceCallback callback,
-    ledger::UnblindedTokenList list) {
-  auto info_ptr = ledger::Balance::New(info);
+    type::UnblindedTokenList list) {
+  auto info_ptr = type::Balance::New(info);
   double total = 0.0;
   for (auto & item : list) {
     total+=item->value;
   }
   info_ptr->total += total;
-  info_ptr->wallets.insert(std::make_pair(ledger::kWalletUnBlinded, total));
+  info_ptr->wallets.insert(std::make_pair(constant::kWalletUnBlinded, total));
   ExternalWallets(std::move(info_ptr), callback);
 }
 
 void WalletBalance::ExternalWallets(
-    ledger::BalancePtr balance,
+    type::BalancePtr balance,
     ledger::FetchBalanceCallback callback) {
   if (!balance) {
     BLOG(0, "Balance is null");
-    callback(ledger::Result::LEDGER_ERROR, std::move(balance));
+    callback(type::Result::LEDGER_ERROR, std::move(balance));
     return;
   }
 
   auto wallets = ledger_->ledger_client()->GetExternalWallets();
 
   if (wallets.empty()) {
-    callback(ledger::Result::LEDGER_OK, std::move(balance));
+    callback(type::Result::LEDGER_OK, std::move(balance));
     return;
   }
 
@@ -128,19 +128,19 @@ void WalletBalance::ExternalWallets(
   uphold_->FetchBalance(uphold_callback);
 }
 
-void WalletBalance::OnUpholdFetchBalance(ledger::Balance info,
+void WalletBalance::OnUpholdFetchBalance(type::Balance info,
                                    ledger::FetchBalanceCallback callback,
-                                   ledger::Result result,
+                                   type::Result result,
                                    double balance) {
-  ledger::BalancePtr info_ptr = ledger::Balance::New(info);
+  type::BalancePtr info_ptr = type::Balance::New(info);
 
-  if (result == ledger::Result::LEDGER_ERROR) {
+  if (result == type::Result::LEDGER_ERROR) {
     BLOG(0, "Can't get uphold balance");
-    callback(ledger::Result::LEDGER_ERROR, std::move(info_ptr));
+    callback(type::Result::LEDGER_ERROR, std::move(info_ptr));
     return;
   }
 
-  info_ptr->wallets.insert(std::make_pair(ledger::kWalletUphold, balance));
+  info_ptr->wallets.insert(std::make_pair(constant::kWalletUphold, balance));
   info_ptr->total += balance;
   callback(result, std::move(info_ptr));
 }

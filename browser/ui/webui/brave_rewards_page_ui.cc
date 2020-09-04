@@ -82,8 +82,8 @@ class RewardsDOMHandler : public WebUIMessageHandler,
   void GetReconcileStamp(const base::ListValue* args);
   void SaveSetting(const base::ListValue* args);
   void UpdateAdRewards(const base::ListValue* args);
-  void OnContentSiteList(ledger::PublisherInfoList list);
-  void OnExcludedSiteList(ledger::PublisherInfoList list);
+  void OnContentSiteList(ledger::type::PublisherInfoList list);
+  void OnExcludedSiteList(ledger::type::PublisherInfoList list);
   void ExcludePublisher(const base::ListValue* args);
   void RestorePublishers(const base::ListValue* args);
   void RestorePublisher(const base::ListValue* args);
@@ -125,10 +125,10 @@ class RewardsDOMHandler : public WebUIMessageHandler,
   void OnGetWalletPassphrase(const std::string& pass);
   void OnGetContributionAmount(double amount);
   void OnGetAutoContributeProperties(
-      ledger::AutoContributePropertiesPtr properties);
+      ledger::type::AutoContributePropertiesPtr properties);
   void OnGetReconcileStamp(uint64_t reconcile_stamp);
   void OnAutoContributePropsReady(
-      ledger::AutoContributePropertiesPtr properties);
+      ledger::type::AutoContributePropertiesPtr properties);
   void OnIsWalletCreated(bool created);
   void GetPendingContributionsTotal(const base::ListValue* args);
   void OnGetPendingContributionsTotal(double amount);
@@ -145,29 +145,30 @@ class RewardsDOMHandler : public WebUIMessageHandler,
       const uint64_t next_payment_date_in_seconds,
       const uint64_t ad_notifications_received_this_month);
 
-  void OnGetRecurringTips(ledger::PublisherInfoList list);
+  void OnGetRecurringTips(ledger::type::PublisherInfoList list);
 
-  void OnGetOneTimeTips(ledger::PublisherInfoList list);
+  void OnGetOneTimeTips(ledger::type::PublisherInfoList list);
 
   void SetInlineTippingPlatformEnabled(const base::ListValue* args);
 
   void GetPendingContributions(const base::ListValue* args);
-  void OnGetPendingContributions(ledger::PendingContributionInfoList list);
+  void OnGetPendingContributions(
+      ledger::type::PendingContributionInfoList list);
   void RemovePendingContribution(const base::ListValue* args);
   void RemoveAllPendingContributions(const base::ListValue* args);
   void FetchBalance(const base::ListValue* args);
   void OnFetchBalance(
-    const ledger::Result result,
-    ledger::BalancePtr balance);
+    const ledger::type::Result result,
+    ledger::type::BalancePtr balance);
 
   void GetExternalWallet(const base::ListValue* args);
   void OnGetExternalWallet(
-      const ledger::Result result,
-      ledger::ExternalWalletPtr wallet);
+      const ledger::type::Result result,
+      ledger::type::ExternalWalletPtr wallet);
   void ProcessRewardsPageUrl(const base::ListValue* args);
 
   void OnProcessRewardsPageUrl(
-    const ledger::Result result,
+    const ledger::type::Result result,
     const std::string& wallet_type,
     const std::string& action,
     const std::map<std::string, std::string>& args);
@@ -181,8 +182,8 @@ class RewardsDOMHandler : public WebUIMessageHandler,
   void OnGetBalanceReport(
       const uint32_t month,
       const uint32_t year,
-      const ledger::Result result,
-      ledger::BalanceReportInfoPtr report);
+      const ledger::type::Result result,
+      ledger::type::BalanceReportInfoPtr report);
 
   void GetMonthlyReport(const base::ListValue* args);
 
@@ -192,43 +193,44 @@ class RewardsDOMHandler : public WebUIMessageHandler,
   void OnGetMonthlyReport(
       const uint32_t month,
       const uint32_t year,
-      ledger::MonthlyReportInfoPtr report);
+      ledger::type::MonthlyReportInfoPtr report);
 
   void OnGetAllMonthlyReportIds(const std::vector<std::string>& ids);
 
-  void OnGetRewardsParameters(ledger::RewardsParametersPtr parameters);
+  void OnGetRewardsParameters(ledger::type::RewardsParametersPtr parameters);
 
   void CompleteReset(const base::ListValue* args);
 
   // RewardsServiceObserver implementation
   void OnWalletInitialized(
       brave_rewards::RewardsService* rewards_service,
-      const ledger::Result result) override;
+      const ledger::type::Result result) override;
   void OnFetchPromotions(
       brave_rewards::RewardsService* rewards_service,
-      const ledger::Result result,
-      const ledger::PromotionList& list) override;
+      const ledger::type::Result result,
+      const ledger::type::PromotionList& list) override;
   void OnPromotionFinished(
       brave_rewards::RewardsService* rewards_service,
-      const ledger::Result result,
-      ledger::PromotionPtr promotion) override;
+      const ledger::type::Result result,
+      ledger::type::PromotionPtr promotion) override;
   void OnRecoverWallet(
       brave_rewards::RewardsService* rewards_service,
-      const ledger::Result result) override;
-  void OnExcludedSitesChanged(brave_rewards::RewardsService* rewards_service,
-                              std::string publisher_id,
-                              bool excluded) override;
+      const ledger::type::Result result) override;
+  void OnExcludedSitesChanged(
+      brave_rewards::RewardsService* rewards_service,
+      std::string publisher_id,
+      bool excluded) override;
   void OnReconcileComplete(
       brave_rewards::RewardsService* rewards_service,
-      const ledger::Result result,
+      const ledger::type::Result result,
       const std::string& contribution_id,
       const double amount,
-      const ledger::RewardsType type,
-      const ledger::ContributionProcessor processor) override;
+      const ledger::type::RewardsType type,
+      const ledger::type::ContributionProcessor processor) override;
 
   void OnPendingContributionSaved(
       brave_rewards::RewardsService* rewards_service,
-      const ledger::Result result) override;
+      const ledger::type::Result result) override;
 
   void OnRewardsMainEnabled(
       brave_rewards::RewardsService* rewards_service,
@@ -236,24 +238,26 @@ class RewardsDOMHandler : public WebUIMessageHandler,
 
   void OnPublisherListNormalized(
       brave_rewards::RewardsService* rewards_service,
-      ledger::PublisherInfoList list) override;
+      ledger::type::PublisherInfoList list) override;
 
   void OnTransactionHistoryChanged(
       brave_rewards::RewardsService* rewards_service) override;
 
-  void OnRecurringTipSaved(brave_rewards::RewardsService* rewards_service,
-                           bool success) override;
+  void OnRecurringTipSaved(
+      brave_rewards::RewardsService* rewards_service,
+      bool success) override;
 
-  void OnRecurringTipRemoved(brave_rewards::RewardsService* rewards_service,
-                             bool success) override;
+  void OnRecurringTipRemoved(
+      brave_rewards::RewardsService* rewards_service,
+      bool success) override;
 
   void OnPendingContributionRemoved(
       brave_rewards::RewardsService* rewards_service,
-      const ledger::Result result) override;
+      const ledger::type::Result result) override;
 
   void OnDisconnectWallet(
       brave_rewards::RewardsService* rewards_service,
-      const ledger::Result result,
+      const ledger::type::Result result,
       const std::string& wallet_type) override;
 
   void OnAdsEnabled(
@@ -262,15 +266,15 @@ class RewardsDOMHandler : public WebUIMessageHandler,
 
   void OnClaimPromotion(
       const std::string& promotion_id,
-      const ledger::Result result,
+      const ledger::type::Result result,
       const std::string& captcha_image,
       const std::string& hint,
       const std::string& captcha_id);
 
   void OnAttestPromotion(
       const std::string& promotion_id,
-      const ledger::Result result,
-      ledger::PromotionPtr promotion);
+      const ledger::type::Result result,
+      ledger::type::PromotionPtr promotion);
 
   void OnUnblindedTokensReady(
     brave_rewards::RewardsService* rewards_service) override;
@@ -289,7 +293,7 @@ class RewardsDOMHandler : public WebUIMessageHandler,
       const brave_rewards::RewardsNotificationService::RewardsNotification&
           notification) override;
   void OnAllNotificationsDeleted(brave_rewards::RewardsNotificationService*
-                                     rewards_notification_service) override;
+        rewards_notification_service) override;
   void OnGetNotification(
       brave_rewards::RewardsNotificationService* rewards_notification_service,
       const brave_rewards::RewardsNotificationService::RewardsNotification&
@@ -545,7 +549,7 @@ void RewardsDOMHandler::GetRewardsParameters(const base::ListValue* args) {
 }
 
 void RewardsDOMHandler::OnGetRewardsParameters(
-    ledger::RewardsParametersPtr parameters) {
+    ledger::type::RewardsParametersPtr parameters) {
   if (!web_ui()->CanCallJavascript()) {
     return;
   }
@@ -567,17 +571,17 @@ void RewardsDOMHandler::OnGetRewardsParameters(
 
 void RewardsDOMHandler::OnWalletInitialized(
     brave_rewards::RewardsService* rewards_service,
-    const ledger::Result result) {
+    const ledger::type::Result result) {
   if (!web_ui()->CanCallJavascript())
     return;
 
-  if (result == ledger::Result::WALLET_CREATED) {
+  if (result == ledger::type::Result::WALLET_CREATED) {
     web_ui()->CallJavascriptFunctionUnsafe("brave_rewards.walletCreated");
     return;
   }
 
-  if (result != ledger::Result::NO_LEDGER_STATE &&
-      result != ledger::Result::LEDGER_OK) {
+  if (result != ledger::type::Result::NO_LEDGER_STATE &&
+      result != ledger::type::Result::LEDGER_OK) {
     // Report back all errors except when ledger_state is missing
     web_ui()->CallJavascriptFunctionUnsafe("brave_rewards.walletCreateFailed");
     return;
@@ -599,7 +603,7 @@ void RewardsDOMHandler::GetAutoContributeProperties(
 }
 
 void RewardsDOMHandler::OnGetAutoContributeProperties(
-    ledger::AutoContributePropertiesPtr properties) {
+    ledger::type::AutoContributePropertiesPtr properties) {
   if (!web_ui()->CanCallJavascript() || !properties) {
     return;
   }
@@ -620,8 +624,8 @@ void RewardsDOMHandler::OnGetAutoContributeProperties(
 
 void RewardsDOMHandler::OnFetchPromotions(
     brave_rewards::RewardsService* rewards_service,
-    const ledger::Result result,
-    const ledger::PromotionList& list) {
+    const ledger::type::Result result,
+    const ledger::type::PromotionList& list) {
   if (!web_ui()->CanCallJavascript()) {
     return;
   }
@@ -652,7 +656,7 @@ void RewardsDOMHandler::FetchPromotions(const base::ListValue* args) {
 
 void RewardsDOMHandler::OnClaimPromotion(
       const std::string& promotion_id,
-      const ledger::Result result,
+      const ledger::type::Result result,
       const std::string& captcha_image,
       const std::string& hint,
       const std::string& captcha_id) {
@@ -717,8 +721,8 @@ void RewardsDOMHandler::AttestPromotion(const base::ListValue *args) {
 
 void RewardsDOMHandler::OnAttestPromotion(
     const std::string& promotion_id,
-      const ledger::Result result,
-      ledger::PromotionPtr promotion) {
+      const ledger::type::Result result,
+      ledger::type::PromotionPtr promotion) {
   if (!web_ui()->CanCallJavascript()) {
     return;
   }
@@ -743,9 +747,9 @@ void RewardsDOMHandler::OnAttestPromotion(
 
 void RewardsDOMHandler::OnPromotionFinished(
     brave_rewards::RewardsService* rewards_service,
-    const ledger::Result result,
-    ledger::PromotionPtr promotion) {
-  if (result != ledger::Result::LEDGER_OK) {
+    const ledger::type::Result result,
+    ledger::type::PromotionPtr promotion) {
+  if (result != ledger::type::Result::LEDGER_OK) {
     return;
   }
 
@@ -780,7 +784,7 @@ void RewardsDOMHandler::RecoverWallet(const base::ListValue *args) {
 
 void RewardsDOMHandler::OnRecoverWallet(
     brave_rewards::RewardsService* rewards_service,
-    const ledger::Result result) {
+    const ledger::type::Result result) {
   if (!web_ui()->CanCallJavascript()) {
     return;
   }
@@ -806,7 +810,7 @@ void RewardsDOMHandler::GetReconcileStamp(const base::ListValue* args) {
 }
 
 void RewardsDOMHandler::OnAutoContributePropsReady(
-    ledger::AutoContributePropertiesPtr properties) {
+    ledger::type::AutoContributePropertiesPtr properties) {
   rewards_service_->GetContentSiteList(
       0,
       0,
@@ -962,7 +966,8 @@ void RewardsDOMHandler::RestorePublisher(const base::ListValue *args) {
   rewards_service_->SetPublisherExclude(publisherKey, false);
 }
 
-void RewardsDOMHandler::OnContentSiteList(ledger::PublisherInfoList list) {
+void RewardsDOMHandler::OnContentSiteList(
+    ledger::type::PublisherInfoList list) {
   if (!web_ui()->CanCallJavascript()) {
     return;
   }
@@ -987,7 +992,8 @@ void RewardsDOMHandler::OnContentSiteList(ledger::PublisherInfoList list) {
       *publishers);
 }
 
-void RewardsDOMHandler::OnExcludedSiteList(ledger::PublisherInfoList list) {
+void RewardsDOMHandler::OnExcludedSiteList(
+    ledger::type::PublisherInfoList list) {
   if (!web_ui()->CanCallJavascript()) {
     return;
   }
@@ -1038,11 +1044,11 @@ void RewardsDOMHandler::GetAutoContributionAmount(const base::ListValue* args) {
 
 void RewardsDOMHandler::OnReconcileComplete(
     brave_rewards::RewardsService* rewards_service,
-    const ledger::Result result,
+    const ledger::type::Result result,
     const std::string& contribution_id,
     const double amount,
-    const ledger::RewardsType type,
-    const ledger::ContributionProcessor processor) {
+    const ledger::type::RewardsType type,
+    const ledger::type::ContributionProcessor processor) {
   if (!web_ui()->CanCallJavascript()) {
     return;
   }
@@ -1073,7 +1079,8 @@ void RewardsDOMHandler::GetRecurringTips(
   }
 }
 
-void RewardsDOMHandler::OnGetRecurringTips(ledger::PublisherInfoList list) {
+void RewardsDOMHandler::OnGetRecurringTips(
+    ledger::type::PublisherInfoList list) {
   if (!web_ui()->CanCallJavascript()) {
     return;
   }
@@ -1098,7 +1105,7 @@ void RewardsDOMHandler::OnGetRecurringTips(ledger::PublisherInfoList list) {
                                          *publishers);
 }
 
-void RewardsDOMHandler::OnGetOneTimeTips(ledger::PublisherInfoList list) {
+void RewardsDOMHandler::OnGetOneTimeTips(ledger::type::PublisherInfoList list) {
   if (!web_ui()->CanCallJavascript()) {
     return;
   }
@@ -1421,7 +1428,7 @@ void RewardsDOMHandler::OnGetPendingContributionsTotal(double amount) {
 
 void RewardsDOMHandler::OnPendingContributionSaved(
     brave_rewards::RewardsService* rewards_service,
-    const ledger::Result result) {
+    const ledger::type::Result result) {
   if (!web_ui()->CanCallJavascript()) {
     return;
   }
@@ -1442,7 +1449,7 @@ void RewardsDOMHandler::OnRewardsMainEnabled(
 
 void RewardsDOMHandler::OnPublisherListNormalized(
     brave_rewards::RewardsService* rewards_service,
-    ledger::PublisherInfoList list) {
+    ledger::type::PublisherInfoList list) {
   OnContentSiteList(std::move(list));
 }
 
@@ -1559,7 +1566,7 @@ void RewardsDOMHandler::GetPendingContributions(
 }
 
 void RewardsDOMHandler::OnGetPendingContributions(
-    ledger::PendingContributionInfoList list) {
+    ledger::type::PendingContributionInfoList list) {
   if (!web_ui()->CanCallJavascript()) {
     return;
   }
@@ -1611,7 +1618,7 @@ void RewardsDOMHandler::RemoveAllPendingContributions(
 
 void RewardsDOMHandler::OnPendingContributionRemoved(
     brave_rewards::RewardsService* rewards_service,
-    const ledger::Result result) {
+    const ledger::type::Result result) {
   if (web_ui()->CanCallJavascript()) {
     web_ui()->CallJavascriptFunctionUnsafe(
         "brave_rewards.onRemovePendingContribution",
@@ -1620,8 +1627,8 @@ void RewardsDOMHandler::OnPendingContributionRemoved(
 }
 
 void RewardsDOMHandler::OnFetchBalance(
-    const ledger::Result result,
-    ledger::BalancePtr balance) {
+    const ledger::type::Result result,
+    ledger::type::BalancePtr balance) {
   if (!web_ui()->CanCallJavascript()) {
     return;
   }
@@ -1631,7 +1638,7 @@ void RewardsDOMHandler::OnFetchBalance(
   if (balance) {
     balance_value.SetDoubleKey("total", balance->total);
 
-    if (result == ledger::Result::LEDGER_OK) {
+    if (result == ledger::type::Result::LEDGER_OK) {
       base::Value wallets(base::Value::Type::DICTIONARY);
       for (auto const& wallet : balance->wallets) {
         wallets.SetDoubleKey(wallet.first, wallet.second);
@@ -1670,8 +1677,8 @@ void RewardsDOMHandler::GetExternalWallet(const base::ListValue* args) {
 }
 
 void RewardsDOMHandler::OnGetExternalWallet(
-    const ledger::Result result,
-    ledger::ExternalWalletPtr wallet) {
+    const ledger::type::Result result,
+    ledger::type::ExternalWalletPtr wallet) {
   if (web_ui()->CanCallJavascript()) {
     base::Value data(base::Value::Type::DICTIONARY);
 
@@ -1699,7 +1706,7 @@ void RewardsDOMHandler::OnGetExternalWallet(
 }
 
 void RewardsDOMHandler::OnProcessRewardsPageUrl(
-    const ledger::Result result,
+    const ledger::type::Result result,
     const std::string& wallet_type,
     const std::string& action,
     const std::map<std::string, std::string>& args) {
@@ -1749,7 +1756,7 @@ void RewardsDOMHandler::DisconnectWallet(const base::ListValue* args) {
 
 void RewardsDOMHandler::OnDisconnectWallet(
       brave_rewards::RewardsService* rewards_service,
-      const ledger::Result result,
+      const ledger::type::Result result,
       const std::string& wallet_type) {
   base::Value data(base::Value::Type::DICTIONARY);
   data.SetIntKey("result", static_cast<int>(result));
@@ -1803,8 +1810,8 @@ void RewardsDOMHandler::ReconcileStampReset() {
 void RewardsDOMHandler::OnGetBalanceReport(
     const uint32_t month,
     const uint32_t year,
-    const ledger::Result result,
-    ledger::BalanceReportInfoPtr report) {
+    const ledger::type::Result result,
+    ledger::type::BalanceReportInfoPtr report) {
   if (!web_ui()->CanCallJavascript() || !report) {
     return;
   }
@@ -1846,7 +1853,7 @@ void RewardsDOMHandler::GetBalanceReport(const base::ListValue* args) {
 void RewardsDOMHandler::OnGetMonthlyReport(
     const uint32_t month,
     const uint32_t year,
-    ledger::MonthlyReportInfoPtr report) {
+    ledger::type::MonthlyReportInfoPtr report) {
   if (!web_ui()->CanCallJavascript() || !report) {
     return;
   }

@@ -6,11 +6,12 @@
 #include "bat/ledger/ledger.h"
 #include "bat/ledger/internal/ledger_impl.h"
 #include "bat/ledger/internal/legacy/media/media.h"
-#include "bat/ledger/internal/static_values.h"
+#include "bat/ledger/internal/legacy/static_values.h"
+#include "bat/ledger/internal/constants.h"
 
 namespace ledger {
 
-Environment _environment = Environment::PRODUCTION;
+type::Environment _environment = type::Environment::PRODUCTION;
 
 bool is_debug = false;
 bool is_testing = false;
@@ -18,8 +19,8 @@ int reconcile_interval = 0;  // minutes
 bool short_retries = false;
 
 // static
-ledger::Ledger* Ledger::CreateInstance(LedgerClient* client) {
-  return new bat_ledger::LedgerImpl(client);
+Ledger* Ledger::CreateInstance(LedgerClient* client) {
+  return new LedgerImpl(client);
 }
 
 bool Ledger::IsMediaLink(const std::string& url,

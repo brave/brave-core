@@ -17,13 +17,14 @@ using std::placeholders::_1;
 using std::placeholders::_2;
 using std::placeholders::_3;
 
-namespace braveledger_credentials {
+namespace ledger {
+namespace credential {
 
-CredentialsPromotion::CredentialsPromotion(bat_ledger::LedgerImpl* ledger) :
+CredentialsPromotion::CredentialsPromotion(LedgerImpl* ledger) :
     ledger_(ledger),
     common_(std::make_unique<CredentialsCommon>(ledger)),
     promotion_server_(
-        std::make_unique<ledger::endpoint::PromotionServer>(ledger)) {
+        std::make_unique<endpoint::PromotionServer>(ledger)) {
   DCHECK(ledger_ && common_);
 }
 
@@ -45,20 +46,20 @@ void CredentialsPromotion::Start(
 }
 
 void CredentialsPromotion::OnStart(
-    ledger::CredsBatchPtr creds,
+    type::CredsBatchPtr creds,
     const CredentialsTrigger& trigger,
     ledger::ResultCallback callback) {
-  ledger::CredsBatchStatus status = ledger::CredsBatchStatus::NONE;
+  type::CredsBatchStatus status = type::CredsBatchStatus::NONE;
   if (creds) {
     status = creds->status;
   }
 
   switch (status) {
-    case ledger::CredsBatchStatus::NONE: {
+    case type::CredsBatchStatus::NONE: {
       Blind(trigger, callback);
       break;
     }
-    case ledger::CredsBatchStatus::BLINDED: {
+    case type::CredsBatchStatus::BLINDED: {
       auto get_callback = std::bind(&CredentialsPromotion::Claim,
           this,
           _1,
@@ -70,7 +71,7 @@ void CredentialsPromotion::OnStart(
           get_callback);
       break;
     }
-    case ledger::CredsBatchStatus::CLAIMED: {
+    case type::CredsBatchStatus::CLAIMED: {
       auto get_callback = std::bind(&CredentialsPromotion::FetchSignedCreds,
           this,
           _1,
@@ -79,7 +80,7 @@ void CredentialsPromotion::OnStart(
       ledger_->database()->GetPromotion(trigger.id, get_callback);
       break;
     }
-    case ledger::CredsBatchStatus::SIGNED: {
+    case type::CredsBatchStatus::SIGNED: {
       auto get_callback = std::bind(&CredentialsPromotion::Unblind,
           this,
           _1,
@@ -91,12 +92,12 @@ void CredentialsPromotion::OnStart(
           get_callback);
       break;
     }
-    case ledger::CredsBatchStatus::FINISHED: {
-      callback(ledger::Result::LEDGER_OK);
+    case type::CredsBatchStatus::FINISHED: {
+      callback(type::Result::LEDGER_OK);
       break;
     }
-    case ledger::CredsBatchStatus::CORRUPTED: {
-      callback(ledger::Result::LEDGER_ERROR);
+    case type::CredsBatchStatus::CORRUPTED: {
+      callback(type::Result::LEDGER_ERROR);
       break;
     }
   }
@@ -114,10 +115,10 @@ void CredentialsPromotion::Blind(
 }
 
 void CredentialsPromotion::OnBlind(
-    const ledger::Result result,
+    const type::Result result,
     const CredentialsTrigger& trigger,
     ledger::ResultCallback callback) {
-  if (result != ledger::Result::LEDGER_OK) {
+  if (result != type::Result::LEDGER_OK) {
     BLOG(0, "Blinding failed");
     callback(result);
     return;
@@ -135,12 +136,12 @@ void CredentialsPromotion::OnBlind(
 }
 
 void CredentialsPromotion::Claim(
-    ledger::CredsBatchPtr creds,
+    type::CredsBatchPtr creds,
     const CredentialsTrigger& trigger,
     ledger::ResultCallback callback) {
   if (!creds) {
     BLOG(0, "Creds not found");
-    callback(ledger::Result::LEDGER_ERROR);
+    callback(type::Result::LEDGER_ERROR);
     return;
   }
 
@@ -157,7 +158,7 @@ void CredentialsPromotion::Claim(
     ledger_->database()->UpdateCredsBatchStatus(
         trigger.id,
         trigger.type,
-        ledger::CredsBatchStatus::NONE,
+        type::CredsBatchStatus::NONE,
         save_callback);
     return;
   }
@@ -176,11 +177,11 @@ void CredentialsPromotion::Claim(
 }
 
 void CredentialsPromotion::OnClaim(
-    const ledger::Result result,
+    const type::Result result,
     const std::string& claim_id,
     const CredentialsTrigger& trigger,
     ledger::ResultCallback callback) {
-  if (result != ledger::Result::LEDGER_OK) {
+  if (result != type::Result::LEDGER_OK) {
     callback(result);
     return;
   }
@@ -198,12 +199,12 @@ void CredentialsPromotion::OnClaim(
 }
 
 void CredentialsPromotion::ClaimedSaved(
-    const ledger::Result result,
+    const type::Result result,
     const CredentialsTrigger& trigger,
     ledger::ResultCallback callback) {
-  if (result != ledger::Result::LEDGER_OK) {
+  if (result != type::Result::LEDGER_OK) {
     BLOG(0, "Claim id was not saved");
-    callback(ledger::Result::LEDGER_ERROR);
+    callback(type::Result::LEDGER_ERROR);
     return;
   }
 
@@ -216,17 +217,17 @@ void CredentialsPromotion::ClaimedSaved(
   ledger_->database()->UpdateCredsBatchStatus(
       trigger.id,
       trigger.type,
-      ledger::CredsBatchStatus::CLAIMED,
+      type::CredsBatchStatus::CLAIMED,
       save_callback);
 }
 
 void CredentialsPromotion::ClaimStatusSaved(
-    const ledger::Result result,
+    const type::Result result,
     const CredentialsTrigger& trigger,
     ledger::ResultCallback callback) {
-  if (result != ledger::Result::LEDGER_OK) {
+  if (result != type::Result::LEDGER_OK) {
     BLOG(0, "Claim status not saved");
-    callback(ledger::Result::LEDGER_ERROR);
+    callback(type::Result::LEDGER_ERROR);
     return;
   }
 
@@ -239,24 +240,24 @@ void CredentialsPromotion::ClaimStatusSaved(
 }
 
 void CredentialsPromotion::RetryPreviousStepSaved(
-    const ledger::Result result,
+    const type::Result result,
     ledger::ResultCallback callback) {
-  if (result != ledger::Result::LEDGER_OK) {
+  if (result != type::Result::LEDGER_OK) {
     BLOG(0, "Previous step not saved");
-    callback(ledger::Result::LEDGER_ERROR);
+    callback(type::Result::LEDGER_ERROR);
     return;
   }
 
-  callback(ledger::Result::RETRY);
+  callback(type::Result::RETRY);
 }
 
 void CredentialsPromotion::FetchSignedCreds(
-    ledger::PromotionPtr promotion,
+    type::PromotionPtr promotion,
     const CredentialsTrigger& trigger,
     ledger::ResultCallback callback) {
   if (!promotion) {
     BLOG(0, "Corrupted data");
-    callback(ledger::Result::LEDGER_ERROR);
+    callback(type::Result::LEDGER_ERROR);
     return;
   }
 
@@ -272,7 +273,7 @@ void CredentialsPromotion::FetchSignedCreds(
     ledger_->database()->UpdateCredsBatchStatus(
         trigger.id,
         trigger.type,
-        ledger::CredsBatchStatus::BLINDED,
+        type::CredsBatchStatus::BLINDED,
         save_callback);
     return;
   }
@@ -291,21 +292,21 @@ void CredentialsPromotion::FetchSignedCreds(
 }
 
 void CredentialsPromotion::OnFetchSignedCreds(
-    const ledger::Result result,
-    ledger::CredsBatchPtr batch,
+    const type::Result result,
+    type::CredsBatchPtr batch,
     const CredentialsTrigger& trigger,
     ledger::ResultCallback callback) {
-  // Note: Translate ledger::Result::RETRY_SHORT into
-  // ledger::Result::RETRY, as promotion only supports the standard
+  // Note: Translate type::Result::RETRY_SHORT into
+  // type::Result::RETRY, as promotion only supports the standard
   // retry
-  if (result == ledger::Result::RETRY_SHORT) {
-    callback(ledger::Result::RETRY);
+  if (result == type::Result::RETRY_SHORT) {
+    callback(type::Result::RETRY);
     return;
   }
 
-  if (result != ledger::Result::LEDGER_OK || !batch) {
+  if (result != type::Result::LEDGER_OK || !batch) {
     BLOG(0, "Problem parsing response");
-    callback(ledger::Result::LEDGER_ERROR);
+    callback(type::Result::LEDGER_ERROR);
     return;
   }
 
@@ -322,12 +323,12 @@ void CredentialsPromotion::OnFetchSignedCreds(
 }
 
 void CredentialsPromotion::SignedCredsSaved(
-    const ledger::Result result,
+    const type::Result result,
     const CredentialsTrigger& trigger,
     ledger::ResultCallback callback) {
-  if (result != ledger::Result::LEDGER_OK) {
+  if (result != type::Result::LEDGER_OK) {
     BLOG(0, "Signed creds were not saved");
-    callback(ledger::Result::LEDGER_ERROR);
+    callback(type::Result::LEDGER_ERROR);
     return;
   }
 
@@ -343,12 +344,12 @@ void CredentialsPromotion::SignedCredsSaved(
 }
 
 void CredentialsPromotion::Unblind(
-    ledger::CredsBatchPtr creds,
+    type::CredsBatchPtr creds,
     const CredentialsTrigger& trigger,
     ledger::ResultCallback callback) {
   if (!creds) {
     BLOG(0, "Corrupted data");
-    callback(ledger::Result::LEDGER_ERROR);
+    callback(type::Result::LEDGER_ERROR);
     return;
   }
 
@@ -362,13 +363,13 @@ void CredentialsPromotion::Unblind(
 }
 
 void CredentialsPromotion::VerifyPublicKey(
-    ledger::PromotionPtr promotion,
+    type::PromotionPtr promotion,
     const CredentialsTrigger& trigger,
-    const ledger::CredsBatch& creds,
+    const type::CredsBatch& creds,
     ledger::ResultCallback callback) {
   if (!promotion) {
     BLOG(0, "Corrupted data");
-    callback(ledger::Result::LEDGER_ERROR);
+    callback(type::Result::LEDGER_ERROR);
     return;
   }
 
@@ -376,7 +377,7 @@ void CredentialsPromotion::VerifyPublicKey(
 
   if (!promotion_keys || promotion_keys->empty()) {
     BLOG(0, "Public key is missing");
-    callback(ledger::Result::LEDGER_ERROR);
+    callback(type::Result::LEDGER_ERROR);
     return;
   }
 
@@ -389,7 +390,7 @@ void CredentialsPromotion::VerifyPublicKey(
 
   if (!valid) {
     BLOG(0, "Public key is not valid");
-    callback(ledger::Result::LEDGER_ERROR);
+    callback(type::Result::LEDGER_ERROR);
     return;
   }
 
@@ -404,7 +405,7 @@ void CredentialsPromotion::VerifyPublicKey(
 
   if (!result) {
     BLOG(0, "UnBlindTokens: " << error);
-    callback(ledger::Result::LEDGER_ERROR);
+    callback(type::Result::LEDGER_ERROR);
     return;
   }
 
@@ -418,7 +419,7 @@ void CredentialsPromotion::VerifyPublicKey(
       callback);
 
   uint64_t expires_at = 0ul;
-  if (promotion->type != ledger::PromotionType::ADS) {
+  if (promotion->type != type::PromotionType::ADS) {
     expires_at = promotion->expires_at;
   }
 
@@ -432,10 +433,10 @@ void CredentialsPromotion::VerifyPublicKey(
 }
 
 void CredentialsPromotion::Completed(
-    const ledger::Result result,
+    const type::Result result,
     const CredentialsTrigger& trigger,
     ledger::ResultCallback callback) {
-  if (result != ledger::Result::LEDGER_OK) {
+  if (result != type::Result::LEDGER_OK) {
     BLOG(0, "Unblinded token save failed");
     callback(result);
     return;
@@ -450,7 +451,7 @@ void CredentialsPromotion::RedeemTokens(
     ledger::ResultCallback callback) {
   if (redeem.token_list.empty()) {
     BLOG(0, "Token list empty");
-    callback(ledger::Result::LEDGER_ERROR);
+    callback(type::Result::LEDGER_ERROR);
     return;
   }
 
@@ -466,12 +467,12 @@ void CredentialsPromotion::RedeemTokens(
       redeem,
       callback);
 
-  if (redeem.type == ledger::RewardsType::TRANSFER) {
+  if (redeem.type == type::RewardsType::TRANSFER) {
     promotion_server_->post_suggestions_claim()->Request(redeem, url_callback);
   } else {
     if (redeem.publisher_key.empty()) {
       BLOG(0, "Publisher key is empty");
-      callback(ledger::Result::LEDGER_ERROR);
+      callback(type::Result::LEDGER_ERROR);
       return;
     }
 
@@ -480,13 +481,13 @@ void CredentialsPromotion::RedeemTokens(
 }
 
 void CredentialsPromotion::OnRedeemTokens(
-    const ledger::Result result,
+    const type::Result result,
     const std::vector<std::string>& token_id_list,
     const CredentialsRedeem& redeem,
     ledger::ResultCallback callback) {
-  if (result != ledger::Result::LEDGER_OK) {
+  if (result != type::Result::LEDGER_OK) {
     BLOG(0, "Failed to parse redeem tokens response");
-    callback(ledger::Result::LEDGER_ERROR);
+    callback(type::Result::LEDGER_ERROR);
     return;
   }
 
@@ -502,4 +503,5 @@ void CredentialsPromotion::OnRedeemTokens(
       callback);
 }
 
-}  // namespace braveledger_credentials
+}  // namespace credential
+}  // namespace ledger

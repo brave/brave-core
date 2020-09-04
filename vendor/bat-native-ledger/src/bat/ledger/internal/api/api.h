@@ -12,15 +12,14 @@
 #include "bat/ledger/internal/api/api_parameters.h"
 #include "bat/ledger/mojom_structs.h"
 
-namespace bat_ledger {
+namespace ledger {
 class LedgerImpl;
-}
 
-namespace braveledger_api {
+namespace api {
 
 class API {
  public:
-  explicit API(bat_ledger::LedgerImpl* ledger);
+  explicit API(LedgerImpl* ledger);
   ~API();
 
   void Initialize();
@@ -28,10 +27,11 @@ class API {
   void FetchParameters(ledger::GetRewardsParametersCallback callback);
 
  private:
-  bat_ledger::LedgerImpl* ledger_;  // NOT OWNED
+  LedgerImpl* ledger_;  // NOT OWNED
   std::unique_ptr<APIParameters> parameters_;
 };
 
-}  // namespace braveledger_api
+}  // namespace api
+}  // namespace ledger
 
 #endif  // BRAVELEDGER_API_API_H_

@@ -11,7 +11,8 @@
 
 #include "bat/ledger/ledger.h"
 
-namespace braveledger_credentials {
+namespace ledger {
+namespace credential {
 
 struct CredentialsTrigger {
   CredentialsTrigger();
@@ -19,11 +20,12 @@ struct CredentialsTrigger {
   ~CredentialsTrigger();
 
   std::string id;
-  ledger::CredsBatchType type;
+  type::CredsBatchType type;
   int size;
   std::vector<std::string> data;
 };
 
-}  // namespace braveledger_credentials
+}  // namespace credential
+}  // namespace ledger
 
 #endif  // BRAVELEDGER_CREDENTIALS_CREDENTIALS_TRIGGER_H_

@@ -28,21 +28,19 @@
 //  "unconfirmed": 0.0
 // }
 
-namespace bat_ledger {
-class LedgerImpl;
-}
-
 namespace ledger {
+class LedgerImpl;
+
 namespace endpoint {
 namespace promotion {
 
 using GetWalletBalanceCallback = std::function<void(
-    const ledger::Result result,
-    ledger::BalancePtr balance)>;
+    const type::Result result,
+    type::BalancePtr balance)>;
 
 class GetWalletBalance {
  public:
-  explicit GetWalletBalance(bat_ledger::LedgerImpl* ledger);
+  explicit GetWalletBalance(LedgerImpl* ledger);
   ~GetWalletBalance();
 
   void Request(GetWalletBalanceCallback callback);
@@ -50,17 +48,17 @@ class GetWalletBalance {
  private:
   std::string GetUrl();
 
-  ledger::Result CheckStatusCode(const int status_code);
+  type::Result CheckStatusCode(const int status_code);
 
-  ledger::Result ParseBody(
+  type::Result ParseBody(
       const std::string& body,
-      ledger::Balance* balance);
+      type::Balance* balance);
 
   void OnRequest(
-      const ledger::UrlResponse& response,
+      const type::UrlResponse& response,
       GetWalletBalanceCallback callback);
 
-  bat_ledger::LedgerImpl* ledger_;  // NOT OWNED
+  LedgerImpl* ledger_;  // NOT OWNED
 };
 
 }  // namespace promotion

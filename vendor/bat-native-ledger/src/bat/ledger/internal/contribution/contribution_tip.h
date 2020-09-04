@@ -10,15 +10,14 @@
 
 #include "bat/ledger/ledger.h"
 
-namespace bat_ledger {
+namespace ledger {
 class LedgerImpl;
-}
 
-namespace braveledger_contribution {
+namespace contribution {
 
 class ContributionTip {
  public:
-  explicit ContributionTip(bat_ledger::LedgerImpl* ledger);
+  explicit ContributionTip(LedgerImpl* ledger);
 
   ~ContributionTip();
 
@@ -29,13 +28,13 @@ class ContributionTip {
 
  private:
   void ServerPublisher(
-      ledger::ServerPublisherInfoPtr server_info,
+      type::ServerPublisherInfoPtr server_info,
       const std::string& publisher_key,
       const double amount,
       ledger::ResultCallback callback);
 
   void QueueSaved(
-      const ledger::Result result,
+      const type::Result result,
       ledger::ResultCallback callback);
 
   void SavePending(
@@ -44,11 +43,12 @@ class ContributionTip {
       ledger::ResultCallback callback);
 
   void OnSavePending(
-      const ledger::Result result,
+      const type::Result result,
       ledger::ResultCallback callback);
 
-  bat_ledger::LedgerImpl* ledger_;  // NOT OWNED
+  LedgerImpl* ledger_;  // NOT OWNED
 };
 
-}  // namespace braveledger_contribution
+}  // namespace contribution
+}  // namespace ledger
 #endif  // BRAVELEDGER_CONTRIBUTION_CONTRIBUTION_TIP_H_

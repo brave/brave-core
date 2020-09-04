@@ -18,13 +18,14 @@ using std::placeholders::_1;
 using std::placeholders::_2;
 using std::placeholders::_3;
 
-namespace braveledger_uphold {
+namespace ledger {
+namespace uphold {
 
 UpholdAuthorization::UpholdAuthorization(
-    bat_ledger::LedgerImpl* ledger, Uphold* uphold) :
+    LedgerImpl* ledger, Uphold* uphold) :
     ledger_(ledger),
     uphold_(uphold),
-    uphold_server_(std::make_unique<ledger::endpoint::UpholdServer>(ledger)) {
+    uphold_server_(std::make_unique<endpoint::UpholdServer>(ledger)) {
 }
 
 UpholdAuthorization::~UpholdAuthorization() = default;
@@ -37,7 +38,7 @@ void UpholdAuthorization::Authorize(
 
   if (!wallet) {
     BLOG(0, "Wallet is null");
-    callback(ledger::Result::LEDGER_ERROR, {});
+    callback(type::Result::LEDGER_ERROR, {});
     return;
   }
   const auto current_one_time = wallet->one_time_string;
@@ -45,7 +46,7 @@ void UpholdAuthorization::Authorize(
   // we need to generate new string as soon as authorization is triggered
   wallet->one_time_string = GenerateRandomString(ledger::is_testing);
   ledger_->ledger_client()->SaveExternalWallet(
-      ledger::kWalletUphold,
+      constant::kWalletUphold,
       wallet->Clone());
 
   auto it = args.find("error_description");
@@ -53,17 +54,17 @@ void UpholdAuthorization::Authorize(
     const std::string message = args.at("error_description");
     BLOG(1, message);
     if (message == "User does not meet minimum requirements") {
-      callback(ledger::Result::NOT_FOUND, {});
+      callback(type::Result::NOT_FOUND, {});
       return;
     }
 
-    callback(ledger::Result::LEDGER_ERROR, {});
+    callback(type::Result::LEDGER_ERROR, {});
     return;
   }
 
   if (args.empty()) {
     BLOG(0, "Arguments are empty");
-    callback(ledger::Result::LEDGER_ERROR, {});
+    callback(type::Result::LEDGER_ERROR, {});
     return;
   }
 
@@ -75,7 +76,7 @@ void UpholdAuthorization::Authorize(
 
   if (code.empty()) {
     BLOG(0, "Code is empty");
-    callback(ledger::Result::LEDGER_ERROR, {});
+    callback(type::Result::LEDGER_ERROR, {});
     return;
   }
 
@@ -87,13 +88,13 @@ void UpholdAuthorization::Authorize(
 
   if (one_time_string.empty()) {
     BLOG(0, "One time string is empty");
-    callback(ledger::Result::LEDGER_ERROR, {});
+    callback(type::Result::LEDGER_ERROR, {});
     return;
   }
 
   if (current_one_time != one_time_string) {
     BLOG(0, "One time string miss match");
-    callback(ledger::Result::LEDGER_ERROR, {});
+    callback(type::Result::LEDGER_ERROR, {});
     return;
   }
 
@@ -107,25 +108,25 @@ void UpholdAuthorization::Authorize(
 }
 
 void UpholdAuthorization::OnAuthorize(
-    const ledger::Result result,
+    const type::Result result,
     const std::string& token,
     ledger::ExternalWalletAuthorizationCallback callback) {
-  if (result == ledger::Result::EXPIRED_TOKEN) {
+  if (result == type::Result::EXPIRED_TOKEN) {
     BLOG(0, "Expired token");
-    callback(ledger::Result::EXPIRED_TOKEN, {});
+    callback(type::Result::EXPIRED_TOKEN, {});
     uphold_->DisconnectWallet();
     return;
   }
 
-  if (result != ledger::Result::LEDGER_OK) {
+  if (result != type::Result::LEDGER_OK) {
     BLOG(0, "Couldn't get token");
-    callback(ledger::Result::LEDGER_ERROR, {});
+    callback(type::Result::LEDGER_ERROR, {});
     return;
   }
 
   if (token.empty()) {
     BLOG(0, "Token is empty");
-    callback(ledger::Result::LEDGER_ERROR, {});
+    callback(type::Result::LEDGER_ERROR, {});
     return;
   }
 
@@ -135,16 +136,16 @@ void UpholdAuthorization::OnAuthorize(
   wallet_ptr->token = token;
 
   switch (wallet_ptr->status) {
-    case ledger::WalletStatus::NOT_CONNECTED: {
-      wallet_ptr->status = ledger::WalletStatus::CONNECTED;
+    case type::WalletStatus::NOT_CONNECTED: {
+      wallet_ptr->status = type::WalletStatus::CONNECTED;
       break;
     }
-    case ledger::WalletStatus::DISCONNECTED_NOT_VERIFIED: {
-      wallet_ptr->status = ledger::WalletStatus::CONNECTED;
+    case type::WalletStatus::DISCONNECTED_NOT_VERIFIED: {
+      wallet_ptr->status = type::WalletStatus::CONNECTED;
       break;
     }
-    case ledger::WalletStatus::DISCONNECTED_VERIFIED: {
-      wallet_ptr->status = ledger::WalletStatus::VERIFIED;
+    case type::WalletStatus::DISCONNECTED_VERIFIED: {
+      wallet_ptr->status = type::WalletStatus::VERIFIED;
       break;
     }
     default:
@@ -152,7 +153,7 @@ void UpholdAuthorization::OnAuthorize(
   }
 
   ledger_->ledger_client()->SaveExternalWallet(
-      ledger::kWalletUphold,
+      constant::kWalletUphold,
       wallet_ptr->Clone());
 
   auto user_callback = std::bind(&UpholdAuthorization::OnGetUser,
@@ -164,7 +165,7 @@ void UpholdAuthorization::OnAuthorize(
 }
 
 void UpholdAuthorization::OnGetUser(
-    const ledger::Result result,
+    const type::Result result,
     const User& user,
     ledger::ExternalWalletAuthorizationCallback callback) {
   auto wallets = ledger_->ledger_client()->GetExternalWallets();
@@ -173,16 +174,16 @@ void UpholdAuthorization::OnGetUser(
 
   if (user.bat_not_allowed || !wallet_ptr) {
     BLOG(0, "BAT not allowed");
-    callback(ledger::Result::BAT_NOT_ALLOWED, args);
+    callback(type::Result::BAT_NOT_ALLOWED, args);
     return;
   }
 
   if (user.status == UserStatus::OK) {
     wallet_ptr->status = user.verified
-        ? ledger::WalletStatus::VERIFIED
-        : ledger::WalletStatus::CONNECTED;
+        ? type::WalletStatus::VERIFIED
+        : type::WalletStatus::CONNECTED;
     ledger_->ledger_client()->SaveExternalWallet(
-        ledger::kWalletUphold,
+        constant::kWalletUphold,
         wallet_ptr->Clone());
 
     if (wallet_ptr->address.empty()) {
@@ -199,23 +200,23 @@ void UpholdAuthorization::OnGetUser(
       args["redirect_url"] = GetSecondStepVerify();
     }
   } else {
-    wallet_ptr->status = ledger::WalletStatus::PENDING;
+    wallet_ptr->status = type::WalletStatus::PENDING;
     ledger_->ledger_client()->SaveExternalWallet(
-        ledger::kWalletUphold,
+        constant::kWalletUphold,
         std::move(wallet_ptr));
     args["redirect_url"] = GetSecondStepVerify();
   }
 
-  callback(ledger::Result::LEDGER_OK, args);
+  callback(type::Result::LEDGER_OK, args);
 }
 
 void UpholdAuthorization::OnCardCreate(
-    const ledger::Result result,
+    const type::Result result,
     const std::string& address,
     ledger::ExternalWalletAuthorizationCallback callback) {
-  if (result == ledger::Result::LEDGER_ERROR) {
+  if (result == type::Result::LEDGER_ERROR) {
     BLOG(0, "Card creation");
-    callback(ledger::Result::LEDGER_ERROR, {});
+    callback(type::Result::LEDGER_ERROR, {});
     return;
   }
 
@@ -223,22 +224,23 @@ void UpholdAuthorization::OnCardCreate(
   auto wallet_ptr = GetWallet(std::move(wallets));
   wallet_ptr->address = address;
   ledger_->ledger_client()->SaveExternalWallet(
-      ledger::kWalletUphold,
+      constant::kWalletUphold,
       wallet_ptr->Clone());
 
   if (!address.empty()) {
     ledger_->database()->SaveEventLog(
-        ledger::log::kWalletConnected,
-        static_cast<std::string>(ledger::kWalletUphold) + "/" +
+        log::kWalletConnected,
+        static_cast<std::string>(constant::kWalletUphold) + "/" +
             address.substr(0, 5));
   }
 
   std::map<std::string, std::string> args;
-  if (wallet_ptr->status != ledger::WalletStatus::VERIFIED) {
+  if (wallet_ptr->status != type::WalletStatus::VERIFIED) {
     args["redirect_url"] = GetSecondStepVerify();
   }
 
-  callback(ledger::Result::LEDGER_OK, args);
+  callback(type::Result::LEDGER_OK, args);
 }
 
-}  // namespace braveledger_uphold
+}  // namespace uphold
+}  // namespace ledger

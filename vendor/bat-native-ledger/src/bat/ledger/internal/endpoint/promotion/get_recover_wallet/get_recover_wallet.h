@@ -32,21 +32,19 @@ WALLET_H_
 //  "publicKey": "79d7da2a756cc8d9403d0353a64fae5698e01b44a2c2745"
 // }
 
-namespace bat_ledger {
-class LedgerImpl;
-}
-
 namespace ledger {
+class LedgerImpl;
+
 namespace endpoint {
 namespace promotion {
 
 using GetRecoverWalletCallback = std::function<void(
-    const ledger::Result result,
+    const type::Result result,
     const std::string& payment_id)>;
 
 class GetRecoverWallet {
  public:
-  explicit GetRecoverWallet(bat_ledger::LedgerImpl* ledger);
+  explicit GetRecoverWallet(LedgerImpl* ledger);
   ~GetRecoverWallet();
 
   void Request(
@@ -56,17 +54,17 @@ class GetRecoverWallet {
  private:
   std::string GetUrl(const std::string& public_key_hex);
 
-  ledger::Result CheckStatusCode(const int status_code);
+  type::Result CheckStatusCode(const int status_code);
 
-  ledger::Result ParseBody(
+  type::Result ParseBody(
       const std::string& body,
       std::string* payment_id);
 
   void OnRequest(
-      const ledger::UrlResponse& response,
+      const type::UrlResponse& response,
       GetRecoverWalletCallback callback);
 
-  bat_ledger::LedgerImpl* ledger_;  // NOT OWNED
+  LedgerImpl* ledger_;  // NOT OWNED
 };
 
 }  // namespace promotion

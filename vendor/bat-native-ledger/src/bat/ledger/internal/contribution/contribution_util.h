@@ -11,11 +11,12 @@
 
 #include "bat/ledger/mojom_structs.h"
 
-namespace braveledger_contribution {
+namespace ledger {
+namespace contribution {
 
-ledger::ReportType GetReportTypeFromRewardsType(const ledger::RewardsType type);
+type::ReportType GetReportTypeFromRewardsType(const type::RewardsType type);
 
-ledger::ContributionProcessor GetProcessor(const std::string& wallet_type);
+type::ContributionProcessor GetProcessor(const std::string& wallet_type);
 
 std::string GetNextProcessor(const std::string& current_processor);
 
@@ -26,6 +27,7 @@ bool HaveEnoughFundsToContribute(
 
 int32_t GetVotesFromAmount(const double amount);
 
-}  // namespace braveledger_contribution
+}  // namespace contribution
+}  // namespace ledger
 
 #endif  // BRAVELEDGER_CONTRIBUTION_CONTRIBUTION_UTIL_H_

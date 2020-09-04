@@ -5,7 +5,8 @@
 
 #include "bat/ledger/internal/credentials/credentials_redeem.h"
 
-namespace braveledger_credentials {
+namespace ledger {
+namespace credential {
 
 CredentialsRedeem::CredentialsRedeem() = default;
 
@@ -14,4 +15,5 @@ CredentialsRedeem::CredentialsRedeem(
 
 CredentialsRedeem::~CredentialsRedeem() = default;
 
-}  // namespace braveledger_credentials
+}  // namespace credential
+}  // namespace ledger

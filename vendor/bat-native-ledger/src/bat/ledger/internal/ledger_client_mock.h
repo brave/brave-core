@@ -25,31 +25,30 @@ class MockLedgerClient : public LedgerClient {
   ~MockLedgerClient() override;
 
   MOCK_METHOD2(OnReconcileComplete, void(
-      Result result,
-      ContributionInfoPtr contribution));
+      type::Result result,
+      type::ContributionInfoPtr contribution));
 
   MOCK_METHOD1(LoadLedgerState, void(
-      ledger::OnLoadCallback callback));
+      client::OnLoadCallback callback));
 
   MOCK_METHOD1(LoadPublisherState, void(
-      ledger::OnLoadCallback callback));
+      client::OnLoadCallback callback));
 
   MOCK_METHOD3(OnPanelPublisherInfo, void(
-      ledger::Result result,
-      ledger::PublisherInfoPtr,
+      type::Result result,
+      type::PublisherInfoPtr,
       uint64_t windowId));
 
   MOCK_METHOD3(FetchFavIcon, void(
       const std::string& url,
       const std::string& favicon_key,
-      ledger::FetchIconCallback callback));
+      client::FetchIconCallback callback));
 
-  MOCK_METHOD1(URIEncode, std::string(
-      const std::string& value));
+  MOCK_METHOD1(URIEncode, std::string(const std::string& value));
 
   MOCK_METHOD2(LoadURL, void(
-      ledger::UrlRequestPtr request,
-      ledger::LoadURLCallback callback));
+      type::UrlRequestPtr request,
+      client::LoadURLCallback callback));
 
   MOCK_METHOD2(SetPublisherExclude, void(
       const std::string& publisher_key,
@@ -61,7 +60,7 @@ class MockLedgerClient : public LedgerClient {
       const int verbose_level,
       const std::string& message));
 
-  MOCK_METHOD1(PublisherListNormalized, void(ledger::PublisherInfoList list));
+  MOCK_METHOD1(PublisherListNormalized, void(type::PublisherInfoList list));
 
   MOCK_METHOD2(SetBooleanState, void(
       const std::string& name,
@@ -127,53 +126,52 @@ class MockLedgerClient : public LedgerClient {
       const std::string& name));
 
   MOCK_METHOD3(OnContributeUnverifiedPublishers, void(
-      ledger::Result result,
+      type::Result result,
       const std::string& publisher_key,
       const std::string& publisher_name));
 
-  MOCK_METHOD0(
-      GetExternalWallets,
-      std::map<std::string, ledger::ExternalWalletPtr>());
+  MOCK_METHOD0(GetExternalWallets,
+      std::map<std::string, type::ExternalWalletPtr>());
 
   MOCK_METHOD2(SaveExternalWallet, void(
       const std::string& wallet_type,
-      ledger::ExternalWalletPtr wallet));
+      type::ExternalWalletPtr wallet));
 
   MOCK_METHOD3(ShowNotification, void(
       const std::string& type,
       const std::vector<std::string>& args,
-      ledger::ResultCallback callback));
+      client::ResultCallback callback));
 
   MOCK_METHOD2(SetTransferFee, void(
       const std::string& wallet_type,
-      ledger::TransferFeePtr transfer_fee));
+      type::TransferFeePtr transfer_fee));
 
-  MOCK_METHOD1(GetTransferFees, ledger::TransferFeeList(
+  MOCK_METHOD1(GetTransferFees, type::TransferFeeList(
       const std::string& wallet_type));
 
   MOCK_METHOD2(RemoveTransferFee, void(
     const std::string& wallet_type,
     const std::string& id));
 
-  MOCK_METHOD0(GetClientInfo, ledger::ClientInfoPtr());
+  MOCK_METHOD0(GetClientInfo, type::ClientInfoPtr());
 
   MOCK_METHOD0(UnblindedTokensReady, void());
 
   MOCK_METHOD0(ReconcileStampReset, void());
 
   MOCK_METHOD2(RunDBTransaction, void(
-      ledger::DBTransactionPtr,
-      ledger::RunDBTransactionCallback));
+      type::DBTransactionPtr,
+      client::RunDBTransactionCallback));
 
-  MOCK_METHOD1(GetCreateScript, void(ledger::GetCreateScriptCallback));
+  MOCK_METHOD1(GetCreateScript, void(client::GetCreateScriptCallback));
 
-  MOCK_METHOD1(PendingContributionSaved, void(const ledger::Result result));
+  MOCK_METHOD1(PendingContributionSaved, void(const type::Result result));
 
   MOCK_METHOD0(ClearAllNotifications, void());
 
   MOCK_METHOD1(WalletDisconnected, void(const std::string& wallet_type));
 
-  MOCK_METHOD1(DeleteLog, void(const ledger::ResultCallback callback));
+  MOCK_METHOD1(DeleteLog, void(const client::ResultCallback callback));
 };
 
 }  // namespace ledger

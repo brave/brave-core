@@ -14,11 +14,11 @@
 namespace ledger {
 namespace wallet {
 
-ledger::ExternalWalletPtr GetWallet(
+type::ExternalWalletPtr GetWallet(
     const std::string& wallet_type,
-    std::map<std::string, ledger::ExternalWalletPtr> wallets);
+    std::map<std::string, type::ExternalWalletPtr> wallets);
 
-ledger::ExternalWalletPtr ResetWallet(ledger::ExternalWalletPtr wallet);
+type::ExternalWalletPtr ResetWallet(type::ExternalWalletPtr wallet);
 
 }  // namespace wallet
 }  // namespace ledger

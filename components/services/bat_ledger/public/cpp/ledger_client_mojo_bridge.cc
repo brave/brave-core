@@ -25,7 +25,7 @@ LedgerClientMojoBridge::~LedgerClientMojoBridge() = default;
 // static
 void LedgerClientMojoBridge::OnLoadLedgerState(
     CallbackHolder<LoadLedgerStateCallback>* holder,
-    ledger::Result result,
+    ledger::type::Result result,
     const std::string& data) {
   DCHECK(holder);
   if (holder->is_valid())
@@ -44,7 +44,7 @@ void LedgerClientMojoBridge::LoadLedgerState(LoadLedgerStateCallback callback) {
 // static
 void LedgerClientMojoBridge::OnLoadPublisherState(
     CallbackHolder<LoadLedgerStateCallback>* holder,
-    ledger::Result result,
+    ledger::type::Result result,
     const std::string& data) {
   DCHECK(holder);
   if (holder->is_valid())
@@ -64,16 +64,16 @@ void LedgerClientMojoBridge::LoadPublisherState(
 }
 
 void LedgerClientMojoBridge::OnReconcileComplete(
-    const ledger::Result result,
-    ledger::ContributionInfoPtr contribution) {
+    const ledger::type::Result result,
+    ledger::type::ContributionInfoPtr contribution) {
   ledger_client_->OnReconcileComplete(
       result,
       std::move(contribution));
 }
 
 void LedgerClientMojoBridge::OnPanelPublisherInfo(
-    const ledger::Result result,
-    ledger::PublisherInfoPtr publisher_info,
+    const ledger::type::Result result,
+    ledger::type::PublisherInfoPtr publisher_info,
     uint64_t window_id) {
   ledger_client_->OnPanelPublisherInfo(
       result,
@@ -108,16 +108,16 @@ void LedgerClientMojoBridge::URIEncode(const std::string& value,
 // static
 void LedgerClientMojoBridge::OnLoadURL(
     CallbackHolder<LoadURLCallback>* holder,
-    const ledger::UrlResponse& response) {
+    const ledger::type::UrlResponse& response) {
   DCHECK(holder);
   if (holder->is_valid()) {
-    std::move(holder->get()).Run(ledger::UrlResponse::New(response));
+    std::move(holder->get()).Run(ledger::type::UrlResponse::New(response));
     delete holder;
   }
 }
 
 void LedgerClientMojoBridge::LoadURL(
-    ledger::UrlRequestPtr request,
+    ledger::type::UrlRequestPtr request,
     LoadURLCallback callback) {
   // deleted in OnLoadURL
   auto* holder = new CallbackHolder<LoadURLCallback>(
@@ -128,7 +128,7 @@ void LedgerClientMojoBridge::LoadURL(
 }
 
 void LedgerClientMojoBridge::PublisherListNormalized(
-    ledger::PublisherInfoList list) {
+    ledger::type::PublisherInfoList list) {
   ledger_client_->PublisherListNormalized(std::move(list));
 }
 
@@ -233,7 +233,7 @@ void LedgerClientMojoBridge::GetUint64Option(
 }
 
 void LedgerClientMojoBridge::OnContributeUnverifiedPublishers(
-      const ledger::Result result,
+      const ledger::type::Result result,
       const std::string& publisher_key,
       const std::string& publisher_name) {
   ledger_client_->OnContributeUnverifiedPublishers(
@@ -250,14 +250,14 @@ void LedgerClientMojoBridge::GetExternalWallets(
 
 void LedgerClientMojoBridge::SaveExternalWallet(
     const std::string& wallet_type,
-    ledger::ExternalWalletPtr wallet) {
+    ledger::type::ExternalWalletPtr wallet) {
   ledger_client_->SaveExternalWallet(wallet_type, std::move(wallet));
 }
 
 // static
 void LedgerClientMojoBridge::OnShowNotification(
     CallbackHolder<ShowNotificationCallback>* holder,
-    const ledger::Result result) {
+    const ledger::type::Result result) {
   DCHECK(holder);
   if (holder->is_valid()) {
     std::move(holder->get()).Run(result);
@@ -288,7 +288,7 @@ void LedgerClientMojoBridge::GetTransferFees(
 
 void LedgerClientMojoBridge::SetTransferFee(
     const std::string& wallet_type,
-    ledger::TransferFeePtr transfer_fee) {
+    ledger::type::TransferFeePtr transfer_fee) {
   ledger_client_->SetTransferFee(wallet_type, std::move(transfer_fee));
 }
 
@@ -315,7 +315,7 @@ void LedgerClientMojoBridge::ReconcileStampReset() {
 // static
 void LedgerClientMojoBridge::OnRunDBTransaction(
     CallbackHolder<RunDBTransactionCallback>* holder,
-    ledger::DBCommandResponsePtr response) {
+    ledger::type::DBCommandResponsePtr response) {
   DCHECK(holder);
   if (holder->is_valid()) {
     std::move(holder->get()).Run(std::move(response));
@@ -324,7 +324,7 @@ void LedgerClientMojoBridge::OnRunDBTransaction(
 }
 
 void LedgerClientMojoBridge::RunDBTransaction(
-    ledger::DBTransactionPtr transaction,
+    ledger::type::DBTransactionPtr transaction,
     RunDBTransactionCallback callback) {
   auto* holder = new CallbackHolder<RunDBTransactionCallback>(
       AsWeakPtr(),
@@ -361,7 +361,7 @@ void LedgerClientMojoBridge::GetCreateScript(
 }
 
 void LedgerClientMojoBridge::PendingContributionSaved(
-    const ledger::Result result) {
+    const ledger::type::Result result) {
   ledger_client_->PendingContributionSaved(result);
 }
 
@@ -385,7 +385,7 @@ void LedgerClientMojoBridge::WalletDisconnected(
 // static
 void LedgerClientMojoBridge::OnDeleteLog(
     CallbackHolder<DeleteLogCallback>* holder,
-    const ledger::Result result) {
+    const ledger::type::Result result) {
   DCHECK(holder);
   if (holder->is_valid()) {
     std::move(holder->get()).Run(result);

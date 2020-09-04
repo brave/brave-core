@@ -31,8 +31,8 @@ class LedgerClientMojoBridge :
   // bat_ledger::mojom::BatLedgerClient
   void LoadLedgerState(LoadLedgerStateCallback callback) override;
   void OnReconcileComplete(
-      const ledger::Result result,
-      ledger::ContributionInfoPtr contribution) override;
+      const ledger::type::Result result,
+      ledger::type::ContributionInfoPtr contribution) override;
 
   void LoadPublisherState(LoadPublisherStateCallback callback) override;
 
@@ -40,18 +40,18 @@ class LedgerClientMojoBridge :
       FetchFavIconCallback callback) override;
 
   void OnPanelPublisherInfo(
-      const ledger::Result result,
-      ledger::PublisherInfoPtr info,
+      const ledger::type::Result result,
+      ledger::type::PublisherInfoPtr info,
       uint64_t window_id) override;
 
   void URIEncode(const std::string& value,
       URIEncodeCallback callback) override;
 
   void LoadURL(
-      ledger::UrlRequestPtr request,
+      ledger::type::UrlRequestPtr request,
       LoadURLCallback callback) override;
 
-  void PublisherListNormalized(ledger::PublisherInfoList list) override;
+  void PublisherListNormalized(ledger::type::PublisherInfoList list) override;
 
   void SetBooleanState(const std::string& name, bool value) override;
   void GetBooleanState(const std::string& name,
@@ -94,14 +94,14 @@ class LedgerClientMojoBridge :
       GetUint64OptionCallback callback) override;
 
   void OnContributeUnverifiedPublishers(
-      const ledger::Result result,
+      const ledger::type::Result result,
       const std::string& publisher_key,
       const std::string& publisher_name) override;
 
   void GetExternalWallets(GetExternalWalletsCallback callback) override;
 
   void SaveExternalWallet(const std::string& wallet_type,
-                          ledger::ExternalWalletPtr wallet) override;
+                          ledger::type::ExternalWalletPtr wallet) override;
 
   void ShowNotification(
       const std::string& type,
@@ -110,7 +110,7 @@ class LedgerClientMojoBridge :
 
   void SetTransferFee(
       const std::string& wallet_type,
-      ledger::TransferFeePtr transfer_fee) override;
+      ledger::type::TransferFeePtr transfer_fee) override;
 
   void GetTransferFees(
       const std::string& wallet_type,
@@ -128,13 +128,13 @@ class LedgerClientMojoBridge :
   void ReconcileStampReset() override;
 
   void RunDBTransaction(
-      ledger::DBTransactionPtr transaction,
+      ledger::type::DBTransactionPtr transaction,
       RunDBTransactionCallback callback) override;
 
   void GetCreateScript(
       GetCreateScriptCallback callback) override;
 
-  void PendingContributionSaved(const ledger::Result result) override;
+  void PendingContributionSaved(const ledger::type::Result result) override;
 
   void Log(
       const std::string& file,
@@ -168,12 +168,12 @@ class LedgerClientMojoBridge :
 
   static void OnLoadLedgerState(
     CallbackHolder<LoadLedgerStateCallback>* holder,
-    ledger::Result result,
+    ledger::type::Result result,
     const std::string& data);
 
   static void OnLoadPublisherState(
     CallbackHolder<LoadLedgerStateCallback>* holder,
-    ledger::Result result,
+    ledger::type::Result result,
     const std::string& data);
 
   static void OnFetchFavIcon(
@@ -183,15 +183,15 @@ class LedgerClientMojoBridge :
 
   static void OnLoadURL(
       CallbackHolder<LoadURLCallback>* holder,
-      const ledger::UrlResponse& response);
+      const ledger::type::UrlResponse& response);
 
   static void OnShowNotification(
     CallbackHolder<ShowNotificationCallback>* holder,
-    const ledger::Result result);
+    const ledger::type::Result result);
 
   static void OnRunDBTransaction(
       CallbackHolder<RunDBTransactionCallback>* holder,
-      ledger::DBCommandResponsePtr response);
+      ledger::type::DBCommandResponsePtr response);
 
   static void OnGetCreateScript(
       CallbackHolder<GetCreateScriptCallback>* holder,
@@ -200,7 +200,7 @@ class LedgerClientMojoBridge :
 
   static void OnDeleteLog(
       CallbackHolder<DeleteLogCallback>* holder,
-      const ledger::Result result);
+      const ledger::type::Result result);
 
   ledger::LedgerClient* ledger_client_;
 };

@@ -16,17 +16,18 @@
 #include "bat/ledger/internal/endpoint/rewards/rewards_server.h"
 #include "bat/ledger/ledger.h"
 
-namespace bat_ledger {
+namespace ledger {
 class LedgerImpl;
-}
 
-namespace braveledger_publisher {
+namespace publisher {
+
+using PublisherPrefixListUpdatedCallback = std::function<void()>;
 
 // Automatically updates the publisher prefix list store on regular
 // intervals.
 class PublisherPrefixListUpdater {
  public:
-  explicit PublisherPrefixListUpdater(bat_ledger::LedgerImpl* ledger);
+  explicit PublisherPrefixListUpdater(LedgerImpl* ledger);
 
   PublisherPrefixListUpdater(const PublisherPrefixListUpdater&) = delete;
   PublisherPrefixListUpdater& operator=(
@@ -35,7 +36,7 @@ class PublisherPrefixListUpdater {
   ~PublisherPrefixListUpdater();
 
   // Starts the auto updater
-  void StartAutoUpdate(ledger::PublisherPrefixListUpdatedCallback callback);
+  void StartAutoUpdate(PublisherPrefixListUpdatedCallback callback);
 
   // Cancels the auto updater
   void StopAutoUpdate();
@@ -47,21 +48,22 @@ class PublisherPrefixListUpdater {
 
   void OnFetchTimerElapsed();
   void OnFetchCompleted(
-      const ledger::Result result,
+      const type::Result result,
       const std::string& body);
-  void OnPrefixListInserted(const ledger::Result result);
+  void OnPrefixListInserted(const type::Result result);
 
   base::TimeDelta GetAutoUpdateDelay();
   base::TimeDelta GetRetryAfterFailureDelay();
 
-  bat_ledger::LedgerImpl* ledger_;  // NOT OWNED
+  LedgerImpl* ledger_;  // NOT OWNED
   base::OneShotTimer timer_;
   bool auto_update_ = false;
   int retry_count_ = 0;
-  ledger::PublisherPrefixListUpdatedCallback on_updated_callback_;
-  std::unique_ptr<ledger::endpoint::RewardsServer> rewards_server_;
+  PublisherPrefixListUpdatedCallback on_updated_callback_;
+  std::unique_ptr<endpoint::RewardsServer> rewards_server_;
 };
 
-}  // namespace braveledger_publisher
+}  // namespace publisher
+}  // namespace ledger
 
 #endif  // BRAVELEDGER_PUBLISHER_PUBLISHER_PREFIX_LIST_UPDATER_H_

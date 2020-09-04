@@ -8,25 +8,25 @@
 
 #include "bat/ledger/ledger.h"
 
-namespace bat_ledger {
+namespace ledger {
 class LedgerImpl;
-}
 
-namespace braveledger_publisher {
+namespace publisher {
 
 // Refreshes the publisher status for each entry in the specified list
 void RefreshPublisherStatus(
-    bat_ledger::LedgerImpl* ledger,
-    ledger::PublisherInfoList&& info_list,
+    LedgerImpl* ledger,
+    type::PublisherInfoList&& info_list,
     ledger::PublisherInfoListCallback callback);
 
 // Refreshes the publisher status for each entry in the specified list
 void RefreshPublisherStatus(
-    bat_ledger::LedgerImpl* ledger,
-    ledger::PendingContributionInfoList&& list,
+    LedgerImpl* ledger,
+    type::PendingContributionInfoList&& list,
     ledger::PendingContributionInfoListCallback callback);
 
 
-}  // namespace braveledger_publisher
+}  // namespace publisher
+}  // namespace ledger
 
 #endif  // BRAVELEDGER_PUBLISHER_PUBLISHER_STATUS_HELPER_H_

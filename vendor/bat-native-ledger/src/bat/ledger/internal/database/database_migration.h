@@ -11,16 +11,14 @@
 
 #include "bat/ledger/ledger.h"
 
-namespace bat_ledger {
-class LedgerImpl;
-}
-
 namespace ledger {
+class LedgerImpl;
+
 namespace database {
 
 class DatabaseMigration {
  public:
-  explicit DatabaseMigration(bat_ledger::LedgerImpl* ledger);
+  explicit DatabaseMigration(LedgerImpl* ledger);
   ~DatabaseMigration();
 
   void Start(
@@ -29,9 +27,10 @@ class DatabaseMigration {
 
  private:
   void GenerateCommand(
-      ledger::DBTransaction* transaction,
+      type::DBTransaction* transaction,
       const std::string& query);
-  bat_ledger::LedgerImpl* ledger_;  // NOT OWNED
+
+  LedgerImpl* ledger_;  // NOT OWNED
 };
 
 }  // namespace database

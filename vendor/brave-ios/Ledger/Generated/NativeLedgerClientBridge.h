@@ -8,16 +8,16 @@
 @protocol NativeLedgerClientBridge
 @required
 
-- (void)fetchFavIcon:(const std::string &)url faviconKey:(const std::string &)favicon_key callback:(ledger::FetchIconCallback)callback;
-- (void)loadLedgerState:(ledger::OnLoadCallback)callback;
-- (void)loadPublisherState:(ledger::OnLoadCallback)callback;
-- (void)loadURL:(ledger::UrlRequestPtr)request callback:(ledger::LoadURLCallback)callback;
+- (void)fetchFavIcon:(const std::string &)url faviconKey:(const std::string &)favicon_key callback:(ledger::client::FetchIconCallback)callback;
+- (void)loadLedgerState:(ledger::client::OnLoadCallback)callback;
+- (void)loadPublisherState:(ledger::client::OnLoadCallback)callback;
+- (void)loadURL:(ledger::type::UrlRequestPtr)request callback:(ledger::client::LoadURLCallback)callback;
 - (void)log:(const char *)file line:(const int)line verboseLevel:(const int)verbose_level message:(const std::string &) message;
-- (void)onPanelPublisherInfo:(ledger::Result)result publisherInfo:(ledger::PublisherInfoPtr)publisher_info windowId:(uint64_t)windowId;
-- (void)onReconcileComplete:(ledger::Result)result contribution:(ledger::ContributionInfoPtr)contribution;
-- (void)publisherListNormalized:(ledger::PublisherInfoList)list;
+- (void)onPanelPublisherInfo:(ledger::type::Result)result publisherInfo:(ledger::type::PublisherInfoPtr)publisher_info windowId:(uint64_t)windowId;
+- (void)onReconcileComplete:(ledger::type::Result)result contribution:(ledger::type::ContributionInfoPtr)contribution;
+- (void)publisherListNormalized:(ledger::type::PublisherInfoList)list;
 - (std::string)URIEncode:(const std::string &)value;
-- (void)onContributeUnverifiedPublishers:(ledger::Result)result publisherKey:(const std::string&)publisher_key publisherName:(const std::string&)publisher_name;
+- (void)onContributeUnverifiedPublishers:(ledger::type::Result)result publisherKey:(const std::string&)publisher_key publisherName:(const std::string&)publisher_name;
 - (void)setBooleanState:(const std::string&)name value:(bool)value;
 - (bool)getBooleanState:(const std::string&)name;
 - (void)setIntegerState:(const std::string&)name value:(int)value;
@@ -31,26 +31,26 @@
 - (void)setUint64State:(const std::string&)name value:(uint64_t)value;
 - (uint64_t)getUint64State:(const std::string&)name;
 - (void)clearState:(const std::string&)name;
-- (std::map<std::string, ledger::ExternalWalletPtr>)getExternalWallets;
-- (void)saveExternalWallet:(const std::string &)wallet_type wallet:(ledger::ExternalWalletPtr)wallet;
-- (void)showNotification:(const std::string &)type args:(const std::vector<std::string>&)args callback:(ledger::ResultCallback)callback;
-- (void)setTransferFee:(const std::string&)wallet_type transfer_fee:(ledger::TransferFeePtr)transfer_fee;
+- (std::map<std::string, ledger::type::ExternalWalletPtr>)getExternalWallets;
+- (void)saveExternalWallet:(const std::string &)wallet_type wallet:(ledger::type::ExternalWalletPtr)wallet;
+- (void)showNotification:(const std::string &)type args:(const std::vector<std::string>&)args callback:(ledger::client::ResultCallback)callback;
+- (void)setTransferFee:(const std::string&)wallet_type transfer_fee:(ledger::type::TransferFeePtr)transfer_fee;
 - (void)removeTransferFee:(const std::string&)wallet_type id:(const std::string&)id;
-- (ledger::TransferFeeList)getTransferFees:(const std::string&)wallet_type;
+- (ledger::type::TransferFeeList)getTransferFees:(const std::string&)wallet_type;
 - (bool)getBooleanOption:(const std::string&)name;
 - (int)getIntegerOption:(const std::string&)name;
 - (double)getDoubleOption:(const std::string&)name;
 - (std::string)getStringOption:(const std::string&)name;
 - (int64_t)getInt64Option:(const std::string&)name;
 - (uint64_t)getUint64Option:(const std::string&)name;
-- (ledger::ClientInfoPtr)getClientInfo;
+- (ledger::type::ClientInfoPtr)getClientInfo;
 - (void)unblindedTokensReady;
 - (void)reconcileStampReset;
-- (void)runDBTransaction:(ledger::DBTransactionPtr)transaction callback:(ledger::RunDBTransactionCallback)callback;
-- (void)getCreateScript:(ledger::GetCreateScriptCallback)callback;
-- (void)pendingContributionSaved:(const ledger::Result)result;
+- (void)runDBTransaction:(ledger::type::DBTransactionPtr)transaction callback:(ledger::client::RunDBTransactionCallback)callback;
+- (void)getCreateScript:(ledger::client::GetCreateScriptCallback)callback;
+- (void)pendingContributionSaved:(const ledger::type::Result)result;
 - (void)clearAllNotifications;
 - (void)walletDisconnected:(const std::string&)wallet_type;
-- (void)deleteLog:(ledger::ResultCallback)callback;
+- (void)deleteLog:(ledger::client::ResultCallback)callback;
 
 @end

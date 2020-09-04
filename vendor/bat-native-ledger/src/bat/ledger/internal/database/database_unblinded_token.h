@@ -11,24 +11,28 @@
 
 #include "bat/ledger/internal/database/database_table.h"
 
-namespace braveledger_database {
+namespace ledger {
+namespace database {
+
+using GetUnblindedTokenListCallback =
+    std::function<void(type::UnblindedTokenList)>;
 
 class DatabaseUnblindedToken: public DatabaseTable {
  public:
-  explicit DatabaseUnblindedToken(bat_ledger::LedgerImpl* ledger);
+  explicit DatabaseUnblindedToken(LedgerImpl* ledger);
   ~DatabaseUnblindedToken() override;
 
   void InsertOrUpdateList(
-      ledger::UnblindedTokenList list,
+      type::UnblindedTokenList list,
       ledger::ResultCallback callback);
 
   void GetSpendableRecordsByTriggerIds(
       const std::vector<std::string>& trigger_ids,
-      ledger::GetUnblindedTokenListCallback callback);
+      GetUnblindedTokenListCallback callback);
 
   void MarkRecordListAsSpent(
       const std::vector<std::string>& ids,
-      ledger::RewardsType redeem_type,
+      type::RewardsType redeem_type,
       const std::string& redeem_id,
       ledger::ResultCallback callback);
 
@@ -43,23 +47,24 @@ class DatabaseUnblindedToken: public DatabaseTable {
 
   void GetReservedRecordList(
       const std::string& redeem_id,
-      ledger::GetUnblindedTokenListCallback callback);
+      GetUnblindedTokenListCallback callback);
 
   void GetSpendableRecordListByBatchTypes(
-      const std::vector<ledger::CredsBatchType>& batch_types,
-      ledger::GetUnblindedTokenListCallback callback);
+      const std::vector<type::CredsBatchType>& batch_types,
+      GetUnblindedTokenListCallback callback);
 
  private:
   void OnGetRecords(
-      ledger::DBCommandResponsePtr response,
-      ledger::GetUnblindedTokenListCallback callback);
+      type::DBCommandResponsePtr response,
+      GetUnblindedTokenListCallback callback);
 
   void OnMarkRecordListAsReserved(
-      ledger::DBCommandResponsePtr response,
+      type::DBCommandResponsePtr response,
       size_t expected_row_count,
       ledger::ResultCallback callback);
 };
 
-}  // namespace braveledger_database
+}  // namespace database
+}  // namespace ledger
 
 #endif  // BRAVELEDGER_DATABASE_DATABASE_UNBLINDED_TOKEN_H_

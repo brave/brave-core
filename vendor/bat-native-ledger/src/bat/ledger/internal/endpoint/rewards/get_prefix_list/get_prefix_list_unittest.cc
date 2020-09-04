@@ -30,13 +30,13 @@ class GetPrefixListTest : public testing::Test {
 
  protected:
   std::unique_ptr<ledger::MockLedgerClient> mock_ledger_client_;
-  std::unique_ptr<bat_ledger::MockLedgerImpl> mock_ledger_impl_;
+  std::unique_ptr<ledger::MockLedgerImpl> mock_ledger_impl_;
   std::unique_ptr<GetPrefixList> list_;
 
   GetPrefixListTest() {
     mock_ledger_client_ = std::make_unique<ledger::MockLedgerClient>();
     mock_ledger_impl_ =
-        std::make_unique<bat_ledger::MockLedgerImpl>(mock_ledger_client_.get());
+        std::make_unique<ledger::MockLedgerImpl>(mock_ledger_client_.get());
     list_ = std::make_unique<GetPrefixList>(mock_ledger_impl_.get());
   }
 };
@@ -45,17 +45,17 @@ TEST_F(GetPrefixListTest, ServerOK) {
   ON_CALL(*mock_ledger_client_, LoadURL(_, _))
       .WillByDefault(
           Invoke([](
-              ledger::UrlRequestPtr request,
-              ledger::LoadURLCallback callback) {
-            ledger::UrlResponse response;
+              type::UrlRequestPtr request,
+              client::LoadURLCallback callback) {
+            type::UrlResponse response;
             response.status_code = 200;
             response.url = request->url;
             response.body = "blob";
             callback(response);
           }));
 
-  list_->Request([](const ledger::Result result, const std::string& blob) {
-    EXPECT_EQ(result, ledger::Result::LEDGER_OK);
+  list_->Request([](const type::Result result, const std::string& blob) {
+    EXPECT_EQ(result, type::Result::LEDGER_OK);
     EXPECT_EQ(blob, "blob");
   });
 }
@@ -64,17 +64,17 @@ TEST_F(GetPrefixListTest, ServerErrorRandom) {
   ON_CALL(*mock_ledger_client_, LoadURL(_, _))
       .WillByDefault(
           Invoke([](
-              ledger::UrlRequestPtr request,
-              ledger::LoadURLCallback callback) {
-            ledger::UrlResponse response;
+              type::UrlRequestPtr request,
+              client::LoadURLCallback callback) {
+            type::UrlResponse response;
             response.status_code = 453;
             response.url = request->url;
             response.body = "";
             callback(response);
           }));
 
-  list_->Request([](const ledger::Result result, const std::string& blob) {
-    EXPECT_EQ(result, ledger::Result::LEDGER_ERROR);
+  list_->Request([](const type::Result result, const std::string& blob) {
+    EXPECT_EQ(result, type::Result::LEDGER_ERROR);
     EXPECT_EQ(blob, "");
   });
 }
@@ -83,17 +83,17 @@ TEST_F(GetPrefixListTest, ServerBodyEmpty) {
   ON_CALL(*mock_ledger_client_, LoadURL(_, _))
       .WillByDefault(
           Invoke([](
-              ledger::UrlRequestPtr request,
-              ledger::LoadURLCallback callback) {
-            ledger::UrlResponse response;
+              type::UrlRequestPtr request,
+              client::LoadURLCallback callback) {
+            type::UrlResponse response;
             response.status_code = 200;
             response.url = request->url;
             response.body = "";
             callback(response);
           }));
 
-  list_->Request([](const ledger::Result result, const std::string& blob) {
-    EXPECT_EQ(result, ledger::Result::LEDGER_ERROR);
+  list_->Request([](const type::Result result, const std::string& blob) {
+    EXPECT_EQ(result, type::Result::LEDGER_ERROR);
     EXPECT_EQ(blob, "");
   });
 }

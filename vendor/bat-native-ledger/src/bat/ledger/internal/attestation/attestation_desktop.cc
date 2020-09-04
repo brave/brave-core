@@ -17,14 +17,14 @@ using std::placeholders::_3;
 namespace ledger {
 namespace attestation {
 
-AttestationDesktop::AttestationDesktop(bat_ledger::LedgerImpl* ledger) :
+AttestationDesktop::AttestationDesktop(LedgerImpl* ledger) :
     Attestation(ledger),
     promotion_server_(std::make_unique<endpoint::PromotionServer>(ledger)) {
 }
 
 AttestationDesktop::~AttestationDesktop() = default;
 
-ledger::Result AttestationDesktop::ParseClaimSolution(
+type::Result AttestationDesktop::ParseClaimSolution(
     const std::string& response,
     int* x,
     int* y,
@@ -33,36 +33,36 @@ ledger::Result AttestationDesktop::ParseClaimSolution(
 
   base::Optional<base::Value> value = base::JSONReader::Read(response);
   if (!value || !value->is_dict()) {
-    return ledger::Result::LEDGER_ERROR;
+    return type::Result::LEDGER_ERROR;
   }
 
   base::DictionaryValue* dictionary = nullptr;
   if (!value->GetAsDictionary(&dictionary)) {
-    return ledger::Result::LEDGER_ERROR;
+    return type::Result::LEDGER_ERROR;
   }
 
   const auto* id = dictionary->FindStringKey("captchaId");
   if (!id) {
     BLOG(0, "Captcha id is wrong");
-    return ledger::Result::LEDGER_ERROR;
+    return type::Result::LEDGER_ERROR;
   }
 
   const auto x_parse = dictionary->FindIntKey("x");
   if (!x_parse) {
     BLOG(0, "X is wrong");
-    return ledger::Result::LEDGER_ERROR;
+    return type::Result::LEDGER_ERROR;
   }
 
   const auto y_parse = dictionary->FindIntKey("y");
   if (!y_parse) {
     BLOG(0, "Y is wrong");
-    return ledger::Result::LEDGER_ERROR;
+    return type::Result::LEDGER_ERROR;
   }
 
   *x = *x_parse;
   *y = *y_parse;
   *captcha_id = *id;
-  return ledger::Result::LEDGER_OK;
+  return type::Result::LEDGER_OK;
 }
 
 void AttestationDesktop::Start(
@@ -79,12 +79,12 @@ void AttestationDesktop::Start(
 }
 
 void AttestationDesktop::DownloadCaptchaImage(
-    const ledger::Result result,
+    const type::Result result,
     const std::string& hint,
     const std::string& captcha_id,
     StartCallback callback) {
-  if (result != ledger::Result::LEDGER_OK) {
-    callback(ledger::Result::LEDGER_ERROR, "");
+  if (result != type::Result::LEDGER_OK) {
+    callback(type::Result::LEDGER_ERROR, "");
     return;
   }
 
@@ -100,13 +100,13 @@ void AttestationDesktop::DownloadCaptchaImage(
 }
 
 void AttestationDesktop::OnDownloadCaptchaImage(
-    const ledger::Result result,
+    const type::Result result,
     const std::string& image,
     const std::string& hint,
     const std::string& captcha_id,
     StartCallback callback) {
-  if (result != ledger::Result::LEDGER_OK) {
-    callback(ledger::Result::LEDGER_ERROR, "");
+  if (result != type::Result::LEDGER_OK) {
+    callback(type::Result::LEDGER_ERROR, "");
     return;
   }
 
@@ -117,7 +117,7 @@ void AttestationDesktop::OnDownloadCaptchaImage(
 
   std::string json;
   base::JSONWriter::Write(dictionary, &json);
-  callback(ledger::Result::LEDGER_OK, json);
+  callback(type::Result::LEDGER_OK, json);
 }
 
 void AttestationDesktop::Confirm(
@@ -126,10 +126,10 @@ void AttestationDesktop::Confirm(
   int x;
   int y;
   std::string captcha_id;
-  const ledger::Result result =
+  const type::Result result =
       ParseClaimSolution(solution, &x, &y, &captcha_id);
 
-  if (result != ledger::Result::LEDGER_OK) {
+  if (result != type::Result::LEDGER_OK) {
     BLOG(0, "Failed to parse solution");
     callback(result);
     return;
@@ -148,15 +148,15 @@ void AttestationDesktop::Confirm(
 }
 
 void AttestationDesktop::OnConfirm(
-    const ledger::Result result,
+    const type::Result result,
     ConfirmCallback callback) {
-  if (result != ledger::Result::LEDGER_OK) {
+  if (result != type::Result::LEDGER_OK) {
     BLOG(0, "Failed to confirm attestation");
     callback(result);
     return;
   }
 
-  callback(ledger::Result::LEDGER_OK);
+  callback(type::Result::LEDGER_OK);
 }
 
 }  // namespace attestation

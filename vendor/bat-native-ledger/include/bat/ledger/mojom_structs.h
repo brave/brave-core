@@ -14,6 +14,7 @@
 #include "brave/vendor/bat-native-ledger/include/bat/ledger/public/interfaces/ledger_database.mojom.h"
 
 namespace ledger {
+namespace type {
 /**
  * LEDGER
  */
@@ -21,7 +22,6 @@ using ActivityInfoFilter = mojom::ActivityInfoFilter;
 using ActivityInfoFilterPtr = mojom::ActivityInfoFilterPtr;
 
 using ActivityInfoFilterOrderPair = mojom::ActivityInfoFilterOrderPair;
-using ActivityInfoFilterOrderPairPtr = mojom::ActivityInfoFilterOrderPairPtr;
 
 using ActivityMonth = mojom::ActivityMonth;
 
@@ -34,7 +34,7 @@ using BalancePtr = mojom::BalancePtr;
 using BalanceReportInfo = mojom::BalanceReportInfo;
 using BalanceReportInfoPtr = mojom::BalanceReportInfoPtr;
 using BalanceReportInfoList =
-    std::vector<ledger::mojom::BalanceReportInfoPtr>;
+    std::vector<mojom::BalanceReportInfoPtr>;
 
 using ClientInfo = mojom::ClientInfo;
 using ClientInfoPtr = mojom::ClientInfoPtr;
@@ -47,24 +47,20 @@ using ContributionProcessor = mojom::ContributionProcessor;
 
 using ContributionPublisher = mojom::ContributionPublisher;
 using ContributionPublisherPtr = mojom::ContributionPublisherPtr;
-using ContributionPublisherList =
-    std::vector<ledger::mojom::ContributionPublisherPtr>;
+using ContributionPublisherList = std::vector<ContributionPublisherPtr>;
 
 using ContributionReportInfo = mojom::ContributionReportInfo;
 using ContributionReportInfoPtr = mojom::ContributionReportInfoPtr;
 using ContributionReportInfoList = std::vector<ContributionReportInfoPtr>;
 
-using ContributionQueue = ledger::mojom::ContributionQueue;
-using ContributionQueuePtr = ledger::mojom::ContributionQueuePtr;
-using ContributionQueueList = std::vector<ledger::mojom::ContributionQueuePtr>;
+using ContributionQueue = mojom::ContributionQueue;
+using ContributionQueuePtr = mojom::ContributionQueuePtr;
 
-using ContributionQueuePublisher = ledger::mojom::ContributionQueuePublisher;
+using ContributionQueuePublisher = mojom::ContributionQueuePublisher;
 using ContributionQueuePublisherPtr =
-    ledger::mojom::ContributionQueuePublisherPtr;
+    mojom::ContributionQueuePublisherPtr;
 using ContributionQueuePublisherList =
     std::vector<ContributionQueuePublisherPtr>;
-
-using ContributionRetry = mojom::ContributionRetry;
 
 using ContributionStep = mojom::ContributionStep;
 
@@ -76,11 +72,11 @@ using CredsBatchType = mojom::CredsBatchType;
 
 using CredsBatchStatus = mojom::CredsBatchStatus;
 
-using EventLog = ledger::mojom::EventLog;
-using EventLogPtr = ledger::mojom::EventLogPtr;
+using EventLog = mojom::EventLog;
+using EventLogPtr = mojom::EventLogPtr;
 using EventLogs = std::vector<EventLogPtr>;
 
-using Environment = ledger::mojom::Environment;
+using Environment = mojom::Environment;
 
 using ExcludeFilter = mojom::ExcludeFilter;
 
@@ -122,6 +118,7 @@ using PublisherBannerPtr = mojom::PublisherBannerPtr;
 using PublisherInfo = mojom::PublisherInfo;
 using PublisherInfoPtr = mojom::PublisherInfoPtr;
 using PublisherInfoList = std::vector<PublisherInfoPtr>;
+
 using PublisherStatus = mojom::PublisherStatus;
 
 using PublisherExclude = mojom::PublisherExclude;
@@ -211,6 +208,7 @@ using DBTransactionPtr = ledger_database::mojom::DBTransactionPtr;
 using DBValue = ledger_database::mojom::DBValue;
 using DBValuePtr = ledger_database::mojom::DBValuePtr;
 
+}  // namespace type
 }  // namespace ledger
 
 #endif  // BAT_LEDGER_MOJOM_STRUCTS_

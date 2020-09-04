@@ -14,36 +14,36 @@
 #include "bat/ledger/internal/endpoint/payment/payment_server.h"
 #include "bat/ledger/ledger.h"
 
-namespace bat_ledger {
+namespace ledger {
 class LedgerImpl;
-}
 
-namespace braveledger_sku {
+namespace sku {
 
 class SKUOrder {
  public:
-  explicit SKUOrder(bat_ledger::LedgerImpl* ledger);
+  explicit SKUOrder(LedgerImpl* ledger);
   ~SKUOrder();
 
   void Create(
-      const std::vector<ledger::SKUOrderItem>& items,
+      const std::vector<type::SKUOrderItem>& items,
       ledger::SKUOrderCallback callback);
 
  private:
   void OnCreate(
-      const ledger::Result result,
-      ledger::SKUOrderPtr order,
+      const type::Result result,
+      type::SKUOrderPtr order,
       ledger::SKUOrderCallback callback);
 
   void OnCreateSave(
-      const ledger::Result result,
+      const type::Result result,
       const std::string& order_id,
       ledger::SKUOrderCallback callback);
 
-  bat_ledger::LedgerImpl* ledger_;  // NOT OWNED
-  std::unique_ptr<ledger::endpoint::PaymentServer> payment_server_;
+  LedgerImpl* ledger_;  // NOT OWNED
+  std::unique_ptr<endpoint::PaymentServer> payment_server_;
 };
 
-}  // namespace braveledger_sku
+}  // namespace sku
+}  // namespace ledger
 
 #endif  // BRAVELEDGER_SKU_ORDER_H_

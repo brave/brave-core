@@ -19,13 +19,13 @@ std::string GetServerUrl(const std::string& path) {
 
   std::string url;
   switch (ledger::_environment) {
-    case ledger::Environment::DEVELOPMENT:
+    case type::Environment::DEVELOPMENT:
       url = kDevelopment;
       break;
-    case ledger::Environment::STAGING:
+    case type::Environment::STAGING:
       url = kStaging;
       break;
-    case ledger::Environment::PRODUCTION:
+    case type::Environment::PRODUCTION:
       url = kProduction;
       break;
   }

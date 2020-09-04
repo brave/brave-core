@@ -10,47 +10,45 @@
 
 #include "bat/ledger/internal/endpoint/promotion/promotion_server.h"
 
-namespace bat_ledger {
-class LedgerImpl;
-}
-
 namespace ledger {
+class LedgerImpl;
+
 namespace recovery {
 
 class EmptyBalance {
  public:
-  explicit EmptyBalance(bat_ledger::LedgerImpl* ledger);
+  explicit EmptyBalance(LedgerImpl* ledger);
   ~EmptyBalance();
 
   void Check();
 
  private:
-  void OnAllContributions(ledger::ContributionInfoList list);
+  void OnAllContributions(type::ContributionInfoList list);
 
-  void GetPromotions(ledger::GetPromotionListCallback callback);
+  void GetPromotions(client::GetPromotionListCallback callback);
 
   void OnPromotions(
-      ledger::PromotionMap promotions,
-      ledger::GetPromotionListCallback callback);
+      type::PromotionMap promotions,
+      client::GetPromotionListCallback callback);
 
-  void GetCredsByPromotions(ledger::PromotionList list);
+  void GetCredsByPromotions(type::PromotionList list);
 
-  void OnCreds(ledger::CredsBatchList list);
+  void OnCreds(type::CredsBatchList list);
 
-  void OnSaveUnblindedCreds(const ledger::Result result);
+  void OnSaveUnblindedCreds(const type::Result result);
 
   void GetAllTokens(
-      ledger::PromotionList list,
+      type::PromotionList list,
       const double contribution_sum);
 
   void ReportResults(
-      ledger::UnblindedTokenList list,
+      type::UnblindedTokenList list,
       const double contribution_sum,
       const double promotion_sum);
 
-  void Sent(const ledger::Result result);
+  void Sent(const type::Result result);
 
-  bat_ledger::LedgerImpl* ledger_;  // NOT OWNED
+  LedgerImpl* ledger_;  // NOT OWNED
   std::unique_ptr<endpoint::PromotionServer> promotion_server_;
 };
 

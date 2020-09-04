@@ -20,9 +20,9 @@
 
 using ::testing::_;
 using ::testing::Invoke;
-using braveledger_publisher::PrefixListReader;
 
-namespace braveledger_database {
+namespace ledger {
+namespace database {
 
 class DatabasePublisherPrefixListTest : public ::testing::Test {
  private:
@@ -30,22 +30,23 @@ class DatabasePublisherPrefixListTest : public ::testing::Test {
 
  protected:
   std::unique_ptr<ledger::MockLedgerClient> mock_ledger_client_;
-  std::unique_ptr<bat_ledger::MockLedgerImpl> mock_ledger_impl_;
+  std::unique_ptr<ledger::MockLedgerImpl> mock_ledger_impl_;
   std::string execute_script_;
   std::unique_ptr<DatabasePublisherPrefixList> database_prefix_list_;
 
   DatabasePublisherPrefixListTest() {
     mock_ledger_client_ = std::make_unique<ledger::MockLedgerClient>();
     mock_ledger_impl_ =
-        std::make_unique<bat_ledger::MockLedgerImpl>(mock_ledger_client_.get());
+        std::make_unique<ledger::MockLedgerImpl>(mock_ledger_client_.get());
     database_prefix_list_ = std::make_unique<DatabasePublisherPrefixList>(
         mock_ledger_impl_.get());
   }
 
   ~DatabasePublisherPrefixListTest() override {}
 
-  std::unique_ptr<PrefixListReader> CreateReader(uint32_t prefix_count) {
-    auto reader = std::make_unique<PrefixListReader>();
+  std::unique_ptr<publisher::PrefixListReader>
+  CreateReader(uint32_t prefix_count) {
+    auto reader = std::make_unique<publisher::PrefixListReader>();
     if (prefix_count == 0) {
       return reader;
     }
@@ -84,8 +85,8 @@ TEST_F(DatabasePublisherPrefixListTest, Reset) {
   std::vector<std::string> commands;
 
   auto on_run_db_transaction = [&](
-      ledger::DBTransactionPtr transaction,
-      ledger::RunDBTransactionCallback callback) {
+      type::DBTransactionPtr transaction,
+      ledger::client::RunDBTransactionCallback callback) {
     ASSERT_TRUE(transaction);
     if (transaction) {
       for (auto& command : transaction->commands) {
@@ -93,8 +94,8 @@ TEST_F(DatabasePublisherPrefixListTest, Reset) {
       }
     }
     commands.push_back("---");
-    auto response = ledger::DBCommandResponse::New();
-    response->status = ledger::DBCommandResponse::Status::RESPONSE_OK;
+    auto response = type::DBCommandResponse::New();
+    response->status = type::DBCommandResponse::Status::RESPONSE_OK;
     callback(std::move(response));
   };
 
@@ -103,7 +104,7 @@ TEST_F(DatabasePublisherPrefixListTest, Reset) {
 
   database_prefix_list_->Reset(
       CreateReader(100'001),
-      [](const ledger::Result) {});
+      [](const type::Result) {});
 
   ASSERT_EQ(commands.size(), 5u);
   EXPECT_EQ(commands[0], "DELETE FROM publisher_prefix_list");
@@ -117,4 +118,5 @@ TEST_F(DatabasePublisherPrefixListTest, Reset) {
   EXPECT_EQ(commands[4], "---");
 }
 
-}  // namespace braveledger_database
+}  // namespace database
+}  // namespace ledger

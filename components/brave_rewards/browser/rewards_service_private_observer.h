@@ -19,8 +19,8 @@ class RewardsServicePrivateObserver : public base::CheckedObserver {
 
   virtual void OnPanelPublisherInfo(
       RewardsService* rewards_service,
-      const ledger::Result result,
-      const ledger::PublisherInfo* info,
+      const ledger::type::Result result,
+      const ledger::type::PublisherInfo* info,
       uint64_t windowId) {}
 
   virtual void OnRewardsMainEnabled(

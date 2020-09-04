@@ -30,13 +30,13 @@ class PostSafetynetTest : public testing::Test {
 
  protected:
   std::unique_ptr<ledger::MockLedgerClient> mock_ledger_client_;
-  std::unique_ptr<bat_ledger::MockLedgerImpl> mock_ledger_impl_;
+  std::unique_ptr<ledger::MockLedgerImpl> mock_ledger_impl_;
   std::unique_ptr<PostSafetynet> safetynet_;
 
   PostSafetynetTest() {
     mock_ledger_client_ = std::make_unique<ledger::MockLedgerClient>();
     mock_ledger_impl_ =
-        std::make_unique<bat_ledger::MockLedgerImpl>(mock_ledger_client_.get());
+        std::make_unique<ledger::MockLedgerImpl>(mock_ledger_client_.get());
     safetynet_ =
         std::make_unique<PostSafetynet>(mock_ledger_impl_.get());
   }
@@ -46,9 +46,9 @@ TEST_F(PostSafetynetTest, ServerOK) {
   ON_CALL(*mock_ledger_client_, LoadURL(_, _))
       .WillByDefault(
           Invoke([](
-              ledger::UrlRequestPtr request,
-              ledger::LoadURLCallback callback) {
-            ledger::UrlResponse response;
+              type::UrlRequestPtr request,
+              client::LoadURLCallback callback) {
+            type::UrlResponse response;
             response.status_code = 200;
             response.url = request->url;
             response.body = R"({
@@ -58,8 +58,8 @@ TEST_F(PostSafetynetTest, ServerOK) {
           }));
 
   safetynet_->Request(
-      [](const ledger::Result result, const std::string& nonce) {
-        EXPECT_EQ(result, ledger::Result::LEDGER_OK);
+      [](const type::Result result, const std::string& nonce) {
+        EXPECT_EQ(result, type::Result::LEDGER_OK);
         EXPECT_EQ(nonce, "c4645786-052f-402f-8593-56af2f7a21ce");
       });
 }
@@ -68,9 +68,9 @@ TEST_F(PostSafetynetTest, ServerError400) {
   ON_CALL(*mock_ledger_client_, LoadURL(_, _))
       .WillByDefault(
           Invoke([](
-              ledger::UrlRequestPtr request,
-              ledger::LoadURLCallback callback) {
-            ledger::UrlResponse response;
+              type::UrlRequestPtr request,
+              client::LoadURLCallback callback) {
+            type::UrlResponse response;
             response.status_code = 400;
             response.url = request->url;
             response.body = "";
@@ -78,8 +78,8 @@ TEST_F(PostSafetynetTest, ServerError400) {
           }));
 
   safetynet_->Request(
-      [](const ledger::Result result, const std::string& nonce) {
-        EXPECT_EQ(result, ledger::Result::LEDGER_ERROR);
+      [](const type::Result result, const std::string& nonce) {
+        EXPECT_EQ(result, type::Result::LEDGER_ERROR);
         EXPECT_EQ(nonce, "");
       });
 }
@@ -88,9 +88,9 @@ TEST_F(PostSafetynetTest, ServerError401) {
   ON_CALL(*mock_ledger_client_, LoadURL(_, _))
       .WillByDefault(
           Invoke([](
-              ledger::UrlRequestPtr request,
-              ledger::LoadURLCallback callback) {
-            ledger::UrlResponse response;
+              type::UrlRequestPtr request,
+              client::LoadURLCallback callback) {
+            type::UrlResponse response;
             response.status_code = 401;
             response.url = request->url;
             response.body = "";
@@ -98,8 +98,8 @@ TEST_F(PostSafetynetTest, ServerError401) {
           }));
 
   safetynet_->Request(
-      [](const ledger::Result result, const std::string& nonce) {
-        EXPECT_EQ(result, ledger::Result::LEDGER_ERROR);
+      [](const type::Result result, const std::string& nonce) {
+        EXPECT_EQ(result, type::Result::LEDGER_ERROR);
         EXPECT_EQ(nonce, "");
       });
 }

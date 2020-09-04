@@ -7,7 +7,7 @@
 #include <utility>
 
 #include "bat/ledger/internal/legacy/media/reddit.h"
-#include "bat/ledger/internal/static_values.h"
+#include "bat/ledger/internal/constants.h"
 #include "bat/ledger/ledger.h"
 #include "testing/gtest/include/gtest/gtest.h"
 

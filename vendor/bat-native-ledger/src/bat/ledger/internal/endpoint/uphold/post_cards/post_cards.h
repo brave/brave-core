@@ -76,21 +76,19 @@
 //   ]
 // }
 
-namespace bat_ledger {
-class LedgerImpl;
-}
-
 namespace ledger {
+class LedgerImpl;
+
 namespace endpoint {
 namespace uphold {
 
 using PostCardsCallback = std::function<void(
-    const ledger::Result result,
+    const type::Result result,
     const std::string& id)>;
 
 class PostCards {
  public:
-  explicit PostCards(bat_ledger::LedgerImpl* ledger);
+  explicit PostCards(LedgerImpl* ledger);
   ~PostCards();
 
   void Request(
@@ -102,17 +100,17 @@ class PostCards {
 
   std::string GeneratePayload();
 
-  ledger::Result CheckStatusCode(const int status_code);
+  type::Result CheckStatusCode(const int status_code);
 
-  ledger::Result ParseBody(
+  type::Result ParseBody(
       const std::string& body,
       std::string* id);
 
   void OnRequest(
-      const ledger::UrlResponse& response,
+      const type::UrlResponse& response,
       PostCardsCallback callback);
 
-  bat_ledger::LedgerImpl* ledger_;  // NOT OWNED
+  LedgerImpl* ledger_;  // NOT OWNED
 };
 
 }  // namespace uphold

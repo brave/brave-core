@@ -15,15 +15,14 @@
 #include "bat/ledger/internal/uphold/uphold_user.h"
 #include "bat/ledger/ledger.h"
 
-namespace bat_ledger {
+namespace ledger {
 class LedgerImpl;
-}
 
-namespace braveledger_uphold {
+namespace uphold {
 
 class UpholdAuthorization {
  public:
-  explicit UpholdAuthorization(bat_ledger::LedgerImpl* ledger, Uphold* uphold);
+  explicit UpholdAuthorization(LedgerImpl* ledger, Uphold* uphold);
 
   ~UpholdAuthorization();
 
@@ -33,24 +32,25 @@ class UpholdAuthorization {
 
  private:
   void OnAuthorize(
-      const ledger::Result result,
+      const type::Result result,
       const std::string& token,
       ledger::ExternalWalletAuthorizationCallback callback);
 
   void OnGetUser(
-      const ledger::Result result,
+      const type::Result result,
       const User& user,
       ledger::ExternalWalletAuthorizationCallback callback);
 
   void OnCardCreate(
-      const ledger::Result result,
+      const type::Result result,
       const std::string& address,
       ledger::ExternalWalletAuthorizationCallback callback);
 
-  bat_ledger::LedgerImpl* ledger_;  // NOT OWNED
+  LedgerImpl* ledger_;  // NOT OWNED
   Uphold* uphold_;  // NOT OWNED
-  std::unique_ptr<ledger::endpoint::UpholdServer> uphold_server_;
+  std::unique_ptr<endpoint::UpholdServer> uphold_server_;
 };
 
-}  // namespace braveledger_uphold
+}  // namespace uphold
+}  // namespace ledger
 #endif  // BRAVELEDGER_UPHOLD_UPHOLD_AUTHORIZATION_H_

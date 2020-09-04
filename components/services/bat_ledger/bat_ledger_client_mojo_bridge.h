@@ -32,21 +32,21 @@ class BatLedgerClientMojoBridge :
       const BatLedgerClientMojoBridge&) = delete;
 
   void OnReconcileComplete(
-      const ledger::Result result,
-      ledger::ContributionInfoPtr contribution) override;
-  void LoadLedgerState(ledger::OnLoadCallback callback) override;
-  void LoadPublisherState(ledger::OnLoadCallback callback) override;
+      const ledger::type::Result result,
+      ledger::type::ContributionInfoPtr contribution) override;
+  void LoadLedgerState(ledger::client::OnLoadCallback callback) override;
+  void LoadPublisherState(ledger::client::OnLoadCallback callback) override;
 
   void LoadURL(
-      ledger::UrlRequestPtr request,
-      ledger::LoadURLCallback callback) override;
+      ledger::type::UrlRequestPtr request,
+      ledger::client::LoadURLCallback callback) override;
 
-  void OnPanelPublisherInfo(ledger::Result result,
-                            ledger::PublisherInfoPtr info,
+  void OnPanelPublisherInfo(ledger::type::Result result,
+                            ledger::type::PublisherInfoPtr info,
                             uint64_t windowId) override;
   void FetchFavIcon(const std::string& url,
                     const std::string& favicon_key,
-                    ledger::FetchIconCallback callback) override;
+                    ledger::client::FetchIconCallback callback) override;
 
   void Log(
       const char* file,
@@ -56,7 +56,7 @@ class BatLedgerClientMojoBridge :
 
   std::string URIEncode(const std::string& value) override;
 
-  void PublisherListNormalized(ledger::PublisherInfoList list) override;
+  void PublisherListNormalized(ledger::type::PublisherInfoList list) override;
 
   void SetBooleanState(const std::string& name, bool value) override;
   bool GetBooleanState(const std::string& name) const override;
@@ -81,58 +81,58 @@ class BatLedgerClientMojoBridge :
   uint64_t GetUint64Option(const std::string& name) const override;
 
   void OnContributeUnverifiedPublishers(
-      ledger::Result result,
+      ledger::type::Result result,
       const std::string& publisher_key,
       const std::string& publisher_name) override;
 
-  std::map<std::string, ledger::ExternalWalletPtr>
+  std::map<std::string, ledger::type::ExternalWalletPtr>
   GetExternalWallets() override;
 
   void SaveExternalWallet(const std::string& wallet_type,
-                           ledger::ExternalWalletPtr wallet) override;
+                           ledger::type::ExternalWalletPtr wallet) override;
 
   void ShowNotification(
       const std::string& type,
       const std::vector<std::string>& args,
-      ledger::ResultCallback callback) override;
+      ledger::client::ResultCallback callback) override;
 
 
-  ledger::TransferFeeList GetTransferFees(
+  ledger::type::TransferFeeList GetTransferFees(
       const std::string& wallet_type) override;
 
   void SetTransferFee(
       const std::string& wallet_type,
-      ledger::TransferFeePtr transfer_fee) override;
+      ledger::type::TransferFeePtr transfer_fee) override;
 
   void RemoveTransferFee(
       const std::string& wallet_type,
       const std::string& id) override;
 
-  ledger::ClientInfoPtr GetClientInfo() override;
+  ledger::type::ClientInfoPtr GetClientInfo() override;
 
   void UnblindedTokensReady() override;
 
   void ReconcileStampReset() override;
 
   void RunDBTransaction(
-      ledger::DBTransactionPtr transaction,
-      ledger::RunDBTransactionCallback callback) override;
+      ledger::type::DBTransactionPtr transaction,
+      ledger::client::RunDBTransactionCallback callback) override;
 
   void GetCreateScript(
-      ledger::GetCreateScriptCallback callback) override;
+      ledger::client::GetCreateScriptCallback callback) override;
 
-  void PendingContributionSaved(const ledger::Result result) override;
+  void PendingContributionSaved(const ledger::type::Result result) override;
 
-  void OnLoadLedgerState(ledger::OnLoadCallback callback,
-      const ledger::Result result, const std::string& data);
-  void OnLoadPublisherState(ledger::OnLoadCallback callback,
-      const ledger::Result result, const std::string& data);
+  void OnLoadLedgerState(ledger::client::OnLoadCallback callback,
+      const ledger::type::Result result, const std::string& data);
+  void OnLoadPublisherState(ledger::client::OnLoadCallback callback,
+      const ledger::type::Result result, const std::string& data);
 
   void ClearAllNotifications() override;
 
   void WalletDisconnected(const std::string& wallet_type) override;
 
-  void DeleteLog(ledger::ResultCallback callback) override;
+  void DeleteLog(ledger::client::ResultCallback callback) override;
 
  private:
   bool Connected() const;

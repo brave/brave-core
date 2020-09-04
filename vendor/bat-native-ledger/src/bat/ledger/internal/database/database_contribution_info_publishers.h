@@ -11,16 +11,17 @@
 
 #include "bat/ledger/internal/database/database_table.h"
 
-namespace braveledger_database {
+namespace ledger {
+namespace database {
 
 class DatabaseContributionInfoPublishers: public DatabaseTable {
  public:
-  explicit DatabaseContributionInfoPublishers(bat_ledger::LedgerImpl* ledger);
+  explicit DatabaseContributionInfoPublishers(LedgerImpl* ledger);
   ~DatabaseContributionInfoPublishers() override;
 
   void InsertOrUpdate(
-      ledger::DBTransaction* transaction,
-      ledger::ContributionInfoPtr info);
+      type::DBTransaction* transaction,
+      type::ContributionInfoPtr info);
 
   void GetRecordByContributionList(
       const std::vector<std::string>& contribution_ids,
@@ -37,14 +38,15 @@ class DatabaseContributionInfoPublishers: public DatabaseTable {
 
  private:
   void OnGetRecordByContributionList(
-      ledger::DBCommandResponsePtr response,
+      type::DBCommandResponsePtr response,
       ContributionPublisherListCallback callback);
 
   void OnGetContributionPublisherInfoMap(
-      ledger::DBCommandResponsePtr response,
+      type::DBCommandResponsePtr response,
       ContributionPublisherPairListCallback callback);
 };
 
-}  // namespace braveledger_database
+}  // namespace database
+}  // namespace ledger
 
 #endif  // BRAVELEDGER_DATABASE_DATABASE_CONTRIBUTION_INFO_PUBLISHERS_H_

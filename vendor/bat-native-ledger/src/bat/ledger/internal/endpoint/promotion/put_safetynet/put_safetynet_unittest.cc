@@ -30,13 +30,13 @@ class PutSafetynetTest : public testing::Test {
 
  protected:
   std::unique_ptr<ledger::MockLedgerClient> mock_ledger_client_;
-  std::unique_ptr<bat_ledger::MockLedgerImpl> mock_ledger_impl_;
+  std::unique_ptr<ledger::MockLedgerImpl> mock_ledger_impl_;
   std::unique_ptr<PutSafetynet> safetynet_;
 
   PutSafetynetTest() {
     mock_ledger_client_ = std::make_unique<ledger::MockLedgerClient>();
     mock_ledger_impl_ =
-        std::make_unique<bat_ledger::MockLedgerImpl>(mock_ledger_client_.get());
+        std::make_unique<ledger::MockLedgerImpl>(mock_ledger_client_.get());
     safetynet_ =
         std::make_unique<PutSafetynet>(mock_ledger_impl_.get());
   }
@@ -46,9 +46,9 @@ TEST_F(PutSafetynetTest, ServerOK) {
   ON_CALL(*mock_ledger_client_, LoadURL(_, _))
       .WillByDefault(
           Invoke([](
-              ledger::UrlRequestPtr request,
-              ledger::LoadURLCallback callback) {
-            ledger::UrlResponse response;
+              type::UrlRequestPtr request,
+              client::LoadURLCallback callback) {
+            type::UrlResponse response;
             response.status_code = 200;
             response.url = request->url;
             response.body = "";
@@ -58,8 +58,8 @@ TEST_F(PutSafetynetTest, ServerOK) {
   safetynet_->Request(
       "sdfsdf32d323d23d",
       "dfasdfasdpflsadfplf2r23re2",
-      [](const ledger::Result result) {
-        EXPECT_EQ(result, ledger::Result::LEDGER_OK);
+      [](const type::Result result) {
+        EXPECT_EQ(result, type::Result::LEDGER_OK);
       });
 }
 
@@ -67,9 +67,9 @@ TEST_F(PutSafetynetTest, ServerError400) {
   ON_CALL(*mock_ledger_client_, LoadURL(_, _))
       .WillByDefault(
           Invoke([](
-              ledger::UrlRequestPtr request,
-              ledger::LoadURLCallback callback) {
-            ledger::UrlResponse response;
+              type::UrlRequestPtr request,
+              client::LoadURLCallback callback) {
+            type::UrlResponse response;
             response.status_code = 400;
             response.url = request->url;
             response.body = "";
@@ -79,8 +79,8 @@ TEST_F(PutSafetynetTest, ServerError400) {
   safetynet_->Request(
       "sdfsdf32d323d23d",
       "dfasdfasdpflsadfplf2r23re2",
-      [](const ledger::Result result) {
-        EXPECT_EQ(result, ledger::Result::CAPTCHA_FAILED);
+      [](const type::Result result) {
+        EXPECT_EQ(result, type::Result::CAPTCHA_FAILED);
       });
 }
 
@@ -88,9 +88,9 @@ TEST_F(PutSafetynetTest, ServerError401) {
   ON_CALL(*mock_ledger_client_, LoadURL(_, _))
       .WillByDefault(
           Invoke([](
-              ledger::UrlRequestPtr request,
-              ledger::LoadURLCallback callback) {
-            ledger::UrlResponse response;
+              type::UrlRequestPtr request,
+              client::LoadURLCallback callback) {
+            type::UrlResponse response;
             response.status_code = 401;
             response.url = request->url;
             response.body = "";
@@ -100,8 +100,8 @@ TEST_F(PutSafetynetTest, ServerError401) {
   safetynet_->Request(
       "sdfsdf32d323d23d",
       "dfasdfasdpflsadfplf2r23re2",
-      [](const ledger::Result result) {
-        EXPECT_EQ(result, ledger::Result::CAPTCHA_FAILED);
+      [](const type::Result result) {
+        EXPECT_EQ(result, type::Result::CAPTCHA_FAILED);
       });
 }
 
@@ -109,9 +109,9 @@ TEST_F(PutSafetynetTest, ServerError500) {
   ON_CALL(*mock_ledger_client_, LoadURL(_, _))
       .WillByDefault(
           Invoke([](
-              ledger::UrlRequestPtr request,
-              ledger::LoadURLCallback callback) {
-            ledger::UrlResponse response;
+              type::UrlRequestPtr request,
+              client::LoadURLCallback callback) {
+            type::UrlResponse response;
             response.status_code = 500;
             response.url = request->url;
             response.body = "";
@@ -121,8 +121,8 @@ TEST_F(PutSafetynetTest, ServerError500) {
   safetynet_->Request(
       "sdfsdf32d323d23d",
       "dfasdfasdpflsadfplf2r23re2",
-      [](const ledger::Result result) {
-        EXPECT_EQ(result, ledger::Result::LEDGER_ERROR);
+      [](const type::Result result) {
+        EXPECT_EQ(result, type::Result::LEDGER_ERROR);
       });
 }
 

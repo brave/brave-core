@@ -20,7 +20,7 @@ namespace ledger {
 namespace endpoint {
 namespace promotion {
 
-PostSuggestions::PostSuggestions(bat_ledger::LedgerImpl* ledger):
+PostSuggestions::PostSuggestions(LedgerImpl* ledger):
     ledger_(ledger) {
   DCHECK(ledger_);
 }
@@ -32,19 +32,19 @@ std::string PostSuggestions::GetUrl() {
 }
 
 std::string PostSuggestions::GeneratePayload(
-    const braveledger_credentials::CredentialsRedeem& redeem) {
+    const credential::CredentialsRedeem& redeem) {
   base::Value data(base::Value::Type::DICTIONARY);
   data.SetStringKey(
       "type",
-      braveledger_credentials::ConvertRewardTypeToString(redeem.type));
+      credential::ConvertRewardTypeToString(redeem.type));
   if (!redeem.order_id.empty()) {
     data.SetStringKey("orderId", redeem.order_id);
   }
   data.SetStringKey("channel", redeem.publisher_key);
 
   const bool is_sku =
-      redeem.processor == ledger::ContributionProcessor::UPHOLD ||
-      redeem.processor == ledger::ContributionProcessor::BRAVE_USER_FUNDS;
+      redeem.processor == type::ContributionProcessor::UPHOLD ||
+      redeem.processor == type::ContributionProcessor::BRAVE_USER_FUNDS;
 
   std::string data_json;
   base::JSONWriter::Write(data, &data_json);
@@ -52,7 +52,7 @@ std::string PostSuggestions::GeneratePayload(
   base::Base64Encode(data_json, &data_encoded);
 
   base::Value credentials(base::Value::Type::LIST);
-  braveledger_credentials::GenerateCredentials(
+  credential::GenerateCredentials(
       redeem.token_list,
       data_encoded,
       &credentials);
@@ -67,42 +67,42 @@ std::string PostSuggestions::GeneratePayload(
   return json;
 }
 
-ledger::Result PostSuggestions::CheckStatusCode(const int status_code) {
+type::Result PostSuggestions::CheckStatusCode(const int status_code) {
   if (status_code == net::HTTP_BAD_REQUEST) {
     BLOG(0, "Invalid request");
-    return ledger::Result::LEDGER_ERROR;
+    return type::Result::LEDGER_ERROR;
   }
 
   if (status_code == net::HTTP_SERVICE_UNAVAILABLE) {
     BLOG(0, "No conversion rate yet in ratios service");
-    return ledger::Result::BAD_REGISTRATION_RESPONSE;
+    return type::Result::BAD_REGISTRATION_RESPONSE;
   }
 
   if (status_code != net::HTTP_OK) {
-    return ledger::Result::LEDGER_ERROR;
+    return type::Result::LEDGER_ERROR;
   }
 
-  return ledger::Result::LEDGER_OK;
+  return type::Result::LEDGER_OK;
 }
 
 void PostSuggestions::Request(
-    const braveledger_credentials::CredentialsRedeem& redeem,
+    const credential::CredentialsRedeem& redeem,
     PostSuggestionsCallback callback) {
   auto url_callback = std::bind(&PostSuggestions::OnRequest,
       this,
       _1,
       callback);
 
-  auto request = ledger::UrlRequest::New();
+  auto request = type::UrlRequest::New();
   request->url = GetUrl();
   request->content = GeneratePayload(redeem);
   request->content_type = "application/json; charset=utf-8";
-  request->method = ledger::UrlMethod::POST;
+  request->method = type::UrlMethod::POST;
   ledger_->LoadURL(std::move(request), url_callback);
 }
 
 void PostSuggestions::OnRequest(
-    const ledger::UrlResponse& response,
+    const type::UrlResponse& response,
     PostSuggestionsCallback callback) {
   ledger::LogUrlResponse(__func__, response);
   callback(CheckStatusCode(response.status_code));

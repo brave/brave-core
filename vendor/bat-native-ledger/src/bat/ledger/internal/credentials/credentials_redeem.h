@@ -11,7 +11,8 @@
 
 #include "bat/ledger/ledger.h"
 
-namespace braveledger_credentials {
+namespace ledger {
+namespace credential {
 
 struct CredentialsRedeem {
   CredentialsRedeem();
@@ -19,13 +20,14 @@ struct CredentialsRedeem {
   ~CredentialsRedeem();
 
   std::string publisher_key;
-  ledger::RewardsType type;
-  ledger::ContributionProcessor processor;
-  std::vector<ledger::UnblindedToken> token_list;
+  type::RewardsType type;
+  type::ContributionProcessor processor;
+  std::vector<type::UnblindedToken> token_list;
   std::string order_id;
   std::string contribution_id;
 };
 
-}  // namespace braveledger_credentials
+}  // namespace credential
+}  // namespace ledger
 
 #endif  // BRAVELEDGER_CREDENTIALS_CREDENTIALS_REDEEM_H_

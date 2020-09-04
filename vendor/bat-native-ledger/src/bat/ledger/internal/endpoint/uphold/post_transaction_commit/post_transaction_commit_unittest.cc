@@ -30,13 +30,13 @@ class PostTransactionCommitTest : public testing::Test {
 
  protected:
   std::unique_ptr<ledger::MockLedgerClient> mock_ledger_client_;
-  std::unique_ptr<bat_ledger::MockLedgerImpl> mock_ledger_impl_;
+  std::unique_ptr<ledger::MockLedgerImpl> mock_ledger_impl_;
   std::unique_ptr<PostTransactionCommit> transaction_;
 
   PostTransactionCommitTest() {
     mock_ledger_client_ = std::make_unique<ledger::MockLedgerClient>();
     mock_ledger_impl_ =
-        std::make_unique<bat_ledger::MockLedgerImpl>(mock_ledger_client_.get());
+        std::make_unique<ledger::MockLedgerImpl>(mock_ledger_client_.get());
     transaction_ =
         std::make_unique<PostTransactionCommit>(mock_ledger_impl_.get());
   }
@@ -46,9 +46,9 @@ TEST_F(PostTransactionCommitTest, ServerOK) {
   ON_CALL(*mock_ledger_client_, LoadURL(_, _))
       .WillByDefault(
           Invoke([](
-              ledger::UrlRequestPtr request,
-              ledger::LoadURLCallback callback) {
-            ledger::UrlResponse response;
+              type::UrlRequestPtr request,
+              client::LoadURLCallback callback) {
+            type::UrlResponse response;
             response.status_code = 200;
             response.url = request->url;
             response.body = R"({
@@ -142,8 +142,8 @@ TEST_F(PostTransactionCommitTest, ServerOK) {
       "bd91a720-f3f9-42f8-b2f5-19548004f6a7",
       "4c2b665ca060d912fec5c735c734859a06118cc8",
       "6654ecb0-6079-4f6c-ba58-791cc890a561",
-      [](const ledger::Result result) {
-        EXPECT_EQ(result, ledger::Result::LEDGER_OK);
+      [](const type::Result result) {
+        EXPECT_EQ(result, type::Result::LEDGER_OK);
       });
 }
 
@@ -151,9 +151,9 @@ TEST_F(PostTransactionCommitTest, ServerError401) {
   ON_CALL(*mock_ledger_client_, LoadURL(_, _))
       .WillByDefault(
           Invoke([](
-              ledger::UrlRequestPtr request,
-              ledger::LoadURLCallback callback) {
-            ledger::UrlResponse response;
+              type::UrlRequestPtr request,
+              client::LoadURLCallback callback) {
+            type::UrlResponse response;
             response.status_code = 401;
             response.url = request->url;
             response.body = "";
@@ -164,8 +164,8 @@ TEST_F(PostTransactionCommitTest, ServerError401) {
       "bd91a720-f3f9-42f8-b2f5-19548004f6a7",
       "4c2b665ca060d912fec5c735c734859a06118cc8",
       "6654ecb0-6079-4f6c-ba58-791cc890a561",
-      [](const ledger::Result result) {
-        EXPECT_EQ(result, ledger::Result::EXPIRED_TOKEN);
+      [](const type::Result result) {
+        EXPECT_EQ(result, type::Result::EXPIRED_TOKEN);
       });
 }
 
@@ -173,9 +173,9 @@ TEST_F(PostTransactionCommitTest, ServerErrorRandom) {
   ON_CALL(*mock_ledger_client_, LoadURL(_, _))
       .WillByDefault(
           Invoke([](
-              ledger::UrlRequestPtr request,
-              ledger::LoadURLCallback callback) {
-            ledger::UrlResponse response;
+              type::UrlRequestPtr request,
+              client::LoadURLCallback callback) {
+            type::UrlResponse response;
             response.status_code = 453;
             response.url = request->url;
             response.body = "";
@@ -186,8 +186,8 @@ TEST_F(PostTransactionCommitTest, ServerErrorRandom) {
       "bd91a720-f3f9-42f8-b2f5-19548004f6a7",
       "4c2b665ca060d912fec5c735c734859a06118cc8",
       "6654ecb0-6079-4f6c-ba58-791cc890a561",
-      [](const ledger::Result result) {
-        EXPECT_EQ(result, ledger::Result::LEDGER_ERROR);
+      [](const type::Result result) {
+        EXPECT_EQ(result, type::Result::LEDGER_ERROR);
       });
 }
 

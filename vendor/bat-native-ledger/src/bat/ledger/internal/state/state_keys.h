@@ -9,40 +9,43 @@
 #include <string>
 
 namespace ledger {
-  const char kStateEnabled[] = "enabled";
-  const char kStateServerPublisherListStamp[] = "publisher_prefix_list_stamp";
-  const char kStateUpholdAnonAddress[] = "uphold_anon_address";  // DEPRECATED
-  const char kStatePromotionLastFetchStamp[] = "promotion_last_fetch_stamp";
-  const char kStatePromotionCorruptedMigrated[] =
-      "promotion_corrupted_migrated2";
-  const char kStateAnonTransferChecked[] = "anon_transfer_checked";
-  const char kStateVersion[] = "version";
+namespace state {
 
-  // Auto contributions
-  const char kStateMinVisitTime[] = "ac.min_visit_time";
-  const char kStateMinVisits[] = "ac.min_visits";
-  const char kStateAllowNonVerified[] = "ac.allow_non_verified";
-  const char kStateAllowVideoContribution[] = "ac.allow_video_contributions";
-  const char kStateScoreA[] = "ac.score.a";
-  const char kStateScoreB[] = "ac.score.b";
-  const char kStateAutoContributeEnabled[] = "ac.enabled";
-  const char kStateAutoContributeAmount[] = "ac.amount";
-  const char kStateNextReconcileStamp[] = "ac.next_reconcile_stamp";
-  const char kStateCreationStamp[] = "creation_stamp";
-  const char kStateRecoverySeed[] = "wallet.seed";
-  const char kStatePaymentId[] = "wallet.payment_id";
-  const char kStateInlineTipRedditEnabled[] = "inline_tip.reddit";
-  const char kStateInlineTipTwitterEnabled[] = "inline_tip.twitter";
-  const char kStateInlineTipGithubEnabled[] = "inline_tip.github";
-  const char kStateParametersRate[] = "parameters.rate";
-  const char kStateParametersAutoContributeChoice[] = "parameters.ac.choice";
-  const char kStateParametersAutoContributeChoices[] = "parameters.ac.choices";
-  const char kStateParametersTipChoices[] = "parameters.tip.choices";
-  const char kStateParametersMonthlyTipChoices[] =
-      "parameters.tip.monthly_choices";
-  const char kStateFetchOldBalance[] = "fetch_old_balance";
-const char kStateEmptyBalanceChecked[] ="empty_balance_checked";
+const char kEnabled[] = "enabled";
+const char kServerPublisherListStamp[] = "publisher_prefix_list_stamp";
+const char kUpholdAnonAddress[] = "uphold_anon_address";  // DEPRECATED
+const char kPromotionLastFetchStamp[] = "promotion_last_fetch_stamp";
+const char kPromotionCorruptedMigrated[] =
+    "promotion_corrupted_migrated2";
+const char kAnonTransferChecked[] = "anon_transfer_checked";
+const char kVersion[] = "version";
 
+// Auto contributions
+const char kMinVisitTime[] = "ac.min_visit_time";
+const char kMinVisits[] = "ac.min_visits";
+const char kAllowNonVerified[] = "ac.allow_non_verified";
+const char kAllowVideoContribution[] = "ac.allow_video_contributions";
+const char kScoreA[] = "ac.score.a";
+const char kScoreB[] = "ac.score.b";
+const char kAutoContributeEnabled[] = "ac.enabled";
+const char kAutoContributeAmount[] = "ac.amount";
+const char kNextReconcileStamp[] = "ac.next_reconcile_stamp";
+const char kCreationStamp[] = "creation_stamp";
+const char kRecoverySeed[] = "wallet.seed";
+const char kPaymentId[] = "wallet.payment_id";
+const char kInlineTipRedditEnabled[] = "inline_tip.reddit";
+const char kInlineTipTwitterEnabled[] = "inline_tip.twitter";
+const char kInlineTipGithubEnabled[] = "inline_tip.github";
+const char kParametersRate[] = "parameters.rate";
+const char kParametersAutoContributeChoice[] = "parameters.ac.choice";
+const char kParametersAutoContributeChoices[] = "parameters.ac.choices";
+const char kParametersTipChoices[] = "parameters.tip.choices";
+const char kParametersMonthlyTipChoices[] =
+    "parameters.tip.monthly_choices";
+const char kFetchOldBalance[] = "fetch_old_balance";
+const char kEmptyBalanceChecked[] ="empty_balance_checked";
+
+}  // namespace state
 }  // namespace ledger
 
 #endif  // BRAVELEDGER_STATE_STATE_KEYS_H_
