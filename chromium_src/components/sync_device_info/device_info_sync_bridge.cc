@@ -9,8 +9,11 @@
 
 namespace syncer {
 
-void DeviceInfoSyncBridge::DeleteDeviceInfo(const std::string& client_id,
-                                            base::OnceClosure callback) {
+void DeviceInfoSyncBridge::DeleteDeviceInfo(
+    const syncer::DeviceInfo* local_device_info,
+    base::OnceClosure callback) {
+  DCHECK(local_device_info);
+  const std::string& client_id = local_device_info->guid();
   std::unique_ptr<WriteBatch> batch = store_->CreateWriteBatch();
   change_processor()->Delete(client_id, batch->GetMetadataChangeList());
   DeleteSpecifics(client_id, batch.get());

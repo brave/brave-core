@@ -18,6 +18,8 @@
 
 namespace syncer {
 
+class DeviceInfo;
+
 BraveProfileSyncService::BraveProfileSyncService(InitParams init_params)
     : ProfileSyncService(std::move(init_params)),
       brave_sync_prefs_(sync_client_->GetPrefService()),
@@ -72,14 +74,14 @@ void BraveProfileSyncService::ResetSync(
   syncer::DeviceInfoTracker* tracker =
     device_info_service->GetDeviceInfoTracker();
   DCHECK(tracker);
+
   const syncer::DeviceInfo* local_device_info =
       device_info_service->GetLocalDeviceInfoProvider()->GetLocalDeviceInfo();
 
-  tracker->DeleteDeviceInfo(local_device_info->guid(),
-                            base::BindOnce(
-                                &BraveProfileSyncService::OnSelfDeleted,
-                                weak_ptr_factory_.GetWeakPtr(),
-                                std::move(cb)));
+  tracker->DeleteDeviceInfo(
+      local_device_info,
+      base::BindOnce(&BraveProfileSyncService::OnSelfDeleted,
+                     weak_ptr_factory_.GetWeakPtr(), std::move(cb)));
 }
 
 BraveSyncAuthManager* BraveProfileSyncService::GetBraveSyncAuthManager() {
