@@ -11,7 +11,7 @@
 #include "brave/common/extensions/extension_constants.h"
 #include "brave/common/pref_names.h"
 #include "brave/common/url_constants.h"
-#include "brave/components/brave_webtorrent/browser/net/brave_torrent_redirect_network_delegate_helper.h"
+#include "brave/components/brave_webtorrent/browser/buildflags/buildflags.h"
 #include "brave/components/brave_webtorrent/browser/webtorrent_util.h"
 #include "chrome/browser/extensions/extension_service.h"
 #include "chrome/browser/profiles/profile.h"
@@ -23,6 +23,10 @@
 #include "extensions/browser/extension_registry.h"
 #include "extensions/browser/extension_system.h"
 #include "extensions/common/extension.h"
+
+#if BUILDFLAG(ENABLE_BRAVE_WEBTORRENT)
+#include "brave/browser/net/brave_torrent_redirect_network_delegate_helper.h"
+#endif
 
 namespace extensions {
 

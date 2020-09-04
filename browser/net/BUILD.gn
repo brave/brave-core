@@ -77,9 +77,13 @@ source_set("net") {
   }
 
   if (enable_brave_webtorrent) {
+    sources += [
+      "brave_torrent_redirect_network_delegate_helper.cc",
+      "brave_torrent_redirect_network_delegate_helper.h",
+    ]
+
     deps += [
       "//brave/components/brave_webtorrent/browser/",
-      "//brave/components/brave_webtorrent/browser/net",
       "//extensions/browser",
     ]
   }
