@@ -331,7 +331,6 @@ void Publisher::SaveVisitInternal(
         _1);
 
     ledger_->database()->SavePublisherInfo(publisher_info->Clone(), callback);
-    ledger_->database()->SaveActivityInfo(std::move(publisher_info), callback);
   } else if (!excluded &&
              ledger_->state()->GetAutoContributeEnabled() &&
              min_duration_ok &&
