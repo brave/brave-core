@@ -15,18 +15,19 @@
 #include "base/android/jni_weak_ref.h"
 #include "base/memory/weak_ptr.h"
 
-namespace binance {
+// namespace binance {
+// class BinanceService;
+// }
+
 class BinanceService;
-}
 
 namespace chrome {
 namespace android {
-
 class BinanceNativeWorker {
  public:
     BinanceNativeWorker(JNIEnv* env,
         const base::android::JavaRef<jobject>& obj);
-    ~BinanceNativeWorker() override;
+    ~BinanceNativeWorker();
 
     void Destroy(JNIEnv* env,
         const base::android::JavaParamRef<jobject>& jcaller);
@@ -97,7 +98,7 @@ class BinanceNativeWorker {
         const std::map<std::string, std::vector<std::string>>& args);
 
     JavaObjectWeakGlobalRef weak_java_binance_native_worker_;
-    binance::BinanceService* binance_service_;
+    BinanceService* binance_service_;
     base::WeakPtrFactory<BinanceNativeWorker> weak_factory_;
 };
 }  // namespace android

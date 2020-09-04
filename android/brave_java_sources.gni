@@ -165,6 +165,7 @@ brave_java_sources = [
   "../../brave/android/java/org/chromium/chrome/browser/util/ImageUtils.java",
   "../../brave/android/java/org/chromium/chrome/browser/util/PackageUtils.java",
   "../../brave/android/java/org/chromium/chrome/browser/util/TabUtils.java",
+  "../../brave/android/java/org/chromium/chrome/browser/widget/crypto/binance/BinanceNativeWorker.java",
   "../../brave/android/java/org/chromium/chrome/browser/widget/crypto/binance/BlankFragment.java",
   "../../brave/android/java/org/chromium/chrome/browser/widget/crypto/binance/CryptoWidgetBottomSheetDialogFragment.java",
   "../../brave/android/java/org/chromium/chrome/browser/widget/crypto/binance/CryptoWidgetTabAdapter.java",
