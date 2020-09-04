@@ -3,6 +3,8 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // you can obtain one at http://mozilla.org/MPL/2.0/.
 
+#include "base/system/sys_info.h"
+
 #include "../../../../components/sync_device_info/device_info_sync_bridge_unittest.cc"
 
 namespace syncer {
@@ -10,10 +12,12 @@ namespace {
 
 std::auto_ptr<syncer::DeviceInfo> CreateStubDeviceInfoByGuid(
     const std::string& guid) {
+  base::SysInfo::HardwareInfo hardware_info;
   std::auto_ptr<syncer::DeviceInfo> device_info(new syncer::DeviceInfo(
       guid, "", "", "", sync_pb::SyncEnums_DeviceType_TYPE_CROS, "",
-      base::SysInfo::HardwareInfo(), base::Time(), base::TimeDelta(), false,
-      base::Optional<syncer::DeviceInfo::SharingInfo>()));
+      hardware_info.manufacturer, hardware_info.model, base::Time(),
+      base::TimeDelta(), false,
+      base::Optional<syncer::DeviceInfo::SharingInfo>(), ""));
   return device_info;
 }
 
