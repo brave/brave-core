@@ -49,10 +49,9 @@ import org.chromium.chrome.browser.brave_stats.BraveStatsUtil;
 import org.chromium.chrome.browser.local_database.BraveStatsTable;
 import org.chromium.chrome.browser.local_database.DatabaseHelper;
 import org.chromium.chrome.browser.local_database.SavedBandwidthTable;
-import org.chromium.chrome.browser.ntp.BraveNewTabPageLayout;
 import org.chromium.chrome.browser.onboarding.OnboardingPrefManager;
 import org.chromium.chrome.browser.util.ConfigurationUtils;
-import org.chromium.ui.base.DeviceFormFactor
+import org.chromium.ui.base.DeviceFormFactor;
 
 import java.util.Arrays;
 import java.util.Calendar;
@@ -69,7 +68,6 @@ public class BraveStatsBottomSheetDialogFragment extends BottomSheetDialogFragme
     private static final int DAYS_7 = -7;
     private static final int DAYS_30 = -30;
     private static final int DAYS_90 = -90;
-
 
     private TextView adsTrackersCountText;
     private TextView adsTrackersText;
@@ -251,8 +249,7 @@ public class BraveStatsBottomSheetDialogFragment extends BottomSheetDialogFragme
                                       dataSavedPair.second));
                 }
 
-                long timeSavedCount =
-                    adsTrackersCount * BraveNewTabPageLayout.MILLISECONDS_PER_ITEM;
+                long timeSavedCount = adsTrackersCount * BraveStatsUtil.MILLISECONDS_PER_ITEM;
                 timeSavedCountText.setText(
                     BraveStatsUtil.getBraveStatsStringFromTime(timeSavedCount / 1000));
                 timeSavedText.setText(mContext.getResources().getString(R.string.time_saved_text));

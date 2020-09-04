@@ -1,8 +1,9 @@
-/** Copyright (c) 2020 The Brave Authors. All rights reserved.
-  * This Source Code Form is subject to the terms of the Mozilla Public
-  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
-  * You can obtain one at http://mozilla.org/MPL/2.0/.
-  */
+/**
+ * Copyright (c) 2020 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this file,
+ * You can obtain one at http://mozilla.org/MPL/2.0/.
+ */
 
 package org.chromium.chrome.browser.widget.crypto.binance;
 
@@ -15,7 +16,7 @@ public class BinanceNativeWorker {
     private static final Object lock = new Object();
     private static BinanceNativeWorker instance;
 
-    public static  BinanceNativeWorker getInstance() {
+    public static BinanceNativeWorker getInstance() {
         synchronized (lock) {
             if (instance == null) {
                 instance = new BinanceNativeWorker();
@@ -55,36 +56,29 @@ public class BinanceNativeWorker {
     }
 
     @CalledByNative
-    public void OnGetAccessToken(boolean isSuccess) {
-    }
+    public void OnGetAccessToken(boolean isSuccess) {}
 
     @CalledByNative
-    public void OnGetAccountBalances(String jsonBalances, boolean isSuccess) {
-    }
+    public void OnGetAccountBalances(String jsonBalances, boolean isSuccess) {}
 
     @CalledByNative
-    public void OnGetConvertQuote(String quoteId, String quotePrice, String totalFee, String totalAmount) {
-    }
+    public void OnGetConvertQuote(
+            String quoteId, String quotePrice, String totalFee, String totalAmount) {}
 
     @CalledByNative
-    public void OnGetCoinNetworks(String jsonNetworks) {
-    }
+    public void OnGetCoinNetworks(String jsonNetworks) {}
 
     @CalledByNative
-    public void OnGetDepositInfo(String depositAddress, String depositeTag, boolean isSuccess) {
-    }
+    public void OnGetDepositInfo(String depositAddress, String depositeTag, boolean isSuccess) {}
 
     @CalledByNative
-    public void OnConfirmConvert(boolean isSuccess, String message) {
-    }
+    public void OnConfirmConvert(boolean isSuccess, String message) {}
 
     @CalledByNative
-    public void OnGetConvertAssets(String jsonAssets) {
-    }
+    public void OnGetConvertAssets(String jsonAssets) {}
 
     @CalledByNative
-    public void OnRevokeToken(boolean isSuccess) {
-    }
+    public void OnRevokeToken(boolean isSuccess) {}
 
     public String getOAuthClientUrl() {
         return nativeGetOAuthClientUrl(mNativeBinanceNativeWorker);

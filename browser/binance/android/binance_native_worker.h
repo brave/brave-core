@@ -7,8 +7,8 @@
 #define BRAVE_BROWSER_BINANCE_ANDROID_BINANCE_NATIVE_WORKER_H_
 
 #include <jni.h>
-#include <memory>
 #include <map>
+#include <memory>
 #include <string>
 #include <vector>
 
@@ -25,81 +25,80 @@ namespace chrome {
 namespace android {
 class BinanceNativeWorker {
  public:
-    BinanceNativeWorker(JNIEnv* env,
-        const base::android::JavaRef<jobject>& obj);
-    ~BinanceNativeWorker();
+  BinanceNativeWorker(JNIEnv* env, const base::android::JavaRef<jobject>& obj);
+  ~BinanceNativeWorker();
 
-    void Destroy(JNIEnv* env,
-        const base::android::JavaParamRef<jobject>& jcaller);
+  void Destroy(JNIEnv* env,
+               const base::android::JavaParamRef<jobject>& jcaller);
 
-    base::android::ScopedJavaLocalRef<jstring> GetOAuthClientUrl(JNIEnv* env,
-        const base::android::JavaParamRef<jobject>& jcaller);
+  base::android::ScopedJavaLocalRef<jstring> GetOAuthClientUrl(
+      JNIEnv* env,
+      const base::android::JavaParamRef<jobject>& jcaller);
 
-    void GetAccessToken(JNIEnv* env,
-        const base::android::JavaParamRef<jobject>& jcaller);
+  void GetAccessToken(JNIEnv* env,
+                      const base::android::JavaParamRef<jobject>& jcaller);
 
-    void OnGetAccessToken(bool success);
+  void OnGetAccessToken(bool success);
 
-    void GetAccountBalances(JNIEnv* env,
-        const base::android::JavaParamRef<jobject>& jcaller);
+  void GetAccountBalances(JNIEnv* env,
+                          const base::android::JavaParamRef<jobject>& jcaller);
 
-    void OnGetAccountBalances(
-        const std::map<std::string, std::vector<std::string>>& balances,
-        bool success);
+  void OnGetAccountBalances(
+      const std::map<std::string, std::vector<std::string>>& balances,
+      bool success);
 
-    void GetConvertQuote(JNIEnv* env,
-        const base::android::JavaParamRef<jobject>& jcaller,
-        const base::android::JavaParamRef<jstring>& from,
-        const base::android::JavaParamRef<jstring>& to,
-        const base::android::JavaParamRef<jstring>& amount);
+  void GetConvertQuote(JNIEnv* env,
+                       const base::android::JavaParamRef<jobject>& jcaller,
+                       const base::android::JavaParamRef<jstring>& from,
+                       const base::android::JavaParamRef<jstring>& to,
+                       const base::android::JavaParamRef<jstring>& amount);
 
-    void OnGetConvertQuote(
-        const std::string& quote_id, const std::string& quote_price,
-        const std::string& total_fee, const std::string& total_amount);
+  void OnGetConvertQuote(const std::string& quote_id,
+                         const std::string& quote_price,
+                         const std::string& total_fee,
+                         const std::string& total_amount);
 
-    void GetCoinNetworks(JNIEnv* env,
-        const base::android::JavaParamRef<jobject>& jcaller);
+  void GetCoinNetworks(JNIEnv* env,
+                       const base::android::JavaParamRef<jobject>& jcaller);
 
-    void OnGetCoinNetworks(
-        const std::map<std::string, std::string>& networks);
+  void OnGetCoinNetworks(const std::map<std::string, std::string>& networks);
 
-    void GetDepositInfo(JNIEnv* env,
-        const base::android::JavaParamRef<jobject>& jcaller,
-        const base::android::JavaParamRef<jstring>& symbol,
-        const base::android::JavaParamRef<jstring>& ticker_network);
+  void GetDepositInfo(
+      JNIEnv* env,
+      const base::android::JavaParamRef<jobject>& jcaller,
+      const base::android::JavaParamRef<jstring>& symbol,
+      const base::android::JavaParamRef<jstring>& ticker_network);
 
-    void OnGetDepositInfo(
-        const std::string& deposit_address,
-        const std::string& deposit_tag,
-        bool success);
+  void OnGetDepositInfo(const std::string& deposit_address,
+                        const std::string& deposit_tag,
+                        bool success);
 
-    void ConfirmConvert(JNIEnv* env,
-        const base::android::JavaParamRef<jobject>& jcaller,
-        const base::android::JavaParamRef<jstring>& quote_id);
+  void ConfirmConvert(JNIEnv* env,
+                      const base::android::JavaParamRef<jobject>& jcaller,
+                      const base::android::JavaParamRef<jstring>& quote_id);
 
-    void OnConfirmConvert(
-        bool success, const std::string& message);
+  void OnConfirmConvert(bool success, const std::string& message);
 
-    void GetConvertAssets(JNIEnv* env,
-        const base::android::JavaParamRef<jobject>& jcaller);
+  void GetConvertAssets(JNIEnv* env,
+                        const base::android::JavaParamRef<jobject>& jcaller);
 
-    void OnGetConvertAssets(
-        const std::map<std::string, std::vector<std::string>>& assets);
+  void OnGetConvertAssets(
+      const std::map<std::string, std::vector<std::string>>& assets);
 
-    void RevokeToken(JNIEnv* env,
-        const base::android::JavaParamRef<jobject>& jcaller);
+  void RevokeToken(JNIEnv* env,
+                   const base::android::JavaParamRef<jobject>& jcaller);
 
-    void OnRevokeToken(bool success);
+  void OnRevokeToken(bool success);
 
  private:
-    std::string StdStrStrMapToJsonString(
-        const std::map<std::string, std::string>& args);
-    std::string StdStrVecMapToJsonString(
-        const std::map<std::string, std::vector<std::string>>& args);
+  std::string StdStrStrMapToJsonString(
+      const std::map<std::string, std::string>& args);
+  std::string StdStrVecMapToJsonString(
+      const std::map<std::string, std::vector<std::string>>& args);
 
-    JavaObjectWeakGlobalRef weak_java_binance_native_worker_;
-    BinanceService* binance_service_;
-    base::WeakPtrFactory<BinanceNativeWorker> weak_factory_;
+  JavaObjectWeakGlobalRef weak_java_binance_native_worker_;
+  BinanceService* binance_service_;
+  base::WeakPtrFactory<BinanceNativeWorker> weak_factory_;
 };
 }  // namespace android
 }  // namespace chrome
