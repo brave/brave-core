@@ -33,6 +33,7 @@ import org.chromium.chrome.browser.toolbar.bottom.SearchAccelerator;
 import org.chromium.chrome.browser.toolbar.bottom.ShareButton;
 import org.chromium.chrome.browser.ui.appmenu.AppMenuButtonHelper;
 import org.chromium.chrome.browser.util.TabUtils;
+import org.chromium.chrome.browser.BraveActivity;
 import org.chromium.ui.widget.Toast;
 
 public class BraveBottomToolbarCoordinator
@@ -191,10 +192,11 @@ public class BraveBottomToolbarCoordinator
                 mOverviewModeBehavior.addOverviewModeObserver(mOverviewModeObserver);
             }
         }
-        ChromeActivity activity = TabUtils.getChromeActivity();
-        if (rootView != null && activity != null) {
+        
+        BraveActivity braveActivity = BraveActivity.getBraveActivity();
+        if (rootView != null && braveActivity != null) {
             rootView.setSwipeDetector(
-                        activity.getCompositorViewHolder().getLayoutManager().getToolbarSwipeHandler());
+                        braveActivity.getCompositorViewHolder().getLayoutManager().getToolbarSwipeHandler());
         }
     }
 }

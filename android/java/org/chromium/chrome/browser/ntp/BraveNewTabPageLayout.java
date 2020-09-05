@@ -10,6 +10,7 @@ import android.content.Context;
 import android.content.res.Configuration;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.text.Html;
@@ -89,6 +90,8 @@ import org.chromium.chrome.browser.tabmodel.TabModel;
 import org.chromium.chrome.browser.util.PackageUtils;
 import org.chromium.chrome.browser.widget.crypto.binance.CryptoWidgetBottomSheetDialogFragment;
 import org.chromium.components.browser_ui.widget.displaystyle.UiConfig;
+import org.chromium.chrome.browser.widget.crypto.binance.BinanceNativeWorker;
+import org.chromium.chrome.browser.util.TabUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -141,7 +144,7 @@ public class BraveNewTabPageLayout extends NewTabPageLayout {
         ntpWidgetViewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
             public void onPageScrolled(
-                    int position, float positionOffset, int positionOffsetPixels) {}
+                int position, float positionOffset, int positionOffsetPixels) {}
 
             @Override
             public void onPageSelected(int position) {
@@ -158,7 +161,7 @@ public class BraveNewTabPageLayout extends NewTabPageLayout {
     private List<NTPWidgetItem> getWidgetList() {
         NTPWidgetManager ntpWidgetManager = NTPWidgetManager.getInstance();
         LayoutInflater inflater =
-                (LayoutInflater) mActivity.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+            (LayoutInflater) mActivity.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         Map<Integer, NTPWidgetItem> ntpWidgetMap = new TreeMap<>();
         if (ntpWidgetManager.getPrivateStatsWidget() != -1) {
             View mBraveStatsView = inflater.inflate(R.layout.brave_stats_layout, null);
@@ -190,7 +193,7 @@ public class BraveNewTabPageLayout extends NewTabPageLayout {
         }
         if (ntpWidgetManager.getBraveRewardsWidget() != -1) {
             View braveRewardsWidgetView =
-                    inflater.inflate(R.layout.brave_rewards_widget_layout, null);
+                inflater.inflate(R.layout.brave_rewards_widget_layout, null);
             NTPWidgetItem ntpWidgetItem = new NTPWidgetItem(ntpWidgetManager.PREF_BRAVE_REWARDS,
                     "Brave Rewards",
                     "Trackers &amp; Ads Blocked, Saved Bandwidth, and Time Saved Estimates.");
@@ -203,10 +206,10 @@ public class BraveNewTabPageLayout extends NewTabPageLayout {
                 @Override
                 public void onClick(View view) {
                     CryptoWidgetBottomSheetDialogFragment cryptoWidgetBottomSheetDialogFragment =
-                            new CryptoWidgetBottomSheetDialogFragment();
+                        new CryptoWidgetBottomSheetDialogFragment();
                     cryptoWidgetBottomSheetDialogFragment.show(
-                            ((BraveActivity) mActivity).getSupportFragmentManager(),
-                            "crypto_widget_bottomSheet_dialog_fragment");
+                        ((BraveActivity) mActivity).getSupportFragmentManager(),
+                        "crypto_widget_bottomSheet_dialog_fragment");
                 }
             });
             NTPWidgetItem ntpWidgetItem = new NTPWidgetItem(ntpWidgetManager.PREF_BINANCE,
@@ -294,6 +297,13 @@ public class BraveNewTabPageLayout extends NewTabPageLayout {
             mBadgeAnimationView.setVisibility(View.INVISIBLE);
         }
         showWidgets();
+        TabImpl currentTab = (TabImpl)((BraveActivity)mActivity).getActivityTab();
+        if (currentTab != null
+                && currentTab.getUrlString() != null
+                && !currentTab.getUrlString().isEmpty()) {
+            Uri uri = Uri.parse(currentTab.getUrlString());
+            Log.e("NTP", "Binance URL query : " + uri.getQuery());
+        }
     }
 
     @Override
@@ -350,6 +360,8 @@ public class BraveNewTabPageLayout extends NewTabPageLayout {
         assert (activity instanceof BraveActivity);
         mActivity = activity;
         ((BraveActivity)mActivity).dismissShieldsTooltip();
+        Log.e("NTP", "Binance URL : "+ BinanceNativeWorker.getInstance().getOAuthClientUrl());
+        TabUtils.openUrlInNewTab(false, BinanceNativeWorker.getInstance().getOAuthClientUrl());
     }
 
     private void showNTPImage(NTPImage ntpImage) {
@@ -403,7 +415,7 @@ public class BraveNewTabPageLayout extends NewTabPageLayout {
                         @Override
                         public void onClick(View view) {
                             if (backgroundImage.getImageCredit() != null) {
-                                NTPUtil.openUrlInSameTab(backgroundImage.getImageCredit().getUrl());
+                                TabUtils.openUrlInSameTab(backgroundImage.getImageCredit().getUrl());
                             }
                         }
                     });
@@ -533,7 +545,7 @@ public class BraveNewTabPageLayout extends NewTabPageLayout {
                     @Override
                     public void onClick(View view) {
                         if (mWallpaper.getLogoDestinationUrl() != null) {
-                            NTPUtil.openUrlInSameTab(mWallpaper.getLogoDestinationUrl());
+                            TabUtils.openUrlInSameTab(mWallpaper.getLogoDestinationUrl());
                         }
                     }
                 });
@@ -569,7 +581,7 @@ public class BraveNewTabPageLayout extends NewTabPageLayout {
             view.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    NTPUtil.openUrlInSameTab(topSite.getDestinationUrl());
+                    TabUtils.openUrlInSameTab(topSite.getDestinationUrl());
                 }
             });
 
@@ -586,14 +598,14 @@ public class BraveNewTabPageLayout extends NewTabPageLayout {
                     menu.add(R.string.contextmenu_open_in_new_tab).setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
                         @Override
                         public boolean onMenuItemClick(MenuItem item) {
-                            NTPUtil.openNewTab(false, topSite.getDestinationUrl());
+                            TabUtils.openUrlInNewTab(false, topSite.getDestinationUrl());
                             return true;
                         }
                     });
                     menu.add(R.string.contextmenu_open_in_incognito_tab).setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
                         @Override
                         public boolean onMenuItemClick(MenuItem item) {
-                            NTPUtil.openNewTab(true, topSite.getDestinationUrl());
+                            TabUtils.openUrlInNewTab(true, topSite.getDestinationUrl());
                             return true;
                         }
                     });
@@ -667,28 +679,28 @@ public class BraveNewTabPageLayout extends NewTabPageLayout {
 
     // NTP related methods
     private NTPWidgetAdapter.NTPWidgetListener ntpWidgetListener =
-            new NTPWidgetAdapter.NTPWidgetListener() {
-                @Override
-                public void onMenuEdit() {
-                    NTPWidgetBottomSheetDialogFragment ntpWidgetBottomSheetDialogFragment =
-                            NTPWidgetBottomSheetDialogFragment.newInstance();
-                    ntpWidgetBottomSheetDialogFragment.setNTPWidgetListener(ntpWidgetListener);
-                    ntpWidgetBottomSheetDialogFragment.setWidgetList(getWidgetList());
-                    ntpWidgetBottomSheetDialogFragment.show(
-                            ((BraveActivity) mActivity).getSupportFragmentManager(),
-                            "NTPWidgetBottomSheetDialogFragment");
-                }
+    new NTPWidgetAdapter.NTPWidgetListener() {
+        @Override
+        public void onMenuEdit() {
+            NTPWidgetBottomSheetDialogFragment ntpWidgetBottomSheetDialogFragment =
+                NTPWidgetBottomSheetDialogFragment.newInstance();
+            ntpWidgetBottomSheetDialogFragment.setNTPWidgetListener(ntpWidgetListener);
+            ntpWidgetBottomSheetDialogFragment.setWidgetList(getWidgetList());
+            ntpWidgetBottomSheetDialogFragment.show(
+                ((BraveActivity) mActivity).getSupportFragmentManager(),
+                "NTPWidgetBottomSheetDialogFragment");
+        }
 
-                @Override
-                public void onMenuRemove(int position) {
-                    ntpWidgetAdapter.removeWidgetItem(position);
-                    ntpWidgetAdapter.notifyDataSetChanged();
-                    showWidgetBasedOnOrder();
-                }
+        @Override
+        public void onMenuRemove(int position) {
+            ntpWidgetAdapter.removeWidgetItem(position);
+            ntpWidgetAdapter.notifyDataSetChanged();
+            showWidgetBasedOnOrder();
+        }
 
-                @Override
-                public void onBottomSheetDismiss() {
-                    showWidgets();
-                }
-            };
+        @Override
+        public void onBottomSheetDismiss() {
+            showWidgets();
+        }
+    };
 }

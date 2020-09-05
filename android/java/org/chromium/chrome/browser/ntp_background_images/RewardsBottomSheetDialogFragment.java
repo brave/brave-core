@@ -50,6 +50,9 @@ import org.chromium.chrome.browser.tab.TabAttributes;
 import org.chromium.chrome.browser.tab.TabImpl;
 import org.chromium.chrome.browser.util.ConfigurationUtils;
 import org.chromium.ui.base.DeviceFormFactor;
+import org.chromium.chrome.browser.util.TabUtils;
+
+import static org.chromium.ui.base.ViewUtils.dpToPx;
 
 public class RewardsBottomSheetDialogFragment extends BottomSheetDialogFragment {
     private static final String BRAVE_TERMS_PAGE = "https://basicattentiontoken.org/user-terms-of-service/";
@@ -144,7 +147,7 @@ public class RewardsBottomSheetDialogFragment extends BottomSheetDialogFragment 
             learnMoreText.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    NTPUtil.openUrlInSameTab(BRAVE_REWARDS_LEARN_MORE);
+                    TabUtils.openUrlInSameTab(BRAVE_REWARDS_LEARN_MORE);
                     dismiss();
                 }
             });

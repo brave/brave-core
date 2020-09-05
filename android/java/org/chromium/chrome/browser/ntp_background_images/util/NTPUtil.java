@@ -30,16 +30,13 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import androidx.annotation.NonNull;
-
-import org.chromium.base.ContextUtils;
-import org.chromium.base.Log;
 import org.chromium.chrome.R;
+import org.chromium.base.Log;
+import org.chromium.base.ContextUtils;
 import org.chromium.chrome.browser.BraveAdsNativeHelper;
 import org.chromium.chrome.browser.BraveRewardsHelper;
 import org.chromium.chrome.browser.BraveRewardsNativeWorker;
 import org.chromium.chrome.browser.BraveRewardsPanelPopup;
-import org.chromium.chrome.browser.ChromeTabbedActivity;
 import org.chromium.chrome.browser.app.ChromeActivity;
 import org.chromium.chrome.browser.ntp_background_images.NTPBackgroundImagesBridge;
 import org.chromium.chrome.browser.ntp_background_images.RewardsBottomSheetDialogFragment;
@@ -451,20 +448,5 @@ public class NTPUtil {
         NTPBackgroundImagesBridge mNTPBackgroundImagesBridge = NTPBackgroundImagesBridge.getInstance(mProfile);
         boolean isReferralEnabled = UserPrefs.get(Profile.getLastUsedRegularProfile()).getInteger(BravePref.NEW_TAB_PAGE_SUPER_REFERRAL_THEMES_OPTION) == 1 ? true : false;
         return mNTPBackgroundImagesBridge.isSuperReferral() && isReferralEnabled;
-    }
-
-    public static void openNewTab(boolean isIncognito, String url) {
-        ChromeTabbedActivity chromeTabbedActivity = BraveRewardsHelper.getChromeTabbedActivity();
-        if (chromeTabbedActivity != null) {
-            chromeTabbedActivity.getTabCreator(isIncognito).launchUrl(url, TabLaunchType.FROM_CHROME_UI);
-        }
-    }
-
-    public static void openUrlInSameTab(String url) {
-        ChromeTabbedActivity chromeTabbedActivity = BraveRewardsHelper.getChromeTabbedActivity();
-        if (chromeTabbedActivity != null) {
-            LoadUrlParams loadUrlParams = new LoadUrlParams(url);
-            chromeTabbedActivity.getActivityTab().loadUrl(loadUrlParams);
-        }
     }
 }
