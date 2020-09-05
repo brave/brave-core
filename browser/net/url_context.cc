@@ -58,6 +58,7 @@ void BraveRequestInfo::FillCTX(const network::ResourceRequest& request,
                                int frame_tree_node_id,
                                uint64_t request_identifier,
                                content::BrowserContext* browser_context,
+                               std::shared_ptr<brave::BraveRequestInfo> old_ctx,
                                std::shared_ptr<brave::BraveRequestInfo> ctx) {
   DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
   ctx->request_identifier = request_identifier;
@@ -124,6 +125,14 @@ void BraveRequestInfo::FillCTX(const network::ResourceRequest& request,
       prefs->GetInteger(kIPFSResolveMethod)) ==
           ipfs::IPFSResolveMethodTypes::IPFS_LOCAL;
 #endif
+
+  // TODO(fmarier): remove this once the hacky code in
+  // brave_proxying_url_loader_factory.cc is refactored. See
+  // BraveProxyingURLLoaderFactory::InProgressRequest::UpdateRequestInfo().
+  if (old_ctx) {
+    ctx->internal_redirect = old_ctx->internal_redirect;
+    ctx->redirect_source = old_ctx->redirect_source;
+  }
 }
 
 }  // namespace brave

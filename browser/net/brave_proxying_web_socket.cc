@@ -85,10 +85,11 @@ void BraveProxyingWebSocket::Start() {
         weak_factory_.GetWeakPtr());
   }
 
+  std::shared_ptr<brave::BraveRequestInfo> old_ctx = ctx_;
   ctx_ = std::make_shared<brave::BraveRequestInfo>();
   brave::BraveRequestInfo::FillCTX(request_, process_id_,
                                    frame_tree_node_id_, request_id_,
-                                   browser_context_, ctx_);
+                                   browser_context_, old_ctx, ctx_);
   int result = request_handler_->OnBeforeURLRequest(
       ctx_, continuation, &redirect_url_);
   // TODO(bridiver) - need to handle general case for redirect_url
@@ -156,10 +157,11 @@ void BraveProxyingWebSocket::ContinueToHeadersReceived() {
   auto continuation = base::BindRepeating(
       &BraveProxyingWebSocket::OnHeadersReceivedComplete,
       weak_factory_.GetWeakPtr());
+  std::shared_ptr<brave::BraveRequestInfo> old_ctx = ctx_;
   ctx_ = std::make_shared<brave::BraveRequestInfo>();
   brave::BraveRequestInfo::FillCTX(request_, process_id_,
                                    frame_tree_node_id_, request_id_,
-                                   browser_context_, ctx_);
+                                   browser_context_, old_ctx, ctx_);
   int result = request_handler_->OnHeadersReceived(
       ctx_, continuation, response_.headers.get(),
       &override_headers_, &redirect_url_);
@@ -267,10 +269,11 @@ void BraveProxyingWebSocket::OnBeforeSendHeadersCompleteFromProxy(
       &BraveProxyingWebSocket::OnBeforeSendHeadersComplete,
       weak_factory_.GetWeakPtr());
 
+  std::shared_ptr<brave::BraveRequestInfo> old_ctx = ctx_;
   ctx_ = std::make_shared<brave::BraveRequestInfo>();
   brave::BraveRequestInfo::FillCTX(request_, process_id_,
                                    frame_tree_node_id_, request_id_,
-                                   browser_context_, ctx_);
+                                   browser_context_, old_ctx, ctx_);
   int result = request_handler_->OnBeforeStartTransaction(
       ctx_, continuation, &request_.headers);
 

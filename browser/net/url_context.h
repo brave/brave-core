@@ -61,6 +61,9 @@ struct BraveRequestInfo {
   GURL tab_url;
   GURL initiator_url;
 
+  bool internal_redirect = false;
+  GURL redirect_source;
+
   GURL referrer;
   net::ReferrerPolicy referrer_policy =
       net::ReferrerPolicy::CLEAR_ON_TRANSITION_FROM_SECURE_TO_INSECURE;
@@ -109,6 +112,7 @@ struct BraveRequestInfo {
                       int frame_tree_node_id,
                       uint64_t request_identifier,
                       content::BrowserContext* browser_context,
+                      std::shared_ptr<brave::BraveRequestInfo> old_ctx,
                       std::shared_ptr<brave::BraveRequestInfo> ctx);
 
  private:
