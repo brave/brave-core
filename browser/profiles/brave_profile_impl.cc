@@ -11,6 +11,7 @@
 #include "chrome/browser/browser_process.h"
 #include "chrome/browser/chrome_notification_types.h"
 #include "chrome/browser/profiles/profile_manager.h"
+#include "chrome/common/pref_names.h"
 #include "content/public/browser/browser_task_traits.h"
 #include "content/public/browser/browser_thread.h"
 #include "content/public/browser/notification_source.h"
@@ -36,6 +37,19 @@ BraveProfileImpl::BraveProfileImpl(
     const bool default_value = !first_run::IsChromeFirstRun();
     GetPrefs()->SetBoolean(kShieldsAdvancedViewEnabled, default_value);
   }
+
+  // TODO(bsclifton): this is a pref backfill added by:
+  // https://github.com/brave/brave-core/pull/6584
+  //
+  // Remove this once enough people have migrated and deprecate
+  // `kNewTabPageShowTopSites` in browser\brave_profile_prefs.cc
+  // Once that is removed, we can update the UI to check `isVisible()` on
+  // topSitesAPI (components\brave_new_tab_ui\api\topSites.ts).
+  //
+  // Also see comments under `toggleShowTopSites` in:
+  // components\brave_new_tab_ui\containers\newTab\index.tsx
+  GetPrefs()->SetBoolean(prefs::kNtpShortcutsVisible,
+      GetPrefs()->GetBoolean(kNewTabPageShowTopSites));
 #endif
 
   // In sessions profiles, prefs are created from the original profile like how

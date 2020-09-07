@@ -48,6 +48,7 @@ export interface Props {
   toggleShowClock: () => void
   toggleShowStats: () => void
   toggleShowTopSites: () => void
+  toggleCustomLinksEnabled: () => void
   toggleShowRewards: () => void
   toggleShowTogether: () => void
   toggleShowBinance: () => void
@@ -59,6 +60,7 @@ export interface Props {
   showClock: boolean
   clockFormat: string
   showTopSites: boolean
+  customLinksEnabled: boolean
   brandedWallpaperOptIn: boolean
   allowSponsoredWallpaperUI: boolean
   showRewards: boolean
@@ -181,6 +183,7 @@ export default class Settings extends React.PureComponent<Props, State> {
       toggleShowClock,
       toggleShowStats,
       toggleShowTopSites,
+      toggleCustomLinksEnabled,
       toggleShowRewards,
       toggleShowTogether,
       toggleBrandedWallpaperOptIn,
@@ -189,6 +192,7 @@ export default class Settings extends React.PureComponent<Props, State> {
       showClock,
       clockFormat,
       showTopSites,
+      customLinksEnabled,
       showRewards,
       showTogether,
       brandedWallpaperOptIn,
@@ -275,6 +279,8 @@ export default class Settings extends React.PureComponent<Props, State> {
                       <TopSitesSettings
                         toggleShowTopSites={toggleShowTopSites}
                         showTopSites={showTopSites}
+                        toggleCustomLinksEnabled={toggleCustomLinksEnabled}
+                        customLinksEnabled={customLinksEnabled}
                       />
                     ) : null
                 }

@@ -26,8 +26,12 @@ import BrandedWallpaperLogo from '../../components/default/brandedWallpaper/logo
 import VisibilityTimer from '../../helpers/visibilityTimer'
 import { generateQRData } from '../../binance-utils'
 
+import {
+  customLinksEnabled,
+  setMostVisitedSettings
+} from '../../api/topSites'
+
 // Types
-import { SortEnd } from 'react-sortable-hoc'
 import { getLocale } from '../../../common/locale'
 import currencyData from '../../components/default/binance/data'
 import geminiData from '../../components/default/gemini/data'
@@ -188,19 +192,6 @@ class NewTabPage extends React.Component<Props, State> {
     this.visibilityTimer.stopTracking()
   }
 
-  onSortEnd = ({ oldIndex, newIndex }: SortEnd) => {
-    const { gridSitesData } = this.props
-    // Do not update topsites order if the drag
-    // destination is a pinned tile
-    console.log('BSC]] FIX ME - SHOULDNT BE HAPPENING')
-    // const gridSite = gridSitesData.gridSites[newIndex]
-    // if (!gridSite) {
-    //   return
-    // }
-    // const items = arrayMove(gridSitesData.gridSites, oldIndex, newIndex)
-    this.props.actions.tilesUpdated(gridSitesData.gridSites)
-  }
-
   toggleShowBackgroundImage = () => {
     this.props.saveShowBackgroundImage(
       !this.props.newTabData.showBackgroundImage
@@ -235,9 +226,17 @@ class NewTabPage extends React.Component<Props, State> {
   }
 
   toggleShowTopSites = () => {
-    this.props.saveShowTopSites(
-      !this.props.newTabData.showTopSites
-    )
+    // TODO(bsclifton): update UI to check topSitesAPI.isVisible instead.
+    // Need to backfill first, to avoid overwriting user preference.
+    // Settings page needs to be updated to read that value too.
+    const new_value = !this.props.newTabData.showTopSites
+    this.props.saveShowTopSites(new_value)
+    setMostVisitedSettings(customLinksEnabled(), new_value)
+  }
+
+  toggleCustomLinksEnabled = () => {
+    setMostVisitedSettings(!customLinksEnabled(),
+        this.props.newTabData.showTopSites)
   }
 
   toggleShowRewards = () => {
@@ -1069,12 +1068,14 @@ class NewTabPage extends React.Component<Props, State> {
           toggleShowClock={this.toggleShowClock}
           toggleShowStats={this.toggleShowStats}
           toggleShowTopSites={this.toggleShowTopSites}
+          toggleCustomLinksEnabled={this.toggleCustomLinksEnabled}
           toggleBrandedWallpaperOptIn={this.toggleShowBrandedWallpaper}
           showBackgroundImage={newTabData.showBackgroundImage}
           showClock={newTabData.showClock}
           clockFormat={newTabData.clockFormat}
           showStats={newTabData.showStats}
           showTopSites={newTabData.showTopSites}
+          customLinksEnabled={customLinksEnabled()}
           showRewards={newTabData.showRewards}
           showBinance={newTabData.showBinance}
           brandedWallpaperOptIn={newTabData.brandedWallpaperOptIn}
