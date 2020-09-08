@@ -95,6 +95,10 @@ void Confirmations::ConfirmAd(
   log_message += ad.creative_set_id;
   log_message += "\n";
 
+  log_message += "  campaignId: ";
+  log_message += ad.campaign_id;
+  log_message += "\n";
+
   if (!ad.category.empty()) {
     log_message += "  category: ";
     log_message += ad.category;
