@@ -215,6 +215,7 @@ source_set("ui") {
     "//chrome/app/vector_icons:vector_icons",
     "//chrome/common",
     "//chrome/services/qrcode_generator",
+    "//components/content_settings/browser",
     "//components/gcm_driver:gcm_buildflags",
     "//components/prefs",
     "//components/sessions",
