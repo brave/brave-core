@@ -7,7 +7,6 @@
 
 #include <utility>
 
-#include "brave/browser/brave_browser_process_impl.h"
 #include "chrome/common/chrome_features.h"
 #include "components/content_settings/core/common/content_settings_types.h"
 #include "components/content_settings/browser/tab_specific_content_settings.h"
