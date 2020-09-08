@@ -62,6 +62,18 @@
 "BraveRewardsAdsPayoutDateFormat" = "MMM d";
 
 /* No comment provided by engineer. */
+"BraveRewardsAdsSubdivisionTargeting" = "Annonsinriktning på statlig nivå";
+
+/* No comment provided by engineer. */
+"BraveRewardsAdsSubdivisionTargetingAutoDetect" = "Autodetektera";
+
+/* No comment provided by engineer. */
+"BraveRewardsAdsSubdivisionTargetingDisable" = "Inaktivera";
+
+/* No comment provided by engineer. */
+"BraveRewardsAdsSubdivisionTargetingDisabled" = "Inaktiverad";
+
+/* No comment provided by engineer. */
 "BraveRewardsAdsUnsupportedDvice" = "Brave Rewards och Ads är inte tillgängliga på din enhet just nu.";
 
 /* No comment provided by engineer. */
@@ -311,10 +323,10 @@
 "BraveRewardsSettings" = "Inställningar";
 
 /* No comment provided by engineer. */
-"BraveRewardsSettingsAdsBody" = "Få mynt genom att se på annonser i Brave. De annonser som visas är baserade på hur du surfar på nätet. Dina personuppgifter och din sökhistorik lämnar aldrig din dator.";
+"BraveRewardsSettingsAdsBody" = "Aktivera Brave-annonser och börja tjäna tokens som du kan använda för att stödja dina favoritskapare! Små integritetsbevarande annonser visas högst upp i webbläsaren när du surfar.";
 
 /* No comment provided by engineer. */
-"BraveRewardsSettingsAdsBodyJapan" = "Få poäng genom att titta på annonser i Brave. De annonser som visas är baserade på dina intressen och hur du surfar på nätet. Dina personuppgifter och din sökhistorik lämnar aldrig din webbläsare.";
+"BraveRewardsSettingsAdsBodyJapan" = "Aktivera Brave-annonser och börja tjäna poäng som du kan använda för att stödja dina favoritskapare! Små integritetsbevarande annonser visas högst upp i webbläsaren när du surfar.";
 
 /* No comment provided by engineer. */
 "BraveRewardsSettingsAdsComingSoonText" = "Kommer snart.";
@@ -338,10 +350,10 @@
 "BraveRewardsSettingsAutoContributeUpToValue" = "Upp till %@";
 
 /* No comment provided by engineer. */
-"BraveRewardsSettingsDisabledBody1" = "I din gamla webbläsare betalade du för att surfa på nätet med din dyrbara tid. Bara genom att vara på nätet laddade du ner snokande annonsteknologi som skickade uppgifter om dig till annonsörer, utan ditt medtycke.";
+"BraveRewardsSettingsDisabledBody1" = "Eftersom skaparna behöver ditt stöd och Brave gör det helt gratis. Nu kan du samla in tokens medan du surfar och bidra med dem tillbaka till de skapare du älskar.";
 
 /* No comment provided by engineer. */
-"BraveRewardsSettingsDisabledBody2" = "Ett där du kompenseras för din tid, dina uppgifter skyddas och du får betalt för att medverka.";
+"BraveRewardsSettingsDisabledBody2" = "En där din tid värderas, dina personuppgifter hålls privata och du kan må bra genom att stödja innehållsskapare.";
 
 /* No comment provided by engineer. */
 "BraveRewardsSettingsDisabledTitle1" = "Varför Brave Rewards?";
@@ -416,7 +428,7 @@
 "BraveRewardsTippingOneTimeTitle" = "Du har dricksat:";
 
 /* No comment provided by engineer. */
-"BraveRewardsTippingOverviewBody" = "Du kan stötta den här innehållsskaparen med dricks. Det är ett sätt att säga tack. Bekräftade skapare får sin dricks utbetalad första veckan varje kalendermånad.\n\nOm du vill kan du ställa in att betala dricks löpande till skaparen.";
+"BraveRewardsTippingOverviewBody" = "Du kan stötta den här innehållsskaparen genom att skicka några tokens. Det är ett sätt att säga tack. Bekräftade skapare får sina tokens utbetalade första veckan varje kalendermånad.\n\nOm du vill kan du planera ett bidrag varje månad för att kontinuerligt stödja den här skaparen.";
 
 /* No comment provided by engineer. */
 "BraveRewardsTippingOverviewTitle" = "Välkommen!";
@@ -437,7 +449,7 @@
 "BraveRewardsTippingTitle" = "Skicka dricks";
 
 /* No comment provided by engineer. */
-"BraveRewardsTippingUnverifiedDisclaimer" = "Obs! Den här skaparen har inte anmält sig för att få donationer från Brave-användare. Din webbläsare kommer fortsätta försöka till skaparen har bekräftat sig, eller tills 90 dagar har passerat.";
+"BraveRewardsTippingUnverifiedDisclaimer" = "Obs! Den här skaparen har inte anmält sig för att få tokens från Brave-användare. Din webbläsare kommer fortsätta försöka till skaparen har bekräftat sig, eller tills 90 dagar har passerat.";
 
 /* No comment provided by engineer. */
 "BraveRewardsTippingWalletBalanceTitle" = "plånbokssaldo";
@@ -464,7 +476,7 @@
 "BraveRewardsTwoAdsPerHour" = "2 annonser i timme";
 
 /* No comment provided by engineer. */
-"BraveRewardsUnverifiedPublisherDisclaimer" = "Den här skaparen har inte anmält sig för att få donationer från Brave-användare. Din dricks lämnar inte plånboken förrän skaparen har bekräftat sig.";
+"BraveRewardsUnverifiedPublisherDisclaimer" = "Den här skaparen har inte anmält sig för att få tokens från Brave-användare. Dina tokens lämnar inte plånboken förrän skaparen har bekräftat sig.";
 
 /* No comment provided by engineer. */
 "BraveRewardsVerified" = "Skapare bekräftad av Brave";
@@ -557,7 +569,7 @@
 "NotificationContributeTipError" = "Kunde inte dricksa. Försök igen senare.";
 
 /* Panel notification text for Ads grant */
-"NotificationEarningsClaimDefault" = "Du har fått dina belöningar från Ads!";
+"NotificationEarningsClaimDefault" = "Nya tokens finns redo att hämta.";
 
 /* Title for an error notification */
 "NotificationErrorTitle" = "Aj då!";
@@ -620,10 +632,10 @@
 "RecurringText" = "Återkommande";
 
 /* No comment provided by engineer. */
-"RewardsOptInDescription" = "Nu kan du tjäna mynt när du ser på annonser som respekterar din integritet.";
+"RewardsOptInDescription" = "Tjäna tokens och belöna skapare för bra innehåll medan du surfar";
 
 /* No comment provided by engineer. */
-"RewardsOptInDescriptionJapan" = "Nu kan du tjäna poäng när du tittar på annonser som respekterar din integritet.";
+"RewardsOptInDescriptionJapan" = "Tjäna poäng och belöna skapare för bra innehåll medan du surfar";
 
 /* No comment provided by engineer. */
 "RewardsOptInJoinTitle" = "Gå med i Rewards";

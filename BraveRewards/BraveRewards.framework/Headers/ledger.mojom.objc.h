@@ -367,7 +367,7 @@ NS_SWIFT_NAME(RewardsParameters)
 NS_SWIFT_NAME(Balance)
 @interface BATBalance : NSObject <NSCopying>
 @property (nonatomic) double total;
-@property (nonatomic, copy) NSString * userFunds;
+@property (nonatomic) double userFunds;
 @property (nonatomic, copy) NSDictionary<NSString *, NSNumber *> * wallets;
 @end
 
@@ -401,7 +401,6 @@ NS_SWIFT_NAME(ExternalWallet)
 @property (nonatomic, copy) NSString * userName;
 @property (nonatomic, copy) NSString * accountUrl;
 @property (nonatomic, copy) NSString * loginUrl;
-@property (nonatomic) bool transferred;
 @end
 
 NS_SWIFT_NAME(BalanceReportInfo)
@@ -594,6 +593,7 @@ NS_SWIFT_NAME(SKUTransaction)
 NS_SWIFT_NAME(UrlResponse)
 @interface BATUrlResponse : NSObject <NSCopying>
 @property (nonatomic, copy) NSString * url;
+@property (nonatomic, copy) NSString * error;
 @property (nonatomic) int32_t statusCode;
 @property (nonatomic, copy) NSString * body;
 @property (nonatomic, copy) NSDictionary<NSString *, NSString *> * headers;

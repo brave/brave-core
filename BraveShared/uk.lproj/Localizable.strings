@@ -30,19 +30,19 @@
 "BraveShieldsStatusValueUp" = "Увімкн.";
 
 /* The body of the notification that goes out monthly to users who can claim an ads grant */
-"MonthlyAdsClaimNotificationBody" = "Час отримати винагороду за рекламу, яку ви переглянули в Brave.";
+"MonthlyAdsClaimNotificationBody" = "Торкніться, щоб отримати безкоштовні токени.";
 
 /* The title of the notification that goes out monthly to users who can claim an ads grant */
-"MonthlyAdsClaimNotificationTitle" = "Отримайте винагороду за перегляд реклами в Brave";
+"MonthlyAdsClaimNotificationTitle" = "Brave Rewards 💵🎁";
 
 /* For search suggestions prompt. This string should be short so it fits nicely on the prompt row. */
 "No" = "Ні";
 
 /* Message when opting into brave Ads when region becomes available */
-"OBAdsOptInMessage" = "Заробляйте токени, переглядаючи рекламу, що не порушує вашу конфіденційність.";
+"OBAdsOptInMessage" = "Заробляйте токени під час перегляду вебсайтів і винагороджуйте авторів за чудовий уміст.";
 
 /* Message when opting into brave Ads when region becomes available */
-"OBAdsOptInMessageJapan" = "Заробляйте бали, переглядаючи рекламу, що не порушує вашу конфіденційність.";
+"OBAdsOptInMessageJapan" = "Заробляйте бали під час перегляду вебсайтів і винагороджуйте авторів за чудовий уміст.";
 
 /* Title when opting into brave Ads when region becomes available */
 "OBAdsOptInTitle" = "Brave Ads уже доступний!";
@@ -71,6 +71,21 @@
 /* Button to join Brave Rewards. */
 "OBJoinButton" = "Приєднатися";
 
+/* No comment provided by engineer. */
+"OBPrivacyConsentClipboardPermission" = "Дозволити Brave перевіряти код рекомендації в моєму буфері обміну";
+
+/* No comment provided by engineer. */
+"OBPrivacyConsentDetail" = "Ви могли завантажити Brave за рекомендацією користувача. Щоб його виявити, Brave одноразово перевірить код рекомендації у вашому буфері обміну. Буде перевірено лише наявність коду, і жодні персональні дані не буде передано. Якщо ви забороните перевірку, користувач, шо надіслав вам рекомендацію, не отримає винагороду від Brave.";
+
+/* No comment provided by engineer. */
+"OBPrivacyConsentNoButton" = "Не дозволяти перевірку";
+
+/* No comment provided by engineer. */
+"OBPrivacyConsentTitle" = "Анонімна перевірка коду рекомендації";
+
+/* No comment provided by engineer. */
+"OBPrivacyConsentYesButton" = "Дозволити одноразову перевірку буфера обміну";
+
 /* Detail text for rewards agreement onboarding screen */
 "OBRewardsAgreementDetail" = "Увімкнувши Rewards, ви приймаєте";
 
@@ -81,10 +96,10 @@
 "OBRewardsAgreementTitle" = "Brave Rewards";
 
 /* Detail text for rewards onboarding screen */
-"OBRewardsDetailInAdRegion" = "Заробляйте токени, переглядаючи рекламу, що не порушує вашу конфіденційність, і використовуйте їх, щоб підтримувати улюблених авторів і веб-сайти.";
+"OBRewardsDetailInAdRegion" = "Заробляйте токени під час перегляду вебсайтів і винагороджуйте авторів за чудовий уміст.";
 
 /* Detail text for rewards onboarding screen */
-"OBRewardsDetailInAdRegionJapan" = "Заробляйте токени, переглядаючи рекламу, що не порушує вашу конфіденційність, і використовуйте їх, щоб підтримувати улюблених авторів і веб-сайти.";
+"OBRewardsDetailInAdRegionJapan" = "Заробляйте бали під час перегляду вебсайтів і винагороджуйте авторів за чудовий уміст.";
 
 /* Detail text for rewards onboarding screen */
 "OBRewardsDetailOutsideAdRegion" = "Підтримуйте улюблені веб-сайти та авторів, приділяючи їм увагу.";
@@ -135,10 +150,226 @@
 "RestoredFavoritesFolderName" = "Відновлений список вибраного";
 
 /* No comment provided by engineer. */
+"RewardsInternalsAmount" = "Сума";
+
+/* No comment provided by engineer. */
+"RewardsInternalsAnonymous" = "Анонімно";
+
+/* No comment provided by engineer. */
+"RewardsInternalsBalanceInfoHeader" = "Інформація про баланс";
+
+/* No comment provided by engineer. */
+"RewardsInternalsClaimedAt" = "Отримано:";
+
+/* No comment provided by engineer. */
+"RewardsInternalsClaimID" = "Ідентифікатор отримання";
+
+/* No comment provided by engineer. */
+"RewardsInternalsClearLogsConfirmation" = "Дійсно очистити всі журнали Rewards?";
+
+/* No comment provided by engineer. */
+"RewardsInternalsClearLogsTitle" = "Очистити журнали";
+
+/* No comment provided by engineer. */
+"RewardsInternalsContributionAmount" = "Сума внеску";
+
+/* No comment provided by engineer. */
+"RewardsInternalsContributionProcessorBraveTokens" = "Токени Brave";
+
+/* No comment provided by engineer. */
+"RewardsInternalsContributionProcessorNone" = "Немає";
+
+/* No comment provided by engineer. */
+"RewardsInternalsContributionProcessorUphold" = "Підтвердити";
+
+/* No comment provided by engineer. */
+"RewardsInternalsContributionProcessorUserFunds" = "Кошти користувача";
+
+/* No comment provided by engineer. */
+"RewardsInternalsContributionsStepACOff" = "Автовнески вимкнено";
+
+/* 'AC' refers to Auto-Contribute */
+"RewardsInternalsContributionsStepACTableEmpty" = "Таблиця автовнесків порожня";
+
+/* No comment provided by engineer. */
+"RewardsInternalsContributionsStepCompleted" = "Завершено";
+
+/* No comment provided by engineer. */
+"RewardsInternalsContributionsStepCreds" = "Облікові дані";
+
+/* No comment provided by engineer. */
+"RewardsInternalsContributionsStepExternalTransaction" = "Зовнішня транзакція";
+
+/* No comment provided by engineer. */
+"RewardsInternalsContributionsStepFailed" = "Помилка";
+
+/* No comment provided by engineer. */
+"RewardsInternalsContributionsStepNotEnoughFunds" = "Недостатньо коштів";
+
+/* No comment provided by engineer. */
+"RewardsInternalsContributionsStepPrepare" = "Підготувати";
+
+/* No comment provided by engineer. */
+"RewardsInternalsContributionsStepReserve" = "Зберегти";
+
+/* No comment provided by engineer. */
+"RewardsInternalsContributionsStepRewardsOff" = "Винагороди вимкнено";
+
+/* No comment provided by engineer. */
+"RewardsInternalsContributionsStepStart" = "Початок";
+
+/* No comment provided by engineer. */
+"RewardsInternalsContributionsTitle" = "Внески";
+
+/* No comment provided by engineer. */
+"RewardsInternalsCreatedAt" = "Створено:";
+
+/* No comment provided by engineer. */
+"RewardsInternalsDeviceInfoHeader" = "Інформація про пристрій";
+
+/* No comment provided by engineer. */
+"RewardsInternalsEnrolled" = "Зареєстровано";
+
+/* No comment provided by engineer. */
+"RewardsInternalsEnrollmentState" = "Стан реєстрації";
+
+/* No comment provided by engineer. */
+"RewardsInternalsExpiresAt" = "Термін дії:";
+
+/* No comment provided by engineer. */
+"RewardsInternalsInvalid" = "Недійсний";
+
+/* No comment provided by engineer. */
+"RewardsInternalsKeyInfoSeed" = "Інформація про ключ";
+
+/* No comment provided by engineer. */
+"RewardsInternalsLegacyPromotion" = "Застаріла промоакція";
+
+/* %d will be the number of logs currently being shown, i.e. '10 logs shown' */
+"RewardsInternalsLogsCount" = "Показано журналів: %d";
+
+/* No comment provided by engineer. */
+"RewardsInternalsLogsTitle" = "Журнали";
+
+/* No comment provided by engineer. */
+"RewardsInternalsNotEnrolled" = "Не зареєстровано";
+
+/* No comment provided by engineer. */
+"RewardsInternalsNotSupported" = "Не підтримується";
+
+/* No comment provided by engineer. */
+"RewardsInternalsProcessor" = "Обробник";
+
+/* No comment provided by engineer. */
+"RewardsInternalsPromotionStatusActive" = "Активна";
+
+/* No comment provided by engineer. */
+"RewardsInternalsPromotionStatusAttested" = "Перевірена";
+
+/* No comment provided by engineer. */
+"RewardsInternalsPromotionStatusCorrupted" = "Пошкоджена";
+
+/* No comment provided by engineer. */
+"RewardsInternalsPromotionStatusFinished" = "Завершена";
+
+/* No comment provided by engineer. */
+"RewardsInternalsPromotionStatusOver" = "Закінчена";
+
+/* No comment provided by engineer. */
+"RewardsInternalsPromotionsTitle" = "Промоакції";
+
+/* No comment provided by engineer. */
+"RewardsInternalsPublisher" = "Видавець";
+
+/* No comment provided by engineer. */
+"RewardsInternalsPublishers" = "Видавці";
+
+/* No comment provided by engineer. */
+"RewardsInternalsRetryCount" = "Кількість повторів";
+
+/* No comment provided by engineer. */
+"RewardsInternalsRewardsTypeAutoContribute" = "Автовнесок";
+
+/* No comment provided by engineer. */
+"RewardsInternalsRewardsTypeOneTimeTip" = "Одноразовий платіж";
+
+/* No comment provided by engineer. */
+"RewardsInternalsRewardsTypeRecurringTip" = "Повторюваний платіж";
+
+/* No comment provided by engineer. */
+"RewardsInternalsSharableBasicDescription" = "Інформація про гаманець, пристрій і баланс (надсилається завжди)";
+
+/* No comment provided by engineer. */
+"RewardsInternalsSharableBasicTitle" = "Основна інформація";
+
+/* No comment provided by engineer. */
+"RewardsInternalsSharableContributionsDescription" = "Будь-які внески на користь видавців через платежі чи автовнески";
+
+/* No comment provided by engineer. */
+"RewardsInternalsSharableDatabaseDescription" = "Сховище внутрішніх даних";
+
+/* No comment provided by engineer. */
+"RewardsInternalsSharableDatabaseTitle" = "База даних винагород";
+
+/* No comment provided by engineer. */
+"RewardsInternalsSharableLogsDescription" = "Зазначені журнали винагород";
+
+/* No comment provided by engineer. */
+"RewardsInternalsSharablePromotionsDescription" = "Будь-які промоакції BAT, які ви отримали або на які очікуєте від реклами чи бонусів";
+
+/* No comment provided by engineer. */
+"RewardsInternalsShare" = "Надіслати";
+
+/* 'Rewards' as in 'Brave Rewards' */
+"RewardsInternalsShareInternalsTitle" = "Надіслати внутрішні дані Rewards";
+
+/* No comment provided by engineer. */
+"RewardsInternalsSharingWarningMessage" = "Дані на цій сторінці можуть бути конфіденційними. Використовуйте їх так, ніби це закриті ключі від вашого гаманця. Стежте за тим, кому ви надсилаєте їх.";
+
+/* No comment provided by engineer. */
+"RewardsInternalsSharingWarningTitle" = "Попередження";
+
+/* No comment provided by engineer. */
+"RewardsInternalsStatus" = "Стан";
+
+/* i.e. 'Step: Started' */
+"RewardsInternalsStep" = "Етап";
+
+/* No comment provided by engineer. */
+"RewardsInternalsSupported" = "Підтримується";
+
+/* 'Rewards' as in 'Brave Rewards' */
+"RewardsInternalsTitle" = "Внутрішні дані Rewards";
+
+/* No comment provided by engineer. */
+"RewardsInternalsTotalAmount" = "Загальна сума";
+
+/* No comment provided by engineer. */
+"RewardsInternalsTotalBalance" = "Загальний баланс";
+
+/* No comment provided by engineer. */
+"RewardsInternalsType" = "Тип";
+
+/* No comment provided by engineer. */
+"RewardsInternalsValid" = "Дійсний";
+
+/* No comment provided by engineer. */
+"RewardsInternalsVersion" = "Версія";
+
+/* No comment provided by engineer. */
+"RewardsInternalsWalletCreationDate" = "Дата створення гаманця";
+
+/* No comment provided by engineer. */
+"RewardsInternalsWalletInfoHeader" = "Інформація про гаманець";
+
+/* No comment provided by engineer. */
+"RewardsInternalsWalletPaymentID" = "Платіжний ідентифікатор гаманця";
+
+/* No comment provided by engineer. */
 "ShieldsDownDisclaimer" = "Ви переглядаєте вебсайт з вимкненим засобом захисту конфіденційності від Brave. Вебсайт не працює належним чином, якщо щити увімкнено?";
 
 /* Text that informs a user about Brave Sync service deprecation. */
-"sync.syncV1DeprecationText" = "Скоро виходить нова синхронізація Brave, яка вплине на ваші налаштування. Підготуйтеся до оновлення.";
+"sync.syncV1DeprecationText" = "Скоро виходить нова версія Brave Sync, що вплине на ваші налаштування. Підготуйтеся до оновлення.";
 
 /* Prompt shown before enabling provider search queries */
 "Turn on search suggestions?" = "Увімкнути пошукові підказки?";
@@ -183,7 +414,7 @@
 "vpn.checkboxNoSellout" = "Ми нікому не розкриваємо та не продаємо ваші дані";
 
 /* Text for a checkbox to present the user benefits for using Brave VPN */
-"vpn.checkboxProtectConnections" = "Захищає всі ваші програми (а не тільки браузер Brave)";
+"vpn.checkboxProtectConnections" = "Захист від небажаних з’єднань";
 
 /* AppStore Receipt field for customer support contact form. */
 "vpn.contactFormAppStoreReceipt" = "Квитанція від AppStore";
@@ -261,7 +492,7 @@
 "vpn.iapDisclaimer" = "Усі підписки поновлюються автоматично. Але ви можете відмовитися від підписки перед тим, як її буде поновлено.";
 
 /* Text explaining how the VPN works. */
-"vpn.installProfileBody" = "Цей профіль дозволяє VPN-розширенню автоматично встановлювати з’єднання та безперервно захищати вебтрафік кожного додатку на вашому пристрої. VPN-з’єднання буде зашифрованим та оброблятиметься інтелектуальним брандмауером браузера Brave, який блокуватиме рекламу та трекери.";
+"vpn.installProfileBody" = "Цей профіль дає можливість VPN-розширенню автоматично встановлювати з’єднання й безперервно захищати трафік застосунків на вашому пристрої. VPN-з’єднання буде зашифровано, його оброблятиме інтелектуальний брандмауер браузера Brave й блокуватиме шкідливі та небезпечні з’єднання.";
 
 /* Text for 'install vpn profile' button */
 "vpn.installProfileButtonText" = "Встановити профіль VPN";
@@ -303,7 +534,7 @@
 "vpn.restorePurchases" = "Відновити";
 
 /* No comment provided by engineer. */
-"vpn.settingHeaderBody" = "Захищає ваше з’єднання, а також блокує рекламу та трекери у всіх додатках, встановлених на вашому пристрої.";
+"vpn.settingHeaderBody" = "Захищає ваше з’єднання й блокує небезпечні засоби відстеження вашої активності.";
 
 /* Button to contact tech support */
 "vpn.settingsContactSupport" = "Звернутися до служби технічної підтримки";
@@ -369,7 +600,7 @@
 "vpn.vpnErrorPurchaseFailedTitle" = "Помилка";
 
 /* Disclaimer for user purchasing the VPN plan. */
-"vpn.vpnIAPBoilerPlate" = "Ціна може змінюватися в залежності від місцезнаходження. Оплата за підписку буде стягуватись з вашої кредитної картки через ваш акаунт iTunes. Ви можете придбати підписку на 1 місяць (9,99 дол. США) або на 1 рік (99,99 дол. США). Вона поновлюватиметься автоматично, якщо її не буде скасовано принаймні за 24 години до закінчення поточного періоду. Після активації підписки ви вже не зможете її скасувати. Після здійснення покупки ви зможете керувати своїми підписками в розділі налаштувань акаунту. Безкоштовним пробним періодом можна скористатися лише один раз. Будь-яку невикористану частину безкоштовного пробного періоду буде втрачено після придбання підписки";
+"vpn.vpnIAPBoilerPlate" = "Оплата за підписки стягуватиметься з вашого рахунку iTunes.\n\nБудь-яку невикористану частину безкоштовного пробного періоду, якщо він є, буде втрачено після придбання підписки.\n\nПідписка поновлюватиметься автоматично, якщо її не буде скасовано щонайменше за 24 години до завершення поточного періоду.\n\nВи можете керувати підписками в меню налаштувань.\n\nКористуючись Brave, ви погоджуєтеся з Умовами використання й Політикою конфіденційності.";
 
 /* Title Brave VPN menu item. */
 "vpn.vpnMenuItemTitle" = "VPN-розширення браузера Brave";

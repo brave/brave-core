@@ -39,6 +39,20 @@ class BraveVPN {
             BraveVPN.validateReceipt() { expired in
                 if expired == true {
                     BraveVPN.clearConfiguration()
+                    return
+                }
+                
+                if isConnected {
+                    GRDGatewayAPI.shared().getServerStatus { completion in
+                        if completion.responseStatus == .serverOK {
+                            log.debug("VPN server status OK")
+                            return
+                        }
+                        
+                        log.debug("VPN server status failure, migrating to new host")
+                        disconnect()
+                        reconnect()
+                    }
                 }
             }
         }
@@ -348,11 +362,6 @@ class BraveVPN {
     /// in this case it tries to reconfigure the vpn before connecting to it.
     static func connectOrMigrateToNewNode(completion: @escaping ((VPNConfigStatus) -> Void)) {
         helper.configureAndConnectVPN { message, status in
-            if status != .success {
-                completion(.error(type: .loadConfigError))
-                return
-            }
-            
             switch status {
             case .success:
                 completion(.success)

@@ -51,6 +51,7 @@ class TippingOptionView: UIControl {
     $0.appearanceTextColor = UX.unselectedDollarTextColor
     $0.font = .systemFont(ofSize: 12.0)
     $0.textAlignment = .center
+    $0.isHidden = true
   }
   
   override init(frame: CGRect) {

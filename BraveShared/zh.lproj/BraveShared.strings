@@ -292,9 +292,6 @@
 /* DuckDuckGo callout enable action. */
 "DDGCalloutEnable" = "是";
 
-/* DuckDuckGo message. */
-"DDGCalloutMessage" = "通过隐私搜索，当您在此隐私选项卡中，Brave 将使用 DuckDuckGo 回答您的搜索。 DuckDuckGo是一个搜索引擎，不会跟踪您的搜索历史记录，使您可以进行隐私搜索。";
-
 /* DuckDuckGo callout no action. */
 "DDGCalloutNo" = "不";
 
@@ -590,21 +587,6 @@
 "ntp.braveSupportFavoriteTitle" = "Brave 支持";
 
 /* No comment provided by engineer. */
-"ntp.claimRewards" = "领取我的奖励";
-
-/* Placeholder example: 'You earned 42 BAT last month from viewing privacy-respecting ads.' */
-"ntp.earningsReport" = "您上个月通过查看尊重隐私的广告赚取了 %@。";
-
-/* No comment provided by engineer. */
-"ntp.earnTokensByViewingAds" = "通过查看尊重隐私的广告来赚代币。";
-
-/* No comment provided by engineer. */
-"ntp.getPaidForThisImageTurnAds" = "通过查看该图片赚取代币。开启 Brave Ads，领取您的酬劳。";
-
-/* No comment provided by engineer. */
-"ntp.getPaidForThisImageTurnRewards" = "通过查看该图片赚取代币。开启 Brave Rewards，领取您的酬劳。";
-
-/* No comment provided by engineer. */
 "ntp.getPaidToSeeThisImage" = "通过查看该图片赚取代币。";
 
 /* The context is to praise the user that they did a good job, to keep it up. It is used in full sentence like: 'Way to go! You earned 40 BAT last month.' */
@@ -612,9 +594,6 @@
 
 /* No comment provided by engineer. */
 "ntp.hideSponsoredImages" = "隐藏赞助图片";
-
-/* No comment provided by engineer. */
-"ntp.learnMoreAboutBrandedImages" = "您每查看一张赞助图片，均可收到收益代币的 70%。通过 Brave Ads，您将始终可以控制您看到的广告。";
 
 /* No comment provided by engineer. */
 "ntp.learnMoreAboutRewards" = "了解更多有关 Brave Rewards 的内容";
@@ -642,9 +621,6 @@
 
 /* A button title to show more bookmarks, that opens a new menu. */
 "ntp.showMoreFavorites" = "显示更多";
-
-/* No comment provided by engineer. */
-"ntp.supportWebCreatorsWithTokens" = "您可使用代币支持 Web 创作者。";
 
 /* No comment provided by engineer. */
 "ntp.turnOnBraveAds" = "开启 Brave Ads";
@@ -729,9 +705,6 @@
 
 /* Private tab detail text */
 "PrivateTabDetails" = "使用私密 Tabs 只会更改 Brave 对您设备的操作，不会更改其他应用对您设备的操作。\n\n当您访问网站时，网站会随时知晓您的 IP 地址。由此地址，他们通常可以大致猜测您的位置 - 通常是您所在的城市。有时，对于位置的猜测可能更加具体。网站也会知晓您明确告诉他们的所有内容，例如您的搜索条件。如果您登录某个网站，他们就会知晓您是该帐户的所有者。当您关闭私密 Tabs 时，您仍然会被迫退出，因为 Brave 会删除辅助您随时登录的 cookie。\n\n为您连网（您的 ISP）的任何人都可以看到您所有的网络活动。通常是您的移动运营商。如果您连接到 WiFi 网络，则是该网络的所有者，如果您在使用 VPN，则是运行该 VPN 的人。您的 ISP 可以在您访问时查看您访问的网站。如果这些网站使用 HTTPS，它们只能对您在这些网站上所进行的操作进行合理的猜测。但是，如果某个网站仅使用 HTTP，那么您的 ISP 可以查看所有内容：您的搜索条件，您所阅读的页面以及您关注的链接。\n\n如果雇主管理您的设备，他们也可能会跟踪您的设备。使用私密 Tabs 可能不会阻止他们知晓您访问过哪些网站。有权访问您设备的其他人也可能安装了监控您活动的软件，而私密 Tabs 也无法保护您不受此影响。";
-
-/* Private tab information link */
-"PrivateTabLink" = "了解更多有关私人标签的内容。";
 
 /* Default engine for private search. */
 "PrivateTabSearch" = "私人标签";

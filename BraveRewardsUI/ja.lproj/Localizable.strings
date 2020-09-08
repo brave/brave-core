@@ -62,6 +62,18 @@
 "BraveRewardsAdsPayoutDateFormat" = "MMM d";
 
 /* No comment provided by engineer. */
+"BraveRewardsAdsSubdivisionTargeting" = "都道府県レベルの広告ターゲティング";
+
+/* No comment provided by engineer. */
+"BraveRewardsAdsSubdivisionTargetingAutoDetect" = "自動検出";
+
+/* No comment provided by engineer. */
+"BraveRewardsAdsSubdivisionTargetingDisable" = "無効";
+
+/* No comment provided by engineer. */
+"BraveRewardsAdsSubdivisionTargetingDisabled" = "無効";
+
+/* No comment provided by engineer. */
 "BraveRewardsAdsUnsupportedDvice" = "現時点では、お使いのデバイスではBrave Rewardsと広告は利用できません。";
 
 /* No comment provided by engineer. */
@@ -311,10 +323,10 @@
 "BraveRewardsSettings" = "設定";
 
 /* No comment provided by engineer. */
-"BraveRewardsSettingsAdsBody" = "Braveで広告を見ることでポイントを獲得しましょう。広告はあなたのブラウザの利用履歴を元に推測されたものが表示されますが、すべての個人情報や閲覧履歴はブラウザの中だけに保存され外部に出ることはありません。";
+"BraveRewardsSettingsAdsBody" = "Brave広告を有効にすると、お気に入りのクリエイターをサポートするために使えるBATポイントを受け取ることができます。小さな広告がブラウザの上部に表示されますが、プライバシー保護は侵害されません。";
 
 /* No comment provided by engineer. */
-"BraveRewardsSettingsAdsBodyJapan" = "Braveで広告を見ることでポイントを獲得しましょう。広告はあなたのブラウザの利用履歴を元に推測されたものが表示されますが、すべての個人情報や閲覧履歴はブラウザの中だけに保存され外部に出ることはありません。";
+"BraveRewardsSettingsAdsBodyJapan" = "Brave広告を有効にすると、お気に入りのクリエイターをサポートするために使えるBATポイントを受け取ることができます。小さな広告がブラウザの上部に表示されますが、プライバシー保護は侵害されません。";
 
 /* No comment provided by engineer. */
 "BraveRewardsSettingsAdsComingSoonText" = "Coming soon.";
@@ -338,10 +350,10 @@
 "BraveRewardsSettingsAutoContributeUpToValue" = "最大 %@BAT";
 
 /* No comment provided by engineer. */
-"BraveRewardsSettingsDisabledBody1" = "旧来のブラウザでは、 あなたの貴重なアテンションを広告に向けることでウェブ閲覧の支払いをしています。また不要な広告やスクリプトをダウンロードするためにあなたの貴重な時間を消費するだけでなく、個人情報を広告主へ送信しています — あなたの同意もなく。";
+"BraveRewardsSettingsDisabledBody1" = "クリエイターはあなたのサポートを必要としています。Braveでは無料で彼らをサポートすることができます。ブラウジング中にBATポイントを集めて、好きなクリエイターに送ることができるようになりました。";
 
 /* No comment provided by engineer. */
-"BraveRewardsSettingsDisabledBody2" = "あなたの時間が尊重され、プライバシーは守られ、更にあなたのアテンションに対して報酬が支払われます。";
+"BraveRewardsSettingsDisabledBody2" = "皆さんの貴重な時間が尊重され、また個人情報を守られます。しかもコンテンツクリエイターをサポートすることができます。";
 
 /* No comment provided by engineer. */
 "BraveRewardsSettingsDisabledTitle1" = "Brave Rewardsの利点";
@@ -416,7 +428,7 @@
 "BraveRewardsTippingOneTimeTitle" = "次の宛先にチップを送信しました:";
 
 /* No comment provided by engineer. */
-"BraveRewardsTippingOverviewBody" = "チップを送ることで、このクリエイターをサポートできます。 すばらしいコンテンツを作成してくれたクリエイターに感謝の気持ちを届けましょう。クリエイターは受取設定が完了していれば毎月第1週にチップを受け取ることができます。\n\n毎月の自動的にチップを送り継続的にサポートすることも可能です。";
+"BraveRewardsTippingOverviewBody" = "このコンテンツクリエイターにBATポイントを送ることで彼らの活動を支援することができます。素晴らしいコンテンツを作ってくれたクリエイターへの感謝の気持ちを伝えましょう。認証が完了しているクリエイターには、毎月第一週目にBATポイントが届けられます。\n\n毎月自動的に送るように設定することも可能です。";
 
 /* No comment provided by engineer. */
 "BraveRewardsTippingOverviewTitle" = "ようこそ！";
@@ -437,7 +449,7 @@
 "BraveRewardsTippingTitle" = "チップを送る";
 
 /* No comment provided by engineer. */
-"BraveRewardsTippingUnverifiedDisclaimer" = "注: このクリエイターは、まだBraveユーザーからの支援を受諾する手続きを行っていません。クリエイターが確認するまで、または90日間が経過するまで、支援の送信を継続します。";
+"BraveRewardsTippingUnverifiedDisclaimer" = "注: このクリエイターは、まだBraveユーザーからの支援を受け取る登録を行っていません。クリエイター側の設定が完了するか、90日間が経過するまでチップの送信を継続します。";
 
 /* No comment provided by engineer. */
 "BraveRewardsTippingWalletBalanceTitle" = "ウォレット残高";
@@ -464,7 +476,7 @@
 "BraveRewardsTwoAdsPerHour" = "広告を1時間に2件表示";
 
 /* No comment provided by engineer. */
-"BraveRewardsUnverifiedPublisherDisclaimer" = "このクリエイターは、まだBraveユーザーからの支援を受諾する手続きを行っていません。クリエイターの認証確認が終了するまで、送信されたチップはあなたのウォレット内に維持されます。";
+"BraveRewardsUnverifiedPublisherDisclaimer" = "このクリエイターは、Braveユーザーからの支援を受け取る設定が完了していません。クリエイターが設定が完了するまで、送られたチップはあなたのウォレット内に保留されます。";
 
 /* No comment provided by engineer. */
 "BraveRewardsVerified" = "Brave認証済みクリエイター";
@@ -557,7 +569,7 @@
 "NotificationContributeTipError" = "チップを送信することができませんでした。後ほどもう一度お試しください。";
 
 /* Panel notification text for Ads grant */
-"NotificationEarningsClaimDefault" = "広告閲覧の報酬を受け取りました！";
+"NotificationEarningsClaimDefault" = "受け取り可能なBATポイントがあります";
 
 /* Title for an error notification */
 "NotificationErrorTitle" = "おっと！";
@@ -620,10 +632,10 @@
 "RecurringText" = "定期支払い";
 
 /* No comment provided by engineer. */
-"RewardsOptInDescription" = "プライバシーに配慮した広告を見ると\nトークンを獲得できます。";
+"RewardsOptInDescription" = "ブラウジング中にBATポイントを獲得し、同時にコンテンツクリエイターに還元することができます";
 
 /* No comment provided by engineer. */
-"RewardsOptInDescriptionJapan" = "プライバシーに配慮した広告を見ることでポイントを獲得できます。";
+"RewardsOptInDescriptionJapan" = "ブラウジング中にBATポイントを獲得し、同時にコンテンツクリエイターに還元することができます";
 
 /* No comment provided by engineer. */
 "RewardsOptInJoinTitle" = "Rewardsに参加する";

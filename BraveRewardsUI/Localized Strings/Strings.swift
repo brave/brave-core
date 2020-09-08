@@ -25,9 +25,9 @@ internal extension Strings {
   static let rewardsOptInLearnMore = NSLocalizedString("RewardsOptInLearnMore", bundle: .rewardsUI, value: "Learn More", comment: "")
   static var settingsAdsBody: String {
     if Preferences.Rewards.isUsingBAP.value == true {
-      return NSLocalizedString("BraveRewardsSettingsAdsBodyJapan", bundle: .rewardsUI, value: "Earn points by viewing ads in Brave. Ads presented are based on your interests, as inferred from your browsing behavior. No personal data or browsing history ever leaves your browser.", comment: "")
+      return NSLocalizedString("BraveRewardsSettingsAdsBodyJapan", bundle: .rewardsUI, value: "Turn on Brave Ads and start earning points that you can use to support your favorite creators! Small, privacy preserving ads will appear at the top of the browser as you browse.", comment: "")
     }
-    return NSLocalizedString("BraveRewardsSettingsAdsBody", bundle: .rewardsUI, value: "Earn tokens by viewing ads in Brave. Ads presented are based on your interests, as inferred from your browsing behavior. No personal data or browsing history ever leaves your browser.", comment: "")
+    return NSLocalizedString("BraveRewardsSettingsAdsBody", bundle: .rewardsUI, value: "Turn on Brave Ads and start earning tokens that you can use to support your favorite creators! Small, privacy preserving ads will appear at the top of the browser as you browse.", comment: "")
   }
   static var walletHeaderGrants: String {
     if Preferences.Rewards.isUsingBAP.value == true {
@@ -89,7 +89,7 @@ internal extension Strings {
   static let notificationRecurringTipTitle = NSLocalizedString("BraveRewardsNotificationRecurringTipTitle", bundle: .rewardsUI, value: "Recurring tips", comment: "")
   static let emptyWalletTitle = NSLocalizedString("BraveRewardsEmptyWalletTitle", bundle: .rewardsUI, value: "Your wallet is ready for action.", comment: "")
   static let recurringTipTitle = NSLocalizedString("BraveRewardsRecurringTipTitle", bundle: .rewardsUI, value: "Recurring tip", comment: "")
-  static let unverifiedPublisherDisclaimer = NSLocalizedString("BraveRewardsUnverifiedPublisherDisclaimer", bundle: .rewardsUI, value: "This creator has not yet signed up to receive contributions from Brave users. Any tips you send will remain in your wallet until they verify.", comment: "")
+  static let unverifiedPublisherDisclaimer = NSLocalizedString("BraveRewardsUnverifiedPublisherDisclaimer", bundle: .rewardsUI, value: "This creator has not yet signed up to receive tokens from Brave users. Any tokens you send will remain in your wallet until they verify.", comment: "")
   static let connectedPublisherDisclaimer = NSLocalizedString("BraveRewardsConnectedPublisherDisclaimer", bundle: .rewardsUI, value: "This Brave Verified Creator has not yet configured their account to receive contributions from Brave Users. Any tips you send will remain in your wallet until they complete this process.", comment: "")
   static let settingsGrantClaimButtonTitle = NSLocalizedString("BraveRewardsSettingsGrantClaimButtonTitle", bundle: .rewardsUI, value: "Claim", comment: "")
   static let autoContributeMinimumLength = NSLocalizedString("BraveRewardsAutoContributeMinimumLength", bundle: .rewardsUI, value: "Minimum Page Time", comment: "")
@@ -158,7 +158,7 @@ internal extension Strings {
   static let disabledTitle = NSLocalizedString("BraveRewardsDisabledTitle", bundle: .rewardsUI, value: "Welcome Back!", comment: "")
   static let learnMoreCreateWallet1 = NSLocalizedString("BraveRewardsLearnMoreCreateWallet1", bundle: .rewardsUI, value: "Yes, I'm In!", comment: "")
   static let learnMoreBraveAdsTitle = NSLocalizedString("BraveRewardsLearnMoreBraveAdsTitle", bundle: .rewardsUI, value: "Ads", comment: "")
-  static let tippingUnverifiedDisclaimer = NSLocalizedString("BraveRewardsTippingUnverifiedDisclaimer", bundle: .rewardsUI, value: "NOTE: This creator has not yet signed up to receive contributions from Brave users. Your browser will keep trying to contribute until they verify, or until 90 days have passed.", comment: "")
+  static let tippingUnverifiedDisclaimer = NSLocalizedString("BraveRewardsTippingUnverifiedDisclaimer", bundle: .rewardsUI, value: "NOTE: This creator has not yet signed up to receive tokens from Brave users. Your browser will keep trying to contribute until they verify, or until 90 days have passed.", comment: "")
   static let tippingNotConnectedDisclaimer = NSLocalizedString("BraveRewardsTippingNotConnectedDisclaimer", bundle: .rewardsUI, value: "NOTE: This Brave Verified Creator has not yet signed up to receive contributions from Brave users. Your browser will keep trying to contribute until they verify, or until 90 days have passed.", comment: "")
   static let settingsTipsBody = NSLocalizedString("BraveRewardsSettingsTipsBody", bundle: .rewardsUI, value: "Tip content creators directly as you browse by using the Rewards Panel.", comment: "")
   static let settingsMonthlyTipsBody = NSLocalizedString("BraveRewardsSettingsMonthlyTipsBody", bundle: .rewardsUI, value: "Set up recurring monthly contributions so you can support sites continuously.", comment: "")
@@ -173,16 +173,16 @@ internal extension Strings {
   static let privacyPolicyURL = NSLocalizedString("PrivacyPolicyURL", bundle: .rewardsUI, value: "Privacy Policy", comment: "")
   static let addFundsTokenWalletAddress = NSLocalizedString("BraveRewardsAddFundsTokenWalletAddress", bundle: .rewardsUI, value: "Wallet Address", comment: "")
   static let autoContributeToVideos = NSLocalizedString("BraveRewardsAutoContributeToVideos", bundle: .rewardsUI, value: "Allow contribution to videos", comment: "")
-  static let settingsDisabledBody2 = NSLocalizedString("BraveRewardsSettingsDisabledBody2", bundle: .rewardsUI, value: "One where your time is valued, your personal data is kept private, and you actually get paid for your attention.", comment: "")
+  static let settingsDisabledBody2 = NSLocalizedString("BraveRewardsSettingsDisabledBody2", bundle: .rewardsUI, value: "One where your time is valued, your personal data is kept private, and you can feel good about supporting content creators.", comment: "")
   static let contributingToUnverifiedSites = NSLocalizedString("BraveRewardsContributingToUnverifiedSites", bundle: .rewardsUI, value: "You've designated %@ for creators who haven't yet signed up to recieve contributions. Your browser will keep trying to contribute until they verify, or until 90 days have passed.", comment: "")
-  static let settingsDisabledBody1 = NSLocalizedString("BraveRewardsSettingsDisabledBody1", bundle: .rewardsUI, value: "With your old browser, you paid to browse the web by viewing ads with your valuable attention. You spent your valuable time downloading invasive ad technology that transmitted your valuable private data to advertisers — without your consent.", comment: "")
+  static let settingsDisabledBody1 = NSLocalizedString("BraveRewardsSettingsDisabledBody1", bundle: .rewardsUI, value: "Because creators need your support and Brave makes it completely free. Now you can collect tokens while you browse and contribute them back to the creators you love.", comment: "")
   static let panelTitle = NSLocalizedString("BraveRewardsPanelTitle", bundle: .rewardsUI, value: "Rewards", comment: "")
   static let creatingWallet = NSLocalizedString("BraveRewardsCreatingWallet", bundle: .rewardsUI, value: "Creating wallet", comment: "")
   static var rewardsOptInDescription: String {
     if Preferences.Rewards.isUsingBAP.value == true {
-      return NSLocalizedString("RewardsOptInDescriptionJapan", bundle: .rewardsUI, value: "You can now earn points for watching privacy-respecting ads.", comment: "")
+      return NSLocalizedString("RewardsOptInDescriptionJapan", bundle: .rewardsUI, value: "Earn points and reward creators for great content while you browse", comment: "")
     }
-    return NSLocalizedString("RewardsOptInDescription", bundle: .rewardsUI, value: "You can now earn tokens for watching privacy-respecting ads.", comment: "")
+    return NSLocalizedString("RewardsOptInDescription", bundle: .rewardsUI, value: "Earn tokens and reward creators for great content while you browse", comment: "")
   }
   static var walletHeaderTitle: String {
     if Preferences.Rewards.isUsingBAP.value == true {
@@ -215,7 +215,7 @@ internal extension Strings {
   static let remove = NSLocalizedString("BraveRewardsRemove", bundle: .rewardsUI, value: "Remove", comment: "")
   static let learnMoreWhyBody = NSLocalizedString("BraveRewardsLearnMoreWhyBody", bundle: .rewardsUI, value: "With your old browser, you paid to browse the web by viewing ads with your valuable attention. You spent your valuable time downloading invasive ad technology that transmitted your valuable private data to advertisers — without your consent.\n\nToday, Brave welcomes you to the new Internet. One where your time is valued, your personal data is kept private, and you actually get paid for your attention.", comment: "")
   static let disabledEnableButton = NSLocalizedString("BraveRewardsDisabledEnableButton", bundle: .rewardsUI, value: "Enable Brave Rewards", comment: "")
-  static let tippingOverviewBody = NSLocalizedString("BraveRewardsTippingOverviewBody", bundle: .rewardsUI, value: "You can support this content creator by sending a tip. It’s a way of thanking them for making great content. Verified creators get paid for their tips during the first week of each calendar month.\n\nIf you like, you can schedule monthly tips to support this creator on a continuous basis.", comment: "")
+  static let tippingOverviewBody = NSLocalizedString("BraveRewardsTippingOverviewBody", bundle: .rewardsUI, value: "You can support this content creator by sending them a few tokens. It’s a way of thanking them for making great content. Verified creators receive their tokens during the first week of each calendar month.\n\nIf you like, you can schedule a monthly contribution to support this creator on an ongoing basis.", comment: "")
   static let tippingSendTip = NSLocalizedString("BraveRewardsTippingSendTip", bundle: .rewardsUI, value: "Send my Tip", comment: "")
   static let tippingSendMonthlyTip = NSLocalizedString("BraveRewardsTippingSendMonthlyTip", bundle: .rewardsUI, value: "Set monthly tip", comment: "")
   static let noActivitiesYet = NSLocalizedString("BraveRewardsNoActivitiesYet", bundle: .rewardsUI, value: "No activities yet…", comment: "")
@@ -264,7 +264,7 @@ internal extension Strings {
   static let notificationContributeNotificationError = NSLocalizedString("NotificationContributeNotificationError", bundle: .rewardsUI, value: "There was a problem processing your contribution.", comment: "We show this string in notification when contribution fails")
   static let notificationPendingNotEnoughFunds = NSLocalizedString("NotificationPendingNotEnoughFunds", bundle: .rewardsUI, value: "You have pending tips due to insufficient funds", comment: "Notification text that tells user his wallet is under funded for pending contribution to complete")
   static let notificationInsufficientFunds = NSLocalizedString("NotificationinsufficientFunds", bundle: .rewardsUI, value: "Your Brave Rewards account is waiting for a deposit.", comment: "Description for new insufficient funds notification")
-  static let notificationEarningsClaimDefault = NSLocalizedString("NotificationEarningsClaimDefault", bundle: .rewardsUI, value: "Your rewards from Ads are here!", comment: "Panel notification text for Ads grant")
+  static let notificationEarningsClaimDefault = NSLocalizedString("NotificationEarningsClaimDefault", bundle: .rewardsUI, value: "New tokens are ready to claim.", comment: "Panel notification text for Ads grant")
   static let notificationGrantNotification = NSLocalizedString("NotificationGrantNotification", bundle: .rewardsUI, value: "You have a grant waiting for you.", comment: "Description for new grant notification")
   static let notificationErrorTitle = NSLocalizedString("NotificationErrorTitle", bundle: .rewardsUI, value: "Uh oh!", comment: "Title for an error notification")
   static let noNetworkTitle = NSLocalizedString("NoNetworkTitle", bundle: .rewardsUI, value: "Uh oh!", comment: "Title for a no network notification")

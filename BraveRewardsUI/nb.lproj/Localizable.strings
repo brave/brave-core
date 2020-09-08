@@ -62,6 +62,18 @@
 "BraveRewardsAdsPayoutDateFormat" = "MMM d";
 
 /* No comment provided by engineer. */
+"BraveRewardsAdsSubdivisionTargeting" = "Angi nivå reklame rettes mot";
+
+/* No comment provided by engineer. */
+"BraveRewardsAdsSubdivisionTargetingAutoDetect" = "Oppdag automatisk";
+
+/* No comment provided by engineer. */
+"BraveRewardsAdsSubdivisionTargetingDisable" = "Deaktiver";
+
+/* No comment provided by engineer. */
+"BraveRewardsAdsSubdivisionTargetingDisabled" = "Deaktivert";
+
+/* No comment provided by engineer. */
 "BraveRewardsAdsUnsupportedDvice" = "Brave Rewards og Ads er ikke tilgjengelige på enheten nå.";
 
 /* No comment provided by engineer. */
@@ -311,10 +323,10 @@
 "BraveRewardsSettings" = "Innstillinger";
 
 /* No comment provided by engineer. */
-"BraveRewardsSettingsAdsBody" = "Tjen tokens ved å se annonser i Brave. Annonsene som presenteres, er basert på interessene dine, som angitt i nettlesingsatferden din. Ingen personlige data eller leserloggen forlater nettleseren din.";
+"BraveRewardsSettingsAdsBody" = "Slå på Brave-annonser og begynn å tjene tokener som du kan bruke til å støtte favorittskaperne dine! Små personvernbevarende annonser vises øverst i nettleseren mens du surfer.";
 
 /* No comment provided by engineer. */
-"BraveRewardsSettingsAdsBodyJapan" = "Tjen poeng ved å se annonser i Brave. Annonsene som presenteres, er basert på interessene dine, som angitt i nettlesingsatferden din. Ingen personlige data eller leserloggen forlater nettleseren din.";
+"BraveRewardsSettingsAdsBodyJapan" = "Slå på Brave-annonser og begynn å tjene poeng som du kan bruke til å støtte favorittskaperne dine! Små personvernbevarende annonser vises øverst i nettleseren mens du surfer.";
 
 /* No comment provided by engineer. */
 "BraveRewardsSettingsAdsComingSoonText" = "Kommer snart.";
@@ -338,10 +350,10 @@
 "BraveRewardsSettingsAutoContributeUpToValue" = "Opptil %@";
 
 /* No comment provided by engineer. */
-"BraveRewardsSettingsDisabledBody1" = "Med den gamle nettleseren din, har du betalt for å surfe på nettet ved å se annonser. Du brukte din verdifulle tid på å laste ned inntrengende annonseteknologi som overførte dine verdifulle private data til annonsører — uten ditt samtykke.";
+"BraveRewardsSettingsDisabledBody1" = "Fordi skaperne trenger din støtte, og Brave gjør det helt gratis. Nå kan du samle tokener mens du surfer og gi dem tilbake til skaperne du setter pris på.";
 
 /* No comment provided by engineer. */
-"BraveRewardsSettingsDisabledBody2" = "Et Internett hvor tiden din er verdsatt, dine personlige data holdes privat, og du faktisk får betalt for tiden din.";
+"BraveRewardsSettingsDisabledBody2" = "Hvor tiden din blir verdsatt, dine personlige data holdes private, og du kan støtte innholdsskapere med god samvittighet.";
 
 /* No comment provided by engineer. */
 "BraveRewardsSettingsDisabledTitle1" = "Hvorfor Brave Rewards?";
@@ -416,7 +428,7 @@
 "BraveRewardsTippingOneTimeTitle" = "Du har nettopp sendt et tips til:";
 
 /* No comment provided by engineer. */
-"BraveRewardsTippingOverviewBody" = "Du kan støtte denne innholdsskaperen ved å sende tips. Det er en måte å takke dem for å lage bra innhold. Verifiserte skapere får betalt for tipsene sine i løpet av den første uken i hver kalendermåned.\n\nHvis du vil, kan du planlegge månedlig tips for å støtte denne skaperen på en kontinuerlig basis.";
+"BraveRewardsTippingOverviewBody" = "Du kan støtte denne innholdsskaperen ved å sende dem noen tokener. Det er en måte å takke dem for at de har laget godt innhold. Bekreftede skapere mottar tokener i løpet av den første uken av hver kalendermåned.\n\nHvis du vil, kan du planlegge et månedlig bidrag for å støtte denne skaperen fortløpende.";
 
 /* No comment provided by engineer. */
 "BraveRewardsTippingOverviewTitle" = "Velkommen!";
@@ -437,7 +449,7 @@
 "BraveRewardsTippingTitle" = "Send tips";
 
 /* No comment provided by engineer. */
-"BraveRewardsTippingUnverifiedDisclaimer" = "Merk: denne skaperen har ennå ikke registrert seg for å motta bidrag fra Brave-brukere. Nettleseren din vil fortsette å prøve å bidra til de bekrefter, eller til 90 dager har gått.";
+"BraveRewardsTippingUnverifiedDisclaimer" = "MERK: Denne skaperen har ennå ikke registrert seg for å motta tokener fra Brave-brukere. Nettleseren din vil fortsette å prøve å bidra til de bekrefter seg, eller til det har gått 90 dager.";
 
 /* No comment provided by engineer. */
 "BraveRewardsTippingWalletBalanceTitle" = "lommeboksaldo";
@@ -464,7 +476,7 @@
 "BraveRewardsTwoAdsPerHour" = "2 annonser per time";
 
 /* No comment provided by engineer. */
-"BraveRewardsUnverifiedPublisherDisclaimer" = "Denne skaperen har ennå ikke registrert seg for å motta bidrag fra Brave-brukere. Eventuell tips du sender vil forbli i lommeboken til de bekrefter.";
+"BraveRewardsUnverifiedPublisherDisclaimer" = "Denne skaperen har ennå ikke registrert seg for å motta tokener fra Brave-brukere. Eventuelle tokener du sender blir værende i lommeboken din til de bekreftes.";
 
 /* No comment provided by engineer. */
 "BraveRewardsVerified" = "Brave-verifisert skaper";
@@ -557,7 +569,7 @@
 "NotificationContributeTipError" = "Klarer ikke å sende tipsen din. Prøv igjen senere.";
 
 /* Panel notification text for Ads grant */
-"NotificationEarningsClaimDefault" = "Dine belønninger fra Ads er her!";
+"NotificationEarningsClaimDefault" = "Nye tokener er klare til å bli gjort krav på.";
 
 /* Title for an error notification */
 "NotificationErrorTitle" = "Oi, sann!";
@@ -620,10 +632,10 @@
 "RecurringText" = "Gjentakende";
 
 /* No comment provided by engineer. */
-"RewardsOptInDescription" = "Du kan nå tjene tokens for å se på annonser som respekterer personvernet.";
+"RewardsOptInDescription" = "Tjen tokener og belønn skaperne for supert innhold mens du surfer";
 
 /* No comment provided by engineer. */
-"RewardsOptInDescriptionJapan" = "Du kan nå tjene poeng for å se på annonser som respekterer personvernet.";
+"RewardsOptInDescriptionJapan" = "Tjen poeng og belønn skaperne for supert innhold mens du surfer";
 
 /* No comment provided by engineer. */
 "RewardsOptInJoinTitle" = "Registrer deg for Rewards";
