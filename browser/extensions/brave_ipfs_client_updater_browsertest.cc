@@ -62,7 +62,7 @@ class BraveIpfsClientUpdaterTest : public ExtensionBrowserTest {
   bool InstallIpfsClientUpdater() {
 #if defined(OS_WIN)
     return InstallIpfsClientUpdater("ipfs-client-updater-win");
-#elif defined(OS_MACOSX)
+#elif defined(OS_MAC)
     return InstallIpfsClientUpdater("ipfs-client-updater-mac");
 #elif defined(OS_LINUX)
     return InstallIpfsClientUpdater("ipfs-client-updater-linux");
