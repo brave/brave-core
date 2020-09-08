@@ -98,7 +98,6 @@ const Config = function () {
   this.updaterDevEndpoint = getNPMConfig(['updater_dev_endpoint']) || ''
   this.webcompatReportApiEndpoint = getNPMConfig(['webcompat_report_api_endpoint']) || 'https://webcompat.brave.com/1/webcompat'
   this.chromePgoPhase = 0
-  this.useBlinkV8BindingNewIdlInterface = false
   // this.buildProjects()
   this.braveVersion = getNPMConfig(['version']) || '0.0.0'
   this.androidOverrideVersionName = this.braveVersion
@@ -211,7 +210,13 @@ Config.prototype.buildArgs = function () {
     enable_cdm_host_verification: this.enableCDMHostVerification(),
     skip_signing: !this.shouldSign(),
     chrome_pgo_phase: this.chromePgoPhase,
-    use_blink_v8_binding_new_idl_interface: this.useBlinkV8BindingNewIdlInterface,
+    // When enabled (see third_party/blink/renderer/config.gni), we end up with
+    // multiple files giving compilation error similar to:
+    // gen/third_party/blink/renderer/bindings/modules/v8/v8_shared_worker_global_scope.cc:4614:34:
+    // error: no member named 'isReportingObserversEnabled' in 'blink::ContextFeatureSettings'
+    // cs.chromium.org shows the same files not having any calls to isReportingObserversEnabled,
+    // which makes me think that Chromium also disables it in their builds.
+    use_blink_v8_binding_new_idl_interface: false,
     ...this.extraGnArgs,
   }
 
