@@ -1,5 +1,5 @@
 diff --git a/components/history/core/browser/thumbnail_database.cc b/components/history/core/browser/thumbnail_database.cc
-index 19c7722a778b24fcc50e7ab9a4e5e368399bf52d..625f5be347adbbfeb207ba45880372435b1a4e80 100644
+index 19c7722a778b24fcc50e7ab9a4e5e368399bf52d..11b2be6a2c3b428719aa9632d347b7aa2334957e 100644
 --- a/components/history/core/browser/thumbnail_database.cc
 +++ b/components/history/core/browser/thumbnail_database.cc
 @@ -519,6 +519,7 @@ FaviconBitmapID ThumbnailDatabase::AddFaviconBitmap(
