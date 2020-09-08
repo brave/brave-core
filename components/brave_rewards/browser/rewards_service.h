@@ -67,9 +67,10 @@ using RefreshPublisherCallback =
         const ledger::type::PublisherStatus,
         const std::string&)>;
 using GetPublisherInfoCallback = base::OnceCallback<void(
-    const int32_t,
+    const ledger::type::Result,
     ledger::type::PublisherInfoPtr)>;
-using SavePublisherInfoCallback = base::OnceCallback<void(const int32_t)>;
+using SavePublisherInfoCallback =
+    base::OnceCallback<void(const ledger::type::Result)>;
 using SaveMediaInfoCallback =
     base::OnceCallback<void(ledger::type::PublisherInfoPtr publisher)>;
 using GetInlineTippingPlatformEnabledCallback = base::OnceCallback<void(bool)>;
@@ -276,7 +277,7 @@ class RewardsService : public KeyedService {
   virtual void UpdateMediaDuration(
       const uint64_t window_id,
       const std::string& publisher_key,
-      uint64_t duration) = 0;
+      const uint64_t duration) = 0;
 
   virtual void GetPublisherInfo(
       const std::string& publisher_key,

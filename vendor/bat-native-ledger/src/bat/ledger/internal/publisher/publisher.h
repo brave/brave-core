@@ -99,7 +99,7 @@ class Publisher {
   void UpdateMediaDuration(
       const uint64_t window_id,
       const std::string& publisher_key,
-      uint64_t duration);
+      const uint64_t duration);
 
   void GetPublisherPanelInfo(
       const std::string& publisher_key,
@@ -115,7 +115,7 @@ class Publisher {
       type::Result result,
       type::PublisherInfoPtr info,
       const uint64_t window_id,
-      uint64_t duration);
+      const uint64_t duration);
 
   void OnGetPanelPublisherInfo(
       const type::Result result,

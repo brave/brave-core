@@ -330,7 +330,7 @@ void Publisher::SaveVisitInternal(
         this,
         _1);
 
-    ledger_->database()->SavePublisherInfo(publisher_info->Clone(), callback);
+    ledger_->database()->SavePublisherInfo(std::move(publisher_info), callback);
   } else if (!excluded &&
              ledger_->state()->GetAutoContributeEnabled() &&
              min_duration_ok &&
@@ -795,7 +795,7 @@ void Publisher::OnServerPublisherInfoLoaded(
 void Publisher::UpdateMediaDuration(
     const uint64_t window_id,
     const std::string& publisher_key,
-    uint64_t duration) {
+    const uint64_t duration) {
   BLOG(1, "Media duration: " << duration);
   ledger_->database()->GetPublisherInfo(publisher_key,
       std::bind(&Publisher::OnGetPublisherInfoForUpdateMediaDuration,
@@ -810,7 +810,7 @@ void Publisher::OnGetPublisherInfoForUpdateMediaDuration(
     type::Result result,
     type::PublisherInfoPtr info,
     const uint64_t window_id,
-    uint64_t duration) {
+    const uint64_t duration) {
   if (result != type::Result::LEDGER_OK) {
     BLOG(0, "Failed to retrieve publisher info while updating media duration");
     return;
@@ -826,8 +826,8 @@ void Publisher::OnGetPublisherInfoForUpdateMediaDuration(
       info->id,
       visit_data,
       duration,
-      window_id,
-      [=](type::Result, type::PublisherInfoPtr) {});
+      0,
+      [](type::Result, type::PublisherInfoPtr) {});
 }
 
 void Publisher::GetPublisherPanelInfo(
@@ -880,12 +880,12 @@ void Publisher::SavePublisherInfo(
     visit_data.favicon_url = publisher_info->favicon_url;
   }
 
-  SaveVideoVisit(
+  SaveVisit(
       publisher_info->id,
       visit_data,
       0,
       window_id,
-      [=](auto result, type::PublisherInfoPtr publisher_info) {
+      [callback](auto result, type::PublisherInfoPtr publisher_info) {
         callback(result);
       });
 }

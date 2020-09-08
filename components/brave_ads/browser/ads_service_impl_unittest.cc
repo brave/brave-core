@@ -145,7 +145,7 @@ class MockRewardsService : public RewardsService {
   MOCK_METHOD3(UpdateMediaDuration, void(
       const uint64_t,
       const std::string&,
-      uint64_t duration));
+      const uint64_t duration));
   MOCK_METHOD2(GetPublisherInfo, void(
       const std::string&,
       brave_rewards::GetPublisherInfoCallback callback));

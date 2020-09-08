@@ -130,10 +130,11 @@ BraveRewardsGetPublisherInfoFunction::Run() {
 }
 
 void BraveRewardsGetPublisherInfoFunction::OnGetPublisherInfo(
-    const int32_t result,
+    const ledger::type::Result result,
     ledger::type::PublisherInfoPtr info) {
   if (!info) {
-    Respond(OneArgument(std::make_unique<base::Value>(result)));
+    Respond(
+        OneArgument(std::make_unique<base::Value>(static_cast<int>(result))));
     return;
   }
 
@@ -147,7 +148,9 @@ void BraveRewardsGetPublisherInfoFunction::OnGetPublisherInfo(
   dict->SetStringKey("provider", info->provider);
   dict->SetStringKey("favIconUrl", info->favicon_url);
 
-  Respond(TwoArguments(std::make_unique<base::Value>(result), std::move(dict)));
+  Respond(TwoArguments(
+      std::make_unique<base::Value>(static_cast<int>(result)),
+      std::move(dict)));
 }
 
 BraveRewardsGetPublisherPanelInfoFunction::
@@ -177,10 +180,11 @@ BraveRewardsGetPublisherPanelInfoFunction::Run() {
 }
 
 void BraveRewardsGetPublisherPanelInfoFunction::OnGetPublisherPanelInfo(
-    const int32_t result,
+    const ledger::type::Result result,
     ledger::type::PublisherInfoPtr info) {
   if (!info) {
-    Respond(OneArgument(std::make_unique<base::Value>(result)));
+    Respond(
+        OneArgument(std::make_unique<base::Value>(static_cast<int>(result))));
     return;
   }
 
@@ -194,7 +198,9 @@ void BraveRewardsGetPublisherPanelInfoFunction::OnGetPublisherPanelInfo(
   dict->SetStringKey("provider", info->provider);
   dict->SetStringKey("favIconUrl", info->favicon_url);
 
-  Respond(TwoArguments(std::make_unique<base::Value>(result), std::move(dict)));
+  Respond(TwoArguments(
+      std::make_unique<base::Value>(static_cast<int>(result)),
+      std::move(dict)));
 }
 
 BraveRewardsSavePublisherInfoFunction::
@@ -233,8 +239,8 @@ BraveRewardsSavePublisherInfoFunction::Run() {
 }
 
 void BraveRewardsSavePublisherInfoFunction::OnSavePublisherInfo(
-    const int32_t result) {
-  Respond(OneArgument(std::make_unique<base::Value>(result)));
+  const ledger::type::Result result) {
+  Respond(OneArgument(std::make_unique<base::Value>(static_cast<int>(result))));
 }
 
 BraveRewardsTipSiteFunction::~BraveRewardsTipSiteFunction() {

@@ -1920,7 +1920,7 @@ void RewardsServiceImpl::SaveInlineMediaInfo(
 void RewardsServiceImpl::UpdateMediaDuration(
     const uint64_t window_id,
     const std::string& publisher_key,
-    uint64_t duration) {
+    const uint64_t duration) {
   if (!Connected()) {
     return;
   }
@@ -1932,6 +1932,7 @@ void RewardsServiceImpl::GetPublisherInfo(
     const std::string& publisher_key,
     GetPublisherInfoCallback callback) {
   if (!Connected()) {
+    std::move(callback).Run(ledger::type::Result::LEDGER_ERROR, nullptr);
     return;
   }
 
@@ -1946,19 +1947,14 @@ void RewardsServiceImpl::OnPublisherInfo(
     GetPublisherInfoCallback callback,
     const ledger::type::Result result,
     ledger::type::PublisherInfoPtr info) {
-  const auto result_converted = static_cast<int>(result);
-  if (result != ledger::type::Result::LEDGER_OK) {
-    std::move(callback).Run(result_converted, nullptr);
-    return;
-  }
-
-  std::move(callback).Run(result_converted, std::move(info));
+  std::move(callback).Run(result, std::move(info));
 }
 
 void RewardsServiceImpl::GetPublisherPanelInfo(
     const std::string& publisher_key,
     GetPublisherInfoCallback callback) {
   if (!Connected()) {
+    std::move(callback).Run(ledger::type::Result::LEDGER_ERROR, nullptr);
     return;
   }
 
@@ -1973,13 +1969,7 @@ void RewardsServiceImpl::OnPublisherPanelInfo(
     GetPublisherInfoCallback callback,
     const ledger::type::Result result,
     ledger::type::PublisherInfoPtr info) {
-  const auto result_converted = static_cast<int>(result);
-  if (result != ledger::type::Result::LEDGER_OK) {
-    std::move(callback).Run(result_converted, nullptr);
-    return;
-  }
-
-  std::move(callback).Run(result_converted, std::move(info));
+  std::move(callback).Run(result, std::move(info));
 }
 
 void RewardsServiceImpl::SavePublisherInfo(
@@ -1987,6 +1977,7 @@ void RewardsServiceImpl::SavePublisherInfo(
     ledger::type::PublisherInfoPtr publisher_info,
     SavePublisherInfoCallback callback) {
   if (!Connected()) {
+    std::move(callback).Run(ledger::type::Result::LEDGER_ERROR);
     return;
   }
 
@@ -2001,8 +1992,7 @@ void RewardsServiceImpl::SavePublisherInfo(
 void RewardsServiceImpl::OnSavePublisherInfo(
     SavePublisherInfoCallback callback,
     const ledger::type::Result result) {
-  const auto result_converted = static_cast<int>(result);
-  std::move(callback).Run(result_converted);
+  std::move(callback).Run(result);
 }
 
 void RewardsServiceImpl::OnGetRecurringTips(

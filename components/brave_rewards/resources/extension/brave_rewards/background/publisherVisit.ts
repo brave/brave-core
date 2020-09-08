@@ -5,11 +5,20 @@
 // Util
 import rewardsPanelActions from './actions/rewardsPanelActions'
 
-interface GreaselionErrorResponse {
+interface GreaselionError {
   errorMessage: string
 }
 
-interface SavePublisherVisitResponse {
+interface MediaDurationMetadata {
+  mediaKey: string
+  duration: number
+}
+
+interface RegisterOnCompletedWebRequest {
+  urlPattern: string
+}
+
+interface SavePublisherVisit {
   url: string
   publisherKey: string
   publisherName: string
@@ -17,69 +26,53 @@ interface SavePublisherVisitResponse {
   favIconUrl?: string
 }
 
-interface GreaselionResponse {
-  type: 'GreaselionError' | 'SavePublisherVisit'
-  mediaType: string
-  data: GreaselionErrorResponse | SavePublisherVisitResponse | null
-}
-
-interface MediaDurationHandlerRegistrationRequest {
-  urlRegex: string
-}
-
-interface MediaDurationMetadataResponse {
-  mediaKey: string
-  duration: number
-}
-
-// Media duration handler registration sentinel
-interface MediaDurationHandlerRegistration {
+interface OnCompletedWebRequestRegistration {
   registered: boolean
 }
 
-// Maps a tabId to a registration sentinel
-const mediaDurationHandlerRegistrations = new Map<number, MediaDurationHandlerRegistration>()
+// Maps webRequest.OnCompleted registrations by tab id
+const onCompletedWebRequestRegistrationsByTabId = new Map<number, OnCompletedWebRequestRegistration>()
 
-// Maps a tabId to a specific Greaselion port
-const greaselionPorts = new Map<number, chrome.runtime.Port>()
+// Maps Greaselion ports by tab id
+const greaselionPortsByTabId = new Map<number, chrome.runtime.Port>()
 
-// Maps a media key to a specific publisher
-const publisherKeys = new Map<string, string>()
+// Maps publisher keys by media key
+const publisherKeysByMediaKey = new Map<string, string>()
 
-const handleGreaselionErrorResponse = (tabId: number, mediaType: string, data: GreaselionErrorResponse) => {
+const handleGreaselionError = (tabId: number, mediaType: string, data: GreaselionError) => {
   console.error(`Greaselion error: ${data.errorMessage}`)
 }
 
-const handleMediaDurationMetadataResponse = (tabId: number, mediaType: string, data: MediaDurationMetadataResponse) => {
-  const publisherKey = publisherKeys[data.mediaKey]
+const handleMediaDurationMetadata = (tabId: number, mediaType: string, data: MediaDurationMetadata) => {
+  const publisherKey = publisherKeysByMediaKey.get(data.mediaKey)
   if (!publisherKey) {
-    console.error(`Failed to handle media duration metadata response: missing publisher key for media key ${data.mediaKey}`)
+    console.error(`Failed to handle media duration metadata: missing publisher key for media key ${data.mediaKey}`)
     return
   }
 
   chrome.braveRewards.updateMediaDuration(tabId, publisherKey, data.duration)
 }
 
-const handleMediaDurationHandlerRegistrationRequest = (tabId: number, mediaType: string, data: MediaDurationHandlerRegistrationRequest) => {
+const handleRegisterOnCompletedWebRequest = (tabId: number, mediaType: string, data: RegisterOnCompletedWebRequest) => {
   // If we already registered a handler for this tab, exit early
-  if (mediaDurationHandlerRegistrations[tabId] && mediaDurationHandlerRegistrations[tabId].registered) {
+  const handler = onCompletedWebRequestRegistrationsByTabId.get(tabId)
+  if (handler && handler.registered) {
     return
   }
 
   // Mark this tab as registered
-  mediaDurationHandlerRegistrations[tabId] = {
-    registered: true
-  }
+  onCompletedWebRequestRegistrationsByTabId.set(tabId, { registered: true })
 
   chrome.webRequest.onCompleted.addListener(
     // Listener
     function (details) {
-      const port = greaselionPorts.get(tabId)
+      const port = greaselionPortsByTabId.get(tabId)
       if (!port) {
         return
       }
       port.postMessage({
-        type: 'MediaDurationMetadataRequest',
+        type: 'MediaDurationMetadata',
+        mediaType,
         url: details.url
       })
     },
@@ -92,7 +85,7 @@ const handleMediaDurationHandlerRegistrationRequest = (tabId: number, mediaType:
         'xmlhttprequest'
       ],
       urls: [
-        data.urlRegex
+        data.urlPattern
       ]
     })
 }
@@ -123,14 +116,14 @@ const savePublisherInfo = (tabId: number, mediaType: string, url: string, publis
     })
 }
 
-const handleSavePublisherVisitResponse = (tabId: number, mediaType: string, data: SavePublisherVisitResponse) => {
+const handleSavePublisherVisit = (tabId: number, mediaType: string, data: SavePublisherVisit) => {
   if (!data.publisherKey) {
     console.error('Failed to handle publisher visit: missing publisher key')
     return
   }
 
-  if (data.mediaKey && !publisherKeys[data.mediaKey]) {
-    publisherKeys[data.mediaKey] = data.publisherKey
+  if (data.mediaKey && !publisherKeysByMediaKey.has(data.mediaKey)) {
+    publisherKeysByMediaKey.set(data.mediaKey, data.publisherKey)
   }
 
   chrome.braveRewards.getPublisherInfo(
@@ -154,58 +147,23 @@ const handleSavePublisherVisitResponse = (tabId: number, mediaType: string, data
     })
 }
 
-const processGreaselionMessage = (msg: any, sender: chrome.runtime.MessageSender) => {
-  if (!msg || !sender || !sender.tab) {
-    return
-  }
-
-  const windowId = sender.tab.windowId
-  if (!windowId) {
-    return
-  }
-
-  const tabId = sender.tab.id
-  if (!tabId) {
-    return
-  }
-
-  const response = msg as GreaselionResponse
-  if (!response.data) {
-    console.error(`Received empty Greaselion response payload for ${msg.type} message`)
-    return
-  }
-
-  switch (msg.type) {
-    case 'GreaselionError': {
-      const data = response.data as GreaselionErrorResponse
-      handleGreaselionErrorResponse(tabId, response.mediaType, data)
-      break
-    }
-    case 'SavePublisherVisit': {
-      const data = response.data as SavePublisherVisitResponse
-      handleSavePublisherVisitResponse(tabId, response.mediaType, data)
-      break
-    }
-  }
-}
-
 chrome.runtime.onConnectExternal.addListener((port: chrome.runtime.Port) => {
-  if (!port || !port.sender || !port.sender.id || !port.sender.tab || port.name !== 'Greaselion') {
+  if (!port || port.name !== 'Greaselion') {
     return
-  }
-
-  const tabId = port.sender.tab.id
-  if (!tabId) {
-    return
-  }
-
-  if (!greaselionPorts.get(tabId)) {
-    greaselionPorts.set(tabId, port)
   }
 
   port.onMessage.addListener((msg: any, port: chrome.runtime.Port) => {
-    if (!port.sender || !port.sender.id || !msg) {
+    if (!port.sender || !port.sender.id || !port.sender.tab || !msg) {
       return
+    }
+
+    const tabId = port.sender.tab.id
+    if (!tabId) {
+      return
+    }
+
+    if (!greaselionPortsByTabId.get(tabId)) {
+      greaselionPortsByTabId.set(tabId, port)
     }
 
     chrome.greaselion.isGreaselionExtension(port.sender.id, (valid: boolean) => {
@@ -213,14 +171,24 @@ chrome.runtime.onConnectExternal.addListener((port: chrome.runtime.Port) => {
         return
       }
       switch (msg.type) {
-        case 'MediaDurationHandlerRegistrationRequest': {
-          const data = msg.data as MediaDurationHandlerRegistrationRequest
-          handleMediaDurationHandlerRegistrationRequest(tabId, msg.mediaType, data)
+        case 'GreaselionError': {
+          const data = msg.data as GreaselionError
+          handleGreaselionError(tabId, msg.mediaType, data)
           break
         }
-        case 'MediaDurationMetadataResponse': {
-          const data = msg.data as MediaDurationMetadataResponse
-          handleMediaDurationMetadataResponse(tabId, msg.mediaType, data)
+        case 'MediaDurationMetadata': {
+          const data = msg.data as MediaDurationMetadata
+          handleMediaDurationMetadata(tabId, msg.mediaType, data)
+          break
+        }
+        case 'RegisterOnCompletedWebRequest': {
+          const data = msg.data as RegisterOnCompletedWebRequest
+          handleRegisterOnCompletedWebRequest(tabId, msg.mediaType, data)
+          break
+        }
+        case 'SavePublisherVisit': {
+          const data = msg.data as SavePublisherVisit
+          handleSavePublisherVisit(tabId, msg.mediaType, data)
           break
         }
       }
@@ -232,19 +200,7 @@ chrome.runtime.onConnectExternal.addListener((port: chrome.runtime.Port) => {
       console.error(`Greaselion port disconnected due to error: ${chrome.runtime.lastError}`)
     }
     if (port.sender && port.sender.tab && port.sender.tab.id) {
-      greaselionPorts.delete(port.sender.tab.id)
-    }
-  })
-})
-
-chrome.runtime.onMessageExternal.addListener((msg: any, sender: chrome.runtime.MessageSender) => {
-  if (!sender || !sender.id) {
-    return
-  }
-
-  chrome.greaselion.isGreaselionExtension(sender.id, (valid: boolean) => {
-    if (valid) {
-      processGreaselionMessage(msg, sender)
+      greaselionPortsByTabId.delete(port.sender.tab.id)
     }
   })
 })

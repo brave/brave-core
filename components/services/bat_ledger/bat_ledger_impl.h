@@ -163,7 +163,7 @@ class BatLedgerImpl :
   void UpdateMediaDuration(
       const uint64_t window_id,
       const std::string& publisher_key,
-      uint64_t duration) override;
+      const uint64_t duration) override;
 
   void GetPublisherInfo(
       const std::string& publisher_key,

@@ -302,7 +302,7 @@ class LEDGER_EXPORT Ledger {
   virtual void UpdateMediaDuration(
       const uint64_t window_id,
       const std::string& publisher_key,
-      uint64_t duration) = 0;
+      const uint64_t duration) = 0;
 
   virtual void GetPublisherInfo(
       const std::string& publisher_key,
