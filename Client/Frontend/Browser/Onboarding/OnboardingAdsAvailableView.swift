@@ -56,7 +56,7 @@ extension OnboardingAdsAvailableController {
         
         private let descriptionLabel = CommonViews.secondaryText("").then {
             let text = Preferences.Rewards.isUsingBAP.value == true ? Strings.OBAdsOptInMessageJapan : Strings.OBAdsOptInMessage
-            $0.attributedText = text.boldWords(with: $0.font, amount: 2)
+            $0.attributedText = text.boldWords(with: $0.font, amount: 5)
         }
         
         private lazy var textStackView = UIStackView().then { stackView in

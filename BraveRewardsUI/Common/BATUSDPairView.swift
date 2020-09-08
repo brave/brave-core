@@ -17,7 +17,9 @@ class BATUSDPairView: UIStackView {
        usdConfig: (UILabel) -> Void) {
     self.batContainer = CurrencyContainerView(amountLabelConfig: batAmountConfig,
                                               kindLabelConfig: batKindConfig)
-    self.usdContainer = CurrencyContainerView(uniformLabelConfig: usdConfig)
+    self.usdContainer = CurrencyContainerView(uniformLabelConfig: usdConfig).then {
+      $0.isHidden = true
+    }
   
     super.init(frame: .zero)
     

@@ -217,6 +217,9 @@
 /* No comment provided by engineer. */
 "CancelButtonTitle" = "Abbrechen";
 
+/* No comment provided by engineer. */
+"ClearData" = "Daten löschen";
+
 /* Button in settings that clears private data for the selected items. Also used as section title in settings panel */
 "ClearPrivateData" = "Private Daten löschen";
 
@@ -590,19 +593,16 @@
 "ntp.braveSupportFavoriteTitle" = "Brave Support";
 
 /* No comment provided by engineer. */
-"ntp.claimRewards" = "Meine Prämien holen";
+"ntp.claimRewards" = "Token anfordern";
 
-/* Placeholder example: 'You earned 42 BAT last month from viewing privacy-respecting ads.' */
-"ntp.earningsReport" = "Sie haben letzten Monat %@ für das Ansehen von Ads, die den Datenschutz respektieren, verdient.";
-
-/* No comment provided by engineer. */
-"ntp.earnTokensByViewingAds" = "Verdienen Sie Tokens für das Ansehen von Ads, die den Datenschutz respektieren.";
+/* Placeholder example: 'You earned 42 BAT by browsing with Brave.' */
+"ntp.earningsReport" = "Sie haben %@ durch das Surfen mit Brave verdient.";
 
 /* No comment provided by engineer. */
-"ntp.getPaidForThisImageTurnAds" = "Verdienen Sie Token für das Ansehen dieses Bildes. Aktivieren Sie Brave Ads, um Ihren Anteil zu erhalten.";
+"ntp.getPaidForThisImageTurnAds" = "Sammeln Sie Token, um dieses Bild anzuzeigen. Aktivieren Sie Brave Ads und unterstützen Sie die Ersteller.";
 
 /* No comment provided by engineer. */
-"ntp.getPaidForThisImageTurnRewards" = "Verdienen Sie Token für das Ansehen dieses Bildes. Aktivieren Sie Brave Rewards, um Ihren Anteil zu erhalten.";
+"ntp.getPaidForThisImageTurnRewards" = "Sammeln Sie Token, um dieses Bild anzuzeigen. Aktivieren Sie Brave Rewards und unterstützen Sie die Ersteller.";
 
 /* No comment provided by engineer. */
 "ntp.getPaidToSeeThisImage" = "Verdienen Sie Token für das Ansehen dieses Bildes.";
@@ -614,7 +614,7 @@
 "ntp.hideSponsoredImages" = "Gesponserte Bilder ausblenden";
 
 /* No comment provided by engineer. */
-"ntp.learnMoreAboutBrandedImages" = "Für jedes gesponserte Bild, das Sie ansehen, erhalten Sie 70 % des Umsatzes in Token. Mit Brave Ads bestimmen Sie stets selbst, welche Anzeigen Sie sehen.";
+"ntp.learnMoreAboutBrandedImages" = "Wenn Sie ein gesponsertes Bild anzeigen, erhalten Sie Token, mit denen Sie Ersteller unterstützen können. Mit Brave Ads haben Sie immer die Kontrolle über die Anzeigen, die Sie sehen.";
 
 /* No comment provided by engineer. */
 "ntp.learnMoreAboutRewards" = "Mehr über Brave Rewards erfahren";
@@ -644,7 +644,7 @@
 "ntp.showMoreFavorites" = "Mehr anzeigen";
 
 /* No comment provided by engineer. */
-"ntp.supportWebCreatorsWithTokens" = "Sie können Web-Ersteller mit Tokens unterstützen.";
+"ntp.supportWebCreatorsWithTokens" = "Verdienen Sie Token und belohnen Sie die Ersteller für großartige Inhalte, während Sie surfen.";
 
 /* No comment provided by engineer. */
 "ntp.turnOnBraveAds" = "Brave-Ads einschalten";

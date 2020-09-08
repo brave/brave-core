@@ -25,7 +25,7 @@ class OnboardingRewardsAgreementViewController: OnboardingViewController {
         let adSupportedRegionText = Preferences.Rewards.isUsingBAP.value == true ? Strings.OBRewardsDetailInAdRegionJapan : Strings.OBRewardsDetailInAdRegion
         contentView.updateSubtitleText(isAdsRegionSupported ?
             adSupportedRegionText : Strings.OBRewardsDetailOutsideAdRegion,
-                                       boldWords: isAdsRegionSupported ? 2 : 1,
+                                       boldWords: isAdsRegionSupported ? 5 : 1,
                                        for: theme)
         
         contentView.turnOnButton.addTarget(self, action: #selector(onTurnOn), for: .touchUpInside)

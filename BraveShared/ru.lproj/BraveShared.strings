@@ -217,6 +217,9 @@
 /* No comment provided by engineer. */
 "CancelButtonTitle" = "Отмена";
 
+/* No comment provided by engineer. */
+"ClearData" = "Удаление данных";
+
 /* Button in settings that clears private data for the selected items. Also used as section title in settings panel */
 "ClearPrivateData" = "Удалить личные данные";
 
@@ -293,7 +296,7 @@
 "DDGCalloutEnable" = "Да";
 
 /* DuckDuckGo message. */
-"DDGCalloutMessage" = "В приватном режиме используется DuckDuckGo — поисковая система, которая не отслеживает вашу историю.";
+"DDGCalloutMessage" = "В режиме инкогнито Brave использует поисковую систему DuckDuckGo. Она не отслеживает историю поиска, сохраняя конфиденциальность ваших запросов.";
 
 /* DuckDuckGo callout no action. */
 "DDGCalloutNo" = "Нет";
@@ -590,19 +593,16 @@
 "ntp.braveSupportFavoriteTitle" = "Служба поддержки Brave";
 
 /* No comment provided by engineer. */
-"ntp.claimRewards" = "Получите вознаграждение";
+"ntp.claimRewards" = "Получить баллы";
 
-/* Placeholder example: 'You earned 42 BAT last month from viewing privacy-respecting ads.' */
-"ntp.earningsReport" = "В прошлом месяце вы заработали %@ за просмотр рекламных объявлений, не нарушающих вашу конфиденциальность.";
-
-/* No comment provided by engineer. */
-"ntp.earnTokensByViewingAds" = "Зарабатывайте токены за просмотр рекламных объявлений, не нарушающих вашу конфиденциальность.";
+/* Placeholder example: 'You earned 42 BAT by browsing with Brave.' */
+"ntp.earningsReport" = "Вы заработали %@, пользуясь Brave.";
 
 /* No comment provided by engineer. */
-"ntp.getPaidForThisImageTurnAds" = "Посмотрите это изображение и заработайте токены. Чтобы получить вознаграждение, включите Brave Ads.";
+"ntp.getPaidForThisImageTurnAds" = "Посмотрите это изображение и заработайте баллы. Включите Brave Ads и начните поддерживать авторов контента.";
 
 /* No comment provided by engineer. */
-"ntp.getPaidForThisImageTurnRewards" = "Посмотрите это изображение и заработайте токены. Чтобы получить вознаграждение, включите Brave Rewards.";
+"ntp.getPaidForThisImageTurnRewards" = "Посмотрите это изображение и заработайте баллы. Включите Brave Rewards и начните поддерживать авторов контента.";
 
 /* No comment provided by engineer. */
 "ntp.getPaidToSeeThisImage" = "Посмотрите это изображение и заработайте токены.";
@@ -614,7 +614,7 @@
 "ntp.hideSponsoredImages" = "Не показывать спонсорские изображения";
 
 /* No comment provided by engineer. */
-"ntp.learnMoreAboutBrandedImages" = "За каждый просмотр спонсорского изображения вы получите 70 % от дохода в токенах. Функция Brave Ads позволяет легко контролировать настройки рекламы.";
+"ntp.learnMoreAboutBrandedImages" = "За каждый просмотр спонсорского изображения вы получаете баллы, которые можете потратить на поддержку авторов. Brave Ads позволяет с легкостью выбирать, какая реклама может появляться в браузере.";
 
 /* No comment provided by engineer. */
 "ntp.learnMoreAboutRewards" = "Подробнее о Brave Rewards…";
@@ -644,7 +644,7 @@
 "ntp.showMoreFavorites" = "Показать еще";
 
 /* No comment provided by engineer. */
-"ntp.supportWebCreatorsWithTokens" = "Вы можете поддержать создателей контента с помощью токенов.";
+"ntp.supportWebCreatorsWithTokens" = "Зарабатывайте баллы и вознаграждайте авторов контента, пользуясь браузером.";
 
 /* No comment provided by engineer. */
 "ntp.turnOnBraveAds" = "Включить Brave Ads";
@@ -731,7 +731,7 @@
 "PrivateTabDetails" = "Используя приватные вкладки, вы влияете только на то, какую информацию Brave сохраняет на вашем устройстве.\n\nСайты получают ваш IP-адрес автоматически, как только вы заходите на них. При этом они могут определить ваше примерное местоположение — как правило, на уровне города. Иногда эти данные могут быть точнее. Кроме того, сайты сохраняют всю вводимую вами информацию, например поисковые запросы. Если вы войдете в систему, им будет известно, что вы являетесь владельцем этой учетной записи. При закрытии приватных вкладок вы автоматически выйдете из аккаунта, так как Brave удалит файлы cookie, необходимые для того, чтобы оставаться в системе.\n\nВаши действия в сети может отслеживать интернет-провайдер. Как правило, это оператор мобильной связи либо владелец сети Wi-Fi или VPN, в зависимости от того, кто предоставляет вам доступ к интернету. Ваш интернет-провайдер видит, какие сайты вы посещаете. Если используется протокол HTTPS, интернет-провайдер сможет лишь догадываться о том, что вы делали на сайте. Если же сайт использует только протокол HTTP, интернет-провайдер сможет узнать всё: какие поисковые запросы вы вводили, какие страницы посещали, по каким ссылкам переходили и т. д.\n\nИспользование приватных вкладок вряд ли помешает работодателю узнать, на какие сайты вы заходили, если он управляет вашим устройством. Кроме того, другие люди, у которых есть доступ к вашему устройству, могут установить программу, отслеживающую ваши действия, — приватные вкладки не помогут и в этом случае.";
 
 /* Private tab information link */
-"PrivateTabLink" = "Подробнее о приватных вкладках…";
+"PrivateTabLink" = "Подробнее о вкладках инкогнито…";
 
 /* Default engine for private search. */
 "PrivateTabSearch" = "Приватная вкладка";

@@ -30,19 +30,19 @@
 "BraveShieldsStatusValueUp" = "Upp";
 
 /* The body of the notification that goes out monthly to users who can claim an ads grant */
-"MonthlyAdsClaimNotificationBody" = "Dags att belönas för de annonser du har sett i Brave.";
+"MonthlyAdsClaimNotificationBody" = "Tryck för att göra anspråk på dina gratis tokens.";
 
 /* The title of the notification that goes out monthly to users who can claim an ads grant */
-"MonthlyAdsClaimNotificationTitle" = "Hämta dina Brave annonsbelöningar";
+"MonthlyAdsClaimNotificationTitle" = "Brave Rewards 💵🎁";
 
 /* For search suggestions prompt. This string should be short so it fits nicely on the prompt row. */
 "No" = "Nej";
 
 /* Message when opting into brave Ads when region becomes available */
-"OBAdsOptInMessage" = "Tjäna mynt genom att titta på annonser som respekterar din integritet.";
+"OBAdsOptInMessage" = "Tjäna tokens och belöna skapare för bra innehåll medan du surfar.";
 
 /* Message when opting into brave Ads when region becomes available */
-"OBAdsOptInMessageJapan" = "Tjäna poäng när du tittar på annonser som respekterar din integritet.";
+"OBAdsOptInMessageJapan" = "Tjäna poäng och belöna skapare för bra innehåll medan du surfar.";
 
 /* Title when opting into brave Ads when region becomes available */
 "OBAdsOptInTitle" = "Brave-annonser är här!";
@@ -71,6 +71,21 @@
 /* Button to join Brave Rewards. */
 "OBJoinButton" = "Gå med";
 
+/* No comment provided by engineer. */
+"OBPrivacyConsentClipboardPermission" = "Tillåt Brave att kontrollera urklipp för en matchande hänvisningskod";
+
+/* No comment provided by engineer. */
+"OBPrivacyConsentDetail" = "Du kanske har laddat ner Brave till stöd för din hänvisare. För att upptäcka din hänvisare utför Brave en engångskontroll av urklipp med avseende på matchande hänvisningskod. Denna kontroll är endast begränsad till koden och inga andra personuppgifter kommer att överföras. Om du väljer bort kommer inte din hänvisare att få belöningar från Brave.";
+
+/* No comment provided by engineer. */
+"OBPrivacyConsentNoButton" = "Tillåt inte denna kontroll";
+
+/* No comment provided by engineer. */
+"OBPrivacyConsentTitle" = "Anonym hänvisningskodkontroll";
+
+/* No comment provided by engineer. */
+"OBPrivacyConsentYesButton" = "Tillåt kontroll av urklipp en gång";
+
 /* Detail text for rewards agreement onboarding screen */
 "OBRewardsAgreementDetail" = "Genom att aktivera Rewards godkänner du";
 
@@ -81,10 +96,10 @@
 "OBRewardsAgreementTitle" = "Brave Rewards";
 
 /* Detail text for rewards onboarding screen */
-"OBRewardsDetailInAdRegion" = "Tjäna mynt genom att se på annonser som respekterar din integritet. Använd dem för att stötta sajter och skapare du gillar.";
+"OBRewardsDetailInAdRegion" = "Tjäna tokens och belöna skapare för bra innehåll medan du surfar.";
 
 /* Detail text for rewards onboarding screen */
-"OBRewardsDetailInAdRegionJapan" = "Tjäna poäng genom att se på annonser som respekterar din integritet. Använd dem för att stötta sajter och skapare du gillar.";
+"OBRewardsDetailInAdRegionJapan" = "Tjäna poäng och belöna skapare för bra innehåll medan du surfar.";
 
 /* Detail text for rewards onboarding screen */
 "OBRewardsDetailOutsideAdRegion" = "Stötta webbplatser och skapare baserat på hur mycket tid du ger dem.";
@@ -135,6 +150,222 @@
 "RestoredFavoritesFolderName" = "Återställda favoriter";
 
 /* No comment provided by engineer. */
+"RewardsInternalsAmount" = "Belopp";
+
+/* No comment provided by engineer. */
+"RewardsInternalsAnonymous" = "Anonymt";
+
+/* No comment provided by engineer. */
+"RewardsInternalsBalanceInfoHeader" = "Saldoinformation";
+
+/* No comment provided by engineer. */
+"RewardsInternalsClaimedAt" = "Anspråk gjordes den";
+
+/* No comment provided by engineer. */
+"RewardsInternalsClaimID" = "Anspråks-ID";
+
+/* No comment provided by engineer. */
+"RewardsInternalsClearLogsConfirmation" = "Är du säker på att du vill rensa alla belöningsloggar?";
+
+/* No comment provided by engineer. */
+"RewardsInternalsClearLogsTitle" = "Rensa loggar";
+
+/* No comment provided by engineer. */
+"RewardsInternalsContributionAmount" = "Belopp att donera";
+
+/* No comment provided by engineer. */
+"RewardsInternalsContributionProcessorBraveTokens" = "Brave-tokens";
+
+/* No comment provided by engineer. */
+"RewardsInternalsContributionProcessorNone" = "Ingen";
+
+/* No comment provided by engineer. */
+"RewardsInternalsContributionProcessorUphold" = "Uphold";
+
+/* No comment provided by engineer. */
+"RewardsInternalsContributionProcessorUserFunds" = "Användares pengar";
+
+/* No comment provided by engineer. */
+"RewardsInternalsContributionsStepACOff" = "Donera automatiskt Av";
+
+/* 'AC' refers to Auto-Contribute */
+"RewardsInternalsContributionsStepACTableEmpty" = "AC-tabell tom";
+
+/* No comment provided by engineer. */
+"RewardsInternalsContributionsStepCompleted" = "Slutförd";
+
+/* No comment provided by engineer. */
+"RewardsInternalsContributionsStepCreds" = "Inloggningsuppgifter";
+
+/* No comment provided by engineer. */
+"RewardsInternalsContributionsStepExternalTransaction" = "Extern transaktion";
+
+/* No comment provided by engineer. */
+"RewardsInternalsContributionsStepFailed" = "Misslyckades";
+
+/* No comment provided by engineer. */
+"RewardsInternalsContributionsStepNotEnoughFunds" = "För lite pengar";
+
+/* No comment provided by engineer. */
+"RewardsInternalsContributionsStepPrepare" = "Förbered";
+
+/* No comment provided by engineer. */
+"RewardsInternalsContributionsStepReserve" = "Reservera";
+
+/* No comment provided by engineer. */
+"RewardsInternalsContributionsStepRewardsOff" = "Belöningar Av";
+
+/* No comment provided by engineer. */
+"RewardsInternalsContributionsStepStart" = "Starta";
+
+/* No comment provided by engineer. */
+"RewardsInternalsContributionsTitle" = "Donationer";
+
+/* No comment provided by engineer. */
+"RewardsInternalsCreatedAt" = "Skapades den";
+
+/* No comment provided by engineer. */
+"RewardsInternalsDeviceInfoHeader" = "Enhetsinformation";
+
+/* No comment provided by engineer. */
+"RewardsInternalsEnrolled" = "Inskriven";
+
+/* No comment provided by engineer. */
+"RewardsInternalsEnrollmentState" = "Inskrivningsstatus";
+
+/* No comment provided by engineer. */
+"RewardsInternalsExpiresAt" = "Utgår den";
+
+/* No comment provided by engineer. */
+"RewardsInternalsInvalid" = "Ogiltig";
+
+/* No comment provided by engineer. */
+"RewardsInternalsKeyInfoSeed" = "Nyckelinfo-frö";
+
+/* No comment provided by engineer. */
+"RewardsInternalsLegacyPromotion" = "Äldre marknadsföring";
+
+/* %d will be the number of logs currently being shown, i.e. '10 logs shown' */
+"RewardsInternalsLogsCount" = "%d loggar visas";
+
+/* No comment provided by engineer. */
+"RewardsInternalsLogsTitle" = "Loggar";
+
+/* No comment provided by engineer. */
+"RewardsInternalsNotEnrolled" = "Ej inskriven";
+
+/* No comment provided by engineer. */
+"RewardsInternalsNotSupported" = "Stöds ej";
+
+/* No comment provided by engineer. */
+"RewardsInternalsProcessor" = "Behandlare";
+
+/* No comment provided by engineer. */
+"RewardsInternalsPromotionStatusActive" = "Aktiv";
+
+/* No comment provided by engineer. */
+"RewardsInternalsPromotionStatusAttested" = "Intygad";
+
+/* No comment provided by engineer. */
+"RewardsInternalsPromotionStatusCorrupted" = "Skadad";
+
+/* No comment provided by engineer. */
+"RewardsInternalsPromotionStatusFinished" = "Slutförd";
+
+/* No comment provided by engineer. */
+"RewardsInternalsPromotionStatusOver" = "Över";
+
+/* No comment provided by engineer. */
+"RewardsInternalsPromotionsTitle" = "Kampanjer";
+
+/* No comment provided by engineer. */
+"RewardsInternalsPublisher" = "Utgivare";
+
+/* No comment provided by engineer. */
+"RewardsInternalsPublishers" = "Utgivare";
+
+/* No comment provided by engineer. */
+"RewardsInternalsRetryCount" = "Försök igen, antal";
+
+/* No comment provided by engineer. */
+"RewardsInternalsRewardsTypeAutoContribute" = "Donera automatiskt";
+
+/* No comment provided by engineer. */
+"RewardsInternalsRewardsTypeOneTimeTip" = "Engångsdricks";
+
+/* No comment provided by engineer. */
+"RewardsInternalsRewardsTypeRecurringTip" = "Återkommande dricks";
+
+/* No comment provided by engineer. */
+"RewardsInternalsSharableBasicDescription" = "Plånbok, enhets- och saldoinformation (delas alltid)";
+
+/* No comment provided by engineer. */
+"RewardsInternalsSharableBasicTitle" = "Grundläggande information";
+
+/* No comment provided by engineer. */
+"RewardsInternalsSharableContributionsDescription" = "Alla bidrag som görs till utgivare genom dricks eller automatisk donation";
+
+/* No comment provided by engineer. */
+"RewardsInternalsSharableDatabaseDescription" = "Den interna datalagringen";
+
+/* No comment provided by engineer. */
+"RewardsInternalsSharableDatabaseTitle" = "Belöningsdatabas";
+
+/* No comment provided by engineer. */
+"RewardsInternalsSharableLogsDescription" = "Belöningsspecifik loggning";
+
+/* No comment provided by engineer. */
+"RewardsInternalsSharablePromotionsDescription" = "Alla BAT-kampanjer som du har gjort anspråk på eller har väntande från annonser eller anslag";
+
+/* No comment provided by engineer. */
+"RewardsInternalsShare" = "Dela";
+
+/* 'Rewards' as in 'Brave Rewards' */
+"RewardsInternalsShareInternalsTitle" = "Dela belöningar internt";
+
+/* No comment provided by engineer. */
+"RewardsInternalsSharingWarningMessage" = "Data på denna sida kan vara känsliga. Behandla dem på samma sätt som du skulle göra med din plånboks privata nycklar. Var försiktig med vem du delar dem med.";
+
+/* No comment provided by engineer. */
+"RewardsInternalsSharingWarningTitle" = "Varning";
+
+/* No comment provided by engineer. */
+"RewardsInternalsStatus" = "Status";
+
+/* i.e. 'Step: Started' */
+"RewardsInternalsStep" = "Steg";
+
+/* No comment provided by engineer. */
+"RewardsInternalsSupported" = "Stöds";
+
+/* 'Rewards' as in 'Brave Rewards' */
+"RewardsInternalsTitle" = "Belöningar internt";
+
+/* No comment provided by engineer. */
+"RewardsInternalsTotalAmount" = "Totalt belopp";
+
+/* No comment provided by engineer. */
+"RewardsInternalsTotalBalance" = "Totalt saldo";
+
+/* No comment provided by engineer. */
+"RewardsInternalsType" = "Typ";
+
+/* No comment provided by engineer. */
+"RewardsInternalsValid" = "Giltig";
+
+/* No comment provided by engineer. */
+"RewardsInternalsVersion" = "Version";
+
+/* No comment provided by engineer. */
+"RewardsInternalsWalletCreationDate" = "Plånboken skapades";
+
+/* No comment provided by engineer. */
+"RewardsInternalsWalletInfoHeader" = "Plånboksinformation";
+
+/* No comment provided by engineer. */
+"RewardsInternalsWalletPaymentID" = "Plånboksbetalning-ID";
+
+/* No comment provided by engineer. */
 "ShieldsDownDisclaimer" = "Du surfar på den här webbplatsen utan Braves sekretesskydd. Fungerar den inte korrekt med sköldar uppe?";
 
 /* Text that informs a user about Brave Sync service deprecation. */
@@ -183,7 +414,7 @@
 "vpn.checkboxNoSellout" = "Vi delar eller säljer aldrig dina uppgifter";
 
 /* Text for a checkbox to present the user benefits for using Brave VPN */
-"vpn.checkboxProtectConnections" = "Skyddar alla dina apar (inte bara Brave)";
+"vpn.checkboxProtectConnections" = "Skyddar dig från oönskade anslutningar";
 
 /* AppStore Receipt field for customer support contact form. */
 "vpn.contactFormAppStoreReceipt" = "AppStore-kvitto";
@@ -261,7 +492,7 @@
 "vpn.iapDisclaimer" = "Alla prenumerationer förnyas automatiskt men kan avbrytas innan förnyelse.";
 
 /* Text explaining how the VPN works. */
-"vpn.installProfileBody" = "Den här profilen tillåter VPN att automatiskt ansluta och säkra trafik över din enhet – i alla appar, hela tiden. Den här VPN-anslutningen kommer krypteras och dirigeras genom Braves intelligenta brandvägg för att blockera annonser och spårare.";
+"vpn.installProfileBody" = "Den här profilen tillåter VPN att automatiskt ansluta och säkra trafik över din enhet, hela tiden. Den här VPN-anslutningen kommer krypteras och dirigeras genom Braves intelligenta brandvägg för att blockera potentiellt skadliga och invasiva anslutningar.";
 
 /* Text for 'install vpn profile' button */
 "vpn.installProfileButtonText" = "Installera VPN-profil";
@@ -303,7 +534,7 @@
 "vpn.restorePurchases" = "Återställ";
 
 /* No comment provided by engineer. */
-"vpn.settingHeaderBody" = "Skydda din anslutning och blockera annonser och spårare över hela din enhet.";
+"vpn.settingHeaderBody" = "Skydda din anslutning och blockera invasiva spårare.";
 
 /* Button to contact tech support */
 "vpn.settingsContactSupport" = "Kontakta teknisk support";
@@ -369,7 +600,7 @@
 "vpn.vpnErrorPurchaseFailedTitle" = "Fel";
 
 /* Disclaimer for user purchasing the VPN plan. */
-"vpn.vpnIAPBoilerPlate" = "Priser kan variera beroende på plats. Prenumerationer kommer att debiteras ditt kreditkort via ditt iTunes-konto. Prenumerationer erbjuds antingen för en period på 1 månad ($ 9.99) eller 1 år ($ 99.99) och kommer att förnyas automatiskt såvida den inte sägs upp åtminstone 24 timmar innan slutet av nuvarande period. Du kommer inte kunna avbryta prenumerationen när den är aktiverad. Du kan hantera dina prenumerationer i Kontoinställningarna efter köp. Den kostnadsfria provperioden kan endast användas en gång. Eventuella oanvända delar av en provperiod kommer bli förverkade om du köper en prenumeration.";
+"vpn.vpnIAPBoilerPlate" = "Prenumerationer debiteras via ditt iTunes-konto.\n\nEventuell oanvänd del av den kostnadsfria provperioden, om den erbjuds, förverkas när du köper en prenumeration.\n\nDin prenumeration förnyas automatiskt såvida den inte sägs upp minst 24 timmar före slutet av den aktuella perioden.\n\nDu kan hantera dina prenumerationer i Inställningar.\n\nGenom att använda Brave godkänner du användarvillkoren och sekretesspolicyn.";
 
 /* Title Brave VPN menu item. */
 "vpn.vpnMenuItemTitle" = "Brave VPN";

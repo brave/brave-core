@@ -217,6 +217,9 @@
 /* No comment provided by engineer. */
 "CancelButtonTitle" = "キャンセル";
 
+/* No comment provided by engineer. */
+"ClearData" = "データを削除";
+
 /* Button in settings that clears private data for the selected items. Also used as section title in settings panel */
 "ClearPrivateData" = "プライベートデータを消去する";
 
@@ -590,13 +593,10 @@
 "ntp.braveSupportFavoriteTitle" = "サポート";
 
 /* No comment provided by engineer. */
-"ntp.claimRewards" = "報酬を受け取る";
+"ntp.claimRewards" = "BATポイントを受け取る";
 
-/* Placeholder example: 'You earned 42 BAT last month from viewing privacy-respecting ads.' */
-"ntp.earningsReport" = "先月、プライバシー重視型の広告を閲覧して%@を獲得しました。";
-
-/* No comment provided by engineer. */
-"ntp.earnTokensByViewingAds" = "プライバシー重視型の広告を表示してトークンを獲得します。";
+/* Placeholder example: 'You earned 42 BAT by browsing with Brave.' */
+"ntp.earningsReport" = "Braveをブラウジングで%@ BATポイント獲得しました";
 
 /* No comment provided by engineer. */
 "ntp.getPaidForThisImageTurnAds" = "この背景画像を表示することで報酬を受け取ることができます。早速Brave Adsをオンにして報酬を受け取りましょう！";
@@ -644,7 +644,7 @@
 "ntp.showMoreFavorites" = "もっと見る";
 
 /* No comment provided by engineer. */
-"ntp.supportWebCreatorsWithTokens" = "クリエイターにウェブ上で直接トークンを送ることができます";
+"ntp.supportWebCreatorsWithTokens" = "ブラウジング中にBATポイントを獲得し、同時にコンテンツクリエイターに還元することができます";
 
 /* No comment provided by engineer. */
 "ntp.turnOnBraveAds" = "Brave Adsを有効にする";
@@ -731,7 +731,7 @@
 "PrivateTabDetails" = "プライベートタブを使うと、Braveのデバイス上での動作は変わりますが、その他の行動は変わりません。\n              \n              あなたのIPアドレスは訪問先のサイトにより追跡され、あなたがいるおよその位置 (都市など) が推測されます。この位置情報の推測は、さらに詳細になる場合もあります。また、サイトはあなたが具体的に伝達したあらゆる内容 (検索語句など) を知ることができます。サイトにログインした場合、サイトにはあなたがそのアカウントの所有者であることが伝わります。プライベートタブを閉じるとことで、Braveはログイン状態を維持するCookieを破棄するため、あなたはログアウトします。\n              \n              あなたをインターネットに接続する者 (ISP) は、あなたのネットワークアクティビティをすべて見ることができます。多くの場合、これはご利用の携帯電話会社になります。WiFiネットワークに接続している場合は、そのネットワークの所有者になります。VPNを使用している場合は、そのVPNの管理者になります。ISPは、あなたがどのサイトを訪問したかを知ることができます。サイトがHTTPSを使っている場合、あなたがそのサイトで何をしたかについてISPの推測能力が限られます。HTTPのみが使用されている場合は、ISPによりあらゆること (検索語句、閲覧したページ、ジャンプしたリンク) がサイトに伝わります。\n              \n              雇用主がデバイスを管理している場合、雇用主もあなたがそのデバイスで行った行動を追跡できる可能性があります。プライベートタブを使ったとしても、訪問先のサイトを隠すことは不可能です。また、そのデバイスにアクセスできる他の人が、あなたのアクティビティをモニタリングするソフトウェアをインストールしている可能性もあります。その場合、プライベートタブを使ってもモニタリングを回避することはできません。";
 
 /* Private tab information link */
-"PrivateTabLink" = "プライベートタブについて。";
+"PrivateTabLink" = "プライベートタブについて";
 
 /* Default engine for private search. */
 "PrivateTabSearch" = "プライベートタブ";

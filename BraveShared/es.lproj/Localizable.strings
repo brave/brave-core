@@ -30,19 +30,19 @@
 "BraveShieldsStatusValueUp" = "activados";
 
 /* The body of the notification that goes out monthly to users who can claim an ads grant */
-"MonthlyAdsClaimNotificationBody" = "Ha llegado el momento de recompensarte por los anuncios que has visto en Brave.";
+"MonthlyAdsClaimNotificationBody" = "Toca para reclamar tus tokens gratuitos.";
 
 /* The title of the notification that goes out monthly to users who can claim an ads grant */
-"MonthlyAdsClaimNotificationTitle" = "Reclama tus recompensas por los anuncios de Brave";
+"MonthlyAdsClaimNotificationTitle" = "Brave Rewards 💵🎁";
 
 /* For search suggestions prompt. This string should be short so it fits nicely on the prompt row. */
 "No" = "No";
 
 /* Message when opting into brave Ads when region becomes available */
-"OBAdsOptInMessage" = "Gana tokens por ver anuncios respetuosos con tu privacidad.";
+"OBAdsOptInMessage" = "Gana tokens y recompensa a los creadores por su fantástico contenido mientras navegas.";
 
 /* Message when opting into brave Ads when region becomes available */
-"OBAdsOptInMessageJapan" = "Gana puntos por ver anuncios respetuosos con tu privacidad.";
+"OBAdsOptInMessageJapan" = "Gana puntos y recompensa a los creadores por su fantástico contenido mientras navegas.";
 
 /* Title when opting into brave Ads when region becomes available */
 "OBAdsOptInTitle" = "¡Brave Ads ya está aquí!";
@@ -71,6 +71,21 @@
 /* Button to join Brave Rewards. */
 "OBJoinButton" = "Unirse";
 
+/* No comment provided by engineer. */
+"OBPrivacyConsentClipboardPermission" = "Permitir que Brave compruebe mi portapapeles para encontrar un código de referencia correspondiente";
+
+/* No comment provided by engineer. */
+"OBPrivacyConsentDetail" = "Es posible que hayas descargado Brave para apoyar a la persona que te lo ha recomendado. Para identificar a dicha persona, Brave necesita realizar una comprobación única en tu portapapeles para ver si tienes el código de referencia correspondiente. Esta comprobación se limita a la búsqueda del código, de forma que no se transmitirá ningún otro dato personal. Si decides no permitirlo, la persona que te ha recomendado Brave no recibirá ninguna recompensa.";
+
+/* No comment provided by engineer. */
+"OBPrivacyConsentNoButton" = "No permitir esta comprobación";
+
+/* No comment provided by engineer. */
+"OBPrivacyConsentTitle" = "Comprobación de código de referencia anónimo";
+
+/* No comment provided by engineer. */
+"OBPrivacyConsentYesButton" = "Permitir la comprobación única en el portapapeles";
+
 /* Detail text for rewards agreement onboarding screen */
 "OBRewardsAgreementDetail" = "Al activar Brave Rewards, acepta las";
 
@@ -81,10 +96,10 @@
 "OBRewardsAgreementTitle" = "Brave Rewards";
 
 /* Detail text for rewards onboarding screen */
-"OBRewardsDetailInAdRegion" = "Gane tokens por ver anuncios respetuosos con su privacidad y úselos para apoyar a sus sitios y creadores favoritos.";
+"OBRewardsDetailInAdRegion" = "Gana tokens y recompensa a los creadores por su fantástico contenido mientras navegas.";
 
 /* Detail text for rewards onboarding screen */
-"OBRewardsDetailInAdRegionJapan" = "Gane puntos por ver anuncios respetuosos con su privacidad y úselos para apoyar a sus sitios y creadores favoritos.";
+"OBRewardsDetailInAdRegionJapan" = "Gana puntos y recompensa a los creadores por su fantástico contenido mientras navegas.";
 
 /* Detail text for rewards onboarding screen */
 "OBRewardsDetailOutsideAdRegion" = "Apoye a sus sitios web y creadores favoritos en función de la atención que les presta.";
@@ -135,10 +150,226 @@
 "RestoredFavoritesFolderName" = "Favoritos restaurados";
 
 /* No comment provided by engineer. */
+"RewardsInternalsAmount" = "Importe";
+
+/* No comment provided by engineer. */
+"RewardsInternalsAnonymous" = "Anónimo";
+
+/* No comment provided by engineer. */
+"RewardsInternalsBalanceInfoHeader" = "Información sobre el saldo";
+
+/* No comment provided by engineer. */
+"RewardsInternalsClaimedAt" = "Reclamado a las";
+
+/* No comment provided by engineer. */
+"RewardsInternalsClaimID" = "Reclamar ID";
+
+/* No comment provided by engineer. */
+"RewardsInternalsClearLogsConfirmation" = "¿Seguro que quieres borrar todos los registros de Rewards?";
+
+/* No comment provided by engineer. */
+"RewardsInternalsClearLogsTitle" = "Borrar registros";
+
+/* No comment provided by engineer. */
+"RewardsInternalsContributionAmount" = "Importe de contribución";
+
+/* No comment provided by engineer. */
+"RewardsInternalsContributionProcessorBraveTokens" = "Tokens de Brave";
+
+/* No comment provided by engineer. */
+"RewardsInternalsContributionProcessorNone" = "Ninguno";
+
+/* No comment provided by engineer. */
+"RewardsInternalsContributionProcessorUphold" = "Uphold";
+
+/* No comment provided by engineer. */
+"RewardsInternalsContributionProcessorUserFunds" = "Fondos del usuario";
+
+/* No comment provided by engineer. */
+"RewardsInternalsContributionsStepACOff" = "Contribución automática desactivada";
+
+/* 'AC' refers to Auto-Contribute */
+"RewardsInternalsContributionsStepACTableEmpty" = "Tabla de CA vacía";
+
+/* No comment provided by engineer. */
+"RewardsInternalsContributionsStepCompleted" = "Completado";
+
+/* No comment provided by engineer. */
+"RewardsInternalsContributionsStepCreds" = "Credenciales";
+
+/* No comment provided by engineer. */
+"RewardsInternalsContributionsStepExternalTransaction" = "Transacción externa";
+
+/* No comment provided by engineer. */
+"RewardsInternalsContributionsStepFailed" = "Error";
+
+/* No comment provided by engineer. */
+"RewardsInternalsContributionsStepNotEnoughFunds" = "No hay fondos suficientes";
+
+/* No comment provided by engineer. */
+"RewardsInternalsContributionsStepPrepare" = "Preparar";
+
+/* No comment provided by engineer. */
+"RewardsInternalsContributionsStepReserve" = "Reservar";
+
+/* No comment provided by engineer. */
+"RewardsInternalsContributionsStepRewardsOff" = "Rewards desactivado";
+
+/* No comment provided by engineer. */
+"RewardsInternalsContributionsStepStart" = "Empezar";
+
+/* No comment provided by engineer. */
+"RewardsInternalsContributionsTitle" = "Contribuciones";
+
+/* No comment provided by engineer. */
+"RewardsInternalsCreatedAt" = "Creado a las";
+
+/* No comment provided by engineer. */
+"RewardsInternalsDeviceInfoHeader" = "Información sobre el dispositivo";
+
+/* No comment provided by engineer. */
+"RewardsInternalsEnrolled" = "Inscrito";
+
+/* No comment provided by engineer. */
+"RewardsInternalsEnrollmentState" = "Estado de inscripción";
+
+/* No comment provided by engineer. */
+"RewardsInternalsExpiresAt" = "Expira a las";
+
+/* No comment provided by engineer. */
+"RewardsInternalsInvalid" = "No válido";
+
+/* No comment provided by engineer. */
+"RewardsInternalsKeyInfoSeed" = "Inicialización de información clave";
+
+/* No comment provided by engineer. */
+"RewardsInternalsLegacyPromotion" = "Promoción antigua";
+
+/* %d will be the number of logs currently being shown, i.e. '10 logs shown' */
+"RewardsInternalsLogsCount" = "%d registros mostrados";
+
+/* No comment provided by engineer. */
+"RewardsInternalsLogsTitle" = "Registros";
+
+/* No comment provided by engineer. */
+"RewardsInternalsNotEnrolled" = "No inscrito";
+
+/* No comment provided by engineer. */
+"RewardsInternalsNotSupported" = "No compatible";
+
+/* No comment provided by engineer. */
+"RewardsInternalsProcessor" = "Procesador";
+
+/* No comment provided by engineer. */
+"RewardsInternalsPromotionStatusActive" = "Activo";
+
+/* No comment provided by engineer. */
+"RewardsInternalsPromotionStatusAttested" = "Atestiguado";
+
+/* No comment provided by engineer. */
+"RewardsInternalsPromotionStatusCorrupted" = "Dañado";
+
+/* No comment provided by engineer. */
+"RewardsInternalsPromotionStatusFinished" = "Finalizado";
+
+/* No comment provided by engineer. */
+"RewardsInternalsPromotionStatusOver" = "Terminado";
+
+/* No comment provided by engineer. */
+"RewardsInternalsPromotionsTitle" = "Promociones";
+
+/* No comment provided by engineer. */
+"RewardsInternalsPublisher" = "Editor";
+
+/* No comment provided by engineer. */
+"RewardsInternalsPublishers" = "Editores";
+
+/* No comment provided by engineer. */
+"RewardsInternalsRetryCount" = "Número de reintentos";
+
+/* No comment provided by engineer. */
+"RewardsInternalsRewardsTypeAutoContribute" = "Contribución automática";
+
+/* No comment provided by engineer. */
+"RewardsInternalsRewardsTypeOneTimeTip" = "Propina ocasional";
+
+/* No comment provided by engineer. */
+"RewardsInternalsRewardsTypeRecurringTip" = "Propina periódica";
+
+/* No comment provided by engineer. */
+"RewardsInternalsSharableBasicDescription" = "Información sobre la cartera, el dispositivo y el saldo (siempre compartida)";
+
+/* No comment provided by engineer. */
+"RewardsInternalsSharableBasicTitle" = "Información básica";
+
+/* No comment provided by engineer. */
+"RewardsInternalsSharableContributionsDescription" = "Cualquier contribución a editores mediante propinas o contribución automática";
+
+/* No comment provided by engineer. */
+"RewardsInternalsSharableDatabaseDescription" = "El almacén de datos interno";
+
+/* No comment provided by engineer. */
+"RewardsInternalsSharableDatabaseTitle" = "Base de datos de Rewards";
+
+/* No comment provided by engineer. */
+"RewardsInternalsSharableLogsDescription" = "Registros específicos de Rewards";
+
+/* No comment provided by engineer. */
+"RewardsInternalsSharablePromotionsDescription" = "Cualquier promoción de BAT que hayas reclamado o que tengas pendiente en Ads o Grants";
+
+/* No comment provided by engineer. */
+"RewardsInternalsShare" = "Compartir";
+
+/* 'Rewards' as in 'Brave Rewards' */
+"RewardsInternalsShareInternalsTitle" = "Compartir datos internos de Rewards";
+
+/* No comment provided by engineer. */
+"RewardsInternalsSharingWarningMessage" = "Es posible que los datos que aparecen en esta página sean confidenciales. Trátalos como si fuesen las claves privadas de tu cartera y mira bien con quién los compartes.";
+
+/* No comment provided by engineer. */
+"RewardsInternalsSharingWarningTitle" = "Advertencia";
+
+/* No comment provided by engineer. */
+"RewardsInternalsStatus" = "Estado";
+
+/* i.e. 'Step: Started' */
+"RewardsInternalsStep" = "Paso";
+
+/* No comment provided by engineer. */
+"RewardsInternalsSupported" = "Compatible";
+
+/* 'Rewards' as in 'Brave Rewards' */
+"RewardsInternalsTitle" = "Datos internos de Rewards";
+
+/* No comment provided by engineer. */
+"RewardsInternalsTotalAmount" = "Importe total";
+
+/* No comment provided by engineer. */
+"RewardsInternalsTotalBalance" = "Saldo total";
+
+/* No comment provided by engineer. */
+"RewardsInternalsType" = "Tipo";
+
+/* No comment provided by engineer. */
+"RewardsInternalsValid" = "Válido";
+
+/* No comment provided by engineer. */
+"RewardsInternalsVersion" = "Versión";
+
+/* No comment provided by engineer. */
+"RewardsInternalsWalletCreationDate" = "Fecha de creación de la cartera";
+
+/* No comment provided by engineer. */
+"RewardsInternalsWalletInfoHeader" = "Información sobre la cartera";
+
+/* No comment provided by engineer. */
+"RewardsInternalsWalletPaymentID" = "ID de pago de la cartera";
+
+/* No comment provided by engineer. */
 "ShieldsDownDisclaimer" = "Estás utilizando este sitio web sin la protección de privacidad de Brave. ¿Acaso no funciona bien con los escudos activados?";
 
 /* Text that informs a user about Brave Sync service deprecation. */
-"sync.syncV1DeprecationText" = "Pronto se realizará una nueva sincronización Brave que alterará tu configuración. Prepárate para la actualización.";
+"sync.syncV1DeprecationText" = "Pronto se habrá una nueva Brave Sync que alterará tu configuración. Prepárate para la actualización.";
 
 /* Prompt shown before enabling provider search queries */
 "Turn on search suggestions?" = "¿Activar las sugerencias de búsqueda?";
@@ -183,7 +414,7 @@
 "vpn.checkboxNoSellout" = "Nunca compartimos ni vendemos tu información";
 
 /* Text for a checkbox to present the user benefits for using Brave VPN */
-"vpn.checkboxProtectConnections" = "Protege todas tus aplicaciones (no solo la de Brave)";
+"vpn.checkboxProtectConnections" = "Te protege de conexiones no deseadas";
 
 /* AppStore Receipt field for customer support contact form. */
 "vpn.contactFormAppStoreReceipt" = "Recibo de la App Store";
@@ -261,7 +492,7 @@
 "vpn.iapDisclaimer" = "Todas las suscripciones se renuevan automáticamente, pero se pueden cancelar antes de la renovación.";
 
 /* Text explaining how the VPN works. */
-"vpn.installProfileBody" = "Este perfil permite que la VPN se conecte automáticamente y proteja el tráfico del dispositivo, y lo hace en todas las aplicaciones al mismo tiempo. Esta conexión VPN estará cifrada y enrutada mediante el firewall inteligente de Brave para bloquear anuncios y rastreadores.";
+"vpn.installProfileBody" = "Este perfil permite que la VPN se conecte automáticamente y proteja el tráfico del dispositivo al mismo tiempo. La conexión VPN estará cifrada y enrutada mediante el firewall inteligente de Brave para bloquear las conexiones potencialmente peligrosas e invasivas.";
 
 /* Text for 'install vpn profile' button */
 "vpn.installProfileButtonText" = "Instalar perfil de VPN";
@@ -303,7 +534,7 @@
 "vpn.restorePurchases" = "Restaurar";
 
 /* No comment provided by engineer. */
-"vpn.settingHeaderBody" = "Protege tu conexión y bloquea los anuncios y rastreadores en todo el dispositivo.";
+"vpn.settingHeaderBody" = "Protege tu conexión y bloquea los rastreadores invasivos. ";
 
 /* Button to contact tech support */
 "vpn.settingsContactSupport" = "Contactar con el soporte técnico";
@@ -369,7 +600,7 @@
 "vpn.vpnErrorPurchaseFailedTitle" = "Error";
 
 /* Disclaimer for user purchasing the VPN plan. */
-"vpn.vpnIAPBoilerPlate" = "El precio puede variar en función de la ubicación. Las suscripciones se cargarán en tu tarjeta de crédito a través de tu cuenta de iTunes. Pueden contratarse por periodos de 1 mes (9,99 $) o de 1 año (99,99 $), y se renuevan automáticamente a menos que se cancelen, como mínimo, 24 horas antes de que finalice el periodo actual. Una vez que se active la suscripción, ya no podrás cancelarla. Puedes gestionar las suscripciones que hayas comprado en los ajustes de la cuenta. Las pruebas gratuitas solo se pueden usar una vez. Si compras una suscripción, te quedarás sin las partes que no hayas utilizado durante la prueba gratuita.";
+"vpn.vpnIAPBoilerPlate" = "Las suscripciones se cobrarán a través de tu cuenta de iTunes.\n\nCuando compras una suscripción, te quedas sin las partes que no hayas utilizado durante la prueba gratuita, en caso de que hubieses tenido una.\n\nLa suscripción se renovará automáticamente a menos que la canceles, como mínimo, 24 horas antes de que finalice el periodo activo en ese momento.\n\nPuedes gestionar las suscripciones que hayas comprado en Ajustes.\n\nAl utilizar Brave, aceptas las Condiciones de uso y la Política de privacidad.";
 
 /* Title Brave VPN menu item. */
 "vpn.vpnMenuItemTitle" = "VPN de Brave";

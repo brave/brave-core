@@ -89,8 +89,7 @@ class NTPNotificationViewController: TranslucentBottomSheet {
                 })
             
         case .youCanGetPaidTurnAdsOn:
-            config.headerText = Strings.NTP.supportWebCreatorsWithTokens
-            config.bodyText = (text: Strings.NTP.earnTokensByViewingAds, urlInfo: [:], action: nil)
+            config.bodyText = (text: Strings.NTP.supportWebCreatorsWithTokens, urlInfo: [:], action: nil)
             
             config.primaryButtonConfig =
                 (text: Strings.NTP.turnOnBraveAds,

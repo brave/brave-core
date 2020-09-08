@@ -30,19 +30,19 @@
 "BraveShieldsStatusValueUp" = "Naik";
 
 /* The body of the notification that goes out monthly to users who can claim an ads grant */
-"MonthlyAdsClaimNotificationBody" = "Waktunya mendapat penghargaan untuk semua iklan yang telah Anda lihat di Brave.";
+"MonthlyAdsClaimNotificationBody" = "Ketuk untuk mengklaim token gratis Anda.";
 
 /* The title of the notification that goes out monthly to users who can claim an ads grant */
-"MonthlyAdsClaimNotificationTitle" = "Klaim penghargaan iklan Brave Anda";
+"MonthlyAdsClaimNotificationTitle" = "Brave Rewards 💵🎁";
 
 /* For search suggestions prompt. This string should be short so it fits nicely on the prompt row. */
 "No" = "Tidak";
 
 /* Message when opting into brave Ads when region becomes available */
-"OBAdsOptInMessage" = "Dapatkan token dengan melihat iklan terkait privasi.";
+"OBAdsOptInMessage" = "Dapatkan token dan beri reward pada pembuat konten atas konten hebat selagi Anda menjelajahi";
 
 /* Message when opting into brave Ads when region becomes available */
-"OBAdsOptInMessageJapan" = "Dapatkan token dengan melihat iklan perlindungan privasi.";
+"OBAdsOptInMessageJapan" = "Dapatkan poin dan beri reward pada pembuat konten atas konten hebat selagi Anda menjelajahi";
 
 /* Title when opting into brave Ads when region becomes available */
 "OBAdsOptInTitle" = "Iklan Brave telah hadir!";
@@ -71,6 +71,21 @@
 /* Button to join Brave Rewards. */
 "OBJoinButton" = "Bergabung";
 
+/* No comment provided by engineer. */
+"OBPrivacyConsentClipboardPermission" = "Izinkan Brave memeriksa clipboard saya atas kode rujukan yang cocok";
+
+/* No comment provided by engineer. */
+"OBPrivacyConsentDetail" = "Anda mungkin telah mengunduh Brave untuk mendukung pemberi rujukan Anda. Untuk mendeteksi pemberi rujukan tersebut, Brave melakukan pemeriksaan satu kali di clipboard Anda atas kode rujukan yang cocok. Pemeriksaan ini terbatas hanya pada kode dan tidak ada data pribadi yang akan ditransfer. Jika Anda memilih untuk tidak ikut, pemberi rujukan Anda tidak akan menerima reward dari Brave.";
+
+/* No comment provided by engineer. */
+"OBPrivacyConsentNoButton" = "Jangan izinkan pemeriksaan ini";
+
+/* No comment provided by engineer. */
+"OBPrivacyConsentTitle" = "Pemeriksaan kode rujukan anonim";
+
+/* No comment provided by engineer. */
+"OBPrivacyConsentYesButton" = "Izinkan pemeriksaan clipboard satu kali";
+
 /* Detail text for rewards agreement onboarding screen */
 "OBRewardsAgreementDetail" = "Dengan mengaktifkan Brave Rewards, berarti Anda setuju dengan";
 
@@ -81,10 +96,10 @@
 "OBRewardsAgreementTitle" = "Brave Rewards";
 
 /* Detail text for rewards onboarding screen */
-"OBRewardsDetailInAdRegion" = "Dapatkan token dengan melihat iklan perlindungan privasi. Gunakan token untuk mendukung situs dan pembuat konten favorit Anda.";
+"OBRewardsDetailInAdRegion" = "Dapatkan token dan beri reward pada pembuat konten atas konten hebat selagi Anda menjelajahi";
 
 /* Detail text for rewards onboarding screen */
-"OBRewardsDetailInAdRegionJapan" = "Dapatkan poin dengan melihat iklan perlindungan privasi. Gunakan token untuk mendukung situs dan pembuat konten favorit Anda.";
+"OBRewardsDetailInAdRegionJapan" = "Dapatkan poin dan beri reward pada pembuat konten atas konten hebat selagi Anda menjelajahi";
 
 /* Detail text for rewards onboarding screen */
 "OBRewardsDetailOutsideAdRegion" = "Dukung situs web dan pembuat konten favorit Anda berdasarkan atensi Anda.";
@@ -135,6 +150,222 @@
 "RestoredFavoritesFolderName" = "Pilihan Favorit Dikembalikan";
 
 /* No comment provided by engineer. */
+"RewardsInternalsAmount" = "Jumlah";
+
+/* No comment provided by engineer. */
+"RewardsInternalsAnonymous" = "Anonim";
+
+/* No comment provided by engineer. */
+"RewardsInternalsBalanceInfoHeader" = "Info Saldo";
+
+/* No comment provided by engineer. */
+"RewardsInternalsClaimedAt" = "Diklaim pada";
+
+/* No comment provided by engineer. */
+"RewardsInternalsClaimID" = "ID Klaim";
+
+/* No comment provided by engineer. */
+"RewardsInternalsClearLogsConfirmation" = "Anda yakin ingin menghapus semua log Rewards?";
+
+/* No comment provided by engineer. */
+"RewardsInternalsClearLogsTitle" = "Hapus Log";
+
+/* No comment provided by engineer. */
+"RewardsInternalsContributionAmount" = "Jumlah kontribusi";
+
+/* No comment provided by engineer. */
+"RewardsInternalsContributionProcessorBraveTokens" = "Token Brave";
+
+/* No comment provided by engineer. */
+"RewardsInternalsContributionProcessorNone" = "Tidak ada";
+
+/* No comment provided by engineer. */
+"RewardsInternalsContributionProcessorUphold" = "Uphold";
+
+/* No comment provided by engineer. */
+"RewardsInternalsContributionProcessorUserFunds" = "Dana Pengguna";
+
+/* No comment provided by engineer. */
+"RewardsInternalsContributionsStepACOff" = "Kontribusi Otomatis Nonaktif";
+
+/* 'AC' refers to Auto-Contribute */
+"RewardsInternalsContributionsStepACTableEmpty" = "Tabel AC kosong";
+
+/* No comment provided by engineer. */
+"RewardsInternalsContributionsStepCompleted" = "Selesai";
+
+/* No comment provided by engineer. */
+"RewardsInternalsContributionsStepCreds" = "Kredensial";
+
+/* No comment provided by engineer. */
+"RewardsInternalsContributionsStepExternalTransaction" = "Transaksi Eksternal";
+
+/* No comment provided by engineer. */
+"RewardsInternalsContributionsStepFailed" = "Gagal";
+
+/* No comment provided by engineer. */
+"RewardsInternalsContributionsStepNotEnoughFunds" = "Dana tidak cukup";
+
+/* No comment provided by engineer. */
+"RewardsInternalsContributionsStepPrepare" = "Siapkan";
+
+/* No comment provided by engineer. */
+"RewardsInternalsContributionsStepReserve" = "Cadangkan";
+
+/* No comment provided by engineer. */
+"RewardsInternalsContributionsStepRewardsOff" = "Reward Habis";
+
+/* No comment provided by engineer. */
+"RewardsInternalsContributionsStepStart" = "Mulai";
+
+/* No comment provided by engineer. */
+"RewardsInternalsContributionsTitle" = "Kontribusi";
+
+/* No comment provided by engineer. */
+"RewardsInternalsCreatedAt" = "Dibuat pada";
+
+/* No comment provided by engineer. */
+"RewardsInternalsDeviceInfoHeader" = "Info Perangkat";
+
+/* No comment provided by engineer. */
+"RewardsInternalsEnrolled" = "Terdaftar";
+
+/* No comment provided by engineer. */
+"RewardsInternalsEnrollmentState" = "Status Pendaftaran";
+
+/* No comment provided by engineer. */
+"RewardsInternalsExpiresAt" = "Kedaluwarsa Pada";
+
+/* No comment provided by engineer. */
+"RewardsInternalsInvalid" = "Tidak Valid";
+
+/* No comment provided by engineer. */
+"RewardsInternalsKeyInfoSeed" = "Key Info Seed";
+
+/* No comment provided by engineer. */
+"RewardsInternalsLegacyPromotion" = "Promosi Dasar";
+
+/* %d will be the number of logs currently being shown, i.e. '10 logs shown' */
+"RewardsInternalsLogsCount" = "%d log ditampilkan";
+
+/* No comment provided by engineer. */
+"RewardsInternalsLogsTitle" = "Log";
+
+/* No comment provided by engineer. */
+"RewardsInternalsNotEnrolled" = "Tidak terdaftar";
+
+/* No comment provided by engineer. */
+"RewardsInternalsNotSupported" = "Tidak didukung";
+
+/* No comment provided by engineer. */
+"RewardsInternalsProcessor" = "Prosesor";
+
+/* No comment provided by engineer. */
+"RewardsInternalsPromotionStatusActive" = "Aktif";
+
+/* No comment provided by engineer. */
+"RewardsInternalsPromotionStatusAttested" = "Disahkan";
+
+/* No comment provided by engineer. */
+"RewardsInternalsPromotionStatusCorrupted" = "Tidak lengkap";
+
+/* No comment provided by engineer. */
+"RewardsInternalsPromotionStatusFinished" = "Selesai";
+
+/* No comment provided by engineer. */
+"RewardsInternalsPromotionStatusOver" = "Habis";
+
+/* No comment provided by engineer. */
+"RewardsInternalsPromotionsTitle" = "Promosi";
+
+/* No comment provided by engineer. */
+"RewardsInternalsPublisher" = "Penerbit";
+
+/* No comment provided by engineer. */
+"RewardsInternalsPublishers" = "Penerbit";
+
+/* No comment provided by engineer. */
+"RewardsInternalsRetryCount" = "Coba Ulang Penghitungan";
+
+/* No comment provided by engineer. */
+"RewardsInternalsRewardsTypeAutoContribute" = "Kontribusi Otomatis";
+
+/* No comment provided by engineer. */
+"RewardsInternalsRewardsTypeOneTimeTip" = "Tip satu kali";
+
+/* No comment provided by engineer. */
+"RewardsInternalsRewardsTypeRecurringTip" = "Tip rutin";
+
+/* No comment provided by engineer. */
+"RewardsInternalsSharableBasicDescription" = "Info dompet, perangkat & saldo (selalu dibagikan)";
+
+/* No comment provided by engineer. */
+"RewardsInternalsSharableBasicTitle" = "Info Dasar";
+
+/* No comment provided by engineer. */
+"RewardsInternalsSharableContributionsDescription" = "Kontribusi apa pun yang dibuat untuk penerbit melalui tip atau kontribusi otomatis";
+
+/* No comment provided by engineer. */
+"RewardsInternalsSharableDatabaseDescription" = "Penyimpanan data internal";
+
+/* No comment provided by engineer. */
+"RewardsInternalsSharableDatabaseTitle" = "Database Reward";
+
+/* No comment provided by engineer. */
+"RewardsInternalsSharableLogsDescription" = "Logging khusus Reward";
+
+/* No comment provided by engineer. */
+"RewardsInternalsSharablePromotionsDescription" = "Promosi BAT apa pun yang telah Anda klaim atau ditangguhkan dari Ads atau Grants";
+
+/* No comment provided by engineer. */
+"RewardsInternalsShare" = "Bagikan";
+
+/* 'Rewards' as in 'Brave Rewards' */
+"RewardsInternalsShareInternalsTitle" = "Bagikan Info Internal Reward";
+
+/* No comment provided by engineer. */
+"RewardsInternalsSharingWarningMessage" = "Data di halaman ini mungkin bersifat sensitif. Perlakukan ini sebagaimana Anda memperlakukan kunci privat dompet Anda. Hati-hati saat membagikannya kepada seseorang.";
+
+/* No comment provided by engineer. */
+"RewardsInternalsSharingWarningTitle" = "Peringatan";
+
+/* No comment provided by engineer. */
+"RewardsInternalsStatus" = "Status";
+
+/* i.e. 'Step: Started' */
+"RewardsInternalsStep" = "Langkah";
+
+/* No comment provided by engineer. */
+"RewardsInternalsSupported" = "Didukung";
+
+/* 'Rewards' as in 'Brave Rewards' */
+"RewardsInternalsTitle" = "Reward Internal";
+
+/* No comment provided by engineer. */
+"RewardsInternalsTotalAmount" = "Jumlah total";
+
+/* No comment provided by engineer. */
+"RewardsInternalsTotalBalance" = "Total Saldo";
+
+/* No comment provided by engineer. */
+"RewardsInternalsType" = "Jenis";
+
+/* No comment provided by engineer. */
+"RewardsInternalsValid" = "Valid";
+
+/* No comment provided by engineer. */
+"RewardsInternalsVersion" = "Versi";
+
+/* No comment provided by engineer. */
+"RewardsInternalsWalletCreationDate" = "Tanggal Pembuatan Dompet";
+
+/* No comment provided by engineer. */
+"RewardsInternalsWalletInfoHeader" = "Info Dompet";
+
+/* No comment provided by engineer. */
+"RewardsInternalsWalletPaymentID" = "ID Pembayaran Dompet";
+
+/* No comment provided by engineer. */
 "ShieldsDownDisclaimer" = "Anda menjelajahi situs ini tanpa perlindungan privasi Brave. Apakah situs tidak berfungsi benar dengan Perisai?";
 
 /* Text that informs a user about Brave Sync service deprecation. */
@@ -183,7 +414,7 @@
 "vpn.checkboxNoSellout" = "Kami tidak pernah membagikan atau menjual informasi Anda";
 
 /* Text for a checkbox to present the user benefits for using Brave VPN */
-"vpn.checkboxProtectConnections" = "Melindungi semua aplikasi Anda (bukan hanya Brave)";
+"vpn.checkboxProtectConnections" = "Melindungi Anda dari koneksi yang tak diinginkan";
 
 /* AppStore Receipt field for customer support contact form. */
 "vpn.contactFormAppStoreReceipt" = "Tanda Terima Apple Store";
@@ -261,7 +492,7 @@
 "vpn.iapDisclaimer" = "Semua paket berlangganan diperbarui secara otomatis namun dapat dibatalkan sebelum diperbarui.";
 
 /* Text explaining how the VPN works. */
-"vpn.installProfileBody" = "Profil ini memungkinkan VPN untuk secara otomatis tersambung dan mengamankan lalu-lintas di semua perangkat Anda - pada semua aplikasi, sepanjang waktu. Koneksi VPN ini akan terenkripsi dan diarahkan melalui firewall cerdas Brave untuk memblokir iklan dan pelacak.";
+"vpn.installProfileBody" = "Profil ini memungkinkan VPN untuk secara otomatis tersambung dan mengamankan lalu-lintas di semua perangkat Anda setiap waktu. VPN ini akan terenkripsi dan diarahkan melalui firewall cerdas Brave untuk memblokir koneksi yang berpotensi menyerang dan merusak.";
 
 /* Text for 'install vpn profile' button */
 "vpn.installProfileButtonText" = "Pasang Profil VPN";
@@ -303,7 +534,7 @@
 "vpn.restorePurchases" = "Kembalikan";
 
 /* No comment provided by engineer. */
-"vpn.settingHeaderBody" = "Lindungi koneksi Anda dan blokirlah iklan dan pelacak di seluruh perangkat Anda.";
+"vpn.settingHeaderBody" = "Lindungi koneksi Anda dan blokir pelacak yang menyerang.";
 
 /* Button to contact tech support */
 "vpn.settingsContactSupport" = "Hubungi Dukungan Teknis";
@@ -369,7 +600,7 @@
 "vpn.vpnErrorPurchaseFailedTitle" = "Kesalahan";
 
 /* Disclaimer for user purchasing the VPN plan. */
-"vpn.vpnIAPBoilerPlate" = "Harga dapat bervariasi sesuai dengan lokasinya. Biaya berlangganan akan dibebankan ke kartu kredit Anda melalui akun iTunes Anda. Periode berlangganan ditawarkan untuk 1 bulan ($9,99) atau 1 tahun ($99,99), dan akan secara otomatis diperbarui kecuali jika dibatalkan minimal 24 jam sebelum berakhirnya periode yang sedang berlangsung. Anda tidak dapat membatalkan status berlangganan Anda setelah diaktifkan. Anda dapat mengelola pengaturan berlangganan Anda di Pengaturan Akun setelah melakukan pembelian. Percobaan gratis hanya berlaku satu kali. Porsi percobaan gratis yang belum digunakan akan hangus jika Anda melakukan pembayaran untuk berlangganan.";
+"vpn.vpnIAPBoilerPlate" = "Langganan akan ditagihkan melalui akun iTunes Anda.\n\nBagian dari uji coba gratis yang tidak digunakan, akan dimasukkan ke paket saat Anda berlangganan.\n\nLangganan Anda akan diperbarui secara otomatis kecuali dibatalkan minimum 24 jam sebelum akhir periode berjalanan.\n\nAnda dapat mengelola langganan Anda di Pengaturan.\n\nDengan menggunakan Brave, anda menyetujui Syarat Penggunaan dan Kebijakan Privasi.";
 
 /* Title Brave VPN menu item. */
 "vpn.vpnMenuItemTitle" = "VPN Brave";
