@@ -10,8 +10,6 @@ buildflag_header("buildflags") {
 }
 
 source_set("browser") {
-  # Remove when https://github.com/brave/brave-browser/issues/10647 is resolved
-  check_includes = false
   public_deps = [
     ":buildflags",
   ]
@@ -34,14 +32,22 @@ source_set("browser") {
     "perf_predictor_tab_helper.h",
   ]
 
+  if (is_android) {
+    sources += [
+      "perf_predictor_tab_helper_delegate_android.h",
+    ]
+  }
+
   deps = [
     "//base",
     "//brave/components/brave_perf_predictor/common",
     "//brave/components/resources",
+    "//brave/components/resources:static_resources_grit",
     "//brave/components/weekly_storage",
     "//components/keyed_service/content:content",
     "//components/page_load_metrics/browser",
     "//components/page_load_metrics/common",
+    "//components/page_load_metrics/common:page_load_metrics_mojom",
     "//components/prefs",
     "//components/sessions",
     "//components/user_prefs",

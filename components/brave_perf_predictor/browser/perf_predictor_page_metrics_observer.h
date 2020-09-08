@@ -7,10 +7,15 @@
 #define BRAVE_COMPONENTS_BRAVE_PERF_PREDICTOR_BROWSER_PERF_PREDICTOR_PAGE_METRICS_OBSERVER_H_
 
 #include <cstdint>
+#include <memory>
 #include <string>
 
 #include "components/page_load_metrics/browser/page_load_metrics_observer.h"
 #include "services/metrics/public/cpp/ukm_source_id.h"
+
+#if defined(OS_ANDROID)
+#include "brave/components/brave_perf_predictor/browser/perf_predictor_tab_helper.h"
+#endif
 
 namespace content {
 class NavigationHandle;
@@ -30,7 +35,14 @@ class PerfPredictorTabHelper;
 class PerfPredictorPageMetricsObserver
     : public page_load_metrics::PageLoadMetricsObserver {
  public:
+#if defined(OS_ANDROID)
+  explicit PerfPredictorPageMetricsObserver(
+      std::unique_ptr<
+          brave_perf_predictor::PerfPredictorTabHelperDelegateAndroid>
+          delegate);
+#else
   PerfPredictorPageMetricsObserver();
+#endif
   ~PerfPredictorPageMetricsObserver() override;
 
   PerfPredictorPageMetricsObserver(const PerfPredictorPageMetricsObserver&) =
@@ -56,6 +68,11 @@ class PerfPredictorPageMetricsObserver
 
   // The browser context this navigation is operating in.
   PerfPredictorTabHelper* observer_ = nullptr;
+
+#if defined(OS_ANDROID)
+  std::unique_ptr<brave_perf_predictor::PerfPredictorTabHelperDelegateAndroid>
+      tab_helper_delegate_;
+#endif
 };
 
 }  // namespace brave_perf_predictor

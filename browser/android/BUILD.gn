@@ -12,6 +12,8 @@ source_set("android_browser_process") {
     "brave_shields_content_settings.cc",
     "brave_shields_content_settings.h",
     "brave_stats_updater_android.cc",
+    "brave_perf_predictor_tab_helper_delegate_android_impl.cc",
+    "brave_perf_predictor_tab_helper_delegate_android_impl.h",
   ]
 
   deps = [

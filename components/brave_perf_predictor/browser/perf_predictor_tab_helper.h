@@ -15,6 +15,10 @@
 #include "content/public/browser/web_contents_user_data.h"
 #include "url/gurl.h"
 
+#if defined(OS_ANDROID)
+#include "brave/components/brave_perf_predictor/browser/perf_predictor_tab_helper_delegate_android.h"
+#endif
+
 class PrefRegistrySimple;
 
 namespace content {
@@ -60,6 +64,13 @@ class PerfPredictorTabHelper
                                    int render_frame_id,
                                    int frame_tree_node_id);
 
+#if defined(OS_ANDROID)
+  void set_perf_predictor_tab_helper_deletate(
+       brave_perf_predictor::PerfPredictorTabHelperDelegateAndroid* delegate) {
+    tab_helper_android_delegate_ = delegate;
+  }
+#endif
+
  private:
   friend class content::WebContentsUserData<PerfPredictorTabHelper>;
   void RecordSavings();
@@ -92,6 +103,11 @@ class PerfPredictorTabHelper
   int64_t navigation_id_ = -1;
   std::unique_ptr<BandwidthSavingsPredictor> bandwidth_predictor_;
   std::unique_ptr<P3ABandwidthSavingsTracker> bandwidth_tracker_;
+
+#if defined(OS_ANDROID)
+  brave_perf_predictor::PerfPredictorTabHelperDelegateAndroid*
+      tab_helper_android_delegate_;
+#endif
 
   WEB_CONTENTS_USER_DATA_KEY_DECL();
 };

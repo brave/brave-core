@@ -17,7 +17,7 @@
 #include "content/public/browser/web_contents_user_data.h"
 
 #if defined(OS_ANDROID)
-#include "brave/browser/android/brave_shields_content_settings.h"
+#include "brave/components/brave_perf_predictor/browser/perf_predictor_tab_helper_delegate_android.h"
 #endif
 
 namespace brave_perf_predictor {
@@ -109,8 +109,8 @@ void PerfPredictorTabHelper::RecordSavings() {
       if (bandwidth_tracker_)
         bandwidth_tracker_->RecordSavings(savings);
 #if defined(OS_ANDROID)
-        chrome::android::BraveShieldsContentSettings::DispatchSavedBandwidth(
-          savings);
+      if (tab_helper_android_delegate_)
+        tab_helper_android_delegate_->DispatchSavedBandwidth(savings);
 #endif
     }
   }

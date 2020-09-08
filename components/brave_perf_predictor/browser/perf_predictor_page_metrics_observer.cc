@@ -5,6 +5,9 @@
 
 #include "brave/components/brave_perf_predictor/browser/perf_predictor_page_metrics_observer.h"
 
+#include <memory>
+#include <utility>
+
 #include "brave/components/brave_perf_predictor/browser/perf_predictor_tab_helper.h"
 #include "content/public/browser/browser_context.h"
 #include "content/public/browser/navigation_handle.h"
@@ -12,8 +15,15 @@
 
 namespace brave_perf_predictor {
 
+#if defined(OS_ANDROID)
+PerfPredictorPageMetricsObserver::PerfPredictorPageMetricsObserver(
+    std::unique_ptr<
+        brave_perf_predictor::PerfPredictorTabHelperDelegateAndroid>
+            delegate)
+    : tab_helper_delegate_(std::move(delegate)) {}
+#else
 PerfPredictorPageMetricsObserver::PerfPredictorPageMetricsObserver() = default;
-
+#endif
 PerfPredictorPageMetricsObserver::~PerfPredictorPageMetricsObserver() = default;
 
 page_load_metrics::PageLoadMetricsObserver::ObservePolicy
@@ -34,6 +44,9 @@ PerfPredictorPageMetricsObserver::OnCommit(
     VLOG(2) << navigation_id_ << " could not get PerfPredictorTabHelper";
     return STOP_OBSERVING;
   }
+#if defined(OS_ANDROID)
+  observer_->set_perf_predictor_tab_helper_deletate(tab_helper_delegate_.get());
+#endif
   return CONTINUE_OBSERVING;
 }
 
