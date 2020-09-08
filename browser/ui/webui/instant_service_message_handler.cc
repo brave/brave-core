@@ -28,6 +28,14 @@ using ntp_background_images::prefs::kNewTabPageShowSponsoredImagesBackgroundImag
 using ntp_background_images::prefs::kBrandedWallpaperNotificationDismissed;
 using ntp_background_images::ViewCounterServiceFactory;
 
+namespace {
+
+bool ShouldExcludeFromTiles(const GURL& url) {
+  return url.spec().find("https://chrome.google.com/webstore") == 0;
+}
+
+}  // namespace
+
 // static
 InstantServiceMessageHandler* InstantServiceMessageHandler::Create(
       content::WebUIDataSource* source, Profile* profile,
@@ -91,6 +99,9 @@ void InstantServiceMessageHandler::MostVisitedInfoChanged(
   int tile_id = 1;
   // See chrome/common/search/instant_types.h for more info
   for (auto& tile : info.items) {
+    if (ShouldExcludeFromTiles(tile.url))
+      continue;
+
     base::Value tile_value(base::Value::Type::DICTIONARY);
     if (tile.title.empty()) {
       tile_value.SetStringKey("title", tile.url.spec());
