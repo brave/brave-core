@@ -320,22 +320,26 @@ public abstract class BraveActivity<C extends ChromeActivityComponent> extends C
     }
 
     public void showOnboardingV2(boolean fromStats) {
-        OnboardingPrefManager.getInstance().setNewOnboardingShown(true);
-        FragmentManager fm = getSupportFragmentManager();
-        HighlightDialogFragment fragment = (HighlightDialogFragment) fm
-                                           .findFragmentByTag(HighlightDialogFragment.TAG_FRAGMENT);
-        FragmentTransaction transaction = fm.beginTransaction();
+        try {
+            OnboardingPrefManager.getInstance().setNewOnboardingShown(true);
+            FragmentManager fm = getSupportFragmentManager();
+            HighlightDialogFragment fragment = (HighlightDialogFragment) fm
+                                               .findFragmentByTag(HighlightDialogFragment.TAG_FRAGMENT);
+            FragmentTransaction transaction = fm.beginTransaction();
 
-        if (fragment != null) {
-            transaction.remove(fragment);
+            if (fragment != null) {
+                transaction.remove(fragment);
+            }
+
+            fragment = new HighlightDialogFragment();
+            Bundle fragmentBundle = new Bundle();
+            fragmentBundle.putBoolean(OnboardingPrefManager.FROM_STATS, fromStats);
+            fragment.setArguments(fragmentBundle);
+            transaction.add(fragment, HighlightDialogFragment.TAG_FRAGMENT);
+            transaction.commitAllowingStateLoss();
+        } catch (IllegalStateException e) {
+            Log.e("HighlightDialogFragment", e.getMessage());
         }
-
-        fragment = new HighlightDialogFragment();
-        Bundle fragmentBundle = new Bundle();
-        fragmentBundle.putBoolean(OnboardingPrefManager.FROM_STATS, fromStats);
-        fragment.setArguments(fragmentBundle);
-        transaction.add(fragment, HighlightDialogFragment.TAG_FRAGMENT);
-        transaction.commit();
     }
 
     public void hideRewardsOnboardingIcon() {
