@@ -17,6 +17,7 @@ export const defaultState: IPFS.State = {
     swarm: []
   },
   daemonStatus: {
+    installed: false,
     launched: false
   }
 }
