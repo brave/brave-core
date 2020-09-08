@@ -172,9 +172,6 @@ void BraveContentBrowserClient::BrowserURLHandlerCreated(
   if (base::FeatureList::IsEnabled(ipfs::features::kIpfsFeature)) {
     handler->AddHandlerPair(
         &ipfs::ContentBrowserClientHelper::HandleIPFSURLRewrite,
-        content::BrowserURLHandler::null_handler());
-    handler->AddHandlerPair(
-        &ipfs::ContentBrowserClientHelper::HandleIPFSURLRewrite,
         &ipfs::ContentBrowserClientHelper::HandleIPFSURLReverseRewrite);
   }
 #endif

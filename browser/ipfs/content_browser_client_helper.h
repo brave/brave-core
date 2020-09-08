@@ -27,8 +27,6 @@ namespace ipfs {
 
 class ContentBrowserClientHelper {
  public:
-  static bool TranslateIPFSURL(const GURL& url, GURL* new_url, bool local);
-
   static bool HandleIPFSURLReverseRewrite(GURL* url,
       content::BrowserContext* browser_context);
 

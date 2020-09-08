@@ -20,6 +20,7 @@
 #include "brave/components/brave_referrals/buildflags/buildflags.h"
 #include "brave/components/brave_rewards/browser/buildflags/buildflags.h"
 #include "brave/components/brave_webtorrent/browser/buildflags/buildflags.h"
+#include "brave/components/ipfs/browser/buildflags/buildflags.h"
 #include "chrome/browser/browser_process.h"
 #include "components/prefs/pref_change_registrar.h"
 #include "components/prefs/pref_service.h"
@@ -42,6 +43,10 @@
 
 #if BUILDFLAG(ENABLE_BRAVE_TRANSLATE_GO)
 #include "brave/browser/net/brave_translate_redirect_network_delegate_helper.h"
+#endif
+
+#if BUILDFLAG(IPFS_ENABLED)
+#include "brave/browser/net/ipfs_redirect_network_delegate_helper.h"
 #endif
 
 static bool IsInternalScheme(std::shared_ptr<brave::BraveRequestInfo> ctx) {
@@ -81,6 +86,12 @@ void BraveRequestHandler::SetupCallbacks() {
 #if BUILDFLAG(ENABLE_BRAVE_TRANSLATE_GO)
   callback =
       base::BindRepeating(brave::OnBeforeURLRequest_TranslateRedirectWork);
+  before_url_request_callbacks_.push_back(callback);
+#endif
+
+#if BUILDFLAG(IPFS_ENABLED)
+  callback =
+      base::BindRepeating(ipfs::OnBeforeURLRequest_IPFSRedirectWork);
   before_url_request_callbacks_.push_back(callback);
 #endif
 

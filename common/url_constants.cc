@@ -9,10 +9,6 @@
 const char kChromeExtensionScheme[] = "chrome-extension";
 const char kBraveUIScheme[] = "brave";
 const char kMagnetScheme[] = "magnet";
-const char kIPFSScheme[] = "ipfs";
-const char kIPNSScheme[] = "ipns";
-const char kDefaultIPFSGateway[] = "https://dweb.link";
-const char kDefaultIPFSLocalGateway[] = "http://127.0.0.1:8080";
 const char kBinanceScheme[] = "com.brave.binance";
 const char kGeminiScheme[] = "com.brave.gemini";
 const char kWidevineMoreInfoURL[] = "https://www.eff.org/issues/drm";

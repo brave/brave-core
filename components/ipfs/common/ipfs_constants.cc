@@ -13,4 +13,9 @@ const char kConfigPath[] = "/api/v0/config";
 const char kArgQueryParam[] = "arg";
 const char kAddressesField[] = "Addresses";
 const char kShutdownPath[] = "/api/v0/shutdown";
+const char kIPFSScheme[] = "ipfs";
+const char kIPNSScheme[] = "ipns";
+const char kDefaultIPFSGateway[] = "https://dweb.link";
+const char kDefaultIPFSLocalGateway[] = "http://127.0.0.1:8080";
+
 }  // namespace ipfs

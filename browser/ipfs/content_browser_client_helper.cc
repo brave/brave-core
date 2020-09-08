@@ -11,6 +11,7 @@
 #include "base/task/post_task.h"
 #include "brave/common/url_constants.h"
 #include "brave/common/pref_names.h"
+#include "brave/components/ipfs/browser/translate_ipfs_uri.h"
 #include "brave/components/ipfs/common/ipfs_constants.h"
 #include "chrome/browser/external_protocol/external_protocol_handler.h"
 #include "components/prefs/pref_service.h"
@@ -41,49 +42,6 @@ bool IsIPFSLocalGateway(content::BrowserContext* browser_context) {
 }  // namespace
 
 namespace ipfs {
-
-// static
-bool ContentBrowserClientHelper::TranslateIPFSURL(
-    const GURL& url, GURL* new_url, bool local) {
-  if (!url.SchemeIs(kIPFSScheme) && !url.SchemeIs(kIPNSScheme)) {
-    return false;
-  }
-
-  std::string path = url.path();
-  // In the case of a URL like ipfs://[cid]/wiki/Vincent_van_Gogh.html
-  // host is empty and path is //wiki/Vincent_van_Gogh.html
-  if (url.host().empty() && path.length() > 2 &&
-      path.substr(0, 2) == "//") {
-    std::string cid(path.substr(2));
-    // If we have a path after the CID, get at the real resource path
-    size_t pos = cid.find("/");
-    std::string path;
-    if (pos != std::string::npos && pos != 0) {
-      // path would be /wiki/Vincent_van_Gogh.html
-      path = cid.substr(pos, cid.length() - pos);
-      // cid would be [cid]
-      cid = cid.substr(0, pos);
-    }
-    bool ipfs_scheme = url.scheme() == "ipfs";
-    bool ipns_scheme = url.scheme() == "ipns";
-    if ((ipfs_scheme || ipns_scheme) && std::all_of(cid.begin(), cid.end(),
-                    [loc = std::locale{}](char c) {
-                      return std::isalnum(c, loc);
-                    })) {
-      // new_url would be:
-      // https://dweb.link/ipfs/[cid]//wiki/Vincent_van_Gogh.html
-      if (new_url) {
-        *new_url = GURL(std::string(
-            local ? kDefaultIPFSLocalGateway : kDefaultIPFSGateway) +
-                (ipfs_scheme ? "/ipfs/" : "/ipns/") + cid + path);
-        VLOG(1) << "[IPFS] " << __func__ << " new URL: " << *new_url;
-      }
-
-      return true;
-    }
-  }
-  return false;
-}
 
 // static
 bool ContentBrowserClientHelper::HandleIPFSURLReverseRewrite(GURL* url,
@@ -119,7 +77,7 @@ bool ContentBrowserClientHelper::HandleIPFSURLRewrite(GURL* url,
     content::BrowserContext* browser_context) {
   if (!IsIPFSDisabled(browser_context) &&
       (url->SchemeIs(kIPFSScheme) || url->SchemeIs(kIPNSScheme))) {
-    return TranslateIPFSURL(*url, url, IsIPFSLocalGateway(browser_context));
+    return TranslateIPFSURI(*url, url, IsIPFSLocalGateway(browser_context));
   }
 
   return false;
@@ -141,7 +99,7 @@ void ContentBrowserClientHelper::HandleIPFSProtocol(
 
 // static
 bool ContentBrowserClientHelper::IsIPFSProtocol(const GURL& url) {
-  return TranslateIPFSURL(url, nullptr, false);
+  return TranslateIPFSURI(url, nullptr, false);
 }
 
 }  // namespace ipfs
