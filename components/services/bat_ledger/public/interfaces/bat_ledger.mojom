@@ -110,7 +110,7 @@ interface BatLedger {
   SaveMediaInfo(string type, map<string, string> args) =>
     (ledger.mojom.Result result, ledger.mojom.PublisherInfo? publisher_info);
 
-  UpdateMediaDuration(uint64 window_id, string publisher_key, uint64 duration);
+  UpdateMediaDuration(uint64 window_id, string publisher_key, uint64 duration, bool first_visit);
 
   GetPublisherInfo(string publisher_key) => (ledger.mojom.Result result, ledger.mojom.PublisherInfo? info);
 

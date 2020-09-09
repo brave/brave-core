@@ -12,6 +12,7 @@ interface GreaselionError {
 interface MediaDurationMetadata {
   mediaKey: string
   duration: number
+  firstVisit: boolean
 }
 
 interface RegisterOnCompletedWebRequest {
@@ -50,7 +51,7 @@ const handleMediaDurationMetadata = (tabId: number, mediaType: string, data: Med
     return
   }
 
-  chrome.braveRewards.updateMediaDuration(tabId, publisherKey, data.duration)
+  chrome.braveRewards.updateMediaDuration(tabId, publisherKey, data.duration, data.firstVisit)
 }
 
 const handleRegisterOnCompletedWebRequest = (tabId: number, mediaType: string, data: RegisterOnCompletedWebRequest) => {

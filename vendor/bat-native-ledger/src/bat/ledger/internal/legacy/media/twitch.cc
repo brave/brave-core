@@ -650,6 +650,7 @@ void Twitch::SavePublisherInfo(const uint64_t duration,
       key,
       new_visit_data,
       duration,
+      true,
       window_id,
       [](ledger::type::Result, ledger::type::PublisherInfoPtr) {});
 

@@ -1920,12 +1920,17 @@ void RewardsServiceImpl::SaveInlineMediaInfo(
 void RewardsServiceImpl::UpdateMediaDuration(
     const uint64_t window_id,
     const std::string& publisher_key,
-    const uint64_t duration) {
+    const uint64_t duration,
+    const bool first_visit) {
   if (!Connected()) {
     return;
   }
 
-  bat_ledger_->UpdateMediaDuration(window_id, publisher_key, duration);
+  bat_ledger_->UpdateMediaDuration(
+      window_id,
+      publisher_key,
+      duration,
+      first_visit);
 }
 
 void RewardsServiceImpl::GetPublisherInfo(

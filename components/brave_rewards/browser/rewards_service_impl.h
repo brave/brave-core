@@ -241,7 +241,8 @@ class RewardsServiceImpl : public RewardsService,
   void UpdateMediaDuration(
       const uint64_t window_id,
       const std::string& publisher_key,
-      const uint64_t duration) override;
+      const uint64_t duration,
+      const bool first_visit) override;
 
   void GetPublisherInfo(
       const std::string& publisher_key,

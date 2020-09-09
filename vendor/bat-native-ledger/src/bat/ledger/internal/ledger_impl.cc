@@ -302,6 +302,7 @@ void LedgerImpl::OnHide(uint32_t tab_id, const uint64_t& current_time) {
       iter->second.tld,
       iter->second,
       duration,
+      true,
       0,
       [](type::Result, type::PublisherInfoPtr){});
 }
@@ -632,8 +633,13 @@ void LedgerImpl::SaveMediaInfo(
 void LedgerImpl::UpdateMediaDuration(
     const uint64_t window_id,
     const std::string& publisher_key,
-    const uint64_t duration) {
-  publisher()->UpdateMediaDuration(window_id, publisher_key, duration);
+    const uint64_t duration,
+    const bool first_visit) {
+  publisher()->UpdateMediaDuration(
+      window_id,
+      publisher_key,
+      duration,
+      first_visit);
 }
 
 void LedgerImpl::GetPublisherInfo(

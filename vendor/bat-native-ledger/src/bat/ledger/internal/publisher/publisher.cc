@@ -126,7 +126,8 @@ bool ignoreMinTime(const std::string& publisher_id) {
 void Publisher::SaveVisit(
     const std::string& publisher_key,
     const type::VisitData& visit_data,
-    const uint64_t& duration,
+    const uint64_t duration,
+    const bool first_visit,
     uint64_t window_id,
     const ledger::PublisherInfoCallback callback) {
   if (!ledger_->state()->GetRewardsMainEnabled()) {
@@ -138,8 +139,16 @@ void Publisher::SaveVisit(
     return;
   }
 
-  auto on_server_info = std::bind(&Publisher::OnSaveVisitServerPublisher,
-      this, _1, publisher_key, visit_data, duration, window_id, callback);
+  auto on_server_info =
+      std::bind(&Publisher::OnSaveVisitServerPublisher,
+          this,
+          _1,
+          publisher_key,
+          visit_data,
+          duration,
+          first_visit,
+          window_id,
+          callback);
 
   ledger_->database()->SearchPublisherPrefixList(
       publisher_key,
@@ -156,13 +165,20 @@ void Publisher::SaveVideoVisit(
     const std::string& publisher_id,
     const type::VisitData& visit_data,
     uint64_t duration,
+    const bool first_visit,
     uint64_t window_id,
     ledger::PublisherInfoCallback callback) {
   if (!ledger_->state()->GetPublisherAllowVideos()) {
     duration = 0;
   }
 
-  SaveVisit(publisher_id, visit_data, duration, window_id, callback);
+  SaveVisit(
+      publisher_id,
+      visit_data,
+      duration,
+      first_visit,
+      window_id,
+      callback);
 }
 
 type::ActivityInfoFilterPtr Publisher::CreateActivityFilter(
@@ -191,7 +207,8 @@ void Publisher::OnSaveVisitServerPublisher(
     type::ServerPublisherInfoPtr server_info,
     const std::string& publisher_key,
     const type::VisitData& visit_data,
-    uint64_t duration,
+    const uint64_t duration,
+    const bool first_visit,
     uint64_t window_id,
     const ledger::PublisherInfoCallback callback) {
   auto filter = CreateActivityFilter(
@@ -215,6 +232,7 @@ void Publisher::OnSaveVisitServerPublisher(
           publisher_key,
           visit_data,
           duration,
+          first_visit,
           window_id,
           callback,
           _1,
@@ -254,7 +272,8 @@ void Publisher::SaveVisitInternal(
     const type::PublisherStatus status,
     const std::string& publisher_key,
     const type::VisitData& visit_data,
-    uint64_t duration,
+    const uint64_t duration,
+    const bool first_visit,
     uint64_t window_id,
     const ledger::PublisherInfoCallback callback,
     type::Result result,
@@ -269,9 +288,9 @@ void Publisher::SaveVisitInternal(
 
   bool is_verified = IsConnectedOrVerified(status);
 
-  bool new_visit = false;
+  bool new_publisher = false;
   if (!publisher_info) {
-    new_visit = true;
+    new_publisher = true;
     publisher_info = type::PublisherInfo::New();
     publisher_info->id = publisher_key;
   }
@@ -319,7 +338,7 @@ void Publisher::SaveVisitInternal(
   bool verified_new = !allow_non_verified && !is_verified;
   bool verified_old = allow_non_verified || is_verified;
 
-  if (new_visit &&
+  if (new_publisher &&
       (excluded ||
        !ledger_->state()->GetAutoContributeEnabled() ||
        min_duration_new ||
@@ -335,7 +354,9 @@ void Publisher::SaveVisitInternal(
              ledger_->state()->GetAutoContributeEnabled() &&
              min_duration_ok &&
              verified_old) {
-    publisher_info->visits += 1;
+    if (first_visit) {
+      publisher_info->visits += 1;
+    }
     publisher_info->duration += duration;
     publisher_info->score += concaveScore(duration);
     publisher_info->reconcile_stamp = ledger_->state()->GetReconcileStamp();
@@ -686,7 +707,7 @@ void Publisher::OnPanelPublisherInfo(
                               _1,
                               _2);
 
-    SaveVisit(visit_data.domain, visit_data, 0, windowId, callback);
+    SaveVisit(visit_data.domain, visit_data, 0, true, windowId, callback);
   }
 }
 
@@ -795,7 +816,8 @@ void Publisher::OnServerPublisherInfoLoaded(
 void Publisher::UpdateMediaDuration(
     const uint64_t window_id,
     const std::string& publisher_key,
-    const uint64_t duration) {
+    const uint64_t duration,
+    const bool first_visit) {
   BLOG(1, "Media duration: " << duration);
   ledger_->database()->GetPublisherInfo(publisher_key,
       std::bind(&Publisher::OnGetPublisherInfoForUpdateMediaDuration,
@@ -803,14 +825,16 @@ void Publisher::UpdateMediaDuration(
                 _1,
                 _2,
                 window_id,
-                duration));
+                duration,
+                first_visit));
 }
 
 void Publisher::OnGetPublisherInfoForUpdateMediaDuration(
     type::Result result,
     type::PublisherInfoPtr info,
     const uint64_t window_id,
-    const uint64_t duration) {
+    const uint64_t duration,
+    const bool first_visit) {
   if (result != type::Result::LEDGER_OK) {
     BLOG(0, "Failed to retrieve publisher info while updating media duration");
     return;
@@ -826,6 +850,7 @@ void Publisher::OnGetPublisherInfoForUpdateMediaDuration(
       info->id,
       visit_data,
       duration,
+      first_visit,
       0,
       [](type::Result, type::PublisherInfoPtr) {});
 }
@@ -884,6 +909,7 @@ void Publisher::SavePublisherInfo(
       publisher_info->id,
       visit_data,
       0,
+      true,
       window_id,
       [callback](auto result, type::PublisherInfoPtr publisher_info) {
         callback(result);

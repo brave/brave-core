@@ -604,8 +604,9 @@ void BatLedgerImpl::SaveMediaInfo(
 void BatLedgerImpl::UpdateMediaDuration(
     const uint64_t window_id,
     const std::string& publisher_key,
-    const uint64_t duration) {
-  ledger_->UpdateMediaDuration(window_id, publisher_key, duration);
+    const uint64_t duration,
+    const bool first_visit) {
+  ledger_->UpdateMediaDuration(window_id, publisher_key, duration, first_visit);
 }
 
 // static

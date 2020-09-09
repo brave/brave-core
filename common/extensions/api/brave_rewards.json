@@ -385,6 +385,10 @@
           {
             "name": "duration",
             "type": "integer"
+          },
+          {
+            "name": "firstVisit",
+            "type": "boolean"
           }
         ]
       },

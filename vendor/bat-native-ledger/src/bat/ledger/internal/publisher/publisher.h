@@ -43,7 +43,8 @@ class Publisher {
 
   void SaveVisit(const std::string& publisher_key,
                  const type::VisitData& visit_data,
-                 const uint64_t& duration,
+                 const uint64_t duration,
+                 const bool first_visit,
                  uint64_t window_id,
                  const ledger::PublisherInfoCallback callback);
 
@@ -51,6 +52,7 @@ class Publisher {
       const std::string& publisher_id,
       const type::VisitData& visit_data,
       uint64_t duration,
+      const bool first_visit,
       uint64_t window_id,
       ledger::PublisherInfoCallback callback);
 
@@ -99,7 +101,8 @@ class Publisher {
   void UpdateMediaDuration(
       const uint64_t window_id,
       const std::string& publisher_key,
-      const uint64_t duration);
+      const uint64_t duration,
+      const bool first_visit);
 
   void GetPublisherPanelInfo(
       const std::string& publisher_key,
@@ -115,7 +118,8 @@ class Publisher {
       type::Result result,
       type::PublisherInfoPtr info,
       const uint64_t window_id,
-      const uint64_t duration);
+      const uint64_t duration,
+      const bool first_visit);
 
   void OnGetPanelPublisherInfo(
       const type::Result result,
@@ -137,7 +141,8 @@ class Publisher {
       const type::PublisherStatus,
       const std::string& publisher_key,
       const type::VisitData& visit_data,
-      uint64_t duration,
+      const uint64_t duration,
+      const bool first_visit,
       uint64_t window_id,
       const ledger::PublisherInfoCallback callback,
       type::Result result,
@@ -147,7 +152,8 @@ class Publisher {
     type::ServerPublisherInfoPtr server_info,
     const std::string& publisher_key,
     const type::VisitData& visit_data,
-    uint64_t duration,
+    const uint64_t duration,
+    const bool first_visit,
     uint64_t window_id,
     const ledger::PublisherInfoCallback callback);
 
