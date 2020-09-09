@@ -19,9 +19,20 @@ content::WebUIDataSource* CreateBasicUIHTMLSource(
     const std::string& name,
     const GritResourceMap* resource_map,
     size_t resource_map_size,
-    int html_resource_id) {
+    int html_resource_id,
+    bool disable_trusted_types_csp) {
   content::WebUIDataSource* source =
       content::WebUIDataSource::Create(name);
+  // Some parts of Brave's UI pages are not yet migrated to work without doing
+  // assignments of strings directly into |innerHTML| elements (i.e. see usage
+  // of |dangerouslySetInnerHTML| in .tsx files). This will break Brave due to
+  // committing a Trusted Types related violation now that Trusted Types are
+  // enforced on WebUI pages (see crrev.com/c/2234238 and crrev.com/c/2353547).
+  // We should migrate those pages not to require using |innerHTML|, but for now
+  // we just restore pre-Cromium 87 behaviour for pages that are not ready yet.
+  if (disable_trusted_types_csp)
+    source->DisableTrustedTypesCSP();
+
   source->UseStringsJs();
   source->SetDefaultResource(html_resource_id);
   // Add generated resource paths
@@ -60,13 +71,15 @@ BasicUI::BasicUI(content::WebUI* web_ui,
                  const std::string& name,
                  const GritResourceMap* resource_map,
                  size_t resource_map_size,
-                 int html_resource_id)
+                 int html_resource_id,
+                 bool disable_trusted_types_csp)
     : WebUIController(web_ui) {
   observer_.reset(
       new BasicUIWebContentsObserver(this, web_ui->GetWebContents()));
   Profile* profile = Profile::FromWebUI(web_ui);
   content::WebUIDataSource* source = CreateBasicUIHTMLSource(profile, name,
-      resource_map, resource_map_size, html_resource_id);
+      resource_map, resource_map_size, html_resource_id,
+      disable_trusted_types_csp);
   content::WebUIDataSource::Add(profile, source);
 }
 
