@@ -85,16 +85,42 @@ class FeedDataSource {
         return decoder
     }()
     
+    private struct TodayBucket {
+        var name: String
+        var path: String = ""
+        
+        var url: URL {
+            var components = URLComponents()
+            components.scheme = "https"
+            // TODO: At the moment these files are only available on the dev servers, eventually we will
+            // change `brave.software` to `bravesoftware.com` or `brave.com` based on staging/prod
+            components.host = "\(name).brave.software"
+            components.path = "/\(path)"
+            return components.url!
+        }
+        
+        static let `default` = TodayBucket(name: "brave-today-cdn")
+        static let privateCDN = TodayBucket(name: "pcdn", path: "brave-today")
+    }
+    
     private struct TodayResource {
+        var bucket: TodayBucket
         var filename: String
         var cacheLifetime: TimeInterval
         
-        static let sources = TodayResource(filename: "sources.json", cacheLifetime: 1.days)
-        static let feed = TodayResource(filename: "feed.json", cacheLifetime: 1.hours)
+        static let sources = TodayResource(
+            bucket: .default,
+            filename: "sources.json",
+            cacheLifetime: 1.days
+        )
+        static let feed = TodayResource(
+            bucket: .privateCDN,
+            filename: "feed.json",
+            cacheLifetime: 1.hours
+        )
     }
     
     private static let cacheFolderName = "brave-today"
-    private static let baseURL = URL(string: "https://pcdn.brave.software/brave-today")!
     
     /// Determine whether or not some cached resource is expired
     ///
@@ -158,7 +184,7 @@ class FeedDataSource {
                     return .init(value: .success(data), defaultQueue: .main)
                 }
                 let deferred = Deferred<Result<Data, Error>>(value: nil, defaultQueue: .main)
-                self.session.dataRequest(with: Self.baseURL.appendingPathComponent(filename)) { data, response, error in
+                self.session.dataRequest(with: resource.bucket.url.appendingPathComponent(filename)) { data, response, error in
                     if let error = error {
                         deferred.fill(.failure(error))
                         return
