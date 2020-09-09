@@ -1100,6 +1100,7 @@ bool AdsImpl::ShowAdNotification(
   ad_notification->parent_uuid = base::GenerateGUID();
   ad_notification->creative_instance_id = info.creative_instance_id;
   ad_notification->creative_set_id = info.creative_set_id;
+  ad_notification->campaign_id = info.campaign_id;
   ad_notification->category = info.category;
   ad_notification->title = info.title;
   ad_notification->body = info.body;
@@ -1112,6 +1113,7 @@ bool AdsImpl::ShowAdNotification(
       << "  creativeInstanceId: "
           << ad_notification->creative_instance_id << "\n"
       << "  creativeSetId: " << ad_notification->creative_set_id << "\n"
+      << "  campaignId: " << ad_notification->campaign_id << "\n"
       << "  category: " << ad_notification->category << "\n"
       << "  title: " << ad_notification->title << "\n"
       << "  body: " << ad_notification->body << "\n"
@@ -1318,6 +1320,9 @@ void AdsImpl::SustainAdNotificationInteractionIfNeeded(
 
   BLOG(1, "Sustained ad for " << url);
 
+  AppendAdNotificationToHistory(last_shown_ad_notification_,
+      ConfirmationType::kLanded);
+
   confirmations_->ConfirmAd(last_shown_ad_notification_,
       ConfirmationType::kLanded);
 }
@@ -1332,6 +1337,7 @@ void AdsImpl::AppendAdNotificationToHistory(
   ad_history.parent_uuid = info.parent_uuid;
   ad_history.ad_content.creative_instance_id = info.creative_instance_id;
   ad_history.ad_content.creative_set_id = info.creative_set_id;
+  ad_history.ad_content.campaign_id = info.campaign_id;
   ad_history.ad_content.brand = info.title;
   ad_history.ad_content.brand_info = info.body;
   ad_history.ad_content.brand_display_url = GetDisplayUrl(info.target_url);

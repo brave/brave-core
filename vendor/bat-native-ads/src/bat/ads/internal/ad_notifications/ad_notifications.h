@@ -73,6 +73,9 @@ class AdNotifications {
   bool GetCreativeSetIdFromDictionary(
       base::DictionaryValue* dictionary,
       std::string* value) const;
+  bool GetCampaignIdFromDictionary(
+      base::DictionaryValue* dictionary,
+      std::string* value) const;
   bool GetCategoryFromDictionary(
       base::DictionaryValue* dictionary,
       std::string* value) const;

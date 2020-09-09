@@ -139,6 +139,218 @@ TEST_F(BatAdsDismissedFrequencyCapTest,
 }
 
 TEST_F(BatAdsDismissedFrequencyCapTest,
+    AdAllowedForAdWithSameCampaignIdWithin48HoursIfDismissed) {
+  // Arrange
+  CreativeAdInfo ad;
+  ad.creative_instance_id = kCreativeInstanceId;
+  ad.campaign_id = kCampaignIds.at(0);
+
+  const std::vector<ConfirmationType> confirmation_types = {
+    ConfirmationType::kViewed,
+    ConfirmationType::kDismissed,
+  };
+
+  for (const auto& confirmation_type : confirmation_types) {
+    AdHistory ad_history = GenerateAdHistory(ad, confirmation_type);
+    get_client()->AppendAdHistoryToAdsHistory(ad_history);
+
+    task_environment_.FastForwardBy(base::TimeDelta::FromMinutes(5));
+  }
+
+  task_environment_.FastForwardBy(base::TimeDelta::FromHours(47));
+
+  // Act
+  const bool should_exclude = frequency_cap_->ShouldExclude(ad);
+
+  // Assert
+  EXPECT_FALSE(should_exclude);
+}
+
+TEST_F(BatAdsDismissedFrequencyCapTest,
+    AdAllowedForAdWithSameCampaignIdWithin48HoursIfDismissedThenClicked) {
+  // Arrange
+  CreativeAdInfo ad;
+  ad.creative_instance_id = kCreativeInstanceId;
+  ad.campaign_id = kCampaignIds.at(0);
+
+  const std::vector<ConfirmationType> confirmation_types = {
+    ConfirmationType::kViewed,
+    ConfirmationType::kDismissed,
+    ConfirmationType::kViewed,
+    ConfirmationType::kClicked
+  };
+
+  for (const auto& confirmation_type : confirmation_types) {
+    AdHistory ad_history = GenerateAdHistory(ad, confirmation_type);
+    get_client()->AppendAdHistoryToAdsHistory(ad_history);
+
+    task_environment_.FastForwardBy(base::TimeDelta::FromMinutes(5));
+  }
+
+  task_environment_.FastForwardBy(base::TimeDelta::FromHours(47));
+
+  // Act
+  const bool should_exclude = frequency_cap_->ShouldExclude(ad);
+
+  // Assert
+  EXPECT_FALSE(should_exclude);
+}
+
+TEST_F(BatAdsDismissedFrequencyCapTest,
+    AdAllowedForAdWithSameCampaignIdAfter48HoursIfDismissedThenClicked) {
+  // Arrange
+  CreativeAdInfo ad;
+  ad.creative_instance_id = kCreativeInstanceId;
+  ad.campaign_id = kCampaignIds.at(0);
+
+  const std::vector<ConfirmationType> confirmation_types = {
+    ConfirmationType::kViewed,
+    ConfirmationType::kDismissed,
+    ConfirmationType::kViewed,
+    ConfirmationType::kClicked
+  };
+
+  for (const auto& confirmation_type : confirmation_types) {
+    AdHistory ad_history = GenerateAdHistory(ad, confirmation_type);
+    get_client()->AppendAdHistoryToAdsHistory(ad_history);
+
+    task_environment_.FastForwardBy(base::TimeDelta::FromMinutes(5));
+  }
+
+  task_environment_.FastForwardBy(base::TimeDelta::FromHours(48));
+
+  // Act
+  const bool should_exclude = frequency_cap_->ShouldExclude(ad);
+
+  // Assert
+  EXPECT_FALSE(should_exclude);
+}
+
+TEST_F(BatAdsDismissedFrequencyCapTest,
+    AdAllowedForAdWithSameCampaignIdWithin48HoursIfClickedThenDismissed) {
+  // Arrange
+  CreativeAdInfo ad;
+  ad.creative_instance_id = kCreativeInstanceId;
+  ad.campaign_id = kCampaignIds.at(0);
+
+  const std::vector<ConfirmationType> confirmation_types = {
+    ConfirmationType::kViewed,
+    ConfirmationType::kClicked,
+    ConfirmationType::kViewed,
+    ConfirmationType::kDismissed
+  };
+
+  for (const auto& confirmation_type : confirmation_types) {
+    AdHistory ad_history = GenerateAdHistory(ad, confirmation_type);
+    get_client()->AppendAdHistoryToAdsHistory(ad_history);
+
+    task_environment_.FastForwardBy(base::TimeDelta::FromMinutes(5));
+  }
+
+  task_environment_.FastForwardBy(base::TimeDelta::FromHours(47));
+
+  // Act
+  const bool should_exclude = frequency_cap_->ShouldExclude(ad);
+
+  // Assert
+  EXPECT_FALSE(should_exclude);
+}
+
+TEST_F(BatAdsDismissedFrequencyCapTest,
+    AdAllowedForAdWithSameCampaignIdAfter48HoursIfClickedThenDismissed) {
+  // Arrange
+  CreativeAdInfo ad;
+  ad.creative_instance_id = kCreativeInstanceId;
+  ad.campaign_id = kCampaignIds.at(0);
+
+  const std::vector<ConfirmationType> confirmation_types = {
+    ConfirmationType::kViewed,
+    ConfirmationType::kClicked,
+    ConfirmationType::kViewed,
+    ConfirmationType::kDismissed
+  };
+
+  for (const auto& confirmation_type : confirmation_types) {
+    AdHistory ad_history = GenerateAdHistory(ad, confirmation_type);
+    get_client()->AppendAdHistoryToAdsHistory(ad_history);
+
+    task_environment_.FastForwardBy(base::TimeDelta::FromMinutes(5));
+  }
+
+  task_environment_.FastForwardBy(base::TimeDelta::FromHours(48));
+
+  // Act
+  const bool should_exclude = frequency_cap_->ShouldExclude(ad);
+
+  // Assert
+  EXPECT_FALSE(should_exclude);
+}
+
+TEST_F(BatAdsDismissedFrequencyCapTest,
+    AdAllowedForAdWithSameCampaignIdAfter48HoursIfClickedThenDismissedTwice) {
+  // Arrange
+  CreativeAdInfo ad;
+  ad.creative_instance_id = kCreativeInstanceId;
+  ad.campaign_id = kCampaignIds.at(0);
+
+  const std::vector<ConfirmationType> confirmation_types = {
+    ConfirmationType::kViewed,
+    ConfirmationType::kClicked,
+    ConfirmationType::kViewed,
+    ConfirmationType::kDismissed,
+    ConfirmationType::kViewed,
+    ConfirmationType::kDismissed
+  };
+
+  for (const auto& confirmation_type : confirmation_types) {
+    AdHistory ad_history = GenerateAdHistory(ad, confirmation_type);
+    get_client()->AppendAdHistoryToAdsHistory(ad_history);
+
+    task_environment_.FastForwardBy(base::TimeDelta::FromMinutes(5));
+  }
+
+  task_environment_.FastForwardBy(base::TimeDelta::FromHours(48));
+
+  // Act
+  const bool should_exclude = frequency_cap_->ShouldExclude(ad);
+
+  // Assert
+  EXPECT_FALSE(should_exclude);
+}
+
+TEST_F(BatAdsDismissedFrequencyCapTest,
+    AdNotAllowedForAdWithSameCampaignIdWithin48HoursIfClickedThenDismissedTwice) {  // NOLINT
+  // Arrange
+  CreativeAdInfo ad;
+  ad.creative_instance_id = kCreativeInstanceId;
+  ad.campaign_id = kCampaignIds.at(0);
+
+  const std::vector<ConfirmationType> confirmation_types = {
+    ConfirmationType::kViewed,
+    ConfirmationType::kClicked,
+    ConfirmationType::kViewed,
+    ConfirmationType::kDismissed,
+    ConfirmationType::kViewed,
+    ConfirmationType::kDismissed
+  };
+
+  for (const auto& confirmation_type : confirmation_types) {
+    AdHistory ad_history = GenerateAdHistory(ad, confirmation_type);
+    get_client()->AppendAdHistoryToAdsHistory(ad_history);
+
+    task_environment_.FastForwardBy(base::TimeDelta::FromMinutes(5));
+  }
+
+  task_environment_.FastForwardBy(base::TimeDelta::FromHours(47));
+
+  // Act
+  const bool should_exclude = frequency_cap_->ShouldExclude(ad);
+
+  // Assert
+  EXPECT_TRUE(should_exclude);
+}
+
+TEST_F(BatAdsDismissedFrequencyCapTest,
     AdAllowedForAdWithDifferentCampaignIdWithin48Hours) {
   // Arrange
   CreativeAdInfo ad_1;
@@ -149,54 +361,24 @@ TEST_F(BatAdsDismissedFrequencyCapTest,
   ad_2.creative_instance_id = kCreativeInstanceId;
   ad_2.campaign_id = kCampaignIds.at(1);
 
-  const AdHistory ad_history =
-      GenerateAdHistory(ad_2, ConfirmationType::kDismissed);
-  get_client()->AppendAdHistoryToAdsHistory(ad_history);
+  const std::vector<ConfirmationType> confirmation_types = {
+    ConfirmationType::kViewed,
+    ConfirmationType::kDismissed,
+    ConfirmationType::kViewed,
+    ConfirmationType::kDismissed
+  };
+
+  for (const auto& confirmation_type : confirmation_types) {
+    AdHistory ad_history = GenerateAdHistory(ad_2, confirmation_type);
+    get_client()->AppendAdHistoryToAdsHistory(ad_history);
+
+    task_environment_.FastForwardBy(base::TimeDelta::FromMinutes(5));
+  }
 
   task_environment_.FastForwardBy(base::TimeDelta::FromHours(47));
 
   // Act
   const bool should_exclude = frequency_cap_->ShouldExclude(ad_1);
-
-  // Assert
-  EXPECT_FALSE(should_exclude);
-}
-
-TEST_F(BatAdsDismissedFrequencyCapTest,
-    AdNotAllowedForAdWithSameCampaignIdWithin48Hours) {
-  // Arrange
-  CreativeAdInfo ad;
-  ad.creative_instance_id = kCreativeInstanceId;
-  ad.campaign_id = kCampaignIds.at(0);
-
-  const AdHistory ad_history =
-      GenerateAdHistory(ad, ConfirmationType::kDismissed);
-  get_client()->AppendAdHistoryToAdsHistory(ad_history);
-
-  task_environment_.FastForwardBy(base::TimeDelta::FromHours(47));
-
-  // Act
-  const bool should_exclude = frequency_cap_->ShouldExclude(ad);
-
-  // Assert
-  EXPECT_FALSE(should_exclude);
-}
-
-TEST_F(BatAdsDismissedFrequencyCapTest,
-    AdAllowedForAdWithSameCampaignIdAfter48Hours) {
-  // Arrange
-  CreativeAdInfo ad;
-  ad.creative_instance_id = kCreativeInstanceId;
-  ad.campaign_id = kCampaignIds.at(0);
-
-  const AdHistory ad_history =
-      GenerateAdHistory(ad, ConfirmationType::kDismissed);
-  get_client()->AppendAdHistoryToAdsHistory(ad_history);
-
-  task_environment_.FastForwardBy(base::TimeDelta::FromHours(48));
-
-  // Act
-  const bool should_exclude = frequency_cap_->ShouldExclude(ad);
 
   // Assert
   EXPECT_FALSE(should_exclude);
@@ -213,9 +395,19 @@ TEST_F(BatAdsDismissedFrequencyCapTest,
   ad_2.creative_instance_id = kCreativeInstanceId;
   ad_2.campaign_id = kCampaignIds.at(1);
 
-  const AdHistory ad_history =
-      GenerateAdHistory(ad_2, ConfirmationType::kDismissed);
-  get_client()->AppendAdHistoryToAdsHistory(ad_history);
+  const std::vector<ConfirmationType> confirmation_types = {
+    ConfirmationType::kViewed,
+    ConfirmationType::kDismissed,
+    ConfirmationType::kViewed,
+    ConfirmationType::kDismissed
+  };
+
+  for (const auto& confirmation_type : confirmation_types) {
+    AdHistory ad_history = GenerateAdHistory(ad_2, confirmation_type);
+    get_client()->AppendAdHistoryToAdsHistory(ad_history);
+
+    task_environment_.FastForwardBy(base::TimeDelta::FromMinutes(5));
+  }
 
   task_environment_.FastForwardBy(base::TimeDelta::FromHours(48));
 
