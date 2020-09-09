@@ -14,7 +14,6 @@
 #include "base/task/post_task.h"
 #include "base/task_runner_util.h"
 #include "brave/common/brave_wallet_constants.h"
-#include "brave/common/extensions/extension_constants.h"
 #include "brave/common/pref_names.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_delegate.h"
 #include "components/user_prefs/user_prefs.h"
@@ -31,6 +30,7 @@
 #include "extensions/browser/shared_user_script_manager.h"
 #include "extensions/browser/unloaded_extension_reason.h"
 #include "extensions/browser/extension_prefs.h"
+#include "extensions/common/constants.h"
 
 BraveWalletService::BraveWalletService(content::BrowserContext* context,
         std::unique_ptr<BraveWalletDelegate> brave_wallet_delegate)

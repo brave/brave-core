@@ -9,11 +9,11 @@
 
 #include "base/one_shot_event.h"
 #include "brave/browser/profiles/profile_util.h"
-#include "brave/common/extensions/extension_constants.h"
 #include "chrome/browser/extensions/api/content_settings/content_settings_service.h"
 #include "chrome/browser/profiles/profile.h"
 #include "extensions/browser/extension_action.h"
 #include "extensions/browser/extension_action_manager.h"
+#include "extensions/common/constants.h"
 
 namespace extensions {
 

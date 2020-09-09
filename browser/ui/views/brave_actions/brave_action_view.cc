@@ -7,12 +7,12 @@
 
 #include <memory>
 
-#include "brave/common/extensions/constants.h"
 #include "chrome/browser/themes/theme_properties.h"
 #include "chrome/browser/ui/layout_constants.h"
 #include "chrome/browser/ui/views/chrome_layout_provider.h"
 #include "chrome/browser/ui/views/toolbar/toolbar_action_view.h"
 #include "chrome/browser/ui/views/toolbar/toolbar_ink_drop_util.h"
+#include "extensions/common/constants.h"
 #include "third_party/skia/include/core/SkPath.h"
 #include "ui/gfx/geometry/insets.h"
 #include "ui/gfx/geometry/rect.h"
@@ -52,7 +52,7 @@ SkPath BraveActionView::GetHighlightPath() const {
   // making it inset so that the badge can show outside it in the
   // fake margin on the right that we are creating.
   SkPath path;
-  gfx::Insets highlight_insets(0, 0, 0, brave_actions::kBraveActionRightMargin);
+  gfx::Insets highlight_insets(0, 0, 0, kBraveActionRightMargin);
   gfx::Rect rect(size());
   rect.Inset(highlight_insets);
   const int radii = ChromeLayoutProvider::Get()->GetCornerRadiusMetric(

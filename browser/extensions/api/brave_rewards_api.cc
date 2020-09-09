@@ -16,7 +16,6 @@
 #include "brave/browser/extensions/api/brave_action_api.h"
 #include "brave/browser/profiles/profile_util.h"
 #include "brave/common/extensions/api/brave_rewards.h"
-#include "brave/common/extensions/extension_constants.h"
 #include "brave/components/brave_ads/browser/ads_service.h"
 #include "brave/components/brave_ads/browser/ads_service_factory.h"
 #include "brave/components/brave_rewards/browser/rewards_service.h"
@@ -26,6 +25,7 @@
 #include "chrome/browser/extensions/extension_tab_util.h"
 #include "chrome/browser/profiles/profile.h"
 #include "content/public/browser/web_contents.h"
+#include "extensions/common/constants.h"
 
 using brave_ads::AdsService;
 using brave_ads::AdsServiceFactory;

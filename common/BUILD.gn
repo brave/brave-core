@@ -81,11 +81,11 @@ source_set("common") {
     sources += [
       "extensions/brave_extensions_api_provider.cc",
       "extensions/brave_extensions_api_provider.h",
-      "extensions/extension_constants.cc",
-      "extensions/extension_constants.h",
       "extensions/whitelist.cc",
       "extensions/whitelist.h",
     ]
+
+    deps += [ "//extensions/common:common_constants" ]
 
     public_deps = [
       "extensions/api",

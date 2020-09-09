@@ -1,10 +1,15 @@
-/* Copyright (c) 2019 The Brave Authors. All rights reserved.
+/* Copyright (c) 2020 The Brave Authors. All rights reserved.
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#ifndef BRAVE_COMMON_EXTENSIONS_EXTENSION_CONSTANTS_H_
-#define BRAVE_COMMON_EXTENSIONS_EXTENSION_CONSTANTS_H_
+#ifndef BRAVE_CHROMIUM_SRC_EXTNESIONS_COMMON_CONSTANTS_H_
+#define BRAVE_CHROMIUM_SRC_EXTNESIONS_COMMON_CONSTANTS_H_
+
+#include "../../../../extensions/common/constants.h"
+
+extern const int kBraveActionGraphicSize;
+extern const int kBraveActionRightMargin;
 
 extern const char brave_extension_id[];
 extern const char brave_rewards_extension_id[];
@@ -33,4 +38,4 @@ extern const char ipfs_companion_beta_extension_id[];
 
 extern const char google_translate_extension_id[];
 
-#endif  // BRAVE_COMMON_EXTENSIONS_EXTENSION_CONSTANTS_H_
+#endif  // BRAVE_CHROMIUM_SRC_EXTNESIONS_COMMON_CONSTANTS_H_

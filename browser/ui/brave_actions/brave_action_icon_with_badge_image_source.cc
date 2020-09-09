@@ -8,10 +8,10 @@
 #include <algorithm>
 
 #include "base/strings/utf_string_conversions.h"
-#include "brave/common/extensions/constants.h"
 #include "cc/paint/paint_flags.h"
 #include "chrome/browser/ui/toolbar/toolbar_actions_bar.h"
 #include "chrome/grit/theme_resources.h"
+#include "extensions/common/constants.h"
 #include "third_party/skia/include/core/SkColor.h"
 #include "ui/base/resource/resource_bundle.h"
 #include "ui/gfx/canvas.h"
@@ -21,8 +21,6 @@
 #include "ui/gfx/geometry/size.h"
 #include "ui/gfx/image/image_skia_operations.h"
 #include "ui/gfx/skia_paint_util.h"
-
-using namespace brave_actions;  // NOLINT
 
 base::Optional<int>
 BraveActionIconWithBadgeImageSource::GetCustomGraphicSize() {

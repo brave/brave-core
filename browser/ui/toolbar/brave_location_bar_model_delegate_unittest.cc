@@ -11,7 +11,7 @@
 #include "testing/gtest/include/gtest/gtest.h"
 
 #if BUILDFLAG(ENABLE_EXTENSIONS)
-#include "brave/common/extensions/extension_constants.h"
+#include "extensions/common/constants.h"
 #endif
 
 using BraveLocationBarModelDelegateTest = testing::Test;

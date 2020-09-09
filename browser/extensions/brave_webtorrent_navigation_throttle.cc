@@ -8,7 +8,6 @@
 #include "base/bind.h"
 #include "brave/browser/extensions/brave_component_loader.h"
 #include "brave/browser/profiles/profile_util.h"
-#include "brave/common/extensions/extension_constants.h"
 #include "brave/common/pref_names.h"
 #include "brave/common/url_constants.h"
 #include "brave/components/brave_webtorrent/browser/buildflags/buildflags.h"
@@ -22,6 +21,7 @@
 #include "content/public/common/url_constants.h"
 #include "extensions/browser/extension_registry.h"
 #include "extensions/browser/extension_system.h"
+#include "extensions/common/constants.h"
 #include "extensions/common/extension.h"
 
 #if BUILDFLAG(ENABLE_BRAVE_WEBTORRENT)

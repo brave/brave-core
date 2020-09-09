@@ -10,7 +10,6 @@
 #include <utility>
 
 #include "brave/browser/ui/brave_actions/brave_action_icon_with_badge_image_source.h"  // NOLINT
-#include "brave/common/extensions/constants.h"
 #include "brave/components/brave_rewards/common/pref_names.h"
 #include "brave/components/brave_rewards/resources/extension/grit/brave_rewards_extension_resources.h"  // NOLINT
 #include "chrome/browser/profiles/profile.h"
@@ -18,6 +17,7 @@
 #include "chrome/browser/ui/views/toolbar/toolbar_action_view.h"
 #include "chrome/browser/ui/views/toolbar/toolbar_ink_drop_util.h"
 #include "components/prefs/pref_service.h"
+#include "extensions/common/constants.h"
 #include "third_party/skia/include/core/SkBitmap.h"
 #include "ui/base/resource/resource_bundle.h"
 #include "ui/gfx/geometry/rect.h"
@@ -70,8 +70,7 @@ BraveRewardsActionStubView::BraveRewardsActionStubView(Profile* profile,
   gfx::ImageSkia image;
   const SkBitmap bitmap = rb.GetImageNamed(IDR_BRAVE_REWARDS_ICON_64)
       .AsBitmap();
-  float scale = static_cast<float>(bitmap.width()) /
-      brave_actions::kBraveActionGraphicSize;
+  float scale = static_cast<float>(bitmap.width()) / kBraveActionGraphicSize;
   image.AddRepresentation(gfx::ImageSkiaRep(bitmap, scale));
   image_source->SetIcon(gfx::Image(image));
   // Set text on badge
@@ -106,7 +105,7 @@ SkPath BraveRewardsActionStubView::GetHighlightPath() const {
   // Set the highlight path for the toolbar button,
   // making it inset so that the badge can show outside it in the
   // fake margin on the right that we are creating.
-  gfx::Insets highlight_insets(0, 0, 0, brave_actions::kBraveActionRightMargin);
+  gfx::Insets highlight_insets(0, 0, 0, kBraveActionRightMargin);
   gfx::Rect rect(GetPreferredSize());
   rect.Inset(highlight_insets);
   const int radii = ChromeLayoutProvider::Get()->GetCornerRadiusMetric(

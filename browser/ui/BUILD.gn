@@ -317,6 +317,7 @@ source_set("ui") {
       "//chrome/browser/extensions",
       "//components/sessions",
       "//extensions/browser",
+      "//extensions/common:common_constants",
     ]
   }
 

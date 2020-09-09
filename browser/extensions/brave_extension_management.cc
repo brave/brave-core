@@ -9,7 +9,6 @@
 
 #include "brave/browser/brave_browser_process_impl.h"
 #include "brave/browser/tor/buildflags.h"
-#include "brave/common/extensions/extension_constants.h"
 #include "brave/common/pref_names.h"
 #include "brave/common/tor/pref_names.h"
 #include "brave/browser/extensions/brave_extension_provider.h"
@@ -17,6 +16,7 @@
 #include "chrome/browser/profiles/profile.h"
 #include "components/prefs/pref_service.h"
 #include "extensions/browser/extension_registry.h"
+#include "extensions/common/constants.h"
 #include "extensions/common/extension.h"
 #include "extensions/common/extension_urls.h"
 

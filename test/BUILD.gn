@@ -153,6 +153,7 @@ test("brave_unit_tests") {
     "//components/version_info",
     "//content/public/common",
     "//content/test:test_support",
+    "//extensions/common:common_constants",
     "//services/network/public/cpp:cpp",
     "//services/network:test_support",
   ]
@@ -746,6 +747,7 @@ test("brave_browser_tests") {
     "//components/prefs",
     "//components/safe_browsing/core:features",
     "//content/test:test_support",
+    "//extensions/common:common_constants",
     "//ppapi/buildflags",
     ":brave_browser_tests_deps",
     "//third_party/blink/public/common",

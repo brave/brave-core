@@ -176,6 +176,7 @@ source_set("browser_process") {
     "//content/public/browser",
     "//content/public/common",
     "//extensions/buildflags",
+    "//extensions/common:common_constants",
     "//brave/chromium_src:browser",
     "browsing_data",
     "themes",
