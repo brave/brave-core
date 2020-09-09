@@ -178,7 +178,7 @@ bool NTPBackgroundImagesSource::IsTopSiteFaviconPath(
 
 base::FilePath NTPBackgroundImagesSource::GetTopSiteFaviconFilePath(
     const std::string& path) const {
-  std::vector<std::string> list = service_->GetCachedTopSitesFaviconList();
+  std::vector<std::string> list = service_->GetTopSitesFaviconList();
   for (const auto& favicon_file : list) {
     base::FilePath file_path = base::FilePath::FromUTF8Unsafe(favicon_file);
     if (path.compare(kSuperReferralPath + file_path.BaseName().AsUTF8Unsafe())

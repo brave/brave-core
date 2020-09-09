@@ -63,10 +63,8 @@ class NTPBackgroundImagesViewCounterTest : public testing::Test {
     brave::RegisterPrefsForBraveReferralsService(local_registry);
     NTPBackgroundImagesService::RegisterLocalStatePrefs(local_registry);
 
-    service_ = std::make_unique<NTPBackgroundImagesService>(
-        nullptr,
-        &local_pref_,
-        base::FilePath());
+    service_ = std::make_unique<NTPBackgroundImagesService>(nullptr,
+                                                            &local_pref_);
     view_counter_ = std::make_unique<ViewCounterService>(
         service_.get(), prefs(), true);
 

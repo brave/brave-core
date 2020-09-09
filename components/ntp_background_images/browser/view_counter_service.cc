@@ -104,17 +104,6 @@ std::vector<TopSite> ViewCounterService::GetTopSitesVectorForWebUI() const {
   return {};
 }
 
-base::Value ViewCounterService::GetTopSites(bool for_webui) const {
-#if BUILDFLAG(ENABLE_BRAVE_REFERRALS)
-  if (auto* data = GetCurrentBrandedWallpaperData()) {
-    if (data->IsSuperReferral())
-      return GetCurrentBrandedWallpaperData()->GetTopSites(for_webui);
-  }
-#endif
-
-  return base::Value();
-}
-
 std::vector<TopSite> ViewCounterService::GetTopSitesVectorData() const {
 #if BUILDFLAG(ENABLE_BRAVE_REFERRALS)
   if (auto* data = GetCurrentBrandedWallpaperData())

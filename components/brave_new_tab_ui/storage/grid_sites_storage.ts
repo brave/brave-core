@@ -6,7 +6,6 @@
 // Utils
 import { debounce } from '../../common/debounce'
 const keyName = 'grid-sites-data-v1'
-const defaultSuperReferralTopSitesKeyName = 'default-super-referral-top-sites'
 
 export const initialGridSitesState: NewTab.GridSitesState = {
   gridSites: [],
@@ -40,10 +39,3 @@ export const debouncedSave = debounce<NewTab.GridSitesState>((data: NewTab.GridS
   }
 }, 50)
 
-export const isDefaultSuperReferralTopSitesAddedToPinnedSites = (): boolean => {
-  return window.localStorage.getItem(defaultSuperReferralTopSitesKeyName) !== null
-}
-
-export const setDefaultSuperReferralTopSitesAddedToPinnedSites = () => {
-  window.localStorage.setItem(defaultSuperReferralTopSitesKeyName, 'set')
-}

@@ -224,11 +224,6 @@ void BraveNewTabMessageHandler::RegisterMessages() {
     base::BindRepeating(
       &BraveNewTabMessageHandler::HandleGetBrandedWallpaperData,
       base::Unretained(this)));
-  web_ui()->RegisterMessageCallback(
-    "getDefaultSuperReferralTopSitesData",
-    base::BindRepeating(
-      &BraveNewTabMessageHandler::HandleGetDefaultSuperReferralTopSitesData,
-      base::Unretained(this)));
 }
 
 void BraveNewTabMessageHandler::OnJavascriptAllowed() {
@@ -434,16 +429,6 @@ void BraveNewTabMessageHandler::HandleGetBrandedWallpaperData(
   ResolveJavascriptCallback(
       args->GetList()[0],
       service ? service->GetCurrentWallpaperForDisplay() : base::Value());
-}
-
-void BraveNewTabMessageHandler::HandleGetDefaultSuperReferralTopSitesData(
-    const base::ListValue* args) {
-  AllowJavascript();
-
-  auto* service = ViewCounterServiceFactory::GetForProfile(profile_);
-  ResolveJavascriptCallback(
-      args->GetList()[0],
-      service ? service->GetTopSites(true) : base::Value());
 }
 
 void BraveNewTabMessageHandler::OnPrivatePropertiesChanged() {

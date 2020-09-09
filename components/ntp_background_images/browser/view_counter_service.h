@@ -51,7 +51,6 @@ class ViewCounterService : public KeyedService,
 
   base::Value GetCurrentWallpaperForDisplay() const;
   base::Value GetCurrentWallpaper() const;
-  base::Value GetTopSites(bool for_webui = false) const;
   std::vector<TopSite> GetTopSitesVectorForWebUI() const;
   std::vector<TopSite> GetTopSitesVectorData() const;
 
