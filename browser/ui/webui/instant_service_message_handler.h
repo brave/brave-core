@@ -37,7 +37,7 @@ class InstantServiceMessageHandler : public content::WebUIMessageHandler,
   void MostVisitedInfoChanged(const InstantMostVisitedInfo& info) override;
 
   // handlers
-  void HandleGetMostVisitedInfo(const base::ListValue* args);
+  void HandleUpdateMostVisitedInfo(const base::ListValue* args);
   void HandleDeleteMostVisitedTile(const base::ListValue* args);
   void HandleReorderMostVisitedTile(const base::ListValue* args);
   void HandleRestoreMostVisitedDefaults(const base::ListValue* args);

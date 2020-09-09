@@ -49,6 +49,7 @@ export function wireApiEventsToStore () {
     binanceInitData()
     getActions().setInitialData(initialData)
     // Listen for API changes and dispatch to store
+    topSitesAPI.updateMostVisitedInfo()
     topSitesAPI.addMostVistedInfoChangedListener(onMostVisitedInfoChanged)
     statsAPI.addChangeListener(updateStats)
     preferencesAPI.addChangeListener(updatePreferences)

@@ -15,18 +15,12 @@
 #include "brave/browser/ui/webui/brave_new_tab_ui.h"
 #include "brave/browser/ntp_background_images/view_counter_service_factory.h"
 #include "brave/common/pref_names.h"
-#include "brave/components/ntp_background_images/browser/features.h"
 #include "brave/components/ntp_background_images/browser/ntp_background_images_data.h"
 #include "brave/components/ntp_background_images/browser/view_counter_service.h"
-#include "brave/components/ntp_background_images/common/pref_names.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/search/instant_service.h"
 #include "content/public/browser/web_ui_data_source.h"
 
-using ntp_background_images::features::kBraveNTPBrandedWallpaper;
-using ntp_background_images::prefs::kNewTabPageShowBackgroundImage;
-using ntp_background_images::prefs::kNewTabPageShowSponsoredImagesBackgroundImage;  // NOLINT
-using ntp_background_images::prefs::kBrandedWallpaperNotificationDismissed;
 using ntp_background_images::ViewCounterServiceFactory;
 
 namespace {
@@ -61,9 +55,9 @@ InstantServiceMessageHandler::~InstantServiceMessageHandler() {
 
 void InstantServiceMessageHandler::RegisterMessages() {
   web_ui()->RegisterMessageCallback(
-    "getMostVisitedInfo",
+    "updateMostVisitedInfo",
     base::BindRepeating(
-      &InstantServiceMessageHandler::HandleGetMostVisitedInfo,
+      &InstantServiceMessageHandler::HandleUpdateMostVisitedInfo,
       base::Unretained(this)));
   web_ui()->RegisterMessageCallback(
     "deleteMostVisitedTile",
@@ -150,13 +144,14 @@ void InstantServiceMessageHandler::MostVisitedInfoChanged(
   }
 }
 
-void InstantServiceMessageHandler::HandleGetMostVisitedInfo(
+void InstantServiceMessageHandler::HandleUpdateMostVisitedInfo(
     const base::ListValue* args) {
   AllowJavascript();
 
-  ResolveJavascriptCallback(
-      args->GetList()[0],
-      top_site_tiles_);
+  // OnNewTabPageOpened refreshes the most visited entries while
+  // UpdateMostVisitedInfo triggers a call to MostVisitedInfoChanged.
+  instant_service_->OnNewTabPageOpened();
+  instant_service_->UpdateMostVisitedInfo();
 }
 
 void InstantServiceMessageHandler::HandleDeleteMostVisitedTile(

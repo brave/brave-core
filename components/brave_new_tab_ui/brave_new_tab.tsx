@@ -10,6 +10,7 @@ import Theme from 'brave-ui/theme/brave-default'
 import DarkTheme from 'brave-ui/theme/brave-dark'
 import BraveCoreThemeProvider from '../common/BraveCoreThemeProvider'
 import { wireApiEventsToStore } from './apiEventsToStore'
+import * as topSitesAPI from './api/topSites'
 
 // Components
 import App from './containers/app'
@@ -48,3 +49,10 @@ wireApiEventsToStore()
 
 // Perform DOM-dependent initialization when ready
 document.addEventListener('DOMContentLoaded', initialize)
+
+// Update topsite tiles when NTP gets visible.
+document.addEventListener('visibilitychange', () => {
+  if (document.visibilityState === 'visible') {
+    topSitesAPI.updateMostVisitedInfo()
+   }
+})

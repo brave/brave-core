@@ -6,14 +6,8 @@
 let are_custom_links_enabled: boolean
 let is_visible: boolean
 
-export function getTopSiteTiles (): Promise<chrome.topSites.MostVisitedURL[]> {
-  return new Promise(resolve => {
-    window.cr.sendWithPromise<any>('getMostVisitedInfo').then((result) => {
-      are_custom_links_enabled = result.custom_links_enabled
-      is_visible = result.visible
-      resolve(result.tiles)
-    })
-  })
+export function updateMostVisitedInfo () {
+  chrome.send('updateMostVisitedInfo')
 }
 
 export function addMostVistedInfoChangedListener (listener: any): void {

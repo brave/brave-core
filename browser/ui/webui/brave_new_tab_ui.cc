@@ -15,7 +15,6 @@
 #include "brave/common/webui_url_constants.h"
 #include "brave/components/brave_new_tab/resources/grit/brave_new_tab_generated_map.h"
 #include "chrome/browser/profiles/profile.h"
-#include "chrome/browser/search/instant_service.h"
 #include "chrome/browser/search/instant_service_factory.h"
 #include "components/grit/brave_components_resources.h"
 #include "components/strings/grit/components_strings.h"
@@ -35,11 +34,6 @@ BraveNewTabUI::BraveNewTabUI(content::WebUI* web_ui, const std::string& name)
     InstantServiceMessageHandler::Create(source, profile_, instant_service_)));
   content::WebUIDataSource::Add(profile_, source);
   web_ui->OverrideTitle(l10n_util::GetStringUTF16(IDS_NEW_TAB_TITLE));
-
-  // OnNewTabPageOpened refreshes the most visited entries while
-  // UpdateMostVisitedInfo triggers a call to MostVisitedInfoChanged.
-  instant_service_->OnNewTabPageOpened();
-  instant_service_->UpdateMostVisitedInfo();
 }
 
 BraveNewTabUI::~BraveNewTabUI() {
