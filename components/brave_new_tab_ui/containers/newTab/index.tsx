@@ -26,6 +26,7 @@ import BrandedWallpaperLogo from '../../components/default/brandedWallpaper/logo
 import VisibilityTimer from '../../helpers/visibilityTimer'
 import { generateQRData } from '../../binance-utils'
 
+// API
 import {
   customLinksEnabled,
   setMostVisitedSettings
@@ -231,12 +232,12 @@ class NewTabPage extends React.Component<Props, State> {
     // Settings page needs to be updated to read that value too.
     const new_value = !this.props.newTabData.showTopSites
     this.props.saveShowTopSites(new_value)
-    setMostVisitedSettings(customLinksEnabled(), new_value)
+    setMostVisitedSettings(customLinksEnabled(), new_value, true)
   }
 
   toggleCustomLinksEnabled = () => {
     setMostVisitedSettings(!customLinksEnabled(),
-        this.props.newTabData.showTopSites)
+        this.props.newTabData.showTopSites, true)
   }
 
   toggleShowRewards = () => {

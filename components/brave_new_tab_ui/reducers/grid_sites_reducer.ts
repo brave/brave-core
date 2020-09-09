@@ -28,7 +28,9 @@ export const gridSitesReducer: Reducer<NewTab.GridSitesState | undefined> = (
 
   switch (action.type) {
     case types.GRID_SITES_DATA_UPDATED: {
-      state = gridSitesState.tilesUpdated(state, payload.gridSites)
+      const { gridSites, custom_links_enabled, visible } = payload
+      setMostVisitedSettings(custom_links_enabled, visible, false)
+      state = gridSitesState.tilesUpdated(state, gridSites)
       break
     }
 

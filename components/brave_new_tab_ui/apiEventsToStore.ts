@@ -34,7 +34,8 @@ function onRewardsToggled (prefData: preferencesAPI.Preferences): void {
 }
 
 async function onMostVisitedInfoChanged (topSites: any) {
-  getActions().tilesUpdated(topSites.tiles)
+  getActions().tilesUpdated(topSites.tiles, topSites.custom_links_enabled,
+      topSites.visible)
 }
 
 // Not marked as async so we don't return a promise

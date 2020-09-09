@@ -5,7 +5,8 @@
 
 // Utils
 import { debounce } from '../../common/debounce'
-const keyName = 'grid-sites-data-v1'
+const oldkeyName = 'grid-sites-data-v1'
+const newkeyName = 'grid-sites-data-v2'
 
 export const initialGridSitesState: NewTab.GridSitesState = {
   gridSites: [],
@@ -14,7 +15,11 @@ export const initialGridSitesState: NewTab.GridSitesState = {
 }
 
 export const load = (): NewTab.GridSitesState => {
-  const data: string | null = window.localStorage.getItem(keyName)
+  // Cleanup legacy localStorage (not needed anymore)
+  if (window.localStorage.getItem(oldkeyName)) {
+    window.localStorage.removeItem(oldkeyName)
+  }
+  const data: string | null = window.sessionStorage.getItem(newkeyName)
   let state = initialGridSitesState
   let storedState: NewTab.GridSitesState
 
@@ -33,9 +38,11 @@ export const load = (): NewTab.GridSitesState => {
   return state
 }
 
+// Saving the state is useful so that something will show when opening
+// a new tab. There is a delay before MostVisitedInfoChanged() is called.
+// Using `sessionStorage` won't persist to disk.
 export const debouncedSave = debounce<NewTab.GridSitesState>((data: NewTab.GridSitesState) => {
   if (data) {
-    window.localStorage.setItem(keyName, JSON.stringify(data))
+    window.sessionStorage.setItem(newkeyName, JSON.stringify(data))
   }
 }, 50)
-

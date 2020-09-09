@@ -197,7 +197,7 @@
       <message name="IDS_BRAVE_NEW_TAB_CLOCK_FORMAT_12" desc="Text for choice '12-hour clock' Clock>Format setting">12-hour clock</message>
       <message name="IDS_BRAVE_NEW_TAB_CLOCK_FORMAT_24" desc="Text for choice '24-hour clock' Clock>Format setting">24-hour clock</message>
       <message name="IDS_BRAVE_NEW_TAB_SHOW_TOP_SITES" desc="Text for settings show top sites option">Show Top Sites</message>
-      <message name="IDS_BRAVE_NEW_TAB_CUSTOM_LINKS_ENABLED" desc="Text for allowing customizing of top sites">Customize top sites</message>
+      <message name="IDS_BRAVE_NEW_TAB_CUSTOM_LINKS_ENABLED" desc="Text for allowing customizing of top sites">Customize Top Sites</message>
       <message name="IDS_BRAVE_NEW_TAB_SHOW_REWARDS" desc="Text for settings show rewards option">Show Brave Rewards</message>
       <message name="IDS_BRAVE_NEW_TAB_SHOW_BINANCE" desc="Text for show binance option">Show Binance</message>
       <message name="IDS_BRAVE_NEW_TAB_SHOW_TOGETHER" desc="Text for show together option">Brave Together</message>

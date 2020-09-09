@@ -7,8 +7,10 @@
 import { types } from '../constants/grid_sites_types'
 import { action } from 'typesafe-actions'
 
-export const tilesUpdated = (gridSites: NewTab.Site[]) => {
-  return action(types.GRID_SITES_DATA_UPDATED, { gridSites })
+export const tilesUpdated = (gridSites: NewTab.Site[],
+    custom_links_enabled: boolean, visible: boolean) => {
+  return action(types.GRID_SITES_DATA_UPDATED, { gridSites,
+      custom_links_enabled, visible })
 }
 
 export const showTilesRemovedNotice = (shouldShow: boolean) => {

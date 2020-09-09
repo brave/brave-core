@@ -22,8 +22,7 @@ import {
 
 import {
   deleteMostVisitedTile,
-  generateGridSiteFavicon,
-  customLinksEnabled
+  generateGridSiteFavicon
 } from '../../api/topSites'
 
 // Types
@@ -48,10 +47,6 @@ class TopSite extends React.PureComponent<Props, {}> {
       <Tile
         title={siteData.title}
         tabIndex={0}
-        style={{
-          // Visually inform users that dragging a site is not allowed.
-          cursor: customLinksEnabled() ? 'grab' : 'not-allowed'
-        }}
       >
         <TileActionsContainer>
           <TileAction onClick={this.onIgnoredTopSite.bind(this, siteData)}>
