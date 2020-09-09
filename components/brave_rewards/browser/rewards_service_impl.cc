@@ -2168,10 +2168,6 @@ void RewardsServiceImpl::DiagnosticLog(
     return;
   }
 
-  if (profile_->IsOffTheRecord()) {
-    return;
-  }
-
   if (verbose_level > kDiagnosticLogMaxVerboseLevel) {
     return;
   }
@@ -2188,7 +2184,6 @@ void RewardsServiceImpl::DiagnosticLog(
       base::BindOnce(&RewardsServiceImpl::OnWriteToLogOnFileTaskRunner,
           AsWeakPtr()));
 }
-
 
 bool RewardsServiceImpl::WriteToDiagnosticLogOnFileTaskRunner(
     const base::FilePath& log_path,
