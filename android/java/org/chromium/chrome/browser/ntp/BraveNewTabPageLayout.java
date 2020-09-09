@@ -122,6 +122,7 @@ public class BraveNewTabPageLayout extends NewTabPageLayout {
     private Tab mTab;
     private Activity mActivity;
     private LinearLayout indicatorLayout;
+    private LinearLayout superReferralSitesLayout;
 
     public BraveNewTabPageLayout(Context context, AttributeSet attrs) {
         super(context, attrs);
@@ -178,14 +179,18 @@ public class BraveNewTabPageLayout extends NewTabPageLayout {
             ntpWidgetMap.put(ntpWidgetManager.getPrivateStatsWidget(), ntpWidgetItem);
         }
         if (ntpWidgetManager.getFavoritesWidget() != -1) {
-            boolean showPlaceholder = getTileGroup().hasReceivedData() && getTileGroup().isEmpty();
-            if (mSiteSectionView != null && !showPlaceholder) {
-                if (!mNTPBackgroundImagesBridge.isSuperReferral()
-                        || !NTPBackgroundImagesBridge.enableSponsoredImages()
-                        || Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
-                    NTPWidgetItem ntpWidgetItem = new NTPWidgetItem(ntpWidgetManager.PREF_FAVORITES,
-                            "Favorites",
-                            "Trackers &amp; Ads Blocked, Saved Bandwidth, and Time Saved Estimates.");
+            NTPWidgetItem ntpWidgetItem = new NTPWidgetItem(ntpWidgetManager.PREF_FAVORITES,
+                    "Favorites",
+                    "Trackers &amp; Ads Blocked, Saved Bandwidth, and Time Saved Estimates.");
+            if (shouldShowSuperReferral() && superReferralSitesLayout != null) {
+                ntpWidgetItem.setWidgetView(superReferralSitesLayout);
+                ntpWidgetMap.put(ntpWidgetManager.getFavoritesWidget(), ntpWidgetItem);
+            } else if (!mNTPBackgroundImagesBridge.isSuperReferral()
+                       || !NTPBackgroundImagesBridge.enableSponsoredImages()
+                       || Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
+                boolean showPlaceholder = getTileGroup().hasReceivedData() && getTileGroup().isEmpty();
+                if (mSiteSectionView != null
+                        && !showPlaceholder) {
                     ntpWidgetItem.setWidgetView(mSiteSectionView);
                     ntpWidgetMap.put(ntpWidgetManager.getFavoritesWidget(), ntpWidgetItem);
                 }
@@ -220,6 +225,12 @@ public class BraveNewTabPageLayout extends NewTabPageLayout {
         }
 
         return new ArrayList<NTPWidgetItem>(ntpWidgetMap.values());
+    }
+
+    private boolean shouldShowSuperReferral() {
+        return mNTPBackgroundImagesBridge.isSuperReferral()
+               && NTPBackgroundImagesBridge.enableSponsoredImages()
+               && Build.VERSION.SDK_INT >= Build.VERSION_CODES.M;
     }
 
     private void showWidgetBasedOnOrder() {
@@ -297,13 +308,13 @@ public class BraveNewTabPageLayout extends NewTabPageLayout {
             mBadgeAnimationView.setVisibility(View.INVISIBLE);
         }
         showWidgets();
-        TabImpl currentTab = (TabImpl)((BraveActivity)mActivity).getActivityTab();
-        if (currentTab != null
-                && currentTab.getUrlString() != null
-                && !currentTab.getUrlString().isEmpty()) {
-            Uri uri = Uri.parse(currentTab.getUrlString());
-            Log.e("NTP", "Binance URL query : " + uri.getQuery());
-        }
+        // TabImpl currentTab = (TabImpl)((BraveActivity)mActivity).getActivityTab();
+        // if (currentTab != null
+        //         && currentTab.getUrlString() != null
+        //         && !currentTab.getUrlString().isEmpty()) {
+        //     Uri uri = Uri.parse(currentTab.getUrlString());
+        //     Log.e("NTP", "Binance URL query : " + uri.getQuery());
+        // }
     }
 
     @Override
@@ -360,8 +371,8 @@ public class BraveNewTabPageLayout extends NewTabPageLayout {
         assert (activity instanceof BraveActivity);
         mActivity = activity;
         ((BraveActivity)mActivity).dismissShieldsTooltip();
-        Log.e("NTP", "Binance URL : "+ BinanceNativeWorker.getInstance().getOAuthClientUrl());
-        TabUtils.openUrlInNewTab(false, BinanceNativeWorker.getInstance().getOAuthClientUrl());
+        // Log.e("NTP", "Binance URL : "+ BinanceNativeWorker.getInstance().getOAuthClientUrl());
+        // TabUtils.openUrlInNewTab(false, BinanceNativeWorker.getInstance().getOAuthClientUrl());
     }
 
     private void showNTPImage(NTPImage ntpImage) {
@@ -468,9 +479,7 @@ public class BraveNewTabPageLayout extends NewTabPageLayout {
             TabAttributes.from(getTab()).set(String.valueOf(getTabImpl().getId()), mSponsoredTab);
         }
         sponsoredTab = TabAttributes.from(getTab()).get(String.valueOf((getTabImpl()).getId()));
-        if (mNTPBackgroundImagesBridge.isSuperReferral()
-                && NTPBackgroundImagesBridge.enableSponsoredImages()
-                && Build.VERSION.SDK_INT >= Build.VERSION_CODES.M)
+        if (shouldShowSuperReferral())
             mNTPBackgroundImagesBridge.getTopSites();
     }
 
@@ -490,21 +499,21 @@ public class BraveNewTabPageLayout extends NewTabPageLayout {
 
         @Override
         public void updateTopSites(List<TopSite> topSites) {
-            new AsyncTask<Void>() {
+            Log.e("NTP", "Inside updateTopSites");
+            new AsyncTask<List<TopSiteTable>>() {
                 @Override
-                protected Void doInBackground() {
+                protected List<TopSiteTable> doInBackground() {
                     for (TopSite topSite : topSites) {
                         mDatabaseHelper.insertTopSite(topSite);
                     }
-                    return null;
+                    return mDatabaseHelper.getAllTopSites();
                 }
 
                 @Override
-                protected void onPostExecute(Void result) {
+                protected void onPostExecute(List<TopSiteTable> topSites) {
                     assert ThreadUtils.runningOnUiThread();
                     if (isCancelled()) return;
 
-                    List<TopSiteTable> topSites = mDatabaseHelper.getAllTopSites();
                     loadTopSites(topSites);
                 }
             } .executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
@@ -516,10 +525,7 @@ public class BraveNewTabPageLayout extends NewTabPageLayout {
         public void onUpdated() {
             if (NTPUtil.isReferralEnabled()) {
                 checkAndShowNTPImage(true);
-                if (mNTPBackgroundImagesBridge.isSuperReferral()
-                        && NTPBackgroundImagesBridge.enableSponsoredImages()
-                        && Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                    removeDefaultTopSites();
+                if (shouldShowSuperReferral()) {
                     mNTPBackgroundImagesBridge.getTopSites();
                 }
             }
@@ -554,7 +560,14 @@ public class BraveNewTabPageLayout extends NewTabPageLayout {
     };
 
     private void loadTopSites(List<TopSiteTable> topSites) {
-        LinearLayout superReferralSitesLayout = (LinearLayout) findViewById(R.id.ntp_super_referral_sites_layout);
+        superReferralSitesLayout = new LinearLayout(mActivity);
+        superReferralSitesLayout.setWeightSum(1f);
+        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT);
+        params.setMargins(16, 16, 16, 16);
+        superReferralSitesLayout.setLayoutParams(params);
+        superReferralSitesLayout.setOrientation(LinearLayout.HORIZONTAL);
+        superReferralSitesLayout.setBackgroundColor(mActivity.getResources().getColor(R.color.topsite_bg_color));
+
         LayoutInflater inflater = (LayoutInflater) mActivity.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
         for (TopSiteTable topSite : topSites) {
@@ -562,20 +575,14 @@ public class BraveNewTabPageLayout extends NewTabPageLayout {
 
             TextView tileViewTitleTv = view.findViewById(R.id.tile_view_title);
             tileViewTitleTv.setText(topSite.getName());
-
-            if (!GlobalNightModeStateProviderHolder.getInstance().isInNightMode()
-                    && !UserPrefs.get(Profile.getLastUsedRegularProfile()).getBoolean(BravePref.NEW_TAB_PAGE_SHOW_BACKGROUND_IMAGE)
-                    && !NTPUtil.isReferralEnabled()) {
-                tileViewTitleTv.setTextColor(getResources().getColor(android.R.color.black));
-            } else {
-                tileViewTitleTv.setTextColor(getResources().getColor(android.R.color.white));
-            }
+            tileViewTitleTv.setTextColor(getResources().getColor(android.R.color.black));
 
             ImageView iconIv = view.findViewById(R.id.tile_view_icon);
             if (NTPUtil.imageCache.get(topSite.getDestinationUrl()) == null) {
                 NTPUtil.imageCache.put(topSite.getDestinationUrl(), new java.lang.ref.SoftReference(NTPUtil.getTopSiteBitmap(topSite.getImagePath())));
             }
             iconIv.setImageBitmap(NTPUtil.imageCache.get(topSite.getDestinationUrl()).get());
+            iconIv.setBackgroundColor(mActivity.getResources().getColor(android.R.color.white));
             iconIv.setClickable(false);
 
             view.setOnClickListener(new View.OnClickListener() {
@@ -636,16 +643,7 @@ public class BraveNewTabPageLayout extends NewTabPageLayout {
             });
             superReferralSitesLayout.addView(view);
         }
-    }
-
-    public void removeDefaultTopSites() {
-        if (mainLayout != null && hasParent(mSiteSectionView)) {
-            mainLayout.removeView(mSiteSectionView);
-        }
-    }
-
-    private boolean hasParent(View view) {
-        return view != null && view.getParent() != null;
+        showWidgets();
     }
 
     public void setTab(Tab tab) {

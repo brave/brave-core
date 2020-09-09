@@ -88,14 +88,6 @@
 
             </LinearLayout>
 
-            <LinearLayout
-                android:id="@+id/ntp_super_referral_sites_layout"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="16dp"
-                android:weightSum="1.0"
-                android:orientation="horizontal"/>
-
             <!-- Explore offline card -->
             <ViewStub
                 android:id="@+id/explore_offline_card_stub"

@@ -10,5 +10,5 @@
     android:layout_height="wrap_content"
     android:layout_marginBottom="16dp"
     android:padding="8dp"
-    android:background="#DADCE8"
+    android:background="@color/topsite_bg_color"
     android:layout_gravity="center_horizontal" />
