@@ -11,6 +11,7 @@ import { connect } from 'react-redux'
 import { AddressesConfig } from './addressesConfig'
 import { ConnectedPeers } from './connectedPeers'
 import { DaemonStatus } from './daemonStatus'
+import { UninstalledView } from './uninstalledView'
 
 // Utils
 import * as ipfsActions from '../actions/ipfs_actions'
@@ -49,6 +50,14 @@ export class IPFSPage extends React.Component<Props, {}> {
   }
 
   render () {
+    if (!this.props.ipfsData.daemonStatus.installed) {
+      return (
+        <div id='ipfsPage'>
+          <UninstalledView />
+        </div>
+      )
+    }
+
     return (
       <div id='ipfsPage'>
         <DaemonStatus daemonStatus={this.props.ipfsData.daemonStatus} onLaunch={this.launchDaemon} onShutdown={this.shutdownDaemon}/>

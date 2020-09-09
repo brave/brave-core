@@ -18,6 +18,25 @@
 #include "content/public/browser/web_ui.h"
 #include "content/public/browser/web_ui_data_source.h"
 
+namespace {
+
+void CallOnGetDaemonStatus(content::WebUI* web_ui) {
+  ipfs::IpfsService* service =
+      ipfs::IpfsServiceFactory::GetForContext(
+          web_ui->GetWebContents()->GetBrowserContext());
+  if (!service) {
+    return;
+  }
+
+  base::Value value(base::Value::Type::DICTIONARY);
+  value.SetBoolKey("installed", service->IsIPFSExecutableAvailable());
+  value.SetBoolKey("launched", service->IsDaemonLaunched());
+  web_ui->CallJavascriptFunctionUnsafe("ipfs.onGetDaemonStatus",
+                                         std::move(value));
+}
+
+}  // namespace
+
 IPFSDOMHandler::IPFSDOMHandler() : weak_ptr_factory_{this} {}
 
 IPFSDOMHandler::~IPFSDOMHandler() {}
@@ -119,17 +138,7 @@ void IPFSDOMHandler::HandleGetDaemonStatus(const base::ListValue* args) {
   if (!web_ui()->CanCallJavascript())
     return;
 
-  ipfs::IpfsService* service =
-      ipfs::IpfsServiceFactory::GetForContext(
-          web_ui()->GetWebContents()->GetBrowserContext());
-  if (!service) {
-    return;
-  }
-
-  base::Value value(base::Value::Type::DICTIONARY);
-  value.SetBoolKey("launched", service->IsDaemonLaunched());
-  web_ui()->CallJavascriptFunctionUnsafe("ipfs.onGetDaemonStatus",
-                                         std::move(value));
+  CallOnGetDaemonStatus(web_ui());
 }
 
 void IPFSDOMHandler::HandleLaunchDaemon(const base::ListValue* args) {
@@ -153,10 +162,7 @@ void IPFSDOMHandler::OnLaunchDaemon(bool success) {
   if (!web_ui()->CanCallJavascript() || !success)
     return;
 
-  base::Value value(base::Value::Type::DICTIONARY);
-  value.SetBoolKey("launched", true);
-  web_ui()->CallJavascriptFunctionUnsafe("ipfs.onGetDaemonStatus",
-                                         std::move(value));
+  CallOnGetDaemonStatus(web_ui());
 }
 
 void IPFSDOMHandler::HandleShutdownDaemon(const base::ListValue* args) {
@@ -180,8 +186,5 @@ void IPFSDOMHandler::OnShutdownDaemon(bool success) {
   if (!web_ui()->CanCallJavascript() || !success)
     return;
 
-  base::Value value(base::Value::Type::DICTIONARY);
-  value.SetBoolKey("launched", false);
-  web_ui()->CallJavascriptFunctionUnsafe("ipfs.onGetDaemonStatus",
-                                         std::move(value));
+  CallOnGetDaemonStatus(web_ui());
 }

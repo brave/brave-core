@@ -24,10 +24,10 @@ export class DaemonStatus extends React.Component<Props, {}> {
     return (
       <Section>
         <Title>
-          <span i18n-content='daemonStatusTitle'/>
+          {getLocale('daemonStatusTitle')}
         </Title>
         <div>
-          <span i18n-content='launched'/>: {this.props.daemonStatus.launched.toString()}
+          {getLocale('launched')}: {this.props.daemonStatus.launched.toString()}
         </div>
         <SideBySideButtons>
           <PaddedButton

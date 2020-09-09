@@ -7,22 +7,17 @@ import * as React from 'react'
 
 import { getLocale } from '../../common/locale'
 
-import { Section } from '../style'
+import { Section, Title } from '../style'
 
-interface Props {
-  peerCount: number
-}
-
-export class ConnectedPeers extends React.Component<Props, {}> {
-  constructor (props: Props) {
-    super(props)
-  }
-
+export class UninstalledView extends React.Component {
   render () {
     return (
       <Section>
+        <Title>
+          {getLocale('daemonStatusTitle')}
+        </Title>
         <div>
-          {getLocale('connectedPeersTitle')} {this.props.peerCount}
+          {getLocale('not_installed')}
         </div>
       </Section>
     )

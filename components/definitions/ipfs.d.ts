@@ -18,6 +18,7 @@ declare namespace IPFS {
   }
 
   export interface DaemonStatus {
+    installed: bool
     launched: bool
   }
 }
