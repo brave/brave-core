@@ -1,0 +1,9 @@
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this
+// file, You can obtain one at http://mozilla.org/MPL/2.0/.
+
+#include "Release.xcconfig"
+
+// Manual Code-Signing
+CODE_SIGN_IDENTITY = Apple Distribution: Brave Software, Inc.
+CODE_SIGN_STYLE = Manual
