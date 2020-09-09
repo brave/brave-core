@@ -214,7 +214,7 @@ AdsServiceImpl::AdsServiceImpl(Profile* profile) :
     rewards_service_(brave_rewards::RewardsServiceFactory::GetForProfile(
         profile_)),
     bat_ads_client_receiver_(new bat_ads::AdsClientMojoBridge(this)) {
-  DCHECK(!profile_->IsOffTheRecord());
+  DCHECK(brave::IsRegularProfile(profile_));
 
   MigratePrefs();
 
@@ -357,8 +357,7 @@ void AdsServiceImpl::OnTabUpdated(
     return;
   }
 
-  const bool is_incognito = profile_->IsOffTheRecord() ||
-      brave::IsTorProfile(profile_);
+  const bool is_incognito = !brave::IsRegularProfile(profile_);
 
   bat_ads_->OnTabUpdated(tab_id.id(), url.spec(), is_active,
       is_browser_active, is_incognito);

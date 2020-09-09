@@ -43,6 +43,10 @@ Profile* GetParentProfile(const base::FilePath& path);
 // the guest profile by calling IsGuestSession and have to use this function.
 bool IsGuestProfile(content::BrowserContext* profile);
 
+// Similar to Profile::IsRegularProfile but return false for Tor regular
+// profile, Tor incognito profile, and the guest profile and its parent.
+bool IsRegularProfile(content::BrowserContext* profile);
+
 bool IsTorDisabledForProfile(Profile* profile);
 
 }  // namespace brave

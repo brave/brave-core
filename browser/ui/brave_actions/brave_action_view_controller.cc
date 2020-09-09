@@ -10,6 +10,7 @@
 #include <utility>
 
 #include "brave/browser/ui/brave_actions/brave_action_icon_with_badge_image_source.h"
+#include "brave/browser/profiles/profile_util.h"
 #include "brave/common/extensions/extension_constants.h"
 #include "chrome/browser/extensions/extension_view_host.h"
 #include "chrome/browser/extensions/extension_view_host_factory.h"
@@ -31,7 +32,7 @@ bool BraveActionViewController::IsEnabled(
     content::WebContents* web_contents) const {
   bool is_enabled = ExtensionActionViewController::IsEnabled(web_contents);
   if (is_enabled && extension_->id() == brave_rewards_extension_id &&
-      browser_->profile()->IsOffTheRecord())
+      !brave::IsRegularProfile(browser_->profile()))
     is_enabled = false;
   return is_enabled;
 }

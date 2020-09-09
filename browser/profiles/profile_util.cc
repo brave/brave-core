@@ -208,6 +208,13 @@ bool IsTorDisabledForProfile(Profile* profile) {
 #endif
 }
 
+bool IsRegularProfile(content::BrowserContext* context) {
+  auto* profile = Profile::FromBrowserContext(context);
+  return !IsTorProfile(context) &&
+         !profile->IsGuestSession() &&
+         profile->IsRegularProfile();
+}
+
 }  // namespace brave
 
 namespace chrome {

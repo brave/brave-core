@@ -49,7 +49,7 @@ ViewCounterServiceFactory::~ViewCounterServiceFactory() {}
 KeyedService* ViewCounterServiceFactory::BuildServiceInstanceFor(
     content::BrowserContext* browser_context) const {
   // Only NTP in normal profile uses sponsored services.
-  if (browser_context->IsOffTheRecord())
+  if (!brave::IsRegularProfile(browser_context))
     return nullptr;
 
   if (auto* service =
