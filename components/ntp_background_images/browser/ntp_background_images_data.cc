@@ -183,6 +183,16 @@ std::string NTPBackgroundImagesData::GetURLPrefix() const {
                                          : kSponsoredImagesPath);
 }
 
+std::vector<TopSite> NTPBackgroundImagesData::GetTopSitesForWebUI() const {
+  std::vector<TopSite> top_sites_for_webui;
+  for (const auto& top_site : top_sites) {
+    TopSite top_site_for_webui = top_site;
+    top_site_for_webui.image_path =  GetURLPrefix() + top_site.image_path;
+    top_sites_for_webui.push_back(top_site_for_webui);
+  }
+  return top_sites_for_webui;
+}
+
 base::Value NTPBackgroundImagesData::GetTopSites(bool for_webui) const {
   base::Value top_sites_list_value(base::Value::Type::LIST);
   int index = 0;

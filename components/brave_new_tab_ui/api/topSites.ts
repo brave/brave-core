@@ -51,8 +51,10 @@ export function isVisible (): boolean {
   return is_visible
 }
 
-export function generateGridSiteFavicon (url: string): string {
-  return `chrome://favicon/size/64@1x/${url}`
+export function generateGridSiteFavicon (site: NewTab.Site): string {
+  if (site.favicon === '')
+    return `chrome://favicon/size/64@1x/${site.url}`
+  return site.favicon
 }
 
 

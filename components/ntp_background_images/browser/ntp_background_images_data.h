@@ -54,6 +54,7 @@ struct NTPBackgroundImagesData {
   // Use different key string for webui. NTP WebUI uses different key name for
   // top sites values.
   base::Value GetTopSites(bool for_webui = false) const;
+  std::vector<TopSite> GetTopSitesForWebUI() const;
 
   bool IsSuperReferral() const;
 

@@ -58,7 +58,7 @@ class TopSite extends React.PureComponent<Props, {}> {
             <CloseStrokeIcon />
           </TileAction>
         </TileActionsContainer>
-          <a href={siteData.url}><TileFavicon src={generateGridSiteFavicon(siteData.url)} /></a>
+          <a href={siteData.url}><TileFavicon src={generateGridSiteFavicon(siteData)} /></a>
       </Tile>
     )
   }
