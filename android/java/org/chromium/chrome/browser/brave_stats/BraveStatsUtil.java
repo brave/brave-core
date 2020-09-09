@@ -66,7 +66,7 @@ public class BraveStatsUtil {
 	public static void showBraveStats() {
 		if (BraveActivity.getBraveActivity() != null) {
 			BraveStatsBottomSheetDialogFragment braveStatsBottomSheetDialogFragment = BraveStatsBottomSheetDialogFragment.newInstance();
-			braveStatsBottomSheetDialogFragment.show(BraveActivity.getBraveActivity().getSupportFragmentManager(), "brave_stats_bottom_sheet_dialog_fragment");
+			braveStatsBottomSheetDialogFragment.show(BraveActivity.getBraveActivity().getSupportFragmentManager(), BraveStatsBottomSheetDialogFragment.TAG_FRAGMENT);
 		}
 	}
 
