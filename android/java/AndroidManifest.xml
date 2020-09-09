@@ -35,7 +35,20 @@
 <activity
     android:name="org.chromium.chrome.browser.onboarding.SearchActivity"
     android:theme="@style/Theme.Chromium.Activity.Fullscreen"
-    android:screenOrientation="sensorPortrait"/>
+    android:screenOrientation="sensorPortrait">
+
+</activity>
+
+<activity
+    android:name="org.chromium.chrome.browser.BinanceActivity"
+    android:theme="@style/Theme.Chromium.Activity.Fullscreen">
+    <intent-filter>
+        <action android:name="android.intent.action.VIEW" />
+        <category android:name="android.intent.category.BROWSABLE" />
+        <category android:name="android.intent.category.DEFAULT" />
+        <data android:scheme="com.brave.binance" />
+    </intent-filter>
+</activity>
 
 <service android:name="org.chromium.chrome.browser.onboarding.BraveRewardsService"
     android:exported="false">

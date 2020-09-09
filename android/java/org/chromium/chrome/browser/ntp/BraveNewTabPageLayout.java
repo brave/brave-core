@@ -308,13 +308,6 @@ public class BraveNewTabPageLayout extends NewTabPageLayout {
             mBadgeAnimationView.setVisibility(View.INVISIBLE);
         }
         showWidgets();
-        // TabImpl currentTab = (TabImpl)((BraveActivity)mActivity).getActivityTab();
-        // if (currentTab != null
-        //         && currentTab.getUrlString() != null
-        //         && !currentTab.getUrlString().isEmpty()) {
-        //     Uri uri = Uri.parse(currentTab.getUrlString());
-        //     Log.e("NTP", "Binance URL query : " + uri.getQuery());
-        // }
     }
 
     @Override
@@ -371,8 +364,6 @@ public class BraveNewTabPageLayout extends NewTabPageLayout {
         assert (activity instanceof BraveActivity);
         mActivity = activity;
         ((BraveActivity)mActivity).dismissShieldsTooltip();
-        // Log.e("NTP", "Binance URL : "+ BinanceNativeWorker.getInstance().getOAuthClientUrl());
-        // TabUtils.openUrlInNewTab(false, BinanceNativeWorker.getInstance().getOAuthClientUrl());
     }
 
     private void showNTPImage(NTPImage ntpImage) {
@@ -680,13 +671,15 @@ public class BraveNewTabPageLayout extends NewTabPageLayout {
     new NTPWidgetAdapter.NTPWidgetListener() {
         @Override
         public void onMenuEdit() {
-            NTPWidgetBottomSheetDialogFragment ntpWidgetBottomSheetDialogFragment =
-                NTPWidgetBottomSheetDialogFragment.newInstance();
-            ntpWidgetBottomSheetDialogFragment.setNTPWidgetListener(ntpWidgetListener);
-            ntpWidgetBottomSheetDialogFragment.setWidgetList(getWidgetList());
-            ntpWidgetBottomSheetDialogFragment.show(
-                ((BraveActivity) mActivity).getSupportFragmentManager(),
-                "NTPWidgetBottomSheetDialogFragment");
+            // NTPWidgetBottomSheetDialogFragment ntpWidgetBottomSheetDialogFragment =
+            //     NTPWidgetBottomSheetDialogFragment.newInstance();
+            // ntpWidgetBottomSheetDialogFragment.setNTPWidgetListener(ntpWidgetListener);
+            // ntpWidgetBottomSheetDialogFragment.setWidgetList(getWidgetList());
+            // ntpWidgetBottomSheetDialogFragment.show(
+            //     ((BraveActivity) mActivity).getSupportFragmentManager(),
+            //     "NTPWidgetBottomSheetDialogFragment");
+            Log.e("NTP", "Binance URL : "+ BinanceNativeWorker.getInstance().getOAuthClientUrl());
+            TabUtils.openUrlInSameTab(BinanceNativeWorker.getInstance().getOAuthClientUrl());
         }
 
         @Override
