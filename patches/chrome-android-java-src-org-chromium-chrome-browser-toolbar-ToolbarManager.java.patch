@@ -1,5 +1,5 @@
 diff --git a/chrome/android/java/src/org/chromium/chrome/browser/toolbar/ToolbarManager.java b/chrome/android/java/src/org/chromium/chrome/browser/toolbar/ToolbarManager.java
-index 4c2c4fd10ba6c6f9981aa581b5630a38b4ee91f0..dbdfad69468c09d0f0adc4ca9b71e59244125666 100644
+index 4c2c4fd10ba6..226caf69236b 100644
 --- a/chrome/android/java/src/org/chromium/chrome/browser/toolbar/ToolbarManager.java
 +++ b/chrome/android/java/src/org/chromium/chrome/browser/toolbar/ToolbarManager.java
 @@ -1253,6 +1253,7 @@ public class ToolbarManager implements UrlFocusChangeListener, ThemeColorObserve
@@ -10,3 +10,11 @@ index 4c2c4fd10ba6c6f9981aa581b5630a38b4ee91f0..dbdfad69468c09d0f0adc4ca9b71e592
      }
  
      private void updateReloadState(boolean tabCrashed) {
+@@ -1354,6 +1355,7 @@ public class ToolbarManager implements UrlFocusChangeListener, ThemeColorObserve
+         mToolbar.onBottomToolbarVisibilityChanged(visible);
+         mBottomToolbarVisibilitySupplier.set(visible);
+         mBottomControlsCoordinator.setBottomControlsVisible(visible);
++        mAppMenuManager.setBottomMenu(isMenuFromBottom());
+     }
+ 
+     /**
