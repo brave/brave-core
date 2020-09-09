@@ -78,7 +78,14 @@ platform :ios do
   desc "Create an archive to be uploaded to the App Store"
   lane :release do |options|
     overrideParams = {
-      scheme: "Release",
+      scheme: "Release (AppStore)",
+      export_options: {
+        method: "app-store",
+        provisioningProfiles: { 
+          "com.brave.ios.browser" => "Brave iOS",
+          "com.brave.ios.browser.BraveShareTo" => "Brave iOS Share Extension"
+        }
+      },
     }
     testflight_build({overrideParams: overrideParams})
   end
