@@ -6,11 +6,12 @@ import("//third_party/blink/renderer/platform/platform.gni")
 source_set("brave_page_graph") {
   deps = [
     "//base",
+    "//services/network/public/mojom",
     "//third_party/blink/renderer/platform/wtf",
-    "//third_party/boringssl",
     "//third_party/icu",
     "//third_party/libxml",
     "//url",
+    "//url/mojom:url_mojom_origin",
   ]
 
   public_deps = [
