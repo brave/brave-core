@@ -5,6 +5,8 @@
 
 import * as React from 'react'
 
+import { getLocale } from '../../common/locale'
+
 import { Section } from '../style'
 
 interface Props {
@@ -20,8 +22,7 @@ export class ConnectedPeers extends React.Component<Props, {}> {
     return (
       <Section>
         <div>
-          <span i18n-content='connectedPeersTitle'/>
-          {this.props.peerCount}
+          {getLocale('connectedPeersTitle')} {this.props.peerCount}
         </div>
       </Section>
     )

@@ -5,6 +5,8 @@
 
 import * as React from 'react'
 
+import { getLocale } from '../../common/locale'
+
 import { Section, Title } from '../style'
 
 interface Props {
@@ -20,16 +22,16 @@ export class AddressesConfig extends React.Component<Props, {}> {
     return (
       <Section>
         <Title>
-          <span i18n-content='addressesConfigTitle'/>
+          {getLocale('addressesConfigTitle')}
         </Title>
         <div>
-          <span i18n-content='api'/>: {this.props.addressesConfig.api}
+          {getLocale('api')}: {this.props.addressesConfig.api}
         </div>
         <div>
-          <span i18n-content='gateway'/>: {this.props.addressesConfig.gateway}
+          {getLocale('gateway')}: {this.props.addressesConfig.gateway}
         </div>
         <div>
-          <span i18n-content='swarm'/>: {this.props.addressesConfig.swarm.toString()}
+          {getLocale('swarm')}: {this.props.addressesConfig.swarm.toString()}
         </div>
       </Section>
     )

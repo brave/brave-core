@@ -5,6 +5,8 @@
 
 import * as React from 'react'
 
+import { getLocale } from '../../common/locale'
+
 import { Section, Title } from '../style'
 
 export class UninstalledView extends React.Component {
@@ -12,10 +14,10 @@ export class UninstalledView extends React.Component {
     return (
       <Section>
         <Title>
-          <span i18n-content='daemonStatusTitle'/>
+          {getLocale('daemonStatusTitle')}
         </Title>
         <div>
-          <span i18n-content='not_installed'/>
+          {getLocale('not_installed')}
         </div>
       </Section>
     )
