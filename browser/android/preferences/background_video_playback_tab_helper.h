@@ -19,10 +19,6 @@ class BackgroundVideoPlaybackTabHelper
   // content::WebContentsObserver overrides:
   void DidFinishNavigation(
       content::NavigationHandle* navigation_handle) override;
-  void ResourceLoadComplete(
-      content::RenderFrameHost* render_frame_host,
-      const content::GlobalRequestID& request_id,
-      const blink::mojom::ResourceLoadInfo& resource_load_info) override;
 
   WEB_CONTENTS_USER_DATA_KEY_DECL();
 
