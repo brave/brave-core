@@ -178,24 +178,34 @@ class SettingsViewController: TableViewController {
     }
     
     private lazy var generalSection: Section = {
-        var general = Section(
-            header: .title(Strings.settingsGeneralSectionTitle),
-            rows: [
-                Row(text: Strings.searchEngines, selection: {
-                    let viewController = SearchSettingsTableViewController()
-                    viewController.model = self.profile.searchEngines
-                    viewController.profile = self.profile
-                    self.navigationController?.pushViewController(viewController, animated: true)
-                }, accessory: .disclosureIndicator, cellClass: MultilineValue1Cell.self),
-                .boolRow(title: Strings.saveLogins, option: Preferences.General.saveLogins),
-                .boolRow(title: Strings.blockPopups, option: Preferences.General.blockPopups)
-            ]
-        )
+        var rows = [
+            Row(text: Strings.searchEngines, selection: {
+                let viewController = SearchSettingsTableViewController()
+                viewController.model = self.profile.searchEngines
+                viewController.profile = self.profile
+                self.navigationController?.pushViewController(viewController, animated: true)
+            }, accessory: .disclosureIndicator, cellClass: MultilineValue1Cell.self),
+            .boolRow(title: Strings.saveLogins, option: Preferences.General.saveLogins),
+            .boolRow(title: Strings.blockPopups, option: Preferences.General.blockPopups)]
         
         if #available(iOS 13.0, *), UIDevice.isIpad {
-            general.rows.append(.boolRow(title: Strings.alwaysRequestDesktopSite,
+            rows.append(.boolRow(title: Strings.alwaysRequestDesktopSite,
             option: Preferences.General.alwaysRequestDesktopSite))
         }
+        
+        if AppConstants.iOSVersionGreaterThanOrEqual(to: 14) {
+            rows.append(.init(text: Strings.setDefaultBrowserSettingsCell, selection: { [unowned self] in
+            guard let settingsUrl = URL(string: UIApplication.openSettingsURLString) else {
+                return
+            }
+            UIApplication.shared.open(settingsUrl)
+            }, cellClass: MultilineButtonCell.self))
+        }
+        
+        var general = Section(
+            header: .title(Strings.settingsGeneralSectionTitle),
+            rows: rows
+        )
         
         return general
     }()
