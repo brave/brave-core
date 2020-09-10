@@ -5,9 +5,9 @@ const callback = (mutationsList: MutationRecord[], observer: MutationObserver) =
   const buttons: NodeListOf<Element> = document.querySelectorAll('div.webstore-test-button-label')
 
   buttons.forEach((button: Element) => {
-    const text: string = button.innerHTML
+    const text: string = button.textContent || ''
     if (textToMatch.includes(text)) {
-      button.innerHTML = text.replace('Chrome', 'Brave')
+      button.textContent = text.replace('Chrome', 'Brave')
     }
   })
 }

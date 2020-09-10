@@ -55,7 +55,7 @@ RegisterPolymerTemplateModifications({
     // remove the google account button
     const manageGoogleAccount = signinTemplate.content.querySelector('#manage-google-account')
     if (!manageGoogleAccount) {
-      console.error('[Brave Settings Overrides] Could not find the google account settings item', templateContent, templateContent.innerHTML)
+      console.error('[Brave Settings Overrides] Could not find the google account settings item', templateContent, templateContent.textContent)
       return
     }
     manageGoogleAccount.remove()

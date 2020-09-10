@@ -28,6 +28,26 @@ export function getSectionElement (templateContent, sectionName) {
   return sectionEl
 }
 
+/**
+ * Creates a settings-section element with a single child and returns it.
+ * @param {string} sectionName - value of the section attribute
+ * @param {string} titleName - loadTimeData key for page-title
+ * @param {string} childName - name of child element
+ * @param {Object} childAttributes - key-value pairs of child element attributes
+ * @returns {Element}
+ */
+function createSectionElement (sectionName, titleName, childName, childAttributes) {
+  const el = document.createElement('settings-section')
+  el.setAttribute('page-title', loadTimeData.getString(titleName))
+  el.setAttribute('section', sectionName)
+  const child = document.createElement(childName)
+  for (const attribute in childAttributes) {
+    child.setAttribute(attribute, childAttributes[attribute])
+  }
+  el.appendChild(child)
+  return el
+}
+
 RegisterStyleOverride(
   'settings-basic-page',
   html`
@@ -94,67 +114,86 @@ RegisterPolymerTemplateModifications({
       sectionGetStarted.setAttribute('is', 'dom-if')
       sectionGetStarted.setAttribute('restamp', true)
       sectionGetStarted.setAttribute('if', '[[showPage_(pageVisibility.getStarted)]]')
-      sectionGetStarted.innerHTML = `
-        <settings-section page-title="${loadTimeData.getString('braveGetStartedTitle')}" section="getStarted">
-          <brave-settings-getting-started prefs={{prefs}} page-visibility=[[pageVisibility]]></brave-settings-getting-started>
-        </settings-section>
-      `
+      sectionGetStarted.content.appendChild(createSectionElement(
+        'getStarted',
+        'braveGetStartedTitle',
+        'brave-settings-getting-started',
+        {
+          prefs: '{{prefs}}',
+          'page-visibility': '[[pageVisibility]]'
+        }
+      ))
       const sectionExtensions = document.createElement('template')
       sectionExtensions.setAttribute('is', 'dom-if')
       sectionExtensions.setAttribute('restamp', true)
       sectionExtensions.setAttribute('if', '[[showPage_(pageVisibility.extensions)]]')
-      sectionExtensions.innerHTML = `
-        <settings-section page-title="${loadTimeData.getString('braveDefaultExtensions')}" section="extensions">
-          <settings-brave-default-extensions-page prefs="{{prefs}}"></settings-brave-default-extensions-page>
-        </settings-section>
-      `
+      sectionExtensions.content.appendChild(createSectionElement(
+        'extensions',
+        'braveDefaultExtensions',
+        'settings-brave-default-extensions-page',
+        {
+          prefs: '{{prefs}}'
+        }
+      ))
       const sectionSync = document.createElement('template')
       sectionSync.setAttribute('is', 'dom-if')
       sectionSync.setAttribute('restamp', true)
       sectionSync.setAttribute('if', '[[showPage_(pageVisibility.braveSync)]]')
-      sectionSync.innerHTML = `
-        <settings-section page-title="${loadTimeData.getString('braveSync')}" section="braveSync">
-          <settings-brave-sync-page></settings-brave-sync-page>
-        </settings-section>
-      `
+      sectionSync.content.appendChild(createSectionElement(
+        'braveSync',
+        'braveSync',
+        'settings-brave-sync-page',
+        {}
+      ))
+
       const sectionShields = document.createElement('template')
       sectionShields.setAttribute('is', 'dom-if')
       sectionShields.setAttribute('restamp', true)
       sectionShields.setAttribute('if', '[[showPage_(pageVisibility.shields)]]')
-      sectionShields.innerHTML = `
-        <settings-section page-title="${loadTimeData.getString('braveShieldsTitle')}"
-            section="shields">
-          <settings-default-brave-shields-page  prefs="{{prefs}}"></settings-default-brave-shields-page>
-        </settings-section>
-      `
+      sectionShields.content.appendChild(createSectionElement(
+        'shields',
+        'braveShieldsTitle',
+        'settings-default-brave-shields-page',
+        {
+          prefs: '{{prefs}}'
+        }
+      ))
       const sectionSocialBlocking = document.createElement('template')
       sectionSocialBlocking.setAttribute('is', 'dom-if')
       sectionSocialBlocking.setAttribute('restamp', true)
       sectionSocialBlocking.setAttribute('if', '[[showPage_(pageVisibility.socialBlocking)]]')
-      sectionSocialBlocking.innerHTML = `
-        <settings-section page-title="${loadTimeData.getString('socialBlocking')}"
-            section="socialBlocking">
-          <settings-social-blocking-page prefs="{{prefs}}"></settings-social-blocking-page>
-        </settings-section>
-      `
+      sectionSocialBlocking.content.appendChild(createSectionElement(
+        'socialBlocking',
+        'socialBlocking',
+        'settings-social-blocking-page',
+        {
+          prefs: '{{prefs}}'
+        }
+      ))
       const sectionHelpTips = document.createElement('template')
       sectionHelpTips.setAttribute('is', 'dom-if')
       sectionHelpTips.setAttribute('restamp', true)
       sectionHelpTips.setAttribute('if', '[[showPage_(pageVisibility.braveHelpTips)]]')
-      sectionHelpTips.innerHTML = `
-        <settings-section page-title="${loadTimeData.getString('braveHelpTips')}" section="braveHelpTips">
-          <settings-brave-help-tips-page prefs="{{prefs}}"></settings-brave-help-tips-page>
-        </settings-section>
-      `
+      sectionHelpTips.content.appendChild(createSectionElement(
+        'braveHelpTips',
+        'braveHelpTips',
+        'settings-brave-help-tips-page',
+        {
+          prefs: '{{prefs}}'
+        }
+      ))
       const sectionNewTab = document.createElement('template')
       sectionNewTab.setAttribute('is', 'dom-if')
       sectionNewTab.setAttribute('restamp', true)
       sectionNewTab.setAttribute('if', '[[showPage_(pageVisibility.newTab)]]')
-      sectionNewTab.innerHTML = `
-        <settings-section page-title="${loadTimeData.getString('braveNewTab')}" section="newTab">
-          <settings-brave-new-tab-page prefs="{{prefs}}"></settings-brave-new-tab-page>
-        </settings-section>
-      `
+      sectionNewTab.content.appendChild(createSectionElement(
+        'newTab',
+        'braveNewTab',
+        'settings-brave-new-tab-page',
+        {
+          prefs: '{{prefs}}'
+        }
+      ))
       // Get Started at top
       basicPageEl.insertAdjacentElement('afterbegin', sectionGetStarted)
       // Move Appearance item

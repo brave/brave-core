@@ -14,10 +14,11 @@ function createMenuElement (title, href, iconName, pageVisibilitySection) {
     menuEl.setAttribute('hidden', `[[!pageVisibility.${pageVisibilitySection}]]`)
   }
   menuEl.href = href
-  menuEl.innerHTML = `
-    <iron-icon icon="${iconName}"></iron-icon>
-    ${title}
-  `
+  const child = document.createElement('iron-icon')
+  child.setAttribute('icon', iconName)
+  menuEl.appendChild(child)
+  const text = document.createTextNode(title)
+  menuEl.appendChild(text)
   return menuEl
 }
 
@@ -140,7 +141,7 @@ RegisterPolymerTemplateModifications({
     // Add title
     const titleEl = document.createElement('h1')
     titleEl.id = 'settingsHeader'
-    titleEl.innerHTML = loadTimeData.getString('settings')
+    titleEl.textContent = loadTimeData.getString('settings')
     const topMenuEl = templateContent.querySelector('#topMenu')
     if (!topMenuEl) {
       console.error('[Brave Settings Overrides] Could not find topMenu element to add title after')
@@ -152,7 +153,7 @@ RegisterPolymerTemplateModifications({
     if (!advancedToggle) {
       console.error('[Brave Settings Overrides] Could not find advancedButton to modify text')
     }
-    advancedToggle.innerText = loadTimeData.getString('braveAdditionalSettingsTitle')
+    advancedToggle.textContent = loadTimeData.getString('braveAdditionalSettingsTitle')
     // Add 'Get Started' item
     const peopleEl = getMenuElement(templateContent, '/people')
     const getStartedEl = createMenuElement(
@@ -238,16 +239,37 @@ RegisterPolymerTemplateModifications({
     const aboutEl = templateContent.querySelector('#about-menu')
     if (!aboutEl) {
       console.error('[Brave Settings Overrides] Could not find about-menu element')
+      return
     }
-    const aboutTitleContent = aboutEl.innerHTML
-    aboutEl.innerHTML = `
-      <div class="brave-about-graphic">
-        <iron-icon icon="brave_settings:full-color-brave-lion"><iron-icon>
-      </div>
-      <div class="brave-about-meta">
-        <span class="brave-about-item brave-about-menu-link-text">${aboutTitleContent}</span>
-        <span class="brave-about-item brave-about-menu-version">v ${loadTimeData.getString('braveProductVersion')}</span>
-      </div>
-    `
+    const parent = aboutEl.parentNode
+    parent.removeChild(aboutEl)
+
+    const newAboutEl = document.createElement('a')
+    newAboutEl.setAttribute('href', '/help')
+    newAboutEl.setAttribute('id', aboutEl.id)
+
+    const graphicsEl = document.createElement('div')
+    graphicsEl.setAttribute('class', 'brave-about-graphic')
+
+    const icon = document.createElement('iron-icon')
+    icon.setAttribute('icon', 'brave_settings:full-color-brave-lion')
+
+    const metaEl = document.createElement('div')
+    metaEl.setAttribute('class', 'brave-about-meta')
+
+    const menuLink = document.createElement('span')
+    menuLink.setAttribute('class', 'brave-about-item brave-about-menu-link-text')
+    menuLink.textContent = aboutEl.textContent
+
+    const versionEl = document.createElement('span')
+    versionEl.setAttribute('class', 'brave-about-item brave-about-menu-version')
+    versionEl.textContent = `v ${loadTimeData.getString('braveProductVersion')}`
+
+    parent.appendChild(newAboutEl)
+    newAboutEl.appendChild(graphicsEl)
+    graphicsEl.appendChild(icon)
+    newAboutEl.appendChild(metaEl)
+    metaEl.appendChild(menuLink)
+    metaEl.appendChild(versionEl)
   }
 })

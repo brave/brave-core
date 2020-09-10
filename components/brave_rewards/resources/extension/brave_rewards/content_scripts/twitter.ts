@@ -252,7 +252,8 @@ const createBraveTipAction = (tweet: Element, tweetId: string, numActions: numbe
 
   // Create style element for hover color
   const style = document.createElement('style')
-  style.innerHTML = '.ProfileTweet-actionButton :hover { color: #FB542B }'
+  const css = '.ProfileTweet-actionButton :hover { color: #FB542B }'
+  style.appendChild(document.createTextNode(css))
   shadowRoot.appendChild(style)
 
   return braveTipAction
