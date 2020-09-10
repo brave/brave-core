@@ -55,6 +55,7 @@ Result CatalogState::FromJson(
 
     campaign_info.campaign_id = campaign["campaignId"].GetString();
     campaign_info.priority = campaign["priority"].GetUint();
+    campaign_info.ptr = campaign["ptr"].GetDouble();
     campaign_info.start_at = campaign["startAt"].GetString();
     campaign_info.end_at = campaign["endAt"].GetString();
     campaign_info.daily_cap = campaign["dailyCap"].GetUint();

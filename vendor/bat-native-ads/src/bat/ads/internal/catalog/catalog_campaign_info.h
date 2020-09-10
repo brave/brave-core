@@ -23,6 +23,7 @@ struct CatalogCampaignInfo {
 
   std::string campaign_id;
   unsigned int priority = 0;
+  double ptr = 0.0;
   std::string name;
   std::string start_at;
   std::string end_at;
