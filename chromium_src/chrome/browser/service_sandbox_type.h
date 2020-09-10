@@ -34,4 +34,16 @@ content::GetServiceSandboxType<ipfs::mojom::IpfsService>() {
   return sandbox::policy::SandboxType::kNoSandbox;
 }
 
+namespace tor {
+namespace mojom {
+class TorLauncher;
+}  // namespace mojom
+}  // namespace tor
+
+template <>
+inline content::SandboxType
+content::GetServiceSandboxType<tor::mojom::TorLauncher>() {
+  return content::SandboxType::kNoSandbox;
+}
+
 #endif  // BRAVE_CHROMIUM_SRC_CHROME_BROWSER_SERVICE_SANDBOX_TYPE_H_

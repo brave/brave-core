@@ -13,15 +13,15 @@
 #include "base/macros.h"
 #include "base/process/process.h"
 #include "brave/components/services/tor/public/interfaces/tor.mojom.h"
-#include "mojo/public/cpp/bindings/interface_request.h"
-#include "services/service_manager/public/cpp/service_context_ref.h"
+#include "mojo/public/cpp/bindings/pending_receiver.h"
+#include "mojo/public/cpp/bindings/receiver.h"
 
 namespace tor {
 
 class TorLauncherImpl : public tor::mojom::TorLauncher {
  public:
   explicit TorLauncherImpl(
-      std::unique_ptr<service_manager::ServiceContextRef> service_ref);
+      mojo::PendingReceiver<tor::mojom::TorLauncher> receiver);
   ~TorLauncherImpl() override;
 
   // tor::mojom::TorLauncher
@@ -30,15 +30,13 @@ class TorLauncherImpl : public tor::mojom::TorLauncher {
   void SetCrashHandler(SetCrashHandlerCallback callback) override;
   void ReLaunch(const TorConfig& config,
               ReLaunchCallback callback) override;
-  void SetDisconnected();
  private:
   void MonitorChild();
 
   SetCrashHandlerCallback crash_handler_callback_;
   std::unique_ptr<base::Thread> child_monitor_thread_;
   base::Process tor_process_;
-  const std::unique_ptr<service_manager::ServiceContextRef> service_ref_;
-  bool connected_ = true;
+  mojo::Receiver<tor::mojom::TorLauncher> receiver_;
 
   DISALLOW_COPY_AND_ASSIGN(TorLauncherImpl);
 };

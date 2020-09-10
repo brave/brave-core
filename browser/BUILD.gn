@@ -348,7 +348,6 @@ source_set("browser_process") {
   if (enable_tor) {
     deps += [
       "//brave/browser/tor",
-      "//brave/components/services/tor/public/cpp:manifest",
       "//brave/common/tor:pref_names",
     ]
   }

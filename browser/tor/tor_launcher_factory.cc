@@ -6,9 +6,10 @@
 #include "brave/browser/tor/tor_launcher_factory.h"
 
 #include "brave/browser/tor/tor_profile_service_impl.h"
+#include "brave/grit/brave_generated_resources.h"
+#include "chrome/browser/service_sandbox_type.h"
 #include "content/public/browser/browser_thread.h"
-#include "content/public/common/service_manager_connection.h"
-#include "services/service_manager/public/cpp/connector.h"
+#include "content/public/browser/service_process_host.h"
 
 using content::BrowserThread;
 
@@ -34,8 +35,11 @@ TorLauncherFactory::TorLauncherFactory()
 }
 
 void TorLauncherFactory::Init() {
-  content::ServiceManagerConnection::GetForProcess()->GetConnector()->Connect(
-      tor::mojom::kServiceName, tor_launcher_.BindNewPipeAndPassReceiver());
+  content::ServiceProcessHost::Launch(
+      tor_launcher_.BindNewPipeAndPassReceiver(),
+      content::ServiceProcessHost::Options()
+          .WithDisplayName(IDS_UTILITY_PROCESS_TOR_LAUNCHER_NAME)
+          .Pass());
 
   tor_launcher_.set_disconnect_handler(base::BindOnce(
       &TorLauncherFactory::OnTorLauncherCrashed, base::Unretained(this)));

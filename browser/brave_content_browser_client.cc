@@ -97,11 +97,7 @@ using extensions::ChromeContentBrowserClientExtensionsPart;
 
 #if BUILDFLAG(ENABLE_TOR)
 #include "brave/browser/tor/tor_navigation_throttle.h"
-#include "brave/browser/tor/tor_profile_service_factory.h"
 #include "brave/common/tor/switches.h"
-#include "brave/components/services/tor/public/cpp/manifest.h"
-#include "brave/components/services/tor/public/interfaces/tor.mojom.h"
-#include "brave/components/services/tor/tor_launcher_service.h"
 #endif
 
 #if BUILDFLAG(ENABLE_SPEEDREADER)
@@ -259,9 +255,6 @@ std::vector<service_manager::Manifest>
 BraveContentBrowserClient::GetExtraServiceManifests() {
   auto manifests = ChromeContentBrowserClient::GetExtraServiceManifests();
 
-#if BUILDFLAG(ENABLE_TOR)
-  manifests.push_back(tor::GetTorLauncherManifest());
-#endif
 #if BUILDFLAG(BRAVE_ADS_ENABLED)
   manifests.push_back(bat_ads::GetManifest());
 #endif

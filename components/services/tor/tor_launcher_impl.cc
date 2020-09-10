@@ -76,8 +76,8 @@ static void TearDownPipeHack() {
 namespace tor {
 
 TorLauncherImpl::TorLauncherImpl(
-    std::unique_ptr<service_manager::ServiceContextRef> service_ref)
-    : service_ref_(std::move(service_ref)) {
+    mojo::PendingReceiver<mojom::TorLauncher> receiver)
+    : receiver_(this, std::move(receiver)) {
 #if defined(OS_POSIX)
   SetupPipeHack();
 #endif
@@ -198,7 +198,7 @@ void TorLauncherImpl::MonitorChild() {
             LOG(ERROR) << "tor exit (" << WEXITSTATUS(status) << ")";
           }
           tor_process_.Close();
-          if (connected_ && crash_handler_callback_) {
+          if (receiver_.is_bound() && crash_handler_callback_) {
             base::ThreadTaskRunnerHandle::Get()->PostTask(
               FROM_HERE, base::BindOnce(std::move(crash_handler_callback_),
                                         pid));
@@ -211,17 +211,13 @@ void TorLauncherImpl::MonitorChild() {
   }
 #elif defined(OS_WIN)
   WaitForSingleObject(tor_process_.Handle(), INFINITE);
-  if (connected_ && crash_handler_callback_)
+  if (receiver_.is_bound() && crash_handler_callback_)
     base::ThreadTaskRunnerHandle::Get()->PostTask(
       FROM_HERE, base::BindOnce(std::move(crash_handler_callback_),
                                 base::GetProcId(tor_process_.Handle())));
 #else
 #error unsupported platforms
 #endif
-}
-
-void TorLauncherImpl::SetDisconnected() {
-  connected_ = false;
 }
 
 }  // namespace tor

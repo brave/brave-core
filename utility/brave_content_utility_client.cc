@@ -9,7 +9,6 @@
 #include <string>
 #include <utility>
 
-#include "brave/browser/tor/buildflags.h"
 #include "brave/components/brave_ads/browser/buildflags/buildflags.h"
 #include "brave/components/brave_rewards/browser/buildflags/buildflags.h"
 #include "content/public/utility/utility_thread.h"
@@ -25,11 +24,6 @@
 #include "brave/components/services/bat_ledger/public/interfaces/bat_ledger.mojom.h"
 #endif
 
-#if BUILDFLAG(ENABLE_TOR)
-#include "brave/components/services/tor/public/interfaces/tor.mojom.h"
-#include "brave/components/services/tor/tor_launcher_service.h"
-#endif
-
 BraveContentUtilityClient::BraveContentUtilityClient()
     : ChromeContentUtilityClient() {}
 
@@ -37,21 +31,12 @@ BraveContentUtilityClient::~BraveContentUtilityClient() = default;
 
 namespace {
 
-#if BUILDFLAG(BRAVE_ADS_ENABLED) || BUILDFLAG(BRAVE_REWARDS_ENABLED) || \
-    BUILDFLAG(ENABLE_TOR)
+#if BUILDFLAG(BRAVE_ADS_ENABLED) || BUILDFLAG(BRAVE_REWARDS_ENABLED)
 void RunServiceAsyncThenTerminateProcess(
     std::unique_ptr<service_manager::Service> service) {
   service_manager::Service::RunAsyncUntilTermination(
       std::move(service),
       base::BindOnce([] { content::UtilityThread::Get()->ReleaseProcess(); }));
-}
-#endif
-
-#if BUILDFLAG(ENABLE_TOR)
-std::unique_ptr<service_manager::Service> CreateTorLauncherService(
-    mojo::PendingReceiver<service_manager::mojom::Service> receiver) {
-  return std::make_unique<tor::TorLauncherService>(
-      std::move(receiver));
 }
 #endif
 
@@ -76,14 +61,6 @@ std::unique_ptr<service_manager::Service> CreateBatLedgerService(
 bool BraveContentUtilityClient::HandleServiceRequest(
     const std::string& service_name,
     mojo::PendingReceiver<service_manager::mojom::Service> receiver) {
-
-#if BUILDFLAG(ENABLE_TOR)
-  if (service_name == tor::mojom::kServiceName) {
-    RunServiceAsyncThenTerminateProcess(
-        CreateTorLauncherService(std::move(receiver)));
-    return true;
-  }
-#endif
 
 #if BUILDFLAG(BRAVE_ADS_ENABLED)
   if (service_name == bat_ads::mojom::kServiceName) {

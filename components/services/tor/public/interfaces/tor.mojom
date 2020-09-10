@@ -5,8 +5,6 @@ module tor.mojom;
 
 import "mojo/public/mojom/base/file_path.mojom";
 
-const string kServiceName = "tor_launcher";
-
 struct TorConfig {
   mojo_base.mojom.FilePath binary_path;
   string proxy_string;

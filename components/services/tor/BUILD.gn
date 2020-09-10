@@ -7,8 +7,6 @@ source_set("tor") {
   sources = [
     "tor_launcher_impl.cc",
     "tor_launcher_impl.h",
-    "tor_launcher_service.cc",
-    "tor_launcher_service.h",
   ]
 
   deps = [
@@ -16,6 +14,5 @@ source_set("tor") {
     "//brave/common/tor",
     "//mojo/public/cpp/bindings",
     "public/interfaces",
-    "//services/service_manager",
   ]
 }

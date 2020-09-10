@@ -6,7 +6,6 @@
 #include "brave/components/services/brave_content_browser_overlay_manifest.h"
 
 #include "base/no_destructor.h"
-#include "brave/browser/tor/buildflags.h"
 #include "brave/components/brave_ads/browser/buildflags/buildflags.h"
 #include "brave/components/brave_rewards/browser/buildflags/buildflags.h"
 #include "services/service_manager/public/cpp/manifest_builder.h"
@@ -19,10 +18,6 @@
 #include "brave/components/services/bat_ads/public/cpp/manifest.h"
 #endif
 
-#if BUILDFLAG(ENABLE_TOR)
-#include "brave/components/services/tor/public/cpp/manifest.h"
-#endif
-
 const service_manager::Manifest& GetBraveContentBrowserOverlayManifest() {
   static base::NoDestructor<service_manager::Manifest> manifest{
       service_manager::ManifestBuilder()
@@ -33,9 +28,6 @@ const service_manager::Manifest& GetBraveContentBrowserOverlayManifest() {
 #if BUILDFLAG(BRAVE_ADS_ENABLED)
           .RequireCapability("bat_ads", "bat_ads")
 #endif
-#endif
-#if BUILDFLAG(ENABLE_TOR)
-          .RequireCapability("tor_launcher", "tor_launcher")
 #endif
           .Build()};
   return *manifest;
