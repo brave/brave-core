@@ -18,9 +18,6 @@ namespace type {
 /**
  * LEDGER
  */
-using ActivityInfo = mojom::ActivityInfo;
-using ActivityInfoPtr = mojom::ActivityInfoPtr;
-
 using ActivityInfoFilter = mojom::ActivityInfoFilter;
 using ActivityInfoFilterPtr = mojom::ActivityInfoFilterPtr;
 

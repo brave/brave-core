@@ -13,8 +13,6 @@
 namespace ledger {
 namespace database {
 
-using GetActivityInfoCallback = std::function<void(type::ActivityInfoPtr)>;
-
 class DatabaseActivityInfo: public DatabaseTable {
  public:
   explicit DatabaseActivityInfo(LedgerImpl* ledger);
@@ -27,10 +25,6 @@ class DatabaseActivityInfo: public DatabaseTable {
   void NormalizeList(
       type::PublisherInfoList list,
       ledger::ResultCallback callback);
-
-  void GetRecord(
-    const std::string& publisher_key,
-    GetActivityInfoCallback callback);
 
   void GetRecordsList(
       const int start,
@@ -46,10 +40,6 @@ class DatabaseActivityInfo: public DatabaseTable {
   void CreateInsertOrUpdate(
       type::DBTransaction* transaction,
       type::PublisherInfoPtr info);
-
-  void OnGetRecord(
-      type::DBCommandResponsePtr response,
-      GetActivityInfoCallback callback);
 
   void OnGetRecordsList(
       type::DBCommandResponsePtr response,

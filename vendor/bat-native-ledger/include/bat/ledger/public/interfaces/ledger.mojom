@@ -171,16 +171,6 @@ enum ExcludeFilter {
   FILTER_ALL_EXCEPT_EXCLUDED = 3
 };
 
-struct ActivityInfo {
-  string id;
-  uint64 duration;
-  uint32 visits;
-  double score;
-  uint32 percent;
-  double weight;
-  uint64 reconcile_stamp;
-};
-
 struct ActivityInfoFilterOrderPair {
   string property_name;
   bool ascending;
