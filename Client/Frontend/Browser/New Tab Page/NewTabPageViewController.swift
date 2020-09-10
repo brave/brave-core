@@ -128,7 +128,7 @@ class NewTabPageViewController: UIViewController, Themeable {
                 self?.delegate?.tappedDuckDuckGoCallout()
             })
         ]
-        
+      
         if !PrivateBrowsingManager.shared.isPrivateBrowsing {
             sections.append(
                 BraveTodaySectionProvider(
@@ -141,6 +141,11 @@ class NewTabPageViewController: UIViewController, Themeable {
             layout.braveTodaySection = sections.firstIndex(where: { $0 is BraveTodaySectionProvider })
         }
 
+        // This is a one-off view, adding it to the NTP only if necessary.
+        if DefaultBrowserCalloutProvider.shouldShowCallout {
+            sections.insert(DefaultBrowserCalloutProvider(), at: 0)
+        }
+        
         collectionView.delegate = self
         collectionView.dataSource = self
         applyTheme(Theme.of(tab))

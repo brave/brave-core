@@ -68,6 +68,10 @@ public struct AppConstants {
             return AppBuildChannel.debug
         #endif
     }()
+    
+    public static func iOSVersionGreaterThanOrEqual(to version: Int) -> Bool {
+        ProcessInfo().operatingSystemVersion.majorVersion >= version
+    }
 
     public static let scheme: String = {
         guard let identifier = Bundle.main.bundleIdentifier else {
