@@ -1,8 +1,8 @@
 diff --git a/content/public/browser/content_browser_client.h b/content/public/browser/content_browser_client.h
-index 428ec871deba7faa1aee05e9e4ab58814c8cff66..47a6d989a523fe8dc0fd5356964fac0bbffe07ad 100644
+index 0229ba39ba7ff66e139df331e6ef519cba1640df..fa9551efaf018202674b4ac6663eed7203cc9787 100644
 --- a/content/public/browser/content_browser_client.h
 +++ b/content/public/browser/content_browser_client.h
-@@ -1760,6 +1760,7 @@ class CONTENT_EXPORT ContentBrowserClient {
+@@ -1761,6 +1761,7 @@ class CONTENT_EXPORT ContentBrowserClient {
    virtual ui::AXMode GetAXModeForBrowserContext(
        BrowserContext* browser_context);
  

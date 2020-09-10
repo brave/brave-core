@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/BUILD.gn b/chrome/browser/BUILD.gn
-index 98ae3acaf7cf5fbfae0e4c2e0ddb8a087e6d6e23..fd339ae93d51f85cb850035d6bc0fc896ae05cdc 100644
+index 0b8467866c5a128f881c44429e61c96e405853d5..a600dbc4e8bd52a9219aeb4611e9b9dba80ef7a7 100644
 --- a/chrome/browser/BUILD.gn
 +++ b/chrome/browser/BUILD.gn
-@@ -2194,6 +2194,7 @@ static_library("browser") {
+@@ -2190,6 +2190,7 @@ static_library("browser") {
      "//ui/strings",
      "//ui/surface",
      "//ui/web_dialogs",
@@ -10,7 +10,7 @@ index 98ae3acaf7cf5fbfae0e4c2e0ddb8a087e6d6e23..fd339ae93d51f85cb850035d6bc0fc89
    ]
  
    if (build_with_tflite_lib) {
-@@ -3878,6 +3879,7 @@ static_library("browser") {
+@@ -4001,6 +4002,7 @@ static_library("browser") {
          "task_manager/sampling/shared_sampler_posix.cc",
        ]
      }
