@@ -195,7 +195,7 @@ class SettingsViewController: TableViewController {
             option: Preferences.General.alwaysRequestDesktopSite))
         }
         
-        if AppConstants.iOSVersionGreaterThanOrEqual(to: 14) {
+        if AppConstants.iOSVersionGreaterThanOrEqual(to: 14) && AppConstants.buildChannel == .release {
             rows.append(.init(text: Strings.setDefaultBrowserSettingsCell, selection: { [unowned self] in
             guard let settingsUrl = URL(string: UIApplication.openSettingsURLString) else {
                 return
