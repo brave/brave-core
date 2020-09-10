@@ -77,7 +77,7 @@ interface TileProps {
 }
 
 export const Tile = styled<TileProps, 'div'>('div')`
-  background-color: #ffffff;
+  background-color: #bdbdbd;
   position: relative;
   user-select: none;
   margin: 6px;
