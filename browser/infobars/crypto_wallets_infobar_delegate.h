@@ -24,8 +24,7 @@ class CryptoWalletsInfoBarDelegate : public ConfirmInfoBarDelegate {
  public:
   enum class InfobarSubType {
     LOAD_CRYPTO_WALLETS,
-    GENERIC_SETUP,
-    CRYPTO_WALLETS_METAMASK
+    GENERIC_SETUP
   };
   static void Create(InfoBarService* infobar_service, InfobarSubType subtype);
 

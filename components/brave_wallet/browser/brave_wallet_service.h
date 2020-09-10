@@ -77,9 +77,16 @@ class BraveWalletService : public KeyedService,
   bool LoadRootSeedInfo(std::vector<uint8_t> key, std::string* seed);
   void RemoveUnusedWeb3ProviderContentScripts();
   void OnPreferenceChanged();
-  // ExtensionRegistryObserver implementation.
+  void OnExtensionInstalled(content::BrowserContext* browser_context,
+      const extensions::Extension* extension, bool is_update) override;
   void OnExtensionLoaded(content::BrowserContext* browser_context,
-                         const extensions::Extension* extension) override;
+      const extensions::Extension* extension) override;
+  void OnExtensionUnloaded(content::BrowserContext* browser_context,
+      const extensions::Extension* extension,
+      extensions::UnloadedExtensionReason reason) override;
+  void OnExtensionUninstalled(content::BrowserContext* browser_context,
+      const extensions::Extension* extension,
+      extensions::UninstallReason reason) override;
 
   content::BrowserContext* context_;
   std::unique_ptr<PrefChangeRegistrar> pref_change_registrar_;
