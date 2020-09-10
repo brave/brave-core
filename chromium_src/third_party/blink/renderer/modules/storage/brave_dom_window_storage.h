@@ -6,11 +6,16 @@
 #ifndef BRAVE_CHROMIUM_SRC_THIRD_PARTY_BLINK_RENDERER_MODULES_STORAGE_BRAVE_DOM_WINDOW_STORAGE_H_
 #define BRAVE_CHROMIUM_SRC_THIRD_PARTY_BLINK_RENDERER_MODULES_STORAGE_BRAVE_DOM_WINDOW_STORAGE_H_
 
+#include "base/feature_list.h"
+#include "third_party/blink/renderer/modules/modules_export.h"
+
 namespace blink {
 
 class ExceptionState;
 class LocalDOMWindow;
 class StorageArea;
+
+MODULES_EXPORT extern const base::Feature kBraveEphemeralStorage;
 
 class BraveDOMWindowStorage {
  public:
