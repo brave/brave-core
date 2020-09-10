@@ -22,6 +22,7 @@
 #include "content/public/common/web_preferences.h"
 #include "content/public/test/browser_test.h"
 #include "gpu/config/gpu_finch_features.h"
+#include "net/base/features.h"
 #include "services/device/public/cpp/device_features.h"
 #include "services/network/public/cpp/features.h"
 #include "third_party/blink/public/common/features.h"
@@ -86,6 +87,7 @@ IN_PROC_BROWSER_TEST_F(BraveMainDelegateBrowserTest, EnabledFeatures) {
     &features::kWinrtGeolocationImplementation,
 #endif
     &omnibox::kOmniboxContextMenuShowFullUrls,
+    &net::features::kLegacyTLSEnforced,
   };
 
   for (const auto* feature : enabled_features)
