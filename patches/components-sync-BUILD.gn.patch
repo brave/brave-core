@@ -1,5 +1,5 @@
 diff --git a/components/sync/BUILD.gn b/components/sync/BUILD.gn
-index abbe13bdd15c0558e0014696de277af5f92a9866..d0f6e94e1f8927d0c0ef01a0ab1616dd64381813 100644
+index fbf5178558298c1fe272027d4dac617064ec2413..647e3cb9f15078b6eae08fc3b70934efbcd453af 100644
 --- a/components/sync/BUILD.gn
 +++ b/components/sync/BUILD.gn
 @@ -305,6 +305,7 @@ static_library("rest_of_sync") {

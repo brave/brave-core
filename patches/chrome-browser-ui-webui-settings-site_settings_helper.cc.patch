@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/ui/webui/settings/site_settings_helper.cc b/chrome/browser/ui/webui/settings/site_settings_helper.cc
-index 32c1db01bda484ba0adebd5ba4191b25b4b7fe1a..e8640dfaec9874e1e69e13d405c90d5b3e8a1b88 100644
+index 54e1de7f3f861e4796e495141389347d98f8d3ac..f7abbbb19381edb9194391b34f27049c4c009ebe 100644
 --- a/chrome/browser/ui/webui/settings/site_settings_helper.cc
 +++ b/chrome/browser/ui/webui/settings/site_settings_helper.cc
-@@ -374,6 +374,7 @@ bool HasRegisteredGroupName(ContentSettingsType type) {
+@@ -373,6 +373,7 @@ bool HasRegisteredGroupName(ContentSettingsType type) {
  }
  
  ContentSettingsType ContentSettingsTypeFromGroupName(const std::string& name) {

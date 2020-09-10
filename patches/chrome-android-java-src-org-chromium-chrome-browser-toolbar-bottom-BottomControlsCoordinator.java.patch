@@ -1,5 +1,5 @@
 diff --git a/chrome/android/java/src/org/chromium/chrome/browser/toolbar/bottom/BottomControlsCoordinator.java b/chrome/android/java/src/org/chromium/chrome/browser/toolbar/bottom/BottomControlsCoordinator.java
-index fdca8057859857c09c570516c33095ac1b6639a9..952c3c7879a26e86ff2b64ce2cfaa63d1a754847 100644
+index 5c6f0f445fe20e45d8dfe950ef19556fe1c8caaf..6004ca0ba2c2bb3cbf45a91400fd4085aaab5364 100644
 --- a/chrome/android/java/src/org/chromium/chrome/browser/toolbar/bottom/BottomControlsCoordinator.java
 +++ b/chrome/android/java/src/org/chromium/chrome/browser/toolbar/bottom/BottomControlsCoordinator.java
 @@ -120,7 +120,7 @@ public class BottomControlsCoordinator {
@@ -11,9 +11,10 @@ index fdca8057859857c09c570516c33095ac1b6639a9..952c3c7879a26e86ff2b64ce2cfaa63d
                      root.findViewById(R.id.bottom_toolbar_stub), tabProvider,
                      tabSwitcherLongclickListener, themeColorProvider, shareDelegateSupplier,
                      showStartSurfaceCallable, openHomepageAction, setUrlBarFocusAction,
-@@ -207,4 +207,5 @@ public class BottomControlsCoordinator {
-         }
-         return mTabGroupUi.getTabGridDialogVisibilitySupplier();
+@@ -197,4 +197,6 @@ public class BottomControlsCoordinator {
+         if (mTabGroupUi != null) mTabGroupUi.destroy();
+         mMediator.destroy();
      }
++
 +    public void updateBookmarkButton(boolean isBookmarked, boolean editingAllowed) {if (mBottomToolbarCoordinator != null) { mBottomToolbarCoordinator.updateBookmarkButton(isBookmarked, editingAllowed);}}
  }

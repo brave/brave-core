@@ -23,7 +23,7 @@ index f7874b0f6944521c0a083375321f01709e2b4d08..43c0c78d69537a27f8bc5692cb1891bb
    if (!ValidateWebGLProgramOrShader("getAttachedShaders", program))
      return base::nullopt;
 +  BRAVE_WEBGL_RENDERING_CONTEXT_BASE_NULLOPT
- 
+
    HeapVector<Member<WebGLShader>> shader_objects;
    const GLenum kShaderType[] = {GL_VERTEX_SHADER, GL_FRAGMENT_SHADER,
 @@ -2996,6 +2999,7 @@ GLint WebGLRenderingContextBase::getAttribLocation(WebGLProgram* program,
@@ -39,13 +39,13 @@ index f7874b0f6944521c0a083375321f01709e2b4d08..43c0c78d69537a27f8bc5692cb1891bb
    if (isContextLost() || !ValidateBufferTarget("getBufferParameter", target))
      return ScriptValue::CreateNull(script_state->GetIsolate());
 +  BRAVE_WEBGL_RENDERING_CONTEXT_BASE_SCRIPT_VALUE
- 
+
    switch (pname) {
      case GL_BUFFER_USAGE: {
 @@ -3165,6 +3170,7 @@ ScriptValue WebGLRenderingContextBase::getFramebufferAttachmentParameter(
                                           target, attachment))
      return ScriptValue::CreateNull(script_state->GetIsolate());
- 
+
 +  BRAVE_WEBGL_RENDERING_CONTEXT_BASE_SCRIPT_VALUE
    if (!framebuffer_binding_ || !framebuffer_binding_->Object()) {
      SynthesizeGLError(GL_INVALID_OPERATION, "getFramebufferAttachmentParameter",
@@ -121,16 +121,16 @@ index f7874b0f6944521c0a083375321f01709e2b4d08..43c0c78d69537a27f8bc5692cb1891bb
 +  BRAVE_WEBGL_RENDERING_CONTEXT_BASE_STRING
    return EnsureNotNull(shader->Source());
  }
- 
-@@ -3737,6 +3752,7 @@ base::Optional<Vector<String>>
+
+@@ -3811,6 +3826,7 @@ base::Optional<Vector<String>>
  WebGLRenderingContextBase::getSupportedExtensions() {
    if (isContextLost())
      return base::nullopt;
 +  BRAVE_WEBGL_RENDERING_CONTEXT_BASE_NULLOPT
- 
+
    Vector<String> result;
- 
-@@ -3759,6 +3775,7 @@ ScriptValue WebGLRenderingContextBase::getTexParameter(
+
+@@ -3833,6 +3849,7 @@ ScriptValue WebGLRenderingContextBase::getTexParameter(
      GLenum pname) {
    if (isContextLost())
      return ScriptValue::CreateNull(script_state->GetIsolate());
