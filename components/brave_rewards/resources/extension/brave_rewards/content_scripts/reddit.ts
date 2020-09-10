@@ -148,7 +148,8 @@ const createRedditTipButton = () => {
   braveTipButton.type = 'button'
 
   const style = document.createElement('style')
-  style.innerHTML = '.reddit-actionButton :hover { color: #FB542B }'
+  const css = '.reddit-actionButton :hover { color: #FB542B }'
+  style.appendChild(document.createTextNode(css))
   braveTipButton.appendChild(style)
 
   return braveTipButton
@@ -232,13 +233,15 @@ const createRedditTipActionCountPresentation = () => {
 const createHoverStyleElement = (isPost: boolean) => {
   // Create style element for hover
   const style = document.createElement('style')
-  style.innerHTML = isPost ? ':host { outline: none } :host(:hover) { background-color: var(--newRedditTheme-navIconFaded10) }' : '.reddit-actionButton { text-decoration: none; color: var(--newCommunityTheme-actionIcon); font-weight: bold; padding: 0px 1px; } .reddit-actionButton:hover { color: var(--newCommunityTheme-bodyText); text-decoration: underline }'
+  const css = isPost ? ':host { outline: none } :host(:hover) { background-color: var(--newRedditTheme-navIconFaded10) }' : '.reddit-actionButton { text-decoration: none; color: var(--newCommunityTheme-actionIcon); font-weight: bold; padding: 0px 1px; } .reddit-actionButton:hover { color: var(--newCommunityTheme-bodyText); text-decoration: underline }'
+  style.appendChild(document.createTextNode(css))
   return style
 }
 
 const createHoverStyleElementForOld = () => {
   const style = document.createElement('style')
-  style.innerHTML = '.reddit-actionButton { color: #888; font-weight: bold; paddings: 0 1px; text-decoration: none } .reddit-actionButton:hover { text-decoration: underline }'
+  const css = '.reddit-actionButton { color: #888; font-weight: bold; paddings: 0 1px; text-decoration: none } .reddit-actionButton:hover { text-decoration: underline }'
+  style.appendChild(document.createTextNode(css))
   return style
 }
 

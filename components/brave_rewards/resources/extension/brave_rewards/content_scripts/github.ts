@@ -96,7 +96,9 @@ const createBraveTipAction = (elem: Element, getMetaData: (elem: Element) => Rew
 
   // Create style element for hover color
   const style = document.createElement('style')
-  style.innerHTML = '.GitHubTip-actionButton :hover { color: #FB542B }'
+  style.appendChild(
+    document.createTextNode('.GitHubTip-actionButton :hover { color: #FB542B }')
+  )
   shadowRoot.appendChild(style)
 
   return braveTipAction
@@ -123,7 +125,7 @@ const getCommentMetaData = (elem: Element): RewardsTip.MediaMetaData | null => {
     const authorCollection = ancestor.getElementsByClassName('author')
     if (authorCollection.length) {
       const author = authorCollection[0] as HTMLElement
-      const userName = author.innerHTML
+      const userName = author.textContent
       return {
         mediaType: 'github',
         userName: userName || ''
@@ -155,7 +157,7 @@ const getReviewItemMetaData = (elem: Element): RewardsTip.MediaMetaData | null =
     const authorCollection = ancestor.getElementsByClassName('author')
     if (authorCollection.length) {
       const author = authorCollection[0] as HTMLElement
-      const userName = author.innerHTML
+      const userName = author.textContent
       return {
         mediaType: 'github',
         userName: userName || ''
@@ -254,7 +256,7 @@ const getPageHeadMetaData = (elem: Element): RewardsTip.MediaMetaData | null => 
       const aTags = author.getElementsByTagName('A')
       if (aTags.length) {
         const aTag = aTags[0] as HTMLAnchorElement
-        const userName = aTag.innerHTML
+        const userName = aTag.textContent
         return {
           mediaType: 'github',
           userName: userName || ''

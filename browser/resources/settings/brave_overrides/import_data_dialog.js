@@ -8,21 +8,16 @@ import {I18nBehavior} from 'chrome://resources/js/i18n_behavior.m.js'
 
 RegisterPolymerTemplateModifications({
   'settings-import-data-dialog': (templateContent) => {
-    let checkBoxesParent = templateContent.querySelector('#browserSelect').parentElement
-    let innerHTML = checkBoxesParent.innerHTML
-    innerHTML += `
-        <settings-checkbox
-            hidden="[[!selected_.extensions]]"
-            pref="{{prefs.import_dialog_extensions}}"
-            label="${I18nBehavior.i18n('importExtensions')}" no-set-pref>
-        </settings-checkbox>
-        <settings-checkbox
-            hidden="[[!selected_.payments]]"
-            pref="{{prefs.import_dialog_payments}}"
-            label="${I18nBehavior.i18n('importPayments')}" no-set-pref>
-        </settings-checkbox>
-    `
-    checkBoxesParent.innerHTML = innerHTML
+    let checkBoxesParent = templateContent.querySelector('#browserSelect').parentElement;
+    ['extensions', 'payments'].forEach((item) => {
+      const checkbox = document.createElement('settings-checkbox')
+      checkbox.setAttribute('hidden', `[[!selected_.${item}]]`)
+      checkbox.setAttribute('pref', `{{prefs.import_dialog_${item}}}`)
+      checkbox.setAttribute('label',
+        I18nBehavior.i18n(`import${item[0].toUpperCase()}${item.slice(1)}`))
+      checkbox.setAttribute('no-set-pref', '')
+      checkBoxesParent.appendChild(checkbox)
+    })
   }
 })
 
