@@ -5,7 +5,7 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-package org.chromium.chrome.browser;
+package org.chromium.chrome.browser.widget.crypto.binance;
 
 import android.os.Bundle;
 
@@ -16,6 +16,7 @@ import org.chromium.base.Log;
 import androidx.appcompat.app.AppCompatActivity;
 
 import org.chromium.chrome.browser.util.TabUtils;
+import org.chromium.chrome.browser.widget.crypto.binance.BinanceNativeWorker;
 import org.chromium.components.embedder_support.util.UrlConstants;
 
 import java.util.List;
@@ -44,6 +45,8 @@ public class BinanceActivity extends AppCompatActivity {
                 if (!TextUtils.isEmpty(code)) {
                     Log.e("NTP", "Code : " + code);
                     TabUtils.openUrlInSameTab(UrlConstants.NTP_URL);
+                    BinanceNativeWorker.getInstance().setAuthToken(code);
+                    BinanceNativeWorker.getInstance().getAccessToken();
                     finish();
                 }
             }

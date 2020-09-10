@@ -10,11 +10,18 @@ package org.chromium.chrome.browser.widget.crypto.binance;
 import org.chromium.base.annotations.CalledByNative;
 import org.chromium.base.annotations.JNINamespace;
 
+import org.chromium.chrome.browser.widget.crypto.binance.BinanceObserver;
+
+import java.util.List;
+import java.util.ArrayList;
+
 @JNINamespace("chrome::android")
 public class BinanceNativeWorker {
     private long mNativeBinanceNativeWorker;
     private static final Object lock = new Object();
     private static BinanceNativeWorker instance;
+
+    private List<BinanceObserver> mObservers;
 
     public static BinanceNativeWorker getInstance() {
         synchronized (lock) {
@@ -27,7 +34,7 @@ public class BinanceNativeWorker {
     }
 
     private BinanceNativeWorker() {
-        // mObservers = new ArrayList<BraveRewardsObserver>();
+        mObservers = new ArrayList<BinanceObserver>();
         // mFrontTabPublisherObservers = new ArrayList<PublisherObserver>();
     }
 
@@ -49,6 +56,24 @@ public class BinanceNativeWorker {
         }
     }
 
+    public void AddObserver(BinanceObserver observer) {
+        synchronized (lock) {
+            mObservers.add(observer);
+        }
+    }
+
+    public void RemoveObserver(BinanceObserver observer) {
+        synchronized (lock) {
+            mObservers.remove(observer);
+        }
+    }
+
+    public void getAccessToken() {
+        synchronized (lock) {
+            nativeGetAccessToken(mNativeBinanceNativeWorker);
+        }
+    }
+
     @CalledByNative
     private void setNativePtr(long nativePtr) {
         assert mNativeBinanceNativeWorker == 0;
@@ -56,35 +81,108 @@ public class BinanceNativeWorker {
     }
 
     @CalledByNative
-    public void OnGetAccessToken(boolean isSuccess) {}
+    public void OnGetAccessToken(boolean isSuccess) {
+        for (BinanceObserver observer : mObservers) {
+            observer.OnGetAccessToken(isSuccess);
+        }
+    }
 
     @CalledByNative
-    public void OnGetAccountBalances(String jsonBalances, boolean isSuccess) {}
+    public void OnGetAccountBalances(String jsonBalances, boolean isSuccess) {
+        for (BinanceObserver observer : mObservers) {
+            observer.OnGetAccountBalances(jsonBalances, isSuccess);
+        }
+    }
 
     @CalledByNative
     public void OnGetConvertQuote(
-            String quoteId, String quotePrice, String totalFee, String totalAmount) {}
+        String quoteId, String quotePrice, String totalFee, String totalAmount) {
+        for (BinanceObserver observer : mObservers) {
+            observer.OnGetConvertQuote(quoteId, quotePrice, totalFee, totalAmount);
+        }
+    }
 
     @CalledByNative
-    public void OnGetCoinNetworks(String jsonNetworks) {}
+    public void OnGetCoinNetworks(String jsonNetworks) {
+        for (BinanceObserver observer : mObservers) {
+            observer.OnGetCoinNetworks(jsonNetworks);
+        }
+    }
 
     @CalledByNative
-    public void OnGetDepositInfo(String depositAddress, String depositeTag, boolean isSuccess) {}
+    public void OnGetDepositInfo(String depositAddress, String depositeTag, boolean isSuccess) {
+        for (BinanceObserver observer : mObservers) {
+            observer.OnGetDepositInfo(depositAddress, depositeTag, isSuccess);
+        }
+    }
 
     @CalledByNative
-    public void OnConfirmConvert(boolean isSuccess, String message) {}
+    public void OnConfirmConvert(boolean isSuccess, String message) {
+        for (BinanceObserver observer : mObservers) {
+            observer.OnConfirmConvert(isSuccess, message);
+        }
+    }
 
     @CalledByNative
-    public void OnGetConvertAssets(String jsonAssets) {}
+    public void OnGetConvertAssets(String jsonAssets) {
+        for (BinanceObserver observer : mObservers) {
+            observer.OnGetConvertAssets(jsonAssets);
+        }
+    }
 
     @CalledByNative
-    public void OnRevokeToken(boolean isSuccess) {}
+    public void OnRevokeToken(boolean isSuccess) {
+        for (BinanceObserver observer : mObservers) {
+            observer.OnRevokeToken(isSuccess);
+        }
+    }
 
     public String getOAuthClientUrl() {
         return nativeGetOAuthClientUrl(mNativeBinanceNativeWorker);
     }
 
+    public void setAuthToken(String authToken) {
+        nativeSetAuthToken(mNativeBinanceNativeWorker, authToken);
+    }
+
+    public void getAccountBalances() {
+        nativeGetAccountBalances(mNativeBinanceNativeWorker);
+    }
+
+    public void getConvertQuote(String from, String to, String amount) {
+        nativeGetConvertQuote(mNativeBinanceNativeWorker, from, to, amount);
+    }
+
+    public void getCoinNetworks() {
+        nativeGetCoinNetworks(mNativeBinanceNativeWorker);
+    }
+
+    public void getDepositInfo(String symbol, String tickerNetwork) {
+        nativeGetDepositInfo(mNativeBinanceNativeWorker, symbol, tickerNetwork);
+    }
+
+    public void confirmConvert(String quoteId) {
+        nativeConfirmConvert(mNativeBinanceNativeWorker, quoteId);
+    }
+
+    public void getConvertAssets() {
+        nativeGetConvertAssets(mNativeBinanceNativeWorker);
+    }
+
+    public void revokeToken() {
+        nativeRevokeToken(mNativeBinanceNativeWorker);
+    }
+
     private native void nativeInit();
     private native void nativeDestroy(long nativeBinanceNativeWorker);
     private native String nativeGetOAuthClientUrl(long nativeBinanceNativeWorker);
+    private native void nativeGetAccessToken(long nativeBinanceNativeWorker);
+    private native void nativeSetAuthToken(long nativeBinanceNativeWorker, String authToken);
+    private native void nativeGetAccountBalances(long nativeBinanceNativeWorker);
+    private native void nativeGetConvertQuote(long nativeBinanceNativeWorker, String from, String to, String amount);
+    private native void nativeGetCoinNetworks(long nativeBinanceNativeWorker);
+    private native void nativeGetDepositInfo(long nativeBinanceNativeWorker, String symbol, String tickerNetwork);
+    private native void nativeConfirmConvert(long nativeBinanceNativeWorker, String quoteId);
+    private native void nativeGetConvertAssets(long nativeBinanceNativeWorker);
+    private native void nativeRevokeToken(long nativeBinanceNativeWorker);
 }

@@ -245,6 +245,14 @@ void BinanceNativeWorker::OnRevokeToken(bool success) {
       env, weak_java_binance_native_worker_.get(env), success);
 }
 
+void BinanceNativeWorker::SetAuthToken(JNIEnv* env,
+    const base::android::JavaParamRef<jobject>& jcaller,
+    const base::android::JavaParamRef<jstring>& auth_token) {
+  if (binance_service_) {
+    binance_service_->SetAuthToken(base::android::ConvertJavaStringToUTF8(env, auth_token));
+  }
+}
+
 static void JNI_BinanceNativeWorker_Init(
     JNIEnv* env,
     const base::android::JavaParamRef<jobject>& jcaller) {

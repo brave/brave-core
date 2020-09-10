@@ -91,6 +91,7 @@ import org.chromium.chrome.browser.util.PackageUtils;
 import org.chromium.chrome.browser.widget.crypto.binance.CryptoWidgetBottomSheetDialogFragment;
 import org.chromium.components.browser_ui.widget.displaystyle.UiConfig;
 import org.chromium.chrome.browser.widget.crypto.binance.BinanceNativeWorker;
+import org.chromium.chrome.browser.widget.crypto.binance.BinanceObserver;
 import org.chromium.chrome.browser.util.TabUtils;
 
 import java.util.ArrayList;
@@ -124,10 +125,13 @@ public class BraveNewTabPageLayout extends NewTabPageLayout {
     private LinearLayout indicatorLayout;
     private LinearLayout superReferralSitesLayout;
 
+    private BinanceNativeWorker mBinanceNativeWorker;
+
     public BraveNewTabPageLayout(Context context, AttributeSet attrs) {
         super(context, attrs);
         mProfile = Profile.getLastUsedRegularProfile();
         mNTPBackgroundImagesBridge = NTPBackgroundImagesBridge.getInstance(mProfile);
+        mBinanceNativeWorker = BinanceNativeWorker.getInstance();
         mNTPBackgroundImagesBridge.setNewTabPageListener(newTabPageListener);
         mDatabaseHelper = DatabaseHelper.getInstance();
     }
@@ -308,6 +312,10 @@ public class BraveNewTabPageLayout extends NewTabPageLayout {
             mBadgeAnimationView.setVisibility(View.INVISIBLE);
         }
         showWidgets();
+        if(NTPWidgetManager.getInstance().isUserAuthenticatedForBinance()) {
+            mBinanceNativeWorker.getAccountBalances();
+        }
+        mBinanceNativeWorker.AddObserver(mBinanaceObserver);
     }
 
     @Override
@@ -324,6 +332,7 @@ public class BraveNewTabPageLayout extends NewTabPageLayout {
             }
         }
         mNTPBackgroundImagesBridge.removeObserver(mNTPBackgroundImageServiceObserver);
+        mBinanceNativeWorker.RemoveObserver(mBinanaceObserver);
         super.onDetachedFromWindow();
     }
 
@@ -678,8 +687,8 @@ public class BraveNewTabPageLayout extends NewTabPageLayout {
             // ntpWidgetBottomSheetDialogFragment.show(
             //     ((BraveActivity) mActivity).getSupportFragmentManager(),
             //     "NTPWidgetBottomSheetDialogFragment");
-            Log.e("NTP", "Binance URL : "+ BinanceNativeWorker.getInstance().getOAuthClientUrl());
-            TabUtils.openUrlInSameTab(BinanceNativeWorker.getInstance().getOAuthClientUrl());
+            Log.e("NTP", "Binance URL : " + mBinanceNativeWorker.getOAuthClientUrl());
+            TabUtils.openUrlInSameTab(mBinanceNativeWorker.getOAuthClientUrl());
         }
 
         @Override
@@ -693,5 +702,52 @@ public class BraveNewTabPageLayout extends NewTabPageLayout {
         public void onBottomSheetDismiss() {
             showWidgets();
         }
+    };
+
+    private BinanceObserver mBinanaceObserver = new BinanceObserver() {
+        @Override
+        public void OnGetAccessToken(boolean isSuccess) {
+            Log.e("NTP", "OnGetAccessToken : "+ isSuccess);
+            NTPWidgetManager.getInstance().setUserAuthenticationForBinance(isSuccess);
+            if(isSuccess) {
+                mBinanceNativeWorker.getAccountBalances();
+            }
+        };
+
+        @Override
+        public void OnGetAccountBalances(String jsonBalances, boolean isSuccess) {
+            if(!isSuccess) {
+                NTPWidgetManager.getInstance().setUserAuthenticationForBinance(isSuccess);
+            }
+            Log.e("NTP", "AccountBalances : "+ jsonBalances);
+            // Reset binance widget to connect page
+
+            mBinanceNativeWorker.getCoinNetworks();
+            mBinanceNativeWorker.getConvertAssets();
+        };
+
+        @Override
+        public void OnGetConvertQuote(String quoteId, String quotePrice, String totalFee, String totalAmount) {
+
+        };
+
+        @Override
+        public void OnGetCoinNetworks(String jsonNetworks) {
+            Log.e("NTP", "CoinNetworks : "+ jsonNetworks);
+        };
+
+        @Override
+        public void OnGetDepositInfo(String depositAddress, String depositeTag, boolean isSuccess) {};
+
+        @Override
+        public void OnConfirmConvert(boolean isSuccess, String message) {};
+
+        @Override
+        public void OnGetConvertAssets(String jsonAssets) {
+            Log.e("NTP", "ConvertAssets : "+ jsonAssets);
+        };
+
+        @Override
+        public void OnRevokeToken(boolean isSuccess) {};
     };
 }

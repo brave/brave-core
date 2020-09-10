@@ -22,6 +22,7 @@ public class NTPWidgetManager {
     public static final String PREF_BRAVE_REWARDS = "brave_rewards";
     public static final String PREF_BINANCE = "binance";
     public static final String PREF_NTP_WIDGET_ORDER = "ntp_widget_order";
+    public static final String PREF_BINANCE_USER_AUTHENTICATION = "binance_user_authentication";
 
     private static NTPWidgetManager sInstance;
 
@@ -67,6 +68,16 @@ public class NTPWidgetManager {
     public void setNTPWidgetOrder(int position) {
         SharedPreferences.Editor sharedPreferencesEditor = mSharedPreferences.edit();
         sharedPreferencesEditor.putInt(PREF_NTP_WIDGET_ORDER, position);
+        sharedPreferencesEditor.apply();
+    }
+
+    public boolean isUserAuthenticatedForBinance() {
+        return mSharedPreferences.getBoolean(PREF_BINANCE_USER_AUTHENTICATION, false);
+    }
+
+    public void setUserAuthenticationForBinance(boolean isAuthenticated) {
+        SharedPreferences.Editor sharedPreferencesEditor = mSharedPreferences.edit();
+        sharedPreferencesEditor.putBoolean(PREF_BINANCE_USER_AUTHENTICATION, isAuthenticated);
         sharedPreferencesEditor.apply();
     }
 }

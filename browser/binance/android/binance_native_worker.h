@@ -90,6 +90,10 @@ class BinanceNativeWorker {
 
   void OnRevokeToken(bool success);
 
+  void SetAuthToken(JNIEnv* env,
+                   const base::android::JavaParamRef<jobject>& jcaller,
+                   const base::android::JavaParamRef<jstring>& auth_token);
+
  private:
   std::string StdStrStrMapToJsonString(
       const std::map<std::string, std::string>& args);
