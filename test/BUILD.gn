@@ -865,6 +865,7 @@ if (!is_android) {
       "//brave/browser/browsing_data",
       "//brave/browser:browser_process",
       "//brave/browser/devtools",
+      "//brave/browser/ephemeral_storage:ephemeral_storage_tests",
       "//brave/browser/extensions",
       "//brave/browser/net",
       "//brave/browser/profiles",

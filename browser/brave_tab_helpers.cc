@@ -8,6 +8,7 @@
 #include "base/command_line.h"
 #include "base/feature_list.h"
 #include "brave/browser/brave_stats/brave_stats_tab_helper.h"
+#include "brave/browser/ephemeral_storage/ephemeral_storage_tab_helper.h"
 #include "brave/browser/farbling/farbling_tab_helper.h"
 #include "brave/browser/profiles/profile_util.h"
 #include "brave/browser/ui/bookmark/brave_bookmark_tab_helper.h"
@@ -22,6 +23,7 @@
 #include "brave/components/speedreader/buildflags.h"
 #include "brave/components/tor/buildflags/buildflags.h"
 #include "content/public/browser/web_contents.h"
+#include "third_party/blink/public/common/features.h"
 #include "third_party/widevine/cdm/buildflags.h"
 
 #if BUILDFLAG(ENABLE_GREASELION)
@@ -131,6 +133,11 @@ void AttachTabHelpers(content::WebContents* web_contents) {
   FarblingTabHelper::CreateForWebContents(web_contents);
 
   brave_stats::BraveStatsTabHelper::CreateForWebContents(web_contents);
+
+  if (base::FeatureList::IsEnabled(blink::features::kBraveEphemeralStorage)) {
+    ephemeral_storage::EphemeralStorageTabHelper::CreateForWebContents(
+        web_contents);
+  }
 }
 
 }  // namespace brave
