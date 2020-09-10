@@ -176,7 +176,6 @@ source_set("browser_process") {
     "//content/public/browser",
     "//content/public/common",
     "//extensions/buildflags",
-    "//extensions/common:common_constants",
     "//brave/chromium_src:browser",
     "browsing_data",
     "themes",
@@ -355,7 +354,11 @@ source_set("browser_process") {
   }
 
   if (enable_extensions) {
-    deps += [ "extensions" ]
+    deps += [
+      "extensions",
+      "//extensions/common:common_constants",
+    ]
+
   }
 
   if (enable_brave_referrals) {
