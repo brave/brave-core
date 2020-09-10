@@ -231,6 +231,8 @@ source_set("browser_process") {
     ]
   } else {
     sources += [
+      "android/brave_cosmetic_resources_tab_helper.cc",
+      "android/brave_cosmetic_resources_tab_helper.h",
       "android/brave_feature_list.cc",
       "android/brave_relaunch_utils.cc",
       "android/brave_shields_content_settings.cc",

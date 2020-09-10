@@ -29,6 +29,7 @@
 #endif
 
 #if defined(OS_ANDROID)
+#include "brave/browser/android/brave_cosmetic_resources_tab_helper.h"
 #include "brave/browser/android/preferences/background_video_playback_tab_helper.h"
 #include "brave/browser/android/preferences/website/desktop_mode_tab_helper.h"
 #endif
@@ -78,6 +79,7 @@ void AttachTabHelpers(content::WebContents* web_contents) {
 #if defined(OS_ANDROID)
   DesktopModeTabHelper::CreateForWebContents(web_contents);
   BackgroundVideoPlaybackTabHelper::CreateForWebContents(web_contents);
+  BraveCosmeticResourcesTabHelper::CreateForWebContents(web_contents);
 #else
   // Add tab helpers here unless they are intended for android too
   BraveBookmarkTabHelper::CreateForWebContents(web_contents);
