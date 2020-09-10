@@ -6,4 +6,31 @@
 common_packaging_files_sources = [
   "//brave/chromium_src/chrome/app/resources/manpage.1.in",
   "//brave/LICENSE",
+  "//brave/chromium_src/chrome/installer/linux/common/brave-browser/chromium-browser.appdata.xml",
+  "//brave/chromium_src/chrome/installer/linux/common/brave-browser/chromium-browser.info",
+]
+
+common_packaging_files_excluded_sources = [
+  "//chrome/app/resources/manpage.1.in",
+  "common/chromium-browser/chromium-browser.appdata.xml",
+  "common/chromium-browser/chromium-browser.info",
+]
+
+brave_packaging_files_executables = [
+  "$root_out_dir/brave",
+  "$root_out_dir/brave_sandbox",
+]
+
+excluded_packaging_files_executables = [
+  "$root_out_dir/chrome",
+  "$root_out_dir/chrome_sandbox",
+]
+
+brave_installer_deps = [
+  "//brave/build/linux:copy_exe",
+  "//brave/build/linux:copy_sandbox",
+]
+
+strip_chrome_binary_deps = [
+  "//brave/build/linux:copy_exe",
 ]
