@@ -64,9 +64,13 @@ TEST_F(GetRecoverWalletTest, ServerOK) {
 
   wallet_->Request(
       "79d7da2a756cc8d9403d0353a64fae5698e01b44a2c2745",
-      [](const type::Result result, const std::string& payment_id) {
+      [](
+          const type::Result result,
+          const std::string& payment_id,
+          const bool legacy_wallet) {
         EXPECT_EQ(result, type::Result::LEDGER_OK);
         EXPECT_EQ(payment_id, "d59d4b69-f66e-4ee8-9c88-1c522e02ffd3");
+        EXPECT_EQ(legacy_wallet, true);
       });
 }
 
@@ -85,7 +89,10 @@ TEST_F(GetRecoverWalletTest, ServerError400) {
 
   wallet_->Request(
       "79d7da2a756cc8d9403d0353a64fae5698e01b44a2c2745",
-      [](const type::Result result, const std::string& payment_id) {
+      [](
+          const type::Result result,
+          const std::string& payment_id,
+          const bool legacy_wallet) {
         EXPECT_EQ(result, type::Result::LEDGER_ERROR);
         EXPECT_EQ(payment_id, "");
       });
@@ -106,7 +113,10 @@ TEST_F(GetRecoverWalletTest, ServerError404) {
 
   wallet_->Request(
       "79d7da2a756cc8d9403d0353a64fae5698e01b44a2c2745",
-      [](const type::Result result, const std::string& payment_id) {
+      [](
+          const type::Result result,
+          const std::string& payment_id,
+          const bool legacy_wallet) {
         EXPECT_EQ(result, type::Result::NOT_FOUND);
         EXPECT_EQ(payment_id, "");
       });
@@ -127,7 +137,10 @@ TEST_F(GetRecoverWalletTest, ServerErrorRandom) {
 
   wallet_->Request(
       "79d7da2a756cc8d9403d0353a64fae5698e01b44a2c2745",
-      [](const type::Result result, const std::string& payment_id) {
+      [](
+          const type::Result result,
+          const std::string& payment_id,
+          const bool legacy_wallet) {
         EXPECT_EQ(result, type::Result::LEDGER_ERROR);
         EXPECT_EQ(payment_id, "");
       });
