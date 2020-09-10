@@ -16,6 +16,7 @@ class DefaultBrowserCalloutProvider: NSObject, NTPObservableSectionProvider {
     static var shouldShowCallout: Bool {
         !Preferences.General.defaultBrowserCalloutDismissed.value
             && AppConstants.iOSVersionGreaterThanOrEqual(to: 14)
+            && AppConstants.buildChannel == .release
     }
     
     func registerCells(to collectionView: UICollectionView) {
