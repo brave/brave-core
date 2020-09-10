@@ -184,7 +184,12 @@ export function OverrideIronIcons(iconSetName, overridingIconSetName, iconOverri
       continue
     }
     // replace
-    chromiumIcon.innerHTML = braveIcon.innerHTML
+    while (chromiumIcon.firstChild) {
+      chromiumIcon.firstChild.remove()
+    }
+    while (braveIcon.firstChild) {
+      chromiumIcon.appendChild(braveIcon.firstChild)
+    }
   }
   // Ensure icons get re-parsed if already parseds
   // `getIconNames` ensures this._icons in iron-iconset-svg is re-parsed
