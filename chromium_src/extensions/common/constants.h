@@ -3,8 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#ifndef BRAVE_CHROMIUM_SRC_EXTNESIONS_COMMON_CONSTANTS_H_
-#define BRAVE_CHROMIUM_SRC_EXTNESIONS_COMMON_CONSTANTS_H_
+#ifndef BRAVE_CHROMIUM_SRC_EXTENSIONS_COMMON_CONSTANTS_H_
+#define BRAVE_CHROMIUM_SRC_EXTENSIONS_COMMON_CONSTANTS_H_
 
 #include "../../../../extensions/common/constants.h"
 
@@ -38,4 +38,4 @@ extern const char ipfs_companion_beta_extension_id[];
 
 extern const char google_translate_extension_id[];
 
-#endif  // BRAVE_CHROMIUM_SRC_EXTNESIONS_COMMON_CONSTANTS_H_
+#endif  // BRAVE_CHROMIUM_SRC_EXTENSIONS_COMMON_CONSTANTS_H_
