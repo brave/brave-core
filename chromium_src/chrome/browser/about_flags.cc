@@ -17,6 +17,7 @@
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/profiles/profile_manager.h"
 #include "components/prefs/pref_service.h"
+#include "third_party/blink/renderer/modules/storage/brave_dom_window_storage.h"
 
 using brave_shields::features::kBraveAdblockCosmeticFiltering;
 using ntp_background_images::features::kBraveNTPBrandedWallpaper;
@@ -84,7 +85,11 @@ using ntp_background_images::features::kBraveNTPSuperReferralWallpaper;
      flag_descriptions::kBraveSuperReferralName,                           \
      flag_descriptions::kBraveSuperReferralDescription,                    \
      flags_ui::kOsMac | flags_ui::kOsWin | flags_ui::kOsAndroid,           \
-     FEATURE_VALUE_TYPE(kBraveNTPSuperReferralWallpaper)},
+     FEATURE_VALUE_TYPE(kBraveNTPSuperReferralWallpaper)},                 \
+    {"brave-ephemeral-storage",                                            \
+     flag_descriptions::kBraveEphemeralStorageName,                        \
+     flag_descriptions::kBraveEphemeralStorageDescription, kOsAll,         \
+     FEATURE_VALUE_TYPE(blink::kBraveEphemeralStorage)},
 
 #define SetFeatureEntryEnabled SetFeatureEntryEnabled_ChromiumImpl
 #include "../../../../chrome/browser/about_flags.cc"  // NOLINT

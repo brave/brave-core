@@ -31,6 +31,9 @@ void MaybeClearAccessDeniedException(StorageArea* storage,
 
 }  // namespace
 
+const base::Feature kBraveEphemeralStorage{"EphemeralStorage",
+                                           base::FEATURE_DISABLED_BY_DEFAULT};
+
 BraveDOMWindowStorage::BraveDOMWindowStorage() {}
 BraveDOMWindowStorage::~BraveDOMWindowStorage() {}
 

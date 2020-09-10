@@ -5,11 +5,13 @@
 
 #include "components/content_settings/core/common/cookie_settings_base.h"
 
+#include "base/feature_list.h"
 #include "base/no_destructor.h"
 #include "base/optional.h"
-#include "net/base/registry_controlled_domains/registry_controlled_domain.h"
 #include "components/content_settings/core/common/content_settings.h"
 #include "components/content_settings/core/common/content_settings_pattern.h"
+#include "components/content_settings/core/common/features.h"
+#include "net/base/registry_controlled_domains/registry_controlled_domain.h"
 #include "url/gurl.h"
 #include "url/origin.h"
 

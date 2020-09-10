@@ -1,0 +1,12 @@
+diff --git a/third_party/blink/public/common/features.h b/third_party/blink/public/common/features.h
+index 1be981d7e40e41fd8f4761aeefd30246b594687e..3971f32017f2ea775ca8f5a5756d744adc83a656 100644
+--- a/third_party/blink/public/common/features.h
++++ b/third_party/blink/public/common/features.h
+@@ -291,6 +291,7 @@ BLINK_COMMON_EXPORT extern const base::Feature
+ BLINK_COMMON_EXPORT
+ extern const char kBackForwardCacheABExperimentGroup[];
+ 
++BRAVE_FEATURES_H
+ }  // namespace features
+ }  // namespace blink
+ 
