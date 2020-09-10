@@ -16,7 +16,7 @@ interface MediaDurationMetadata {
 }
 
 interface RegisterOnCompletedWebRequest {
-  urlPattern: string
+  urlPatterns: string[]
 }
 
 interface SavePublisherVisit {
@@ -72,9 +72,9 @@ const handleRegisterOnCompletedWebRequest = (tabId: number, mediaType: string, d
         return
       }
       port.postMessage({
-        type: 'MediaDurationMetadata',
+        type: 'OnCompletedWebRequest',
         mediaType,
-        url: details.url
+        details
       })
     },
     // Filters
@@ -85,9 +85,7 @@ const handleRegisterOnCompletedWebRequest = (tabId: number, mediaType: string, d
         'script',
         'xmlhttprequest'
       ],
-      urls: [
-        data.urlPattern
-      ]
+      urls: data.urlPatterns
     })
 }
 
