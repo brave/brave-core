@@ -20,11 +20,6 @@ import {
   CloseStrokeIcon
 } from 'brave-ui/components/icons'
 
-import {
-  deleteMostVisitedTile,
-  generateGridSiteFavicon
-} from '../../api/topSites'
-
 // Types
 import * as newTabActions from '../../actions/new_tab_actions'
 import * as gridSitesActions from '../../actions/grid_sites_actions'
@@ -32,12 +27,19 @@ import * as gridSitesActions from '../../actions/grid_sites_actions'
 interface Props {
   actions: typeof newTabActions & typeof gridSitesActions
   siteData: NewTab.Site
+  disabled: boolean
+}
+
+function generateGridSiteFavicon (site: NewTab.Site): string {
+  if (site.favicon === '') {
+    return `chrome://favicon/size/64@1x/${site.url}`
+  }
+  return site.favicon
 }
 
 class TopSite extends React.PureComponent<Props, {}> {
   onIgnoredTopSite (site: NewTab.Site) {
-    deleteMostVisitedTile(site.url)
-    this.props.actions.showTilesRemovedNotice(true)
+    this.props.actions.tileRemoved(site.url)
   }
 
   render () {

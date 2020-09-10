@@ -12,6 +12,16 @@ import { types } from '../constants/grid_sites_types'
 // API
 import * as gridSitesState from '../state/gridSitesState'
 import * as storage from '../storage/grid_sites_storage'
+import {
+  deleteMostVisitedTile,
+  reorderMostVisitedTile,
+  restoreMostVisitedDefaults,
+  setMostVisitedSettings,
+  undoMostVisitedTileAction
+} from '../api/topSites'
+
+// Utils
+import arrayMove from 'array-move'
 
 const initialState = storage.load()
 
@@ -28,15 +38,47 @@ export const gridSitesReducer: Reducer<NewTab.GridSitesState | undefined> = (
 
   switch (action.type) {
     case types.GRID_SITES_DATA_UPDATED: {
-      const { gridSites, custom_links_enabled, visible } = payload
-      setMostVisitedSettings(custom_links_enabled, visible, false)
+      const { gridSites, customLinksEnabled, visible } = payload
+      setMostVisitedSettings(customLinksEnabled, visible, false)
       state = gridSitesState.tilesUpdated(state, gridSites)
+      break
+    }
+
+    case types.GRID_SITES_REMOVE: {
+      const { url } = payload
+      deleteMostVisitedTile(url)
+      state = gridSitesState.showTilesRemovedNotice(state, true)
+      break
+    }
+
+    case types.GRID_SITES_REORDER: {
+      // Change the order in Chromium
+      const { gridSites, oldPos, newPos } = payload
+      reorderMostVisitedTile(gridSites[oldPos].url, newPos)
+      // Change the order that user sees. Chromium will overwrite this
+      // when `MostVisitedInfoChanged` is called- but changing BEFORE that
+      // avoids a flicker for the user where (for a second or so), tiles would
+      // have the wrong order.
+      const reorderedGridSites: NewTab.Site[] =
+          arrayMove(gridSites, oldPos, newPos)
+      state = gridSitesState.tilesUpdated(state, reorderedGridSites)
+      break
+    }
+
+    case types.GRID_SITES_RESTORE_DEFAULTS: {
+      restoreMostVisitedDefaults()
+      state = gridSitesState.showTilesRemovedNotice(state, false)
       break
     }
 
     case types.GRID_SITES_SHOW_SITE_REMOVED_NOTIFICATION: {
       state = gridSitesState.showTilesRemovedNotice(state, payload.shouldShow)
       break
+    }
+
+    case types.GRID_SITES_UNDO_ACTION: {
+      undoMostVisitedTileAction()
+      state = gridSitesState.showTilesRemovedNotice(state, false)
     }
   }
 

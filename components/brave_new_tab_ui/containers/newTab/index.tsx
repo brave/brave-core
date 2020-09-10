@@ -230,9 +230,9 @@ class NewTabPage extends React.Component<Props, State> {
     // TODO(bsclifton): update UI to check topSitesAPI.isVisible instead.
     // Need to backfill first, to avoid overwriting user preference.
     // Settings page needs to be updated to read that value too.
-    const new_value = !this.props.newTabData.showTopSites
-    this.props.saveShowTopSites(new_value)
-    setMostVisitedSettings(customLinksEnabled(), new_value, true)
+    const newValue = !this.props.newTabData.showTopSites
+    this.props.saveShowTopSites(newValue)
+    setMostVisitedSettings(customLinksEnabled(), newValue, true)
   }
 
   toggleCustomLinksEnabled = () => {
@@ -1021,6 +1021,7 @@ class NewTabPage extends React.Component<Props, State> {
                 <TopSitesGrid
                   actions={actions}
                   paddingType={'right'}
+                  customLinksEnabled={customLinksEnabled()}
                   widgetTitle={getLocale('topSitesTitle')}
                   gridSites={gridSitesData.gridSites}
                   menuPosition={'right'}

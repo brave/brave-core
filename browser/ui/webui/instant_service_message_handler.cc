@@ -31,17 +31,6 @@ bool ShouldExcludeFromTiles(const GURL& url) {
 
 }  // namespace
 
-// static
-InstantServiceMessageHandler* InstantServiceMessageHandler::Create(
-      content::WebUIDataSource* source, Profile* profile,
-      InstantService* instant_service) {
-  //
-  // Initial Values
-  // Should only contain data that is static
-  //
-  return new InstantServiceMessageHandler(profile, instant_service);
-}
-
 InstantServiceMessageHandler::InstantServiceMessageHandler(Profile* profile,
     InstantService* instant_service)
         : profile_(profile),
@@ -93,24 +82,27 @@ void InstantServiceMessageHandler::MostVisitedInfoChanged(
   base::Value tiles(base::Value::Type::LIST);
   int tile_id = 1;
 
+  // Super Referral feature only present in regular tabs (not private tabs)
   auto* service = ViewCounterServiceFactory::GetForProfile(profile_);
-  for (auto& top_site : service->GetTopSitesVectorForWebUI()) {
-    base::Value tile_value(base::Value::Type::DICTIONARY);
-    if (top_site.name.empty()) {
-      tile_value.SetStringKey("title", top_site.destination_url);
-      tile_value.SetIntKey("title_direction", base::i18n::LEFT_TO_RIGHT);
-    } else {
-      tile_value.SetStringKey("title", top_site.name);
-      tile_value.SetIntKey("title_direction",
-          base::i18n::GetFirstStrongCharacterDirection(
-              base::UTF8ToUTF16(top_site.name)));
+  if (service) {
+    for (auto& top_site : service->GetTopSitesVectorForWebUI()) {
+      base::Value tile_value(base::Value::Type::DICTIONARY);
+      if (top_site.name.empty()) {
+        tile_value.SetStringKey("title", top_site.destination_url);
+        tile_value.SetIntKey("title_direction", base::i18n::LEFT_TO_RIGHT);
+      } else {
+        tile_value.SetStringKey("title", top_site.name);
+        tile_value.SetIntKey("title_direction",
+            base::i18n::GetFirstStrongCharacterDirection(
+                base::UTF8ToUTF16(top_site.name)));
+      }
+      tile_value.SetIntKey("id", tile_id++);
+      tile_value.SetStringKey("url", top_site.destination_url);
+      tile_value.SetStringKey("favicon", top_site.image_path);
+      tile_value.SetIntKey(
+          "source", static_cast<int32_t>(ntp_tiles::TileTitleSource::INFERRED));
+      tiles.Append(std::move(tile_value));
     }
-    tile_value.SetIntKey("id", tile_id++);
-    tile_value.SetStringKey("url", top_site.destination_url);
-    tile_value.SetStringKey("favicon", top_site.image_path);
-    tile_value.SetIntKey(
-        "source", static_cast<int32_t>(ntp_tiles::TileTitleSource::INFERRED));
-    tiles.Append(std::move(tile_value));
   }
 
   // See chrome/common/search/instant_types.h for more info

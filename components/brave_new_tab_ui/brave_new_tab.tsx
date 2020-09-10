@@ -54,5 +54,5 @@ document.addEventListener('DOMContentLoaded', initialize)
 document.addEventListener('visibilitychange', () => {
   if (document.visibilityState === 'visible') {
     topSitesAPI.updateMostVisitedInfo()
-   }
+  }
 })

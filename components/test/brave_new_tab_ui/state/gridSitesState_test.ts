@@ -19,7 +19,7 @@ const newTopSite2: chrome.topSites.MostVisitedURL = {
   title: 'BSC]]'
 }
 
-let top_site_id = 1
+let topSiteId = 1
 const generateGridSiteProperties = (
   index: number,
   topSite: chrome.topSites.MostVisitedURL,
@@ -28,7 +28,7 @@ const generateGridSiteProperties = (
   return {
     title: topSite.title,
     url: topSite.url,
-    id: top_site_id++,
+    id: topSiteId++,
     // In the legacy version of topSites the pinnedIndex
     // was the site index itself.
     pinnedIndex: fromLegacyData ? index : undefined,

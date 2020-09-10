@@ -7,6 +7,7 @@
 import { debounce } from '../../common/debounce'
 const oldkeyName = 'grid-sites-data-v1'
 const newkeyName = 'grid-sites-data-v2'
+const defaultSuperReferralTopSitesKeyName = 'default-super-referral-top-sites'
 
 export const initialGridSitesState: NewTab.GridSitesState = {
   gridSites: [],
@@ -19,6 +20,11 @@ export const load = (): NewTab.GridSitesState => {
   if (window.localStorage.getItem(oldkeyName)) {
     window.localStorage.removeItem(oldkeyName)
   }
+  if (window.localStorage.getItem(defaultSuperReferralTopSitesKeyName)) {
+    window.localStorage.removeItem(defaultSuperReferralTopSitesKeyName)
+  }
+
+  // updated logic using sessionStorage
   const data: string | null = window.sessionStorage.getItem(newkeyName)
   let state = initialGridSitesState
   let storedState: NewTab.GridSitesState

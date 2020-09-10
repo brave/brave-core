@@ -11,7 +11,6 @@ import {
   SortEnd,
   SortableContainerProps
 } from 'react-sortable-hoc'
-import arrayMove from 'array-move'
 
 // Feature-specific components
 import { List } from '../../components/default/gridSites'
@@ -23,17 +22,13 @@ import GridSiteTile from './gridTile'
 // Constants
 import { MAX_GRID_SIZE } from '../../constants/new_tab_ui'
 
-import {
-  reorderMostVisitedTile,
-  customLinksEnabled
-} from '../../api/topSites'
-
 // Types
 import * as newTabActions from '../../actions/new_tab_actions'
 import * as gridSitesActions from '../../actions/grid_sites_actions'
 
 interface Props {
   actions: typeof newTabActions & typeof gridSitesActions
+  customLinksEnabled: boolean
   gridSites: NewTab.Site[]
 }
 
@@ -45,17 +40,10 @@ const DynamicList = SortableContainer((props: DynamicListProps) => {
 class TopSitesList extends React.PureComponent<Props, {}> {
   onSortEnd = ({ oldIndex, newIndex }: SortEnd) => {
     // User can't change order in "Most Visited" mode
-    if (!customLinksEnabled()) {
+    if (!this.props.customLinksEnabled) {
       return
     }
-    // Change the order in Chromium
-    reorderMostVisitedTile(this.props.gridSites[oldIndex].url, newIndex)
-    // Change the order that user sees. Chromium will overwrite this
-    // when `MostVisitedInfoChanged` is called- but changing BEFORE that
-    // avoids a flicker for the user where (for a second or so), tiles would
-    // have the wrong order.
-    const items = arrayMove(this.props.gridSites, oldIndex, newIndex)
-    this.props.actions.tilesUpdated(items)
+    this.props.actions.tilesReordered(this.props.gridSites, oldIndex, newIndex)
   }
 
   render () {
@@ -84,7 +72,7 @@ class TopSitesList extends React.PureComponent<Props, {}> {
                   index={index}
                   siteData={siteData}
                   // User can't change order in "Most Visited" mode
-                  disabled={!customLinksEnabled()}
+                  disabled={!this.props.customLinksEnabled}
                 />
           ))}
         </DynamicList>

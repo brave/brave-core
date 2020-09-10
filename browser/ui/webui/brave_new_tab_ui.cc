@@ -22,17 +22,16 @@
 #include "ui/base/l10n/l10n_util.h"
 
 BraveNewTabUI::BraveNewTabUI(content::WebUI* web_ui, const std::string& name)
-    : WebUIController(web_ui),
-      profile_(Profile::FromWebUI(web_ui)),
-      instant_service_(InstantServiceFactory::GetForProfile(profile_)) {
-
-  content::WebUIDataSource* source = CreateBasicUIHTMLSource(profile_, name,
+    : WebUIController(web_ui) {
+  Profile* profile = Profile::FromWebUI(web_ui);
+  InstantService* instant_service = InstantServiceFactory::GetForProfile(profile);
+  content::WebUIDataSource* source = CreateBasicUIHTMLSource(profile, name,
       kBraveNewTabGenerated, kBraveNewTabGeneratedSize, IDR_BRAVE_NEW_TAB_HTML);
   web_ui->AddMessageHandler(base::WrapUnique(
-    BraveNewTabMessageHandler::Create(source, profile_)));
+    BraveNewTabMessageHandler::Create(source, profile)));
   web_ui->AddMessageHandler(base::WrapUnique(
-    InstantServiceMessageHandler::Create(source, profile_, instant_service_)));
-  content::WebUIDataSource::Add(profile_, source);
+    new InstantServiceMessageHandler(profile, instant_service)));
+  content::WebUIDataSource::Add(profile, source);
   web_ui->OverrideTitle(l10n_util::GetStringUTF16(IDS_NEW_TAB_TITLE));
 }
 

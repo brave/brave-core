@@ -3,8 +3,8 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // you can obtain one at http://mozilla.org/MPL/2.0/.
 
-let are_custom_links_enabled: boolean = true
-let is_visible: boolean = true
+let areCustomLinksEnabled: boolean = true
+let areTopSitesVisible: boolean = true
 
 export function updateMostVisitedInfo () {
   chrome.send('updateMostVisitedInfo')
@@ -18,8 +18,8 @@ export function deleteMostVisitedTile (url: string): void {
   chrome.send('deleteMostVisitedTile', [url])
 }
 
-export function reorderMostVisitedTile (url: string, new_pos: any): void {
-  chrome.send('reorderMostVisitedTile', [url, new_pos])
+export function reorderMostVisitedTile (url: string, newPos: number): void {
+  chrome.send('reorderMostVisitedTile', [url, newPos])
 }
 
 export function restoreMostVisitedDefaults (): void {
@@ -30,34 +30,19 @@ export function undoMostVisitedTileAction (): void {
   chrome.send('undoMostVisitedTileAction', [])
 }
 
-export function setMostVisitedSettings (custom_links_enabled: boolean,
-    visible: boolean, update_instant_service: boolean): void {
-  are_custom_links_enabled = custom_links_enabled
-  is_visible = visible
-  if (update_instant_service) {
-    chrome.send('setMostVisitedSettings', [custom_links_enabled, visible])
+export function setMostVisitedSettings (customLinksEnabled: boolean,
+    visible: boolean, updateInstantService: boolean): void {
+  areCustomLinksEnabled = customLinksEnabled
+  areTopSitesVisible = visible
+  if (updateInstantService) {
+    chrome.send('setMostVisitedSettings', [customLinksEnabled, visible])
   }
 }
 
 export function customLinksEnabled (): boolean {
-  return are_custom_links_enabled
+  return areCustomLinksEnabled
 }
 
 export function isVisible (): boolean {
-  return is_visible
+  return areTopSitesVisible
 }
-
-export function generateGridSiteFavicon (site: NewTab.Site): string {
-  if (site.favicon === '')
-    return `chrome://favicon/size/64@1x/${site.url}`
-  return site.favicon
-}
-
-
-/*
-
-TODOS:
-2. Wire up the top sites visible to Chromium one & deprecate pref
-  c. when reading value
-3. Fix the hover style; only should show an X in the top right. Nothing else.
-*/

@@ -25,10 +25,6 @@ class InstantServiceMessageHandler : public content::WebUIMessageHandler,
       InstantService* instant_service);
   ~InstantServiceMessageHandler() override;
 
-  static InstantServiceMessageHandler* Create(
-      content::WebUIDataSource* html_source, Profile* profile,
-      InstantService* instant_service);
-
  private:
   // WebUIMessageHandler:
   void RegisterMessages() override;
