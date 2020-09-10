@@ -13,7 +13,7 @@ import SnapKit
 /// the image credit, brand logos or the share by QR code button
 ///
 /// Currently this view displays only a single active button at a time
-class NewTabPageBackgroundButtonsView: UIView {
+class NewTabPageBackgroundButtonsView: UIView, PreferencesObserver {
     /// The button kind to display
     enum ActiveButton {
         /// Displays the image credit button showing credit to some `name`
@@ -80,6 +80,8 @@ class NewTabPageBackgroundButtonsView: UIView {
     override init(frame: CGRect) {
         super.init(frame: frame)
         
+        Preferences.BraveToday.isEnabled.observe(from: self)
+        
         backgroundColor = .clear
         addLayoutGuide(collectionViewSafeAreaLayoutGuide)
         collectionViewSafeAreaLayoutGuide.snp.makeConstraints {
@@ -89,10 +91,6 @@ class NewTabPageBackgroundButtonsView: UIView {
         for button in [imageCreditButton, sponsorLogoButton, qrCodeButton] {
             addSubview(button)
             button.addTarget(self, action: #selector(tappedButton(_:)), for: .touchUpInside)
-        }
-        
-        imageCreditButton.snp.makeConstraints {
-            $0.bottom.leading.equalTo(collectionViewSafeAreaLayoutGuide).inset(16)
         }
     }
     
@@ -106,9 +104,18 @@ class NewTabPageBackgroundButtonsView: UIView {
         
         let isLandscape = frame.width > frame.height
         
+        let braveTodayVisible =
+            !PrivateBrowsingManager.shared.isPrivateBrowsing &&
+            Preferences.BraveToday.isEnabled.value
+        
+        imageCreditButton.snp.remakeConstraints {
+            $0.leading.equalTo(collectionViewSafeAreaLayoutGuide).inset(16)
+            $0.bottom.equalTo(collectionViewSafeAreaLayoutGuide).inset(16 + (braveTodayVisible ? 30 : 0))
+        }
+        
         sponsorLogoButton.snp.remakeConstraints {
             $0.size.equalTo(170)
-            $0.bottom.equalTo(collectionViewSafeAreaLayoutGuide.snp.bottom).inset(10)
+            $0.bottom.equalTo(collectionViewSafeAreaLayoutGuide.snp.bottom).inset(10 + (braveTodayVisible ? 30 : 0))
             
             if isLandscape {
                 $0.left.equalTo(collectionViewSafeAreaLayoutGuide.snp.left).offset(20)
@@ -119,7 +126,7 @@ class NewTabPageBackgroundButtonsView: UIView {
         
         qrCodeButton.snp.remakeConstraints {
             $0.size.equalTo(48)
-            $0.bottom.equalTo(collectionViewSafeAreaLayoutGuide.snp.bottom).inset(24)
+            $0.bottom.equalTo(collectionViewSafeAreaLayoutGuide.snp.bottom).inset(24 + (braveTodayVisible ? 30 : 0))
             
             if isLandscape {
                 $0.left.equalTo(collectionViewSafeAreaLayoutGuide.snp.left).offset(48)
@@ -131,6 +138,10 @@ class NewTabPageBackgroundButtonsView: UIView {
     
     @objc private func tappedButton(_ sender: UIControl) {
         tappedActiveButton?(sender)
+    }
+    
+    func preferencesDidChange(for key: String) {
+        setNeedsLayout()
     }
 }
 

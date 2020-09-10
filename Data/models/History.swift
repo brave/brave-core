@@ -108,6 +108,19 @@ public final class History: NSManagedObject, WebsitePresentable, CRUD {
             }
         }
     }
+    
+    /// Obtain the last N pages that were visited by the user
+    public class func suffix(_ maxLength: Int) throws -> [History] {
+        let fetchRequest = NSFetchRequest<History>()
+        let context = DataController.viewContext
+        
+        fetchRequest.entity = History.entity(context)
+        fetchRequest.fetchBatchSize = max(20, maxLength)
+        fetchRequest.fetchLimit = maxLength
+        fetchRequest.sortDescriptors = [NSSortDescriptor(key: "visitedOn", ascending: false)]
+        
+        return try context.fetch(fetchRequest)
+    }
 }
 
 // MARK: - Internal implementations
