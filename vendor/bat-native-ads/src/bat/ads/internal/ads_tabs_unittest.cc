@@ -59,7 +59,7 @@ class BatAdsTabsTest : public ::testing::Test {
 TEST_F(BatAdsTabsTest,
     MediaIsPlaying) {
   // Arrange
-  ads_->OnTabUpdated(1, "https://brave.com", true, false);
+  ads_->OnTabUpdated(1, "https://brave.com", true, true, false);
   ads_->OnMediaPlaying(1);
 
   // Act
@@ -72,7 +72,7 @@ TEST_F(BatAdsTabsTest,
 TEST_F(BatAdsTabsTest,
     MediaIsNotPlaying) {
   // Arrange
-  ads_->OnTabUpdated(1, "https://brave.com", true, false);
+  ads_->OnTabUpdated(1, "https://brave.com", true, true, false);
 
   ads_->OnMediaPlaying(1);
   ads_->OnMediaPlaying(2);
@@ -94,7 +94,7 @@ TEST_F(BatAdsTabsTest,
       .Times(0);
 
   // Act
-  ads_->OnTabUpdated(1, "https://brave.com", true, true);
+  ads_->OnTabUpdated(1, "https://brave.com", true, true, true);
 
   // Assert
 }
@@ -106,7 +106,7 @@ TEST_F(BatAdsTabsTest,
       .Times(0);
 
   // Act
-  ads_->OnTabUpdated(1, "https://brave.com", false, true);
+  ads_->OnTabUpdated(1, "https://brave.com", false, false, true);
 
   // Assert
 }
@@ -115,10 +115,10 @@ TEST_F(BatAdsTabsTest,
     TabUpdated) {
   // Arrange
   EXPECT_CALL(*ads_client_mock_, Log(_, _, _, _))
-      .Times(2);
+      .Times(3);
 
   // Act
-  ads_->OnTabUpdated(1, "https://brave.com", true, false);
+  ads_->OnTabUpdated(1, "https://brave.com", true, true, false);
 
   // Assert
 }
@@ -130,7 +130,7 @@ TEST_F(BatAdsTabsTest,
       .Times(2);
 
   // Act
-  ads_->OnTabUpdated(1, "https://brave.com", false, false);
+  ads_->OnTabUpdated(1, "https://brave.com", false, false, false);
 
   // Assert
 }
