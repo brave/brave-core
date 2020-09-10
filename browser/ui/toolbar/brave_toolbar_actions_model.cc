@@ -9,7 +9,8 @@
 #include "extensions/common/constants.h"
 #include "extensions/common/extension.h"
 
-bool BraveToolbarActionsModel::ShouldAddExtension(const extensions::Extension* extension) {
+bool BraveToolbarActionsModel::ShouldAddExtension(
+    const extensions::Extension* extension) {
   // Don't show the Brave and Rewards 'extensions' in the ToolbarActions
   // extensions area. They will instead be shown in the BraveActions area.
   if (extension->id() == brave_extension_id ||
