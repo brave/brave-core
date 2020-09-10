@@ -6,6 +6,7 @@
 #include "brave/browser/net/ipfs_redirect_network_delegate_helper.h"
 
 #include "brave/components/ipfs/browser/translate_ipfs_uri.h"
+#include "net/base/net_errors.h"
 
 namespace ipfs {
 
