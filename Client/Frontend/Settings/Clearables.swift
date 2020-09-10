@@ -166,3 +166,21 @@ class DownloadsClearable: Clearable {
         
     }
 }
+
+class BraveTodayClearable: Clearable {
+    
+    let feedDataSource: FeedDataSource
+    
+    init(feedDataSource: FeedDataSource) {
+        self.feedDataSource = feedDataSource
+    }
+    
+    var label: String {
+        return Strings.BraveToday.braveToday
+    }
+    
+    func clear() -> Success {
+        feedDataSource.clearCachedFiles()
+        return succeed()
+    }
+}

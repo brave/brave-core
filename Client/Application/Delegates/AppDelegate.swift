@@ -101,6 +101,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UIViewControllerRestorati
         DynamicFontHelper.defaultHelper.startObserving()
 
         MenuHelper.defaultHelper.setItems()
+        
+        SDWebImageCodersManager.sharedInstance().addCoder(PrivateCDNImageCoder())
 
         let logDate = Date()
         // Create a new sync log file on cold app launch. Note that this doesn't roll old logs.
@@ -133,6 +135,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UIViewControllerRestorati
         // Temporary fix for Bug 1390871 - NSInvalidArgumentException: -[WKContentView menuHelperFindInPage]: unrecognized selector
         if let clazz = NSClassFromString("WKCont" + "ent" + "View"), let swizzledMethod = class_getInstanceMethod(TabWebViewMenuHelper.self, #selector(TabWebViewMenuHelper.swizzledMenuHelperFindInPage)) {
             class_addMethod(clazz, MenuHelper.selectorFindInPage, method_getImplementation(swizzledMethod), method_getTypeEncoding(swizzledMethod))
+        }
+        
+        if !Preferences.BraveToday.languageChecked.value {
+            Preferences.BraveToday.languageChecked.value = true
+            Preferences.BraveToday.isEnabled.value = Locale.preferredLanguages.first?.prefix(2) == "en"
         }
 
         self.tabManager = TabManager(prefs: profile.prefs, imageStore: imageStore)

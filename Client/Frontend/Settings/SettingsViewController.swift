@@ -56,11 +56,13 @@ class SettingsViewController: TableViewController {
     
     private let profile: Profile
     private let tabManager: TabManager
+    private let feedDataSource: FeedDataSource
     private let rewards: BraveRewards?
     
-    init(profile: Profile, tabManager: TabManager, rewards: BraveRewards? = nil) {
+    init(profile: Profile, tabManager: TabManager, feedDataSource: FeedDataSource, rewards: BraveRewards? = nil) {
         self.profile = profile
         self.tabManager = tabManager
+        self.feedDataSource = feedDataSource
         self.rewards = rewards
         
         super.init(style: .grouped)
@@ -295,6 +297,13 @@ class SettingsViewController: TableViewController {
             section.rows.append(row)
         }
         
+        section.rows.append(
+            Row(text: Strings.BraveToday.braveToday, selection: {
+                let todaySettings = BraveTodaySettingsViewController(dataSource: self.feedDataSource)
+                self.navigationController?.pushViewController(todaySettings, animated: true)
+            }, accessory: .disclosureIndicator)
+        )
+        
         return section
     }()
     
@@ -347,10 +356,11 @@ class SettingsViewController: TableViewController {
             Row(text: Strings.clearPrivateData,
                 selection: { [unowned self] in
                     // Show Clear private data screen
-                    let clearPrivateData = ClearPrivateDataTableViewController().then {
-                        $0.profile = self.profile
-                        $0.tabManager = self.tabManager
-                    }
+                    let clearPrivateData = ClearPrivateDataTableViewController(
+                        profile: self.profile,
+                        tabManager: self.tabManager,
+                        feedDataSource: self.feedDataSource
+                    )
                     self.navigationController?.pushViewController(clearPrivateData, animated: true)
                 },
                 accessory: .disclosureIndicator,

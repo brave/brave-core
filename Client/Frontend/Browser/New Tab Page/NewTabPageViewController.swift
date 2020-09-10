@@ -96,14 +96,19 @@ class NewTabPageViewController: UIViewController, Themeable {
     private let backgroundView = NewTabPageBackgroundView()
     private let backgroundButtonsView = NewTabPageBackgroundButtonsView()
     
+    private let feedDataSource: FeedDataSource
+    private let feedOverlayView = NewTabPageFeedOverlayView()
+    
     private let notifications: NewTabPageNotifications
     
     init(tab: Tab,
          profile: Profile,
          dataSource: NTPDataSource,
+         feedDataSource: FeedDataSource,
          rewards: BraveRewards) {
         self.tab = tab
         self.rewards = rewards
+        self.feedDataSource = feedDataSource
         background = NewTabPageBackground(dataSource: dataSource)
         notifications = NewTabPageNotifications(rewards: rewards)
         collectionView = NewTabCollectionView(frame: .zero, collectionViewLayout: layout)
@@ -121,9 +126,21 @@ class NewTabPageViewController: UIViewController, Themeable {
             }),
             DuckDuckGoCalloutSectionProvider(profile: profile, action: { [weak self] in
                 self?.delegate?.tappedDuckDuckGoCallout()
-            }),
+            })
         ]
-        
+      
+        if !PrivateBrowsingManager.shared.isPrivateBrowsing {
+            sections.append(
+                BraveTodaySectionProvider(
+                    dataSource: feedDataSource,
+                    actionHandler: { [weak self] in
+                        self?.handleBraveTodayAction($0)
+                    }
+                )
+            )
+            layout.braveTodaySection = sections.firstIndex(where: { $0 is BraveTodaySectionProvider })
+        }
+
         // This is a one-off view, adding it to the NTP only if necessary.
         if DefaultBrowserCalloutProvider.shouldShowCallout {
             sections.insert(DefaultBrowserCalloutProvider(), at: 0)
@@ -136,6 +153,12 @@ class NewTabPageViewController: UIViewController, Themeable {
         background.changed = { [weak self] in
             self?.setupBackgroundImage()
         }
+        
+        Preferences.BraveToday.isEnabled.observe(from: self)
+        feedDataSource.observeState(from: self) { [weak self] in
+            self?.handleFeedStateChange($0, $1)
+        }
+        NotificationCenter.default.addObserver(self, selector: #selector(checkForUpdatedFeed), name: UIApplication.didBecomeActiveNotification, object: nil)
     }
     
     @available(*, unavailable)
@@ -143,13 +166,21 @@ class NewTabPageViewController: UIViewController, Themeable {
         fatalError()
     }
     
+    deinit {
+        NotificationCenter.default.removeObserver(self)
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
         view.addSubview(backgroundView)
         view.addSubview(collectionView)
+        view.addSubview(feedOverlayView)
         
         collectionView.backgroundView = backgroundButtonsView
+        
+        feedOverlayView.headerView.settingsButton.addTarget(self, action: #selector(tappedBraveTodaySettings), for: .touchUpInside)
+        feedOverlayView.newContentAvailableButton.addTarget(self, action: #selector(tappedNewContentAvailable), for: .touchUpInside)
         
         backgroundButtonsView.tappedActiveButton = { [weak self] sender in
             self?.tappedActiveBackgroundButton(sender)
@@ -160,6 +191,9 @@ class NewTabPageViewController: UIViewController, Themeable {
             $0.edges.equalToSuperview()
         }
         collectionView.snp.makeConstraints {
+            $0.edges.equalToSuperview()
+        }
+        feedOverlayView.snp.makeConstraints {
             $0.edges.equalToSuperview()
         }
         
@@ -173,6 +207,11 @@ class NewTabPageViewController: UIViewController, Themeable {
                 }
             }
         }
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        checkForUpdatedFeed()
     }
     
     override func viewDidLayoutSubviews() {
@@ -202,12 +241,6 @@ class NewTabPageViewController: UIViewController, Themeable {
     
     func applyTheme(_ theme: Theme) {
         styleChildren(theme: theme)
-        collectionView.reloadData()
-    }
-    
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        
         collectionView.reloadData()
     }
     
@@ -430,7 +463,170 @@ class NewTabPageViewController: UIViewController, Themeable {
         notificationController = nil
     }
     
+    // MARK: - Brave Today
+    
+    private func handleBraveTodayAction(_ action: BraveTodaySectionProvider.Action) {
+        switch action {
+        case .welcomeCardAction(.closedButtonTapped):
+            Preferences.BraveToday.isShowingIntroCard.value = false
+            if let section = layout.braveTodaySection, collectionView.numberOfItems(inSection: section) != 0 {
+                collectionView.deleteItems(at: [IndexPath(item: 0, section: section)])
+            }
+        case .welcomeCardAction(.learnMoreButtonTapped):
+            delegate?.navigateToInput(BraveUX.braveTodayPrivacyURL.absoluteString, inNewTab: false, switchingToPrivateMode: false)
+        case .welcomeCardAction(.settingsButtonTapped),
+             .emptyCardTappedSourcesAndSettings:
+            tappedBraveTodaySettings()
+        case .errorCardTappedRefresh:
+            loadFeedContents()
+        case .moreBraveOffersTapped:
+            delegate?.navigateToInput(
+                BraveUX.braveOffersURL.absoluteString,
+                inNewTab: false,
+                switchingToPrivateMode: false
+            )
+        case .itemAction(.opened(let inNewTab, let switchingToPrivateMode), let context):
+            guard let url = context.item.content.url else { return }
+            delegate?.navigateToInput(
+                url.absoluteString,
+                inNewTab: inNewTab,
+                switchingToPrivateMode: switchingToPrivateMode
+            )
+        case .itemAction(.toggledSource, let context):
+            let isEnabled = feedDataSource.isSourceEnabled(context.item.source)
+            feedDataSource.toggleSource(context.item.source, enabled: !isEnabled)
+            if isEnabled {
+                let alert = FeedActionAlertView(
+                    image: UIImage(imageLiteralResourceName: "disable.feed.source.alert"),
+                    title: Strings.BraveToday.disabledAlertTitle,
+                    message: String(format: Strings.BraveToday.disabledAlertBody, context.item.source.name)
+                )
+                alert.present(on: self)
+            }
+        case .itemAction(.longPressed(let context), _):
+            let alertController = UIAlertController(
+                title: context.title,
+                message: context.message,
+                preferredStyle: .actionSheet
+            )
+            for action in context.actions {
+                alertController.addAction(action)
+            }
+            present(alertController, animated: true)
+        }
+    }
+    
+    private var newContentAvailableDismissTimer: Timer? {
+        didSet {
+            oldValue?.invalidate()
+        }
+    }
+    
+    private func handleFeedStateChange(
+        _ oldValue: FeedDataSource.State,
+        _ newValue: FeedDataSource.State
+    ) {
+        guard let braveTodaySection = layout.braveTodaySection else { return }
+        
+        switch (oldValue, newValue) {
+        case (.loading, .loading):
+            // Nothing to do
+            break
+        case (.failure(let error1 as NSError),
+              .failure(let error2 as NSError)) where error1 == error2:
+            // Nothing to do
+            break
+        case (.loading(.failure(let error1 as NSError)),
+              .failure(let error2 as NSError)) where error1 == error2:
+            if let cell = collectionView.cellForItem(at: IndexPath(item: 0, section: braveTodaySection)) as? FeedCardCell<BraveTodayErrorView> {
+                cell.content.refreshButton.isLoading = false
+            }
+        case (_, .loading):
+            if collectionView.contentOffset.y == collectionView.contentInset.top ||
+                collectionView.numberOfItems(inSection: braveTodaySection) == 0 {
+                feedOverlayView.loaderView.isHidden = false
+                feedOverlayView.loaderView.start()
+                
+                if let section = layout.braveTodaySection {
+                    let numberOfItems = collectionView.numberOfItems(inSection: section)
+                    if numberOfItems > 0 {
+                        collectionView.deleteItems(
+                            at: (0..<numberOfItems).map({ IndexPath(item: $0, section: section) })
+                        )
+                    }
+                }
+            }
+        case (.loading, _):
+            UIView.animate(withDuration: 0.2, animations: {
+                self.feedOverlayView.loaderView.alpha = 0.0
+            }, completion: { _ in
+                self.feedOverlayView.loaderView.stop()
+                self.feedOverlayView.loaderView.alpha = 1.0
+                self.feedOverlayView.loaderView.isHidden = true
+            })
+            if collectionView.contentOffset.y == collectionView.contentInset.top {
+                collectionView.reloadData()
+                collectionView.layoutIfNeeded()
+                let cells = collectionView.indexPathsForVisibleItems
+                    .filter { $0.section == braveTodaySection }
+                    .compactMap(collectionView.cellForItem(at:))
+                cells.forEach { cell in
+                    cell.transform = .init(translationX: 0, y: 200)
+                    UIView.animate(withDuration: 0.5, delay: 0, usingSpringWithDamping: 1.0, initialSpringVelocity: 0, options: [.beginFromCurrentState], animations: {
+                        cell.transform = .identity
+                    }, completion: nil)
+                }
+            } else {
+                collectionView.reloadSections(IndexSet(integer: braveTodaySection))
+            }
+        default:
+            collectionView.reloadSections(IndexSet(integer: braveTodaySection))
+        }
+    }
+    
+    @objc private func checkForUpdatedFeed() {
+        if !isBraveTodayVisible { return }
+        if collectionView.contentOffset.y == collectionView.contentInset.top {
+            // Reload contents if the user is not currently scrolled into the feed
+            loadFeedContents()
+        } else {
+            // Possibly show the "new content available" button
+            if feedDataSource.shouldLoadContent {
+                feedOverlayView.showNewContentAvailableButton()
+            }
+        }
+    }
+    
+    private func loadFeedContents(completion: (() -> Void)? = nil) {
+        if !feedDataSource.shouldLoadContent {
+            return
+        }
+        feedDataSource.load(completion)
+    }
+    
     // MARK: - Actions
+    
+    @objc private func tappedNewContentAvailable() {
+        if case .loading = feedDataSource.state {
+            return
+        }
+        let todayStart = collectionView.frame.height - feedOverlayView.headerView.bounds.height - 32 - 16
+        newContentAvailableDismissTimer = nil
+        feedOverlayView.newContentAvailableButton.isLoading = true
+        loadFeedContents { [weak self] in
+            guard let self = self else { return }
+            self.feedOverlayView.hideNewContentAvailableButton()
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+                self.collectionView.setContentOffset(CGPoint(x: 0, y: todayStart), animated: true)
+            }
+        }
+    }
+    
+    @objc private func tappedBraveTodaySettings() {
+        let controller = BraveTodaySettingsViewController(dataSource: feedDataSource)
+        let container = UINavigationController(rootViewController: controller)
+        present(container, animated: true)
+    }
     
     func updateDuckDuckGoVisibility() {
         if let section = sections.firstIndex(where: { $0 is DuckDuckGoCalloutSectionProvider }) {
@@ -491,6 +687,65 @@ class NewTabPageViewController: UIViewController, Themeable {
     }
 }
 
+extension NewTabPageViewController: PreferencesObserver {
+    func preferencesDidChange(for key: String) {
+        collectionView.reloadData()
+        if !isBraveTodayVisible {
+            collectionView.verticalScrollIndicatorInsets = .zero
+            feedOverlayView.headerView.alpha = 0.0
+            backgroundButtonsView.alpha = 1.0
+        }
+    }
+}
+
+// MARK: - UIScrollViewDelegate
+extension NewTabPageViewController {
+    var isBraveTodayVisible: Bool {
+        !PrivateBrowsingManager.shared.isPrivateBrowsing &&
+            Preferences.BraveToday.isEnabled.value
+    }
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        guard isBraveTodayVisible, let braveTodaySection = layout.braveTodaySection else { return }
+        if collectionView.numberOfItems(inSection: braveTodaySection) > 0 {
+            // Hide the buttons as BraveToday feeds appear
+            backgroundButtonsView.alpha = 1.0 - max(0.0, min(1.0, (scrollView.contentOffset.y - scrollView.contentInset.top) / 16))
+            // Show the header as BraveToday feeds appear
+            // Offset of where Brave Today starts
+            let todayStart = collectionView.frame.height - feedOverlayView.headerView.bounds.height - 32 - 16
+            // Offset of where the header should begin becoming visible
+            let alphaInStart = collectionView.frame.height / 2.0
+            let value = scrollView.contentOffset.y
+            let alpha = max(0.0, min(1.0, (value - alphaInStart) / (todayStart - alphaInStart)))
+            feedOverlayView.headerView.alpha = alpha
+            
+            if feedOverlayView.newContentAvailableButton.alpha != 0 &&
+                !feedOverlayView.newContentAvailableButton.isLoading {
+                let velocity = scrollView.panGestureRecognizer.velocity(in: scrollView).y
+                if velocity > 0 && collectionView.contentOffset.y < todayStart {
+                    // Scrolling up
+                    self.feedOverlayView.hideNewContentAvailableButton()
+                } else if velocity < 0 {
+                    // Scrolling down
+                    if newContentAvailableDismissTimer == nil {
+                        let timer = Timer(
+                            timeInterval: 4,
+                            repeats: false
+                        ) { [weak self] _ in
+                            guard let self = self else { return }
+                            self.feedOverlayView.hideNewContentAvailableButton()
+                            self.newContentAvailableDismissTimer = nil
+                        }
+                        // Adding the timer manually under `common` mode allows it to execute while the user
+                        // is scrolling through the feed rather than have to wait until input stops
+                        RunLoop.main.add(timer, forMode: .common)
+                        newContentAvailableDismissTimer = timer
+                    }
+                }
+            }
+        }
+    }
+}
+
 // MARK: - UICollectionViewDelegateFlowLayout
 extension NewTabPageViewController: UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
@@ -522,6 +777,19 @@ extension NewTabPageViewController: UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {
         sections[section].collectionView?(collectionView, layout: collectionViewLayout, minimumInteritemSpacingForSectionAt: section) ?? 0
     }
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForHeaderInSection section: Int) -> CGSize {
+        sections[section].collectionView?(collectionView, layout: collectionViewLayout, referenceSizeForHeaderInSection: section) ?? .zero
+    }
+}
+
+// MARK: - UICollectionViewDelegate
+extension NewTabPageViewController: UICollectionViewDelegate {
+    func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
+        sections[indexPath.section].collectionView?(collectionView, willDisplay: cell, forItemAt: indexPath)
+    }
+    func collectionView(_ collectionView: UICollectionView, didEndDisplaying cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
+        sections[indexPath.section].collectionView?(collectionView, didEndDisplaying: cell, forItemAt: indexPath)
+    }
 }
 
 // MARK: - UICollectionViewDataSource
@@ -538,6 +806,9 @@ extension NewTabPageViewController: UICollectionViewDataSource {
             themableCell.applyTheme(Theme.of(tab))
         }
         return cell
+    }
+    func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
+        sections[indexPath.section].collectionView?(collectionView, viewForSupplementaryElementOfKind: kind, at: indexPath) ?? UICollectionReusableView()
     }
     @available(iOS 13.0, *)
     func collectionView(_ collectionView: UICollectionView, contextMenuConfigurationForItemAt indexPath: IndexPath, point: CGPoint) -> UIContextMenuConfiguration? {
@@ -577,6 +848,9 @@ extension NewTabPageViewController {
             showsHorizontalScrollIndicator = false
             // Needed for some reason, as its not setting safe area insets while in landscape
             contentInsetAdjustmentBehavior = .always
+            showsVerticalScrollIndicator = false
+            // Even on light mode we use a darker background now
+            indicatorStyle = .white
         }
         @available(*, unavailable)
         required init(coder: NSCoder) {
