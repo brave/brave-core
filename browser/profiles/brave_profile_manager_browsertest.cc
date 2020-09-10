@@ -8,10 +8,12 @@
 #include "base/path_service.h"
 #include "base/strings/utf_string_conversions.h"
 #include "brave/browser/brave_browser_process_impl.h"
+#include "brave/browser/brave_rewards/rewards_service_factory.h"
 #include "brave/browser/extensions/brave_tor_client_updater.h"
 #include "brave/browser/profiles/profile_util.h"
 #include "brave/browser/tor/buildflags.h"
 #include "brave/common/brave_paths.h"
+#include "brave/components/brave_ads/browser/ads_service_factory.h"
 #include "chrome/browser/bookmarks/bookmark_model_factory.h"
 #include "chrome/browser/browser_process.h"
 #include "chrome/browser/chrome_notification_types.h"
@@ -234,6 +236,34 @@ IN_PROC_BROWSER_TEST_F(BraveProfileManagerTest,
       tor_bookmark_model->AddURL(tor_root, 0, title, url3);
   EXPECT_EQ(parent_bookmark_model->GetMostRecentlyAddedUserNodeForURL(url3),
             new_node3);
+}
+
+IN_PROC_BROWSER_TEST_F(BraveProfileManagerTest,
+                       SwitchToTorProfileExcludeServices) {
+  ScopedTorLaunchPreventerForTest prevent_tor_process;
+
+  ProfileManager* profile_manager = g_browser_process->profile_manager();
+  ASSERT_TRUE(profile_manager);
+  Profile* parent_profile = ProfileManager::GetActiveUserProfile();
+
+  Profile* tor_otr_profile = SwitchToTorProfile();
+  Profile* tor_reg_profile = tor_otr_profile->GetOriginalProfile();
+  EXPECT_EQ(brave::GetParentProfile(tor_otr_profile), parent_profile);
+  ASSERT_TRUE(brave::IsTorProfile(tor_otr_profile));
+  ASSERT_TRUE(brave::IsTorProfile(tor_reg_profile));
+  EXPECT_TRUE(tor_otr_profile->IsOffTheRecord());
+  EXPECT_FALSE(tor_reg_profile->IsOffTheRecord());
+
+  EXPECT_EQ(
+      brave_rewards::RewardsServiceFactory::GetForProfile(tor_otr_profile),
+      nullptr);
+  EXPECT_EQ(
+      brave_rewards::RewardsServiceFactory::GetForProfile(tor_reg_profile),
+      nullptr);
+  EXPECT_EQ(brave_ads::AdsServiceFactory::GetForProfile(tor_otr_profile),
+            nullptr);
+  EXPECT_EQ(brave_ads::AdsServiceFactory::GetForProfile(tor_reg_profile),
+            nullptr);
 }
 
 IN_PROC_BROWSER_TEST_F(BraveProfileManagerTest,

@@ -14,6 +14,7 @@
 #include "base/strings/string_number_conversions.h"
 #include "brave/browser/brave_rewards/tip_dialog.h"
 #include "brave/browser/extensions/api/brave_action_api.h"
+#include "brave/browser/profiles/profile_util.h"
 #include "brave/common/extensions/api/brave_rewards.h"
 #include "brave/common/extensions/extension_constants.h"
 #include "brave/components/brave_ads/browser/ads_service.h"
@@ -86,8 +87,7 @@ ExtensionFunction::ResponseAction BraveRewardsTipSiteFunction::Run() {
 
   // Sanity check: don't allow tips in private / tor contexts,
   // although the command should not have been enabled in the first place.
-  Profile* profile = Profile::FromBrowserContext(browser_context());
-  if (profile->IsOffTheRecord()) {
+  if (!brave::IsRegularProfile(browser_context())) {
     return RespondNow(Error("Cannot tip to site in a private context"));
   }
 
@@ -95,7 +95,7 @@ ExtensionFunction::ResponseAction BraveRewardsTipSiteFunction::Run() {
   content::WebContents* contents = nullptr;
   if (!ExtensionTabUtil::GetTabById(
         params->tab_id,
-        profile,
+        Profile::FromBrowserContext(browser_context()),
         false,
         nullptr,
         nullptr,
@@ -130,12 +130,12 @@ BraveRewardsTipTwitterUserFunction::Run() {
 
   // Sanity check: don't allow tips in private / tor contexts,
   // although the command should not have been enabled in the first place.
-  Profile* profile = Profile::FromBrowserContext(browser_context());
-  if (profile->IsOffTheRecord()) {
+  if (!brave::IsRegularProfile(browser_context())) {
     return RespondNow(
         Error("Cannot tip Twitter user in a private context"));
   }
 
+  Profile* profile = Profile::FromBrowserContext(browser_context());
   auto* rewards_service = RewardsServiceFactory::GetForProfile(profile);
   if (rewards_service) {
     AddRef();
@@ -166,12 +166,12 @@ ExtensionFunction::ResponseAction BraveRewardsTipRedditUserFunction::Run() {
       brave_rewards::TipRedditUser::Params::Create(*args_));
   EXTENSION_FUNCTION_VALIDATE(params.get());
 
-  Profile* profile = Profile::FromBrowserContext(browser_context());
-  if (profile->IsOffTheRecord()) {
+  if (!brave::IsRegularProfile(browser_context())) {
     return RespondNow(
         Error("Cannot tip Reddit user in a private context"));
   }
 
+  Profile* profile = Profile::FromBrowserContext(browser_context());
   RewardsService* rewards_service = RewardsServiceFactory::GetForProfile(
       profile);
 
@@ -301,12 +301,12 @@ BraveRewardsTipGitHubUserFunction::Run() {
 
   // Sanity check: don't allow tips in private / tor contexts,
   // although the command should not have been enabled in the first place.
-  Profile* profile = Profile::FromBrowserContext(browser_context());
-  if (profile->IsOffTheRecord()) {
+  if (!brave::IsRegularProfile(browser_context())) {
     return RespondNow(
         Error("Cannot tip Twitter user in a private context"));
   }
 
+  Profile* profile = Profile::FromBrowserContext(browser_context());
   auto* rewards_service = RewardsServiceFactory::GetForProfile(profile);
   if (rewards_service) {
     AddRef();

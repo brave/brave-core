@@ -32,7 +32,7 @@ namespace brave_ads {
 // static
 AdsService* AdsServiceFactory::GetForProfile(
     Profile* profile) {
-  if (profile->IsOffTheRecord() || brave::IsTorProfile(profile)) {
+  if (!brave::IsRegularProfile(profile)) {
     return nullptr;
   }
 

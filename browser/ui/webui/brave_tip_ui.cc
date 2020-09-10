@@ -14,6 +14,7 @@
 #include "base/memory/weak_ptr.h"
 #include "base/strings/utf_string_conversions.h"
 #include "brave/browser/brave_browser_process_impl.h"
+#include "brave/browser/profiles/profile_util.h"
 #include "brave/browser/ui/webui/basic_ui.h"
 #include "brave/common/pref_names.h"
 #include "brave/common/webui_url_constants.h"
@@ -291,7 +292,7 @@ BraveTipUI::BraveTipUI(content::WebUI* web_ui, const std::string& name)
     : ConstrainedWebDialogUI(web_ui) {
   Profile* profile = Profile::FromWebUI(web_ui);
   // Show error for non-supported contexts
-  if (profile->IsOffTheRecord()) {
+  if (!brave::IsRegularProfile(profile)) {
     return;
   }
   content::WebUIDataSource* data_source = CreateBasicUIHTMLSource(profile,
