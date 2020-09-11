@@ -14,24 +14,25 @@
 #include <vector>
 
 #include "base/containers/flat_set.h"
-#include "bat/ledger/ledger.h"
-#include "base/files/file_path.h"
 #include "base/files/file.h"
+#include "base/files/file_path.h"
+#include "base/memory/weak_ptr.h"
 #include "base/observer_list.h"
 #include "base/one_shot_event.h"
-#include "base/memory/weak_ptr.h"
 #include "base/values.h"
+#include "bat/ledger/ledger.h"
 #include "bat/ledger/ledger_client.h"
-#include "brave/components/services/bat_ledger/public/interfaces/bat_ledger.mojom.h"
 #include "brave/components/brave_rewards/browser/rewards_service.h"
+#include "brave/components/brave_rewards/browser/rewards_service_private_observer.h"
 #include "brave/components/greaselion/browser/buildflags/buildflags.h"
+#include "brave/components/services/bat_ledger/public/interfaces/bat_ledger.mojom.h"
 #include "chrome/browser/bitmap_fetcher/bitmap_fetcher_service.h"
+#include "components/prefs/pref_change_registrar.h"
 #include "content/public/browser/browser_thread.h"
 #include "mojo/public/cpp/bindings/associated_receiver.h"
 #include "mojo/public/cpp/bindings/associated_remote.h"
 #include "mojo/public/cpp/bindings/remote.h"
 #include "ui/gfx/image/image.h"
-#include "brave/components/brave_rewards/browser/rewards_service_private_observer.h"
 
 #if defined(OS_ANDROID)
 #include "brave/components/safetynet/safetynet_check.h"
@@ -334,7 +335,11 @@ class RewardsServiceImpl : public RewardsService,
  private:
   friend class ::RewardsFlagBrowserTest;
 
-  void EnableGreaseLion(const bool enabled);
+  void InitPrefChangeRegistrar();
+
+  void OnPreferenceChanged(const std::string& key);
+
+  void EnableGreaseLion();
 
   void OnStopLedger(
       StopLedgerCallback callback,
@@ -747,6 +752,7 @@ class RewardsServiceImpl : public RewardsService,
       current_media_fetchers_;
   std::unique_ptr<base::OneShotTimer> notification_startup_timer_;
   std::unique_ptr<base::RepeatingTimer> notification_periodic_timer_;
+  PrefChangeRegistrar profile_pref_change_registrar_;
 
   uint32_t next_timer_id_;
   bool reset_states_;

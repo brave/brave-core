@@ -40,6 +40,9 @@ const char kRunAt[] = "run_at";
 // precondition keys
 const char kRewards[] = "rewards-enabled";
 const char kTwitterTips[] = "twitter-tips-enabled";
+const char kRedditTips[] = "reddit-tips-enabled";
+const char kGithubTips[] = "github-tips-enabled";
+const char kAutoContribution[] = "auto-contribution-enabled";
 
 GreaselionPreconditionValue GreaselionRule::ParsePrecondition(
     const base::Value& value) {
@@ -65,6 +68,12 @@ void GreaselionRule::Parse(base::DictionaryValue* preconditions_value,
         preconditions_.rewards_enabled = condition;
       } else if (kv.first == kTwitterTips) {
         preconditions_.twitter_tips_enabled = condition;
+      } else if (kv.first == kRedditTips) {
+        preconditions_.reddit_tips_enabled = condition;
+      } else if (kv.first == kGithubTips) {
+        preconditions_.github_tips_enabled = condition;
+      }  else if (kv.first == kAutoContribution) {
+        preconditions_.auto_contribution_enabled = condition;
       } else {
         LOG(INFO) << "Greaselion encountered an unknown precondition: "
             << kv.first;
@@ -116,6 +125,15 @@ bool GreaselionRule::Matches(GreaselionFeatures state) const {
     return false;
   if (!PreconditionFulfilled(preconditions_.twitter_tips_enabled,
                              state[greaselion::TWITTER_TIPS]))
+    return false;
+  if (!PreconditionFulfilled(preconditions_.reddit_tips_enabled,
+                             state[greaselion::REDDIT_TIPS]))
+    return false;
+  if (!PreconditionFulfilled(preconditions_.github_tips_enabled,
+                             state[greaselion::GITHUB_TIPS]))
+    return false;
+  if (!PreconditionFulfilled(preconditions_.auto_contribution_enabled,
+                             state[greaselion::AUTO_CONTRIBUTION]))
     return false;
   return true;
 }

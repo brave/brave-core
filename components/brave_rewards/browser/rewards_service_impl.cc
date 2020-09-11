@@ -363,6 +363,41 @@ void RewardsServiceImpl::Init(
   if (profile_->GetPrefs()->GetBoolean(prefs::kEnabled)) {
     StartLedger();
   }
+
+  InitPrefChangeRegistrar();
+}
+
+void RewardsServiceImpl::InitPrefChangeRegistrar() {
+  profile_pref_change_registrar_.Init(profile_->GetPrefs());
+  profile_pref_change_registrar_.Add(
+      prefs::kEnabled,
+      base::Bind(
+          &RewardsServiceImpl::OnPreferenceChanged,
+          base::Unretained(this)));
+  profile_pref_change_registrar_.Add(
+      prefs::kInlineTipTwitterEnabled,
+      base::Bind(
+          &RewardsServiceImpl::OnPreferenceChanged,
+          base::Unretained(this)));
+  profile_pref_change_registrar_.Add(
+      prefs::kInlineTipRedditEnabled,
+      base::Bind(
+          &RewardsServiceImpl::OnPreferenceChanged,
+          base::Unretained(this)));
+  profile_pref_change_registrar_.Add(
+      prefs::kInlineTipGithubEnabled,
+      base::Bind(
+          &RewardsServiceImpl::OnPreferenceChanged,
+          base::Unretained(this)));
+  profile_pref_change_registrar_.Add(
+      prefs::kAutoContributeEnabled,
+      base::Bind(
+          &RewardsServiceImpl::OnPreferenceChanged,
+          base::Unretained(this)));
+}
+
+void RewardsServiceImpl::OnPreferenceChanged(const std::string& key) {
+  EnableGreaseLion();
 }
 
 void RewardsServiceImpl::StartLedger() {
@@ -832,8 +867,7 @@ void RewardsServiceImpl::OnWalletInitialized(ledger::type::Result result) {
 #endif
   }
 
-  EnableGreaseLion(profile_->GetPrefs()->GetBoolean(
-      prefs::kEnabled));
+  EnableGreaseLion();
 
   for (auto& observer : observers_) {
     observer.OnWalletInitialized(this, result);
@@ -1361,11 +1395,24 @@ void RewardsServiceImpl::SetRewardsMainEnabled(bool enabled) {
   }
 }
 
-void RewardsServiceImpl::EnableGreaseLion(const bool enabled) {
+void RewardsServiceImpl::EnableGreaseLion() {
   #if BUILDFLAG(ENABLE_GREASELION)
     if (greaselion_service_) {
-      greaselion_service_->SetFeatureEnabled(greaselion::REWARDS, enabled);
-      greaselion_service_->SetFeatureEnabled(greaselion::TWITTER_TIPS, enabled);
+      greaselion_service_->SetFeatureEnabled(
+          greaselion::REWARDS,
+          profile_->GetPrefs()->GetBoolean(prefs::kEnabled));
+      greaselion_service_->SetFeatureEnabled(
+          greaselion::TWITTER_TIPS,
+          profile_->GetPrefs()->GetBoolean(prefs::kInlineTipTwitterEnabled));
+      greaselion_service_->SetFeatureEnabled(
+          greaselion::REDDIT_TIPS,
+          profile_->GetPrefs()->GetBoolean(prefs::kInlineTipRedditEnabled));
+      greaselion_service_->SetFeatureEnabled(
+          greaselion::GITHUB_TIPS,
+          profile_->GetPrefs()->GetBoolean(prefs::kInlineTipGithubEnabled));
+      greaselion_service_->SetFeatureEnabled(
+          greaselion::AUTO_CONTRIBUTION,
+          profile_->GetPrefs()->GetBoolean(prefs::kAutoContributeEnabled));
     }
   #endif
 }
