@@ -1,13 +1,16 @@
 diff --git a/chrome/android/java/src/org/chromium/chrome/browser/toolbar/bottom/BottomToolbarConfiguration.java b/chrome/android/java/src/org/chromium/chrome/browser/toolbar/bottom/BottomToolbarConfiguration.java
-index 3138acd77b38b31cc57e06df649e09c709a03c46..cfe1463b38ab0b519a839146e8e46fe726e82a30 100644
+index 9f61423f51c8f0ee27d427a214ae8248f3c0ccba..9068a0b439f113b529d811681cf74783d123f1a4 100644
 --- a/chrome/android/java/src/org/chromium/chrome/browser/toolbar/bottom/BottomToolbarConfiguration.java
 +++ b/chrome/android/java/src/org/chromium/chrome/browser/toolbar/bottom/BottomToolbarConfiguration.java
-@@ -18,7 +18,7 @@ public class BottomToolbarConfiguration {
+@@ -12,7 +12,10 @@ public class BottomToolbarConfiguration {
       * @return Whether or not the bottom toolbar is enabled.
       */
      public static boolean isBottomToolbarEnabled() {
--        return CachedFeatureFlags.isEnabled(ChromeFeatureList.CHROME_DUET)
+-        return false;
 +        return BraveBottomToolbarConfiguration.isBottomToolbarEnabled()
-                 && !DeviceFormFactor.isNonMultiDisplayContextOnTablet(
-                         ContextUtils.getApplicationContext())
-                 && (TabUiFeatureUtilities.isDuetTabStripIntegrationAndroidEnabled()
++                && !DeviceFormFactor.isNonMultiDisplayContextOnTablet(
++                        ContextUtils.getApplicationContext())
++                && !TabUiFeatureUtilities.isTabGroupsAndroidEnabled();
+     }
+ 
+     /**

@@ -1,5 +1,5 @@
 diff --git a/chrome/android/java/src/org/chromium/chrome/browser/ChromeTabbedActivity.java b/chrome/android/java/src/org/chromium/chrome/browser/ChromeTabbedActivity.java
-index d6040e241c95c15981d2e8bbee9d3e95dbb5d6bb..af9bde84e67c55af7091214640e084d1e3eebcfd 100644
+index 9378c7896502f36fd50628747f713432d6155587..7bc5674368f8c45907cd12d3f7f77f6eb3aa6616 100644
 --- a/chrome/android/java/src/org/chromium/chrome/browser/ChromeTabbedActivity.java
 +++ b/chrome/android/java/src/org/chromium/chrome/browser/ChromeTabbedActivity.java
 @@ -182,7 +182,7 @@ import java.util.Locale;
@@ -20,7 +20,7 @@ index d6040e241c95c15981d2e8bbee9d3e95dbb5d6bb..af9bde84e67c55af7091214640e084d1
                              assert profile != null : "Unexpectedly null profile from TabModel.";
                              if (profile == null) return;
  
-@@ -1564,7 +1564,7 @@ public class ChromeTabbedActivity extends ChromeActivity<ChromeActivityComponent
+@@ -1588,7 +1588,7 @@ public class ChromeTabbedActivity extends ChromeActivity<ChromeActivityComponent
  
      @Override
      public AppMenuPropertiesDelegate createAppMenuPropertiesDelegate() {
@@ -29,7 +29,7 @@ index d6040e241c95c15981d2e8bbee9d3e95dbb5d6bb..af9bde84e67c55af7091214640e084d1
                  getMultiWindowModeStateDispatcher(), getTabModelSelector(), getToolbarManager(),
                  getWindow().getDecorView(), this, mOverviewModeBehaviorSupplier,
                  mBookmarkBridgeSupplier);
-@@ -1588,10 +1588,10 @@ public class ChromeTabbedActivity extends ChromeActivity<ChromeActivityComponent
+@@ -1612,10 +1612,10 @@ public class ChromeTabbedActivity extends ChromeActivity<ChromeActivityComponent
                  }
              };
          }
@@ -42,7 +42,7 @@ index d6040e241c95c15981d2e8bbee9d3e95dbb5d6bb..af9bde84e67c55af7091214640e084d1
                          tabDelegateFactorySupplier, true, overviewNTPCreator,
                          AsyncTabParamsManager.getInstance()));
      }
-@@ -1982,7 +1982,7 @@ public class ChromeTabbedActivity extends ChromeActivity<ChromeActivityComponent
+@@ -2006,7 +2006,7 @@ public class ChromeTabbedActivity extends ChromeActivity<ChromeActivityComponent
          }
      }
  

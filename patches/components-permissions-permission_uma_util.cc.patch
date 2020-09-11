@@ -1,5 +1,5 @@
 diff --git a/components/permissions/permission_uma_util.cc b/components/permissions/permission_uma_util.cc
-index a5475f3b4433c4656606b4d747fc4e21a3a0f100..4254c39723f72b9b7031be976d0ff64f7a1c9c51 100644
+index 200018e3d58986f1dc26cb4d80540f82a68222b0..68ccbcacdf459fabf3692bf942121ba2c166cc62 100644
 --- a/components/permissions/permission_uma_util.cc
 +++ b/components/permissions/permission_uma_util.cc
 @@ -50,7 +50,7 @@ namespace {

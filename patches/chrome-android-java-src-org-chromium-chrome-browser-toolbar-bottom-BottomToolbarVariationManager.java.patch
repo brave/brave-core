@@ -1,8 +1,8 @@
 diff --git a/chrome/android/java/src/org/chromium/chrome/browser/toolbar/bottom/BottomToolbarVariationManager.java b/chrome/android/java/src/org/chromium/chrome/browser/toolbar/bottom/BottomToolbarVariationManager.java
-index cf54c3785cde4ac9da4d2039b112644ebc2d7c62..7cc81b6639c41302e5265d82d3bf1f56de7d2201 100644
+index 9bef97dea67e0a10960c523b16d1cfbe3ecd4418..3b89eea859d0eb9dcafb157f579fa7039b24af53 100644
 --- a/chrome/android/java/src/org/chromium/chrome/browser/toolbar/bottom/BottomToolbarVariationManager.java
 +++ b/chrome/android/java/src/org/chromium/chrome/browser/toolbar/bottom/BottomToolbarVariationManager.java
-@@ -62,6 +62,7 @@ public class BottomToolbarVariationManager {
+@@ -50,6 +50,7 @@ public class BottomToolbarVariationManager {
       *         in the current variation.
       */
      public static boolean isShareButtonOnBottom() {
@@ -10,7 +10,7 @@ index cf54c3785cde4ac9da4d2039b112644ebc2d7c62..7cc81b6639c41302e5265d82d3bf1f56
          return BottomToolbarConfiguration.isBottomToolbarEnabled()
                  && !getVariation().equals(Variations.HOME_SEARCH_TAB_SWITCHER);
      }
-@@ -71,6 +72,7 @@ public class BottomToolbarVariationManager {
+@@ -59,6 +60,7 @@ public class BottomToolbarVariationManager {
       *         in portrait mode in the current variation.
       */
      public static boolean isNewTabButtonOnBottom() {
@@ -18,7 +18,7 @@ index cf54c3785cde4ac9da4d2039b112644ebc2d7c62..7cc81b6639c41302e5265d82d3bf1f56
          return BottomToolbarConfiguration.isBottomToolbarEnabled()
                  && getVariation().equals(Variations.NEW_TAB_SEARCH_SHARE);
      }
-@@ -80,6 +82,7 @@ public class BottomToolbarVariationManager {
+@@ -68,6 +70,7 @@ public class BottomToolbarVariationManager {
       *         in portrait mode in the current variation.
       */
      public static boolean isMenuButtonOnBottom() {
@@ -26,7 +26,7 @@ index cf54c3785cde4ac9da4d2039b112644ebc2d7c62..7cc81b6639c41302e5265d82d3bf1f56
          // If we don't have variations that put menu on bottom in the future,
          // then this method can be removed.
          return false;
-@@ -90,6 +93,7 @@ public class BottomToolbarVariationManager {
+@@ -78,6 +81,7 @@ public class BottomToolbarVariationManager {
       *         in the current variation.
       */
      public static boolean shouldBottomToolbarBeVisibleInOverviewMode() {
@@ -34,7 +34,7 @@ index cf54c3785cde4ac9da4d2039b112644ebc2d7c62..7cc81b6639c41302e5265d82d3bf1f56
          return (getVariation().equals(Variations.NEW_TAB_SEARCH_SHARE)
                         && !StartSurfaceConfiguration.isStartSurfaceEnabled())
                  || ((!TabUiFeatureUtilities.isGridTabSwitcherEnabled()
-@@ -111,6 +115,7 @@ public class BottomToolbarVariationManager {
+@@ -99,6 +103,7 @@ public class BottomToolbarVariationManager {
       *         of portrait mode in current variation.
       */
      public static boolean isTabSwitcherOnBottom() {

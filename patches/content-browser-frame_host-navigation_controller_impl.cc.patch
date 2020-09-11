@@ -1,5 +1,5 @@
 diff --git a/content/browser/frame_host/navigation_controller_impl.cc b/content/browser/frame_host/navigation_controller_impl.cc
-index 5735af8289f2e23c22135485ceb6d54cee298f74..271bf406b185a9525e5f1dc54a9c863f575fc82d 100644
+index 40b0b21ddfd6d89cc98c2f2ad6b76e682ae52806..4d703106e4e4f168abcb227b4cb227b6f6450bae 100644
 --- a/content/browser/frame_host/navigation_controller_impl.cc
 +++ b/content/browser/frame_host/navigation_controller_impl.cc
 @@ -3025,16 +3025,17 @@ void NavigationControllerImpl::NavigateWithoutEntry(

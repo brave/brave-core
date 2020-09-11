@@ -1,12 +1,13 @@
 diff --git a/third_party/blink/renderer/modules/mediastream/media_devices.cc b/third_party/blink/renderer/modules/mediastream/media_devices.cc
-index 68c45c08f751b15237cf64e1e09390111181c738..f7fb88c3d78c0fce28b129ceec616d48b4d5308b 100644
+index 5a2adbb4956bc9a032450d305786d785a3091215..3cb58d3dde53f276f37f6923af55dc8edf9f557d 100644
 --- a/third_party/blink/renderer/modules/mediastream/media_devices.cc
 +++ b/third_party/blink/renderer/modules/mediastream/media_devices.cc
-@@ -323,6 +323,7 @@ void MediaDevices::DevicesEnumerated(
+@@ -351,6 +351,8 @@ void MediaDevices::DevicesEnumerated(
      }
    }
  
 +  BRAVE_MEDIA_DEVICES_DEVICES_ENUMERATED
-   if (enumerate_devices_test_callback_)
-     std::move(enumerate_devices_test_callback_).Run(media_devices);
++
+   RecordEnumeratedDevices(resolver, media_devices);
  
+   if (enumerate_devices_test_callback_)
