@@ -20,8 +20,8 @@ bool testing() {
 namespace bat_ledger {
 
 BatLedgerServiceImpl::BatLedgerServiceImpl(
-    std::unique_ptr<service_manager::ServiceContextRef> service_ref)
-  : service_ref_(std::move(service_ref)),
+    mojo::PendingReceiver<mojom::BatLedgerService> receiver)
+    : receiver_(this, std::move(receiver)),
     initialized_(false) {}
 
 BatLedgerServiceImpl::~BatLedgerServiceImpl() = default;
@@ -30,7 +30,7 @@ void BatLedgerServiceImpl::Create(
     mojo::PendingAssociatedRemote<mojom::BatLedgerClient> client_info,
     mojo::PendingAssociatedReceiver<mojom::BatLedger> bat_ledger,
     CreateCallback callback) {
-  receivers_.Add(
+  associated_receivers_.Add(
       std::make_unique<BatLedgerImpl>(std::move(client_info)),
       std::move(bat_ledger));
   initialized_ = true;

@@ -24,7 +24,6 @@
 #include "brave/common/webui_url_constants.h"
 #include "brave/components/binance/browser/buildflags/buildflags.h"
 #include "brave/components/gemini/browser/buildflags/buildflags.h"
-#include "brave/components/brave_ads/browser/buildflags/buildflags.h"
 #include "brave/components/brave_rewards/browser/buildflags/buildflags.h"
 #include "brave/components/brave_shields/browser/brave_shields_util.h"
 #include "brave/components/brave_shields/browser/brave_shields_web_contents_observer.h"
@@ -34,7 +33,6 @@
 #include "brave/components/brave_webtorrent/browser/buildflags/buildflags.h"
 #include "brave/components/ipfs/browser/buildflags/buildflags.h"
 #include "brave/components/ipfs/browser/features.h"
-#include "brave/components/services/brave_content_browser_overlay_manifest.h"
 #include "brave/components/speedreader/buildflags.h"
 #include "brave/grit/brave_generated_resources.h"
 #include "chrome/browser/content_settings/host_content_settings_map_factory.h"
@@ -55,7 +53,6 @@
 #include "extensions/buildflags/buildflags.h"
 #include "net/base/registry_controlled_domains/registry_controlled_domain.h"
 #include "net/cookies/site_for_cookies.h"
-#include "services/service_manager/public/cpp/manifest_builder.h"
 #include "third_party/blink/public/common/loader/url_loader_throttle.h"
 #include "ui/base/l10n/l10n_util.h"
 
@@ -64,16 +61,6 @@ using content::BrowserThread;
 using content::ContentBrowserClient;
 using content::RenderFrameHost;
 using content::WebContents;
-
-#if BUILDFLAG(BRAVE_ADS_ENABLED)
-#include "brave/components/services/bat_ads/public/cpp/manifest.h"
-#include "brave/components/services/bat_ads/public/interfaces/bat_ads.mojom.h"
-#endif
-
-#if BUILDFLAG(BRAVE_REWARDS_ENABLED)
-#include "brave/components/services/bat_ledger/public/cpp/manifest.h"
-#include "brave/components/services/bat_ledger/public/interfaces/bat_ledger.mojom.h"
-#endif
 
 #if BUILDFLAG(ENABLE_EXTENSIONS)
 #include "chrome/browser/extensions/chrome_content_browser_client_extensions_part.h"
@@ -242,27 +229,6 @@ bool BraveContentBrowserClient::HandleExternalProtocol(
       url, std::move(web_contents_getter), child_id, navigation_data,
       is_main_frame, page_transition, has_user_gesture, initiating_origin,
       out_factory);
-}
-
-base::Optional<service_manager::Manifest>
-BraveContentBrowserClient::GetServiceManifestOverlay(base::StringPiece name) {
-  if (name == content::mojom::kBrowserServiceName)
-    return GetBraveContentBrowserOverlayManifest();
-  return base::nullopt;
-}
-
-std::vector<service_manager::Manifest>
-BraveContentBrowserClient::GetExtraServiceManifests() {
-  auto manifests = ChromeContentBrowserClient::GetExtraServiceManifests();
-
-#if BUILDFLAG(BRAVE_ADS_ENABLED)
-  manifests.push_back(bat_ads::GetManifest());
-#endif
-#if BUILDFLAG(BRAVE_REWARDS_ENABLED)
-  manifests.push_back(bat_ledger::GetManifest());
-#endif
-
-  return manifests;
 }
 
 void BraveContentBrowserClient::AppendExtraCommandLineSwitches(

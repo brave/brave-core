@@ -46,4 +46,18 @@ content::GetServiceSandboxType<tor::mojom::TorLauncher>() {
   return content::SandboxType::kNoSandbox;
 }
 
+#if !defined(OS_ANDROID)  // Android will use default, which is kUtility.
+namespace bat_ledger {
+namespace mojom {
+class BatLedgerService;
+}  // namespace mojom
+}  // namespace bat_ledger
+
+template <>
+inline content::SandboxType
+content::GetServiceSandboxType<bat_ledger::mojom::BatLedgerService>() {
+  return content::SandboxType::kNoSandbox;
+}
+#endif  // !defined(OS_ANDROID)
+
 #endif  // BRAVE_CHROMIUM_SRC_CHROME_BROWSER_SERVICE_SANDBOX_TYPE_H_

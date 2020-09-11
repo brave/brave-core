@@ -12,15 +12,16 @@
 #include "brave/components/services/bat_ledger/public/interfaces/bat_ledger.mojom.h"
 #include "mojo/public/cpp/bindings/pending_associated_receiver.h"
 #include "mojo/public/cpp/bindings/pending_associated_remote.h"
+#include "mojo/public/cpp/bindings/pending_receiver.h"
+#include "mojo/public/cpp/bindings/receiver.h"
 #include "mojo/public/cpp/bindings/unique_associated_receiver_set.h"
-#include "services/service_manager/public/cpp/service_context_ref.h"
 
 namespace bat_ledger {
 
 class BatLedgerServiceImpl : public mojom::BatLedgerService {
  public:
   explicit BatLedgerServiceImpl(
-      std::unique_ptr<service_manager::ServiceContextRef> service_ref);
+      mojo::PendingReceiver<mojom::BatLedgerService> receiver);
 
   ~BatLedgerServiceImpl() override;
 
@@ -45,9 +46,9 @@ class BatLedgerServiceImpl : public mojom::BatLedgerService {
   void GetShortRetries(GetShortRetriesCallback callback) override;
 
  private:
-  const std::unique_ptr<service_manager::ServiceContextRef> service_ref_;
+  mojo::Receiver<mojom::BatLedgerService> receiver_;
   bool initialized_;
-  mojo::UniqueAssociatedReceiverSet<mojom::BatLedger> receivers_;
+  mojo::UniqueAssociatedReceiverSet<mojom::BatLedger> associated_receivers_;
 };
 
 }  // namespace bat_ledger

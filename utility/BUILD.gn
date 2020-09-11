@@ -20,10 +20,7 @@ source_set("utility") {
     "brave_content_utility_client.h",
   ]
 
-  deps = [
-    "//chrome/common",
-    "//content/public/common",
-  ]
+  deps = []
 
   if (!is_android) {
     sources += [
