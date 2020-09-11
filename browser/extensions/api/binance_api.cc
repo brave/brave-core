@@ -14,7 +14,6 @@
 #include "brave/browser/profiles/profile_util.h"
 
 #include "brave/common/extensions/api/binance.h"
-#include "brave/common/extensions/extension_constants.h"
 #include "brave/common/pref_names.h"
 #include "brave/browser/binance/binance_service_factory.h"
 #include "brave/components/binance/browser/binance_service.h"
@@ -26,6 +25,7 @@
 #include "chrome/browser/profiles/profile.h"
 #include "components/prefs/pref_service.h"
 #include "extensions/browser/extension_util.h"
+#include "extensions/common/constants.h"
 
 namespace {
 

@@ -11,7 +11,7 @@
 #include "extensions/buildflags/buildflags.h"
 
 #if BUILDFLAG(ENABLE_EXTENSIONS)
-#include "brave/common/extensions/extension_constants.h"
+#include "extensions/common/constants.h"
 #endif
 
 bool CanAddURLToHistory(const GURL& url) {

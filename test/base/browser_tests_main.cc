@@ -1,4 +1,5 @@
-/* This Source Code Form is subject to the terms of the Mozilla Public
+/* Copyright (c) 2020 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
@@ -14,7 +15,7 @@
 
 int main(int argc, char** argv) {
   base::CommandLine::Init(argc, argv);
-  size_t parallel_jobs = base::NumParallelJobs();
+  size_t parallel_jobs = base::NumParallelJobs(/*cores_per_job=*/1);
   if (parallel_jobs == 0U) {
     return 1;
   } else if (parallel_jobs > 1U) {

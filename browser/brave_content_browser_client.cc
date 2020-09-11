@@ -41,7 +41,7 @@
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/profiles/profile_io_data.h"
 #include "chrome/common/url_constants.h"
-#include "components/content_settings/browser/tab_specific_content_settings.h"
+#include "components/content_settings/browser/page_specific_content_settings.h"
 #include "components/prefs/pref_service.h"
 #include "components/services/heap_profiling/public/mojom/heap_profiling_client.mojom.h"
 #include "content/browser/frame_host/render_frame_host_impl.h"
@@ -156,7 +156,7 @@ BraveContentBrowserClient::CreateBrowserMainParts(
       ChromeContentBrowserClient::CreateBrowserMainParts(parameters);
   ChromeBrowserMainParts* chrome_main_parts =
       static_cast<ChromeBrowserMainParts*>(main_parts.get());
-  chrome_main_parts->AddParts(new BraveBrowserMainExtraParts());
+  chrome_main_parts->AddParts(std::make_unique<BraveBrowserMainExtraParts>());
   return main_parts;
 }
 
@@ -253,11 +253,9 @@ bool BraveContentBrowserClient::HandleExternalProtocol(
 
 base::Optional<service_manager::Manifest>
 BraveContentBrowserClient::GetServiceManifestOverlay(base::StringPiece name) {
-  auto manifest = ChromeContentBrowserClient::GetServiceManifestOverlay(name);
-  if (name == content::mojom::kBrowserServiceName) {
-    manifest->Amend(GetBraveContentBrowserOverlayManifest());
-  }
-  return manifest;
+  if (name == content::mojom::kBrowserServiceName)
+    return GetBraveContentBrowserOverlayManifest();
+  return base::nullopt;
 }
 
 std::vector<service_manager::Manifest>

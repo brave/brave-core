@@ -5,6 +5,8 @@
 
 #include "../../../../../../../third_party/blink/renderer/modules/storage/dom_window_storage.cc"
 #include "third_party/blink/renderer/modules/storage/brave_dom_window_storage.h"
+#include "third_party/blink/renderer/core/execution_context/execution_context.h"
+#include "third_party/blink/renderer/core/frame/local_dom_window.h"
 
 namespace blink {
 
@@ -17,10 +19,9 @@ void MaybeClearAccessDeniedException(StorageArea* storage,
                                      const LocalDOMWindow& window,
                                      ExceptionState* exception_state) {
   if (!storage && exception_state->HadException()) {
-    Document* document =
-        window.GetFrame()->GetDocument();
+    LocalDOMWindow* dom_window = window.GetFrame()->DomWindow();
 
-    if (!document->GetSecurityOrigin()->CanAccessSessionStorage())
+    if (!dom_window->GetSecurityOrigin()->CanAccessSessionStorage())
       return;
 
     // clear the access denied exception for better webcompat

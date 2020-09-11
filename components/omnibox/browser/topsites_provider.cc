@@ -34,7 +34,7 @@ void TopSitesProvider::Start(const AutocompleteInput& input,
     return;
   }
 
-  if (input.from_omnibox_focus() ||
+  if (input.focus_type() != OmniboxFocusType::DEFAULT ||
       (input.type() == metrics::OmniboxInputType::EMPTY) ||
       (input.type() == metrics::OmniboxInputType::QUERY))
     return;

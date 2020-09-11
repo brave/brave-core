@@ -6,11 +6,11 @@
 #include "base/path_service.h"
 #include "brave/common/brave_paths.h"
 #include "brave/common/brave_wallet_constants.h"
-#include "brave/common/extensions/extension_constants.h"
 #include "brave/common/pref_names.h"
 #include "chrome/browser/extensions/extension_apitest.h"
 #include "components/prefs/pref_service.h"
 #include "content/public/test/browser_test.h"
+#include "extensions/common/constants.h"
 #include "extensions/test/result_catcher.h"
 
 namespace extensions {

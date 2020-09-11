@@ -1,13 +1,13 @@
 diff --git a/chrome/common/importer/importer_type.h b/chrome/common/importer/importer_type.h
-index c172f8a5bc534465ff4d063a52f9bb510b7e36af..f1252eb63f413e2135202236ca40d05f129a6c7a 100644
+index bfd24902a506262e890566d7cfe2049614fe0274..651dd9aa5d95e4ece599ef52a377240287dfaf87 100644
 --- a/chrome/common/importer/importer_type.h
 +++ b/chrome/common/importer/importer_type.h
 @@ -19,6 +19,8 @@ enum ImporterType {
-   TYPE_IE              = 0,
+   TYPE_IE = 0,
  #endif
    // Value 1 was the (now deleted) Firefox 2 profile importer.
 +  // We use it for the Chrome profile importer now.
-+  TYPE_CHROME		   = 1,
-   TYPE_FIREFOX         = 2,
- #if defined(OS_MACOSX)
-   TYPE_SAFARI          = 3,
++  TYPE_CHROME = 1,
+   TYPE_FIREFOX = 2,
+ #if defined(OS_MAC)
+   TYPE_SAFARI = 3,

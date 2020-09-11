@@ -109,7 +109,7 @@ source_set("extensions") {
   if (ntp_widget_utils_enabled) {
     deps += [
       "//brave/components/ntp_widget_utils/browser",
-    ]    
+    ]
   }
 
   if (ipfs_enabled) {

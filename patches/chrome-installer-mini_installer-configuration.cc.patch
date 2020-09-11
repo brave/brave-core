@@ -1,8 +1,8 @@
 diff --git a/chrome/installer/mini_installer/configuration.cc b/chrome/installer/mini_installer/configuration.cc
-index 31abb3ea5f67a8a4661e3023b8e5594f416a62bd..825f4f80ae2b4031508448215a40aad9507e54cd 100644
+index 932aaedc2d8134e1f2957e867aa4e22b1d3871a5..e56c3e889d59ad9b58d6132e95b85f98001577e1 100644
 --- a/chrome/installer/mini_installer/configuration.cc
 +++ b/chrome/installer/mini_installer/configuration.cc
-@@ -23,7 +23,11 @@ namespace {
+@@ -24,7 +24,11 @@ namespace {
  bool GetGoogleUpdateIsMachineEnvVar() {
    const DWORD kBufferSize = 2;
    StackString<kBufferSize> value;
@@ -14,7 +14,7 @@ index 31abb3ea5f67a8a4661e3023b8e5594f416a62bd..825f4f80ae2b4031508448215a40aad9
                                             value.get(), kBufferSize);
    return length == 1 && *value.get() == L'1';
  }
-@@ -74,7 +78,9 @@ bool Configuration::ParseCommandLine(const wchar_t* command_line) {
+@@ -77,7 +81,9 @@ bool Configuration::ParseCommandLine(const wchar_t* command_line) {
    for (int i = 1; i < argument_count_; ++i) {
      if (0 == ::lstrcmpi(args_[i], L"--system-level"))
        is_system_level_ = true;

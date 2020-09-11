@@ -1,11 +1,11 @@
 diff --git a/components/permissions/permission_request.h b/components/permissions/permission_request.h
-index f05dc7c82aa7b299e5a8a8da4dba0732ac92adb4..418e9a2cee6616ac1e1a162fd7f270cbb89dcc30 100644
+index 9a7ae7d6505a01ccf2e4fc72a3b5c91ef6d9921e..06198e9d28907555221c5a22f9c955aadc43ede7 100644
 --- a/components/permissions/permission_request.h
 +++ b/components/permissions/permission_request.h
-@@ -56,6 +56,7 @@ enum class PermissionRequestType {
-   PERMISSION_STORAGE_ACCESS = 23,
+@@ -57,6 +57,7 @@ enum class PermissionRequestType {
    PERMISSION_CAMERA_PAN_TILT_ZOOM = 24,
    PERMISSION_WINDOW_PLACEMENT = 25,
+   PERMISSION_FONT_ACCESS = 26,
 +  BRAVE_PERMISSION_REQUEST_TYPES
    // NUM must be the last value in the enum.
    NUM

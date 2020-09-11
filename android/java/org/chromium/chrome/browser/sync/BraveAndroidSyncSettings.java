@@ -13,7 +13,7 @@ public class BraveAndroidSyncSettings extends AndroidSyncSettings {
     private boolean mMasterSyncEnabled;
 
     public BraveAndroidSyncSettings(SyncContentResolverDelegate syncContentResolverDelegate) {
-        super(syncContentResolverDelegate, null);
+        super(syncContentResolverDelegate);
     }
 
     // Chromium's AndroidSyncSettings.mChromeSyncEnabled is never set to true

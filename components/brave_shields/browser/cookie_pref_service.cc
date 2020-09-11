@@ -8,8 +8,10 @@
 #include <string>
 
 #include "base/bind.h"
+#include "base/notreached.h"
 #include "brave/components/brave_shields/browser/brave_shields_util.h"
 #include "brave/components/brave_shields/common/brave_shield_constants.h"
+#include "components/content_settings/core/browser/cookie_settings.h"
 #include "components/content_settings/core/browser/host_content_settings_map.h"
 #include "components/content_settings/core/common/content_settings.h"
 #include "components/content_settings/core/common/content_settings_pattern.h"
@@ -21,10 +23,29 @@ namespace brave_shields {
 
 namespace {
 
+ControlType CookieControlsModeToControlType(
+    content_settings::CookieControlsMode mode) {
+  switch (mode) {
+    case content_settings::CookieControlsMode::kOff:
+      return ControlType::ALLOW;
+    case content_settings::CookieControlsMode::kBlockThirdParty:
+      return ControlType::BLOCK_THIRD_PARTY;
+    // There shouldn't be a way to set kIncognitoOnly in Brave.
+    case content_settings::CookieControlsMode::kIncognitoOnly:
+    default:
+      NOTREACHED() << "Unexpected cookie controls mode.";
+      return ControlType::ALLOW;
+  }
+}
+
 void SetCookieControlTypeFromPrefs(HostContentSettingsMap* map,
                                    PrefService* prefs,
                                    PrefService* local_state) {
   auto control_type = ControlType::ALLOW;
+  control_type = CookieControlsModeToControlType(
+      static_cast<content_settings::CookieControlsMode>(
+          prefs->GetInteger(prefs::kCookieControlsMode)));
+
   if (prefs->GetBoolean(prefs::kBlockThirdPartyCookies)) {
     control_type = ControlType::BLOCK_THIRD_PARTY;
   }
@@ -38,10 +59,24 @@ void SetCookieControlTypeFromPrefs(HostContentSettingsMap* map,
   SetCookieControlType(map, control_type, GURL(), local_state);
 }
 
+content_settings::CookieControlsMode ControlTypeToCookieControlsMode(
+    ControlType type) {
+  switch (type) {
+    case ControlType::BLOCK_THIRD_PARTY:
+    case ControlType::BLOCK:
+      return content_settings::CookieControlsMode::kBlockThirdParty;
+    default:
+      return content_settings::CookieControlsMode::kOff;
+  }
+}
+
 void SetCookiePrefDefaults(HostContentSettingsMap* map, PrefService* prefs) {
   auto type = GetCookieControlType(map, GURL());
   prefs->SetBoolean(prefs::kBlockThirdPartyCookies,
                     type == ControlType::BLOCK_THIRD_PARTY);
+
+  prefs->SetInteger(prefs::kCookieControlsMode,
+                    static_cast<int>(ControlTypeToCookieControlsMode(type)));
 
   if (type == ControlType::BLOCK) {
     prefs->SetInteger("profile.default_content_setting_values.cookies",
@@ -87,6 +122,10 @@ CookiePrefService::CookiePrefService(
   pref_change_registrar_.Init(prefs_);
   pref_change_registrar_.Add(
       prefs::kBlockThirdPartyCookies,
+      base::BindRepeating(&CookiePrefService::OnPreferenceChanged,
+                          base::Unretained(this)));
+  pref_change_registrar_.Add(
+      prefs::kCookieControlsMode,
       base::BindRepeating(&CookiePrefService::OnPreferenceChanged,
                           base::Unretained(this)));
   pref_change_registrar_.Add(

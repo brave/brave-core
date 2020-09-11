@@ -19,7 +19,7 @@ namespace {
 // more inconvenient. Instead, restoring this function here so that we know when
 // to fall onto Chromium code.
 bool ShouldIgnoreHarmonySpec(const ui::NativeTheme& theme) {
-#if defined(OS_MACOSX)
+#if defined(OS_MAC)
     return false;
 #else
     if (theme.UsesHighContrastColors())
@@ -34,7 +34,7 @@ bool ShouldIgnoreHarmonySpec(const ui::NativeTheme& theme) {
     const bool label_color_is_black =
         test_color == SK_ColorBLACK || test_color == gfx::kGoogleGrey900;
     return !label_color_is_black;
-#endif  // defined(OS_MACOSX)
+#endif  // defined(OS_MAC)
 }
 
 }  // namespace

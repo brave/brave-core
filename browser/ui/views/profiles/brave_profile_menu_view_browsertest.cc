@@ -48,8 +48,12 @@ class BraveProfileMenuViewTest : public InProcessBrowserTest {
 
   void CheckIdentityHasNoText() {
     ProfileMenuViewBase* menu = profile_menu();
-    // Only the profile image.
-    EXPECT_EQ(1u, menu->identity_info_container_->children().size());
+    // Profile image and title container.
+    EXPECT_EQ(2u, menu->identity_info_container_->children().size());
+    // Each should have 0 children.
+    for (const auto* view : menu->identity_info_container_->children()) {
+      EXPECT_EQ(0u, view->children().size());
+    }
   }
 
  private:

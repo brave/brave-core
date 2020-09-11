@@ -11,7 +11,6 @@
 #include <vector>
 
 #include "brave/common/extensions/api/gemini.h"
-#include "brave/common/extensions/extension_constants.h"
 #include "brave/browser/gemini/gemini_service_factory.h"
 #include "brave/components/ntp_widget_utils/browser/ntp_widget_utils_region.h"
 #include "brave/components/gemini/browser/gemini_service.h"
@@ -21,6 +20,7 @@
 #include "chrome/browser/infobars/infobar_service.h"
 #include "chrome/browser/profiles/profile.h"
 #include "extensions/browser/extension_util.h"
+#include "extensions/common/constants.h"
 
 namespace {
 

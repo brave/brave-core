@@ -40,7 +40,7 @@ void RecordImporterP3A(importer::ImporterType type) {
   case importer::TYPE_FIREFOX:
     metric = ImporterSource::kFirefox;
     break;
-#if defined(OS_MACOSX)
+#if defined(OS_MAC)
   case importer::TYPE_SAFARI:
     metric = ImporterSource::kSafari;
     break;

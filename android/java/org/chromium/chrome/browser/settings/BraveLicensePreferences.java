@@ -11,7 +11,6 @@ import org.chromium.base.Log;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.BraveRewardsHelper;
 import org.chromium.chrome.browser.settings.BravePreferenceFragment;
-import org.chromium.components.browser_ui.settings.TextMessagePreference;
 import org.chromium.components.browser_ui.settings.SettingsUtils;
 
 import java.io.IOException;
@@ -31,8 +30,8 @@ public class BraveLicensePreferences extends BravePreferenceFragment {
     public void onCreatePreferences(Bundle savedInstanceState, String s) {
         SettingsUtils.addPreferencesFromResource(this, R.xml.brave_license_preferences);
         getActivity().setTitle(R.string.brave_license_text);
-        TextMessagePreference licenseText =
-                (TextMessagePreference) findPreference(PREF_BRAVE_LICENSE_TEXT);
+        BraveLicensePreference licenseText =
+                (BraveLicensePreference) findPreference(PREF_BRAVE_LICENSE_TEXT);
         try {
             InputStream in = getActivity().getAssets().open(ASSET_BRAVE_LICENSE);
             Scanner scanner = new Scanner(in).useDelimiter("\\A");

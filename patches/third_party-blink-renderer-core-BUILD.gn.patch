@@ -1,8 +1,8 @@
 diff --git a/third_party/blink/renderer/core/BUILD.gn b/third_party/blink/renderer/core/BUILD.gn
-index cdd49a53f8138572d746d87ba7116880eca850ef..b0a08622b460cb6d8791195d5469f6c4d5bd2b9b 100644
+index b9af544e49cb0c58627f842a7b34ac2b805c4c34..f5fb3b766aa5ca2eb6c0ac612bf8173f5c7ba0de 100644
 --- a/third_party/blink/renderer/core/BUILD.gn
 +++ b/third_party/blink/renderer/core/BUILD.gn
-@@ -147,6 +147,7 @@ component("core") {
+@@ -121,6 +121,7 @@ component("core") {
  
    visibility = []  # Allow re-assignment of list.
    visibility = [ "//third_party/blink/*" ]
@@ -10,7 +10,7 @@ index cdd49a53f8138572d746d87ba7116880eca850ef..b0a08622b460cb6d8791195d5469f6c4
  
    # If you create a new subdirectory, make a new BUILD file for that directory
    # and reference it in the deps below rather than adding the sources here.
-@@ -217,6 +218,7 @@ component("core") {
+@@ -192,6 +193,7 @@ component("core") {
      "//url",
      "//v8",
    ]

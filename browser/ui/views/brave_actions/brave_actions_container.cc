@@ -13,16 +13,13 @@
 #include "base/one_shot_event.h"
 #include "brave/browser/extensions/brave_component_loader.h"
 #include "brave/browser/ui/brave_actions/brave_action_view_controller.h"
-#include "brave/browser/ui/brave_actions/constants.h"
 #include "brave/browser/ui/views/brave_actions/brave_action_view.h"
 #include "brave/browser/ui/views/brave_actions/brave_rewards_action_stub_view.h"
 #include "brave/browser/ui/views/rounded_separator.h"
 #include "brave/common/brave_switches.h"
-#include "brave/common/extensions/extension_constants.h"
 #include "brave/common/pref_names.h"
 #include "brave/components/brave_rewards/browser/buildflags/buildflags.h"
 #include "brave/components/brave_rewards/common/pref_names.h"
-#include "chrome/browser/extensions/extension_action_manager.h"
 #include "chrome/browser/extensions/extension_service.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser.h"
@@ -32,9 +29,11 @@
 #include "chrome/browser/ui/toolbar/toolbar_action_view_controller.h"
 #include "chrome/browser/ui/views/toolbar/toolbar_action_view.h"
 #include "components/prefs/pref_service.h"
+#include "extensions/browser/extension_action_manager.h"
 #include "extensions/browser/extension_registry.h"
 #include "extensions/browser/extension_registry_observer.h"
 #include "extensions/browser/extension_system.h"
+#include "extensions/common/constants.h"
 #include "ui/views/layout/box_layout.h"
 #include "ui/views/layout/grid_layout.h"
 #include "ui/views/view.h"
@@ -413,7 +412,7 @@ void BraveActionsContainer::OnExtensionUnloaded(
 
 // ExtensionActionAPI::Observer
 void BraveActionsContainer::OnExtensionActionUpdated(
-    ExtensionAction* extension_action,
+    extensions::ExtensionAction* extension_action,
     content::WebContents* web_contents,
     content::BrowserContext* browser_context) {
   if (IsContainerAction(extension_action->extension_id()))

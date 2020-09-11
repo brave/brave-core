@@ -17,7 +17,7 @@
 #include "content/public/common/content_switches.h"
 #endif
 
-#if defined(OS_MACOSX)
+#if defined(OS_MAC)
 #include "base/mac/foundation_util.h"
 #include "base/strings/sys_string_conversions.h"
 #endif
@@ -30,7 +30,7 @@ namespace {
 
 #if !defined(BRAVE_CHROMIUM_BUILD) || !defined(OS_ANDROID)
 base::FilePath GetResourcesPakFilePath() {
-#if defined(OS_MACOSX)
+#if defined(OS_MAC)
   return base::mac::PathForFrameworkBundleResource(
       CFSTR("brave_resources.pak"));
 #else
@@ -38,7 +38,7 @@ base::FilePath GetResourcesPakFilePath() {
   base::PathService::Get(base::DIR_MODULE, &pak_path);
   pak_path = pak_path.AppendASCII("brave_resources.pak");
   return pak_path;
-#endif  // OS_MACOSX
+#endif  // OS_MAC
 }
 #endif  // OS_ANDROID
 
@@ -50,7 +50,7 @@ base::FilePath GetScaledResourcesPakFilePath(ui::ScaleFactor scale_factor) {
   const char* pak_file =
       (scale_factor == ui::SCALE_FACTOR_100P) ? "brave_100_percent.pak"
                                               : "brave_200_percent.pak";
-#if defined(OS_MACOSX)
+#if defined(OS_MAC)
   base::ScopedCFTypeRef<CFStringRef> pak_file_mac(
       base::SysUTF8ToCFStringRef(pak_file));
   return base::mac::PathForFrameworkBundleResource(pak_file_mac);
@@ -59,7 +59,7 @@ base::FilePath GetScaledResourcesPakFilePath(ui::ScaleFactor scale_factor) {
   base::PathService::Get(base::DIR_MODULE, &pak_path);
   pak_path = pak_path.AppendASCII(pak_file);
   return pak_path;
-#endif  // OS_MACOSX
+#endif  // OS_MAC
 }
 #endif  // !defined(OS_ANDROID)
 
@@ -94,17 +94,17 @@ bool SubprocessNeedsResourceBundle() {
 #else
   std::string process_type = cmd.GetSwitchValueASCII(switches::kProcessType);
   return
-#if defined(OS_POSIX) && !defined(OS_MACOSX)
+#if defined(OS_POSIX) && !defined(OS_MAC)
       // The zygote process opens the resources for the renderers.
       process_type == service_manager::switches::kZygoteProcess ||
-#endif  // defined(OS_POSIX) && !defined(OS_MACOSX)
-#if defined(OS_MACOSX)
+#endif  // defined(OS_POSIX) && !defined(OS_MAC)
+#if defined(OS_MAC)
       // Mac needs them too for scrollbar related images and for sandbox
       // profiles.
       process_type == switches::kPpapiPluginProcess ||
       process_type == switches::kPpapiBrokerProcess ||
       process_type == switches::kGpuProcess ||
-#endif  // defined(OS_MACOSX)
+#endif  // defined(OS_MAC)
       process_type == switches::kRendererProcess ||
       process_type == switches::kUtilityProcess;
 #endif  // defined(OS_IOS)

@@ -1,8 +1,8 @@
 diff --git a/build/config/BUILDCONFIG.gn b/build/config/BUILDCONFIG.gn
-index 4cc6bfc45e647e656934b331793faef1ba0f4b14..656506b35c04f20e44f843af178b1edbb99c5e85 100644
+index e011502180b5a94bd32bcebb301c91314d12653e..4e8645e62e9f415217d9fa68d8a5a427863703bd 100644
 --- a/build/config/BUILDCONFIG.gn
 +++ b/build/config/BUILDCONFIG.gn
-@@ -419,6 +419,7 @@ set_sources_assignment_filter(sources_assignment_filter)
+@@ -420,6 +420,7 @@ set_sources_assignment_filter(sources_assignment_filter)
  
  # Holds all configs used for running the compiler.
  default_compiler_configs = [

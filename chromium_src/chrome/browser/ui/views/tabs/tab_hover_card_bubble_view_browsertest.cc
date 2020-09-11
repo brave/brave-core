@@ -63,8 +63,8 @@ class TabHoverCardBubbleViewBrowserTest : public DialogBrowserTest {
     return tabstrip->hover_card_;
   }
 
-  static Widget* GetHoverCardWidget(const TabHoverCardBubbleView* hover_card) {
-    return hover_card->widget_;
+  static Widget* GetHoverCardWidget(TabHoverCardBubbleView* hover_card) {
+    return hover_card->GetWidget();
   }
 
   const base::string16& GetHoverCardTitle(

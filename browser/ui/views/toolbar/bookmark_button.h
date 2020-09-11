@@ -20,10 +20,6 @@ class BookmarkButton : public ToolbarButton {
     void SetToggled(bool on);
     void UpdateImage();
 
-    // Invoked when a bubble for this icon is created. The Button
-    // changes highlights based on this widget's visibility.
-    void OnBubbleWidgetCreated(views::Widget* bubble_widget);
-
     // ToolbarButton:
     base::string16 GetTooltipText(const gfx::Point& p) const override;
     const char* GetClassName() const override;
@@ -31,29 +27,6 @@ class BookmarkButton : public ToolbarButton {
 
  private:
     bool active_ = false;
-    // Highlights the ink drop for the icon, used when the corresponding widget
-    // is visible.
-    void SetHighlighted(bool bubble_visible);
-
-    class WidgetObserver : public views::WidgetObserver {
-     public:
-        explicit WidgetObserver(BookmarkButton* parent);
-        ~WidgetObserver() override;
-
-        void SetWidget(views::Widget* widget);
-
-     private:
-        // views::WidgetObserver:
-        void OnWidgetDestroying(views::Widget* widget) override;
-        void OnWidgetVisibilityChanged(views::Widget* widget,
-                                      bool visible) override;
-
-        BookmarkButton* const parent_;
-        ScopedObserver<views::Widget, views::WidgetObserver> scoped_observer_;
-        DISALLOW_COPY_AND_ASSIGN(WidgetObserver);
-    };
-    WidgetObserver widget_observer_;
-
     DISALLOW_COPY_AND_ASSIGN(BookmarkButton);
 };
 

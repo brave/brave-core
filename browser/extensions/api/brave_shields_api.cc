@@ -12,7 +12,6 @@
 #include "brave/browser/extensions/api/brave_action_api.h"
 #include "brave/browser/webcompat_reporter/webcompat_reporter_dialog.h"
 #include "brave/common/extensions/api/brave_shields.h"
-#include "brave/common/extensions/extension_constants.h"
 #include "brave/components/brave_shields/browser/ad_block_base_service.h"
 #include "brave/components/brave_shields/browser/ad_block_custom_filters_service.h"
 #include "brave/components/brave_shields/browser/ad_block_regional_service_manager.h"
@@ -30,6 +29,7 @@
 #include "chrome/browser/profiles/profile.h"
 #include "content/public/browser/web_contents.h"
 #include "extensions/browser/extension_util.h"
+#include "extensions/common/constants.h"
 
 using brave_shields::BraveShieldsWebContentsObserver;
 using brave_shields::ControlType;

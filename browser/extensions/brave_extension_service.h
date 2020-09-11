@@ -18,7 +18,7 @@ class BraveExtensionService : public ExtensionService {
                         const base::CommandLine* command_line,
                         const base::FilePath& install_directory,
                         ExtensionPrefs* extension_prefs,
-                        Blacklist* blacklist,
+                        Blocklist* blocklist,
                         bool autoupdate_enabled,
                         bool extensions_enabled,
                         base::OneShotEvent* ready);

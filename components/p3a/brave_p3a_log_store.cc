@@ -185,7 +185,7 @@ void BraveP3ALogStore::DiscardStagedLog() {
 
 void BraveP3ALogStore::MarkStagedLogAsSent() {}
 
-void BraveP3ALogStore::PersistUnsentLogs() const {
+void BraveP3ALogStore::TrimAndPersistUnsentLogs() {
   NOTREACHED();
 }
 

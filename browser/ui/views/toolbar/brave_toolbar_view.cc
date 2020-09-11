@@ -136,8 +136,6 @@ void BraveToolbarView::Init() {
   bookmark_ = new BookmarkButton(this);
   bookmark_->set_triggerable_event_flags(ui::EF_LEFT_MOUSE_BUTTON |
                                          ui::EF_MIDDLE_MOUSE_BUTTON);
-  bookmark_->Init();
-
   DCHECK(location_bar_);
   AddChildViewAt(bookmark_, GetIndexOf(location_bar_));
   bookmark_->UpdateImage();
@@ -148,7 +146,6 @@ void BraveToolbarView::Init() {
     speedreader_ = new SpeedreaderButton(this, profile->GetPrefs());
     speedreader_->set_triggerable_event_flags(ui::EF_LEFT_MOUSE_BUTTON |
                                               ui::EF_MIDDLE_MOUSE_BUTTON);
-    speedreader_->Init();
   }
 
   if (speedreader_) {
@@ -237,12 +234,9 @@ void BraveToolbarView::ShowBookmarkBubble(
 
   std::unique_ptr<BubbleSyncPromoDelegate> delegate;
   delegate.reset(new BookmarkBubbleSignInDelegate(browser()));
-  views::Widget* bubble_widget = BookmarkBubbleView::ShowBubble(
-      anchor_view, bookmark_, observer, std::move(delegate),
-      browser_->profile(), url, already_bookmarked);
-
-  if (bubble_widget && bookmark_)
-    bookmark_->OnBubbleWidgetCreated(bubble_widget);
+  BookmarkBubbleView::ShowBubble(anchor_view, bookmark_, observer,
+                                 std::move(delegate), browser_->profile(), url,
+                                 already_bookmarked);
 }
 
 void BraveToolbarView::Layout() {

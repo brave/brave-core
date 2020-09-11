@@ -5,6 +5,8 @@
 
 #include "brave/browser/ui/views/infobars/brave_wayback_machine_infobar_button_container.h"
 
+#include <memory>
+
 #include "brave/browser/ui/views/infobars/brave_wayback_machine_infobar_throbber.h"
 #include "brave/grit/brave_generated_resources.h"
 #include "chrome/browser/ui/views/chrome_layout_provider.h"
@@ -19,7 +21,7 @@ constexpr int kInsetOffsetsForThrobber = kThrobberDiameter;
 
 BraveWaybackMachineInfoBarButtonContainer::
 BraveWaybackMachineInfoBarButtonContainer(views::ButtonListener* listener) {
-  auto button = views::MdTextButton::Create(
+  auto button = std::make_unique<views::MdTextButton>(
       listener,
       l10n_util::GetStringUTF16(IDS_BRAVE_WAYBACK_MACHINE_CHECK_BUTTON_TEXT));
   button_ = button.get();

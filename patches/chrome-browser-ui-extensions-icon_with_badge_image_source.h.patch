@@ -1,47 +1,12 @@
 diff --git a/chrome/browser/ui/extensions/icon_with_badge_image_source.h b/chrome/browser/ui/extensions/icon_with_badge_image_source.h
-index e82f79440e4bc4c3d19daae41688beab01be6831..a417fb79d0707a689ec8f0e9cb0a379100d32bd2 100644
+index e82f79440e4bc4c3d19daae41688beab01be6831..dca40a6e26b88f7319a4a68d6fef610e4a7772f4 100644
 --- a/chrome/browser/ui/extensions/icon_with_badge_image_source.h
 +++ b/chrome/browser/ui/extensions/icon_with_badge_image_source.h
-@@ -13,6 +13,7 @@
- #include "ui/gfx/image/canvas_image_source.h"
- #include "ui/gfx/image/image.h"
- 
-+class BraveActionIconWithBadgeImageSource;
- namespace gfx {
- class RenderText;
- class Size;
-@@ -21,6 +22,7 @@ class Size;
- // CanvasImageSource for creating extension icon with a badge.
- class IconWithBadgeImageSource : public gfx::CanvasImageSource {
-  public:
-+  friend class BraveActionIconWithBadgeImageSource;
-   // The data representing a badge to be painted over the base image.
-   struct Badge {
-     Badge(const std::string& text,
-@@ -57,11 +59,16 @@ class IconWithBadgeImageSource : public gfx::CanvasImageSource {
+@@ -55,6 +55,7 @@ class IconWithBadgeImageSource : public gfx::CanvasImageSource {
+   bool paint_blocked_actions_decoration() const {
+     return paint_blocked_actions_decoration_;
    }
++  BRAVE_ICON_WITH_BADGE_IMAGE_SOURCE_H_
  
   private:
-+  // Custom values for Brave Action Icons
-+  virtual base::Optional<int> GetCustomGraphicSize();
-+  virtual base::Optional<int> GetCustomGraphicXOffset();
-+  virtual base::Optional<int> GetCustomGraphicYOffset();
-+
    // gfx::CanvasImageSource:
-   void Draw(gfx::Canvas* canvas) override;
- 
-   // Paints |badge_|, if any, on |canvas|.
--  void PaintBadge(gfx::Canvas* canvas);
-+  virtual void PaintBadge(gfx::Canvas* canvas);
- 
-   // Paints a decoration over the base icon to indicate that the action wants to
-   // run.
-@@ -76,7 +83,7 @@ class IconWithBadgeImageSource : public gfx::CanvasImageSource {
-   // all cases, our badges and decorations should be positions at the corners of
-   // the area where the icon exists (ignoring all the paddings).
-   // https://crbug.com/831946.
--  gfx::Rect GetIconAreaRect() const;
-+  virtual gfx::Rect GetIconAreaRect() const;
- 
-   // The base icon to draw.
-   gfx::Image icon_;

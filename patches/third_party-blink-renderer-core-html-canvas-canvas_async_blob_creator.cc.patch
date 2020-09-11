@@ -1,12 +1,12 @@
 diff --git a/third_party/blink/renderer/core/html/canvas/canvas_async_blob_creator.cc b/third_party/blink/renderer/core/html/canvas/canvas_async_blob_creator.cc
-index 44dc498b064ff76d10dfd0bc524dc58546edc60b..6a65652dab5d2843f0b73aea2a55ad8ca6fb6640 100644
+index 14a78dbd7248fd9a8033d44a8cf604fa190faa16..ec5c30e8009b4f8f22167aa69f0c554aff62ed11 100644
 --- a/third_party/blink/renderer/core/html/canvas/canvas_async_blob_creator.cc
 +++ b/third_party/blink/renderer/core/html/canvas/canvas_async_blob_creator.cc
-@@ -189,6 +189,7 @@ CanvasAsyncBlobCreator::CanvasAsyncBlobCreator(
+@@ -190,6 +190,7 @@ CanvasAsyncBlobCreator::CanvasAsyncBlobCreator(
    // We use pixmap to access the image pixels. Make the image unaccelerated if
    // necessary.
    image_ = image_->MakeUnaccelerated();
 +  BRAVE_CANVAS_ASYNC_BLOB_CREATOR
  
-   sk_sp<SkImage> skia_image = image_->PaintImageForCurrentFrame().GetSkImage();
-   DCHECK(skia_image);
+   sk_sp<SkImage> skia_image =
+       image_->PaintImageForCurrentFrame().GetSwSkImage();

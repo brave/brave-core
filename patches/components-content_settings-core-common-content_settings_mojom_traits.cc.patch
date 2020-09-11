@@ -1,10 +1,10 @@
 diff --git a/components/content_settings/core/common/content_settings_mojom_traits.cc b/components/content_settings/core/common/content_settings_mojom_traits.cc
-index 3cdb9450d8329a9955f7c3f8359075f604a91224..f4d355b1c7cd9f4d2d72a69a3c7991e5c23c9929 100644
+index dae4b74aec71cfc96f35912880382fce76348795..f46d190a6f23cf6c70a42c0ad6f6650c41b95792 100644
 --- a/components/content_settings/core/common/content_settings_mojom_traits.cc
 +++ b/components/content_settings/core/common/content_settings_mojom_traits.cc
-@@ -101,6 +101,7 @@ bool StructTraits<content_settings::mojom::RendererContentSettingRulesDataView,
+@@ -100,6 +100,7 @@ bool StructTraits<content_settings::mojom::RendererContentSettingRulesDataView,
+   return data.ReadImageRules(&out->image_rules) &&
           data.ReadScriptRules(&out->script_rules) &&
-          data.ReadClientHintsRules(&out->client_hints_rules) &&
           data.ReadPopupRedirectRules(&out->popup_redirect_rules) &&
 +         BRAVE_READ_RENDERER_CONTENT_SETTING_RULES_DATA_VIEW
           data.ReadMixedContentRules(&out->mixed_content_rules);

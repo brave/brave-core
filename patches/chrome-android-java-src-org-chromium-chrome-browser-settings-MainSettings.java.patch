@@ -1,8 +1,8 @@
 diff --git a/chrome/android/java/src/org/chromium/chrome/browser/settings/MainSettings.java b/chrome/android/java/src/org/chromium/chrome/browser/settings/MainSettings.java
-index 6deca270f6902c677fcf39766eb821617a241fc0..21c707f0411af5ae48dcff2bd55cda00eaa98ee8 100644
+index 49bcf7e55674ba54271a76b8d3b32e731860b36e..5d7cd965c87e1a68dce2ef160153db1ae312090a 100644
 --- a/chrome/android/java/src/org/chromium/chrome/browser/settings/MainSettings.java
 +++ b/chrome/android/java/src/org/chromium/chrome/browser/settings/MainSettings.java
-@@ -44,7 +44,7 @@ import java.util.Map;
+@@ -50,7 +50,7 @@ import java.util.Map;
  /**
   * The main settings screen, shown when the user first opens Settings.
   */
@@ -10,4 +10,4 @@ index 6deca270f6902c677fcf39766eb821617a241fc0..21c707f0411af5ae48dcff2bd55cda00
 +public class MainSettings extends BraveMainPreferencesBase
          implements TemplateUrlService.LoadListener, ProfileSyncService.SyncStateChangedListener,
                     SigninManager.SignInStateObserver {
-     public static final String PREF_ACCOUNT_SECTION = "account_section";
+     public static final String PREF_SYNC_PROMO = "sync_promo";

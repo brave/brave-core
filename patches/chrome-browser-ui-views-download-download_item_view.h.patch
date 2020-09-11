@@ -1,12 +1,12 @@
 diff --git a/chrome/browser/ui/views/download/download_item_view.h b/chrome/browser/ui/views/download/download_item_view.h
-index 0bfc2e08d39bceb436b23abfe17319809f9f742a..38c6aea6e70fd9b6c00dac6e365418a2311c35a4 100644
+index 108df89672d65d32c8f8d840323b19c81a93ab75..6dde04d48647ab715ba1209d49c7dc0baf906e0b 100644
 --- a/chrome/browser/ui/views/download/download_item_view.h
 +++ b/chrome/browser/ui/views/download/download_item_view.h
-@@ -107,6 +107,7 @@ class DownloadItemView : public views::View,
-   gfx::Size CalculatePreferredSize() const override;
+@@ -116,6 +116,7 @@ class DownloadItemView : public views::View,
+   void OnPaintBackground(gfx::Canvas* canvas) override;
    void OnPaint(gfx::Canvas* canvas) override;
    void OnThemeChanged() override;
 +  BRAVE_DOWNLOAD_DOWNLOAD_ITEM_VIEW_H_
  
   private:
-   enum State { NORMAL = 0, HOT, PUSHED };
+   // Returns the mode that best reflects the current model state.

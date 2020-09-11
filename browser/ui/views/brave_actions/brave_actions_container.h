@@ -96,7 +96,7 @@ class BraveActionsContainer : public views::View,
   // incognito contexts, so |browser_context| may not equal
   // |browser_context_|.)
   void OnExtensionActionUpdated(
-      ExtensionAction* extension_action,
+      extensions::ExtensionAction* extension_action,
       content::WebContents* web_contents,
       content::BrowserContext* browser_context) override;
 

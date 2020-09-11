@@ -8,11 +8,11 @@
 #undef IsComponentExtensionWhitelisted
 
 #include "base/stl_util.h"
-#include "brave/common/extensions/extension_constants.h"
 #include "brave/components/brave_extension/grit/brave_extension.h"
-#include "components/grit/brave_components_resources.h"
 #include "brave/components/brave_rewards/resources/extension/grit/brave_rewards_extension_resources.h"
 #include "brave/components/brave_webtorrent/grit/brave_webtorrent_resources.h"
+#include "components/grit/brave_components_resources.h"
+#include "extensions/common/constants.h"
 
 namespace extensions {
 

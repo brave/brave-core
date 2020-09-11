@@ -29,6 +29,7 @@ java_binary("java_bytecode_rewriter") {
   main_class = "org.brave.bytecode.ByteCodeProcessor"
   deps = [
     "//third_party/android_deps:org_ow2_asm_asm_java",
+    "//third_party/android_deps:org_ow2_asm_asm_tree_java",
     "//third_party/android_deps:org_ow2_asm_asm_util_java",
   ]
   wrapper_script_name = "helper/java_bytecode_rewriter"

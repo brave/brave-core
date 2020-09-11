@@ -16,7 +16,6 @@ source_set("browser") {
 
     deps = [
         "//base",
-        "//brave/common:common",
         "//brave/common:pref_names",
         "//components/keyed_service/content",
         "//components/keyed_service/core",
@@ -24,5 +23,6 @@ source_set("browser") {
         "//components/prefs",
         "//components/user_prefs",
         "//extensions/browser",
+        "//extensions/common:common_constants",
     ]
 }

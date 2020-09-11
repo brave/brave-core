@@ -66,7 +66,7 @@ class FirstRunMasterPrefsBrowserTestBase : public InProcessBrowserTest {
 
   void SetUpCommandLine(base::CommandLine* command_line) override;
 
-#if defined(OS_MACOSX) || defined(OS_LINUX)
+#if defined(OS_MAC) || defined(OS_LINUX)
   void SetUpInProcessBrowserTestFixture() override;
 #endif
 

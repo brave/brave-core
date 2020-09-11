@@ -1,13 +1,13 @@
 diff --git a/third_party/widevine/cdm/widevine.gni b/third_party/widevine/cdm/widevine.gni
-index 6c828f73590a88b5ba85e48ca856286c7103d06d..4fcd0f122f9f210cff12ec999fed2d3ae55d60e6 100644
+index 769489b6b1570d3f6d566efdfa6297b7a01766f3..bae72e4ee9d957fdf7edb8a40da6ce41600f9e7e 100644
 --- a/third_party/widevine/cdm/widevine.gni
 +++ b/third_party/widevine/cdm/widevine.gni
-@@ -42,6 +42,8 @@ enable_widevine_cdm_component =
+@@ -41,6 +41,8 @@ enable_widevine_cdm_component =
  
  # Widevine CDM is bundled as part of Google Chrome builds.
  bundle_widevine_cdm = enable_library_widevine_cdm && is_chrome_branded
 +bundle_widevine_cdm = enable_library_widevine_cdm && is_desktop_linux
 +enable_widevine_cdm_component = enable_library_widevine_cdm && (is_win || is_mac)
  
- enable_widevine_cdm_host_verification =
-     enable_library_widevine_cdm && enable_cdm_host_verification
+ # TODO(crbug.com/1111381): Remove this when MacOS ARM64 CDM is checked in.
+ if (is_mac && target_cpu == "arm64") {

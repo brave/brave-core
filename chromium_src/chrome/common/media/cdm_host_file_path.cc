@@ -14,7 +14,7 @@
 #include "build/build_config.h"
 #include "chrome/common/chrome_version.h"
 
-#if defined(OS_MACOSX)
+#if defined(OS_MAC)
 #include "base/mac/bundle_locations.h"
 #include "chrome/common/chrome_constants.h"
 #endif

@@ -36,7 +36,7 @@ class BraveImportDataHandler : public ImportDataHandler,
   BraveImportDataHandler& operator=(const BraveImportDataHandler&) = delete;
 
  private:
-#if defined(OS_MACOSX)
+#if defined(OS_MAC)
   // ImportDataHandler overrides:
   void StartImport(const importer::SourceProfile& source_profile,
                    uint16_t imported_items) override;

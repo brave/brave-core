@@ -1,5 +1,5 @@
 diff --git a/chrome/android/java/res/layout/toolbar_tablet.xml b/chrome/android/java/res/layout/toolbar_tablet.xml
-index 5b19fd620a476472de82e3c37b0b226d10225e42..43c8507862bd05369da1ad14889c82d0e4e719fa 100644
+index b754783207893443e820105ad13a3fb962b89abe..f257b6bf4ed1f2109f67f02e13c721fc90d86b62 100644
 --- a/chrome/android/java/res/layout/toolbar_tablet.xml
 +++ b/chrome/android/java/res/layout/toolbar_tablet.xml
 @@ -58,7 +58,7 @@
@@ -17,5 +17,5 @@ index 5b19fd620a476472de82e3c37b0b226d10225e42..43c8507862bd05369da1ad14889c82d0
              android:visibility="gone" />
 +        <include layout="@layout/brave_toolbar" android:layout_height="wrap_content" android:layout_width="wrap_content" />
  
-         <org.chromium.chrome.browser.toolbar.MenuButton
+         <org.chromium.chrome.browser.toolbar.menu_button.MenuButton
              android:layout_width="wrap_content"

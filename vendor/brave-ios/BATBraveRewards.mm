@@ -6,7 +6,7 @@
 #import "DataController.h"
 #import "RewardsLogging.h"
 
-#include "base/message_loop/message_loop_current.h"
+#include "base/task/current_thread.h"
 #include "base/task/single_thread_task_executor.h"
 
 base::SingleThreadTaskExecutor* g_task_executor = nullptr;
@@ -91,7 +91,7 @@ base::SingleThreadTaskExecutor* g_task_executor = nullptr;
                              adsClass:(nullable Class)adsClass
 {
   if ((self = [super init])) {
-    if (!base::MessageLoopCurrent::Get()) {
+    if (!base::CurrentThread::Get()) {
       g_task_executor = new base::SingleThreadTaskExecutor(base::MessagePumpType::UI);
     }
 

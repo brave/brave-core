@@ -1,0 +1,13 @@
+diff --git a/third_party/blink/renderer/core/dom/document.cc b/third_party/blink/renderer/core/dom/document.cc
+index 74856aabf5aff72be70d4cd398fa8200dec49af4..48d763164d202bce9cef9ac1d89d0183644e3f84 100644
+--- a/third_party/blink/renderer/core/dom/document.cc
++++ b/third_party/blink/renderer/core/dom/document.cc
+@@ -33,7 +33,7 @@
+ // instead of including more headers. If that is infeasible, adjust the limit.
+ // For more info, see
+ // https://chromium.googlesource.com/chromium/src/+/HEAD/docs/wmax_tokens.md
+-#pragma clang max_tokens_here 900000
++#pragma clang max_tokens_here 2000000
+ 
+ #include <memory>
+ #include <utility>
