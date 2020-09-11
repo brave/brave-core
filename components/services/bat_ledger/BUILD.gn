@@ -14,12 +14,12 @@ static_library("lib") {
   ]
 
   public_deps = [
+    "//brave/vendor/bat-native-ledger",
     "public/interfaces",
   ]
 
   deps = [
     "//brave/base:base",
-    "//brave/vendor/bat-native-ledger",
     "//mojo/public/cpp/system",
   ]
 }
