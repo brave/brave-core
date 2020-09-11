@@ -127,7 +127,6 @@ class SettingsPage extends React.Component<Props, State> {
   startRewards () {
     if (this.props.rewardsData.firstLoad) {
       this.actions.getAdsData()
-      this.actions.getWalletPassphrase()
     } else {
       // normal load
       this.refreshActions()

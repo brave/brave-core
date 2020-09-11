@@ -18,7 +18,7 @@ extern const char kBackupSucceeded[];
 extern const char kUserHasFunded[];
 extern const char kAddFundsNotification[];
 extern const char kNotificationStartupDelay[];
-extern const char kExternalWallets[];
+extern const char kExternalWallets[];  // DEPRECATED
 extern const char kBadgeText[];
 extern const char kUseRewardsStagingServer[];
 
@@ -39,8 +39,8 @@ extern const char kAutoContributeEnabled[];
 extern const char kAutoContributeAmount[];
 extern const char kNextReconcileStamp[];
 extern const char kCreationStamp[];
-extern const char kRecoverySeed[];
-extern const char kPaymentId[];
+extern const char kRecoverySeed[];  // DEPRECATED
+extern const char kPaymentId[];   // DEPRECATED
 extern const char kInlineTipRedditEnabled[];
 extern const char kInlineTipTwitterEnabled[];
 extern const char kInlineTipGithubEnabled[];
@@ -51,6 +51,8 @@ extern const char kParametersTipChoices[];
 extern const char kParametersMonthlyTipChoices[];
 extern const char kFetchOldBalance[];
 extern const char kEmptyBalanceChecked[];
+extern const char kWalletBrave[];
+extern const char kWalletUphold[];
 
 }  // namespace prefs
 }  // namespace brave_rewards

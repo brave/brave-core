@@ -686,22 +686,20 @@ bool BraveRewardsNativeWorker::IsAnonWallet(JNIEnv* env,
   return false;
 }
 
-void BraveRewardsNativeWorker::GetExternalWallet(JNIEnv* env,
-    const base::android::JavaParamRef<jobject>& obj,
-    const base::android::JavaParamRef<jstring>& wallet_type) {
+void BraveRewardsNativeWorker::GetExternalWallet(
+    JNIEnv* env,
+    const base::android::JavaParamRef<jobject>& obj) {
   if (brave_rewards_service_) {
-    std::string str_wallet_type =
-        base::android::ConvertJavaStringToUTF8(env, wallet_type);
     auto callback = base::Bind(
         &BraveRewardsNativeWorker::OnGetExternalWallet,
         base::Unretained(this));
-    brave_rewards_service_->GetExternalWallet(str_wallet_type, callback);
+    brave_rewards_service_->GetUpholdWallet(callback);
   }
 }
 
 void BraveRewardsNativeWorker::OnGetExternalWallet(
     const ledger::type::Result result,
-    ledger::type::ExternalWalletPtr wallet) {
+    ledger::type::UpholdWalletPtr wallet) {
   std::string json_wallet;
   base::Value dict(base::Value::Type::DICTIONARY);
   dict.SetStringKey("token", wallet->token);
@@ -709,7 +707,6 @@ void BraveRewardsNativeWorker::OnGetExternalWallet(
 
   // enum class WalletStatus : int32_t
   dict.SetIntKey("status", static_cast<int32_t>(wallet->status));
-  dict.SetStringKey("type", wallet->type);
   dict.SetStringKey("verify_url", wallet->verify_url);
   dict.SetStringKey("add_url", wallet->add_url);
   dict.SetStringKey("withdraw_url", wallet->withdraw_url);

@@ -6,9 +6,13 @@
 #include <utility>
 
 #include "base/base64.h"
+#include "base/json/json_reader.h"
+#include "base/json/json_writer.h"
 #include "base/strings/string_number_conversions.h"
 #include "base/strings/stringprintf.h"
 #include "bat/ledger/global_constants.h"
+#include "bat/ledger/internal/ledger_impl.h"
+#include "bat/ledger/internal/state/state_keys.h"
 #include "bat/ledger/internal/uphold/uphold_util.h"
 #include "crypto/random.h"
 
@@ -101,18 +105,126 @@ std::string GetSecondStepVerify() {
       id.c_str());
 }
 
-type::ExternalWalletPtr GetWallet(
-    std::map<std::string, type::ExternalWalletPtr> wallets) {
-  for (auto& wallet : wallets) {
-    if (wallet.first == constant::kWalletUphold) {
-      return std::move(wallet.second);
+type::UpholdWalletPtr GetWallet(LedgerImpl* ledger) {
+  DCHECK(ledger);
+  const std::string wallet_string = ledger->ledger_client()->GetStringState(
+      state::kWalletUphold);
+
+  if (wallet_string.empty()) {
+    return nullptr;
+  }
+
+  base::Optional<base::Value> value = base::JSONReader::Read(wallet_string);
+  if (!value || !value->is_dict()) {
+    BLOG(0, "Parsing of uphold wallet failed");
+    return nullptr;
+  }
+
+  base::DictionaryValue* dictionary = nullptr;
+  if (!value->GetAsDictionary(&dictionary)) {
+    BLOG(0, "Parsing of uphold wallet failed");
+    return nullptr;
+  }
+
+  auto wallet = ledger::type::UpholdWallet::New();
+
+  auto* token = dictionary->FindStringKey("token");
+  if (token) {
+    wallet->token = *token;
+  }
+
+  auto* address = dictionary->FindStringKey("address");
+  if (address) {
+    wallet->address = *address;
+  }
+
+  auto* one_time_string = dictionary->FindStringKey("one_time_string");
+  if (one_time_string) {
+    wallet->one_time_string = *one_time_string;
+  }
+
+  auto status = dictionary->FindIntKey("status");
+  if (status) {
+    wallet->status = static_cast<ledger::type::WalletStatus>(*status);
+  }
+
+  auto* user_name = dictionary->FindStringKey("user_name");
+  if (user_name) {
+    wallet->user_name = *user_name;
+  }
+
+  auto* verify_url = dictionary->FindStringKey("verify_url");
+  if (verify_url) {
+    wallet->verify_url = *verify_url;
+  }
+
+  auto* add_url = dictionary->FindStringKey("add_url");
+  if (add_url) {
+    wallet->add_url = *add_url;
+  }
+
+  auto* withdraw_url = dictionary->FindStringKey("withdraw_url");
+  if (withdraw_url) {
+    wallet->withdraw_url = *withdraw_url;
+  }
+
+  auto* account_url = dictionary->FindStringKey("account_url");
+  if (account_url) {
+    wallet->account_url = *account_url;
+  }
+
+  auto* login_url = dictionary->FindStringKey("login_url");
+  if (login_url) {
+    wallet->login_url = *login_url;
+  }
+
+  auto* fees = dictionary->FindDictKey("fees");
+  if (fees) {
+    base::DictionaryValue* fees_dictionary;
+    if (fees->GetAsDictionary(&fees_dictionary)) {
+      for (base::DictionaryValue::Iterator it(*fees_dictionary);
+          !it.IsAtEnd();
+          it.Advance()) {
+        if (!it.value().is_double()) {
+          continue;
+        }
+
+        wallet->fees.insert(std::make_pair(it.key(), it.value().GetDouble()));
+      }
     }
   }
 
-  return nullptr;
+  return wallet;
 }
 
+void SetWallet(LedgerImpl* ledger, type::UpholdWalletPtr wallet) {
+  DCHECK(ledger);
+  if (!wallet) {
+    return;
+  }
 
+  base::Value fees(base::Value::Type::DICTIONARY);
+  for (const auto& fee : wallet->fees) {
+    fees.SetDoubleKey(fee.first, fee.second);
+  }
+
+  base::Value new_wallet(base::Value::Type::DICTIONARY);
+  new_wallet.SetStringKey("token", wallet->token);
+  new_wallet.SetStringKey("address", wallet->address);
+  new_wallet.SetIntKey("status", static_cast<int>(wallet->status));
+  new_wallet.SetStringKey("one_time_string", wallet->one_time_string);
+  new_wallet.SetStringKey("user_name", wallet->user_name);
+  new_wallet.SetStringKey("verify_url", wallet->verify_url);
+  new_wallet.SetStringKey("add_url", wallet->add_url);
+  new_wallet.SetStringKey("withdraw_url", wallet->withdraw_url);
+  new_wallet.SetStringKey("account_url", wallet->account_url);
+  new_wallet.SetStringKey("login_url", wallet->login_url);
+  new_wallet.SetKey("fees", std::move(fees));
+
+  std::string json;
+  base::JSONWriter::Write(new_wallet, &json);
+  ledger->ledger_client()->SetStringState(state::kWalletUphold, json);
+}
 
 std::string GenerateRandomString(bool testing) {
   if (testing) {
@@ -133,7 +245,7 @@ std::string GetAccountUrl() {
       url.c_str());
 }
 
-type::ExternalWalletPtr GenerateLinks(type::ExternalWalletPtr wallet) {
+type::UpholdWalletPtr GenerateLinks(type::UpholdWalletPtr wallet) {
   if (!wallet) {
     return nullptr;
   }
@@ -170,7 +282,7 @@ type::ExternalWalletPtr GenerateLinks(type::ExternalWalletPtr wallet) {
   return wallet;
 }
 
-std::string GenerateVerifyLink(type::ExternalWalletPtr wallet) {
+std::string GenerateVerifyLink(type::UpholdWalletPtr wallet) {
   std::string url;
   if (!wallet) {
     return url;
@@ -194,6 +306,25 @@ std::string GenerateVerifyLink(type::ExternalWalletPtr wallet) {
   }
 
   return url;
+}
+
+type::UpholdWalletPtr ResetWallet(type::UpholdWalletPtr wallet) {
+  if (!wallet) {
+    return nullptr;
+  }
+
+  const auto status = wallet->status;
+  wallet = type::UpholdWallet::New();
+
+  if (status != type::WalletStatus::NOT_CONNECTED) {
+    if (status == type::WalletStatus::VERIFIED) {
+      wallet->status = type::WalletStatus::DISCONNECTED_VERIFIED;
+    } else {
+      wallet->status = type::WalletStatus::DISCONNECTED_NOT_VERIFIED;
+    }
+  }
+
+  return wallet;
 }
 
 }  // namespace uphold

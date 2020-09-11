@@ -64,10 +64,10 @@ class RewardsTipDOMHandler : public WebUIMessageHandler,
   void OnGetRecurringTips(ledger::type::PublisherInfoList list);
   void TweetTip(const base::ListValue *args);
   void OnlyAnonWallet(const base::ListValue* args);
-  void GetExternalWallet(const base::ListValue* args);
-  void OnExternalWallet(
+  void GetUpholdWallet(const base::ListValue* args);
+  void OnGetUpholdWallet(
       const ledger::type::Result result,
-      ledger::type::ExternalWalletPtr wallet);
+      ledger::type::UpholdWalletPtr wallet);
 
   void OnPublisherBanner(ledger::type::PublisherBannerPtr banner);
 
@@ -148,7 +148,7 @@ void RewardsTipDOMHandler::RegisterMessages() {
   web_ui()->RegisterMessageCallback(
       "brave_rewards_tip.getExternalWallet",
       base::BindRepeating(
-          &RewardsTipDOMHandler::GetExternalWallet,
+          &RewardsTipDOMHandler::GetUpholdWallet,
           base::Unretained(this)));
   web_ui()->RegisterMessageCallback(
       "brave_rewards_tip.onlyAnonWallet",
@@ -429,23 +429,21 @@ void RewardsTipDOMHandler::FetchBalance(const base::ListValue* args) {
   }
 }
 
-void RewardsTipDOMHandler::GetExternalWallet(
+void RewardsTipDOMHandler::GetUpholdWallet(
     const base::ListValue* args) {
   if (!rewards_service_) {
     return;
   }
 
-  const std::string type = args->GetList()[0].GetString();
-
-  rewards_service_->GetExternalWallet(type,
+  rewards_service_->GetUpholdWallet(
      base::BindOnce(
-         &RewardsTipDOMHandler::OnExternalWallet,
+         &RewardsTipDOMHandler::OnGetUpholdWallet,
          weak_factory_.GetWeakPtr()));
 }
 
-void RewardsTipDOMHandler::OnExternalWallet(
+void RewardsTipDOMHandler::OnGetUpholdWallet(
     const ledger::type::Result result,
-    ledger::type::ExternalWalletPtr wallet) {
+    ledger::type::UpholdWalletPtr wallet) {
   if (!web_ui()->CanCallJavascript()) {
     return;
   }
@@ -455,7 +453,6 @@ void RewardsTipDOMHandler::OnExternalWallet(
   if (wallet) {
     data.SetString("token", wallet->token);
     data.SetString("address", wallet->address);
-    data.SetString("type", wallet->type);
     data.SetString("verifyUrl", wallet->verify_url);
     data.SetString("addUrl", wallet->add_url);
     data.SetString("withdrawUrl", wallet->withdraw_url);

@@ -70,14 +70,6 @@ class State {
 
   void SetCreationStamp(const uint64_t stamp);
 
-  std::vector<uint8_t> GetRecoverySeed();
-
-  void SetRecoverySeed(const std::vector<uint8_t>& seed);
-
-  std::string GetPaymentId();
-
-  void SetPaymentId(const std::string& id);
-
   bool GetInlineTippingPlatformEnabled(
       const type::InlineTipsPlatforms platform);
 

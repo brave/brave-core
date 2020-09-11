@@ -85,7 +85,7 @@ State::State(LedgerImpl* ledger) :
 State::~State() = default;
 
 void State::Initialize(ledger::ResultCallback callback) {
-  migration_->Migrate(callback);
+  migration_->Start(callback);
 }
 
 void State::SetVersion(const int version) {
@@ -227,40 +227,6 @@ uint64_t State::GetCreationStamp() {
 void State::SetCreationStamp(const uint64_t stamp) {
   ledger_->database()->SaveEventLog(kCreationStamp, std::to_string(stamp));
   ledger_->ledger_client()->SetUint64State(kCreationStamp, stamp);
-}
-
-std::vector<uint8_t> State::GetRecoverySeed() {
-  const std::string& seed =
-      ledger_->ledger_client()->GetStringState(kRecoverySeed);
-  std::string decoded_seed;
-  if (!base::Base64Decode(seed, &decoded_seed)) {
-    BLOG(0, "Problem decoding recovery seed");
-    NOTREACHED();
-    return {};
-  }
-
-  std::vector<uint8_t> vector_seed;
-  vector_seed.assign(decoded_seed.begin(), decoded_seed.end());
-  return vector_seed;
-}
-
-void State::SetRecoverySeed(const std::vector<uint8_t>& seed) {
-  const std::string seed_string = base::Base64Encode(seed);
-  std::string event_string;
-  if (seed.size() > 1) {
-    event_string = std::to_string(seed[0]+seed[1]);
-  }
-  ledger_->database()->SaveEventLog(kRecoverySeed, event_string);
-  ledger_->ledger_client()->SetStringState(kRecoverySeed, seed_string);
-}
-
-std::string State::GetPaymentId() {
-  return ledger_->ledger_client()->GetStringState(kPaymentId);
-}
-
-void State::SetPaymentId(const std::string& id) {
-  ledger_->database()->SaveEventLog(kPaymentId, id);
-  ledger_->ledger_client()->SetStringState(kPaymentId, id);
 }
 
 bool State::GetInlineTippingPlatformEnabled(

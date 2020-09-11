@@ -37,8 +37,14 @@ std::string PostCreds::GetUrl(const std::string& promotion_id) {
 
 std::string PostCreds::GeneratePayload(
     std::unique_ptr<base::ListValue> blinded_creds) {
+  const auto wallet = ledger_->wallet()->GetWallet();
+  if (!wallet) {
+    BLOG(0, "Wallet is null");
+    return "";
+  }
+
   base::Value body(base::Value::Type::DICTIONARY);
-  body.SetStringKey("paymentId", ledger_->state()->GetPaymentId());
+  body.SetStringKey("paymentId", wallet->payment_id);
   body.SetKey("blindedCreds", base::Value(std::move(*blinded_creds)));
 
   std::string json;
@@ -118,13 +124,20 @@ void PostCreds::Request(
     return;
   }
 
+  const auto wallet = ledger_->wallet()->GetWallet();
+  if (!wallet) {
+    BLOG(0, "Wallet is null");
+    callback(type::Result::LEDGER_ERROR, "");
+    return;
+  }
+
   const std::string& payload = GeneratePayload(std::move(blinded_creds));
 
   const auto headers = util::BuildSignHeaders(
       "post /v1/promotions/" + promotion_id,
       payload,
-      ledger_->state()->GetPaymentId(),
-      ledger_->state()->GetRecoverySeed());
+      wallet->payment_id,
+      wallet->recovery_seed);
 
   auto url_callback = std::bind(&PostCreds::OnRequest,
       this,

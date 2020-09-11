@@ -21,12 +21,12 @@ class SKU {
 
   virtual void Retry(
       const std::string& order_id,
-      type::ExternalWalletPtr wallet,
+      const std::string& wallet_type,
       ledger::SKUOrderCallback callback) = 0;
 
   virtual void Process(
       const std::vector<type::SKUOrderItem>& items,
-      type::ExternalWalletPtr wallet,
+      const std::string& wallet_type,
       ledger::SKUOrderCallback callback,
       const std::string& contribution_id = "") = 0;
 };

@@ -21,10 +21,8 @@ using std::placeholders::_3;
 namespace ledger {
 namespace uphold {
 
-UpholdAuthorization::UpholdAuthorization(
-    LedgerImpl* ledger, Uphold* uphold) :
+UpholdAuthorization::UpholdAuthorization(LedgerImpl* ledger) :
     ledger_(ledger),
-    uphold_(uphold),
     uphold_server_(std::make_unique<endpoint::UpholdServer>(ledger)) {
 }
 
@@ -33,8 +31,7 @@ UpholdAuthorization::~UpholdAuthorization() = default;
 void UpholdAuthorization::Authorize(
     const std::map<std::string, std::string>& args,
     ledger::ExternalWalletAuthorizationCallback callback) {
-  auto wallets = ledger_->ledger_client()->GetExternalWallets();
-  auto wallet = GetWallet(std::move(wallets));
+  auto wallet = GetWallet(ledger_);
 
   if (!wallet) {
     BLOG(0, "Wallet is null");
@@ -45,9 +42,7 @@ void UpholdAuthorization::Authorize(
 
   // we need to generate new string as soon as authorization is triggered
   wallet->one_time_string = GenerateRandomString(ledger::is_testing);
-  ledger_->ledger_client()->SaveExternalWallet(
-      constant::kWalletUphold,
-      wallet->Clone());
+  ledger_->uphold()->SetWallet(wallet->Clone());
 
   auto it = args.find("error_description");
   if (it != args.end()) {
@@ -114,7 +109,7 @@ void UpholdAuthorization::OnAuthorize(
   if (result == type::Result::EXPIRED_TOKEN) {
     BLOG(0, "Expired token");
     callback(type::Result::EXPIRED_TOKEN, {});
-    uphold_->DisconnectWallet();
+    ledger_->uphold()->DisconnectWallet();
     return;
   }
 
@@ -130,8 +125,7 @@ void UpholdAuthorization::OnAuthorize(
     return;
   }
 
-  auto wallets = ledger_->ledger_client()->GetExternalWallets();
-  auto wallet_ptr = GetWallet(std::move(wallets));
+  auto wallet_ptr = GetWallet(ledger_);
 
   wallet_ptr->token = token;
 
@@ -152,24 +146,21 @@ void UpholdAuthorization::OnAuthorize(
       break;
   }
 
-  ledger_->ledger_client()->SaveExternalWallet(
-      constant::kWalletUphold,
-      wallet_ptr->Clone());
+  ledger_->uphold()->SetWallet(wallet_ptr->Clone());
 
   auto user_callback = std::bind(&UpholdAuthorization::OnGetUser,
       this,
       _1,
       _2,
       callback);
-  uphold_->GetUser(user_callback);
+  ledger_->uphold()->GetUser(user_callback);
 }
 
 void UpholdAuthorization::OnGetUser(
     const type::Result result,
     const User& user,
     ledger::ExternalWalletAuthorizationCallback callback) {
-  auto wallets = ledger_->ledger_client()->GetExternalWallets();
-  auto wallet_ptr = GetWallet(std::move(wallets));
+  auto wallet_ptr = GetWallet(ledger_);
   std::map<std::string, std::string> args;
 
   if (user.bat_not_allowed || !wallet_ptr) {
@@ -182,9 +173,7 @@ void UpholdAuthorization::OnGetUser(
     wallet_ptr->status = user.verified
         ? type::WalletStatus::VERIFIED
         : type::WalletStatus::CONNECTED;
-    ledger_->ledger_client()->SaveExternalWallet(
-        constant::kWalletUphold,
-        wallet_ptr->Clone());
+    ledger_->uphold()->SetWallet(wallet_ptr->Clone());
 
     if (wallet_ptr->address.empty()) {
       auto new_callback = std::bind(&UpholdAuthorization::OnCardCreate,
@@ -192,7 +181,7 @@ void UpholdAuthorization::OnGetUser(
           _1,
           _2,
           callback);
-      uphold_->CreateCard(new_callback);
+      ledger_->uphold()->CreateCard(new_callback);
       return;
     }
 
@@ -201,9 +190,7 @@ void UpholdAuthorization::OnGetUser(
     }
   } else {
     wallet_ptr->status = type::WalletStatus::PENDING;
-    ledger_->ledger_client()->SaveExternalWallet(
-        constant::kWalletUphold,
-        std::move(wallet_ptr));
+    ledger_->uphold()->SetWallet(wallet_ptr->Clone());
     args["redirect_url"] = GetSecondStepVerify();
   }
 
@@ -220,12 +207,9 @@ void UpholdAuthorization::OnCardCreate(
     return;
   }
 
-  auto wallets = ledger_->ledger_client()->GetExternalWallets();
-  auto wallet_ptr = GetWallet(std::move(wallets));
+  auto wallet_ptr = GetWallet(ledger_);
   wallet_ptr->address = address;
-  ledger_->ledger_client()->SaveExternalWallet(
-      constant::kWalletUphold,
-      wallet_ptr->Clone());
+  ledger_->uphold()->SetWallet(wallet_ptr->Clone());
 
   if (!address.empty()) {
     ledger_->database()->SaveEventLog(

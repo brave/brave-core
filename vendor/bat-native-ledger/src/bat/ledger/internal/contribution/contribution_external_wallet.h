@@ -10,7 +10,6 @@
 #include <string>
 
 #include "bat/ledger/ledger.h"
-#include "bat/ledger/internal/uphold/uphold.h"
 
 namespace ledger {
 class LedgerImpl;
@@ -19,9 +18,7 @@ namespace contribution {
 
 class ContributionExternalWallet {
  public:
-  explicit ContributionExternalWallet(
-      LedgerImpl* ledger,
-      uphold::Uphold* uphold);
+  explicit ContributionExternalWallet(LedgerImpl* ledger);
 
   ~ContributionExternalWallet();
 
@@ -36,7 +33,6 @@ class ContributionExternalWallet {
  private:
   void ContributionInfo(
       type::ContributionInfoPtr contribution,
-      const type::ExternalWallet& wallet,
       ledger::ResultCallback callback);
 
   void OnAC(
@@ -60,7 +56,6 @@ class ContributionExternalWallet {
       ledger::ResultCallback callback);
 
   LedgerImpl* ledger_;  // NOT OWNED
-  uphold::Uphold* uphold_;  // NOT OWNED
 };
 
 }  // namespace contribution

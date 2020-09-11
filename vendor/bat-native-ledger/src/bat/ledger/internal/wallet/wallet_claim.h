@@ -10,7 +10,6 @@
 #include <string>
 
 #include "bat/ledger/internal/endpoint/promotion/promotion_server.h"
-#include "bat/ledger/internal/uphold/uphold.h"
 #include "bat/ledger/ledger.h"
 
 namespace ledger {
@@ -36,7 +35,6 @@ class WalletClaim {
       ledger::ResultCallback callback);
 
   LedgerImpl* ledger_;  // NOT OWNED
-  std::unique_ptr<uphold::Uphold> uphold_;
   std::unique_ptr<endpoint::PromotionServer> promotion_server_;
 };
 

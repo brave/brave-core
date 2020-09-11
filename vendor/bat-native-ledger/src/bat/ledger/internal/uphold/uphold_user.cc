@@ -37,8 +37,7 @@ UpholdUser::UpholdUser(LedgerImpl* ledger) :
 UpholdUser::~UpholdUser() = default;
 
 void UpholdUser::Get(GetUserCallback callback) {
-  auto wallets = ledger_->ledger_client()->GetExternalWallets();
-  auto wallet = GetWallet(std::move(wallets));
+  auto wallet = GetWallet(ledger_);
 
   if (!wallet) {
     User user;

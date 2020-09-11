@@ -54,8 +54,6 @@ class MockRewardsService : public RewardsService {
   MOCK_METHOD3(AttestPromotion, void(const std::string&,
       const std::string&,
       brave_rewards::AttestPromotionCallback));
-  MOCK_METHOD1(GetWalletPassphrase,
-      void(const brave_rewards::GetWalletPassphraseCallback&));
   MOCK_METHOD1(RecoverWallet, void(const std::string&));
   MOCK_METHOD0(RestorePublishers, void());
   MOCK_METHOD2(OnLoad, void(SessionID, const GURL&));
@@ -178,9 +176,8 @@ class MockRewardsService : public RewardsService {
              void(const std::map<std::string, std::string>&,
                   brave_rewards::SaveMediaInfoCallback));
 
-  MOCK_METHOD2(GetExternalWallet,
-               void(const std::string& wallet_type,
-                    brave_rewards::GetExternalWalletCallback callback));
+  MOCK_METHOD1(GetUpholdWallet,
+               void(brave_rewards::GetUpholdWalletCallback callback));
 
   MOCK_METHOD3(ProcessRewardsPageUrl,
       void(const std::string& path,

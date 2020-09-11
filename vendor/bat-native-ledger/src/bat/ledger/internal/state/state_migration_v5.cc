@@ -10,7 +10,6 @@
 
 #include "bat/ledger/internal/ledger_impl.h"
 #include "bat/ledger/internal/state/state_keys.h"
-#include "bat/ledger/internal/state/state_migration_v4.h"
 
 namespace ledger {
 namespace state {

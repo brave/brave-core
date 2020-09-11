@@ -37,8 +37,8 @@ using HasSufficientBalanceToReconcileCallback = std::function<void(bool)>;
 using FetchBalanceCallback =
     std::function<void(type::Result, type::BalancePtr)>;
 
-using ExternalWalletCallback =
-    std::function<void(type::Result, type::ExternalWalletPtr)>;
+using UpholdWalletCallback =
+    std::function<void(type::Result, type::UpholdWalletPtr)>;
 
 using ExternalWalletAuthorizationCallback =
     std::function<void(type::Result, std::map<std::string, std::string>)>;
@@ -234,8 +234,6 @@ class LEDGER_EXPORT Ledger {
       const std::string& solution,
       AttestPromotionCallback callback) const = 0;
 
-  virtual std::string GetWalletPassphrase() const = 0;
-
   virtual void GetBalanceReport(
       type::ActivityMonth month,
       int year,
@@ -343,9 +341,7 @@ class LEDGER_EXPORT Ledger {
 
   virtual void FetchBalance(FetchBalanceCallback callback) = 0;
 
-  virtual void GetExternalWallet(
-      const std::string& wallet_type,
-      ExternalWalletCallback callback) = 0;
+  virtual void GetUpholdWallet(UpholdWalletCallback callback) = 0;
 
   virtual void ExternalWalletAuthorization(
       const std::string& wallet_type,
@@ -386,7 +382,7 @@ class LEDGER_EXPORT Ledger {
 
   virtual void ProcessSKU(
       const std::vector<type::SKUOrderItem>& items,
-      type::ExternalWalletPtr wallet,
+      const std::string& wallet_type,
       SKUOrderCallback callback) = 0;
 
   virtual void Shutdown(ResultCallback callback) = 0;

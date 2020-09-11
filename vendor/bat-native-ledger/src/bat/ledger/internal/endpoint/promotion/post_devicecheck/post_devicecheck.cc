@@ -31,10 +31,15 @@ std::string PostDevicecheck::GetUrl() {
 }
 
 std::string PostDevicecheck::GeneratePayload(const std::string& key) {
-  const std::string payment_id = ledger_->state()->GetPaymentId();
+  const auto wallet = ledger_->wallet()->GetWallet();
+  if (!wallet) {
+    BLOG(0, "Wallet is null");
+    return "";
+  }
+
   base::Value dictionary(base::Value::Type::DICTIONARY);
   dictionary.SetStringKey("publicKeyHash", key);
-  dictionary.SetStringKey("paymentId", payment_id);
+  dictionary.SetStringKey("paymentId", wallet->payment_id);
   std::string json;
   base::JSONWriter::Write(dictionary, &json);
 

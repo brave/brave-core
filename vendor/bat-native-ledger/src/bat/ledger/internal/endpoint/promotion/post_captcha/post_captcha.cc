@@ -31,10 +31,16 @@ std::string PostCaptcha::GetUrl() {
 }
 
 std::string PostCaptcha::GeneratePayload() {
+  const auto wallet = ledger_->wallet()->GetWallet();
+  if (!wallet) {
+    BLOG(0, "Wallet is null");
+    return "";
+  }
+
   base::Value body(base::Value::Type::DICTIONARY);
   body.SetStringKey(
       "paymentId",
-      ledger_->state()->GetPaymentId());
+      wallet->payment_id);
 
   std::string json;
   base::JSONWriter::Write(body, &json);

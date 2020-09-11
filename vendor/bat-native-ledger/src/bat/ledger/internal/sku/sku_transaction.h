@@ -26,7 +26,7 @@ class SKUTransaction {
   void Create(
       type::SKUOrderPtr order,
       const std::string& destination,
-      const type::ExternalWallet& wallet,
+      const std::string& wallet_type,
       ledger::ResultCallback callback);
 
   void SendExternalTransaction(
@@ -39,7 +39,7 @@ class SKUTransaction {
       const type::Result result,
       const type::SKUTransaction& transaction,
       const std::string& destination,
-      const type::ExternalWallet& wallet,
+      const std::string& wallet_type,
       ledger::ResultCallback callback);
 
   void OnTransfer(

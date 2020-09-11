@@ -14,7 +14,6 @@
 #import "BATBraveAds.h"
 #import "BATCommonOperations.h"
 #import "NSURL+Extensions.h"
-#import "BATExternalWallet+DictionaryValue.h"
 
 #import "NativeLedgerClient.h"
 #import "NativeLedgerClientBridge.h"
@@ -98,7 +97,7 @@ typedef NS_ENUM(NSInteger, BATLedgerDatabaseMigrationType) {
 @property (nonatomic, copy) NSString *storagePath;
 @property (nonatomic) BATRewardsParameters *rewardsParameters;
 @property (nonatomic) BATBalance *balance;
-@property (nonatomic) NSMutableDictionary<BATWalletType, BATExternalWallet *> *mExternalWallets;
+@property (nonatomic) BATUpholdWallet *upholdWallet;
 @property (nonatomic) dispatch_queue_t fileWriteThread;
 @property (nonatomic) NSMutableDictionary<NSString *, NSString *> *state;
 @property (nonatomic) BATCommonOperations *commonOps;
@@ -140,7 +139,6 @@ typedef NS_ENUM(NSInteger, BATLedgerDatabaseMigrationType) {
     self.fileWriteThread = dispatch_queue_create("com.rewards.file-write", DISPATCH_QUEUE_SERIAL);
     self.mPendingPromotions = [[NSMutableArray alloc] init];
     self.mFinishedPromotions = [[NSMutableArray alloc] init];
-    self.mExternalWallets = [[NSMutableDictionary alloc] init];
     self.observers = [NSHashTable weakObjectsHashTable];
     rewardsDatabase = nullptr;
     
@@ -185,7 +183,7 @@ typedef NS_ENUM(NSInteger, BATLedgerDatabaseMigrationType) {
     if (self.walletCreated) {
       [self getRewardsParameters:nil];
       [self fetchBalance:nil];
-      [self fetchExternalWalletForType:BATWalletTypeUphold completion:nil];
+      [self fetchUpholdWallet:nil];
     }
 
     [self readNotificationsFromDisk];
@@ -484,14 +482,6 @@ BATLedgerReadonlyBridge(BOOL, isWalletCreated, IsWalletCreated)
   });
 }
 
-- (NSString *)walletPassphrase
-{
-  if (ledger->IsWalletCreated()) {
-    return [NSString stringWithUTF8String:ledger->GetWalletPassphrase().c_str()];
-  }
-  return nil;
-}
-
 - (void)recoverWalletUsingPassphrase:(NSString *)passphrase completion:(void (^)(NSError *_Nullable))completion
 {
   const auto __weak weakSelf = self;
@@ -535,18 +525,13 @@ BATLedgerReadonlyBridge(BOOL, isWalletCreated, IsWalletCreated)
 
 #pragma mark - User Wallets
 
-- (NSDictionary<BATWalletType, BATExternalWallet *> *)externalWallets
+- (void)fetchUpholdWallet:(nullable void (^)(BATUpholdWallet * _Nullable wallet))completion
 {
-  return [self.mExternalWallets copy];
-}
-
-- (void)fetchExternalWalletForType:(BATWalletType)walletType
-                        completion:(nullable void (^)(BATExternalWallet * _Nullable wallet))completion
-{
-  ledger->GetExternalWallet(walletType.UTF8String, ^(ledger::type::Result result, ledger::type::ExternalWalletPtr walletPtr) {
+  const auto __weak weakSelf = self;
+  ledger->GetUpholdWallet(^(ledger::type::Result result, ledger::type::UpholdWalletPtr walletPtr) {
     if (result == ledger::type::Result::LEDGER_OK && walletPtr.get() != nullptr) {
-      const auto bridgedWallet = [[BATExternalWallet alloc] initWithExternalWallet:*walletPtr];
-      self.mExternalWallets[walletType] = bridgedWallet;
+      const auto bridgedWallet = [[BATUpholdWallet alloc] initWithUpholdWallet:*walletPtr];
+      weakSelf.upholdWallet = bridgedWallet;
       if (completion) {
         completion(bridgedWallet);
       }
@@ -599,77 +584,18 @@ BATLedgerReadonlyBridge(BOOL, isWalletCreated, IsWalletCreated)
   });
 }
 
-- (std::map<std::string, ledger::type::ExternalWalletPtr>)getExternalWallets
+- (std::string)getLegacyWallet
 {
-  std::map<std::string, ledger::type::ExternalWalletPtr> wallets;
   NSDictionary *externalWallets = self.prefs[kExternalWalletsPrefKey] ?: [[NSDictionary alloc] init];
-  for (NSString *walletTypeKey in externalWallets) {
-    const auto wallet = [[BATExternalWallet alloc] initWithDictionaryValue:externalWallets[walletTypeKey]];
-    wallets.insert(std::make_pair(walletTypeKey.UTF8String, wallet.cppObjPtr));
+  std::string wallet;
+  NSData *data = [NSJSONSerialization dataWithJSONObject:externalWallets options:0 error:nil];
+  if (data != nil) {
+    NSString *dataString = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
+    if (dataString.UTF8String != nil) {
+      wallet = dataString.UTF8String;
+    }
   }
-  return wallets;
-}
-
-- (void)saveExternalWallet:(const std::string &)wallet_type wallet:(ledger::type::ExternalWalletPtr)wallet
-{
-  if (wallet.get() == nullptr) { return; }
-  const auto bridgedWallet = [[BATExternalWallet alloc] initWithExternalWallet:*wallet];
-  const auto bridgedType = [NSString stringWithUTF8String:wallet_type.c_str()];
-  NSMutableDictionary *externalWallets = [self.prefs[kExternalWalletsPrefKey] mutableCopy] ?: [[NSMutableDictionary alloc] init];
-  externalWallets[bridgedType] = [bridgedWallet dictionaryValue];
-  self.prefs[kExternalWalletsPrefKey] = externalWallets;
-  [self savePrefs];
-}
-
-- (void)setTransferFee:(const std::string &)wallet_type transfer_fee:(ledger::type::TransferFeePtr)transfer_fee
-{
-  if (transfer_fee.get() == nullptr) {
-    return;
-  }
-  const auto bridgedType = [NSString stringWithUTF8String:wallet_type.c_str()];
-  const auto feeID = [NSString stringWithUTF8String:transfer_fee->id.c_str()];
-  const auto feeDict = @{
-    @"id": feeID,
-    @"amount": @(transfer_fee->amount)
-  };
-
-  NSMutableDictionary *transferFees = [self.prefs[kTransferFeesPrefKey] mutableCopy] ?: [[NSMutableDictionary alloc] init];
-  NSMutableDictionary *feesForWalletType = [transferFees[bridgedType] mutableCopy] ?: [[NSMutableDictionary alloc] init];
-  feesForWalletType[feeID] = feeDict;
-  transferFees[bridgedType] = feesForWalletType;
-  self.prefs[kTransferFeesPrefKey] = transferFees;
-  [self savePrefs];
-}
-
-- (ledger::type::TransferFeeList)getTransferFees:(const std::string &)wallet_type
-{
-  const auto bridgedType = [NSString stringWithUTF8String:wallet_type.c_str()];
-  ledger::type::TransferFeeList list;
-  NSDictionary *transferFees = self.prefs[kTransferFeesPrefKey] ?: [[NSDictionary alloc] init];
-  NSDictionary *walletFees = transferFees[bridgedType];
-  if (!walletFees || walletFees.count == 0) {
-    return list;
-  }
-  for (NSString *feeID in walletFees) {
-    NSDictionary* feeDict = walletFees[feeID];
-    auto fee = ledger::type::TransferFee::New();
-    fee->id = feeID.UTF8String;
-    fee->amount = [feeDict[@"amount"] doubleValue];
-    list.insert(std::make_pair(feeID.UTF8String, std::move(fee)));
-  }
-  return list;
-}
-
-- (void)removeTransferFee:(const std::string &)wallet_type id:(const std::string &)id
-{
-  const auto bridgedType = [NSString stringWithUTF8String:wallet_type.c_str()];
-  const auto bridgedID = [NSString stringWithUTF8String:id.c_str()];
-  NSMutableDictionary *transferFees = [self.prefs[kTransferFeesPrefKey] mutableCopy] ?: [[NSMutableDictionary alloc] init];
-  NSMutableDictionary *feesForWalletType = [transferFees[bridgedType] mutableCopy] ?: [[NSMutableDictionary alloc] init];
-  [feesForWalletType removeObjectForKey:bridgedID];
-  transferFees[bridgedType] = feesForWalletType;
-  self.prefs[kTransferFeesPrefKey] = transferFees;
-  [self savePrefs];
+  return wallet;
 }
 
 #pragma mark - Publishers
@@ -796,12 +722,9 @@ BATLedgerReadonlyBridge(BOOL, isWalletCreated, IsWalletCreated)
 - (void)processSKUItems:(NSArray<BATSKUOrderItem *> *)items
              completion:(void (^)(BATResult result, NSString *orderID))completion
 {
-  auto wallet = ledger::type::ExternalWallet::New();
-  wallet->type = ledger::constant::kWalletUnBlinded;
-  
   ledger->ProcessSKU(VectorFromNSArray(items, ^ledger::type::SKUOrderItem(BATSKUOrderItem *item) {
     return *item.cppObjPtr;
-  }), std::move(wallet), ^(const ledger::type::Result result, const std::string& order_id) {
+  }), ledger::constant::kWalletUnBlinded, ^(const ledger::type::Result result, const std::string& order_id) {
     completion(static_cast<BATResult>(result), [NSString stringWithUTF8String:order_id.c_str()]);
   });
 }

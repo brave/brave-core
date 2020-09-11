@@ -101,60 +101,34 @@ ContributionSKU::~ContributionSKU() = default;
 
 void ContributionSKU::AutoContribution(
     const std::string& contribution_id,
-    type::ExternalWalletPtr wallet,
+    const std::string& wallet_type,
     ledger::ResultCallback callback) {
-  if (!wallet) {
-    BLOG(0, "Wallet is null");
-    callback(type::Result::LEDGER_ERROR);
-    return;
-  }
-
   type::SKUOrderItem item;
   item.sku = GetACSKU();
 
-  Start(
-      contribution_id,
-      item,
-      std::move(wallet),
-      callback);
+  Start(contribution_id, item, wallet_type, callback);
 }
 
 void ContributionSKU::AnonUserFunds(
     const std::string& contribution_id,
-    type::ExternalWalletPtr wallet,
+    const std::string& wallet_type,
     ledger::ResultCallback callback) {
-  if (!wallet) {
-    BLOG(0, "Wallet is null");
-    callback(type::Result::LEDGER_ERROR);
-    return;
-  }
-
   type::SKUOrderItem item;
   item.sku = GetUserFundsSKU();
 
-  Start(
-      contribution_id,
-      item,
-      std::move(wallet),
-      callback);
+  Start(contribution_id, item, wallet_type, callback);
 }
 
 void ContributionSKU::Start(
     const std::string& contribution_id,
     const type::SKUOrderItem& item,
-    type::ExternalWalletPtr wallet,
+    const std::string& wallet_type,
     ledger::ResultCallback callback) {
-  if (!wallet) {
-    BLOG(0, "Wallet is null");
-    callback(type::Result::LEDGER_ERROR);
-    return;
-  }
-
   auto get_callback = std::bind(&ContributionSKU::GetContributionInfo,
       this,
       _1,
       item,
-      *wallet,
+      wallet_type,
       callback);
 
   ledger_->database()->GetContributionInfo(contribution_id, get_callback);
@@ -163,7 +137,7 @@ void ContributionSKU::Start(
 void ContributionSKU::GetContributionInfo(
     type::ContributionInfoPtr contribution,
     const type::SKUOrderItem& item,
-    const type::ExternalWallet& wallet,
+    const std::string& wallet_type,
     ledger::ResultCallback callback) {
   if (!contribution) {
     BLOG(0, "Contribution not found");
@@ -196,7 +170,7 @@ void ContributionSKU::GetContributionInfo(
 
   sku_->Process(
       items,
-      type::ExternalWallet::New(wallet),
+      wallet_type,
       process_callback,
       contribution->contribution_id);
 }
@@ -488,15 +462,15 @@ void ContributionSKU::RetryStartStep(
         order_id,
         contribution->contribution_id,
         callback);
-    ledger_->wallet()->GetExternalWallet(constant::kWalletUphold, get_callback);
+    ledger_->uphold()->GetWallet();
     return;
   }
 
-  auto wallet = type::ExternalWallet::New();
-  wallet->type = constant::kWalletAnonymous;
-
   if (!order) {
-    AnonUserFunds(contribution->contribution_id, std::move(wallet), callback);
+    AnonUserFunds(
+        contribution->contribution_id,
+        constant::kWalletAnonymous,
+        callback);
     return;
   }
 
@@ -507,23 +481,23 @@ void ContributionSKU::RetryStartStep(
       contribution->contribution_id,
       callback);
 
-  sku_->Retry(order->order_id, std::move(wallet), retry_callback);
+  sku_->Retry(order->order_id, constant::kWalletAnonymous, retry_callback);
 }
 
 void ContributionSKU::RetryStartStepExternalWallet(
     const type::Result result,
-    type::ExternalWalletPtr wallet,
+    const std::string& wallet_type,
     const std::string& order_id,
     const std::string& contribution_id,
     ledger::ResultCallback callback) {
-  if (!wallet || result != type::Result::LEDGER_OK) {
+  if (result != type::Result::LEDGER_OK) {
     BLOG(0, "External wallet is missing");
     callback(type::Result::LEDGER_ERROR);
     return;
   }
 
   if (order_id.empty()) {
-    AutoContribution(contribution_id, std::move(wallet), callback);
+    AutoContribution(contribution_id, wallet_type, callback);
     return;
   }
 
@@ -534,7 +508,7 @@ void ContributionSKU::RetryStartStepExternalWallet(
       contribution_id,
       callback);
 
-  sku_->Retry(order_id, std::move(wallet), retry_callback);
+  sku_->Retry(order_id, wallet_type, retry_callback);
 }
 
 void ContributionSKU::RetryExternalTransactionStep(

@@ -8,7 +8,10 @@
 #include "brave/components/brave_rewards/browser/test/common/rewards_browsertest_context_helper.h"
 #include "brave/components/brave_rewards/browser/test/common/rewards_browsertest_context_util.h"
 #include "brave/components/brave_rewards/browser/test/common/rewards_browsertest_contribution.h"
+#include "brave/components/brave_rewards/common/pref_names.h"
+#include "chrome/browser/profiles/profile.h"
 #include "chrome/test/base/ui_test_utils.h"
+#include "components/prefs/pref_service.h"
 #include "content/public/test/browser_test_utils.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
@@ -437,13 +440,20 @@ void RewardsBrowserTestContribution::SetUpUpholdWallet(
     const double balance,
     const ledger::type::WalletStatus status) {
   external_balance_ = balance;
-  auto wallet = ledger::type::ExternalWallet::New();
-  wallet->token = "token";
-  wallet->address = rewards_browsertest_util::GetUpholdExternalAddress();
-  wallet->status = status;
-  wallet->one_time_string = "";
-  wallet->user_name = "Brave Test";
-  rewards_service_->SaveExternalWallet("uphold", std::move(wallet));
+
+  base::Value wallet(base::Value::Type::DICTIONARY);
+  wallet.SetStringKey("token", "token");
+  wallet.SetStringKey(
+      "address",
+      rewards_browsertest_util::GetUpholdExternalAddress());
+  wallet.SetIntKey("status", static_cast<int>(status));
+  wallet.SetStringKey("user_name", "Brave Test");
+
+  std::string json;
+  base::JSONWriter::Write(wallet, &json);
+  browser_->profile()->GetPrefs()->SetString(
+      brave_rewards::prefs::kWalletUphold,
+      json);
 }
 
 double RewardsBrowserTestContribution::GetReconcileTipTotal() {

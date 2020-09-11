@@ -333,8 +333,8 @@ IN_PROC_BROWSER_TEST_F(RewardsBrowserTest, ShowACPercentInThePanel) {
 
 IN_PROC_BROWSER_TEST_F(RewardsBrowserTest, ZeroBalanceWalletClaimNotCalled) {
   response_->SetVerifiedWallet(true);
-  contribution_->SetUpUpholdWallet(50.0);
   rewards_browsertest_util::EnableRewardsViaCode(browser(), rewards_service_);
+  contribution_->SetUpUpholdWallet(50.0);
 
   response_->ClearRequests();
 
@@ -342,7 +342,7 @@ IN_PROC_BROWSER_TEST_F(RewardsBrowserTest, ZeroBalanceWalletClaimNotCalled) {
   auto test_callback =
       [&](
           const ledger::type::Result result,
-          ledger::type::ExternalWalletPtr wallet) {
+          ledger::type::UpholdWalletPtr wallet) {
         auto requests = response_->GetRequests();
         EXPECT_EQ(result, ledger::type::Result::LEDGER_OK);
         EXPECT_FALSE(requests.empty());
@@ -360,8 +360,7 @@ IN_PROC_BROWSER_TEST_F(RewardsBrowserTest, ZeroBalanceWalletClaimNotCalled) {
         run_loop.Quit();
       };
 
-  rewards_service_->GetExternalWallet(
-      "uphold", base::BindLambdaForTesting(test_callback));
+  rewards_service_->GetUpholdWallet(base::BindLambdaForTesting(test_callback));
   run_loop.Run();
 }
 

@@ -28,7 +28,6 @@ namespace wallet {
 
 WalletClaim::WalletClaim(LedgerImpl* ledger) :
     ledger_(ledger),
-    uphold_(std::make_unique<uphold::Uphold>(ledger)),
     promotion_server_(std::make_unique<endpoint::PromotionServer>(ledger)) {
 }
 
@@ -59,8 +58,7 @@ void WalletClaim::OnBalance(
     return;
   }
 
-  auto wallets = ledger_->ledger_client()->GetExternalWallets();
-  auto wallet_ptr = uphold::GetWallet(std::move(wallets));
+  auto wallet_ptr = uphold::GetWallet(ledger_);
 
   if (!wallet_ptr) {
     BLOG(0, "Wallet is null");

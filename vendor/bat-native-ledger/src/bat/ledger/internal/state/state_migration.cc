@@ -12,7 +12,7 @@ using std::placeholders::_1;
 
 namespace {
 
-const int kCurrentVersionNumber = 5;
+const int kCurrentVersionNumber = 6;
 
 }  // namespace
 
@@ -25,11 +25,26 @@ StateMigration::StateMigration(LedgerImpl* ledger) :
     v3_(std::make_unique<StateMigrationV3>()),
     v4_(std::make_unique<StateMigrationV4>(ledger)),
     v5_(std::make_unique<StateMigrationV5>(ledger)),
+    v6_(std::make_unique<StateMigrationV6>(ledger)),
     ledger_(ledger) {
-  DCHECK(v1_ && v2_ && v3_ && v4_ && v5_);
+  DCHECK(v1_ && v2_ && v3_ && v4_ && v5_ && v6_);
 }
 
 StateMigration::~StateMigration() = default;
+
+void StateMigration::Start(ledger::ResultCallback callback) {
+  const int current_version = ledger_->state()->GetVersion();
+  const bool fresh_install = current_version == 0;
+
+  if (fresh_install) {
+    BLOG(1, "Fresh install, state version set to " << kCurrentVersionNumber);
+    ledger_->state()->SetVersion(kCurrentVersionNumber);
+    callback(type::Result::LEDGER_OK);
+    return;
+  }
+
+  Migrate(callback);
+}
 
 void StateMigration::Migrate(ledger::ResultCallback callback) {
   const int current_version = ledger_->state()->GetVersion();
@@ -47,6 +62,11 @@ void StateMigration::Migrate(ledger::ResultCallback callback) {
       callback);
 
   switch (new_version) {
+    case 0: {
+      ledger_->state()->SetVersion(new_version);
+      Migrate(callback);
+      return;
+    }
     case 1: {
       v1_->Migrate(migrate_callback);
       return;
@@ -65,6 +85,10 @@ void StateMigration::Migrate(ledger::ResultCallback callback) {
     }
     case 5: {
       v5_->Migrate(migrate_callback);
+      return;
+    }
+    case 6: {
+      v6_->Migrate(migrate_callback);
       return;
     }
   }
