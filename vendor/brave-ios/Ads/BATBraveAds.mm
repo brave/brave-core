@@ -169,7 +169,7 @@ BATClassAdsBridge(BOOL, isDebug, setDebug, _is_debug)
 {
   if (![self isAdsServiceRunning] && self.enabled) {
     self.databaseQueue = dispatch_queue_create("com.rewards.ads.db-transactions", DISPATCH_QUEUE_SERIAL);
-    
+
     const auto* dbPath = [self adsDatabasePath].UTF8String;
     adsDatabase = new ads::Database(base::FilePath(dbPath));
 
