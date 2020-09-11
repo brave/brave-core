@@ -35,7 +35,15 @@ namespace views {
 MdTextButton::MdTextButton(ButtonListener* listener,
                                  const base::string16& text,
                                  int button_context)
-    : MdTextButtonBase(listener, text, button_context) {
+    : MdTextButton(ListenerToPressedCallback(this, listener),
+                   text,
+                   button_context) {
+}
+
+MdTextButton::MdTextButton(PressedCallback callback,
+                                 const base::string16& text,
+                                 int button_context)
+    : MdTextButtonBase(callback, text, button_context) {
   SetCornerRadius(100);
   views::HighlightPathGenerator::Install(
       this, std::make_unique<BraveTextButtonHighlightPathGenerator>());

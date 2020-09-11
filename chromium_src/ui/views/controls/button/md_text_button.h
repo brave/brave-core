@@ -31,7 +31,9 @@ class VIEWS_EXPORT MdTextButton : public MdTextButtonBase {
   explicit MdTextButton(ButtonListener* listener = nullptr,
                         const base::string16& text = base::string16(),
                         int button_context = style::CONTEXT_BUTTON_MD);
-
+  explicit MdTextButton(PressedCallback callback,
+                        const base::string16& text = base::string16(),
+                        int button_context = style::CONTEXT_BUTTON_MD);
   ~MdTextButton() override;
 
   // InkDrop
