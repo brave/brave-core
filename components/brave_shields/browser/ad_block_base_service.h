@@ -45,7 +45,6 @@ class AdBlockBaseService : public BaseBraveShieldsService {
                           blink::mojom::ResourceType resource_type,
                           const std::string& tab_host,
                           bool* did_match_exception,
-                          bool* cancel_request_explicitly,
                           std::string* mock_data_url,
                           const BlockDecision** block_decision) override;
   void AddResources(const std::string& resources);
