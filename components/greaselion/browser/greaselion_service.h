@@ -23,6 +23,8 @@ enum GreaselionFeature {
   FIRST_FEATURE = 0,
   REWARDS = FIRST_FEATURE,
   TWITTER_TIPS,
+  REDDIT_TIPS,
+  GITHUB_TIPS,
   LAST_FEATURE
 };
 

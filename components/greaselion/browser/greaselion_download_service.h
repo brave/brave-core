@@ -38,6 +38,8 @@ enum GreaselionPreconditionValue { kMustBeFalse, kMustBeTrue, kAny };
 struct GreaselionPreconditions {
   GreaselionPreconditionValue rewards_enabled = kAny;
   GreaselionPreconditionValue twitter_tips_enabled = kAny;
+  GreaselionPreconditionValue reddit_tips_enabled = kAny;
+  GreaselionPreconditionValue github_tips_enabled = kAny;
 };
 
 class GreaselionRule {
