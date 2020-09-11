@@ -5,9 +5,30 @@
 
 #include "brave/browser/tor/tor_control.h"
 
+#include "base/run_loop.h"
+#include "base/bind_helpers.h"
+#include "content/public/browser/browser_task_traits.h"
+#include "content/public/browser/browser_thread.h"
+#include "content/public/test/browser_task_environment.h"
+#include "testing/gmock/include/gmock/gmock.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
 namespace tor {
+namespace {
+class MockTorControlDelegate : public TorControl::Delegate {
+ public:
+  MOCK_METHOD0(OnTorControlReady, void());
+  MOCK_METHOD0(OnTorClosed, void());
+  MOCK_METHOD1(OnTorCleanupNeeded, void(base::ProcessId));
+  MOCK_METHOD3(OnTorEvent, void(TorControlEvent,
+                                const std::string&,
+                                const std::map<std::string, std::string>&));
+  MOCK_METHOD1(OnTorRawCmd, void(const std::string&));
+  MOCK_METHOD2(OnTorRawAsync, void(const std::string&, const std::string&));
+  MOCK_METHOD2(OnTorRawMid, void(const std::string&, const std::string&));
+  MOCK_METHOD2(OnTorRawEnd, void(const std::string&, const std::string&));
+};
+}  // namespace
 
 TEST(TorControlTest, ParseQuoted) {
   const struct {
@@ -84,6 +105,78 @@ TEST(TorControlTest, ParseKV) {
                        << "\nvalue: " << value;
     }
   }
+}
+
+TEST(TorControlTest, ReadLine) {
+  content::BrowserTaskEnvironment task_environment;
+
+  MockTorControlDelegate delegate;
+  std::unique_ptr<TorControl> control = TorControl::Create(&delegate);
+
+  EXPECT_CALL(delegate, OnTorClosed()).Times(2);
+  content::GetIOThreadTaskRunner({})
+    ->PostTask(FROM_HERE,
+               base::BindOnce([](std::unique_ptr<TorControl> control) {
+                EXPECT_FALSE(control->ReadLine("500"));
+                EXPECT_FALSE(control->ReadLine("500/OK"));
+               }, std::move(control)));
+
+  control = TorControl::Create(&delegate);
+  EXPECT_CALL(delegate, OnTorRawMid("250", "SOCKSPORT=9050")).Times(1);
+  EXPECT_CALL(delegate, OnTorRawEnd("250", "OK")).Times(1);
+  content::GetIOThreadTaskRunner({})
+    ->PostTask(FROM_HERE,
+               base::BindOnce([](std::unique_ptr<TorControl> control) {
+                EXPECT_TRUE(control->ReadLine("250-SOCKSPORT=9050"));
+                EXPECT_TRUE(control->ReadLine("250 OK"));
+               }, std::move(control)));
+
+  // Test Async:
+  control = TorControl::Create(&delegate);
+  using tor::TorControlEvent;
+  EXPECT_CALL(delegate, OnTorRawAsync("650", "FAKEVENT WHAT")).Times(1);
+  EXPECT_CALL(delegate, OnTorRawAsync("650", "NETWORK_LIVENESS UP")).Times(1);
+  EXPECT_CALL(delegate, OnTorRawAsync("650", "NETWORK_LIVENESS DOWN")).Times(1);
+  EXPECT_CALL(delegate, OnTorRawAsync("650", "FAKEVENT BEGIN")).Times(1);
+  EXPECT_CALL(delegate, OnTorRawAsync("650", "CONTINUE=FAKEVENT")).Times(1);
+  EXPECT_CALL(delegate, OnTorRawAsync("650", "END=FAKEVENT")).Times(1);
+  EXPECT_CALL(delegate, OnTorRawAsync("650", "CIRC 1000 EXTENDED")).Times(1);
+  EXPECT_CALL(delegate, OnTorRawAsync("650", "EXTRAMAGIC=99")).Times(1);
+  EXPECT_CALL(delegate, OnTorRawAsync("650", "ANONYMITY=high")).Times(1);
+  EXPECT_CALL(delegate, OnTorEvent(TorControlEvent::NETWORK_LIVENESS, "DOWN",
+                                   testing::_)).Times(1);
+  std::map<std::string, std::string> circ_extra = {
+    {"ANONYMITY", "high"},
+    {"EXTRAMAGIC", "99"}
+  };
+  EXPECT_CALL(delegate, OnTorEvent(TorControlEvent::CIRC, "1000 EXTENDED",
+                                  circ_extra)).Times(1);
+  content::GetIOThreadTaskRunner({})
+    ->PostTask(FROM_HERE,
+               base::BindOnce([](std::unique_ptr<TorControl> control) {
+                EXPECT_FALSE(control->ReadLine("650 FAKEVENT WHAT"));
+                EXPECT_TRUE(control->ReadLine("650 NETWORK_LIVENESS UP"));
+                // Emulate subscribe
+                control->async_events_[TorControlEvent::NETWORK_LIVENESS] = 1;
+                EXPECT_TRUE(control->ReadLine("650 NETWORK_LIVENESS DOWN"));
+                // Async skip
+                EXPECT_TRUE(control->ReadLine("650-FAKEVENT BEGIN"));
+                EXPECT_TRUE(control->async_);
+                EXPECT_TRUE(control->async_->skip);
+                EXPECT_TRUE(control->ReadLine("650-CONTINUE=FAKEVENT"));
+                EXPECT_TRUE(control->ReadLine("650 END=FAKEVENT"));
+                EXPECT_FALSE(control->async_);
+                // Normal multi async
+                control->async_events_[TorControlEvent::CIRC] = 1;
+                EXPECT_TRUE(control->ReadLine("650-CIRC 1000 EXTENDED"));
+                EXPECT_TRUE(control->async_);
+                EXPECT_FALSE(control->async_->skip);
+                EXPECT_TRUE(control->ReadLine("650-EXTRAMAGIC=99"));
+                EXPECT_TRUE(control->ReadLine("650 ANONYMITY=high"));
+                EXPECT_FALSE(control->async_);
+               }, std::move(control)));
+
+  base::RunLoop().RunUntilIdle();
 }
 
 }  // namespace tor

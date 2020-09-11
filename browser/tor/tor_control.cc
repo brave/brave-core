@@ -42,8 +42,6 @@ const net::NetworkTrafficAnnotationTag tor_control_traffic_annotation =
 
 const size_t kTorBufferSize = 4096;
 
-constexpr base::TaskTraits kIOTaskTraits = {content::BrowserThread::IO};
-
 constexpr base::TaskTraits kWatchTaskTraits = {
   base::ThreadPool(), base::MayBlock(), base::TaskPriority::BEST_EFFORT
 };
@@ -55,14 +53,11 @@ std::unique_ptr<TorControl> TorControl::Create(TorControl::Delegate* delegate) {
   return std::make_unique<TorControl>(delegate);
 }
 
-// try base::SequencedTaskRunnerHandle::Get()
-// try base::CreateSingleThreadTaskRunner({BrowserThread::IO})
-using content::BrowserThread;
 TorControl::TorControl(TorControl::Delegate* delegate)
   : running_(false),
     owner_task_runner_(base::SequencedTaskRunnerHandle::Get()),
     watch_task_runner_(base::CreateSequencedTaskRunner(kWatchTaskTraits)),
-    io_task_runner_(base::CreateSingleThreadTaskRunner(kIOTaskTraits)),
+    io_task_runner_(content::GetIOThreadTaskRunner({})),
     polling_(false),
     repoll_(false),
     writing_(false),
