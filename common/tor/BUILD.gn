@@ -2,8 +2,6 @@ import("//mojo/public/tools/bindings/mojom.gni")
 
 source_set("tor") {
   sources = [
-    "switches.cc",
-    "switches.h",
     "tor_common.cc",
     "tor_common.h",
     "tor_constants.cc",
