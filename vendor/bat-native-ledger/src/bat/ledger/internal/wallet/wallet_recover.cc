@@ -93,8 +93,11 @@ void WalletRecover::OnRecover(
     return;
   }
 
-  ledger_->state()->SetRecoverySeed(new_seed);
-  ledger_->state()->SetPaymentId(payment_id);
+  auto wallet = type::BraveWallet::New();
+  wallet->payment_id = payment_id;
+  wallet->recovery_seed = new_seed;
+  ledger_->wallet()->SetWallet(std::move(wallet));
+
   ledger_->state()->SetAnonTransferChecked(false);
   ledger_->state()->SetPromotionLastFetchStamp(0);
   if (legacy_wallet) {

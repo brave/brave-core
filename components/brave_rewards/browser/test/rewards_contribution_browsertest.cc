@@ -209,8 +209,8 @@ IN_PROC_BROWSER_TEST_F(
     RewardsContributionBrowserTest,
     AutoContributionMultiplePublishersUphold) {
   response_->SetVerifiedWallet(true);
-  contribution_->SetUpUpholdWallet(50.0);
   rewards_browsertest_helper::EnableRewards(browser());
+  contribution_->SetUpUpholdWallet(50.0);
 
   ledger::type::SKUOrderItemList items;
   auto item = ledger::type::SKUOrderItem::New();
@@ -448,8 +448,8 @@ IN_PROC_BROWSER_TEST_F(
     RewardsContributionBrowserTest,
     TipWithVerifiedWallet) {
   response_->SetVerifiedWallet(true);
-  contribution_->SetUpUpholdWallet(50.0);
   rewards_browsertest_helper::EnableRewards(browser());
+  contribution_->SetUpUpholdWallet(50.0);
 
   const double amount = 5.0;
   contribution_->TipViaCode(
@@ -464,9 +464,8 @@ IN_PROC_BROWSER_TEST_F(
     RewardsContributionBrowserTest,
     MultipleTipsProduceMultipleFeesWithVerifiedWallet) {
   response_->SetVerifiedWallet(true);
-  contribution_->SetUpUpholdWallet(50.0);
-
   rewards_browsertest_helper::EnableRewards(browser());
+  contribution_->SetUpUpholdWallet(50.0);
 
   double total_amount = 0.0;
   const double amount = 5.0;
@@ -486,16 +485,19 @@ IN_PROC_BROWSER_TEST_F(
       1);
   total_amount += amount;
 
-  ledger::type::TransferFeeList transfer_fees =
-      rewards_service_->GetTransferFeesForTesting("uphold");
-
-  ASSERT_EQ(transfer_fees.size(), 2UL);
-
+  base::RunLoop run_loop_first;
+  rewards_service_->GetUpholdWallet(
+      base::BindLambdaForTesting([&](
+          const ledger::mojom::Result,
+          ledger::type::UpholdWalletPtr wallet) {
+        ASSERT_EQ(wallet->fees.size(), 2UL);
+        for (auto const& value : wallet->fees) {
+          ASSERT_EQ(value.second, tip_fee);
+        }
+        run_loop_first.Quit();
+      }));
+  run_loop_first.Run();
   contribution_->VerifyTip(total_amount, true, false, true);
-
-  for (auto const& value : transfer_fees) {
-    ASSERT_EQ(value.second->amount, tip_fee);
-  }
 }
 
 IN_PROC_BROWSER_TEST_F(
@@ -517,9 +519,8 @@ IN_PROC_BROWSER_TEST_F(
     RewardsContributionBrowserTest,
     TipConnectedPublisherAnonAndConnected) {
   response_->SetVerifiedWallet(true);
-  contribution_->SetUpUpholdWallet(50.0);
-
   rewards_browsertest_helper::EnableRewards(browser());
+  contribution_->SetUpUpholdWallet(50.0);
   contribution_->AddBalance(promotion_->ClaimPromotionViaCode());
 
   const double amount = 5.0;
@@ -535,9 +536,8 @@ IN_PROC_BROWSER_TEST_F(
     RewardsContributionBrowserTest,
     TipConnectedPublisherConnected) {
   response_->SetVerifiedWallet(true);
-  contribution_->SetUpUpholdWallet(50.0, ledger::type::WalletStatus::CONNECTED);
-
   rewards_browsertest_helper::EnableRewards(browser());
+  contribution_->SetUpUpholdWallet(50.0, ledger::type::WalletStatus::CONNECTED);
   rewards_browsertest_helper::ReloadCurrentSite(browser());
 
   const double amount = 5.0;
@@ -560,9 +560,8 @@ IN_PROC_BROWSER_TEST_F(
     RewardsContributionBrowserTest,
     TipConnectedPublisherVerified) {
   response_->SetVerifiedWallet(true);
-  contribution_->SetUpUpholdWallet(50.0);
-
   rewards_browsertest_helper::EnableRewards(browser());
+  contribution_->SetUpUpholdWallet(50.0);
   rewards_browsertest_helper::ReloadCurrentSite(browser());
 
   const double amount = 5.0;
@@ -725,9 +724,8 @@ IN_PROC_BROWSER_TEST_F(
     RewardsContributionBrowserTest,
     SplitProcessorAutoContribution) {
   response_->SetVerifiedWallet(true);
-  contribution_->SetUpUpholdWallet(50.0);
-
   rewards_browsertest_helper::EnableRewards(browser());
+  contribution_->SetUpUpholdWallet(50.0);
   contribution_->AddBalance(promotion_->ClaimPromotionViaCode());
 
   rewards_browsertest_helper::VisitPublisher(
@@ -858,8 +856,8 @@ IN_PROC_BROWSER_TEST_F(
     RewardsContributionBrowserTest,
     SplitProcessOneTimeTip) {
   response_->SetVerifiedWallet(true);
-  contribution_->SetUpUpholdWallet(50.0);
   rewards_browsertest_helper::EnableRewards(browser());
+  contribution_->SetUpUpholdWallet(50.0);
   contribution_->AddBalance(promotion_->ClaimPromotionViaCode());
 
   contribution_->TipPublisher(

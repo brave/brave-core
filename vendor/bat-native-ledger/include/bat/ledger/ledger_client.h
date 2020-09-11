@@ -39,9 +39,6 @@ using GetPromotionListCallback = std::function<void(type::PromotionList)>;
 using TransactionCallback =
     std::function<void(const type::Result, const std::string&)>;
 
-using GetExternalWalletsCallback =
-    std::function<void(std::map<std::string, type::ExternalWalletPtr>)>;
-
 using GetServerPublisherInfoCallback =
     std::function<void(type::ServerPublisherInfoPtr)>;
 
@@ -128,28 +125,13 @@ class LEDGER_EXPORT LedgerClient {
       const std::string& publisher_key,
       const std::string& publisher_name) = 0;
 
-  virtual std::map<std::string, type::ExternalWalletPtr>
-  GetExternalWallets() = 0;
-
-  virtual void SaveExternalWallet(
-      const std::string& wallet_type,
-      type::ExternalWalletPtr wallet) = 0;
+  // DEPRECATED
+  virtual std::string GetLegacyWallet() = 0;
 
   virtual void ShowNotification(
       const std::string& type,
       const std::vector<std::string>& args,
       client::ResultCallback callback) = 0;
-
-  virtual void SetTransferFee(
-      const std::string& wallet_type,
-      type::TransferFeePtr transfer_fee) = 0;
-
-  virtual type::TransferFeeList GetTransferFees(
-      const std::string& wallet_type) = 0;
-
-  virtual void RemoveTransferFee(
-      const std::string& wallet_type,
-      const std::string& id) = 0;
 
   virtual type::ClientInfoPtr GetClientInfo() = 0;
 

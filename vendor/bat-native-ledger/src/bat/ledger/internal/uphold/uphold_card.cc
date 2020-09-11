@@ -29,17 +29,15 @@ UpdateCard::UpdateCard() :
 
 UpdateCard::~UpdateCard() = default;
 
-UpholdCard::UpholdCard(LedgerImpl* ledger, Uphold* uphold) :
+UpholdCard::UpholdCard(LedgerImpl* ledger) :
     ledger_(ledger),
-    uphold_(uphold),
     uphold_server_(std::make_unique<endpoint::UpholdServer>(ledger)) {
 }
 
 UpholdCard::~UpholdCard() = default;
 
 void UpholdCard::CreateIfNecessary(CreateCardCallback callback) {
-  auto wallets = ledger_->ledger_client()->GetExternalWallets();
-  auto wallet = GetWallet(std::move(wallets));
+  auto wallet = GetWallet(ledger_);
   if (!wallet) {
     BLOG(0, "Wallet is null");
     callback(type::Result::LEDGER_ERROR, "");
@@ -61,7 +59,7 @@ void UpholdCard::OnCreateIfNecessary(
     CreateCardCallback callback) {
   if (result == type::Result::EXPIRED_TOKEN) {
     callback(type::Result::EXPIRED_TOKEN, "");
-    uphold_->DisconnectWallet();
+    ledger_->uphold()->DisconnectWallet();
     return;
   }
 
@@ -75,8 +73,7 @@ void UpholdCard::OnCreateIfNecessary(
 
 void UpholdCard::Create(
     CreateCardCallback callback) {
-  auto wallets = ledger_->ledger_client()->GetExternalWallets();
-  auto wallet = GetWallet(std::move(wallets));
+  auto wallet = GetWallet(ledger_);
   if (!wallet) {
     BLOG(0, "Wallet is null");
     callback(type::Result::LEDGER_ERROR, "");
@@ -99,7 +96,7 @@ void UpholdCard::OnCreate(
   if (result == type::Result::EXPIRED_TOKEN) {
     BLOG(0, "Expired token");
     callback(type::Result::EXPIRED_TOKEN, "");
-    uphold_->DisconnectWallet();
+    ledger_->uphold()->DisconnectWallet();
     return;
   }
 
@@ -109,17 +106,14 @@ void UpholdCard::OnCreate(
     return;
   }
 
-  auto wallets = ledger_->ledger_client()->GetExternalWallets();
-  auto wallet_ptr = GetWallet(std::move(wallets));
+  auto wallet_ptr = GetWallet(ledger_);
   if (!wallet_ptr) {
     BLOG(0, "Wallet is null");
     callback(type::Result::LEDGER_ERROR, "");
     return;
   }
   wallet_ptr->address = id;
-  ledger_->ledger_client()->SaveExternalWallet(
-      constant::kWalletUphold,
-      wallet_ptr->Clone());
+  ledger_->uphold()->SetWallet(wallet_ptr->Clone());
 
   auto update_callback = std::bind(&UpholdCard::OnCreateUpdate,
       this,
@@ -148,8 +142,7 @@ void UpholdCard::OnCreateUpdate(
 void UpholdCard::Update(
     const UpdateCard& card,
     ledger::ResultCallback callback) {
-  auto wallets = ledger_->ledger_client()->GetExternalWallets();
-  auto wallet = GetWallet(std::move(wallets));
+  auto wallet = GetWallet(ledger_);
   if (!wallet) {
     BLOG(0, "Wallet is null");
     callback(type::Result::LEDGER_ERROR);
@@ -174,7 +167,7 @@ void UpholdCard::OnUpdate(
   if (result == type::Result::EXPIRED_TOKEN) {
     BLOG(0, "Expired token");
     callback(type::Result::EXPIRED_TOKEN);
-    uphold_->DisconnectWallet();
+    ledger_->uphold()->DisconnectWallet();
     return;
   }
 

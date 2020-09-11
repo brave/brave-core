@@ -491,8 +491,7 @@ public class BraveRewardsPanelPopup implements BraveRewardsObserver, BraveReward
             }
         });
 
-        mBraveRewardsNativeWorker.GetExternalWallet(
-            BraveRewardsBalance.WALLET_UPHOLD);
+        mBraveRewardsNativeWorker.GetExternalWallet();
     }
 
     private void startJoinRewardsAnimation() {
@@ -1610,7 +1609,6 @@ public class BraveRewardsPanelPopup implements BraveRewardsObserver, BraveReward
         intent.putExtra(BraveRewardsExternalWallet.ADDRESS, mExternal_wallet.mAddress);
         intent.putExtra(BraveRewardsExternalWallet.STATUS, mExternal_wallet.mStatus);
         intent.putExtra(BraveRewardsExternalWallet.TOKEN, mExternal_wallet.mToken);
-        intent.putExtra(BraveRewardsExternalWallet.TYPE, mExternal_wallet.mType);
         intent.putExtra(BraveRewardsExternalWallet.USER_NAME, mExternal_wallet.mUser_name);
         intent.putExtra(BraveRewardsExternalWallet.VERIFY_URL, mExternal_wallet.mVerify_url);
         intent.putExtra(BraveRewardsExternalWallet.WITHDRAW_URL, mExternal_wallet.mWithdraw_url);

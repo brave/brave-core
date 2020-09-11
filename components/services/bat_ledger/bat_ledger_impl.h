@@ -90,7 +90,6 @@ class BatLedgerImpl :
       const std::string& promotion_id,
       const std::string& solution,
       AttestPromotionCallback callback) override;
-  void GetWalletPassphrase(GetWalletPassphraseCallback callback) override;
   void RecoverWallet(
       const std::string& pass_phrase,
       RecoverWalletCallback callback) override;
@@ -207,8 +206,7 @@ class BatLedgerImpl :
 
   void FetchBalance(FetchBalanceCallback callback) override;
 
-  void GetExternalWallet(const std::string& wallet_type,
-                         GetExternalWalletCallback callback) override;
+  void GetUpholdWallet(GetUpholdWalletCallback callback) override;
 
   void ExternalWalletAuthorization(
     const std::string& wallet_type,
@@ -392,10 +390,10 @@ class BatLedgerImpl :
       ledger::type::Result result,
       ledger::type::BalancePtr balance);
 
-  static void OnGetExternalWallet(
-    CallbackHolder<GetExternalWalletCallback>* holder,
+  static void OnGetUpholdWallet(
+    CallbackHolder<GetUpholdWalletCallback>* holder,
     ledger::type::Result result,
-    ledger::type::ExternalWalletPtr wallet);
+    ledger::type::UpholdWalletPtr wallet);
 
   static void OnExternalWalletAuthorization(
     CallbackHolder<ExternalWalletAuthorizationCallback>* holder,

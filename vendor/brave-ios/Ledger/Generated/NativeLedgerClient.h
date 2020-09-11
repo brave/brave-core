@@ -38,12 +38,8 @@ private:
   void SetUint64State(const std::string& name, uint64_t value) override;
   uint64_t GetUint64State(const std::string& name) const override;
   void ClearState(const std::string& name) override;
-  std::map<std::string, ledger::type::ExternalWalletPtr> GetExternalWallets() override;
-  void SaveExternalWallet(const std::string& wallet_type, ledger::type::ExternalWalletPtr wallet) override;
+  std::string GetLegacyWallet() override;
   void ShowNotification(const std::string& type, const std::vector<std::string>& args,  ledger::client::ResultCallback callback) override;
-  void SetTransferFee(const std::string& wallet_type, ledger::type::TransferFeePtr transfer_fee) override;
-  ledger::type::TransferFeeList GetTransferFees(const std::string& wallet_type) override;
-  void RemoveTransferFee(const std::string& wallet_type, const std::string& id) override;
   bool GetBooleanOption(const std::string& name) const override;
   int GetIntegerOption(const std::string& name) const override;
   double GetDoubleOption(const std::string& name) const override;

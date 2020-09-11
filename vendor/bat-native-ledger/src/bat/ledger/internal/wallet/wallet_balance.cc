@@ -22,7 +22,6 @@ namespace wallet {
 
 WalletBalance::WalletBalance(LedgerImpl* ledger) :
     ledger_(ledger),
-    uphold_(std::make_unique<uphold::Uphold>(ledger)),
     promotion_server_(std::make_unique<endpoint::PromotionServer>(ledger)) {
 }
 
@@ -37,7 +36,14 @@ void WalletBalance::Fetch(ledger::FetchBalanceCallback callback) {
     return;
   }
 
-  if (ledger_->state()->GetPaymentId().empty()) {
+  const auto wallet = ledger_->wallet()->GetWallet();
+  if (!wallet) {
+    BLOG(0, "Wallet is null");
+    callback(type::Result::LEDGER_ERROR, nullptr);
+    return;
+  }
+
+  if (wallet->payment_id.empty()) {
     BLOG(0, "Payment ID is empty");
     callback(type::Result::LEDGER_ERROR, nullptr);
     return;
@@ -111,9 +117,8 @@ void WalletBalance::ExternalWallets(
     return;
   }
 
-  auto wallets = ledger_->ledger_client()->GetExternalWallets();
-
-  if (wallets.empty()) {
+  auto wallet = ledger_->uphold()->GetWallet();
+  if (!wallet) {
     callback(type::Result::LEDGER_OK, std::move(balance));
     return;
   }
@@ -125,13 +130,14 @@ void WalletBalance::ExternalWallets(
                                    _1,
                                    _2);
 
-  uphold_->FetchBalance(uphold_callback);
+  ledger_->uphold()->FetchBalance(uphold_callback);
 }
 
-void WalletBalance::OnUpholdFetchBalance(type::Balance info,
-                                   ledger::FetchBalanceCallback callback,
-                                   type::Result result,
-                                   double balance) {
+void WalletBalance::OnUpholdFetchBalance(
+    type::Balance info,
+    ledger::FetchBalanceCallback callback,
+    type::Result result,
+    double balance) {
   type::BalancePtr info_ptr = type::Balance::New(info);
 
   if (result == type::Result::LEDGER_ERROR) {

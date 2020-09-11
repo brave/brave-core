@@ -127,8 +127,6 @@ class RewardsServiceImpl : public RewardsService,
       const std::string& promotion_id,
       const std::string& solution,
       AttestPromotionCallback callback) override;
-  void GetWalletPassphrase(
-      const GetWalletPassphraseCallback& callback) override;
   void RecoverWallet(const std::string& passPhrase) override;
   void GetActivityInfoList(
       const uint32_t start,
@@ -293,11 +291,9 @@ class RewardsServiceImpl : public RewardsService,
 
   void FetchBalance(FetchBalanceCallback callback) override;
 
-  std::map<std::string, ledger::type::ExternalWalletPtr>
-  GetExternalWallets() override;
+  std::string GetLegacyWallet() override;
 
-  void GetExternalWallet(const std::string& wallet_type,
-                         GetExternalWalletCallback callback) override;
+  void GetUpholdWallet(GetUpholdWalletCallback callback) override;
 
   void ExternalWalletAuthorization(
       const std::string& wallet_type,
@@ -310,10 +306,6 @@ class RewardsServiceImpl : public RewardsService,
       ProcessRewardsPageUrlCallback callback) override;
 
   void DisconnectWallet(const std::string& wallet_type) override;
-
-  void SaveExternalWallet(
-      const std::string& wallet_type,
-      ledger::type::ExternalWalletPtr wallet) override;
 
   bool OnlyAnonWallet() override;
 
@@ -343,8 +335,6 @@ class RewardsServiceImpl : public RewardsService,
   void MaybeShowNotificationAddFundsForTesting(
       base::OnceCallback<void(bool)> callback);
   void CheckInsufficientFundsForTesting();
-  ledger::type::TransferFeeList GetTransferFeesForTesting(
-      const std::string& wallet_type);
   bool IsWalletInitialized();
   void ForTestingSetTestResponseCallback(GetTestResponseCallback callback);
 
@@ -407,7 +397,14 @@ class RewardsServiceImpl : public RewardsService,
 
   void TriggerOnGetCurrentBalanceReport(
       ledger::type::BalanceReportInfoPtr report);
+
   void MaybeShowBackupNotification(uint64_t boot_stamp);
+
+  void WalletBackupNotification(
+      const uint64_t boot_stamp,
+      const ledger::type::Result result,
+      ledger::type::UpholdWalletPtr wallet);
+
   void MaybeShowAddFundsNotification(uint64_t reconcile_stamp);
 
   void OnGetOneTimeTips(
@@ -451,11 +448,10 @@ class RewardsServiceImpl : public RewardsService,
                       const ledger::type::Result result,
                       ledger::type::BalancePtr balance);
 
-  void OnGetExternalWallet(
-    const std::string& wallet_type,
-    GetExternalWalletCallback callback,
-    const ledger::type::Result result,
-    ledger::type::ExternalWalletPtr wallet);
+  void OnGetUpholdWallet(
+      GetUpholdWalletCallback callback,
+      const ledger::type::Result result,
+      ledger::type::UpholdWalletPtr wallet);
 
   void OnExternalWalletAuthorization(
     const std::string& wallet_type,
@@ -624,17 +620,6 @@ class RewardsServiceImpl : public RewardsService,
       const std::string& type,
       const std::vector<std::string>& args,
       ledger::ResultCallback callback) override;
-
-  void SetTransferFee(
-      const std::string& wallet_type,
-      ledger::type::TransferFeePtr transfer_fee) override;
-
-  ledger::type::TransferFeeList GetTransferFees(
-      const std::string& wallet_type) override;
-
-  void RemoveTransferFee(
-      const std::string& wallet_type,
-      const std::string& id) override;
 
   ledger::type::ClientInfoPtr GetClientInfo() override;
 

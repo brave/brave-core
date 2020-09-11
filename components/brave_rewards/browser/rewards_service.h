@@ -40,7 +40,6 @@ class RewardsServicePrivateObserver;
 
 using GetPublisherInfoListCallback =
     base::Callback<void(ledger::type::PublisherInfoList list)>;
-using GetWalletPassphraseCallback = base::Callback<void(const std::string&)>;
 using GetAutoContributionAmountCallback = base::Callback<void(double)>;
 using GetAutoContributePropertiesCallback = base::Callback<void(
     ledger::type::AutoContributePropertiesPtr)>;
@@ -81,9 +80,9 @@ using GetCurrentCountryCallback = base::OnceCallback<void(const std::string&)>;
 using FetchBalanceCallback = base::OnceCallback<void(
     const ledger::type::Result,
     ledger::type::BalancePtr)>;
-using GetExternalWalletCallback = base::OnceCallback<void(
+using GetUpholdWalletCallback = base::OnceCallback<void(
     const ledger::type::Result result,
-    ledger::type::ExternalWalletPtr wallet)>;
+    ledger::type::UpholdWalletPtr wallet)>;
 using ProcessRewardsPageUrlCallback = base::OnceCallback<void(
     const ledger::type::Result result,
     const std::string&,
@@ -159,8 +158,6 @@ class RewardsService : public KeyedService {
       const std::string& promotion_id,
       const std::string& solution,
       AttestPromotionCallback callback) = 0;
-  virtual void GetWalletPassphrase(
-      const GetWalletPassphraseCallback& callback) = 0;
   virtual void RecoverWallet(const std::string& passPhrase) = 0;
   virtual void RestorePublishers() = 0;
   virtual void OnLoad(SessionID tab_id, const GURL& gurl) = 0;
@@ -308,8 +305,7 @@ class RewardsService : public KeyedService {
 
   virtual void FetchBalance(FetchBalanceCallback callback) = 0;
 
-  virtual void GetExternalWallet(const std::string& wallet_type,
-                                 GetExternalWalletCallback callback) = 0;
+  virtual void GetUpholdWallet(GetUpholdWalletCallback callback) = 0;
 
   virtual void ProcessRewardsPageUrl(
       const std::string& path,

@@ -25,12 +25,12 @@ class ContributionSKU {
 
   void AutoContribution(
       const std::string& contribution_id,
-      type::ExternalWalletPtr wallet,
+      const std::string& wallet_type,
       ledger::ResultCallback callback);
 
   void AnonUserFunds(
       const std::string& contribution_id,
-      type::ExternalWalletPtr wallet,
+      const std::string& wallet_type,
       ledger::ResultCallback callback);
 
   void Merchant(
@@ -45,13 +45,13 @@ class ContributionSKU {
   void Start(
       const std::string& contribution_id,
       const type::SKUOrderItem& item,
-      type::ExternalWalletPtr wallet,
+      const std::string& wallet_type,
       ledger::ResultCallback callback);
 
   void GetContributionInfo(
       type::ContributionInfoPtr contribution,
       const type::SKUOrderItem& item,
-      const type::ExternalWallet& wallet,
+      const std::string& wallet_type,
       ledger::ResultCallback callback);
 
   void GetOrder(
@@ -107,7 +107,7 @@ class ContributionSKU {
 
   void RetryStartStepExternalWallet(
       const type::Result result,
-      type::ExternalWalletPtr wallet,
+      const std::string& wallet_type,
       const std::string& order_id,
       const std::string& contribution_id,
       ledger::ResultCallback callback);

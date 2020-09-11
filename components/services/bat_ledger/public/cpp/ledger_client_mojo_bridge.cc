@@ -242,16 +242,9 @@ void LedgerClientMojoBridge::OnContributeUnverifiedPublishers(
       publisher_name);
 }
 
-void LedgerClientMojoBridge::GetExternalWallets(
-    GetExternalWalletsCallback callback) {
-  std::move(callback).Run(
-      base::MapToFlatMap(ledger_client_->GetExternalWallets()));
-}
-
-void LedgerClientMojoBridge::SaveExternalWallet(
-    const std::string& wallet_type,
-    ledger::type::ExternalWalletPtr wallet) {
-  ledger_client_->SaveExternalWallet(wallet_type, std::move(wallet));
+void LedgerClientMojoBridge::GetLegacyWallet(
+    GetLegacyWalletCallback callback) {
+  std::move(callback).Run(ledger_client_->GetLegacyWallet());
 }
 
 // static
@@ -277,25 +270,6 @@ void LedgerClientMojoBridge::ShowNotification(
       std::bind(LedgerClientMojoBridge::OnShowNotification,
                 holder,
                 _1));
-}
-
-void LedgerClientMojoBridge::GetTransferFees(
-    const std::string& wallet_type,
-    GetTransferFeesCallback callback) {
-  auto list = ledger_client_->GetTransferFees(wallet_type);
-  std::move(callback).Run(base::MapToFlatMap(std::move(list)));
-}
-
-void LedgerClientMojoBridge::SetTransferFee(
-    const std::string& wallet_type,
-    ledger::type::TransferFeePtr transfer_fee) {
-  ledger_client_->SetTransferFee(wallet_type, std::move(transfer_fee));
-}
-
-void LedgerClientMojoBridge::RemoveTransferFee(
-    const std::string& wallet_type,
-    const std::string& id) {
-  ledger_client_->RemoveTransferFee(wallet_type, id);
 }
 
 void LedgerClientMojoBridge::GetClientInfo(

@@ -449,6 +449,8 @@ source_set("ledger") {
     "src/bat/ledger/internal/state/state_migration_v4.h",
     "src/bat/ledger/internal/state/state_migration_v5.cc",
     "src/bat/ledger/internal/state/state_migration_v5.h",
+    "src/bat/ledger/internal/state/state_migration_v6.cc",
+    "src/bat/ledger/internal/state/state_migration_v6.h",
     "src/bat/ledger/internal/uphold/uphold.h",
     "src/bat/ledger/internal/uphold/uphold.cc",
     "src/bat/ledger/internal/uphold/uphold_authorization.h",
@@ -473,8 +475,6 @@ source_set("ledger") {
     "src/bat/ledger/internal/wallet/wallet_create.cc",
     "src/bat/ledger/internal/wallet/wallet_recover.h",
     "src/bat/ledger/internal/wallet/wallet_recover.cc",
-    "src/bat/ledger/internal/wallet/wallet_util.h",
-    "src/bat/ledger/internal/wallet/wallet_util.cc",
     "src/bat/ledger/ledger.cc",
     "src/bat/ledger/ledger_database.cc",
   ]

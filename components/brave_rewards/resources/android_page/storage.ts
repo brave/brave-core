@@ -23,7 +23,6 @@ export const defaultState: Rewards.State = {
   contributionVideos: true,
   donationAbilityYT: true,
   donationAbilityTwitter: true,
-  recoveryKey: '',
   reconcileStamp: 0,
   ui: {
     emptyWallet: true,

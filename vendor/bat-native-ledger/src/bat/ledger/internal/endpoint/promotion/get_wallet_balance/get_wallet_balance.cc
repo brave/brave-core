@@ -27,10 +27,15 @@ GetWalletBalance::GetWalletBalance(LedgerImpl* ledger):
 GetWalletBalance::~GetWalletBalance() = default;
 
 std::string GetWalletBalance::GetUrl() {
-  const std::string payment_id = ledger_->state()->GetPaymentId();
+  const auto wallet = ledger_->wallet()->GetWallet();
+  if (!wallet) {
+    BLOG(0, "Wallet is null");
+    return "";
+  }
+
   const std::string path = base::StringPrintf(
       "/v3/wallet/uphold/%s",
-      payment_id.c_str());
+      wallet->payment_id.c_str());
 
   return GetServerUrl(path);
 }

@@ -73,10 +73,6 @@ class PageWallet extends React.Component<Props, State> {
   }
 
   onModalBackupOpen = () => {
-    if (this.props.rewardsData.recoveryKey.length === 0) {
-      this.actions.getWalletPassphrase()
-    }
-
     this.actions.onModalBackupOpen()
   }
 
@@ -775,7 +771,6 @@ class PageWallet extends React.Component<Props, State> {
 
   render () {
     const {
-      recoveryKey,
       enabledMain,
       balance,
       ui,
@@ -829,7 +824,7 @@ class PageWallet extends React.Component<Props, State> {
           modalBackup
             ? <ModalBackupRestore
               activeTabId={this.state.activeTabId}
-              backupKey={recoveryKey}
+              backupKey={''}
               showBackupNotice={this.showBackupNotice()}
               onTabChange={this.onModalBackupTabChange}
               onClose={this.onModalBackupClose}

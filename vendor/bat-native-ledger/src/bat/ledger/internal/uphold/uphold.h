@@ -65,13 +65,17 @@ class Uphold {
       const std::map<std::string, std::string>& args,
       ledger::ExternalWalletAuthorizationCallback callback);
 
-  void GenerateExternalWallet(ledger::ResultCallback callback);
+  void GenerateWallet(ledger::ResultCallback callback);
 
   void CreateCard(CreateCardCallback callback);
 
   void DisconnectWallet();
 
   void GetUser(GetUserCallback callback);
+
+  type::UpholdWalletPtr GetWallet();
+
+  void SetWallet(type::UpholdWalletPtr wallet);
 
  private:
   void ContributionCompleted(
@@ -87,18 +91,20 @@ class Uphold {
       const double available,
       FetchBalanceCallback callback);
 
-  void SaveTransferFee(type::TransferFeePtr transfer_fee);
+  void SaveTransferFee(const std::string& contribution_id, const double amount);
 
   void StartTransferFeeTimer(const std::string& fee_id);
 
   void OnTransferFeeCompleted(
       const type::Result result,
       const std::string& transaction_id,
-      const type::TransferFee& transfer_fee);
+      const std::string& contribution_id);
 
-  void TransferFee(const type::TransferFee& transfer_fee);
+  void TransferFee(const std::string& contribution_id, const double amount);
 
   void OnTransferFeeTimerElapsed(const std::string& id);
+
+  void RemoveTransferFee(const std::string& contribution_id);
 
   std::unique_ptr<UpholdTransfer> transfer_;
   std::unique_ptr<UpholdCard> card_;

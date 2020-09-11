@@ -34,6 +34,7 @@ LedgerImpl::LedgerImpl(ledger::LedgerClient* client) :
     state_(std::make_unique<state::State>(this)),
     api_(std::make_unique<api::API>(this)),
     recovery_(std::make_unique<recovery::Recovery>(this)),
+    uphold_(std::make_unique<uphold::Uphold>(this)),
     initialized_task_scheduler_(false),
     initializing_(false),
     last_tab_active_time_(0),
@@ -108,6 +109,10 @@ api::API* LedgerImpl::api() const {
 
 database::Database* LedgerImpl::database() const {
   return database_.get();
+}
+
+uphold::Uphold* LedgerImpl::uphold() const {
+  return uphold_.get();
 }
 
 void LedgerImpl::LoadURL(
@@ -487,10 +492,6 @@ void LedgerImpl::AttestPromotion(
   promotion()->Attest(promotion_id, solution, callback);
 }
 
-std::string LedgerImpl::GetWalletPassphrase() const {
-  return wallet()->GetWalletPassphrase();
-}
-
 void LedgerImpl::GetBalanceReport(
     const type::ActivityMonth month,
     const int year,
@@ -569,21 +570,27 @@ void LedgerImpl::HasSufficientBalanceToReconcile(
 
 void LedgerImpl::GetRewardsInternalsInfo(
     ledger::RewardsInternalsInfoCallback callback) {
-  type::RewardsInternalsInfoPtr info = type::RewardsInternalsInfo::New();
+  auto info = type::RewardsInternalsInfo::New();
+
+  type::BraveWalletPtr wallet = wallet_->GetWallet();
+  if (!wallet) {
+    BLOG(0, "Wallet is null");
+    callback(std::move(info));
+    return;
+  }
 
   // Retrieve the payment id.
-  info->payment_id = state()->GetPaymentId();
+  info->payment_id = wallet->payment_id;
 
   // Retrieve the boot stamp.
   info->boot_stamp = state()->GetCreationStamp();
 
   // Retrieve the key info seed and validate it.
-  const auto seed = state()->GetRecoverySeed();
-  if (!util::Security::IsSeedValid(seed)) {
+  if (!util::Security::IsSeedValid(wallet->recovery_seed)) {
     info->is_key_info_seed_valid = false;
   } else {
     std::vector<uint8_t> secret_key =
-        util::Security::GetHKDF(seed);
+        util::Security::GetHKDF(wallet->recovery_seed);
     std::vector<uint8_t> public_key;
     std::vector<uint8_t> new_secret_key;
     info->is_key_info_seed_valid =
@@ -714,10 +721,18 @@ void LedgerImpl::FetchBalance(ledger::FetchBalanceCallback callback) {
   wallet()->FetchBalance(callback);
 }
 
-void LedgerImpl::GetExternalWallet(
-    const std::string& wallet_type,
-    ledger::ExternalWalletCallback callback) {
-  wallet()->GetExternalWallet(wallet_type, callback);
+void LedgerImpl::GetUpholdWallet(ledger::UpholdWalletCallback callback) {
+  uphold()->GenerateWallet(
+    [this, callback](const type::Result result) {
+      if (result != type::Result::LEDGER_OK &&
+          result != type::Result::CONTINUE) {
+        callback(result, nullptr);
+        return;
+      }
+
+      auto wallet = uphold()->GetWallet();
+      callback(type::Result::LEDGER_OK, std::move(wallet));
+    });
 }
 
 void LedgerImpl::ExternalWalletAuthorization(
@@ -784,9 +799,9 @@ void LedgerImpl::GetAllMonthlyReportIds(
 
 void LedgerImpl::ProcessSKU(
     const std::vector<type::SKUOrderItem>& items,
-    type::ExternalWalletPtr wallet,
+    const std::string& wallet_type,
     ledger::SKUOrderCallback callback) {
-  sku()->Process(items, std::move(wallet), callback);
+  sku()->Process(items, wallet_type, callback);
 }
 
 void LedgerImpl::Shutdown(ledger::ResultCallback callback) {
@@ -815,6 +830,10 @@ void LedgerImpl::OnAllDone(
 
 void LedgerImpl::GetEventLogs(ledger::GetEventLogsCallback callback) {
   database()->GetLastEventLogs(callback);
+}
+
+bool LedgerImpl::IsShuttingDown() const {
+  return shutting_down_;
 }
 
 }  // namespace ledger

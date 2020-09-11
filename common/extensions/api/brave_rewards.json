@@ -1213,6 +1213,7 @@
               {
                 "name": "wallet",
                 "type": "object",
+                "optional": true,
                 "properties": {
                   "token": {
                     "type": "any"
@@ -1221,9 +1222,6 @@
                     "type": "any"
                   },
                   "status": {
-                    "type": "any"
-                  },
-                  "type": {
                     "type": "any"
                   },
                   "verifyUrl": {

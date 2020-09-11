@@ -31,7 +31,7 @@ class SKUCommon {
   void CreateTransaction(
       type::SKUOrderPtr order,
       const std::string& destination,
-      const type::ExternalWallet& wallet,
+      const std::string& wallet_type,
       ledger::SKUOrderCallback callback);
 
   void SendExternalTransaction(

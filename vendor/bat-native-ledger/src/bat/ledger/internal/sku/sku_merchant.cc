@@ -26,20 +26,14 @@ SKUMerchant::~SKUMerchant() = default;
 
 void SKUMerchant::Process(
     const std::vector<type::SKUOrderItem>& items,
-    type::ExternalWalletPtr wallet,
+    const std::string& wallet_type,
     ledger::SKUOrderCallback callback,
     const std::string& contribution_id) {
-  if (!wallet) {
-    BLOG(0, "Wallet is null");
-    callback(type::Result::LEDGER_ERROR, "");
-    return;
-  }
-
   auto create_callback = std::bind(&SKUMerchant::OrderCreated,
       this,
       _1,
       _2,
-      *wallet,
+      wallet_type,
       callback);
 
   common_->CreateOrder(items, create_callback);
@@ -48,7 +42,7 @@ void SKUMerchant::Process(
 void SKUMerchant::OrderCreated(
     const type::Result result,
     const std::string& order_id,
-    const type::ExternalWallet& wallet,
+    const std::string& wallet_type,
     ledger::SKUOrderCallback callback) {
   if (result != type::Result::LEDGER_OK) {
     BLOG(0, "Order was not successful");
@@ -59,7 +53,7 @@ void SKUMerchant::OrderCreated(
   auto get_callback = std::bind(&SKUMerchant::OnOrder,
       this,
       _1,
-      wallet,
+      wallet_type,
       callback);
 
   ledger_->database()->GetSKUOrder(order_id, get_callback);
@@ -67,7 +61,7 @@ void SKUMerchant::OrderCreated(
 
 void SKUMerchant::OnOrder(
     type::SKUOrderPtr order,
-    const type::ExternalWallet& wallet,
+    const std::string& wallet_type,
     ledger::SKUOrderCallback callback) {
   if (!order) {
     BLOG(0, "Order is null");
@@ -75,13 +69,13 @@ void SKUMerchant::OnOrder(
     return;
   }
 
-  if (wallet.type == constant::kWalletUphold) {
+  if (wallet_type == constant::kWalletUphold) {
     auto publisher_callback =
         std::bind(&SKUMerchant::OnServerPublisherInfo,
           this,
           _1,
           std::make_shared<type::SKUOrderPtr>(order->Clone()),
-          wallet,
+          wallet_type,
           callback);
 
     ledger_->publisher()->GetServerPublisherInfo(
@@ -90,13 +84,13 @@ void SKUMerchant::OnOrder(
     return;
   }
 
-  common_->CreateTransaction(std::move(order), "", wallet, callback);
+  common_->CreateTransaction(std::move(order), "", wallet_type, callback);
 }
 
 void SKUMerchant::OnServerPublisherInfo(
     type::ServerPublisherInfoPtr info,
     std::shared_ptr<type::SKUOrderPtr> shared_order,
-    const type::ExternalWallet& wallet,
+    const std::string& wallet_type,
     ledger::SKUOrderCallback callback) {
   if (!shared_order || !info) {
     BLOG(0, "Order/Publisher not found");
@@ -113,13 +107,13 @@ void SKUMerchant::OnServerPublisherInfo(
   common_->CreateTransaction(
       std::move(*shared_order),
       info->address,
-      wallet,
+      wallet_type,
       callback);
 }
 
 void SKUMerchant::Retry(
     const std::string& order_id,
-    type::ExternalWalletPtr wallet,
+    const std::string& wallet_type,
     ledger::SKUOrderCallback callback) {
   // We will implement retry logic when we will have more complex flows,
   // right now there is nothing to retry

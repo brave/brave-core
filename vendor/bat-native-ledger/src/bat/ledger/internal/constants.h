@@ -26,6 +26,8 @@ const uint64_t kPendingContributionExpirationInterval =
 
 const double kVotePrice = 0.25;
 
+const int kMinVisitTime = 8;
+
 }  // namespace constant
 }  // namespace ledger
 

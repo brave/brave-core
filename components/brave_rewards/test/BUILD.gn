@@ -88,7 +88,6 @@ source_set("brave_rewards_unit_tests") {
       "//brave/vendor/bat-native-ledger/src/bat/ledger/internal/endpoint/uphold/uphold_utils_unittest.cc",
       "//brave/vendor/bat-native-ledger/src/bat/ledger/internal/uphold/uphold_unittest.cc",
       "//brave/vendor/bat-native-ledger/src/bat/ledger/internal/uphold/uphold_util_unittest.cc",
-      "//brave/vendor/bat-native-ledger/src/bat/ledger/internal/wallet/wallet_util_unittest.cc",
     ]
 
     deps = [

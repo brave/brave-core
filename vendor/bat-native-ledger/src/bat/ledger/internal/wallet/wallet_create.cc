@@ -5,12 +5,14 @@
 
 #include "bat/ledger/internal/wallet/wallet_create.h"
 
+#include <utility>
 #include <vector>
 
 #include "base/json/json_reader.h"
 #include "bat/ledger/internal/common/security_util.h"
 #include "bat/ledger/internal/common/time_util.h"
 #include "bat/ledger/internal/ledger_impl.h"
+#include "bat/ledger/internal/constants.h"
 
 using std::placeholders::_1;
 using std::placeholders::_2;
@@ -27,16 +29,18 @@ WalletCreate::WalletCreate(LedgerImpl* ledger) :
 WalletCreate::~WalletCreate() = default;
 
 void WalletCreate::Start(ledger::ResultCallback callback) {
-  const auto payment_id = ledger_->state()->GetPaymentId();
+  auto wallet = ledger_->wallet()->GetWallet();
 
-  if (!payment_id.empty()) {
+  if (wallet && !wallet->payment_id.empty()) {
     BLOG(1, "Wallet already exists");
     callback(type::Result::WALLET_CREATED);
     return;
   }
 
+  wallet = type::BraveWallet::New();
   const auto key_info_seed = util::Security::GenerateSeed();
-  ledger_->state()->SetRecoverySeed(key_info_seed);
+  wallet->recovery_seed = key_info_seed;
+  ledger_->wallet()->SetWallet(std::move(wallet));
 
   auto url_callback = std::bind(&WalletCreate::OnCreate,
       this,
@@ -56,18 +60,21 @@ void WalletCreate::OnCreate(
     return;
   }
 
-  ledger_->state()->SetPaymentId(payment_id);
+  auto wallet = ledger_->wallet()->GetWallet();
+  wallet->payment_id = payment_id;
+  ledger_->wallet()->SetWallet(std::move(wallet));
 
   ledger_->state()->SetRewardsMainEnabled(true);
   ledger_->state()->SetAutoContributeEnabled(true);
+  ledger_->publisher()->CalcScoreConsts(
+      ledger_->state()->GetPublisherMinVisitTime());
   ledger_->state()->ResetReconcileStamp();
   if (!ledger::is_testing) {
     ledger_->state()->SetFetchOldBalanceEnabled(false);
     ledger_->state()->SetEmptyBalanceChecked(true);
     ledger_->state()->SetPromotionCorruptedMigrated(true);
   }
-  ledger_->state()->SetCreationStamp(
-      util::GetCurrentTimeStamp());
+  ledger_->state()->SetCreationStamp(util::GetCurrentTimeStamp());
   ledger_->state()->SetInlineTippingPlatformEnabled(
       type::InlineTipsPlatforms::REDDIT,
       true);
