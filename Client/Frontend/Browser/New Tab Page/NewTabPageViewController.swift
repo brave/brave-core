@@ -247,7 +247,7 @@ class NewTabPageViewController: UIViewController, Themeable {
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         
-        presentNotification()
+//        presentNotification()
     }
     
     override func viewSafeAreaInsetsDidChange() {
