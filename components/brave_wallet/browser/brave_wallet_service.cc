@@ -253,32 +253,43 @@ void BraveWalletService::RemoveUnusedWeb3ProviderContentScripts() {
   PrefService* prefs = user_prefs::UserPrefs::Get(context_);
   auto* shared_user_script_manager =
       extensions::ExtensionSystem::Get(context_)->shared_user_script_manager();
+  if (!shared_user_script_manager) {
+    return;
+  }
   auto* registry = extensions::ExtensionRegistry::Get(context_);
-  auto* metamask_extension =
-      registry->enabled_extensions().GetByID(metamask_extension_id);
-  auto* erc_extension =
-      registry->enabled_extensions().GetByID(
-          ethereum_remote_client_extension_id);
   auto provider = static_cast<BraveWalletWeb3ProviderTypes>(
       prefs->GetInteger(kBraveWalletWeb3Provider));
-  if (metamask_extension) {
-    shared_user_script_manager->OnExtensionUnloaded(
-        context_, metamask_extension,
-        extensions::UnloadedExtensionReason::DISABLE);
-  }
+
+  auto* erc_extension =
+    registry->enabled_extensions().GetByID(
+        ethereum_remote_client_extension_id);
   if (erc_extension) {
     shared_user_script_manager->OnExtensionUnloaded(
         context_, erc_extension,
         extensions::UnloadedExtensionReason::DISABLE);
   }
+  auto* metamask_extension =
+    registry->enabled_extensions().GetByID(metamask_extension_id);
+  if (metamask_extension) {
+    shared_user_script_manager->OnExtensionUnloaded(
+        context_, metamask_extension,
+        extensions::UnloadedExtensionReason::DISABLE);
+  }
+
+  // If the user has not manually gone into settings and selected
+  // they want to use Crypto Wallets. Then we prefer MetaMask.
+  // MetaMask is the default if it is installed.
+  // We can't have 2 web3 providers, we:
+  // 1) Check if MetaMask content scripts are disabled, if so, enable them.
+  // 2) Check if CryptoWallets content scripts are enabled, if so, disable them.
   if (provider == BraveWalletWeb3ProviderTypes::CRYPTO_WALLETS) {
     if (erc_extension) {
       shared_user_script_manager->OnExtensionLoaded(context_, erc_extension);
     }
-  } else if (provider == BraveWalletWeb3ProviderTypes::METAMASK) {
+  } else if (provider != BraveWalletWeb3ProviderTypes::NONE) {
     if (metamask_extension) {
-      shared_user_script_manager->OnExtensionLoaded(
-          context_, metamask_extension);
+      shared_user_script_manager->OnExtensionLoaded(context_,
+          metamask_extension);
     }
   }
 }
@@ -287,10 +298,49 @@ void BraveWalletService::OnPreferenceChanged() {
   RemoveUnusedWeb3ProviderContentScripts();
 }
 
+void BraveWalletService::OnExtensionInstalled(
+    content::BrowserContext* browser_context,
+    const extensions::Extension* extension, bool is_update) {
+  if (extension->id() == metamask_extension_id && !is_update) {
+    PrefService* prefs = user_prefs::UserPrefs::Get(context_);
+    prefs->SetInteger(kBraveWalletWeb3Provider,
+        static_cast<int>(BraveWalletWeb3ProviderTypes::METAMASK));
+    RemoveUnusedWeb3ProviderContentScripts();
+  }
+}
+
 void BraveWalletService::OnExtensionLoaded(
     content::BrowserContext* browser_context,
     const extensions::Extension* extension) {
-  RemoveUnusedWeb3ProviderContentScripts();
+  if (extension->id() == metamask_extension_id ||
+      extension->id() == ethereum_remote_client_extension_id) {
+    RemoveUnusedWeb3ProviderContentScripts();
+  }
+}
+
+void BraveWalletService::OnExtensionUnloaded(
+    content::BrowserContext* browser_context,
+    const extensions::Extension* extension,
+    extensions::UnloadedExtensionReason reason) {
+  if (extension->id() == metamask_extension_id ||
+      extension->id() == ethereum_remote_client_extension_id) {
+    RemoveUnusedWeb3ProviderContentScripts();
+  }
+}
+
+void BraveWalletService::OnExtensionUninstalled(
+    content::BrowserContext* browser_context,
+    const extensions::Extension* extension,
+    extensions::UninstallReason reason) {
+  if (extension->id() == metamask_extension_id) {
+    PrefService* prefs = user_prefs::UserPrefs::Get(context_);
+    auto provider = static_cast<BraveWalletWeb3ProviderTypes>(
+      prefs->GetInteger(kBraveWalletWeb3Provider));
+    if (provider == BraveWalletWeb3ProviderTypes::METAMASK)
+      prefs->SetInteger(kBraveWalletWeb3Provider,
+          static_cast<int>(BraveWalletWeb3ProviderTypes::CRYPTO_WALLETS));
+    RemoveUnusedWeb3ProviderContentScripts();
+  }
 }
 
 bool BraveWalletService::IsCryptoWalletsSetup() const {

@@ -16,7 +16,6 @@
 #include "brave/components/brave_shields/browser/brave_shields_web_contents_observer.h"
 #include "brave/components/brave_sync/brave_sync_prefs.h"
 #include "brave/components/brave_rewards/common/pref_names.h"
-#include "brave/components/brave_wallet/browser/buildflags/buildflags.h"
 #include "brave/components/brave_wayback_machine/buildflags.h"
 #include "brave/components/brave_webtorrent/browser/buildflags/buildflags.h"
 #include "brave/components/ipfs/browser/buildflags/buildflags.h"
@@ -53,10 +52,6 @@
 #include "brave/browser/ipfs/ipfs_service.h"
 #endif
 
-#if BUILDFLAG(BRAVE_WALLET_ENABLED)
-#include "brave/browser/brave_wallet/brave_wallet_utils.h"
-#endif
-
 #if BUILDFLAG(GEMINI_ENABLED)
 #include "brave/components/gemini/browser/pref_names.h"
 #endif
@@ -91,10 +86,6 @@ void RegisterProfilePrefsForMigration(
 #endif
 
   dark_mode::RegisterBraveDarkModePrefsForMigration(registry);
-
-#if BUILDFLAG(BRAVE_WALLET_ENABLED)
-  brave_wallet::RegisterBraveWalletProfilePrefsForMigration(registry);
-#endif
 
   // Restore "Other Bookmarks" migration
   registry->RegisterBooleanPref(kOtherBookmarksMigrated, false);

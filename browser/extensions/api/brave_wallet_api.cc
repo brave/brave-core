@@ -10,6 +10,7 @@
 
 #include "base/json/json_writer.h"
 #include "base/values.h"
+#include "brave/browser/extensions/brave_wallet_util.h"
 #include "brave/browser/infobars/crypto_wallets_infobar_delegate.h"
 #include "brave/browser/profiles/profile_util.h"
 #include "brave/common/brave_wallet_constants.h"
@@ -27,7 +28,6 @@
 #include "extensions/browser/extension_util.h"
 #include "brave/browser/brave_wallet/brave_wallet_service_factory.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_service.h"
-#include "brave/browser/extensions/brave_wallet_util.h"
 #include "ui/base/l10n/l10n_util.h"
 
 namespace {
@@ -82,13 +82,9 @@ BraveWalletPromptToEnableWalletFunction::Run() {
     CryptoWalletsInfoBarDelegate::InfobarSubType subtype =
         CryptoWalletsInfoBarDelegate::InfobarSubType::GENERIC_SETUP;
     auto* service = GetBraveWalletService(browser_context());
-    auto* registry = extensions::ExtensionRegistry::Get(profile);
     if (service->ShouldShowLazyLoadInfobar()) {
       subtype = CryptoWalletsInfoBarDelegate::InfobarSubType::
           LOAD_CRYPTO_WALLETS;
-    } else if (registry->ready_extensions().Contains(metamask_extension_id)) {
-      subtype = CryptoWalletsInfoBarDelegate::InfobarSubType::
-          CRYPTO_WALLETS_METAMASK;
     }
     CryptoWalletsInfoBarDelegate::Create(infobar_service, subtype);
   }
@@ -147,15 +143,22 @@ BraveWalletShouldPromptForSetupFunction::Run() {
 ExtensionFunction::ResponseAction
 BraveWalletShouldCheckForDappsFunction::Run() {
   Profile* profile = Profile::FromBrowserContext(browser_context());
+  if (brave::IsTorProfile(profile)) {
+    return RespondNow(OneArgument(
+        std::make_unique<base::Value>(false)));
+  }
   auto provider = static_cast<BraveWalletWeb3ProviderTypes>(
       profile->GetPrefs()->GetInteger(kBraveWalletWeb3Provider));
-  bool dappDetection = !brave::IsTorProfile(profile);
-  if (provider != BraveWalletWeb3ProviderTypes::ASK) {
-    auto* service = GetBraveWalletService(browser_context());
-    dappDetection = provider == BraveWalletWeb3ProviderTypes::ASK ||
-        (provider == BraveWalletWeb3ProviderTypes::CRYPTO_WALLETS &&
-        !service->IsCryptoWalletsReady());
-  }
+  auto* registry = extensions::ExtensionRegistry::Get(profile);
+  bool has_metamask =
+      registry->ready_extensions().Contains(metamask_extension_id);
+
+  auto* service = GetBraveWalletService(browser_context());
+  bool dappDetection = (
+      provider == BraveWalletWeb3ProviderTypes::ASK && !has_metamask) ||
+      (provider == BraveWalletWeb3ProviderTypes::CRYPTO_WALLETS &&
+       !service->IsCryptoWalletsReady());
+
   return RespondNow(OneArgument(
       std::make_unique<base::Value>(dappDetection)));
 }

@@ -870,9 +870,6 @@ By installing this extension, you are agreeing to the Google Widevine Terms of U
         This anonymous info only lets Brave estimate the overall usage of certain features.
       </message>
       <!-- Web3 detection -->
-      <message name="IDS_BRAVE_CRYPTO_WALLETS_METAMASK_INFOBAR_TEXT" desc="Text that shows on the info bar when a Dapp is detected">
-        Would you like to use Brave's Crypto Wallets or MetaMask for Dapps?
-      </message>
       <message name="IDS_BRAVE_CRYPTO_WALLETS_LAZY_LOAD_TEXT" desc="Text that shows on the info bar when a Dapp is detected">
         Would you like to start Crypto Wallets for web3 support on this page?
       </message>
@@ -881,12 +878,6 @@ By installing this extension, you are agreeing to the Google Widevine Terms of U
       </message>
       <message name="IDS_BRAVE_CRYPTO_WALLETS_SETUP_CRYPTO_WALLETS" desc="Setup Crypto Wallets">
         Setup Crypto Wallets
-      </message>
-      <message name="IDS_BRAVE_CRYPTO_WALLETS_USE_METAMASK" desc="Use MetaMask and don't use Crypto Wallets">
-        Use MetaMask
-      </message>
-      <message name="IDS_BRAVE_CRYPTO_WALLETS_SETUP" desc="Use Crypto Wallets">
-        SETUP
       </message>
        <message name="IDS_BRAVE_CRYPTO_WALLETS_START_AND_RELOAD" desc="Start Crypto Wallets and reload">
         Start Crypto Wallets and reload

@@ -28,7 +28,6 @@
 #include "ui/base/l10n/l10n_util.h"
 #include "ui/views/vector_icons.h"
 
-
 // static
 void CryptoWalletsInfoBarDelegate::Create(InfoBarService* infobar_service,
     CryptoWalletsInfoBarDelegate::InfobarSubType subtype) {
@@ -60,16 +59,11 @@ base::string16 CryptoWalletsInfoBarDelegate::GetMessageText() const {
   if (subtype_ == InfobarSubType::LOAD_CRYPTO_WALLETS) {
     return l10n_util::GetStringUTF16(IDS_BRAVE_CRYPTO_WALLETS_LAZY_LOAD_TEXT);
   }
-  if (subtype_ == InfobarSubType::CRYPTO_WALLETS_METAMASK) {
-      return l10n_util::GetStringUTF16(
-          IDS_BRAVE_CRYPTO_WALLETS_METAMASK_INFOBAR_TEXT);
-  }
   return l10n_util::GetStringUTF16(IDS_BRAVE_CRYPTO_WALLETS_INFOBAR_TEXT);
 }
 
 int CryptoWalletsInfoBarDelegate::GetButtons() const {
-  if (subtype_ == InfobarSubType::LOAD_CRYPTO_WALLETS ||
-      subtype_ == InfobarSubType::CRYPTO_WALLETS_METAMASK) {
+  if (subtype_ == InfobarSubType::LOAD_CRYPTO_WALLETS) {
     return BUTTON_OK | BUTTON_CANCEL;
   }
   return BUTTON_OK;
@@ -85,13 +79,8 @@ base::string16 CryptoWalletsInfoBarDelegate::GetButtonLabel(
         IDS_BRAVE_CRYPTO_WALLETS_START_AND_RELOAD);
   }
 
-  if (button == BUTTON_CANCEL) {
-    return l10n_util::GetStringUTF16(IDS_BRAVE_CRYPTO_WALLETS_USE_METAMASK);
-  }
-
-  return subtype_ == InfobarSubType::CRYPTO_WALLETS_METAMASK ?
-      l10n_util::GetStringUTF16(IDS_BRAVE_CRYPTO_WALLETS_SETUP_CRYPTO_WALLETS) :
-      l10n_util::GetStringUTF16(IDS_BRAVE_CRYPTO_WALLETS_SETUP);
+  return l10n_util::GetStringUTF16(
+      IDS_BRAVE_CRYPTO_WALLETS_SETUP_CRYPTO_WALLETS);
 }
 
 base::string16 CryptoWalletsInfoBarDelegate::GetLinkText() const {
@@ -132,22 +121,11 @@ bool CryptoWalletsInfoBarDelegate::Accept() {
 }
 
 bool CryptoWalletsInfoBarDelegate::Cancel() {
-  if (subtype_ == InfobarSubType::LOAD_CRYPTO_WALLETS) {
-    content::WebContents* web_contents =
-      InfoBarService::WebContentsFromInfoBar(infobar());
-    if (web_contents) {
-      Browser* browser = chrome::FindBrowserWithWebContents(web_contents);
-      brave::ShowExtensionSettings(browser);
-    }
-    return true;
-  }
-
   content::WebContents* web_contents =
-      InfoBarService::WebContentsFromInfoBar(infobar());
+    InfoBarService::WebContentsFromInfoBar(infobar());
   if (web_contents) {
-    user_prefs::UserPrefs::Get(web_contents->GetBrowserContext())->
-        SetInteger(kBraveWalletWeb3Provider,
-            static_cast<int>(BraveWalletWeb3ProviderTypes::METAMASK));
+    Browser* browser = chrome::FindBrowserWithWebContents(web_contents);
+    brave::ShowExtensionSettings(browser);
   }
   return true;
 }
