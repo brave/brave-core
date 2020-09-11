@@ -45,7 +45,6 @@ class TrackingProtectionService : public LocalDataFilesObserver {
                           blink::mojom::ResourceType resource_type,
                           const std::string& tab_host,
                           bool* matching_exception_filter,
-                          bool* cancel_request_explicitly,
                           const BlockDecision** block_decision);
 
   // implementation of LocalDataFilesObserver

@@ -60,13 +60,11 @@ bool BaseBraveShieldsService::ShouldStartRequest(
     blink::mojom::ResourceType resource_type,
     const std::string& tab_host,
     bool* did_match_exception,
-    bool* cancel_request_explicitly,
     std::string* mock_data_url,
     const BlockDecision** block_decision) {
   if (did_match_exception) {
     *did_match_exception = false;
   }
-  // Intentionally don't set cancel_request_explicitly
   return true;
 }
 

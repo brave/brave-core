@@ -362,10 +362,11 @@ void BraveProxyingURLLoaderFactory::InProgressRequest::
 
   // TODO(iefremov): Shorten
   if (ctx_->blocked_by != brave::kNotBlocked) {
-    if (ctx_->cancel_request_explicitly) {
+    if (!ctx_->ShouldMockRequest()) {
       OnRequestError(network::URLLoaderCompletionStatus(net::ERR_ABORTED));
       return;
     }
+
     auto response = network::mojom::URLResponseHead::New();
     std::string response_data;
     brave_shields::MakeStubResponse(ctx_->mock_data_url, request_, &response,

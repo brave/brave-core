@@ -122,7 +122,6 @@ bool AdBlockBaseService::ShouldStartRequest(
     blink::mojom::ResourceType resource_type,
     const std::string& tab_host,
     bool* did_match_exception,
-    bool* cancel_request_explicitly,
     std::string* mock_data_url,
     const BlockDecision** block_decision) {
   DCHECK(GetTaskRunner()->RunsTasksInCurrentSequence());
@@ -134,6 +133,7 @@ bool AdBlockBaseService::ShouldStartRequest(
       url,
       url::Origin::CreateFromNormalizedTuple("https", tab_host.c_str(), 80),
       INCLUDE_PRIVATE_REGISTRIES);
+  // TODO: Remove explicit_cancel here when removed from adblock-rust.
   bool explicit_cancel;
   bool saved_from_exception;
   std::string filter;
@@ -141,9 +141,6 @@ bool AdBlockBaseService::ShouldStartRequest(
           url.spec(), url.host(), tab_host, is_third_party,
           ResourceTypeToString(resource_type), &explicit_cancel,
           &saved_from_exception, &filter, mock_data_url)) {
-    if (cancel_request_explicitly) {
-      *cancel_request_explicitly = explicit_cancel;
-    }
     // We'd only possibly match an exception filter if we're returning true.
     if (did_match_exception) {
       *did_match_exception = false;
