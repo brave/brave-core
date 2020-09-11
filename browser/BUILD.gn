@@ -230,45 +230,8 @@ source_set("browser_process") {
       "//brave/app:brave_generated_resources_grit",
     ]
   } else {
-    sources += [
-      "android/brave_cosmetic_resources_tab_helper.cc",
-      "android/brave_cosmetic_resources_tab_helper.h",
-      "android/brave_feature_list.cc",
-      "android/brave_relaunch_utils.cc",
-      "android/brave_shields_content_settings.cc",
-      "android/brave_shields_content_settings.h",
-      "android/brave_stats_updater_android.cc",
-    ]
-
-    if (brave_ads_enabled) {
-      sources += [
-        "brave_ads/android/brave_ads_native_helper.cc",
-      ]
-
-      deps += [
-        "brave_ads/android:jni_headers",
-      ]
-    }
-
-    if (enable_brave_sync) {
-      sources += [
-        "android/brave_sync_worker.cc",
-        "android/brave_sync_worker.h",
-        "sync/brave_sync_devices_android.cc",
-        "sync/brave_sync_devices_android.h",
-      ]
-      deps += [
-        "//components/sync",
-        "//components/sync_device_info",
-      ]
-    }
-
     deps += [
-      "//brave/browser/android/preferences",
-      "//brave/build/android:jni_headers",
-      "//chrome/android:jni_headers",
-      "//components/ntp_tiles",
-      "//components/translate/core/browser",
+      "android:android_browser_process",
     ]
   }
 

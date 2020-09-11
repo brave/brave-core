@@ -1,0 +1,60 @@
+import("//brave/build/config.gni")
+import("//build/config/android/rules.gni")
+
+source_set("android_browser_process") {
+  check_includes = false
+
+  sources = [
+    "brave_cosmetic_resources_tab_helper.cc",
+    "brave_cosmetic_resources_tab_helper.h",
+    "brave_feature_list.cc",
+    "brave_relaunch_utils.cc",
+    "brave_shields_content_settings.cc",
+    "brave_shields_content_settings.h",
+    "brave_stats_updater_android.cc",
+  ]
+
+  deps = [
+    "//base",
+    "//brave/browser:stats_updater",
+    "//brave/browser/android/preferences",
+    "//brave/build/android:jni_headers",
+    "//brave/components/brave_shields/browser",
+    "//chrome/android:jni_headers",
+    "//chrome/common",
+    "//components/content_settings/core/browser",
+    "//components/flags_ui",
+    "//components/ntp_tiles",
+    "//components/translate/core/browser",
+  ]
+
+  if (brave_ads_enabled) {
+    sources += [
+      "//brave/browser/brave_ads/android/brave_ads_native_helper.cc",
+    ]
+
+    deps += [
+      "//brave/browser/brave_ads/android:jni_headers",
+      "//brave/components/brave_ads/browser",
+      "//brave/components/l10n/browser",
+    ]
+  }
+
+  if (enable_brave_sync) {
+    sources += [
+      "brave_sync_worker.cc",
+      "brave_sync_worker.h",
+      "//brave/browser/sync/brave_sync_devices_android.cc",
+      "//brave/browser/sync/brave_sync_devices_android.h",
+    ]
+    deps += [
+      "//brave/components/brave_sync",
+      "//brave/components/brave_sync:crypto",
+      "//brave/components/brave_sync:prefs",
+      "//components/sync",
+      "//components/sync_device_info",
+      "//components/unified_consent",
+      "//third_party/leveldatabase",
+    ]
+  }
+}
