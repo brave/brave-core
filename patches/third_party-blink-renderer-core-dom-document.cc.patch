@@ -1,5 +1,5 @@
 diff --git a/third_party/blink/renderer/core/dom/document.cc b/third_party/blink/renderer/core/dom/document.cc
-index 01f4b1d7ffe928126be221ff39715d1c0e6ae849..14d5d0201a17e78765788584f06e589b4215b743 100644
+index 01f4b1d7ffe928126be221ff39715d1c0e6ae849..5c0f9a34f1337e2848345db63ef306b71b38a044 100644
 --- a/third_party/blink/renderer/core/dom/document.cc
 +++ b/third_party/blink/renderer/core/dom/document.cc
 @@ -33,7 +33,7 @@
@@ -7,7 +7,7 @@ index 01f4b1d7ffe928126be221ff39715d1c0e6ae849..14d5d0201a17e78765788584f06e589b
  // For more info, see
  // https://chromium.googlesource.com/chromium/src/+/HEAD/docs/wmax_tokens.md
 -#pragma clang max_tokens_here 900000
-+#pragma clang max_tokens_here 2000000
++#pragma clang max_tokens_here 2097152
  
  #include <memory>
  #include <utility>
