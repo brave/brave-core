@@ -862,8 +862,11 @@ are declared in tools/grit/grit_rule.gni.
     <message name="IDS_INCOGNITO_PROFILE_MENU_CLOSE_BUTTON" desc="The text of the button offering to close all private windows.">
       Exit Private
     </message>
+    <message name="IDS_INCOGNITO_PROFILE_MENU_CLOSE_BUTTON_NEW" desc="The text of the button offering to close all private windows.">
+      Close private
+    </message>
 
-    <if expr="not is_android">
+   <if expr="not is_android">
       <if expr="use_titlecase">
         </if>
       <if expr="not use_titlecase">

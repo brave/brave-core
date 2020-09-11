@@ -1661,9 +1661,6 @@ are declared in tools/grit/grit_rule.gni.
       <message name="IDS_PROMPT_APP_DEEP_SCANNING" desc="Message shown in the download shelf when Brave recommends uploading the file for additional scanning">
         <ph name="FILE_NAME">$1<ex>bla.exe</ex></ph> may be dangerous. Send to Brave Advanced Protection for scanning?
       </message>
-      <message name="IDS_PROMPT_APP_DEEP_SCANNING_ALTERNATE" desc="Message shown in the download shelf when Brave recommends uploading the file for additional scanning.">
-        <ph name="FILE_NAME">$1<ex>bla.exe</ex></ph> is unknown. Advanced Protection recommends sending this file to Brave for scanning.
-      </message>
       <message name="IDS_BLOCK_REASON_UNCOMMON_DOWNLOAD" desc="Message shown to the user on chrome://downloads page to explain that this download is blocked because it is uncommon.">
         This file is not commonly downloaded and may be dangerous.
       </message>
@@ -1754,9 +1751,6 @@ are declared in tools/grit/grit_rule.gni.
       </message>
       <message name="IDS_SCAN_DOWNLOAD" desc="Text shown to upload a file for deep scanning.">
         Send
-      </message>
-      <message name="IDS_SCAN_DOWNLOAD_ALTERNATE" desc="Text shown to upload a file for deep scanning.">
-        Scan
       </message>
 
       <!-- Download Tab Items -->
@@ -9615,13 +9609,16 @@ Please help our engineers fix this problem. Tell us what happened right before y
     <if expr="chromeos">
       <!-- CrOSUsb Notification -->
       <message name="IDS_CROSUSB_DEVICE_DETECTED_NOTIFICATION" desc="Content for notification shown to the user when a USB device gets plugged in.">
-        Open Settings to connect <ph name="USB_DEVICE_NAME">$1<ex>Nexus 5</ex></ph> to Linux
+          Open Settings to connect <ph name="USB_DEVICE_NAME">$1<ex>Nexus 5</ex></ph> to <ph name="USB_VM_NAME">$2<ex>Linux</ex></ph>
+      </message>
+      <message name="IDS_CROSUSB_DEVICE_DETECTED_NOTIFICATION_MULTI_VM" desc="Content for notification shown to the user when a USB device gets plugged in.">
+          Open Settings to connect <ph name="USB_DEVICE_NAME">$1<ex>Nexus 5</ex></ph>
       </message>
       <message name="IDS_CROSUSB_DEVICE_DETECTED_NOTIFICATION_TITLE" desc="Title for notification shown to the user when a USB device gets plugged in.">
         USB device detected
       </message>
-      <message name="IDS_CROSUSB_NOTIFICATION_BUTTON_CONNECT_TO_LINUX" desc="Label for notification button shown to the user when a USB device gets plugged in to allowed Linux to use the device">
-        Connect to Linux
+      <message name="IDS_CROSUSB_NOTIFICATION_BUTTON_CONNECT_TO_VM" desc="Label for notification button shown to the user when a USB device gets plugged in to allow a virtual machine to use the device">
+          Connect to <ph name="USB_VM_NAME">$1<ex>Linux</ex></ph>
       </message>
       <message name="IDS_CROSUSB_UNKNOWN_DEVICE_FROM_MANUFACTURER" desc="String describing an unknown device in notification shown when a USB device gets plugged in.">
         USB device from <ph name="MANUFACTURER_NAME">$1<ex>Brave</ex></ph>
@@ -10325,6 +10322,14 @@ Please help our engineers fix this problem. Tell us what happened right before y
     </message>
     <message name="IDS_INCOGNITO_PROFILE_MENU_CLOSE_BUTTON" desc="The text of the button offering to close all private windows.">
       Exit Private
+    </message>
+    <message name="IDS_INCOGNITO_PROFILE_MENU_CLOSE_BUTTON_NEW" desc="The text of the button offering to close all private windows.">
+      Close private
+    </message>
+
+   <!-- Guest Profile Menu bubble. -->
+    <message name="IDS_GUEST_PROFILE_MENU_CLOSE_BUTTON" desc="The text of the button offering to close all guest windows.">
+      Close guest
     </message>
 
     <!-- User happiness tracking survey UI -->
