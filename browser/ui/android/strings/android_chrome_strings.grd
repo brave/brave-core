@@ -296,6 +296,9 @@ CHAR-LIMIT guidelines:
       <message name="IDS_SIGN_OUT_AND_TURN_OFF_SYNC" desc="The text for a preferences row that for signs out the user and turns off sync.">
         Sign out and turn off sync
       </message>
+      <message name="IDS_SIGN_OUT" desc="The text for a preference row that signs out the user.">
+        Sign out
+      </message>
       <message name="IDS_MANAGE_YOUR_GOOGLE_ACCOUNT" desc="Title for link to Brave sync chain Page to manage account settings.">
         Manage your Brave sync chain
       </message>
@@ -2396,10 +2399,10 @@ To change this setting, <ph name="BEGIN_LINK">&lt;resetlink&gt;</ph>reset sync<p
         Add account to device
       </message>
       <message name="IDS_SIGNIN_INCOGNITO_MODE_PRIMARY" desc="Text for signing in private mode.">
-        Go Private mode
+        Sign in temporarily
       </message>
       <message name="IDS_SIGNIN_INCOGNITO_MODE_SECONDARY" desc="Secondary text for signing in private mode.">
-        To sign in temporarily
+        A new private tab will open
       </message>
       <message name="IDS_SIGNIN_GMS_UPDATING" desc="Message notifying user that Google Play Services is still updating.">
         Waiting for Google Play Services to finish updating
@@ -3595,6 +3598,12 @@ To change this setting, <ph name="BEGIN_LINK">&lt;resetlink&gt;</ph>reset sync<p
       <message name="IDS_SHARING_HUB_SYNC_DISABLED_TEXT" desc="Text to show when sync is disabled on the current device.">
         To share this page to another device, turn on sync in Brave settings
       </message>
+      <message name="IDS_SHARING_HUB_STORAGE_DISABLED_TEXT" desc="Text to show when storage permission is disabled.">
+        You have disabled Storage access, please go to Settings to enable it.
+      </message>
+      <message name="IDS_SHARING_HUB_OPEN_SETTINGS_LABEL" desc="Label for the open settings button.">
+        Open Settings
+      </message>
 
       <!-- ClickToCall -->
       <message name="IDS_CLICK_TO_CALL_NOTIFICATION_TEXT" desc="Text displayed in a click to call notification to call on a number.">
@@ -3653,26 +3662,6 @@ To change this setting, <ph name="BEGIN_LINK">&lt;resetlink&gt;</ph>reset sync<p
       </message>
       <message name="IDS_SHARED_CLIPBOARD_SHARE_ACTIVITY_TITLE" desc="Title of the Shared Clipboard Share activity that will appear in the Android share dialog.">
         Send text to Your Devices
-      </message>
-
-      <!-- Brave Duet -->
-      <message name="IDS_IPH_DUET_HOME_BUTTON_TITLE" desc="This string appears in an overlay that explains a new UI to users. The title of the feature highlight bubble that explains what is home button in bottom toolbar for.">
-        Get back home easily
-      </message>
-      <message name="IDS_IPH_DUET_HOME_BUTTON_DESCRIPTION" desc="This string appears in an overlay that explains a new UI to users. The text in the feature highlight bubble that explains what is home button in bottom toolbar for.">
-        Tap here to quickly access your homepage from anywhere
-      </message>
-      <message name="IDS_IPH_DUET_SEARCH_TITLE" desc="This string appears in an overlay that explains a new UI to users. 'Search' refers to searching the web, and 'explore' refers to Brave's suggested content.">
-        Search &amp; explore
-      </message>
-      <message name="IDS_IPH_DUET_SEARCH_DESCRIPTION" desc="This string appears in an overlay that explains a new UI to users. 'From here' is a generic directional cue: don't worry about the direction, as it is clarified by the way the overlay is shown.">
-        From here, you can search the web, share with friends, and see open pages
-      </message>
-      <message name="IDS_IPH_DUET_TAB_SWITCHER_TITLE" desc="This string appears in an overlay that explains a new UI to users. The title of the feature highlight bubble that explains what is tab switcher in bottom toolbar for.">
-        See all your open tabs
-      </message>
-      <message name="IDS_IPH_DUET_TAB_SWITCHER_DESCRIPTION" desc="This string appears in an overlay that explains a new UI to users. The text in the feature highlight bubble that explains what is tab switcher in bottom toolbar for.">
-        Tap here to create new tabs and go back to previous ones
       </message>
 
       <!-- Interventions -->

@@ -293,6 +293,9 @@
   <message name="IDS_OS_SETTINGS_LANGUAGES_ADD_INPUT_METHOD_LABEL" translateable="false" desc="Button under the list of input methods which opens a dialog that lets the user add keyboard layouts and input method editors.">
     Add input methods
   </message>
+  <message name="IDS_OS_SETTINGS_LANGUAGES_REMOVE_INPUT_METHOD_LABEL" translateable="false" desc="Title of the dialog that lets the user remove a given keyboard layout or input method editor.">
+    Remove <ph name="INPUT_METHOD_NAME">$1<ex>US keyboard</ex></ph>?
+  </message>
   <message name="IDS_OS_SETTINGS_LANGUAGES_SPELL_CHECK_TITLE" translateable="false" desc="Title for the section containing all the options for spell check settings. The options include picking between using the system's spell check or using Brave's web service and a list of the enabled languages which support spell checking.">
     Spell check
   </message>
@@ -2207,6 +2210,18 @@
   <message name="IDS_SETTINGS_MULTIDEVICE_PHONE_HUB_TASK_CONTINUATION_SECTION_TITLE" translateable="false" desc="The title of the Phone Hub Task Continuation section on the settings page.">
     Task Continuation
   </message>
+  <message name="IDS_SETTINGS_MULTIDEVICE_PHONE_HUB_SUMMARY" translateable="false" desc="Description of for the 'Phone Hub' setting. This feature lets the user stay productive on Chrome OS by ensuring that their phones' apps, content, and connectivity are available on their Chrome OS device.">
+    Make the best of your Android phone on your your <ph name="DEVICE_TYPE">$1<ex>Bravebook</ex></ph>
+  </message>
+  <message name="IDS_SETTINGS_MULTIDEVICE_PHONE_HUB_NOTIFICATIONS_SUMMARY" translateable="false" desc="Description of for the 'Phone Hub Notifications' setting. This feature mirrors notifications from a connected Android phone to Chrome OS devices.">
+    View your phones notifications on your <ph name="DEVICE_TYPE">$1<ex>Bravebook</ex></ph>
+  </message>
+  <message name="IDS_SETTINGS_MULTIDEVICE_PHONE_HUB_NOTIFICATION_BADGE_SUMMARY" translateable="false" desc="Description of for the 'Phone Hub Notification Badge' setting. This feature shows an indicator in the Chrome OS shelf when notifications are mirrored from a connected Android phone.">
+    Indicator in shelf when new notifications come in
+  </message>
+  <message name="IDS_SETTINGS_MULTIDEVICE_PHONE_HUB_TASK_CONTINUATION_SUMMARY" translateable="false" desc="Description of for the 'Phone Hub Task Continuation' setting. This feature lets users resume in-app actions and chrome tabs that are open on a connected Android phone from Chrome OS devices.">
+    View your active Brave tabs in Phone Hub
+  </message>
   <message name="IDS_SETTINGS_MULTIDEVICE_NOTIFICATION_ACCESS_SETUP_DIALOG_ACK_TITLE" translateable="false" desc="The title of the dialog containing the Phone Hub notification opt-in flow shown when the Phone Hub 'Notifications' toggle is switched on.">
     Turn on notifications on Android phone
   </message>
@@ -2221,6 +2236,12 @@
   </message>
   <message name="IDS_SETTINGS_MULTIDEVICE_NOTIFICATION_ACCESS_SETUP_DIALOG_COMPLETED_SUMMARY" translateable="false" desc="The body text of the dialog containing the Phone Hub notification opt-in flow when the feature is successfully turned on and notifications on their phone will now be mirrored to their Bravebook.">
     You will receive your phone notifications on your Bravebook
+  </message>
+  <message name="IDS_SETTINGS_MULTIDEVICE_WIFI_SYNC_SECTION_TITLE" translateable="false" desc="The title of the Wifi Sync section on the settings page. Wi-Fi Sync V2 allows user to sync network configurations between Chrome OS devices and a connected Android phone.">
+    Wi-Fi Sync
+  </message>
+  <message name="IDS_SETTINGS_MULTIDEVICE_WIFI_SYNC_SUMMARY" translateable="false" desc="Description of for the 'Wifi Sync' setting. This feature lets the user sync wifi network configurations between Chrome OS devices and a connected Android phone">
+    Sync Wi-Fi networks with your phone <ph name="LINK_BEGIN">&lt;a target="_blank" href="$1<ex>https://google.com/</ex>"&gt;</ph>Learn more<ph name="LINK_END">&lt;/a&gt;</ph>
   </message>
 
   <!-- Lock Screen Page (OS settings) -->
@@ -3012,6 +3033,18 @@
   </message>
   <message name="IDS_SETTINGS_APPS_PLUGIN_VM_SHARED_PATHS_LIST_EMPTY_MESSAGE" desc="Message shown when the user has not yet shared any folders in Parallels.">
     Shared folders will appear here
+  </message>
+  <message name="IDS_SETTINGS_APPS_PLUGIN_VM_SHARED_USB_DEVICES_LABEL" desc="Label for managing shared USB devices.">
+    USB preferences
+  </message>
+  <message name="IDS_SETTINGS_APPS_PLUGIN_VM_SHARED_USB_DEVICES_DESCRIPTION" desc="Description for managing shared USB devices. Do not translate 'Parallels Desktop'.">
+    Give Parallels Desktop permission to access USB devices. Parallels Desktop won't remember a USB device after it's removed.
+  </message>
+  <message name="IDS_SETTINGS_APPS_PLUGIN_VM_SHARED_USB_DEVICES_EXTRA_DESCRIPTION" desc="Extra description for managing shared USB devices.">
+    Only supported devices are shown.
+  </message>
+  <message name="IDS_SETTINGS_APPS_PLUGIN_VM_SHARED_USB_DEVICES_LIST_EMPTY_MESSAGE" desc="Message shown when there are no avaiable USB devices.">
+    Available USB devices will appear here.
   </message>
 
   <!-- Storage -->

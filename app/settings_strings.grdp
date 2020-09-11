@@ -54,19 +54,19 @@
   <message name="IDS_SETTINGS_ACCESSIBLE_IMAGE_LABELS_SUBTITLE" desc="Subtitle for screen reader image labels feature.">
     If an image doesn’t have a useful description, Brave will try to provide one for you. To create descriptions, images are sent to Brave.
   </message>
-  <message name="IDS_SETTINGS_CAPTIONS_ENABLE_LIVE_CAPTION_TITLE" desc="Name of the setting to enable Live Caption.">
-    Get captions for your media
+  <message name="IDS_SETTINGS_CAPTIONS_ENABLE_LIVE_CAPTION_TITLE" desc="Name of the setting to enable Live Caption feature.">
+    Live Caption
   </message>
-  <message name="IDS_SETTINGS_CAPTIONS_ENABLE_LIVE_CAPTION_SUBTITLE" desc="Subtitle of the setting to enable Live Caption.">
-    Brave automatically creates captions using Live Caption (currently available in English only)
+  <message name="IDS_SETTINGS_CAPTIONS_ENABLE_LIVE_CAPTION_SUBTITLE" desc="Description text for Live Caption feature. When media is playing (such as a video) the user will see captions on the screen. Only works in Brave browser initially.">
+    Automatically creates captions for media in Brave browser (currently available in English only)
   </message>
-  <message name="IDS_SETTINGS_CAPTIONS_LIVE_CAPTION_DOWNLOAD_PROGRESS" desc="This message is displayed as a subtitle to the Live Caption title while the model is being downloading. It shows the download progress as a percentage and is updated dynamically.">
+  <message name="IDS_SETTINGS_CAPTIONS_LIVE_CAPTION_DOWNLOAD_PROGRESS" desc="Download progress indicator after Live Caption is enabled. The user needs to download certain files for the feature to work.">
     Downloading speech recognition files... <ph name="PERCENT">$1<ex>17</ex></ph>%
   </message>
-  <message name="IDS_SETTINGS_CAPTIONS_LIVE_CAPTION_DOWNLOAD_COMPLETE" desc="Message displayed when the live caption files have completed downloading.">
+  <message name="IDS_SETTINGS_CAPTIONS_LIVE_CAPTION_DOWNLOAD_COMPLETE" desc="Success message when Live Caption files have completed downloading.">
     Speech recognition files downloaded
   </message>
-  <message name="IDS_SETTINGS_CAPTIONS_LIVE_CAPTION_DOWNLOAD_ERROR" desc="Message displayed when there is an error downloading the live caption files.">
+  <message name="IDS_SETTINGS_CAPTIONS_LIVE_CAPTION_DOWNLOAD_ERROR" desc="Error message when Live Caption files can’t be downloaded.">
     The required files can't be downloaded. Try again later.
   </message>
   <message name="IDS_SETTINGS_ENABLE_CARET_BROWSING_TITLE" desc="Name of the setting to enable Caret Browsing, which allows you to move around any web page using a text caret.">
@@ -1605,6 +1605,12 @@
   </message>
   <message name="IDS_SETTINGS_SITE_SETTINGS_SITE_REPRESENTATION_SEPARATOR" desc="The separator used to split up the display of a URL into host and scheme/protocol, when the scheme is not HTTPS. For example, it will be used in a string that looks like 'google.co.uk — http'.">
       —
+  </message>
+  <message name="IDS_SETTINGS_SITE_SETTINGS_DEFAULT_BEHAVIOR" desc="Label for the site settings default behavior.">
+    Default behavior
+  </message>
+  <message name="IDS_SETTINGS_SITE_SETTINGS_DEFAULT_BEHAVIOR_DESCRIPTION" desc="Description for the site settings default behavior.">
+    Sites automatically follow this setting when you visit them
   </message>
   <message name="IDS_SETTINGS_SITE_SETTINGS_ADS" desc="Label for the ads site settings.">
     Ads
