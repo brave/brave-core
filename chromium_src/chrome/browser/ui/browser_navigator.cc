@@ -43,7 +43,7 @@ void MaybeHandleInParent(NavigateParams* params, bool allow_in_incognito) {
     if (!allow_in_incognito) {
       params->initiating_profile =
           profile->IsOffTheRecord()
-              ? brave::GetParentProfile(profile)->GetOffTheRecordProfile()
+              ? brave::GetParentProfile(profile)->GetPrimaryOTRProfile()
               : brave::GetParentProfile(profile);
     } else if (HandleURLInParent(params, profile)) {
       params->browser = BraveGetOrCreateBrowser(
