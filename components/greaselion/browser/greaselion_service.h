@@ -25,6 +25,7 @@ enum GreaselionFeature {
   TWITTER_TIPS,
   REDDIT_TIPS,
   GITHUB_TIPS,
+  AUTO_CONTRIBUTION,
   LAST_FEATURE
 };
 

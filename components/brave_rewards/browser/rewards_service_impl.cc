@@ -389,6 +389,11 @@ void RewardsServiceImpl::InitPrefChangeRegistrar() {
       base::Bind(
           &RewardsServiceImpl::OnPreferenceChanged,
           base::Unretained(this)));
+  profile_pref_change_registrar_.Add(
+      prefs::kAutoContributeEnabled,
+      base::Bind(
+          &RewardsServiceImpl::OnPreferenceChanged,
+          base::Unretained(this)));
 }
 
 void RewardsServiceImpl::OnPreferenceChanged(const std::string& key) {
@@ -1405,6 +1410,9 @@ void RewardsServiceImpl::EnableGreaseLion() {
       greaselion_service_->SetFeatureEnabled(
           greaselion::GITHUB_TIPS,
           profile_->GetPrefs()->GetBoolean(prefs::kInlineTipGithubEnabled));
+      greaselion_service_->SetFeatureEnabled(
+          greaselion::AUTO_CONTRIBUTION,
+          profile_->GetPrefs()->GetBoolean(prefs::kAutoContributeEnabled));
     }
   #endif
 }

@@ -40,6 +40,7 @@ struct GreaselionPreconditions {
   GreaselionPreconditionValue twitter_tips_enabled = kAny;
   GreaselionPreconditionValue reddit_tips_enabled = kAny;
   GreaselionPreconditionValue github_tips_enabled = kAny;
+  GreaselionPreconditionValue auto_contribution_enabled = kAny;
 };
 
 class GreaselionRule {
