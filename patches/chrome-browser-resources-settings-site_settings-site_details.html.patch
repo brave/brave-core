@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/resources/settings/site_settings/site_details.html b/chrome/browser/resources/settings/site_settings/site_details.html
-index 144f7fdf9735423acec2922d1bffaf97e9ce0e0f..2f949206ea4f838b87d484f08c42e7683ce27feb 100644
+index 321cf041148de741357a2e1f923a53b18c951c2b..87bf5c7697f1c57da532ba02286956c97558dbac 100644
 --- a/chrome/browser/resources/settings/site_settings/site_details.html
 +++ b/chrome/browser/resources/settings/site_settings/site_details.html
 @@ -213,6 +213,11 @@
@@ -13,4 +13,4 @@ index 144f7fdf9735423acec2922d1bffaf97e9ce0e0f..2f949206ea4f838b87d484f08c42e768
 +      </site-details-permission>
  <if expr="chromeos">
        <site-details-permission
-           category="{{ContentSettingsTypes.PROTECTED_CONTENT}}"
+           category="[[ContentSettingsTypes.PROTECTED_CONTENT]]"

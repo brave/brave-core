@@ -1,8 +1,8 @@
 diff --git a/ui/views/controls/button/md_text_button.h b/ui/views/controls/button/md_text_button.h
-index 81b342becf7658c68d54394eab6a79caa34be0fc..0d177024fa97caa6f53252c6773f2922c5786b5d 100644
+index 15818a3e2e7d94ee4877c26ec467a812b6ee7833..613a5d466210cc09b44e4d3a60c53a857d0b8695 100644
 --- a/ui/views/controls/button/md_text_button.h
 +++ b/ui/views/controls/button/md_text_button.h
-@@ -57,11 +57,13 @@ class VIEWS_EXPORT MdTextButton : public LabelButton {
+@@ -60,11 +60,13 @@ class VIEWS_EXPORT MdTextButton : public LabelButton {
    void OnBlur() override;
  
   private:
