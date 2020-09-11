@@ -130,7 +130,7 @@ class CryptoDotCom extends React.PureComponent<Props, State> {
                 <Text $color='green'>{210.01}%</Text>
               </>
             ) : (
-              <PlainButton onClick={onBtcPriceOptIn} textColor='green'>Show Price</PlainButton>
+              <PlainButton onClick={onBtcPriceOptIn} textColor='green' inline={true}>Show Price</PlainButton>
             )}
           </FlexItem>
           <FlexItem style={{ paddingLeft: 5 }}>

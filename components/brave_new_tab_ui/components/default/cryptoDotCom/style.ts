@@ -60,19 +60,19 @@ function getColor (p: any) {
 }
 
 export const Text = styled<StyleProps, 'p'>('p')`
-  font-family: ${(p) => 'Poppins'};
-  font-weight: ${(p) => (p.weight || (p.small ? '500' : 'normal'))};
-  color: ${(p) => getColor(p.$color) || '#ffffff'};
-  font-size: ${(p) => (p.small ? '11px' : '14px')};
-  margin: ${(p) => (p.$hasSpacing ? '20px 0px' : '0px')};
-  text-align: ${(p) => (p.center ? 'center' : 'inherit')}
+  font-family: ${p => 'Poppins'};
+  font-weight: ${p => (p.weight || (p.small ? '500' : 'normal'))};
+  color: ${p => getColor(p.$color) || '#ffffff'};
+  font-size: ${p => (p.small ? '11px' : '14px')};
+  margin: ${p => (p.$hasSpacing ? '20px 0px' : '0px')};
+  text-align: ${p => (p.center ? 'center' : 'inherit')}
  `
 
 export const Box = styled<StyleProps, 'div'>('div')`
   border: 1px solid #979797;
-  padding: ${(p) => (p.noPadding ? '0' : '0.5em')};
+  padding: ${p => (p.noPadding ? '0' : '0.5em')};
   border-radius: 2px;
-  display: ${(p) => (p.isFlex ? 'flex' : 'block')};
+  display: ${p => (p.isFlex ? 'flex' : 'block')};
 
    ${(p) =>
      p.isFlex &&
@@ -84,17 +84,17 @@ export const Box = styled<StyleProps, 'div'>('div')`
  `
 
 export const FlexItem = styled<StyleProps, 'div'>('div')`
-  flex: ${(p) => p.flex || 'inherit'};
-  text-align: ${(p) => p.textAlign || 'left'};
-  padding: ${(p) => (p.hasPadding ? '0.5em' : '0px')};
+  flex: ${p => p.flex || 'inherit'};
+  text-align: ${p => p.textAlign || 'left'};
+  padding: ${p => (p.hasPadding ? '0.5em' : '0px')};
  `
 
 export const PlainButton = styled<StyleProps, 'button'>('button')`
-  display: block;
+  display: ${p => p.inline ? 'inline-block' : 'block'};
   background: none;
   border: none;
   cursor: pointer;
-  color: ${(p) => getColor(p.textColor) || '#ffffff'};
+  color: ${p => getColor(p.textColor) || '#ffffff'};
 
    &:focus {
      outline: 0;
@@ -106,7 +106,7 @@ export const WidgetWrapper = styled<StyleProps, 'div'>('div')`
   padding: 6px 20px 30px 20px;
   border-radius: 6px;
   position: relative;
-  font-family: ${(p) => 'Poppins'};
+  font-family: ${p => 'Poppins'};
   font-size: 14px;
   overflow: hidden;
   min-width: 284px;
@@ -116,7 +116,7 @@ export const WidgetWrapper = styled<StyleProps, 'div'>('div')`
 
 export const Header = styled<StyleProps, 'div'>('div')`
   text-align: left;
-  margin-bottom: ${(p) => (p.showContent ? '15' : '0')}px;
+  margin-bottom: ${p => (p.showContent ? '15' : '0')}px;
  `
 
 export const StyledTitle = styled<{}, 'div'>('div')`
@@ -127,7 +127,7 @@ export const StyledTitle = styled<{}, 'div'>('div')`
   font-size: 18px;
   font-weight: 600;
   color: #fff;
-  font-family: ${(p) => 'Poppins'};
+  font-family: ${p => 'Poppins'};
  `
 
 export const CryptoDotComIcon = styled<{}, 'div'>('div')`
@@ -142,7 +142,7 @@ export const StyledTitleText = styled<{}, 'div'>('div')`
  `
 
 export const List = styled(Box)`
-  overflow-y: ${(p) => (p.hideOverflow ? 'hidden' : 'scroll')};
+  overflow-y: ${p => (p.hideOverflow ? 'hidden' : 'scroll')};
   height: 260px;
   padding: 0;
   margin: 0;
@@ -152,8 +152,8 @@ export const ListItem = styled<StyleProps, 'li'>('li')`
   border-bottom: 1px solid #979797;
   padding: 5px;
   border-radius: 2px;
-  display: ${(p) => (p.isFlex ? 'flex' : 'block')};
-  cursor: ${(p) => (p.onClick ? 'pointer' : 'initial')}
+  display: ${p => (p.isFlex ? 'flex' : 'block')};
+  cursor: ${p => (p.onClick ? 'pointer' : 'initial')}
   ${(p) =>
     p.isFlex && `
     justify-content: space-between;
@@ -180,28 +180,28 @@ export const BackArrow = styled<{}, 'div'>('div')`
  `
 
 export const ActionButton = styled<StyleProps, 'button'>('button')`
-  font-family: ${(p) => 'Poppins'};
-  font-size: ${(p) => (p.small ? '13px' : '15px')};
-  font-weight: ${(p) => (p.small ? '500' : 'bold')};
+  font-family: ${p => 'Poppins'};
+  font-size: ${p => (p.small ? '13px' : '15px')};
+  font-weight: ${p => (p.small ? '500' : 'bold')};
   border-radius: 20px;
-  width: ${(p) => (p.inline ? 'auto' : '100%')};
-  background: ${(p) => (p.light ? 'rgba(255, 255, 255, 0.21)' : '#44B0FF')};
+  width: ${p => (p.inline ? 'auto' : '100%')};
+  background: ${p => (p.light ? 'rgba(255, 255, 255, 0.21)' : '#44B0FF')};
   border: 0;
-  padding: ${(p) => (p.small ? '6px 10px' : '10px 0px')};
+  padding: ${p => (p.small ? '6px 10px' : '10px 0px')};
   cursor: pointer;
   color: #ffffff;
   line-height: 1;
  `
 
 export const ActionAnchor = styled<StyleProps, 'a'>('a')`
-  font-family: ${(p) => 'Poppins'};
-  font-size: ${(p) => (p.small ? '13px' : '15px')};
-  font-weight: ${(p) => (p.small ? '500' : 'bold')};
+  font-family: ${p => 'Poppins'};
+  font-size: ${p => (p.small ? '13px' : '15px')};
+  font-weight: ${p => (p.small ? '500' : 'bold')};
   border-radius: 20px;
-  width: ${(p) => (p.inline ? 'auto' : '100%')};
-  background: ${(p) => (p.light ? 'rgba(255, 255, 255, 0.21)' : '#44B0FF')};
+  width: ${p => (p.inline ? 'auto' : '100%')};
+  background: ${p => (p.light ? 'rgba(255, 255, 255, 0.21)' : '#44B0FF')};
   border: 0;
-  padding: ${(p) => (p.small ? '6px 10px' : '10px 0px')};
+  padding: ${p => (p.small ? '6px 10px' : '10px 0px')};
   cursor: pointer;
   color: #ffffff;
   line-height: 1;
