@@ -28,7 +28,7 @@ class MockTranslateBubbleModel : public TranslateBubbleModel {
         translation_declined_(false),
         original_language_index_on_translation_(-1),
         target_language_index_on_translation_(-1),
-        can_blacklist_site_(true) {}
+        can_blocklist_site_(true) {}
 
   TranslateBubbleModel::ViewState GetViewState() const override {
     return view_state_transition_.view_state();
@@ -113,9 +113,9 @@ class MockTranslateBubbleModel : public TranslateBubbleModel {
            target_language_index_on_translation_ == target_language_index_;
   }
 
-  bool CanBlacklistSite() override { return can_blacklist_site_; }
+  bool CanBlocklistSite() override { return can_blocklist_site_; }
 
-  void SetCanBlacklistSite(bool value) { can_blacklist_site_ = value; }
+  void SetCanBlocklistSite(bool value) { can_blocklist_site_ = value; }
 
   TranslateBubbleViewStateTransition view_state_transition_;
   translate::TranslateErrors::Type error_type_;
@@ -131,7 +131,7 @@ class MockTranslateBubbleModel : public TranslateBubbleModel {
   bool translation_declined_;
   int original_language_index_on_translation_;
   int target_language_index_on_translation_;
-  bool can_blacklist_site_;
+  bool can_blocklist_site_;
 };
 
 class MockBraveTranslateBubbleView : public BraveTranslateBubbleView {

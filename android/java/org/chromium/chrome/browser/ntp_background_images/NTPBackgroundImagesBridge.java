@@ -5,21 +5,22 @@
 
 package org.chromium.chrome.browser.ntp_background_images;
 
-import android.support.annotation.Nullable;
-import java.util.List;
-import java.util.ArrayList;
+import androidx.annotation.Nullable;
 
 import org.chromium.base.ObserverList;
 import org.chromium.base.ThreadUtils;
 import org.chromium.base.annotations.CalledByNative;
 import org.chromium.base.annotations.NativeMethods;
-import org.chromium.chrome.browser.flags.ChromeFeatureList;
 import org.chromium.chrome.browser.BraveFeatureList;
-import org.chromium.chrome.browser.preferences.BravePrefServiceBridge;
-import org.chromium.chrome.browser.profiles.Profile;
+import org.chromium.chrome.browser.flags.ChromeFeatureList;
 import org.chromium.chrome.browser.ntp_background_images.model.TopSite;
 import org.chromium.chrome.browser.ntp_background_images.model.Wallpaper;
 import org.chromium.chrome.browser.ntp_background_images.util.NewTabPageListener;
+import org.chromium.chrome.browser.preferences.BravePrefServiceBridge;
+import org.chromium.chrome.browser.profiles.Profile;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class NTPBackgroundImagesBridge {
     private long mNativeNTPBackgroundImagesBridge;

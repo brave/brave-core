@@ -48,7 +48,7 @@ SkPath BraveNewTabButton::GetBorderPath(const gfx::Point& origin,
   return path;
 }
 
-void BraveNewTabButton::PaintPlusIcon(gfx::Canvas* canvas) const {
+void BraveNewTabButton::PaintIcon(gfx::Canvas* canvas) {
   // Overriden to fix chromium assumption that border radius
   // will be 50% of width.
   gfx::ScopedCanvas scoped_canvas(canvas);
@@ -60,5 +60,5 @@ void BraveNewTabButton::PaintPlusIcon(gfx::Canvas* canvas) const {
   const int offset = correct_offset - chromium_offset;
   // Shim base implementation's painting
   canvas->Translate(gfx::Vector2d(offset, offset));
-  NewTabButton::PaintPlusIcon(canvas);
+  NewTabButton::PaintIcon(canvas);
 }

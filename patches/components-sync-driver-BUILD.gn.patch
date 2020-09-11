@@ -1,12 +1,12 @@
 diff --git a/components/sync/driver/BUILD.gn b/components/sync/driver/BUILD.gn
-index ab9eca7b82246f8473c7d1c6dfc7f06105d0f01d..c571c5fa2be1b4ca249bb5339599234fd81a355e 100644
+index 8baa714b0341b6164d1975a8a2cea18b21a778a9..ea6a392244751b12c9ddc160cb33ff543f796ad4 100644
 --- a/components/sync/driver/BUILD.gn
 +++ b/components/sync/driver/BUILD.gn
-@@ -128,6 +128,7 @@ jumbo_static_library("driver") {
-   defines = [ "SYNC_USER_AGENT_PRODUCT=$sync_user_agent_product" ]
+@@ -116,6 +116,7 @@ static_library("driver") {
+   }
  
    configs += [ "//build/config/compiler:wexit_time_destructors" ]
-+  sources += brave_components_sync_driver_sources deps += brave_components_sync_driver_deps  defines += brave_service_key_defines
++  sources += brave_components_sync_driver_sources deps += brave_components_sync_driver_deps defines = brave_service_key_defines
  }
  
  grit("resources") {

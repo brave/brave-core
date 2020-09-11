@@ -367,7 +367,7 @@ void BraveBrowserProcessImpl::CreateProfileManager() {
 
 NotificationPlatformBridge*
 BraveBrowserProcessImpl::notification_platform_bridge() {
-#if !defined(OS_MACOSX)
+#if !defined(OS_MAC)
   return BrowserProcessImpl::notification_platform_bridge();
 #else
 #if BUILDFLAG(ENABLE_NATIVE_NOTIFICATIONS)
@@ -381,7 +381,7 @@ BraveBrowserProcessImpl::notification_platform_bridge() {
 }
 
 void BraveBrowserProcessImpl::CreateNotificationPlatformBridge() {
-#if defined(OS_MACOSX)
+#if defined(OS_MAC)
 #if BUILDFLAG(ENABLE_NATIVE_NOTIFICATIONS)
   DCHECK(!notification_bridge_);
   notification_bridge_ = BraveNotificationPlatformBridge::Create();

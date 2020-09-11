@@ -183,11 +183,12 @@ bool IsDefaultAvatarIconUrl(const std::string& url, size_t* icon_index) {
   return IsDefaultAvatarIconUrl_ChromiumImpl(url, icon_index);
 }
 
-gfx::ImageSkia GetGuestAvatar(int size) {
-  return gfx::CreateVectorIcon(
-      kUserMenuGuestIcon, size,
+ui::ImageModel GetGuestAvatar(int size) {
+  return ui::ImageModel::FromVectorIcon(
+      kUserMenuGuestIcon,
       ui::NativeTheme::GetInstanceForNativeUi()->GetSystemColor(
-          ui::NativeTheme::kColorId_DefaultIconColor));
+          ui::NativeTheme::kColorId_DefaultIconColor),
+      size);
 }
 
 }  // namespace profiles

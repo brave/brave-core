@@ -6,7 +6,6 @@
 #include "brave/browser/ui/views/translate/brave_translate_icon_view.h"
 
 #include "chrome/browser/ui/browser.h"
-#include "brave/common/extensions/extension_constants.h"
 #include "chrome/browser/extensions/webstore_install_with_prompt.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser_finder.h"
@@ -14,6 +13,7 @@
 #include "chrome/browser/ui/views/translate/translate_bubble_view.h"
 #include "content/public/browser/web_contents.h"
 #include "extensions/browser/extension_registry.h"
+#include "extensions/common/constants.h"
 
 BraveTranslateIconView::BraveTranslateIconView(
     CommandUpdater* command_updater,

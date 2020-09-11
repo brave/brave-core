@@ -17,14 +17,14 @@ void FirstRunMasterPrefsBrowserTestBase::SetUp() {
   ASSERT_TRUE(base::CreateTemporaryFile(&prefs_file_));
   EXPECT_EQ(static_cast<int>(text_->size()),
             base::WriteFile(prefs_file_, text_->c_str(), text_->size()));
-  first_run::SetMasterPrefsPathForTesting(prefs_file_);
+  first_run::SetInitialPrefsPathForTesting(prefs_file_);
 
   // This invokes BrowserMain, and does the import, so must be done last.
   InProcessBrowserTest::SetUp();
 }
 
 void FirstRunMasterPrefsBrowserTestBase::TearDown() {
-  EXPECT_TRUE(base::DeleteFile(prefs_file_, false));
+  EXPECT_TRUE(base::DeleteFile(prefs_file_));
   InProcessBrowserTest::TearDown();
 }
 
@@ -36,7 +36,7 @@ void FirstRunMasterPrefsBrowserTestBase::SetUpCommandLine(
   extensions::ComponentLoader::EnableBackgroundExtensionsForTesting();
 }
 
-#if defined(OS_MACOSX) || defined(OS_LINUX)
+#if defined(OS_MAC) || defined(OS_LINUX)
 void FirstRunMasterPrefsBrowserTestBase::SetUpInProcessBrowserTestFixture() {
   InProcessBrowserTest::SetUpInProcessBrowserTestFixture();
   // Suppress first run dialog since it blocks test progress.

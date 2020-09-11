@@ -30,7 +30,7 @@ import org.chromium.chrome.browser.onboarding.OnboardingPrefManager;
 import org.chromium.chrome.browser.profiles.Profile;
 import org.chromium.chrome.browser.settings.BraveRewardsPreferences;
 import org.chromium.chrome.browser.preferences.BravePref;
-import org.chromium.chrome.browser.preferences.PrefServiceBridge;
+import org.chromium.components.user_prefs.UserPrefs;
 import org.chromium.chrome.browser.util.PackageUtils;
 
 import java.lang.System;
@@ -48,7 +48,7 @@ public class BraveAdsSignupDialog {
           shouldShowOnboardingDialog()
           && PackageUtils.isFirstInstall(context)
           && !BraveAdsNativeHelper.nativeIsBraveAdsEnabled(Profile.getLastUsedRegularProfile())
-          && !PrefServiceBridge.getInstance().getBoolean(BravePref.ENABLED)
+          && !UserPrefs.get(Profile.getLastUsedRegularProfile()).getBoolean(BravePref.ENABLED)
           && hasElapsed24Hours(context)
           && ChromeFeatureList.isEnabled(BraveFeatureList.BRAVE_REWARDS);
 
@@ -63,7 +63,7 @@ public class BraveAdsSignupDialog {
           shouldShowOnboardingDialog()
           && !PackageUtils.isFirstInstall(context)
           && !BraveAdsNativeHelper.nativeIsBraveAdsEnabled(Profile.getLastUsedRegularProfile())
-          && !PrefServiceBridge.getInstance().getBoolean(BravePref.ENABLED)
+          && !UserPrefs.get(Profile.getLastUsedRegularProfile()).getBoolean(BravePref.ENABLED)
           && ChromeFeatureList.isEnabled(BraveFeatureList.BRAVE_REWARDS);
 
         boolean shouldShowForViewCount = shouldShowForViewCount();
@@ -77,7 +77,7 @@ public class BraveAdsSignupDialog {
           shouldShowOnboardingDialog()
           && !PackageUtils.isFirstInstall(context)
           && !BraveAdsNativeHelper.nativeIsBraveAdsEnabled(Profile.getLastUsedRegularProfile())
-          && PrefServiceBridge.getInstance().getBoolean(BravePref.ENABLED)
+          && UserPrefs.get(Profile.getLastUsedRegularProfile()).getBoolean(BravePref.ENABLED)
           && BraveAdsNativeHelper.nativeIsLocaleValid(Profile.getLastUsedRegularProfile())
           && ChromeFeatureList.isEnabled(BraveFeatureList.BRAVE_REWARDS);
 

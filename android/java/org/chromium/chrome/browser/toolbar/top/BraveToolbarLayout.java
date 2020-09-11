@@ -33,20 +33,20 @@ import org.chromium.base.task.AsyncTask;
 import org.chromium.base.ThreadUtils;
 import org.chromium.base.Log;
 import org.chromium.chrome.R;
-import org.chromium.chrome.browser.BraveActivity;
 import org.chromium.chrome.browser.BraveFeatureList;
 import org.chromium.chrome.browser.BraveRelaunchUtils;
 import org.chromium.chrome.browser.BraveRewardsNativeWorker;
 import org.chromium.chrome.browser.BraveRewardsObserver;
 import org.chromium.chrome.browser.BraveRewardsPanelPopup;
-import org.chromium.chrome.browser.ChromeActivity;
+import org.chromium.chrome.browser.app.BraveActivity;
+import org.chromium.chrome.browser.app.ChromeActivity;
 import org.chromium.chrome.browser.dialogs.BraveAdsSignupDialog;
 import org.chromium.chrome.browser.flags.ChromeFeatureList;
 import org.chromium.chrome.browser.ntp.NewTabPage;
 import org.chromium.chrome.browser.onboarding.OnboardingPrefManager;
 import org.chromium.chrome.browser.preferences.BravePref;
 import org.chromium.chrome.browser.preferences.BravePrefServiceBridge;
-import org.chromium.chrome.browser.preferences.PrefServiceBridge;
+import org.chromium.components.user_prefs.UserPrefs;
 import org.chromium.chrome.browser.preferences.website.BraveShieldsContentSettings;
 import org.chromium.chrome.browser.preferences.website.BraveShieldsContentSettingsObserver;
 import org.chromium.chrome.browser.profiles.Profile;
@@ -451,7 +451,7 @@ public abstract class BraveToolbarLayout extends ToolbarLayout implements OnClic
 
   private boolean checkForRewardsOnboarding() {
     return PackageUtils.isFirstInstall(getContext())
-           && (ChromeFeatureList.isEnabled(BraveFeatureList.BRAVE_REWARDS) && !PrefServiceBridge.getInstance().getBoolean(BravePref.ENABLED))
+           && (ChromeFeatureList.isEnabled(BraveFeatureList.BRAVE_REWARDS) && !UserPrefs.get(Profile.getLastUsedRegularProfile()).getBoolean(BravePref.ENABLED))
            && !BraveAdsNativeHelper.nativeIsBraveAdsEnabled(Profile.getLastUsedRegularProfile())
            && !OnboardingPrefManager.getInstance().isOnboardingShown();
   }
@@ -724,7 +724,7 @@ public abstract class BraveToolbarLayout extends ToolbarLayout implements OnClic
 
   @Override
   public void OnNotificationsCount(int count) {
-    boolean rewardsEnabled = PrefServiceBridge.getInstance().getBoolean(BravePref.ENABLED);
+    boolean rewardsEnabled = UserPrefs.get(Profile.getLastUsedRegularProfile()).getBoolean(BravePref.ENABLED);
     if (mBraveRewardsNotificationsCount != null && rewardsEnabled) {
       if (count != 0) {
         String value = Integer.toString(count);

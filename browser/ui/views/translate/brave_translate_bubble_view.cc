@@ -72,12 +72,12 @@ views::View* BraveTranslateBubbleView::BraveCreateViewBeforeTranslate() {
                              views::style::STYLE_PRIMARY);
   dont_ask_button->SetTextColor(views::Button::STATE_NORMAL, color);
 
-  auto accept_button = views::MdTextButton::Create(
+  auto accept_button = std::make_unique<views::MdTextButton>(
       this, l10n_util::GetStringUTF16(IDS_BRAVE_TRANSLATE_BUBBLE_INSTALL));
   accept_button->SetID(BUTTON_ID_DONE);
   accept_button->SetIsDefault(true);
 
-  auto cancel_button = views::MdTextButton::Create(
+  auto cancel_button = std::make_unique<views::MdTextButton>(
       this, l10n_util::GetStringUTF16(IDS_BRAVE_TRANSLATE_BUBBLE_CANCEL));
   cancel_button->SetID(BUTTON_ID_CLOSE);
 

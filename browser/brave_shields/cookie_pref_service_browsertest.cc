@@ -9,6 +9,7 @@
 #include "chrome/browser/ui/browser.h"
 #include "chrome/test/base/in_process_browser_test.h"
 #include "chrome/test/base/ui_test_utils.h"
+#include "components/content_settings/core/browser/cookie_settings.h"
 #include "components/content_settings/core/common/content_settings.h"
 #include "components/content_settings/core/common/pref_names.h"
 #include "components/prefs/pref_service.h"
@@ -36,6 +37,11 @@ class CookiePrefServiceTest : public InProcessBrowserTest {
   void SetThirdPartyCookiePref(bool setting) {
     profile()->GetPrefs()->SetBoolean(
         prefs::kBlockThirdPartyCookies, setting);
+    profile()->GetPrefs()->SetInteger(
+        prefs::kCookieControlsMode,
+        static_cast<int>(
+            setting ? content_settings::CookieControlsMode::kBlockThirdParty
+                    : content_settings::CookieControlsMode::kOff));
   }
 
   void SetCookiePref(ContentSetting setting) {

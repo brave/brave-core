@@ -68,9 +68,9 @@ public class BraveNotificationPlatformBridge extends NotificationPlatformBridge 
     @Override
     protected NotificationBuilderBase prepareNotificationBuilder(String notificationId,
             @NotificationType int notificationType, String origin, String scopeUrl,
-            String profileId, boolean incognito, String title, String body, Bitmap image,
-            Bitmap icon, Bitmap badge, int[] vibrationPattern, long timestamp, boolean renotify,
-            boolean silent, ActionInfo[] actions, String webApkPackage) {
+            String profileId, boolean incognito, boolean vibrateEnabled, String title, String body,
+            Bitmap image, Bitmap icon, Bitmap badge, int[] vibrationPattern, long timestamp,
+            boolean renotify, boolean silent, ActionInfo[] actions, String webApkPackage) {
         mNotificationType = notificationType;
 
         if (notificationType == NotificationType.BRAVE_ADS) {
@@ -78,8 +78,8 @@ public class BraveNotificationPlatformBridge extends NotificationPlatformBridge 
         }
 
         return super.prepareNotificationBuilder(notificationId, notificationType, origin, scopeUrl,
-                profileId, incognito, title, body, image, icon, badge, vibrationPattern, timestamp,
-                renotify, silent, actions, webApkPackage);
+                profileId, incognito, vibrateEnabled, title, body, image, icon, badge,
+                vibrationPattern, timestamp, renotify, silent, actions, webApkPackage);
     }
 
     @Override

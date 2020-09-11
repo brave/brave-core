@@ -1,5 +1,5 @@
 diff --git a/ui/native_theme/native_theme.h b/ui/native_theme/native_theme.h
-index f4e9cc14b0b8406d255bbed56d98dcf61f24a405..21cabc43b72043771efb509c6fd58d7c9b72ed87 100644
+index e2ca7dd198390ebc923facd690904faeb8300e62..a21c89003b4a9f40f7a1896ca6ec2d496edce978 100644
 --- a/ui/native_theme/native_theme.h
 +++ b/ui/native_theme/native_theme.h
 @@ -437,6 +437,7 @@ class NATIVE_THEME_EXPORT NativeTheme {

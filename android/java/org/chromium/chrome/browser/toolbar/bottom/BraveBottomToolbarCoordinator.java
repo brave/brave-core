@@ -19,8 +19,8 @@ import org.chromium.base.supplier.ObservableSupplier;
 import org.chromium.base.supplier.Supplier;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.ActivityTabProvider;
-import org.chromium.chrome.browser.ChromeActivity;
 import org.chromium.chrome.browser.ThemeColorProvider;
+import org.chromium.chrome.browser.app.ChromeActivity;
 import org.chromium.chrome.browser.compositor.layouts.EmptyOverviewModeObserver;
 import org.chromium.chrome.browser.compositor.layouts.OverviewModeBehavior;
 import org.chromium.chrome.browser.homepage.HomepageManager;
@@ -47,16 +47,17 @@ public class BraveBottomToolbarCoordinator
 
     private final Context mContext = ContextUtils.getApplicationContext();
 
-    BraveBottomToolbarCoordinator(ViewStub stub, ScrollingBottomViewResourceFrameLayout root,
-            ActivityTabProvider tabProvider,
-            OnLongClickListener tabsSwitcherLongClickListner, ThemeColorProvider themeColorProvider,
+    BraveBottomToolbarCoordinator(ScrollingBottomViewResourceFrameLayout root, ViewStub stub,
+            ActivityTabProvider tabProvider, OnLongClickListener tabsSwitcherLongClickListner,
+            ThemeColorProvider themeColorProvider,
             ObservableSupplier<ShareDelegate> shareDelegateSupplier,
             Supplier<Boolean> showStartSurfaceCallable, Runnable openHomepageAction,
             Callback<Integer> setUrlBarFocusAction,
-            ObservableSupplier<OverviewModeBehavior> overviewModeBehaviorSupplier) {
+            ObservableSupplier<OverviewModeBehavior> overviewModeBehaviorSupplier,
+            ObservableSupplier<AppMenuButtonHelper> menuButtonHelperSupplier) {
         super(stub, tabProvider, tabsSwitcherLongClickListner, themeColorProvider,
                 shareDelegateSupplier, showStartSurfaceCallable, openHomepageAction,
-                setUrlBarFocusAction, overviewModeBehaviorSupplier);
+                setUrlBarFocusAction, overviewModeBehaviorSupplier, menuButtonHelperSupplier);
         mBraveTabProvider = tabProvider;
         mOriginalHomeButtonRunnable = openHomepageAction;
         rootView = root;
@@ -90,11 +91,11 @@ public class BraveBottomToolbarCoordinator
 
     @Override
     void initializeWithNative(OnClickListener tabSwitcherListener,
-            OnClickListener newTabClickListener, AppMenuButtonHelper menuButtonHelper,
-            TabCountProvider tabCountProvider, IncognitoStateProvider incognitoStateProvider,
-            ViewGroup topToolbarRoot, Runnable closeAllTabsAction) {
-        super.initializeWithNative(tabSwitcherListener, newTabClickListener, menuButtonHelper,
-                tabCountProvider, incognitoStateProvider, topToolbarRoot, closeAllTabsAction);
+            OnClickListener newTabClickListener, TabCountProvider tabCountProvider,
+            IncognitoStateProvider incognitoStateProvider, ViewGroup topToolbarRoot,
+            Runnable closeAllTabsAction) {
+        super.initializeWithNative(tabSwitcherListener, newTabClickListener, tabCountProvider,
+                incognitoStateProvider, topToolbarRoot, closeAllTabsAction);
 
         View root = (View) topToolbarRoot.getParent();
         View bottom_toolbar_browsing = root.findViewById(R.id.bottom_toolbar_browsing);

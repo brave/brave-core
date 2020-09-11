@@ -229,6 +229,7 @@ const char kUpgradeHelpCenterBaseURL[] =
 
 const char kWhoIsMyAdministratorHelpURL[] =
     "https://support.brave.com/";
+
 const char kChromeFlashRoadmapURL[] = "https://support.brave.com/";
 
 #if defined(OS_ANDROID)
@@ -241,7 +242,7 @@ const char kEnhancedPlaybackNotificationLearnMoreURL[] =
     "https://community.brave.com";
 #endif
 
-#if defined(OS_MACOSX)
+#if defined(OS_MAC)
 const char kChromeEnterpriseSignInLearnMoreURL[] =
     "https://support.brave.com/";
 

@@ -1,12 +1,12 @@
 diff --git a/chrome/browser/resources/settings/site_settings/category_default_setting.js b/chrome/browser/resources/settings/site_settings/category_default_setting.js
-index 329851abf6153ee1d126f4424a3a7320f062f3ae..893880f22742f60972901545df4b6b93793a476f 100644
+index 15eb2547dbc833d78eeaf00a91e2d04b7d514c4c..11feccf2318857955696bba0e0b33d9c8f5eed5d 100644
 --- a/chrome/browser/resources/settings/site_settings/category_default_setting.js
 +++ b/chrome/browser/resources/settings/site_settings/category_default_setting.js
 @@ -169,6 +169,7 @@ Polymer({
-     }
-     switch (this.category) {
-       case ContentSettingsTypes.ADS:
+             this.categoryEnabled ? ContentSetting.ALLOW : ContentSetting.BLOCK);
+         break;
+       case ContentSettingsTypes.AUTOMATIC_DOWNLOADS:
 +      case ContentSettingsTypes.AUTOPLAY:
-       case ContentSettingsTypes.BACKGROUND_SYNC:
-       case ContentSettingsTypes.IMAGES:
-       case ContentSettingsTypes.JAVASCRIPT:
+       case ContentSettingsTypes.CAMERA:
+       case ContentSettingsTypes.CLIPBOARD:
+       case ContentSettingsTypes.FONT_ACCESS:

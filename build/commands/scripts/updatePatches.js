@@ -18,18 +18,14 @@ module.exports = function RunCommand (options) {
 
   const chromiumDir = config.srcDir
   const v8Dir = path.join(config.srcDir, 'v8')
-  const devtoolsFrontendSrcDir = path.join(chromiumDir, 'third_party', 'devtools-frontend', 'src')
   const patchDir = path.join(config.braveCoreDir, 'patches')
   const v8PatchDir = path.join(patchDir, 'v8')
-  const devtoolsFrontendSrcPatchDir = path.join(patchDir, 'devtools-frontend-src')
 
   Promise.all([
     // chromium
     updatePatches(chromiumDir, patchDir, chromiumPathFilter),
     // v8
     updatePatches(v8Dir, v8PatchDir),
-    // third_party/devtools-frontend/src
-    updatePatches(devtoolsFrontendSrcDir, devtoolsFrontendSrcPatchDir)
   ])
   .then(() => {
     console.log('Done.')

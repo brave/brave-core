@@ -1,5 +1,5 @@
 diff --git a/content/public/browser/permission_type.cc b/content/public/browser/permission_type.cc
-index 8bb88e872867e29aae689e44e3a882940e9a1ca0..d7502c196777726690d6e91c1c89f868c4c6c9c8 100644
+index f39b27b778a849bf84a1cf21051e320bed56bde6..9d36215474f67c33625895cc03b81ac5ccc1c51a 100644
 --- a/content/public/browser/permission_type.cc
 +++ b/content/public/browser/permission_type.cc
 @@ -95,6 +95,7 @@ base::Optional<PermissionType> PermissionDescriptorToPermissionType(
@@ -9,4 +9,4 @@ index 8bb88e872867e29aae689e44e3a882940e9a1ca0..d7502c196777726690d6e91c1c89f868
 +    BRAVE_PERMISSIONDESCRIPTORTOPERMISSIONTYPE
      case PermissionName::WINDOW_PLACEMENT:
        return PermissionType::WINDOW_PLACEMENT;
-   }
+     case PermissionName::FONT_ACCESS:

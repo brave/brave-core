@@ -43,9 +43,9 @@ import org.chromium.base.TraceEvent;
 import org.chromium.base.supplier.Supplier;
 import org.chromium.base.task.AsyncTask;
 import org.chromium.chrome.R;
-import org.chromium.chrome.browser.BraveActivity;
 import org.chromium.chrome.browser.BraveRewardsHelper;
 import org.chromium.chrome.browser.ChromeTabbedActivity;
+import org.chromium.chrome.browser.app.BraveActivity;
 import org.chromium.chrome.browser.compositor.layouts.OverviewModeBehavior;
 import org.chromium.chrome.browser.explore_sites.ExploreSitesBridge;
 import org.chromium.chrome.browser.lifecycle.ActivityLifecycleDispatcher;
@@ -70,7 +70,7 @@ import org.chromium.chrome.browser.offlinepages.OfflinePageBridge;
 import org.chromium.chrome.browser.offlinepages.RequestCoordinatorBridge;
 import org.chromium.chrome.browser.preferences.BravePref;
 import org.chromium.chrome.browser.preferences.BravePrefServiceBridge;
-import org.chromium.chrome.browser.preferences.PrefServiceBridge;
+import org.chromium.components.user_prefs.UserPrefs;
 import org.chromium.chrome.browser.profiles.Profile;
 import org.chromium.chrome.browser.suggestions.tile.SiteSection;
 import org.chromium.chrome.browser.suggestions.tile.TileGroup;
@@ -153,7 +153,7 @@ public class BraveNewTabPageLayout extends NewTabPageLayout {
 
         FrameLayout mBadgeLayout = findViewById(R.id.badge_layout);
         ImageView mBadgeImageView = findViewById(R.id.badge_image_view);
-        if (!PrefServiceBridge.getInstance().getBoolean(BravePref.NEW_TAB_PAGE_SHOW_BACKGROUND_IMAGE)
+        if (!UserPrefs.get(Profile.getLastUsedRegularProfile()).getBoolean(BravePref.NEW_TAB_PAGE_SHOW_BACKGROUND_IMAGE)
                 || !NTPUtil.shouldEnableNTPFeature()) {
             mBadgeImageView.setColorFilter(ContextCompat.getColor(ContextUtils.getApplicationContext(), R.color.brave_stats_badge_tint_color), android.graphics.PorterDuff.Mode.SRC_IN);
         }
@@ -207,7 +207,7 @@ public class BraveNewTabPageLayout extends NewTabPageLayout {
     }
 
     protected int getMaxRowsForMostVisitedTiles() {
-        if (PrefServiceBridge.getInstance().getBoolean(BravePref.NEW_TAB_PAGE_SHOW_BACKGROUND_IMAGE)
+        if (UserPrefs.get(Profile.getLastUsedRegularProfile()).getBoolean(BravePref.NEW_TAB_PAGE_SHOW_BACKGROUND_IMAGE)
                 && NTPUtil.shouldEnableNTPFeature()) {
             return 1;
         } else {
@@ -284,14 +284,13 @@ public class BraveNewTabPageLayout extends NewTabPageLayout {
 
     @Override
     public void initialize(NewTabPageManager manager, Activity activity,
-                           TileGroup.Delegate tileGroupDelegate, boolean searchProviderHasLogo,
-                           boolean searchProviderIsGoogle, ScrollDelegate scrollDelegate,
-                           ContextMenuManager contextMenuManager, UiConfig uiConfig, Supplier<Tab> tabProvider,
-                           ActivityLifecycleDispatcher lifecycleDispatcher,
-                           @Nullable OverviewModeBehavior overviewModeBehavior, NewTabPageUma uma) {
+            TileGroup.Delegate tileGroupDelegate, boolean searchProviderHasLogo,
+            boolean searchProviderIsGoogle, ScrollDelegate scrollDelegate,
+            ContextMenuManager contextMenuManager, UiConfig uiConfig, Supplier<Tab> tabProvider,
+            ActivityLifecycleDispatcher lifecycleDispatcher, NewTabPageUma uma) {
         super.initialize(manager, activity, tileGroupDelegate, searchProviderHasLogo,
-                         searchProviderIsGoogle, scrollDelegate, contextMenuManager, uiConfig, tabProvider,
-                         lifecycleDispatcher, overviewModeBehavior, uma);
+                searchProviderIsGoogle, scrollDelegate, contextMenuManager, uiConfig, tabProvider,
+                lifecycleDispatcher, uma);
 
         assert (activity instanceof BraveActivity);
         mActivity = activity;
@@ -323,7 +322,7 @@ public class BraveNewTabPageLayout extends NewTabPageLayout {
         mDataSavedValueTextView.setText(String.format(getResources().getString(R.string.ntp_stat_text), dataSavedPair.first, dataSavedPair.second));
         mEstTimeSavedCountTextView.setText(BraveStatsUtil.getBraveStatsStringFromTime(estimatedMillisecondsSaved / 1000));
 
-        if ((PrefServiceBridge.getInstance().getBoolean(BravePref.NEW_TAB_PAGE_SHOW_BACKGROUND_IMAGE)
+        if ((UserPrefs.get(Profile.getLastUsedRegularProfile()).getBoolean(BravePref.NEW_TAB_PAGE_SHOW_BACKGROUND_IMAGE)
                 || NTPUtil.isReferralEnabled())
                 && sponsoredTab != null
                 && NTPUtil.shouldEnableNTPFeature()) {
@@ -366,7 +365,7 @@ public class BraveNewTabPageLayout extends NewTabPageLayout {
                         "SuperReferralShareDialogFragment");
                 }
             });
-        } else if (PrefServiceBridge.getInstance().getBoolean(
+        } else if (UserPrefs.get(Profile.getLastUsedRegularProfile()).getBoolean(
                        BravePref.NEW_TAB_PAGE_SHOW_BACKGROUND_IMAGE)
                    && sponsoredTab != null
                    && NTPUtil.shouldEnableNTPFeature()) {
@@ -540,7 +539,7 @@ public class BraveNewTabPageLayout extends NewTabPageLayout {
             tileViewTitleTv.setText(topSite.getName());
 
             if (!GlobalNightModeStateProviderHolder.getInstance().isInNightMode()
-                    && !PrefServiceBridge.getInstance().getBoolean(BravePref.NEW_TAB_PAGE_SHOW_BACKGROUND_IMAGE)
+                    && !UserPrefs.get(Profile.getLastUsedRegularProfile()).getBoolean(BravePref.NEW_TAB_PAGE_SHOW_BACKGROUND_IMAGE)
                     && !NTPUtil.isReferralEnabled()) {
                 tileViewTitleTv.setTextColor(getResources().getColor(android.R.color.black));
             } else {

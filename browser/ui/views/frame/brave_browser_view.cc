@@ -16,8 +16,8 @@
 #endif
 
 #if BUILDFLAG(ENABLE_BRAVE_TRANSLATE_EXTENSION)
-#include "brave/common/extensions/extension_constants.h"
 #include "extensions/browser/extension_registry.h"
+#include "extensions/common/constants.h"
 #endif
 
 void BraveBrowserView::SetStarredState(bool is_starred) {

@@ -1,5 +1,5 @@
 diff --git a/chrome/android/java/src/org/chromium/chrome/browser/toolbar/top/TabSwitcherModeTTPhone.java b/chrome/android/java/src/org/chromium/chrome/browser/toolbar/top/TabSwitcherModeTTPhone.java
-index 2d5c7f94389664cdfad0e4764477043f0735bc3e..25097eff0af644a39f9fd5e4a9cd86422fb173d8 100644
+index 5a7b93b3da8a745cfdd1f223f1177f16da149b0e..ed791527aaf87f7d0a0b514c98dc39c02923d08e 100644
 --- a/chrome/android/java/src/org/chromium/chrome/browser/toolbar/top/TabSwitcherModeTTPhone.java
 +++ b/chrome/android/java/src/org/chromium/chrome/browser/toolbar/top/TabSwitcherModeTTPhone.java
 @@ -291,6 +291,7 @@ public class TabSwitcherModeTTPhone extends OptimizedFrameLayout

@@ -11,10 +11,10 @@
 
 #include "base/strings/utf_string_conversions.h"
 #include "brave/browser/brave_browser_process_impl.h"
-#include "brave/common/extensions/extension_constants.h"
 #include "brave/components/brave_component_updater/browser/local_data_files_service.h"
 #include "brave/components/brave_component_updater/browser/extension_whitelist_service.h"
 #include "brave/grit/brave_generated_resources.h"
+#include "extensions/common/constants.h"
 #include "ui/base/l10n/l10n_util.h"
 
 namespace {

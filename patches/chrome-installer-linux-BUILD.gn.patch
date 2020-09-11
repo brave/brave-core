@@ -1,9 +1,9 @@
 diff --git a/chrome/installer/linux/BUILD.gn b/chrome/installer/linux/BUILD.gn
-index b101b0cb224260df3b02db2cbb1986a84db38a7b..1e5eb4df0c3501beaf0623bf18c3d442b2175715 100644
+index f5543a3271a7cd239d2f41516cb8a992bffa36dc..ae4b77895894d72c959d1f1b681e0026b134d08b 100644
 --- a/chrome/installer/linux/BUILD.gn
 +++ b/chrome/installer/linux/BUILD.gn
 @@ -30,8 +30,8 @@ declare_args() {
- assert(is_linux)
+ assert(is_linux || is_chromeos)
  
  packaging_files_executables = [
 -  "$root_out_dir/chrome",

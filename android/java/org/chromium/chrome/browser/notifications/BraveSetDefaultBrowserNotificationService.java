@@ -25,7 +25,7 @@ import org.chromium.base.ContextUtils;
 import org.chromium.base.task.PostTask;
 import org.chromium.base.task.TaskTraits;
 import org.chromium.chrome.R;
-import org.chromium.chrome.browser.BraveActivity;
+import org.chromium.chrome.browser.app.BraveActivity;
 import org.chromium.components.embedder_support.util.UrlConstants;
 
 import java.util.Calendar;

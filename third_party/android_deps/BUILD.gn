@@ -22,5 +22,5 @@ android_aar_prebuilt("com_android_installreferrer_java") {
 android_aar_prebuilt("com_airbnb_android_java") {
   aar_path = "libs/com_airbnb_android/lottie-3.0.3.aar"
   info_path = "libs/com_airbnb_android/com_airbnb_android.info"
-deps = ["$google_play_services_package:androidx_appcompat_appcompat_java"]
+  deps = ["//third_party/android_deps:androidx_appcompat_appcompat_java"]
 }

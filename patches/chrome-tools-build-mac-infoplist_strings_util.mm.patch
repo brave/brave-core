@@ -1,14 +1,14 @@
 diff --git a/chrome/tools/build/mac/infoplist_strings_util.mm b/chrome/tools/build/mac/infoplist_strings_util.mm
-index 45e4c8d75c62b182d2f747d8d6e217f099f6cee6..3a229c70f0aea370e40cc720141f6422f4de21de 100644
+index 85b3833a34bf7cc21b1869faa0f0423944e432f0..e108c44e4e14864f52e720ad3227a65bc33dba81 100644
 --- a/chrome/tools/build/mac/infoplist_strings_util.mm
 +++ b/chrome/tools/build/mac/infoplist_strings_util.mm
-@@ -245,8 +245,7 @@ int main(int argc, char* const argv[]) {
+@@ -241,8 +241,7 @@ int main(int argc, char* const argv[]) {
  
        // Fetch the strings.
        NSString* name =
 -            LoadStringFromDataPack(branded_data_pack.get(), cur_lang,
 -                                   name_id, name_id_str);
 +          [NSString stringWithUTF8String:BRAVE_PRODUCT_STRING];
-       NSString* short_name =
-             LoadStringFromDataPack(branded_data_pack.get(), cur_lang,
-                                    short_name_id, short_name_id_str);
+       NSString* copyright_format =
+           LoadStringFromDataPack(branded_data_pack.get(), cur_lang,
+                                  IDS_ABOUT_VERSION_COPYRIGHT,

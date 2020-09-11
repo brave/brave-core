@@ -18,20 +18,20 @@ import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
-import android.support.annotation.Nullable;
 import android.util.DisplayMetrics;
 import android.view.View;
 import android.widget.RemoteViews;
 
+import androidx.annotation.Nullable;
 import androidx.annotation.VisibleForTesting;
 
 import org.chromium.base.ApiCompatibilityUtils;
 import org.chromium.base.ApplicationStatus;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.notifications.channels.BraveChannelDefinitions;
-import org.chromium.components.browser_ui.notifications.ChromeNotification;
-import org.chromium.components.browser_ui.notifications.ChromeNotificationBuilder;
 import org.chromium.components.browser_ui.notifications.NotificationMetadata;
+import org.chromium.components.browser_ui.notifications.NotificationWrapper;
+import org.chromium.components.browser_ui.notifications.NotificationWrapperBuilder;
 
 /**
  * Builds a notification according to BraveAds spec.
@@ -99,7 +99,7 @@ public class BraveAdsNotificationBuilder extends NotificationBuilderBase {
     }
 
     @Override
-    public ChromeNotification build(NotificationMetadata metadata) {
+    public NotificationWrapper build(NotificationMetadata metadata) {
         // A note about RemoteViews and updating notifications. When a notification is passed to the
         // {@code NotificationManager} with the same tag and id as a previous notification, an
         // in-place update will be performed. In that case, the actions of all new
@@ -142,8 +142,8 @@ public class BraveAdsNotificationBuilder extends NotificationBuilderBase {
         String channelId =  (ApplicationStatus.hasVisibleActivities()) ?
                 BraveChannelDefinitions.ChannelId.BRAVE_ADS :
                 BraveChannelDefinitions.ChannelId.BRAVE_ADS_BACKGROUND;
-        ChromeNotificationBuilder builder =
-                NotificationBuilderFactory.createChromeNotificationBuilder(false /* preferCompat */,
+        NotificationWrapperBuilder builder =
+                NotificationWrapperBuilderFactory.createNotificationWrapperBuilder(false /* preferCompat */,
                         channelId, mRemotePackageForBuilderContext, metadata);
         builder.setTicker(mTickerText);
         builder.setContentIntent(mContentIntent);

@@ -1,10 +1,10 @@
 diff --git a/content/public/browser/permission_type.h b/content/public/browser/permission_type.h
-index 764190e5544da142c52571ef20b82472dc9b7586..2a1d47568fd87381b5459b30bda6c779b2301522 100644
+index f0d17e4885ac7ba6d67f4063465f800a61c29f68..1f7aab91de0d2105c87849bf90f8b004c5734054 100644
 --- a/content/public/browser/permission_type.h
 +++ b/content/public/browser/permission_type.h
-@@ -50,6 +50,7 @@ enum class PermissionType {
-   CAMERA_PAN_TILT_ZOOM = 28,
+@@ -51,6 +51,7 @@ enum class PermissionType {
    WINDOW_PLACEMENT = 29,
+   FONT_ACCESS = 30,
  
 +  AUTOPLAY,
    // Always keep this at the end.

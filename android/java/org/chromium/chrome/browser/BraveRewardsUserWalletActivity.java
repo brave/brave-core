@@ -18,10 +18,10 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
 import org.chromium.chrome.R;
-import org.chromium.chrome.browser.BraveActivity;
 import org.chromium.chrome.browser.BraveRewardsBalance;
 import org.chromium.chrome.browser.BraveRewardsExternalWallet;
 import org.chromium.chrome.browser.BraveRewardsNativeWorker;
+import org.chromium.chrome.browser.app.BraveActivity;
 
 public class BraveRewardsUserWalletActivity extends AppCompatActivity {
 

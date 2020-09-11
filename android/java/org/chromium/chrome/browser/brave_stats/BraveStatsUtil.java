@@ -7,7 +7,7 @@ package org.chromium.chrome.browser.brave_stats;
 
 import android.util.Pair;
 
-import org.chromium.chrome.browser.BraveActivity;
+import org.chromium.chrome.browser.app.BraveActivity;
 import org.chromium.chrome.browser.brave_stats.BraveStatsBottomSheetDialogFragment;
 
 import java.text.SimpleDateFormat;

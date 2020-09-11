@@ -35,7 +35,7 @@ class BrowsingDataRemovalWatcher
       BraveClearBrowsingData::OnExitTestingCallback* testing_callback);
 
   // BrowsingDataRemover::Observer implementation.
-  void OnBrowsingDataRemoverDone() override;
+  void OnBrowsingDataRemoverDone(uint64_t failed_data_types) override;
 
  private:
   bool GetClearBrowsingDataOnExitSettings(const Profile* profile,
@@ -153,7 +153,8 @@ void BrowsingDataRemovalWatcher::Wait() {
     run_loop_.Run();
 }
 
-void BrowsingDataRemovalWatcher::OnBrowsingDataRemoverDone() {
+void BrowsingDataRemovalWatcher::OnBrowsingDataRemoverDone(
+    uint64_t failed_data_types) {
   --num_profiles_to_clear_;
   if (num_profiles_to_clear_ > 0)
     return;

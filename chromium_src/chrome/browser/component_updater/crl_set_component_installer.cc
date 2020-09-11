@@ -10,8 +10,8 @@
 #include "chrome/browser/browser_process.h"
 
 #if !defined(OS_ANDROID)
-#include "brave/common/extensions/extension_constants.h"
 #include "chrome/browser/component_updater/component_updater_utils.h"
+#include "extensions/common/constants.h"
 #endif
 
 namespace component_updater {

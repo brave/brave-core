@@ -5,7 +5,7 @@
 
 #include "chrome/browser/webauthn/chrome_authenticator_request_delegate.h"
 
-#if defined(OS_MACOSX)
+#if defined(OS_APPLE)
 #include "base/mac/foundation_util.h"
 
 #define BRAVE_WEBAUTHN_KEYCHAIN_ACCESS_GROUP                    \

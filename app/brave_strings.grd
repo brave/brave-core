@@ -205,9 +205,6 @@ If you update this file, be sure also to update google_chrome_strings.grd. -->
           Chrome OS
         </message>
       </if>
-      <message name="IDS_SHORT_PRODUCT_LOGO_ALT_TEXT" desc="Alt text for the Brave logo image.">
-        Brave logo
-      </message>
       <!-- Brave enterprise logo won't be used in Brave -->
       <message name="IDS_PRODUCT_LOGO_ENTERPRISE_ALT_TEXT" desc="Alt text for the Brave Enterprise logo image." />
       <if expr="is_win">
@@ -215,9 +212,16 @@ If you update this file, be sure also to update google_chrome_strings.grd. -->
           New window
         </message>
       </if>
-      <message name="IDS_TASK_MANAGER_TITLE" desc="The title of the Task Manager window">
-        Task Manager - Brave
-      </message>
+      <if expr="is_macosx or chromeos">
+        <message name="IDS_TASK_MANAGER_TITLE" desc="The title of the Task Manager window">
+          Task Manager
+        </message>
+      </if>
+      <if expr="not is_macosx and not chromeos">
+        <message name="IDS_TASK_MANAGER_TITLE" desc="The title of the Task Manager window">
+          Task Manager - Brave
+        </message>
+      </if>
       <message name="IDS_SESSION_CRASHED_VIEW_UMA_OPTIN" desc="Text besides the checkbox to let users optin to UMA in the restore from previous crash bubble.">
         Help make Brave better by sending crash reports and <ph name="UMA_LINK">$1<ex>usage statistics</ex></ph> to Brave
       </message>
@@ -687,6 +691,16 @@ Brave is unable to recover your settings.
         </message>
       </if>
 
+      <!-- Dice Web Signin Interception Bubble-->
+      <if expr="not chromeos and not is_android">
+        <message name="IDS_SIGNIN_DICE_WEB_INTERCEPT_CONSUMER_BUBBLE_TITLE" desc="Title of the web signin interception bubble">
+          Create your own profile in Brave?
+        </message>
+        <message name="IDS_SIGNIN_DICE_WEB_INTERCEPT_ENTERPRISE_CONSUMER_BUBBLE_DESC" desc="Body of the web signin interception bubble when the new account is managed and the existing account is personal">
+          To separate personal and <ph name="NEW_USER">$1<ex>example.com</ex></ph> browsing, create a new profile in Brave
+        </message>
+      </if>
+
       <!-- Brave Cleanup prompt.
            Note: these strings should only be used by Brave, but
                  omitting them brings up a hash collision error. -->
@@ -932,9 +946,6 @@ Brave is unable to recover your settings.
       </message>
 
       <!-- User menu errors -->
-      <message name="IDS_SYNC_ERROR_USER_MENU_UPGRADE_MESSAGE" desc="Message of the out-of-date Brave client error in the header of desktop user menu.">
-        Brave is out of date
-      </message>
       <message name="IDS_SYNC_ERROR_USER_MENU_UPGRADE_BUTTON" desc="Button in the header of desktop user menu that prompts the user to update Brave to fix the out-of-date Brave client error.">
         Update Brave
       </message>
@@ -1117,6 +1128,25 @@ Brave is unable to recover your settings.
          Your parent has turned off "Permissions for sites, apps and extensions" for Brave. Enabling this <ph name="EXTENSION_TYPE_PARAMETER">$1<ex>extension</ex></ph> is not allowed.
         </message>
 
+      </if>
+
+      <!-- Profile Picker -->
+      <if expr="not chromeos and not is_android">
+        <message name="IDS_PROFILE_PICKER_MAIN_VIEW_TITLE" desc="Profile picker main view title">
+          Who's using Brave?
+        </message>
+        <message name="IDS_PROFILE_PICKER_MAIN_VIEW_SUBTITLE" desc="Profile picker main view subtitle">
+          Use different profiles in Brave to separate work and personal browsing, or for different profiles who use this device
+        </message>
+        <message name="IDS_PROFILE_PICKER_REMOVE_WARNING_SIGNED_IN_PROFILE" desc="Remove warning message shown for signed in profiles shown when the user selects remove from the 3 dotted menu">
+          This will permanently delete your browsing data from this device. To recover the data, sign in to Brave as
+        </message>
+        <message name="IDS_PROFILE_PICKER_PROFILE_CREATION_FLOW_PROFILE_TYPE_CHOICE_TITLE" desc="Profile picker profile type choice title">
+          Set up your new Brave profile
+        </message>
+        <message name="IDS_PROFILE_PICKER_ASK_ON_STARTUP" desc="Text for the checkbox on the profile picker main view">
+          Ask when I open Brave
+        </message>
       </if>
 
     </messages>

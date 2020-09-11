@@ -5,8 +5,8 @@
 
 #include "brave/common/extensions/whitelist.h"
 
-#include "brave/common/extensions/extension_constants.h"
 #include "brave/components/brave_component_updater/browser/local_data_files_service.h"
+#include "extensions/common/constants.h"
 
 // This is a hardcoded list of vetted extensions, mostly
 // the built-in ones that ship with Brave or are used for

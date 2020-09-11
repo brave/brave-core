@@ -10,7 +10,7 @@
 
 namespace {
 
-#if defined(OS_MACOSX)
+#if defined(OS_MAC)
 // tor::switches::kTorExecutablePath
 const char kTorExecutablePath[] = "tor-executable-path";
 
@@ -40,7 +40,7 @@ void CleanupTor() {
     base::KillProcesses(path.value(), 0, &process_tree_filter);
   }
 }
-#endif  // defined(OS_MACOSX)
+#endif  // defined(OS_MAC)
 
 }  // namespace
 

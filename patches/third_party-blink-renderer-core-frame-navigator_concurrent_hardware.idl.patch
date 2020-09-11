@@ -1,11 +1,11 @@
 diff --git a/third_party/blink/renderer/core/frame/navigator_concurrent_hardware.idl b/third_party/blink/renderer/core/frame/navigator_concurrent_hardware.idl
-index 3bb78d4b00c651a9edef3639a125736dc55d6be7..8bc1b636ba5423c443137aa7cb344261340de477 100644
+index 5cc78bbd3276c7798b5bbc019a8df470cfcc40e5..03c10b0c3145665db4bd9717b76edb263c9e7b4c 100644
 --- a/third_party/blink/renderer/core/frame/navigator_concurrent_hardware.idl
 +++ b/third_party/blink/renderer/core/frame/navigator_concurrent_hardware.idl
 @@ -5,5 +5,5 @@
  // https://html.spec.whatwg.org/C/#navigator.hardwareconcurrency
  
  interface mixin NavigatorConcurrentHardware {
--    [HighEntropy, MeasureAs=NavigatorHardwareConcurrency] readonly attribute unsigned long long hardwareConcurrency;
-+  [CallWith=ScriptState, HighEntropy, MeasureAs=NavigatorHardwareConcurrency] readonly attribute unsigned long long hardwareConcurrency;
+-    [HighEntropy=Direct, MeasureAs=NavigatorHardwareConcurrency] readonly attribute unsigned long long hardwareConcurrency;
++  [CallWith=ScriptState, HighEntropy=Direct, MeasureAs=NavigatorHardwareConcurrency] readonly attribute unsigned long long hardwareConcurrency;
  };
