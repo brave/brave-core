@@ -13,13 +13,66 @@ const currencyData = {
   btc: {
     volume24hr: 1271112419,
     chartData: [
-      { x: 1, y: 2 },
-      { x: 2, y: 3 },
-      { x: 3, y: 5 },
-      { x: 4, y: 4 },
-      { x: 5, y: 7 }
+      {
+        t: 1599091200000,
+        o: 13000.0,
+        h: 13000.0,
+        l: 8692.84,
+        c: 12999.5,
+        v: 33.804565
+      },
+      {
+        t: 1599177600000,
+        o: 13000.0,
+        h: 13000.0,
+        l: 8691.07,
+        c: 8691.07,
+        v: 46.798151
+      },
+      {
+        t: 1599350400000,
+        o: 12001.0,
+        h: 12001.01,
+        l: 12001.0,
+        c: 12001.01,
+        v: 0.2
+      },
+      {
+        t: 1599436800000,
+        o: 13000.0,
+        h: 13000.0,
+        l: 8682.27,
+        c: 9000.0,
+        v: 31.319846
+      },
+      {
+        t: 1599523200000,
+        o: 8682.27,
+        h: 13000.0,
+        l: 8682.21,
+        c: 8682.21,
+        v: 3.768236
+      },
+      {
+        t: 1599609600000,
+        o: 8682.27,
+        h: 13000.0,
+        l: 8680.16,
+        c: 8680.16,
+        v: 19.107522
+      },
+      {
+        t: 1599696000000,
+        o: 12950.0,
+        h: 12950.0,
+        l: 10300.0,
+        c: 11000.0,
+        v: 6.08722
+      }
     ]
-  }
+  },
+  eth: {},
+  cro: {}
 }
 
 import * as React from 'react'
@@ -75,6 +128,11 @@ interface Props {
   onTotalPriceOptIn: () => void
   onBtcPriceOptIn: () => void
 }
+interface ChartConfig {
+  data: Array<any>
+  chartHeight: number
+  chartWidth: number
+}
 
 class CryptoDotCom extends React.PureComponent<Props, State> {
   constructor (props: Props) {
@@ -95,6 +153,21 @@ class CryptoDotCom extends React.PureComponent<Props, State> {
     this.setState({
       selectedAsset: asset
     })
+  }
+
+  plotData ({ data, chartHeight, chartWidth }: ChartConfig) {
+    const dataPoints = data.map((day: any) => day.c)
+    const chartArea = chartHeight - 2
+    const max = Math.max(...dataPoints)
+    const min = Math.min(...dataPoints)
+    const pixelsPerPoint = (max - min) / chartArea
+    return dataPoints
+      .map((v, i) => {
+        const y = (v - min) / pixelsPerPoint
+        const x = i * (chartWidth / 6)
+        return `${x},${chartArea - y}`
+      })
+      .join('\n')
   }
 
   renderIconAsset = (key: string, isDetail: boolean = false) => {
@@ -170,6 +243,8 @@ class CryptoDotCom extends React.PureComponent<Props, State> {
   renderAssetDetailView () {
     const { selectedAsset: currency } = this.state
     const assetData = currencyData[currency.toLowerCase()]
+    const chartHeight = 100
+    const chartWidth = 309
     return (
       <Box noPadding={true}>
         <FlexItem
@@ -209,17 +284,31 @@ class CryptoDotCom extends React.PureComponent<Props, State> {
             borderBottom: '1px solid #979797'
           }}
         >
-          {/* <VictoryLine
-            padding={0}
-            style={{
-              data: { stroke: "#44B0FF" }
-            }}
-            animate={{
-              duration: 2000,
-              onLoad: { duration: 1000 }
-            }}
-            data={assetData.chartData}
-          /> */}
+          <Text
+            inline={true}
+            large={true}
+            weight={500}
+            style={{ marginRight: '0.5rem' }}
+          >
+            $9,499.50 USDT
+          </Text>
+          <Text inline={true} $color='green'>0.98%</Text>
+          <svg
+            viewBox={`0 0 ${chartWidth} ${chartHeight}`}
+            style={{ margin: '1rem 0' }}
+          >
+            <polyline
+              fill='none'
+              stroke='#44B0FF'
+              stroke-width='1'
+              points={this.plotData({
+                data: assetData.chartData,
+                chartHeight,
+                chartWidth
+              })}
+            />
+          </svg>
+        <Text small={true} $color='xlight'>7d Graph</Text>
         </FlexItem>
         <FlexItem
           hasPadding={true}

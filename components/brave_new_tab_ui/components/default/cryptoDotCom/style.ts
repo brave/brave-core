@@ -35,6 +35,7 @@ interface StyleProps {
   position?: string
   showContent?: boolean
   small?: boolean
+  large?: boolean
   style?: object
   textAlign?: string
   textColor?: string
@@ -45,7 +46,8 @@ interface StyleProps {
 const colorNameToHex = {
   green: '#58B2A9',
   red: '#D986A2',
-  light: 'rgba(255, 255, 255, 0.6)'
+  light: 'rgba(255, 255, 255, 0.6)',
+  xlight: 'rgba(255, 255, 255, 0.3)'
 }
 
 function getColor (p: any) {
@@ -63,9 +65,10 @@ export const Text = styled<StyleProps, 'p'>('p')`
   font-family: ${p => 'Poppins'};
   font-weight: ${p => (p.weight || (p.small ? '500' : 'normal'))};
   color: ${p => getColor(p.$color) || '#ffffff'};
-  font-size: ${p => (p.small ? '11px' : '14px')};
+  font-size: ${p => (p.small ? '11px' : (p.large ? '19px' : '14px'))};
   margin: ${p => (p.$hasSpacing ? '20px 0px' : '0px')};
   text-align: ${p => (p.center ? 'center' : 'inherit')}
+  display: ${p => (p.inline ? 'inline-block' : 'block')}
  `
 
 export const Box = styled<StyleProps, 'div'>('div')`
