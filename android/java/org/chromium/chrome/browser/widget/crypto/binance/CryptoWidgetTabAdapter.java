@@ -16,7 +16,7 @@ import java.util.Arrays;
 import java.util.List;
 
 public class CryptoWidgetTabAdapter extends FragmentStatePagerAdapter {
-    List<String> titles = Arrays.asList("Deposit", "Trade", "Balance");
+    List<String> titles = Arrays.asList("Summary", "Deposit", "Convert", "Buy");
 
     public CryptoWidgetTabAdapter(@NonNull FragmentManager fm, int behavior) {
         super(fm, behavior);
@@ -30,7 +30,7 @@ public class CryptoWidgetTabAdapter extends FragmentStatePagerAdapter {
 
     @Override
     public int getCount() {
-        return 3;
+        return 4;
     }
 
     @Nullable

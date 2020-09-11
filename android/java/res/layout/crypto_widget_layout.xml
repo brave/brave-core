@@ -41,65 +41,48 @@
 
     </LinearLayout>
 
-    <LinearLayout
+    <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="36dp"
-        android:layout_marginEnd="36dp"
-        android:orientation="horizontal">
+        android:layout_marginEnd="36dp">
+
+        <Button
+            android:id="@+id/btn_connect"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/rounded_filled_binance"
+            android:layout_gravity="center"
+            android:padding="16dp"
+            android:text="Connect" />
 
         <LinearLayout
-            android:layout_width="0dp"
+            android:id="@+id/binance_widget_layout"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
+            android:visibility="gone"
             android:orientation="vertical">
 
             <TextView
+                android:id="@+id/binance_balance_text"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="1.0118121BTC"
+                android:text="@string/btc_balance"
                 android:textColor="#FFFFFF"
                 android:layout_marginBottom="4dp"
                 android:textSize="24sp" />
 
             <TextView
+                android:id="@+id/binance_usd_balance_text"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="≈ $9,345.21"
+                android:text="@string/usd_balance"
                 android:textColor="#FFFFFF"
                 android:alpha="0.6"
                 android:textSize="12sp" />
 
         </LinearLayout>
 
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
-            android:orientation="vertical">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:drawableStart="@drawable/ic_polygon_1"
-                android:drawablePadding="4dp"
-                android:gravity="center_vertical"
-                android:text="1.01%"
-                android:textColor="#5DFF43"
-                android:layout_gravity="center_vertical"
-                android:layout_marginBottom="4dp"
-                android:textSize="18sp" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="24h Change"
-                android:textColor="#FFFFFF"
-                android:alpha="0.4"
-                android:textSize="12sp" />
-
-        </LinearLayout>
-
-    </LinearLayout>
+    </FrameLayout>
 
 </LinearLayout>

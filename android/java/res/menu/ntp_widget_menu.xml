@@ -8,7 +8,16 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto" >
 	<item android:id="@+id/edit"
-          android:title="@string/menu_edit" />
+		android:title="@string/menu_edit" />
     <item android:id="@+id/remove"
-          android:title="@string/menu_remove" />
+    	android:title="@string/menu_remove" />
+    <item android:id="@+id/learn_more"
+    	android:visible="false"
+    	android:title="@string/menu_learn_more" />
+    <item android:id="@+id/refresh_data"
+    	android:visible="false"
+    	android:title="@string/menu_refresh_data" />
+    <item android:id="@+id/disconnect"
+    	android:visible="false"
+    	android:title="@string/menu_disconnect" />
 </menu>

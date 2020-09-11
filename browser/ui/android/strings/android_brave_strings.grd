@@ -1314,6 +1314,21 @@ until they verify, or until 90 days have passed.
       <message name="IDS_MENU_REMOVE" desc="NTP widget menu item">
         Remove
       </message>
+      <message name="IDS_MENU_LEARN_MORE" desc="NTP widget menu item">
+        Learn More
+      </message>
+      <message name="IDS_MENU_REFRESH_DATA" desc="NTP widget menu item">
+        Refresh Data
+      </message>
+      <message name="IDS_MENU_DISCONNECT" desc="NTP widget menu item">
+        Disconnect
+      </message>
+      <message name="IDS_BTC_BALANCE" desc="Binance widget BTC balance text">
+        <ph name="BTC_BALANCE">%1$s<ex>0.0</ex></ph>BTC
+      </message>
+      <message name="IDS_USD_BALANCE" desc="Binance widget USD balance text">
+        ≈ $<ph name="USD_BALANCE">%1$s<ex>0.0</ex></ph>
+      </message>
     </messages>
   </release>
 </grit>

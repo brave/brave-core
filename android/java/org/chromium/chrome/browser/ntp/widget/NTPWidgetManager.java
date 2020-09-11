@@ -16,10 +16,12 @@ import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 
+import org.chromium.chrome.browser.widget.crypto.binance.BinanceAccountBalance;
+
 public class NTPWidgetManager {
     public static final String PREF_PRIVATE_STATS = "private_stats";
     public static final String PREF_FAVORITES = "favorites";
-    public static final String PREF_BRAVE_REWARDS = "brave_rewards";
+    // public static final String PREF_BRAVE_REWARDS = "brave_rewards";
     public static final String PREF_BINANCE = "binance";
     public static final String PREF_NTP_WIDGET_ORDER = "ntp_widget_order";
     public static final String PREF_BINANCE_USER_AUTHENTICATION = "binance_user_authentication";
@@ -27,6 +29,16 @@ public class NTPWidgetManager {
     private static NTPWidgetManager sInstance;
 
     private final SharedPreferences mSharedPreferences;
+
+    private static BinanceAccountBalance binanceAccountBalance;
+
+    public BinanceAccountBalance getBinanceAccountBalance() {
+        return binanceAccountBalance;
+    }
+
+    public void setBinanceAccountBalance(BinanceAccountBalance binanceAccountBalance) {
+        this.binanceAccountBalance = binanceAccountBalance;
+    }
 
     private NTPWidgetManager() {
         mSharedPreferences = ContextUtils.getAppSharedPreferences();
@@ -47,12 +59,12 @@ public class NTPWidgetManager {
         return mSharedPreferences.getInt(PREF_FAVORITES, 1);
     }
 
-    public int getBraveRewardsWidget() {
-        return mSharedPreferences.getInt(PREF_BRAVE_REWARDS, 2);
-    }
+    // public int getBraveRewardsWidget() {
+    //     return mSharedPreferences.getInt(PREF_BRAVE_REWARDS, 2);
+    // }
 
     public int getBinanceWidget() {
-        return mSharedPreferences.getInt(PREF_BINANCE, 3);
+        return mSharedPreferences.getInt(PREF_BINANCE, 2);
     }
 
     public void setWidget(String widgetType, int position) {
