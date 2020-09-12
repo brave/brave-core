@@ -41,9 +41,9 @@ class TorLauncher;
 }  // namespace tor
 
 template <>
-inline content::SandboxType
+inline sandbox::policy::SandboxType
 content::GetServiceSandboxType<tor::mojom::TorLauncher>() {
-  return content::SandboxType::kNoSandbox;
+  return sandbox::policy::SandboxType::kNoSandbox;
 }
 
 #if !defined(OS_ANDROID)  // Android will use default, which is kUtility.
@@ -54,9 +54,9 @@ class BatLedgerService;
 }  // namespace bat_ledger
 
 template <>
-inline content::SandboxType
+inline sandbox::policy::SandboxType
 content::GetServiceSandboxType<bat_ledger::mojom::BatLedgerService>() {
-  return content::SandboxType::kNoSandbox;
+  return sandbox::policy::SandboxType::kNoSandbox;
 }
 #endif  // !defined(OS_ANDROID)
 
