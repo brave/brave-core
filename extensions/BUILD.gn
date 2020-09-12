@@ -1,6 +1,4 @@
-if (is_android || is_ios) {
-  # Remove when https://github.com/brave/brave-browser/issues/10698 is resolved
-  check_includes = false
+if (is_android) {
   source_set("common") {
     sources = [
       "//extensions/common/error_utils.cc",
@@ -14,7 +12,9 @@ if (is_android || is_ios) {
     deps = [
       "//base",
       "//components/url_pattern_index",
+      "//content/public/common",
       "//extensions/buildflags",
+      "//net:net",
       "//url",
     ]
 
@@ -28,6 +28,8 @@ if (is_android || is_ios) {
   }
 } else {
   group("common") {
-    deps = [ "//extensions/common" ]
+   if (!is_ios) {
+      deps = [ "//extensions/common" ]
+    }
   }
 }
