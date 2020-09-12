@@ -40,7 +40,8 @@ namespace promotion {
 
 using GetRecoverWalletCallback = std::function<void(
     const type::Result result,
-    const std::string& payment_id)>;
+    const std::string& payment_id,
+    const bool legacy_wallet)>;
 
 class GetRecoverWallet {
  public:
@@ -58,7 +59,8 @@ class GetRecoverWallet {
 
   type::Result ParseBody(
       const std::string& body,
-      std::string* payment_id);
+      std::string* payment_id,
+      bool* legacy_wallet);
 
   void OnRequest(
       const type::UrlResponse& response,

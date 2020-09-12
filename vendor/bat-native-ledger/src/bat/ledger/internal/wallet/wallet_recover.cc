@@ -16,6 +16,7 @@
 
 using std::placeholders::_1;
 using std::placeholders::_2;
+using std::placeholders::_3;
 
 namespace ledger {
 namespace wallet {
@@ -72,6 +73,7 @@ void WalletRecover::Start(
       this,
       _1,
       _2,
+      _3,
       new_seed,
       callback);
 
@@ -83,6 +85,7 @@ void WalletRecover::Start(
 void WalletRecover::OnRecover(
     const type::Result result,
     const std::string& payment_id,
+    const bool legacy_wallet,
     const std::vector<uint8_t>& new_seed,
     ledger::ResultCallback callback) {
   if (result != type::Result::LEDGER_OK) {
@@ -92,9 +95,11 @@ void WalletRecover::OnRecover(
 
   ledger_->state()->SetRecoverySeed(new_seed);
   ledger_->state()->SetPaymentId(payment_id);
-  ledger_->state()->SetFetchOldBalanceEnabled(true);
   ledger_->state()->SetAnonTransferChecked(false);
   ledger_->state()->SetPromotionLastFetchStamp(0);
+  if (legacy_wallet) {
+    ledger_->state()->SetFetchOldBalanceEnabled(true);
+  }
 
   callback(type::Result::LEDGER_OK);
 }
