@@ -118,6 +118,9 @@ void TorLauncherFactory::ReLaunchTorProcess(const tor::TorConfig& config) {
 }
 
 void TorLauncherFactory::KillTorProcess() {
+  if (tor_launcher_.is_bound())
+    tor_launcher_->Shutdown();
+
   tor_launcher_.reset();
   tor_pid_ = -1;
 }

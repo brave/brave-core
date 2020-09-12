@@ -78,12 +78,17 @@ namespace tor {
 TorLauncherImpl::TorLauncherImpl(
     mojo::PendingReceiver<mojom::TorLauncher> receiver)
     : receiver_(this, std::move(receiver)) {
+  receiver_.set_disconnect_handler(
+      base::BindOnce(&TorLauncherImpl::Cleanup, base::Unretained(this)));
 #if defined(OS_POSIX)
   SetupPipeHack();
 #endif
 }
 
-TorLauncherImpl::~TorLauncherImpl() {
+void TorLauncherImpl::Cleanup() {
+  if (in_shutdown_) return;
+  in_shutdown_ = true;
+
   if (tor_process_.IsValid()) {
     tor_process_.Terminate(0, true);
 #if defined(OS_POSIX)
@@ -98,6 +103,14 @@ TorLauncherImpl::~TorLauncherImpl() {
     base::EnsureProcessTerminated(std::move(tor_process_));
 #endif
   }
+}
+
+TorLauncherImpl::~TorLauncherImpl() {
+  Cleanup();
+}
+
+void TorLauncherImpl::Shutdown() {
+  Cleanup();
 }
 
 void TorLauncherImpl::Launch(const TorConfig& config,

@@ -25,6 +25,7 @@ class TorLauncherImpl : public tor::mojom::TorLauncher {
   ~TorLauncherImpl() override;
 
   // tor::mojom::TorLauncher
+  void Shutdown() override;
   void Launch(const TorConfig& config,
               LaunchCallback callback) override;
   void SetCrashHandler(SetCrashHandlerCallback callback) override;
@@ -32,11 +33,13 @@ class TorLauncherImpl : public tor::mojom::TorLauncher {
               ReLaunchCallback callback) override;
  private:
   void MonitorChild();
+  void Cleanup();
 
   SetCrashHandlerCallback crash_handler_callback_;
   std::unique_ptr<base::Thread> child_monitor_thread_;
   base::Process tor_process_;
   mojo::Receiver<tor::mojom::TorLauncher> receiver_;
+  bool in_shutdown_ = false;
 
   DISALLOW_COPY_AND_ASSIGN(TorLauncherImpl);
 };
