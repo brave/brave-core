@@ -196,7 +196,7 @@ export const SettingsSidebarButton = styled<SettingsSidebarButtonProps, 'button'
 export const SettingsFeatureBody = styled<{}, 'section'>('section')`
   padding: 10px 0;
   height: 360px;
-  overflow-y: scroll;
+  overflow-y: auto;
 `
 
 export const SettingsTitle = styled<{}, 'div'>('div')`
