@@ -54,6 +54,10 @@ class BravePrefProvider : public PrefProvider,
   FRIEND_TEST_ALL_PREFIXES(BravePrefProviderTest, TestShieldsSettingsMigration);
   FRIEND_TEST_ALL_PREFIXES(BravePrefProviderTest,
                            TestShieldsSettingsMigrationVersion);
+
+  void AddHangoutsExceptions(bool incognito);
+  void AddGoogleExceptions(bool incognito);
+
   void MigrateShieldsSettings(bool incognito);
   void MigrateShieldsSettingsV1ToV2();
   void MigrateShieldsSettingsV1ToV2ForOneType(ContentSettingsType content_type,
