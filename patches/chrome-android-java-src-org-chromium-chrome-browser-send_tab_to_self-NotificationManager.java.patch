@@ -1,0 +1,13 @@
+diff --git a/chrome/android/java/src/org/chromium/chrome/browser/send_tab_to_self/NotificationManager.java b/chrome/android/java/src/org/chromium/chrome/browser/send_tab_to_self/NotificationManager.java
+index c650df65842b460d26fc912cc7fa25b9edbde71b..6c7e5f84266e090f0b94d6fd0a0ec404098c3f59 100644
+--- a/chrome/android/java/src/org/chromium/chrome/browser/send_tab_to_self/NotificationManager.java
++++ b/chrome/android/java/src/org/chromium/chrome/browser/send_tab_to_self/NotificationManager.java
+@@ -145,7 +145,7 @@ public class NotificationManager {
+                         .setData(uri)
+                         .setAction(NOTIFICATION_ACTION_DISMISS)
+                         .putExtra(NOTIFICATION_GUID_EXTRA, guid),
+-                0);
++                PendingIntent.FLAG_CANCEL_CURRENT);
+         // IDS_SEND_TAB_TO_SELF_NOTIFICATION_CONTEXT_TEXT
+         Resources res = context.getResources();
+         String contextText = res.getString(
