@@ -1,0 +1,13 @@
+diff --git a/components/send_tab_to_self/send_tab_to_self_bridge.cc b/components/send_tab_to_self/send_tab_to_self_bridge.cc
+index 28906d7d81abe28c59d8442a7a85d11c6f3942ed..dce960b1543f6aff7b8bfd079e6025849b22fb88 100644
+--- a/components/send_tab_to_self/send_tab_to_self_bridge.cc
++++ b/components/send_tab_to_self/send_tab_to_self_bridge.cc
+@@ -372,7 +372,7 @@ void SendTabToSelfBridge::DismissEntry(const std::string& guid) {
+ 
+   std::unique_ptr<ModelTypeStore::WriteBatch> batch =
+       store_->CreateWriteBatch();
+-
++  BRAVE_DISMISS_ENTRY
+   batch->WriteData(guid, entry->AsLocalProto().SerializeAsString());
+   Commit(std::move(batch));
+ }
