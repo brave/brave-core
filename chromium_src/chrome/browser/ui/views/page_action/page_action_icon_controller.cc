@@ -7,6 +7,20 @@
 #include "brave/browser/ui/views/location_bar/brave_star_view.h"
 #include "brave/browser/ui/views/translate/brave_translate_icon_view.h"
 #include "brave/browser/ui/views/reader_mode/brave_reader_mode_icon_view.h"
+#include "chrome/browser/ui/page_action/page_action_icon_type.h"
+
+namespace {
+constexpr PageActionIconType kUndefinedPageActionIconType =
+    static_cast<PageActionIconType>(-1);
+}  // namespace
+
+// Circumvent creation of CookieControlsIconView in
+// PageActionIconController::Init's switch statement by injecting a case
+// with a non-existent value created above.
+#define kCookieControls \
+  kCookieControls:      \
+  break;                \
+  case kUndefinedPageActionIconType
 
 #if BUILDFLAG(ENABLE_BRAVE_TRANSLATE_EXTENSION)
 #define TranslateIconView BraveTranslateIconView
@@ -19,3 +33,4 @@
 #undef TranslateIconView
 #endif
 #undef ReaderModeIconView
+#undef kCookieControls
