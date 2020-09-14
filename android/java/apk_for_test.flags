@@ -73,3 +73,7 @@
 -keep class org.chromium.base.CommandLineInitUtil {
     *** initCommandLine(...);
 }
+
+-keep class org.chromium.chrome.browser.toolbar.bottom.BottomToolbarConfiguration {
+    *** isBottomToolbarEnabled(...);
+}
