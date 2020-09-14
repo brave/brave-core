@@ -28,13 +28,10 @@
   },
   "testTargets" : [
     {
-      "skippedTests" : [
-        "NavigationRouterTests\/testNavigationPathInPrivateBrowsingOnlyMode()"
-      ],
       "target" : {
         "containerPath" : "container:Client.xcodeproj",
-        "identifier" : "F84B21D21A090F8100AAB793",
-        "name" : "ClientTests"
+        "identifier" : "5D1DC51A20AC9AFA00905E5A",
+        "name" : "DataTests"
       }
     },
     {
@@ -45,10 +42,13 @@
       }
     },
     {
+      "skippedTests" : [
+        "NavigationRouterTests\/testNavigationPathInPrivateBrowsingOnlyMode()"
+      ],
       "target" : {
         "containerPath" : "container:Client.xcodeproj",
-        "identifier" : "5D1DC51A20AC9AFA00905E5A",
-        "name" : "DataTests"
+        "identifier" : "F84B21D21A090F8100AAB793",
+        "name" : "ClientTests"
       }
     },
     {
