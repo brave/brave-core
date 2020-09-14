@@ -15,12 +15,18 @@ import org.chromium.base.ContextUtils;
 import org.chromium.chrome.browser.app.ChromeActivity;
 import org.chromium.chrome.browser.preferences.BravePreferenceKeys;
 import org.chromium.chrome.browser.preferences.SharedPreferencesManager;
+import org.chromium.chrome.browser.tasks.tab_management.TabUiFeatureUtilities;
+import org.chromium.ui.base.DeviceFormFactor;
 
 public class BraveBottomToolbarConfiguration {
     private static final int SMALL_SCREEN_WIDTH = 360;
     private static final int SMALL_SCREEN_HEIGHT = 640;
 
     public static boolean isBottomToolbarEnabled() {
+        if (DeviceFormFactor.isNonMultiDisplayContextOnTablet(ContextUtils.getApplicationContext())
+                || TabUiFeatureUtilities.isTabGroupsAndroidEnabled()) {
+            return false;
+        }
         SharedPreferences sharedPreferences = ContextUtils.getAppSharedPreferences();
         if (sharedPreferences.getBoolean(
                     BravePreferenceKeys.BRAVE_BOTTOM_TOOLBAR_SET_KEY, false)) {

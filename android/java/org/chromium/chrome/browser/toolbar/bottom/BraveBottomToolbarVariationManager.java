@@ -16,7 +16,7 @@ public class BraveBottomToolbarVariationManager
 
     private static @Variations String getBraveVariation() {
         if (sBraveVariation != null) return sBraveVariation;
-        sBraveVariation = BOTTOM_TOOLBAR_VARIATION.getValue();
+        sBraveVariation = Variations.NONE;
         return sBraveVariation;
     }
 
