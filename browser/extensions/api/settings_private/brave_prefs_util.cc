@@ -90,6 +90,8 @@ const PrefsUtil::TypedPrefMap& BravePrefsUtil::GetWhitelistedKeys() {
         settings_api::PrefType::PREF_TYPE_BOOLEAN;
   (*s_brave_whitelist)[kNewTabPageShowClock] =
         settings_api::PrefType::PREF_TYPE_BOOLEAN;
+  (*s_brave_whitelist)[kNewTabPageClockFormat] =
+        settings_api::PrefType::PREF_TYPE_BOOLEAN;
   (*s_brave_whitelist)[kNewTabPageShowTopSites] =
         settings_api::PrefType::PREF_TYPE_BOOLEAN;
   (*s_brave_whitelist)[kNewTabPageShowStats] =

@@ -15,6 +15,7 @@ export type Preferences = {
   brandedWallpaperOptIn: boolean
   showStats: boolean
   showClock: boolean
+  clockFormat: string
   showTopSites: boolean
   showRewards: boolean
   showAddCard: boolean
@@ -37,6 +38,10 @@ export function saveShowBackgroundImage (value: boolean): void {
 
 export function saveShowClock (value: boolean): void {
   sendSavePref('showClock', value)
+}
+
+export function saveClockFormat (value: string): void {
+  sendSavePref('clockFormat', value)
 }
 
 export function saveShowTopSites (value: boolean): void {

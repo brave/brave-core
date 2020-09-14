@@ -15,6 +15,7 @@ export const defaultState: NewTab.State = {
   showBackgroundImage: false,
   showStats: false,
   showClock: false,
+  clockFormat: '',
   showTopSites: false,
   showRewards: false,
   showTogether: false,

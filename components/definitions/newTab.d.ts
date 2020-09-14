@@ -122,6 +122,7 @@ declare namespace NewTab {
     showBackgroundImage: boolean
     showStats: boolean
     showClock: boolean
+    clockFormat: string
     showTopSites: boolean
     showRewards: boolean
     showTogether: boolean

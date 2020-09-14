@@ -36,7 +36,11 @@ import TopSitesSettings from './settings/topSites'
 import ClockSettings from './settings/clock'
 import MoreCardsSettings from './settings/moreCards'
 
+// Types
+import * as newTabActions from '../../actions/new_tab_actions'
+
 export interface Props {
+  actions: typeof newTabActions
   textDirection: string
   showSettingsMenu: boolean
   onClickOutside: () => void
@@ -52,6 +56,7 @@ export interface Props {
   showBackgroundImage: boolean
   showStats: boolean
   showClock: boolean
+  clockFormat: string
   showTopSites: boolean
   brandedWallpaperOptIn: boolean
   allowSponsoredWallpaperUI: boolean
@@ -179,6 +184,7 @@ export default class Settings extends React.PureComponent<Props, State> {
       showBackgroundImage,
       showStats,
       showClock,
+      clockFormat,
       showTopSites,
       showRewards,
       showTogether,
@@ -269,8 +275,10 @@ export default class Settings extends React.PureComponent<Props, State> {
                   activeTab === 3
                     ? (
                       <ClockSettings
+                        actions={this.props.actions}
                         toggleShowClock={toggleShowClock}
                         showClock={showClock}
+                        clockFormat={clockFormat}
                       />
                     ) : null
                 }
