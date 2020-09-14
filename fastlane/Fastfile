@@ -43,6 +43,7 @@ platform :ios do
         "ClientTests/FingerprintProtectionTest/testFingerprintProtection",
         "ClientTests/TabSessionTests",
         "ClientTests/ContentBlockerTests",
+        "ClientTests/HttpCookieExtensionTest/testSaveAndLoadCookie",
         "DataTests/DeviceTests",
         "DataTests/DomainTests/testAllShieldsOff"
       ]
