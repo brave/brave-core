@@ -8,9 +8,9 @@
 
 #include "components/sync_device_info/device_info_tracker.h"
 
-#define ForcePulseForTest                                       \
-  DeleteDeviceInfo(const syncer::DeviceInfo* local_device_info, \
-                   base::OnceClosure callback) override;        \
+#define ForcePulseForTest                                                    \
+  DeleteDeviceInfo(const std::string& client_id, base::OnceClosure callback) \
+      override;                                                              \
   void ForcePulseForTest
 
 // private:
