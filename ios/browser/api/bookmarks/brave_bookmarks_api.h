@@ -30,7 +30,6 @@ OBJC_EXPORT
 + (NSString *)kMobileBookmarksNodeGuid;
 + (NSString *)kManagedNodeGuid;
 
-+ (NSString *)RootNodeGuid;
 - (bool)isPermanentNode;
 - (void)setTitle:(NSString *)title;
 - (NSUInteger)nodeId;

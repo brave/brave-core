@@ -13,6 +13,7 @@
 #include "components/sync/driver/sync_driver_switches.h"
 #include "components/sync/base/model_type.h"
 #include "components/browser_sync/browser_sync_switches.h"
+#include "components/sync/base/sync_base_switches.h"
 #include "ios/chrome/browser/chrome_switches.h"
 
 #if !defined(__has_feature) || !__has_feature(objc_arc)

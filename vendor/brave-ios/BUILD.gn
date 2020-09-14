@@ -20,6 +20,7 @@ config("internal_config") {
     "-Wno-objc-property-synthesis",
     "-Wno-sign-compare",
   ]
+  ldflags = [ "-Wl,-no_compact_unwind" ]
   include_dirs = [
     ".",
     "Ads",

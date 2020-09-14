@@ -41,7 +41,7 @@ source_set("app") {
     "//ios/third_party/material_components_ios:material_components_ios+link",
   ]
 
-  libs = [
+  frameworks = [
     "Foundation.framework",
   ]
 }

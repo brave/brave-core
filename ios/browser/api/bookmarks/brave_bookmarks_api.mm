@@ -66,10 +66,6 @@
   return base::SysUTF8ToNSString(bookmarks::BookmarkNode::kManagedNodeGuid);
 }
 
-+ (NSString *)RootNodeGuid {
-  return base::SysUTF8ToNSString(bookmarks::BookmarkNode::RootNodeGuid());
-}
-
 - (bool)isPermanentNode {
   return node_->is_permanent_node();
 }

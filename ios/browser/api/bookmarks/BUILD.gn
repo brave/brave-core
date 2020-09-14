@@ -27,7 +27,7 @@ source_set("bookmarks") {
     "//url",
   ]
 
-  libs = [
+  frameworks = [
     "Foundation.framework",
   ]
 }

@@ -27,7 +27,7 @@ source_set("sync") {
     "//ios/chrome/browser/sync",
   ]
 
-  libs = [
+  frameworks = [
     "Foundation.framework",
     "UIKit.framework"
   ]

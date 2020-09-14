@@ -126,7 +126,7 @@ bool BraveSyncWorker::ResetSync() {
   if (!tracker)
     return false;
     
-  tracker->DeleteDeviceInfo(local_device_info,
+  tracker->DeleteDeviceInfo(local_device_info->guid(),
                             base::BindOnce(&BraveSyncWorker::OnLocalDeviceInfoDeleted,
                                            weak_ptr_factory_.GetWeakPtr()));
 

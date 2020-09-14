@@ -7,7 +7,6 @@
 
 #include "ios/chrome/browser/autofill/personal_data_manager_factory.h"
 #include "ios/chrome/browser/bookmarks/bookmark_model_factory.h"
-#include "ios/chrome/browser/bookmarks/startup_task_runner_service_factory.h"
 #include "ios/chrome/browser/favicon/favicon_service_factory.h"
 #include "ios/chrome/browser/history/history_service_factory.h"
 #include "ios/chrome/browser/invalidation/ios_chrome_profile_invalidation_provider_factory.h"
@@ -37,7 +36,6 @@ void EnsureBrowserStateKeyedServiceFactoriesBuilt() {
   ios::BookmarkUndoServiceFactory::GetInstance();
   ios::FaviconServiceFactory::GetInstance();
   ios::HistoryServiceFactory::GetInstance();
-  ios::StartupTaskRunnerServiceFactory::GetInstance();
   ios::TemplateURLServiceFactory::GetInstance();
   ios::WebDataServiceFactory::GetInstance();
   IdentityManagerFactory::GetInstance();
