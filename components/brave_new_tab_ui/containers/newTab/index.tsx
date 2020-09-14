@@ -46,7 +46,6 @@ interface Props {
   gridSitesData: NewTab.GridSitesState
   actions: typeof newTabActions & typeof gridSitesActions & typeof binanceActions & typeof rewardsActions & typeof geminiActions
   saveShowBackgroundImage: (value: boolean) => void
-  saveShowClock: (value: boolean) => void
   saveShowTopSites: (value: boolean) => void
   saveShowStats: (value: boolean) => void
   saveShowRewards: (value: boolean) => void
@@ -207,9 +206,9 @@ class NewTabPage extends React.Component<Props, State> {
   }
 
   toggleShowClock = () => {
-    this.props.saveShowClock(
-      !this.props.newTabData.showClock
-    )
+    this.props.actions.updateClockWidget(
+      !this.props.newTabData.showClock,
+      this.props.newTabData.clockFormat)
   }
 
   toggleShowStats = () => {
@@ -930,6 +929,7 @@ class NewTabPage extends React.Component<Props, State> {
               textDirection={newTabData.textDirection}
               hideWidget={this.toggleShowClock}
               menuPosition={'left'}
+              clockFormat={newTabData.clockFormat}
             />
           </Page.GridItemClock>
           }
@@ -978,6 +978,7 @@ class NewTabPage extends React.Component<Props, State> {
           </Page.Footer>
         </Page.Page>
         <Settings
+          actions={actions}
           textDirection={newTabData.textDirection}
           showSettingsMenu={showSettingsMenu}
           onClickOutside={this.closeSettings}
@@ -988,6 +989,7 @@ class NewTabPage extends React.Component<Props, State> {
           toggleBrandedWallpaperOptIn={this.toggleShowBrandedWallpaper}
           showBackgroundImage={newTabData.showBackgroundImage}
           showClock={newTabData.showClock}
+          clockFormat={newTabData.clockFormat}
           showStats={newTabData.showStats}
           showTopSites={newTabData.showTopSites}
           showRewards={newTabData.showRewards}

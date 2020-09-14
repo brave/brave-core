@@ -191,7 +191,11 @@
       <message name="IDS_BRAVE_NEW_TAB_CUSTOMIZE" desc="Title for dashboard settings">Customize</message>
       <message name="IDS_BRAVE_NEW_TAB_SHOW_BACKGROUND_IMAGE" desc="Text for settings background option">Show Background Images</message>
       <message name="IDS_BRAVE_NEW_TAB_SHOW_BRAVE_STATS" desc="Text for settings show stats option">Show Brave Stats</message>
-      <message name="IDS_BRAVE_NEW_TAB_SHOW_CLOCK" desc="Text for settings show clock option">Show Clock</message>
+      <message name="IDS_BRAVE_NEW_TAB_SHOW_CLOCK" desc="Text describing 'Show Clock' setting">Show Clock</message>
+      <message name="IDS_BRAVE_NEW_TAB_CLOCK_FORMAT" desc="Text describing 'Format' setting under Clock">Format</message>
+      <message name="IDS_BRAVE_NEW_TAB_CLOCK_FORMAT_DEFAULT" desc="Text for default choice Clock>Format setting">Automatic</message>
+      <message name="IDS_BRAVE_NEW_TAB_CLOCK_FORMAT_12" desc="Text for choice '12-hour clock' Clock>Format setting">12-hour clock</message>
+      <message name="IDS_BRAVE_NEW_TAB_CLOCK_FORMAT_24" desc="Text for choice '24-hour clock' Clock>Format setting">24-hour clock</message>
       <message name="IDS_BRAVE_NEW_TAB_SHOW_TOP_SITES" desc="Text for settings show top sites option">Show Top Sites</message>
       <message name="IDS_BRAVE_NEW_TAB_SHOW_REWARDS" desc="Text for settings show rewards option">Show Brave Rewards</message>
       <message name="IDS_BRAVE_NEW_TAB_SHOW_BINANCE" desc="Text for show binance option">Show Binance</message>

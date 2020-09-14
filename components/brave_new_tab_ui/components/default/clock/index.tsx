@@ -18,15 +18,30 @@ export interface ClockState {
   date: Date
 }
 
-class Clock extends React.PureComponent<{}, ClockState> {
-  constructor (props: {}) {
+interface Props {
+  clockFormat: string
+}
+
+class Clock extends React.PureComponent<Props, ClockState> {
+  constructor (props: any) {
     super(props)
     this.state = this.getClockState(new Date())
+  }
+
+  componentDidUpdate (prevProps: Props) {
+    if (prevProps.clockFormat !== this.props.clockFormat) {
+      this.setState(this.getClockState(new Date()))
+    }
   }
 
   get dateTimeFormat (): any {
     // https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/DateTimeFormat
     const options = { hour: 'numeric', minute: 'numeric' }
+    if (this.props.clockFormat === '24') {
+      options['hourCycle'] = 'h23'
+    } else if (this.props.clockFormat === '12') {
+      options['hourCycle'] = 'h12'
+    }
     return new Intl.DateTimeFormat(undefined, options)
   }
 
