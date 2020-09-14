@@ -10,8 +10,8 @@
 #include "extensions/buildflags/buildflags.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
-#if BUILDFLAG(ENABLE_EXTENSIONS)
-#include "extensions/common/constants.h"
+#if BUILDFLAG(BRAVE_WALLET_ENABLED)
+#include "brave/components/brave_wallet/common/brave_wallet_constants.h"
 #endif
 
 using BraveLocationBarModelDelegateTest = testing::Test;

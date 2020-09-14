@@ -16,12 +16,12 @@ source_set("browser") {
 
     deps = [
         "//base",
-        "//brave/common:pref_names",
+        "//brave/components/brave_wallet/common",
         "//components/keyed_service/content",
         "//components/keyed_service/core",
-        "//content/public/browser",
         "//components/prefs",
         "//components/user_prefs",
+        "//content/public/browser",
         "//extensions/browser",
         "//extensions/common:common_constants",
     ]

@@ -9,10 +9,15 @@
 
 #include "base/stl_util.h"
 #include "brave/components/brave_extension/grit/brave_extension.h"
+#include "brave/components/brave_wallet/browser/buildflags/buildflags.h"
 #include "brave/components/brave_rewards/resources/extension/grit/brave_rewards_extension_resources.h"
 #include "brave/components/brave_webtorrent/grit/brave_webtorrent_resources.h"
 #include "components/grit/brave_components_resources.h"
 #include "extensions/common/constants.h"
+
+#if BUILDFLAG(BRAVE_WALLET_ENABLED)
+#include "brave/components/brave_wallet/common/brave_wallet_constants.h"
+#endif
 
 namespace extensions {
 
@@ -20,7 +25,9 @@ namespace extensions {
     const char* const kAllowed[] = {
       brave_extension_id,
       brave_rewards_extension_id,
+#if BUILDFLAG(BRAVE_WALLET_ENABLED)
       ethereum_remote_client_extension_id,
+#endif
       brave_webtorrent_extension_id
     };
 

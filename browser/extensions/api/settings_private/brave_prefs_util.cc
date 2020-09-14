@@ -6,6 +6,7 @@
 #include "brave/browser/extensions/api/settings_private/brave_prefs_util.h"
 
 #include "brave/common/pref_names.h"
+#include "brave/components/brave_wallet/browser/buildflags/buildflags.h"
 #include "brave/components/brave_wayback_machine/buildflags.h"
 #include "brave/components/brave_rewards/common/pref_names.h"
 #include "brave/components/ntp_background_images/common/pref_names.h"
@@ -19,6 +20,9 @@
 #include "brave/components/brave_wayback_machine/pref_names.h"
 #endif
 
+#if BUILDFLAG(BRAVE_WALLET_ENABLED)
+#include "brave/components/brave_wallet/common/brave_wallet_pref_names.h"
+#endif
 
 namespace extensions {
 
@@ -133,10 +137,12 @@ const PrefsUtil::TypedPrefMap& BravePrefsUtil::GetWhitelistedKeys() {
   (*s_brave_whitelist)[kIPFSCompanionEnabled] =
       settings_api::PrefType::PREF_TYPE_BOOLEAN;
   // Brave Wallet pref
+#if BUILDFLAG(BRAVE_WALLET_ENABLED)
   (*s_brave_whitelist)[kBraveWalletWeb3Provider] =
       settings_api::PrefType::PREF_TYPE_NUMBER;
   (*s_brave_whitelist)[kLoadCryptoWalletsOnStartup] =
       settings_api::PrefType::PREF_TYPE_BOOLEAN;
+#endif
   // IPFS pref
   (*s_brave_whitelist)[kIPFSResolveMethod] =
       settings_api::PrefType::PREF_TYPE_NUMBER;

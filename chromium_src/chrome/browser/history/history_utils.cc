@@ -8,10 +8,11 @@
 #undef CanAddURLToHistory
 
 #include "brave/common/url_constants.h"
+#include "brave/components/brave_wallet/browser/buildflags/buildflags.h"
 #include "extensions/buildflags/buildflags.h"
 
-#if BUILDFLAG(ENABLE_EXTENSIONS)
-#include "extensions/common/constants.h"
+#if BUILDFLAG(BRAVE_WALLET_ENABLED)
+#include "brave/components/brave_wallet/common/brave_wallet_constants.h"
 #endif
 
 bool CanAddURLToHistory(const GURL& url) {
@@ -19,14 +20,12 @@ bool CanAddURLToHistory(const GURL& url) {
     return false;
 
   bool is_brave_scheme = url.SchemeIs(content::kBraveUIScheme);
-
-#if !BUILDFLAG(ENABLE_EXTENSIONS)
-  return !is_brave_scheme;
-#else
+#if BUILDFLAG(BRAVE_WALLET_ENABLED)
   bool is_wallet_host =
-    url.SchemeIs(kChromeExtensionScheme) &&
-    url.host() == ethereum_remote_client_extension_id;
-
+      url.SchemeIs(kChromeExtensionScheme) &&
+      url.host() == ethereum_remote_client_extension_id;
   return !is_brave_scheme && !is_wallet_host;
+#else
+  return !is_brave_scheme;
 #endif
 }

@@ -120,6 +120,7 @@ using extensions::ChromeContentBrowserClientExtensionsPart;
 
 #if BUILDFLAG(BRAVE_WALLET_ENABLED)
 #include "brave/browser/brave_wallet/brave_wallet_service_factory.h"
+#include "brave/components/brave_wallet/common/brave_wallet_constants.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_service.h"
 #endif
 

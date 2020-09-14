@@ -7,7 +7,6 @@
 
 #include "brave/browser/themes/brave_dark_mode_utils.h"
 #include "brave/browser/ui/omnibox/brave_omnibox_client_impl.h"
-#include "brave/common/brave_wallet_constants.h"
 #include "brave/common/pref_names.h"
 #include "brave/components/binance/browser/buildflags/buildflags.h"
 #include "brave/components/gemini/browser/buildflags/buildflags.h"
@@ -16,6 +15,7 @@
 #include "brave/components/brave_shields/browser/brave_shields_web_contents_observer.h"
 #include "brave/components/brave_sync/brave_sync_prefs.h"
 #include "brave/components/brave_rewards/common/pref_names.h"
+#include "brave/components/brave_wallet/browser/buildflags/buildflags.h"
 #include "brave/components/brave_wayback_machine/buildflags.h"
 #include "brave/components/brave_webtorrent/browser/buildflags/buildflags.h"
 #include "brave/components/ipfs/browser/buildflags/buildflags.h"
@@ -46,6 +46,11 @@
 
 #if BUILDFLAG(ENABLE_BRAVE_WAYBACK_MACHINE)
 #include "brave/components/brave_wayback_machine/pref_names.h"
+#endif
+
+#if BUILDFLAG(BRAVE_WALLET_ENABLED)
+#include "brave/components/brave_wallet/common/brave_wallet_constants.h"
+#include "brave/components/brave_wallet/common/brave_wallet_pref_names.h"
 #endif
 
 #if BUILDFLAG(IPFS_ENABLED)
@@ -229,6 +234,7 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
   registry->RegisterBooleanPref(kNewTabPageShowGemini, true);
 
   // Brave Wallet
+#if BUILDFLAG(BRAVE_WALLET_ENABLED)
   registry->RegisterIntegerPref(kBraveWalletPrefVersion, 0);
   registry->RegisterStringPref(kBraveWalletAES256GCMSivNonce, "");
   registry->RegisterStringPref(kBraveWalletEncryptedSeed, "");
@@ -236,6 +242,7 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
       static_cast<int>(BraveWalletWeb3ProviderTypes::ASK));
   registry->RegisterBooleanPref(kLoadCryptoWalletsOnStartup, false);
   registry->RegisterBooleanPref(kOptedIntoCryptoWallets, false);
+#endif
 
   // Binance widget
 #if BUILDFLAG(BINANCE_ENABLED)

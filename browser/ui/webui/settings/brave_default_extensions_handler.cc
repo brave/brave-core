@@ -40,6 +40,10 @@
 #include "brave/common/tor/pref_names.h"
 #endif
 
+#if BUILDFLAG(BRAVE_WALLET_ENABLED)
+#include "brave/components/brave_wallet/common/brave_wallet_constants.h"
+#endif
+
 BraveDefaultExtensionsHandler::BraveDefaultExtensionsHandler()
   : weak_ptr_factory_(this) {
 }
@@ -53,10 +57,12 @@ void BraveDefaultExtensionsHandler::RegisterMessages() {
       "setWebTorrentEnabled",
       base::BindRepeating(&BraveDefaultExtensionsHandler::SetWebTorrentEnabled,
                           base::Unretained(this)));
+#if BUILDFLAG(BRAVE_WALLET_ENABLED)
   web_ui()->RegisterMessageCallback(
       "setBraveWalletEnabled",
       base::BindRepeating(&BraveDefaultExtensionsHandler::SetBraveWalletEnabled,
                           base::Unretained(this)));
+#endif
   web_ui()->RegisterMessageCallback(
       "setHangoutsEnabled",
       base::BindRepeating(&BraveDefaultExtensionsHandler::SetHangoutsEnabled,
@@ -299,6 +305,7 @@ void BraveDefaultExtensionsHandler::SetIPFSCompanionEnabled(
   }
 }
 
+#if BUILDFLAG(BRAVE_WALLET_ENABLED)
 void BraveDefaultExtensionsHandler::SetBraveWalletEnabled(
     const base::ListValue* args) {
   CHECK_EQ(args->GetSize(), 1U);
@@ -316,3 +323,4 @@ void BraveDefaultExtensionsHandler::SetBraveWalletEnabled(
         extensions::disable_reason::DisableReason::DISABLE_USER_ACTION);
   }
 }
+#endif

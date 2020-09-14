@@ -5,7 +5,7 @@
 
 #include "brave/components/brave_wallet/browser/brave_wallet_service.h"
 
-#include "brave/common/pref_names.h"
+#include "brave/components/brave_wallet/common/brave_wallet_pref_names.h"
 #include "chrome/browser/profiles/profile_manager.h"
 #include "chrome/test/base/testing_browser_process.h"
 #include "chrome/test/base/testing_profile_manager.h"
