@@ -2,7 +2,7 @@
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
-package org.chromium.chrome.browser.ntp_background_images;
+package org.chromium.chrome.browser;
 
 import android.os.Bundle;
 import android.content.Intent;
@@ -21,14 +21,10 @@ import com.google.zxing.common.BitMatrix;
 
 import org.chromium.chrome.R;
 import org.chromium.base.Log;
-import org.chromium.chrome.browser.profiles.Profile;
-import org.chromium.chrome.browser.ntp_background_images.NTPBackgroundImagesBridge;
 import org.chromium.chrome.browser.night_mode.GlobalNightModeStateProviderHolder;
 
-public class SuperReferralShareDialogFragment extends DialogFragment implements View.OnClickListener{
+public class QRCodeShareDialogFragment extends DialogFragment implements View.OnClickListener{
 	private static final String TAG = "SUPER-REFERRAL";
-
-    private static final String BRAVE_REF_URL = "https://brave.com/r/";
 
 	// For QR code generation
 	private static final int WHITE = 0xFFFFFFFF;
@@ -38,25 +34,22 @@ public class SuperReferralShareDialogFragment extends DialogFragment implements 
 	private ImageView mQRImage;
 	private Button mShareButton;
 
-    private NTPBackgroundImagesBridge mNTPBackgroundImagesBridge;
+    private String qrCodeText;
 
-	public SuperReferralShareDialogFragment() {
+	public QRCodeShareDialogFragment() {
 		// Empty constructor is required for DialogFragment
 		// Make sure not to add arguments to the constructor
 		// Use `newInstance` instead as shown below
 	}
-	
-	public static SuperReferralShareDialogFragment newInstance(String title) {
-		SuperReferralShareDialogFragment mSuperReferralShareDialogFragment = new SuperReferralShareDialogFragment();
-		return mSuperReferralShareDialogFragment;
-	}
+
+    public void setQRCodeText(String qrCodeText) {
+        this.qrCodeText = qrCodeText;
+    }
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
-        Profile mProfile = Profile.getLastUsedRegularProfile();
-        mNTPBackgroundImagesBridge = NTPBackgroundImagesBridge.getInstance(mProfile);
-		return inflater.inflate(R.layout.fragment_super_referral_share, container);
+		return inflater.inflate(R.layout.fragment_qr_code_share, container);
 	}
 
 	@Override
@@ -80,12 +73,11 @@ public class SuperReferralShareDialogFragment extends DialogFragment implements 
     private void openShareIntent() {
     	Intent sharingIntent = new Intent(android.content.Intent.ACTION_SEND);
         sharingIntent.setType("text/plain");
-        sharingIntent.putExtra(android.content.Intent.EXTRA_TEXT, BRAVE_REF_URL + mNTPBackgroundImagesBridge.getSuperReferralCode());
+        sharingIntent.putExtra(android.content.Intent.EXTRA_TEXT, qrCodeText);
         getActivity().startActivity(Intent.createChooser(sharingIntent, getResources().getString(R.string.share_link_chooser_title)));
     }
 
     private void generateQRCode() {
-        final String qrDataFinal = BRAVE_REF_URL + mNTPBackgroundImagesBridge.getSuperReferralCode();
         final int WHITE = GlobalNightModeStateProviderHolder.getInstance().isInNightMode() ? 0xFFFFFFFF : 0xFF000000;
         final int BLACK = GlobalNightModeStateProviderHolder.getInstance().isInNightMode() ? 0x613C4043 : 0xFFFFFFFF;
         new Thread(new Runnable() {
@@ -94,7 +86,7 @@ public class SuperReferralShareDialogFragment extends DialogFragment implements 
                 // Generate QR code
                 BitMatrix result;
                 try {
-                    result = new MultiFormatWriter().encode(qrDataFinal, BarcodeFormat.QR_CODE, WIDTH, WIDTH, null);
+                    result = new MultiFormatWriter().encode(qrCodeText, BarcodeFormat.QR_CODE, WIDTH, WIDTH, null);
                 } catch (WriterException e) {
                     Log.e(TAG, "QR code unsupported format: " + e);
                     return;

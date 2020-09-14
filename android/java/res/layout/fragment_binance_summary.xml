@@ -3,10 +3,47 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    tools:context=".BlankFragment">
+    android:orientation="vertical">
 
-    <TextView
+    <LinearLayout
+            android:id="@+id/binance_widget_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="16dp"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/binance_balance_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/btc_balance"
+                android:textColor="#FFFFFF"
+                android:layout_marginBottom="4dp"
+                android:textSize="24sp" />
+
+            <TextView
+                android:id="@+id/binance_usd_balance_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/usd_balance"
+                android:textColor="#FFFFFF"
+                android:alpha="0.6"
+                android:textSize="12sp" />
+
+        </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="2dp"
+        android:layout_marginBottom="16dp"
+        android:background="#c0c0c0"/>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerview_currency_list"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+    <!-- <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:drawableStart="@drawable/ic_btc"
@@ -56,6 +93,6 @@
         android:layout_gravity="center"
         android:text="Litecoin"
         android:textColor="#FFFFFF"
-        android:textSize="16sp" />
+        android:textSize="16sp" /> -->
 
 </LinearLayout>

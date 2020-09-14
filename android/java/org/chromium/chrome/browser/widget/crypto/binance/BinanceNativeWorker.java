@@ -110,9 +110,9 @@ public class BinanceNativeWorker {
     }
 
     @CalledByNative
-    public void OnGetDepositInfo(String depositAddress, String depositeTag, boolean isSuccess) {
+    public void OnGetDepositInfo(String depositAddress, String depositTag, boolean isSuccess) {
         for (BinanceObserver observer : mObservers) {
-            observer.OnGetDepositInfo(depositAddress, depositeTag, isSuccess);
+            observer.OnGetDepositInfo(depositAddress, depositTag, isSuccess);
         }
     }
 

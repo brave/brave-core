@@ -1329,6 +1329,12 @@ until they verify, or until 90 days have passed.
       <message name="IDS_USD_BALANCE" desc="Binance widget USD balance text">
         ≈ $<ph name="USD_BALANCE">%1$s<ex>0.0</ex></ph>
       </message>
+      <message name="IDS_CURRENCY_ADDRESS_TEXT" desc="Binance deposit coin address text">
+        <ph name="COIN_ADDRESS">%1$s</ph> Deposit Address
+      </message>
+      <message name="IDS_CURRENCY_MEMO_TEXT" desc="Binance deposit coin memo text">
+        <ph name="COIN_MEMO">%1$s</ph> Deposit Memo
+      </message>
     </messages>
   </release>
 </grit>

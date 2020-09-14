@@ -70,7 +70,7 @@
                 android:text="@string/btc_balance"
                 android:textColor="#FFFFFF"
                 android:layout_marginBottom="4dp"
-                android:textSize="24sp" />
+                android:textSize="32sp" />
 
             <TextView
                 android:id="@+id/binance_usd_balance_text"
@@ -79,7 +79,7 @@
                 android:text="@string/usd_balance"
                 android:textColor="#FFFFFF"
                 android:alpha="0.6"
-                android:textSize="12sp" />
+                android:textSize="16sp" />
 
         </LinearLayout>
 

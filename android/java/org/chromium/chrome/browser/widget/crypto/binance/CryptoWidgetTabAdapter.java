@@ -25,7 +25,10 @@ public class CryptoWidgetTabAdapter extends FragmentStatePagerAdapter {
     @NonNull
     @Override
     public Fragment getItem(int position) {
-        return new BlankFragment();
+        if (position == 1) {
+            return new BinanceDepositFragment();
+        }
+        return new BinanceSummaryFragment();
     }
 
     @Override

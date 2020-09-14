@@ -31,6 +31,7 @@ import org.chromium.chrome.browser.ntp_background_images.util.NTPUtil;
 import org.chromium.chrome.browser.preferences.BravePref;
 import org.chromium.chrome.browser.preferences.BravePrefServiceBridge;
 import org.chromium.chrome.browser.widget.crypto.binance.BinanceAccountBalance;
+import org.chromium.chrome.browser.widget.crypto.binance.BinanceWidgetManager;
 import org.chromium.chrome.browser.profiles.Profile;
 
 import java.util.ArrayList;
@@ -87,16 +88,16 @@ public class NTPWidgetAdapter extends PagerAdapter {
                 updateBraveStats(mainView);
             } else if (ntpWidgetItem.getWidgetType().equals(NTPWidgetManager.PREF_BINANCE)) {
                 Button connectButton = mainView.findViewById(R.id.btn_connect);
-                connectButton.setOnClickListener(null);
+                // connectButton.setOnClickListener(null);
                 LinearLayout binanceWidgetLayout = mainView.findViewById(R.id.binance_widget_layout);
                 TextView binanceBalanceText = binanceWidgetLayout.findViewById(R.id.binance_balance_text);
                 TextView binanceUSDBalanceText = binanceWidgetLayout.findViewById(R.id.binance_usd_balance_text);
-                BinanceAccountBalance binanceAccountBalance = NTPWidgetManager.getInstance().getBinanceAccountBalance();
+                BinanceAccountBalance binanceAccountBalance = BinanceWidgetManager.getInstance().getBinanceAccountBalance();
                 if (binanceAccountBalance != null) {
                     binanceBalanceText.setText(String.format(mContext.getResources().getString(R.string.btc_balance), String.valueOf(binanceAccountBalance.getTotalBTC())));
                     binanceUSDBalanceText.setText(String.format(mContext.getResources().getString(R.string.usd_balance), String.valueOf(binanceAccountBalance.getTotalUSD())));
                 }
-                if (NTPWidgetManager.getInstance().isUserAuthenticatedForBinance()) {
+                if (BinanceWidgetManager.getInstance().isUserAuthenticatedForBinance()) {
                     binanceWidgetLayout.setVisibility(View.VISIBLE);
                     connectButton.setVisibility(View.GONE);
                 } else {
@@ -176,7 +177,7 @@ public class NTPWidgetAdapter extends PagerAdapter {
 
         NTPWidgetItem ntpWidgetItem = widgetList.get(position);
         if (ntpWidgetItem.getWidgetType().equals(NTPWidgetManager.PREF_BINANCE)
-                && NTPWidgetManager.getInstance().isUserAuthenticatedForBinance()) {
+                && BinanceWidgetManager.getInstance().isUserAuthenticatedForBinance()) {
             popup.getMenu().findItem(R.id.learn_more).setVisible(true);
             popup.getMenu().findItem(R.id.refresh_data).setVisible(true);
             popup.getMenu().findItem(R.id.disconnect).setVisible(true);

@@ -9,7 +9,7 @@ public interface BinanceObserver {
   default public void OnGetAccountBalances(String jsonBalances, boolean isSuccess) {};
   default public void OnGetConvertQuote(String quoteId, String quotePrice, String totalFee, String totalAmount) {};
   default public void OnGetCoinNetworks(String jsonNetworks) {};
-  default public void OnGetDepositInfo(String depositAddress, String depositeTag, boolean isSuccess) {};
+  default public void OnGetDepositInfo(String depositAddress, String depositTag, boolean isSuccess) {};
   default public void OnConfirmConvert(boolean isSuccess, String message) {};
   default public void OnGetConvertAssets(String jsonAssets) {};
   default public void OnRevokeToken(boolean isSuccess) {};
