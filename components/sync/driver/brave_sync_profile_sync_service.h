@@ -29,15 +29,14 @@ class BraveProfileSyncService : public ProfileSyncService {
 
   std::string GetOrCreateSyncCode();
   bool SetSyncCode(const std::string& sync_code);
-  void ResetSync(DeviceInfoSyncService* device_info_service,
-                 base::OnceClosure cb);
+
+  // This should only be called by helper function, brave_sync::ResetSync
+  void OnSelfDeviceInfoDeleted(base::OnceClosure cb);
 
  private:
   BraveSyncAuthManager* GetBraveSyncAuthManager();
 
   void OnBraveSyncPrefsChanged(const std::string& path);
-
-  void OnSelfDeleted(base::OnceClosure cb);
 
   brave_sync::Prefs brave_sync_prefs_;
 

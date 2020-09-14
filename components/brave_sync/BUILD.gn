@@ -73,6 +73,19 @@ source_set("prefs") {
   ]
 }
 
+source_set("profile_sync_service_helper") {
+  sources = [
+    "profile_sync_service_helper.cc",
+    "profile_sync_service_helper.h",
+  ]
+
+  deps = [
+    "//base",
+    "//components/sync_device_info",
+    "//components/sync/driver",
+  ]
+}
+
 group("brave_sync") {
   deps = [
     ":crypto",
