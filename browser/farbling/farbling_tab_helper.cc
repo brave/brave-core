@@ -27,7 +27,7 @@ using brave_shields::GetFingerprintingControlType;
 
 namespace {
 
-#if defined(OS_MACOSX)
+#if defined(OS_MAC)
 int32_t GetMinimumBugfixVersion(int32_t os_major_version,
                                 int32_t os_minor_version) {
   if (os_major_version == 10) {
@@ -50,7 +50,7 @@ int32_t GetMinimumBugfixVersion(int32_t os_major_version,
 std::string GetUserAgentPlatform() {
 #if defined(OS_WIN)
   return "";
-#elif defined(OS_MACOSX)
+#elif defined(OS_MAC)
   return "Macintosh; ";
 #elif defined(USE_X11)
   return "X11; ";
@@ -67,14 +67,14 @@ std::string GetMinimalProduct() {
 
 std::string GetMinimalOSVersion() {
   std::string os_version;
-#if defined(OS_WIN) || defined(OS_MACOSX)
+#if defined(OS_WIN) || defined(OS_MAC)
   int32_t os_major_version = 0;
   int32_t os_minor_version = 0;
   int32_t os_bugfix_version = 0;
   base::SysInfo::OperatingSystemVersionNumbers(
       &os_major_version, &os_minor_version, &os_bugfix_version);
 #endif
-#if defined(OS_MACOSX)
+#if defined(OS_MAC)
   os_bugfix_version =
       std::max(os_bugfix_version,
                GetMinimumBugfixVersion(os_major_version, os_minor_version));
@@ -90,7 +90,7 @@ std::string GetMinimalOSVersion() {
   base::StringAppendF(&os_version,
 #if defined(OS_WIN)
                       "%d.%d", os_major_version, os_minor_version
-#elif defined(OS_MACOSX)
+#elif defined(OS_MAC)
                       "%d_%d_%d", os_major_version, os_minor_version,
                       os_bugfix_version
 #elif defined(OS_ANDROID)
