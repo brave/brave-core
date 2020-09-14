@@ -437,6 +437,7 @@ void YouTube::OnMediaPublisherInfo(
         id,
         new_visit_data,
         duration,
+        true,
         window_id,
         [](ledger::type::Result, ledger::type::PublisherInfoPtr) {});
   }
@@ -561,6 +562,7 @@ void YouTube::SavePublisherInfo(const uint64_t duration,
       publisher_id,
       new_visit_data,
       duration,
+      true,
       window_id,
       [](ledger::type::Result, ledger::type::PublisherInfoPtr) {});
 

@@ -82,7 +82,7 @@ class RewardsDOMHandler : public WebUIMessageHandler,
   void GetReconcileStamp(const base::ListValue* args);
   void SaveSetting(const base::ListValue* args);
   void UpdateAdRewards(const base::ListValue* args);
-  void OnContentSiteList(ledger::type::PublisherInfoList list);
+  void OnPublisherList(ledger::type::PublisherInfoList list);
   void OnExcludedSiteList(ledger::type::PublisherInfoList list);
   void ExcludePublisher(const base::ListValue* args);
   void RestorePublishers(const base::ListValue* args);
@@ -132,8 +132,6 @@ class RewardsDOMHandler : public WebUIMessageHandler,
   void OnIsWalletCreated(bool created);
   void GetPendingContributionsTotal(const base::ListValue* args);
   void OnGetPendingContributionsTotal(double amount);
-  void OnContentSiteUpdated(
-      brave_rewards::RewardsService* rewards_service) override;
   void GetTransactionHistory(const base::ListValue* args);
   void GetRewardsMainEnabled(const base::ListValue* args);
   void OnGetRewardsMainEnabled(bool enabled);
@@ -811,22 +809,24 @@ void RewardsDOMHandler::GetReconcileStamp(const base::ListValue* args) {
 
 void RewardsDOMHandler::OnAutoContributePropsReady(
     ledger::type::AutoContributePropertiesPtr properties) {
-  rewards_service_->GetContentSiteList(
-      0,
-      0,
-      properties->contribution_min_time,
-      properties->reconcile_stamp,
-      properties->contribution_non_verified,
-      properties->contribution_min_visits,
-      base::Bind(&RewardsDOMHandler::OnContentSiteList,
-                 weak_factory_.GetWeakPtr()));
-}
+  auto filter = ledger::type::ActivityInfoFilter::New();
+  auto pair = ledger::type::ActivityInfoFilterOrderPair::New(
+      "ai.percent",
+      false);
+  filter->order_by.push_back(std::move(pair));
+  filter->min_duration = properties->contribution_min_time;
+  filter->reconcile_stamp = properties->reconcile_stamp;
+  filter->excluded = ledger::type::ExcludeFilter::FILTER_ALL_EXCEPT_EXCLUDED;
+  filter->percent = 1;
+  filter->non_verified = properties->contribution_non_verified;
+  filter->min_visits = properties->contribution_min_visits;
 
-void RewardsDOMHandler::OnContentSiteUpdated(
-    brave_rewards::RewardsService* rewards_service) {
-  rewards_service_->GetAutoContributeProperties(
-      base::Bind(&RewardsDOMHandler::OnAutoContributePropsReady,
-        weak_factory_.GetWeakPtr()));
+  rewards_service_->GetActivityInfoList(
+      0,
+      0,
+      std::move(filter),
+      base::Bind(&RewardsDOMHandler::OnPublisherList,
+                 weak_factory_.GetWeakPtr()));
 }
 
 void RewardsDOMHandler::GetExcludedSites(const base::ListValue* args) {
@@ -966,8 +966,7 @@ void RewardsDOMHandler::RestorePublisher(const base::ListValue *args) {
   rewards_service_->SetPublisherExclude(publisherKey, false);
 }
 
-void RewardsDOMHandler::OnContentSiteList(
-    ledger::type::PublisherInfoList list) {
+void RewardsDOMHandler::OnPublisherList(ledger::type::PublisherInfoList list) {
   if (!web_ui()->CanCallJavascript()) {
     return;
   }
@@ -1140,9 +1139,13 @@ void RewardsDOMHandler::GetOneTimeTips(const base::ListValue *args) {
 }
 
 void RewardsDOMHandler::GetContributionList(const base::ListValue *args) {
-  if (rewards_service_) {
-    OnContentSiteUpdated(rewards_service_);
+  if (!rewards_service_) {
+    return;
   }
+
+  rewards_service_->GetAutoContributeProperties(
+      base::Bind(&RewardsDOMHandler::OnAutoContributePropsReady,
+        weak_factory_.GetWeakPtr()));
 }
 
 void RewardsDOMHandler::GetAdsData(const base::ListValue *args) {
@@ -1450,7 +1453,7 @@ void RewardsDOMHandler::OnRewardsMainEnabled(
 void RewardsDOMHandler::OnPublisherListNormalized(
     brave_rewards::RewardsService* rewards_service,
     ledger::type::PublisherInfoList list) {
-  OnContentSiteList(std::move(list));
+  OnPublisherList(std::move(list));
 }
 
 void RewardsDOMHandler::GetTransactionHistory(

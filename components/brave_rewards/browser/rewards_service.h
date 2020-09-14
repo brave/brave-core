@@ -38,7 +38,7 @@ class RewardsNotificationService;
 class RewardsServiceObserver;
 class RewardsServicePrivateObserver;
 
-using GetContentSiteListCallback =
+using GetPublisherInfoListCallback =
     base::Callback<void(ledger::type::PublisherInfoList list)>;
 using GetWalletPassphraseCallback = base::Callback<void(const std::string&)>;
 using GetAutoContributionAmountCallback = base::Callback<void(double)>;
@@ -66,6 +66,11 @@ using RefreshPublisherCallback =
     base::OnceCallback<void(
         const ledger::type::PublisherStatus,
         const std::string&)>;
+using GetPublisherInfoCallback = base::OnceCallback<void(
+    const ledger::type::Result,
+    ledger::type::PublisherInfoPtr)>;
+using SavePublisherInfoCallback =
+    base::OnceCallback<void(const ledger::type::Result)>;
 using SaveMediaInfoCallback =
     base::OnceCallback<void(ledger::type::PublisherInfoPtr publisher)>;
 using GetInlineTippingPlatformEnabledCallback = base::OnceCallback<void(bool)>;
@@ -134,15 +139,13 @@ class RewardsService : public KeyedService {
 
   virtual void CreateWallet(CreateWalletCallback callback) = 0;
   virtual void GetRewardsParameters(GetRewardsParametersCallback callback) = 0;
-  virtual void GetContentSiteList(
-      uint32_t start,
-      uint32_t limit,
-      uint64_t min_visit_time,
-      uint64_t reconcile_stamp,
-      bool allow_non_verified,
-      uint32_t min_visits,
-      const GetContentSiteListCallback& callback) = 0;
-  virtual void GetExcludedList(const GetContentSiteListCallback& callback) = 0;
+  virtual void GetActivityInfoList(
+      const uint32_t start,
+      const uint32_t limit,
+      ledger::type::ActivityInfoFilterPtr filter,
+      const GetPublisherInfoListCallback& callback) = 0;
+  virtual void GetExcludedList(
+      const GetPublisherInfoListCallback& callback) = 0;
   virtual void FetchPromotions() = 0;
   // Used by desktop
   virtual void ClaimPromotion(
@@ -270,6 +273,25 @@ class RewardsService : public KeyedService {
       const std::string& media_type,
       const std::map<std::string, std::string>& args,
       SaveMediaInfoCallback callback) = 0;
+
+  virtual void UpdateMediaDuration(
+      const uint64_t window_id,
+      const std::string& publisher_key,
+      const uint64_t duration,
+      const bool firstVisit) = 0;
+
+  virtual void GetPublisherInfo(
+      const std::string& publisher_key,
+      GetPublisherInfoCallback callback) = 0;
+
+  virtual void GetPublisherPanelInfo(
+      const std::string& publisher_key,
+      GetPublisherInfoCallback callback) = 0;
+
+  virtual void SavePublisherInfo(
+      const uint64_t window_id,
+      ledger::type::PublisherInfoPtr publisher_info,
+      SavePublisherInfoCallback callback) = 0;
 
   virtual void SetInlineTippingPlatformEnabled(
       const std::string& key,

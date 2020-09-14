@@ -39,9 +39,6 @@ class RewardsServiceObserver : public base::CheckedObserver {
       const ledger::type::Result result,
       ledger::type::PromotionPtr promotion) {}
 
-  virtual void OnContentSiteUpdated(
-      RewardsService* rewards_service) {}
-
   virtual void OnExcludedSitesChanged(
       RewardsService* rewards_service,
       std::string publisher_id,
@@ -102,7 +99,7 @@ class RewardsServiceObserver : public base::CheckedObserver {
   // RewardsServiceObserver should not be used to return responses to the
   // caller. Method calls on RewardsService should use callbacks to return
   // responses. The observer is primarily for broadcast notifications of events
-  // from the the rewards service. OnWalletInitialized, OnContentSiteUpdated,
+  // from the the rewards service. OnWalletInitialized, OnPublisherInfoUpdated,
   // etc... are examples of events that all observers will be interested in.
 };
 

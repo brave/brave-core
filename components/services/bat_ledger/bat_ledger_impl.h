@@ -160,6 +160,25 @@ class BatLedgerImpl :
       const base::flat_map<std::string, std::string>& args,
       SaveMediaInfoCallback callback) override;
 
+  void UpdateMediaDuration(
+      const uint64_t window_id,
+      const std::string& publisher_key,
+      const uint64_t duration,
+      const bool first_visit) override;
+
+  void GetPublisherInfo(
+      const std::string& publisher_key,
+      GetPublisherInfoCallback callback) override;
+
+  void GetPublisherPanelInfo(
+      const std::string& publisher_key,
+      GetPublisherPanelInfoCallback callback) override;
+
+  void SavePublisherInfo(
+      const uint64_t window_id,
+      ledger::type::PublisherInfoPtr publisher_info,
+      SavePublisherInfoCallback callback) override;
+
   void SetInlineTippingPlatformEnabled(
       const ledger::type::InlineTipsPlatforms platform,
       bool enabled) override;
@@ -214,9 +233,9 @@ class BatLedgerImpl :
 
   void GetAllContributions(GetAllContributionsCallback callback) override;
 
-  void SavePublisherInfo(
+  void SavePublisherInfoForTip(
       ledger::type::PublisherInfoPtr info,
-      SavePublisherInfoCallback callback) override;
+      SavePublisherInfoForTipCallback callback) override;
 
   void GetMonthlyReport(
       const ledger::type::ActivityMonth month,
@@ -249,6 +268,16 @@ class BatLedgerImpl :
       base::WeakPtr<BatLedgerImpl> client_;
       Callback callback_;
     };
+
+  static void OnPublisherInfo(
+      CallbackHolder<GetPublisherInfoCallback>* holder,
+      const ledger::type::Result result,
+      ledger::type::PublisherInfoPtr info);
+
+  static void OnPublisherPanelInfo(
+      CallbackHolder<GetPublisherPanelInfoCallback>* holder,
+      const ledger::type::Result result,
+      ledger::type::PublisherInfoPtr info);
 
   static void OnGetBalanceReport(
       CallbackHolder<GetBalanceReportCallback>* holder,
@@ -392,6 +421,10 @@ class BatLedgerImpl :
   static void OnGetAllContributions(
       CallbackHolder<GetAllContributionsCallback>* holder,
       ledger::type::ContributionInfoList list);
+
+  static void OnSavePublisherInfoForTip(
+      CallbackHolder<SavePublisherInfoForTipCallback>* holder,
+      const ledger::type::Result result);
 
   static void OnSavePublisherInfo(
       CallbackHolder<SavePublisherInfoCallback>* holder,

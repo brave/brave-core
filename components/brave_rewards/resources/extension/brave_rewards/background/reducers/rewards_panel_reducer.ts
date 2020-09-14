@@ -8,8 +8,8 @@ import { Reducer } from 'redux'
 import { setBadgeText } from '../browserAction'
 import { isPublisherConnectedOrVerified } from '../../utils'
 
-const getWindowId = (id: number) => {
-  return `id_${id}`
+const getTabKey = (id: number) => {
+  return `key_${id}`
 }
 
 const updateBadgeTextAllWindows = (windows: chrome.windows.Window[], state?: RewardsExtension.State) => {
@@ -18,9 +18,9 @@ const updateBadgeTextAllWindows = (windows: chrome.windows.Window[], state?: Rew
   }
 
   windows.forEach((window => {
-    const id = getWindowId(window.id)
+    const tabKey = getTabKey(window.id)
     const publishers: Record<string, RewardsExtension.Publisher> = state.publishers
-    const publisher = publishers[id]
+    const publisher = publishers[tabKey]
 
     if (!publisher || !window.tabs) {
       return
@@ -35,6 +35,14 @@ const updateBadgeTextAllWindows = (windows: chrome.windows.Window[], state?: Rew
     setBadgeText(state, isPublisherConnectedOrVerified(publisher.status), tab.id)
   }))
 
+}
+
+const handledByGreaselion = (url: URL) => {
+  if (!url) {
+    return false
+  }
+
+  return url.hostname.endsWith('.youtube.com') || url.hostname === 'youtube.com'
 }
 
 export const rewardsPanelReducer: Reducer<RewardsExtension.State | undefined> = (state: RewardsExtension.State, action: any) => {
@@ -103,6 +111,7 @@ export const rewardsPanelReducer: Reducer<RewardsExtension.State | undefined> = 
       const tab: chrome.tabs.Tab = payload.tab
       if (
         !tab ||
+        !tab.id ||
         !tab.url ||
         tab.incognito ||
         !tab.active ||
@@ -112,27 +121,30 @@ export const rewardsPanelReducer: Reducer<RewardsExtension.State | undefined> = 
         break
       }
 
-      const id = getWindowId(tab.windowId)
+      const tabKey = getTabKey(tab.id)
       const publishers: Record<string, RewardsExtension.Publisher> = state.publishers
-      const publisher = publishers[id]
-      const validKey = publisher && publisher.publisher_key && publisher.publisher_key.length > 0
+      const publisher = publishers[tabKey]
+      const validKey = publisher && publisher.publisherKey && publisher.publisherKey.length > 0
 
       if (!publisher || (publisher.tabUrl !== tab.url || !validKey)) {
         // Invalid publisher for tab, re-fetch publisher.
-        chrome.braveRewards.getPublisherData(
-          tab.windowId,
-          tab.url,
-          tab.favIconUrl || '',
-          payload.publisherBlob || '')
-
-        if (publisher) {
-          delete publishers[id]
+        if (!handledByGreaselion(new URL(tab.url))) {
+          chrome.braveRewards.getPublisherData(
+            tab.id,
+            tab.url,
+            tab.favIconUrl || '',
+            payload.publisherBlob || '')
         }
 
-        publishers[id] = {
+        if (publisher) {
+          delete publishers[tabKey]
+        }
+
+        publishers[tabKey] = {
           tabUrl: tab.url,
           tabId: tab.id
         }
+
       } else if (publisher &&
                  publisher.tabUrl === tab.url &&
                  (publisher.tabId !== tab.id || payload.activeTabIsLoadingTriggered) &&
@@ -141,7 +153,7 @@ export const rewardsPanelReducer: Reducer<RewardsExtension.State | undefined> = 
         // or the same tab but it has been unloaded and re-loaded.
         // Set state.
         setBadgeText(state, isPublisherConnectedOrVerified(publisher.status), tab.id)
-        publishers[id].tabId = tab.id
+        publishers[tabKey].tabId = tab.id
       }
 
       state = {
@@ -153,13 +165,13 @@ export const rewardsPanelReducer: Reducer<RewardsExtension.State | undefined> = 
     case types.ON_PUBLISHER_DATA: {
       const publisher = payload.publisher
       let publishers: Record<string, RewardsExtension.Publisher> = state.publishers
-      const id = getWindowId(payload.windowId)
+      const tabKey = getTabKey(payload.windowId)
 
-      if (publisher && !publisher.publisher_key) {
-        delete publishers[id]
+      if (publisher && !publisher.publisherKey) {
+        delete publishers[tabKey]
       } else {
-        publishers[id] = { ...publishers[id], ...publisher }
-        const newPublisher = publishers[id]
+        publishers[tabKey] = { ...publishers[tabKey], ...publisher }
+        const newPublisher = publishers[tabKey]
 
         if (newPublisher.tabId) {
           setBadgeText(state, isPublisherConnectedOrVerified(newPublisher.status), newPublisher.tabId)
@@ -307,7 +319,7 @@ export const rewardsPanelReducer: Reducer<RewardsExtension.State | undefined> = 
       for (const key in publishers) {
         let publisher = publishers[key]
         const updated = list.find((newPublisher: RewardsExtension.PublisherNormalized) =>
-          newPublisher.publisher_key === publisher.publisher_key)
+          newPublisher.publisherKey === publisher.publisherKey)
 
         if (updated) {
           publisher.status = updated.status
@@ -329,7 +341,7 @@ export const rewardsPanelReducer: Reducer<RewardsExtension.State | undefined> = 
         break
       }
 
-      const publisherKey: string = payload.properties.publisher_key
+      const publisherKey: string = payload.properties.publisherKey
       const excluded: boolean = payload.properties.excluded
 
       let publishers: Record<string, RewardsExtension.Publisher> = state.publishers
@@ -337,7 +349,7 @@ export const rewardsPanelReducer: Reducer<RewardsExtension.State | undefined> = 
       for (const key in publishers) {
         let publisher = publishers[key]
 
-        if (publisher.publisher_key === publisherKey) {
+        if (publisher.publisherKey === publisherKey) {
           publisher.excluded = !!excluded
         } else if (publisherKey === '-1') {
           publisher.excluded = false
@@ -404,7 +416,7 @@ export const rewardsPanelReducer: Reducer<RewardsExtension.State | undefined> = 
         let publishers: Record<string, RewardsExtension.Publisher> = state.publishers
         for (const key in publishers) {
           let publisher = publishers[key]
-          if (publisher.publisher_key === publisherKey) {
+          if (publisher.publisherKey === publisherKey) {
             publisher.status = payload.status
           }
         }
@@ -471,10 +483,15 @@ export const rewardsPanelReducer: Reducer<RewardsExtension.State | undefined> = 
       const publishers: Record<string, RewardsExtension.Publisher> = state.publishers
 
       tabs.forEach((tab) => {
-        const id = getWindowId(tab.windowId)
-        const publisher = publishers[id]
+        const tabId = tab.id
+        if (!tabId) {
+          return
+        }
 
-        if (!publisher || publisher.tabId !== tab.id) {
+        const tabKey = getTabKey(tabId)
+        const publisher = publishers[tabKey]
+
+        if (!publisher || publisher.tabId !== tabId) {
           return
         }
 

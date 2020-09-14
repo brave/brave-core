@@ -15,6 +15,7 @@
     "webRequest",
     "chrome://favicon/*",
     "https://www.twitch.tv/*",
+    "https://www.youtube.com/*",
     "https://*.twitter.com/*"
   ],
   "browser_action": {

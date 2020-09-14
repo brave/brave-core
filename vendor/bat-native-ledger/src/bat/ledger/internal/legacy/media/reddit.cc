@@ -336,6 +336,7 @@ void Reddit::SavePublisherInfo(
       publisher_key,
       *visit_data,
       0,
+      true,
       window_id,
       callback);
 

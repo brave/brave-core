@@ -54,7 +54,6 @@ struct PublisherInfo {
   uint32 percent;
   double weight;
   PublisherExclude excluded;
-  int32 category;
   uint64 reconcile_stamp;
   PublisherStatus status = PublisherStatus.NOT_VERIFIED;
   uint64 status_updated_at;

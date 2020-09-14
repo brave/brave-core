@@ -130,19 +130,16 @@ class RewardsServiceImpl : public RewardsService,
   void GetWalletPassphrase(
       const GetWalletPassphraseCallback& callback) override;
   void RecoverWallet(const std::string& passPhrase) override;
-  void GetContentSiteList(
-      uint32_t start,
-      uint32_t limit,
-      uint64_t min_visit_time,
-      uint64_t reconcile_stamp,
-      bool allow_non_verified,
-      uint32_t min_visits,
-      const GetContentSiteListCallback& callback) override;
+  void GetActivityInfoList(
+      const uint32_t start,
+      const uint32_t limit,
+      ledger::type::ActivityInfoFilterPtr filter,
+      const GetPublisherInfoListCallback& callback) override;
 
-  void GetExcludedList(const GetContentSiteListCallback& callback) override;
+  void GetExcludedList(const GetPublisherInfoListCallback& callback) override;
 
-  void OnGetContentSiteList(
-      const GetContentSiteListCallback& callback,
+  void OnGetPublisherInfoList(
+      const GetPublisherInfoListCallback& callback,
       ledger::type::PublisherInfoList list);
   void OnLoad(SessionID tab_id, const GURL& url) override;
   void OnUnload(SessionID tab_id) override;
@@ -241,6 +238,25 @@ class RewardsServiceImpl : public RewardsService,
       const std::string& media_type,
       const std::map<std::string, std::string>& args,
       SaveMediaInfoCallback callback) override;
+
+  void UpdateMediaDuration(
+      const uint64_t window_id,
+      const std::string& publisher_key,
+      const uint64_t duration,
+      const bool first_visit) override;
+
+  void GetPublisherInfo(
+      const std::string& publisher_key,
+      GetPublisherInfoCallback callback) override;
+
+  void GetPublisherPanelInfo(
+      const std::string& publisher_key,
+      GetPublisherInfoCallback callback) override;
+
+  void SavePublisherInfo(
+      const uint64_t window_id,
+      ledger::type::PublisherInfoPtr publisher_info,
+      SavePublisherInfoCallback callback) override;
 
   void SetInlineTippingPlatformEnabled(
       const std::string& key,
@@ -519,6 +535,17 @@ class RewardsServiceImpl : public RewardsService,
   void OnSetOnDemandFaviconComplete(const std::string& favicon_url,
                                     ledger::client::FetchIconCallback callback,
                                     bool success);
+  void OnPublisherInfo(
+      GetPublisherInfoCallback callback,
+      const ledger::type::Result result,
+      ledger::type::PublisherInfoPtr info);
+  void OnPublisherPanelInfo(
+      GetPublisherInfoCallback callback,
+      const ledger::type::Result result,
+      ledger::type::PublisherInfoPtr info);
+  void OnSavePublisherInfo(
+      SavePublisherInfoCallback callback,
+      const ledger::type::Result result);
 
   bool MaybeTailDiagnosticLog(
       const int num_lines);

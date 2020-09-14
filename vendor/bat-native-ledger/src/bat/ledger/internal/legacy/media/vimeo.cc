@@ -672,6 +672,7 @@ void Vimeo::SavePublisherInfo(
       key,
       visit_data,
       duration,
+      true,
       window_id,
       [](ledger::type::Result, ledger::type::PublisherInfoPtr) {});
 

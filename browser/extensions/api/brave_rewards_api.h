@@ -42,6 +42,59 @@ class BraveRewardsOpenBrowserActionUIFunction :
   ResponseAction Run() override;
 };
 
+class BraveRewardsUpdateMediaDurationFunction : public ExtensionFunction {
+ public:
+  DECLARE_EXTENSION_FUNCTION("braveRewards.updateMediaDuration", UNKNOWN)
+
+ protected:
+  ~BraveRewardsUpdateMediaDurationFunction() override;
+
+  ResponseAction Run() override;
+};
+
+class BraveRewardsGetPublisherInfoFunction : public ExtensionFunction {
+ public:
+  DECLARE_EXTENSION_FUNCTION("braveRewards.getPublisherInfo", UNKNOWN)
+
+ protected:
+  ~BraveRewardsGetPublisherInfoFunction() override;
+
+  ResponseAction Run() override;
+
+ private:
+  void OnGetPublisherInfo(
+      const ledger::type::Result result,
+      ledger::type::PublisherInfoPtr info);
+};
+
+class BraveRewardsGetPublisherPanelInfoFunction : public ExtensionFunction {
+ public:
+  DECLARE_EXTENSION_FUNCTION("braveRewards.getPublisherPanelInfo", UNKNOWN)
+
+ protected:
+  ~BraveRewardsGetPublisherPanelInfoFunction() override;
+
+  ResponseAction Run() override;
+
+ private:
+  void OnGetPublisherPanelInfo(
+      const ledger::type::Result result,
+      ledger::type::PublisherInfoPtr info);
+};
+
+class BraveRewardsSavePublisherInfoFunction : public ExtensionFunction {
+ public:
+  DECLARE_EXTENSION_FUNCTION("braveRewards.savePublisherInfo", UNKNOWN)
+
+ protected:
+  ~BraveRewardsSavePublisherInfoFunction() override;
+
+  ResponseAction Run() override;
+
+ private:
+  void OnSavePublisherInfo(const ledger::type::Result result);
+};
+
 class BraveRewardsTipSiteFunction : public ExtensionFunction {
  public:
   DECLARE_EXTENSION_FUNCTION("braveRewards.tipSite", UNKNOWN)

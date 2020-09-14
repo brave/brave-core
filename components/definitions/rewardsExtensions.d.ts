@@ -37,8 +37,8 @@ declare namespace RewardsExtension {
 
   interface Publisher {
     excluded?: boolean
-    favicon_url?: string
-    publisher_key?: string
+    favIconUrl?: string
+    publisherKey?: string
     name?: string
     percentage?: number
     provider?: string
@@ -132,13 +132,13 @@ declare namespace RewardsExtension {
   }
 
   interface PublisherNormalized {
-    publisher_key: string
+    publisherKey: string
     percentage: number
     status: PublisherStatus
   }
 
   interface ExcludedSitesChanged {
-    publisher_key: string
+    publisherKey: string
     excluded: boolean
   }
 

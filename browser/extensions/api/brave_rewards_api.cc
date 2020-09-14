@@ -12,6 +12,7 @@
 
 #include "base/bind.h"
 #include "base/strings/string_number_conversions.h"
+#include "brave/browser/brave_rewards/rewards_service_factory.h"
 #include "brave/browser/brave_rewards/tip_dialog.h"
 #include "brave/browser/extensions/api/brave_action_api.h"
 #include "brave/browser/profiles/profile_util.h"
@@ -19,7 +20,6 @@
 #include "brave/components/brave_ads/browser/ads_service.h"
 #include "brave/components/brave_ads/browser/ads_service_factory.h"
 #include "brave/components/brave_rewards/browser/rewards_service.h"
-#include "brave/browser/brave_rewards/rewards_service_factory.h"
 #include "chrome/browser/extensions/api/tabs/tabs_constants.h"
 #include "chrome/browser/extensions/chrome_extension_function_details.h"
 #include "chrome/browser/extensions/extension_tab_util.h"
@@ -75,6 +75,173 @@ BraveRewardsOpenBrowserActionUIFunction::Run() {
     return RespondNow(Error(error));
   }
   return RespondNow(NoArguments());
+}
+
+BraveRewardsUpdateMediaDurationFunction::
+    ~BraveRewardsUpdateMediaDurationFunction() {}
+
+ExtensionFunction::ResponseAction
+BraveRewardsUpdateMediaDurationFunction::Run() {
+  std::unique_ptr<brave_rewards::UpdateMediaDuration::Params> params(
+      brave_rewards::UpdateMediaDuration::Params::Create(*args_));
+  EXTENSION_FUNCTION_VALIDATE(params.get());
+
+  Profile* profile = Profile::FromBrowserContext(browser_context());
+  RewardsService* rewards_service =
+      RewardsServiceFactory::GetForProfile(profile);
+
+  if (!rewards_service) {
+    return RespondNow(NoArguments());
+  }
+
+  rewards_service->UpdateMediaDuration(
+      params->window_id,
+      params->publisher_key,
+      params->duration,
+      params->first_visit);
+
+  return RespondNow(NoArguments());
+}
+
+BraveRewardsGetPublisherInfoFunction::
+~BraveRewardsGetPublisherInfoFunction() {
+}
+
+ExtensionFunction::ResponseAction
+BraveRewardsGetPublisherInfoFunction::Run() {
+  std::unique_ptr<brave_rewards::GetPublisherInfo::Params> params(
+      brave_rewards::GetPublisherInfo::Params::Create(*args_));
+  EXTENSION_FUNCTION_VALIDATE(params.get());
+
+  Profile* profile = Profile::FromBrowserContext(browser_context());
+  RewardsService* rewards_service =
+      RewardsServiceFactory::GetForProfile(profile);
+
+  if (!rewards_service) {
+    return RespondNow(Error("Rewards service is not initialized"));
+  }
+
+  rewards_service->GetPublisherInfo(
+      params->publisher_key,
+      base::Bind(
+          &BraveRewardsGetPublisherInfoFunction::OnGetPublisherInfo,
+          this));
+
+  return RespondLater();
+}
+
+void BraveRewardsGetPublisherInfoFunction::OnGetPublisherInfo(
+    const ledger::type::Result result,
+    ledger::type::PublisherInfoPtr info) {
+  if (!info) {
+    Respond(
+        OneArgument(std::make_unique<base::Value>(static_cast<int>(result))));
+    return;
+  }
+
+  auto dict = std::make_unique<base::Value>(base::Value::Type::DICTIONARY);
+  dict->SetStringKey("publisherKey", info->id);
+  dict->SetStringKey("name", info->name);
+  dict->SetIntKey("percentage", info->percent);
+  dict->SetIntKey("status", static_cast<int>(info->status));
+  dict->SetIntKey("excluded", static_cast<int>(info->excluded));
+  dict->SetStringKey("url", info->url);
+  dict->SetStringKey("provider", info->provider);
+  dict->SetStringKey("favIconUrl", info->favicon_url);
+
+  Respond(TwoArguments(
+      std::make_unique<base::Value>(static_cast<int>(result)),
+      std::move(dict)));
+}
+
+BraveRewardsGetPublisherPanelInfoFunction::
+    ~BraveRewardsGetPublisherPanelInfoFunction() {}
+
+ExtensionFunction::ResponseAction
+BraveRewardsGetPublisherPanelInfoFunction::Run() {
+  std::unique_ptr<brave_rewards::GetPublisherPanelInfo::Params> params(
+      brave_rewards::GetPublisherPanelInfo::Params::Create(*args_));
+  EXTENSION_FUNCTION_VALIDATE(params.get());
+
+  Profile* profile = Profile::FromBrowserContext(browser_context());
+  RewardsService* rewards_service =
+      RewardsServiceFactory::GetForProfile(profile);
+
+  if (!rewards_service) {
+    return RespondNow(NoArguments());
+  }
+
+  rewards_service->GetPublisherPanelInfo(
+      params->publisher_key,
+      base::Bind(
+          &BraveRewardsGetPublisherPanelInfoFunction::OnGetPublisherPanelInfo,
+          this));
+
+  return RespondLater();
+}
+
+void BraveRewardsGetPublisherPanelInfoFunction::OnGetPublisherPanelInfo(
+    const ledger::type::Result result,
+    ledger::type::PublisherInfoPtr info) {
+  if (!info) {
+    Respond(
+        OneArgument(std::make_unique<base::Value>(static_cast<int>(result))));
+    return;
+  }
+
+  auto dict = std::make_unique<base::Value>(base::Value::Type::DICTIONARY);
+  dict->SetStringKey("publisherKey", info->id);
+  dict->SetStringKey("name", info->name);
+  dict->SetIntKey("percentage", info->percent);
+  dict->SetIntKey("status", static_cast<int>(info->status));
+  dict->SetIntKey("excluded", static_cast<int>(info->excluded));
+  dict->SetStringKey("url", info->url);
+  dict->SetStringKey("provider", info->provider);
+  dict->SetStringKey("favIconUrl", info->favicon_url);
+
+  Respond(TwoArguments(
+      std::make_unique<base::Value>(static_cast<int>(result)),
+      std::move(dict)));
+}
+
+BraveRewardsSavePublisherInfoFunction::
+    ~BraveRewardsSavePublisherInfoFunction() {}
+
+ExtensionFunction::ResponseAction
+BraveRewardsSavePublisherInfoFunction::Run() {
+  std::unique_ptr<brave_rewards::SavePublisherInfo::Params>
+      params(brave_rewards::SavePublisherInfo::Params::Create(
+          *args_));
+  EXTENSION_FUNCTION_VALIDATE(params.get());
+
+  Profile* profile = Profile::FromBrowserContext(browser_context());
+  RewardsService* rewards_service =
+      RewardsServiceFactory::GetForProfile(profile);
+
+  if (!rewards_service) {
+    return RespondNow(NoArguments());
+  }
+
+  auto publisher_info = ledger::type::PublisherInfo::New();
+  publisher_info->id = params->publisher_key;
+  publisher_info->name = params->publisher_name;
+  publisher_info->url = params->url;
+  publisher_info->provider = params->media_type;
+  publisher_info->favicon_url = params->fav_icon_url;
+
+  rewards_service->SavePublisherInfo(
+      params->window_id,
+      std::move(publisher_info),
+      base::Bind(
+          &BraveRewardsSavePublisherInfoFunction::OnSavePublisherInfo,
+          this));
+
+  return RespondLater();
+}
+
+void BraveRewardsSavePublisherInfoFunction::OnSavePublisherInfo(
+  const ledger::type::Result result) {
+  Respond(OneArgument(std::make_unique<base::Value>(static_cast<int>(result))));
 }
 
 BraveRewardsTipSiteFunction::~BraveRewardsTipSiteFunction() {

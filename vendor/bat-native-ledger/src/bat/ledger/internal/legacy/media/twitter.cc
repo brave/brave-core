@@ -386,6 +386,7 @@ void Twitter::SavePublisherInfo(
       publisher_key,
       *visit_data,
       duration,
+      true,
       window_id,
       callback);
 
