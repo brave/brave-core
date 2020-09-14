@@ -210,6 +210,11 @@ group("create_dist") {
     deps += [
       "app/$target_os:create_dist_zips"
     ]
+  } else if (is_linux) {
+    # zip will be created along with installer
+    deps += [
+      ":create_symbols_dist"
+    ]
   } else {
     deps += [
       ":create_dist_zips"
