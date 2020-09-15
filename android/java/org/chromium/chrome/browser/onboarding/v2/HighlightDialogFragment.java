@@ -118,7 +118,7 @@ public class HighlightDialogFragment extends DialogFragment {
             getDialog().setDismissMessage(null);
         }
 
-        getActivity().setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_SENSOR);
+        getActivity().setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED);
 
         super.onDestroyView();
     }
