@@ -178,6 +178,7 @@ brave_java_sources = [
   "../../brave/android/java/org/chromium/chrome/browser/widget/crypto/binance/BinanceDepositFragment.java",
   "../../brave/android/java/org/chromium/chrome/browser/widget/crypto/binance/BinanceDepositAdapter.java",
   "../../brave/android/java/org/chromium/chrome/browser/widget/crypto/binance/CoinNetworkModel.java",
+  "../../brave/android/java/org/chromium/chrome/browser/widget/crypto/binance/BinanceBuyFragment.java",
   "../../brave/android/java/org/chromium/chrome/browser/widget/tile/BraveTileWithTextView.java",
 ]
 

@@ -25,6 +25,9 @@ import org.chromium.chrome.browser.widget.crypto.binance.CoinNetworkModel;
 public class BinanceWidgetManager {
     public static final String PREF_BINANCE_USER_AUTHENTICATION = "binance_user_authentication";
 
+    public static final String BINANCE_US = "https://www.binance.us/en/buy-sell-crypto?crypto=%1$s&amount=%2$s&ref=35089877&utm_source=brave";
+    public static final String BINANCE_COM = "https://www.binance.com/en/buy-sell-crypto?fiat=%1$s&crypto=%2$s&amount=%3$s&ref=39346846&utm_source=brave";
+
     private static BinanceWidgetManager sInstance;
 
     private final SharedPreferences mSharedPreferences;

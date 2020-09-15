@@ -37,7 +37,7 @@ public class BinanceCoinNetworks {
             String key = keys.next();
             if (BinanceWidgetManager.comCurrenciesMap.containsKey(key)) {
                 CoinNetworkModel coinNetworkModel = BinanceWidgetManager.comCurrenciesMap.get(key);
-                Log.e("NTP", key);
+                // Log.e("NTP", key);
                 coinNetworkModel.setTickerNetwork(jsonroot.getString(key));
                 mCoinNetwroksList.add(coinNetworkModel);
             }

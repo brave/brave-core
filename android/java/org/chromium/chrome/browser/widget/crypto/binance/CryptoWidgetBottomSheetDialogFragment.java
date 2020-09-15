@@ -32,6 +32,7 @@ import java.util.List;
 import java.util.ArrayList;
 
 public class CryptoWidgetBottomSheetDialogFragment extends BottomSheetDialogFragment {
+    final public static String TAG_FRAGMENT = "CRYPTO_WIDGET_FRAG";
 
     @Nullable
     @Override

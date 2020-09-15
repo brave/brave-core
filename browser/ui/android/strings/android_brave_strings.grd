@@ -1335,6 +1335,18 @@ until they verify, or until 90 days have passed.
       <message name="IDS_CURRENCY_MEMO_TEXT" desc="Binance deposit coin memo text">
         <ph name="COIN_MEMO">%1$s</ph> Deposit Memo
       </message>
+      <message name="IDS_BUY_CRYPTO" desc="Binance buy section text.">
+        Buy Crypto
+      </message>
+      <message name="IDS_COM_TEXT" desc="Binance buy section .com text.">
+        .com
+      </message>
+      <message name="IDS_US_TEXT" desc="Binance buy section .us text.">
+        .us
+      </message>
+      <message name="IDS_BUY_CRYPTO_BUTTON_TEXT" desc="Binance buy crypto button text">
+        Buy <ph name="COIN_NAME">%1$s</ph>
+      </message>
     </messages>
   </release>
 </grit>

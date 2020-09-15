@@ -232,7 +232,7 @@ public class BraveNewTabPageLayout extends NewTabPageLayout {
                         new CryptoWidgetBottomSheetDialogFragment();
                     cryptoWidgetBottomSheetDialogFragment.show(
                         ((BraveActivity) mActivity).getSupportFragmentManager(),
-                        "crypto_widget_bottomSheet_dialog_fragment");
+                        CryptoWidgetBottomSheetDialogFragment.TAG_FRAGMENT);
                     // Log.e("NTP", "Binance URL : " + mBinanceNativeWorker.getOAuthClientUrl());
                     // TabUtils.openUrlInSameTab(mBinanceNativeWorker.getOAuthClientUrl());
                 }
