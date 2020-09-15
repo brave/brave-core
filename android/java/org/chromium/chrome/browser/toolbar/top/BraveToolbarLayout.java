@@ -793,9 +793,10 @@ public abstract class BraveToolbarLayout extends ToolbarLayout implements OnClic
 
   @Override
   MenuButtonCoordinator getMenuButtonCoordinator() {
-    if (this instanceof ToolbarPhone && BottomToolbarVariationManager.isMenuButtonOnBottom()) {
-      return null;
-    }
-    return super.getMenuButtonCoordinator();
+      if (this instanceof ToolbarPhone && BottomToolbarVariationManager.isMenuButtonOnBottom()
+              && super.getMenuButtonCoordinator() != null) {
+          super.getMenuButtonCoordinator().disableMenuButton();
+      }
+      return super.getMenuButtonCoordinator();
   }
 }
