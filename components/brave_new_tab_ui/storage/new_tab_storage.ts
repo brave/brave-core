@@ -87,7 +87,8 @@ export const defaultState: NewTab.State = {
     accountBTCUSDValue: '0.00',
     disconnectInProgress: false,
     authInvalid: false,
-    selectedView: 'summary'
+    selectedView: 'summary',
+    depositInfoSaved: false
   },
   geminiState: {
     geminiClientUrl: '',
