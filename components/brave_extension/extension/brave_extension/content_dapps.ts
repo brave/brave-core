@@ -9,14 +9,10 @@
 // If the page itself accesses window.ethereum within the first 2 seconds, and the
 // wallet is not installed yet, then we'll prompt to install it.
 
-// A closure can't be used for __disableDappDetectionInsertion var
-// because some sites like www.wnyc.org do a second script execution
-// via eval for some reason.
-// Likely oldEthereum is undefined and it has a property only because
-// we defined it. Some sites like wnyc.org are evaling all scripts
-// that exist again, so this is protection against multiple calls.
-const code =
-`
+// Minified version of the comment block that follows
+const code = `(function(){let e=!1;function n(){if(!e){const n=document.createElement("meta");n.name="dapp-detected",document.head.appendChild(n),e=!0}}if(window.hasOwnProperty("ethereum")){if(window.__disableDappDetectionInsertion=!0,void 0===window.ethereum)return;n()}else{var t=window.ethereum;Object.defineProperty(window,"ethereum",{configurable:!0,set:function(e){window.__disableDappDetectionInsertion||n(),t=e},get:function(){return window.__disableDappDetectionInsertion||n(),t}})}})();`  // NOLINT
+
+/*
 (function() {
   let alreadyInsertedMetaTag = false
 
@@ -30,12 +26,18 @@ const code =
   }
 
   if (window.hasOwnProperty('ethereum')) {
+    // A closure can't be used for __disableDappDetectionInsertion var
+    // because some sites like www.wnyc.org do a second script execution
+    // via eval for some reason.
     window.__disableDappDetectionInsertion = true
     if (window.ethereum === undefined) {
       return
     }
     __insertDappDetected()
   } else {
+    // Likely oldEthereum is undefined and it has a property only because
+    // we defined it. Some sites like wnyc.org are evaling all scripts
+    // that exist again, so this is protection against multiple calls.
     var oldEthereum = window.ethereum
     Object.defineProperty(window, 'ethereum', {
       configurable: true,
@@ -52,6 +54,7 @@ const code =
     })
   }
 })()`
+*/
 
 // We need this script inserted as early as possible even before the load
 // We can't check if ethereum exists here because this is an isolated world.
