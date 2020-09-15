@@ -1,3 +1,4 @@
+import("//brave/components/brave_wallet/browser/buildflags/buildflags.gni")
 import("//build/util/branding.gni")
 import("//extensions/buildflags/buildflags.gni")
 
@@ -90,6 +91,11 @@ source_set("common") {
     public_deps = [
       "extensions/api",
     ]
+    if (brave_wallet_enabled) {
+      deps += [
+        "//brave/components/brave_wallet/common"
+      ]
+    }
   }
 
   deps += [

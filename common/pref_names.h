@@ -59,14 +59,6 @@ extern const char kNewTabPageShowGemini[];
 extern const char kNewTabPageShowTogether[];
 extern const char kNewTabPageShowAddCard[];
 extern const char kBraveEnabledMediaRouter[];
-extern const char kBraveWalletAES256GCMSivNonce[];
-extern const char kBraveWalletEncryptedSeed[];
-// Deprecated in favor of kBraveWalletWeb3Provider
-extern const char kBraveWalletEnabledDeprecated[];
-extern const char kBraveWalletPrefVersion[];
-extern const char kBraveWalletWeb3Provider[];
-extern const char kLoadCryptoWalletsOnStartup[];
-extern const char kOptedIntoCryptoWallets[];
 extern const char kAlwaysShowBookmarkBarOnNTP[];
 extern const char kAutocompleteEnabled[];
 extern const char kTopSiteSuggestionsEnabled[];

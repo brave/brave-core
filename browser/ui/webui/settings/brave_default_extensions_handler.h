@@ -10,6 +10,7 @@
 
 #include "base/memory/weak_ptr.h"
 #include "brave/browser/tor/buildflags.h"
+#include "brave/components/brave_wallet/browser/buildflags/buildflags.h"
 #include "chrome/browser/ui/webui/settings/settings_page_ui_handler.h"
 #include "chrome/common/extensions/webstore_install_result.h"
 #include "components/prefs/pref_change_registrar.h"
@@ -32,7 +33,9 @@ class BraveDefaultExtensionsHandler : public settings::SettingsPageUIHandler {
   void SetHangoutsEnabled(const base::ListValue* args);
   void SetIPFSCompanionEnabled(const base::ListValue* args);
   void SetMediaRouterEnabled(const base::ListValue* args);
+#if BUILDFLAG(BRAVE_WALLET_ENABLED)
   void SetBraveWalletEnabled(const base::ListValue* args);
+#endif
 #if BUILDFLAG(ENABLE_TOR)
   void SetTorEnabled(const base::ListValue* args);
   void IsTorEnabled(const base::ListValue* args);

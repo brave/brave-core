@@ -6,6 +6,7 @@
 #include "brave/components/brave_wallet/browser/buildflags/buildflags.h"
 
 #if BUILDFLAG(BRAVE_WALLET_ENABLED)
+#include "brave/components/brave_wallet/common/brave_wallet_constants.h"
 #include "content/public/common/url_constants.h"
 #include "extensions/common/constants.h"
 #include "url/gurl.h"

@@ -6,9 +6,9 @@
 #include "brave/browser/brave_first_run_browsertest.h"
 #include "brave/common/pref_names.h"
 #include "brave/components/brave_rewards/common/pref_names.h"
+#include "brave/components/brave_wallet/browser/buildflags/buildflags.h"
 #include "brave/components/brave_wayback_machine/buildflags.h"
 #include "brave/components/ipfs/browser/buildflags/buildflags.h"
-#include "brave/common/brave_wallet_constants.h"
 #include "chrome/browser/net/prediction_options.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser.h"
@@ -24,6 +24,11 @@
 
 #if BUILDFLAG(IPFS_ENABLED)
 #include "brave/components/ipfs/common/ipfs_constants.h"
+#endif
+
+#if BUILDFLAG(BRAVE_WALLET_ENABLED)
+#include "brave/components/brave_wallet/common/brave_wallet_constants.h"
+#include "brave/components/brave_wallet/common/brave_wallet_pref_names.h"
 #endif
 
 #if BUILDFLAG(ENABLE_BRAVE_WAYBACK_MACHINE)
@@ -76,6 +81,7 @@ IN_PROC_BROWSER_TEST_F(BraveProfilePrefsBrowserTest, MiscBravePrefs) {
 #endif
   EXPECT_FALSE(
       browser()->profile()->GetPrefs()->GetBoolean(kIPFSCompanionEnabled));
+#if BUILDFLAG(BRAVE_WALLET_ENABLED)
   EXPECT_EQ(
       browser()->profile()->GetPrefs()->GetInteger(kBraveWalletWeb3Provider),
       static_cast<int>(BraveWalletWeb3ProviderTypes::ASK));
@@ -84,7 +90,7 @@ IN_PROC_BROWSER_TEST_F(BraveProfilePrefsBrowserTest, MiscBravePrefs) {
           kLoadCryptoWalletsOnStartup));
   EXPECT_FALSE(
       browser()->profile()->GetPrefs()->GetBoolean(kOptedIntoCryptoWallets));
-
+#endif
 #if !BUILDFLAG(USE_GCM_FROM_PLATFORM)
   EXPECT_FALSE(
       browser()->profile()->GetPrefs()->GetBoolean(kBraveGCMChannelStatus));

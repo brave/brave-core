@@ -5,8 +5,9 @@
 
 #include "base/path_service.h"
 #include "brave/common/brave_paths.h"
-#include "brave/common/brave_wallet_constants.h"
 #include "brave/common/pref_names.h"
+#include "brave/components/brave_wallet/common/brave_wallet_constants.h"
+#include "brave/components/brave_wallet/common/brave_wallet_pref_names.h"
 #include "chrome/browser/extensions/extension_apitest.h"
 #include "components/prefs/pref_service.h"
 #include "content/public/test/browser_test.h"
