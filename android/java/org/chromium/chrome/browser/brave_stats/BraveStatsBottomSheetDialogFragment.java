@@ -191,7 +191,7 @@ public class BraveStatsBottomSheetDialogFragment extends BottomSheetDialogFragme
 
     @Override
     public void onDestroyView() {
-        getActivity().setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_SENSOR);
+        getActivity().setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED);
         super.onDestroyView();
     }
 
