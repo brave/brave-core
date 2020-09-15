@@ -5,17 +5,23 @@
 
 #include "third_party/blink/renderer/modules/webaudio/analyser_node.h"
 
+#include "third_party/blink/public/platform/web_content_settings_client.h"
+#include "third_party/blink/renderer/core/dom/document.h"
+#include "third_party/blink/renderer/core/execution_context/execution_context.h"
 #include "third_party/blink/renderer/core/frame/local_dom_window.h"
+#include "third_party/blink/renderer/core/frame/local_frame.h"
+#include "third_party/blink/renderer/core/workers/worker_global_scope.h"
 
-#define BRAVE_ANALYSERHANDLER_CONSTRUCTOR                                 \
-  if (ExecutionContext* context = node.GetExecutionContext()) {           \
-    if (LocalDOMWindow* local_dom_window =                                \
-            DynamicTo<LocalDOMWindow>(context)) {                         \
-      analyser_.audio_farbling_callback_ =                                \
-          brave::BraveSessionCache::From(*(local_dom_window->document())) \
-              .GetAudioFarblingCallback(                                  \
-                  local_dom_window->document()->GetFrame());              \
-    }                                                                     \
+#define BRAVE_ANALYSERHANDLER_CONSTRUCTOR                                  \
+  if (ExecutionContext* context = node.GetExecutionContext()) {         \
+    WebContentSettingsClient* settings = nullptr;                       \
+    if (auto* window = DynamicTo<LocalDOMWindow>(context))              \
+      settings = window->GetFrame()->GetContentSettingsClient();        \
+    else if (context->IsWorkerGlobalScope())                            \
+      settings = To<WorkerGlobalScope>(context)->ContentSettingsClient(); \
+    analyser_.audio_farbling_callback_ =                                \
+        brave::BraveSessionCache::From(*context).GetAudioFarblingCallback( \
+            settings);                                                     \
   }
 
 #include "../../../../../../../third_party/blink/renderer/modules/webaudio/analyser_node.cc"

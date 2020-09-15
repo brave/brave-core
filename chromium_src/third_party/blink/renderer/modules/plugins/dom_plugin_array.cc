@@ -7,6 +7,8 @@
 
 #include "brave/third_party/blink/renderer/brave_farbling_constants.h"
 #include "third_party/blink/public/platform/web_content_settings_client.h"
+#include "third_party/blink/renderer/core/execution_context/execution_context.h"
+#include "third_party/blink/renderer/core/frame/local_dom_window.h"
 #include "third_party/blink/renderer/core/frame/local_frame.h"
 #include "third_party/blink/renderer/core/page/plugin_data.h"
 #include "third_party/blink/renderer/modules/plugins/dom_plugin.h"
@@ -64,7 +66,7 @@ void FarblePlugins(DOMPluginArray* owner,
       U_FALLTHROUGH;
     }
     case BraveFarblingLevel::BALANCED: {
-      std::mt19937_64 prng = BraveSessionCache::From(*(frame->GetDocument()))
+      std::mt19937_64 prng = BraveSessionCache::From(*(frame->DomWindow()))
                                  .MakePseudoRandomGenerator();
       // The item() method will populate plugin info if any item of
       // |dom_plugins_| is null, but when it tries, it assumes the
@@ -81,23 +83,23 @@ void FarblePlugins(DOMPluginArray* owner,
         if ((name == "Chrome PDF Plugin") || (name == "Chrome PDF Viewer")) {
           plugin->SetName(PluginReplacementName(&prng));
           plugin->SetFilename(
-              BraveSessionCache::From(*(frame->GetDocument()))
+              BraveSessionCache::From(*(frame->DomWindow()))
                   .GenerateRandomString(plugin->Filename().Ascii(), 32));
         }
         (*dom_plugins)[index] = MakeGarbageCollected<DOMPlugin>(frame, *plugin);
       }
       // Add fake plugin #1.
       auto* fake_plugin_info_1 = MakeGarbageCollected<PluginInfo>(
-          BraveSessionCache::From(*(frame->GetDocument()))
+          BraveSessionCache::From(*(frame->DomWindow()))
               .GenerateRandomString("PLUGIN_1_NAME", 8),
-          BraveSessionCache::From(*(frame->GetDocument()))
+          BraveSessionCache::From(*(frame->DomWindow()))
               .GenerateRandomString("PLUGIN_1_FILENAME", 16),
-          BraveSessionCache::From(*(frame->GetDocument()))
+          BraveSessionCache::From(*(frame->DomWindow()))
               .GenerateRandomString("PLUGIN_1_DESCRIPTION", 32),
           0, false);
       auto* fake_mime_info_1 = MakeGarbageCollected<MimeClassInfo>(
           "",
-          BraveSessionCache::From(*(frame->GetDocument()))
+          BraveSessionCache::From(*(frame->DomWindow()))
               .GenerateRandomString("MIME_1_DESCRIPTION", 32),
           *fake_plugin_info_1);
       fake_plugin_info_1->AddMimeType(fake_mime_info_1);
@@ -106,16 +108,16 @@ void FarblePlugins(DOMPluginArray* owner,
       dom_plugins->push_back(fake_dom_plugin_1);
       // Add fake plugin #2.
       auto* fake_plugin_info_2 = MakeGarbageCollected<PluginInfo>(
-          BraveSessionCache::From(*(frame->GetDocument()))
+          BraveSessionCache::From(*(frame->DomWindow()))
               .GenerateRandomString("PLUGIN_2_NAME", 7),
-          BraveSessionCache::From(*(frame->GetDocument()))
+          BraveSessionCache::From(*(frame->DomWindow()))
               .GenerateRandomString("PLUGIN_2_FILENAME", 15),
-          BraveSessionCache::From(*(frame->GetDocument()))
+          BraveSessionCache::From(*(frame->DomWindow()))
               .GenerateRandomString("PLUGIN_2_DESCRIPTION", 31),
           0, false);
       auto* fake_mime_info_2 = MakeGarbageCollected<MimeClassInfo>(
           "",
-          BraveSessionCache::From(*(frame->GetDocument()))
+          BraveSessionCache::From(*(frame->DomWindow()))
               .GenerateRandomString("MIME_2_DESCRIPTION", 32),
           *fake_plugin_info_2);
       fake_plugin_info_2->AddMimeType(fake_mime_info_2);
