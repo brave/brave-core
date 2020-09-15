@@ -117,6 +117,7 @@ brave_java_sources = [
   "../../brave/android/java/org/chromium/chrome/browser/rate/RateFeedbackUtils.java",
   "../../brave/android/java/org/chromium/chrome/browser/rate/RateUtils.java",
   "../../brave/android/java/org/chromium/chrome/browser/search_engines/settings/BraveBaseSearchEngineAdapter.java",
+  "../../brave/android/java/org/chromium/chrome/browser/widget/crypto/binance/BinanceConvertFragment.java",
   "../../brave/android/java/org/chromium/chrome/browser/settings/AppearancePreferences.java",
   "../../brave/android/java/org/chromium/chrome/browser/settings/BackgroundImagesPreferences.java",
   "../../brave/android/java/org/chromium/chrome/browser/settings/BackgroundVideoPlaybackPreference.java",
@@ -179,6 +180,7 @@ brave_java_sources = [
   "../../brave/android/java/org/chromium/chrome/browser/widget/crypto/binance/BinanceDepositAdapter.java",
   "../../brave/android/java/org/chromium/chrome/browser/widget/crypto/binance/CoinNetworkModel.java",
   "../../brave/android/java/org/chromium/chrome/browser/widget/crypto/binance/BinanceBuyFragment.java",
+  "../../brave/android/java/org/chromium/chrome/browser/widget/crypto/binance/BinanceConvert.java",
   "../../brave/android/java/org/chromium/chrome/browser/widget/tile/BraveTileWithTextView.java",
 ]
 

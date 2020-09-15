@@ -722,6 +722,7 @@ brave_java_resources = [
   "java/res/layout/fragment_binance_buy.xml",
   "java/res/layout/top_sites_layout.xml",
   "java/res/layout/binance_spinner_text_layout.xml",
+  "java/res/layout/fragment_binance_convert.xml",
   "java/res/menu/exit_settings_menu.xml",
   "java/res/menu/new_tab_menu.xml",
   "java/res/menu/ntp_widget_menu.xml",

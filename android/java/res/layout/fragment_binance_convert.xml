@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/binance_convert_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="16dp"
+            android:text="@string/available_balance_text"
+            android:textColor="@android:color/white"
+            android:layout_marginBottom="4dp"
+            android:textSize="24sp" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="16dp"
+            android:orientation="horizontal">
+
+            <EditText  
+                android:id="@+id/amount_edittext"
+                android:layout_width="0dp" 
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:padding="8dp"
+                android:textColor="@android:color/white"
+                android:textColorHint="#80FFFFFF"
+                android:hint="I want to convert..."
+                android:background="@drawable/binance_edittext"/>
+
+            <Spinner
+                android:id="@+id/crypto_spinner_1"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:textColor="@android:color/white"
+                android:padding="8dp"
+                android:background="@drawable/binance_edittext"
+                style="@android:style/Widget.Spinner"
+                android:spinnerMode="dropdown"/>
+
+        </LinearLayout>
+
+        <Spinner
+            android:id="@+id/crypto_spinner_2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="16dp"
+            android:textColor="@android:color/white"
+            android:padding="8dp"
+            style="@android:style/Widget.Spinner"
+            android:background="@drawable/binance_edittext"
+            android:spinnerMode="dropdown"/>
+
+        <Button
+            android:id="@+id/btn_convert"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="16dp"
+            android:layout_marginTop="32dp"
+            android:background="@drawable/rounded_filled_binance"
+            android:layout_gravity="center"
+            android:padding="16dp"
+            android:text="@string/preview_conversion" />
+
+</LinearLayout>

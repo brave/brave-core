@@ -31,7 +31,7 @@ public class CryptoWidgetTabAdapter extends FragmentStatePagerAdapter {
         } else if (position == 1) {
             fragment = new BinanceDepositFragment();
         } else if (position == 2) {
-            fragment = new BinanceSummaryFragment();
+            fragment = new BinanceConvertFragment();
         } else if(position == 3) {
             fragment = new BinanceBuyFragment();
         }

@@ -48,22 +48,26 @@ import org.chromium.chrome.R;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class BinanceBuyFragment extends Fragment {
+public class BinanceConvertFragment extends Fragment {
 	private BinanceNativeWorker mBinanceNativeWorker;
 	private CurrencyListAdapter mCurrencyListAdapter;
 
-	private Button buyButton;
+	private Button convertButton;
 
-	private Spinner fiatSpinner;
-	private Spinner cryptoSpinner;
+	private Spinner cryptoSpinner1;
+	private Spinner cryptoSpinner2;
 
-	private String selectedFiat;
-	private String selectedCrypto;
+	private String selectedCrypto1;
+	private String selectedCrypto2;
 
-	private String[] fiatArray;
-	private String[] cryptoArray;
+	private String[] cryptoArray1;
+	private String[] cryptoArray2;
 
-	public BinanceBuyFragment() {
+	private BinanceConvert binanceConvert;
+
+	private TextView binanceConvertTitle;
+
+	public BinanceConvertFragment() {
 		// Required empty public constructor
 	}
 
@@ -78,7 +82,7 @@ public class BinanceBuyFragment extends Fragment {
 	    LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		// Inflate the layout for this fragment
 		mBinanceNativeWorker.AddObserver(mBinanaceObserver);
-		return inflater.inflate(R.layout.fragment_binance_buy, container, false);
+		return inflater.inflate(R.layout.fragment_binance_convert, container, false);
 	}
 
 	@Override
@@ -90,57 +94,25 @@ public class BinanceBuyFragment extends Fragment {
 	@Override
 	public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
 		super.onViewCreated(view, savedInstanceState);
-
-		RadioGroup buyRadioGroup = view.findViewById(R.id.buy_radio_group);
 		EditText amountEditText = view.findViewById(R.id.amount_edittext);
+		binanceConvertTitle = view.findViewById(R.id.binance_convert_title);
 
-		buyButton = view.findViewById(R.id.btn_buy);
-		buyButton.setOnClickListener(new View.OnClickListener() {
+		convertButton = view.findViewById(R.id.btn_convert);
+		convertButton.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View view) {
-				String buyUrl = "";
-				if (buyRadioGroup.getCheckedRadioButtonId() == R.id.com_radio) {
-					buyUrl = String.format(BinanceWidgetManager.BINANCE_COM,  selectedFiat, selectedCrypto, amountEditText.getText());
-				} else if (buyRadioGroup.getCheckedRadioButtonId() == R.id.us_radio) {
-					buyUrl = String.format(BinanceWidgetManager.BINANCE_US, selectedCrypto, amountEditText.getText());
-				}
-				if (!TextUtils.isEmpty(buyUrl)) {
-					TabUtils.openUrlInSameTab(buyUrl);
-				}
+
 				dismissBinanceBottomSheet();
 			}
 		});
 
-		fiatSpinner = (Spinner)view.findViewById(R.id.fiat_spinner);
-		fiatArray = (String[]) BinanceWidgetManager.fiatList.toArray(new String[BinanceWidgetManager.fiatList.size()]);
-		fiatSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+		cryptoSpinner1 = (Spinner)view.findViewById(R.id.crypto_spinner_1);
+		cryptoSpinner1.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
 			@Override
 			public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
-				selectedFiat = fiatArray[position];
-			}
-
-			@Override
-			public void onNothingSelected(AdapterView<?> parentView) {
-				// your code here
-			}
-
-		});
-		ArrayAdapter<String> fiatAdapter = new ArrayAdapter<String>(getActivity(),
-		        R.layout.binance_spinner_text_layout, fiatArray);
-
-		fiatAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-		fiatSpinner.setAdapter(fiatAdapter);
-
-		selectedFiat = fiatArray[0];
-
-		cryptoSpinner = (Spinner)view.findViewById(R.id.crypto_spinner);
-		cryptoSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-			@Override
-			public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
-				selectedCrypto = cryptoArray[position];
-				if (buyButton != null) {
-					buyButton.setText(String.format(getResources().getString(R.string.buy_crypto_button_text), selectedCrypto));
-				}
+				selectedCrypto1 = cryptoArray1[position];
+				setCryptoSpinner(selectedCrypto1);
+				setTitle();
 			}
 
 			@Override
@@ -150,7 +122,21 @@ public class BinanceBuyFragment extends Fragment {
 
 		});
 
-		mBinanceNativeWorker.getCoinNetworks();
+		cryptoSpinner2 = (Spinner)view.findViewById(R.id.crypto_spinner_2);
+		cryptoSpinner2.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+			@Override
+			public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
+				selectedCrypto2 = cryptoArray2[position];
+			}
+
+			@Override
+			public void onNothingSelected(AdapterView<?> parentView) {
+				// your code here
+			}
+
+		});
+
+		mBinanceNativeWorker.getConvertAssets();
 	}
 
 	private void dismissBinanceBottomSheet() {
@@ -169,35 +155,13 @@ public class BinanceBuyFragment extends Fragment {
 		public void OnGetAccessToken(boolean isSuccess) {};
 
 		@Override
-		public void OnGetAccountBalances(String jsonBalances, boolean isSuccess) {
-			// Log.e("NTP", "AccountBalances : " + jsonBalances);
-		};
+		public void OnGetAccountBalances(String jsonBalances, boolean isSuccess) {};
 
 		@Override
 		public void OnGetConvertQuote(String quoteId, String quotePrice, String totalFee, String totalAmount) {};
 
 		@Override
-		public void OnGetCoinNetworks(String jsonNetworks) {
-			// Log.e("NTP", "OnGetCoinNetworks"+jsonNetworks);
-			try {
-				BinanceCoinNetworks binanceCoinNetworks = new BinanceCoinNetworks(jsonNetworks);
-				List<String> cryptoList = new ArrayList<String>();
-				for (CoinNetworkModel coinNetworkModel : binanceCoinNetworks.getCoinNetworksList()) {
-					cryptoList.add(coinNetworkModel.getCoin());
-				}
-				if (cryptoSpinner != null) {
-					cryptoArray = (String[]) cryptoList.toArray(new String[cryptoList.size()]);
-					ArrayAdapter<String> cryptoAdapter = new ArrayAdapter<String>(getActivity(),
-					        R.layout.binance_spinner_text_layout, cryptoArray);
-					cryptoAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-					cryptoSpinner.setAdapter(cryptoAdapter);
-					selectedCrypto = cryptoArray[0];
-					buyButton.setText(String.format(getResources().getString(R.string.buy_crypto_button_text), selectedCrypto));
-				}
-			} catch (JSONException e) {
-				Log.e("NTP", e.getMessage());
-			}
-		};
+		public void OnGetCoinNetworks(String jsonNetworks) {};
 
 		@Override
 		public void OnGetDepositInfo(String depositAddress, String depositeTag, boolean isSuccess) {};
@@ -207,10 +171,43 @@ public class BinanceBuyFragment extends Fragment {
 
 		@Override
 		public void OnGetConvertAssets(String jsonAssets) {
-			// Log.e("NTP", "OnGetConvertAssets"+jsonAssets);
+			// Log.e("NTP", "OnGetConvertAssets" + jsonAssets);
+			try {
+				binanceConvert = new BinanceConvert(jsonAssets);
+				cryptoArray1 = (String[]) binanceConvert.getCurrencyKeys().toArray(new String[binanceConvert.getCurrencyKeys().size()]);
+				ArrayAdapter<String> cryptoAdapter1 = new ArrayAdapter<String>(getActivity(),
+				        R.layout.binance_spinner_text_layout, cryptoArray1);
+				cryptoAdapter1.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+				cryptoSpinner1.setAdapter(cryptoAdapter1);
+
+				selectedCrypto1 = cryptoArray1[0];
+				setCryptoSpinner(selectedCrypto1);
+				setTitle();
+			} catch (JSONException e) {
+				Log.e("NTP", e.getMessage());
+			}
 		};
 
 		@Override
 		public void OnRevokeToken(boolean isSuccess) {};
 	};
+
+	private void setCryptoSpinner(String key) {
+		List<String> convertCryptoList = binanceConvert.getCurrencyValue(key);
+		if (cryptoSpinner2 != null) {
+			cryptoArray2 = (String[]) convertCryptoList.toArray(new String[convertCryptoList.size()]);
+			ArrayAdapter<String> cryptoAdapter2 = new ArrayAdapter<String>(getActivity(),
+			        R.layout.binance_spinner_text_layout, cryptoArray2);
+			cryptoAdapter2.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+			cryptoSpinner2.setAdapter(cryptoAdapter2);
+			selectedCrypto2 = cryptoArray2[0];
+		}
+	}
+
+	private void setTitle() {
+		if (binanceConvertTitle != null) {
+			BinanceAccountBalance binanceAccountBalance = BinanceWidgetManager.getInstance().getBinanceAccountBalance();
+			binanceConvertTitle.setText(String.format(getResources().getString(R.string.available_balance_text), binanceAccountBalance.getCurrencyValue(selectedCrypto1) != null ? String.valueOf(binanceAccountBalance.getCurrencyValue(selectedCrypto1).first) : "0.000000" , selectedCrypto1));
+		}
+	}
 }

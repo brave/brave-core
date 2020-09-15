@@ -1347,6 +1347,12 @@ until they verify, or until 90 days have passed.
       <message name="IDS_BUY_CRYPTO_BUTTON_TEXT" desc="Binance buy crypto button text">
         Buy <ph name="COIN_NAME">%1$s</ph>
       </message>
+      <message name="IDS_AVAILABLE_BALANCE_TEXT" desc="Binance convert available balance text">
+        Available <ph name="COIN_BALANCE">%1$s</ph> <ph name="COIN_NAME">%2$s</ph>
+      </message>
+      <message name="IDS_PREVIEW_CONVERSION" desc="Binance preview conversion text.">
+        Preview Conversion
+      </message>
     </messages>
   </release>
 </grit>
