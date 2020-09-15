@@ -1183,7 +1183,7 @@ until they verify, or until 90 days have passed.
         Save data and battery
       </message>
       <message name="IDS_SAVE_DATA_AND_BATTERY_TEXT" desc="Text for onboading bottomsheet.">
-        Without ads &amp; trackers, websites use less data and battery. You mighth even save money on carrier fees.
+        Without ads &amp; trackers, websites use less data and battery. You might even save money on carrier fees.
       </message>
       <message name="IDS_WEBSITES_LOAD_FASTER" desc="Title for onboading bottomsheet.">
         Websites load faster
