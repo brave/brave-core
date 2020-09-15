@@ -1,0 +1,24 @@
+diff --git a/components/services/storage/dom_storage/session_storage_namespace_impl.cc b/components/services/storage/dom_storage/session_storage_namespace_impl.cc
+index 496d3737bd559975f161235768aa624bafc4cf19..5ac09c7c5e119f136eba816db1746495669f9b77 100644
+--- a/components/services/storage/dom_storage/session_storage_namespace_impl.cc
++++ b/components/services/storage/dom_storage/session_storage_namespace_impl.cc
+@@ -165,6 +165,19 @@ void SessionStorageNamespaceImpl::RemoveOriginData(const url::Origin& origin,
+   it->second->data_map()->storage_area()->ScheduleImmediateCommit();
+ }
+ 
++void SessionStorageNamespaceImpl::ClearData(base::OnceClosure callback) {
++  for(auto it = origin_areas_.begin(); it != origin_areas_.end(); it++) {
++    it->second->DeleteAll(
++        "\n", /*new_observer=*/mojo::NullRemote(),
++        base::DoNothing());
++    it->second->NotifyObserversAllDeleted();
++    it->second->data_map()->storage_area()->ScheduleImmediateCommit();
++  }
++
++  origin_areas_.clear();
++  std::move(callback).Run();
++}
++
+ void SessionStorageNamespaceImpl::OpenArea(
+     const url::Origin& origin,
+     mojo::PendingReceiver<blink::mojom::StorageArea> receiver) {

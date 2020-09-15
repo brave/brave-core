@@ -1,0 +1,12 @@
+diff --git a/components/services/storage/public/mojom/session_storage_control.mojom b/components/services/storage/public/mojom/session_storage_control.mojom
+index 56e97671e6bea3a0f5f2ac53466c262014288c66..172f1c829161035419f87e0f92feb35a7f860fa5 100644
+--- a/components/services/storage/public/mojom/session_storage_control.mojom
++++ b/components/services/storage/public/mojom/session_storage_control.mojom
+@@ -97,4 +97,7 @@ interface SessionStorageControl {
+   // |should_persist| is true, the namespace's data is left in the database;
+   // otherwise it is permanently deleted.
+   DeleteNamespace(string namespace_id, bool should_persist);
++
++  // Will clear all the data in the namespace.
++  ClearDataInNamespace(string namespace_id) => ();
+ };

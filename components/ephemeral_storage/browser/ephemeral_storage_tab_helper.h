@@ -29,8 +29,17 @@ class EphemeralStorageTabHelper
 
  private:
   void ClearEphemeralStorage();
+  void CreateEphemeralStorageNamespcesIfNeeded();
+  bool GenerateEphemeralStorageNamespcesIds(
+      std::string& ephemeral_session_namespace_id,
+      std::string& ephemeral_local_namespace_id);
 
   friend class content::WebContentsUserData<EphemeralStorageTabHelper>;
+
+  scoped_refptr<content::SessionStorageNamespace>
+      ephemeral_session_storage_namespace_;
+  scoped_refptr<content::SessionStorageNamespace>
+      ephemeral_local_storage_namespace_;
 
   WEB_CONTENTS_USER_DATA_KEY_DECL();
 };

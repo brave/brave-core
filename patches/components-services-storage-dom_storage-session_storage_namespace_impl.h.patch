@@ -1,0 +1,12 @@
+diff --git a/components/services/storage/dom_storage/session_storage_namespace_impl.h b/components/services/storage/dom_storage/session_storage_namespace_impl.h
+index 65c5ddc55142c59d316038bd9a5ce3e0cef2e072..566ffb133b1515a46c89d87a56bb6e3cd38fa200 100644
+--- a/components/services/storage/dom_storage/session_storage_namespace_impl.h
++++ b/components/services/storage/dom_storage/session_storage_namespace_impl.h
+@@ -190,6 +190,7 @@ class SessionStorageNamespaceImpl final
+   void FlushAreasForTesting();
+   void FlushOriginForTesting(const url::Origin& origin);
+ 
++ BRAVE_SESSION_STORAGE_NAMESPACE_IMPL_H
+  private:
+   FRIEND_TEST_ALL_PREFIXES(SessionStorageImplTest,
+                            PurgeMemoryDoesNotCrashOrHang);

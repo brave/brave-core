@@ -1,0 +1,12 @@
+diff --git a/components/services/storage/dom_storage/session_storage_impl.h b/components/services/storage/dom_storage/session_storage_impl.h
+index d1e109aedeae2412d4c803b5229992997882930e..6f3bd7e3535cfed6fc3ba06e1fa2b49300fcf504 100644
+--- a/components/services/storage/dom_storage/session_storage_impl.h
++++ b/components/services/storage/dom_storage/session_storage_impl.h
+@@ -123,6 +123,7 @@ class SessionStorageImpl : public base::trace_event::MemoryDumpProvider,
+   // is already opened, |callback| is invoked immediately.
+   void SetDatabaseOpenCallbackForTesting(base::OnceClosure callback);
+ 
++ BRAVE_SESSION_STORAGE_IMPL_H
+  private:
+   friend class DOMStorageBrowserTest;
+   FRIEND_TEST_ALL_PREFIXES(SessionStorageImplTest,

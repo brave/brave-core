@@ -1,0 +1,19 @@
+diff --git a/components/services/storage/dom_storage/session_storage_impl.cc b/components/services/storage/dom_storage/session_storage_impl.cc
+index 6b0826ed671424bc80cc571ab26609c4121eeff8..a71a3d5919505d5d1b88844f44a2d1a3ed2d51f1 100644
+--- a/components/services/storage/dom_storage/session_storage_impl.cc
++++ b/components/services/storage/dom_storage/session_storage_impl.cc
+@@ -295,6 +295,14 @@ void SessionStorageImpl::DeleteNamespace(const std::string& namespace_id,
+   }
+ }
+ 
++void SessionStorageImpl::ClearDataInNamespace(const std::string& namespace_id, ClearDataInNamespaceCallback callback) {
++  auto namespace_it = namespaces_.find(namespace_id);
++  if (namespace_it != namespaces_.end()) {
++    SessionStorageNamespaceImpl* namespace_ptr = namespace_it->second.get();
++    namespace_ptr->ClearData(std::move(callback));
++  }
++}
++
+ void SessionStorageImpl::Flush(FlushCallback callback) {
+   if (connection_state_ != CONNECTION_FINISHED) {
+     RunWhenConnected(base::BindOnce(&SessionStorageImpl::Flush,

@@ -17,9 +17,7 @@ void MaybeClearAccessDeniedException(StorageArea* storage,
                                      const LocalDOMWindow* window,
                                      ExceptionState* exception_state) {
   if (!storage && exception_state->HadException()) {
-    Document* document = window->GetFrame()->GetDocument();
-
-    if (!document->GetSecurityOrigin()->CanAccessSessionStorage())
+    if (!window->GetSecurityOrigin()->CanAccessSessionStorage())
       return;
 
     // clear the access denied exception for better webcompat
@@ -39,20 +37,24 @@ class EphemeralStorageNamespaces
 
  public:
   EphemeralStorageNamespaces(StorageController* controller,
-                             const String& session_storage_id,
-                             const String& local_storage_id);
+                             const String& session_storage_namespace_id,
+                             const String& local_storage_namespace_id);
   virtual ~EphemeralStorageNamespaces() = default;
 
   static const char kSupplementName[];
   static EphemeralStorageNamespaces* From(Page* page);
 
-  StorageNamespace* session_storage() { return session_storage_.Get(); }
-  StorageNamespace* local_storage() { return local_storage_.Get(); }
+  StorageNamespace* session_storage_namespace() {
+    return session_storage_namespace_.Get();
+  }
+  StorageNamespace* local_storage_namespace() {
+    return local_storage_namespace_.Get();
+  }
   void Trace(Visitor* visitor) const override;
 
  private:
-  Member<StorageNamespace> session_storage_;
-  Member<StorageNamespace> local_storage_;
+  Member<StorageNamespace> session_storage_namespace_;
+  Member<StorageNamespace> local_storage_namespace_;
 };
 
 const char EphemeralStorageNamespaces::kSupplementName[] =
@@ -60,18 +62,18 @@ const char EphemeralStorageNamespaces::kSupplementName[] =
 
 EphemeralStorageNamespaces::EphemeralStorageNamespaces(
     StorageController* controller,
-    const String& session_storage_id,
-    const String& local_storage_id)
-    : session_storage_(
+    const String& session_storage_namespace_id,
+    const String& local_storage_namespace_id)
+    : session_storage_namespace_(
           MakeGarbageCollected<StorageNamespace>(controller,
-                                                 session_storage_id)),
-      local_storage_(MakeGarbageCollected<StorageNamespace>(controller,
-                                                            local_storage_id)) {
-}
+                                                 session_storage_namespace_id)),
+      local_storage_namespace_(
+          MakeGarbageCollected<StorageNamespace>(controller,
+                                                 local_storage_namespace_id)) {}
 
 void EphemeralStorageNamespaces::Trace(Visitor* visitor) const {
-  visitor->Trace(session_storage_);
-  visitor->Trace(local_storage_);
+  visitor->Trace(session_storage_namespace_);
+  visitor->Trace(local_storage_namespace_);
   Supplement<Page>::Trace(visitor);
 }
 
@@ -171,8 +173,8 @@ StorageArea* BraveDOMWindowStorage::ephemeralSessionStorage(
     return nullptr;
 
   Document* document = window->GetFrame()->GetDocument();
-  auto storage_area =
-      namespaces->local_storage()->GetCachedArea(document->GetSecurityOrigin());
+  auto storage_area = namespaces->session_storage_namespace()->GetCachedArea(
+      window->GetSecurityOrigin());
   ephemeral_session_storage_ =
       StorageArea::Create(document->GetFrame(), std::move(storage_area),
                           StorageArea::StorageType::kSessionStorage);
@@ -216,8 +218,8 @@ StorageArea* BraveDOMWindowStorage::ephemeralLocalStorage(
     return nullptr;
 
   Document* document = window->GetFrame()->GetDocument();
-  auto storage_area =
-      namespaces->local_storage()->GetCachedArea(document->GetSecurityOrigin());
+  auto storage_area = namespaces->local_storage_namespace()->GetCachedArea(
+      window->GetSecurityOrigin());
   ephemeral_local_storage_ =
       StorageArea::Create(document->GetFrame(), std::move(storage_area),
                           StorageArea::StorageType::kSessionStorage);

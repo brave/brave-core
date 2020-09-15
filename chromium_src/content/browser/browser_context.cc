@@ -30,14 +30,14 @@ void BrowserContext::ClearEphemeralStorageForHost(RenderViewHost* host,
   std::string session_namespace_id =
       host->GetDelegate()->GetSessionStorageNamespace(site_instance)->id() +
       "ephemeral-session-storage";
-  session_storage_control->DeleteNamespace(session_namespace_id,
-                                           false /* should_persist */);
+  session_storage_control->ClearDataInNamespace(session_namespace_id,
+                                                base::DoNothing());
 
   std::string local_namespace_id =
       host->GetDelegate()->GetSessionStorageNamespace(site_instance)->id() +
       "ephemeral-local-storage";
-  session_storage_control->DeleteNamespace(local_namespace_id,
-                                           false /* should_persist */);
+  session_storage_control->ClearDataInNamespace(local_namespace_id,
+                                                base::DoNothing());
 }
 
 }  // namespace content
