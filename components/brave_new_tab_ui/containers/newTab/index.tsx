@@ -496,6 +496,12 @@ class NewTabPage extends React.Component<Props, State> {
     this.getConvertAssets()
   }
 
+  binanceRefreshActions = () => {
+    this.fetchBalance()
+    this.setDepositInfo()
+    this.getConvertAssets()
+  }
+
   geminiUpdateActions = () => {
     this.fetchGeminiTickerPrices()
     this.fetchGeminiBalances()
@@ -566,6 +572,8 @@ class NewTabPage extends React.Component<Props, State> {
   }
 
   fetchBalance = () => {
+    const { depositInfoSaved } = this.props.newTabData.binanceState
+
     chrome.binance.getAccountBalances((balances: Record<string, Record<string, string>>, success: boolean) => {
       const hasBalances = Object.keys(balances).length
 
@@ -577,7 +585,10 @@ class NewTabPage extends React.Component<Props, State> {
       }
 
       this.setBalanceInfo(balances)
-      this.setDepositInfo()
+
+      if (!depositInfoSaved) {
+        this.setDepositInfo()
+      }
     })
   }
 
@@ -591,6 +602,9 @@ class NewTabPage extends React.Component<Props, State> {
             await generateQRData((tag || address), ticker, this.setAssetDepositQRCodeSrc)
           })
         }
+      }
+      if (Object.keys(networks).length) {
+        this.props.actions.setDepositInfoSaved()
       }
     })
   }
@@ -778,7 +792,7 @@ class NewTabPage extends React.Component<Props, State> {
 
     if (binanceState.userAuthed) {
       menuActions['onDisconnect'] = this.setBinanceDisconnectInProgress
-      menuActions['onRefreshData'] = this.binanceUpdateActions
+      menuActions['onRefreshData'] = this.binanceRefreshActions
     }
 
     return (

@@ -214,6 +214,14 @@ const binanceReducer: Reducer<NewTab.State | undefined> = (state: NewTab.State, 
       }
       break
 
+    case types.SET_DEPOSIT_INFO_SAVED:
+      state = { ...state }
+      state.binanceState = {
+        ...state.binanceState,
+        depositInfoSaved: true
+      }
+      break
+
     default:
       break
   }

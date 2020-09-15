@@ -175,6 +175,7 @@ declare namespace NewTab {
     disconnectInProgress: boolean
     authInvalid: boolean
     selectedView: string
+    depositInfoSaved: boolean
   }
 
   export interface GeminiWidgetState {
