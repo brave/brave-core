@@ -4,6 +4,7 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 #include "base/path_service.h"
+#include "base/strings/string_number_conversions.h"
 #include "base/strings/stringprintf.h"
 #include "base/task/post_task.h"
 #include "base/test/thread_test_helper.h"
@@ -31,6 +32,7 @@ using brave_shields::ControlType;
 
 const char kHardwareConcurrencyScript[] =
     "domAutomationController.send(navigator.hardwareConcurrency);";
+const char kTitleScript[] = "domAutomationController.send(document.title);";
 
 class BraveNavigatorHardwareConcurrencyFarblingBrowserTest
     : public InProcessBrowserTest {
@@ -139,6 +141,48 @@ IN_PROC_BROWSER_TEST_F(BraveNavigatorHardwareConcurrencyFarblingBrowserTest,
   NavigateToURLUntilLoadStop(farbling_url());
   int completely_fake_value =
       ExecScriptGetInt(kHardwareConcurrencyScript, contents());
+  // For this domain (a.com) + the random seed (constant for browser tests),
+  // the value will always be the same.
+  EXPECT_EQ(completely_fake_value, 7);
+}
+
+IN_PROC_BROWSER_TEST_F(BraveNavigatorHardwareConcurrencyFarblingBrowserTest,
+                       FarbleNavigatorHardwareConcurrencyWorkers) {
+  GURL url = embedded_test_server()->GetURL(
+      "a.com", "/navigator/workers-hardware-concurrency.html");
+  // Farbling level: off
+  // get real navigator.hardwareConcurrency
+  AllowFingerprinting();
+  NavigateToURLUntilLoadStop(url);
+  // NavigateToURLUntilLoadStop() will return before our Worker has a chance
+  // to run its code to completion, so we block here until document.title
+  // changes. This will happen relatively quickly if things are going well
+  // inside the Worker. If the browser crashes while executing the Worker
+  // code (which is what this test is really testing), then this will never
+  // unblock and the entire browser test will eventually time out. Timing
+  // out indicates a fatal error.
+  while (ExecScriptGetStr(kTitleScript, contents()) == "") {
+  }
+  int real_value;
+  base::StringToInt(ExecScriptGetStr(kTitleScript, contents()), &real_value);
+  ASSERT_GE(real_value, 2);
+
+  SetFingerprintingDefault();
+  NavigateToURLUntilLoadStop(url);
+  while (ExecScriptGetStr(kTitleScript, contents()) == "") {
+  }
+  int fake_value;
+  base::StringToInt(ExecScriptGetStr(kTitleScript, contents()), &fake_value);
+  EXPECT_GE(fake_value, 2);
+  EXPECT_LE(fake_value, real_value);
+
+  BlockFingerprinting();
+  NavigateToURLUntilLoadStop(url);
+  while (ExecScriptGetStr(kTitleScript, contents()) == "") {
+  }
+  int completely_fake_value;
+  base::StringToInt(ExecScriptGetStr(kTitleScript, contents()),
+                    &completely_fake_value);
   // For this domain (a.com) + the random seed (constant for browser tests),
   // the value will always be the same.
   EXPECT_EQ(completely_fake_value, 7);

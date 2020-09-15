@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<!-- OffscreenCanvas getImageData test -->
+<html>
+  <head>
+    <title></title>
+    <meta charset="utf-8">
+</head>
+<body>
+  <script>
+    var worker = function() {
+        var adder = (a, x) => a + x;
+        var canvas = new OffscreenCanvas(16, 16);
+        var ctx = canvas.getContext('2d');
+        var data = ctx.createImageData(canvas.width, canvas.height);
+        ctx.putImageData(data, 0, 0);
+        postMessage(ctx.getImageData(0, 0, canvas.width, canvas.height).data.reduce(adder));
+    }
+
+    var workerBlob = new Blob(['(' + worker.toString() + ')()'], {
+        type: "text/javascript"
+    });
+
+    worker = new Worker(window.URL.createObjectURL(workerBlob));
+    worker.onmessage = function (e) {
+        document.title = e.data;
+    };
+  </script>
+</body>
+</html>

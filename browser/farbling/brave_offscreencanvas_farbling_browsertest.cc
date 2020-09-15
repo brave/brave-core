@@ -30,6 +30,9 @@ using brave_shields::ControlType;
 
 const char kEmbeddedTestServerDirectory[] = "canvas";
 const char kTitleScript[] = "domAutomationController.send(document.title);";
+const char kExpectedImageDataHashFarblingBalanced[] = "85";
+const char kExpectedImageDataHashFarblingOff[] = "0";
+const char kExpectedImageDataHashFarblingMaximum[] = "85";
 
 class BraveOffscreenCanvasFarblingBrowserTest : public InProcessBrowserTest {
  public:
@@ -53,16 +56,12 @@ class BraveOffscreenCanvasFarblingBrowserTest : public InProcessBrowserTest {
     ASSERT_TRUE(embedded_test_server()->Start());
 
     top_level_page_url_ = embedded_test_server()->GetURL("a.com", "/");
-    offscreen_farbling_url_ =
-        embedded_test_server()->GetURL("a.com", "/offscreen-farbling.html");
   }
 
   void TearDown() override {
     browser_content_client_.reset();
     content_client_.reset();
   }
-
-  const GURL& offscreen_farbling_url() { return offscreen_farbling_url_; }
 
   HostContentSettingsMap* content_settings() {
     return HostContentSettingsMapFactory::GetForProfile(browser()->profile());
@@ -101,35 +100,74 @@ class BraveOffscreenCanvasFarblingBrowserTest : public InProcessBrowserTest {
 
  private:
   GURL top_level_page_url_;
-  GURL offscreen_farbling_url_;
   std::unique_ptr<ChromeContentClient> content_client_;
   std::unique_ptr<BraveContentBrowserClient> browser_content_client_;
 };
 
 IN_PROC_BROWSER_TEST_F(BraveOffscreenCanvasFarblingBrowserTest,
                        MustNotTimeout) {
+  GURL url =
+      embedded_test_server()->GetURL("a.com", "/offscreen-farbling.html");
   AllowFingerprinting();
-  NavigateToURLUntilLoadStop(offscreen_farbling_url());
-  // NavigateToURLUntilLoadStop() will return before our Worker has a chance to
-  // run its code to completion, so we block here until document.title changes.
-  // This will happen relatively quickly if things are going well inside the
-  // Worker. If the browser crashes while executing the Worker code (which is
-  // what this test is really testing), then this will never unblock and the
-  // entire browser test will eventually time out. Timing out indicates a fatal
-  // error.
+  NavigateToURLUntilLoadStop(url);
+  // NavigateToURLUntilLoadStop() will return before our Worker has a chance
+  // to run its code to completion, so we block here until document.title
+  // changes. This will happen relatively quickly if things are going well
+  // inside the Worker. If the browser crashes while executing the Worker
+  // code (which is what this test is really testing), then this will never
+  // unblock and the entire browser test will eventually time out. Timing
+  // out indicates a fatal error.
   while (ExecScriptGetStr(kTitleScript, contents()) == "") {
   }
   EXPECT_EQ(ExecScriptGetStr(kTitleScript, contents()), "pass");
 
   BlockFingerprinting();
-  NavigateToURLUntilLoadStop(offscreen_farbling_url());
+  NavigateToURLUntilLoadStop(url);
   while (ExecScriptGetStr(kTitleScript, contents()) == "") {
   }
   EXPECT_EQ(ExecScriptGetStr(kTitleScript, contents()), "pass");
 
   SetFingerprintingDefault();
-  NavigateToURLUntilLoadStop(offscreen_farbling_url());
+  NavigateToURLUntilLoadStop(url);
   while (ExecScriptGetStr(kTitleScript, contents()) == "") {
   }
   EXPECT_EQ(ExecScriptGetStr(kTitleScript, contents()), "pass");
+}
+
+IN_PROC_BROWSER_TEST_F(BraveOffscreenCanvasFarblingBrowserTest,
+                       FarbleGetImageData) {
+  GURL url = embedded_test_server()->GetURL(
+      "a.com", "/offscreen-getimagedata-farbling.html");
+
+  AllowFingerprinting();
+  NavigateToURLUntilLoadStop(url);
+  // wait for worker thread to complete
+  while (ExecScriptGetStr(kTitleScript, contents()) == "") {
+  }
+  EXPECT_EQ(ExecScriptGetStr(kTitleScript, contents()),
+            kExpectedImageDataHashFarblingOff);
+
+  BlockFingerprinting();
+  NavigateToURLUntilLoadStop(url);
+  while (ExecScriptGetStr(kTitleScript, contents()) == "") {
+  }
+  EXPECT_EQ(ExecScriptGetStr(kTitleScript, contents()),
+            kExpectedImageDataHashFarblingMaximum);
+
+  SetFingerprintingDefault();
+  NavigateToURLUntilLoadStop(url);
+  while (ExecScriptGetStr(kTitleScript, contents()) == "") {
+  }
+  EXPECT_EQ(ExecScriptGetStr(kTitleScript, contents()),
+            kExpectedImageDataHashFarblingBalanced);
+
+  // Turn off shields to test that the worker content settings agent
+  // properly respects shields setting separately from fingerprinting
+  // setting.
+  brave_shields::SetBraveShieldsEnabled(content_settings(), false, url);
+  NavigateToURLUntilLoadStop(url);
+  while (ExecScriptGetStr(kTitleScript, contents()) == "") {
+  }
+  EXPECT_EQ(ExecScriptGetStr(kTitleScript, contents()),
+            kExpectedImageDataHashFarblingOff);
 }

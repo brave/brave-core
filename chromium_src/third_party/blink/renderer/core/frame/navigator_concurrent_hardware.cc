@@ -8,23 +8,38 @@
 #include "base/system/sys_info.h"
 #include "brave/third_party/blink/renderer/brave_farbling_constants.h"
 #include "third_party/blink/public/platform/web_content_settings_client.h"
+#include "third_party/blink/renderer/core/execution_context/execution_context.h"
 #include "third_party/blink/renderer/core/frame/local_dom_window.h"
+#include "third_party/blink/renderer/core/frame/local_frame.h"
 #include "third_party/blink/renderer/core/frame/navigator_concurrent_hardware.h"
+#include "third_party/blink/renderer/core/workers/worker_global_scope.h"
+
+using blink::DynamicTo;
+using blink::ExecutionContext;
+using blink::LocalDOMWindow;
+using blink::To;
+using blink::WebContentSettingsClient;
+using blink::WorkerGlobalScope;
 
 namespace brave {
-
-using blink::LocalFrame;
 
 const unsigned kFakeMinProcessors = 2;
 const unsigned kFakeMaxProcessors = 8;
 
-unsigned FarbleNumberOfProcessors(LocalFrame* frame) {
+unsigned FarbleNumberOfProcessors(ExecutionContext* context) {
   unsigned true_value =
       static_cast<unsigned>(base::SysInfo::NumberOfProcessors());
-  if ((true_value <= 2) || !frame || !frame->GetContentSettingsClient())
+  if (true_value <= 2)
+    return true_value;
+  WebContentSettingsClient* settings = nullptr;
+  if (auto* window = DynamicTo<LocalDOMWindow>(context))
+    settings = window->GetFrame()->GetContentSettingsClient();
+  else if (context->IsWorkerGlobalScope())
+    settings = To<WorkerGlobalScope>(context)->ContentSettingsClient();
+  if (!settings)
     return true_value;
   unsigned farbled_value = true_value;
-  switch (frame->GetContentSettingsClient()->GetBraveFarblingLevel()) {
+  switch (settings->GetBraveFarblingLevel()) {
     case BraveFarblingLevel::OFF: {
       break;
     }
@@ -35,8 +50,8 @@ unsigned FarbleNumberOfProcessors(LocalFrame* frame) {
       U_FALLTHROUGH;
     }
     case BraveFarblingLevel::BALANCED: {
-      std::mt19937_64 prng = BraveSessionCache::From(*(frame->GetDocument()))
-                                 .MakePseudoRandomGenerator();
+      std::mt19937_64 prng =
+          BraveSessionCache::From(*context).MakePseudoRandomGenerator();
       farbled_value =
           kFakeMinProcessors + (prng() % (true_value + 1 - kFakeMinProcessors));
       break;
@@ -53,10 +68,8 @@ namespace blink {
 
 unsigned NavigatorConcurrentHardware::hardwareConcurrency(
     ScriptState* script_state) const {
-  LocalFrame* frame = nullptr;
-  if (LocalDOMWindow* window = LocalDOMWindow::From(script_state))
-    frame = window->GetFrame();
-  return brave::FarbleNumberOfProcessors(frame);
+  ExecutionContext* context = ExecutionContext::From(script_state);
+  return brave::FarbleNumberOfProcessors(context);
 }
 
 }  // namespace blink
