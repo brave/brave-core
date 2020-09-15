@@ -14,7 +14,7 @@ public class BraveBottomToolbarConfigurationClassAdapter extends BraveClassVisit
     static String sBraveBottomToolbarConfigurationClassName =
             "org/chromium/chrome/browser/toolbar/bottom/BraveBottomToolbarConfiguration";
 
-    public BraveCommandLineInitUtilClassAdapter(ClassVisitor visitor) {
+    public BraveBottomToolbarConfigurationClassAdapter(ClassVisitor visitor) {
         super(visitor);
         changeMethodOwner(sBottomToolbarConfigurationClassName, "isBottomToolbarEnabled",
                 sBraveBottomToolbarConfigurationClassName);

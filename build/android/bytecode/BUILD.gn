@@ -11,6 +11,7 @@ java_binary("java_bytecode_rewriter") {
     "//brave/build/android/bytecode/java/org/brave/bytecode/BraveClassAdapter.java",
     "//brave/build/android/bytecode/java/org/brave/bytecode/BraveClassVisitor.java",
     "//brave/build/android/bytecode/java/org/brave/bytecode/BraveAndroidSyncSettingsClassAdapter.java",
+    "//brave/build/android/bytecode/java/org/brave/bytecode/BraveBottomToolbarConfigurationClassAdapter.java",
     "//brave/build/android/bytecode/java/org/brave/bytecode/BraveCommandLineInitUtilClassAdapter.java",
     "//brave/build/android/bytecode/java/org/brave/bytecode/BraveEditUrlSuggestionProcessorClassAdapter.java",
     "//brave/build/android/bytecode/java/org/brave/bytecode/BraveFeedSurfaceCoordinatorClassAdapter.java",
