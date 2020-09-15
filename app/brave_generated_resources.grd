@@ -651,7 +651,7 @@ By installing this extension, you are agreeing to the Google Widevine Terms of U
         MetaMask
       </message>
       <message name="IDS_SETTINGS_BRAVE_WEB3_PROVIDER_DESC" desc="The description for Brave web3 provider select control in settings">
-        Web3 provider for using Dapps
+        Ethereum provider for using Dapps
       </message>
       <message name="IDS_SETTINGS_LOAD_CRYPTO_WALLETS_ON_STARTUP" desc="The description for always loading the Crypto Wallets extension on startup">
         Load Crypto Wallets on startup
@@ -871,7 +871,7 @@ By installing this extension, you are agreeing to the Google Widevine Terms of U
       </message>
       <!-- Web3 detection -->
       <message name="IDS_BRAVE_CRYPTO_WALLETS_LAZY_LOAD_TEXT" desc="Text that shows on the info bar when a Dapp is detected">
-        Would you like to start Crypto Wallets for web3 support on this page?
+        Would you like to start Crypto Wallets for Ethereum support?
       </message>
       <message name="IDS_BRAVE_CRYPTO_WALLETS_INFOBAR_TEXT" desc="Text that shows on the info bar when a Dapp is detected">
         Set up Crypto Wallets to interact with this app and others like it.
