@@ -5,8 +5,6 @@ static_library("lib") {
   ]
 
   sources = [
-    "bat_ledger_app.cc",
-    "bat_ledger_app.h",
     "bat_ledger_client_mojo_bridge.cc",
     "bat_ledger_client_mojo_bridge.h",
     "bat_ledger_impl.cc",
@@ -16,14 +14,13 @@ static_library("lib") {
   ]
 
   public_deps = [
+    "//brave/vendor/bat-native-ledger",
     "public/interfaces",
   ]
 
   deps = [
     "//brave/base:base",
-    "//brave/vendor/bat-native-ledger",
     "//mojo/public/cpp/system",
-    "//services/service_manager/public/cpp",
   ]
 }
 

@@ -5,8 +5,6 @@ static_library("lib") {
   ]
 
   sources = [
-    "bat_ads_app.cc",
-    "bat_ads_app.h",
     "bat_ads_client_mojo_bridge.cc",
     "bat_ads_client_mojo_bridge.h",
     "bat_ads_impl.cc",
@@ -16,13 +14,12 @@ static_library("lib") {
   ]
 
   public_deps = [
+    "//brave/vendor/bat-native-ads",
     "public/interfaces",
   ]
 
   deps = [
     "//mojo/public/cpp/bindings",
     "//mojo/public/cpp/system",
-    "//services/service_manager/public/cpp",
-    "//brave/vendor/bat-native-ads",
   ]
 }

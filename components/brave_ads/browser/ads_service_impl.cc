@@ -51,6 +51,7 @@
 #include "brave/components/brave_ads/browser/notification_helper.h"
 #include "chrome/browser/browser_process.h"
 #include "brave/browser/brave_browser_process_impl.h"
+#include "brave/grit/brave_generated_resources.h"
 #include "chrome/browser/notifications/notification_display_service.h"
 #include "chrome/browser/profiles/profile_manager.h"
 #include "chrome/browser/profiles/profile.h"
@@ -66,12 +67,11 @@
 #include "components/wifi/wifi_service.h"
 #include "content/public/browser/browser_thread.h"
 #include "content/public/browser/network_service_instance.h"
+#include "content/public/browser/service_process_host.h"
 #include "content/public/browser/storage_partition.h"
-#include "content/public/common/service_manager_connection.h"
 #include "net/base/network_change_notifier.h"
 #include "services/network/public/cpp/shared_url_loader_factory.h"
 #include "services/network/public/cpp/simple_url_loader.h"
-#include "services/service_manager/public/cpp/connector.h"
 #include "third_party/dom_distiller_js/dom_distiller.pb.h"
 #include "ui/base/l10n/l10n_util.h"
 #include "ui/base/resource/resource_bundle.h"
@@ -701,15 +701,12 @@ bool AdsServiceImpl::StartService() {
   DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
   DCHECK(!connected());
 
-  auto* connection = content::ServiceManagerConnection::GetForProcess();
-  if (!connection) {
-    return false;
-  }
-
   if (!bat_ads_service_.is_bound()) {
-    connection->GetConnector()->Connect(
-        bat_ads::mojom::kServiceName,
-        bat_ads_service_.BindNewPipeAndPassReceiver());
+    content::ServiceProcessHost::Launch(
+        bat_ads_service_.BindNewPipeAndPassReceiver(),
+        content::ServiceProcessHost::Options()
+            .WithDisplayName(IDS_SERVICE_BAT_ADS)
+            .Pass());
 
     bat_ads_service_.set_disconnect_handler(
         base::Bind(&AdsServiceImpl::MaybeStart, AsWeakPtr(), true));

@@ -43,6 +43,7 @@ source_set("tor") {
     ]
 
     deps += [
+      "//brave/app:brave_generated_resources_grit",
       "//brave/components/services/tor/public/interfaces",
       "//content/public/browser",
       "//content/public/common",

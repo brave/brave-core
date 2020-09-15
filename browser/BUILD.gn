@@ -144,7 +144,6 @@ source_set("browser_process") {
     "//brave/components/ntp_tiles",
     "//brave/components/p3a",
     "//brave/components/resources",
-    "//brave/components/services:brave_content_manifest_overlays",
     "//brave/components/speedreader:buildflags",
     "//brave/components/weekly_storage",
     "//brave/services/network/public/cpp",
@@ -311,7 +310,6 @@ source_set("browser_process") {
   if (enable_tor) {
     deps += [
       "//brave/browser/tor",
-      "//brave/components/services/tor/public/cpp:manifest",
       "//brave/common/tor:pref_names",
     ]
   }
@@ -338,7 +336,6 @@ source_set("browser_process") {
   if (brave_ads_enabled) {
     deps += [
       "//brave/components/brave_user_model/browser",
-      "//brave/components/services/bat_ads/public/cpp:manifest",
       "//components/dom_distiller/core",
     ]
   }
@@ -374,7 +371,6 @@ source_set("browser_process") {
 
     deps += [
       "//brave/components/brave_rewards/browser",
-      "//brave/components/services/bat_ledger/public/cpp:manifest",
       "//brave/vendor/bat-native-ledger:headers",
     ]
   }

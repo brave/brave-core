@@ -7,8 +7,6 @@ module bat_ledger.mojom;
 import "brave/vendor/bat-native-ledger/include/bat/ledger/public/interfaces/ledger.mojom";
 import "brave/vendor/bat-native-ledger/include/bat/ledger/public/interfaces/ledger_database.mojom";
 
-const string kServiceName = "bat_ledger";
-
 interface BatLedgerService {
   Create(pending_associated_remote<BatLedgerClient> bat_ledger_client,
          pending_associated_receiver<BatLedger> database) => ();

@@ -20,10 +20,8 @@ source_set("utility") {
     "brave_content_utility_client.h",
   ]
 
-  deps = [
-    "//chrome/common",
-    "//content/public/common",
-  ]
+  deps = []
+  public_deps = []
 
   if (!is_android) {
     sources += [
@@ -67,10 +65,10 @@ source_set("utility") {
   }
 
   if (brave_ads_enabled) {
-    deps += [ "//brave/components/services/bat_ads:lib" ]
+    public_deps += [ "//brave/components/services/bat_ads:lib" ]
   }
 
   if (brave_rewards_enabled) {
-    deps += [ "//brave/components/services/bat_ledger:lib" ]
+    public_deps += [ "//brave/components/services/bat_ledger:lib" ]
   }
 }

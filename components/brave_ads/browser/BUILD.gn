@@ -38,7 +38,6 @@ source_set("browser") {
     # for profile.h
     "//components/domain_reliability",
     "//content/public/browser",
-    "//content/public/common",
   ]
 
   if (brave_ads_enabled) {
@@ -58,6 +57,7 @@ source_set("browser") {
     ]
 
     deps += [
+      "//brave/app:brave_generated_resources_grit",
       "//brave/vendor/bat-native-ads",
       "//brave/components/brave_ads/resources",
       "//brave/components/services/bat_ads/public/cpp",

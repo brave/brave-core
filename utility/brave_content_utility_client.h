@@ -16,10 +16,6 @@ class BraveContentUtilityClient : public ChromeContentUtilityClient {
   BraveContentUtilityClient();
   ~BraveContentUtilityClient() override;
 
-  bool HandleServiceRequest(
-      const std::string& service_name,
-      mojo::PendingReceiver<service_manager::mojom::Service> receiver) override;
-
  private:
   DISALLOW_COPY_AND_ASSIGN(BraveContentUtilityClient);
 };
