@@ -111,8 +111,7 @@ void BookmarkBarInstructionsView::GetAccessibleNodeData(
   instructions_->GetAccessibleNodeData(node_data);
 }
 
-void BookmarkBarInstructionsView::LinkClicked(views::Link* source,
-                                              int event_flags) {
+void BookmarkBarInstructionsView::LinkClicked(int event_flags) {
   chrome::ShowImportDialog(browser_);
 }
 
