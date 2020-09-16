@@ -35,7 +35,7 @@ String FarbledUserAgent(LocalFrame* frame, std::mt19937_64 prng) {
   if (!AllowFingerprinting(GetFrame()))                              \
     return brave::FarbledUserAgent(                                  \
         GetFrame(),                                                  \
-        brave::BraveSessionCache::From(*(GetFrame()->GetDocument())) \
+        brave::BraveSessionCache::From(*(GetFrame()->DomWindow()))   \
             .MakePseudoRandomGenerator());
 
 #include "../../../../../../../third_party/blink/renderer/core/frame/navigator.cc"

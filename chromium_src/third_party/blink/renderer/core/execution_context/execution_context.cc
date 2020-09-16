@@ -3,7 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#include "third_party/blink/renderer/core/dom/document.h"
+#include "third_party/blink/renderer/core/execution_context/execution_context.h"
 
 #include "base/command_line.h"
 #include "base/strings/string_number_conversions.h"
@@ -13,6 +13,7 @@
 #include "third_party/blink/renderer/core/dom/document.h"
 #include "third_party/blink/renderer/core/frame/local_dom_window.h"
 #include "third_party/blink/renderer/core/frame/local_frame.h"
+#include "third_party/blink/renderer/core/workers/worker_or_worklet_global_scope.h"
 #include "third_party/blink/renderer/platform/bindings/script_state.h"
 #include "third_party/blink/renderer/platform/graphics/image_data_buffer.h"
 #include "third_party/blink/renderer/platform/graphics/static_bitmap_image.h"
@@ -64,10 +65,10 @@ const char kLettersForRandomStrings[] =
 // length of kLettersForRandomStrings array
 const size_t kLettersForRandomStringsLength = 64;
 
-BraveSessionCache::BraveSessionCache(Document& document)
-    : Supplement<Document>(document) {
+BraveSessionCache::BraveSessionCache(ExecutionContext& context)
+    : Supplement<ExecutionContext>(context) {
   farbling_enabled_ = false;
-  const auto origin = document.TopFrameOrigin();
+  const auto* origin = context.GetSecurityContext().GetSecurityOrigin();
   if (!origin || origin->IsOpaque())
     return;
   const auto host = origin->Host();
@@ -90,20 +91,20 @@ BraveSessionCache::BraveSessionCache(Document& document)
   farbling_enabled_ = true;
 }
 
-BraveSessionCache& BraveSessionCache::From(Document& document) {
+BraveSessionCache& BraveSessionCache::From(ExecutionContext& context) {
   BraveSessionCache* cache =
-      Supplement<Document>::From<BraveSessionCache>(document);
+      Supplement<ExecutionContext>::From<BraveSessionCache>(context);
   if (!cache) {
-    cache = MakeGarbageCollected<BraveSessionCache>(document);
-    ProvideTo(document, cache);
+    cache = MakeGarbageCollected<BraveSessionCache>(context);
+    ProvideTo(context, cache);
   }
   return *cache;
 }
 
 AudioFarblingCallback BraveSessionCache::GetAudioFarblingCallback(
-    blink::LocalFrame* frame) {
-  if (farbling_enabled_ && frame && frame->GetContentSettingsClient()) {
-    switch (frame->GetContentSettingsClient()->GetBraveFarblingLevel()) {
+    blink::WebContentSettingsClient* settings) {
+  if (farbling_enabled_ && settings) {
+    switch (settings->GetBraveFarblingLevel()) {
       case BraveFarblingLevel::OFF: {
         break;
       }
@@ -125,12 +126,11 @@ AudioFarblingCallback BraveSessionCache::GetAudioFarblingCallback(
 }
 
 scoped_refptr<blink::StaticBitmapImage> BraveSessionCache::PerturbPixels(
-    blink::LocalFrame* frame,
+    blink::WebContentSettingsClient* settings,
     scoped_refptr<blink::StaticBitmapImage> image_bitmap) {
-  if (!farbling_enabled_ || !frame || !frame->GetContentSettingsClient()) {
+  if (!farbling_enabled_ || !settings)
     return image_bitmap;
-  }
-  switch (frame->GetContentSettingsClient()->GetBraveFarblingLevel()) {
+  switch (settings->GetBraveFarblingLevel()) {
     case BraveFarblingLevel::OFF:
       break;
     case BraveFarblingLevel::BALANCED:
@@ -221,4 +221,4 @@ std::mt19937_64 BraveSessionCache::MakePseudoRandomGenerator() {
 
 }  // namespace brave
 
-#include "../../../../../../../third_party/blink/renderer/core/dom/document.cc"
+#include "../../../../../../../third_party/blink/renderer/core/execution_context/execution_context.cc"
