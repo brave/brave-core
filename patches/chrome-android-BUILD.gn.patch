@@ -1,8 +1,8 @@
 diff --git a/chrome/android/BUILD.gn b/chrome/android/BUILD.gn
-index bb74c9bc1e04e9e2f07af85c88d0107220555b3d..0d9176180b9707ad20593e56903d8119a01a1116 100644
+index d0aa1fa0fe90f763ebd777030eb3c6f7c6e745dc..8a06a00e65be1c05649f9b27895d6c4b9e10d24b 100644
 --- a/chrome/android/BUILD.gn
 +++ b/chrome/android/BUILD.gn
-@@ -209,6 +209,7 @@ android_resources("chrome_app_java_resources") {
+@@ -210,6 +210,7 @@ android_resources("chrome_app_java_resources") {
      "//third_party/android_deps:androidx_recyclerview_recyclerview_java",
      "//third_party/android_deps:material_design_java",
    ]
@@ -10,7 +10,7 @@ index bb74c9bc1e04e9e2f07af85c88d0107220555b3d..0d9176180b9707ad20593e56903d8119
    create_srcjar = false
  }
  
-@@ -495,6 +496,7 @@ android_library("chrome_java") {
+@@ -497,6 +498,7 @@ android_library("chrome_java") {
    ]
  
    deps += feed_deps
@@ -18,7 +18,7 @@ index bb74c9bc1e04e9e2f07af85c88d0107220555b3d..0d9176180b9707ad20593e56903d8119
  
    srcjar_deps = [
      ":chrome_android_java_enums_srcjar",
-@@ -529,6 +531,7 @@ android_library("chrome_java") {
+@@ -531,6 +533,7 @@ android_library("chrome_java") {
      "//components/ui_metrics:ui_metrics_enums_java",
      "//net:effective_connection_type_java",
    ]
@@ -26,15 +26,15 @@ index bb74c9bc1e04e9e2f07af85c88d0107220555b3d..0d9176180b9707ad20593e56903d8119
  
    # From java_sources.gni.
    sources = chrome_java_sources + [
-@@ -654,6 +657,7 @@ group("jni_headers") {
-     "//chrome/browser/util:jni_headers",
+@@ -655,6 +658,7 @@ group("jni_headers") {
      "//chrome/browser/webauthn/android:jni_headers",
+     "//components/media_router/browser/android:jni_headers",
    ]
 +  public_deps += ["//brave/build/android:jni_headers"]
  }
  
  action("chrome_android_java_google_api_keys_srcjar") {
-@@ -1724,6 +1728,7 @@ if (current_toolchain == default_toolchain) {
+@@ -1726,6 +1730,7 @@ if (current_toolchain == default_toolchain) {
          ":${_variant}_locale_pak_assets",
          ":${_variant}_paks",
        ]
