@@ -21,7 +21,9 @@ EXCLUDE_PATHS = [
     os.path.join('vendor', 'brave-extension', 'node_modules'),
 ]
 
+# Ping security team before adding to ignored_npm_advisories
 ignored_npm_advisories = [
+    1556  # low-sev DoS vector that isn't fixed in some upstream packages
 ]
 
 
@@ -68,15 +70,11 @@ def npm_audit_deps(path, args):
     if sys.platform.startswith('win'):
         npm_cmd = 'npm.cmd'
 
-    npm_args = [npm_cmd, 'audit']
-
-    # Just run audit regularly if --audit_dev_deps is passed
-    if args.audit_dev_deps:
-        return subprocess.call(npm_args, cwd=path)
-
-    npm_args.append('--json')
+    npm_args = [npm_cmd, 'audit', '--json']
     audit_process = subprocess.Popen(npm_args, stdout=subprocess.PIPE, cwd=path)
     output, error_data = audit_process.communicate()
+    if not args.audit_dev_deps:
+        print('WARNING: Ignoring npm devDependencies')
 
     try:
         # results from audit
@@ -88,6 +86,8 @@ def npm_audit_deps(path, args):
         return 1
 
     # remove the results which match the exceptions
+    if len(ignored_npm_advisories):
+        print('Ignoring NPM advisories ' + ','.join(map(str, ignored_npm_advisories)))
     for i, val in enumerate(result['actions']):
         result['actions'][i]['resolves'] = \
             [d for d in result['actions'][i]['resolves'] if
@@ -95,19 +95,21 @@ def npm_audit_deps(path, args):
 
     resolutions, non_dev_exceptions = extract_resolutions(result)
 
-    # Trigger a failure if there are non-dev exceptions
-    if non_dev_exceptions:
+    if resolutions:
         print('Result: Audit finished, vulnerabilities found')
+
+    # Trigger a failure if there are non-dev exceptions
+    if non_dev_exceptions and not args.audit_dev_deps:
+        print('Result: Audit finished, dev vulnerabilities ignored')
         print(json.dumps(non_dev_exceptions, indent=4))
         return 1
 
-    # Still pass if there are dev exceptions, but let the user know about them
     if resolutions:
-        print('Result: Audit finished, there are dev package warnings')
         print(json.dumps(resolutions, indent=4))
+        return 1 if args.audit_dev_deps else 0
     else:
         print('Result: Audit finished, no vulnerabilities found')
-    return 0
+        return 0
 
 
 def cargo_audit_deps(path, args):
