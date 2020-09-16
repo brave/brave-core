@@ -141,3 +141,60 @@ bool CryptoDotComJSONParser::GetChartDataFromJSON(
 
   return success;
 }
+
+bool CryptoDotComJSONParser::GetPairsFromJSON(
+    const std::string& json,
+    std::vector<std::map<std::string, std::string>>* pairs) {
+  if (!pairs) {
+    return false;
+  }
+
+  base::JSONReader::ValueWithError value_with_error =
+      base::JSONReader::ReadAndReturnValueWithError(
+          json, base::JSONParserOptions::JSON_PARSE_RFC);
+  base::Optional<base::Value>& records_v = value_with_error.value;
+
+  if (!records_v) {
+    LOG(ERROR) << "Invalid response, could not parse JSON, JSON is: " << json;
+    return false;
+  }
+
+  const base::Value* response = records_v->FindKey("response");
+  if (!response) {
+    return false;
+  }
+
+  const base::Value* result = response->FindKey("result");
+  if (!result) {
+    return false;
+  }
+
+  const base::Value* instruments = result->FindKey("instruments");
+  if (!instruments || !instruments->is_list()) {
+    return false;
+  }
+
+  bool success = true;
+
+  for (const base::Value &instrument : instruments->GetList()) {
+    std::map<std::string, std::string> instrument_data;
+    const base::Value* pair = instrument.FindKey("instrument_name");
+    const base::Value* quote = instrument.FindKey("quote_currency");
+    const base::Value* base = instrument.FindKey("base_currency");
+
+    if (!(pair && pair->is_string()) ||
+        !(quote && quote->is_string()) ||
+        !(base && base->is_string())) {
+      success = false;
+      break;
+    }
+
+    instrument_data.insert({"pair", pair->GetString()});
+    instrument_data.insert({"quote", quote->GetString()});
+    instrument_data.insert({"base", base->GetString()});
+
+    pairs->push_back(instrument_data);
+  }
+
+  return success;
+}

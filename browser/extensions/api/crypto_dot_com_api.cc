@@ -99,5 +99,37 @@ void CryptoDotComGetChartDataFunction::OnChartDataResult(
   Respond(OneArgument(std::move(result)));
 }
 
+ExtensionFunction::ResponseAction
+CryptoDotComGetSupportedPairsFunction::Run() {
+  auto* service = GetCryptoDotComService(browser_context());
+  bool chart_data_request = service->GetSupportedPairs(
+      base::BindOnce(
+          &CryptoDotComGetSupportedPairsFunction::OnSupportedPairsResult,
+          this));
+
+  if (!chart_data_request) {
+    return RespondNow(
+        Error("Could not make request for supported pairs"));
+  }
+
+  return RespondLater();
+}
+
+void CryptoDotComGetSupportedPairsFunction::OnSupportedPairsResult(
+    const std::vector<std::map<std::string, std::string>>& pairs) {
+  auto result = std::make_unique<base::ListValue>();
+
+  for (const auto& pair : pairs) {
+    auto instrument = std::make_unique<base::Value>(
+      base::Value::Type::DICTIONARY);
+    for (const auto& item : pair) {
+      instrument->SetStringKey(item.first, item.second);
+    }
+    result->Append(std::move(instrument));
+  }
+
+  Respond(OneArgument(std::move(result)));
+}
+
 }  // namespace api
 }  // namespace extensions

@@ -40,6 +40,7 @@ class Profile;
 
 const char get_ticker_info_path[] = "/v2/public/get-ticker";
 const char get_chart_data_path[] = "/v2/public/get-candlestick";
+const char get_pairs_path[] = "/v2/public/get-instruments";
 
 class CryptoDotComService : public KeyedService {
  public:
@@ -51,11 +52,15 @@ class CryptoDotComService : public KeyedService {
   using GetChartDataCallback =
         base::OnceCallback<void(
             const std::vector<std::map<std::string, std::string>>&)>;
+  using GetSupportedPairsCallback =
+        base::OnceCallback<void(
+            const std::vector<std::map<std::string, std::string>>&)>;
 
   bool GetTickerInfo(const std::string& asset,
                      GetTickerInfoCallback callback);
   bool GetChartData(const std::string& asset,
-                     GetChartDataCallback callback);
+                    GetChartDataCallback callback);
+  bool GetSupportedPairs(GetSupportedPairsCallback callback);
 
  private:
   using SimpleURLLoaderList =
@@ -70,8 +75,11 @@ class CryptoDotComService : public KeyedService {
                     const int status, const std::string& body,
                     const std::map<std::string, std::string>& headers);
   void OnChartData(GetChartDataCallback callback,
-                    const int status, const std::string& body,
-                    const std::map<std::string, std::string>& headers);
+                   const int status, const std::string& body,
+                   const std::map<std::string, std::string>& headers);
+  void OnSupportedPairs(GetSupportedPairsCallback callback,
+                        const int status, const std::string& body,
+                        const std::map<std::string, std::string>& headers);
 
   bool NetworkRequest(const GURL& url, const std::string& method,
       const std::string& post_data, URLRequestCallback callback,

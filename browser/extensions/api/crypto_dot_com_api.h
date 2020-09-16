@@ -42,6 +42,19 @@ class CryptoDotComGetChartDataFunction :
   ResponseAction Run() override;
 };
 
+class CryptoDotComGetSupportedPairsFunction :
+    public ExtensionFunction {
+ public:
+  DECLARE_EXTENSION_FUNCTION("cryptoDotCom.getSupportedPairs", UNKNOWN)
+
+ protected:
+  ~CryptoDotComGetSupportedPairsFunction() override {}
+  void OnSupportedPairsResult(
+      const std::vector<std::map<std::string, std::string>>& pairs);
+
+  ResponseAction Run() override;
+};
+
 }  // namespace api
 }  // namespace extensions
 

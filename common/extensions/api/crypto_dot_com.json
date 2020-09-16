@@ -67,6 +67,40 @@
             ]
           }
         ]
+      },
+      {
+        "name": "getSupportedPairs",
+        "type": "function",
+        "description": "Gets supported asset pairs",
+        "parameters": [
+          {
+            "type": "function",
+            "name": "callback",
+            "parameters": [
+              {
+                "name": "data",
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "pair": {
+                      "type": "string",
+                      "description": "trading pair"
+                    },
+                    "base": {
+                      "type": "string",
+                      "description": "base asset"
+                    },
+                    "quote": {
+                      "type": "string",
+                      "description": "quote asset"
+                    }
+                  }
+                }
+              }
+            ]
+          }
+        ]
       }
     ],
     "types": [

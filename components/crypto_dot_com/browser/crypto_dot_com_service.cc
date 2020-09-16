@@ -121,6 +121,28 @@ void CryptoDotComService::OnChartData(
   std::move(callback).Run(data);
 }
 
+bool CryptoDotComService::GetSupportedPairs(
+    GetSupportedPairsCallback callback) {
+  auto internal_callback = base::BindOnce(
+      &CryptoDotComService::OnSupportedPairs,
+      base::Unretained(this), std::move(callback));
+  GURL url = GetURLWithPath(api_host, get_pairs_path);
+  return NetworkRequest(
+      url, "GET", "", std::move(internal_callback), false);
+}
+
+void CryptoDotComService::OnSupportedPairs(
+  GetSupportedPairsCallback callback,
+  const int status, const std::string& body,
+  const std::map<std::string, std::string>& headers) {
+  std::vector<std::map<std::string, std::string>> pairs;
+  if (status >= 200 && status <= 299) {
+    const std::string json_body = "{\"response\": " + body + "}";
+    CryptoDotComJSONParser::GetPairsFromJSON(json_body, &pairs);
+  }
+  std::move(callback).Run(pairs);
+}
+
 bool CryptoDotComService::NetworkRequest(const GURL &url,
                                   const std::string& method,
                                   const std::string& post_data,
