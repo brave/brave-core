@@ -12,6 +12,7 @@
 #include "brave/common/extensions/api/crypto_dot_com.h"
 #include "brave/browser/crypto_dot_com/crypto_dot_com_service_factory.h"
 #include "brave/components/crypto_dot_com/browser/crypto_dot_com_service.h"
+#include "brave/components/ntp_widget_utils/browser/ntp_widget_utils_region.h"
 #include "chrome/browser/extensions/api/tabs/tabs_constants.h"
 #include "chrome/browser/extensions/extension_tab_util.h"
 #include "chrome/browser/infobars/infobar_service.h"
@@ -167,6 +168,17 @@ void CryptoDotComGetAssetRankingsFunction::OnAssetRankingsResult(
   }
 
   Respond(OneArgument(std::move(result)));
+}
+
+ExtensionFunction::ResponseAction
+CryptoDotComIsSupportedFunction::Run() {
+  Profile* profile = Profile::FromBrowserContext(browser_context());
+  // todo(ryanml) - add the final list of supported countries in the appropriate regions.h file
+  std::vector<std::string> supported_regions = { "US" };
+  bool is_supported = ntp_widget_utils::IsRegionSupported(
+      profile->GetPrefs(), supported_regions, true);
+  return RespondNow(OneArgument(
+      std::make_unique<base::Value>(is_supported)));
 }
 
 }  // namespace api

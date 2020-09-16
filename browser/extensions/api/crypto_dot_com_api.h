@@ -69,6 +69,16 @@ class CryptoDotComGetAssetRankingsFunction :
   ResponseAction Run() override;
 };
 
+class CryptoDotComIsSupportedFunction :
+    public ExtensionFunction {
+ public:
+  DECLARE_EXTENSION_FUNCTION("cryptoDotCom.isSupported", UNKNOWN)
+
+ protected:
+  ~CryptoDotComIsSupportedFunction() override {}
+  ResponseAction Run() override;
+};
+
 }  // namespace api
 }  // namespace extensions
 

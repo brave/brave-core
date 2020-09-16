@@ -136,6 +136,23 @@
             ]
           }
         ]
+      },
+      {
+        "name": "isSupported",
+        "type": "function",
+        "description": "Fetches whether crypto.com is supported",
+        "parameters": [
+          {
+            "type": "function",
+            "name": "callback",
+            "parameters": [
+              {
+                "name": "supported",
+                "type": "boolean"
+              }
+            ]
+          }
+        ]
       }
     ],
     "types": [
