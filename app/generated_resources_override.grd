@@ -97,7 +97,7 @@ are declared in tools/grit/grit_rule.gni.
       <if expr="chromeos">
         <part file="os_settings_strings_override.grdp" />
         <part file="os_settings_search_tag_strings_override.grdp" />
-      </if>
+        </if>
 
       <if expr="not is_android">
         <part file="settings_strings_override.grdp" />

@@ -303,9 +303,6 @@ If you update this file, be sure also to update google_chrome_strings.grd. -->
           Use different profiles in Brave to separate work and personal browsing, or for different profiles who use this device
         </message>
         </if>
-
-      <if expr="not is_android">
-        </if>
     </messages>
   </release>
 </grit>

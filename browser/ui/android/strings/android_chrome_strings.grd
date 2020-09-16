@@ -2484,9 +2484,6 @@ To change this setting, <ph name="BEGIN_LINK">&lt;resetlink&gt;</ph>reset sync<p
       <message name="IDS_SIGNIN_PROMO_CHOOSE_ANOTHER_ACCOUNT" desc="Button that the user can press if they want to select a different account before signing in. This button is shown below 'Continue as Joe Doe' button that signs user in with default account.">
         Choose another account
       </message>
-      <message name="IDS_SIGNIN_PROMO_STATUS_MESSAGE" desc="Title string for 'Turn on sync' sync promos.">
-        Sync is off
-      </message>
       <message name="IDS_SYNC_PROMO_TURN_ON_SYNC" desc="Button that the user can press if they want to turn on sync with this account.">
         Turn on sync
       </message>
@@ -2496,15 +2493,6 @@ To change this setting, <ph name="BEGIN_LINK">&lt;resetlink&gt;</ph>reset sync<p
       </message>
 
       <!-- New Tab Page strings -->
-      <message name="IDS_EXPLORE_OFFLINE_CARD_TITLE" desc="Card title text informing the user that they can explore the offline feed. ">
-        Keep exploring offline
-      </message>
-      <message name="IDS_EXPLORE_OFFLINE_CARD_DESCRIPTION" desc="Card description text informing the user that they can consume the videos, articles and other content even though they are offline. ">
-        Get articles, videos, and other content from sites you like, even if you’re offline or your connection is poor.
-      </message>
-      <message name="IDS_EXPLORE_OFFLINE_CARD_EXPLORE" desc="Button text on the explore offline card on new tab page that shows up when the user is offline. Clicking on this button will take the user to downloads home where they can consume articles, audios and videos while being offline.">
-        Explore
-      </message>
       <message name="IDS_RECENT_TABS" desc="Text for button to show 'Recent tabs', i.e. recently closed tabs and tabs that are open on other devices [CHAR-LIMIT=20]">
         Recent tabs
       </message>
@@ -2942,9 +2930,6 @@ To change this setting, <ph name="BEGIN_LINK">&lt;resetlink&gt;</ph>reset sync<p
       <message name="IDS_ACCESSIBILITY_TOOLBAR_BTN_MENU_OS_VERSION_UNSUPPORTED" desc="Content description for the menu button when it is covered by the warning icon that is displayed when the current Android OS version is unsupported.">
         Brave can’t update. More options
       </message>
-      <message name="IDS_ACCESSIBILITY_TOOLBAR_BTN_SEARCH_ACCELERATOR" desc="Content description for the search accelerator button">
-        Search
-      </message>
       <message name="IDS_ACCESSIBILITY_TOOLBAR_BTN_SITE_INFO" desc="Content description for the page icon that gives more site information when clicked. The icon can be a magnifier for search result pages, or other icons representing the page state.">
         Site information
       </message>
@@ -2962,12 +2947,6 @@ To change this setting, <ph name="BEGIN_LINK">&lt;resetlink&gt;</ph>reset sync<p
       </message>
       <message name="IDS_ACCESSIBILITY_TOOLBAR_BTN_NEW_INCOGNITO_TAB" desc="Content description for the new private tab button.">
         New private tab
-      </message>
-      <message name="IDS_ACCESSIBILITY_TOOLBAR_BTN_CLOSE_ALL_TABS" desc="Content description for the close all tabs button.">
-        Close all tabs
-      </message>
-      <message name="IDS_ACCESSIBILITY_TOOLBAR_BTN_CLOSE_ALL_INCOGNITO_TABS" desc="Content description for the close all private tabs button.">
-        Close all private tabs
       </message>
       <message name="IDS_ACCESSIBILITY_INCOGNITO_BADGE" desc="Content description for the badge indicating that the user is in Private mode.">
         Private mode
