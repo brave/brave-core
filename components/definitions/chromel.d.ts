@@ -191,6 +191,13 @@ declare namespace chrome.gemini {
   const isSupported: (callback: (supported: boolean) => void) => {}
 }
 
+declare namespace chrome.cryptoDotCom {
+  const getTickerInfo: (asset: string, callback: (info: any) => void) => {}
+  const getChartData: (asset: string, callback: (data: any) => void) => {}
+  const getSupportedAssets: (callback: (assets: string[]) => void) => {}
+  const getAssetRankings: (callback: (assets: any) => void) => {}
+}
+
 declare namespace chrome.braveTogether {
   const isSupported: (callback: (supported: boolean) => void) => {}
 }

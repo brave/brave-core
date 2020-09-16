@@ -1,0 +1,39 @@
+import("//brave/build/config.gni")
+import("//brave/components/crypto_dot_com/browser/buildflags/buildflags.gni")
+
+assert(crypto_dot_com_enabled)
+
+declare_args() {
+  crypto_dot_com_exchange_token = ""
+}
+
+source_set("browser") {
+  public_deps = [
+    "buildflags"
+  ]
+  sources = [
+    "crypto_dot_com_service.cc",
+    "crypto_dot_com_service.h",
+    "crypto_dot_com_json_parser.cc",
+    "crypto_dot_com_json_parser.h",
+  ]
+
+  deps = [
+    "//base",
+    "//components/keyed_service/content",
+    "//components/keyed_service/core",
+    "//components/user_prefs",
+    "//content/public/browser",
+    "//net",
+    "//services/network/public/cpp",
+    "//url",
+  ]
+
+  configs += [ ":crypto_dot_com_config" ]
+}
+
+config("crypto_dot_com_config") {
+  defines = [
+    "CRYPTO_DOT_COM_EXCHANGE_TOKEN=\"$crypto_dot_com_exchange_token\"",
+  ]
+}

@@ -1,0 +1,178 @@
+/* Copyright (c) 2020 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this file,
+ * You can obtain one at http://mozilla.org/MPL/2.0/. */
+
+#include "brave/components/crypto_dot_com/browser/crypto_dot_com_service.h"
+
+#include <algorithm>
+#include <string>
+#include <utility>
+
+#include "base/bind.h"
+#include "base/containers/flat_set.h"
+#include "base/files/file_enumerator.h"
+#include "base/files/file_util.h"
+#include "base/strings/utf_string_conversions.h"
+#include "base/task/post_task.h"
+#include "base/task_runner_util.h"
+#include "base/time/time.h"
+#include "base/token.h"
+#include "brave/common/pref_names.h"
+#include "brave/components/crypto_dot_com/browser/crypto_dot_com_json_parser.h"
+#include "components/country_codes/country_codes.h"
+#include "components/user_prefs/user_prefs.h"
+#include "content/public/browser/browser_context.h"
+#include "content/public/browser/storage_partition.h"
+#include "net/base/load_flags.h"
+#include "net/base/url_util.h"
+#include "services/network/public/cpp/shared_url_loader_factory.h"
+#include "services/network/public/cpp/simple_url_loader.h"
+
+namespace {
+
+const char api_host[] = "api.crypto.com";
+const unsigned int kRetriesCountOnNetworkChange = 1;
+
+net::NetworkTrafficAnnotationTag GetNetworkTrafficAnnotationTag() {
+  return net::DefineNetworkTrafficAnnotation("crypto_dot_com_service", R"(
+      semantics {
+        sender: "CryptoDotCom Service"
+        description:
+          "This service is used to communicate with CryptoDotCom "
+          "on behalf of the user interacting with the CryptoDotCom widget."
+        trigger:
+          "Triggered by user connecting the CryptoDotCom widget."
+        data:
+          "Account balance for the widget."
+        destination: WEBSITE
+      }
+      policy {
+        cookies_allowed: NO
+        setting:
+          "You can enable or disable this feature on the new tab page."
+        policy_exception_justification:
+          "Not implemented."
+      }
+    )");
+}
+
+GURL GetURLWithPath(const std::string& host, const std::string& path) {
+  return GURL(std::string(url::kHttpsScheme) + "://" + host).Resolve(path);
+}
+
+}  // namespace
+
+CryptoDotComService::CryptoDotComService(content::BrowserContext* context)
+    : exchange_token_(CRYPTO_DOT_COM_EXCHANGE_TOKEN),
+      context_(context),
+      url_loader_factory_(
+          content::BrowserContext::GetDefaultStoragePartition(context_)
+              ->GetURLLoaderFactoryForBrowserProcess()),
+      weak_factory_(this) {
+}
+
+CryptoDotComService::~CryptoDotComService() {
+}
+
+bool CryptoDotComService::GetTickerInfo(const std::string& asset,
+                                   GetTickerInfoCallback callback) {
+  auto internal_callback = base::BindOnce(&CryptoDotComService::OnTickerInfo,
+      base::Unretained(this), std::move(callback));
+  GURL url = GetURLWithPath(api_host, get_ticker_info_path);
+  url = net::AppendQueryParameter(url, "instrument_name", asset);
+  return NetworkRequest(
+      url, "GET", "", std::move(internal_callback), false);
+}
+
+void CryptoDotComService::OnTickerInfo(
+  GetTickerInfoCallback callback,
+  const int status, const std::string& body,
+  const std::map<std::string, std::string>& headers) {
+  std::map<std::string, std::string> info;
+  if (status >= 200 && status <= 299) {
+    const std::string json_body = "{\"response\": " + body + "}";
+    CryptoDotComJSONParser::GetTickerInfoFromJSON(json_body, &info);
+  }
+  std::move(callback).Run(info);
+}
+
+
+bool CryptoDotComService::NetworkRequest(const GURL &url,
+                                  const std::string& method,
+                                  const std::string& post_data,
+                                  URLRequestCallback callback,
+                                  bool use_exchange_token) {
+  auto request = std::make_unique<network::ResourceRequest>();
+  request->url = url;
+  request->load_flags = net::LOAD_BYPASS_CACHE |
+                        net::LOAD_DISABLE_CACHE |
+                        net::LOAD_DO_NOT_SEND_COOKIES |
+                        net::LOAD_DO_NOT_SAVE_COOKIES;
+  request->method = method;
+
+  auto url_loader = network::SimpleURLLoader::Create(
+      std::move(request), GetNetworkTrafficAnnotationTag());
+
+  if (!post_data.empty()) {
+    url_loader->AttachStringForUpload(post_data,
+        "application/x-www-form-urlencoded");
+  }
+
+  if (use_exchange_token) {
+    request->headers.SetHeader("exchange-token", exchange_token_);    
+  }
+
+  url_loader->SetRetryOptions(
+      kRetriesCountOnNetworkChange,
+      network::SimpleURLLoader::RetryMode::RETRY_ON_NETWORK_CHANGE);
+
+  auto iter = url_loaders_.insert(url_loaders_.begin(), std::move(url_loader));
+  auto* default_storage_partition =
+      content::BrowserContext::GetDefaultStoragePartition(context_);
+  auto* url_loader_factory =
+      default_storage_partition->GetURLLoaderFactoryForBrowserProcess().get();
+
+  iter->get()->DownloadToStringOfUnboundedSizeUntilCrashAndDie(
+      url_loader_factory, base::BindOnce(
+          &CryptoDotComService::OnURLLoaderComplete,
+          base::Unretained(this), std::move(iter), std::move(callback)));
+
+  return true;
+}
+
+void CryptoDotComService::OnURLLoaderComplete(
+    SimpleURLLoaderList::iterator iter,
+    URLRequestCallback callback,
+    const std::unique_ptr<std::string> response_body) {
+  auto* loader = iter->get();
+  auto response_code = -1;
+  std::map<std::string, std::string> headers;
+  if (loader->ResponseInfo() && loader->ResponseInfo()->headers) {
+    response_code = loader->ResponseInfo()->headers->response_code();
+    auto headers_list = loader->ResponseInfo()->headers;
+    if (headers_list) {
+      size_t iter = 0;
+      std::string key;
+      std::string value;
+      while (headers_list->EnumerateHeaderLines(&iter, &key, &value)) {
+        key = base::ToLowerASCII(key);
+        headers[key] = value;
+      }
+    }
+  }
+
+  url_loaders_.erase(iter);
+
+  std::move(callback).Run(
+      response_code, response_body ? *response_body : "", headers);
+}
+
+base::SequencedTaskRunner* CryptoDotComService::io_task_runner() {
+  if (!io_task_runner_) {
+    io_task_runner_ = base::CreateSequencedTaskRunner(
+        {base::ThreadPool(), base::MayBlock(), base::TaskPriority::BEST_EFFORT,
+         base::TaskShutdownBehavior::SKIP_ON_SHUTDOWN});
+  }
+  return io_task_runner_.get();
+}
