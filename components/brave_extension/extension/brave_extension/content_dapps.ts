@@ -4,12 +4,15 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 // For dapp detection:
-// Redefine window.web3 so that when window.web3 is accessed by the page,
-// we'll insert a meta header to say that this is a dapp and web3 is installed.
-// If the page itself accesses window.web3 within the first 2 seconds, and the
+// Redefine window.ethereum so that when window.ethereum is accessed by the page,
+// we'll insert a meta header to say that this is a dapp and ethereum is installed.
+// If the page itself accesses window.ethereum within the first 2 seconds, and the
 // wallet is not installed yet, then we'll prompt to install it.
-const code =
-`
+
+// Minified version of the comment block that follows
+const code = `(function(){let e=!1;function n(){if(!e){const n=document.createElement("meta");n.name="dapp-detected",document.head.appendChild(n),e=!0}}if(window.hasOwnProperty("ethereum")){if(window.__disableDappDetectionInsertion=!0,void 0===window.ethereum)return;n()}else{var t=window.ethereum;Object.defineProperty(window,"ethereum",{configurable:!0,set:function(e){window.__disableDappDetectionInsertion||n(),t=e},get:function(){return window.__disableDappDetectionInsertion||n(),t}})}})();`  // NOLINT
+
+/*
 (function() {
   let alreadyInsertedMetaTag = false
 
@@ -22,46 +25,48 @@ const code =
     }
   }
 
-  if (window.hasOwnProperty('web3')) {
-    // Note a closure can't be used for this var because some sites like
-    // www.wnyc.org do a second script execution via eval for some reason.
+  if (window.hasOwnProperty('ethereum')) {
+    // A closure can't be used for __disableDappDetectionInsertion var
+    // because some sites like www.wnyc.org do a second script execution
+    // via eval for some reason.
     window.__disableDappDetectionInsertion = true
-    // Likely oldWeb3 is undefined and it has a property only because
-    // we defined it. Some sites like wnyc.org are evaling all scripts
-    // that exist again, so this is protection against multiple calls.
-    if (window.web3 === undefined) {
+    if (window.ethereum === undefined) {
       return
     }
     __insertDappDetected()
   } else {
-    var oldWeb3 = window.web3
-    Object.defineProperty(window, 'web3', {
+    // Likely oldEthereum is undefined and it has a property only because
+    // we defined it. Some sites like wnyc.org are evaling all scripts
+    // that exist again, so this is protection against multiple calls.
+    var oldEthereum = window.ethereum
+    Object.defineProperty(window, 'ethereum', {
       configurable: true,
       set: function (val) {
         if (!window.__disableDappDetectionInsertion)
           __insertDappDetected()
-        oldWeb3 = val
+        oldEthereum = val
       },
       get: function () {
         if (!window.__disableDappDetectionInsertion)
           __insertDappDetected()
-        return oldWeb3
+        return oldEthereum
       }
     })
   }
 })()`
+*/
 
 // We need this script inserted as early as possible even before the load
-// We can't check if web3 exists here because this is an isolated world.
+// We can't check if ethereum exists here because this is an isolated world.
 if (!document.querySelector('script[data-dapp-detection]')) {
   const scriptEl = document.createElement('script')
   scriptEl.dataset.dappDetection = ''
   scriptEl.textContent = code;
   (document.head || document.documentElement).appendChild(scriptEl)
 
-  // If a website tries to access window.web3 within the first 2 seconds,
+  // If a website tries to access window.ethereum within the first 2 seconds,
   // then we prompt to install Brave Crypto Wallets.
-  // If a website does not try to access window.web3, then we will not prompt.
+  // If a website does not try to access window.ethereum, then we will not prompt.
   window.setTimeout(() => {
     const isDapp = document.querySelector('meta[name="dapp-detected"]')
     if (isDapp) {
