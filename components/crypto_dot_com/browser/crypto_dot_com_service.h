@@ -41,6 +41,7 @@ class Profile;
 const char get_ticker_info_path[] = "/v2/public/get-ticker";
 const char get_chart_data_path[] = "/v2/public/get-candlestick";
 const char get_pairs_path[] = "/v2/public/get-instruments";
+const char get_gainers_losers_path[] = "/fe-ex-api/widget/get-gainers";
 
 class CryptoDotComService : public KeyedService {
  public:
@@ -55,12 +56,17 @@ class CryptoDotComService : public KeyedService {
   using GetSupportedPairsCallback =
         base::OnceCallback<void(
             const std::vector<std::map<std::string, std::string>>&)>;
+  using GetAssetRankingsCallback =
+        base::OnceCallback<void(
+            const std::map<std::string,
+            std::vector<std::map<std::string, std::string>>>&)>;
 
   bool GetTickerInfo(const std::string& asset,
                      GetTickerInfoCallback callback);
   bool GetChartData(const std::string& asset,
                     GetChartDataCallback callback);
   bool GetSupportedPairs(GetSupportedPairsCallback callback);
+  bool GetAssetRankings(GetAssetRankingsCallback callback);
 
  private:
   using SimpleURLLoaderList =
@@ -80,6 +86,9 @@ class CryptoDotComService : public KeyedService {
   void OnSupportedPairs(GetSupportedPairsCallback callback,
                         const int status, const std::string& body,
                         const std::map<std::string, std::string>& headers);
+  void OnAssetRankings(GetAssetRankingsCallback callback,
+                       const int status, const std::string& body,
+                       const std::map<std::string, std::string>& headers);
 
   bool NetworkRequest(const GURL& url, const std::string& method,
       const std::string& post_data, URLRequestCallback callback,

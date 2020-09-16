@@ -102,12 +102,12 @@ void CryptoDotComGetChartDataFunction::OnChartDataResult(
 ExtensionFunction::ResponseAction
 CryptoDotComGetSupportedPairsFunction::Run() {
   auto* service = GetCryptoDotComService(browser_context());
-  bool chart_data_request = service->GetSupportedPairs(
+  bool supported_pairs_request = service->GetSupportedPairs(
       base::BindOnce(
           &CryptoDotComGetSupportedPairsFunction::OnSupportedPairsResult,
           this));
 
-  if (!chart_data_request) {
+  if (!supported_pairs_request) {
     return RespondNow(
         Error("Could not make request for supported pairs"));
   }
@@ -126,6 +126,44 @@ void CryptoDotComGetSupportedPairsFunction::OnSupportedPairsResult(
       instrument->SetStringKey(item.first, item.second);
     }
     result->Append(std::move(instrument));
+  }
+
+  Respond(OneArgument(std::move(result)));
+}
+
+ExtensionFunction::ResponseAction
+CryptoDotComGetAssetRankingsFunction::Run() {
+  auto* service = GetCryptoDotComService(browser_context());
+  bool asset_rankings_request = service->GetAssetRankings(
+      base::BindOnce(
+          &CryptoDotComGetAssetRankingsFunction::OnAssetRankingsResult,
+          this));
+
+  if (!asset_rankings_request) {
+    return RespondNow(
+        Error("Could not make request for asset rankings"));
+  }
+
+  return RespondLater();
+}
+
+void CryptoDotComGetAssetRankingsFunction::OnAssetRankingsResult(
+    const std::map<std::string,
+    std::vector<std::map<std::string, std::string>>>& rankings) {
+  auto result = std::make_unique<base::Value>(
+      base::Value::Type::DICTIONARY);
+
+  for (const auto& ranking : rankings) {
+    base::ListValue ranking_list;
+    for (const auto& asset : ranking.second) {
+      auto asset_dict = std::make_unique<base::Value>(
+          base::Value::Type::DICTIONARY);
+      for (const auto& att : asset) {
+        asset_dict->SetStringKey(att.first, att.second);
+      }
+      ranking_list.Append(std::move(asset_dict));
+    }
+    result->SetKey(ranking.first, std::move(ranking_list));
   }
 
   Respond(OneArgument(std::move(result)));

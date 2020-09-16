@@ -18,6 +18,9 @@ class CryptoDotComJSONParser {
       std::vector<std::map<std::string, std::string>>* data);
   static bool GetPairsFromJSON(const std::string& json,
       std::vector<std::map<std::string, std::string>>* pairs);
+  static bool GetRankingsFromJSON(const std::string& json,
+      std::map<std::string,
+      std::vector<std::map<std::string, std::string>>>* rankings);
  private:
   static void CalculateAssetVolume(const double v,
       const double h,

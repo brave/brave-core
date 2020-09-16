@@ -174,8 +174,6 @@ bool CryptoDotComJSONParser::GetPairsFromJSON(
     return false;
   }
 
-  bool success = true;
-
   for (const base::Value &instrument : instruments->GetList()) {
     std::map<std::string, std::string> instrument_data;
     const base::Value* pair = instrument.FindKey("instrument_name");
@@ -185,8 +183,7 @@ bool CryptoDotComJSONParser::GetPairsFromJSON(
     if (!(pair && pair->is_string()) ||
         !(quote && quote->is_string()) ||
         !(base && base->is_string())) {
-      success = false;
-      break;
+      continue;
     }
 
     instrument_data.insert({"pair", pair->GetString()});
@@ -196,5 +193,80 @@ bool CryptoDotComJSONParser::GetPairsFromJSON(
     pairs->push_back(instrument_data);
   }
 
-  return success;
+  return true;
+}
+
+bool CryptoDotComJSONParser::GetRankingsFromJSON(
+    const std::string& json,
+    std::map<std::string,
+    std::vector<std::map<std::string, std::string>>>* rankings) {
+  if (!rankings) {
+    return false;
+  }
+
+  base::JSONReader::ValueWithError value_with_error =
+      base::JSONReader::ReadAndReturnValueWithError(
+          json, base::JSONParserOptions::JSON_PARSE_RFC);
+  base::Optional<base::Value>& records_v = value_with_error.value;
+
+  if (!records_v) {
+    LOG(ERROR) << "Invalid response, could not parse JSON, JSON is: " << json;
+    return false;
+  }
+
+  const base::Value* response = records_v->FindKey("response");
+  if (!response) {
+    return false;
+  }
+
+  const base::Value* result = response->FindKey("result");
+  if (!result) {
+    return false;
+  }
+
+  // Both gainers and losers are part of the "gainers" list
+  const base::Value* rankings_list = result->FindKey("gainers");
+  if (!rankings_list || !rankings_list->is_list()) {
+    return false;
+  }
+
+  std::vector<std::map<std::string, std::string>> gainers;
+  std::vector<std::map<std::string, std::string>> losers;
+
+  for (const base::Value &ranking : rankings_list->GetList()) {
+    std::map<std::string, std::string> ranking_data;
+    const base::Value* pair = ranking.FindKey("instrument_name");
+    const base::Value* change = ranking.FindKey("percent_change");
+    const base::Value* last = ranking.FindKey("last_price");
+
+    if (!(pair && pair->is_string()) ||
+        !(change && change->is_string()) ||
+        !(last && last->is_string())) {
+      continue;
+    }
+
+    double percent_double;
+    const std::string pair_name = pair->GetString();
+    const std::string percent_change = change->GetString();
+    const std::string last_price = last->GetString();
+
+    if (!base::StringToDouble(change->GetString(), &percent_double)) {
+      continue;
+    }
+
+    ranking_data.insert({"pair", pair_name});
+    ranking_data.insert({"percentChange", percent_change});
+    ranking_data.insert({"lastPrice", last_price});
+
+    if (percent_double < 0.0) {
+      losers.push_back(ranking_data);
+    } else {
+      gainers.push_back(ranking_data);
+    }
+  }
+
+  rankings->insert({"gainers", gainers});
+  rankings->insert({"losers", losers});
+
+  return true;
 }

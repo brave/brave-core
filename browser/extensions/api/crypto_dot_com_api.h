@@ -55,6 +55,20 @@ class CryptoDotComGetSupportedPairsFunction :
   ResponseAction Run() override;
 };
 
+class CryptoDotComGetAssetRankingsFunction :
+    public ExtensionFunction {
+ public:
+  DECLARE_EXTENSION_FUNCTION("cryptoDotCom.getAssetRankings", UNKNOWN)
+
+ protected:
+  ~CryptoDotComGetAssetRankingsFunction() override {}
+  void OnAssetRankingsResult(
+      const std::map<std::string,
+      std::vector<std::map<std::string, std::string>>>& rankings);
+
+  ResponseAction Run() override;
+};
+
 }  // namespace api
 }  // namespace extensions
 

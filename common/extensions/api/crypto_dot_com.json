@@ -101,6 +101,41 @@
             ]
           }
         ]
+      },
+      {
+        "name": "getAssetRankings",
+        "type": "function",
+        "description": "Gets top gainers and losers",
+        "parameters": [
+          {
+            "type": "function",
+            "name": "callback",
+            "parameters": [
+              {
+                "name": "data",
+                "type": "object",
+                "properties": {
+                  "gainers": {
+                    "type": "array",
+                    "description": "top gainers",
+                    "items": {
+                      "type": "object",
+                      "additionalProperties": { "type": "any" }
+                    }
+                  },
+                  "losers": {
+                    "type": "array",
+                    "description": "top losers",
+                    "items": {
+                      "type": "object",
+                      "additionalProperties": { "type": "any" }
+                    }
+                  }
+                }
+              }
+            ]
+          }
+        ]
       }
     ],
     "types": [
