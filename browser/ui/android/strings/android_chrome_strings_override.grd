@@ -165,9 +165,6 @@ CHAR-LIMIT guidelines:
       <message name="IDS_ACCESSIBILITY_TOOLBAR_BTN_NEW_INCOGNITO_TAB" desc="Content description for the new private tab button.">
         New private tab
       </message>
-      <message name="IDS_ACCESSIBILITY_TOOLBAR_BTN_CLOSE_ALL_INCOGNITO_TABS" desc="Content description for the close all private tabs button.">
-        Close all private tabs
-      </message>
       <message name="IDS_ACCESSIBILITY_INCOGNITO_BADGE" desc="Content description for the badge indicating that the user is in Private mode.">
         Private mode
       </message>

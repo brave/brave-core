@@ -278,6 +278,9 @@
   <message name="IDS_OS_SETTINGS_LANGUAGES_LANGUAGES_PREFERENCE_DESCRIPTION" translateable="false" desc="The description of the section in the language settings page where users can add languages they read to an ordered list. The web content languages will be served in the order of the list.">
     Add and order languages you read. Apps and websites will be displayed in the most preferred language available. <ph name="BEGIN_LINK_LEARN_MORE">&lt;a target="_blank" href="$1"&gt;</ph>Learn more<ph name="END_LINK_LEARN_MORE">&lt;/a&gt;</ph>
   </message>
+  <message name="IDS_OS_SETTINGS_LANGUAGES_TRANSLATE_TARGET_LABEL" translateable="false" desc="The label of the toggle that enables the prompt to translate a page to users.">
+   The language is used when translating pages
+  </message>
   <message name="IDS_OS_SETTINGS_LANGUAGES_OFFER_TRANSLATION_LABEL" translateable="false" desc="The label of the toggle that enables the prompt to translate a page to users.">
    Translation suggestion
   </message>
@@ -299,8 +302,26 @@
   <message name="IDS_OS_SETTINGS_LANGUAGES_SPELL_CHECK_TITLE" translateable="false" desc="Title for the section containing all the options for spell check settings. The options include picking between using the system's spell check or using Brave's web service and a list of the enabled languages which support spell checking.">
     Spell check
   </message>
-  <message name="IDS_OS_SETTINGS_LANGUAGES_SPELL_CHECK_DISABLED_REASON" translateable="false" desc="Text that indicates to the user that spell check options are disabled because none of the languages they have added have spell check support.">
-    Spell check isn’t supported for the languages you selected
+  <message name="IDS_OS_SETTINGS_LANGUAGES_SPELL_CHECK_ENHANCED_LABEL" translateable="false" desc="Label for enhanced spell check toggle, the type of spell check that sends the text the user types to Brave spelling service. It is important that it is communicated that the text the user types will be sent to Brave.">
+    Enhanced spell check in Brave browser only (text is sent to Brave)
+  </message>
+  <message name="IDS_OS_SETTINGS_LANGUAGES_SPELL_CHECK_LANGUAGES_LIST_TITLE" translateable="false" desc="Title for the list of languages that support spell check, from which users can enable or disable spell check for.">
+    Spell check languages
+  </message>
+  <message name="IDS_OS_SETTINGS_LANGUAGES_SPELL_CHECK_LANGUAGES_LIST_DESCRIPTION" translateable="false" desc="Description for the list of languages that support spell check, from which users can enable or disable spell check for.">
+    Languages available for spell check is based on your languages settings
+  </message>
+  <message name="IDS_OS_SETTINGS_LANGUAGES_DICTIONARY_DOWNLOAD_FAILED" translateable="false" desc="Error message when spell check dictionary download fails.">
+    Couldn’t download spell check dictionary
+  </message>
+  <message name="IDS_OS_SETTINGS_LANGUAGES_DICTIONARY_DOWNLOAD_RETRY_LABEL" translateable="false" desc="Label for the button to retry spell check dictionary download.">
+    Try again
+  </message>
+  <message name="IDS_OS_SETTINGS_LANGUAGES_DICTIONARY_DOWNLOAD_RETRY_DESCRIPTION" translateable="false" desc="Description read by screenreader for the button to retry spell check dictionary download.">
+    Couldn’t download spell check dictionary for <ph name="LANGUAGE">$1<ex>English</ex></ph>. Try again.
+  </message>
+  <message name="IDS_OS_SETTINGS_LANGUAGES_EDIT_DICTIONARY_LABEL" translateable="false" desc="Label for the section for users to add custom words for no spell check.">
+    Customize spell check
   </message>
   <message name="IDS_OS_SETTINGS_LANGUAGES_LIST_TITLE" desc="Title for the list of the user's preferred written languages.">
     Languages
