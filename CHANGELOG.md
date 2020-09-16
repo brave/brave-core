@@ -1,5 +1,10 @@
 # Changelog
 
+## [1.20](https://github.com/brave/brave-ios/releases/tag/v1.20)
+
+ - Implemented capability to set Brave as default browser. ([#2785](https://github.com/brave/brave-ios/issues/2785))
+ - Updated user agent to be same per iOS version. ([#2864](https://github.com/brave/brave-ios/issues/2864))
+
 ## [1.19.2](https://github.com/brave/brave-ios/releases/tag/v1.19.2)
 
  - Implemented URL scheme handlers for both "HTTP" and "HTTPS". ([#2784](https://github.com/brave/brave-ios/issues/2784))
