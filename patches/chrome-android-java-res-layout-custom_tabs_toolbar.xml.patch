@@ -1,12 +1,13 @@
 diff --git a/chrome/android/java/res/layout/custom_tabs_toolbar.xml b/chrome/android/java/res/layout/custom_tabs_toolbar.xml
-index 00a9c318afe2b53de0e6c8555770661fd6170671..b3bb40378590abaea76d5718dc2d556e1522a472 100644
+index a3b998b12505b4969ea6cc32d8ee01fcc4c51c8c..42f83234de200e7ae59fbf0441ceff67596cb278 100644
 --- a/chrome/android/java/res/layout/custom_tabs_toolbar.xml
 +++ b/chrome/android/java/res/layout/custom_tabs_toolbar.xml
-@@ -96,6 +96,7 @@
-         android:layout_gravity="center_vertical|end"
+@@ -97,7 +97,7 @@
          android:gravity="center_vertical"
          android:orientation="horizontal" />
+ 
+-
 +    <include layout="@layout/brave_custom_tabs_toolbar" android:layout_height="wrap_content" android:layout_width="match_parent" />
-     <org.chromium.ui.widget.ChromeImageButton
-         android:id="@+id/menu_button"
-         style="@style/ToolbarButton"
+     <org.chromium.chrome.browser.toolbar.menu_button.MenuButton
+         android:layout_height="wrap_content"
+         android:layout_gravity="center_vertical|end"
