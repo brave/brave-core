@@ -38,7 +38,7 @@ bool TorrentFileNameMatched(const net::HttpResponseHeaders* headers) {
 }
 
 bool TorrentURLMatched(const GURL& url) {
-  return base::EndsWith(url.spec(), ".torrent",
+  return base::EndsWith(url.path(), ".torrent",
       base::CompareCase::INSENSITIVE_ASCII);
 }
 
