@@ -35,9 +35,8 @@ void ShouldBlockAdOnTaskRunner(std::shared_ptr<BraveRequestInfo> ctx) {
   bool did_match_exception = false;
   std::string tab_host = ctx->tab_origin.host();
   if (!g_brave_browser_process->ad_block_service()->ShouldStartRequest(
-          ctx->request_url, ctx->resource_type, tab_host,
-          &did_match_exception, &ctx->cancel_request_explicitly,
-          &ctx->mock_data_url)) {
+          ctx->request_url, ctx->resource_type, tab_host, &did_match_exception,
+          &ctx->cancel_request_explicitly, &ctx->mock_data_url)) {
     ctx->blocked_by = kAdBlocked;
   } else if (!did_match_exception &&
              !g_brave_browser_process->ad_block_regional_service_manager()
@@ -61,46 +60,75 @@ void OnShouldBlockAdResult(const ResponseCallback& next_callback,
   DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
   if (ctx->blocked_by == kAdBlocked) {
     brave_shields::DispatchBlockedEvent(
-        ctx->request_url,
-        ctx->render_frame_id, ctx->render_process_id, ctx->frame_tree_node_id,
-        brave_shields::kAds);
+        ctx->request_url, ctx->render_frame_id, ctx->render_process_id,
+        ctx->frame_tree_node_id, brave_shields::kAds);
   }
   next_callback.Run();
 }
 
-void OnGetCnameResult(const ResponseCallback& next_callback, std::shared_ptr<BraveRequestInfo> ctx) {
+void OnGetCnameResult(const ResponseCallback& next_callback,
+                      std::shared_ptr<BraveRequestInfo> ctx) {
   DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
-  scoped_refptr<base::SequencedTaskRunner> task_runner = g_brave_browser_process->ad_block_service()->GetTaskRunner();
+  scoped_refptr<base::SequencedTaskRunner> task_runner =
+      g_brave_browser_process->ad_block_service()->GetTaskRunner();
   // TODO - causes DCHECK failures in ref_counted.h
-  task_runner
-      ->PostTaskAndReply(FROM_HERE,
-                         base::BindOnce(&ShouldBlockAdOnTaskRunner, ctx),
-                         base::BindOnce(&OnShouldBlockAdResult, next_callback,
-                                        ctx));
+  task_runner->PostTaskAndReply(
+      FROM_HERE, base::BindOnce(&ShouldBlockAdOnTaskRunner, ctx),
+      base::BindOnce(&OnShouldBlockAdResult, next_callback, ctx));
 }
 
 class AdblockCnameResolveHostClient : public network::mojom::ResolveHostClient {
  private:
   mojo::Receiver<network::mojom::ResolveHostClient> receiver_{this};
-  const ResponseCallback& next_callback_;
-  std::shared_ptr<BraveRequestInfo> ctx_;
+  base::OnceCallback<void()> cb_;
 
  public:
-  AdblockCnameResolveHostClient(mojo::PendingRemote<network::mojom::ResolveHostClient>& pending_response_client, const ResponseCallback& next_callback, std::shared_ptr<BraveRequestInfo> ctx) : next_callback_(next_callback), ctx_(ctx) {
-    pending_response_client = receiver_.BindNewPipeAndPassRemote();
-    receiver_.set_disconnect_handler(base::BindOnce(&AdblockCnameResolveHostClient::OnComplete, base::Unretained(this), net::ERR_NAME_NOT_RESOLVED, net::ResolveErrorInfo(net::ERR_FAILED), base::nullopt));
+  AdblockCnameResolveHostClient(
+      const ResponseCallback& next_callback,
+      std::shared_ptr<BraveRequestInfo> ctx) {
+    cb_ = base::Bind(&OnGetCnameResult, next_callback, ctx);
+
+    content::BrowserContext* context =
+        content::RenderProcessHost::FromID(ctx->render_process_id)
+            ->GetBrowserContext();
+
+    auto* rfh = content::RenderFrameHost::FromID(ctx->render_process_id,
+                                                 ctx->render_frame_id);
+    const net::NetworkIsolationKey network_isolation_key =
+        rfh->GetNetworkIsolationKey();
+
+    network::mojom::ResolveHostParametersPtr optional_parameters =
+        network::mojom::ResolveHostParameters::New();
+    optional_parameters->include_canonical_name = true;
+
+    network::mojom::NetworkContext* network_context =
+        content::BrowserContext::GetDefaultStoragePartition(context)
+            ->GetNetworkContext();
+    network_context->ResolveHost(
+        net::HostPortPair::FromURL(ctx->request_url), network_isolation_key,
+        std::move(optional_parameters), receiver_.BindNewPipeAndPassRemote());
+
+    receiver_.set_disconnect_handler(
+        base::BindOnce(&AdblockCnameResolveHostClient::OnComplete,
+                       base::Unretained(this), net::ERR_NAME_NOT_RESOLVED,
+                       net::ResolveErrorInfo(net::ERR_FAILED), base::nullopt));
   }
 
-  void OnComplete(int32_t result, const net::ResolveErrorInfo& resolve_error_info, const base::Optional<net::AddressList>& resolved_addresses) override {
+  void OnComplete(
+      int32_t result,
+      const net::ResolveErrorInfo& resolve_error_info,
+      const base::Optional<net::AddressList>& resolved_addresses) override {
     if (result == net::OK && resolved_addresses) {
       DCHECK(resolved_addresses.has_value() && !resolved_addresses->empty());
       // TODO - add the canonical name to ctx
       LOG(ERROR) << resolved_addresses->canonical_name();
-      OnGetCnameResult(next_callback_, ctx_);
+      std::move(cb_).Run();
     } else {
       // TODO - this brings up a lot of `-2` (generic failure)
       LOG(ERROR) << "Could not resolve: " << resolve_error_info.error;
     }
+
+    delete this;
   }
 
   // Should not be called
@@ -114,9 +142,8 @@ class AdblockCnameResolveHostClient : public network::mojom::ResolveHostClient {
   }
 };
 
-void OnBeforeURLRequestAdBlockTP(
-    const ResponseCallback& next_callback,
-    std::shared_ptr<BraveRequestInfo> ctx) {
+void OnBeforeURLRequestAdBlockTP(const ResponseCallback& next_callback,
+                                 std::shared_ptr<BraveRequestInfo> ctx) {
   DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
   // If the following info isn't available, then proper content settings can't
   // be looked up, so do nothing.
@@ -131,33 +158,18 @@ void OnBeforeURLRequestAdBlockTP(
     // This case occurs for the top-level request. It's okay to ignore the
     // canonical name here since the top-level request can't be blocked
     // anyways.
-    g_brave_browser_process->ad_block_service()->GetTaskRunner()
-        ->PostTaskAndReply(FROM_HERE,
-                           base::BindOnce(&ShouldBlockAdOnTaskRunner, ctx),
-                           base::BindOnce(&OnShouldBlockAdResult, next_callback,
-                                          ctx));
+    g_brave_browser_process->ad_block_service()
+        ->GetTaskRunner()
+        ->PostTaskAndReply(
+            FROM_HERE, base::BindOnce(&ShouldBlockAdOnTaskRunner, ctx),
+            base::BindOnce(&OnShouldBlockAdResult, next_callback, ctx));
   } else {
-    content::BrowserContext* context = content::RenderProcessHost::FromID(ctx->render_process_id)->GetBrowserContext();
-    network::mojom::NetworkContext* network_context = content::BrowserContext::GetDefaultStoragePartition(context)->GetNetworkContext();
-
-    auto* rfh = content::RenderFrameHost::FromID(ctx->render_process_id, ctx->render_frame_id);
-    const net::NetworkIsolationKey network_isolation_key = rfh->GetNetworkIsolationKey();
-
-    network::mojom::ResolveHostParametersPtr optional_parameters = network::mojom::ResolveHostParameters::New();
-    optional_parameters->include_canonical_name = true;
-    mojo::PendingRemote<network::mojom::ResolveHostClient> pending_response_client;
-    // TODO - proper memory management of the response client. Right now, for
-    // testing purposes, it's just allocated on the heap and never freed.
-    #pragma clang diagnostic ignored "-Weverything"
-    AdblockCnameResolveHostClient* response_client = new AdblockCnameResolveHostClient(pending_response_client, next_callback, ctx);
-    network_context->ResolveHost(net::HostPortPair::FromURL(ctx->request_url), network_isolation_key, std::move(optional_parameters), std::move(pending_response_client));
+     new AdblockCnameResolveHostClient(next_callback, ctx);
   }
 }
 
-int OnBeforeURLRequest_AdBlockTPPreWork(
-    const ResponseCallback& next_callback,
-    std::shared_ptr<BraveRequestInfo> ctx) {
-
+int OnBeforeURLRequest_AdBlockTPPreWork(const ResponseCallback& next_callback,
+                                        std::shared_ptr<BraveRequestInfo> ctx) {
   if (ctx->request_url.is_empty()) {
     return net::OK;
   }
