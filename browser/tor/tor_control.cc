@@ -22,6 +22,9 @@
 #include "net/socket/tcp_client_socket.h"
 #include "net/traffic_annotation/network_traffic_annotation.h"
 
+// Tor Control Channel spec:
+// https://gitweb.torproject.org/torspec.git/plain/control-spec.txt
+
 namespace tor {
 
 namespace {
@@ -41,10 +44,51 @@ const net::NetworkTrafficAnnotationTag tor_control_traffic_annotation =
   )");
 
 const size_t kTorBufferSize = 4096;
+#if defined(OS_WIN)
+constexpr char kControlPortMinTmpl[] = "PORT=1.1.1.1:1\r\n";
+constexpr char kControlPortMaxTmpl[] = "PORT=255.255.255.255:65535\r\n";
+constexpr char kLineBreak[] = "\r\n";
+#else
+constexpr char kControlPortMinTmpl[] = "PORT=1.1.1.1:1\n";
+constexpr char kControlPortMaxTmpl[] = "PORT=255.255.255.255:65535\n";
+constexpr char kLineBreak[] = "\n";
+#endif
+constexpr char kControlAuthCookieName[] = "control_auth_cookie";
+constexpr char kControlPortName[] = "controlport";
+constexpr char kTorPidName[] = "tor.pid";
+
+constexpr char kGetVersionCmd[] = "GETINFO version";
+constexpr char kGetVersionReply[] = "version=";
+constexpr char kGetSOCKSListenersCmd[] = "GETINFO net/listeners/socks";
+constexpr char kGetSOCKSListenersReply[] = "net/listeners/socks=";
 
 constexpr base::TaskTraits kWatchTaskTraits = {
   base::ThreadPool(), base::MayBlock(), base::TaskPriority::BEST_EFFORT
 };
+
+static std::string escapify(const char *buf, int len) {
+  std::ostringstream s;
+  for (int i = 0; i < len; i++) {
+    unsigned char ch = static_cast<unsigned char>(buf[i]);
+    if (::isprint(ch)) {
+      s << buf[i];
+      continue;
+    }
+    switch (ch) {
+      case '\f': s << "\\f"; break;
+      case '\n': s << "\\n"; break;
+      case '\r': s << "\\r"; break;
+      case '\t': s << "\\t"; break;
+      default:
+        const char hex[] = "0123456789abcdef";
+        s << "\\x";
+        s << hex[(ch >> 4) & 0xf];
+        s << hex[(ch >> 0) & 0xf];
+        break;
+    }
+  }
+  return s.str();
+}
 
 }  // namespace
 
@@ -195,9 +239,9 @@ void TorControl::Poll() {
   base::Time port_mtime;
 
   if (!EatControlCookie(cookie, cookie_mtime))
-    return Polled();
+    return PollDone();
   if (!EatControlPort(port, port_mtime))
-    return Polled();
+    return PollDone();
 
   // Tor writes the control port first, then the auth cookie.  If the
   // auth cookie is _older_ than the control port, then it's certainly
@@ -206,7 +250,7 @@ void TorControl::Poll() {
   // to distinguish them.
   if (cookie_mtime < port_mtime) {
     VLOG(0) << "tor: tossing stale cookie";
-    return Polled();
+    return PollDone();
   }
 
   // Blocking shenanigans all done; move back to the regular sequence.
@@ -228,7 +272,7 @@ bool TorControl::EatControlCookie(std::vector<uint8_t>& cookie,
 
   // Open the control auth cookie file.
   base::FilePath cookiepath =
-    watch_dir_path_.AppendASCII("control_auth_cookie");
+    watch_dir_path_.AppendASCII(kControlAuthCookieName);
   base::File cookiefile(cookiepath,
                         base::File::FLAG_OPEN|base::File::FLAG_READ);
   if (!cookiefile.IsValid()) {
@@ -275,7 +319,7 @@ bool TorControl::EatControlPort(int& port, base::Time& mtime) {
   DCHECK(polling_);
 
   // Open the control port file.
-  base::FilePath portpath = watch_dir_path_.AppendASCII("controlport");
+  base::FilePath portpath = watch_dir_path_.AppendASCII(kControlPortName);
   base::File portfile(portpath, base::File::FLAG_OPEN|base::File::FLAG_READ);
   if (!portfile.IsValid()) {
     VLOG(0) << "tor: failed to open control port";
@@ -290,21 +334,14 @@ bool TorControl::EatControlPort(int& port, base::Time& mtime) {
   }
 
   // Read up to 27/28 octets, the maximum we will ever need.
-#if defined(OS_WIN)
-  const char mintmpl[] = "PORT=1.1.1.1:1\r\n";
-  const char maxtmpl[] = "PORT=255.255.255.255:65535\r\n";
-#else
-  const char mintmpl[] = "PORT=1.1.1.1:1\n";
-  const char maxtmpl[] = "PORT=255.255.255.255:65535\n";
-#endif
-  const size_t kBufSiz = strlen(maxtmpl);
+  const size_t kBufSiz = strlen(kControlPortMaxTmpl);
   char buf[kBufSiz];
   int nread = portfile.ReadAtCurrentPos(buf, sizeof buf);
   if (nread < 0) {
     VLOG(0) << "tor: failed to read control port";
     return false;
   }
-  if (static_cast<size_t>(nread) < strlen(mintmpl)) {
+  if (static_cast<size_t>(nread) < strlen(kControlPortMinTmpl)) {
     VLOG(0) << "tor: control port truncated";
     return false;
   }
@@ -314,11 +351,7 @@ bool TorControl::EatControlPort(int& port, base::Time& mtime) {
 
   // Sanity-check the content.
   if (!base::StartsWith(text, "PORT=", base::CompareCase::SENSITIVE) ||
-#if defined(OS_WIN)
-      !base::EndsWith(text, "\r\n", base::CompareCase::SENSITIVE)) {
-#else
-      !base::EndsWith(text, "\n", base::CompareCase::SENSITIVE)) {
-#endif
+      !base::EndsWith(text, kLineBreak, base::CompareCase::SENSITIVE)) {
     VLOG(0) << "tor: invalid control port: "
                << "`" << text << ";";  // XXX escape
     return false;
@@ -332,11 +365,8 @@ bool TorControl::EatControlPort(int& port, base::Time& mtime) {
   }
 
   // Parse it!
-#if defined(OS_WIN)
-  std::string portstr(text, strlen(expected), nread - 2 - strlen(expected));
-#else
-  std::string portstr(text, strlen(expected), nread - 1 - strlen(expected));
-#endif
+  std::string portstr(text, strlen(expected),
+                      nread - strlen(kLineBreak) - strlen(expected));
   if (!base::StringToInt(portstr, &port)) {
     VLOG(0) << "tor: failed to parse control port: "
                << "`" << portstr << "'";  // XXX escape
@@ -352,20 +382,14 @@ bool TorControl::EatOldPid(base::ProcessId* id) {
   DCHECK(id);
 
   // Open the tor pid file.
-  base::FilePath pidpath = watch_dir_path_.AppendASCII("tor.pid");
-  base::File pidfile(pidpath,
-                        base::File::FLAG_OPEN|base::File::FLAG_READ);
+  base::FilePath pidpath = watch_dir_path_.AppendASCII(kTorPidName);
+  base::File pidfile(pidpath, base::File::FLAG_OPEN | base::File::FLAG_READ);
   if (!pidfile.IsValid()) {
     VLOG(0) << "tor: failed to open tor.pid";
     return false;
   }
 
-#if defined(OS_WIN)
-  const char maxpid[] = "4294967292";  // 0xFFFFFFFC
-#else
-  const char maxpid[] = "4194304";  // 0x400000
-#endif
-  const size_t kBufSiz = strlen(maxpid);
+  const size_t kBufSiz = pidfile.GetLength();
   char buf[kBufSiz];
   int nread = pidfile.ReadAtCurrentPos(buf, sizeof buf);
   if (nread < 0) {
@@ -373,7 +397,7 @@ bool TorControl::EatOldPid(base::ProcessId* id) {
     return false;
   }
 
-  std::string pid(buf, 0, nread - 1);
+  std::string pid(buf, 0, nread - strlen(kLineBreak));
 #if defined(OS_WIN)
   *id = stoul(pid, nullptr);
 #else
@@ -385,14 +409,14 @@ bool TorControl::EatOldPid(base::ProcessId* id) {
   return true;
 }
 
-// Polled()
+// PollDone()
 //
 //      Just finished polling the watch directory and failed to
 //      establish a connection.  Decide whether to go back to watching
 //      and waiting or whether to poll again, if something else
 //      happened on the file system while we were busy polling.
 //
-void TorControl::Polled() {
+void TorControl::PollDone() {
   DCHECK_CALLED_ON_VALID_SEQUENCE(watch_sequence_checker_);
   DCHECK(polling_);
 
@@ -450,7 +474,7 @@ void TorControl::Connected(std::vector<uint8_t> cookie, int rv) {
                << net::ErrorToString(rv);
     watch_task_runner_->PostTask(
         FROM_HERE,
-        base::BindOnce(&TorControl::Polled, base::Unretained(this)));
+        base::BindOnce(&TorControl::PollDone, base::Unretained(this)));
     return;
   }
 
@@ -661,7 +685,7 @@ void TorControl::GetVersion(
         bool error, const std::string& version)> callback) {
   std::unique_ptr<std::string> version = std::make_unique<std::string>();
   std::string* versionp = version.get();
-  Cmd("GETINFO version",
+  Cmd(kGetVersionCmd,
       base::BindRepeating(&TorControl::GetVersionLine,
                           base::Unretained(this), versionp),
       base::BindOnce(&TorControl::GetVersionDone,
@@ -672,14 +696,14 @@ void TorControl::GetVersion(
 void TorControl::GetVersionLine(std::string* version,
                                     const std::string& status,
                                     const std::string& reply) {
-  const char prefix[] = "version=";
   if (status != "250" ||
-      !base::StartsWith(reply, prefix, base::CompareCase::SENSITIVE) ||
+      !base::StartsWith(reply, kGetVersionReply,
+                        base::CompareCase::SENSITIVE) ||
       !version->empty()) {
-    VLOG(0) << "tor: unexpected `GETINFO version' reply";
+    VLOG(0) << "tor: unexpected " << kGetVersionCmd << " reply";
     return;
   }
-  *version = reply.substr(strlen(prefix));
+  *version = reply.substr(strlen(kGetVersionReply));
 }
 
 void TorControl::GetVersionDone(
@@ -704,7 +728,7 @@ void TorControl::GetSOCKSListeners(
   std::unique_ptr<std::vector<std::string>> listeners =
     std::make_unique<std::vector<std::string>>();
   std::vector<std::string>* listeners_p = listeners.get();
-  Cmd("GETINFO net/listeners/socks",
+  Cmd(kGetSOCKSListenersCmd,
       base::BindRepeating(&TorControl::GetSOCKSListenersLine,
                           base::Unretained(this), listeners_p),
       base::BindOnce(&TorControl::GetSOCKSListenersDone,
@@ -715,13 +739,12 @@ void TorControl::GetSOCKSListeners(
 void TorControl::GetSOCKSListenersLine(std::vector<std::string>* listeners,
                                            const std::string& status,
                                            const std::string& reply) {
-  const char prefix[] = "net/listeners/socks=";
-  if (status != "250" ||
-      !base::StartsWith(reply, prefix, base::CompareCase::SENSITIVE)) {
-    VLOG(0) << "tor: unexpected `GETINFO net/listeners/socks' reply";
+  if (status != "250" || !base::StartsWith(reply, kGetSOCKSListenersReply,
+                                           base::CompareCase::SENSITIVE)) {
+    VLOG(0) << "tor: unexpected " << kGetSOCKSListenersCmd << " reply";
     return;
   }
-  listeners->push_back(reply.substr(strlen(prefix)));
+  listeners->push_back(reply.substr(strlen(kGetSOCKSListenersReply)));
 }
 
 void TorControl::GetSOCKSListenersDone(
@@ -760,31 +783,6 @@ void TorControl::StartWrite() {
   auto buf = base::MakeRefCounted<net::StringIOBuffer>(writeq_.front());
   writeiobuf_ = base::MakeRefCounted<net::DrainableIOBuffer>(buf, buf->size());
   writeq_.pop();
-}
-
-// XXX DEBUG
-static std::string escapify(const char *buf, int len) {
-  std::ostringstream s;
-  for (int i = 0; i < len; i++) {
-    unsigned char ch = static_cast<unsigned char>(buf[i]);
-    if (::isprint(ch)) {
-      s << buf[i];
-      continue;
-    }
-    switch (ch) {
-      case '\f': s << "\\f"; break;
-      case '\n': s << "\\n"; break;
-      case '\r': s << "\\r"; break;
-      case '\t': s << "\\t"; break;
-      default:
-        const char hex[] = "0123456789abcdef";
-        s << "\\x";
-        s << hex[(ch >> 4) & 0xf];
-        s << hex[(ch >> 0) & 0xf];
-        break;
-    }
-  }
-  return s.str();
 }
 
 // DoWrites()

@@ -22,6 +22,11 @@ using content::BrowserThread;
 
 namespace {
 constexpr char kTorProxyScheme[] = "socks5://";
+// tor::TorControlEvent::STATUS_CLIENT response
+constexpr char kStatusClientBootstrap[] = "BOOTSTRAP";
+constexpr char kStatusClientBootstrapProgress[] = "PROGRESS=";
+constexpr char kStatusClientCircuitEstablished[] = "CIRCUIT_ESTABLISHED";
+constexpr char kStatusClientCircuitNotEstablished[] = "CIRCUIT_NOT_ESTABLISHED";
 bool g_prevent_tor_launch_for_tests = false;
 }
 
@@ -205,9 +210,11 @@ void TorLauncherFactory::GotSOCKSListeners(
     VLOG(1) << "Failed to get SOCKS listeners!";
     return;
   }
-  VLOG(2) << "Tor SOCKS listeners: ";
-  for (auto& listener : listeners) {
-    VLOG(2) << listener;
+  if (VLOG_IS_ON(2)) {
+    VLOG(2) << "Tor SOCKS listeners: ";
+    for (auto& listener : listeners) {
+      VLOG(2) << listener;
+    }
   }
   std::string tor_proxy_uri = kTorProxyScheme + listeners[0];
   // Remove extra quotes
@@ -258,21 +265,22 @@ void TorLauncherFactory::OnTorEvent(
              << (*tor::kTorControlEventByEnum.find(event)).second
              << ": " << initial;
   if (event == tor::TorControlEvent::STATUS_CLIENT) {
-    if (initial.find("BOOTSTRAP") != std::string::npos) {
-      const char prefix[] = "PROGRESS=";
-      size_t progress_start = initial.find(prefix);
+    if (initial.find(kStatusClientBootstrap) != std::string::npos) {
+      size_t progress_start = initial.find(kStatusClientBootstrapProgress);
       size_t progress_length = initial.substr(progress_start).find(" ");
       // Dispatch progress
-      const std::string percentage =
-        initial.substr(progress_start + strlen(prefix),
-                       progress_length - strlen(prefix));
+      const std::string percentage = initial.substr(
+          progress_start + strlen(kStatusClientBootstrapProgress),
+          progress_length - strlen(kStatusClientBootstrapProgress));
       for (auto& observer : observers_)
         observer.NotifyTorInitializing(percentage);
-    } else if (initial.find("CIRCUIT_ESTABLISHED") != std::string::npos) {
+    } else if (initial.find(kStatusClientCircuitEstablished) !=
+               std::string::npos) {
       for (auto& observer : observers_)
         observer.NotifyTorCircuitEstablished(true);
       is_connected_ = true;
-    } else if (initial.find("CIRCUIT_NOT_ESTABLISHED") != std::string::npos) {
+    } else if (initial.find(kStatusClientCircuitNotEstablished) !=
+               std::string::npos) {
       for (auto& observer : observers_)
         observer.NotifyTorCircuitEstablished(false);
     }
