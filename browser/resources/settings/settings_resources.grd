@@ -99,6 +99,11 @@
           compress="false"
           preprocess="true"
           type="BINDATA" />
+      <include name="IDR_SETTINGS_BRAVE_OVERRIDES_SAFETY_CHECK_PASSWORDS_CHILD_JS"
+          file="brave_overrides/safety_check_passwords_child.js"
+          compress="false"
+          preprocess="true"
+          type="BINDATA" />
       <include name="IDR_SETTINGS_BRAVE_OVERRIDES_SECURITY_PAGE_JS"
           file="brave_overrides/security_page.js"
           compress="false"
