@@ -1,5 +1,5 @@
 diff --git a/chrome/utility/importer/safari_importer.h b/chrome/utility/importer/safari_importer.h
-index 1b585ea85dd695087f492224bab18056188371e7..1ea2a602771b7a9718378e05228d0a8cc3edd88d 100644
+index 1891fa3eff16f4e7b8f0821bc9f793c5e00514f7..89bce81bbc3d2f682adb3aacd888ac29f6d06e74 100644
 --- a/chrome/utility/importer/safari_importer.h
 +++ b/chrome/utility/importer/safari_importer.h
 @@ -46,6 +46,7 @@ class SafariImporter : public Importer {

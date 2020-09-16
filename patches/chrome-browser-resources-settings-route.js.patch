@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/resources/settings/route.js b/chrome/browser/resources/settings/route.js
-index 162b5ec9f9d6451a6723d10e96f71ac94622729f..8f0463b5d35670b01c34190fe5f1a8e7d2c2174f 100644
+index 8f61f71e589efba60c146ef60bd191133948e4d6..9df7f236e4a10f2c952c8d6d965e11158837927e 100644
 --- a/chrome/browser/resources/settings/route.js
 +++ b/chrome/browser/resources/settings/route.js
 @@ -34,7 +34,9 @@ function addPrivacyChildRoutes(r) {
@@ -12,7 +12,7 @@ index 162b5ec9f9d6451a6723d10e96f71ac94622729f..8f0463b5d35670b01c34190fe5f1a8e7
    r.SITE_SETTINGS_AR = r.SITE_SETTINGS.createChild('ar');
    r.SITE_SETTINGS_AUTOMATIC_DOWNLOADS =
        r.SITE_SETTINGS.createChild('automaticDownloads');
-@@ -181,7 +183,9 @@ function createBrowserSettingsRoutes() {
+@@ -178,7 +180,9 @@ function createBrowserSettingsRoutes() {
      }
  
      r.PRINTING = r.ADVANCED.createSection('/printing', 'printing');
