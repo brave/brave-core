@@ -76,7 +76,7 @@ CryptoDotComService::~CryptoDotComService() {
 }
 
 bool CryptoDotComService::GetTickerInfo(const std::string& asset,
-                                   GetTickerInfoCallback callback) {
+                                        GetTickerInfoCallback callback) {
   auto internal_callback = base::BindOnce(&CryptoDotComService::OnTickerInfo,
       base::Unretained(this), std::move(callback));
   GURL url = GetURLWithPath(api_host, get_ticker_info_path);
@@ -97,6 +97,29 @@ void CryptoDotComService::OnTickerInfo(
   std::move(callback).Run(info);
 }
 
+bool CryptoDotComService::GetChartData(const std::string& asset,
+                                       GetChartDataCallback callback) {
+  auto internal_callback = base::BindOnce(&CryptoDotComService::OnChartData,
+      base::Unretained(this), std::move(callback));
+  GURL url = GetURLWithPath(api_host, get_chart_data_path);
+  url = net::AppendQueryParameter(url, "instrument_name", asset);
+  url = net::AppendQueryParameter(url, "timeframe", "4h");
+  url = net::AppendQueryParameter(url, "depth", "42");
+  return NetworkRequest(
+      url, "GET", "", std::move(internal_callback), false);
+}
+
+void CryptoDotComService::OnChartData(
+  GetChartDataCallback callback,
+  const int status, const std::string& body,
+  const std::map<std::string, std::string>& headers) {
+  std::vector<std::map<std::string, std::string>> data;
+  if (status >= 200 && status <= 299) {
+    const std::string json_body = "{\"response\": " + body + "}";
+    CryptoDotComJSONParser::GetChartDataFromJSON(json_body, &data);
+  }
+  std::move(callback).Run(data);
+}
 
 bool CryptoDotComService::NetworkRequest(const GURL &url,
                                   const std::string& method,
@@ -120,7 +143,7 @@ bool CryptoDotComService::NetworkRequest(const GURL &url,
   }
 
   if (use_exchange_token) {
-    request->headers.SetHeader("exchange-token", exchange_token_);    
+    request->headers.SetHeader("exchange-token", exchange_token_);
   }
 
   url_loader->SetRetryOptions(

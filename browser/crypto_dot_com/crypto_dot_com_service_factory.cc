@@ -17,7 +17,8 @@ CryptoDotComServiceFactory* CryptoDotComServiceFactory::GetInstance() {
 }
 
 // static
-CryptoDotComService* CryptoDotComServiceFactory::GetForProfile(Profile* profile) {
+CryptoDotComService*CryptoDotComServiceFactory::GetForProfile(
+    Profile* profile) {
   if (brave::IsTorProfile(profile) ||
       profile->IsIncognitoProfile() ||
       profile->IsGuestSession()) {

@@ -8,7 +8,6 @@
 #include <memory>
 #include <string>
 #include <utility>
-#include <vector>
 
 #include "brave/common/extensions/api/crypto_dot_com.h"
 #include "brave/browser/crypto_dot_com/crypto_dot_com_service_factory.h"
@@ -69,7 +68,7 @@ CryptoDotComGetChartDataFunction::Run() {
   std::unique_ptr<crypto_dot_com::GetChartData::Params> params(
       crypto_dot_com::GetChartData::Params::Create(*args_));
   EXTENSION_FUNCTION_VALIDATE(params.get());
-  /*
+
   auto* service = GetCryptoDotComService(browser_context());
   bool chart_data_request = service->GetChartData(
       params->asset,
@@ -80,17 +79,21 @@ CryptoDotComGetChartDataFunction::Run() {
     return RespondNow(
         Error("Could not make request for chart data"));
   }
-  */
+
   return RespondLater();
 }
 
 void CryptoDotComGetChartDataFunction::OnChartDataResult(
-    const std::map<std::string, std::string>& data) {
-  auto result = std::make_unique<base::Value>(
-      base::Value::Type::DICTIONARY);
+    const std::vector<std::map<std::string, std::string>>& data) {
+  auto result = std::make_unique<base::ListValue>();
 
-  for (const auto& att : data) {
-    result->SetStringKey(att.first, att.second);
+  for (const auto& data_point : data) {
+    auto point = std::make_unique<base::Value>(
+      base::Value::Type::DICTIONARY);
+    for (const auto& att : data_point) {
+      point->SetStringKey(att.first, att.second);
+    }
+    result->Append(std::move(point));
   }
 
   Respond(OneArgument(std::move(result)));

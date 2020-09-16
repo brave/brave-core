@@ -14,6 +14,8 @@ class CryptoDotComJSONParser {
  public:
   static bool GetTickerInfoFromJSON(const std::string& json,
       std::map<std::string, std::string>* info);
+  static bool GetChartDataFromJSON(const std::string& json,
+      std::vector<std::map<std::string, std::string>>* data);
  private:
   static void CalculateAssetVolume(const double v,
       const double h,

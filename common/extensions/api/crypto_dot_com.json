@@ -58,8 +58,11 @@
             "parameters": [
               {
                 "name": "data",
-                "type": "object",
-                "additionalProperties": { "type": "any" }
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "additionalProperties": { "type": "any" }
+                }
               }
             ]
           }

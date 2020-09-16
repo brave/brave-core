@@ -75,3 +75,69 @@ bool CryptoDotComJSONParser::GetTickerInfoFromJSON(
 
   return true;
 }
+
+bool CryptoDotComJSONParser::GetChartDataFromJSON(
+    const std::string& json,
+    std::vector<std::map<std::string, std::string>>* data) {
+  if (!data) {
+    return false;
+  }
+
+  base::JSONReader::ValueWithError value_with_error =
+      base::JSONReader::ReadAndReturnValueWithError(
+          json, base::JSONParserOptions::JSON_PARSE_RFC);
+  base::Optional<base::Value>& records_v = value_with_error.value;
+
+  if (!records_v) {
+    LOG(ERROR) << "Invalid response, could not parse JSON, JSON is: " << json;
+    return false;
+  }
+
+  const base::Value* response = records_v->FindKey("response");
+  if (!response) {
+    return false;
+  }
+
+  const base::Value* result = response->FindKey("result");
+  if (!result) {
+    return false;
+  }
+
+  const base::Value* data_arr = result->FindKey("data");
+  if (!data_arr || !data_arr->is_list()) {
+    return false;
+  }
+
+  bool success = true;
+
+  for (const base::Value &point : data_arr->GetList()) {
+    std::map<std::string, std::string> data_point;
+    const base::Value* t = point.FindKey("t");
+    const base::Value* o = point.FindKey("o");
+    const base::Value* h = point.FindKey("h");
+    const base::Value* l = point.FindKey("l");
+    const base::Value* c = point.FindKey("c");
+    const base::Value* v = point.FindKey("v");
+
+    if (!(t && t->is_double()) ||
+        !(o && o->is_double()) ||
+        !(h && h->is_double()) ||
+        !(l && l->is_double()) ||
+        !(c && c->is_double()) ||
+        !(v && v->is_double())) {
+      success = false;
+      break;
+    }
+
+    data_point.insert({"t", std::to_string(t->GetDouble())});
+    data_point.insert({"o", std::to_string(o->GetDouble())});
+    data_point.insert({"h", std::to_string(h->GetDouble())});
+    data_point.insert({"l", std::to_string(l->GetDouble())});
+    data_point.insert({"c", std::to_string(c->GetDouble())});
+    data_point.insert({"v", std::to_string(v->GetDouble())});
+
+    data->push_back(data_point);
+  }
+
+  return success;
+}

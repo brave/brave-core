@@ -8,6 +8,7 @@
 
 #include <map>
 #include <string>
+#include <vector>
 
 #include "extensions/browser/extension_function.h"
 
@@ -35,7 +36,8 @@ class CryptoDotComGetChartDataFunction :
 
  protected:
   ~CryptoDotComGetChartDataFunction() override {}
-  void OnChartDataResult(const std::map<std::string, std::string>& data);
+  void OnChartDataResult(
+      const std::vector<std::map<std::string, std::string>>& data);
 
   ResponseAction Run() override;
 };
