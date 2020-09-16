@@ -3,12 +3,12 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#include "content/browser/frame_host/frame_tree.h"
-#include "content/browser/frame_host/frame_tree_node.h"
+#include "content/browser/renderer_host/frame_tree.h"
+#include "content/browser/renderer_host/frame_tree_node.h"
 #include "url/gurl.h"
 
 #if defined(OS_ANDROID)
-#include "content/browser/frame_host/navigator.h"
+#include "content/browser/renderer_host/navigator.h"
 #include "content/public/browser/navigation_controller.h"
 #include "content/public/browser/navigation_entry.h"
 #endif
@@ -46,6 +46,6 @@ GURL GetTopDocumentGURL(content::FrameTreeNode* frame_tree_node) {
       GetTopDocumentGURL(frame_tree_node_), frame_tree_node_->IsMainFrame(), \
       common_params_->method, &common_params_->referrer);
 
-#include "../../../../../content/browser/frame_host/navigation_request.cc"
+#include "../../../../../content/browser/renderer_host/navigation_request.cc"
 
 #undef BRAVE_ONSTARTCHECKSCOMPLETE_MAYBEHIDEREFERRER
