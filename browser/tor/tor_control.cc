@@ -55,7 +55,6 @@ std::unique_ptr<TorControl> TorControl::Create(TorControl::Delegate* delegate) {
 
 TorControl::TorControl(TorControl::Delegate* delegate)
   : running_(false),
-    owner_task_runner_(base::SequencedTaskRunnerHandle::Get()),
     watch_task_runner_(base::CreateSequencedTaskRunner(kWatchTaskTraits)),
     io_task_runner_(content::GetIOThreadTaskRunner({})),
     polling_(false),
@@ -152,8 +151,7 @@ void TorControl::CheckingOldTorProcess(base::OnceClosure callback) {
   base::ProcessId id;
   if (EatOldPid(&id))
     NotifyTorCleanupNeeded(std::move(id));
-  owner_task_runner_->PostTask(FROM_HERE,
-                               std::move(callback));
+  content::GetUIThreadTaskRunner({})->PostTask(FROM_HERE, std::move(callback));
 }
 
 
@@ -692,12 +690,12 @@ void TorControl::GetVersionDone(
       status != "250" ||
       reply != "OK" ||
       version->empty()) {
-    owner_task_runner_->PostTask(FROM_HERE, base::BindOnce(std::move(callback),
-                                                           true, ""));
+    content::GetUIThreadTaskRunner({})->PostTask(
+        FROM_HERE, base::BindOnce(std::move(callback), true, ""));
     return;
   }
-  owner_task_runner_->PostTask(FROM_HERE, base::BindOnce(std::move(callback),
-                                                         false, *version));
+  content::GetUIThreadTaskRunner({})->PostTask(
+      FROM_HERE, base::BindOnce(std::move(callback), false, *version));
 }
 
 void TorControl::GetSOCKSListeners(
@@ -736,14 +734,13 @@ void TorControl::GetSOCKSListenersDone(
       status != "250" ||
       reply != "OK" ||
       listeners->empty()) {
-    owner_task_runner_->PostTask(FROM_HERE,
-                                 base::BindOnce(std::move(callback),
-                                                true,
-                                                std::vector<std::string>()));
+    content::GetUIThreadTaskRunner({})->PostTask(
+        FROM_HERE,
+        base::BindOnce(std::move(callback), true, std::vector<std::string>()));
     return;
   }
-  owner_task_runner_->PostTask(FROM_HERE, base::BindOnce(std::move(callback),
-                                                         false, *listeners));
+  content::GetUIThreadTaskRunner({})->PostTask(
+      FROM_HERE, base::BindOnce(std::move(callback), false, *listeners));
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -1245,91 +1242,96 @@ void TorControl::Error() {
 }
 
 void TorControl::NotifyTorControlReady() {
-  owner_task_runner_->PostTask(
-      FROM_HERE,
-      base::BindOnce(
-          [](TorControl::Delegate* delegate) {
-            delegate->OnTorControlReady();
-          }, delegate_));
+  content::GetUIThreadTaskRunner({})->PostTask(
+      FROM_HERE, base::BindOnce(
+                     [](base::WeakPtr<TorControl::Delegate> delegate) {
+                       if (delegate)
+                         delegate->OnTorControlReady();
+                     },
+                     delegate_->AsWeakPtr()));
 }
 
 void TorControl::NotifyTorClosed() {
-  owner_task_runner_->PostTask(
-      FROM_HERE,
-      base::BindOnce(
-          [](TorControl::Delegate* delegate) {
-            delegate->OnTorClosed();
-          }, delegate_));
+  content::GetUIThreadTaskRunner({})->PostTask(
+      FROM_HERE, base::BindOnce(
+                     [](base::WeakPtr<TorControl::Delegate> delegate) {
+                       if (delegate)
+                         delegate->OnTorClosed();
+                     },
+                     delegate_->AsWeakPtr()));
 }
 
 void TorControl::NotifyTorCleanupNeeded(base::ProcessId id) {
-  owner_task_runner_->PostTask(
+  content::GetUIThreadTaskRunner({})->PostTask(
       FROM_HERE,
       base::BindOnce(
-          [](TorControl::Delegate* delegate, base::ProcessId id) {
-            delegate->OnTorCleanupNeeded(std::move(id));
-          }, delegate_, std::move(id)));
+          [](base::WeakPtr<TorControl::Delegate> delegate, base::ProcessId id) {
+            if (delegate)
+              delegate->OnTorCleanupNeeded(std::move(id));
+          },
+          delegate_->AsWeakPtr(), std::move(id)));
 }
 
 void TorControl::NotifyTorEvent(
     TorControlEvent event,
     const std::string& initial,
     const std::map<std::string, std::string>& extra) {
-  owner_task_runner_->PostTask(
-      FROM_HERE,
-      base::BindOnce(
-          [](TorControl::Delegate* delegate,
-             TorControlEvent event,
-             const std::string& initial,
-             const std::map<std::string, std::string>& extra) {
-            delegate->OnTorEvent(event, initial, extra);
-          }, delegate_, event, initial, extra));
+  content::GetUIThreadTaskRunner({})->PostTask(
+      FROM_HERE, base::BindOnce(
+                     [](base::WeakPtr<TorControl::Delegate> delegate,
+                        TorControlEvent event, const std::string& initial,
+                        const std::map<std::string, std::string>& extra) {
+                       if (delegate)
+                         delegate->OnTorEvent(event, initial, extra);
+                     },
+                     delegate_->AsWeakPtr(), event, initial, extra));
 }
 
 void TorControl::NotifyTorRawCmd(const std::string& cmd) {
-  owner_task_runner_->PostTask(
-      FROM_HERE,
-      base::BindOnce(
-          [](TorControl::Delegate* delegate,
-             const std::string& cmd) {
-            delegate->OnTorRawCmd(cmd);
-          }, delegate_, cmd));
+  content::GetUIThreadTaskRunner({})->PostTask(
+      FROM_HERE, base::BindOnce(
+                     [](base::WeakPtr<TorControl::Delegate> delegate,
+                        const std::string& cmd) {
+                       if (delegate)
+                         delegate->OnTorRawCmd(cmd);
+                     },
+                     delegate_->AsWeakPtr(), cmd));
 }
 
 void TorControl::NotifyTorRawAsync(const std::string& status,
                                    const std::string& line) {
-  owner_task_runner_->PostTask(
-      FROM_HERE,
-      base::BindOnce(
-          [](TorControl::Delegate* delegate,
-             const std::string& status,
-             const std::string& line) {
-            delegate->OnTorRawAsync(status, line);
-          }, delegate_, status, line));
+  content::GetUIThreadTaskRunner({})->PostTask(
+      FROM_HERE, base::BindOnce(
+                     [](base::WeakPtr<TorControl::Delegate> delegate,
+                        const std::string& status, const std::string& line) {
+                       if (delegate)
+                         delegate->OnTorRawAsync(status, line);
+                     },
+                     delegate_->AsWeakPtr(), status, line));
 }
 
 void TorControl::NotifyTorRawMid(const std::string& status,
                                  const std::string& line) {
-  owner_task_runner_->PostTask(
-      FROM_HERE,
-      base::BindOnce(
-          [](TorControl::Delegate* delegate,
-             const std::string& status,
-             const std::string& line) {
-            delegate->OnTorRawMid(status, line);
-          }, delegate_, status, line));
+  content::GetUIThreadTaskRunner({})->PostTask(
+      FROM_HERE, base::BindOnce(
+                     [](base::WeakPtr<TorControl::Delegate> delegate,
+                        const std::string& status, const std::string& line) {
+                       if (delegate)
+                         delegate->OnTorRawMid(status, line);
+                     },
+                     delegate_->AsWeakPtr(), status, line));
 }
 
 void TorControl::NotifyTorRawEnd(const std::string& status,
                                  const std::string& line) {
-  owner_task_runner_->PostTask(
-      FROM_HERE,
-      base::BindOnce(
-          [](TorControl::Delegate* delegate,
-             const std::string& status,
-             const std::string& line) {
-            delegate->OnTorRawEnd(status, line);
-          }, delegate_, status, line));
+  content::GetUIThreadTaskRunner({})->PostTask(
+      FROM_HERE, base::BindOnce(
+                     [](base::WeakPtr<TorControl::Delegate> delegate,
+                        const std::string& status, const std::string& line) {
+                       if (delegate)
+                         delegate->OnTorRawEnd(status, line);
+                     },
+                     delegate_->AsWeakPtr(), status, line));
 }
 
 // ParseKV(string, key, value)
