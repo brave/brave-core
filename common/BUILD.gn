@@ -116,7 +116,6 @@ source_set("common") {
     sources += [
       "brave_content_client.cc",
       "brave_content_client.h",
-      "brave_isolated_worlds.h",
     ]
 
     deps += [
