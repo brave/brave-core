@@ -33,7 +33,7 @@ import org.chromium.chrome.browser.toolbar.bottom.SearchAccelerator;
 import org.chromium.chrome.browser.toolbar.bottom.ShareButton;
 import org.chromium.chrome.browser.ui.appmenu.AppMenuButtonHelper;
 import org.chromium.chrome.browser.util.TabUtils;
-import org.chromium.chrome.browser.BraveActivity;
+import org.chromium.chrome.browser.app.BraveActivity;
 import org.chromium.ui.widget.Toast;
 
 public class BraveBottomToolbarCoordinator

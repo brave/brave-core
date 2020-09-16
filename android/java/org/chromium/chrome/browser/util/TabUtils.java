@@ -19,7 +19,7 @@ import org.chromium.base.ApplicationStatus;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.app.ChromeActivity;
 import org.chromium.chrome.browser.night_mode.GlobalNightModeStateProviderHolder;
-import org.chromium.chrome.browser.BraveActivity;
+import org.chromium.chrome.browser.app.BraveActivity;
 import org.chromium.content_public.browser.LoadUrlParams;
 import org.chromium.chrome.browser.tab.TabLaunchType;
 
