@@ -33,7 +33,7 @@ typedef NS_ENUM(NSUInteger, BookmarksNodeFaviconState) {
 - (bool)isPermanentNode;
 - (void)setTitle:(NSString *)title;
 - (NSUInteger)nodeId;
-- (void)setNodeId:(NSUInteger)id;
+//- (void)setNodeId:(NSUInteger)id;
 - (NSString *)getGuid;
 - (NSURL *)url;
 - (void)setUrl:(NSURL *)url;
@@ -53,29 +53,46 @@ typedef NS_ENUM(NSUInteger, BookmarksNodeFaviconState) {
 
 - (bool)getMetaInfo:(NSString *)key value:(NSString **)value;
 - (void)setMetaInfo:(NSString *)key value:(NSString *)value;
-- (bool)deleteMetaInfo:(NSString *)key;
+- (void)deleteMetaInfo:(NSString *)key;
 
 - (NSString *)titleUrlNodeTitle;
 - (NSURL *)titleUrlNodeUrl;
+
+- (BookmarkNode *)parent;
+- (NSArray<BookmarkNode *> *)children;
+
+- (BookmarkNode *)addChildFolderWithTitle:(NSString *)title;
+- (BookmarkNode *)addChildBookmarkWithTitle:(NSString *)title url:(NSURL *)url;
+
+- (void)moveToParent:(BookmarkNode *)parent;
+- (void)moveToParent:(BookmarkNode *)parent index:(NSUInteger)index;
 @end
 
 //NS_SWIFT_NAME(BraveBookmarksAPI)
 @interface BraveBookmarksAPI: NSObject
-- (void)createWithParentId:(NSUInteger)parentId index:(NSUInteger)index title:(NSString *)title url:(NSURL *)url;
 
-- (void)moveWithId:(NSUInteger)bookmarkId parentId:(NSUInteger)parentId index:(NSUInteger)index;
+- (BookmarkNode *)getRootNode;
 
-- (void)updateWithId:(NSUInteger)bookmarkId title:(NSString *)title url:(NSURL *)url;
+- (BookmarkNode *)getOtherNode;
 
-- (void)removeWithId:(NSUInteger)bookmarkId;
+- (BookmarkNode *)mobileNode;
 
+- (BookmarkNode *)desktopNode;
+
+- (bool)isEditingEnabled;
+
+- (BookmarkNode *)createFolderWithTitle:(NSString *)title;
+- (BookmarkNode *)createFolderWithParent:(BookmarkNode *)parent title:(NSString *)title;
+
+- (BookmarkNode *)createBookmarkWithTitle:(NSString *)title url:(NSURL *)url;
+- (BookmarkNode *)createBookmarkWithParent:(BookmarkNode *)parent title:(NSString *)title withUrl:(NSURL *)url;
+
+- (void)removeBookmark:(BookmarkNode *)bookmark;
 - (void)removeAll;
 
 - (NSArray<BookmarkNode *> *)searchWithQuery:(NSString *)query maxCount:(NSUInteger)maxCount;
 
 - (void)undo;
-
-- (void)addBookmark:(NSString *)title url:(NSURL *)url;
 @end
 
 #endif  // BRAVE_IOS_BROWSER_API_BOOKMARKS_BRAVE_BOOKMARKS_API_H_
