@@ -73,9 +73,9 @@ OBJC_EXPORT
 OBJC_EXPORT
 @interface BraveBookmarksAPI: NSObject
 
-- (BookmarkNode *)getRootNode;
+- (BookmarkNode *)rootNode;
 
-- (BookmarkNode *)getOtherNode;
+- (BookmarkNode *)otherNode;
 
 - (BookmarkNode *)mobileNode;
 

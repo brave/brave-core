@@ -259,11 +259,11 @@
   bookmarkUndoService_ = nil;
 }
 
-- (BookmarkNode *)getRootNode {
+- (BookmarkNode *)rootNode {
   return [[BookmarkNode alloc] initWithNode:bookmarkModel_->root_node() model:bookmarkModel_];
 }
 
-- (BookmarkNode *)getOtherNode {
+- (BookmarkNode *)otherNode {
   return [[BookmarkNode alloc] initWithNode:bookmarkModel_->other_node() model:bookmarkModel_];
 }
 
