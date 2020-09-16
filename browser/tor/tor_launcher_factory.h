@@ -41,17 +41,14 @@ class TorLauncherFactory : public tor::TorControl::Delegate {
   void OnTorControlReady() override;
   void OnTorClosed() override;
   void OnTorCleanupNeeded(base::ProcessId id) override;
-  void OnTorEvent(
-      tor::TorControlEvent event,
-      const std::string& initial,
-      const std::map<std::string, std::string>& extra) override;
+  void OnTorEvent(tor::TorControlEvent event,
+                  const std::string& initial,
+                  const std::map<std::string, std::string>& extra) override;
   void OnTorRawCmd(const std::string& cmd) override;
   void OnTorRawAsync(const std::string& status,
                      const std::string& line) override;
-  void OnTorRawMid(const std::string& status,
-                   const std::string& line) override;
-  void OnTorRawEnd(const std::string& status,
-                   const std::string& line) override;
+  void OnTorRawMid(const std::string& status, const std::string& line) override;
+  void OnTorRawEnd(const std::string& status, const std::string& line) override;
 
  private:
   friend struct base::DefaultSingletonTraits<TorLauncherFactory>;
