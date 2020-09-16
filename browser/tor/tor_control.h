@@ -155,7 +155,7 @@ class TorControl {
   void CheckingOldTorProcess(base::OnceClosure callback);
   void WatchDirChanged(const base::FilePath& path, bool error);
   void Poll();
-  void Polled();
+  void PollDone();
   bool EatControlCookie(std::vector<uint8_t>&, base::Time&);
   bool EatControlPort(int&, base::Time&);
   bool EatOldPid(base::ProcessId* id);
