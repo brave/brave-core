@@ -1,0 +1,74 @@
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this
+// file, You can obtain one at http://mozilla.org/MPL/2.0/.
+
+[
+  {
+    "namespace": "cryptoDotCom",
+    "description": "Use the <code>chrome.cryptoDotCom</code> to interact with crypto.com services.",
+    "compiler_options": {
+      "implemented_in": "brave/browser/extensions/api/crypto_dot_com_api.h"
+    },
+    "events": [
+    ],
+    "functions": [
+      {
+        "name": "getTickerInfo",
+        "type": "function",
+        "description": "Gets price and volume info for an asset pair",
+        "parameters": [
+          {
+            "type": "string",
+            "name": "asset"
+          },
+          {
+            "type": "function",
+            "name": "callback",
+            "parameters": [
+              {
+                "name": "info",
+                "type": "object",
+                "properties": {
+                  "price": {
+                    "type": "string",
+                    "description": "price"
+                  },
+                  "volume": {
+                    "type": "string",
+                    "description": "volume"
+                  }
+                }
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "name": "getChartData",
+        "type": "function",
+        "description": "Gets chart data for an asset pair",
+        "parameters": [
+          {
+            "type": "string",
+            "name": "asset"
+          },
+          {
+            "type": "function",
+            "name": "callback",
+            "parameters": [
+              {
+                "name": "data",
+                "type": "object",
+                "additionalProperties": { "type": "any" }
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "types": [
+    ],
+    "properties": {
+    }
+  }
+]
