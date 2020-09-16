@@ -44,7 +44,7 @@ class TorControl {
     base::OnceCallback<
         void(bool error, const std::string& status, const std::string& reply)>;
 
-  class Delegate {
+  class Delegate : public base::SupportsWeakPtr<Delegate> {
    public:
     virtual ~Delegate() = default;
     virtual void OnTorControlReady() = 0;
@@ -110,7 +110,6 @@ class TorControl {
  private:
   bool running_;
   SEQUENCE_CHECKER(sequence_checker_);
-  scoped_refptr<base::SequencedTaskRunner> owner_task_runner_;
 
   scoped_refptr<base::SequencedTaskRunner> watch_task_runner_;
   SEQUENCE_CHECKER(watch_sequence_checker_);
@@ -197,7 +196,7 @@ class TorControl {
       bool error, const std::string& status, const std::string& reply);
   std::string SetEventsCmd();
 
-  // Notify delegate on owner thread
+  // Notify delegate on UI thread
   void NotifyTorControlReady();
   void NotifyTorClosed();
   void NotifyTorCleanupNeeded(base::ProcessId id);
