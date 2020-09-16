@@ -12,13 +12,8 @@
 #include "brave/components/brave_sync/crypto/crypto.h"
 #include "brave/components/sync/driver/brave_sync_auth_manager.h"
 #include "components/prefs/pref_service.h"
-#include "components/sync_device_info/device_info_sync_service.h"
-#include "components/sync_device_info/device_info_tracker.h"
-#include "components/sync_device_info/local_device_info_provider.h"
 
 namespace syncer {
-
-class DeviceInfo;
 
 BraveProfileSyncService::BraveProfileSyncService(InitParams init_params)
     : ProfileSyncService(std::move(init_params)),
@@ -63,25 +58,13 @@ bool BraveProfileSyncService::SetSyncCode(const std::string& sync_code) {
   return true;
 }
 
-void BraveProfileSyncService::ResetSync(
-    DeviceInfoSyncService* device_info_service, base::OnceClosure cb) {
-  DCHECK(device_info_service);
-  // Do not send self deleted commit if engine is not up and running
-  if (GetTransportState() != SyncService::TransportState::ACTIVE) {
-    std::move(cb).Run();
-    return;
-  }
-  syncer::DeviceInfoTracker* tracker =
-    device_info_service->GetDeviceInfoTracker();
-  DCHECK(tracker);
-
-  const syncer::DeviceInfo* local_device_info =
-      device_info_service->GetLocalDeviceInfoProvider()->GetLocalDeviceInfo();
-
-  tracker->DeleteDeviceInfo(
-      local_device_info,
-      base::BindOnce(&BraveProfileSyncService::OnSelfDeleted,
-                     weak_ptr_factory_.GetWeakPtr(), std::move(cb)));
+void BraveProfileSyncService::OnSelfDeviceInfoDeleted(base::OnceClosure cb) {
+  // This function will follow normal reset process and set SyncRequested to
+  // false
+  StopAndClear();
+  brave_sync_prefs_.Clear();
+  // Sync prefs will be clear in ProfileSyncService::StopImpl
+  std::move(cb).Run();
 }
 
 BraveSyncAuthManager* BraveProfileSyncService::GetBraveSyncAuthManager() {
@@ -103,15 +86,6 @@ void BraveProfileSyncService::OnBraveSyncPrefsChanged(const std::string& path) {
       GetBraveSyncAuthManager()->ResetKeys();
     }
   }
-}
-
-void BraveProfileSyncService::OnSelfDeleted(base::OnceClosure cb) {
-  // This function will follow normal reset process and set SyncRequested to
-  // false
-  StopAndClear();
-  brave_sync_prefs_.Clear();
-  // Sync prefs will be clear in ProfileSyncService::StopImpl
-  std::move(cb).Run();
 }
 
 }  // namespace syncer

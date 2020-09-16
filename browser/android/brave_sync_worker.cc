@@ -17,6 +17,7 @@
 #include "brave/build/android/jni_headers/BraveSyncWorker_jni.h"
 #include "brave/components/brave_sync/brave_sync_prefs.h"
 #include "brave/components/brave_sync/crypto/crypto.h"
+#include "brave/components/brave_sync/profile_sync_service_helper.h"
 #include "brave/components/sync/driver/brave_sync_profile_sync_service.h"
 
 #include "chrome/browser/profiles/profile.h"
@@ -198,9 +199,9 @@ void BraveSyncWorker::ResetSync(
 
   auto* device_info_sync_service =
       DeviceInfoSyncServiceFactory::GetForProfile(profile_);
-  sync_service->ResetSync(device_info_sync_service,
-                          base::BindOnce(&BraveSyncWorker::OnResetDone,
-                                         weak_ptr_factory_.GetWeakPtr()));
+  brave_sync::ResetSync(sync_service, device_info_sync_service,
+                        base::BindOnce(&BraveSyncWorker::OnResetDone,
+                                       weak_ptr_factory_.GetWeakPtr()));
 }
 
 bool BraveSyncWorker::GetSyncV1WasEnabled(

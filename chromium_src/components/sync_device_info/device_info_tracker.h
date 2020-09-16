@@ -6,9 +6,9 @@
 #ifndef BRAVE_CHROMIUM_SRC_COMPONENTS_SYNC_DEVICE_INFO_DEVICE_INFO_TRACKER_H_
 #define BRAVE_CHROMIUM_SRC_COMPONENTS_SYNC_DEVICE_INFO_DEVICE_INFO_TRACKER_H_
 
-#define ForcePulseForTest                                 \
-  DeleteDeviceInfo(const syncer::DeviceInfo* device_info, \
-                   base::OnceClosure callback) {}         \
+#define ForcePulseForTest                                                      \
+  DeleteDeviceInfo(const std::string& client_id, base::OnceClosure callback) { \
+  }                                                                            \
   virtual void ForcePulseForTest
 
 #include "../../../../components/sync_device_info/device_info_tracker.h"

@@ -13,6 +13,7 @@
 #include "base/strings/string_number_conversions.h"
 #include "brave/components/brave_sync/brave_sync_prefs.h"
 #include "brave/components/brave_sync/crypto/crypto.h"
+#include "brave/components/brave_sync/profile_sync_service_helper.h"
 #include "brave/components/sync/driver/brave_sync_profile_sync_service.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/sync/device_info_sync_service_factory.h"
@@ -176,10 +177,10 @@ void BraveSyncHandler::HandleReset(const base::ListValue* args) {
   base::Value callback_id_arg(callback_id->Clone());
   auto* device_info_sync_service =
       DeviceInfoSyncServiceFactory::GetForProfile(profile_);
-  sync_service->ResetSync(device_info_sync_service,
-                          base::BindOnce(&BraveSyncHandler::OnResetDone,
-                                         weak_ptr_factory_.GetWeakPtr(),
-                                         std::move(callback_id_arg)));
+  brave_sync::ResetSync(sync_service, device_info_sync_service,
+                        base::BindOnce(&BraveSyncHandler::OnResetDone,
+                                       weak_ptr_factory_.GetWeakPtr(),
+                                       std::move(callback_id_arg)));
 }
 
 syncer::BraveProfileSyncService* BraveSyncHandler::GetSyncService() const {
