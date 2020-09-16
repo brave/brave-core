@@ -683,9 +683,8 @@ bool LedgerImpl::GetInlineTippingPlatformEnabled(
 }
 
 std::string LedgerImpl::GetShareURL(
-    const std::string& type,
     const std::map<std::string, std::string>& args) {
-  return media()->GetShareURL(type, args);
+  return publisher()->GetShareURL(args);
 }
 
 void LedgerImpl::GetPendingContributions(

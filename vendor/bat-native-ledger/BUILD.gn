@@ -284,8 +284,6 @@ source_set("ledger") {
     "src/bat/ledger/internal/legacy/media/reddit.cc",
     "src/bat/ledger/internal/legacy/media/twitch.h",
     "src/bat/ledger/internal/legacy/media/twitch.cc",
-    "src/bat/ledger/internal/legacy/media/twitter.h",
-    "src/bat/ledger/internal/legacy/media/twitter.cc",
     "src/bat/ledger/internal/legacy/media/vimeo.h",
     "src/bat/ledger/internal/legacy/media/vimeo.cc",
     "src/bat/ledger/internal/legacy/media/youtube.h",

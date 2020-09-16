@@ -36,8 +36,8 @@ class TipMediaUser extends React.Component<Props, {}> {
 
     if (mediaMetaData.mediaType === 'twitter') {
       this.actions.onTweet(
-        `@${mediaMetaData.screenName}`,
-        mediaMetaData.tweetId)
+        `@${mediaMetaData.publisherName}`,
+        mediaMetaData.postId)
     } else if (mediaMetaData.mediaType === 'reddit') {
       let name = this.props.publisher.name
       this.actions.onTweet(name, '')
@@ -64,11 +64,11 @@ class TipMediaUser extends React.Component<Props, {}> {
 
     if (mediaMetaData.mediaType === 'twitter') {
       const key =
-        mediaMetaData.tweetText &&
-        mediaMetaData.tweetText.length > 0
+        mediaMetaData.postText &&
+        mediaMetaData.postText.length > 0
         ? 'tweetTipTitle'
         : 'tweetTipTitleEmpty'
-      publisher.title = getLocale(key, { user: mediaMetaData.screenName })
+      publisher.title = getLocale(key, { user: mediaMetaData.publisherName })
     } else if (mediaMetaData.mediaType === 'reddit') {
       const key =
         mediaMetaData.postText &&

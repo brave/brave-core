@@ -240,7 +240,7 @@ BraveRewardsSavePublisherInfoFunction::Run() {
 }
 
 void BraveRewardsSavePublisherInfoFunction::OnSavePublisherInfo(
-  const ledger::type::Result result) {
+    const ledger::type::Result result) {
   Respond(OneArgument(std::make_unique<base::Value>(static_cast<int>(result))));
 }
 
@@ -282,43 +282,128 @@ ExtensionFunction::ResponseAction BraveRewardsTipSiteFunction::Run() {
   return RespondNow(NoArguments());
 }
 
-BraveRewardsTipTwitterUserFunction::BraveRewardsTipTwitterUserFunction()
+BraveRewardsTipUserFunction::BraveRewardsTipUserFunction()
     : weak_factory_(this) {
 }
 
-BraveRewardsTipTwitterUserFunction::~BraveRewardsTipTwitterUserFunction() {
+BraveRewardsTipUserFunction::~BraveRewardsTipUserFunction() {
 }
 
-ExtensionFunction::ResponseAction
-BraveRewardsTipTwitterUserFunction::Run() {
-  std::unique_ptr<brave_rewards::TipTwitterUser::Params> params(
-      brave_rewards::TipTwitterUser::Params::Create(*args_));
+ExtensionFunction::ResponseAction BraveRewardsTipUserFunction::Run() {
+  std::unique_ptr<brave_rewards::TipUser::Params> params(
+      brave_rewards::TipUser::Params::Create(*args_));
   EXTENSION_FUNCTION_VALIDATE(params.get());
 
   // Sanity check: don't allow tips in private / tor contexts,
   // although the command should not have been enabled in the first place.
   if (!brave::IsRegularProfile(browser_context())) {
-    return RespondNow(
-        Error("Cannot tip Twitter user in a private context"));
+    return RespondNow(Error("Cannot tip user in a private context"));
   }
 
   Profile* profile = Profile::FromBrowserContext(browser_context());
   auto* rewards_service = RewardsServiceFactory::GetForProfile(profile);
-  if (rewards_service) {
-    AddRef();
-    std::map<std::string, std::string> args;
-    args["user_id"] = params->media_meta_data.user_id;
-    args["twitter_name"] = params->media_meta_data.twitter_name;
-    args["screen_name"] = params->media_meta_data.screen_name;
-    rewards_service->SaveInlineMediaInfo(
-        params->media_meta_data.media_type,
-        args,
-        base::Bind(&BraveRewardsTipTwitterUserFunction::
-                   OnTwitterPublisherInfoSaved,
-                   weak_factory_.GetWeakPtr()));
+  if (!rewards_service) {
+    return RespondNow(Error("Rewards service is not initialized"));
   }
 
+  AddRef();
+
+  rewards_service->GetPublisherInfo(
+      params->publisher_key,
+      base::Bind(
+          &BraveRewardsTipUserFunction::OnTipUserGetPublisherInfo,
+          this));
+
   return RespondNow(NoArguments());
+}
+
+void BraveRewardsTipUserFunction::OnTipUserGetPublisherInfo(
+    const ledger::type::Result result,
+    ledger::type::PublisherInfoPtr info) {
+  if (result != ledger::type::Result::LEDGER_OK &&
+      result != ledger::type::Result::NOT_FOUND) {
+    Release();
+    return;
+  }
+
+  if (result == ledger::type::Result::LEDGER_OK) {
+    ShowTipDialog();
+    Release();
+    return;
+  }
+
+  std::unique_ptr<brave_rewards::TipUser::Params> params(
+      brave_rewards::TipUser::Params::Create(*args_));
+
+  auto publisher_info = ledger::type::PublisherInfo::New();
+  publisher_info->id = params->publisher_key;
+  publisher_info->name = params->publisher_name;
+  publisher_info->url = params->url;
+  publisher_info->provider = params->media_type;
+  publisher_info->favicon_url = "";
+
+  Profile* profile = Profile::FromBrowserContext(browser_context());
+  auto* rewards_service = RewardsServiceFactory::GetForProfile(profile);
+  if (!rewards_service) {
+    Release();
+    return;
+  }
+
+  rewards_service->SavePublisherInfo(
+      0,
+      std::move(publisher_info),
+      base::Bind(&BraveRewardsTipUserFunction::
+                 OnTipUserSavePublisherInfo,
+                 weak_factory_.GetWeakPtr()));
+}
+
+void BraveRewardsTipUserFunction::OnTipUserSavePublisherInfo(
+    const ledger::type::Result result) {
+  if (result != ledger::type::Result::LEDGER_OK) {
+    Release();
+    return;
+  }
+
+  ShowTipDialog();
+  Release();
+}
+
+void BraveRewardsTipUserFunction::ShowTipDialog() {
+  std::unique_ptr<brave_rewards::TipUser::Params> params(
+      brave_rewards::TipUser::Params::Create(*args_));
+  if (!params) {
+    Release();
+    return;
+  }
+
+  // Get web contents for this tab
+  content::WebContents* contents = nullptr;
+  if (!ExtensionTabUtil::GetTabById(
+        params->tab_id,
+        Profile::FromBrowserContext(browser_context()),
+        false,
+        nullptr,
+        nullptr,
+        &contents,
+        nullptr)) {
+    Release();
+    return;
+  }
+
+  base::Value media_meta_data_dict(base::Value::Type::DICTIONARY);
+  media_meta_data_dict.SetStringKey("mediaType", params->media_type);
+  media_meta_data_dict.SetStringKey("publisherKey", params->publisher_key);
+  media_meta_data_dict.SetStringKey("publisherName", params->publisher_name);
+  media_meta_data_dict.SetStringKey("postId", params->post_id);
+  media_meta_data_dict.SetStringKey("postTimestamp", params->post_timestamp);
+  media_meta_data_dict.SetStringKey("postText", params->post_text);
+
+  auto params_dict = std::make_unique<base::DictionaryValue>();
+  params_dict->SetString("publisherKey", params->publisher_key);
+  params_dict->SetString("url", params->url);
+  params_dict->SetPath("mediaMetaData", std::move(media_meta_data_dict));
+
+  ::brave_rewards::OpenTipDialog(contents, std::move(params_dict));
 }
 
 BraveRewardsTipRedditUserFunction::BraveRewardsTipRedditUserFunction()
@@ -371,14 +456,15 @@ void BraveRewardsTipRedditUserFunction::OnRedditPublisherInfoSaved(
 
   content::WebContents* contents = nullptr;
   if (!ExtensionTabUtil::GetTabById(
-          params->tab_id,
-          Profile::FromBrowserContext(browser_context()),
-          false,
-          nullptr,
-          nullptr,
-          &contents,
-          nullptr)) {
-      return;
+        params->tab_id,
+        Profile::FromBrowserContext(browser_context()),
+        false,
+        nullptr,
+        nullptr,
+        &contents,
+        nullptr)) {
+    Release();
+    return;
   }
 
   std::unique_ptr<base::DictionaryValue> params_dict =
@@ -405,54 +491,6 @@ void BraveRewardsTipRedditUserFunction::OnRedditPublisherInfoSaved(
   Release();
 }
 
-void BraveRewardsTipTwitterUserFunction::OnTwitterPublisherInfoSaved(
-    ledger::type::PublisherInfoPtr publisher) {
-  std::unique_ptr<brave_rewards::TipTwitterUser::Params> params(
-      brave_rewards::TipTwitterUser::Params::Create(*args_));
-
-  if (!publisher) {
-    // TODO(nejczdovc): what should we do in this case?
-    Release();
-    return;
-  }
-
-  // Get web contents for this tab
-  content::WebContents* contents = nullptr;
-  if (!ExtensionTabUtil::GetTabById(
-        params->tab_id,
-        Profile::FromBrowserContext(browser_context()),
-        false,
-        nullptr,
-        nullptr,
-        &contents,
-        nullptr)) {
-    return;
-  }
-
-  auto params_dict = std::make_unique<base::DictionaryValue>();
-  params_dict->SetString("publisherKey", publisher->id);
-  params_dict->SetString("url", publisher->url);
-
-  base::Value media_meta_data_dict(base::Value::Type::DICTIONARY);
-  media_meta_data_dict.SetStringKey("twitter_name", publisher->name);
-  media_meta_data_dict.SetStringKey("mediaType",
-                                  params->media_meta_data.media_type);
-  media_meta_data_dict.SetStringKey("screenName",
-                                  params->media_meta_data.screen_name);
-  media_meta_data_dict.SetStringKey("userId", params->media_meta_data.user_id);
-  media_meta_data_dict.SetStringKey("tweetId",
-                                  params->media_meta_data.tweet_id);
-  media_meta_data_dict.SetDoubleKey("tweetTimestamp",
-                                  params->media_meta_data.tweet_timestamp);
-  media_meta_data_dict.SetStringKey("tweetText",
-                                  params->media_meta_data.tweet_text);
-  params_dict->SetPath("mediaMetaData", std::move(media_meta_data_dict));
-
-  ::brave_rewards::OpenTipDialog(contents, std::move(params_dict));
-
-  Release();
-}
-///////////////////////////////////////////////////
 BraveRewardsTipGitHubUserFunction::BraveRewardsTipGitHubUserFunction()
     : weak_factory_(this) {
 }
@@ -515,6 +553,7 @@ void BraveRewardsTipGitHubUserFunction::OnGitHubPublisherInfoSaved(
         nullptr,
         &contents,
         nullptr)) {
+    Release();
     return;
   }
 
@@ -535,7 +574,6 @@ void BraveRewardsTipGitHubUserFunction::OnGitHubPublisherInfoSaved(
 
   Release();
 }
-//////////////////
 
 BraveRewardsGetPublisherDataFunction::~BraveRewardsGetPublisherDataFunction() {
 }

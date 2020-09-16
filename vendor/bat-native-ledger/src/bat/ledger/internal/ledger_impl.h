@@ -285,7 +285,6 @@ class LedgerImpl : public ledger::Ledger {
       const type::InlineTipsPlatforms platform) override;
 
   std::string GetShareURL(
-      const std::string& type,
       const std::map<std::string, std::string>& args) override;
 
   void GetPendingContributions(

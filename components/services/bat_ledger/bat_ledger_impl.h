@@ -187,7 +187,6 @@ class BatLedgerImpl :
     GetInlineTippingPlatformEnabledCallback callback) override;
 
   void GetShareURL(
-    const std::string& type,
     const base::flat_map<std::string, std::string>& args,
     GetShareURLCallback callback) override;
 

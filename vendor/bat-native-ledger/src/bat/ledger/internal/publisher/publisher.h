@@ -113,6 +113,9 @@ class Publisher {
       type::PublisherInfoPtr publisher_info,
       ledger::ResultCallback callback);
 
+  static std::string GetShareURL(
+      const std::map<std::string, std::string>& args);
+
  private:
   void OnGetPublisherInfoForUpdateMediaDuration(
       type::Result result,

@@ -130,7 +130,7 @@ class Banner extends React.Component<Props, State> {
       return ''
     }
     if (mediaMetaData.mediaType === 'twitter') {
-      return `@${mediaMetaData.screenName}`
+      return `@${mediaMetaData.publisherName}`
     } else if (mediaMetaData.mediaType === 'reddit') {
       return `u/${mediaMetaData.userName}`
     } else if (mediaMetaData.mediaType === 'github') {
@@ -150,16 +150,16 @@ class Banner extends React.Component<Props, State> {
     }
 
     if (mediaMetaData.mediaType !== 'twitter' ||
-        !mediaMetaData.tweetText ||
-        mediaMetaData.tweetText.length === 0) {
+        !mediaMetaData.postText ||
+        mediaMetaData.postText.length === 0) {
       return null
     }
 
     return (
       <MediaBox
         mediaType={'twitter'}
-        mediaText={mediaMetaData.tweetText}
-        mediaTimestamp={mediaMetaData.tweetTimestamp}
+        mediaText={mediaMetaData.postText}
+        mediaTimestamp={Date.parse(mediaMetaData.postTimestamp) / 1000}
       />)
   }
 

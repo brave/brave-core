@@ -121,8 +121,7 @@ interface BatLedger {
 
   GetInlineTippingPlatformEnabled(ledger.mojom.InlineTipsPlatforms platform) => (bool enabled);
 
-  GetShareURL(string type, map<string, string> args) =>
-      (string url);
+  GetShareURL(map<string, string> args) => (string url);
 
   GetPendingContributions() => (array<ledger.mojom.PendingContributionInfo> list);
 

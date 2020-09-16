@@ -565,47 +565,41 @@
         ]
       },
       {
-        "name": "tipTwitterUser",
+        "name": "tipUser",
         "type": "function",
-        "description": "Allow the user to perform a donation to a Twitter user",
+        "description": "Allow the user to tip a user on a particular site",
         "parameters": [
           {
-            "name": "tabID",
-            "type": "integer"
+            "name": "tabId",
+            "type": "number"
           },
           {
-            "name": "mediaMetaData",
-            "type": "object",
-            "properties": {
-              "mediaType": {
-                "type": "string",
-                "description": "description used in UI to identify the media type"
-              },
-              "userId": {
-                "type": "string",
-                "description": "User ID of tweet author"
-              },
-              "twitterName": {
-                "type": "string",
-                "description": "Name of tweet author"
-              },
-              "screenName": {
-                "type": "string",
-                "description": "Twitter handle of tweet author"
-              },
-              "tweetId": {
-                "type": "string",
-                "description": "Unique tweet ID"
-              },
-              "tweetTimestamp": {
-                "type": "number",
-                "description": "Timestamp (in milliseconds) of tweet"
-              },
-              "tweetText": {
-                "type": "string",
-                "description": "Textual contents of tweet"
-              }
-            }
+            "name": "mediaType",
+            "type": "string"
+          },
+          {
+            "name": "url",
+            "type": "string"
+          },
+          {
+            "name": "publisherKey",
+            "type": "string"
+          },
+          {
+            "name": "publisherName",
+            "type": "string"
+          },
+          {
+            "name": "postId",
+            "type": "string"
+          },
+          {
+            "name": "postTimestamp",
+            "type": "string"
+          },
+          {
+            "name": "postText",
+            "type": "string"
           }
         ]
       },

@@ -178,5 +178,28 @@ TEST_F(PublisherTest, synopsisNormalizerInternal) {
   }
 }
 
+TEST_F(PublisherTest, GetShareURL) {
+  std::map<std::string, std::string> args;
+
+  // Ensure that missing args results in no output
+  EXPECT_EQ(Publisher::GetShareURL(args), "");
+
+  // Ensure that intent looks correct when no tweet ID is specified
+  args.insert({"name", "brave"});
+  args.insert({"comment", "I just tipped someone using the Brave browser."});
+  args.insert({"hashtag", "TipWithBrave"});
+  EXPECT_EQ(Publisher::GetShareURL(args),
+            "https://twitter.com/intent/tweet?text=I just tipped someone using "
+            "the Brave browser.%20%23TipWithBrave");
+
+  // Ensure that intent includes quoted tweet when tweet ID is
+  // specified
+  args.insert({"tweet_id", "794221010484502528"});
+  EXPECT_EQ(Publisher::GetShareURL(args),
+            "https://twitter.com/intent/tweet?text=I just tipped someone using "
+            "the Brave browser.%20%23TipWithBrave"
+            "&url=https://twitter.com/brave/status/794221010484502528");
+}
+
 }  // namespace publisher
 }  // namespace ledger

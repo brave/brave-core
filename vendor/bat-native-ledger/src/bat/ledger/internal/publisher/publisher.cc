@@ -11,6 +11,7 @@
 #include <vector>
 
 #include "base/guid.h"
+#include "base/strings/stringprintf.h"
 #include "bat/ledger/global_constants.h"
 #include "bat/ledger/internal/constants.h"
 #include "bat/ledger/internal/ledger_impl.h"
@@ -916,6 +917,43 @@ void Publisher::SavePublisherInfo(
       });
 }
 
+// static
+std::string Publisher::GetShareURL(
+    const std::map<std::string, std::string>& args) {
+  auto comment = args.find("comment");
+  auto name = args.find("name");
+  auto tweet_id = args.find("tweet_id");
+  auto hashtag = args.find("hashtag");
+  if (comment == args.end() || name == args.end() || hashtag == args.end()) {
+    return "";
+  }
+
+  // Append hashtag to comment ("%20%23" = percent-escaped space and
+  // number sign)
+  const std::string comment_with_hashtag =
+      comment->second + "%20%23" + hashtag->second;
+
+  // If a tweet ID was specified, then quote the original tweet along
+  // with the supplied comment; otherwise, just tweet the comment.
+  std::string share_url;
+  if (tweet_id != args.end() && !tweet_id->second.empty()) {
+    const std::string quoted_tweet_url =
+        base::StringPrintf(
+            "https://twitter.com/%s/status/%s",
+            name->second.c_str(),
+            tweet_id->second.c_str());
+    share_url = base::StringPrintf(
+        "https://twitter.com/intent/tweet?text=%s&url=%s",
+        comment_with_hashtag.c_str(),
+        quoted_tweet_url.c_str());
+  } else {
+    share_url = base::StringPrintf(
+        "https://twitter.com/intent/tweet?text=%s",
+        comment_with_hashtag.c_str());
+  }
+
+  return share_url;
+}
 
 }  // namespace publisher
 }  // namespace ledger

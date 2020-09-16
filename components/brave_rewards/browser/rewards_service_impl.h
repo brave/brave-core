@@ -265,7 +265,6 @@ class RewardsServiceImpl : public RewardsService,
       GetInlineTippingPlatformEnabledCallback callback) override;
 
   void GetShareURL(
-      const std::string& type,
       const std::map<std::string, std::string>& args,
       GetShareURLCallback callback) override;
 

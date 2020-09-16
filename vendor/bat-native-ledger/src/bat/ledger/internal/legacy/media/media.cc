@@ -21,7 +21,7 @@ bool HandledByGreaselion(const std::string media_type) {
 #if defined(OS_ANDROID) || defined(OS_IOS)
   return false;
 #else
-  return media_type == "youtube";
+  return media_type == "twitter" || media_type == "youtube";
 #endif
 }
 
@@ -33,7 +33,6 @@ Media::Media(ledger::LedgerImpl* ledger):
   ledger_(ledger),
   media_youtube_(new braveledger_media::YouTube(ledger)),
   media_twitch_(new braveledger_media::Twitch(ledger)),
-  media_twitter_(new braveledger_media::Twitter(ledger)),
   media_reddit_(new braveledger_media::Reddit(ledger)),
   media_vimeo_(new braveledger_media::Vimeo(ledger)),
   media_github_(new braveledger_media::GitHub(ledger)) {
@@ -112,15 +111,13 @@ void Media::GetMediaActivityFromUrl(
   if (HandledByGreaselion(type)) {
     return;
   }
+
   if (type == YOUTUBE_MEDIA_TYPE) {
     media_youtube_->ProcessActivityFromUrl(window_id, *visit_data);
   } else if (type == TWITCH_MEDIA_TYPE) {
     media_twitch_->ProcessActivityFromUrl(window_id,
                                           *visit_data,
                                           publisher_blob);
-  } else if (type == TWITTER_MEDIA_TYPE) {
-    media_twitter_->ProcessActivityFromUrl(window_id,
-                                           *visit_data);
   } else if (type == REDDIT_MEDIA_TYPE) {
     media_reddit_->ProcessActivityFromUrl(window_id, *visit_data);
   } else if (type == VIMEO_MEDIA_TYPE) {
@@ -135,19 +132,16 @@ void Media::GetMediaActivityFromUrl(
 void Media::OnMediaActivityError(ledger::type::VisitDataPtr visit_data,
                                        const std::string& type,
                                        uint64_t window_id) {
-  std::string url;
-  std::string name;
-
   if (HandledByGreaselion(type)) {
     return;
   }
 
+  std::string url;
+  std::string name;
+
   if (type == TWITCH_MEDIA_TYPE) {
     url = TWITCH_TLD;
     name = TWITCH_MEDIA_TYPE;
-  } else if (type == TWITTER_MEDIA_TYPE) {
-    url = TWITTER_TLD;
-    name = TWITTER_MEDIA_TYPE;
   } else if (type == REDDIT_MEDIA_TYPE) {
     url = REDDIT_TLD;
     name = REDDIT_MEDIA_TYPE;
@@ -180,27 +174,13 @@ void Media::OnMediaActivityError(ledger::type::VisitDataPtr visit_data,
 void Media::SaveMediaInfo(const std::string& type,
                                 const std::map<std::string, std::string>& data,
                                 ledger::PublisherInfoCallback callback) {
-  if (type == TWITTER_MEDIA_TYPE) {
-    media_twitter_->SaveMediaInfo(data, callback);
-    return;
-  } else if (type == REDDIT_MEDIA_TYPE) {
+  if (type == REDDIT_MEDIA_TYPE) {
     media_reddit_->SaveMediaInfo(data, callback);
     return;
-  }
-  if (type == GITHUB_MEDIA_TYPE) {
+  } else if (type == GITHUB_MEDIA_TYPE) {
     media_github_->SaveMediaInfo(data, callback);
     return;
   }
 }
 
-// static
-std::string Media::GetShareURL(
-    const std::string& type,
-    const std::map<std::string, std::string>& args) {
-  if (type == TWITTER_MEDIA_TYPE) {
-    return braveledger_media::Twitter::GetShareURL(args);
-  }
-
-  return std::string();
-}
 }  // namespace braveledger_media

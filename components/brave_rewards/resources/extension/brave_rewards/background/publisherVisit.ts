@@ -9,6 +9,12 @@ interface GreaselionError {
   errorMessage: string
 }
 
+interface OnAPIRequest {
+  name: string
+  url: string
+  init: {}
+}
+
 interface MediaDurationMetadata {
   mediaKey: string
   duration: number
@@ -19,6 +25,11 @@ interface RegisterOnCompletedWebRequest {
   urlPatterns: string[]
 }
 
+interface RegisterOnSendHeadersWebRequest {
+  urlPatterns: string[]
+  extra?: string[]
+}
+
 interface SavePublisherVisit {
   url: string
   publisherKey: string
@@ -27,12 +38,38 @@ interface SavePublisherVisit {
   favIconUrl?: string
 }
 
+interface TipUser {
+  url: string
+  publisherKey: string
+  publisherName: string
+  postId: string
+  postTimestamp: string
+  postText: string
+}
+
 interface OnCompletedWebRequestRegistration {
   registered: boolean
 }
 
+interface OnSendHeadersWebRequestRegistration {
+  registered: boolean
+}
+
+interface OnUpdatedTabRegistration {
+  registered: boolean
+}
+
 // Maps webRequest.OnCompleted registrations by tab id
-const onCompletedWebRequestRegistrationsByTabId = new Map<number, OnCompletedWebRequestRegistration>()
+const onCompletedWebRequestRegistrationsByTabId =
+  new Map<number, OnCompletedWebRequestRegistration>()
+
+// Maps webRequest.OnSendHeaders registrations by tab id
+const onSendHeadersWebRequestRegistrationsByTabId =
+  new Map<number, OnSendHeadersWebRequestRegistration>()
+
+// Maps tabs.OnUpdated registrations by tab id
+const onUpdatedTabRegistrationsByTabId =
+  new Map<number, OnUpdatedTabRegistration>()
 
 // Maps Greaselion ports by tab id
 const greaselionPortsByTabId = new Map<number, chrome.runtime.Port>()
@@ -42,6 +79,23 @@ const publisherKeysByMediaKey = new Map<string, string>()
 
 const handleGreaselionError = (tabId: number, mediaType: string, data: GreaselionError) => {
   console.error(`Greaselion error: ${data.errorMessage}`)
+}
+
+const handleOnAPIRequest = (data: OnAPIRequest, onSuccess: (response: any) => void, onFailure: (error: any) => void) => {
+  if (!data || !data.url || !data.init || !onSuccess || !onFailure) {
+    return
+  }
+
+  fetch(data.url, data.init)
+    .then(response => {
+      if (!response.ok) {
+        throw new Error(`API request failed: ${response.statusText} (${response.status})`)
+      }
+
+      return response.json()
+    })
+    .then(responseData => onSuccess(responseData))
+    .catch(error => onFailure(error))
 }
 
 const handleMediaDurationMetadata = (tabId: number, mediaType: string, data: MediaDurationMetadata) => {
@@ -89,6 +143,69 @@ const handleRegisterOnCompletedWebRequest = (tabId: number, mediaType: string, d
     })
 }
 
+const handleRegisterOnSendHeadersWebRequest = (tabId: number, mediaType: string, data: RegisterOnSendHeadersWebRequest) => {
+  // If we already registered a handler for this tab, exit early
+  const handler = onSendHeadersWebRequestRegistrationsByTabId.get(tabId)
+  if (handler && handler.registered) {
+    return
+  }
+
+  // Mark this tab as registered
+  onSendHeadersWebRequestRegistrationsByTabId.set(tabId, { registered: true })
+
+  chrome.webRequest.onSendHeaders.addListener(
+    // Listener
+    function (details) {
+      const port = greaselionPortsByTabId.get(tabId)
+      if (!port) {
+        return
+      }
+      port.postMessage({
+        type: 'OnSendHeadersWebRequest',
+        mediaType,
+        data: {
+          details
+        }
+      })
+    },
+    // Filters
+    {
+      urls: data.urlPatterns
+    },
+    // Extra
+    data.extra
+  )
+}
+
+const handleRegisterOnUpdatedTab = (tabId: number, mediaType: string) => {
+  // If we already registered a handler for this tab, exit early
+  const handler = onUpdatedTabRegistrationsByTabId.get(tabId)
+  if (handler && handler.registered) {
+    return
+  }
+
+  // Mark this tab as registered
+  onUpdatedTabRegistrationsByTabId.set(tabId, { registered: true })
+
+  chrome.tabs.onUpdated.addListener(
+    // Listener
+    function (tabId, changeInfo, tab) {
+      const port = greaselionPortsByTabId.get(tabId)
+      if (!port) {
+        return
+      }
+      port.postMessage({
+        type: 'OnUpdatedTab',
+        mediaType,
+        data: {
+          tabId,
+          changeInfo,
+          tab
+        }
+      })
+    })
+}
+
 const getPublisherPanelInfo = (tabId: number, publisherKey: string) => {
   chrome.braveRewards.getPublisherPanelInfo(
     publisherKey, (result: RewardsExtension.Result, info?: RewardsExtension.Publisher) => {
@@ -116,8 +233,8 @@ const savePublisherInfo = (tabId: number, mediaType: string, url: string, publis
 }
 
 const handleSavePublisherVisit = (tabId: number, mediaType: string, data: SavePublisherVisit) => {
-  if (!data.publisherKey) {
-    console.error('Failed to handle publisher visit: missing publisher key')
+  if (!data.publisherKey || !data.publisherName) {
+    console.error('Invalid parameter')
     return
   }
 
@@ -144,6 +261,18 @@ const handleSavePublisherVisit = (tabId: number, mediaType: string, data: SavePu
         return
       }
     })
+}
+
+const handleTipUser = (tabId: number, mediaType: string, data: TipUser) => {
+  chrome.braveRewards.tipUser(
+    tabId,
+    mediaType,
+    data.url,
+    data.publisherKey,
+    data.publisherName,
+    data.postId,
+    data.postTimestamp,
+    data.postText)
 }
 
 chrome.runtime.onConnectExternal.addListener((port: chrome.runtime.Port) => {
@@ -175,6 +304,32 @@ chrome.runtime.onConnectExternal.addListener((port: chrome.runtime.Port) => {
           handleGreaselionError(tabId, msg.mediaType, data)
           break
         }
+        case 'OnAPIRequest': {
+          const data = msg.data as OnAPIRequest
+          handleOnAPIRequest(
+            data,
+            (response: any) => {
+              port.postMessage({
+                type: 'OnAPIResponse',
+                mediaType: msg.mediaType,
+                data: {
+                  name: data.name,
+                  response
+                }
+              })
+            },
+            (error: any) => {
+              port.postMessage({
+                type: 'OnAPIResponse',
+                mediaType: msg.mediaType,
+                data: {
+                  name: data.name,
+                  error
+                }
+              })
+            })
+          break
+        }
         case 'MediaDurationMetadata': {
           const data = msg.data as MediaDurationMetadata
           handleMediaDurationMetadata(tabId, msg.mediaType, data)
@@ -185,9 +340,23 @@ chrome.runtime.onConnectExternal.addListener((port: chrome.runtime.Port) => {
           handleRegisterOnCompletedWebRequest(tabId, msg.mediaType, data)
           break
         }
+        case 'RegisterOnSendHeadersWebRequest': {
+          const data = msg.data as RegisterOnSendHeadersWebRequest
+          handleRegisterOnSendHeadersWebRequest(tabId, msg.mediaType, data)
+          break
+        }
+        case 'RegisterOnUpdatedTab': {
+          handleRegisterOnUpdatedTab(tabId, msg.mediaType)
+          break
+        }
         case 'SavePublisherVisit': {
           const data = msg.data as SavePublisherVisit
           handleSavePublisherVisit(tabId, msg.mediaType, data)
+          break
+        }
+        case 'TipUser': {
+          const data = msg.data as TipUser
+          handleTipUser(tabId, msg.mediaType, data)
           break
         }
       }

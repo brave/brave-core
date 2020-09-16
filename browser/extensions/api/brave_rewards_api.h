@@ -105,20 +105,24 @@ class BraveRewardsTipSiteFunction : public ExtensionFunction {
   ResponseAction Run() override;
 };
 
-class BraveRewardsTipTwitterUserFunction
-    : public ExtensionFunction {
+class BraveRewardsTipUserFunction : public ExtensionFunction {
  public:
-  BraveRewardsTipTwitterUserFunction();
-  DECLARE_EXTENSION_FUNCTION("braveRewards.tipTwitterUser", UNKNOWN)
+  BraveRewardsTipUserFunction();
+  DECLARE_EXTENSION_FUNCTION("braveRewards.tipUser", UNKNOWN)
 
  protected:
-  ~BraveRewardsTipTwitterUserFunction() override;
+  ~BraveRewardsTipUserFunction() override;
 
   ResponseAction Run() override;
 
  private:
-  base::WeakPtrFactory<BraveRewardsTipTwitterUserFunction> weak_factory_;
-  void OnTwitterPublisherInfoSaved(ledger::type::PublisherInfoPtr publisher);
+  void OnTipUserGetPublisherInfo(
+      const ledger::type::Result result,
+      ledger::type::PublisherInfoPtr info);
+  void OnTipUserSavePublisherInfo(const ledger::type::Result result);
+  void ShowTipDialog();
+
+  base::WeakPtrFactory<BraveRewardsTipUserFunction> weak_factory_;
 };
 
 class BraveRewardsTipGitHubUserFunction : public ExtensionFunction {
