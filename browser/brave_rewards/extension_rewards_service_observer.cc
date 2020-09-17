@@ -28,46 +28,7 @@ ExtensionRewardsServiceObserver::~ExtensionRewardsServiceObserver() {
 void ExtensionRewardsServiceObserver::OnWalletInitialized(
     RewardsService* rewards_service,
     const ledger::type::Result result) {
-  auto* event_router = extensions::EventRouter::Get(profile_);
-
-  if (!event_router) {
-    return;
-  }
-
-  if (result == ledger::type::Result::WALLET_CREATED) {
-    auto args = std::make_unique<base::ListValue>();
-    std::unique_ptr<extensions::Event> event(new extensions::Event(
-        extensions::events::BRAVE_START,
-        extensions::api::brave_rewards::WalletCreated::kEventName,
-        std::move(args)));
-    event_router->BroadcastEvent(std::move(event));
-    return;
-  }
-
-  if (result != ledger::type::Result::NO_LEDGER_STATE &&
-      result != ledger::type::Result::LEDGER_OK) {
-    // Report back all errors except when ledger_state is missing
-    std::unique_ptr<base::ListValue> args(
-        extensions::api::brave_rewards::WalletCreationFailed::Create(
-          static_cast<int>(result)).release());
-
-    std::unique_ptr<extensions::Event> event(new extensions::Event(
-        extensions::events::BRAVE_START,
-        extensions::api::brave_rewards::WalletCreationFailed::kEventName,
-        std::move(args)));
-    event_router->BroadcastEvent(std::move(event));
-    return;
-  }
-
-  std::unique_ptr<base::ListValue> args(
-      extensions::api::brave_rewards::Initialized::Create(
-        static_cast<int>(result)).release());
-
-  std::unique_ptr<extensions::Event> event(new extensions::Event(
-      extensions::events::BRAVE_START,
-      extensions::api::brave_rewards::Initialized::kEventName,
-      std::move(args)));
-  event_router->BroadcastEvent(std::move(event));
+  // TODO remove
 }
 
 void ExtensionRewardsServiceObserver::OnPanelPublisherInfo(
@@ -188,19 +149,7 @@ void ExtensionRewardsServiceObserver::OnAdsEnabled(
 void ExtensionRewardsServiceObserver::OnRewardsMainEnabled(
     RewardsService* rewards_service,
     bool rewards_main_enabled) {
-  auto* event_router = extensions::EventRouter::Get(profile_);
-  if (!event_router) {
-    return;
-  }
-
-  std::unique_ptr<base::ListValue> args(
-      extensions::api::brave_rewards::OnEnabledMain::Create(
-          rewards_main_enabled).release());
-  std::unique_ptr<extensions::Event> event(new extensions::Event(
-      extensions::events::BRAVE_START,
-      extensions::api::brave_rewards::OnEnabledMain::kEventName,
-      std::move(args)));
-  event_router->BroadcastEvent(std::move(event));
+  // TODO remove
 }
 
 void ExtensionRewardsServiceObserver::OnPendingContributionSaved(

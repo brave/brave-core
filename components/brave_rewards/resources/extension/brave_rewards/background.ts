@@ -77,14 +77,7 @@ chrome.runtime.onMessage.addListener((msg, sender, sendResponse) => {
       }
       return false
     }
-    case 'rewardsEnabled': {
-      // Check if rewards is enabled
-      chrome.braveRewards.getRewardsMainEnabled(function (enabled: boolean) {
-        sendResponse({ enabled })
-      })
-      // Must return true for asynchronous calls to sendResponse
-      return true
-    }
+
     case 'inlineTippingPlatformEnabled': {
       // Check if inline tip is enabled
       chrome.braveRewards.getInlineTippingPlatformEnabled(msg.key, function (enabled: boolean) {

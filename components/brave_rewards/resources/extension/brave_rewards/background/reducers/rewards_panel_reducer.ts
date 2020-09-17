@@ -3,7 +3,6 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 import { types } from '../../constants/rewards_panel_types'
-import * as storage from '../storage'
 import { Reducer } from 'redux'
 import { setBadgeText } from '../browserAction'
 import { isPublisherConnectedOrVerified } from '../../utils'
@@ -56,62 +55,6 @@ export const rewardsPanelReducer: Reducer<RewardsExtension.State | undefined> = 
   }
   const payload = action.payload
   switch (action.type) {
-    case types.TOGGLE_ENABLE_MAIN: {
-      if (state.initializing && state.enabledMain) {
-        break
-      }
-
-      state = { ...state }
-      const key = 'enabledMain'
-      const enable = action.payload.enable
-      state.initializing = true
-
-      state[key] = enable
-      chrome.braveRewards.saveSetting(key, enable ? '1' : '0')
-      break
-    }
-    case types.CREATE_WALLET:
-      chrome.braveRewards.createWallet()
-      state = { ...state }
-      state.walletCreating = true
-      state.walletCreateFailed = false
-      state.walletCreated = false
-      state.walletCorrupted = false
-      state.initializing = true
-      break
-    case types.WALLET_CREATED: {
-      state = { ...state }
-      state.initializing = false
-      state.walletCreated = true
-      state.walletCreateFailed = false
-      state.walletCreating = false
-      state.walletCorrupted = false
-      state.enabledMain = true
-      chrome.braveRewards.saveAdsSetting('adsEnabled', 'true')
-      chrome.storage.local.get(['is_dismissed'], function (result) {
-        if (result && result['is_dismissed'] === 'false') {
-          chrome.browserAction.setBadgeText({
-            text: ''
-          })
-          chrome.storage.local.remove(['is_dismissed'])
-        }
-      })
-      break
-    }
-    case types.WALLET_CREATION_FAILED: {
-      state = { ...state }
-      const result: RewardsExtension.Result = payload.result
-      state.initializing = false
-      if (result === RewardsExtension.Result.WALLET_CORRUPT) {
-        state.walletCorrupted = true
-      } else {
-        state.walletCreateFailed = true
-        state.walletCreating = false
-        state.walletCreated = false
-        state.walletCorrupted = false
-      }
-      break
-    }
     case types.ON_TAB_RETRIEVED: {
       const tab: chrome.tabs.Tab = payload.tab
       if (
@@ -119,9 +62,7 @@ export const rewardsPanelReducer: Reducer<RewardsExtension.State | undefined> = 
         !tab.id ||
         !tab.url ||
         tab.incognito ||
-        !tab.active ||
-        !state.walletCreated ||
-        !state.enabledMain
+        !tab.active
       ) {
         break
       }
@@ -286,23 +227,6 @@ export const rewardsPanelReducer: Reducer<RewardsExtension.State | undefined> = 
     case types.ON_PENDING_CONTRIBUTIONS_TOTAL: {
       state = { ...state }
       state.pendingContributionTotal = payload.amount
-      break
-    }
-    case types.ON_ENABLED_MAIN: {
-      state = { ...state }
-      const enabled = payload.enabledMain
-      if (enabled == null) {
-        break
-      }
-
-      if (state.enabledMain && !enabled) {
-        state = storage.defaultState
-        state.enabledMain = false
-        state.walletCreated = true
-        break
-      }
-
-      state.enabledMain = enabled
       break
     }
     case types.ON_ENABLED_AC: {
@@ -522,12 +446,6 @@ export const rewardsPanelReducer: Reducer<RewardsExtension.State | undefined> = 
       state.walletCreating = false
       state.walletCreated = false
       state.walletCreateFailed = false
-
-      if (payload.result === RewardsExtension.Result.WALLET_CORRUPT) {
-        state.walletCorrupted = true
-      } else if (payload.result === RewardsExtension.Result.WALLET_CREATED) {
-        state.walletCreated = true
-      }
       break
     }
     case types.ON_REWARDS_PARAMETERS: {
@@ -556,13 +474,6 @@ export const rewardsPanelReducer: Reducer<RewardsExtension.State | undefined> = 
       state = {
         ...state,
         initializing: false
-      }
-      break
-    }
-    case types.WALLET_EXISTS: {
-      state = {
-        ...state,
-        walletCreated: payload.exists
       }
       break
     }

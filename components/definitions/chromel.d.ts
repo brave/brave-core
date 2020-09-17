@@ -63,7 +63,6 @@ declare namespace chrome.settingsPrivate {
 }
 
 declare namespace chrome.braveRewards {
-  const createWallet: () => {}
   const getRewardsParameters: (callback: (properties: RewardsExtension.RewardsParameters) => void) => {}
   const updateMediaDuration: (tabId: number, publisherKey: string, duration: number, firstVisit: boolean) => {}
   const getPublisherInfo: (publisherKey: string, callback: (result: RewardsExtension.Result, properties: RewardsExtension.PublisherInfo) => void) => {}
@@ -74,12 +73,6 @@ declare namespace chrome.braveRewards {
   const tipRedditUser: (tabId: number, mediaMetaData: RewardsTip.MediaMetaData) => {}
   const getPublisherData: (windowId: number, url: string, faviconUrl: string, publisherBlob: string | undefined) => {}
   const getBalanceReport: (month: number, year: number, callback: (properties: RewardsExtension.BalanceReport) => void) => {}
-  const walletCreated: {
-    addListener: (callback: () => void) => void
-  }
-  const walletCreationFailed: {
-    addListener: (callback: (result: RewardsExtension.Result) => void) => void
-  }
   const onPublisherData: {
     addListener: (callback: (windowId: number, publisher: RewardsExtension.Publisher) => void) => void
   }
@@ -94,12 +87,8 @@ declare namespace chrome.braveRewards {
   const claimPromotion: (promotionId: string, callback: (properties: RewardsExtension.Captcha) => void) => {}
   const attestPromotion: (promotionId: string, solution: string, callback: (result: number, promotion?: RewardsExtension.Promotion) => void) => {}
   const getPendingContributionsTotal: (callback: (amount: number) => void) => {}
-  const getNonVerifiedSettings: (callback: (nonVerified: boolean) => void) => {}
   const onAdsEnabled: {
     addListener: (callback: (enabled: boolean) => void) => void
-  }
-  const onEnabledMain: {
-    addListener: (callback: (enabledMain: boolean) => void) => void
   }
   const getAdsEnabled: (callback: (enabled: boolean) => void) => {}
   const getAdsSupported: (callback: (supported: boolean) => void) => {}
