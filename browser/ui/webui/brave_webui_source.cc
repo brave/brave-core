@@ -210,6 +210,12 @@ void CustomizeWebUIHTMLSource(const std::string &name,
         { "boxTorText2", IDS_BRAVE_PRIVATE_NEW_TAB_BOX_TOR_TEXT_2 },
         { "boxTorButton", IDS_BRAVE_PRIVATE_NEW_TAB_BOX_TOR_BUTTON },
 
+        // Private Tab - Private Window - Tor Status
+        { "torStatus", IDS_BRAVE_PRIVATE_NEW_TAB_TOR_STATUS },
+        { "torStatusConnected", IDS_BRAVE_PRIVATE_NEW_TAB_TOR_STATUS_CONNECTED },         // NOLINT
+        { "torStatusDisconnected", IDS_BRAVE_PRIVATE_NEW_TAB_TOR_STATUS_DISCONNECTED },   // NOLINT
+        { "torStatusInitializing", IDS_BRAVE_PRIVATE_NEW_TAB_TOR_STATUS_INITIALIZING },   // NOLINT
+
         // Rewards widget
         { "rewardsWidgetBap", IDS_BRAVE_UI_BAP_REWARDS_TEXT },
         { "rewardsWidgetBat", IDS_BRAVE_UI_BAT_REWARDS_TEXT },
