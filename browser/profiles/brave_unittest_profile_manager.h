@@ -3,18 +3,18 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#ifndef BRAVE_BROWSER_PROFILES_TOR_UNITTEST_PROFILE_MANAGER_H_
-#define BRAVE_BROWSER_PROFILES_TOR_UNITTEST_PROFILE_MANAGER_H_
+#ifndef BRAVE_BROWSER_PROFILES_BRAVE_UNITTEST_PROFILE_MANAGER_H_
+#define BRAVE_BROWSER_PROFILES_BRAVE_UNITTEST_PROFILE_MANAGER_H_
 
 #include <memory>
 
 #include "brave/browser/profiles/brave_profile_manager.h"
 
-class TorUnittestProfileManager : public BraveProfileManagerWithoutInit {
+class BraveUnittestProfileManager : public BraveProfileManagerWithoutInit {
  public:
-  explicit TorUnittestProfileManager(const base::FilePath& user_data_dir)
+  explicit BraveUnittestProfileManager(const base::FilePath& user_data_dir)
       : BraveProfileManagerWithoutInit(user_data_dir) {}
-  ~TorUnittestProfileManager() override = default;
+  ~BraveUnittestProfileManager() override = default;
 
  protected:
   std::unique_ptr<Profile> CreateProfileHelper(
@@ -31,4 +31,4 @@ class TorUnittestProfileManager : public BraveProfileManagerWithoutInit {
                                          Delegate* delegate);
 };
 
-#endif  // BRAVE_BROWSER_PROFILES_TOR_UNITTEST_PROFILE_MANAGER_H_
+#endif  // BRAVE_BROWSER_PROFILES_BRAVE_UNITTEST_PROFILE_MANAGER_H_
