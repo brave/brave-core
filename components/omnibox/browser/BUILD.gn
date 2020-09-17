@@ -2,31 +2,16 @@ source_set("browser") {
   # Only //components/omnibox/browser target can depend on this target
   # because this target expands //components/omnibox/browser implementation.
   visibility = [ "//components/omnibox/browser" ]
-  # Remove when https://github.com/brave/brave-browser/issues/10624 is resolved
-  check_includes = false
-
   sources = [
-    "brave_omnibox_client.cc",
-    "brave_omnibox_client.h",
     "constants.cc",
     "constants.h",
     "suggested_sites_match.cc",
     "suggested_sites_match.h",
-    "suggested_sites_provider.cc",
-    "suggested_sites_provider.h",
-    "suggested_sites_provider_data.cc",
-    "topsites_provider_data.cc",
-    "topsites_provider.cc",
-    "topsites_provider.h",
   ]
 
   deps = [
      "//base",
      "//components/omnibox/browser:buildflags",
-     "//components/security_state/core",
-     "//skia",
-     "//third_party/icu",
-     "//third_party/metrics_proto",
      "//url",
   ]
 

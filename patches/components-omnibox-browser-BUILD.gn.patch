@@ -1,12 +1,12 @@
 diff --git a/components/omnibox/browser/BUILD.gn b/components/omnibox/browser/BUILD.gn
-index ce702e7dec262a0ff797235efcd5f6f3e5df3531..328ac3af1ff2f74a1e950fe5010478450def3a29 100644
+index ce702e7dec262a0ff797235efcd5f6f3e5df3531..7281b5cf527c5414d28f5dd9901f2e0ab00186e6 100644
 --- a/components/omnibox/browser/BUILD.gn
 +++ b/components/omnibox/browser/BUILD.gn
 @@ -250,6 +250,7 @@ static_library("browser") {
      "//ui/base",
      "//ui/gfx",
    ]
-+  if (brave_chromium_build) {  deps += [ "//brave/components/omnibox/browser" ] }
++  if (brave_chromium_build) {  deps += [ "//brave/components/omnibox/browser" ] sources += brave_components_omnibox_browser_sources deps += brave_components_omnibox_browser_deps }
  
    if ((!is_android || enable_vr) && !is_ios) {
      deps += [ ":vector_icons" ]

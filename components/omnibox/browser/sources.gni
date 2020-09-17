@@ -1,0 +1,19 @@
+# Copyright (c) 2020 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at http://mozilla.org/MPL/2.0/.
+
+brave_components_omnibox_browser_sources = [
+  "//brave/components/omnibox/browser/brave_omnibox_client.cc",
+  "//brave/components/omnibox/browser/brave_omnibox_client.h",
+  "//brave/components/omnibox/browser/suggested_sites_provider.cc",
+  "//brave/components/omnibox/browser/suggested_sites_provider.h",
+  "//brave/components/omnibox/browser/suggested_sites_provider_data.cc",
+  "//brave/components/omnibox/browser/topsites_provider.cc",
+  "//brave/components/omnibox/browser/topsites_provider.h",
+  "//brave/components/omnibox/browser/topsites_provider_data.cc",
+]
+
+brave_components_omnibox_browser_deps = [
+  "//brave/common:pref_names",
+]
