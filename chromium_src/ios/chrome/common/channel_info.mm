@@ -18,13 +18,27 @@
 #endif
 
 std::string GetVersionString() {
-  return std::string();
+  NSDictionary *info_dictionary = [[NSBundle mainBundle] infoDictionary];
+  NSString *version = [info_dictionary objectForKey:@"CFBundleShortVersionString"];
+  NSString *build = [info_dictionary objectForKey:@"CFBundleVersion"];
+    
+  NSString *display_string = [NSString stringWithFormat:@"Version %@ (%@)", version, build];
+  return std::string([display_string UTF8String],
+                     [display_string lengthOfBytesUsingEncoding:NSUTF8StringEncoding]);
 }
 
 std::string GetChannelString() {
-  return std::string();
+  #if defined(OFFICIAL_BUILD)
+  return "version_info::Channel::STABLE";
+  #else
+  return "version_info::Channel::DEV";
+  #endif
 }
 
 version_info::Channel GetChannel() {
-  return version_info::Channel::UNKNOWN;
+  #if defined(OFFICIAL_BUILD)
+  return version_info::Channel::STABLE;
+  #else
+  return version_info::Channel::DEV;
+  #endif
 }

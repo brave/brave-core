@@ -9,21 +9,41 @@
 #import <Foundation/Foundation.h>
 #import <UIKit/UIKit.h>
 
-OBJC_EXPORT @interface BraveSyncAPI : NSObject
-- (instancetype)init;
+NS_ASSUME_NONNULL_BEGIN
+
+OBJC_EXPORT
+@interface BraveSyncDeviceObserver: NSObject
+- (instancetype)initWithCallback:(void(^)())onDeviceInfoChanged;
+@end
+
+OBJC_EXPORT
+@interface BraveSyncServiceObserver: NSObject
+- (instancetype)initWithCallback:(void(^)())onSyncServiceStateChanged;
+@end
+
+OBJC_EXPORT
+@interface BraveSyncAPI : NSObject
+
+@property(class, readonly, strong) BraveSyncAPI *sharedSyncAPI NS_SWIFT_NAME(shared);
 
 - (bool)setSyncEnabled:(bool)enabled;
 
+- (bool)removeDevice:(NSString *)deviceGuid;
+
 - (bool)resetSync;
 
-- (NSString *)getOrCreateSyncCode;
+- (bool)isValidSyncCode:(NSString *)syncCode;
+
+- (NSString *)getSyncCode;
 
 // returns false is sync is already configured or if the sync code is invalid
 - (bool)setSyncCode:(NSString *)syncCode;
 
-- (UIImage *)getQRCodeImage:(CGSize)size;
+- (NSString *)syncCodeFromHexSeed:(NSString *)hexSeed;
 
-- (NSString *)getDeviceListJSON;
+- (nullable UIImage *)getQRCodeImage:(CGSize)size;
+
+- (nullable NSString *)getDeviceListJSON;
 
 // has the user enabled sync
 - (bool)isSyncEnabled;
@@ -31,5 +51,7 @@ OBJC_EXPORT @interface BraveSyncAPI : NSObject
 // is sync configured and running
 - (bool)isSyncFeatureActive;
 @end
+
+NS_ASSUME_NONNULL_END
 
 #endif  // BRAVE_IOS_BROWSER_API_SYNC_BRAVE_SYNC_API_H_
