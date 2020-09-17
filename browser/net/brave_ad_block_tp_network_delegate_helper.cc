@@ -7,6 +7,8 @@
 
 #include <memory>
 #include <string>
+#include <utility>
+#include <vector>
 
 #include "base/base64url.h"
 #include "base/strings/string_util.h"
@@ -28,10 +30,12 @@
 #include "mojo/public/cpp/bindings/remote.h"
 #include "services/network/network_context.h"
 #include "ui/base/resource/resource_bundle.h"
+#include "url/url_canon.h"
 
 namespace brave {
 
-void ShouldBlockAdOnTaskRunner(std::shared_ptr<BraveRequestInfo> ctx) {
+void ShouldBlockAdOnTaskRunner(std::shared_ptr<BraveRequestInfo> ctx,
+                               base::Optional<std::string> canonical_name) {
   bool did_match_exception = false;
   std::string tab_host = ctx->tab_origin.host();
   if (!g_brave_browser_process->ad_block_service()->ShouldStartRequest(
@@ -52,6 +56,32 @@ void ShouldBlockAdOnTaskRunner(std::shared_ptr<BraveRequestInfo> ctx) {
                                        &ctx->cancel_request_explicitly,
                                        &ctx->mock_data_url)) {
     ctx->blocked_by = kAdBlocked;
+  } else if (canonical_name && ctx->request_url.host() != *canonical_name) {
+    GURL::Replacements replacements = GURL::Replacements();
+    replacements.SetHost(canonical_name->c_str(),
+        url::Component(0, static_cast<int>(canonical_name->length())));
+    const GURL canonical_url = ctx->request_url.ReplaceComponents(replacements);
+
+    if (!did_match_exception &&
+        !g_brave_browser_process->ad_block_service()->ShouldStartRequest(
+            canonical_url, ctx->resource_type, tab_host, &did_match_exception,
+            &ctx->cancel_request_explicitly, &ctx->mock_data_url)) {
+      ctx->blocked_by = kAdBlocked;
+    } else if (!did_match_exception &&
+               !g_brave_browser_process->ad_block_regional_service_manager()
+                    ->ShouldStartRequest(canonical_url, ctx->resource_type,
+                                         tab_host, &did_match_exception,
+                                         &ctx->cancel_request_explicitly,
+                                         &ctx->mock_data_url)) {
+      ctx->blocked_by = kAdBlocked;
+    } else if (!did_match_exception &&
+               !g_brave_browser_process->ad_block_custom_filters_service()
+                    ->ShouldStartRequest(canonical_url, ctx->resource_type,
+                                         tab_host, &did_match_exception,
+                                         &ctx->cancel_request_explicitly,
+                                         &ctx->mock_data_url)) {
+      ctx->blocked_by = kAdBlocked;
+    }
   }
 }
 
@@ -67,20 +97,20 @@ void OnShouldBlockAdResult(const ResponseCallback& next_callback,
 }
 
 void OnGetCnameResult(const ResponseCallback& next_callback,
-                      std::shared_ptr<BraveRequestInfo> ctx) {
+                      std::shared_ptr<BraveRequestInfo> ctx,
+                      const base::Optional<std::string> cname) {
   DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
   scoped_refptr<base::SequencedTaskRunner> task_runner =
       g_brave_browser_process->ad_block_service()->GetTaskRunner();
-  // TODO - causes DCHECK failures in ref_counted.h
   task_runner->PostTaskAndReply(
-      FROM_HERE, base::BindOnce(&ShouldBlockAdOnTaskRunner, ctx),
+      FROM_HERE, base::BindOnce(&ShouldBlockAdOnTaskRunner, ctx, cname),
       base::BindOnce(&OnShouldBlockAdResult, next_callback, ctx));
 }
 
 class AdblockCnameResolveHostClient : public network::mojom::ResolveHostClient {
  private:
   mojo::Receiver<network::mojom::ResolveHostClient> receiver_{this};
-  base::OnceCallback<void()> cb_;
+  base::OnceCallback<void(base::Optional<std::string>)> cb_;
 
  public:
   AdblockCnameResolveHostClient(
@@ -120,12 +150,10 @@ class AdblockCnameResolveHostClient : public network::mojom::ResolveHostClient {
       const base::Optional<net::AddressList>& resolved_addresses) override {
     if (result == net::OK && resolved_addresses) {
       DCHECK(resolved_addresses.has_value() && !resolved_addresses->empty());
-      // TODO - add the canonical name to ctx
-      LOG(ERROR) << resolved_addresses->canonical_name();
-      std::move(cb_).Run();
+      std::move(cb_).Run(
+          base::Optional<std::string>(resolved_addresses->canonical_name()));
     } else {
-      // TODO - this brings up a lot of `-2` (generic failure)
-      LOG(ERROR) << "Could not resolve: " << resolve_error_info.error;
+      std::move(cb_).Run(base::Optional<std::string>());
     }
 
     delete this;
@@ -161,7 +189,8 @@ void OnBeforeURLRequestAdBlockTP(const ResponseCallback& next_callback,
     g_brave_browser_process->ad_block_service()
         ->GetTaskRunner()
         ->PostTaskAndReply(
-            FROM_HERE, base::BindOnce(&ShouldBlockAdOnTaskRunner, ctx),
+            FROM_HERE, base::BindOnce(&ShouldBlockAdOnTaskRunner,
+                ctx, base::Optional<std::string>()),
             base::BindOnce(&OnShouldBlockAdResult, next_callback, ctx));
   } else {
      new AdblockCnameResolveHostClient(next_callback, ctx);
