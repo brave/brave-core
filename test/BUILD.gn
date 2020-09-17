@@ -204,6 +204,8 @@ test("brave_unit_tests") {
 
       # TODO(samartnik): this should work on Android, we will review it once unit tests are set up on CI
       "//brave/browser/autoplay/autoplay_permission_context_unittest.cc",
+      "//brave/browser/profiles/brave_unittest_profile_manager.cc",
+      "//brave/browser/profiles/brave_unittest_profile_manager.h",
       "//brave/components/brave_shields/browser/brave_shields_util_unittest.cc",
       "//brave/components/omnibox/browser/fake_autocomplete_provider_client.cc",
       "//brave/components/omnibox/browser/fake_autocomplete_provider_client.h",
@@ -364,8 +366,6 @@ test("brave_unit_tests") {
     sources += [
       # TODO(darkdh): move these out and use buildflag guard once it contains non tor specifics
       "//brave/browser/profiles/brave_profile_manager_unittest.cc",
-      "//brave/browser/profiles/tor_unittest_profile_manager.cc",
-      "//brave/browser/profiles/tor_unittest_profile_manager.h",
       "//brave/browser/tor/tor_navigation_throttle_unittest.cc",
       "//brave/common/tor/tor_test_constants.cc",
       "//brave/common/tor/tor_test_constants.h",
