@@ -212,20 +212,12 @@ void CustomizeWebUIHTMLSource(const std::string &name,
         { "rewardsWidgetBraveRewards", IDS_BRAVE_UI_BRAVE_REWARDS },
         { "rewardsWidgetTurnOnAds", IDS_BRAVE_UI_TURN_ON_ADS },
         { "rewardsWidgetClaimMyRewards", IDS_REWARDS_WIDGET_CLAIM_MY_REWARDS },
-        { "rewardsWidgetWalletFailedButton", IDS_BRAVE_UI_WALLET_FAILED_BUTTON },         // NOLINT
         { "rewardsWidgetAboutRewards", IDS_REWARDS_WIDGET_ABOUT_REWARDS },
         { "rewardsWidgetServiceText", IDS_REWARDS_WIDGET_SERVICE_TEXT },
         { "rewardsWidgetEstimatedEarnings", IDS_REWARDS_WIDGET_ESTIMATED_EARNINGS },      // NOLINT
         { "rewardsWidgetAdsOptInDescription", IDS_REWARDS_WIDGET_ADS_OPT_IN_DESCRIPTION },      // NOLINT
         { "rewardsWidgetMonthlyTips", IDS_REWARDS_WIDGET_MONTHLY_TIPS },
-        { "rewardsWidgetTurningOn", IDS_REWARDS_WIDGET_TURNING_ON },
-        { "rewardsWidgetTurnOnRewards", IDS_REWARDS_WIDGET_TURN_ON_REWARDS },             // NOLINT
-        { "rewardsWidgetReEnableTitle", IDS_REWARDS_WIDGET_REENABLE_TITLE },              // NOLINT
-        { "rewardsWidgetTurnOnLearnMore", IDS_REWARDS_WIDGET_TURN_ON_LEARN_MORE },        // NOLINT
-        { "rewardsWidgetEnableTitle", IDS_REWARDS_WIDGET_ENABLE_TITLE },
         { "rewardsWidgetEnableBrandedWallpaperTitle", IDS_REWARDS_WIDGET_ENABLE_BRANDED_WALLPAPER_TITLE },  // NOLINT
-        { "rewardsWidgetReEnableSubTitle", IDS_REWARDS_WIDGET_REENABLE_SUBTITLE },        // NOLINT
-        { "rewardsWidgetEnableSubTitle", IDS_REWARDS_WIDGET_ENABLE_SUBTITLE },            // NOLINT
         { "rewardsWidgetEnableBrandedWallpaperSubTitle", IDS_REWARDS_WIDGET_ENABLE_BRANDED_WALLPAPER_SUBTITLE },            // NOLINT
         { "rewardsWidgetAdsNotSupported", IDS_BRAVE_REWARDS_LOCAL_ADS_NOT_SUPPORTED_REGION },    // NOLINT
         { "rewardsWidgetNotificationTitle", IDS_REWARDS_WIDGET_NOTIFICATION_TITLE },      // NOLINT
@@ -756,8 +748,6 @@ void CustomizeWebUIHTMLSource(const std::string &name,
         { "walletConnected", IDS_BRAVE_UI_WALLET_CONNECTED },
         { "walletPending", IDS_BRAVE_UI_WALLET_PENDING },
         { "walletVerified", IDS_BRAVE_UI_WALLET_VERIFIED },
-
-        { "walletFailedButton", IDS_BRAVE_UI_WALLET_FAILED_BUTTON },
         { "walletFailedTitle", IDS_BRAVE_UI_WALLET_FAILED_TITLE },
         { "walletFailedText", IDS_BRAVE_UI_WALLET_FAILED_TEXT },
         { "welcome", IDS_BRAVE_UI_WELCOME },

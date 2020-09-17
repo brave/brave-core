@@ -441,15 +441,6 @@ export const rewardsPanelReducer: Reducer<RewardsExtension.State | undefined> = 
       state.externalWallet = payload.wallet
       break
     }
-    case types.ON_ANON_WALLET_STATUS: {
-      state = { ...state }
-
-      state.walletCorrupted = false
-      state.walletCreating = false
-      state.walletCreated = false
-      state.walletCreateFailed = false
-      break
-    }
     case types.ON_REWARDS_PARAMETERS: {
       state = {
         ...state,

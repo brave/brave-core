@@ -53,14 +53,9 @@ export const defaultState: NewTab.State = {
     dismissedNotifications: [],
     enabledAds: false,
     adsSupported: false,
-    enabledMain: false,
     promotions: [],
     onlyAnonWallet: false,
     totalContribution: 0.0,
-    walletCreated: false,
-    walletCreating: false,
-    walletCreateFailed: false,
-    walletCorrupted: false,
     parameters: {
       rate: 0,
       monthlyTipChoices: []

@@ -52,7 +52,6 @@ export default class BrandedWallpaperRewardsNotification extends React.PureCompo
 
   renderPreAdsOptInContent () {
     const text = getLocale('rewardsWidgetEnableBrandedWallpaperSubTitle')
-      .replace('$3', 'Brave Ads')
     const { beforeTag, duringTag, afterTag } = splitStringForTag(text, '$1', '$2')
     return (
       <>

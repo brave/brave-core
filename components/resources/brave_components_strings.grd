@@ -740,7 +740,6 @@
       <message name="IDS_BRAVE_UI_WALLET_ACTIVITY" desc="">Wallet Activity</message>
       <message name="IDS_BRAVE_UI_WALLET_ADDRESS" desc="">Wallet Address</message>
       <message name="IDS_BRAVE_UI_WALLET_BALANCE" desc="">wallet balance</message>
-      <message name="IDS_BRAVE_UI_WALLET_FAILED_BUTTON" desc="">Try again</message>
       <message name="IDS_BRAVE_UI_WALLET_FAILED_TITLE" desc="">Wallet creation failed</message>
       <message name="IDS_BRAVE_UI_WALLET_FAILED_TEXT" desc="">Please check your internet connection.</message>
       <message name="IDS_BRAVE_UI_WELCOME" desc="">Welcome!</message>
@@ -834,26 +833,15 @@
       </message>
       <message name="IDS_REWARDS_WIDGET_MONTHLY_TIPS" desc="">Tips and contributions this month</message>
       <message name="IDS_REWARDS_WIDGET_CLAIM_MY_REWARDS" desc="">Claim my Rewards</message>
-      <message name="IDS_REWARDS_WIDGET_TURNING_ON" desc="">Turning on...</message>
-      <message name="IDS_REWARDS_WIDGET_TURN_ON_REWARDS" desc="">Turn on Rewards</message>
-      <message name="IDS_REWARDS_WIDGET_REENABLE_TITLE" desc="">Feeling Generous?</message>
-      <message name="IDS_REWARDS_WIDGET_TURN_ON_LEARN_MORE"
-        desc="Button text to learn more about Brave Rewards"
-      >
-        Learn more
-      </message>
-      <message name="IDS_REWARDS_WIDGET_ENABLE_TITLE" desc="">Ready to start earning?</message>
       <message name="IDS_REWARDS_WIDGET_ENABLE_BRANDED_WALLPAPER_TITLE"
         desc="Title for prompt to enable Brave Rewards when a Branded Wallpaper is currently being displayed"
       >
         Get paid to view this sponsored background image.
       </message>
-      <message name="IDS_REWARDS_WIDGET_REENABLE_SUBTITLE" desc="">Try Brave Rewards again and pay it forward as you earn!</message>
-      <message name="IDS_REWARDS_WIDGET_ENABLE_SUBTITLE" desc="">Turn on Brave Rewards and get paid to view privacy-respecting ads.</message>
       <message name="IDS_REWARDS_WIDGET_ENABLE_BRANDED_WALLPAPER_SUBTITLE"
         desc="Description for prompt to enable Brave Rewards when a Branded Wallpaper is currently being displayed"
       >
-        Turn on <ph name="PRODUCT_NAME">$3<ex>Brave Rewards</ex></ph> to claim your share. You can also choose to <ph name="LINK_BEGIN">$1</ph>hide sponsored images<ph name="LINK_END">$2</ph>.
+        Turn on Brave Ads to claim your share. You can also choose to <ph name="LINK_BEGIN">$1</ph>hide sponsored images<ph name="LINK_END">$2</ph>.
       </message>
       <message name="IDS_REWARDS_WIDGET_NOTIFICATION_TITLE" desc="">Way to Go!</message>
       <message name="IDS_REWARDS_WIDGET_NOTIFICATION_TEXT_ADS" desc="">Your rewards from Ads are here</message>
