@@ -8,11 +8,12 @@ import("//ios/build/config.gni")
 
 source_set("bookmarks") {
   configs += [ "//build/config/compiler:enable_arc" ]
-  configs -= [ "//build/config/gcc:symbol_visibility_hidden" ]
 
   sources = [
     "brave_bookmarks_api.h",
     "brave_bookmarks_api.mm",
+    "brave_bookmarks_observer.h",
+    "brave_bookmarks_observer.mm",
   ]
 
   deps = [
@@ -23,6 +24,7 @@ source_set("bookmarks") {
     "//ios/chrome/browser/bookmarks",
     "//ios/chrome/browser/browser_state",
     "//ios/chrome/browser/undo",
+    "//ios/web/public/thread",
     "//net",
     "//url",
   ]
