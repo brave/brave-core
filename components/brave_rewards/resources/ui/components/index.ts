@@ -32,7 +32,6 @@ import ModalShowAdsHistory from './modalShowAdsHistory'
 import ModalVerify from './modalVerify'
 import ModalQRCode from './modalQRCode'
 import NextContribution from './nextContribution'
-import PanelWelcome from './panelWelcome'
 import Profile from './profile'
 import RestoreSites from './restoreSites'
 import RewardsButton from './rewardsButton'
@@ -54,7 +53,6 @@ import Tooltip from './tooltip'
 import WalletEmpty from './walletEmpty'
 import WalletOff from './walletOff'
 import WalletPanel from './walletPanel'
-import WalletPanelDisabled from './walletPanelDisabled'
 import WalletPopup from './walletPopup'
 import WalletSummary from './walletSummary'
 import WalletSummarySlider from './walletSummarySlider'
@@ -92,7 +90,6 @@ export {
   ModalVerify,
   ModalQRCode,
   NextContribution,
-  PanelWelcome,
   Profile,
   RestoreSites,
   RewardsButton,
@@ -114,7 +111,6 @@ export {
   WalletEmpty,
   WalletOff,
   WalletPanel,
-  WalletPanelDisabled,
   WalletPopup,
   WalletSummary,
   WalletSummarySlider,

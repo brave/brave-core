@@ -3,9 +3,6 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 export const enum types {
-  CREATE_WALLET = '@@rewards_panel/CREATE_WALLET',
-  WALLET_CREATED = '@@rewards_panel/WALLET_CREATED',
-  WALLET_CREATION_FAILED = '@@rewards_panel/WALLET_CREATION_FAILED',
   ON_TAB_RETRIEVED = '@@rewards_panel/ON_TAB_RETRIEVED',
   ON_PUBLISHER_DATA = '@@rewards_panel/ON_PUBLISHER_DATA',
   ON_REWARDS_PARAMETERS = '@@rewards_panel/ON_REWARDS_PARAMETERS',
@@ -21,7 +18,6 @@ export const enum types {
   DELETE_PROMOTION = '@@rewards_panel/DELETE_PROMOTION',
   ON_PROMOTION_FINISH = '@@rewards_panel/ON_PROMOTION_FINISH',
   ON_PENDING_CONTRIBUTIONS_TOTAL = '@@rewards_panel/ON_PENDING_CONTRIBUTIONS_TOTAL',
-  ON_ENABLED_MAIN = '@@rewards_panel/ON_ENABLED_MAIN',
   ON_ENABLED_AC = '@@rewards_panel/ON_ENABLED_AC',
   ON_PUBLISHER_LIST_NORMALIZED = '@@rewards_panel/ON_PUBLISHER_LIST_NORMALIZED',
   ON_EXCLUDED_SITES_CHANGED = '@@rewards_panel/ON_EXCLUDED_SITES_CHANGED',
@@ -38,9 +34,7 @@ export const enum types {
   ON_ANON_WALLET_STATUS = '@@rewards_panel/ON_ANON_WALLET_STATUS',
   ON_ALL_NOTIFICATIONS_DELETED = '@@rewards_panel/ON_ALL_NOTIFICATIONS_DELETED',
   ON_COMPLETE_RESET = '@@rewards_panel/ON_COMPLETE_RESET',
-  TOGGLE_ENABLE_MAIN = '@@rewards_panel/TOGGLE_ENABLE_MAIN',
-  INITIALIZED = '@@rewards_panel/INITIALIZED',
-  WALLET_EXISTS = '@@rewards_panel/WALLET_EXISTS'
+  INITIALIZED = '@@rewards_panel/INITIALIZED'
 }
 
 // Note: This declaration must match the RewardsNotificationType enum in

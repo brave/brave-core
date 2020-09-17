@@ -11,22 +11,6 @@
     },
     "events": [
       {
-        "name": "walletCreated",
-        "type": "function",
-        "description": "Fired when wallet is created",
-        "parameters": []
-      },
-      {
-        "name": "walletCreationFailed",
-        "type": "function",
-        "description": "Fired when wallet creation failed",
-        "parameters": [{
-            "name": "result",
-            "type": "integer"
-          }
-        ]
-      },
-      {
         "name": "initialized",
         "type": "function",
         "description": "Fired when wallet is initialized",
@@ -169,17 +153,6 @@
         "parameters": [
           {
             "name": "enabled",
-            "type": "boolean"
-          }
-        ]
-      },
-      {
-        "name": "onEnabledMain",
-        "type": "function",
-        "description": "",
-        "parameters": [
-          {
-            "name": "enabledMain",
             "type": "boolean"
           }
         ]
@@ -362,12 +335,6 @@
             "optional": true
           }
         ]
-      },
-      {
-        "name": "createWallet",
-        "type": "function",
-        "description": "Creates new wallet",
-        "parameters": []
       },
       {
         "name": "updateMediaDuration",
@@ -875,40 +842,6 @@
               {
                 "name": "amount",
                 "type": "number"
-              }
-            ]
-          }
-        ]
-      },
-      {
-        "name": "getRewardsMainEnabled",
-        "type": "function",
-        "description": "Gets whether rewards has been enabled explicitly",
-        "parameters": [
-          {
-            "type": "function",
-            "name": "callback",
-            "parameters": [
-              {
-                "name": "enabled",
-                "type": "boolean"
-              }
-            ]
-          }
-        ]
-      },
-      {
-        "name": "getWalletExists",
-        "type": "function",
-        "description": "Gets whether a Rewards wallet already exists",
-        "parameters": [
-          {
-            "type": "function",
-            "name": "callback",
-            "parameters": [
-              {
-                "name": "exists",
-                "type": "boolean"
               }
             ]
           }

@@ -232,20 +232,6 @@ class BraveRewardsGetPendingContributionsTotalFunction
   void OnGetPendingTotal(double amount);
 };
 
-class BraveRewardsGetRewardsMainEnabledFunction
-    : public ExtensionFunction {
- public:
-  DECLARE_EXTENSION_FUNCTION("braveRewards.getRewardsMainEnabled", UNKNOWN)
-
- protected:
-  ~BraveRewardsGetRewardsMainEnabledFunction() override;
-
-  ResponseAction Run() override;
-
- private:
-  void OnGetRewardsMainEnabled(bool enabled);
-};
-
 class BraveRewardsSaveAdsSettingFunction : public ExtensionFunction {
  public:
   DECLARE_EXTENSION_FUNCTION("braveRewards.saveAdsSetting", UNKNOWN)
@@ -447,20 +433,6 @@ class BraveRewardsGetAdsEstimatedEarningsFunction
       const double estimated_pending_rewards,
       const uint64_t next_payment_date_in_seconds,
       const uint64_t ad_notifications_received_this_month);
-};
-
-class BraveRewardsGetWalletExistsFunction
-    : public ExtensionFunction {
- public:
-  DECLARE_EXTENSION_FUNCTION("braveRewards.getWalletExists", UNKNOWN)
-
- protected:
-  ~BraveRewardsGetWalletExistsFunction() override;
-
-  ResponseAction Run() override;
-
- private:
-  void OnGetWalletExists(const bool exists);
 };
 
 class BraveRewardsGetAdsSupportedFunction : public ExtensionFunction {

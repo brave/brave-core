@@ -643,31 +643,6 @@ void BraveRewardsGetPendingContributionsTotalFunction::OnGetPendingTotal(
   Respond(OneArgument(std::make_unique<base::Value>(amount)));
 }
 
-BraveRewardsGetRewardsMainEnabledFunction::
-~BraveRewardsGetRewardsMainEnabledFunction() {
-}
-
-ExtensionFunction::ResponseAction
-BraveRewardsGetRewardsMainEnabledFunction::Run() {
-  Profile* profile = Profile::FromBrowserContext(browser_context());
-  RewardsService* rewards_service =
-    RewardsServiceFactory::GetForProfile(profile);
-
-  if (!rewards_service) {
-    return RespondNow(Error("Rewards service is not initialized"));
-  }
-
-  rewards_service->GetRewardsMainEnabled(base::Bind(
-        &BraveRewardsGetRewardsMainEnabledFunction::OnGetRewardsMainEnabled,
-        this));
-  return RespondLater();
-}
-
-void BraveRewardsGetRewardsMainEnabledFunction::OnGetRewardsMainEnabled(
-    bool enabled) {
-  Respond(OneArgument(std::make_unique<base::Value>(enabled)));
-}
-
 BraveRewardsSaveAdsSettingFunction::~BraveRewardsSaveAdsSettingFunction() {
 }
 
@@ -1153,31 +1128,6 @@ void BraveRewardsGetAdsEstimatedEarningsFunction::OnAdsEstimatedEarnings(
     const uint64_t ad_notifications_received_this_month) {
   Respond(OneArgument(
       std::make_unique<base::Value>(estimated_pending_rewards)));
-}
-
-BraveRewardsGetWalletExistsFunction::
-~BraveRewardsGetWalletExistsFunction() {
-}
-
-ExtensionFunction::ResponseAction
-BraveRewardsGetWalletExistsFunction::Run() {
-  Profile* profile = Profile::FromBrowserContext(browser_context());
-  RewardsService* rewards_service =
-    RewardsServiceFactory::GetForProfile(profile);
-
-  if (!rewards_service) {
-    return RespondNow(Error("Rewards service is not initialized"));
-  }
-
-  rewards_service->IsWalletCreated(base::Bind(
-        &BraveRewardsGetWalletExistsFunction::OnGetWalletExists,
-        this));
-  return RespondLater();
-}
-
-void BraveRewardsGetWalletExistsFunction::OnGetWalletExists(
-    const bool exists) {
-  Respond(OneArgument(std::make_unique<base::Value>(exists)));
 }
 
 BraveRewardsGetAdsSupportedFunction::
