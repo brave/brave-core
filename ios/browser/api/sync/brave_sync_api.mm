@@ -36,6 +36,44 @@
 #error "This file requires ARC support."
 #endif
 
+
+
+@interface BraveSyncDeviceObserver()
+{
+  std::unique_ptr<BraveSyncDeviceTracker> _device_observer;
+}
+@end
+
+@implementation BraveSyncDeviceObserver
+
+- (instancetype)initWithCallback:(void(^)())onDeviceInfoChanged {
+  if ((self = [super init])) {
+    _device_observer = std::make_unique<BraveSyncDeviceTracker>(onDeviceInfoChanged);
+  }
+  return self;
+}
+@end
+
+@interface BraveSyncServiceObserver()
+{
+  std::unique_ptr<BraveSyncServiceTracker> _service_observer;
+}
+@end
+
+@implementation BraveSyncServiceObserver
+
+- (instancetype)initWithCallback:(void(^)())onSyncServiceStateChanged {
+  if ((self = [super init])) {
+    _service_observer = std::make_unique<BraveSyncServiceTracker>([onSyncServiceStateChanged](syncer::SyncService *sync) {
+      onSyncServiceStateChanged();
+    }, [](syncer::SyncService *sync) {
+        fprintf(stderr, "Sync Shut Down\n");
+    });
+  }
+  return self;
+}
+@end
+
 @interface BraveSyncAPI()
 {
   std::unique_ptr<BraveSyncWorker> _worker;
@@ -43,6 +81,15 @@
 @end
 
 @implementation BraveSyncAPI
+
++ (instancetype)sharedSyncAPI {
+	static BraveSyncAPI *instance = nil;
+	static dispatch_once_t onceToken;
+	dispatch_once(&onceToken, ^{
+		instance = [[BraveSyncAPI alloc] init];
+	});
+	return instance;
+}
 
 - (instancetype)init {
   if ((self = [super init])) {
@@ -63,16 +110,25 @@
   return _worker->SetSyncEnabled(enabled);
 }
 
-- (NSString *)getOrCreateSyncCode {
+- (bool)isValidSyncCode:(NSString *)syncCode {
+  return _worker->IsValidSyncCode(base::SysNSStringToUTF8(syncCode));
+}
+
+- (NSString *)getSyncCode {
   std::string syncCode = _worker->GetOrCreateSyncCode();
-  if (syncCode.empty())
+  if (syncCode.empty()) {
     return nil;
+  }
 
   return base::SysUTF8ToNSString(syncCode);
 }
 
 - (bool)setSyncCode:(NSString *)syncCode {
   return _worker->SetSyncCode(base::SysNSStringToUTF8(syncCode));
+}
+
+- (NSString *)syncCodeFromHexSeed:(NSString *)hexSeed {
+  return base::SysUTF8ToNSString(_worker->GetSyncCodeFromHexSeed(base::SysNSStringToUTF8(hexSeed)));
 }
 
 - (UIImage *)getQRCodeImage:(CGSize)size {
@@ -103,37 +159,38 @@
     CGFloat scaleY = size.height / ciImage.extent.size.height;
     CGAffineTransform transform = CGAffineTransformMakeScale(scaleX, scaleY);
     ciImage = [ciImage imageByApplyingTransform:transform];
-  } else {
-    return nil;
+      
+    return [UIImage imageWithCIImage:ciImage scale:[[UIScreen mainScreen] scale] orientation:UIImageOrientationUp];
   }
-
-  return [UIImage imageWithCIImage:ciImage
-                  scale:[[UIScreen mainScreen] scale]
-                  orientation:UIImageOrientationUp];
+  return nil;
 }
 
 - (NSString *)getDeviceListJSON {
-    auto deviceList = _worker->GetDeviceList();
-    auto* localDeviecInfo = _worker->GetLocalDeviceInfo();
+    auto device_list = _worker->GetDeviceList();
+    auto* local_device_info = _worker->GetLocalDeviceInfo();
 
-    base::Value deviceListValue(base::Value::Type::LIST);
+    base::Value device_list_value(base::Value::Type::LIST);
 
-    fprintf(stderr, "DEVICE INFO: %p\n", localDeviecInfo);
-    for (const auto& device : deviceList) {
-        auto deviceValue = base::Value::FromUniquePtrValue(device->ToValue());
-        bool is_current_device = localDeviecInfo
-            ? localDeviecInfo->guid() == device->guid()
+    for (const auto& device : _worker->GetDeviceList()) {
+        auto device_value = base::Value::FromUniquePtrValue(device->ToValue());
+        bool is_current_device = local_device_info
+            ? local_device_info->guid() == device->guid()
             : false;
-        deviceValue.SetBoolKey("isCurrentDevice", is_current_device);
-        deviceListValue.Append(std::move(deviceValue));
+        device_value.SetBoolKey("isCurrentDevice", is_current_device);
+        device_value.SetStringKey("guid", device->guid());
+        device_list_value.Append(std::move(device_value));
     }
 
     std::string json_string;
-    if (!base::JSONWriter::Write(deviceListValue, &json_string)) {
+    if (!base::JSONWriter::Write(device_list_value, &json_string)) {
       return nil;
     }
 
     return base::SysUTF8ToNSString(json_string);
+}
+
+- (bool)removeDevice:(NSString *)deviceGuid {
+  return _worker->RemoveDevice(base::SysNSStringToUTF8(deviceGuid));
 }
 
 - (bool)resetSync {
