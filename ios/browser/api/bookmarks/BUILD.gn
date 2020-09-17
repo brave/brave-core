@@ -13,6 +13,8 @@ source_set("bookmarks") {
   sources = [
     "brave_bookmarks_api.h",
     "brave_bookmarks_api.mm",
+    "brave_bookmarks_observer.h",
+    "brave_bookmarks_observer.mm"
   ]
 
   deps = [

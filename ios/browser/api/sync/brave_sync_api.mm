@@ -103,13 +103,10 @@
     CGFloat scaleY = size.height / ciImage.extent.size.height;
     CGAffineTransform transform = CGAffineTransformMakeScale(scaleX, scaleY);
     ciImage = [ciImage imageByApplyingTransform:transform];
-  } else {
-    return nil;
+      
+    return [UIImage imageWithCIImage:ciImage scale:[[UIScreen mainScreen] scale] orientation:UIImageOrientationUp];
   }
-
-  return [UIImage imageWithCIImage:ciImage
-                  scale:[[UIScreen mainScreen] scale]
-                  orientation:UIImageOrientationUp];
+  return nil;
 }
 
 - (NSString *)getDeviceListJSON {
@@ -118,7 +115,6 @@
 
     base::Value deviceListValue(base::Value::Type::LIST);
 
-    fprintf(stderr, "DEVICE INFO: %p\n", localDeviecInfo);
     for (const auto& device : deviceList) {
         auto deviceValue = base::Value::FromUniquePtrValue(device->ToValue());
         bool is_current_device = localDeviecInfo

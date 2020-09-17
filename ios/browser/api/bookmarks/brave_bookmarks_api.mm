@@ -1,4 +1,5 @@
 #include "brave/ios/browser/api/bookmarks/brave_bookmarks_api.h"
+#include "brave/ios/browser/api/bookmarks/brave_bookmarks_observer.h"
 
 // #include "base/strings/utf_string_conversions.h"
 #include "base/strings/sys_string_conversions.h"
@@ -256,19 +257,47 @@
 }
 
 - (BookmarkNode *)rootNode {
-  return [[BookmarkNode alloc] initWithNode:bookmarkModel_->root_node() model:bookmarkModel_];
+  const bookmarks::BookmarkNode *node = bookmarkModel_->root_node();
+  if (node) {
+    return [[BookmarkNode alloc] initWithNode:node model:bookmarkModel_];
+  }
+  return nil;
 }
 
 - (BookmarkNode *)otherNode {
-  return [[BookmarkNode alloc] initWithNode:bookmarkModel_->other_node() model:bookmarkModel_];
+  const bookmarks::BookmarkNode *node = bookmarkModel_->other_node();
+  if (node) {
+    return [[BookmarkNode alloc] initWithNode:node model:bookmarkModel_];
+  }
+  return nil;
 }
 
 - (BookmarkNode *)mobileNode {
-  return [[BookmarkNode alloc] initWithNode:bookmarkModel_->mobile_node() model:bookmarkModel_];
+  const bookmarks::BookmarkNode *node = bookmarkModel_->mobile_node();
+  if (node) {
+    return [[BookmarkNode alloc] initWithNode:node model:bookmarkModel_];
+  }
+  return nil;
 }
 
 - (BookmarkNode *)desktopNode {
-  return [[BookmarkNode alloc] initWithNode:bookmarkModel_->bookmark_bar_node() model:bookmarkModel_];
+  const bookmarks::BookmarkNode *node = bookmarkModel_->bookmark_bar_node();
+  if (node) {
+    return [[BookmarkNode alloc] initWithNode:node model:bookmarkModel_];
+  }
+  return nil;
+}
+
+- (bool)isLoaded {
+  return bookmarkModel_->loaded();
+}
+
+- (id<BookmarkModelListener>)addObserver:(id<BookmarkModelObserver>)observer {
+  return [[BookmarkModelListenerImpl alloc] init:observer bookmarkModel:bookmarkModel_];
+}
+
+- (void)removeObserver:(id<BookmarkModelListener>)observer {
+  [observer destroy];
 }
 
 - (bool)isEditingEnabled {
@@ -282,25 +311,39 @@
 }
 
 - (BookmarkNode *)createFolderWithTitle:(NSString *)title {
-  return [self createFolderWithParent:[self mobileNode] title:title];
+  if ([self mobileNode]) {
+    return [self createFolderWithParent:[self mobileNode] title:title];
+  }
+  return nil;
 }
 
 - (BookmarkNode *)createFolderWithParent:(BookmarkNode *)parent title:(NSString *)title {
+  DCHECK(parent);
   const bookmarks::BookmarkNode* defaultFolder = [parent getNode];
   
   const bookmarks::BookmarkNode* new_node = bookmarkModel_->AddFolder(defaultFolder, defaultFolder->children().size(), base::SysNSStringToUTF16(title));
-  return [[BookmarkNode alloc] initWithNode:new_node model:bookmarkModel_];
+  if (new_node) {
+    return [[BookmarkNode alloc] initWithNode:new_node model:bookmarkModel_];
+  }
+  return nil;
 }
 
 - (BookmarkNode *)createBookmarkWithTitle:(NSString *)title url:(NSURL *)url {
-  return [self createBookmarkWithParent:[self mobileNode] title:title withUrl:url];
+  if ([self mobileNode]) {
+    return [self createBookmarkWithParent:[self mobileNode] title:title withUrl:url];
+  }
+  return nil;
 }
 
 - (BookmarkNode *)createBookmarkWithParent:(BookmarkNode *)parent title:(NSString *)title withUrl:(NSURL *)url {
+  DCHECK(parent);
   const bookmarks::BookmarkNode* defaultFolder = [parent getNode];
   
   const bookmarks::BookmarkNode* new_node = bookmarkModel_->AddURL(defaultFolder, defaultFolder->children().size(), base::SysNSStringToUTF16(title), net::GURLWithNSURL(url));
-  return [[BookmarkNode alloc] initWithNode:new_node model:bookmarkModel_];
+  if (new_node) {
+    return [[BookmarkNode alloc] initWithNode:new_node model:bookmarkModel_];
+  }
+  return nil;
 }
 
 - (void)removeBookmark:(BookmarkNode *)bookmark {
@@ -332,4 +375,7 @@
     bookmarkUndoService_->undo_manager()->Undo();
 }
 
+- (bookmarks::BookmarkModel *)getModel {
+  return bookmarkModel_;
+}
 @end

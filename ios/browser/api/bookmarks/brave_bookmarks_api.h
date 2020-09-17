@@ -8,6 +8,8 @@
 
 #import <Foundation/Foundation.h>
 
+NS_ASSUME_NONNULL_BEGIN
+
 typedef NS_ENUM(NSUInteger, BookmarksNodeType) {
   URL,
   FOLDER,
@@ -22,6 +24,9 @@ typedef NS_ENUM(NSUInteger, BookmarksNodeFaviconState) {
   LOADED_FAVICON,
 };
 
+@protocol BookmarkModelObserver;
+@protocol BookmarkModelListener;
+
 OBJC_EXPORT
 @interface BookmarkNode: NSObject
 + (NSString *)kRootNodeGuid;
@@ -35,10 +40,10 @@ OBJC_EXPORT
 - (NSUInteger)nodeId;
 //- (void)setNodeId:(NSUInteger)id;
 - (NSString *)getGuid;
-- (NSURL *)url;
-- (void)setUrl:(NSURL *)url;
+- (nullable NSURL *)url;
+- (void)setUrl:(nullable NSURL *)url;
 
-- (NSURL *)iconUrl;
+- (nullable NSURL *)iconUrl;
 - (BookmarksNodeType)type;
 - (NSDate *)dateAdded;
 - (void)setDateAdded:(NSDate *)date;
@@ -51,42 +56,47 @@ OBJC_EXPORT
 - (bool)isFavIconLoading;
 - (bool)isVisible;
 
-- (bool)getMetaInfo:(NSString *)key value:(NSString **)value;
+- (bool)getMetaInfo:(NSString *)key value:(NSString * _Nonnull * _Nullable)value;
 - (void)setMetaInfo:(NSString *)key value:(NSString *)value;
 - (void)deleteMetaInfo:(NSString *)key;
 
 - (NSString *)titleUrlNodeTitle;
-- (NSURL *)titleUrlNodeUrl;
+- (nullable NSURL *)titleUrlNodeUrl;
 
-- (BookmarkNode *)parent;
+- (nullable BookmarkNode *)parent;
 - (NSArray<BookmarkNode *> *)children;
 
-- (BookmarkNode *)addChildFolderWithTitle:(NSString *)title;
-- (BookmarkNode *)addChildBookmarkWithTitle:(NSString *)title url:(NSURL *)url;
+- (nullable BookmarkNode *)addChildFolderWithTitle:(NSString *)title;
+- (nullable BookmarkNode *)addChildBookmarkWithTitle:(NSString *)title url:(NSURL *)url;
 
-- (void)moveToParent:(BookmarkNode *)parent;
-- (void)moveToParent:(BookmarkNode *)parent index:(NSUInteger)index;
+- (void)moveToParent:(nonnull BookmarkNode *)parent;
+- (void)moveToParent:(nonnull BookmarkNode *)parent index:(NSUInteger)index;
 @end
 
 //NS_SWIFT_NAME(BraveBookmarksAPI)
 OBJC_EXPORT
 @interface BraveBookmarksAPI: NSObject
 
-- (BookmarkNode *)rootNode;
+- (nullable BookmarkNode *)rootNode;
 
-- (BookmarkNode *)otherNode;
+- (nullable BookmarkNode *)otherNode;
 
-- (BookmarkNode *)mobileNode;
+- (nullable BookmarkNode *)mobileNode;
 
-- (BookmarkNode *)desktopNode;
+- (nullable BookmarkNode *)desktopNode;
+
+- (bool)isLoaded;
+
+- (id<BookmarkModelListener>)addObserver:(id<BookmarkModelObserver>)observer;
+- (void)removeObserver:(id<BookmarkModelListener>)observer;
 
 - (bool)isEditingEnabled;
 
-- (BookmarkNode *)createFolderWithTitle:(NSString *)title;
-- (BookmarkNode *)createFolderWithParent:(BookmarkNode *)parent title:(NSString *)title;
+- (nullable BookmarkNode *)createFolderWithTitle:(NSString *)title;
+- (nullable BookmarkNode *)createFolderWithParent:(BookmarkNode *)parent title:(NSString *)title;
 
-- (BookmarkNode *)createBookmarkWithTitle:(NSString *)title url:(NSURL *)url;
-- (BookmarkNode *)createBookmarkWithParent:(BookmarkNode *)parent title:(NSString *)title withUrl:(NSURL *)url;
+- (nullable BookmarkNode *)createBookmarkWithTitle:(NSString *)title url:(NSURL *)url;
+- (nullable BookmarkNode *)createBookmarkWithParent:(BookmarkNode *)parent title:(NSString *)title withUrl:(NSURL *)url;
 
 - (void)removeBookmark:(BookmarkNode *)bookmark;
 - (void)removeAll;
@@ -95,5 +105,7 @@ OBJC_EXPORT
 
 - (void)undo;
 @end
+
+NS_ASSUME_NONNULL_END
 
 #endif  // BRAVE_IOS_BROWSER_API_BOOKMARKS_BRAVE_BOOKMARKS_API_H_
