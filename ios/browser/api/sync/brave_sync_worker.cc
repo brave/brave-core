@@ -32,6 +32,64 @@
 #include "ios/chrome/browser/sync/sync_setup_service_factory.h"
 #include "ios/web/public/thread/web_thread.h"
 
+BraveSyncDeviceTracker::BraveSyncDeviceTracker(std::function<void()> onDeviceInfoChanged) : onDeviceInfoChanged_(onDeviceInfoChanged) {
+  
+  ios::ChromeBrowserStateManager* browserStateManager =
+      GetApplicationContext()->GetChromeBrowserStateManager();
+  ChromeBrowserState* chromeBrowserState =
+      browserStateManager->GetLastUsedBrowserState();
+  
+  syncer::DeviceInfoTracker* tracker =
+  DeviceInfoSyncServiceFactory::GetForBrowserState(chromeBrowserState)
+     ->GetDeviceInfoTracker();
+  DCHECK(tracker);
+  if (tracker) {
+    device_info_tracker_observer_.Add(tracker);
+  }
+}
+
+BraveSyncDeviceTracker::~BraveSyncDeviceTracker() {
+  // Observer will be removed by ScopedObserver
+}
+
+void BraveSyncDeviceTracker::OnDeviceInfoChange() {
+  if (onDeviceInfoChanged_) {
+    onDeviceInfoChanged_();
+  }
+}
+
+BraveSyncServiceTracker::BraveSyncServiceTracker(std::function<void(syncer::SyncService* sync)> onStateChanged, std::function<void(syncer::SyncService* sync)> onSyncShutdown) : onStateChanged_(onStateChanged), onSyncShutdown_(onSyncShutdown) {
+    
+  ios::ChromeBrowserStateManager* browserStateManager =
+      GetApplicationContext()->GetChromeBrowserStateManager();
+  ChromeBrowserState* chromeBrowserState =
+      browserStateManager->GetLastUsedBrowserState();
+    
+  auto* sync_service =
+      ProfileSyncServiceFactory::GetForBrowserState(chromeBrowserState);
+  DCHECK(sync_service);
+  if (sync_service) {
+    sync_service_observer_.Add(sync_service);
+  }
+}
+
+BraveSyncServiceTracker::~BraveSyncServiceTracker() {
+  // Observer will be removed by ScopedObserver
+}
+
+void BraveSyncServiceTracker::OnStateChanged(syncer::SyncService* sync) {
+  if (onStateChanged_) {
+    onStateChanged_(sync);
+  }
+}
+
+void BraveSyncServiceTracker::OnSyncShutdown(syncer::SyncService* sync) {
+  if (onSyncShutdown_) {
+    onSyncShutdown_(sync);
+  }
+}
+
+
 BraveSyncWorker::BraveSyncWorker(ChromeBrowserState* browser_state)
     : browser_state_(browser_state) {
   DCHECK_CURRENTLY_ON(web::WebThread::UI);

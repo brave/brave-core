@@ -36,6 +36,44 @@
 #error "This file requires ARC support."
 #endif
 
+
+
+@interface BraveSyncDeviceObserver()
+{
+  std::unique_ptr<BraveSyncDeviceTracker> _device_observer;
+}
+@end
+
+@implementation BraveSyncDeviceObserver
+
+- (instancetype)initWithCallback:(void(^)())onDeviceInfoChanged {
+  if ((self = [super init])) {
+    _device_observer = std::make_unique<BraveSyncDeviceTracker>(onDeviceInfoChanged);
+  }
+  return self;
+}
+@end
+
+@interface BraveSyncServiceObserver()
+{
+  std::unique_ptr<BraveSyncServiceTracker> _service_observer;
+}
+@end
+
+@implementation BraveSyncServiceObserver
+
+- (instancetype)initWithCallback:(void(^)())onSyncServiceStateChanged {
+  if ((self = [super init])) {
+    _service_observer = std::make_unique<BraveSyncServiceTracker>([onSyncServiceStateChanged](syncer::SyncService *sync) {
+      onSyncServiceStateChanged();
+    }, [](syncer::SyncService *sync) {
+        fprintf(stderr, "Sync Shut Down\n");
+    });
+  }
+  return self;
+}
+@end
+
 @interface BraveSyncAPI()
 {
   std::unique_ptr<BraveSyncWorker> _worker;
