@@ -18,6 +18,7 @@ typedef NS_ENUM(NSInteger, BATAdsConfirmationType) {
   BATAdsConfirmationTypeConversion  // = ads::ConfirmationType::kConversion
 } NS_SWIFT_NAME(ConfirmationType);
 
+OBJC_EXPORT
 NS_SWIFT_NAME(AdsNotification)
 @interface BATAdNotification : NSObject
 @property (nonatomic, readonly, copy) NSString *uuid;
@@ -32,6 +33,7 @@ NS_SWIFT_NAME(AdsNotification)
 @property (nonatomic, readonly, copy) NSString *geoTarget;
 @end
 
+OBJC_EXPORT 
 @interface BATAdNotification (MyFirstAd)
 + (instancetype)customAdWithTitle:(NSString *)title
                              body:(NSString *)body

@@ -158,11 +158,11 @@ typedef NS_ENUM(NSInteger, BATLedgerDatabaseMigrationType) {
       [self savePrefs];
     }
     
-    const auto pathToICUDTL = [[NSBundle bundleForClass:[BATBraveLedger class]] pathForResource:@"icudtl" ofType:@"dat"];
-    base::ios::OverridePathOfEmbeddedICU(pathToICUDTL.UTF8String);
-    if (!base::i18n::InitializeICU()) {
-      BLOG(0, @"Failed to initialize ICU data");
-    }
+//    const auto pathToICUDTL = [[NSBundle bundleForClass:[BATBraveLedger class]] pathForResource:@"icudtl" ofType:@"dat"];
+//    base::ios::OverridePathOfEmbeddedICU(pathToICUDTL.UTF8String);
+//    if (!base::i18n::InitializeICU()) {
+//      BLOG(0, @"Failed to initialize ICU data");
+//    }
     
     const auto args = [NSProcessInfo processInfo].arguments;
     const char *argv[args.count];
