@@ -40,6 +40,8 @@ class IpfsService : public KeyedService,
   explicit IpfsService(content::BrowserContext* context);
   ~IpfsService() override;
 
+  static bool IsIpfsEnabled(content::BrowserContext* context);
+
   using GetConnectedPeersCallback = base::OnceCallback<
     void(bool,
          const std::vector<std::string>&)>;

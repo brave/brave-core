@@ -11,8 +11,8 @@
 #include "base/files/file_path.h"
 #include "base/files/scoped_temp_dir.h"
 #include "base/strings/utf_string_conversions.h"
+#include "brave/browser/profiles/brave_unittest_profile_manager.h"
 #include "brave/browser/profiles/profile_util.h"
-#include "brave/browser/profiles/tor_unittest_profile_manager.h"
 #include "brave/browser/tor/tor_launcher_factory.h"
 #include "brave/browser/translate/buildflags/buildflags.h"
 #include "brave/common/tor/pref_names.h"
@@ -67,7 +67,7 @@ class BraveProfileManagerTest : public testing::Test {
     // Create a new temporary directory, and store the path
     ASSERT_TRUE(temp_dir_.CreateUniqueTempDir());
     TestingBrowserProcess::GetGlobal()->SetProfileManager(
-        new TorUnittestProfileManager(temp_dir_.GetPath()));
+        new BraveUnittestProfileManager(temp_dir_.GetPath()));
   }
 
   void TearDown() override {

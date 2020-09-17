@@ -476,8 +476,10 @@ BraveContentBrowserClient::CreateThrottlesForNavigation(
 #endif
 
 #if BUILDFLAG(IPFS_ENABLED)
-  throttles.push_back(
-      std::make_unique<ipfs::IpfsNavigationThrottle>(handle));
+  std::unique_ptr<content::NavigationThrottle> ipfs_navigation_throttle =
+    ipfs::IpfsNavigationThrottle::MaybeCreateThrottleFor(handle);
+  if (ipfs_navigation_throttle)
+    throttles.push_back(std::move(ipfs_navigation_throttle));
 #endif
 
   return throttles;

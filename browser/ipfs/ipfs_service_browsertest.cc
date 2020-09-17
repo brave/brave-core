@@ -5,8 +5,10 @@
 
 #include "base/run_loop.h"
 #include "base/strings/strcat.h"
+#include "base/test/scoped_feature_list.h"
 #include "brave/browser/ipfs/ipfs_service.h"
 #include "brave/browser/ipfs/ipfs_service_factory.h"
+#include "brave/components/ipfs/browser/features.h"
 #include "brave/components/ipfs/common/ipfs_constants.h"
 #include "chrome/test/base/in_process_browser_test.h"
 #include "chrome/browser/profiles/profile.h"
@@ -20,7 +22,10 @@ namespace ipfs {
 
 class IpfsServiceBrowserTest : public InProcessBrowserTest {
  public:
-  IpfsServiceBrowserTest() = default;
+  IpfsServiceBrowserTest() {
+    feature_list_.InitAndEnableFeature(ipfs::features::kIpfsFeature);
+  }
+
   ~IpfsServiceBrowserTest() override = default;
 
   void SetUpOnMainThread() override {
@@ -188,6 +193,7 @@ class IpfsServiceBrowserTest : public InProcessBrowserTest {
   std::unique_ptr<base::RunLoop> wait_for_request_;
   std::unique_ptr<net::EmbeddedTestServer> test_server_;
   IpfsService* ipfs_service_;
+  base::test::ScopedFeatureList feature_list_;
 };
 
 IN_PROC_BROWSER_TEST_F(IpfsServiceBrowserTest, GetConnectedPeers) {

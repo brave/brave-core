@@ -23,6 +23,10 @@ IpfsServiceFactory* IpfsServiceFactory::GetInstance() {
 // static
 IpfsService* IpfsServiceFactory::GetForContext(
     content::BrowserContext* context) {
+  if (!IpfsService::IsIpfsEnabled(context)) {
+    return nullptr;
+  }
+
   return static_cast<IpfsService*>(
       GetInstance()->GetServiceForBrowserContext(context, true));
 }

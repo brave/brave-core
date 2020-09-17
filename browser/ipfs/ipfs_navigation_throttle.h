@@ -6,10 +6,11 @@
 #ifndef BRAVE_BROWSER_IPFS_IPFS_NAVIGATION_THROTTLE_H_
 #define BRAVE_BROWSER_IPFS_IPFS_NAVIGATION_THROTTLE_H_
 
-#include "content/public/browser/navigation_throttle.h"
+#include <memory>
 
 #include "base/gtest_prod_util.h"
 #include "brave/browser/ipfs/ipfs_service_observer.h"
+#include "content/public/browser/navigation_throttle.h"
 
 namespace content {
 class NavigationHandle;
@@ -29,6 +30,12 @@ class IpfsNavigationThrottle : public content::NavigationThrottle,
       content::NavigationHandle* navigation_handle);
   ~IpfsNavigationThrottle() override;
 
+  IpfsNavigationThrottle(const IpfsNavigationThrottle&) = delete;
+  IpfsNavigationThrottle& operator=(const IpfsNavigationThrottle&) = delete;
+
+  static std::unique_ptr<IpfsNavigationThrottle>
+      MaybeCreateThrottleFor(content::NavigationHandle* navigation_handle);
+
   // content::NavigationThrottle implementation:
   ThrottleCheckResult WillStartRequest() override;
   const char* GetNameForLogging() override;
@@ -42,8 +49,6 @@ class IpfsNavigationThrottle : public content::NavigationThrottle,
   bool resume_pending_ = false;
   IpfsService* ipfs_service_ = nullptr;
   PrefService* pref_service_ = nullptr;
-
-  DISALLOW_COPY_AND_ASSIGN(IpfsNavigationThrottle);
 };
 
 }  // namespace ipfs
