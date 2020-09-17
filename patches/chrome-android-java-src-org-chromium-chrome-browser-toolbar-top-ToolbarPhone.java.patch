@@ -1,0 +1,52 @@
+diff --git a/chrome/android/java/src/org/chromium/chrome/browser/toolbar/top/ToolbarPhone.java b/chrome/android/java/src/org/chromium/chrome/browser/toolbar/top/ToolbarPhone.java
+index 25c687987c90ac32f40698e9270cddc1d77f3bb0..0ea457c1b335d38d402d96ae559e792170854c57 100644
+--- a/chrome/android/java/src/org/chromium/chrome/browser/toolbar/top/ToolbarPhone.java
++++ b/chrome/android/java/src/org/chromium/chrome/browser/toolbar/top/ToolbarPhone.java
+@@ -89,7 +89,7 @@ import java.util.List;
+ /**
+  * Phone specific toolbar implementation.
+  */
+-public class ToolbarPhone extends ToolbarLayout implements Invalidator.Client, OnClickListener,
++public class ToolbarPhone extends BraveToolbarLayout implements Invalidator.Client, OnClickListener,
+                                                            NewTabPage.OnSearchBoxScrollListener,
+                                                            TabCountObserver {
+     /** The amount of time transitioning from one theme color to another should take in ms. */
+@@ -411,10 +411,12 @@ public class ToolbarPhone extends ToolbarLayout implements Invalidator.Client, O
+     /**
+      * Set the background color of the location bar to appropriately match the theme color.
+      */
+-    private void updateModernLocationBarColor(int color) {
++    @Override
++    protected void updateModernLocationBarColor(int color) {
+         if (mCurrentLocationBarColor == color) return;
+         mCurrentLocationBarColor = color;
+         mLocationBarBackground.setColorFilter(color, PorterDuff.Mode.SRC_IN);
++        super.updateModernLocationBarColor(color);
+     }
+ 
+     /**
+@@ -533,6 +535,7 @@ public class ToolbarPhone extends ToolbarLayout implements Invalidator.Client, O
+                         EventConstants.PARTNER_HOME_PAGE_BUTTON_PRESSED);
+             }
+         }
++        super.onClick(v);
+     }
+ 
+     @Override
+@@ -701,7 +704,7 @@ public class ToolbarPhone extends ToolbarLayout implements Invalidator.Client, O
+      * @return The right bounds of the location bar after accounting for any visible left buttons.
+      */
+     private int getBoundsAfterAccountingForRightButtons() {
+-        return Math.max(mToolbarSidePadding, mToolbarButtonsContainer.getMeasuredWidth());
++        return Math.max(mToolbarSidePadding, super.getBoundsAfterAccountingForRightButtons(mToolbarButtonsContainer));
+     }
+ 
+     private void updateToolbarBackground(int color) {
+@@ -2140,6 +2143,7 @@ public class ToolbarPhone extends ToolbarLayout implements Invalidator.Client, O
+         } else {
+             populateUrlClearFocusingAnimatorSet(animators);
+         }
++        populateUrlAnimatorSet(hasFocus, URL_FOCUS_TOOLBAR_BUTTONS_DURATION_MS, URL_CLEAR_FOCUS_TABSTACK_DELAY_MS, URL_FOCUS_TOOLBAR_BUTTONS_TRANSLATION_X_DP, animators);
+         mUrlFocusLayoutAnimator = new AnimatorSet();
+         mUrlFocusLayoutAnimator.playTogether(animators);
+ 
