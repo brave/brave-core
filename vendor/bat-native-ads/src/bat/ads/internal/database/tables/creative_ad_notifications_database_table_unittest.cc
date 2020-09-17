@@ -159,6 +159,7 @@ TEST_F(BatAdsCreativeAdNotificationsDatabaseTableTest,
   info_2.total_max = 4;
   info_2.category = "Technology & Computing-Software";
   info_2.geo_targets = { "US" };
+  info_2.dayparts = { "0123456_0_1440" };
   info_2.target_url = "https://brave.com";
   info_2.title = "Test Ad 2 Title";
   info_2.body = "Test Ad 2 Body";
@@ -716,6 +717,8 @@ TEST_F(BatAdsCreativeAdNotificationsDatabaseTableTest,
 TEST_F(BatAdsCreativeAdNotificationsDatabaseTableTest,
     GetCreativeAdNotificationsFromCatalogEndpoint) {
   // Arrange
+  std::cout << "albert RUNNING GetCreativeAdNotificationsFromCatalogEndpoint 1" << std::endl;
+  LOG(INFO) << "albert wtf why isn't this printing";
   SetBuildChannel(false, "test");
 
   ON_CALL(*locale_helper_mock_, GetLocale())
@@ -753,6 +756,7 @@ TEST_F(BatAdsCreativeAdNotificationsDatabaseTableTest,
   const std::vector<std::string> categories = {
     "Technology & Computing"
   };
+  std::cout << "albert RUNNING GetCreativeAdNotificationsFromCatalogEndpoint 2" << std::endl;
 
   database_table_->GetForCategories(categories, [](
       const Result result,

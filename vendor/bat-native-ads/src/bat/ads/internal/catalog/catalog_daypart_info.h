@@ -3,22 +3,22 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#ifndef BAT_ADS_INTERNAL_CATALOG_CATALOG_DAY_PART_INFO_H_
-#define BAT_ADS_INTERNAL_CATALOG_CATALOG_DAY_PART_INFO_H_
+#ifndef BAT_ADS_INTERNAL_CATALOG_CATALOG_DAYPART_INFO_H_
+#define BAT_ADS_INTERNAL_CATALOG_CATALOG_DAYPART_INFO_H_
 
 #include <string>
 #include <vector>
 
 namespace ads {
 
-struct CatalogDayPartInfo {
+struct CatalogDaypartInfo {
   std::string dow;
   unsigned int start_minute;
   unsigned int end_minute;
 };
 
-using CatalogDayPartList = std::vector<CatalogDayPartInfo>;
+using CatalogDaypartList = std::vector<CatalogDaypartInfo>;
 
 }  // namespace ads
 
-#endif  // BAT_ADS_INTERNAL_CATALOG_CATALOG_DAY_PART_INFO_H_
+#endif  // BAT_ADS_INTERNAL_CATALOG_CATALOG_DAYPART_INFO_H_

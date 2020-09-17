@@ -5,6 +5,7 @@
 
 #include "bat/ads/database.h"
 
+#include <iostream>
 #include <utility>
 #include <vector>
 
@@ -118,6 +119,7 @@ Database::~Database() = default;
 void Database::RunTransaction(
     DBTransactionPtr transaction,
     DBCommandResponse* command_response) {
+  std::cout << "*** RUN TRANSACTION ***" << std::endl;
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
 
   DCHECK(command_response);
@@ -137,6 +139,7 @@ void Database::RunTransaction(
     DBCommandResponse::Status status;
 
     BLOG(8, "Database query: " << command->command);
+    std::cout << "** Database query: " << command->command << std::endl;
 
     switch (command->type) {
       case DBCommand::Type::INITIALIZE: {
@@ -167,6 +170,7 @@ void Database::RunTransaction(
     }
 
     if (status != DBCommandResponse::Status::RESPONSE_OK) {
+      std::cout << "albert response not ok!" << std::endl;
       committer.Rollback();
       command_response->status = status;
       return;
@@ -274,6 +278,7 @@ DBCommandResponse::Status Database::Read(
     return DBCommandResponse::Status::INITIALIZATION_ERROR;
   }
 
+  std::cout << "albert running the following command:" << command->command.c_str() << std::endl;
   sql::Statement statement(db_.GetUniqueStatement(command->command.c_str()));
 
   for (const auto& binding : command->bindings) {

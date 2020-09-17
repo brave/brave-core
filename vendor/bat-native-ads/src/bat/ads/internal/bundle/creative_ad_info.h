@@ -34,6 +34,7 @@ struct CreativeAdInfo {
   std::string category;
   std::vector<std::string> geo_targets;
   std::string target_url;
+  std::vector<std::string> dayparts;
 };
 
 using CreativeAdList = std::vector<CreativeAdInfo>;

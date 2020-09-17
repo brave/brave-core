@@ -10,7 +10,7 @@
 #include <vector>
 
 #include "bat/ads/internal/catalog/catalog_creative_set_info.h"
-#include "bat/ads/internal/catalog/catalog_day_part_info.h"
+#include "bat/ads/internal/catalog/catalog_daypart_info.h"
 #include "bat/ads/internal/catalog/catalog_geo_target_info.h"
 
 namespace ads {
@@ -30,7 +30,7 @@ struct CatalogCampaignInfo {
   unsigned int daily_cap = 0;
   std::string advertiser_id;
   CatalogCreativeSetList creative_sets;
-  CatalogDayPartList day_parts;
+  CatalogDaypartList dayparts;
   CatalogGeoTargetList geo_targets;
 };
 

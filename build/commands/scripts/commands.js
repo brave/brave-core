@@ -185,6 +185,7 @@ program
 
 program
   .command('test <suite>')
+  .option('-C <build_dir>', 'build config (out/Debug, out/Release')
   .option('--v [log_level]', 'set log level to [log_level]', parseInt, '0')
   .option('--vmodule [modules]', 'verbose log from specific modules')
   .option('--filter <filter>', 'set test filter')

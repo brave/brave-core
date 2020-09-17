@@ -183,6 +183,20 @@ std::unique_ptr<BundleState> Bundle::GenerateFromCatalog(
       geo_targets.push_back(code);
     }
 
+    // Day Parting
+    std::vector<std::string> dayparts;
+    // Converts this to a form of
+    // "DOW_STARTTIME_ENDTIME"
+    for (const auto& daypart : campaign.dayparts) {
+      std::string daypart_stringified = daypart.dow +
+          "_" +
+          std::to_string(daypart.start_minute) +
+          "_" +
+          std::to_string(daypart.end_minute);
+
+      dayparts.push_back(daypart_stringified);
+    }
+
     // Creative Sets
     for (const auto& creative_set : campaign.creative_sets) {
       uint64_t entries = 0;
@@ -236,6 +250,7 @@ std::unique_ptr<BundleState> Bundle::GenerateFromCatalog(
             creative_set.ad_conversions.size() != 0 ? true : false;
         info.per_day = creative_set.per_day;
         info.total_max = creative_set.total_max;
+        info.dayparts = dayparts;
         info.geo_targets = geo_targets;
         info.title = creative.payload.title;
         info.body = creative.payload.body;
