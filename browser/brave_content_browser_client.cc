@@ -32,6 +32,7 @@
 #include "brave/components/ipfs/buildflags/buildflags.h"
 #include "brave/components/speedreader/buildflags.h"
 #include "brave/components/tor/buildflags/buildflags.h"
+#include "brave/components/private_channel/buildflags.h"
 #include "brave/grit/brave_generated_resources.h"
 #include "chrome/browser/content_settings/host_content_settings_map_factory.h"
 #include "chrome/browser/profiles/profile.h"
@@ -110,6 +111,10 @@ using extensions::ChromeContentBrowserClientExtensionsPart;
 
 #if !defined(OS_ANDROID)
 #include "brave/browser/new_tab/new_tab_shows_navigation_throttle.h"
+#endif
+
+#if BUILDFLAG(PRIVATE_CHANNEL_ENABLED)
+#include "brave/components/private_channel/client_private_channel.h"
 #endif
 
 namespace {

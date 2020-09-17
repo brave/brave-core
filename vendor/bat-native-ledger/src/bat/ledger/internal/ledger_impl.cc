@@ -503,6 +503,15 @@ void LedgerImpl::RecoverWallet(
 void LedgerImpl::SetPublisherExclude(
     const std::string& publisher_id,
     const type::PublisherExclude& exclude,
+void LedgerImpl::OnTimer(uint32_t timer_id) {
+  bat_contribution_->OnTimer(timer_id);
+  bat_publisher_->OnTimer(timer_id);
+  bat_promotion_->OnTimer(timer_id);
+  bat_api_->OnTimer(timer_id);
+}
+
+void LedgerImpl::SaveRecurringTip(
+    ledger::RecurringTipPtr info,
     ledger::ResultCallback callback) {
   publisher()->SetPublisherExclude(publisher_id, exclude, callback);
 }

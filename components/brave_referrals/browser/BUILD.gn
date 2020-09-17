@@ -24,6 +24,7 @@ source_set("browser") {
       "//content/public/browser",
       "//net",
       "//services/network/public/cpp",
+      "//brave/components/private_channel",
     ]
 
     if (is_android) {

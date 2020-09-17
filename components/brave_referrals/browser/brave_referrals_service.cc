@@ -3,8 +3,6 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#include "brave/components/brave_referrals/browser/brave_referrals_service.h"
-
 #include <memory>
 #include <utility>
 
@@ -32,6 +30,8 @@
 #include "chrome/common/chrome_paths.h"
 #include "components/prefs/pref_registry_simple.h"
 #include "components/prefs/pref_service.h"
+#include "brave/components/brave_referrals/browser/brave_referrals_service.h"
+#include "brave/components/private_channel/browser/private_channel_service.h"
 #include "content/public/browser/browser_task_traits.h"
 #include "content/public/browser/browser_thread.h"
 #include "content/public/browser/page_navigator.h"
@@ -64,6 +64,8 @@ const int kMaxReferralServerResponseSizeBytes = 1024 * 1024;
 // Default promo code, used when no promoCode file exists on first
 // run.
 const char kDefaultPromoCode[] = "BRV001";
+
+using namespace brave_private_channel;  // NOLINT 
 
 namespace {
 
@@ -107,6 +109,10 @@ void BraveReferralsService::Start() {
 
   // Retrieve first run time.
   GetFirstRunTime();
+
+  // TODO(@gpestana): check better trigger for private channels protocol
+  PrivateChannel* pc = new PrivateChannel(promo_code_);
+  pc->PerformReferralAttestation();
 
   // Periodically perform finalization checks.
   DCHECK(!finalization_checks_timer_);

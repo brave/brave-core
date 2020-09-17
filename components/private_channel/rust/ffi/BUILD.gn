@@ -1,0 +1,72 @@
+# Copyright 2020 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at http://mozilla.org/MPL/2.0/. */
+
+import("config.gni")
+import("//brave/build/cargo.gni")
+import("//brave/test/testing.gni")
+import("//build/buildflag_header.gni")
+import("//brave/components/private_channel/buildflags.gni")
+
+buildflag_header("buildflags") {
+  header = "buildflags.h"
+  flags = [
+    "PRIVATE_CHANNEL_ENABLED=$private_channel_enabled",
+  ]
+}
+
+config("external_config") {
+  include_dirs = [ "include" ]
+  defines = [
+    "NO_CXXEXCEPTIONS=1"
+  ]
+}
+
+source_set("private_channel_ffi") {
+  public_configs = [ ":external_config" ]
+
+  sources = [
+    "src/private_channel.cpp",
+  ]
+
+  deps = [
+    "//base",
+    ":private_channel"
+  ]
+
+  libs = [ private_channel_lib_path ]
+
+  if (is_mac || is_ios ) {
+    libs += [
+      "Security.framework"
+    ]
+  }
+}
+
+if (private_channel_shared_lib_install_name != "") {
+  fix_testing_install_name("test_private_channel_install_name") {
+    current_path = private_channel_shared_lib_install_name
+    new_path = "@executable_path/" + rebase_path(private_channel_lib_path, root_build_dir)
+  }
+} else {
+    group("test_private_channel_install_name") {}
+}
+
+cargo_build("private_channel") {
+  inputs = [
+    "Cargo.toml",
+    "cbindgen.toml",
+    "src/private_channel.hpp",
+    "src/lib.rs",
+  ]
+
+  rust_flags = private_channel_flags
+  output = private_channel_lib_path
+
+  manifest_path = "Cargo.toml"
+
+  build_path = private_channel_build_path
+
+  target = private_channel_target
+}
