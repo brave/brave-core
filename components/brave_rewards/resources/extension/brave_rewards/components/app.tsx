@@ -56,10 +56,6 @@ export class RewardsPanel extends React.Component<Props, State> {
   startRewards = () => {
     this.getCurrentTab(this.onCurrentTab)
 
-    chrome.braveRewards.getAnonWalletStatus((result: RewardsExtension.Result) => {
-      this.props.actions.onAnonWalletStatus(result)
-    })
-
     chrome.braveRewards.getAllNotifications((list: RewardsExtension.Notification[]) => {
       this.props.actions.onAllNotifications(list)
     })
@@ -199,9 +195,7 @@ export class RewardsPanel extends React.Component<Props, State> {
       tabId: tab.id
     })
 
-    if (this.props.rewardsPanelData.walletCreated) {
-      this.getTabData()
-    }
+    this.getTabData()
   }
 
   get actions () {

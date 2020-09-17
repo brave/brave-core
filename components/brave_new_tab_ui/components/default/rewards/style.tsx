@@ -14,10 +14,6 @@ interface StyleProps {
   isInTab?: boolean
 }
 
-interface WidgetProps {
-  isEnabled: boolean
-}
-
 const Base = styled('div')`
   overflow-x: hidden;
   color: white;
@@ -25,13 +21,13 @@ const Base = styled('div')`
   width: 284px;
 `
 
-export const WidgetWrapper = styled(Base)<WidgetProps>`
+export const WidgetWrapper = styled(Base)`
   position: relative;
   /* Show a 1x1 grid with all items overlapping.
       This makes sure that our layered notifications increase the height of the
       whole widget. Absolute positioning would not accomplish that. */
   display: grid;
-  background: ${p => p.isEnabled ? palette.neutral900 : 'linear-gradient(140deg, #392DD1 0%, #8E2995 100%)'};
+  background: ${palette.neutral900};
   border-radius: 6px;
 `
 
@@ -62,13 +58,6 @@ export const RewardsTitle = styled<StyleProps, 'div'>('div')`
   font-family: Poppins, sans-serif;
 `
 
-export const ServiceText = styled<{}, 'span'>('span')`
-  color: #fff;
-  font-size: 12px;
-  letter-spacing: 0;
-  line-height: 1.5;
-`
-
 export const ServiceLink = styled<{}, 'a'>('a')`
   color: ${p => p.theme.color.brandBrave};
   font-weight: 600;
@@ -80,30 +69,12 @@ export const LearnMoreText = styled<{}, 'div'>('div')`
   margin-top: 34px;
 `
 
-export const PreOptInInfo = styled<{}, 'div'>('div')`
-  margin-top: 14px;
-`
-
 export const Title = styled<{ isGrant?: boolean}, 'span'>('span')`
   font-size: ${p => p.isGrant ? 16 : 14}px;
   display: block;
   font-family: ${p => p.theme.fontFamily.heading};
   line-height: 1.5;
   font-weight: 500;
-`
-
-export const LearnMoreTextButton = styled('a')`
-  display: block;
-  margin-top: 16px;
-  font-size: 14px;
-  line-height: 1.5;
-  font-weight: 600;
-  font-family: ${p => p.theme.fontFamily.body};
-  color: white;
-  text-decoration: none;
-  :hover {
-    text-decoration: underline;
-  }
 `
 
 export const SubTitle = styled<{}, 'span'>('span')`
@@ -121,11 +92,6 @@ export const SubTitleLink = styled<{}, 'a'>('a')`
   &:hover {
     text-decoration: underline;
   }
-`
-
-export const PreOptInAction = styled<{}, 'div'>('div')`
-  margin-top: 30px;
-  text-align: center;
 `
 
 export const TurnOnButton = styled<{}, 'button'>('button')`

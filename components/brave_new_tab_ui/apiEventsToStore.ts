@@ -67,18 +67,8 @@ export function rewardsInitData () {
   getRewardsPreInitialData()
   .then((preInitialRewardsData) => {
     getActions().setPreInitialRewardsData(preInitialRewardsData)
-
-    chrome.braveRewards.getWalletExists((exists: boolean) => {
-      getActions().onWalletExists(exists)
-      if (exists) {
-        if (!preInitialRewardsData.enabledMain) {
-          return
-        }
-
-        fetchCreatedWalletData()
-        setRewardsFetchInterval()
-      }
-    })
+    fetchRewardsData()
+    setRewardsFetchInterval()
   })
   .catch(e => {
     console.error('Error fetching pre-initial rewards data: ', e)
@@ -101,20 +91,11 @@ function binanceInitData () {
 
 function setRewardsFetchInterval () {
   window.setInterval(() => {
-    chrome.braveRewards.getRewardsMainEnabled((enabledMain: boolean) => {
-      if (!enabledMain) {
-        return
-      }
-      chrome.braveRewards.getWalletExists((exists: boolean) => {
-        if (exists) {
-          fetchCreatedWalletData()
-        }
-      })
-    })
+    fetchRewardsData()
   }, 30000)
 }
 
-function fetchCreatedWalletData () {
+function fetchRewardsData () {
   chrome.braveRewards.isInitialized((initialized: boolean) => {
     if (!initialized) {
       return
@@ -130,26 +111,8 @@ function fetchCreatedWalletData () {
   })
 }
 
-chrome.braveRewards.walletCreated.addListener(() => {
-  getActions().onWalletInitialized(12)
-})
-
-chrome.braveRewards.walletCreationFailed.addListener((result: any | NewTab.RewardsResult) => {
-  getActions().onWalletInitialized(result)
-})
-
 chrome.braveRewards.initialized.addListener((result: any | NewTab.RewardsResult) => {
   rewardsInitData()
-})
-
-chrome.braveRewards.onEnabledMain.addListener((enabledMain: boolean) => {
-  if (enabledMain) {
-    chrome.braveRewards.getAdsEnabled((enabledAds: boolean) => {
-      getActions().onEnabledMain(enabledMain, enabledAds)
-    })
-  } else {
-    getActions().onEnabledMain(false, false)
-  }
 })
 
 chrome.braveRewards.onAdsEnabled.addListener((enabled: boolean) => {
