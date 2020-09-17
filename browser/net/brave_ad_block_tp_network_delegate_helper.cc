@@ -15,8 +15,6 @@
 #include "brave/browser/brave_browser_process_impl.h"
 #include "brave/browser/net/url_context.h"
 #include "brave/common/network_constants.h"
-#include "brave/components/brave_shields/browser/ad_block_custom_filters_service.h"
-#include "brave/components/brave_shields/browser/ad_block_regional_service_manager.h"
 #include "brave/components/brave_shields/browser/ad_block_service.h"
 #include "brave/components/brave_shields/browser/brave_shields_util.h"
 #include "brave/components/brave_shields/browser/brave_shields_web_contents_observer.h"
@@ -42,44 +40,16 @@ void ShouldBlockAdOnTaskRunner(std::shared_ptr<BraveRequestInfo> ctx,
           ctx->request_url, ctx->resource_type, tab_host, &did_match_exception,
           &ctx->cancel_request_explicitly, &ctx->mock_data_url)) {
     ctx->blocked_by = kAdBlocked;
-  } else if (!did_match_exception &&
-             !g_brave_browser_process->ad_block_regional_service_manager()
-                  ->ShouldStartRequest(ctx->request_url, ctx->resource_type,
-                                       tab_host, &did_match_exception,
-                                       &ctx->cancel_request_explicitly,
-                                       &ctx->mock_data_url)) {
-    ctx->blocked_by = kAdBlocked;
-  } else if (!did_match_exception &&
-             !g_brave_browser_process->ad_block_custom_filters_service()
-                  ->ShouldStartRequest(ctx->request_url, ctx->resource_type,
-                                       tab_host, &did_match_exception,
-                                       &ctx->cancel_request_explicitly,
-                                       &ctx->mock_data_url)) {
-    ctx->blocked_by = kAdBlocked;
-  } else if (canonical_name && ctx->request_url.host() != *canonical_name) {
+  } else if (!did_match_exception
+             && canonical_name && ctx->request_url.host() != *canonical_name) {
     GURL::Replacements replacements = GURL::Replacements();
     replacements.SetHost(canonical_name->c_str(),
         url::Component(0, static_cast<int>(canonical_name->length())));
     const GURL canonical_url = ctx->request_url.ReplaceComponents(replacements);
 
-    if (!did_match_exception &&
-        !g_brave_browser_process->ad_block_service()->ShouldStartRequest(
+    if (!g_brave_browser_process->ad_block_service()->ShouldStartRequest(
             canonical_url, ctx->resource_type, tab_host, &did_match_exception,
             &ctx->cancel_request_explicitly, &ctx->mock_data_url)) {
-      ctx->blocked_by = kAdBlocked;
-    } else if (!did_match_exception &&
-               !g_brave_browser_process->ad_block_regional_service_manager()
-                    ->ShouldStartRequest(canonical_url, ctx->resource_type,
-                                         tab_host, &did_match_exception,
-                                         &ctx->cancel_request_explicitly,
-                                         &ctx->mock_data_url)) {
-      ctx->blocked_by = kAdBlocked;
-    } else if (!did_match_exception &&
-               !g_brave_browser_process->ad_block_custom_filters_service()
-                    ->ShouldStartRequest(canonical_url, ctx->resource_type,
-                                         tab_host, &did_match_exception,
-                                         &ctx->cancel_request_explicitly,
-                                         &ctx->mock_data_url)) {
       ctx->blocked_by = kAdBlocked;
     }
   }
