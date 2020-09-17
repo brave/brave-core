@@ -80,7 +80,8 @@
       "endAt": "<time:distant_future>",
       "dailyCap": 10,
       "advertiserId": "a437c7f3-9a48-4fe8-b37b-99321bea93fe",
-      "priority": 1
+      "priority": 1,
+      "ptr": 1.0
     },
     {
       "creativeSets": [
@@ -137,7 +138,7 @@
       "dailyCap": 10,
       "advertiserId": "db3f5832-ce6a-401d-b8ba-8be4a67137a0",
       "priority": 1,
-      "ptr": 0.5
+      "ptr": 1.0
     }
   ],
   "catalogId": "29e5c8bc0ba319069980bb390d8e8f9b58c05a20"

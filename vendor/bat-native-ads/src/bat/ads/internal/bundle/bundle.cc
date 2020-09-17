@@ -165,6 +165,7 @@ std::unique_ptr<BundleState> Bundle::GenerateFromCatalog(
         info.daily_cap = campaign.daily_cap;
         info.advertiser_id = campaign.advertiser_id;
         info.priority = campaign.priority;
+        info.ptr = campaign.ptr;
         info.conversion =
             creative_set.ad_conversions.size() != 0 ? true : false;
         info.per_day = creative_set.per_day;
