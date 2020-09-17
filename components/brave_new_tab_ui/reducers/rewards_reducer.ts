@@ -154,7 +154,7 @@ const rewardsReducer: Reducer<NewTab.State | undefined> = (state: NewTab.State, 
         ...state,
         rewardsState: {
           ...state.rewardsState,
-          enabledAds: false,
+          enabledAds: false
         }
       }
       break

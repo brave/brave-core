@@ -13,7 +13,7 @@ import { General } from './general'
 import { EventLogs } from './event_logs'
 import { Log } from './log'
 import { Tabs } from 'brave-ui/components'
-import { Wrapper, MainTitle, DisabledContent, Disclaimer } from '../style'
+import { Wrapper, MainTitle, Disclaimer } from '../style'
 
 // Utils
 import { getLocale } from '../../../../common/locale'
@@ -37,18 +37,8 @@ export class RewardsInternalsPage extends React.Component<Props, State> {
   }
 
   componentDidMount () {
-    // Process is not started until rewards is on,
-    // so we need to first check if rewards is on before we do anything
-    this.actions.getRewardsEnabled()
-  }
-
-  componentDidUpdate (prevProps: Props, prevState: State) {
-    if (
-      !prevProps.rewardsInternalsData.isRewardsEnabled &&
-      this.props.rewardsInternalsData.isRewardsEnabled
-    ) {
-      this.getGeneralInfo()
-    }
+    // TODO we probably need to init first
+    this.getGeneralInfo()
   }
 
   get actions () {
@@ -113,17 +103,7 @@ export class RewardsInternalsPage extends React.Component<Props, State> {
   }
 
   render () {
-    const { isRewardsEnabled, contributions, promotions, log, fullLog, eventLogs } = this.props.rewardsInternalsData
-
-    if (!isRewardsEnabled) {
-      return (
-        <Wrapper id='rewardsInternalsPage'>
-          <MainTitle level={2}>{getLocale('mainTitle')}</MainTitle>
-          <DisabledContent>
-            {getLocale('rewardsNotEnabled')} <a href='chrome://rewards' target='_blank'>brave://rewards</a>
-          </DisabledContent>
-        </Wrapper>)
-    }
+    const { contributions, promotions, log, fullLog, eventLogs } = this.props.rewardsInternalsData
 
     return (
       <Wrapper id='rewardsInternalsPage'>

@@ -19,29 +19,6 @@ describe('rewardsPage component', () => {
     })
   })
 
-  describe('mapDispatchToProps', () => {
-    it('should fire walletCreated', () => {
-      const dispatch = jest.fn()
-
-      mapDispatchToProps(dispatch).actions.onWalletCreated()
-      expect(dispatch.mock.calls[0][0]).toEqual({
-        type: types.WALLET_CREATED,
-        meta: undefined,
-        payload: undefined
-      })
-    })
-    it('should fire walletCreateFailed', () => {
-      const dispatch = jest.fn()
-
-      mapDispatchToProps(dispatch).actions.onWalletCreateFailed()
-      expect(dispatch.mock.calls[0][0]).toEqual({
-        type: types.WALLET_CREATE_FAILED,
-        meta: undefined,
-        payload: undefined
-      })
-    })
-  })
-
   describe('rewardsPage dumb component', () => {
     it('renders the component', () => {
       const wrapper = shallow(

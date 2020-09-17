@@ -30,56 +30,6 @@ describe('wallet reducer', () => {
     })
   })
 
-  describe('CREATE_WALLET_REQUESTED', () => {
-    it('calls createWalletRequested', () => {
-      // TODO: mock chrome.send and use jest.spyOn()
-    })
-  })
-
-  describe('WALLET_CREATED', () => {
-    it('wallet created', () => {
-      const assertion = reducers(undefined, {
-        type: types.WALLET_CREATED,
-        payload: {
-          walletCreateFailed: false,
-          walletCreated: true
-        }
-      })
-
-      const expectedState: Rewards.State = { ...defaultState }
-      expectedState.walletCreated = true
-      expectedState.enabledMain = true
-      expectedState.createdTimestamp = constantDate.getTime()
-      expectedState.enabledAds = true
-      expectedState.enabledContribute = true
-      expectedState.initializing = false
-
-      expect(assertion).toEqual({
-        rewardsData: expectedState
-      })
-    })
-  })
-
-  describe('WALLET_CREATE_FAILED', () => {
-    it('wallet failed', () => {
-      const assertion = reducers(undefined, {
-        type: types.WALLET_CREATE_FAILED,
-        payload: {
-          walletCreateFailed: true,
-          walletCreated: false
-        }
-      })
-
-      const expectedState: Rewards.State = { ...defaultState }
-      expectedState.walletCreateFailed = true
-      expectedState.initializing = false
-
-      expect(assertion).toEqual({
-        rewardsData: expectedState
-      })
-    })
-  })
-
   describe('ON_RECOVER_WALLET_DATA', () => {
     let chromeSpy: jest.SpyInstance
 
@@ -124,8 +74,7 @@ describe('wallet reducer', () => {
         ui: {
           ...defaultState.ui,
           emptyWallet: false,
-          modalBackup: false,
-          walletCorrupted: false
+          modalBackup: false
         }
       }
 
