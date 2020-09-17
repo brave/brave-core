@@ -6,6 +6,7 @@
 import * as preferencesAPI from './preferences'
 import * as statsAPI from './stats'
 import * as privateTabDataAPI from './privateTabData'
+import * as torTabDataAPI from './torTabData'
 import * as topSitesAPI from './topSites'
 import * as brandedWallpaper from './brandedWallpaper'
 
@@ -13,6 +14,7 @@ export type InitialData = {
   preferences: preferencesAPI.Preferences
   stats: statsAPI.Stats
   privateTabData: privateTabDataAPI.PrivateTabData
+  torTabData: torTabDataAPI.TorTabData
   topSites: chrome.topSites.MostVisitedURL[]
   defaultSuperReferralTopSites: undefined | NewTab.DefaultSuperReferralTopSite[]
   brandedWallpaperData: undefined | NewTab.BrandedWallpaper
@@ -43,6 +45,7 @@ export async function getInitialData (): Promise<InitialData> {
       preferences,
       stats,
       privateTabData,
+      torTabData,
       topSites,
       defaultSuperReferralTopSites,
       brandedWallpaperData,
@@ -52,6 +55,7 @@ export async function getInitialData (): Promise<InitialData> {
       preferencesAPI.getPreferences(),
       statsAPI.getStats(),
       privateTabDataAPI.getPrivateTabData(),
+      torTabDataAPI.getTorTabData(),
       topSitesAPI.getTopSites(),
       !isIncognito ? brandedWallpaper.getDefaultSuperReferralTopSites() : Promise.resolve(undefined),
       !isIncognito ? brandedWallpaper.getBrandedWallpaper() : Promise.resolve(undefined),
@@ -75,6 +79,7 @@ export async function getInitialData (): Promise<InitialData> {
       preferences,
       stats,
       privateTabData,
+      torTabData,
       topSites,
       defaultSuperReferralTopSites,
       brandedWallpaperData,

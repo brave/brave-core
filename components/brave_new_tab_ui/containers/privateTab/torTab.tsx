@@ -29,7 +29,24 @@ import { getLocale } from '../../../common/locale'
 // Assets
 const privateWindowImg = require('../../../img/newtab/private-window-tor.svg')
 
-export default class TorTab extends React.PureComponent<{}, {}> {
+interface Props {
+  actions: any
+  newTabData: NewTab.State
+}
+
+export default class TorTab extends React.PureComponent<Props, {}> {
+  get torStatus () {
+    if (this.props.newTabData &&
+        this.props.newTabData.torCircuitEstablished) {
+      return getLocale('torStatusConnected')
+    }
+    if (this.props.newTabData &&
+        this.props.newTabData.torInitProgress) {
+      return getLocale('torStatusInitializing',
+        { percentage: String(this.props.newTabData.torInitProgress) })
+    }
+    return getLocale('torStatusDisconnected')
+  }
   render () {
     return (
       <Grid>
@@ -74,6 +91,10 @@ export default class TorTab extends React.PureComponent<{}, {}> {
           >
             {getLocale('boxTorButton')}
           </FakeButton>
+        </Box>
+        <Box>
+          <Title>{getLocale('torStatus')}</Title>
+          <Text>{this.torStatus}</Text>
         </Box>
       </Grid>
     )

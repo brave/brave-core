@@ -5,7 +5,6 @@
 
 #include "brave/browser/ui/webui/brave_new_tab_message_handler.h"
 
-#include <string>
 #include <memory>
 #include <utility>
 
@@ -13,6 +12,8 @@
 #include "base/values.h"
 #include "brave/browser/profiles/profile_util.h"
 #include "brave/browser/search_engines/search_engine_provider_util.h"
+#include "brave/browser/tor/tor_profile_service.h"
+#include "brave/browser/tor/tor_profile_service_factory.h"
 #include "brave/browser/ui/webui/brave_new_tab_ui.h"
 #include "brave/browser/ntp_background_images/view_counter_service_factory.h"
 #include "brave/common/pref_names.h"
@@ -27,6 +28,7 @@
 #include "content/public/browser/web_ui_data_source.h"
 #include "components/prefs/pref_change_registrar.h"
 #include "components/prefs/pref_service.h"
+
 
 using ntp_background_images::features::kBraveNTPBrandedWallpaper;
 using ntp_background_images::prefs::kNewTabPageShowBackgroundImage;
@@ -111,6 +113,14 @@ base::DictionaryValue GetPrivatePropertiesDictionary(PrefService* prefs) {
   return private_data;
 }
 
+base::DictionaryValue GetTorPropertiesDictionary(bool connected,
+                                                 const std::string& progress) {
+  base::DictionaryValue tor_data;
+  tor_data.SetBoolean("torCircuitEstablished", connected);
+  tor_data.SetString("torInitProgress", progress);
+  return tor_data;
+}
+
 }  // namespace
 
 // static
@@ -147,6 +157,9 @@ BraveNewTabMessageHandler* BraveNewTabMessageHandler::Create(
 
 BraveNewTabMessageHandler::BraveNewTabMessageHandler(Profile* profile)
     : profile_(profile) {
+  if (brave::IsTorProfile(profile)) {
+    tor_profile_service_ = TorProfileServiceFactory::GetForProfile(profile);
+  }
 }
 
 BraveNewTabMessageHandler::~BraveNewTabMessageHandler() {}
@@ -172,6 +185,11 @@ void BraveNewTabMessageHandler::RegisterMessages() {
     "getNewTabPagePrivateProperties",
     base::BindRepeating(
       &BraveNewTabMessageHandler::HandleGetPrivateProperties,
+      base::Unretained(this)));
+  web_ui()->RegisterMessageCallback(
+    "getNewTabPageTorProperties",
+    base::BindRepeating(
+      &BraveNewTabMessageHandler::HandleGetTorProperties,
       base::Unretained(this)));
   web_ui()->RegisterMessageCallback(
     "toggleAlternativePrivateSearchEngine",
@@ -264,10 +282,15 @@ void BraveNewTabMessageHandler::OnJavascriptAllowed() {
   pref_change_registrar_.Add(kNewTabPageShowGemini,
     base::Bind(&BraveNewTabMessageHandler::OnPreferencesChanged,
     base::Unretained(this)));
+
+  if (tor_profile_service_)
+    tor_profile_service_->AddObserver(this);
 }
 
 void BraveNewTabMessageHandler::OnJavascriptDisallowed() {
   pref_change_registrar_.RemoveAll();
+  if (tor_profile_service_)
+    tor_profile_service_->RemoveObserver(this);
 }
 
 void BraveNewTabMessageHandler::HandleGetPreferences(
@@ -290,6 +313,15 @@ void BraveNewTabMessageHandler::HandleGetPrivateProperties(
   AllowJavascript();
   PrefService* prefs = profile_->GetPrefs();
   auto data = GetPrivatePropertiesDictionary(prefs);
+  ResolveJavascriptCallback(args->GetList()[0], data);
+}
+
+void BraveNewTabMessageHandler::HandleGetTorProperties(
+        const base::ListValue* args) {
+  AllowJavascript();
+  auto data = GetTorPropertiesDictionary(
+      tor_profile_service_ ? tor_profile_service_->IsTorConnected() : false,
+      "");
   ResolveJavascriptCallback(args->GetList()[0], data);
 }
 
@@ -393,4 +425,15 @@ void BraveNewTabMessageHandler::OnPreferencesChanged() {
   PrefService* prefs = profile_->GetPrefs();
   auto data = GetPreferencesDictionary(prefs);
   FireWebUIListener("preferences-changed", data);
+}
+
+void BraveNewTabMessageHandler::OnTorCircuitEstablished(bool result) {
+  auto data = GetTorPropertiesDictionary(result, "");
+  FireWebUIListener("tor-tab-data-updated", data);
+}
+
+void BraveNewTabMessageHandler::OnTorInitializing(
+    const std::string& percentage) {
+  auto data = GetTorPropertiesDictionary(false, percentage);
+  FireWebUIListener("tor-tab-data-updated", data);
 }

@@ -23,9 +23,9 @@ export default class NewPrivateTabPage extends React.PureComponent<Props, {}> {
     const { newTabData, actions } = this.props
     if (newTabData.isTor) {
       if (newTabData.isQwant) {
-        return <QwantTorTab />
+        return <QwantTorTab actions={actions} newTabData={newTabData} />
       }
-      return <TorTab />
+      return <TorTab actions={actions} newTabData={newTabData} />
     }
 
     if (newTabData.isQwant) {

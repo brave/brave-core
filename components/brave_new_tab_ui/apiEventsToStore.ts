@@ -7,6 +7,7 @@ import getActions from './api/getActions'
 import * as preferencesAPI from './api/preferences'
 import * as statsAPI from './api/stats'
 import * as privateTabDataAPI from './api/privateTabData'
+import * as torTabDataAPI from './api/torTabData'
 import { getInitialData, getRewardsInitialData, getRewardsPreInitialData, getBinanceBlackList } from './api/initialData'
 
 async function updatePreferences (prefData: preferencesAPI.Preferences) {
@@ -19,6 +20,10 @@ async function updateStats (statsData: statsAPI.Stats) {
 
 async function updatePrivateTabData (data: privateTabDataAPI.PrivateTabData) {
   getActions().privateTabDataUpdated(data)
+}
+
+async function updateTorTabData (data: torTabDataAPI.TorTabData) {
+  getActions().torTabDataUpdated(data)
 }
 
 function onRewardsToggled (prefData: preferencesAPI.Preferences): void {
@@ -44,6 +49,7 @@ export function wireApiEventsToStore () {
     preferencesAPI.addChangeListener(updatePreferences)
     preferencesAPI.addChangeListener(onRewardsToggled)
     privateTabDataAPI.addChangeListener(updatePrivateTabData)
+    torTabDataAPI.addChangeListener(updateTorTabData)
   })
   .catch(e => {
     console.error('New Tab Page fatal error:', e)
