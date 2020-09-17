@@ -58,6 +58,7 @@ bool Bundle::UpdateFromCatalog(
   DeleteCampaigns();
   DeleteCategories();
   DeleteCreativeAds();
+  DeleteDayparts();
   DeleteGeoTargets();
 
   SaveCreativeAdNotifications(bundle_state->creative_ad_notifications);
@@ -104,6 +105,11 @@ void Bundle::DeleteCategories() {
 void Bundle::DeleteCreativeAds() {
   database::table::CreativeAds database_table(ads_);
   database_table.Delete(std::bind(&Bundle::OnCreativeAdsDeleted, this, _1));
+}
+
+void Bundle::DeleteDayparts() {
+  database::table::Dayparts database_table(ads_);
+  database_table.Delete(std::bind(&Bundle::OnDaypartsDeleted, this, _1));
 }
 
 void Bundle::DeleteGeoTargets() {
@@ -183,6 +189,16 @@ std::unique_ptr<BundleState> Bundle::GenerateFromCatalog(
       geo_targets.push_back(code);
     }
 
+    std::vector<CreativeDaypartInfo> creative_dayparts;
+    for (const auto& daypart : campaign.dayparts) {
+      CreativeDaypartInfo creative_daypart_info;
+      creative_daypart_info.dow = daypart.dow;
+      creative_daypart_info.start_minute = daypart.start_minute;
+      creative_daypart_info.end_minute = daypart.end_minute;
+
+      creative_dayparts.push_back(creative_daypart_info);
+    }
+
     // Creative Sets
     for (const auto& creative_set : campaign.creative_sets) {
       uint64_t entries = 0;
@@ -236,6 +252,7 @@ std::unique_ptr<BundleState> Bundle::GenerateFromCatalog(
             creative_set.ad_conversions.size() != 0 ? true : false;
         info.per_day = creative_set.per_day;
         info.total_max = creative_set.total_max;
+        info.dayparts = creative_dayparts;
         info.geo_targets = geo_targets;
         info.title = creative.payload.title;
         info.body = creative.payload.body;
@@ -318,6 +335,7 @@ std::unique_ptr<BundleState> Bundle::GenerateFromCatalog(
             creative_set.ad_conversions.size() != 0 ? true : false;
         info.per_day = creative_set.per_day;
         info.total_max = creative_set.total_max;
+        info.dayparts = creative_dayparts;
         info.geo_targets = geo_targets;
         info.company_name = creative.payload.company_name;
         info.alt = creative.payload.alt;
@@ -444,6 +462,16 @@ void Bundle::OnCreativeAdsDeleted(
   }
 
   BLOG(3, "Successfully deleted creative ads");
+}
+
+void Bundle::OnDaypartsDeleted(
+    const Result result) {
+  if (result != SUCCESS) {
+    BLOG(0, "Failed to delete dayparts");
+    return;
+  }
+
+  BLOG(3, "Successfully deleted dayparts");
 }
 
 void Bundle::OnGeoTargetsDeleted(

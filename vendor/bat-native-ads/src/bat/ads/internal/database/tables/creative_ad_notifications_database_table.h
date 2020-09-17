@@ -17,6 +17,7 @@
 #include "bat/ads/internal/database/tables/campaigns_database_table.h"
 #include "bat/ads/internal/database/tables/categories_database_table.h"
 #include "bat/ads/internal/database/tables/creative_ads_database_table.h"
+#include "bat/ads/internal/database/tables/dayparts_database_table.h"
 #include "bat/ads/internal/database/tables/geo_targets_database_table.h"
 #include "bat/ads/mojom.h"
 #include "bat/ads/result.h"
@@ -106,6 +107,7 @@ class CreativeAdNotifications : public Table {
   std::unique_ptr<Campaigns> campaigns_database_table_;
   std::unique_ptr<Categories> categories_database_table_;
   std::unique_ptr<CreativeAds> creative_ads_database_table_;
+  std::unique_ptr<Dayparts> dayparts_database_table_;
   std::unique_ptr<GeoTargets> geo_targets_database_table_;
 };
 

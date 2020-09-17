@@ -72,14 +72,19 @@ Result CatalogState::FromJson(
     }
 
     // Day parts
-    for (const auto& day_part : campaign["dayParts"].GetArray()) {
-      CatalogDayPartInfo day_part_info;
+    for (const auto& daypart : campaign["dayParts"].GetArray()) {
+      CatalogDaypartInfo daypart_info;
 
-      day_part_info.dow = day_part["dow"].GetString();
-      day_part_info.start_minute = day_part["startMinute"].GetUint();
-      day_part_info.end_minute = day_part["endMinute"].GetUint();
+      daypart_info.dow          = daypart["dow"].GetString();
+      daypart_info.start_minute = daypart["startMinute"].GetInt();
+      daypart_info.end_minute   = daypart["endMinute"].GetInt();
 
-      campaign_info.day_parts.push_back(day_part_info);
+      campaign_info.dayparts.push_back(daypart_info);
+    }
+
+    if (campaign_info.dayparts.empty()) {
+      CatalogDaypartInfo daypart_info;
+      campaign_info.dayparts.push_back(daypart_info);
     }
 
     // Creative sets
