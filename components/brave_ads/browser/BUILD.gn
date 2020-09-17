@@ -120,13 +120,12 @@ source_set("browser") {
 }
 
 source_set("testutil") {
-  # Remove when https://github.com/brave/brave-browser/issues/10650 is resolved
-  check_includes = false
   testonly = true
 
   deps = [
     ":browser",
     "//base",
+    "//brave/components/brave_rewards/browser:browser",
     "//content/public/browser",
     "//chrome/test:test_support",
     "//testing/gtest",
