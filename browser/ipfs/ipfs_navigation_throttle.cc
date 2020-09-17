@@ -18,6 +18,17 @@
 
 namespace ipfs {
 
+// static
+std::unique_ptr<IpfsNavigationThrottle>
+IpfsNavigationThrottle::MaybeCreateThrottleFor(
+    content::NavigationHandle* navigation_handle) {
+  if (!IpfsService::IsIpfsEnabled(
+      navigation_handle->GetWebContents()->GetBrowserContext()))
+    return nullptr;
+
+  return std::make_unique<IpfsNavigationThrottle>(navigation_handle);
+}
+
 IpfsNavigationThrottle::IpfsNavigationThrottle(
     content::NavigationHandle* navigation_handle)
     : content::NavigationThrottle(navigation_handle) {

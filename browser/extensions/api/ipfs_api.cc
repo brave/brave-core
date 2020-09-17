@@ -49,7 +49,8 @@ IpfsGetIPFSResolveMethodListFunction::Run() {
       l10n_util::GetStringUTF16(IDS_IPFS_RESOLVE_OPTION_GATEWAY),
       ipfs::IPFSResolveMethodTypes::IPFS_GATEWAY));
 
-  if (GetIPFSService(browser_context())->IsIPFSExecutableAvailable()) {
+  if (GetIPFSService(browser_context()) &&
+      GetIPFSService(browser_context())->IsIPFSExecutableAvailable()) {
     list.Append(MakeSelectValue(
         l10n_util::GetStringUTF16(IDS_IPFS_RESOLVE_OPTION_LOCAL),
         ipfs::IPFSResolveMethodTypes::IPFS_LOCAL));

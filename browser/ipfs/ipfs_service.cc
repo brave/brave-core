@@ -7,13 +7,18 @@
 
 #include <utility>
 
+#include "base/command_line.h"
+#include "base/feature_list.h"
 #include "base/json/json_reader.h"
 #include "base/path_service.h"
 #include "base/strings/strcat.h"
 #include "base/strings/string_util.h"
 #include "brave/browser/brave_browser_process_impl.h"
 #include "brave/browser/ipfs/ipfs_service_observer.h"
+#include "brave/browser/profiles/profile_util.h"
+#include "brave/common/brave_switches.h"
 #include "brave/common/pref_names.h"
+#include "brave/components/ipfs/browser/features.h"
 #include "brave/components/ipfs/browser/ipfs_json_parser.h"
 #include "brave/components/ipfs/common/ipfs_constants.h"
 #include "brave/grit/brave_generated_resources.h"
@@ -86,6 +91,20 @@ IpfsService::IpfsService(content::BrowserContext* context)
 }
 
 IpfsService::~IpfsService() = default;
+
+// static
+bool IpfsService::IsIpfsEnabled(content::BrowserContext* context) {
+  if (!base::FeatureList::IsEnabled(features::kIpfsFeature) ||
+      base::CommandLine::ForCurrentProcess()->HasSwitch(
+          switches::kDisableIpfsClientUpdaterExtension))
+    return false;
+
+  // IPFS is disabled for OTR profiles, Tor profiles, and guest sessions.
+  if (!brave::IsRegularProfile(context))
+    return false;
+
+  return true;
+}
 
 // static
 void IpfsService::RegisterPrefs(PrefRegistrySimple* registry) {
