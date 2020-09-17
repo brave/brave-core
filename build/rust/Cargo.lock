@@ -29,18 +29,15 @@ dependencies = [
 
 [[package]]
 name = "adblock"
-version = "0.3.1"
-source = "git+https://github.com/brave/adblock-rust?rev=1f8dd4273ebc0339babb1cc3e38bd6f14d44e7e1#1f8dd4273ebc0339babb1cc3e38bd6f14d44e7e1"
+version = "0.3.2"
+source = "git+https://github.com/brave/adblock-rust?rev=a54fcc29c3d904ffaf438501efe7708caaab4483#a54fcc29c3d904ffaf438501efe7708caaab4483"
 dependencies = [
  "base64 0.10.1",
  "bitflags",
  "flate2",
- "hashbrown",
  "idna 0.2.0",
  "itertools",
- "lazy_static",
  "lifeguard",
- "matches",
  "once_cell",
  "percent-encoding 2.1.0",
  "regex",
@@ -55,7 +52,7 @@ dependencies = [
 name = "adblock-ffi"
 version = "0.1.0"
 dependencies = [
- "adblock 0.3.1",
+ "adblock 0.3.2",
  "libc",
  "serde_json",
 ]
