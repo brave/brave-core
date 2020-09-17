@@ -42,7 +42,7 @@ var packageConfig = function(key){
 
 const getNPMConfig = (key) => {
   if (!NpmConfig) {
-    const list = run(npmCommand, ['config', 'list', '--json'], {cwd: rootDir})
+    const list = run(npmCommand, ['config', 'list', '--json', '--userconfig=' + path.join(rootDir, '.npmrc')])
     NpmConfig = JSON.parse(list.stdout.toString())
   }
 
@@ -347,6 +347,16 @@ Config.prototype.buildArgs = function () {
     // https://github.com/brave/brave-browser/issues/10334
     args.dcheck_always_on = this.isDebug()
 
+    // args.ios_chrome_links_with_material_components_framework = false
+    args.ios_enable_content_widget_extension = false
+    args.ios_enable_search_widget_extension = false
+    args.ios_enable_share_extension = false
+    args.ios_enable_credential_provider_extension = false
+
+  // # Label of the target providing implementation for AccountVerificationProvider.
+  // # Overridden when using the Google-internal repository to build Chrome on iOS.
+  // ios_account_verification_provider_target = "//ios/chrome/credential_provider_extension:account_verification_provider_implementation"
+
     delete args.safebrowsing_api_endpoint
     delete args.updater_prod_endpoint
     delete args.updater_dev_endpoint
@@ -365,7 +375,6 @@ Config.prototype.buildArgs = function () {
     delete args.binance_client_id
     delete args.gemini_client_id
     delete args.gemini_client_secret
-    delete args.brave_services_key
     delete args.webcompat_report_api_endpoint
   }
 

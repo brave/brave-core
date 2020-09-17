@@ -24,6 +24,8 @@
 
 #import "RewardsLogging.h"
 
+//base::SingleThreadTaskExecutor* g_task_executor = nullptr;
+
 #define BATClassAdsBridge(__type, __objc_getter, __objc_setter, __cpp_var) \
   + (__type)__objc_getter { return ads::__cpp_var; } \
   + (void)__objc_setter:(__type)newValue { ads::__cpp_var = newValue; }
