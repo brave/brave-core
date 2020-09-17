@@ -41,6 +41,7 @@ const char kReferralHeaders[] = "brave.referral.headers";
 const char kReferralAndroidFirstRunTimestamp[] =
     "brave.referral_android_first_run_timestamp";
 const char kHTTPSEVerywhereControlType[] = "brave.https_everywhere_default";
+const char kMigratedHTTPSEverywhere6[] = "brave.https_everywhere.migrated6";
 const char kNoScriptControlType[] = "brave.no_script_default";
 const char kShieldsAdvancedViewEnabled[] =
     "brave.shields.advanced_view_enabled";

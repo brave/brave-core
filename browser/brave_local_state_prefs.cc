@@ -14,6 +14,7 @@
 #include "brave/components/brave_referrals/buildflags/buildflags.h"
 #include "brave/components/brave_shields/browser/ad_block_service.h"
 #include "brave/components/brave_shields/browser/brave_shields_p3a.h"
+#include "brave/components/brave_shields/browser/https_everywhere_service.h"
 #include "brave/components/ntp_background_images/browser/ntp_background_images_service.h"
 #include "brave/components/p3a/brave_p3a_service.h"
 #include "brave/components/p3a/buildflags.h"
@@ -43,6 +44,7 @@ namespace brave {
 
 void RegisterLocalStatePrefs(PrefRegistrySimple* registry) {
   brave_shields::RegisterPrefsForAdBlockService(registry);
+  brave_shields::RegisterPrefsForHTTPSEverywhereService(registry);
   RegisterPrefsForBraveStatsUpdater(registry);
   ntp_background_images::NTPBackgroundImagesService::RegisterLocalStatePrefs(
       registry);
