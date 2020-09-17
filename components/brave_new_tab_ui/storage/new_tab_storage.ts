@@ -28,6 +28,8 @@ export const defaultState: NewTab.State = {
   geminiSupported: false,
   isIncognito: chrome.extension.inIncognitoContext,
   useAlternativePrivateSearchEngine: false,
+  torCircuitEstablished: false,
+  torInitProgress: '',
   isTor: false,
   isQwant: false,
   stats: {

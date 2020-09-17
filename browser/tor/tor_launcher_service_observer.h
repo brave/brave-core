@@ -6,6 +6,8 @@
 #ifndef BRAVE_BROWSER_TOR_TOR_LAUNCHER_SERVICE_OBSERVER_H_
 #define BRAVE_BROWSER_TOR_TOR_LAUNCHER_SERVICE_OBSERVER_H_
 
+#include <string>
+
 #include "base/observer_list_types.h"
 
 namespace tor {
@@ -17,6 +19,8 @@ class TorLauncherServiceObserver : public base::CheckedObserver {
   virtual void OnTorLauncherCrashed() {}
   virtual void OnTorCrashed(int64_t pid) {}
   virtual void OnTorLaunched(bool result, int64_t pid) {}
+  virtual void OnTorCircuitEstablished(bool result) {}
+  virtual void OnTorInitializing(const std::string& percentage) {}
 };
 
 }  // namespace tor

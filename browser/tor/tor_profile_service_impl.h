@@ -7,6 +7,7 @@
 #define BRAVE_BROWSER_TOR_TOR_PROFILE_SERVICE_IMPL_H_
 
 #include <memory>
+#include <string>
 
 #include "base/memory/weak_ptr.h"
 #include "base/optional.h"
@@ -38,7 +39,7 @@ class TorProfileServiceImpl : public TorProfileService,
   // TorProfileService:
   void SetNewTorCircuit(content::WebContents* web_contents) override;
   std::unique_ptr<net::ProxyConfigService> CreateProxyConfigService() override;
-  bool IsTorLaunched() override;
+  bool IsTorConnected() override;
   void SetTorLaunchedForTest() override;
 
   void KillTor();
@@ -47,6 +48,9 @@ class TorProfileServiceImpl : public TorProfileService,
   void NotifyTorLauncherCrashed();
   void NotifyTorCrashed(int64_t pid);
   void NotifyTorLaunched(bool result, int64_t pid);
+  void NotifyTorNewProxyURI(const std::string& uri);
+  void NotifyTorCircuitEstablished(bool result);
+  void NotifyTorInitializing(const std::string& percentage);
 
  private:
   void LaunchTor();

@@ -29,14 +29,13 @@ class TorLauncherImpl : public tor::mojom::TorLauncher {
   void Launch(const TorConfig& config,
               LaunchCallback callback) override;
   void SetCrashHandler(SetCrashHandlerCallback callback) override;
-  void ReLaunch(const TorConfig& config,
-              ReLaunchCallback callback) override;
  private:
   void MonitorChild();
   void Cleanup();
 
   SetCrashHandlerCallback crash_handler_callback_;
   std::unique_ptr<base::Thread> child_monitor_thread_;
+  scoped_refptr<base::SequencedTaskRunner> main_task_runner_;
   base::Process tor_process_;
   mojo::Receiver<tor::mojom::TorLauncher> receiver_;
   bool in_shutdown_ = false;

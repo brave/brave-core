@@ -6,6 +6,9 @@
 #ifndef BRAVE_BROWSER_UI_WEBUI_BRAVE_NEW_TAB_MESSAGE_HANDLER_H_
 #define BRAVE_BROWSER_UI_WEBUI_BRAVE_NEW_TAB_MESSAGE_HANDLER_H_
 
+#include <string>
+
+#include "brave/browser/tor/tor_launcher_service_observer.h"
 #include "components/prefs/pref_change_registrar.h"
 #include "content/public/browser/web_ui_message_handler.h"
 
@@ -13,9 +16,13 @@ class Profile;
 namespace content {
 class WebUIDataSource;
 }
+namespace tor {
+class TorProfileService;
+}  // namespace tor
 
 // Handles messages to and from the New Tab Page javascript
-class BraveNewTabMessageHandler : public content::WebUIMessageHandler {
+class BraveNewTabMessageHandler : public content::WebUIMessageHandler,
+                                  public tor::TorLauncherServiceObserver {
  public:
   explicit BraveNewTabMessageHandler(Profile* profile);
   ~BraveNewTabMessageHandler() override;
@@ -32,6 +39,7 @@ class BraveNewTabMessageHandler : public content::WebUIMessageHandler {
   void HandleGetPreferences(const base::ListValue* args);
   void HandleGetStats(const base::ListValue* args);
   void HandleGetPrivateProperties(const base::ListValue* args);
+  void HandleGetTorProperties(const base::ListValue* args);
   void HandleSaveNewTabPagePref(const base::ListValue* args);
   void HandleToggleAlternativeSearchEngineProvider(
       const base::ListValue* args);
@@ -43,9 +51,14 @@ class BraveNewTabMessageHandler : public content::WebUIMessageHandler {
   void OnPreferencesChanged();
   void OnPrivatePropertiesChanged();
 
+  // tor::TorLauncherServiceObserver:
+  void OnTorCircuitEstablished(bool result) override;
+  void OnTorInitializing(const std::string& percentage) override;
+
   PrefChangeRegistrar pref_change_registrar_;
   // Weak pointer.
   Profile* profile_;
+  tor::TorProfileService* tor_profile_service_ = nullptr;
 
   DISALLOW_COPY_AND_ASSIGN(BraveNewTabMessageHandler);
 };

@@ -37,7 +37,7 @@ class TorNavigationThrottle : public content::NavigationThrottle,
                            DeferUntilTorProcessLaunched);
 
   // TorLauncherServiceObserver:
-  void OnTorLaunched(bool result, int64_t pid) override;
+  void OnTorCircuitEstablished(bool result) override;
 
   bool resume_pending_ = false;
   TorProfileService* tor_profile_service_ = nullptr;
