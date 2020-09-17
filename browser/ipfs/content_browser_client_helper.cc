@@ -9,6 +9,7 @@
 #include <utility>
 
 #include "base/task/post_task.h"
+#include "brave/browser/ipfs/ipfs_service.h"
 #include "brave/common/url_constants.h"
 #include "brave/common/pref_names.h"
 #include "brave/components/ipfs/browser/translate_ipfs_uri.h"
@@ -29,7 +30,8 @@ bool IsIPFSDisabled(content::BrowserContext* browser_context) {
   auto* prefs = user_prefs::UserPrefs::Get(browser_context);
   auto resolve_method = static_cast<ipfs::IPFSResolveMethodTypes>(
       prefs->GetInteger(kIPFSResolveMethod));
-  return resolve_method == ipfs::IPFSResolveMethodTypes::IPFS_DISABLED;
+  return resolve_method == ipfs::IPFSResolveMethodTypes::IPFS_DISABLED ||
+         !ipfs::IpfsService::IsIpfsEnabled(browser_context);
 }
 
 bool IsIPFSLocalGateway(content::BrowserContext* browser_context) {
