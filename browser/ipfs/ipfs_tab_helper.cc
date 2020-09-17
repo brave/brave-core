@@ -9,6 +9,7 @@
 
 #include "brave/browser/brave_browser_process_impl.h"
 #include "brave/browser/infobars/ipfs_infobar_delegate.h"
+#include "brave/browser/ipfs/ipfs_service.h"
 #include "brave/common/pref_names.h"
 #include "brave/components/ipfs/common/ipfs_constants.h"
 #include "brave/components/ipfs/common/ipfs_utils.h"
@@ -25,6 +26,15 @@ IPFSTabHelper::~IPFSTabHelper() = default;
 IPFSTabHelper::IPFSTabHelper(content::WebContents* web_contents)
     : content::WebContentsObserver(web_contents) {
   pref_service_ = user_prefs::UserPrefs::Get(web_contents->GetBrowserContext());
+}
+
+// static
+void IPFSTabHelper::MaybeCreateForWebContents(
+    content::WebContents* web_contents) {
+  if (!ipfs::IpfsService::IsIpfsEnabled(web_contents->GetBrowserContext()))
+    return;
+
+  CreateForWebContents(web_contents);
 }
 
 void IPFSTabHelper::UpdateActiveState(content::NavigationHandle* handle) {
