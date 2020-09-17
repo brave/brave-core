@@ -1,0 +1,38 @@
+# Copyright (c) 2019 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this
+# file, You can obtain one at http://mozilla.org/MPL/2.0/.
+
+import("//build/config/ios/rules.gni")
+
+config("internal_config") {
+  cflags = [
+    "-fobjc-abi-version=2",
+    "-fobjc-legacy-dispatch",
+    "-Wno-objc-property-synthesis",
+    "-Wno-sign-compare",
+  ]
+
+  include_dirs = [
+    "."
+  ]
+}
+
+source_set("keyed_service") {
+  configs += [ ":internal_config" ]
+  configs += [ "//build/config/compiler:enable_arc" ]
+  configs -= [ "//build/config/gcc:symbol_visibility_hidden" ]
+
+  sources = [
+    "browser_state_keyed_service_factory.h",
+    "browser_state_keyed_service_factory.cc",
+    "browser_state_dependency_manager.h",
+    "browser_state_dependency_manager.cc",
+  ]
+
+  deps = [
+    "//base",
+    "//components/bookmarks/browser",
+    "//components/keyed_service/core"
+  ]
+}

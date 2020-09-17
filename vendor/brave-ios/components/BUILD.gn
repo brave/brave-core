@@ -1,0 +1,50 @@
+# Copyright (c) 2019 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this
+# file, You can obtain one at http://mozilla.org/MPL/2.0/.
+
+import("//build/config/ios/rules.gni")
+
+config("internal_config") {
+  cflags = [
+    "-fobjc-weak",
+    "-fobjc-abi-version=2",
+    "-fobjc-legacy-dispatch",
+    "-Wno-objc-property-synthesis",
+    "-Wno-sign-compare",
+  ]
+
+  include_dirs = [
+    ".",
+    "bookmarks",
+    "brave_sync",
+    "bookmark_sync_service",
+    "user_prefs",
+    "prefs_service",
+    "browser_state",
+    "context",
+    "keyed_service"
+  ]
+}
+
+source_set("components") {
+  configs += [ ":internal_config" ]
+  configs += [ "//build/config/compiler:enable_arc" ]
+  configs -= [ "//build/config/gcc:symbol_visibility_hidden" ]
+
+  sources = [
+    "Bookmarks.mm",
+    "Bookmarks.h",
+  ]
+
+  deps = [
+    "//base",
+    "bookmarks",
+    "brave_sync",
+    "bookmark_sync_service",
+    "user_prefs",
+    "browser_state",
+    "context",
+    "keyed_service"
+  ]
+}

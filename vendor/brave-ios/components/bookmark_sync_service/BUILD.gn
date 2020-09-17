@@ -1,0 +1,38 @@
+# Copyright (c) 2019 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this
+# file, You can obtain one at http://mozilla.org/MPL/2.0/.
+
+import("//build/config/ios/rules.gni")
+
+config("internal_config") {
+  cflags = [
+    "-fobjc-abi-version=2",
+    "-fobjc-legacy-dispatch",
+    "-Wno-objc-property-synthesis",
+    "-Wno-sign-compare",
+  ]
+
+  include_dirs = [
+    "."
+  ]
+}
+
+source_set("bookmark_sync_service") {
+  configs += [ ":internal_config" ]
+  configs += [ "//build/config/compiler:enable_arc" ]
+  configs -= [ "//build/config/gcc:symbol_visibility_hidden" ]
+
+  sources = [
+    "bookmark_sync_service_factory.h",
+    "bookmark_sync_service_factory.cc",
+    "bookmark_undo_service_factory.h",
+    "bookmark_undo_service_factory.cc",
+  ]
+
+  deps = [
+    "//base",
+    "//components/sync_bookmarks",
+    "//components/keyed_service/core"
+  ]
+}

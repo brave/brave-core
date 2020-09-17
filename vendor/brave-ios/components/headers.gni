@@ -1,0 +1,3 @@
+brave_components_public_headers = [
+  "//brave/vendor/brave-ios/components/Bookmarks.h"
+]
