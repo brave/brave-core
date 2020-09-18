@@ -4,7 +4,7 @@
 
 import * as React from 'react'
 
-import { LocaleContext } from '../localeContext'
+import { LocaleContext, getLocaleTags } from '../localeContext'
 import { DialogTitle } from '../dialogTitle'
 import { FormSection } from '../formSection'
 import { CreditCardForm, CreditCardFormHandle, CreditCardDetails } from '../creditCardForm'
@@ -119,6 +119,8 @@ export function AddFundsPanel (props: AddFundsPanelProps) {
     }
   }
 
+  const tags = getLocaleTags(locale.get('addFundsTermsOfSale'))
+
   return (
     <>
       <DialogTitle>{locale.get('addFundsTitle')}</DialogTitle>
@@ -165,7 +167,11 @@ export function AddFundsPanel (props: AddFundsPanelProps) {
         />
       </PurchaseButtonRow>
       <TermsOfSale>
-        <span dangerouslySetInnerHTML={{ __html: locale.get('addFundsTermsOfSale') }} />
+        <span>
+          {tags.beforeTag}
+          <a href='javascript:void 0'>{tags.duringTag}</a>
+          {tags.afterTag}
+        </span>
       </TermsOfSale>
     </>
   )

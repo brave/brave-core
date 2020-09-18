@@ -13,12 +13,11 @@ import {
 import Modal from 'brave-ui/components/popupModals/modal/index'
 import { LoaderIcon } from 'brave-ui/components/icons'
 import { Button } from 'brave-ui/components'
+import { splitStringForTag } from '../../../../../common/locale'
 
 export interface Props {
   id?: string
-  errorText?: {
-    __html: string;
-  }
+  errorText?: string
   buttonText?: string
   titleText?: string
   onClick?: () => void
@@ -41,6 +40,10 @@ export default class ModalRedirect extends React.PureComponent<Props, {}> {
 
   render () {
     const { id, errorText, titleText } = this.props
+    let tags = null
+    if (errorText && errorText.includes('$1')) {
+      tags = splitStringForTag(errorText, '$1', '$2')
+    }
 
     return (
       <Modal id={id} displayCloseButton={false}>
@@ -51,7 +54,23 @@ export default class ModalRedirect extends React.PureComponent<Props, {}> {
           {
             errorText
             ? <StyledError>
-              <p dangerouslySetInnerHTML={errorText} />
+              <p>
+              {
+                tags
+                ? <>
+                    {tags.beforeTag}
+                    <a
+                      href='https://uphold.com/en/brave/support'
+                      target='_blank'
+                      rel='noopener noreferrer'
+                    >
+                      {tags.duringTag}
+                    </a>
+                    {tags.afterTag}
+                  </>
+                : errorText
+              }
+              </p>
               {this.getButton()}
             </StyledError>
             : <StyledLoader>

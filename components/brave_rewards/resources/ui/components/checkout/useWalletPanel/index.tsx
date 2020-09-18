@@ -5,7 +5,7 @@
 import * as React from 'react'
 import { PlusIcon } from 'brave-ui/components/icons'
 
-import { LocaleContext, LocaleData } from '../localeContext'
+import { LocaleContext, LocaleData, getLocaleTags } from '../localeContext'
 import { FormSection } from '../formSection'
 
 import {
@@ -72,6 +72,7 @@ export function UseWalletPanel (props: UseWalletPanelProps) {
   }
 
   const locale = React.useContext(LocaleContext)
+  const tags = getLocaleTags(locale.get('payWithBatTermsOfSale'))
 
   return (
     <>
@@ -100,7 +101,11 @@ export function UseWalletPanel (props: UseWalletPanelProps) {
       {
         props.hasSufficientFunds &&
           <TermsOfSale>
-            <span dangerouslySetInnerHTML={{ __html: locale.get('payWithBatTermsOfSale') }} />
+            <span>
+              {tags.beforeTag}
+              <a href='javascript:void 0'>{tags.duringTag}</a>
+              {tags.afterTag}
+            </span>
           </TermsOfSale>
       }
     </>

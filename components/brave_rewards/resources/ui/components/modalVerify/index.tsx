@@ -32,6 +32,7 @@ import {
   RewardsCheckIcon
 } from 'brave-ui/components/icons'
 import { Modal } from 'brave-ui/components'
+import { getLocaleTags } from '../../../../../common/locale'
 
 export interface Props {
   onVerifyClick: () => void
@@ -69,14 +70,21 @@ export default class ModalVerify extends React.PureComponent<Props, {}> {
     </>
   )
 
-  getFooter = () => (
-    <StyledFooter>
-      <span dangerouslySetInnerHTML={{ __html: getLocale('walletVerificationFooter') }} />
-      <StyledFooterIcon>
-        <UpholdColorIcon />
-      </StyledFooterIcon>
-    </StyledFooter>
-  )
+  getFooter = () => {
+    const tags = getLocaleTags('walletVerificationFooter')
+    return (
+      <StyledFooter>
+        <span>
+          {tags.beforeTag}
+          <b>{tags.duringTag}</b>
+          {tags.afterTag}
+        </span>
+        <StyledFooterIcon>
+          <UpholdColorIcon />
+        </StyledFooterIcon>
+      </StyledFooter>
+    )
+  }
 
   render () {
     const {

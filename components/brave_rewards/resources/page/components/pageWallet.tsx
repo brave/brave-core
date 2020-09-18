@@ -20,7 +20,7 @@ import { AlertWallet, WalletState } from '../../ui/components/walletWrapper'
 import { Provider } from '../../ui/components/profile'
 import { DetailRow as PendingDetailRow, PendingType } from '../../ui/components/tablePending'
 // Utils
-import { getLocale } from '../../../../common/locale'
+import { getLocale, getLocaleTags } from '../../../../common/locale'
 import * as rewardsActions from '../actions/rewards_actions'
 import * as utils from '../utils'
 import WalletOff from '../../ui/components/walletOff'
@@ -752,7 +752,16 @@ class PageWallet extends React.Component<Props, State> {
 
     // ledger::type::Result::CORRUPTED_DATA
     if (walletRecoveryStatus === 17) {
-      return <span dangerouslySetInnerHTML={{ __html: getLocale('walletRecoveryOutdated') }} />
+      const tags = getLocaleTags('walletRecoveryOutdated')
+      return (
+        <span>
+          {tags.beforeTag}
+          <a href='https://brave.com/faq#convert-old-keys' target='_blank' rel='noopener noreferrer'>
+            {tags.duringTag}
+          </a>
+          {tags.afterTag}
+        </span>
+      )
     }
 
     if (walletRecoveryStatus !== 0) {

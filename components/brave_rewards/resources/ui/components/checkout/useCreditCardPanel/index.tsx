@@ -4,7 +4,7 @@
 
 import * as React from 'react'
 
-import { LocaleContext } from '../localeContext'
+import { LocaleContext, getLocaleTags } from '../localeContext'
 import { FormSection } from '../formSection'
 import { CreditCardForm, CreditCardDetails, CreditCardFormHandle } from '../creditCardForm'
 import { GoBackLink } from '../goBackLink'
@@ -31,6 +31,7 @@ interface UseCreditCardPanelProps {
 export function UseCreditCardPanel (props: UseCreditCardPanelProps) {
   const locale = React.useContext(LocaleContext)
   const creditCardFormRef = React.useRef<CreditCardFormHandle>(null)
+  const tags = getLocaleTags(locale.get('confirmTermsOfSale'))
 
   const onConfirmClick = () => {
     const formHandle = creditCardFormRef.current
@@ -83,7 +84,11 @@ export function UseCreditCardPanel (props: UseCreditCardPanelProps) {
           </div>
         </ConfirmButtonRow>
         <TermsOfSale>
-          <span dangerouslySetInnerHTML={{ __html: locale.get('confirmTermsOfSale') }} />
+          <span>
+            {tags.beforeTag}
+            <a href='javascript:void 0'>{tags.duringTag}</a>
+            {tags.afterTag}
+          </span>
         </TermsOfSale>
       </div>
     )

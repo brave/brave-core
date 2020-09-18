@@ -5,9 +5,9 @@
 
 const execSync = require('child_process').execSync
 
-// Grep for any usage of innerHTML. TODO: add dangerouslySetInnerHTML.
+// Grep for any usage of innerHTML / document.write.
 // Ping @security-team before changing this.
-const cmd = "git grep --extended-regexp '(innerHTML|document.write)' ':(exclude)*test.cc' ':(exclude)test/*' ':(exclude)*.json' ':(exclude)build/*' ':(exclude)*browsertest*.cc'"
+const cmd = "git grep -i --extended-regexp '(innerHTML|document.write)' ':(exclude)*test.cc' ':(exclude)test/*' ':(exclude)*.json' ':(exclude)build/*' ':(exclude)*browsertest*.cc'"
 
 try {
   const stdout = execSync(cmd)

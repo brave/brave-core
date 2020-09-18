@@ -13,3 +13,12 @@ export const LocaleContext = React.createContext<LocaleData>({
     return 'MISSING'
   }
 })
+
+export const getLocaleTags = (text: string) => {
+  const actionIndex: number = text.indexOf('$1')
+  const actionEndIndex: number = text.indexOf('$2')
+  const beforeTag = text.substring(0, actionIndex)
+  const duringTag = text.substring(actionIndex + 2, actionEndIndex)
+  const afterTag = text.substring(actionEndIndex + 2)
+  return { beforeTag, duringTag, afterTag }
+}
