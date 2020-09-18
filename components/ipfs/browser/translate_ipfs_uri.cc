@@ -35,10 +35,10 @@ bool TranslateIPFSURI(
     }
     bool ipfs_scheme = url.scheme() == kIPFSScheme;
     bool ipns_scheme = url.scheme() == kIPNSScheme;
-    if ((ipfs_scheme || ipns_scheme) && std::all_of(cid.begin(), cid.end(),
+    if ((ipfs_scheme && std::all_of(cid.begin(), cid.end(),
                     [loc = std::locale{}](char c) {
                       return std::isalnum(c, loc);
-                    })) {
+                    })) || ipns_scheme) {
       // new_url would be:
       // https://dweb.link/ipfs/[cid]//wiki/Vincent_van_Gogh.html
       if (new_url) {
