@@ -28,10 +28,6 @@
 namespace ledger {
 class LedgerImpl;
 
-namespace uphold {
-class Uphold;
-}
-
 namespace contribution {
 
 class Contribution {
@@ -76,12 +72,12 @@ class Contribution {
   void TransferFunds(
       const type::SKUTransaction& transaction,
       const std::string& destination,
-      type::ExternalWalletPtr wallet,
+      const std::string& wallet_type,
       client::TransactionCallback callback);
 
   void SKUAutoContribution(
       const std::string& contribution_id,
-      type::ExternalWalletPtr wallet,
+      const std::string& wallet_type,
       ledger::ResultCallback callback);
 
   void StartUnblinded(
@@ -179,7 +175,6 @@ class Contribution {
   std::unique_ptr<Unverified> unverified_;
   std::unique_ptr<Unblinded> unblinded_;
   std::unique_ptr<ContributionSKU> sku_;
-  std::unique_ptr<uphold::Uphold> uphold_;
   std::unique_ptr<ContributionMonthly> monthly_;
   std::unique_ptr<ContributionAC> ac_;
   std::unique_ptr<ContributionTip> tip_;

@@ -19,9 +19,8 @@ using std::placeholders::_3;
 namespace ledger {
 namespace uphold {
 
-UpholdTransfer::UpholdTransfer(LedgerImpl* ledger, Uphold* uphold) :
+UpholdTransfer::UpholdTransfer(LedgerImpl* ledger) :
     ledger_(ledger),
-    uphold_(uphold),
     uphold_server_(std::make_unique<endpoint::UpholdServer>(ledger)) {
 }
 
@@ -30,8 +29,7 @@ UpholdTransfer::~UpholdTransfer() = default;
 void UpholdTransfer::Start(
     const Transaction& transaction,
     client::TransactionCallback callback) {
-  auto wallets = ledger_->ledger_client()->GetExternalWallets();
-  auto wallet = GetWallet(std::move(wallets));
+  auto wallet = GetWallet(ledger_);
   if (!wallet) {
     BLOG(0, "Wallet is null");
     callback(type::Result::LEDGER_ERROR, "");
@@ -56,7 +54,7 @@ void UpholdTransfer::OnCreateTransaction(
     client::TransactionCallback callback) {
   if (result == type::Result::EXPIRED_TOKEN) {
     callback(type::Result::EXPIRED_TOKEN, "");
-    uphold_->DisconnectWallet();
+    ledger_->uphold()->DisconnectWallet();
     return;
   }
 
@@ -72,8 +70,7 @@ void UpholdTransfer::OnCreateTransaction(
 void UpholdTransfer::CommitTransaction(
     const std::string& transaction_id,
     client::TransactionCallback callback) {
-  auto wallets = ledger_->ledger_client()->GetExternalWallets();
-  auto wallet = GetWallet(std::move(wallets));
+  auto wallet = GetWallet(ledger_);
   if (!wallet) {
     BLOG(0, "Wallet is null");
     callback(type::Result::LEDGER_ERROR, "");
@@ -104,7 +101,7 @@ void UpholdTransfer::OnCommitTransaction(
     client::TransactionCallback callback) {
   if (result == type::Result::EXPIRED_TOKEN) {
     callback(type::Result::EXPIRED_TOKEN, "");
-    uphold_->DisconnectWallet();
+    ledger_->uphold()->DisconnectWallet();
     return;
   }
 

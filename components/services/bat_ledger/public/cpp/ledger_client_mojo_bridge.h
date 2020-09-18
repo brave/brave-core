@@ -98,27 +98,12 @@ class LedgerClientMojoBridge :
       const std::string& publisher_key,
       const std::string& publisher_name) override;
 
-  void GetExternalWallets(GetExternalWalletsCallback callback) override;
-
-  void SaveExternalWallet(const std::string& wallet_type,
-                          ledger::type::ExternalWalletPtr wallet) override;
+  void GetLegacyWallet(GetLegacyWalletCallback callback) override;
 
   void ShowNotification(
       const std::string& type,
       const std::vector<std::string>& args,
       ShowNotificationCallback callback) override;
-
-  void SetTransferFee(
-      const std::string& wallet_type,
-      ledger::type::TransferFeePtr transfer_fee) override;
-
-  void GetTransferFees(
-      const std::string& wallet_type,
-      GetTransferFeesCallback callback) override;
-
-  void RemoveTransferFee(
-      const std::string& wallet_type,
-      const std::string& id) override;
 
   void GetClientInfo(
       GetClientInfoCallback callback) override;

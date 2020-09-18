@@ -85,28 +85,12 @@ class BatLedgerClientMojoBridge :
       const std::string& publisher_key,
       const std::string& publisher_name) override;
 
-  std::map<std::string, ledger::type::ExternalWalletPtr>
-  GetExternalWallets() override;
-
-  void SaveExternalWallet(const std::string& wallet_type,
-                           ledger::type::ExternalWalletPtr wallet) override;
+  std::string GetLegacyWallet() override;
 
   void ShowNotification(
       const std::string& type,
       const std::vector<std::string>& args,
       ledger::client::ResultCallback callback) override;
-
-
-  ledger::type::TransferFeeList GetTransferFees(
-      const std::string& wallet_type) override;
-
-  void SetTransferFee(
-      const std::string& wallet_type,
-      ledger::type::TransferFeePtr transfer_fee) override;
-
-  void RemoveTransferFee(
-      const std::string& wallet_type,
-      const std::string& id) override;
 
   ledger::type::ClientInfoPtr GetClientInfo() override;
 

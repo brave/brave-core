@@ -68,12 +68,6 @@ export const deletePromotion = (promotionId: string) => action(types.DELETE_PROM
   promotionId
 })
 
-export const getWalletPassphrase = () => action(types.GET_WALLLET_PASSPHRASE)
-
-export const onWalletPassphrase = (pass: string) => action(types.ON_WALLLET_PASSPHRASE, {
-  pass
-})
-
 export const recoverWallet = (key: string) => action(types.RECOVER_WALLET, {
   key
 })

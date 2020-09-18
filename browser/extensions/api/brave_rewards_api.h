@@ -420,9 +420,9 @@ class BraveRewardsGetExternalWalletFunction : public ExtensionFunction {
   ResponseAction Run() override;
 
  private:
-  void OnExternalWalet(
+  void OnGetUpholdWallet(
       const ledger::type::Result result,
-      ledger::type::ExternalWalletPtr wallet);
+      ledger::type::UpholdWalletPtr wallet);
 };
 
 class BraveRewardsDisconnectWalletFunction : public ExtensionFunction {

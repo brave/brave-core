@@ -36,6 +36,9 @@ using BalanceReportInfoPtr = mojom::BalanceReportInfoPtr;
 using BalanceReportInfoList =
     std::vector<mojom::BalanceReportInfoPtr>;
 
+using BraveWallet = mojom::BraveWallet;
+using BraveWalletPtr = mojom::BraveWalletPtr;
+
 using ClientInfo = mojom::ClientInfo;
 using ClientInfoPtr = mojom::ClientInfoPtr;
 
@@ -80,8 +83,8 @@ using Environment = mojom::Environment;
 
 using ExcludeFilter = mojom::ExcludeFilter;
 
-using ExternalWallet = mojom::ExternalWallet;
-using ExternalWalletPtr = mojom::ExternalWalletPtr;
+using UpholdWallet = mojom::UpholdWallet;
+using UpholdWalletPtr = mojom::UpholdWalletPtr;
 
 using InlineTipsPlatforms = mojom::InlineTipsPlatforms;
 
@@ -158,10 +161,6 @@ using SKUTransactionPtr = mojom::SKUTransactionPtr;
 using SKUTransactionStatus = mojom::SKUTransactionStatus;
 
 using SKUTransactionType = mojom::SKUTransactionType;
-
-using TransferFee = mojom::TransferFee;
-using TransferFeePtr = mojom::TransferFeePtr;
-using TransferFeeList = std::map<std::string, TransferFeePtr>;
 
 using TransactionReportInfo = mojom::TransactionReportInfo;
 using TransactionReportInfoPtr = mojom::TransactionReportInfoPtr;

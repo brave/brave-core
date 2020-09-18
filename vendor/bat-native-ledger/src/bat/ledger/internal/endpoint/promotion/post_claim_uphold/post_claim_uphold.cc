@@ -32,18 +32,28 @@ PostClaimUphold::PostClaimUphold(LedgerImpl* ledger):
 PostClaimUphold::~PostClaimUphold() = default;
 
 std::string PostClaimUphold::GetUrl() {
-  const std::string payment_id = ledger_->state()->GetPaymentId();
+  const auto wallet = ledger_->wallet()->GetWallet();
+  if (!wallet) {
+    BLOG(0, "Wallet is null");
+    return "";
+  }
+
   const std::string& path = base::StringPrintf(
       "/v3/wallet/uphold/%s/claim",
-      payment_id.c_str());
+      wallet->payment_id.c_str());
 
   return GetServerUrl(path);
 }
 
 std::string PostClaimUphold::GeneratePayload(const double user_funds) {
-  auto wallets = ledger_->ledger_client()->GetExternalWallets();
-  auto wallet_ptr = uphold::GetWallet(std::move(wallets));
-  if (!wallet_ptr) {
+  auto uphold_wallet = uphold::GetWallet(ledger_);
+  if (!uphold_wallet) {
+    BLOG(0, "Wallet is null");
+    return "";
+  }
+
+  const auto wallet = ledger_->wallet()->GetWallet();
+  if (!wallet) {
     BLOG(0, "Wallet is null");
     return "";
   }
@@ -54,7 +64,7 @@ std::string PostClaimUphold::GeneratePayload(const double user_funds) {
 
   base::Value octets(base::Value::Type::DICTIONARY);
   octets.SetKey("denomination", std::move(denomination));
-  octets.SetStringKey("destination", wallet_ptr->address);
+  octets.SetStringKey("destination", uphold_wallet->address);
   std::string octets_json;
   base::JSONWriter::Write(octets, &octets_json);
 
@@ -67,7 +77,7 @@ std::string PostClaimUphold::GeneratePayload(const double user_funds) {
   const std::string header_signature = util::Security::Sign(
       headers,
       "primary",
-      ledger_->state()->GetRecoverySeed());
+      wallet->recovery_seed);
 
   base::Value signed_reqeust(base::Value::Type::DICTIONARY);
   signed_reqeust.SetStringKey("octets", octets_json);

@@ -11,7 +11,6 @@
 #include <string>
 
 #include "bat/ledger/ledger.h"
-#include "bat/ledger/internal/uphold/uphold.h"
 
 namespace ledger {
 class LedgerImpl;
@@ -24,7 +23,7 @@ namespace uphold {
 
 class UpholdTransfer {
  public:
-  explicit UpholdTransfer(LedgerImpl* ledger, Uphold* uphold);
+  explicit UpholdTransfer(LedgerImpl* ledger);
 
   ~UpholdTransfer();
 
@@ -48,7 +47,6 @@ class UpholdTransfer {
       client::TransactionCallback callback);
 
   LedgerImpl* ledger_;  // NOT OWNED
-  Uphold* uphold_;  // NOT OWNED
   std::unique_ptr<endpoint::UpholdServer> uphold_server_;
 };
 

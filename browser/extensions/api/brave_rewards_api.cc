@@ -1166,32 +1166,32 @@ BraveRewardsGetExternalWalletFunction::Run() {
   std::unique_ptr<brave_rewards::GetExternalWallet::Params> params(
     brave_rewards::GetExternalWallet::Params::Create(*args_));
 
-  rewards_service->GetExternalWallet(
-      params->type,
+  rewards_service->GetUpholdWallet(
       base::BindOnce(
-          &BraveRewardsGetExternalWalletFunction::OnExternalWalet,
+          &BraveRewardsGetExternalWalletFunction::OnGetUpholdWallet,
           this));
   return RespondLater();
 }
 
-void BraveRewardsGetExternalWalletFunction::OnExternalWalet(
+void BraveRewardsGetExternalWalletFunction::OnGetUpholdWallet(
     const ledger::type::Result result,
-    ledger::type::ExternalWalletPtr wallet) {
-  auto data = std::make_unique<base::Value>(
-      base::Value::Type::DICTIONARY);
-
-  if (wallet) {
-    data->SetStringKey("token", wallet->token);
-    data->SetStringKey("address", wallet->address);
-    data->SetIntKey("status", static_cast<int>(wallet->status));
-    data->SetStringKey("type", wallet->type);
-    data->SetStringKey("verifyUrl", wallet->verify_url);
-    data->SetStringKey("addUrl", wallet->add_url);
-    data->SetStringKey("withdrawUrl", wallet->withdraw_url);
-    data->SetStringKey("userName", wallet->user_name);
-    data->SetStringKey("accountUrl", wallet->account_url);
-    data->SetStringKey("loginUrl", wallet->login_url);
+    ledger::type::UpholdWalletPtr wallet) {
+  if (!wallet) {
+    Respond(OneArgument(
+        std::make_unique<base::Value>(static_cast<int>(result))));
+    return;
   }
+
+  auto data = std::make_unique<base::Value>(base::Value::Type::DICTIONARY);
+  data->SetStringKey("token", wallet->token);
+  data->SetStringKey("address", wallet->address);
+  data->SetIntKey("status", static_cast<int>(wallet->status));
+  data->SetStringKey("verifyUrl", wallet->verify_url);
+  data->SetStringKey("addUrl", wallet->add_url);
+  data->SetStringKey("withdrawUrl", wallet->withdraw_url);
+  data->SetStringKey("userName", wallet->user_name);
+  data->SetStringKey("accountUrl", wallet->account_url);
+  data->SetStringKey("loginUrl", wallet->login_url);
 
   Respond(TwoArguments(
         std::make_unique<base::Value>(static_cast<int>(result)),

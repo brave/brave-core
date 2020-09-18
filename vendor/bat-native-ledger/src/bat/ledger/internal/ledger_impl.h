@@ -25,6 +25,7 @@
 #include "bat/ledger/internal/report/report.h"
 #include "bat/ledger/internal/sku/sku.h"
 #include "bat/ledger/internal/state/state.h"
+#include "bat/ledger/internal/uphold/uphold.h"
 #include "bat/ledger/internal/wallet/wallet.h"
 #include "bat/ledger/ledger.h"
 #include "bat/ledger/ledger_client.h"
@@ -67,11 +68,15 @@ class LedgerImpl : public ledger::Ledger {
 
   api::API* api() const;
 
+  uphold::Uphold* uphold() const;
+
   virtual database::Database* database() const;
 
   virtual void LoadURL(
       type::UrlRequestPtr request,
       client::LoadURLCallback callback);
+
+  bool IsShuttingDown() const;
 
  private:
   void OnInitialized(
@@ -190,8 +195,6 @@ class LedgerImpl : public ledger::Ledger {
       const std::string& solution,
       ledger::AttestPromotionCallback callback) const override;
 
-  std::string GetWalletPassphrase() const override;
-
   void GetBalanceReport(
       type::ActivityMonth month,
       int year,
@@ -300,9 +303,7 @@ class LedgerImpl : public ledger::Ledger {
 
   void FetchBalance(ledger::FetchBalanceCallback callback) override;
 
-  void GetExternalWallet(
-      const std::string& wallet_type,
-      ledger::ExternalWalletCallback callback) override;
+  void GetUpholdWallet(ledger::UpholdWalletCallback callback) override;
 
   void ExternalWalletAuthorization(
       const std::string& wallet_type,
@@ -344,7 +345,7 @@ class LedgerImpl : public ledger::Ledger {
 
   void ProcessSKU(
       const std::vector<type::SKUOrderItem>& items,
-      type::ExternalWalletPtr wallet,
+      const std::string& wallet_type,
       ledger::SKUOrderCallback callback) override;
 
   void Shutdown(ledger::ResultCallback callback) override;
@@ -367,6 +368,7 @@ class LedgerImpl : public ledger::Ledger {
   std::unique_ptr<state::State> state_;
   std::unique_ptr<api::API> api_;
   std::unique_ptr<recovery::Recovery> recovery_;
+  std::unique_ptr<uphold::Uphold> uphold_;
   scoped_refptr<base::SequencedTaskRunner> task_runner_;
   bool initialized_task_scheduler_;
 

@@ -6,11 +6,12 @@
 #include <utility>
 
 #include "base/test/task_environment.h"
+#include "bat/ledger/global_constants.h"
 #include "bat/ledger/internal/ledger_client_mock.h"
 #include "bat/ledger/internal/ledger_impl_mock.h"
+#include "bat/ledger/internal/state/state_keys.h"
 #include "bat/ledger/internal/uphold/uphold.h"
 #include "bat/ledger/ledger.h"
-#include "bat/ledger/global_constants.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
 // npm run test -- brave_unit_tests --filter=UpholdTest.*
@@ -40,16 +41,14 @@ class UpholdTest : public testing::Test {
 };
 
 TEST_F(UpholdTest, FetchBalanceConnectedWallet) {
+  const std::string wallet = R"({
+      "token":"token",
+      "address":"address"
+      "status":1
+    })";
+  ON_CALL(*mock_ledger_client_, GetStringState(state::kWalletUphold))
+      .WillByDefault(testing::Return(wallet));
   EXPECT_CALL(*mock_ledger_client_, LoadURL(_, _)).Times(0);
-
-  std::map<std::string, type::ExternalWalletPtr> wallets;
-  auto wallet = type::ExternalWallet::New();
-  wallet->status = type::WalletStatus::CONNECTED;
-  wallet->token = "token";
-  wallet->address = "address";
-  wallets.insert(std::make_pair(constant::kWalletUphold, std::move(wallet)));
-  EXPECT_CALL(*mock_ledger_client_, GetExternalWallets())
-    .WillOnce(testing::Return(testing::ByMove(std::move(wallets))));
 
   FetchBalanceCallback callback =
       std::bind(

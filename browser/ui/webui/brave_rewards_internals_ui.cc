@@ -62,10 +62,10 @@ class RewardsInternalsDOMHandler : public content::WebUIMessageHandler {
   void OnGetFulllLog(const std::string& log);
   void ClearLog(const base::ListValue* args);
   void OnClearLog(const bool success);
-  void GetExternalWallet(const base::ListValue* args);
-  void OnGetExternalWallet(
+  void GetUpholdWallet(const base::ListValue* args);
+  void OnGetUpholdWallet(
       const ledger::type::Result result,
-      ledger::type::ExternalWalletPtr wallet);
+      ledger::type::UpholdWalletPtr wallet);
   void GetEventLogs(const base::ListValue* args);
   void OnGetEventLogs(ledger::type::EventLogs logs);
 
@@ -125,7 +125,7 @@ void RewardsInternalsDOMHandler::RegisterMessages() {
   web_ui()->RegisterMessageCallback(
       "brave_rewards_internals.getExternalWallet",
       base::BindRepeating(
-          &RewardsInternalsDOMHandler::GetExternalWallet,
+          &RewardsInternalsDOMHandler::GetUpholdWallet,
           base::Unretained(this)));
   web_ui()->RegisterMessageCallback(
       "brave_rewards_internals.getEventLogs",
@@ -379,24 +379,20 @@ void RewardsInternalsDOMHandler::OnClearLog(const bool success) {
       base::Value(""));
 }
 
-void RewardsInternalsDOMHandler::GetExternalWallet(
-    const base::ListValue* args) {
-  CHECK_EQ(1U, args->GetSize());
+void RewardsInternalsDOMHandler::GetUpholdWallet(const base::ListValue* args) {
   if (!rewards_service_) {
     return;
   }
 
-  const std::string wallet_type = args->GetList()[0].GetString();
-  rewards_service_->GetExternalWallet(
-      wallet_type,
+  rewards_service_->GetUpholdWallet(
       base::BindOnce(
-          &RewardsInternalsDOMHandler::OnGetExternalWallet,
+          &RewardsInternalsDOMHandler::OnGetUpholdWallet,
           weak_ptr_factory_.GetWeakPtr()));
 }
 
-void RewardsInternalsDOMHandler::OnGetExternalWallet(
+void RewardsInternalsDOMHandler::OnGetUpholdWallet(
     const ledger::type::Result result,
-    ledger::type::ExternalWalletPtr wallet) {
+    ledger::type::UpholdWalletPtr wallet) {
   if (!web_ui()->CanCallJavascript()) {
     return;
   }

@@ -31,9 +31,14 @@ std::string PostSafetynet::GetUrl() {
 }
 
 std::string PostSafetynet::GeneratePayload() {
-  auto payment_id = base::Value(ledger_->state()->GetPaymentId());
+  const auto wallet = ledger_->wallet()->GetWallet();
+  if (!wallet) {
+    BLOG(0, "Wallet is null");
+    return "";
+  }
+
   base::Value payment_ids(base::Value::Type::LIST);
-  payment_ids.Append(std::move(payment_id));
+  payment_ids.Append(base::Value(wallet->payment_id));
 
   base::Value body(base::Value::Type::DICTIONARY);
   body.SetKey("paymentIds", std::move(payment_ids));

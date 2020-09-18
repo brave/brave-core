@@ -13,6 +13,8 @@
 #include "bat/ledger/ledger.h"
 
 namespace ledger {
+class LedgerImpl;
+
 namespace uphold {
 
 const char kUrlStaging[] = "https://sandbox.uphold.com";
@@ -40,16 +42,19 @@ std::string GetWithdrawUrl(const std::string& address);
 
 std::string GetSecondStepVerify();
 
-type::ExternalWalletPtr GetWallet(
-      std::map<std::string, type::ExternalWalletPtr> wallets);
+type::UpholdWalletPtr GetWallet(LedgerImpl* ledger);
+
+void SetWallet(LedgerImpl* ledger, type::UpholdWalletPtr wallet);
 
 std::string GenerateRandomString(bool testing);
 
 std::string GetAccountUrl();
 
-type::ExternalWalletPtr GenerateLinks(type::ExternalWalletPtr wallet);
+type::UpholdWalletPtr GenerateLinks(type::UpholdWalletPtr wallet);
 
-std::string GenerateVerifyLink(type::ExternalWalletPtr wallet);
+std::string GenerateVerifyLink(type::UpholdWalletPtr wallet);
+
+type::UpholdWalletPtr ResetWallet(type::UpholdWalletPtr wallet);
 
 }  // namespace uphold
 }  // namespace ledger

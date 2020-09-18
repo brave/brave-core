@@ -130,28 +130,10 @@ class MockLedgerClient : public LedgerClient {
       const std::string& publisher_key,
       const std::string& publisher_name));
 
-  MOCK_METHOD0(GetExternalWallets,
-      std::map<std::string, type::ExternalWalletPtr>());
-
-  MOCK_METHOD2(SaveExternalWallet, void(
-      const std::string& wallet_type,
-      type::ExternalWalletPtr wallet));
-
   MOCK_METHOD3(ShowNotification, void(
       const std::string& type,
       const std::vector<std::string>& args,
       client::ResultCallback callback));
-
-  MOCK_METHOD2(SetTransferFee, void(
-      const std::string& wallet_type,
-      type::TransferFeePtr transfer_fee));
-
-  MOCK_METHOD1(GetTransferFees, type::TransferFeeList(
-      const std::string& wallet_type));
-
-  MOCK_METHOD2(RemoveTransferFee, void(
-    const std::string& wallet_type,
-    const std::string& id));
 
   MOCK_METHOD0(GetClientInfo, type::ClientInfoPtr());
 
@@ -172,6 +154,8 @@ class MockLedgerClient : public LedgerClient {
   MOCK_METHOD1(WalletDisconnected, void(const std::string& wallet_type));
 
   MOCK_METHOD1(DeleteLog, void(const client::ResultCallback callback));
+
+  MOCK_METHOD0(GetLegacyWallet, std::string());
 };
 
 }  // namespace ledger

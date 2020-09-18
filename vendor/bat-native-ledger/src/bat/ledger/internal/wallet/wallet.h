@@ -34,13 +34,9 @@ class Wallet {
       const std::string& pass_phrase,
       ledger::ResultCallback callback);
 
-  std::string GetWalletPassphrase() const;
+  std::string GetWalletPassphrase(type::BraveWalletPtr wallet);
 
   void FetchBalance(ledger::FetchBalanceCallback callback);
-
-  void GetExternalWallet(
-      const std::string& wallet_type,
-      ledger::ExternalWalletCallback callback);
 
   void ExternalWalletAuthorization(
       const std::string& wallet_type,
@@ -57,13 +53,16 @@ class Wallet {
 
   void DisconnectAllWallets(ledger::ResultCallback callback);
 
+  type::BraveWalletPtr GetWallet();
+
+  void SetWallet(type::BraveWalletPtr wallet);
+
  private:
   LedgerImpl* ledger_;  // NOT OWNED
   std::unique_ptr<WalletCreate> create_;
   std::unique_ptr<WalletRecover> recover_;
   std::unique_ptr<WalletBalance> balance_;
   std::unique_ptr<WalletClaim> claim_;
-  std::unique_ptr<uphold::Uphold> uphold_;
 };
 
 }  // namespace wallet

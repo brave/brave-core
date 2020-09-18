@@ -89,7 +89,6 @@ void AttestationIOS::Start(
     const std::string& payload,
     StartCallback callback) {
   const std::string key = ParseStartPayload(payload);
-  const std::string payment_id = ledger_->state()->GetPaymentId();
 
   if (key.empty()) {
     BLOG(0, "Key is empty");

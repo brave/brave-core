@@ -79,12 +79,18 @@ type::Result PostWalletBrave::ParseBody(
 
 void PostWalletBrave::Request(
     PostWalletBraveCallback callback) {
-  const auto seed = ledger_->state()->GetRecoverySeed();
+  const auto wallet = ledger_->wallet()->GetWallet();
+  if (!wallet) {
+    BLOG(0, "Wallet is null");
+    callback(type::Result::LEDGER_ERROR, "");
+    return;
+  }
+
   const auto headers = util::BuildSignHeaders(
       "post /v3/wallet/brave",
       "",
-      util::Security::GetPublicKeyHexFromSeed(seed),
-      seed);
+      util::Security::GetPublicKeyHexFromSeed(wallet->recovery_seed),
+      wallet->recovery_seed);
 
   auto url_callback = std::bind(&PostWalletBrave::OnRequest,
       this,

@@ -4,22 +4,43 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 #include <map>
+#include <memory>
 #include <utility>
 
 #include "bat/ledger/global_constants.h"
 #include "bat/ledger/internal/uphold/uphold_util.h"
+#include "bat/ledger/internal/state/state_keys.h"
 #include "bat/ledger/ledger.h"
-#include "testing/gtest/include/gtest/gtest.h"
+#include "testing/gmock/include/gmock/gmock.h"
+#include "bat/ledger/internal/ledger_client_mock.h"
+#include "bat/ledger/internal/ledger_impl_mock.h"
+#include "base/test/task_environment.h"
 
 // npm run test -- brave_unit_tests --filter=UpholdUtilTest.*
+
+using ::testing::_;
 
 namespace ledger {
 namespace uphold {
 
 class UpholdUtilTest : public testing::Test {
+ private:
+  base::test::TaskEnvironment scoped_task_environment_;
+
+ protected:
+  std::unique_ptr<ledger::MockLedgerClient> mock_ledger_client_;
+  std::unique_ptr<ledger::MockLedgerImpl> mock_ledger_impl_;
+
+  UpholdUtilTest() {
+    mock_ledger_client_ = std::make_unique<ledger::MockLedgerClient>();
+    mock_ledger_impl_ =
+        std::make_unique<ledger::MockLedgerImpl>(mock_ledger_client_.get());
+  }
+
+  ~UpholdUtilTest() override {}
 };
 
-TEST(UpholdUtilTest, GetClientId) {
+TEST_F(UpholdUtilTest, GetClientId) {
   // production
   ledger::_environment = type::Environment::PRODUCTION;
   std::string result = uphold::GetClientId();
@@ -31,7 +52,7 @@ TEST(UpholdUtilTest, GetClientId) {
   ASSERT_EQ(result, kClientIdStaging);
 }
 
-TEST(UpholdUtilTest, GetFeeAddress) {
+TEST_F(UpholdUtilTest, GetFeeAddress) {
   // production
   ledger::_environment = type::Environment::PRODUCTION;
   std::string result = uphold::GetFeeAddress();
@@ -43,7 +64,7 @@ TEST(UpholdUtilTest, GetFeeAddress) {
   ASSERT_EQ(result, kFeeAddressStaging);
 }
 
-TEST(UpholdUtilTest, GetAuthorizeUrl) {
+TEST_F(UpholdUtilTest, GetAuthorizeUrl) {
   // production
   ledger::_environment = type::Environment::PRODUCTION;
   std::string result =
@@ -90,7 +111,7 @@ TEST(UpholdUtilTest, GetAuthorizeUrl) {
       "&intention=login&state=rdfdsfsdfsdf");
 }
 
-TEST(UpholdUtilTest, GetAddUrl) {
+TEST_F(UpholdUtilTest, GetAddUrl) {
   // empty string
   std::string result = uphold::GetAddUrl("");
   ASSERT_EQ(result, "");
@@ -107,7 +128,7 @@ TEST(UpholdUtilTest, GetAddUrl) {
       "https://sandbox.uphold.com/dashboard/cards/9324i5i32459i/add");
 }
 
-TEST(UpholdUtilTest, GetWithdrawUrl) {
+TEST_F(UpholdUtilTest, GetWithdrawUrl) {
   // empty string
   std::string result = uphold::GetWithdrawUrl("");
   ASSERT_EQ(result, "");
@@ -124,7 +145,7 @@ TEST(UpholdUtilTest, GetWithdrawUrl) {
       "https://sandbox.uphold.com/dashboard/cards/9324i5i32459i/use");
 }
 
-TEST(UpholdUtilTest, GetSecondStepVerify) {
+TEST_F(UpholdUtilTest, GetSecondStepVerify) {
   // production
   ledger::_environment = type::Environment::PRODUCTION;
   std::string result = uphold::GetSecondStepVerify();
@@ -140,29 +161,40 @@ TEST(UpholdUtilTest, GetSecondStepVerify) {
       "application_id=4c2b665ca060d912fec5c735c734859a06118cc8&intention=kyc");
 }
 
-TEST(UpholdUtilTest, GetWallet) {
-  // no wallets
-  std::map<std::string, type::ExternalWalletPtr> wallets;
-  type::ExternalWalletPtr result =
-      uphold::GetWallet(std::move(wallets));
+TEST_F(UpholdUtilTest, GetWallet) {
+  // no wallet
+  ON_CALL(*mock_ledger_client_, GetStringState(state::kWalletUphold))
+      .WillByDefault(testing::Return(""));
+  auto result = uphold::GetWallet(mock_ledger_impl_.get());
   ASSERT_TRUE(!result);
 
-  // different wallet
-  auto diff = type::ExternalWallet::New();
-  diff->address = "add1";
-  wallets.insert(std::make_pair("different", std::move(diff)));
-  result = uphold::GetWallet(std::move(wallets));
-  ASSERT_TRUE(!result);
+  const std::string wallet =R"({
+    "account_url":"https://sandbox.uphold.com/dashboard",
+    "add_url":"https://sandbox.uphold.com/dashboard/cards/asadasdasd/add",
+    "address":"2323dff2ba-d0d1-4dfw-8e56-a2605bcaf4af",
+    "fees":{},
+    "login_url":"https://sandbox.uphold.com/authorize/4c2b665ca060d",
+    "one_time_string":"1F747AE0A708E47ED7E650BF1856B5A4EF7E36833BDB1158A108F8",
+    "status":2,
+    "token":"4c80232r219c30cdf112208890a32c7e00",
+    "user_name":"test",
+    "verify_url":"",
+    "withdraw_url":"https://sandbox.uphold.com/dashboard/cards/asadasdasd/use"
+  })";
+
+  ON_CALL(*mock_ledger_client_, GetStringState(state::kWalletUphold))
+      .WillByDefault(testing::Return(wallet));
 
   // uphold wallet
-  auto uphold = type::ExternalWallet::New();
-  uphold->address = "12355";
-  wallets.insert(std::make_pair(constant::kWalletUphold, std::move(uphold)));
-  result = uphold::GetWallet(std::move(wallets));
-  ASSERT_EQ(result->address, "12355");
+  result = uphold::GetWallet(mock_ledger_impl_.get());
+  ASSERT_TRUE(result);
+  ASSERT_EQ(result->address, "2323dff2ba-d0d1-4dfw-8e56-a2605bcaf4af");
+  ASSERT_EQ(result->user_name, "test");
+  ASSERT_EQ(result->token, "4c80232r219c30cdf112208890a32c7e00");
+  ASSERT_EQ(result->status, type::WalletStatus::VERIFIED);
 }
 
-TEST(UpholdUtilTest, GenerateRandomString) {
+TEST_F(UpholdUtilTest, GenerateRandomString) {
   // string for testing
   auto result = uphold::GenerateRandomString(true);
   ASSERT_EQ(result, "123456789");
@@ -173,10 +205,10 @@ TEST(UpholdUtilTest, GenerateRandomString) {
   ASSERT_EQ(result.length(), 64u);
 }
 
-TEST(UpholdUtilTest, GenerateLinks) {
+TEST_F(UpholdUtilTest, GenerateLinks) {
   ledger::_environment = type::Environment::STAGING;
 
-  auto wallet = type::ExternalWallet::New();
+  auto wallet = type::UpholdWallet::New();
   wallet->address = "123123123124234234234";
 
   // Not connected
@@ -262,10 +294,10 @@ TEST(UpholdUtilTest, GenerateLinks) {
   ASSERT_EQ(result->account_url, "https://sandbox.uphold.com/dashboard");
 }
 
-TEST(UpholdUtilTest, GenerateVerifyLink) {
+TEST_F(UpholdUtilTest, GenerateVerifyLink) {
   ledger::_environment = type::Environment::STAGING;
 
-  auto wallet = type::ExternalWallet::New();
+  auto wallet = type::UpholdWallet::New();
   wallet->one_time_string = "123123123124234234234";
 
   // Not connected

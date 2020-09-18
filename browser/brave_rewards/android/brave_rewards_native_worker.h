@@ -156,9 +156,9 @@ class BraveRewardsNativeWorker : public brave_rewards::RewardsServiceObserver,
                        const base::android::JavaParamRef<jobject>& obj,
                        jint value);
 
-    void GetExternalWallet(JNIEnv* env,
-        const base::android::JavaParamRef<jobject>& obj,
-        const base::android::JavaParamRef<jstring>& wallet_type);
+    void GetExternalWallet(
+        JNIEnv* env,
+        const base::android::JavaParamRef<jobject>& obj);
 
     void DisconnectWallet(JNIEnv* env,
         const base::android::JavaParamRef<jobject>& obj,
@@ -244,7 +244,7 @@ class BraveRewardsNativeWorker : public brave_rewards::RewardsServiceObserver,
 
     void OnGetExternalWallet(
         const ledger::type::Result result,
-        ledger::type::ExternalWalletPtr wallet);
+        ledger::type::UpholdWalletPtr wallet);
 
     void OnDisconnectWallet(
       brave_rewards::RewardsService* rewards_service,

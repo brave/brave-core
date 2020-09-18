@@ -5,6 +5,7 @@
 
 #include <utility>
 
+#include "bat/ledger/global_constants.h"
 #include "bat/ledger/internal/contribution/contribution_external_wallet.h"
 #include "bat/ledger/internal/ledger_impl.h"
 #include "bat/ledger/internal/uphold/uphold_util.h"
@@ -15,12 +16,9 @@ using std::placeholders::_2;
 namespace ledger {
 namespace contribution {
 
-ContributionExternalWallet::ContributionExternalWallet(
-    LedgerImpl* ledger,
-    uphold::Uphold* uphold) :
-    ledger_(ledger),
-    uphold_(uphold) {
-  DCHECK(ledger_ && uphold_);
+ContributionExternalWallet::ContributionExternalWallet(LedgerImpl* ledger) :
+    ledger_(ledger) {
+  DCHECK(ledger_);
 }
 
 ContributionExternalWallet::~ContributionExternalWallet() = default;
@@ -34,33 +32,15 @@ void ContributionExternalWallet::Process(
     return;
   }
 
-  auto wallets = ledger_->ledger_client()->GetExternalWallets();
-
-  if (wallets.empty()) {
-    BLOG(0, "No external wallets");
-    callback(type::Result::LEDGER_ERROR);
-    return;
-  }
-
-  auto wallet = uphold::GetWallet(std::move(wallets));
-
-  if (!wallet) {
-    BLOG(0, "External wallet null");
-    callback(type::Result::LEDGER_ERROR);
-    return;
-  }
-
   auto get_callback = std::bind(&ContributionExternalWallet::ContributionInfo,
       this,
       _1,
-      *wallet,
       callback);
   ledger_->database()->GetContributionInfo(contribution_id, get_callback);
 }
 
 void ContributionExternalWallet::ContributionInfo(
     type::ContributionInfoPtr contribution,
-    const type::ExternalWallet& wallet,
     ledger::ResultCallback callback) {
   if (!contribution) {
     BLOG(0, "Contribution is null");
@@ -72,10 +52,17 @@ void ContributionExternalWallet::ContributionInfo(
   // so we will just always pick uphold.
   // In the future we will allow user to pick which wallet to use via UI
   // and then we will extend this function
-  if (wallet.token.empty() ||
-      wallet.status != type::WalletStatus::VERIFIED) {
+  const auto wallet = ledger_->uphold()->GetWallet();
+  if (!wallet) {
+    BLOG(0, "Wallet is null");
+    callback(type::Result::LEDGER_ERROR);
+    return;
+  }
+
+  if (wallet->token.empty() ||
+      wallet->status != type::WalletStatus::VERIFIED) {
     BLOG(0, "Wallet token is empty/wallet is not verified. Wallet status: "
-        << wallet.status);
+        << wallet->status);
     callback(type::Result::LEDGER_ERROR);
     return;
   }
@@ -83,7 +70,7 @@ void ContributionExternalWallet::ContributionInfo(
   if (contribution->type == type::RewardsType::AUTO_CONTRIBUTE) {
     ledger_->contribution()->SKUAutoContribution(
         contribution->contribution_id,
-        type::ExternalWallet::New(wallet),
+        constant::kWalletUphold,
         callback);
     return;
   }
@@ -165,7 +152,7 @@ void ContributionExternalWallet::OnServerPublisherInfo(
       single_publisher,
       callback);
 
-  uphold_->StartContribution(
+  ledger_->uphold()->StartContribution(
       contribution_id,
       std::move(info),
       amount,

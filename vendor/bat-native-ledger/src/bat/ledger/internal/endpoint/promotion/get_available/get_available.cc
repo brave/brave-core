@@ -29,10 +29,15 @@ GetAvailable::GetAvailable(LedgerImpl* ledger):
 GetAvailable::~GetAvailable() = default;
 
 std::string GetAvailable::GetUrl(const std::string& platform) {
-  const std::string payment_id = ledger_->state()->GetPaymentId();
+  const auto wallet = ledger_->wallet()->GetWallet();
+  if (!wallet) {
+    BLOG(0, "Wallet is null");
+    return "";
+  }
+
   const std::string& arguments = base::StringPrintf(
       "migrate=true&paymentId=%s&platform=%s",
-      payment_id.c_str(),
+      wallet->payment_id.c_str(),
       platform.c_str());
 
   const std::string& path = base::StringPrintf(

@@ -19,8 +19,6 @@ const char kPromotionCorruptedMigrated[] =
     "promotion_corrupted_migrated2";
 const char kAnonTransferChecked[] = "anon_transfer_checked";
 const char kVersion[] = "version";
-
-// Auto contributions
 const char kMinVisitTime[] = "ac.min_visit_time";
 const char kMinVisits[] = "ac.min_visits";
 const char kAllowNonVerified[] = "ac.allow_non_verified";
@@ -31,8 +29,8 @@ const char kAutoContributeEnabled[] = "ac.enabled";
 const char kAutoContributeAmount[] = "ac.amount";
 const char kNextReconcileStamp[] = "ac.next_reconcile_stamp";
 const char kCreationStamp[] = "creation_stamp";
-const char kRecoverySeed[] = "wallet.seed";
-const char kPaymentId[] = "wallet.payment_id";
+const char kRecoverySeed[] = "wallet.seed";  // DEPRECATED
+const char kPaymentId[] = "wallet.payment_id";  // DEPRECATED
 const char kInlineTipRedditEnabled[] = "inline_tip.reddit";
 const char kInlineTipTwitterEnabled[] = "inline_tip.twitter";
 const char kInlineTipGithubEnabled[] = "inline_tip.github";
@@ -43,7 +41,9 @@ const char kParametersTipChoices[] = "parameters.tip.choices";
 const char kParametersMonthlyTipChoices[] =
     "parameters.tip.monthly_choices";
 const char kFetchOldBalance[] = "fetch_old_balance";
-const char kEmptyBalanceChecked[] ="empty_balance_checked";
+const char kEmptyBalanceChecked[] = "empty_balance_checked";
+const char kWalletBrave[]  ="wallets.brave";
+const char kWalletUphold[] = "wallets.uphold";
 
 }  // namespace state
 }  // namespace ledger

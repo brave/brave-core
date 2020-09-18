@@ -59,7 +59,6 @@ interface BatLedger {
   FetchPromotions() => (ledger.mojom.Result result, array<ledger.mojom.Promotion> promotion);
   ClaimPromotion(string promotion_id, string payload) => (ledger.mojom.Result result, string response);
   AttestPromotion(string promotion_id, string solution) => (ledger.mojom.Result result, ledger.mojom.Promotion? promotion);
-  GetWalletPassphrase() => (string wallet_passphrase);
   RecoverWallet(string passPhrase) => (ledger.mojom.Result result);
   
   SetRewardsMainEnabled(bool enabled);
@@ -135,7 +134,7 @@ interface BatLedger {
 
   FetchBalance() => (ledger.mojom.Result result, ledger.mojom.Balance? balance);
 
-  GetExternalWallet(string wallet_type) => (ledger.mojom.Result result, ledger.mojom.ExternalWallet? wallet);
+  GetUpholdWallet() => (ledger.mojom.Result result, ledger.mojom.UpholdWallet? wallet);
 
   ExternalWalletAuthorization(string wallet_type, map<string, string> args) => (ledger.mojom.Result result, map<string, string> args);
 
@@ -219,16 +218,10 @@ interface BatLedgerClient {
       string publisher_name);
 
   [Sync]
-  GetExternalWallets() => (map<string, ledger.mojom.ExternalWallet?> wallets);
-
-  SaveExternalWallet(string wallet_type, ledger.mojom.ExternalWallet wallet);
+  GetLegacyWallet() => (string wallet);
 
   ShowNotification(string type, array<string> args) => (ledger.mojom.Result result);
 
-  [Sync]
-  GetTransferFees(string wallet_type) => (map<string, ledger.mojom.TransferFee> list);
-  SetTransferFee(string wallet_type, ledger.mojom.TransferFee transfer_fee);
-  RemoveTransferFee(string wallet_type, string id);
   [Sync]
   GetClientInfo() => (ledger.mojom.ClientInfo info);
   UnblindedTokensReady();

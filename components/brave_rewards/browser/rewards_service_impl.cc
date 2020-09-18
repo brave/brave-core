@@ -482,35 +482,43 @@ void RewardsServiceImpl::MaybeShowBackupNotification(uint64_t boot_stamp) {
     return;
   }
 
-  auto clear_backup_interval = [pref_service]() {
-    pref_service->SetTimeDelta(
-        prefs::kBackupNotificationInterval,
-        base::TimeDelta());
-  };
-
   // Don't display notification if a backup has already succeeded.
   if (pref_service->GetBoolean(prefs::kBackupSucceeded)) {
-    clear_backup_interval();
+    pref_service->SetTimeDelta(
+          prefs::kBackupNotificationInterval,
+          base::TimeDelta());
     return;
   }
 
+  auto callback = base::BindOnce(&RewardsServiceImpl::WalletBackupNotification,
+      AsWeakPtr(),
+      boot_stamp);
+
   // Don't display notification if user has a verified wallet.
-  for (auto& pair : GetExternalWallets()) {
-    DCHECK(pair.second);
-    switch (pair.second->status) {
-      case ledger::type::WalletStatus::VERIFIED:
-      case ledger::type::WalletStatus::DISCONNECTED_VERIFIED:
-        clear_backup_interval();
-        return;
-      default:
-        break;
-    }
+  GetUpholdWallet(std::move(callback));
+}
+
+void RewardsServiceImpl::WalletBackupNotification(
+    const uint64_t boot_stamp,
+    const ledger::type::Result result,
+    ledger::type::UpholdWalletPtr wallet) {
+  if (wallet &&
+      (wallet->status == ledger::type::WalletStatus::VERIFIED ||
+      wallet->status == ledger::type::WalletStatus::DISCONNECTED_VERIFIED)) {
+    profile_->GetPrefs()->SetTimeDelta(
+        prefs::kBackupNotificationInterval,
+        base::TimeDelta());
+    return;
   }
 
-  const base::Time boot_time = base::Time::FromDoubleT(boot_stamp);
-  const base::TimeDelta elapsed = base::Time::Now() - boot_time;
+  const auto boot_time = base::Time::FromDoubleT(boot_stamp);
+  const auto elapsed = base::Time::Now() - boot_time;
+  const auto interval = profile_->GetPrefs()->GetTimeDelta(
+      prefs::kBackupNotificationInterval);
   if (elapsed > interval) {
-    clear_backup_interval();
+    profile_->GetPrefs()->SetTimeDelta(
+          prefs::kBackupNotificationInterval,
+          base::TimeDelta());
     notification_service_->AddNotification(
         RewardsNotificationService::REWARDS_NOTIFICATION_BACKUP_WALLET,
         RewardsNotificationService::RewardsNotificationArgs(),
@@ -1276,15 +1284,6 @@ void RewardsServiceImpl::ClaimPromotion(
       std::move(callback));
 
   bat_ledger_->ClaimPromotion(promotion_id, "", std::move(claim_callback));
-}
-
-void RewardsServiceImpl::GetWalletPassphrase(
-    const GetWalletPassphraseCallback& callback) {
-  if (!Connected()) {
-    return;
-  }
-
-  bat_ledger_->GetWalletPassphrase(callback);
 }
 
 void RewardsServiceImpl::RecoverWallet(const std::string& passPhrase) {
@@ -2492,19 +2491,6 @@ void RewardsServiceImpl::HandleFlags(const std::string& options) {
       SetShortRetries(short_retries);
     }
 
-    if (name == "uphold-token") {
-      std::string token = base::ToLowerASCII(value);
-
-      auto uphold = ledger::type::ExternalWallet::New();
-      uphold->token = token;
-      uphold->address = "c5fd7219-6586-4fe1-b947-0cbd25040ca8";
-      uphold->status = ledger::type::WalletStatus::VERIFIED;
-      uphold->one_time_string = "";
-      uphold->user_name = "Brave Test";
-      SaveExternalWallet(ledger::constant::kWalletUphold, std::move(uphold));
-      continue;
-    }
-
     if (name == "development") {
       ledger::type::Environment environment;
       std::string lower = base::ToLowerASCII(value);
@@ -2628,11 +2614,6 @@ void RewardsServiceImpl::StartMonthlyContributionForTest() {
 
 void RewardsServiceImpl::CheckInsufficientFundsForTesting() {
   MaybeShowNotificationAddFunds();
-}
-
-ledger::type::TransferFeeList RewardsServiceImpl::GetTransferFeesForTesting(
-    const std::string& wallet_type) {
-  return GetTransferFees(wallet_type);
 }
 
 void RewardsServiceImpl::GetEnvironment(
@@ -2890,6 +2871,7 @@ void RewardsServiceImpl::OnFetchBalance(
 
 void RewardsServiceImpl::FetchBalance(FetchBalanceCallback callback) {
   if (!Connected()) {
+    std::move(callback).Run(ledger::type::Result::LEDGER_ERROR, nullptr);
     return;
   }
 
@@ -2899,124 +2881,33 @@ void RewardsServiceImpl::FetchBalance(FetchBalanceCallback callback) {
                      std::move(callback)));
 }
 
-void RewardsServiceImpl::SaveExternalWallet(
-    const std::string& wallet_type,
-    ledger::type::ExternalWalletPtr wallet) {
-  auto* wallets =
-      profile_->GetPrefs()->GetDictionary(prefs::kExternalWallets);
+std::string RewardsServiceImpl::GetLegacyWallet() {
+  auto* dict = profile_->GetPrefs()->GetDictionary(prefs::kExternalWallets);
 
-  base::Value new_wallets(wallets->Clone());
-
-  auto* old_wallet = new_wallets.FindDictKey(wallet_type);
-  base::Value new_wallet(base::Value::Type::DICTIONARY);
-  if (old_wallet) {
-    new_wallet = old_wallet->Clone();
-  }
-
-  new_wallet.SetStringKey("token", wallet->token);
-  new_wallet.SetStringKey("address", wallet->address);
-  new_wallet.SetIntKey("status", static_cast<int>(wallet->status));
-  new_wallet.SetStringKey("one_time_string", wallet->one_time_string);
-  new_wallet.SetStringKey("user_name", wallet->user_name);
-  new_wallet.SetStringKey("verify_url", wallet->verify_url);
-  new_wallet.SetStringKey("add_url", wallet->add_url);
-  new_wallet.SetStringKey("withdraw_url", wallet->withdraw_url);
-  new_wallet.SetStringKey("account_url", wallet->account_url);
-  new_wallet.SetStringKey("login_url", wallet->login_url);
-
-  new_wallets.SetKey(wallet_type, std::move(new_wallet));
-
-  profile_->GetPrefs()->Set(prefs::kExternalWallets, new_wallets);
-}
-
-std::map<std::string, ledger::type::ExternalWalletPtr>
-RewardsServiceImpl::GetExternalWallets() {
-  std::map<std::string, ledger::type::ExternalWalletPtr> wallets;
-
-  auto* dict =
-      profile_->GetPrefs()->GetDictionary(prefs::kExternalWallets);
-
+  std::string json;
   for (const auto& it : dict->DictItems()) {
-    ledger::type::ExternalWalletPtr wallet =
-        ledger::type::ExternalWallet::New();
-
-    wallet->type = it.first;
-
-    auto* token = it.second.FindStringKey("token");
-    if (token) {
-      wallet->token = *token;
-    }
-
-    auto* address = it.second.FindStringKey("address");
-    if (address) {
-      wallet->address = *address;
-    }
-
-    auto* one_time_string = it.second.FindStringKey("one_time_string");
-    if (one_time_string) {
-      wallet->one_time_string = *one_time_string;
-    }
-
-    auto status = it.second.FindIntKey("status");
-    if (status) {
-      wallet->status = static_cast<ledger::type::WalletStatus>(*status);
-    }
-
-    auto* user_name = it.second.FindStringKey("user_name");
-    if (user_name) {
-      wallet->user_name = *user_name;
-    }
-
-    auto* verify_url = it.second.FindStringKey("verify_url");
-    if (verify_url) {
-      wallet->verify_url = *verify_url;
-    }
-
-    auto* add_url = it.second.FindStringKey("add_url");
-    if (add_url) {
-      wallet->add_url = *add_url;
-    }
-
-    auto* withdraw_url = it.second.FindStringKey("withdraw_url");
-    if (withdraw_url) {
-      wallet->withdraw_url = *withdraw_url;
-    }
-
-    auto* account_url = it.second.FindStringKey("account_url");
-    if (account_url) {
-      wallet->account_url = *account_url;
-    }
-
-    auto* login_url = it.second.FindStringKey("login_url");
-    if (login_url) {
-      wallet->login_url = *login_url;
-    }
-
-    wallets.insert(std::make_pair(it.first, std::move(wallet)));
+    base::JSONWriter::Write(std::move(it.second), &json);
   }
 
-  return wallets;
+  return json;
 }
 
-void RewardsServiceImpl::OnGetExternalWallet(
-    const std::string& wallet_type,
-    GetExternalWalletCallback callback,
+void RewardsServiceImpl::OnGetUpholdWallet(
+    GetUpholdWalletCallback callback,
     const ledger::type::Result result,
-    ledger::type::ExternalWalletPtr wallet) {
+    ledger::type::UpholdWalletPtr wallet) {
   std::move(callback).Run(result, std::move(wallet));
 }
 
-void RewardsServiceImpl::GetExternalWallet(
-    const std::string& wallet_type,
-    GetExternalWalletCallback callback) {
+void RewardsServiceImpl::GetUpholdWallet(GetUpholdWalletCallback callback) {
   if (!Connected()) {
+    std::move(callback).Run(ledger::type::Result::LEDGER_OK, nullptr);
     return;
   }
 
-  bat_ledger_->GetExternalWallet(wallet_type,
-      base::BindOnce(&RewardsServiceImpl::OnGetExternalWallet,
+  bat_ledger_->GetUpholdWallet(
+      base::BindOnce(&RewardsServiceImpl::OnGetUpholdWallet,
                      AsWeakPtr(),
-                     wallet_type,
                      std::move(callback)));
 }
 
@@ -3138,112 +3029,6 @@ void RewardsServiceImpl::ShowNotification(
       notification_args,
       "rewards_notification_general_ledger_" + type);
     callback(ledger::type::Result::LEDGER_OK);
-}
-
-void RewardsServiceImpl::SetTransferFee(
-    const std::string& wallet_type,
-    ledger::type::TransferFeePtr transfer_fee) {
-  if (!transfer_fee) {
-    return;
-  }
-
-  base::Value fee(base::Value::Type::DICTIONARY);
-  fee.SetStringKey("id", transfer_fee->id);
-  fee.SetDoubleKey("amount", transfer_fee->amount);
-
-  auto* external_wallets =
-      profile_->GetPrefs()->GetDictionary(prefs::kExternalWallets);
-
-  base::Value new_external_wallets(external_wallets->Clone());
-
-  auto* wallet = new_external_wallets.FindDictKey(wallet_type);
-  base::Value new_wallet(base::Value::Type::DICTIONARY);
-  if (wallet) {
-    new_wallet = wallet->Clone();
-  }
-
-  auto* fees = wallet->FindDictKey("transfer_fees");
-  base::Value new_fees(base::Value::Type::DICTIONARY);
-  if (fees) {
-    new_fees = fees->Clone();
-  }
-  new_fees.SetKey(transfer_fee->id, std::move(fee));
-
-  new_wallet.SetKey("transfer_fees", std::move(new_fees));
-  new_external_wallets.SetKey(wallet_type, std::move(new_wallet));
-
-  profile_->GetPrefs()->Set(
-      prefs::kExternalWallets,
-      new_external_wallets);
-}
-
-ledger::type::TransferFeeList RewardsServiceImpl::GetTransferFees(
-    const std::string& wallet_type) {
-  ledger::type::TransferFeeList fees;
-
-  auto* external_wallets =
-      profile_->GetPrefs()->GetDictionary(prefs::kExternalWallets);
-
-  auto* wallet_key = external_wallets->FindKey(wallet_type);
-
-  const base::DictionaryValue* wallet;
-  if (!wallet_key || !wallet_key->GetAsDictionary(&wallet)) {
-    return fees;
-  }
-
-  auto* fees_key = wallet->FindKey("transfer_fees");
-  const base::DictionaryValue* fee_dict;
-  if (!fees_key || !fees_key->GetAsDictionary(&fee_dict)) {
-    return fees;
-  }
-
-  for (auto& item : *fee_dict) {
-    const base::DictionaryValue* fee_dict;
-    if (!item.second || !item.second->GetAsDictionary(&fee_dict)) {
-      continue;
-    }
-
-    auto fee = ledger::type::TransferFee::New();
-
-    auto* id = fee_dict->FindKey("id");
-    if (!id || !id->is_string()) {
-      continue;
-    }
-    fee->id = id->GetString();
-
-    auto* amount = fee_dict->FindKey("amount");
-    if (!amount || !amount->is_double()) {
-      continue;
-    }
-    fee->amount = amount->GetDouble();
-
-    fees.insert(std::make_pair(fee->id, std::move(fee)));
-  }
-
-  return fees;
-}
-
-void RewardsServiceImpl::RemoveTransferFee(
-    const std::string& wallet_type,
-    const std::string& id) {
-  auto* external_wallets =
-      profile_->GetPrefs()->GetDictionary(prefs::kExternalWallets);
-
-  base::Value new_external_wallets(external_wallets->Clone());
-
-  const auto path = base::StringPrintf(
-      "%s.transfer_fees.%s",
-      wallet_type.c_str(),
-      id.c_str());
-
-  bool success = new_external_wallets.RemovePath(path);
-  if (!success) {
-    return;
-  }
-
-  profile_->GetPrefs()->Set(
-      prefs::kExternalWallets,
-      new_external_wallets);
 }
 
 bool RewardsServiceImpl::OnlyAnonWallet() {

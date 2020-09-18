@@ -13,6 +13,7 @@
 #include "base/containers/flat_map.h"
 #include "base/files/file_path.h"
 #include "base/files/file_util.h"
+#include "base/json/json_reader.h"
 #include "base/path_service.h"
 #include "chrome/common/chrome_paths.h"
 #include "base/files/important_file_writer.h"
@@ -379,12 +380,39 @@ void AdsServiceImpl::OnWalletUpdated() {
     return;
   }
 
-  const std::string payment_id =
-      profile_->GetPrefs()->GetString(brave_rewards::prefs::kPaymentId);
-  const std::string recovery_seed_base64 =
-      profile_->GetPrefs()->GetString(brave_rewards::prefs::kRecoverySeed);
+  const std::string json = profile_->GetPrefs()->GetString(
+      brave_rewards::prefs::kWalletBrave);
 
-  bat_ads_->OnWalletUpdated(payment_id, recovery_seed_base64);
+  if (json.empty()) {
+    return;
+  }
+
+  base::Optional<base::Value> value = base::JSONReader::Read(json);
+  if (!value || !value->is_dict()) {
+    VLOG(0) << "Failed to parse wallet";
+    return;
+  }
+
+  base::DictionaryValue* dictionary = nullptr;
+  if (!value->GetAsDictionary(&dictionary)) {
+    VLOG(0) << "Failed to parse wallet";
+    return;
+  }
+
+  const std::string* payment_id = dictionary->FindStringKey("payment_id");
+  if (!payment_id) {
+    VLOG(0) << "Wallet missing payment_id";
+    return;
+  }
+
+  const std::string* recovery_seed_base64 =
+      dictionary->FindStringKey("recovery_seed");
+  if (!recovery_seed_base64) {
+    VLOG(0) << "Wallet missing recovery_seed";
+    return;
+  }
+
+  bat_ads_->OnWalletUpdated(*payment_id, *recovery_seed_base64);
 }
 
 void AdsServiceImpl::UpdateAdRewards(
@@ -625,10 +653,7 @@ void AdsServiceImpl::Initialize() {
   profile_pref_change_registrar_.Add(prefs::kIdleThreshold,
       base::Bind(&AdsServiceImpl::OnPrefsChanged, base::Unretained(this)));
 
-  profile_pref_change_registrar_.Add(brave_rewards::prefs::kPaymentId,
-      base::Bind(&AdsServiceImpl::OnPrefsChanged, base::Unretained(this)));
-
-  profile_pref_change_registrar_.Add(brave_rewards::prefs::kRecoverySeed,
+  profile_pref_change_registrar_.Add(brave_rewards::prefs::kWalletBrave,
       base::Bind(&AdsServiceImpl::OnPrefsChanged, base::Unretained(this)));
 
 #if !defined(OS_ANDROID)
@@ -1966,8 +1991,7 @@ void AdsServiceImpl::OnPrefsChanged(
     brave_rewards::UpdateAdsP3AOnPreferenceChange(profile_->GetPrefs(), pref);
   } else if (pref == prefs::kIdleThreshold) {
     StartCheckIdleStateTimer();
-  } else if (pref == brave_rewards::prefs::kPaymentId ||
-      pref == brave_rewards::prefs::kRecoverySeed) {
+  } else if (pref == brave_rewards::prefs::kWalletBrave) {
     OnWalletUpdated();
   }
 }
