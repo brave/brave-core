@@ -12,3 +12,8 @@ repsys_crypto = { path = "./repsys-crypto" }
 bincode = "1"
 sha2 = "0.8.0" 
 
+[profile.dev]
+panic = "abort"
+
+[profile.release]
+panic = "abort"

@@ -2,28 +2,20 @@ import("//brave/build/config.gni")
 import("//brave/components/private_channel/buildflags.gni")
 
 source_set("browser") {
-    public_deps = []
+  public_deps = []
 
-    sources = [
-        "request_utils.h",
-        "request_utils.cc",
-        "private_channel_service.h",
-        "private_channel_service.h",
-        "private_channel_service.cc",
-        "static_values.h",
-    ]
+  sources = [
+    "constants.cc",
+    "constants.h",
+    "private_channel.cc",
+    "private_channel.h",
+    "request_utils.cc",
+    "request_utils.h",
+  ]
 
-    deps = [
-        "//base",
-        "//brave/common",
-        "//brave/vendor/brave_base",
-        "//chrome/common",
-
-        "//components/keyed_service/content",
-        "//components/keyed_service/core",
-        "//content/public/browser",
-        "//components/prefs",
-        "//components/user_prefs",
-        "//extensions/browser",
-    ]
+  deps = [
+    "//base",
+    "//content/public/browser",
+    "//extensions/browser",
+  ]
 }

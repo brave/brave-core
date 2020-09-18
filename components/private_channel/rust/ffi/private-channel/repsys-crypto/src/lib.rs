@@ -15,11 +15,19 @@ const ZERO_POINT: CompressedRistretto = CompressedRistretto([
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
 ]);
 
-/// Generates asymmetric key pair and proof of knowledge of the secret (zero knowledge)
+/// Generates asymmetric key pair
 pub fn generate_keys() -> (SecretKey, PublicKey) {
     let sk = SecretKey::new(&mut OsRng);
     let pk = PublicKey::from(&sk);
     (sk, pk)
+}
+
+/// Generates a vector of asymmetric key pairs
+pub fn generate_key_vector(length: usize) -> (Vec<SecretKey>, Vec<PublicKey>) {
+    let sks: Vec<SecretKey> = (0..length).map(|_| SecretKey::new(&mut OsRng)).collect();
+    let pks: Vec<PublicKey> = (&sks).iter().map(|sk| PublicKey::from(sk)).collect();
+
+    (sks, pks)
 }
 
 /// Combines two public keys to generate one where the two private keys are required to decrypt
@@ -28,22 +36,37 @@ pub fn combine_pks(pk1: PublicKey, pk2: PublicKey) -> PublicKey {
     PublicKey::from(pk1.get_point() + pk2.get_point())
 }
 
+/// Combines a vector of public keys with another public key, to generate a vector of shared public
+/// keys.
+pub fn combine_pks_vector(pk1: &[PublicKey], pk2: PublicKey) -> Vec<PublicKey> {
+    pk1.iter().map(|&pk| combine_pks(pk, pk2)).collect()
+}
+
 /// Computes an encrypted vector in which each element contains an encrypted
 /// element resulting from subtracting the encrypted hash value and the
 /// original check value
 pub fn compute_checks(
-    shared_pk: &PublicKey,
-    encrypted_hashes: Vec<Ciphertext>,
-    vector_checks: Vec<Scalar>,
+    shared_pks: &[PublicKey],
+    encrypted_hashes: &[Ciphertext],
+    vector_checks: &[Scalar],
 ) -> Result<Vec<Ciphertext>, &'static str> {
     if encrypted_hashes.len() != vector_checks.len() {
         return Err("Size of encrypted hashes slice must be the same as vector checks");
     }
-    let encrypted_checks = vector_checks
-        .into_iter()
-        .zip(encrypted_hashes.into_iter())
-        .map(|(checks, hashes)| shared_pk.encrypt(&(&checks * &RISTRETTO_BASEPOINT_TABLE)) - hashes)
-        .collect();
+
+    if encrypted_hashes.len() != shared_pks.len() {
+        return Err("Size of encrypted hashes slice must be the same as shared public keys");
+    }
+
+    let mut encrypted_checks: Vec<Ciphertext> = Vec::new();
+
+    for (index, vector_check) in vector_checks.iter().enumerate() {
+        encrypted_checks.push(
+            shared_pks[index].encrypt(&(vector_check * &RISTRETTO_BASEPOINT_TABLE))
+                - encrypted_hashes[index],
+        )
+    }
+
     Ok(encrypted_checks)
 }
 
@@ -104,7 +127,7 @@ pub fn verify_randomization_proofs(
                 G: &encrypted_vector[i].points.1.compress(),
             },
         )
-        .is_err()
+            .is_err()
         {
             return Ok(false);
         }
@@ -137,9 +160,39 @@ pub fn partial_decryption_and_proof(
     (partial_decryption, proofs_correct_decryption)
 }
 
+/// Computes partial decryption of ciphertext using a vector of private keys, and returns a set of
+/// proofs of correct decryption.
+/// The partial decryption is due to the shared key.
+pub fn partial_decryption_and_proof_vec_key(
+    randomized_vector: &[Ciphertext],
+    sks: &[SecretKey],
+) -> Result<(Vec<Ciphertext>, Vec<CompactProof>), &'static str> {
+    if randomized_vector.len() != sks.len() {
+        return Err("Size of the vector must equal the number of secret keys");
+    }
+
+    let partial_decryption: Vec<Ciphertext> = randomized_vector
+        .iter()
+        .zip(sks.iter())
+        .map(|(ciphertext, key)| Ciphertext {
+            pk: ciphertext.pk,
+            points: (ciphertext.points.0, key.decrypt(ciphertext)),
+        })
+        .collect();
+
+    let mut proofs_correct_decryption: Vec<CompactProof> = Vec::new();
+
+    for (index, value) in partial_decryption.iter().enumerate() {
+        proofs_correct_decryption
+            .push(sks[index].prove_correct_decryption(&randomized_vector[index], &value.points.1));
+    }
+
+    Ok((partial_decryption, proofs_correct_decryption))
+}
+
 /// Verify vector of proofs
 pub fn verify_partial_decryption_proofs(
-    public_key: &PublicKey,
+    public_keys: &[PublicKey],
     ctxt: &[Ciphertext],
     partial_dec_ctxt: &[Ciphertext],
     proofs: &[zkp::CompactProof],
@@ -151,8 +204,13 @@ pub fn verify_partial_decryption_proofs(
     if ctxt.len() != proofs.len() {
         return Err("Size of encrypted hashes slice must be the same as vector checks");
     }
+
+    if ctxt.len() != public_keys.len() {
+        return Err("Size of encrypted vector must equal the number of public keys.");
+    }
+
     for i in 0..proofs.len() {
-        if !public_key.verify_correct_decryption(
+        if !public_keys[i].verify_correct_decryption(
             &proofs[i].clone(),
             &ctxt[i],
             &partial_dec_ctxt[i].points.1,
@@ -166,11 +224,11 @@ pub fn verify_partial_decryption_proofs(
 /// Checks if a vector of "tests" has passed. A given test passes if its
 /// correspondent index is zero in the Ristretto group. It returns the result
 /// of the check.
-pub fn check_tests(final_decryption: Vec<RistrettoPoint>) -> bool {
+pub fn check_tests(final_decryption: &[RistrettoPoint]) -> bool {
     let mut passed = true;
     let zero_point = ZERO_POINT.decompress().unwrap();
 
-    for (_index, value) in final_decryption.into_iter().enumerate() {
+    for &value in final_decryption.iter() {
         if !(value == zero_point) {
             passed = false;
             break;
@@ -181,12 +239,21 @@ pub fn check_tests(final_decryption: Vec<RistrettoPoint>) -> bool {
 
 /// Encrypts a vector of inputs. The input is encrytped using a threshold
 /// generated among two peers (in our case, the client and the server)
-pub fn encrypt_input(shared_pk: PublicKey, vector_hashes: &[Scalar]) -> Vec<Ciphertext> {
+pub fn encrypt_input(
+    shared_pks: &[PublicKey],
+    vector_hashes: &[Scalar],
+) -> Result<Vec<Ciphertext>, &'static str> {
+    if shared_pks.len() != vector_hashes.len() {
+        return Err("Size of public keys must equal the size of the array.");
+    }
+
     let encrypted_hashes: Vec<Ciphertext> = vector_hashes
         .iter()
-        .map(|x| shared_pk.encrypt(&(x * &RISTRETTO_BASEPOINT_TABLE)))
+        .zip(shared_pks.iter())
+        .map(|(hash, pk)| pk.encrypt(&(hash * &RISTRETTO_BASEPOINT_TABLE)))
         .collect();
-    encrypted_hashes
+
+    Ok(encrypted_hashes)
 }
 
 #[cfg(test)]
@@ -199,5 +266,20 @@ mod tests {
         let (_sk_2, pk_2) = generate_keys();
 
         assert_eq!(combine_pks(pk_1, pk_2), combine_pks(pk_2, pk_1))
+    }
+
+    #[test]
+    fn combine_key_vect() {
+        let size = 8;
+        let (_sks, pks) = generate_key_vector(size);
+        let (_sk_2, pk_2) = generate_keys();
+
+        let combined_vector_1 = combine_pks_vector(&pks, pk_2);
+        let combined_vector_2: Vec<PublicKey> =
+            pks.into_iter().map(|pk| combine_pks(pk_2, pk)).collect();
+
+        for (pk1, pk2) in combined_vector_1.iter().zip(combined_vector_2.iter()) {
+            assert_eq!(pk1, pk2)
+        }
     }
 }

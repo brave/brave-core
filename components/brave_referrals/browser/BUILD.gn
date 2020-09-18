@@ -3,9 +3,7 @@ import("//brave/components/brave_referrals/buildflags/buildflags.gni")
 source_set("browser") {
   # Remove when https://github.com/brave/brave-browser/issues/10646 is resolved
   check_includes = false
-  public_deps = [
-    "//brave/components/brave_referrals/buildflags",
-  ]
+  public_deps = [ "//brave/components/brave_referrals/buildflags" ]
 
   if (enable_brave_referrals) {
     sources = [
@@ -18,13 +16,13 @@ source_set("browser") {
       "//brave/common",
       "//brave/components/brave_referrals/common",
       "//brave/components/brave_stats/browser",
+      "//brave/components/private_channel",
       "//brave/vendor/brave_base",
       "//chrome/common",
       "//components/prefs",
       "//content/public/browser",
       "//net",
       "//services/network/public/cpp",
-      "//brave/components/private_channel",
     ]
 
     if (is_android) {

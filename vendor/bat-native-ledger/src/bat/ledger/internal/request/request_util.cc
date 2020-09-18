@@ -6,10 +6,10 @@
 #include <map>
 
 #include "base/strings/stringprintf.h"
-#include "bat/ledger/ledger.h"
-#include "bat/ledger/internal/static_values.h"
-#include "bat/ledger/internal/request/request_util.h"
 #include "bat/ledger/internal/common/security_helper.h"
+#include "bat/ledger/internal/request/request_util.h"
+#include "bat/ledger/internal/static_values.h"
+#include "bat/ledger/ledger.h"
 
 namespace {
 
@@ -128,10 +128,9 @@ std::string BuildApiUrl() {
 
 namespace braveledger_request_util {
 
-std::string BuildUrl(
-    const std::string& path,
-    const std::string& prefix,
-    const ServerTypes& server) {
+std::string BuildUrl(const std::string& path,
+                     const std::string& prefix,
+                     const ServerTypes& server) {
   std::string url;
   switch (server) {
     case ServerTypes::BALANCE: {
@@ -176,12 +175,11 @@ std::string DigestValue(const std::string& body) {
   return base::StringPrintf("SHA-256=%s", body_sha256_base64.c_str());
 }
 
-std::string SignatureHeaderValue(
-    const std::string& data,
-    const std::string& body,
-    const std::string key_id,
-    const std::vector<uint8_t>& private_key,
-    const bool idempotency_key) {
+std::string SignatureHeaderValue(const std::string& data,
+                                 const std::string& body,
+                                 const std::string key_id,
+                                 const std::vector<uint8_t>& private_key,
+                                 const bool idempotency_key) {
   DCHECK(!body.empty());
   DCHECK(!private_key.empty());
 
@@ -195,10 +193,7 @@ std::string SignatureHeaderValue(
     headers.push_back({{"(request-target)", data}});
   }
 
-  return braveledger_helper::Security::Sign(
-      headers,
-      key_id,
-      private_key);
+  return braveledger_helper::Security::Sign(headers, key_id, private_key);
 }
 
 std::map<std::string, std::string> GetSignHeaders(
@@ -208,17 +203,11 @@ std::map<std::string, std::string> GetSignHeaders(
     const std::vector<uint8_t>& private_key,
     const bool idempotency_key) {
   const std::string digest_header = DigestValue(body).c_str();
-  const std::string signature_header = SignatureHeaderValue(
-      data,
-      body,
-      key_id,
-      private_key,
-      idempotency_key).c_str();
+  const std::string signature_header =
+      SignatureHeaderValue(data, body, key_id, private_key, idempotency_key)
+          .c_str();
 
-  return {
-    { "digest", digest_header },
-    { "signature", signature_header}
-  };
+  return {{"digest", digest_header}, {"signature", signature_header}};
 }
 
 std::vector<std::string> BuildSignHeaders(
@@ -229,20 +218,14 @@ std::vector<std::string> BuildSignHeaders(
   auto headers = GetSignHeaders(url, body, key_id, private_key);
   DCHECK_EQ(headers.size(), 2ul);
 
-  const std::string digest_header = base::StringPrintf(
-      "digest: %s",
-      headers.at("digest").c_str());
-  const std::string signature_header = base::StringPrintf(
-      "signature: %s",
-      headers.at("signature").c_str());
+  const std::string digest_header =
+      base::StringPrintf("digest: %s", headers.at("digest").c_str());
+  const std::string signature_header =
+      base::StringPrintf("signature: %s", headers.at("signature").c_str());
 
   const std::string accept_header = "accept: application/json";
 
-  return {
-    digest_header,
-    signature_header,
-    accept_header
-  };
+  return {digest_header, signature_header, accept_header};
 }
 
 }  // namespace braveledger_request_util

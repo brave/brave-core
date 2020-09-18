@@ -7,36 +7,38 @@
 #define BRAVE_COMPONENTS_PRIVATE_CHANNEL_CLIENT_PRIVATE_CHANNEL_H_
 
 #include <string>
-#include "brave/components/private_channel/rust/ffi/src/private_channel.hpp"
+#include "brave/components/private_channel/rust/ffi/src/private_channel.h"
 
-  struct ChallengeArtefacts {
-    std::string client_sk;
-    std::string client_pk;
-    std::string shared_pubkey;
-    std::string encrypted_hashes;
-    int encrypted_hashes_size;
-    bool error;
+struct ChallengeArtefacts {
+  std::string client_sks;
+  std::string client_pks;
+  std::string shared_pubkey;
+  std::string encrypted_hashes;
+  int encrypted_hashes_size;
+  bool error;
 
-    ChallengeArtefacts();
-    ChallengeArtefacts(const ChallengeArtefacts& other);
-    ~ChallengeArtefacts();
-  };
+  ChallengeArtefacts();
+  ChallengeArtefacts(const ChallengeArtefacts& other);
+  ~ChallengeArtefacts();
+};
 
-  struct SecondRoundArtefacts {
-    std::string partial_decryption;
-    std::string proofs;
-    std::string rand_vec;
-    bool error;
+struct SecondRoundArtefacts {
+  std::string partial_decryption;
+  std::string proofs;
+  std::string rand_vec;
+  bool error;
 
-    SecondRoundArtefacts();
-    SecondRoundArtefacts(const SecondRoundArtefacts& other);
-    ~SecondRoundArtefacts();
-  };
+  SecondRoundArtefacts();
+  SecondRoundArtefacts(const SecondRoundArtefacts& other);
+  ~SecondRoundArtefacts();
+};
 
-ChallengeArtefacts ChallengeFirstRound(
-  const char** input, int input_size, const char* server_pk_encoded);
+ChallengeArtefacts ChallengeFirstRound(const char** input,
+                                       int input_size,
+                                       const char* server_pk_encoded);
 
-SecondRoundArtefacts SecondRound(
-  const char* enc_input, int size, const char* client_sk);
+SecondRoundArtefacts SecondRound(const char* enc_input,
+                                 int size,
+                                 const char* client_sks);
 
 #endif  // BRAVE_COMPONENTS_PRIVATE_CHANNEL_CLIENT_PRIVATE_CHANNEL_H_

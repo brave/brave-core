@@ -1,14 +1,18 @@
 #[allow(unused_imports)]
 use repsys_crypto::{
-    combine_pks, compute_checks, encrypt_input, generate_keys, partial_decryption_and_proof,
-    randomize_and_prove, verify_partial_decryption_proofs,
+    combine_pks, compute_checks, encrypt_input, generate_key_vector, generate_keys,
+    partial_decryption_and_proof, randomize_and_prove, verify_partial_decryption_proofs,
 };
 
 use curve25519_dalek::constants::RISTRETTO_BASEPOINT_TABLE;
 use curve25519_dalek::ristretto::RistrettoPoint;
 use curve25519_dalek::scalar::Scalar;
 use rand_core::OsRng;
-use repsys_crypto::verify_randomization_proofs;
+use repsys_crypto::{
+    check_tests, combine_pks_vector, partial_decryption_and_proof_vec_key,
+    verify_randomization_proofs,
+};
+use zkp::CompactProof;
 
 #[test]
 fn randomization_proofs() {
@@ -19,8 +23,10 @@ fn randomization_proofs() {
         Scalar::random(&mut OsRng),
     ];
 
-    let (_sk, pk) = generate_keys();
-    let encrypted_values = encrypt_input(pk, vector_scalar);
+    let length = vector_scalar.len();
+
+    let (_sks, pks) = generate_key_vector(length);
+    let encrypted_values = encrypt_input(&pks, vector_scalar).expect("Error encrypting hashes");
     let (randomized_vector, proof_correct_rand) = randomize_and_prove(&encrypted_values);
 
     let verification =
@@ -28,21 +34,16 @@ fn randomization_proofs() {
 
     assert!(verification.unwrap());
 
-    let fake_reencryption = encrypt_input(pk, vector_scalar);
+    let fake_reencryption = encrypt_input(&pks, vector_scalar).expect("Error encrypting hashes");
     let wrong_verification =
         verify_randomization_proofs(&encrypted_values, &fake_reencryption, &proof_correct_rand);
 
     assert!(!wrong_verification.unwrap());
 
     let wrong_size: &[Scalar] = &[Scalar::random(&mut OsRng), Scalar::random(&mut OsRng)];
-    let wrong_size_encrypted_values = encrypt_input(pk, wrong_size);
-    let wrong_verification = verify_randomization_proofs(
-        &encrypted_values,
-        &wrong_size_encrypted_values,
-        &proof_correct_rand,
-    );
+    let wrong_size_encrypted_values = encrypt_input(&pks, wrong_size);
 
-    assert!(!wrong_verification.is_ok());
+    assert!(wrong_size_encrypted_values.is_err());
 
     let wrong_nr_proofs_verification = verify_randomization_proofs(
         &encrypted_values,
@@ -50,7 +51,7 @@ fn randomization_proofs() {
         &(proof_correct_rand[1..3].to_vec()),
     );
 
-    assert!(!wrong_nr_proofs_verification.is_ok());
+    assert!(wrong_nr_proofs_verification.is_err());
 }
 
 #[test]
@@ -62,17 +63,22 @@ fn partial_decryption_proofs() {
         Scalar::random(&mut OsRng),
     ];
 
-    let (sk_1, pk_1) = generate_keys();
+    let length = vector_scalar.len();
+
+    let (sks, pks) = generate_key_vector(length);
     let (_sk_2, pk_2) = generate_keys();
 
-    let combined_key = combine_pks(pk_1, pk_2);
+    let combined_keys = combine_pks_vector(&pks, pk_2);
 
-    let encrypted_values = encrypt_input(combined_key, vector_scalar);
+    let encrypted_values =
+        encrypt_input(&combined_keys, vector_scalar).expect("Error encrypting hashes");
 
     let (partial_decryption, proofs_correct_decryption) =
-        partial_decryption_and_proof(&encrypted_values, &sk_1);
+        partial_decryption_and_proof_vec_key(&encrypted_values, &sks)
+            .expect("Partial decryption failed");
+
     let verification = verify_partial_decryption_proofs(
-        &pk_1,
+        &pks,
         &encrypted_values,
         &partial_decryption,
         &proofs_correct_decryption,
@@ -80,9 +86,10 @@ fn partial_decryption_proofs() {
 
     assert!(verification.unwrap());
 
-    let fake_partial_decryption = encrypt_input(combined_key, vector_scalar);
+    let fake_partial_decryption =
+        encrypt_input(&combined_keys, vector_scalar).expect("Error encrypting hashes");
     let wrong_verification = verify_partial_decryption_proofs(
-        &pk_1,
+        &pks,
         &encrypted_values,
         &fake_partial_decryption,
         &proofs_correct_decryption,
@@ -91,132 +98,40 @@ fn partial_decryption_proofs() {
     assert!(!wrong_verification.unwrap());
 
     let wrong_size: &[Scalar] = &[Scalar::random(&mut OsRng), Scalar::random(&mut OsRng)];
-    let wrong_size_encrypted_values = encrypt_input(combined_key, wrong_size);
-    let wrong_verification = verify_partial_decryption_proofs(
-        &pk_1,
-        &encrypted_values,
-        &wrong_size_encrypted_values,
-        &proofs_correct_decryption,
-    );
+    let wrong_size_encrypted_values = encrypt_input(&combined_keys, wrong_size);
 
-    assert!(!wrong_verification.is_ok());
+    assert!(wrong_size_encrypted_values.is_err());
 
     let wrong_nr_proofs_verification = verify_partial_decryption_proofs(
-        &pk_1,
+        &pks,
         &encrypted_values,
         &partial_decryption,
         &(proofs_correct_decryption[1..3].to_vec()),
     );
 
-    assert!(!wrong_nr_proofs_verification.is_ok());
+    assert!(wrong_nr_proofs_verification.is_err());
 }
 
 #[test]
 fn test_e2e_simple() {
     let vector_hashes: &[Scalar] = &[Scalar::random(&mut OsRng), Scalar::random(&mut OsRng)];
     let vector_checks: Vec<Scalar> = vec![vector_hashes[0], vector_hashes[1]];
+    let length = vector_hashes.len();
 
-    let (sk, pk) = generate_keys();
-    let encrypted_hashes = encrypt_input(pk, vector_hashes);
-    let encrypted_checks = compute_checks(&pk, encrypted_hashes, vector_checks)
+    let (sks, pks) = generate_key_vector(length);
+    let encrypted_hashes = encrypt_input(&pks, vector_hashes).expect("Error encrypting hashes");
+    let encrypted_checks = compute_checks(&pks, &encrypted_hashes, &vector_checks)
         .expect("Error encrypting check vector");
 
     let decrypted_checks: Vec<RistrettoPoint> = encrypted_checks
         .into_iter()
-        .map(|ciphertext| sk.decrypt(&ciphertext))
+        .zip(sks.into_iter())
+        .map(|(ciphertext, sk)| sk.decrypt(&ciphertext))
         .collect();
 
     let zero_point = RISTRETTO_BASEPOINT_TABLE.basepoint() * Scalar::zero();
     assert_eq!(zero_point, decrypted_checks[0]);
     assert_eq!(zero_point, decrypted_checks[1]);
-}
-
-#[test]
-fn test_e2e_passing() {
-    // generate random scalars as user reply.
-    let vector_hashes: &[Scalar] = &[
-        Scalar::random(&mut OsRng),
-        Scalar::random(&mut OsRng),
-        Scalar::random(&mut OsRng),
-        Scalar::random(&mut OsRng),
-    ];
-    // `vector_checks` === `vector_hashes`, so that the test passes!
-    let vector_checks: Vec<Scalar> = vec![
-        vector_hashes[0],
-        vector_hashes[1],
-        vector_hashes[2],
-        vector_hashes[3],
-    ];
-
-    /* SERVER */
-    let (sk_server, pk_server) = generate_keys();
-    let pk_server_proof = sk_server.prove_knowledge();
-
-    /* USER */
-    let (sk_user, pk_user) = generate_keys();
-    let pk_user_proof = sk_user.prove_knowledge();
-
-    // 1.- User fetches the server's public key, and verifies
-    // it does know the private key associated with `pk_server`.
-    assert!(pk_server.verify_proof_knowledge(&pk_server_proof));
-
-    // Then, the user encrypts the vector of values to send the server.
-    // This vector will contain `n` hashes, out of which only `l` will be used
-    // to compute the final score.
-    let shared_pk_user = combine_pks(pk_user, pk_server);
-    let encrypted_hashes = encrypt_input(shared_pk_user, vector_hashes);
-
-    /* SERVER */
-
-    // 2.- User sends the encrypted hashes to the server, together with its
-    // share of the key. The server generates the shared key, verifies the proof and produces
-    // the checks.
-    assert!(pk_user.verify_proof_knowledge(&pk_user_proof));
-    let shared_pk_server = combine_pks(pk_server, pk_user);
-
-    // Generated shared keys must be the same
-    assert_eq!(shared_pk_server, shared_pk_user);
-
-    // Server now computes the encrypted checks, i.e. performs ElGamal
-    // homomorphic addition over each element of the arrays (between the
-    // `encrypted_hashes` sent by user and the `vector_checks` in the server)
-    let encrypted_checks = compute_checks(&shared_pk_server, encrypted_hashes, vector_checks)
-        .expect("Error encrypting check vector");
-
-    /* USER */
-    // 3.- Server sends the aggregate (`encrypted_checks`) back to the user.
-    // The user first randomises each of the values, and then decrypts the
-    // entries in the vector.
-    // The randomisation is necessary so that, if the server cheats it will not
-    // be able to learn anything about the user input. Thus, the server
-    // will only be able to determine whether some of these encrypted values
-    // were zero.
-    let (randomized_vector, _proof_correct_rand) = randomize_and_prove(&encrypted_checks);
-    let (partial_decryption, proofs_correct_decryption) =
-        partial_decryption_and_proof(&randomized_vector, &sk_user);
-
-    /* SERVER */
-    // 4.- User sends the partially decrypted aggregated count to the server,
-    // together with the proof of correct decryption.
-    // First, the server verifies the proof of correct decryption.
-    assert!(verify_partial_decryption_proofs(
-        &pk_user,
-        &randomized_vector,
-        &partial_decryption,
-        &proofs_correct_decryption
-    )
-    .unwrap());
-
-    // Finally, the server fully decrypts the ciphertext and checks if the
-    // decryption equals zero.
-    let (final_decryption, _proof_correct_decryption_server) =
-        partial_decryption_and_proof(&partial_decryption, &sk_server);
-
-    let plaintext: Vec<curve25519_dalek::ristretto::RistrettoPoint> =
-        final_decryption.into_iter().map(|x| x.points.1).collect();
-
-    // tests must pass since the `vector_hashes` is a copy of `vector_checks`
-    assert!(check_tests(plaintext));
 }
 
 #[test]
@@ -238,59 +153,150 @@ fn test_e2e_not_passing() {
         Scalar::random(&mut OsRng),
     ];
 
-    let (sk_server, pk_server) = repsys_crypto::generate_keys();
+    let length = vector_hashes.len();
+
+    let (sk_server, pk_server) = generate_keys();
     let pk_server_proof = sk_server.prove_knowledge();
 
-    let (sk_user, pk_user) = repsys_crypto::generate_keys();
-    let pk_user_proof = sk_user.prove_knowledge();
+    let (sks_user, pks_user) = generate_key_vector(length);
+    let pk_user_proofs: Vec<CompactProof> = (&sks_user)
+        .into_iter()
+        .map(|sk| sk.prove_knowledge())
+        .collect();
 
     assert!(pk_server.verify_proof_knowledge(&pk_server_proof));
 
-    let shared_pk_user = combine_pks(pk_user, pk_server);
-    let encrypted_hashes = encrypt_input(shared_pk_user, vector_hashes);
-    assert!(pk_user.verify_proof_knowledge(&pk_user_proof));
+    let shared_pks_user = combine_pks_vector(&pks_user, pk_server);
+    let encrypted_hashes =
+        encrypt_input(&shared_pks_user, vector_hashes).expect("Error encrypting input");
 
-    let shared_pk_server = combine_pks(pk_server, pk_user);
-    assert_eq!(shared_pk_server, shared_pk_user);
+    for (pk, proof) in (&pks_user).iter().zip(pk_user_proofs.iter()) {
+        assert!(pk.verify_proof_knowledge(&proof))
+    }
 
-    let encrypted_checks = compute_checks(&shared_pk_server, encrypted_hashes, vector_checks)
+    let shared_pks_server = combine_pks_vector(&pks_user, pk_server);
+
+    assert_eq!(shared_pks_server, shared_pks_user);
+
+    let encrypted_checks = compute_checks(&shared_pks_server, &encrypted_hashes, &vector_checks)
         .expect("Error encrypting check vector");
 
     let (randomized_vector, _proofs_correct_rand) = randomize_and_prove(&encrypted_checks);
 
     let (partial_decryption, proofs_correct_decryption) =
-        partial_decryption_and_proof(&randomized_vector, &sk_user);
+        partial_decryption_and_proof_vec_key(&randomized_vector, &sks_user)
+            .expect("Error decrypting the vector of ciphertexts");
 
     assert!(verify_partial_decryption_proofs(
-        &pk_user,
+        &pks_user,
         &randomized_vector,
         &partial_decryption,
         &proofs_correct_decryption
     )
-    .unwrap());
+        .unwrap());
 
     let (final_decryption, _proofs_correct_decryption_server) =
         partial_decryption_and_proof(&partial_decryption, &sk_server);
 
-    let plaintext = final_decryption.into_iter().map(|x| x.points.1).collect();
+    let plaintext: Vec<RistrettoPoint> = final_decryption.into_iter().map(|x| x.points.1).collect();
 
     // tests must not pass since the `vector_hashes` is generated randomly
-    assert_eq!(false, check_tests(plaintext));
+    assert_eq!(false, check_tests(&plaintext));
 }
 
-/// Checks if a vector of "tests" has passed. A given test passes if its
-/// correspondent index is zero in the Ristretto group. It returns the result
-/// of the check.
-pub fn check_tests(final_decryption: Vec<RistrettoPoint>) -> bool {
-    let mut passed = true;
-    let zero_point = RISTRETTO_BASEPOINT_TABLE.basepoint() * Scalar::zero();
+#[test]
+fn test_e2e_passing() {
+    // generate random scalars as user reply.
+    let vector_hashes: &[Scalar] = &[
+        Scalar::random(&mut OsRng),
+        Scalar::random(&mut OsRng),
+        Scalar::random(&mut OsRng),
+        Scalar::random(&mut OsRng),
+    ];
+    // `vector_checks` === `vector_hashes`, so that the test passes!
+    let vector_checks: Vec<Scalar> = vec![
+        vector_hashes[0],
+        vector_hashes[1],
+        vector_hashes[2],
+        vector_hashes[3],
+    ];
 
-    for (index, value) in final_decryption.into_iter().enumerate() {
-        if !(value == zero_point) {
-            print!("\nCheck {} failed. User is using an emulator.\n", index);
-            passed = false;
-            break;
-        }
+    let length = vector_checks.len();
+
+    /* SERVER */
+    let (sk_server, pk_server) = generate_keys();
+    let pk_server_proof = sk_server.prove_knowledge();
+
+    /* USER */
+    let (sks_user, pks_user) = generate_key_vector(length);
+    let pk_user_proofs: Vec<CompactProof> = (&sks_user)
+        .into_iter()
+        .map(|sk| sk.prove_knowledge())
+        .collect();
+
+    // 1.- User fetches the server's public key, and verifies
+    // it does know the private key associated with `pk_server`.
+    assert!(pk_server.verify_proof_knowledge(&pk_server_proof));
+
+    // Then, the user encrypts the vector of values to send the server.
+    // This vector will contain `n` hashes, out of which only `l` will be used
+    // to compute the final score.
+    let shared_pks_user = combine_pks_vector(&pks_user, pk_server);
+    let encrypted_hashes =
+        encrypt_input(&shared_pks_user, vector_hashes).expect("Error encrypting input");
+
+    /* SERVER */
+
+    // 2.- User sends the encrypted hashes to the server, together with its
+    // share of the key. The server generates the shared key, verifies the proof and produces
+    // the checks.
+    for (pk, proof) in pks_user.iter().zip(pk_user_proofs.iter()) {
+        assert!(pk.verify_proof_knowledge(&proof))
     }
-    passed
+
+    let shared_pks_server = combine_pks_vector(&pks_user, pk_server);
+
+    // Generated shared keys must be the same
+    assert_eq!(shared_pks_server, shared_pks_user);
+
+    // Server now computes the encrypted checks, i.e. performs ElGamal
+    // homomorphic addition over each element of the arrays (between the
+    // `encrypted_hashes` sent by user and the `vector_checks` in the server)
+    let encrypted_checks = compute_checks(&shared_pks_server, &encrypted_hashes, &vector_checks)
+        .expect("Error encrypting check vector");
+
+    /* USER */
+    // 3.- Server sends the aggregate (`encrypted_checks`) back to the user.
+    // The user first randomises each of the values, and then decrypts the
+    // entries in the vector.
+    // The randomisation is necessary so that, if the server cheats it will not
+    // be able to learn anything about the user input. Thus, the server
+    // will only be able to determine whether some of these encrypted values
+    // were zero.
+    let (randomized_vector, _proof_correct_rand) = randomize_and_prove(&encrypted_checks);
+    let (partial_decryption, proofs_correct_decryption) =
+        partial_decryption_and_proof_vec_key(&randomized_vector, &sks_user)
+            .expect("Error performing partial decryption");
+
+    /* SERVER */
+    // 4.- User sends the partially decrypted aggregated count to the server,
+    // together with the proof of correct decryption.
+    // First, the server verifies the proof of correct decryption.
+    assert!(verify_partial_decryption_proofs(
+        &pks_user,
+        &randomized_vector,
+        &partial_decryption,
+        &proofs_correct_decryption
+    )
+        .unwrap());
+
+    // Finally, the server fully decrypts the ciphertext and checks if the
+    // decryption equals zero.
+    let (final_decryption, _proof_correct_decryption_server) =
+        partial_decryption_and_proof(&partial_decryption, &sk_server);
+
+    let plaintext: Vec<RistrettoPoint> = final_decryption.into_iter().map(|x| x.points.1).collect();
+
+    // tests must pass since the `vector_hashes` is a copy of `vector_checks`
+    assert!(check_tests(&plaintext));
 }

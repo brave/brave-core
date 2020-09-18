@@ -8,28 +8,28 @@ ifdef NO_CXXEXCEPTIONS
 CFLAGS += -DNO_CXXEXCEPTIONS=${NO_CXXEXCEPTIONS}
 endif
 
-all: tests/cpp.out
+all: tests/cc.out
 
 src/lib.h: src/lib.rs
 	cbindgen -o src/lib.h
 
-test: tests/cpp.out
-	./tests/cpp.out
+test: tests/cc.out
+	./tests/cc.out
 
-tests/cpp.out: target/debug/libprivate_channel.a tests/private_channel.o tests/main.cpp 
-	g++ $(CFLAGS) -std=gnu++0x tests/main.cpp tests/private_channel.o ./target/debug/libprivate_channel.a -I ./src -lpthread -ldl -o tests/cpp.out
+tests/cc.out: target/debug/libprivate_channel.a tests/private_channel.o tests/main.cc 
+	g++ $(CFLAGS) -std=gnu++0x tests/main.cc tests/private_channel.o ./target/debug/libprivate_channel.a -I ./src -lpthread -ldl -o tests/cc.out
 
-tests/private_channel.o: src/lib.h src/private_channel.cpp src/private_channel.hpp
-	g++ $(CFLAGS) -std=gnu++0x src/private_channel.cpp -I src/ -c  -o tests/private_channel.o
+tests/private_channel.o: src/lib.h src/private_channel.cc src/private_channel.h
+	g++ $(CFLAGS) -std=gnu++0x src/private_channel.cc -I src/ -c  -o tests/private_channel.o
 
 target/debug/libprivate_channel.a: src/lib.rs Cargo.toml
 	cargo build
 
 valgrind-supp: tests
-	valgrind --gen-suppressions=all --suppressions=.valgrind.supp  --leak-check=yes --error-exitcode=1 ./tests/cpp.out --gen-suppressions=all
+	valgrind --gen-suppressions=all --suppressions=.valgrind.supp  --leak-check=yes --error-exitcode=1 ./tests/cc.out --gen-suppressions=all
 
 valgrind: tests
-	valgrind -v --suppressions=.valgrind.supp  --leak-check=yes --error-exitcode=1 ./tests/cpp.out --gen-suppressions=all
+	valgrind -v --suppressions=.valgrind.supp  --leak-check=yes --error-exitcode=1 ./tests/cc.out --gen-suppressions=all
 
 clean:
 	rm -rf target
