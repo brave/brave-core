@@ -1,0 +1,16 @@
+<html>
+<head>
+<script>
+function redirectToDestination() {
+    const urlParams = new URLSearchParams(window.location.search);
+    const url = urlParams.get('url');
+    window.location = atob(url);
+}
+</script>
+</head>
+<body>
+<p>Waiting for JS redirect...</p>
+<script>
+setTimeout(redirectToDestination, 100);
+</script>
+</html>
