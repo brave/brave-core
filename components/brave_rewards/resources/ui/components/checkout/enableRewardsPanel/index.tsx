@@ -4,7 +4,7 @@
 
 import * as React from 'react'
 
-import { LocaleContext } from '../localeContext'
+import { LocaleContext, getLocaleTags } from '../localeContext'
 
 import {
   Container,
@@ -22,14 +22,15 @@ interface EnableRewardsPanelProps {
 export function EnableRewardsPanel (props: EnableRewardsPanelProps) {
   const locale = React.useContext(LocaleContext)
   const handleClick = () => { props.onEnableRewards() }
+  const tags = getLocaleTags(locale.get('enableRewardsTerms'))
 
   return (
     <Container>
       <Title>{locale.get('enableRewardsTitle')}</Title>
       <Text>{locale.get('enableRewardsText')}</Text>
-      <LearnMore
-        dangerouslySetInnerHTML={{ __html: locale.get('enableRewardsLearnMore') }}
-      />
+      <LearnMore>
+        <a href='javascript:void 0'>{locale.get('enableRewardsLearnMore')}</a>
+      </LearnMore>
       <EnableRewardsButton
         text={locale.get('enableRewardsButtonText')}
         size='medium'
@@ -37,9 +38,11 @@ export function EnableRewardsPanel (props: EnableRewardsPanelProps) {
         type='accent'
         brand='rewards'
       />
-      <TermsOfService
-        dangerouslySetInnerHTML={{ __html: locale.get('enableRewardsTerms') }}
-      />
+      <TermsOfService>
+        {tags.beforeTag}
+        <a href='javascript: void 0'>{tags.duringTag}</a>
+        {tags.afterTag}
+      </TermsOfService>
     </Container>
   )
 }

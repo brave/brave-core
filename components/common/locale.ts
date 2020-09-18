@@ -34,6 +34,18 @@ interface SplitStringForTagResult {
 }
 
 /**
+ * Returns text for translations with a single HTML tag
+ * (like a link or button)
+ * @param {string} key - translation identifier
+ * @param {object} replacements - replacements for specific translation, replacement should be defined as {{key}}
+ * @returns {SplitStringForTagResult}
+ */
+export const getLocaleTags = (key: string, replacements?: Record<string, string>) => {
+  const text = getLocale(key, replacements)
+  return splitStringForTag(text, '$1', '$2')
+}
+
+/**
  * Allows an html or xml tag to be injected in to a string by extracting
  * the components of the string before, during and after the tag.
  * Usage:

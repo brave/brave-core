@@ -223,7 +223,7 @@ class SettingsPage extends React.Component<Props, State> {
       return (
         <ModalRedirect
           id={'redirect-modal-not-allowed'}
-          errorText={{ __html: getLocale('redirectModalNotAllowed') }}
+          errorText={getLocale('redirectModalNotAllowed')}
           titleText={getLocale('redirectModalErrorWallet')}
           buttonText={getLocale('redirectModalClose')}
           onClick={this.actions.hideRedirectModal}
@@ -236,7 +236,7 @@ class SettingsPage extends React.Component<Props, State> {
         <ModalRedirect
           id={'redirect-modal-bat-limit'}
           titleText={getLocale('redirectModalBatLimitTitle')}
-          errorText={{ __html: getLocale('redirectModalBatLimitText') }}
+          errorText={getLocale('redirectModalBatLimitText')}
           buttonText={getLocale('redirectModalClose')}
           onClick={this.actions.hideRedirectModal}
         />
@@ -247,7 +247,7 @@ class SettingsPage extends React.Component<Props, State> {
       return (
         <ModalRedirect
           id={'redirect-modal-error'}
-          errorText={{ __html: getLocale('redirectModalError') }}
+          errorText={getLocale('redirectModalError')}
           buttonText={getLocale('processingRequestButton')}
           titleText={getLocale('processingRequest')}
           onClick={this.onRedirectError}

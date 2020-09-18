@@ -332,7 +332,7 @@ storiesOf('Rewards/Modal', module)
     return (
       <ModalRedirect
         titleText={text('Title text', 'Sorry there was problem processing your request, please try again.')}
-        errorText={{ __html: 'Error explanation, more info <a href="#">here</a>.' }}
+        errorText={'Error explanation, more info here.'}
         onClick={doNothing}
       />
     )

@@ -4,7 +4,7 @@
   "description": "Brave Core is a set of changes, APIs, and scripts used for customizing Chromium to make Brave.",
   "main": "index.js",
   "scripts": {
-    "audit_deps": "node ./build/commands/scripts/audit.js",
+    "audit_deps": "node ./build/commands/scripts/audit.js -- --audit_dev_deps",
     "check_security": "node ./build/commands/scripts/checkSecurity.js",
     "cibuild": "node ./build/commands/scripts/commands.js cibuild",
     "init": "npm --prefix ../../ run init --",
@@ -26,7 +26,7 @@
     "lint": "node ./build/commands/scripts/commands.js lint",
     "test": "node ./build/commands/scripts/commands.js test",
     "test:scripts": "jest build/commands/lib build/commands/scripts",
-    "test-security": "npm run check_security && npm run audit_deps -- --audit_dev_deps && node ./build/commands/scripts/commands.js start --enable_brave_update --network_log --user_data_dir_name=brave-network-test",
+    "test-security": "npm run check_security && npm run audit_deps && node ./build/commands/scripts/commands.js start --enable_brave_update --network_log --user_data_dir_name=brave-network-test",
     "tslint": "tslint --project tsconfig-lint.json \"components/**/*.{ts,tsx}\"",
     "pep8": "pycodestyle --max-line-length 120 -r script",
     "web-ui-gen-grd": "node components/webpack/gen-webpack-grd",

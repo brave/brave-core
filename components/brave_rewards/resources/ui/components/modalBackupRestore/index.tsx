@@ -22,6 +22,7 @@ import {
 } from './style'
 import { TextArea, Modal, Button } from 'brave-ui/components'
 import { getLocale } from 'brave-ui/helpers'
+import { getLocaleTags } from '../../../../../common/locale'
 import { Alert, Tab } from '../'
 import ControlWrapper from 'brave-ui/components/formControls/controlWrapper'
 
@@ -310,13 +311,20 @@ export default class ModalBackupRestore extends React.PureComponent<Props, State
   }
 
   getReset = () => {
+    const tags = getLocaleTags('rewardsResetTextFunds', {
+      amount: this.props.internalFunds.toString()
+    })
     return (
       <>
         <StyledTextWrapper>
           <StyledText data-test-id={'reset-text'}>
             {
               this.props.internalFunds > 0
-              ? <span dangerouslySetInnerHTML={{ __html: getLocale('rewardsResetTextFunds', { amount: this.props.internalFunds }) }} />
+              ? <span>
+                {tags.beforeTag}
+                <b>{tags.duringTag}</b>
+                {tags.afterTag}
+              </span>
               : getLocale('rewardsResetTextNoFunds')
             }
           </StyledText>

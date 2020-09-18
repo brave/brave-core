@@ -105,24 +105,6 @@ void CustomizeWebUIHTMLSource(const std::string &name,
   };
   AddResourcePaths(source, resources[name]);
 
-  /**
-   * REWARDS
-   */
-  // String used to display not supported region for
-  // uphold wallet connection
-  base::string16 rewards_not_supported_region = l10n_util::GetStringFUTF16(
-      IDS_BRAVE_REWARDS_LOCAL_REDIRECT_MODAL_NOT_ALLOWED,
-      base::ASCIIToUTF16(kRewardsUpholdSupport));
-  source->AddString("redirectModalNotAllowed", rewards_not_supported_region);
-
-  // Strings which have token replacement in them
-  base::string16 brave_welcome_page_privacy_desc = l10n_util::GetStringFUTF16(
-      IDS_BRAVE_WELCOME_PAGE_PRIVACY_DESC,
-      base::ASCIIToUTF16(kP3ALearnMoreURL),
-      base::ASCIIToUTF16(kP3ASettingsLink));
-  source->AddString("privacyDesc",
-                         brave_welcome_page_privacy_desc);
-
   static std::map<std::string, std::vector<WebUISimpleItem> >
                                                            localized_strings = {
     {
@@ -373,7 +355,8 @@ void CustomizeWebUIHTMLSource(const std::string &name,
         { "skipWelcomeTour", IDS_BRAVE_WELCOME_PAGE_SKIP_BUTTON },
         { "next", IDS_BRAVE_WELCOME_PAGE_NEXT_BUTTON },
         { "done", IDS_BRAVE_WELCOME_PAGE_DONE_BUTTON },
-        { "privacyTitle", IDS_BRAVE_WELCOME_PAGE_PRIVACY_TITLE }
+        { "privacyTitle", IDS_BRAVE_WELCOME_PAGE_PRIVACY_TITLE },
+        { "privacyDesc", IDS_BRAVE_WELCOME_PAGE_PRIVACY_DESC }
       }
     }, {
       std::string("rewards"), {
@@ -468,6 +451,7 @@ void CustomizeWebUIHTMLSource(const std::string &name,
         { "redirectModalErrorWallet", IDS_BRAVE_REWARDS_LOCAL_REDIRECT_MODAL_ERROR_WALLET },     // NOLINT
         { "redirectModalBatLimitTitle", IDS_BRAVE_REWARDS_LOCAL_REDIRECT_MODAL_BAT_LIMIT_TITLE },     // NOLINT
         { "redirectModalBatLimitText", IDS_BRAVE_REWARDS_LOCAL_REDIRECT_MODAL_BAT_LIMIT_TEXT },     // NOLINT
+        { "redirectModalNotAllowed", IDS_BRAVE_REWARDS_LOCAL_REDIRECT_MODAL_NOT_ALLOWED},     // NOLINT
 
         { "click",  IDS_BRAVE_REWARDS_LOCAL_ADS_CONFIRMATION_TYPE_CLICK },
         { "dismiss",  IDS_BRAVE_REWARDS_LOCAL_ADS_CONFIRMATION_TYPE_DISMISS },
