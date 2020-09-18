@@ -19,7 +19,7 @@ class EphemeralStorageTabHelper
     : public content::WebContentsObserver,
       public content::WebContentsUserData<EphemeralStorageTabHelper> {
  public:
-  explicit EphemeralStorageTabHelper(content::WebContents*);
+  explicit EphemeralStorageTabHelper(content::WebContents* web_contents);
   ~EphemeralStorageTabHelper() override;
 
  protected:
@@ -28,9 +28,9 @@ class EphemeralStorageTabHelper
   void WebContentsDestroyed() override;
 
  private:
-  void ClearEphemeralStorage();
-
   friend class content::WebContentsUserData<EphemeralStorageTabHelper>;
+
+  void ClearEphemeralStorage();
 
   WEB_CONTENTS_USER_DATA_KEY_DECL();
 };

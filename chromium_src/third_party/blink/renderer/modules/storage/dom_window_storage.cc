@@ -19,9 +19,7 @@ void MaybeClearAccessDeniedException(StorageArea* storage,
                                      const LocalDOMWindow& window,
                                      ExceptionState* exception_state) {
   if (!storage && exception_state->HadException()) {
-    LocalDOMWindow* dom_window = window.GetFrame()->DomWindow();
-
-    if (!dom_window->GetSecurityOrigin()->CanAccessSessionStorage())
+    if (!window.GetSecurityOrigin()->CanAccessSessionStorage())
       return;
 
     // clear the access denied exception for better webcompat
@@ -37,7 +35,6 @@ const base::Feature kBraveEphemeralStorage{"EphemeralStorage",
 class EphemeralStorageNamespaces
     : public GarbageCollected<EphemeralStorageNamespaces>,
       public Supplement<Page> {
-  USING_GARBAGE_COLLECTED_MIXIN(StorageNamespace);
 
  public:
   EphemeralStorageNamespaces(StorageController* controller,
@@ -87,16 +84,13 @@ EphemeralStorageNamespaces* EphemeralStorageNamespaces::From(Page* page) {
   if (supplement)
     return supplement;
 
-  // The ephemeral session storage namespace is constructed using the
-  // normal session storage id. We get it here and transform it.
-  StorageNamespace* session_storage_namespace = StorageNamespace::From(page);
-  if (!session_storage_namespace)
-    return nullptr;
+  auto* security_origin =
+      page->MainFrame()->GetSecurityContext()->GetSecurityOrigin();
 
-  String session_storage_id = session_storage_namespace->namespace_id() +
-                              String("ephemeral-session-storage");
-  String local_storage_id = session_storage_namespace->namespace_id() +
-                            String("ephemeral-local-storage");
+  String session_storage_id = security_origin->RegistrableDomain() +
+                              String("/ephemeral-session-storage");
+  String local_storage_id = security_origin->RegistrableDomain() +
+                            String("/ephemeral-local-storage");
   supplement = MakeGarbageCollected<EphemeralStorageNamespaces>(
       StorageController::GetInstance(), session_storage_id, local_storage_id);
 
@@ -141,7 +135,7 @@ StorageArea* BraveDOMWindowStorage::sessionStorage(
   auto* storage =
       DOMWindowStorage::From(*window).sessionStorage(exception_state);
 
-  MaybeClearAccessDeniedException(storage, window, &exception_state);
+  MaybeClearAccessDeniedException(storage, *window, &exception_state);
   if (base::FeatureList::IsEnabled(kBraveEphemeralStorage)) {
     storage = ephemeralSessionStorage(storage);
   }
@@ -172,9 +166,10 @@ StorageArea* BraveDOMWindowStorage::ephemeralSessionStorage(
   if (!namespaces)
     return nullptr;
 
-  Document* document = window->GetFrame()->GetDocument();
   auto storage_area =
-      namespaces->local_storage()->GetCachedArea(document->GetSecurityOrigin());
+      namespaces->local_storage()->GetCachedArea(window->GetSecurityOrigin());
+
+  Document* document = window->GetFrame()->GetDocument();
   ephemeral_session_storage_ =
       StorageArea::Create(document->GetFrame(), std::move(storage_area),
                           StorageArea::StorageType::kSessionStorage);
@@ -186,7 +181,7 @@ StorageArea* BraveDOMWindowStorage::localStorage(
   LocalDOMWindow* window = GetSupplementable();
   auto* storage = DOMWindowStorage::From(*window).localStorage(exception_state);
 
-  MaybeClearAccessDeniedException(storage, window, &exception_state);
+  MaybeClearAccessDeniedException(storage, *window, &exception_state);
   if (base::FeatureList::IsEnabled(kBraveEphemeralStorage)) {
     storage = ephemeralLocalStorage(storage);
   }
@@ -217,9 +212,10 @@ StorageArea* BraveDOMWindowStorage::ephemeralLocalStorage(
   if (!namespaces)
     return nullptr;
 
-  Document* document = window->GetFrame()->GetDocument();
   auto storage_area =
-      namespaces->local_storage()->GetCachedArea(document->GetSecurityOrigin());
+      namespaces->local_storage()->GetCachedArea(window->GetSecurityOrigin());
+
+  Document* document = window->GetFrame()->GetDocument();
   ephemeral_local_storage_ =
       StorageArea::Create(document->GetFrame(), std::move(storage_area),
                           StorageArea::StorageType::kSessionStorage);

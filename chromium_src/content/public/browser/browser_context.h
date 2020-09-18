@@ -6,18 +6,22 @@
 #ifndef BRAVE_CHROMIUM_SRC_CONTENT_PUBLIC_BROWSER_BROWSER_CONTEXT_H_
 #define BRAVE_CHROMIUM_SRC_CONTENT_PUBLIC_BROWSER_BROWSER_CONTEXT_H_
 
-namespace content {
-class RenderViewHost;
-class SiteInstance;
-}  // namespace content
-
-// Brave-specific: allows embedder to request deletion of an in-memory
-// StoragePartition.
-#define BRAVE_BROWSER_CONTEXT_H \
-  void ClearEphemeralStorageForHost(RenderViewHost*, SiteInstance*);
-
 #include "../../../../../content/public/browser/browser_context.h"
 
-#undef BRAVE_BROWSER_CONTEXT_H
+#include <string>
+
+#include "base/memory/ref_counted.h"
+#include "content/common/content_export.h"
+
+namespace content {
+
+class SessionStorageNamespace;
+class StoragePartition;
+
+CONTENT_EXPORT scoped_refptr<content::SessionStorageNamespace> CreateSessionStorageNamespace(
+    content::StoragePartition* partition,
+    const std::string& namespace_id);
+
+}  // namespace content
 
 #endif  // BRAVE_CHROMIUM_SRC_CONTENT_PUBLIC_BROWSER_BROWSER_CONTEXT_H_

@@ -5,7 +5,8 @@ source_set("browser") {
   ]
 
   deps = [
-    "//brave/third_party/blink/renderer:renderer",
+    "//base",
     "//content/public/browser",
+    "//net",
   ]
 }

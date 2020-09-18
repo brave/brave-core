@@ -21,8 +21,6 @@ MODULES_EXPORT extern const base::Feature kBraveEphemeralStorage;
 class BraveDOMWindowStorage final
     : public GarbageCollected<BraveDOMWindowStorage>,
       public Supplement<LocalDOMWindow> {
-  USING_GARBAGE_COLLECTED_MIXIN(BraveDOMWindowStorage);
-
  public:
   static const char kSupplementName[];
 
