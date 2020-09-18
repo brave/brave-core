@@ -535,6 +535,7 @@ test("brave_browser_tests") {
     "//brave/browser/farbling/brave_webgl_farbling_browsertest.cc",
     "//brave/browser/net/brave_network_delegate_browsertest.cc",
     "//brave/browser/net/brave_network_delegate_hsts_fingerprinting_browsertest.cc",
+    "//brave/browser/net/brave_site_hacks_network_delegate_helper_browsertest.cc",
     "//brave/browser/net/brave_system_request_handler_browsertest.cc",
     "//brave/browser/policy/brave_policy_browsertest.cc",
     "//brave/browser/profiles/brave_bookmark_model_loaded_observer_browsertest.cc",
