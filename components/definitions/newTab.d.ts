@@ -184,6 +184,8 @@ declare namespace NewTab {
     optInTotal: boolean
     optInBTCPrice: boolean
     tickerPrices: Record<string, any>
+    losersGainers: Record<string, any>
+    charts: Record<string, any>
   }
 
   export type BinanceTLD = 'us' | 'com'

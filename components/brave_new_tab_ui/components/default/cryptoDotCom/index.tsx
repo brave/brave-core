@@ -3,77 +3,7 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 // MOCK DATA
-const topMovers = [
-  { currency: 'BTC', tickerPrice: 18484.10, tickerChange: 210.01 },
-  { currency: 'ETH', tickerPrice: 334.54, tickerChange: 152.78 },
-  { currency: 'CRO', tickerPrice: 1.20, tickerChange: 89.12 }
-]
-
-const currencyData = {
-  btc: {
-    volume24hr: 1271112419,
-    chartData: [
-      {
-        t: 1599091200000,
-        o: 13000.0,
-        h: 13000.0,
-        l: 8692.84,
-        c: 12999.5,
-        v: 33.804565
-      },
-      {
-        t: 1599177600000,
-        o: 13000.0,
-        h: 13000.0,
-        l: 8691.07,
-        c: 8691.07,
-        v: 46.798151
-      },
-      {
-        t: 1599350400000,
-        o: 12001.0,
-        h: 12001.01,
-        l: 12001.0,
-        c: 12001.01,
-        v: 0.2
-      },
-      {
-        t: 1599436800000,
-        o: 13000.0,
-        h: 13000.0,
-        l: 8682.27,
-        c: 9000.0,
-        v: 31.319846
-      },
-      {
-        t: 1599523200000,
-        o: 8682.27,
-        h: 13000.0,
-        l: 8682.21,
-        c: 8682.21,
-        v: 3.768236
-      },
-      {
-        t: 1599609600000,
-        o: 8682.27,
-        h: 13000.0,
-        l: 8680.16,
-        c: 8680.16,
-        v: 19.107522
-      },
-      {
-        t: 1599696000000,
-        o: 12950.0,
-        h: 12950.0,
-        l: 10300.0,
-        c: 11000.0,
-        v: 6.08722
-      }
-    ]
-  },
-  eth: {},
-  cro: {}
-}
+const topMovers = [ 'BTC', 'ETH', 'CRO' ]
 
 import * as React from 'react'
 
@@ -113,20 +43,45 @@ import cryptoColors from '../exchangeWidget/colors'
 // import { getLocale } from '../../../../common/locale'
 
 interface State {
-  selectedView: string,
+  selectedView: string
   selectedAsset: string
+}
+
+interface TickerPrice {
+  price: number
+  volume: number
+}
+
+interface AssetRanking {
+  lastPrice: number
+  pair: string
+  percentChange: number
+}
+
+interface ChartDataPoint {
+  c: number
+  h: number
+  l: number
+  o: number
+  t: number
+  v: number
 }
 
 interface Props {
   showContent: boolean
   optInTotal: boolean
   optInBTCPrice: boolean
-  tickerPrices: Record<string, string>
+  tickerPrices: Record<string, TickerPrice>
+  losersGainers: Record<string, AssetRanking[]>
+  charts: Record<string, ChartDataPoint[]>
   stackPosition: number
   onShowContent: () => void
   onDisableWidget: () => void
   onTotalPriceOptIn: () => void
   onBtcPriceOptIn: () => void
+  onSetLosersGainers: () => void
+  onSetTickerPrices: (assets: Array<string>) => Promise<void>
+  // onSetChartData: (asset: string) => void
 }
 interface ChartConfig {
   data: Array<any>
@@ -143,6 +98,21 @@ class CryptoDotCom extends React.PureComponent<Props, State> {
     }
   }
 
+  // This is a temporary function only necessary for MVP
+  // Merges losers/gainers into one table
+  transformLosersGainers = ({ losers = [], gainers = [] }: Record<string, AssetRanking[]>): Record<string, AssetRanking> => {
+    const losersGainersMerged = [ ...losers, ...gainers ]
+    return losersGainersMerged.reduce((mergedTable: object, asset: AssetRanking) => {
+      let { pair: assetName, ...assetRanking } = asset
+      assetName = assetName.split('_')[0]
+
+      return {
+        ...mergedTable,
+        [assetName]: assetRanking
+      }
+    }, {})
+  }
+
   setSelectedView = (view: string) => {
     this.setState({
       selectedView: view
@@ -153,6 +123,12 @@ class CryptoDotCom extends React.PureComponent<Props, State> {
     this.setState({
       selectedAsset: asset
     })
+  }
+
+  handleViewMarketsClick = async () => {
+    await this.props.onSetTickerPrices(topMovers)
+    this.props.onSetLosersGainers()
+    this.setSelectedView('topMovers')
   }
 
   plotData ({ data, chartHeight, chartWidth }: ChartConfig) {
@@ -186,6 +162,10 @@ class CryptoDotCom extends React.PureComponent<Props, State> {
   renderIndexView () {
     const { optInBTCPrice, onBtcPriceOptIn } = this.props
     const currency = 'BTC'
+    const { price = null } = this.props.tickerPrices[currency] || {}
+
+    const losersGainers = this.transformLosersGainers(this.props.losersGainers || {})
+    const { percentChange = null } = losersGainers[currency] || {}
     return (
       <>
         <Box isFlex={true}>
@@ -199,8 +179,8 @@ class CryptoDotCom extends React.PureComponent<Props, State> {
           <FlexItem textAlign='right' flex={1}>
             {optInBTCPrice ? (
               <>
-                <Text>{new Intl.NumberFormat('en-IN', { style: 'currency', currency: 'USD', currencyDisplay: 'narrowSymbol' }).format(18484.10)}</Text>
-                <Text $color='green'>{210.01}%</Text>
+                {(price !== null) && <Text>{new Intl.NumberFormat('en-IN', { style: 'currency', currency: 'USD', currencyDisplay: 'narrowSymbol' }).format(price)}</Text>}
+                {(percentChange !== null) && <Text $color='green'>{percentChange}%</Text>}
               </>
             ) : (
               <PlainButton onClick={onBtcPriceOptIn} textColor='green' inline={true}>Show Price</PlainButton>
@@ -213,7 +193,7 @@ class CryptoDotCom extends React.PureComponent<Props, State> {
         <Text center={true} style={{ padding: '1em 0 0.5em', fontSize: 15 }}>Get 2% bonus on deposits</Text>
         <Text center={true} style={{ fontSize: 15 }}>Stop paying trading fees</Text>
         <ActionAnchor href='#' style={{ margin: '1em 0' }}>Buy Bitcoin Now</ActionAnchor>
-        <PlainButton textColor='light' onClick={this.setSelectedView.bind(this, 'topMovers')} style={{ margin: '0 auto' }}>View Crypto.com Markets</PlainButton>
+        <PlainButton textColor='light' onClick={this.handleViewMarketsClick} style={{ margin: '0 auto' }}>View Crypto.com Markets</PlainButton>
       </>
     )
   }
@@ -221,28 +201,38 @@ class CryptoDotCom extends React.PureComponent<Props, State> {
   renderTopMoversView () {
     return (
       <List>
-        {topMovers.map(({ currency, tickerPrice, tickerChange }) => (
-          <ListItem isFlex={true} onClick={this.setSelectedAsset.bind(this, currency)}>
-            <FlexItem style={{ paddingLeft: 5, paddingRight: 5 }}>
-              {this.renderIconAsset(currency.toLowerCase())}
-            </FlexItem>
-            <FlexItem>
-              <Text>{currency}</Text>
-              <Text small={true} $color='light'>{currencyNames[currency]}</Text>
-            </FlexItem>
-            <FlexItem textAlign='right' flex={1}>
-              <Text>{new Intl.NumberFormat('en-IN', { style: 'currency', currency: 'USD', currencyDisplay: 'narrowSymbol' }).format(tickerPrice)}</Text>
-              <Text $color={tickerChange > 0 ? 'green' : 'red'}>{tickerChange}%</Text>
-            </FlexItem>
-          </ListItem>
-        ))}
+        {topMovers.map(currency => {
+          const { price = null } = this.props.tickerPrices[currency] || {}
+          const losersGainers = this.transformLosersGainers(this.props.losersGainers || {})
+          const { percentChange = null } = losersGainers[currency] || {}
+          return (
+            <ListItem key={currency} isFlex={true} onClick={this.setSelectedAsset.bind(this, currency)}>
+              <FlexItem style={{ paddingLeft: 5, paddingRight: 5 }}>
+                {this.renderIconAsset(currency.toLowerCase())}
+              </FlexItem>
+              <FlexItem>
+                <Text>{currency}</Text>
+                <Text small={true} $color='light'>{currencyNames[currency]}</Text>
+              </FlexItem>
+              <FlexItem textAlign='right' flex={1}>
+                {(price !== null) && <Text>{new Intl.NumberFormat('en-IN', { style: 'currency', currency: 'USD', currencyDisplay: 'narrowSymbol' }).format(price)}</Text>}
+                {(percentChange !== null) && <Text $color={percentChange > 0 ? 'green' : 'red'}>{percentChange}%</Text>}
+              </FlexItem>
+            </ListItem>
+          )
+        })}
       </List>
     )
   }
 
   renderAssetDetailView () {
     const { selectedAsset: currency } = this.state
-    const assetData = currencyData[currency.toLowerCase()]
+    const { price = null, volume = null } = this.props.tickerPrices[currency] || {}
+
+    const losersGainers = this.transformLosersGainers(this.props.losersGainers || {})
+    const { percentChange = null } = losersGainers[currency] || {}
+
+    const chartData = this.props.charts[currency] || []
     const chartHeight = 100
     const chartWidth = 309
     return (
@@ -284,15 +274,15 @@ class CryptoDotCom extends React.PureComponent<Props, State> {
             borderBottom: '1px solid #979797'
           }}
         >
-          <Text
+          {(price !== null) && <Text
             inline={true}
             large={true}
             weight={500}
             style={{ marginRight: '0.5rem' }}
           >
-            $9,499.50 USDT
-          </Text>
-          <Text inline={true} $color='green'>0.98%</Text>
+            {new Intl.NumberFormat('en-IN', { style: 'currency', currency: 'USD', currencyDisplay: 'narrowSymbol' }).format(price)} USDT
+          </Text>}
+          {(percentChange !== null) && <Text inline={true} $color='green'>{percentChange}%</Text>}
           <svg
             viewBox={`0 0 ${chartWidth} ${chartHeight}`}
             style={{ margin: '1rem 0' }}
@@ -302,7 +292,7 @@ class CryptoDotCom extends React.PureComponent<Props, State> {
               stroke='#44B0FF'
               stroke-width='1'
               points={this.plotData({
-                data: assetData.chartData,
+                data: chartData,
                 chartHeight,
                 chartWidth
               })}
@@ -320,7 +310,7 @@ class CryptoDotCom extends React.PureComponent<Props, State> {
             <Text small={true} $color='light' style={{ paddingBottom: '0.2rem' }}>
               24HR VOLUME
             </Text>
-            <Text weight={500}>{new Intl.NumberFormat('en-IN', { style: 'currency', currency: 'USD', currencyDisplay: 'narrowSymbol' }).format(assetData.volume24hr)} USDT</Text>
+            {(volume != null) && <Text weight={500}>{new Intl.NumberFormat('en-IN', { style: 'currency', currency: 'USD', currencyDisplay: 'narrowSymbol' }).format(volume)} USDT</Text>}
           </div>
           <div style={{ marginTop: '1em' }}>
             <Text small={true} $color='light' style={{ paddingBottom: '0.2rem' }}>SUPPORTED PAIRS</Text>
