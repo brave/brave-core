@@ -5,6 +5,7 @@
 
 #include "brave/browser/brave_local_state_prefs.h"
 #include "brave/browser/brave_profile_prefs.h"
+#include "brave/browser/search/ntp_utils.h"
 #include "brave/browser/themes/brave_dark_mode_utils.h"
 #include "brave/components/brave_sync/brave_sync_prefs.h"
 #include "chrome/browser/profiles/profile.h"
@@ -42,4 +43,7 @@ void MigrateObsoleteProfilePrefs(Profile* profile) {
 
   // Added 12/2019.
   dark_mode::MigrateBraveDarkModePrefs(profile);
+
+  // Added 9/2020
+  new_tab_page::MigrateNewTabPagePrefs(profile);
 }

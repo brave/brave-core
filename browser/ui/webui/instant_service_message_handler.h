@@ -21,8 +21,7 @@ class WebUIDataSource;
 class InstantServiceMessageHandler : public content::WebUIMessageHandler,
                                      public InstantServiceObserver {
  public:
-  explicit InstantServiceMessageHandler(Profile* profile,
-      InstantService* instant_service);
+  explicit InstantServiceMessageHandler(Profile* profile);
   ~InstantServiceMessageHandler() override;
 
  private:

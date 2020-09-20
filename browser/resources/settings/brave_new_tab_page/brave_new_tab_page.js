@@ -26,6 +26,7 @@
       isBraveTogetherSupported_: Boolean,
       isGeminiSupported_: Boolean,
       isBitcoinDotComSupported_: Boolean,
+      showTopSites_: Boolean
     },
 
     /** @override */
@@ -36,6 +37,7 @@
       this.isBraveTogetherSupported_ = false;
       this.isGeminiSupported_ = false;
       this.isBitcoinDotComSupported_ = false;
+      this.showTopSites_ = false;
     },
 
     /** @override */
@@ -55,10 +57,20 @@
       this.browserProxy_.getIsBitcoinDotComSupported().then(isBitcoinDotComSupported => {
         this.isBitcoinDotComSupported_ = isBitcoinDotComSupported;
       })
+      this.browserProxy_.getShowTopSites().then(visible => {
+        this.showTopSites_ = visible;
+      })
 
       this.addWebUIListener('super-referral-active-state-changed', (isSuperReferralActive) => {
         this.isSuperReferralActive_ = isSuperReferralActive;
       })
+      this.addWebUIListener('ntp-shortcut-visibility-changed', (visible) => {
+        this.showTopSites_ = visible;
+      })
+    },
+
+    onShowTopSitesChange_: function() {
+      this.browserProxy_.toggleTopSitesVisible();
     }
   });
 })();

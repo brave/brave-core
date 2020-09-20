@@ -15,7 +15,6 @@
 #include "brave/common/webui_url_constants.h"
 #include "brave/components/brave_new_tab/resources/grit/brave_new_tab_generated_map.h"
 #include "chrome/browser/profiles/profile.h"
-#include "chrome/browser/search/instant_service_factory.h"
 #include "components/grit/brave_components_resources.h"
 #include "components/strings/grit/components_strings.h"
 #include "content/public/browser/web_ui_data_source.h"
@@ -24,13 +23,12 @@
 BraveNewTabUI::BraveNewTabUI(content::WebUI* web_ui, const std::string& name)
     : WebUIController(web_ui) {
   Profile* profile = Profile::FromWebUI(web_ui);
-  InstantService* instant_service = InstantServiceFactory::GetForProfile(profile);
   content::WebUIDataSource* source = CreateBasicUIHTMLSource(profile, name,
       kBraveNewTabGenerated, kBraveNewTabGeneratedSize, IDR_BRAVE_NEW_TAB_HTML);
   web_ui->AddMessageHandler(base::WrapUnique(
     BraveNewTabMessageHandler::Create(source, profile)));
   web_ui->AddMessageHandler(base::WrapUnique(
-    new InstantServiceMessageHandler(profile, instant_service)));
+    new InstantServiceMessageHandler(profile)));
   content::WebUIDataSource::Add(profile, source);
   web_ui->OverrideTitle(l10n_util::GetStringUTF16(IDS_NEW_TAB_TITLE));
 }

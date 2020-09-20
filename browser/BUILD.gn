@@ -178,6 +178,7 @@ source_set("browser_process") {
     "//extensions/buildflags",
     "//brave/chromium_src:browser",
     "browsing_data",
+    "search",
     "themes",
     "ntp_background_images",
     "//services/network/public/cpp",

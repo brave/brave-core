@@ -87,9 +87,6 @@ base::DictionaryValue GetPreferencesDictionary(PrefService* prefs) {
       "clockFormat",
       prefs->GetString(kNewTabPageClockFormat));
   pref_data.SetBoolean(
-      "showTopSites",
-      prefs->GetBoolean(kNewTabPageShowTopSites));
-  pref_data.SetBoolean(
       "showStats",
       prefs->GetBoolean(kNewTabPageShowStats));
   pref_data.SetBoolean(
@@ -272,9 +269,6 @@ void BraveNewTabMessageHandler::OnJavascriptAllowed() {
   pref_change_registrar_.Add(kNewTabPageShowStats,
     base::Bind(&BraveNewTabMessageHandler::OnPreferencesChanged,
     base::Unretained(this)));
-  pref_change_registrar_.Add(kNewTabPageShowTopSites,
-    base::Bind(&BraveNewTabMessageHandler::OnPreferencesChanged,
-    base::Unretained(this)));
   pref_change_registrar_.Add(kNewTabPageShowRewards,
     base::Bind(&BraveNewTabMessageHandler::OnPreferencesChanged,
     base::Unretained(this)));
@@ -385,8 +379,6 @@ void BraveNewTabMessageHandler::HandleSaveNewTabPagePref(
     settingsKey = kNewTabPageShowSponsoredImagesBackgroundImage;
   } else if (settingsKeyInput == "showClock") {
     settingsKey = kNewTabPageShowClock;
-  } else if (settingsKeyInput == "showTopSites") {
-    settingsKey = kNewTabPageShowTopSites;
   } else if (settingsKeyInput == "showStats") {
     settingsKey = kNewTabPageShowStats;
   } else if (settingsKeyInput == "showRewards") {

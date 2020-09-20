@@ -11,15 +11,15 @@
 
 #include "base/i18n/rtl.h"
 #include "base/strings/utf_string_conversions.h"
+#include "brave/browser/ntp_background_images/view_counter_service_factory.h"
 #include "brave/browser/profiles/profile_util.h"
 #include "brave/browser/ui/webui/brave_new_tab_ui.h"
-#include "brave/browser/ntp_background_images/view_counter_service_factory.h"
 #include "brave/common/pref_names.h"
 #include "brave/components/ntp_background_images/browser/ntp_background_images_data.h"
 #include "brave/components/ntp_background_images/browser/view_counter_service.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/search/instant_service.h"
-#include "content/public/browser/web_ui_data_source.h"
+#include "chrome/browser/search/instant_service_factory.h"
 
 using ntp_background_images::ViewCounterServiceFactory;
 
@@ -31,10 +31,9 @@ bool ShouldExcludeFromTiles(const GURL& url) {
 
 }  // namespace
 
-InstantServiceMessageHandler::InstantServiceMessageHandler(Profile* profile,
-    InstantService* instant_service)
-        : profile_(profile),
-          instant_service_(instant_service) {
+InstantServiceMessageHandler::InstantServiceMessageHandler(Profile* profile)
+        : profile_(profile) {
+  instant_service_ = InstantServiceFactory::GetForProfile(profile_);
   instant_service_->AddObserver(this);
 }
 

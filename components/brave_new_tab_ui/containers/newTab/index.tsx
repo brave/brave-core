@@ -29,6 +29,7 @@ import { generateQRData } from '../../binance-utils'
 // API
 import {
   customLinksEnabled,
+  isVisible,
   setMostVisitedSettings
 } from '../../api/topSites'
 
@@ -46,7 +47,6 @@ interface Props {
   gridSitesData: NewTab.GridSitesState
   actions: NewTabActions
   saveShowBackgroundImage: (value: boolean) => void
-  saveShowTopSites: (value: boolean) => void
   saveShowStats: (value: boolean) => void
   saveShowRewards: (value: boolean) => void
   saveShowTogether: (value: boolean) => void
@@ -227,17 +227,11 @@ class NewTabPage extends React.Component<Props, State> {
   }
 
   toggleShowTopSites = () => {
-    // TODO(bsclifton): update UI to check topSitesAPI.isVisible instead.
-    // Need to backfill first, to avoid overwriting user preference.
-    // Settings page needs to be updated to read that value too.
-    const newValue = !this.props.newTabData.showTopSites
-    this.props.saveShowTopSites(newValue)
-    setMostVisitedSettings(customLinksEnabled(), newValue, true)
+    setMostVisitedSettings(customLinksEnabled(), !isVisible(), true)
   }
 
   toggleCustomLinksEnabled = () => {
-    setMostVisitedSettings(!customLinksEnabled(),
-        this.props.newTabData.showTopSites, true)
+    setMostVisitedSettings(!customLinksEnabled(), isVisible(), true)
   }
 
   toggleShowRewards = () => {
@@ -961,7 +955,7 @@ class NewTabPage extends React.Component<Props, State> {
 
     const hasImage = this.imageSource !== undefined
     const isShowingBrandedWallpaper = newTabData.brandedWallpaperData ? true : false
-    const showTopSites = !!this.props.gridSitesData.gridSites.length && newTabData.showTopSites
+    const showTopSites = !!this.props.gridSitesData.gridSites.length && isVisible()
     const cryptoContent = this.renderCryptoContent()
 
     return (
@@ -1076,7 +1070,7 @@ class NewTabPage extends React.Component<Props, State> {
           showClock={newTabData.showClock}
           clockFormat={newTabData.clockFormat}
           showStats={newTabData.showStats}
-          showTopSites={newTabData.showTopSites}
+          showTopSites={isVisible()}
           customLinksEnabled={customLinksEnabled()}
           showRewards={newTabData.showRewards}
           showBinance={newTabData.showBinance}
