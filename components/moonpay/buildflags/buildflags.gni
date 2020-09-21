@@ -1,0 +1,9 @@
+import("//build/config/features.gni")
+
+declare_args() {
+  moonpay_enabled = is_mac || is_linux || is_win
+}
+
+declare_args() {
+  bitcoin_dot_com_enabled = moonpay_enabled
+}

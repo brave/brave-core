@@ -1,0 +1,11 @@
+import("//brave/components/moonpay/buildflags/buildflags.gni")
+
+source_set("browser") {
+  sources = [
+    "regions.h",
+  ]
+
+  public_deps = [
+    "//brave/components/moonpay/buildflags",
+  ]
+}
