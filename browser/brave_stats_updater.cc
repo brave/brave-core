@@ -15,8 +15,6 @@
 #include "brave/common/brave_channel_info.h"
 #include "brave/common/network_constants.h"
 #include "brave/common/pref_names.h"
-#include "brave/components/brave_referrals/buildflags/buildflags.h"
-#include "brave/components/brave_referrals/common/pref_names.h"
 #include "chrome/browser/browser_process.h"
 #include "chrome/browser/net/system_network_context_manager.h"
 #include "chrome/common/channel_info.h"
@@ -30,6 +28,11 @@
 #include "net/traffic_annotation/network_traffic_annotation.h"
 #include "services/network/public/cpp/resource_request.h"
 #include "services/network/public/cpp/simple_url_loader.h"
+
+#include "brave/components/brave_referrals/buildflags/buildflags.h"
+#if BUILDFLAG(ENABLE_BRAVE_REFERRALS)
+#include "brave/components/brave_referrals/common/pref_names.h"
+#endif
 
 // Ping the update server shortly after startup (units are seconds).
 const int kUpdateServerStartupPingDelay = 3;

@@ -464,13 +464,18 @@ source_set("stats_updater") {
 
   deps = [
     ":version_info",
+    "//base",
+    "//brave/common",
     "//brave/common:pref_names",
     "//brave/components/brave_referrals/buildflags",
     "//chrome/common",
+    "//content/public/browser",
+    "//ui/base",
   ]
 
   if (enable_brave_referrals) {
     deps += [
+      "//brave/components/brave_referrals/buildflags",
       "//brave/components/brave_referrals/common",
     ]
   }

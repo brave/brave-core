@@ -8,7 +8,6 @@
 
 #include "content/public/browser/web_contents_observer.h"
 #include "content/public/browser/web_contents_user_data.h"
-#include "ui/base/page_transition_types.h"
 
 namespace content {
 class NavigationHandle;
