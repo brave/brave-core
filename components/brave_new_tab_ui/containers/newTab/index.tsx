@@ -16,7 +16,8 @@ import {
   TogetherWidget as Together,
   BinanceWidget as Binance,
   AddCardWidget as AddCard,
-  GeminiWidget as Gemini
+  GeminiWidget as Gemini,
+  BitcoinDotComWidget as BitcoinDotCom
 } from '../../components/default'
 import * as Page from '../../components/default/page'
 import BrandedWallpaperLogo from '../../components/default/brandedWallpaper/logo'
@@ -919,7 +920,28 @@ class NewTabPage extends React.Component<Props, State> {
   }
 
   renderBitcoinDotComWidget (showContent: boolean, position: number) {
-    return null
+    const { newTabData } = this.props
+    const { showBitcoinDotCom, bitcoinDotComSupported, textDirection } = newTabData
+
+    if (!showBitcoinDotCom || !bitcoinDotComSupported) {
+      return null
+    }
+
+    return(
+      <BitcoinDotCom
+        isCrypto={true}
+        isCryptoTab={!showContent}
+        menuPosition={'left'}
+        widgetTitle={'Bitcoin.com'}
+        isForeground={showContent}
+        stackPosition={position}
+        textDirection={textDirection}
+        preventFocus={false}
+        hideWidget={this.toggleShowBitcoinDotCom}
+        showContent={showContent}
+        onShowContent={this.setForegroundStackWidget.bind(this, 'bitcoinDotCom')}
+      />
+    )
   }
 
   render () {
