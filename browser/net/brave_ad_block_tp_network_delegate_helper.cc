@@ -66,12 +66,12 @@ void OnShouldBlockAdResult(const ResponseCallback& next_callback,
   next_callback.Run();
 }
 
-void ShouldBlockAdWithOptionalCname(const ResponseCallback& next_callback,
+void ShouldBlockAdWithOptionalCname(
+    scoped_refptr<base::SequencedTaskRunner> task_runner,
+    const ResponseCallback& next_callback,
     std::shared_ptr<BraveRequestInfo> ctx,
     const base::Optional<std::string> cname) {
   DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
-  scoped_refptr<base::SequencedTaskRunner> task_runner =
-      g_brave_browser_process->ad_block_service()->GetTaskRunner();
   task_runner->PostTaskAndReply(
       FROM_HERE, base::BindOnce(&ShouldBlockAdOnTaskRunner, ctx, cname),
       base::BindOnce(&OnShouldBlockAdResult, next_callback, ctx));
@@ -151,8 +151,12 @@ void OnBeforeURLRequestAdBlockTP(const ResponseCallback& next_callback,
   }
   DCHECK_NE(ctx->request_identifier, 0UL);
 
+  scoped_refptr<base::SequencedTaskRunner> task_runner =
+      g_brave_browser_process->ad_block_service()->GetTaskRunner();
+
   base::OnceCallback<void(base::Optional<std::string>)> cname_callback =
-      base::Bind(&ShouldBlockAdWithOptionalCname, next_callback, ctx);
+      base::BindOnce(&ShouldBlockAdWithOptionalCname, task_runner,
+                     next_callback, ctx);
 
   auto* rph = content::RenderProcessHost::FromID(ctx->render_process_id);
   if (!rph) {
