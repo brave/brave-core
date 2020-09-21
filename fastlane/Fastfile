@@ -90,26 +90,25 @@ platform :ios do
     testflight_build({overrideParams: overrideParams})
   end
 
+  private_lane :run_carthage do |_|
+    # There is a XCode 12 bug with Carthage where it can't lipo frameworks correctly.
+    # As a workaround a custom script must be used to handle it.
+    # See https://github.com/Carthage/Carthage/issues/3019
+    sh "cd .. && bash carthage_command.sh"
+  end
+
   desc "All Testflight releases use this as the foundation. Pass in `gym` override params."
   private_lane :testflight_build do |options|
     set_build_number(options)
 
-    carthage(
-      platform: "iOS",
-      cache_builds: true,
-      configuration: "Release",
-    )
+    run_carthage
     defaultParams = gym_params()
     gym(defaultParams.merge!(options[:overrideParams]))
   end
   
   desc "All enterprise releases use this as the foundation"
   lane :enterprise do |options|
-    carthage(
-      platform: "iOS",
-      cache_builds: true,
-      configuration: "Release",
-    )
+    run_carthage
 
     build_app(
       scheme: "Enterprise",
