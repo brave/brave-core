@@ -105,6 +105,9 @@ base::DictionaryValue GetPreferencesDictionary(PrefService* prefs) {
   pref_data.SetBoolean(
       "showGemini",
       prefs->GetBoolean(kNewTabPageShowGemini));
+  pref_data.SetBoolean(
+      "showBitcoinDotCom",
+      prefs->GetBoolean(kNewTabPageShowBitcoinDotCom));
   return pref_data;
 }
 
@@ -288,6 +291,9 @@ void BraveNewTabMessageHandler::OnJavascriptAllowed() {
   pref_change_registrar_.Add(kNewTabPageShowGemini,
     base::Bind(&BraveNewTabMessageHandler::OnPreferencesChanged,
     base::Unretained(this)));
+  pref_change_registrar_.Add(kNewTabPageShowBitcoinDotCom,
+    base::Bind(&BraveNewTabMessageHandler::OnPreferencesChanged,
+    base::Unretained(this)));
 
   if (tor_profile_service_)
     tor_profile_service_->AddObserver(this);
@@ -391,6 +397,8 @@ void BraveNewTabMessageHandler::HandleSaveNewTabPagePref(
     settingsKey = kNewTabPageShowAddCard;
   } else if (settingsKeyInput == "showGemini") {
     settingsKey = kNewTabPageShowGemini;
+  } else if (settingsKeyInput == "showBitcoinDotCom") {
+    settingsKey = kNewTabPageShowBitcoinDotCom;
   } else {
     LOG(ERROR) << "Invalid setting key";
     return;

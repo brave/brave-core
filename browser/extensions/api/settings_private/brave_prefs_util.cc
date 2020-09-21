@@ -109,6 +109,8 @@ const PrefsUtil::TypedPrefMap& BravePrefsUtil::GetWhitelistedKeys() {
         settings_api::PrefType::PREF_TYPE_BOOLEAN;
   (*s_brave_whitelist)[kNewTabPageShowGemini] =
         settings_api::PrefType::PREF_TYPE_BOOLEAN;
+  (*s_brave_whitelist)[kNewTabPageShowBitcoinDotCom] =
+        settings_api::PrefType::PREF_TYPE_BOOLEAN;
   // Clear browsing data on exit prefs.
   (*s_brave_whitelist)[browsing_data::prefs::kDeleteBrowsingHistoryOnExit] =
     settings_api::PrefType::PREF_TYPE_BOOLEAN;

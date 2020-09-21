@@ -53,6 +53,7 @@ interface Props {
   saveShowBinance: (value: boolean) => void
   saveShowAddCard: (value: boolean) => void
   saveShowGemini: (value: boolean) => void
+  saveShowBitcoinDotCom: (value: boolean) => void
   saveBrandedWallpaperOptIn: (value: boolean) => void
 }
 
@@ -142,7 +143,8 @@ class NewTabPage extends React.Component<Props, State> {
     const oldShowBinance = prevProps.newTabData.showBinance
     const oldShowTogether = prevProps.newTabData.showTogether
     const oldShowGemini = prevProps.newTabData.showGemini
-    const { showRewards, showBinance, showTogether, showGemini } = this.props.newTabData
+    const oldShowBitcoinDotCom = prevProps.newTabData.showBitcoinDotCom
+    const { showRewards, showBinance, showTogether, showGemini, showBitcoinDotCom } = this.props.newTabData
 
     if (!oldShowRewards && showRewards) {
       this.props.actions.setForegroundStackWidget('rewards')
@@ -160,6 +162,10 @@ class NewTabPage extends React.Component<Props, State> {
       this.props.actions.removeStackWidget('gemini')
     } else if (!oldShowGemini && showGemini) {
       this.props.actions.setForegroundStackWidget('gemini')
+    } else if (oldShowBitcoinDotCom && !showBitcoinDotCom) {
+      this.props.actions.removeStackWidget('bitcoinDotCom')
+    } else if (!oldShowBitcoinDotCom && showBitcoinDotCom) {
+      this.props.actions.setForegroundStackWidget('bitcoinDotCom')
     }
   }
 
@@ -317,6 +323,22 @@ class NewTabPage extends React.Component<Props, State> {
         this.disconnectGemini()
       })
     }
+  }
+
+  toggleShowBitcoinDotCom = () => {
+    const { showBitcoinDotCom } = this.props.newTabData
+
+    if (showBitcoinDotCom) {
+      this.removeStackWidget('bitcoinDotCom')
+    } else {
+      this.setForegroundStackWidget('bitcoinDotCom')
+    }
+
+    if (!showBitcoinDotCom) {
+      this.props.saveShowAddCard(true)
+    }
+
+    this.props.saveShowBitcoinDotCom(!showBitcoinDotCom)
   }
 
   onBinanceClientUrl = (clientUrl: string) => {
@@ -645,6 +667,7 @@ class NewTabPage extends React.Component<Props, State> {
       showBinance,
       showTogether,
       showGemini,
+      showBitcoinDotCom,
       geminiSupported
     } = this.props.newTabData
     const lookup = {
@@ -663,6 +686,10 @@ class NewTabPage extends React.Component<Props, State> {
       'gemini': {
         display: showGemini && geminiSupported,
         render: this.renderGeminiWidget.bind(this)
+      },
+      'bitcoinDotCom': {
+        display: showBitcoinDotCom,
+        render: this.renderBitcoinDotComWidget.bind(this)
       }
     }
 
@@ -690,13 +717,15 @@ class NewTabPage extends React.Component<Props, State> {
       showBinance,
       showTogether,
       geminiSupported,
-      showGemini
+      showGemini,
+      showBitcoinDotCom
     } = this.props.newTabData
     return [
       showRewards,
       togetherSupported && showTogether,
       binanceState.binanceSupported && showBinance,
-      geminiSupported && showGemini
+      geminiSupported && showGemini,
+      showBitcoinDotCom
     ].every((widget: boolean) => !widget)
   }
 
@@ -885,6 +914,10 @@ class NewTabPage extends React.Component<Props, State> {
         onDismissAuthInvalid={this.dismissGeminiAuthInvalid}
       />
     )
+  }
+
+  renderBitcoinDotComWidget (showContent: boolean, position: number) {
+    return null
   }
 
   render () {
