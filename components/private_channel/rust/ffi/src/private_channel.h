@@ -31,10 +31,12 @@ typedef struct {
 typedef struct {
   const uint8_t* encoded_partial_dec;
   uintptr_t encoded_partial_dec_size;
-  const uint8_t* encoded_proofs;
-  uintptr_t encoded_proofs_size;
+  const uint8_t* encoded_proofs_dec;
+  uintptr_t encoded_proofs_dec_size;
   const uint8_t* random_vec;
   uintptr_t random_vec_size;
+  const uint8_t* encoded_proofs_rand;
+  uintptr_t encoded_proofs_rand_size;
   bool error;
 } ResultSecondRound;
 

@@ -49,10 +49,12 @@ impl Default for ResultChallenge {
 pub struct ResultSecondRound {
     pub encoded_partial_dec: *const u8,
     pub encoded_partial_dec_size: usize,
-    pub encoded_proofs: *const u8,
-    pub encoded_proofs_size: usize,
+    pub encoded_proofs_dec: *const u8,
+    pub encoded_proofs_dec_size: usize,
     pub random_vec: *const u8,
     pub random_vec_size: usize,
+    pub encoded_proofs_rand: *const u8,
+    pub encoded_proofs_rand_size: usize,
     pub error: bool,
 }
 
@@ -63,10 +65,12 @@ impl Default for ResultSecondRound {
             error: true,
             encoded_partial_dec: mock_vec.as_ptr(),
             encoded_partial_dec_size: 0,
-            encoded_proofs: mock_vec.as_ptr(),
-            encoded_proofs_size: 0,
+            encoded_proofs_dec: mock_vec.as_ptr(),
+            encoded_proofs_dec_size: 0,
             random_vec: mock_vec.as_ptr(),
             random_vec_size: 0,
+            encoded_proofs_rand: mock_vec.as_ptr(),
+            encoded_proofs_rand_size: 0,
         }
     }
 }
@@ -154,9 +158,10 @@ pub unsafe extern "C" fn client_second_round(
         .collect();
 
     let brave_private_channel::SecondRoundOutput {
-        partial_dec,
-        proofs,
         rand_vec,
+        proofs_rand,
+        partial_dec,
+        proofs_dec,
     } = match brave_private_channel::second_round(&v_enc, client_sk) {
         Ok(result) => result,
         Err(_) => return ResultSecondRound::default(),
@@ -165,19 +170,24 @@ pub unsafe extern "C" fn client_second_round(
     let partial_enc_buff = partial_dec.into_boxed_slice();
     let partial_enc_buff = std::mem::ManuallyDrop::new(partial_enc_buff);
 
-    let proofs_buff = proofs.into_boxed_slice();
-    let proofs_buff = std::mem::ManuallyDrop::new(proofs_buff);
+    let proofs_dec_buff = proofs_dec.into_boxed_slice();
+    let proofs_dec_buff = std::mem::ManuallyDrop::new(proofs_dec_buff);
 
     let rand_vec_buff = rand_vec.into_boxed_slice();
     let rand_vec_buff = std::mem::ManuallyDrop::new(rand_vec_buff);
 
+    let proofs_rand_buff = proofs_rand.into_boxed_slice();
+    let proofs_rand_buff = std::mem::ManuallyDrop::new(proofs_rand_buff);
+
     ResultSecondRound {
         encoded_partial_dec: partial_enc_buff.as_ptr(),
         encoded_partial_dec_size: partial_enc_buff.len(),
-        encoded_proofs: proofs_buff.as_ptr(),
-        encoded_proofs_size: proofs_buff.len(),
+        encoded_proofs_dec: proofs_dec_buff.as_ptr(),
+        encoded_proofs_dec_size: proofs_dec_buff.len(),
         random_vec: rand_vec_buff.as_ptr(),
         random_vec_size: rand_vec_buff.len(),
+        encoded_proofs_rand: proofs_rand_buff.as_ptr(),
+        encoded_proofs_rand_size: proofs_rand_buff.len(),
         error: false,
     }
 }
@@ -224,10 +234,10 @@ pub unsafe extern "C" fn deallocate_second_round_result(result: ResultSecondRoun
     ))
     .into_vec();
 
-    abort_if_null!(result.encoded_proofs);
-    let _enc_proofs = Box::from_raw(std::slice::from_raw_parts_mut(
-        result.encoded_proofs as *mut u8,
-        result.encoded_proofs_size,
+    abort_if_null!(result.encoded_proofs_dec);
+    let _dec_proofs = Box::from_raw(std::slice::from_raw_parts_mut(
+        result.encoded_proofs_dec as *mut u8,
+        result.encoded_proofs_dec_size,
     ))
     .into_vec();
 
@@ -235,6 +245,13 @@ pub unsafe extern "C" fn deallocate_second_round_result(result: ResultSecondRoun
     let _rand_vec = Box::from_raw(std::slice::from_raw_parts_mut(
         result.random_vec as *mut u8,
         result.random_vec_size,
+    ))
+    .into_vec();
+
+    abort_if_null!(result.encoded_proofs_rand);
+    let _rand_proofs = Box::from_raw(std::slice::from_raw_parts_mut(
+        result.encoded_proofs_rand as *mut u8,
+        result.encoded_proofs_rand_size,
     ))
     .into_vec();
 }

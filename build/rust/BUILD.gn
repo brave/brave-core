@@ -1,7 +1,8 @@
 import("//brave/build/cargo.gni")
 
 lib_build_path = "$root_build_dir/brave_rust/out/$current_cpu"
-lib_output_path = "$lib_build_path/${cargo_lib_prefix}brave_rust${cargo_lib_suffix}"
+lib_output_path =
+    "$lib_build_path/${cargo_lib_prefix}brave_rust${cargo_lib_suffix}"
 
 # TODO(bridiver) - selectively include these libraries based on buildflags, but
 # in order to do that we have to dynamically create the brave rust lib
@@ -18,6 +19,7 @@ cargo_build("rust_lib") {
 
   deps = [
     "//brave/components/challenge_bypass_ristretto:rust_lib",
+    "//brave/components/private_channel",
     "//brave/components/speedreader/rust/lib",
     "//brave/vendor/adblock_rust_ffi:rust_lib",
   ]
@@ -25,6 +27,7 @@ cargo_build("rust_lib") {
 
 brave_ffi_deps = [
   "//brave/components/challenge_bypass_ristretto:rust_ffi",
+  "//brave/components/private_channel/rust/ffi",
   "//brave/components/speedreader/rust/ffi",
   "//brave/vendor/adblock_rust_ffi:rust_ffi",
 ]
@@ -38,18 +41,15 @@ if (is_mac) {
 
     public_deps = brave_ffi_deps
 
-    ldflags = [
-      "-Wl,-install_name,@loader_path/Libraries/lib$target_name.dylib",
-    ]
+    ldflags =
+        [ "-Wl,-install_name,@loader_path/Libraries/lib$target_name.dylib" ]
   }
 
   # This is just a hack so @loader_path/Libraries/lib$target_name.dylib
   # works for the test executables
   copy("copy_rust_lib") {
     visibility = [ ":*" ]
-    sources = [
-      "$root_out_dir/libbrave_rust.dylib",
-    ]
+    sources = [ "$root_out_dir/libbrave_rust.dylib" ]
     outputs = [ "$root_out_dir/Libraries/{{source_file_part}}" ]
 
     public_deps = [ ":brave_rust" ]
@@ -57,14 +57,10 @@ if (is_mac) {
 
   bundle_data("bundle_rust_lib") {
     visibility = [ ":*" ]
-    sources = [
-      "$root_out_dir/Libraries/libbrave_rust.dylib",
-    ]
+    sources = [ "$root_out_dir/Libraries/libbrave_rust.dylib" ]
     outputs = [ "{{bundle_contents_dir}}/Libraries/{{source_file_part}}" ]
 
-    public_deps = [
-      ":copy_rust_lib"
-    ]
+    public_deps = [ ":copy_rust_lib" ]
   }
 } else {
   config("external_config") {
@@ -82,8 +78,6 @@ if (is_mac) {
 group("rust") {
   public_deps = [ ":brave_rust" ]
   if (is_mac) {
-    deps = [
-      ":bundle_rust_lib"
-    ]
+    deps = [ ":bundle_rust_lib" ]
   }
 }

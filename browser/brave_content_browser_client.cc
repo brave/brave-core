@@ -21,7 +21,6 @@
 #include "brave/common/pref_names.h"
 #include "brave/common/webui_url_constants.h"
 #include "brave/components/binance/browser/buildflags/buildflags.h"
-#include "brave/components/gemini/browser/buildflags/buildflags.h"
 #include "brave/components/brave_rewards/browser/buildflags/buildflags.h"
 #include "brave/components/brave_shields/browser/brave_shields_util.h"
 #include "brave/components/brave_shields/browser/brave_shields_web_contents_observer.h"
@@ -29,6 +28,7 @@
 #include "brave/components/brave_shields/common/brave_shield_constants.h"
 #include "brave/components/brave_wallet/buildflags/buildflags.h"
 #include "brave/components/brave_webtorrent/browser/buildflags/buildflags.h"
+#include "brave/components/gemini/browser/buildflags/buildflags.h"
 #include "brave/components/ipfs/buildflags/buildflags.h"
 #include "brave/components/speedreader/buildflags.h"
 #include "brave/components/tor/buildflags/buildflags.h"
@@ -112,10 +112,6 @@ using extensions::ChromeContentBrowserClientExtensionsPart;
 
 #if !defined(OS_ANDROID)
 #include "brave/browser/new_tab/new_tab_shows_navigation_throttle.h"
-#endif
-
-#if BUILDFLAG(PRIVATE_CHANNEL_ENABLED)
-#include "brave/components/private_channel/client_private_channel.h"
 #endif
 
 namespace {

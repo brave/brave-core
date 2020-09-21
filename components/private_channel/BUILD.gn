@@ -1,5 +1,4 @@
 import("//brave/components/private_channel/buildflags.gni")
-import("//brave/components/private_channel/rust/ffi/config.gni")
 import("//build/buildflag_header.gni")
 
 buildflag_header("buildflags") {
@@ -8,7 +7,15 @@ buildflag_header("buildflags") {
 }
 
 source_set("private_channel") {
+  public_deps = [ ":buildflags" ]
+
   sources = [
+    "browser/constants.cc",
+    "browser/constants.h",
+    "browser/private_channel.cc",
+    "browser/private_channel.h",
+    "browser/request_utils.cc",
+    "browser/request_utils.h",
     "client_private_channel.cc",
     "client_private_channel.h",
     "utils.cc",
@@ -16,27 +23,8 @@ source_set("private_channel") {
   ]
 
   deps = [
-    "//brave/components/private_channel:buildflags",
-    "//brave/components/private_channel/browser",
-    "//brave/components/private_channel/rust/ffi:private_channel_ffi",
-    "//brave/components/resources",
     "//services/network/public/cpp",
     "//services/network/public/mojom",
-    "//ui/base",  # For ResourceBundle, consider getting rid of this?
     "//url",
   ]
-
-  public_deps = [ ":private_channel_libs" ]
-}
-
-if (is_mac) {
-  bundle_data("private_channel_libs") {
-    sources = [ private_channel_lib_path ]
-    outputs = [ "{{bundle_contents_dir}}/Libraries/{{source_file_part}}" ]
-    public_deps =
-        [ "//brave/components/private_channel/rust/ffi:private_channel" ]
-  }
-} else {
-  group("private_channel_libs") {
-  }
 }

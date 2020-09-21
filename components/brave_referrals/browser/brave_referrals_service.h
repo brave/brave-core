@@ -21,6 +21,9 @@
 #include "brave/components/safetynet/safetynet_check.h"
 #endif
 
+// #TODO Add buildgard
+#include "brave/components/private_channel/browser/private_channel.h"
+
 class PrefRegistrySimple;
 class PrefService;
 
@@ -59,6 +62,7 @@ class BraveReferralsService {
   void GetFirstRunTime();
   void GetFirstRunTimeDesktop();
   void PerformFinalizationChecks();
+  void PerformPrivateAttestation();
   base::FilePath GetPromoCodeFileName() const;
   void ReadPromoCode();
   void DeletePromoCodeFile() const;
@@ -117,6 +121,7 @@ class BraveReferralsService {
   const std::string api_key_;
   const std::string platform_;
   std::string promo_code_;
+  std::unique_ptr<private_channel::PrivateChannel> private_channel_;
 
   base::WeakPtrFactory<BraveReferralsService> weak_factory_;
 };

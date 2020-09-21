@@ -2,7 +2,6 @@
 extern crate zkp;
 
 use curve25519_dalek::constants::RISTRETTO_BASEPOINT_TABLE;
-use curve25519_dalek::ristretto::{CompressedRistretto, RistrettoPoint};
 use curve25519_dalek::scalar::Scalar;
 use rand_core::OsRng;
 
@@ -10,10 +9,6 @@ use elgamal_ristretto::ciphertext::Ciphertext;
 use elgamal_ristretto::private::SecretKey;
 use elgamal_ristretto::public::PublicKey;
 use zkp::{CompactProof, Transcript};
-
-const ZERO_POINT: CompressedRistretto = CompressedRistretto([
-    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-]);
 
 /// Generates asymmetric key pair
 pub fn generate_keys() -> (SecretKey, PublicKey) {
@@ -25,7 +20,7 @@ pub fn generate_keys() -> (SecretKey, PublicKey) {
 /// Generates a vector of asymmetric key pairs
 pub fn generate_key_vector(length: usize) -> (Vec<SecretKey>, Vec<PublicKey>) {
     let sks: Vec<SecretKey> = (0..length).map(|_| SecretKey::new(&mut OsRng)).collect();
-    let pks: Vec<PublicKey> = (&sks).iter().map(|sk| PublicKey::from(sk)).collect();
+    let pks: Vec<PublicKey> = (&sks).iter().map(|x| PublicKey::from(x)).collect();
 
     (sks, pks)
 }
@@ -37,37 +32,9 @@ pub fn combine_pks(pk1: PublicKey, pk2: PublicKey) -> PublicKey {
 }
 
 /// Combines a vector of public keys with another public key, to generate a vector of shared public
-/// keys.
+/// keys, where the two private keys are required to decrypt a ciphertext.
 pub fn combine_pks_vector(pk1: &[PublicKey], pk2: PublicKey) -> Vec<PublicKey> {
     pk1.iter().map(|&pk| combine_pks(pk, pk2)).collect()
-}
-
-/// Computes an encrypted vector in which each element contains an encrypted
-/// element resulting from subtracting the encrypted hash value and the
-/// original check value
-pub fn compute_checks(
-    shared_pks: &[PublicKey],
-    encrypted_hashes: &[Ciphertext],
-    vector_checks: &[Scalar],
-) -> Result<Vec<Ciphertext>, &'static str> {
-    if encrypted_hashes.len() != vector_checks.len() {
-        return Err("Size of encrypted hashes slice must be the same as vector checks");
-    }
-
-    if encrypted_hashes.len() != shared_pks.len() {
-        return Err("Size of encrypted hashes slice must be the same as shared public keys");
-    }
-
-    let mut encrypted_checks: Vec<Ciphertext> = Vec::new();
-
-    for (index, vector_check) in vector_checks.iter().enumerate() {
-        encrypted_checks.push(
-            shared_pks[index].encrypt(&(vector_check * &RISTRETTO_BASEPOINT_TABLE))
-                - encrypted_hashes[index],
-        )
-    }
-
-    Ok(encrypted_checks)
 }
 
 // Generate macro for Discrete Logarithm Equality proof (from zkp crate)
@@ -221,22 +188,6 @@ pub fn verify_partial_decryption_proofs(
     Ok(true)
 }
 
-/// Checks if a vector of "tests" has passed. A given test passes if its
-/// correspondent index is zero in the Ristretto group. It returns the result
-/// of the check.
-pub fn check_tests(final_decryption: &[RistrettoPoint]) -> bool {
-    let mut passed = true;
-    let zero_point = ZERO_POINT.decompress().unwrap();
-
-    for &value in final_decryption.iter() {
-        if !(value == zero_point) {
-            passed = false;
-            break;
-        }
-    }
-    passed
-}
-
 /// Encrypts a vector of inputs. The input is encrytped using a threshold
 /// generated among two peers (in our case, the client and the server)
 pub fn encrypt_input(
@@ -261,7 +212,7 @@ mod tests {
     use super::*;
 
     #[test]
-    fn combine_keys() {
+    fn test_combine_pks() {
         let (_sk_1, pk_1) = generate_keys();
         let (_sk_2, pk_2) = generate_keys();
 
@@ -269,7 +220,7 @@ mod tests {
     }
 
     #[test]
-    fn combine_key_vect() {
+    fn test_combine_pks_vector() {
         let size = 8;
         let (_sks, pks) = generate_key_vector(size);
         let (_sk_2, pk_2) = generate_keys();

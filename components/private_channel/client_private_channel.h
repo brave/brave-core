@@ -7,6 +7,7 @@
 #define BRAVE_COMPONENTS_PRIVATE_CHANNEL_CLIENT_PRIVATE_CHANNEL_H_
 
 #include <string>
+
 #include "brave/components/private_channel/rust/ffi/src/private_channel.h"
 
 struct ChallengeArtefacts {
@@ -25,6 +26,7 @@ struct ChallengeArtefacts {
 struct SecondRoundArtefacts {
   std::string partial_decryption;
   std::string proofs;
+  std::string dec_proofs;
   std::string rand_vec;
   bool error;
 
@@ -33,12 +35,10 @@ struct SecondRoundArtefacts {
   ~SecondRoundArtefacts();
 };
 
-ChallengeArtefacts ChallengeFirstRound(const char** input,
-                                       int input_size,
-                                       const char* server_pk_encoded);
+ChallengeArtefacts ChallengeFirstRound(std::string server_pk_str);
 
-SecondRoundArtefacts SecondRound(const char* enc_input,
+SecondRoundArtefacts SecondRound(std::string enc_input_str,
                                  int size,
-                                 const char* client_sks);
+                                 std::string client_sks_str);
 
 #endif  // BRAVE_COMPONENTS_PRIVATE_CHANNEL_CLIENT_PRIVATE_CHANNEL_H_

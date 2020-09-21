@@ -12,6 +12,7 @@ libc = "0.2"
 crate-type = [
     "cdylib",
     "staticlib",
+    "rlib",
 ]
 name = "private_channel"
 

@@ -4,63 +4,50 @@
 # You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 import("//brave/build/cargo.gni")
-import("//brave/components/private_channel/buildflags.gni")
-import("//brave/test/testing.gni")
-import("//build/buildflag_header.gni")
-import("config.gni")
-
-buildflag_header("buildflags") {
-  header = "buildflags.h"
-  flags = [ "PRIVATE_CHANNEL_ENABLED=$private_channel_enabled" ]
-}
+import("//brave/build/rust/config.gni")
 
 config("external_config") {
-  include_dirs = [ "include" ]
-  defines = [ "NO_CXXEXCEPTIONS=1" ]
-}
-
-source_set("private_channel_ffi") {
-  public_configs = [ ":external_config" ]
-
-  sources = [ "src/private_channel.cc" ]
-
-  deps = [
-    ":private_channel",
-    "//base",
-  ]
-
-  libs = [ private_channel_lib_path ]
-
-  if (is_mac || is_ios) {
-    libs += []
+  if (is_mac) {
+    defines = [ "PRIVATE_CHANNEL_SHARED_LIBRARY" ]
   }
 }
 
-if (private_channel_shared_lib_install_name != "") {
-  fix_testing_install_name("test_private_channel_install_name") {
-    current_path = private_channel_shared_lib_install_name
-    new_path = "@executable_path/" +
-               rebase_path(private_channel_lib_path, root_build_dir)
-  }
-} else {
-  group("test_private_channel_install_name") {
-  }
-}
+# Generate FFI header from Rust source
+cargo_cbindgen("private_channel_ffi_header") {
+  visibility = [ ":*" ]
+  config = "cbindgen.toml"
+  output = "${target_gen_dir}/private_channel_ffi.h"
 
-cargo_build("private_channel") {
-  inputs = [
+  sources = [
+    "Cargo.lock",
     "Cargo.toml",
     "cbindgen.toml",
-    "src/private_channel.h",
+    "private-channel/Cargo.lock",
+    "private-channel/Cargo.toml",
+    "private-channel/repsys-crypto/Cargo.lock",
+    "private-channel/repsys-crypto/Cargo.toml",
+    "private-channel/repsys-crypto/src/lib.rs",
+    "private-channel/src/lib.rs",
     "src/lib.rs",
   ]
+}
 
-  rust_flags = private_channel_flags
-  output = private_channel_lib_path
+source_set("ffi") {
+  public_configs = [ ":external_config" ]
+  visibility = [
+    "//brave/build/rust:*",
+    "//brave/components/brave_referrals/browser:browser",
+  ]
+  defines = [ "PRIVATE_CHANNEL_IMPLEMENTATION" ]
 
-  manifest_path = "Cargo.toml"
+  sources = [
+    "src/lib.h",
+    "src/private_channel.cc",
+    "src/private_channel.h",
+  ]
 
-  build_path = private_channel_build_path
-
-  target = private_channel_target
+  deps = [
+    ":private_channel_ffi_header",
+    "//base",
+  ]
 }

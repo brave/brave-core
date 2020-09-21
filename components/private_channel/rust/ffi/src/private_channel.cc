@@ -39,10 +39,12 @@ ResultSecondRound second_round(const char* enc_input,
   ResultSecondRound result;
   result.encoded_partial_dec = c_result.encoded_partial_dec;
   result.encoded_partial_dec_size = c_result.encoded_partial_dec_size;
-  result.encoded_proofs = c_result.encoded_proofs;
-  result.encoded_proofs_size = c_result.encoded_proofs_size;
+  result.encoded_proofs_dec = c_result.encoded_proofs_dec;
+  result.encoded_proofs_dec_size = c_result.encoded_proofs_dec_size;
   result.random_vec = c_result.random_vec;
   result.random_vec_size = c_result.random_vec_size;
+  result.encoded_proofs_rand = c_result.encoded_proofs_rand;
+  result.encoded_proofs_rand_size = c_result.encoded_proofs_rand_size;
   result.error = c_result.error;
 
   return result;
@@ -65,10 +67,12 @@ void free_second_round_result(ResultSecondRound result) {
   C_ResultSecondRound c_result;
   c_result.encoded_partial_dec = result.encoded_partial_dec;
   c_result.encoded_partial_dec_size = result.encoded_partial_dec_size;
-  c_result.encoded_proofs = result.encoded_proofs;
-  c_result.encoded_proofs_size = result.encoded_proofs_size;
+  c_result.encoded_proofs_dec = result.encoded_proofs_dec;
+  c_result.encoded_proofs_dec_size = result.encoded_proofs_dec_size;
   c_result.random_vec = result.random_vec;
   c_result.random_vec_size = result.random_vec_size;
+  c_result.encoded_proofs_rand = result.encoded_proofs_rand;
+  c_result.encoded_proofs_rand_size = result.encoded_proofs_rand_size;
   c_result.error = result.error;
 
   return deallocate_second_round_result(c_result);

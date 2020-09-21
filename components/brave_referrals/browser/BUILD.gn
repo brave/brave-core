@@ -17,6 +17,7 @@ source_set("browser") {
       "//brave/components/brave_referrals/common",
       "//brave/components/brave_stats/browser",
       "//brave/components/private_channel",
+      "//brave/components/private_channel/rust/ffi",
       "//brave/vendor/brave_base",
       "//chrome/common",
       "//components/prefs",

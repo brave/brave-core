@@ -18,9 +18,10 @@ pub struct FirstRoundOutput {
 }
 
 pub struct SecondRoundOutput {
-    pub partial_dec: Vec<u8>,
-    pub proofs: Vec<u8>,
     pub rand_vec: Vec<u8>,
+    pub proofs_rand: Vec<u8>,
+    pub partial_dec: Vec<u8>,
+    pub proofs_dec: Vec<u8>,
 }
 
 pub fn start_challenge(
@@ -66,21 +67,22 @@ pub fn second_round(input: &[u8], encoded_sks: String) -> Result<SecondRoundOutp
 
     let enc_checks: Vec<Ciphertext> = bincode::deserialize(input).map_err(|_| ())?;
 
-    let (rand_vec, _) = randomize_and_prove(&enc_checks);
+    let (rand_vec, proofs_randomization) = randomize_and_prove(&enc_checks);
 
     let (partial_decryption, proofs_correct_decryption) =
         partial_decryption_and_proof_vec_key(&rand_vec, &sks).map_err(|_| ())?;
 
-    let encoded_partial_decryption = bincode::serialize(&partial_decryption).map_err(|_| ())?;
+    let encoded_rand_vec = bincode::serialize(&rand_vec).map_err(|_| ())?;
+    let proofs_rand = bincode::serialize(&proofs_randomization).map_err(|_| ())?;
 
+    let encoded_partial_decryption = bincode::serialize(&partial_decryption).map_err(|_| ())?;
     let encoded_proofs = bincode::serialize(&proofs_correct_decryption).map_err(|_| ())?;
 
-    let encoded_rand_vec = bincode::serialize(&rand_vec).map_err(|_| ())?;
-
     Ok(SecondRoundOutput {
-        partial_dec: encoded_partial_decryption,
-        proofs: encoded_proofs,
         rand_vec: encoded_rand_vec,
+        proofs_rand: proofs_rand,
+        partial_dec: encoded_partial_decryption,
+        proofs_dec: encoded_proofs,
     })
 }
 

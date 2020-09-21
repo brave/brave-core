@@ -4,6 +4,7 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 #include <iostream>
+#include <vector>
 
 #include "base/logging.h"
 
@@ -21,9 +22,20 @@ SecondRoundArtefacts::SecondRoundArtefacts(const SecondRoundArtefacts& other) =
     default;
 SecondRoundArtefacts::~SecondRoundArtefacts() {}
 
-ChallengeArtefacts ChallengeFirstRound(const char** input,
-                                       int input_size,
-                                       const char* server_pk) {
+ChallengeArtefacts ChallengeFirstRound(std::string server_pk_str) {
+  // TODO(@gpestana): finish
+  std::string s = "";
+  std::vector<std::string> input_vec = {s, s, s, s, s, s, s, s, s};
+
+  const char* server_pk = server_pk_str.c_str();
+
+  int input_size = input_vec.size();
+  const char* input[input_size];
+
+  for (std::size_t i = 0; i < input_vec.size(); ++i) {
+    input[i] = input_vec[i].c_str();
+  }
+
   struct ChallengeArtefacts artefacts;
   auto results = private_channel::start_challenge(input, input_size, server_pk);
 
@@ -41,17 +53,22 @@ ChallengeArtefacts ChallengeFirstRound(const char** input,
   return artefacts;
 }
 
-SecondRoundArtefacts SecondRound(const char* enc_input,
+SecondRoundArtefacts SecondRound(std::string enc_input_str,
                                  int enc_input_size,
-                                 const char* client_sks) {
+                                 std::string client_sks_str) {
+  const char* enc_input = enc_input_str.c_str();
+  const char* client_sks = client_sks_str.c_str();
+
   struct SecondRoundArtefacts artefacts;
   auto results =
       private_channel::second_round(enc_input, enc_input_size, client_sks);
 
   artefacts.partial_decryption = convert_to_str(
       results.encoded_partial_dec, results.encoded_partial_dec_size);
-  artefacts.proofs =
-      convert_to_str(results.encoded_proofs, results.encoded_proofs_size);
+  artefacts.dec_proofs = convert_to_str(results.encoded_proofs_rand,
+                                        results.encoded_proofs_rand_size);
+  artefacts.proofs = convert_to_str(results.encoded_proofs_dec,
+                                    results.encoded_proofs_dec_size);
   artefacts.rand_vec =
       convert_to_str(results.random_vec, results.random_vec_size);
   artefacts.error = results.error;

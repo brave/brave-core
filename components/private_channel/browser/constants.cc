@@ -6,6 +6,8 @@
 #include "brave/components/private_channel/browser/constants.h"
 
 const int kMaxPrivateChannelServerResponseSizeBytes = 1024 * 1024;
+const char kPrivateChannelVersion[] =
+    "30ee124d76368c52339c8d965d3a07c1db66a555";
 
 extern const char PRIVATE_CHANNEL_STAGING_SERVER[] =
     "https://repsys.rewards.brave.software";

@@ -9,7 +9,11 @@
 #include <memory>
 #include <string>
 
+#include "brave/components/private_channel/client_private_channel.h"
+
 #include "base/macros.h"
+#include "base/memory/weak_ptr.h"
+#include "base/sequenced_task_runner.h"
 #include "base/values.h"
 #include "url/gurl.h"
 
@@ -21,10 +25,10 @@ namespace private_channel {
 
 class PrivateChannel {
  public:
-  explicit PrivateChannel(std::string referral_code);
+  PrivateChannel();
   ~PrivateChannel();
 
-  void PerformReferralAttestation();
+  void PerformReferralAttestation(std::string referral_code);
 
  private:
   void FetchMetadataPrivateChannelServer();
@@ -32,7 +36,7 @@ class PrivateChannel {
   void OnPrivateChannelMetaLoadComplete(
       std::unique_ptr<std::string> response_body);
 
-  void FirstRoundProtocol(std::string server_pubkey);
+  void FirstRoundProtocol(ChallengeArtefacts request_artefacts);
 
   void OnPrivateChannelFirstRoundLoadComplete(
       std::string client_sks,
@@ -40,16 +44,16 @@ class PrivateChannel {
       int input_size,
       std::unique_ptr<std::string> response_body);
 
-  void SecondRoundProtocol(const std::string& encrypted_input,
-                           std::string client_sks,
-                           std::string id,
-                           int input_size);
+  void SecondRoundProtocol(SecondRoundArtefacts request_artefacts);
 
   void OnPrivateChannelSecondRoundLoadComplete(
       std::unique_ptr<std::string> response_body);
 
+  scoped_refptr<base::SequencedTaskRunner> task_runner_;
   std::unique_ptr<network::SimpleURLLoader> http_loader_;
   std::string referral_code_;
+
+  base::WeakPtrFactory<PrivateChannel> weak_factory_;
 };
 
 }  // namespace private_channel
