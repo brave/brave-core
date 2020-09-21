@@ -91,14 +91,6 @@
 
             </LinearLayout>
 
-            <!-- Explore offline card -->
-            <ViewStub
-                android:id="@+id/explore_offline_card_stub"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout="@layout/new_tab_page_offline_card"
-                android:inflatedId="@+id/explore_offline_card" />
-
             <!-- Search box -->
             <include layout="@layout/fake_search_box_layout"/>
 
