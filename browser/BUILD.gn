@@ -21,6 +21,7 @@ import("//components/gcm_driver/config.gni")
 import("//extensions/buildflags/buildflags.gni")
 import("//third_party/protobuf/proto_library.gni")
 import("//third_party/widevine/cdm/widevine.gni")
+import("//tools/grit/grit_rule.gni")
 
 declare_args() {
   brave_stats_api_key = ""
@@ -484,10 +485,37 @@ source_set("browser") {
 
   deps = [
     "//chrome/browser",
+    ":resources",
   ]
+
   if (enable_sparkle) {
     deps += [
       "//brave/vendor/sparkle:sparkle_framework_bundle_data"
     ]
   }
+}
+
+grit("resources") {
+  source = "brave_browser_resources.grd"
+
+  use_brotli = true
+
+  defines = chrome_grit_defines
+
+  defines += [
+    "is_official_build=$is_official_build",
+  ]
+
+  resource_ids = "//brave/browser/resources/resource_ids"
+
+  output_dir = "$root_gen_dir/brave"
+  outputs = [
+    "grit/brave_browser_resources.h",
+    "brave_browser_resources.pak",
+  ]
+
+  grit_flags = [
+    "-E",
+    "root_gen_dir=" + rebase_path(root_gen_dir, root_build_dir),
+  ]
 }
