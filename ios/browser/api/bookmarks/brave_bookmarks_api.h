@@ -22,6 +22,7 @@ typedef NS_ENUM(NSUInteger, BookmarksNodeFaviconState) {
   LOADED_FAVICON,
 };
 
+OBJC_EXPORT
 @interface BookmarkNode: NSObject
 + (NSString *)kRootNodeGuid;
 + (NSString *)kBookmarkBarNodeGuid;
@@ -69,6 +70,7 @@ typedef NS_ENUM(NSUInteger, BookmarksNodeFaviconState) {
 @end
 
 //NS_SWIFT_NAME(BraveBookmarksAPI)
+OBJC_EXPORT
 @interface BraveBookmarksAPI: NSObject
 
 - (BookmarkNode *)getRootNode;

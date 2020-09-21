@@ -54,7 +54,7 @@ ios_framework_bundle("brave_rewards_ios_framework") {
 
   configs += [ ":internal_config" ]
   configs += [ "//build/config/compiler:enable_arc" ]
-  configs -= [ "//build/config/gcc:symbol_visibility_hidden" ]
+  #configs -= [ "//build/config/gcc:symbol_visibility_hidden" ]
 
   deps = [
     "//brave/base:base",

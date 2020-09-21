@@ -19,6 +19,7 @@ typedef void (^BATNetworkCompletionBlock)(const std::string& errorDescription,
                                           const base::flat_map<std::string, std::string>& headers);
 
 /// A set of common operations that accept and return C++ types
+OBJC_EXPORT
 @interface BATCommonOperations : NSObject
 
 - (instancetype)initWithStoragePath:(nullable NSString *)storagePath NS_DESIGNATED_INITIALIZER;

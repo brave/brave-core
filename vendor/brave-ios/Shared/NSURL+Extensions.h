@@ -6,6 +6,7 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
+OBJC_EXPORT
 @interface NSURL (Extensions)
 
 @property (nonatomic, nullable, readonly) NSString *bat_normalizedHost;

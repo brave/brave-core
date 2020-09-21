@@ -9,7 +9,7 @@
 #import <Foundation/Foundation.h>
 #import <UIKit/UIKit.h>
 
-@interface BraveSyncAPI : NSObject
+OBJC_EXPORT @interface BraveSyncAPI : NSObject
 - (instancetype)init;
 
 - (bool)setSyncEnabled:(bool)enabled;
