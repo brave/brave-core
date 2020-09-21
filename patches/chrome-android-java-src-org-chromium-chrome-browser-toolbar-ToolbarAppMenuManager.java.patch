@@ -1,5 +1,5 @@
 diff --git a/chrome/android/java/src/org/chromium/chrome/browser/toolbar/ToolbarAppMenuManager.java b/chrome/android/java/src/org/chromium/chrome/browser/toolbar/ToolbarAppMenuManager.java
-index cabff32bdae3..a74dd961aebb 100644
+index cabff32bdae3e37a296d6ecf07c5b209b612de1d..a74dd961aebba355d913f521b898608d3e9153d1 100644
 --- a/chrome/android/java/src/org/chromium/chrome/browser/toolbar/ToolbarAppMenuManager.java
 +++ b/chrome/android/java/src/org/chromium/chrome/browser/toolbar/ToolbarAppMenuManager.java
 @@ -162,6 +162,7 @@ class ToolbarAppMenuManager implements AppMenuObserver {
