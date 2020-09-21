@@ -360,10 +360,15 @@ void BraveContentBrowserClient::MaybeHideReferrer(
     blink::mojom::ReferrerPtr* referrer) {
   DCHECK(referrer && !referrer->is_null());
 #if BUILDFLAG(ENABLE_EXTENSIONS)
-  if (document_url.SchemeIs(kChromeExtensionScheme)) {
+  if (document_url.SchemeIs(kChromeExtensionScheme) ||
+      request_url.SchemeIs(kChromeExtensionScheme)) {
     return;
   }
 #endif
+  if (document_url.SchemeIs(content::kChromeUIScheme) ||
+      request_url.SchemeIs(content::kChromeUIScheme)) {
+    return;
+  }
 
   Profile* profile = Profile::FromBrowserContext(browser_context);
   const bool allow_referrers = brave_shields::AllowReferrers(
