@@ -56,8 +56,8 @@ class SettingsViewController: TableViewController {
     
     private let profile: Profile
     private let tabManager: TabManager
-    private let feedDataSource: FeedDataSource
     private let rewards: BraveRewards?
+    private let feedDataSource: FeedDataSource
     
     init(profile: Profile, tabManager: TabManager, feedDataSource: FeedDataSource, rewards: BraveRewards? = nil) {
         self.profile = profile
@@ -65,7 +65,11 @@ class SettingsViewController: TableViewController {
         self.feedDataSource = feedDataSource
         self.rewards = rewards
         
-        super.init(style: .grouped)
+        if #available(iOS 13.0, *) {
+            super.init(style: .insetGrouped)
+        } else {
+            super.init(style: .grouped)
+        }
     }
     
     @available(*, unavailable)
@@ -79,6 +83,8 @@ class SettingsViewController: TableViewController {
         navigationItem.title = Strings.settings
         tableView.accessibilityIdentifier = "SettingsViewController.tableView"
         dataSource.sections = sections
+        
+        tableView.separatorInset = UIEdgeInsets(top: 0, left: 16, bottom: 0, right: 0)
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -86,9 +92,11 @@ class SettingsViewController: TableViewController {
         
         guard let vpnRow = vpnRow else { return }
         // This is a dynamic cell that must be updated based on vpn status.
-        if let indexPath = dataSource.indexPath(rowUUID: vpnRow.uuid, sectionUUID: otherSettingsSection.uuid) {
+        if let indexPath = dataSource.indexPath(rowUUID: vpnRow.uuid, sectionUUID: featuresSection.uuid) {
+            let newVPNRow = vpnSettingsRow()
+            self.vpnRow = newVPNRow
             dataSource.sections[indexPath.section].rows.remove(at: indexPath.row)
-            dataSource.sections[indexPath.section].rows.append(vpnSettingsRow())
+            dataSource.sections[indexPath.section].rows.insert(newVPNRow, at: indexPath.row)
         }
     }
     
@@ -103,7 +111,14 @@ class SettingsViewController: TableViewController {
     }
     
     private var sections: [Section] {
-        var list = [Section]()
+        var list = [
+            featuresSection,
+            generalSection,
+            displaySection,
+            securitySection,
+            supportSection,
+            aboutSection
+        ]
         
         let shouldShowVPNSection = { () -> Bool in
             if !VPNProductInfo.isComplete || Preferences.VPN.vpnSettingHeaderWasDismissed.value {
@@ -119,16 +134,8 @@ class SettingsViewController: TableViewController {
         }()
         
         if shouldShowVPNSection {
-            list.append(enableBraveVPNSection)
+            list.insert(enableBraveVPNSection, at: 0)
         }
-        list.append(generalSection)
-        list.append(displaySection)
-        list.append(otherSettingsSection)
-        list.append(contentsOf: [privacySection,
-                                 securitySection,
-                                 shieldsSection,
-                                 supportSection,
-                                 aboutSection])
         
         if let debugSection = debugSection {
             list.append(debugSection)
@@ -160,54 +167,70 @@ class SettingsViewController: TableViewController {
         return Section(header: .view(header))
     }()
     
-    private func enableVPNTapped() {
-        let state = BraveVPN.vpnState
+    private lazy var featuresSection: Section = {
+        var section = Section(
+            header: .title(Strings.features),
+            rows: [
+                Row(text: Strings.braveShieldsAndPrivacy, selection: { [unowned self] in
+                    let controller = BraveShieldsAndPrivacySettingsController(profile: self.profile, tabManager: self.tabManager, feedDataSource: self.feedDataSource)
+                    self.navigationController?.pushViewController(controller, animated: true)
+                }, image: #imageLiteral(resourceName: "settings-shields"), accessory: .disclosureIndicator)
+            ]
+        )
         
-        switch state {
-        case .notPurchased, .purchased, .expired:
-            guard let vc = state.enableVPNDestinationVC else { return }
-            navigationController?.pushViewController(vc, animated: true)
-        case .installed:
-            BraveVPN.reconnect()
-            dismiss(animated: true)
+        if BraveRewards.isAvailable, let rewards = rewards {
+            section.rows += [
+                Row(text: Strings.braveRewardsTitle, selection: { [unowned self] in
+                    let rewardsVC = BraveRewardsSettingsViewController(rewards)
+                    rewardsVC.tappedShowRewardsSettings = { [unowned self] in
+                        self.settingsDelegate?.settingsOpenRewardsSettings(self)
+                    }
+                    self.navigationController?.pushViewController(rewardsVC, animated: true)
+                }, image: #imageLiteral(resourceName: "settings-brave-rewards"), accessory: .disclosureIndicator),
+            ]
         }
-    }
-    
-    private func dismissVPNHeaderTapped() {
-        if dataSource.sections.isEmpty { return }
-        dataSource.sections[0] = Section()
-        Preferences.VPN.vpnSettingHeaderWasDismissed.value = true
-    }
+        
+        vpnRow = vpnSettingsRow()
+        
+        section.rows.append(
+            Row(text: Strings.BraveToday.braveToday, selection: {
+                let todaySettings = BraveTodaySettingsViewController(dataSource: self.feedDataSource)
+                self.navigationController?.pushViewController(todaySettings, animated: true)
+            }, image: #imageLiteral(resourceName: "settings-brave-today").template, accessory: .disclosureIndicator)
+        )
+        
+        return section
+    }()
     
     private lazy var generalSection: Section = {
-        var rows = [
-            Row(text: Strings.searchEngines, selection: {
-                let viewController = SearchSettingsTableViewController()
-                viewController.model = self.profile.searchEngines
-                viewController.profile = self.profile
-                self.navigationController?.pushViewController(viewController, animated: true)
-            }, accessory: .disclosureIndicator, cellClass: MultilineValue1Cell.self),
-            .boolRow(title: Strings.saveLogins, option: Preferences.General.saveLogins),
-            .boolRow(title: Strings.blockPopups, option: Preferences.General.blockPopups)]
+        var general = Section(
+            header: .title(Strings.settingsGeneralSectionTitle),
+            rows: [
+                Row(text: Strings.searchEngines, selection: { [unowned self] in
+                    let viewController = SearchSettingsTableViewController()
+                    viewController.model = self.profile.searchEngines
+                    viewController.profile = self.profile
+                    self.navigationController?.pushViewController(viewController, animated: true)
+                }, image: #imageLiteral(resourceName: "settings-search").template, accessory: .disclosureIndicator, cellClass: MultilineValue1Cell.self),
+            ]
+        )
         
         if #available(iOS 13.0, *), UIDevice.isIpad {
-            rows.append(.boolRow(title: Strings.alwaysRequestDesktopSite,
-            option: Preferences.General.alwaysRequestDesktopSite))
+            general.rows.append(
+                .boolRow(title: Strings.alwaysRequestDesktopSite,
+                         option: Preferences.General.alwaysRequestDesktopSite,
+                         image: #imageLiteral(resourceName: "settings-desktop-always").template)
+            )
         }
         
         if AppConstants.iOSVersionGreaterThanOrEqual(to: 14) && AppConstants.buildChannel == .release {
-            rows.append(.init(text: Strings.setDefaultBrowserSettingsCell, selection: { [unowned self] in
-            guard let settingsUrl = URL(string: UIApplication.openSettingsURLString) else {
-                return
-            }
-            UIApplication.shared.open(settingsUrl)
+            general.rows.append(.init(text: Strings.setDefaultBrowserSettingsCell, selection: { [unowned self] in
+                guard let settingsUrl = URL(string: UIApplication.openSettingsURLString) else {
+                    return
+                }
+                UIApplication.shared.open(settingsUrl)
             }, cellClass: MultilineButtonCell.self))
         }
-        
-        var general = Section(
-            header: .title(Strings.settingsGeneralSectionTitle),
-            rows: rows
-        )
         
         return general
     }()
@@ -219,7 +242,7 @@ class SettingsViewController: TableViewController {
         )
         
         let themeSubtitle = Theme.DefaultTheme(rawValue: Preferences.General.themeNormalMode.value)?.displayString
-        var row = Row(text: Strings.themesDisplayBrightness, detailText: themeSubtitle, accessory: .disclosureIndicator, cellClass: MultilineSubtitleCell.self)
+        var row = Row(text: Strings.themesDisplayBrightness, detailText: themeSubtitle, image: #imageLiteral(resourceName: "settings-appearance").template, accessory: .disclosureIndicator, cellClass: MultilineSubtitleCell.self)
         row.selection = { [unowned self] in
             let optionsViewController = OptionSelectionViewController<Theme.DefaultTheme>(
                 options: Theme.DefaultTheme.normalThemesOptions,
@@ -240,16 +263,17 @@ class SettingsViewController: TableViewController {
             selection: { [unowned self] in
                 self.navigationController?.pushViewController(NTPTableViewController(), animated: true)
             },
+            image: #imageLiteral(resourceName: "settings-ntp").template,
             accessory: .disclosureIndicator,
             cellClass: MultilineValue1Cell.self
         ))
         
         if UIDevice.current.userInterfaceIdiom == .pad {
             display.rows.append(
-                Row(text: Strings.showTabsBar, accessory: .switchToggle(value: Preferences.General.tabBarVisibility.value == TabBarVisibility.always.rawValue, { Preferences.General.tabBarVisibility.value = $0 ? TabBarVisibility.always.rawValue : TabBarVisibility.never.rawValue }), cellClass: MultilineValue1Cell.self)
+                Row(text: Strings.showTabsBar, image: #imageLiteral(resourceName: "settings-show-tab-bar").template, accessory: .switchToggle(value: Preferences.General.tabBarVisibility.value == TabBarVisibility.always.rawValue, { Preferences.General.tabBarVisibility.value = $0 ? TabBarVisibility.always.rawValue : TabBarVisibility.never.rawValue }), cellClass: MultilineValue1Cell.self)
             )
         } else {
-            var row = Row(text: Strings.showTabsBar, detailText: TabBarVisibility(rawValue: Preferences.General.tabBarVisibility.value)?.displayString, accessory: .disclosureIndicator, cellClass: MultilineSubtitleCell.self)
+            var row = Row(text: Strings.showTabsBar, detailText: TabBarVisibility(rawValue: Preferences.General.tabBarVisibility.value)?.displayString, image: #imageLiteral(resourceName: "settings-show-tab-bar").template, accessory: .disclosureIndicator, cellClass: MultilineSubtitleCell.self)
             row.selection = { [unowned self] in
                 // Show options for tab bar visibility
                 let optionsViewController = OptionSelectionViewController<TabBarVisibility>(
@@ -268,43 +292,11 @@ class SettingsViewController: TableViewController {
         
         display.rows.append(
             .boolRow(title: Strings.showBookmarkButtonInTopToolbar,
-                     option: Preferences.General.showBookmarkToolbarShortcut)
+                     option: Preferences.General.showBookmarkToolbarShortcut,
+                     image: #imageLiteral(resourceName: "settings-bookmarks-shortcut").template)
         )
         
         return display
-    }()
-    
-    private lazy var otherSettingsSection: Section = {
-        // BRAVE TODO: Change it once we finalize our decision how to name the section.(#385)
-        var section = Section(header: .title(Strings.otherSettingsSection))
-        if BraveRewards.isAvailable {
-            if let rewards = rewards {
-                section.rows += [
-                    Row(text: Strings.braveRewardsTitle, selection: { [unowned self] in
-                        let rewardsVC = BraveRewardsSettingsViewController(rewards)
-                        rewardsVC.tappedShowRewardsSettings = { [unowned self] in
-                            self.settingsDelegate?.settingsOpenRewardsSettings(self)
-                        }
-                        self.navigationController?.pushViewController(rewardsVC, animated: true)
-                        }, accessory: .disclosureIndicator),
-                ]
-            }
-        }
-        
-        vpnRow = vpnSettingsRow()
-        
-        if let row = vpnRow {
-            section.rows.append(row)
-        }
-        
-        section.rows.append(
-            Row(text: Strings.BraveToday.braveToday, selection: {
-                let todaySettings = BraveTodaySettingsViewController(dataSource: self.feedDataSource)
-                self.navigationController?.pushViewController(todaySettings, animated: true)
-            }, accessory: .disclosureIndicator)
-        )
-        
-        return section
     }()
     
     private var vpnRow: Row?
@@ -344,137 +336,9 @@ class SettingsViewController: TableViewController {
             
             guard let vcToShow = vc else { return }
             self.navigationController?.pushViewController(vcToShow, animated: true)
-            }, accessory: .disclosureIndicator,
+            }, image: #imageLiteral(resourceName: "settings-vpn").template, accessory: .disclosureIndicator,
                cellClass: ColoredDetailCell.self, context: [ColoredDetailCell.colorKey: color], uuid: "vpnrow")
     }
-    
-    private lazy var privacySection: Section = {
-        var privacy = Section(
-            header: .title(Strings.privacy)
-        )
-        privacy.rows = [
-            Row(text: Strings.clearPrivateData,
-                selection: { [unowned self] in
-                    // Show Clear private data screen
-                    let clearPrivateData = ClearPrivateDataTableViewController(
-                        profile: self.profile,
-                        tabManager: self.tabManager,
-                        feedDataSource: self.feedDataSource
-                    )
-                    self.navigationController?.pushViewController(clearPrivateData, animated: true)
-                },
-                accessory: .disclosureIndicator,
-                cellClass: MultilineValue1Cell.self
-            ),
-            .boolRow(title: Strings.blockAllCookies, option: Preferences.Privacy.blockAllCookies, onValueChange: { [unowned self] in
-                func toggleCookieSetting(with status: Bool) {
-                    // Lock/Unlock Cookie Folder
-                    let completionBlock: (Bool) -> Void = { _ in
-                        let success = FileManager.default.setFolderAccess([
-                            (.cookie, status),
-                            (.webSiteData, status)
-                            ])
-                        if success {
-                            Preferences.Privacy.blockAllCookies.value = status
-                        } else {
-                            //Revert the changes. Not handling success here to avoid a loop.
-                            FileManager.default.setFolderAccess([
-                                (.cookie, false),
-                                (.webSiteData, false)
-                                ])
-                            self.toggleSwitch(on: false, section: self.privacySection, rowUUID: Preferences.Privacy.blockAllCookies.key)
-                            
-                            // TODO: Throw Alert to user to try again?
-                            let alert = UIAlertController(title: nil, message: Strings.blockAllCookiesFailedAlertMsg, preferredStyle: .alert)
-                            alert.addAction(UIAlertAction(title: Strings.OKString, style: .default))
-                            self.present(alert, animated: true)
-                        }
-                    }
-                    // Save cookie to disk before purge for unblock load.
-                    status ? HTTPCookie.saveToDisk(completion: completionBlock) : completionBlock(true)
-                }
-                if $0 {
-                    let status = $0
-                    // THROW ALERT to inform user of the setting
-                    let alert = UIAlertController(title: Strings.blockAllCookiesAlertTitle, message: Strings.blockAllCookiesAlertInfo, preferredStyle: .alert)
-                    let okAction = UIAlertAction(title: Strings.blockAllCookiesAction, style: .destructive, handler: { (action) in
-                        toggleCookieSetting(with: status)
-                    })
-                    alert.addAction(okAction)
-                    
-                    let cancelAction = UIAlertAction(title: Strings.cancelButtonTitle, style: .cancel, handler: { (action) in
-                        self.toggleSwitch(on: false, section: self.privacySection, rowUUID: Preferences.Privacy.blockAllCookies.key)
-                    })
-                    alert.addAction(cancelAction)
-                    self.present(alert, animated: true)
-                } else {
-                    toggleCookieSetting(with: $0)
-                }
-            })
-        ]
-        privacy.rows.append(
-            .boolRow(
-                title: Strings.privateBrowsingOnly,
-                option: Preferences.Privacy.privateBrowsingOnly,
-                onValueChange: { value in
-                    
-                    let applyThemeBlock = { [weak self] in
-                        guard let self = self else { return }
-                        // Need to flush the table, hacky, but works consistenly and well
-                        let superView = self.tableView.superview
-                        self.tableView.removeFromSuperview()
-                        DispatchQueue.main.async {
-                            // Let shield toggle change propagate, otherwise theme may not be set properly
-                            superView?.addSubview(self.tableView)
-                            self.applyTheme(self.theme)
-                        }
-                    }
-
-                    if value {
-                        let alert = UIAlertController(title: Strings.privateBrowsingOnly, message: Strings.privateBrowsingOnlyWarning, preferredStyle: .alert)
-                        alert.addAction(UIAlertAction(title: Strings.cancelButtonTitle, style: .cancel, handler: { _ in
-                            DispatchQueue.main.async {
-                                self.toggleSwitch(on: false, section: self.privacySection, rowUUID: Preferences.Privacy.privateBrowsingOnly.key)
-                            }
-                        }))
-
-                        alert.addAction(UIAlertAction(title: Strings.OKString, style: .default, handler: { _ in
-                            let spinner = SpinnerView().then {
-                                $0.present(on: self.view)
-                            }
-                            
-                            Preferences.Privacy.privateBrowsingOnly.value = value
-                            
-                            DispatchQueue.global(qos: .background).asyncAfter(deadline: .now() + 0.1) {
-                                let clearables: [Clearable] = [CookiesAndCacheClearable()]
-                                ClearPrivateDataTableViewController.clearPrivateData(clearables).uponQueue(.main) { [weak self] in
-                                    guard let self = self else { return }
-                                    
-                                    //First remove all tabs so that only a blank tab exists.
-                                    self.tabManager.removeAll()
-                                    
-                                    //Reset tab configurations and delete all webviews..
-                                    self.tabManager.reset()
-                                    
-                                    //Restore all existing tabs by removing the blank tabs and recreating new ones..
-                                    self.tabManager.removeAll()
-                                    
-                                    spinner.dismiss()
-                                    applyThemeBlock()
-                                }
-                            }
-                        }))
-
-                        self.present(alert, animated: true, completion: nil)
-                    } else {
-                        Preferences.Privacy.privateBrowsingOnly.value = value
-                        applyThemeBlock()
-                    }
-                }
-            )
-        )
-        return privacy
-    }()
 
     private lazy var securitySection: Section = {
         let passcodeTitle: String = {
@@ -497,26 +361,10 @@ class SettingsViewController: TableViewController {
                 Row(text: passcodeTitle, selection: { [unowned self] in
                     let passcodeSettings = PasscodeSettingsViewController()
                     self.navigationController?.pushViewController(passcodeSettings, animated: true)
-                    }, accessory: .disclosureIndicator, cellClass: MultilineValue1Cell.self)
+                    }, image: #imageLiteral(resourceName: "settings-passcode").template, accessory: .disclosureIndicator, cellClass: MultilineValue1Cell.self),
+                .boolRow(title: Strings.saveLogins, option: Preferences.General.saveLogins, image: #imageLiteral(resourceName: "settings-save-logins").template)
             ]
         )
-    }()
-    
-    private lazy var shieldsSection: Section = {
-        var shields = Section(
-            header: .title(Strings.shieldsDefaults),
-            rows: [
-                .boolRow(title: Strings.blockAdsAndTracking, option: Preferences.Shields.blockAdsAndTracking),
-                .boolRow(title: Strings.HTTPSEverywhere, option: Preferences.Shields.httpsEverywhere),
-                .boolRow(title: Strings.blockPhishingAndMalware, option: Preferences.Shields.blockPhishingAndMalware),
-                .boolRow(title: Strings.blockScripts, option: Preferences.Shields.blockScripts),
-                .boolRow(title: Strings.fingerprintingProtection, option: Preferences.Shields.fingerprintingProtection),
-            ]
-        )
-        if let locale = Locale.current.languageCode, let _ = ContentBlockerRegion.with(localeCode: locale) {
-            shields.rows.append(.boolRow(title: Strings.useRegionalAdblock, option: Preferences.Shields.useRegionAdBlock))
-        }
-        return shields
     }()
     
     private lazy var supportSection: Section = {
@@ -528,7 +376,8 @@ class SettingsViewController: TableViewController {
                         self.settingsDelegate?.settingsOpenURLInNewTab(BraveUX.braveCommunityURL)
                         self.dismiss(animated: true)
                     },
-                    cellClass: MultilineButtonCell.self),
+                    image: #imageLiteral(resourceName: "settings-report-bug").template,
+                    cellClass: MultilineValue1Cell.self),
                 Row(text: Strings.rateBrave,
                     selection: { [unowned self] in
                         // Rate Brave
@@ -537,21 +386,8 @@ class SettingsViewController: TableViewController {
                         UIApplication.shared.open(writeReviewURL)
                         self.dismiss(animated: true)
                     },
-                    cellClass: MultilineValue1Cell.self),
-                Row(text: Strings.privacyPolicy,
-                    selection: { [unowned self] in
-                        // Show privacy policy
-                        let privacy = SettingsContentViewController().then { $0.url = BraveUX.bravePrivacyURL }
-                        self.navigationController?.pushViewController(privacy, animated: true)
-                    },
-                    accessory: .disclosureIndicator, cellClass: MultilineValue1Cell.self),
-                Row(text: Strings.termsOfUse,
-                    selection: { [unowned self] in
-                        // Show terms of use
-                        let toc = SettingsContentViewController().then { $0.url = BraveUX.braveTermsOfUseURL }
-                        self.navigationController?.pushViewController(toc, animated: true)
-                    },
-                    accessory: .disclosureIndicator, cellClass: MultilineValue1Cell.self)
+                    image: #imageLiteral(resourceName: "settings-rate").template,
+                    cellClass: MultilineValue1Cell.self)
             ]
         )
     }()
@@ -579,6 +415,20 @@ class SettingsViewController: TableViewController {
                     actionSheet.addAction(UIAlertAction(title: Strings.cancelButtonTitle, style: .cancel, handler: nil))
                     self.navigationController?.present(actionSheet, animated: true, completion: nil)
                 }, cellClass: MultilineValue1Cell.self),
+                Row(text: Strings.privacyPolicy,
+                    selection: { [unowned self] in
+                        // Show privacy policy
+                        let privacy = SettingsContentViewController().then { $0.url = BraveUX.bravePrivacyURL }
+                        self.navigationController?.pushViewController(privacy, animated: true)
+                    },
+                    accessory: .disclosureIndicator, cellClass: MultilineValue1Cell.self),
+                Row(text: Strings.termsOfUse,
+                    selection: { [unowned self] in
+                        // Show terms of use
+                        let toc = SettingsContentViewController().then { $0.url = BraveUX.braveTermsOfUseURL }
+                        self.navigationController?.pushViewController(toc, animated: true)
+                    },
+                    accessory: .disclosureIndicator, cellClass: MultilineValue1Cell.self),
                 Row(text: Strings.settingsLicenses, selection: { [unowned self] in
                     guard let url = URL(string: WebServer.sharedInstance.base) else { return }
                     
@@ -597,25 +447,25 @@ class SettingsViewController: TableViewController {
         return Section(
             rows: [
                 Row(text: "Region: \(Locale.current.regionCode ?? "--")"),
-                Row(text: "Adblock Debug", selection: { [weak self] in
+                Row(text: "Adblock Debug", selection: { [unowned self] in
                     let vc = AdblockDebugMenuTableViewController(style: .grouped)
-                    self?.navigationController?.pushViewController(vc, animated: true)
+                    self.navigationController?.pushViewController(vc, animated: true)
                 }, accessory: .disclosureIndicator, cellClass: MultilineValue1Cell.self),
-                Row(text: "View URP Logs", selection: {
+                Row(text: "View URP Logs", selection: { [unowned self] in
                     self.navigationController?.pushViewController(UrpLogsViewController(), animated: true)
                 }, accessory: .disclosureIndicator, cellClass: MultilineValue1Cell.self),
                 Row(text: "URP Code: \(UserReferralProgram.getReferralCode() ?? "--")"),
-                Row(text: "View Rewards Debug Menu", selection: {
+                Row(text: "View Rewards Debug Menu", selection: { [unowned self] in
                     self.displayRewardsDebugMenu()
                 }, accessory: .disclosureIndicator, cellClass: MultilineValue1Cell.self),
-                Row(text: "Load all QA Links", selection: {
+                Row(text: "Load all QA Links", selection: { [unowned self] in
                     let url = URL(string: "https://raw.githubusercontent.com/brave/qa-resources/master/testlinks.json")!
                     let string = try? String(contentsOf: url)
                     let urls = JSON(parseJSON: string!)["links"].arrayValue.compactMap { URL(string: $0.stringValue) }
                     self.settingsDelegate?.settingsOpenURLs(urls)
                     self.dismiss(animated: true)
                 }, cellClass: MultilineButtonCell.self),
-                Row(text: "CRASH!!!", selection: {
+                Row(text: "CRASH!!!", selection: { [unowned self] in
                     let alert = UIAlertController(title: "Force crash?", message: nil, preferredStyle: .alert)
                     alert.addAction(UIAlertAction(title: "Crash app", style: .destructive) { _ in
                         fatalError()
@@ -627,12 +477,25 @@ class SettingsViewController: TableViewController {
         )
     }()
     
-    func toggleSwitch(on: Bool, section: Section, rowUUID: String) {
-        if let sectionRow: Row = section.rows.first(where: {$0.uuid == rowUUID}) {
-            if let switchView: UISwitch = sectionRow.accessory.view as? UISwitch {
-                switchView.setOn(on, animated: true)
-            }
+    // MARK: - Actions
+    
+    private func enableVPNTapped() {
+        let state = BraveVPN.vpnState
+        
+        switch state {
+        case .notPurchased, .purchased, .expired:
+            guard let vc = state.enableVPNDestinationVC else { return }
+            navigationController?.pushViewController(vc, animated: true)
+        case .installed:
+            BraveVPN.reconnect()
+            dismiss(animated: true)
         }
+    }
+    
+    private func dismissVPNHeaderTapped() {
+        if dataSource.sections.isEmpty { return }
+        dataSource.sections[0] = Section()
+        Preferences.VPN.vpnSettingHeaderWasDismissed.value = true
     }
 }
 
