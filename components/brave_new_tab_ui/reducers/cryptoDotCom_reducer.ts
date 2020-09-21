@@ -32,6 +32,12 @@ const cryptoDotComReducer: Reducer<NewTab.State | undefined> = (state: NewTab.St
       state.cryptoDotComState.losersGainers = payload
       break
 
+    case types.SET_CHART_DATA:
+      state = { ...state }
+      const { asset, chartData } = payload
+      state.cryptoDotComState.charts[asset] = chartData
+      break
+
     default:
       break
   }

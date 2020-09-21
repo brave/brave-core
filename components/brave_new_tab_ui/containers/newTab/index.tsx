@@ -580,10 +580,24 @@ class NewTabPage extends React.Component<Props, State> {
     this.props.actions.setCryptoDotComTickerPrices(assetPrices)
   }
 
-  fetchCryptoDotComLosersGainers = () => {
+  fetchCryptoDotComLosersGainers = async () => {
     chrome.cryptoDotCom.getAssetRankings((resp: any) => {
       this.props.actions.setCryptoDotComLosersGainers(resp)
     })
+  }
+
+  fetchCryptoDotComChartData = async (asset: string) => {
+    chrome.cryptoDotCom.getChartData(`${asset}_USDT`, (resp: any) => {
+      this.props.actions.setCryptoDotComChartData(asset, resp)
+    })
+  }
+
+  cryptoDotComUpdateActions = async (asset: string) => {
+    return Promise.all([
+      this.fetchCryptoDotComTickerPrices([asset]),
+      this.fetchCryptoDotComLosersGainers(),
+      this.fetchCryptoDotComChartData(asset)
+    ])
   }
 
   fetchGeminiBalances = () => {

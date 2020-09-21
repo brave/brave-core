@@ -79,9 +79,10 @@ interface Props {
   onDisableWidget: () => void
   onTotalPriceOptIn: () => void
   onBtcPriceOptIn: () => void
-  onSetLosersGainers: () => void
+  onSetLosersGainers: () => Promise<void>
   onSetTickerPrices: (assets: Array<string>) => Promise<void>
-  // onSetChartData: (asset: string) => void
+  onSetChartData: (asset: string) => Promise<void>
+  onUpdateActions: (asset: string) => Promise<void[]>
 }
 interface ChartConfig {
   data: Array<any>
@@ -127,8 +128,13 @@ class CryptoDotCom extends React.PureComponent<Props, State> {
 
   handleViewMarketsClick = async () => {
     await this.props.onSetTickerPrices(topMovers)
-    this.props.onSetLosersGainers()
+    await this.props.onSetLosersGainers()
     this.setSelectedView('topMovers')
+  }
+
+  handleAssetDetailClick = async (asset: string) => {
+    await this.props.onSetChartData(asset)
+    this.setSelectedAsset(asset)
   }
 
   plotData ({ data, chartHeight, chartWidth }: ChartConfig) {
@@ -206,7 +212,7 @@ class CryptoDotCom extends React.PureComponent<Props, State> {
           const losersGainers = this.transformLosersGainers(this.props.losersGainers || {})
           const { percentChange = null } = losersGainers[currency] || {}
           return (
-            <ListItem key={currency} isFlex={true} onClick={this.setSelectedAsset.bind(this, currency)}>
+            <ListItem key={currency} isFlex={true} onClick={this.handleAssetDetailClick.bind(this, currency)}>
               <FlexItem style={{ paddingLeft: 5, paddingRight: 5 }}>
                 {this.renderIconAsset(currency.toLowerCase())}
               </FlexItem>

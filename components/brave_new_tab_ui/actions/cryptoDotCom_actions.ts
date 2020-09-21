@@ -13,3 +13,5 @@ export const onBtcPriceOptIn = () => action(types.ON_BTC_PRICE_OPT_IN)
 export const setCryptoDotComTickerPrices = (assetData: object) => action(types.SET_TICKER_PRICES, assetData)
 
 export const setCryptoDotComLosersGainers = (losersGainers: object) => action(types.SET_LOSERS_GAINERS, losersGainers)
+
+export const setCryptoDotComChartData = (asset: string, chartData: Array<object>) => action(types.SET_CHART_DATA, { asset, chartData })
