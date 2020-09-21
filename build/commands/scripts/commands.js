@@ -75,6 +75,7 @@ program
   .option('--gn <arg>', 'Additional gn args, in the form <key>:<value>', collect, [])
   .option('--ninja <opt>', 'Additional Ninja command-line options, in the form <key>:<value>', collect, [])
   .option('--brave_safetynet_api_key <brave_safetynet_api_key>')
+  .option('--is_asan', 'is asan enabled')
   .arguments('[build_config]')
   .action(build)
 
@@ -102,6 +103,7 @@ program
   .option('--notarize', 'notarize the macOS app with Apple')
   .option('--target_os <target_os>', 'target OS')
   .option('--target_apk_base <target_apk_base>', 'target Android OS apk (classic, modern, mono)', 'classic')
+  .option('--is_asan', 'is asan enabled')
   .arguments('[build_config]')
   .action(createDist)
 
@@ -192,6 +194,7 @@ program
   .option('--test_launcher_jobs <test_launcher_jobs>', 'Number of jobs to launch', parseInt, '4')
   .option('--target_os <target_os>', 'target OS')
   .option('--target_arch <target_arch>', 'target architecture')
+  .option('--run_disabled_tests', 'run disabled tests')
   .arguments('[build_config]')
   .action(test)
 

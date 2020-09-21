@@ -5,6 +5,7 @@
 
 import("//brave/build/config.gni")
 import("//brave/components/brave_rewards/browser/buildflags/buildflags.gni")
+import("//build/config/sanitizers/sanitizers.gni")
 import("//testing/test.gni")
 
 source_set("brave_rewards_unit_tests") {
@@ -34,7 +35,6 @@ source_set("brave_rewards_unit_tests") {
       "//brave/vendor/bat-native-ledger/src/bat/ledger/internal/legacy/media/github_unittest.cc",
       "//brave/vendor/bat-native-ledger/src/bat/ledger/internal/legacy/media/helper_unittest.cc",
       "//brave/vendor/bat-native-ledger/src/bat/ledger/internal/legacy/media/reddit_unittest.cc",
-      "//brave/vendor/bat-native-ledger/src/bat/ledger/internal/legacy/media/twitch_unittest.cc",
       "//brave/vendor/bat-native-ledger/src/bat/ledger/internal/legacy/media/twitter_unittest.cc",
       "//brave/vendor/bat-native-ledger/src/bat/ledger/internal/legacy/media/vimeo_unittest.cc",
       "//brave/vendor/bat-native-ledger/src/bat/ledger/internal/legacy/media/youtube_unittest.cc",
@@ -89,6 +89,14 @@ source_set("brave_rewards_unit_tests") {
       "//brave/vendor/bat-native-ledger/src/bat/ledger/internal/uphold/uphold_unittest.cc",
       "//brave/vendor/bat-native-ledger/src/bat/ledger/internal/uphold/uphold_util_unittest.cc",
     ]
+
+    if (!is_asan) {
+      # Move sources out of the !is_asan block when
+      # https://github.com/brave/brave-browser/issues/11893 is fixed
+      sources += [
+        "//brave/vendor/bat-native-ledger/src/bat/ledger/internal/legacy/media/twitch_unittest.cc",
+      ]
+    }
 
     deps = [
       "//base/test:test_support",
