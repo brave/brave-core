@@ -53,13 +53,14 @@ BraveRequestInfo::BraveRequestInfo(const GURL& url) : request_url(url) {}
 BraveRequestInfo::~BraveRequestInfo() = default;
 
 // static
-void BraveRequestInfo::FillCTX(const network::ResourceRequest& request,
-                               int render_process_id,
-                               int frame_tree_node_id,
-                               uint64_t request_identifier,
-                               content::BrowserContext* browser_context,
-                               std::shared_ptr<brave::BraveRequestInfo> ctx,
-                               std::shared_ptr<brave::BraveRequestInfo> old_ctx) {
+void BraveRequestInfo::FillCTX(
+    const network::ResourceRequest& request,
+    int render_process_id,
+    int frame_tree_node_id,
+    uint64_t request_identifier,
+    content::BrowserContext* browser_context,
+    std::shared_ptr<brave::BraveRequestInfo> ctx,
+    std::shared_ptr<brave::BraveRequestInfo> old_ctx) {
   DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
   ctx->request_identifier = request_identifier;
   ctx->method = request.method;
