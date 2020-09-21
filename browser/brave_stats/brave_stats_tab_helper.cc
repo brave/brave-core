@@ -3,16 +3,16 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#include "brave/browser/brave_stats_tab_helper.h"
+#include "brave/browser/brave_stats/brave_stats_tab_helper.h"
 
 #include "brave/browser/brave_browser_process_impl.h"
-#include "brave/browser/brave_stats_updater.h"
+#include "brave/browser/brave_stats/brave_stats_updater.h"
 #include "content/public/browser/navigation_handle.h"
 #include "content/public/browser/web_contents.h"
 #include "content/public/browser/web_contents_user_data.h"
 #include "ui/base/page_transition_types.h"
 
-namespace brave {
+namespace brave_stats {
 
 BraveStatsTabHelper::BraveStatsTabHelper(content::WebContents *web_contents)
     : content::WebContentsObserver(web_contents) {}
@@ -44,4 +44,4 @@ void BraveStatsTabHelper::NotifyStatsUpdater() {
 
 WEB_CONTENTS_USER_DATA_KEY_IMPL(BraveStatsTabHelper)
 
-}  //  namespace brave
+}  //  namespace brave_stats

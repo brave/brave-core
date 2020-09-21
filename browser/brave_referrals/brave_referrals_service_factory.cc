@@ -7,7 +7,7 @@
 
 #include <memory>
 
-#include "brave/browser/brave_stats_updater_util.h"
+#include "brave/browser/brave_stats/brave_stats_updater_util.h"
 #include "brave/components/brave_referrals/browser/brave_referrals_service.h"
 
 namespace brave {
@@ -17,7 +17,9 @@ std::unique_ptr<BraveReferralsService>
   BraveReferralsServiceFactory::GetForPrefs(
     PrefService* pref_service) {
   return std::make_unique<BraveReferralsService>(
-      pref_service, GetAPIKey(), GetPlatformIdentifier());
+      pref_service,
+      brave_stats::GetAPIKey(),
+      brave_stats::GetPlatformIdentifier());
 }
 
 // static

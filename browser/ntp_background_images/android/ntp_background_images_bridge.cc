@@ -190,7 +190,7 @@ base::android::ScopedJavaLocalRef<jstring>
 NTPBackgroundImagesBridge::GetReferralApiKey(
   JNIEnv* env, const JavaParamRef<jobject>& obj) {
   return ConvertUTF8ToJavaString(env,
-      brave::GetAPIKey());
+      brave_stats::GetAPIKey());
 }
 
 base::android::ScopedJavaLocalRef<jobject>

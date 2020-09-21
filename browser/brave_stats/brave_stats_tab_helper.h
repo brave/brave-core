@@ -3,8 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#ifndef BRAVE_BROWSER_BRAVE_STATS_TAB_HELPER_H_
-#define BRAVE_BROWSER_BRAVE_STATS_TAB_HELPER_H_
+#ifndef BRAVE_BROWSER_BRAVE_STATS_BRAVE_STATS_TAB_HELPER_H_
+#define BRAVE_BROWSER_BRAVE_STATS_BRAVE_STATS_TAB_HELPER_H_
 
 #include "content/public/browser/web_contents_observer.h"
 #include "content/public/browser/web_contents_user_data.h"
@@ -14,7 +14,7 @@ class NavigationHandle;
 class WebContents;
 }  // namespace content
 
-namespace brave {
+namespace brave_stats {
 
 class BraveStatsUpdater;
 
@@ -36,5 +36,5 @@ class BraveStatsTabHelper
   WEB_CONTENTS_USER_DATA_KEY_DECL();
 };
 
-}  // namespace brave
-#endif  // BRAVE_BROWSER_BRAVE_STATS_TAB_HELPER_H_
+}  // namespace brave_stats
+#endif  // BRAVE_BROWSER_BRAVE_STATS_BRAVE_STATS_TAB_HELPER_H_

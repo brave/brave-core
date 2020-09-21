@@ -6,7 +6,7 @@
 #include <ctime>
 #include <memory>
 
-#include "brave/browser/brave_stats_updater_util.h"
+#include "brave/browser/brave_stats/brave_stats_updater_util.h"
 
 #include "base/environment.h"
 #include "base/strings/string_number_conversions.h"
@@ -16,7 +16,7 @@
 #include "brave/common/pref_names.h"
 #include "chrome/browser/first_run/first_run.h"
 
-namespace brave {
+namespace brave_stats {
 
 std::string GetDateAsYMD(const base::Time& time) {
   base::Time::Exploded exploded;
@@ -108,4 +108,4 @@ std::string GetAPIKey() {
   return api_key;
 }
 
-}  // namespace brave
+}  // namespace brave_stats

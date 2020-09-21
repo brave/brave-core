@@ -1,0 +1,46 @@
+import("//brave/components/brave_referrals/buildflags/buildflags.gni")
+
+declare_args() {
+  brave_stats_api_key = ""
+  brave_stats_updater_url = "https://laptop-updates.brave.com"
+}
+
+source_set("stats_updater") {
+  # Remove when https://github.com/brave/brave-browser/issues/10657 is resolved
+  check_includes = false
+  defines = [
+      "BRAVE_STATS_API_KEY=\"$brave_stats_api_key\"",
+      "BRAVE_USAGE_SERVER=\"$brave_stats_updater_url\"",
+  ]
+
+  sources = [
+    "brave_stats_tab_helper.cc",
+    "brave_stats_tab_helper.h",
+    "brave_stats_updater.cc",
+    "brave_stats_updater.h",
+    "brave_stats_updater_params.cc",
+    "brave_stats_updater_params.h",
+    "brave_stats_updater_util.cc",
+    "brave_stats_updater_util.h",
+    "switches.cc",
+    "switches.h",
+  ]
+
+  deps = [
+    "//brave/browser:version_info",
+    "//base",
+    "//brave/common",
+    "//brave/common:pref_names",
+    "//brave/components/brave_referrals/buildflags",
+    "//chrome/common",
+    "//content/public/browser",
+    "//ui/base",
+  ]
+
+  if (enable_brave_referrals) {
+    deps += [
+      "//brave/components/brave_referrals/buildflags",
+      "//brave/components/brave_referrals/common",
+    ]
+  }
+}

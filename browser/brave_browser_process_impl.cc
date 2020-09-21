@@ -11,7 +11,7 @@
 #include "base/path_service.h"
 #include "base/task/post_task.h"
 #include "base/threading/sequenced_task_runner_handle.h"
-#include "brave/browser/brave_stats_updater.h"
+#include "brave/browser/brave_stats/brave_stats_updater.h"
 #include "brave/browser/component_updater/brave_component_updater_configurator.h"
 #include "brave/browser/component_updater/brave_component_updater_delegate.h"
 #include "brave/browser/net/brave_system_request_handler.h"
@@ -135,7 +135,7 @@ BraveBrowserProcessImpl::BraveBrowserProcessImpl(StartupData* startup_data)
 
   base::SequencedTaskRunnerHandle::Get()->PostTask(
       FROM_HERE, base::BindOnce(
-                     [](brave::BraveStatsUpdater* stats_updater) {
+                     [](brave_stats::BraveStatsUpdater* stats_updater) {
                        stats_updater->Start();
                      },
                      base::Unretained(brave_stats_updater())));
@@ -346,9 +346,9 @@ BraveBrowserProcessImpl::brave_widevine_bundle_manager() {
 }
 #endif
 
-brave::BraveStatsUpdater* BraveBrowserProcessImpl::brave_stats_updater() {
+brave_stats::BraveStatsUpdater* BraveBrowserProcessImpl::brave_stats_updater() {
   if (!brave_stats_updater_)
-    brave_stats_updater_ = brave::BraveStatsUpdaterFactory(local_state());
+    brave_stats_updater_ = brave_stats::BraveStatsUpdaterFactory(local_state());
   return brave_stats_updater_.get();
 }
 

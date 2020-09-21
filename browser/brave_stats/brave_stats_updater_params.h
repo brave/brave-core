@@ -3,8 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#ifndef BRAVE_BROWSER_BRAVE_STATS_UPDATER_PARAMS_H_
-#define BRAVE_BROWSER_BRAVE_STATS_UPDATER_PARAMS_H_
+#ifndef BRAVE_BROWSER_BRAVE_STATS_BRAVE_STATS_UPDATER_PARAMS_H_
+#define BRAVE_BROWSER_BRAVE_STATS_BRAVE_STATS_UPDATER_PARAMS_H_
 
 #include <string>
 
@@ -15,7 +15,7 @@ class BraveStatsUpdaterBrowserTest;
 class BraveStatsUpdaterTest;
 class PrefService;
 
-namespace brave {
+namespace brave_stats {
 
 class BraveStatsUpdaterParams {
  public:
@@ -71,6 +71,6 @@ class BraveStatsUpdaterParams {
   DISALLOW_COPY_AND_ASSIGN(BraveStatsUpdaterParams);
 };
 
-}  // namespace brave
+}  // namespace brave_stats
 
-#endif  // BRAVE_BROWSER_BRAVE_STATS_UPDATER_PARAMS_H_
+#endif  // BRAVE_BROWSER_BRAVE_STATS_BRAVE_STATS_UPDATER_PARAMS_H_

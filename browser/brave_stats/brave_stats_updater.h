@@ -3,8 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#ifndef BRAVE_BROWSER_BRAVE_STATS_UPDATER_H_
-#define BRAVE_BROWSER_BRAVE_STATS_UPDATER_H_
+#ifndef BRAVE_BROWSER_BRAVE_STATS_BRAVE_STATS_UPDATER_H_
+#define BRAVE_BROWSER_BRAVE_STATS_BRAVE_STATS_UPDATER_H_
 
 #include <memory>
 #include <string>
@@ -32,7 +32,7 @@ namespace network {
 class SimpleURLLoader;
 }
 
-namespace brave {
+namespace brave_stats {
 
 class BraveStatsUpdaterParams;
 
@@ -51,10 +51,11 @@ class BraveStatsUpdater {
   void SetStatsUpdatedCallback(StatsUpdatedCallback stats_updated_callback);
 
  private:
-  std::string BuildStatsEndpoint(const std::string& path);
+  GURL BuildStatsEndpoint(const std::string& path);
   // Invoked from SimpleURLLoader after download is complete.
   void OnSimpleLoaderComplete(
-      std::unique_ptr<brave::BraveStatsUpdaterParams> stats_updater_params,
+      std::unique_ptr<brave_stats::BraveStatsUpdaterParams>
+          stats_updater_params,
       scoped_refptr<net::HttpResponseHeaders> headers);
 
   // Invoked when server ping timer fires.
@@ -98,6 +99,6 @@ std::unique_ptr<BraveStatsUpdater> BraveStatsUpdaterFactory(
 // Registers the preferences used by BraveStatsUpdater
 void RegisterPrefsForBraveStatsUpdater(PrefRegistrySimple* registry);
 
-}  // namespace brave
+}  // namespace brave_stats
 
-#endif  // BRAVE_BROWSER_BRAVE_STATS_UPDATER_H_
+#endif  // BRAVE_BROWSER_BRAVE_STATS_BRAVE_STATS_UPDATER_H_

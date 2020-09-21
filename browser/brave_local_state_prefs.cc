@@ -6,7 +6,7 @@
 #include "brave/browser/brave_local_state_prefs.h"
 
 #include "base/values.h"
-#include "brave/browser/brave_stats_updater.h"
+#include "brave/browser/brave_stats/brave_stats_updater.h"
 #include "brave/browser/metrics/metrics_reporting_util.h"
 #include "brave/browser/themes/brave_dark_mode_utils.h"
 #include "brave/browser/tor/buildflags.h"
@@ -43,7 +43,7 @@ namespace brave {
 
 void RegisterLocalStatePrefs(PrefRegistrySimple* registry) {
   brave_shields::RegisterPrefsForAdBlockService(registry);
-  RegisterPrefsForBraveStatsUpdater(registry);
+  brave_stats::RegisterPrefsForBraveStatsUpdater(registry);
   ntp_background_images::NTPBackgroundImagesService::RegisterLocalStatePrefs(
       registry);
 #if BUILDFLAG(ENABLE_BRAVE_REFERRALS)

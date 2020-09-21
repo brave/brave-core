@@ -20,7 +20,7 @@
 #include "base/strings/string_number_conversions.h"
 #include "base/task/post_task.h"
 #include "base/trace_event/trace_event.h"
-#include "brave/browser/brave_stats_updater_util.h"
+#include "brave/browser/brave_stats/brave_stats_updater_util.h"
 #include "brave/browser/version_info.h"
 #include "brave/common/brave_channel_info.h"
 #include "brave/common/pref_names.h"
@@ -268,20 +268,20 @@ void BraveP3AService::MaybeOverrideSettingsFromCommandLine() {
 }
 
 void BraveP3AService::InitPyxisMeta() {
-  pyxis_meta_.platform = brave::GetPlatformIdentifier();
+  pyxis_meta_.platform = brave_stats::GetPlatformIdentifier();
   pyxis_meta_.channel = brave::GetChannelName();
   pyxis_meta_.version =
       version_info::GetBraveVersionWithoutChromiumMajorVersion();
 
   const std::string woi = local_state_->GetString(kWeekOfInstallation);
   if (!woi.empty()) {
-    pyxis_meta_.date_of_install = GetYMDAsDate(woi);
+    pyxis_meta_.date_of_install = brave_stats::GetYMDAsDate(woi);
   } else {
     pyxis_meta_.date_of_install = base::Time::Now();
   }
-  pyxis_meta_.woi = GetIsoWeekNumber(pyxis_meta_.date_of_install);
+  pyxis_meta_.woi = brave_stats::GetIsoWeekNumber(pyxis_meta_.date_of_install);
   pyxis_meta_.date_of_survey = base::Time::Now();
-  pyxis_meta_.wos = GetIsoWeekNumber(pyxis_meta_.date_of_survey);
+  pyxis_meta_.wos = brave_stats::GetIsoWeekNumber(pyxis_meta_.date_of_survey);
 
   pyxis_meta_.country_code =
       base::ToUpperASCII(base::CountryCodeForCurrentTimezone());

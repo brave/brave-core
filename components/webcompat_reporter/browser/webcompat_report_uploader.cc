@@ -12,6 +12,7 @@
 #include "base/environment.h"
 #include "base/json/json_writer.h"
 #include "brave/components/brave_referrals/browser/brave_referrals_service.h"
+#include "brave/browser/brave_stats/brave_stats_updater_util.h"
 #include "content/public/browser/browser_task_traits.h"
 #include "net/base/load_flags.h"
 #include "services/network/public/cpp/shared_url_loader_factory.h"
@@ -27,7 +28,7 @@ WebcompatReportUploader::WebcompatReportUploader(
 WebcompatReportUploader::~WebcompatReportUploader() {}
 
 void WebcompatReportUploader::SubmitReport(std::string report_domain) {
-  std::string api_key = brave::GetAPIKey();
+  std::string api_key = brave_stats::GetAPIKey();
 
   GURL upload_url(WEBCOMPAT_REPORT_ENDPOINT);
 

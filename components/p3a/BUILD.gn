@@ -28,7 +28,7 @@ source_set("p3a") {
   ]
 
   deps = [
-    "//brave/browser:stats_updater",
+    "//brave/browser/brave_stats:stats_updater",
     "//brave/browser:version_info",
     "//brave/common",
     "//brave/common:pref_names",

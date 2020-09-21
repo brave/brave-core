@@ -5,17 +5,17 @@
 
 #include <cmath>
 
-#include "brave/browser/brave_stats_updater_params.h"
+#include "brave/browser/brave_stats/brave_stats_updater_params.h"
 #include "brave/components/brave_referrals/buildflags/buildflags.h"
 
 #include "base/strings/string_util.h"
 #include "base/time/time.h"
-#include "brave/browser/brave_stats_updater_util.h"
+#include "brave/browser/brave_stats/brave_stats_updater_util.h"
 #include "brave/common/pref_names.h"
 #include "brave/components/brave_referrals/common/pref_names.h"
 #include "components/prefs/pref_service.h"
 
-namespace brave {
+namespace brave_stats {
 
 base::Time BraveStatsUpdaterParams::g_current_time;
 bool BraveStatsUpdaterParams::g_force_first_run = false;
@@ -65,7 +65,7 @@ std::string BraveStatsUpdaterParams::GetWeekOfInstallationParam() const {
 std::string BraveStatsUpdaterParams::GetDateOfInstallationParam() const {
   return (GetCurrentTimeNow() - date_of_installation_ >= g_dtoi_delete_delta)
       ? "null"
-      : brave::GetDateAsYMD(date_of_installation_);
+      : brave_stats::GetDateAsYMD(date_of_installation_);
 }
 
 std::string BraveStatsUpdaterParams::GetReferralCodeParam() const {
@@ -83,7 +83,7 @@ void BraveStatsUpdaterParams::LoadPrefs() {
   if (ShouldForceFirstRun()) {
     date_of_installation_ = GetCurrentTimeNow();
   } else {
-    date_of_installation_ = brave::GetFirstRunTime(pref_service_);
+    date_of_installation_ = brave_stats::GetFirstRunTime(pref_service_);
     DCHECK(!date_of_installation_.is_null());
   }
 #if BUILDFLAG(ENABLE_BRAVE_REFERRALS)
@@ -104,7 +104,7 @@ std::string BraveStatsUpdaterParams::BooleanToString(bool bool_value) const {
 }
 
 std::string BraveStatsUpdaterParams::GetCurrentDateAsYMD() const {
-  return brave::GetDateAsYMD(GetCurrentTimeNow());
+  return brave_stats::GetDateAsYMD(GetCurrentTimeNow());
 }
 
 std::string BraveStatsUpdaterParams::GetLastMondayAsYMD() const {
@@ -117,7 +117,7 @@ std::string BraveStatsUpdaterParams::GetLastMondayAsYMD() const {
   base::Time last_monday = base::Time::FromJsTime(
       now.ToJsTime() - (days_adjusted * base::Time::kMillisecondsPerDay));
 
-  return brave::GetDateAsYMD(last_monday);
+  return brave_stats::GetDateAsYMD(last_monday);
 }
 
 int BraveStatsUpdaterParams::GetCurrentMonth() const {
@@ -151,4 +151,4 @@ void BraveStatsUpdaterParams::SetFirstRunForTest(bool first_run) {
   g_force_first_run = first_run;
 }
 
-}  // namespace brave
+}  // namespace brave_stats

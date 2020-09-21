@@ -3,12 +3,14 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
+#include "base/command_line.h"
 #include "base/environment.h"
 #include "base/path_service.h"
 #include "base/time/time.h"
 #include "brave/browser/brave_referrals/brave_referrals_service_factory.h"
-#include "brave/browser/brave_stats_updater.h"
-#include "brave/browser/brave_stats_updater_params.h"
+#include "brave/browser/brave_stats/brave_stats_updater.h"
+#include "brave/browser/brave_stats/brave_stats_updater_params.h"
+#include "brave/browser/brave_stats/switches.h"
 #include "brave/common/pref_names.h"
 #include "brave/components/brave_referrals/browser/brave_referrals_service.h"
 #include "brave/components/brave_referrals/common/pref_names.h"
@@ -52,27 +54,27 @@ class BraveStatsUpdaterBrowserTest : public InProcessBrowserTest {
  public:
   void SetUpOnMainThread() override {
     InProcessBrowserTest::SetUpOnMainThread();
-    brave::RegisterPrefsForBraveStatsUpdater(testing_local_state_.registry());
+    brave_stats::RegisterPrefsForBraveStatsUpdater(
+            testing_local_state_.registry());
     brave::RegisterPrefsForBraveReferralsService(
         testing_local_state_.registry());
-    InitEmbeddedTestServer();
     SetBaseUpdateURLForTest();
     // Simulate sentinel file creation as if chrome_browser_main.h was called,
     // which reads in the sentinel value and caches it.
-    brave::BraveStatsUpdaterParams::SetFirstRunForTest(true);
+    brave_stats::BraveStatsUpdaterParams::SetFirstRunForTest(true);
   }
 
-  void InitEmbeddedTestServer() {
+  void SetUpCommandLine(base::CommandLine* command_line) override {
     embedded_test_server()->RegisterRequestHandler(
         base::Bind(&HandleRequestForStats));
     ASSERT_TRUE(embedded_test_server()->Start());
+    command_line->AppendSwitchASCII(
+        brave_stats::switches::kBraveStatsUpdaterServer,
+        embedded_test_server()->base_url().spec());
   }
 
   void SetBaseUpdateURLForTest() {
     std::unique_ptr<base::Environment> env(base::Environment::Create());
-    env->SetVar("BRAVE_USAGE_SERVER",
-        embedded_test_server()->host_port_pair().ToString());
-    env->SetVar("BRAVE_USAGE_LOCAL", "1");  // use http for local testing
     env->SetVar("BRAVE_REFERRALS_SERVER",
         embedded_test_server()->host_port_pair().ToString());
     env->SetVar("BRAVE_REFERRALS_LOCAL", "1");  // use http for local testing
@@ -147,7 +149,7 @@ IN_PROC_BROWSER_TEST_F(BraveStatsUpdaterBrowserTest,
 
   // Start the stats updater, wait for it to perform its startup ping,
   // and then shut it down
-  brave::BraveStatsUpdater stats_updater(GetLocalState());
+  brave_stats::BraveStatsUpdater stats_updater(GetLocalState());
   stats_updater.SetStatsUpdatedCallback(base::BindRepeating(
       &BraveStatsUpdaterBrowserTest::OnStatsUpdated, base::Unretained(this)));
   stats_updater.Start();
@@ -181,7 +183,7 @@ IN_PROC_BROWSER_TEST_F(BraveStatsUpdaterBrowserTest,
 
   // Start the stats updater, wait for it to perform its startup ping,
   // and then shut it down
-  brave::BraveStatsUpdater stats_updater(GetLocalState());
+  brave_stats::BraveStatsUpdater stats_updater(GetLocalState());
   stats_updater.SetStatsUpdatedCallback(base::BindRepeating(
       &BraveStatsUpdaterBrowserTest::OnStatsUpdated, base::Unretained(this)));
   stats_updater.Start();
@@ -232,7 +234,7 @@ IN_PROC_BROWSER_TEST_F(BraveStatsUpdaterBrowserTest,
 
   // Start the stats updater, wait for it to perform its startup ping,
   // and then shut it down
-  brave::BraveStatsUpdater stats_updater(GetLocalState());
+  brave_stats::BraveStatsUpdater stats_updater(GetLocalState());
   stats_updater.SetStatsUpdatedCallback(base::BindRepeating(
       &BraveStatsUpdaterBrowserTest::OnStatsUpdated, base::Unretained(this)));
   stats_updater.Start();
@@ -281,7 +283,7 @@ IN_PROC_BROWSER_TEST_F(BraveStatsUpdaterBrowserTest,
 
   // Start the stats updater, wait for it to perform its startup ping,
   // and then shut it down
-  brave::BraveStatsUpdater stats_updater(GetLocalState());
+  brave_stats::BraveStatsUpdater stats_updater(GetLocalState());
   stats_updater.SetStatsUpdatedCallback(base::BindRepeating(
       &BraveStatsUpdaterBrowserTest::OnStatsUpdated, base::Unretained(this)));
   stats_updater.Start();

@@ -3,14 +3,15 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#include "brave/browser/brave_stats_updater.h"
+#include "brave/browser/brave_stats/brave_stats_updater.h"
 
 #include <utility>
 
-#include "base/environment.h"
+#include "base/command_line.h"
 #include "base/system/sys_info.h"
-#include "brave/browser/brave_stats_updater_params.h"
-#include "brave/browser/brave_stats_updater_util.h"
+#include "brave/browser/brave_stats/brave_stats_updater_params.h"
+#include "brave/browser/brave_stats/brave_stats_updater_util.h"
+#include "brave/browser/brave_stats/switches.h"
 #include "brave/browser/version_info.h"
 #include "brave/common/brave_channel_info.h"
 #include "brave/common/network_constants.h"
@@ -43,13 +44,14 @@ const int kUpdateServerPeriodicPingFrequency = 5 * 60;
 
 static constexpr int kMinimumUsageThreshold = 3;
 
-namespace {
+namespace brave_stats {
 
-GURL GetUpdateURL(const GURL& base_update_url,
-                  const brave::BraveStatsUpdaterParams& stats_updater_params) {
+GURL GetUpdateURL(
+    const GURL& base_update_url,
+    const brave_stats::BraveStatsUpdaterParams& stats_updater_params) {
   GURL update_url(base_update_url);
   update_url = net::AppendQueryParameter(update_url, "platform",
-                                         brave::GetPlatformIdentifier());
+                                         brave_stats::GetPlatformIdentifier());
   update_url =
       net::AppendQueryParameter(update_url, "channel", brave::GetChannelName());
   update_url = net::AppendQueryParameter(update_url, "version",
@@ -71,22 +73,21 @@ GURL GetUpdateURL(const GURL& base_update_url,
   return update_url;
 }
 
-}  // namespace
+}  // namespace brave_stats
 
-namespace brave {
+namespace brave_stats {
 
 BraveStatsUpdater::BraveStatsUpdater(PrefService* pref_service)
     :  threshold_score_(0),
        threshold_ping_state_(THRESHOLD_PING_INACTIVE),
        pref_service_(pref_service) {
-  std::unique_ptr<base::Environment> env(base::Environment::Create());
-  std::string proto = "https://";
-  if (env->HasVar("BRAVE_USAGE_LOCAL"))
-    proto = "http://";
-  env->GetVar("BRAVE_USAGE_SERVER", &usage_server_);
-  if (usage_server_.empty())
-    usage_server_ = kBraveUsageServer;
-  usage_server_ = proto + usage_server_;
+  const base::CommandLine& command_line =
+    *base::CommandLine::ForCurrentProcess();
+  if (command_line.HasSwitch(switches::kBraveStatsUpdaterServer))
+    usage_server_ =
+        command_line.GetSwitchValueASCII(switches::kBraveStatsUpdaterServer);
+  else
+    usage_server_ = BRAVE_USAGE_SERVER;
 }
 
 BraveStatsUpdater::~BraveStatsUpdater() {}
@@ -126,7 +127,7 @@ bool BraveStatsUpdater::MaybeDoThresholdPing(int score) {
   if (threshold_ping_state_ != THRESHOLD_PING_INACTIVE ||
       server_ping_startup_timer_->IsRunning() ||
       !IsReferralInitialized())
-    return false;
+    return threshold_ping_state_ >= THRESHOLD_PING_QUEUED;
 
   if (threshold_score_ >= kMinimumUsageThreshold) {
     threshold_ping_state_ = THRESHOLD_PING_QUEUED;
@@ -141,12 +142,14 @@ void BraveStatsUpdater::SetStatsUpdatedCallback(
   stats_updated_callback_ = std::move(stats_updated_callback);
 }
 
-std::string BraveStatsUpdater::BuildStatsEndpoint(const std::string& path) {
-  return usage_server_ + path;
+GURL BraveStatsUpdater::BuildStatsEndpoint(const std::string& path) {
+  auto stats_updater_url = GURL(usage_server_ + path);
+  DCHECK(stats_updater_url.is_valid());
+  return stats_updater_url;
 }
 
 void BraveStatsUpdater::OnSimpleLoaderComplete(
-    std::unique_ptr<brave::BraveStatsUpdaterParams> stats_updater_params,
+    std::unique_ptr<brave_stats::BraveStatsUpdaterParams> stats_updater_params,
     scoped_refptr<net::HttpResponseHeaders> headers) {
   DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
   GURL final_url = simple_url_loader_->GetFinalURL();
@@ -179,9 +182,9 @@ void BraveStatsUpdater::OnSimpleLoaderComplete(
 
 void BraveStatsUpdater::OnServerPingTimerFired() {
   // If we already pinged the stats server today, then we're done.
-  std::string today_ymd = brave::GetDateAsYMD(base::Time::Now());
+  std::string today_ymd = brave_stats::GetDateAsYMD(base::Time::Now());
   std::string last_check_ymd = pref_service_->GetString(kLastCheckYMD);
-  if (base::CompareCaseInsensitiveASCII(today_ymd, last_check_ymd) != 0) {
+  if (base::CompareCaseInsensitiveASCII(today_ymd, last_check_ymd) == 1) {
     DCHECK(threshold_ping_state_ == THRESHOLD_PING_INACTIVE);
     SendServerPing();
   } else if (threshold_ping_state_ == THRESHOLD_PING_QUEUED) {
@@ -246,18 +249,20 @@ void BraveStatsUpdater::SendServerPing() {
         })");
   auto resource_request = std::make_unique<network::ResourceRequest>();
   auto stats_updater_params =
-      std::make_unique<brave::BraveStatsUpdaterParams>(pref_service_);
+      std::make_unique<brave_stats::BraveStatsUpdaterParams>(pref_service_);
 
   auto endpoint =
-      GURL(BuildStatsEndpoint((threshold_ping_state_ == THRESHOLD_PING_FIRED) ?
+      BuildStatsEndpoint((threshold_ping_state_ == THRESHOLD_PING_FIRED) ?
                               kBraveUsageThresholdPath :
-                              kBraveUsageStandardPath));
+                              kBraveUsageStandardPath);
   resource_request->url = GetUpdateURL(endpoint, *stats_updater_params);
   resource_request->load_flags =
       net::LOAD_DO_NOT_SEND_COOKIES | net::LOAD_DO_NOT_SAVE_COOKIES |
       net::LOAD_BYPASS_CACHE | net::LOAD_DISABLE_CACHE |
       net::LOAD_DO_NOT_SEND_AUTH_DATA;
-  resource_request->headers.SetHeader("X-Brave-API-Key", brave::GetAPIKey());
+  resource_request->headers.SetHeader(
+      "X-Brave-API-Key",
+      brave_stats::GetAPIKey());
   network::mojom::URLLoaderFactory* loader_factory =
       g_browser_process->system_network_context_manager()
           ->GetURLLoaderFactory();
@@ -283,4 +288,4 @@ void RegisterPrefsForBraveStatsUpdater(PrefRegistrySimple* registry) {
   registry->RegisterStringPref(kLastCheckYMD, std::string());
   registry->RegisterStringPref(kWeekOfInstallation, std::string());
 }
-}  // namespace brave
+}  // namespace brave_stats

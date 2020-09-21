@@ -8,7 +8,6 @@
 const char kBraveProxyPattern[] = "https://*.brave.com/*";
 const char kBraveSoftwareProxyPattern[] = "https://*.bravesoftware.com/*";
 
-const char kBraveUsageServer[] = "laptop-updates.brave.com";
 const char kBraveUsageStandardPath[] = "/1/usage/brave-core";
 const char kBraveUsageThresholdPath[] = "/1/usage/brave-core-threshold";
 
