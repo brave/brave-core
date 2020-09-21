@@ -57,6 +57,7 @@ struct BraveRequestInfo {
   explicit BraveRequestInfo(const GURL& url);
 
   ~BraveRequestInfo();
+  std::string method;
   GURL request_url;
   GURL tab_origin;
   GURL tab_url;
@@ -71,6 +72,7 @@ struct BraveRequestInfo {
   base::Optional<GURL> new_referrer;
 
   std::string new_url_spec;
+  // TODO(iefremov): rename to shields_up.
   bool allow_brave_shields = true;
   bool allow_ads = false;
   bool allow_http_upgradable_resource = false;
@@ -115,8 +117,8 @@ struct BraveRequestInfo {
                       int frame_tree_node_id,
                       uint64_t request_identifier,
                       content::BrowserContext* browser_context,
-                      std::shared_ptr<brave::BraveRequestInfo> old_ctx,
-                      std::shared_ptr<brave::BraveRequestInfo> ctx);
+                      std::shared_ptr<brave::BraveRequestInfo> ctx,
+                      std::shared_ptr<brave::BraveRequestInfo> old_ctx = {});
 
  private:
   // Please don't add any more friends here if it can be avoided.

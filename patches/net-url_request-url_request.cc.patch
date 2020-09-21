@@ -1,0 +1,12 @@
+diff --git a/net/url_request/url_request.cc b/net/url_request/url_request.cc
+index d96b34201073c6b90056b56730edcc5a83911044..1c533ab60234b244e0959b5081a53f991a79dd84 100644
+--- a/net/url_request/url_request.cc
++++ b/net/url_request/url_request.cc
+@@ -926,6 +926,7 @@ void URLRequest::Redirect(
+   method_ = redirect_info.new_method;
+   referrer_ = redirect_info.new_referrer;
+   referrer_policy_ = redirect_info.new_referrer_policy;
++  BRAVE_REDIRECT_CLEARREFERRER
+   site_for_cookies_ = redirect_info.new_site_for_cookies;
+   isolation_info_ = isolation_info_.CreateForRedirect(
+       url::Origin::Create(redirect_info.new_url));

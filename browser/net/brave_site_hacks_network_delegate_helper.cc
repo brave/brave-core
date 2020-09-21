@@ -128,14 +128,14 @@ bool ApplyPotentialReferrerBlock(std::shared_ptr<BraveRequestInfo> ctx) {
 
   if (ctx->resource_type == blink::mojom::ResourceType::kMainFrame ||
       ctx->resource_type == blink::mojom::ResourceType::kSubFrame) {
-    // Frame navigations are handled in NavigationRequest.
+    // Frame navigations are handled in content::NavigationRequest.
     return false;
   }
 
   content::Referrer new_referrer;
   if (brave_shields::MaybeChangeReferrer(
-          ctx->allow_referrers, ctx->allow_brave_shields, GURL(ctx->referrer),
-          ctx->tab_origin, ctx->request_url,
+          ctx->allow_referrers, ctx->allow_brave_shields,
+          GURL(ctx->referrer), ctx->request_url,
           blink::ReferrerUtils::NetToMojoReferrerPolicy(ctx->referrer_policy),
           &new_referrer)) {
     ctx->new_referrer = new_referrer.url;
@@ -172,7 +172,19 @@ int OnBeforeStartTransaction_SiteHacksWork(
       }
     }
   }
+
+  // Special case for handling top-level redirects. There is no other way to
+  // normally change referrer in net::URLRequest during redirects.
+  if (!ctx->allow_referrers && ctx->allow_brave_shields &&
+      ctx->redirect_source.is_valid() &&
+      ctx->resource_type == blink::mojom::ResourceType::kMainFrame &&
+      brave_shields::ShouldCleanReferrerForTopLevelNavigation(
+          ctx->method, ctx->referrer, ctx->request_url)) {
+    // This is hack that notifies the patched code in net::URLRequest.
+    ctx->removed_headers.insert("X-Brave-Clear-Referer");
+  }
   return net::OK;
 }
+
 
 }  // namespace brave
