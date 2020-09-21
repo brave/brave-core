@@ -40,7 +40,9 @@ const DynamicList = SortableContainer((props: DynamicListProps) => {
 class TopSitesList extends React.PureComponent<Props, {}> {
   onSortEnd = ({ oldIndex, newIndex }: SortEnd) => {
     // User can't change order in "Most Visited" mode
-    if (!this.props.customLinksEnabled) {
+    // and they can't change position of super referral tiles
+    if (this.props.gridSites[newIndex].defaultSRTopSite ||
+        !this.props.customLinksEnabled) {
       return
     }
     this.props.actions.tilesReordered(this.props.gridSites, oldIndex, newIndex)
@@ -72,7 +74,8 @@ class TopSitesList extends React.PureComponent<Props, {}> {
                   index={index}
                   siteData={siteData}
                   // User can't change order in "Most Visited" mode
-                  disabled={!this.props.customLinksEnabled}
+                  // and they can't change position of super referral tiles
+                  disabled={siteData.defaultSRTopSite || !this.props.customLinksEnabled}
                 />
           ))}
         </DynamicList>

@@ -226,7 +226,9 @@ export default class Settings extends React.PureComponent<Props, State> {
             </SettingsTitle>
             <SettingsContent id='settingsBody'>
               <SettingsSidebar id='sidebar'>
-                <SettingsSidebarActiveButtonSlider translateTo={activeTab} />
+                <SettingsSidebarActiveButtonSlider
+                  translateTo={allowSponsoredWallpaperUI ? activeTab : (activeTab - 1)}
+                />
                 {
                   this.activeTabOptions.map((tabName, index) => {
                     const name = this.getTabKey(tabName)

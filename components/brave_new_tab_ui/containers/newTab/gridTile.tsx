@@ -50,12 +50,16 @@ class TopSite extends React.PureComponent<Props, {}> {
         title={siteData.title}
         tabIndex={0}
       >
-        <TileActionsContainer>
-          <TileAction onClick={this.onIgnoredTopSite.bind(this, siteData)}>
-            <CloseStrokeIcon />
-          </TileAction>
-        </TileActionsContainer>
-          <a href={siteData.url}><TileFavicon src={generateGridSiteFavicon(siteData)} /></a>
+        {
+          !siteData.defaultSRTopSite
+          ? <TileActionsContainer>
+              <TileAction onClick={this.onIgnoredTopSite.bind(this, siteData)}>
+                <CloseStrokeIcon />
+              </TileAction>
+            </TileActionsContainer>
+          : null
+        }
+        <a href={siteData.url}><TileFavicon src={generateGridSiteFavicon(siteData)} /></a>
       </Tile>
     )
   }

@@ -98,6 +98,7 @@ void InstantServiceMessageHandler::MostVisitedInfoChanged(
       tile_value.SetIntKey("id", tile_id++);
       tile_value.SetStringKey("url", top_site.destination_url);
       tile_value.SetStringKey("favicon", top_site.image_path);
+      tile_value.SetBoolKey("defaultSRTopSite", true);
       tile_value.SetIntKey(
           "source", static_cast<int32_t>(ntp_tiles::TileTitleSource::INFERRED));
       tiles.Append(std::move(tile_value));
