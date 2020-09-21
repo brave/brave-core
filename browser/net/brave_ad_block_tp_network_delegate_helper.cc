@@ -40,8 +40,8 @@ void ShouldBlockAdOnTaskRunner(std::shared_ptr<BraveRequestInfo> ctx,
           ctx->request_url, ctx->resource_type, tab_host, &did_match_exception,
           &ctx->cancel_request_explicitly, &ctx->mock_data_url)) {
     ctx->blocked_by = kAdBlocked;
-  } else if (!did_match_exception
-             && canonical_name && ctx->request_url.host() != *canonical_name) {
+  } else if (!did_match_exception && canonical_name &&
+      ctx->request_url.host() != *canonical_name && *canonical_name != "") {
     GURL::Replacements replacements = GURL::Replacements();
     replacements.SetHost(canonical_name->c_str(),
         url::Component(0, static_cast<int>(canonical_name->length())));
@@ -66,9 +66,9 @@ void OnShouldBlockAdResult(const ResponseCallback& next_callback,
   next_callback.Run();
 }
 
-void OnGetCnameResult(const ResponseCallback& next_callback,
-                      std::shared_ptr<BraveRequestInfo> ctx,
-                      const base::Optional<std::string> cname) {
+void ShouldBlockAdWithOptionalCname(const ResponseCallback& next_callback,
+    std::shared_ptr<BraveRequestInfo> ctx,
+    const base::Optional<std::string> cname) {
   DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
   scoped_refptr<base::SequencedTaskRunner> task_runner =
       g_brave_browser_process->ad_block_service()->GetTaskRunner();
@@ -84,9 +84,9 @@ class AdblockCnameResolveHostClient : public network::mojom::ResolveHostClient {
 
  public:
   AdblockCnameResolveHostClient(
-      const ResponseCallback& next_callback,
+      base::OnceCallback<void(base::Optional<std::string>)> next_callback,
       std::shared_ptr<BraveRequestInfo> ctx) {
-    cb_ = base::Bind(&OnGetCnameResult, next_callback, ctx);
+    cb_ = std::move(next_callback);
 
     content::BrowserContext* context =
         content::RenderProcessHost::FromID(ctx->render_process_id)
@@ -151,19 +151,17 @@ void OnBeforeURLRequestAdBlockTP(const ResponseCallback& next_callback,
   }
   DCHECK_NE(ctx->request_identifier, 0UL);
 
+  base::OnceCallback<void(base::Optional<std::string>)> cname_callback =
+      base::Bind(&ShouldBlockAdWithOptionalCname, next_callback, ctx);
+
   auto* rph = content::RenderProcessHost::FromID(ctx->render_process_id);
   if (!rph) {
     // This case occurs for the top-level request. It's okay to ignore the
     // canonical name here since the top-level request can't be blocked
     // anyways.
-    g_brave_browser_process->ad_block_service()
-        ->GetTaskRunner()
-        ->PostTaskAndReply(
-            FROM_HERE, base::BindOnce(&ShouldBlockAdOnTaskRunner,
-                ctx, base::Optional<std::string>()),
-            base::BindOnce(&OnShouldBlockAdResult, next_callback, ctx));
+    std::move(cname_callback).Run(base::Optional<std::string>());
   } else {
-     new AdblockCnameResolveHostClient(next_callback, ctx);
+    new AdblockCnameResolveHostClient(std::move(cname_callback), ctx);
   }
 }
 
