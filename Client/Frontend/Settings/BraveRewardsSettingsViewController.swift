@@ -18,7 +18,11 @@ class BraveRewardsSettingsViewController: TableViewController {
     
     init(_ rewards: BraveRewards) {
         self.rewards = rewards
-        super.init(style: .grouped)
+        if #available(iOS 13.0, *) {
+            super.init(style: .insetGrouped)
+        } else {
+            super.init(style: .grouped)
+        }
     }
     
     @available(*, unavailable)
@@ -46,7 +50,7 @@ class BraveRewardsSettingsViewController: TableViewController {
                 Section(rows: [
                     Row(text: Strings.openBraveRewardsSettings, selection: { [unowned self] in
                         self.tappedShowRewardsSettings?()
-                    }, image: RewardsPanelController.batLogoImage, cellClass: ButtonCell.self)
+                    }, cellClass: ButtonCell.self)
                 ]),
                 Section(rows: [
                     Row(text: Strings.RewardsInternals.title, selection: {

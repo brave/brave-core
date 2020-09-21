@@ -88,30 +88,6 @@ extension UIAlertController {
         return alert
     }
     
-    class func clearPrivateDataAlert(okayCallback: @escaping (UIAlertAction) -> Void) -> UIAlertController {
-        let alert = UIAlertController(
-            title: "",
-            message: Strings.clearPrivateDataAlertMessage,
-            preferredStyle: .alert
-        )
-        
-        let noOption = UIAlertAction(
-            title: Strings.clearPrivateDataAlertCancelButtonTitle,
-            style: .cancel,
-            handler: nil
-        )
-        
-        let okayOption = UIAlertAction(
-            title: Strings.clearPrivateDataAlertOkButtonTitle,
-            style: .destructive,
-            handler: okayCallback
-        )
-        
-        alert.addAction(okayOption)
-        alert.addAction(noOption)
-        return alert
-    }
-    
     /**
      Builds the Alert view that asks if the users wants to also delete history stored on their other devices.
      

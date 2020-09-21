@@ -41,6 +41,8 @@ extension Theme {
         
         UITableViewCell.appearance().tintColor = colors.accent
         UITableViewCell.appearance().backgroundColor = tableSecondaryColor
+        
+        UIImageView.appearance(whenContainedInInstancesOf: [SettingsViewController.self]).tintColor = colors.tints.home
 
         UIView.appearance(whenContainedInInstancesOf: [UITableViewHeaderFooterView.self]).appearanceBackgroundColor = tablePrimaryColor
         

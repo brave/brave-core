@@ -31,11 +31,13 @@ class SwitchAccessoryView: UISwitch {
 
 extension Row {
     /// Creates a switch toggle `Row` which updates a `Preferences.Option<Bool>`
-    static func boolRow(title: String, option: Preferences.Option<Bool>, onValueChange: SwitchAccessoryView.ValueChange? = nil) -> Row {
+    static func boolRow(title: String, detailText: String? = nil, option: Preferences.Option<Bool>, onValueChange: SwitchAccessoryView.ValueChange? = nil, image: UIImage? = nil) -> Row {
         return Row(
             text: title,
+            detailText: detailText,
+            image: image,
             accessory: .view(SwitchAccessoryView(initialValue: option.value, valueChange: onValueChange ?? { option.value = $0 })),
-            cellClass: MultilineValue1Cell.self,
+            cellClass: MultilineSubtitleCell.self,
             uuid: option.key
         )
     }
@@ -92,6 +94,7 @@ class ColoredDetailCell: UITableViewCell, Cell {
         textLabel?.text = row.text
         detailTextLabel?.text = row.detailText
         accessoryType = row.accessory.type
+        imageView?.image = row.image
         
         guard let detailColor = row.context?[ColoredDetailCell.colorKey] as? UIColor else { return }
         detailTextLabel?.appearanceTextColor = detailColor

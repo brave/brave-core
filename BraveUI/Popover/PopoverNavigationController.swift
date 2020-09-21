@@ -98,6 +98,25 @@ open class PopoverNavigationController: UINavigationController, PopoverContentCo
   override public func preferredContentSizeDidChange(forChildContentContainer container: UIContentContainer) {
     self.preferredContentSize = container.preferredContentSize
   }
+  
+  /// The last visible controller to be popped from this navigation controller
+  ///
+  /// Used because when you pop a controller off the stack it is no longer listed within
+  /// `viewControllers`, or set as `visibleViewController` even if the animation is still
+  /// ongoing.
+  private(set) weak var lastPoppedController: UIViewController?
+  
+  open override func popViewController(animated: Bool) -> UIViewController? {
+    let vc = super.popViewController(animated: animated)
+    lastPoppedController = vc
+    return vc
+  }
+  
+  open override func popToRootViewController(animated: Bool) -> [UIViewController]? {
+    let vcs = super.popToRootViewController(animated: animated)
+    lastPoppedController = vcs?.last
+    return vcs
+  }
 }
 
 extension PopoverNavigationController: UIGestureRecognizerDelegate {

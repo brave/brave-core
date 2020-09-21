@@ -227,6 +227,9 @@ public class PopoverController: UIViewController {
                     if let nc = self.contentController as? UINavigationController {
                         nc.viewControllers.filter { $0.isViewLoaded }.forEach { $0.view.frame = nc.view.bounds }
                     }
+                    if let nc = self.contentController as? PopoverNavigationController {
+                        nc.lastPoppedController?.view.frame = nc.view.bounds
+                    }
                 }
             }
             self.containerViewWidthConstraint?.springAnimate(property: kPOPLayoutConstraintConstant, key: "constant") { animation, _ in

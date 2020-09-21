@@ -100,6 +100,8 @@ extension Preferences {
         public static let useRegionAdBlock = Option<Bool>(key: "shields.regional-adblock", default: true)
         /// Version of downloaded data file for adblock stats.
         public static let adblockStatsDataVersion = Option<Int?>(key: "stats.adblock-data-version", default: nil)
+        /// Whether or not advanced controls in the shields UI are visible by default
+        public static let advancedControlsVisible = Option<Bool>(key: "shields.advanced-controls-visible", default: false)
     }
     
     public final class Rewards {
