@@ -28,6 +28,7 @@ export const defaultState: NewTab.State = {
   showEmptyPage: false,
   togetherSupported: false,
   geminiSupported: false,
+  bitcoinDotComSupported: false,
   isIncognito: chrome.extension.inIncognitoContext,
   useAlternativePrivateSearchEngine: false,
   torCircuitEstablished: false,
@@ -257,6 +258,7 @@ export const debouncedSave = debounce<NewTab.State>((data: NewTab.State) => {
     const dataToSave = {
       togetherSupported: data.togetherSupported,
       geminiSupported: data.geminiSupported,
+      bitcoinDotComSupported: data.bitcoinDotComSupported,
       rewardsState: data.rewardsState,
       binanceState: data.binanceState,
       geminiState: data.geminiState,
