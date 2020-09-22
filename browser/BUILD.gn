@@ -308,6 +308,7 @@ source_set("browser_process") {
   if (moonpay_enabled) {
     deps += [
       "//brave/components/moonpay/browser",
+      "//brave/components/moonpay/common",
     ]
   }
 

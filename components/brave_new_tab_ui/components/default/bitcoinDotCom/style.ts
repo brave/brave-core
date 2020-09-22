@@ -71,7 +71,7 @@ export const Dropdown = styled<StyleProps, 'div'>('div')`
 `
 
 export const AssetItem = styled<{}, 'div'>('div')`
-  padding: 10px 7px;
+  padding: 7px;
   cursor: pointer;
 `
 
@@ -103,7 +103,7 @@ export const CurrencyItems = styled<{}, 'div'>('div')`
   overflow-y: scroll;
   position: absolute;
   min-width: 244px;
-  max-height: 135px;
+  max-height: 155px;
   border: 1px solid lightgray;
   border-top: none;
   left: auto;

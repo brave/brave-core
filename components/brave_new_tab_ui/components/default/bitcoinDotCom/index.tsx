@@ -22,6 +22,7 @@ interface Props {
   showContent: boolean
   stackPosition: number
   onShowContent: () => void
+  onBuyCrypto: () => void
 }
 
 class BitcoinDotCom extends React.PureComponent<Props, State> {
@@ -103,6 +104,12 @@ class BitcoinDotCom extends React.PureComponent<Props, State> {
     })
   }
 
+  hideFiatCurrencyOptions = () => {
+    this.setState({
+      fiatCurrenciesShowing: false
+    })
+  }
+
   openBuyURL = () => {
     const {
       currentAmount,
@@ -117,6 +124,8 @@ class BitcoinDotCom extends React.PureComponent<Props, State> {
     if (amount.length) {
       window.open(`https://bitcoincom.moonpay.io/?currencyCode=${asset}&baseCurrencyCode=${fiat}&baseCurrencyAmount=${amount}`, '_blank', 'noopener')
     }
+
+    this.props.onBuyCrypto()
   }
 
   openInfoURL = () => {
@@ -185,7 +194,7 @@ class BitcoinDotCom extends React.PureComponent<Props, State> {
   }
 
   renderAmountInput () {
-    const { fiatCurrenciesShowing, selectedFiat } = this.state
+    const { currentAmount, fiatCurrenciesShowing, selectedFiat } = this.state
 
     return (
       <>
@@ -197,10 +206,11 @@ class BitcoinDotCom extends React.PureComponent<Props, State> {
         <Styled.AmountInputWrapper>
           <Styled.AmountInput
             type={'text'}
+            value={currentAmount}
             placeholder={'Enter amount'}
             onChange={this.setCurrentAmount}
             dropdownShowing={fiatCurrenciesShowing}
-            onClick={this.toggleFiatCurrenciesShowing}
+            onClick={this.hideFiatCurrencyOptions}
           />
           <Styled.FiatDropdown
             dropdownShowing={fiatCurrenciesShowing}

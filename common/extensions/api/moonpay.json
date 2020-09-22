@@ -28,6 +28,12 @@
             ]
           }
         ]
+      },
+      {
+        "name": "onBuyBitcoinDotComCrypto",
+        "type": "function",
+        "description": "Marks when a user has used the bitcoin.com widget to buy crypto",
+        "parameters": []
       }
     ],
     "types": [

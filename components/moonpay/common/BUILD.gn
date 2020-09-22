@@ -1,0 +1,10 @@
+import("//brave/components/moonpay/buildflags/buildflags.gni")
+
+assert(moonpay_enabled)
+
+source_set("common") {
+    sources = [
+        "moonpay_pref_names.cc",
+        "moonpay_pref_names.h",
+    ]
+}

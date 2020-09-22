@@ -11,8 +11,10 @@
 #include "base/environment.h"
 #include "brave/browser/profiles/profile_util.h"
 #include "brave/components/moonpay/browser/regions.h"
+#include "brave/components/moonpay/common/moonpay_pref_names.h"
 #include "brave/components/ntp_widget_utils/browser/ntp_widget_utils_region.h"
 #include "chrome/browser/profiles/profile.h"
+#include "components/prefs/pref_service.h"
 
 namespace extensions {
 namespace api {
@@ -29,6 +31,19 @@ MoonpayIsBitcoinDotComSupportedFunction::Run() {
       profile->GetPrefs(), moonpay::bitcoin_dot_com_supported_regions, true);
   return RespondNow(OneArgument(
       std::make_unique<base::Value>(is_supported)));
+}
+
+ExtensionFunction::ResponseAction
+MoonpayOnBuyBitcoinDotComCryptoFunction::Run() {
+  Profile* profile = Profile::FromBrowserContext(browser_context());
+
+  if (brave::IsTorProfile(profile)) {
+    return RespondNow(Error("Not available in Tor profile"));
+  }
+
+  profile->GetPrefs()->SetBoolean(kMoonpayHasBoughtBitcoinDotComCrypto, true);
+
+  return RespondNow(NoArguments());
 }
 
 }  // namespace api
