@@ -18,15 +18,12 @@ import {
   SettingsPageMobile,
   WalletInfoHeader
 } from '../../ui/components/mobile'
-import { StyledDisabledContent, StyledHeading, StyledText } from './style'
 
 // Utils
 import * as rewardsActions from '../actions/rewards_actions'
 import * as utils from '../utils'
-import { getLocale } from '../../../../common/locale'
 
 interface State {
-  mainToggle: boolean
   walletShown: boolean
 }
 
@@ -40,18 +37,12 @@ class SettingsPage extends React.Component<Props, State> {
   constructor (props: Props) {
     super(props)
     this.state = {
-      mainToggle: true,
       walletShown: false
     }
   }
 
   get actions () {
     return this.props.actions
-  }
-
-  onToggle = () => {
-    this.setState({ mainToggle: !this.state.mainToggle })
-    this.actions.toggleEnableMain(!this.props.rewardsData.enabledMain)
   }
 
   onToggleWallet = () => {
@@ -76,8 +67,6 @@ class SettingsPage extends React.Component<Props, State> {
   }
 
   componentDidMount () {
-    this.actions.getRewardsMainEnabled()
-
     if (this.props.rewardsData.firstLoad === null) {
       // First load ever
       this.actions.onSettingSave('firstLoad', true, false)
@@ -86,26 +75,17 @@ class SettingsPage extends React.Component<Props, State> {
       this.actions.onSettingSave('firstLoad', false, false)
     }
 
-    if (this.props.rewardsData.enabledMain &&
-        !this.props.rewardsData.initializing) {
+    if (!this.props.rewardsData.initializing) {
       this.startRewards()
     }
   }
 
   componentDidUpdate (prevProps: Props) {
     if (
-      this.props.rewardsData.enabledMain &&
       prevProps.rewardsData.initializing &&
       !this.props.rewardsData.initializing
     ) {
       this.startRewards()
-    }
-
-    if (
-      prevProps.rewardsData.enabledMain &&
-      !this.props.rewardsData.enabledMain
-    ) {
-      this.stopRewards()
     }
 
     if (
@@ -196,37 +176,15 @@ class SettingsPage extends React.Component<Props, State> {
   }
 
   render () {
-    const { enabledMain, parameters, balance } = this.props.rewardsData
+    const { parameters, balance } = this.props.rewardsData
     const { onlyAnonWallet } = this.props.rewardsData.ui
     const { total } = balance
     const convertedBalance = utils.convertBalance((total || 0), parameters.rate)
 
     return (
       <SettingsPageMobile>
-        <MainToggleMobile
-          onToggle={this.onToggle}
-          enabled={enabledMain}
-        />
-        {
-          !this.state.mainToggle && !enabledMain
-          ? <StyledDisabledContent>
-              <StyledHeading>
-                {getLocale('rewardsWhy')}
-              </StyledHeading>
-              <StyledText>
-                {getLocale('whyBraveRewardsDesc1')}
-              </StyledText>
-              <StyledText>
-                {getLocale('whyBraveRewardsDesc2')}
-              </StyledText>
-            </StyledDisabledContent>
-          : null
-        }
-        {
-          enabledMain
-          ? this.getPromotionsClaims()
-          : null
-        }
+        <MainToggleMobile />
+        {this.getPromotionsClaims()}
         <WalletInfoHeader
           onClick={this.onToggleWallet}
           balance={total.toFixed(3).toString()}

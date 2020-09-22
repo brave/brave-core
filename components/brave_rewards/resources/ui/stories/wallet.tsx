@@ -8,7 +8,7 @@ import { withKnobs, object, text, select, boolean, number } from '@storybook/add
 import centered from '@storybook/addon-centered'
 
 // Components
-import { WalletSummary, WalletEmpty, WalletOff, WalletPanel, WalletSummarySlider, WalletWrapper } from '../components'
+import { WalletSummary, WalletEmpty, WalletPanel, WalletSummarySlider, WalletWrapper } from '../components'
 import { AlertWallet, WalletState } from '../components/walletWrapper'
 import { WalletAddIcon, WalletImportIcon } from 'brave-ui/components/icons'
 import { WalletInfoHeader } from '../components/mobile'
@@ -150,13 +150,6 @@ storiesOf('Rewards/Wallet/Desktop', module)
           showUnVerified={boolean('Show unverified content', true)}
           onRefreshPublisher={doNothing}
         />
-      </div>
-    )
-  })
-  .add('Off', () => {
-    return (
-      <div style={{ width: '373px', background: '#f9fbfc', padding: '0 25px' }}>
-        <WalletOff />
       </div>
     )
   })

@@ -20,15 +20,6 @@ export const StyledWrapper = styled<{}, 'div'>('div')`
   padding: 0 16px;
 `
 
-export const StyledLeft = styled<{}, 'div'>('div')`
-  display: flex;
-  align-items: center;
-`
-
-export const StyledRight = styled<{}, 'div'>('div')`
-  display: flex;
-`
-
 export const StyledTitle = styled<{}, 'div'>('div')`
   color: #4B4C5C;
   font-size: 22px;

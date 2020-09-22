@@ -19,7 +19,6 @@ import {
   Tokens,
   Profile,
   Amount,
-  PanelWelcome,
   ToggleTips,
   Tooltip,
   MediaBox,
@@ -95,21 +94,16 @@ storiesOf('Rewards/Other/Desktop', module)
       </Alert>
     )
   })
-  .add('Main toggle', withState({ checked: false }, (store) => {
-    const onToggle = () => {
-      store.set({ checked: !store.state.checked })
-    }
+  .add('Main toggle', () => {
     return (
       <div style={{ width: '800px' }}>
         <MainToggle
           onTOSClick={dummyClick}
           onPrivacyClick={dummyClick}
-          enabled={boolean('Enable', store.state.checked)}
-          onToggle={onToggle}
         />
       </div>
     )
-  }))
+  })
   .add('Donate', withState({ donationAmounts, currentAmount: '5.0' }, (store) => {
     const onDonate = () => {
       console.log('onDonate')
@@ -208,18 +202,6 @@ storiesOf('Rewards/Other/Desktop', module)
         type={'ugp'}
         onClaim={dummyClick}
       />
-    )
-  })
-  .add('Panel Welcome', () => {
-    return (
-      <div style={{ width: '373px', minHeight: '446px' }}>
-        <PanelWelcome
-          optInAction={dummyClick}
-          optInErrorAction={dummyClick}
-          variant={select<any>('Variant', { one: 'One', two: 'Two' }, 'one')}
-          moreLink={dummyClick}
-        />
-      </div>
     )
   })
   .add('Toggle Tips', withState({ tipsEnabled: true }, (store) => {
@@ -336,21 +318,14 @@ storiesOf('Rewards/Other/Mobile', module)
       </div>
     )
   }))
-  .add('Main Toggle', withState({ checked: false }, (store) => {
+  .add('Main Toggle', () => {
     let items = []
     for (let i = 0; i < 25; i++) {
       items.push(i)
     }
-
-    const onToggle = () => {
-      store.set({ checked: !store.state.checked })
-    }
     return (
       <div style={{ width: '100%' }}>
-        <MainToggleMobile
-          enabled={boolean('Enable', store.state.checked)}
-          onToggle={onToggle}
-        />
+        <MainToggleMobile/>
         {items.map(i =>
           <div key={i}>
             <List title={`Item No: ${i}`} />
@@ -358,4 +333,4 @@ storiesOf('Rewards/Other/Mobile', module)
         )}
       </div>
     )
-  }))
+  })
