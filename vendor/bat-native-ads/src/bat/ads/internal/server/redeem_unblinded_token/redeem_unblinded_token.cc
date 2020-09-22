@@ -63,7 +63,11 @@ void RedeemUnblindedToken::Redeem(
   BLOG(1, "Redeem token");
 
   if (ads_->get_confirmations()->get_unblinded_tokens()->IsEmpty()) {
-    BLOG(1, "No unblinded tokens to redeem");
+    BLOG(1, "There are no unblinded tokens to redeem");
+
+    BLOG(3, "Failed to redeem unblinded token for ad with "
+        << ad.creative_instance_id << " creative instance id");
+
     return;
   }
 

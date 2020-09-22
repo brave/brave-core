@@ -264,6 +264,8 @@ source_set("ads") {
     "src/bat/ads/internal/frequency_capping/permission_rules/minimum_wait_time_frequency_cap.cc",
     "src/bat/ads/internal/frequency_capping/permission_rules/minimum_wait_time_frequency_cap.h",
     "src/bat/ads/internal/frequency_capping/permission_rules/permission_rule.h",
+    "src/bat/ads/internal/frequency_capping/permission_rules/unblinded_tokens_frequency_cap.cc",
+    "src/bat/ads/internal/frequency_capping/permission_rules/unblinded_tokens_frequency_cap.h",
     "src/bat/ads/internal/json_helper.cc",
     "src/bat/ads/internal/json_helper.h",
     "src/bat/ads/internal/locale/anonymous_country_codes.h",
