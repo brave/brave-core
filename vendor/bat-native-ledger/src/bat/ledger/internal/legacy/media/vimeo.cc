@@ -642,7 +642,7 @@ void Vimeo::SavePublisherInfo(
     const std::string& publisher_favicon) {
   if (user_id.empty() && publisher_key.empty()) {
     OnMediaActivityError(window_id);
-    BLOG(0, "User id is missing for: " << media_key);
+    BLOG(0, "User id is missing");
     return;
   }
 
@@ -653,7 +653,7 @@ void Vimeo::SavePublisherInfo(
 
   if (key.empty()) {
     OnMediaActivityError(window_id);
-    BLOG(0, "Publisher key is missing for: " << media_key);
+    BLOG(0, "Publisher key is missing");
     return;
   }
 

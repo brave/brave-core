@@ -288,8 +288,7 @@ void Twitch::OnMediaActivityError(const ledger::type::VisitData& visit_data,
     ledger_->publisher()->GetPublisherActivityFromUrl(
         window_id, ledger::type::VisitData::New(new_visit_data), std::string());
   } else {
-      BLOG(0, "Media activity error for " << TWITCH_MEDIA_TYPE << " (name: "
-          << name << ", url: " << visit_data.url << ")");
+      BLOG(0, "Media activity error");
   }
 }
 
@@ -618,7 +617,7 @@ void Twitch::SavePublisherInfo(const uint64_t duration,
                                const std::string& channel_id,
                                const std::string& publisher_key) {
   if (channel_id.empty() && publisher_key.empty()) {
-    BLOG(0, "author id is missing for: " << media_key);
+    BLOG(0, "author id is missing");
     return;
   }
 
@@ -628,7 +627,7 @@ void Twitch::SavePublisherInfo(const uint64_t duration,
   }
 
   if (key.empty()) {
-    BLOG(0, "Publisher id is missing for: " << media_key);
+    BLOG(0, "Publisher id is missing");
     return;
   }
 
