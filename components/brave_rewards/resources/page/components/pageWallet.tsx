@@ -766,7 +766,7 @@ class PageWallet extends React.Component<Props, State> {
     const { balance } = this.props.rewardsData
     const walletStatus = this.getWalletStatus()
 
-    return walletStatus === 'unverified' && balance && balance.total < 25
+    return (!walletStatus || walletStatus === 'unverified') && balance && balance.total < 25
   }
 
   render () {
