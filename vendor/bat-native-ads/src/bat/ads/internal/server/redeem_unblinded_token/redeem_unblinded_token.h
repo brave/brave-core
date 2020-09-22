@@ -8,7 +8,6 @@
 
 #include <string>
 
-#include "bat/ads/internal/privacy/unblinded_tokens/unblinded_tokens.h"
 #include "bat/ads/internal/server/redeem_unblinded_token/redeem_unblinded_token_delegate.h"
 #include "bat/ads/mojom.h"
 #include "bat/ads/result.h"

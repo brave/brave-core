@@ -43,6 +43,7 @@
 #include "bat/ads/internal/frequency_capping/permission_rules/ads_per_day_frequency_cap.h"
 #include "bat/ads/internal/frequency_capping/permission_rules/ads_per_hour_frequency_cap.h"
 #include "bat/ads/internal/frequency_capping/permission_rules/minimum_wait_time_frequency_cap.h"
+#include "bat/ads/internal/frequency_capping/permission_rules/unblinded_tokens_frequency_cap.h"
 #include "bat/ads/internal/logging.h"
 #include "bat/ads/internal/platform/platform_helper.h"
 #include "bat/ads/internal/reports/reports.h"
@@ -1131,6 +1132,10 @@ std::vector<std::unique_ptr<PermissionRule>>
     AdsImpl::CreatePermissionRules() const {
   std::vector<std::unique_ptr<PermissionRule>> permission_rules;
 
+  std::unique_ptr<PermissionRule> ads_per_day_frequency_cap =
+      std::make_unique<AdsPerDayFrequencyCap>(this);
+  permission_rules.push_back(std::move(ads_per_day_frequency_cap));
+
   std::unique_ptr<PermissionRule> ads_per_hour_frequency_cap =
       std::make_unique<AdsPerHourFrequencyCap>(this);
   permission_rules.push_back(std::move(ads_per_hour_frequency_cap));
@@ -1139,9 +1144,9 @@ std::vector<std::unique_ptr<PermissionRule>>
       std::make_unique<MinimumWaitTimeFrequencyCap>(this);
   permission_rules.push_back(std::move(minimum_wait_time_frequency_cap));
 
-  std::unique_ptr<PermissionRule> ads_per_day_frequency_cap =
-      std::make_unique<AdsPerDayFrequencyCap>(this);
-  permission_rules.push_back(std::move(ads_per_day_frequency_cap));
+  std::unique_ptr<PermissionRule> unblinded_tokens_frequency_cap =
+      std::make_unique<UnblindedTokensFrequencyCap>(this);
+  permission_rules.push_back(std::move(unblinded_tokens_frequency_cap));
 
   return permission_rules;
 }
