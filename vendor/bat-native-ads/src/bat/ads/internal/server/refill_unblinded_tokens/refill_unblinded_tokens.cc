@@ -53,34 +53,29 @@ void RefillUnblindedTokens::set_delegate(
 }
 
 void RefillUnblindedTokens::MaybeRefill() {
-  WalletInfo wallet = ads_->get_wallet();
-
-  const std::string confirmations_public_key =
-      ads_->get_confirmations()->GetCatalogIssuers().public_key;
-
-  Refill(wallet, confirmations_public_key);
-}
-
-///////////////////////////////////////////////////////////////////////////////
-
-void RefillUnblindedTokens::Refill(
-    const WalletInfo& wallet,
-    const std::string& public_key) {
-  DCHECK(!public_key.empty());
-
-  if (retry_timer_.IsRunning()) {
-    return;
-  }
-
-  BLOG(1, "Refill unblinded tokens");
-
-  wallet_ = wallet;
+  wallet_ = ads_->get_wallet();
   if (!wallet_.IsValid()) {
     BLOG(0, "Failed to refill unblinded tokens due to an invalid wallet");
     return;
   }
 
-  public_key_ = public_key;
+  public_key_ = ads_->get_confirmations()->GetCatalogIssuers().public_key;
+  if (public_key_.empty()) {
+    BLOG(0, "Failed to refill unblinded tokens due to an invalid public key");
+    return;
+  }
+
+  Refill();
+}
+
+///////////////////////////////////////////////////////////////////////////////
+
+void RefillUnblindedTokens::Refill() {
+  if (retry_timer_.IsRunning()) {
+    return;
+  }
+
+  BLOG(1, "Refill unblinded tokens");
 
   nonce_ = "";
 
