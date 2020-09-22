@@ -9,6 +9,7 @@ import { StyledTitleTab } from '../widgetTitleTab'
 import assetIcons from './assets/icons'
 import BitcoinDotComLogo from './assets/logo.png'
 import { CaratDownIcon } from 'brave-ui/components/icons'
+import { getLocale } from '../../../../common/locale'
 
 interface State {
   selectedAsset: string
@@ -139,7 +140,7 @@ class BitcoinDotCom extends React.PureComponent<Props, State> {
       <>
         <Styled.InputHeader>
           <Styled.InputLabel>
-            {'Currency'}
+            {getLocale('bitcoinDotComWidgetCurrency')}
           </Styled.InputLabel>
         </Styled.InputHeader>
         <Styled.Dropdown
@@ -200,17 +201,17 @@ class BitcoinDotCom extends React.PureComponent<Props, State> {
       <>
         <Styled.InputHeader>
           <Styled.InputLabel>
-            {'Amount'}
+            {getLocale('bitcoinDotComWidgetAmount')}
           </Styled.InputLabel>
         </Styled.InputHeader>
         <Styled.AmountInputWrapper>
           <Styled.AmountInput
             type={'text'}
             value={currentAmount}
-            placeholder={'Enter amount'}
             onChange={this.setCurrentAmount}
             dropdownShowing={fiatCurrenciesShowing}
             onClick={this.hideFiatCurrencyOptions}
+            placeholder={getLocale('bitcoinDotComWidgetEnterAmount')}
           />
           <Styled.FiatDropdown
             dropdownShowing={fiatCurrenciesShowing}
@@ -250,14 +251,14 @@ class BitcoinDotCom extends React.PureComponent<Props, State> {
     return (
       <Styled.FooterWrapper>
         <Styled.BuyButton onClick={this.openBuyURL}>
-          {'Buy'}
+          {getLocale('bitcoinDotComWidgetBuy')}
         </Styled.BuyButton>
         <Styled.FooterInfo>
           <Styled.LinkLabel>
-            {'New to crypto?'}
+            {getLocale('bitcoinDotComWidgetFooterCopyOne')}
           </Styled.LinkLabel>
           <Styled.Link onClick={this.openInfoURL}>
-            {'Get the wallet here to get started'}
+            {getLocale('bitcoinDotComWidgetFooterCopyTwo')}
           </Styled.Link>
         </Styled.FooterInfo>
       </Styled.FooterWrapper>
