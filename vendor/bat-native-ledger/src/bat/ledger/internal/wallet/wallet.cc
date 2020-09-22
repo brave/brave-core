@@ -106,7 +106,7 @@ void Wallet::DisconnectWallet(
       const std::string& wallet_type,
       ledger::ResultCallback callback) {
   if (wallet_type == constant::kWalletUphold) {
-    ledger_->uphold()->DisconnectWallet();
+    ledger_->uphold()->DisconnectWallet(true);
     callback(type::Result::LEDGER_OK);
     return;
   }

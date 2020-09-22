@@ -69,7 +69,7 @@ class Uphold {
 
   void CreateCard(CreateCardCallback callback);
 
-  void DisconnectWallet();
+  void DisconnectWallet(const bool manual = false);
 
   void GetUser(GetUserCallback callback);
 

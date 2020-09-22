@@ -684,6 +684,13 @@ export class Panel extends React.Component<Props, State> {
     return utils.getPromotion(currentPromotion[0], onlyAnonWallet)
   }
 
+  showLoginMessage = () => {
+    const { balance, externalWallet } = this.props.rewardsPanelData
+    const walletStatus = utils.getWalletStatus(externalWallet)
+
+    return (!walletStatus || walletStatus === 'unverified') && balance && balance.total < 25
+  }
+
   render () {
     const { pendingContributionTotal, enabledAC, externalWallet, balance, parameters } = this.props.rewardsPanelData
     const publisher: RewardsExtension.Publisher | undefined = this.getPublisher()
@@ -747,7 +754,7 @@ export class Panel extends React.Component<Props, State> {
         goToUphold={this.goToUphold}
         greetings={utils.getGreetings(externalWallet)}
         onlyAnonWallet={this.props.onlyAnonWallet}
-        showLoginMessage={balance.total < 25}
+        showLoginMessage={this.showLoginMessage()}
         {...notification}
       >
         <WalletSummarySlider
