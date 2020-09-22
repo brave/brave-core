@@ -630,7 +630,6 @@ IN_PROC_BROWSER_TEST_F(BraveContentSettingsAgentImplBrowserTest,
   EXPECT_EQ(GetLastReferrer(cross_site_url()), "");
 }
 
-// TODO(iefremov): https://github.com/brave/brave-browser/issues/7933
 IN_PROC_BROWSER_TEST_F(BraveContentSettingsAgentImplBrowserTest,
                        BlockReferrerByDefaultRedirects) {
   ContentSettingsForOneType settings;
@@ -662,6 +661,8 @@ IN_PROC_BROWSER_TEST_F(BraveContentSettingsAgentImplBrowserTest,
   RedirectToPageWithLink(redirect_to_cross_site_url(), cross_site_url());
   EXPECT_EQ(ExecScriptGetStr(kReferrerScript, contents()), "");
   EXPECT_EQ(GetLastReferrer(cross_site_url()), "");
+  EXPECT_EQ(GetLastReferrer(redirect_to_cross_site_url()),
+            link_url().spec());
 }
 
 IN_PROC_BROWSER_TEST_F(BraveContentSettingsAgentImplBrowserTest,
@@ -730,7 +731,6 @@ IN_PROC_BROWSER_TEST_F(BraveContentSettingsAgentImplBrowserTest,
   EXPECT_EQ(GetLastReferrer(cross_site_url()), "");
 }
 
-// TODO(iefremov): https://github.com/brave/brave-browser/issues/7933
 IN_PROC_BROWSER_TEST_F(BraveContentSettingsAgentImplBrowserTest,
                        BlockReferrerRedirects) {
   BlockReferrers();
@@ -758,6 +758,9 @@ IN_PROC_BROWSER_TEST_F(BraveContentSettingsAgentImplBrowserTest,
   RedirectToPageWithLink(redirect_to_cross_site_url(), cross_site_url());
   EXPECT_EQ(ExecScriptGetStr(kReferrerScript, contents()), "");
   EXPECT_EQ(GetLastReferrer(cross_site_url()), "");
+  // Intermidiate same-origin navigation gets full referrer.
+  EXPECT_EQ(GetLastReferrer(redirect_to_cross_site_url()),
+            link_url().spec());
 }
 
 IN_PROC_BROWSER_TEST_F(BraveContentSettingsAgentImplBrowserTest,
