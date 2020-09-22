@@ -348,7 +348,7 @@ void BraveNewTabMessageHandler::HandleSaveNewTabPagePref(
   auto settingsValue = args->GetList()[1].Clone();
   std::string settingsKey;
 
-  // specifically handle string types first
+  // Handle string settings
   if (settingsValue.is_string()) {
     const auto settingsValueString = settingsValue.GetString();
     if (settingsKeyInput == "clockFormat") {
@@ -361,9 +361,7 @@ void BraveNewTabMessageHandler::HandleSaveNewTabPagePref(
     return;
   }
 
-  // Validate args
-  // Note: if we introduce any non-bool settings values
-  // then perform this type check within the appropriate key conditionals.
+  // Handle bool settings
   if (!settingsValue.is_bool()) {
     LOG(ERROR) << "Invalid value type";
     return;
