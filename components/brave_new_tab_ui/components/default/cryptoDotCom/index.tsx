@@ -80,9 +80,9 @@ interface Props {
   onTotalPriceOptIn: () => void
   onBtcPriceOptIn: () => void
   onSetLosersGainers: () => Promise<void>
-  onSetTickerPrices: (assets: Array<string>) => Promise<void>
-  onSetChartData: (asset: string) => Promise<void>
-  onUpdateActions: (asset: string) => Promise<void[]>
+  onSetTickerPrices: (assets: string[]) => Promise<void>
+  onSetCharts: (asset: string[]) => Promise<void>
+  onUpdateActions: () => Promise<void[]>
 }
 interface ChartConfig {
   data: Array<any>
@@ -91,6 +91,8 @@ interface ChartConfig {
 }
 
 class CryptoDotCom extends React.PureComponent<Props, State> {
+  private refreshInterval: any
+
   constructor (props: Props) {
     super(props)
     this.state = {
@@ -114,6 +116,26 @@ class CryptoDotCom extends React.PureComponent<Props, State> {
     }, {})
   }
 
+  componentDidMount () {
+    this.checkSetRefreshInterval()
+  }
+
+  componentWillUnmount () {
+    clearInterval(this.refreshInterval)
+  }
+
+  checkSetRefreshInterval = () => {
+    if (!this.refreshInterval) {
+      this.refreshInterval = setInterval(() => {
+        this.props.onUpdateActions()
+      }, 30000)
+    }
+  }
+
+  clearIntervals = () => {
+    clearInterval(this.refreshInterval)
+  }
+
   setSelectedView = (view: string) => {
     this.setState({
       selectedView: view
@@ -133,7 +155,7 @@ class CryptoDotCom extends React.PureComponent<Props, State> {
   }
 
   handleAssetDetailClick = async (asset: string) => {
-    await this.props.onSetChartData(asset)
+    await this.props.onSetCharts([asset])
     this.setSelectedAsset(asset)
   }
 
@@ -174,7 +196,7 @@ class CryptoDotCom extends React.PureComponent<Props, State> {
     const { percentChange = null } = losersGainers[currency] || {}
     return (
       <>
-        <Box isFlex={true}>
+        <Box isFlex={true} style={{ height: 48 }}>
           <FlexItem style={{ paddingLeft: 5, paddingRight: 5 }}>
             {this.renderIconAsset(currency.toLowerCase())}
           </FlexItem>
@@ -186,7 +208,7 @@ class CryptoDotCom extends React.PureComponent<Props, State> {
             {optInBTCPrice ? (
               <>
                 {(price !== null) && <Text>{new Intl.NumberFormat('en-IN', { style: 'currency', currency: 'USD', currencyDisplay: 'narrowSymbol' }).format(price)}</Text>}
-                {(percentChange !== null) && <Text $color='green'>{percentChange}%</Text>}
+                {(percentChange !== null) && <Text $color={percentChange > 0 ? 'green' : 'red'}>{percentChange}%</Text>}
               </>
             ) : (
               <PlainButton onClick={onBtcPriceOptIn} textColor='green' inline={true}>Show Price</PlainButton>
@@ -212,7 +234,7 @@ class CryptoDotCom extends React.PureComponent<Props, State> {
           const losersGainers = this.transformLosersGainers(this.props.losersGainers || {})
           const { percentChange = null } = losersGainers[currency] || {}
           return (
-            <ListItem key={currency} isFlex={true} onClick={this.handleAssetDetailClick.bind(this, currency)}>
+            <ListItem key={currency} isFlex={true} onClick={this.handleAssetDetailClick.bind(this, currency)} style={{ height: 48 }}>
               <FlexItem style={{ paddingLeft: 5, paddingRight: 5 }}>
                 {this.renderIconAsset(currency.toLowerCase())}
               </FlexItem>
@@ -288,7 +310,7 @@ class CryptoDotCom extends React.PureComponent<Props, State> {
           >
             {new Intl.NumberFormat('en-IN', { style: 'currency', currency: 'USD', currencyDisplay: 'narrowSymbol' }).format(price)} USDT
           </Text>}
-          {(percentChange !== null) && <Text inline={true} $color='green'>{percentChange}%</Text>}
+          {(percentChange !== null) && <Text inline={true} $color={percentChange > 0 ? 'green' : 'red'}>{percentChange}%</Text>}
           <svg
             viewBox={`0 0 ${chartWidth} ${chartHeight}`}
             style={{ margin: '1rem 0' }}

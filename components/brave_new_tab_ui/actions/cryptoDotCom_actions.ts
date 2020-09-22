@@ -14,4 +14,4 @@ export const setCryptoDotComTickerPrices = (assetData: object) => action(types.S
 
 export const setCryptoDotComLosersGainers = (losersGainers: object) => action(types.SET_LOSERS_GAINERS, losersGainers)
 
-export const setCryptoDotComChartData = (asset: string, chartData: Array<object>) => action(types.SET_CHART_DATA, { asset, chartData })
+export const setCryptoDotComCharts = (charts: object) => action(types.SET_CHART_DATA, charts)
