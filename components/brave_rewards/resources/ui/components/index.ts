@@ -8,7 +8,6 @@ import Amount from './amount'
 import Box from './box'
 import BoxAlert from './boxAlert'
 import CategoryLikePicker from './categoryLikePicker'
-import DisabledBox from './disabledBox'
 import DisabledContent from './disabledContent'
 import DisabledPanel from './disabledPanel'
 import Donate from './donate'
@@ -51,13 +50,11 @@ import ToggleTips from './toggleTips'
 import Tokens from './tokens'
 import Tooltip from './tooltip'
 import WalletEmpty from './walletEmpty'
-import WalletOff from './walletOff'
 import WalletPanel from './walletPanel'
 import WalletPopup from './walletPopup'
 import WalletSummary from './walletSummary'
 import WalletSummarySlider from './walletSummarySlider'
 import WalletWrapper from './walletWrapper'
-import WelcomePage from './welcomePage'
 
 export {
   AdRowsDetails,
@@ -66,7 +63,6 @@ export {
   Box,
   BoxAlert,
   CategoryLikePicker,
-  DisabledBox,
   DisabledContent,
   DisabledPanel,
   Donate,
@@ -109,11 +105,9 @@ export {
   Tokens,
   Tooltip,
   WalletEmpty,
-  WalletOff,
   WalletPanel,
   WalletPopup,
   WalletSummary,
   WalletSummarySlider,
-  WalletWrapper,
-  WelcomePage
+  WalletWrapper
 }

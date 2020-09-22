@@ -49,14 +49,6 @@ window.cr.define('brave_rewards', function () {
     return newActions
   }
 
-  function walletCreated () {
-    getActions().onWalletCreated()
-  }
-
-  function walletCreateFailed () {
-    getActions().onWalletCreateFailed()
-  }
-
   function rewardsParameters (properties: Rewards.RewardsParameters) {
     getActions().onRewardsParameters(properties)
     // Get the current AC amount after rewards parameters have been
@@ -70,10 +62,6 @@ window.cr.define('brave_rewards', function () {
 
   function claimPromotion (properties: Rewards.Captcha) {
     getActions().onClaimPromotion(properties)
-  }
-
-  function walletPassphrase (pass: string) {
-    getActions().onWalletPassphrase(pass)
   }
 
   function recoverWalletData (result: number) {
@@ -98,10 +86,6 @@ window.cr.define('brave_rewards', function () {
 
   function balanceReport (properties: {month: number, year: number, report: Rewards.BalanceReport}) {
     getActions().onBalanceReport(properties)
-  }
-
-  function walletExists (exists: boolean) {
-    getActions().onWalletExists(exists)
   }
 
   function contributionAmount (amount: number) {
@@ -156,10 +140,6 @@ window.cr.define('brave_rewards', function () {
     if (result === 0) {
       getActions().getPendingContributions()
     }
-  }
-
-  function rewardsEnabled (enabled: boolean) {
-    getActions().onRewardsEnabled(enabled)
   }
 
   function transactionHistory (data: {adsEstimatedPendingRewards: number, adsNextPaymentDate: string, adsNotificationsReceivedThisMonth: number}) {
@@ -267,19 +247,15 @@ window.cr.define('brave_rewards', function () {
 
   return {
     initialize,
-    walletCreated,
-    walletCreateFailed,
     rewardsParameters,
     promotions,
     claimPromotion,
-    walletPassphrase,
     recoverWalletData,
     promotionFinish,
     reconcileStamp,
     contributeList,
     excludedList,
     balanceReport,
-    walletExists,
     contributionAmount,
     recurringTips,
     currentTips,
@@ -294,7 +270,6 @@ window.cr.define('brave_rewards', function () {
     onToggleFlagAd,
     pendingContributions,
     onPendingContributionSaved,
-    rewardsEnabled,
     transactionHistory,
     transactionHistoryChanged,
     recurringTipSaved,

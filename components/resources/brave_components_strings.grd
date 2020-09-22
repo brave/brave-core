@@ -374,8 +374,6 @@
       <message name="IDS_BRAVE_REWARDS_LOCAL_GENERAL_GRANT_ERROR_TITLE" desc="">Oops, something is wrong. Please try again later.</message>
       <message name="IDS_BRAVE_REWARDS_LOCAL_GENERAL_GRANT_ERROR_BUTTON" desc="">OK</message>
       <message name="IDS_BRAVE_REWARDS_LOCAL_GENERAL_GRANT_ERROR_TEXT" desc="">Brave Rewards is having an issue. Please try again later.</message>
-      <message name="IDS_BRAVE_REWARDS_LOCAL_WALLET_CORRUPTED" desc="">We detected that something is wrong with your wallet. You must recover your backup wallet before any transactions can be processed.</message>
-      <message name="IDS_BRAVE_REWARDS_LOCAL_WALLET_CORRUPTED_NOW" desc="">Recover now!</message>
       <message name="IDS_BRAVE_REWARDS_LOCAL_DONAT_NEXT_DATE" desc="Description of the date in the donation box">Next monthly contribution date</message>
       <message name="IDS_BRAVE_REWARDS_LOCAL_COMPLIMENT_TWEET" desc="">
         I just tipped <ph name="NAME">$1<ex>user</ex></ph> using the Brave Browser. Check it out at https://brave.com/tips.
@@ -536,7 +534,6 @@
       <message name="IDS_BRAVE_UI_AND" desc="">and</message>
       <message name="IDS_BRAVE_UI_PRIVACY_POLICY" desc="">Privacy Policy</message>
       <message name="IDS_BRAVE_UI_TERMS_OF_SERVICE" desc="">Terms of Service</message>
-      <message name="IDS_BRAVE_UI_SERVICE_TEXT_TOGGLE" desc="">By turning on Brave Rewards, you indicate that you have read and agree to the</message>
       <message name="IDS_BRAVE_UI_SERVICE_TEXT_WELCOME" desc="">By clicking ‘Yes, I'm in!’, you indicate that you have read and agree to the</message>
       <message name="IDS_BRAVE_UI_SERVICE_TEXT_READY" desc="">By clicking ‘Yes, I'm Ready!’, you indicate that you have read and agree to the</message>
       <message name="IDS_BRAVE_UI_BRAVE_REWARDS_CREATING_TEXT" desc="">Creating wallet</message>

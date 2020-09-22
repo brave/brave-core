@@ -469,8 +469,6 @@ void CustomizeWebUIHTMLSource(const std::string &name,
         { "grantGeneralErrorTitle",  IDS_BRAVE_REWARDS_LOCAL_GENERAL_GRANT_ERROR_TITLE },        // NOLINT
         { "grantGeneralErrorButton",  IDS_BRAVE_REWARDS_LOCAL_GENERAL_GRANT_ERROR_BUTTON },      // NOLINT
         { "grantGeneralErrorText",  IDS_BRAVE_REWARDS_LOCAL_GENERAL_GRANT_ERROR_TEXT },          // NOLINT
-        { "walletCorrupted",  IDS_BRAVE_REWARDS_LOCAL_WALLET_CORRUPTED },
-        { "walletCorruptedNow",  IDS_BRAVE_REWARDS_LOCAL_WALLET_CORRUPTED_NOW },
         { "redirectModalError", IDS_BRAVE_REWARDS_LOCAL_REDIRECT_MODAL_ERROR },
         { "redirectModalClose", IDS_BRAVE_REWARDS_LOCAL_REDIRECT_MODAL_CLOSE },
         { "redirectModalErrorWallet", IDS_BRAVE_REWARDS_LOCAL_REDIRECT_MODAL_ERROR_WALLET },     // NOLINT
@@ -773,7 +771,6 @@ void CustomizeWebUIHTMLSource(const std::string &name,
         { "rewardsExcludedText1", IDS_BRAVE_UI_REWARDS_EXCLUDED_TEXT_1 },
         { "rewardsExcludedText2", IDS_BRAVE_UI_REWARDS_EXCLUDED_TEXT_2 },
         { "rewardsOffText5", IDS_BRAVE_UI_REWARDS_OFF_TEXT5 },
-        { "serviceTextToggle", IDS_BRAVE_UI_SERVICE_TEXT_TOGGLE },
         { "serviceTextWelcome", IDS_BRAVE_UI_SERVICE_TEXT_WELCOME },
         { "serviceTextReady", IDS_BRAVE_UI_SERVICE_TEXT_READY },
         { "showAll", IDS_BRAVE_UI_SHOW_ALL },

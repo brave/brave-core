@@ -46,15 +46,6 @@ class AdsBox extends React.Component<Props, State> {
     this.props.actions.getAdsHistory()
   }
 
-  componentDidUpdate (prevProps: Props) {
-    if (
-      prevProps.rewardsData.enabledMain &&
-      !this.props.rewardsData.enabledMain
-    ) {
-      this.setState({ settings: false })
-    }
-  }
-
   adsDisabled = () => {
     return (
       <DisabledContent
@@ -390,7 +381,6 @@ class AdsBox extends React.Component<Props, State> {
     const {
       adsData,
       adsHistory,
-      enabledMain,
       firstLoad,
       parameters,
       ui
@@ -408,7 +398,7 @@ class AdsBox extends React.Component<Props, State> {
     }
 
     const enabled = adsEnabled && adsIsSupported
-    const toggle = !(!enabledMain || !adsUIEnabled || !adsIsSupported)
+    const toggle = !(!adsUIEnabled || !adsIsSupported)
     const showDisabled = firstLoad !== false || !toggle || !adsEnabled || !adsIsSupported
 
     const historyEntries = adsHistory || []
@@ -424,7 +414,7 @@ class AdsBox extends React.Component<Props, State> {
           description={getLocale('adsDesc', { currency: tokenString })}
           toggle={toggle}
           checked={enabled}
-          settingsChild={this.adsSettings(enabled && enabledMain)}
+          settingsChild={this.adsSettings(enabled)}
           testId={'braveAdsSettings'}
           disabledContent={showDisabled ? this.adsDisabled() : null}
           onToggle={this.onAdsSettingChange.bind(this, 'adsEnabled', '')}

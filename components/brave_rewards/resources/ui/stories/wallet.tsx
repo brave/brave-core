@@ -9,7 +9,7 @@ import centered from '@storybook/addon-centered'
 
 // Components
 import { WalletSummary, WalletEmpty, WalletOff, WalletPanel, WalletSummarySlider, WalletWrapper } from '../components'
-import { AlertWallet, Notification, WalletState } from '../components/walletWrapper'
+import { AlertWallet, WalletState } from '../components/walletWrapper'
 import { WalletAddIcon, WalletImportIcon } from 'brave-ui/components/icons'
 import { WalletInfoHeader } from '../components/mobile'
 

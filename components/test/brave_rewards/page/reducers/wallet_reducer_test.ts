@@ -4,7 +4,6 @@
 /* global chrome */
 
 import reducers from '../../../../brave_rewards/resources/page/reducers/index'
-import * as actions from '../../../../brave_rewards/resources/page/actions/rewards_actions'
 import { types } from '../../../../brave_rewards/resources/page/constants/rewards_types'
 import { defaultState } from '../../../../brave_rewards/resources/page/storage'
 import { getMockChrome } from '../../../testData'
@@ -19,15 +18,6 @@ describe('wallet reducer', () => {
         return constantDate
       }
     }
-  })
-
-  it('should handle initial state', () => {
-    const assertion = reducers(undefined, actions.createWallet())
-    const expectedState: Rewards.State = { ...defaultState }
-    expectedState.initializing = true
-    expect(assertion).toEqual({
-      rewardsData: expectedState
-    })
   })
 
   describe('ON_RECOVER_WALLET_DATA', () => {
@@ -52,7 +42,6 @@ describe('wallet reducer', () => {
       })
 
       const expectedState: Rewards.State = { ...defaultState }
-      expectedState.ui.walletCorrupted = true
 
       // No chrome.send calls should be made in the event of a failure
       expect(chromeSpy).toHaveBeenCalledTimes(0)
