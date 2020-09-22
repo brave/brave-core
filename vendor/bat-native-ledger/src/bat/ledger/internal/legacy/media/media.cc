@@ -162,7 +162,7 @@ void Media::OnMediaActivityError(ledger::type::VisitDataPtr visit_data,
   }
 
   if (url.empty()) {
-    BLOG(0, "Media activity error for url: " << visit_data->url);
+    BLOG(0, "Media activity error");
     return;
   }
 

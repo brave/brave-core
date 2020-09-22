@@ -334,8 +334,7 @@ void YouTube::OnMediaActivityError(const ledger::type::VisitData& visit_data,
     ledger_->publisher()->GetPublisherActivityFromUrl(
         window_id, ledger::type::VisitData::New(new_visit_data), std::string());
   } else {
-      BLOG(0, "Media activity error for " << YOUTUBE_MEDIA_TYPE << " (name: "
-          << name << ", url: " << visit_data.url << ")");
+      BLOG(0, "Media activity error");
   }
 }
 
@@ -537,7 +536,7 @@ void YouTube::SavePublisherInfo(const uint64_t duration,
                                      const std::string& channel_id) {
   std::string url;
   if (channel_id.empty()) {
-    BLOG(0, "Channel id is missing for: " << media_key);
+    BLOG(0, "Channel id is missing");
     return;
   }
 
@@ -545,7 +544,7 @@ void YouTube::SavePublisherInfo(const uint64_t duration,
   url = publisher_url + "/videos";
 
   if (publisher_id.empty()) {
-    BLOG(0, "Publisher id is missing for: " << media_key);
+    BLOG(0, "Publisher id is missing");
     return;
   }
 
