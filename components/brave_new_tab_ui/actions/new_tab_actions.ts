@@ -32,7 +32,7 @@ export const dismissBrandedWallpaperNotification = (isUserAction: boolean) =>
 export const preferencesUpdated = (preferences: Preferences) =>
   action(types.NEW_TAB_PREFERENCES_UPDATED, preferences)
 
-export const updateClockWidget = (showClockWidget: boolean,
+export const clockWidgetUpdated = (showClockWidget: boolean,
     clockFormat: string) =>
   action(types.UPDATE_CLOCK_WIDGET, { showClockWidget, clockFormat })
 

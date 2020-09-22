@@ -28,7 +28,7 @@ interface Props {
 
 class ClockSettings extends React.PureComponent<Props, {}> {
   onClockFormatChanged = (selectedValue: any) => {
-    this.props.actions.updateClockWidget(
+    this.props.actions.clockWidgetUpdated(
       this.props.showClock,
       selectedValue)
   }

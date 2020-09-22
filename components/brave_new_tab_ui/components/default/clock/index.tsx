@@ -20,6 +20,7 @@ export interface ClockState {
 
 interface Props {
   clockFormat: string
+  toggleClickFormat: () => void
 }
 
 class Clock extends React.PureComponent<Props, ClockState> {
@@ -77,9 +78,15 @@ class Clock extends React.PureComponent<Props, ClockState> {
     window.setInterval(this.maybeUpdateClock.bind(this), 2000)
   }
 
+  onDoubleClick = () => {
+    if (this.props.toggleClickFormat) {
+      this.props.toggleClickFormat()
+    }
+  }
+
   render () {
     return (
-      <StyledClock>
+      <StyledClock onDoubleClick={this.onDoubleClick}>
         <StyledTime>{this.formattedTime}</StyledTime>
       </StyledClock>
     )
