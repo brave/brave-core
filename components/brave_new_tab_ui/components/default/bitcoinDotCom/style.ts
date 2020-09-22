@@ -86,8 +86,22 @@ export const AssetTitle = styled<{}, 'span'>('span')`
   vertical-align: super;
 `
 
-export const AssetSymbol = styled<{}, 'span'>('span')`
+export const AssetSymbol = styled<StyleProps, 'span'>('span')`
+  font-size: 12px;
+  border-radius: 4px;
+  background: lightgray;
+  padding: 2px 7px;
+  margin-left: 10px;
   vertical-align: super;
+
+  ${(p) => p.dropdownShowing
+    ? css`
+      float: right;
+      margin-top: 5px;
+      min-width: 40px;
+      text-align: center;
+    ` : ''
+  }
 `
 
 export const DropdownIcon = styled<StyleProps, 'div'>('div')`
@@ -166,7 +180,7 @@ export const FiatItems = styled<{}, 'div'>('div')`
   overflow-y: scroll;
   position: absolute;
   min-width: 244px;
-  max-height: 80px;
+  max-height: 90px;
   border: 1px solid lightgray;
   border-top: none;
   left: auto;
@@ -176,10 +190,23 @@ export const FiatItems = styled<{}, 'div'>('div')`
 
 export const FiatItem = styled<{}, 'div'>('div')`
   color: #000;
-  font-weight: bold;
-  font-size: 14px;
-  padding: 5px 10px;
+  padding: 7px 0px 7px 7px;
   cursor: pointer;
+`
+
+export const FiatSymbol = styled<{}, 'div'>('div')`
+  font-size: 12px;
+  border-radius: 4px;
+  background: lightgray;
+  padding: 2px 5px 2px 7px;
+  display: inline-block;
+  min-width: 40px;
+`
+
+export const FiatName = styled<{}, 'span'>('span')`
+  font-size: 13px;
+  font-weight: bold;
+  margin-left: 8px;
 `
 
 export const FooterWrapper = styled<{}, 'div'>('div')`

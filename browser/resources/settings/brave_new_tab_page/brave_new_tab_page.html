@@ -77,6 +77,13 @@
             label="$i18n{braveNewTabGemini}">
         </settings-toggle-button>
       </template>
+      <template is="dom-if" if="[[isBitcoinDotComSupported_]]">
+        <settings-toggle-button
+            class="cr-row"
+            pref="{{prefs.brave.new_tab_page.show_bitcoin_dot_com}}"
+            label="$i18n{braveNewTabBitcoinDotCom}">
+        </settings-toggle-button>
+      </template>
       <settings-toggle-button
           class="cr-row"
           pref="{{prefs.brave.new_tab_page.show_top_sites}}"

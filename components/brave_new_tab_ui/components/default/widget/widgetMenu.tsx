@@ -26,6 +26,7 @@ interface Props {
   onLearnMore?: () => void
   onDisconnect?: () => void
   onRefreshData?: () => void
+  lightWidget?: boolean
 }
 
 interface State {
@@ -87,6 +88,7 @@ export default class WidgetMenu extends React.PureComponent<Props, State> {
       widgetMenuPersist,
       widgetTitle,
       isForeground,
+      lightWidget,
       onLearnMore,
       onDisconnect,
       onRefreshData
@@ -98,7 +100,7 @@ export default class WidgetMenu extends React.PureComponent<Props, State> {
       <StyledWidgetMenuContainer innerRef={this.settingsMenuRef}>
         <StyledEllipsis widgetMenuPersist={widgetMenuPersist} isForeground={isForeground}>
           <IconButton isClickMenu={true} onClick={this.toggleMenu}>
-            <EllipsisIcon/>
+            <EllipsisIcon lightWidget={lightWidget} />
           </IconButton>
         </StyledEllipsis>
         {showMenu && <StyledWidgetMenu

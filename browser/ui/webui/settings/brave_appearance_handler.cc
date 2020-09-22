@@ -12,6 +12,7 @@
 #include "brave/components/binance/browser/buildflags/buildflags.h"
 #include "brave/components/brave_together/buildflags/buildflags.h"
 #include "brave/components/gemini/browser/buildflags/buildflags.h"
+#include "brave/components/moonpay/buildflags/buildflags.h"
 #include "brave/components/ntp_widget_utils/browser/buildflags/buildflags.h"
 #include "brave/common/pref_names.h"
 #include "brave/components/ntp_background_images/browser/ntp_background_images_data.h"
@@ -35,6 +36,10 @@
 
 #if BUILDFLAG(GEMINI_ENABLED)
 #include "brave/components/gemini/browser/regions.h"
+#endif
+
+#if BUILDFLAG(BITCOIN_DOT_COM_ENABLED)
+#include "brave/components/moonpay/browser/regions.h"
 #endif
 
 using ntp_background_images::ViewCounterServiceFactory;
@@ -98,6 +103,10 @@ void BraveAppearanceHandler::RegisterMessages() {
   web_ui()->RegisterMessageCallback(
       "getIsGeminiSupported",
       base::BindRepeating(&BraveAppearanceHandler::GetIsGeminiSupported,
+                          base::Unretained(this)));
+  web_ui()->RegisterMessageCallback(
+      "getIsBitcoinDotComSupported",
+      base::BindRepeating(&BraveAppearanceHandler::GetIsBitcoinDotComSupported,
                           base::Unretained(this)));
 }
 
@@ -174,6 +183,22 @@ void BraveAppearanceHandler::GetIsGeminiSupported(
 #else
   bool is_supported = ntp_widget_utils::IsRegionSupported(
       profile_->GetPrefs(), gemini::supported_regions, true);
+#endif
+
+  ResolveJavascriptCallback(args->GetList()[0], base::Value(is_supported));
+}
+
+void BraveAppearanceHandler::GetIsBitcoinDotComSupported(
+    const base::ListValue* args) {
+  CHECK_EQ(args->GetSize(), 1U);
+
+  AllowJavascript();
+
+#if !BUILDFLAG(BITCOIN_DOT_COM_ENABLED)
+  bool is_supported = false;
+#else
+  bool is_supported = ntp_widget_utils::IsRegionSupported(
+      profile_->GetPrefs(), moonpay::bitcoin_dot_com_supported_regions, true);
 #endif
 
   ResolveJavascriptCallback(args->GetList()[0], base::Value(is_supported));

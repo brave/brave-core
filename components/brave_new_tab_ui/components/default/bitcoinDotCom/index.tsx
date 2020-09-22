@@ -7,6 +7,7 @@ import createWidget from '../widget/index'
 import * as Styled from './style'
 import { StyledTitleTab } from '../widgetTitleTab'
 import assetIcons from './assets/icons'
+import fiatData from './fiat'
 import BitcoinDotComLogo from './assets/logo.png'
 import { CaratDownIcon } from 'brave-ui/components/icons'
 import { getLocale } from '../../../../common/locale'
@@ -28,7 +29,7 @@ interface Props {
 
 class BitcoinDotCom extends React.PureComponent<Props, State> {
   private assets: Record<string, string>
-  private fiatCurrencies: string[]
+  private fiatCurrencies: Record<string, string>
 
   constructor (props: Props) {
     super(props)
@@ -47,13 +48,7 @@ class BitcoinDotCom extends React.PureComponent<Props, State> {
       'XLM': 'Stellar',
       'XRP': 'Ripple'
     }
-    this.fiatCurrencies = [
-      'EUR',
-      'AUD',
-      'CAD',
-      'GBP',
-      'USD'
-    ]
+    this.fiatCurrencies = fiatData
   }
 
   renderTitle () {
@@ -184,7 +179,7 @@ class BitcoinDotCom extends React.PureComponent<Props, State> {
               <Styled.AssetTitle>
                 {this.assets[asset]}
               </Styled.AssetTitle>
-              <Styled.AssetSymbol>
+              <Styled.AssetSymbol dropdownShowing={true}>
                 {asset}
               </Styled.AssetSymbol>
             </Styled.AssetItem>
@@ -231,15 +226,26 @@ class BitcoinDotCom extends React.PureComponent<Props, State> {
   }
 
   renderFiatItems () {
+    const { selectedFiat } = this.state
+
     return (
       <Styled.FiatItems>
-        {this.fiatCurrencies.map((fiat: string) => {
+        {Object.keys(this.fiatCurrencies).map((fiat: string) => {
+          if (fiat === selectedFiat) {
+            return null
+          }
+
           return (
             <Styled.FiatItem
               key={`${fiat}-fiat`}
               onClick={this.setSelectedFiat.bind(this, fiat)}
             >
-              {fiat}
+              <Styled.FiatSymbol>
+                {fiat}
+              </Styled.FiatSymbol>
+              <Styled.FiatName>
+                {this.fiatCurrencies[fiat]}
+              </Styled.FiatName>
             </Styled.FiatItem>
           )
         })}

@@ -945,6 +945,7 @@ class NewTabPage extends React.Component<Props, State> {
         showContent={showContent}
         onShowContent={this.setForegroundStackWidget.bind(this, 'bitcoinDotCom')}
         onBuyCrypto={this.buyBitcoinDotComCrypto}
+        lightWidget={showContent}
       />
     )
   }

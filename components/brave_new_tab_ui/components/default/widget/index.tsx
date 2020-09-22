@@ -18,6 +18,7 @@ export interface WidgetProps {
   widgetTitle?: string
   hideMenu?: boolean
   isForeground?: boolean
+  lightWidget?: boolean
   onLearnMore?: () => void
   onDisconnect?: () => void
   onRefreshData?: () => void
@@ -55,6 +56,7 @@ const createWidget = <P extends object>(WrappedComponent: React.ComponentType<P>
         widgetTitle,
         hideMenu,
         isForeground,
+        lightWidget,
         onLearnMore,
         onDisconnect,
         onRefreshData
@@ -87,6 +89,7 @@ const createWidget = <P extends object>(WrappedComponent: React.ComponentType<P>
             hideWidget={hideWidget as HideWidgetFunction}
             persistWidget={this.persistWidget}
             unpersistWidget={this.unpersistWidget}
+            lightWidget={lightWidget}
           />
           }
         </StyledWidgetContainer>
