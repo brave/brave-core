@@ -174,7 +174,12 @@ int OnBeforeStartTransaction_SiteHacksWork(
   }
 
   // Special case for handling top-level redirects. There is no other way to
-  // normally change referrer in net::URLRequest during redirects.
+  // normally change referrer in net::URLRequest during redirects
+  // (except using network::mojom::TrustedURLLoaderHeaderClient, which
+  // will affect performance).
+  // Note that this code only affects "Referer" header sent via network - we
+  // handle document.referer in content::NavigationRequest (see also
+  // BraveContentBrowserClient::MaybeHideReferrer).
   if (!ctx->allow_referrers && ctx->allow_brave_shields &&
       ctx->redirect_source.is_valid() &&
       ctx->resource_type == blink::mojom::ResourceType::kMainFrame &&
