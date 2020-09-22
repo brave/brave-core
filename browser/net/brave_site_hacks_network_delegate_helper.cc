@@ -179,7 +179,7 @@ int OnBeforeStartTransaction_SiteHacksWork(
       ctx->redirect_source.is_valid() &&
       ctx->resource_type == blink::mojom::ResourceType::kMainFrame &&
       brave_shields::ShouldCleanReferrerForTopLevelNavigation(
-          ctx->method, ctx->referrer, ctx->request_url)) {
+          ctx->method, ctx->redirect_source, ctx->request_url)) {
     // This is hack that notifies the patched code in net::URLRequest.
     ctx->removed_headers.insert("X-Brave-Clear-Referer");
   }
