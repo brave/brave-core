@@ -8,21 +8,22 @@
 #include "base/task/post_task.h"
 #include "base/test/thread_test_helper.h"
 #include "brave/browser/brave_browser_process_impl.h"
+#include "brave/browser/brave_rewards/rewards_service_factory.h"
 #include "brave/browser/extensions/brave_base_local_data_files_browsertest.h"
 #include "brave/browser/greaselion/greaselion_service_factory.h"
 #include "brave/common/brave_paths.h"
 #include "brave/components/brave_component_updater/browser/local_data_files_service.h"
-#include "brave/browser/brave_rewards/rewards_service_factory.h"
-#include "brave/components/greaselion/browser/greaselion_download_service.h"
+#include "brave/components/brave_rewards/browser/test/common/rewards_browsertest_network_util.h"
 #include "brave/components/brave_rewards/browser/test/common/rewards_browsertest_response.h"
 #include "brave/components/brave_rewards/browser/test/common/rewards_browsertest_util.h"
-#include "brave/components/brave_rewards/browser/test/common/rewards_browsertest_network_util.h"
+#include "brave/components/greaselion/browser/greaselion_download_service.h"
 #include "brave/components/greaselion/browser/greaselion_service.h"
 #include "chrome/browser/extensions/extension_browsertest.h"
 #include "chrome/test/base/ui_test_utils.h"
 #include "content/public/test/browser_test.h"
 #include "content/public/test/browser_test_utils.h"
 #include "net/dns/mock_host_resolver.h"
+#include "ui/base/ui_base_switches.h"
 
 using brave_rewards::RewardsService;
 using brave_rewards::RewardsServiceFactory;
@@ -177,6 +178,37 @@ class GreaselionServiceTest : public BaseLocalDataFilesBrowserTest {
   brave_rewards::RewardsServiceImpl* rewards_service_;
 };
 
+#if !defined(OS_MAC)
+class GreaselionServiceLocaleTest : public GreaselionServiceTest {
+ public:
+  explicit GreaselionServiceLocaleTest(const std::string& locale)
+      : locale_(locale) {}
+
+  void SetUpCommandLine(base::CommandLine* command_line) override {
+    ExtensionBrowserTest::SetUpCommandLine(command_line);
+    command_line->AppendSwitchASCII(switches::kLang, locale_);
+  }
+
+ private:
+  std::string locale_;
+};
+
+class GreaselionServiceLocaleTestEnglish : public GreaselionServiceLocaleTest {
+ public:
+  GreaselionServiceLocaleTestEnglish() : GreaselionServiceLocaleTest("en") {}
+};
+
+class GreaselionServiceLocaleTestGerman : public GreaselionServiceLocaleTest {
+ public:
+  GreaselionServiceLocaleTestGerman() : GreaselionServiceLocaleTest("de") {}
+};
+
+class GreaselionServiceLocaleTestFrench : public GreaselionServiceLocaleTest {
+ public:
+  GreaselionServiceLocaleTestFrench() : GreaselionServiceLocaleTest("fr") {}
+};
+#endif
+
 // Ensure the site specific script service properly clears its cache of
 // precompiled URLPatterns if initialized twice. (This can happen if
 // the parent component is updated while Brave is running.)
@@ -326,3 +358,78 @@ IN_PROC_BROWSER_TEST_F(GreaselionServiceTest, IsNotGreaselionExtension) {
 
   EXPECT_FALSE(greaselion_service->IsGreaselionExtension("INVALID"));
 }
+
+#if !defined(OS_MAC)
+IN_PROC_BROWSER_TEST_F(GreaselionServiceLocaleTestEnglish,
+                       ScriptInjectionWithMessagesDefaultLocale) {
+  ASSERT_TRUE(InstallMockExtension());
+
+  const GURL url =
+      embedded_test_server()->GetURL("messages.example.com", "/simple.html");
+  ui_test_utils::NavigateToURL(browser(), url);
+  content::WebContents* contents =
+      browser()->tab_strip_model()->GetActiveWebContents();
+  ASSERT_TRUE(content::WaitForLoadStop(contents));
+
+  EXPECT_EQ(url, contents->GetURL());
+
+  std::string title;
+  ASSERT_TRUE(
+      ExecuteScriptAndExtractString(contents,
+                                    "window.domAutomationController.send("
+                                    "document.title)",
+                                    &title));
+
+  // Ensure that English localization is correct
+  EXPECT_EQ(title, "Hello, world!");
+}
+
+IN_PROC_BROWSER_TEST_F(GreaselionServiceLocaleTestGerman,
+                       ScriptInjectionWithMessagesNonDefaultLocale) {
+  ASSERT_TRUE(InstallMockExtension());
+
+  const GURL url =
+      embedded_test_server()->GetURL("messages.example.com", "/simple.html");
+  ui_test_utils::NavigateToURL(browser(), url);
+  content::WebContents* contents =
+      browser()->tab_strip_model()->GetActiveWebContents();
+  ASSERT_TRUE(content::WaitForLoadStop(contents));
+
+  EXPECT_EQ(url, contents->GetURL());
+
+  std::string title;
+  ASSERT_TRUE(
+      ExecuteScriptAndExtractString(contents,
+                                    "window.domAutomationController.send("
+                                    "document.title)",
+                                    &title));
+
+  // Ensure that German localization is correct
+  EXPECT_EQ(title, "Hallo, Welt!");
+}
+
+IN_PROC_BROWSER_TEST_F(GreaselionServiceLocaleTestFrench,
+                       ScriptInjectionWithMessagesUnsupportedLocale) {
+  ASSERT_TRUE(InstallMockExtension());
+
+  const GURL url =
+      embedded_test_server()->GetURL("messages.example.com", "/simple.html");
+  ui_test_utils::NavigateToURL(browser(), url);
+  content::WebContents* contents =
+      browser()->tab_strip_model()->GetActiveWebContents();
+  ASSERT_TRUE(content::WaitForLoadStop(contents));
+
+  EXPECT_EQ(url, contents->GetURL());
+
+  std::string title;
+  ASSERT_TRUE(
+      ExecuteScriptAndExtractString(contents,
+                                    "window.domAutomationController.send("
+                                    "document.title)",
+                                    &title));
+
+  // We don't have a French localization, so ensure that the default
+  // (English) localization is shown instead
+  EXPECT_EQ(title, "Hello, world!");
+}
+#endif
