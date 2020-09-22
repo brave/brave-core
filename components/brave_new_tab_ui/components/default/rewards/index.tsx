@@ -123,7 +123,7 @@ class Rewards extends React.PureComponent<RewardsProps, {}> {
     } = this.props
 
     return (
-      <div data-test-id2={'enableMain'}>
+      <div>
         {adsSupported && this.renderAmountItem(AmountItemType.ADS)}
         {this.renderAmountItem(AmountItemType.TIPS)}
       </div>
