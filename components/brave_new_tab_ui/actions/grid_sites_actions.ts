@@ -7,29 +7,27 @@
 import { types } from '../constants/grid_sites_types'
 import { action } from 'typesafe-actions'
 
-export const tilesUpdated = (gridSites: NewTab.Site[],
-    customLinksEnabled: boolean, visible: boolean) => {
-  return action(types.GRID_SITES_DATA_UPDATED, { gridSites,
-    customLinksEnabled, visible })
+export const tilesUpdated = (gridSites: NewTab.Site[]) => {
+  return action(types.TILES_UPDATED, { gridSites })
 }
 
 export const tileRemoved = (url: string) => {
-  return action(types.GRID_SITES_REMOVE, { url })
+  return action(types.TILE_REMOVED, { url })
 }
 
 export const tilesReordered = (gridSites: NewTab.Site[],
     oldPos: number, newPos: number) => {
-  return action(types.GRID_SITES_REORDER, { gridSites, oldPos, newPos })
+  return action(types.TILES_REORDERED, { gridSites, oldPos, newPos })
 }
 
 export const restoreDefaultTiles = () => {
-  return action(types.GRID_SITES_RESTORE_DEFAULTS, {})
+  return action(types.RESTORE_DEFAULT_TILES, {})
 }
 
 export const showTilesRemovedNotice = (shouldShow: boolean) => {
-  return action(types.GRID_SITES_SHOW_SITE_REMOVED_NOTIFICATION, { shouldShow })
+  return action(types.SHOW_TILES_REMOVED_NOTICE, { shouldShow })
 }
 
 export const undoRemoveTile = () => {
-  return action(types.GRID_SITES_UNDO_ACTION, {})
+  return action(types.UNDO_REMOVE_TILE, {})
 }

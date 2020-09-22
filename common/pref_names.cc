@@ -28,9 +28,6 @@ const char kUseAlternativeSearchEngineProvider[] =
     "brave.use_alternate_private_search_engine";
 const char kAlternativeSearchEngineProviderInTor[] =
     "brave.alternate_private_search_engine_in_tor";
-const char kBraveThemeType[] = "brave.theme.type";  // deprecated
-const char kUseOverriddenBraveThemeType[] =
-    "brave.theme.use_overridden_brave_theme_type";  // deprecated
 const char kLocationBarIsWide[] = "brave.location_bar_is_wide";
 const char kReferralDownloadID[] = "brave.referral.download_id";
 const char kReferralTimestamp[] = "brave.referral.timestamp";
@@ -56,7 +53,6 @@ const char kHangoutsEnabled[] = "brave.hangouts_enabled";
 const char kIPFSCompanionEnabled[] = "brave.ipfs_companion_enabled";
 const char kNewTabPageShowClock[] = "brave.new_tab_page.show_clock";
 const char kNewTabPageClockFormat[] = "brave.new_tab_page.clock_format";
-const char kNewTabPageShowTopSites[] = "brave.new_tab_page.show_top_sites";  // deprecated
 const char kNewTabPageShowStats[] = "brave.new_tab_page.show_stats";
 const char kNewTabPageShowRewards[] = "brave.new_tab_page.show_rewards";
 const char kNewTabPageShowBinance[] = "brave.new_tab_page.show_binance";
@@ -90,3 +86,9 @@ const char kBackgroundVideoPlaybackEnabled[] =
 const char kSafetynetCheckFailed[] = "safetynetcheck.failed";
 const char kSafetynetStatus[] = "safetynet.status";
 #endif
+
+// deprecated
+const char kBraveThemeType[] = "brave.theme.type";
+const char kUseOverriddenBraveThemeType[] =
+    "brave.theme.use_overridden_brave_theme_type";
+const char kNewTabPageShowTopSites[] = "brave.new_tab_page.show_top_sites";

@@ -41,7 +41,7 @@ describe('gridSitesReducer', () => {
     })
   })
 
-  describe('GRID_SITES_DATA_UPDATED', () => {
+  describe('TILES_UPDATED', () => {
     let tilesUpdatedStub: jest.SpyInstance
 
     beforeEach(() => {
@@ -54,7 +54,7 @@ describe('gridSitesReducer', () => {
 
     it('calls tilesUpdated with the correct args', () => {
       gridSitesReducer(undefined, {
-        type: types.GRID_SITES_DATA_UPDATED,
+        type: types.TILES_UPDATED,
         payload: { gridSites }
       })
 
@@ -64,14 +64,14 @@ describe('gridSitesReducer', () => {
     })
     it('update state.gridSites list', () => {
       const assertion = gridSitesReducer(storage.initialGridSitesState, {
-        type: types.GRID_SITES_DATA_UPDATED,
+        type: types.TILES_UPDATED,
         payload: { gridSites }
       })
 
       expect(assertion.gridSites).toHaveLength(2)
     })
   })
-  describe('GRID_SITES_SHOW_SITE_REMOVED_NOTIFICATION', () => {
+  describe('SHOW_TILES_REMOVED_NOTICE', () => {
     let showTilesRemovedNoticeStub: jest.SpyInstance
 
     beforeEach(() => {
@@ -85,7 +85,7 @@ describe('gridSitesReducer', () => {
     it('calls showTilesRemovedNotice with the correct args', () => {
       const shouldShow: boolean = true
       gridSitesReducer(undefined, {
-        type: types.GRID_SITES_SHOW_SITE_REMOVED_NOTIFICATION,
+        type: types.SHOW_TILES_REMOVED_NOTICE,
         payload: { shouldShow }
       })
 
@@ -95,7 +95,7 @@ describe('gridSitesReducer', () => {
     })
     it('update state with the specified payload value', () => {
       const assertion = gridSitesReducer(storage.initialGridSitesState, {
-        type: types.GRID_SITES_SHOW_SITE_REMOVED_NOTIFICATION,
+        type: types.SHOW_TILES_REMOVED_NOTICE,
         payload: {
           shouldShow: true
         }

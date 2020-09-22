@@ -33,9 +33,9 @@ function onRewardsToggled (prefData: preferencesAPI.Preferences): void {
   }
 }
 
-async function onMostVisitedInfoChanged (topSites: any) {
-  getActions().tilesUpdated(topSites.tiles, topSites.custom_links_enabled,
-      topSites.visible)
+async function onMostVisitedInfoChanged (topSites: topSitesAPI.MostVisitedInfoChanged) {
+  getActions().tilesUpdated(topSites.tiles)
+  getActions().topSitesStateUpdated(topSites.visible, topSites.custom_links_enabled)
 }
 
 // Not marked as async so we don't return a promise
@@ -50,8 +50,8 @@ export function wireApiEventsToStore () {
     binanceInitData()
     getActions().setInitialData(initialData)
     // Listen for API changes and dispatch to store
-    topSitesAPI.updateMostVisitedInfo()
     topSitesAPI.addMostVistedInfoChangedListener(onMostVisitedInfoChanged)
+    topSitesAPI.updateMostVisitedInfo()
     statsAPI.addChangeListener(updateStats)
     preferencesAPI.addChangeListener(updatePreferences)
     preferencesAPI.addChangeListener(onRewardsToggled)

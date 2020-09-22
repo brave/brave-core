@@ -233,7 +233,8 @@ void BraveAppearanceHandler::OnPreferenceChanged(const std::string& pref_name) {
   }
 }
 
-void BraveAppearanceHandler::ToggleTopSitesVisible(const base::ListValue* args) {
+void BraveAppearanceHandler::ToggleTopSitesVisible(
+    const base::ListValue* args) {
   AllowJavascript();
   InstantService* instant_service =
       InstantServiceFactory::GetForProfile(profile_);

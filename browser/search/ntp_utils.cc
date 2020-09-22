@@ -5,8 +5,8 @@
 
 #include "brave/browser/search/ntp_utils.h"
 
+#include "brave/browser/profiles/profile_util.h"
 #include "brave/common/pref_names.h"
-#include "chrome/browser/profiles/profile.h"
 #include "chrome/common/pref_names.h"
 #include "components/pref_registry/pref_registry_syncable.h"
 #include "components/prefs/pref_registry_simple.h"
@@ -25,9 +25,10 @@ namespace new_tab_page {
 
 void MigrateNewTabPagePrefs(Profile* profile) {
   // Migrate over to the Chromium setting for shortcuts visible
+  // Only sets the value if user has changed it
   const PrefService::Preference* pref =
-      profile->GetPrefs()->FindPreference(prefs::kNtpShortcutsVisible);
-  if (!pref->HasUserSetting()) {
+      profile->GetPrefs()->FindPreference(kNewTabPageShowTopSites);
+  if (pref->HasUserSetting()) {
     profile->GetPrefs()->SetBoolean(prefs::kNtpShortcutsVisible,
       profile->GetPrefs()->GetBoolean(kNewTabPageShowTopSites));
   }

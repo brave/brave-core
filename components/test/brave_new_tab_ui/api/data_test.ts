@@ -21,7 +21,7 @@ describe('new tab data api tests', () => {
     it('can call an action from getActions', () => {
       expect(getActions().showTilesRemovedNotice(true)).toEqual({
         payload: { shouldShow: true },
-        type: topSitesTypes.GRID_SITES_SHOW_SITE_REMOVED_NOTIFICATION
+        type: topSitesTypes.SHOW_TILES_REMOVED_NOTICE
       })
     })
   })

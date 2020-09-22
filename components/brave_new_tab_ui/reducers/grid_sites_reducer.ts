@@ -16,7 +16,6 @@ import {
   deleteMostVisitedTile,
   reorderMostVisitedTile,
   restoreMostVisitedDefaults,
-  setMostVisitedSettings,
   undoMostVisitedTileAction
 } from '../api/topSites'
 
@@ -37,21 +36,20 @@ export const gridSitesReducer: Reducer<NewTab.GridSitesState | undefined> = (
   const startingState = state
 
   switch (action.type) {
-    case types.GRID_SITES_DATA_UPDATED: {
-      const { gridSites, customLinksEnabled, visible } = payload
-      setMostVisitedSettings(customLinksEnabled, visible, false)
+    case types.TILES_UPDATED: {
+      const { gridSites } = payload
       state = gridSitesState.tilesUpdated(state, gridSites)
       break
     }
 
-    case types.GRID_SITES_REMOVE: {
+    case types.TILE_REMOVED: {
       const { url } = payload
       deleteMostVisitedTile(url)
       state = gridSitesState.showTilesRemovedNotice(state, true)
       break
     }
 
-    case types.GRID_SITES_REORDER: {
+    case types.TILES_REORDERED: {
       const { gridSites, oldPos, newPos } = payload
       // "Super referral" entries (if present) are always at the beginning
       // Skip these indices when determining the new position for Chromium
@@ -74,18 +72,18 @@ export const gridSitesReducer: Reducer<NewTab.GridSitesState | undefined> = (
       break
     }
 
-    case types.GRID_SITES_RESTORE_DEFAULTS: {
+    case types.RESTORE_DEFAULT_TILES: {
       restoreMostVisitedDefaults()
       state = gridSitesState.showTilesRemovedNotice(state, false)
       break
     }
 
-    case types.GRID_SITES_SHOW_SITE_REMOVED_NOTIFICATION: {
+    case types.SHOW_TILES_REMOVED_NOTICE: {
       state = gridSitesState.showTilesRemovedNotice(state, payload.shouldShow)
       break
     }
 
-    case types.GRID_SITES_UNDO_ACTION: {
+    case types.UNDO_REMOVE_TILE: {
       undoMostVisitedTileAction()
       state = gridSitesState.showTilesRemovedNotice(state, false)
     }

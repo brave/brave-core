@@ -3,14 +3,19 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // you can obtain one at http://mozilla.org/MPL/2.0/.
 
-let areCustomLinksEnabled: boolean = true
-let areTopSitesVisible: boolean = true
+export type MostVisitedInfoChanged = {
+  tiles: NewTab.Site[]
+  custom_links_enabled: boolean
+  visible: boolean
+}
+
+export type MostVisitedInfoChangedHandler = (data: MostVisitedInfoChanged) => any
 
 export function updateMostVisitedInfo () {
   chrome.send('updateMostVisitedInfo')
 }
 
-export function addMostVistedInfoChangedListener (listener: any): void {
+export function addMostVistedInfoChangedListener (listener: MostVisitedInfoChangedHandler): void {
   window.cr.addWebUIListener('most-visited-info-changed', listener)
 }
 
@@ -31,18 +36,6 @@ export function undoMostVisitedTileAction (): void {
 }
 
 export function setMostVisitedSettings (customLinksEnabled: boolean,
-    visible: boolean, updateInstantService: boolean): void {
-  areCustomLinksEnabled = customLinksEnabled
-  areTopSitesVisible = visible
-  if (updateInstantService) {
-    chrome.send('setMostVisitedSettings', [customLinksEnabled, visible])
-  }
-}
-
-export function customLinksEnabled (): boolean {
-  return areCustomLinksEnabled
-}
-
-export function isVisible (): boolean {
-  return areTopSitesVisible
+    visible: boolean): void {
+  chrome.send('setMostVisitedSettings', [customLinksEnabled, visible])
 }
