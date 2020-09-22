@@ -22,13 +22,37 @@
 #include "brave/grit/brave_generated_resources.h"
 #include "content/public/browser/browser_context.h"
 #include "content/public/browser/browser_thread.h"
-#include "content/public/browser/render_process_host.h"
+#include "content/public/browser/render_frame_host.h"
 #include "content/public/browser/storage_partition.h"
+#include "content/public/browser/web_contents.h"
 #include "extensions/common/url_pattern.h"
 #include "mojo/public/cpp/bindings/remote.h"
 #include "services/network/network_context.h"
 #include "ui/base/resource/resource_bundle.h"
 #include "url/url_canon.h"
+
+namespace {
+
+content::WebContents* GetWebContents(
+    int render_process_id,
+    int render_frame_id,
+    int frame_tree_node_id) {
+  DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
+  content::WebContents* web_contents =
+      content::WebContents::FromFrameTreeNodeId(frame_tree_node_id);
+  if (!web_contents) {
+    content::RenderFrameHost* rfh =
+        content::RenderFrameHost::FromID(render_process_id, render_frame_id);
+    if (!rfh) {
+      return nullptr;
+    }
+    web_contents =
+        content::WebContents::FromRenderFrameHost(rfh);
+  }
+  return web_contents;
+}
+
+}  // namespace
 
 namespace brave {
 
@@ -88,14 +112,15 @@ class AdblockCnameResolveHostClient : public network::mojom::ResolveHostClient {
       std::shared_ptr<BraveRequestInfo> ctx) {
     cb_ = std::move(next_callback);
 
-    content::BrowserContext* context =
-        content::RenderProcessHost::FromID(ctx->render_process_id)
-            ->GetBrowserContext();
+    auto* web_contents = GetWebContents(ctx->render_process_id,
+                                        ctx->render_frame_id,
+                                        ctx->frame_tree_node_id);
+    DCHECK(web_contents);
 
-    auto* rfh = content::RenderFrameHost::FromID(ctx->render_process_id,
-                                                 ctx->render_frame_id);
-    const net::NetworkIsolationKey network_isolation_key =
-        rfh->GetNetworkIsolationKey();
+    content::BrowserContext* context = web_contents->GetBrowserContext();
+    DCHECK(context);
+
+    const auto network_isolation_key = ctx->network_isolation_key;
 
     network::mojom::ResolveHostParametersPtr optional_parameters =
         network::mojom::ResolveHostParameters::New();
@@ -158,15 +183,7 @@ void OnBeforeURLRequestAdBlockTP(const ResponseCallback& next_callback,
       base::BindOnce(&ShouldBlockAdWithOptionalCname, task_runner,
                      next_callback, ctx);
 
-  auto* rph = content::RenderProcessHost::FromID(ctx->render_process_id);
-  if (!rph) {
-    // This case occurs for the top-level request. It's okay to ignore the
-    // canonical name here since the top-level request can't be blocked
-    // anyways.
-    std::move(cname_callback).Run(base::Optional<std::string>());
-  } else {
-    new AdblockCnameResolveHostClient(std::move(cname_callback), ctx);
-  }
+  new AdblockCnameResolveHostClient(std::move(cname_callback), ctx);
 }
 
 int OnBeforeURLRequest_AdBlockTPPreWork(const ResponseCallback& next_callback,
