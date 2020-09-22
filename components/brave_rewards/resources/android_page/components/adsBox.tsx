@@ -184,7 +184,6 @@ class AdsBox extends React.Component<Props, {}> {
     let adNotificationsReceivedThisMonth = 0
     const {
       adsData,
-      enabledMain,
       safetyNetFailed,
       parameters
     } = this.props.rewardsData
@@ -201,7 +200,7 @@ class AdsBox extends React.Component<Props, {}> {
 
     // disabled / alert state
     const isDisabled = safetyNetFailed || !adsIsSupported || !adsUIEnabled
-    const toggle = !isDisabled && enabledMain
+    const toggle = !isDisabled
     // Sanity-check: ensure no action can be performed if the box isn't allowed
     // to be enabled
     const toggleAction = toggle
@@ -230,7 +229,7 @@ class AdsBox extends React.Component<Props, {}> {
         title={getLocale('adsTitle')}
         type={'ads'}
         description={getLocale('adsDesc', { currency : tokenString })}
-        settingsChild={this.adsSettings(adsEnabled && enabledMain)}
+        settingsChild={this.adsSettings(adsEnabled)}
         {...boxPropsExtra}
       >
         <List title={<StyledListContent>{getLocale('adsCurrentEarnings')}</StyledListContent>}>

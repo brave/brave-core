@@ -13,17 +13,14 @@ import SettingsMobile from './settingsMobile/settingsMobile'
 import {
   DisabledPanel,
   MediaBox,
-  WalletPanelDisabled,
   SiteBanner,
   Tip,
-  PanelWelcome,
   WalletPanel,
   WalletSummary,
   WalletSummarySlider,
   WalletWrapper
 } from '../components'
 import { BatColorIcon, WalletAddIcon } from 'brave-ui/components/icons'
-import WelcomePage from '../components/welcomePage'
 import { Notification, WalletState } from '../components/walletWrapper'
 
 const favicon = require('./img/brave-favicon.png')
@@ -107,14 +104,6 @@ storiesOf('Rewards/Concepts/Desktop', module)
     }
     return (<Settings {...{ walletProps }}/>)
   })
-  .add('Welcome Page', () => (
-    <WelcomePage
-      id={'welcome-page'}
-      onTOSClick={dummyOptInAction}
-      onPrivacyClick={dummyOptInAction}
-      optInAction={dummyOptInAction}
-    />
-  ))
   .add('Site Banner', withState({ donationAmounts, currentAmount: '5.0', showBanner: true }, (store) => {
     const mediaProvider = select<any>('Provider', { youtube: 'youtube', twitter: 'twitter', twitch: 'twitch', reddit: 'reddit', github: 'github' }, 'youtube')
     const screenName = text('Screen Name', '')
@@ -259,41 +248,6 @@ storiesOf('Rewards/Concepts/Desktop', module)
       </div>
     )
   }))
-  .add('Pre Opt-In', withState({ creatingOne: false, creatingTwo: false }, (store) => {
-    const creatingOne = () => {
-      store.set({ creatingOne: true })
-    }
-
-    const creatingTwo = () => {
-      store.set({ creatingTwo: true })
-    }
-
-    return (
-      <div>
-        <div style={{ position: 'absolute', top: '40px', left: '120px', width: '373px', minHeight: '446px', borderRadius: '8px', overflow: 'hidden' }}>
-          <PanelWelcome
-            variant={'one'}
-            creating={store.state.creatingOne}
-            optInAction={creatingOne}
-            moreLink={dummyOptInAction}
-            optInErrorAction={dummyOptInAction}
-            error={boolean('Wallet Creation Error', false)}
-          />
-        </div>
-        <div style={{ position: 'absolute', top: '40px', left: '565px', width: '373px', minHeight: '446px', borderRadius: '8px', overflow: 'hidden' }}>
-          <PanelWelcome
-            variant={'two'}
-            optInAction={creatingTwo}
-            creating={store.state.creatingTwo}
-            optInErrorAction={dummyOptInAction}
-            onTOSClick={dummyOptInAction}
-            onPrivacyClick={dummyOptInAction}
-            error={boolean('Wallet Creation Error', false)}
-          />
-        </div>
-      </div>
-    )
-  }))
   .add('Disabled Panel', () => {
     const onPrivateLink = () => {
       console.log('open up private tab info')
@@ -326,13 +280,7 @@ storiesOf('Rewards/Concepts/Desktop', module)
             }
           ]}
           showSecActions={false}
-        >
-          <WalletPanelDisabled
-            onTOSClick={doNothing}
-            onPrivacyClick={doNothing}
-            onEnable={doNothing}
-          />
-        </WalletWrapper>
+        />
         <div style={{ position: 'absolute', top: '40px', left: '500px', width: '330px', borderRadius: '8px', overflow: 'hidden' }}>
           <DisabledPanel isPrivate={true} onLinkOpen={onPrivateLink} />
         </div>
@@ -507,10 +455,4 @@ storiesOf('Rewards/Concepts/Desktop', module)
     )
   }))
 storiesOf('Rewards/Concepts/Mobile', module)
-  .add('Welcome Page', () => (
-    <WelcomePage
-      id={'welcome-page'}
-      optInAction={dummyOptInAction}
-    />
-  ))
   .add('Settings', () => <SettingsMobile />)

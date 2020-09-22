@@ -45,15 +45,6 @@ class ContributeBox extends React.Component<Props, State> {
     }
   }
 
-  componentDidUpdate (prevProps: Props) {
-    if (
-      prevProps.rewardsData.enabledMain &&
-      !this.props.rewardsData.enabledMain
-    ) {
-      this.setState({ settings: false })
-    }
-  }
-
   getContributeRows = (list: Rewards.Publisher[]) => {
     return list.map((item: Rewards.Publisher) => {
       const verified = utils.isPublisherConnectedOrVerified(item.status)
@@ -153,14 +144,10 @@ class ContributeBox extends React.Component<Props, State> {
       contributionNonVerified,
       contributionVideos,
       contributionMonthly,
-      enabledMain,
       ui
     } = this.props.rewardsData
-    const { onlyAnonWallet } = ui
 
-    if (!enabledMain) {
-      return null
-    }
+    const { onlyAnonWallet } = ui
 
     return (
       <Grid columns={1} customStyle={{ maxWidth: '270px', margin: '0 auto' }}>
@@ -237,7 +224,6 @@ class ContributeBox extends React.Component<Props, State> {
 
   render () {
     const {
-      enabledMain,
       parameters,
       contributionMonthly,
       enabledContribute,
@@ -260,8 +246,8 @@ class ContributeBox extends React.Component<Props, State> {
         title={getLocale('contributionTitle')}
         type={'contribute'}
         description={getLocale('contributionDesc')}
-        toggle={enabledMain}
-        checked={enabledMain ? enabledContribute : false}
+        toggle={true}
+        checked={enabledContribute}
         settingsChild={this.contributeSettings(monthlyList)}
         toggleAction={this.onToggleContribution}
       >
