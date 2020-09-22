@@ -390,7 +390,7 @@ void GitHub::SavePublisherInfo(
 
   if (publisher_key.empty()) {
     callback(ledger::type::Result::LEDGER_ERROR, nullptr);
-    BLOG(0, "Publisher key is missing for: " << media_key);
+    BLOG(0, "Publisher key is missing");
     return;
   }
 

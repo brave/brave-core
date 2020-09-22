@@ -1837,7 +1837,7 @@ void RewardsServiceImpl::FetchFavIcon(
 
   auto it = current_media_fetchers_.find(url);
   if (it != current_media_fetchers_.end()) {
-    BLOG(1, "Already fetching favicon: " << url);
+    BLOG(1, "Already fetching favicon");
     return;
   }
 
