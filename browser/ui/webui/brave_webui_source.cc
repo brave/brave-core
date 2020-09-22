@@ -331,7 +331,7 @@ void CustomizeWebUIHTMLSource(const std::string &name,
         { "bitcoinDotComWidgetEnterAmount", IDS_BITCOIN_DOT_COM_ENTER_AMOUNT },
         { "bitcoinDotComWidgetFooterCopyOne", IDS_BITCOIN_DOT_COM_FOOTER_COPY_ONE },      // NOLINT
         { "bitcoinDotComWidgetFooterCopyTwo", IDS_BITCOIN_DOT_COM_FOOTER_COPY_TWO },      // NOLINT
-        { "bitcoinDotComWidgetBuy", IDS_BINANCE_WIDGET_BUY },        
+        { "bitcoinDotComWidgetBuy", IDS_BINANCE_WIDGET_BUY },
       }
     }, {
       std::string("wallet"), {

@@ -218,7 +218,7 @@
       <message name="IDS_BRAVE_NEW_TAB_REWARDS_WIDGET_DESC" desc="Rewards widget description">Earn tokens for watching privacy-respecting ads.</message>
       <message name="IDS_BRAVE_NEW_TAB_BINANCE_WIDGET_DESC" desc="Binance widget description">Trade Crypto on Binance directly in your browser.</message>
       <message name="IDS_BRAVE_NEW_TAB_GEMINI_WIDGET_DESC" desc="Gemini widget description">Trade Crypto on Gemini directly in your browser.</message>
-      <message name="IDS_BRAVE_NEW_TAB_BITCOIN_DOT_COM_WIDGET_DESC" desc="Bitcoin.com widget description">Purchase crypto from Bitcoin.com, powered by Moonpay.</message>
+      <message name="IDS_BRAVE_NEW_TAB_BITCOIN_DOT_COM_WIDGET_DESC" desc="Bitcoin.com widget description">Purchase crypto from Bitcoin.com.</message>
 
       <!-- WebUI private tab resources -->
       <message name="IDS_BRAVE_PRIVATE_NEW_TAB_LEARN_MORE" desc="">Learn more</message>
