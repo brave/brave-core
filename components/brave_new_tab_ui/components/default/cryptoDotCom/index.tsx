@@ -73,6 +73,7 @@ interface Props {
   optInBTCPrice: boolean
   tickerPrices: Record<string, TickerPrice>
   losersGainers: Record<string, AssetRanking[]>
+  supportedPairs: Record<string, string[]>
   charts: Record<string, ChartDataPoint[]>
   stackPosition: number
   onShowContent: () => void
@@ -80,6 +81,7 @@ interface Props {
   onTotalPriceOptIn: () => void
   onBtcPriceOptIn: () => void
   onSetLosersGainers: () => Promise<void>
+  onSetSupportedPairs: () => Promise<void>
   onSetTickerPrices: (assets: string[]) => Promise<void>
   onSetCharts: (asset: string[]) => Promise<void>
   onUpdateActions: () => Promise<void[]>
@@ -149,27 +151,36 @@ class CryptoDotCom extends React.PureComponent<Props, State> {
   }
 
   handleViewMarketsClick = async () => {
-    await this.props.onSetTickerPrices(topMovers)
-    await this.props.onSetLosersGainers()
+    await Promise.all([
+      this.props.onSetTickerPrices(topMovers),
+      this.props.onSetLosersGainers()
+    ])
     this.setSelectedView('topMovers')
   }
 
   handleAssetDetailClick = async (asset: string) => {
-    await this.props.onSetCharts([asset])
+    await Promise.all([
+      this.props.onSetCharts([asset]),
+      this.props.onSetSupportedPairs()
+    ])
     this.setSelectedAsset(asset)
   }
 
   plotData ({ data, chartHeight, chartWidth }: ChartConfig) {
-    const dataPoints = data.map((day: any) => day.c)
-    const chartArea = chartHeight - 2
-    const max = Math.max(...dataPoints)
-    const min = Math.min(...dataPoints)
-    const pixelsPerPoint = (max - min) / chartArea
+    const pointsPerDay = 4
+    const daysInrange = 7
+    const yHighs = data.map((point: ChartDataPoint) => point.h)
+    const yLows = data.map((point: ChartDataPoint) => point.l)
+    const dataPoints = data.map((point: ChartDataPoint) => point.c)
+    const chartAreaY = chartHeight - 2
+    const max = Math.max(...yHighs)
+    const min = Math.min(...yLows)
+    const pixelsPerPoint = (max - min) / chartAreaY
     return dataPoints
       .map((v, i) => {
         const y = (v - min) / pixelsPerPoint
-        const x = i * (chartWidth / 6)
-        return `${x},${chartArea - y}`
+        const x = i * (chartWidth / (pointsPerDay * daysInrange))
+        return `${x},${chartAreaY - y}`
       })
       .join('\n')
   }
@@ -256,11 +267,12 @@ class CryptoDotCom extends React.PureComponent<Props, State> {
   renderAssetDetailView () {
     const { selectedAsset: currency } = this.state
     const { price = null, volume = null } = this.props.tickerPrices[currency] || {}
+    const chartData = this.props.charts[currency] || []
+    const pairs = this.props.supportedPairs[currency] || []
 
     const losersGainers = this.transformLosersGainers(this.props.losersGainers || {})
     const { percentChange = null } = losersGainers[currency] || {}
 
-    const chartData = this.props.charts[currency] || []
     const chartHeight = 100
     const chartWidth = 309
     return (
@@ -272,7 +284,7 @@ class CryptoDotCom extends React.PureComponent<Props, State> {
             justifyContent: 'space-between',
             alignItems: 'center',
             width: '100%',
-            borderBottom: '1px solid #979797'
+            borderBottom: '1px solid #4F5661'
           }}
         >
           <FlexItem>
@@ -299,7 +311,7 @@ class CryptoDotCom extends React.PureComponent<Props, State> {
           hasPadding={true}
           style={{
             width: '100%',
-            borderBottom: '1px solid #979797'
+            borderBottom: '1px solid #4F5661'
           }}
         >
           {(price !== null) && <Text
@@ -318,7 +330,7 @@ class CryptoDotCom extends React.PureComponent<Props, State> {
             <polyline
               fill='none'
               stroke='#44B0FF'
-              stroke-width='1'
+              stroke-width='3'
               points={this.plotData({
                 data: chartData,
                 chartHeight,
@@ -342,8 +354,9 @@ class CryptoDotCom extends React.PureComponent<Props, State> {
           </div>
           <div style={{ marginTop: '1em' }}>
             <Text small={true} $color='light' style={{ paddingBottom: '0.2rem' }}>SUPPORTED PAIRS</Text>
-            <ActionButton small={true} light={true} inline={true} style={{ marginRight: 5 }}>BTC/CRO</ActionButton>
-            <ActionButton small={true} light={true} inline={true}>BTC/USDT</ActionButton>
+            {pairs.map((pair, i) => (
+              <ActionButton key={pair} small={true} inline={true} style={{ marginRight: i === 0 ? 5 : 0, marginBottom: 5 }}>{pair.replace('_', '/')}</ActionButton>
+            ))}
           </div>
         </FlexItem>
       </Box>

@@ -8,5 +8,6 @@ export const enum types {
   ON_BTC_PRICE_OPT_IN = '@@cryptoDotCom/ON_BTC_PRICE_OPT_IN',
   SET_TICKER_PRICES = '@@cryptoDotCom/SET_TICKER_PRICES',
   SET_LOSERS_GAINERS = '@@cryptoDotCom/SET_LOSERS_GAINERS',
-  SET_CHART_DATA = '@@cryptoDotCom/SET_CHART_DATA'
+  SET_CHART_DATA = '@@cryptoDotCom/SET_CHART_DATA',
+  SET_SUPPORTED_PAIRS = '@@cryptoDotCom/SET_SUPPORTED_PAIRS'
 }

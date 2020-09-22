@@ -365,8 +365,10 @@ class NewTabPage extends React.Component<Props, State> {
     this.props.actions.onTotalPriceOptIn()
   }
   onBtcPriceOptIn = async () => {
-    await this.fetchCryptoDotComTickerPrices(['BTC'])
-    await this.fetchCryptoDotComLosersGainers()
+    await Promise.all([
+      this.fetchCryptoDotComTickerPrices(['BTC']),
+      this.fetchCryptoDotComLosersGainers()
+    ])
     this.props.actions.onBtcPriceOptIn()
   }
 
@@ -573,10 +575,26 @@ class NewTabPage extends React.Component<Props, State> {
     })
   }
 
+  getCryptoDotComAssetRankings = () => {
+    return new Promise((resolve: Function) => {
+      chrome.cryptoDotCom.getAssetRankings((resp: any) => {
+        resolve(resp)
+      })
+    })
+  }
+
   getCryptoDotComChartData = (asset: string) => {
     return new Promise((resolve: Function) => {
       chrome.cryptoDotCom.getChartData(`${asset}_USDT`, (resp: any) => {
         resolve({ [asset]: resp })
+      })
+    })
+  }
+
+  getCryptoDotComSupportedPairs = () => {
+    return new Promise((resolve: Function) => {
+      chrome.cryptoDotCom.getSupportedPairs((resp: any) => {
+        resolve(resp)
       })
     })
   }
@@ -596,9 +614,13 @@ class NewTabPage extends React.Component<Props, State> {
   }
 
   fetchCryptoDotComLosersGainers = async () => {
-    chrome.cryptoDotCom.getAssetRankings((resp: any) => {
-      this.props.actions.setCryptoDotComLosersGainers(resp)
-    })
+    const losersGainers = await this.getCryptoDotComAssetRankings().then((resp: any) => resp)
+    this.props.actions.setCryptoDotComLosersGainers(losersGainers)
+  }
+
+  fetchCryptoDotComSupportedPairs = async () => {
+    const pairs = await this.getCryptoDotComSupportedPairs().then((resp: any) => resp)
+    this.props.actions.setCryptoDotComSupportedPairs(pairs)
   }
 
   cryptoDotComUpdateActions = async () => {

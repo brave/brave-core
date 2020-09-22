@@ -72,7 +72,7 @@ export const Text = styled<StyleProps, 'p'>('p')`
  `
 
 export const Box = styled<StyleProps, 'div'>('div')`
-  border: 1px solid #979797;
+  border: 1px solid #4F5661;
   padding: ${p => (p.noPadding ? '0' : '0.5em')};
   border-radius: 2px;
   display: ${p => (p.isFlex ? 'flex' : 'block')};
@@ -152,7 +152,7 @@ export const List = styled(Box)`
  `
 
 export const ListItem = styled<StyleProps, 'li'>('li')`
-  border-bottom: 1px solid #979797;
+  border-bottom: 1px solid #4F5661;
   padding: 5px;
   border-radius: 2px;
   display: ${p => (p.isFlex ? 'flex' : 'block')};
@@ -173,7 +173,7 @@ export const AssetIconWrapper = styled<StyleProps, 'div'>('div')`
 
 export const AssetIcon = styled<StyleProps, 'span'>('span')`
   font-size: 0.9em;
-  margin-top: 0.2em;
+  margin-top: 0.3em;
   margin-left: 0.2em;
  `
 

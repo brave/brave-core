@@ -185,6 +185,7 @@ declare namespace NewTab {
     optInBTCPrice: boolean
     tickerPrices: Record<string, any>
     losersGainers: Record<string, any>
+    supportedPairs: Record<string, any>
     charts: Record<string, any>
   }
 

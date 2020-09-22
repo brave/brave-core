@@ -5,6 +5,12 @@
 import { Reducer } from 'redux'
 import { types } from '../constants/cryptoDotCom_types'
 
+interface SupportedPair {
+  base: string
+  pair: string
+  quote: string
+}
+
 const cryptoDotComReducer: Reducer<NewTab.State | undefined> = (state: NewTab.State, action) => {
   const payload = action.payload
 
@@ -38,6 +44,18 @@ const cryptoDotComReducer: Reducer<NewTab.State | undefined> = (state: NewTab.St
         ...state.cryptoDotComState.charts,
         ...payload
       }
+      break
+
+    case types.SET_SUPPORTED_PAIRS:
+      state = { ...state }
+      const supportedPairs = payload.reduce((pairs: object, currPair: SupportedPair) => {
+        const { base, pair } = currPair
+        pairs[base] = pairs[base]
+          ? [...pairs[base], pair]
+          : [pair]
+        return pairs
+      }, {})
+      state.cryptoDotComState.supportedPairs = supportedPairs
       break
 
     default:
