@@ -96,7 +96,7 @@ class OnionLocationButtonView : public views::LabelButton,
     SetBorder(views::CreateEmptyBorder(
         GetLayoutInsets(LOCATION_BAR_ICON_INTERIOR_PADDING)));
     set_has_ink_drop_action_on_click(true);
-    set_ink_drop_visible_opacity(kToolbarInkDropVisibleOpacity);
+    SetInkDropVisibleOpacity(kToolbarInkDropVisibleOpacity);
     UpdateBorder();
     // Ensure focus ring follows border
     views::HighlightPathGenerator::Install(
