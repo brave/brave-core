@@ -30,15 +30,19 @@
 #include "brave/components/sync/driver/brave_sync_profile_sync_service.h"
 #include "ios/chrome/browser/sync/sync_setup_service.h"
 #include "ios/chrome/browser/sync/sync_setup_service_factory.h"
+#include "ios/web/public/thread/web_thread.h"
 
 BraveSyncWorker::BraveSyncWorker(ChromeBrowserState* browser_state)
-    : browser_state_(browser_state) {}
+    : browser_state_(browser_state) {
+  DCHECK_CURRENTLY_ON(web::WebThread::UI);
+}
 
 BraveSyncWorker::~BraveSyncWorker() {
   // Observer will be removed by ScopedObserver
 }
 
 bool BraveSyncWorker::SetSyncEnabled(bool enabled) {
+  DCHECK_CURRENTLY_ON(web::WebThread::UI);
   auto* setup_service =
       SyncSetupServiceFactory::GetForBrowserState(browser_state_);
   auto* sync_service =
@@ -59,6 +63,7 @@ bool BraveSyncWorker::SetSyncEnabled(bool enabled) {
 }
 
 const syncer::DeviceInfo* BraveSyncWorker::GetLocalDeviceInfo() {
+  DCHECK_CURRENTLY_ON(web::WebThread::UI);
   auto* device_info_service =
       DeviceInfoSyncServiceFactory::GetForBrowserState(browser_state_);
 
@@ -70,6 +75,7 @@ const syncer::DeviceInfo* BraveSyncWorker::GetLocalDeviceInfo() {
 
 std::vector<std::unique_ptr<syncer::DeviceInfo>>
 BraveSyncWorker::GetDeviceList() {
+  DCHECK_CURRENTLY_ON(web::WebThread::UI);
   auto* device_info_service =
       DeviceInfoSyncServiceFactory::GetForBrowserState(browser_state_);
 
@@ -82,6 +88,7 @@ BraveSyncWorker::GetDeviceList() {
 }
 
 std::string BraveSyncWorker::GetOrCreateSyncCode() {
+  DCHECK_CURRENTLY_ON(web::WebThread::UI);
   auto* sync_service = GetSyncService();
   std::string sync_code;
   if (sync_service) {
@@ -91,6 +98,7 @@ std::string BraveSyncWorker::GetOrCreateSyncCode() {
 }
 
 bool BraveSyncWorker::SetSyncCode(const std::string& sync_code) {
+  DCHECK_CURRENTLY_ON(web::WebThread::UI);
   if (sync_code.empty())
     return false;
 
@@ -102,6 +110,7 @@ bool BraveSyncWorker::SetSyncCode(const std::string& sync_code) {
 }
 
 bool BraveSyncWorker::ResetSync() {
+  DCHECK_CURRENTLY_ON(web::WebThread::UI);
   auto* sync_service =
       ProfileSyncServiceFactory::GetForBrowserState(browser_state_);
 
@@ -134,6 +143,7 @@ bool BraveSyncWorker::ResetSync() {
 }
 
 syncer::BraveProfileSyncService* BraveSyncWorker::GetSyncService() const {
+  DCHECK_CURRENTLY_ON(web::WebThread::UI);
   return static_cast<syncer::BraveProfileSyncService*>(
                  ProfileSyncServiceFactory::GetForBrowserState(browser_state_));
 }
@@ -176,6 +186,7 @@ void BraveSyncWorker::OnLocalDeviceInfoDeleted() {
 }
 
 bool BraveSyncWorker::IsSyncEnabled() {
+  DCHECK_CURRENTLY_ON(web::WebThread::UI);
   auto* setup_service =
       SyncSetupServiceFactory::GetForBrowserState(browser_state_);
 
@@ -186,6 +197,7 @@ bool BraveSyncWorker::IsSyncEnabled() {
 }
 
 bool BraveSyncWorker::IsSyncFeatureActive() {
+  DCHECK_CURRENTLY_ON(web::WebThread::UI);
   auto* sync_service =
       ProfileSyncServiceFactory::GetForBrowserState(browser_state_);
 

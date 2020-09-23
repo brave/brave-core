@@ -16,6 +16,7 @@
 #include "ios/chrome/browser/browser_state/chrome_browser_state.h"
 #include "ios/chrome/browser/browser_state/chrome_browser_state_manager.h"
 #include "ios/chrome/browser/undo/bookmark_undo_service_factory.h"
+#include "ios/web/public/thread/web_thread.h"
 #import "net/base/mac/url_conversions.h"
 #include "url/gurl.h"
 
@@ -239,6 +240,7 @@
 @implementation BraveBookmarksAPI
 - (instancetype)init {
   if ((self = [super init])) {
+    DCHECK_CURRENTLY_ON(web::WebThread::UI);
     ios::ChromeBrowserStateManager* browserStateManager =
         GetApplicationContext()->GetChromeBrowserStateManager();
     ChromeBrowserState* browserState =
@@ -257,6 +259,7 @@
 }
 
 - (BookmarkNode *)rootNode {
+  DCHECK_CURRENTLY_ON(web::WebThread::UI);
   const bookmarks::BookmarkNode *node = bookmarkModel_->root_node();
   if (node) {
     return [[BookmarkNode alloc] initWithNode:node model:bookmarkModel_];
@@ -265,6 +268,7 @@
 }
 
 - (BookmarkNode *)otherNode {
+  DCHECK_CURRENTLY_ON(web::WebThread::UI);
   const bookmarks::BookmarkNode *node = bookmarkModel_->other_node();
   if (node) {
     return [[BookmarkNode alloc] initWithNode:node model:bookmarkModel_];
@@ -273,6 +277,7 @@
 }
 
 - (BookmarkNode *)mobileNode {
+  DCHECK_CURRENTLY_ON(web::WebThread::UI);
   const bookmarks::BookmarkNode *node = bookmarkModel_->mobile_node();
   if (node) {
     return [[BookmarkNode alloc] initWithNode:node model:bookmarkModel_];
@@ -281,6 +286,7 @@
 }
 
 - (BookmarkNode *)desktopNode {
+  DCHECK_CURRENTLY_ON(web::WebThread::UI);
   const bookmarks::BookmarkNode *node = bookmarkModel_->bookmark_bar_node();
   if (node) {
     return [[BookmarkNode alloc] initWithNode:node model:bookmarkModel_];
@@ -301,16 +307,18 @@
 }
 
 - (bool)isEditingEnabled {
+  DCHECK_CURRENTLY_ON(web::WebThread::UI);
   ios::ChromeBrowserStateManager* browserStateManager =
       GetApplicationContext()->GetChromeBrowserStateManager();
   ChromeBrowserState* browserState =
       browserStateManager->GetLastUsedBrowserState();
-  
+
   PrefService* prefs = user_prefs::UserPrefs::Get(browserState);
   return prefs->GetBoolean(bookmarks::prefs::kEditBookmarksEnabled);
 }
 
 - (BookmarkNode *)createFolderWithTitle:(NSString *)title {
+  DCHECK_CURRENTLY_ON(web::WebThread::UI);
   if ([self mobileNode]) {
     return [self createFolderWithParent:[self mobileNode] title:title];
   }
@@ -318,9 +326,10 @@
 }
 
 - (BookmarkNode *)createFolderWithParent:(BookmarkNode *)parent title:(NSString *)title {
+  DCHECK_CURRENTLY_ON(web::WebThread::UI);
   DCHECK(parent);
   const bookmarks::BookmarkNode* defaultFolder = [parent getNode];
-  
+
   const bookmarks::BookmarkNode* new_node = bookmarkModel_->AddFolder(defaultFolder, defaultFolder->children().size(), base::SysNSStringToUTF16(title));
   if (new_node) {
     return [[BookmarkNode alloc] initWithNode:new_node model:bookmarkModel_];
@@ -329,6 +338,7 @@
 }
 
 - (BookmarkNode *)createBookmarkWithTitle:(NSString *)title url:(NSURL *)url {
+  DCHECK_CURRENTLY_ON(web::WebThread::UI);
   if ([self mobileNode]) {
     return [self createBookmarkWithParent:[self mobileNode] title:title withUrl:url];
   }
@@ -336,9 +346,10 @@
 }
 
 - (BookmarkNode *)createBookmarkWithParent:(BookmarkNode *)parent title:(NSString *)title withUrl:(NSURL *)url {
+  DCHECK_CURRENTLY_ON(web::WebThread::UI);
   DCHECK(parent);
   const bookmarks::BookmarkNode* defaultFolder = [parent getNode];
-  
+
   const bookmarks::BookmarkNode* new_node = bookmarkModel_->AddURL(defaultFolder, defaultFolder->children().size(), base::SysNSStringToUTF16(title), net::GURLWithNSURL(url));
   if (new_node) {
     return [[BookmarkNode alloc] initWithNode:new_node model:bookmarkModel_];
@@ -347,14 +358,17 @@
 }
 
 - (void)removeBookmark:(BookmarkNode *)bookmark {
+  DCHECK_CURRENTLY_ON(web::WebThread::UI);
   [bookmark remove];
 }
 
 - (void)removeAll {
-    bookmarkModel_->RemoveAllUserBookmarks();
+  DCHECK_CURRENTLY_ON(web::WebThread::UI);
+  bookmarkModel_->RemoveAllUserBookmarks();
 }
 
 - (NSArray<BookmarkNode *> *)searchWithQuery:(NSString *)query maxCount:(NSUInteger)maxCount {
+  DCHECK_CURRENTLY_ON(web::WebThread::UI);
   DCHECK(bookmarkModel_->loaded());
   bookmarks::QueryFields queryFields;
   queryFields.word_phrase_query.reset(
@@ -372,7 +386,8 @@
 }
 
 - (void)undo {
-    bookmarkUndoService_->undo_manager()->Undo();
+  DCHECK_CURRENTLY_ON(web::WebThread::UI);
+  bookmarkUndoService_->undo_manager()->Undo();
 }
 
 - (bookmarks::BookmarkModel *)getModel {

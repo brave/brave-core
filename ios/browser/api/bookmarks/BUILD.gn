@@ -25,6 +25,7 @@ source_set("bookmarks") {
     "//ios/chrome/browser/bookmarks",
     "//ios/chrome/browser/browser_state",
     "//ios/chrome/browser/undo",
+    "//ios/web/public/thread",
     "//net",
     "//url",
   ]
