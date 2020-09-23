@@ -111,6 +111,8 @@ interface State {
   currentConvertFee: string
   currentConvertTransAmount: string
   currentConvertExpiryTime: number
+  currentConvertMinimum: string
+  underMinimumConvertAmount: boolean
 }
 
 interface Props {
@@ -131,7 +133,7 @@ interface Props {
   binanceClientUrl: string
   assetDepositInfo: Record<string, any>
   assetDepoitQRCodeSrcs: Record<string, string>
-  convertAssets: Record<string, string[]>
+  convertAssets: Record<string, Record<string, string>[]>
   accountBTCValue: string
   accountBTCUSDValue: string
   disconnectInProgress: boolean
@@ -189,7 +191,9 @@ class Binance extends React.PureComponent<Props, State> {
       currentQRAsset: '',
       convertFromShowing: false,
       convertToShowing: false,
-      currentConvertExpiryTime: 30
+      currentConvertExpiryTime: 30,
+      currentConvertMinimum: '',
+      underMinimumConvertAmount: false
     }
     this.fiatList = currencyData.fiatList
     this.currencyNames = {
@@ -299,7 +303,9 @@ class Binance extends React.PureComponent<Props, State> {
       currentConvertPrice: '',
       currentConvertFee: '',
       currentConvertTransAmount: '',
-      currentConvertExpiryTime: 30
+      currentConvertExpiryTime: 30,
+      currentConvertMinimum: '',
+      underMinimumConvertAmount: false
     })
   }
 
@@ -315,7 +321,9 @@ class Binance extends React.PureComponent<Props, State> {
       currentConvertPrice: '',
       currentConvertFee: '',
       currentConvertTransAmount: '',
-      currentConvertExpiryTime: 30
+      currentConvertExpiryTime: 30,
+      currentConvertMinimum: '',
+      underMinimumConvertAmount: false
     })
   }
 
@@ -463,6 +471,27 @@ class Binance extends React.PureComponent<Props, State> {
     this.setState({ currentTradeAsset: asset })
   }
 
+  checkMeetsConvertMinimum = () => {
+    const { convertAssets } = this.props
+    const {
+      currentConvertFrom,
+      currentConvertTo,
+      currentConvertAmount
+    } = this.state
+
+    const subSelector = convertAssets[currentConvertFrom].find((item: any) => {
+      return item.asset === currentConvertTo
+    })
+
+    const minAmount = (subSelector && subSelector['minAmount']) || '0.00'
+    const meetsMinimum = parseFloat(currentConvertAmount) >= parseFloat(minAmount)
+
+    return {
+      success: meetsMinimum,
+      minimum: this.formatCryptoBalance(minAmount)
+    }
+  }
+
   shouldShowConvertPreview = () => {
     const {
       currentConvertFrom,
@@ -475,6 +504,15 @@ class Binance extends React.PureComponent<Props, State> {
     if (!accountBalances[currentConvertFrom] ||
         parseFloat(currentConvertAmount) >= parseFloat(accountBalances[currentConvertFrom])) {
       this.setState({ insufficientFunds: true })
+      return
+    }
+
+    const { success, minimum } = this.checkMeetsConvertMinimum()
+    if (!success) {
+      this.setState({
+        currentConvertMinimum: minimum,
+        underMinimumConvertAmount: true
+      })
       return
     }
 
@@ -683,6 +721,24 @@ class Binance extends React.PureComponent<Props, State> {
         </InvalidTitle>
         <InvalidCopy>
           {getLocale('binanceWidgetInsufficientFunds')}
+        </InvalidCopy>
+        <GenButton onClick={this.retryConvert}>
+          {getLocale('binanceWidgetRetry')}
+        </GenButton>
+      </InvalidWrapper>
+    )
+  }
+
+  renderUnderMinimumConvertView = () => {
+    const { currentConvertFrom, currentConvertMinimum } = this.state
+
+    return (
+      <InvalidWrapper>
+        <InvalidTitle>
+          {getLocale('binanceWidgetUnableToConvert')}
+        </InvalidTitle>
+        <InvalidCopy>
+          {getLocale('binanceWidgetUnderMinimum')} {currentConvertMinimum} {currentConvertFrom}
         </InvalidCopy>
         <GenButton onClick={this.retryConvert}>
           {getLocale('binanceWidgetRetry')}
@@ -1067,7 +1123,9 @@ class Binance extends React.PureComponent<Props, State> {
           {
             convertToShowing
             ? <AssetItems>
-                {compatibleCurrencies.map((asset: string, i: number) => {
+                {compatibleCurrencies.map((item: Record<string, string>, i: number) => {
+                  const { asset } = item
+
                   if (asset === currentConvertTo) {
                     return null
                   }
@@ -1308,7 +1366,8 @@ class Binance extends React.PureComponent<Props, State> {
       insufficientFunds,
       convertFailed,
       convertSuccess,
-      showConvertPreview
+      showConvertPreview,
+      underMinimumConvertAmount
     } = this.state
     const {
       authInvalid,
@@ -1321,6 +1380,8 @@ class Binance extends React.PureComponent<Props, State> {
       return this.renderQRView()
     } else if (insufficientFunds) {
       return this.renderInsufficientFundsView()
+    } else if (underMinimumConvertAmount) {
+      return this.renderUnderMinimumConvertView()
     } else if (convertFailed) {
       return this.renderUnableToConvertView()
     } else if (convertSuccess) {

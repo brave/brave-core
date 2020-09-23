@@ -430,7 +430,8 @@ bool BinanceService::GetConvertAssets(GetConvertAssetsCallback callback) {
 void BinanceService::OnGetConvertAssets(GetConvertAssetsCallback callback,
     const int status, const std::string& body,
     const std::map<std::string, std::string>& headers) {
-  std::map<std::string, std::vector<std::string>> assets;
+  std::map<std::string, std::vector<
+      std::map<std::string, std::string>>> assets;
 
   if (status >= 200 && status <= 299) {
     BinanceJSONParser::GetConvertAssetsFromJSON(body, &assets);
