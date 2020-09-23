@@ -1,5 +1,5 @@
 diff --git a/content/browser/permissions/permission_controller_impl.cc b/content/browser/permissions/permission_controller_impl.cc
-index 259186652ba17b85c65657865ad78a6ad997d00c..a8405e5951fc819b514788875e9084ea7625ddb7 100644
+index ddd6656e035c4448905c7d9beb0896a13ad17ad0..c5dd4d3bbde92b939a17dc0c6d409070363feb39 100644
 --- a/content/browser/permissions/permission_controller_impl.cc
 +++ b/content/browser/permissions/permission_controller_impl.cc
 @@ -67,6 +67,7 @@ PermissionToSchedulingFeature(PermissionType permission_name) {

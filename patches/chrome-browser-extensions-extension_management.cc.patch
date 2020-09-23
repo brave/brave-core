@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/extensions/extension_management.cc b/chrome/browser/extensions/extension_management.cc
-index 45300358307ddc086f175a8ef31f3dabfc79e85f..33a911a6defa8e5220b67d177196fcb00c15f46d 100644
+index 9d8854fde0bc139a3c7056567daf1297d13b3e70..accce246cf3f47021d032c6834e2c1f124b3aa7a 100644
 --- a/chrome/browser/extensions/extension_management.cc
 +++ b/chrome/browser/extensions/extension_management.cc
 @@ -17,6 +17,7 @@

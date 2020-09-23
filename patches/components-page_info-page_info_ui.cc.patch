@@ -1,9 +1,9 @@
 diff --git a/components/page_info/page_info_ui.cc b/components/page_info/page_info_ui.cc
-index 87d77aa394f81887d8a4923fbd4abaca8ed8631c..71dd781811ff7c547cd7d77c118b72d3d4e07493 100644
+index 3da415e052e9a4f047f4aaeea1d5cc5677602677..aa1894cccbef67ccee310dc629c468b7e6d7c419 100644
 --- a/components/page_info/page_info_ui.cc
 +++ b/components/page_info/page_info_ui.cc
-@@ -555,6 +555,7 @@ const gfx::ImageSkia PageInfoUI::GetPermissionIcon(const PermissionInfo& info,
-                                                    SkColor related_text_color) {
+@@ -554,6 +554,7 @@ const gfx::ImageSkia PageInfoUI::GetPermissionIcon(
+     SkColor related_text_color) {
    const gfx::VectorIcon* icon = &gfx::kNoneIcon;
    switch (info.type) {
 +    BRAVE_PAGE_INFO_UI_GET_PERMISSION_ICON
