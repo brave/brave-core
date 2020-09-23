@@ -45,6 +45,7 @@
         "additionalProperties": false,
         "required": [
           "priority",
+          "ptr",
           "campaignId",
           "advertiserId",
           "startAt",
@@ -59,6 +60,9 @@
             "type": "string"
           },
           "priority": {
+            "type": "number"
+          },
+          "ptr": {
             "type": "number"
           },
           "advertiserId": {

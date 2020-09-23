@@ -260,7 +260,7 @@ typedef NS_ENUM(NSInteger, BATInlineTipsPlatforms) {
 
 
 
-@class BATContributionInfo, BATContributionPublisher, BATPublisherInfo, BATPublisherBanner, BATPendingContribution, BATPendingContributionInfo, BATVisitData, BATRewardsParameters, BATBalance, BATAutoContributeProperties, BATMediaEventInfo, BATExternalWallet, BATBalanceReportInfo, BATActivityInfoFilterOrderPair, BATActivityInfoFilter, BATRewardsInternalsInfo, BATServerPublisherInfo, BATTransferFee, BATContributionQueue, BATContributionQueuePublisher, BATPromotion, BATUnblindedToken, BATClientInfo, BATRecurringTip, BATTransactionReportInfo, BATContributionReportInfo, BATMonthlyReportInfo, BATCredsBatch, BATSKUOrder, BATSKUOrderItem, BATSKUTransaction, BATUrlResponse;
+@class BATContributionInfo, BATContributionPublisher, BATPublisherInfo, BATPublisherBanner, BATPendingContribution, BATPendingContributionInfo, BATVisitData, BATRewardsParameters, BATBalance, BATAutoContributeProperties, BATMediaEventInfo, BATExternalWallet, BATBalanceReportInfo, BATActivityInfoFilterOrderPair, BATActivityInfoFilter, BATRewardsInternalsInfo, BATServerPublisherInfo, BATTransferFee, BATContributionQueue, BATContributionQueuePublisher, BATPromotion, BATUnblindedToken, BATClientInfo, BATRecurringTip, BATTransactionReportInfo, BATContributionReportInfo, BATMonthlyReportInfo, BATCredsBatch, BATSKUOrder, BATSKUOrderItem, BATSKUTransaction, BATUrlResponse, BATEventLog;
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -451,8 +451,6 @@ NS_SWIFT_NAME(TransferFee)
 @interface BATTransferFee : NSObject <NSCopying>
 @property (nonatomic, copy) NSString * id;
 @property (nonatomic) double amount;
-@property (nonatomic) uint64_t executionTimestamp;
-@property (nonatomic) uint32_t executionId;
 @end
 
 NS_SWIFT_NAME(ContributionQueue)
@@ -504,7 +502,6 @@ NS_SWIFT_NAME(ClientInfo)
 @interface BATClientInfo : NSObject <NSCopying>
 @property (nonatomic) BATPlatform platform;
 @property (nonatomic) BATOperatingSystem os;
-@property (nonatomic, copy) NSString * channel;
 @end
 
 NS_SWIFT_NAME(RecurringTip)
@@ -597,6 +594,14 @@ NS_SWIFT_NAME(UrlResponse)
 @property (nonatomic) int32_t statusCode;
 @property (nonatomic, copy) NSString * body;
 @property (nonatomic, copy) NSDictionary<NSString *, NSString *> * headers;
+@end
+
+NS_SWIFT_NAME(EventLog)
+@interface BATEventLog : NSObject <NSCopying>
+@property (nonatomic, copy) NSString * eventLogId;
+@property (nonatomic, copy) NSString * key;
+@property (nonatomic, copy) NSString * value;
+@property (nonatomic) uint64_t createdAt;
 @end
 
 NS_ASSUME_NONNULL_END
