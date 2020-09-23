@@ -10,7 +10,7 @@ import android.os.Bundle;
 
 import org.chromium.chrome.browser.BraveHelper;
 import org.chromium.chrome.browser.preferences.SharedPreferencesManager;
-import org.chromium.chrome.browser.toolbar.bottom.BottomToolbarConfiguration;
+import org.chromium.chrome.browser.toolbar.bottom.BraveBottomToolbarConfiguration;
 
 /**
  * Base class for ChromeLauncherActivity
@@ -23,7 +23,7 @@ public class BraveLauncherActivity extends Activity {
         // Disable key checker to avoid asserts on Brave keys in debug
         SharedPreferencesManager.getInstance().disableKeyCheckerForTesting();
 
-        BottomToolbarConfiguration.isBottomToolbarEnabled();
+        BraveBottomToolbarConfiguration.isBottomToolbarEnabled();
         BraveHelper.DisableFREDRP();
     }
 }

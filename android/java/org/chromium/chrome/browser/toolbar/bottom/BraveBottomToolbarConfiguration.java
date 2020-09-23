@@ -23,8 +23,8 @@ public class BraveBottomToolbarConfiguration {
     private static final int SMALL_SCREEN_HEIGHT = 640;
 
     public static boolean isBottomToolbarEnabled() {
-        if (DeviceFormFactor.isNonMultiDisplayContextOnTablet(ContextUtils.getApplicationContext())
-                || TabUiFeatureUtilities.isTabGroupsAndroidEnabled()) {
+        if (DeviceFormFactor.isNonMultiDisplayContextOnTablet(
+                    ContextUtils.getApplicationContext())) {
             return false;
         }
         SharedPreferences sharedPreferences = ContextUtils.getAppSharedPreferences();

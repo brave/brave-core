@@ -20,7 +20,6 @@ public class BraveClassAdapter {
         chain = new BraveEditUrlSuggestionProcessorClassAdapter(chain);
         chain = new BraveSearchEngineAdapterClassAdapter(chain);
         chain = new BraveCommandLineInitUtilClassAdapter(chain);
-        chain = new BraveBottomToolbarConfigurationClassAdapter(chain);
         return chain;
     }
 }
