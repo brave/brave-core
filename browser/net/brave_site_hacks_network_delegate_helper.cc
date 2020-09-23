@@ -19,6 +19,7 @@
 #include "brave/components/brave_shields/browser/brave_shields_util.h"
 #include "content/public/common/referrer.h"
 #include "extensions/common/url_pattern.h"
+#include "net/base/registry_controlled_domains/registry_controlled_domain.h"
 #include "net/url_request/url_request.h"
 #include "third_party/blink/public/common/loader/network_utils.h"
 #include "third_party/blink/public/common/loader/referrer_utils.h"
@@ -73,11 +74,35 @@ DECLARE_LAZY_MATCHER(tracker_appended_matcher,
 
 #undef DECLARE_LAZY_MATCHER
 
-void ApplyPotentialQueryStringFilter(const GURL& request_url,
-                                     std::string* new_url_spec) {
-  DCHECK(new_url_spec);
+void ApplyPotentialQueryStringFilter(std::shared_ptr<BraveRequestInfo> ctx) {
   SCOPED_UMA_HISTOGRAM_TIMER("Brave.SiteHacks.QueryFilter");
-  std::string new_query = request_url.query();
+
+  if (!ctx->initiator_url.is_valid()) {
+    // Direct navigations (e.g. omnibar, bookmarks) are exempted.
+    return;
+  }
+
+  if (ctx->redirect_source.is_valid()) {
+    if (ctx->internal_redirect) {
+      // Ignore internal redirects since we trigger them.
+      return;
+    }
+
+    if (net::registry_controlled_domains::SameDomainOrHost(
+            ctx->redirect_source, ctx->request_url,
+            net::registry_controlled_domains::INCLUDE_PRIVATE_REGISTRIES)) {
+      // Same-site redirects are exempted.
+      return;
+    }
+  } else if (net::registry_controlled_domains::SameDomainOrHost(
+                 ctx->initiator_url, ctx->request_url,
+                 net::registry_controlled_domains::
+                     INCLUDE_PRIVATE_REGISTRIES)) {
+    // Same-site requests are exempted.
+    return;
+  }
+
+  std::string new_query = ctx->request_url.query();
   // Note: the ordering of these replacements is important.
   const int replacement_count =
       re2::RE2::GlobalReplace(&new_query, tracker_appended_matcher.Get(), "") +
@@ -92,7 +117,7 @@ void ApplyPotentialQueryStringFilter(const GURL& request_url,
       replacements.SetQuery(new_query.c_str(),
                             url::Component(0, new_query.size()));
     }
-    *new_url_spec = request_url.ReplaceComponents(replacements).spec();
+    ctx->new_url_spec = ctx->request_url.ReplaceComponents(replacements).spec();
   }
 }
 
@@ -125,7 +150,7 @@ int OnBeforeURLRequest_SiteHacksWork(const ResponseCallback& next_callback,
                                      std::shared_ptr<BraveRequestInfo> ctx) {
   ApplyPotentialReferrerBlock(ctx);
   if (ctx->request_url.has_query()) {
-    ApplyPotentialQueryStringFilter(ctx->request_url, &ctx->new_url_spec);
+    ApplyPotentialQueryStringFilter(ctx);
   }
   return net::OK;
 }
