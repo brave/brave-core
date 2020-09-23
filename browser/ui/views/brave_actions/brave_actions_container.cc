@@ -250,6 +250,7 @@ void BraveActionsContainer::AttachAction(BraveActionInfo &action) {
   // we control destruction
   action.view_->set_owned_by_client();
   Update();
+  PreferredSizeChanged();
 }
 
 void BraveActionsContainer::AddAction(const std::string& id) {
