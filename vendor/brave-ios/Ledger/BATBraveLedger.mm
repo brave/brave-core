@@ -29,9 +29,12 @@
 #import "url/gurl.h"
 #import "net/base/registry_controlled_domains/registry_controlled_domain.h"
 #import "base/strings/sys_string_conversions.h"
+#import "components/os_crypt/os_crypt.h"
 
 #import "base/i18n/icu_util.h"
 #import "base/ios/ios_util.h"
+#import "base/base64.h"
+#import "base/command_line.h"
 
 #import "RewardsLogging.h"
 
@@ -160,6 +163,13 @@ typedef NS_ENUM(NSInteger, BATLedgerDatabaseMigrationType) {
     if (!base::i18n::InitializeICU()) {
       BLOG(0, @"Failed to initialize ICU data");
     }
+    
+    const auto args = [NSProcessInfo processInfo].arguments;
+    const char *argv[args.count];
+    for (NSInteger i = 0; i < args.count; i++) {
+      argv[i] = args[i].UTF8String;
+    }
+    base::CommandLine::Init(args.count, argv);
     
     self.databaseQueue = dispatch_queue_create("com.rewards.db-transactions", DISPATCH_QUEUE_SERIAL);
     
@@ -1855,14 +1865,44 @@ BATLedgerBridge(BOOL,
 
 - (bool)setEncryptedStringState:(const std::string&)key value:(const std::string&)value
 {
-  // TODO implement
-  return false;
+  const auto bridgedKey = [NSString stringWithUTF8String:key.c_str()];
+  
+  std::string encrypted_value;
+  if (!OSCrypt::EncryptString(value, &encrypted_value)) {
+    BLOG(0, @"Couldn't encrypt value for %@", bridgedKey);
+    return false;
+  }
+  
+  std::string encoded_value;
+  base::Base64Encode(encrypted_value, &encoded_value);
+  
+  self.prefs[bridgedKey] = [NSString stringWithUTF8String:encoded_value.c_str()];
+  [self savePrefs];
+  return true;
 }
 
 - (std::string)getEncryptedStringState:(const std::string&)key
 {
-  // TODO implement
-  return "";
+  const auto bridgedKey = [NSString stringWithUTF8String:key.c_str()];
+  NSString *savedValue = self.prefs[bridgedKey];
+  if (!savedValue || ![savedValue isKindOfClass:NSString.class]) {
+    return "";
+  }
+  
+  std::string encoded_value = savedValue.UTF8String;
+  std::string encrypted_value;
+  if (!base::Base64Decode(encoded_value, &encrypted_value)) {
+    BLOG(0, @"base64 decode failed for %@", bridgedKey);
+    return "";
+  }
+  
+  std::string value;
+  if (!OSCrypt::DecryptString(encrypted_value, &value)) {
+    BLOG(0, @"Decrypting failed for %@", bridgedKey);
+    return "";
+  }
+  
+  return value;
 }
 
 @end
