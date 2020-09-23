@@ -44,7 +44,7 @@ public class BraveBrowsingModeBottomToolbarCoordinator
         mBraveToolbarRoot = root.findViewById(R.id.bottom_toolbar_browsing);
         mBraveNewTabButton = mBraveToolbarRoot.findViewById(R.id.bottom_new_tab_button);
         mBookmarkButton = mBraveToolbarRoot.findViewById(R.id.bottom_bookmark_button);
-        if (BraveBottomToolbarVariationManager.isBraveVariation()) {
+        if (BottomToolbarVariationManager.isBookmarkButtonOnBottom()) {
             mBookmarkButton.setVisibility(View.VISIBLE);
             getNewTabButtonParent().setVisibility(View.GONE);
             OnClickListener bookmarkClickHandler = v -> {

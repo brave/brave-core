@@ -28,7 +28,7 @@ import org.chromium.chrome.browser.tab.Tab;
 import org.chromium.chrome.browser.tabbed_mode.TabbedAppMenuPropertiesDelegate;
 import org.chromium.chrome.browser.tabmodel.TabModelSelector;
 import org.chromium.chrome.browser.toolbar.ToolbarManager;
-import org.chromium.chrome.browser.toolbar.bottom.BottomToolbarConfiguration;
+import org.chromium.chrome.browser.toolbar.bottom.BraveBottomToolbarConfiguration;
 import org.chromium.chrome.browser.ui.appmenu.AppMenuDelegate;
 import org.chromium.chrome.browser.ui.appmenu.AppMenuHandler;
 
@@ -114,7 +114,7 @@ public class BraveTabbedAppMenuPropertiesDelegate extends TabbedAppMenuPropertie
 
         // Hide bookmark button if bottom toolbar is enabled
         ImageButton bookmarkButton = view.findViewById(R.id.bookmark_this_page_id);
-        if (bookmarkButton != null && BottomToolbarConfiguration.isBottomToolbarEnabled()) {
+        if (bookmarkButton != null && BraveBottomToolbarConfiguration.isBottomToolbarEnabled()) {
             bookmarkButton.setVisibility(View.GONE);
         }
 

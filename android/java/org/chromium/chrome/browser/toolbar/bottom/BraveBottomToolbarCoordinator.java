@@ -29,9 +29,9 @@ import org.chromium.chrome.browser.share.ShareDelegate;
 import org.chromium.chrome.browser.toolbar.HomeButton;
 import org.chromium.chrome.browser.toolbar.IncognitoStateProvider;
 import org.chromium.chrome.browser.toolbar.TabCountProvider;
+import org.chromium.chrome.browser.toolbar.bottom.BookmarksButton;
 import org.chromium.chrome.browser.toolbar.bottom.BottomToolbarNewTabButton;
 import org.chromium.chrome.browser.toolbar.bottom.SearchAccelerator;
-import org.chromium.chrome.browser.toolbar.bottom.ShareButton;
 import org.chromium.chrome.browser.ui.appmenu.AppMenuButtonHelper;
 import org.chromium.chrome.browser.util.TabUtils;
 import org.chromium.ui.widget.Toast;
@@ -39,7 +39,7 @@ import org.chromium.ui.widget.Toast;
 public class BraveBottomToolbarCoordinator
         extends BottomToolbarCoordinator implements View.OnLongClickListener {
     private HomeButton mHomeButton;
-    private ShareButton mBookmarksButton;
+    private BookmarksButton mBookmarksButton;
     private SearchAccelerator mSearchAccelerator;
     private BottomToolbarNewTabButton mNewTabButton;
     private ActivityTabProvider mBraveTabProvider;
@@ -150,7 +150,7 @@ public class BraveBottomToolbarCoordinator
                     if (BottomToolbarVariationManager.isHomeButtonOnBottom()) {
                         browsingModeCoordinator.getHomeButton().setVisibility(View.INVISIBLE);
                     }
-                    if (BraveBottomToolbarVariationManager.isBraveVariation()) {
+                    if (BottomToolbarVariationManager.isBookmarkButtonOnBottom()) {
                         browsingModeCoordinator.getBookmarkButton().setVisibility(View.INVISIBLE);
                     }
                     if (BottomToolbarVariationManager.isTabSwitcherOnBottom()) {
@@ -177,7 +177,7 @@ public class BraveBottomToolbarCoordinator
                         browsingModeCoordinator.getHomeButton().updateButtonEnabledState(
                                 mBraveTabProvider.get());
                     }
-                    if (BraveBottomToolbarVariationManager.isBraveVariation()) {
+                    if (BottomToolbarVariationManager.isBookmarkButtonOnBottom()) {
                         browsingModeCoordinator.getBookmarkButton().setVisibility(View.VISIBLE);
                     }
                     if (BottomToolbarVariationManager.isTabSwitcherOnBottom()) {

@@ -19,11 +19,12 @@ import org.chromium.chrome.browser.ThemeColorProvider.ThemeColorObserver;
 import org.chromium.chrome.browser.ThemeColorProvider.TintObserver;
 import org.chromium.chrome.browser.compositor.layouts.OverviewModeBehavior;
 import org.chromium.chrome.browser.tab.Tab;
+import org.chromium.ui.widget.ChromeImageButton;
 
 /**
  * The bookmarks button.
  */
-public class BookmarksButton extends ShareButton implements ThemeColorObserver, TintObserver {
+public class BookmarksButton extends ChromeImageButton implements ThemeColorObserver, TintObserver {
     /** A provider that notifies components when the theme color changes.*/
     private ThemeColorProvider mThemeColorProvider;
     private ColorStateList mCurrentTint;
@@ -33,7 +34,6 @@ public class BookmarksButton extends ShareButton implements ThemeColorObserver, 
         setImageDrawable(ContextCompat.getDrawable(context, R.drawable.btn_bookmark));
     }
 
-    @Override
     public void destroy() {
         if (mThemeColorProvider != null) {
             mThemeColorProvider.removeThemeColorObserver(this);
@@ -42,7 +42,6 @@ public class BookmarksButton extends ShareButton implements ThemeColorObserver, 
         }
     }
 
-    @Override
     public void setThemeColorProvider(ThemeColorProvider themeColorProvider) {
         mThemeColorProvider = themeColorProvider;
         mThemeColorProvider.addThemeColorObserver(this);
@@ -72,17 +71,10 @@ public class BookmarksButton extends ShareButton implements ThemeColorObserver, 
         }
         setEnabled(editingAllowed);
     }
-
-    @Override
-    public void setActivityTabProvider(ActivityTabProvider activityTabProvider) {
-        // sergz: Do nothing here, was added just to avoid extra patching
-    }
     
-    @Override
     public void setOverviewModeBehavior(OverviewModeBehavior overviewModeBehavior) {
     }
     
-    @Override
     public void updateButtonEnabledState(Tab tab) {
     }
 }
