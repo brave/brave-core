@@ -46,7 +46,7 @@ class BraveStatsUpdater {
   bool MaybeDoThresholdPing(int score);
 
   using StatsUpdatedCallback =
-      base::RepeatingCallback<void(const std::string& url)>;
+      base::RepeatingCallback<void(const GURL& url)>;
 
   void SetStatsUpdatedCallback(StatsUpdatedCallback stats_updated_callback);
 

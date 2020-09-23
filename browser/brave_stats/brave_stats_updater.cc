@@ -127,7 +127,7 @@ bool BraveStatsUpdater::MaybeDoThresholdPing(int score) {
   if (threshold_ping_state_ != THRESHOLD_PING_INACTIVE ||
       server_ping_startup_timer_->IsRunning() ||
       !IsReferralInitialized())
-    return threshold_ping_state_ >= THRESHOLD_PING_QUEUED;
+    return threshold_score_ >= kMinimumUsageThreshold;
 
   if (threshold_score_ >= kMinimumUsageThreshold) {
     threshold_ping_state_ = THRESHOLD_PING_QUEUED;
@@ -171,7 +171,7 @@ void BraveStatsUpdater::OnSimpleLoaderComplete(
 
   // Inform the client that the stats ping completed, if requested.
   if (!stats_updated_callback_.is_null())
-    stats_updated_callback_.Run(final_url.spec());
+    stats_updated_callback_.Run(final_url);
 
   // In case the first call was blocked by our timer.
   (void) MaybeDoThresholdPing(0);

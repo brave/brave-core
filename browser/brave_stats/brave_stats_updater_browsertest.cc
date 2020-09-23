@@ -109,23 +109,47 @@ class BraveStatsUpdaterBrowserTest : public InProcessBrowserTest {
     wait_for_callback_loop_->Run();
   }
 
-  void OnStatsUpdated(const std::string& update_url) {
-    stats_was_called_ = true;
-    update_url_ = update_url;
+  void OnStandardStatsUpdated(const GURL& update_url) {
+    stats_standard_endpoint_was_called_ = true;
+    // We get //1/usage/brave-core here, so ignore the first slash.
+    EXPECT_STREQ(update_url.path().c_str() + 1, "/1/usage/brave-core");
+    update_url_ = update_url.spec();
     wait_for_callback_loop_->Quit();
   }
 
-  void WaitForStatsUpdatedCallback() {
-    if (stats_was_called_)
+  void WaitForStandardStatsUpdatedCallback() {
+    if (stats_standard_endpoint_was_called_)
       return;
     wait_for_callback_loop_.reset(new base::RunLoop);
     wait_for_callback_loop_->Run();
   }
 
+  void OnThresholdStatsUpdated(const GURL& update_url) {
+    stats_threshold_endpoint_was_called_ = true;
+    // We get //1/usage/brave-core-threshold here, so ignore the first slash.
+    EXPECT_STREQ(
+      update_url.path().c_str() + 1,
+      "/1/usage/brave-core-threshold");
+    update_url_ = update_url.spec();
+    wait_for_callback_loop_->Quit();
+  }
+
+  void WaitForThresholdStatsUpdatedCallback() {
+    if (stats_threshold_endpoint_was_called_)
+      return;
+    wait_for_callback_loop_.reset(new base::RunLoop);
+    wait_for_callback_loop_->Run();
+  }
+
+  bool StandardStatsEndpointWasCalled() {
+    return stats_standard_endpoint_was_called_;
+  }
+
  private:
   TestingPrefServiceSimple testing_local_state_;
   std::unique_ptr<base::RunLoop> wait_for_callback_loop_;
-  bool stats_was_called_ = false;
+  bool stats_standard_endpoint_was_called_ = false;
+  bool stats_threshold_endpoint_was_called_ = false;
   bool referral_was_initialized_ = false;
   std::string update_url_;
 };
@@ -151,9 +175,47 @@ IN_PROC_BROWSER_TEST_F(BraveStatsUpdaterBrowserTest,
   // and then shut it down
   brave_stats::BraveStatsUpdater stats_updater(GetLocalState());
   stats_updater.SetStatsUpdatedCallback(base::BindRepeating(
-      &BraveStatsUpdaterBrowserTest::OnStatsUpdated, base::Unretained(this)));
+      &BraveStatsUpdaterBrowserTest::OnStandardStatsUpdated,
+      base::Unretained(this)));
   stats_updater.Start();
-  WaitForStatsUpdatedCallback();
+  WaitForStandardStatsUpdatedCallback();
+  // Normal usage ping is _always_ sent before the threshold ping.
+  EXPECT_TRUE(StandardStatsEndpointWasCalled());
+  stats_updater.Stop();
+
+  // Stop the referrals service
+  referrals_service->Stop();
+
+  // First check preference should now be true
+  EXPECT_TRUE(GetLocalState()->GetBoolean(kFirstCheckMade));
+}
+
+// Run the stats updater and verify the threshold endpoint is reached
+IN_PROC_BROWSER_TEST_F(BraveStatsUpdaterBrowserTest,
+                       StatsUpdaterThresholdSetsFirstCheckPreference) {
+  // Ensure that first check preference is false
+  ASSERT_FALSE(GetLocalState()->GetBoolean(kFirstCheckMade));
+
+  // Start the referrals service, since the stats updater's startup
+  // ping only occurs after the referrals service checks for the promo
+  // code file
+  auto referrals_service = brave::BraveReferralsServiceFactory::GetInstance()
+    ->GetForPrefs(GetLocalState());
+  referrals_service->SetReferralInitializedCallbackForTest(base::BindRepeating(
+      &BraveStatsUpdaterBrowserTest::OnReferralInitialized,
+      base::Unretained(this)));
+  referrals_service->Start();
+  WaitForReferralInitializeCallback();
+
+  // Start the stats updater, wait for it to perform its startup ping,
+  // and then shut it down
+  brave_stats::BraveStatsUpdater stats_updater(GetLocalState());
+  stats_updater.SetStatsUpdatedCallback(base::BindRepeating(
+      &BraveStatsUpdaterBrowserTest::OnStandardStatsUpdated,
+      base::Unretained(this)));
+  stats_updater.Start();
+  EXPECT_TRUE(stats_updater.MaybeDoThresholdPing(3));
+  WaitForThresholdStatsUpdatedCallback();
   stats_updater.Stop();
 
   // Stop the referrals service
@@ -185,9 +247,10 @@ IN_PROC_BROWSER_TEST_F(BraveStatsUpdaterBrowserTest,
   // and then shut it down
   brave_stats::BraveStatsUpdater stats_updater(GetLocalState());
   stats_updater.SetStatsUpdatedCallback(base::BindRepeating(
-      &BraveStatsUpdaterBrowserTest::OnStatsUpdated, base::Unretained(this)));
+      &BraveStatsUpdaterBrowserTest::OnStandardStatsUpdated,
+      base::Unretained(this)));
   stats_updater.Start();
-  WaitForStatsUpdatedCallback();
+  WaitForStandardStatsUpdatedCallback();
   stats_updater.Stop();
 
   // Stop the referrals service
@@ -236,9 +299,10 @@ IN_PROC_BROWSER_TEST_F(BraveStatsUpdaterBrowserTest,
   // and then shut it down
   brave_stats::BraveStatsUpdater stats_updater(GetLocalState());
   stats_updater.SetStatsUpdatedCallback(base::BindRepeating(
-      &BraveStatsUpdaterBrowserTest::OnStatsUpdated, base::Unretained(this)));
+      &BraveStatsUpdaterBrowserTest::OnStandardStatsUpdated,
+      base::Unretained(this)));
   stats_updater.Start();
-  WaitForStatsUpdatedCallback();
+  WaitForStandardStatsUpdatedCallback();
   stats_updater.Stop();
 
   // Stop the referrals service
@@ -285,9 +349,10 @@ IN_PROC_BROWSER_TEST_F(BraveStatsUpdaterBrowserTest,
   // and then shut it down
   brave_stats::BraveStatsUpdater stats_updater(GetLocalState());
   stats_updater.SetStatsUpdatedCallback(base::BindRepeating(
-      &BraveStatsUpdaterBrowserTest::OnStatsUpdated, base::Unretained(this)));
+      &BraveStatsUpdaterBrowserTest::OnStandardStatsUpdated,
+      base::Unretained(this)));
   stats_updater.Start();
-  WaitForStatsUpdatedCallback();
+  WaitForStandardStatsUpdatedCallback();
   stats_updater.Stop();
 
   // Stop the referrals service
