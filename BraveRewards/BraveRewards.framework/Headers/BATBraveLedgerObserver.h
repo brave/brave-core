@@ -58,9 +58,6 @@ NS_SWIFT_NAME(LedgerObserver)
 /// Called when the ledger removes activity info for a given publisher
 @property (nonatomic, copy, nullable) void (^activityRemoved)(NSString *publisherKey);
 
-/// confirmationsTransactionHistoryDidChange
-@property (nonatomic, copy, nullable) void (^confirmationsTransactionHistoryDidChange)();
-
 /// The publisher list was normalized and saved
 @property (nonatomic, copy, nullable) void (^publisherListNormalized)(NSArray<BATPublisherInfo *> *normalizedList);
 
