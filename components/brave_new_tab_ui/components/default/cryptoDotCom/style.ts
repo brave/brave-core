@@ -72,7 +72,7 @@ export const Text = styled<StyleProps, 'p'>('p')`
  `
 
 export const Box = styled<StyleProps, 'div'>('div')`
-  border: 1px solid #4F5661;
+  border: 1px solid rgba(79, 86, 97, 0.7);
   padding: ${p => (p.noPadding ? '0' : '0.5em')};
   border-radius: 2px;
   display: ${p => (p.isFlex ? 'flex' : 'block')};
@@ -138,11 +138,14 @@ export const CryptoDotComIcon = styled<{}, 'div'>('div')`
   height: 27px;
   margin-right: 7px;
   margin-left: 2px;
+
+  & svg {
+    width: 100%;
+    height: 100%;
+  }
  `
 
-export const StyledTitleText = styled<{}, 'div'>('div')`
-  margin-top: 4px;
- `
+export const StyledTitleText = styled<{}, 'div'>('div')``
 
 export const List = styled(Box)`
   overflow-y: ${p => (p.hideOverflow ? 'hidden' : 'scroll')};
@@ -152,7 +155,7 @@ export const List = styled(Box)`
  `
 
 export const ListItem = styled<StyleProps, 'li'>('li')`
-  border-bottom: 1px solid #4F5661;
+  border-bottom: 1px solid rgba(79, 86, 97, 0.7);
   padding: 5px;
   border-radius: 2px;
   display: ${p => (p.isFlex ? 'flex' : 'block')};

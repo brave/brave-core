@@ -284,7 +284,7 @@ class CryptoDotCom extends React.PureComponent<Props, State> {
             justifyContent: 'space-between',
             alignItems: 'center',
             width: '100%',
-            borderBottom: '1px solid #4F5661'
+            borderBottom: '1px solid rgba(79, 86, 97, 0.7)'
           }}
         >
           <FlexItem>
@@ -311,7 +311,7 @@ class CryptoDotCom extends React.PureComponent<Props, State> {
           hasPadding={true}
           style={{
             width: '100%',
-            borderBottom: '1px solid #4F5661'
+            borderBottom: '1px solid rgba(79, 86, 97, 0.7)'
           }}
         >
           {(price !== null) && <Text
