@@ -153,7 +153,7 @@ class BrowserViewController: UIViewController {
         self.readerModeCache = ReaderMode.cache(for: tabManager.selectedTab)
         self.crashedLastSession = crashedLastSession
         self.safeBrowsing = safeBrowsingManager
-        
+
         let configuration: BraveRewardsConfiguration
         if AppConstants.buildChannel.isPublic {
             configuration = .production
@@ -173,6 +173,12 @@ class BrowserViewController: UIViewController {
                 configuration = AppConstants.buildChannel == .debug ? .staging : .production
             }
         }
+
+        configuration.buildChannel = BraveAdsBuildChannel().then {
+          $0.name = AppConstants.buildChannel.rawValue
+          $0.isRelease = AppConstants.buildChannel == .release
+        }
+
         rewards = BraveRewards(configuration: configuration)
         if !BraveRewards.isAvailable {
             // Disable rewards services in case previous user already enabled

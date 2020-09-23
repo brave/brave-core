@@ -24,6 +24,7 @@ NS_SWIFT_NAME(AdsNotification)
 @property (nonatomic, readonly, copy) NSString *parentUuid;
 @property (nonatomic, readonly, copy) NSString *creativeInstanceID;
 @property (nonatomic, readonly, copy) NSString *creativeSetID;
+@property (nonatomic, readonly, copy) NSString *campaignID;
 @property (nonatomic, readonly, copy) NSString *category;
 @property (nonatomic, readonly, copy) NSString *title;
 @property (nonatomic, readonly, copy) NSString *body;
