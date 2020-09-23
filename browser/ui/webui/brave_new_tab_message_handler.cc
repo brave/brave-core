@@ -20,6 +20,7 @@
 #include "brave/components/brave_ads/browser/ads_service.h"
 #include "brave/components/brave_ads/browser/ads_service_factory.h"
 #include "brave/components/brave_perf_predictor/browser/buildflags.h"
+#include "brave/components/moonpay/browser/buildflags/buildflags.h"
 #include "brave/components/ntp_background_images/browser/features.h"
 #include "brave/components/ntp_background_images/browser/view_counter_service.h"
 #include "brave/components/ntp_background_images/common/pref_names.h"
@@ -105,9 +106,11 @@ base::DictionaryValue GetPreferencesDictionary(PrefService* prefs) {
   pref_data.SetBoolean(
       "showGemini",
       prefs->GetBoolean(kNewTabPageShowGemini));
+#if BUILDFLAG(BITCOIN_DOT_COM_ENABLED)
   pref_data.SetBoolean(
       "showBitcoinDotCom",
       prefs->GetBoolean(kNewTabPageShowBitcoinDotCom));
+#endif
   return pref_data;
 }
 
@@ -291,9 +294,11 @@ void BraveNewTabMessageHandler::OnJavascriptAllowed() {
   pref_change_registrar_.Add(kNewTabPageShowGemini,
     base::Bind(&BraveNewTabMessageHandler::OnPreferencesChanged,
     base::Unretained(this)));
+#if BUILDFLAG(BITCOIN_DOT_COM_ENABLED)
   pref_change_registrar_.Add(kNewTabPageShowBitcoinDotCom,
     base::Bind(&BraveNewTabMessageHandler::OnPreferencesChanged,
     base::Unretained(this)));
+#endif
 
   if (tor_profile_service_)
     tor_profile_service_->AddObserver(this);
@@ -397,8 +402,10 @@ void BraveNewTabMessageHandler::HandleSaveNewTabPagePref(
     settingsKey = kNewTabPageShowAddCard;
   } else if (settingsKeyInput == "showGemini") {
     settingsKey = kNewTabPageShowGemini;
+#if BUILDFLAG(BITCOIN_DOT_COM_ENABLED)
   } else if (settingsKeyInput == "showBitcoinDotCom") {
     settingsKey = kNewTabPageShowBitcoinDotCom;
+#endif
   } else {
     LOG(ERROR) << "Invalid setting key";
     return;

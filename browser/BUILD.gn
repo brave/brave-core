@@ -1,7 +1,7 @@
 import("//brave/build/config.gni")
 import("//brave/components/binance/browser/buildflags/buildflags.gni")
 import("//brave/components/brave_together/buildflags/buildflags.gni")
-import("//brave/components/moonpay/buildflags/buildflags.gni")
+import("//brave/components/moonpay/browser/buildflags/buildflags.gni")
 import("//brave/components/ntp_widget_utils/browser/buildflags/buildflags.gni")
 import("//brave/components/gemini/browser/buildflags/buildflags.gni")
 import("//brave/browser/tor/buildflags/buildflags.gni")
@@ -141,7 +141,7 @@ source_set("browser_process") {
     "//brave/components/greaselion/browser/buildflags",
     "//brave/components/ipfs/browser/buildflags",
     "//brave/components/l10n/browser",
-    "//brave/components/moonpay/browser",
+    "//brave/components/moonpay/browser/buildflags",
     "//brave/components/ntp_background_images/browser",
     "//brave/components/ntp_tiles",
     "//brave/components/p3a",

@@ -12,7 +12,7 @@
 #include "brave/components/binance/browser/buildflags/buildflags.h"
 #include "brave/components/brave_together/buildflags/buildflags.h"
 #include "brave/components/gemini/browser/buildflags/buildflags.h"
-#include "brave/components/moonpay/buildflags/buildflags.h"
+#include "brave/components/moonpay/browser/buildflags/buildflags.h"
 #include "brave/components/ntp_widget_utils/browser/buildflags/buildflags.h"
 #include "brave/common/pref_names.h"
 #include "brave/components/ntp_background_images/browser/ntp_background_images_data.h"

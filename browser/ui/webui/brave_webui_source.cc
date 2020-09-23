@@ -11,6 +11,7 @@
 #include "brave/components/ipfs/browser/buildflags/buildflags.h"
 #include "base/strings/utf_string_conversions.h"
 #include "brave/common/url_constants.h"
+#include "brave/components/moonpay/browser/buildflags/buildflags.h"
 #include "components/grit/brave_components_resources.h"
 #include "components/grit/brave_components_strings.h"
 #include "components/grit/components_resources.h"
@@ -160,7 +161,9 @@ void CustomizeWebUIHTMLSource(const std::string &name,
         { "rewardsWidgetDesc", IDS_BRAVE_NEW_TAB_REWARDS_WIDGET_DESC },
         { "binanceWidgetDesc", IDS_BRAVE_NEW_TAB_BINANCE_WIDGET_DESC },
         { "geminiWidgetDesc", IDS_BRAVE_NEW_TAB_GEMINI_WIDGET_DESC },
+#if BUILDFLAG(BITCOIN_DOT_COM_ENABLED)
         { "bitcoinDotComWidgetDesc", IDS_BRAVE_NEW_TAB_BITCOIN_DOT_COM_WIDGET_DESC },            // NOLINT
+#endif
         { "braveRewardsTitle", IDS_BRAVE_NEW_TAB_BRAVE_REWARDS_TITLE },
         // Private Tab - General
         { "learnMore", IDS_BRAVE_PRIVATE_NEW_TAB_LEARN_MORE },
@@ -325,6 +328,7 @@ void CustomizeWebUIHTMLSource(const std::string &name,
         { "geminiWidgetUnitPrice", IDS_GEMINI_WIDGET_UNIT_PRICE },
         { "geminiWidgetTotalPrice", IDS_GEMINI_WIDGET_TOTAL_PRICE },
         { "geminiWidgetTotalAmount", IDS_GEMINI_WIDGET_TOTAL_AMOUNT },
+#if BUILDFLAG(BITCOIN_DOT_COM_ENABLED)
         // Bitcoin.com widget
         { "bitcoinDotComWidgetCurrency", IDS_BITCOIN_DOT_COM_CURRENCY },
         { "bitcoinDotComWidgetAmount", IDS_BITCOIN_DOT_COM_AMOUNT },
@@ -332,6 +336,7 @@ void CustomizeWebUIHTMLSource(const std::string &name,
         { "bitcoinDotComWidgetFooterCopyOne", IDS_BITCOIN_DOT_COM_FOOTER_COPY_ONE },      // NOLINT
         { "bitcoinDotComWidgetFooterCopyTwo", IDS_BITCOIN_DOT_COM_FOOTER_COPY_TWO },      // NOLINT
         { "bitcoinDotComWidgetBuy", IDS_BINANCE_WIDGET_BUY },
+#endif
       }
     }, {
       std::string("wallet"), {

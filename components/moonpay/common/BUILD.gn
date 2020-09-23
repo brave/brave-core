@@ -1,4 +1,4 @@
-import("//brave/components/moonpay/buildflags/buildflags.gni")
+import("//brave/components/moonpay/browser/buildflags/buildflags.gni")
 
 assert(moonpay_enabled)
 

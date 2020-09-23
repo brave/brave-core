@@ -18,7 +18,7 @@
 #include "brave/components/brave_wallet/browser/buildflags/buildflags.h"
 #include "brave/components/brave_wayback_machine/buildflags.h"
 #include "brave/components/brave_webtorrent/browser/buildflags/buildflags.h"
-#include "brave/components/moonpay/buildflags/buildflags.h"
+#include "brave/components/moonpay/browser/buildflags/buildflags.h"
 #include "brave/components/ipfs/browser/buildflags/buildflags.h"
 #include "brave/components/speedreader/buildflags.h"
 #include "chrome/browser/net/prediction_options.h"
