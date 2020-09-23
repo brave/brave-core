@@ -1,5 +1,5 @@
 diff --git a/chrome/android/java/src/org/chromium/chrome/browser/toolbar/top/ToolbarTablet.java b/chrome/android/java/src/org/chromium/chrome/browser/toolbar/top/ToolbarTablet.java
-index cb3009568f8283be44fbd86e9a1d02ef71dec2fa..b2eb2d71b2ad55c8ca588307dec075f354521e15 100644
+index 18d8ddb15d8f79103bbba4b11dbe91c22a8f0b3f..44cafe634a6943d21e8edfe511416a2ba9bc0957 100644
 --- a/chrome/android/java/src/org/chromium/chrome/browser/toolbar/top/ToolbarTablet.java
 +++ b/chrome/android/java/src/org/chromium/chrome/browser/toolbar/top/ToolbarTablet.java
 @@ -59,7 +59,7 @@ import java.util.Collection;

@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/extensions/component_loader.h b/chrome/browser/extensions/component_loader.h
-index 2d82a3f55258ad5914eff7a9bb1c14534d24d50b..89639e9d9366fe0abd3675fffcd7ff531c5f8d2e 100644
+index 64f0d79916d9d56f6fe29f54116c3089f41afd12..68abb8377be5b806fc78c6ff78252dbcd7126350 100644
 --- a/chrome/browser/extensions/component_loader.h
 +++ b/chrome/browser/extensions/component_loader.h
 @@ -80,7 +80,7 @@ class ComponentLoader {

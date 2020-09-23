@@ -1,8 +1,8 @@
 diff --git a/chrome/android/java/src/org/chromium/chrome/browser/toolbar/menu_button/MenuButtonCoordinator.java b/chrome/android/java/src/org/chromium/chrome/browser/toolbar/menu_button/MenuButtonCoordinator.java
-index 2d9b68296d598b723cd60f8b268f988bc2f79be8..dd5ced91b58503fc39f6e780025ebfdaced3bc3e 100644
+index 3e2ce3901540e00d9158be7e3304c5bdfdd1cc51..25f3125c019907ea246e4cb2a1e39a40198faf80 100644
 --- a/chrome/android/java/src/org/chromium/chrome/browser/toolbar/menu_button/MenuButtonCoordinator.java
 +++ b/chrome/android/java/src/org/chromium/chrome/browser/toolbar/menu_button/MenuButtonCoordinator.java
-@@ -272,6 +272,7 @@ public class MenuButtonCoordinator implements AppMenuObserver {
+@@ -292,6 +292,7 @@ public class MenuButtonCoordinator implements AppMenuObserver {
          mAppMenuHandler = appMenuHandler;
          mAppMenuHandler.addObserver(this);
          mAppMenuButtonHelper = mAppMenuHandler.createAppMenuButtonHelper();
@@ -10,7 +10,7 @@ index 2d9b68296d598b723cd60f8b268f988bc2f79be8..dd5ced91b58503fc39f6e780025ebfda
          mAppMenuButtonHelper.setOnAppMenuShownListener(
                  () -> { RecordUserAction.record("MobileToolbarShowMenu"); });
          if (mMenuButton != null) {
-@@ -311,4 +312,5 @@ public class MenuButtonCoordinator implements AppMenuObserver {
+@@ -325,4 +326,5 @@ public class MenuButtonCoordinator implements AppMenuObserver {
              mMenuButton.removeAppMenuUpdateBadge(false);
          }
      }
