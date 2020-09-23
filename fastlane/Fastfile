@@ -62,7 +62,7 @@ platform :ios do
   lane :beta do |options|
     overrideParams = {
       scheme: "Beta",
-      export_method: "development",
+      export_method: "app-store"
     }
     testflight_build({overrideParams: overrideParams})
   end
@@ -72,7 +72,7 @@ platform :ios do
 
     overrideParams = {
       scheme: "Dev",
-      export_method: "development",
+      export_method: "app-store"
     }
     testflight_build({overrideParams: overrideParams})
   end
@@ -106,6 +106,14 @@ platform :ios do
     run_carthage
     defaultParams = gym_params()
     gym(defaultParams.merge!(options[:overrideParams]))
+    unless options[:skip_upload]
+      api_key = app_store_connect_api_key()
+      pilot(
+        api_key: api_key,
+        skip_submission: true,
+        skip_waiting_for_build_processing: true
+      )
+    end
   end
   
   desc "All enterprise releases use this as the foundation"
@@ -143,7 +151,7 @@ platform :ios do
     {
       sdk: "iphoneos",
       clean: true,
-      skip_package_ipa: true,
+      output_directory: "build",
       xcargs: "-allowProvisioningUpdates BRAVE_API_KEY=\"#{ENV['BRAVE_STATS_API_KEY']}\""
     }
   end
