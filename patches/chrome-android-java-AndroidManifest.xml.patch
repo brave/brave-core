@@ -1,5 +1,5 @@
 diff --git a/chrome/android/java/AndroidManifest.xml b/chrome/android/java/AndroidManifest.xml
-index 3b1a51fe42f01e1c4d0c9b018c283675c2703106..bf977767a3f2d88099ce388332d836652945a297 100644
+index bf4b2d47b7e26e9567f8582e0084904cee785573..d443349e977a7876b0fd4142d9030c0eaaa1664f 100644
 --- a/chrome/android/java/AndroidManifest.xml
 +++ b/chrome/android/java/AndroidManifest.xml
 @@ -34,7 +34,9 @@ by a child template that "extends" this file.
@@ -54,7 +54,7 @@ index 3b1a51fe42f01e1c4d0c9b018c283675c2703106..bf977767a3f2d88099ce388332d83665
          android:icon="@drawable/ic_launcher"
          android:roundIcon="@drawable/ic_launcher_round"
          android:label="{% block application_label %}@string/app_name{% endblock %}"
-@@ -198,6 +209,7 @@ by a child template that "extends" this file.
+@@ -199,6 +210,7 @@ by a child template that "extends" this file.
          <!-- ARCore APK integration -->
          <!-- This tag indicates that this application optionally uses ARCore. -->
          <meta-data android:name="com.google.ar.core" android:value="optional" />
@@ -62,11 +62,11 @@ index 3b1a51fe42f01e1c4d0c9b018c283675c2703106..bf977767a3f2d88099ce388332d83665
          {% endif %}
  
          <!-- Cast support -->
-@@ -1203,6 +1215,7 @@ by a child template that "extends" this file.
+@@ -1204,6 +1216,7 @@ by a child template that "extends" this file.
          </activity>
          {% endif %}
  
 +        {% include "//brave/android/java/AndroidManifest.xml" %}
          {% block extra_application_definitions %}
- 
          <!-- Media route controllers to use for remote playback (cast).
+              This is here, rather than in code, since it varies between upstream and downstream,

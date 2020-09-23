@@ -1,10 +1,10 @@
 diff --git a/chrome/browser/ui/browser.h b/chrome/browser/ui/browser.h
-index ab2a03e6e87890ae1364971f3009483789ef0260..059a281db6b5b35299444d5b3e290f77d153d695 100644
+index 7c4a3b819cfd51483374859e96adef63b95d36b3..0411b803e963f5909798e01a5ee307e478f029c7 100644
 --- a/chrome/browser/ui/browser.h
 +++ b/chrome/browser/ui/browser.h
-@@ -664,6 +664,7 @@ class Browser : public TabStripModelObserver,
-   // dragging.
-   void SetIsInTabDragging(bool is_in_tab_dragging);
+@@ -671,6 +671,7 @@ class Browser : public TabStripModelObserver,
+   // Sets the browser's user title. Setting it to an empty string clears it.
+   void SetWindowUserTitle(const std::string& user_title);
  
 +  BRAVE_BROWSER_H
   private:
