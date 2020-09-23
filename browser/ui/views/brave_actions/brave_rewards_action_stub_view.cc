@@ -60,7 +60,7 @@ BraveRewardsActionStubView::BraveRewardsActionStubView(Profile* profile,
   SetInkDropMode(InkDropMode::ON);
   set_has_ink_drop_action_on_click(true);
   SetHorizontalAlignment(gfx::ALIGN_CENTER);
-  set_ink_drop_visible_opacity(kToolbarInkDropVisibleOpacity);
+  SetInkDropVisibleOpacity(kToolbarInkDropVisibleOpacity);
   // Create badge-and-image source like an extension icon would
   auto preferred_size = GetPreferredSize();
   ui::ResourceBundle& rb = ui::ResourceBundle::GetSharedInstance();
