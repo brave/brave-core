@@ -1,0 +1,12 @@
+diff --git a/rlz/BUILD.gn b/rlz/BUILD.gn
+index 37247ec1e5683d6124335bb1f6405618169283a4..371f42d8ce0fc86f7946615b5119fcce84071565 100644
+--- a/rlz/BUILD.gn
++++ b/rlz/BUILD.gn
+@@ -208,6 +208,7 @@ if (enable_rlz_support) {
+     }
+   }
+ }
++else { group("rlz_lib") {} group("rlz_lib_no_network") {} group("rlz_unittests") {} }
+ 
+ if (!is_ios && !is_android) {
+   executable("rlz_id") {
