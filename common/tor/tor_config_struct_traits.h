@@ -9,7 +9,7 @@
 #include <string>
 
 #include "brave/common/tor/tor_common.h"
-#include "brave/components/services/tor/public/interfaces/tor.mojom.h"
+#include "brave/components/services/tor/public/interfaces/tor.mojom-shared.h"
 #include "ipc/ipc_message_utils.h"
 
 namespace mojo {

@@ -7,4 +7,20 @@ mojom("interfaces") {
   public_deps = [
     "//mojo/public/mojom/base",
   ]
+  cpp_typemaps = [
+    {
+      types = [
+        {
+          mojom = "tor.mojom.TorConfig"
+          cpp = "tor::TorConfig"
+        },
+      ]
+      traits_headers = [ "//brave/common/tor/tor_config_struct_traits.h" ]
+      traits_sources = [ "//brave/common/tor/tor_config_struct_traits.cc" ]
+      traits_public_deps = [
+        "//mojo/public/cpp/base",
+        "//mojo/public/cpp/base:shared_typemap_traits",
+      ]
+    },
+  ]
 }
