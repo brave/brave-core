@@ -138,7 +138,8 @@ int GetWidevinePermissionRequestTextFrangmentResourceId() {
 
 void RequestWidevinePermission(content::WebContents* web_contents) {
   permissions::PermissionRequestManager::FromWebContents(web_contents)
-      ->AddRequest(new WidevinePermissionRequest(web_contents));
+      ->AddRequest(web_contents->GetMainFrame(),
+                   new WidevinePermissionRequest(web_contents));
 }
 void DontAskWidevineInstall(content::WebContents* web_contents, bool dont_ask) {
   Profile* profile = static_cast<Profile*>(web_contents->GetBrowserContext());

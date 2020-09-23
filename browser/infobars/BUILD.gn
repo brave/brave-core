@@ -38,6 +38,7 @@ source_set("infobars") {
       "//brave/common:pref_names",
       "//brave/components/brave_wallet/browser:browser",
       "//components/user_prefs:user_prefs",
+      "//extensions/common:common_constants",
     ]
   }
 

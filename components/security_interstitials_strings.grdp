@@ -84,10 +84,18 @@
   </message>
 
   <!-- Lookalike URL without a suggested hostname -->
+  <message name="IDS_LOOKALIKE_URL_HEADING_NO_SUGGESTED_URL" desc="Large heading. Context: the error page that's shown when the requested URL might be trying to trick the user since it looks fake. This interstitial warns the user to not visit the site but doesn't suggest a safe site.">
+    Fake site ahead
+  </message>
+  <message name="IDS_LOOKALIKE_URL_PRIMARY_PARAGRAPH_NO_SUGGESTED_URL" desc="Main paragraph of an error message. Context: the error page that's shown when the requested URL might be trying to trick the user since it looks fake. This interstitial warns the user to not visit the site but doesn't suggest a safe site.">
+    Attackers sometimes mimic sites by making small, hard-to-see changes to the URL.
+  </message>
   <message name="IDS_LOOKALIKE_URL_BACK_TO_SAFETY" desc="The text for the button that takes the user back to the new tab page.">
     Back to safety
   </message>
-
+  <message name="IDS_LOOKALIKE_URL_CLOSE_PAGE" desc="The text for the button that closes the tab.">
+    Close page
+  </message>
 
   <!-- Clock errors -->
   <message name="IDS_CLOCK_ERROR_TITLE" desc="Tab title. Context: the browser can't load a page because the device's clock is wrong.">
@@ -448,17 +456,6 @@
     Hide advanced
   </message>
 
-  <!-- Safety Tip summary strings for Android (Desktop is in page_info_strings.grdp) -->
-  <message name="IDS_SAFETY_TIP_ANDROID_LEAVE_BUTTON" desc="Text of button to ignore the warning on a suspicious page. Shown on the safety tip infobar.">
-    Leave site
-  </message>
-  <message name="IDS_SAFETY_TIP_ANDROID_LOOKALIKE_TITLE" desc="Title of Safety Tip infobar on a domain that looks like another domain.">
-    Is this the right site?
-  </message>
-  <message name="IDS_SAFETY_TIP_ANDROID_LOOKALIKE_DESCRIPTION" desc="Body of an infobar warning when the user visits a page that triggered a Safety Tip because the domain looked like another domain.">
-    <ph name="LOOKALIKE_DOMAIN">$1<ex>fake-google.com</ex></ph> looks similar to <ph name="SUGGESTED_DOMAIN">$2<ex>google.com</ex></ph>. Attackers sometimes mimic sites by using similar URLs.
-  </message>
-
   <if expr="not is_ios">
     <!-- Blocked interception interstitial strings -->
     <message name="IDS_BLOCKED_INTERCEPTION_HEADING" desc="Large heading of the known interception interstitial.">
@@ -513,19 +510,19 @@
 
   <!-- Insecure form submission interstitial-->
   <message name="IDS_INSECURE_FORM_TITLE" desc="Tab Title for insecure form submission warning">
-    Insecure Form
+    Form is not secure
   </message>
   <message name="IDS_INSECURE_FORM_HEADING" desc="Large heading of the warning shown when submitting an insecure form">
-    The data in this form is being sent through an insecure connection
+    The information you’re about to submit is not secure
   </message>
   <message name="IDS_INSECURE_FORM_PRIMARY_PARAGRAPH" desc="Main paragraph of the insecure form submission warning. This warning is shown when a form shown on a secure website is submitted over an insecure connection.">
-    This form is being submitted over an insecure connection, which may expose your information (for example, passwords, messages, or credit cards) when it is sent to this site.
+    Because the site is using a connection that’s not completely secure, your information will be visible to others.
   </message>
   <message name="IDS_INSECURE_FORM_BACK_BUTTON" desc="Text for the button in the insecure form warning that takes the user back to the previous page">
-    Go Back
+    Go back
   </message>
   <message name="IDS_INSECURE_FORM_SUBMIT_BUTTON" desc="Text for the button in the insecure form warning that bypasses the warning and submits the form">
-    Submit Anyways
+    Send anyway
   </message>
 
 </grit-part>

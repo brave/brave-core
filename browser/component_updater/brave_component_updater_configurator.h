@@ -49,6 +49,8 @@ class BraveConfigurator : public update_client::Configurator {
   std::string GetDownloadPreference() const override;
   scoped_refptr<update_client::NetworkFetcherFactory> GetNetworkFetcherFactory()
       override;
+  scoped_refptr<update_client::CrxDownloaderFactory> GetCrxDownloaderFactory()
+      override;
   scoped_refptr<update_client::UnzipperFactory> GetUnzipperFactory() override;
   scoped_refptr<update_client::PatcherFactory> GetPatcherFactory() override;
   bool EnabledDeltas() const override;
@@ -67,6 +69,7 @@ class BraveConfigurator : public update_client::Configurator {
   ConfiguratorImpl configurator_impl_;
   PrefService* pref_service_;  // This member is not owned by this class.
   scoped_refptr<update_client::NetworkFetcherFactory> network_fetcher_factory_;
+  scoped_refptr<update_client::CrxDownloaderFactory> crx_downloader_factory_;
   scoped_refptr<update_client::UnzipperFactory> unzip_factory_;
   scoped_refptr<update_client::PatcherFactory> patch_factory_;
 

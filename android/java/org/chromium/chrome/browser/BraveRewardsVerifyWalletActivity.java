@@ -16,10 +16,10 @@ import android.widget.Button;
 import android.widget.TextView;
 import java.util.Locale;
 
-import org.chromium.chrome.browser.BraveActivity;
 import org.chromium.chrome.browser.BraveRewardsExternalWallet;
 import org.chromium.chrome.browser.BraveRewardsHelper;
 import org.chromium.chrome.browser.BraveUphold;
+import org.chromium.chrome.browser.app.BraveActivity;
 import org.chromium.chrome.R;
 
 public class BraveRewardsVerifyWalletActivity extends Activity {

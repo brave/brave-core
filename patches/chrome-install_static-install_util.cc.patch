@@ -1,8 +1,8 @@
 diff --git a/chrome/install_static/install_util.cc b/chrome/install_static/install_util.cc
-index e3deeab6f561a37dd58a440832022b3d7bd47e56..21bea5ea2ff60830d78b4616410626e310b5504f 100644
+index 21053b379f091a4683a4a69b22b545c385ac3c55..fe0f568cb6d2205b6e00650afed2c1d724c54ab7 100644
 --- a/chrome/install_static/install_util.cc
 +++ b/chrome/install_static/install_util.cc
-@@ -672,7 +672,7 @@ void GetExecutableVersionDetails(const std::wstring& exe_path,
+@@ -688,7 +688,7 @@ void GetExecutableVersionDetails(const std::wstring& exe_path,
  }
  
  version_info::Channel GetChromeChannel() {
@@ -11,7 +11,7 @@ index e3deeab6f561a37dd58a440832022b3d7bd47e56..21bea5ea2ff60830d78b4616410626e3
    std::wstring channel_name(GetChromeChannelName());
    if (channel_name.empty()) {
      return version_info::Channel::STABLE;
-@@ -683,7 +683,7 @@ version_info::Channel GetChromeChannel() {
+@@ -699,7 +699,7 @@ version_info::Channel GetChromeChannel() {
    if (channel_name == L"dev") {
      return version_info::Channel::DEV;
    }

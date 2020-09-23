@@ -15,7 +15,7 @@
 #include "content/public/browser/browser_thread.h"
 #include "content/public/browser/content_browser_client.h"
 #include "mojo/public/cpp/bindings/pending_remote.h"
-#include "third_party/blink/public/mojom/referrer.mojom.h"
+#include "third_party/blink/public/mojom/loader/referrer.mojom.h"
 
 class PrefChangeRegistrar;
 

@@ -17,7 +17,7 @@ import android.widget.PopupMenu;
 
 import org.chromium.base.ApplicationStatus;
 import org.chromium.chrome.R;
-import org.chromium.chrome.browser.ChromeActivity;
+import org.chromium.chrome.browser.app.ChromeActivity;
 import org.chromium.chrome.browser.night_mode.GlobalNightModeStateProviderHolder;
 
 public class TabUtils {

@@ -61,7 +61,6 @@ using ntp_background_images::features::kBraveNTPSuperReferralWallpaper;
 #endif
 
 #define BRAVE_FEATURE_ENTRIES \
-    ,                                                                      \
     {"use-dev-updater-url",                                                \
      flag_descriptions::kUseDevUpdaterUrlName,                             \
      flag_descriptions::kUseDevUpdaterUrlDescription, kOsAll,              \

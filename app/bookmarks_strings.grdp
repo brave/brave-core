@@ -52,6 +52,9 @@
   <message name="IDS_BOOKMARK_BAR_APPS_SHORTCUT_TOOLTIP" desc="Text shown in the tooltip of the apps page shortcut in the bookmark bar">
     Show apps
   </message>
+  <message name="IDS_BOOKMARK_BAR_OVERFLOW_BUTTON_TOOLTIP" desc="Text shown on the overflow chevron, if visible">
+    Hidden bookmarks
+  </message>
   <!-- End of Bookmarks Bar strings. -->
 
   <!-- Begin of Bookmarks Bar Context Menu strings. -->

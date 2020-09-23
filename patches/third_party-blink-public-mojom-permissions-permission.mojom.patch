@@ -1,11 +1,11 @@
 diff --git a/third_party/blink/public/mojom/permissions/permission.mojom b/third_party/blink/public/mojom/permissions/permission.mojom
-index 372df35d637cd7b585ea44a37d06b6fb91560596..cdaab740dc78162d9d115a9d433e97c9cfc524d6 100644
+index 7c47d2b47a45b34c88625d22ca6dd5e03cd5862b..55a28bd94d2ea52afe0c9de030934fb63aca1795 100644
 --- a/third_party/blink/public/mojom/permissions/permission.mojom
 +++ b/third_party/blink/public/mojom/permissions/permission.mojom
-@@ -28,6 +28,7 @@ enum PermissionName {
-   NFC,
+@@ -29,6 +29,7 @@ enum PermissionName {
    STORAGE_ACCESS,
    WINDOW_PLACEMENT,
+   FONT_ACCESS,
 +  AUTOPLAY,
  };
  

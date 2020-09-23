@@ -21,8 +21,6 @@
 #undef MigrateObsoleteProfilePrefs
 
 #if BUILDFLAG(BRAVE_WALLET_ENABLED)
-#include "brave/common/extensions/extension_constants.h"
-#include "extensions/browser/extension_prefs.h"
 #include "brave/browser/brave_wallet/brave_wallet_utils.h"
 #endif
 

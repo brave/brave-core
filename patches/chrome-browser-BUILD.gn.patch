@@ -1,12 +1,12 @@
 diff --git a/chrome/browser/BUILD.gn b/chrome/browser/BUILD.gn
-index 995b99c5ba9d388de83d6a4dc30bf0ae74fbeb4a..581e413f68661119ca60f8c8779a708e7d99abbe 100644
+index 5aacd783dda58e48452997bc3b4a7799d3638304..2827781c7c4d7cd652e0d545cca78327d5a5fbaa 100644
 --- a/chrome/browser/BUILD.gn
 +++ b/chrome/browser/BUILD.gn
-@@ -2160,6 +2160,7 @@ static_library("browser") {
+@@ -2194,6 +2194,7 @@ static_library("browser") {
      "//ui/strings",
      "//ui/surface",
      "//ui/web_dialogs",
 +    "//brave/browser:browser_process",
    ]
  
-   if (is_posix || is_fuchsia) {
+   if (build_with_tflite_lib) {

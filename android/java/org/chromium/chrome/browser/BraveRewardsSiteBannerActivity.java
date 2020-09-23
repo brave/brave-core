@@ -29,6 +29,7 @@ import org.chromium.chrome.browser.BraveRewardsHelper;
 import org.chromium.chrome.browser.BraveRewardsNativeWorker;
 import org.chromium.chrome.browser.BraveRewardsObserver;
 import org.chromium.chrome.browser.BraveRewardsPublisher.PublisherStatus;
+import org.chromium.chrome.browser.app.BraveActivity;
 import android.graphics.Bitmap;
 import android.widget.ImageView;
 import org.chromium.chrome.browser.tab.Tab;

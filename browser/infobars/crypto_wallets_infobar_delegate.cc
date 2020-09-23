@@ -11,7 +11,6 @@
 #include "brave/browser/brave_wallet/brave_wallet_service_factory.h"
 #include "brave/browser/ui/brave_pages.h"
 #include "brave/common/brave_wallet_constants.h"
-#include "brave/common/extensions/extension_constants.h"
 #include "brave/common/pref_names.h"
 #include "brave/common/url_constants.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_service.h"
@@ -25,6 +24,7 @@
 #include "components/strings/grit/components_strings.h"
 #include "components/user_prefs/user_prefs.h"
 #include "content/public/browser/browser_context.h"
+#include "extensions/common/constants.h"
 #include "ui/base/l10n/l10n_util.h"
 #include "ui/views/vector_icons.h"
 

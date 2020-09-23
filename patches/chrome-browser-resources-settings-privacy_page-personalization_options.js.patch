@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/resources/settings/privacy_page/personalization_options.js b/chrome/browser/resources/settings/privacy_page/personalization_options.js
-index 2076807ebbf585719c5e2d25bd20c227e2ced02b..cb1aba3918609b06c25753adb162b48256478b2a 100644
+index ac89f95e3b5c98dcba8635ba60ad3817a057ea87..760975b00917cb0fd93029118811599b90277973 100644
 --- a/chrome/browser/resources/settings/privacy_page/personalization_options.js
 +++ b/chrome/browser/resources/settings/privacy_page/personalization_options.js
 @@ -34,7 +34,7 @@ Polymer({
@@ -11,7 +11,7 @@ index 2076807ebbf585719c5e2d25bd20c227e2ced02b..cb1aba3918609b06c25753adb162b482
      // TODO(dbeam): make a virtual.* pref namespace and set/get this normally
      // (but handled differently in C++).
      /** @private {chrome.settingsPrivate.PrefObject} */
-@@ -88,14 +88,14 @@ Polymer({
+@@ -80,14 +80,14 @@ Polymer({
    ready() {
      this.browserProxy_ = settings.PrivacyPageBrowserProxyImpl.getInstance();
  
@@ -28,7 +28,7 @@ index 2076807ebbf585719c5e2d25bd20c227e2ced02b..cb1aba3918609b06c25753adb162b482
    /** @private */
    onMetricsReportingChange_() {
      const enabled = this.$.metricsReportingControl.checked;
-@@ -145,6 +145,7 @@ Polymer({
+@@ -137,6 +137,7 @@ Polymer({
    },
    // </if>
  
@@ -36,7 +36,7 @@ index 2076807ebbf585719c5e2d25bd20c227e2ced02b..cb1aba3918609b06c25753adb162b482
    /**
     * @return {boolean}
     * @private
-@@ -193,6 +194,7 @@ Polymer({
+@@ -185,6 +186,7 @@ Polymer({
      }
      this.showSignoutDialog_ = false;
    },

@@ -25,10 +25,10 @@ import androidx.fragment.app.FragmentManager;
 import org.chromium.chrome.R;
 import org.chromium.base.Log;
 
+import org.chromium.chrome.browser.app.BraveActivity;
 import org.chromium.chrome.browser.onboarding.v2.OnboardingV2PagerAdapter;
 import org.chromium.chrome.browser.onboarding.OnboardingPrefManager;
 import org.chromium.chrome.browser.brave_stats.BraveStatsUtil;
-import org.chromium.chrome.browser.BraveActivity;
 import org.chromium.chrome.browser.notifications.retention.RetentionNotificationUtil;
 
 import java.util.Arrays;

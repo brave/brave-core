@@ -1,5 +1,5 @@
 diff --git a/chrome/installer/mini_installer/chrome.release b/chrome/installer/mini_installer/chrome.release
-index f86e95ba89302631017f372bc60335e1ebf1244f..4244d2e6f69fa158d8f6c56838bab56718135551 100644
+index abfb1fab34d6fc6e531c456337969dafb18d5395..f5a8f6b9aa0938bce7ae3fb970e746362c5c7943 100644
 --- a/chrome/installer/mini_installer/chrome.release
 +++ b/chrome/installer/mini_installer/chrome.release
 @@ -6,7 +6,7 @@
@@ -32,5 +32,5 @@ index f86e95ba89302631017f372bc60335e1ebf1244f..4244d2e6f69fa158d8f6c56838bab567
  chrome_200_percent.pak: %(VersionDir)s\
 +brave_200_percent.pak: %(VersionDir)s\
  
- [TOUCH]
- 
+ [FFMPEG]
+ ffmpeg.dll: %(VersionDir)s\

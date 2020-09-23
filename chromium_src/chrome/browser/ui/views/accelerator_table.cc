@@ -12,7 +12,7 @@
 namespace {
 
 const AcceleratorMapping kBraveAcceleratorMap[] = {
-#if defined(OS_MACOSX)
+#if defined(OS_MAC)
     // Command-Option-N
     {ui::VKEY_N, ui::EF_ALT_DOWN | ui::EF_PLATFORM_ACCELERATOR,
      IDC_NEW_OFFTHERECORD_WINDOW_TOR},

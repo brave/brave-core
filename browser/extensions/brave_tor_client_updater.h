@@ -28,7 +28,7 @@ namespace extensions {
 #if defined(OS_WIN)
 extern const char kTorClientComponentName[];
 extern const char kTorClientComponentId[];
-#elif defined(OS_MACOSX)
+#elif defined(OS_MAC)
 extern const char kTorClientComponentName[];
 extern const char kTorClientComponentId[];
 extern const char kTorClientComponentBase64PublicKey[];

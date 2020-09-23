@@ -13,6 +13,7 @@
 #include "brave/components/brave_ads/browser/buildflags/buildflags.h"
 #include "brave/components/brave_rewards/browser/buildflags/buildflags.h"
 #include "content/public/utility/utility_thread.h"
+#include "mojo/public/cpp/bindings/pending_receiver.h"
 
 #if BUILDFLAG(BRAVE_ADS_ENABLED)
 #include "brave/components/services/bat_ads/bat_ads_app.h"
@@ -48,25 +49,25 @@ void RunServiceAsyncThenTerminateProcess(
 
 #if BUILDFLAG(ENABLE_TOR)
 std::unique_ptr<service_manager::Service> CreateTorLauncherService(
-    service_manager::mojom::ServiceRequest request) {
+    mojo::PendingReceiver<service_manager::mojom::Service> receiver) {
   return std::make_unique<tor::TorLauncherService>(
-      std::move(request));
+      std::move(receiver));
 }
 #endif
 
 #if BUILDFLAG(BRAVE_ADS_ENABLED)
 std::unique_ptr<service_manager::Service> CreateBatAdsService(
-    service_manager::mojom::ServiceRequest request) {
+    mojo::PendingReceiver<service_manager::mojom::Service> receiver) {
   return std::make_unique<bat_ads::BatAdsApp>(
-      std::move(request));
+      std::move(receiver));
 }
 #endif
 
 #if BUILDFLAG(BRAVE_REWARDS_ENABLED)
 std::unique_ptr<service_manager::Service> CreateBatLedgerService(
-    service_manager::mojom::ServiceRequest request) {
+    mojo::PendingReceiver<service_manager::mojom::Service> receiver) {
   return std::make_unique<bat_ledger::BatLedgerApp>(
-      std::move(request));
+      std::move(receiver));
 }
 #endif
 
@@ -74,12 +75,12 @@ std::unique_ptr<service_manager::Service> CreateBatLedgerService(
 
 bool BraveContentUtilityClient::HandleServiceRequest(
     const std::string& service_name,
-    service_manager::mojom::ServiceRequest request) {
+    mojo::PendingReceiver<service_manager::mojom::Service> receiver) {
 
 #if BUILDFLAG(ENABLE_TOR)
   if (service_name == tor::mojom::kServiceName) {
     RunServiceAsyncThenTerminateProcess(
-        CreateTorLauncherService(std::move(request)));
+        CreateTorLauncherService(std::move(receiver)));
     return true;
   }
 #endif
@@ -87,7 +88,7 @@ bool BraveContentUtilityClient::HandleServiceRequest(
 #if BUILDFLAG(BRAVE_ADS_ENABLED)
   if (service_name == bat_ads::mojom::kServiceName) {
     RunServiceAsyncThenTerminateProcess(
-        CreateBatAdsService(std::move(request)));
+        CreateBatAdsService(std::move(receiver)));
     return true;
   }
 #endif
@@ -95,12 +96,11 @@ bool BraveContentUtilityClient::HandleServiceRequest(
 #if BUILDFLAG(BRAVE_REWARDS_ENABLED)
   if (service_name == bat_ledger::mojom::kServiceName) {
     RunServiceAsyncThenTerminateProcess(
-        CreateBatLedgerService(std::move(request)));
+        CreateBatLedgerService(std::move(receiver)));
     return true;
   }
 #endif
 
   return ChromeContentUtilityClient::HandleServiceRequest(
-      service_name, std::move(request));
+      service_name, std::move(receiver));
 }
-

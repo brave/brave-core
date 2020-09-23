@@ -14,8 +14,8 @@
 #include "base/macros.h"
 #include "base/strings/string16.h"
 #include "components/renderer_context_menu/render_view_context_menu_proxy.h"
+#include "ui/base/models/image_model.h"
 #include "ui/base/models/simple_menu_model.h"
-#include "ui/gfx/image/image.h"
 
 class BraveMockRenderViewContextMenu;
 class PrefService;
@@ -59,10 +59,7 @@ class BraveMockRenderViewContextMenu : public ui::SimpleMenuModel::Delegate,
   void AddMenuItem(int command_id, const base::string16& title) override;
   void AddMenuItemWithIcon(int command_id,
                            const base::string16& title,
-                           const gfx::ImageSkia& image) override;
-  void AddMenuItemWithIcon(int command_id,
-                           const base::string16& title,
-                           const gfx::VectorIcon& image) override;
+                           const ui::ImageModel& icon) override;
   void AddCheckItem(int command_id, const base::string16& title) override;
   void AddSeparator() override;
   void AddSubMenu(int command_id,
@@ -71,16 +68,12 @@ class BraveMockRenderViewContextMenu : public ui::SimpleMenuModel::Delegate,
   void AddSubMenuWithStringIdAndIcon(int command_id,
                                      int message_id,
                                      ui::MenuModel* model,
-                                     const gfx::ImageSkia& image) override;
-  void AddSubMenuWithStringIdAndIcon(int command_id,
-                                     int message_id,
-                                     ui::MenuModel* model,
-                                     const gfx::VectorIcon& image) override;
+                                     const ui::ImageModel& icon) override;
   void UpdateMenuItem(int command_id,
                       bool enabled,
                       bool hidden,
                       const base::string16& title) override;
-  void UpdateMenuIcon(int command_id, const gfx::Image& image) override;
+  void UpdateMenuIcon(int command_id, const ui::ImageModel& image) override;
   void RemoveMenuItem(int command_id) override;
   void RemoveAdjacentSeparators() override;
   void AddSpellCheckServiceItem(bool is_checked) override;

@@ -273,6 +273,10 @@
       </message>
 
       <!-- Version UI -->
+      <message name="IDS_SHORT_PRODUCT_LOGO_ALT_TEXT" desc="Alt text for the Brave logo image.">
+        Brave logo
+      </message>
+
       <message name="IDS_VERSION_UI_LICENSE" desc="The label below the copyright message, containing the URLs.">
         Brave is made possible by the <ph name="BEGIN_LINK_CHROMIUM">&lt;a target="_blank" href="$1"&gt;</ph>Brave<ph name="END_LINK_CHROMIUM">&lt;/a&gt;</ph> open source project and other <ph name="BEGIN_LINK_OSS">&lt;a target="_blank" href="$2"&gt;</ph>open source software<ph name="END_LINK_OSS">&lt;/a&gt;</ph>.
       </message>

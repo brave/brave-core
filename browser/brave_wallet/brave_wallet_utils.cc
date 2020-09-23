@@ -6,12 +6,12 @@
 #include "brave/browser/brave_wallet/brave_wallet_utils.h"
 
 #include "brave/common/brave_wallet_constants.h"
-#include "brave/common/extensions/extension_constants.h"
 #include "brave/common/pref_names.h"
 #include "chrome/browser/profiles/profile.h"
 #include "components/prefs/pref_registry_simple.h"
 #include "components/pref_registry/pref_registry_syncable.h"
 #include "extensions/browser/extension_prefs.h"
+#include "extensions/common/constants.h"
 
 namespace {
 

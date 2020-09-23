@@ -37,7 +37,7 @@
 #include "components/password_manager/core/common/password_manager_features.h"
 #include "components/safe_browsing/core/features.h"
 #include "components/security_state/core/features.h"
-#include "components/sync/driver/sync_driver_switches.h"
+#include "components/sync/base/sync_base_switches.h"
 #include "components/translate/core/browser/translate_prefs.h"
 #include "content/public/common/content_features.h"
 #include "content/public/common/content_switches.h"
@@ -138,12 +138,12 @@ BraveMainDelegate::CreateContentUtilityClient() {
 
 void BraveMainDelegate::PreSandboxStartup() {
   ChromeMainDelegate::PreSandboxStartup();
-#if defined(OS_LINUX) || defined(OS_MACOSX)
+#if defined(OS_LINUX) || defined(OS_MAC)
   // Setup NativeMessagingHosts to point to the default Chrome locations
   // because that's where native apps will create them
   base::FilePath chrome_user_data_dir;
   base::FilePath native_messaging_dir;
-#if defined(OS_MACOSX)
+#if defined(OS_MAC)
   base::PathService::Get(base::DIR_APP_DATA, &chrome_user_data_dir);
   chrome_user_data_dir = chrome_user_data_dir.Append("Google/Chrome");
   native_messaging_dir = base::FilePath(FILE_PATH_LITERAL(
@@ -152,14 +152,14 @@ void BraveMainDelegate::PreSandboxStartup() {
   chrome::GetDefaultUserDataDirectory(&chrome_user_data_dir);
   native_messaging_dir = base::FilePath(FILE_PATH_LITERAL(
       "/etc/opt/chrome/native-messaging-hosts"));
-#endif  // defined(OS_MACOSX)
+#endif  // defined(OS_MAC)
   base::PathService::OverrideAndCreateIfNeeded(
       chrome::DIR_USER_NATIVE_MESSAGING,
       chrome_user_data_dir.Append(FILE_PATH_LITERAL("NativeMessagingHosts")),
       false, true);
   base::PathService::OverrideAndCreateIfNeeded(chrome::DIR_NATIVE_MESSAGING,
       native_messaging_dir, false, true);
-#endif  // defined(OS_LINUX) || defined(OS_MACOSX)
+#endif  // defined(OS_LINUX) || defined(OS_MAC)
   if (brave::SubprocessNeedsResourceBundle()) {
     brave::InitializeResourceBundle();
   }
@@ -213,7 +213,7 @@ bool BraveMainDelegate::BasicStartupComplete(int* exit_code) {
       // this feature.
       features::kWebUIDarkMode.name,
       blink::features::kPrefetchPrivacyChanges.name,
-      features::kReducedReferrerGranularity.name,
+      blink::features::kReducedReferrerGranularity.name,
 #if defined(OS_WIN)
       features::kWinrtGeolocationImplementation.name,
 #endif

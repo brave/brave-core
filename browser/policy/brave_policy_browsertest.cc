@@ -53,7 +53,7 @@ class TorDisabledPolicyBrowserTest : public BravePolicyTest {
     PolicyMap policies;
     policies.Set(key::kTorDisabled, POLICY_LEVEL_MANDATORY,
                  POLICY_SCOPE_MACHINE, POLICY_SOURCE_PLATFORM,
-                 std::make_unique<base::Value>(true), nullptr);
+                 base::Value(true), nullptr);
     provider_.UpdateChromePolicy(policies);
   }
 };
@@ -75,7 +75,7 @@ class TorEnabledPolicyBrowserTest : public BravePolicyTest {
     PolicyMap policies;
     policies.Set(key::kTorDisabled, POLICY_LEVEL_MANDATORY,
                  POLICY_SCOPE_MACHINE, POLICY_SOURCE_PLATFORM,
-                 std::make_unique<base::Value>(false), nullptr);
+                 base::Value(false), nullptr);
     provider_.UpdateChromePolicy(policies);
   }
 };

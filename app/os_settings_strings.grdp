@@ -19,6 +19,14 @@
   <message name="IDS_SETTINGS_SECONDARY_USER_BANNER" desc="Banner displayed in settings page when the user is secondary in a multi-profile session.">
     Some settings belonging to <ph name="PRIMARY_EMAIL">$1<ex>john@google.com</ex></ph> are being shared with you. These settings only affect your account when using multiple sign-in.
   </message>
+  <message name="IDS_SETTINGS_UPDATE_REQUIRED_EOL_BANNER_DAYS" desc="Banner displayed in OS settings page in case update is required by policy but device has reached end-of-life and the days remaining to return the device back to the enterprise is less than seven.">
+    {NUM_DAYS, plural,
+      =1 {<ph name="DOMAIN">{1}<ex>example.com</ex></ph> requires you to back up your data and return this <ph name="DEVICE_TYPE">{2}<ex>Bravebook</ex></ph> today.<ph name="LINK_BEGIN">&lt;a target="_blank" href="{3}<ex>https://google.com/</ex>"&gt;</ph>See details<ph name="LINK_END">&lt;/a&gt;</ph>}
+      other {<ph name="DOMAIN">{1}<ex>example.com</ex></ph> requires you to back up your data and return this <ph name="DEVICE_TYPE">{2}<ex>Bravebook</ex></ph> within {NUM_DAYS} days.<ph name="LINK_BEGIN">&lt;a target="_blank" href="{3}<ex>https://google.com/</ex>"&gt;</ph>See details<ph name="LINK_END">&lt;/a&gt;</ph>}}
+  </message>
+  <message name="IDS_SETTINGS_UPDATE_REQUIRED_EOL_BANNER_ONE_WEEK" desc="Banner displayed in OS settings page in case update is required by policy but device has reached end-of-life and the days remaining to return the device back to the enterprise is equal to seven.">
+    <ph name="DOMAIN">$1<ex>example.com</ex></ph> requires you to back up your data and return this <ph name="DEVICE_TYPE">$2<ex>Bravebook</ex></ph> within 1 week.<ph name="LINK_BEGIN">&lt;a target="_blank" href="$3<ex>https://google.com/</ex>"&gt;</ph>See details<ph name="LINK_END">&lt;/a&gt;</ph>
+  </message>
 
   <!-- Settings Search Box -->
   <message name="IDS_OS_SEARCH_RESULT_ROW_A11Y_RESULT_SELECTED" desc="BraveVox alert to indicate the position number of a selected result in a list of search results and the selected result text itself, and that the user can press enter to navigate to section described by the search result.">
@@ -116,7 +124,7 @@
   <message name="IDS_SETTINGS_ABOUT_PAGE_UPDATE_WARNING_TITLE" desc="The title of the warning about update over mobile data.">
     Download update using mobile data
   </message>
-    <message name="IDS_SETTINGS_ABOUT_PAGE_CURRENT_CHANNEL_BETA" desc="The beta label in the message about current channel.">
+  <message name="IDS_SETTINGS_ABOUT_PAGE_CURRENT_CHANNEL_BETA" desc="The beta label in the message about current channel.">
     beta
   </message>
   <message name="IDS_SETTINGS_ABOUT_PAGE_CURRENT_CHANNEL_CANARY" desc="The canary label in the message about current channel.">
@@ -130,6 +138,9 @@
   </message>
   <message name="IDS_SETTINGS_ABOUT_PAGE_CURRENT_CHANNEL_STABLE" desc="The stable label in the message about current channel.">
     stable
+  </message>
+  <message name="IDS_SETTINGS_ABOUT_PAGE_CURRENT_CHANNEL_STABLE_TT" desc="The stable (trusted tester) label in the message about current channel.">
+    stable (trusted tester)
   </message>
   <message name="IDS_SETTINGS_ABOUT_PAGE_CHECK_FOR_UPDATES" desc="The button label to check for updates and apply (download and install) if found">
     Check for updates
@@ -234,6 +245,51 @@
   <message name="IDS_OS_SETTINGS_LANGUAGES_AND_INPUT_PAGE_TITLE" desc="Name of the OS settings page which displays language method preferences.">
     Languages and input
   </message>
+  <message name="IDS_OS_SETTINGS_LANGUAGES_LANGUAGES_PAGE_TITLE" translateable="false" desc="A page under “Languages and input” section in the OS settings page that users can set system display language, web content language fallback and translation preference.">
+    Languages
+  </message>
+  <message name="IDS_OS_SETTINGS_LANGUAGES_INPUT_PAGE_TITLE" translateable="false" desc="A page under “Languages and input” section in the OS settings page that users can add, remove and manage input methods.">
+    Input
+  </message>
+  <message name="IDS_OS_SETTINGS_LANGUAGES_SYSTEM_LANGUAGE_TITLE" translateable="false" desc="The label for the section where users can see their display language. This language will be used for system surfaces (launcher, shelf, and notifications etc.) and the preferred application language if it’s provided by the application developer.">
+    System display language
+  </message>
+  <message name="IDS_OS_SETTINGS_LANGUAGES_SYSTEM_LANGUAGE_DESCRIPTION" translateable="false" desc="The description for the section where users can see their display language. This language will be used for system surfaces (launcher, shelf, and notifications etc.) and the preferred application language if it’s provided by the application developer.">
+    System features like launcher, Settings and Files will appear in this language.
+  </message>
+  <message name="IDS_OS_SETTINGS_LANGUAGES_CHANGE_SYSTEM_LANGUAGE_BUTTON_LABEL" translateable="false" desc="The label for the button where users can change their display language. This language will be used for system surfaces (launcher, shelf, and notifications etc.) and the preferred application language if it’s provided by the application developer.">
+    Change
+  </message>
+  <message name="IDS_OS_SETTINGS_LANGUAGES_CHANGE_SYSTEM_LANGUAGE_BUTTON_DESCRIPTION" translateable="false" desc="The description read by screenreader for the button where users can change their display language. This language will be used for system surfaces (launcher, shelf, and notifications etc.) and the preferred application language if it’s provided by the application developer.">
+    Change system language. Current language is <ph name="LANGUAGE">$1<ex>English</ex></ph>. System features like launcher, Settings and Files will appear in the language you choose.
+  </message>
+  <message name="IDS_OS_SETTINGS_LANGUAGES_LANGUAGES_PREFERENCE_TITLE" translateable="false" desc="The label of the section in the language settings page where users can add languages they read to an ordered list. The web content languages will be served in the order of the list.">
+    Languages you read
+  </message>
+  <message name="IDS_OS_SETTINGS_LANGUAGES_LANGUAGES_PREFERENCE_DESCRIPTION" translateable="false" desc="The description of the section in the language settings page where users can add languages they read to an ordered list. The web content languages will be served in the order of the list.">
+    Add and order languages you read. Apps and websites will be displayed in the most preferred language available. <ph name="BEGIN_LINK_LEARN_MORE">&lt;a target="_blank" href="$1"&gt;</ph>Learn more<ph name="END_LINK_LEARN_MORE">&lt;/a&gt;</ph>
+  </message>
+  <message name="IDS_OS_SETTINGS_LANGUAGES_OFFER_TRANSLATION_LABEL" translateable="false" desc="The label of the toggle that enables the prompt to translate a page to users.">
+   Translation suggestion
+  </message>
+  <message name="IDS_OS_SETTINGS_LANGUAGES_OFFER_TRANSLATION_SUBLABEL" translateable="false" desc="The sublabel of the toggle that enables the prompt to translate a page to users.">
+    Allow the system to offer to translate web pages when it detects languages you don't read
+  </message>
+  <message name="IDS_OS_SETTINGS_LANGUAGES_INPUT_METHOD_LIST_TITLE" translateable="false" desc="Title for the current input method in the header for the collapsible list of enabled input methods (keyboard layouts and input method editors).">
+    Input methods
+  </message>
+  <message name="IDS_OS_SETTINGS_LANGUAGES_OPEN_OPTIONS_PAGE_LABEL" translateable="false" desc="Title for the button to open the options page for a input method (keyboard layout and input method editor).">
+      Open options page for <ph name="INPUT_METHOD_NAME">$1<ex>US keyboard</ex></ph>
+  </message>
+  <message name="IDS_OS_SETTINGS_LANGUAGES_ADD_INPUT_METHOD_LABEL" translateable="false" desc="Button under the list of input methods which opens a dialog that lets the user add keyboard layouts and input method editors.">
+    Add input methods
+  </message>
+  <message name="IDS_OS_SETTINGS_LANGUAGES_SPELL_CHECK_TITLE" translateable="false" desc="Title for the section containing all the options for spell check settings. The options include picking between using the system's spell check or using Brave's web service and a list of the enabled languages which support spell checking.">
+    Spell check
+  </message>
+  <message name="IDS_OS_SETTINGS_LANGUAGES_SPELL_CHECK_DISABLED_REASON" translateable="false" desc="Text that indicates to the user that spell check options are disabled because none of the languages they have added have spell check support.">
+    Spell check isn’t supported for the languages you selected
+  </message>
   <message name="IDS_OS_SETTINGS_LANGUAGES_LIST_TITLE" desc="Title for the list of the user's preferred written languages.">
     Languages
   </message>
@@ -275,30 +331,27 @@
     System text is shown in this language
   </message>
 
-  <!-- Smart Inputs Section -->
-  <message name="IDS_SETTINGS_SMART_INPUTS_TITLE" desc="The label for the smart inputs section, which contains features to help users type faster or more expressively such as suggesting personal information or suggesting emoji to use.">
-    Smart inputs
+  <!-- Suggestions Section -->
+  <message name="IDS_SETTINGS_SUGGESTIONS_TITLE" desc="The label for the suggestions section, which contains features to help users type faster or more expressively such as suggesting personal information or suggesting emoji to use.">
+    Suggestions
   </message>
-  <message name="IDS_SETTINGS_SMART_INPUTS_PERSONAL_INFO_TITLE" desc="The label for personal information suggestion section.">
+  <message name="IDS_SETTINGS_SUGGESTIONS_PERSONAL_INFO_TITLE" desc="The label for personal information suggestion section. The feature shows inline suggestions for the users’s name, address, and phone number.">
     Personal information suggestions
   </message>
-  <message name="IDS_SETTINGS_SMART_INPUTS_PERSONAL_INFO_DESCRIPTION" desc="The description for personal information suggestion section.">
-    Personal information suggestions help you write faster with suggestions such as your name, address or phone number. Only you see your own private, personalized suggestions for your account.
+  <message name="IDS_SETTINGS_SUGGESTIONS_PERSONAL_INFO_HELP_TOOLTIP" desc="The help icon's tooltip for personal information suggestion section to inform users of the privacy of the suggestions.">
+    Personal suggestions are only shown on your account
   </message>
-  <message name="IDS_SETTINGS_SMART_INPUTS_SHOW_PERSONAL_INFO" desc="The label for the toggle button controlling showing personal information suggestions.">
-    Show personal information suggestions
+  <message name="IDS_SETTINGS_SUGGESTIONS_PERSONAL_INFO_DESCRIPTION" desc="The description for personal information suggestion section.">
+    Write faster with inline suggestions for your name, address, or phone number
   </message>
-  <message name="IDS_SETTINGS_SMART_INPUTS_MANAGE_PERSONAL_INFO" desc="The label for opening Brave's browser settings page for managing personal addresses">
+  <message name="IDS_SETTINGS_SUGGESTIONS_MANAGE_PERSONAL_INFO" desc="The label for opening Brave's browser settings page for managing personal addresses">
     Manage personal information
   </message>
-  <message name="IDS_SETTINGS_SMART_INPUTS_EMOJI_SUGGESTION_TITLE" desc="The label for emoji suggestion (when an user types a word, some emojis might be suggested for the user to insert after) section.">
+  <message name="IDS_SETTINGS_SUGGESTIONS_EMOJI_SUGGESTION_TITLE" desc="The label for emoji suggestion (when an user types a word, some emojis might be suggested for the user to insert after) section.">
     Emoji suggestions
   </message>
-  <message name="IDS_SETTINGS_SMART_INPUTS_EMOJI_SUGGESTION_DESCRIPTION" desc="The description for emoji suggestion (when an user types a word, some emojis might be suggested for the user to insert after) section.">
-    Get emoji suggestions based on what you are typing
-  </message>
-  <message name="IDS_SETTINGS_SMART_INPUTS_SHOW_EMOJI_SUGGESTION" desc="The label for the toggle button controlling showing emoji suggestions (when an user types a word, some emojis might be suggested for the user to insert after).">
-    Show emoji suggestions
+  <message name="IDS_SETTINGS_SUGGESTIONS_EMOJI_SUGGESTION_DESCRIPTION" desc="The description for emoji suggestion (when an user types a word, some emojis might be suggested for the user to insert after) section.">
+    Get emoji suggestions based on what you're typing
   </message>
 
   <!-- Input Method Options Section -->
@@ -447,7 +500,7 @@
     Change device account image
   </message>
   <message name="IDS_OS_SETTINGS_AMBIENT_MODE_TITLE" desc="Label for row in settings page that opens the ambient mode settings page to customize what you see on your screen when the device is idle.">
-    Ambient mode
+    Screen saver
   </message>
   <message name="IDS_OS_SETTINGS_AMBIENT_MODE_ENABLED" desc="Sub label for the ambient mode row in settings page when it is enabled.">
     Enabled
@@ -455,20 +508,73 @@
   <message name="IDS_OS_SETTINGS_AMBIENT_MODE_DISABLED" desc="Sub label for the ambient mode row in settings page when it is disabled.">
     Disabled
   </message>
+
+  <!-- Ambient Mode Page -->
+  <message name="IDS_OS_SETTINGS_AMBIENT_MODE_PAGE_DESCRIPTION" desc="Description for the ambient mode settings page.">
+    When your screen is idle, show photos, time, weather, and media info
+  </message>
   <message name="IDS_OS_SETTINGS_AMBIENT_MODE_ON" desc="Label for the toggle row in ambient mode settings page when it is enabled.">
     On
   </message>
   <message name="IDS_OS_SETTINGS_AMBIENT_MODE_OFF" desc="Label for the toggle row in ambient mode settings page when it is disabled.">
     Off
   </message>
-  <message name="IDS_OS_SETTINGS_AMBIENT_MODE_TOPIC_SOURCE_TITLE" desc="Label for the radio button group of topic source, where the screen contents come from.">
-    Choose what you see on your screen
+  <message name="IDS_OS_SETTINGS_AMBIENT_MODE_TOPIC_SOURCE_TITLE" desc="Label for the radio button group of ambient mode topic source, where the screen contents come from.">
+    Background
   </message>
-  <message name="IDS_OS_SETTINGS_AMBIENT_MODE_TOPIC_SOURCE_GOOGLE_PHOTOS" desc="Label for the radio button to choose the topic source from Brave Photos.">
+  <message name="IDS_OS_SETTINGS_AMBIENT_MODE_TOPIC_SOURCE_GOOGLE_PHOTOS" desc="Label for the radio button to choose the topic source from Brave Photos. The radio button allows the user to set Brave Photos for ambient mode, which shows photos to the user when their device is idle.">
     Brave Photos
   </message>
-  <message name="IDS_OS_SETTINGS_AMBIENT_MODE_TOPIC_SOURCE_ART_GALLERY" desc="Label for the radio button to choose the topic source from art gallery.">
+  <message name="IDS_OS_SETTINGS_AMBIENT_MODE_TOPIC_SOURCE_GOOGLE_PHOTOS_DESC" desc="Description for the radio button to choose the topic source from Brave Photos. The radio button allows the user to set Brave Photos for ambient mode, which shows photos to the user when their device is idle.">
+    Choose your favorite photos and albums
+  </message>
+  <message name="IDS_OS_SETTINGS_AMBIENT_MODE_TOPIC_SOURCE_GOOGLE_PHOTOS_DESC_NO_ALBUM" desc="Description for the radio button to choose the topic source from Brave Photos when there is no album. The radio button allows the user to set Brave Photos for ambient mode, which shows photos to the user when their device is idle.">
+    To create albums, go to Brave Photos
+  </message>
+  <message name="IDS_OS_SETTINGS_AMBIENT_MODE_TOPIC_SOURCE_ART_GALLERY" desc="Label for the radio button to choose the topic source from art gallery. The radio button allows the user to set Art gallery for ambient mode, which shows photos to the user when their device is idle.">
     Art gallery
+  </message>
+  <message name="IDS_OS_SETTINGS_AMBIENT_MODE_TOPIC_SOURCE_ART_GALLERY_DESCRIPTION" desc="Description for the radio button to choose the topic source from art gallery. The radio button allows the user to set Art gallery for ambient mode, which shows photos to the user when their device is idle.">
+    Select curated artwork and images
+  </message>
+  <message name="IDS_OS_SETTINGS_AMBIENT_MODE_TOPIC_SOURCE_SELECTED_ROW" desc="A11y label for the selected topic source row in ambient mode.">
+    <ph name="TOPIC_SOURCE">$1<ex>Brave Photos</ex></ph> <ph name="TOPIC_SOURCE_DESC">$2<ex>Select your memories</ex></ph> selected, press Enter to select <ph name="TOPIC_SOURCE">$1<ex>Brave Photos</ex></ph> albums
+  </message>
+  <message name="IDS_OS_SETTINGS_AMBIENT_MODE_TOPIC_SOURCE_UNSELECTED_ROW" desc="A11y label for the unselected topic source row in ambient mode.">
+    Select <ph name="TOPIC_SOURCE">$1<ex>Brave Photos</ex></ph> <ph name="TOPIC_SOURCE_DESC">$2<ex>Select your memories</ex></ph>
+  </message>
+  <message name="IDS_OS_SETTINGS_AMBIENT_MODE_TOPIC_SOURCE_SUBPAGE" desc="A11y label for the subpage button to select albums in ambient mode.">
+    Select <ph name="TOPIC_SOURCE">$1<ex>Brave Photos</ex></ph> albums
+  </message>
+  <message name="IDS_OS_SETTINGS_AMBIENT_MODE_ALBUMS_SUBPAGE_GOOGLE_PHOTOS_TITLE" desc="Label for the subpage to select albums of Brave Photos in ambient mode.">
+    Relive your favorite memories. To add or edit albums, go to<ph name="LINK_BEGIN">&lt;a target="_blank" href="$1<ex>https://google.com/</ex>"&gt;</ph>Brave Photos<ph name="LINK_END">&lt;/a&gt;</ph>.
+  </message>
+  <message name="IDS_OS_SETTINGS_AMBIENT_MODE_ALBUMS_SUBPAGE_GOOGLE_PHOTOS_NO_ALBUM" desc="Text for the subpage to select albums of Brave Photos when there is no album in ambient mode.">
+    No albums. Create an album in<ph name="LINK_BEGIN">&lt;a target="_blank" href="$1<ex>https://google.com/</ex>"&gt;</ph>Brave Photos<ph name="LINK_END">&lt;/a&gt;</ph>.
+  </message>
+  <message name="IDS_OS_SETTINGS_AMBIENT_MODE_ALBUMS_SUBPAGE_RECENT_DESC" desc="Description for the Recent highlights album in ambient mode.">
+    Your best photos, selected automatically
+  </message>
+  <message name="IDS_OS_SETTINGS_AMBIENT_MODE_ALBUMS_SUBPAGE_PHOTOS_NUM_PLURAL" desc="Number of photos in an album in ambient mode.">
+    <ph name="NUMBER">$1<ex>100</ex></ph> photos
+  </message>
+  <message name="IDS_OS_SETTINGS_AMBIENT_MODE_ALBUMS_SUBPAGE_PHOTOS_NUM_SINGULAR" desc="1 or 0 photo in an album in ambient mode.">
+    <ph name="NUMBER">$1<ex>1</ex></ph> photo
+  </message>
+  <message name="IDS_OS_SETTINGS_AMBIENT_MODE_ALBUMS_SUBPAGE_ALBUM_SELECTED" desc="A11y label of a selected album in ambient mode.">
+    Album <ph name="TITLE">$1<ex>Recent highlights</ex></ph> <ph name="DESC">$2<ex>Your best auto selected photos</ex></ph> selected
+  </message>
+  <message name="IDS_OS_SETTINGS_AMBIENT_MODE_ALBUMS_SUBPAGE_ALBUM_UNSELECTED" desc="A11y label of an unselected album in ambient mode.">
+    Select album <ph name="TITLE">$1<ex>Recent highlights</ex></ph> <ph name="DESC">$2<ex>Your best auto selected photos</ex></ph>
+  </message>
+  <message name="IDS_OS_SETTINGS_AMBIENT_MODE_WEATHER_TITLE" desc="Label for the radio button group of weather.">
+    Weather
+  </message>
+  <message name="IDS_OS_SETTINGS_AMBIENT_MODE_TEMPERATURE_UNIT_FAHRENHEIT" desc="Label for the radio button to choose fahrenheit as the preferred temperature unit.">
+    Fahrenheit
+  </message>
+  <message name="IDS_OS_SETTINGS_AMBIENT_MODE_TEMPERATURE_UNIT_CELSIUS" desc="Label for the radio button to choose celsius as the preferred temperature unit.">
+    Celsius
   </message>
 
   <!-- Search and Assistant section. -->
@@ -565,26 +671,32 @@
   <message name="IDS_SETTINGS_LARGE_MOUSE_CURSOR_SIZE_LARGE_LABEL" desc="Label in the slider which indicates that this side makes the cursor large.">
     Large
   </message>
-  <message name="IDS_SETTINGS_CURSOR_COLOR_ENABLED_LABEL" desc="Label for a checkbox which enables selecting custom cursor colors.">
-    Custom cursor color
-  </message>
   <message name="IDS_SETTINGS_CURSOR_COLOR_OPTIONS_LABEL" desc="Label for a drop-down menu of cursor color options for custom cursor colors.">
-    Color
+    Cursor color
+  </message>
+  <message name="IDS_SETTINGS_CURSOR_COLOR_BLACK" desc="Label for a cursor color option which colors the cursor black (default).">
+    Black (default)
   </message>
   <message name="IDS_SETTINGS_CURSOR_COLOR_RED" desc="Label for a cursor color option which colors the cursor red.">
     Red
   </message>
-  <message name="IDS_SETTINGS_CURSOR_COLOR_ORANGE" desc="Label for a cursor color option which colors the cursor orange.">
-    Orange
+  <message name="IDS_SETTINGS_CURSOR_COLOR_YELLOW" desc="Label for a cursor color option which colors the cursor dark yellow.">
+    Yellow
   </message>
   <message name="IDS_SETTINGS_CURSOR_COLOR_GREEN" desc="Label for a cursor color option which colors the cursor green.">
     Green
   </message>
+  <message name="IDS_SETTINGS_CURSOR_COLOR_CYAN" desc="Label for a cursor color option which colors the cursor cyan.">
+    Cyan
+  </message>
   <message name="IDS_SETTINGS_CURSOR_COLOR_BLUE" desc="Label for a cursor color option which colors the cursor blue.">
     Blue
   </message>
-    <message name="IDS_SETTINGS_CURSOR_COLOR_PURPLE" desc="Label for a cursor color option which colors the cursor purple.">
-    Purple
+  <message name="IDS_SETTINGS_CURSOR_COLOR_MAGENTA" desc="Label for a cursor color option which colors the cursor magenta.">
+    Magenta
+  </message>
+  <message name="IDS_SETTINGS_CURSOR_COLOR_PINK" desc="Label for a cursor color option which colors the cursor pink.">
+    Pink
   </message>
   <message name="IDS_SETTINGS_HIGH_CONTRAST_LABEL" desc="Label for checkbox which enables high-contrast UI.">
       Use high contrast mode
@@ -745,6 +857,9 @@
   <message name="IDS_SETTINGS_SWITCH_ASSIGNMENT_HEADING" desc="Heading for the settings section for Switch Access to assign switches to actions">
     Switch action assignment
   </message>
+  <message name="IDS_SETTINGS_SWITCH_ASSIGN_OPTION_PLACEHOLDER" desc="Placeholder for the options for switch assignment.">
+    Placeholder
+  </message>
   <message name="IDS_SETTINGS_SWITCH_ASSIGN_OPTION_NONE" desc="Label for the option to have no switch assigned to an action.">
     None
   </message>
@@ -901,7 +1016,7 @@
      Bookmarks, passwords, and other browser data are synced with the primary account.
   </message>
   <message name="IDS_SETTINGS_ACCOUNT_MANAGER_CHILD_SECOND_MESSAGE" desc="Description of the Account Manager Settings page for child users. Shown just below the link to learn more about account management.">
-    Adding a school account enables easy sign-in to websites and extensions as a student while still operating under parental controls.
+    Adding a school account enables easy sign-in to websites, extensions, and apps as a student while still operating under parental controls.
   </message>
   <message name="IDS_SETTINGS_ACCOUNT_MANAGER_LIST_HEADER" desc="List header for Account List in Account Manager Settings page.">
     Accounts
@@ -980,6 +1095,9 @@
   <message name="IDS_SETTINGS_CROSTINI_SHARED_PATHS_LIST_HEADING" desc="Label for list of shared folders.">
     Shared folders
   </message>
+  <message name="IDS_SETTINGS_CROSTINI_SHARED_PATHS_INSTRUCTIONS_LOCATE" desc="Instructions for how to locate shared folders in Crostini.">
+    Shared folders are available in Linux at <ph name="BASE_DIR">$1<ex>/mnt/chromeos</ex></ph>.
+  </message>
   <message name="IDS_SETTINGS_CROSTINI_SHARED_PATHS_INSTRUCTIONS_ADD" desc="Instructions for how to add shared folders in Crostini.">
     To share, right-click on a folder in Files app, then select "Share with Linux".
   </message>
@@ -1032,7 +1150,7 @@
     Give Linux apps permission to access USB devices. Linux won't remember a USB device after it's removed.
   </message>
   <message name="IDS_SETTINGS_CROSTINI_SHARED_USB_DEVICES_EXTRA_DESCRIPTION" desc="Extra description for managing shared USB devices.">
-    Only Android devices are currently supported.
+    Only supported devices are shown.
   </message>
   <message name="IDS_SETTINGS_CROSTINI_SHARED_USB_DEVICES_LIST_EMPTY_MESSAGE" desc="Message shown when there are no avaiable USB devices.">
     Available USB devices will appear here.
@@ -1198,9 +1316,6 @@
   </message>
   <message name="IDS_SETTINGS_CROSTINI_ARC_ADB_CONFIRMATION_MESSAGE_DISABLE" desc="Describes what will happen if the user disables ADB Sideloading.">
     Disabling ADB debugging will reset this <ph name="DEVICE_TYPE">$1<ex>Bravebook</ex></ph> to factory settings. All user accounts and local data will be erased.
-  </message>
-  <message name="IDS_SETTINGS_CROSTINI_SHARED_PATHS_INSTRUCTIONS_LOCATE" desc="Instructions for how to locate shared folders in Crostini.">
-    Shared folders are available in Linux at <ph name="BASE_DIR">$1<ex>/mnt/chromeos</ex></ph>.
   </message>
   <message name="IDS_SETTINGS_CROSTINI_SUBTEXT" desc="Description for the section for enabling and managing Crostini.">
     Run Linux tools, editors, and IDEs on your <ph name="DEVICE_TYPE">$1<ex>Bravebook</ex></ph>. &lt;a target="_blank" href="<ph name="URL">$2<ex>https://google.com/</ex></ph>"&gt;Learn more&lt;/a&gt;
@@ -1481,7 +1596,7 @@
     Set up or manage CUPS printers. <ph name="LINK_BEGIN">&lt;a&gt;</ph>Learn more<ph name="LINK_END">&lt;/a&gt;</ph>
   </message>
   <message name="IDS_SETTINGS_PRINTING_CUPS_PRINTERS_ADD_PRINTER" desc="In CUPS printing settings subpage, text for the link adding a new CUPS printer.">
-    Add Printer
+    Add printer
   </message>
     <message name="IDS_SETTINGS_PRINTING_CUPS_PRINTERS_ADD_DETECTED_OR_NEW_PRINTER" desc="In CUPS printing settings subpage, explanatory text for the nearby printers list.">
     Save detected printers to your profile, or add a new printer. <ph name="LINK_BEGIN">&lt;a&gt;</ph>Learn more<ph name="LINK_END">&lt;/a&gt;</ph>
@@ -1728,6 +1843,9 @@
   </message>
 
   <!-- Internet page (OS settings) -->
+  <message name="IDS_SETTINGS_INTERNET_ADD_CELLULAR" desc="The accessibility label for the add cellular icon at Settings &gt; Internet &gt; Add Cellular label. This text will not be visible, but will be announced when BraveVox is on and the user navigates to the icon. Clicking this icon will show a dialog that allows the user to activate a physical SIM or set up eSIM.">
+    Add Cellular...
+  </message>
   <message name="IDS_SETTINGS_INTERNET_ADD_CONNECTION" desc="Settings &gt; Internet &gt; Add connection expanding section label.">
     Add connection
   </message>
@@ -1884,6 +2002,9 @@
   <message name="IDS_SETTINGS_INTERNET_NETWORK_METERED" desc="Settings &gt; Internet &gt; Network details: Label for the toggle indicating whether a network is metered.">
     Metered network
   </message>
+  <message name="IDS_SETTINGS_INTERNET_NETWORK_METERED_DESC" desc="Settings &gt; Internet &gt; Network details: Subtext description for the toggle indicating whether a network is metered.">
+    Helps reduce network data usage by pausing automatic app and system updates
+  </message>
   <message name="IDS_SETTINGS_INTERNET_NETWORK_PREFER" desc="Settings &gt; Internet &gt; Network details: Label for the checkbox determining whether a network is preferred over other networks.">
     Prefer this network
   </message>
@@ -1934,6 +2055,9 @@
   </message>
   <message name="IDS_SETTINGS_INTERNET_CELLULAR_CONTACT_DEFAULT_CARRIER" desc="Text shown when the Bravebook cannot connect to a cellular network, which alerts the user to contact their carrier.">
     Trouble connecting. Please contact your carrier for assistance.
+  </message>
+  <message name="IDS_SETTINGS_INTERNET_CELLULAR_SETUP_DIALOG_TITLE" desc="The title text of the cellular setup dialog that allows users set up a new cellular network by activating a physical SIM card or setting up the device's built in eSIM.">
+    Set up new network
   </message>
   <message name="IDS_SETTINGS_INTERNET_TETHER_PHONE_OUT_OF_RANGE" desc="Text shown when viewing the Tether network detail page when the currently-viewed Tether network has been lost (e.g., has gone out of range). Because Tether networks are provided by Android phones, we use the word 'phone' here instead of 'network'.">
     Unable to detect your phone
@@ -2062,6 +2186,18 @@
   <message name="IDS_SETTINGS_MULTIDEVICE_ANDROID_MESSAGES_SUMMARY" desc="Description of for the 'Android Messages' setting. This feature lets the user read and reply to text messages from their Bravebook. New text messages will appear as notifications.">
     Send and receive text messages from your <ph name="DEVICE_TYPE">$1<ex>Bravebook</ex></ph>. <ph name="LINK_BEGIN">&lt;a target="_blank" href="$2<ex>https://google.com/</ex>"&gt;</ph>Learn more<ph name="LINK_END">&lt;/a&gt;</ph>
   </message>
+  <message name="IDS_SETTINGS_MULTIDEVICE_PHONE_HUB_SECTION_TITLE" translateable="false" desc="The title of the Phone Hub section on the settings page.">
+    Phone Hub
+  </message>
+  <message name="IDS_SETTINGS_MULTIDEVICE_PHONE_HUB_NOTIFICATIONS_SECTION_TITLE" translateable="false" desc="The title of the Phone Hub Notifications section on the settings page.">
+    Notifications
+  </message>
+  <message name="IDS_SETTINGS_MULTIDEVICE_PHONE_HUB_NOTIFICATION_BADGE_SECTION_TITLE" translateable="false" desc="The title of the Phone Hub Notifications Badge section on the settings page.">
+    Notifications Badge
+  </message>
+  <message name="IDS_SETTINGS_MULTIDEVICE_PHONE_HUB_TASK_CONTINUATION_SECTION_TITLE" translateable="false" desc="The title of the Phone Hub Task Continuation section on the settings page.">
+    Task Continuation
+  </message>
 
   <!-- Lock Screen Page (OS settings) -->
   <message name="IDS_ASH_SETTINGS_LOCK_SCREEN_NOTIFICATION_TITLE" desc="The title of options to change the behavior of notifications on the lock screen.">
@@ -2078,6 +2214,18 @@
   </message>
   <message name="IDS_SETTINGS_PEOPLE_LOCK_SCREEN_PIN_OR_PASSWORD" desc="The account password or a custom PIN can be used to unlock the device.">
     PIN or password
+  </message>
+  <message name="IDS_SETTINGS_PEOPLE_LOCK_SCREEN_PIN_AUTOSUBMIT" desc="Option to enable PIN auto-submit">
+    Unlock automatically once PIN is entered
+  </message>
+  <message name="IDS_SETTINGS_PEOPLE_LOCK_SCREEN_PIN_AUTOSUBMIT_PROMPT" desc="Text above a PIN input field that tells the user they need to submit their PIN to enable auto submit.">
+    Confirm PIN to turn on automatic unlock
+  </message>
+  <message name="IDS_SETTINGS_PEOPLE_LOCK_SCREEN_PIN_AUTOSUBMIT_ERROR_PIN_TOO_LONG" desc="Error shown to users when trying to enable PIN auto submit telling them that their PIN is too long for this feature.">
+    PIN must be 12 digits or less
+  </message>
+  <message name="IDS_SETTINGS_PEOPLE_LOCK_SCREEN_PIN_AUTOSUBMIT_ERROR_PIN_INCORRECT" desc="Error shown to users when trying to enable PIN auto submit telling them that their PIN is incorrect.">
+    Incorrect PIN
   </message>
   <message name="IDS_SETTINGS_PEOPLE_LOCK_SCREEN_FINGERPRINT_SETUP_BUTTON" desc="Text on the lock screen button which opens up the fingerprint subpage.">
     Set up
@@ -2781,7 +2929,7 @@
     Android settings
   </message>
   <message name="IDS_SETTINGS_ANDROID_APPS_SUBTEXT" desc="Description for the section for enabling and managing Google Play Store (Android) apps.">
-    Install apps and games from Google Play on your <ph name="DEVICE_TYPE">$1<ex>Bravebook</ex></ph>. &lt;a target="_blank" href="<ph name="URL">$2<ex>https://google.com/</ex></ph>"&gt;Learn more&lt;/a&gt;
+    Install apps and games from Google Play on your <ph name="DEVICE_TYPE">$1<ex>Bravebook</ex></ph>. <ph name="LINK_BEGIN">&lt;a target="_blank" href="$2<ex>https://google.com/</ex>"&gt;</ph>Learn more<ph name="LINK_END">&lt;/a&gt;</ph>
   </message>
   <!-- TODO(jamescook): Use device type instead of "Bravebook", which may
         require changing ArcPlayTermsOfServiceConsent resource id handling. -->
@@ -2813,6 +2961,9 @@
   </message>
   <message name="IDS_SETTINGS_APPS_PLUGIN_VM_SHARED_PATHS_LIST_HEADING" desc="Label for list of shared folders.">
     Shared folders
+  </message>
+  <message name="IDS_SETTINGS_APPS_PLUGIN_VM_SHARED_PATHS_INSTRUCTIONS_LOCATE" desc="Instructions for how to locate shared folders in Parallels.">
+      Shared folders are available in Windows at <ph name="BASE_DIR">$1<ex>Network › BraveOS</ex></ph>.
   </message>
   <message name="IDS_SETTINGS_APPS_PLUGIN_VM_SHARED_PATHS_INSTRUCTIONS_ADD" desc="Instructions for how to add shared folders in Parallels.">
     To share, right-click on a folder in Files app, then select "Share with Parallels Desktop".
@@ -2888,25 +3039,11 @@
   <message name="IDS_SETTINGS_STORAGE_EXTERNAL_STORAGE_LIST_HEADER" desc="Header of the list of external storage devices for the subpage for setting preferences for external storage. This is shown when the list is not empty.">
     Available devices
   </message>
-  <message name="IDS_SETTINGS_STORAGE_MANAGE_DOWNLOADED_CONTENT_ROW_TITLE" desc="Header of the list of manage downloaded content for the subpage for managing DLC.">
-    Manage downloaded content
-  </message>
   <message name="IDS_SETTINGS_STORAGE_OVERVIEW_ARIA_LABEL" desc="The label to be read aloud by BraveVox to describe the storage usage progress bar on the Storage page">
     Storage Usage Overview
   </message>
   <message name="IDS_SETTINGS_STORAGE_ITEM_SYSTEM" desc="In Device Settings &gt; Storage, label for the total system size, difference between the size of the filesystem and the size of all items listed on the storage page.">
     System
-  </message>
-
-  <!-- DLC Device Subpage -->
-  <message name="IDS_SETTINGS_DLC_SUBPAGE_TITLE" desc="Title for the DLC subpage.">
-    Downloaded Content
-  </message>
-  <message name="IDS_SETTINGS_DLC_REMOVE" desc="Label for a button that will remove a DLC from disk.">
-    Remove
-  </message>
-  <message name="IDS_SETTINGS_DLC_SUBPAGE_DESCRIPTION" desc="A description shown at the top of the subpage that informs users that if they modify any of the DLCs in the list, other users of the device may be impacted by those changes.">
-    These components are shared with other users on this device. Removing components may affect other users.
   </message>
 
   <!-- Privacy Page -->
@@ -2924,9 +3061,6 @@
   </message>
   <message name="IDS_SETTINGS_ENABLE_CONTENT_PROTECTION_ATTESTATION" desc="description label for verified access about premium contents">
     Enable Verified Access
-  </message>
-  <message name="IDS_SETTINGS_WAKE_ON_WIFI_DESCRIPTION" desc="In the settings tab, the text next to the checkbox for enabling quickly reconnecting to known Wi-Fi SSIDs.">
-    Keep Wi-Fi on during sleep
   </message>
 </if>
 </grit-part>

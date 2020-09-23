@@ -1,5 +1,5 @@
 diff --git a/components/content_settings/core/browser/content_settings_pref_provider.h b/components/content_settings/core/browser/content_settings_pref_provider.h
-index d5c24d775b147d846fd0c727373b9b4dd68e7e9b..2c3afb3f044ef781721b44ed0d19459cf18f5de9 100644
+index 4a9ce3a8eb9e5dcfe2b19a336b34f6cfdf68b8d8..97910be49844fc16bf758ff729d22ce2ee3df6af 100644
 --- a/components/content_settings/core/browser/content_settings_pref_provider.h
 +++ b/components/content_settings/core/browser/content_settings_pref_provider.h
 @@ -67,6 +67,7 @@ class PrefProvider : public UserModifiableProvider {

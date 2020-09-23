@@ -29,14 +29,13 @@ public class BraveNewTabPage extends NewTabPage {
 
     public BraveNewTabPage(Activity activity,
             BrowserControlsStateProvider browserControlsStateProvider,
-            Supplier<Tab> activityTabProvider, @Nullable OverviewModeBehavior overviewModeBehavior,
-            SnackbarManager snackbarManager, ActivityLifecycleDispatcher lifecycleDispatcher,
-            TabModelSelector tabModelSelector, boolean isTablet, NewTabPageUma uma,
-            boolean isInNightMode, NativePageHost nativePageHost, Tab tab,
-            BottomSheetController bottomSheetController) {
-        super(activity, browserControlsStateProvider, activityTabProvider, overviewModeBehavior,
-                snackbarManager, lifecycleDispatcher, tabModelSelector, isTablet, uma,
-                isInNightMode, nativePageHost, tab, bottomSheetController);
+            Supplier<Tab> activityTabProvider, SnackbarManager snackbarManager,
+            ActivityLifecycleDispatcher lifecycleDispatcher, TabModelSelector tabModelSelector,
+            boolean isTablet, NewTabPageUma uma, boolean isInNightMode,
+            NativePageHost nativePageHost, Tab tab, BottomSheetController bottomSheetController) {
+        super(activity, browserControlsStateProvider, activityTabProvider, snackbarManager,
+                lifecycleDispatcher, tabModelSelector, isTablet, uma, isInNightMode, nativePageHost,
+                tab, bottomSheetController);
 
         assert mNewTabPageLayout instanceof BraveNewTabPageLayout;
         if (mNewTabPageLayout instanceof BraveNewTabPageLayout) {

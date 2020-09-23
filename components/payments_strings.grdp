@@ -622,4 +622,18 @@
   <message name="IDS_PAYMENT_HANDLER_SHEET_CLOSED" desc="Accessibility string read when the payment-handler bottom sheet is closed." formatter_data="android_java">
     Payment handler sheet is closed
   </message>
+
+  <!-- Secure Payment Confirmation strings -->
+  <message name="IDS_SECURE_PAYMENT_CONFIRMATION_VERIFY_PURCHASE" desc="The title string on a payment confirmation dialog that confirms the details of the payment that the user is about to verify. The user has the option to click 'Cancel' or 'Verify', and clicking 'Verify' will open the system interface to verify their identity with the Touch ID fingerprint sensor.">
+    Use Touch ID to verify and complete your purchase?
+  </message>
+  <message name="IDS_SECURE_PAYMENT_CONFIRMATION_STORE_LABEL" desc="In a secure payment confirmation dialog, this is the label for the row of data that shows the store name, e.g. merchant.com.">
+    Store
+  </message>
+  <message name="IDS_SECURE_PAYMENT_CONFIRMATION_TOTAL_LABEL" desc="In a secure payment confirmation dialog, this is the label for the row of data that shows the total price, e.g. $20.00 USD.">
+    Total
+  </message>
+  <message name="IDS_SECURE_PAYMENT_CONFIRMATION_VERIFY_BUTTON_LABEL" desc="As in 'Verify my identity', this is the label of the affirmitive button in a payment confirmation dialog that asks the user to verify their identity with a platform authenticator such as a fingerprint reader.">
+    Verify
+  </message>
 </grit-part>

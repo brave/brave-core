@@ -34,11 +34,13 @@ IN_PROC_BROWSER_TEST_F(BraveOmniboxViewViewsTest, CopyURLToClipboardTest) {
   ui::Clipboard* clipboard = ui::Clipboard::GetForCurrentThread();
   std::string text_from_clipboard;
   clipboard->ReadAsciiText(ui::ClipboardBuffer::kCopyPaste,
+                           /* data_dst = */ nullptr,
                            &text_from_clipboard);
   EXPECT_EQ(test_url, text_from_clipboard);
 
 #if defined(OS_LINUX)
   clipboard->ReadAsciiText(ui::ClipboardBuffer::kSelection,
+                           /* data_dst = */ nullptr,
                            &text_from_clipboard);
   EXPECT_EQ(test_url, text_from_clipboard);
 #endif

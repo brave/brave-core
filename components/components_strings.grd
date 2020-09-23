@@ -311,6 +311,7 @@
       <part file="security_interstitials_strings.grdp" />
       <part file="security_state_strings.grdp" />
       <part file="send_tab_to_self_strings.grdp" />
+      <part file="sms_strings.grdp" />
       <part file="ssl_errors_strings.grdp" />
       <part file="sync_ui_strings.grdp" />
       <part file="translate_strings.grdp" />
@@ -323,6 +324,9 @@
       </if>
       <if expr="is_android">
         <part file="android_system_error_page_strings.grdp" />
+      </if>
+      <if expr="is_ios">
+        <part file="management_ios_strings.grdp" />
       </if>
 
       <!-- Generic terms -->
@@ -357,10 +361,10 @@
         Menu
       </message>
       <if expr="is_android">
-        <message name="IDS_SHOW" desc="Generic label to show content for a feature. [CHAR-LIMIT=20]" formatter_data="android_java">
+        <message name="IDS_SHOW_CONTENT" desc="Generic label to show content for a feature. [CHAR-LIMIT=20]" formatter_data="android_java">
           Show
         </message>
-        <message name="IDS_HIDE" desc="Generic label to hide content for a feature. [CHAR-LIMIT=20]" formatter_data="android_java">
+        <message name="IDS_HIDE_CONTENT" desc="Generic label to hide content for a feature. [CHAR-LIMIT=20]" formatter_data="android_java">
           Hide
         </message>
       </if>

@@ -11,10 +11,11 @@
 
 #include "brave/components/services/tor/public/interfaces/tor.mojom.h"
 #include "mojo/public/cpp/bindings/binder_map.h"
+#include "mojo/public/cpp/bindings/pending_receiver.h"
 #include "mojo/public/cpp/bindings/unique_receiver_set.h"
 #include "services/service_manager/public/cpp/service.h"
-#include "services/service_manager/public/cpp/service_binding.h"
 #include "services/service_manager/public/cpp/service_keepalive.h"
+#include "services/service_manager/public/cpp/service_receiver.h"
 
 namespace tor {
 
@@ -23,7 +24,7 @@ class TorLauncherImpl;
 class TorLauncherService : public service_manager::Service {
  public:
   explicit TorLauncherService(
-      service_manager::mojom::ServiceRequest request);
+      mojo::PendingReceiver<service_manager::mojom::Service> receiver);
   ~TorLauncherService() override;
 
   // Lifescycle events that occur after the service has started to spinup.
@@ -33,7 +34,7 @@ class TorLauncherService : public service_manager::Service {
                  mojo::ScopedMessagePipeHandle receiver_pipe) override;
 
  private:
-  service_manager::ServiceBinding service_binding_;
+  service_manager::ServiceReceiver service_receiver_;
   service_manager::ServiceKeepalive service_keepalive_;
   mojo::BinderMap binders_;
 

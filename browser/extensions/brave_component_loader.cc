@@ -13,7 +13,6 @@
 #include "brave/browser/component_updater/brave_component_installer.h"
 #include "brave/common/brave_switches.h"
 #include "brave/common/brave_wallet_constants.h"
-#include "brave/common/extensions/extension_constants.h"
 #include "brave/common/pref_names.h"
 #include "brave/components/brave_component_updater/browser/brave_on_demand_updater.h"
 #include "brave/components/brave_extension/grit/brave_extension.h"
@@ -31,6 +30,7 @@
 #include "extensions/browser/extension_prefs.h"
 #include "extensions/browser/extension_registry.h"
 #include "extensions/browser/extension_system.h"
+#include "extensions/common/constants.h"
 
 namespace extensions {
 

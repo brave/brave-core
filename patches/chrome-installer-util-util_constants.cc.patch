@@ -1,8 +1,8 @@
 diff --git a/chrome/installer/util/util_constants.cc b/chrome/installer/util/util_constants.cc
-index 1debd28f36043bb069c12d7186a205ce3e9b3025..93860b6db1497a67e66b958395bdf584a09e2113 100644
+index 72633f21023ebc75a702752eb8b8d4d1e1bfb372..647762456c1216dda0f9fb542ae703911549c8bc 100644
 --- a/chrome/installer/util/util_constants.cc
 +++ b/chrome/installer/util/util_constants.cc
-@@ -176,7 +176,13 @@ namespace env_vars {
+@@ -182,7 +182,13 @@ namespace env_vars {
  // The presence of this environment variable with a value of 1 implies that
  // setup.exe should run as a system installation regardless of what is on the
  // command line.
@@ -16,7 +16,7 @@ index 1debd28f36043bb069c12d7186a205ce3e9b3025..93860b6db1497a67e66b958395bdf584
  
  }  // namespace env_vars
  
-@@ -191,7 +197,11 @@ const char kGoogleUpdateIsMachineEnvVar[] = "GoogleUpdateIsMachine";
+@@ -197,7 +203,11 @@ const char kGoogleUpdateIsMachineEnvVar[] = "GoogleUpdateIsMachine";
  // Active Setup.
  const wchar_t kActiveSetupExe[] = L"chrmstp.exe";
  const wchar_t kChromeDll[] = L"chrome.dll";

@@ -1,19 +1,19 @@
 diff --git a/android_webview/browser/aw_permission_manager.cc b/android_webview/browser/aw_permission_manager.cc
-index bedb16b046d45b257e28e29e410afe43f5c8817c..e42ab4d47c07d027b17e69b9c2afc22b5757f59b 100644
+index 4b982411c699d85e6d8c24a3011cb790a862eb86..6af42c9a117b240f026e22259546109005ef8044 100644
 --- a/android_webview/browser/aw_permission_manager.cc
 +++ b/android_webview/browser/aw_permission_manager.cc
-@@ -341,6 +341,7 @@ int AwPermissionManager::RequestPermissions(
-       case PermissionType::STORAGE_ACCESS_GRANT:
+@@ -342,6 +342,7 @@ int AwPermissionManager::RequestPermissions(
        case PermissionType::CAMERA_PAN_TILT_ZOOM:
        case PermissionType::WINDOW_PLACEMENT:
+       case PermissionType::FONT_ACCESS:
 +      BRAVE_PERMISSION_TYPES
          NOTIMPLEMENTED() << "RequestPermissions is not implemented for "
                           << static_cast<int>(permissions[i]);
          pending_request_raw->SetPermissionStatus(permissions[i],
-@@ -548,6 +549,7 @@ void AwPermissionManager::CancelPermissionRequest(int request_id) {
-       case PermissionType::STORAGE_ACCESS_GRANT:
+@@ -550,6 +551,7 @@ void AwPermissionManager::CancelPermissionRequest(int request_id) {
        case PermissionType::CAMERA_PAN_TILT_ZOOM:
        case PermissionType::WINDOW_PLACEMENT:
+       case PermissionType::FONT_ACCESS:
 +      BRAVE_PERMISSION_TYPES
          NOTIMPLEMENTED() << "CancelPermission not implemented for "
                           << static_cast<int>(permission);

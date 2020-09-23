@@ -34,7 +34,7 @@ static const char kIpfsClientComponentBase64PublicKey[] =
     "5WFfljFxICOKeb7S/a1I0lWu2Y4Yv/ohbzktjcpAluefz6mE5d/sSBdQGdJzJIdo"
     "/CRfYgax5nMumx0x38CmVN53GVB+5TM0mw1bhU52ASysgZjAC0++Kbl1qXeSZuWM"
     "/QIDAQAB";
-#elif defined(OS_MACOSX)
+#elif defined(OS_MAC)
 static const char kIpfsClientComponentName[] =
     "Brave Ipfs Client Updater (Mac)";
 static const char kIpfsClientComponentId[] =

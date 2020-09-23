@@ -15,6 +15,7 @@
 #include "base/metrics/metrics_hashes.h"
 #include "base/metrics/sample_vector.h"
 #include "base/metrics/statistics_recorder.h"
+#include "base/no_destructor.h"
 #include "base/rand_util.h"
 #include "base/strings/string_number_conversions.h"
 #include "base/task/post_task.h"

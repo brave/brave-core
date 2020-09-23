@@ -6,13 +6,13 @@
 
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
-    <org.chromium.components.browser_ui.settings.IconPreference
+    <org.chromium.components.browser_ui.settings.ChromeBasePreference
         android:fragment="org.chromium.chrome.browser.site_settings.DesktopModePreferences"
         android:key="desktop_mode_category"
         android:icon="@drawable/settings_desktop_mode"
         android:title="@string/settings_desktop_mode_title"
         app:iconTint="@color/default_icon_color" />
-    <org.chromium.components.browser_ui.settings.IconPreference
+    <org.chromium.components.browser_ui.settings.ChromeBasePreference
         android:fragment="org.chromium.chrome.browser.site_settings.PlayYTVideoInBrowserPreferences"
         android:key="play_yt_video_in_browser_category"
         android:icon="@drawable/settings_play_yt_video_in_browser"

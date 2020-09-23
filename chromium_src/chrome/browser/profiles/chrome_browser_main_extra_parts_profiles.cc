@@ -31,7 +31,7 @@ class BraveBrowserMainExtraPartsProfiles
 namespace chrome {
 
 void AddProfilesExtraParts(ChromeBrowserMainParts* main_parts) {
-  main_parts->AddParts(new BraveBrowserMainExtraPartsProfiles());
+  main_parts->AddParts(std::make_unique<BraveBrowserMainExtraPartsProfiles>());
 }
 
 }  // namespace chrome

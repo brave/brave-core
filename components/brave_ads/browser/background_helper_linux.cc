@@ -35,7 +35,7 @@ bool BackgroundHelperLinux::IsForeground() const {
   for (auto* browser : *BrowserList::GetInstance()) {
     auto window =
         browser->window()->GetNativeWindow()->GetHost()->GetAcceleratedWidget();
-    if (x11_window == window)
+    if (x11_window == static_cast<x11::Window>(window))
       return true;
   }
 

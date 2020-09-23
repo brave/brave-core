@@ -4,7 +4,7 @@
   <message name="IDS_APP_MANAGEMENT_CAMERA" desc="Label for the camera permission toggle.">
     Camera
   </message>
-  <message name="IDS_APP_MANAGEMENT_LOCATION" desc="Label for the location permission toggle.">
+  <message name="IDS_APP_MANAGEMENT_LOCATION" desc="Label for the location permission toggle." meaning="Geolocation">
     Location
   </message>
   <message name="IDS_APP_MANAGEMENT_MICROPHONE" desc="Label for the microphone permission toggle.">

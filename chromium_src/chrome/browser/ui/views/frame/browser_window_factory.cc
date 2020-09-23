@@ -7,7 +7,7 @@
 #include "brave/browser/ui/views/frame/brave_browser_view.h"
 #include "chrome/browser/ui/views/frame/browser_view.h"
 
-#if defined(OS_WIN) || defined(OS_MACOSX)
+#if defined(OS_WIN) || defined(OS_MAC)
 #include "brave/browser/ui/views/frame/brave_browser_frame.h"
 
 #define BrowserFrame BraveBrowserFrame
@@ -17,6 +17,6 @@
 #include "../../../../../../../chrome/browser/ui/views/frame/browser_window_factory.cc"  // NOLINT
 #undef BrowserView
 
-#if defined(OS_WIN) || defined(OS_MACOSX)
+#if defined(OS_WIN) || defined(OS_MAC)
 #undef BrowserFrame
 #endif

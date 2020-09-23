@@ -7,7 +7,7 @@
 
 #include "base/values.h"
 #include "base/json/json_reader.h"
-#include "brave/common/extensions/extension_constants.h"
+#include "extensions/common/constants.h"
 
 namespace brave {
 

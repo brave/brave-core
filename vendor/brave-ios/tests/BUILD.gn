@@ -16,7 +16,7 @@ ios_xctest_test("brave_rewards_ios_tests") {
   configs += [ "//brave/vendor/brave-ios:internal_config" ]
   configs += [ "//build/config/compiler:enable_arc" ]
 
-  libs = [
+  frameworks = [
     "CoreData.framework",
   ]
 

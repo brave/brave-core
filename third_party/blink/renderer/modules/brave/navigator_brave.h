@@ -20,7 +20,6 @@ class NavigatorBrave final
     : public GarbageCollected<NavigatorBrave>,
       public Supplement<Navigator>,
       public NameClient {
-  USING_GARBAGE_COLLECTED_MIXIN(NavigatorBrave);
 
  public:
   static const char kSupplementName[];

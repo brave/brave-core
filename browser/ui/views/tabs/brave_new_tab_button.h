@@ -19,12 +19,14 @@ class BraveNewTabButton : public NewTabButton {
   static const gfx::Size kButtonSize;
   using NewTabButton::NewTabButton;
 
+ protected:
+  void PaintIcon(gfx::Canvas* canvas) override;
+
  private:
   gfx::Size CalculatePreferredSize() const override;
   SkPath GetBorderPath(const gfx::Point& origin,
                        float scale,
                        bool extend_to_top) const override;
-  void PaintPlusIcon(gfx::Canvas* canvas) const override;
   DISALLOW_COPY_AND_ASSIGN(BraveNewTabButton);
 };
 

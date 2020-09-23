@@ -55,11 +55,33 @@
     If an image doesn’t have a useful description, Brave will try to provide one for you. To create descriptions, images are sent to Brave.
   </message>
   <message name="IDS_SETTINGS_CAPTIONS_ENABLE_LIVE_CAPTION_TITLE" desc="Name of the setting to enable Live Caption.">
-    Live caption
+    Get captions for your media
   </message>
   <message name="IDS_SETTINGS_CAPTIONS_ENABLE_LIVE_CAPTION_SUBTITLE" desc="Subtitle of the setting to enable Live Caption.">
-    Live caption detects speech in media and automatically generates captions for all media playing in Brave.
+    Brave automatically creates captions using Live Caption (currently available in English only)
   </message>
+  <message name="IDS_SETTINGS_CAPTIONS_LIVE_CAPTION_DOWNLOAD_PROGRESS" desc="This message is displayed as a subtitle to the Live Caption title while the model is being downloading. It shows the download progress as a percentage and is updated dynamically.">
+    Downloading speech recognition files... <ph name="PERCENT">$1<ex>17</ex></ph>%
+  </message>
+  <message name="IDS_SETTINGS_CAPTIONS_LIVE_CAPTION_DOWNLOAD_COMPLETE" desc="Message displayed when the live caption files have completed downloading.">
+    Speech recognition files downloaded
+  </message>
+  <message name="IDS_SETTINGS_CAPTIONS_LIVE_CAPTION_DOWNLOAD_ERROR" desc="Message displayed when there is an error downloading the live caption files.">
+    The required files can't be downloaded. Try again later.
+  </message>
+  <message name="IDS_SETTINGS_ENABLE_CARET_BROWSING_TITLE" desc="Name of the setting to enable Caret Browsing, which allows you to move around any web page using a text caret.">
+    Navigate pages with a text cursor
+  </message>
+  <if expr="not chromeos">
+    <message name="IDS_SETTINGS_ENABLE_CARET_BROWSING_SUBTITLE" desc="Subtitle of the setting to enable Caret Browsing, which allows you to move around any web page using a text caret.">
+      To turn caret browsing on or off, use the shortcut F7
+    </message>
+  </if>
+  <if expr="chromeos">
+    <message name="IDS_SETTINGS_ENABLE_CARET_BROWSING_SUBTITLE" desc="Subtitle of the setting to enable Caret Browsing, which allows you to move around any web page using a text caret.">
+      To turn caret browsing on or off, use the shortcut Ctrl+Search+7
+    </message>
+  </if>
   <if expr="not chromeos">
     <message name="IDS_SETTINGS_ACCESSIBILITY_FOCUS_HIGHLIGHT_DESCRIPTION" desc="In the settings tab, the text next to the checkbox to highlight the focused object to make it easier to see.">
       Show a quick highlight on the focused object
@@ -86,7 +108,7 @@
   </if>
   <if expr="not chromeos">
     <message name="IDS_SETTINGS_THEMES" desc="Name of the control which allows the user to get a theme for the browser.">
-      Themes
+      Theme
     </message>
   </if>
   <if expr="is_linux and not chromeos">
@@ -268,6 +290,9 @@
   <message name="IDS_SETTINGS_MULTIPLE_MIGRATABLE_CARDS_INFO" desc="Display text under the save cards to Brave Pay label. This text indicates user has multiple migratable cards on this device.">
     Right now, you have some cards that can only be used on this device
   </message>
+  <message name="IDS_SETTINGS_REMOTE_CREDIT_CARD_LINK_LABEL" desc="The title and ARIA (accessibility) label for a link in chrome://settings/payments that opens the credit card settings on https://pay.google.com. Note that the ARIA role and the link icon already convey that this is a link that will be opened when you click on it. Therefore, the message does not contain a verb.">
+    Your payment methods in Brave Pay
+  </message>
   <message name="IDS_SETTINGS_NAME_ON_CREDIT_CARD" desc="The title for the input that lets users modify the name on the credit card.">
     Name on card
   </message>
@@ -370,9 +395,6 @@
   <message name="IDS_SETTINGS_COMPROMISED_PASSWORD_HIDE" desc="Action menu item for a row which displays a compromised password. The password value, which is shown in plain text, will be hidden again.">
     Hide password
   </message>
-  <message name="IDS_SETTINGS_COMPROMISED_PASSWORD_EDIT" desc="Action menu item for a row which displays a compromised password. It will open a modal dialog which will allow the user to edit the password and other metadata (username, website).">
-    Edit password
-  </message>
   <message name="IDS_SETTINGS_COMPROMISED_PASSWORD_REMOVE" desc="Action menu item for a row which displays a compromised password. It will open a confirmation dialog for deleting the password.">
     Remove password
   </message>
@@ -381,12 +403,6 @@
   </message>
   <message name="IDS_SETTINGS_REMOVE_COMPROMISED_PASSWORD_CONFIRMATION_DESCRIPTION" desc="Compromised password remove dialog conformation description">
     Removing this password will not delete your account on <ph name="DOMAIN">$1<ex>airbnb.com</ex></ph>. Change your password or delete your account on <ph name="DOMAIN_LINK">$2<ex>&lt;a href="https://airbnb.com" target="_blank"&gt;airbnb.com&lt;/a&gt;</ex></ph> to keep it safe from others.
-  </message>
-  <message name="IDS_SETTINGS_COMPROMISED_EDIT_PASSWORD_TITLE" desc="The title for a dialog, which allows a user to edit a password, which have been found to be compromised. This dialog includes other details, such as username and website.">
-    Edit password
-  </message>
-  <message name="IDS_SETTINGS_COMPROMISED_EDIT_PASSWORD_FOOTNOTE" desc="A footnote for the dialog which allows the user to edit a password, which has been found to have been compromised.">
-    Make sure the password you are saving matches your password for <ph name="WEBSITE">$1<ex>airbnb.com</ex></ph>
   </message>
   <message name="IDS_SETTINGS_COMPROMISED_EDIT_PASSWORD_SITE" desc="A label for the field, which displays the site for which the password was saved. The field is part of a dialog, which allows the user to edit the password.">
     Site
@@ -444,6 +460,15 @@
   </message>
   <message name="IDS_SETTINGS_PASSWORD_DETAILS" desc="Label for a context menu item that shows a dialog with details for the selected password.">
     Details
+  </message>
+  <message name="IDS_SETTINGS_PASSWORD_EDIT_TITLE" desc="The title for a dialog, which allows a user to edit a saved password. This dialog includes other details, such as username and website.">
+    Edit password
+  </message>
+  <message name="IDS_SETTINGS_PASSWORD_EDIT" desc="Action menu item for a row which displays a saved password. It will open a modal dialog which will allow the user to edit the password and other metadata (username, website).">
+    Edit password
+  </message>
+  <message name="IDS_SETTINGS_PASSWORD_EDIT_FOOTNOTE" desc="A footnote for the dialog which allows the user to edit a saved password.">
+    Make sure the password you are saving matches your password for <ph name="WEBSITE">$1<ex>airbnb.com</ex></ph>
   </message>
   <message name="IDS_SETTINGS_PASSWORD_COPY" desc="Label for a context menu item that allows to copy the selected password into clipboard.">
     Copy password
@@ -506,14 +531,13 @@
     Move
   </message>
   <message name="IDS_SETTINGS_PASSWORD_MOVE_TO_ACCOUNT_DIALOG_CANCEL_BUTTON_TEXT" desc="Text for the button that cancels the action of moving a password to the user Brave sync chain.">
-    No, thanks
+    No thanks
   </message>
   <message name="IDS_SETTINGS_PASSWORD_REMOVE_DIALOG_TITLE" desc="Title for the dialog that asks the user which versions of a password to remove (device, Brave sync chain or both).">
     Delete password?
   </message>
-  <!-- TODO(crbug.com/1102294): Inject the website in the string. -->
   <message name="IDS_SETTINGS_PASSWORD_REMOVE_DIALOG_BODY" desc="Description message for the dialog that asks the user which versions of a password to remove (device, Brave sync chain or both).">
-    Your password is stored on this device and in your Brave sync chain. Which one do you want to delete?
+    Your password for <ph name="WEBSITE">&lt;b&gt;$1&lt;/b&gt;</ph> is stored on this device and in your Brave sync chain. Which one do you want to delete?
   </message>
   <message name="IDS_SETTINGS_PASSWORD_REMOVE_DIALOG_REMOVE_BUTTON_TEXT" desc="Text for the button that confirms the action in the dialog that asks the user which versions of a password to remove (device, Brave sync chain or both).">
     Delete
@@ -913,9 +937,6 @@
   <message name="IDS_SETTINGS_PRINTING" desc="Title of the printing page and navigation item to get there.">
     Printing
   </message>
-  <message name="IDS_SETTINGS_PRINTING_CLOUD_PRINT_LEARN_MORE_LABEL" desc="Label for the link that teaches users how to use Google Cloud Print">
-    Set up or manage printers in Google Cloud Print.
-  </message>
   <message name="IDS_SETTINGS_PRINTING_NOTIFICATIONS_LABEL" desc="Label for the checkbox which enabled notifications when new printers are added to the user's network">
     Show notifications when new printers are detected on the network
   </message>
@@ -929,6 +950,15 @@
   </if>
   <message name="IDS_SETTINGS_PRINTING_CLOUD_PRINTERS" desc="In Printing Settings, the title of the google cloud printers setting section.">
     Google Cloud Print
+  </message>
+  <message name="IDS_SETTINGS_PRINTING_GOOGLE_CLOUD_PRINT_NOT_SUPPORTED_WARNING" desc="Warning shown to the user to inform them that Google Cloud Print will no longer be supported.">
+    Google Cloud Print will no longer be supported after December 31
+  </message>
+  <message name="IDS_SETTINGS_PRINTING_GOOGLE_CLOUD_PRINT_NOT_SUPPORTED_FULL_WARNING" desc="Warning shown to the user to inform them that Google Cloud Print will no longer be supported. Same as above, with the addition of the learn more link.">
+    Google Cloud Print will no longer be supported after December 31. <ph name="BEGIN_LINK">&lt;a target="_blank" href="$1"&gt;</ph>Learn more<ph name="END_LINK">&lt;/a&gt;</ph>
+  </message>
+  <message name="IDS_SETTINGS_PRINTING_GOOGLE_CLOUD_PRINT_NOT_SUPPORTED_WARNING_ENTERPRISE" desc="Warning shown to users managed by enterprise policy to inform them that Google Cloud Print will no longer be supported.">
+    Google Cloud Print will no longer be supported after December 31. Contact your administrator.
   </message>
 
   <!-- Downloads Page -->
@@ -1194,6 +1224,9 @@
   <message name="IDS_SETTINGS_SAFETY_CHECK_SAFE_BROWSING_ENABLED_STANDARD" desc="This text points out that Safe Browsing is enabled as standard protection.">
     Standard Protection is on
   </message>
+  <message name="IDS_SETTINGS_SAFETY_CHECK_SAFE_BROWSING_ENABLED_STANDARD_AVAILABLE_ENHANCED" desc="This text points out that Safe Browsing is enabled as standard protection, but the user can enable enhanced protection.">
+    Standard protection is on. For even more security, use enhanced protection.
+  </message>
   <message name="IDS_SETTINGS_SAFETY_CHECK_SAFE_BROWSING_ENABLED_ENHANCED" desc="This text points out that Safe Browsing is enabled as enhanced protection.">
     Enhanced Protection is on
   </message>
@@ -1234,10 +1267,10 @@
     Review extensions
   </message>
   <message name="IDS_SETTINGS_SAFETY_CHECK_CHROME_CLEANER_PRIMARY_LABEL" desc="'Unwanted software protection' is an element in safety check that finds harmful software installed on the computer and allows users to remove it.">
-    Unwanted software protection
+    Device software
   </message>
   <message name="IDS_SETTINGS_SAFETY_CHECK_CHROME_CLEANER_BUTTON_ARIA_LABEL" desc="Accessiblity text for the button that allows users to review and remove harmful software found on their computer.">
-    Review unwanted software
+    Review device software
   </message>
 
   <message name="IDS_SETTINGS_NETWORK_PREDICTION_ENABLED_LABEL" desc="In the advanced options tab, the text next to the checkbox that enables prediction of network actions.  Actions include browser-initiated DNS prefetching, TCP and SSL preconnection, and prerendering of webpages.">
@@ -1930,7 +1963,10 @@
     Your Flash settings will be kept until you quit Brave.
   </message>
   <message name="IDS_SETTINGS_SITE_SETTINGS_FLASH_WILDCARD_UNSUPPORTED" desc="The warning message for users that tells wildcard patterns are no longer allowed in Flash">
-    Settings with "*" wildcards are no longer supported. Contact the extension developer or your administrator to <ph name="BEGIN_LINK">&lt;a is="action-link" href="$1" target="_blank"&gt;</ph> change these settings<ph name="END_LINK">&lt;/a&gt;</ph>.
+    Settings with "*" wildcards are no longer supported. Contact the extension developer or your administrator to <ph name="BEGIN_LINK">&lt;a is="action-link" href="$1" target="_blank"&gt;</ph>change these settings<ph name="END_LINK">&lt;/a&gt;</ph>.
+  </message>
+  <message name="IDS_SETTINGS_SITE_SETTINGS_FLASH_WILDCARD_UNSUPPORTED_IN_POLICIES" desc="The warning message for users that tells wildcard patterns are no longer allowed in Flash. mail.google.com is allowed whereas [*.]google.com is not.">
+    Settings with "*" wildcards are no longer supported. Contact your administrator to <ph name="BEGIN_LINK">&lt;a is="action-link" href="$1" target="_blank"&gt;</ph>change these settings<ph name="END_LINK">&lt;/a&gt;</ph>.
   </message>
   <message name="IDS_SETTINGS_SITE_SETTINGS_ALLOW_RECENTLY_CLOSED_SITES" desc="The allow label for background sync in site settings.">
     Allow recently closed sites to finish sending and receiving data
@@ -2006,6 +2042,12 @@
   </message>
   <message name="IDS_SETTINGS_SITE_SETTINGS_WINDOW_PLACEMENT_BLOCK" desc="The block label for the window placement site settings.">
     Block sites from opening and placing windows on your screens
+  </message>
+  <message name="IDS_SETTINGS_SITE_SETTINGS_FONT_ACCESS_ASK" desc="The ask label for the local font access site settings.">
+    Ask when a site wants to use fonts installed on your device
+  </message>
+  <message name="IDS_SETTINGS_SITE_SETTINGS_FONT_ACCESS_BLOCK" desc="The block label for the local font access site settings.">
+    Block sites from using fonts installed on your device
   </message>
   <message name="IDS_SETTINGS_SITE_SETTINGS_ALLOWED" desc="A generic Allowed label to show in Site Settings when Allow is NOT the recommended option.">
     Allowed
@@ -2144,7 +2186,7 @@
     Clear third-party cookies
   </message>
   <message name="IDS_SETTINGS_SITE_SETTINGS_THIRD_PARTY_COOKIES_EXCEPTION_LABEL" desc="Label for site exceptions that affect third party cookies.">
-    All cookies, on this site only
+    Including third-party cookies on this site
   </message>
   <message name="IDS_SETTINGS_SITE_SETTINGS_CLEAR_ALL_STORAGE_DIALOG_TITLE" desc="Title of the dialog that warns about deleting all site data.">
     Clear all data?

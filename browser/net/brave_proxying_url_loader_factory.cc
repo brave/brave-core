@@ -70,8 +70,8 @@ net::RedirectInfo CreateRedirectInfo(
       original_request.method, original_request.url,
       original_request.site_for_cookies,
       update_first_party_url_on_redirect
-          ? net::URLRequest::UPDATE_FIRST_PARTY_URL_ON_REDIRECT
-          : net::URLRequest::NEVER_CHANGE_FIRST_PARTY_URL,
+          ? net::RedirectInfo::FirstPartyURLPolicy::UPDATE_URL_ON_REDIRECT
+          : net::RedirectInfo::FirstPartyURLPolicy::NEVER_CHANGE_URL,
       original_request.referrer_policy, original_request.referrer.spec(),
       response_code, new_url, referrer_policy_header,
       false /* insecure_scheme_was_upgraded */, false /* copy_fragment */,

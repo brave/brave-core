@@ -16,5 +16,5 @@ ScopedCopyFile::ScopedCopyFile(const base::FilePath& original_file_path) {
 
 ScopedCopyFile::~ScopedCopyFile() {
   if (base::PathExists(copied_file_path_))
-    base::DeleteFile(copied_file_path_, false);
+    base::DeleteFile(copied_file_path_);
 }

@@ -1,19 +1,19 @@
 diff --git a/components/browser_ui/site_settings/android/BUILD.gn b/components/browser_ui/site_settings/android/BUILD.gn
-index 64150f04e4c800ed49d1cb3dcdb95619c6f70749..2f62074c30a241c8872aaecbf639deb9d504feda 100644
+index 5b6f9ff2945b0303e51fe45f88943c8da9227b98..2ca544bf887da522ac8458182ce1126c1c944d17 100644
 --- a/components/browser_ui/site_settings/android/BUILD.gn
 +++ b/components/browser_ui/site_settings/android/BUILD.gn
-@@ -75,6 +75,7 @@ android_library("java") {
+@@ -74,6 +74,7 @@ android_library("java") {
      "java/src/org/chromium/components/browser_ui/site_settings/WebsitePreference.java",
      "java/src/org/chromium/components/browser_ui/site_settings/WebsitePreferenceBridge.java",
    ]
 +  sources += brave_components_browser_ui_site_settings_android_java
    annotation_processor_deps = [ "//base/android/jni_generator:jni_processor" ]
+   resources_package = "org.chromium.components.browser_ui.site_settings"
    deps = [
-     ":java_resources",
-@@ -209,5 +210,6 @@ android_resources("java_resources") {
+@@ -211,5 +212,6 @@ android_resources("java_resources") {
      "//components/permissions/android:java_resources",
      "//third_party/android_deps:android_support_v7_appcompat_java",
    ]
 +  deps += brave_components_browser_ui_site_settings_android_java_resources_deps sources += brave_components_browser_ui_site_settings_android_java_resources
-   custom_package = "org.chromium.components.browser_ui.site_settings"
+   create_srcjar = false
  }

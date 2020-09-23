@@ -5,6 +5,7 @@
 
 #include "third_party/blink/renderer/core/dom/document.h"
 
+#include "base/command_line.h"
 #include "base/strings/string_number_conversions.h"
 #include "brave/third_party/blink/renderer/brave_farbling_constants.h"
 #include "crypto/hmac.h"

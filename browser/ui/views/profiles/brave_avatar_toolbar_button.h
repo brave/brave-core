@@ -17,7 +17,7 @@ class BraveAvatarToolbarButton : public AvatarToolbarButton {
                     base::Optional<SkColor> highlight_color) override;
 
  private:
-  gfx::ImageSkia GetAvatarIcon(
+  ui::ImageModel GetAvatarIcon(
       ButtonState state,
       const gfx::Image& profile_identity_image) const override;
   DISALLOW_COPY_AND_ASSIGN(BraveAvatarToolbarButton);

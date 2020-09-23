@@ -1,6 +1,7 @@
-/* This Source Code Form is subject to the terms of the Mozilla Public
-+ * License, v. 2.0. If a copy of the MPL was not distributed with this file,
-+ * You can obtain one at http://mozilla.org/MPL/2.0/. */
+/* Copyright (c) 2020 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this file,
+ * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 #include "chrome/common/channel_info.h"
 
@@ -13,7 +14,7 @@
 #include "base/environment.h"
 #endif
 
-#if defined(OS_MACOSX)
+#if defined(OS_MAC)
 // GetChannelByName is only supported on MacOS.
 TEST(BraveChannelInfoTest, ChannelByNameTest) {
 #if defined(OFFICIAL_BUILD)
@@ -30,7 +31,7 @@ TEST(BraveChannelInfoTest, ChannelByNameTest) {
             chrome::GetChannelByName(""));
 #endif
 }
-#endif  // OS_MACOSX
+#endif  // OS_MAC
 
 #if defined(OS_LINUX)
 TEST(BraveChannelInfoTest, ParentDirectoryOfUserDataDirectoryTest) {

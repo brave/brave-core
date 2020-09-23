@@ -1,8 +1,8 @@
 diff --git a/components/content_settings/renderer/content_settings_agent_impl.h b/components/content_settings/renderer/content_settings_agent_impl.h
-index 3484035136ce2aee52d2913485121d47a4d3d4dc..717c8ed15ce661380907b79c9b03c6ad507533c6 100644
+index 7dd094e9329cff4cdac570f34fd3991320dbadce..5c75b519ef3dbb631ccd5da4f1a0f38fa366cdd2 100644
 --- a/components/content_settings/renderer/content_settings_agent_impl.h
 +++ b/components/content_settings/renderer/content_settings_agent_impl.h
-@@ -125,6 +125,7 @@ class ContentSettingsAgentImpl
+@@ -117,6 +117,7 @@ class ContentSettingsAgentImpl
        const blink::WebFrame* frame,
        const blink::WebURL& secondary_url);
  

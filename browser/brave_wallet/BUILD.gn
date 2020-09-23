@@ -19,5 +19,6 @@ source_set("brave_wallet") {
     "//components/pref_registry",
     "//components/prefs",
     "//extensions/browser",
+    "//extensions/common:common_constants",
   ]
 }
