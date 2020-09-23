@@ -20,7 +20,6 @@ import {
 } from './style'
 import { StyledTitleTab } from '../widgetTitleTab'
 import BraveTogetherIcon from './assets/brave-together-icon'
-import getRandomBase64 from '../../../getRandomBytes'
 
 interface Props {
   showContent: boolean
