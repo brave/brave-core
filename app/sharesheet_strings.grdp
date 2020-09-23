@@ -1,0 +1,9 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!-- Sharesheet specific strings (included from generated_resources.grd). -->
+<!--This file is created by l10nUtil.js. Do not edit manually.-->
+<grit-part>
+  <!-- Common strings -->
+  <message name="IDS_SHARESHEET_TITLE_LABEL" desc="The label to be shown as the title of the sharesheet bubble when a user clicks on the share button.">
+    Share
+  </message>
+</grit-part>

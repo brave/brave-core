@@ -144,9 +144,18 @@ CHAR-LIMIT guidelines:
         Close all private tabs
       </message>
 
-      <message name="IDS_SIGNIN_INCOGNITO_MODE_SECONDARY" desc="Secondary text for signing in private mode.">
-        A new private tab will open
+      <message name="IDS_SIGNIN_GO_INCOGNITO" desc="Button text to open the private interstitial in the web sign-in account picker bottom sheet">
+        Go Private
       </message>
+      <message name="IDS_INCOGNITO_INTERSTITIAL_TITLE" desc="The title of the private interstitial bottom sheet.">
+        Go Private
+      </message>
+      <message name="IDS_INCOGNITO_INTERSTITIAL_MESSAGE" desc="The content of private interstitial which is shown when a user is in the sign-in flow and they want to go private mode to sign in temporarily. Before they go private mode they would be presented with this private interstitial which would inform them about how they can clear sign-in information in private, how their activity may be visbile to others and the possibility of cookies and other private data being used across other already open private tabs.">
+        To clear your sign-in information and other data from Brave, close all Private tabs.
+
+In Private, your activity might still be visible to websites that you visit, your employer or school, and your internet service provider.
+      </message>
+
       <message name="IDS_BUTTON_NEW_INCOGNITO_TAB" desc="Tooltip for the button to open a new private browser tab.">
         New private tab
       </message>
