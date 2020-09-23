@@ -1,10 +1,10 @@
 diff --git a/chrome/browser/resources/extensions/BUILD.gn b/chrome/browser/resources/extensions/BUILD.gn
-index b68df101732bad22771b4fd0bd71dea1214c4ebc..5d14d2af8b5a1fa2faefe1a5166d790445f02ebd 100644
+index c7563df6715f95d4fb4070e50adead73372a7005..a9a3cdd331b7fbd3cd3f4f23225978ee541844ff 100644
 --- a/chrome/browser/resources/extensions/BUILD.gn
 +++ b/chrome/browser/resources/extensions/BUILD.gn
 @@ -21,6 +21,7 @@ if (optimize_webui) {
-     deps = [
-       ":unpak",
+       ":preprocess",
+       ":preprocess_generated",
        "../../../../ui/webui/resources:preprocess",
 +      "//brave/browser/resources/extensions:unpak",
      ]
