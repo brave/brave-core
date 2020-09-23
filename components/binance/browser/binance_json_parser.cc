@@ -301,7 +301,8 @@ bool BinanceJSONParser::GetConfirmStatusFromJSON(
 //   "success":true
 // }
 bool BinanceJSONParser::GetConvertAssetsFromJSON(const std::string& json,
-    std::map<std::string, std::vector<std::string>>* assets) {
+    std::map<std::string, std::vector<
+    std::map<std::string, std::string>>>* assets) {
   if (!assets) {
     return false;
   }
@@ -321,15 +322,20 @@ bool BinanceJSONParser::GetConvertAssetsFromJSON(const std::string& json,
     for (const base::Value &val : data_arr->GetList()) {
       const base::Value* asset_code = val.FindKey("assetCode");
       if (asset_code && asset_code->is_string()) {
-        std::vector<std::string> sub_selectors;
+        std::vector<std::map<std::string, std::string>> sub_selectors;
         std::string asset_symbol = asset_code->GetString();
         const base::Value* selectors = val.FindKey("subSelector");
         if (selectors && selectors->is_list()) {
           for (const base::Value &selector : selectors->GetList()) {
+            std::map<std::string, std::string> sub_selector;
             const base::Value* sub_code = selector.FindKey("assetCode");
-            if (sub_code && sub_code->is_string()) {
-              sub_selectors.push_back(sub_code->GetString());
+            const base::Value* min_limit = selector.FindKey("perTimeMinLimit");
+            if (sub_code && sub_code->is_string() &&
+                min_limit && min_limit->is_string()) {
+              sub_selector.insert({"asset", sub_code->GetString()});
+              sub_selector.insert({"minAmount", min_limit->GetString()});
             }
+            sub_selectors.push_back(sub_selector);
           }
           assets->insert({asset_symbol, sub_selectors});
         }

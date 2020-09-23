@@ -69,7 +69,8 @@ class BinanceService : public KeyedService {
   using ConfirmConvertCallback = base::OnceCallback<void(bool,
                                                          const std::string&)>;
   using GetConvertAssetsCallback = base::OnceCallback<
-      void(const std::map<std::string, std::vector<std::string>>&)>;
+      void(const std::map<std::string, std::vector<
+      std::map<std::string, std::string>>>&)>;
   using RevokeTokenCallback = base::OnceCallback<void(bool)>;
   using GetCoinNetworksCallback = base::OnceCallback<
         void(const std::map<std::string, std::string>&)>;

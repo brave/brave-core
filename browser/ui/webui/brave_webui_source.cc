@@ -298,6 +298,7 @@ void CustomizeWebUIHTMLSource(const std::string &name,
         { "binanceWidgetAuthInvalid", IDS_BINANCE_WIDGET_AUTH_INVALID },
         { "binanceWidgetAuthInvalidCopy", IDS_BINANCE_WIDGET_AUTH_INVALID_COPY },         // NOLINT
         { "binanceWidgetRefreshData", IDS_BINANCE_WIDGET_REFRESH_DATA },
+        { "binanceWidgetUnderMinimum", IDS_BINANCE_WIDGET_UNDER_MINIMUM },
         // Gemini Widget
         { "geminiWidgetAuthInvalid", IDS_BINANCE_WIDGET_AUTH_INVALID },
         { "geminiWidgetAuthInvalidCopy", IDS_GEMINI_WIDGET_AUTH_INVALID_COPY },

@@ -122,7 +122,8 @@ class BinanceGetConvertAssetsFunction :
  protected:
   ~BinanceGetConvertAssetsFunction() override {}
   void OnGetConvertAssets(
-      const std::map<std::string, std::vector<std::string>>& assets);
+      const std::map<std::string, std::vector<
+      std::map<std::string, std::string>>>& assets);
 
   ResponseAction Run() override;
 };
