@@ -581,6 +581,10 @@ are declared in tools/grit/grit_rule.gni.
             Copy link te&amp;xt
           </message>
 
+          <message name="IDS_CONTENT_CONTEXT_COPYLINKTOTEXT" desc="The name of the Copy Link to Text command in the content area context menu">
+            Copy link to text
+          </message>
+
           <message name="IDS_CONTENT_CONTEXT_SAVEIMAGEAS" desc="The name of the Save Image As command in the content area context menu">
             Sa&amp;ve image as...
           </message>
@@ -797,6 +801,10 @@ are declared in tools/grit/grit_rule.gni.
 
           <message name="IDS_CONTENT_CONTEXT_COPYLINKTEXT" desc="In Title Case: The name of the Copy Link Text command in the content area context menu">
             Copy Link Te&amp;xt
+          </message>
+
+          <message name="IDS_CONTENT_CONTEXT_COPYLINKTOTEXT" desc="In Title Case: The name of the Copy Link to Text command in the content area context menu">
+            Copy Link to Text
           </message>
 
           <message name="IDS_CONTENT_CONTEXT_SAVEIMAGEAS" desc="In Title Case: The name of the Save Image As command in the content area context menu">
@@ -5455,17 +5463,44 @@ Keep your key file in a safe place. You will need it to create new versions of y
       </if>
 
       <!-- Star View menu -->
-      <message name="IDS_STAR_VIEW_MENU_ADD_BOOKMARK" desc="The item label of the menu triggered from the star icon in the location bar for adding a bookmark.">
-        Add Bookmark
+      <if expr="use_titlecase">
+        <message name="IDS_STAR_VIEW_MENU_ADD_BOOKMARK" desc="The item label of the menu triggered from the star icon in the location bar for adding a bookmark.">
+          Add Bookmark
+        </message>
+        <message name="IDS_STAR_VIEW_MENU_EDIT_BOOKMARK" desc="The item label of the menu triggered from the star icon in the location bar for editing a bookmark.">
+          Edit Bookmark
+        </message>
+        <message name="IDS_STAR_VIEW_MENU_MOVE_TO_READ_LATER" desc="The item label of the menu triggered from the star icon in the location bar for moving the current tab to read later.">
+          Read Later
+        </message>
+        <message name="IDS_STAR_VIEW_MENU_MARK_AS_READ" desc="The item label of the menu triggered from the star icon in the location bar for marking the current tab's read later entry as read.">
+          Mark as Read
+        </message>
+      </if>
+      <if expr="not use_titlecase">
+        <message name="IDS_STAR_VIEW_MENU_ADD_BOOKMARK" desc="The item label of the menu triggered from the star icon in the location bar for adding a bookmark.">
+          Add bookmark
+        </message>
+        <message name="IDS_STAR_VIEW_MENU_EDIT_BOOKMARK" desc="The item label of the menu triggered from the star icon in the location bar for editing a bookmark.">
+          Edit bookmark
+        </message>
+        <message name="IDS_STAR_VIEW_MENU_MOVE_TO_READ_LATER" desc="The item label of the menu triggered from the star icon in the location bar for moving the current tab to read later.">
+          Read later
+        </message>
+        <message name="IDS_STAR_VIEW_MENU_MARK_AS_READ" desc="The item label of the menu triggered from the star icon in the location bar for marking the current tab's read later entry as read.">
+          Mark as read
+        </message>
+      </if>
+
+      <!-- Read Later menu -->
+      <message name="IDS_READ_LATER_MENU_TITLE" desc="Title of the Read later menu">
+        Read later
       </message>
-      <message name="IDS_STAR_VIEW_MENU_EDIT_BOOKMARK" desc="The item label of the menu triggered from the star icon in the location bar for editing a bookmark.">
-        Edit Bookmark
+      <message name="IDS_READ_LATER_MENU_UNREAD_HEADER" desc="Header for section of unread Read later items.">
+        UNREAD
       </message>
-      <message name="IDS_STAR_VIEW_MENU_MOVE_TO_READ_LATER" desc="The item label of the menu triggered from the star icon in the location bar for moving the current tab to read later.">
-        Add to Read later
-      </message>
-      <message name="IDS_STAR_VIEW_MENU_MARK_AS_READ" desc="The item label of the menu triggered from the star icon in the location bar for marking the current tab's read later entry as read.">
-        Mark as Read
+      <message name="IDS_READ_LATER_MENU_READ_HEADER" desc="Header for section of read Read later items.">
+        PAGES YOU'VE READ
       </message>
 
       <!--Tooltip strings-->
@@ -5679,6 +5714,12 @@ Keep your key file in a safe place. You will need it to create new versions of y
       <message name="IDS_INCOGNITOWINDOW_PROMO_3" desc="Variations option 4. Text shown on promotional UI appearing next to the App Menu button, which encourages users to use it.">
         To browse privately, click the dots icon menu to open a private window
       </message>
+      <message name="IDS_LIVE_CAPTION_PROMO" desc="Text shown on promotional UI appearing next to the global media controls button">
+        Get captions for your media
+      </message>
+      <message name="IDS_LIVE_CAPTION_PROMO_SCREENREADER" desc="Text announced encouraging users to open live caption">
+        Get captions for your media by enabling Live Caption in settings
+      </message>
       <message name="IDS_NEWTAB_PROMO_0" desc="Variations option 1. Text shown on promotional UI appearing next to the New Tab button, which encourages users to use it.">
         Open a new tab with one click
       </message>
@@ -5697,12 +5738,22 @@ Keep your key file in a safe place. You will need it to create new versions of y
       <message name="IDS_TAB_GROUPS_NEW_GROUP_PROMO" desc="Text shown on promotional UI encouraging users to create a tab group in their tab strip">
         To group tabs together, right-click a tab
       </message>
-      <message name="IDS_PROMO_DISMISS_BUTTON" desc="Text shown on the button to dismiss a promotional UI">
-        Dismiss
-      </message>
-      <message name="IDS_PROMO_SNOOZE_BUTTON" desc="Text shown on the button to snooze a promotional UI, which indicates that users want to see this promotion at a later time">
-        Remind me later
-      </message>
+      <if expr="use_titlecase">
+        <message name="IDS_PROMO_DISMISS_BUTTON" desc="Text shown on the button for the user to acknowledge that they understand the message">
+          Got It
+        </message>
+        <message name="IDS_PROMO_SNOOZE_BUTTON" desc="Text shown on the button to snooze a promotional UI, which indicates that users want to see this promotion at a later time">
+          Remind Me Later
+        </message>
+      </if>
+      <if expr="not use_titlecase">
+        <message name="IDS_PROMO_DISMISS_BUTTON" desc="Text shown on the button for the user to acknowledge that they understand the message">
+          Got it
+        </message>
+        <message name="IDS_PROMO_SNOOZE_BUTTON" desc="Text shown on the button to snooze a promotional UI, which indicates that users want to see this promotion at a later time">
+          Remind me later
+        </message>
+      </if>
 
       <!-- Browser Hung Plugin Detector -->
       <if expr="is_win">
@@ -5906,7 +5957,7 @@ Keep your key file in a safe place. You will need it to create new versions of y
         <message name="IDS_PASSWORD_MANAGER_SAVE_BUTTON" desc="Mobile: Button text for the 'Save Password' infobar's 'Remember password' option">
           Save
         </message>
-        <message name="IDS_PASSWORD_MANAGER_BLACKLIST_BUTTON" desc="Mobile: Button text for the 'Save Password' infobar's 'Never remember for this site' option">
+        <message name="IDS_PASSWORD_MANAGER_BLOCKLIST_BUTTON" desc="Mobile: Button text for the 'Save Password' infobar's 'Never remember for this site' option">
           Never
         </message>
         <message name="IDS_PASSWORD_MANAGER_UPDATE_BUTTON" desc="Label for the 'update' button in the Update Password infobar. This infobar asks if the user wishes to update the saved password for a site to a new password the user has just entered; the button applies the suggested update.">
@@ -7363,7 +7414,7 @@ Keep your key file in a safe place. You will need it to create new versions of y
       <message name="IDS_NEW_TAB_THUMBNAIL_REMOVED_NOTIFICATION" desc="Notification text shown when a thumbnail has been removed from the most visited section.">
         Thumbnail removed.
       </message>
-      <message name="IDS_NEW_TAB_REMOVE_THUMBNAIL_TOOLTIP" desc="Tooltip text for the button that removes/blacklists the thumbnail. Once removed the thumbnail will not show up on the new tab page again.">
+      <message name="IDS_NEW_TAB_REMOVE_THUMBNAIL_TOOLTIP" desc="Tooltip text for the button that removes/denylists the thumbnail. Once removed the thumbnail will not show up on the new tab page again.">
         Don't show on this page
       </message>
       <message name="IDS_NEW_TAB_PAGE_SWITCHER_CHANGE_TITLE" desc="Title for accessibility of the 'page-switcher-start' or 'page-switcher-end' button when switching from one type (determined based on title) of card to another">
@@ -9067,6 +9118,9 @@ Please help our engineers fix this problem. Tell us what happened right before y
       </message>
 
       <!-- Live caption. -->
+      <message name="IDS_LIVE_CAPTION_BUBBLE_TITLE" desc="Title of the Live Caption bubble">
+        Live Caption
+      </message>
       <message name="IDS_LIVE_CAPTION_BUBBLE_CLOSE" desc="Tooltip for the Live Caption close button">
         Turn off Live Caption for now
       </message>
@@ -9078,9 +9132,6 @@ Please help our engineers fix this problem. Tell us what happened right before y
       </message>
       <message name="IDS_LIVE_CAPTION_BUBBLE_ERROR" desc="Error message for the Live Caption bubble when Live Captions are unavailable.">
         Live Caption is not available right now
-      </message>
-      <message name="IDS_LIVE_CAPTION_BUBBLE_ACCESSIBLE_NAME" desc="Label of the Live Caption bubble for accessibility.">
-        Live Caption
       </message>
 
       <!-- Caret browsing. -->
@@ -9618,8 +9669,8 @@ Please help our engineers fix this problem. Tell us what happened right before y
       <message name="IDS_CROSUSB_DEVICE_DETECTED_NOTIFICATION" desc="Content for notification shown to the user when a USB device gets plugged in.">
           Open Settings to connect <ph name="USB_DEVICE_NAME">$1<ex>Nexus 5</ex></ph> to <ph name="USB_VM_NAME">$2<ex>Linux</ex></ph>
       </message>
-      <message name="IDS_CROSUSB_DEVICE_DETECTED_NOTIFICATION_MULTI_VM" desc="Content for notification shown to the user when a USB device gets plugged in.">
-          Open Settings to connect <ph name="USB_DEVICE_NAME">$1<ex>Nexus 5</ex></ph>
+      <message name="IDS_CROSUSB_DEVICE_DETECTED_NOTIFICATION_LINUX_PLUGIN_VM" desc="Content for notification shown to the user when a USB device gets plugged in and both Parallels and Linux are enabled. Do not translate 'Parallels Desktop' or 'Linux'.">
+          Open Settings to connect <ph name="USB_DEVICE_NAME">$1<ex>Nexus 5</ex></ph> to Parallels Desktop or Linux
       </message>
       <message name="IDS_CROSUSB_DEVICE_DETECTED_NOTIFICATION_TITLE" desc="Title for notification shown to the user when a USB device gets plugged in.">
         USB device detected
@@ -9801,7 +9852,7 @@ Please help our engineers fix this problem. Tell us what happened right before y
     </message>
 
     <!-- Ad Blocking UI strings. -->
-    <message name="IDS_ALWAYS_ALLOW_ADS" desc="Explanation associated with a toggle to allow ads after ads have been blocked on the page. To be used on pages where the ad blocking UI is governed by a persistent permissions-based whitelist.">
+    <message name="IDS_ALWAYS_ALLOW_ADS" desc="Explanation associated with a toggle to allow ads after ads have been blocked on the page. To be used on pages where the ad blocking UI is governed by a persistent permissions-based allowlist.">
       Always allow ads on this site
     </message>
     <message name="IDS_BLOCKED_ADS_INFOBAR_MESSAGE" desc="The mini infobar message shown to users on Android when Brave has blocked ads on the site because the site tends to show intrusive ads. Will be presented as a sentence, next to a Details link to expand the infobar.">
@@ -10336,7 +10387,10 @@ Please help our engineers fix this problem. Tell us what happened right before y
 
    <!-- Guest Profile Menu bubble. -->
     <message name="IDS_GUEST_PROFILE_MENU_CLOSE_BUTTON" desc="The text of the button offering to close all guest windows.">
-      Close guest
+      {0, plural,
+        =1 {Close guest}
+        other {Close guest}
+      }
     </message>
 
     <!-- User happiness tracking survey UI -->
@@ -10543,12 +10597,10 @@ Please help our engineers fix this problem. Tell us what happened right before y
       <!-- These strings are placeholders for strings that are filled in via
            field trials, so they are *not* used as-is except in tests. -->
       <message name="IDS_MAC_SYSTEM_INFOBAR_TEXT_ARM" desc="Mac system-specific infobar text for Arm64-on-Arm64." translateable="false">
-        This is an Arm64 Brave on Arm64, so things might not work quite right
-yet!
+        Brave can’t play premium videos or music on this device yet. Brave will update automatically when this issue is fixed.
       </message>
       <message name="IDS_MAC_SYSTEM_INFOBAR_TEXT_ROSETTA" desc="Mac system-specific infobar text for Intel-on-Arm64." translateable="false">
-        This is an x86-64 Brave on Arm64, so things might not work quite right
-yet!
+        This is an x86-64 Brave on Arm64, so things might not work quite right yet!
       </message>
       <message name="IDS_MAC_SYSTEM_INFOBAR_LINK_TEXT_ARM" desc="Mac system-specific infobar link text for Arm64-on-Arm64." translateable="false">
         Learn more

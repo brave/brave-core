@@ -2058,7 +2058,7 @@ To change this setting, <ph name="BEGIN_LINK">&lt;resetlink&gt;</ph>reset sync<p
         Could not open app
       </message>
       <message name="IDS_MENU_ADD_TO_HOMESCREEN_INSTALL" desc="Menu item for adding a shortcut to the Home screen. [CHAR-LIMIT=27]">
-        Install web app
+        Install app
       </message>
       <message name="IDS_APP_BANNER_ADD" desc="A button in an app banner to confirm adding a site to homescreen">
         Add
@@ -2398,14 +2398,21 @@ To change this setting, <ph name="BEGIN_LINK">&lt;resetlink&gt;</ph>reset sync<p
       <message name="IDS_SIGNIN_ADD_ACCOUNT_TO_DEVICE" desc="Text for adding another Brave sync chain to device in the web sign-in flow and account picker dialog, users will be asked to add an account to his device when this text is tapped">
         Add account to device
       </message>
-      <message name="IDS_SIGNIN_INCOGNITO_MODE_PRIMARY" desc="Text for signing in private mode.">
-        Sign in temporarily
-      </message>
-      <message name="IDS_SIGNIN_INCOGNITO_MODE_SECONDARY" desc="Secondary text for signing in private mode.">
-        A new private tab will open
+      <message name="IDS_SIGNIN_GO_INCOGNITO" desc="Button text to open the private interstitial in the web sign-in account picker bottom sheet">
+        Go Private
       </message>
       <message name="IDS_SIGNIN_GMS_UPDATING" desc="Message notifying user that Google Play Services is still updating.">
         Waiting for Google Play Services to finish updating
+      </message>
+
+      <!-- Strings for Private Interstitial. -->
+      <message name="IDS_INCOGNITO_INTERSTITIAL_TITLE" desc="The title of the private interstitial bottom sheet.">
+        Go Private
+      </message>
+      <message name="IDS_INCOGNITO_INTERSTITIAL_MESSAGE" desc="The content of private interstitial which is shown when a user is in the sign-in flow and they want to go private mode to sign in temporarily. Before they go private mode they would be presented with this private interstitial which would inform them about how they can clear sign-in information in private, how their activity may be visbile to others and the possibility of cookies and other private data being used across other already open private tabs.">
+        To clear your sign-in information and other data from Brave, close all Private tabs.
+
+In Private, your activity might still be visible to websites that you visit, your employer or school, and your internet service provider.
       </message>
 
       <!-- Strings for Streamlined Signin and Unified Consent. -->
@@ -2431,7 +2438,7 @@ To change this setting, <ph name="BEGIN_LINK">&lt;resetlink&gt;</ph>reset sync<p
         Choose an account
       </message>
       <message name="IDS_SIGNIN_ACCOUNT_PICKER_BOTTOM_SHEET_SUBTITLE" desc="The subtitle for the account picker bottom sheet that tells the user what happens if the button 'Continue as John Doe' is clicked">
-        You’ll be signed in with your Brave sync chain\n(this won’t turn on Brave Sync)
+        Sign in to this site, your Brave sync chain, and Brave. You may turn on sync later.
       </message>
       <message name="IDS_SIGNIN_ACCOUNT_PICKER_BOTTOM_SHEET_SIGNIN_TITLE" desc="The title of the account picker bottom sheet tells that the user is in the process of signing in with their Brave sync chain">
         Signing in...
@@ -2825,6 +2832,41 @@ To change this setting, <ph name="BEGIN_LINK">&lt;resetlink&gt;</ph>reset sync<p
       </message>
       <message name="IDS_BOOKMARK_MISSING_URL" desc="Error message appearing when a user tries to create a bookmark without a url. [CHAR-LIMIT=32]">
         URL required
+      </message>
+
+      <!-- Read later strings -->
+      <message name="IDS_READING_LIST_TITLE" desc="The title for the reading list page in main bookmark UI.">
+        Reading list
+      </message>
+      <message name="IDS_READING_LIST_READ" desc="The header for the read section in the reading list UI.">
+        Read
+      </message>
+      <message name="IDS_READING_LIST_UNREAD" desc="The header for the unread section in the reading list UI.">
+        Unread
+      </message>
+      <message name="IDS_READING_LIST_READY_FOR_OFFLINE" desc="The string to inform the user that the reading list has offline page ready.">
+        Ready for offline
+      </message>
+      <message name="IDS_READING_LIST_MARK_AS_READ" desc="The text for the action to mark the reading list as read.">
+        Mark as read
+      </message>
+      <message name="IDS_READING_LIST_SHARE" desc="The text for the action to share the reading list item.">
+        Share
+      </message>
+      <message name="IDS_READING_LIST_REMINDER_NOTIFICATION_TITLE" desc="The title of the reminder notification for reading list.">
+        Catch up on your reading list
+      </message>
+      <message name="IDS_READING_LIST_REMINDER_NOTIFICATION_SUBTITLE" desc="The subtitle of the reminder notification for reading list.">
+        You have <ph name="READING_LIST_COUNT">%1$d<ex>5</ex></ph> pages
+      </message>
+      <message name="IDS_READING_LIST_UNREAD_PAGE_COUNT" desc="Inform the user about the number of unread reading list items.">
+        <ph name="READING_LIST_COUNT">%1$d<ex>5</ex></ph> unread pages
+      </message>
+      <message name="IDS_READING_LIST_INTRO_TEXT" desc="The text on the reading list in product help bubble and other UIs to introduce the feature to the user.">
+        Save this page for later and get a reminder
+      </message>
+      <message name="IDS_READING_LIST_FIND_IN_BOOKMARKS" desc="The text to inform the user to find the reading list in bookmarks UI.">
+        Find your reading list in Bookmarks
       </message>
 
       <!-- Offline pages -->
@@ -3261,7 +3303,7 @@ To change this setting, <ph name="BEGIN_LINK">&lt;resetlink&gt;</ph>reset sync<p
         Running in Brave
       </message>
       <message name="IDS_TWA_RUNNING_IN_CHROME_V2" desc="Updated message on a snackbar indicating that the current Activity may use Brave data (the rest of the app may not be).">
-        You'll see your <ph name="SITE_NAME">%1$s<ex>www.youtube.com</ex></ph> sign-in status, browsing data, and site data in Brave.
+        You'll see your <ph name="SITE_NAME">%1$s<ex>www.youtube.com</ex></ph> sign-in status, browsing data, and site data in Brave
       </message>
       <message name="IDS_GOT_IT" desc="Button for the user to accept a disclosure/message">
         Got it
@@ -3583,6 +3625,9 @@ To change this setting, <ph name="BEGIN_LINK">&lt;resetlink&gt;</ph>reset sync<p
       <message name="IDS_SHARING_HUB_OPEN_SETTINGS_LABEL" desc="Label for the open settings button.">
         Open Settings
       </message>
+      <message name="IDS_SHARING_HUB_IMAGE_PREVIEW_SUBTITLE" desc="Subtitle shown in the preview of Sharing Hub image shares.">
+        image
+      </message>
 
       <!-- ClickToCall -->
       <message name="IDS_CLICK_TO_CALL_NOTIFICATION_TEXT" desc="Text displayed in a click to call notification to call on a number.">
@@ -3834,12 +3879,8 @@ To change this setting, <ph name="BEGIN_LINK">&lt;resetlink&gt;</ph>reset sync<p
         chrome_qrcode_<ph name="CURRENT_TIMESTAMP_MS">%1$s<ex>1582667748515</ex></ph>
       </message>
 
-      <message name="IDS_LINK_TO_TEXT_SUCCESS_MESSAGE" desc="Message displayed when link to highlighted text is successfully created.">
-        Share link to the highlighted text in an app
-      </message>
-
-      <message name="IDS_LINK_TO_TEXT_FAILURE_MESSAGE" desc="Message displayed when link to highlighted text was not possible to create.">
-        Can't create link to text. Share link to page in an app.
+      <message name="IDS_LINK_TO_TEXT_FAILURE_TOAST_MESSAGE" desc="Toast displayed when link to highlighted text was not possible to create.">
+        Can't create link to text. Share link to page.
       </message>
 
       <!-- Share Screenshot strings -->
@@ -3857,6 +3898,10 @@ To change this setting, <ph name="BEGIN_LINK">&lt;resetlink&gt;</ph>reset sync<p
 
       <message name="IDS_SCREENSHOT_SHARE_TITLE" desc="The text shown on the share option for screenshots.">
         Share
+      </message>
+
+      <message name="IDS_SCREENSHOT_TITLE_FOR_SHARE" desc="The title shared with the screenshot.">
+        Screenshot <ph name="CURRENT_DATE_ISO">%1$s<ex>2020-09-16</ex></ph>
       </message>
 
       <message name="IDS_SCREENSHOT_FILENAME_PREFIX" desc="File name prefix for downloaded screenshot that is followed by timestamp.">

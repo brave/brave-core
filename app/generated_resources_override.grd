@@ -470,6 +470,11 @@ are declared in tools/grit/grit_rule.gni.
       <if expr="is_android">
         </if>
 
+      <if expr="use_titlecase">
+        </if>
+      <if expr="not use_titlecase">
+        </if>
+
       <if expr="is_macosx">
         </if>
       <if expr="not is_android">
@@ -490,6 +495,11 @@ are declared in tools/grit/grit_rule.gni.
       <message name="IDS_INCOGNITOWINDOW_PROMO_3" desc="Variations option 4. Text shown on promotional UI appearing next to the App Menu button, which encourages users to use it.">
         To browse privately, click the dots icon menu to open a private window
       </message>
+      <if expr="use_titlecase">
+        </if>
+      <if expr="not use_titlecase">
+        </if>
+
       <if expr="is_win">
         </if>
       <if expr="use_titlecase">
