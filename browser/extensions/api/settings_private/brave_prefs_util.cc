@@ -54,151 +54,151 @@ using ntp_background_images::prefs::kNewTabPageSuperReferralThemesOption;
 
 namespace settings_api = api::settings_private;
 
-const PrefsUtil::TypedPrefMap& BravePrefsUtil::GetWhitelistedKeys() {
+const PrefsUtil::TypedPrefMap& BravePrefsUtil::GetAllowlistedKeys() {
   // Static cache, similar to parent class
-  static PrefsUtil::TypedPrefMap* s_brave_whitelist = nullptr;
-  if (s_brave_whitelist)
-    return *s_brave_whitelist;
-  s_brave_whitelist = new PrefsUtil::TypedPrefMap();
-  // Start with parent class whitelist
-  const auto chromium_prefs = PrefsUtil::GetWhitelistedKeys();
-  s_brave_whitelist->insert(chromium_prefs.begin(), chromium_prefs.end());
-  // Add Brave values to the whitelist
+  static PrefsUtil::TypedPrefMap* s_brave_allowlist = nullptr;
+  if (s_brave_allowlist)
+    return *s_brave_allowlist;
+  s_brave_allowlist = new PrefsUtil::TypedPrefMap();
+  // Start with parent class allowlist
+  const auto chromium_prefs = PrefsUtil::GetAllowlistedKeys();
+  s_brave_allowlist->insert(chromium_prefs.begin(), chromium_prefs.end());
+  // Add Brave values to the allowlist
   // import data
-  (*s_brave_whitelist)[kImportDialogExtensions] =
+  (*s_brave_allowlist)[kImportDialogExtensions] =
       settings_api::PrefType::PREF_TYPE_BOOLEAN;
-  (*s_brave_whitelist)[kImportDialogPayments] =
+  (*s_brave_allowlist)[kImportDialogPayments] =
       settings_api::PrefType::PREF_TYPE_BOOLEAN;
   // Default Brave shields
-  (*s_brave_whitelist)[kShieldsAdvancedViewEnabled] =
+  (*s_brave_allowlist)[kShieldsAdvancedViewEnabled] =
       settings_api::PrefType::PREF_TYPE_BOOLEAN;
-  (*s_brave_whitelist)[kShieldsStatsBadgeVisible] =
+  (*s_brave_allowlist)[kShieldsStatsBadgeVisible] =
       settings_api::PrefType::PREF_TYPE_BOOLEAN;
-  (*s_brave_whitelist)[kAdControlType] =
+  (*s_brave_allowlist)[kAdControlType] =
       settings_api::PrefType::PREF_TYPE_BOOLEAN;
-  (*s_brave_whitelist)[kHTTPSEVerywhereControlType] =
+  (*s_brave_allowlist)[kHTTPSEVerywhereControlType] =
       settings_api::PrefType::PREF_TYPE_BOOLEAN;
-  (*s_brave_whitelist)[kNoScriptControlType] =
+  (*s_brave_allowlist)[kNoScriptControlType] =
       settings_api::PrefType::PREF_TYPE_BOOLEAN;
-  (*s_brave_whitelist)[kGoogleLoginControlType] =
+  (*s_brave_allowlist)[kGoogleLoginControlType] =
       settings_api::PrefType::PREF_TYPE_BOOLEAN;
-  (*s_brave_whitelist)[kFBEmbedControlType] =
+  (*s_brave_allowlist)[kFBEmbedControlType] =
       settings_api::PrefType::PREF_TYPE_BOOLEAN;
-  (*s_brave_whitelist)[kTwitterEmbedControlType] =
+  (*s_brave_allowlist)[kTwitterEmbedControlType] =
       settings_api::PrefType::PREF_TYPE_BOOLEAN;
-  (*s_brave_whitelist)[kLinkedInEmbedControlType] =
+  (*s_brave_allowlist)[kLinkedInEmbedControlType] =
       settings_api::PrefType::PREF_TYPE_BOOLEAN;
 
   // appearance prefs
-  (*s_brave_whitelist)[kLocationBarIsWide] =
+  (*s_brave_allowlist)[kLocationBarIsWide] =
       settings_api::PrefType::PREF_TYPE_BOOLEAN;
-  (*s_brave_whitelist)[kAutocompleteEnabled] =
+  (*s_brave_allowlist)[kAutocompleteEnabled] =
       settings_api::PrefType::PREF_TYPE_BOOLEAN;
-  (*s_brave_whitelist)[kTopSiteSuggestionsEnabled] =
+  (*s_brave_allowlist)[kTopSiteSuggestionsEnabled] =
       settings_api::PrefType::PREF_TYPE_BOOLEAN;
-  (*s_brave_whitelist)[kBraveSuggestedSiteSuggestionsEnabled] =
+  (*s_brave_allowlist)[kBraveSuggestedSiteSuggestionsEnabled] =
       settings_api::PrefType::PREF_TYPE_BOOLEAN;
-  (*s_brave_whitelist)[brave_rewards::prefs::kHideButton] =
+  (*s_brave_allowlist)[brave_rewards::prefs::kHideButton] =
       settings_api::PrefType::PREF_TYPE_BOOLEAN;
-  (*s_brave_whitelist)[kAskWidevineInstall] =
+  (*s_brave_allowlist)[kAskWidevineInstall] =
       settings_api::PrefType::PREF_TYPE_BOOLEAN;
-  (*s_brave_whitelist)[kNewTabPageSuperReferralThemesOption] =
+  (*s_brave_allowlist)[kNewTabPageSuperReferralThemesOption] =
       settings_api::PrefType::PREF_TYPE_NUMBER;
   // new tab prefs
-  (*s_brave_whitelist)[kNewTabPageShowSponsoredImagesBackgroundImage] =
+  (*s_brave_allowlist)[kNewTabPageShowSponsoredImagesBackgroundImage] =
       settings_api::PrefType::PREF_TYPE_BOOLEAN;
-  (*s_brave_whitelist)[kNewTabPageShowBackgroundImage] =
+  (*s_brave_allowlist)[kNewTabPageShowBackgroundImage] =
       settings_api::PrefType::PREF_TYPE_BOOLEAN;
-  (*s_brave_whitelist)[kNewTabPageShowClock] =
+  (*s_brave_allowlist)[kNewTabPageShowClock] =
       settings_api::PrefType::PREF_TYPE_BOOLEAN;
-  (*s_brave_whitelist)[kNewTabPageShowStats] =
+  (*s_brave_allowlist)[kNewTabPageShowStats] =
       settings_api::PrefType::PREF_TYPE_BOOLEAN;
-  (*s_brave_whitelist)[kNewTabPageShowRewards] =
+  (*s_brave_allowlist)[kNewTabPageShowRewards] =
       settings_api::PrefType::PREF_TYPE_BOOLEAN;
-  (*s_brave_whitelist)[kNewTabPageShowBinance] =
+  (*s_brave_allowlist)[kNewTabPageShowBinance] =
       settings_api::PrefType::PREF_TYPE_BOOLEAN;
-  (*s_brave_whitelist)[kNewTabPageShowTogether] =
+  (*s_brave_allowlist)[kNewTabPageShowTogether] =
       settings_api::PrefType::PREF_TYPE_BOOLEAN;
-  (*s_brave_whitelist)[kNewTabPageShowAddCard] =
+  (*s_brave_allowlist)[kNewTabPageShowAddCard] =
       settings_api::PrefType::PREF_TYPE_BOOLEAN;
-  (*s_brave_whitelist)[kNewTabPageShowGemini] =
+  (*s_brave_allowlist)[kNewTabPageShowGemini] =
       settings_api::PrefType::PREF_TYPE_BOOLEAN;
 #if BUILDFLAG(MOONPAY_ENABLED)
-  (*s_brave_whitelist)[kMoonpayNewTabPageShowBitcoinDotCom] =
+  (*s_brave_allowlist)[kMoonpayNewTabPageShowBitcoinDotCom] =
       settings_api::PrefType::PREF_TYPE_BOOLEAN;
 #endif
 #if BUILDFLAG(CRYPTO_DOT_COM_ENABLED)
-  (*s_brave_whitelist)[kCryptoDotComNewTabPageShowCryptoDotCom] =
+  (*s_brave_allowlist)[kCryptoDotComNewTabPageShowCryptoDotCom] =
       settings_api::PrefType::PREF_TYPE_BOOLEAN;
 #endif
   // Clear browsing data on exit prefs.
-  (*s_brave_whitelist)[browsing_data::prefs::kDeleteBrowsingHistoryOnExit] =
+  (*s_brave_allowlist)[browsing_data::prefs::kDeleteBrowsingHistoryOnExit] =
       settings_api::PrefType::PREF_TYPE_BOOLEAN;
-  (*s_brave_whitelist)[browsing_data::prefs::kDeleteDownloadHistoryOnExit] =
+  (*s_brave_allowlist)[browsing_data::prefs::kDeleteDownloadHistoryOnExit] =
       settings_api::PrefType::PREF_TYPE_BOOLEAN;
-  (*s_brave_whitelist)[browsing_data::prefs::kDeleteCacheOnExit] =
+  (*s_brave_allowlist)[browsing_data::prefs::kDeleteCacheOnExit] =
       settings_api::PrefType::PREF_TYPE_BOOLEAN;
-  (*s_brave_whitelist)[browsing_data::prefs::kDeleteCookiesOnExit] =
+  (*s_brave_allowlist)[browsing_data::prefs::kDeleteCookiesOnExit] =
       settings_api::PrefType::PREF_TYPE_BOOLEAN;
-  (*s_brave_whitelist)[browsing_data::prefs::kDeletePasswordsOnExit] =
+  (*s_brave_allowlist)[browsing_data::prefs::kDeletePasswordsOnExit] =
       settings_api::PrefType::PREF_TYPE_BOOLEAN;
-  (*s_brave_whitelist)[browsing_data::prefs::kDeleteFormDataOnExit] =
+  (*s_brave_allowlist)[browsing_data::prefs::kDeleteFormDataOnExit] =
       settings_api::PrefType::PREF_TYPE_BOOLEAN;
-  (*s_brave_whitelist)[browsing_data::prefs::kDeleteSiteSettingsOnExit] =
+  (*s_brave_allowlist)[browsing_data::prefs::kDeleteSiteSettingsOnExit] =
       settings_api::PrefType::PREF_TYPE_BOOLEAN;
-  (*s_brave_whitelist)[browsing_data::prefs::kDeleteHostedAppsDataOnExit] =
+  (*s_brave_allowlist)[browsing_data::prefs::kDeleteHostedAppsDataOnExit] =
       settings_api::PrefType::PREF_TYPE_BOOLEAN;
-  (*s_brave_whitelist)[kAlwaysShowBookmarkBarOnNTP] =
+  (*s_brave_allowlist)[kAlwaysShowBookmarkBarOnNTP] =
       settings_api::PrefType::PREF_TYPE_BOOLEAN;
-  (*s_brave_whitelist)[kMRUCyclingEnabled] =
+  (*s_brave_allowlist)[kMRUCyclingEnabled] =
       settings_api::PrefType::PREF_TYPE_BOOLEAN;
   // WebTorrent pref
-  (*s_brave_whitelist)[kWebTorrentEnabled] =
+  (*s_brave_allowlist)[kWebTorrentEnabled] =
       settings_api::PrefType::PREF_TYPE_BOOLEAN;
 #if BUILDFLAG(ENABLE_BRAVE_WAYBACK_MACHINE)
-  (*s_brave_whitelist)[kBraveWaybackMachineEnabled] =
+  (*s_brave_allowlist)[kBraveWaybackMachineEnabled] =
       settings_api::PrefType::PREF_TYPE_BOOLEAN;
 #endif
   // Hangouts pref
-  (*s_brave_whitelist)[kHangoutsEnabled] =
+  (*s_brave_allowlist)[kHangoutsEnabled] =
       settings_api::PrefType::PREF_TYPE_BOOLEAN;
   // IPFS Companion pref
-  (*s_brave_whitelist)[kIPFSCompanionEnabled] =
+  (*s_brave_allowlist)[kIPFSCompanionEnabled] =
       settings_api::PrefType::PREF_TYPE_BOOLEAN;
   // Brave Wallet pref
 #if BUILDFLAG(BRAVE_WALLET_ENABLED)
-  (*s_brave_whitelist)[kBraveWalletWeb3Provider] =
+  (*s_brave_allowlist)[kBraveWalletWeb3Provider] =
       settings_api::PrefType::PREF_TYPE_NUMBER;
-  (*s_brave_whitelist)[kLoadCryptoWalletsOnStartup] =
+  (*s_brave_allowlist)[kLoadCryptoWalletsOnStartup] =
       settings_api::PrefType::PREF_TYPE_BOOLEAN;
 #endif
   // IPFS pref
 #if BUILDFLAG(IPFS_ENABLED)
-  (*s_brave_whitelist)[kIPFSResolveMethod] =
+  (*s_brave_allowlist)[kIPFSResolveMethod] =
       settings_api::PrefType::PREF_TYPE_NUMBER;
-  (*s_brave_whitelist)[kIPFSAutoFallbackToGateway] =
+  (*s_brave_allowlist)[kIPFSAutoFallbackToGateway] =
       settings_api::PrefType::PREF_TYPE_BOOLEAN;
 #endif
   // Media Router Pref
-  (*s_brave_whitelist)[kBraveEnabledMediaRouter] =
+  (*s_brave_allowlist)[kBraveEnabledMediaRouter] =
       settings_api::PrefType::PREF_TYPE_BOOLEAN;
 
 #if !BUILDFLAG(USE_GCM_FROM_PLATFORM)
   // Push Messaging Pref
-  (*s_brave_whitelist)[kBraveGCMChannelStatus] =
+  (*s_brave_allowlist)[kBraveGCMChannelStatus] =
       settings_api::PrefType::PREF_TYPE_BOOLEAN;
 #endif
   // Omnibox pref
-  (*s_brave_whitelist)[omnibox::kPreventUrlElisionsInOmnibox] =
+  (*s_brave_allowlist)[omnibox::kPreventUrlElisionsInOmnibox] =
       settings_api::PrefType::PREF_TYPE_BOOLEAN;
 #if BUILDFLAG(ENABLE_TOR)
-  (*s_brave_whitelist)[tor::prefs::kAutoOnionLocation] =
+  (*s_brave_allowlist)[tor::prefs::kAutoOnionLocation] =
       settings_api::PrefType::PREF_TYPE_BOOLEAN;
 #endif
-  (*s_brave_whitelist)[prefs::kWebRTCIPHandlingPolicy] =
+  (*s_brave_allowlist)[prefs::kWebRTCIPHandlingPolicy] =
       settings_api::PrefType::PREF_TYPE_STRING;
 
-  return *s_brave_whitelist;
+  return *s_brave_allowlist;
 }
 
 }  // namespace extensions
