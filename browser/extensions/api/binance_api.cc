@@ -261,21 +261,25 @@ BinanceGetConvertAssetsFunction::Run() {
 }
 
 void BinanceGetConvertAssetsFunction::OnGetConvertAssets(
-    const std::map<std::string, std::vector<std::string>>& assets) {
-  std::unique_ptr<base::DictionaryValue> asset_dict(
-      new base::DictionaryValue());
+    const std::map<std::string, std::vector<
+    std::map<std::string, std::string>>>& assets) {
+  auto result = std::make_unique<base::Value>(
+      base::Value::Type::DICTIONARY);
 
   for (const auto& asset : assets) {
-    auto supported = std::make_unique<base::ListValue>();
-    if (!asset.second.empty()) {
-      for (auto const& ticker : asset.second) {
-        supported->Append(ticker);
+    base::ListValue sub_selectors;
+    for (const auto& sub : asset.second) {
+      auto sub_selector = std::make_unique<base::Value>(
+          base::Value::Type::DICTIONARY);
+      for (const auto& att : sub) {
+        sub_selector->SetStringKey(att.first, att.second);
       }
+      sub_selectors.Append(std::move(sub_selector));
     }
-    asset_dict->SetList(asset.first, std::move(supported));
+    result->SetKey(asset.first, std::move(sub_selectors));
   }
 
-  Respond(OneArgument(std::move(asset_dict)));
+  Respond(OneArgument(std::move(result)));
 }
 
 ExtensionFunction::ResponseAction

@@ -360,7 +360,8 @@ class BinanceAPIBrowserTest : public InProcessBrowserTest {
   }
 
   void OnGetConvertAssets(
-      const std::map<std::string, std::vector<std::string>>& assets) {
+      const std::map<std::string,
+      std::vector<std::map<std::string, std::string>>>& assets) {
     if (wait_for_request_) {
       wait_for_request_->Quit();
     }
@@ -368,7 +369,8 @@ class BinanceAPIBrowserTest : public InProcessBrowserTest {
   }
 
   void WaitForGetConvertAssets(
-      const std::map<std::string, std::vector<std::string>>& expected_assets) {
+      const std::map<std::string,
+      std::vector<std::map<std::string, std::string>>>& expected_assets) {
     if (wait_for_request_) {
       return;
     }
@@ -451,7 +453,8 @@ class BinanceAPIBrowserTest : public InProcessBrowserTest {
   std::vector<std::string> expected_assets_;
   std::map<std::string, std::vector<std::string>> expected_balances_;
   std::map<std::string, std::string> expected_networks_;
-  std::map<std::string, std::vector<std::string>> expected_assets_with_sub_;
+  std::map<std::string, std::vector<std::map<std::string, std::string>>>
+      expected_assets_with_sub_;
 
   std::unique_ptr<base::RunLoop> wait_for_request_;
   std::unique_ptr<net::EmbeddedTestServer> https_server_;
@@ -668,8 +671,13 @@ IN_PROC_BROWSER_TEST_F(BinanceAPIBrowserTest, GetConvertAssets) {
       base::BindOnce(
           &BinanceAPIBrowserTest::OnGetConvertAssets,
           base::Unretained(this))));
-  std::vector<std::string> sub {"BNB"};
-  std::map<std::string, std::vector<std::string>> assets {{"BTC", sub}};
+  std::map<std::string, std::string> inner_sub {
+    { "asset", "BNB", },
+    { "minAmount", "0.00200000" }
+  };
+  std::vector<std::map<std::string, std::string>> sub {inner_sub};
+  std::map<std::string, std::vector<
+    std::map<std::string, std::string>>> assets {{"BTC", sub}};
   WaitForGetConvertAssets(assets);
 }
 
@@ -681,7 +689,8 @@ IN_PROC_BROWSER_TEST_F(BinanceAPIBrowserTest, GetConvertAssetsUnauthorized) {
       base::BindOnce(
           &BinanceAPIBrowserTest::OnGetConvertAssets,
           base::Unretained(this))));
-  WaitForGetConvertAssets(std::map<std::string, std::vector<std::string> >());
+  WaitForGetConvertAssets(std::map<std::string, std::vector<
+    std::map<std::string, std::string>>>());
 }
 
 IN_PROC_BROWSER_TEST_F(BinanceAPIBrowserTest, GetConvertAssetsServerError) {
@@ -692,7 +701,8 @@ IN_PROC_BROWSER_TEST_F(BinanceAPIBrowserTest, GetConvertAssetsServerError) {
       base::BindOnce(
           &BinanceAPIBrowserTest::OnGetConvertAssets,
           base::Unretained(this))));
-  WaitForGetConvertAssets(std::map<std::string, std::vector<std::string> >());
+  WaitForGetConvertAssets(std::map<std::string, std::vector<
+    std::map<std::string, std::string>>>());
 }
 
 // Test disabled due to failure when run from a Powershell context

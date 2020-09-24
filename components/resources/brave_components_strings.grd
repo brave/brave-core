@@ -897,6 +897,7 @@
       <message name="IDS_BINANCE_WIDGET_DEPOSIT_MEMO" desc="">Deposit Memo</message>
       <message name="IDS_BINANCE_WIDGET_SEARCH" desc="">Search</message>
 
+      <message name="IDS_BINANCE_WIDGET_UNDER_MINIMUM" desc="">The minimum amount to convert is:</message>
       <message name="IDS_BINANCE_WIDGET_CONFIRM_CONVERSION" desc="">Confirm Conversion</message>
       <message name="IDS_BINANCE_WIDGET_CONVERT" desc="">Convert</message>
       <message name="IDS_BINANCE_WIDGET_RATE" desc="">Rate</message>
