@@ -58,6 +58,11 @@ class Wallet {
   bool SetWallet(type::BraveWalletPtr wallet);
 
  private:
+  void AuthorizeWallet(
+      const std::string& wallet_type,
+      const std::map<std::string, std::string>& args,
+      ledger::ExternalWalletAuthorizationCallback callback);
+
   LedgerImpl* ledger_;  // NOT OWNED
   std::unique_ptr<WalletCreate> create_;
   std::unique_ptr<WalletRecover> recover_;
