@@ -477,6 +477,7 @@ extension Strings {
     public static let cookies = NSLocalizedString("Cookies", tableName: "BraveShared", bundle: Bundle.braveShared, value: "Cookies and Site Data", comment: "Settings item for clearing cookies and site data")
     public static let findInPage = NSLocalizedString("FindInPage", tableName: "BraveShared", bundle: Bundle.braveShared, value: "Find in Page", comment: "Share action title")
     public static let addToFavorites = NSLocalizedString("AddToFavorites", tableName: "BraveShared", bundle: Bundle.braveShared, value: "Add to Favorites", comment: "Add to favorites share action.")
+    public static let createPDF = NSLocalizedString("CreatePDF", tableName: "BraveShared", bundle: Bundle.braveShared, value: "Create PDF", comment: "Create PDF share action.")
     
     public static let showBookmarks = NSLocalizedString("ShowBookmarks", tableName: "BraveShared", bundle: Bundle.braveShared, value: "Show Bookmarks", comment: "Button to show the bookmarks list")
     public static let showHistory = NSLocalizedString("ShowHistory", tableName: "BraveShared", bundle: Bundle.braveShared, value: "Show History", comment: "Button to show the history list")
