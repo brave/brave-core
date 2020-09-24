@@ -49,9 +49,7 @@ using GetPublisherAllowNonVerifiedCallback = base::Callback<void(bool)>;
 using GetPublisherAllowVideosCallback = base::Callback<void(bool)>;
 using GetAutoContributeEnabledCallback = base::OnceCallback<void(bool)>;
 using GetReconcileStampCallback = base::Callback<void(uint64_t)>;
-using IsWalletCreatedCallback = base::Callback<void(bool)>;
 using GetPendingContributionsTotalCallback = base::Callback<void(double)>;
-using GetRewardsMainEnabledCallback = base::Callback<void(bool)>;
 using GetRewardsInternalsInfoCallback =
     base::OnceCallback<void(ledger::type::RewardsInternalsInfoPtr info)>;
 using SaveRecurringTipCallback = base::OnceCallback<void(bool)>;
@@ -181,7 +179,6 @@ class RewardsService : public KeyedService {
 
   virtual void GetReconcileStamp(
       const GetReconcileStampCallback& callback) = 0;
-  virtual void SetRewardsMainEnabled(bool enabled) = 0;
   virtual void GetPublisherMinVisitTime(
       const GetPublisherMinVisitTimeCallback& callback) = 0;
   virtual void SetPublisherMinVisitTime(int duration_in_seconds) const = 0;
@@ -202,7 +199,6 @@ class RewardsService : public KeyedService {
       const uint32_t month,
       const uint32_t year,
       GetBalanceReportCallback callback) = 0;
-  virtual void IsWalletCreated(const IsWalletCreatedCallback& callback) = 0;
   virtual void GetPublisherActivityFromUrl(
       uint64_t windowId,
       const std::string& url,
@@ -236,8 +232,6 @@ class RewardsService : public KeyedService {
     const GetAutoContributePropertiesCallback& callback) = 0;
   virtual void GetPendingContributionsTotal(
     const GetPendingContributionsTotalCallback& callback) = 0;
-  virtual void GetRewardsMainEnabled(
-    const GetRewardsMainEnabledCallback& callback) const = 0;
   virtual void GetRewardsInternalsInfo(
       GetRewardsInternalsInfoCallback callback) = 0;
   virtual void AddPrivateObserver(

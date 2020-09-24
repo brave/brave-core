@@ -26,19 +26,6 @@ void GetTestDataDir(base::FilePath* test_data_dir) {
   ASSERT_TRUE(base::PathExists(*test_data_dir));
 }
 
-double IsRewardsEnabled(Browser* browser, const bool private_window) {
-  DCHECK(browser);
-  auto* profile = browser->profile();
-  if (private_window) {
-    Profile* private_profile = profile->GetOffTheRecordProfile();
-    return private_profile->GetPrefs()->GetBoolean(
-      brave_rewards::prefs::kEnabled);
-  }
-
-  return profile->GetPrefs()->GetBoolean(
-      brave_rewards::prefs::kEnabled);
-}
-
 GURL GetRewardsUrl() {
   GURL url("brave://rewards");
   return url;
@@ -69,7 +56,6 @@ void EnableRewardsViaCode(
   run_loop.Run();
 
   ASSERT_TRUE(wallet_created);
-  ASSERT_TRUE(IsRewardsEnabled(browser));
 }
 
 GURL GetUrl(

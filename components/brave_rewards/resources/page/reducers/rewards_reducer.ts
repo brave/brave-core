@@ -402,6 +402,7 @@ const rewardsReducer: Reducer<Rewards.State | undefined> = (state: Rewards.State
       break
     }
     case types.ON_INITIALIZED: {
+      chrome.send('brave_rewards.getReconcileStamp')
       state = {
         ...state,
         initializing: false

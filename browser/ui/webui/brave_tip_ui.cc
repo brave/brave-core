@@ -51,10 +51,6 @@ class TipMessageHandler : public WebUIMessageHandler,
   void RegisterMessages() override;
 
   // RewardsServiceObserver:
-  void OnWalletInitialized(
-      RewardsService* rewards_service,
-      const ledger::type::Result result) override;
-
   void OnRecurringTipSaved(
       RewardsService* rewards_service,
       bool success) override;
@@ -178,16 +174,6 @@ void TipMessageHandler::RegisterMessages() {
       base::BindRepeating(
           &TipMessageHandler::GetOnlyAnonWallet,
           base::Unretained(this)));
-}
-
-void TipMessageHandler::OnWalletInitialized(
-    RewardsService* rewards_service,
-    const ledger::type::Result result) {
-  if (!IsJavascriptAllowed()) {
-    return;
-  }
-
-  FireWebUIListener("rewardsInitialized");
 }
 
 void TipMessageHandler::OnRecurringTipRemoved(

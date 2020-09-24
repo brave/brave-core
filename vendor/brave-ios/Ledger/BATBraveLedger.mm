@@ -190,11 +190,9 @@ typedef NS_ENUM(NSInteger, BATLedgerDatabaseMigrationType) {
     [NSNotificationCenter.defaultCenter addObserver:self selector:@selector(applicationDidBecomeActive) name:UIApplicationDidBecomeActiveNotification object:nil];
     [NSNotificationCenter.defaultCenter addObserver:self selector:@selector(applicationDidBackground) name:UIApplicationDidEnterBackgroundNotification object:nil];
 
-    if (self.walletCreated) {
-      [self getRewardsParameters:nil];
-      [self fetchBalance:nil];
-      [self fetchUpholdWallet:nil];
-    }
+    [self getRewardsParameters:nil];
+    [self fetchBalance:nil];
+    [self fetchUpholdWallet:nil];
 
     [self readNotificationsFromDisk];
   }
@@ -227,10 +225,8 @@ typedef NS_ENUM(NSInteger, BATLedgerDatabaseMigrationType) {
     if (self.initialized) {
       self.prefs[kMigrationSucceeded] = @(YES);
       [self savePrefs];
-      
-      if (self.isEnabled) {
-        [self.ads initializeIfAdsEnabled];
-      }
+
+      [self.ads initializeIfAdsEnabled];
     } else {
       BLOG(0, @"Ledger Initialization Failed with error: %d", result);
       if (result == ledger::type::Result::DATABASE_INIT_FAILED) {
@@ -401,8 +397,6 @@ BATClassLedgerBridge(BOOL, useShortRetries, setUseShortRetries, short_retries)
 
 #pragma mark - Wallet
 
-BATLedgerReadonlyBridge(BOOL, isWalletCreated, IsWalletCreated)
-
 - (void)createWallet:(void (^)(NSError * _Nullable))completion
 {
   const auto __weak weakSelf = self;
@@ -437,12 +431,6 @@ BATLedgerReadonlyBridge(BOOL, isWalletCreated, IsWalletCreated)
     dispatch_async(dispatch_get_main_queue(), ^{
       if (completion) {
         completion(error);
-      }
-      
-      for (BATBraveLedgerObserver *observer in [strongSelf.observers copy]) {
-        if (observer.rewardsEnabledStateUpdated) {
-          observer.rewardsEnabledStateUpdated(strongSelf.isEnabled);
-        }
       }
       
       for (BATBraveLedgerObserver *observer in [strongSelf.observers copy]) {
@@ -1179,24 +1167,6 @@ BATLedgerReadonlyBridge(BOOL, isWalletCreated, IsWalletCreated)
 
 #pragma mark - Preferences
 
-BATLedgerReadonlyBridge(BOOL, isEnabled, GetRewardsMainEnabled)
-
-- (void)setEnabled:(BOOL)enabled
-{
-  ledger->SetRewardsMainEnabled(enabled);
-  if (enabled) {
-    [self.ads initializeIfAdsEnabled];
-  } else {
-    [self.ads shutdown];
-  }
-
-  for (BATBraveLedgerObserver *observer in [self.observers copy]) {
-    if (observer.rewardsEnabledStateUpdated) {
-      observer.rewardsEnabledStateUpdated(enabled);
-    }
-  }
-}
-
 BATLedgerBridge(int,
                 minimumVisitDuration, setMinimumVisitDuration,
                 GetPublisherMinVisitTime, SetPublisherMinVisitTime)
@@ -1419,10 +1389,6 @@ BATLedgerBridge(BOOL,
 
 - (void)startNotificationTimers
 {
-  if (!self.isEnabled) {
-    return;
-  }
-
   dispatch_async(dispatch_get_main_queue(), ^{
     // Startup timer, begins after 30-second delay.
     self.notificationStartupTimer =

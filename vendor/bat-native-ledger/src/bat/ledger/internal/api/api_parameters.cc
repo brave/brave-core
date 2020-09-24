@@ -26,9 +26,7 @@ APIParameters::APIParameters(LedgerImpl* ledger) :
 APIParameters::~APIParameters() = default;
 
 void APIParameters::Initialize() {
-  if (ledger_->state()->GetRewardsMainEnabled()) {
-    Fetch([](type::RewardsParametersPtr) {});
-  }
+  Fetch([](type::RewardsParametersPtr) {});
 }
 
 void APIParameters::Fetch(ledger::GetRewardsParametersCallback callback) {

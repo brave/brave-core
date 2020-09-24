@@ -57,9 +57,6 @@ ViewCounterService::ViewCounterService(NTPBackgroundImagesService* service,
     model_.set_total_image_count(data->backgrounds.size());
 
   pref_change_registrar_.Init(prefs_);
-  pref_change_registrar_.Add(brave_rewards::prefs::kEnabled,
-      base::BindRepeating(&ViewCounterService::OnPreferenceChanged,
-      base::Unretained(this)));
   pref_change_registrar_.Add(ads::prefs::kEnabled,
       base::BindRepeating(&ViewCounterService::OnPreferenceChanged,
       base::Unretained(this)));

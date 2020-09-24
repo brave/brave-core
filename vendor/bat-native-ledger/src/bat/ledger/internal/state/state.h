@@ -48,10 +48,6 @@ class State {
 
   void GetScoreValues(double* a, double* b);
 
-  void SetRewardsMainEnabled(bool enabled);
-
-  bool GetRewardsMainEnabled();
-
   void SetAutoContributeEnabled(bool enabled);
 
   bool GetAutoContributeEnabled();

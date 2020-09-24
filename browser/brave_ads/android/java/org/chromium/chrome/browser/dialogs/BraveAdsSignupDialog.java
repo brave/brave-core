@@ -121,8 +121,6 @@ public class BraveAdsSignupDialog {
                 neverShowOnboardingDialogAgain();
 
                 BraveRewardsNativeWorker braveRewardsNativeWorker = BraveRewardsNativeWorker.getInstance();
-                braveRewardsNativeWorker.GetRewardsMainEnabled();
-                braveRewardsNativeWorker.CreateWallet();
 
                 // Enable ads
                 BraveAdsNativeHelper.nativeSetAdsEnabled(Profile.getLastUsedRegularProfile());

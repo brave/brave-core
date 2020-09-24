@@ -880,21 +880,6 @@
         ]
       },
       {
-        "name": "saveSetting",
-        "type": "function",
-        "description": "Updates settings related to rewards service",
-        "parameters": [
-          {
-            "name": "key",
-            "type": "string"
-          },
-          {
-            "name": "value",
-            "type": "string"
-          }
-        ]
-      },
-      {
         "name": "saveRecurringTip",
         "type": "function",
         "description": "Updates recurring tip amount for rewards panel",

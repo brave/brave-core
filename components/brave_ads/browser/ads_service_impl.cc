@@ -510,12 +510,7 @@ void AdsServiceImpl::ToggleFlagAd(
 }
 
 bool AdsServiceImpl::IsEnabled() const {
-  auto is_enabled = GetBooleanPref(ads::prefs::kEnabled);
-
-  auto is_rewards_enabled =
-      GetBooleanPref(brave_rewards::prefs::kEnabled);
-
-  return is_enabled && is_rewards_enabled;
+  return GetBooleanPref(ads::prefs::kEnabled);
 }
 
 uint64_t AdsServiceImpl::GetAdsPerHour() const {
@@ -622,9 +617,6 @@ void AdsServiceImpl::Initialize() {
   profile_pref_change_registrar_.Init(profile_->GetPrefs());
 
   profile_pref_change_registrar_.Add(ads::prefs::kEnabled,
-      base::Bind(&AdsServiceImpl::OnPrefsChanged, base::Unretained(this)));
-
-  profile_pref_change_registrar_.Add(brave_rewards::prefs::kEnabled,
       base::Bind(&AdsServiceImpl::OnPrefsChanged, base::Unretained(this)));
 
   profile_pref_change_registrar_.Add(ads::prefs::kIdleThreshold,
@@ -1704,13 +1696,9 @@ void AdsServiceImpl::MaybeShowOnboarding() {
 bool AdsServiceImpl::ShouldShowOnboarding() {
   auto is_ads_enabled = GetBooleanPref(ads::prefs::kEnabled);
 
-  auto is_rewards_enabled =
-      GetBooleanPref(brave_rewards::prefs::kEnabled);
-
   auto should_show = GetBooleanPref(prefs::kShouldShowOnboarding);
 
-  return IsNewlySupportedLocale() && !is_ads_enabled && is_rewards_enabled
-      && should_show;
+  return IsNewlySupportedLocale() && !is_ads_enabled && should_show;
 }
 
 void AdsServiceImpl::ShowOnboarding() {
@@ -1814,8 +1802,7 @@ bool AdsServiceImpl::PrefExists(
 
 void AdsServiceImpl::OnPrefsChanged(
     const std::string& pref) {
-  if (pref == ads::prefs::kEnabled ||
-      pref == brave_rewards::prefs::kEnabled) {
+  if (pref == ads::prefs::kEnabled) {
     if (IsEnabled()) {
 #if !defined(OS_ANDROID)
       if (first_run::IsChromeFirstRun()) {

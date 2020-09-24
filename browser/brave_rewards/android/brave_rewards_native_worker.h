@@ -39,14 +39,6 @@ class BraveRewardsNativeWorker : public brave_rewards::RewardsServiceObserver,
     void Destroy(JNIEnv* env,
         const base::android::JavaParamRef<jobject>& jcaller);
 
-    void CreateWallet(JNIEnv* env,
-        const base::android::JavaParamRef<jobject>& jcaller);
-
-    void OnCreateWallet(const ledger::type::Result result);
-
-    void WalletExist(JNIEnv* env,
-        const base::android::JavaParamRef<jobject>& jcaller);
-
     void GetRewardsParameters(JNIEnv* env,
         const base::android::JavaParamRef<jobject>& jcaller);
 
@@ -121,11 +113,6 @@ class BraveRewardsNativeWorker : public brave_rewards::RewardsServiceObserver,
         const base::android::JavaParamRef<jobject>& obj,
         const base::android::JavaParamRef<jstring>& publisher);
 
-    void SetRewardsMainEnabled(JNIEnv* env,
-        const base::android::JavaParamRef<jobject>& obj, bool enabled);
-    void GetRewardsMainEnabled(JNIEnv* env,
-        const base::android::JavaParamRef<jobject>& obj);
-
     void GetAutoContributeProperties(JNIEnv* env,
         const base::android::JavaParamRef<jobject>& obj);
 
@@ -185,15 +172,7 @@ class BraveRewardsNativeWorker : public brave_rewards::RewardsServiceObserver,
     void OnGetAutoContributeProperties(
         ledger::type::AutoContributePropertiesPtr properties);
 
-    void OnGetRewardsMainEnabled(bool enabled);
-
     void OnGetPendingContributionsTotal(double amount);
-
-    void OnIsWalletCreated(bool created);
-
-    void OnWalletInitialized(
-        brave_rewards::RewardsService* rewards_service,
-        const ledger::type::Result result) override;
 
     void OnPanelPublisherInfo(
         brave_rewards::RewardsService* rewards_service,
@@ -231,9 +210,6 @@ class BraveRewardsNativeWorker : public brave_rewards::RewardsServiceObserver,
         ledger::type::PromotionPtr promotion) override;
 
     void OnGetRecurringTips(ledger::type::PublisherInfoList list);
-
-    void OnRewardsMainEnabled(brave_rewards::RewardsService* rewards_service,
-        bool rewards_main_enabled) override;
 
     bool IsAnonWallet(JNIEnv* env,
         const base::android::JavaParamRef<jobject>& jcaller);

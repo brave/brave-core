@@ -24,8 +24,7 @@ ContributionAC::ContributionAC(LedgerImpl* ledger) :
 ContributionAC::~ContributionAC() = default;
 
 void ContributionAC::Process(const uint64_t reconcile_stamp) {
-  if (!ledger_->state()->GetRewardsMainEnabled() ||
-      !ledger_->state()->GetAutoContributeEnabled()) {
+  if (!ledger_->state()->GetAutoContributeEnabled()) {
     BLOG(1, "Auto contribution is off");
     return;
   }

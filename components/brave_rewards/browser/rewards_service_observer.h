@@ -21,10 +21,6 @@ class RewardsServiceObserver : public base::CheckedObserver {
  public:
   ~RewardsServiceObserver() override {}
 
-  virtual void OnWalletInitialized(
-      RewardsService* rewards_service,
-      const ledger::type::Result result) {}
-
   virtual void OnFetchPromotions(
       RewardsService* rewards_service,
       const ledger::type::Result result,
@@ -55,10 +51,6 @@ class RewardsServiceObserver : public base::CheckedObserver {
   virtual void OnAdsEnabled(
       brave_rewards::RewardsService* rewards_service,
       bool ads_enabled) {}
-
-  virtual void OnRewardsMainEnabled(
-      brave_rewards::RewardsService* rewards_service,
-      bool rewards_main_enabled) {}
 
   virtual void OnPendingContributionSaved(
       brave_rewards::RewardsService* rewards_service,
@@ -99,7 +91,7 @@ class RewardsServiceObserver : public base::CheckedObserver {
   // RewardsServiceObserver should not be used to return responses to the
   // caller. Method calls on RewardsService should use callbacks to return
   // responses. The observer is primarily for broadcast notifications of events
-  // from the the rewards service. OnWalletInitialized, OnPublisherInfoUpdated,
+  // from the rewards service. OnPublisherInfoUpdated,
   // etc... are examples of events that all observers will be interested in.
 };
 

@@ -69,8 +69,6 @@ void WalletCreate::OnCreate(
     return;
   }
 
-  ledger_->state()->SetRewardsMainEnabled(true);
-  ledger_->state()->SetAutoContributeEnabled(true);
   ledger_->publisher()->CalcScoreConsts(
       ledger_->state()->GetPublisherMinVisitTime());
   ledger_->state()->ResetReconcileStamp();

@@ -17,20 +17,6 @@
 namespace extensions {
 namespace api {
 
-class BraveRewardsCreateWalletFunction : public ExtensionFunction {
- public:
-  BraveRewardsCreateWalletFunction();
-  DECLARE_EXTENSION_FUNCTION("braveRewards.createWallet", UNKNOWN)
-
- protected:
-  ~BraveRewardsCreateWalletFunction() override;
-
-  ResponseAction Run() override;
- private:
-  base::WeakPtrFactory<BraveRewardsCreateWalletFunction> weak_factory_;
-  void OnCreateWallet(const ledger::type::Result result);
-};
-
 class BraveRewardsOpenBrowserActionUIFunction :
     public ExtensionFunction {
  public:
@@ -253,16 +239,6 @@ class BraveRewardsGetACEnabledFunction : public ExtensionFunction {
 
  private:
   void OnGetACEnabled(bool enabled);
-};
-
-class BraveRewardsSaveSettingFunction : public ExtensionFunction {
- public:
-  DECLARE_EXTENSION_FUNCTION("braveRewards.saveSetting", UNKNOWN)
-
- protected:
-  ~BraveRewardsSaveSettingFunction() override;
-
-  ResponseAction Run() override;
 };
 
 class BraveRewardsSaveRecurringTipFunction : public ExtensionFunction {
