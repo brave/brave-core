@@ -140,7 +140,7 @@ class SearchSettingsTableViewController: UITableViewController {
     private var searchPickerEngines: [OpenSearchEngine] {
         let orderedEngines = model.orderedEngines.sorted { $0.shortName < $1.shortName }
         
-        guard let priorityEngine = SearchEngines.defaultSearchPrefs?.priorityEngine(for: Locale.current) else {
+        guard let priorityEngine = InitialSearchEngines().priorityEngine?.rawValue else {
             return orderedEngines
         }
         

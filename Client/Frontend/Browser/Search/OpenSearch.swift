@@ -182,18 +182,13 @@ class OpenSearchEngine: NSObject, NSSecureCoding {
 
 private extension URL {
     func appendYahooRegionalSubdomain(for locale: Locale = .current) -> URL? {
-        guard let prefs = SearchEngines.defaultSearchPrefs,
-            let priorityEngines = prefs.priorityEngines else { return nil }
+        let se = InitialSearchEngines()
+        if se.priorityEngine != .yahoo { return nil }
         
         var region = locale.regionCode ?? "US"
         
         // Default search, no need to append the region code.
         if region == "US" { return nil }
-        
-        let supportedRegions = priorityEngines.compactMap { $0.key }
-        
-        // Region is not supported by yahoo, fallback to default url.
-        if !supportedRegions.contains(region) { return nil }
         
         // Handling non direct region translations.
         if region == "MY" { region = "malaysia" }

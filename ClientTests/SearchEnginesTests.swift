@@ -179,26 +179,6 @@ class SearchEnginesTests: XCTestCase {
         XCTAssertTrue(engines2.shouldShowSearchSuggestions)
     }
 
-    func testUnorderedSearchEnginesNoPriorityEngine() {
-        let unorderedList = ["Google", "Bing", "DuckDuckGo", "Qwant", "StartPage", "Yahoo"]
-        ["pl-PL", "el-GR", "ar-EG"].forEach {
-            XCTAssertEqual(SearchEngines.getUnorderedBundledEnginesFor(locale: Locale(identifier: $0)).compactMap({$0.shortName}), unorderedList)
-        }
-        
-        let russianList = ["Google", "DuckDuckGo", "Qwant", "StartPage", "Яндекс"]
-        XCTAssertEqual(SearchEngines.getUnorderedBundledEnginesFor(locale: Locale(identifier: "ru")).compactMap({$0.shortName}), russianList)
-    }
-    
-    func testUnorderedSearchEnginesWithPriorityEngine() {
-        let unorderedList = ["Yahoo", "Google", "Bing", "DuckDuckGo", "Qwant", "StartPage"]
-        ["zh-HK", "it-IT", "hi-IN", "en-US"].forEach {
-            XCTAssertEqual(SearchEngines.getUnorderedBundledEnginesFor(locale: Locale(identifier: $0)).compactMap({$0.shortName}), unorderedList)
-        }
-        
-        let nonGoogleDefault = ["Yahoo", "DuckDuckGo", "Bing", "Google", "Qwant", "StartPage"]
-        XCTAssertEqual(SearchEngines.getUnorderedBundledEnginesFor(locale: Locale(identifier: "de-DE")).compactMap({$0.shortName}), nonGoogleDefault)
-    }
-
     func testGetOrderedEngines() {
         // setup an existing search engine in the profile
         let profile = MockProfile()
@@ -213,7 +193,6 @@ class SearchEnginesTests: XCTestCase {
         Preferences.General.isFirstLaunch.value = true
         
         let profile = MockProfile()
-        profile.searchEngines.searchEngineSetup(for: Locale(identifier: "de-DE"))
         
         expectddgClientName(locales: ["de-DE"], expectedClientName: "bravened", profile: profile)
         expectddgClientName(locales: ["en-IE", "en-AU", "en-NZ"], expectedClientName: "braveed", profile: profile)
