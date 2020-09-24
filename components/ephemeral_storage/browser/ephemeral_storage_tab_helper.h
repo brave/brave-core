@@ -6,6 +6,8 @@
 #ifndef BRAVE_COMPONENTS_EPHEMERAL_STORAGE_BROWSER_EPHEMERAL_STORAGE_TAB_HELPER_H_
 #define BRAVE_COMPONENTS_EPHEMERAL_STORAGE_BROWSER_EPHEMERAL_STORAGE_TAB_HELPER_H_
 
+#include <string>
+
 #include "content/public/browser/web_contents_observer.h"
 #include "content/public/browser/web_contents_user_data.h"
 
@@ -30,7 +32,8 @@ class EphemeralStorageTabHelper
  private:
   friend class content::WebContentsUserData<EphemeralStorageTabHelper>;
 
-  void ClearEphemeralStorage();
+  void ClearEphemeralStorageIfNecessary();
+  bool IsAnotherTabOpenWithStorageDomain(const std::string&);
 
   WEB_CONTENTS_USER_DATA_KEY_DECL();
 };

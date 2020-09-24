@@ -20,7 +20,7 @@ scoped_refptr<content::SessionStorageNamespace> CreateSessionStorageNamespace(
     const std::string& namespace_id) {
   content::DOMStorageContextWrapper* context_wrapper =
       static_cast<content::DOMStorageContextWrapper*>(
-            partition->GetDOMStorageContext());
+          partition->GetDOMStorageContext());
 
   return content::SessionStorageNamespaceImpl::Create(context_wrapper,
                                                       namespace_id);

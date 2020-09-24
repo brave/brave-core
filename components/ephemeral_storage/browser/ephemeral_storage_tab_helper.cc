@@ -6,9 +6,10 @@
 #include "brave/components/ephemeral_storage/browser/ephemeral_storage_tab_helper.h"
 
 #include <string>
+#include <utility>
 
-#include "base/no_destructor.h"
 #include "base/feature_list.h"
+#include "base/no_destructor.h"
 // TODO(bridiver) - move ephemeral storage tab helper in brave/browser
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser.h"
@@ -19,8 +20,7 @@
 #include "content/public/browser/storage_partition.h"
 #include "content/public/browser/web_contents.h"
 #include "net/base/registry_controlled_domains/registry_controlled_domain.h"
-// TODO(bridiver) - this is a layering violation
-#include "third_party/blink/renderer/modules/storage/brave_dom_window_storage.h"
+#include "third_party/blink/public/common/features.h"
 
 using content::BrowserContext;
 using content::NavigationHandle;
@@ -40,7 +40,12 @@ content::SessionStorageNamespaceMap& local_storage_namespace_map() {
   return *local_storage_namespace_map.get();
 }
 
+std::string URLToStorageDomain(const GURL& url) {
+  return net::registry_controlled_domains::GetDomainAndRegistry(
+      url, net::registry_controlled_domains::INCLUDE_PRIVATE_REGISTRIES);
 }
+
+}  // namespace
 namespace ephemeral_storage {
 
 EphemeralStorageTabHelper::~EphemeralStorageTabHelper() {}
@@ -55,17 +60,17 @@ void EphemeralStorageTabHelper::ReadyToCommitNavigation(
   if (navigation_handle->IsSameDocument())
     return;
 
-  std::string domain = net::registry_controlled_domains::GetDomainAndRegistry(
-          navigation_handle->GetURL(),
-          net::registry_controlled_domains::INCLUDE_PRIVATE_REGISTRIES);
-
+  std::string domain = URLToStorageDomain(navigation_handle->GetURL());
   std::string partition_id = domain + "/ephemeral-storage";
 
   content::SessionStorageNamespaceMap::const_iterator it =
       session_storage_namespace_map().find(partition_id);
 
-  // we only need to check one map since they are added/removed together
   if (it == session_storage_namespace_map().end()) {
+    // Namespaces are added and removed together, so these two maps
+    // should be in sync.
+    DCHECK(local_storage_namespace_map().find(partition_id) ==
+           local_storage_namespace_map().end());
     auto* browser_context = web_contents()->GetBrowserContext();
 
     auto instance = content::SiteInstance::CreateForURL(
@@ -85,41 +90,42 @@ void EphemeralStorageTabHelper::ReadyToCommitNavigation(
         std::move(local_storage_namespace);
   }
 
-  ClearEphemeralStorage();
+  ClearEphemeralStorageIfNecessary();
 }
 
 void EphemeralStorageTabHelper::WebContentsDestroyed() {
-  ClearEphemeralStorage();
+  ClearEphemeralStorageIfNecessary();
 }
 
-void EphemeralStorageTabHelper::ClearEphemeralStorage() {
-  if (!base::FeatureList::IsEnabled(blink::kBraveEphemeralStorage)) {
+bool EphemeralStorageTabHelper::IsAnotherTabOpenWithStorageDomain(
+    const std::string& storage_domain) {
+  for (Browser* browser : *BrowserList::GetInstance()) {
+    if (browser->profile() != web_contents()->GetBrowserContext())
+      continue;
+
+    TabStripModel* tab_strip = browser->tab_strip_model();
+    for (int i = 0; i < tab_strip->count(); ++i) {
+      WebContents* contents = tab_strip->GetWebContentsAt(i);
+      const GURL& url = contents->GetLastCommittedURL();
+      if (contents != web_contents() &&
+          URLToStorageDomain(url) == storage_domain) {
+        return true;
+      }
+    }
+  }
+
+  return false;
+}
+
+void EphemeralStorageTabHelper::ClearEphemeralStorageIfNecessary() {
+  if (!base::FeatureList::IsEnabled(blink::features::kBraveEphemeralStorage)) {
     return;
   }
 
   std::string storage_domain =
-      net::registry_controlled_domains::GetDomainAndRegistry(
-          web_contents()->GetLastCommittedURL(),
-          net::registry_controlled_domains::INCLUDE_PRIVATE_REGISTRIES);
-
-  for (Browser* browser : *BrowserList::GetInstance()) {
-    if (browser->profile() == web_contents()->GetBrowserContext()) {
-      TabStripModel* tab_strip = browser->tab_strip_model();
-      for (int i = 0; i < tab_strip->count(); ++i) {
-        WebContents* contents = tab_strip->GetWebContentsAt(i);
-        if (contents != web_contents()) {
-          std::string domain =
-              net::registry_controlled_domains::GetDomainAndRegistry(
-                  contents->GetLastCommittedURL(),
-                  net::registry_controlled_domains::INCLUDE_PRIVATE_REGISTRIES);
-          if (domain == storage_domain) {
-            // There is an open tab with the same etld so don't delete the
-            // namespace
-            return;
-          }
-        }
-      }
-    }
+      URLToStorageDomain(web_contents()->GetLastCommittedURL());
+  if (IsAnotherTabOpenWithStorageDomain(storage_domain)) {
+    return;
   }
 
   local_storage_namespace_map().erase(storage_domain + "/ephemeral-storage");

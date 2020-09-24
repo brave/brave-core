@@ -4,9 +4,10 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 #include "../../../../../../../third_party/blink/renderer/modules/storage/dom_window_storage.cc"
-#include "third_party/blink/renderer/modules/storage/brave_dom_window_storage.h"
+#include "third_party/blink/public/common/features.h"
 #include "third_party/blink/renderer/core/execution_context/execution_context.h"
 #include "third_party/blink/renderer/core/frame/local_dom_window.h"
+#include "third_party/blink/renderer/modules/storage/brave_dom_window_storage.h"
 
 namespace blink {
 
@@ -29,13 +30,9 @@ void MaybeClearAccessDeniedException(StorageArea* storage,
 
 }  // namespace
 
-const base::Feature kBraveEphemeralStorage{"EphemeralStorage",
-                                           base::FEATURE_DISABLED_BY_DEFAULT};
-
 class EphemeralStorageNamespaces
     : public GarbageCollected<EphemeralStorageNamespaces>,
       public Supplement<Page> {
-
  public:
   EphemeralStorageNamespaces(StorageController* controller,
                              const String& session_storage_id,
@@ -89,8 +86,8 @@ EphemeralStorageNamespaces* EphemeralStorageNamespaces::From(Page* page) {
 
   String session_storage_id = security_origin->RegistrableDomain() +
                               String("/ephemeral-session-storage");
-  String local_storage_id = security_origin->RegistrableDomain() +
-                            String("/ephemeral-local-storage");
+  String local_storage_id =
+      security_origin->RegistrableDomain() + String("/ephemeral-local-storage");
   supplement = MakeGarbageCollected<EphemeralStorageNamespaces>(
       StorageController::GetInstance(), session_storage_id, local_storage_id);
 
@@ -136,7 +133,7 @@ StorageArea* BraveDOMWindowStorage::sessionStorage(
       DOMWindowStorage::From(*window).sessionStorage(exception_state);
 
   MaybeClearAccessDeniedException(storage, *window, &exception_state);
-  if (base::FeatureList::IsEnabled(kBraveEphemeralStorage)) {
+  if (base::FeatureList::IsEnabled(features::kBraveEphemeralStorage)) {
     storage = ephemeralSessionStorage(storage);
   }
 
@@ -145,7 +142,7 @@ StorageArea* BraveDOMWindowStorage::sessionStorage(
 
 StorageArea* BraveDOMWindowStorage::ephemeralSessionStorage(
     StorageArea* non_ephemeral_storage) {
-  if (!base::FeatureList::IsEnabled(kBraveEphemeralStorage))
+  if (!base::FeatureList::IsEnabled(features::kBraveEphemeralStorage))
     return non_ephemeral_storage;
 
   LocalDOMWindow* window = GetSupplementable();
@@ -182,7 +179,7 @@ StorageArea* BraveDOMWindowStorage::localStorage(
   auto* storage = DOMWindowStorage::From(*window).localStorage(exception_state);
 
   MaybeClearAccessDeniedException(storage, *window, &exception_state);
-  if (base::FeatureList::IsEnabled(kBraveEphemeralStorage)) {
+  if (base::FeatureList::IsEnabled(features::kBraveEphemeralStorage)) {
     storage = ephemeralLocalStorage(storage);
   }
 
@@ -191,7 +188,7 @@ StorageArea* BraveDOMWindowStorage::localStorage(
 
 StorageArea* BraveDOMWindowStorage::ephemeralLocalStorage(
     StorageArea* non_ephemeral_storage) {
-  if (!base::FeatureList::IsEnabled(kBraveEphemeralStorage))
+  if (!base::FeatureList::IsEnabled(features::kBraveEphemeralStorage))
     return non_ephemeral_storage;
 
   LocalDOMWindow* window = GetSupplementable();

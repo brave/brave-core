@@ -18,9 +18,9 @@ namespace content {
 class SessionStorageNamespace;
 class StoragePartition;
 
-CONTENT_EXPORT scoped_refptr<content::SessionStorageNamespace> CreateSessionStorageNamespace(
-    content::StoragePartition* partition,
-    const std::string& namespace_id);
+CONTENT_EXPORT scoped_refptr<content::SessionStorageNamespace>
+CreateSessionStorageNamespace(content::StoragePartition* partition,
+                              const std::string& namespace_id);
 
 }  // namespace content
 

@@ -23,7 +23,7 @@
 #include "content/public/test/test_navigation_observer.h"
 #include "net/dns/mock_host_resolver.h"
 #include "net/test/embedded_test_server/default_handlers.h"
-#include "third_party/blink/renderer/modules/storage/brave_dom_window_storage.h"
+#include "third_party/blink/public/common/features.h"
 #include "url/gurl.h"
 
 using content::RenderFrameHost;
@@ -75,7 +75,8 @@ class EphemeralStorageBrowserTest : public InProcessBrowserTest {
  public:
   EphemeralStorageBrowserTest()
       : https_server_(net::EmbeddedTestServer::TYPE_HTTPS) {
-    scoped_feature_list_.InitAndEnableFeature(blink::kBraveEphemeralStorage);
+    scoped_feature_list_.InitAndEnableFeature(
+        blink::features::kBraveEphemeralStorage);
   }
 
   void SetUpOnMainThread() override {
