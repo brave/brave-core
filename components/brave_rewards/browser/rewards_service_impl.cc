@@ -35,9 +35,7 @@
 #include "base/time/time.h"
 #include "bat/ads/pref_names.h"
 #include "bat/ledger/global_constants.h"
-#include "bat/ledger/ledger.h"
 #include "bat/ledger/ledger_database.h"
-#include "bat/ledger/mojom_structs.h"
 #include "brave/base/containers/utils.h"
 #include "brave/browser/brave_rewards/rewards_service_factory.h"
 #include "brave/browser/ui/webui/brave_rewards_source.h"
@@ -1601,10 +1599,10 @@ void RewardsServiceImpl::SetAutoContributeEnabled(bool enabled) {
   }
 }
 
-void RewardsServiceImpl::OnAdsEnabled(
-    bool ads_enabled) {
-  for (auto& observer : observers_)
+void RewardsServiceImpl::OnAdsEnabled(bool ads_enabled) {
+  for (auto& observer : observers_) {
     observer.OnAdsEnabled(this, ads_enabled);
+  }
 }
 
 void RewardsServiceImpl::OnGetBalanceReport(
