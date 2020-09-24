@@ -287,7 +287,7 @@
       <message name="IDS_BRAVE_WELCOME_PAGE_DONE_BUTTON" desc="Button that ends the welcome tour and moves the user to the new tab page">Done</message>
       <message name="IDS_BRAVE_WELCOME_PAGE_PRIVACY_TITLE" desc="Title for the P3A panel">Browse safe and sound</message>
       <message name="IDS_BRAVE_WELCOME_PAGE_PRIVACY_DESC" desc="Description for the P3A panel">
-        Brave Shields blocks the creepy stuff that tries to track you across the web — including most ads. Set Shields to &#8220;down&#8221; if a site doesn’t seem to be working. Brave uses <ph name="BEGIN_LINK_P3A">&lt;a target="_blank" href="$1"&gt;</ph>completely private product analytics<ph name="END_LINK_P3A">&lt;/a&gt;</ph> to estimate the overall usage of certain features. You can turn this off in <ph name="BEGIN_LINK_P3A_SETTINGS">&lt;a target="_blank" href="$2"&gt;</ph>Settings<ph name="END_LINK_P3A_SETTINGS">&lt;/a&gt;</ph>.
+        Brave Shields blocks the creepy stuff that tries to track you across the web — including most ads. Set Shields to &#8220;down&#8221; if a site doesn’t seem to be working. Brave uses <ph name="BEGIN_LINK_P3A">$1</ph>completely private product analytics<ph name="END_LINK_P3A">$1</ph> to estimate the overall usage of certain features. You can turn this off in <ph name="BEGIN_LINK_P3A_SETTINGS">$1</ph>Settings<ph name="END_LINK_P3A_SETTINGS">$1</ph>.
       </message>
       <!-- WebUI rewards resources -->
       <message name="IDS_BRAVE_REWARDS_LOCAL_ADS_TITLE" desc="">Ads</message>
@@ -362,7 +362,7 @@
       <message name="IDS_BRAVE_REWARDS_LOCAL_WALLET_RECOVERY_SUCCESS" desc="">Your wallet key has been verified and loaded successfully.</message>
       <message name="IDS_BRAVE_REWARDS_LOCAL_WALLET_RESTORED" desc="">Wallet restored!</message>
       <message name="IDS_BRAVE_REWARDS_LOCAL_WALLET_RECOVERY_FAIL" desc="">Please re-enter keys or try different keys.</message>
-      <message name="IDS_BRAVE_REWARDS_LOCAL_WALLET_RECOVERY_OUTDATED" desc="">The restore key entered is not supported anymore. Please visit <ph name="BEGIN_LINK_REGION_TEXT">&lt;a target="_blank" href="http://brave.com/faq#convert-old-keys"&gt;</ph>here<ph name="END_LINK_REGION_TEXT">&lt;/a&gt;</ph> to get a new key.</message>
+      <message name="IDS_BRAVE_REWARDS_LOCAL_WALLET_RECOVERY_OUTDATED" desc="">The restore key entered is not supported anymore. Please visit <ph name="BEGIN_LINK">$1</ph>here<ph name="END_LINK">$2</ph> to get a new key.</message>
       <message name="IDS_BRAVE_REWARDS_LOCAL_ALMOST_THERE" desc="">Almost there…</message>
       <message name="IDS_BRAVE_REWARDS_LOCAL_PROVE_HUMAN" desc="">Prove that you are human!</message>
       <message name="IDS_BRAVE_REWARDS_LOCAL_NOT_QUITE" desc="">Hmmm, not quite...</message>
@@ -383,7 +383,7 @@
       <message name="IDS_BRAVE_REWARDS_LOCAL_ADS_CONFIRMATION_TYPE_DISMISS" desc="">Dismissed</message>
       <message name="IDS_BRAVE_REWARDS_LOCAL_ADS_CONFIRMATION_TYPE_LANDED" desc="">Clicked</message>
       <message name="IDS_BRAVE_REWARDS_LOCAL_ADS_CONFIRMATION_TYPE_VIEW" desc="">Viewed</message>
-      <message name="IDS_BRAVE_REWARDS_LOCAL_REDIRECT_MODAL_NOT_ALLOWED" desc="">BAT is not currently supported in your region. Please refer <ph name="BEGIN_LINK_REGION_TEXT">&lt;a target="_blank" href="$1"&gt;</ph>here<ph name="END_LINK_REGION_TEXT">&lt;/a&gt;</ph> for updates.</message>
+      <message name="IDS_BRAVE_REWARDS_LOCAL_REDIRECT_MODAL_NOT_ALLOWED" desc="">BAT is not currently supported in your region. Please refer <ph name="BEGIN_LINK">$1</ph>here<ph name="END_LINK">$2</ph> for updates.</message>
       <message name="IDS_BRAVE_REWARDS_LOCAL_REDIRECT_MODAL_CLOSE" desc="">Close</message>
       <message name="IDS_BRAVE_REWARDS_LOCAL_REDIRECT_MODAL_ERROR_WALLET" desc="">Error creating Brave Browser BAT card</message>
       <message name="IDS_BRAVE_REWARDS_LOCAL_REDIRECT_MODAL_BAT_LIMIT_TITLE" desc="">You need a verified wallet to Login</message>
@@ -567,7 +567,7 @@
       <message name="IDS_BRAVE_UI_LEARN_MORE" desc="">Learn More</message>
       <message name="IDS_BRAVE_UI_LOGIN" desc="">Login</message>
       <message name="IDS_BRAVE_UI_LOGIN_MESSAGE_TITLE" desc="">Verifying wallet allows you to manage your funds more efficiently.</message>
-      <message name="IDS_BRAVE_UI_LOGIN_MESSAGE_TEXT" desc="">You need to have minimum 25 BAT to create an Uphold account. Please try again later. <ph name="BREAK">&lt;br/&gt;</ph>If you already have a verified Uphold account, continue to login.</message>
+      <message name="IDS_BRAVE_UI_LOGIN_MESSAGE_TEXT" desc="">You need to have minimum 25 BAT to create an Uphold account. Please try again later. <ph name="BEGIN_BREAK">$1</ph><ph name="END_BREAK">$2</ph>If you already have a verified Uphold account, continue to login.</message>
       <message name="IDS_BRAVE_UI_MAKE_MONTHLY" desc="">Make this monthly</message>
       <message name="IDS_BRAVE_UI_MANAGE_WALLET" desc="">Manage Your Wallet</message>
       <message name="IDS_BRAVE_UI_MONTH_APR" desc="">Apr</message>
@@ -671,8 +671,8 @@
       <message name="IDS_BRAVE_UI_REWARDS_PANEL_EMPTY_TEXT6" desc="">Look for ad notifications as you continue to use Brave. Your BAT Points balance will increase with each ad you view.</message>
       <message name="IDS_BRAVE_UI_REWARDS_PANEL_OFF_TEXT1" desc="">Get Rewarded for Browsing!</message>
       <message name="IDS_BRAVE_UI_REWARDS_PANEL_OFF_TEXT2" desc="">Earn tokens for your attention to ads and pay it forward to support content creators you value!</message>
-      <message name="IDS_BRAVE_UI_REWARDS_PANEL_TEXT1" desc="">Add, withdraw and manage funds at <ph name="BEGIN_BOLD">&lt;b&gt;</ph>Uphold<ph name="BEGIN_END">&lt;/b&gt;</ph>.</message>
-      <message name="IDS_BRAVE_UI_REWARDS_PANEL_TEXT2" desc="">Your Brave wallet is powered by <ph name="BEGIN_BOLD">&lt;b&gt;</ph>Uphold<ph name="BEGIN_END">&lt;/b&gt;</ph>.</message>
+      <message name="IDS_BRAVE_UI_REWARDS_PANEL_TEXT1" desc="">Add, withdraw and manage funds at <ph name="BEGIN_BOLD">$1</ph>Uphold<ph name="END_BOLD">$2</ph>.</message>
+      <message name="IDS_BRAVE_UI_REWARDS_PANEL_TEXT2" desc="">Your Brave wallet is powered by <ph name="BEGIN_BOLD">$1</ph>Uphold<ph name="END_BOLD">$2</ph>.</message>
       <message name="IDS_BRAVE_UI_REWARDS_PANEL_TEXT3" desc="">Brave Rewards is built on the Basic Attention Token. Learn more about BAT</message>
       <message name="IDS_BRAVE_UI_REWARDS_PANEL_TEXT4" desc="">here</message>
       <message name="IDS_BRAVE_UI_REWARDS_RESTORE_TEXT1" desc="">Restore your Wallet</message>
@@ -681,7 +681,7 @@
       <message name="IDS_BRAVE_UI_REWARDS_RESTORE_TEXT4" desc="">Enter your recovery key or</message>
       <message name="IDS_BRAVE_UI_REWARDS_RESTORE_WARNING" desc="">Backup your wallet before replacing. Or you will lose the fund, {{funds}}, in your current wallet.</message>
       <message name="IDS_BRAVE_UI_REWARDS_RESET_CONFIRMATION" desc="">Are you sure you want to reset your Rewards Wallet?</message>
-      <message name="IDS_BRAVE_UI_REWARDS_RESET_TEXT_FUNDS" desc="">Your <ph name="BEGIN_BOLD">&lt;b&gt;</ph>{{amount}} BATs<ph name="BEGIN_END">&lt;/b&gt;</ph> and other Rewards data will be permanently lost if you reset your wallet. Please ensure you have verified your wallet with Uphold so you can keep your BAT.</message>
+      <message name="IDS_BRAVE_UI_REWARDS_RESET_TEXT_FUNDS" desc="">Your <ph name="BEGIN_BOLD">$1</ph>{{amount}} BATs<ph name="END_BOLD">$2</ph> and other Rewards data will be permanently lost if you reset your wallet. Please ensure you have verified your wallet with Uphold so you can keep your BAT.</message>
       <message name="IDS_BRAVE_UI_REWARDS_RESET_TEXT_NO_FUNDS" desc="">Your Rewards data will be permanently lost if you reset your wallet.</message>
       <message name="IDS_BRAVE_UI_TOKEN_GRANT" desc="">Token Grants Claimed</message>
       <message name="IDS_BRAVE_UI_REWARDS_SUMMARY" desc="">Rewards Summary</message>
@@ -785,7 +785,7 @@
       <message name="IDS_BRAVE_UI_WALLET_GO_TO_VERIFY_PAGE" desc="CTA for completing wallet verification">Complete wallet verification</message>
       <message name="IDS_BRAVE_UI_WALLET_DISCONNECT" desc="">Disconnect from Brave Rewards</message>
       <message name="IDS_BRAVE_UI_WALLET_VERIFICATION_BUTTON" desc="">Verify wallet</message>
-      <message name="IDS_BRAVE_UI_WALLET_VERIFICATION_FOOTER" desc="">Our wallet service is provided by <ph name="BEGIN_BOLD">&lt;b&gt;</ph>Uphold<ph name="BEGIN_END">&lt;/b&gt;</ph></message>
+      <message name="IDS_BRAVE_UI_WALLET_VERIFICATION_FOOTER" desc="">Our wallet service is provided by <ph name="BEGIN_BOLD">$1</ph>Uphold.<ph name="END_BOLD">$2</ph></message>
       <message name="IDS_BRAVE_UI_WALLET_VERIFICATION_ID" desc="">Please have your government issued ID available.</message>
       <message name="IDS_BRAVE_UI_WALLET_VERIFICATION_LIST1" desc="">Withdraw BAT that you earn from viewing privacy-respecting ads</message>
       <message name="IDS_BRAVE_UI_WALLET_VERIFICATION_LIST2" desc="">Purchase additional BAT with credit cards and other sources</message>

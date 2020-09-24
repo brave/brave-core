@@ -43,6 +43,7 @@ import {
   LoginMessageText
 } from './style'
 import { getLocale } from 'brave-ui/helpers'
+import { getLocaleTags } from '../../../../../common/locale'
 import { GrantCaptcha, GrantComplete, GrantError, GrantWrapper, WalletPopup } from '../'
 import Alert, { Type as AlertType } from '../alert'
 import Button, { Props as ButtonProps } from 'brave-ui/components/buttonsIndicators/button'
@@ -606,6 +607,10 @@ export default class WalletWrapper extends React.PureComponent<Props, State> {
     const connectedVerified = walletState === 'verified'
     const batFormatString = onlyAnonWallet ? getLocale('batPoints') : getLocale('bat')
 
+    const loginText = getLocaleTags('loginMessageText')
+    const rewardsText1 = getLocaleTags('rewardsPanelText1')
+    const rewardsText2 = getLocaleTags('rewardsPanelText2')
+
     return (
       <>
         <StyledWrapper
@@ -673,7 +678,11 @@ export default class WalletWrapper extends React.PureComponent<Props, State> {
               ? <LoginMessage>
                   <LoginMessageText>
                     <b>{getLocale('loginMessageTitle')}</b>
-                    <p dangerouslySetInnerHTML={{ __html: getLocale('loginMessageText') }} />
+                    <p>
+                      {loginText.beforeTag}
+                      <br />
+                      {loginText.afterTag}
+                    </p>
                   </LoginMessageText>
                   <LoginMessageButtons>
                     <Button
@@ -709,13 +718,21 @@ export default class WalletWrapper extends React.PureComponent<Props, State> {
                       <StyledCopyImage>
                         <UpholdColorIcon />
                       </StyledCopyImage>
-                      <span dangerouslySetInnerHTML={{ __html: getLocale('rewardsPanelText1') }} />
+                      <span>
+                        {rewardsText1.beforeTag}
+                        <b>{rewardsText1.duringTag}</b>
+                        {rewardsText1.afterTag}
+                      </span>
                     </>
                     : <>
                       <StyledCopyImage>
                         <UpholdSystemIcon />
                       </StyledCopyImage>
-                      <span dangerouslySetInnerHTML={{ __html: getLocale('rewardsPanelText2') }} />
+                      <span>
+                        {rewardsText2.beforeTag}
+                        <b>{rewardsText2.duringTag}</b>
+                        {rewardsText2.afterTag}
+                      </span>
                       {
                         onVerifyClick
                           ? <>
