@@ -177,6 +177,7 @@ GreaselionServiceImpl::GreaselionServiceImpl(
       extension_registry_(extension_registry),
       all_rules_installed_successfully_(true),
       update_in_progress_(false),
+      update_pending_(false),
       pending_installs_(0),
       task_runner_(std::move(task_runner)),
       weak_factory_(this) {
@@ -200,8 +201,10 @@ GreaselionServiceImpl::GetExtensionIdsForTesting() {
 }
 
 void GreaselionServiceImpl::UpdateInstalledExtensions() {
-  if (update_in_progress_)
+  if (update_in_progress_) {
+    update_pending_ = true;
     return;
+  }
   update_in_progress_ = true;
   if (greaselion_extensions_.empty()) {
     // No Greaselion extensions are currently installed, so we can move on to
@@ -319,6 +322,10 @@ void GreaselionServiceImpl::MaybeNotifyObservers() {
     update_in_progress_ = false;
     for (Observer& observer : observers_)
       observer.OnExtensionsReady(this, all_rules_installed_successfully_);
+    if (update_pending_) {
+      update_pending_ = false;
+      UpdateInstalledExtensions();
+    }
   }
 }
 
