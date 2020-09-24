@@ -75,7 +75,7 @@ class Uphold {
 
   type::UpholdWalletPtr GetWallet();
 
-  void SetWallet(type::UpholdWalletPtr wallet);
+  bool SetWallet(type::UpholdWalletPtr wallet);
 
  private:
   void ContributionCompleted(

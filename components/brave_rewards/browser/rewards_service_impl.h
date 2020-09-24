@@ -328,6 +328,12 @@ class RewardsServiceImpl : public RewardsService,
 
   void StopLedger(StopLedgerCallback callback);
 
+  std::string GetEncryptedStringState(const std::string& name) override;
+
+  bool SetEncryptedStringState(
+      const std::string& name,
+      const std::string& value) override;
+
   // Testing methods
   void SetLedgerEnvForTesting();
   void PrepareLedgerEnvForTesting();

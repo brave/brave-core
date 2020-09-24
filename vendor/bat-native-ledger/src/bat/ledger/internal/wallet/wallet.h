@@ -55,7 +55,7 @@ class Wallet {
 
   type::BraveWalletPtr GetWallet();
 
-  void SetWallet(type::BraveWalletPtr wallet);
+  bool SetWallet(type::BraveWalletPtr wallet);
 
  private:
   LedgerImpl* ledger_;  // NOT OWNED

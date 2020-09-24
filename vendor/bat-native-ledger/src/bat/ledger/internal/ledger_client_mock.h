@@ -156,6 +156,12 @@ class MockLedgerClient : public LedgerClient {
   MOCK_METHOD1(DeleteLog, void(const client::ResultCallback callback));
 
   MOCK_METHOD0(GetLegacyWallet, std::string());
+
+  MOCK_METHOD2(
+      SetEncryptedStringState,
+      bool(const std::string&, const std::string&));
+
+  MOCK_METHOD1(GetEncryptedStringState, std::string(const std::string&));
 };
 
 }  // namespace ledger

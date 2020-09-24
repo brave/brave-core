@@ -44,7 +44,7 @@ std::string GetSecondStepVerify();
 
 type::UpholdWalletPtr GetWallet(LedgerImpl* ledger);
 
-void SetWallet(LedgerImpl* ledger, type::UpholdWalletPtr wallet);
+bool SetWallet(LedgerImpl* ledger, type::UpholdWalletPtr wallet);
 
 std::string GenerateRandomString(bool testing);
 

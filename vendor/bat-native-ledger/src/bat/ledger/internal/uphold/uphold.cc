@@ -303,8 +303,8 @@ type::UpholdWalletPtr Uphold::GetWallet() {
   return ::ledger::uphold::GetWallet(ledger_);
 }
 
-void Uphold::SetWallet(type::UpholdWalletPtr wallet) {
-  ::ledger::uphold::SetWallet(ledger_, std::move(wallet));
+bool Uphold::SetWallet(type::UpholdWalletPtr wallet) {
+  return ::ledger::uphold::SetWallet(ledger_, std::move(wallet));
 }
 
 void Uphold::RemoveTransferFee(const std::string& contribution_id) {
