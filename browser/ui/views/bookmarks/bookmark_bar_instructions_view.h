@@ -44,7 +44,7 @@ class BookmarkBarInstructionsView : public views::View,
                                   ui::MenuSourceType source_type) override;
 
   void UpdateColors();
-  void LinkClicked(int event_flags);
+  void LinkClicked();
 
   views::Label* instructions_;
   views::Link* import_link_;
