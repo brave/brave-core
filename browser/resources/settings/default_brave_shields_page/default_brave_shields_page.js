@@ -72,7 +72,7 @@ Polymer({
 
     Promise.all([this.browserProxy_.getAdControlType(), this.browserProxy_.isFirstPartyCosmeticFilteringEnabled()])
         .then(([adControlType, hide1pContent]) => {
-      this.adControlType_ = (adControlType === 'allow' ? 'allow' : (hide1pContent ? 'block' : 'block_third_party'))
+      this.adControlType_ = (adControlType ? 'allow' : (hide1pContent ? 'block' : 'block_third_party'))
     });
     this.browserProxy_.getCookieControlType().then(value => {
       this.cookieControlType_ = value;
