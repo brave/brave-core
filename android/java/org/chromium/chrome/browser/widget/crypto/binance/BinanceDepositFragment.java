@@ -6,10 +6,12 @@
 package org.chromium.chrome.browser.widget.crypto.binance;
 
 import android.os.Bundle;
+import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.FrameLayout;
 import android.view.MotionEvent;
@@ -31,6 +33,7 @@ import org.chromium.chrome.browser.widget.crypto.binance.BinanceCoinNetworks;
 import org.chromium.chrome.browser.widget.crypto.binance.BinanceWidgetManager;
 import org.chromium.chrome.browser.widget.crypto.binance.CoinNetworkModel;
 import org.chromium.chrome.browser.QRCodeShareDialogFragment;
+import org.chromium.ui.widget.Toast;
 
 import java.util.List;
 import org.json.JSONException;
@@ -77,27 +80,34 @@ public class BinanceDepositFragment extends Fragment {
 		super.onViewCreated(view, savedInstanceState);
 		currencyRecyclerView = view.findViewById(R.id.recyclerview_currency_list);
 		currencyRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+		currencyRecyclerView.setOnFlingListener(new RecyclerView.OnFlingListener() {
+			@Override
+			public boolean onFling(int velocityX, int velocityY) {
+				currencyRecyclerView.dispatchNestedFling(velocityX, velocityY, false);
+				return false;
+			}
+		});
 		currencyRecyclerView.setOnTouchListener(new RecyclerView.OnTouchListener() {
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                int action = event.getAction();
-                switch (action) {
-                    case MotionEvent.ACTION_DOWN:
-                        // Disallow NestedScrollView to intercept touch events.
-                        v.getParent().requestDisallowInterceptTouchEvent(true);
-                        break;
+			@Override
+			public boolean onTouch(View v, MotionEvent event) {
+				int action = event.getAction();
+				switch (action) {
+				case MotionEvent.ACTION_DOWN:
+					// Disallow NestedScrollView to intercept touch events.
+					v.getParent().requestDisallowInterceptTouchEvent(true);
+					break;
 
-                    case MotionEvent.ACTION_UP:
-                        // Allow NestedScrollView to intercept touch events.
-                        v.getParent().requestDisallowInterceptTouchEvent(false);
-                        break;
-                }
+				case MotionEvent.ACTION_UP:
+					// Allow NestedScrollView to intercept touch events.
+					v.getParent().requestDisallowInterceptTouchEvent(false);
+					break;
+				}
 
-                // Handle RecyclerView touch events.
-                v.onTouchEvent(event);
-                return true;
-            }
-        });
+				// Handle RecyclerView touch events.
+				v.onTouchEvent(event);
+				return true;
+			}
+		});
 		mBinanceDepositAdapter = new BinanceDepositAdapter();
 		currencyRecyclerView.setAdapter(mBinanceDepositAdapter);
 		mBinanceDepositAdapter.setBinanceDepositListener(binanceDepositListener);
@@ -153,6 +163,8 @@ public class BinanceDepositFragment extends Fragment {
 				TextView currencyMemoText = depositLayout.findViewById(R.id.currency_memo_text);
 				TextView currencyAddressValueText = depositLayout.findViewById(R.id.currency_address_value_text);
 				TextView currencyMemoValueText = depositLayout.findViewById(R.id.currency_memo_value_text);
+				Button btnCopyAddress = depositLayout.findViewById(R.id.btn_copy_address);
+				Button btnCopyMemo = depositLayout.findViewById(R.id.btn_copy_memo);
 
 				deposiQrIcon.setOnClickListener(new View.OnClickListener() {
 					@Override
@@ -181,7 +193,9 @@ public class BinanceDepositFragment extends Fragment {
 							depositLayout.setVisibility(View.GONE);
 							currencyMemoText.setVisibility(View.GONE);
 							currencyMemoValueText.setVisibility(View.GONE);
+							btnCopyMemo.setVisibility(View.GONE);
 						}
+						selectedCoinNetworkModel = null;
 					}
 				});
 				depositLayout.setVisibility(View.VISIBLE);
@@ -193,10 +207,27 @@ public class BinanceDepositFragment extends Fragment {
 				if (!TextUtils.isEmpty(depositTag)) {
 					currencyMemoText.setVisibility(View.VISIBLE);
 					currencyMemoValueText.setVisibility(View.VISIBLE);
+					btnCopyMemo.setVisibility(View.VISIBLE);
 					currencyMemoValueText.setText(depositTag);
 				}
 
-				selectedCoinNetworkModel = null;
+				btnCopyAddress.setOnClickListener(new View.OnClickListener() {
+					@Override
+					public void onClick(View view) {
+						if (selectedCoinNetworkModel != null) {
+							copyTextToClipboard(String.format(getResources().getString(R.string.currency_address_text), selectedCoinNetworkModel.getCoin()), depositAddress);
+						}
+					}
+				});
+
+				btnCopyMemo.setOnClickListener(new View.OnClickListener() {
+					@Override
+					public void onClick(View view) {
+						if (selectedCoinNetworkModel != null) {
+							copyTextToClipboard(String.format(getResources().getString(R.string.currency_memo_text), selectedCoinNetworkModel.getCoin()), depositTag);
+						}
+					}
+				});
 
 				Log.e("NTP", "depositAddress : " + depositAddress);
 				Log.e("NTP", "depositeTag : " + depositTag);
@@ -212,4 +243,16 @@ public class BinanceDepositFragment extends Fragment {
 		@Override
 		public void OnRevokeToken(boolean isSuccess) {};
 	};
+
+	private void copyTextToClipboard(String title, String textToCopy) {
+		if (android.os.Build.VERSION.SDK_INT < android.os.Build.VERSION_CODES.HONEYCOMB) {
+			android.text.ClipboardManager clipboard = (android.text.ClipboardManager) getActivity().getSystemService(Context.CLIPBOARD_SERVICE);
+			clipboard.setText(textToCopy);
+		} else {
+			android.content.ClipboardManager clipboard = (android.content.ClipboardManager) getActivity().getSystemService(Context.CLIPBOARD_SERVICE);
+			android.content.ClipData clip = android.content.ClipData.newPlainText(title, textToCopy);
+			clipboard.setPrimaryClip(clip);
+		}
+		Toast.makeText(getActivity(), R.string.text_has_been_copied, Toast.LENGTH_LONG).show();
+	}
 }

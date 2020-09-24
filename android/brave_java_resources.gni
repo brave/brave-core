@@ -645,6 +645,7 @@ brave_java_resources = [
   "java/res/drawable/wallet_verify_button.xml",
   "java/res/layout-land/brave_rewards_site_banner.xml",
   "java/res/layout-land/verify_wallet_activity.xml",
+  "java/res/layout/binance_spinner_dropdown_item.xml",
   "java/res/layout/activity_onboarding.xml",
   "java/res/layout/brave_ads_existing_user_dialog_layout.xml",
   "java/res/layout/brave_ads_new_user_dialog_layout.xml",

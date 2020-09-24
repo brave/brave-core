@@ -135,6 +135,7 @@ public class BraveNewTabPageLayout extends NewTabPageLayout {
 
     private BinanceNativeWorker mBinanceNativeWorker;
     private CountDownTimer countDownTimer = null;
+    private List<NTPWidgetItem> widgetList = new ArrayList<NTPWidgetItem>();
 
     public BraveNewTabPageLayout(Context context, AttributeSet attrs) {
         super(context, attrs);
@@ -172,7 +173,7 @@ public class BraveNewTabPageLayout extends NewTabPageLayout {
         showWidgetBasedOnOrder();
     }
 
-    private List<NTPWidgetItem> getWidgetList() {
+    private void setWidgetList() {
         NTPWidgetManager ntpWidgetManager = NTPWidgetManager.getInstance();
         LayoutInflater inflater =
             (LayoutInflater) mActivity.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -208,6 +209,9 @@ public class BraveNewTabPageLayout extends NewTabPageLayout {
                 boolean showPlaceholder = getTileGroup().hasReceivedData() && getTileGroup().isEmpty();
                 if (mSiteSectionView != null
                         && !showPlaceholder) {
+                    if (mSiteSectionView.getParent() != null) {
+                        ((ViewGroup)mSiteSectionView.getParent()).removeView(mSiteSectionView); // <- fix
+                    }
                     mTopSitesGridLayout.addView(mSiteSectionView);
                     ntpWidgetItem.setWidgetView(mTopSitesLayout);
                     ntpWidgetMap.put(ntpWidgetManager.getFavoritesWidget(), ntpWidgetItem);
@@ -228,13 +232,13 @@ public class BraveNewTabPageLayout extends NewTabPageLayout {
             binanceWidgetView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    CryptoWidgetBottomSheetDialogFragment cryptoWidgetBottomSheetDialogFragment =
-                        new CryptoWidgetBottomSheetDialogFragment();
-                    cryptoWidgetBottomSheetDialogFragment.show(
-                        ((BraveActivity) mActivity).getSupportFragmentManager(),
-                        CryptoWidgetBottomSheetDialogFragment.TAG_FRAGMENT);
-                    // Log.e("NTP", "Binance URL : " + mBinanceNativeWorker.getOAuthClientUrl());
-                    // TabUtils.openUrlInSameTab(mBinanceNativeWorker.getOAuthClientUrl());
+                    if (BinanceWidgetManager.getInstance().isUserAuthenticatedForBinance()) {
+                        CryptoWidgetBottomSheetDialogFragment cryptoWidgetBottomSheetDialogFragment =
+                            new CryptoWidgetBottomSheetDialogFragment();
+                        cryptoWidgetBottomSheetDialogFragment.show(
+                            ((BraveActivity) mActivity).getSupportFragmentManager(),
+                            CryptoWidgetBottomSheetDialogFragment.TAG_FRAGMENT);
+                    }
                 }
             });
             Button connectButton = binanceWidgetView.findViewById(R.id.btn_connect);
@@ -252,7 +256,7 @@ public class BraveNewTabPageLayout extends NewTabPageLayout {
             ntpWidgetMap.put(ntpWidgetManager.getBinanceWidget(), ntpWidgetItem);
         }
 
-        return new ArrayList<NTPWidgetItem>(ntpWidgetMap.values());
+        widgetList = new ArrayList<NTPWidgetItem>(ntpWidgetMap.values());
     }
 
     private boolean shouldShowSuperReferral() {
@@ -272,7 +276,7 @@ public class BraveNewTabPageLayout extends NewTabPageLayout {
     private void showWidgets() {
         if (ntpWidgetAdapter != null) {
             ntpWidgetAdapter.clearWidgets();
-            ntpWidgetAdapter.setWidgetList(getWidgetList());
+            ntpWidgetAdapter.setWidgetList(widgetList);
             ntpWidgetAdapter.notifyDataSetChanged();
             showWidgetBasedOnOrder();
         }
@@ -335,6 +339,7 @@ public class BraveNewTabPageLayout extends NewTabPageLayout {
                 && !OnboardingPrefManager.getInstance().shouldShowBadgeAnimation()) {
             mBadgeAnimationView.setVisibility(View.INVISIBLE);
         }
+        setWidgetList();
         showWidgets();
         if (BinanceWidgetManager.getInstance().isUserAuthenticatedForBinance()) {
             mBinanceNativeWorker.getAccountBalances();
@@ -388,13 +393,13 @@ public class BraveNewTabPageLayout extends NewTabPageLayout {
 
     @Override
     public void initialize(NewTabPageManager manager, Activity activity,
-            TileGroup.Delegate tileGroupDelegate, boolean searchProviderHasLogo,
-            boolean searchProviderIsGoogle, ScrollDelegate scrollDelegate,
-            ContextMenuManager contextMenuManager, UiConfig uiConfig, Supplier<Tab> tabProvider,
-            ActivityLifecycleDispatcher lifecycleDispatcher, NewTabPageUma uma) {
+                           TileGroup.Delegate tileGroupDelegate, boolean searchProviderHasLogo,
+                           boolean searchProviderIsGoogle, ScrollDelegate scrollDelegate,
+                           ContextMenuManager contextMenuManager, UiConfig uiConfig, Supplier<Tab> tabProvider,
+                           ActivityLifecycleDispatcher lifecycleDispatcher, NewTabPageUma uma) {
         super.initialize(manager, activity, tileGroupDelegate, searchProviderHasLogo,
-                searchProviderIsGoogle, scrollDelegate, contextMenuManager, uiConfig, tabProvider,
-                lifecycleDispatcher, uma);
+                         searchProviderIsGoogle, scrollDelegate, contextMenuManager, uiConfig, tabProvider,
+                         lifecycleDispatcher, uma);
 
         assert (activity instanceof BraveActivity);
         mActivity = activity;
@@ -710,7 +715,7 @@ public class BraveNewTabPageLayout extends NewTabPageLayout {
             NTPWidgetBottomSheetDialogFragment ntpWidgetBottomSheetDialogFragment =
                 NTPWidgetBottomSheetDialogFragment.newInstance();
             ntpWidgetBottomSheetDialogFragment.setNTPWidgetListener(ntpWidgetListener);
-            ntpWidgetBottomSheetDialogFragment.setWidgetList(getWidgetList());
+            ntpWidgetBottomSheetDialogFragment.setWidgetList(widgetList);
             ntpWidgetBottomSheetDialogFragment.show(
                 ((BraveActivity) mActivity).getSupportFragmentManager(),
                 "NTPWidgetBottomSheetDialogFragment");
@@ -740,7 +745,8 @@ public class BraveNewTabPageLayout extends NewTabPageLayout {
 
         @Override
         public void onBottomSheetDismiss() {
-            showWidgets();
+            // showWidgets();
+            ntpWidgetAdapter.notifyDataSetChanged();
         }
     };
 

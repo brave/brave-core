@@ -70,6 +70,7 @@
             android:layout_marginTop="32dp"
             android:background="@drawable/rounded_filled_binance"
             android:layout_gravity="center"
+            android:textColor="@android:color/white"
             android:padding="16dp"
             android:text="@string/preview_conversion" />
 

@@ -112,6 +112,7 @@
             android:layout_marginEnd="16dp"
             android:layout_marginTop="32dp"
             android:background="@drawable/rounded_filled_binance"
+            android:textColor="@android:color/white"
             android:layout_gravity="center"
             android:padding="16dp"
             android:text="@string/buy_crypto_button_text" />

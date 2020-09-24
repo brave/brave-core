@@ -54,15 +54,15 @@ public class NTPWidgetBottomSheetDialogFragment extends BottomSheetDialogFragmen
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        RecyclerView widgetsRecyclerView = view.findViewById(R.id.recyclerview_user_list);
-        widgetsRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+        RecyclerView usedWidgetsRecyclerView = view.findViewById(R.id.used_widget_list);
+        usedWidgetsRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         ntpWidgetListAdapter = new NTPWidgetListAdapter();
         SwipeAndDragHelper swipeAndDragHelper = new SwipeAndDragHelper(ntpWidgetListAdapter);
         ItemTouchHelper touchHelper = new ItemTouchHelper(swipeAndDragHelper);
         ntpWidgetListAdapter.setTouchHelper(touchHelper);
         ntpWidgetListAdapter.setNTPWidgetListener(ntpWidgetListener);
-        widgetsRecyclerView.setAdapter(ntpWidgetListAdapter);
-        touchHelper.attachToRecyclerView(widgetsRecyclerView);
+        usedWidgetsRecyclerView.setAdapter(ntpWidgetListAdapter);
+        touchHelper.attachToRecyclerView(usedWidgetsRecyclerView);
         ntpWidgetListAdapter.setWidgetList(widgetList);
     }
 

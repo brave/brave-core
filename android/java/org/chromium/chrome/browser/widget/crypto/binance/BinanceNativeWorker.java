@@ -35,7 +35,6 @@ public class BinanceNativeWorker {
 
     private BinanceNativeWorker() {
         mObservers = new ArrayList<BinanceObserver>();
-        // mFrontTabPublisherObservers = new ArrayList<PublisherObserver>();
     }
 
     private void Init() {
