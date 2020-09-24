@@ -47,14 +47,6 @@ enum DefaultEngineType: String {
  */
 class SearchEngines {
     fileprivate let fileAccessor: FileAccessor
-
-    static let defaultRegionSearchEngines = [
-        "DE": OpenSearchEngine.EngineNames.duckDuckGo,
-        "FR": OpenSearchEngine.EngineNames.qwant,
-        "AU": OpenSearchEngine.EngineNames.duckDuckGo,
-        "NZ": OpenSearchEngine.EngineNames.duckDuckGo,
-        "IE": OpenSearchEngine.EngineNames.duckDuckGo,
-    ]
     
     init(files: FileAccessor) {
         self.fileAccessor = files
@@ -62,27 +54,8 @@ class SearchEngines {
         self.orderedEngines = getOrderedEngines()
     }
     
-    func searchEngineSetup(for locale: Locale = Locale.current) {
-        if let region = locale.regionCode, let searchEngine = SearchEngines.defaultRegionSearchEngines[region] {
-            setInitialDefaultEngine(searchEngine)
-            return
-        }
-        
-        if let prefs = Self.defaultSearchPrefs {
-            let defaultEngine = prefs.searchDefault(for: [Locale.current.languageCode ?? "en"],
-                                                    and: Locale.current.regionCode ?? "US")
-            
-            setInitialDefaultEngine(defaultEngine)
-        }
-    }
-    
-    static var defaultSearchPrefs: DefaultSearchPrefs? {
-        guard let pluginDirectory = Bundle.main.resourceURL?.appendingPathComponent("SearchPlugins") else {
-            assertionFailure("Search plugins not found. Check bundle")
-            return nil
-        }
-
-        return DefaultSearchPrefs(with: pluginDirectory.appendingPathComponent("list.json"))
+    func searchEngineSetup() {
+        setInitialDefaultEngine(InitialSearchEngines().defaultSearchEngine.rawValue)
     }
     
     /// If no engine type is specified this method returns search engine for regular browsing.
@@ -94,24 +67,18 @@ class SearchEngines {
             return defaultEngine
         }
         
-        if let prefs = Self.defaultSearchPrefs {
-            let defaultEngineName = prefs.searchDefault(for: [Locale.current.languageCode ?? "en"],
-                                       and: Locale.current.regionCode ?? "US")
-            
-            let defaultEngine = orderedEngines.first(where: { $0.shortName == defaultEngineName })
-            return defaultEngine ?? orderedEngines[0]
-        }
+        let defaultEngineName = InitialSearchEngines().defaultSearchEngine.rawValue
         
-        return orderedEngines[0]
+        let defaultEngine = orderedEngines.first(where: { $0.engineID == defaultEngineName })
+        return defaultEngine ?? orderedEngines[0]
     }
     
     /// Whether or not we should show DuckDuckGo related promotions based on the users current region
     static var shouldShowDuckDuckGoPromo: Bool {
-        // We want to show ddg promo in most cases so guard returns true.
-        guard let region = Locale.current.regionCode,
-            let searchEngine = defaultRegionSearchEngines[region] else { return true }
+        // We want to show ddg promo in most cases so this guard returns true.
+        guard let region = Locale.current.regionCode else { return true }
         
-        return searchEngine == OpenSearchEngine.EngineNames.duckDuckGo
+        return !InitialSearchEngines.qwantDefaultRegions.contains(region)
     }
     
     /// Initialize default engine and set order of remaining search engines.
@@ -121,13 +88,11 @@ class SearchEngines {
         // update engine
         DefaultEngineType.standard.option.value = engine
         DefaultEngineType.privateMode.option.value = engine
-        // sort engines, priority engine at first place
         
-        guard let prefs = Self.defaultSearchPrefs else { return }
-        
-        let priorityEngine = prefs.priorityEngine(for: locale)
+        let priorityEngine = InitialSearchEngines().priorityEngine?.rawValue
         let defEngine = defaultEngine(forType: .standard)
         
+        // Sort engines, priority engine at first place
         var newlyOrderedEngines = orderedEngines
             .filter { engine in engine.shortName != defEngine.shortName }
             .sorted { e1, e2 in e1.shortName < e2.shortName }
@@ -285,9 +250,7 @@ class SearchEngines {
 
     /// Get all bundled (not custom) search engines, with the default search engine first,
     /// but the others in no particular order.
-    class func getUnorderedBundledEnginesFor(locale: Locale, selected: [String] = []) -> [OpenSearchEngine] {
-        let languageIdentifier = locale.identifier
-        let region = locale.regionCode ?? "US"
+    class func getUnorderedBundledEnginesFor(selected: [String] = []) -> [OpenSearchEngine] {
         let parser = OpenSearchParser(pluginMode: true)
 
         guard let pluginDirectory = Bundle.main.resourceURL?.appendingPathComponent("SearchPlugins") else {
@@ -295,29 +258,20 @@ class SearchEngines {
             return []
         }
 
-        guard let defaultSearchPrefs = DefaultSearchPrefs(with: pluginDirectory.appendingPathComponent("list.json")) else {
-            assertionFailure("Failed to parse List.json")
-            return []
-        }
-        let possibilities = possibilitiesForLanguageIdentifier(languageIdentifier)
-        let engineNames = defaultSearchPrefs.visibleDefaultEngines(locales: possibilities, region: region, selected: selected)
-        let defaultEngineName = defaultSearchPrefs.searchDefault(for: possibilities, and: region)
-        let priorityEngine = defaultSearchPrefs.priorityEngine(for: locale)
+        let se = InitialSearchEngines()
+        let engineNames = se.engines.map { $0.customId ?? $0.id.rawValue }
         assert(engineNames.count > 0, "No search engines")
 
         return engineNames.map({ (name: $0, path: pluginDirectory.appendingPathComponent("\($0).xml").path) })
             .filter({ FileManager.default.fileExists(atPath: $0.path) })
             .compactMap({ parser.parse($0.path, engineID: $0.name) })
-            .sorted { e1, e2 in e1.shortName < e2.shortName }
-            .sorted { e, _ in e.shortName == defaultEngineName }
-            .sorted { e, _ in e.engineID == priorityEngine }
     }
 
     /// Get all known search engines, possibly as ordered by the user.
     fileprivate func getOrderedEngines() -> [OpenSearchEngine] {
-        let locale = Locale.current
         let selectedSearchEngines = [Preferences.Search.defaultEngineName, Preferences.Search.defaultPrivateEngineName].compactMap { $0.value }
-        let unorderedEngines = customEngines + SearchEngines.getUnorderedBundledEnginesFor(locale: locale, selected: selectedSearchEngines)
+        let unorderedEngines = customEngines
+            + SearchEngines.getUnorderedBundledEnginesFor(selected: selectedSearchEngines)
 
         // might not work to change the default.
         guard let orderedEngineNames = Preferences.Search.orderedEngines.value else {
