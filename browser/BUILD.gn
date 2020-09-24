@@ -34,6 +34,7 @@ source_set("browser_process") {
     "//brave/browser/*",
     "//brave:browser_dependencies",
     "//brave/components/brave_ads/test:*",
+    "//brave/components/brave_rewards/browser:testutil",
     "//brave/components/brave_rewards/test:*",
     "//brave/test:*",
   ]
