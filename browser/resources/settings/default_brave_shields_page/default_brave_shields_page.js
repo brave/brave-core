@@ -70,9 +70,13 @@ Polymer({
     this.onHTTPSEverywhereControlChange_ = this.onHTTPSEverywhereControlChange_.bind(this)
     this.onNoScriptControlChange_ = this.onNoScriptControlChange_.bind(this)
 
-    Promise.all([this.browserProxy_.getAdControlType(), this.browserProxy_.isFirstPartyCosmeticFilteringEnabled()])
-        .then(([adControlType, hide1pContent]) => {
-      this.adControlType_ = (adControlType ? 'allow' : (hide1pContent ? 'block' : 'block_third_party'))
+    Promise.all([this.browserProxy_.isAdControlEnabled(), this.browserProxy_.isFirstPartyCosmeticFilteringEnabled()])
+        .then(([adControlEnabled, hide1pContent]) => {
+      if (adControlEnabled) {
+        this.adControlType_ = hide1pContent ? 'block' : 'block_third_party'
+      } else {
+        this.adControlType_ = 'allow'
+      }
     });
     this.browserProxy_.getCookieControlType().then(value => {
       this.cookieControlType_ = value;
