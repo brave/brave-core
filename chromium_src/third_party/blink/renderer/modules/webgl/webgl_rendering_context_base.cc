@@ -31,59 +31,64 @@ bool AllowFingerprintingFromExecutionContext(ExecutionContext* context) {
 
 }  // namespace
 
-#define BRAVE_WEBGL_RENDERING_CONTEXT_BASE_RETURN           \
-  if (canvas() && !AllowFingerprintingFromExecutionContext( \
-                      canvas()->GetTopExecutionContext()))  \
+#define BRAVE_WEBGL_RENDERING_CONTEXT_BASE_RETURN         \
+  if (Host() && !AllowFingerprintingFromExecutionContext( \
+                    Host()->GetTopExecutionContext()))    \
     return;
 
-#define BRAVE_WEBGL_RENDERING_CONTEXT_BASE_NULLPTR          \
-  if (canvas() && !AllowFingerprintingFromExecutionContext( \
-                      canvas()->GetTopExecutionContext()))  \
+#define BRAVE_WEBGL_RENDERING_CONTEXT_BASE_NULLPTR        \
+  if (Host() && !AllowFingerprintingFromExecutionContext( \
+                    Host()->GetTopExecutionContext()))    \
     return nullptr;
 
-#define BRAVE_WEBGL_RENDERING_CONTEXT_BASE_NULLOPT          \
-  if (canvas() && !AllowFingerprintingFromExecutionContext( \
-                      canvas()->GetTopExecutionContext()))  \
+#define BRAVE_WEBGL_RENDERING_CONTEXT_BASE_NULLOPT        \
+  if (Host() && !AllowFingerprintingFromExecutionContext( \
+                    Host()->GetTopExecutionContext()))    \
     return base::nullopt;
 
-#define BRAVE_WEBGL_RENDERING_CONTEXT_BASE_ZERO             \
-  if (canvas() && !AllowFingerprintingFromExecutionContext( \
-                      canvas()->GetTopExecutionContext()))  \
+#define BRAVE_WEBGL_RENDERING_CONTEXT_BASE_ZERO           \
+  if (Host() && !AllowFingerprintingFromExecutionContext( \
+                    Host()->GetTopExecutionContext()))    \
     return 0;
 
-#define BRAVE_WEBGL_RENDERING_CONTEXT_BASE_MINUS_ONE        \
-  if (canvas() && !AllowFingerprintingFromExecutionContext( \
-                      canvas()->GetTopExecutionContext()))  \
+#define BRAVE_WEBGL_RENDERING_CONTEXT_BASE_MINUS_ONE      \
+  if (Host() && !AllowFingerprintingFromExecutionContext( \
+                    Host()->GetTopExecutionContext()))    \
     return -1;
 
-#define BRAVE_WEBGL_RENDERING_CONTEXT_BASE_SCRIPT_VALUE     \
-  if (canvas() && !AllowFingerprintingFromExecutionContext( \
-                      canvas()->GetTopExecutionContext()))  \
+#define BRAVE_WEBGL_RENDERING_CONTEXT_BASE_SCRIPT_VALUE   \
+  if (Host() && !AllowFingerprintingFromExecutionContext( \
+                    Host()->GetTopExecutionContext()))    \
     return ScriptValue::CreateNull(script_state->GetIsolate());
 
-#define BRAVE_WEBGL_RENDERING_CONTEXT_BASE_STRING           \
-  if (canvas() && !AllowFingerprintingFromExecutionContext( \
-                      canvas()->GetTopExecutionContext()))  \
+#define BRAVE_WEBGL_RENDERING_CONTEXT_BASE_STRING         \
+  if (Host() && !AllowFingerprintingFromExecutionContext( \
+                    Host()->GetTopExecutionContext()))    \
     return String();
 
-#define BRAVE_WEBGL_GET_PARAMETER_UNMASKED_RENDERER                \
-  if (ExtensionEnabled(kWebGLDebugRendererInfoName) && canvas() && \
-      !AllowFingerprintingFromExecutionContext(                    \
-          canvas()->GetTopExecutionContext()))                     \
-    return WebGLAny(                                               \
-        script_state,                                              \
-        String(brave::BraveSessionCache::From(                     \
-                   *(canvas()->GetTopExecutionContext()))          \
+#define BRAVE_WEBGL_RENDERING_CONTEXT_BASE_GETSHADERINFOLOG \
+  range[0] = 0;                                             \
+  range[1] = 0;                                             \
+  precision = 0;
+
+#define BRAVE_WEBGL_GET_PARAMETER_UNMASKED_RENDERER              \
+  if (ExtensionEnabled(kWebGLDebugRendererInfoName) && Host() && \
+      !AllowFingerprintingFromExecutionContext(                  \
+          Host()->GetTopExecutionContext()))                     \
+    return WebGLAny(                                             \
+        script_state,                                            \
+        String(brave::BraveSessionCache::From(                   \
+                   *(Host()->GetTopExecutionContext()))          \
                    .GenerateRandomString("UNMASKED_RENDERER_WEBGL", 8)));
 
-#define BRAVE_WEBGL_GET_PARAMETER_UNMASKED_VENDOR                  \
-  if (ExtensionEnabled(kWebGLDebugRendererInfoName) && canvas() && \
-      !AllowFingerprintingFromExecutionContext(                    \
-          canvas()->GetTopExecutionContext()))                     \
-    return WebGLAny(                                               \
-        script_state,                                              \
-        String(brave::BraveSessionCache::From(                     \
-                   *(canvas()->GetTopExecutionContext()))          \
+#define BRAVE_WEBGL_GET_PARAMETER_UNMASKED_VENDOR                \
+  if (ExtensionEnabled(kWebGLDebugRendererInfoName) && Host() && \
+      !AllowFingerprintingFromExecutionContext(                  \
+          Host()->GetTopExecutionContext()))                     \
+    return WebGLAny(                                             \
+        script_state,                                            \
+        String(brave::BraveSessionCache::From(                   \
+                   *(Host()->GetTopExecutionContext()))          \
                    .GenerateRandomString("UNMASKED_VENDOR_WEBGL", 8)));
 
 #include "../../../../../../../third_party/blink/renderer/modules/webgl/webgl_rendering_context_base.cc"

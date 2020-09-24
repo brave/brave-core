@@ -38,4 +38,12 @@ BraveFarblingLevel WorkerContentSettingsClient::GetBraveFarblingLevel() {
   }
 }
 
+bool WorkerContentSettingsClient::AllowFingerprinting(
+    bool enabled_per_settings) {
+  if (!enabled_per_settings)
+    return false;
+
+  return GetBraveFarblingLevel() != BraveFarblingLevel::MAXIMUM;
+}
+
 #include "../../../../chrome/renderer/worker_content_settings_client.cc"
