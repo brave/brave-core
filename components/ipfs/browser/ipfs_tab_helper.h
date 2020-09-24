@@ -3,8 +3,10 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#ifndef BRAVE_BROWSER_IPFS_IPFS_TAB_HELPER_H_
-#define BRAVE_BROWSER_IPFS_IPFS_TAB_HELPER_H_
+#ifndef BRAVE_COMPONENTS_IPFS_BROWSER_IPFS_TAB_HELPER_H_
+#define BRAVE_COMPONENTS_IPFS_BROWSER_IPFS_TAB_HELPER_H_
+
+#include <memory>
 
 #include "content/public/browser/web_contents_observer.h"
 #include "content/public/browser/web_contents_user_data.h"
@@ -18,6 +20,8 @@ class PrefService;
 
 namespace ipfs {
 
+class IpfsTabHelperDelegate;
+
 // Determines if IPFS should be active for a given top-level navigation.
 class IPFSTabHelper
     : public content::WebContentsObserver,
@@ -30,7 +34,8 @@ class IPFSTabHelper
 
   bool IsActiveForMainFrame() const { return active_; }
 
-  static void MaybeCreateForWebContents(content::WebContents* web_contents);
+  static void MaybeCreateForWebContents(content::WebContents* web_contents,
+      bool regular_profile, IpfsTabHelperDelegate*);
 
  private:
   friend class content::WebContentsUserData<IPFSTabHelper>;
@@ -44,12 +49,16 @@ class IPFSTabHelper
   void DidRedirectNavigation(
       content::NavigationHandle* navigation_handle) override;
 
+  void set_delegate(IpfsTabHelperDelegate* delegate);
+
   PrefService* pref_service_ = nullptr;
   bool active_ = false;
+
+  std::unique_ptr<IpfsTabHelperDelegate> delegate_;
 
   WEB_CONTENTS_USER_DATA_KEY_DECL();
 };
 
 }  // namespace ipfs
 
-#endif  // BRAVE_BROWSER_IPFS_IPFS_TAB_HELPER_H_
+#endif  // BRAVE_COMPONENTS_IPFS_BROWSER_IPFS_TAB_HELPER_H_

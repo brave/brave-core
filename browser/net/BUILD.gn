@@ -76,7 +76,6 @@ source_set("net") {
     ]
     deps += [
       "//brave/components/ipfs/browser",
-      "//brave/components/ipfs/common",
     ]
   }
 

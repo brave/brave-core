@@ -3,28 +3,24 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#include "brave/browser/ipfs/ipfs_service.h"
+#include "brave/components/ipfs/browser/ipfs_service.h"
 
 #include <utility>
 
 #include "base/command_line.h"
 #include "base/feature_list.h"
 #include "base/json/json_reader.h"
-#include "base/path_service.h"
 #include "base/strings/strcat.h"
 #include "base/strings/string_util.h"
-#include "brave/browser/brave_browser_process_impl.h"
-#include "brave/browser/ipfs/ipfs_service_observer.h"
-#include "brave/browser/profiles/profile_util.h"
-#include "brave/common/brave_switches.h"
-#include "brave/common/pref_names.h"
+#include "brave/components/ipfs/browser/ipfs_service_delegate.h"
+#include "brave/components/ipfs/browser/ipfs_switches.h"
 #include "brave/components/ipfs/browser/features.h"
 #include "brave/components/ipfs/browser/ipfs_json_parser.h"
+#include "brave/components/ipfs/browser/ipfs_service_observer.h"
+#include "brave/components/ipfs/browser/service_sandbox_type.h"
 #include "brave/components/ipfs/common/ipfs_constants.h"
-#include "brave/grit/brave_generated_resources.h"
-#include "chrome/browser/profiles/profile.h"
-#include "chrome/browser/service_sandbox_type.h"
-#include "chrome/common/chrome_paths.h"
+#include "brave/components/ipfs/common/pref_names.h"
+#include "components/grit/brave_components_strings.h"
 #include "components/prefs/pref_registry_simple.h"
 #include "components/prefs/pref_service.h"
 #include "components/user_prefs/user_prefs.h"
@@ -68,12 +64,14 @@ net::NetworkTrafficAnnotationTag GetNetworkTrafficAnnotationTag() {
 
 namespace ipfs {
 
-IpfsService::IpfsService(content::BrowserContext* context)
+IpfsService::IpfsService(content::BrowserContext* context,
+    ipfs::BraveIpfsClientUpdater* ipfs_client_updater,
+    IpfsServiceDelegate* ipfs_service_delegate)
   : context_(context),
-    server_endpoint_(GURL(kServerEndpoint)) {
-  // Return early since g_brave_browser_process and ipfs_client_updater are not
-  // available in unit tests.
-  if (Profile::FromBrowserContext(context)->AsTestingProfile()) {
+    server_endpoint_(GURL(kServerEndpoint)),
+    ipfs_service_delegate_(ipfs_service_delegate),
+    ipfs_client_updater_(ipfs_client_updater) {
+  if (ipfs_service_delegate_->IsTestingProfile()) {
     return;
   }
 
@@ -85,22 +83,25 @@ IpfsService::IpfsService(content::BrowserContext* context)
   // Brave's path is running (brave-ipfs), which is leftover from browser
   // crash, send a shutdown request if so.
 
-  if (g_brave_browser_process)
-    g_brave_browser_process->ipfs_client_updater()->AddObserver(this);
+  // Return early since g_brave_browser_process and ipfs_client_updater are not
+  // available in unit tests.
+  if (ipfs_client_updater_) {
+    ipfs_client_updater_->AddObserver(this);
+  }
+
   OnExecutableReady(GetIpfsExecutablePath());
 }
 
 IpfsService::~IpfsService() = default;
 
 // static
-bool IpfsService::IsIpfsEnabled(content::BrowserContext* context) {
-  if (!base::FeatureList::IsEnabled(features::kIpfsFeature) ||
-      base::CommandLine::ForCurrentProcess()->HasSwitch(
-          switches::kDisableIpfsClientUpdaterExtension))
-    return false;
-
+bool IpfsService::IsIpfsEnabled(content::BrowserContext* context,
+    bool regular_profile) {
   // IPFS is disabled for OTR profiles, Tor profiles, and guest sessions.
-  if (!brave::IsRegularProfile(context))
+  if (!regular_profile ||
+      !base::FeatureList::IsEnabled(features::kIpfsFeature) ||
+      base::CommandLine::ForCurrentProcess()->HasSwitch(
+          ipfs::kDisableIpfsClientUpdaterExtension))
     return false;
 
   return true;
@@ -114,7 +115,7 @@ void IpfsService::RegisterPrefs(PrefRegistrySimple* registry) {
 }
 
 base::FilePath IpfsService::GetIpfsExecutablePath() {
-  return g_brave_browser_process->ipfs_client_updater()->GetExecutablePath();
+  return ipfs_client_updater_->GetExecutablePath();
 }
 
 void IpfsService::OnExecutableReady(const base::FilePath& path) {
@@ -124,8 +125,9 @@ void IpfsService::OnExecutableReady(const base::FilePath& path) {
   PrefService* prefs = user_prefs::UserPrefs::Get(context_);
   prefs->SetBoolean(kIPFSBinaryAvailable, true);
 
-  if (g_brave_browser_process)
-    g_brave_browser_process->ipfs_client_updater()->RemoveObserver(this);
+  if (ipfs_client_updater_) {
+    ipfs_client_updater_->RemoveObserver(this);
+  }
   LaunchIfNotRunning(path);
 }
 
@@ -148,8 +150,7 @@ void IpfsService::LaunchIfNotRunning(const base::FilePath& executable_path) {
       base::Bind(&IpfsService::OnIpfsDaemonCrashed,
         base::Unretained(this)));
 
-  base::FilePath user_data_dir;
-  base::PathService::Get(chrome::DIR_USER_DATA, &user_data_dir);
+  base::FilePath user_data_dir(ipfs_service_delegate_->GetUserDataDir());
   DCHECK(!user_data_dir.empty());
 
   base::FilePath data_root_path =
@@ -356,8 +357,9 @@ void IpfsService::RemoveObserver(IpfsServiceObserver* observer) {
 }
 
 void IpfsService::RegisterIpfsClientUpdater() {
-  if (g_brave_browser_process)
-    g_brave_browser_process->ipfs_client_updater()->Register();
+  if (ipfs_client_updater_) {
+    ipfs_client_updater_->Register();
+  }
 }
 
 void IpfsService::SetIpfsLaunchedForTest(bool launched) {

@@ -3,8 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#ifndef BRAVE_BROWSER_IPFS_IPFS_SERVICE_H_
-#define BRAVE_BROWSER_IPFS_IPFS_SERVICE_H_
+#ifndef BRAVE_COMPONENTS_IPFS_BROWSER_IPFS_SERVICE_H_
+#define BRAVE_COMPONENTS_IPFS_BROWSER_IPFS_SERVICE_H_
 
 #include <list>
 #include <memory>
@@ -32,15 +32,20 @@ class PrefRegistrySimple;
 
 namespace ipfs {
 
+class BraveIpfsClientUpdater;
+class IpfsServiceDelegate;
 class IpfsServiceObserver;
 
 class IpfsService : public KeyedService,
                     public BraveIpfsClientUpdater::Observer {
  public:
-  explicit IpfsService(content::BrowserContext* context);
+  explicit IpfsService(content::BrowserContext* context,
+      ipfs::BraveIpfsClientUpdater* ipfs_client_updater,
+      IpfsServiceDelegate* ipfs_service_delegate);
   ~IpfsService() override;
 
-  static bool IsIpfsEnabled(content::BrowserContext* context);
+  static bool IsIpfsEnabled(content::BrowserContext* context,
+                            bool regular_profile);
 
   using GetConnectedPeersCallback = base::OnceCallback<
     void(bool,
@@ -113,9 +118,12 @@ class IpfsService : public KeyedService,
   bool is_ipfs_launched_for_test_ = false;
   GURL server_endpoint_;
 
+  std::unique_ptr<IpfsServiceDelegate> ipfs_service_delegate_;
+  BraveIpfsClientUpdater* ipfs_client_updater_;
+
   DISALLOW_COPY_AND_ASSIGN(IpfsService);
 };
 
 }  // namespace ipfs
 
-#endif  // BRAVE_BROWSER_IPFS_IPFS_SERVICE_H_
+#endif  // BRAVE_COMPONENTS_IPFS_BROWSER_IPFS_SERVICE_H_

@@ -9,9 +9,9 @@
 #include <vector>
 
 #include "base/test/bind_test_util.h"
-#include "brave/browser/ipfs/ipfs_service.h"
 #include "brave/browser/ipfs/ipfs_service_factory.h"
 #include "brave/common/pref_names.h"
+#include "brave/components/ipfs/browser/ipfs_service.h"
 #include "brave/components/ipfs/common/ipfs_constants.h"
 #include "chrome/test/base/chrome_render_view_host_test_harness.h"
 #include "chrome/test/base/scoped_testing_local_state.h"

@@ -9,11 +9,12 @@
 #include <utility>
 
 #include "base/task/post_task.h"
-#include "brave/browser/ipfs/ipfs_service.h"
+#include "brave/browser/profiles/profile_util.h"
 #include "brave/common/url_constants.h"
-#include "brave/common/pref_names.h"
+#include "brave/components/ipfs/browser/ipfs_service.h"
 #include "brave/components/ipfs/browser/translate_ipfs_uri.h"
 #include "brave/components/ipfs/common/ipfs_constants.h"
+#include "brave/components/ipfs/common/pref_names.h"
 #include "chrome/browser/external_protocol/external_protocol_handler.h"
 #include "components/prefs/pref_service.h"
 #include "components/user_prefs/user_prefs.h"
@@ -31,7 +32,8 @@ bool IsIPFSDisabled(content::BrowserContext* browser_context) {
   auto resolve_method = static_cast<ipfs::IPFSResolveMethodTypes>(
       prefs->GetInteger(kIPFSResolveMethod));
   return resolve_method == ipfs::IPFSResolveMethodTypes::IPFS_DISABLED ||
-         !ipfs::IpfsService::IsIpfsEnabled(browser_context);
+         !ipfs::IpfsService::IsIpfsEnabled(browser_context,
+             brave::IsRegularProfile(browser_context));
 }
 
 bool IsIPFSLocalGateway(content::BrowserContext* browser_context) {
@@ -69,14 +71,14 @@ bool ContentBrowserClientHelper::HandleIPFSURLReverseRewrite(GURL* url,
 bool ContentBrowserClientHelper::ShouldNavigateIPFSURI(const GURL& url,
     GURL* new_url, content::BrowserContext* browser_context) {
   *new_url = url;
-  bool isIPFSScheme = url.SchemeIs(kIPFSScheme) || url.SchemeIs(kIPNSScheme);
-  return !IsIPFSDisabled(browser_context) && (!isIPFSScheme ||
+  bool is_ipfs_scheme = url.SchemeIs(kIPFSScheme) || url.SchemeIs(kIPNSScheme);
+  return !IsIPFSDisabled(browser_context) && (!is_ipfs_scheme ||
       TranslateIPFSURI(url, new_url, IsIPFSLocalGateway(browser_context)));
 }
 
 // static
 void ContentBrowserClientHelper::LoadOrLaunchIPFSURL(
-    GURL url,
+    const GURL& url,
     content::WebContents::OnceGetter web_contents_getter,
     ui::PageTransition page_transition,
     bool has_user_gesture,
@@ -84,12 +86,13 @@ void ContentBrowserClientHelper::LoadOrLaunchIPFSURL(
   content::WebContents* web_contents = std::move(web_contents_getter).Run();
   if (!web_contents)
     return;
-  if (ShouldNavigateIPFSURI(url, &url, web_contents->GetBrowserContext())) {
-    web_contents->GetController().LoadURL(url, content::Referrer(),
+  GURL new_url(url);
+  if (ShouldNavigateIPFSURI(url, &new_url, web_contents->GetBrowserContext())) {
+    web_contents->GetController().LoadURL(new_url, content::Referrer(),
         page_transition, std::string());
   } else {
     ExternalProtocolHandler::LaunchUrl(
-        url, web_contents->GetRenderViewHost()->GetProcess()->GetID(),
+        new_url, web_contents->GetRenderViewHost()->GetProcess()->GetID(),
         web_contents->GetRenderViewHost()->GetRoutingID(), page_transition,
         has_user_gesture, initiating_origin);
   }

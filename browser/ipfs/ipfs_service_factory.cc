@@ -5,7 +5,10 @@
 
 #include "brave/browser/ipfs/ipfs_service_factory.h"
 
-#include "brave/browser/ipfs/ipfs_service.h"
+#include "brave/browser/brave_browser_process_impl.h"
+#include "brave/browser/ipfs/ipfs_service_delegate_impl.h"
+#include "brave/browser/profiles/profile_util.h"
+#include "brave/components/ipfs/browser/ipfs_service.h"
 #include "chrome/browser/profiles/incognito_helpers.h"
 #include "components/keyed_service/content/browser_context_dependency_manager.h"
 #include "extensions/browser/extension_registry_factory.h"
@@ -23,7 +26,7 @@ IpfsServiceFactory* IpfsServiceFactory::GetInstance() {
 // static
 IpfsService* IpfsServiceFactory::GetForContext(
     content::BrowserContext* context) {
-  if (!IpfsService::IsIpfsEnabled(context)) {
+  if (!IpfsService::IsIpfsEnabled(context, brave::IsRegularProfile(context))) {
     return nullptr;
   }
 
@@ -45,7 +48,10 @@ IpfsServiceFactory::~IpfsServiceFactory() {
 
 KeyedService* IpfsServiceFactory::BuildServiceInstanceFor(
     content::BrowserContext* context) const {
-  return new IpfsService(context);
+  return new IpfsService(context,
+      g_brave_browser_process ?
+          g_brave_browser_process->ipfs_client_updater() : nullptr,
+      new IpfsServiceDelegateImpl(context));
 }
 
 content::BrowserContext* IpfsServiceFactory::GetBrowserContextToUse(

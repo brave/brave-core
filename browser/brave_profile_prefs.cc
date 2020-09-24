@@ -54,7 +54,7 @@
 #endif
 
 #if BUILDFLAG(IPFS_ENABLED)
-#include "brave/browser/ipfs/ipfs_service.h"
+#include "brave/components/ipfs/browser/ipfs_service.h"
 #endif
 
 #if BUILDFLAG(GEMINI_ENABLED)

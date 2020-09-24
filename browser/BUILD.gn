@@ -282,15 +282,12 @@ source_set("browser_process") {
     sources += [
       "ipfs/content_browser_client_helper.cc",
       "ipfs/content_browser_client_helper.h",
-      "ipfs/ipfs_navigation_throttle.cc",
-      "ipfs/ipfs_navigation_throttle.h",
-      "ipfs/ipfs_service.cc",
-      "ipfs/ipfs_service.h",
+      "ipfs/ipfs_service_delegate_impl.cc",
+      "ipfs/ipfs_service_delegate_impl.h",
+      "ipfs/ipfs_tab_helper_delegate_impl.cc",
+      "ipfs/ipfs_tab_helper_delegate_impl.h",
       "ipfs/ipfs_service_factory.cc",
       "ipfs/ipfs_service_factory.h",
-      "ipfs/ipfs_service_observer.h",
-      "ipfs/ipfs_tab_helper.cc",
-      "ipfs/ipfs_tab_helper.h",
     ]
 
     deps += [

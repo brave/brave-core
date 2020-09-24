@@ -19,6 +19,7 @@
 #include "brave/browser/extensions/brave_tor_client_updater.h"
 #include "brave/browser/net/brave_proxying_url_loader_factory.h"
 #include "brave/browser/net/brave_proxying_web_socket.h"
+#include "brave/browser/profiles/profile_util.h"
 #include "brave/browser/tor/buildflags.h"
 #include "brave/common/pref_names.h"
 #include "brave/common/webui_url_constants.h"
@@ -75,7 +76,8 @@ using extensions::ChromeContentBrowserClientExtensionsPart;
 
 #if BUILDFLAG(IPFS_ENABLED)
 #include "brave/browser/ipfs/content_browser_client_helper.h"
-#include "brave/browser/ipfs/ipfs_navigation_throttle.h"
+#include "brave/browser/ipfs/ipfs_service_factory.h"
+#include "brave/components/ipfs/browser/ipfs_navigation_throttle.h"
 #endif
 
 #if BUILDFLAG(BRAVE_REWARDS_ENABLED)
@@ -461,8 +463,12 @@ BraveContentBrowserClient::CreateThrottlesForNavigation(
 #endif
 
 #if BUILDFLAG(IPFS_ENABLED)
+  content::BrowserContext* context =
+      handle->GetWebContents()->GetBrowserContext();
   std::unique_ptr<content::NavigationThrottle> ipfs_navigation_throttle =
-    ipfs::IpfsNavigationThrottle::MaybeCreateThrottleFor(handle);
+    ipfs::IpfsNavigationThrottle::MaybeCreateThrottleFor(handle,
+        ipfs::IpfsServiceFactory::GetForContext(context),
+        brave::IsRegularProfile(context));
   if (ipfs_navigation_throttle)
     throttles.push_back(std::move(ipfs_navigation_throttle));
 #endif

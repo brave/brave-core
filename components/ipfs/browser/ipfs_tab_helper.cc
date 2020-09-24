@@ -3,17 +3,15 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#include "brave/browser/ipfs/ipfs_tab_helper.h"
+#include "brave/components/ipfs/browser/ipfs_tab_helper.h"
 
 #include <vector>
 
-#include "brave/browser/brave_browser_process_impl.h"
-#include "brave/browser/infobars/ipfs_infobar_delegate.h"
-#include "brave/browser/ipfs/ipfs_service.h"
-#include "brave/common/pref_names.h"
+#include "brave/components/ipfs/browser/ipfs_service.h"
+#include "brave/components/ipfs/browser/ipfs_tab_helper_delegate.h"
 #include "brave/components/ipfs/common/ipfs_constants.h"
 #include "brave/components/ipfs/common/ipfs_utils.h"
-#include "chrome/browser/infobars/infobar_service.h"
+#include "brave/components/ipfs/common/pref_names.h"
 #include "components/prefs/pref_service.h"
 #include "components/user_prefs/user_prefs.h"
 #include "content/public/browser/browser_context.h"
@@ -30,11 +28,16 @@ IPFSTabHelper::IPFSTabHelper(content::WebContents* web_contents)
 
 // static
 void IPFSTabHelper::MaybeCreateForWebContents(
-    content::WebContents* web_contents) {
-  if (!ipfs::IpfsService::IsIpfsEnabled(web_contents->GetBrowserContext()))
+    content::WebContents* web_contents, bool regular_profile,
+    IpfsTabHelperDelegate* delegate) {
+  auto* browser_context = web_contents->GetBrowserContext();
+  if (!ipfs::IpfsService::IsIpfsEnabled(browser_context, regular_profile)) {
     return;
+  }
 
   CreateForWebContents(web_contents);
+  auto* ipfs_tab_helper = FromWebContents(web_contents);
+  ipfs_tab_helper->set_delegate(delegate);
 }
 
 void IPFSTabHelper::UpdateActiveState(content::NavigationHandle* handle) {
@@ -45,10 +48,8 @@ void IPFSTabHelper::UpdateActiveState(content::NavigationHandle* handle) {
       pref_service_->GetInteger(kIPFSResolveMethod));
   if (resolve_method == ipfs::IPFSResolveMethodTypes::IPFS_ASK &&
       IpfsUtils::IsIPFSURL(handle->GetURL())) {
-    InfoBarService* infobar_service =
-        InfoBarService::FromWebContents(web_contents());
-    if (infobar_service) {
-      IPFSInfoBarDelegate::Create(infobar_service);
+    if (delegate_) {
+      delegate_->CreateInfoBarDelegateForWebContents(web_contents());
     }
   }
 }
@@ -65,6 +66,10 @@ void IPFSTabHelper::DidRedirectNavigation(
   if (navigation_handle->IsInMainFrame()) {
     UpdateActiveState(navigation_handle);
   }
+}
+
+void IPFSTabHelper::set_delegate(IpfsTabHelperDelegate* delegate) {
+  delegate_.reset(delegate);
 }
 
 WEB_CONTENTS_USER_DATA_KEY_IMPL(IPFSTabHelper)

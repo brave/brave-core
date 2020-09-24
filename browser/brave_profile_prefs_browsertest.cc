@@ -24,6 +24,7 @@
 
 #if BUILDFLAG(IPFS_ENABLED)
 #include "brave/components/ipfs/common/ipfs_constants.h"
+#include "brave/components/ipfs/common/pref_names.h"
 #endif
 
 #if BUILDFLAG(BRAVE_WALLET_ENABLED)

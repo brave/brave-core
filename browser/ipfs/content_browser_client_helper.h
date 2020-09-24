@@ -34,7 +34,7 @@ class ContentBrowserClientHelper {
       content::BrowserContext* browser_context);
 
   static void LoadOrLaunchIPFSURL(
-      GURL url,
+      const GURL& url,
       content::WebContents::OnceGetter web_contents_getter,
       ui::PageTransition page_transition,
       bool has_user_gesture,

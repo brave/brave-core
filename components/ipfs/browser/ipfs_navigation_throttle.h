@@ -3,13 +3,13 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#ifndef BRAVE_BROWSER_IPFS_IPFS_NAVIGATION_THROTTLE_H_
-#define BRAVE_BROWSER_IPFS_IPFS_NAVIGATION_THROTTLE_H_
+#ifndef BRAVE_COMPONENTS_IPFS_BROWSER_IPFS_NAVIGATION_THROTTLE_H_
+#define BRAVE_COMPONENTS_IPFS_BROWSER_IPFS_NAVIGATION_THROTTLE_H_
 
 #include <memory>
 
 #include "base/gtest_prod_util.h"
-#include "brave/browser/ipfs/ipfs_service_observer.h"
+#include "brave/components/ipfs/browser/ipfs_service_observer.h"
 #include "content/public/browser/navigation_throttle.h"
 
 namespace content {
@@ -27,14 +27,15 @@ class IpfsNavigationThrottle : public content::NavigationThrottle,
                                public IpfsServiceObserver {
  public:
   explicit IpfsNavigationThrottle(
-      content::NavigationHandle* navigation_handle);
+      content::NavigationHandle* navigation_handle, IpfsService* ipfs_service);
   ~IpfsNavigationThrottle() override;
 
   IpfsNavigationThrottle(const IpfsNavigationThrottle&) = delete;
   IpfsNavigationThrottle& operator=(const IpfsNavigationThrottle&) = delete;
 
   static std::unique_ptr<IpfsNavigationThrottle>
-      MaybeCreateThrottleFor(content::NavigationHandle* navigation_handle);
+      MaybeCreateThrottleFor(content::NavigationHandle* navigation_handle,
+          IpfsService* ipfs_service, bool regular_profile);
 
   // content::NavigationThrottle implementation:
   ThrottleCheckResult WillStartRequest() override;
@@ -53,4 +54,4 @@ class IpfsNavigationThrottle : public content::NavigationThrottle,
 
 }  // namespace ipfs
 
-#endif  // BRAVE_BROWSER_IPFS_IPFS_NAVIGATION_THROTTLE_H_
+#endif  // BRAVE_COMPONENTS_IPFS_BROWSER_IPFS_NAVIGATION_THROTTLE_H_
