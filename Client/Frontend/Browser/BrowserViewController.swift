@@ -1536,6 +1536,36 @@ class BrowserViewController: UIViewController {
                 activities.append(addToFavoritesActivity)
             }
             activities.append(requestDesktopSiteActivity)
+            
+            #if compiler(>=5.3)
+            if #available(iOS 14.0, *), let webView = tab?.webView, tab?.temporaryDocument == nil {
+                let createPDFActivity = CreatePDFActivity(webView: webView) { [weak self] pdfData in
+                    guard let self = self else { return }
+                    // Create a valid filename
+                    let validFilenameSet = CharacterSet(charactersIn: ":/")
+                        .union(.newlines)
+                        .union(.controlCharacters)
+                        .union(.illegalCharacters)
+                    let filename = webView.title?.components(separatedBy: validFilenameSet).joined()
+                    let url = URL(fileURLWithPath: NSTemporaryDirectory())
+                        .appendingPathComponent("\(filename ?? "Untitled").pdf")
+                    do {
+                        try pdfData.write(to: url)
+                        let pdfActivityController = UIActivityViewController(activityItems: [url], applicationActivities: nil)
+                        if let popoverPresentationController = pdfActivityController.popoverPresentationController {
+                            popoverPresentationController.sourceView = sourceView
+                            popoverPresentationController.sourceRect = sourceRect
+                            popoverPresentationController.permittedArrowDirections = arrowDirection
+                            popoverPresentationController.delegate = self
+                        }
+                        self.present(pdfActivityController, animated: true)
+                    } catch {
+                        log.error("Failed to write PDF to disk: \(error)")
+                    }
+                }
+                activities.append(createPDFActivity)
+            }
+            #endif
         }
         
         let controller = helper.createActivityViewController(items: activities) { [unowned self] completed, _ in
