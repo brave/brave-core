@@ -87,13 +87,11 @@ source_set("browser") {
 
 source_set("testutil") {
   testonly = true
-  # Remove when https://github.com/brave/brave-browser/issues/10618 is resolved
-  check_includes = false
-
   deps = [
     "//brave/vendor/bat-native-ledger:headers",
     ":browser",
     "//base",
+    "//brave/browser:browser_process",
     "//content/public/browser",
     "//chrome/test:test_support",
     "//testing/gtest",
