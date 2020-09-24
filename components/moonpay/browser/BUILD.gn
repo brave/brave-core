@@ -4,6 +4,8 @@ assert(moonpay_enabled)
 
 source_set("browser") {
   sources = [
+    "moonpay_pref_utils.cc",
+    "moonpay_pref_utils.h",
     "regions.h",
   ]
 }

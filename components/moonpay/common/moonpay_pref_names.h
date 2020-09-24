@@ -7,5 +7,6 @@
 #define BRAVE_COMPONENTS_MOONPAY_COMMON_MOONPAY_PREF_NAMES_H_
 
 extern const char kMoonpayHasBoughtBitcoinDotComCrypto[];
+extern const char kMoonpayNewTabPageShowBitcoinDotCom[];
 
 #endif  // BRAVE_COMPONENTS_MOONPAY_COMMON_MOONPAY_PREF_NAMES_H_

@@ -7,3 +7,5 @@
 
 const char kMoonpayHasBoughtBitcoinDotComCrypto[] =
     "moonpay.has_bought_bitcoin_dot_com_crypto";
+const char kMoonpayNewTabPageShowBitcoinDotCom[] =
+    "moonpay.new_tab_page.show_bitcoin_dot_com";

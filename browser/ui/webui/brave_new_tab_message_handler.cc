@@ -41,6 +41,10 @@ using ntp_background_images::ViewCounterServiceFactory;
 #include "brave/components/brave_perf_predictor/common/pref_names.h"
 #endif
 
+#if BUILDFLAG(BITCOIN_DOT_COM_ENABLED)
+#include "brave/components/moonpay/common/moonpay_pref_names.h"
+#endif
+
 namespace {
 
 bool IsPrivateNewTab(Profile* profile) {
@@ -109,7 +113,7 @@ base::DictionaryValue GetPreferencesDictionary(PrefService* prefs) {
 #if BUILDFLAG(BITCOIN_DOT_COM_ENABLED)
   pref_data.SetBoolean(
       "showBitcoinDotCom",
-      prefs->GetBoolean(kNewTabPageShowBitcoinDotCom));
+      prefs->GetBoolean(kMoonpayNewTabPageShowBitcoinDotCom));
 #endif
   return pref_data;
 }
@@ -295,7 +299,7 @@ void BraveNewTabMessageHandler::OnJavascriptAllowed() {
     base::Bind(&BraveNewTabMessageHandler::OnPreferencesChanged,
     base::Unretained(this)));
 #if BUILDFLAG(BITCOIN_DOT_COM_ENABLED)
-  pref_change_registrar_.Add(kNewTabPageShowBitcoinDotCom,
+  pref_change_registrar_.Add(kMoonpayNewTabPageShowBitcoinDotCom,
     base::Bind(&BraveNewTabMessageHandler::OnPreferencesChanged,
     base::Unretained(this)));
 #endif
@@ -404,7 +408,7 @@ void BraveNewTabMessageHandler::HandleSaveNewTabPagePref(
     settingsKey = kNewTabPageShowGemini;
 #if BUILDFLAG(BITCOIN_DOT_COM_ENABLED)
   } else if (settingsKeyInput == "showBitcoinDotCom") {
-    settingsKey = kNewTabPageShowBitcoinDotCom;
+    settingsKey = kMoonpayNewTabPageShowBitcoinDotCom;
 #endif
   } else {
     LOG(ERROR) << "Invalid setting key";

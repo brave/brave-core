@@ -63,6 +63,7 @@
 #endif
 
 #if BUILDFLAG(BITCOIN_DOT_COM_ENABLED)
+#include "brave/components/moonpay/browser/moonpay_pref_utils.h"
 #include "brave/components/moonpay/common/moonpay_pref_names.h"
 #endif
 
@@ -238,7 +239,6 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
   registry->RegisterBooleanPref(kNewTabPageShowTogether, true);
   registry->RegisterBooleanPref(kNewTabPageShowAddCard, true);
   registry->RegisterBooleanPref(kNewTabPageShowGemini, true);
-  registry->RegisterBooleanPref(kNewTabPageShowBitcoinDotCom, true);
 
   // Brave Wallet
 #if BUILDFLAG(BRAVE_WALLET_ENABLED)
@@ -263,11 +263,6 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
   registry->RegisterStringPref(kGeminiRefreshToken, "");
 #endif
 
-  // Bitcoin.com widget
-#if BUILDFLAG(BITCOIN_DOT_COM_ENABLED)
-  registry->RegisterBooleanPref(kMoonpayHasBoughtBitcoinDotComCrypto, false);
-#endif
-
   // Autocomplete in address bar
   registry->RegisterBooleanPref(kAutocompleteEnabled, true);
   registry->RegisterBooleanPref(kTopSiteSuggestionsEnabled, true);
@@ -282,6 +277,10 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
 
 #if BUILDFLAG(ENABLE_SPEEDREADER)
   speedreader::SpeedreaderService::RegisterPrefs(registry);
+#endif
+
+#if BUILDFLAG(BITCOIN_DOT_COM_ENABLED)
+  moonpay::MoonpayPrefUtils::RegisterPrefs(registry);
 #endif
 
 #if !defined(OS_ANDROID)

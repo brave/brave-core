@@ -61,8 +61,6 @@ const char kNewTabPageShowStats[] = "brave.new_tab_page.show_stats";
 const char kNewTabPageShowRewards[] = "brave.new_tab_page.show_rewards";
 const char kNewTabPageShowBinance[] = "brave.new_tab_page.show_binance";
 const char kNewTabPageShowGemini[] = "brave.new_tab_page.show_gemini";
-const char kNewTabPageShowBitcoinDotCom[] =
-    "brave.new_tab_page.show_bitcoin_dot_com";
 const char kNewTabPageShowTogether[] = "brave.new_tab_page.show_together";
 const char kNewTabPageShowAddCard[] = "brave.new_tab_page.show_addcard";
 const char kBraveEnabledMediaRouter[] = "brave.enable_media_router";
