@@ -72,6 +72,7 @@ class GreaselionServiceImpl : public GreaselionService {
   extensions::ExtensionRegistry* extension_registry_;  // NOT OWNED
   bool all_rules_installed_successfully_;
   bool update_in_progress_;
+  bool update_pending_;
   int pending_installs_;
   scoped_refptr<base::SequencedTaskRunner> task_runner_;
   base::ObserverList<Observer> observers_;
