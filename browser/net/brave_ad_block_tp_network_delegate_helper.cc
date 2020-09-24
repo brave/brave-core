@@ -33,10 +33,9 @@
 
 namespace {
 
-content::WebContents* GetWebContents(
-    int render_process_id,
-    int render_frame_id,
-    int frame_tree_node_id) {
+content::WebContents* GetWebContents(int render_process_id,
+                                     int render_frame_id,
+                                     int frame_tree_node_id) {
   DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
   content::WebContents* web_contents =
       content::WebContents::FromFrameTreeNodeId(frame_tree_node_id);
@@ -46,8 +45,7 @@ content::WebContents* GetWebContents(
     if (!rfh) {
       return nullptr;
     }
-    web_contents =
-        content::WebContents::FromRenderFrameHost(rfh);
+    web_contents = content::WebContents::FromRenderFrameHost(rfh);
   }
   return web_contents;
 }
@@ -65,9 +63,11 @@ void ShouldBlockAdOnTaskRunner(std::shared_ptr<BraveRequestInfo> ctx,
           &ctx->cancel_request_explicitly, &ctx->mock_data_url)) {
     ctx->blocked_by = kAdBlocked;
   } else if (!did_match_exception && canonical_name &&
-      ctx->request_url.host() != *canonical_name && *canonical_name != "") {
+             ctx->request_url.host() != *canonical_name &&
+             *canonical_name != "") {
     GURL::Replacements replacements = GURL::Replacements();
-    replacements.SetHost(canonical_name->c_str(),
+    replacements.SetHost(
+        canonical_name->c_str(),
         url::Component(0, static_cast<int>(canonical_name->length())));
     const GURL canonical_url = ctx->request_url.ReplaceComponents(replacements);
 
@@ -108,17 +108,17 @@ class AdblockCnameResolveHostClient : public network::mojom::ResolveHostClient {
 
  public:
   AdblockCnameResolveHostClient(
-      base::OnceCallback<void(base::Optional<std::string>)> next_callback,
+      const ResponseCallback& next_callback,
+      scoped_refptr<base::SequencedTaskRunner> task_runner,
       std::shared_ptr<BraveRequestInfo> ctx) {
-    cb_ = std::move(next_callback);
+    cb_ = base::BindOnce(&ShouldBlockAdWithOptionalCname, task_runner,
+                         std::move(next_callback), ctx);
 
-    auto* web_contents = GetWebContents(ctx->render_process_id,
-                                        ctx->render_frame_id,
-                                        ctx->frame_tree_node_id);
+    auto* web_contents = GetWebContents(
+        ctx->render_process_id, ctx->render_frame_id, ctx->frame_tree_node_id);
     DCHECK(web_contents);
 
     content::BrowserContext* context = web_contents->GetBrowserContext();
-    DCHECK(context);
 
     const auto network_isolation_key = ctx->network_isolation_key;
 
@@ -148,7 +148,7 @@ class AdblockCnameResolveHostClient : public network::mojom::ResolveHostClient {
       std::move(cb_).Run(
           base::Optional<std::string>(resolved_addresses->canonical_name()));
     } else {
-      std::move(cb_).Run(base::Optional<std::string>());
+      std::move(cb_).Run(base::nullopt);
     }
 
     delete this;
@@ -156,12 +156,12 @@ class AdblockCnameResolveHostClient : public network::mojom::ResolveHostClient {
 
   // Should not be called
   void OnTextResults(const std::vector<std::string>& text_results) override {
-    DCHECK(false);
+    NOTREACHED();
   }
 
   // Should not be called
   void OnHostnameResults(const std::vector<net::HostPortPair>& hosts) override {
-    DCHECK(false);
+    NOTREACHED();
   }
 };
 
@@ -179,11 +179,7 @@ void OnBeforeURLRequestAdBlockTP(const ResponseCallback& next_callback,
   scoped_refptr<base::SequencedTaskRunner> task_runner =
       g_brave_browser_process->ad_block_service()->GetTaskRunner();
 
-  base::OnceCallback<void(base::Optional<std::string>)> cname_callback =
-      base::BindOnce(&ShouldBlockAdWithOptionalCname, task_runner,
-                     next_callback, ctx);
-
-  new AdblockCnameResolveHostClient(std::move(cname_callback), ctx);
+  new AdblockCnameResolveHostClient(std::move(next_callback), task_runner, ctx);
 }
 
 int OnBeforeURLRequest_AdBlockTPPreWork(const ResponseCallback& next_callback,
