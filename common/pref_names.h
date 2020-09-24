@@ -51,6 +51,7 @@ extern const char kIPFSResolveMethod[];
 extern const char kIPFSBinaryAvailable[];
 extern const char kIPFSCompanionEnabled[];
 extern const char kNewTabPageShowClock[];
+extern const char kNewTabPageClockFormat[];
 extern const char kNewTabPageShowTopSites[];
 extern const char kNewTabPageShowStats[];
 extern const char kNewTabPageShowRewards[];

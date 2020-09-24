@@ -78,6 +78,9 @@ base::DictionaryValue GetPreferencesDictionary(PrefService* prefs) {
   pref_data.SetBoolean(
       "showClock",
       prefs->GetBoolean(kNewTabPageShowClock));
+  pref_data.SetString(
+      "clockFormat",
+      prefs->GetString(kNewTabPageClockFormat));
   pref_data.SetBoolean(
       "showTopSites",
       prefs->GetBoolean(kNewTabPageShowTopSites));
@@ -258,6 +261,9 @@ void BraveNewTabMessageHandler::OnJavascriptAllowed() {
   pref_change_registrar_.Add(kNewTabPageShowClock,
     base::Bind(&BraveNewTabMessageHandler::OnPreferencesChanged,
     base::Unretained(this)));
+  pref_change_registrar_.Add(kNewTabPageClockFormat,
+    base::Bind(&BraveNewTabMessageHandler::OnPreferencesChanged,
+    base::Unretained(this)));
   pref_change_registrar_.Add(kNewTabPageShowStats,
     base::Bind(&BraveNewTabMessageHandler::OnPreferencesChanged,
     base::Unretained(this)));
@@ -340,15 +346,27 @@ void BraveNewTabMessageHandler::HandleSaveNewTabPagePref(
   // Collect args
   std::string settingsKeyInput = args->GetList()[0].GetString();
   auto settingsValue = args->GetList()[1].Clone();
-  // Validate args
-  // Note: if we introduce any non-bool settings values
-  // then perform this type check within the appropriate key conditionals.
+  std::string settingsKey;
+
+  // Handle string settings
+  if (settingsValue.is_string()) {
+    const auto settingsValueString = settingsValue.GetString();
+    if (settingsKeyInput == "clockFormat") {
+      settingsKey = kNewTabPageClockFormat;
+    } else {
+      LOG(ERROR) << "Invalid setting key";
+      return;
+    }
+    prefs->SetString(settingsKey, settingsValueString);
+    return;
+  }
+
+  // Handle bool settings
   if (!settingsValue.is_bool()) {
     LOG(ERROR) << "Invalid value type";
     return;
   }
   const auto settingsValueBool = settingsValue.GetBool();
-  std::string settingsKey;
   if (settingsKeyInput == "showBackgroundImage") {
     settingsKey = kNewTabPageShowBackgroundImage;
   } else if (settingsKeyInput == "brandedWallpaperOptIn") {

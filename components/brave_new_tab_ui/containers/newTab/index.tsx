@@ -46,7 +46,6 @@ interface Props {
   gridSitesData: NewTab.GridSitesState
   actions: typeof newTabActions & typeof gridSitesActions & typeof binanceActions & typeof rewardsActions & typeof geminiActions
   saveShowBackgroundImage: (value: boolean) => void
-  saveShowClock: (value: boolean) => void
   saveShowTopSites: (value: boolean) => void
   saveShowStats: (value: boolean) => void
   saveShowRewards: (value: boolean) => void
@@ -207,9 +206,24 @@ class NewTabPage extends React.Component<Props, State> {
   }
 
   toggleShowClock = () => {
-    this.props.saveShowClock(
-      !this.props.newTabData.showClock
-    )
+    this.props.actions.clockWidgetUpdated(
+      !this.props.newTabData.showClock,
+      this.props.newTabData.clockFormat)
+  }
+
+  toggleClockFormat = () => {
+    const currentFormat = this.props.newTabData.clockFormat
+    let newFormat
+    // cycle through the available options
+    switch (currentFormat) {
+      case '': newFormat = '12'; break
+      case '12': newFormat = '24'; break
+      case '24': newFormat = ''; break
+      default: newFormat = ''; break
+    }
+    this.props.actions.clockWidgetUpdated(
+      this.props.newTabData.showClock,
+      newFormat)
   }
 
   toggleShowStats = () => {
@@ -930,6 +944,8 @@ class NewTabPage extends React.Component<Props, State> {
               textDirection={newTabData.textDirection}
               hideWidget={this.toggleShowClock}
               menuPosition={'left'}
+              toggleClickFormat={this.toggleClockFormat}
+              clockFormat={newTabData.clockFormat}
             />
           </Page.GridItemClock>
           }
@@ -978,6 +994,7 @@ class NewTabPage extends React.Component<Props, State> {
           </Page.Footer>
         </Page.Page>
         <Settings
+          actions={actions}
           textDirection={newTabData.textDirection}
           showSettingsMenu={showSettingsMenu}
           onClickOutside={this.closeSettings}
@@ -988,6 +1005,7 @@ class NewTabPage extends React.Component<Props, State> {
           toggleBrandedWallpaperOptIn={this.toggleShowBrandedWallpaper}
           showBackgroundImage={newTabData.showBackgroundImage}
           showClock={newTabData.showClock}
+          clockFormat={newTabData.clockFormat}
           showStats={newTabData.showStats}
           showTopSites={newTabData.showTopSites}
           showRewards={newTabData.showRewards}

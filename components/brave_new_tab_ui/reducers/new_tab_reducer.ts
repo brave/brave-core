@@ -179,6 +179,15 @@ export const newTabReducer: Reducer<NewTab.State | undefined> = (state: NewTab.S
       }
       break
 
+    case types.UPDATE_CLOCK_WIDGET: {
+      const { showClockWidget, clockFormat } = payload
+      performSideEffect(async function (state) {
+        preferencesAPI.saveShowClock(showClockWidget)
+        preferencesAPI.saveClockFormat(clockFormat)
+      })
+      break
+    }
+
     default:
       break
   }

@@ -42,7 +42,6 @@ class DefaultPage extends React.Component<Props, {}> {
           gridSitesData={gridSitesData}
           actions={actions}
           saveShowBackgroundImage={PreferencesAPI.saveShowBackgroundImage}
-          saveShowClock={PreferencesAPI.saveShowClock}
           saveShowStats={PreferencesAPI.saveShowStats}
           saveShowTopSites={PreferencesAPI.saveShowTopSites}
           saveShowRewards={PreferencesAPI.saveShowRewards}
