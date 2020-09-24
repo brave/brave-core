@@ -2,6 +2,7 @@ import("//brave/components/brave_perf_predictor/browser/buildflags/buildflags.gn
 import("//brave/components/brave_rewards/browser/buildflags/buildflags.gni")
 import("//brave/components/brave_wallet/browser/buildflags/buildflags.gni")
 import("//brave/components/ipfs/browser/buildflags/buildflags.gni")
+import("//brave/components/moonpay/browser/buildflags/buildflags.gni")
 import("//brave/components/speedreader/buildflags.gni")
 import("//build/config/locales.gni")
 import("//extensions/buildflags/buildflags.gni")
@@ -41,6 +42,7 @@ grit("static_resources") {
     "enable_brave_perf_predictor=$enable_brave_perf_predictor",
     "enable_speedreader=$enable_speedreader",
     "ipfs_enabled=$ipfs_enabled",
+    "bitcoin_dot_com_enabled=$bitcoin_dot_com_enabled",
   ]
 
   grit_flags = [
@@ -100,6 +102,7 @@ grit("strings") {
   defines = [
     "enable_speedreader=$enable_speedreader",
     "ipfs_enabled=$ipfs_enabled",
+    "bitcoin_dot_com_enabled=$bitcoin_dot_com_enabled",
   ]
 
   foreach(locale, locales_with_fake_bidi) {

@@ -12,7 +12,7 @@ namespace moonpay {
 
 class MoonpayPrefUtils {
  public:
-  explicit MoonpayPrefUtils();
+  MoonpayPrefUtils();
   ~MoonpayPrefUtils();
 
   static void RegisterPrefs(PrefRegistrySimple* registry);

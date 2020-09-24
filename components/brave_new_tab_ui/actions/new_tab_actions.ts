@@ -46,5 +46,3 @@ export const removeStackWidget = (widget: NewTab.StackWidget) => action(types.RE
 export const setForegroundStackWidget = (widget: NewTab.StackWidget) => action(types.SET_FOREGROUND_STACK_WIDGET, {
   widget
 })
-
-export const buyBitcoinDotComCrypto = () => action(types.BUY_BITCOIN_DOT_COM_CRYPTO)

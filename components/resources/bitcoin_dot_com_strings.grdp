@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<grit-part>
+  <if expr="bitcoin_dot_com_enabled">   
+    <message name="IDS_BRAVE_NEW_TAB_BITCOIN_DOT_COM_WIDGET_DESC" desc="Bitcoin.com widget description">Purchase crypto from Bitcoin.com.</message>
+    <message name="IDS_BITCOIN_DOT_COM_CURRENCY" desc="">Currency</message>
+    <message name="IDS_BITCOIN_DOT_COM_AMOUNT" desc="">Amount</message>
+    <message name="IDS_BITCOIN_DOT_COM_ENTER_AMOUNT" desc="">Enter amount</message>
+    <message name="IDS_BITCOIN_DOT_COM_FOOTER_COPY_ONE" desc="">New to crypto?</message>
+    <message name="IDS_BITCOIN_DOT_COM_FOOTER_COPY_TWO" desc="">Get the wallet here to get started</message>
+  </if>
+</grit-part>
