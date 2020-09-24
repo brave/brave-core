@@ -137,16 +137,13 @@ void LedgerImpl::LoadURL(
 }
 
 void LedgerImpl::StartServices() {
-  // TODO this should only be called in specific flows not for all users
-  wallet()->CreateWalletIfNecessary([this](const type::Result result) {
-    publisher()->SetPublisherServerListTimer();
-    contribution()->SetReconcileTimer();
-    promotion()->Refresh(false);
-    contribution()->Initialize();
-    promotion()->Initialize();
-    api()->Initialize();
-    recovery_->Check();
-  });
+  publisher()->SetPublisherServerListTimer();
+  contribution()->SetReconcileTimer();
+  promotion()->Refresh(false);
+  contribution()->Initialize();
+  promotion()->Initialize();
+  api()->Initialize();
+  recovery_->Check();
 }
 
 void LedgerImpl::Initialize(

@@ -540,7 +540,6 @@ void BraveRewardsClaimPromotionFunction::OnClaimPromotion(
     const std::string& captcha_image,
     const std::string& hint,
     const std::string& captcha_id) {
-
   auto data = std::make_unique<base::Value>(base::Value::Type::DICTIONARY);
   data->SetIntKey("result", static_cast<int>(result));
   data->SetStringKey("promotionId", promotion_id);

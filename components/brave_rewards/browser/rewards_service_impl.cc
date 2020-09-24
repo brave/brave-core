@@ -1186,6 +1186,7 @@ void RewardsServiceImpl::ClaimPromotion(
     const std::string& promotion_id,
     ClaimPromotionCallback callback) {
   if (!Connected()) {
+    std::move(callback).Run(ledger::type::Result::LEDGER_ERROR, "", "", "");
     return;
   }
 
@@ -1200,6 +1201,7 @@ void RewardsServiceImpl::ClaimPromotion(
     const std::string& promotion_id,
     AttestPromotionCallback callback) {
   if (!Connected()) {
+    std::move(callback).Run(ledger::type::Result::LEDGER_ERROR, nullptr);
     return;
   }
 

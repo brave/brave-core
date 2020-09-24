@@ -30,14 +30,16 @@ GetAvailable::~GetAvailable() = default;
 
 std::string GetAvailable::GetUrl(const std::string& platform) {
   const auto wallet = ledger_->wallet()->GetWallet();
-  if (!wallet) {
-    BLOG(0, "Wallet is null");
-    return "";
+  std::string payment_id;
+  if (wallet) {
+    payment_id = base::StringPrintf(
+      "paymentId=%s&",
+      wallet->payment_id.c_str());
   }
 
   const std::string& arguments = base::StringPrintf(
-      "migrate=true&paymentId=%s&platform=%s",
-      wallet->payment_id.c_str(),
+      "migrate=true%s&platform=%s",
+      payment_id.c_str(),
       platform.c_str());
 
   const std::string& path = base::StringPrintf(
