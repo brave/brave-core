@@ -22,8 +22,8 @@ using brave_shields::ControlTypeToString;
 void DefaultBraveShieldsHandler::RegisterMessages() {
   profile_ = Profile::FromWebUI(web_ui());
   web_ui()->RegisterMessageCallback(
-      "getAdControlType",
-      base::BindRepeating(&DefaultBraveShieldsHandler::GetAdControlType,
+      "isAdControlEnabled",
+      base::BindRepeating(&DefaultBraveShieldsHandler::IsAdControlEnabled,
                           base::Unretained(this)));
   web_ui()->RegisterMessageCallback(
       "setAdControlType",
@@ -68,7 +68,8 @@ void DefaultBraveShieldsHandler::RegisterMessages() {
                           base::Unretained(this)));
 }
 
-void DefaultBraveShieldsHandler::GetAdControlType(const base::ListValue* args) {
+void DefaultBraveShieldsHandler::IsAdControlEnabled(
+    const base::ListValue* args) {
   CHECK_EQ(args->GetSize(), 1U);
   CHECK(profile_);
 
@@ -78,7 +79,7 @@ void DefaultBraveShieldsHandler::GetAdControlType(const base::ListValue* args) {
   AllowJavascript();
   ResolveJavascriptCallback(
       args->GetList()[0].Clone(),
-      base::Value(setting == ControlType::ALLOW));
+      base::Value(setting == ControlType::BLOCK));
 }
 
 void DefaultBraveShieldsHandler::SetAdControlType(const base::ListValue* args) {
