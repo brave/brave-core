@@ -46,9 +46,7 @@ class RefillUnblindedTokens {
   std::vector<Token> tokens_;
   std::vector<BlindedToken> blinded_tokens_;
 
-  void Refill(
-      const WalletInfo& wallet,
-      const std::string& public_key);
+  void Refill();
 
   void RequestSignedTokens();
   void OnRequestSignedTokens(
