@@ -170,9 +170,6 @@ base::SingleThreadTaskExecutor* g_task_executor = nullptr;
 
 - (void)onTabRetrieved:(NSInteger)tabId url:(NSURL *)url faviconURL:(nullable NSURL *)faviconURL html:(nullable NSString *)html
 {
-  // Check for private mode should be done on client side.
-  if (!self.ledger.walletCreated || !self.ledger.isEnabled) { return; }
-  
   // New publisher database entry will be created if the pub doesn't exist.
   [self.ledger fetchPublisherActivityFromURL:url faviconURL:faviconURL publisherBlob:html tabId:tabId];
 }

@@ -182,12 +182,6 @@ IN_PROC_BROWSER_TEST_F(RewardsBrowserTest, ToggleAutoContribute) {
   ASSERT_STREQ(value.c_str(), "true");
 }
 
-IN_PROC_BROWSER_TEST_F(RewardsBrowserTest, PrefsTestInPrivateWindow) {
-  rewards_browsertest_helper::EnableRewards(browser());
-  EXPECT_TRUE(rewards_browsertest_util::IsRewardsEnabled(browser()));
-  EXPECT_FALSE(rewards_browsertest_util::IsRewardsEnabled(browser(), true));
-}
-
 IN_PROC_BROWSER_TEST_F(RewardsBrowserTest, SiteBannerDefaultTipChoices) {
   rewards_browsertest_helper::EnableRewards(browser());
 

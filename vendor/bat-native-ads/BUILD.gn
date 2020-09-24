@@ -58,6 +58,7 @@ source_set("headers") {
   visibility = [
     ":*",
     "//brave/components/brave_ads/test:*",
+    "//brave/browser/extensions:extensions",
     "//brave/test:*",
   ]
 

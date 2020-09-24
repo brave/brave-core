@@ -25,12 +25,6 @@ ExtensionRewardsServiceObserver::ExtensionRewardsServiceObserver(
 ExtensionRewardsServiceObserver::~ExtensionRewardsServiceObserver() {
 }
 
-void ExtensionRewardsServiceObserver::OnWalletInitialized(
-    RewardsService* rewards_service,
-    const ledger::type::Result result) {
-  // TODO remove
-}
-
 void ExtensionRewardsServiceObserver::OnPanelPublisherInfo(
     RewardsService* rewards_service,
     const ledger::type::Result result,
@@ -144,12 +138,6 @@ void ExtensionRewardsServiceObserver::OnAdsEnabled(
       extensions::api::brave_rewards::OnAdsEnabled::kEventName,
       std::move(args)));
   event_router->BroadcastEvent(std::move(event));
-}
-
-void ExtensionRewardsServiceObserver::OnRewardsMainEnabled(
-    RewardsService* rewards_service,
-    bool rewards_main_enabled) {
-  // TODO remove
 }
 
 void ExtensionRewardsServiceObserver::OnPendingContributionSaved(

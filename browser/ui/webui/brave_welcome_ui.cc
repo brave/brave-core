@@ -53,7 +53,6 @@ class WelcomeDOMHandler : public WebUIMessageHandler {
  private:
   void HandleImportNowRequested(const base::ListValue* args);
   void HandleRecordP3A(const base::ListValue* args);
-  void OnWalletInitialized(int result_code);
   Browser* GetBrowser();
 
   int screen_number_ = 0;

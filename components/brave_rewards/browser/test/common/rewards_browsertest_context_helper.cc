@@ -36,18 +36,6 @@ void OpenRewardsPopupRewardsEnabled(Browser* browser) {
   EXPECT_TRUE(popup_shown);
 }
 
-void OpenRewardsPopupRewardsDisabled(Browser* browser) {
-  BrowserView* browser_view =
-    BrowserView::GetBrowserViewForBrowser(browser);
-  BraveLocationBarView* brave_location_bar_view =
-      static_cast<BraveLocationBarView*>(browser_view->GetLocationBarView());
-  ASSERT_NE(brave_location_bar_view, nullptr);
-  auto* brave_actions = brave_location_bar_view->GetBraveActionsContainer();
-  ASSERT_NE(brave_actions, nullptr);
-
-  brave_actions->OnRewardsStubButtonClicked();
-}
-
 content::WebContents* OpenRewardsPopup(Browser* browser) {
   // Construct an observer to wait for the popup to load
   content::WebContents* popup_contents = nullptr;
@@ -70,14 +58,7 @@ content::WebContents* OpenRewardsPopup(Browser* browser) {
       content::NOTIFICATION_LOAD_COMPLETED_MAIN_FRAME,
       base::BindLambdaForTesting(check_load_is_rewards_panel));
 
-  bool rewards_enabled = browser->profile()->GetPrefs()->
-      GetBoolean(brave_rewards::prefs::kEnabled);
-
-  if (rewards_enabled) {
-    OpenRewardsPopupRewardsEnabled(browser);
-  } else {
-    OpenRewardsPopupRewardsDisabled(browser);
-  }
+  OpenRewardsPopupRewardsEnabled(browser);
 
   // Wait for the popup to load
   popup_observer.Wait();

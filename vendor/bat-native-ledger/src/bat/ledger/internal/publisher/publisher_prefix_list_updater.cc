@@ -39,16 +39,9 @@ PublisherPrefixListUpdater::~PublisherPrefixListUpdater() = default;
 void PublisherPrefixListUpdater::StartAutoUpdate(
     PublisherPrefixListUpdatedCallback callback) {
   on_updated_callback_ = callback;
-  auto_update_ = true;
   if (!timer_.IsRunning()) {
     StartFetchTimer(FROM_HERE, GetAutoUpdateDelay());
   }
-}
-
-void PublisherPrefixListUpdater::StopAutoUpdate() {
-  BLOG(1, "Cancelling publisher prefix list update");
-  auto_update_ = false;
-  timer_.Stop();
 }
 
 void PublisherPrefixListUpdater::StartFetchTimer(
@@ -117,9 +110,7 @@ void PublisherPrefixListUpdater::OnPrefixListInserted(
   ledger_->state()->SetServerPublisherListStamp(
       util::GetCurrentTimeStamp());
 
-  if (auto_update_) {
-    StartFetchTimer(FROM_HERE, GetAutoUpdateDelay());
-  }
+  StartFetchTimer(FROM_HERE, GetAutoUpdateDelay());
 
   if (result != type::Result::LEDGER_OK) {
     BLOG(0, "Error updating publisher prefix list table: " << result);

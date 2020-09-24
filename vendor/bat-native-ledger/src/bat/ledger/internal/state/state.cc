@@ -153,15 +153,6 @@ void State::GetScoreValues(double* a, double* b) {
   *b = ledger_->ledger_client()->GetDoubleState(kScoreB);
 }
 
-void State::SetRewardsMainEnabled(bool enabled) {
-  ledger_->database()->SaveEventLog(kEnabled, std::to_string(enabled));
-  ledger_->ledger_client()->SetBooleanState(kEnabled, enabled);
-}
-
-bool State::GetRewardsMainEnabled() {
-  return ledger_->ledger_client()->GetBooleanState(kEnabled);
-}
-
 void State::SetAutoContributeEnabled(bool enabled) {
   ledger_->database()->SaveEventLog(
       kAutoContributeEnabled,

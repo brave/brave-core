@@ -35,7 +35,6 @@ class MockRewardsService : public RewardsService {
   ~MockRewardsService() {}
 
   MOCK_METHOD0(IsInitialized, bool());
-  MOCK_METHOD1(CreateWallet, void(brave_rewards::CreateWalletCallback));
   MOCK_METHOD1(
       GetRewardsParameters,
       void(brave_rewards::GetRewardsParametersCallback callback));
@@ -73,7 +72,6 @@ class MockRewardsService : public RewardsService {
                                const std::string&));
   MOCK_METHOD1(GetReconcileStamp,
       void(const brave_rewards::GetReconcileStampCallback&));
-  MOCK_METHOD1(SetRewardsMainEnabled, void(bool));
   MOCK_METHOD1(GetPublisherMinVisitTime,
       void(const brave_rewards::GetPublisherMinVisitTimeCallback&));
   MOCK_CONST_METHOD1(SetPublisherMinVisitTime, void(int));
@@ -91,8 +89,6 @@ class MockRewardsService : public RewardsService {
       void(brave_rewards::GetAutoContributeEnabledCallback));
   MOCK_METHOD1(SetAutoContributeEnabled, void(bool));
   MOCK_METHOD2(SetTimer, void(uint64_t, uint32_t*));
-  MOCK_METHOD1(IsWalletCreated,
-      void(const brave_rewards::IsWalletCreatedCallback&));
   MOCK_METHOD4(GetPublisherActivityFromUrl, void(uint64_t,
                                                  const std::string&,
                                                  const std::string&,
@@ -123,8 +119,6 @@ class MockRewardsService : public RewardsService {
       void(const brave_rewards::GetAutoContributePropertiesCallback&));
   MOCK_METHOD1(GetPendingContributionsTotal,
       void(const brave_rewards::GetPendingContributionsTotalCallback&));
-  MOCK_CONST_METHOD1(GetRewardsMainEnabled,
-      void(const brave_rewards::GetRewardsMainEnabledCallback&));
   MOCK_METHOD1(GetRewardsInternalsInfo,
       void(brave_rewards::GetRewardsInternalsInfoCallback));
   MOCK_METHOD3(SaveRecurringTip,

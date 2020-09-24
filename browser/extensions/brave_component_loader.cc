@@ -9,10 +9,12 @@
 
 #include "base/bind.h"
 #include "base/command_line.h"
+#include "bat/ads/pref_names.h"
 #include "brave/browser/brave_browser_process_impl.h"
 #include "brave/browser/component_updater/brave_component_installer.h"
 #include "brave/common/brave_switches.h"
 #include "brave/common/pref_names.h"
+#include "brave/components/brave_ads/common/pref_names.h"
 #include "brave/components/brave_component_updater/browser/brave_on_demand_updater.h"
 #include "brave/components/brave_extension/grit/brave_extension.h"
 #include "brave/components/brave_rewards/browser/buildflags/buildflags.h"
@@ -45,8 +47,11 @@ BraveComponentLoader::BraveComponentLoader(ExtensionSystem* extension_system,
       profile_prefs_(profile->GetPrefs()) {
 #if BUILDFLAG(BRAVE_REWARDS_ENABLED)
   pref_change_registrar_.Init(profile_prefs_);
-  pref_change_registrar_.Add(brave_rewards::prefs::kEnabled,
-      base::Bind(&BraveComponentLoader::HandleRewardsEnabledStatus,
+  pref_change_registrar_.Add(brave_rewards::prefs::kAutoContributeEnabled,
+      base::Bind(&BraveComponentLoader::CheckRewardsStatus,
+      base::Unretained(this)));
+  pref_change_registrar_.Add(ads::prefs::kEnabled,
+      base::Bind(&BraveComponentLoader::CheckRewardsStatus,
       base::Unretained(this)));
 #endif
 }
@@ -106,7 +111,7 @@ void BraveComponentLoader::AddDefaultComponentExtensions(
 
 #if BUILDFLAG(BRAVE_REWARDS_ENABLED)
   // Enable rewards extension if already opted-in
-  HandleRewardsEnabledStatus();
+  CheckRewardsStatus();
 #endif
 
 #if BUILDFLAG(BRAVE_WALLET_ENABLED)
@@ -132,10 +137,12 @@ void BraveComponentLoader::AddRewardsExtension() {
   }
 }
 
-void BraveComponentLoader::HandleRewardsEnabledStatus() {
-  const bool is_rewards_enabled = profile_prefs_->GetBoolean(
-      brave_rewards::prefs::kEnabled);
-  if (is_rewards_enabled) {
+void BraveComponentLoader::CheckRewardsStatus() {
+  const bool is_ac_enabled = profile_prefs_->GetBoolean(
+      brave_rewards::prefs::kAutoContributeEnabled);
+  const bool is_ads_enabled = profile_prefs_->GetBoolean(ads::prefs::kEnabled);
+
+  if (is_ac_enabled || is_ads_enabled) {
     AddRewardsExtension();
   }
 }

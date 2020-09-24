@@ -206,6 +206,7 @@ const rewardsReducer: Reducer<Rewards.State | undefined> = (state: Rewards.State
         ...state,
         initializing: false
       }
+      chrome.send('brave_rewards.getReconcileStamp')
       break
     }
   }

@@ -208,10 +208,6 @@ class BraveAdsBrowserTest
     return browser()->profile()->GetPrefs();
   }
 
-  bool IsRewardsEnabled() const {
-    return GetPrefs()->GetBoolean(brave_rewards::prefs::kEnabled);
-  }
-
   bool IsAdsEnabled() {
     return ads_service_->IsEnabled();
   }
@@ -467,7 +463,6 @@ class BraveAdsBrowserTest
     ads_service_->SetEnabled(
         wallet_created && ads_service_->IsSupportedLocale());
     ASSERT_TRUE(wallet_created);
-    ASSERT_TRUE(IsRewardsEnabled());
   }
 
   MOCK_METHOD1(OnGetEnvironment, void(ledger::type::Environment));
@@ -1254,8 +1249,6 @@ IN_PROC_BROWSER_TEST_P(BraveAdsUpgradeBrowserTest, PRE_UpgradePath) {
 
 IN_PROC_BROWSER_TEST_P(BraveAdsUpgradeBrowserTest, UpgradePath) {
   BraveAdsUpgradePathParamInfo param(GetParam());
-
-  EXPECT_EQ(IsRewardsEnabled(), param.rewards_enabled);
 
   EXPECT_EQ(IsAdsEnabled(), param.ads_enabled);
 

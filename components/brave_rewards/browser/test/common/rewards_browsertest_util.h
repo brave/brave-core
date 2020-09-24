@@ -21,8 +21,6 @@ enum class ContributionType { OneTimeTip, MonthlyTip };
 
 void GetTestDataDir(base::FilePath* test_data_dir);
 
-double IsRewardsEnabled(Browser* browser, const bool private_window = false);
-
 GURL GetRewardsUrl();
 
 GURL GetRewardsInternalsUrl();

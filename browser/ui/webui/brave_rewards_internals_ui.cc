@@ -12,11 +12,8 @@
 
 #include "brave/components/brave_rewards/browser/rewards_service.h"
 #include "brave/browser/brave_rewards/rewards_service_factory.h"
-#include "brave/components/brave_rewards/common/pref_names.h"
 #include "brave/components/brave_rewards/resources/grit/brave_rewards_internals_generated_map.h"
 #include "chrome/browser/profiles/profile.h"
-#include "components/prefs/pref_change_registrar.h"
-#include "components/prefs/pref_service.h"
 #include "content/public/browser/web_ui.h"
 #include "content/public/browser/web_ui_message_handler.h"
 #include "bat/ledger/mojom_structs.h"
@@ -43,11 +40,8 @@ class RewardsInternalsDOMHandler : public content::WebUIMessageHandler {
   void RegisterMessages() override;
 
  private:
-  bool IsRewardsEnabled() const;
-  void HandleGetRewardsEnabled(const base::ListValue* args);
   void HandleGetRewardsInternalsInfo(const base::ListValue* args);
   void OnGetRewardsInternalsInfo(ledger::type::RewardsInternalsInfoPtr info);
-  void OnPreferenceChanged();
   void GetBalance(const base::ListValue* args);
   void OnGetBalance(
     const ledger::type::Result result,
@@ -71,7 +65,6 @@ class RewardsInternalsDOMHandler : public content::WebUIMessageHandler {
 
   brave_rewards::RewardsService* rewards_service_;  // NOT OWNED
   Profile* profile_;
-  std::unique_ptr<PrefChangeRegistrar> pref_change_registrar_;
   base::WeakPtrFactory<RewardsInternalsDOMHandler> weak_ptr_factory_;
 
   DISALLOW_COPY_AND_ASSIGN(RewardsInternalsDOMHandler);
@@ -83,10 +76,6 @@ RewardsInternalsDOMHandler::RewardsInternalsDOMHandler()
 RewardsInternalsDOMHandler::~RewardsInternalsDOMHandler() {}
 
 void RewardsInternalsDOMHandler::RegisterMessages() {
-  web_ui()->RegisterMessageCallback(
-      "brave_rewards_internals.getRewardsEnabled",
-      base::BindRepeating(&RewardsInternalsDOMHandler::HandleGetRewardsEnabled,
-                          base::Unretained(this)));
   web_ui()->RegisterMessageCallback(
       "brave_rewards_internals.getRewardsInternalsInfo",
       base::BindRepeating(
@@ -138,28 +127,6 @@ void RewardsInternalsDOMHandler::Init() {
   profile_ = Profile::FromWebUI(web_ui());
   rewards_service_ =
       brave_rewards::RewardsServiceFactory::GetForProfile(profile_);
-  PrefService* prefs = profile_->GetPrefs();
-  pref_change_registrar_ = std::make_unique<PrefChangeRegistrar>();
-  pref_change_registrar_->Init(prefs);
-  pref_change_registrar_->Add(
-      brave_rewards::prefs::kEnabled,
-      base::BindRepeating(&RewardsInternalsDOMHandler::OnPreferenceChanged,
-                          base::Unretained(this)));
-}
-
-bool RewardsInternalsDOMHandler::IsRewardsEnabled() const {
-  DCHECK(profile_);
-  return profile_->GetPrefs()->GetBoolean(
-      brave_rewards::prefs::kEnabled);
-}
-
-void RewardsInternalsDOMHandler::HandleGetRewardsEnabled(
-    const base::ListValue* args) {
-  if (!web_ui()->CanCallJavascript())
-    return;
-  web_ui()->CallJavascriptFunctionUnsafe(
-      "brave_rewards_internals.onGetRewardsEnabled",
-      base::Value(IsRewardsEnabled()));
 }
 
 void RewardsInternalsDOMHandler::HandleGetRewardsInternalsInfo(
@@ -167,14 +134,6 @@ void RewardsInternalsDOMHandler::HandleGetRewardsInternalsInfo(
   rewards_service_->GetRewardsInternalsInfo(
       base::BindOnce(&RewardsInternalsDOMHandler::OnGetRewardsInternalsInfo,
                      weak_ptr_factory_.GetWeakPtr()));
-}
-
-void RewardsInternalsDOMHandler::OnPreferenceChanged() {
-  if (!web_ui()->CanCallJavascript())
-    return;
-  web_ui()->CallJavascriptFunctionUnsafe(
-      "brave_rewards_internals.onGetRewardsEnabled",
-      base::Value(IsRewardsEnabled()));
 }
 
 void RewardsInternalsDOMHandler::OnGetRewardsInternalsInfo(

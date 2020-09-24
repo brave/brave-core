@@ -292,10 +292,6 @@ void BatLedgerImpl::RecoverWallet(
       _1));
 }
 
-void BatLedgerImpl::SetRewardsMainEnabled(bool enabled) {
-  ledger_->SetRewardsMainEnabled(enabled);
-}
-
 void BatLedgerImpl::SetPublisherMinVisitTime(int duration_in_seconds) {
   ledger_->SetPublisherMinVisitTime(duration_in_seconds);
 }
@@ -340,10 +336,6 @@ void BatLedgerImpl::GetBalanceReport(
       month,
       year,
       std::bind(BatLedgerImpl::OnGetBalanceReport, holder, _1, _2));
-}
-
-void BatLedgerImpl::IsWalletCreated(IsWalletCreatedCallback callback) {
-  std::move(callback).Run(ledger_->IsWalletCreated());
 }
 
 void BatLedgerImpl::GetPublisherActivityFromUrl(
@@ -423,11 +415,6 @@ void BatLedgerImpl::RemoveRecurringTip(
 
 void BatLedgerImpl::GetCreationStamp(GetCreationStampCallback callback) {
   std::move(callback).Run(ledger_->GetCreationStamp());
-}
-
-void BatLedgerImpl::GetRewardsMainEnabled(
-    GetRewardsMainEnabledCallback callback) {
-  std::move(callback).Run(ledger_->GetRewardsMainEnabled());
 }
 
 void BatLedgerImpl::OnHasSufficientBalanceToReconcile(

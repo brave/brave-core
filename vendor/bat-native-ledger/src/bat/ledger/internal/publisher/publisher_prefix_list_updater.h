@@ -38,9 +38,6 @@ class PublisherPrefixListUpdater {
   // Starts the auto updater
   void StartAutoUpdate(PublisherPrefixListUpdatedCallback callback);
 
-  // Cancels the auto updater
-  void StopAutoUpdate();
-
  private:
   void StartFetchTimer(
       const base::Location& posted_from,
@@ -57,7 +54,6 @@ class PublisherPrefixListUpdater {
 
   LedgerImpl* ledger_;  // NOT OWNED
   base::OneShotTimer timer_;
-  bool auto_update_ = false;
   int retry_count_ = 0;
   PublisherPrefixListUpdatedCallback on_updated_callback_;
   std::unique_ptr<endpoint::RewardsServer> rewards_server_;
