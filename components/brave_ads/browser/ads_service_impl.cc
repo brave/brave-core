@@ -272,7 +272,6 @@ bool AdsServiceImpl::IsNewlySupportedLocale() {
 void AdsServiceImpl::SetEnabled(
     const bool is_enabled) {
   SetBooleanPref(ads::prefs::kEnabled, is_enabled);
-  rewards_service_->OnAdsEnabled(is_enabled);
 }
 
 void AdsServiceImpl::SetAllowAdConversionTracking(
@@ -1796,16 +1795,11 @@ bool AdsServiceImpl::PrefExists(
 void AdsServiceImpl::OnPrefsChanged(
     const std::string& pref) {
   if (pref == ads::prefs::kEnabled) {
-    if (IsEnabled()) {
-#if !defined(OS_ANDROID)
-      if (first_run::IsChromeFirstRun()) {
-        SetBooleanPref(prefs::kShouldShowOnboarding, false);
-      } else {
-        RemoveOnboarding();
-      }
-#endif
+    rewards_service_->OnAdsEnabled(IsEnabled());
 
-      MaybeStart(false);
+    if (IsEnabled()) {
+      rewards_service_->CreateWallet(
+          base::BindOnce(&AdsServiceImpl::OnWalletCreated, AsWeakPtr()));
     } else {
       // Record "special value" to prevent sending this week's data to P2A
       // server. Matches INT_MAX - 1 for |kSuspendedMetricValue| in
@@ -1821,6 +1815,24 @@ void AdsServiceImpl::OnPrefsChanged(
   } else if (pref == brave_rewards::prefs::kWalletBrave) {
     OnWalletUpdated();
   }
+}
+
+void AdsServiceImpl::OnWalletCreated(const ledger::type::Result result) {
+  if (result != ledger::type::Result::WALLET_CREATED) {
+    VLOG(0) << "Failed to create a wallet";
+    SetEnabled(false);
+    return;
+  }
+
+  #if !defined(OS_ANDROID)
+    if (first_run::IsChromeFirstRun()) {
+      SetBooleanPref(prefs::kShouldShowOnboarding, false);
+    } else {
+      RemoveOnboarding();
+    }
+  #endif
+
+  MaybeStart(false);
 }
 
 bool AdsServiceImpl::connected() {

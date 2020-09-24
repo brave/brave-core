@@ -350,6 +350,7 @@ class AdsServiceImpl : public AdsService,
       const std::string& path) const;
   void OnPrefsChanged(
       const std::string& pref);
+  void OnWalletCreated(const ledger::type::Result result);
 
   std::string GetLocale() const;
 
