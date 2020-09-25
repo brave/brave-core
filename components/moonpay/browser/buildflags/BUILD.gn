@@ -5,7 +5,6 @@ import("//brave/components/moonpay/browser/buildflags/buildflags.gni")
 buildflag_header("buildflags") {
   header = "buildflags.h"
   flags = [
-    "BITCOIN_DOT_COM_ENABLED=$bitcoin_dot_com_enabled",
     "MOONPAY_ENABLED=$moonpay_enabled",
   ]
 }

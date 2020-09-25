@@ -38,7 +38,7 @@
 #include "brave/components/gemini/browser/regions.h"
 #endif
 
-#if BUILDFLAG(BITCOIN_DOT_COM_ENABLED)
+#if BUILDFLAG(MOONPAY_ENABLED)
 #include "brave/components/moonpay/browser/regions.h"
 #endif
 
@@ -194,7 +194,7 @@ void BraveAppearanceHandler::GetIsBitcoinDotComSupported(
 
   AllowJavascript();
 
-#if !BUILDFLAG(BITCOIN_DOT_COM_ENABLED)
+#if !BUILDFLAG(MOONPAY_ENABLED)
   bool is_supported = false;
 #else
   bool is_supported = ntp_widget_utils::IsRegionSupported(

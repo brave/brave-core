@@ -4,7 +4,7 @@ assert(moonpay_enabled)
 
 source_set("common") {
     sources = [
-        "moonpay_pref_names.cc",
-        "moonpay_pref_names.h",
+        "pref_names.cc",
+        "pref_names.h",
     ]
 }

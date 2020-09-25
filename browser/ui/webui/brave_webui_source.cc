@@ -161,7 +161,7 @@ void CustomizeWebUIHTMLSource(const std::string &name,
         { "rewardsWidgetDesc", IDS_BRAVE_NEW_TAB_REWARDS_WIDGET_DESC },
         { "binanceWidgetDesc", IDS_BRAVE_NEW_TAB_BINANCE_WIDGET_DESC },
         { "geminiWidgetDesc", IDS_BRAVE_NEW_TAB_GEMINI_WIDGET_DESC },
-#if BUILDFLAG(BITCOIN_DOT_COM_ENABLED)
+#if BUILDFLAG(MOONPAY_ENABLED)
         { "bitcoinDotComWidgetDesc", IDS_BRAVE_NEW_TAB_BITCOIN_DOT_COM_WIDGET_DESC },            // NOLINT
 #endif
         { "braveRewardsTitle", IDS_BRAVE_NEW_TAB_BRAVE_REWARDS_TITLE },
@@ -328,7 +328,7 @@ void CustomizeWebUIHTMLSource(const std::string &name,
         { "geminiWidgetUnitPrice", IDS_GEMINI_WIDGET_UNIT_PRICE },
         { "geminiWidgetTotalPrice", IDS_GEMINI_WIDGET_TOTAL_PRICE },
         { "geminiWidgetTotalAmount", IDS_GEMINI_WIDGET_TOTAL_AMOUNT },
-#if BUILDFLAG(BITCOIN_DOT_COM_ENABLED)
+#if BUILDFLAG(MOONPAY_ENABLED)
         // Bitcoin.com widget
         { "bitcoinDotComWidgetCurrency", IDS_BITCOIN_DOT_COM_CURRENCY },
         { "bitcoinDotComWidgetAmount", IDS_BITCOIN_DOT_COM_AMOUNT },

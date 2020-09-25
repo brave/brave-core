@@ -9,13 +9,18 @@
 #include <memory>
 #include <utility>
 
-#include "base/environment.h"
 #include "brave/browser/profiles/profile_util.h"
 #include "brave/components/moonpay/browser/regions.h"
-#include "brave/components/moonpay/common/moonpay_pref_names.h"
+#include "brave/components/moonpay/common/pref_names.h"
 #include "brave/components/ntp_widget_utils/browser/ntp_widget_utils_region.h"
 #include "chrome/browser/profiles/profile.h"
 #include "components/prefs/pref_service.h"
+
+namespace {
+bool IsMoonpayAPIAvailable(content::BrowserContext* context) {
+  return brave::IsRegularProfile(context);
+}
+}
 
 namespace extensions {
 namespace api {
@@ -24,8 +29,8 @@ ExtensionFunction::ResponseAction
 MoonpayIsBitcoinDotComSupportedFunction::Run() {
   Profile* profile = Profile::FromBrowserContext(browser_context());
 
-  if (brave::IsTorProfile(profile)) {
-    return RespondNow(Error("Not available in Tor profile"));
+  if (!IsMoonpayAPIAvailable(browser_context())) {
+    return RespondNow(Error("Not available in Tor/incognito/guest profile"));
   }
 
   bool is_supported = ntp_widget_utils::IsRegionSupported(
@@ -38,8 +43,8 @@ ExtensionFunction::ResponseAction
 MoonpayOnBuyBitcoinDotComCryptoFunction::Run() {
   Profile* profile = Profile::FromBrowserContext(browser_context());
 
-  if (brave::IsTorProfile(profile)) {
-    return RespondNow(Error("Not available in Tor profile"));
+  if (!IsMoonpayAPIAvailable(browser_context())) {
+    return RespondNow(Error("Not available in Tor/incognito/guest profile"));
   }
 
   profile->GetPrefs()->SetBoolean(kMoonpayHasBoughtBitcoinDotComCrypto, true);
@@ -52,8 +57,8 @@ ExtensionFunction::ResponseAction
 MoonpayOnInteractionBitcoinDotComFunction::Run() {
   Profile* profile = Profile::FromBrowserContext(browser_context());
 
-  if (brave::IsTorProfile(profile)) {
-    return RespondNow(Error("Not available in Tor profile"));
+  if (!IsMoonpayAPIAvailable(browser_context())) {
+    return RespondNow(Error("Not available in Tor/incognito/guest profile"));
   }
 
   profile->GetPrefs()->SetBoolean(kMoonpayHasInteractedBitcoinDotCom, true);
@@ -65,8 +70,8 @@ ExtensionFunction::ResponseAction
 MoonpayGetBitcoinDotComInteractionsFunction::Run() {
   Profile* profile = Profile::FromBrowserContext(browser_context());
 
-  if (brave::IsTorProfile(profile)) {
-    return RespondNow(Error("Not available in Tor profile"));
+  if (!IsMoonpayAPIAvailable(browser_context())) {
+    return RespondNow(Error("Not available in Tor/incognito/guest profile"));
   }
 
   bool has_bought = profile->GetPrefs()->GetBoolean(

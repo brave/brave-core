@@ -41,8 +41,8 @@ using ntp_background_images::ViewCounterServiceFactory;
 #include "brave/components/brave_perf_predictor/common/pref_names.h"
 #endif
 
-#if BUILDFLAG(BITCOIN_DOT_COM_ENABLED)
-#include "brave/components/moonpay/common/moonpay_pref_names.h"
+#if BUILDFLAG(MOONPAY_ENABLED)
+#include "brave/components/moonpay/common/pref_names.h"
 #endif
 
 namespace {
@@ -110,7 +110,7 @@ base::DictionaryValue GetPreferencesDictionary(PrefService* prefs) {
   pref_data.SetBoolean(
       "showGemini",
       prefs->GetBoolean(kNewTabPageShowGemini));
-#if BUILDFLAG(BITCOIN_DOT_COM_ENABLED)
+#if BUILDFLAG(MOONPAY_ENABLED)
   pref_data.SetBoolean(
       "showBitcoinDotCom",
       prefs->GetBoolean(kMoonpayNewTabPageShowBitcoinDotCom));
@@ -298,7 +298,7 @@ void BraveNewTabMessageHandler::OnJavascriptAllowed() {
   pref_change_registrar_.Add(kNewTabPageShowGemini,
     base::Bind(&BraveNewTabMessageHandler::OnPreferencesChanged,
     base::Unretained(this)));
-#if BUILDFLAG(BITCOIN_DOT_COM_ENABLED)
+#if BUILDFLAG(MOONPAY_ENABLED)
   pref_change_registrar_.Add(kMoonpayNewTabPageShowBitcoinDotCom,
     base::Bind(&BraveNewTabMessageHandler::OnPreferencesChanged,
     base::Unretained(this)));
@@ -406,7 +406,7 @@ void BraveNewTabMessageHandler::HandleSaveNewTabPagePref(
     settingsKey = kNewTabPageShowAddCard;
   } else if (settingsKeyInput == "showGemini") {
     settingsKey = kNewTabPageShowGemini;
-#if BUILDFLAG(BITCOIN_DOT_COM_ENABLED)
+#if BUILDFLAG(MOONPAY_ENABLED)
   } else if (settingsKeyInput == "showBitcoinDotCom") {
     settingsKey = kMoonpayNewTabPageShowBitcoinDotCom;
 #endif

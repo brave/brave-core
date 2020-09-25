@@ -18,7 +18,7 @@ const std::vector<std::string> bitcoin_dot_com_supported_regions = {
   "IT", "LV", "LT", "LU", "MT",
   "NL", "PL", "PT", "RO", "SK",
   "SI", "ES", "SE", "CA", "AU",
-  "RU", "CH", "ZA", "NZ", "US"
+  "RU", "CH", "ZA", "NZ"
 };
 
 }  // namespace moonpay

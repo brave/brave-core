@@ -62,9 +62,9 @@
 #include "brave/components/gemini/browser/pref_names.h"
 #endif
 
-#if BUILDFLAG(BITCOIN_DOT_COM_ENABLED)
+#if BUILDFLAG(MOONPAY_ENABLED)
 #include "brave/components/moonpay/browser/moonpay_pref_utils.h"
-#include "brave/components/moonpay/common/moonpay_pref_names.h"
+#include "brave/components/moonpay/common/pref_names.h"
 #endif
 
 #if BUILDFLAG(ENABLE_BRAVE_PERF_PREDICTOR)
@@ -279,7 +279,7 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
   speedreader::SpeedreaderService::RegisterPrefs(registry);
 #endif
 
-#if BUILDFLAG(BITCOIN_DOT_COM_ENABLED)
+#if BUILDFLAG(MOONPAY_ENABLED)
   moonpay::MoonpayPrefUtils::RegisterPrefs(registry);
 #endif
 

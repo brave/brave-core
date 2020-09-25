@@ -5,7 +5,7 @@
 
 #include "brave/components/moonpay/browser/moonpay_pref_utils.h"
 
-#include "brave/components/moonpay/common/moonpay_pref_names.h"
+#include "brave/components/moonpay/common/pref_names.h"
 #include "components/prefs/pref_registry_simple.h"
 
 namespace moonpay {
