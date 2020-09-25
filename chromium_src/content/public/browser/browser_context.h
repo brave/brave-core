@@ -6,8 +6,6 @@
 #ifndef BRAVE_CHROMIUM_SRC_CONTENT_PUBLIC_BROWSER_BROWSER_CONTEXT_H_
 #define BRAVE_CHROMIUM_SRC_CONTENT_PUBLIC_BROWSER_BROWSER_CONTEXT_H_
 
-#include "../../../../../content/public/browser/browser_context.h"
-
 #include <string>
 
 #include "base/memory/ref_counted.h"
@@ -15,6 +13,8 @@
 
 namespace content {
 
+class EphemeralStoragePartition;
+class RenderViewHost;
 class SessionStorageNamespace;
 class StoragePartition;
 
@@ -23,5 +23,15 @@ CreateSessionStorageNamespace(content::StoragePartition* partition,
                               const std::string& namespace_id);
 
 }  // namespace content
+
+#define BRAVE_BROWSER_CONTEXT_H                                           \
+ public:                                                                  \
+  void DeleteInMemoryStoragePartitionForMainFrameURL(const GURL&);        \
+  EphemeralStoragePartition* GetEphemeralStoragePartitionForMainFrameURL( \
+      SiteInstance*, const GURL&);
+
+#include "../../../../../content/public/browser/browser_context.h"
+
+#undef BRAVE_BROWSER_CONTEXT_H
 
 #endif  // BRAVE_CHROMIUM_SRC_CONTENT_PUBLIC_BROWSER_BROWSER_CONTEXT_H_

@@ -130,6 +130,11 @@ void EphemeralStorageTabHelper::ClearEphemeralStorageIfNecessary() {
 
   local_storage_namespace_map().erase(storage_domain + "/ephemeral-storage");
   session_storage_namespace_map().erase(storage_domain + "/ephemeral-storage");
+
+  web_contents()
+      ->GetBrowserContext()
+      ->DeleteInMemoryStoragePartitionForMainFrameURL(
+          web_contents()->GetLastCommittedURL());
 }
 
 WEB_CONTENTS_USER_DATA_KEY_IMPL(EphemeralStorageTabHelper)

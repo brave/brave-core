@@ -1,0 +1,13 @@
+diff --git a/content/public/browser/browser_context.h b/content/public/browser/browser_context.h
+index 64be74b277227553c5ba2b09243442521abe0327..5f05e83775cc16434c3fd9bb0bce5806718d5c50 100644
+--- a/content/public/browser/browser_context.h
++++ b/content/public/browser/browser_context.h
+@@ -386,6 +386,8 @@ class CONTENT_EXPORT BrowserContext : public base::SupportsUserData {
+  private:
+   const std::string unique_id_;
+   bool was_notify_will_be_destroyed_called_ = false;
++
++  BRAVE_BROWSER_CONTEXT_H
+ };
+ 
+ }  // namespace content

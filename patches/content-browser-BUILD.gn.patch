@@ -1,0 +1,12 @@
+diff --git a/content/browser/BUILD.gn b/content/browser/BUILD.gn
+index 1b474da31816ff9c43d350c8e3fdd6749c488912..80fb5e570c0c13c8c7f20cc449e0831a332cd8d2 100644
+--- a/content/browser/BUILD.gn
++++ b/content/browser/BUILD.gn
+@@ -2068,6 +2068,7 @@ source_set("browser") {
+     "worker_host/worker_script_loader_factory.cc",
+     "worker_host/worker_script_loader_factory.h",
+   ]
++  sources += brave_content_browser_sources
+ 
+   if (toolkit_views) {
+     deps += [ "//ui/events" ]
