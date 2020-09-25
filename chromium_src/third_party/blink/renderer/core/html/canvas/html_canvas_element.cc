@@ -9,15 +9,14 @@
 #include "third_party/blink/renderer/core/frame/local_frame.h"
 #include "third_party/blink/renderer/core/workers/worker_global_scope.h"
 
-#define BRAVE_TO_DATA_URL_INTERNAL                                       \
-  WebContentSettingsClient* settings = nullptr;                          \
-  ExecutionContext* context = GetTopExecutionContext();                  \
-  if (auto* window = DynamicTo<LocalDOMWindow>(context))                 \
-    settings = window->GetFrame()->GetContentSettingsClient();           \
-  else if (context->IsWorkerGlobalScope())                               \
-    settings = To<WorkerGlobalScope>(context)->ContentSettingsClient();  \
-  image_bitmap = brave::BraveSessionCache::From(*context).PerturbPixels( \
-      settings, image_bitmap);
+#define BRAVE_TO_DATA_URL_INTERNAL                                           \
+  if (ExecutionContext* context = GetExecutionContext()) {                   \
+    if (WebContentSettingsClient* settings =                                 \
+            brave::GetContentSettingsClientFor(context)) {                   \
+      image_bitmap = brave::BraveSessionCache::From(*context).PerturbPixels( \
+          settings, image_bitmap);                                           \
+    }                                                                        \
+  }
 
 #include "../../../../../../../../third_party/blink/renderer/core/html/canvas/html_canvas_element.cc"
 

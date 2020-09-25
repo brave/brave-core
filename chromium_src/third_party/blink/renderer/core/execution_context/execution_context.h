@@ -29,6 +29,9 @@ namespace brave {
 
 typedef base::RepeatingCallback<float(float, size_t)> AudioFarblingCallback;
 
+CORE_EXPORT blink::WebContentSettingsClient* GetContentSettingsClientFor(
+    ExecutionContext* context);
+
 class CORE_EXPORT BraveSessionCache final
     : public GarbageCollected<BraveSessionCache>,
       public Supplement<ExecutionContext> {
