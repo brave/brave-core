@@ -2,120 +2,110 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-// clang-format off
-// #import {addSingletonGetter, sendWithPromise} from 'chrome://resources/js/cr.m.js';
-// clang-format on
+import {addSingletonGetter, sendWithPromise} from 'chrome://resources/js/cr.m.js';
 
-cr.define('settings', function() {
-  /** @interface */
-  /* #export */ class DefaultBraveShieldsBrowserProxy {
-    /**
-     * @return {!Promise<string>}
-     */
-    getAdControlType() {}
-    /**
-     * @param {string} value name.
-     */
-    setAdControlType(value) {}
-
-    /**
-     * @return {!Promise<string>}
-     */
-    isFirstPartyCosmeticFilteringEnabled() {}
-    /**
-     * @param {string} value name.
-     */
-    setCosmeticFilteringControlType(value) {}
-
-    /**
-     * @return {!Promise<string>}
-     */
-    getCookieControlType() {}
-    /**
-     * @param {string} value name.
-     */
-    setCookieControlType(value) {}
-
-    /**
-     * @return {!Promise<string>}
-     */
-    getFingerprintingControlType() {}
-    /**
-     * @param {string} value name.
-     */
-    setFingerprintingControlType(value) {}
-
-    /**
-     * @param {string} value name.
-     */
-    setHTTPSEverywhereEnabled(value) {}
-
-    /**
-     * @param {string} value name.
-     */
-    setNoScriptControlType(value) {}
-  }
+/** @interface */
+export class DefaultBraveShieldsBrowserProxy {
+  /**
+   * @return {!Promise<string>}
+   */
+  getAdControlType() {}
+  /**
+   * @param {string} value name.
+   */
+  setAdControlType(value) {}
 
   /**
-   * @implements {settings.DefaultBraveShieldsBrowserProxy}
+   * @return {!Promise<string>}
    */
-  /* #export */ class DefaultBraveShieldsBrowserProxyImpl {
-    /** @override */
-    getAdControlType() {
-      return cr.sendWithPromise('getAdControlType');
-    }
+  isFirstPartyCosmeticFilteringEnabled() {}
+  /**
+   * @param {string} value name.
+   */
+  setCosmeticFilteringControlType(value) {}
 
-    /** @override */
-    setAdControlType(value) {
-      chrome.send('setAdControlType', [value]);
-    }
+  /**
+   * @return {!Promise<string>}
+   */
+  getCookieControlType() {}
+  /**
+   * @param {string} value name.
+   */
+  setCookieControlType(value) {}
 
-    /** @override */
-    isFirstPartyCosmeticFilteringEnabled() {
-      return cr.sendWithPromise('isFirstPartyCosmeticFilteringEnabled');
-    }
+  /**
+   * @return {!Promise<string>}
+   */
+  getFingerprintingControlType() {}
+  /**
+   * @param {string} value name.
+   */
+  setFingerprintingControlType(value) {}
 
-    /** @override */
-    setCosmeticFilteringControlType(value) {
-      chrome.send('setCosmeticFilteringControlType', [value]);
-    }
+  /**
+   * @param {string} value name.
+   */
+  setHTTPSEverywhereEnabled(value) {}
 
-    /** @override */
-    getCookieControlType() {
-      return cr.sendWithPromise('getCookieControlType');
-    }
+  /**
+   * @param {string} value name.
+   */
+  setNoScriptControlType(value) {}
+}
 
-    /** @override */
-    setCookieControlType(value) {
-      chrome.send('setCookieControlType', [value]);
-    }
-
-    /** @override */
-    getFingerprintingControlType() {
-      return cr.sendWithPromise('getFingerprintingControlType');
-    }
-
-    /** @override */
-    setFingerprintingControlType(value) {
-      chrome.send('setFingerprintingControlType', [value]);
-    }
-
-    /** @override */
-    setHTTPSEverywhereEnabled(value) {
-      chrome.send('setHTTPSEverywhereEnabled', [value]);
-    }
-
-    /** @override */
-    setNoScriptControlType(value) {
-      chrome.send('setNoScriptControlType', [value]);
-    }
+/**
+ * @implements {settings.DefaultBraveShieldsBrowserProxy}
+ */
+export class DefaultBraveShieldsBrowserProxyImpl {
+  /** @override */
+  getAdControlType() {
+    return sendWithPromise('getAdControlType');
   }
 
-  cr.addSingletonGetter(DefaultBraveShieldsBrowserProxyImpl);
+  /** @override */
+  setAdControlType(value) {
+    chrome.send('setAdControlType', [value]);
+  }
 
-  // #cr_define_end
-  return {
-    DefaultBraveShieldsBrowserProxy,
-    DefaultBraveShieldsBrowserProxyImpl
-  };
-});
+  /** @override */
+  isFirstPartyCosmeticFilteringEnabled() {
+    return sendWithPromise('isFirstPartyCosmeticFilteringEnabled');
+  }
+
+  /** @override */
+  setCosmeticFilteringControlType(value) {
+    chrome.send('setCosmeticFilteringControlType', [value]);
+  }
+
+  /** @override */
+  getCookieControlType() {
+    return sendWithPromise('getCookieControlType');
+  }
+
+  /** @override */
+  setCookieControlType(value) {
+    chrome.send('setCookieControlType', [value]);
+  }
+
+  /** @override */
+  getFingerprintingControlType() {
+    return sendWithPromise('getFingerprintingControlType');
+  }
+
+  /** @override */
+  setFingerprintingControlType(value) {
+    chrome.send('setFingerprintingControlType', [value]);
+  }
+
+  /** @override */
+  setHTTPSEverywhereEnabled(value) {
+    chrome.send('setHTTPSEverywhereEnabled', [value]);
+  }
+
+  /** @override */
+  setNoScriptControlType(value) {
+    chrome.send('setNoScriptControlType', [value]);
+  }
+}
+
+addSingletonGetter(DefaultBraveShieldsBrowserProxyImpl);

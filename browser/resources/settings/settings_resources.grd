@@ -20,6 +20,10 @@
     <includes>
       <part file="settings_resources_generated.grdp" />
       <include name="IDR_SETTINGS_BRAVE_STAMP" file="brave_unpack.stamp" type="BINDATA" />
+      <include name="IDR_SETTINGS_DEFAULT_BRAVE_SHIELDS_BROWSER_PROXY_JS"
+          file="default_brave_shields_page/default_brave_shields_browser_proxy.js"
+          compress="false"
+          type="BINDATA" />
       <include name="IDR_SETTINGS_BRAVE_SYNC_BROWSER_PROXY_JS"
           file="brave_sync_page/brave_sync_browser_proxy.js"
           compress="false"
