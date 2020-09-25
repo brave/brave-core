@@ -5,9 +5,6 @@
 
 const path = require('path')
 const GenerateDepfilePlugin = require('./webpack-plugin-depfile')
-const createStyledComponentsTransformer = require('typescript-plugin-styled-components').default
-
-const styledComponentsTransformer = createStyledComponentsTransformer()
 
 module.exports = (env, argv) => ({
   devtool: argv.mode === 'development' ? '#inline-source-map' : false,
@@ -52,11 +49,12 @@ module.exports = (env, argv) => ({
         loader: 'url-loader?limit=13000&minetype=application/font-woff'
       },
       {
-        test: /\.(ttf|eot|ico|svg|png|jpg)(\?v=[0-9]\.[0-9]\.[0-9])?$/,
+        test: /\.(ttf|eot|ico|svg|png|jpg|gif)(\?v=[0-9]\.[0-9]\.[0-9])?$/,
         loader: 'file-loader'
       }]
   },
   node: {
-    fs: 'empty'
+    fs: 'empty',
+    stream: 'empty'
   }
 })
