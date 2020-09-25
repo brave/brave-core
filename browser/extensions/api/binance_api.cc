@@ -114,7 +114,7 @@ BinanceGetAccountBalancesFunction::Run() {
 }
 
 void BinanceGetAccountBalancesFunction::OnGetAccountBalances(
-    const std::map<std::string, std::vector<std::string>>& balances,
+    const BinanceAccountBalances& balances,
     bool success) {
   std::unique_ptr<base::DictionaryValue> result(new base::DictionaryValue());
 
@@ -261,8 +261,7 @@ BinanceGetConvertAssetsFunction::Run() {
 }
 
 void BinanceGetConvertAssetsFunction::OnGetConvertAssets(
-    const std::map<std::string, std::vector<
-    std::map<std::string, std::string>>>& assets) {
+    const BinanceConvertAsserts& assets) {
   auto result = std::make_unique<base::Value>(
       base::Value::Type::DICTIONARY);
 
@@ -324,7 +323,7 @@ BinanceGetCoinNetworksFunction::Run() {
 }
 
 void BinanceGetCoinNetworksFunction::OnGetCoinNetworks(
-    const std::map<std::string, std::string>& networks) {
+    const BinanceCoinNetworks& networks) {
   auto coin_networks = std::make_unique<base::Value>(
       base::Value::Type::DICTIONARY);
 

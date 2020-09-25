@@ -50,6 +50,11 @@ const char binance_com_refcode[] = "39346846";
 const char gateway_path_networks[] =
     "/gateway-api/v1/public/capital/getNetworkCoinAll";
 
+typedef std::map<std::string, std::string> BinanceCoinNetworks;
+typedef std::map<std::string, std::vector<std::string>> BinanceAccountBalances;
+typedef std::map<std::string, std::vector<std::map<std::string, std::string>>>
+    BinanceConvertAsserts;
+
 class BinanceService : public KeyedService {
  public:
   explicit BinanceService(content::BrowserContext* context);
@@ -61,19 +66,17 @@ class BinanceService : public KeyedService {
                                                           const std::string&,
                                                           const std::string&)>;
   using GetAccountBalancesCallback = base::OnceCallback<
-      void(const std::map<std::string, std::vector<std::string>>&,
-           bool success)>;
+      void(const BinanceAccountBalances&, bool success)>;
   using GetDepositInfoCallback = base::OnceCallback<void(const std::string&,
                                                          const std::string&,
                                                          bool success)>;
   using ConfirmConvertCallback = base::OnceCallback<void(bool,
                                                          const std::string&)>;
   using GetConvertAssetsCallback = base::OnceCallback<
-      void(const std::map<std::string, std::vector<
-      std::map<std::string, std::string>>>&)>;
+      void(const BinanceConvertAsserts&)>;
   using RevokeTokenCallback = base::OnceCallback<void(bool)>;
   using GetCoinNetworksCallback = base::OnceCallback<
-        void(const std::map<std::string, std::string>&)>;
+        void(const BinanceCoinNetworks&)>;
 
   bool GetAccessToken(GetAccessTokenCallback callback);
   bool GetConvertQuote(const std::string& from,

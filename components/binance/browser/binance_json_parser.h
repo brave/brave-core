@@ -10,12 +10,14 @@
 #include <string>
 #include <vector>
 
+#include "brave/components/binance/browser/binance_service.h"
+
 class BinanceJSONParser {
  public:
   static bool GetTokensFromJSON(const std::string& json,
                                 std::string *value, std::string type);
   static bool GetAccountBalancesFromJSON(const std::string& json,
-      std::map<std::string, std::vector<std::string>>* balances);
+                                         BinanceAccountBalances* balances);
   static bool GetQuoteIDFromJSON(const std::string& json,
                                  std::string *quote_id);
   static bool GetDepositInfoFromJSON(const std::string& json,
@@ -30,12 +32,11 @@ class BinanceJSONParser {
                                        std::string *error_message,
                                        bool* success_status);
   static bool GetConvertAssetsFromJSON(const std::string& json,
-    std::map<std::string, std::vector<
-    std::map<std::string, std::string>>>* assets);
+                                       BinanceConvertAsserts* assets);
   static bool RevokeTokenFromJSON(const std::string& json,
                                   bool* success_status);
   static bool GetCoinNetworksFromJSON(const std::string& json,
-      std::map<std::string, std::string>* networks);
+                                      BinanceCoinNetworks* networks);
 };
 
 #endif  // BRAVE_COMPONENTS_BINANCE_BROWSER_BINANCE_JSON_PARSER_H_
