@@ -206,8 +206,8 @@
 		0BF42D4F1A7CD09600889E28 /* TestFavicons.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BF42D4E1A7CD09600889E28 /* TestFavicons.swift */; };
 		27012EE924FD80B8002694C3 /* WebcompatReporter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27012EE824FD80B8002694C3 /* WebcompatReporter.swift */; };
 		2701C04924E450050073496F /* LegacyRelativeDateTimeFormatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2701C04824E450050073496F /* LegacyRelativeDateTimeFormatter.swift */; };
-		270C48CC24AE243300E2A1E6 /* SDWebImage.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 7B604F9A1C4950F2006EEEC3 /* SDWebImage.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		2703BE8B24F4508E00CBE6CD /* CreatePDFActivity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2703BE8A24F4508E00CBE6CD /* CreatePDFActivity.swift */; };
+		270C48CC24AE243300E2A1E6 /* SDWebImage.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 7B604F9A1C4950F2006EEEC3 /* SDWebImage.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		2713AF052396EA8F00E3ACAA /* VerifyUserWalletViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2713AF042396EA8F00E3ACAA /* VerifyUserWalletViewController.swift */; };
 		2713AF072398439E00E3ACAA /* ConnectUserWalletButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2713AF062398439E00E3ACAA /* ConnectUserWalletButton.swift */; };
 		2713AF0923984C6B00E3ACAA /* VerifiedUserWalletButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2713AF0823984C6B00E3ACAA /* VerifiedUserWalletButton.swift */; };
@@ -8726,6 +8726,7 @@
 					"$(BUILD_DIR)/Release$(EFFECTIVE_PLATFORM_NAME)",
 					"$(SRCROOT)/ThirdParty/YubiKit",
 					"$(PROJECT_DIR)/Client/WebFilters/ShieldStats/Adblock/Resources",
+					"$(PROJECT_DIR)/ThirdParty/sqlcipher",
 				);
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
@@ -8771,10 +8772,6 @@
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
-				);
-				LIBRARY_SEARCH_PATHS = (
-					"$(inherited)",
-					"$(PROJECT_DIR)/ThirdParty/sqlcipher",
 				);
 				OTHER_LDFLAGS = (
 					"-ObjC",
@@ -8960,10 +8957,6 @@
 					"@executable_path/Frameworks",
 					"@loader_path/Frameworks",
 				);
-				LIBRARY_SEARCH_PATHS = (
-					"$(inherited)",
-					"$(PROJECT_DIR)/ThirdParty/sqlcipher",
-				);
 				PRODUCT_BUNDLE_IDENTIFIER = "$(FRAMEWORK_BASE_BUNDLE_ID).$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
@@ -8992,12 +8985,6 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 					"@loader_path/Frameworks",
-				);
-				LIBRARY_SEARCH_PATHS = (
-					"$(BUILD_DIR)/Release$(EFFECTIVE_PLATFORM_NAME)",
-					"$(SRCROOT)/ThirdParty/YubiKit",
-					"$(PROJECT_DIR)/Client/WebFilters/ShieldStats/Adblock/Resources",
-					"$(PROJECT_DIR)/ThirdParty/sqlcipher",
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = "$(FRAMEWORK_BASE_BUNDLE_ID).$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -9562,6 +9549,7 @@
 					"$(BUILD_DIR)/Release$(EFFECTIVE_PLATFORM_NAME)",
 					"$(SRCROOT)/ThirdParty/YubiKit",
 					"$(PROJECT_DIR)/Client/WebFilters/ShieldStats/Adblock/Resources",
+					"$(PROJECT_DIR)/ThirdParty/sqlcipher",
 				);
 				MTL_ENABLE_DEBUG_INFO = NO;
 				OTHER_LDFLAGS = (
@@ -9610,7 +9598,6 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				LIBRARY_SEARCH_PATHS = "$(inherited)";
 				OTHER_LDFLAGS = (
 					"-ObjC",
 					"-lxml2",
@@ -9805,10 +9792,6 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 					"@loader_path/Frameworks",
-				);
-				LIBRARY_SEARCH_PATHS = (
-					"$(inherited)",
-					"$(PROJECT_DIR)/ThirdParty/sqlcipher",
 				);
 				OTHER_CFLAGS = "-DSQLITE_HAS_CODEC";
 				PRODUCT_BUNDLE_IDENTIFIER = "$(FRAMEWORK_BASE_BUNDLE_ID).$(PRODUCT_NAME:rfc1034identifier)";
@@ -10621,12 +10604,6 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 					"@loader_path/Frameworks",
-				);
-				LIBRARY_SEARCH_PATHS = (
-					"$(BUILD_DIR)/Release$(EFFECTIVE_PLATFORM_NAME)",
-					"$(SRCROOT)/ThirdParty/YubiKit",
-					"$(PROJECT_DIR)/Client/WebFilters/ShieldStats/Adblock/Resources",
-					"$(PROJECT_DIR)/ThirdParty/sqlcipher",
 				);
 				OTHER_CFLAGS = "-DSQLITE_HAS_CODEC";
 				PRODUCT_BUNDLE_IDENTIFIER = "$(FRAMEWORK_BASE_BUNDLE_ID).$(PRODUCT_NAME:rfc1034identifier)";
@@ -11857,6 +11834,7 @@
 					"$(BUILD_DIR)/Release$(EFFECTIVE_PLATFORM_NAME)",
 					"$(SRCROOT)/ThirdParty/YubiKit",
 					"$(PROJECT_DIR)/Client/WebFilters/ShieldStats/Adblock/Resources",
+					"$(PROJECT_DIR)/ThirdParty/sqlcipher",
 				);
 				MTL_ENABLE_DEBUG_INFO = NO;
 				OTHER_LDFLAGS = (
@@ -11902,10 +11880,6 @@
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
-				);
-				LIBRARY_SEARCH_PATHS = (
-					"$(inherited)",
-					"$(PROJECT_DIR)/ThirdParty/sqlcipher",
 				);
 				OTHER_LDFLAGS = (
 					"-ObjC",
@@ -11961,10 +11935,6 @@
 					"@executable_path/Frameworks",
 					"@loader_path/Frameworks",
 				);
-				LIBRARY_SEARCH_PATHS = (
-					"$(inherited)",
-					"$(PROJECT_DIR)/ThirdParty/sqlcipher",
-				);
 				PRODUCT_BUNDLE_IDENTIFIER = "$(FRAMEWORK_BASE_BUNDLE_ID).$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
@@ -11991,10 +11961,6 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 					"@loader_path/Frameworks",
-				);
-				LIBRARY_SEARCH_PATHS = (
-					"$(inherited)",
-					"$(PROJECT_DIR)/ThirdParty/sqlcipher",
 				);
 				MTL_ENABLE_DEBUG_INFO = NO;
 				OTHER_CFLAGS = "-DSQLITE_HAS_CODEC";
@@ -12096,6 +12062,7 @@
 					"$(BUILD_DIR)/Release$(EFFECTIVE_PLATFORM_NAME)",
 					"$(SRCROOT)/ThirdParty/YubiKit",
 					"$(PROJECT_DIR)/Client/WebFilters/ShieldStats/Adblock/Resources",
+					"$(PROJECT_DIR)/ThirdParty/sqlcipher",
 				);
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
@@ -12142,10 +12109,6 @@
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
-				);
-				LIBRARY_SEARCH_PATHS = (
-					"$(inherited)",
-					"$(PROJECT_DIR)/ThirdParty/sqlcipher",
 				);
 				OTHER_LDFLAGS = (
 					"-ObjC",
@@ -12220,12 +12183,6 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 					"@loader_path/Frameworks",
-				);
-				LIBRARY_SEARCH_PATHS = (
-					"$(BUILD_DIR)/Release$(EFFECTIVE_PLATFORM_NAME)",
-					"$(SRCROOT)/ThirdParty/YubiKit",
-					"$(PROJECT_DIR)/Client/WebFilters/ShieldStats/Adblock/Resources",
-					"$(PROJECT_DIR)/ThirdParty/sqlcipher",
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = "$(FRAMEWORK_BASE_BUNDLE_ID).$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -12400,6 +12357,7 @@
 					"$(BUILD_DIR)/Release$(EFFECTIVE_PLATFORM_NAME)",
 					"$(SRCROOT)/ThirdParty/YubiKit",
 					"$(PROJECT_DIR)/Client/WebFilters/ShieldStats/Adblock/Resources",
+					"$(PROJECT_DIR)/ThirdParty/sqlcipher",
 				);
 				MTL_ENABLE_DEBUG_INFO = NO;
 				OTHER_LDFLAGS = (
@@ -12446,10 +12404,6 @@
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
-				);
-				LIBRARY_SEARCH_PATHS = (
-					"$(inherited)",
-					"$(PROJECT_DIR)/ThirdParty/sqlcipher",
 				);
 				OTHER_LDFLAGS = (
 					"-ObjC",
@@ -12530,10 +12484,6 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 					"@loader_path/Frameworks",
-				);
-				LIBRARY_SEARCH_PATHS = (
-					"$(inherited)",
-					"$(PROJECT_DIR)/ThirdParty/sqlcipher",
 				);
 				MTL_ENABLE_DEBUG_INFO = NO;
 				OTHER_CFLAGS = "-DSQLITE_HAS_CODEC";
@@ -12655,6 +12605,7 @@
 					"$(BUILD_DIR)/Release$(EFFECTIVE_PLATFORM_NAME)",
 					"$(SRCROOT)/ThirdParty/YubiKit",
 					"$(PROJECT_DIR)/Client/WebFilters/ShieldStats/Adblock/Resources",
+					"$(PROJECT_DIR)/ThirdParty/sqlcipher",
 				);
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
@@ -12700,10 +12651,6 @@
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
-				);
-				LIBRARY_SEARCH_PATHS = (
-					"$(inherited)",
-					"$(PROJECT_DIR)/ThirdParty/sqlcipher",
 				);
 				OTHER_LDFLAGS = (
 					"-ObjC",
