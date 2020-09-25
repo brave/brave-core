@@ -19,7 +19,7 @@ function install() {
         webkit.messageHandlers.rewardsReporting.postMessage({
             method: method === undefined ? "GET" : method,
             url: url,
-            data: data === undefined ? null : data,
+            data: (data === undefined || data instanceof Blob) ? null : data,
             referrerUrl: referrerUrl === undefined ? null : referrerUrl,
         });
     }
