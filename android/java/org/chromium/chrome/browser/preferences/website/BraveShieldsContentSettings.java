@@ -29,6 +29,7 @@ public class BraveShieldsContentSettings {
 
     static public final String BLOCK_RESOURCE = "block";
     static public final String BLOCK_THIRDPARTY_RESOURCE = "block_third_party";
+    static public final String DEFAULT = "default";
     static public final String ALLOW_RESOURCE = "allow";
 
     private long mNativeBraveShieldsContentSettings;
