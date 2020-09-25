@@ -67,7 +67,7 @@ bool GeminiJSONParser::GetTickerPriceFromJSON(
 
 bool GeminiJSONParser::GetAccountBalancesFromJSON(
     const std::string& json,
-    std::map<std::string, std::string>* balances) {
+    GeminiAccountBalances* balances) {
   if (!balances) {
     return false;
   }

@@ -33,7 +33,7 @@ std::unique_ptr<net::test_server::HttpResponse> HandleRequest(
   http_response->set_code(net::HTTP_OK);
   http_response->set_content_type("text/html");
   std::string request_path = request.GetURL().path();
-  if (request_path == oauth_path_access_token) {
+  if (request_path == auth_path_access_token) {
     http_response->set_content(R"({
         "access_token": "83f2bf51-a2c4-4c2e-b7c4-46cef6a8dba5",
         "refresh_token": "fb5587ee-d9cf-4cb5-a586-4aed72cc9bea",
@@ -241,8 +241,8 @@ class GeminiAPIBrowserTest : public InProcessBrowserTest {
     wait_for_request_->Run();
   }
 
-  void OnGetAccountBalances(const std::map<std::string,
-                                           std::string>& balances,
+  void OnGetAccountBalances(
+      const GeminiAccountBalances& balances,
       bool success) {
     if (wait_for_request_) {
       wait_for_request_->Quit();
@@ -252,8 +252,7 @@ class GeminiAPIBrowserTest : public InProcessBrowserTest {
   }
 
   void WaitForGetAccountBalances(
-      const std::map<std::string,
-                     std::string>& expected_balances,
+      const GeminiAccountBalances& expected_balances,
       bool expected_success) {
     if (wait_for_request_) {
       return;
@@ -311,8 +310,7 @@ class GeminiAPIBrowserTest : public InProcessBrowserTest {
   std::string expected_total_fee_;
   std::string expected_quantity_;
   std::string expected_address_;
-  std::map<std::string, std::string> expected_balances_;
-  std::map<std::string, std::string> expected_networks_;
+  GeminiAccountBalances expected_balances_;
 
   std::unique_ptr<base::RunLoop> wait_for_request_;
   std::unique_ptr<net::EmbeddedTestServer> https_server_;
@@ -474,7 +472,7 @@ IN_PROC_BROWSER_TEST_F(GeminiAPIBrowserTest, GetAccountBalances) {
           &GeminiAPIBrowserTest::OnGetAccountBalances,
           base::Unretained(this))));
   WaitForGetAccountBalances(
-      std::map<std::string, std::string> {
+      GeminiAccountBalances {
           {
             {"BTC", "1129.10517279"},
             {"USD", "14481.62"},
@@ -491,8 +489,7 @@ IN_PROC_BROWSER_TEST_F(GeminiAPIBrowserTest, GetAccountBalancesUnauthorized) {
       base::BindOnce(
           &GeminiAPIBrowserTest::OnGetAccountBalances,
           base::Unretained(this))));
-  WaitForGetAccountBalances(
-      std::map<std::string, std::string>(), true);
+  WaitForGetAccountBalances(GeminiAccountBalances(), true);
 }
 
 IN_PROC_BROWSER_TEST_F(GeminiAPIBrowserTest, GetAccountBalancesServerError) {
@@ -503,8 +500,7 @@ IN_PROC_BROWSER_TEST_F(GeminiAPIBrowserTest, GetAccountBalancesServerError) {
       base::BindOnce(
           &GeminiAPIBrowserTest::OnGetAccountBalances,
           base::Unretained(this))));
-  WaitForGetAccountBalances(
-      std::map<std::string, std::string>(), false);
+  WaitForGetAccountBalances(GeminiAccountBalances(), false);
 }
 
 IN_PROC_BROWSER_TEST_F(GeminiAPIBrowserTest, GetDepositInfo) {
