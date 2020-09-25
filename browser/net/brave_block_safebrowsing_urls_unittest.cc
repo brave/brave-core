@@ -43,7 +43,6 @@ TEST(BraveBlockReportingUrlsHelperTest, PreserveNormalUrls) {
 
 TEST(BraveBlockReportingUrlsHelperTest, CancelReportingUrl) {
   const std::vector<const std::string> reportingUrls({
-      "https://sb-ssl.google.com/safebrowsing/clientreport/download",
       "https://sb-ssl.google.com/safebrowsing/clientreport/chrome-reset",
       "https://sb-ssl.google.com/safebrowsing/clientreport/incident",
       "https://sb-ssl.google.com/safebrowsing/clientreport/login",
