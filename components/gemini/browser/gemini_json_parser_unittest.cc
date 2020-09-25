@@ -5,6 +5,9 @@
 
 #include "brave/components/gemini/browser/gemini_json_parser.h"
 
+#include <map>
+
+#include "brave/components/gemini/browser/gemini_service.h"
 #include "brave/components/content_settings/core/common/content_settings_util.h"
 #include "chrome/test/base/chrome_render_view_host_test_harness.h"
 
@@ -27,7 +30,7 @@ std::string GetValueFromStringMap(
 typedef testing::Test GeminiJSONParserTest;
 
 TEST_F(GeminiJSONParserTest, GetAccountBalancesFromJSON) {
-  std::map<std::string, std::string> balances;
+  GeminiAccountBalances balances;
   ASSERT_TRUE(GeminiJSONParser::GetAccountBalancesFromJSON(R"(
       {
         "data": [

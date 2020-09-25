@@ -6,10 +6,10 @@
 #ifndef BRAVE_BROWSER_EXTENSIONS_API_GEMINI_API_H_
 #define BRAVE_BROWSER_EXTENSIONS_API_GEMINI_API_H_
 
-#include <map>
 #include <string>
 #include <vector>
 
+#include "brave/components/gemini/browser/gemini_service.h"
 #include "extensions/browser/extension_function.h"
 
 class Profile;
@@ -71,7 +71,7 @@ class GeminiGetAccountBalancesFunction :
  protected:
   ~GeminiGetAccountBalancesFunction() override {}
   void OnGetAccountBalances(
-    const std::map<std::string, std::string>& balances,
+    const GeminiAccountBalances& balances,
     bool auth_invalid);
 
   ResponseAction Run() override;

@@ -169,7 +169,7 @@ void GeminiService::SetAuthToken(const std::string& auth_token) {
 bool GeminiService::GetAccessToken(AccessTokenCallback callback) {
   auto internal_callback = base::BindOnce(&GeminiService::OnGetAccessToken,
       base::Unretained(this), std::move(callback));
-  GURL base_url = GetURLWithPath(oauth_host_, oauth_path_access_token);
+  GURL base_url = GetURLWithPath(oauth_host_, auth_path_access_token);
 
   base::Value dict(base::Value::Type::DICTIONARY);
   dict.SetStringKey("client_id", client_id_);
@@ -189,7 +189,7 @@ bool GeminiService::GetAccessToken(AccessTokenCallback callback) {
 bool GeminiService::RefreshAccessToken(AccessTokenCallback callback) {
   auto internal_callback = base::BindOnce(&GeminiService::OnGetAccessToken,
       base::Unretained(this), std::move(callback));
-  GURL base_url = GetURLWithPath(oauth_host_, oauth_path_access_token);
+  GURL base_url = GetURLWithPath(oauth_host_, auth_path_access_token);
 
   base::Value dict(base::Value::Type::DICTIONARY);
   dict.SetStringKey("client_id", client_id_);
@@ -250,7 +250,7 @@ void GeminiService::OnGetAccountBalances(
   GetAccountBalancesCallback callback,
   const int status, const std::string& body,
   const std::map<std::string, std::string>& headers) {
-  std::map<std::string, std::string> balances;
+  GeminiAccountBalances balances;
   bool auth_invalid = status == 401;
   if (status >= 200 && status <= 299) {
     const std::string json_body = "{\"data\": " + body + "}";
