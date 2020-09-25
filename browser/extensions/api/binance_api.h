@@ -10,6 +10,7 @@
 #include <string>
 #include <vector>
 
+#include "brave/components/binance/browser/binance_service.h"
 #include "extensions/browser/extension_function.h"
 
 class Profile;
@@ -66,8 +67,7 @@ class BinanceGetAccountBalancesFunction :
 
  protected:
   ~BinanceGetAccountBalancesFunction() override {}
-  void OnGetAccountBalances(const std::map<std::string,
-                                  std::vector<std::string>>& balances,
+  void OnGetAccountBalances(const BinanceAccountBalances& balances,
                             bool success);
 
   ResponseAction Run() override;
@@ -121,9 +121,7 @@ class BinanceGetConvertAssetsFunction :
 
  protected:
   ~BinanceGetConvertAssetsFunction() override {}
-  void OnGetConvertAssets(
-      const std::map<std::string, std::vector<
-      std::map<std::string, std::string>>>& assets);
+  void OnGetConvertAssets(const BinanceConvertAsserts& assets);
 
   ResponseAction Run() override;
 };
@@ -147,8 +145,7 @@ class BinanceGetCoinNetworksFunction :
 
  protected:
   ~BinanceGetCoinNetworksFunction() override {}
-  void OnGetCoinNetworks(
-      const std::map<std::string, std::string>& networks);
+  void OnGetCoinNetworks(const BinanceCoinNetworks& networks);
 
   ResponseAction Run() override;
 };

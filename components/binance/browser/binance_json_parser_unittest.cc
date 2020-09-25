@@ -5,6 +5,7 @@
 
 #include "brave/components/binance/browser/binance_json_parser.h"
 
+#include "brave/components/binance/browser/binance_service.h"
 #include "brave/components/content_settings/core/common/content_settings_util.h"
 #include "chrome/test/base/chrome_render_view_host_test_harness.h"
 
@@ -53,7 +54,7 @@ std::vector<std::map<std::string, std::string>> GetVectorFromStringRecordMap(
 typedef testing::Test BinanceJSONParserTest;
 
 TEST_F(BinanceJSONParserTest, GetAccountBalancesFromJSON) {
-  std::map<std::string, std::vector<std::string>> balances;
+  BinanceAccountBalances balances;
   ASSERT_TRUE(BinanceJSONParser::GetAccountBalancesFromJSON(R"(
       {
         "code": "000000",
@@ -256,7 +257,7 @@ TEST_F(BinanceJSONParserTest, RevokeTokenFromJSONFail) {
 }
 
 TEST_F(BinanceJSONParserTest, GetCoinNetworksFromJSON) {
-  std::map<std::string, std::string> networks;
+  BinanceCoinNetworks networks;
   ASSERT_TRUE(BinanceJSONParser::GetCoinNetworksFromJSON(R"(
       {
         "code": "000000",
@@ -302,8 +303,7 @@ TEST_F(BinanceJSONParserTest, GetCoinNetworksFromJSON) {
 }
 
 TEST_F(BinanceJSONParserTest, GetConvertAssetsFromJSON) {
-  std::map<std::string, std::vector<
-      std::map<std::string, std::string>>> assets;
+  BinanceConvertAsserts assets;
 
   ASSERT_TRUE(BinanceJSONParser::GetConvertAssetsFromJSON(R"(
       {

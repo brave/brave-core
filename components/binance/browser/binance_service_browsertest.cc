@@ -294,8 +294,7 @@ class BinanceAPIBrowserTest : public InProcessBrowserTest {
     wait_for_request_->Run();
   }
 
-  void OnGetAccountBalances(const std::map<std::string,
-                                           std::vector<std::string>>& balances,
+  void OnGetAccountBalances(const BinanceAccountBalances& balances,
       bool success) {
     if (wait_for_request_) {
       wait_for_request_->Quit();
@@ -305,8 +304,7 @@ class BinanceAPIBrowserTest : public InProcessBrowserTest {
   }
 
   void WaitForGetAccountBalances(
-      const std::map<std::string,
-                     std::vector<std::string>>& expected_balances,
+      const BinanceAccountBalances& expected_balances,
       bool expected_success) {
     if (wait_for_request_) {
       return;
@@ -360,8 +358,7 @@ class BinanceAPIBrowserTest : public InProcessBrowserTest {
   }
 
   void OnGetConvertAssets(
-      const std::map<std::string,
-      std::vector<std::map<std::string, std::string>>>& assets) {
+      const BinanceConvertAsserts& assets) {
     if (wait_for_request_) {
       wait_for_request_->Quit();
     }
@@ -369,8 +366,7 @@ class BinanceAPIBrowserTest : public InProcessBrowserTest {
   }
 
   void WaitForGetConvertAssets(
-      const std::map<std::string,
-      std::vector<std::map<std::string, std::string>>>& expected_assets) {
+      const BinanceConvertAsserts& expected_assets) {
     if (wait_for_request_) {
       return;
     }
@@ -401,7 +397,7 @@ class BinanceAPIBrowserTest : public InProcessBrowserTest {
     wait_for_request_->Run();
   }
 
-  void OnGetCoinNetworks(const std::map<std::string, std::string>& networks) {
+  void OnGetCoinNetworks(const BinanceCoinNetworks& networks) {
     if (wait_for_request_) {
       wait_for_request_->Quit();
     }
@@ -409,7 +405,7 @@ class BinanceAPIBrowserTest : public InProcessBrowserTest {
   }
 
   void WaitForGetCoinNetworks(
-      const std::map<std::string, std::string>& expected_networks) {
+      const BinanceCoinNetworks& expected_networks) {
     if (wait_for_request_) {
       return;
     }
@@ -451,10 +447,9 @@ class BinanceAPIBrowserTest : public InProcessBrowserTest {
   std::string expected_tag_;
   std::string expected_error_message_;
   std::vector<std::string> expected_assets_;
-  std::map<std::string, std::vector<std::string>> expected_balances_;
-  std::map<std::string, std::string> expected_networks_;
-  std::map<std::string, std::vector<std::map<std::string, std::string>>>
-      expected_assets_with_sub_;
+  BinanceAccountBalances expected_balances_;
+  BinanceCoinNetworks expected_networks_;
+  BinanceConvertAsserts expected_assets_with_sub_;
 
   std::unique_ptr<base::RunLoop> wait_for_request_;
   std::unique_ptr<net::EmbeddedTestServer> https_server_;
@@ -566,7 +561,7 @@ IN_PROC_BROWSER_TEST_F(BinanceAPIBrowserTest, GetAccountBalances) {
           &BinanceAPIBrowserTest::OnGetAccountBalances,
           base::Unretained(this))));
   WaitForGetAccountBalances(
-      std::map<std::string, std::vector<std::string>> {
+      BinanceAccountBalances {
           {"BAT", {"1000.00000", "0.021100", "20000.00000"}}
       }, true);
 }
@@ -579,8 +574,7 @@ IN_PROC_BROWSER_TEST_F(BinanceAPIBrowserTest, GetAccountBalancesUnauthorized) {
       base::BindOnce(
           &BinanceAPIBrowserTest::OnGetAccountBalances,
           base::Unretained(this))));
-  WaitForGetAccountBalances(
-      std::map<std::string, std::vector<std::string>>(), false);
+  WaitForGetAccountBalances(BinanceAccountBalances(), false);
 }
 
 IN_PROC_BROWSER_TEST_F(BinanceAPIBrowserTest, GetAccountBalancesServerError) {
@@ -591,8 +585,7 @@ IN_PROC_BROWSER_TEST_F(BinanceAPIBrowserTest, GetAccountBalancesServerError) {
       base::BindOnce(
           &BinanceAPIBrowserTest::OnGetAccountBalances,
           base::Unretained(this))));
-  WaitForGetAccountBalances(
-      std::map<std::string, std::vector<std::string>>(), false);
+  WaitForGetAccountBalances(BinanceAccountBalances(), false);
 }
 
 IN_PROC_BROWSER_TEST_F(BinanceAPIBrowserTest, GetDepositInfo) {
@@ -676,8 +669,7 @@ IN_PROC_BROWSER_TEST_F(BinanceAPIBrowserTest, GetConvertAssets) {
     { "minAmount", "0.00200000" }
   };
   std::vector<std::map<std::string, std::string>> sub {inner_sub};
-  std::map<std::string, std::vector<
-    std::map<std::string, std::string>>> assets {{"BTC", sub}};
+  BinanceConvertAsserts assets {{"BTC", sub}};
   WaitForGetConvertAssets(assets);
 }
 
@@ -689,8 +681,7 @@ IN_PROC_BROWSER_TEST_F(BinanceAPIBrowserTest, GetConvertAssetsUnauthorized) {
       base::BindOnce(
           &BinanceAPIBrowserTest::OnGetConvertAssets,
           base::Unretained(this))));
-  WaitForGetConvertAssets(std::map<std::string, std::vector<
-    std::map<std::string, std::string>>>());
+  WaitForGetConvertAssets(BinanceConvertAsserts());
 }
 
 IN_PROC_BROWSER_TEST_F(BinanceAPIBrowserTest, GetConvertAssetsServerError) {
@@ -701,8 +692,7 @@ IN_PROC_BROWSER_TEST_F(BinanceAPIBrowserTest, GetConvertAssetsServerError) {
       base::BindOnce(
           &BinanceAPIBrowserTest::OnGetConvertAssets,
           base::Unretained(this))));
-  WaitForGetConvertAssets(std::map<std::string, std::vector<
-    std::map<std::string, std::string>>>());
+  WaitForGetConvertAssets(BinanceConvertAsserts());
 }
 
 // Test disabled due to failure when run from a Powershell context
@@ -796,7 +786,7 @@ IN_PROC_BROWSER_TEST_F(BinanceAPIBrowserTest, GetCoinNetworks) {
           &BinanceAPIBrowserTest::OnGetCoinNetworks,
           base::Unretained(this))));
   WaitForGetCoinNetworks(
-      std::map<std::string, std::string> {
+      BinanceCoinNetworks {
           {"BAT", "ETH"},
           {"GAS", "NEO"}
       });
@@ -810,8 +800,7 @@ IN_PROC_BROWSER_TEST_F(BinanceAPIBrowserTest, GetCoinNetworksUnauthorized) {
       base::BindOnce(
           &BinanceAPIBrowserTest::OnGetCoinNetworks,
           base::Unretained(this))));
-  WaitForGetCoinNetworks(
-      std::map<std::string, std::string>());
+  WaitForGetCoinNetworks(BinanceCoinNetworks());
 }
 
 IN_PROC_BROWSER_TEST_F(BinanceAPIBrowserTest, GetCoinNetworksServerError) {
@@ -822,6 +811,5 @@ IN_PROC_BROWSER_TEST_F(BinanceAPIBrowserTest, GetCoinNetworksServerError) {
       base::BindOnce(
           &BinanceAPIBrowserTest::OnGetCoinNetworks,
           base::Unretained(this))));
-  WaitForGetCoinNetworks(
-      std::map<std::string, std::string>());
+  WaitForGetCoinNetworks(BinanceCoinNetworks());
 }

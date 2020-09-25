@@ -63,8 +63,7 @@ bool BinanceJSONParser::GetTokensFromJSON(
 // }
 //
 bool BinanceJSONParser::GetAccountBalancesFromJSON(
-    const std::string& json,
-    std::map<std::string, std::vector<std::string>>* balances) {
+    const std::string& json, BinanceAccountBalances* balances) {
   if (!balances) {
     return false;
   }
@@ -301,8 +300,7 @@ bool BinanceJSONParser::GetConfirmStatusFromJSON(
 //   "success":true
 // }
 bool BinanceJSONParser::GetConvertAssetsFromJSON(const std::string& json,
-    std::map<std::string, std::vector<
-    std::map<std::string, std::string>>>* assets) {
+    BinanceConvertAsserts* assets) {
   if (!assets) {
     return false;
   }
@@ -403,7 +401,7 @@ bool BinanceJSONParser::RevokeTokenFromJSON(
 // }
 //
 bool BinanceJSONParser::GetCoinNetworksFromJSON(
-    const std::string& json, std::map<std::string, std::string>* networks) {
+    const std::string& json, BinanceCoinNetworks* networks) {
   if (!networks) {
     return false;
   }
