@@ -23,16 +23,19 @@ OBJC_EXPORT
 
 OBJC_EXPORT
 @interface BraveSyncAPI : NSObject
-- (instancetype)init;
+
+@property(class, readonly, strong) BraveSyncAPI *sharedSyncAPI NS_SWIFT_NAME(shared);
 
 - (bool)setSyncEnabled:(bool)enabled;
 
 - (bool)resetSync;
 
-- (NSString *)getOrCreateSyncCode;
+- (NSString *)getSyncCode;
 
 // returns false is sync is already configured or if the sync code is invalid
 - (bool)setSyncCode:(NSString *)syncCode;
+
+- (NSString *)syncCodeFromHexSeed:(NSString *)hexSeed;
 
 - (nullable UIImage *)getQRCodeImage:(CGSize)size;
 

@@ -32,6 +32,10 @@
 #include "ios/chrome/browser/sync/sync_setup_service_factory.h"
 #include "ios/web/public/thread/web_thread.h"
 
+namespace {
+static const size_t SEED_BYTES_COUNT = 32u;
+}  // namespace
+
 BraveSyncDeviceTracker::BraveSyncDeviceTracker(std::function<void()> onDeviceInfoChanged) : onDeviceInfoChanged_(onDeviceInfoChanged) {
   
   ios::ChromeBrowserStateManager* browserStateManager =
@@ -167,6 +171,35 @@ bool BraveSyncWorker::SetSyncCode(const std::string& sync_code) {
   return true;
 }
 
+std::string BraveSyncWorker::GetSyncCodeFromHexSeed(const std::string& hex_code_seed) {
+  DCHECK(!hex_code_seed.empty());
+
+  std::vector<uint8_t> bytes;
+		std::string sync_code_words;
+		if (base::HexStringToBytes(hex_code_seed, &bytes)) {
+				DCHECK_EQ(bytes.size(), SEED_BYTES_COUNT);
+				if (bytes.size(), SEED_BYTES_COUNT) {
+						sync_code_words = brave_sync::crypto::PassphraseFromBytes32(bytes);
+						if (sync_code_words.empty()) {
+								VLOG(1) << __func__ << " PassphraseFromBytes32 failed for " << hex_code_seed;
+						}
+				} else {
+						LOG(ERROR) << "wrong seed bytes " << bytes.size();
+				}
+				
+				DCHECK_NE(sync_code_words, "");
+		} else {
+				VLOG(1) << __func__ << " HexStringToBytes failed for " << hex_code_seed;
+		}
+		return sync_code_words;
+}
+
+bool BraveSyncWorker::IsFirstSetupComplete() {
+		syncer::SyncService* sync_service = GetSyncService();
+		return sync_service &&
+										sync_service->GetUserSettings()->IsFirstSetupComplete();
+}
+
 bool BraveSyncWorker::ResetSync() {
   DCHECK_CURRENTLY_ON(web::WebThread::UI);
   auto* sync_service =
@@ -208,11 +241,15 @@ syncer::BraveProfileSyncService* BraveSyncWorker::GetSyncService() const {
 
 void BraveSyncWorker::OnStateChanged(syncer::SyncService* service) {
   // If the sync engine has shutdown for some reason, just give up
-  if (!service || !service->IsEngineInitialized())
-    return;
+		if (!service || !service->IsEngineInitialized()) {
+				VLOG(3) << "[BraveSync] " << __func__ << " sync engine is not initialized";
+				return;
+		}
+		
 
-  if (IsSyncFeatureActive())
+		if (IsSyncFeatureActive()) {
     LOG(ERROR) << "OMFG it worked!!!";
+		}
 
   auto* setup_service =
       SyncSetupServiceFactory::GetForBrowserState(browser_state_);

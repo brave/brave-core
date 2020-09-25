@@ -82,6 +82,15 @@
 
 @implementation BraveSyncAPI
 
++ (instancetype)sharedSyncAPI {
+	static BraveSyncAPI *instance = nil;
+	static dispatch_once_t onceToken;
+	dispatch_once(&onceToken, ^{
+		instance = [[BraveSyncAPI alloc] init];
+	});
+	return instance;
+}
+
 - (instancetype)init {
   if ((self = [super init])) {
     ios::ChromeBrowserStateManager* browserStateManager =
@@ -101,7 +110,7 @@
   return _worker->SetSyncEnabled(enabled);
 }
 
-- (NSString *)getOrCreateSyncCode {
+- (NSString *)getSyncCode {
   std::string syncCode = _worker->GetOrCreateSyncCode();
   if (syncCode.empty())
     return nil;
@@ -111,6 +120,10 @@
 
 - (bool)setSyncCode:(NSString *)syncCode {
   return _worker->SetSyncCode(base::SysNSStringToUTF8(syncCode));
+}
+
+- (NSString *)syncCodeFromHexSeed:(NSString *)hexSeed {
+  return base::SysUTF8ToNSString(_worker->GetSyncCodeFromHexSeed(base::SysNSStringToUTF8(hexSeed)));
 }
 
 - (UIImage *)getQRCodeImage:(CGSize)size {

@@ -77,6 +77,8 @@ OBJC_EXPORT
 OBJC_EXPORT
 @interface BraveBookmarksAPI: NSObject
 
+@property(class, readonly, strong) BraveBookmarksAPI *sharedBookmarksAPI NS_SWIFT_NAME(shared);
+
 - (nullable BookmarkNode *)rootNode;
 
 - (nullable BookmarkNode *)otherNode;

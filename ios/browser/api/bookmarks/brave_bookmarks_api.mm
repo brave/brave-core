@@ -238,6 +238,15 @@
 @end
 
 @implementation BraveBookmarksAPI
++ (instancetype)sharedBookmarksAPI {
+	static BraveBookmarksAPI *instance = nil;
+	static dispatch_once_t onceToken;
+	dispatch_once(&onceToken, ^{
+		instance = [[BraveBookmarksAPI alloc] init];
+	});
+	return instance;
+}
+
 - (instancetype)init {
   if ((self = [super init])) {
     DCHECK_CURRENTLY_ON(web::WebThread::UI);

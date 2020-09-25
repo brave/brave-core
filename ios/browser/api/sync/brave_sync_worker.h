@@ -61,10 +61,12 @@ class BraveSyncWorker : public syncer::SyncServiceObserver {
   bool SetSyncEnabled(bool enabled);
   std::string GetOrCreateSyncCode();
   bool SetSyncCode(const std::string& sync_code);
+  std::string GetSyncCodeFromHexSeed(const std::string& hex_seed);
   const syncer::DeviceInfo* GetLocalDeviceInfo();
   std::vector<std::unique_ptr<syncer::DeviceInfo>> GetDeviceList();
   bool IsSyncEnabled();
   bool IsSyncFeatureActive();
+  bool IsFirstSetupComplete();
   bool ResetSync();
 
  private:
