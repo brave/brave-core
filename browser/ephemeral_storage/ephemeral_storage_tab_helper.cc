@@ -16,7 +16,6 @@
 #include "content/public/browser/session_storage_namespace.h"
 #include "content/public/browser/storage_partition.h"
 #include "content/public/browser/web_contents.h"
-#include "net/base/registry_controlled_domains/registry_controlled_domain.h"
 #include "third_party/blink/public/common/features.h"
 
 using content::BrowserContext;
@@ -27,18 +26,6 @@ using content::WebContents;
 namespace ephemeral_storage {
 
 namespace {
-
-std::string URLToStorageDomain(const GURL& url) {
-  std::string domain = net::registry_controlled_domains::GetDomainAndRegistry(
-      url, net::registry_controlled_domains::INCLUDE_PRIVATE_REGISTRIES);
-
-  // GetDomainAndRegistry might return an empty string if this host is an IP
-  // address or a file URL.
-  if (domain.empty())
-    domain = url::Origin::Create(url.GetOrigin()).Serialize();
-
-  return domain;
-}
 
 // Session storage ids are expected to be 36 character long GUID strings. Since
 // we are constructing our own ids, we convert our string into a 32 character
@@ -62,7 +49,8 @@ EphemeralStorageTabHelper::EphemeralStorageTabHelper(WebContents* web_contents)
   // In that case we want to make sure it has valid ephemeral storage.
   const GURL& url = web_contents->GetLastCommittedURL();
   if (!url.is_empty())
-    CreateEphemeralStorageAreasForDomainAndURL(URLToStorageDomain(url), url);
+    CreateEphemeralStorageAreasForDomainAndURL(
+        content::URLToEphemeralStorageDomain(url), url);
 }
 
 EphemeralStorageTabHelper::~EphemeralStorageTabHelper() {}
@@ -75,9 +63,9 @@ void EphemeralStorageTabHelper::ReadyToCommitNavigation(
     return;
 
   const GURL& new_url = navigation_handle->GetURL();
-  std::string new_domain = URLToStorageDomain(new_url);
-  std::string previous_domain =
-      URLToStorageDomain(web_contents()->GetLastCommittedURL());
+  std::string new_domain = content::URLToEphemeralStorageDomain(new_url);
+  std::string previous_domain = content::URLToEphemeralStorageDomain(
+      web_contents()->GetLastCommittedURL());
   if (new_domain == previous_domain)
     return;
 
@@ -115,6 +103,9 @@ void EphemeralStorageTabHelper::CreateEphemeralStorageAreasForDomainAndURL(
       "/ephemeral-session-storage");
   session_storage_namespace_ =
       content::CreateSessionStorageNamespace(partition, session_partition_id);
+
+  ephemeral_storage_partition_ =
+      browser_context->GetOrCreateEphemeralStoragePartition(new_domain);
 }
 
 WEB_CONTENTS_USER_DATA_KEY_IMPL(EphemeralStorageTabHelper)

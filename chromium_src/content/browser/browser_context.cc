@@ -15,6 +15,9 @@
 #include "content/public/browser/session_storage_namespace.h"
 #include "content/public/browser/storage_partition.h"
 #include "content/public/browser/web_contents.h"
+#include "net/base/registry_controlled_domains/registry_controlled_domain.h"
+
+#include "../../../../content/browser/browser_context.cc"
 
 namespace content {
 
@@ -36,6 +39,27 @@ std::string GetSessionStorageNamespaceId(WebContents* web_contents) {
       ->id();
 }
 
-}  // namespace content
+std::string URLToEphemeralStorageDomain(const GURL& url) {
+  std::string domain = net::registry_controlled_domains::GetDomainAndRegistry(
+      url, net::registry_controlled_domains::INCLUDE_PRIVATE_REGISTRIES);
 
-#include "../../../../content/browser/browser_context.cc"
+  // GetDomainAndRegistry might return an empty string if this host is an IP
+  // address or a file URL.
+  if (domain.empty())
+    domain = url::Origin::Create(url.GetOrigin()).Serialize();
+
+  return domain;
+}
+
+scoped_refptr<EphemeralStoragePartition>
+BrowserContext::GetOrCreateEphemeralStoragePartition(
+    std::string storage_domain) {
+  return EphemeralStoragePartition::GetOrCreate(this, storage_domain);
+}
+
+EphemeralStoragePartition* BrowserContext::GetExistingEphemeralStoragePartition(
+    const GURL& url) {
+  return EphemeralStoragePartition::Get(this, URLToEphemeralStorageDomain(url));
+}
+
+}  // namespace content

@@ -1,0 +1,12 @@
+diff --git a/content/browser/renderer_host/render_frame_host_impl.cc b/content/browser/renderer_host/render_frame_host_impl.cc
+index 497033d3d5257daffe4aca2ebdd1fd71513db73f..32ab8f258aa8f69e33854f411b39d510b885ecf3 100644
+--- a/content/browser/renderer_host/render_frame_host_impl.cc
++++ b/content/browser/renderer_host/render_frame_host_impl.cc
+@@ -7840,6 +7840,7 @@ void RenderFrameHostImpl::BindSmsReceiverReceiver(
+ 
+ void RenderFrameHostImpl::BindRestrictedCookieManager(
+     mojo::PendingReceiver<network::mojom::RestrictedCookieManager> receiver) {
++  BRAVE_BINDRESTRICTEDCOOKIEMANAGER
+   static_cast<StoragePartitionImpl*>(GetProcess()->GetStoragePartition())
+       ->CreateRestrictedCookieManager(
+           network::mojom::RestrictedCookieManagerRole::SCRIPT,

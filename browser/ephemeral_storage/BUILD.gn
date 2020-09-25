@@ -8,7 +8,6 @@ source_set("ephemeral_storage") {
     "//base",
     "//chrome/browser/ui",
     "//content/public/browser",
-    "//net",
     "//third_party/blink/public/common",
   ]
 }

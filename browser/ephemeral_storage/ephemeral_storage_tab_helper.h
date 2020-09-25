@@ -14,8 +14,9 @@
 #include "content/public/browser/web_contents_user_data.h"
 
 namespace content {
-class WebContents;
 class BrowserContext;
+class EphemeralStoragePartition;
+class WebContents;
 }  // namespace content
 
 namespace ephemeral_storage {
@@ -43,6 +44,8 @@ class EphemeralStorageTabHelper
   friend class content::WebContentsUserData<EphemeralStorageTabHelper>;
   scoped_refptr<content::SessionStorageNamespace> local_storage_namespace_;
   scoped_refptr<content::SessionStorageNamespace> session_storage_namespace_;
+  scoped_refptr<content::EphemeralStoragePartition>
+      ephemeral_storage_partition_;
 
   WEB_CONTENTS_USER_DATA_KEY_DECL();
 };
