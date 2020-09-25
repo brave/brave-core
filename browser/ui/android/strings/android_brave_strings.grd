@@ -1099,7 +1099,10 @@ until they verify, or until 90 days have passed.
         Prevents browser from recognizing your device
       </message>
       <message name="IDS_BLOCK_FINGERPRINTING_OPTION_1" desc="Title for shields option.">
-        Block all fingerprinting
+        Fingerprinting blocked(strict, may break sites)
+      </message>
+      <message name="IDS_BLOCK_FINGERPRINTING_OPTION_2" desc="Title for shields option.">
+        Fingerprinting blocked(standard)
       </message>
       <message name="IDS_BLOCK_FINGERPRINTING_OPTION_3" desc="Title for shields option.">
         Allow all fingerprinting

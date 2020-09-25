@@ -490,7 +490,7 @@ public class BraveShieldsHandler implements BraveRewardsHelper.LargeIconReadyCal
         mCookiesIcon.setImageResource(R.drawable.ic_chevron_right);
         mCookiesIcon.setColorFilter(mContext.getResources().getColor(R.color.default_icon_color_tint_list));
         TextView mCookiesText = mCookiesLayout.findViewById(R.id.toggle_text);
-        mCookiesText.setText(R.string.block_cross_site_cookies);
+        mCookiesText.setText(R.string.block_cookies);
 
         String settingOption = BraveShieldsContentSettings.getShieldsValue(mProfile, mHost, BraveShieldsContentSettings.RESOURCE_IDENTIFIER_COOKIES);
         if (settingOption.equals(BraveShieldsContentSettings.BLOCK_RESOURCE)) {
@@ -533,7 +533,7 @@ public class BraveShieldsHandler implements BraveRewardsHelper.LargeIconReadyCal
         RadioButton mFingerprintingOption1 = mBlockFingerPrintingLayout.findViewById(R.id.option1);
         mFingerprintingOption1.setText(R.string.block_fingerprinting_option_1);
         RadioButton mFingerprintingOption2 = mBlockFingerPrintingLayout.findViewById(R.id.option2);
-        mFingerprintingOption2.setText(R.string.block_cross_site_fingerprinting);
+        mFingerprintingOption2.setText(R.string.block_fingerprinting_option_2);
         RadioButton mFingerprintingOption3 = mBlockFingerPrintingLayout.findViewById(R.id.option3);
         mFingerprintingOption3.setText(R.string.block_fingerprinting_option_3);
         Button mFingerprintingDoneButton = mBlockFingerPrintingLayout.findViewById(R.id.done_button);
@@ -560,12 +560,12 @@ public class BraveShieldsHandler implements BraveRewardsHelper.LargeIconReadyCal
         mFingerPrintingIcon.setImageResource(R.drawable.ic_chevron_right);
         mFingerPrintingIcon.setColorFilter(mContext.getResources().getColor(R.color.default_icon_color_tint_list));
         TextView mFingerPrintingText = mFingerPrintingLayout.findViewById(R.id.toggle_text);
-        mFingerPrintingText.setText(R.string.block_cross_site_fingerprinting);
+        mFingerPrintingText.setText(R.string.block_fingerprinting);
 
         String settingOption = BraveShieldsContentSettings.getShieldsValue(mProfile, mHost, BraveShieldsContentSettings.RESOURCE_IDENTIFIER_FINGERPRINTING);
         if (settingOption.equals(BraveShieldsContentSettings.BLOCK_RESOURCE)) {
             mFingerprintingOption1.setChecked(true);
-        } else if (settingOption.equals(BraveShieldsContentSettings.BLOCK_THIRDPARTY_RESOURCE)) {
+        } else if (settingOption.equals(BraveShieldsContentSettings.DEFAULT)) {
             mFingerprintingOption2.setChecked(true);
         } else if (settingOption.equals(BraveShieldsContentSettings.ALLOW_RESOURCE)) {
             mFingerprintingOption3.setChecked(true);
@@ -582,7 +582,7 @@ public class BraveShieldsHandler implements BraveRewardsHelper.LargeIconReadyCal
                     if (checkedId == R.id.option1) {
                         BraveShieldsContentSettings.setShieldsValue(mProfile, mHost, BraveShieldsContentSettings.RESOURCE_IDENTIFIER_FINGERPRINTING, BraveShieldsContentSettings.BLOCK_RESOURCE, false);
                     } else if (checkedId == R.id.option2) {
-                        BraveShieldsContentSettings.setShieldsValue(mProfile, mHost, BraveShieldsContentSettings.RESOURCE_IDENTIFIER_FINGERPRINTING, BraveShieldsContentSettings.BLOCK_THIRDPARTY_RESOURCE, false);
+                        BraveShieldsContentSettings.setShieldsValue(mProfile, mHost, BraveShieldsContentSettings.RESOURCE_IDENTIFIER_FINGERPRINTING, BraveShieldsContentSettings.DEFAULT, false);
                     } else if (checkedId == R.id.option3) {
                         BraveShieldsContentSettings.setShieldsValue(mProfile, mHost, BraveShieldsContentSettings.RESOURCE_IDENTIFIER_FINGERPRINTING, BraveShieldsContentSettings.ALLOW_RESOURCE, false);
                     }
