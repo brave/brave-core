@@ -43,16 +43,22 @@ TEST(BraveBlockReportingUrlsHelperTest, PreserveNormalUrls) {
 
 TEST(BraveBlockReportingUrlsHelperTest, CancelReportingUrl) {
   const std::vector<const std::string> reportingUrls({
+      "https://sb-ssl.google.com/safebrowsing/clientreport/chrome-cct",
       "https://sb-ssl.google.com/safebrowsing/clientreport/chrome-reset",
+      "https://sb-ssl.google.com/safebrowsing/clientreport/chrome-sw-reporter",
       "https://sb-ssl.google.com/safebrowsing/clientreport/incident",
       "https://sb-ssl.google.com/safebrowsing/clientreport/login",
       "https://sb-ssl.google.com/safebrowsing/clientreport/phishing",
       "https://sb-ssl.google.com/safebrowsing/clientreport/malware-check",
+      "https://safebrowsing.google.com/safebrowsing/uploads/app",
+      "https://safebrowsing.google.com/safebrowsing/uploads/chrome",
+      "https://safebrowsing.google.com/safebrowsing/uploads/scan",
       "https://safebrowsing.google.com/safebrowsing/uploads/webprotect",
       "https://safebrowsing.google.com/safebrowsing/report",
       "https://safebrowsing.google.com/safebrowsing/clientreport/malware",
       "https://safebrowsing.google.com/safebrowsing/uploads/chrome",
       "https://safebrowsing.google.com/safebrowsing/clientreport/crx-list-info",
+      "https://safebrowsing.google.com/safebrowsing/clientreport/realtime",
   });
 
   for (const auto& url : reportingUrls) {
