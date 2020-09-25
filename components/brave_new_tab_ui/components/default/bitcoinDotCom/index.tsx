@@ -25,6 +25,7 @@ interface Props {
   stackPosition: number
   onShowContent: () => void
   onBuyCrypto: () => void
+  onInteraction: () => void
 }
 
 class BitcoinDotCom extends React.PureComponent<Props, State> {
@@ -72,6 +73,7 @@ class BitcoinDotCom extends React.PureComponent<Props, State> {
     this.setState({
       assetsShowing: !this.state.assetsShowing
     })
+    this.props.onInteraction()
   }
 
   setSelectedAsset = (asset: string) => {
@@ -85,12 +87,14 @@ class BitcoinDotCom extends React.PureComponent<Props, State> {
     this.setState({
       currentAmount: target.value
     })
+    this.props.onInteraction()
   }
 
   toggleFiatCurrenciesShowing = () => {
     this.setState({
       fiatCurrenciesShowing: !this.state.fiatCurrenciesShowing
     })
+    this.props.onInteraction()
   }
 
   setSelectedFiat = (fiat: string) => {
@@ -126,6 +130,7 @@ class BitcoinDotCom extends React.PureComponent<Props, State> {
 
   openInfoURL = () => {
     window.open('https://bitcoincom.moonpay.io/', '_blank', 'noopener')
+    this.props.onInteraction()
   }
 
   renderCurrencyInput () {

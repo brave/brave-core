@@ -7,6 +7,7 @@
 
 #include <string>
 #include <memory>
+#include <utility>
 
 #include "base/environment.h"
 #include "brave/browser/profiles/profile_util.h"
@@ -42,8 +43,42 @@ MoonpayOnBuyBitcoinDotComCryptoFunction::Run() {
   }
 
   profile->GetPrefs()->SetBoolean(kMoonpayHasBoughtBitcoinDotComCrypto, true);
+  profile->GetPrefs()->SetBoolean(kMoonpayHasInteractedBitcoinDotCom, true);
 
   return RespondNow(NoArguments());
+}
+
+ExtensionFunction::ResponseAction
+MoonpayOnInteractionBitcoinDotComFunction::Run() {
+  Profile* profile = Profile::FromBrowserContext(browser_context());
+
+  if (brave::IsTorProfile(profile)) {
+    return RespondNow(Error("Not available in Tor profile"));
+  }
+
+  profile->GetPrefs()->SetBoolean(kMoonpayHasInteractedBitcoinDotCom, true);
+
+  return RespondNow(NoArguments());
+}
+
+ExtensionFunction::ResponseAction
+MoonpayGetBitcoinDotComInteractionsFunction::Run() {
+  Profile* profile = Profile::FromBrowserContext(browser_context());
+
+  if (brave::IsTorProfile(profile)) {
+    return RespondNow(Error("Not available in Tor profile"));
+  }
+
+  bool has_bought = profile->GetPrefs()->GetBoolean(
+      kMoonpayHasBoughtBitcoinDotComCrypto);
+  bool has_interacted = profile->GetPrefs()->GetBoolean(
+      kMoonpayHasInteractedBitcoinDotCom);
+
+  auto interactions = std::make_unique<base::DictionaryValue>();
+  interactions->SetBoolean("boughtCrypto", has_bought);
+  interactions->SetBoolean("interacted", has_interacted);
+
+  return RespondNow(OneArgument(std::move(interactions)));
 }
 
 }  // namespace api

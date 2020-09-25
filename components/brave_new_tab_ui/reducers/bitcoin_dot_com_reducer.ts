@@ -11,6 +11,10 @@ const bitcoinDotComReducer: Reducer<NewTab.State | undefined> = (state: NewTab.S
       chrome.moonpay.onBuyBitcoinDotComCrypto()
       break
 
+    case types.INTERACTION_BITCOIN_DOT_COM:
+      chrome.moonpay.onInteractionBitcoinDotCom()
+      break
+
     default:
       break
   }

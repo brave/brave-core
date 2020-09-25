@@ -7,3 +7,5 @@ import { action } from 'typesafe-actions'
 import { types } from '../constants/bitcoin_dot_com_types'
 
 export const buyBitcoinDotComCrypto = () => action(types.BUY_BITCOIN_DOT_COM_CRYPTO)
+
+export const interactionBitcoinDotCom = () => action(types.INTERACTION_BITCOIN_DOT_COM)

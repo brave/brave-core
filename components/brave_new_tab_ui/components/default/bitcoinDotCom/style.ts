@@ -43,7 +43,7 @@ export const BitcoinDotComIcon = styled<{}, 'div'>('div')`
 `
 
 export const TitleText = styled<{}, 'div'>('div')`
-  margin-top: 4px;
+  margin-top: -2px;
 `
 
 export const InputHeader = styled<{}, 'div'>('div')`

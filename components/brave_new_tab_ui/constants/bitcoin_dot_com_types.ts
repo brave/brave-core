@@ -4,5 +4,6 @@
 // you can obtain one at http://mozilla.org/MPL/2.0/.
 
 export const enum types {
-  BUY_BITCOIN_DOT_COM_CRYPTO = '@@bitcoin_dot_com/BUY_BITCOIN_DOT_COM_CRYPTO'
+  BUY_BITCOIN_DOT_COM_CRYPTO = '@@bitcoin_dot_com/BUY_BITCOIN_DOT_COM_CRYPTO',
+  INTERACTION_BITCOIN_DOT_COM = '@@bitcoin_dot_com/INTERACTION_BITCOIN_DOT_COM'
 }

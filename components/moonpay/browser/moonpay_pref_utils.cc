@@ -18,6 +18,7 @@ MoonpayPrefUtils::~MoonpayPrefUtils() {}
 void MoonpayPrefUtils::RegisterPrefs(PrefRegistrySimple* registry) {
   registry->RegisterBooleanPref(kMoonpayNewTabPageShowBitcoinDotCom, true);
   registry->RegisterBooleanPref(kMoonpayHasBoughtBitcoinDotComCrypto, false);
+  registry->RegisterBooleanPref(kMoonpayHasInteractedBitcoinDotCom, false);
 }
 
 }  // namespace moonpay

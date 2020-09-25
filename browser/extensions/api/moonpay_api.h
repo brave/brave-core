@@ -36,6 +36,27 @@ class MoonpayOnBuyBitcoinDotComCryptoFunction :
   ResponseAction Run() override;
 };
 
+class MoonpayOnInteractionBitcoinDotComFunction :
+    public ExtensionFunction {
+ public:
+  DECLARE_EXTENSION_FUNCTION("moonpay.onInteractionBitcoinDotCom", UNKNOWN)
+
+ protected:
+  ~MoonpayOnInteractionBitcoinDotComFunction() override {}
+  ResponseAction Run() override;
+};
+
+class MoonpayGetBitcoinDotComInteractionsFunction :
+    public ExtensionFunction {
+ public:
+  DECLARE_EXTENSION_FUNCTION("moonpay.getBitcoinDotComInteractions", UNKNOWN)
+
+ protected:
+  ~MoonpayGetBitcoinDotComInteractionsFunction() override {}
+  ResponseAction Run() override;
+};
+
+
 }  // namespace api
 }  // namespace extensions
 
