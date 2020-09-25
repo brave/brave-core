@@ -11,13 +11,12 @@
 #include "base/feature_list.h"
 #include "base/hash/md5.h"
 #include "base/no_destructor.h"
-#include "content/public/browser/browser_context.h"
 #include "content/public/browser/navigation_handle.h"
 #include "content/public/browser/session_storage_namespace.h"
 #include "content/public/browser/storage_partition.h"
 #include "content/public/browser/web_contents.h"
-#include "net/base/registry_controlled_domains/registry_controlled_domain.h"
-#include "third_party/blink/public/common/features.h"
+#include "net/base/features.h"
+#include "net/base/url_util.h"
 
 using content::BrowserContext;
 using content::NavigationHandle;
@@ -27,18 +26,6 @@ using content::WebContents;
 namespace ephemeral_storage {
 
 namespace {
-
-std::string URLToStorageDomain(const GURL& url) {
-  std::string domain = net::registry_controlled_domains::GetDomainAndRegistry(
-      url, net::registry_controlled_domains::INCLUDE_PRIVATE_REGISTRIES);
-
-  // GetDomainAndRegistry might return an empty string if this host is an IP
-  // address or a file URL.
-  if (domain.empty())
-    domain = url::Origin::Create(url.GetOrigin()).Serialize();
-
-  return domain;
-}
 
 // Session storage ids are expected to be 36 character long GUID strings. Since
 // we are constructing our own ids, we convert our string into a 32 character
@@ -54,15 +41,20 @@ std::string StringToSessionStorageId(const std::string& string,
 
 }  // namespace
 
+// EphemeralStorageTabHelper helps to manage the lifetime of ephemeral storage.
+// For more information about the design of ephemeral storage please see the
+// design document at:
+// https://github.com/brave/brave-browser/wiki/Ephemeral-Storage-Design
 EphemeralStorageTabHelper::EphemeralStorageTabHelper(WebContents* web_contents)
     : WebContentsObserver(web_contents) {
-  DCHECK(base::FeatureList::IsEnabled(blink::features::kBraveEphemeralStorage));
+  DCHECK(base::FeatureList::IsEnabled(net::features::kBraveEphemeralStorage));
 
   // The URL might not be empty if this is a restored WebContents, for instance.
   // In that case we want to make sure it has valid ephemeral storage.
   const GURL& url = web_contents->GetLastCommittedURL();
   if (!url.is_empty())
-    CreateEphemeralStorageAreasForDomainAndURL(URLToStorageDomain(url), url);
+    CreateEphemeralStorageAreasForDomainAndURL(
+        net::URLToEphemeralStorageDomain(url), url);
 }
 
 EphemeralStorageTabHelper::~EphemeralStorageTabHelper() {}
@@ -75,9 +67,9 @@ void EphemeralStorageTabHelper::ReadyToCommitNavigation(
     return;
 
   const GURL& new_url = navigation_handle->GetURL();
-  std::string new_domain = URLToStorageDomain(new_url);
+  std::string new_domain = net::URLToEphemeralStorageDomain(new_url);
   std::string previous_domain =
-      URLToStorageDomain(web_contents()->GetLastCommittedURL());
+      net::URLToEphemeralStorageDomain(web_contents()->GetLastCommittedURL());
   if (new_domain == previous_domain)
     return;
 
@@ -115,6 +107,9 @@ void EphemeralStorageTabHelper::CreateEphemeralStorageAreasForDomainAndURL(
       "/ephemeral-session-storage");
   session_storage_namespace_ =
       content::CreateSessionStorageNamespace(partition, session_partition_id);
+
+  tld_ephemeral_lifetime_ = content::TLDEphemeralLifetime::GetOrCreate(
+      browser_context, partition, new_domain);
 }
 
 WEB_CONTENTS_USER_DATA_KEY_IMPL(EphemeralStorageTabHelper)

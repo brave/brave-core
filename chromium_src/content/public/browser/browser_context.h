@@ -15,6 +15,7 @@
 
 #include "base/memory/ref_counted.h"
 #include "content/common/content_export.h"
+#include "content/public/browser/tld_ephemeral_lifetime.h"
 
 namespace content {
 
