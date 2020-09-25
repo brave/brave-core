@@ -27,11 +27,14 @@ namespace ipfs {
 
 class ContentBrowserClientHelper {
  public:
+  static bool ShouldNavigateIPFSURI(const GURL& url, GURL* new_url,
+      content::BrowserContext* browser_context);
+
   static bool HandleIPFSURLReverseRewrite(GURL* url,
       content::BrowserContext* browser_context);
 
   static void LoadOrLaunchIPFSURL(
-      const GURL& url,
+      GURL url,
       content::WebContents::OnceGetter web_contents_getter,
       ui::PageTransition page_transition,
       bool has_user_gesture,
