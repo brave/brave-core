@@ -14,12 +14,17 @@ import android.util.Pair;
 import java.util.List;
 import java.util.ArrayList;
 
+import org.chromium.base.Log;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.json.JSONArray;
+import org.json.JSONObject;
+
+import org.chromium.chrome.browser.widget.crypto.binance.ConvertAsset;
 
 public class BinanceConvert {
-    private Map <String, List<String>> mCurrencyValues;
+    private Map <String, List<ConvertAsset>> mCurrencyValues;
 
     public BinanceConvert (String json_balance) throws JSONException {
         fromJson (json_balance);
@@ -27,20 +32,23 @@ public class BinanceConvert {
 
     private void fromJson(String json_balance) throws JSONException {
         JSONObject jsonroot = new JSONObject(json_balance);
+        Log.e("NTP", json_balance);
         Iterator<String> keys = jsonroot.keys();
         mCurrencyValues = new HashMap <>();
         while (keys.hasNext()) {
             String key = keys.next();
             JSONArray data = jsonroot.getJSONArray(key);
-            List<String> tempList = new ArrayList<String>();
+            List<ConvertAsset> tempList = new ArrayList<>();
             for (int i = 0; i < data.length(); i++) {
-                tempList.add(data.getString(i));
+                JSONObject convertAssetJsonObject = new JSONObject(data.getString(i));
+                // Log.e("NTP", convertAssetJsonObject);
+                tempList.add(new ConvertAsset(convertAssetJsonObject.getString("asset"), convertAssetJsonObject.getString("minAmount")));
             }
             mCurrencyValues.put(key, tempList);
         }
     }
 
-    public List<String> getCurrencyValue(String currency) {
+    public List<ConvertAsset> getCurrencyValue(String currency) {
         if (mCurrencyValues.containsKey(currency)
                 && mCurrencyValues.get(currency) != null) {
             return mCurrencyValues.get(currency);

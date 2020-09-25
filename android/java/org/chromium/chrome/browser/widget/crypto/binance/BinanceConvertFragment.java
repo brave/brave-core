@@ -37,6 +37,7 @@ import org.chromium.chrome.browser.widget.crypto.binance.BinanceCoinNetworks;
 import org.chromium.chrome.browser.widget.crypto.binance.BinanceWidgetManager;
 import org.chromium.chrome.browser.widget.crypto.binance.CoinNetworkModel;
 import org.chromium.chrome.browser.widget.crypto.binance.CryptoWidgetBottomSheetDialogFragment;
+import org.chromium.chrome.browser.widget.crypto.binance.ConvertAsset;
 import org.chromium.chrome.browser.util.TabUtils;
 import org.chromium.ui.widget.Toast;
 
@@ -59,10 +60,10 @@ public class BinanceConvertFragment extends Fragment {
 	private Spinner cryptoSpinner2;
 
 	private String selectedCrypto1;
-	private String selectedCrypto2;
+	private ConvertAsset selectedCrypto2;
 
 	private String[] cryptoArray1;
-	private String[] cryptoArray2;
+	private ConvertAsset[] cryptoArray2;
 
 	private BinanceConvert binanceConvert;
 
@@ -102,7 +103,7 @@ public class BinanceConvertFragment extends Fragment {
 		convertButton.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View view) {
-				mBinanceNativeWorker.getConvertQuote(selectedCrypto1, selectedCrypto2, !TextUtils.isEmpty(amountEditText.getText().toString()) ? amountEditText.getText().toString() : "0.0");
+				mBinanceNativeWorker.getConvertQuote(selectedCrypto1, selectedCrypto2.getAsset(), !TextUtils.isEmpty(amountEditText.getText().toString()) ? amountEditText.getText().toString() : "0.0");
 				// dismissBinanceBottomSheet();
 			}
 		});
@@ -196,11 +197,15 @@ public class BinanceConvertFragment extends Fragment {
 	};
 
 	private void setCryptoSpinner(String key) {
-		List<String> convertCryptoList = binanceConvert.getCurrencyValue(key);
+		List<ConvertAsset> convertCryptoList = binanceConvert.getCurrencyValue(key);
 		if (cryptoSpinner2 != null) {
-			cryptoArray2 = (String[]) convertCryptoList.toArray(new String[convertCryptoList.size()]);
+			cryptoArray2 = (ConvertAsset[]) convertCryptoList.toArray(new ConvertAsset[0]);
+			List<String> tempCryptoList = new ArrayList<>();
+			for(ConvertAsset convertAsset : convertCryptoList) {
+				tempCryptoList.add(convertAsset.getAsset());
+			}
 			ArrayAdapter<String> cryptoAdapter2 = new ArrayAdapter<String>(getActivity(),
-			        R.layout.binance_spinner_text_layout, cryptoArray2);
+			        R.layout.binance_spinner_text_layout, (String[]) tempCryptoList.toArray(new String[tempCryptoList.size()]));
 			cryptoAdapter2.setDropDownViewResource(android.R.layout.simple_list_item_1);
 			cryptoSpinner2.setAdapter(cryptoAdapter2);
 			selectedCrypto2 = cryptoArray2[0];

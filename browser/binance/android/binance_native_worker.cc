@@ -60,6 +60,23 @@ std::string BinanceNativeWorker::StdStrVecMapToJsonString(
   return json_args;
 }
 
+std::string BinanceNativeWorker::ConvertAssetsToJsonString(
+    const std::map<std::string, std::vector<std::map<std::string, std::string>>>& args) {
+  std::string json_args;
+  base::DictionaryValue dict;
+  for (const auto& item : args) {
+    auto inner_list = std::make_unique<base::ListValue>();
+    if (!item.second.empty()) {
+      for (const auto& it : item.second) {
+        inner_list->Append(StdStrStrMapToJsonString(it));
+      }
+    }
+    dict.SetList(item.first, std::move(inner_list));
+  }
+  base::JSONWriter::Write(dict, &json_args);
+  return json_args;
+}
+
 std::string BinanceNativeWorker::StdStrStrMapToJsonString(
     const std::map<std::string, std::string>& args) {
   std::string json_args;
@@ -222,9 +239,10 @@ void BinanceNativeWorker::GetConvertAssets(
 }
 
 void BinanceNativeWorker::OnGetConvertAssets(
-    const std::map<std::string, std::vector<std::string>>& assets) {
+    const std::map<std::string, std::vector<
+    std::map<std::string, std::string>>>& assets) {
   JNIEnv* env = base::android::AttachCurrentThread();
-  std::string json_assets = StdStrVecMapToJsonString(assets);
+  std::string json_assets = ConvertAssetsToJsonString(assets);
   Java_BinanceNativeWorker_OnGetConvertAssets(
       env, weak_java_binance_native_worker_.get(env),
       base::android::ConvertUTF8ToJavaString(env, json_assets));
