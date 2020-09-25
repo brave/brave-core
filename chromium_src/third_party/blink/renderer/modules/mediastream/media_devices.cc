@@ -25,13 +25,10 @@ namespace brave {
 
 void FarbleMediaDevices(ExecutionContext* context,
                         MediaDeviceInfoVector* media_devices) {
-  WebContentSettingsClient* settings = nullptr;
-  if (auto* window = DynamicTo<LocalDOMWindow>(context))
-    settings = window->GetFrame()->GetContentSettingsClient();
-  else if (context->IsWorkerGlobalScope())
-    settings = To<WorkerGlobalScope>(context)->ContentSettingsClient();
-  if (settings &&
-      (settings->GetBraveFarblingLevel() != BraveFarblingLevel::OFF)) {
+  WebContentSettingsClient* settings = GetContentSettingsClientFor(context);
+  if (!settings)
+    return;
+  if (settings->GetBraveFarblingLevel() != BraveFarblingLevel::OFF) {
     // Shuffle the list of plugins pseudo-randomly, based on the
     // domain+session key.
     std::mt19937_64 prng =

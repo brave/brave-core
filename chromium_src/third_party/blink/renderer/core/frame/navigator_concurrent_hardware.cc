@@ -31,11 +31,7 @@ unsigned FarbleNumberOfProcessors(ExecutionContext* context) {
       static_cast<unsigned>(base::SysInfo::NumberOfProcessors());
   if (true_value <= 2)
     return true_value;
-  WebContentSettingsClient* settings = nullptr;
-  if (auto* window = DynamicTo<LocalDOMWindow>(context))
-    settings = window->GetFrame()->GetContentSettingsClient();
-  else if (context->IsWorkerGlobalScope())
-    settings = To<WorkerGlobalScope>(context)->ContentSettingsClient();
+  WebContentSettingsClient* settings = GetContentSettingsClientFor(context);
   if (!settings)
     return true_value;
   unsigned farbled_value = true_value;

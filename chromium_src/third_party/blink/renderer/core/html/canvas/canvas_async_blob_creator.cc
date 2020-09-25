@@ -9,14 +9,12 @@
 #include "third_party/blink/renderer/core/frame/local_frame.h"
 #include "third_party/blink/renderer/core/workers/worker_global_scope.h"
 
-#define BRAVE_CANVAS_ASYNC_BLOB_CREATOR                                     \
-  WebContentSettingsClient* settings = nullptr;                             \
-  if (auto* window = DynamicTo<LocalDOMWindow>(context))                    \
-    settings = window->GetFrame()->GetContentSettingsClient();              \
-  else if (context->IsWorkerGlobalScope())                                  \
-    settings = To<WorkerGlobalScope>(context)->ContentSettingsClient();     \
-  image_ = brave::BraveSessionCache::From(*context).PerturbPixels(settings, \
-                                                                  image_);
+#define BRAVE_CANVAS_ASYNC_BLOB_CREATOR                                       \
+  if (WebContentSettingsClient* settings =                                    \
+          brave::GetContentSettingsClientFor(context)) {                      \
+    image_ = brave::BraveSessionCache::From(*context).PerturbPixels(settings, \
+                                                                    image_);  \
+  }
 
 #include "../../../../../../../../third_party/blink/renderer/core/html/canvas/canvas_async_blob_creator.cc"
 

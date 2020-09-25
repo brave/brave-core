@@ -16,12 +16,8 @@
 #define BRAVE_AUDIOBUFFER_GETCHANNELDATA                                       \
   NotShared<DOMFloat32Array> array = getChannelData(channel_index);            \
   if (ExecutionContext* context = ExecutionContext::From(script_state)) {      \
-    WebContentSettingsClient* settings = nullptr;                              \
-    if (auto* window = DynamicTo<LocalDOMWindow>(context))                     \
-      settings = window->GetFrame()->GetContentSettingsClient();               \
-    else if (context->IsWorkerGlobalScope())                                   \
-      settings = To<WorkerGlobalScope>(context)->ContentSettingsClient();      \
-    if (settings) {                                                            \
+    if (WebContentSettingsClient* settings =                                   \
+            brave::GetContentSettingsClientFor(context)) {                     \
       DOMFloat32Array* destination_array = array.View();                       \
       size_t len = destination_array->lengthAsSizeT();                         \
       if (len > 0) {                                                           \
@@ -38,12 +34,8 @@
 
 #define BRAVE_AUDIOBUFFER_COPYFROMCHANNEL                                    \
   if (ExecutionContext* context = ExecutionContext::From(script_state)) {    \
-    WebContentSettingsClient* settings = nullptr;                            \
-    if (auto* window = DynamicTo<LocalDOMWindow>(context))                   \
-      settings = window->GetFrame()->GetContentSettingsClient();             \
-    else if (context->IsWorkerGlobalScope())                                 \
-      settings = To<WorkerGlobalScope>(context)->ContentSettingsClient();    \
-    if (settings) {                                                          \
+    if (WebContentSettingsClient* settings =                                 \
+            brave::GetContentSettingsClientFor(context)) {                   \
       brave::AudioFarblingCallback audio_farbling_callback =                 \
           brave::BraveSessionCache::From(*context).GetAudioFarblingCallback( \
               settings);                                                     \

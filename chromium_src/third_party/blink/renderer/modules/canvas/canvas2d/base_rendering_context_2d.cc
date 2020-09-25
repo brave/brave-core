@@ -14,12 +14,8 @@
 
 #define BRAVE_GET_IMAGE_DATA                                              \
   if (ExecutionContext* context = ExecutionContext::From(script_state)) { \
-    WebContentSettingsClient* settings = nullptr;                         \
-    if (auto* window = DynamicTo<LocalDOMWindow>(context))                \
-      settings = window->GetFrame()->GetContentSettingsClient();          \
-    else if (context->IsWorkerGlobalScope())                              \
-      settings = To<WorkerGlobalScope>(context)->ContentSettingsClient(); \
-    if (settings) {                                                       \
+    if (WebContentSettingsClient* settings =                              \
+            brave::GetContentSettingsClientFor(context)) {                \
       snapshot = brave::BraveSessionCache::From(*context).PerturbPixels(  \
           settings, snapshot);                                            \
     }                                                                     \
@@ -32,21 +28,11 @@
 
 namespace {
 
-using blink::DynamicTo;
-using blink::ExecutionContext;
-using blink::LocalDOMWindow;
-using blink::ScriptState;
-using blink::To;
-using blink::WebContentSettingsClient;
-using blink::WorkerGlobalScope;
-
-bool AllowFingerprintingFromScriptState(ScriptState* script_state) {
-  ExecutionContext* context = ExecutionContext::From(script_state);
-  WebContentSettingsClient* settings = nullptr;
-  if (auto* window = DynamicTo<LocalDOMWindow>(context))
-    settings = window->GetFrame()->GetContentSettingsClient();
-  else if (context->IsWorkerGlobalScope())
-    settings = To<WorkerGlobalScope>(context)->ContentSettingsClient();
+bool AllowFingerprintingFromScriptState(blink::ScriptState* script_state) {
+  blink::ExecutionContext* context =
+      blink::ExecutionContext::From(script_state);
+  blink::WebContentSettingsClient* settings =
+      brave::GetContentSettingsClientFor(context);
   return !settings || settings->AllowFingerprinting(true);
 }
 

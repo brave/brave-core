@@ -13,7 +13,7 @@
 #include "third_party/blink/renderer/core/dom/document.h"
 #include "third_party/blink/renderer/core/frame/local_dom_window.h"
 #include "third_party/blink/renderer/core/frame/local_frame.h"
-#include "third_party/blink/renderer/core/workers/worker_or_worklet_global_scope.h"
+#include "third_party/blink/renderer/core/workers/worker_global_scope.h"
 #include "third_party/blink/renderer/platform/bindings/script_state.h"
 #include "third_party/blink/renderer/platform/graphics/image_data_buffer.h"
 #include "third_party/blink/renderer/platform/graphics/static_bitmap_image.h"
@@ -65,10 +65,29 @@ const char kLettersForRandomStrings[] =
 // length of kLettersForRandomStrings array
 const size_t kLettersForRandomStringsLength = 64;
 
+blink::WebContentSettingsClient* GetContentSettingsClientFor(
+    ExecutionContext* context) {
+  blink::WebContentSettingsClient* settings = nullptr;
+  if (!context)
+    return settings;
+  if (auto* window = blink::DynamicTo<blink::LocalDOMWindow>(context)) {
+    if (auto* frame = window->GetFrame())
+      settings = frame->GetContentSettingsClient();
+  } else if (context->IsWorkerGlobalScope()) {
+    settings =
+        blink::To<blink::WorkerGlobalScope>(context)->ContentSettingsClient();
+  }
+  return settings;
+}
+
 BraveSessionCache::BraveSessionCache(ExecutionContext& context)
     : Supplement<ExecutionContext>(context) {
   farbling_enabled_ = false;
-  const auto* origin = context.GetSecurityContext().GetSecurityOrigin();
+  scoped_refptr<const blink::SecurityOrigin> origin;
+  if (auto* window = blink::DynamicTo<blink::LocalDOMWindow>(context))
+    origin = window->document()->TopFrameOrigin();
+  else
+    origin = context.GetSecurityContext().GetSecurityOrigin();
   if (!origin || origin->IsOpaque())
     return;
   const auto host = origin->Host();

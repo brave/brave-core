@@ -12,16 +12,14 @@
 #include "third_party/blink/renderer/core/frame/local_frame.h"
 #include "third_party/blink/renderer/core/workers/worker_global_scope.h"
 
-#define BRAVE_ANALYSERHANDLER_CONSTRUCTOR                                  \
-  if (ExecutionContext* context = node.GetExecutionContext()) {         \
-    WebContentSettingsClient* settings = nullptr;                       \
-    if (auto* window = DynamicTo<LocalDOMWindow>(context))              \
-      settings = window->GetFrame()->GetContentSettingsClient();        \
-    else if (context->IsWorkerGlobalScope())                            \
-      settings = To<WorkerGlobalScope>(context)->ContentSettingsClient(); \
-    analyser_.audio_farbling_callback_ =                                \
-        brave::BraveSessionCache::From(*context).GetAudioFarblingCallback( \
-            settings);                                                     \
+#define BRAVE_ANALYSERHANDLER_CONSTRUCTOR                                    \
+  if (ExecutionContext* context = node.GetExecutionContext()) {              \
+    if (WebContentSettingsClient* settings =                                 \
+            brave::GetContentSettingsClientFor(context)) {                   \
+      analyser_.audio_farbling_callback_ =                                   \
+          brave::BraveSessionCache::From(*context).GetAudioFarblingCallback( \
+              settings);                                                     \
+    }                                                                        \
   }
 
 #include "../../../../../../../third_party/blink/renderer/modules/webaudio/analyser_node.cc"
