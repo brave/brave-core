@@ -10,17 +10,18 @@
 #include <string>
 #include <vector>
 
+#include "brave/components/crypto_dot_com/browser/crypto_dot_com_service.h"
+
 class CryptoDotComJSONParser {
  public:
   static bool GetTickerInfoFromJSON(const std::string& json,
-      std::map<std::string, std::string>* info);
+      CryptoDotComTickerInfo* info);
   static bool GetChartDataFromJSON(const std::string& json,
-      std::vector<std::map<std::string, std::string>>* data);
+      CryptoDotComChartData* data);
   static bool GetPairsFromJSON(const std::string& json,
-      std::vector<std::map<std::string, std::string>>* pairs);
+      CryptoDotComSupportedPairs* pairs);
   static bool GetRankingsFromJSON(const std::string& json,
-      std::map<std::string,
-      std::vector<std::map<std::string, std::string>>>* rankings);
+      CryptoDotComAssetRankings* rankings);
  private:
   static void CalculateAssetVolume(const double v,
       const double h,

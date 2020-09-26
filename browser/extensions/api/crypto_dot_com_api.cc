@@ -53,7 +53,7 @@ CryptoDotComGetTickerInfoFunction::Run() {
 }
 
 void CryptoDotComGetTickerInfoFunction::OnInfoResult(
-    const std::map<std::string, std::string>& info) {
+    const CryptoDotComTickerInfo& info) {
   auto result = std::make_unique<base::Value>(
       base::Value::Type::DICTIONARY);
 
@@ -85,7 +85,7 @@ CryptoDotComGetChartDataFunction::Run() {
 }
 
 void CryptoDotComGetChartDataFunction::OnChartDataResult(
-    const std::vector<std::map<std::string, std::string>>& data) {
+    const CryptoDotComChartData& data) {
   auto result = std::make_unique<base::ListValue>();
 
   for (const auto& data_point : data) {
@@ -117,7 +117,7 @@ CryptoDotComGetSupportedPairsFunction::Run() {
 }
 
 void CryptoDotComGetSupportedPairsFunction::OnSupportedPairsResult(
-    const std::vector<std::map<std::string, std::string>>& pairs) {
+    const CryptoDotComSupportedPairs& pairs) {
   auto result = std::make_unique<base::ListValue>();
 
   for (const auto& pair : pairs) {
@@ -149,8 +149,7 @@ CryptoDotComGetAssetRankingsFunction::Run() {
 }
 
 void CryptoDotComGetAssetRankingsFunction::OnAssetRankingsResult(
-    const std::map<std::string,
-    std::vector<std::map<std::string, std::string>>>& rankings) {
+    const CryptoDotComAssetRankings& rankings) {
   auto result = std::make_unique<base::Value>(
       base::Value::Type::DICTIONARY);
 

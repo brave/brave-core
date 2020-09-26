@@ -24,7 +24,7 @@ void CryptoDotComJSONParser::CalculateAssetVolume(
 
 bool CryptoDotComJSONParser::GetTickerInfoFromJSON(
     const std::string& json,
-    std::map<std::string, std::string>* info) {
+    CryptoDotComTickerInfo* info) {
   if (!info) {
     return false;
   }
@@ -78,7 +78,7 @@ bool CryptoDotComJSONParser::GetTickerInfoFromJSON(
 
 bool CryptoDotComJSONParser::GetChartDataFromJSON(
     const std::string& json,
-    std::vector<std::map<std::string, std::string>>* data) {
+    CryptoDotComChartData* data) {
   if (!data) {
     return false;
   }
@@ -144,7 +144,7 @@ bool CryptoDotComJSONParser::GetChartDataFromJSON(
 
 bool CryptoDotComJSONParser::GetPairsFromJSON(
     const std::string& json,
-    std::vector<std::map<std::string, std::string>>* pairs) {
+    CryptoDotComSupportedPairs* pairs) {
   if (!pairs) {
     return false;
   }
@@ -198,8 +198,7 @@ bool CryptoDotComJSONParser::GetPairsFromJSON(
 
 bool CryptoDotComJSONParser::GetRankingsFromJSON(
     const std::string& json,
-    std::map<std::string,
-    std::vector<std::map<std::string, std::string>>>* rankings) {
+    CryptoDotComAssetRankings* rankings) {
   if (!rankings) {
     return false;
   }

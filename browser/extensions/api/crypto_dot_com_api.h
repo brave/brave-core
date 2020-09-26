@@ -11,6 +11,7 @@
 #include <vector>
 
 #include "extensions/browser/extension_function.h"
+#include "brave/components/crypto_dot_com/browser/crypto_dot_com_service.h"
 
 class Profile;
 
@@ -24,7 +25,7 @@ class CryptoDotComGetTickerInfoFunction :
 
  protected:
   ~CryptoDotComGetTickerInfoFunction() override {}
-  void OnInfoResult(const std::map<std::string, std::string>& info);
+  void OnInfoResult(const CryptoDotComTickerInfo& info);
 
   ResponseAction Run() override;
 };
@@ -37,7 +38,7 @@ class CryptoDotComGetChartDataFunction :
  protected:
   ~CryptoDotComGetChartDataFunction() override {}
   void OnChartDataResult(
-      const std::vector<std::map<std::string, std::string>>& data);
+      const CryptoDotComChartData& data);
 
   ResponseAction Run() override;
 };
@@ -50,7 +51,7 @@ class CryptoDotComGetSupportedPairsFunction :
  protected:
   ~CryptoDotComGetSupportedPairsFunction() override {}
   void OnSupportedPairsResult(
-      const std::vector<std::map<std::string, std::string>>& pairs);
+      const CryptoDotComSupportedPairs& pairs);
 
   ResponseAction Run() override;
 };
@@ -63,8 +64,7 @@ class CryptoDotComGetAssetRankingsFunction :
  protected:
   ~CryptoDotComGetAssetRankingsFunction() override {}
   void OnAssetRankingsResult(
-      const std::map<std::string,
-      std::vector<std::map<std::string, std::string>>>& rankings);
+      const CryptoDotComAssetRankings& rankings);
 
   ResponseAction Run() override;
 };

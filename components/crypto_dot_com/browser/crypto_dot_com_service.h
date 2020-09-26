@@ -43,23 +43,26 @@ const char get_chart_data_path[] = "/v2/public/get-candlestick";
 const char get_pairs_path[] = "/v2/public/get-instruments";
 const char get_gainers_losers_path[] = "/fe-ex-api/widget/get-gainers";
 
+typedef std::map<std::string, std::string> CryptoDotComTickerInfo;
+typedef std::vector<std::map<std::string, std::string>> CryptoDotComChartData;
+typedef std::vector<std::map<std::string, std::string>>
+    CryptoDotComSupportedPairs;
+typedef std::map<std::string, std::vector<std::map<std::string, std::string>>>
+    CryptoDotComAssetRankings;
+
 class CryptoDotComService : public KeyedService {
  public:
   explicit CryptoDotComService(content::BrowserContext* context);
   ~CryptoDotComService() override;
 
   using GetTickerInfoCallback =
-        base::OnceCallback<void(const std::map<std::string, std::string>&)>;
+        base::OnceCallback<void(const CryptoDotComTickerInfo&)>;
   using GetChartDataCallback =
-        base::OnceCallback<void(
-            const std::vector<std::map<std::string, std::string>>&)>;
+        base::OnceCallback<void(const CryptoDotComChartData&)>;
   using GetSupportedPairsCallback =
-        base::OnceCallback<void(
-            const std::vector<std::map<std::string, std::string>>&)>;
+        base::OnceCallback<void(const CryptoDotComSupportedPairs&)>;
   using GetAssetRankingsCallback =
-        base::OnceCallback<void(
-            const std::map<std::string,
-            std::vector<std::map<std::string, std::string>>>&)>;
+        base::OnceCallback<void(const CryptoDotComAssetRankings&)>;
 
   bool GetTickerInfo(const std::string& asset,
                      GetTickerInfoCallback callback);

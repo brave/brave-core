@@ -62,6 +62,10 @@ GURL GetURLWithPath(const std::string& host, const std::string& path) {
   return GURL(std::string(url::kHttpsScheme) + "://" + host).Resolve(path);
 }
 
+std::string GetFormattedResponseBody(const std::string& json_response) {
+  return "{\"response\": " + json_response + "}";
+}
+
 }  // namespace
 
 CryptoDotComService::CryptoDotComService(content::BrowserContext* context)
@@ -89,9 +93,9 @@ void CryptoDotComService::OnTickerInfo(
   GetTickerInfoCallback callback,
   const int status, const std::string& body,
   const std::map<std::string, std::string>& headers) {
-  std::map<std::string, std::string> info;
+  CryptoDotComTickerInfo info;
   if (status >= 200 && status <= 299) {
-    const std::string json_body = "{\"response\": " + body + "}";
+    const std::string json_body = GetFormattedResponseBody(body);
     CryptoDotComJSONParser::GetTickerInfoFromJSON(json_body, &info);
   }
   std::move(callback).Run(info);
@@ -113,9 +117,9 @@ void CryptoDotComService::OnChartData(
   GetChartDataCallback callback,
   const int status, const std::string& body,
   const std::map<std::string, std::string>& headers) {
-  std::vector<std::map<std::string, std::string>> data;
+  CryptoDotComChartData data;
   if (status >= 200 && status <= 299) {
-    const std::string json_body = "{\"response\": " + body + "}";
+    const std::string json_body = GetFormattedResponseBody(body);
     CryptoDotComJSONParser::GetChartDataFromJSON(json_body, &data);
   }
   std::move(callback).Run(data);
@@ -135,9 +139,9 @@ void CryptoDotComService::OnSupportedPairs(
   GetSupportedPairsCallback callback,
   const int status, const std::string& body,
   const std::map<std::string, std::string>& headers) {
-  std::vector<std::map<std::string, std::string>> pairs;
+  CryptoDotComSupportedPairs pairs;
   if (status >= 200 && status <= 299) {
-    const std::string json_body = "{\"response\": " + body + "}";
+    const std::string json_body = GetFormattedResponseBody(body);
     CryptoDotComJSONParser::GetPairsFromJSON(json_body, &pairs);
   }
   std::move(callback).Run(pairs);
@@ -157,10 +161,9 @@ void CryptoDotComService::OnAssetRankings(
     GetAssetRankingsCallback callback,
     const int status, const std::string& body,
     const std::map<std::string, std::string>& headers) {
-  std::map<std::string,
-      std::vector<std::map<std::string, std::string>>> rankings;
+  CryptoDotComAssetRankings rankings;
   if (status >= 200 && status <= 299) {
-    const std::string json_body = "{\"response\": " + body + "}";
+    const std::string json_body = GetFormattedResponseBody(body);
     CryptoDotComJSONParser::GetRankingsFromJSON(json_body, &rankings);
   }
   std::move(callback).Run(rankings);
