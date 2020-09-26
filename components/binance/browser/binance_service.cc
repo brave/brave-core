@@ -137,7 +137,7 @@ bool BinanceService::GetAccountBalances(GetAccountBalancesCallback callback) {
 void BinanceService::OnGetAccountBalances(GetAccountBalancesCallback callback,
     const int status, const std::string& body,
     const std::map<std::string, std::string>& headers) {
-  std::map<std::string, std::vector<std::string>> balances;
+  BinanceAccountBalances balances;
 
   bool success = status >= 200 && status <= 299;
   if (success) {
@@ -356,7 +356,7 @@ void BinanceService::OnGetCoinNetworks(
   GetCoinNetworksCallback callback,
   const int status, const std::string& body,
   const std::map<std::string, std::string>& headers) {
-  std::map<std::string, std::string> networks;
+  BinanceCoinNetworks networks;
   if (status >= 200 && status <= 299) {
     BinanceJSONParser::GetCoinNetworksFromJSON(body, &networks);
   }
@@ -430,8 +430,7 @@ bool BinanceService::GetConvertAssets(GetConvertAssetsCallback callback) {
 void BinanceService::OnGetConvertAssets(GetConvertAssetsCallback callback,
     const int status, const std::string& body,
     const std::map<std::string, std::string>& headers) {
-  std::map<std::string, std::vector<
-      std::map<std::string, std::string>>> assets;
+  BinanceConvertAsserts assets;
 
   if (status >= 200 && status <= 299) {
     BinanceJSONParser::GetConvertAssetsFromJSON(body, &assets);

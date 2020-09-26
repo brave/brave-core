@@ -120,7 +120,7 @@ GeminiGetAccountBalancesFunction::Run() {
 }
 
 void GeminiGetAccountBalancesFunction::OnGetAccountBalances(
-    const std::map<std::string, std::string>& balances,
+    const GeminiAccountBalances& balances,
     bool auth_invalid) {
   auto result = std::make_unique<base::Value>(
       base::Value::Type::DICTIONARY);

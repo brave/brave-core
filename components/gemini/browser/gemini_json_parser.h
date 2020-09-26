@@ -6,9 +6,10 @@
 #ifndef BRAVE_COMPONENTS_GEMINI_BROWSER_GEMINI_JSON_PARSER_H_
 #define BRAVE_COMPONENTS_GEMINI_BROWSER_GEMINI_JSON_PARSER_H_
 
-#include <map>
 #include <string>
 #include <vector>
+
+#include "brave/components/gemini/browser/gemini_service.h"
 
 class GeminiJSONParser {
  public:
@@ -18,7 +19,7 @@ class GeminiJSONParser {
   static bool GetTickerPriceFromJSON(const std::string& json,
                                      std::string* price);
   static bool GetAccountBalancesFromJSON(const std::string& json,
-      std::map<std::string, std::string>* balances);
+      GeminiAccountBalances* balances);
   static bool GetDepositInfoFromJSON(const std::string& json,
                                      std::string* address);
   static bool GetOrderQuoteInfoFromJSON(const std::string& json,

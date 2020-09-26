@@ -38,13 +38,15 @@ class SimpleURLLoader;
 
 class Profile;
 
-const char oauth_path_access_token[] = "/auth/token";
+const char auth_path_access_token[] = "/auth/token";
 const char api_path_account_balances[] = "/v1/balances";
 const char api_path_account_addresses[] = "/v1/addresses";
 const char api_path_get_quote[] = "/v1/instant/quote";
 const char api_path_execute_quote[] = "/v1/instant/execute";
 const char api_path_ticker_price[] = "/v1/pubticker";
 const char api_path_revoke_token[] = "/v1/oauth/revokeByToken";
+
+typedef std::map<std::string, std::string> GeminiAccountBalances;
 
 class GeminiService : public KeyedService {
  public:
@@ -58,7 +60,7 @@ class GeminiService : public KeyedService {
       base::OnceCallback<void(const int, const std::string&,
                               const std::map<std::string, std::string>&)>;
   using GetAccountBalancesCallback = base::OnceCallback<
-      void(const std::map<std::string, std::string>&, bool)>;
+      void(const GeminiAccountBalances&, bool)>;
   using GetDepositInfoCallback = base::OnceCallback<void(const std::string&)>;
   using RevokeAccessTokenCallback = base::OnceCallback<void(bool)>;
   using GetOrderQuoteCallback = base::OnceCallback<void(const std::string&,
