@@ -39,7 +39,7 @@ std::string UnblindedTokensFrequencyCap::get_last_message() const {
   return last_message_;
 }
 
-bool UnblindedTokensFrequencyCap::DoesRespectCap() const {
+bool UnblindedTokensFrequencyCap::DoesRespectCap() {
   const int count = ads_->get_confirmations()->get_unblinded_tokens()->Count();
 
   if (count < kUnblindedTokenCountThreshold) {

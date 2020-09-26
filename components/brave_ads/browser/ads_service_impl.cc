@@ -20,6 +20,7 @@
 #include "base/guid.h"
 #include "base/logging.h"
 #include "base/memory/ptr_util.h"
+#include "base/numerics/ranges.h"
 #include "base/sequenced_task_runner.h"
 #include "base/strings/utf_string_conversions.h"
 #include "base/task/post_task.h"
@@ -544,12 +545,14 @@ bool AdsServiceImpl::ShouldAllowAdConversionTracking() const {
   return GetBooleanPref(prefs::kShouldAllowAdConversionTracking);
 }
 
-uint64_t AdsServiceImpl::GetAdsPerHour() const {
-  return GetUint64Pref(prefs::kAdsPerHour);
+uint64_t AdsServiceImpl::GetAdsPerHour() {
+  return base::ClampToRange(GetUint64Pref(prefs::kAdsPerHour),
+      static_cast<uint64_t>(1), static_cast<uint64_t>(5));
 }
 
-uint64_t AdsServiceImpl::GetAdsPerDay() const {
-  return GetUint64Pref(prefs::kAdsPerDay);
+uint64_t AdsServiceImpl::GetAdsPerDay() {
+  return base::ClampToRange(GetUint64Pref(prefs::kAdsPerDay),
+      static_cast<uint64_t>(1), static_cast<uint64_t>(20));
 }
 
 bool AdsServiceImpl::ShouldAllowAdsSubdivisionTargeting() const {

@@ -35,10 +35,10 @@ class ADS_EXPORT AdsClient {
   virtual bool ShouldAllowAdConversionTracking() const = 0;
 
   // Should return the maximum number of ads that can be shown per hour
-  virtual uint64_t GetAdsPerHour() const = 0;
+  virtual uint64_t GetAdsPerHour() = 0;
 
   // Should return the maximum number of ads that can be shown per day
-  virtual uint64_t GetAdsPerDay() const = 0;
+  virtual uint64_t GetAdsPerDay() = 0;
 
   // Should return |true| if ads subdivision targeting is allowed; otherwise,
   // should return |false|

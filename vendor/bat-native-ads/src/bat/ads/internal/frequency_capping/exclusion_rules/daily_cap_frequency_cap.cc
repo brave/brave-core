@@ -45,7 +45,7 @@ std::string DailyCapFrequencyCap::get_last_message() const {
 
 bool DailyCapFrequencyCap::DoesRespectCap(
       const std::deque<uint64_t>& history,
-      const CreativeAdInfo& ad) const {
+      const CreativeAdInfo& ad) {
   const uint64_t time_constraint =
       base::Time::kSecondsPerHour * base::Time::kHoursPerDay;
 

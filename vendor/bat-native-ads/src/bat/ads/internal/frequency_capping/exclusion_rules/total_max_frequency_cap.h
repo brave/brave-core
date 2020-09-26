@@ -41,7 +41,7 @@ class TotalMaxFrequencyCap : public ExclusionRule {
 
   bool DoesRespectCap(
       const std::deque<uint64_t>& history,
-      const CreativeAdInfo& ad) const;
+      const CreativeAdInfo& ad);
 
   std::deque<uint64_t> FilterHistory(
       const std::map<std::string, std::deque<uint64_t>>& history,
