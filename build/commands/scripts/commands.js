@@ -68,7 +68,6 @@ program
   .option('--binance_client_id <binance_client_id>')
   .option('--gemini_client_id <gemini_client_id>')
   .option('--gemini_client_secret <gemini_client_secret>')
-  .option('--crypto_dot_com_exchange_token <crypto_dot_com_exchange_token>')
   .option('--channel <target_channel>', 'target channel to build', /^(beta|dev|nightly|release)$/i)
   .option('--ignore_compile_failure', 'Keep compiling regardless of error')
   .option('--skip_signing', 'skip signing binaries')

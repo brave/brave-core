@@ -173,7 +173,7 @@ void CryptoDotComGetAssetRankingsFunction::OnAssetRankingsResult(
 ExtensionFunction::ResponseAction
 CryptoDotComIsSupportedFunction::Run() {
   Profile* profile = Profile::FromBrowserContext(browser_context());
-  // todo(ryanml) - add the final list of supported countries in the appropriate regions.h file
+  // todo(ryanml) - add the final list of supported countries in a regions file
   std::vector<std::string> supported_regions = { "US" };
   bool is_supported = ntp_widget_utils::IsRegionSupported(
       profile->GetPrefs(), supported_regions, true);

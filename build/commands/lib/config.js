@@ -93,7 +93,6 @@ const Config = function () {
   this.binanceClientId = getNPMConfig(['binance_client_id']) || ''
   this.geminiClientId = getNPMConfig(['gemini_client_id']) || ''
   this.geminiClientSecret = getNPMConfig(['gemini_client_secret']) || ''
-  this.cryptoDotComExchangeToken = getNPMConfig(['crypto_dot_com_exchange_token']) || ''
   this.safeBrowsingApiEndpoint = getNPMConfig(['safebrowsing_api_endpoint']) || ''
   this.updaterProdEndpoint = getNPMConfig(['updater_prod_endpoint']) || ''
   this.updaterDevEndpoint = getNPMConfig(['updater_dev_endpoint']) || ''
@@ -206,7 +205,6 @@ Config.prototype.buildArgs = function () {
     binance_client_id: this.binanceClientId,
     gemini_client_id: this.geminiClientId,
     gemini_client_secret: this.geminiClientSecret,
-    crypto_dot_com_exchange_token: this.cryptoDotComExchangeToken,
     brave_product_name: getNPMConfig(['brave_product_name']) || "brave-core",
     brave_project_name: getNPMConfig(['brave_project_name']) || "brave-core",
     brave_version_major: version_parts[0],
@@ -342,7 +340,6 @@ Config.prototype.buildArgs = function () {
     delete args.binance_client_id
     delete args.gemini_client_id
     delete args.gemini_client_secret
-    delete args.crypto_dot_com_exchange_token
   }
 
   if (this.targetOS === 'ios') {
@@ -381,7 +378,6 @@ Config.prototype.buildArgs = function () {
     delete args.binance_client_id
     delete args.gemini_client_id
     delete args.gemini_client_secret
-    delete args.crypto_dot_com_exchange_token
     delete args.brave_services_key
     delete args.webcompat_report_api_endpoint
     delete args.use_blink_v8_binding_new_idl_interface
@@ -529,10 +525,6 @@ Config.prototype.update = function (options) {
 
   if (options.gemini_client_secret) {
     this.geminiClientSecret = options.gemini_client_secret
-  }
-
-  if (options.crypto_dot_com_exchange_token) {
-    this.cryptoDotComExchangeToken = options.crypto_dot_com_exchange_token
   }
 
   if (options.safebrowsing_api_endpoint) {

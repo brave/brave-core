@@ -91,16 +91,13 @@ class CryptoDotComService : public KeyedService {
                        const std::map<std::string, std::string>& headers);
 
   bool NetworkRequest(const GURL& url, const std::string& method,
-      const std::string& post_data, URLRequestCallback callback,
-      bool use_exchange_token);
+      const std::string& post_data, URLRequestCallback callback);
   void OnURLLoaderComplete(
       SimpleURLLoaderList::iterator iter,
       URLRequestCallback callback,
       const std::unique_ptr<std::string> response_body);
 
   scoped_refptr<base::SequencedTaskRunner> io_task_runner_;
-
-  std::string exchange_token_;
 
   content::BrowserContext* context_;
   scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory_;

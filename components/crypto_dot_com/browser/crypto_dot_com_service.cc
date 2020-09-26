@@ -65,8 +65,7 @@ GURL GetURLWithPath(const std::string& host, const std::string& path) {
 }  // namespace
 
 CryptoDotComService::CryptoDotComService(content::BrowserContext* context)
-    : exchange_token_(CRYPTO_DOT_COM_EXCHANGE_TOKEN),
-      context_(context),
+    : context_(context),
       url_loader_factory_(
           content::BrowserContext::GetDefaultStoragePartition(context_)
               ->GetURLLoaderFactoryForBrowserProcess()),
@@ -83,7 +82,7 @@ bool CryptoDotComService::GetTickerInfo(const std::string& asset,
   GURL url = GetURLWithPath(api_host, get_ticker_info_path);
   url = net::AppendQueryParameter(url, "instrument_name", asset);
   return NetworkRequest(
-      url, "GET", "", std::move(internal_callback), false);
+      url, "GET", "", std::move(internal_callback));
 }
 
 void CryptoDotComService::OnTickerInfo(
@@ -107,7 +106,7 @@ bool CryptoDotComService::GetChartData(const std::string& asset,
   url = net::AppendQueryParameter(url, "timeframe", "4h");
   url = net::AppendQueryParameter(url, "depth", "42");
   return NetworkRequest(
-      url, "GET", "", std::move(internal_callback), false);
+      url, "GET", "", std::move(internal_callback));
 }
 
 void CryptoDotComService::OnChartData(
@@ -129,7 +128,7 @@ bool CryptoDotComService::GetSupportedPairs(
       base::Unretained(this), std::move(callback));
   GURL url = GetURLWithPath(api_host, get_pairs_path);
   return NetworkRequest(
-      url, "GET", "", std::move(internal_callback), false);
+      url, "GET", "", std::move(internal_callback));
 }
 
 void CryptoDotComService::OnSupportedPairs(
@@ -151,7 +150,7 @@ bool CryptoDotComService::GetAssetRankings(
       base::Unretained(this), std::move(callback));
   GURL url = GetURLWithPath(root_host, get_gainers_losers_path);
   return NetworkRequest(
-      url, "GET", "", std::move(internal_callback), false);
+      url, "GET", "", std::move(internal_callback));
 }
 
 void CryptoDotComService::OnAssetRankings(
@@ -170,8 +169,7 @@ void CryptoDotComService::OnAssetRankings(
 bool CryptoDotComService::NetworkRequest(const GURL &url,
                                   const std::string& method,
                                   const std::string& post_data,
-                                  URLRequestCallback callback,
-                                  bool use_exchange_token) {
+                                  URLRequestCallback callback) {
   auto request = std::make_unique<network::ResourceRequest>();
   request->url = url;
   request->load_flags = net::LOAD_BYPASS_CACHE |
@@ -186,10 +184,6 @@ bool CryptoDotComService::NetworkRequest(const GURL &url,
   if (!post_data.empty()) {
     url_loader->AttachStringForUpload(post_data,
         "application/x-www-form-urlencoded");
-  }
-
-  if (use_exchange_token) {
-    request->headers.SetHeader("exchange-token", exchange_token_);
   }
 
   url_loader->SetRetryOptions(

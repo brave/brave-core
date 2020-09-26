@@ -3,10 +3,6 @@ import("//brave/components/crypto_dot_com/browser/buildflags/buildflags.gni")
 
 assert(crypto_dot_com_enabled)
 
-declare_args() {
-  crypto_dot_com_exchange_token = ""
-}
-
 source_set("browser") {
   public_deps = [
     "buildflags"
@@ -27,13 +23,5 @@ source_set("browser") {
     "//net",
     "//services/network/public/cpp",
     "//url",
-  ]
-
-  configs += [ ":crypto_dot_com_config" ]
-}
-
-config("crypto_dot_com_config") {
-  defines = [
-    "CRYPTO_DOT_COM_EXCHANGE_TOKEN=\"$crypto_dot_com_exchange_token\"",
   ]
 }
