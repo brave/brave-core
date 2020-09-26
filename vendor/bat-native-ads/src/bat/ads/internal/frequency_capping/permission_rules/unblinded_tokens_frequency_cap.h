@@ -40,7 +40,7 @@ class UnblindedTokensFrequencyCap : public PermissionRule  {
 
   std::string last_message_;
 
-  bool DoesRespectCap() const;
+  bool DoesRespectCap();
 };
 
 }  // namespace ads

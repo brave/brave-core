@@ -44,6 +44,7 @@
 #include "bat/ads/internal/frequency_capping/permission_rules/ads_per_hour_frequency_cap.h"
 #include "bat/ads/internal/frequency_capping/permission_rules/minimum_wait_time_frequency_cap.h"
 #include "bat/ads/internal/frequency_capping/permission_rules/unblinded_tokens_frequency_cap.h"
+#include "bat/ads/internal/frequency_capping/permission_rules/user_activity_frequency_cap.h"
 #include "bat/ads/internal/logging.h"
 #include "bat/ads/internal/platform/platform_helper.h"
 #include "bat/ads/internal/reports/reports.h"
@@ -116,7 +117,8 @@ AdsImpl::AdsImpl(
           RedeemUnblindedPaymentTokens>(this)),
       redeem_unblinded_token_(std::make_unique<RedeemUnblindedToken>(this)),
       refill_unblinded_tokens_(std::make_unique<RefillUnblindedTokens>(this)),
-      subdivision_targeting_(std::make_unique<SubdivisionTargeting>(this)) {
+      subdivision_targeting_(std::make_unique<SubdivisionTargeting>(this)),
+      user_activity_(std::make_unique<UserActivity>()) {
   set_ads_client_for_logging(ads_client_);
 
   redeem_unblinded_token_->set_delegate(this);
@@ -231,14 +233,7 @@ void AdsImpl::InitializeStep6(
 
   client_->UpdateAdUUID();
 
-  if (PlatformHelper::GetInstance()->IsMobile()) {
-    if (client_->GetNextCheckServeAdNotificationDate().is_null()) {
-      StartDeliveringAdNotificationsAfterSeconds(
-          2 * base::Time::kSecondsPerMinute);
-    } else {
-      StartDeliveringAdNotifications();
-    }
-  }
+  MaybeStartDeliveringAdNotifications();
 
   const CatalogIssuersInfo catalog_issuers =
       confirmations_->GetCatalogIssuers();
@@ -310,10 +305,10 @@ void AdsImpl::OnForeground() {
 
   BLOG(1, "Browser window did become active");
 
-  if (PlatformHelper::GetInstance()->IsMobile() &&
-      !ads_client_->CanShowBackgroundNotifications()) {
-    StartDeliveringAdNotifications();
-  }
+  user_activity_->RecordActivityForType(
+      UserActivityType::kBrowserWindowDidBecomeActive);
+
+  MaybeStartDeliveringAdNotifications();
 }
 
 void AdsImpl::OnBackground() {
@@ -321,10 +316,10 @@ void AdsImpl::OnBackground() {
 
   BLOG(1, "Browser window did enter background");
 
-  if (PlatformHelper::GetInstance()->IsMobile() &&
-      !ads_client_->CanShowBackgroundNotifications()) {
-    deliver_ad_notification_timer_.Stop();
-  }
+  user_activity_->RecordActivityForType(
+      UserActivityType::kBrowserWindowDidEnterBackground);
+
+  MaybeStartDeliveringAdNotifications();
 }
 
 bool AdsImpl::IsForeground() const {
@@ -361,6 +356,8 @@ void AdsImpl::OnMediaPlaying(
   BLOG(2, "Started playing media for tab id " << tab_id);
 
   media_playing_.insert(tab_id);
+
+  user_activity_->RecordActivityForType(UserActivityType::kStartedPlayingMedia);
 }
 
 void AdsImpl::OnMediaStopped(
@@ -448,23 +445,18 @@ void AdsImpl::OnTabUpdated(
   }
 
   if (is_active && is_browser_active) {
-    BLOG(2, "Tab id " << tab_id << " is visible");
+    if (active_tab_id_ != tab_id) {
+      BLOG(2, "Tab id " << tab_id << " is visible");
 
-    active_tab_id_ = tab_id;
-    previous_tab_url_ = active_tab_url_;
-    active_tab_url_ = url;
+      user_activity_->RecordActivityForType(
+          UserActivityType::kOpenedNewOrFocusedOnExistingTab);
+
+      active_tab_id_ = tab_id;
+      previous_tab_url_ = active_tab_url_;
+      active_tab_url_ = url;
+    }
   } else {
     BLOG(7, "Tab id " << tab_id << " is occluded");
-  }
-
-  if (is_browser_active) {
-    if (!is_foreground_) {
-      OnForeground();
-    }
-  } else {
-    if (is_foreground_) {
-      OnBackground();
-    }
   }
 }
 
@@ -475,6 +467,8 @@ void AdsImpl::OnTabClosed(
   OnMediaStopped(tab_id);
 
   sustained_ad_notifications_.erase(tab_id);
+
+  user_activity_->RecordActivityForType(UserActivityType::kClosedTab);
 }
 
 void AdsImpl::OnWalletUpdated(
@@ -1150,11 +1144,17 @@ std::vector<std::unique_ptr<PermissionRule>>
       std::make_unique<UnblindedTokensFrequencyCap>(this);
   permission_rules.push_back(std::move(unblinded_tokens_frequency_cap));
 
+  std::unique_ptr<PermissionRule> user_activity_frequency_cap =
+      std::make_unique<UserActivityFrequencyCap>(this);
+  permission_rules.push_back(std::move(user_activity_frequency_cap));
+
   return permission_rules;
 }
 
 bool AdsImpl::IsAllowedToServeAdNotifications() {
   const auto permission_rules = CreatePermissionRules();
+
+  std::set<std::string> permission_reasons;
 
   bool is_allowed = true;
 
@@ -1163,15 +1163,47 @@ bool AdsImpl::IsAllowedToServeAdNotifications() {
       continue;
     }
 
-    BLOG(2, permission_rule->get_last_message());
+    const std::string permission_reason = permission_rule->get_last_message();
+    if (!permission_reason.empty()) {
+      permission_reasons.insert(permission_reason);
+    }
 
     is_allowed = false;
+  }
+
+  for (const auto& permission_reason : permission_reasons) {
+    BLOG(2, permission_reason);
   }
 
   return is_allowed;
 }
 
+void AdsImpl::MaybeStartDeliveringAdNotifications() {
+  if (!PlatformHelper::GetInstance()->IsMobile()) {
+    return;
+  }
+
+  if (ads_client_->CanShowBackgroundNotifications()) {
+    StartDeliveringAdNotifications();
+  } else {
+    if (is_foreground_) {
+      if (client_->GetNextCheckServeAdNotificationDate().is_null()) {
+        StartDeliveringAdNotificationsAfterSeconds(
+            2 * base::Time::kSecondsPerMinute);
+      } else {
+        StartDeliveringAdNotifications();
+      }
+    } else {
+      deliver_ad_notification_timer_.Stop();
+    }
+  }
+}
+
 void AdsImpl::StartDeliveringAdNotifications() {
+  if (deliver_ad_notification_timer_.IsRunning()) {
+    return;
+  }
+
   const base::Time now = base::Time::Now();
   const base::Time next_check_serve_ad_notification_date =
       client_->GetNextCheckServeAdNotificationDate();

@@ -44,7 +44,7 @@ std::string DismissedFrequencyCap::get_last_message() const {
 
 bool DismissedFrequencyCap::DoesRespectCap(
     const std::deque<AdHistory>& history,
-    const CreativeAdInfo& ad) const {
+    const CreativeAdInfo& ad) {
   int count = 0;
   for (const auto& ad : history) {
     if (ad.ad_content.ad_action == ConfirmationType::kClicked) {
