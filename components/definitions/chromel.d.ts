@@ -197,6 +197,8 @@ declare namespace chrome.cryptoDotCom {
   const getSupportedPairs: (callback: (pairs: any[]) => void) => {}
   const getAssetRankings: (callback: (assets: any) => void) => {}
   const isSupported: (callback: (supported: boolean) => void) => {}
+  const onBuyCrypto: () => void
+  const onInteraction: () => void
 }
 
 declare namespace chrome.braveTogether {

@@ -282,6 +282,7 @@ source_set("browser_process") {
       "//base",
       "//brave/browser/profiles",
       "//brave/components/crypto_dot_com/browser",
+      "//brave/components/crypto_dot_com/common",
       "//components/keyed_service/content",
       "//components/user_prefs",
       "//content/public/browser",

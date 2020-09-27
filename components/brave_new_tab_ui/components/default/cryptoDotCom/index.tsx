@@ -85,6 +85,8 @@ interface Props {
   onSetTickerPrices: (assets: string[]) => Promise<void>
   onSetCharts: (asset: string[]) => Promise<void>
   onUpdateActions: () => Promise<void[]>
+  onBuyCrypto: () => void
+  onInteraction: () => void
 }
 interface ChartConfig {
   data: Array<any>
@@ -156,6 +158,7 @@ class CryptoDotCom extends React.PureComponent<Props, State> {
       this.props.onSetLosersGainers()
     ])
     this.setSelectedView('topMovers')
+    this.props.onInteraction()
   }
 
   handleAssetDetailClick = async (asset: string) => {
@@ -164,6 +167,10 @@ class CryptoDotCom extends React.PureComponent<Props, State> {
       this.props.onSetSupportedPairs()
     ])
     this.setSelectedAsset(asset)
+  }
+
+  onClickBuy = () => {
+    this.props.onBuyCrypto()
   }
 
   plotData ({ data, chartHeight, chartWidth }: ChartConfig) {
@@ -226,7 +233,7 @@ class CryptoDotCom extends React.PureComponent<Props, State> {
             )}
           </FlexItem>
           <FlexItem style={{ paddingLeft: 5 }}>
-            <ActionButton small={true} light={true}>BUY</ActionButton>
+            <ActionButton onClick={this.onClickBuy} small={true} light={true}>BUY</ActionButton>
           </FlexItem>
         </Box>
         <Text center={true} style={{ padding: '1em 0 0.5em', fontSize: 15 }}>Get 2% bonus on deposits</Text>
@@ -330,7 +337,7 @@ class CryptoDotCom extends React.PureComponent<Props, State> {
             <polyline
               fill='none'
               stroke='#44B0FF'
-              stroke-width='3'
+              strokeWidth='3'
               points={this.plotData({
                 data: chartData,
                 chartHeight,
@@ -350,7 +357,7 @@ class CryptoDotCom extends React.PureComponent<Props, State> {
             <Text small={true} $color='light' style={{ paddingBottom: '0.2rem' }}>
               24HR VOLUME
             </Text>
-            {(volume != null) && <Text weight={500}>{new Intl.NumberFormat('en-IN', { style: 'currency', currency: 'USD', currencyDisplay: 'narrowSymbol' }).format(volume)} USDT</Text>}
+            {volume && <Text weight={500}>{new Intl.NumberFormat('en-IN', { style: 'currency', currency: 'USD', currencyDisplay: 'narrowSymbol' }).format(volume)} USDT</Text>}
           </div>
           <div style={{ marginTop: '1em' }}>
             <Text small={true} $color='light' style={{ paddingBottom: '0.2rem' }}>SUPPORTED PAIRS</Text>

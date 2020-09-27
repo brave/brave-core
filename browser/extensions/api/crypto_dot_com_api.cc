@@ -13,11 +13,13 @@
 #include "brave/browser/crypto_dot_com/crypto_dot_com_service_factory.h"
 #include "brave/components/crypto_dot_com/browser/crypto_dot_com_service.h"
 #include "brave/components/crypto_dot_com/browser/regions.h"
+#include "brave/components/crypto_dot_com/common/pref_names.h"
 #include "brave/components/ntp_widget_utils/browser/ntp_widget_utils_region.h"
 #include "chrome/browser/extensions/api/tabs/tabs_constants.h"
 #include "chrome/browser/extensions/extension_tab_util.h"
 #include "chrome/browser/infobars/infobar_service.h"
 #include "chrome/browser/profiles/profile.h"
+#include "components/prefs/pref_service.h"
 #include "extensions/browser/extension_util.h"
 #include "extensions/common/constants.h"
 
@@ -204,6 +206,50 @@ CryptoDotComIsSupportedFunction::Run() {
 
   return RespondNow(OneArgument(
       std::make_unique<base::Value>(is_supported)));
+}
+
+ExtensionFunction::ResponseAction
+CryptoDotComOnBuyCryptoFunction::Run() {
+  if (!IsCryptoDotComAPIAvailable(browser_context())) {
+    return RespondNow(Error("Not available in Tor/incognito/guest profile"));
+  }
+
+  Profile* profile = Profile::FromBrowserContext(browser_context());
+  profile->GetPrefs()->SetBoolean(kCryptoDotComHasBoughtCrypto, true);
+  profile->GetPrefs()->SetBoolean(kCryptoDotComHasInteracted, true);
+
+  return RespondNow(NoArguments());
+}
+
+ExtensionFunction::ResponseAction
+CryptoDotComOnInteractionFunction::Run() {
+  if (!IsCryptoDotComAPIAvailable(browser_context())) {
+    return RespondNow(Error("Not available in Tor/incognito/guest profile"));
+  }
+
+  Profile* profile = Profile::FromBrowserContext(browser_context());
+  profile->GetPrefs()->SetBoolean(kCryptoDotComHasInteracted, true);
+
+  return RespondNow(NoArguments());
+}
+
+ExtensionFunction::ResponseAction
+CryptoDotComGetInteractionsFunction::Run() {
+  if (!IsCryptoDotComAPIAvailable(browser_context())) {
+    return RespondNow(Error("Not available in Tor/incognito/guest profile"));
+  }
+
+  Profile* profile = Profile::FromBrowserContext(browser_context());
+  bool has_bought = profile->GetPrefs()->GetBoolean(
+      kCryptoDotComHasBoughtCrypto);
+  bool has_interacted = profile->GetPrefs()->GetBoolean(
+      kCryptoDotComHasInteracted);
+
+  auto interactions = std::make_unique<base::DictionaryValue>();
+  interactions->SetBoolean("boughtCrypto", has_bought);
+  interactions->SetBoolean("interacted", has_interacted);
+
+  return RespondNow(OneArgument(std::move(interactions)));
 }
 
 }  // namespace api

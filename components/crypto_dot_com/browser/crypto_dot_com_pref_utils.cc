@@ -17,6 +17,8 @@ CryptoDotComPrefUtils::~CryptoDotComPrefUtils() {}
 // static
 void CryptoDotComPrefUtils::RegisterPrefs(PrefRegistrySimple* registry) {
   registry->RegisterBooleanPref(kCryptoDotComNewTabPageShowCryptoDotCom, true);
+  registry->RegisterBooleanPref(kCryptoDotComHasBoughtCrypto, false);
+  registry->RegisterBooleanPref(kCryptoDotComHasInteracted, false);
 }
 
 }  // namespace crypto_dot_com

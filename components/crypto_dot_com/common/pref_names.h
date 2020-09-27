@@ -7,5 +7,7 @@
 #define BRAVE_COMPONENTS_CRYPTO_DOT_COM_COMMON_PREF_NAMES_H_
 
 extern const char kCryptoDotComNewTabPageShowCryptoDotCom[];
+extern const char kCryptoDotComHasBoughtCrypto[];
+extern const char kCryptoDotComHasInteracted[];
 
 #endif  // BRAVE_COMPONENTS_CRYPTO_DOT_COM_COMMON_PREF_NAMES_H_

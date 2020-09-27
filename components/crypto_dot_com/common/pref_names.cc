@@ -7,3 +7,7 @@
 
 const char kCryptoDotComNewTabPageShowCryptoDotCom[] =
     "crypto_dot_com.new_tab_page.show_crypto_dot_com";
+const char kCryptoDotComHasBoughtCrypto[] =
+    "crypto_dot_com.new_tab_page.has_bought_crypto";
+const char kCryptoDotComHasInteracted[] =
+    "crypto_dot_com.new_tab_page.has_interacted";

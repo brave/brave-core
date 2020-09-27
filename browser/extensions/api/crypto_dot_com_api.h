@@ -79,6 +79,36 @@ class CryptoDotComIsSupportedFunction :
   ResponseAction Run() override;
 };
 
+class CryptoDotComOnBuyCryptoFunction :
+    public ExtensionFunction {
+ public:
+  DECLARE_EXTENSION_FUNCTION("cryptoDotCom.onBuyCrypto", UNKNOWN)
+
+ protected:
+  ~CryptoDotComOnBuyCryptoFunction() override {}
+  ResponseAction Run() override;
+};
+
+class CryptoDotComOnInteractionFunction :
+    public ExtensionFunction {
+ public:
+  DECLARE_EXTENSION_FUNCTION("cryptoDotCom.onInteraction", UNKNOWN)
+
+ protected:
+  ~CryptoDotComOnInteractionFunction() override {}
+  ResponseAction Run() override;
+};
+
+class CryptoDotComGetInteractionsFunction :
+    public ExtensionFunction {
+ public:
+  DECLARE_EXTENSION_FUNCTION("cryptoDotCom.getInteractions", UNKNOWN)
+
+ protected:
+  ~CryptoDotComGetInteractionsFunction() override {}
+  ResponseAction Run() override;
+};
+
 }  // namespace api
 }  // namespace extensions
 

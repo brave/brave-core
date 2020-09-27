@@ -58,6 +58,14 @@ const cryptoDotComReducer: Reducer<NewTab.State | undefined> = (state: NewTab.St
       state.cryptoDotComState.supportedPairs = supportedPairs
       break
 
+    case types.ON_BUY_CRYPTO:
+      chrome.cryptoDotCom.onBuyCrypto()
+      break
+
+    case types.ON_INTERACTION:
+      chrome.cryptoDotCom.onInteraction()
+      break
+
     default:
       break
   }

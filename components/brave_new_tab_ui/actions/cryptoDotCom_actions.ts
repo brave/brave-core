@@ -17,3 +17,7 @@ export const setCryptoDotComLosersGainers = (losersGainers: object) => action(ty
 export const setCryptoDotComCharts = (charts: object) => action(types.SET_CHART_DATA, charts)
 
 export const setCryptoDotComSupportedPairs = (pairs: object) => action(types.SET_SUPPORTED_PAIRS, pairs)
+
+export const onCryptoDotComBuyCrypto = () => action(types.ON_BUY_CRYPTO)
+
+export const onCryptoDotComInteraction = () => action(types.ON_INTERACTION)
