@@ -32,7 +32,6 @@ public class BinanceConvert {
 
     private void fromJson(String json_balance) throws JSONException {
         JSONObject jsonroot = new JSONObject(json_balance);
-        Log.e("NTP", json_balance);
         Iterator<String> keys = jsonroot.keys();
         mCurrencyValues = new HashMap <>();
         while (keys.hasNext()) {
@@ -41,7 +40,6 @@ public class BinanceConvert {
             List<ConvertAsset> tempList = new ArrayList<>();
             for (int i = 0; i < data.length(); i++) {
                 JSONObject convertAssetJsonObject = new JSONObject(data.getString(i));
-                // Log.e("NTP", convertAssetJsonObject);
                 tempList.add(new ConvertAsset(convertAssetJsonObject.getString("asset"), convertAssetJsonObject.getString("minAmount")));
             }
             mCurrencyValues.put(key, tempList);

@@ -1359,6 +1359,9 @@ until they verify, or until 90 days have passed.
       <message name="IDS_TEXT_HAS_BEEN_COPIED" desc="Copy to clipboard toast text.">
         Your text has been copied to the clipboard.
       </message>
+      <message name="IDS_RETRY" desc="Retry button text.">
+        Retry
+      </message>
     </messages>
   </release>
 </grit>

@@ -17,6 +17,7 @@ import android.widget.Spinner;
 import android.widget.Button;
 import android.widget.RadioGroup;
 import android.widget.AdapterView;
+import android.widget.LinearLayout;
 import android.text.TextUtils;
 
 import androidx.fragment.app.Fragment;
@@ -68,6 +69,15 @@ public class BinanceConvertFragment extends Fragment {
 	private BinanceConvert binanceConvert;
 
 	private TextView binanceConvertTitle;
+	private LinearLayout convertLayout;
+	private LinearLayout errorLayout;
+
+	private LinearLayout confirmLayout;
+	private TextView convertCurrencyText;
+	private TextView convertFeeText;
+	private TextView convertBalanceText;
+
+	private Button confirmButton;
 
 	public BinanceConvertFragment() {
 		// Required empty public constructor
@@ -99,12 +109,53 @@ public class BinanceConvertFragment extends Fragment {
 		EditText amountEditText = view.findViewById(R.id.amount_edittext);
 		binanceConvertTitle = view.findViewById(R.id.binance_convert_title);
 
+		convertLayout = view.findViewById(R.id.convert_layout);
+		errorLayout = view.findViewById(R.id.error_layout);
+		TextView errorText = view.findViewById(R.id.error_message_text);
+
+		Button retryButton = view.findViewById(R.id.btn_retry);
+		retryButton.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View view) {
+				convertLayout.setVisibility(View.VISIBLE);
+				errorLayout.setVisibility(View.GONE);
+			}
+		});
+
+		confirmLayout = view.findViewById(R.id.confirm_convert_layout);
+		convertCurrencyText = view.findViewById(R.id.convert_currency_text);
+		convertFeeText = view.findViewById(R.id.convert_fee_text);
+		convertBalanceText = view.findViewById(R.id.convert_balance_text);
+		confirmButton = view.findViewById(R.id.btn_confirm);
+
+		Button cancelButton = view.findViewById(R.id.btn_cancel);
+		cancelButton.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View view) {
+				convertLayout.setVisibility(View.VISIBLE);
+				confirmLayout.setVisibility(View.GONE);
+			}
+		});
+
+
 		convertButton = view.findViewById(R.id.btn_convert);
 		convertButton.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View view) {
-				mBinanceNativeWorker.getConvertQuote(selectedCrypto1, selectedCrypto2.getAsset(), !TextUtils.isEmpty(amountEditText.getText().toString()) ? amountEditText.getText().toString() : "0.0");
-				// dismissBinanceBottomSheet();
+				double convertAmount = !TextUtils.isEmpty(amountEditText.getText().toString()) ? Double.valueOf(amountEditText.getText().toString()) : 0.0;
+				BinanceAccountBalance binanceAccountBalance = BinanceWidgetManager.getInstance().getBinanceAccountBalance();
+				double availableBalance = binanceAccountBalance.getCurrencyValue(selectedCrypto1) != null ? Double.valueOf(binanceAccountBalance.getCurrencyValue(selectedCrypto1).first) : 0.0;
+				if (availableBalance < convertAmount) {
+					convertLayout.setVisibility(View.GONE);
+					errorLayout.setVisibility(View.VISIBLE);
+					errorText.setText("Not enough balance for conversion");
+				} else if (Double.valueOf(selectedCrypto2.getMinAmount()) > convertAmount) {
+					convertLayout.setVisibility(View.GONE);
+					errorLayout.setVisibility(View.VISIBLE);
+					errorText.setText("The minimum amount to convert is : " + selectedCrypto2.getMinAmount() + " " + selectedCrypto1);
+				} else {
+					mBinanceNativeWorker.getConvertQuote(selectedCrypto1, selectedCrypto2.getAsset(), String.valueOf(convertAmount));
+				}
 			}
 		});
 
@@ -161,7 +212,18 @@ public class BinanceConvertFragment extends Fragment {
 
 		@Override
 		public void OnGetConvertQuote(String quoteId, String quotePrice, String totalFee, String totalAmount) {
-			Log.e("NTP", "quoteId : "+quoteId+" quotePrice : "+quotePrice+" totalFee : "+totalFee+" totalAmount : "+totalAmount);
+			convertLayout.setVisibility(View.GONE);
+			confirmLayout.setVisibility(View.VISIBLE);			
+			convertCurrencyText.setText(quotePrice + selectedCrypto1);
+			convertFeeText.setText(totalFee + selectedCrypto1);
+			convertBalanceText.setText(totalAmount + selectedCrypto2.getAsset());
+
+			confirmButton.setOnClickListener(new View.OnClickListener() {
+				@Override
+				public void onClick(View view) {
+					mBinanceNativeWorker.confirmConvert(quoteId);
+				}
+			});
 		};
 
 		@Override
@@ -171,11 +233,15 @@ public class BinanceConvertFragment extends Fragment {
 		public void OnGetDepositInfo(String depositAddress, String depositeTag, boolean isSuccess) {};
 
 		@Override
-		public void OnConfirmConvert(boolean isSuccess, String message) {};
+		public void OnConfirmConvert(boolean isSuccess, String message) {
+			if (isSuccess) {
+				convertLayout.setVisibility(View.VISIBLE);
+				confirmLayout.setVisibility(View.GONE);
+			}
+		};
 
 		@Override
 		public void OnGetConvertAssets(String jsonAssets) {
-			// Log.e("NTP", "OnGetConvertAssets" + jsonAssets);
 			try {
 				binanceConvert = new BinanceConvert(jsonAssets);
 				cryptoArray1 = (String[]) binanceConvert.getCurrencyKeys().toArray(new String[binanceConvert.getCurrencyKeys().size()]);
@@ -201,7 +267,7 @@ public class BinanceConvertFragment extends Fragment {
 		if (cryptoSpinner2 != null) {
 			cryptoArray2 = (ConvertAsset[]) convertCryptoList.toArray(new ConvertAsset[0]);
 			List<String> tempCryptoList = new ArrayList<>();
-			for(ConvertAsset convertAsset : convertCryptoList) {
+			for (ConvertAsset convertAsset : convertCryptoList) {
 				tempCryptoList.add(convertAsset.getAsset());
 			}
 			ArrayAdapter<String> cryptoAdapter2 = new ArrayAdapter<String>(getActivity(),

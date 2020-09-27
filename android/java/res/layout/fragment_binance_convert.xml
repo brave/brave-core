@@ -1,77 +1,247 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:id="@+id/error_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="gone"
+        android:orientation="vertical">
 
         <TextView
-            android:id="@+id/binance_convert_title"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
-            android:layout_marginStart="16dp"
-            android:layout_marginEnd="16dp"
-            android:text="@string/available_balance_text"
+            android:layout_marginStart="32dp"
+            android:layout_marginEnd="32dp"
+            android:gravity="center_horizontal"
+            android:text="Unable to connect"
+            android:textColor="@android:color/white"/>
+
+        <TextView
+            android:id="@+id/error_message_text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:layout_marginStart="32dp"
+            android:layout_marginEnd="32dp"
+            android:gravity="center_horizontal"
             android:textColor="@android:color/white"
-            android:layout_marginBottom="4dp"
-            android:textSize="24sp" />
+            android:alpha="0.6"
+            android:layout_marginBottom="4dp"/>
+
+        <Button
+            android:id="@+id/btn_retry"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:gravity="center"
+            android:layout_gravity="center"
+            android:background="@drawable/rounded_filled_binance"
+            android:textColor="@android:color/white"
+            android:textSize="12sp"
+            android:text="@string/retry" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/confirm_convert_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="16dp"
+        android:layout_marginStart="32dp"
+        android:layout_marginEnd="32dp"
+        android:visibility="gone"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp"
+            android:gravity="center_horizontal"
+            android:text="Confirm Conversion"
+            android:textColor="@android:color/white"/>
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:layout_marginStart="16dp"
-            android:layout_marginEnd="16dp"
+            android:layout_marginBottom="8dp"
             android:orientation="horizontal">
 
-            <EditText  
-                android:id="@+id/amount_edittext"
-                android:layout_width="0dp" 
+            <TextView
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:padding="8dp"
-                android:textColor="@android:color/white"
-                android:textColorHint="#80FFFFFF"
-                android:hint="I want to convert..."
-                android:background="@drawable/binance_edittext"/>
+                android:layout_marginEnd="16dp"
+                android:text="Convert"
+                android:textColor="@android:color/white"/>
 
-            <Spinner
-                android:id="@+id/crypto_spinner_1"
+            <TextView
+                android:id="@+id/convert_currency_text"
                 android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:textColor="@android:color/white"
-                android:padding="8dp"
-                android:background="@drawable/binance_edittext"
-                style="@android:style/Widget.Spinner"
-                android:spinnerMode="dropdown"/>
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:layout_marginEnd="16dp"
+                android:textStyle="bold"
+                android:textColor="@android:color/white"/>
 
         </LinearLayout>
 
-        <Spinner
-            android:id="@+id/crypto_spinner_2"
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:layout_marginEnd="16dp"
+                android:text="Fee"
+                android:textColor="@android:color/white"/>
+
+            <TextView
+                android:id="@+id/convert_fee_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:layout_marginEnd="16dp"
+                android:textStyle="bold"
+                android:textColor="@android:color/white"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:layout_marginEnd="16dp"
+                android:text="You will receive"
+                android:textColor="@android:color/white"/>
+
+            <TextView
+                android:id="@+id/convert_balance_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:layout_marginEnd="16dp"
+                android:textStyle="bold"
+                android:textColor="@android:color/white"/>
+
+        </LinearLayout>
+
+        <Button
+            android:id="@+id/btn_confirm"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
-            android:layout_marginStart="16dp"
-            android:layout_marginEnd="16dp"
+            android:layout_marginBottom="16dp"
+            android:gravity="center"
+            android:layout_gravity="center"
+            android:background="@drawable/rounded_filled_binance"
             android:textColor="@android:color/white"
-            android:padding="8dp"
-            style="@android:style/Widget.Spinner"
-            android:background="@drawable/binance_edittext"
-            android:spinnerMode="dropdown"/>
+            android:textSize="12sp"
+            android:text="@string/confirm"/>
 
         <Button
-            android:id="@+id/btn_convert"
-            android:layout_width="match_parent"
+            android:id="@+id/btn_cancel"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:layout_marginEnd="16dp"
-            android:layout_marginTop="32dp"
-            android:background="@drawable/rounded_filled_binance"
-            android:layout_gravity="center"
-            android:textColor="@android:color/white"
+            android:layout_gravity="center_horizontal"
+            android:background="@android:color/transparent"
             android:padding="16dp"
-            android:text="@string/preview_conversion" />
+            android:text="@string/cancel"
+            android:textAllCaps="false"
+            android:alpha="0.6"
+            android:textColor="@android:color/white"/>
 
-</LinearLayout>
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/convert_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/binance_convert_title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginEnd="16dp"
+                android:text="@string/available_balance_text"
+                android:textColor="@android:color/white"
+                android:layout_marginBottom="4dp"
+                android:textSize="24sp" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginEnd="16dp"
+                android:orientation="horizontal">
+
+                <EditText  
+                    android:id="@+id/amount_edittext"
+                    android:layout_width="0dp" 
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:padding="8dp"
+                    android:textColor="@android:color/white"
+                    android:textColorHint="#80FFFFFF"
+                    android:hint="I want to convert..."
+                    android:background="@drawable/binance_edittext"/>
+
+                <Spinner
+                    android:id="@+id/crypto_spinner_1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:textColor="@android:color/white"
+                    android:padding="8dp"
+                    android:background="@drawable/binance_edittext"
+                    style="@android:style/Widget.Spinner"
+                    android:spinnerMode="dropdown"/>
+
+            </LinearLayout>
+
+            <Spinner
+                android:id="@+id/crypto_spinner_2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginEnd="16dp"
+                android:textColor="@android:color/white"
+                android:padding="8dp"
+                style="@android:style/Widget.Spinner"
+                android:background="@drawable/binance_edittext"
+                android:spinnerMode="dropdown"/>
+
+            <Button
+                android:id="@+id/btn_convert"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginEnd="16dp"
+                android:layout_marginTop="32dp"
+                android:background="@drawable/rounded_filled_binance"
+                android:layout_gravity="center"
+                android:textColor="@android:color/white"
+                android:padding="16dp"
+                android:text="@string/preview_conversion" />
+
+    </LinearLayout>
+
+</FrameLayout>
