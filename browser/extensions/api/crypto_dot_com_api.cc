@@ -12,6 +12,7 @@
 #include "brave/common/extensions/api/crypto_dot_com.h"
 #include "brave/browser/crypto_dot_com/crypto_dot_com_service_factory.h"
 #include "brave/components/crypto_dot_com/browser/crypto_dot_com_service.h"
+#include "brave/components/crypto_dot_com/browser/regions.h"
 #include "brave/components/ntp_widget_utils/browser/ntp_widget_utils_region.h"
 #include "chrome/browser/extensions/api/tabs/tabs_constants.h"
 #include "chrome/browser/extensions/extension_tab_util.h"
@@ -27,6 +28,11 @@ CryptoDotComService* GetCryptoDotComService(content::BrowserContext* context) {
       ->GetForProfile(Profile::FromBrowserContext(context));
 }
 
+bool IsCryptoDotComAPIAvailable(content::BrowserContext* context) {
+  Profile* profile = Profile::FromBrowserContext(context);
+  return profile->IsRegularProfile();
+}
+
 }  // namespace
 
 namespace extensions {
@@ -34,6 +40,10 @@ namespace api {
 
 ExtensionFunction::ResponseAction
 CryptoDotComGetTickerInfoFunction::Run() {
+  if (!IsCryptoDotComAPIAvailable(browser_context())) {
+    return RespondNow(Error("Not available in Tor/incognito/guest profile"));
+  }
+
   std::unique_ptr<crypto_dot_com::GetTickerInfo::Params> params(
       crypto_dot_com::GetTickerInfo::Params::Create(*args_));
   EXTENSION_FUNCTION_VALIDATE(params.get());
@@ -66,6 +76,10 @@ void CryptoDotComGetTickerInfoFunction::OnInfoResult(
 
 ExtensionFunction::ResponseAction
 CryptoDotComGetChartDataFunction::Run() {
+  if (!IsCryptoDotComAPIAvailable(browser_context())) {
+    return RespondNow(Error("Not available in Tor/incognito/guest profile"));
+  }
+
   std::unique_ptr<crypto_dot_com::GetChartData::Params> params(
       crypto_dot_com::GetChartData::Params::Create(*args_));
   EXTENSION_FUNCTION_VALIDATE(params.get());
@@ -102,6 +116,10 @@ void CryptoDotComGetChartDataFunction::OnChartDataResult(
 
 ExtensionFunction::ResponseAction
 CryptoDotComGetSupportedPairsFunction::Run() {
+  if (!IsCryptoDotComAPIAvailable(browser_context())) {
+    return RespondNow(Error("Not available in Tor/incognito/guest profile"));
+  }
+
   auto* service = GetCryptoDotComService(browser_context());
   bool supported_pairs_request = service->GetSupportedPairs(
       base::BindOnce(
@@ -134,6 +152,10 @@ void CryptoDotComGetSupportedPairsFunction::OnSupportedPairsResult(
 
 ExtensionFunction::ResponseAction
 CryptoDotComGetAssetRankingsFunction::Run() {
+  if (!IsCryptoDotComAPIAvailable(browser_context())) {
+    return RespondNow(Error("Not available in Tor/incognito/guest profile"));
+  }
+
   auto* service = GetCryptoDotComService(browser_context());
   bool asset_rankings_request = service->GetAssetRankings(
       base::BindOnce(
@@ -171,11 +193,15 @@ void CryptoDotComGetAssetRankingsFunction::OnAssetRankingsResult(
 
 ExtensionFunction::ResponseAction
 CryptoDotComIsSupportedFunction::Run() {
+  if (!IsCryptoDotComAPIAvailable(browser_context())) {
+    return RespondNow(Error("Not available in Tor/incognito/guest profile"));
+  }
+
   Profile* profile = Profile::FromBrowserContext(browser_context());
-  // todo(ryanml) - add the final list of supported countries in a regions file
-  std::vector<std::string> supported_regions = { "US" };
+
   bool is_supported = ntp_widget_utils::IsRegionSupported(
-      profile->GetPrefs(), supported_regions, true);
+      profile->GetPrefs(), ::crypto_dot_com::unsupported_regions, false);
+
   return RespondNow(OneArgument(
       std::make_unique<base::Value>(is_supported)));
 }

@@ -14,6 +14,7 @@ source_set("browser") {
     "crypto_dot_com_json_parser.h",
     "crypto_dot_com_pref_utils.cc",
     "crypto_dot_com_pref_utils.h",
+    "regions.h",
   ]
 
   deps = [
