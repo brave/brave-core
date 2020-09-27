@@ -42,6 +42,11 @@ cr.define('settings', function() {
     /**
      */
     toggleTopSitesVisible() {}
+
+    /**
+     * @return {!Promise<Boolean>}
+     */
+    isCryptoDotComSupported() {}
   }
 
   /**
@@ -81,6 +86,11 @@ cr.define('settings', function() {
     /** @override */
     toggleTopSitesVisible() {
       chrome.send('toggleTopSitesVisible', [])
+    }
+
+    /** @override */
+    getIsCryptoDotComSupported() {
+      return cr.sendWithPromise('getIsCryptoDotComSupported')
     }
   }
 

@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<grit-part>
+  <if expr="crypto_dot_com_enabled">
+     <message name="IDS_SETTINGS_NEW_TAB_CRYPTO_DOT_COM" desc="The label for Crypto.com show/hide feature toggle">Crypto.com</message>
+  </if>
+</grit-part>

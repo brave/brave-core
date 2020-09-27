@@ -26,7 +26,8 @@
       isBraveTogetherSupported_: Boolean,
       isGeminiSupported_: Boolean,
       isBitcoinDotComSupported_: Boolean,
-      showTopSites_: Boolean
+      showTopSites_: Boolean,
+      isCryptoDotComSupported_: Boolean,
     },
 
     /** @override */
@@ -38,6 +39,7 @@
       this.isGeminiSupported_ = false;
       this.isBitcoinDotComSupported_ = false;
       this.showTopSites_ = false;
+      this.isCryptoDotComSupported_ = false;
     },
 
     /** @override */
@@ -59,6 +61,9 @@
       })
       this.browserProxy_.getShowTopSites().then(visible => {
         this.showTopSites_ = visible;
+      })
+      this.browserProxy_.getIsCryptoDotComSupported().then(isCryptoDotComSupported => {
+        this.isCryptoDotComSupported_ = isCryptoDotComSupported;
       })
 
       this.addWebUIListener('super-referral-active-state-changed', (isSuperReferralActive) => {
