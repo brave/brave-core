@@ -38,3 +38,37 @@ IN_PROC_BROWSER_TEST_F(BraveBrowserViewTest, MRUCyclingBasic) {
   chrome::ExecuteCommand(browser(), IDC_SELECT_PREVIOUS_TAB);
   EXPECT_EQ(tab_strip_model->active_index(), 2);
 }
+
+// Check MRU Cycling is restarted when tab is closed during the mru cycling.
+// User can close current tab while cycling like this.
+// For example on linux, when user does "Ctrl + tab -> Ctrl + F4 -> Ctrl + tab",
+// second Ctrl + tab should restart mru cycling.
+IN_PROC_BROWSER_TEST_F(BraveBrowserViewTest, TabClosingWhileMRUCycling) {
+  // Activate MRU cycling
+  browser()->profile()->GetPrefs()->SetBoolean(kMRUCyclingEnabled, true);
+
+  TabStripModel* tab_strip_model = browser()->tab_strip_model();
+
+  // Open 3 tabs
+  chrome::NewTab(browser());
+  chrome::NewTab(browser());
+  chrome::NewTab(browser());
+  EXPECT_EQ(browser()->tab_strip_model()->count(), 4);
+  EXPECT_EQ(browser()->tab_strip_model()->active_index(), 3);
+
+  // MRU cycling, 3 -> 2
+  chrome::ExecuteCommand(browser(), IDC_SELECT_NEXT_TAB);
+  EXPECT_EQ(tab_strip_model->active_index(), 2);
+
+  // MRU cycling, 2 -> 1
+  chrome::ExecuteCommand(browser(), IDC_SELECT_NEXT_TAB);
+  EXPECT_EQ(tab_strip_model->active_index(), 1);
+
+  // Close current tab (index 1).
+  chrome::ExecuteCommand(browser(), IDC_CLOSE_TAB);
+  EXPECT_EQ(tab_strip_model->active_index(), 1);
+
+  // New MRU cycling is started
+  chrome::ExecuteCommand(browser(), IDC_SELECT_NEXT_TAB);
+  EXPECT_EQ(tab_strip_model->active_index(), 2);
+}

@@ -33,6 +33,13 @@ class BraveBrowserView : public BrowserView {
 
  private:
   class MRUCyclingEventHandler;
+
+  // BrowserView overrides:
+  void OnTabStripModelChanged(
+      TabStripModel* tab_strip_model,
+      const TabStripModelChange& change,
+      const TabStripSelectionChange& selection) override;
+
   std::unique_ptr<MRUCyclingEventHandler> mru_cycling_event_handler_;
 
   DISALLOW_COPY_AND_ASSIGN(BraveBrowserView);

@@ -5,6 +5,8 @@
 
 #include "brave/browser/ui/views/frame/brave_browser_view.h"
 
+#include <utility>
+
 #include "brave/browser/sparkle_buildflags.h"
 #include "brave/browser/translate/buildflags/buildflags.h"
 #include "brave/browser/ui/views/toolbar/bookmark_button.h"
@@ -149,6 +151,20 @@ ShowTranslateBubbleResult BraveBrowserView::ShowTranslateBubble(
   }
 #endif
   return ShowTranslateBubbleResult::BROWSER_WINDOW_NOT_VALID;
+}
+
+void BraveBrowserView::OnTabStripModelChanged(
+    TabStripModel* tab_strip_model,
+    const TabStripModelChange& change,
+    const TabStripSelectionChange& selection) {
+  BrowserView::OnTabStripModelChanged(tab_strip_model, change, selection);
+
+  if (change.type() != TabStripModelChange::kSelectionOnly) {
+    // Stop mru cycling if tab is closed dusing the cycle.
+    // This can happen when tab is closed by shortcut (ex, ctrl + F4).
+    // After stopping, current mru cycling, new mru cycling will be started.
+    StopMRUCycling();
+  }
 }
 
 void BraveBrowserView::StartMRUCycling() {
