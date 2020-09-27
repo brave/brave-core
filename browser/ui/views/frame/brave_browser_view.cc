@@ -36,6 +36,9 @@ class BraveBrowserView::MRUCyclingEventHandler : public ui::EventObserver,
     Stop();
   }
 
+  MRUCyclingEventHandler(const MRUCyclingEventHandler&) = delete;
+  MRUCyclingEventHandler& operator=(const MRUCyclingEventHandler&) = delete;
+
  private:
   // ui::EventObserver overrides:
   void OnEvent(const ui::Event& event) override {
@@ -90,8 +93,6 @@ class BraveBrowserView::MRUCyclingEventHandler : public ui::EventObserver,
 
   BraveBrowserView* browser_view_;
   std::unique_ptr<views::EventMonitor> monitor_;
-
-  DISALLOW_COPY_AND_ASSIGN(MRUCyclingEventHandler);
 };
 
 BraveBrowserView::BraveBrowserView(std::unique_ptr<Browser> browser)

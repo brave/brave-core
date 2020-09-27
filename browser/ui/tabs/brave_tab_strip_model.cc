@@ -6,10 +6,8 @@
 #include "brave/browser/ui/tabs/brave_tab_strip_model.h"
 
 #include <algorithm>
-#include <memory>
 
 #include "brave/common/pref_names.h"
-#include "build/build_config.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser_finder.h"
 #include "chrome/browser/ui/views/frame/browser_view.h"

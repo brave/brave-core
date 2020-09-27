@@ -6,7 +6,6 @@
 #ifndef BRAVE_BROWSER_UI_TABS_BRAVE_TAB_STRIP_MODEL_H_
 #define BRAVE_BROWSER_UI_TABS_BRAVE_TAB_STRIP_MODEL_H_
 
-#include <memory>
 #include <vector>
 
 #include "chrome/browser/ui/tabs/tab_strip_model.h"
