@@ -378,7 +378,8 @@ IN_PROC_BROWSER_TEST_F(CryptoDotComAPIBrowserTest, GetSupportedPairs) {
   WaitForGetSupportedPairs(CryptoDotComSupportedPairs());
 }
 
-IN_PROC_BROWSER_TEST_F(CryptoDotComAPIBrowserTest, GetSupportedPairsUnauthorized) {
+IN_PROC_BROWSER_TEST_F(CryptoDotComAPIBrowserTest,
+    GetSupportedPairsUnauthorized) {
   ResetHTTPSServer(base::BindRepeating(&HandleRequestUnauthorized));
   EXPECT_TRUE(NavigateToNewTabUntilLoadStop());
   auto* service = GetCryptoDotComService();
@@ -389,7 +390,8 @@ IN_PROC_BROWSER_TEST_F(CryptoDotComAPIBrowserTest, GetSupportedPairsUnauthorized
   WaitForGetSupportedPairs(CryptoDotComSupportedPairs());
 }
 
-IN_PROC_BROWSER_TEST_F(CryptoDotComAPIBrowserTest, GetSupportedPairsServerError) {
+IN_PROC_BROWSER_TEST_F(CryptoDotComAPIBrowserTest,
+    GetSupportedPairsServerError) {
   ResetHTTPSServer(base::BindRepeating(&HandleRequestServerError));
   EXPECT_TRUE(NavigateToNewTabUntilLoadStop());
   auto* service = GetCryptoDotComService();
@@ -411,7 +413,8 @@ IN_PROC_BROWSER_TEST_F(CryptoDotComAPIBrowserTest, GetAssetRankings) {
   WaitForGetAssetRankings(CryptoDotComAssetRankings());
 }
 
-IN_PROC_BROWSER_TEST_F(CryptoDotComAPIBrowserTest, GetAssetRankingsUnauthorized) {
+IN_PROC_BROWSER_TEST_F(CryptoDotComAPIBrowserTest,
+    GetAssetRankingsUnauthorized) {
   ResetHTTPSServer(base::BindRepeating(&HandleRequestUnauthorized));
   EXPECT_TRUE(NavigateToNewTabUntilLoadStop());
   auto* service = GetCryptoDotComService();
@@ -422,7 +425,8 @@ IN_PROC_BROWSER_TEST_F(CryptoDotComAPIBrowserTest, GetAssetRankingsUnauthorized)
   WaitForGetAssetRankings(CryptoDotComAssetRankings());
 }
 
-IN_PROC_BROWSER_TEST_F(CryptoDotComAPIBrowserTest, GetAssetRankingsServerError) {
+IN_PROC_BROWSER_TEST_F(CryptoDotComAPIBrowserTest,
+    GetAssetRankingsServerError) {
   ResetHTTPSServer(base::BindRepeating(&HandleRequestServerError));
   EXPECT_TRUE(NavigateToNewTabUntilLoadStop());
   auto* service = GetCryptoDotComService();

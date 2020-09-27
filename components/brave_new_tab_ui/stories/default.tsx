@@ -60,6 +60,7 @@ storiesOf('New Tab/Containers', module)
         saveShowAddCard={doNothing}
         saveShowGemini={doNothing}
         saveShowBitcoinDotCom={doNothing}
+        saveShowCryptoDotCom={doNothing}
         saveBrandedWallpaperOptIn={doNothing}
       />
     )
