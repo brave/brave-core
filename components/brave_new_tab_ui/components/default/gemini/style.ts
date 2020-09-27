@@ -90,23 +90,27 @@ export const ActionsWrapper = styled<StyleProps, 'div'>('div')`
   text-align: center;
 `
 
-export const ConnectButton = styled<StyleProps, 'a'>('a')`
+export const ConnectButton = styled<StyleProps, 'button'>('button')`
   font-size: 14px;
   font-weight: bold;
   border-radius: 20px;
   width: 100%;
   background: #3D3D3D;
   border: 0;
-  padding: 10px 60px;
+  padding: 10px;
   cursor: pointer;
   color: #fff;
-  margin-bottom: 10px;
   text-decoration: none;
-  width: ${p => p.isSmall ? 50 : 100}%;
+  min-width: 245px;
 
   &:focus {
     outline: 0;
   }
+`
+
+export const SmallButton = styled(ConnectButton)`
+  width: 50%;
+  margin-bottom: 10px;
 `
 
 export const NavigationBar = styled<{}, 'div'>('div')`

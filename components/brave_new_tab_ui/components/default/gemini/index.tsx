@@ -73,7 +73,8 @@ import {
   TradeInfoItem,
   TradeItemLabel,
   TradeValue,
-  StyledParty
+  StyledParty,
+  SmallButton
 } from './style'
 import {
   SearchIcon,
@@ -732,9 +733,9 @@ class Gemini extends React.PureComponent<Props, State> {
         <InvalidTitle>
           {`${getLocale(actionLabel)} ${quantity} ${currentTradeAsset}!`}
         </InvalidTitle>
-        <ConnectButton isSmall={true} onClick={this.finishTrade}>
+        <SmallButton onClick={this.finishTrade}>
           {getLocale('geminiWidgetContinue')}
-        </ConnectButton>
+        </SmallButton>
       </InvalidWrapper>
     )
   }
@@ -780,9 +781,9 @@ class Gemini extends React.PureComponent<Props, State> {
           </TradeInfoItem>
         </TradeInfoWrapper>
         <ActionsWrapper>
-          <ConnectButton isSmall={true} onClick={this.processTrade}>
+          <SmallButton onClick={this.processTrade}>
             {`${getLocale('geminiWidgetConfirm')} (${currentTradeExpiryTime}s)`}
-          </ConnectButton>
+          </SmallButton>
           <DismissAction onClick={this.cancelTrade}>
             {getLocale('geminiWidgetCancel')}
           </DismissAction>
