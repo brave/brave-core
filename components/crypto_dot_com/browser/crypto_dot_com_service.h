@@ -107,6 +107,8 @@ class CryptoDotComService : public KeyedService {
   SimpleURLLoaderList url_loaders_;
   base::WeakPtrFactory<CryptoDotComService> weak_factory_;
 
+  friend class CryptoDotComAPIBrowserTest;
+
   DISALLOW_COPY_AND_ASSIGN(CryptoDotComService);
 };
 
