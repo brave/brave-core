@@ -54,6 +54,18 @@ RegisterPolymerTemplateModifications({
         <settings-brave-appearance-toolbar prefs="{{prefs}}"></settings-brave-appearance-toolbar>
       `)
     }
+    const zoomLevel = templateContent.getElementById('zoomLevel')
+    if (!zoomLevel || !zoomLevel.parentNode) {
+      console.error(`[Brave Settings Overrides] Couldn't find zoomLevel`)
+    } else {
+      zoomLevel.parentNode.insertAdjacentHTML('afterend', `
+        <settings-toggle-button
+          class="hr"
+          pref="{{prefs.brave.mru_cycling_enabled}}"
+          label="${I18nBehavior.i18n('mruCyclingSettingLabel')}">
+        </settings-toggle-button>
+      `)
+    }
     // Super referral themes prefs
     const pages = templateContent.getElementById('pages')
     if (!pages) {
