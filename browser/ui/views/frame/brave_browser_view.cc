@@ -56,6 +56,11 @@ class BraveBrowserView::MRUCyclingEventHandler : public ui::EventObserver,
       Stop();
   }
 
+  // Handle Browser widget closing while MRU Cycling is in-progress.
+  void OnWidgetClosing(views::Widget* widget) override {
+    Stop();
+  }
+
   void Start() {
     // Add the event handler
     auto* widget = browser_view_->GetWidget();

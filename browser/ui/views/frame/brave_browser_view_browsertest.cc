@@ -8,14 +8,11 @@
 #include "chrome/browser/ui/browser_commands.h"
 #include "chrome/browser/ui/views/tabs/tab_strip.h"
 #include "chrome/test/base/in_process_browser_test.h"
+#include "content/public/test/browser_test.h"
 
 using BraveBrowserViewTest = InProcessBrowserTest;
 
 IN_PROC_BROWSER_TEST_F(BraveBrowserViewTest, MRUCyclingBasic) {
-  // Off by default.
-  EXPECT_FALSE(
-      browser()->profile()->GetPrefs()->GetBoolean(kMRUCyclingEnabled));
-
   TabStripModel* tab_strip_model = browser()->tab_strip_model();
 
   // Open 3 tabs
