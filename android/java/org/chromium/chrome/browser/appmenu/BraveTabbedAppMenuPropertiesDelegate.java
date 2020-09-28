@@ -15,6 +15,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.content.res.AppCompatResources;
 
 import org.chromium.base.supplier.ObservableSupplier;
+import org.chromium.base.supplier.OneshotSupplier;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.ActivityTabProvider;
 import org.chromium.chrome.browser.BraveFeatureList;
@@ -40,7 +41,7 @@ public class BraveTabbedAppMenuPropertiesDelegate extends TabbedAppMenuPropertie
             MultiWindowModeStateDispatcher multiWindowModeStateDispatcher,
             TabModelSelector tabModelSelector, ToolbarManager toolbarManager, View decorView,
             AppMenuDelegate appMenuDelegate,
-            @Nullable ObservableSupplier<OverviewModeBehavior> overviewModeBehaviorSupplier,
+            OneshotSupplier<OverviewModeBehavior> overviewModeBehaviorSupplier,
             ObservableSupplier<BookmarkBridge> bookmarkBridgeSupplier) {
         super(context, activityTabProvider, multiWindowModeStateDispatcher, tabModelSelector,
                 toolbarManager, decorView, appMenuDelegate, overviewModeBehaviorSupplier,
