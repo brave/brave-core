@@ -245,7 +245,7 @@ bool BraveMainDelegate::BasicStartupComplete(int* exit_code) {
     safe_browsing::kEnhancedProtection.name,
 #if defined(OS_ANDROID)
     feed::kInterestFeedContentSuggestions.name,
-    translate::kTranslateUI.name,
+    translate::kTranslate.name,
     offline_pages::kPrefetchingOfflinePagesFeature.name,
 #endif
   };
