@@ -7,7 +7,7 @@
 
 Object.defineProperty(navigator, 'brave', {
   enumerable: false,
-  configurable: false,
+  configurable: true,
   writable: false,
   value: Object.freeze({ isBrave: () => new Promise(res => res(true)) })
 })
