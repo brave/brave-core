@@ -88,6 +88,7 @@ class PromotionTest : public testing::Test {
         Invoke([](
             type::UrlRequestPtr request,
             client::LoadURLCallback callback) {
+          BLOG(0, "NEJC " << request->url);
           type::UrlResponse response;
           response.status_code = 200;
           response.url = request->url;

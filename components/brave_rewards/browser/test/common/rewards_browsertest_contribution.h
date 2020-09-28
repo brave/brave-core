@@ -146,6 +146,7 @@ class RewardsBrowserTestContribution
 
   Browser* browser_;  // NOT OWNED
   brave_rewards::RewardsServiceImpl* rewards_service_;  // NOT OWNED
+  std::unique_ptr<RewardsBrowserTestContextHelper> context_helper_;
 };
 
 }  // namespace rewards_browsertest

@@ -114,6 +114,7 @@ class SettingsPage extends React.Component<Props, State> {
 
   startRewards () {
     if (this.props.rewardsData.firstLoad) {
+      this.actions.getBalanceReport(new Date().getMonth() + 1, new Date().getFullYear())
       this.actions.getAdsData()
     } else {
       // normal load

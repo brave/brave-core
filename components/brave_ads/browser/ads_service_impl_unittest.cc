@@ -236,6 +236,10 @@ class MockRewardsService : public RewardsService {
   MOCK_METHOD1(
       GetBraveWallet,
       void(brave_rewards::GetBraveWalletCallback));
+
+  MOCK_METHOD1(CreateWallet, void(brave_rewards::CreateWalletCallback));
+
+  MOCK_METHOD1(StartProcess, void(brave_rewards::StartProcessCallback));
 };
 
 class AdsServiceTest : public testing::Test {

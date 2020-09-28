@@ -295,6 +295,7 @@ export default class WalletWrapper extends React.PureComponent<Props, State> {
 
     return (
       <StyledButton
+        id={'panel-notifications'}
         size={'small'}
         type={'accent'}
         level={'primary'}

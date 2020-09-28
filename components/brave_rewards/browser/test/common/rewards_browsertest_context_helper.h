@@ -17,26 +17,36 @@ namespace content {
 class WebContents;
 }  // namespace content
 
-namespace rewards_browsertest_helper {
+namespace rewards_browsertest {
 
-content::WebContents* OpenRewardsPopup(Browser* browser);
+class RewardsBrowserTestContextHelper {
+ public:
+  explicit RewardsBrowserTestContextHelper(Browser* browser);
+  ~RewardsBrowserTestContextHelper();
 
-void EnableRewards(Browser* browser, const bool use_new_tab = false);
+  content::WebContents* OpenRewardsPopup();
 
-content::WebContents* OpenSiteBanner(
-    Browser* browser,
-    rewards_browsertest_util::ContributionType banner_type);
+  content::WebContents* OpenSiteBanner(
+      rewards_browsertest_util::ContributionType banner_type);
 
-void VisitPublisher(
-    Browser* browser,
-    const GURL& url,
-    const bool verified,
-    const bool last_add = false);
+  void VisitPublisher(
+      const GURL& url,
+      const bool verified,
+      const bool last_add = false);
 
-void LoadURL(Browser* browser, GURL url);
+  void LoadURL(GURL url);
 
-void ReloadCurrentSite(Browser* browser);
+  void ReloadCurrentSite();
 
-}  // namespace rewards_browsertest_helper
+ private:
+  void OpenPopup();
+
+  void OpenPopupFirstTime();
+
+  Browser* browser_;  // NOT OWNED
+  bool loaded_ = false;
+};
+
+}  // namespace rewards_browsertest
 
 #endif  // BRAVE_COMPONENTS_BRAVE_REWARDS_BROWSER_TEST_COMMON_REWARDS_BROWSERTEST_CONTEXT_HELPER_H_

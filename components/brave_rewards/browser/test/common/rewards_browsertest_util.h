@@ -27,9 +27,7 @@ GURL GetRewardsInternalsUrl();
 
 GURL GetNewTabUrl();
 
-void EnableRewardsViaCode(
-    Browser* browser,
-    brave_rewards::RewardsServiceImpl* rewards_service);
+void StartProcess(brave_rewards::RewardsServiceImpl* rewards_service);
 
 GURL GetUrl(
     net::EmbeddedTestServer* https_server,
@@ -49,6 +47,8 @@ void NavigateToPublisherPage(
     const std::string& path = "");
 
 void WaitForLedgerStop(brave_rewards::RewardsServiceImpl* rewards_service);
+
+void CreateWallet(brave_rewards::RewardsServiceImpl* rewards_service);
 
 }  // namespace rewards_browsertest_util
 

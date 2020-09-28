@@ -32,6 +32,9 @@ class RewardsPromotionBrowserTest : public InProcessBrowserTest {
   void SetUpOnMainThread() override {
     InProcessBrowserTest::SetUpOnMainThread();
 
+    context_helper_ =
+        std::make_unique<RewardsBrowserTestContextHelper>(browser());
+
     // HTTP resolver
     https_server_.reset(new net::EmbeddedTestServer(
         net::test_server::EmbeddedTestServer::TYPE_HTTPS));
@@ -89,19 +92,19 @@ class RewardsPromotionBrowserTest : public InProcessBrowserTest {
   }
 
   double ClaimPromotion(bool use_panel, const bool should_finish = true) {
-    // Wait for promotion to initialize
-    promotion_->WaitForPromotionInitialization();
-
     // Use the appropriate WebContents
     content::WebContents* contents = use_panel
-        ? rewards_browsertest_helper::OpenRewardsPopup(browser())
+        ? context_helper_->OpenRewardsPopup()
         : browser()->tab_strip_model()->GetActiveWebContents();
+
+    // Wait for promotion to initialize
+    promotion_->WaitForPromotionInitialization();
 
     // Claim promotion via settings page or panel, as instructed
     if (use_panel) {
       rewards_browsertest_util::WaitForElementThenClick(
           contents,
-          "button");
+          "#panel-notifications");
     } else {
       rewards_browsertest_util::WaitForElementThenClick(
           contents,
@@ -165,8 +168,7 @@ class RewardsPromotionBrowserTest : public InProcessBrowserTest {
   }
 
   void CheckPromotionStatus(const std::string status) {
-    rewards_browsertest_helper::LoadURL(
-        browser(),
+    context_helper_->LoadURL(
         rewards_browsertest_util::GetRewardsInternalsUrl());
 
     rewards_browsertest_util::WaitForElementThenClick(
@@ -183,20 +185,18 @@ class RewardsPromotionBrowserTest : public InProcessBrowserTest {
   std::unique_ptr<net::EmbeddedTestServer> https_server_;
   std::unique_ptr<RewardsBrowserTestPromotion> promotion_;
   std::unique_ptr<RewardsBrowserTestResponse> response_;
+  std::unique_ptr<RewardsBrowserTestContextHelper> context_helper_;
   bool gone_ = false;
   bool removed_ = false;
 };
 
 IN_PROC_BROWSER_TEST_F(RewardsPromotionBrowserTest, ClaimViaSettingsPage) {
-  rewards_browsertest_helper::EnableRewards(browser());
-
+  context_helper_->LoadURL(rewards_browsertest_util::GetRewardsUrl());
   double balance = ClaimPromotion(false);
   ASSERT_EQ(balance, 30.0);
 }
 
 IN_PROC_BROWSER_TEST_F(RewardsPromotionBrowserTest, ClaimViaPanel) {
-  rewards_browsertest_util::EnableRewardsViaCode(browser(), rewards_service_);
-
   double balance = ClaimPromotion(true);
   ASSERT_EQ(balance, 30.0);
 }
@@ -205,20 +205,20 @@ IN_PROC_BROWSER_TEST_F(
     RewardsPromotionBrowserTest,
     PromotionHasEmptyPublicKey) {
   response_->SetPromotionEmptyKey(true);
-  rewards_browsertest_helper::EnableRewards(browser());
+  rewards_browsertest_util::StartProcess(rewards_service_);
+
+  content::WebContents* popup = context_helper_->OpenRewardsPopup();
 
   promotion_->WaitForPromotionInitialization();
   rewards_browsertest_util::WaitForElementToAppear(
-      rewards_browsertest_helper::OpenRewardsPopup(browser()),
+      popup,
       "[data-test-id=notification-close]",
       false);
 }
 
 IN_PROC_BROWSER_TEST_F(RewardsPromotionBrowserTest, PromotionGone) {
   gone_ = true;
-  rewards_browsertest_helper::EnableRewards(browser());
-
-  promotion_->WaitForPromotionInitialization();
+  rewards_browsertest_util::StartProcess(rewards_service_);
   ClaimPromotion(true, false);
   CheckPromotionStatus("Over");
 }
@@ -226,11 +226,10 @@ IN_PROC_BROWSER_TEST_F(RewardsPromotionBrowserTest, PromotionGone) {
 IN_PROC_BROWSER_TEST_F(
     RewardsPromotionBrowserTest,
     PromotionRemovedFromEndpoint) {
-  rewards_browsertest_helper::EnableRewards(browser());
-
+  context_helper_->LoadURL(rewards_browsertest_util::GetRewardsUrl());
   promotion_->WaitForPromotionInitialization();
   removed_ = true;
-  rewards_browsertest_helper::ReloadCurrentSite(browser());
+  context_helper_->ReloadCurrentSite();
 
   rewards_browsertest_util::WaitForElementToAppear(
       contents(),

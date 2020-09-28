@@ -33,6 +33,8 @@ class StateMigration {
   void Migrate(ledger::ResultCallback callback);
 
  private:
+  void FreshInstall(ledger::ResultCallback callback);
+
   void OnMigration(
       type::Result result,
       const int version,

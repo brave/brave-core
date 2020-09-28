@@ -89,5 +89,6 @@ export const enum types {
   ON_COUNTRY_CODE = '@@rewards/ON_COUNTRY_CODE',
   ON_INITIALIZED = '@@rewards/ON_INITIALIZED',
   COMPLETE_RESET = '@@rewards/COMPLETE_RESET',
-  ON_COMPLETE_RESET = '@@rewards/ON_COMPLETE_RESET'
+  ON_COMPLETE_RESET = '@@rewards/ON_COMPLETE_RESET',
+  SET_FIRST_LOAD = '@@rewards/SET_FIRST_LOAD'
 }

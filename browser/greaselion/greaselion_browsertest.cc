@@ -144,6 +144,7 @@ class GreaselionServiceTest : public BaseLocalDataFilesBrowserTest {
     // Rewards service
     rewards_service_ = static_cast<brave_rewards::RewardsServiceImpl*>(
         brave_rewards::RewardsServiceFactory::GetForProfile(profile()));
+    rewards_browsertest_util::StartProcess(rewards_service_);
 
     // Response mock
     rewards_service_->ForTestingSetTestResponseCallback(
@@ -151,8 +152,6 @@ class GreaselionServiceTest : public BaseLocalDataFilesBrowserTest {
             &GreaselionServiceTest::GetTestResponse,
             base::Unretained(this)));
     rewards_service_->SetLedgerEnvForTesting();
-
-    rewards_browsertest_util::EnableRewardsViaCode(browser(), rewards_service_);
     GreaselionService* greaselion_service =
         GreaselionServiceFactory::GetForBrowserContext(profile());
     // wait for the Greaselion service to install all the extensions it creates
@@ -322,6 +321,7 @@ IN_PROC_BROWSER_TEST_F(GreaselionServiceTest,
   EXPECT_EQ(title, "OK");
 
   StartRewards();
+  rewards_service_->SetAutoContributeEnabled(true);
   ui_test_utils::NavigateToURL(browser(), url);
   contents = browser()->tab_strip_model()->GetActiveWebContents();
   ASSERT_TRUE(content::WaitForLoadStop(contents));
@@ -334,6 +334,20 @@ IN_PROC_BROWSER_TEST_F(GreaselionServiceTest,
   // should be altered because rewards precondition matched, so the relevant
   // Greaselion rule is active
   EXPECT_EQ(title, "Altered");
+
+  rewards_service_->SetAutoContributeEnabled(false);
+  ui_test_utils::NavigateToURL(browser(), url);
+  contents = browser()->tab_strip_model()->GetActiveWebContents();
+  ASSERT_TRUE(content::WaitForLoadStop(contents));
+  EXPECT_EQ(url, contents->GetURL());
+  ASSERT_TRUE(
+      ExecuteScriptAndExtractString(contents,
+                                    "window.domAutomationController.send("
+                                    "document.title)",
+                                    &title));
+  // should be altered because rewards precondition matched, so the relevant
+  // Greaselion rule is active
+  EXPECT_EQ(title, "OK");
 }
 
 IN_PROC_BROWSER_TEST_F(GreaselionServiceTest, IsGreaselionExtension) {

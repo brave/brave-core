@@ -130,6 +130,9 @@ using GetEventLogsCallback =
 using GetBraveWalletCallback =
     base::OnceCallback<void(ledger::type::BraveWalletPtr wallet)>;
 
+using StartProcessCallback =
+    base::OnceCallback<void(ledger::type::Result result)>;
+
 class RewardsService : public KeyedService {
  public:
   RewardsService();
@@ -353,7 +356,7 @@ class RewardsService : public KeyedService {
 
   virtual void GetBraveWallet(GetBraveWalletCallback callback) = 0;
 
-  virtual void StartProcess() = 0;
+  virtual void StartProcess(StartProcessCallback callback) = 0;
 
  protected:
   base::ObserverList<RewardsServiceObserver> observers_;

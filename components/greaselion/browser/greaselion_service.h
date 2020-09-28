@@ -21,8 +21,7 @@ namespace greaselion {
 
 enum GreaselionFeature {
   FIRST_FEATURE = 0,
-  REWARDS = FIRST_FEATURE,
-  TWITTER_TIPS,
+  TWITTER_TIPS = FIRST_FEATURE,
   REDDIT_TIPS,
   GITHUB_TIPS,
   AUTO_CONTRIBUTION,

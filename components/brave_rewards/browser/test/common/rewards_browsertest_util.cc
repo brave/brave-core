@@ -41,21 +41,19 @@ GURL GetNewTabUrl() {
   return url;
 }
 
-void EnableRewardsViaCode(
-    Browser* browser,
-    brave_rewards::RewardsServiceImpl* rewards_service) {
-  DCHECK(browser);
+void StartProcess(brave_rewards::RewardsServiceImpl* rewards_service) {
+  DCHECK(rewards_service);
   base::RunLoop run_loop;
-  bool wallet_created = false;
-  rewards_service->CreateWallet(
+  bool success = false;
+  rewards_service->StartProcess(
       base::BindLambdaForTesting([&](const ledger::type::Result result) {
-        wallet_created = result == ledger::type::Result::WALLET_CREATED;
+        success = result == ledger::type::Result::LEDGER_OK;
         run_loop.Quit();
       }));
 
   run_loop.Run();
 
-  ASSERT_TRUE(wallet_created);
+  ASSERT_TRUE(success);
 }
 
 GURL GetUrl(
@@ -105,6 +103,21 @@ void WaitForLedgerStop(brave_rewards::RewardsServiceImpl* rewards_service) {
         run_loop.Quit();
       }));
   run_loop.Run();
+}
+
+void CreateWallet(brave_rewards::RewardsServiceImpl* rewards_service) {
+  DCHECK(rewards_service);
+  base::RunLoop run_loop;
+  bool success = false;
+  rewards_service->CreateWallet(
+      base::BindLambdaForTesting([&](const ledger::type::Result result) {
+        success = result == ledger::type::Result::WALLET_CREATED;
+        run_loop.Quit();
+      }));
+
+  run_loop.Run();
+
+  ASSERT_TRUE(success);
 }
 
 }  // namespace rewards_browsertest_util

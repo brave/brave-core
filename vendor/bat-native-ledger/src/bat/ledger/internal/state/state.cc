@@ -158,6 +158,10 @@ void State::SetAutoContributeEnabled(bool enabled) {
       kAutoContributeEnabled,
       std::to_string(enabled));
   ledger_->ledger_client()->SetBooleanState(kAutoContributeEnabled, enabled);
+
+  if (enabled) {
+    ledger_->publisher()->CalcScoreConsts(GetPublisherMinVisitTime());
+  }
 }
 
 bool State::GetAutoContributeEnabled() {

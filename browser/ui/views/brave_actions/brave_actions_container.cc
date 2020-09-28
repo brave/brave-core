@@ -23,7 +23,6 @@
 #include "brave/components/brave_rewards/common/pref_names.h"
 #include "chrome/browser/extensions/extension_service.h"
 #include "chrome/browser/profiles/profile.h"
-#include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/extensions/extensions_container.h"
 #include "chrome/browser/ui/layout_constants.h"
@@ -378,7 +377,7 @@ void BraveActionsContainer::OnRewardsStubButtonClicked() {
               AddRewardsExtension();
 
     if (rewards_service_) {
-      rewards_service_->StartProcess();
+      rewards_service_->StartProcess(base::DoNothing());
     }
   }
 }
