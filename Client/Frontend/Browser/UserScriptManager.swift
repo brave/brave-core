@@ -220,6 +220,7 @@ class UserScriptManager {
         let token = UserScriptManager.securityToken.uuidString.replacingOccurrences(of: "-", with: "", options: .literal)
         alteredSource = alteredSource.replacingOccurrences(of: "$<prunePaths>", with: "ABSPP\(token)", options: .literal)
         alteredSource = alteredSource.replacingOccurrences(of: "$<findOwner>", with: "ABSFO\(token)", options: .literal)
+        alteredSource = alteredSource.replacingOccurrences(of: "$<setJS>", with: "ABSSJ\(token)", options: .literal)
         
         return WKUserScript(source: alteredSource, injectionTime: .atDocumentStart, forMainFrameOnly: false)
     }()
