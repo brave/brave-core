@@ -38,13 +38,26 @@ void StateMigration::Start(ledger::ResultCallback callback) {
   const bool fresh_install = current_version == 0;
 
   if (fresh_install) {
-    BLOG(1, "Fresh install, state version set to " << kCurrentVersionNumber);
-    ledger_->state()->SetVersion(kCurrentVersionNumber);
-    callback(type::Result::LEDGER_OK);
+    FreshInstall(callback);
     return;
   }
 
   Migrate(callback);
+}
+
+void StateMigration::FreshInstall(ledger::ResultCallback callback) {
+  BLOG(1, "Fresh install, state version set to " << kCurrentVersionNumber);
+  ledger_->state()->SetInlineTippingPlatformEnabled(
+      type::InlineTipsPlatforms::REDDIT,
+      true);
+  ledger_->state()->SetInlineTippingPlatformEnabled(
+      type::InlineTipsPlatforms::TWITTER,
+      true);
+  ledger_->state()->SetInlineTippingPlatformEnabled(
+      type::InlineTipsPlatforms::GITHUB,
+      true);
+  ledger_->state()->SetVersion(kCurrentVersionNumber);
+  callback(type::Result::LEDGER_OK);
 }
 
 void StateMigration::Migrate(ledger::ResultCallback callback) {

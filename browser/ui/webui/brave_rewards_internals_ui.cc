@@ -127,7 +127,7 @@ void RewardsInternalsDOMHandler::Init() {
   profile_ = Profile::FromWebUI(web_ui());
   rewards_service_ =
       brave_rewards::RewardsServiceFactory::GetForProfile(profile_);
-  rewards_service_->StartProcess();
+  rewards_service_->StartProcess(base::DoNothing());
 }
 
 void RewardsInternalsDOMHandler::HandleGetRewardsInternalsInfo(

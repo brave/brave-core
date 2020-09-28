@@ -33,7 +33,7 @@ std::string GetAvailable::GetUrl(const std::string& platform) {
   std::string payment_id;
   if (wallet) {
     payment_id = base::StringPrintf(
-      "paymentId=%s&",
+      "&paymentId=%s",
       wallet->payment_id.c_str());
   }
 

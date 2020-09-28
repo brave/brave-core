@@ -75,8 +75,6 @@ void WalletCreate::OnCreate(
     return;
   }
 
-  ledger_->publisher()->CalcScoreConsts(
-      ledger_->state()->GetPublisherMinVisitTime());
   ledger_->state()->ResetReconcileStamp();
   if (!ledger::is_testing) {
     ledger_->state()->SetFetchOldBalanceEnabled(false);
@@ -84,15 +82,6 @@ void WalletCreate::OnCreate(
     ledger_->state()->SetPromotionCorruptedMigrated(true);
   }
   ledger_->state()->SetCreationStamp(util::GetCurrentTimeStamp());
-  ledger_->state()->SetInlineTippingPlatformEnabled(
-      type::InlineTipsPlatforms::REDDIT,
-      true);
-  ledger_->state()->SetInlineTippingPlatformEnabled(
-      type::InlineTipsPlatforms::TWITTER,
-      true);
-  ledger_->state()->SetInlineTippingPlatformEnabled(
-      type::InlineTipsPlatforms::GITHUB,
-      true);
   callback(type::Result::WALLET_CREATED);
 }
 

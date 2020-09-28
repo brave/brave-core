@@ -42,6 +42,9 @@ class RewardsNotificationBrowserTest
   void SetUpOnMainThread() override {
     InProcessBrowserTest::SetUpOnMainThread();
 
+    context_helper_ =
+        std::make_unique<RewardsBrowserTestContextHelper>(browser());
+
     // HTTP resolver
     host_resolver()->AddRule("*", "127.0.0.1");
     https_server_.reset(new net::EmbeddedTestServer(
@@ -213,6 +216,7 @@ class RewardsNotificationBrowserTest
   std::unique_ptr<RewardsBrowserTestContribution> contribution_;
   std::unique_ptr<RewardsBrowserTestPromotion> promotion_;
   std::unique_ptr<RewardsBrowserTestResponse> response_;
+  std::unique_ptr<RewardsBrowserTestContextHelper> context_helper_;
 
   brave_rewards::RewardsNotificationService::RewardsNotification
     last_added_notification_;
@@ -305,7 +309,7 @@ IN_PROC_BROWSER_TEST_F(
 IN_PROC_BROWSER_TEST_F(
     RewardsNotificationBrowserTest,
     InsufficientNotificationForZeroAmountZeroPublishers) {
-  rewards_browsertest_util::EnableRewardsViaCode(browser(), rewards_service_);
+  rewards_browsertest_util::StartProcess(rewards_service_);
   CheckInsufficientFundsForTesting();
   WaitForInsufficientFundsNotification();
   const auto& notifications = rewards_service_->GetAllNotifications();
@@ -324,20 +328,18 @@ IN_PROC_BROWSER_TEST_F(
 IN_PROC_BROWSER_TEST_F(
     RewardsNotificationBrowserTest,
     InsufficientNotificationForACNotEnoughFunds) {
-  rewards_browsertest_helper::EnableRewards(browser());
-
+  rewards_browsertest_util::StartProcess(rewards_service_);
+  rewards_service_->SetAutoContributeEnabled(true);
+  context_helper_->LoadURL(rewards_browsertest_util::GetRewardsUrl());
   // Visit publishers
   const bool verified = true;
-  rewards_browsertest_helper::VisitPublisher(
-      browser(),
+  context_helper_->VisitPublisher(
       rewards_browsertest_util::GetUrl(https_server_.get(), "duckduckgo.com"),
       verified);
-  rewards_browsertest_helper::VisitPublisher(
-      browser(),
+  context_helper_->VisitPublisher(
       rewards_browsertest_util::GetUrl(https_server_.get(), "bumpsmack.com"),
       verified);
-  rewards_browsertest_helper::VisitPublisher(
-      browser(),
+  context_helper_->VisitPublisher(
       rewards_browsertest_util::GetUrl(https_server_.get(), "brave.com"),
       !verified,
       true);
@@ -360,7 +362,8 @@ IN_PROC_BROWSER_TEST_F(
 IN_PROC_BROWSER_TEST_F(
     RewardsNotificationBrowserTest,
     InsufficientNotificationForInsufficientAmount) {
-  rewards_browsertest_helper::EnableRewards(browser());
+  rewards_browsertest_util::StartProcess(rewards_service_);
+  rewards_browsertest_util::CreateWallet(rewards_service_);
   contribution_->AddBalance(promotion_->ClaimPromotionViaCode());
 
   contribution_->TipViaCode(
@@ -395,7 +398,9 @@ IN_PROC_BROWSER_TEST_F(
 IN_PROC_BROWSER_TEST_F(
     RewardsNotificationBrowserTest,
     InsufficientNotificationForVerifiedInsufficientAmount) {
-  rewards_browsertest_helper::EnableRewards(browser());
+  rewards_browsertest_util::StartProcess(rewards_service_);
+  rewards_browsertest_util::CreateWallet(rewards_service_);
+  context_helper_->LoadURL(rewards_browsertest_util::GetRewardsUrl());
   contribution_->AddBalance(promotion_->ClaimPromotionViaCode());
 
   contribution_->TipViaCode(

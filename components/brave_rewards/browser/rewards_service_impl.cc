@@ -330,9 +330,19 @@ RewardsServiceImpl::~RewardsServiceImpl() {
 }
 
 void RewardsServiceImpl::ConnectionClosed() {
+  auto callback = base::BindOnce(&RewardsServiceImpl::OnConnectionClosed,
+      AsWeakPtr());
   base::ThreadTaskRunnerHandle::Get()->PostDelayedTask(FROM_HERE,
-      base::BindOnce(&RewardsServiceImpl::StartLedger, AsWeakPtr()),
+      base::BindOnce(&RewardsServiceImpl::StartLedger,
+          AsWeakPtr(),
+          std::move(callback)),
       base::TimeDelta::FromSeconds(1));
+}
+
+void RewardsServiceImpl::OnConnectionClosed(const ledger::type::Result result) {
+  if (result != ledger::type::Result::LEDGER_OK) {
+    BLOG(0, "Ledger process was not started successfully");
+  }
 }
 
 bool RewardsServiceImpl::IsInitialized() {
@@ -390,7 +400,7 @@ void RewardsServiceImpl::OnPreferenceChanged(const std::string& key) {
 
   if (key == prefs::kAutoContributeEnabled) {
     if (profile_->GetPrefs()->GetBoolean(prefs::kAutoContributeEnabled)) {
-      StartLedger();
+      StartLedger(base::DoNothing());
     }
 
     return;
@@ -401,14 +411,14 @@ void RewardsServiceImpl::CheckPreferences() {
   const bool is_ac_enabled = profile_->GetPrefs()->GetBoolean(
       brave_rewards::prefs::kAutoContributeEnabled);
   const bool is_ads_enabled = profile_->GetPrefs()->GetBoolean(
-      brave_ads::prefs::kEnabled);
+      ads::prefs::kEnabled);
 
   if (is_ac_enabled || is_ads_enabled) {
-    StartLedger();
+    StartLedger(base::DoNothing());
   }
 }
 
-void RewardsServiceImpl::StartLedger() {
+void RewardsServiceImpl::StartLedger(StartProcessCallback callback) {
   if (Connected()) {
     BLOG(1, "Ledger process is already running");
     return;
@@ -455,20 +465,24 @@ void RewardsServiceImpl::StartLedger() {
   bat_ledger_service_->Create(
       bat_ledger_client_receiver_.BindNewEndpointAndPassRemote(),
       bat_ledger_.BindNewEndpointAndPassReceiver(),
-      base::BindOnce(&RewardsServiceImpl::OnCreate, AsWeakPtr()));
+      base::BindOnce(&RewardsServiceImpl::OnCreate,
+          AsWeakPtr(),
+          std::move(callback)));
 }
 
-void RewardsServiceImpl::OnCreate() {
+void RewardsServiceImpl::OnCreate(StartProcessCallback callback) {
   if (!Connected()) {
+    std::move(callback).Run(ledger::type::Result::LEDGER_ERROR);
     return;
   }
 
   PrepareLedgerEnvForTesting();
 
-  auto callback = base::BindOnce(&RewardsServiceImpl::OnLedgerInitialized,
-      AsWeakPtr());
+  auto init_callback = base::BindOnce(&RewardsServiceImpl::OnLedgerInitialized,
+      AsWeakPtr(),
+      std::move(callback));
 
-  bat_ledger_->Initialize(false, std::move(callback));
+  bat_ledger_->Initialize(false, std::move(init_callback));
 }
 
 void RewardsServiceImpl::OnResult(
@@ -798,8 +812,11 @@ void RewardsServiceImpl::Shutdown() {
   RewardsService::Shutdown();
 }
 
-void RewardsServiceImpl::OnLedgerInitialized(ledger::type::Result result) {
+void RewardsServiceImpl::OnLedgerInitialized(
+    StartProcessCallback callback,
+    const ledger::type::Result result) {
   if (result == ledger::type::Result::LEDGER_OK) {
+    std::move(callback).Run(result);
     is_ledger_initialized_ = true;
     StartNotificationTimers();
   }
@@ -1618,7 +1635,7 @@ void RewardsServiceImpl::SetAutoContributeEnabled(bool enabled) {
 
 void RewardsServiceImpl::OnAdsEnabled(bool ads_enabled) {
   if (ads_enabled) {
-    StartLedger();
+    StartLedger(base::DoNothing());
   }
 
   for (auto& observer : observers_) {
@@ -2480,7 +2497,7 @@ void RewardsServiceImpl::PrepareLedgerEnvForTesting() {
 
   bat_ledger_service_->SetTesting();
 
-  profile_->GetPrefs()->SetInteger(prefs::kMinVisitTime, 1);
+  SetPublisherMinVisitTime(1);
   SetShortRetries(true);
 
   // this is needed because we are using braveledger_request_util::buildURL
@@ -3348,8 +3365,8 @@ void RewardsServiceImpl::OnGetBraveWallet(
   std::move(callback).Run(std::move(wallet));
 }
 
-void RewardsServiceImpl::StartProcess() {
-  StartLedger();
+void RewardsServiceImpl::StartProcess(StartProcessCallback callback) {
+  StartLedger(std::move(callback));
 }
 
 

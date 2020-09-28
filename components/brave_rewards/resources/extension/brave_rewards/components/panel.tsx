@@ -729,6 +729,7 @@ export class Panel extends React.Component<Props, State> {
 
     return (
       <WalletWrapper
+        id={'rewards-panel'}
         compact={true}
         contentPadding={false}
         gradientTop={this.gradientColor}

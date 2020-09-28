@@ -27,6 +27,7 @@ void RewardsBrowserTestContribution::Initialize(
   DCHECK(browser && rewards_service);
   browser_ = browser;
   rewards_service_ = rewards_service;
+  context_helper_ = std::make_unique<RewardsBrowserTestContextHelper>(browser);
 
   rewards_service_->AddObserver(this);
 }
@@ -91,7 +92,7 @@ void RewardsBrowserTestContribution::TipPublisher(
       ui_test_utils::BROWSER_TEST_WAIT_FOR_LOAD_STOP);
 
   content::WebContents* site_banner_contents =
-      rewards_browsertest_helper::OpenSiteBanner(browser_, type);
+      context_helper_->OpenSiteBanner(type);
   ASSERT_TRUE(site_banner_contents);
 
   auto tip_options = rewards_browsertest_util::GetSiteBannerTipOptions(
@@ -181,8 +182,8 @@ void RewardsBrowserTestContribution::VerifyTip(
     return;
   }
 
-  // Activate the Rewards settings page tab
-  rewards_browsertest_util::ActivateTabAtIndex(browser_, 0);
+  // Load rewards page
+  context_helper_->LoadURL(rewards_browsertest_util::GetRewardsUrl());
 
   if (should_contribute) {
     // Make sure that balance is updated correctly
@@ -427,6 +428,9 @@ void RewardsBrowserTestContribution::SetUpUpholdWallet(
     const double balance,
     const ledger::type::WalletStatus status) {
   DCHECK(rewards_service);
+  // we need brave wallet as well
+  rewards_browsertest_util::CreateWallet(rewards_service_);
+
   external_balance_ = balance;
 
   base::Value wallet(base::Value::Type::DICTIONARY);

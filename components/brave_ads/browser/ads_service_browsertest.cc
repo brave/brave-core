@@ -18,8 +18,9 @@
 #include "brave/common/brave_paths.h"
 #include "brave/browser/brave_rewards/rewards_service_factory.h"
 #include "brave/components/brave_rewards/browser/rewards_service_impl.h"
-#include "brave/components/brave_rewards/browser/rewards_notification_service_impl.h"  // NOLINT
-#include "brave/components/brave_rewards/browser/rewards_notification_service_observer.h"  // NOLINT
+#include "brave/components/brave_rewards/browser/rewards_notification_service_impl.h"
+#include "brave/components/brave_rewards/browser/rewards_notification_service_observer.h"
+#include "brave/components/brave_rewards/browser/test/common/rewards_browsertest_util.h"
 #include "brave/components/brave_rewards/common/pref_names.h"
 #include "brave/components/brave_ads/browser/ads_service_factory.h"
 #include "brave/components/brave_ads/browser/ads_service_impl.h"
@@ -449,22 +450,6 @@ class BraveAdsBrowserTest
     rewards_service_->GetNotificationService()->AddObserver(this);
   }
 
-  void EnableRewardsViaCode() {
-    base::RunLoop run_loop;
-    bool wallet_created = false;
-    rewards_service_->CreateWallet(
-        base::BindLambdaForTesting([&](const ledger::type::Result result) {
-          wallet_created = result == ledger::type::Result::WALLET_CREATED;
-          run_loop.Quit();
-        }));
-
-    run_loop.Run();
-
-    ads_service_->SetEnabled(
-        wallet_created && ads_service_->IsSupportedLocale());
-    ASSERT_TRUE(wallet_created);
-  }
-
   MOCK_METHOD1(OnGetEnvironment, void(ledger::type::Environment));
   MOCK_METHOD1(OnGetDebug, void(bool));
   MOCK_METHOD1(OnGetReconcileTime, void(int32_t));
@@ -538,8 +523,7 @@ IN_PROC_BROWSER_TEST_F(BraveAdsBrowserTest, BraveAdsLocaleIsNotNewlySupported) {
 
 IN_PROC_BROWSER_TEST_F(BraveAdsBrowserTest,
     PRE_AutoEnableAdsForSupportedLocales) {
-  EnableRewardsViaCode();
-
+  rewards_browsertest_util::StartProcess(rewards_service_);
   EXPECT_TRUE(IsAdsEnabled());
 }
 
@@ -549,7 +533,7 @@ IN_PROC_BROWSER_TEST_F(BraveAdsBrowserTest, AutoEnableAdsForSupportedLocales) {
 
 IN_PROC_BROWSER_TEST_F(BraveAdsBrowserTest,
     PRE_DoNotAutoEnableAdsForUnsupportedLocales) {
-  EnableRewardsViaCode();
+  rewards_browsertest_util::StartProcess(rewards_service_);
 
   EXPECT_FALSE(IsAdsEnabled());
 }
@@ -561,7 +545,7 @@ IN_PROC_BROWSER_TEST_F(BraveAdsBrowserTest,
 
 IN_PROC_BROWSER_TEST_F(BraveAdsBrowserTest,
     PRE_ShowBraveAdsHaveArrivedNotificationForNewLocale) {
-  EnableRewardsViaCode();
+  rewards_browsertest_util::StartProcess(rewards_service_);
 
   EXPECT_FALSE(IsAdsEnabled());
 }
@@ -577,7 +561,7 @@ IN_PROC_BROWSER_TEST_F(BraveAdsBrowserTest,
 
 IN_PROC_BROWSER_TEST_F(BraveAdsBrowserTest,
     PRE_DoNotShowBraveAdsHaveArrivedNotificationForUnsupportedLocale) {
-  EnableRewardsViaCode();
+  rewards_browsertest_util::StartProcess(rewards_service_);
 
   EXPECT_FALSE(IsAdsEnabled());
 }

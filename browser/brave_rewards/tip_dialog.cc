@@ -144,7 +144,7 @@ void OpenTipDialog(WebContents* initiator,
   auto* rewards_service = RewardsServiceFactory::GetForProfile(
       Profile::FromBrowserContext(initiator->GetBrowserContext()));
   if (rewards_service) {
-    rewards_service->StartProcess();
+    rewards_service->StartProcess(base::DoNothing());
   }
 
   content::WebContents* outermost_web_contents =

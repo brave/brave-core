@@ -328,3 +328,7 @@ export const getPaymentId = () => action(types.GET_PAYMENT_ID)
 export const onPaymentId = (paymentId: string) => action(types.ON_PAYMENT_ID, {
   paymentId
 })
+
+export const setFirstLoad = (firstLoad: boolean) => action(types.SET_FIRST_LOAD, {
+  firstLoad
+})

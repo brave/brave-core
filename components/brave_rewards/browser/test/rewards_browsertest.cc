@@ -40,6 +40,8 @@ class RewardsBrowserTest : public InProcessBrowserTest {
 
   void SetUpOnMainThread() override {
     InProcessBrowserTest::SetUpOnMainThread();
+    context_helper_ =
+        std::make_unique<RewardsBrowserTestContextHelper>(browser());
 
     // HTTP resolver
     host_resolver()->AddRule("*", "127.0.0.1");
@@ -109,42 +111,11 @@ class RewardsBrowserTest : public InProcessBrowserTest {
   std::unique_ptr<RewardsBrowserTestResponse> response_;
   std::unique_ptr<RewardsBrowserTestContribution> contribution_;
   std::unique_ptr<RewardsBrowserTestPromotion> promotion_;
+  std::unique_ptr<RewardsBrowserTestContextHelper> context_helper_;
 };
 
-IN_PROC_BROWSER_TEST_F(RewardsBrowserTest, RenderWelcome) {
-  rewards_browsertest_helper::EnableRewards(browser());
-
-  EXPECT_STREQ(
-      contents()->GetLastCommittedURL().spec().c_str(),
-      "chrome://rewards/");
-}
-
-IN_PROC_BROWSER_TEST_F(RewardsBrowserTest, ToggleRewards) {
-  rewards_browsertest_helper::EnableRewards(browser());
-
-  // Toggle rewards off
-  rewards_browsertest_util::WaitForElementThenClick(
-      contents(),
-      "[data-test-id2='enableMain']");
-  std::string value = rewards_browsertest_util::WaitForElementThenGetAttribute(
-      contents(),
-      "[data-test-id2='enableMain']",
-      "data-toggled");
-  ASSERT_STREQ(value.c_str(), "false");
-
-  // Toggle rewards back on
-  rewards_browsertest_util::WaitForElementThenClick(
-      contents(),
-      "[data-test-id2='enableMain']");
-  value = rewards_browsertest_util::WaitForElementThenGetAttribute(
-      contents(),
-      "[data-test-id2='enableMain']",
-      "data-toggled");
-  ASSERT_STREQ(value.c_str(), "true");
-}
-
 IN_PROC_BROWSER_TEST_F(RewardsBrowserTest, ActivateSettingsModal) {
-  rewards_browsertest_helper::EnableRewards(browser());
+  context_helper_->LoadURL(rewards_browsertest_util::GetRewardsUrl());
 
   rewards_browsertest_util::WaitForElementThenClick(
       contents(),
@@ -155,51 +126,45 @@ IN_PROC_BROWSER_TEST_F(RewardsBrowserTest, ActivateSettingsModal) {
 }
 
 IN_PROC_BROWSER_TEST_F(RewardsBrowserTest, ToggleAutoContribute) {
-  rewards_browsertest_helper::EnableRewards(browser());
-
-  // once rewards has loaded, reload page to activate auto-contribute
-  rewards_browsertest_helper::ReloadCurrentSite(browser());
-
-  // toggle auto contribute off
-  rewards_browsertest_util::WaitForElementThenClick(
-      contents(),
-      "[data-test-id2='autoContribution']");
-  std::string value =
-      rewards_browsertest_util::WaitForElementThenGetAttribute(
-        contents(),
-        "[data-test-id2='autoContribution']",
-        "data-toggled");
-  ASSERT_STREQ(value.c_str(), "false");
+  context_helper_->LoadURL(rewards_browsertest_util::GetRewardsUrl());
 
   // toggle auto contribute back on
   rewards_browsertest_util::WaitForElementThenClick(
       contents(),
       "[data-test-id2='autoContribution']");
-  value = rewards_browsertest_util::WaitForElementThenGetAttribute(
+  std::string value = rewards_browsertest_util::WaitForElementThenGetAttribute(
       contents(),
       "[data-test-id2='autoContribution']",
       "data-toggled");
   ASSERT_STREQ(value.c_str(), "true");
+
+  // toggle auto contribute off
+  rewards_browsertest_util::WaitForElementThenClick(
+      contents(),
+      "[data-test-id2='autoContribution']");
+  value =
+      rewards_browsertest_util::WaitForElementThenGetAttribute(
+        contents(),
+        "[data-test-id2='autoContribution']",
+        "data-toggled");
+  ASSERT_STREQ(value.c_str(), "false");
 }
 
 IN_PROC_BROWSER_TEST_F(RewardsBrowserTest, SiteBannerDefaultTipChoices) {
-  rewards_browsertest_helper::EnableRewards(browser());
-
+  rewards_browsertest_util::StartProcess(rewards_service_);
   rewards_browsertest_util::NavigateToPublisherPage(
       browser(),
       https_server_.get(),
       "3zsistemi.si");
 
   content::WebContents* site_banner =
-      rewards_browsertest_helper::OpenSiteBanner(
-          browser(),
+      context_helper_->OpenSiteBanner(
           rewards_browsertest_util::ContributionType::OneTimeTip);
   auto tip_options = rewards_browsertest_util::GetSiteBannerTipOptions(
       site_banner);
   ASSERT_EQ(tip_options, std::vector<double>({ 1, 5, 50 }));
 
-  site_banner = rewards_browsertest_helper::OpenSiteBanner(
-      browser(),
+  site_banner = context_helper_->OpenSiteBanner(
       rewards_browsertest_util::ContributionType::MonthlyTip);
   tip_options = rewards_browsertest_util::GetSiteBannerTipOptions(
       site_banner);
@@ -209,31 +174,21 @@ IN_PROC_BROWSER_TEST_F(RewardsBrowserTest, SiteBannerDefaultTipChoices) {
 IN_PROC_BROWSER_TEST_F(
     RewardsBrowserTest,
     SiteBannerDefaultPublisherAmounts) {
-  rewards_browsertest_helper::EnableRewards(browser());
-
   rewards_browsertest_util::NavigateToPublisherPage(
       browser(),
       https_server_.get(),
       "laurenwags.github.io");
 
   content::WebContents* site_banner =
-      rewards_browsertest_helper::OpenSiteBanner(
-          browser(),
+      context_helper_->OpenSiteBanner(
           rewards_browsertest_util::ContributionType::OneTimeTip);
   const auto tip_options = rewards_browsertest_util::GetSiteBannerTipOptions(
       site_banner);
   ASSERT_EQ(tip_options, std::vector<double>({ 5, 10, 20 }));
 }
 
-IN_PROC_BROWSER_TEST_F(
-  RewardsBrowserTest,
-  NewTabPageWidgetEnableRewards) {
-  rewards_browsertest_helper::EnableRewards(browser(), true);
-}
-
 // Disabled in https://github.com/brave/brave-browser/issues/10789
 IN_PROC_BROWSER_TEST_F(RewardsBrowserTest, DISABLED_NotVerifiedWallet) {
-  rewards_browsertest_helper::EnableRewards(browser());
   contribution_->AddBalance(promotion_->ClaimPromotionViaCode());
   contribution_->IsBalanceCorrect();
 
@@ -271,28 +226,14 @@ IN_PROC_BROWSER_TEST_F(RewardsBrowserTest, DISABLED_NotVerifiedWallet) {
   }
 }
 
-IN_PROC_BROWSER_TEST_F(RewardsBrowserTest, PanelDontDoRequests) {
-  // Open the Rewards popup
-  content::WebContents* popup_contents =
-      rewards_browsertest_helper::OpenRewardsPopup(browser());
-  ASSERT_TRUE(popup_contents);
-
-  // Make sure that no request was made
-  ASSERT_TRUE(response_->GetRequests().empty());
-}
-
 IN_PROC_BROWSER_TEST_F(RewardsBrowserTest, ShowMonthlyIfACOff) {
-  rewards_browsertest_util::EnableRewardsViaCode(browser(), rewards_service_);
-  rewards_service_->SetAutoContributeEnabled(false);
-
   rewards_browsertest_util::NavigateToPublisherPage(
       browser(),
       https_server_.get(),
       "3zsistemi.si");
 
   // Open the Rewards popup
-  content::WebContents* popup_contents =
-      rewards_browsertest_helper::OpenRewardsPopup(browser());
+  content::WebContents* popup_contents = context_helper_->OpenRewardsPopup();
   ASSERT_TRUE(popup_contents);
 
   rewards_browsertest_util::WaitForElementToAppear(
@@ -301,10 +242,10 @@ IN_PROC_BROWSER_TEST_F(RewardsBrowserTest, ShowMonthlyIfACOff) {
 }
 
 IN_PROC_BROWSER_TEST_F(RewardsBrowserTest, ShowACPercentInThePanel) {
-  rewards_browsertest_helper::EnableRewards(browser());
-
-  rewards_browsertest_helper::VisitPublisher(
-      browser(),
+  rewards_browsertest_util::StartProcess(rewards_service_);
+  rewards_service_->SetAutoContributeEnabled(true);
+  context_helper_->LoadURL(rewards_browsertest_util::GetRewardsUrl());
+  context_helper_->VisitPublisher(
       rewards_browsertest_util::GetUrl(https_server_.get(), "3zsistemi.si"),
       true);
 
@@ -314,8 +255,7 @@ IN_PROC_BROWSER_TEST_F(RewardsBrowserTest, ShowACPercentInThePanel) {
       "3zsistemi.si");
 
   // Open the Rewards popup
-  content::WebContents* popup_contents =
-      rewards_browsertest_helper::OpenRewardsPopup(browser());
+  content::WebContents* popup_contents = context_helper_->OpenRewardsPopup();
   ASSERT_TRUE(popup_contents);
 
   const std::string score =
@@ -327,7 +267,7 @@ IN_PROC_BROWSER_TEST_F(RewardsBrowserTest, ShowACPercentInThePanel) {
 
 IN_PROC_BROWSER_TEST_F(RewardsBrowserTest, ZeroBalanceWalletClaimNotCalled) {
   response_->SetVerifiedWallet(true);
-  rewards_browsertest_util::EnableRewardsViaCode(browser(), rewards_service_);
+  rewards_browsertest_util::StartProcess(rewards_service_);
   contribution_->SetUpUpholdWallet(rewards_service_, 50.0);
 
   response_->ClearRequests();
@@ -359,7 +299,8 @@ IN_PROC_BROWSER_TEST_F(RewardsBrowserTest, ZeroBalanceWalletClaimNotCalled) {
 }
 
 IN_PROC_BROWSER_TEST_F(RewardsBrowserTest, BackupRestoreModalHasNotice) {
-  rewards_browsertest_helper::EnableRewards(browser());
+  context_helper_->LoadURL(rewards_browsertest_util::GetRewardsUrl());
+  rewards_browsertest_util::CreateWallet(rewards_service_);
   contribution_->AddBalance(promotion_->ClaimPromotionViaCode());
 
   rewards_browsertest_util::WaitForElementToEqual(
@@ -383,7 +324,9 @@ IN_PROC_BROWSER_TEST_F(RewardsBrowserTest, BackupRestoreModalHasNotice) {
 
 IN_PROC_BROWSER_TEST_F(RewardsBrowserTest, BackupRestoreModalHasNoNotice) {
   response_->SetUserFundsBalance(true);
-  rewards_browsertest_helper::EnableRewards(browser());
+  rewards_browsertest_util::StartProcess(rewards_service_);
+  rewards_browsertest_util::CreateWallet(rewards_service_);
+  context_helper_->LoadURL(rewards_browsertest_util::GetRewardsUrl());
 
   rewards_browsertest_util::WaitForElementToEqual(
       contents(),
@@ -406,7 +349,7 @@ IN_PROC_BROWSER_TEST_F(RewardsBrowserTest, BackupRestoreModalHasNoNotice) {
 }
 
 IN_PROC_BROWSER_TEST_F(RewardsBrowserTest, ResetRewards) {
-  rewards_browsertest_helper::EnableRewards(browser());
+  context_helper_->LoadURL(rewards_browsertest_util::GetRewardsUrl());
 
   rewards_browsertest_util::WaitForElementThenClick(
       contents(),
@@ -427,7 +370,8 @@ IN_PROC_BROWSER_TEST_F(RewardsBrowserTest, ResetRewards) {
 }
 
 IN_PROC_BROWSER_TEST_F(RewardsBrowserTest, ResetRewardsWithBAT) {
-  rewards_browsertest_helper::EnableRewards(browser());
+  context_helper_->LoadURL(rewards_browsertest_util::GetRewardsUrl());
+  rewards_browsertest_util::CreateWallet(rewards_service_);
   contribution_->AddBalance(promotion_->ClaimPromotionViaCode());
 
   rewards_browsertest_util::WaitForElementThenClick(
@@ -449,8 +393,7 @@ IN_PROC_BROWSER_TEST_F(RewardsBrowserTest, ResetRewardsWithBAT) {
 }
 
 IN_PROC_BROWSER_TEST_F(RewardsBrowserTest, UpholdLimitNoBAT) {
-  rewards_browsertest_helper::EnableRewards(browser());
-
+  context_helper_->LoadURL(rewards_browsertest_util::GetRewardsUrl());
   rewards_browsertest_util::WaitForElementThenClick(
       contents(),
       "#verify-wallet-button");

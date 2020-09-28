@@ -1693,11 +1693,12 @@ void AdsServiceImpl::MaybeShowOnboarding() {
 }
 
 bool AdsServiceImpl::ShouldShowOnboarding() {
-  auto is_ads_enabled = GetBooleanPref(ads::prefs::kEnabled);
+//  auto is_ads_enabled = GetBooleanPref(ads::prefs::kEnabled);
+//
+//  auto should_show = GetBooleanPref(prefs::kShouldShowOnboarding);
 
-  auto should_show = GetBooleanPref(prefs::kShouldShowOnboarding);
-
-  return IsNewlySupportedLocale() && !is_ads_enabled && should_show;
+//  return IsNewlySupportedLocale() && !is_ads_enabled && should_show;
+  return false;
 }
 
 void AdsServiceImpl::ShowOnboarding() {

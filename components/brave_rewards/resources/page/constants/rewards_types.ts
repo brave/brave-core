@@ -91,5 +91,6 @@ export const enum types {
   COMPLETE_RESET = '@@rewards/COMPLETE_RESET',
   ON_COMPLETE_RESET = '@@rewards/ON_COMPLETE_RESET',
   GET_PAYMENT_ID = '@@rewards/GET_PAYMENT_ID',
-  ON_PAYMENT_ID = '@@rewards/ON_PAYMENT_ID'
+  ON_PAYMENT_ID = '@@rewards/ON_PAYMENT_ID',
+  SET_FIRST_LOAD = '@@rewards/SET_FIRST_LOAD'
 }

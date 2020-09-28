@@ -139,6 +139,7 @@ window.cr.define('brave_rewards', function () {
   function onPendingContributionSaved (result: number) {
     if (result === 0) {
       getActions().getPendingContributions()
+      getActions().setFirstLoad(false)
     }
   }
 

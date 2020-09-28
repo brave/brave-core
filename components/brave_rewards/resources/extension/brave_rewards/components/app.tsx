@@ -205,7 +205,6 @@ export class RewardsPanel extends React.Component<Props, State> {
   render () {
     return (
       <Panel
-        data-test-id={'rewards-panel'}
         tabId={this.state.tabId}
         onlyAnonWallet={this.state.onlyAnonWallet}
       />
