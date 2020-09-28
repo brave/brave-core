@@ -1227,6 +1227,8 @@ class NewTabPage extends React.Component<Props, State> {
           showTogether={newTabData.showTogether}
           geminiSupported={newTabData.geminiSupported}
           toggleShowGemini={this.toggleShowGemini}
+          showCryptoDotCom={newTabData.showCryptoDotCom}
+          cryptoDotComSupported={newTabData.cryptoDotComSupported}
           toggleShowCryptoDotCom={this.toggleShowCryptoDotCom}
           showGemini={newTabData.showGemini}
           focusMoreCards={focusMoreCards}

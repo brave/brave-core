@@ -22,6 +22,7 @@ import binanceBanner from './assets/binance.png'
 import rewardsBanner from './assets/braverewards.png'
 import geminiBanner from './assets/gemini.png'
 import bitcoinDotComBanner from './assets/bitcoin-dot-com.png'
+import cryptoDotComBanner from './assets/crypto-dot-com.png'
 import HideIcon from './assets/hide-icon'
 import AddIcon from '../../../components/default/addCard/assets/add-icon'
 
@@ -42,6 +43,9 @@ interface Props {
   showBitcoinDotCom: boolean
   bitcoinDotComSupported: boolean
   toggleShowBitcoinDotCom: () => void
+  toggleShowCryptoDotCom: () => void
+  showCryptoDotCom: boolean
+  cryptoDotComSupported: boolean
 }
 
 class MoreCardsSettings extends React.PureComponent<Props, {}> {
@@ -86,7 +90,10 @@ class MoreCardsSettings extends React.PureComponent<Props, {}> {
       showGemini,
       toggleShowBitcoinDotCom,
       showBitcoinDotCom,
-      bitcoinDotComSupported
+      bitcoinDotComSupported,
+      cryptoDotComSupported,
+      toggleShowCryptoDotCom,
+      showCryptoDotCom
     } = this.props
     return (
       <StyledWidgetSettings hasFeatured={togetherSupported}>
@@ -151,6 +158,22 @@ class MoreCardsSettings extends React.PureComponent<Props, {}> {
                 </StyledSettingsCopy>
               </StyledSettingsInfo>
               {this.renderToggleButton(showBitcoinDotCom, toggleShowBitcoinDotCom, false)}
+            </SettingsWidget>
+          : null
+        }
+        {
+          cryptoDotComSupported
+          ? <SettingsWidget>
+              <StyledBannerImage src={cryptoDotComBanner} />
+              <StyledSettingsInfo>
+                <StyledSettingsTitle>
+                  {'crypto.com'}
+                </StyledSettingsTitle>
+                <StyledSettingsCopy>
+                  {getLocale('cryptoDotComWidgetDesc')}
+                </StyledSettingsCopy>
+              </StyledSettingsInfo>
+              {this.renderToggleButton(showCryptoDotCom, toggleShowCryptoDotCom, false)}
             </SettingsWidget>
           : null
         }

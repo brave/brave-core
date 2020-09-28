@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <grit-part>
   <if expr="crypto_dot_com_enabled">
-     <message name="IDS_SETTINGS_NEW_TAB_CRYPTO_DOT_COM" desc="The label for Crypto.com show/hide feature toggle">Crypto.com</message>
+    <message name="IDS_SETTINGS_NEW_TAB_CRYPTO_DOT_COM" desc="The label for Crypto.com show/hide feature toggle">Crypto.com</message>
+    <message name="IDS_BRAVE_NEW_TAB_CRYPTO_DOT_COM_WIDGET_DESC" desc="crypto.com widget description">View markets and buy crypto from crypto.com.</message>
   </if>
 </grit-part>
