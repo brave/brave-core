@@ -1,0 +1,19 @@
+# Copyright (c) 2020 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at http://mozilla.org/MPL/2.0/.
+
+brave_browser_farbling_sources = [
+  "//brave/browser/farbling/farbling_tab_helper.cc",
+]
+
+brave_browser_farbling_deps = [
+  "//base",
+  "//brave/components/brave_shields/browser:browser",
+  "//chrome/common",
+  "//components/version_info",
+  "//content/public/browser",
+  "//content/public/common",
+  "//net",
+  "//third_party/blink/public/common",
+]

@@ -1,18 +1,9 @@
 source_set("farbling") {
-  check_includes = false
   sources = [
-    "farbling_tab_helper.cc",
     "farbling_tab_helper.h",
   ]
 
   deps = [
-    "//base",
-    "//brave/components/brave_shields/browser:browser",
-    "//components/version_info",
     "//content/public/browser",
-    "//content/public/common",
-    "//chrome/common",
-    "//net",
-    "//third_party/blink/public/common",
   ]
 }
