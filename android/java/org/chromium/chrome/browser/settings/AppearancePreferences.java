@@ -22,7 +22,7 @@ import org.chromium.chrome.browser.flags.ChromeFeatureList;
 import org.chromium.chrome.browser.night_mode.NightModeUtils;
 import org.chromium.chrome.browser.preferences.BravePreferenceKeys;
 import org.chromium.chrome.browser.settings.BravePreferenceFragment;
-import org.chromium.chrome.browser.toolbar.bottom.BraveBottomToolbarConfiguration;
+import org.chromium.chrome.browser.toolbar.bottom.BottomToolbarConfiguration;
 import org.chromium.components.browser_ui.settings.ChromeSwitchPreference;
 import org.chromium.components.browser_ui.settings.SettingsUtils;
 import org.chromium.ui.base.DeviceFormFactor;
@@ -90,7 +90,7 @@ public class AppearancePreferences extends BravePreferenceFragment
                     ContextUtils.getApplicationContext());
             ((ChromeSwitchPreference) enableBottomToolbar)
                     .setChecked(!isTablet
-                            && BraveBottomToolbarConfiguration.isBottomToolbarEnabled());
+                            && BottomToolbarConfiguration.isBottomToolbarEnabled());
         }
     }
 
@@ -116,7 +116,7 @@ public class AppearancePreferences extends BravePreferenceFragment
         String key = preference.getKey();
         if (BravePreferenceKeys.BRAVE_BOTTOM_TOOLBAR_ENABLED_KEY.equals(key)) {
             SharedPreferences prefs = ContextUtils.getAppSharedPreferences();
-            Boolean originalStatus = BraveBottomToolbarConfiguration.isBottomToolbarEnabled();
+            Boolean originalStatus = BottomToolbarConfiguration.isBottomToolbarEnabled();
             prefs.edit()
                     .putBoolean(BravePreferenceKeys.BRAVE_BOTTOM_TOOLBAR_ENABLED_KEY,
                             !originalStatus)

@@ -41,7 +41,7 @@
     <include layout="@layout/brave_bookmark_toolbar" />
     <include layout="@layout/toolbar_space" />
 
-    <org.chromium.chrome.browser.toolbar.bottom.BraveSearchAccelerator
+    <org.chromium.chrome.browser.toolbar.bottom.SearchAccelerator
         android:id="@+id/search_accelerator"
         android:layout_width="@dimen/search_accelerator_width"
         android:layout_height="@dimen/search_accelerator_height"
