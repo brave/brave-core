@@ -111,7 +111,6 @@ source_set("browser_process") {
     ":version_info",
     "autoplay",
     "content_settings",
-    "download",
     "farbling",
     "net",
     "profiles",
