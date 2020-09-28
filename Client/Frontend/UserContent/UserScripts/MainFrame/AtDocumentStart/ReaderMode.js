@@ -60,6 +60,9 @@ function checkReadability() {
       var readability = new Readability(uri, doc, { debug: DEBUG });
       readabilityResult = readability.parse();
 
+      // Sanitize the title to prevent a malicious page from inserting HTML in the `<title>`.
+      readabilityResult.title = escapeHTML(readabilityResult.title);
+
       debug({Type: "ReaderModeStateChange", Value: readabilityResult !== null ? "Available" : "Unavailable"});
       webkit.messageHandlers.readerModeMessageHandler.postMessage({Type: "ReaderModeStateChange", Value: readabilityResult !== null ? "Available" : "Unavailable"});
       webkit.messageHandlers.readerModeMessageHandler.postMessage({Type: "ReaderContentParsed", Value: readabilityResult});
@@ -69,6 +72,15 @@ function checkReadability() {
     debug({Type: "ReaderModeStateChange", Value: "Unavailable"});
     webkit.messageHandlers.readerModeMessageHandler.postMessage({Type: "ReaderModeStateChange", Value: "Unavailable"});
   }, 100);
+}
+
+function escapeHTML(string) {
+  return string
+    .replace(/\&/g, "&amp;")
+    .replace(/\</g, "&lt;")
+    .replace(/\>/g, "&gt;")
+    .replace(/\"/g, "&quot;")
+    .replace(/\'/g, "&#039;"); 
 }
 
 // Readerize the document. Since we did the actual readerization already in checkReadability, we
