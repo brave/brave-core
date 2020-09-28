@@ -41,6 +41,7 @@ program
 
 program
   .command('gn_check')
+  .option('-C <build_dir>', 'build config (out/Debug, out/Release')
   .option('--target_os <target_os>', 'target OS')
   .option('--target_arch <target_arch>', 'target architecture')
   .option('--target_apk_base <target_apk_base>', 'target Android OS apk (classic, modern, mono)', 'classic')
