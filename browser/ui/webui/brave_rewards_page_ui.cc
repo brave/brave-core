@@ -473,6 +473,7 @@ void RewardsDOMHandler::Init() {
 
   rewards_service_ =
       brave_rewards::RewardsServiceFactory::GetForProfile(profile);
+  rewards_service_->StartProcess();
   if (rewards_service_) {
     rewards_service_->AddObserver(this);
   }

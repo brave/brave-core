@@ -50,9 +50,6 @@ BraveComponentLoader::BraveComponentLoader(ExtensionSystem* extension_system,
   pref_change_registrar_.Add(brave_rewards::prefs::kAutoContributeEnabled,
       base::Bind(&BraveComponentLoader::CheckRewardsStatus,
       base::Unretained(this)));
-  pref_change_registrar_.Add(ads::prefs::kEnabled,
-      base::Bind(&BraveComponentLoader::CheckRewardsStatus,
-      base::Unretained(this)));
 #endif
 }
 
@@ -140,9 +137,8 @@ void BraveComponentLoader::AddRewardsExtension() {
 void BraveComponentLoader::CheckRewardsStatus() {
   const bool is_ac_enabled = profile_prefs_->GetBoolean(
       brave_rewards::prefs::kAutoContributeEnabled);
-  const bool is_ads_enabled = profile_prefs_->GetBoolean(ads::prefs::kEnabled);
 
-  if (is_ac_enabled || is_ads_enabled) {
+  if (is_ac_enabled) {
     AddRewardsExtension();
   }
 }

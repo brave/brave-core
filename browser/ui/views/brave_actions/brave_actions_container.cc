@@ -11,6 +11,7 @@
 
 #include "base/command_line.h"
 #include "base/one_shot_event.h"
+#include "brave/browser/brave_rewards/rewards_service_factory.h"
 #include "brave/browser/extensions/brave_component_loader.h"
 #include "brave/browser/ui/brave_actions/brave_action_view_controller.h"
 #include "brave/browser/ui/views/brave_actions/brave_action_view.h"
@@ -22,11 +23,12 @@
 #include "brave/components/brave_rewards/common/pref_names.h"
 #include "chrome/browser/extensions/extension_service.h"
 #include "chrome/browser/profiles/profile.h"
+#include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/extensions/extensions_container.h"
 #include "chrome/browser/ui/layout_constants.h"
-#include "chrome/browser/ui/toolbar/toolbar_actions_bar_bubble_delegate.h"
 #include "chrome/browser/ui/toolbar/toolbar_action_view_controller.h"
+#include "chrome/browser/ui/toolbar/toolbar_actions_bar_bubble_delegate.h"
 #include "chrome/browser/ui/views/toolbar/toolbar_action_view.h"
 #include "components/prefs/pref_service.h"
 #include "extensions/browser/extension_action_manager.h"
@@ -113,6 +115,8 @@ BraveActionsContainer::BraveActionsContainer(Browser* browser, Profile* profile)
       extension_action_observer_(this),
       brave_action_observer_(this),
       empty_extensions_container_(new EmptyExtensionsContainer),
+      rewards_service_(
+          brave_rewards::RewardsServiceFactory::GetForProfile(profile)),
       weak_ptr_factory_(this) {
   // Handle when the extension system is ready
   extension_system_->ready().Post(
@@ -372,6 +376,10 @@ void BraveActionsContainer::OnRewardsStubButtonClicked() {
     extensions::ComponentLoader* loader = service->component_loader();
           static_cast<extensions::BraveComponentLoader*>(loader)->
               AddRewardsExtension();
+
+    if (rewards_service_) {
+      rewards_service_->StartProcess();
+    }
   }
 }
 // end BraveRewardsActionStubView::Delegate members

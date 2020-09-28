@@ -353,6 +353,8 @@ class RewardsService : public KeyedService {
 
   virtual void GetBraveWallet(GetBraveWalletCallback callback) = 0;
 
+  virtual void StartProcess() = 0;
+
  protected:
   base::ObserverList<RewardsServiceObserver> observers_;
 

@@ -12,10 +12,11 @@
 
 #include "brave/browser/extensions/api/brave_action_api.h"
 #include "brave/components/brave_rewards/browser/buildflags/buildflags.h"
-#include "chrome/browser/ui/views/toolbar/toolbar_action_view.h"
-#include "chrome/browser/ui/toolbar/toolbar_action_view_controller.h"
-#include "chrome/browser/ui/browser.h"
+#include "brave/components/brave_rewards/browser/rewards_service.h"
 #include "chrome/browser/extensions/api/extension_action/extension_action_api.h"
+#include "chrome/browser/ui/browser.h"
+#include "chrome/browser/ui/toolbar/toolbar_action_view_controller.h"
+#include "chrome/browser/ui/views/toolbar/toolbar_action_view.h"
 #include "components/prefs/pref_member.h"
 #include "extensions/browser/extension_registry.h"
 #include "extensions/browser/extension_registry_observer.h"
@@ -186,6 +187,8 @@ class BraveActionsContainer : public views::View,
   BooleanPrefMember hide_brave_rewards_button_;
 
   std::unique_ptr<EmptyExtensionsContainer> empty_extensions_container_;
+
+  brave_rewards::RewardsService* rewards_service_;
 
   base::WeakPtrFactory<BraveActionsContainer> weak_ptr_factory_;
 
