@@ -95,6 +95,8 @@
 		0A6112AC230B00E7001BBC45 /* OnboardingNavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A6112AB230B00E7001BBC45 /* OnboardingNavigationController.swift */; };
 		0A6112BD230B4306001BBC45 /* OnboardingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A6112BC230B4306001BBC45 /* OnboardingViewController.swift */; };
 		0A62A355238C6F3E008902E3 /* Bookmark+Restoration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A62A354238C6F3E008902E3 /* Bookmark+Restoration.swift */; };
+		0A64384B24FD3F0F000E80A3 /* DomainUserScript.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A64384A24FD3F0F000E80A3 /* DomainUserScript.swift */; };
+		0A64384E24FD4E43000E80A3 /* ArchiveIsCompat.js in Resources */ = {isa = PBXBuildFile; fileRef = 0A64384D24FD4E43000E80A3 /* ArchiveIsCompat.js */; };
 		0A66550A23E9D9750047EF2A /* UserAgent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A66550923E9D9750047EF2A /* UserAgent.swift */; };
 		0A66550C23E9E04F0047EF2A /* UserAgentTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A66550B23E9E04F0047EF2A /* UserAgentTests.swift */; };
 		0A6BEF6624FCF23C0057A166 /* NewTabCenteredCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A6BEF6524FCF23C0057A166 /* NewTabCenteredCollectionViewCell.swift */; };
@@ -1487,6 +1489,8 @@
 		0A6112AB230B00E7001BBC45 /* OnboardingNavigationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingNavigationController.swift; sourceTree = "<group>"; };
 		0A6112BC230B4306001BBC45 /* OnboardingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingViewController.swift; sourceTree = "<group>"; };
 		0A62A354238C6F3E008902E3 /* Bookmark+Restoration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Bookmark+Restoration.swift"; sourceTree = "<group>"; };
+		0A64384A24FD3F0F000E80A3 /* DomainUserScript.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DomainUserScript.swift; sourceTree = "<group>"; };
+		0A64384D24FD4E43000E80A3 /* ArchiveIsCompat.js */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.javascript; path = ArchiveIsCompat.js; sourceTree = "<group>"; };
 		0A66550923E9D9750047EF2A /* UserAgent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserAgent.swift; sourceTree = "<group>"; };
 		0A66550B23E9E04F0047EF2A /* UserAgentTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserAgentTests.swift; sourceTree = "<group>"; };
 		0A66550D23E9EA540047EF2A /* Brave_iPad.xctestplan */ = {isa = PBXFileReference; lastKnownFileType = text; path = Brave_iPad.xctestplan; sourceTree = "<group>"; };
@@ -4806,6 +4810,7 @@
 				5EB57D0122FDC0CB00A07325 /* FullscreenHelper.js */,
 				F9B23EE123F61173000EB3D8 /* PaymentRequest.js */,
 				5E4E078224A0E4D700B01720 /* YoutubeAdblock.js */,
+				0A64384D24FD4E43000E80A3 /* ArchiveIsCompat.js */,
 			);
 			path = UserScripts;
 			sourceTree = "<group>";
@@ -4986,6 +4991,7 @@
 				D04D1B91209790B60074B35F /* Toast.swift */,
 				D3C744CC1A687D6C004CE85D /* URIFixup.swift */,
 				D0FCF7F41FE45842004A7995 /* UserScriptManager.swift */,
+				0A64384A24FD3F0F000E80A3 /* DomainUserScript.swift */,
 				279C756A219DDE3B001CD1CB /* FingerprintingProtection.swift */,
 				5E34780F22D7A1D200B0D5F8 /* ResourceDownloadManager.swift */,
 				5E4845C122DE3DF800372022 /* WindowRenderHelperScript.swift */,
@@ -6264,6 +6270,7 @@
 				5D5374A023846FFC00A2B587 /* joe-gardner.jpg in Resources */,
 				5D5374A123846FFC00A2B587 /* xavier-balderas-cejudo.jpg in Resources */,
 				5D5374A923846FFC00A2B587 /* matt-palmer.jpg in Resources */,
+				0A64384E24FD4E43000E80A3 /* ArchiveIsCompat.js in Resources */,
 				5D5374A323846FFC00A2B587 /* will_christiansen_glacier_peak.jpg in Resources */,
 				5DE52511218CE92C000DFAA6 /* block-trackers.json in Resources */,
 				39A35AED1C0662A3006B9E87 /* SpotlightHelper.js in Resources */,
@@ -6826,6 +6833,7 @@
 				4422D4FC21BFFB7600BF1855 /* version_set.cc in Sources */,
 				4422D4C821BFFB7600BF1855 /* env.cc in Sources */,
 				27D67CED24D07EB800066D83 /* BraveTodaySettingsViewController.swift in Sources */,
+				0A64384B24FD3F0F000E80A3 /* DomainUserScript.swift in Sources */,
 				4422D56321BFFB7F00BF1855 /* compile.cc in Sources */,
 				D3C3696E1CC6B78800348A61 /* LocalRequestHelper.swift in Sources */,
 				2726637324981B600056CFE1 /* FeedSectionHeaderView.swift in Sources */,

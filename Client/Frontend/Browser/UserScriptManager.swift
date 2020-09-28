@@ -4,6 +4,7 @@
 
 import WebKit
 import Shared
+import Data
 
 private let log = Logger.browserLogger
 
@@ -45,21 +46,44 @@ class UserScriptManager {
         }
     }
     
-    // Whether or not the Adblock shields are enabled
-    var isYoutubeAdblockEnabled: Bool {
+    /// Stores domain specific scriplet, usually used for webcompat workarounds.
+    var domainUserScript: DomainUserScript? {
         didSet {
-            if oldValue == isYoutubeAdblockEnabled { return }
+            if oldValue == domainUserScript { return }
             reloadUserScripts()
         }
     }
     
-    init(tab: Tab, isFingerprintingProtectionEnabled: Bool, isCookieBlockingEnabled: Bool, isU2FEnabled: Bool, isPaymentRequestEnabled: Bool, isYoutubeAdblockEnabled: Bool) {
+    func handleDomainUserScript(for url: URL) {
+        guard let baseDomain = url.baseDomain,
+            let customDomainUserScript = DomainUserScript.get(for: baseDomain) else {
+                // No custom script for this domain, clearing existing user script
+                // in case the previous domain had one.
+                domainUserScript = nil
+                return
+        }
+        
+        if let shieldType = customDomainUserScript.shieldType {
+            let domain = Domain.getOrCreate(forUrl: url,
+                                            persistent: !PrivateBrowsingManager.shared.isPrivateBrowsing)
+            
+            if domain.isShieldExpected(shieldType, considerAllShieldsOption: true) {
+                domainUserScript = customDomainUserScript
+            } else {
+                // Remove old user script.
+                domainUserScript = nil
+            }
+        } else {
+            domainUserScript = customDomainUserScript
+        }
+    }
+    
+    init(tab: Tab, isFingerprintingProtectionEnabled: Bool, isCookieBlockingEnabled: Bool, isU2FEnabled: Bool, isPaymentRequestEnabled: Bool) {
         self.tab = tab
         self.isFingerprintingProtectionEnabled = isFingerprintingProtectionEnabled
         self.isCookieBlockingEnabled = isCookieBlockingEnabled
         self.isU2FEnabled = isU2FEnabled
         self.isPaymentRequestEnabled = isPaymentRequestEnabled
-        self.isYoutubeAdblockEnabled = isYoutubeAdblockEnabled
         reloadUserScripts()
     }
     
@@ -206,24 +230,6 @@ class UserScriptManager {
         
         return WKUserScript(source: alteredSource, injectionTime: .atDocumentStart, forMainFrameOnly: false)
     }()
-    
-    private let youtubeAdblockJSScript: WKUserScript? = {
-        guard let path = Bundle.main.path(forResource: "YoutubeAdblock", ofType: "js"), let source = try? String(contentsOfFile: path) else {
-            log.error("Failed to load YoutubeAdblock.js")
-            return nil
-        }
-        
-        //Verify that the application itself is making a call to the JS script instead of other scripts on the page.
-        //This variable will be unique amongst scripts loaded in the page.
-        //When the script is called, the token is provided in order to access the script variable.
-        var alteredSource = source
-        let token = UserScriptManager.securityToken.uuidString.replacingOccurrences(of: "-", with: "", options: .literal)
-        alteredSource = alteredSource.replacingOccurrences(of: "$<prunePaths>", with: "ABSPP\(token)", options: .literal)
-        alteredSource = alteredSource.replacingOccurrences(of: "$<findOwner>", with: "ABSFO\(token)", options: .literal)
-        alteredSource = alteredSource.replacingOccurrences(of: "$<setJS>", with: "ABSSJ\(token)", options: .literal)
-        
-        return WKUserScript(source: alteredSource, injectionTime: .atDocumentStart, forMainFrameOnly: false)
-    }()
 
     private func reloadUserScripts() {
         tab?.webView?.configuration.userContentController.do {
@@ -257,7 +263,7 @@ class UserScriptManager {
                 $0.addUserScript(script)
             }
             
-            if isYoutubeAdblockEnabled, let script = youtubeAdblockJSScript {
+            if let domainUserScript = domainUserScript, let script = domainUserScript.script {
                 $0.addUserScript(script)
             }
             
