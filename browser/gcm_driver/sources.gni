@@ -1,0 +1,19 @@
+# Copyright (c) 2020 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at http://mozilla.org/MPL/2.0/.
+
+brave_chrome_browser_gcm_driver_sources = [
+  "//brave/browser/gcm_driver/brave_gcm_utils.cc",
+  "//brave/browser/gcm_driver/brave_gcm_utils.h",
+  "//brave/browser/gcm_driver/brave_gcm_channel_status.cc",
+  "//brave/browser/gcm_driver/brave_gcm_channel_status.h",
+]
+
+brave_chrome_browser_gcm_driver_deps = [
+  "//base",
+  "//brave/common:pref_names",
+  "//components/gcm_driver:gcm_driver",
+  "//components/prefs",
+  "//components/pref_registry",
+]

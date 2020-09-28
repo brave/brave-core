@@ -3,10 +3,17 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at http://mozilla.org/MPL/2.0/.
 
+import("//brave/browser/gcm_driver/sources.gni")
 import("//brave/browser/importer/sources.gni")
+import("//components/gcm_driver/config.gni")
 
 brave_chrome_browser_sources = []
 brave_chrome_browser_sources += brave_chrome_browser_importer_sources
 
 brave_chrome_browser_deps = []
 brave_chrome_browser_deps += brave_chrome_browser_importer_deps
+
+if (!use_gcm_from_platform) {
+  brave_chrome_browser_sources += brave_chrome_browser_gcm_driver_sources
+  brave_chrome_browser_deps += brave_chrome_browser_gcm_driver_deps
+}

@@ -25,7 +25,6 @@ source_set("profiles") {
 
   deps = [
     "//base",
-    "//brave/browser/gcm_driver",
     "//brave/browser/tor",
     "//brave/browser/translate/buildflags",
     "//brave/common:pref_names",
