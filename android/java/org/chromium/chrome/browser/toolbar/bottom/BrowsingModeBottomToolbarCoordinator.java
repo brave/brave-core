@@ -1,6 +1,7 @@
-// Copyright 2018 The Chromium Authors. All rights reserved.
-// Use of this source code is governed by a BSD-style license that can be
-// found in the LICENSE file.
+/* Copyright (c) 2020 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this file,
+ * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 package org.chromium.chrome.browser.toolbar.bottom;
 
@@ -29,6 +30,9 @@ import org.chromium.chrome.browser.ui.appmenu.AppMenuButtonHelper;
 import org.chromium.components.feature_engagement.FeatureConstants;
 import org.chromium.components.feature_engagement.Tracker;
 import org.chromium.ui.modelutil.PropertyModelChangeProcessor;
+import org.chromium.chrome.browser.tab.TabImpl;
+import org.chromium.chrome.browser.app.BraveActivity;
+import org.chromium.chrome.browser.toolbar.menu_button.MenuButton;
 
 /**
  * The coordinator for the browsing mode bottom toolbar. This class has two primary components,
@@ -74,6 +78,8 @@ public class BrowsingModeBottomToolbarCoordinator {
 
     private Callback<OverviewModeBehavior> mOverviewModeBehaviorSupplierObserver;
     private ObservableSupplier<OverviewModeBehavior> mOverviewModeBehaviorSupplier;
+    private final BookmarksButton mBookmarkButton;
+    private final MenuButton mMenuButton;
 
     /**
      * Build the coordinator that manages the browsing mode bottom toolbar.
@@ -137,6 +143,27 @@ public class BrowsingModeBottomToolbarCoordinator {
         mOverviewModeBehaviorSupplier = overviewModeBehaviorSupplier;
         mOverviewModeBehaviorSupplierObserver = this::setOverviewModeBehavior;
         mOverviewModeBehaviorSupplier.addObserver(mOverviewModeBehaviorSupplierObserver);
+
+        mBookmarkButton = mToolbarRoot.findViewById(R.id.bottom_bookmark_button);
+        if (BottomToolbarVariationManager.isBookmarkButtonOnBottom()) {
+            mBookmarkButton.setVisibility(View.VISIBLE);
+            getNewTabButtonParent().setVisibility(View.GONE);
+            OnClickListener bookmarkClickHandler = v -> {
+                TabImpl tab = (TabImpl) mTabProvider.get();
+                BraveActivity activity = BraveActivity.getBraveActivity();
+                if (tab == null || activity == null) {
+                    assert false;
+                    return;
+                }
+                activity.addOrEditBookmark(tab);
+            };
+            mBookmarkButton.setOnClickListener(bookmarkClickHandler);
+        }
+
+        mMenuButton = mToolbarRoot.findViewById(R.id.menu_button_wrapper);
+        if (!BottomToolbarVariationManager.isMenuButtonOnBottom()) {
+            mMenuButton.setVisibility(View.GONE);
+        }
     }
 
     /**
@@ -182,6 +209,11 @@ public class BrowsingModeBottomToolbarCoordinator {
             mTabSwitcherButtonCoordinator.setThemeColorProvider(themeColorProvider);
             mTabSwitcherButtonCoordinator.setTabCountProvider(tabCountProvider);
         }
+
+        mBookmarkButton.setThemeColorProvider(themeColorProvider);
+
+        mMenuButton.setAppMenuButtonHelper(menuButtonHelper);
+        mMenuButton.setThemeColorProvider(themeColorProvider);
     }
 
     private void setOverviewModeBehavior(OverviewModeBehavior overviewModeBehavior) {
@@ -192,7 +224,7 @@ public class BrowsingModeBottomToolbarCoordinator {
         // disabled based on the overview state.
         if (ReturnToChromeExperimentsUtil.shouldShowStartSurfaceAsTheHomePage()) {
             mShareButton.setOverviewModeBehavior(overviewModeBehavior);
-            mTabSwitcherButtonCoordinator.setOverviewModeBehavior(overviewModeBehavior);
+            // mTabSwitcherButtonCoordinator.setOverviewModeBehavior(overviewModeBehavior);
             mHomeButton.setOverviewModeBehavior(overviewModeBehavior);
         }
     }
@@ -257,5 +289,21 @@ public class BrowsingModeBottomToolbarCoordinator {
         mShareButton.destroy();
         mSearchAccelerator.destroy();
         mTabSwitcherButtonCoordinator.destroy();
+        mBookmarkButton.destroy();
+        mMenuButton.destroy();
+    }
+
+    public void updateBookmarkButton(boolean isBookmarked, boolean editingAllowed) {
+        if (mBookmarkButton != null) {
+            mBookmarkButton.updateBookmarkButton(isBookmarked, editingAllowed);
+        }
+    }
+
+    View getNewTabButtonParent() {
+        return (View)mNewTabButton.getParent();
+    }
+
+    BookmarksButton getBookmarkButton() {
+        return mBookmarkButton;
     }
 }

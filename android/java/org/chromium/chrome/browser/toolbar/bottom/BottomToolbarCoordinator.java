@@ -1,9 +1,12 @@
-// Copyright 2018 The Chromium Authors. All rights reserved.
-// Use of this source code is governed by a BSD-style license that can be
-// found in the LICENSE file.
+/* Copyright (c) 2020 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this file,
+ * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 package org.chromium.chrome.browser.toolbar.bottom;
 
+import android.content.Context;
+import android.content.res.Resources;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.View.OnLongClickListener;
@@ -11,6 +14,7 @@ import android.view.ViewGroup;
 import android.view.ViewStub;
 
 import org.chromium.base.Callback;
+import org.chromium.base.ContextUtils;
 import org.chromium.base.metrics.RecordUserAction;
 import org.chromium.base.supplier.ObservableSupplier;
 import org.chromium.base.supplier.ObservableSupplierImpl;
@@ -19,26 +23,34 @@ import org.chromium.base.supplier.Supplier;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.ActivityTabProvider;
 import org.chromium.chrome.browser.ThemeColorProvider;
+import org.chromium.chrome.browser.app.ChromeActivity;
 import org.chromium.chrome.browser.compositor.layouts.EmptyOverviewModeObserver;
 import org.chromium.chrome.browser.compositor.layouts.OverviewModeBehavior;
 import org.chromium.chrome.browser.compositor.layouts.OverviewModeBehavior.OverviewModeObserver;
 import org.chromium.chrome.browser.feature_engagement.TrackerFactory;
+import org.chromium.chrome.browser.homepage.HomepageManager;
 import org.chromium.chrome.browser.omnibox.LocationBar;
 import org.chromium.chrome.browser.profiles.Profile;
 import org.chromium.chrome.browser.share.ShareDelegate;
 import org.chromium.chrome.browser.tab.Tab;
 import org.chromium.chrome.browser.tasks.ReturnToChromeExperimentsUtil;
+import org.chromium.chrome.browser.toolbar.HomeButton;
 import org.chromium.chrome.browser.toolbar.IncognitoStateProvider;
 import org.chromium.chrome.browser.toolbar.TabCountProvider;
+import org.chromium.chrome.browser.toolbar.bottom.BookmarksButton;
+import org.chromium.chrome.browser.toolbar.bottom.BottomToolbarNewTabButton;
+import org.chromium.chrome.browser.toolbar.bottom.SearchAccelerator;
 import org.chromium.chrome.browser.ui.appmenu.AppMenuButtonHelper;
+import org.chromium.chrome.browser.util.TabUtils;
 import org.chromium.components.feature_engagement.EventConstants;
 import org.chromium.components.feature_engagement.Tracker;
+import org.chromium.ui.widget.Toast;
 
 /**
  * The root coordinator for the bottom toolbar. It has two sub-components: the browsing mode bottom
  * toolbar and the tab switcher mode bottom toolbar.
  */
-class BottomToolbarCoordinator {
+class BottomToolbarCoordinator implements View.OnLongClickListener {
     /** The browsing mode bottom toolbar component */
     protected final BrowsingModeBottomToolbarCoordinator mBrowsingModeCoordinator;
 
@@ -66,6 +78,15 @@ class BottomToolbarCoordinator {
     private ObservableSupplier<OverviewModeBehavior> mOverviewModeBehaviorSupplier;
     private Callback<OverviewModeBehavior> mOverviewModeBehaviorSupplierObserver;
     private AppMenuButtonHelper mMenuButtonHelper;
+    private BottomControlsMediator mBottomControlsMediator;
+    private Runnable mOriginalHomeButtonRunnable;
+    private final ScrollingBottomViewResourceFrameLayout mScrollingBottomView;
+    private HomeButton mHomeButton;
+    private BookmarksButton mBookmarksButton;
+    private SearchAccelerator mSearchAccelerator;
+    private BottomToolbarNewTabButton mNewTabButton;
+
+    private final Context mContext = ContextUtils.getApplicationContext();
 
     /**
      * Build the coordinator that manages the bottom toolbar.
@@ -81,13 +102,15 @@ class BottomToolbarCoordinator {
      * @param overviewModeBehaviorSupplier Supplier for the overview mode manager.
      * @param menuButtonHelperSupplier
      */
-    BottomToolbarCoordinator(ViewStub stub, ActivityTabProvider tabProvider,
+    BottomToolbarCoordinator(ScrollingBottomViewResourceFrameLayout scrollingBottomView,
+            ViewStub stub, ActivityTabProvider tabProvider,
             OnLongClickListener tabsSwitcherLongClickListner, ThemeColorProvider themeColorProvider,
             ObservableSupplier<ShareDelegate> shareDelegateSupplier,
             Supplier<Boolean> showStartSurfaceCallable, Runnable openHomepageAction,
             Callback<Integer> setUrlBarFocusAction,
             ObservableSupplier<OverviewModeBehavior> overviewModeBehaviorSupplier,
-            ObservableSupplier<AppMenuButtonHelper> menuButtonHelperSupplier) {
+            ObservableSupplier<AppMenuButtonHelper> menuButtonHelperSupplier,
+            BottomControlsMediator bottomControlsMediator) {
         View root = stub.inflate();
 
         mOverviewModeBehaviorSupplierObserver = this::setOverviewModeBehavior;
@@ -108,7 +131,7 @@ class BottomToolbarCoordinator {
             setUrlBarFocusAction.onResult(LocationBar.OmniboxFocusReason.ACCELERATOR_TAP);
         };
 
-        mBrowsingModeCoordinator = new BraveBrowsingModeBottomToolbarCoordinator(root, tabProvider,
+        mBrowsingModeCoordinator = new BrowsingModeBottomToolbarCoordinator(root, tabProvider,
                 homeButtonListener, searchAcceleratorListener, mShareButtonListenerSupplier,
                 tabsSwitcherLongClickListner, mOverviewModeBehaviorSupplier);
 
@@ -126,6 +149,9 @@ class BottomToolbarCoordinator {
                 mMenuButtonHelper = menuButtonHelper;
             }
         });
+        mBottomControlsMediator = bottomControlsMediator;
+        mOriginalHomeButtonRunnable = openHomepageAction;
+        mScrollingBottomView = scrollingBottomView;
     }
 
     /**
@@ -158,7 +184,6 @@ class BottomToolbarCoordinator {
             closeAllTabsAction.run();
         };
 
-
         mBrowsingModeCoordinator.initializeWithNative(newTabClickListener, tabSwitcherListener,
                 mMenuButtonHelper, tabCountProvider, mThemeColorProvider, incognitoStateProvider);
         mTabSwitcherModeCoordinator = new TabSwitcherBottomToolbarCoordinator(mTabSwitcherModeStub,
@@ -172,30 +197,103 @@ class BottomToolbarCoordinator {
             mOverviewModeObserver = new EmptyOverviewModeObserver() {
                 @Override
                 public void onOverviewModeStartedShowing(boolean showToolbar) {
-                    mBrowsingModeCoordinator.getSearchAccelerator().setEnabled(false);
+                    mBottomControlsMediator.setCompositedViewVisibile(false);
+                    BrowsingModeBottomToolbarCoordinator browsingModeCoordinator =
+                            (BrowsingModeBottomToolbarCoordinator) mBrowsingModeCoordinator;
+                    browsingModeCoordinator.getSearchAccelerator().setVisibility(View.GONE);
                     if (BottomToolbarVariationManager.isShareButtonOnBottom()) {
-                        mBrowsingModeCoordinator.getShareButton().setEnabled(false);
+                        browsingModeCoordinator.getShareButton().setVisibility(View.GONE);
                     }
                     if (BottomToolbarVariationManager.isHomeButtonOnBottom()) {
-                        mBrowsingModeCoordinator.getHomeButton().setEnabled(false);
+                        browsingModeCoordinator.getHomeButton().setVisibility(View.INVISIBLE);
+                    }
+                    if (BottomToolbarVariationManager.isBookmarkButtonOnBottom()) {
+                        browsingModeCoordinator.getBookmarkButton().setVisibility(View.INVISIBLE);
+                    }
+                    if (BottomToolbarVariationManager.isTabSwitcherOnBottom()) {
+                        browsingModeCoordinator.getTabSwitcherButtonView().setVisibility(
+                                View.INVISIBLE);
+                    }
+                    if (BottomToolbarVariationManager.isNewTabButtonOnBottom()) {
+                        browsingModeCoordinator.getNewTabButtonParent().setVisibility(View.VISIBLE);
                     }
                 }
 
                 @Override
                 public void onOverviewModeStartedHiding(
                         boolean showToolbar, boolean delayAnimation) {
-                    mBrowsingModeCoordinator.getSearchAccelerator().setEnabled(true);
+                    BrowsingModeBottomToolbarCoordinator browsingModeCoordinator =
+                            (BrowsingModeBottomToolbarCoordinator) mBrowsingModeCoordinator;
+                    browsingModeCoordinator.getSearchAccelerator().setVisibility(View.VISIBLE);
                     if (BottomToolbarVariationManager.isShareButtonOnBottom()) {
-                        mBrowsingModeCoordinator.getShareButton().updateButtonEnabledState(
+                        browsingModeCoordinator.getShareButton().setVisibility(View.VISIBLE);
+                        browsingModeCoordinator.getShareButton().updateButtonEnabledState(
                                 mTabProvider.get());
                     }
                     if (BottomToolbarVariationManager.isHomeButtonOnBottom()) {
-                        mBrowsingModeCoordinator.getHomeButton().updateButtonEnabledState(
+                        browsingModeCoordinator.getHomeButton().setVisibility(View.VISIBLE);
+                        browsingModeCoordinator.getHomeButton().updateButtonEnabledState(
                                 mTabProvider.get());
                     }
+                    if (BottomToolbarVariationManager.isBookmarkButtonOnBottom()) {
+                        browsingModeCoordinator.getBookmarkButton().setVisibility(View.VISIBLE);
+                    }
+                    if (BottomToolbarVariationManager.isTabSwitcherOnBottom()) {
+                        browsingModeCoordinator.getTabSwitcherButtonView().setVisibility(
+                                View.VISIBLE);
+                    }
+                    if (BottomToolbarVariationManager.isNewTabButtonOnBottom()) {
+                        browsingModeCoordinator.getNewTabButtonParent().setVisibility(View.GONE);
+                    }
+                }
+
+                @Override
+                public void onOverviewModeFinishedHiding() {
+                    mBottomControlsMediator.setCompositedViewVisibile(true);
                 }
             };
             mOverviewModeBehaviorSupplier.addObserver(mOverviewModeBehaviorSupplierObserver);
+        }
+
+        View root = (View) topToolbarRoot.getParent();
+        View bottomToolbarBrowsing = root.findViewById(R.id.bottom_toolbar_browsing);
+        View bottomToolbarButtons = root.findViewById(R.id.bottom_toolbar_buttons);
+
+        mHomeButton = bottomToolbarBrowsing.findViewById(R.id.bottom_home_button);
+        if (mHomeButton != null) {
+            mHomeButton.setOnLongClickListener(this);
+
+            final OnClickListener homeButtonListener = v -> {
+                final boolean isHomepageEnabled = HomepageManager.isHomepageEnabled();
+                if (isHomepageEnabled) {
+                    mOriginalHomeButtonRunnable.run();
+                } else {
+                    newTabClickListener.onClick(v);
+                }
+            };
+
+            mHomeButton.setOnClickListener(homeButtonListener);
+        }
+
+        mBookmarksButton = bottomToolbarBrowsing.findViewById(R.id.bottom_bookmark_button);
+        if (mBookmarksButton != null) {
+            mBookmarksButton.setOnLongClickListener(this);
+        }
+
+        mSearchAccelerator = bottomToolbarBrowsing.findViewById(R.id.search_accelerator);
+        if (mSearchAccelerator != null) {
+            mSearchAccelerator.setOnLongClickListener(this);
+        }
+
+        mNewTabButton = bottomToolbarButtons.findViewById(R.id.bottom_new_tab_button);
+        if (mNewTabButton != null) {
+            mNewTabButton.setOnLongClickListener(this);
+        }
+
+        ChromeActivity activity = TabUtils.getChromeActivity();
+        if (mScrollingBottomView != null && activity != null) {
+            mScrollingBottomView.setSwipeDetector(
+                    activity.getCompositorViewHolder().getLayoutManager().getToolbarSwipeHandler());
         }
     }
 
@@ -255,8 +353,34 @@ class BottomToolbarCoordinator {
 
     public void updateBookmarkButton(boolean isBookmarked, boolean editingAllowed) {
         if (mBrowsingModeCoordinator != null) {
-            ((BraveBrowsingModeBottomToolbarCoordinator) mBrowsingModeCoordinator)
+            ((BrowsingModeBottomToolbarCoordinator) mBrowsingModeCoordinator)
                     .updateBookmarkButton(isBookmarked, editingAllowed);
         }
+    }
+
+    @Override
+    public boolean onLongClick(View v) {
+        String description = "";
+        Resources resources = mContext.getResources();
+
+        if (v == mHomeButton) {
+            // It is currently a new tab button when homepage is disabled.
+            if (!HomepageManager.isHomepageEnabled()) {
+                TabUtils.showTabPopupMenu(mContext, v);
+                return true;
+            }
+
+            description = resources.getString(R.string.accessibility_toolbar_btn_home);
+        } else if (v == mBookmarksButton) {
+            description = resources.getString(R.string.accessibility_toolbar_btn_bookmark);
+        } else if (v == mSearchAccelerator) {
+            description =
+                    resources.getString(R.string.accessibility_toolbar_btn_search_accelerator);
+        } else if (v == mNewTabButton) {
+            TabUtils.showTabPopupMenu(mContext, v);
+            return true;
+        }
+
+        return Toast.showAnchoredToast(mContext, v, description);
     }
 }

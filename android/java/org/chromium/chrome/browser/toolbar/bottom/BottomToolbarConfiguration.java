@@ -18,7 +18,7 @@ import org.chromium.chrome.browser.preferences.SharedPreferencesManager;
 import org.chromium.chrome.browser.tasks.tab_management.TabUiFeatureUtilities;
 import org.chromium.ui.base.DeviceFormFactor;
 
-public class BraveBottomToolbarConfiguration {
+public class BottomToolbarConfiguration {
     private static final int SMALL_SCREEN_WIDTH = 360;
     private static final int SMALL_SCREEN_HEIGHT = 640;
 

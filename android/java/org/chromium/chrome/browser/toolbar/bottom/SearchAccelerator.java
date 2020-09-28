@@ -1,12 +1,14 @@
-// Copyright 2018 The Chromium Authors. All rights reserved.
-// Use of this source code is governed by a BSD-style license that can be
-// found in the LICENSE file.
+/* Copyright (c) 2020 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this file,
+ * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 package org.chromium.chrome.browser.toolbar.bottom;
 
 import android.content.Context;
 import android.content.res.ColorStateList;
 import android.content.res.Resources;
+import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
 import android.util.AttributeSet;
@@ -46,6 +48,8 @@ class SearchAccelerator extends ChromeImageButton
         mBackground = ApiCompatibilityUtils.getDrawable(mResources, R.drawable.ntp_search_box);
         mBackground.mutate();
         setBackground(mBackground);
+
+        setBackgroundColor(Color.TRANSPARENT);
     }
 
     void setThemeColorProvider(ThemeColorProvider themeColorProvider) {

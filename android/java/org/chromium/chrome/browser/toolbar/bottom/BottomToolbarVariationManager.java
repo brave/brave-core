@@ -1,6 +1,7 @@
-// Copyright 2020 The Chromium Authors. All rights reserved.
-// Use of this source code is governed by a BSD-style license that can be
-// found in the LICENSE file.
+/* Copyright (c) 2020 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this file,
+ * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 package org.chromium.chrome.browser.toolbar.bottom;
 
@@ -37,7 +38,7 @@ public class BottomToolbarVariationManager {
      *         in portrait mode in the current variation.
      */
     public static boolean isNewTabButtonOnBottom() {
-        return BraveBottomToolbarConfiguration.isBottomToolbarEnabled();
+        return BottomToolbarConfiguration.isBottomToolbarEnabled();
     }
 
     /**
@@ -45,7 +46,7 @@ public class BottomToolbarVariationManager {
      *         in portrait mode in the current variation.
      */
     public static boolean isMenuButtonOnBottom() {
-        return BraveBottomToolbarConfiguration.isBottomToolbarEnabled();
+        return BottomToolbarConfiguration.isBottomToolbarEnabled();
     }
 
     /**
@@ -53,7 +54,7 @@ public class BottomToolbarVariationManager {
      *         in the current variation.
      */
     public static boolean shouldBottomToolbarBeVisibleInOverviewMode() {
-        return BraveBottomToolbarConfiguration.isBottomToolbarEnabled();
+        return BottomToolbarConfiguration.isBottomToolbarEnabled();
     }
 
     /**
@@ -61,7 +62,7 @@ public class BottomToolbarVariationManager {
      *         in current variation.
      */
     public static boolean isHomeButtonOnBottom() {
-        return BraveBottomToolbarConfiguration.isBottomToolbarEnabled();
+        return BottomToolbarConfiguration.isBottomToolbarEnabled();
     }
 
     /**
@@ -69,7 +70,7 @@ public class BottomToolbarVariationManager {
      *         of portrait mode in current variation.
      */
     public static boolean isTabSwitcherOnBottom() {
-        return BraveBottomToolbarConfiguration.isBottomToolbarEnabled();
+        return BottomToolbarConfiguration.isBottomToolbarEnabled();
     }
 
     /**
@@ -77,6 +78,6 @@ public class BottomToolbarVariationManager {
      *         of portrait mode in current variation.
      */
     public static boolean isBookmarkButtonOnBottom() {
-        return BraveBottomToolbarConfiguration.isBottomToolbarEnabled();
+        return BottomToolbarConfiguration.isBottomToolbarEnabled();
     }
 }
