@@ -147,7 +147,7 @@ class BraveShieldsAndPrivacySettingsController: TableViewController {
     }()
     
     private lazy var otherSettingsSection: Section = {
-        Section(
+        var section = Section(
             header: .title(Strings.otherPrivacySettingsSection),
             rows: [
                 .boolRow(
@@ -161,6 +161,16 @@ class BraveShieldsAndPrivacySettingsController: TableViewController {
                 .boolRow(title: Strings.blockPopups, option: Preferences.General.blockPopups)
             ]
         )
+        if #available(iOS 14.0, *) {
+            section.rows.append(
+                .boolRow(
+                    title: Strings.googleSafeBrowsing,
+                    detailText: Strings.googleSafeBrowsingUsingWebKitDescription,
+                    option: Preferences.Shields.googleSafeBrowsing
+                )
+            )
+        }
+        return section
     }()
     
     // MARK: - Actions
