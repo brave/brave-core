@@ -356,9 +356,7 @@ void RewardsServiceImpl::Init(
     private_observers_.AddObserver(private_observer_.get());
   }
 
-  // TODO this needs to be dynamic
-  StartLedger();
-
+  CheckPreferences();
   InitPrefChangeRegistrar();
   EnableGreaseLion();
 }
@@ -389,6 +387,25 @@ void RewardsServiceImpl::InitPrefChangeRegistrar() {
 
 void RewardsServiceImpl::OnPreferenceChanged(const std::string& key) {
   EnableGreaseLion();
+
+  if (key == prefs::kAutoContributeEnabled) {
+    if (profile_->GetPrefs()->GetBoolean(prefs::kAutoContributeEnabled)) {
+      StartLedger();
+    }
+
+    return;
+  }
+}
+
+void RewardsServiceImpl::CheckPreferences() {
+  const bool is_ac_enabled = profile_->GetPrefs()->GetBoolean(
+      brave_rewards::prefs::kAutoContributeEnabled);
+  const bool is_ads_enabled = profile_->GetPrefs()->GetBoolean(
+      brave_ads::prefs::kEnabled);
+
+  if (is_ac_enabled || is_ads_enabled) {
+    StartLedger();
+  }
 }
 
 void RewardsServiceImpl::StartLedger() {
@@ -1600,6 +1617,10 @@ void RewardsServiceImpl::SetAutoContributeEnabled(bool enabled) {
 }
 
 void RewardsServiceImpl::OnAdsEnabled(bool ads_enabled) {
+  if (ads_enabled) {
+    StartLedger();
+  }
+
   for (auto& observer : observers_) {
     observer.OnAdsEnabled(this, ads_enabled);
   }
@@ -3326,5 +3347,10 @@ void RewardsServiceImpl::OnGetBraveWallet(
     ledger::type::BraveWalletPtr wallet) {
   std::move(callback).Run(std::move(wallet));
 }
+
+void RewardsServiceImpl::StartProcess() {
+  StartLedger();
+}
+
 
 }  // namespace brave_rewards
