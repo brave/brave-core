@@ -39,8 +39,9 @@ int32_t GetMinimumBugfixVersion(int32_t os_major_version,
       case 12:
       case 13:
       case 14:
-      case 15:
         return 6;
+      case 15:
+        return 7;
     }
   }
   return 0;
