@@ -15,8 +15,6 @@ source_set("browser") {
     "ads_service_factory.cc",
     "ads_service_factory.h",
     "ads_service_observer.h",
-    "ads_tab_helper.cc",
-    "ads_tab_helper.h",
   ]
 
   deps = [

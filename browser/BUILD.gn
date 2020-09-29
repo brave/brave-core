@@ -339,6 +339,11 @@ source_set("browser_process") {
   }
 
   if (brave_ads_enabled) {
+    sources += [
+      "brave_ads/ads_tab_helper.cc",
+      "brave_ads/ads_tab_helper.h",
+    ]
+
     deps += [
       "//brave/components/brave_ads/browser",
       "//brave/components/brave_user_model/browser",
