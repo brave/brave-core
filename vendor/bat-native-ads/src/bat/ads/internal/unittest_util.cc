@@ -36,7 +36,7 @@ namespace ads {
 
 namespace {
 
-static std::map<std::string, uint16_t> indexes;
+static std::map<std::string, uint16_t> g_indexes;
 
 const char kNowTagValue[] = "now";
 const char kDistantPastTagValue[] = "distant_past";
@@ -178,12 +178,11 @@ bool GetNextEndpointResponse(
   const std::string indexes_path = base::StringPrintf("%s:%s.%s", path.c_str(),
       test_info->test_suite_name(), test_info->name());
 
-  uint16_t index;
+  uint16_t index = 0;
 
-  const auto indexes_iter = indexes.find(indexes_path);
-  if (indexes_iter == indexes.end()) {
-    index = 0;
-    indexes.insert({indexes_path, index});
+  const auto indexes_iter = g_indexes.find(indexes_path);
+  if (indexes_iter == g_indexes.end()) {
+    g_indexes.insert({indexes_path, index});
   } else {
     index = indexes_iter->second;
   }
@@ -195,7 +194,9 @@ bool GetNextEndpointResponse(
 
   *endpoint_response = endpoint_responses.at(index);
 
-  indexes_iter->second++;
+  if (indexes_iter != g_indexes.end()) {
+    indexes_iter->second++;
+  }
 
   return true;
 }
