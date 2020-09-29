@@ -12,7 +12,6 @@
 #include "base/callback.h"
 #include "base/macros.h"
 #include "base/memory/scoped_refptr.h"
-#include "net/traffic_annotation/network_traffic_annotation.h"
 #include "url/gurl.h"
 
 class BraveStatsUpdaterBrowserTest;
@@ -49,8 +48,10 @@ class BraveStatsUpdater {
   using StatsUpdatedCallback =
       base::RepeatingCallback<void(const GURL& url)>;
 
-  void SetStatsUpdatedCallback(StatsUpdatedCallback stats_updated_callback);
-  void SetStatsThresholdCallback(StatsUpdatedCallback stats_threshold_callback);
+  void SetStatsUpdatedCallback(
+      StatsUpdatedCallback stats_updated_callback);
+  void SetStatsThresholdCallback(
+      StatsUpdatedCallback stats_threshold_callback);
 
  private:
   GURL BuildStatsEndpoint(const std::string& path);
@@ -68,10 +69,9 @@ class BraveStatsUpdater {
   // Invoked after browser has initialized with referral server.
   void OnReferralInitialization();
 
-  net::NetworkTrafficAnnotationTag AnonymousStatsAnnotation();
   void StartServerPingStartupTimer();
   void QueueServerPing();
-  void SendThresholdPing();
+  void SendUserTriggeredPing();
   void SendServerPing();
 
   bool IsReferralInitialized();
@@ -80,7 +80,7 @@ class BraveStatsUpdater {
 
   friend class ::BraveStatsUpdaterBrowserTest;
 
-  int threshold_score_;
+  int threshold_score_ = 0;
   PrefService* pref_service_;
   std::string usage_server_;
   StatsUpdatedCallback stats_updated_callback_;

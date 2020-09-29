@@ -326,6 +326,7 @@ source_set("browser_process") {
     deps += [
       "//brave/components/brave_referrals/browser",
       "//brave/components/brave_referrals/common",
+      "//brave/components/brave_stats/browser",
     ]
   }
 

@@ -16,7 +16,13 @@ const char kLastCheckYMD[] = "brave.stats.last_check_ymd";
 const char kLastCheckWOY[] = "brave.stats.last_check_woy";
 const char kLastCheckMonth[] = "brave.stats.last_check_month";
 const char kFirstCheckMade[] = "brave.stats.first_check_made";
+// Set to true if the user met the threshold requirements and successfully
+// sent a ping to the stats-updater server.
 const char kThresholdCheckMade[] = "brave.stats.threshold_check_made";
+// Serialized query for to send to the stats-updater server. Needs to be saved
+// in the case that the user sends the standard usage ping, stops the browser,
+// meets the threshold requirements, and then starts the browser before the
+// threshold ping was sent.
 const char kThresholdQuery[] = "brave.stats.threshold_query";
 const char kWeekOfInstallation[] = "brave.stats.week_of_installation";
 const char kAdBlockCheckedDefaultRegion[] =

@@ -7,8 +7,8 @@
 
 #include <memory>
 
-#include "brave/browser/brave_stats/brave_stats_updater_util.h"
 #include "brave/components/brave_referrals/browser/brave_referrals_service.h"
+#include "brave/components/brave_stats/browser/brave_stats_updater_util.h"
 
 namespace brave {
 

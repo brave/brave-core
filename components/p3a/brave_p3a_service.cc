@@ -20,7 +20,7 @@
 #include "base/strings/string_number_conversions.h"
 #include "base/task/post_task.h"
 #include "base/trace_event/trace_event.h"
-#include "brave/browser/brave_stats/brave_stats_updater_util.h"
+#include "brave/components/brave_stats/browser/brave_stats_updater_util.h"
 #include "brave/browser/version_info.h"
 #include "brave/common/brave_channel_info.h"
 #include "brave/common/pref_names.h"

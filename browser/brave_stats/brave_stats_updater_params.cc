@@ -10,9 +10,10 @@
 
 #include "base/strings/string_util.h"
 #include "base/time/time.h"
-#include "brave/browser/brave_stats/brave_stats_updater_util.h"
 #include "brave/common/pref_names.h"
 #include "brave/components/brave_referrals/common/pref_names.h"
+#include "brave/components/brave_stats/browser/brave_stats_updater_util.h"
+#include "chrome/browser/first_run/first_run.h"
 #include "components/prefs/pref_service.h"
 
 namespace brave_stats {
@@ -26,8 +27,7 @@ BraveStatsUpdaterParams::BraveStatsUpdaterParams(PrefService* pref_service)
     : BraveStatsUpdaterParams(pref_service,
                               GetCurrentDateAsYMD(),
                               GetCurrentISOWeekNumber(),
-                              GetCurrentMonth()) {
-}
+                              GetCurrentMonth()) {}
 
 BraveStatsUpdaterParams::BraveStatsUpdaterParams(PrefService* pref_service,
                                                  const std::string& ymd,
@@ -37,8 +37,7 @@ BraveStatsUpdaterParams::BraveStatsUpdaterParams(PrefService* pref_service,
   LoadPrefs();
 }
 
-BraveStatsUpdaterParams::~BraveStatsUpdaterParams() {
-}
+BraveStatsUpdaterParams::~BraveStatsUpdaterParams() {}
 
 std::string BraveStatsUpdaterParams::GetDailyParam() const {
   return BooleanToString(
@@ -50,8 +49,7 @@ std::string BraveStatsUpdaterParams::GetWeeklyParam() const {
 }
 
 std::string BraveStatsUpdaterParams::GetMonthlyParam() const {
-  return BooleanToString(last_check_month_ == 0 ||
-                         month_ != last_check_month_);
+  return BooleanToString(last_check_month_ == 0 || month_ != last_check_month_);
 }
 
 std::string BraveStatsUpdaterParams::GetFirstCheckMadeParam() const {
@@ -64,8 +62,8 @@ std::string BraveStatsUpdaterParams::GetWeekOfInstallationParam() const {
 
 std::string BraveStatsUpdaterParams::GetDateOfInstallationParam() const {
   return (GetCurrentTimeNow() - date_of_installation_ >= g_dtoi_delete_delta)
-      ? "null"
-      : brave_stats::GetDateAsYMD(date_of_installation_);
+             ? "null"
+             : brave_stats::GetDateAsYMD(date_of_installation_);
 }
 
 std::string BraveStatsUpdaterParams::GetReferralCodeParam() const {
@@ -83,7 +81,7 @@ void BraveStatsUpdaterParams::LoadPrefs() {
   if (ShouldForceFirstRun()) {
     date_of_installation_ = GetCurrentTimeNow();
   } else {
-    date_of_installation_ = brave_stats::GetFirstRunTime(pref_service_);
+    date_of_installation_ = GetFirstRunTime(pref_service_);
     DCHECK(!date_of_installation_.is_null());
   }
 #if BUILDFLAG(ENABLE_BRAVE_REFERRALS)
@@ -149,6 +147,29 @@ void BraveStatsUpdaterParams::SetCurrentTimeForTest(
 // static
 void BraveStatsUpdaterParams::SetFirstRunForTest(bool first_run) {
   g_force_first_run = first_run;
+}
+
+// static
+base::Time BraveStatsUpdaterParams::GetFirstRunTime(PrefService* pref_service) {
+#if defined(OS_ANDROID)
+  // Android doesn't use a sentinel to track first run, so we use a
+  // preference instead. kReferralAndroidFirstRunTimestamp is used because
+  // previously only referrals needed to know the first run value.
+  base::Time first_run_timestamp =
+      pref_service->GetTime(kReferralAndroidFirstRunTimestamp);
+  if (first_run_timestamp.is_null()) {
+    first_run_timestamp = base::Time::Now();
+    pref_service->SetTime(kReferralAndroidFirstRunTimestamp,
+                          first_run_timestamp);
+  }
+  return first_run_timestamp;
+#else
+  (void)pref_service;  // suppress unused warning
+
+  // Note that CreateSentinelIfNeeded() is called in chrome_browser_main.cc,
+  // so this will be a non-blocking read of the cached sentinel value.
+  return first_run::GetFirstRunSentinelCreationTime();
+#endif  // #defined(OS_ANDROID)
 }
 
 }  // namespace brave_stats

@@ -20,11 +20,11 @@ source_set("browser") {
 
   deps = [
     "//base",
-    "//net",
-    "//content/public/browser",
-    "//services/network/public/cpp",
-    "//brave/browser/brave_stats:stats_updater",
-    "//brave/components/brave_referrals/browser",
     "//brave/common",
+    "//brave/components/brave_referrals/browser",
+    "//brave/components/brave_stats/browser",
+    "//content/public/browser",
+    "//net",
+    "//services/network/public/cpp",
   ]
 }

@@ -10,12 +10,13 @@
 #include "base/command_line.h"
 #include "base/system/sys_info.h"
 #include "brave/browser/brave_stats/brave_stats_updater_params.h"
-#include "brave/browser/brave_stats/brave_stats_updater_util.h"
 #include "brave/browser/brave_stats/switches.h"
 #include "brave/browser/version_info.h"
 #include "brave/common/brave_channel_info.h"
 #include "brave/common/network_constants.h"
 #include "brave/common/pref_names.h"
+#include "brave/components/brave_referrals/buildflags/buildflags.h"
+#include "brave/components/brave_stats/browser/brave_stats_updater_util.h"
 #include "chrome/browser/browser_process.h"
 #include "chrome/browser/net/system_network_context_manager.h"
 #include "chrome/common/channel_info.h"
@@ -26,24 +27,25 @@
 #include "net/base/load_flags.h"
 #include "net/base/url_util.h"
 #include "net/http/http_response_headers.h"
+#include "net/traffic_annotation/network_traffic_annotation.h"
 #include "services/network/public/cpp/resource_request.h"
 #include "services/network/public/cpp/simple_url_loader.h"
 
-#include "brave/components/brave_referrals/buildflags/buildflags.h"
 #if BUILDFLAG(ENABLE_BRAVE_REFERRALS)
 #include "brave/components/brave_referrals/common/pref_names.h"
 #endif
 
-// Ping the update server shortly after startup (units are seconds).
-const int kUpdateServerStartupPingDelay = 3;
+namespace brave_stats {
+
+namespace {
+// Ping the update server shortly after startup.
+static constexpr int kUpdateServerStartupPingDelaySeconds = 3;
 
 // Every five minutes, check if we need to ping the update server for
-// today (units are seconds).
-const int kUpdateServerPeriodicPingFrequency = 5 * 60;
+// today.
+static constexpr int kUpdateServerPeriodicPingFrequencySeconds = 5 * 60;
 
 static constexpr int kMinimumUsageThreshold = 3;
-
-namespace brave_stats {
 
 GURL GetUpdateURL(
     const GURL& base_update_url,
@@ -52,9 +54,10 @@ GURL GetUpdateURL(
   update_url = net::AppendQueryParameter(update_url, "platform",
                                          brave_stats::GetPlatformIdentifier());
   update_url =
-      net::AppendQueryParameter(update_url, "channel", "beta");
-  update_url = net::AppendQueryParameter(update_url, "version",
-                    version_info::GetBraveVersionWithoutChromiumMajorVersion());
+      net::AppendQueryParameter(update_url, "channel", brave::GetChannelName());
+  update_url = net::AppendQueryParameter(
+      update_url, "version",
+      version_info::GetBraveVersionWithoutChromiumMajorVersion());
   update_url = net::AppendQueryParameter(update_url, "daily",
                                          stats_updater_params.GetDailyParam());
   update_url = net::AppendQueryParameter(update_url, "weekly",
@@ -72,20 +75,41 @@ GURL GetUpdateURL(
   return update_url;
 }
 
-}  // namespace brave_stats
-
-namespace brave_stats {
+net::NetworkTrafficAnnotationTag AnonymousStatsAnnotation() {
+  return net::DefineNetworkTrafficAnnotation("brave_stats_updater", R"(
+    semantics {
+      sender:
+        "Brave Stats Updater"
+      description:
+        "This service sends anonymous usage statistics to Brave."
+      trigger:
+        "Stats are automatically sent at intervals while Brave "
+        "is running."
+      data: "Anonymous usage statistics."
+      destination: WEBSITE
+    }
+    policy {
+      cookies_allowed: NO
+      setting:
+        "This feature cannot be disabled by settings."
+      policy_exception_justification:
+        "Not implemented."
+    })");
+}
+}  // anonymous namespace
 
 BraveStatsUpdater::BraveStatsUpdater(PrefService* pref_service)
-    :  threshold_score_(0),
-       pref_service_(pref_service) {
+    : pref_service_(pref_service) {
   const base::CommandLine& command_line =
-    *base::CommandLine::ForCurrentProcess();
-  if (command_line.HasSwitch(switches::kBraveStatsUpdaterServer))
+      *base::CommandLine::ForCurrentProcess();
+  if (command_line.HasSwitch(switches::kBraveStatsUpdaterServer)) {
     usage_server_ =
         command_line.GetSwitchValueASCII(switches::kBraveStatsUpdaterServer);
-  else
+    if (!GURL(usage_server_).is_valid())
+      LOG(ERROR) << "bad url given as stats updater url: " << usage_server_;
+  } else {
     usage_server_ = BRAVE_USAGE_SERVER;
+  }
 }
 
 BraveStatsUpdater::~BraveStatsUpdater() {}
@@ -103,9 +127,8 @@ void BraveStatsUpdater::Start() {
   server_ping_periodic_timer_ = std::make_unique<base::RepeatingTimer>();
   server_ping_periodic_timer_->Start(
       FROM_HERE,
-      base::TimeDelta::FromSeconds(kUpdateServerPeriodicPingFrequency), this,
-      &BraveStatsUpdater::OnServerPingTimerFired);
-  DCHECK(server_ping_periodic_timer_->IsRunning());
+      base::TimeDelta::FromSeconds(kUpdateServerPeriodicPingFrequencySeconds),
+      this, &BraveStatsUpdater::OnServerPingTimerFired);
 }
 
 void BraveStatsUpdater::Stop() {
@@ -125,12 +148,11 @@ bool BraveStatsUpdater::MaybeDoThresholdPing(int score) {
   //   (1) The standard ping is still waiting to be sent.
   //   (2) Referrals haven't initialized, thus blocking the standard ping.
   // The standard usage ping will set the url and call us back.
-  if (server_ping_startup_timer_->IsRunning() ||
-      !IsReferralInitialized())
+  if (server_ping_startup_timer_->IsRunning() || !IsReferralInitialized())
     return threshold_score_ >= kMinimumUsageThreshold;
 
   if (threshold_score_ >= kMinimumUsageThreshold) {
-    SendThresholdPing();
+    SendUserTriggeredPing();
     return true;
   }
   return false;
@@ -189,7 +211,7 @@ void BraveStatsUpdater::OnSimpleLoaderComplete(
     stats_updated_callback_.Run(final_url);
 
   // In case the first call was blocked by our timer.
-  (void) MaybeDoThresholdPing(0);
+  (void)MaybeDoThresholdPing(0);
 
   // Log the full URL of the stats ping.
   VLOG(1) << "Brave stats ping, url: " << final_url.spec();
@@ -233,10 +255,9 @@ void BraveStatsUpdater::OnServerPingTimerFired() {
 }
 
 bool BraveStatsUpdater::IsReferralInitialized() {
-  return true;
 #if BUILDFLAG(ENABLE_BRAVE_REFERRALS)
   return pref_service_->GetBoolean(kReferralInitialization) ||
-      pref_service_->GetBoolean(kReferralCheckedForPromoCodeFile);
+         pref_service_->GetBoolean(kReferralCheckedForPromoCodeFile);
 #else
   return true;
 #endif
@@ -270,32 +291,9 @@ void BraveStatsUpdater::OnReferralInitialization() {
 
 void BraveStatsUpdater::StartServerPingStartupTimer() {
   server_ping_startup_timer_->Start(
-      FROM_HERE, base::TimeDelta::FromSeconds(kUpdateServerStartupPingDelay),
-      this, &BraveStatsUpdater::OnServerPingTimerFired);
-  DCHECK(server_ping_startup_timer_->IsRunning());
-}
-
-net::NetworkTrafficAnnotationTag
-    BraveStatsUpdater::AnonymousStatsAnnotation() {
-  return net::DefineNetworkTrafficAnnotation("brave_stats_updater", R"(
-    semantics {
-      sender:
-        "Brave Stats Updater"
-      description:
-        "This service sends anonymous usage statistics to Brave."
-      trigger:
-        "Stats are automatically sent at intervals while Brave "
-        "is running."
-      data: "Anonymous usage statistics."
-      destination: WEBSITE
-    }
-    policy {
-      cookies_allowed: NO
-      setting:
-        "This feature cannot be disabled by settings."
-      policy_exception_justification:
-        "Not implemented."
-    })");
+      FROM_HERE,
+      base::TimeDelta::FromSeconds(kUpdateServerStartupPingDelaySeconds), this,
+      &BraveStatsUpdater::OnServerPingTimerFired);
 }
 
 void BraveStatsUpdater::SendServerPing() {
@@ -311,9 +309,8 @@ void BraveStatsUpdater::SendServerPing() {
       net::LOAD_DO_NOT_SEND_COOKIES | net::LOAD_DO_NOT_SAVE_COOKIES |
       net::LOAD_BYPASS_CACHE | net::LOAD_DISABLE_CACHE |
       net::LOAD_DO_NOT_SEND_AUTH_DATA;
-  resource_request->headers.SetHeader(
-      "X-Brave-API-Key",
-      brave_stats::GetAPIKey());
+  resource_request->headers.SetHeader("X-Brave-API-Key",
+                                      brave_stats::GetAPIKey());
   network::mojom::URLLoaderFactory* loader_factory =
       g_browser_process->system_network_context_manager()
           ->GetURLLoaderFactory();
@@ -325,7 +322,7 @@ void BraveStatsUpdater::SendServerPing() {
                      base::Unretained(this), std::move(stats_updater_params)));
 }
 
-void BraveStatsUpdater::SendThresholdPing() {
+void BraveStatsUpdater::SendUserTriggeredPing() {
   DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
   auto traffic_annotation = AnonymousStatsAnnotation();
   auto resource_request = std::make_unique<network::ResourceRequest>();
@@ -342,9 +339,8 @@ void BraveStatsUpdater::SendThresholdPing() {
       net::LOAD_DO_NOT_SEND_COOKIES | net::LOAD_DO_NOT_SAVE_COOKIES |
       net::LOAD_BYPASS_CACHE | net::LOAD_DISABLE_CACHE |
       net::LOAD_DO_NOT_SEND_AUTH_DATA;
-  resource_request->headers.SetHeader(
-      "X-Brave-API-Key",
-      brave_stats::GetAPIKey());
+  resource_request->headers.SetHeader("X-Brave-API-Key",
+                                      brave_stats::GetAPIKey());
   network::mojom::URLLoaderFactory* loader_factory =
       g_browser_process->system_network_context_manager()
           ->GetURLLoaderFactory();

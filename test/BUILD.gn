@@ -294,6 +294,14 @@ test("brave_unit_tests") {
     sources += [
       "//brave/browser/brave_stats/brave_stats_updater_unittest.cc",
     ]
+
+    deps += [
+      # This is only used in the unit test, not the browser test.
+      # TODO(keur): Reminder to move this out when we migrate
+      # stats browser tests into unit tests.
+      "//brave/components/brave_stats/browser",
+    ]
+
     if (!is_android) {
       sources += [
         # TODO(samartnik): this should work on Android, we will review it once unit tests are set up on CI

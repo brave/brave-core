@@ -67,6 +67,8 @@ class BraveStatsUpdaterParams {
 
   static void SetCurrentTimeForTest(const base::Time& current_time);
   static void SetFirstRunForTest(bool first_run);
+  // Returns the timestamp of the browsers first run
+  static base::Time GetFirstRunTime(PrefService *pref_service);
 
   DISALLOW_COPY_AND_ASSIGN(BraveStatsUpdaterParams);
 };
