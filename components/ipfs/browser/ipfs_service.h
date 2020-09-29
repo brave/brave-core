@@ -40,19 +40,17 @@ class IpfsService : public KeyedService,
                     public BraveIpfsClientUpdater::Observer {
  public:
   explicit IpfsService(content::BrowserContext* context,
-      ipfs::BraveIpfsClientUpdater* ipfs_client_updater,
-      IpfsServiceDelegate* ipfs_service_delegate);
+                       ipfs::BraveIpfsClientUpdater* ipfs_client_updater,
+                       IpfsServiceDelegate* ipfs_service_delegate);
   ~IpfsService() override;
 
   static bool IsIpfsEnabled(content::BrowserContext* context,
                             bool regular_profile);
 
-  using GetConnectedPeersCallback = base::OnceCallback<
-    void(bool,
-         const std::vector<std::string>&)>;
-  using GetAddressesConfigCallback = base::OnceCallback<
-    void(bool,
-         const ipfs::AddressesConfig&)>;
+  using GetConnectedPeersCallback =
+      base::OnceCallback<void(bool, const std::vector<std::string>&)>;
+  using GetAddressesConfigCallback =
+      base::OnceCallback<void(bool, const ipfs::AddressesConfig&)>;
   using LaunchDaemonCallback = base::OnceCallback<void(bool)>;
   using ShutdownDaemonCallback = base::OnceCallback<void(bool)>;
 

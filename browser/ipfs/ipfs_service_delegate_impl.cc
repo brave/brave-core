@@ -12,11 +12,10 @@
 namespace ipfs {
 
 IpfsServiceDelegateImpl::IpfsServiceDelegateImpl(
-    content::BrowserContext* context) : IpfsServiceDelegate(context) {
-}
+    content::BrowserContext* context)
+    : IpfsServiceDelegate(context) {}
 
-IpfsServiceDelegateImpl::~IpfsServiceDelegateImpl() {
-}
+IpfsServiceDelegateImpl::~IpfsServiceDelegateImpl() {}
 
 base::FilePath IpfsServiceDelegateImpl::GetUserDataDir() {
   base::FilePath user_data_dir;

@@ -16,6 +16,9 @@ class IpfsTabHelperDelegateImpl : public IpfsTabHelperDelegate {
   ~IpfsTabHelperDelegateImpl() override = default;
 
   void CreateInfoBarDelegateForWebContents(content::WebContents*) override;
+
+ protected:
+  DISALLOW_COPY_AND_ASSIGN(IpfsTabHelperDelegateImpl);
 };
 
 }  // namespace ipfs

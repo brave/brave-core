@@ -7,8 +7,8 @@
 
 #include "brave/components/ipfs/browser/ipfs_json_parser.h"
 
-#include "base/logging.h"
 #include "base/json/json_reader.h"
+#include "base/logging.h"
 
 // static
 // Response Format for /api/v0/swarm/peers
@@ -28,8 +28,8 @@
 //      }
 //    ]
 // }
-bool IPFSJSONParser::GetPeersFromJSON(
-    const std::string& json, std::vector<std::string>* peers) {
+bool IPFSJSONParser::GetPeersFromJSON(const std::string& json,
+                                      std::vector<std::string>* peers) {
   base::JSONReader::ValueWithError value_with_error =
       base::JSONReader::ReadAndReturnValueWithError(
           json, base::JSONParserOptions::JSON_PARSE_RFC);
@@ -46,7 +46,7 @@ bool IPFSJSONParser::GetPeersFromJSON(
     return false;
   }
 
-  for (const base::Value &val : peers_arr->GetList()) {
+  for (const base::Value& val : peers_arr->GetList()) {
     const base::Value* addr = val.FindKey("Addr");
     const base::Value* peer = val.FindKey("Peer");
 
@@ -79,7 +79,7 @@ bool IPFSJSONParser::GetPeersFromJSON(
 //      }
 // }
 bool IPFSJSONParser::GetAddressesConfigFromJSON(const std::string& json,
-                                ipfs::AddressesConfig* config) {
+                                                ipfs::AddressesConfig* config) {
   base::JSONReader::ValueWithError value_with_error =
       base::JSONReader::ReadAndReturnValueWithError(
           json, base::JSONParserOptions::JSON_PARSE_RFC);
@@ -110,7 +110,7 @@ bool IPFSJSONParser::GetAddressesConfigFromJSON(const std::string& json,
 
   config->api = *api;
   config->gateway = *gateway;
-  for (const base::Value &val : swarm->GetList()) {
+  for (const base::Value& val : swarm->GetList()) {
     if (!val.is_string()) {
       continue;
     }

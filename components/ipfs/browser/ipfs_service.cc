@@ -12,11 +12,11 @@
 #include "base/json/json_reader.h"
 #include "base/strings/strcat.h"
 #include "base/strings/string_util.h"
-#include "brave/components/ipfs/browser/ipfs_service_delegate.h"
-#include "brave/components/ipfs/browser/ipfs_switches.h"
 #include "brave/components/ipfs/browser/features.h"
 #include "brave/components/ipfs/browser/ipfs_json_parser.h"
+#include "brave/components/ipfs/browser/ipfs_service_delegate.h"
 #include "brave/components/ipfs/browser/ipfs_service_observer.h"
+#include "brave/components/ipfs/browser/ipfs_switches.h"
 #include "brave/components/ipfs/browser/service_sandbox_type.h"
 #include "brave/components/ipfs/common/ipfs_constants.h"
 #include "brave/components/ipfs/common/pref_names.h"
@@ -65,12 +65,12 @@ net::NetworkTrafficAnnotationTag GetNetworkTrafficAnnotationTag() {
 namespace ipfs {
 
 IpfsService::IpfsService(content::BrowserContext* context,
-    ipfs::BraveIpfsClientUpdater* ipfs_client_updater,
-    IpfsServiceDelegate* ipfs_service_delegate)
-  : context_(context),
-    server_endpoint_(GURL(kServerEndpoint)),
-    ipfs_service_delegate_(ipfs_service_delegate),
-    ipfs_client_updater_(ipfs_client_updater) {
+                         ipfs::BraveIpfsClientUpdater* ipfs_client_updater,
+                         IpfsServiceDelegate* ipfs_service_delegate)
+    : context_(context),
+      server_endpoint_(GURL(kServerEndpoint)),
+      ipfs_service_delegate_(ipfs_service_delegate),
+      ipfs_client_updater_(ipfs_client_updater) {
   if (ipfs_service_delegate_->IsTestingProfile()) {
     return;
   }
@@ -96,7 +96,7 @@ IpfsService::~IpfsService() = default;
 
 // static
 bool IpfsService::IsIpfsEnabled(content::BrowserContext* context,
-    bool regular_profile) {
+                                bool regular_profile) {
   // IPFS is disabled for OTR profiles, Tor profiles, and guest sessions.
   if (!regular_profile ||
       !base::FeatureList::IsEnabled(features::kIpfsFeature) ||
@@ -109,7 +109,8 @@ bool IpfsService::IsIpfsEnabled(content::BrowserContext* context,
 
 // static
 void IpfsService::RegisterPrefs(PrefRegistrySimple* registry) {
-  registry->RegisterIntegerPref(kIPFSResolveMethod,
+  registry->RegisterIntegerPref(
+      kIPFSResolveMethod,
       static_cast<int>(ipfs::IPFSResolveMethodTypes::IPFS_ASK));
   registry->RegisterBooleanPref(kIPFSBinaryAvailable, false);
 }
@@ -138,35 +139,29 @@ void IpfsService::LaunchIfNotRunning(const base::FilePath& executable_path) {
   content::ServiceProcessHost::Launch(
       ipfs_service_.BindNewPipeAndPassReceiver(),
       content::ServiceProcessHost::Options()
-        .WithDisplayName(IDS_UTILITY_PROCESS_IPFS_NAME)
-        .Pass());
+          .WithDisplayName(IDS_UTILITY_PROCESS_IPFS_NAME)
+          .Pass());
 
   ipfs_service_.set_disconnect_handler(
-      base::BindOnce(
-        &IpfsService::OnIpfsCrashed,
-        base::Unretained(this)));
+      base::BindOnce(&IpfsService::OnIpfsCrashed, base::Unretained(this)));
 
   ipfs_service_->SetCrashHandler(
-      base::Bind(&IpfsService::OnIpfsDaemonCrashed,
-        base::Unretained(this)));
+      base::Bind(&IpfsService::OnIpfsDaemonCrashed, base::Unretained(this)));
 
   base::FilePath user_data_dir(ipfs_service_delegate_->GetUserDataDir());
   DCHECK(!user_data_dir.empty());
 
   base::FilePath data_root_path =
-    user_data_dir.Append(FILE_PATH_LITERAL("brave_ipfs"));
+      user_data_dir.Append(FILE_PATH_LITERAL("brave_ipfs"));
   base::FilePath config_path =
-    data_root_path.Append(FILE_PATH_LITERAL("config"));
+      data_root_path.Append(FILE_PATH_LITERAL("config"));
 
-  auto config = mojom::IpfsConfig::New(
-      executable_path,
-      config_path,
-      data_root_path);
+  auto config =
+      mojom::IpfsConfig::New(executable_path, config_path, data_root_path);
 
   ipfs_service_->Launch(
       std::move(config),
-      base::Bind(&IpfsService::OnIpfsLaunched,
-        base::Unretained(this)));
+      base::Bind(&IpfsService::OnIpfsLaunched, base::Unretained(this)));
 }
 
 void IpfsService::OnIpfsCrashed() {
@@ -234,10 +229,8 @@ void IpfsService::GetConnectedPeers(GetConnectedPeersCallback callback) {
 
   iter->get()->DownloadToStringOfUnboundedSizeUntilCrashAndDie(
       url_loader_factory_.get(),
-      base::BindOnce(&IpfsService::OnGetConnectedPeers,
-                     base::Unretained(this),
-                     std::move(iter),
-                     std::move(callback)));
+      base::BindOnce(&IpfsService::OnGetConnectedPeers, base::Unretained(this),
+                     std::move(iter), std::move(callback)));
 }
 
 void IpfsService::OnGetConnectedPeers(
@@ -252,8 +245,8 @@ void IpfsService::OnGetConnectedPeers(
   url_loaders_.erase(iter);
 
   if (error_code != net::OK || response_code != net::HTTP_OK) {
-    VLOG(1) << "Fail to get connected peers, error_code = " << error_code <<
-        " response_code = " << response_code;
+    VLOG(1) << "Fail to get connected peers, error_code = " << error_code
+            << " response_code = " << response_code;
     std::move(callback).Run(false, std::vector<std::string>{});
     return;
   }
@@ -270,17 +263,14 @@ void IpfsService::GetAddressesConfig(GetAddressesConfigCallback callback) {
   }
 
   GURL gurl = net::AppendQueryParameter(server_endpoint_.Resolve(kConfigPath),
-                                        kArgQueryParam,
-                                        kAddressesField);
+                                        kArgQueryParam, kAddressesField);
   auto url_loader = CreateURLLoader(gurl);
   auto iter = url_loaders_.insert(url_loaders_.begin(), std::move(url_loader));
 
   iter->get()->DownloadToStringOfUnboundedSizeUntilCrashAndDie(
       url_loader_factory_.get(),
-      base::BindOnce(&IpfsService::OnGetAddressesConfig,
-                     base::Unretained(this),
-                     std::move(iter),
-                     std::move(callback)));
+      base::BindOnce(&IpfsService::OnGetAddressesConfig, base::Unretained(this),
+                     std::move(iter), std::move(callback)));
 }
 
 void IpfsService::OnGetAddressesConfig(
@@ -296,15 +286,14 @@ void IpfsService::OnGetAddressesConfig(
 
   ipfs::AddressesConfig addresses_config;
   if (error_code != net::OK || response_code != net::HTTP_OK) {
-    VLOG(1) << "Fail to get addresses config, error_code = " << error_code <<
-        " response_code = " << response_code;
+    VLOG(1) << "Fail to get addresses config, error_code = " << error_code
+            << " response_code = " << response_code;
     std::move(callback).Run(false, addresses_config);
     return;
   }
 
-  bool success = IPFSJSONParser::GetAddressesConfigFromJSON(
-      *response_body,
-      &addresses_config);
+  bool success = IPFSJSONParser::GetAddressesConfigFromJSON(*response_body,
+                                                            &addresses_config);
   std::move(callback).Run(success, addresses_config);
 }
 

@@ -43,19 +43,19 @@ IpfsServiceFactory::IpfsServiceFactory()
       extensions::ExtensionsBrowserClient::Get()->GetExtensionSystemFactory());
 }
 
-IpfsServiceFactory::~IpfsServiceFactory() {
-}
+IpfsServiceFactory::~IpfsServiceFactory() {}
 
 KeyedService* IpfsServiceFactory::BuildServiceInstanceFor(
     content::BrowserContext* context) const {
   return new IpfsService(context,
-      g_brave_browser_process ?
-          g_brave_browser_process->ipfs_client_updater() : nullptr,
-      new IpfsServiceDelegateImpl(context));
+                         g_brave_browser_process
+                             ? g_brave_browser_process->ipfs_client_updater()
+                             : nullptr,
+                         new IpfsServiceDelegateImpl(context));
 }
 
 content::BrowserContext* IpfsServiceFactory::GetBrowserContextToUse(
-      content::BrowserContext* context) const {
+    content::BrowserContext* context) const {
   return chrome::GetBrowserContextRedirectedInIncognito(context);
 }
 

@@ -32,8 +32,8 @@ bool IsIPFSDisabled(content::BrowserContext* browser_context) {
   auto resolve_method = static_cast<ipfs::IPFSResolveMethodTypes>(
       prefs->GetInteger(kIPFSResolveMethod));
   return resolve_method == ipfs::IPFSResolveMethodTypes::IPFS_DISABLED ||
-         !ipfs::IpfsService::IsIpfsEnabled(browser_context,
-             brave::IsRegularProfile(browser_context));
+         !ipfs::IpfsService::IsIpfsEnabled(
+             browser_context, brave::IsRegularProfile(browser_context));
 }
 
 bool IsIPFSLocalGateway(content::BrowserContext* browser_context) {
@@ -48,7 +48,8 @@ bool IsIPFSLocalGateway(content::BrowserContext* browser_context) {
 namespace ipfs {
 
 // static
-bool ContentBrowserClientHelper::HandleIPFSURLRewrite(GURL* url,
+bool ContentBrowserClientHelper::HandleIPFSURLRewrite(
+    GURL* url,
     content::BrowserContext* browser_context) {
   if (!IsIPFSDisabled(browser_context) &&
       // When it's not the local gateway we don't want to show a ipfs:// URL.
@@ -62,18 +63,22 @@ bool ContentBrowserClientHelper::HandleIPFSURLRewrite(GURL* url,
 }
 
 // static
-bool ContentBrowserClientHelper::HandleIPFSURLReverseRewrite(GURL* url,
+bool ContentBrowserClientHelper::HandleIPFSURLReverseRewrite(
+    GURL* url,
     content::BrowserContext* browser_context) {
   return false;
 }
 
 // static
-bool ContentBrowserClientHelper::ShouldNavigateIPFSURI(const GURL& url,
-    GURL* new_url, content::BrowserContext* browser_context) {
+bool ContentBrowserClientHelper::ShouldNavigateIPFSURI(
+    const GURL& url,
+    GURL* new_url,
+    content::BrowserContext* browser_context) {
   *new_url = url;
   bool is_ipfs_scheme = url.SchemeIs(kIPFSScheme) || url.SchemeIs(kIPNSScheme);
-  return !IsIPFSDisabled(browser_context) && (!is_ipfs_scheme ||
-      TranslateIPFSURI(url, new_url, IsIPFSLocalGateway(browser_context)));
+  return !IsIPFSDisabled(browser_context) &&
+         (!is_ipfs_scheme ||
+          TranslateIPFSURI(url, new_url, IsIPFSLocalGateway(browser_context)));
 }
 
 // static
@@ -89,7 +94,7 @@ void ContentBrowserClientHelper::LoadOrLaunchIPFSURL(
   GURL new_url(url);
   if (ShouldNavigateIPFSURI(url, &new_url, web_contents->GetBrowserContext())) {
     web_contents->GetController().LoadURL(new_url, content::Referrer(),
-        page_transition, std::string());
+                                          page_transition, std::string());
   } else {
     ExternalProtocolHandler::LaunchUrl(
         new_url, web_contents->GetRenderViewHost()->GetProcess()->GetID(),
@@ -106,10 +111,10 @@ void ContentBrowserClientHelper::HandleIPFSProtocol(
     bool has_user_gesture,
     const base::Optional<url::Origin>& initiating_origin) {
   DCHECK(url.SchemeIs(kIPFSScheme) || url.SchemeIs(kIPNSScheme));
-  base::PostTask(FROM_HERE, {content::BrowserThread::UI},
-                 base::BindOnce(&LoadOrLaunchIPFSURL, url,
-                                std::move(web_contents_getter), page_transition,
-                                has_user_gesture, initiating_origin));
+  base::PostTask(
+      FROM_HERE, {content::BrowserThread::UI},
+      base::BindOnce(&LoadOrLaunchIPFSURL, url, std::move(web_contents_getter),
+                     page_transition, has_user_gesture, initiating_origin));
 }
 
 // static

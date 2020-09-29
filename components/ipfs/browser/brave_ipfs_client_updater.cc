@@ -27,11 +27,9 @@ BraveIpfsClientUpdater::BraveIpfsClientUpdater(
       task_runner_(base::CreateSequencedTaskRunner(
           {base::ThreadPool(), base::MayBlock()})),
       registered_(false),
-      weak_ptr_factory_(this) {
-}
+      weak_ptr_factory_(this) {}
 
-BraveIpfsClientUpdater::~BraveIpfsClientUpdater() {
-}
+BraveIpfsClientUpdater::~BraveIpfsClientUpdater() {}
 
 void BraveIpfsClientUpdater::Register() {
   if (registered_)
@@ -92,15 +90,14 @@ base::FilePath BraveIpfsClientUpdater::GetExecutablePath() const {
   return executable_path_;
 }
 
-void BraveIpfsClientUpdater::OnComponentReady(
-    const std::string& component_id,
-    const base::FilePath& install_dir,
-    const std::string& manifest) {
+void BraveIpfsClientUpdater::OnComponentReady(const std::string& component_id,
+                                              const base::FilePath& install_dir,
+                                              const std::string& manifest) {
   base::PostTaskAndReplyWithResult(
       GetTaskRunner().get(), FROM_HERE,
       base::BindOnce(&InitExecutablePath, install_dir),
       base::BindOnce(&BraveIpfsClientUpdater::SetExecutablePath,
-        weak_ptr_factory_.GetWeakPtr()));
+                     weak_ptr_factory_.GetWeakPtr()));
 }
 
 void BraveIpfsClientUpdater::AddObserver(Observer* observer) {

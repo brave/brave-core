@@ -7,12 +7,12 @@
 #include "base/strings/strcat.h"
 #include "base/test/scoped_feature_list.h"
 #include "brave/browser/ipfs/ipfs_service_factory.h"
-#include "brave/components/ipfs/browser/ipfs_service.h"
 #include "brave/components/ipfs/browser/features.h"
+#include "brave/components/ipfs/browser/ipfs_service.h"
 #include "brave/components/ipfs/common/ipfs_constants.h"
-#include "chrome/test/base/in_process_browser_test.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser.h"
+#include "chrome/test/base/in_process_browser_test.h"
 #include "content/public/test/browser_test.h"
 #include "net/dns/mock_host_resolver.h"
 #include "net/test/embedded_test_server/http_request.h"
@@ -29,8 +29,8 @@ class IpfsServiceBrowserTest : public InProcessBrowserTest {
   ~IpfsServiceBrowserTest() override = default;
 
   void SetUpOnMainThread() override {
-    ipfs_service_ = IpfsServiceFactory::GetInstance()
-        ->GetForContext(browser()->profile());
+    ipfs_service_ =
+        IpfsServiceFactory::GetInstance()->GetForContext(browser()->profile());
     ASSERT_TRUE(ipfs_service_);
     ipfs_service_->SetIpfsLaunchedForTest(true);
 
@@ -40,12 +40,11 @@ class IpfsServiceBrowserTest : public InProcessBrowserTest {
   void ResetTestServer(
       const net::EmbeddedTestServer::HandleRequestCallback& callback) {
     test_server_.reset(new net::EmbeddedTestServer(
-          net::test_server::EmbeddedTestServer::TYPE_HTTPS));
+        net::test_server::EmbeddedTestServer::TYPE_HTTPS));
     test_server_->SetSSLConfig(net::EmbeddedTestServer::CERT_OK);
     test_server_->RegisterRequestHandler(callback);
     ASSERT_TRUE(test_server_->Start());
-    ipfs_service_->SetServerEndpointForTest(
-        test_server_->base_url());
+    ipfs_service_->SetServerEndpointForTest(test_server_->base_url());
   }
 
   std::unique_ptr<net::test_server::HttpResponse> HandleGetConnectedPeers(
@@ -120,25 +119,22 @@ class IpfsServiceBrowserTest : public InProcessBrowserTest {
 
   const std::vector<std::string>& GetExpectedPeers() {
     static std::vector<std::string> peers{
-        "/ip4/101.101.101.101/tcp/4001/p2p/QmaCpDMGvV2BGHeYERUEnRQAwe3N8SzbUtfsmvsqQLuvuJ",  // NOLINT
-        "/ip4/102.102.102.102/tcp/4001/p2p/QmStjfkGsfQGQQm6Gdxin6DvrZsFTmTNoX5oEFMzYrc1PS"  // NOLINT
+        "/ip4/101.101.101.101/tcp/4001/p2p/"
+        "QmaCpDMGvV2BGHeYERUEnRQAwe3N8SzbUtfsmvsqQLuvuJ",  // NOLINT
+        "/ip4/102.102.102.102/tcp/4001/p2p/"
+        "QmStjfkGsfQGQQm6Gdxin6DvrZsFTmTNoX5oEFMzYrc1PS"  // NOLINT
     };
     return peers;
   }
 
   const std::vector<std::string>& GetExpectedSwarm() {
     static std::vector<std::string> swarm{
-        "/ip4/0.0.0.0/tcp/4001",
-        "/ip6/::/tcp/4001",
-        "/ip4/0.0.0.0/udp/4001/quic",
-        "/ip6/::/udp/4001/quic"
-    };
+        "/ip4/0.0.0.0/tcp/4001", "/ip6/::/tcp/4001",
+        "/ip4/0.0.0.0/udp/4001/quic", "/ip6/::/udp/4001/quic"};
     return swarm;
   }
 
-  IpfsService* ipfs_service() {
-    return ipfs_service_;
-  }
+  IpfsService* ipfs_service() { return ipfs_service_; }
 
   void OnGetConnectedPeersSuccess(bool success,
                                   const std::vector<std::string>& peers) {
@@ -169,8 +165,7 @@ class IpfsServiceBrowserTest : public InProcessBrowserTest {
     EXPECT_EQ(config.swarm, GetExpectedSwarm());
   }
 
-  void OnGetAddressesConfigFail(bool success,
-                                const AddressesConfig& config) {
+  void OnGetAddressesConfigFail(bool success, const AddressesConfig& config) {
     if (wait_for_request_) {
       wait_for_request_->Quit();
     }

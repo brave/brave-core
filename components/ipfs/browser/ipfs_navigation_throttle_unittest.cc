@@ -15,8 +15,8 @@
 #include "brave/browser/profiles/brave_unittest_profile_manager.h"
 #include "brave/browser/profiles/profile_util.h"
 #include "brave/browser/tor/buildflags.h"
-#include "brave/components/ipfs/browser/ipfs_service.h"
 #include "brave/components/ipfs/browser/features.h"
+#include "brave/components/ipfs/browser/ipfs_service.h"
 #include "brave/components/ipfs/common/ipfs_constants.h"
 #include "brave/components/ipfs/common/pref_names.h"
 #include "chrome/browser/prefs/browser_prefs.h"
@@ -38,13 +38,17 @@ namespace {
 
 const GURL& GetIPFSURL() {
   static const GURL ipfs_url(
-      "http://localhost:8080/ipfs/bafybeiemxf5abjwjbikoz4mc3a3dla6ual3jsgpdr4cjr3oz3evfyavhwq/wiki/Vincent_van_Gogh.html");  // NOLINT
+      "http://localhost:8080/ipfs/"
+      "bafybeiemxf5abjwjbikoz4mc3a3dla6ual3jsgpdr4cjr3oz3evfyavhwq/wiki/"
+      "Vincent_van_Gogh.html");  // NOLINT
   return ipfs_url;
 }
 
 const GURL& GetIPNSURL() {
-  static const GURL ipns_url(
-      "http://localhost:8080/ipns/tr.wikipedia-on-ipfs.org/wiki/Anasayfa.html");  // NOLINT
+  static const GURL
+      ipns_url(
+          "http://localhost:8080/ipns/tr.wikipedia-on-ipfs.org/wiki/"
+          "Anasayfa.html");  // NOLINT
   return ipns_url;
 }
 
@@ -55,7 +59,7 @@ namespace ipfs {
 class IpfsNavigationThrottleUnitTest : public testing::Test {
  public:
   IpfsNavigationThrottleUnitTest()
-    :local_state_(TestingBrowserProcess::GetGlobal()) {}
+      : local_state_(TestingBrowserProcess::GetGlobal()) {}
   ~IpfsNavigationThrottleUnitTest() override = default;
 
   void SetUp() override {
@@ -67,7 +71,7 @@ class IpfsNavigationThrottleUnitTest : public testing::Test {
     ProfileManager* profile_manager = g_browser_process->profile_manager();
     ASSERT_TRUE(profile_manager);
 
-    profile_ =  profile_manager->GetProfile(
+    profile_ = profile_manager->GetProfile(
         temp_dir_.GetPath().AppendASCII(TestingProfile::kTestUserProfileDir));
     web_contents_ =
         content::WebContentsTester::CreateTestWebContents(profile_, nullptr);
@@ -79,17 +83,11 @@ class IpfsNavigationThrottleUnitTest : public testing::Test {
     TestingBrowserProcess::GetGlobal()->SetProfileManager(nullptr);
   }
 
-  content::WebContents* web_contents() {
-    return web_contents_.get();
-  }
+  content::WebContents* web_contents() { return web_contents_.get(); }
 
-  IpfsService* ipfs_service() {
-    return ipfs_service_;
-  }
+  IpfsService* ipfs_service() { return ipfs_service_; }
 
-  base::ScopedTempDir* temp_dir() {
-    return &temp_dir_;
-  }
+  base::ScopedTempDir* temp_dir() { return &temp_dir_; }
 
   // Helper that creates simple test guest profile.
   std::unique_ptr<TestingProfile> CreateGuestProfile() {
@@ -98,9 +96,7 @@ class IpfsNavigationThrottleUnitTest : public testing::Test {
     return profile_builder.Build();
   }
 
-  Profile* profile() {
-    return profile_;
-  }
+  Profile* profile() { return profile_; }
 
  private:
   content::BrowserTaskEnvironment task_environment_;
@@ -116,13 +112,13 @@ class IpfsNavigationThrottleUnitTest : public testing::Test {
 };
 
 TEST_F(IpfsNavigationThrottleUnitTest, DeferUntilIpfsProcessLaunched) {
-  profile()->GetPrefs()->SetInteger(kIPFSResolveMethod,
-      static_cast<int>(IPFSResolveMethodTypes::IPFS_LOCAL));
+  profile()->GetPrefs()->SetInteger(
+      kIPFSResolveMethod, static_cast<int>(IPFSResolveMethodTypes::IPFS_LOCAL));
 
   content::MockNavigationHandle test_handle(web_contents());
   test_handle.set_url(GetIPFSURL());
-  auto throttle = IpfsNavigationThrottle::MaybeCreateThrottleFor(&test_handle,
-      ipfs_service(), brave::IsRegularProfile(profile()));
+  auto throttle = IpfsNavigationThrottle::MaybeCreateThrottleFor(
+      &test_handle, ipfs_service(), brave::IsRegularProfile(profile()));
   ASSERT_TRUE(throttle != nullptr);
   bool was_navigation_resumed = false;
   throttle->set_resume_callback_for_testing(
@@ -149,36 +145,39 @@ TEST_F(IpfsNavigationThrottleUnitTest, DeferUntilIpfsProcessLaunched) {
 }
 
 TEST_F(IpfsNavigationThrottleUnitTest, ProceedForGatewayNodeMode) {
-  profile()->GetPrefs()->SetInteger(kIPFSResolveMethod,
+  profile()->GetPrefs()->SetInteger(
+      kIPFSResolveMethod,
       static_cast<int>(IPFSResolveMethodTypes::IPFS_GATEWAY));
 
   content::MockNavigationHandle test_handle(web_contents());
   test_handle.set_url(GetIPFSURL());
-  auto throttle = IpfsNavigationThrottle::MaybeCreateThrottleFor(&test_handle,
-      ipfs_service(), brave::IsRegularProfile(profile()));
+  auto throttle = IpfsNavigationThrottle::MaybeCreateThrottleFor(
+      &test_handle, ipfs_service(), brave::IsRegularProfile(profile()));
   ASSERT_TRUE(throttle != nullptr);
   EXPECT_EQ(NavigationThrottle::PROCEED, throttle->WillStartRequest().action())
       << GetIPFSURL();
 
-  profile()->GetPrefs()->SetInteger(kIPFSResolveMethod,
+  profile()->GetPrefs()->SetInteger(
+      kIPFSResolveMethod,
       static_cast<int>(IPFSResolveMethodTypes::IPFS_DISABLED));
   EXPECT_EQ(NavigationThrottle::PROCEED, throttle->WillStartRequest().action())
       << GetIPFSURL();
 }
 
 TEST_F(IpfsNavigationThrottleUnitTest, ProceedForAskNodeMode) {
-  profile()->GetPrefs()->SetInteger(kIPFSResolveMethod,
-      static_cast<int>(IPFSResolveMethodTypes::IPFS_ASK));
+  profile()->GetPrefs()->SetInteger(
+      kIPFSResolveMethod, static_cast<int>(IPFSResolveMethodTypes::IPFS_ASK));
 
   content::MockNavigationHandle test_handle(web_contents());
   test_handle.set_url(GetIPFSURL());
-  auto throttle = IpfsNavigationThrottle::MaybeCreateThrottleFor(&test_handle,
-      ipfs_service(), brave::IsRegularProfile(profile()));
+  auto throttle = IpfsNavigationThrottle::MaybeCreateThrottleFor(
+      &test_handle, ipfs_service(), brave::IsRegularProfile(profile()));
   ASSERT_TRUE(throttle != nullptr);
   EXPECT_EQ(NavigationThrottle::PROCEED, throttle->WillStartRequest().action())
       << GetIPFSURL();
 
-  profile()->GetPrefs()->SetInteger(kIPFSResolveMethod,
+  profile()->GetPrefs()->SetInteger(
+      kIPFSResolveMethod,
       static_cast<int>(IPFSResolveMethodTypes::IPFS_DISABLED));
   EXPECT_EQ(NavigationThrottle::PROCEED, throttle->WillStartRequest().action())
       << GetIPFSURL();
@@ -186,30 +185,27 @@ TEST_F(IpfsNavigationThrottleUnitTest, ProceedForAskNodeMode) {
 
 TEST_F(IpfsNavigationThrottleUnitTest, Instantiation) {
   content::MockNavigationHandle test_handle(web_contents());
-  auto throttle = IpfsNavigationThrottle::MaybeCreateThrottleFor(&test_handle,
-      ipfs_service(), brave::IsRegularProfile(profile()));
+  auto throttle = IpfsNavigationThrottle::MaybeCreateThrottleFor(
+      &test_handle, ipfs_service(), brave::IsRegularProfile(profile()));
   EXPECT_TRUE(throttle != nullptr);
 
   // Disable in OTR profile.
   auto otr_web_contents = content::WebContentsTester::CreateTestWebContents(
       profile()->GetPrimaryOTRProfile(), nullptr);
   content::MockNavigationHandle otr_test_handle(otr_web_contents.get());
-  auto throttle_in_otr =
-      IpfsNavigationThrottle::MaybeCreateThrottleFor(&otr_test_handle,
-          ipfs_service(),
-          brave::IsRegularProfile(profile()->GetPrimaryOTRProfile()));
+  auto throttle_in_otr = IpfsNavigationThrottle::MaybeCreateThrottleFor(
+      &otr_test_handle, ipfs_service(),
+      brave::IsRegularProfile(profile()->GetPrimaryOTRProfile()));
   EXPECT_EQ(throttle_in_otr, nullptr);
 
   // Disable in guest sessions.
   auto guest_profile = CreateGuestProfile();
-  auto guest_web_contents =
-      content::WebContentsTester::CreateTestWebContents(
-          guest_profile.get(), nullptr);
+  auto guest_web_contents = content::WebContentsTester::CreateTestWebContents(
+      guest_profile.get(), nullptr);
   content::MockNavigationHandle guest_test_handle(guest_web_contents.get());
-  auto throttle_in_guest =
-      IpfsNavigationThrottle::MaybeCreateThrottleFor(&guest_test_handle,
-          ipfs_service(),
-          brave::IsRegularProfile(guest_profile.get()));
+  auto throttle_in_guest = IpfsNavigationThrottle::MaybeCreateThrottleFor(
+      &guest_test_handle, ipfs_service(),
+      brave::IsRegularProfile(guest_profile.get()));
   EXPECT_EQ(throttle_in_guest, nullptr);
 }
 
@@ -218,30 +214,26 @@ TEST_F(IpfsNavigationThrottleUnitTest, NotInstantiatedInTor) {
   ProfileManager* profile_manager = g_browser_process->profile_manager();
   ASSERT_TRUE(profile_manager);
 
-  Profile* tor_reg_profile = profile_manager->GetProfile(
-      BraveProfileManager::GetTorProfilePath());
+  Profile* tor_reg_profile =
+      profile_manager->GetProfile(BraveProfileManager::GetTorProfilePath());
   ASSERT_EQ(brave::GetParentProfile(tor_reg_profile), profile());
   ASSERT_TRUE(brave::IsTorProfile(tor_reg_profile));
   ASSERT_FALSE(tor_reg_profile->IsOffTheRecord());
 
-  auto tor_reg_web_contents =
-      content::WebContentsTester::CreateTestWebContents(
-          tor_reg_profile, nullptr);
-  content::MockNavigationHandle tor_reg_test_handle(
-      tor_reg_web_contents.get());
-  auto throttle_in_tor_reg =
-      IpfsNavigationThrottle::MaybeCreateThrottleFor(&tor_reg_test_handle,
-          ipfs_service(), brave::IsRegularProfile(tor_reg_profile));
+  auto tor_reg_web_contents = content::WebContentsTester::CreateTestWebContents(
+      tor_reg_profile, nullptr);
+  content::MockNavigationHandle tor_reg_test_handle(tor_reg_web_contents.get());
+  auto throttle_in_tor_reg = IpfsNavigationThrottle::MaybeCreateThrottleFor(
+      &tor_reg_test_handle, ipfs_service(),
+      brave::IsRegularProfile(tor_reg_profile));
   EXPECT_EQ(throttle_in_tor_reg, nullptr);
 
-  auto tor_otr_web_contents =
-      content::WebContentsTester::CreateTestWebContents(
-          tor_reg_profile->GetPrimaryOTRProfile(), nullptr);
-  content::MockNavigationHandle tor_otr_test_handle(
-      tor_otr_web_contents.get());
-  auto throttle_in_tor_otr =
-      IpfsNavigationThrottle::MaybeCreateThrottleFor(&tor_otr_test_handle,
-          ipfs_service(), brave::IsRegularProfile(tor_reg_profile));
+  auto tor_otr_web_contents = content::WebContentsTester::CreateTestWebContents(
+      tor_reg_profile->GetPrimaryOTRProfile(), nullptr);
+  content::MockNavigationHandle tor_otr_test_handle(tor_otr_web_contents.get());
+  auto throttle_in_tor_otr = IpfsNavigationThrottle::MaybeCreateThrottleFor(
+      &tor_otr_test_handle, ipfs_service(),
+      brave::IsRegularProfile(tor_reg_profile));
   EXPECT_EQ(throttle_in_tor_otr, nullptr);
 }
 #endif

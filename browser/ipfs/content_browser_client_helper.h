@@ -27,10 +27,12 @@ namespace ipfs {
 
 class ContentBrowserClientHelper {
  public:
-  static bool ShouldNavigateIPFSURI(const GURL& url, GURL* new_url,
-      content::BrowserContext* browser_context);
+  static bool ShouldNavigateIPFSURI(const GURL& url,
+                                    GURL* new_url,
+                                    content::BrowserContext* browser_context);
 
-  static bool HandleIPFSURLReverseRewrite(GURL* url,
+  static bool HandleIPFSURLReverseRewrite(
+      GURL* url,
       content::BrowserContext* browser_context);
 
   static void LoadOrLaunchIPFSURL(
@@ -41,7 +43,7 @@ class ContentBrowserClientHelper {
       const base::Optional<url::Origin>& initiating_origin);
 
   static bool HandleIPFSURLRewrite(GURL* url,
-      content::BrowserContext* browser_context);
+                                   content::BrowserContext* browser_context);
 
   static void HandleIPFSProtocol(
       const GURL& url,

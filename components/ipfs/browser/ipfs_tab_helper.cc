@@ -28,7 +28,8 @@ IPFSTabHelper::IPFSTabHelper(content::WebContents* web_contents)
 
 // static
 void IPFSTabHelper::MaybeCreateForWebContents(
-    content::WebContents* web_contents, bool regular_profile,
+    content::WebContents* web_contents,
+    bool regular_profile,
     IpfsTabHelperDelegate* delegate) {
   auto* browser_context = web_contents->GetBrowserContext();
   if (!ipfs::IpfsService::IsIpfsEnabled(browser_context, regular_profile)) {

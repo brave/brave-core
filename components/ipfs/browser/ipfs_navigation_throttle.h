@@ -26,16 +26,17 @@ class IpfsServiceObserver;
 class IpfsNavigationThrottle : public content::NavigationThrottle,
                                public IpfsServiceObserver {
  public:
-  explicit IpfsNavigationThrottle(
-      content::NavigationHandle* navigation_handle, IpfsService* ipfs_service);
+  explicit IpfsNavigationThrottle(content::NavigationHandle* navigation_handle,
+                                  IpfsService* ipfs_service);
   ~IpfsNavigationThrottle() override;
 
   IpfsNavigationThrottle(const IpfsNavigationThrottle&) = delete;
   IpfsNavigationThrottle& operator=(const IpfsNavigationThrottle&) = delete;
 
-  static std::unique_ptr<IpfsNavigationThrottle>
-      MaybeCreateThrottleFor(content::NavigationHandle* navigation_handle,
-          IpfsService* ipfs_service, bool regular_profile);
+  static std::unique_ptr<IpfsNavigationThrottle> MaybeCreateThrottleFor(
+      content::NavigationHandle* navigation_handle,
+      IpfsService* ipfs_service,
+      bool regular_profile);
 
   // content::NavigationThrottle implementation:
   ThrottleCheckResult WillStartRequest() override;

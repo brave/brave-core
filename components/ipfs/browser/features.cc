@@ -10,10 +10,7 @@
 namespace ipfs {
 namespace features {
 
-const base::Feature kIpfsFeature {
-      "Ipfs",
-      base::FEATURE_DISABLED_BY_DEFAULT
-};
+const base::Feature kIpfsFeature{"Ipfs", base::FEATURE_DISABLED_BY_DEFAULT};
 
 }  // namespace features
 }  // namespace ipfs

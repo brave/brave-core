@@ -17,6 +17,9 @@ class IpfsServiceDelegateImpl : public IpfsServiceDelegate {
 
   base::FilePath GetUserDataDir() override;
   bool IsTestingProfile() override;
+
+ protected:
+  DISALLOW_COPY_AND_ASSIGN(IpfsServiceDelegateImpl);
 };
 
 }  // namespace ipfs

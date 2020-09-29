@@ -23,9 +23,8 @@ namespace ipfs {
 class IpfsTabHelperDelegate;
 
 // Determines if IPFS should be active for a given top-level navigation.
-class IPFSTabHelper
-    : public content::WebContentsObserver,
-      public content::WebContentsUserData<IPFSTabHelper> {
+class IPFSTabHelper : public content::WebContentsObserver,
+                      public content::WebContentsUserData<IPFSTabHelper> {
  public:
   ~IPFSTabHelper() override;
 
@@ -35,7 +34,8 @@ class IPFSTabHelper
   bool IsActiveForMainFrame() const { return active_; }
 
   static void MaybeCreateForWebContents(content::WebContents* web_contents,
-      bool regular_profile, IpfsTabHelperDelegate*);
+                                        bool regular_profile,
+                                        IpfsTabHelperDelegate*);
 
  private:
   friend class content::WebContentsUserData<IPFSTabHelper>;
