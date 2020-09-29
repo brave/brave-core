@@ -1,0 +1,12 @@
+diff --git a/chrome/browser/ui/android/appmenu/internal/BUILD.gn b/chrome/browser/ui/android/appmenu/internal/BUILD.gn
+index d06aceed7443a093d85bbfc340fe1a50a9613ac9..a41f90a8a60019a06ac5c22acec4f98a35d2aa17 100644
+--- a/chrome/browser/ui/android/appmenu/internal/BUILD.gn
++++ b/chrome/browser/ui/android/appmenu/internal/BUILD.gn
+@@ -21,6 +21,7 @@ android_library("java") {
+     "java/src/org/chromium/chrome/browser/ui/appmenu/AppMenuHandlerImpl.java",
+     "java/src/org/chromium/chrome/browser/ui/appmenu/AppMenuItemIcon.java",
+   ]
++  sources += brave_browser_ui_android_appmenu_internal_sources
+ 
+   deps = [
+     ":java_resources",

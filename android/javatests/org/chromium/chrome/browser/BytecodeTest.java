@@ -40,6 +40,7 @@ public class BytecodeTest {
         Assert.assertTrue(classExists(
                 "org/chromium/chrome/browser/search_engines/settings/SearchEngineAdapter"));
         Assert.assertTrue(classExists("org/chromium/base/CommandLineInitUtil"));
+        Assert.assertTrue(classExists("org/chromium/chrome/browser/ui/appmenu/AppMenu"));
     }
 
     @Test
@@ -67,6 +68,8 @@ public class BytecodeTest {
                 "org/chromium/chrome/browser/search_engines/settings/SearchEngineAdapter",
                 "sortAndFilterUnnecessaryTemplateUrl"));
         Assert.assertTrue(methodExists("org/chromium/base/CommandLineInitUtil", "initCommandLine"));
+        Assert.assertTrue(
+                methodExists("org/chromium/chrome/browser/ui/appmenu/AppMenu", "getPopupPosition"));
     }
 
     @Test
