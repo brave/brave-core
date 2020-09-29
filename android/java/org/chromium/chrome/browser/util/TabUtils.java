@@ -17,19 +17,19 @@ import android.widget.PopupMenu;
 
 import org.chromium.base.ApplicationStatus;
 import org.chromium.chrome.R;
+import org.chromium.chrome.browser.app.BraveActivity;
 import org.chromium.chrome.browser.app.ChromeActivity;
 import org.chromium.chrome.browser.night_mode.GlobalNightModeStateProviderHolder;
-import org.chromium.chrome.browser.app.BraveActivity;
-import org.chromium.content_public.browser.LoadUrlParams;
 import org.chromium.chrome.browser.tab.TabLaunchType;
+import org.chromium.content_public.browser.LoadUrlParams;
 
 public class TabUtils {
     public static void showTabPopupMenu(Context context, View view) {
         BraveActivity braveActivity = BraveActivity.getBraveActivity();
         Context wrapper = new ContextThemeWrapper(context,
                 GlobalNightModeStateProviderHolder.getInstance().isInNightMode()
-                ? R.style.NewTabPopupMenuDark
-                : R.style.NewTabPopupMenuLight);
+                        ? R.style.NewTabPopupMenuDark
+                        : R.style.NewTabPopupMenuLight);
         // Creating the instance of PopupMenu
         PopupMenu popup = new PopupMenu(wrapper, view);
         // Inflating the Popup using xml file
@@ -57,7 +57,7 @@ public class TabUtils {
     public static void openNewTab() {
         BraveActivity braveActivity = BraveActivity.getBraveActivity();
         boolean isIncognito =
-            braveActivity != null ? braveActivity.getCurrentTabModel().isIncognito() : false;
+                braveActivity != null ? braveActivity.getCurrentTabModel().isIncognito() : false;
         openNewTab(braveActivity, isIncognito);
     }
 

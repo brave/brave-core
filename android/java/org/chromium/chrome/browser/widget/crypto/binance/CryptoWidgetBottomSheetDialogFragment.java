@@ -10,8 +10,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import org.json.JSONException;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.FragmentPagerAdapter;
@@ -20,16 +18,18 @@ import androidx.viewpager.widget.ViewPager;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 import com.google.android.material.tabs.TabLayout;
 
-import org.chromium.chrome.R;
+import org.json.JSONException;
+
 import org.chromium.base.Log;
-import org.chromium.chrome.browser.widget.crypto.binance.BinanceNativeWorker;
-import org.chromium.chrome.browser.widget.crypto.binance.BinanceObserver;
+import org.chromium.chrome.R;
 import org.chromium.chrome.browser.widget.crypto.binance.BinanceAccountBalance;
 import org.chromium.chrome.browser.widget.crypto.binance.BinanceCoinNetworks;
+import org.chromium.chrome.browser.widget.crypto.binance.BinanceNativeWorker;
+import org.chromium.chrome.browser.widget.crypto.binance.BinanceObserver;
 import org.chromium.chrome.browser.widget.crypto.binance.BinanceWidgetManager;
 
-import java.util.List;
 import java.util.ArrayList;
+import java.util.List;
 
 public class CryptoWidgetBottomSheetDialogFragment extends BottomSheetDialogFragment {
     final public static String TAG_FRAGMENT = "CRYPTO_WIDGET_FRAG";
@@ -37,9 +37,9 @@ public class CryptoWidgetBottomSheetDialogFragment extends BottomSheetDialogFrag
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
-                             @Nullable Bundle savedInstanceState) {
+            @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(
-                        R.layout.fragment_crypto_widget_bottom_sheet_dialog, container, false);
+                R.layout.fragment_crypto_widget_bottom_sheet_dialog, container, false);
 
         return view;
     }

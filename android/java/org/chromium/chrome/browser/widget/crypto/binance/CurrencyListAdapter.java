@@ -5,6 +5,8 @@
 package org.chromium.chrome.browser.widget.crypto.binance;
 
 import android.annotation.SuppressLint;
+import android.content.Context;
+import android.util.Pair;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -12,14 +14,11 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import android.util.Pair;
-import android.content.Context;
-import org.chromium.base.ContextUtils;
-
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.RecyclerView;
 
+import org.chromium.base.ContextUtils;
 import org.chromium.chrome.R;
 
 import java.util.List;
@@ -32,7 +31,7 @@ public class CurrencyListAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext())
-                    .inflate(R.layout.binance_currency_item, parent, false);
+                            .inflate(R.layout.binance_currency_item, parent, false);
         return new CurrencyViewHolder(view);
     }
 
@@ -43,11 +42,15 @@ public class CurrencyListAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         CoinNetworkModel coinNetworkModel = currencyList.get(position);
         currencyViewHolder.currencyText.setText(coinNetworkModel.getCoin());
         currencyViewHolder.currencyImageView.setImageResource(coinNetworkModel.getCoinRes());
-        BinanceAccountBalance binanceAccountBalance = BinanceWidgetManager.getInstance().getBinanceAccountBalance();
+        BinanceAccountBalance binanceAccountBalance =
+                BinanceWidgetManager.getInstance().getBinanceAccountBalance();
         if (binanceAccountBalance.getCurrencyValue(coinNetworkModel.getCoin()) != null) {
-            Pair<Double, Double> currencyValue = binanceAccountBalance.getCurrencyValue(coinNetworkModel.getCoin());
+            Pair<Double, Double> currencyValue =
+                    binanceAccountBalance.getCurrencyValue(coinNetworkModel.getCoin());
             currencyViewHolder.currencyValueText.setText(String.valueOf(currencyValue.first));
-            currencyViewHolder.currencyUsdText.setText(String.format(mContext.getResources().getString(R.string.usd_balance), String.valueOf(currencyValue.second)));
+            currencyViewHolder.currencyUsdText.setText(
+                    String.format(mContext.getResources().getString(R.string.usd_balance),
+                            String.valueOf(currencyValue.second)));
         }
     }
 

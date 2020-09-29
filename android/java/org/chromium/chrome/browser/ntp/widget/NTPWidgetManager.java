@@ -7,19 +7,18 @@
 
 package org.chromium.chrome.browser.ntp.widget;
 
-import android.content.SharedPreferences;
 import android.content.Context;
+import android.content.SharedPreferences;
 
-import org.chromium.chrome.R;
 import org.chromium.base.ContextUtils;
+import org.chromium.chrome.R;
+import org.chromium.chrome.browser.ntp.widget.NTPWidgetItem;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.HashMap;
 import java.util.TreeMap;
-
-import org.chromium.chrome.browser.ntp.widget.NTPWidgetItem;
 
 public class NTPWidgetManager {
     public static final String PREF_PRIVATE_STATS = "private_stats";
@@ -37,16 +36,16 @@ public class NTPWidgetManager {
         {
             put(PREF_PRIVATE_STATS,
                     new NTPWidgetItem(PREF_PRIVATE_STATS,
-                        mContext.getResources().getString(R.string.privacy_stats),
-                        mContext.getResources().getString(R.string.privacy_stats_text)));
+                            mContext.getResources().getString(R.string.privacy_stats),
+                            mContext.getResources().getString(R.string.privacy_stats_text)));
             put(PREF_FAVORITES,
                     new NTPWidgetItem(PREF_FAVORITES,
-                        mContext.getResources().getString(R.string.favorites),
-                        mContext.getResources().getString(R.string.privacy_stats_text)));
+                            mContext.getResources().getString(R.string.favorites),
+                            mContext.getResources().getString(R.string.privacy_stats_text)));
             put(PREF_BINANCE,
                     new NTPWidgetItem(PREF_BINANCE,
-                        mContext.getResources().getString(R.string.binance),
-                        mContext.getResources().getString(R.string.privacy_stats_text)));
+                            mContext.getResources().getString(R.string.binance),
+                            mContext.getResources().getString(R.string.privacy_stats_text)));
         }
     };
 
@@ -106,7 +105,7 @@ public class NTPWidgetManager {
         }
         return new ArrayList<String>(usedWidgetMap.values());
     }
-    
+
     public List<String> getAvailableWidgets() {
         List<String> availableWidgets = new ArrayList<>();
         if (getPrivateStatsWidget() == -1) {

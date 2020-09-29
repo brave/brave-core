@@ -6,16 +6,17 @@
 package org.chromium.chrome.browser.widget.crypto.binance;
 
 import android.content.Context;
+import android.view.ViewGroup;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import android.view.ViewGroup;
 import androidx.core.widget.NestedScrollView;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentStatePagerAdapter;
 
-import org.chromium.chrome.R;
 import org.chromium.base.ContextUtils;
+import org.chromium.chrome.R;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -23,7 +24,10 @@ import java.util.List;
 
 public class CryptoWidgetTabAdapter extends FragmentStatePagerAdapter {
     Context mContext = ContextUtils.getApplicationContext();
-    List<String> titles = Arrays.asList(mContext.getResources().getString(R.string.summary), mContext.getResources().getString(R.string.deposit), mContext.getResources().getString(R.string.convert), mContext.getResources().getString(R.string.buy));
+    List<String> titles = Arrays.asList(mContext.getResources().getString(R.string.summary),
+            mContext.getResources().getString(R.string.deposit),
+            mContext.getResources().getString(R.string.convert),
+            mContext.getResources().getString(R.string.buy));
 
     public CryptoWidgetTabAdapter(@NonNull FragmentManager fm, int behavior) {
         super(fm, behavior);
@@ -61,19 +65,25 @@ public class CryptoWidgetTabAdapter extends FragmentStatePagerAdapter {
         super.setPrimaryItem(container, position, object);
         for (int i = 0; i < getCount(); i++) {
             if ((NestedScrollView) container.findViewById(R.id.summary_scrollview) != null) {
-                ((NestedScrollView) container.findViewById(R.id.summary_scrollview)).setNestedScrollingEnabled(false);
+                ((NestedScrollView) container.findViewById(R.id.summary_scrollview))
+                        .setNestedScrollingEnabled(false);
             } else if ((NestedScrollView) container.findViewById(R.id.deposit_scrollview) != null) {
-                ((NestedScrollView) container.findViewById(R.id.deposit_scrollview)).setNestedScrollingEnabled(false);
+                ((NestedScrollView) container.findViewById(R.id.deposit_scrollview))
+                        .setNestedScrollingEnabled(false);
             }
         }
 
         Fragment currentFragment = (Fragment) object;
         if (currentFragment.getView() != null) {
             if (currentFragment.getClass() == BinanceSummaryFragment.class) {
-                NestedScrollView currentNestedScrollView = (NestedScrollView) currentFragment.getView().findViewById(R.id.summary_scrollview);
+                NestedScrollView currentNestedScrollView =
+                        (NestedScrollView) currentFragment.getView().findViewById(
+                                R.id.summary_scrollview);
                 currentNestedScrollView.setNestedScrollingEnabled(true);
             } else if (currentFragment.getClass() == BinanceDepositFragment.class) {
-                NestedScrollView currentNestedScrollView = (NestedScrollView) currentFragment.getView().findViewById(R.id.deposit_scrollview);
+                NestedScrollView currentNestedScrollView =
+                        (NestedScrollView) currentFragment.getView().findViewById(
+                                R.id.deposit_scrollview);
                 currentNestedScrollView.setNestedScrollingEnabled(true);
             }
         }

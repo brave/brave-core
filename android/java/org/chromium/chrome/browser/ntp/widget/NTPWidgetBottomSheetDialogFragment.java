@@ -53,7 +53,7 @@ public class NTPWidgetBottomSheetDialogFragment extends BottomSheetDialogFragmen
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
-                             @Nullable Bundle savedInstanceState) {
+            @Nullable Bundle savedInstanceState) {
         return inflater.inflate(R.layout.fragment_ntp_widget_bottom_sheet_dialog, container, false);
     }
 
@@ -99,28 +99,29 @@ public class NTPWidgetBottomSheetDialogFragment extends BottomSheetDialogFragmen
         super.onDismiss(dialog);
         for (int i = 0; i < usedNtpWidgetListAdapter.getWidgetList().size(); i++) {
             NTPWidgetManager.getInstance().setWidget(
-                usedNtpWidgetListAdapter.getWidgetList().get(i), i);
+                    usedNtpWidgetListAdapter.getWidgetList().get(i), i);
         }
         ntpWidgetListener.onBottomSheetDismiss();
     }
 
     private NTPWidgetStackUpdateListener ntpWidgetStackUpdateListener =
-    new NTPWidgetStackUpdateListener() {
-        @Override
-        public void onWidgetStackUpdate() {
-            List<String> usedWidgetList = NTPWidgetManager.getInstance().getUsedWidgets();
-            List<String> availableWidgetList = NTPWidgetManager.getInstance().getAvailableWidgets();
+            new NTPWidgetStackUpdateListener() {
+                @Override
+                public void onWidgetStackUpdate() {
+                    List<String> usedWidgetList = NTPWidgetManager.getInstance().getUsedWidgets();
+                    List<String> availableWidgetList =
+                            NTPWidgetManager.getInstance().getAvailableWidgets();
 
-            usedNtpWidgetListAdapter.setWidgetList(usedWidgetList);
-            usedNtpWidgetListAdapter.notifyDataSetChanged();
+                    usedNtpWidgetListAdapter.setWidgetList(usedWidgetList);
+                    usedNtpWidgetListAdapter.notifyDataSetChanged();
 
-            if (availableWidgetList.size() > 0) {
-                availableWidgetLayout.setVisibility(View.VISIBLE);
-                availableNtpWidgetListAdapter.setWidgetList(availableWidgetList);
-                availableNtpWidgetListAdapter.notifyDataSetChanged();
-            } else {
-                availableWidgetLayout.setVisibility(View.GONE);
-            }
-        }
-    };
+                    if (availableWidgetList.size() > 0) {
+                        availableWidgetLayout.setVisibility(View.VISIBLE);
+                        availableNtpWidgetListAdapter.setWidgetList(availableWidgetList);
+                        availableNtpWidgetListAdapter.notifyDataSetChanged();
+                    } else {
+                        availableWidgetLayout.setVisibility(View.GONE);
+                    }
+                }
+            };
 }

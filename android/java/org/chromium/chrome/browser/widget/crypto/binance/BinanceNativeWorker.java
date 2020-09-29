@@ -9,11 +9,10 @@ package org.chromium.chrome.browser.widget.crypto.binance;
 
 import org.chromium.base.annotations.CalledByNative;
 import org.chromium.base.annotations.JNINamespace;
-
 import org.chromium.chrome.browser.widget.crypto.binance.BinanceObserver;
 
-import java.util.List;
 import java.util.ArrayList;
+import java.util.List;
 
 @JNINamespace("chrome::android")
 public class BinanceNativeWorker {
@@ -95,7 +94,7 @@ public class BinanceNativeWorker {
 
     @CalledByNative
     public void OnGetConvertQuote(
-        String quoteId, String quotePrice, String totalFee, String totalAmount) {
+            String quoteId, String quotePrice, String totalFee, String totalAmount) {
         for (BinanceObserver observer : mObservers) {
             observer.OnGetConvertQuote(quoteId, quotePrice, totalFee, totalAmount);
         }
@@ -178,9 +177,11 @@ public class BinanceNativeWorker {
     private native void nativeGetAccessToken(long nativeBinanceNativeWorker);
     private native void nativeSetAuthToken(long nativeBinanceNativeWorker, String authToken);
     private native void nativeGetAccountBalances(long nativeBinanceNativeWorker);
-    private native void nativeGetConvertQuote(long nativeBinanceNativeWorker, String from, String to, String amount);
+    private native void nativeGetConvertQuote(
+            long nativeBinanceNativeWorker, String from, String to, String amount);
     private native void nativeGetCoinNetworks(long nativeBinanceNativeWorker);
-    private native void nativeGetDepositInfo(long nativeBinanceNativeWorker, String symbol, String tickerNetwork);
+    private native void nativeGetDepositInfo(
+            long nativeBinanceNativeWorker, String symbol, String tickerNetwork);
     private native void nativeConfirmConvert(long nativeBinanceNativeWorker, String quoteId);
     private native void nativeGetConvertAssets(long nativeBinanceNativeWorker);
     private native void nativeRevokeToken(long nativeBinanceNativeWorker);

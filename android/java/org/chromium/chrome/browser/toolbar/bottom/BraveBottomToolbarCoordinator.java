@@ -20,6 +20,7 @@ import org.chromium.base.supplier.Supplier;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.ActivityTabProvider;
 import org.chromium.chrome.browser.ThemeColorProvider;
+import org.chromium.chrome.browser.app.BraveActivity;
 import org.chromium.chrome.browser.app.ChromeActivity;
 import org.chromium.chrome.browser.compositor.layouts.EmptyOverviewModeObserver;
 import org.chromium.chrome.browser.compositor.layouts.OverviewModeBehavior;
@@ -33,7 +34,6 @@ import org.chromium.chrome.browser.toolbar.bottom.SearchAccelerator;
 import org.chromium.chrome.browser.toolbar.bottom.ShareButton;
 import org.chromium.chrome.browser.ui.appmenu.AppMenuButtonHelper;
 import org.chromium.chrome.browser.util.TabUtils;
-import org.chromium.chrome.browser.app.BraveActivity;
 import org.chromium.ui.widget.Toast;
 
 public class BraveBottomToolbarCoordinator
@@ -192,11 +192,12 @@ public class BraveBottomToolbarCoordinator
                 mOverviewModeBehavior.addOverviewModeObserver(mOverviewModeObserver);
             }
         }
-        
+
         BraveActivity braveActivity = BraveActivity.getBraveActivity();
         if (rootView != null && braveActivity != null) {
-            rootView.setSwipeDetector(
-                        braveActivity.getCompositorViewHolder().getLayoutManager().getToolbarSwipeHandler());
+            rootView.setSwipeDetector(braveActivity.getCompositorViewHolder()
+                                              .getLayoutManager()
+                                              .getToolbarSwipeHandler());
         }
     }
 }

@@ -83,8 +83,8 @@ class BinanceNativeWorker {
                         const base::android::JavaParamRef<jobject>& jcaller);
 
   void OnGetConvertAssets(
-      const std::map<std::string, std::vector<
-    std::map<std::string, std::string>>>& assets);
+      const std::map<std::string,
+                     std::vector<std::map<std::string, std::string>>>& assets);
 
   void RevokeToken(JNIEnv* env,
                    const base::android::JavaParamRef<jobject>& jcaller);
@@ -92,8 +92,8 @@ class BinanceNativeWorker {
   void OnRevokeToken(bool success);
 
   void SetAuthToken(JNIEnv* env,
-                   const base::android::JavaParamRef<jobject>& jcaller,
-                   const base::android::JavaParamRef<jstring>& auth_token);
+                    const base::android::JavaParamRef<jobject>& jcaller,
+                    const base::android::JavaParamRef<jstring>& auth_token);
 
  private:
   std::string StdStrStrMapToJsonString(
@@ -101,7 +101,8 @@ class BinanceNativeWorker {
   std::string StdStrVecMapToJsonString(
       const std::map<std::string, std::vector<std::string>>& args);
   std::string ConvertAssetsToJsonString(
-    const std::map<std::string, std::vector<std::map<std::string, std::string>>>& args);
+      const std::map<std::string,
+                     std::vector<std::map<std::string, std::string>>>& args);
 
   JavaObjectWeakGlobalRef weak_java_binance_native_worker_;
   BinanceService* binance_service_;

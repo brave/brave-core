@@ -231,9 +231,7 @@ source_set("browser_process") {
       "//brave/app:brave_generated_resources_grit",
     ]
   } else {
-    deps += [
-      "android:android_browser_process",
-    ]
+    deps += [ "android:android_browser_process" ]
   }
 
   if (binance_enabled) {
@@ -337,7 +335,6 @@ source_set("browser_process") {
       "extensions",
       "//extensions/common:common_constants",
     ]
-
   }
 
   if (enable_brave_referrals) {

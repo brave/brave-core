@@ -13,9 +13,9 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.PopupMenu;
 import android.widget.TextView;
-import android.widget.LinearLayout;
 
 import androidx.appcompat.widget.AppCompatImageView;
 import androidx.viewpager.widget.PagerAdapter;
@@ -30,9 +30,9 @@ import org.chromium.chrome.browser.ntp.widget.NTPWidgetManager;
 import org.chromium.chrome.browser.ntp_background_images.util.NTPUtil;
 import org.chromium.chrome.browser.preferences.BravePref;
 import org.chromium.chrome.browser.preferences.BravePrefServiceBridge;
+import org.chromium.chrome.browser.profiles.Profile;
 import org.chromium.chrome.browser.widget.crypto.binance.BinanceAccountBalance;
 import org.chromium.chrome.browser.widget.crypto.binance.BinanceWidgetManager;
-import org.chromium.chrome.browser.profiles.Profile;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -88,13 +88,21 @@ public class NTPWidgetAdapter extends PagerAdapter {
                 updateBraveStats(mainView);
             } else if (ntpWidgetItem.getWidgetType().equals(NTPWidgetManager.PREF_BINANCE)) {
                 Button connectButton = mainView.findViewById(R.id.btn_connect);
-                LinearLayout binanceWidgetLayout = mainView.findViewById(R.id.binance_widget_layout);
-                TextView binanceBalanceText = binanceWidgetLayout.findViewById(R.id.binance_balance_text);
-                TextView binanceUSDBalanceText = binanceWidgetLayout.findViewById(R.id.binance_usd_balance_text);
-                BinanceAccountBalance binanceAccountBalance = BinanceWidgetManager.getInstance().getBinanceAccountBalance();
+                LinearLayout binanceWidgetLayout =
+                        mainView.findViewById(R.id.binance_widget_layout);
+                TextView binanceBalanceText =
+                        binanceWidgetLayout.findViewById(R.id.binance_balance_text);
+                TextView binanceUSDBalanceText =
+                        binanceWidgetLayout.findViewById(R.id.binance_usd_balance_text);
+                BinanceAccountBalance binanceAccountBalance =
+                        BinanceWidgetManager.getInstance().getBinanceAccountBalance();
                 if (binanceAccountBalance != null) {
-                    binanceBalanceText.setText(String.format(mContext.getResources().getString(R.string.btc_balance), String.valueOf(binanceAccountBalance.getTotalBTC())));
-                    binanceUSDBalanceText.setText(String.format(mContext.getResources().getString(R.string.usd_balance), String.valueOf(binanceAccountBalance.getTotalUSD())));
+                    binanceBalanceText.setText(
+                            String.format(mContext.getResources().getString(R.string.btc_balance),
+                                    String.valueOf(binanceAccountBalance.getTotalBTC())));
+                    binanceUSDBalanceText.setText(
+                            String.format(mContext.getResources().getString(R.string.usd_balance),
+                                    String.valueOf(binanceAccountBalance.getTotalUSD())));
                 }
                 if (BinanceWidgetManager.getInstance().isUserAuthenticatedForBinance()) {
                     binanceWidgetLayout.setVisibility(View.VISIBLE);
@@ -140,32 +148,32 @@ public class NTPWidgetAdapter extends PagerAdapter {
 
     private void updateBraveStats(View view) {
         TextView mAdsBlockedCountTextView =
-            (TextView) view.findViewById(R.id.brave_stats_text_ads_count);
+                (TextView) view.findViewById(R.id.brave_stats_text_ads_count);
         TextView mDataSavedValueTextView =
-            (TextView) view.findViewById(R.id.brave_stats_data_saved_value);
+                (TextView) view.findViewById(R.id.brave_stats_data_saved_value);
         TextView mEstTimeSavedCountTextView =
-            (TextView) view.findViewById(R.id.brave_stats_text_time_count);
+                (TextView) view.findViewById(R.id.brave_stats_text_time_count);
 
         long trackersBlockedCount =
-            BravePrefServiceBridge.getInstance().getTrackersBlockedCount(mProfile);
+                BravePrefServiceBridge.getInstance().getTrackersBlockedCount(mProfile);
         long adsBlockedCount = BravePrefServiceBridge.getInstance().getAdsBlockedCount(mProfile);
         long dataSaved = BravePrefServiceBridge.getInstance().getDataSaved(mProfile);
         long estimatedMillisecondsSaved =
-            (trackersBlockedCount + adsBlockedCount) * BraveStatsUtil.MILLISECONDS_PER_ITEM;
+                (trackersBlockedCount + adsBlockedCount) * BraveStatsUtil.MILLISECONDS_PER_ITEM;
 
         Pair<String, String> adsTrackersPair =
-            BraveStatsUtil.getBraveStatsStringFormNumberPair(adsBlockedCount, false);
+                BraveStatsUtil.getBraveStatsStringFormNumberPair(adsBlockedCount, false);
         Pair<String, String> dataSavedPair =
-            BraveStatsUtil.getBraveStatsStringFormNumberPair(dataSaved, true);
+                BraveStatsUtil.getBraveStatsStringFormNumberPair(dataSaved, true);
 
         mAdsBlockedCountTextView.setText(
-            String.format(mContext.getResources().getString(R.string.ntp_stat_text),
-                          adsTrackersPair.first, adsTrackersPair.second));
+                String.format(mContext.getResources().getString(R.string.ntp_stat_text),
+                        adsTrackersPair.first, adsTrackersPair.second));
         mDataSavedValueTextView.setText(
-            String.format(mContext.getResources().getString(R.string.ntp_stat_text),
-                          dataSavedPair.first, dataSavedPair.second));
+                String.format(mContext.getResources().getString(R.string.ntp_stat_text),
+                        dataSavedPair.first, dataSavedPair.second));
         mEstTimeSavedCountTextView.setText(
-            BraveStatsUtil.getBraveStatsStringFromTime(estimatedMillisecondsSaved / 1000));
+                BraveStatsUtil.getBraveStatsStringFromTime(estimatedMillisecondsSaved / 1000));
     }
 
     private void showPopupMenu(Context context, View view, final int position) {

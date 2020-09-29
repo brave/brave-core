@@ -5,22 +5,21 @@
 package org.chromium.chrome.browser.widget.crypto.binance;
 
 import android.annotation.SuppressLint;
+import android.content.Context;
+import android.text.TextUtils;
+import android.util.Pair;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.text.TextUtils;
-
-import android.util.Pair;
-import android.content.Context;
-import org.chromium.base.ContextUtils;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.RecyclerView;
 
+import org.chromium.base.ContextUtils;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.widget.crypto.binance.CoinNetworkModel;
 
@@ -43,7 +42,7 @@ public class BinanceDepositAdapter extends RecyclerView.Adapter<RecyclerView.Vie
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext())
-                    .inflate(R.layout.binance_deposit_item, parent, false);
+                            .inflate(R.layout.binance_deposit_item, parent, false);
         return new CurrencyViewHolder(view);
     }
 
@@ -52,7 +51,10 @@ public class BinanceDepositAdapter extends RecyclerView.Adapter<RecyclerView.Vie
     public void onBindViewHolder(@NonNull final RecyclerView.ViewHolder holder, int position) {
         CurrencyViewHolder currencyViewHolder = (CurrencyViewHolder) holder;
         CoinNetworkModel coinNetworkModel = currencyList.get(position);
-        currencyViewHolder.currencyText.setText(coinNetworkModel.getCoin() + (TextUtils.isEmpty(coinNetworkModel.getCoinDesc()) ? "" : " (" + coinNetworkModel.getCoinDesc() + ")"));
+        currencyViewHolder.currencyText.setText(coinNetworkModel.getCoin()
+                + (TextUtils.isEmpty(coinNetworkModel.getCoinDesc())
+                                ? ""
+                                : " (" + coinNetworkModel.getCoinDesc() + ")"));
         currencyViewHolder.currencyImageView.setImageResource(coinNetworkModel.getCoinRes());
         currencyViewHolder.rootView.setOnClickListener(new View.OnClickListener() {
             @Override

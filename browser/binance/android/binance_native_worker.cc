@@ -61,7 +61,8 @@ std::string BinanceNativeWorker::StdStrVecMapToJsonString(
 }
 
 std::string BinanceNativeWorker::ConvertAssetsToJsonString(
-    const std::map<std::string, std::vector<std::map<std::string, std::string>>>& args) {
+    const std::map<std::string,
+                   std::vector<std::map<std::string, std::string>>>& args) {
   std::string json_args;
   base::DictionaryValue dict;
   for (const auto& item : args) {
@@ -239,8 +240,8 @@ void BinanceNativeWorker::GetConvertAssets(
 }
 
 void BinanceNativeWorker::OnGetConvertAssets(
-    const std::map<std::string, std::vector<
-    std::map<std::string, std::string>>>& assets) {
+    const std::map<std::string,
+                   std::vector<std::map<std::string, std::string>>>& assets) {
   JNIEnv* env = base::android::AttachCurrentThread();
   std::string json_assets = ConvertAssetsToJsonString(assets);
   Java_BinanceNativeWorker_OnGetConvertAssets(
@@ -263,11 +264,13 @@ void BinanceNativeWorker::OnRevokeToken(bool success) {
       env, weak_java_binance_native_worker_.get(env), success);
 }
 
-void BinanceNativeWorker::SetAuthToken(JNIEnv* env,
+void BinanceNativeWorker::SetAuthToken(
+    JNIEnv* env,
     const base::android::JavaParamRef<jobject>& jcaller,
     const base::android::JavaParamRef<jstring>& auth_token) {
   if (binance_service_) {
-    binance_service_->SetAuthToken(base::android::ConvertJavaStringToUTF8(env, auth_token));
+    binance_service_->SetAuthToken(
+        base::android::ConvertJavaStringToUTF8(env, auth_token));
   }
 }
 

@@ -7,14 +7,13 @@
 
 package org.chromium.chrome.browser.widget.crypto.binance;
 
-import android.os.Bundle;
-
 import android.net.Uri;
+import android.os.Bundle;
 import android.text.TextUtils;
 
-import org.chromium.base.Log;
 import androidx.appcompat.app.AppCompatActivity;
 
+import org.chromium.base.Log;
 import org.chromium.chrome.browser.util.TabUtils;
 import org.chromium.chrome.browser.widget.crypto.binance.BinanceNativeWorker;
 import org.chromium.components.embedder_support.util.UrlConstants;
@@ -22,7 +21,6 @@ import org.chromium.components.embedder_support.util.UrlConstants;
 import java.util.List;
 
 public class BinanceActivity extends AppCompatActivity {
-
     private static final String REDIRECT_URI_ROOT = "com.brave.binance";
     private static final String CODE = "code";
 
