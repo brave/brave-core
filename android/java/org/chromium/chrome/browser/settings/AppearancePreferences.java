@@ -70,6 +70,15 @@ public class AppearancePreferences extends BravePreferenceFragment
             hideBraveRewardsIconPref.setOnPreferenceChangeListener(this);
         }
 
+        Preference nightModeEnabled =
+                findPreference(PREF_BRAVE_NIGHT_MODE_ENABLED);
+        nightModeEnabled.setOnPreferenceChangeListener(this);
+        if (nightModeEnabled instanceof ChromeSwitchPreference) {
+            ((ChromeSwitchPreference) nightModeEnabled)
+                    .setChecked(ChromeFeatureList.isEnabled(
+                        BraveFeatureList.FORCE_WEB_CONTENTS_DARK_MODE));
+        }
+
         Preference enableBottomToolbar =
                 findPreference(BravePreferenceKeys.BRAVE_BOTTOM_TOOLBAR_ENABLED_KEY);
         if (enableBottomToolbar == null) return;
@@ -81,15 +90,6 @@ public class AppearancePreferences extends BravePreferenceFragment
             ((ChromeSwitchPreference) enableBottomToolbar)
                     .setChecked(!isTablet
                             && BottomToolbarConfiguration.isBottomToolbarEnabled());
-        }
-
-        Preference nightModeEnabled =
-                findPreference(PREF_BRAVE_NIGHT_MODE_ENABLED);
-        nightModeEnabled.setOnPreferenceChangeListener(this);
-        if (nightModeEnabled instanceof ChromeSwitchPreference) {
-            ((ChromeSwitchPreference) nightModeEnabled)
-                    .setChecked(ChromeFeatureList.isEnabled(
-                        BraveFeatureList.FORCE_WEB_CONTENTS_DARK_MODE));
         }
     }
 
