@@ -45,7 +45,7 @@ std::string PerHourFrequencyCap::get_last_message() const {
 
 bool PerHourFrequencyCap::DoesRespectCap(
     const std::deque<uint64_t>& history,
-    const CreativeAdInfo& ad) const {
+    const CreativeAdInfo& ad) {
   const uint64_t time_constraint = base::Time::kSecondsPerHour;
 
   const uint64_t cap = 1;

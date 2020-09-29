@@ -44,7 +44,7 @@ std::string TotalMaxFrequencyCap::get_last_message() const {
 
 bool TotalMaxFrequencyCap::DoesRespectCap(
     const std::deque<uint64_t>& history,
-    const CreativeAdInfo& ad) const {
+    const CreativeAdInfo& ad) {
   if (history.size() >= ad.total_max) {
     return false;
   }

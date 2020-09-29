@@ -67,7 +67,7 @@ class AdsService : public KeyedService {
   virtual void SetAllowAdConversionTracking(
       const bool should_allow) = 0;
 
-  virtual uint64_t GetAdsPerHour() const = 0;
+  virtual uint64_t GetAdsPerHour() = 0;
   virtual void SetAdsPerHour(
       const uint64_t ads_per_hour) = 0;
 

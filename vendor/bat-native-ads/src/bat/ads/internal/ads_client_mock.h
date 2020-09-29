@@ -28,9 +28,9 @@ class AdsClientMock : public AdsClient {
 
   MOCK_CONST_METHOD0(GetLocale, std::string());
 
-  MOCK_CONST_METHOD0(GetAdsPerHour, uint64_t());
+  MOCK_METHOD0(GetAdsPerHour, uint64_t());
 
-  MOCK_CONST_METHOD0(GetAdsPerDay, uint64_t());
+  MOCK_METHOD0(GetAdsPerDay, uint64_t());
 
   MOCK_CONST_METHOD0(ShouldAllowAdsSubdivisionTargeting, bool());
 

@@ -161,7 +161,7 @@ TEST_F(BatAdsTabsTest,
     TabUpdated) {
   // Arrange
   EXPECT_CALL(*ads_client_mock_, Log(_, _, _, _))
-      .Times(2);
+      .Times(1);
 
   // Act
   ads_->OnTabUpdated(1, "https://brave.com", true, true, false);

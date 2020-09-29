@@ -24,6 +24,7 @@
 #include "bat/ads/internal/server/redeem_unblinded_token/redeem_unblinded_token_delegate.h"
 #include "bat/ads/internal/server/refill_unblinded_tokens/refill_unblinded_tokens_delegate.h"
 #include "bat/ads/internal/timer.h"
+#include "bat/ads/internal/user_activity/user_activity.h"
 #include "bat/ads/internal/wallet/wallet_info.h"
 #include "bat/ads/mojom.h"
 
@@ -118,6 +119,10 @@ class AdsImpl
 
   SubdivisionTargeting* get_subdivision_targeting() const {
     return subdivision_targeting_.get();
+  }
+
+  UserActivity* get_user_activity() const {
+    return user_activity_.get();
   }
 
   void Initialize(
@@ -279,6 +284,7 @@ class AdsImpl
   bool IsAllowedToServeAdNotifications();
 
   Timer deliver_ad_notification_timer_;
+  void MaybeStartDeliveringAdNotifications();
   void StartDeliveringAdNotifications();
   void StartDeliveringAdNotificationsAfterSeconds(
       const uint64_t seconds);
@@ -354,6 +360,7 @@ class AdsImpl
   std::unique_ptr<RedeemUnblindedToken> redeem_unblinded_token_;
   std::unique_ptr<RefillUnblindedTokens> refill_unblinded_tokens_;
   std::unique_ptr<SubdivisionTargeting> subdivision_targeting_;
+  std::unique_ptr<UserActivity> user_activity_;
 
   // RedeemUnblindedTokenDelegate implementation
   void OnDidRedeemUnblindedToken(
