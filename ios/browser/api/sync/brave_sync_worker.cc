@@ -36,6 +36,49 @@ namespace {
 static const size_t SEED_BYTES_COUNT = 32u;
 }  // namespace
 
+namespace {
+
+// A structure which contains all the configuration information for sync.
+struct SyncConfigInfo {
+  SyncConfigInfo();
+  ~SyncConfigInfo();
+
+  bool encrypt_all;
+  bool set_new_passphrase;
+};
+
+SyncConfigInfo::SyncConfigInfo()
+    : encrypt_all(false), set_new_passphrase(false) {}
+
+SyncConfigInfo::~SyncConfigInfo() {}
+
+// Return false if we are not interested configure encryption
+bool FillSyncConfigInfo(syncer::SyncService* service,
+                        SyncConfigInfo* configuration) {
+  bool first_setup_in_progress =
+      service && !service->GetUserSettings()->IsFirstSetupComplete();
+
+  configuration->encrypt_all =
+      service->GetUserSettings()->IsEncryptEverythingEnabled();
+
+  bool sync_prefs_passphrase_required =
+      service->GetUserSettings()->IsPassphraseRequired();
+
+  if (!first_setup_in_progress) {
+    if (!configuration->encrypt_all) {
+      configuration->encrypt_all = true;
+      configuration->set_new_passphrase = true;
+    } else if (sync_prefs_passphrase_required) {
+      configuration->set_new_passphrase = false;
+    } else {
+      return false;
+    }
+  }
+  return true;
+}
+
+}  // namespace
+
 BraveSyncDeviceTracker::BraveSyncDeviceTracker(std::function<void()> onDeviceInfoChanged) : onDeviceInfoChanged_(onDeviceInfoChanged) {
   
   ios::ChromeBrowserStateManager* browserStateManager =
@@ -245,11 +288,13 @@ void BraveSyncWorker::OnStateChanged(syncer::SyncService* service) {
 				VLOG(3) << "[BraveSync] " << __func__ << " sync engine is not initialized";
 				return;
 		}
-		
-
-		if (IsSyncFeatureActive()) {
-    LOG(ERROR) << "OMFG it worked!!!";
-		}
+  
+  SyncConfigInfo configuration = {};
+  if (!FillSyncConfigInfo(service, &configuration)) {
+    VLOG(3) << "[BraveSync] " << __func__
+            << " operations with passphrase are not required";
+    return;
+  }
 
   auto* setup_service =
       SyncSetupServiceFactory::GetForBrowserState(browser_state_);
@@ -257,8 +302,36 @@ void BraveSyncWorker::OnStateChanged(syncer::SyncService* service) {
   if (setup_service && !service->GetUserSettings()->IsFirstSetupComplete()) {
     brave_sync::Prefs brave_sync_prefs(browser_state_->GetPrefs());
     std::string sync_code = brave_sync_prefs.GetSeed();
-    service->GetUserSettings()->EnableEncryptEverything();
-    service->GetUserSettings()->SetEncryptionPassphrase(sync_code);
+    DCHECK_NE(sync_code.size(), 0u);
+    
+    if (!service->GetUserSettings()->IsEncryptEverythingAllowed()) {
+      configuration.encrypt_all = false;
+      configuration.set_new_passphrase = false;
+    }
+    
+    if (configuration.encrypt_all) {
+      service->GetUserSettings()->EnableEncryptEverything();
+    }
+    
+    bool passphrase_failed = false;
+    if (!sync_code.empty()) {
+      if (service->GetUserSettings()->IsPassphraseRequired()) {
+        passphrase_failed = !service->GetUserSettings()->SetDecryptionPassphrase(sync_code);
+      } else if (service->GetUserSettings()->IsTrustedVaultKeyRequired()) {
+        passphrase_failed = true;
+      } else {
+        if (configuration.set_new_passphrase &&
+            !service->GetUserSettings()->IsUsingSecondaryPassphrase()) {
+          service->GetUserSettings()->SetEncryptionPassphrase(sync_code);
+        }
+      }
+    }
+
+    if (passphrase_failed ||
+        service->GetUserSettings()->IsPassphraseRequiredForPreferredDataTypes()) {
+      VLOG(1) << __func__ << " setup passphrase failed";
+    }
+    
     setup_service->SetFirstSetupComplete(
         syncer::SyncFirstSetupCompleteSource::ADVANCED_FLOW_CONFIRM);
   }
