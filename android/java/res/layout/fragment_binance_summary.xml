@@ -38,9 +38,17 @@
         android:layout_marginBottom="16dp"
         android:background="#c0c0c0"/>
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recyclerview_currency_list"
+    <androidx.core.widget.NestedScrollView
+        android:id="@+id/summary_scrollview"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:id="@+id/summary_layout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"/>
+
+    </androidx.core.widget.NestedScrollView>
 
 </LinearLayout>

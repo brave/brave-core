@@ -8,13 +8,18 @@
 package org.chromium.chrome.browser.ntp.widget;
 
 import android.content.SharedPreferences;
+import android.content.Context;
 
+import org.chromium.chrome.R;
 import org.chromium.base.ContextUtils;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.HashMap;
 import java.util.TreeMap;
+
+import org.chromium.chrome.browser.ntp.widget.NTPWidgetItem;
 
 public class NTPWidgetManager {
     public static final String PREF_PRIVATE_STATS = "private_stats";
@@ -26,6 +31,24 @@ public class NTPWidgetManager {
     private static NTPWidgetManager sInstance;
 
     private final SharedPreferences mSharedPreferences;
+    private static Context mContext = ContextUtils.getApplicationContext();
+
+    public static Map<String, NTPWidgetItem> mWidgetsMap = new HashMap<String, NTPWidgetItem>() {
+        {
+            put(PREF_PRIVATE_STATS,
+                    new NTPWidgetItem(PREF_PRIVATE_STATS,
+                        mContext.getResources().getString(R.string.privacy_stats),
+                        mContext.getResources().getString(R.string.privacy_stats_text)));
+            put(PREF_FAVORITES,
+                    new NTPWidgetItem(PREF_FAVORITES,
+                        mContext.getResources().getString(R.string.favorites),
+                        mContext.getResources().getString(R.string.privacy_stats_text)));
+            put(PREF_BINANCE,
+                    new NTPWidgetItem(PREF_BINANCE,
+                        mContext.getResources().getString(R.string.binance),
+                        mContext.getResources().getString(R.string.privacy_stats_text)));
+        }
+    };
 
     private NTPWidgetManager() {
         mSharedPreferences = ContextUtils.getAppSharedPreferences();
@@ -68,5 +91,33 @@ public class NTPWidgetManager {
         SharedPreferences.Editor sharedPreferencesEditor = mSharedPreferences.edit();
         sharedPreferencesEditor.putInt(PREF_NTP_WIDGET_ORDER, position);
         sharedPreferencesEditor.apply();
+    }
+
+    public List<String> getUsedWidgets() {
+        Map<Integer, String> usedWidgetMap = new TreeMap<>();
+        if (getPrivateStatsWidget() != -1) {
+            usedWidgetMap.put(getPrivateStatsWidget(), PREF_PRIVATE_STATS);
+        }
+        if (getFavoritesWidget() != -1) {
+            usedWidgetMap.put(getFavoritesWidget(), PREF_FAVORITES);
+        }
+        if (getBinanceWidget() != -1) {
+            usedWidgetMap.put(getBinanceWidget(), PREF_BINANCE);
+        }
+        return new ArrayList<String>(usedWidgetMap.values());
+    }
+    
+    public List<String> getAvailableWidgets() {
+        List<String> availableWidgets = new ArrayList<>();
+        if (getPrivateStatsWidget() == -1) {
+            availableWidgets.add(PREF_PRIVATE_STATS);
+        }
+        if (getFavoritesWidget() == -1) {
+            availableWidgets.add(PREF_FAVORITES);
+        }
+        if (getBinanceWidget() == -1) {
+            availableWidgets.add(PREF_BINANCE);
+        }
+        return availableWidgets;
     }
 }

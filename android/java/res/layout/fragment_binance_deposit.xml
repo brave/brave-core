@@ -7,9 +7,17 @@
 
     <include layout="@layout/binance_deposit_layout"/>
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recyclerview_currency_list"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+    <androidx.core.widget.NestedScrollView
+	 	android:id="@+id/deposit_scrollview"
+	    android:layout_width="match_parent"
+	    android:layout_height="match_parent">
+
+	    <LinearLayout
+	        android:id="@+id/deposit_layout"
+	        android:layout_width="match_parent"
+	        android:layout_height="match_parent"
+	        android:orientation="vertical"/>
+
+	</androidx.core.widget.NestedScrollView>
 
 </LinearLayout>

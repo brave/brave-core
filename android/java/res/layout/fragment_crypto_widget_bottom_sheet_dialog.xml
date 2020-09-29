@@ -33,6 +33,7 @@
             android:padding="8dp"
             android:layout_gravity="center_vertical"
             android:contentDescription="@null"
+            android:visibility="gone"
             app:srcCompat="@drawable/ic_more_horiz"/>
 
     </LinearLayout>

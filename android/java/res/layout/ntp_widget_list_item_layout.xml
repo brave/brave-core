@@ -39,7 +39,6 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center_vertical"
         android:padding="8dp"
-        android:layout_marginStart="8dp"
-        app:srcCompat="@drawable/ic_sort" />
+        android:layout_marginStart="8dp" />
 
 </LinearLayout>

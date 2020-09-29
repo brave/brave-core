@@ -6,10 +6,13 @@
 package org.chromium.chrome.browser.widget.crypto.binance;
 
 import android.os.Bundle;
+import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.util.Pair;
 
 import androidx.fragment.app.Fragment;
@@ -38,6 +41,8 @@ import org.chromium.chrome.R;
 public class BinanceSummaryFragment extends Fragment {
 	private BinanceNativeWorker mBinanceNativeWorker;
 	private CurrencyListAdapter mCurrencyListAdapter;
+	private LinearLayout summaryLayout;
+	private NestedScrollView currentNestedScrollView;
 
 	public BinanceSummaryFragment() {
 		// Required empty public constructor
@@ -48,16 +53,6 @@ public class BinanceSummaryFragment extends Fragment {
 		super.onCreate(savedInstanceState);
 		mBinanceNativeWorker = BinanceNativeWorker.getInstance();
 	}
-
-	// @Override
-	// public void setUserVisibleHint(boolean isVisibleToUser) {
-	// 	super.setUserVisibleHint(isVisibleToUser);
-	// 	if (isVisibleToUser && isResumed()) {
-	// 		mBinanceNativeWorker.AddObserver(mBinanaceObserver);
-	// 	} else {
-	// 		mBinanceNativeWorker.RemoveObserver(mBinanaceObserver);
-	// 	}
-	// }
 
 	@Override
 	public View onCreateView(
@@ -76,11 +71,6 @@ public class BinanceSummaryFragment extends Fragment {
 	@Override
 	public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
 		super.onViewCreated(view, savedInstanceState);
-		RecyclerView currencyRecyclerView = view.findViewById(R.id.recyclerview_currency_list);
-		currencyRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-		mCurrencyListAdapter = new CurrencyListAdapter();
-		currencyRecyclerView.setAdapter(mCurrencyListAdapter);
-
 		TextView binanceBalanceText = view.findViewById(R.id.binance_balance_text);
 		TextView binanceUSDBalanceText = view.findViewById(R.id.binance_usd_balance_text);
 		BinanceAccountBalance binanceAccountBalance = BinanceWidgetManager.getInstance().getBinanceAccountBalance();
@@ -88,9 +78,8 @@ public class BinanceSummaryFragment extends Fragment {
 			binanceBalanceText.setText(String.format(getActivity().getResources().getString(R.string.btc_balance), String.valueOf(binanceAccountBalance.getTotalBTC())));
 			binanceUSDBalanceText.setText(String.format(getActivity().getResources().getString(R.string.usd_balance), String.valueOf(binanceAccountBalance.getTotalUSD())));
 		}
-
+		summaryLayout = view.findViewById(R.id.summary_layout);
 		mBinanceNativeWorker.getCoinNetworks();
-		// Log.e("NTP", "Set CoinNetworks");
 	}
 
 	private BinanceObserver mBinanaceObserver = new BinanceObserver() {
@@ -98,20 +87,36 @@ public class BinanceSummaryFragment extends Fragment {
 		public void OnGetAccessToken(boolean isSuccess) {};
 
 		@Override
-		public void OnGetAccountBalances(String jsonBalances, boolean isSuccess) {
-			// Log.e("NTP", "AccountBalances : " + jsonBalances);
-		};
+		public void OnGetAccountBalances(String jsonBalances, boolean isSuccess) {};
 
 		@Override
 		public void OnGetConvertQuote(String quoteId, String quotePrice, String totalFee, String totalAmount) {};
 
 		@Override
 		public void OnGetCoinNetworks(String jsonNetworks) {
-			// Log.e("NTP", "OnGetCoinNetworks"+jsonNetworks);
 			try {
 				BinanceCoinNetworks binanceCoinNetworks = new BinanceCoinNetworks(jsonNetworks);
-				mCurrencyListAdapter.setCurrencyList(binanceCoinNetworks.getCoinNetworksList());
-				// Log.e("NTP", "CoinNetworks : " + binanceCoinNetworks.toString());
+				LayoutInflater inflater = (LayoutInflater) getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+				for (CoinNetworkModel coinNetworkModel : binanceCoinNetworks.getCoinNetworksList()) {
+					final View view = inflater.inflate(R.layout.binance_currency_item, null);
+
+					ImageView currencyImageView = view.findViewById(R.id.currency_image);
+					TextView currencyText = view.findViewById(R.id.currency_text);
+					TextView currencyValueText = view.findViewById(R.id.currency_value_text);
+					TextView currencyUsdText = view.findViewById(R.id.currency_usd_text);
+
+					currencyText.setText(coinNetworkModel.getCoin());
+					currencyImageView.setImageResource(coinNetworkModel.getCoinRes());
+					BinanceAccountBalance binanceAccountBalance = BinanceWidgetManager.getInstance().getBinanceAccountBalance();
+					if (binanceAccountBalance.getCurrencyValue(coinNetworkModel.getCoin()) != null) {
+						Pair<Double, Double> currencyValue = binanceAccountBalance.getCurrencyValue(coinNetworkModel.getCoin());
+						currencyValueText.setText(String.valueOf(currencyValue.first));
+						currencyUsdText.setText(String.format(getActivity().getResources().getString(R.string.usd_balance), String.valueOf(currencyValue.second)));
+					}
+					if (summaryLayout != null) {
+						summaryLayout.addView(view);
+					}
+				}
 			} catch (JSONException e) {
 				Log.e("NTP", e.getMessage());
 			}

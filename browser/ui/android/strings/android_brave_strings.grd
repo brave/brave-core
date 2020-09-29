@@ -1362,6 +1362,30 @@ until they verify, or until 90 days have passed.
       <message name="IDS_RETRY" desc="Retry button text.">
         Retry
       </message>
+      <message name="IDS_PRIVACY_STATS" desc="Private stats title text.">
+        Privacy Stats
+      </message>
+      <message name="IDS_FAVORITES" desc="Favorites title text.">
+        Favorites
+      </message>
+      <message name="IDS_BINANCE" desc="Binance title text.">
+        Binance
+      </message>
+      <message name="IDS_PRIVACY_STATS_TEXT" desc="Private stats text.">
+        Trackers &amp; Ads Blocked, Saved Bandwidth, and Time Saved Estimates.
+      </message>
+      <message name="IDS_SUMMARY" desc="Binance detail section title.">
+        Summary
+      </message>
+      <message name="IDS_DEPOSIT" desc="Binance detail section title.">
+        Deposit
+      </message>
+      <message name="IDS_CONVERT" desc="Binance detail section title.">
+        Convert
+      </message>
+      <message name="IDS_BUY" desc="Binance detail section title.">
+        Buy
+      </message>
     </messages>
   </release>
 </grit>

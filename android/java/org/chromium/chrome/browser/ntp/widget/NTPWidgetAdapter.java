@@ -88,7 +88,6 @@ public class NTPWidgetAdapter extends PagerAdapter {
                 updateBraveStats(mainView);
             } else if (ntpWidgetItem.getWidgetType().equals(NTPWidgetManager.PREF_BINANCE)) {
                 Button connectButton = mainView.findViewById(R.id.btn_connect);
-                // connectButton.setOnClickListener(null);
                 LinearLayout binanceWidgetLayout = mainView.findViewById(R.id.binance_widget_layout);
                 TextView binanceBalanceText = binanceWidgetLayout.findViewById(R.id.binance_balance_text);
                 TextView binanceUSDBalanceText = binanceWidgetLayout.findViewById(R.id.binance_usd_balance_text);

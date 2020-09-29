@@ -14,10 +14,12 @@ import android.widget.TextView;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.FrameLayout;
+import android.widget.LinearLayout;
 import android.view.MotionEvent;
 import android.text.TextUtils;
 
 import androidx.fragment.app.Fragment;
+import androidx.core.widget.NestedScrollView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -45,11 +47,10 @@ import org.chromium.chrome.R;
  */
 public class BinanceDepositFragment extends Fragment {
 	private BinanceNativeWorker mBinanceNativeWorker;
-	private BinanceDepositAdapter mBinanceDepositAdapter;
-
-	private RecyclerView currencyRecyclerView;
 
 	private CoinNetworkModel selectedCoinNetworkModel;
+	private LinearLayout depositCoinListLayout;
+	private NestedScrollView currentNestedScrollView;
 
 	public BinanceDepositFragment() {
 		// Required empty public constructor
@@ -78,42 +79,8 @@ public class BinanceDepositFragment extends Fragment {
 	@Override
 	public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
 		super.onViewCreated(view, savedInstanceState);
-		currencyRecyclerView = view.findViewById(R.id.recyclerview_currency_list);
-		currencyRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-		currencyRecyclerView.setOnFlingListener(new RecyclerView.OnFlingListener() {
-			@Override
-			public boolean onFling(int velocityX, int velocityY) {
-				currencyRecyclerView.dispatchNestedFling(velocityX, velocityY, false);
-				return false;
-			}
-		});
-		currencyRecyclerView.setOnTouchListener(new RecyclerView.OnTouchListener() {
-			@Override
-			public boolean onTouch(View v, MotionEvent event) {
-				int action = event.getAction();
-				switch (action) {
-				case MotionEvent.ACTION_DOWN:
-					// Disallow NestedScrollView to intercept touch events.
-					v.getParent().requestDisallowInterceptTouchEvent(true);
-					break;
-
-				case MotionEvent.ACTION_UP:
-					// Allow NestedScrollView to intercept touch events.
-					v.getParent().requestDisallowInterceptTouchEvent(false);
-					break;
-				}
-
-				// Handle RecyclerView touch events.
-				v.onTouchEvent(event);
-				return true;
-			}
-		});
-		mBinanceDepositAdapter = new BinanceDepositAdapter();
-		currencyRecyclerView.setAdapter(mBinanceDepositAdapter);
-		mBinanceDepositAdapter.setBinanceDepositListener(binanceDepositListener);
-
+		depositCoinListLayout = view.findViewById(R.id.deposit_layout);
 		mBinanceNativeWorker.getCoinNetworks();
-		// Log.e("NTP", "Set CoinNetworks");
 	}
 
 	private BinanceDepositAdapter.BinanceDepositListener binanceDepositListener =
@@ -130,20 +97,35 @@ public class BinanceDepositFragment extends Fragment {
 		public void OnGetAccessToken(boolean isSuccess) {};
 
 		@Override
-		public void OnGetAccountBalances(String jsonBalances, boolean isSuccess) {
-			// Log.e("NTP", "AccountBalances : " + jsonBalances);
-		};
+		public void OnGetAccountBalances(String jsonBalances, boolean isSuccess) {};
 
 		@Override
 		public void OnGetConvertQuote(String quoteId, String quotePrice, String totalFee, String totalAmount) {};
 
 		@Override
 		public void OnGetCoinNetworks(String jsonNetworks) {
-			// Log.e("NTP", "OnGetCoinNetworks"+jsonNetworks);
 			try {
 				BinanceCoinNetworks binanceCoinNetworks = new BinanceCoinNetworks(jsonNetworks);
-				mBinanceDepositAdapter.setCurrencyList(binanceCoinNetworks.getCoinNetworksList());
-				// Log.e("NTP", "CoinNetworks : " + binanceCoinNetworks.toString());
+				LayoutInflater inflater = (LayoutInflater) getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+				for (CoinNetworkModel coinNetworkModel : binanceCoinNetworks.getCoinNetworksList()) {
+					final View view = inflater.inflate(R.layout.binance_deposit_item, null);
+
+					ImageView currencyImageView = view.findViewById(R.id.currency_image);
+					TextView currencyText = view.findViewById(R.id.currency_text);
+
+					currencyText.setText(coinNetworkModel.getCoin() + (TextUtils.isEmpty(coinNetworkModel.getCoinDesc()) ? "" : " (" + coinNetworkModel.getCoinDesc() + ")"));
+					currencyImageView.setImageResource(coinNetworkModel.getCoinRes());
+					view.setOnClickListener(new View.OnClickListener() {
+						@Override
+						public void onClick(View view) {
+							selectedCoinNetworkModel = coinNetworkModel;
+							mBinanceNativeWorker.getDepositInfo(coinNetworkModel.getCoin(), coinNetworkModel.getTickerNetwork());
+						}
+					});
+					if (depositCoinListLayout != null) {
+						depositCoinListLayout.addView(view);
+					}
+				}
 			} catch (JSONException e) {
 				Log.e("NTP", e.getMessage());
 			}
@@ -188,8 +170,8 @@ public class BinanceDepositFragment extends Fragment {
 				depositBack.setOnClickListener(new View.OnClickListener() {
 					@Override
 					public void onClick(View view) {
-						if (currencyRecyclerView != null) {
-							currencyRecyclerView.setVisibility(View.VISIBLE);
+						if (depositCoinListLayout != null) {
+							depositCoinListLayout.setVisibility(View.VISIBLE);
 							depositLayout.setVisibility(View.GONE);
 							currencyMemoText.setVisibility(View.GONE);
 							currencyMemoValueText.setVisibility(View.GONE);
@@ -199,8 +181,8 @@ public class BinanceDepositFragment extends Fragment {
 					}
 				});
 				depositLayout.setVisibility(View.VISIBLE);
-				if (currencyRecyclerView != null) {
-					currencyRecyclerView.setVisibility(View.GONE);
+				if (depositCoinListLayout != null) {
+					depositCoinListLayout.setVisibility(View.GONE);
 				}
 
 				currencyAddressValueText.setText(depositAddress);
@@ -228,9 +210,6 @@ public class BinanceDepositFragment extends Fragment {
 						}
 					}
 				});
-
-				Log.e("NTP", "depositAddress : " + depositAddress);
-				Log.e("NTP", "depositeTag : " + depositTag);
 			}
 		};
 
