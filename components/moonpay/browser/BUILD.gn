@@ -8,4 +8,9 @@ source_set("browser") {
     "moonpay_pref_utils.h",
     "regions.h",
   ]
+
+  deps = [
+    "//brave/components/moonpay/common",
+    "//components/prefs",
+  ]
 }

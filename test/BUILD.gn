@@ -14,6 +14,7 @@ import("//brave/components/brave_wayback_machine/buildflags/buildflags.gni")
 import("//brave/components/brave_webtorrent/browser/buildflags/buildflags.gni")
 import("//brave/components/greaselion/browser/buildflags/buildflags.gni")
 import("//brave/components/ipfs/browser/buildflags/buildflags.gni")
+import("//brave/components/moonpay/browser/buildflags/buildflags.gni")
 import("//brave/components/speedreader/buildflags.gni")
 import("//brave/test/testing.gni")
 import("//components/gcm_driver/config.gni")
@@ -635,6 +636,15 @@ test("brave_browser_tests") {
   if (gemini_enabled) {
     sources += [
       "//brave/components/gemini/browser/gemini_service_browsertest.cc",
+    ]
+  }
+
+  if (moonpay_enabled) {
+    sources += [
+      "//brave/browser/extensions/api/moonpay_api_browsertest.cc",
+    ]
+    deps += [
+      "//brave/components/moonpay/common",
     ]
   }
 
