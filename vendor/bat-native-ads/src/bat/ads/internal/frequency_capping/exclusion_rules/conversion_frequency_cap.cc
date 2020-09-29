@@ -60,7 +60,7 @@ bool ConversionFrequencyCap::ShouldAllow(
 
 bool ConversionFrequencyCap::DoesRespectCap(
       const std::deque<uint64_t>& history,
-      const CreativeAdInfo& ad) const {
+      const CreativeAdInfo& ad) {
   if (history.size() >= 1) {
     return false;
   }

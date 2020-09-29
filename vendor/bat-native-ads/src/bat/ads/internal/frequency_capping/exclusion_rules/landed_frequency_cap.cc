@@ -42,7 +42,7 @@ std::string LandedFrequencyCap::get_last_message() const {
 
 bool LandedFrequencyCap::DoesRespectCap(
     const std::deque<uint64_t>& history,
-    const CreativeAdInfo& ad) const {
+    const CreativeAdInfo& ad) {
   const uint64_t time_constraint =
       2 * (base::Time::kSecondsPerHour * base::Time::kHoursPerDay);
 

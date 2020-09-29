@@ -39,7 +39,7 @@ class DismissedFrequencyCap : public ExclusionRule {
 
   bool DoesRespectCap(
       const std::deque<AdHistory>& history,
-      const CreativeAdInfo& ad) const;
+      const CreativeAdInfo& ad);
 
   std::deque<AdHistory> FilterHistory(
       const std::deque<AdHistory>& history,

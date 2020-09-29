@@ -19,8 +19,8 @@ class NativeAdsClient : public ads::AdsClient {
 
   bool IsEnabled() const override;
   bool ShouldAllowAdConversionTracking() const override;
-  uint64_t GetAdsPerDay() const override;
-  uint64_t GetAdsPerHour() const override;
+  uint64_t GetAdsPerDay() override;
+  uint64_t GetAdsPerHour() override;
   bool IsNetworkConnectionAvailable() const override;
   void SetIdleThreshold(const int threshold) override;
   bool IsForeground() const override;
