@@ -31,9 +31,22 @@
 - (void)setAllowAdsSubdivisionTargeting:(const bool)should_allow;
 - (std::string)adsSubdivisionTargetingCode;
 - (void)setAdsSubdivisionTargetingCode:(const std::string &)subdivision_targeting_code;
-- (std::string)automaticallyDetectedAdsSubdivisionTargetingCode;
-- (void)setAutomaticallyDetectedAdsSubdivisionTargetingCode:(const std::string &)subdivision_targeting_code;
+- (std::string)autoDetectedAdsSubdivisionTargetingCode;
+- (void)setAutoDetectedAdsSubdivisionTargetingCode:(const std::string &)subdivision_targeting_code;
 - (void)runDBTransaction:(ads::DBTransactionPtr)transaction callback:(ads::RunDBTransactionCallback)callback;
 - (void)onAdRewardsChanged;
+- (void)setBooleanPref:(const std::string&)path value:(const bool)value;
+- (bool)getBooleanPref:(const std::string&)path;
+- (void)setIntegerPref:(const std::string&)path value:(const int)value;
+- (int)getIntegerPref:(const std::string&)path;
+- (void)setDoublePref:(const std::string&)path value:(const double)value;
+- (double)getDoublePref:(const std::string&)path;
+- (void)setStringPref:(const std::string&)path value:(const std::string&)value;
+- (std::string)getStringPref:(const std::string&)path;
+- (void)setInt64Pref:(const std::string&)path value:(const int64_t)value;
+- (int64_t)getInt64Pref:(const std::string&)path;
+- (void)setUint64Pref:(const std::string&)path value:(const uint64_t)value;
+- (uint64_t)getUint64Pref:(const std::string&)path;
+- (void)clearPref:(const std::string&)path;
 
 @end

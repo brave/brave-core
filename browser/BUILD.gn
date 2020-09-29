@@ -124,7 +124,6 @@ source_set("browser_process") {
     "//brave/browser/translate/buildflags",
     "//brave/common",
     "//brave/common:pref_names",
-    "//brave/components/brave_ads/browser",
     "//brave/components/binance/browser/buildflags",
     "//brave/components/gemini/browser/buildflags",
     "//brave/components/brave_component_updater/browser",
@@ -337,6 +336,7 @@ source_set("browser_process") {
 
   if (brave_ads_enabled) {
     deps += [
+      "//brave/components/brave_ads/browser",
       "//brave/components/brave_user_model/browser",
       "//components/dom_distiller/core",
     ]

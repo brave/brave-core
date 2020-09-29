@@ -226,7 +226,7 @@ declare namespace Rewards {
     adsEnabled: boolean
     adsPerHour: number
     adsSubdivisionTargeting: string
-    automaticallyDetectedAdsSubdivisionTargeting: string
+    autoDetectedAdsSubdivisionTargeting: string
     shouldAllowAdsSubdivisionTargeting: boolean
     adsUIEnabled: boolean
     adsIsSupported: boolean

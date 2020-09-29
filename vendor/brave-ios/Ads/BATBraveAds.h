@@ -90,7 +90,7 @@ NS_SWIFT_NAME(BraveAds)
 @property (nonatomic, copy) NSString * subdivisionTargetingCode;
 
 /// Automatically detected ads subdivision targeting code
-@property (nonatomic, copy) NSString * automaticallyDetectedSubdivisionTargetingCode;
+@property (nonatomic, copy) NSString * autoDetectedSubdivisionTargetingCode;
 
 /// Remove all cached history (should be called when the user clears their browser history)
 - (void)removeAllHistory:(void (^)(BOOL))completion;

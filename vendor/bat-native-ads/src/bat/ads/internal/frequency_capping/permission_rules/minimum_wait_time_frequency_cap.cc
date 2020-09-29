@@ -9,6 +9,7 @@
 #include "bat/ads/internal/frequency_capping/frequency_capping_util.h"
 #include "bat/ads/internal/platform/platform_helper.h"
 #include "bat/ads/internal/time_util.h"
+#include "bat/ads/pref_names.h"
 
 namespace ads {
 
@@ -45,7 +46,7 @@ std::string MinimumWaitTimeFrequencyCap::get_last_message() const {
 bool MinimumWaitTimeFrequencyCap::DoesRespectCap(
     const std::deque<uint64_t>& history) {
   const uint64_t time_constraint =
-      base::Time::kSecondsPerHour / ads_->get_ads_client()->GetAdsPerHour();
+      base::Time::kSecondsPerHour / ads_->GetAdsPerHourPref();
 
   const uint64_t cap = 1;
 

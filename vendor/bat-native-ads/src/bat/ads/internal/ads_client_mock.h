@@ -22,34 +22,7 @@ class AdsClientMock : public AdsClient {
   AdsClientMock();
   ~AdsClientMock() override;
 
-  MOCK_CONST_METHOD0(IsEnabled, bool());
-
-  MOCK_CONST_METHOD0(ShouldAllowAdConversionTracking, bool());
-
   MOCK_CONST_METHOD0(GetLocale, std::string());
-
-  MOCK_METHOD0(GetAdsPerHour, uint64_t());
-
-  MOCK_METHOD0(GetAdsPerDay, uint64_t());
-
-  MOCK_CONST_METHOD0(ShouldAllowAdsSubdivisionTargeting, bool());
-
-  MOCK_METHOD1(SetAllowAdsSubdivisionTargeting, void(
-      const bool should_allow));
-
-  MOCK_CONST_METHOD0(GetAdsSubdivisionTargetingCode, std::string());
-
-  MOCK_METHOD1(SetAdsSubdivisionTargetingCode, void(
-      const std::string& subdivision_targeting_code));
-
-  MOCK_CONST_METHOD0(GetAutomaticallyDetectedAdsSubdivisionTargetingCode,
-      std::string());
-
-  MOCK_METHOD1(SetAutomaticallyDetectedAdsSubdivisionTargetingCode, void(
-      const std::string& subdivision_targeting_code));
-
-  MOCK_METHOD1(SetIdleThreshold, void(
-      const int threshold));
 
   MOCK_CONST_METHOD0(IsNetworkConnectionAvailable, bool());
 
@@ -96,6 +69,45 @@ class AdsClientMock : public AdsClient {
       const int line,
       const int verbose_level,
       const std::string& message));
+
+  MOCK_CONST_METHOD1(GetBooleanPref, bool(
+      const std::string& path));
+  MOCK_METHOD2(SetBooleanPref, void(
+      const std::string& path,
+      const bool value));
+
+  MOCK_CONST_METHOD1(GetIntegerPref, int(
+      const std::string& path));
+  MOCK_METHOD2(SetIntegerPref, void(
+      const std::string& path,
+      const int value));
+
+  MOCK_CONST_METHOD1(GetDoublePref, double(
+      const std::string& path));
+  MOCK_METHOD2(SetDoublePref, void(
+      const std::string& path,
+      const double value));
+
+  MOCK_CONST_METHOD1(GetStringPref, std::string(
+      const std::string& path));
+  MOCK_METHOD2(SetStringPref, void(
+      const std::string& path,
+      const std::string& value));
+
+  MOCK_CONST_METHOD1(GetInt64Pref, int64_t(
+      const std::string& path));
+  MOCK_METHOD2(SetInt64Pref, void(
+      const std::string& path,
+      const int64_t value));
+
+  MOCK_CONST_METHOD1(GetUint64Pref, uint64_t(
+      const std::string& path));
+  MOCK_METHOD2(SetUint64Pref, void(
+      const std::string& path,
+      const uint64_t value));
+
+  MOCK_METHOD1(ClearPref, void(
+      const std::string& path));
 };
 
 }  // namespace ads

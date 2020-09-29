@@ -11,12 +11,9 @@
 #include "brave/browser/profiles/profile_util.h"
 #include "brave/components/brave_ads/browser/ads_service.h"
 #include "brave/components/brave_ads/browser/buildflags/buildflags.h"
-#include "brave/components/brave_ads/common/pref_names.h"
 #include "chrome/browser/profiles/incognito_helpers.h"
 #include "chrome/browser/profiles/profile.h"
 #include "components/keyed_service/content/browser_context_dependency_manager.h"
-#include "components/pref_registry/pref_registry_syncable.h"
-#include "components/prefs/pref_store.h"
 
 #if BUILDFLAG(BRAVE_ADS_ENABLED)
 #include "brave/browser/brave_rewards/rewards_service_factory.h"
@@ -24,8 +21,6 @@
 #include "chrome/browser/dom_distiller/dom_distiller_service_factory.h"
 #include "chrome/browser/notifications/notification_display_service_factory.h"
 #endif
-
-class PrefStore;
 
 namespace brave_ads {
 
@@ -71,39 +66,6 @@ KeyedService* AdsServiceFactory::BuildServiceInstanceFor(
 
 bool AdsServiceFactory::ServiceIsNULLWhileTesting() const {
   return false;
-}
-
-void AdsServiceFactory::RegisterProfilePrefs(
-    user_prefs::PrefRegistrySyncable* registry) {
-  registry->RegisterIntegerPref(prefs::kVersion, prefs::kCurrentVersionNumber);
-
-  registry->RegisterIntegerPref(
-      prefs::kSupportedCountryCodesLastSchemaVersion, 0);
-
-  registry->RegisterIntegerPref(prefs::kSupportedCountryCodesSchemaVersion,
-      prefs::kSupportedCountryCodesSchemaVersionNumber);
-
-  registry->RegisterBooleanPref(prefs::kEnabled, false);
-
-  registry->RegisterBooleanPref(prefs::kShouldAllowAdConversionTracking, true);
-
-  registry->RegisterUint64Pref(prefs::kAdsPerHour, 2);
-  registry->RegisterUint64Pref(prefs::kAdsPerDay, 20);
-
-  registry->RegisterBooleanPref(prefs::kShouldAllowAdsSubdivisionTargeting,
-      false);
-  registry->RegisterStringPref(prefs::kAdsSubdivisionTargetingCode, "AUTO");
-  registry->RegisterStringPref(
-      prefs::kAutomaticallyDetectedAdsSubdivisionTargetingCode, "");
-
-  registry->RegisterIntegerPref(prefs::kIdleThreshold, 15);
-  registry->RegisterBooleanPref(prefs::kAdsWereDisabled, false);
-  registry->RegisterBooleanPref(prefs::kHasAdsP3AState, false);
-
-  registry->RegisterBooleanPref(prefs::kShouldShowMyFirstAdNotification, true);
-
-  registry->RegisterBooleanPref(prefs::kShouldShowOnboarding, true);
-  registry->RegisterUint64Pref(prefs::kOnboardingTimestamp, 0);
 }
 
 }  // namespace brave_ads

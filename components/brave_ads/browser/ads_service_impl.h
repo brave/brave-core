@@ -76,15 +76,29 @@ class AdsServiceImpl : public AdsService,
   bool IsSupportedLocale() const override;
   bool IsNewlySupportedLocale() override;
 
+  bool IsEnabled() const override;
   void SetEnabled(
       const bool is_enabled) override;
+
+  uint64_t GetAdsPerHour() const override;
+  void SetAdsPerHour(
+      const uint64_t ads_per_hour) override;
+
+  uint64_t GetAdsPerDay() const override;
+
+  bool ShouldAllowAdsSubdivisionTargeting() const override;
+  std::string GetAdsSubdivisionTargetingCode() const override;
+  void SetAdsSubdivisionTargetingCode(
+      const std::string& subdivision_targeting_code) override;
+  std::string
+  GetAutoDetectedAdsSubdivisionTargetingCode() const override;
+  void SetAutoDetectedAdsSubdivisionTargetingCode(
+      const std::string& subdivision_targeting_code) override;
 
   void SetAllowAdConversionTracking(
       const bool should_allow) override;
 
-  void SetAdsPerHour(
-      const uint64_t ads_per_hour) override;
-
+  // AdsClient implementation
   void ChangeLocale(
       const std::string& locale) override;
 
@@ -151,27 +165,6 @@ class AdsServiceImpl : public AdsService,
 
   void ResetAllState(
       const bool should_shutdown) override;
-
-  // AdsClient implementation
-  bool IsEnabled() const override;
-
-  bool ShouldAllowAdConversionTracking() const override;
-
-  uint64_t GetAdsPerHour() override;
-  uint64_t GetAdsPerDay() override;
-
-  bool ShouldAllowAdsSubdivisionTargeting() const override;
-  void SetAllowAdsSubdivisionTargeting(
-      const bool should_allow) override;
-
-  std::string GetAdsSubdivisionTargetingCode() const override;
-  void SetAdsSubdivisionTargetingCode(
-      const std::string& subdivision_targeting_code) override;
-
-  std::string
-  GetAutomaticallyDetectedAdsSubdivisionTargetingCode() const override;
-  void SetAutomaticallyDetectedAdsSubdivisionTargetingCode(
-      const std::string& subdivision_targeting_code) override;
 
   // BraveUserModelInstaller::Observer implementation
   void OnUserModelUpdated(
@@ -351,36 +344,6 @@ class AdsServiceImpl : public AdsService,
   void MaybeShowMyFirstAdNotification();
   bool ShouldShowMyFirstAdNotification() const;
 
-  bool GetBooleanPref(
-      const std::string& path) const;
-  void SetBooleanPref(
-      const std::string& path,
-      const bool value);
-  int GetIntegerPref(
-      const std::string& path) const;
-  void SetIntegerPref(
-      const std::string& path,
-      const int value);
-  double GetDoublePref(
-      const std::string& path) const;
-  void SetDoublePref(
-      const std::string& path,
-      const double value);
-  std::string GetStringPref(
-      const std::string& path) const;
-  void SetStringPref(
-      const std::string& path,
-      const std::string& value);
-  int64_t GetInt64Pref(
-      const std::string& path) const;
-  void SetInt64Pref(
-      const std::string& path,
-      const int64_t value);
-  uint64_t GetUint64Pref(
-      const std::string& path) const;
-  void SetUint64Pref(
-      const std::string& path,
-      const uint64_t value);
   bool PrefExists(
       const std::string& path) const;
   void OnPrefsChanged(
@@ -395,9 +358,6 @@ class AdsServiceImpl : public AdsService,
 
   // AdsClient implementation
   bool IsNetworkConnectionAvailable() const override;
-
-  void SetIdleThreshold(
-      const int threshold) override;
 
   bool IsForeground() const override;
 
@@ -448,6 +408,51 @@ class AdsServiceImpl : public AdsService,
       const int line,
       const int verbose_level,
       const std::string& message) override;
+
+  bool GetBooleanPref(
+      const std::string& path) const override;
+
+  void SetBooleanPref(
+      const std::string& path,
+      const bool value) override;
+
+  int GetIntegerPref(
+      const std::string& path) const override;
+
+  void SetIntegerPref(
+      const std::string& path,
+      const int value) override;
+
+  double GetDoublePref(
+      const std::string& path) const override;
+
+  void SetDoublePref(
+      const std::string& path,
+      const double value) override;
+
+  std::string GetStringPref(
+      const std::string& path) const override;
+
+  void SetStringPref(
+      const std::string& path,
+      const std::string& value) override;
+
+  int64_t GetInt64Pref(
+      const std::string& path) const override;
+
+  void SetInt64Pref(
+      const std::string& path,
+      const int64_t value) override;
+
+  uint64_t GetUint64Pref(
+      const std::string& path) const override;
+
+  void SetUint64Pref(
+      const std::string& path,
+      const uint64_t value) override;
+
+  void ClearPref(
+      const std::string& path) override;
 
   // BackgroundHelper::Observer implementation
   void OnBackground() override;

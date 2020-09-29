@@ -33,6 +33,7 @@ static_library("browser") {
     "//brave/components/l10n/browser",
     "//brave/components/l10n/common",
     "//brave/components/ntp_background_images/common",
+    "//brave/vendor/bat-native-ads",
     "//components/component_updater",
     "//components/keyed_service/core",
     "//components/prefs",

@@ -118,6 +118,9 @@ void MockRunDBTransaction(
     const std::unique_ptr<AdsClientMock>& mock,
     const std::unique_ptr<Database>& database);
 
+void MockPrefs(
+    const std::unique_ptr<AdsClientMock>& mock);
+
 int64_t DistantPast();
 
 int64_t DistantFuture();

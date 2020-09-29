@@ -34,6 +34,8 @@ class AdConversions {
 
   void StartTimerIfReady();
 
+  bool IsAllowed() const;
+
  private:
   bool is_initialized_;
   InitializeCallback callback_;

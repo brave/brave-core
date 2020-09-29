@@ -21,6 +21,7 @@
 #include "bat/ads/internal/server/ads_server_util.h"
 #include "bat/ads/internal/server/get_subdivision/get_subdivision_url_request_builder.h"
 #include "bat/ads/internal/time_util.h"
+#include "bat/ads/pref_names.h"
 
 namespace ads {
 
@@ -68,7 +69,8 @@ bool SubdivisionTargeting::ShouldAllowForLocale(
 
 bool SubdivisionTargeting::IsDisabled() const {
   const std::string subdivision_targeting_code =
-      ads_->get_ads_client()->GetAdsSubdivisionTargetingCode();
+      ads_->get_ads_client()->GetStringPref(
+          prefs::kAdsSubdivisionTargetingCode);
 
   if (subdivision_targeting_code != "DISABLED") {
     return false;
@@ -83,7 +85,9 @@ void SubdivisionTargeting::MaybeFetchForLocale(
     BLOG(1, "Ads subdivision targeting is not supported for " << locale
         << " locale");
 
-    ads_->get_ads_client()->SetAllowAdsSubdivisionTargeting(false);
+    ads_->get_ads_client()->SetBooleanPref(
+        prefs::kShouldAllowAdsSubdivisionTargeting, false);
+
     return;
   }
 
@@ -92,9 +96,10 @@ void SubdivisionTargeting::MaybeFetchForLocale(
     return;
   }
 
-  if (!ShouldAutomaticallyDetect()) {
+  if (!ShouldAutoDetect()) {
     const std::string subdivision_targeting_code =
-        ads_->get_ads_client()->GetAdsSubdivisionTargetingCode();
+        ads_->get_ads_client()->GetStringPref(
+            prefs::kAdsSubdivisionTargetingCode);
 
     BLOG(1, "Ads subdivision targeting is enabled for "
         << subdivision_targeting_code);
@@ -115,12 +120,13 @@ void SubdivisionTargeting::MaybeFetchForCurrentLocale() {
 }
 
 std::string SubdivisionTargeting::GetAdsSubdivisionTargetingCode() const {
-  if (ShouldAutomaticallyDetect()) {
-    return ads_->get_ads_client()->
-        GetAutomaticallyDetectedAdsSubdivisionTargetingCode();
+  if (ShouldAutoDetect()) {
+    return ads_->get_ads_client()->GetStringPref(
+        prefs::kAutoDetectedAdsSubdivisionTargetingCode);
   }
 
-  return ads_->get_ads_client()->GetAdsSubdivisionTargetingCode();
+  return ads_->get_ads_client()->GetStringPref(
+      prefs::kAdsSubdivisionTargetingCode);
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -140,12 +146,15 @@ bool SubdivisionTargeting::IsSupportedLocale(
 void SubdivisionTargeting::MaybeAllowForLocale(
     const std::string& locale) {
   const bool should_allow = ShouldAllowForLocale(locale);
-  ads_->get_ads_client()->SetAllowAdsSubdivisionTargeting(should_allow);
+
+  ads_->get_ads_client()->SetBooleanPref(
+      prefs::kShouldAllowAdsSubdivisionTargeting, should_allow);
 }
 
-bool SubdivisionTargeting::ShouldAutomaticallyDetect() const {
+bool SubdivisionTargeting::ShouldAutoDetect() const {
   const std::string subdivision_targeting_code =
-      ads_->get_ads_client()->GetAdsSubdivisionTargetingCode();
+      ads_->get_ads_client()->GetStringPref(
+          prefs::kAdsSubdivisionTargetingCode);
 
   if (subdivision_targeting_code != "AUTO") {
     return false;
@@ -239,8 +248,9 @@ bool SubdivisionTargeting::ParseJson(
   const std::string subdivision_code =
       base::StringPrintf("%s-%s", country->c_str(), region->c_str());
 
-  ads_->get_ads_client()->SetAutomaticallyDetectedAdsSubdivisionTargetingCode(
-      subdivision_code);
+  ads_->get_ads_client()->SetStringPref(
+      prefs::kAutoDetectedAdsSubdivisionTargetingCode,
+          subdivision_code);
 
   return true;
 }

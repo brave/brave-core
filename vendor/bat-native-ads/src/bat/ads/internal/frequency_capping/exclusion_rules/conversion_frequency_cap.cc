@@ -6,6 +6,7 @@
 #include "bat/ads/internal/frequency_capping/exclusion_rules/conversion_frequency_cap.h"
 
 #include "base/strings/stringprintf.h"
+#include "bat/ads/internal/ad_conversions/ad_conversions.h"
 #include "bat/ads/internal/ads_impl.h"
 #include "bat/ads/internal/logging.h"
 
@@ -50,8 +51,7 @@ std::string ConversionFrequencyCap::get_last_message() const {
 
 bool ConversionFrequencyCap::ShouldAllow(
     const CreativeAdInfo& ad) {
-  if (!ads_->get_ads_client()->ShouldAllowAdConversionTracking() &&
-      ad.conversion) {
+  if (ad.conversion && !ads_->get_ad_conversions()->IsAllowed()) {
     return false;
   }
 

@@ -29,32 +29,9 @@ class BatAdsClientMojoBridge
   BatAdsClientMojoBridge& operator=(const BatAdsClientMojoBridge&) = delete;
 
   // AdsClient implementation
-  bool IsEnabled() const override;
-
-  bool ShouldAllowAdConversionTracking() const override;
-
   bool CanShowBackgroundNotifications() const override;
 
-  uint64_t GetAdsPerHour() override;
-  uint64_t GetAdsPerDay() override;
-
-  bool ShouldAllowAdsSubdivisionTargeting() const override;
-  void SetAllowAdsSubdivisionTargeting(
-      const bool should_allow) override;
-
-  std::string GetAdsSubdivisionTargetingCode() const override;
-  void SetAdsSubdivisionTargetingCode(
-      const std::string& subdivision_targeting_code) override;
-
-  std::string
-  GetAutomaticallyDetectedAdsSubdivisionTargetingCode() const override;
-  void SetAutomaticallyDetectedAdsSubdivisionTargetingCode(
-      const std::string& subdivision_targeting_code) override;
-
   bool IsNetworkConnectionAvailable() const override;
-
-  void SetIdleThreshold(
-      const int threshold) override;
 
   bool IsForeground() const override;
 
@@ -93,6 +70,51 @@ class BatAdsClientMojoBridge
       const int line,
       const int verbose_level,
       const std::string& message) override;
+
+  bool GetBooleanPref(
+      const std::string& path) const override;
+
+  void SetBooleanPref(
+      const std::string& path,
+      const bool value) override;
+
+  int GetIntegerPref(
+      const std::string& path) const override;
+
+  void SetIntegerPref(
+      const std::string& path,
+      const int value) override;
+
+  double GetDoublePref(
+      const std::string& path) const override;
+
+  void SetDoublePref(
+      const std::string& path,
+      const double value) override;
+
+  std::string GetStringPref(
+      const std::string& path) const override;
+
+  void SetStringPref(
+      const std::string& path,
+      const std::string& value) override;
+
+  int64_t GetInt64Pref(
+      const std::string& path) const override;
+
+  void SetInt64Pref(
+      const std::string& path,
+      const int64_t value) override;
+
+  uint64_t GetUint64Pref(
+      const std::string& path) const override;
+
+  void SetUint64Pref(
+      const std::string& path,
+      const uint64_t value) override;
+
+  void ClearPref(
+      const std::string& path) override;
 
  private:
   bool connected() const;

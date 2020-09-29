@@ -18,14 +18,6 @@ interface BatAdsService {
 
 interface BatAdsClient {
   [Sync]
-  IsEnabled() => (bool is_enabled);
-  [Sync]
-  ShouldAllowAdConversionTracking() => (bool should_allow);
-  [Sync]
-  GetAdsPerHour() => (uint64 ads_per_hour);
-  [Sync]
-  GetAdsPerDay() => (uint64 ads_per_day);
-  [Sync]
   IsNetworkConnectionAvailable() => (bool available);
   [Sync]
   IsForeground() => (bool is_foreground);
@@ -36,16 +28,18 @@ interface BatAdsClient {
   [Sync]
   CanShowBackgroundNotifications() => (bool can_show);
   [Sync]
-  ShouldAllowAdsSubdivisionTargeting() => (bool should_allow);
+  GetBooleanPref(string path) => (bool value);
   [Sync]
-  GetAdsSubdivisionTargetingCode() => (string subdivision_targeting_code);
+  GetIntegerPref(string path) => (int32 value);
   [Sync]
-  GetAutomaticallyDetectedAdsSubdivisionTargetingCode() => (string subdivision_targeting_code);
+  GetDoublePref(string path) => (double value);
+  [Sync]
+  GetStringPref(string path) => (string value);
+  [Sync]
+  GetInt64Pref(string path) => (int64 value);
+  [Sync]
+  GetUint64Pref(string path) => (uint64 value);
 
-  SetAllowAdsSubdivisionTargeting(bool should_allow);
-  SetAdsSubdivisionTargetingCode(string subdivision_targeting_code);
-  SetAutomaticallyDetectedAdsSubdivisionTargetingCode(string subdivision_targeting_code);
-  SetIdleThreshold(int32 threshold);
   ShowNotification(string notification_info);
   CloseNotification(string uuid);
   UrlRequest(ads.mojom.BraveAdsUrlRequest request) => (ads.mojom.BraveAdsUrlResponse response);
@@ -55,6 +49,13 @@ interface BatAdsClient {
   RunDBTransaction(ads_database.mojom.DBTransaction transaction) => (ads_database.mojom.DBCommandResponse response);
   OnAdRewardsChanged();
   Log(string file, int32 line, int32 verbose_level, string message);
+  SetBooleanPref(string path, bool value);
+  SetIntegerPref(string path, int32 value);
+  SetDoublePref(string path, double value);
+  SetStringPref(string path, string value);
+  SetInt64Pref(string path, int64 value);
+  SetUint64Pref(string path, uint64 value);
+  ClearPref(string path);
 };
 
 interface BatAds {

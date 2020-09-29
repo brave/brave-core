@@ -17,12 +17,7 @@ class NativeAdsClient : public ads::AdsClient {
  private:
   __unsafe_unretained id<NativeAdsClientBridge> bridge_;
 
-  bool IsEnabled() const override;
-  bool ShouldAllowAdConversionTracking() const override;
-  uint64_t GetAdsPerDay() override;
-  uint64_t GetAdsPerHour() override;
   bool IsNetworkConnectionAvailable() const override;
-  void SetIdleThreshold(const int threshold) override;
   bool IsForeground() const override;
   bool CanShowBackgroundNotifications() const override;
   void ShowNotification(std::unique_ptr<ads::AdNotificationInfo> info) override;
@@ -34,12 +29,19 @@ class NativeAdsClient : public ads::AdsClient {
   void LoadUserModelForId(const std::string & id, ads::LoadCallback callback) override;
   std::string LoadResourceForId(const std::string & id) override;
   void Log(const char * file, const int line, const int verbose_level, const std::string & message) override;
-  bool ShouldAllowAdsSubdivisionTargeting() const override;
-  void SetAllowAdsSubdivisionTargeting(const bool should_allow) override;
-  std::string GetAdsSubdivisionTargetingCode() const override;
-  void SetAdsSubdivisionTargetingCode(const std::string & subdivision_targeting_code) override;
-  std::string GetAutomaticallyDetectedAdsSubdivisionTargetingCode() const override;
-  void SetAutomaticallyDetectedAdsSubdivisionTargetingCode(const std::string & subdivision_targeting_code) override;
   void RunDBTransaction(ads::DBTransactionPtr transaction, ads::RunDBTransactionCallback callback) override;
   void OnAdRewardsChanged() override;
+  void SetBooleanPref(const std::string & path, const bool value) override;
+  bool GetBooleanPref(const std::string & path) const override;
+  void SetIntegerPref(const std::string & path, const int value) override;
+  int GetIntegerPref(const std::string & path) const override;
+  void SetDoublePref(const std::string & path, const double value) override;
+  double GetDoublePref(const std::string & path) const override;
+  void SetStringPref(const std::string & path, const std::string& value) override;
+  std::string GetStringPref(const std::string & path) const override;
+  void SetInt64Pref(const std::string & path, const int64_t value) override;
+  int64_t GetInt64Pref(const std::string & path) const override;
+  void SetUint64Pref(const std::string & path, const uint64_t value) override;
+  uint64_t GetUint64Pref(const std::string & path) const override;
+  void ClearPref(const std::string & path) override;
 };

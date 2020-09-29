@@ -5,6 +5,10 @@
 
 #include "brave/components/brave_ads/browser/ads_service.h"
 
+#include "brave/components/brave_ads/common/pref_names.h"
+#include "components/pref_registry/pref_registry_syncable.h"
+#include "bat/ads/pref_names.h"
+
 namespace brave_ads {
 
 AdsService::AdsService() = default;
@@ -19,6 +23,53 @@ void AdsService::AddObserver(
 void AdsService::RemoveObserver(
     AdsServiceObserver* observer) {
   observers_.RemoveObserver(observer);
+}
+
+void AdsService::RegisterProfilePrefs(
+    user_prefs::PrefRegistrySyncable* registry) {
+  registry->RegisterBooleanPref(
+      prefs::kAdsWereDisabled, false);
+  registry->RegisterBooleanPref(
+      prefs::kHasAdsP3AState, false);
+
+  registry->RegisterBooleanPref(
+      prefs::kShouldShowOnboarding, true);
+  registry->RegisterUint64Pref(
+      prefs::kOnboardingTimestamp, 0);
+
+  registry->RegisterBooleanPref(
+      prefs::kShouldShowMyFirstAdNotification, true);
+
+  registry->RegisterIntegerPref(
+      prefs::kSupportedCountryCodesLastSchemaVersion, 0);
+
+  registry->RegisterIntegerPref(
+      prefs::kSupportedCountryCodesSchemaVersion,
+          prefs::kSupportedCountryCodesSchemaVersionNumber);
+
+  registry->RegisterIntegerPref(
+      prefs::kVersion, prefs::kCurrentVersionNumber);
+
+  registry->RegisterBooleanPref(
+      ads::prefs::kEnabled, false);
+
+  registry->RegisterBooleanPref(
+      ads::prefs::kShouldAllowAdConversionTracking, true);
+
+  registry->RegisterUint64Pref(
+      ads::prefs::kAdsPerHour, 2);
+  registry->RegisterUint64Pref(
+      ads::prefs::kAdsPerDay, 20);
+
+  registry->RegisterIntegerPref(
+      ads::prefs::kIdleThreshold, 15);
+
+  registry->RegisterBooleanPref(
+      ads::prefs::kShouldAllowAdsSubdivisionTargeting, false);
+  registry->RegisterStringPref(
+      ads::prefs::kAdsSubdivisionTargetingCode, "AUTO");
+  registry->RegisterStringPref(
+      ads::prefs::kAutoDetectedAdsSubdivisionTargetingCode, "");
 }
 
 }  // namespace brave_ads

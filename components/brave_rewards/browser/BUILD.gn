@@ -68,6 +68,7 @@ source_set("browser") {
       "//brave/components/brave_ads/browser/buildflags",
       "//brave/components/resources",
       "//brave/components/services/bat_ledger/public/cpp",
+      "//brave/vendor/bat-native-ads",
       "//mojo/public/cpp/bindings",
       "//net",
       "//services/network/public/cpp",

@@ -45,7 +45,7 @@ class SubdivisionTargeting {
   void MaybeAllowForLocale(
       const std::string& locale);
 
-  bool ShouldAutomaticallyDetect() const;
+  bool ShouldAutoDetect() const;
 
   void Fetch();
 
