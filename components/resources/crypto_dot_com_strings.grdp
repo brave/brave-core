@@ -6,7 +6,7 @@
     <message name="IDS_CRYPTO_DOT_COM_WIDGET_SHOW_PRICE" desc="">Show Price</message>
     <message name="IDS_CRYPTO_DOT_COM_WIDGET_COPY_ONE" desc="">Get 2% bonus on deposits</message>
     <message name="IDS_CRYPTO_DOT_COM_WIDGET_COPY_TWO" desc="">Stop paying trading fees</message>
-    <message name="IDS_CRYPTO_DOT_COM_WIDGET_BUY_BTC" desc="">Buy Bitcoin Now</message>
+    <message name="IDS_CRYPTO_DOT_COM_WIDGET_BUY_BTC" desc="">Buy Bitcoin</message>
     <message name="IDS_CRYPTO_DOT_COM_WIDGET_VIEW_MARKETS" desc="">View Crypto.com Markets</message>
     <message name="IDS_CRYPTO_DOT_COM_WIDGET_GRAPH" desc="">7d Graph</message>
     <message name="IDS_CRYPTO_DOT_COM_WIDGET_PAIRS" desc="">Supported Pairs</message>

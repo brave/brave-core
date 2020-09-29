@@ -425,7 +425,7 @@ class CryptoDotCom extends React.PureComponent<Props, State> {
             <CryptoDotComLogo />
           </CryptoDotComIcon>
           <StyledTitleText>
-            {'crypto.com'}
+            {'Crypto.com'}
           </StyledTitleText>
         </StyledTitle>
       </Header>
