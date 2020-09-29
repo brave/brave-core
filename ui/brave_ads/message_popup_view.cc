@@ -45,7 +45,7 @@ static const int kPopupBaseWidth = 344;
 static const int kPopupBaseHeight = 88;
 static const int kBodyPixelLineHeight = 10;
 static const int kBodyCharactersPerLine = 40;
-}
+}  // namespace
 
 // static
 void MessagePopupView::Show(const Notification& notification) {
@@ -79,10 +79,11 @@ MessagePopupView::MessagePopupView(const Notification& notification) :
   views::Widget::InitParams params(views::Widget::InitParams::TYPE_POPUP);
   params.type = views::Widget::InitParams::TYPE_WINDOW_FRAMELESS;
   params.z_order = ui::ZOrderLevel::kFloatingWindow;
-  const gfx::Size& screen_size = display::Screen::GetScreen()->GetPrimaryDisplay().size();
+  const gfx::Size& screen_size =
+      display::Screen::GetScreen()->GetPrimaryDisplay().size();
 #if defined(OS_WIN)
   const uint64_t screen_y = screen_size.height() - kPopupYDeltaWin;
-#elif defined (OS_LINUX)
+#elif defined(OS_LINUX)
   const uint64_t screen_y = kPopupYDeltaLinux;
 #else
   const uint64_t screen_y = kPopupYDeltaOther;
