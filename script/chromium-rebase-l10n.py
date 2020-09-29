@@ -6,9 +6,13 @@ import re
 import sys
 from lxml import etree
 from lib.config import get_env_var
-from lib.grd_string_replacements import (write_xml_file_from_tree, write_braveified_grd_override,
-                                         update_braveified_grd_tree_override, get_override_file_path)
-from lib.transifex import pull_source_files_from_transifex, textify
+from lib.grd_string_replacements import (write_xml_file_from_tree,
+                                         write_braveified_grd_override,
+                                         update_braveified_grd_tree_override,
+                                         get_override_file_path)
+from lib.transifex import (fix_links_with_target_blank,
+                           pull_source_files_from_transifex,
+                           textify)
 
 SOURCE_ROOT = os.path.abspath(os.path.dirname(os.path.dirname(__file__)))
 
@@ -20,6 +24,7 @@ def parse_args():
 
 
 def generate_overrides_and_replace_strings(source_string_path):
+    fix_links_with_target_blank(source_string_path)
     original_xml_tree_with_branding_fixes = etree.parse(source_string_path)
     update_braveified_grd_tree_override(original_xml_tree_with_branding_fixes, True)
     write_braveified_grd_override(source_string_path)
