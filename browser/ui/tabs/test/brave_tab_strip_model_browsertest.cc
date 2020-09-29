@@ -5,14 +5,16 @@
 
 #include "brave/common/pref_names.h"
 #include "chrome/app/chrome_command_ids.h"
+#include "chrome/browser/profiles/profile.h"
+#include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/browser_commands.h"
-#include "chrome/browser/ui/views/tabs/tab_strip.h"
 #include "chrome/test/base/in_process_browser_test.h"
+#include "components/prefs/pref_service.h"
 #include "content/public/test/browser_test.h"
 
-using BraveBrowserViewTest = InProcessBrowserTest;
+using BraveTabStripModelTest = InProcessBrowserTest;
 
-IN_PROC_BROWSER_TEST_F(BraveBrowserViewTest, MRUCyclingBasic) {
+IN_PROC_BROWSER_TEST_F(BraveTabStripModelTest, MRUCyclingBasic) {
   TabStripModel* tab_strip_model = browser()->tab_strip_model();
 
   // Open 3 tabs
@@ -43,7 +45,7 @@ IN_PROC_BROWSER_TEST_F(BraveBrowserViewTest, MRUCyclingBasic) {
 // User can close current tab while cycling like this.
 // For example on linux, when user does "Ctrl + tab -> Ctrl + F4 -> Ctrl + tab",
 // second Ctrl + tab should restart mru cycling.
-IN_PROC_BROWSER_TEST_F(BraveBrowserViewTest, TabClosingWhileMRUCycling) {
+IN_PROC_BROWSER_TEST_F(BraveTabStripModelTest, TabClosingWhileMRUCycling) {
   // Activate MRU cycling
   browser()->profile()->GetPrefs()->SetBoolean(kMRUCyclingEnabled, true);
 
