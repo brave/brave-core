@@ -11,17 +11,17 @@
 NS_ASSUME_NONNULL_BEGIN
 
 typedef NS_ENUM(NSUInteger, BookmarksNodeType) {
-  URL,
-  FOLDER,
-  BOOKMARK_BAR,
-  OTHER_NODE,
-  MOBILE
+  BookmarksNodeTypeURL,
+  BookmarksNodeTypeFOLDER,
+  BookmarksNodeTypeBOOKMARK_BAR,
+  BookmarksNodeTypeOTHER_NODE,
+  BookmarksNodeTypeMOBILE
 };
 
 typedef NS_ENUM(NSUInteger, BookmarksNodeFaviconState) {
-  INVALID_FAVICON,
-  LOADING_FAVICON,
-  LOADED_FAVICON,
+  BookmarksNodeFaviconStateINVALID_FAVICON,
+  BookmarksNodeFaviconStateLOADING_FAVICON,
+  BookmarksNodeFaviconStateLOADED_FAVICON,
 };
 
 @protocol BookmarkModelObserver;
@@ -29,42 +29,39 @@ typedef NS_ENUM(NSUInteger, BookmarksNodeFaviconState) {
 
 OBJC_EXPORT
 @interface BookmarkNode: NSObject
-+ (NSString *)kRootNodeGuid;
-+ (NSString *)kBookmarkBarNodeGuid;
-+ (NSString *)kOtherBookmarksNodeGuid;
-+ (NSString *)kMobileBookmarksNodeGuid;
-+ (NSString *)kManagedNodeGuid;
+@property (class, nonatomic, copy, readonly, getter=kRootNodeGuid) NSString *rootNodeGuid;
+@property (class, nonatomic, copy, readonly, getter=kBookmarkBarNodeGuid) NSString *bookmarkBarNodeGuid;
+@property (class, nonatomic, copy, readonly, getter=kOtherBookmarksNodeGuid) NSString *otherBookmarksNodeGuid;
+@property (class, nonatomic, copy, readonly, getter=kMobileBookmarksNodeGuid) NSString *mobileBookmarksNodeGuid;
+@property (class, nonatomic, copy, readonly, getter=kManagedNodeGuid) NSString *managedNodeGuid;
 
-- (bool)isPermanentNode;
+@property (nonatomic, assign, readonly) bool isPermanentNode;
+
+@property (nonatomic, assign, readonly, getter=getNodeId) NSUInteger nodeId;
+@property (nonatomic, copy, readonly, getter=getGuid) NSString *guid;
+@property (nonatomic, nullable, copy, getter=getUrl) NSURL *url;
+@property (nonatomic, nullable, copy, readonly, getter=getIconUrl) NSURL *iconUrl;
+
+@property (nonatomic, assign, readonly, getter=getType) BookmarksNodeType type;
+@property (nonatomic, copy, getter=getDateAdded) NSDate *dateAdded;
+@property (nonatomic, copy, getter=getDateFolderModified) NSDate *dateFolderModified;
+
+@property (nonatomic, assign, readonly) bool isFolder;
+@property (nonatomic, assign, readonly) bool isUrl;
+@property (nonatomic, assign, readonly) bool isFavIconLoaded;
+@property (nonatomic, assign, readonly) bool isFavIconLoading;
+@property (nonatomic, assign, readonly) bool isVisible;
+
+@property (nonatomic, readonly, getter=getTitleUrlNodeTitle) NSString *titleUrlNodeTitle;
+@property (nonatomic, nullable, readonly, getter=getTitleUrlNodeUrl) NSURL *titleUrlNodeUrl;
+
+@property (nonatomic, nullable, readonly) BookmarkNode *parent;
+@property (nonatomic, readonly) NSArray<BookmarkNode *> *children;
+
 - (void)setTitle:(NSString *)title;
-- (NSUInteger)nodeId;
-//- (void)setNodeId:(NSUInteger)id;
-- (NSString *)getGuid;
-- (nullable NSURL *)url;
-- (void)setUrl:(nullable NSURL *)url;
-
-- (nullable NSURL *)iconUrl;
-- (BookmarksNodeType)type;
-- (NSDate *)dateAdded;
-- (void)setDateAdded:(NSDate *)date;
-
-- (NSDate *)dateFolderModified;
-- (void)setDateFolderModified:(NSDate *)date;
-- (bool)isFolder;
-- (bool)isUrl;
-- (bool)isFavIconLoaded;
-- (bool)isFavIconLoading;
-- (bool)isVisible;
-
 - (bool)getMetaInfo:(NSString *)key value:(NSString * _Nonnull * _Nullable)value;
 - (void)setMetaInfo:(NSString *)key value:(NSString *)value;
 - (void)deleteMetaInfo:(NSString *)key;
-
-- (NSString *)titleUrlNodeTitle;
-- (nullable NSURL *)titleUrlNodeUrl;
-
-- (nullable BookmarkNode *)parent;
-- (NSArray<BookmarkNode *> *)children;
 
 - (nullable BookmarkNode *)addChildFolderWithTitle:(NSString *)title;
 - (nullable BookmarkNode *)addChildBookmarkWithTitle:(NSString *)title url:(NSURL *)url;
@@ -77,22 +74,16 @@ OBJC_EXPORT
 OBJC_EXPORT
 @interface BraveBookmarksAPI: NSObject
 
-@property(class, readonly, strong) BraveBookmarksAPI *sharedBookmarksAPI NS_SWIFT_NAME(shared);
-
-- (nullable BookmarkNode *)rootNode;
-
-- (nullable BookmarkNode *)otherNode;
-
-- (nullable BookmarkNode *)mobileNode;
-
-- (nullable BookmarkNode *)desktopNode;
-
-- (bool)isLoaded;
+@property (class, readonly, getter=sharedBookmarksAPI) BraveBookmarksAPI *shared;
+@property (nonatomic, nullable, readonly, getter=getRootNode) BookmarkNode *rootNode;
+@property (nonatomic, nullable, readonly, getter=getOtherNode) BookmarkNode *otherNode;
+@property (nonatomic, nullable, readonly, getter=getMobileNode) BookmarkNode *mobileNode;
+@property (nonatomic, nullable, readonly, getter=getDesktopNode) BookmarkNode *desktopNode;
+@property (nonatomic, assign, readonly) bool isLoaded;
+@property (nonatomic, assign, readonly, getter=isEditingEnabled) bool editingEnabled;
 
 - (id<BookmarkModelListener>)addObserver:(id<BookmarkModelObserver>)observer;
 - (void)removeObserver:(id<BookmarkModelListener>)observer;
-
-- (bool)isEditingEnabled;
 
 - (nullable BookmarkNode *)createFolderWithTitle:(NSString *)title;
 - (nullable BookmarkNode *)createFolderWithParent:(BookmarkNode *)parent title:(NSString *)title;

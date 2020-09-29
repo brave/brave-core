@@ -76,19 +76,15 @@
   model_->SetTitle(node_, base::SysNSStringToUTF16(title));
 }
 
-- (NSUInteger)nodeId {
+- (NSUInteger)getNodeId {
   return node_->id();
 }
-
-//- (void)setNodeId:(NSUInteger)id {
-//  node_->set_id(id);
-//}
 
 - (NSString *)getGuid {
   return base::SysUTF8ToNSString(node_->guid());
 }
 
-- (NSURL *)url {
+- (NSURL *)getUrl {
   return net::NSURLWithGURL(node_->url());
 }
 
@@ -96,23 +92,23 @@
   model_->SetURL(node_, net::GURLWithNSURL(url));
 }
 
-- (NSURL *)iconUrl {
+- (NSURL *)getIconUrl {
   const GURL* url = node_->icon_url();
   return url ? net::NSURLWithGURL(*url) : nullptr;
 }
 
-- (BookmarksNodeType)type {
+- (BookmarksNodeType)getType {
   switch (node_->type()) {
-    case bookmarks::BookmarkNode::URL: return BookmarksNodeType::URL;
-    case bookmarks::BookmarkNode::FOLDER: return BookmarksNodeType::FOLDER;
-    case bookmarks::BookmarkNode::BOOKMARK_BAR: return BookmarksNodeType::BOOKMARK_BAR;
-    case bookmarks::BookmarkNode::OTHER_NODE: return BookmarksNodeType::OTHER_NODE;
-    case bookmarks::BookmarkNode::MOBILE: return BookmarksNodeType::MOBILE;
+    case bookmarks::BookmarkNode::URL: return BookmarksNodeTypeURL;
+    case bookmarks::BookmarkNode::FOLDER: return BookmarksNodeTypeFOLDER;
+    case bookmarks::BookmarkNode::BOOKMARK_BAR: return BookmarksNodeTypeBOOKMARK_BAR;
+    case bookmarks::BookmarkNode::OTHER_NODE: return BookmarksNodeTypeOTHER_NODE;
+    case bookmarks::BookmarkNode::MOBILE: return BookmarksNodeTypeMOBILE;
   }
-  return BookmarksNodeType::MOBILE;
+  return BookmarksNodeTypeMOBILE;
 }
 
-- (NSDate *)dateAdded {
+- (NSDate *)getDateAdded {
   return [NSDate dateWithTimeIntervalSince1970:node_->date_added().ToDoubleT()];
 }
 
@@ -120,7 +116,7 @@
     model_->SetDateAdded(node_, base::Time::FromDoubleT([date timeIntervalSince1970]));
 }
 
-- (NSDate *)dateFolderModified {
+- (NSDate *)getDateFolderModified {
   return [NSDate dateWithTimeIntervalSince1970:node_->date_folder_modified().ToDoubleT()];
 }
 
@@ -165,11 +161,11 @@
   return model_->DeleteNodeMetaInfo(node_, base::SysNSStringToUTF8(key));
 }
 
-- (NSString *)titleUrlNodeTitle {
+- (NSString *)getTitleUrlNodeTitle {
   return base::SysUTF16ToNSString(node_->GetTitledUrlNodeTitle());
 }
 
-- (NSURL *)titleUrlNodeUrl {
+- (NSURL *)getTitleUrlNodeUrl {
   return net::NSURLWithGURL(node_->GetTitledUrlNodeUrl());
 }
 
@@ -267,7 +263,7 @@
   bookmarkUndoService_ = nil;
 }
 
-- (BookmarkNode *)rootNode {
+- (BookmarkNode *)getRootNode {
   DCHECK_CURRENTLY_ON(web::WebThread::UI);
   const bookmarks::BookmarkNode *node = bookmarkModel_->root_node();
   if (node) {
@@ -276,7 +272,7 @@
   return nil;
 }
 
-- (BookmarkNode *)otherNode {
+- (BookmarkNode *)getOtherNode {
   DCHECK_CURRENTLY_ON(web::WebThread::UI);
   const bookmarks::BookmarkNode *node = bookmarkModel_->other_node();
   if (node) {
@@ -285,7 +281,7 @@
   return nil;
 }
 
-- (BookmarkNode *)mobileNode {
+- (BookmarkNode *)getMobileNode {
   DCHECK_CURRENTLY_ON(web::WebThread::UI);
   const bookmarks::BookmarkNode *node = bookmarkModel_->mobile_node();
   if (node) {
@@ -294,7 +290,7 @@
   return nil;
 }
 
-- (BookmarkNode *)desktopNode {
+- (BookmarkNode *)getDesktopNode {
   DCHECK_CURRENTLY_ON(web::WebThread::UI);
   const bookmarks::BookmarkNode *node = bookmarkModel_->bookmark_bar_node();
   if (node) {
@@ -328,8 +324,8 @@
 
 - (BookmarkNode *)createFolderWithTitle:(NSString *)title {
   DCHECK_CURRENTLY_ON(web::WebThread::UI);
-  if ([self mobileNode]) {
-    return [self createFolderWithParent:[self mobileNode] title:title];
+  if ([self getMobileNode]) {
+    return [self createFolderWithParent:[self getMobileNode] title:title];
   }
   return nil;
 }
@@ -348,8 +344,8 @@
 
 - (BookmarkNode *)createBookmarkWithTitle:(NSString *)title url:(NSURL *)url {
   DCHECK_CURRENTLY_ON(web::WebThread::UI);
-  if ([self mobileNode]) {
-    return [self createBookmarkWithParent:[self mobileNode] title:title withUrl:url];
+  if ([self getMobileNode]) {
+    return [self createBookmarkWithParent:[self getMobileNode] title:title withUrl:url];
   }
   return nil;
 }
