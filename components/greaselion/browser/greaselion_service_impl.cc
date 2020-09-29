@@ -120,6 +120,10 @@ scoped_refptr<Extension> ConvertGreaselionRuleToExtensionOnTaskRunner(
         ? extensions::manifest_values::kRunAtDocumentStart
         : extensions::manifest_values::kRunAtDocumentEnd);
 
+  if (!rule->messages().empty()) {
+    root->SetStringPath(extensions::manifest_keys::kDefaultLocale, "en_US");
+  }
+
   auto content_scripts = std::make_unique<base::ListValue>();
   content_scripts->Append(std::move(content_script));
 
@@ -137,6 +141,17 @@ scoped_refptr<Extension> ConvertGreaselionRuleToExtensionOnTaskRunner(
   if (!serializer.Serialize(*root)) {
     LOG(ERROR) << "Could not write Greaselion manifest";
     return nullptr;
+  }
+
+  // Copy the messages directory to our extension directory.
+  if (!rule->messages().empty()) {
+    if (!base::CopyDirectory(
+            rule->messages(),
+            temp_dir.GetPath().AppendASCII("_locales"), true)) {
+      LOG(ERROR) << "Could not copy Greaselion messages directory at path: "
+                 << rule->messages().LossyDisplayName();
+      return nullptr;
+    }
   }
 
   // Copy the script files to our extension directory.

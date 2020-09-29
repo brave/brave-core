@@ -50,6 +50,7 @@ class GreaselionRule {
              base::ListValue* urls_value,
              base::ListValue* scripts_value,
              const std::string& run_at_value,
+             const base::FilePath& messages_value,
              const base::FilePath& resource_dir);
   ~GreaselionRule();
 
@@ -59,6 +60,9 @@ class GreaselionRule {
   std::vector<base::FilePath> scripts() const { return scripts_; }
   std::string run_at() const {
     return run_at_;
+  }
+  base::FilePath messages() const {
+    return messages_;
   }
   bool has_unknown_preconditions() const { return has_unknown_preconditions_; }
 
@@ -72,6 +76,7 @@ class GreaselionRule {
   std::vector<std::string> url_patterns_;
   std::vector<base::FilePath> scripts_;
   std::string run_at_;
+  base::FilePath messages_;
   GreaselionPreconditions preconditions_;
   bool has_unknown_preconditions_ = false;
   base::WeakPtrFactory<GreaselionRule> weak_factory_;

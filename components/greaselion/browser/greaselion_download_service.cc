@@ -37,6 +37,7 @@ const char kPreconditions[] = "preconditions";
 const char kURLs[] = "urls";
 const char kScripts[] = "scripts";
 const char kRunAt[] = "run_at";
+const char kMessages[] = "messages";
 // precondition keys
 const char kRewards[] = "rewards-enabled";
 const char kTwitterTips[] = "twitter-tips-enabled";
@@ -60,6 +61,7 @@ void GreaselionRule::Parse(base::DictionaryValue* preconditions_value,
                            base::ListValue* urls_value,
                            base::ListValue* scripts_value,
                            const std::string& run_at_value,
+                           const base::FilePath& messages_value,
                            const base::FilePath& resource_dir) {
   if (preconditions_value) {
     for (const auto& kv : preconditions_value->DictItems()) {
@@ -91,7 +93,6 @@ void GreaselionRule::Parse(base::DictionaryValue* preconditions_value,
       return;
     }
     url_patterns_.push_back(pattern_string);
-    run_at_ = run_at_value;
   }
   for (const auto& scripts_it : scripts_value->GetList()) {
     base::FilePath script_path = resource_dir.AppendASCII(
@@ -101,6 +102,10 @@ void GreaselionRule::Parse(base::DictionaryValue* preconditions_value,
     } else {
       scripts_.push_back(script_path);
     }
+  }
+  run_at_ = run_at_value;
+  if (!messages_value.empty()) {
+    messages_ = resource_dir.Append(messages_value);
   }
 }
 
@@ -212,11 +217,16 @@ void GreaselionDownloadService::OnDATFileDataReady(std::string contents) {
     rule_dict->GetList(kScripts, &scripts_value);
     const std::string* run_at_ptr = rule_it.FindStringPath(kRunAt);
     const std::string run_at_value = run_at_ptr ? *run_at_ptr : "";
+    const std::string* messages = rule_it.FindStringPath(kMessages);
+    base::FilePath messages_path;
+    if (messages) {
+      messages_path = base::FilePath::FromUTF8Unsafe(messages->c_str());
+    }
 
     std::unique_ptr<GreaselionRule> rule = std::make_unique<GreaselionRule>(
         base::StringPrintf(kRuleNameFormat, rules_.size()));
     rule->Parse(preconditions_value, urls_value, scripts_value,
-        run_at_value, resource_dir_);
+        run_at_value, messages_path, resource_dir_);
     rules_.push_back(std::move(rule));
   }
   for (Observer& observer : observers_)

@@ -51,5 +51,14 @@
         "scripts": [
             "scripts/b-com.js"
         ]
+    },
+    {
+        "urls": [
+            "http://messages.example.com/*"
+        ],
+        "scripts": [
+            "scripts/messages-example-com.js"
+        ],
+        "messages": "messages"
     }
 ]
