@@ -129,8 +129,9 @@ class CryptoDotCom extends React.PureComponent<Props, State> {
 
   checkSetRefreshInterval = () => {
     if (!this.refreshInterval) {
-      this.refreshInterval = setInterval(() => {
-        this.props.onUpdateActions()
+      this.refreshInterval = setInterval(async () => {
+        await this.props.onUpdateActions()
+          .catch((_e) => console.debug('Could not update crypto.com data'))
       }, 30000)
     }
   }
@@ -181,6 +182,14 @@ class CryptoDotCom extends React.PureComponent<Props, State> {
   onClickBuyPair = (pair: string) => {
     window.open(dynamicBuyLink(pair), '_blank', 'noopener')
     this.props.onBuyCrypto()
+  }
+
+  formattedNum = (price: number) => {
+    return new Intl.NumberFormat('en-IN', {
+      style: 'currency',
+      currency: 'USD',
+      currencyDisplay: 'narrowSymbol'
+    }).format(price)
   }
 
   plotData ({ data, chartHeight, chartWidth }: ChartConfig) {
@@ -235,7 +244,7 @@ class CryptoDotCom extends React.PureComponent<Props, State> {
           <FlexItem textAlign='right' flex={1}>
             {optInBTCPrice ? (
               <>
-                {(price !== null) && <Text>{new Intl.NumberFormat('en-IN', { style: 'currency', currency: 'USD', currencyDisplay: 'narrowSymbol' }).format(price)}</Text>}
+                {(price !== null) && <Text>{this.formattedNum(price)}</Text>}
                 {(percentChange !== null) && <Text $color={percentChange > 0 ? 'green' : 'red'}>{percentChange}%</Text>}
               </>
             ) : (
@@ -283,7 +292,7 @@ class CryptoDotCom extends React.PureComponent<Props, State> {
                 <Text small={true} $color='light'>{currencyNames[currency]}</Text>
               </FlexItem>
               <FlexItem textAlign='right' flex={1}>
-                {(price !== null) && <Text>{new Intl.NumberFormat('en-IN', { style: 'currency', currency: 'USD', currencyDisplay: 'narrowSymbol' }).format(price)}</Text>}
+                {(price !== null) && <Text>{this.formattedNum(price)}</Text>}
                 {(percentChange !== null) && <Text $color={percentChange > 0 ? 'green' : 'red'}>{percentChange}%</Text>}
               </FlexItem>
             </ListItem>
@@ -351,7 +360,7 @@ class CryptoDotCom extends React.PureComponent<Props, State> {
             weight={500}
             style={{ marginRight: '0.5rem' }}
           >
-            {new Intl.NumberFormat('en-IN', { style: 'currency', currency: 'USD', currencyDisplay: 'narrowSymbol' }).format(price)} USDT
+            {this.formattedNum(price)} USDT
           </Text>}
           {(percentChange !== null) && <Text inline={true} $color={percentChange > 0 ? 'green' : 'red'}>{percentChange}%</Text>}
           <svg
@@ -385,7 +394,7 @@ class CryptoDotCom extends React.PureComponent<Props, State> {
                 {getLocale('cryptoDotComWidgetVolume')}
               </UpperCaseText>
             </Text>
-            {volume && <Text weight={500}>{new Intl.NumberFormat('en-IN', { style: 'currency', currency: 'USD', currencyDisplay: 'narrowSymbol' }).format(volume)} USDT</Text>}
+            {volume && <Text weight={500}>{this.formattedNum(volume)} USDT</Text>}
           </div>
           <div style={{ marginTop: '1em' }}>
             <Text small={true} $color='light' style={{ paddingBottom: '0.2rem' }}>

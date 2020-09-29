@@ -62,7 +62,7 @@ function getColor (p: any) {
 }
 
 export const Text = styled<StyleProps, 'p'>('p')`
-  font-family: ${p => 'Poppins'};
+  font-family: ${p => p.theme.fontFamily.heading};
   font-weight: ${p => (p.weight || (p.small ? '500' : 'normal'))};
   color: ${p => getColor(p.$color) || '#ffffff'};
   font-size: ${p => (p.small ? '11px' : (p.large ? '19px' : '14px'))};
@@ -109,7 +109,7 @@ export const WidgetWrapper = styled<StyleProps, 'div'>('div')`
   padding: 6px 20px 30px 20px;
   border-radius: 6px;
   position: relative;
-  font-family: ${p => 'Poppins'};
+  font-family: ${p => p.theme.fontFamily.heading};
   font-size: 14px;
   overflow: hidden;
   min-width: 284px;
@@ -130,7 +130,7 @@ export const StyledTitle = styled<{}, 'div'>('div')`
   font-size: 18px;
   font-weight: 600;
   color: #fff;
-  font-family: ${p => 'Poppins'};
+  font-family: ${p => p.theme.fontFamily.heading};
  `
 
 export const CryptoDotComIcon = styled<{}, 'div'>('div')`
@@ -186,7 +186,7 @@ export const BackArrow = styled<{}, 'div'>('div')`
  `
 
 export const ActionButton = styled<StyleProps, 'button'>('button')`
-  font-family: ${p => 'Poppins'};
+  font-family: ${p => p.theme.fontFamily.heading};
   font-size: ${p => (p.small ? '13px' : '15px')};
   font-weight: ${p => (p.small ? '500' : 'bold')};
   border-radius: 20px;
@@ -201,7 +201,7 @@ export const ActionButton = styled<StyleProps, 'button'>('button')`
  `
 
 export const ActionAnchor = styled<StyleProps, 'span'>('span')`
-  font-family: ${p => 'Poppins'};
+  font-family: ${p => p.theme.fontFamily.heading};
   font-size: ${p => (p.small ? '13px' : '15px')};
   font-weight: ${p => (p.small ? '500' : 'bold')};
   border-radius: 20px;
