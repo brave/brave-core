@@ -197,9 +197,10 @@ export const ActionButton = styled<StyleProps, 'button'>('button')`
   cursor: pointer;
   color: #ffffff;
   line-height: 1;
+  text-transform: uppercase;
  `
 
-export const ActionAnchor = styled<StyleProps, 'a'>('a')`
+export const ActionAnchor = styled<StyleProps, 'span'>('span')`
   font-family: ${p => 'Poppins'};
   font-size: ${p => (p.small ? '13px' : '15px')};
   font-weight: ${p => (p.small ? '500' : 'bold')};
@@ -215,3 +216,7 @@ export const ActionAnchor = styled<StyleProps, 'a'>('a')`
   text-align: center;
   text-decoration: none;
  `
+
+export const UpperCaseText = styled<StyleProps, 'span'>('span')`
+  text-transform: uppercase;
+`

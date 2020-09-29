@@ -167,7 +167,7 @@ void CustomizeWebUIHTMLSource(const std::string &name,
         { "bitcoinDotComWidgetDesc", IDS_BRAVE_NEW_TAB_BITCOIN_DOT_COM_WIDGET_DESC },            // NOLINT
 #endif
 #if BUILDFLAG(CRYPTO_DOT_COM_ENABLED)
-        { "cryptoDotComWidgetDesc", IDS_BRAVE_NEW_TAB_CRYPTO_DOT_COM_WIDGET_DESC },
+        { "cryptoDotComWidgetDesc", IDS_BRAVE_NEW_TAB_CRYPTO_DOT_COM_WIDGET_DESC },              // NOLINT
 #endif
         { "braveRewardsTitle", IDS_BRAVE_NEW_TAB_BRAVE_REWARDS_TITLE },
         // Private Tab - General
@@ -341,6 +341,17 @@ void CustomizeWebUIHTMLSource(const std::string &name,
         { "bitcoinDotComWidgetFooterCopyOne", IDS_BITCOIN_DOT_COM_FOOTER_COPY_ONE },      // NOLINT
         { "bitcoinDotComWidgetFooterCopyTwo", IDS_BITCOIN_DOT_COM_FOOTER_COPY_TWO },      // NOLINT
         { "bitcoinDotComWidgetBuy", IDS_BINANCE_WIDGET_BUY },
+#endif
+#if BUILDFLAG(CRYPTO_DOT_COM_ENABLED)
+        { "cryptoDotComWidgetShowPrice", IDS_CRYPTO_DOT_COM_WIDGET_SHOW_PRICE },
+        { "cryptoDotComWidgetBuy", IDS_BINANCE_WIDGET_BUY },
+        { "cryptoDotComWidgetCopyOne", IDS_CRYPTO_DOT_COM_WIDGET_COPY_ONE },
+        { "cryptoDotComWidgetCopyTwo", IDS_CRYPTO_DOT_COM_WIDGET_COPY_TWO },
+        { "cryptoDotComWidgetBuyBtc", IDS_CRYPTO_DOT_COM_WIDGET_BUY_BTC },
+        { "cryptoDotComWidgetViewMarkets", IDS_CRYPTO_DOT_COM_WIDGET_VIEW_MARKETS },      // NOLINT
+        { "cryptoDotComWidgetGraph", IDS_CRYPTO_DOT_COM_WIDGET_GRAPH },
+        { "cryptoDotComWidgetPairs", IDS_CRYPTO_DOT_COM_WIDGET_PAIRS },
+        { "cryptoDotComWidgetVolume", IDS_CRYPTO_DOT_COM_WIDGET_VOLUME },
 #endif
       }
     }, {

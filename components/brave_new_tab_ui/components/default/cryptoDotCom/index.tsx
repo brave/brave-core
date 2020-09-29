@@ -1,16 +1,16 @@
 /* This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
-
-// MOCK DATA
-const topMovers = [ 'BTC', 'ETH', 'CRO' ]
-
 import * as React from 'react'
 
 import createWidget from '../widget/index'
 import { StyledTitleTab } from '../widgetTitleTab'
 
-import currencyNames from './data'
+import {
+  currencyNames,
+  dynamicBuyLink,
+  links
+} from './data'
 
 import {
   ActionAnchor,
@@ -28,18 +28,15 @@ import {
   StyledTitle,
   StyledTitleText,
   Text,
-  WidgetWrapper
+  WidgetWrapper,
+  UpperCaseText
 } from './style'
-// import {
-//   SearchIcon,
-//   ShowIcon,
-//   HideIcon
-// } from '../exchangeWidget/shared-assets'
 import CryptoDotComLogo from './assets/cryptoDotCom-logo'
 import { CaratLeftIcon } from 'brave-ui/components/icons'
 
 // Utils
 import cryptoColors from '../exchangeWidget/colors'
+import { getLocale } from '../../../../common/locale'
 // import { getLocale } from '../../../../common/locale'
 
 interface State {
@@ -96,6 +93,7 @@ interface ChartConfig {
 
 class CryptoDotCom extends React.PureComponent<Props, State> {
   private refreshInterval: any
+  private topMovers: string[]
 
   constructor (props: Props) {
     super(props)
@@ -103,6 +101,7 @@ class CryptoDotCom extends React.PureComponent<Props, State> {
       selectedView: 'index',
       selectedAsset: ''
     }
+    this.topMovers = [ 'BTC', 'ETH', 'CRO' ]
   }
 
   // This is a temporary function only necessary for MVP
@@ -154,7 +153,7 @@ class CryptoDotCom extends React.PureComponent<Props, State> {
 
   handleViewMarketsClick = async () => {
     await Promise.all([
-      this.props.onSetTickerPrices(topMovers),
+      this.props.onSetTickerPrices(this.topMovers),
       this.props.onSetLosersGainers()
     ])
     this.setSelectedView('topMovers')
@@ -169,7 +168,18 @@ class CryptoDotCom extends React.PureComponent<Props, State> {
     this.setSelectedAsset(asset)
   }
 
-  onClickBuy = () => {
+  onClickBuyTop = () => {
+    window.open(links.buyTop, '_blank', 'noopener')
+    this.props.onBuyCrypto()
+  }
+
+  onClickBuyBottom = () => {
+    window.open(links.buyBottom, '_blank', 'noopener')
+    this.props.onBuyCrypto()
+  }
+
+  onClickBuyPair = (pair: string) => {
+    window.open(dynamicBuyLink(pair), '_blank', 'noopener')
     this.props.onBuyCrypto()
   }
 
@@ -229,17 +239,29 @@ class CryptoDotCom extends React.PureComponent<Props, State> {
                 {(percentChange !== null) && <Text $color={percentChange > 0 ? 'green' : 'red'}>{percentChange}%</Text>}
               </>
             ) : (
-              <PlainButton onClick={onBtcPriceOptIn} textColor='green' inline={true}>Show Price</PlainButton>
+              <PlainButton onClick={onBtcPriceOptIn} textColor='green' inline={true}>
+                {getLocale('cryptoDotComWidgetShowPrice')}
+              </PlainButton>
             )}
           </FlexItem>
           <FlexItem style={{ paddingLeft: 5 }}>
-            <ActionButton onClick={this.onClickBuy} small={true} light={true}>BUY</ActionButton>
+            <ActionButton onClick={this.onClickBuyTop} small={true} light={true}>
+              {getLocale('cryptoDotComWidgetBuy')}
+            </ActionButton>
           </FlexItem>
         </Box>
-        <Text center={true} style={{ padding: '1em 0 0.5em', fontSize: 15 }}>Get 2% bonus on deposits</Text>
-        <Text center={true} style={{ fontSize: 15 }}>Stop paying trading fees</Text>
-        <ActionAnchor href='#' style={{ margin: '1em 0' }}>Buy Bitcoin Now</ActionAnchor>
-        <PlainButton textColor='light' onClick={this.handleViewMarketsClick} style={{ margin: '0 auto' }}>View Crypto.com Markets</PlainButton>
+        <Text center={true} style={{ padding: '1em 0 0.5em', fontSize: 15 }}>
+          {getLocale('cryptoDotComWidgetCopyOne')}
+        </Text>
+        <Text center={true} style={{ fontSize: 15 }}>
+          {getLocale('cryptoDotComWidgetCopyTwo')}
+        </Text>
+        <ActionAnchor onClick={this.onClickBuyBottom} style={{ margin: '1em 0' }}>
+          {getLocale('cryptoDotComWidgetBuyBtc')}
+        </ActionAnchor>
+        <PlainButton textColor='light' onClick={this.handleViewMarketsClick} style={{ margin: '0 auto' }}>
+          {getLocale('cryptoDotComWidgetViewMarkets')}
+        </PlainButton>
       </>
     )
   }
@@ -247,7 +269,7 @@ class CryptoDotCom extends React.PureComponent<Props, State> {
   renderTopMoversView () {
     return (
       <List>
-        {topMovers.map(currency => {
+        {this.topMovers.map(currency => {
           const { price = null } = this.props.tickerPrices[currency] || {}
           const losersGainers = this.transformLosersGainers(this.props.losersGainers || {})
           const { percentChange = null } = losersGainers[currency] || {}
@@ -309,8 +331,10 @@ class CryptoDotCom extends React.PureComponent<Props, State> {
             </Text>
           </FlexItem>
           <FlexItem style={{ paddingLeft: 5 }}>
-            <ActionButton small={true} light={true}>
-              BUY
+            <ActionButton onClick={this.onClickBuyPair.bind(this, `${currency}_USDT`)} small={true} light={true}>
+              <UpperCaseText>
+                {getLocale('cryptoDotComWidgetBuy')}
+              </UpperCaseText>
             </ActionButton>
           </FlexItem>
         </FlexItem>
@@ -345,7 +369,9 @@ class CryptoDotCom extends React.PureComponent<Props, State> {
               })}
             />
           </svg>
-        <Text small={true} $color='xlight'>7d Graph</Text>
+        <Text small={true} $color='xlight'>
+          {getLocale('cryptoDotComWidgetGraph')}
+        </Text>
         </FlexItem>
         <FlexItem
           hasPadding={true}
@@ -355,15 +381,26 @@ class CryptoDotCom extends React.PureComponent<Props, State> {
         >
           <div style={{ marginTop: '0.2em' }}>
             <Text small={true} $color='light' style={{ paddingBottom: '0.2rem' }}>
-              24HR VOLUME
+              <UpperCaseText>
+                {getLocale('cryptoDotComWidgetVolume')}
+              </UpperCaseText>
             </Text>
             {volume && <Text weight={500}>{new Intl.NumberFormat('en-IN', { style: 'currency', currency: 'USD', currencyDisplay: 'narrowSymbol' }).format(volume)} USDT</Text>}
           </div>
           <div style={{ marginTop: '1em' }}>
-            <Text small={true} $color='light' style={{ paddingBottom: '0.2rem' }}>SUPPORTED PAIRS</Text>
-            {pairs.map((pair, i) => (
-              <ActionButton key={pair} small={true} inline={true} style={{ marginRight: i === 0 ? 5 : 0, marginBottom: 5 }}>{pair.replace('_', '/')}</ActionButton>
-            ))}
+            <Text small={true} $color='light' style={{ paddingBottom: '0.2rem' }}>
+              <UpperCaseText>
+                {getLocale('cryptoDotComWidgetPairs')}
+              </UpperCaseText>
+            </Text>
+            {pairs.map((pair, i) => {
+              const pairName = pair.replace('_', '/')
+              return (
+                <ActionButton onClick={this.onClickBuyPair.bind(this, pairName)} key={pair} small={true} inline={true} style={{ marginRight: i === 0 ? 5 : 0, marginBottom: 5 }}>
+                  {pairName}
+                </ActionButton>
+              )
+            })}
           </div>
         </FlexItem>
       </Box>
