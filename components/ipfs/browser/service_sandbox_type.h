@@ -6,11 +6,19 @@
 #ifndef BRAVE_COMPONENTS_IPFS_BROWSER_SERVICE_SANDBOX_TYPE_H_
 #define BRAVE_COMPONENTS_IPFS_BROWSER_SERVICE_SANDBOX_TYPE_H_
 
+#include "content/public/browser/service_process_host.h"
+
 // ipfs::mojom::IpfsService
 namespace ipfs {
 namespace mojom {
 class IpfsService;
 }  // namespace mojom
 }  // namespace ipfs
+
+template <>
+inline sandbox::policy::SandboxType
+content::GetServiceSandboxType<ipfs::mojom::IpfsService>() {
+  return sandbox::policy::SandboxType::kNoSandbox;
+}
 
 #endif  // BRAVE_COMPONENTS_IPFS_BROWSER_SERVICE_SANDBOX_TYPE_H_

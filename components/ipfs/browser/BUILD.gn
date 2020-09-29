@@ -12,10 +12,7 @@ source_set("browser") {
     "ipfs_navigation_throttle.h",
     "ipfs_service.cc",
     "ipfs_service.h",
-    "ipfs_service_delegate.h",
     "ipfs_service_observer.h",
-    "ipfs_tab_helper.cc",
-    "ipfs_tab_helper.h",
     "translate_ipfs_uri.cc",
     "translate_ipfs_uri.h",
   ]

@@ -692,9 +692,9 @@ test("brave_browser_tests") {
 
   if (ipfs_enabled) {
     sources += [
+      "//brave/browser/ipfs/ipfs_tab_helper_browsertest.cc",
       "//brave/components/ipfs/browser/brave_ipfs_client_updater_browsertest.cc",
       "//brave/components/ipfs/browser/ipfs_service_browsertest.cc",
-      "//brave/components/ipfs/browser/ipfs_tab_helper_browsertest.cc",
     ]
   }
 

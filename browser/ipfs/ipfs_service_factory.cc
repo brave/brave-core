@@ -5,16 +5,18 @@
 
 #include "brave/browser/ipfs/ipfs_service_factory.h"
 
+#include "base/path_service.h"
 #include "brave/browser/brave_browser_process_impl.h"
-#include "brave/browser/ipfs/ipfs_service_delegate_impl.h"
 #include "brave/browser/profiles/profile_util.h"
 #include "brave/components/ipfs/browser/ipfs_service.h"
 #include "chrome/browser/profiles/incognito_helpers.h"
+#include "chrome/common/chrome_paths.h"
 #include "components/keyed_service/content/browser_context_dependency_manager.h"
 #include "extensions/browser/extension_registry_factory.h"
 #include "extensions/browser/extension_system.h"
 #include "extensions/browser/extension_system_provider.h"
 #include "extensions/browser/extensions_browser_client.h"
+
 
 namespace ipfs {
 
@@ -47,11 +49,13 @@ IpfsServiceFactory::~IpfsServiceFactory() {}
 
 KeyedService* IpfsServiceFactory::BuildServiceInstanceFor(
     content::BrowserContext* context) const {
+  base::FilePath user_data_dir;
+  base::PathService::Get(chrome::DIR_USER_DATA, &user_data_dir);
   return new IpfsService(context,
                          g_brave_browser_process
                              ? g_brave_browser_process->ipfs_client_updater()
                              : nullptr,
-                         new IpfsServiceDelegateImpl(context));
+                         user_data_dir);
 }
 
 content::BrowserContext* IpfsServiceFactory::GetBrowserContextToUse(

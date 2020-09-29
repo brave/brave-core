@@ -6,7 +6,6 @@
 #include "brave/browser/brave_tab_helpers.h"
 
 #include "brave/browser/farbling/farbling_tab_helper.h"
-#include "brave/browser/profiles/profile_util.h"
 #include "brave/browser/tor/buildflags.h"
 #include "brave/browser/ui/bookmark/brave_bookmark_tab_helper.h"
 #include "brave/components/brave_ads/browser/ads_tab_helper.h"
@@ -61,8 +60,9 @@
 #endif
 
 #if BUILDFLAG(IPFS_ENABLED)
-#include "brave/browser/ipfs/ipfs_tab_helper_delegate_impl.h"
-#include "brave/components/ipfs/browser/ipfs_tab_helper.h"
+#include "brave/browser/infobars/ipfs_infobar_delegate.h"
+#include "brave/browser/ipfs/ipfs_service_factory.h"
+#include "brave/browser/ipfs/ipfs_tab_helper.h"
 #endif
 
 namespace brave {
@@ -118,9 +118,7 @@ void AttachTabHelpers(content::WebContents* web_contents) {
 #endif
 
 #if BUILDFLAG(IPFS_ENABLED)
-  ipfs::IPFSTabHelper::MaybeCreateForWebContents(web_contents,
-      brave::IsRegularProfile(web_contents->GetBrowserContext()),
-      new ipfs::IpfsTabHelperDelegateImpl());
+  ipfs::IPFSTabHelper::MaybeCreateForWebContents(web_contents);
 #endif
 
   FarblingTabHelper::CreateForWebContents(web_contents);

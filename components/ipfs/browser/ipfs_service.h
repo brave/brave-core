@@ -41,7 +41,7 @@ class IpfsService : public KeyedService,
  public:
   explicit IpfsService(content::BrowserContext* context,
                        ipfs::BraveIpfsClientUpdater* ipfs_client_updater,
-                       IpfsServiceDelegate* ipfs_service_delegate);
+                       const base::FilePath& user_data_dir);
   ~IpfsService() override;
 
   static bool IsIpfsEnabled(content::BrowserContext* context,
@@ -116,7 +116,7 @@ class IpfsService : public KeyedService,
   bool is_ipfs_launched_for_test_ = false;
   GURL server_endpoint_;
 
-  std::unique_ptr<IpfsServiceDelegate> ipfs_service_delegate_;
+  base::FilePath user_data_dir_;
   BraveIpfsClientUpdater* ipfs_client_updater_;
 
   DISALLOW_COPY_AND_ASSIGN(IpfsService);

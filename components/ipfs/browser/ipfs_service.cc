@@ -14,7 +14,6 @@
 #include "base/strings/string_util.h"
 #include "brave/components/ipfs/browser/features.h"
 #include "brave/components/ipfs/browser/ipfs_json_parser.h"
-#include "brave/components/ipfs/browser/ipfs_service_delegate.h"
 #include "brave/components/ipfs/browser/ipfs_service_observer.h"
 #include "brave/components/ipfs/browser/ipfs_switches.h"
 #include "brave/components/ipfs/browser/service_sandbox_type.h"
@@ -66,15 +65,12 @@ namespace ipfs {
 
 IpfsService::IpfsService(content::BrowserContext* context,
                          ipfs::BraveIpfsClientUpdater* ipfs_client_updater,
-                         IpfsServiceDelegate* ipfs_service_delegate)
+                         const base::FilePath& user_data_dir)
     : context_(context),
       server_endpoint_(GURL(kServerEndpoint)),
-      ipfs_service_delegate_(ipfs_service_delegate),
+      user_data_dir_(user_data_dir),
       ipfs_client_updater_(ipfs_client_updater) {
-  if (ipfs_service_delegate_->IsTestingProfile()) {
-    return;
-  }
-
+  DCHECK(!user_data_dir.empty());
   url_loader_factory_ =
       content::BrowserContext::GetDefaultStoragePartition(context)
           ->GetURLLoaderFactoryForBrowserProcess();
@@ -87,9 +83,8 @@ IpfsService::IpfsService(content::BrowserContext* context,
   // available in unit tests.
   if (ipfs_client_updater_) {
     ipfs_client_updater_->AddObserver(this);
+    OnExecutableReady(GetIpfsExecutablePath());
   }
-
-  OnExecutableReady(GetIpfsExecutablePath());
 }
 
 IpfsService::~IpfsService() = default;
@@ -148,11 +143,8 @@ void IpfsService::LaunchIfNotRunning(const base::FilePath& executable_path) {
   ipfs_service_->SetCrashHandler(
       base::Bind(&IpfsService::OnIpfsDaemonCrashed, base::Unretained(this)));
 
-  base::FilePath user_data_dir(ipfs_service_delegate_->GetUserDataDir());
-  DCHECK(!user_data_dir.empty());
-
   base::FilePath data_root_path =
-      user_data_dir.Append(FILE_PATH_LITERAL("brave_ipfs"));
+      user_data_dir_.Append(FILE_PATH_LITERAL("brave_ipfs"));
   base::FilePath config_path =
       data_root_path.Append(FILE_PATH_LITERAL("config"));
 

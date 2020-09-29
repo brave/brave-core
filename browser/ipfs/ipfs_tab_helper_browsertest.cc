@@ -5,9 +5,9 @@
 
 #include "base/path_service.h"
 #include "base/scoped_observer.h"
+#include "brave/browser/ipfs/ipfs_tab_helper.h"
 #include "brave/common/brave_paths.h"
 #include "brave/components/ipfs/browser/features.h"
-#include "brave/components/ipfs/browser/ipfs_tab_helper.h"
 #include "brave/components/ipfs/common/ipfs_constants.h"
 #include "brave/components/ipfs/common/pref_names.h"
 #include "chrome/browser/infobars/infobar_service.h"
