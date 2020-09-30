@@ -157,8 +157,8 @@ class AdsServiceImpl : public AdsService,
 
   bool ShouldAllowAdConversionTracking() const override;
 
-  uint64_t GetAdsPerHour() const override;
-  uint64_t GetAdsPerDay() const override;
+  uint64_t GetAdsPerHour() override;
+  uint64_t GetAdsPerDay() override;
 
   bool ShouldAllowAdsSubdivisionTargeting() const override;
   void SetAllowAdsSubdivisionTargeting(

@@ -42,7 +42,7 @@ std::string SubdivisionTargetingFrequencyCap::get_last_message() const {
 }
 
 bool SubdivisionTargetingFrequencyCap::DoesRespectCap(
-    const CreativeAdInfo& ad) const {
+    const CreativeAdInfo& ad) {
   const std::string locale =
       brave_l10n::LocaleHelper::GetInstance()->GetLocale();
 

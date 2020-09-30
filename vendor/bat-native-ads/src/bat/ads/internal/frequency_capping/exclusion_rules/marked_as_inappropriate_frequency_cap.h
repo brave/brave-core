@@ -38,7 +38,7 @@ class MarkedAsInappropriateFrequencyCap : public ExclusionRule {
   std::string last_message_;
 
   bool DoesRespectCap(
-      const CreativeAdInfo& ad) const;
+      const CreativeAdInfo& ad);
 };
 
 }  // namespace ads

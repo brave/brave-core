@@ -62,7 +62,7 @@ bool BatAdsClientMojoBridge::CanShowBackgroundNotifications() const {
   return can_show;
 }
 
-uint64_t BatAdsClientMojoBridge::GetAdsPerHour() const {
+uint64_t BatAdsClientMojoBridge::GetAdsPerHour() {
   if (!connected()) {
     return 0;
   }
@@ -72,7 +72,7 @@ uint64_t BatAdsClientMojoBridge::GetAdsPerHour() const {
   return ads_per_hour;
 }
 
-uint64_t BatAdsClientMojoBridge::GetAdsPerDay() const {
+uint64_t BatAdsClientMojoBridge::GetAdsPerDay() {
   if (!connected()) {
     return 0;
   }

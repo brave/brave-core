@@ -38,7 +38,7 @@ class SubdivisionTargetingFrequencyCap : public ExclusionRule {
   std::string last_message_;
 
   bool DoesRespectCap(
-      const CreativeAdInfo& ad) const;
+      const CreativeAdInfo& ad);
 
   bool DoesAdSupportSubdivisionTargetingCode(
       const CreativeAdInfo& ad,

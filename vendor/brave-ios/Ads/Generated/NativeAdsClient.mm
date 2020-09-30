@@ -23,11 +23,11 @@ bool NativeAdsClient::ShouldAllowAdConversionTracking() const {
   return [bridge_ shouldAllowAdConversionTracking];
 }
 
-uint64_t NativeAdsClient::GetAdsPerDay() const {
+uint64_t NativeAdsClient::GetAdsPerDay() {
   return [bridge_ getAdsPerDay];
 }
 
-uint64_t NativeAdsClient::GetAdsPerHour() const {
+uint64_t NativeAdsClient::GetAdsPerHour() {
   return [bridge_ getAdsPerHour];
 }
 
