@@ -1309,10 +1309,10 @@ until they verify, or until 90 days have passed.
         Enable "Night Mode" (Experimental)
       </message>
       <message name="IDS_MENU_EDIT" desc="NTP widget menu item">
-        Edit
+        Edit Stack
       </message>
       <message name="IDS_MENU_REMOVE" desc="NTP widget menu item">
-        Remove
+        Remove Widget
       </message>
       <message name="IDS_MENU_LEARN_MORE" desc="NTP widget menu item">
         Learn More
@@ -1385,6 +1385,9 @@ until they verify, or until 90 days have passed.
       </message>
       <message name="IDS_BUY" desc="Binance detail section title.">
         Buy
+      </message>
+      <message name="IDS_BINANCE_DISCONNECT_TEXT" desc="Binance disconnected state text.">
+        Enable Binance connection to view Binance account balance and trade crypto.
       </message>
     </messages>
   </release>

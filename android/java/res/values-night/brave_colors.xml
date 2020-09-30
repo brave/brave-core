@@ -53,4 +53,5 @@
     <color name="brave_stats_close_button_color">#F0F2FF</color>
     <color name="brave_stats_radio_group_bg">#17171F</color>
     <color name="brave_stats_radio_button_active">#3B3E4F</color>
+    <color name="spinner_bg_color">#212529</color>
 </resources>

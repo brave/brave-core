@@ -87,6 +87,7 @@
                 android:padding="8dp"
                 android:background="@drawable/binance_edittext"
                 style="@android:style/Widget.Spinner"
+                android:popupBackground="@color/spinner_bg_color"
                 android:spinnerMode="dropdown"/>
 
         </LinearLayout>
@@ -102,6 +103,7 @@
             android:padding="8dp"
             style="@android:style/Widget.Spinner"
             android:background="@drawable/binance_edittext"
+            android:popupBackground="@color/spinner_bg_color"
             android:spinnerMode="dropdown"/>
 
         <Button

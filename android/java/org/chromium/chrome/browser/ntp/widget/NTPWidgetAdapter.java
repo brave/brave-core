@@ -88,6 +88,7 @@ public class NTPWidgetAdapter extends PagerAdapter {
                 updateBraveStats(mainView);
             } else if (ntpWidgetItem.getWidgetType().equals(NTPWidgetManager.PREF_BINANCE)) {
                 Button connectButton = mainView.findViewById(R.id.btn_connect);
+                LinearLayout bianceDisconnectLayout= mainView.findViewById(R.id.binance_disconnect_layout);
                 LinearLayout binanceWidgetLayout =
                         mainView.findViewById(R.id.binance_widget_layout);
                 TextView binanceBalanceText =
@@ -106,10 +107,10 @@ public class NTPWidgetAdapter extends PagerAdapter {
                 }
                 if (BinanceWidgetManager.getInstance().isUserAuthenticatedForBinance()) {
                     binanceWidgetLayout.setVisibility(View.VISIBLE);
-                    connectButton.setVisibility(View.GONE);
+                    bianceDisconnectLayout.setVisibility(View.GONE);
                 } else {
                     binanceWidgetLayout.setVisibility(View.GONE);
-                    connectButton.setVisibility(View.VISIBLE);
+                    bianceDisconnectLayout.setVisibility(View.VISIBLE);
                 }
             }
             container.addView(mainView);

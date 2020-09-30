@@ -264,7 +264,7 @@ public class BraveNewTabPageLayout extends NewTabPageLayout {
     private void showWidgetBasedOnOrder() {
         if (ntpWidgetViewPager != null) {
             int selectedOrder = NTPWidgetManager.getInstance().getNTPWidgetOrder();
-            // ntpWidgetViewPager.setCurrentItem(selectedOrder);
+            ntpWidgetViewPager.setCurrentItem(selectedOrder);
             updateAndShowIndicators(selectedOrder);
         }
     }

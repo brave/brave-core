@@ -28,10 +28,7 @@ public class BraveTileWithTextView extends TileWithTextView {
     @Override
     public void setTitle(String title, int titleLines) {
         super.setTitle(title, titleLines);
-        // TextView mTitleView = findViewById(R.id.tile_view_title);
-        // if (BravePrefServiceBridge.getInstance().getBoolean(BravePref.NTP_SHOW_BACKGROUND_IMAGE)
-        //         && NTPUtil.shouldEnableNTPFeature()) {
-        //     mTitleView.setTextColor(getResources().getColor(android.R.color.white));
-        // }
+        TextView mTitleView = findViewById(R.id.tile_view_title);
+        mTitleView.setTextColor(getResources().getColor(android.R.color.black));
     }
 }
