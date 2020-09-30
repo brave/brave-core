@@ -96,7 +96,9 @@ extension AdvancedShieldsView {
             return l
         }()
         
-        let toggleSwitch = UISwitch()
+        let toggleSwitch = UISwitch().then {
+            $0.appearanceOnTintColor = BraveUX.braveOrange
+        }
         var valueToggled: ((Bool) -> Void)?
         
         init(title: String) {

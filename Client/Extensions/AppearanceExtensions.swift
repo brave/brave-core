@@ -21,7 +21,7 @@ extension Theme {
         UINavigationBar.appearance().tintColor = colors.accent
         UINavigationBar.appearance().appearanceBarTintColor = colors.header
         
-        UISwitch.appearance().onTintColor = colors.accent
+        UISwitch.appearance().appearanceOnTintColor = colors.accent
         
         // This is a subtle "abuse" of theme colors
         // In order to properly style things, `addressBar` has been utilized to offer contrast to `home`/`header`, as many of the themes utilize similar colors.
