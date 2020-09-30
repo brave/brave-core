@@ -1,0 +1,23 @@
+diff --git a/third_party/blink/renderer/bindings/scripts/web_idl/composition_parts.py b/third_party/blink/renderer/bindings/scripts/web_idl/composition_parts.py
+index 5e8de89409976528f8d97d4962f9f111c6d158a1..d8eca553b5c3aaa2ae3f8644457d20a7c4bb399b 100644
+--- a/third_party/blink/renderer/bindings/scripts/web_idl/composition_parts.py
++++ b/third_party/blink/renderer/bindings/scripts/web_idl/composition_parts.py
+@@ -147,6 +147,9 @@ class Location(object):
+     _blink_path_prefix = posixpath.sep + posixpath.join(
+         'third_party', 'blink', 'renderer', '')
+ 
++    _brave_path_prefix = posixpath.sep + posixpath.join(
++        'brave', 'third_party', 'blink', 'renderer', '')
++
+     def __init__(self, filepath=None, line_number=None, position=None):
+         assert filepath is None or isinstance(filepath, str)
+         assert line_number is None or isinstance(line_number, int)
+@@ -155,7 +158,7 @@ class Location(object):
+         # idl_parser produces paths based on the working directory, which may
+         # not be the project root directory, e.g. "../../third_party/blink/...".
+         # Canonicalize the paths heuristically.
+-        if filepath is not None:
++        if filepath is not None and filepath.find(self._brave_path_prefix) < 0:
+             index = filepath.find(self._blink_path_prefix)
+             if index >= 0:
+                 filepath = filepath[index + 1:]
