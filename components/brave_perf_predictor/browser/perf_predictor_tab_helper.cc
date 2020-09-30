@@ -65,6 +65,7 @@ void PerfPredictorTabHelper::OnPageLoadTimingUpdated(
 void PerfPredictorTabHelper::RegisterProfilePrefs(
     PrefRegistrySimple* registry) {
   registry->RegisterUint64Pref(prefs::kBandwidthSavedBytes, 0);
+  registry->RegisterUint64Pref(prefs::kLastBandwidthSavedBytes, 0);
 }
 
 // static
@@ -109,8 +110,7 @@ void PerfPredictorTabHelper::RecordSavings() {
       if (bandwidth_tracker_)
         bandwidth_tracker_->RecordSavings(savings);
 #if defined(OS_ANDROID)
-        chrome::android::BraveShieldsContentSettings::DispatchSavedBandwidth(
-          savings);
+      prefs->SetUint64(prefs::kLastBandwidthSavedBytes, savings);
 #endif
     }
   }

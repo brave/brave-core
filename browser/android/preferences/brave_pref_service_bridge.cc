@@ -166,6 +166,17 @@ jlong JNI_BravePrefServiceBridge_GetDataSaved(
   return 0;
 }
 
+jlong JNI_BravePrefServiceBridge_GetLastDataSaved(
+    JNIEnv* env,
+    const base::android::JavaParamRef<jobject>& j_profile) {
+#if BUILDFLAG(ENABLE_BRAVE_PERF_PREDICTOR)
+  Profile* profile = ProfileAndroid::FromProfileAndroid(j_profile);
+  return profile->GetPrefs()->GetUint64(
+      brave_perf_predictor::prefs::kLastBandwidthSavedBytes);
+#endif
+  return 0;
+}
+
 void JNI_BravePrefServiceBridge_SetOldTrackersBlockedCount(JNIEnv* env,
     const base::android::JavaParamRef<jobject>& j_profile,
     jlong count) {

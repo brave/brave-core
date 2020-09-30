@@ -135,13 +135,6 @@ public class BraveShieldsContentSettings {
         }
     }
 
-    @CalledByNative
-    private void savedBandwidth(long savings) {
-        for (BraveShieldsContentSettingsObserver observer : mBraveShieldsContentSettingsObservers) {
-            observer.savedBandwidth(savings);
-        }
-    }
-
     @NativeMethods
     interface Natives {
         void init(BraveShieldsContentSettings self);

@@ -53,7 +53,9 @@ import org.chromium.chrome.browser.ntp.NewTabPage;
 import org.chromium.chrome.browser.onboarding.OnboardingPrefManager;
 import org.chromium.chrome.browser.onboarding.SearchActivity;
 import org.chromium.chrome.browser.preferences.BravePref;
+import org.chromium.chrome.browser.preferences.BravePreferenceKeys;
 import org.chromium.chrome.browser.preferences.BravePrefServiceBridge;
+import org.chromium.chrome.browser.preferences.PrefChangeRegistrar;
 import org.chromium.chrome.browser.preferences.website.BraveShieldsContentSettings;
 import org.chromium.chrome.browser.preferences.website.BraveShieldsContentSettingsObserver;
 import org.chromium.chrome.browser.profiles.Profile;
@@ -93,7 +95,8 @@ import java.util.List;
 public abstract class BraveToolbarLayout extends ToolbarLayout implements OnClickListener,
   View.OnLongClickListener,
   BraveRewardsObserver,
-  BraveRewardsNativeWorker.PublisherObserver {
+  BraveRewardsNativeWorker.PublisherObserver,
+  PrefChangeRegistrar.PrefObserver {
   public static final String PREF_HIDE_BRAVE_REWARDS_ICON = "hide_brave_rewards_icon";
 
   private static final long MB_10 = 10000000;
@@ -123,6 +126,7 @@ public abstract class BraveToolbarLayout extends ToolbarLayout implements OnClic
   private boolean mIsInitialNotificationPosted; // initial red circle notification
 
   private PopupWindow mShieldsTooltipPopupWindow;
+  private PrefChangeRegistrar mPrefChangeRegistrar;
 
   private boolean mIsBottomToolbarVisible;
 
@@ -140,6 +144,10 @@ public abstract class BraveToolbarLayout extends ToolbarLayout implements OnClic
     if (mBraveRewardsNativeWorker != null) {
       mBraveRewardsNativeWorker.RemoveObserver(this);
       mBraveRewardsNativeWorker.RemovePublisherObserver(this);
+    }
+
+    if(mPrefChangeRegistrar != null) {
+      mPrefChangeRegistrar.destroy();
     }
   }
 
@@ -230,14 +238,6 @@ public abstract class BraveToolbarLayout extends ToolbarLayout implements OnClic
           });
         }
       }
-
-      @Override
-      public void savedBandwidth(long savings) {
-        if (!isIncognito()
-            && OnboardingPrefManager.getInstance().isBraveStatsEnabled()) {
-          addSavedBandwidthToDb(savings);
-        }
-      }
     };
     // Initially show shields off image. Shields button state will be updated when tab is
     // shown and loading state is changed.
@@ -274,6 +274,9 @@ public abstract class BraveToolbarLayout extends ToolbarLayout implements OnClic
       mBraveRewardsNativeWorker.TriggerOnNotifyFrontTabUrlChanged();
       mBraveRewardsNativeWorker.GetAllNotifications();
     }
+
+    mPrefChangeRegistrar = new PrefChangeRegistrar();
+    mPrefChangeRegistrar.addObserver(BravePreferenceKeys.BRAVE_LAST_BANDWIDTH_SAVED_BYTES, this);
   }
 
   @Override
@@ -816,10 +819,18 @@ public abstract class BraveToolbarLayout extends ToolbarLayout implements OnClic
       return mIsBottomToolbarVisible && BottomToolbarVariationManager.isMenuButtonOnBottom();
   }
 
-    @Override
-    protected void initialize(ToolbarDataProvider toolbarDataProvider,
-            ToolbarTabController tabController, MenuButtonCoordinator menuButtonCoordinator) {
-        super.initialize(toolbarDataProvider, tabController, menuButtonCoordinator);
-        BraveMenuButtonCoordinator.setMenuFromBottom(isMenuButtonOnBottom());
+  @Override
+  protected void initialize(ToolbarDataProvider toolbarDataProvider,
+    ToolbarTabController tabController, MenuButtonCoordinator menuButtonCoordinator) {
+    super.initialize(toolbarDataProvider, tabController, menuButtonCoordinator);
+    BraveMenuButtonCoordinator.setMenuFromBottom(isMenuButtonOnBottom());
+  }
+  
+  @Override
+  public void onPreferenceChange() {
+    if (!isIncognito()
+            && OnboardingPrefManager.getInstance().isBraveStatsEnabled()) {
+        addSavedBandwidthToDb(BravePrefServiceBridge.getInstance().getLastDataSaved(Profile.getLastUsedRegularProfile()));
     }
+  }
 }
