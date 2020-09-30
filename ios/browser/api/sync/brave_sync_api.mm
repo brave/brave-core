@@ -110,10 +110,15 @@
   return _worker->SetSyncEnabled(enabled);
 }
 
+- (bool)isValidSyncCode:(NSString *)syncCode {
+  return _worker->IsValidSyncCode(base::SysNSStringToUTF8(syncCode));
+}
+
 - (NSString *)getSyncCode {
   std::string syncCode = _worker->GetOrCreateSyncCode();
-  if (syncCode.empty())
+  if (syncCode.empty()) {
     return nil;
+  }
 
   return base::SysUTF8ToNSString(syncCode);
 }

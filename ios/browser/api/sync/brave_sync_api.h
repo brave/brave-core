@@ -30,6 +30,8 @@ OBJC_EXPORT
 
 - (bool)resetSync;
 
+- (bool)isValidSyncCode:(NSString *)syncCode;
+
 - (NSString *)getSyncCode;
 
 // returns false is sync is already configured or if the sync code is invalid

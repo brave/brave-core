@@ -161,8 +161,9 @@ bool BraveSyncWorker::SetSyncEnabled(bool enabled) {
 
   setup_service->SetSyncEnabled(enabled);
 
-  if (enabled && !sync_service->GetUserSettings()->IsFirstSetupComplete())
+  if (enabled && !sync_service->GetUserSettings()->IsFirstSetupComplete()) {
     setup_service->PrepareForFirstSyncSetup();
+  }
 
   return true;
 }
@@ -200,6 +201,14 @@ std::string BraveSyncWorker::GetOrCreateSyncCode() {
     sync_code = sync_service->GetOrCreateSyncCode();
   }
   return sync_code;
+}
+
+bool BraveSyncWorker::IsValidSyncCode(const std::string& sync_code) {
+  std::vector<uint8_t> seed;
+  if (!brave_sync::crypto::PassphraseToBytes32(sync_code, &seed)) {
+    return false;
+  }
+  return seed.size() == SEED_BYTES_COUNT;
 }
 
 bool BraveSyncWorker::SetSyncCode(const std::string& sync_code) {
