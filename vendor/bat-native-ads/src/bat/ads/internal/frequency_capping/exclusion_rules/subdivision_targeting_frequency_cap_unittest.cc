@@ -20,6 +20,7 @@
 #include "bat/ads/internal/frequency_capping/frequency_capping_unittest_util.h"
 #include "bat/ads/internal/platform/platform_helper_mock.h"
 #include "bat/ads/internal/unittest_util.h"
+#include "bat/ads/pref_names.h"
 
 // npm run test -- brave_unit_tests --filter=BatAds*
 
@@ -68,12 +69,6 @@ class BatAdsSubdivisionTargetingFrequencyCapTest : public ::testing::Test {
     ASSERT_TRUE(temp_dir_.CreateUniqueTempDir());
     const base::FilePath path = temp_dir_.GetPath();
 
-    ON_CALL(*ads_client_mock_, IsEnabled())
-        .WillByDefault(Return(true));
-
-    ON_CALL(*ads_client_mock_, ShouldAllowAdConversionTracking())
-        .WillByDefault(Return(true));
-
     SetBuildChannel(false, "test");
 
     ON_CALL(*locale_helper_mock_, GetLocale())
@@ -88,6 +83,8 @@ class BatAdsSubdivisionTargetingFrequencyCapTest : public ::testing::Test {
     MockLoadUserModelForId(ads_client_mock_);
     MockLoadResourceForId(ads_client_mock_);
     MockSave(ads_client_mock_);
+
+    MockPrefs(ads_client_mock_);
 
     database_ = std::make_unique<Database>(path.AppendASCII("database.sqlite"));
     MockRunDBTransaction(ads_client_mock_, database_);
@@ -115,14 +112,12 @@ class BatAdsSubdivisionTargetingFrequencyCapTest : public ::testing::Test {
 };
 
 TEST_F(BatAdsSubdivisionTargetingFrequencyCapTest,
-    AllowAdIfSubdivisionTargetingIsSupportedAndAutomaticallyDetected) {
+    AllowAdIfSubdivisionTargetingIsSupportedAndAutoDetected) {
   // Arrange
-  ON_CALL(*ads_client_mock_,
-      GetAutomaticallyDetectedAdsSubdivisionTargetingCode())
-          .WillByDefault(Return("US-FL"));
+  ads_client_mock_->SetStringPref(
+      prefs::kAutoDetectedAdsSubdivisionTargetingCode, "US-FL");
 
-  ON_CALL(*ads_client_mock_, GetAdsSubdivisionTargetingCode())
-      .WillByDefault(Return("AUTO"));
+  ads_client_mock_->SetStringPref(prefs::kAdsSubdivisionTargetingCode, "AUTO");
 
   CreativeAdInfo ad;
   ad.creative_set_id = kCreativeSetId;
@@ -136,14 +131,12 @@ TEST_F(BatAdsSubdivisionTargetingFrequencyCapTest,
 }
 
 TEST_F(BatAdsSubdivisionTargetingFrequencyCapTest,
-    AllowAdIfSubdivisionTargetingIsSupportedAndAutomaticallyDetectedForNonSubdivisionGeoTarget) {  // NOLINT
+    AllowAdIfSubdivisionTargetingIsSupportedAndAutoDetectedForNonSubdivisionGeoTarget) {  // NOLINT
   // Arrange
-  ON_CALL(*ads_client_mock_,
-      GetAutomaticallyDetectedAdsSubdivisionTargetingCode())
-          .WillByDefault(Return("US-FL"));
+  ads_client_mock_->SetStringPref(
+      prefs::kAutoDetectedAdsSubdivisionTargetingCode, "US-FL");
 
-  ON_CALL(*ads_client_mock_, GetAdsSubdivisionTargetingCode())
-      .WillByDefault(Return("AUTO"));
+  ads_client_mock_->SetStringPref(prefs::kAdsSubdivisionTargetingCode, "AUTO");
 
   CreativeAdInfo ad;
   ad.creative_set_id = kCreativeSetId;
@@ -159,8 +152,7 @@ TEST_F(BatAdsSubdivisionTargetingFrequencyCapTest,
 TEST_F(BatAdsSubdivisionTargetingFrequencyCapTest,
     AllowAdIfSubdivisionTargetingIsSupportedAndManuallySelected) {
   // Arrange
-  ON_CALL(*ads_client_mock_, GetAdsSubdivisionTargetingCode())
-      .WillByDefault(Return("US-FL"));
+  ads_client_mock_->SetStringPref(prefs::kAdsSubdivisionTargetingCode, "US-FL");
 
   CreativeAdInfo ad;
   ad.creative_set_id = kCreativeSetId;
@@ -176,8 +168,7 @@ TEST_F(BatAdsSubdivisionTargetingFrequencyCapTest,
 TEST_F(BatAdsSubdivisionTargetingFrequencyCapTest,
     AllowAdIfSubdivisionTargetingIsSupportedAndManuallySelectedForNonSubdivisionGeoTarget) {  // NOLINT
   // Arrange
-  ON_CALL(*ads_client_mock_, GetAdsSubdivisionTargetingCode())
-      .WillByDefault(Return("US-FL"));
+  ads_client_mock_->SetStringPref(prefs::kAdsSubdivisionTargetingCode, "US-FL");
 
   CreativeAdInfo ad;
   ad.creative_set_id = kCreativeSetId;
@@ -193,8 +184,7 @@ TEST_F(BatAdsSubdivisionTargetingFrequencyCapTest,
 TEST_F(BatAdsSubdivisionTargetingFrequencyCapTest,
     DoNotAllowAdIfSubdivisionTargetingIsSupportedForUnsupportedGeoTarget) {
   // Arrange
-  ON_CALL(*ads_client_mock_, GetAdsSubdivisionTargetingCode())
-      .WillByDefault(Return("US-FL"));
+  ads_client_mock_->SetStringPref(prefs::kAdsSubdivisionTargetingCode, "US-FL");
 
   CreativeAdInfo ad;
   ad.creative_set_id = kCreativeSetId;
@@ -244,8 +234,8 @@ TEST_F(BatAdsSubdivisionTargetingFrequencyCapTest,
 TEST_F(BatAdsSubdivisionTargetingFrequencyCapTest,
     DoNotAllowAdIfSubdivisionTargetingIsDisabledForSubdivisionGeoTarget) {
   // Arrange
-  ON_CALL(*ads_client_mock_, GetAdsSubdivisionTargetingCode())
-      .WillByDefault(Return("DISABLED"));
+  ads_client_mock_->SetStringPref(
+      prefs::kAdsSubdivisionTargetingCode, "DISABLED");
 
   CreativeAdInfo ad;
   ad.creative_set_id = kCreativeSetId;
@@ -261,8 +251,8 @@ TEST_F(BatAdsSubdivisionTargetingFrequencyCapTest,
 TEST_F(BatAdsSubdivisionTargetingFrequencyCapTest,
     AllowAdIfSubdivisionTargetingIsDisabledForNonSubdivisionGeoTarget) {
   // Arrange
-  ON_CALL(*ads_client_mock_, GetAdsSubdivisionTargetingCode())
-      .WillByDefault(Return("DISABLED"));
+  ads_client_mock_->SetStringPref(
+      prefs::kAdsSubdivisionTargetingCode, "DISABLED");
 
   CreativeAdInfo ad;
   ad.creative_set_id = kCreativeSetId;

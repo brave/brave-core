@@ -27,6 +27,10 @@ namespace base {
 class ListValue;
 }
 
+namespace user_prefs {
+class PrefRegistrySyncable;
+}
+
 namespace brave_ads {
 
 using OnGetAdsHistoryCallback =
@@ -63,25 +67,24 @@ class AdsService : public KeyedService {
   virtual void SetEnabled(
       const bool is_enabled) = 0;
 
-  virtual bool ShouldAllowAdConversionTracking() const = 0;
   virtual void SetAllowAdConversionTracking(
       const bool should_allow) = 0;
 
-  virtual uint64_t GetAdsPerHour() = 0;
+  virtual uint64_t GetAdsPerHour() const = 0;
   virtual void SetAdsPerHour(
       const uint64_t ads_per_hour) = 0;
 
+  virtual uint64_t GetAdsPerDay() const = 0;
+
   virtual bool ShouldAllowAdsSubdivisionTargeting() const = 0;
-  virtual void SetAllowAdsSubdivisionTargeting(
-      const bool should_allow) = 0;
 
   virtual std::string GetAdsSubdivisionTargetingCode() const = 0;
   virtual void SetAdsSubdivisionTargetingCode(
       const std::string& subdivision_targeting_code) = 0;
 
   virtual std::string
-  GetAutomaticallyDetectedAdsSubdivisionTargetingCode() const = 0;
-  virtual void SetAutomaticallyDetectedAdsSubdivisionTargetingCode(
+  GetAutoDetectedAdsSubdivisionTargetingCode() const = 0;
+  virtual void SetAutoDetectedAdsSubdivisionTargetingCode(
       const std::string& subdivision_targeting_code) = 0;
 
   virtual void ChangeLocale(
@@ -156,6 +159,10 @@ class AdsService : public KeyedService {
       AdsServiceObserver* observer);
   void RemoveObserver(
       AdsServiceObserver* observer);
+
+  // static
+  static void RegisterProfilePrefs(
+      user_prefs::PrefRegistrySyncable* registry);
 
  protected:
   base::ObserverList<AdsServiceObserver> observers_;

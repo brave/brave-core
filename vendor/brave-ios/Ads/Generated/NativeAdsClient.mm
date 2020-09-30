@@ -15,28 +15,8 @@ NativeAdsClient::~NativeAdsClient() {
   bridge_ = nil;
 }
 
-bool NativeAdsClient::IsEnabled() const {
-  return [bridge_ isAdsEnabled];
-}
-
-bool NativeAdsClient::ShouldAllowAdConversionTracking() const {
-  return [bridge_ shouldAllowAdConversionTracking];
-}
-
-uint64_t NativeAdsClient::GetAdsPerDay() {
-  return [bridge_ getAdsPerDay];
-}
-
-uint64_t NativeAdsClient::GetAdsPerHour() {
-  return [bridge_ getAdsPerHour];
-}
-
 bool NativeAdsClient::IsNetworkConnectionAvailable() const {
   return [bridge_ isNetworkConnectionAvailable];
-}
-
-void NativeAdsClient::SetIdleThreshold(const int threshold) {
-  [bridge_ setIdleThreshold:threshold];
 }
 
 bool NativeAdsClient::IsForeground() const {
@@ -83,34 +63,62 @@ void NativeAdsClient::Log(const char * file, const int line, const int verbose_l
   [bridge_ log:file line:line verboseLevel:verbose_level message:message];
 }
 
-bool NativeAdsClient::ShouldAllowAdsSubdivisionTargeting() const {
-  return [bridge_ shouldAllowAdsSubdivisionTargeting];
-}
-
-void NativeAdsClient::SetAllowAdsSubdivisionTargeting(const bool should_allow) {
-  [bridge_ setAllowAdsSubdivisionTargeting:should_allow];
-}
-
-std::string NativeAdsClient::GetAdsSubdivisionTargetingCode() const {
-  return [bridge_ adsSubdivisionTargetingCode];
-}
-
-void NativeAdsClient::SetAdsSubdivisionTargetingCode(const std::string & subdivision_targeting_code) {
-  [bridge_ setAdsSubdivisionTargetingCode:subdivision_targeting_code];
-}
-
-std::string NativeAdsClient::GetAutomaticallyDetectedAdsSubdivisionTargetingCode() const {
-  return [bridge_ automaticallyDetectedAdsSubdivisionTargetingCode];
-}
-
-void NativeAdsClient::SetAutomaticallyDetectedAdsSubdivisionTargetingCode(const std::string & subdivision_targeting_code) {
-  [bridge_ setAutomaticallyDetectedAdsSubdivisionTargetingCode:subdivision_targeting_code];
-}
-
 void NativeAdsClient::RunDBTransaction(ads::DBTransactionPtr transaction, ads::RunDBTransactionCallback callback) {
   [bridge_ runDBTransaction:std::move(transaction) callback:callback];
 }
 
 void NativeAdsClient::OnAdRewardsChanged() {
   [bridge_ onAdRewardsChanged];
+}
+
+void NativeAdsClient::SetBooleanPref(const std::string & path, const bool value) {
+  [bridge_ setBooleanPref:path value:value];
+}
+
+bool NativeAdsClient::GetBooleanPref(const std::string & path) const {
+  return [bridge_ getBooleanPref:path];
+}
+
+void NativeAdsClient::SetIntegerPref(const std::string & path, const int value) {
+  [bridge_ setIntegerPref:path value:value];
+}
+
+int NativeAdsClient::GetIntegerPref(const std::string & path) const {
+  return [bridge_ getIntegerPref:path];
+}
+
+void NativeAdsClient::SetDoublePref(const std::string & path, const double value) {
+  [bridge_ setDoublePref:path value:value];
+}
+
+double NativeAdsClient::GetDoublePref(const std::string & path) const {
+  return [bridge_ getDoublePref:path];
+}
+
+void NativeAdsClient::SetStringPref(const std::string & path, const std::string & value) {
+  [bridge_ setStringPref:path value:value];
+}
+
+std::string NativeAdsClient::GetStringPref(const std::string& path) const {
+  return [bridge_ getStringPref:path];
+}
+
+void NativeAdsClient::SetInt64Pref(const std::string& path, const int64_t value) {
+  [bridge_ setInt64Pref:path value:value];
+}
+
+int64_t NativeAdsClient::GetInt64Pref(const std::string& path) const {
+  return [bridge_ getInt64Pref:path];
+}
+
+void NativeAdsClient::SetUint64Pref(const std::string& path, const uint64_t value) {
+  [bridge_ setUint64Pref:path value:value];
+}
+
+uint64_t NativeAdsClient::GetUint64Pref(const std::string& path) const {
+  return [bridge_ getUint64Pref:path];
+}
+
+void NativeAdsClient::ClearPref(const std::string & path) {
+  [bridge_ clearPref:path];
 }

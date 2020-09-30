@@ -9,13 +9,6 @@ namespace brave_ads {
 
 namespace prefs {
 
-// Stores whether Brave ads is enabled or disabled
-const char kEnabled[] = "brave.brave_ads.enabled";
-
-// Stores whether Brave ads should allow ad conversion tracking
-const char kShouldAllowAdConversionTracking[] =
-    "brave.brave_ads.should_allow_ad_conversion_tracking";
-
 // Stores whether ads were disabled at least once
 const char kAdsWereDisabled[] = "brave.brave_ads.were_disabled";
 
@@ -23,26 +16,9 @@ const char kAdsWereDisabled[] = "brave.brave_ads.were_disabled";
 // "No Wallet".
 const char kHasAdsP3AState[] = "brave.brave_ads.has_p3a_state";
 
-// Stores the maximum amount of ads per hour
-const char kAdsPerHour[] = "brave.brave_ads.ads_per_hour";
-
-// Stores whether Brave ads should allow subdivision ad targeting
-const char kShouldAllowAdsSubdivisionTargeting[] =
-    "brave.brave_ads.should_allow_ads_subdivision_targeting";
-
-// Stores the selected ads subdivision targeting code
-const char kAdsSubdivisionTargetingCode[] =
-    "brave.brave_ads.ads_subdivision_targeting_code";
-
-// Stores the automatically detected ads subdivision targeting code
-const char kAutomaticallyDetectedAdsSubdivisionTargetingCode[] =
-    "brave.brave_ads.automatically_detected_ads_subdivision_targeting_code";
-
-// Stores the maximum amount of ads per day
-const char kAdsPerDay[] = "brave.brave_ads.ads_per_day";
-
-// Stores the idle threshold before checking if an ad can be served
-const char kIdleThreshold[] = "brave.brave_ads.idle_threshold";
+// Stores ad view confirmation count
+const char kAdViewConfirmationCountPrefName[] =
+    "brave.weekly_storage.p2a_ad_view_confirmation_count";
 
 // Stores whether onboarding should be shown
 const char kShouldShowOnboarding[] =
@@ -61,16 +37,12 @@ const char kSupportedCountryCodesLastSchemaVersion[] =
     "brave.brave_ads.supported_regions_last_schema_version_number";
 const char kSupportedCountryCodesSchemaVersion[] =
     "brave.brave_ads.supported_regions_schema_version_number";
-
 const int kSupportedCountryCodesSchemaVersionNumber = 9;
 
 // Stores the preferences version number
 const char kVersion[] = "brave.brave_ads.prefs.version";
 
 const int kCurrentVersionNumber = 7;
-
-const char kAdViewConfirmationCountPrefName[] =
-    "brave.weekly_storage.p2a_ad_view_confirmation_count";
 
 }  // namespace prefs
 

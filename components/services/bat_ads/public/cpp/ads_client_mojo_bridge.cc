@@ -29,30 +29,6 @@ AdsClientMojoBridge::AdsClientMojoBridge(
 
 AdsClientMojoBridge::~AdsClientMojoBridge() = default;
 
-bool AdsClientMojoBridge::IsEnabled(
-    bool* out_is_enabled) {
-  DCHECK(out_is_enabled);
-  *out_is_enabled = ads_client_->IsEnabled();
-  return true;
-}
-
-void AdsClientMojoBridge::IsEnabled(
-    IsEnabledCallback callback) {
-  std::move(callback).Run(ads_client_->IsEnabled());
-}
-
-bool AdsClientMojoBridge::ShouldAllowAdConversionTracking(
-    bool* out_should_allow) {
-  DCHECK(out_should_allow);
-  *out_should_allow = ads_client_->ShouldAllowAdConversionTracking();
-  return true;
-}
-
-void AdsClientMojoBridge::ShouldAllowAdConversionTracking(
-    ShouldAllowAdConversionTrackingCallback callback) {
-  std::move(callback).Run(ads_client_->ShouldAllowAdConversionTracking());
-}
-
 bool AdsClientMojoBridge::IsForeground(
     bool* out_is_foreground) {
   DCHECK(out_is_foreground);
@@ -75,84 +51,6 @@ bool AdsClientMojoBridge::CanShowBackgroundNotifications(
 void AdsClientMojoBridge::CanShowBackgroundNotifications(
     CanShowBackgroundNotificationsCallback callback) {
   std::move(callback).Run(ads_client_->CanShowBackgroundNotifications());
-}
-
-bool AdsClientMojoBridge::GetAdsPerHour(
-    uint64_t* out_ads_per_hour) {
-  DCHECK(out_ads_per_hour);
-  *out_ads_per_hour = ads_client_->GetAdsPerHour();
-  return true;
-}
-
-void AdsClientMojoBridge::GetAdsPerHour(
-    GetAdsPerHourCallback callback) {
-  std::move(callback).Run(ads_client_->GetAdsPerHour());
-}
-
-bool AdsClientMojoBridge::GetAdsPerDay(
-    uint64_t* out_ads_per_day) {
-  DCHECK(out_ads_per_day);
-  *out_ads_per_day = ads_client_->GetAdsPerDay();
-  return true;
-}
-
-void AdsClientMojoBridge::GetAdsPerDay(GetAdsPerDayCallback callback) {
-  std::move(callback).Run(ads_client_->GetAdsPerDay());
-}
-
-bool AdsClientMojoBridge::ShouldAllowAdsSubdivisionTargeting(
-    bool* out_should_allow) {
-  DCHECK(out_should_allow);
-  *out_should_allow = ads_client_->ShouldAllowAdsSubdivisionTargeting();
-  return true;
-}
-
-void AdsClientMojoBridge::ShouldAllowAdsSubdivisionTargeting(
-    ShouldAllowAdsSubdivisionTargetingCallback callback) {
-  std::move(callback).Run(ads_client_->ShouldAllowAdsSubdivisionTargeting());
-}
-
-void AdsClientMojoBridge::SetAllowAdsSubdivisionTargeting(
-    const bool should_allow) {
-  ads_client_->SetAllowAdsSubdivisionTargeting(should_allow);
-}
-
-bool AdsClientMojoBridge::GetAdsSubdivisionTargetingCode(
-    std::string* out_subdivision_targeting_code) {
-  DCHECK(out_subdivision_targeting_code);
-  *out_subdivision_targeting_code =
-      ads_client_->GetAdsSubdivisionTargetingCode();
-  return true;
-}
-
-void AdsClientMojoBridge::GetAdsSubdivisionTargetingCode(
-    GetAdsSubdivisionTargetingCodeCallback callback) {
-  std::move(callback).Run(ads_client_->GetAdsSubdivisionTargetingCode());
-}
-
-void AdsClientMojoBridge::SetAdsSubdivisionTargetingCode(
-    const std::string& subdivision_targeting_code) {
-  ads_client_->SetAdsSubdivisionTargetingCode(subdivision_targeting_code);
-}
-
-bool AdsClientMojoBridge::GetAutomaticallyDetectedAdsSubdivisionTargetingCode(
-    std::string* out_subdivision_targeting_code) {
-  DCHECK(out_subdivision_targeting_code);
-  *out_subdivision_targeting_code =
-      ads_client_->GetAutomaticallyDetectedAdsSubdivisionTargetingCode();
-  return true;
-}
-
-void AdsClientMojoBridge::GetAutomaticallyDetectedAdsSubdivisionTargetingCode(
-    GetAutomaticallyDetectedAdsSubdivisionTargetingCodeCallback callback) {
-  std::move(callback).Run(
-      ads_client_->GetAutomaticallyDetectedAdsSubdivisionTargetingCode());
-}
-
-void AdsClientMojoBridge::SetAutomaticallyDetectedAdsSubdivisionTargetingCode(
-    const std::string& subdivision_targeting_code) {
-  ads_client_->SetAutomaticallyDetectedAdsSubdivisionTargetingCode(
-      subdivision_targeting_code);
 }
 
 bool AdsClientMojoBridge::IsNetworkConnectionAvailable(
@@ -191,11 +89,6 @@ void AdsClientMojoBridge::LoadResourceForId(
     const std::string& id,
     LoadResourceForIdCallback callback) {
   std::move(callback).Run(ads_client_->LoadResourceForId(id));
-}
-
-void AdsClientMojoBridge::SetIdleThreshold(
-    const int32_t threshold) {
-  ads_client_->SetIdleThreshold(threshold);
 }
 
 void AdsClientMojoBridge::Log(
@@ -339,6 +232,83 @@ void AdsClientMojoBridge::RunDBTransaction(
 
 void AdsClientMojoBridge::OnAdRewardsChanged() {
   ads_client_->OnAdRewardsChanged();
+}
+
+void AdsClientMojoBridge::GetBooleanPref(
+    const std::string& path,
+    GetBooleanPrefCallback callback) {
+  std::move(callback).Run(ads_client_->GetBooleanPref(path));
+}
+
+void AdsClientMojoBridge::SetBooleanPref(
+    const std::string& path,
+    const bool value) {
+  ads_client_->SetBooleanPref(path, value);
+}
+
+void AdsClientMojoBridge::GetIntegerPref(
+    const std::string& path,
+    GetIntegerPrefCallback callback) {
+  std::move(callback).Run(ads_client_->GetBooleanPref(path));
+}
+
+void AdsClientMojoBridge::SetIntegerPref(
+    const std::string& path,
+    const int value) {
+  ads_client_->SetIntegerPref(path, value);
+}
+
+void AdsClientMojoBridge::GetDoublePref(
+    const std::string& path,
+    GetDoublePrefCallback callback) {
+  std::move(callback).Run(ads_client_->GetDoublePref(path));
+}
+
+void AdsClientMojoBridge::SetDoublePref(
+    const std::string& path,
+    const double value) {
+  ads_client_->SetDoublePref(path, value);
+}
+
+void AdsClientMojoBridge::GetStringPref(
+    const std::string& path,
+    GetStringPrefCallback callback) {
+  std::move(callback).Run(ads_client_->GetStringPref(path));
+}
+
+void AdsClientMojoBridge::SetStringPref(
+    const std::string& path,
+    const std::string& value) {
+  ads_client_->SetStringPref(path, value);
+}
+
+void AdsClientMojoBridge::GetInt64Pref(
+    const std::string& path,
+    GetInt64PrefCallback callback) {
+  std::move(callback).Run(ads_client_->GetInt64Pref(path));
+}
+
+void AdsClientMojoBridge::SetInt64Pref(
+    const std::string& path,
+    const int64_t value) {
+  ads_client_->SetInt64Pref(path, value);
+}
+
+void AdsClientMojoBridge::GetUint64Pref(
+    const std::string& path,
+    GetUint64PrefCallback callback) {
+  std::move(callback).Run(ads_client_->GetUint64Pref(path));
+}
+
+void AdsClientMojoBridge::SetUint64Pref(
+    const std::string& path,
+    const uint64_t value) {
+  ads_client_->SetUint64Pref(path, value);
+}
+
+void AdsClientMojoBridge::ClearPref(
+    const std::string& path) {
+  ads_client_->ClearPref(path);
 }
 
 }  // namespace bat_ads

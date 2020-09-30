@@ -13,7 +13,7 @@
 #include "base/feature_list.h"
 #include "base/files/file_path.h"
 #include "base/logging.h"
-#include "brave/components/brave_ads/common/pref_names.h"
+#include "bat/ads/pref_names.h"
 #include "brave/components/brave_referrals/buildflags/buildflags.h"
 #include "brave/components/brave_rewards/common/pref_names.h"
 #include "brave/components/ntp_background_images/browser/features.h"
@@ -56,7 +56,7 @@ ViewCounterService::ViewCounterService(NTPBackgroundImagesService* service,
   pref_change_registrar_.Add(brave_rewards::prefs::kEnabled,
       base::BindRepeating(&ViewCounterService::OnPreferenceChanged,
       base::Unretained(this)));
-  pref_change_registrar_.Add(brave_ads::prefs::kEnabled,
+  pref_change_registrar_.Add(ads::prefs::kEnabled,
       base::BindRepeating(&ViewCounterService::OnPreferenceChanged,
       base::Unretained(this)));
   pref_change_registrar_.Add(prefs::kNewTabPageSuperReferralThemesOption,

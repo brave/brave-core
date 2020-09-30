@@ -22,6 +22,7 @@
 #include "base/memory/ptr_util.h"
 #include "base/numerics/ranges.h"
 #include "base/sequenced_task_runner.h"
+#include "base/strings/string_number_conversions.h"
 #include "base/strings/utf_string_conversions.h"
 #include "base/task/post_task.h"
 #include "base/task_runner_util.h"
@@ -32,6 +33,7 @@
 #include "bat/ads/ads_history.h"
 #include "bat/ads/ad_notification_info.h"
 #include "bat/ads/mojom.h"
+#include "bat/ads/pref_names.h"
 #include "bat/ads/resources/grit/bat_ads_resources.h"
 #include "bat/ads/statement_info.h"
 #include "brave/browser/profiles/profile_util.h"
@@ -40,6 +42,7 @@
 #include "brave/components/brave_ads/browser/ads_notification_handler.h"
 #include "brave/components/brave_ads/browser/ads_p2a.h"
 #include "brave/components/brave_ads/common/pref_names.h"
+#include "brave/components/brave_ads/browser/prefs_util.h"
 #include "brave/components/brave_ads/common/switches.h"
 #include "brave/components/brave_rewards/browser/rewards_notification_service.h"
 #include "brave/components/brave_rewards/browser/rewards_p3a.h"
@@ -268,30 +271,25 @@ bool AdsServiceImpl::IsNewlySupportedLocale() {
 
 void AdsServiceImpl::SetEnabled(
     const bool is_enabled) {
-  SetBooleanPref(prefs::kEnabled, is_enabled);
+  SetBooleanPref(ads::prefs::kEnabled, is_enabled);
   rewards_service_->OnAdsEnabled(is_enabled);
 }
 
 void AdsServiceImpl::SetAllowAdConversionTracking(
     const bool should_allow) {
-  SetBooleanPref(prefs::kShouldAllowAdConversionTracking, should_allow);
+  SetBooleanPref(ads::prefs::kShouldAllowAdConversionTracking, should_allow);
 }
 
 void AdsServiceImpl::SetAdsPerHour(
     const uint64_t ads_per_hour) {
-  SetUint64Pref(prefs::kAdsPerHour, ads_per_hour);
-}
-
-void AdsServiceImpl::SetAllowAdsSubdivisionTargeting(
-    const bool should_allow) {
-  SetBooleanPref(prefs::kShouldAllowAdsSubdivisionTargeting, should_allow);
+  SetUint64Pref(ads::prefs::kAdsPerHour, ads_per_hour);
 }
 
 void AdsServiceImpl::SetAdsSubdivisionTargetingCode(
     const std::string& subdivision_targeting_code) {
   const auto last_subdivision_targeting_code = GetAdsSubdivisionTargetingCode();
 
-  SetStringPref(prefs::kAdsSubdivisionTargetingCode,
+  SetStringPref(ads::prefs::kAdsSubdivisionTargetingCode,
       subdivision_targeting_code);
 
   if (last_subdivision_targeting_code == subdivision_targeting_code) {
@@ -305,9 +303,9 @@ void AdsServiceImpl::SetAdsSubdivisionTargetingCode(
   bat_ads_->OnAdsSubdivisionTargetingCodeHasChanged();
 }
 
-void AdsServiceImpl::SetAutomaticallyDetectedAdsSubdivisionTargetingCode(
+void AdsServiceImpl::SetAutoDetectedAdsSubdivisionTargetingCode(
     const std::string& subdivision_targeting_code) {
-  SetStringPref(prefs::kAutomaticallyDetectedAdsSubdivisionTargetingCode,
+  SetStringPref(ads::prefs::kAutoDetectedAdsSubdivisionTargetingCode,
       subdivision_targeting_code);
 }
 
@@ -533,7 +531,7 @@ void AdsServiceImpl::ToggleFlagAd(
 }
 
 bool AdsServiceImpl::IsEnabled() const {
-  auto is_enabled = GetBooleanPref(prefs::kEnabled);
+  auto is_enabled = GetBooleanPref(ads::prefs::kEnabled);
 
   auto is_rewards_enabled =
       GetBooleanPref(brave_rewards::prefs::kEnabled);
@@ -541,32 +539,27 @@ bool AdsServiceImpl::IsEnabled() const {
   return is_enabled && is_rewards_enabled;
 }
 
-bool AdsServiceImpl::ShouldAllowAdConversionTracking() const {
-  return GetBooleanPref(prefs::kShouldAllowAdConversionTracking);
-}
-
-uint64_t AdsServiceImpl::GetAdsPerHour() {
-  return base::ClampToRange(GetUint64Pref(prefs::kAdsPerHour),
+uint64_t AdsServiceImpl::GetAdsPerHour() const {
+  return base::ClampToRange(GetUint64Pref(ads::prefs::kAdsPerHour),
       static_cast<uint64_t>(1), static_cast<uint64_t>(5));
 }
 
-uint64_t AdsServiceImpl::GetAdsPerDay() {
-  return base::ClampToRange(GetUint64Pref(prefs::kAdsPerDay),
+uint64_t AdsServiceImpl::GetAdsPerDay() const {
+  return base::ClampToRange(GetUint64Pref(ads::prefs::kAdsPerDay),
       static_cast<uint64_t>(1), static_cast<uint64_t>(20));
 }
 
 bool AdsServiceImpl::ShouldAllowAdsSubdivisionTargeting() const {
-  return GetBooleanPref(prefs::kShouldAllowAdsSubdivisionTargeting);
+  return GetBooleanPref(ads::prefs::kShouldAllowAdsSubdivisionTargeting);
 }
 
 std::string AdsServiceImpl::GetAdsSubdivisionTargetingCode() const {
-  return GetStringPref(prefs::kAdsSubdivisionTargetingCode);
+  return GetStringPref(ads::prefs::kAdsSubdivisionTargetingCode);
 }
 
 std::string AdsServiceImpl::
-GetAutomaticallyDetectedAdsSubdivisionTargetingCode() const {
-  return GetStringPref(
-      prefs::kAutomaticallyDetectedAdsSubdivisionTargetingCode);
+GetAutoDetectedAdsSubdivisionTargetingCode() const {
+  return GetStringPref(ads::prefs::kAutoDetectedAdsSubdivisionTargetingCode);
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -647,13 +640,13 @@ void AdsServiceImpl::OnMigrateConfirmationsState(
 void AdsServiceImpl::Initialize() {
   profile_pref_change_registrar_.Init(profile_->GetPrefs());
 
-  profile_pref_change_registrar_.Add(prefs::kEnabled,
+  profile_pref_change_registrar_.Add(ads::prefs::kEnabled,
       base::Bind(&AdsServiceImpl::OnPrefsChanged, base::Unretained(this)));
 
   profile_pref_change_registrar_.Add(brave_rewards::prefs::kEnabled,
       base::Bind(&AdsServiceImpl::OnPrefsChanged, base::Unretained(this)));
 
-  profile_pref_change_registrar_.Add(prefs::kIdleThreshold,
+  profile_pref_change_registrar_.Add(ads::prefs::kIdleThreshold,
       base::Bind(&AdsServiceImpl::OnPrefsChanged, base::Unretained(this)));
 
   profile_pref_change_registrar_.Add(brave_rewards::prefs::kWalletBrave,
@@ -955,7 +948,7 @@ void AdsServiceImpl::ProcessIdleState(
 }
 
 int AdsServiceImpl::GetIdleThreshold() {
-  return GetIntegerPref(prefs::kIdleThreshold);
+  return GetIntegerPref(ads::prefs::kIdleThreshold);
 }
 
 void AdsServiceImpl::OnShow(
@@ -1427,9 +1420,9 @@ void AdsServiceImpl::MigratePrefsVersion1To2() {
   // migrate to the new value
 
   #if defined(OS_ANDROID)
-    SetUint64Pref(prefs::kAdsPerDay, 12);
+    SetUint64Pref(ads::prefs::kAdsPerDay, 12);
   #else
-    SetUint64Pref(prefs::kAdsPerDay, 20);
+    SetUint64Pref(ads::prefs::kAdsPerDay, 20);
   #endif
 }
 
@@ -1564,7 +1557,7 @@ void AdsServiceImpl::MigratePrefsVersion5To6() {
   // Unlike Muon, ads per day are not configurable in the UI so we can safely
   // migrate to the new value
 
-  SetUint64Pref(prefs::kAdsPerDay, 20);
+  SetUint64Pref(ads::prefs::kAdsPerDay, 20);
 }
 
 void AdsServiceImpl::MigratePrefsVersion6To7() {
@@ -1650,8 +1643,9 @@ bool AdsServiceImpl::IsUpgradingFromPreBraveAdsBuild() {
   // |prefs::kVersion| does not exist and it is not the first time the browser
   // has run for this user
 #if !defined(OS_ANDROID)
-  return GetBooleanPref(prefs::kEnabled) && !PrefExists(prefs::kIdleThreshold)
-      && !PrefExists(prefs::kVersion) && !first_run::IsChromeFirstRun();
+  return GetBooleanPref(ads::prefs::kEnabled) &&
+      !PrefExists(ads::prefs::kIdleThreshold) &&
+      !PrefExists(prefs::kVersion) && !first_run::IsChromeFirstRun();
 #else
   return false;
 #endif
@@ -1720,7 +1714,7 @@ void AdsServiceImpl::MaybeShowOnboarding() {
 }
 
 bool AdsServiceImpl::ShouldShowOnboarding() {
-  auto is_ads_enabled = GetBooleanPref(prefs::kEnabled);
+  auto is_ads_enabled = GetBooleanPref(ads::prefs::kEnabled);
 
   auto is_rewards_enabled =
       GetBooleanPref(brave_rewards::prefs::kEnabled);
@@ -1825,144 +1819,6 @@ bool AdsServiceImpl::ShouldShowMyFirstAdNotification() const {
   return IsEnabled() && should_show;
 }
 
-bool AdsServiceImpl::GetBooleanPref(
-    const std::string& path) const {
-  auto* prefs = profile_->GetPrefs();
-  const auto value = prefs->GetBoolean(path);
-
-  if (!prefs->HasPrefPath(path)) {
-    // If the preference path does not exist then the default value set with
-    // RegisterBooleanPref has not been serialized, so we need to serialize the
-    // default value
-    prefs->SetBoolean(path, value);
-  }
-
-  // If the preference path does exist then a value was serialized, so return
-  // the serialized value
-  return value;
-}
-
-void AdsServiceImpl::SetBooleanPref(
-    const std::string& path,
-    const bool value) {
-  profile_->GetPrefs()->SetBoolean(path, value);
-}
-
-int AdsServiceImpl::GetIntegerPref(
-    const std::string& path) const {
-  auto* prefs = profile_->GetPrefs();
-  const auto value = prefs->GetInteger(path);
-
-  if (!prefs->HasPrefPath(path)) {
-    // If the preference path does not exist then the default value set with
-    // RegisterIntegerPref has not been serialized, so we need to serialize the
-    // default value
-    prefs->SetInteger(path, value);
-  }
-
-  // If the preference path does exist then a value was serialized, so return
-  // the serialized value
-  return value;
-}
-
-void AdsServiceImpl::SetIntegerPref(
-    const std::string& path,
-    const int value) {
-  profile_->GetPrefs()->SetInteger(path, value);
-}
-
-double AdsServiceImpl::GetDoublePref(
-    const std::string& path) const {
-  auto* prefs = profile_->GetPrefs();
-  const auto value = prefs->GetDouble(path);
-
-  if (!prefs->HasPrefPath(path)) {
-    // If the preference path does not exist then the default value set with
-    // RegisterDoublePref has not been serialized, so we need to serialize the
-    // default value
-    prefs->SetDouble(path, value);
-  }
-
-  // If the preference path does exist then a value was serialized, so return
-  // the serialized value
-  return value;
-}
-
-void AdsServiceImpl::SetDoublePref(
-    const std::string& path,
-    const double value) {
-  profile_->GetPrefs()->SetDouble(path, value);
-}
-
-std::string AdsServiceImpl::GetStringPref(
-    const std::string& path) const {
-  auto* prefs = profile_->GetPrefs();
-  const auto value = prefs->GetString(path);
-
-  if (!prefs->HasPrefPath(path)) {
-    // If the preference path does not exist then the default value set with
-    // RegisterStringPref has not been serialized, so we need to serialize the
-    // default value
-    prefs->SetString(path, value);
-  }
-
-  // If the preference path does exist then a value was serialized, so return
-  // the serialized value
-  return value;
-}
-
-void AdsServiceImpl::SetStringPref(
-    const std::string& path,
-    const std::string& value) {
-  profile_->GetPrefs()->SetString(path, value);
-}
-
-int64_t AdsServiceImpl::GetInt64Pref(
-    const std::string& path) const {
-  auto* prefs = profile_->GetPrefs();
-  const auto value = prefs->GetInt64(path);
-
-  if (!prefs->HasPrefPath(path)) {
-    // If the preference path does not exist then the default value set with
-    // RegisterInt64Pref has not been serialized, so we need to serialize the
-    // default value
-    prefs->SetInt64(path, value);
-  }
-
-  // If the preference path does exist then a value was serialized, so return
-  // the serialized value
-  return value;
-}
-
-void AdsServiceImpl::SetInt64Pref(
-    const std::string& path,
-    const int64_t value) {
-  profile_->GetPrefs()->SetInt64(path, value);
-}
-
-uint64_t AdsServiceImpl::GetUint64Pref(
-    const std::string& path) const {
-  auto* prefs = profile_->GetPrefs();
-  const auto value = prefs->GetUint64(path);
-
-  if (!prefs->HasPrefPath(path)) {
-    // If the preference path does not exist then the default value set with
-    // RegisterUint64Pref has not been serialized, so we need to serialize the
-    // default value
-    prefs->SetUint64(path, value);
-  }
-
-  // If the preference path does exist then a value was serialized, so return
-  // the serialized value
-  return value;
-}
-
-void AdsServiceImpl::SetUint64Pref(
-    const std::string& path,
-    const uint64_t value) {
-  profile_->GetPrefs()->SetUint64(path, value);
-}
-
 bool AdsServiceImpl::PrefExists(
     const std::string& path) const {
   return profile_->GetPrefs()->HasPrefPath(path);
@@ -1970,7 +1826,7 @@ bool AdsServiceImpl::PrefExists(
 
 void AdsServiceImpl::OnPrefsChanged(
     const std::string& pref) {
-  if (pref == prefs::kEnabled ||
+  if (pref == ads::prefs::kEnabled ||
       pref == brave_rewards::prefs::kEnabled) {
     if (IsEnabled()) {
 #if !defined(OS_ANDROID)
@@ -1992,7 +1848,7 @@ void AdsServiceImpl::OnPrefsChanged(
 
     // Record P3A.
     brave_rewards::UpdateAdsP3AOnPreferenceChange(profile_->GetPrefs(), pref);
-  } else if (pref == prefs::kIdleThreshold) {
+  } else if (pref == ads::prefs::kIdleThreshold) {
     StartCheckIdleStateTimer();
   } else if (pref == brave_rewards::prefs::kWalletBrave) {
     OnWalletUpdated();
@@ -2007,10 +1863,6 @@ bool AdsServiceImpl::connected() {
 
 bool AdsServiceImpl::IsNetworkConnectionAvailable() const {
   return !net::NetworkChangeNotifier::IsOffline();
-}
-
-void AdsServiceImpl::SetIdleThreshold(const int threshold) {
-  SetIntegerPref(prefs::kIdleThreshold, threshold);
 }
 
 bool AdsServiceImpl::IsForeground() const {
@@ -2244,6 +2096,127 @@ void AdsServiceImpl::Log(
   if (verbose_level <= vlog_level) {
     ::logging::LogMessage(file, line, -verbose_level).stream() << message;
   }
+}
+
+bool AdsServiceImpl::GetBooleanPref(
+    const std::string& path) const {
+  const base::Value* value = prefs::GetValue(profile_->GetPrefs(), path);
+  if (!value) {
+    return false;
+  }
+
+  DCHECK(value->is_bool());
+
+  return value->GetBool();
+}
+
+void AdsServiceImpl::SetBooleanPref(
+    const std::string& path,
+    const bool value) {
+  profile_->GetPrefs()->SetBoolean(path, value);
+}
+
+int AdsServiceImpl::GetIntegerPref(
+    const std::string& path) const {
+  const base::Value* value = prefs::GetValue(profile_->GetPrefs(), path);
+  if (!value) {
+    return 0;
+  }
+
+  DCHECK(value->is_int());
+
+  return value->GetInt();
+}
+
+void AdsServiceImpl::SetIntegerPref(
+    const std::string& path,
+    const int value) {
+  profile_->GetPrefs()->SetInteger(path, value);
+}
+
+double AdsServiceImpl::GetDoublePref(
+    const std::string& path) const {
+  const base::Value* value = prefs::GetValue(profile_->GetPrefs(), path);
+  if (!value) {
+    return 0.0;
+  }
+
+  DCHECK(value->is_double() || value->is_int());
+
+  return value->GetDouble();
+}
+
+void AdsServiceImpl::SetDoublePref(
+    const std::string& path,
+    const double value) {
+  profile_->GetPrefs()->SetDouble(path, value);
+}
+
+std::string AdsServiceImpl::GetStringPref(
+    const std::string& path) const {
+  const base::Value* value = prefs::GetValue(profile_->GetPrefs(), path);
+  if (!value) {
+    return "";
+  }
+
+  DCHECK(value->is_string());
+
+  return value->GetString();
+}
+
+void AdsServiceImpl::SetStringPref(
+    const std::string& path,
+    const std::string& value) {
+  profile_->GetPrefs()->SetString(path, value);
+}
+
+int64_t AdsServiceImpl::GetInt64Pref(
+    const std::string& path) const {
+  const base::Value* value = prefs::GetValue(profile_->GetPrefs(), path);
+  if (!value) {
+    return 0;
+  }
+
+  std::string string = "0";
+  bool success = value->GetAsString(&string);
+  DCHECK(success);
+
+  int64_t integer;
+  base::StringToInt64(string, &integer);
+  return integer;
+}
+
+void AdsServiceImpl::SetInt64Pref(
+    const std::string& path,
+    const int64_t value) {
+  profile_->GetPrefs()->SetInt64(path, value);
+}
+
+uint64_t AdsServiceImpl::GetUint64Pref(
+    const std::string& path) const {
+  const base::Value* value = prefs::GetValue(profile_->GetPrefs(), path);
+  if (!value) {
+    return 0;
+  }
+
+  std::string string = "0";
+  bool success = value->GetAsString(&string);
+  DCHECK(success);
+
+  uint64_t integer;
+  base::StringToUint64(string, &integer);
+  return integer;
+}
+
+void AdsServiceImpl::SetUint64Pref(
+    const std::string& path,
+    const uint64_t value) {
+  profile_->GetPrefs()->SetUint64(path, value);
+}
+
+void AdsServiceImpl::ClearPref(
+    const std::string& path) {
+  profile_->GetPrefs()->ClearPref(path);
 }
 
 ///////////////////////////////////////////////////////////////////////////////

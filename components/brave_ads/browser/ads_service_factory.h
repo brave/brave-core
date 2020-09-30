@@ -24,9 +24,6 @@ class AdsServiceFactory : public BrowserContextKeyedServiceFactory {
 
   static AdsServiceFactory* GetInstance();
 
-  void RegisterProfilePrefs(
-      user_prefs::PrefRegistrySyncable* registry) override;
-
  private:
   friend struct base::DefaultSingletonTraits<AdsServiceFactory>;
 

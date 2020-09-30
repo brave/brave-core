@@ -310,8 +310,8 @@
       <message name="IDS_BRAVE_REWARDS_LOCAL_ADS_SUBDIVISION_TARGETING_TITLE" desc="">State level ad targeting</message>
       <message name="IDS_BRAVE_REWARDS_LOCAL_ADS_SUBDIVISION_TARGETING_DESCRIPTION" desc="">This allows Brave to show you ads meant specifically for your state.</message>
       <message name="IDS_BRAVE_REWARDS_LOCAL_ADS_SUBDIVISION_TARGETING_LEARN" desc="">Learn More</message>
-      <message name="IDS_BRAVE_REWARDS_LOCAL_ADS_SUBDIVISION_TARGETING_AUTOMATICALLY_DETECTED_AS" desc="">Auto-detected as {{adsSubdivisionTarget}}</message>
-      <message name="IDS_BRAVE_REWARDS_LOCAL_ADS_SUBDIVISION_TARGETING_AUTOMATICALLY_DETECT" desc="">Auto-detect</message>
+      <message name="IDS_BRAVE_REWARDS_LOCAL_ADS_SUBDIVISION_TARGETING_AUTO_DETECTED_AS" desc="">Auto-detected as {{adsSubdivisionTarget}}</message>
+      <message name="IDS_BRAVE_REWARDS_LOCAL_ADS_SUBDIVISION_TARGETING_AUTO_DETECT" desc="">Auto-detect</message>
       <message name="IDS_BRAVE_REWARDS_LOCAL_ADS_SUBDIVISION_TARGETING_DISABLE" desc="">Disable</message>
       <message name="IDS_BRAVE_REWARDS_LOCAL_ADS_SUBDIVISION_TARGETING_DISABLED" desc="">Disabled</message>
       <message name="IDS_BRAVE_UI_BAT_REWARDS_TEXT" desc="">BAT</message>

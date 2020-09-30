@@ -147,6 +147,9 @@ class AdsImpl
   void Shutdown(
       ShutdownCallback callback) override;
 
+  uint64_t GetAdsPerHourPref() const;
+  uint64_t GetAdsPerDayPref() const;
+
   bool is_foreground_ = false;
   void OnForeground() override;
   void OnBackground() override;

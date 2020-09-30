@@ -33,6 +33,7 @@
 #include "base/task_runner_util.h"
 #include "base/threading/sequenced_task_runner_handle.h"
 #include "base/time/time.h"
+#include "bat/ads/pref_names.h"
 #include "bat/ledger/global_constants.h"
 #include "bat/ledger/ledger.h"
 #include "bat/ledger/ledger_database.h"
@@ -43,7 +44,6 @@
 #include "brave/components/brave_ads/browser/ads_service.h"
 #include "brave/components/brave_ads/browser/ads_service_factory.h"
 #include "brave/components/brave_ads/browser/buildflags/buildflags.h"
-#include "brave/components/brave_ads/common/pref_names.h"
 #include "brave/components/brave_rewards/browser/android_util.h"
 #include "brave/components/brave_rewards/browser/file_util.h"
 #include "brave/components/brave_rewards/browser/logging.h"
@@ -854,7 +854,7 @@ void RewardsServiceImpl::OnWalletInitialized(ledger::type::Result result) {
     RecordWalletBalanceP3A(true, true, 0);
 #if BUILDFLAG(BRAVE_ADS_ENABLED)
     const bool ads_enabled =
-        profile_->GetPrefs()->GetBoolean(brave_ads::prefs::kEnabled);
+        profile_->GetPrefs()->GetBoolean(ads::prefs::kEnabled);
     RecordAdsState(ads_enabled ? AdsP3AState::kAdsEnabled
                                : AdsP3AState::kAdsDisabled);
 #endif

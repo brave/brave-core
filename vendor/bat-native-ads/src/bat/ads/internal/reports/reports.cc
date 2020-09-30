@@ -13,6 +13,7 @@
 #include "rapidjson/writer.h"
 #include "bat/ads/internal/ads_impl.h"
 #include "bat/ads/internal/time_util.h"
+#include "bat/ads/pref_names.h"
 
 namespace ads {
 
@@ -59,11 +60,11 @@ std::string Reports::GenerateSettingsEventReport() const {
   writer.EndObject();
 
   writer.String("adsPerDay");
-  auto ads_per_day = ads_->get_ads_client()->GetAdsPerDay();
+  auto ads_per_day = ads_->GetAdsPerDayPref();
   writer.Uint64(ads_per_day);
 
   writer.String("adsPerHour");
-  auto ads_per_hour = ads_->get_ads_client()->GetAdsPerHour();
+  auto ads_per_hour = ads_->GetAdsPerHourPref();
   writer.Uint64(ads_per_hour);
 
   writer.EndObject();

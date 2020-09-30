@@ -22,6 +22,7 @@
 #include "bat/ads/internal/sorts/ads_history/ads_history_sort_factory.h"
 #include "bat/ads/internal/time_util.h"
 #include "bat/ads/internal/url_util.h"
+#include "bat/ads/pref_names.h"
 
 namespace ads {
 
@@ -64,7 +65,7 @@ void AdConversions::MaybeConvert(
     const std::string& url) {
   DCHECK(is_initialized_);
 
-  if (!ads_->get_ads_client()->ShouldAllowAdConversionTracking()) {
+  if (!IsAllowed()) {
     BLOG(1, "Ad conversions are not allowed");
     return;
   }
@@ -95,6 +96,11 @@ void AdConversions::StartTimerIfReady() {
 
   AdConversionQueueItemInfo ad_conversion = queue_.front();
   StartTimer(ad_conversion);
+}
+
+bool AdConversions::IsAllowed() const {
+  return ads_->get_ads_client()->GetBooleanPref(
+      prefs::kShouldAllowAdConversionTracking);
 }
 
 ///////////////////////////////////////////////////////////////////////////////

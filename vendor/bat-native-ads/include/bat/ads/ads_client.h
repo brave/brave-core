@@ -27,47 +27,6 @@ class ADS_EXPORT AdsClient {
  public:
   virtual ~AdsClient() = default;
 
-  // Should return |true| if ads is enabled; otherwise, should return |false|
-  virtual bool IsEnabled() const = 0;
-
-  // Should return |true| if allow ad conversion tracking is enabled; otherwise,
-  // should return |false|
-  virtual bool ShouldAllowAdConversionTracking() const = 0;
-
-  // Should return the maximum number of ads that can be shown per hour
-  virtual uint64_t GetAdsPerHour() = 0;
-
-  // Should return the maximum number of ads that can be shown per day
-  virtual uint64_t GetAdsPerDay() = 0;
-
-  // Should return |true| if ads subdivision targeting is allowed; otherwise,
-  // should return |false|
-  virtual bool ShouldAllowAdsSubdivisionTargeting() const = 0;
-
-  // Set if ads subdivision targeting is allowed
-  virtual void SetAllowAdsSubdivisionTargeting(
-      const bool should_allow) = 0;
-
-  // Should return the ads subdivision targeting code
-  virtual std::string GetAdsSubdivisionTargetingCode() const = 0;
-
-  // Set the ads subdivision targeting code
-  virtual void SetAdsSubdivisionTargetingCode(
-      const std::string& subdivision_targeting_code) = 0;
-
-  // Should return the automatically detected ads subdivision targeting code
-  virtual std::string
-      GetAutomaticallyDetectedAdsSubdivisionTargetingCode() const = 0;
-
-  // Set the automatically detected ads subdivision targeting code
-  virtual void SetAutomaticallyDetectedAdsSubdivisionTargetingCode(
-      const std::string& subdivision_targeting_code) = 0;
-
-  // Set the idle threshold specified in seconds for how long a user should be
-  // idle before |OnUnIdle| is called. This call is optional for mobile devices
-  virtual void SetIdleThreshold(
-      const int threshold) = 0;
-
   // Should return |true| if there is an available network connection;
   // otherwise, should return |false|
   virtual bool IsNetworkConnectionAvailable() const = 0;
@@ -138,6 +97,52 @@ class ADS_EXPORT AdsClient {
       const int line,
       const int verbose_level,
       const std::string& message) = 0;
+
+  // Preferences
+  virtual bool GetBooleanPref(
+      const std::string& path) const = 0;
+
+  virtual void SetBooleanPref(
+      const std::string& path,
+      const bool value) = 0;
+
+  virtual int GetIntegerPref(
+      const std::string& path) const = 0;
+
+  virtual void SetIntegerPref(
+      const std::string& path,
+      const int value) = 0;
+
+  virtual double GetDoublePref(
+      const std::string& path) const = 0;
+
+  virtual void SetDoublePref(
+      const std::string& path,
+      const double value) = 0;
+
+  virtual std::string GetStringPref(
+      const std::string& path) const = 0;
+
+  virtual void SetStringPref(
+      const std::string& path,
+      const std::string& value) = 0;
+
+  virtual int64_t GetInt64Pref(
+      const std::string& path) const = 0;
+
+  virtual void SetInt64Pref(
+      const std::string& path,
+      const int64_t value) = 0;
+
+  virtual uint64_t GetUint64Pref(
+      const std::string& path) const = 0;
+
+  virtual void SetUint64Pref(
+      const std::string& path,
+      const uint64_t value) = 0;
+
+  virtual void ClearPref(
+      const std::string& path) = 0;
 };
 
 }  // namespace ads

@@ -8,6 +8,7 @@
 #include "bat/ads/internal/ads_impl.h"
 #include "bat/ads/internal/frequency_capping/frequency_capping_util.h"
 #include "bat/ads/internal/time_util.h"
+#include "bat/ads/pref_names.h"
 
 namespace ads {
 
@@ -41,7 +42,7 @@ bool AdsPerDayFrequencyCap::DoesRespectCap(
   const uint64_t time_constraint = base::Time::kSecondsPerHour *
       base::Time::kHoursPerDay;
 
-  const uint64_t cap = ads_->get_ads_client()->GetAdsPerDay();
+  const uint64_t cap = ads_->GetAdsPerDayPref();
 
   return DoesHistoryRespectCapForRollingTimeConstraint(history,
       time_constraint, cap);

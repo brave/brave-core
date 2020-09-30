@@ -384,8 +384,8 @@ void CustomizeWebUIHTMLSource(const std::string &name,
         { "adsSubdivisionTargetingTitle",  IDS_BRAVE_REWARDS_LOCAL_ADS_SUBDIVISION_TARGETING_TITLE },  // NOLINT
         { "adsSubdivisionTargetingDescription",  IDS_BRAVE_REWARDS_LOCAL_ADS_SUBDIVISION_TARGETING_DESCRIPTION },  // NOLINT
         { "adsSubdivisionTargetingLearn",  IDS_BRAVE_REWARDS_LOCAL_ADS_SUBDIVISION_TARGETING_LEARN },  // NOLINT
-        { "adsSubdivisionTargetingAutomaticallyDetectedAs",  IDS_BRAVE_REWARDS_LOCAL_ADS_SUBDIVISION_TARGETING_AUTOMATICALLY_DETECTED_AS },  // NOLINT
-        { "adsSubdivisionTargetingAutomaticallyDetect",  IDS_BRAVE_REWARDS_LOCAL_ADS_SUBDIVISION_TARGETING_AUTOMATICALLY_DETECT },  // NOLINT
+        { "adsSubdivisionTargetingAutoDetectedAs",  IDS_BRAVE_REWARDS_LOCAL_ADS_SUBDIVISION_TARGETING_AUTO_DETECTED_AS },  // NOLINT
+        { "adsSubdivisionTargetingAutoDetect",  IDS_BRAVE_REWARDS_LOCAL_ADS_SUBDIVISION_TARGETING_AUTO_DETECT },  // NOLINT
         { "adsSubdivisionTargetingDisable",  IDS_BRAVE_REWARDS_LOCAL_ADS_SUBDIVISION_TARGETING_DISABLE },  // NOLINT
         { "adsSubdivisionTargetingDisabled",  IDS_BRAVE_REWARDS_LOCAL_ADS_SUBDIVISION_TARGETING_DISABLED },  // NOLINT
         { "adsTitle",  IDS_BRAVE_REWARDS_LOCAL_ADS_TITLE },

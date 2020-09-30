@@ -316,8 +316,8 @@ const int kDaysOfAdsHistory = 7;
 const char kShouldAllowAdsSubdivisionTargeting[] =
     "shouldAllowAdsSubdivisionTargeting";
 const char kAdsSubdivisionTargeting[] = "adsSubdivisionTargeting";
-const char kAutomaticallyDetectedAdsSubdivisionTargeting[] =
-    "automaticallyDetectedAdsSubdivisionTargeting";
+const char kAutoDetectedAdsSubdivisionTargeting[] =
+    "autoDetectedAdsSubdivisionTargeting";
 
 }  // namespace
 
@@ -1148,10 +1148,10 @@ void RewardsDOMHandler::GetAdsData(const base::ListValue *args) {
       ads_service_->GetAdsSubdivisionTargetingCode();
   ads_data.SetString(kAdsSubdivisionTargeting, subdivision_targeting_code);
 
-  const std::string automatically_detected_subdivision_targeting_code =
-      ads_service_->GetAutomaticallyDetectedAdsSubdivisionTargetingCode();
-  ads_data.SetString(kAutomaticallyDetectedAdsSubdivisionTargeting,
-      automatically_detected_subdivision_targeting_code);
+  const std::string auto_detected_subdivision_targeting_code =
+      ads_service_->GetAutoDetectedAdsSubdivisionTargetingCode();
+  ads_data.SetString(kAutoDetectedAdsSubdivisionTargeting,
+      auto_detected_subdivision_targeting_code);
 
   const bool should_allow_subdivision_ad_targeting =
       ads_service_->ShouldAllowAdsSubdivisionTargeting();
@@ -1379,8 +1379,8 @@ void RewardsDOMHandler::SaveAdsSetting(const base::ListValue* args) {
     ads_service_->SetAdsPerHour(std::stoull(value));
   } else if (key == kAdsSubdivisionTargeting) {
     ads_service_->SetAdsSubdivisionTargetingCode(value);
-  } else if (key == kAutomaticallyDetectedAdsSubdivisionTargeting) {
-    ads_service_->SetAutomaticallyDetectedAdsSubdivisionTargetingCode(value);
+  } else if (key == kAutoDetectedAdsSubdivisionTargeting) {
+    ads_service_->SetAutoDetectedAdsSubdivisionTargetingCode(value);
   }
 
   base::ListValue* emptyArgs = nullptr;

@@ -54,6 +54,8 @@ source_set("browser") {
       "background_helper.h",
       "notification_helper.cc",
       "notification_helper.h",
+      "prefs_util.cc",
+      "prefs_util.h",
     ]
 
     deps += [

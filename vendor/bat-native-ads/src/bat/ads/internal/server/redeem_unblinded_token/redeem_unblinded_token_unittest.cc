@@ -24,6 +24,7 @@
 #include "bat/ads/internal/server/redeem_unblinded_token/create_confirmation_util.h"
 #include "bat/ads/internal/server/redeem_unblinded_token/redeem_unblinded_token_delegate_mock.h"
 #include "bat/ads/internal/unittest_util.h"
+#include "bat/ads/pref_names.h"
 
 // npm run test -- brave_unit_tests --filter=BatAds*
 
@@ -71,12 +72,6 @@ class BatAdsRedeemUnblindedTokenTest : public ::testing::Test {
     ASSERT_TRUE(temp_dir_.CreateUniqueTempDir());
     const base::FilePath path = temp_dir_.GetPath();
 
-    ON_CALL(*ads_client_mock_, IsEnabled())
-        .WillByDefault(Return(true));
-
-    ON_CALL(*ads_client_mock_, ShouldAllowAdConversionTracking())
-        .WillByDefault(Return(true));
-
     SetBuildChannel(false, "test");
 
     ON_CALL(*locale_helper_mock_, GetLocale())
@@ -91,6 +86,8 @@ class BatAdsRedeemUnblindedTokenTest : public ::testing::Test {
     MockLoadUserModelForId(ads_client_mock_);
     MockLoadResourceForId(ads_client_mock_);
     MockSave(ads_client_mock_);
+
+    MockPrefs(ads_client_mock_);
 
     database_ = std::make_unique<Database>(path.AppendASCII("database.sqlite"));
     MockRunDBTransaction(ads_client_mock_, database_);

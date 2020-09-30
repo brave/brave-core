@@ -25,6 +25,7 @@
 #include "bat/ads/internal/platform/platform_helper_mock.h"
 #include "bat/ads/internal/time_util.h"
 #include "bat/ads/internal/unittest_util.h"
+#include "bat/ads/pref_names.h"
 
 // npm run test -- brave_unit_tests --filter=BatAds*
 
@@ -801,12 +802,6 @@ TEST_F(BatAdsCreativeAdNotificationsDatabaseTableTest,
 TEST_F(BatAdsCreativeAdNotificationsDatabaseTableTest,
     GetCreativeAdNotificationsFromCatalogEndpoint) {
   // Arrange
-  ON_CALL(*ads_client_mock_, IsEnabled())
-      .WillByDefault(Return(true));
-
-  ON_CALL(*ads_client_mock_, ShouldAllowAdConversionTracking())
-      .WillByDefault(Return(true));
-
   SetBuildChannel(false, "test");
 
   ON_CALL(*locale_helper_mock_, GetLocale())
@@ -821,6 +816,8 @@ TEST_F(BatAdsCreativeAdNotificationsDatabaseTableTest,
   MockLoadUserModelForId(ads_client_mock_);
   MockLoadResourceForId(ads_client_mock_);
   MockSave(ads_client_mock_);
+
+  MockPrefs(ads_client_mock_);
 
   const URLEndpoints endpoints = {
     {
