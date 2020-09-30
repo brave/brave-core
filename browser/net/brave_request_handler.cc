@@ -15,6 +15,7 @@
 #include "brave/browser/net/brave_httpse_network_delegate_helper.h"
 #include "brave/browser/net/brave_site_hacks_network_delegate_helper.h"
 #include "brave/browser/net/brave_stp_util.h"
+#include "brave/browser/net/global_privacy_control_network_delegate_helper.h"
 #include "brave/browser/translate/buildflags/buildflags.h"
 #include "brave/common/pref_names.h"
 #include "brave/components/brave_referrals/buildflags/buildflags.h"
@@ -98,6 +99,10 @@ void BraveRequestHandler::SetupCallbacks() {
 
   brave::OnBeforeStartTransactionCallback start_transaction_callback =
       base::Bind(brave::OnBeforeStartTransaction_SiteHacksWork);
+  before_start_transaction_callbacks_.push_back(start_transaction_callback);
+
+  start_transaction_callback =
+      base::Bind(brave::OnBeforeStartTransaction_GlobalPrivacyControlWork);
   before_start_transaction_callbacks_.push_back(start_transaction_callback);
 
 #if BUILDFLAG(ENABLE_BRAVE_REFERRALS)
