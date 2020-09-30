@@ -14,8 +14,11 @@ typedef testing::Test IpfsUtilsUnitTest;
 
 TEST_F(IpfsUtilsUnitTest, IsIPFSURL) {
   std::vector<GURL> ipfs_urls({
-      GURL("http://localhost:8080/ipfs/bafybeiemxf5abjwjbikoz4mc3a3dla6ual3jsgpdr4cjr3oz3evfyavhwq/wiki/Vincent_van_Gogh.html"),  // NOLINT
-      GURL("http://localhost:8080/ipns/tr.wikipedia-on-ipfs.org/wiki/Anasayfa.html")  // NOLINT
+      GURL("http://localhost:8080/ipfs/"
+           "bafybeiemxf5abjwjbikoz4mc3a3dla6ual3jsgpdr4cjr3oz3evfyavhwq/wiki/"
+           "Vincent_van_Gogh.html"),  // NOLINT
+      GURL("http://localhost:8080/ipns/tr.wikipedia-on-ipfs.org/wiki/"
+           "Anasayfa.html")  // NOLINT
   });
 
   for (auto url : ipfs_urls) {

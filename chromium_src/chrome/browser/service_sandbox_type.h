@@ -8,6 +8,8 @@
 
 #include "../../../../chrome/browser/service_sandbox_type.h"
 
+#include "brave/components/ipfs/browser/buildflags/buildflags.h"
+
 // brave::mojom::ProfileImport
 namespace brave {
 namespace mojom {
@@ -21,18 +23,9 @@ content::GetServiceSandboxType<brave::mojom::ProfileImport>() {
   return sandbox::policy::SandboxType::kNoSandbox;
 }
 
-// ipfs::mojom::IpfsService
-namespace ipfs {
-namespace mojom {
-class IpfsService;
-}  // namespace mojom
-}  // namespace ipfs
-
-template <>
-inline sandbox::policy::SandboxType
-content::GetServiceSandboxType<ipfs::mojom::IpfsService>() {
-  return sandbox::policy::SandboxType::kNoSandbox;
-}
+#if BUILDFLAG(IPFS_ENABLED)
+#include "brave/components/ipfs/browser/service_sandbox_type.h"
+#endif
 
 namespace tor {
 namespace mojom {

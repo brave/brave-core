@@ -3,14 +3,10 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#include "brave/components/ipfs/browser/features.h"
+#ifndef BRAVE_COMPONENTS_IPFS_COMMON_PREF_NAMES_H_
+#define BRAVE_COMPONENTS_IPFS_COMMON_PREF_NAMES_H_
 
-#include "base/feature_list.h"
+extern const char kIPFSResolveMethod[];
+extern const char kIPFSBinaryAvailable[];
 
-namespace ipfs {
-namespace features {
-
-const base::Feature kIpfsFeature{"Ipfs", base::FEATURE_DISABLED_BY_DEFAULT};
-
-}  // namespace features
-}  // namespace ipfs
+#endif  // BRAVE_COMPONENTS_IPFS_COMMON_PREF_NAMES_H_

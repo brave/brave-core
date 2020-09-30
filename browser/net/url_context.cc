@@ -19,7 +19,7 @@
 #include "net/base/isolation_info.h"
 
 #if BUILDFLAG(IPFS_ENABLED)
-#include "brave/common/pref_names.h"
+#include "brave/components/ipfs/common/pref_names.h"
 #include "brave/components/ipfs/common/ipfs_constants.h"
 #include "components/prefs/testing_pref_service.h"
 #include "components/user_prefs/user_prefs.h"

@@ -7,17 +7,16 @@
 
 #include <vector>
 
-#include "url/gurl.h"
 #include "extensions/common/url_pattern.h"
+#include "url/gurl.h"
 
 namespace ipfs {
 
 // static
 bool IpfsUtils::IsIPFSURL(const GURL& gurl) {
-  static std::vector<URLPattern> updater_patterns({
-      URLPattern(URLPattern::SCHEME_ALL, "*://*/ipfs/*"),
-      URLPattern(URLPattern::SCHEME_ALL, "*://*/ipns/*")
-  });
+  static std::vector<URLPattern> updater_patterns(
+      {URLPattern(URLPattern::SCHEME_ALL, "*://*/ipfs/*"),
+       URLPattern(URLPattern::SCHEME_ALL, "*://*/ipns/*")});
   return std::any_of(
       updater_patterns.begin(), updater_patterns.end(),
       [&gurl](URLPattern pattern) { return pattern.MatchesURL(gurl); });

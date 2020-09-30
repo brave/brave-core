@@ -11,5 +11,6 @@
      <message name="IDS_IPFS_LAUNCH" desc="Text of launch action">Launch</message>
      <message name="IDS_IPFS_SHUTDOWN" desc="Text of shutdown action">Shutdown</message>
      <message name="IDS_IPFS_NOT_INSTALLED" desc="Text of not installed state">Not Installed</message>
+     <message name="IDS_UTILITY_PROCESS_IPFS_NAME" desc="The utility process which manages IPFS daemon">IPFS Service</message>
   </if>
 </grit-part>

@@ -89,9 +89,8 @@ class BraveIpfsClientUpdaterTest : public ExtensionBrowserTest {
   }
 
   void WaitForIpfsClientUpdaterThread() {
-    scoped_refptr<base::ThreadTestHelper> io_helper(
-        new base::ThreadTestHelper(
-            g_brave_browser_process->ipfs_client_updater()->GetTaskRunner()));
+    scoped_refptr<base::ThreadTestHelper> io_helper(new base::ThreadTestHelper(
+        g_brave_browser_process->ipfs_client_updater()->GetTaskRunner()));
     ASSERT_TRUE(io_helper->Run());
   }
 

@@ -7,12 +7,12 @@
 
 #include <vector>
 
-#include "brave/browser/brave_browser_process_impl.h"
 #include "brave/browser/infobars/ipfs_infobar_delegate.h"
-#include "brave/browser/ipfs/ipfs_service.h"
-#include "brave/common/pref_names.h"
+#include "brave/browser/ipfs/ipfs_service_factory.h"
+#include "brave/components/ipfs/browser/ipfs_service.h"
 #include "brave/components/ipfs/common/ipfs_constants.h"
 #include "brave/components/ipfs/common/ipfs_utils.h"
+#include "brave/components/ipfs/common/pref_names.h"
 #include "chrome/browser/infobars/infobar_service.h"
 #include "components/prefs/pref_service.h"
 #include "components/user_prefs/user_prefs.h"
@@ -31,8 +31,10 @@ IPFSTabHelper::IPFSTabHelper(content::WebContents* web_contents)
 // static
 void IPFSTabHelper::MaybeCreateForWebContents(
     content::WebContents* web_contents) {
-  if (!ipfs::IpfsService::IsIpfsEnabled(web_contents->GetBrowserContext()))
+  if (!ipfs::IpfsServiceFactory::GetForContext(
+          web_contents->GetBrowserContext())) {
     return;
+  }
 
   CreateForWebContents(web_contents);
 }

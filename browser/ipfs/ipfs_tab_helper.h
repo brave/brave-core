@@ -6,6 +6,8 @@
 #ifndef BRAVE_BROWSER_IPFS_IPFS_TAB_HELPER_H_
 #define BRAVE_BROWSER_IPFS_IPFS_TAB_HELPER_H_
 
+#include <memory>
+
 #include "content/public/browser/web_contents_observer.h"
 #include "content/public/browser/web_contents_user_data.h"
 
@@ -19,9 +21,8 @@ class PrefService;
 namespace ipfs {
 
 // Determines if IPFS should be active for a given top-level navigation.
-class IPFSTabHelper
-    : public content::WebContentsObserver,
-      public content::WebContentsUserData<IPFSTabHelper> {
+class IPFSTabHelper : public content::WebContentsObserver,
+                      public content::WebContentsUserData<IPFSTabHelper> {
  public:
   ~IPFSTabHelper() override;
 

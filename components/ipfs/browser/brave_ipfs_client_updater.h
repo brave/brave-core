@@ -24,8 +24,7 @@ namespace ipfs {
 #if defined(OS_WIN)
 static const char kIpfsClientComponentName[] =
     "Brave Ipfs Client Updater (Windows)";
-static const char kIpfsClientComponentId[] =
-    "lnbclahgobmjphilkalbhebakmblnbij";
+static const char kIpfsClientComponentId[] = "lnbclahgobmjphilkalbhebakmblnbij";
 static const char kIpfsClientComponentBase64PublicKey[] =
     "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAuLxVDZm1QIzpMUFMBYym"
     "zriJGzgRYWpun1n9Qgd0240h9zchyZenLnZG0d3XLk38J+tHCoObb+o5sNuSzx43"
@@ -37,8 +36,7 @@ static const char kIpfsClientComponentBase64PublicKey[] =
 #elif defined(OS_MAC)
 static const char kIpfsClientComponentName[] =
     "Brave Ipfs Client Updater (Mac)";
-static const char kIpfsClientComponentId[] =
-    "nljcddpbnaianmglkpkneakjaapinabi";
+static const char kIpfsClientComponentId[] = "nljcddpbnaianmglkpkneakjaapinabi";
 static const char kIpfsClientComponentBase64PublicKey[] =
     "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAu4gvE67b2T0U0i5awN5Q"
     "8YTyEXkahVAIaDqZaC2GkyjqJxkfThTxNq+MfjRAfeoxdKq95XATHMQPw6bHBCRr"
@@ -50,8 +48,7 @@ static const char kIpfsClientComponentBase64PublicKey[] =
 #elif defined(OS_LINUX)
 static const char kIpfsClientComponentName[] =
     "Brave Ipfs Client Updater (Linux)";
-static const char kIpfsClientComponentId[] =
-    "oecghfpdmkjlhnfpmmjegjacfimiafjp";
+static const char kIpfsClientComponentId[] = "oecghfpdmkjlhnfpmmjegjacfimiafjp";
 static const char kIpfsClientComponentBase64PublicKey[] =
     "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAuG1akBG8ka37Pdx0F21r"
     "J2efimrZnN8PrBlUBHYZ3sOBFLjzdw7gxpqznbOzNzx4hAAUXdLWPxBZXgOGV+rw"
@@ -86,8 +83,8 @@ class BraveIpfsClientUpdater : public BraveComponent {
 
  protected:
   void OnComponentReady(const std::string& component_id,
-      const base::FilePath& install_dir,
-      const std::string& manifest) override;
+                        const base::FilePath& install_dir,
+                        const std::string& manifest) override;
 
  private:
   friend class ::BraveIpfsClientUpdaterTest;
@@ -109,8 +106,8 @@ class BraveIpfsClientUpdater : public BraveComponent {
 };
 
 // Creates the BraveIpfsClientUpdater
-std::unique_ptr<BraveIpfsClientUpdater>
-BraveIpfsClientUpdaterFactory(BraveComponent::Delegate* delegate);
+std::unique_ptr<BraveIpfsClientUpdater> BraveIpfsClientUpdaterFactory(
+    BraveComponent::Delegate* delegate);
 
 }  // namespace ipfs
 

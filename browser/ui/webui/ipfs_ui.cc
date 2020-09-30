@@ -7,9 +7,9 @@
 
 #include <utility>
 
-#include "brave/browser/ipfs/ipfs_service.h"
 #include "brave/browser/ipfs/ipfs_service_factory.h"
 #include "brave/components/ipfs/browser/addresses_config.h"
+#include "brave/components/ipfs/browser/ipfs_service.h"
 #include "brave/components/ipfs_ui/resources/grit/ipfs_generated_map.h"
 #include "components/grit/brave_components_resources.h"
 #include "content/public/browser/render_frame_host.h"

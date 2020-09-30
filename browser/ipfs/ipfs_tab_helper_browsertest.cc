@@ -7,9 +7,9 @@
 #include "base/scoped_observer.h"
 #include "brave/browser/ipfs/ipfs_tab_helper.h"
 #include "brave/common/brave_paths.h"
-#include "brave/common/pref_names.h"
 #include "brave/components/ipfs/browser/features.h"
 #include "brave/components/ipfs/common/ipfs_constants.h"
+#include "brave/components/ipfs/common/pref_names.h"
 #include "chrome/browser/infobars/infobar_service.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser.h"
@@ -23,11 +23,10 @@
 #include "content/public/test/browser_test_utils.h"
 #include "net/dns/mock_host_resolver.h"
 
-class IPFSTabHelperTest: public InProcessBrowserTest,
-    public infobars::InfoBarManager::Observer {
+class IPFSTabHelperTest : public InProcessBrowserTest,
+                          public infobars::InfoBarManager::Observer {
  public:
-  IPFSTabHelperTest() : infobar_observer_(this),
-      infobar_added_(false) {
+  IPFSTabHelperTest() : infobar_observer_(this), infobar_added_(false) {
     feature_list_.InitAndEnableFeature(ipfs::features::kIpfsFeature);
   }
 
@@ -55,8 +54,7 @@ class IPFSTabHelperTest: public InProcessBrowserTest,
     ASSERT_TRUE(embedded_test_server()->Start());
   }
 
-  ~IPFSTabHelperTest() override {
-  }
+  ~IPFSTabHelperTest() override {}
 
   void AddInfoBarObserver(InfoBarService* infobar_service) {
     infobar_observer_.Add(infobar_service);
@@ -77,7 +75,7 @@ class IPFSTabHelperTest: public InProcessBrowserTest,
       infobars::InfoBarDelegate* delegate =
           infobar_service->infobar_at(i)->delegate();
       if (delegate->GetIdentifier() ==
-              infobars::InfoBarDelegate::IPFS_INFOBAR_DELEGATE) {
+          infobars::InfoBarDelegate::IPFS_INFOBAR_DELEGATE) {
         ConfirmInfoBarDelegate* confirm_delegate =
             delegate->AsConfirmInfoBarDelegate();
         ASSERT_EQ(confirm_delegate->GetButtons(), expected_buttons);
@@ -93,20 +91,19 @@ class IPFSTabHelperTest: public InProcessBrowserTest,
       infobars::InfoBarDelegate* delegate =
           infobar_service->infobar_at(i)->delegate();
       if (delegate->GetIdentifier() ==
-              infobars::InfoBarDelegate::IPFS_INFOBAR_DELEGATE) {
+          infobars::InfoBarDelegate::IPFS_INFOBAR_DELEGATE) {
         ConfirmInfoBarDelegate* confirm_delegate =
             delegate->AsConfirmInfoBarDelegate();
-        ASSERT_EQ(confirm_delegate->GetButtons(),
-            expected_buttons);
+        ASSERT_EQ(confirm_delegate->GetButtons(), expected_buttons);
         confirm_delegate->Cancel();
       }
     }
   }
 
   bool NavigateToURLUntilLoadStop(const std::string& origin,
-      const std::string& path) {
+                                  const std::string& path) {
     ui_test_utils::NavigateToURL(browser(),
-        embedded_test_server()->GetURL(origin, path));
+                                 embedded_test_server()->GetURL(origin, path));
     return WaitForLoadStop(active_contents());
   }
 
@@ -120,7 +117,7 @@ class IPFSTabHelperTest: public InProcessBrowserTest,
   // infobars::InfoBarManager::Observer:
   void OnInfoBarAdded(infobars::InfoBar* infobar) override {
     if (infobar->delegate()->GetIdentifier() ==
-            infobars::InfoBarDelegate::IPFS_INFOBAR_DELEGATE) {
+        infobars::InfoBarDelegate::IPFS_INFOBAR_DELEGATE) {
       infobar_added_ = true;
       if (infobar_added_run_loop_) {
         infobar_added_run_loop_->Quit();
@@ -133,8 +130,8 @@ IN_PROC_BROWSER_TEST_F(IPFSTabHelperTest, InfobarAddWithAccept) {
   InfoBarService* infobar_service =
       InfoBarService::FromWebContents(active_contents());
   AddInfoBarObserver(infobar_service);
-  EXPECT_TRUE(NavigateToURLUntilLoadStop("dweb.link",
-                  "/ipfs/QmbWqxBEKC3P8tqsKc98xmWNzrzDtRLMiMPL8wBuTGsMnR"));
+  EXPECT_TRUE(NavigateToURLUntilLoadStop(
+      "dweb.link", "/ipfs/QmbWqxBEKC3P8tqsKc98xmWNzrzDtRLMiMPL8wBuTGsMnR"));
 
   WaitForInfobarAdded();
   InfoBarAccept(ConfirmInfoBarDelegate::BUTTON_OK |
@@ -150,8 +147,8 @@ IN_PROC_BROWSER_TEST_F(IPFSTabHelperTest, InfobarAddWithSettings) {
   InfoBarService* infobar_service =
       InfoBarService::FromWebContents(active_contents());
   AddInfoBarObserver(infobar_service);
-  EXPECT_TRUE(NavigateToURLUntilLoadStop("dweb.link",
-                  "/ipfs/QmbWqxBEKC3P8tqsKc98xmWNzrzDtRLMiMPL8wBuTGsMnR"));
+  EXPECT_TRUE(NavigateToURLUntilLoadStop(
+      "dweb.link", "/ipfs/QmbWqxBEKC3P8tqsKc98xmWNzrzDtRLMiMPL8wBuTGsMnR"));
 
   WaitForInfobarAdded();
   InfoBarCancel(ConfirmInfoBarDelegate::BUTTON_OK |
