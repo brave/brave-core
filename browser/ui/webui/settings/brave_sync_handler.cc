@@ -49,6 +49,11 @@ void BraveSyncHandler::RegisterMessages() {
   web_ui()->RegisterMessageCallback(
       "SyncSetupReset", base::BindRepeating(&BraveSyncHandler::HandleReset,
                                             base::Unretained(this)));
+
+  web_ui()->RegisterMessageCallback(
+      "SyncDeleteDevice",
+      base::BindRepeating(&BraveSyncHandler::HandleDeleteDevice,
+                          base::Unretained(this)));
 }
 
 void BraveSyncHandler::OnJavascriptAllowed() {
@@ -183,6 +188,25 @@ void BraveSyncHandler::HandleReset(const base::ListValue* args) {
                                        std::move(callback_id_arg)));
 }
 
+void BraveSyncHandler::HandleDeleteDevice(const base::ListValue* args) {
+  AllowJavascript();
+  CHECK_EQ(2U, args->GetSize());
+  const base::Value* callback_id;
+  CHECK(args->Get(0, &callback_id));
+  const base::Value* device_id_value;
+  CHECK(args->Get(1, &device_id_value));
+
+  std::string device_id = device_id_value->GetString();
+DLOG(ERROR) << "[BraveSync] " << __func__ << " device_id=" << device_id;
+  if (device_id.empty()) {
+    LOG(ERROR) << "No device id to remove!";
+    RejectJavascriptCallback(*callback_id, base::Value(false));
+    return;
+  }
+
+  // TODO(alexeybarabash): implement the logic
+}
+
 syncer::BraveProfileSyncService* BraveSyncHandler::GetSyncService() const {
   return ProfileSyncServiceFactory::IsSyncAllowed(profile_)
              ? static_cast<syncer::BraveProfileSyncService*>(
@@ -221,6 +245,8 @@ base::Value BraveSyncHandler::GetSyncDeviceList() {
     bool is_current_device =
         local_device_info ? local_device_info->guid() == device->guid() : false;
     device_value.SetBoolKey("isCurrentDevice", is_current_device);
+    device_value.SetStringKey("signinScopedDeviceId",
+        device->signin_scoped_device_id());
     device_list.Append(std::move(device_value));
   }
   return device_list;

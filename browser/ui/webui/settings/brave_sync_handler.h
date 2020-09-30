@@ -41,6 +41,7 @@ class BraveSyncHandler : public settings::SettingsPageUIHandler,
   void HandleSetSyncCode(const base::ListValue* args);
   void HandleGetQRCode(const base::ListValue* args);
   void HandleReset(const base::ListValue* args);
+  void HandleDeleteDevice(const base::ListValue* args);
 
   void OnResetDone(base::Value callback_id);
 
