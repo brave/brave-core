@@ -477,6 +477,27 @@ class NSURLExtensionsTests: XCTestCase {
         XCTAssertEqual("http://foo.com/bar/?ppp=123&rrr=aaa", urlE.absoluteString)
     }
     
+    func testLocalQueryParamHandling() {
+        let urlA = URL(string: "http://brave.com?url=https://foo.com")
+        let urlB = URL(string: "http://brave.com/?url=https://foo.com")
+        let urlC = URL(string: "http://brave.com?url=https://foo.com/meh")
+        let urlD = URL(string: "http://localhost/errors/foo.hmtl?url=https://foo.com")
+        let urlE = URL(string: "http://localhost/errors/foo.hmtl?url=https://foo.com/meh")
+        
+        for url in [urlA, urlB, urlC, urlD, urlE] {
+            if url == nil {
+                XCTAssertTrue(false, "Cannot parse URL")
+                return
+            }
+        }
+        
+        XCTAssertNotEqual(urlA?.originalURLFromErrorURL, urlA)
+        XCTAssertNotEqual(urlB?.originalURLFromErrorURL, urlB)
+        XCTAssertNotEqual(urlC?.originalURLFromErrorURL, urlC)
+        XCTAssertEqual(urlD?.originalURLFromErrorURL?.absoluteString, "https://foo.com")
+        XCTAssertEqual(urlE?.originalURLFromErrorURL?.absoluteString, "https://foo.com/meh")
+    }
+    
     func testAppendPathComponentsHelper() {
         var urlA = URL(string: "http://foo.com/bar/")!
         var urlB = URL(string: "http://bar.com/noo")!
