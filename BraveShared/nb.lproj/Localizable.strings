@@ -29,6 +29,9 @@
 /* Context: The 'Up' in 'Brave Shields Up' */
 "BraveShieldsStatusValueUp" = "Opp";
 
+/* The accessibility hint spoken when focused on the main shields toggle */
+"BraveShieldsToggleHint" = "Dobbeltklikk for å skru av og på Brave Shields";
+
 /* The body of the notification that goes out monthly to users who can claim an ads grant */
 "MonthlyAdsClaimNotificationBody" = "Trykk for å gjøre krav på dine gratis tokener.";
 
@@ -142,6 +145,15 @@
 
 /* No comment provided by engineer. */
 "ReportABrokenSite" = "Rapporter et ødelagt nettsted";
+
+/* First part of the report a broken site copy. After the colon is a new line and then a website address */
+"ReportBrokenSiteBody1" = "Fortell Braves utviklere at dette nettstedet ikke funker ordentlig med Shields:";
+
+/* No comment provided by engineer. */
+"ReportBrokenSiteBody2" = "Merk: Denne nettadressen vil sendes inn med Brave-versjonsnummeret ditt og IP-adressen din (som ikke vil bli lagret).";
+
+/* No comment provided by engineer. */
+"ReportBrokenSubmitButtonTitle" = "Send inn";
 
 /* Name of folder where restored bookmarks are retrieved */
 "RestoredBookmarksFolderName" = "Gjenopprettede bokmerker";
@@ -368,8 +380,92 @@
 /* No comment provided by engineer. */
 "ShieldsDownDisclaimer" = "Du surfer på dette nettstedet uten Braves personvernsbeskyttelse. Fungerer det ikke med Skjold oppe?";
 
+/* No comment provided by engineer. */
+"SiteReportedBody" = "Takk for at du forteller Braves utviklere at det er noe galt med dette nettstedet. Vi vil gjøre vårt beste for å fikse det!";
+
+/* No comment provided by engineer. */
+"SiteReportedTitle" = "Takk skal du ha";
+
 /* Text that informs a user about Brave Sync service deprecation. */
 "sync.syncV1DeprecationText" = "En ny versjon av Brave Sync er på vei, og dette vil påvirke oppsettet ditt. Gjør deg klar for oppgraderingen.";
+
+/* No comment provided by engineer. */
+"today.allSources" = "Alle kilder";
+
+/* The name of the feature */
+"today.braveToday" = "Brave Today";
+
+/* No comment provided by engineer. */
+"today.contentAvailableButtonTitle" = "Nytt innhold tilgjengelig";
+
+/* No comment provided by engineer. */
+"today.deals" = "Tilbud";
+
+/* No comment provided by engineer. */
+"today.disableAll" = "Deaktiver alle";
+
+/* '%@' will turn into the name of a publisher (verbatim), for example: Brave Blog */
+"today.disabledAlertBody" = "Brave Today vil ikke lenger vise innhold fra %@";
+
+/* No comment provided by engineer. */
+"today.disabledAlertTitle" = "Deaktivert";
+
+/* '%@' will turn into the name of a publisher (verbatim), for example: Brave Blog */
+"today.disablePublisherContent" = "Deaktiver innhold fra %@";
+
+/* No comment provided by engineer. */
+"today.emptyFeedBody" = "Prøv å skru på noen nyhetskilder";
+
+/* No comment provided by engineer. */
+"today.emptyFeedTitle" = "Ingen artikler å vise";
+
+/* No comment provided by engineer. */
+"today.enableAll" = "Aktiver alle";
+
+/* '%@' will turn into the name of a publisher (verbatim), for example: Brave Blog */
+"today.enablePublisherContent" = "Aktiver innhold fra %@";
+
+/* No comment provided by engineer. */
+"today.errorGeneralBody" = "Brave Today opplever noen problemer. Prøv igjen.";
+
+/* No comment provided by engineer. */
+"today.errorGeneralTitle" = "Oops …";
+
+/* No comment provided by engineer. */
+"today.introCardBody" = "Brave Today matcher interessene dine på enheten din, slik at din personlige informasjon aldri forlater nettleseren din. Nytt innhold oppdatert gjennom hele dagen.";
+
+/* No comment provided by engineer. */
+"today.introCardTitle" = "Dagens topphistorier i en helt privat feed, bare for deg.";
+
+/* No comment provided by engineer. */
+"today.isEnabledToggleLabel" = "Vis Brave Today";
+
+/* No comment provided by engineer. */
+"today.learnMoreTitle" = "Lær mer om dataene dine";
+
+/* 'Brave Offers' is a product name */
+"today.moreBraveOffers" = "Flere tilbud fra Brave";
+
+/* No comment provided by engineer. */
+"today.noInternet" = "Ingen Internett-tilkobling";
+
+/* No comment provided by engineer. */
+"today.noInternetBody" = "Prøv å sjekke tilkoblingen din eller koble til Wi-Fi på nytt.";
+
+/* No comment provided by engineer. */
+"today.refresh" = "Oppdater";
+
+/* No comment provided by engineer. */
+"today.resetSourceSettingsButtonTitle" = "Tilbakestill kildeinnstillinger til standard";
+
+/* No comment provided by engineer. */
+"today.settingsSourceHeaderTitle" = "Kilder";
+
+/* No comment provided by engineer. */
+"today.sourcesAndSettings" = "Kilder og innstillinger";
+
+/* No comment provided by engineer. */
+"today.sourceSearchPlaceholder" = "Søk";
 
 /* Prompt shown before enabling provider search queries */
 "Turn on search suggestions?" = "Slå på søkeforslag?";

@@ -133,6 +133,9 @@
 /* No comment provided by engineer. */
 "BlockAdsAndTracking" = "Blokker annonser og sporing";
 
+/* No comment provided by engineer. */
+"BlockAdsAndTrackingDescription" = "Forhindrer annonser, sprettoppvinduer og sporere fra å lastes inn";
+
 /* Title for setting to block all website cookies. */
 "BlockAllCookies" = "Blokker alle informasjonskapsler";
 
@@ -148,6 +151,9 @@
 /* Message of alert displayed to user when block all cookie operation fails */
 "BlockAllCookiesFailedAlertMsg" = "Alternativet kan ikke endres. Prøv senere.";
 
+/* No comment provided by engineer. */
+"BlockCookiesDescription" = "Forhindrer nettsteder i å lagre informasjon om dine tidligere besøk";
+
 /* title for section showing page blocking statistics */
 "BlockingMonitor" = "Blokkeringsoversikt";
 
@@ -162,6 +168,9 @@
 
 /* No comment provided by engineer. */
 "BlockScripts" = "Blokker skripter";
+
+/* No comment provided by engineer. */
+"BlockScriptsDescription" = "Blokkerer Javascript (kan ødelegge nettsteder)";
 
 /* Bookmark Folder Section Title */
 "BookmarkFolder" = "Bokmerkemappe";
@@ -189,6 +198,9 @@
 
 /* Brave Rewards settings title */
 "BraveRewardsTitle" = "Brave Rewards";
+
+/* No comment provided by engineer. */
+"BraveShieldsAndPrivacy" = "Brave Shields og -personvern";
 
 /* Sync page title */
 "BraveSync" = "Synk";
@@ -220,17 +232,26 @@
 /* No comment provided by engineer. */
 "ClearData" = "Sletter data";
 
-/* Button in settings that clears private data for the selected items. Also used as section title in settings panel */
+/* Section title in settings panel */
 "ClearPrivateData" = "Fjern private data";
 
 /* The cancel button when confirming clear private data. */
 "ClearPrivateDataAlertCancelButtonTitle" = "Avbryt";
 
-/* Description of the confirmation dialog shown when a user tries to clear their private data. */
-"ClearPrivateDataAlertMessage" = "Denne handlingen kommer til å fjerne all din private data. Handlingen kan ikke gjøres om.";
+/* No comment provided by engineer. */
+"ClearPrivateDataAlertMessage" = "Er du sikker?";
 
 /* The button that clears private data. */
 "ClearPrivateDataAlertOkButtonTitle" = "OK";
+
+/* No comment provided by engineer. */
+"ClearPrivateDataAlertTitle" = "Slett data";
+
+/* No comment provided by engineer. */
+"ClearPrivateDataAlertYesAction" = "Ja, slett";
+
+/* Button in settings that clears private data for the selected items. */
+"ClearPrivateDataNow" = "Slett data nå";
 
 /* The cancel button when confirming clear history. */
 "ClearSyncedHistoryAlertCancelButtoTitle" = "Avbryt";
@@ -289,6 +310,9 @@
 /* Copy rewards internals info for support */
 "CopyWalletSupportInfo" = "Kopier støtteinformasjon";
 
+/* Create PDF share action. */
+"CreatePDF" = "Opprett PDF";
+
 /* Currently usedd search engines section name. */
 "CurrentlyUsedSearchEngines" = "Søkemotorer som for tiden er i bruk";
 
@@ -303,6 +327,9 @@
 
 /* DuckDuckGo callout title. */
 "DDGCalloutTitle" = "Søke privat med DuckDuckGo?";
+
+/* No comment provided by engineer. */
+"defaultBrowserCalloutCloseAccesabilityLabel" = "Lukk infomelding om standard nettleser";
 
 /* Name for default Brave theme. */
 "defaultThemeName" = "Brave standard";
@@ -436,6 +463,9 @@
 /* Title for favorites cell */
 "FavoritesRootLevelCellTitle" = "Favoritter";
 
+/* No comment provided by engineer. */
+"Features" = "Funksjoner";
+
 /* Share action title */
 "FindInPage" = "Finn på side";
 
@@ -461,13 +491,22 @@
 "FingerprintingnProtection" = "Fingeravtrykk-\nbeskyttelse";
 
 /* No comment provided by engineer. */
-"FingerprintingProtection" = "Fingeravtrykkbeskyttelse";
+"FingerprintingProtection" = "Blokkerer fingeravtrykk";
+
+/* No comment provided by engineer. */
+"FingerprintingProtectionDescription" = "Gjør det vanskeligere for nettsteder å gjenkjenne enhetens særegne egenskaper.";
 
 /* No comment provided by engineer. */
 "genericErrorBody" = "Auda! Noe gikk galt. Prøv på nytt.";
 
 /* No comment provided by engineer. */
 "genericErrorTitle" = "Feil";
+
+/* No comment provided by engineer. */
+"GoogleSafeBrowsing" = "Blokkerer farlige nettsteder";
+
+/* No comment provided by engineer. */
+"GoogleSafeBrowsingUsingWebKitDescription" = "Sender tilslørte nettadresser til enkelte sider du besøker til Googles Safe Browsing-tjeneste når sikkerheten din er i fare.";
 
 /* Grand camera access */
 "GrantCameraAccess" = "Aktiver kamera";
@@ -492,6 +531,9 @@
 
 /* No comment provided by engineer. */
 "HTTPSEverywhere" = "HTTPS Everywhere";
+
+/* No comment provided by engineer. */
+"HTTPSEverywhereDescription" = "Åpner noen nettsteder med en sikker HTTPS-tilkobling i stedet for vanlig HTTP.";
 
 /* Shields Https Stat */
 "HTTPSrUpgrades" = "HTTPS-\noppgraderinger";
@@ -678,6 +720,9 @@
 
 /* Button title to that opens a website. */
 "OpenWebsite" = "Åpne nettside";
+
+/* Section name for other privacy settings */
+"OtherPrivacySettingsSection" = "Andre personverninnstillinger";
 
 /* Section name for other settings. */
 "OtherSettingsSection" = "Andre innstillinger";
@@ -896,6 +941,12 @@
 "SendReportButtonTitle" = "Send rapport";
 
 /* No comment provided by engineer. */
+"setDefaultBrowserCalloutTitle" = "Brave kan nå angis som standard nettleser i iOS. Trykk her for å åpne innstillingene.";
+
+/* Settings item to set the Brave as a default browser on the iOS device. */
+"setDefaultBrowserSettingsCell" = "Angi som standard nettleser";
+
+/* No comment provided by engineer. */
 "Settings" = "Innstillinger";
 
 /* Error message that is shown in settings when there was a problem loading */
@@ -914,7 +965,10 @@
 "ShareWithMenuItem" = "Lagre med ...";
 
 /* Section title for adbblock, tracking protection, HTTPS-E, and cookies */
-"ShieldsDefaults" = "Shield standardverdier";
+"ShieldsDefaults" = "Globale standarder for Brave Shields";
+
+/* Section footer for global shields defaults */
+"ShieldsDefaultsFooter" = "Dette er standard Shields-innstillinger for nye nettsteder. Å endre disse påvirker ikke de eksisterende innstillingene per nettsted.";
 
 /* shields overview message */
 "ShieldsOverview" = "Med Site Shield kan du kontrollere når annonser og sporingsprogrammer blokkeres på hver side du besøker. Hvis du vil se annonser på en bestemt side, kan du aktivere dem her.";

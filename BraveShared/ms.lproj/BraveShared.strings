@@ -133,6 +133,9 @@
 /* No comment provided by engineer. */
 "BlockAdsAndTracking" = "Sekat Iklan & Penjejakan";
 
+/* No comment provided by engineer. */
+"BlockAdsAndTrackingDescription" = "Halang iklan, halaman timbul dan penjejak daripada dimuatkan";
+
 /* Title for setting to block all website cookies. */
 "BlockAllCookies" = "Sekat semua Kuki";
 
@@ -148,6 +151,9 @@
 /* Message of alert displayed to user when block all cookie operation fails */
 "BlockAllCookiesFailedAlertMsg" = "Gagal menetapkan keutamaan. Sila cuba lagi.";
 
+/* No comment provided by engineer. */
+"BlockCookiesDescription" = "Halang laman web daripada menyimpan maklumat tentang lawatan anda sebelum ini";
+
 /* title for section showing page blocking statistics */
 "BlockingMonitor" = "Pemantau Penyekatan";
 
@@ -162,6 +168,9 @@
 
 /* No comment provided by engineer. */
 "BlockScripts" = "Sekat Skrip";
+
+/* No comment provided by engineer. */
+"BlockScriptsDescription" = "Menyekat Javascript (mungkin memecahkan tapak)";
 
 /* Bookmark Folder Section Title */
 "BookmarkFolder" = "Folder Penanda Buku";
@@ -189,6 +198,9 @@
 
 /* Brave Rewards settings title */
 "BraveRewardsTitle" = "Brave Rewards";
+
+/* No comment provided by engineer. */
+"BraveShieldsAndPrivacy" = "Perisai Brave & Privasi";
 
 /* Sync page title */
 "BraveSync" = "Segerak";
@@ -220,17 +232,26 @@
 /* No comment provided by engineer. */
 "ClearData" = "Mengosongkan Data";
 
-/* Button in settings that clears private data for the selected items. Also used as section title in settings panel */
+/* Section title in settings panel */
 "ClearPrivateData" = "Kosongkan Data Peribadi";
 
 /* The cancel button when confirming clear private data. */
 "ClearPrivateDataAlertCancelButtonTitle" = "Batal";
 
-/* Description of the confirmation dialog shown when a user tries to clear their private data. */
-"ClearPrivateDataAlertMessage" = "Tindakan ini akan mengosongkan semua data peribadi anda. Ia tidak dapat dibuat asal.";
+/* No comment provided by engineer. */
+"ClearPrivateDataAlertMessage" = "Adakah anda pasti?";
 
 /* The button that clears private data. */
 "ClearPrivateDataAlertOkButtonTitle" = "OK";
+
+/* No comment provided by engineer. */
+"ClearPrivateDataAlertTitle" = "Kosongkan Data";
+
+/* No comment provided by engineer. */
+"ClearPrivateDataAlertYesAction" = "Ya, Padamkan";
+
+/* Button in settings that clears private data for the selected items. */
+"ClearPrivateDataNow" = "Kosongkan Data Sekarang";
 
 /* The cancel button when confirming clear history. */
 "ClearSyncedHistoryAlertCancelButtoTitle" = "Batal";
@@ -289,6 +310,9 @@
 /* Copy rewards internals info for support */
 "CopyWalletSupportInfo" = "Salin Maklumat Sokongan";
 
+/* Create PDF share action. */
+"CreatePDF" = "Cipta PDF";
+
 /* Currently usedd search engines section name. */
 "CurrentlyUsedSearchEngines" = "Enjin carian yang digunakan sekarang";
 
@@ -303,6 +327,9 @@
 
 /* DuckDuckGo callout title. */
 "DDGCalloutTitle" = "Carian peribadi dengan DuckDuckGo?";
+
+/* No comment provided by engineer. */
+"defaultBrowserCalloutCloseAccesabilityLabel" = "Tutup timbul penyemak imbas lalai";
 
 /* Name for default Brave theme. */
 "defaultThemeName" = "Brave gagal";
@@ -436,6 +463,9 @@
 /* Title for favorites cell */
 "FavoritesRootLevelCellTitle" = "Kegemaran";
 
+/* No comment provided by engineer. */
+"Features" = "Ciri";
+
 /* Share action title */
 "FindInPage" = "Cari dalam Halaman";
 
@@ -461,13 +491,22 @@
 "FingerprintingnProtection" = "Pencapjarian\nPerlindungan";
 
 /* No comment provided by engineer. */
-"FingerprintingProtection" = "Perlindungan Pencapjarian";
+"FingerprintingProtection" = "Sekat Pencapjarian";
+
+/* No comment provided by engineer. */
+"FingerprintingProtectionDescription" = "Menjadikannya lebih sukar untuk tapak mengecam ciri tersendiri peranti anda.";
 
 /* No comment provided by engineer. */
 "genericErrorBody" = "Oops! Ralat telah berlaku. Sila cuba lagi.";
 
 /* No comment provided by engineer. */
 "genericErrorTitle" = "Ralat";
+
+/* No comment provided by engineer. */
+"GoogleSafeBrowsing" = "Sekat tapak merbahaya";
+
+/* No comment provided by engineer. */
+"GoogleSafeBrowsingUsingWebKitDescription" = "Menghantar URL mengelirukan bagi sesetengah halaman yang anda lawati ke perkhidmatan Penyemakan Lalu Selamat Google, apabila eselamatan anda berisiko.";
 
 /* Grand camera access */
 "GrantCameraAccess" = "Aktifkan Kamera";
@@ -492,6 +531,9 @@
 
 /* No comment provided by engineer. */
 "HTTPSEverywhere" = "HTTPS Di Mana Sahaja";
+
+/* No comment provided by engineer. */
+"HTTPSEverywhereDescription" = "Membuka sesetengah tapak menggunakan sambungan HTTPS yang selamat berbanding HTTP biasa.";
 
 /* Shields Https Stat */
 "HTTPSrUpgrades" = "HTTPS \nNaik Taraf";
@@ -678,6 +720,9 @@
 
 /* Button title to that opens a website. */
 "OpenWebsite" = "Buka Laman Web";
+
+/* Section name for other privacy settings */
+"OtherPrivacySettingsSection" = "Tetapan Privasi Lain";
 
 /* Section name for other settings. */
 "OtherSettingsSection" = "Tetapan Lain";
@@ -896,6 +941,12 @@
 "SendReportButtonTitle" = "Hantar Laporan";
 
 /* No comment provided by engineer. */
+"setDefaultBrowserCalloutTitle" = "Brave kini boleh ditetapkan sebagai penyemak imbas lalai anda di iOS. Ketik di sini untuk membuka tetapan.";
+
+/* Settings item to set the Brave as a default browser on the iOS device. */
+"setDefaultBrowserSettingsCell" = "Tetapkan sebagai Penyemak Imbas Lalai";
+
+/* No comment provided by engineer. */
 "Settings" = "Tetapan";
 
 /* Error message that is shown in settings when there was a problem loading */
@@ -914,7 +965,10 @@
 "ShareWithMenuItem" = "Kongsi dengan...";
 
 /* Section title for adbblock, tracking protection, HTTPS-E, and cookies */
-"ShieldsDefaults" = "Lalai Perisai";
+"ShieldsDefaults" = "Lalai Global Perisai Brave";
+
+/* Section footer for global shields defaults */
+"ShieldsDefaultsFooter" = "Ini adalah tetapan Perisai lalai untuk tapak baharu. Mengubah ini tidak akan menjejaskan tetapan setiap tapak sedia ada anda.";
 
 /* shields overview message */
 "ShieldsOverview" = "Perisai Tapak membenarkan anda mengawal bila iklan dan penjejak disekat untuk setiap tapak yang anda lawati. Jika anda suka melihat iklan di sesuatu tapak khusus, anda boleh mendayakannya di sini.";

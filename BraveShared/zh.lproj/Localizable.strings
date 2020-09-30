@@ -29,8 +29,23 @@
 /* Context: The 'Up' in 'Brave Shields Up' */
 "BraveShieldsStatusValueUp" = "开启";
 
+/* The accessibility hint spoken when focused on the main shields toggle */
+"BraveShieldsToggleHint" = "轻击两次即可切换 Brave Shields";
+
+/* The body of the notification that goes out monthly to users who can claim an ads grant */
+"MonthlyAdsClaimNotificationBody" = "点按以领取免费代币。";
+
+/* The title of the notification that goes out monthly to users who can claim an ads grant */
+"MonthlyAdsClaimNotificationTitle" = "Brave Rewards 💵🎁";
+
 /* For search suggestions prompt. This string should be short so it fits nicely on the prompt row. */
 "No" = "否";
+
+/* Message when opting into brave Ads when region becomes available */
+"OBAdsOptInMessage" = "一边浏览，一边赚取积分并奖励创作者，以获得精彩内容。";
+
+/* Message when opting into brave Ads when region becomes available */
+"OBAdsOptInMessageJapan" = "一边浏览，一边赚取积分并奖励创作者，以获得精彩内容。";
 
 /* Title when opting into brave Ads when region becomes available */
 "OBAdsOptInTitle" = "Brave Ads 来了！";
@@ -59,6 +74,21 @@
 /* Button to join Brave Rewards. */
 "OBJoinButton" = "加入";
 
+/* No comment provided by engineer. */
+"OBPrivacyConsentClipboardPermission" = "允许 Brave 检查我的剪贴板中是否有匹配的推荐代码";
+
+/* No comment provided by engineer. */
+"OBPrivacyConsentDetail" = "您可能已经下载了 Brave 以支持您的推荐人。为了检测您的引荐来源，Brave 会对剪贴板进行一次一次性的检查以查找匹配的推荐代码。此检查仅限于代码，不会传输其他个人数据。如果您选择退出，推荐人将不会获得 Brave 的奖励。";
+
+/* No comment provided by engineer. */
+"OBPrivacyConsentNoButton" = "不允许此检查";
+
+/* No comment provided by engineer. */
+"OBPrivacyConsentTitle" = "匿名推荐代码检查";
+
+/* No comment provided by engineer. */
+"OBPrivacyConsentYesButton" = "允许一次性剪贴板检查";
+
 /* Detail text for rewards agreement onboarding screen */
 "OBRewardsAgreementDetail" = "启用“Rewards”即表示您同意";
 
@@ -67,6 +97,12 @@
 
 /* Title for rewards agreement onboarding screen */
 "OBRewardsAgreementTitle" = "Brave Rewards";
+
+/* Detail text for rewards onboarding screen */
+"OBRewardsDetailInAdRegion" = "一边浏览，一边赚取代币并奖励创作者，以获得精彩内容。";
+
+/* Detail text for rewards onboarding screen */
+"OBRewardsDetailInAdRegionJapan" = "一边浏览，一边赚取代币并奖励创作者，以获得精彩内容。";
 
 /* Detail text for rewards onboarding screen */
 "OBRewardsDetailOutsideAdRegion" = "根据您的关注度来支持您最喜欢的网站和创建者。";
@@ -110,6 +146,15 @@
 /* No comment provided by engineer. */
 "ReportABrokenSite" = "报告损坏的网站";
 
+/* First part of the report a broken site copy. After the colon is a new line and then a website address */
+"ReportBrokenSiteBody1" = "让 Brave 的开发人员知道此网站无法与 Shields 一起正常使用：";
+
+/* No comment provided by engineer. */
+"ReportBrokenSiteBody2" = "注意：该站点地址将与您使用的 Brave 的版本号和 IP 地址（不会存储）一起被提交。";
+
+/* No comment provided by engineer. */
+"ReportBrokenSubmitButtonTitle" = "提交";
+
 /* Name of folder where restored bookmarks are retrieved */
 "RestoredBookmarksFolderName" = "恢复的书签";
 
@@ -117,10 +162,310 @@
 "RestoredFavoritesFolderName" = "恢复的收藏夹";
 
 /* No comment provided by engineer. */
+"RewardsInternalsAmount" = "金额";
+
+/* No comment provided by engineer. */
+"RewardsInternalsAnonymous" = "匿名";
+
+/* No comment provided by engineer. */
+"RewardsInternalsBalanceInfoHeader" = "余额信息";
+
+/* No comment provided by engineer. */
+"RewardsInternalsClaimedAt" = "领取时间";
+
+/* No comment provided by engineer. */
+"RewardsInternalsClaimID" = "领取 ID";
+
+/* No comment provided by engineer. */
+"RewardsInternalsClearLogsConfirmation" = "您确定要清除所有“ Rewards”日志吗？";
+
+/* No comment provided by engineer. */
+"RewardsInternalsClearLogsTitle" = "清除日志";
+
+/* No comment provided by engineer. */
+"RewardsInternalsContributionAmount" = "捐款金额";
+
+/* No comment provided by engineer. */
+"RewardsInternalsContributionProcessorBraveTokens" = "Brave 代币";
+
+/* No comment provided by engineer. */
+"RewardsInternalsContributionProcessorNone" = "无";
+
+/* No comment provided by engineer. */
+"RewardsInternalsContributionProcessorUphold" = "坚持";
+
+/* No comment provided by engineer. */
+"RewardsInternalsContributionProcessorUserFunds" = "用户资金";
+
+/* No comment provided by engineer. */
+"RewardsInternalsContributionsStepACOff" = "关闭自动捐款";
+
+/* 'AC' refers to Auto-Contribute */
+"RewardsInternalsContributionsStepACTableEmpty" = "AC 表为空";
+
+/* No comment provided by engineer. */
+"RewardsInternalsContributionsStepCompleted" = "已完成";
+
+/* No comment provided by engineer. */
+"RewardsInternalsContributionsStepCreds" = "凭证";
+
+/* No comment provided by engineer. */
+"RewardsInternalsContributionsStepExternalTransaction" = "对外交易";
+
+/* No comment provided by engineer. */
+"RewardsInternalsContributionsStepFailed" = "失败";
+
+/* No comment provided by engineer. */
+"RewardsInternalsContributionsStepNotEnoughFunds" = "资金不足";
+
+/* No comment provided by engineer. */
+"RewardsInternalsContributionsStepPrepare" = "准备";
+
+/* No comment provided by engineer. */
+"RewardsInternalsContributionsStepReserve" = "保留";
+
+/* No comment provided by engineer. */
+"RewardsInternalsContributionsStepRewardsOff" = "关闭 Rewards";
+
+/* No comment provided by engineer. */
+"RewardsInternalsContributionsStepStart" = "开始";
+
+/* No comment provided by engineer. */
+"RewardsInternalsContributionsTitle" = "捐款";
+
+/* No comment provided by engineer. */
+"RewardsInternalsCreatedAt" = "创建于";
+
+/* No comment provided by engineer. */
+"RewardsInternalsDeviceInfoHeader" = "设备信息";
+
+/* No comment provided by engineer. */
+"RewardsInternalsEnrolled" = "已注册";
+
+/* No comment provided by engineer. */
+"RewardsInternalsEnrollmentState" = "注册状态";
+
+/* No comment provided by engineer. */
+"RewardsInternalsExpiresAt" = "到期时间";
+
+/* No comment provided by engineer. */
+"RewardsInternalsInvalid" = "无效";
+
+/* No comment provided by engineer. */
+"RewardsInternalsKeyInfoSeed" = "关键信息栏";
+
+/* No comment provided by engineer. */
+"RewardsInternalsLegacyPromotion" = "旧的促销活动";
+
+/* %d will be the number of logs currently being shown, i.e. '10 logs shown' */
+"RewardsInternalsLogsCount" = "显示了 %d 个日志";
+
+/* No comment provided by engineer. */
+"RewardsInternalsLogsTitle" = "日志";
+
+/* No comment provided by engineer. */
+"RewardsInternalsNotEnrolled" = "未注册";
+
+/* No comment provided by engineer. */
+"RewardsInternalsNotSupported" = "不受支持";
+
+/* No comment provided by engineer. */
+"RewardsInternalsProcessor" = "处理器";
+
+/* No comment provided by engineer. */
+"RewardsInternalsPromotionStatusActive" = "现有的";
+
+/* No comment provided by engineer. */
+"RewardsInternalsPromotionStatusAttested" = "经证明";
+
+/* No comment provided by engineer. */
+"RewardsInternalsPromotionStatusCorrupted" = "已被损坏";
+
+/* No comment provided by engineer. */
+"RewardsInternalsPromotionStatusFinished" = "已完成";
+
+/* No comment provided by engineer. */
+"RewardsInternalsPromotionStatusOver" = "超过";
+
+/* No comment provided by engineer. */
+"RewardsInternalsPromotionsTitle" = "优惠活动";
+
+/* No comment provided by engineer. */
+"RewardsInternalsPublisher" = "发布者";
+
+/* No comment provided by engineer. */
+"RewardsInternalsPublishers" = "发布者";
+
+/* No comment provided by engineer. */
+"RewardsInternalsRetryCount" = "重试计数";
+
+/* No comment provided by engineer. */
+"RewardsInternalsRewardsTypeAutoContribute" = "自动捐款";
+
+/* No comment provided by engineer. */
+"RewardsInternalsRewardsTypeOneTimeTip" = "一次性提示";
+
+/* No comment provided by engineer. */
+"RewardsInternalsRewardsTypeRecurringTip" = "循环提示";
+
+/* No comment provided by engineer. */
+"RewardsInternalsSharableBasicDescription" = "钱包、设备和余额信息（始终共享）";
+
+/* No comment provided by engineer. */
+"RewardsInternalsSharableBasicTitle" = "基本信息";
+
+/* No comment provided by engineer. */
+"RewardsInternalsSharableContributionsDescription" = "通过小费或自动捐款形式给发布者的捐款";
+
+/* No comment provided by engineer. */
+"RewardsInternalsSharableDatabaseDescription" = "内部数据存储";
+
+/* No comment provided by engineer. */
+"RewardsInternalsSharableDatabaseTitle" = "奖励数据库";
+
+/* No comment provided by engineer. */
+"RewardsInternalsSharableLogsDescription" = "Rewards 专用登录";
+
+/* No comment provided by engineer. */
+"RewardsInternalsSharablePromotionsDescription" = "您已经领取的 BAT 活动优惠或有待领取的广告或赠款";
+
+/* No comment provided by engineer. */
+"RewardsInternalsShare" = "分享";
+
+/* 'Rewards' as in 'Brave Rewards' */
+"RewardsInternalsShareInternalsTitle" = "分享奖励（内部）";
+
+/* No comment provided by engineer. */
+"RewardsInternalsSharingWarningMessage" = "此页面上的数据可能是敏感信息。请象对待钱包私钥一样对待它们。与谁共享时要小心。";
+
+/* No comment provided by engineer. */
+"RewardsInternalsSharingWarningTitle" = "警告";
+
+/* No comment provided by engineer. */
+"RewardsInternalsStatus" = "状态";
+
+/* i.e. 'Step: Started' */
+"RewardsInternalsStep" = "步骤";
+
+/* No comment provided by engineer. */
+"RewardsInternalsSupported" = "受支持";
+
+/* 'Rewards' as in 'Brave Rewards' */
+"RewardsInternalsTitle" = "奖励（内部）";
+
+/* No comment provided by engineer. */
+"RewardsInternalsTotalAmount" = "总金额";
+
+/* No comment provided by engineer. */
+"RewardsInternalsTotalBalance" = "总余额";
+
+/* No comment provided by engineer. */
+"RewardsInternalsType" = "类型";
+
+/* No comment provided by engineer. */
+"RewardsInternalsValid" = "有效";
+
+/* No comment provided by engineer. */
+"RewardsInternalsVersion" = "版本";
+
+/* No comment provided by engineer. */
+"RewardsInternalsWalletCreationDate" = "钱包创建日期";
+
+/* No comment provided by engineer. */
+"RewardsInternalsWalletInfoHeader" = "钱包信息";
+
+/* No comment provided by engineer. */
+"RewardsInternalsWalletPaymentID" = "钱包付款 ID";
+
+/* No comment provided by engineer. */
 "ShieldsDownDisclaimer" = "你正在没有 Brave 隐私保护的情况下浏览本网站。Shields 处于开启状态时无法正常工作吗？";
+
+/* No comment provided by engineer. */
+"SiteReportedBody" = "感谢您让 Brave 的开发人员知道该站点出了问题。我们将尽力解决这个问题！";
+
+/* No comment provided by engineer. */
+"SiteReportedTitle" = "谢谢您！";
 
 /* Text that informs a user about Brave Sync service deprecation. */
 "sync.syncV1DeprecationText" = "即将推出新的 Brave Sync，它将影响您的设置。赶快做好升级的准备吧。";
+
+/* No comment provided by engineer. */
+"today.allSources" = "所有来源";
+
+/* The name of the feature */
+"today.braveToday" = "今日 Brave";
+
+/* No comment provided by engineer. */
+"today.contentAvailableButtonTitle" = "新内容可供查阅";
+
+/* No comment provided by engineer. */
+"today.deals" = "交易";
+
+/* No comment provided by engineer. */
+"today.disableAll" = "全部禁用";
+
+/* '%@' will turn into the name of a publisher (verbatim), for example: Brave Blog */
+"today.disabledAlertBody" = "今日 Brave 将不再显示来自 %@ 的内容";
+
+/* No comment provided by engineer. */
+"today.disabledAlertTitle" = "已阻止";
+
+/* '%@' will turn into the name of a publisher (verbatim), for example: Brave Blog */
+"today.disablePublisherContent" = "阻止来自 %@ 的内容";
+
+/* No comment provided by engineer. */
+"today.emptyFeedBody" = "尝试开启新的新闻来源";
+
+/* No comment provided by engineer. */
+"today.emptyFeedTitle" = "没有待显示的文章";
+
+/* No comment provided by engineer. */
+"today.enableAll" = "全部允许";
+
+/* '%@' will turn into the name of a publisher (verbatim), for example: Brave Blog */
+"today.enablePublisherContent" = "允许来自 %@ 的内容";
+
+/* No comment provided by engineer. */
+"today.errorGeneralBody" = "今日 Brave 出现问题。请重试。";
+
+/* No comment provided by engineer. */
+"today.errorGeneralTitle" = "哎呀...";
+
+/* No comment provided by engineer. */
+"today.introCardBody" = "今日 Brave 会在您的设备上匹配您的兴趣爱好，让您的个人信息绝不离开您的浏览器。新内容会全天候不间断更新。";
+
+/* No comment provided by engineer. */
+"today.introCardTitle" = "今日热门故事，专属于您的私人订阅。";
+
+/* No comment provided by engineer. */
+"today.isEnabledToggleLabel" = "显示今日 Brave";
+
+/* No comment provided by engineer. */
+"today.learnMoreTitle" = "详细了解您的数据";
+
+/* 'Brave Offers' is a product name */
+"today.moreBraveOffers" = "更多 Brave 服务";
+
+/* No comment provided by engineer. */
+"today.noInternet" = "无网络";
+
+/* No comment provided by engineer. */
+"today.noInternetBody" = "请检查您的网络连接，或重新连接至 Wi-Fi。";
+
+/* No comment provided by engineer. */
+"today.refresh" = "刷新";
+
+/* No comment provided by engineer. */
+"today.resetSourceSettingsButtonTitle" = "将来源设置重置为默认";
+
+/* No comment provided by engineer. */
+"today.settingsSourceHeaderTitle" = "来源";
+
+/* No comment provided by engineer. */
+"today.sourcesAndSettings" = "来源和设置";
+
+/* No comment provided by engineer. */
+"today.sourceSearchPlaceholder" = "搜索";
 
 /* Prompt shown before enabling provider search queries */
 "Turn on search suggestions?" = "开启搜索建议功能？";
@@ -163,6 +508,9 @@
 
 /* Text for a checkbox to present the user benefits for using Brave VPN */
 "vpn.checkboxNoSellout" = "我们绝不会分享或出售您的信息";
+
+/* Text for a checkbox to present the user benefits for using Brave VPN */
+"vpn.checkboxProtectConnections" = "保护您免受不必要的连接的打扰";
 
 /* AppStore Receipt field for customer support contact form. */
 "vpn.contactFormAppStoreReceipt" = "AppStore 收据";
@@ -239,6 +587,9 @@
 /* Disclaimer about in app subscription */
 "vpn.iapDisclaimer" = "所有订阅都会自动续订，但也可以在续订之前取消。";
 
+/* Text explaining how the VPN works. */
+"vpn.installProfileBody" = "此配置文件让 VPN 可以始终自动连接并保护设备上的流量。此 VPN 连接会被加密，并会通过 Brave 的智能防火墙进行路由，以阻止潜在有害和侵入性的连接。";
+
 /* Text for 'install vpn profile' button */
 "vpn.installProfileButtonText" = "安装 VPN 配置文件";
 
@@ -277,6 +628,9 @@
 
 /* No comment provided by engineer. */
 "vpn.restorePurchases" = "恢复";
+
+/* No comment provided by engineer. */
+"vpn.settingHeaderBody" = "保护您的连接并屏蔽侵入性跟踪器。";
 
 /* Button to contact tech support */
 "vpn.settingsContactSupport" = "联系技术支持部门";
@@ -340,6 +694,9 @@
 
 /* Title for error when VPN could not be purchased. */
 "vpn.vpnErrorPurchaseFailedTitle" = "错误";
+
+/* Disclaimer for user purchasing the VPN plan. */
+"vpn.vpnIAPBoilerPlate" = "我们会通过您的 iTunes 帐户收取订阅费用。\n\n购买订阅后，免费试用的任何未使用部分（如已提供）会被没收。\n\n您的订阅会自动更新，除非在当前订阅期结束前至少 24 小时以前取消该订阅。\n\n您可以在“设置”中管理您的订阅。\n\n使用 Brave，即表示您同意使用条款和隐私政策。";
 
 /* Title Brave VPN menu item. */
 "vpn.vpnMenuItemTitle" = "Brave VPN";

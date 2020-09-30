@@ -134,7 +134,7 @@
 "BraveRewardsCreatingWallet" = "ウォレットを作成中";
 
 /* No comment provided by engineer. */
-"BraveRewardsDisabledBody" = "プライバシー重視型の広告を閲覧することで報酬を得て、あなたのお気に入りのサイトを支援することができます。";
+"BraveRewardsDisabledBody" = "プライバシーを尊重した広告を閲覧して報酬を獲得し、応援しているクリエイターに送ってみましょう！";
 
 /* No comment provided by engineer. */
 "BraveRewardsDisabledEnableButton" = "Brave Rewardsを有効にする";
@@ -632,10 +632,10 @@
 "RecurringText" = "定期支払い";
 
 /* No comment provided by engineer. */
-"RewardsOptInDescription" = "ブラウジング中にBATポイントを獲得し、同時にコンテンツクリエイターに還元することができます";
+"RewardsOptInDescription" = "ブラウジングを通じて報酬を獲得し、クリエイターを応援しましょう！";
 
 /* No comment provided by engineer. */
-"RewardsOptInDescriptionJapan" = "ブラウジング中にBATポイントを獲得し、同時にコンテンツクリエイターに還元することができます";
+"RewardsOptInDescriptionJapan" = "ブラウジングを通じて報酬を獲得し、クリエイターを応援しましょう！";
 
 /* No comment provided by engineer. */
 "RewardsOptInJoinTitle" = "Rewardsに参加する";

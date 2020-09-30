@@ -133,6 +133,9 @@
 /* No comment provided by engineer. */
 "BlockAdsAndTracking" = "拦截广告和追踪";
 
+/* No comment provided by engineer. */
+"BlockAdsAndTrackingDescription" = "阻止加载广告、弹出窗口和跟踪器";
+
 /* Title for setting to block all website cookies. */
 "BlockAllCookies" = "拦截所有 Cookie";
 
@@ -148,6 +151,9 @@
 /* Message of alert displayed to user when block all cookie operation fails */
 "BlockAllCookiesFailedAlertMsg" = "设置首选项失败。请重试。";
 
+/* No comment provided by engineer. */
+"BlockCookiesDescription" = "阻止网站存储有关您以前访问过的信息";
+
 /* title for section showing page blocking statistics */
 "BlockingMonitor" = "正在拦截监视器";
 
@@ -162,6 +168,9 @@
 
 /* No comment provided by engineer. */
 "BlockScripts" = "拦截脚本";
+
+/* No comment provided by engineer. */
+"BlockScriptsDescription" = "屏蔽 Javascript（可能会破坏站点）";
 
 /* Bookmark Folder Section Title */
 "BookmarkFolder" = "书签文件夹";
@@ -190,6 +199,9 @@
 /* Brave Rewards settings title */
 "BraveRewardsTitle" = "Brave Rewards";
 
+/* No comment provided by engineer. */
+"BraveShieldsAndPrivacy" = "Brave Shields 与隐私";
+
 /* Sync page title */
 "BraveSync" = "同步";
 
@@ -217,17 +229,29 @@
 /* No comment provided by engineer. */
 "CancelButtonTitle" = "取消";
 
-/* Button in settings that clears private data for the selected items. Also used as section title in settings panel */
+/* No comment provided by engineer. */
+"ClearData" = "清除资料";
+
+/* Section title in settings panel */
 "ClearPrivateData" = "清除隐私数据";
 
 /* The cancel button when confirming clear private data. */
 "ClearPrivateDataAlertCancelButtonTitle" = "取消";
 
-/* Description of the confirmation dialog shown when a user tries to clear their private data. */
-"ClearPrivateDataAlertMessage" = "该操作会清除您的所有隐私数据，并且该操作无法撤回。";
+/* No comment provided by engineer. */
+"ClearPrivateDataAlertMessage" = "确定吗？";
 
 /* The button that clears private data. */
 "ClearPrivateDataAlertOkButtonTitle" = "确定";
+
+/* No comment provided by engineer. */
+"ClearPrivateDataAlertTitle" = "清除数据";
+
+/* No comment provided by engineer. */
+"ClearPrivateDataAlertYesAction" = "是，删除";
+
+/* Button in settings that clears private data for the selected items. */
+"ClearPrivateDataNow" = "立即清除数据";
 
 /* The cancel button when confirming clear history. */
 "ClearSyncedHistoryAlertCancelButtoTitle" = "取消";
@@ -286,17 +310,26 @@
 /* Copy rewards internals info for support */
 "CopyWalletSupportInfo" = "复制支持信息";
 
+/* Create PDF share action. */
+"CreatePDF" = "创建 PDF";
+
 /* Currently usedd search engines section name. */
 "CurrentlyUsedSearchEngines" = "当前使用的搜索引擎";
 
 /* DuckDuckGo callout enable action. */
 "DDGCalloutEnable" = "是";
 
+/* DuckDuckGo message. */
+"DDGCalloutMessage" = "通过私人搜索功能，Brave 会在您在此私人标签中时通过 DuckDuckGo 对您的搜索进行回应。DuckDuckGo 是一个不会跟踪您的搜索历史的搜索引擎，让您可以私下进行搜索。";
+
 /* DuckDuckGo callout no action. */
 "DDGCalloutNo" = "不";
 
 /* DuckDuckGo callout title. */
 "DDGCalloutTitle" = "使用 DuckDuckGo 进行隐私搜索？";
+
+/* No comment provided by engineer. */
+"defaultBrowserCalloutCloseAccesabilityLabel" = "关闭默认浏览器标注";
 
 /* Name for default Brave theme. */
 "defaultThemeName" = "Brave 默认";
@@ -430,6 +463,9 @@
 /* Title for favorites cell */
 "FavoritesRootLevelCellTitle" = "收藏夹";
 
+/* No comment provided by engineer. */
+"Features" = "功能";
+
 /* Share action title */
 "FindInPage" = "在页面中查找";
 
@@ -455,13 +491,22 @@
 "FingerprintingnProtection" = "指纹\n保护";
 
 /* No comment provided by engineer. */
-"FingerprintingProtection" = "指纹识别保护";
+"FingerprintingProtection" = "屏蔽指纹功能";
+
+/* No comment provided by engineer. */
+"FingerprintingProtectionDescription" = "使站点更难识别设备的独特特征。";
 
 /* No comment provided by engineer. */
 "genericErrorBody" = "糟糕！出问题了。请再试一次。";
 
 /* No comment provided by engineer. */
 "genericErrorTitle" = "错误";
+
+/* No comment provided by engineer. */
+"GoogleSafeBrowsing" = "屏蔽危险网站";
+
+/* No comment provided by engineer. */
+"GoogleSafeBrowsingUsingWebKitDescription" = "当您的安全受到威胁时，系统会将您访问过的某些页面的容易混淆的 URL 发送到 Google 安全浏览服务。";
 
 /* Grand camera access */
 "GrantCameraAccess" = "启用摄像头";
@@ -486,6 +531,9 @@
 
 /* No comment provided by engineer. */
 "HTTPSEverywhere" = "HTTPS Everywhere";
+
+/* No comment provided by engineer. */
+"HTTPSEverywhereDescription" = "使用安全的 HTTPS 连接（而不是纯 HTTP）打开某些站点。";
 
 /* Shields Https Stat */
 "HTTPSrUpgrades" = "HTTPS \n安全升级";
@@ -587,6 +635,18 @@
 "ntp.braveSupportFavoriteTitle" = "Brave 支持";
 
 /* No comment provided by engineer. */
+"ntp.claimRewards" = "领取代币";
+
+/* Placeholder example: 'You earned 42 BAT by browsing with Brave.' */
+"ntp.earningsReport" = "您通过用 Brave 进行浏览赚取了 %@。";
+
+/* No comment provided by engineer. */
+"ntp.getPaidForThisImageTurnAds" = "通过查看此图片赚取代币。启用“Brave Ads”开始支持创作者。";
+
+/* No comment provided by engineer. */
+"ntp.getPaidForThisImageTurnRewards" = "通过查看此图像赚取代币。启用“Brave Rewards”开始支持创作者。";
+
+/* No comment provided by engineer. */
 "ntp.getPaidToSeeThisImage" = "通过查看该图片赚取代币。";
 
 /* The context is to praise the user that they did a good job, to keep it up. It is used in full sentence like: 'Way to go! You earned 40 BAT last month.' */
@@ -594,6 +654,9 @@
 
 /* No comment provided by engineer. */
 "ntp.hideSponsoredImages" = "隐藏赞助图片";
+
+/* No comment provided by engineer. */
+"ntp.learnMoreAboutBrandedImages" = "查看赞助的图片时，您会赚到可用来支持创作者的代币。借助“Brave Ads”，您始终可以控制看到的广告。";
 
 /* No comment provided by engineer. */
 "ntp.learnMoreAboutRewards" = "了解更多有关 Brave Rewards 的内容";
@@ -621,6 +684,9 @@
 
 /* A button title to show more bookmarks, that opens a new menu. */
 "ntp.showMoreFavorites" = "显示更多";
+
+/* No comment provided by engineer. */
+"ntp.supportWebCreatorsWithTokens" = "一边浏览，一边赚取代币并奖励创作者，以获得精彩内容。";
 
 /* No comment provided by engineer. */
 "ntp.turnOnBraveAds" = "开启 Brave Ads";
@@ -654,6 +720,9 @@
 
 /* Button title to that opens a website. */
 "OpenWebsite" = "开启网站";
+
+/* Section name for other privacy settings */
+"OtherPrivacySettingsSection" = "其他隐私设置";
 
 /* Section name for other settings. */
 "OtherSettingsSection" = "其他设置";
@@ -705,6 +774,9 @@
 
 /* Private tab detail text */
 "PrivateTabDetails" = "使用私密 Tabs 只会更改 Brave 对您设备的操作，不会更改其他应用对您设备的操作。\n\n当您访问网站时，网站会随时知晓您的 IP 地址。由此地址，他们通常可以大致猜测您的位置 - 通常是您所在的城市。有时，对于位置的猜测可能更加具体。网站也会知晓您明确告诉他们的所有内容，例如您的搜索条件。如果您登录某个网站，他们就会知晓您是该帐户的所有者。当您关闭私密 Tabs 时，您仍然会被迫退出，因为 Brave 会删除辅助您随时登录的 cookie。\n\n为您连网（您的 ISP）的任何人都可以看到您所有的网络活动。通常是您的移动运营商。如果您连接到 WiFi 网络，则是该网络的所有者，如果您在使用 VPN，则是运行该 VPN 的人。您的 ISP 可以在您访问时查看您访问的网站。如果这些网站使用 HTTPS，它们只能对您在这些网站上所进行的操作进行合理的猜测。但是，如果某个网站仅使用 HTTP，那么您的 ISP 可以查看所有内容：您的搜索条件，您所阅读的页面以及您关注的链接。\n\n如果雇主管理您的设备，他们也可能会跟踪您的设备。使用私密 Tabs 可能不会阻止他们知晓您访问过哪些网站。有权访问您设备的其他人也可能安装了监控您活动的软件，而私密 Tabs 也无法保护您不受此影响。";
+
+/* Private tab information link */
+"PrivateTabLink" = "了解私人标签";
 
 /* Default engine for private search. */
 "PrivateTabSearch" = "私人标签";
@@ -869,6 +941,12 @@
 "SendReportButtonTitle" = "发送报告";
 
 /* No comment provided by engineer. */
+"setDefaultBrowserCalloutTitle" = "现在，您可将 Brave 设置为您的 iOS 默认浏览器。点击此处打开设置。";
+
+/* Settings item to set the Brave as a default browser on the iOS device. */
+"setDefaultBrowserSettingsCell" = "设为默认浏览器";
+
+/* No comment provided by engineer. */
 "Settings" = "设置";
 
 /* Error message that is shown in settings when there was a problem loading */
@@ -887,7 +965,10 @@
 "ShareWithMenuItem" = "分享对象...";
 
 /* Section title for adbblock, tracking protection, HTTPS-E, and cookies */
-"ShieldsDefaults" = "默认保护";
+"ShieldsDefaults" = "Brave Shields 全局默认";
+
+/* Section footer for global shields defaults */
+"ShieldsDefaultsFooter" = "这些是新站点的默认 Shields 设置。更改这些设置不会影响您现有的每个站点的设置。";
 
 /* shields overview message */
 "ShieldsOverview" = "利用网站屏幕，您在访问每个网站时可以控制是否拦截广告和跟踪程序。如果您希望查看某个特定网站的广告，则可以在此处启用这些广告。";

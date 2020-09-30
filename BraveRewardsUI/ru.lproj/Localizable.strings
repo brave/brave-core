@@ -134,7 +134,7 @@
 "BraveRewardsCreatingWallet" = "Создание кошелька";
 
 /* No comment provided by engineer. */
-"BraveRewardsDisabledBody" = "Зарабатывайте, просматривая рекламу, не нарушающую вашу конфиденциальность, и платите, чтобы поддержать тех создателей контента, которые вам нравятся.";
+"BraveRewardsDisabledBody" = "Зарабатывайте баллы, просматривая рекламу, не нарушающую вашу конфиденциальность. Оплачивайте ими труд любимых создателей контента.";
 
 /* No comment provided by engineer. */
 "BraveRewardsDisabledEnableButton" = "Включить Brave Rewards";
@@ -632,10 +632,10 @@
 "RecurringText" = "Повторяющийся";
 
 /* No comment provided by engineer. */
-"RewardsOptInDescription" = "Пользуясь браузером, зарабатывайте баллы и вознаграждайте авторов за отличный контент.";
+"RewardsOptInDescription" = "Пользуясь браузером, зарабатывайте баллы и поощряйте авторов за отличный контент.";
 
 /* No comment provided by engineer. */
-"RewardsOptInDescriptionJapan" = "Пользуясь браузером, зарабатывайте баллы и вознаграждайте авторов за отличный контент.";
+"RewardsOptInDescriptionJapan" = "Пользуясь браузером, зарабатывайте бонусы и поощряйте авторов за отличный контент.";
 
 /* No comment provided by engineer. */
 "RewardsOptInJoinTitle" = "Присоединиться к сервису Rewards";

@@ -29,6 +29,9 @@
 /* Context: The 'Up' in 'Brave Shields Up' */
 "BraveShieldsStatusValueUp" = "オン";
 
+/* The accessibility hint spoken when focused on the main shields toggle */
+"BraveShieldsToggleHint" = "ダブルタップでBrave Shieldを切り替える";
+
 /* The body of the notification that goes out monthly to users who can claim an ads grant */
 "MonthlyAdsClaimNotificationBody" = "タップしてTAPポイントを受け取る";
 
@@ -142,6 +145,15 @@
 
 /* No comment provided by engineer. */
 "ReportABrokenSite" = "サイト表示の問題を報告する";
+
+/* First part of the report a broken site copy. After the colon is a new line and then a website address */
+"ReportBrokenSiteBody1" = "Braveの開発者に、こちらのサイトが正常に動作しないことをご共有いただけませんか:";
+
+/* No comment provided by engineer. */
+"ReportBrokenSiteBody2" = "注意:このアドレスは、Braveのバージョンとお客様のIPアドレス（保存されません）とともに送信されます。";
+
+/* No comment provided by engineer. */
+"ReportBrokenSubmitButtonTitle" = "送信";
 
 /* Name of folder where restored bookmarks are retrieved */
 "RestoredBookmarksFolderName" = "復元されたブックマーク";
@@ -368,8 +380,92 @@
 /* No comment provided by engineer. */
 "ShieldsDownDisclaimer" = "現在Braveのプライバシー保護機能オフの状態でブラウジングしています。Shieldをオンにした状態では不具合が発生しますか？";
 
+/* No comment provided by engineer. */
+"SiteReportedBody" = "Braveの開発者にサイトの問題について知らせてくれてありがとうございます。修正するために最善を尽くします！";
+
+/* No comment provided by engineer. */
+"SiteReportedTitle" = "ありがとうございます";
+
 /* Text that informs a user about Brave Sync service deprecation. */
 "sync.syncV1DeprecationText" = "Brave Syncがリニューアルされます。ご利用の環境にも影響がございますのでアップグレードに向けてご準備ください。";
+
+/* No comment provided by engineer. */
+"today.allSources" = "全てのソース";
+
+/* The name of the feature */
+"today.braveToday" = "Brave Today";
+
+/* No comment provided by engineer. */
+"today.contentAvailableButtonTitle" = "利用可能な新しいコンテンツ";
+
+/* No comment provided by engineer. */
+"today.deals" = "お得な情報";
+
+/* No comment provided by engineer. */
+"today.disableAll" = "全て無効にする";
+
+/* '%@' will turn into the name of a publisher (verbatim), for example: Brave Blog */
+"today.disabledAlertBody" = "Brave Today は %@ からのコンテンツの表示を無効にします";
+
+/* No comment provided by engineer. */
+"today.disabledAlertTitle" = "無効";
+
+/* '%@' will turn into the name of a publisher (verbatim), for example: Brave Blog */
+"today.disablePublisherContent" = "次のコンテンツを無効にする: %@";
+
+/* No comment provided by engineer. */
+"today.emptyFeedBody" = "いくつかのニュースソースを有効にしてみてください";
+
+/* No comment provided by engineer. */
+"today.emptyFeedTitle" = "表示する記事はありません";
+
+/* No comment provided by engineer. */
+"today.enableAll" = "全て有効にする";
+
+/* '%@' will turn into the name of a publisher (verbatim), for example: Brave Blog */
+"today.enablePublisherContent" = "次のコンテンツを有効にする: %@";
+
+/* No comment provided by engineer. */
+"today.errorGeneralBody" = "Brave Todayに問題が発生しています。もう一度お試しください。";
+
+/* No comment provided by engineer. */
+"today.errorGeneralTitle" = "うーん...";
+
+/* No comment provided by engineer. */
+"today.introCardBody" = "Brave Todayは、あなたの関心に合わせてデバイス上で最適化されているため、個人情報がブラウザからどこかに送られることはありません。コンテンツは随時更新されます。";
+
+/* No comment provided by engineer. */
+"today.introCardTitle" = "今日の注目記事を、あなた専用のプライベートなフィードにお届けいたします。";
+
+/* No comment provided by engineer. */
+"today.isEnabledToggleLabel" = "Brave Todayを表示";
+
+/* No comment provided by engineer. */
+"today.learnMoreTitle" = "あなたのデータについて詳しく";
+
+/* 'Brave Offers' is a product name */
+"today.moreBraveOffers" = "Brave Offersをもっと見る";
+
+/* No comment provided by engineer. */
+"today.noInternet" = "インターネット接続がありません";
+
+/* No comment provided by engineer. */
+"today.noInternetBody" = "接続を確認するか、Wi-Fiに再接続してみてください。";
+
+/* No comment provided by engineer. */
+"today.refresh" = "更新";
+
+/* No comment provided by engineer. */
+"today.resetSourceSettingsButtonTitle" = "ソースの設定をデフォルトにリセット";
+
+/* No comment provided by engineer. */
+"today.settingsSourceHeaderTitle" = "ソース";
+
+/* No comment provided by engineer. */
+"today.sourcesAndSettings" = "ソースと設定";
+
+/* No comment provided by engineer. */
+"today.sourceSearchPlaceholder" = "検索";
 
 /* Prompt shown before enabling provider search queries */
 "Turn on search suggestions?" = "検索候補をオンにしますか？";

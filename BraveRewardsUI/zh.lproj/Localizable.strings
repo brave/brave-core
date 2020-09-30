@@ -62,6 +62,18 @@
 "BraveRewardsAdsPayoutDateFormat" = "月  日";
 
 /* No comment provided by engineer. */
+"BraveRewardsAdsSubdivisionTargeting" = "州级广告定位";
+
+/* No comment provided by engineer. */
+"BraveRewardsAdsSubdivisionTargetingAutoDetect" = "自动侦测";
+
+/* No comment provided by engineer. */
+"BraveRewardsAdsSubdivisionTargetingDisable" = "禁用";
+
+/* No comment provided by engineer. */
+"BraveRewardsAdsSubdivisionTargetingDisabled" = "已禁用";
+
+/* No comment provided by engineer. */
 "BraveRewardsAdsUnsupportedDvice" = "Brave Rewards 和 Ads 目前还无法在您的设备上使用。";
 
 /* No comment provided by engineer. */
@@ -122,7 +134,7 @@
 "BraveRewardsCreatingWallet" = "创建钱包";
 
 /* No comment provided by engineer. */
-"BraveRewardsDisabledBody" = "通过查看尊重隐私的广告来赚钱，并付款支持您喜欢的内容创作者。";
+"BraveRewardsDisabledBody" = "通过查看尊重隐私的广告来赚钱，并用赚到的钱支持您喜爱的内容创作者。";
 
 /* No comment provided by engineer. */
 "BraveRewardsDisabledEnableButton" = "启用 Brave Rewards";
@@ -311,6 +323,12 @@
 "BraveRewardsSettings" = "设置";
 
 /* No comment provided by engineer. */
+"BraveRewardsSettingsAdsBody" = "打开“Brave Ads”，开始赚取可用来支持您最喜欢的创作者的代币！在您浏览时，浏览器的顶部会显示具有隐私保护功能的小广告。";
+
+/* No comment provided by engineer. */
+"BraveRewardsSettingsAdsBodyJapan" = "打开“Brave Ads”，开始赚取可用积分来支持您最喜欢的创作者！在您浏览时，浏览器的顶部会显示具有隐私保护功能的小广告。";
+
+/* No comment provided by engineer. */
 "BraveRewardsSettingsAdsComingSoonText" = "即将推出。";
 
 /* No comment provided by engineer. */
@@ -330,6 +348,12 @@
 
 /* The maximum amount of BAT to auto-contribute. E.g. 'Up to 20.0 BAT' */
 "BraveRewardsSettingsAutoContributeUpToValue" = "最高 %@";
+
+/* No comment provided by engineer. */
+"BraveRewardsSettingsDisabledBody1" = "由于创作者需要您的支持，而 Brave 对此提供免费服务。现在，您可以一边浏览，一边收集代币，然后再将其捐赠给您喜爱的创作者。";
+
+/* No comment provided by engineer. */
+"BraveRewardsSettingsDisabledBody2" = "会珍惜您的时间，会对您的个人数据保密，而您会为支持内容创作者而感到开心的。";
 
 /* No comment provided by engineer. */
 "BraveRewardsSettingsDisabledTitle1" = "为什么应该选择 Brave Rewards？";
@@ -404,6 +428,9 @@
 "BraveRewardsTippingOneTimeTitle" = "您已将酬谢费发送给：";
 
 /* No comment provided by engineer. */
+"BraveRewardsTippingOverviewBody" = "您可以通过给他们发送代币来支持此内容创建者。这是感谢他们提供的丰富内容的一种方式。经过验证的创作者会在每个日历月的第一周收到代币。\n\n如果愿意，您可以安排每月捐款持续地支持该创作者。";
+
+/* No comment provided by engineer. */
 "BraveRewardsTippingOverviewTitle" = "欢迎！";
 
 /* No comment provided by engineer. */
@@ -420,6 +447,9 @@
 
 /* No comment provided by engineer. */
 "BraveRewardsTippingTitle" = "发送酬谢费";
+
+/* No comment provided by engineer. */
+"BraveRewardsTippingUnverifiedDisclaimer" = "注意：该创建者尚未注册接收 Brave 用户捐献的代币。您的浏览器将继续尝试捐赠，直到它们通过验证或直到 90 天以后。";
 
 /* No comment provided by engineer. */
 "BraveRewardsTippingWalletBalanceTitle" = "钱包余额";
@@ -444,6 +474,9 @@
 
 /* No comment provided by engineer. */
 "BraveRewardsTwoAdsPerHour" = "每小时 2 个广告";
+
+/* No comment provided by engineer. */
+"BraveRewardsUnverifiedPublisherDisclaimer" = "该创建者尚未注册接受 Brave 用户的代币。您发送的所有代币都会保留在您的钱包中，直到他们进行验证。";
 
 /* No comment provided by engineer. */
 "BraveRewardsVerified" = "经 Brave 验证的创作者";
@@ -535,6 +568,9 @@
 /* We show this string in notification when tip fails */
 "NotificationContributeTipError" = "无法发送您的酬谢费。请稍后再试。";
 
+/* Panel notification text for Ads grant */
+"NotificationEarningsClaimDefault" = "新代币已准备就绪。";
+
 /* Title for an error notification */
 "NotificationErrorTitle" = "哦哦！";
 
@@ -594,6 +630,12 @@
 
 /* Text describing the type of contribution */
 "RecurringText" = "循环支付";
+
+/* No comment provided by engineer. */
+"RewardsOptInDescription" = "浏览时赚取代币并奖励创作者以获得精彩的内容";
+
+/* No comment provided by engineer. */
+"RewardsOptInDescriptionJapan" = "浏览时赚取积分并奖励创作者以获得精彩的内容";
 
 /* No comment provided by engineer. */
 "RewardsOptInJoinTitle" = "加入 Rewards";
