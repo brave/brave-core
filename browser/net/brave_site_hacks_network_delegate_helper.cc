@@ -81,11 +81,6 @@ DECLARE_LAZY_MATCHER(tracker_appended_matcher,
 void ApplyPotentialQueryStringFilter(std::shared_ptr<BraveRequestInfo> ctx) {
   SCOPED_UMA_HISTOGRAM_TIMER("Brave.SiteHacks.QueryFilter");
 
-  if (!ctx->initiator_url.is_valid()) {
-    // Direct navigations (e.g. omnibar, bookmarks) are exempted.
-    return;
-  }
-
   if (ctx->redirect_source.is_valid()) {
     if (ctx->internal_redirect) {
       // Ignore internal redirects since we trigger them.
@@ -98,7 +93,8 @@ void ApplyPotentialQueryStringFilter(std::shared_ptr<BraveRequestInfo> ctx) {
       // Same-site redirects are exempted.
       return;
     }
-  } else if (net::registry_controlled_domains::SameDomainOrHost(
+  } else if (ctx->initiator_url.is_valid() &&
+             net::registry_controlled_domains::SameDomainOrHost(
                  ctx->initiator_url, ctx->request_url,
                  net::registry_controlled_domains::
                      INCLUDE_PRIVATE_REGISTRIES)) {
