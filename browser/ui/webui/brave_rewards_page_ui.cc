@@ -317,7 +317,7 @@ const char kShouldAllowAdsSubdivisionTargeting[] =
     "shouldAllowAdsSubdivisionTargeting";
 const char kAdsSubdivisionTargeting[] = "adsSubdivisionTargeting";
 const char kAutoDetectedAdsSubdivisionTargeting[] =
-    "autoDetectedAdsSubdivisionTargeting";
+    "automaticallyDetectedAdsSubdivisionTargeting";
 
 }  // namespace
 
