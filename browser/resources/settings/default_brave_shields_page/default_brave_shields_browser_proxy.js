@@ -10,16 +10,16 @@ cr.define('settings', function() {
   /** @interface */
   /* #export */ class DefaultBraveShieldsBrowserProxy {
     /**
-     * @return {!Promise<string>}
+     * @return {!Promise<boolean>}
      */
-    getAdControlType() {}
+    isAdControlEnabled() {}
     /**
      * @param {string} value name.
      */
     setAdControlType(value) {}
 
     /**
-     * @return {!Promise<string>}
+     * @return {!Promise<boolean>}
      */
     isFirstPartyCosmeticFilteringEnabled() {}
     /**
@@ -61,8 +61,8 @@ cr.define('settings', function() {
    */
   /* #export */ class DefaultBraveShieldsBrowserProxyImpl {
     /** @override */
-    getAdControlType() {
-      return cr.sendWithPromise('getAdControlType');
+    isAdControlEnabled() {
+      return cr.sendWithPromise('isAdControlEnabled');
     }
 
     /** @override */

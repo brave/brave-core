@@ -22,7 +22,7 @@ class DefaultBraveShieldsHandler : public settings::SettingsPageUIHandler {
   void OnJavascriptDisallowed() override {}
 
   void SetAdControlType(const base::ListValue* args);
-  void GetAdControlType(const base::ListValue* args);
+  void IsAdControlEnabled(const base::ListValue* args);
   void SetCosmeticFilteringControlType(const base::ListValue* args);
   void IsFirstPartyCosmeticFilteringEnabled(const base::ListValue* args);
   void SetCookieControlType(const base::ListValue* args);
