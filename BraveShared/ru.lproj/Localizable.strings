@@ -29,6 +29,9 @@
 /* Context: The 'Up' in 'Brave Shields Up' */
 "BraveShieldsStatusValueUp" = "включены";
 
+/* The accessibility hint spoken when focused on the main shields toggle */
+"BraveShieldsToggleHint" = "Чтобы переключить щиты Brave, нажмите дважды";
+
 /* The body of the notification that goes out monthly to users who can claim an ads grant */
 "MonthlyAdsClaimNotificationBody" = "Нажмите, чтобы получить бесплатные баллы.";
 
@@ -142,6 +145,15 @@
 
 /* No comment provided by engineer. */
 "ReportABrokenSite" = "Пожаловаться на проблемы с сайтом";
+
+/* First part of the report a broken site copy. After the colon is a new line and then a website address */
+"ReportBrokenSiteBody1" = "Сообщите разработчикам Brave, что этот сайт некорректно работает со щитами:";
+
+/* No comment provided by engineer. */
+"ReportBrokenSiteBody2" = "Примечание. Разработчикам будет отправлен адрес этого сайта, а также номер вашей версии Brave и ваш IP-адрес (эти данные не будут храниться).";
+
+/* No comment provided by engineer. */
+"ReportBrokenSubmitButtonTitle" = "Отправить";
 
 /* Name of folder where restored bookmarks are retrieved */
 "RestoredBookmarksFolderName" = "Восстановленные закладки";
@@ -368,8 +380,92 @@
 /* No comment provided by engineer. */
 "ShieldsDownDisclaimer" = "Вы выключили защиту конфиденциальности. Сайт неправильно отображается при включенных щитах?";
 
+/* No comment provided by engineer. */
+"SiteReportedBody" = "Спасибо за предоставленную информацию. Мы постараемся как можно скорее исправить проблему, обещаем.";
+
+/* No comment provided by engineer. */
+"SiteReportedTitle" = "Спасибо!";
+
 /* Text that informs a user about Brave Sync service deprecation. */
 "sync.syncV1DeprecationText" = "Скоро станет доступна свежая версия функции Brave Sync. Это повлияет на ваши настройки. Подготовьтесь к обновлению.";
+
+/* No comment provided by engineer. */
+"today.allSources" = "Все источники";
+
+/* The name of the feature */
+"today.braveToday" = "Brave Today";
+
+/* No comment provided by engineer. */
+"today.contentAvailableButtonTitle" = "Есть новый контент";
+
+/* No comment provided by engineer. */
+"today.deals" = "Сделки";
+
+/* No comment provided by engineer. */
+"today.disableAll" = "Отключить всё";
+
+/* '%@' will turn into the name of a publisher (verbatim), for example: Brave Blog */
+"today.disabledAlertBody" = "Контент от автора «%@» больше не будет появляться в Brave Today.";
+
+/* No comment provided by engineer. */
+"today.disabledAlertTitle" = "Отключено";
+
+/* '%@' will turn into the name of a publisher (verbatim), for example: Brave Blog */
+"today.disablePublisherContent" = "%@: отключить показ контента";
+
+/* No comment provided by engineer. */
+"today.emptyFeedBody" = "Попробуйте включить источники новостей.";
+
+/* No comment provided by engineer. */
+"today.emptyFeedTitle" = "Нет статей";
+
+/* No comment provided by engineer. */
+"today.enableAll" = "Включить всё";
+
+/* '%@' will turn into the name of a publisher (verbatim), for example: Brave Blog */
+"today.enablePublisherContent" = "%@: включить показ контента";
+
+/* No comment provided by engineer. */
+"today.errorGeneralBody" = "У нас возникли неполадки. Повторите попытку позже.";
+
+/* No comment provided by engineer. */
+"today.errorGeneralTitle" = "Ошибочка…";
+
+/* No comment provided by engineer. */
+"today.introCardBody" = "Brave Today подбирает контент по вашим интересам прямо на устройстве, поэтому ваши персональные данные надежно защищены. Новые материалы появляются в течение дня.";
+
+/* No comment provided by engineer. */
+"today.introCardTitle" = "Все главные сегодняшние статьи опубликованы в приватной ленте, которую можете читать только вы.";
+
+/* No comment provided by engineer. */
+"today.isEnabledToggleLabel" = "Показать Brave Today";
+
+/* No comment provided by engineer. */
+"today.learnMoreTitle" = "Узнайте больше о ваших данных";
+
+/* 'Brave Offers' is a product name */
+"today.moreBraveOffers" = "Больше предложений Brave Offers";
+
+/* No comment provided by engineer. */
+"today.noInternet" = "Нет подключения к Интернету.";
+
+/* No comment provided by engineer. */
+"today.noInternetBody" = "Проверьте подключение к Интернету или повторно подключитесь к Wi-Fi.";
+
+/* No comment provided by engineer. */
+"today.refresh" = "Обновить";
+
+/* No comment provided by engineer. */
+"today.resetSourceSettingsButtonTitle" = "Возврат к исходным настройкам источника";
+
+/* No comment provided by engineer. */
+"today.settingsSourceHeaderTitle" = "Источники";
+
+/* No comment provided by engineer. */
+"today.sourcesAndSettings" = "Источники и настройки";
+
+/* No comment provided by engineer. */
+"today.sourceSearchPlaceholder" = "Поиск";
 
 /* Prompt shown before enabling provider search queries */
 "Turn on search suggestions?" = "Включить подсказки при поиске?";

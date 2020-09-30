@@ -133,6 +133,9 @@
 /* No comment provided by engineer. */
 "BlockAdsAndTracking" = "Блокировать рекламу и трекеры";
 
+/* No comment provided by engineer. */
+"BlockAdsAndTrackingDescription" = "Блокирует загрузку рекламы, всплывающих окон и трекеров.";
+
 /* Title for setting to block all website cookies. */
 "BlockAllCookies" = "Блокировать все файлы cookie";
 
@@ -148,6 +151,9 @@
 /* Message of alert displayed to user when block all cookie operation fails */
 "BlockAllCookiesFailedAlertMsg" = "Не удалось применить параметр. Повторите попытку.";
 
+/* No comment provided by engineer. */
+"BlockCookiesDescription" = "Блокирует сохранение на сайтах информации о ваших предыдущих посещениях.";
+
 /* title for section showing page blocking statistics */
 "BlockingMonitor" = " Статистика блокировок";
 
@@ -162,6 +168,9 @@
 
 /* No comment provided by engineer. */
 "BlockScripts" = "Блокировать скрипты";
+
+/* No comment provided by engineer. */
+"BlockScriptsDescription" = "Блокирует JavaScript (это может нарушать работу сайтов).";
 
 /* Bookmark Folder Section Title */
 "BookmarkFolder" = "Папка закладок";
@@ -189,6 +198,9 @@
 
 /* Brave Rewards settings title */
 "BraveRewardsTitle" = "Brave Rewards";
+
+/* No comment provided by engineer. */
+"BraveShieldsAndPrivacy" = "Щиты Brave и конфиденциальность";
 
 /* Sync page title */
 "BraveSync" = "Синхронизация";
@@ -220,17 +232,26 @@
 /* No comment provided by engineer. */
 "ClearData" = "Удаление данных";
 
-/* Button in settings that clears private data for the selected items. Also used as section title in settings panel */
+/* Section title in settings panel */
 "ClearPrivateData" = "Удалить личные данные";
 
 /* The cancel button when confirming clear private data. */
 "ClearPrivateDataAlertCancelButtonTitle" = "Отмена";
 
-/* Description of the confirmation dialog shown when a user tries to clear their private data. */
-"ClearPrivateDataAlertMessage" = "Все ваши личные данные будут удалены. Это действие нельзя отменить.";
+/* No comment provided by engineer. */
+"ClearPrivateDataAlertMessage" = "Вы уверены?";
 
 /* The button that clears private data. */
 "ClearPrivateDataAlertOkButtonTitle" = "ОК";
+
+/* No comment provided by engineer. */
+"ClearPrivateDataAlertTitle" = "Удаление данных";
+
+/* No comment provided by engineer. */
+"ClearPrivateDataAlertYesAction" = "Удалить";
+
+/* Button in settings that clears private data for the selected items. */
+"ClearPrivateDataNow" = "Удалить данные";
 
 /* The cancel button when confirming clear history. */
 "ClearSyncedHistoryAlertCancelButtoTitle" = "Отмена";
@@ -289,6 +310,9 @@
 /* Copy rewards internals info for support */
 "CopyWalletSupportInfo" = "Скопировать информацию для службы поддержки";
 
+/* Create PDF share action. */
+"CreatePDF" = "Создать PDF";
+
 /* Currently usedd search engines section name. */
 "CurrentlyUsedSearchEngines" = "Используемые поисковые системы";
 
@@ -303,6 +327,9 @@
 
 /* DuckDuckGo callout title. */
 "DDGCalloutTitle" = "Использовать DuckDuckGo?";
+
+/* No comment provided by engineer. */
+"defaultBrowserCalloutCloseAccesabilityLabel" = "Закрыть сообщение о браузере по умолчанию";
 
 /* Name for default Brave theme. */
 "defaultThemeName" = "По умолчанию";
@@ -436,6 +463,9 @@
 /* Title for favorites cell */
 "FavoritesRootLevelCellTitle" = "Избранное";
 
+/* No comment provided by engineer. */
+"Features" = "Возможности";
+
 /* Share action title */
 "FindInPage" = "Найти на странице";
 
@@ -461,13 +491,22 @@
 "FingerprintingnProtection" = "Защита от\nидентификации";
 
 /* No comment provided by engineer. */
-"FingerprintingProtection" = "Защита от идентификации";
+"FingerprintingProtection" = "Блокировка идентификации";
+
+/* No comment provided by engineer. */
+"FingerprintingProtectionDescription" = "Усложняет для сайтов определение отличительных характеристик вашего устройства.";
 
 /* No comment provided by engineer. */
 "genericErrorBody" = "Что-то пошло не так. Повторите попытку.";
 
 /* No comment provided by engineer. */
 "genericErrorTitle" = "Ошибка";
+
+/* No comment provided by engineer. */
+"GoogleSafeBrowsing" = "Блокировка опасных сайтов";
+
+/* No comment provided by engineer. */
+"GoogleSafeBrowsingUsingWebKitDescription" = "Отправляет обфусцированные URL-адреса некоторых страниц, которые вы посещали, в сервис \"Google Безопасный просмотр\", если есть угроза вашей безопасности.";
 
 /* Grand camera access */
 "GrantCameraAccess" = "Включить камеру";
@@ -492,6 +531,9 @@
 
 /* No comment provided by engineer. */
 "HTTPSEverywhere" = "HTTPS Everywhere";
+
+/* No comment provided by engineer. */
+"HTTPSEverywhereDescription" = "Открывает некоторые сайты с помощью защищенного соединения HTTPS, а не обычного протокола HTTP.";
 
 /* Shields Https Stat */
 "HTTPSrUpgrades" = "Смена HTTP\nна HTTPS";
@@ -678,6 +720,9 @@
 
 /* Button title to that opens a website. */
 "OpenWebsite" = "Открыть сайт";
+
+/* Section name for other privacy settings */
+"OtherPrivacySettingsSection" = "Другие настройки конфиденциальности";
 
 /* Section name for other settings. */
 "OtherSettingsSection" = "Другие настройки";
@@ -896,6 +941,12 @@
 "SendReportButtonTitle" = "Отправить отчет";
 
 /* No comment provided by engineer. */
+"setDefaultBrowserCalloutTitle" = "Теперь можно установить Brave в качестве браузера по умолчанию для iOS. Нажмите, чтобы открыть настройки.";
+
+/* Settings item to set the Brave as a default browser on the iOS device. */
+"setDefaultBrowserSettingsCell" = "Установить в качестве браузера по умолчанию";
+
+/* No comment provided by engineer. */
 "Settings" = "Настройки";
 
 /* Error message that is shown in settings when there was a problem loading */
@@ -914,7 +965,10 @@
 "ShareWithMenuItem" = "Поделиться…";
 
 /* Section title for adbblock, tracking protection, HTTPS-E, and cookies */
-"ShieldsDefaults" = "Настройки щитов по умолчанию";
+"ShieldsDefaults" = "Общие настройки щитов Brave по умолчанию";
+
+/* Section footer for global shields defaults */
+"ShieldsDefaultsFooter" = "Это настройки щитов по умолчанию для новых сайтов. Их изменение не повлияет на уже заданные настройки для отдельных сайтов.";
 
 /* shields overview message */
 "ShieldsOverview" = "Щиты сайтов Shields позволяют контролировать блокировку рекламы и трекеров для каждого сайта, на который вы заходите. Если вы хотите видеть рекламу только на определенных сайтах, включите эту функцию ниже.";

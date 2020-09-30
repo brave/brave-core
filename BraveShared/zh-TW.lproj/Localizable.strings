@@ -29,6 +29,9 @@
 /* Context: The 'Up' in 'Brave Shields Up' */
 "BraveShieldsStatusValueUp" = "開啟";
 
+/* The accessibility hint spoken when focused on the main shields toggle */
+"BraveShieldsToggleHint" = "點兩下即可切換 Brave Shields";
+
 /* The body of the notification that goes out monthly to users who can claim an ads grant */
 "MonthlyAdsClaimNotificationBody" = "輕觸即可免費領取代幣。";
 
@@ -142,6 +145,15 @@
 
 /* No comment provided by engineer. */
 "ReportABrokenSite" = "回報故障網站";
+
+/* First part of the report a broken site copy. After the colon is a new line and then a website address */
+"ReportBrokenSiteBody1" = "讓 Brave 的開發人員知悉此網站無法在 Shields 中正常運作：";
+
+/* No comment provided by engineer. */
+"ReportBrokenSiteBody2" = "注意：此網址將與您的 Brave 版本號碼和 IP 位址一併提交 (不會留存記錄)。";
+
+/* No comment provided by engineer. */
+"ReportBrokenSubmitButtonTitle" = "提交";
 
 /* Name of folder where restored bookmarks are retrieved */
 "RestoredBookmarksFolderName" = "恢復的書籤";
@@ -368,8 +380,92 @@
 /* No comment provided by engineer. */
 "ShieldsDownDisclaimer" = "您目前是在沒有 Brave 隱私防護的情況下瀏覽此網站。開啟 Shields 時無法正常瀏覽嗎？";
 
+/* No comment provided by engineer. */
+"SiteReportedBody" = "感謝您讓 Brave 的開發人員知悉此網站發生錯誤。我們將盡力予以修正！";
+
+/* No comment provided by engineer. */
+"SiteReportedTitle" = "謝謝";
+
 /* Text that informs a user about Brave Sync service deprecation. */
 "sync.syncV1DeprecationText" = "最新 Brave Sync 即將推出，屆時您的設定將會受到影響。敬請準備升級。";
+
+/* No comment provided by engineer. */
+"today.allSources" = "所有來源";
+
+/* The name of the feature */
+"today.braveToday" = "Brave Today";
+
+/* No comment provided by engineer. */
+"today.contentAvailableButtonTitle" = "新上架內容";
+
+/* No comment provided by engineer. */
+"today.deals" = "優惠";
+
+/* No comment provided by engineer. */
+"today.disableAll" = "停用全部";
+
+/* '%@' will turn into the name of a publisher (verbatim), for example: Brave Blog */
+"today.disabledAlertBody" = "Brave Today 將不再顯示來自 %@ 的內容";
+
+/* No comment provided by engineer. */
+"today.disabledAlertTitle" = "已停用";
+
+/* '%@' will turn into the name of a publisher (verbatim), for example: Brave Blog */
+"today.disablePublisherContent" = "停用來自 %@ 的內容";
+
+/* No comment provided by engineer. */
+"today.emptyFeedBody" = "嘗試開啟一些新聞來源";
+
+/* No comment provided by engineer. */
+"today.emptyFeedTitle" = "沒有可顯示的文章";
+
+/* No comment provided by engineer. */
+"today.enableAll" = "啟用全部";
+
+/* '%@' will turn into the name of a publisher (verbatim), for example: Brave Blog */
+"today.enablePublisherContent" = "啟用來自 %@ 的內容";
+
+/* No comment provided by engineer. */
+"today.errorGeneralBody" = "Brave Today 發生了一些問題，請再試一次。";
+
+/* No comment provided by engineer. */
+"today.errorGeneralTitle" = "糟糕…";
+
+/* No comment provided by engineer. */
+"today.introCardBody" = "Brave Today 會在您的裝置上匹配感興趣的內容，因此您的個人資料不會從瀏覽器流出。內容更新從不間斷。";
+
+/* No comment provided by engineer. */
+"today.introCardTitle" = "Today 的重點消息是完全私人的摘要，專屬於您。";
+
+/* No comment provided by engineer. */
+"today.isEnabledToggleLabel" = "顯示 Brave Today";
+
+/* No comment provided by engineer. */
+"today.learnMoreTitle" = "深入了解您的資料";
+
+/* 'Brave Offers' is a product name */
+"today.moreBraveOffers" = "更多 Brave Offer";
+
+/* No comment provided by engineer. */
+"today.noInternet" = "沒有網際網路連線";
+
+/* No comment provided by engineer. */
+"today.noInternetBody" = "嘗試確認連線或重新連線至 Wi-Fi。";
+
+/* No comment provided by engineer. */
+"today.refresh" = "重新整理";
+
+/* No comment provided by engineer. */
+"today.resetSourceSettingsButtonTitle" = "將來源設定重設為預設";
+
+/* No comment provided by engineer. */
+"today.settingsSourceHeaderTitle" = "來源";
+
+/* No comment provided by engineer. */
+"today.sourcesAndSettings" = "來源與設定";
+
+/* No comment provided by engineer. */
+"today.sourceSearchPlaceholder" = "搜尋";
 
 /* Prompt shown before enabling provider search queries */
 "Turn on search suggestions?" = "開啟搜尋建議？";

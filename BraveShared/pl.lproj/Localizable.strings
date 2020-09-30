@@ -29,6 +29,9 @@
 /* Context: The 'Up' in 'Brave Shields Up' */
 "BraveShieldsStatusValueUp" = "Włącz";
 
+/* The accessibility hint spoken when focused on the main shields toggle */
+"BraveShieldsToggleHint" = "Dotknij dwukrotnie, aby włączyć lub wyłączyć Brave Shields";
+
 /* The body of the notification that goes out monthly to users who can claim an ads grant */
 "MonthlyAdsClaimNotificationBody" = "Dotknij, aby otrzymać bezpłatne tokeny.";
 
@@ -142,6 +145,15 @@
 
 /* No comment provided by engineer. */
 "ReportABrokenSite" = "Zgłoś nieprawidłową stronę";
+
+/* First part of the report a broken site copy. After the colon is a new line and then a website address */
+"ReportBrokenSiteBody1" = "Daj znać programistom Brave, że ta strona nie działa poprawnie z Shields:";
+
+/* No comment provided by engineer. */
+"ReportBrokenSiteBody2" = "Uwaga: adres strony zostanie przesłany wraz z numerem wersji Brave i adresem IP (który nie będzie przechowywany).";
+
+/* No comment provided by engineer. */
+"ReportBrokenSubmitButtonTitle" = "Prześlij";
 
 /* Name of folder where restored bookmarks are retrieved */
 "RestoredBookmarksFolderName" = "Przywrócone zakładki";
@@ -368,8 +380,92 @@
 /* No comment provided by engineer. */
 "ShieldsDownDisclaimer" = "Przeglądasz tę stronę bez użycia ochrony prywatności Brave. Czy nie działa ona właściwie przy włączonej ochronie?";
 
+/* No comment provided by engineer. */
+"SiteReportedBody" = "Dziękujemy za powiadomienie programistów Brave o tym, że coś jest nie tak z tą stroną. Zrobimy, co w naszej mocy, by to naprawić!";
+
+/* No comment provided by engineer. */
+"SiteReportedTitle" = "Dziękujemy";
+
 /* Text that informs a user about Brave Sync service deprecation. */
 "sync.syncV1DeprecationText" = "Nadchodzi nowe Brave Sync, które będzie miało wpływ na Twoją konfigurację. Przygotuj się na aktualizację.";
+
+/* No comment provided by engineer. */
+"today.allSources" = "Wszystkie źródła";
+
+/* The name of the feature */
+"today.braveToday" = "Brave Today";
+
+/* No comment provided by engineer. */
+"today.contentAvailableButtonTitle" = "Dostępne są nowe treści";
+
+/* No comment provided by engineer. */
+"today.deals" = "Oferty";
+
+/* No comment provided by engineer. */
+"today.disableAll" = "Wyłącz wszystko";
+
+/* '%@' will turn into the name of a publisher (verbatim), for example: Brave Blog */
+"today.disabledAlertBody" = "Brave Today przestanie pokazywać treści z %@";
+
+/* No comment provided by engineer. */
+"today.disabledAlertTitle" = "Wyłączono";
+
+/* '%@' will turn into the name of a publisher (verbatim), for example: Brave Blog */
+"today.disablePublisherContent" = "Wyłącz treści z %@";
+
+/* No comment provided by engineer. */
+"today.emptyFeedBody" = "Spróbuj włączyć kilka źródeł informacji";
+
+/* No comment provided by engineer. */
+"today.emptyFeedTitle" = "Brak artykułów do wyświetlenia";
+
+/* No comment provided by engineer. */
+"today.enableAll" = "Włącz wszystko";
+
+/* '%@' will turn into the name of a publisher (verbatim), for example: Brave Blog */
+"today.enablePublisherContent" = "Włącz treści z %@";
+
+/* No comment provided by engineer. */
+"today.errorGeneralBody" = "Brave Today doświadcza pewnych problemów. Spróbuj ponownie.";
+
+/* No comment provided by engineer. */
+"today.errorGeneralTitle" = "Ups…";
+
+/* No comment provided by engineer. */
+"today.introCardBody" = "Brave Today dopasowuj się do zainteresowań na Twoim urządzeniu, dzięki czemu Twoje dane osobowe nigdy nie opuszczą przeglądarki. Nowe treści aktualizowane przez cały dzień.";
+
+/* No comment provided by engineer. */
+"today.introCardTitle" = "Dzisiejsze najlepsze historie w całkowicie prywatnym kanale, specjalnie dla Ciebie.";
+
+/* No comment provided by engineer. */
+"today.isEnabledToggleLabel" = "Wyświetl Brave Today";
+
+/* No comment provided by engineer. */
+"today.learnMoreTitle" = "Dowiedz się więcej o swoich danych";
+
+/* 'Brave Offers' is a product name */
+"today.moreBraveOffers" = "Więcej Brave Offers";
+
+/* No comment provided by engineer. */
+"today.noInternet" = "Brak Internetu";
+
+/* No comment provided by engineer. */
+"today.noInternetBody" = "Spróbuj sprawdzić swoje połączenie lub ponownie połączyć się z siecią Wi-Fi.";
+
+/* No comment provided by engineer. */
+"today.refresh" = "Odśwież";
+
+/* No comment provided by engineer. */
+"today.resetSourceSettingsButtonTitle" = "Przywróć domyślne ustawienia źródła";
+
+/* No comment provided by engineer. */
+"today.settingsSourceHeaderTitle" = "Źródła";
+
+/* No comment provided by engineer. */
+"today.sourcesAndSettings" = "Źródła i ustawienia";
+
+/* No comment provided by engineer. */
+"today.sourceSearchPlaceholder" = "Szukaj";
 
 /* Prompt shown before enabling provider search queries */
 "Turn on search suggestions?" = "Czy włączyć sugestie wyszukiwania?";

@@ -133,6 +133,9 @@
 /* No comment provided by engineer. */
 "BlockAdsAndTracking" = "封鎖廣告和追蹤";
 
+/* No comment provided by engineer. */
+"BlockAdsAndTrackingDescription" = "禁止載入廣告、彈出式視窗和追蹤器";
+
 /* Title for setting to block all website cookies. */
 "BlockAllCookies" = "封鎖所有 Cookie";
 
@@ -148,6 +151,9 @@
 /* Message of alert displayed to user when block all cookie operation fails */
 "BlockAllCookiesFailedAlertMsg" = "無法設定偏好設定，請稍後再試。";
 
+/* No comment provided by engineer. */
+"BlockCookiesDescription" = "禁止網站儲存您的造訪記錄相關資訊";
+
 /* title for section showing page blocking statistics */
 "BlockingMonitor" = "封鎖監控";
 
@@ -162,6 +168,9 @@
 
 /* No comment provided by engineer. */
 "BlockScripts" = "封鎖指令碼";
+
+/* No comment provided by engineer. */
+"BlockScriptsDescription" = "封鎖 JavaScript (可能會影響網站運作)";
 
 /* Bookmark Folder Section Title */
 "BookmarkFolder" = "書籤資料夾";
@@ -189,6 +198,9 @@
 
 /* Brave Rewards settings title */
 "BraveRewardsTitle" = "Brave Rewards";
+
+/* No comment provided by engineer. */
+"BraveShieldsAndPrivacy" = "Brave Shields 和隱私";
 
 /* Sync page title */
 "BraveSync" = "同步";
@@ -220,17 +232,26 @@
 /* No comment provided by engineer. */
 "ClearData" = "正在清除資料";
 
-/* Button in settings that clears private data for the selected items. Also used as section title in settings panel */
+/* Section title in settings panel */
 "ClearPrivateData" = "清除隱私資料";
 
 /* The cancel button when confirming clear private data. */
 "ClearPrivateDataAlertCancelButtonTitle" = "取消";
 
-/* Description of the confirmation dialog shown when a user tries to clear their private data. */
-"ClearPrivateDataAlertMessage" = "此操作會清除您的所有隱私資料，且無法復原。";
+/* No comment provided by engineer. */
+"ClearPrivateDataAlertMessage" = "是否確定？";
 
 /* The button that clears private data. */
 "ClearPrivateDataAlertOkButtonTitle" = "確定";
+
+/* No comment provided by engineer. */
+"ClearPrivateDataAlertTitle" = "清除資料";
+
+/* No comment provided by engineer. */
+"ClearPrivateDataAlertYesAction" = "是的，刪除";
+
+/* Button in settings that clears private data for the selected items. */
+"ClearPrivateDataNow" = "立即清除資料";
 
 /* The cancel button when confirming clear history. */
 "ClearSyncedHistoryAlertCancelButtoTitle" = "取消";
@@ -289,6 +310,9 @@
 /* Copy rewards internals info for support */
 "CopyWalletSupportInfo" = "複製客服資訊";
 
+/* Create PDF share action. */
+"CreatePDF" = "建立 PDF";
+
 /* Currently usedd search engines section name. */
 "CurrentlyUsedSearchEngines" = "目前使用的搜尋引擎";
 
@@ -303,6 +327,9 @@
 
 /* DuckDuckGo callout title. */
 "DDGCalloutTitle" = "使用 DuckDuckGo 執行隱私搜尋？";
+
+/* No comment provided by engineer. */
+"defaultBrowserCalloutCloseAccesabilityLabel" = "關閉預設瀏覽器標註";
 
 /* Name for default Brave theme. */
 "defaultThemeName" = "Brave 預設";
@@ -436,6 +463,9 @@
 /* Title for favorites cell */
 "FavoritesRootLevelCellTitle" = "我的最愛";
 
+/* No comment provided by engineer. */
+"Features" = "功能";
+
 /* Share action title */
 "FindInPage" = "在頁面中尋找";
 
@@ -461,13 +491,22 @@
 "FingerprintingnProtection" = "指紋識別\n防護";
 
 /* No comment provided by engineer. */
-"FingerprintingProtection" = "指紋識別防護";
+"FingerprintingProtection" = "封鎖指紋識別";
+
+/* No comment provided by engineer. */
+"FingerprintingProtectionDescription" = "使網站不易識別裝置的特徵。 ";
 
 /* No comment provided by engineer. */
 "genericErrorBody" = "糟糕！ 出問題了。 請再試一次。";
 
 /* No comment provided by engineer. */
 "genericErrorTitle" = "錯誤";
+
+/* No comment provided by engineer. */
+"GoogleSafeBrowsing" = "封鎖不安全的網站";
+
+/* No comment provided by engineer. */
+"GoogleSafeBrowsingUsingWebKitDescription" = "當您有安全風險時，將您所造訪部分網頁的網址經模糊處理後傳送給 Google 安全瀏覽服務。";
 
 /* Grand camera access */
 "GrantCameraAccess" = "啟用相機";
@@ -492,6 +531,9 @@
 
 /* No comment provided by engineer. */
 "HTTPSEverywhere" = "HTTPS Everywhere";
+
+/* No comment provided by engineer. */
+"HTTPSEverywhereDescription" = "使用安全的 HTTPS 連線開啟部分網站，取代普通的 HTTP。";
 
 /* Shields Https Stat */
 "HTTPSrUpgrades" = "HTTPS\n升級";
@@ -678,6 +720,9 @@
 
 /* Button title to that opens a website. */
 "OpenWebsite" = "開啟網站";
+
+/* Section name for other privacy settings */
+"OtherPrivacySettingsSection" = "其他隱私設定";
 
 /* Section name for other settings. */
 "OtherSettingsSection" = "其他設定";
@@ -896,6 +941,12 @@
 "SendReportButtonTitle" = "傳送報告";
 
 /* No comment provided by engineer. */
+"setDefaultBrowserCalloutTitle" = "現在能夠在 iOS 將 Brave 設定為預設瀏覽器。請點選此處以開啟設定。";
+
+/* Settings item to set the Brave as a default browser on the iOS device. */
+"setDefaultBrowserSettingsCell" = "設定為預設瀏覽器";
+
+/* No comment provided by engineer. */
 "Settings" = "設定";
 
 /* Error message that is shown in settings when there was a problem loading */
@@ -914,7 +965,10 @@
 "ShareWithMenuItem" = "與...共享";
 
 /* Section title for adbblock, tracking protection, HTTPS-E, and cookies */
-"ShieldsDefaults" = "Shield 預設";
+"ShieldsDefaults" = "Brave Shields 全域預設";
+
+/* Section footer for global shields defaults */
+"ShieldsDefaultsFooter" = "這些是 Shields 對新網站的預設設定。變更這些設定不會影響現有的個別網站設定。";
 
 /* shields overview message */
 "ShieldsOverview" = "「網站防護」可控制您在造訪每個網站時，是否直接封鎖網站上的廣告與追踪器。若您希望在特定網站上顯示廣告，可以在這裡啟用廣告。";

@@ -133,6 +133,9 @@
 /* No comment provided by engineer. */
 "BlockAdsAndTracking" = "광고 및 개인정보 추적 차단";
 
+/* No comment provided by engineer. */
+"BlockAdsAndTrackingDescription" = "광고, 팝업, 트래커가 로드되지 않도록 차단";
+
 /* Title for setting to block all website cookies. */
 "BlockAllCookies" = "모든 쿠키 차단";
 
@@ -148,6 +151,9 @@
 /* Message of alert displayed to user when block all cookie operation fails */
 "BlockAllCookiesFailedAlertMsg" = "환경 설정을 설정하는 데 실패했습니다. 다시 시도하십시오.";
 
+/* No comment provided by engineer. */
+"BlockCookiesDescription" = "웹사이트에 이전 방문에 대한 정보가 저장되지 않도록 차단";
+
 /* title for section showing page blocking statistics */
 "BlockingMonitor" = "차단 모니터";
 
@@ -162,6 +168,9 @@
 
 /* No comment provided by engineer. */
 "BlockScripts" = "스크립트 차단";
+
+/* No comment provided by engineer. */
+"BlockScriptsDescription" = "자바스크립트 차단(사이트가 깨져 보일 수 있음)";
 
 /* Bookmark Folder Section Title */
 "BookmarkFolder" = "북마크 폴더";
@@ -189,6 +198,9 @@
 
 /* Brave Rewards settings title */
 "BraveRewardsTitle" = "Brave Rewards";
+
+/* No comment provided by engineer. */
+"BraveShieldsAndPrivacy" = "Brave Shields 및 프라이버시";
 
 /* Sync page title */
 "BraveSync" = "동기화";
@@ -220,17 +232,26 @@
 /* No comment provided by engineer. */
 "ClearData" = "데이터 지우는 중";
 
-/* Button in settings that clears private data for the selected items. Also used as section title in settings panel */
+/* Section title in settings panel */
 "ClearPrivateData" = "개인 정보 지우기";
 
 /* The cancel button when confirming clear private data. */
 "ClearPrivateDataAlertCancelButtonTitle" = "취소";
 
-/* Description of the confirmation dialog shown when a user tries to clear their private data. */
-"ClearPrivateDataAlertMessage" = "이 작업은 여러분의 모든 개인 정보를 삭제하며 실행 취소할 수 없습니다.";
+/* No comment provided by engineer. */
+"ClearPrivateDataAlertMessage" = "계속하시겠습니까?";
 
 /* The button that clears private data. */
 "ClearPrivateDataAlertOkButtonTitle" = "확인";
+
+/* No comment provided by engineer. */
+"ClearPrivateDataAlertTitle" = "데이터 지우기";
+
+/* No comment provided by engineer. */
+"ClearPrivateDataAlertYesAction" = "예, 삭제합니다.";
+
+/* Button in settings that clears private data for the selected items. */
+"ClearPrivateDataNow" = "지금 데이터 지우기";
 
 /* The cancel button when confirming clear history. */
 "ClearSyncedHistoryAlertCancelButtoTitle" = "취소";
@@ -289,6 +310,9 @@
 /* Copy rewards internals info for support */
 "CopyWalletSupportInfo" = "후원 정보 복사";
 
+/* Create PDF share action. */
+"CreatePDF" = "PDF 만들기";
+
 /* Currently usedd search engines section name. */
 "CurrentlyUsedSearchEngines" = "현재 사용 중인 검색 엔진";
 
@@ -303,6 +327,9 @@
 
 /* DuckDuckGo callout title. */
 "DDGCalloutTitle" = "DuckDuckGo로 비공개 검색을 하시겠습니까?";
+
+/* No comment provided by engineer. */
+"defaultBrowserCalloutCloseAccesabilityLabel" = "기본 브라우저 설정 안내 닫기";
 
 /* Name for default Brave theme. */
 "defaultThemeName" = "Brave 기본값";
@@ -436,6 +463,9 @@
 /* Title for favorites cell */
 "FavoritesRootLevelCellTitle" = "즐겨찾기";
 
+/* No comment provided by engineer. */
+"Features" = "기능";
+
 /* Share action title */
 "FindInPage" = "페이지에서 찾기";
 
@@ -461,13 +491,22 @@
 "FingerprintingnProtection" = "지문\n보호";
 
 /* No comment provided by engineer. */
-"FingerprintingProtection" = "디지털 지문 보호";
+"FingerprintingProtection" = "지문 차단";
+
+/* No comment provided by engineer. */
+"FingerprintingProtectionDescription" = "기기의 고유한 특성을 사이트가 인식하기 어렵게 만듭니다.";
 
 /* No comment provided by engineer. */
 "genericErrorBody" = "앗! 문제가 발생했습니다. 다시 시도하세요.";
 
 /* No comment provided by engineer. */
 "genericErrorTitle" = "오류";
+
+/* No comment provided by engineer. */
+"GoogleSafeBrowsing" = "위험한 사이트 차단";
+
+/* No comment provided by engineer. */
+"GoogleSafeBrowsingUsingWebKitDescription" = "사용자의 보안이 위험할 때, 방문하는 일부 페이지의 난독화된 URL을 Google 세이프 브라우징 서비스로 보냅니다.";
 
 /* Grand camera access */
 "GrantCameraAccess" = "카메라 활성화";
@@ -492,6 +531,9 @@
 
 /* No comment provided by engineer. */
 "HTTPSEverywhere" = "HTTPS Everywhere";
+
+/* No comment provided by engineer. */
+"HTTPSEverywhereDescription" = "일부 사이트를 평범한 HTTP가 아닌 보안 HTTPS 연결을 사용하여 엽니다.";
 
 /* Shields Https Stat */
 "HTTPSrUpgrades" = "HTTPS \n업그레이드";
@@ -678,6 +720,9 @@
 
 /* Button title to that opens a website. */
 "OpenWebsite" = "웹사이트 열기";
+
+/* Section name for other privacy settings */
+"OtherPrivacySettingsSection" = "기타 프라이버시 설정";
 
 /* Section name for other settings. */
 "OtherSettingsSection" = "기타 설정";
@@ -896,6 +941,12 @@
 "SendReportButtonTitle" = "보고서 보내기";
 
 /* No comment provided by engineer. */
+"setDefaultBrowserCalloutTitle" = "이제 iOS에서 Brave를 기본 브라우저로 설정할 수 있습니다. 여기를 탭하여 설정을 여세요.";
+
+/* Settings item to set the Brave as a default browser on the iOS device. */
+"setDefaultBrowserSettingsCell" = "기본 브라우저로 설정";
+
+/* No comment provided by engineer. */
 "Settings" = "설정";
 
 /* Error message that is shown in settings when there was a problem loading */
@@ -914,7 +965,10 @@
 "ShareWithMenuItem" = "다음 대상과 공유...";
 
 /* Section title for adbblock, tracking protection, HTTPS-E, and cookies */
-"ShieldsDefaults" = "Shield 기본값";
+"ShieldsDefaults" = "Brave Shields 전역 기본값";
+
+/* Section footer for global shields defaults */
+"ShieldsDefaultsFooter" = "새로운 사이트에 적용되는 기본 Shields 설정입니다. 이 설정을 변경해도 기존 사이트별 설정에는 영향을 주지 않습니다.";
 
 /* shields overview message */
 "ShieldsOverview" = "사이트 차단을 사용하면 방문하는 사이트별로 광고와 트래커를 차단할지 관리할 수 있습니다. 특정 사이트에서 광고를 표시하려면 여기에서 해당 기능을 활성화할 수 있습니다.";

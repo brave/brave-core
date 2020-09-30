@@ -133,6 +133,9 @@
 /* No comment provided by engineer. */
 "BlockAdsAndTracking" = "Blocca annunci e sistemi di tracciamento";
 
+/* No comment provided by engineer. */
+"BlockAdsAndTrackingDescription" = "Impedisce il caricamento di annunci, popup e tracker";
+
 /* Title for setting to block all website cookies. */
 "BlockAllCookies" = "Blocca tutti i cookie";
 
@@ -148,6 +151,9 @@
 /* Message of alert displayed to user when block all cookie operation fails */
 "BlockAllCookiesFailedAlertMsg" = "Impossibile impostare la preferenza. Riprova.";
 
+/* No comment provided by engineer. */
+"BlockCookiesDescription" = "Impedisce ai siti web di memorizzare le informazioni sulle tue visite precedenti";
+
 /* title for section showing page blocking statistics */
 "BlockingMonitor" = "Monitoraggio blocchi";
 
@@ -162,6 +168,9 @@
 
 /* No comment provided by engineer. */
 "BlockScripts" = "Blocca script";
+
+/* No comment provided by engineer. */
+"BlockScriptsDescription" = "Blocca Javascript (i siti potrebbero non funzionare correttamente)";
 
 /* Bookmark Folder Section Title */
 "BookmarkFolder" = "Cartella dei segnalibri";
@@ -189,6 +198,9 @@
 
 /* Brave Rewards settings title */
 "BraveRewardsTitle" = "Brave Rewards";
+
+/* No comment provided by engineer. */
+"BraveShieldsAndPrivacy" = "Brave Shields e privacy";
 
 /* Sync page title */
 "BraveSync" = "Sincronizza";
@@ -220,17 +232,26 @@
 /* No comment provided by engineer. */
 "ClearData" = "Eliminazione dei dati";
 
-/* Button in settings that clears private data for the selected items. Also used as section title in settings panel */
+/* Section title in settings panel */
 "ClearPrivateData" = "Cancella dati privati";
 
 /* The cancel button when confirming clear private data. */
 "ClearPrivateDataAlertCancelButtonTitle" = "Annulla";
 
-/* Description of the confirmation dialog shown when a user tries to clear their private data. */
-"ClearPrivateDataAlertMessage" = "Questa azione cancellerà tutti i tuoi dati privati. Non può essere annullata. ";
+/* No comment provided by engineer. */
+"ClearPrivateDataAlertMessage" = "Confermi la tua scelta?";
 
 /* The button that clears private data. */
 "ClearPrivateDataAlertOkButtonTitle" = "OK";
+
+/* No comment provided by engineer. */
+"ClearPrivateDataAlertTitle" = "Cancella dati";
+
+/* No comment provided by engineer. */
+"ClearPrivateDataAlertYesAction" = "Sì, elimina";
+
+/* Button in settings that clears private data for the selected items. */
+"ClearPrivateDataNow" = "Cancella dati ora";
 
 /* The cancel button when confirming clear history. */
 "ClearSyncedHistoryAlertCancelButtoTitle" = "Annulla";
@@ -289,6 +310,9 @@
 /* Copy rewards internals info for support */
 "CopyWalletSupportInfo" = "Copia le informazioni di supporto";
 
+/* Create PDF share action. */
+"CreatePDF" = "Crea PDF";
+
 /* Currently usedd search engines section name. */
 "CurrentlyUsedSearchEngines" = "Motori di ricerca utilizzati attualmente";
 
@@ -303,6 +327,9 @@
 
 /* DuckDuckGo callout title. */
 "DDGCalloutTitle" = "Ricerca privata con DuckDuckGo?";
+
+/* No comment provided by engineer. */
+"defaultBrowserCalloutCloseAccesabilityLabel" = "Chiudi la finestra del browser predefinito";
 
 /* Name for default Brave theme. */
 "defaultThemeName" = "Predefinito di Brave";
@@ -436,6 +463,9 @@
 /* Title for favorites cell */
 "FavoritesRootLevelCellTitle" = "Preferiti";
 
+/* No comment provided by engineer. */
+"Features" = "Funzioni";
+
 /* Share action title */
 "FindInPage" = "Trova nella pagina";
 
@@ -461,13 +491,22 @@
 "FingerprintingnProtection" = "Protezione\ndal fingerprinting";
 
 /* No comment provided by engineer. */
-"FingerprintingProtection" = "Protezione dal fingerprinting";
+"FingerprintingProtection" = "Blocca fingerprinting";
+
+/* No comment provided by engineer. */
+"FingerprintingProtectionDescription" = "Rende più difficile per i siti riconoscere le caratteristiche distintive del tuo dispositivo.";
 
 /* No comment provided by engineer. */
 "genericErrorBody" = "Ops! Si è verificato un errore, riprova.";
 
 /* No comment provided by engineer. */
 "genericErrorTitle" = "Errore";
+
+/* No comment provided by engineer. */
+"GoogleSafeBrowsing" = "Blocca siti pericolosi";
+
+/* No comment provided by engineer. */
+"GoogleSafeBrowsingUsingWebKitDescription" = "Invia URL offuscati di alcune delle pagine che visiti al servizio di Navigazione sicura di Google quando la tua sicurezza è a rischio.";
 
 /* Grand camera access */
 "GrantCameraAccess" = "Attiva Fotocamera";
@@ -492,6 +531,9 @@
 
 /* No comment provided by engineer. */
 "HTTPSEverywhere" = "HTTPS Everywhere";
+
+/* No comment provided by engineer. */
+"HTTPSEverywhereDescription" = "Apre alcuni siti utilizzando una connessione HTTPS sicura invece della normale connessione HTTP.";
 
 /* Shields Https Stat */
 "HTTPSrUpgrades" = "Aggiornamenti \nHTTPS";
@@ -678,6 +720,9 @@
 
 /* Button title to that opens a website. */
 "OpenWebsite" = "Apri sito web";
+
+/* Section name for other privacy settings */
+"OtherPrivacySettingsSection" = "Altre impostazioni della privacy";
 
 /* Section name for other settings. */
 "OtherSettingsSection" = "Altre impostazioni";
@@ -896,6 +941,12 @@
 "SendReportButtonTitle" = "Invia segnalazione";
 
 /* No comment provided by engineer. */
+"setDefaultBrowserCalloutTitle" = "Ora in iOS puoi configurare Brave come browser predefinito. Tocca qui per aprire le impostazioni.";
+
+/* Settings item to set the Brave as a default browser on the iOS device. */
+"setDefaultBrowserSettingsCell" = "Imposta come browser predefinito";
+
+/* No comment provided by engineer. */
 "Settings" = "Impostazioni";
 
 /* Error message that is shown in settings when there was a problem loading */
@@ -914,7 +965,10 @@
 "ShareWithMenuItem" = "Condividi con...";
 
 /* Section title for adbblock, tracking protection, HTTPS-E, and cookies */
-"ShieldsDefaults" = "Impostazioni predefinite per gli scudi";
+"ShieldsDefaults" = "Impostazioni predefinite globali Brave Shields";
+
+/* Section footer for global shields defaults */
+"ShieldsDefaultsFooter" = "Queste sono le impostazioni predefinite di Shields per i nuovi siti. La loro modifica non influirà sulle impostazioni esistenti per i singoli siti.";
 
 /* shields overview message */
 "ShieldsOverview" = "Con Shields decidi se bloccare gli annunci pubblicitari e i sistemi di tracciamento, per tutti i siti che visiti. Se su un sito specifico vuoi vedere gli annunci, puoi attivarli qui.";

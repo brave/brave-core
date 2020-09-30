@@ -134,7 +134,7 @@
 "BraveRewardsCreatingWallet" = "Oppretter lommebok";
 
 /* No comment provided by engineer. */
-"BraveRewardsDisabledBody" = "Tjen penger ved å se annonser som respekterer personvernet, og bruk det til å støtte innholdsskapere du liker.";
+"BraveRewardsDisabledBody" = "Tjen ved å se på annonser som respekterer personvern, og gi det videre ved å støtte innholdsskapere du setter pris på.";
 
 /* No comment provided by engineer. */
 "BraveRewardsDisabledEnableButton" = "Aktiver Brave Rewards";
@@ -632,10 +632,10 @@
 "RecurringText" = "Gjentakende";
 
 /* No comment provided by engineer. */
-"RewardsOptInDescription" = "Tjen tokener og belønn skaperne for supert innhold mens du surfer";
+"RewardsOptInDescription" = "Tjen tokener og belønn skapere for flott innhold mens du surfer";
 
 /* No comment provided by engineer. */
-"RewardsOptInDescriptionJapan" = "Tjen poeng og belønn skaperne for supert innhold mens du surfer";
+"RewardsOptInDescriptionJapan" = "Tjen poeng og belønn skapere for flott innhold mens du surfer";
 
 /* No comment provided by engineer. */
 "RewardsOptInJoinTitle" = "Registrer deg for Rewards";

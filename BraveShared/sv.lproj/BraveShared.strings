@@ -133,6 +133,9 @@
 /* No comment provided by engineer. */
 "BlockAdsAndTracking" = "Blockera annonser och spårning";
 
+/* No comment provided by engineer. */
+"BlockAdsAndTrackingDescription" = "Förhindrar att annonser, popups och spårare läses in";
+
 /* Title for setting to block all website cookies. */
 "BlockAllCookies" = "Blockera alla kakor";
 
@@ -148,6 +151,9 @@
 /* Message of alert displayed to user when block all cookie operation fails */
 "BlockAllCookiesFailedAlertMsg" = "Det gick inte att spara inställningen. Försök igen.";
 
+/* No comment provided by engineer. */
+"BlockCookiesDescription" = "Hindrar webbplatser från att lagra information om dina tidigare besök";
+
 /* title for section showing page blocking statistics */
 "BlockingMonitor" = "Blockeringsvisare";
 
@@ -162,6 +168,9 @@
 
 /* No comment provided by engineer. */
 "BlockScripts" = "Blockera skript";
+
+/* No comment provided by engineer. */
+"BlockScriptsDescription" = "Blockerar Javascript (kan få webbplatser att sluta fungera)";
 
 /* Bookmark Folder Section Title */
 "BookmarkFolder" = "Bokmärkesmapp";
@@ -189,6 +198,9 @@
 
 /* Brave Rewards settings title */
 "BraveRewardsTitle" = "Brave Rewards";
+
+/* No comment provided by engineer. */
+"BraveShieldsAndPrivacy" = "Braves sköldar och sekretess";
 
 /* Sync page title */
 "BraveSync" = "Synkronisera";
@@ -220,17 +232,26 @@
 /* No comment provided by engineer. */
 "ClearData" = "Rensa data";
 
-/* Button in settings that clears private data for the selected items. Also used as section title in settings panel */
+/* Section title in settings panel */
 "ClearPrivateData" = "Rensa privata data";
 
 /* The cancel button when confirming clear private data. */
 "ClearPrivateDataAlertCancelButtonTitle" = "Avbryt";
 
-/* Description of the confirmation dialog shown when a user tries to clear their private data. */
-"ClearPrivateDataAlertMessage" = "Den här åtgärden rensar alla dina privata data. Detta kan inte ångras.";
+/* No comment provided by engineer. */
+"ClearPrivateDataAlertMessage" = "Är du säker?";
 
 /* The button that clears private data. */
 "ClearPrivateDataAlertOkButtonTitle" = "OK";
+
+/* No comment provided by engineer. */
+"ClearPrivateDataAlertTitle" = "Rensa data";
+
+/* No comment provided by engineer. */
+"ClearPrivateDataAlertYesAction" = "Ja, ta bort";
+
+/* Button in settings that clears private data for the selected items. */
+"ClearPrivateDataNow" = "Rensa data nu";
 
 /* The cancel button when confirming clear history. */
 "ClearSyncedHistoryAlertCancelButtoTitle" = "Avbryt";
@@ -289,6 +310,9 @@
 /* Copy rewards internals info for support */
 "CopyWalletSupportInfo" = "Kopiera kundtjänstinformation";
 
+/* Create PDF share action. */
+"CreatePDF" = "Skapa pdf";
+
 /* Currently usedd search engines section name. */
 "CurrentlyUsedSearchEngines" = "Sökmotorer som används för närvarande";
 
@@ -303,6 +327,9 @@
 
 /* DuckDuckGo callout title. */
 "DDGCalloutTitle" = "Privat sökning med DuckDuckGo?";
+
+/* No comment provided by engineer. */
+"defaultBrowserCalloutCloseAccesabilityLabel" = "Stäng text om standardwebbläsare";
 
 /* Name for default Brave theme. */
 "defaultThemeName" = "Brave standardinställningar";
@@ -436,6 +463,9 @@
 /* Title for favorites cell */
 "FavoritesRootLevelCellTitle" = "Favoriter";
 
+/* No comment provided by engineer. */
+"Features" = "Funktioner";
+
 /* Share action title */
 "FindInPage" = "Sök på sidan";
 
@@ -461,13 +491,22 @@
 "FingerprintingnProtection" = "Fingeratrycks\nskydd";
 
 /* No comment provided by engineer. */
-"FingerprintingProtection" = "Fingeravtrycksskydd";
+"FingerprintingProtection" = "Blockera fingeravtryck";
+
+/* No comment provided by engineer. */
+"FingerprintingProtectionDescription" = "Gör det svårare för webbplatser att känna igen enhetens utmärkande egenskaper.";
 
 /* No comment provided by engineer. */
 "genericErrorBody" = "Någonting gick fel. Vänligen försök igen.";
 
 /* No comment provided by engineer. */
 "genericErrorTitle" = "Fel";
+
+/* No comment provided by engineer. */
+"GoogleSafeBrowsing" = "Blockera farliga webbplatser";
+
+/* No comment provided by engineer. */
+"GoogleSafeBrowsingUsingWebKitDescription" = "Skickar skadliga webbadresser för vissa sidor som du besöker till Googles tjänst för säker webbsökning, när din säkerhet är i fara.";
 
 /* Grand camera access */
 "GrantCameraAccess" = "Aktivera kamera";
@@ -492,6 +531,9 @@
 
 /* No comment provided by engineer. */
 "HTTPSEverywhere" = "HTTPS Everywhere";
+
+/* No comment provided by engineer. */
+"HTTPSEverywhereDescription" = "Öppnar vissa webbplatser med hjälp av en säker HTTPS-anslutning i stället för vanligt HTTP.";
 
 /* Shields Https Stat */
 "HTTPSrUpgrades" = "HTTPS-\nuppgraderingar";
@@ -678,6 +720,9 @@
 
 /* Button title to that opens a website. */
 "OpenWebsite" = "Öppne hemsida";
+
+/* Section name for other privacy settings */
+"OtherPrivacySettingsSection" = "Andra sekretessinställningar";
 
 /* Section name for other settings. */
 "OtherSettingsSection" = "Andra inställningar";
@@ -896,6 +941,12 @@
 "SendReportButtonTitle" = "Skicka rapport";
 
 /* No comment provided by engineer. */
+"setDefaultBrowserCalloutTitle" = "Brave kan nu anges som din standardwebbläsare i iOS. Tryck här för att öppna inställningarna.";
+
+/* Settings item to set the Brave as a default browser on the iOS device. */
+"setDefaultBrowserSettingsCell" = "Ange som standardwebbläsare";
+
+/* No comment provided by engineer. */
 "Settings" = "Inställningar";
 
 /* Error message that is shown in settings when there was a problem loading */
@@ -914,7 +965,10 @@
 "ShareWithMenuItem" = "Dela med …";
 
 /* Section title for adbblock, tracking protection, HTTPS-E, and cookies */
-"ShieldsDefaults" = "Standarder för sköldar";
+"ShieldsDefaults" = "Globala standardinställningar för Braves sköldar";
+
+/* Section footer for global shields defaults */
+"ShieldsDefaultsFooter" = "Dessa är standardinställningar för sköldar för nya webbplatser. Om du ändrar dessa påverkas inte dina befintliga inställningar per webbplats.";
 
 /* shields overview message */
 "ShieldsOverview" = "Sköldarna låter dig styra när annonser och spårare blockeras för varje webbplats du besöker. Om du föredrar att se annonser på en viss webbplats kan du aktivera dem här.";

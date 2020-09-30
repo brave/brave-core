@@ -133,6 +133,9 @@
 /* No comment provided by engineer. */
 "BlockAdsAndTracking" = "広告と追跡をブロック";
 
+/* No comment provided by engineer. */
+"BlockAdsAndTrackingDescription" = "広告やポップアップ、トラッカーの読み込みをブロックする";
+
 /* Title for setting to block all website cookies. */
 "BlockAllCookies" = "すべてのクッキーをブロック";
 
@@ -148,6 +151,9 @@
 /* Message of alert displayed to user when block all cookie operation fails */
 "BlockAllCookiesFailedAlertMsg" = "設定に失敗しました。もう一度やり直してください。";
 
+/* No comment provided by engineer. */
+"BlockCookiesDescription" = "ウェブサイトがあなたに関する情報を保存しないようにします。";
+
 /* title for section showing page blocking statistics */
 "BlockingMonitor" = "ブロックモニター";
 
@@ -162,6 +168,9 @@
 
 /* No comment provided by engineer. */
 "BlockScripts" = "スクリプトをブロック";
+
+/* No comment provided by engineer. */
+"BlockScriptsDescription" = "Javascriptをブロック (サイトが機能しなくなる可能性があります)";
 
 /* Bookmark Folder Section Title */
 "BookmarkFolder" = "ブックマークフォルダ";
@@ -189,6 +198,9 @@
 
 /* Brave Rewards settings title */
 "BraveRewardsTitle" = "Brave Rewards";
+
+/* No comment provided by engineer. */
+"BraveShieldsAndPrivacy" = "Brave Shields & プライバシー";
 
 /* Sync page title */
 "BraveSync" = "Brave Sync";
@@ -220,17 +232,26 @@
 /* No comment provided by engineer. */
 "ClearData" = "データを削除";
 
-/* Button in settings that clears private data for the selected items. Also used as section title in settings panel */
+/* Section title in settings panel */
 "ClearPrivateData" = "プライベートデータを消去する";
 
 /* The cancel button when confirming clear private data. */
 "ClearPrivateDataAlertCancelButtonTitle" = "キャンセル";
 
-/* Description of the confirmation dialog shown when a user tries to clear their private data. */
-"ClearPrivateDataAlertMessage" = "すべてのプライベートデータが消去されます。この操作は元に戻せません。";
+/* No comment provided by engineer. */
+"ClearPrivateDataAlertMessage" = "本当によろしいですか？";
 
 /* The button that clears private data. */
 "ClearPrivateDataAlertOkButtonTitle" = "了解";
+
+/* No comment provided by engineer. */
+"ClearPrivateDataAlertTitle" = "データを削除する";
+
+/* No comment provided by engineer. */
+"ClearPrivateDataAlertYesAction" = "はい、削除します";
+
+/* Button in settings that clears private data for the selected items. */
+"ClearPrivateDataNow" = "今すぐ削除する";
 
 /* The cancel button when confirming clear history. */
 "ClearSyncedHistoryAlertCancelButtoTitle" = "キャンセル";
@@ -289,6 +310,9 @@
 /* Copy rewards internals info for support */
 "CopyWalletSupportInfo" = "サポート情報をコピー";
 
+/* Create PDF share action. */
+"CreatePDF" = "PDFを作成する";
+
 /* Currently usedd search engines section name. */
 "CurrentlyUsedSearchEngines" = "現在使用中の検索エンジン";
 
@@ -303,6 +327,9 @@
 
 /* DuckDuckGo callout title. */
 "DDGCalloutTitle" = "DuckDuckGo によるプライベート検索を有効にしますか？";
+
+/* No comment provided by engineer. */
+"defaultBrowserCalloutCloseAccesabilityLabel" = "デフォルトブラウザの設定メッセージを閉じる";
 
 /* Name for default Brave theme. */
 "defaultThemeName" = "Brave デフォルト";
@@ -436,6 +463,9 @@
 /* Title for favorites cell */
 "FavoritesRootLevelCellTitle" = "お気に入り";
 
+/* No comment provided by engineer. */
+"Features" = "機能";
+
 /* Share action title */
 "FindInPage" = "ページを検索";
 
@@ -461,13 +491,22 @@
 "FingerprintingnProtection" = "フィンガープリント対策";
 
 /* No comment provided by engineer. */
-"FingerprintingProtection" = "フィンガープリント対策";
+"FingerprintingProtection" = "フィンガープリントをブロック";
+
+/* No comment provided by engineer. */
+"FingerprintingProtectionDescription" = "サイトがあなたのデバイスの特徴を識別しにくくします";
 
 /* No comment provided by engineer. */
 "genericErrorBody" = "おやっ！うまく行かなかったようです。もう一度やり直してください。";
 
 /* No comment provided by engineer. */
 "genericErrorTitle" = "エラー";
+
+/* No comment provided by engineer. */
+"GoogleSafeBrowsing" = "危険なサイトをブロック";
+
+/* No comment provided by engineer. */
+"GoogleSafeBrowsingUsingWebKitDescription" = "セキュリティ上の危険が存在する場合、訪問したページの難読化されたURLの一部をGoogle セーフ ブラウジング サービスに送信します";
 
 /* Grand camera access */
 "GrantCameraAccess" = "カメラを有効にする";
@@ -492,6 +531,9 @@
 
 /* No comment provided by engineer. */
 "HTTPSEverywhere" = "HTTPS Everywhere";
+
+/* No comment provided by engineer. */
+"HTTPSEverywhereDescription" = "ウェブサイトをHTTPではなく、よりセキュアなHTTPSで接続する";
 
 /* Shields Https Stat */
 "HTTPSrUpgrades" = "HTTPS\nアップグレード";
@@ -678,6 +720,9 @@
 
 /* Button title to that opens a website. */
 "OpenWebsite" = "ウェブサイトを開く";
+
+/* Section name for other privacy settings */
+"OtherPrivacySettingsSection" = "その他のプライバシー設定";
 
 /* Section name for other settings. */
 "OtherSettingsSection" = "その他の設定";
@@ -896,6 +941,12 @@
 "SendReportButtonTitle" = "レポートを送信";
 
 /* No comment provided by engineer. */
+"setDefaultBrowserCalloutTitle" = "Braveをデフォルトのブラウザに設定できるようになりました。こちらをタップして設定を開始しましょう。";
+
+/* Settings item to set the Brave as a default browser on the iOS device. */
+"setDefaultBrowserSettingsCell" = "デフォルトブラウザに設定する";
+
+/* No comment provided by engineer. */
 "Settings" = "設定";
 
 /* Error message that is shown in settings when there was a problem loading */
@@ -914,7 +965,10 @@
 "ShareWithMenuItem" = "共有";
 
 /* Section title for adbblock, tracking protection, HTTPS-E, and cookies */
-"ShieldsDefaults" = "Shieldのデフォルト設定";
+"ShieldsDefaults" = "Brave Shieldsの全体のデフォルト設定";
+
+/* Section footer for global shields defaults */
+"ShieldsDefaultsFooter" = "今後アクセスするサイトに適用されるデフォルトのShield設定です。こちらを変更しても個別サイトの設定には影響しません。";
 
 /* shields overview message */
 "ShieldsOverview" = "サイトの保護機能では、サイト毎に広告やトラッカーをブロックするか設定することができます。特定のサイトで広告を表示させたい場合、ここで設定することができます。";
