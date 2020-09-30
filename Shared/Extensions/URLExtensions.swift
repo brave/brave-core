@@ -405,7 +405,7 @@ extension URL {
 
     public var originalURLFromErrorURL: URL? {
         let components = URLComponents(url: self, resolvingAgainstBaseURL: false)
-        if let queryURL = components?.queryItems?.find({ $0.name == "url" })?.value {
+        if self.isErrorPageURL, let queryURL = components?.queryItems?.find({ $0.name == "url" })?.value {
             return URL(string: queryURL)
         }
         return nil
