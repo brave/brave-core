@@ -663,17 +663,19 @@ extension TabTrayController: TabManagerDelegate {
         }
 
         tabDataSource.addTab(tab)
-        self.collectionView?.performBatchUpdates({
-            self.collectionView.insertItems(at: [IndexPath(item: index, section: 0)])
-        }, completion: { finished in
-            if finished {
-                tabManager.selectTab(tab)
-                // don't pop the tab tray view controller if it is not in the foreground
-                if self.presentedViewController == nil {
-                    _ = self.navigationController?.popViewController(animated: true)
+        if navigationController?.visibleViewController === self {
+            self.collectionView?.performBatchUpdates({
+                self.collectionView.insertItems(at: [IndexPath(item: index, section: 0)])
+            }, completion: { finished in
+                if finished {
+                    tabManager.selectTab(tab)
+                    // don't pop the tab tray view controller if it is not in the foreground
+                    if self.presentedViewController == nil {
+                        _ = self.navigationController?.popViewController(animated: true)
+                    }
                 }
-            }
-        })
+            })
+        }
     }
 
     func tabManager(_ tabManager: TabManager, didRemoveTab tab: Tab) {
