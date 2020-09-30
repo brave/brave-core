@@ -1,0 +1,12 @@
+diff --git a/third_party/blink/renderer/bindings/idl_in_modules.gni b/third_party/blink/renderer/bindings/idl_in_modules.gni
+index 0ea2e923a37a2698921c6c0a98828940a4ac64ae..5fd4cc47377990bab6b6a4df00d9e552815d38e3 100644
+--- a/third_party/blink/renderer/bindings/idl_in_modules.gni
++++ b/third_party/blink/renderer/bindings/idl_in_modules.gni
+@@ -1023,6 +1023,7 @@ static_idl_files_in_modules = get_path_info(
+           "//third_party/blink/renderer/modules/xr/xr_world_tracking_state.idl",
+         ],
+         "abspath")
++static_idl_files_in_modules += get_path_info(brave_static_idl_files_in_modules, "abspath")
+ 
+ # Serial
+ if (!is_android) {
