@@ -20,7 +20,6 @@ import {
 } from './style'
 import { StyledTitleTab } from '../widgetTitleTab'
 import BraveTogetherIcon from './assets/brave-together-icon'
-import getRandomBase64 from '../../../getRandomBytes'
 
 interface Props {
   showContent: boolean
@@ -61,8 +60,7 @@ class Together extends React.PureComponent<Props, {}> {
 
   shouldCreateCall = (event: any) => {
     event.preventDefault()
-    const roomId = getRandomBase64(32)
-    window.open(`https://together.brave.com/${roomId}`, '_self', 'noopener')
+    window.open(`https://together.brave.com/widget`, '_self', 'noopener')
   }
 
   render () {
