@@ -183,6 +183,7 @@ declare namespace NewTab {
   export interface CryptoDotComWidgetState {
     optInTotal: boolean
     optInBTCPrice: boolean
+    optInMarkets: boolean
     tickerPrices: Record<string, any>
     losersGainers: Record<string, any>
     supportedPairs: Record<string, any>

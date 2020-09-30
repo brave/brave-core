@@ -40,17 +40,13 @@ bool CryptoDotComJSONParser::GetTickerInfoFromJSON(
   }
 
   const base::Value* response = records_v->FindKey("response");
-  if (!response) {
-    return false;
-  }
-
   const base::Value* result = response->FindKey("result");
-  if (!result) {
-    return false;
-  }
-
   const base::Value* data = result->FindKey("data");
-  if (!data) {
+
+  if (!response || !result || !data) {
+    // Empty values on failed response
+    info->insert({"volume", std::string()});
+    info->insert({"price", std::string()});
     return false;
   }
 
@@ -223,14 +219,17 @@ bool CryptoDotComJSONParser::GetRankingsFromJSON(
     return false;
   }
 
+  std::vector<std::map<std::string, std::string>> gainers;
+  std::vector<std::map<std::string, std::string>> losers;
+
   // Both gainers and losers are part of the "gainers" list
   const base::Value* rankings_list = result->FindKey("gainers");
   if (!rankings_list || !rankings_list->is_list()) {
+    // Gainers and losers should return empty on a bad response
+    rankings->insert({"gainers", gainers});
+    rankings->insert({"losers", losers});
     return false;
   }
-
-  std::vector<std::map<std::string, std::string>> gainers;
-  std::vector<std::map<std::string, std::string>> losers;
 
   for (const base::Value &ranking : rankings_list->GetList()) {
     std::map<std::string, std::string> ranking_data;

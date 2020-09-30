@@ -66,6 +66,11 @@ const cryptoDotComReducer: Reducer<NewTab.State | undefined> = (state: NewTab.St
       chrome.cryptoDotCom.onInteraction()
       break
 
+    case types.ON_MARKETS_OPT_IN:
+      state = { ...state }
+      state.cryptoDotComState.optInMarkets = true
+      break
+
     default:
       break
   }

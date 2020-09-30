@@ -11,5 +11,6 @@ export const enum types {
   SET_CHART_DATA = '@@cryptoDotCom/SET_CHART_DATA',
   SET_SUPPORTED_PAIRS = '@@cryptoDotCom/SET_SUPPORTED_PAIRS',
   ON_BUY_CRYPTO = '@@cryptoDotCom/ON_BUY_CRYPTO',
-  ON_INTERACTION = '@@cryptoDotCom/ON_INTERACTION'
+  ON_INTERACTION = '@@cryptoDotCom/ON_INTERACTION',
+  ON_MARKETS_OPT_IN = '@@cryptoDotCom/ON_MARKETS_OPT_IN'
 }

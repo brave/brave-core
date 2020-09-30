@@ -37,10 +37,8 @@ import { CaratLeftIcon } from 'brave-ui/components/icons'
 // Utils
 import cryptoColors from '../exchangeWidget/colors'
 import { getLocale } from '../../../../common/locale'
-// import { getLocale } from '../../../../common/locale'
 
 interface State {
-  selectedView: string
   selectedAsset: string
 }
 
@@ -68,6 +66,7 @@ interface Props {
   showContent: boolean
   optInTotal: boolean
   optInBTCPrice: boolean
+  optInMarkets: boolean
   tickerPrices: Record<string, TickerPrice>
   losersGainers: Record<string, AssetRanking[]>
   supportedPairs: Record<string, string[]>
@@ -84,6 +83,7 @@ interface Props {
   onUpdateActions: () => Promise<void[]>
   onBuyCrypto: () => void
   onInteraction: () => void
+  onOptInMarkets: () => void
 }
 interface ChartConfig {
   data: Array<any>
@@ -98,7 +98,6 @@ class CryptoDotCom extends React.PureComponent<Props, State> {
   constructor (props: Props) {
     super(props)
     this.state = {
-      selectedView: 'index',
       selectedAsset: ''
     }
     this.topMovers = [ 'BTC', 'ETH', 'CRO' ]
@@ -140,12 +139,6 @@ class CryptoDotCom extends React.PureComponent<Props, State> {
     clearInterval(this.refreshInterval)
   }
 
-  setSelectedView = (view: string) => {
-    this.setState({
-      selectedView: view
-    })
-  }
-
   setSelectedAsset = (asset: string) => {
     this.setState({
       selectedAsset: asset
@@ -157,8 +150,8 @@ class CryptoDotCom extends React.PureComponent<Props, State> {
       this.props.onSetTickerPrices(this.topMovers),
       this.props.onSetLosersGainers()
     ])
-    this.setSelectedView('topMovers')
     this.props.onInteraction()
+    this.props.onOptInMarkets()
   }
 
   handleAssetDetailClick = async (asset: string) => {
@@ -443,19 +436,18 @@ class CryptoDotCom extends React.PureComponent<Props, State> {
   }
 
   renderSelectedView () {
-    const { selectedView } = this.state
     const { selectedAsset } = this.state
+    const { optInMarkets } = this.props
 
     if (selectedAsset) {
       return this.renderAssetDetailView()
     }
 
-    switch (selectedView) {
-      case 'topMovers':
-        return this.renderTopMoversView()
-      default:
-        return this.renderIndexView()
+    if (optInMarkets) {
+      return this.renderTopMoversView()
     }
+
+    return this.renderIndexView()
   }
 
   render () {
