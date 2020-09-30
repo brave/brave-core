@@ -31,6 +31,8 @@
 #include "ui/base/resource/resource_bundle.h"
 #include "url/url_canon.h"
 
+namespace brave {
+
 namespace {
 
 content::WebContents* GetWebContents(int render_process_id,
@@ -52,8 +54,6 @@ content::WebContents* GetWebContents(int render_process_id,
 
 }  // namespace
 
-namespace brave {
-
 void ShouldBlockAdOnTaskRunner(std::shared_ptr<BraveRequestInfo> ctx,
                                base::Optional<std::string> canonical_name) {
   bool did_match_exception = false;
@@ -62,7 +62,7 @@ void ShouldBlockAdOnTaskRunner(std::shared_ptr<BraveRequestInfo> ctx,
           ctx->request_url, ctx->resource_type, tab_host, &did_match_exception,
           &ctx->cancel_request_explicitly, &ctx->mock_data_url)) {
     ctx->blocked_by = kAdBlocked;
-  } else if (!did_match_exception && canonical_name &&
+  } else if (!did_match_exception && canonical_name.has_value() &&
              ctx->request_url.host() != *canonical_name &&
              *canonical_name != "") {
     GURL::Replacements replacements = GURL::Replacements();
@@ -105,6 +105,7 @@ class AdblockCnameResolveHostClient : public network::mojom::ResolveHostClient {
  private:
   mojo::Receiver<network::mojom::ResolveHostClient> receiver_{this};
   base::OnceCallback<void(base::Optional<std::string>)> cb_;
+  base::TimeTicks start_time_;
 
  public:
   AdblockCnameResolveHostClient(
@@ -116,7 +117,11 @@ class AdblockCnameResolveHostClient : public network::mojom::ResolveHostClient {
 
     auto* web_contents = GetWebContents(
         ctx->render_process_id, ctx->render_frame_id, ctx->frame_tree_node_id);
-    DCHECK(web_contents);
+    if (!web_contents) {
+      start_time_ = base::TimeTicks::Now();
+      this->OnComplete(net::ERR_FAILED, net::ResolveErrorInfo(), base::nullopt);
+      return;
+    }
 
     content::BrowserContext* context = web_contents->GetBrowserContext();
 
@@ -129,6 +134,9 @@ class AdblockCnameResolveHostClient : public network::mojom::ResolveHostClient {
     network::mojom::NetworkContext* network_context =
         content::BrowserContext::GetDefaultStoragePartition(context)
             ->GetNetworkContext();
+
+    start_time_ = base::TimeTicks::Now();
+
     network_context->ResolveHost(
         net::HostPortPair::FromURL(ctx->request_url), network_isolation_key,
         std::move(optional_parameters), receiver_.BindNewPipeAndPassRemote());
@@ -143,6 +151,8 @@ class AdblockCnameResolveHostClient : public network::mojom::ResolveHostClient {
       int32_t result,
       const net::ResolveErrorInfo& resolve_error_info,
       const base::Optional<net::AddressList>& resolved_addresses) override {
+    UMA_HISTOGRAM_TIMES("Brave.ShieldsCNAMEBlocking.TotalResolutionTime",
+                        base::TimeTicks::Now() - start_time_);
     if (result == net::OK && resolved_addresses) {
       DCHECK(resolved_addresses.has_value() && !resolved_addresses->empty());
       std::move(cb_).Run(
