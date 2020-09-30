@@ -39,6 +39,13 @@ public extension UITextField {
     }
 }
 
+public extension UISwitch {
+    @objc dynamic var appearanceOnTintColor: UIColor? {
+        get { return self.onTintColor }
+        set { self.onTintColor = newValue }
+    }
+}
+
 public extension UIView {
     @objc dynamic var appearanceOverrideUserInterfaceStyle: UIUserInterfaceStyle {
         get {
