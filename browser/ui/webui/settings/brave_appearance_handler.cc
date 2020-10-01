@@ -13,7 +13,7 @@
 #include "brave/components/brave_together/buildflags/buildflags.h"
 #include "brave/components/gemini/browser/buildflags/buildflags.h"
 #include "brave/components/moonpay/browser/buildflags/buildflags.h"
-#include "brave/components/ntp_widget_utils/browser/buildflags/buildflags.h"
+#include "brave/components/ntp_widget_utils/browser/ntp_widget_utils_region.h"
 #include "brave/common/pref_names.h"
 #include "brave/components/ntp_background_images/browser/ntp_background_images_data.h"
 #include "brave/components/ntp_background_images/browser/view_counter_service.h"
@@ -21,10 +21,6 @@
 #include "chrome/browser/browser_process.h"
 #include "chrome/browser/profiles/profile.h"
 #include "content/public/browser/web_ui.h"
-
-#if BUILDFLAG(NTP_WIDGET_UTILS_ENABLED)
-#include "brave/components/ntp_widget_utils/browser/ntp_widget_utils_region.h"
-#endif
 
 #if BUILDFLAG(BINANCE_ENABLED)
 #include "brave/components/binance/browser/regions.h"
