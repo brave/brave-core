@@ -16,7 +16,8 @@ import {
   TogetherWidget as Together,
   BinanceWidget as Binance,
   AddCardWidget as AddCard,
-  GeminiWidget as Gemini
+  GeminiWidget as Gemini,
+  BitcoinDotComWidget as BitcoinDotCom
 } from '../../components/default'
 import * as Page from '../../components/default/page'
 import BrandedWallpaperLogo from '../../components/default/brandedWallpaper/logo'
@@ -29,14 +30,10 @@ import { generateQRData } from '../../binance-utils'
 
 // Types
 import { SortEnd } from 'react-sortable-hoc'
-import * as newTabActions from '../../actions/new_tab_actions'
-import * as gridSitesActions from '../../actions/grid_sites_actions'
-import * as binanceActions from '../../actions/binance_actions'
-import * as geminiActions from '../../actions/gemini_actions'
-import * as rewardsActions from '../../actions/rewards_actions'
 import { getLocale } from '../../../common/locale'
 import currencyData from '../../components/default/binance/data'
 import geminiData from '../../components/default/gemini/data'
+import { NewTabActions } from '../../constants/new_tab_types'
 
 // NTP features
 import Settings from './settings'
@@ -44,7 +41,7 @@ import Settings from './settings'
 interface Props {
   newTabData: NewTab.State
   gridSitesData: NewTab.GridSitesState
-  actions: typeof newTabActions & typeof gridSitesActions & typeof binanceActions & typeof rewardsActions & typeof geminiActions
+  actions: NewTabActions
   saveShowBackgroundImage: (value: boolean) => void
   saveShowTopSites: (value: boolean) => void
   saveShowStats: (value: boolean) => void
@@ -53,6 +50,7 @@ interface Props {
   saveShowBinance: (value: boolean) => void
   saveShowAddCard: (value: boolean) => void
   saveShowGemini: (value: boolean) => void
+  saveShowBitcoinDotCom: (value: boolean) => void
   saveBrandedWallpaperOptIn: (value: boolean) => void
 }
 
@@ -142,7 +140,8 @@ class NewTabPage extends React.Component<Props, State> {
     const oldShowBinance = prevProps.newTabData.showBinance
     const oldShowTogether = prevProps.newTabData.showTogether
     const oldShowGemini = prevProps.newTabData.showGemini
-    const { showRewards, showBinance, showTogether, showGemini } = this.props.newTabData
+    const oldShowBitcoinDotCom = prevProps.newTabData.showBitcoinDotCom
+    const { showRewards, showBinance, showTogether, showGemini, showBitcoinDotCom } = this.props.newTabData
 
     if (!oldShowRewards && showRewards) {
       this.props.actions.setForegroundStackWidget('rewards')
@@ -160,6 +159,10 @@ class NewTabPage extends React.Component<Props, State> {
       this.props.actions.removeStackWidget('gemini')
     } else if (!oldShowGemini && showGemini) {
       this.props.actions.setForegroundStackWidget('gemini')
+    } else if (oldShowBitcoinDotCom && !showBitcoinDotCom) {
+      this.props.actions.removeStackWidget('bitcoinDotCom')
+    } else if (!oldShowBitcoinDotCom && showBitcoinDotCom) {
+      this.props.actions.setForegroundStackWidget('bitcoinDotCom')
     }
   }
 
@@ -319,6 +322,16 @@ class NewTabPage extends React.Component<Props, State> {
     }
   }
 
+  toggleShowBitcoinDotCom = () => {
+    const { showBitcoinDotCom } = this.props.newTabData
+
+    if (!showBitcoinDotCom) {
+      this.props.saveShowAddCard(true)
+    }
+
+    this.props.saveShowBitcoinDotCom(!showBitcoinDotCom)
+  }
+
   onBinanceClientUrl = (clientUrl: string) => {
     this.props.actions.onBinanceClientUrl(clientUrl)
   }
@@ -385,6 +398,14 @@ class NewTabPage extends React.Component<Props, State> {
     } else {
       window.open(`https://www.binance.com/en/buy-sell-crypto?fiat=${fiat}&crypto=${coin}&amount=${amount}&${refParams}`, '_blank', 'noopener')
     }
+  }
+
+  onBuyBitcoinDotComCrypto = () => {
+    this.props.actions.buyBitcoinDotComCrypto()
+  }
+
+  onInteractionBitcoinDotCom = () => {
+    this.props.actions.interactionBitcoinDotCom()
   }
 
   onBinanceUserTLD = (userTLD: NewTab.BinanceTLD) => {
@@ -645,7 +666,9 @@ class NewTabPage extends React.Component<Props, State> {
       showBinance,
       showTogether,
       showGemini,
-      geminiSupported
+      showBitcoinDotCom,
+      geminiSupported,
+      bitcoinDotComSupported
     } = this.props.newTabData
     const lookup = {
       'rewards': {
@@ -663,6 +686,10 @@ class NewTabPage extends React.Component<Props, State> {
       'gemini': {
         display: showGemini && geminiSupported,
         render: this.renderGeminiWidget.bind(this)
+      },
+      'bitcoinDotCom': {
+        display: showBitcoinDotCom && bitcoinDotComSupported,
+        render: this.renderBitcoinDotComWidget.bind(this)
       }
     }
 
@@ -690,13 +717,16 @@ class NewTabPage extends React.Component<Props, State> {
       showBinance,
       showTogether,
       geminiSupported,
-      showGemini
+      showGemini,
+      showBitcoinDotCom,
+      bitcoinDotComSupported
     } = this.props.newTabData
     return [
       showRewards,
       togetherSupported && showTogether,
       binanceState.binanceSupported && showBinance,
-      geminiSupported && showGemini
+      geminiSupported && showGemini,
+      showBitcoinDotCom && bitcoinDotComSupported
     ].every((widget: boolean) => !widget)
   }
 
@@ -887,6 +917,34 @@ class NewTabPage extends React.Component<Props, State> {
     )
   }
 
+  renderBitcoinDotComWidget (showContent: boolean, position: number) {
+    const { newTabData } = this.props
+    const { showBitcoinDotCom, bitcoinDotComSupported, textDirection } = newTabData
+
+    if (!showBitcoinDotCom || !bitcoinDotComSupported) {
+      return null
+    }
+
+    return(
+      <BitcoinDotCom
+        isCrypto={true}
+        isCryptoTab={!showContent}
+        menuPosition={'left'}
+        widgetTitle={'Bitcoin.com'}
+        isForeground={showContent}
+        stackPosition={position}
+        textDirection={textDirection}
+        preventFocus={false}
+        hideWidget={this.toggleShowBitcoinDotCom}
+        showContent={showContent}
+        onShowContent={this.setForegroundStackWidget.bind(this, 'bitcoinDotCom')}
+        onBuyCrypto={this.onBuyBitcoinDotComCrypto}
+        onInteraction={this.onInteractionBitcoinDotCom}
+        lightWidget={showContent}
+      />
+    )
+  }
+
   render () {
     const { newTabData, gridSitesData, actions } = this.props
     const { showSettingsMenu, focusMoreCards } = this.state
@@ -1022,6 +1080,9 @@ class NewTabPage extends React.Component<Props, State> {
           toggleShowGemini={this.toggleShowGemini}
           showGemini={newTabData.showGemini}
           focusMoreCards={focusMoreCards}
+          bitcoinDotComSupported={newTabData.bitcoinDotComSupported}
+          showBitcoinDotCom={newTabData.showBitcoinDotCom}
+          toggleShowBitcoinDotCom={this.toggleShowBitcoinDotCom}
         />
       </Page.App>
     )
