@@ -6,7 +6,7 @@ source_set("common") {
     sources = [
         "brave_wallet_constants.cc",
         "brave_wallet_constants.h",
-        "brave_wallet_pref_names.cc",
-        "brave_wallet_pref_names.h",
+        "pref_names.cc",
+        "pref_names.h",
     ]
 }
