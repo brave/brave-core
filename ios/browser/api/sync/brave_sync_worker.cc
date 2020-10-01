@@ -153,16 +153,20 @@ bool BraveSyncWorker::SetSyncEnabled(bool enabled) {
   auto* sync_service =
       ProfileSyncServiceFactory::GetForBrowserState(browser_state_);
 
-  if (!setup_service || !sync_service)
+  if (!setup_service || !sync_service) {
     return false;
+  }
 
-  if (!sync_service_observer_.IsObserving(sync_service))
+  if (!sync_service_observer_.IsObserving(sync_service)) {
     sync_service_observer_.Add(sync_service);
+  }
 
   setup_service->SetSyncEnabled(enabled);
 
   if (enabled && !sync_service->GetUserSettings()->IsFirstSetupComplete()) {
     setup_service->PrepareForFirstSyncSetup();
+    setup_service->SetFirstSetupComplete(
+        syncer::SyncFirstSetupCompleteSource::ADVANCED_FLOW_CONFIRM);
   }
 
   return true;
@@ -173,8 +177,9 @@ const syncer::DeviceInfo* BraveSyncWorker::GetLocalDeviceInfo() {
   auto* device_info_service =
       DeviceInfoSyncServiceFactory::GetForBrowserState(browser_state_);
 
-  if (!device_info_service)
+  if (!device_info_service) {
     return nullptr;
+  }
 
   return device_info_service->GetLocalDeviceInfoProvider()->GetLocalDeviceInfo();
 }
@@ -185,8 +190,9 @@ BraveSyncWorker::GetDeviceList() {
   auto* device_info_service =
       DeviceInfoSyncServiceFactory::GetForBrowserState(browser_state_);
 
-  if (!device_info_service)
+  if (!device_info_service) {
     return std::vector<std::unique_ptr<syncer::DeviceInfo>>();
+  }
 
   syncer::DeviceInfoTracker* tracker =
       device_info_service->GetDeviceInfoTracker();
@@ -213,8 +219,9 @@ bool BraveSyncWorker::IsValidSyncCode(const std::string& sync_code) {
 
 bool BraveSyncWorker::SetSyncCode(const std::string& sync_code) {
   DCHECK_CURRENTLY_ON(web::WebThread::UI);
-  if (sync_code.empty())
+  if (sync_code.empty()) {
     return false;
+  }
 
   auto* sync_service = GetSyncService();
   if (!sync_service || !sync_service->SetSyncCode(sync_code)) {
@@ -275,8 +282,9 @@ bool BraveSyncWorker::ResetSync() {
       DeviceInfoSyncServiceFactory::GetForBrowserState(browser_state_);
   auto* tracker = device_info_service->GetDeviceInfoTracker();
 
-  if (!tracker)
+  if (!tracker) {
     return false;
+  }
     
   tracker->DeleteDeviceInfo(local_device_info->guid(),
                             base::BindOnce(&BraveSyncWorker::OnLocalDeviceInfoDeleted,
@@ -305,58 +313,52 @@ void BraveSyncWorker::OnStateChanged(syncer::SyncService* service) {
     return;
   }
 
-  auto* setup_service =
-      SyncSetupServiceFactory::GetForBrowserState(browser_state_);
-
-  if (setup_service && !service->GetUserSettings()->IsFirstSetupComplete()) {
-    brave_sync::Prefs brave_sync_prefs(browser_state_->GetPrefs());
-    std::string sync_code = brave_sync_prefs.GetSeed();
-    DCHECK_NE(sync_code.size(), 0u);
-    
-    if (!service->GetUserSettings()->IsEncryptEverythingAllowed()) {
-      configuration.encrypt_all = false;
-      configuration.set_new_passphrase = false;
-    }
-    
-    if (configuration.encrypt_all) {
-      service->GetUserSettings()->EnableEncryptEverything();
-    }
-    
-    bool passphrase_failed = false;
-    if (!sync_code.empty()) {
-      if (service->GetUserSettings()->IsPassphraseRequired()) {
-        passphrase_failed = !service->GetUserSettings()->SetDecryptionPassphrase(sync_code);
-      } else if (service->GetUserSettings()->IsTrustedVaultKeyRequired()) {
-        passphrase_failed = true;
-      } else {
-        if (configuration.set_new_passphrase &&
-            !service->GetUserSettings()->IsUsingSecondaryPassphrase()) {
-          service->GetUserSettings()->SetEncryptionPassphrase(sync_code);
-        }
+  brave_sync::Prefs brave_sync_prefs(browser_state_->GetPrefs());
+  std::string sync_code = brave_sync_prefs.GetSeed();
+  DCHECK_NE(sync_code.size(), 0u);
+  
+  if (!service->GetUserSettings()->IsEncryptEverythingAllowed()) {
+    configuration.encrypt_all = false;
+    configuration.set_new_passphrase = false;
+  }
+  
+  if (configuration.encrypt_all) {
+    service->GetUserSettings()->EnableEncryptEverything();
+  }
+  
+  bool passphrase_failed = false;
+  if (!sync_code.empty()) {
+    if (service->GetUserSettings()->IsPassphraseRequired()) {
+      passphrase_failed = !service->GetUserSettings()->SetDecryptionPassphrase(sync_code);
+    } else if (service->GetUserSettings()->IsTrustedVaultKeyRequired()) {
+      passphrase_failed = true;
+    } else {
+      if (configuration.set_new_passphrase &&
+          !service->GetUserSettings()->IsUsingSecondaryPassphrase()) {
+        service->GetUserSettings()->SetEncryptionPassphrase(sync_code);
       }
     }
+  }
 
-    if (passphrase_failed ||
-        service->GetUserSettings()->IsPassphraseRequiredForPreferredDataTypes()) {
-      VLOG(1) << __func__ << " setup passphrase failed";
-    }
-    
-    setup_service->SetFirstSetupComplete(
-        syncer::SyncFirstSetupCompleteSource::ADVANCED_FLOW_CONFIRM);
+  if (passphrase_failed ||
+      service->GetUserSettings()->IsPassphraseRequiredForPreferredDataTypes()) {
+    VLOG(1) << __func__ << " setup passphrase failed";
   }
 }
 
 void BraveSyncWorker::OnSyncShutdown(syncer::SyncService* service) {
-  if (sync_service_observer_.IsObserving(service))
+  if (sync_service_observer_.IsObserving(service)) {
     sync_service_observer_.Remove(service);
+  }
 }
 
 void BraveSyncWorker::OnLocalDeviceInfoDeleted() {
   auto* sync_service =
       ProfileSyncServiceFactory::GetForBrowserState(browser_state_);
 
-  if (sync_service)
+  if (sync_service) {
     sync_service->StopAndClear();
+  }
 
   brave_sync::Prefs brave_sync_prefs(browser_state_->GetPrefs());
   brave_sync_prefs.Clear();
@@ -367,8 +369,9 @@ bool BraveSyncWorker::IsSyncEnabled() {
   auto* setup_service =
       SyncSetupServiceFactory::GetForBrowserState(browser_state_);
 
-  if (!setup_service)
+  if (!setup_service) {
     return false;
+  }
 
   return setup_service->IsSyncEnabled();
 }
@@ -378,8 +381,9 @@ bool BraveSyncWorker::IsSyncFeatureActive() {
   auto* sync_service =
       ProfileSyncServiceFactory::GetForBrowserState(browser_state_);
 
-  if (!sync_service)
+  if (!sync_service) {
     return false;
+  }
 
   return sync_service->IsSyncFeatureActive();
 }
