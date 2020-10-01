@@ -190,14 +190,17 @@ class SettingsViewController: TableViewController {
             ]
         }
         
-        vpnRow = vpnSettingsRow()
-        
         section.rows.append(
             Row(text: Strings.BraveToday.braveToday, selection: {
                 let todaySettings = BraveTodaySettingsViewController(dataSource: self.feedDataSource)
                 self.navigationController?.pushViewController(todaySettings, animated: true)
             }, image: #imageLiteral(resourceName: "settings-brave-today").template, accessory: .disclosureIndicator)
         )
+         
+        vpnRow = vpnSettingsRow()
+        if let vpnRow = vpnRow {
+            section.rows.append(vpnRow)
+        }
         
         return section
     }()
