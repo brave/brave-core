@@ -325,12 +325,6 @@ class NewTabPage extends React.Component<Props, State> {
   toggleShowBitcoinDotCom = () => {
     const { showBitcoinDotCom } = this.props.newTabData
 
-    if (showBitcoinDotCom) {
-      this.removeStackWidget('bitcoinDotCom')
-    } else {
-      this.setForegroundStackWidget('bitcoinDotCom')
-    }
-
     if (!showBitcoinDotCom) {
       this.props.saveShowAddCard(true)
     }

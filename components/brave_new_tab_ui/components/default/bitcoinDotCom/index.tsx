@@ -29,8 +29,15 @@ interface Props {
 }
 
 class BitcoinDotCom extends React.PureComponent<Props, State> {
-  private assets: Record<string, string>
-  private fiatCurrencies: Record<string, string>
+  private fiatCurrencies: Record<string, string> = fiatData
+  private assets: Record<string, string> = {
+    'BCH': 'Bitcoin Cash',
+    'BTC': 'Bitcoin',
+    'ETH': 'Ethereum',
+    'LTC': 'Litecoin',
+    'XLM': 'Stellar',
+    'XRP': 'Ripple'
+  }
 
   constructor (props: Props) {
     super(props)
@@ -41,15 +48,6 @@ class BitcoinDotCom extends React.PureComponent<Props, State> {
       assetsShowing: false,
       fiatCurrenciesShowing: false
     }
-    this.assets = {
-      'BCH': 'Bitcoin Cash',
-      'BTC': 'Bitcoin',
-      'ETH': 'Ethereum',
-      'LTC': 'Litecoin',
-      'XLM': 'Stellar',
-      'XRP': 'Ripple'
-    }
-    this.fiatCurrencies = fiatData
   }
 
   renderTitle () {
@@ -83,11 +81,19 @@ class BitcoinDotCom extends React.PureComponent<Props, State> {
     })
   }
 
-  setCurrentAmount = ({ target }: any) => {
-    this.setState({
-      currentAmount: target.value
-    })
+  setCurrentAmount = (event: any) => {
+    const { target } = event
+    const { value } = target
+    const validation = /^[0-9]+\.?[0-9]?[0-9]?$/
+
     this.props.onInteraction()
+
+    if (!validation.test(value) && value !== '') {
+      event.preventDefault()
+      return
+    }
+
+    this.setState({ currentAmount: value })
   }
 
   toggleFiatCurrenciesShowing = () => {
