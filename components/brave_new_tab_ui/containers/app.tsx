@@ -17,10 +17,14 @@ import * as gridSitesActions from '../actions/grid_sites_actions'
 import * as binanceActions from '../actions/binance_actions'
 import * as rewardsActions from '../actions/rewards_actions'
 import * as geminiActions from '../actions/gemini_actions'
+import * as bitcoinDotComActions from '../actions/bitcoin_dot_com_actions'
 import * as PreferencesAPI from '../api/preferences'
 
+// Types
+import { NewTabActions } from '../constants/new_tab_types'
+
 interface Props {
-  actions: typeof newTabActions & typeof gridSitesActions & typeof binanceActions & typeof rewardsActions & typeof geminiActions
+  actions: NewTabActions
   newTabData: NewTab.State
   gridSitesData: NewTab.GridSitesState
 }
@@ -50,6 +54,7 @@ class DefaultPage extends React.Component<Props, {}> {
           saveShowBinance={PreferencesAPI.saveShowBinance}
           saveShowAddCard={PreferencesAPI.saveShowAddCard}
           saveShowGemini={PreferencesAPI.saveShowGemini}
+          saveShowBitcoinDotCom={PreferencesAPI.saveShowBitcoinDotCom}
           saveBrandedWallpaperOptIn={PreferencesAPI.saveBrandedWallpaperOptIn}
         />
       )
@@ -62,7 +67,7 @@ const mapStateToProps = (state: NewTab.ApplicationState) => ({
 })
 
 const mapDispatchToProps = (dispatch: Dispatch) => {
-  const allActions = Object.assign({}, newTabActions, gridSitesActions, binanceActions, rewardsActions, geminiActions)
+  const allActions = Object.assign({}, newTabActions, gridSitesActions, binanceActions, rewardsActions, geminiActions, bitcoinDotComActions)
   return {
     actions: bindActionCreators(allActions, dispatch)
   }

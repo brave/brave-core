@@ -18,6 +18,7 @@ export type InitialData = {
   brandedWallpaperData: undefined | NewTab.BrandedWallpaper
   togetherSupported: boolean
   geminiSupported: boolean
+  bitcoinDotComSupported: boolean
 }
 
 export type PreInitialRewardsData = {
@@ -47,7 +48,8 @@ export async function getInitialData (): Promise<InitialData> {
       defaultSuperReferralTopSites,
       brandedWallpaperData,
       togetherSupported,
-      geminiSupported
+      geminiSupported,
+      bitcoinDotComSupported
     ] = await Promise.all([
       preferencesAPI.getPreferences(),
       statsAPI.getStats(),
@@ -68,6 +70,11 @@ export async function getInitialData (): Promise<InitialData> {
         chrome.gemini.isSupported((supported: boolean) => {
           resolve(supported)
         })
+      }),
+      new Promise((resolve) => {
+        chrome.moonpay.isBitcoinDotComSupported((supported: boolean) => {
+          resolve(supported)
+        })
       })
     ])
     console.timeStamp('Got all initial data.')
@@ -79,7 +86,8 @@ export async function getInitialData (): Promise<InitialData> {
       defaultSuperReferralTopSites,
       brandedWallpaperData,
       togetherSupported,
-      geminiSupported
+      geminiSupported,
+      bitcoinDotComSupported
     } as InitialData
   } catch (e) {
     console.error(e)
