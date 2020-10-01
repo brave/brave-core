@@ -37,16 +37,15 @@ BraveWalletServiceFactory::BraveWalletServiceFactory()
       extensions::ExtensionsBrowserClient::Get()->GetExtensionSystemFactory());
 }
 
-BraveWalletServiceFactory::~BraveWalletServiceFactory() {
-}
+BraveWalletServiceFactory::~BraveWalletServiceFactory() {}
 
 KeyedService* BraveWalletServiceFactory::BuildServiceInstanceFor(
     content::BrowserContext* context) const {
   return new BraveWalletService(Profile::FromBrowserContext(context),
-      std::make_unique<BraveWalletDelegateImpl>());
+                                std::make_unique<BraveWalletDelegateImpl>());
 }
 
 content::BrowserContext* BraveWalletServiceFactory::GetBrowserContextToUse(
-      content::BrowserContext* context) const {
+    content::BrowserContext* context) const {
   return chrome::GetBrowserContextRedirectedInIncognito(context);
 }

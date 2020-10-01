@@ -10,8 +10,7 @@
 #include "content/public/browser/browser_context.h"
 #include "extensions/browser/extension_system.h"
 
-BraveWalletDelegateImpl::~BraveWalletDelegateImpl() {
-}
+BraveWalletDelegateImpl::~BraveWalletDelegateImpl() {}
 
 void BraveWalletDelegateImpl::LoadCryptoWalletsExtension(
     content::BrowserContext* context) {
@@ -19,7 +18,7 @@ void BraveWalletDelegateImpl::LoadCryptoWalletsExtension(
       extensions::ExtensionSystem::Get(context)->extension_service();
   if (service) {
     extensions::ComponentLoader* loader = service->component_loader();
-    static_cast<extensions::BraveComponentLoader*>(loader)->
-        AddEthereumRemoteClientExtension();
+    static_cast<extensions::BraveComponentLoader*>(loader)
+        ->AddEthereumRemoteClientExtension();
   }
 }

@@ -40,9 +40,10 @@ class BrowserContext;
 }  // namespace content
 
 class BraveWalletService : public KeyedService,
-    public extensions::ExtensionRegistryObserver {
+                           public extensions::ExtensionRegistryObserver {
  public:
-  explicit BraveWalletService(content::BrowserContext* context,
+  explicit BraveWalletService(
+      content::BrowserContext* context,
       std::unique_ptr<BraveWalletDelegate> brave_wallet_delegate);
   ~BraveWalletService() override;
   using LoadUICallback = base::OnceCallback<void()>;
@@ -58,16 +59,21 @@ class BraveWalletService : public KeyedService,
 
   static std::string GetEthereumRemoteClientSeedFromRootSeed(
       const std::string& seed);
-  static std::string GetBitGoSeedFromRootSeed(
-      const std::string& seed);
-  static bool SealSeed(const std::string& seed, const std::string& key,
-      const std::string& nonce, std::string* cipher_seed);
+  static std::string GetBitGoSeedFromRootSeed(const std::string& seed);
+  static bool SealSeed(const std::string& seed,
+                       const std::string& key,
+                       const std::string& nonce,
+                       std::string* cipher_seed);
   static bool OpenSeed(const std::string& cipher_seed,
-      const std::string& key, const std::string& nonce, std::string* seed);
-  static void SaveToPrefs(PrefService* prefs, const std::string& cipher_seed,
-      const std::string& nonce);
-  static bool LoadFromPrefs(PrefService* prefs, std::string* cipher_seed,
-      std::string* nonce);
+                       const std::string& key,
+                       const std::string& nonce,
+                       std::string* seed);
+  static void SaveToPrefs(PrefService* prefs,
+                          const std::string& cipher_seed,
+                          const std::string& nonce);
+  static bool LoadFromPrefs(PrefService* prefs,
+                            std::string* cipher_seed,
+                            std::string* nonce);
   static std::string GetRandomNonce();
   static std::string GetRandomSeed();
   static const size_t kNonceByteLength;
@@ -78,21 +84,23 @@ class BraveWalletService : public KeyedService,
   void RemoveUnusedWeb3ProviderContentScripts();
   void OnPreferenceChanged();
   void OnExtensionInstalled(content::BrowserContext* browser_context,
-      const extensions::Extension* extension, bool is_update) override;
+                            const extensions::Extension* extension,
+                            bool is_update) override;
   void OnExtensionLoaded(content::BrowserContext* browser_context,
-      const extensions::Extension* extension) override;
+                         const extensions::Extension* extension) override;
   void OnExtensionUnloaded(content::BrowserContext* browser_context,
-      const extensions::Extension* extension,
-      extensions::UnloadedExtensionReason reason) override;
+                           const extensions::Extension* extension,
+                           extensions::UnloadedExtensionReason reason) override;
   void OnExtensionUninstalled(content::BrowserContext* browser_context,
-      const extensions::Extension* extension,
-      extensions::UninstallReason reason) override;
+                              const extensions::Extension* extension,
+                              extensions::UninstallReason reason) override;
 
   content::BrowserContext* context_;
   std::unique_ptr<PrefChangeRegistrar> pref_change_registrar_;
   std::unique_ptr<BraveWalletDelegate> brave_wallet_delegate_;
   ScopedObserver<extensions::ExtensionRegistry,
-      extensions::ExtensionRegistryObserver> extension_registry_observer_{this};
+                 extensions::ExtensionRegistryObserver>
+      extension_registry_observer_{this};
   scoped_refptr<base::SequencedTaskRunner> file_task_runner_;
   LoadUICallback load_ui_callback_;
   base::WeakPtrFactory<BraveWalletService> weak_factory_;
