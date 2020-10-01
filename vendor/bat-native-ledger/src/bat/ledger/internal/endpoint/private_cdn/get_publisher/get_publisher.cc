@@ -89,8 +89,6 @@ void GetServerInfoForEmptyResponse(
     const std::string& publisher_key,
     ledger::type::ServerPublisherInfo* info) {
   DCHECK(info);
-
-  BLOG(1, "Server did not return an entry for publisher " << publisher_key);
   info->publisher_key = publisher_key;
   info->status = ledger::type::PublisherStatus::NOT_VERIFIED;
   info->updated_at = ledger::util::GetCurrentTimeStamp();
