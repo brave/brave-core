@@ -205,6 +205,7 @@ source_set("ui") {
     "//brave/components/brave_wayback_machine:buildflags",
     "//brave/components/l10n/browser",
     "//brave/components/l10n/common",
+    "//brave/components/moonpay/browser/buildflags:buildflags",
     "//brave/components/ntp_background_images/browser",
     "//brave/components/ntp_background_images/common",
     "//brave/components/p3a:buildflags",

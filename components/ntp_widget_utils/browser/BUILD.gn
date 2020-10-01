@@ -1,13 +1,6 @@
 import("//brave/build/config.gni")
-import("//brave/components/ntp_widget_utils/browser/buildflags/buildflags.gni")
-
-assert(ntp_widget_utils_enabled)
 
 source_set("browser") {
-  public_deps = [
-    "buildflags"
-  ]
-
   sources = [
     "ntp_widget_utils_oauth.cc",
     "ntp_widget_utils_oauth.h",
@@ -20,13 +13,5 @@ source_set("browser") {
     "//components/country_codes",
     "//components/prefs",
     "//crypto",
-  ]
-
-  configs += [ ":ntp_widget_utils_config" ]
-}
-
-config("ntp_widget_utils_config") {
-  defines = [
-    "NTP_WIDGET_UTILS_ENABLED=\"ntp_widget_utils_enabled\"",
   ]
 }

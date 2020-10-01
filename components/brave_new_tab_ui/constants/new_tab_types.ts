@@ -2,6 +2,12 @@
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // you can obtain one at http://mozilla.org/MPL/2.0/.
+import * as newTabActions from '../actions/new_tab_actions'
+import * as gridSitesActions from '../actions/grid_sites_actions'
+import * as binanceActions from '../actions/binance_actions'
+import * as rewardsActions from '../actions/rewards_actions'
+import * as geminiActions from '../actions/gemini_actions'
+import * as bitcoinDotComActions from '../actions/bitcoin_dot_com_actions'
 
 export const enum types {
   NEW_TAB_STATS_UPDATED = '@@newtab/NEW_TAB_STATS_UPDATED',
@@ -18,3 +24,11 @@ export const enum types {
 export type DismissBrandedWallpaperNotificationPayload = {
   isUserAction: boolean
 }
+
+export type NewTabActions =
+  typeof newTabActions &
+  typeof gridSitesActions &
+  typeof binanceActions &
+  typeof rewardsActions &
+  typeof geminiActions &
+  typeof bitcoinDotComActions
