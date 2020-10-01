@@ -7,6 +7,8 @@
 
 #include <memory>
 
+#include "base/feature_list.h"
+#include "brave/common/brave_features.h"
 #include "brave/common/network_constants.h"
 #include "net/base/net_errors.h"
 #include "net/http/http_request_headers.h"
@@ -17,7 +19,9 @@ int OnBeforeStartTransaction_GlobalPrivacyControlWork(
     net::HttpRequestHeaders* headers,
     const ResponseCallback& next_callback,
     std::shared_ptr<BraveRequestInfo> ctx) {
-  headers->SetHeader(kSecGpcHeader, "1");
+  if (base::FeatureList::IsEnabled(features::kGlobalPrivacyControl)) {
+    headers->SetHeader(kSecGpcHeader, "1");
+  }
   return net::OK;
 }
 
