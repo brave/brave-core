@@ -85,11 +85,11 @@ base::string16 CryptoWalletsInfoBarDelegate::GetButtonLabel(
 }
 
 base::string16 CryptoWalletsInfoBarDelegate::GetLinkText() const {
-  return base::string16();
+  return l10n_util::GetStringUTF16(IDS_LEARN_MORE);
 }
 
 GURL CryptoWalletsInfoBarDelegate::GetLinkURL() const {
-  return GURL();  // No learn more link for now.
+  return GURL(kCryptoWalletsLearnMoreURL);
 }
 
 bool CryptoWalletsInfoBarDelegate::Accept() {
