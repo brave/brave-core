@@ -394,6 +394,9 @@ void BraveRewardsTipUserFunction::ShowTipDialog() {
   media_meta_data_dict.SetStringKey("mediaType", params->media_type);
   media_meta_data_dict.SetStringKey("publisherKey", params->publisher_key);
   media_meta_data_dict.SetStringKey("publisherName", params->publisher_name);
+  media_meta_data_dict.SetStringKey(
+      "publisherScreenName",
+      params->publisher_screen_name);
   media_meta_data_dict.SetStringKey("postId", params->post_id);
   media_meta_data_dict.SetStringKey("postTimestamp", params->post_timestamp);
   media_meta_data_dict.SetStringKey("postText", params->post_text);
@@ -487,90 +490,6 @@ void BraveRewardsTipRedditUserFunction::OnRedditPublisherInfoSaved(
 
   ::brave_rewards::OpenTipDialog(
       contents, std::move(params_dict));
-
-  Release();
-}
-
-BraveRewardsTipGitHubUserFunction::BraveRewardsTipGitHubUserFunction()
-    : weak_factory_(this) {
-}
-
-BraveRewardsTipGitHubUserFunction::~BraveRewardsTipGitHubUserFunction() {
-}
-
-ExtensionFunction::ResponseAction
-BraveRewardsTipGitHubUserFunction::Run() {
-  std::unique_ptr<brave_rewards::TipGitHubUser::Params> params(
-      brave_rewards::TipGitHubUser::Params::Create(*args_));
-  EXTENSION_FUNCTION_VALIDATE(params.get());
-
-  // Sanity check: don't allow tips in private / tor contexts,
-  // although the command should not have been enabled in the first place.
-  if (!brave::IsRegularProfile(browser_context())) {
-    return RespondNow(
-        Error("Cannot tip Twitter user in a private context"));
-  }
-
-  Profile* profile = Profile::FromBrowserContext(browser_context());
-  auto* rewards_service = RewardsServiceFactory::GetForProfile(profile);
-  if (rewards_service) {
-    AddRef();
-    std::map<std::string, std::string> args;
-    args["user_name"] = params->media_meta_data.user_name;
-    if (args["user_name"].empty()) {
-      LOG(ERROR) << "Cannot tip user without username";
-    } else {
-      rewards_service->SaveInlineMediaInfo(
-          params->media_meta_data.media_type,
-          args,
-          base::Bind(&BraveRewardsTipGitHubUserFunction::
-                     OnGitHubPublisherInfoSaved,
-                     weak_factory_.GetWeakPtr()));
-    }
-  }
-  return RespondNow(NoArguments());
-}
-
-
-void BraveRewardsTipGitHubUserFunction::OnGitHubPublisherInfoSaved(
-    ledger::type::PublisherInfoPtr publisher) {
-  std::unique_ptr<brave_rewards::TipGitHubUser::Params> params(
-      brave_rewards::TipGitHubUser::Params::Create(*args_));
-
-  if (!publisher) {
-    // TODO(nejczdovc): what should we do in this case?
-    Release();
-    return;
-  }
-
-  // Get web contents for this tab
-  content::WebContents* contents = nullptr;
-  if (!ExtensionTabUtil::GetTabById(
-        params->tab_id,
-        Profile::FromBrowserContext(browser_context()),
-        false,
-        nullptr,
-        nullptr,
-        &contents,
-        nullptr)) {
-    Release();
-    return;
-  }
-
-  auto params_dict = std::make_unique<base::DictionaryValue>();
-  params_dict->SetString("publisherKey", publisher->id);
-  params_dict->SetString("url", publisher->url);
-
-  base::Value media_meta_data_dict(base::Value::Type::DICTIONARY);
-  media_meta_data_dict.SetStringKey("mediaType",
-                                  params->media_meta_data.media_type);
-  media_meta_data_dict.SetStringKey("name", publisher->name);
-  media_meta_data_dict.SetStringKey("userName",
-                                  params->media_meta_data.user_name);
-  params_dict->SetPath("mediaMetaData",
-                       std::move(media_meta_data_dict));
-
-  ::brave_rewards::OpenTipDialog(contents, std::move(params_dict));
 
   Release();
 }

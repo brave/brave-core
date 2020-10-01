@@ -21,7 +21,8 @@ bool HandledByGreaselion(const std::string media_type) {
 #if defined(OS_ANDROID) || defined(OS_IOS)
   return false;
 #else
-  return media_type == "twitter" || media_type == "youtube";
+  return media_type == "github" || media_type == "twitter" ||
+         media_type == "youtube";
 #endif
 }
 

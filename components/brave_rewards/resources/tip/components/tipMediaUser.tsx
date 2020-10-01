@@ -77,8 +77,8 @@ class TipMediaUser extends React.Component<Props, {}> {
           : 'redditTipTitleEmpty'
       publisher.title = getLocale(key, { user: 'u/' + mediaMetaData.userName })
     } else if (mediaMetaData.mediaType === 'github') {
-      const key = mediaMetaData.userName ? 'githubTipTitle' : 'githubTipTitleEmpty'
-      publisher.title = getLocale(key, { user: '@' + mediaMetaData.userName })
+      const key = mediaMetaData.publisherName ? 'githubTipTitle' : 'githubTipTitleEmpty'
+      publisher.title = getLocale(key, { user: '@' + mediaMetaData.publisherScreenName })
     }
 
     return (
