@@ -176,10 +176,12 @@ class AdsServiceImpl : public AdsService,
   // AdsService implementation
   friend class AdsNotificationHandler;
 
+  void MigrateState();
+  void OnMigrateState(
+      const bool success);
+
   void MaybeInitialize();
   void Initialize();
-  void OnMigrateConfirmationsState(
-      const bool success);
 
   void OnCreate();
 

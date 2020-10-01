@@ -19,7 +19,7 @@ namespace ads {
 using std::placeholders::_1;
 using std::placeholders::_2;
 
-const char kNotificationsFilename[] = "notifications.json";
+const char kNotificationsFilename[] = "notifications";
 
 const char kNotificationsListKey[] = "notifications";
 

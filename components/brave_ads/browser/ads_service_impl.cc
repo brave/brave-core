@@ -8,6 +8,7 @@
 #include <limits>
 #include <utility>
 
+#include "base/base64.h"
 #include "base/bind.h"
 #include "base/command_line.h"
 #include "base/containers/flat_map.h"
@@ -68,6 +69,7 @@
 #include "chrome/browser/first_run/first_run.h"
 #include "chrome/common/buildflags.h"
 #include "chrome/common/chrome_constants.h"
+#include "components/os_crypt/os_crypt.h"
 #include "components/prefs/pref_service.h"
 #include "components/wifi/wifi_service.h"
 #include "content/public/browser/browser_thread.h"
@@ -148,15 +150,32 @@ void PostWriteCallback(
 
 std::string LoadOnFileTaskRunner(
     const base::FilePath& path) {
-  std::string data;
-  bool success = base::ReadFileToString(path, &data);
-
-  // Make sure the file isn't empty.
-  if (!success || data.empty()) {
+  std::string value;
+  if (!base::ReadFileToString(path, &value)) {
     return "";
   }
 
-  return data;
+  return value;
+}
+
+std::string LoadEncryptedOnFileTaskRunner(
+    const base::FilePath& path) {
+  std::string base64_encrypted_value;
+  if (!base::ReadFileToString(path, &base64_encrypted_value)) {
+    return "";
+  }
+
+  std::string encrypted_value;
+  if (!base::Base64Decode(base64_encrypted_value, &encrypted_value)) {
+    return "";
+  }
+
+  std::string value;
+  if (!OSCrypt::DecryptString(encrypted_value, &value)) {
+    return "";
+  }
+
+  return value;
 }
 
 bool EnsureBaseDirectoryExistsOnFileTaskRunner(
@@ -582,56 +601,131 @@ void AdsServiceImpl::Shutdown() {
 
 ///////////////////////////////////////////////////////////////////////////////
 
-bool MigrateConfirmationsStateOnFileTaskRunner(
-    const base::FilePath& path) {
-  const base::FilePath rewards_service_base_path =
-      path.AppendASCII("rewards_service");
+bool MigrateConfirmationsStateFromRewardsServiceToAdsService(
+    const base::FilePath& base_path) {
+  const base::FilePath ads_service_path = base_path.AppendASCII("ads_service");
 
-  const base::FilePath legacy_confirmations_state_path =
-      rewards_service_base_path.AppendASCII("confirmations.json");
+  const base::FilePath rewards_service_path =
+      base_path.AppendASCII("rewards_service");
 
-  if (base::PathExists(legacy_confirmations_state_path)) {
-    base::FilePath confirmations_state_path =
-        path.AppendASCII("ads_service").AppendASCII("confirmations.json");
+  const base::FilePath from_path =
+      rewards_service_path.AppendASCII("confirmations.json");
 
-    VLOG(1) << "Migrating " << legacy_confirmations_state_path.value()
-        << " to " << confirmations_state_path.value();
+  if (base::PathExists(from_path)) {
+    base::FilePath to_path = ads_service_path.AppendASCII("confirmations.json");
 
-    if (!base::Move(legacy_confirmations_state_path,
-        confirmations_state_path)) {
+    if (!base::Move(from_path, to_path)) {
       return false;
     }
   }
 
-  if (base::PathExists(rewards_service_base_path)) {
-    VLOG(1) << "Deleting " << rewards_service_base_path.value();
-
-    if (!base::DeleteFile(rewards_service_base_path)) {
-      VLOG(0) << "Failed to delete " << rewards_service_base_path.value();
+  if (base::PathExists(rewards_service_path)) {
+    if (!base::DeleteFile(rewards_service_path)) {
+      return false;
     }
   }
 
   return true;
 }
 
-void AdsServiceImpl::MaybeInitialize() {
-  const base::FilePath path = profile_->GetPath();
+bool RenameAndEncryptState(
+    const base::FilePath& base_path) {
+  const std::vector<std::string> filenames = {
+    "ad_conversions.json",
+    "catalog.json",
+    "client.json",
+    "confirmations.json",
+    "notifications.json"
+  };
+
+  const base::FilePath ads_service_path = base_path.AppendASCII("ads_service");
+
+  // Rename files
+  for (const auto& filename : filenames) {
+    const base::FilePath path = ads_service_path.AppendASCII(filename);
+    if (!base::PathExists(path)) {
+      continue;
+    }
+
+    if (!base::Move(path, path.RemoveExtension())) {
+      return false;
+    }
+  }
+
+  // Encrypt files
+  for (const auto& filename : filenames) {
+    const base::FilePath path =
+        ads_service_path.AppendASCII(filename).RemoveExtension();
+
+    std::string value;
+    if (!base::ReadFileToString(path, &value)) {
+      continue;
+    }
+
+    std::string decrypted_value;
+    if (OSCrypt::DecryptString(value, &decrypted_value)) {
+      // File was already migrated
+      continue;
+    }
+
+    std::string encrypted_value;
+    if (!OSCrypt::EncryptString(value, &encrypted_value)) {
+      return false;
+    }
+
+    std::string base64_encrypted_value;
+    base::Base64Encode(encrypted_value, &base64_encrypted_value);
+
+    if (!base::WriteFile(path, base64_encrypted_value)) {
+      return false;
+    }
+  }
+
+  return true;
+}
+
+bool MigrateStateOnFileTaskRunner(
+    const base::FilePath& base_path) {
+  if (!MigrateConfirmationsStateFromRewardsServiceToAdsService(base_path)) {
+    return false;
+  }
+
+  if (!RenameAndEncryptState(base_path)) {
+    return false;
+  }
+
+  return true;
+}
+
+void AdsServiceImpl::MigrateState() {
+  VLOG(1) << "Migrating state";
 
   base::PostTaskAndReplyWithResult(
       file_task_runner_.get(), FROM_HERE,
-      base::BindOnce(&MigrateConfirmationsStateOnFileTaskRunner, path),
-      base::BindOnce(&AdsServiceImpl::OnMigrateConfirmationsState,
+      base::BindOnce(&MigrateStateOnFileTaskRunner, profile_->GetPath()),
+      base::BindOnce(&AdsServiceImpl::OnMigrateState,
           AsWeakPtr()));
 }
 
-void AdsServiceImpl::OnMigrateConfirmationsState(
+void AdsServiceImpl::OnMigrateState(
     const bool success) {
   if (!success) {
-    VLOG(0) << "Failed to migrate confirmations state";
+    VLOG(0) << "Failed to migrate state";
     return;
   }
 
-  VLOG(1) << "Successfully migrated confirmations state";
+  SetBooleanPref(prefs::kShouldMigrateState, false);
+
+  VLOG(1) << "Successfully migrated state";
+
+  Initialize();
+}
+
+void AdsServiceImpl::MaybeInitialize() {
+  if (GetBooleanPref(prefs::kShouldMigrateState)) {
+    MigrateState();
+    return;
+  }
 
   Initialize();
 }
@@ -1990,6 +2084,15 @@ void AdsServiceImpl::Save(
     const std::string& name,
     const std::string& value,
     ads::ResultCallback callback) {
+  std::string encrypted_value;
+  if (!OSCrypt::EncryptString(value, &encrypted_value)) {
+    callback(ads::Result::FAILED);
+    return;
+  }
+
+  std::string base64_encrypted_value;
+  base::Base64Encode(encrypted_value, &base64_encrypted_value);
+
   base::ImportantFileWriter writer(
       base_path_.AppendASCII(name), file_task_runner_);
 
@@ -2001,7 +2104,7 @@ void AdsServiceImpl::Save(
             std::move(callback)),
         base::SequencedTaskRunnerHandle::Get()));
 
-  writer.WriteNow(std::make_unique<std::string>(value));
+  writer.WriteNow(std::make_unique<std::string>(base64_encrypted_value));
 }
 
 void AdsServiceImpl::LoadUserModelForId(
@@ -2027,7 +2130,8 @@ void AdsServiceImpl::Load(
     const std::string& name,
     ads::LoadCallback callback) {
   base::PostTaskAndReplyWithResult(file_task_runner_.get(), FROM_HERE,
-      base::BindOnce(&LoadOnFileTaskRunner, base_path_.AppendASCII(name)),
+      base::BindOnce(&LoadEncryptedOnFileTaskRunner,
+          base_path_.AppendASCII(name)),
       base::BindOnce(&AdsServiceImpl::OnLoaded,
           AsWeakPtr(), std::move(callback)));
 }
