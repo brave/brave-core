@@ -93,14 +93,13 @@ interface ChartConfig {
 
 class CryptoDotCom extends React.PureComponent<Props, State> {
   private refreshInterval: any
-  private topMovers: string[]
+  private topMovers: string[] = [ 'BTC', 'ETH', 'CRO' ]
 
   constructor (props: Props) {
     super(props)
     this.state = {
       selectedAsset: ''
     }
-    this.topMovers = [ 'BTC', 'ETH', 'CRO' ]
   }
 
   // This is a temporary function only necessary for MVP

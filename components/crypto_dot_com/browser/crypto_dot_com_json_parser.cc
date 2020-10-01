@@ -59,6 +59,8 @@ bool CryptoDotComJSONParser::GetTickerInfoFromJSON(
       !(h && h->is_double()) ||
       !(l && l->is_double()) ||
       !(price && price->is_double())) {
+    info->insert({"volume", std::string()});
+    info->insert({"price", std::string()});
     return false;
   }
 
@@ -237,9 +239,9 @@ bool CryptoDotComJSONParser::GetRankingsFromJSON(
     const base::Value* change = ranking.FindKey("percent_change");
     const base::Value* last = ranking.FindKey("last_price");
 
-    if (!(pair && pair->is_string()) ||
-        !(change && change->is_string()) ||
-        !(last && last->is_string())) {
+    if (!pair || !pair->is_string() ||
+        !change || !change->is_string() ||
+        !last || !last->is_string()) {
       continue;
     }
 

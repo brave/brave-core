@@ -11,6 +11,10 @@ interface SupportedPair {
   quote: string
 }
 
+function performSideEffect (fn: () => void): void {
+  window.setTimeout(() => fn(), 0)
+}
+
 const cryptoDotComReducer: Reducer<NewTab.State | undefined> = (state: NewTab.State, action) => {
   const payload = action.payload
 
@@ -59,11 +63,15 @@ const cryptoDotComReducer: Reducer<NewTab.State | undefined> = (state: NewTab.St
       break
 
     case types.ON_BUY_CRYPTO:
-      chrome.cryptoDotCom.onBuyCrypto()
+      performSideEffect(async function () {
+        chrome.cryptoDotCom.onBuyCrypto()
+      })
       break
 
     case types.ON_INTERACTION:
-      chrome.cryptoDotCom.onInteraction()
+      performSideEffect(async function () {
+        chrome.cryptoDotCom.onInteraction()
+      })
       break
 
     case types.ON_MARKETS_OPT_IN:

@@ -284,10 +284,6 @@ source_set("browser_process") {
       "//brave/components/crypto_dot_com/browser",
       "//brave/components/crypto_dot_com/common",
       "//components/keyed_service/content",
-      "//components/user_prefs",
-      "//content/public/browser",
-      "//ui/base",
-      "//url",
     ]    
   }
 

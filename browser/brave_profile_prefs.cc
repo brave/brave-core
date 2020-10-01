@@ -294,7 +294,7 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
 #endif
 
 #if BUILDFLAG(CRYPTO_DOT_COM_ENABLED)
-  crypto_dot_com::CryptoDotComPrefUtils::RegisterPrefs(registry);
+  crypto_dot_com::RegisterPrefs(registry);
 #endif
 
 #if !defined(OS_ANDROID)

@@ -10,13 +10,7 @@ class PrefRegistrySimple;
 
 namespace crypto_dot_com {
 
-class CryptoDotComPrefUtils {
- public:
-  CryptoDotComPrefUtils();
-  ~CryptoDotComPrefUtils();
-
-  static void RegisterPrefs(PrefRegistrySimple* registry);
-};
+void RegisterPrefs(PrefRegistrySimple* registry);
 
 }  // namespace crypto_dot_com
 

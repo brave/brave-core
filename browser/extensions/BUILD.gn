@@ -189,9 +189,15 @@ source_set("extensions") {
       "api/crypto_dot_com_api.h",
     ]
     deps += [
+      "//brave/browser/profiles",
       "//brave/common",
       "//brave/components/crypto_dot_com/browser",
+      "//brave/components/crypto_dot_com/common/",
+      "//brave/components/ntp_widget_utils/browser",
+      "//chrome/browser/extensions",
+      "//components/prefs",
       "//extensions/browser",
+      "//extensions/common:common_constants",
     ]
   }
 }

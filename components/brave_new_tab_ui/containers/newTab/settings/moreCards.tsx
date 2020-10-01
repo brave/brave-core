@@ -167,7 +167,7 @@ class MoreCardsSettings extends React.PureComponent<Props, {}> {
               <StyledBannerImage src={cryptoDotComBanner} />
               <StyledSettingsInfo>
                 <StyledSettingsTitle>
-                  {'crypto.com'}
+                  {'Crypto.com'}
                 </StyledSettingsTitle>
                 <StyledSettingsCopy>
                   {getLocale('cryptoDotComWidgetDesc')}

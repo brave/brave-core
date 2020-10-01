@@ -9,6 +9,7 @@
 #include <string>
 #include <utility>
 
+#include "brave/browser/profiles/profile_util.h"
 #include "brave/common/extensions/api/crypto_dot_com.h"
 #include "brave/browser/crypto_dot_com/crypto_dot_com_service_factory.h"
 #include "brave/components/crypto_dot_com/browser/crypto_dot_com_service.h"
@@ -31,8 +32,7 @@ CryptoDotComService* GetCryptoDotComService(content::BrowserContext* context) {
 }
 
 bool IsCryptoDotComAPIAvailable(content::BrowserContext* context) {
-  Profile* profile = Profile::FromBrowserContext(context);
-  return profile->IsRegularProfile();
+  return brave::IsRegularProfile(context);
 }
 
 }  // namespace
