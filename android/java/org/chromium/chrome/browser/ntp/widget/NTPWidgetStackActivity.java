@@ -1,24 +1,24 @@
-/* Copyright (c) 2020 The Brave Authors. All rights reserved.
+/**
+ * Copyright (c) 2020 The Brave Authors. All rights reserved.
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
- * You can obtain one at http://mozilla.org/MPL/2.0/. */
+ * You can obtain one at http://mozilla.org/MPL/2.0/.
+ */
 
 package org.chromium.chrome.browser.ntp.widget;
 
-import android.content.DialogInterface;
+import android.app.Activity;
 import android.os.Bundle;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.widget.LinearLayout;
+import android.widget.ImageView;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
-import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
+import androidx.appcompat.app.AppCompatActivity;
 
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.ntp.widget.NTPWidgetAdapter;
@@ -28,7 +28,7 @@ import org.chromium.chrome.browser.ntp.widget.NTPWidgetManager;
 import java.util.ArrayList;
 import java.util.List;
 
-public class NTPWidgetBottomSheetDialogFragment extends BottomSheetDialogFragment {
+public class NTPWidgetStackActivity extends AppCompatActivity {
     private NTPWidgetAdapter.NTPWidgetListener ntpWidgetListener;
     private RecyclerView usedWidgetsRecyclerView;
     private RecyclerView availableWidgetsRecyclerView;
@@ -46,26 +46,24 @@ public class NTPWidgetBottomSheetDialogFragment extends BottomSheetDialogFragmen
         this.ntpWidgetListener = ntpWidgetListener;
     }
 
-    public static NTPWidgetBottomSheetDialogFragment newInstance() {
-        return new NTPWidgetBottomSheetDialogFragment();
-    }
-
-    @Nullable
     @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
-            @Nullable Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_ntp_widget_bottom_sheet_dialog, container, false);
-    }
-
-    @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_ntp_widget_stack);
 
         List<String> usedWidgetList = NTPWidgetManager.getInstance().getUsedWidgets();
         List<String> availableWidgetList = NTPWidgetManager.getInstance().getAvailableWidgets();
 
-        usedWidgetsRecyclerView = view.findViewById(R.id.used_widget_list);
-        usedWidgetsRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+        ImageView backButton = findViewById(R.id.back_button);
+        backButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                finish();
+            }
+        });
+
+        usedWidgetsRecyclerView = findViewById(R.id.used_widget_list);
+        usedWidgetsRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         usedNtpWidgetListAdapter = new NTPWidgetListAdapter();
         SwipeAndDragHelper swipeAndDragHelper = new SwipeAndDragHelper(usedNtpWidgetListAdapter);
         ItemTouchHelper touchHelper = new ItemTouchHelper(swipeAndDragHelper);
@@ -77,10 +75,10 @@ public class NTPWidgetBottomSheetDialogFragment extends BottomSheetDialogFragmen
         touchHelper.attachToRecyclerView(usedWidgetsRecyclerView);
         usedNtpWidgetListAdapter.setWidgetList(usedWidgetList);
 
-        availableWidgetLayout = view.findViewById(R.id.available_widget_layout);
+        availableWidgetLayout = findViewById(R.id.available_widget_layout);
 
-        availableWidgetsRecyclerView = view.findViewById(R.id.available_widget_list);
-        availableWidgetsRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+        availableWidgetsRecyclerView = findViewById(R.id.available_widget_list);
+        availableWidgetsRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         availableNtpWidgetListAdapter = new NTPWidgetListAdapter();
         availableNtpWidgetListAdapter.setNTPWidgetListener(ntpWidgetListener);
         availableNtpWidgetListAdapter.setNTPWidgetStackUpdateListener(ntpWidgetStackUpdateListener);
@@ -95,33 +93,32 @@ public class NTPWidgetBottomSheetDialogFragment extends BottomSheetDialogFragmen
     }
 
     @Override
-    public void onDismiss(@NonNull DialogInterface dialog) {
-        super.onDismiss(dialog);
+    protected void onStop() {
         for (int i = 0; i < usedNtpWidgetListAdapter.getWidgetList().size(); i++) {
             NTPWidgetManager.getInstance().setWidget(
-                    usedNtpWidgetListAdapter.getWidgetList().get(i), i);
+                usedNtpWidgetListAdapter.getWidgetList().get(i), i);
         }
-        ntpWidgetListener.onBottomSheetDismiss();
+        super.onStop();
     }
 
     private NTPWidgetStackUpdateListener ntpWidgetStackUpdateListener =
-            new NTPWidgetStackUpdateListener() {
-                @Override
-                public void onWidgetStackUpdate() {
-                    List<String> usedWidgetList = NTPWidgetManager.getInstance().getUsedWidgets();
-                    List<String> availableWidgetList =
-                            NTPWidgetManager.getInstance().getAvailableWidgets();
+    new NTPWidgetStackUpdateListener() {
+        @Override
+        public void onWidgetStackUpdate() {
+            List<String> usedWidgetList = NTPWidgetManager.getInstance().getUsedWidgets();
+            List<String> availableWidgetList =
+                NTPWidgetManager.getInstance().getAvailableWidgets();
 
-                    usedNtpWidgetListAdapter.setWidgetList(usedWidgetList);
-                    usedNtpWidgetListAdapter.notifyDataSetChanged();
+            usedNtpWidgetListAdapter.setWidgetList(usedWidgetList);
+            usedNtpWidgetListAdapter.notifyDataSetChanged();
 
-                    if (availableWidgetList.size() > 0) {
-                        availableWidgetLayout.setVisibility(View.VISIBLE);
-                        availableNtpWidgetListAdapter.setWidgetList(availableWidgetList);
-                        availableNtpWidgetListAdapter.notifyDataSetChanged();
-                    } else {
-                        availableWidgetLayout.setVisibility(View.GONE);
-                    }
-                }
-            };
+            if (availableWidgetList.size() > 0) {
+                availableWidgetLayout.setVisibility(View.VISIBLE);
+                availableNtpWidgetListAdapter.setWidgetList(availableWidgetList);
+                availableNtpWidgetListAdapter.notifyDataSetChanged();
+            } else {
+                availableWidgetLayout.setVisibility(View.GONE);
+            }
+        }
+    };
 }

@@ -53,8 +53,6 @@ public class NTPWidgetAdapter extends PagerAdapter {
         void onMenuRefreshData();
 
         void onMenuDisconnect();
-
-        void onBottomSheetDismiss();
     }
 
     public void setNTPWidgetListener(NTPWidgetListener ntpWidgetListener) {

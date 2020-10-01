@@ -7,6 +7,7 @@ package org.chromium.chrome.browser.ntp;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.content.res.Configuration;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
@@ -62,7 +63,7 @@ import org.chromium.chrome.browser.native_page.ContextMenuManager;
 import org.chromium.chrome.browser.night_mode.GlobalNightModeStateProviderHolder;
 import org.chromium.chrome.browser.ntp.NewTabPageLayout;
 import org.chromium.chrome.browser.ntp.widget.NTPWidgetAdapter;
-import org.chromium.chrome.browser.ntp.widget.NTPWidgetBottomSheetDialogFragment;
+import org.chromium.chrome.browser.ntp.widget.NTPWidgetStackActivity;
 import org.chromium.chrome.browser.ntp.widget.NTPWidgetItem;
 import org.chromium.chrome.browser.ntp.widget.NTPWidgetManager;
 import org.chromium.chrome.browser.ntp_background_images.NTPBackgroundImagesBridge;
@@ -136,6 +137,7 @@ public class BraveNewTabPageLayout extends NewTabPageLayout {
     private BinanceNativeWorker mBinanceNativeWorker;
     private CountDownTimer countDownTimer = null;
     private List<NTPWidgetItem> widgetList = new ArrayList<NTPWidgetItem>();
+    public static final int NTP_WIDGET_STACK_CODE = 3333;
 
     public BraveNewTabPageLayout(Context context, AttributeSet attrs) {
         super(context, attrs);
@@ -364,6 +366,19 @@ public class BraveNewTabPageLayout extends NewTabPageLayout {
         cancelTimer();
         super.onDetachedFromWindow();
     }
+
+    // @Override
+    // public void onWindowFocusChanged(boolean hasWindowFocus) {
+    //     super.onWindowFocusChanged(hasWindowFocus);
+    //     if (hasWindowFocus) {
+    //         //onresume() called
+    //         showWidgets();
+    //         Log.e("NTP", "onResume new tab");
+    //     } else {
+    //         // onPause() called
+    //         Log.e("NTP", "onPause new tab");
+    //     }
+    // }
 
     @Override
     public void onConfigurationChanged(Configuration newConfig) {
@@ -714,13 +729,21 @@ public class BraveNewTabPageLayout extends NewTabPageLayout {
                 @Override
                 public void onMenuEdit() {
                     cancelTimer();
-                    NTPWidgetBottomSheetDialogFragment ntpWidgetBottomSheetDialogFragment =
-                            NTPWidgetBottomSheetDialogFragment.newInstance();
-                    ntpWidgetBottomSheetDialogFragment.setNTPWidgetListener(ntpWidgetListener);
-                    // ntpWidgetBottomSheetDialogFragment.setWidgetList(widgetList);
-                    ntpWidgetBottomSheetDialogFragment.show(
-                            ((BraveActivity) mActivity).getSupportFragmentManager(),
-                            "NTPWidgetBottomSheetDialogFragment");
+                    // final FragmentManager fm = ((BraveActivity) mActivity).getSupportFragmentManager();
+                    // Fragment auxiliary = new Fragment() {
+                    //     @Override
+                    //     public void onActivityResult(int requestCode, int resultCode, Intent data) {
+                    //         //DO WHATEVER YOU NEED
+                    //         super.onActivityResult(requestCode, resultCode, data);
+                    //         fm.beginTransaction().remove(this).commit();
+                    //     }
+                    // };
+                    // fm.beginTransaction().add(auxiliary, "FRAGMENT_TAG").commit();
+                    // fm.executePendingTransactions();
+
+                    // auxiliary.startActivityForResult(new Intent(mActivity, NTPWidgetStackActivity.class), NTP_WIDGET_STACK_CODE);
+                    Intent ntpWidgetStackActivityIntent = new Intent(mActivity, NTPWidgetStackActivity.class);
+                    mActivity.startActivity(ntpWidgetStackActivityIntent);
                 }
 
                 @Override
@@ -743,16 +766,6 @@ public class BraveNewTabPageLayout extends NewTabPageLayout {
                 @Override
                 public void onMenuDisconnect() {
                     mBinanceNativeWorker.revokeToken();
-                }
-
-                @Override
-                public void onBottomSheetDismiss() {
-                    showWidgets();
-                    cancelTimer();
-                    if (ntpWidgetViewPager.getCurrentItem()
-                            == NTPWidgetManager.getInstance().getBinanceWidget()) {
-                        startTimer();
-                    }
                 }
             };
 

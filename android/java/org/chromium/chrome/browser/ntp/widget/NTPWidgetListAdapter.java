@@ -21,6 +21,7 @@ import org.chromium.chrome.R;
 import org.chromium.chrome.browser.ntp.widget.NTPWidgetAdapter;
 import org.chromium.chrome.browser.ntp.widget.NTPWidgetManager;
 import org.chromium.chrome.browser.ntp.widget.SwipeAndDragHelper;
+import org.chromium.chrome.browser.ntp.widget.NTPWidgetStackActivity;
 
 import java.util.List;
 
@@ -29,7 +30,7 @@ public class NTPWidgetListAdapter extends RecyclerView.Adapter<RecyclerView.View
     private List<String> widgetList;
     private ItemTouchHelper touchHelper;
     private NTPWidgetAdapter.NTPWidgetListener ntpWidgetListener;
-    private NTPWidgetBottomSheetDialogFragment
+    private NTPWidgetStackActivity
             .NTPWidgetStackUpdateListener ntpWidgetStackUpdateListener;
     private int ntpWidgetType;
 
@@ -38,7 +39,7 @@ public class NTPWidgetListAdapter extends RecyclerView.Adapter<RecyclerView.View
     }
 
     public void setNTPWidgetStackUpdateListener(
-            NTPWidgetBottomSheetDialogFragment
+            NTPWidgetStackActivity
                     .NTPWidgetStackUpdateListener ntpWidgetStackUpdateListener) {
         this.ntpWidgetStackUpdateListener = ntpWidgetStackUpdateListener;
     }
@@ -62,7 +63,7 @@ public class NTPWidgetListAdapter extends RecyclerView.Adapter<RecyclerView.View
         NTPWidgetItem ntpWidgetItem = NTPWidgetManager.mWidgetsMap.get(widgetList.get(position));
         ntpWidgetViewHolder.widgetTitle.setText(ntpWidgetItem.getWidgetTitle());
         ntpWidgetViewHolder.widgetText.setText(ntpWidgetItem.getWidgetText());
-        if (ntpWidgetType == NTPWidgetBottomSheetDialogFragment.USED_WIDGET) {
+        if (ntpWidgetType == NTPWidgetStackActivity.USED_WIDGET) {
             ntpWidgetViewHolder.widgetReorderView.setImageResource(R.drawable.ic_sort);
             ntpWidgetViewHolder.widgetReorderView.setOnTouchListener(new View.OnTouchListener() {
                 @Override
@@ -73,7 +74,7 @@ public class NTPWidgetListAdapter extends RecyclerView.Adapter<RecyclerView.View
                     return false;
                 }
             });
-        } else if (ntpWidgetType == NTPWidgetBottomSheetDialogFragment.AVAILABLE_WIDGET) {
+        } else if (ntpWidgetType == NTPWidgetStackActivity.AVAILABLE_WIDGET) {
             ntpWidgetViewHolder.widgetReorderView.setImageResource(R.drawable.ic_add);
             ntpWidgetViewHolder.widgetReorderView.setOnClickListener(new View.OnClickListener() {
                 @Override
