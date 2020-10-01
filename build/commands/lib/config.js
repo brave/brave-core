@@ -160,6 +160,13 @@ Config.prototype.enableCDMHostVerification = function () {
   return enable
 }
 
+Config.prototype.isAsan = function () {
+  if (this.is_asan) {
+    return true
+  }
+  return false
+}
+
 Config.prototype.buildArgs = function () {
   const version = this.braveVersion
   let version_parts = version.split('+')[0]
@@ -168,6 +175,9 @@ Config.prototype.buildArgs = function () {
   const chrome_version_parts = this.chromeVersion.split('.')
 
   let args = {
+    is_asan: this.isAsan(),
+    enable_full_stack_frames_for_profiling: this.isAsan(),
+    v8_enable_verify_heap: this.isAsan(),
     fieldtrial_testing_like_official_build: true,
     safe_browsing_mode: 1,
     brave_services_key: this.braveServicesKey,
@@ -182,7 +192,7 @@ Config.prototype.buildArgs = function () {
     enable_nacl: false,
     enable_widevine: true,
     target_cpu: this.targetArch,
-    is_official_build: this.isOfficialBuild(),
+    is_official_build: this.isOfficialBuild() && !this.isAsan(),
     is_debug: this.isDebug(),
     dcheck_always_on: this.isDcheckAlwaysOn(),
     brave_channel: this.channel,
@@ -468,6 +478,12 @@ Config.prototype.update = function (options) {
 
   if (options.target_os) {
     this.targetOS = options.target_os
+  }
+
+  if (options.is_asan) {
+    this.is_asan = true
+  } else {
+    this.is_asan = false
   }
 
   if (options.C) {

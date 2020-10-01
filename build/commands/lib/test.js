@@ -40,6 +40,10 @@ const test = (suite, buildConfig = config.defaultBuildConfig, options) => {
     braveArgs.push('--gtest_filter=' + options.filter)
   }
 
+  if (options.run_disabled_tests) {
+    braveArgs.push('--gtest_also_run_disabled_tests')
+  }
+
   if (options.output) {
     braveArgs.push('--gtest_output=xml:' + options.output)
   }
