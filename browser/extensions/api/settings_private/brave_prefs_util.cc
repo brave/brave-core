@@ -23,7 +23,7 @@
 #endif
 
 #if BUILDFLAG(BRAVE_WALLET_ENABLED)
-#include "brave/components/brave_wallet/common/brave_wallet_pref_names.h"
+#include "brave/components/brave_wallet/common/pref_names.h"
 #endif
 
 #if BUILDFLAG(IPFS_ENABLED)

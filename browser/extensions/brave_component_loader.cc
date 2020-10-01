@@ -33,7 +33,7 @@
 #if BUILDFLAG(BRAVE_WALLET_ENABLED)
 #include "brave/browser/extensions/brave_wallet_util.h"
 #include "brave/components/brave_wallet/common/brave_wallet_constants.h"
-#include "brave/components/brave_wallet/common/brave_wallet_pref_names.h"
+#include "brave/components/brave_wallet/common/pref_names.h"
 #endif
 
 namespace extensions {
