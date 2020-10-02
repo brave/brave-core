@@ -27,6 +27,7 @@
 #endif
 
 class BraveActionViewController;
+class OnionLocationView;
 class BraveActionsContainerTest;
 class RewardsBrowserTest;
 
@@ -186,6 +187,8 @@ class BraveActionsContainer : public views::View,
   BooleanPrefMember hide_brave_rewards_button_;
 
   std::unique_ptr<EmptyExtensionsContainer> empty_extensions_container_;
+
+  OnionLocationView* onion_location_view_ = nullptr;
 
   base::WeakPtrFactory<BraveActionsContainer> weak_ptr_factory_;
 

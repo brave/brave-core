@@ -15,6 +15,7 @@
 #include "brave/browser/ui/brave_actions/brave_action_view_controller.h"
 #include "brave/browser/ui/views/brave_actions/brave_action_view.h"
 #include "brave/browser/ui/views/brave_actions/brave_rewards_action_stub_view.h"
+#include "brave/browser/ui/views/location_bar/onion_location_view.h"
 #include "brave/browser/ui/views/rounded_separator.h"
 #include "brave/common/brave_switches.h"
 #include "brave/common/pref_names.h"
@@ -37,6 +38,7 @@
 #include "ui/views/layout/box_layout.h"
 #include "ui/views/layout/grid_layout.h"
 #include "ui/views/view.h"
+
 
 class BraveActionsContainer::EmptyExtensionsContainer
     : public ExtensionsContainer {
@@ -146,11 +148,13 @@ void BraveActionsContainer::Init() {
   // separator right margin
   brave_button_separator_->SetBorder(
       views::CreateEmptyBorder(0, 0, 0, kSeparatorRightMargin));
+  onion_location_view_ = new OnionLocationView();
+  AddChildViewAt(onion_location_view_, 0);
   // Just in case the extensions load before this function does (not likely!)
   // make sure separator is at index 0
-  AddChildViewAt(brave_button_separator_, 0);
+  AddChildViewAt(brave_button_separator_, 1);
   // Populate actions
-  actions_[brave_extension_id].position_ = 1;
+  actions_[brave_extension_id].position_ = 2;
   actions_[brave_rewards_extension_id].position_ = ACTION_ANY_POSITION;
 
   // React to Brave Rewards preferences changes.
@@ -312,6 +316,7 @@ void BraveActionsContainer::Update() {
   // only show separator if we're showing any buttons
   const bool visible = !should_hide_ && can_show;
   SetVisible(visible);
+  onion_location_view_->Update(GetCurrentWebContents());
   Layout();
 }
 

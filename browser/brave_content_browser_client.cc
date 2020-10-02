@@ -86,6 +86,7 @@ using extensions::ChromeContentBrowserClientExtensionsPart;
 
 #if BUILDFLAG(ENABLE_TOR)
 #include "brave/browser/tor/tor_navigation_throttle.h"
+#include "brave/browser/tor/onion_location_navigation_throttle.h"
 #endif
 
 #if BUILDFLAG(ENABLE_SPEEDREADER)
@@ -460,6 +461,11 @@ BraveContentBrowserClient::CreateThrottlesForNavigation(
     tor::TorNavigationThrottle::MaybeCreateThrottleFor(handle);
   if (tor_navigation_throttle)
     throttles.push_back(std::move(tor_navigation_throttle));
+  std::unique_ptr<content::NavigationThrottle>
+      onion_location_navigation_throttle =
+          tor::OnionLocationNavigationThrottle::CreateThrottleFor(handle);
+  if (onion_location_navigation_throttle)
+    throttles.push_back(std::move(onion_location_navigation_throttle));
 #endif
 
 #if BUILDFLAG(IPFS_ENABLED)
