@@ -119,14 +119,7 @@ void RedeemUnblindedPaymentTokens::OnRedeemUnblindedPaymentTokens(
       delegate_->OnFailedToRedeemUnblindedPaymentTokens();
     }
 
-    const base::Time time = retry_timer_.StartWithPrivacy(
-        base::TimeDelta::FromSeconds(kRetryAfterSeconds),
-            base::BindOnce(&RedeemUnblindedPaymentTokens::OnRetry,
-                base::Unretained(this)));
-
-    BLOG(1, "Retry redeeming unblinded payment tokens "
-        << FriendlyDateAndTime(time));
-
+    Retry();
     return;
   }
 
@@ -155,6 +148,16 @@ void RedeemUnblindedPaymentTokens::ScheduleNextTokenRedemption() {
       next_token_redemption_date);
 
   RedeemAfterDelay(wallet_);
+}
+
+void RedeemUnblindedPaymentTokens::Retry() {
+  const base::Time time = retry_timer_.StartWithPrivacy(
+      base::TimeDelta::FromSeconds(kRetryAfterSeconds),
+          base::BindOnce(&RedeemUnblindedPaymentTokens::OnRetry,
+              base::Unretained(this)));
+
+  BLOG(1, "Retry redeeming unblinded payment tokens "
+      << FriendlyDateAndTime(time));
 }
 
 void RedeemUnblindedPaymentTokens::OnRetry() {

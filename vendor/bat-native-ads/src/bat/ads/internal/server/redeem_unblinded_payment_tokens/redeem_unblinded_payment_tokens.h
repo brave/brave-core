@@ -45,6 +45,7 @@ class RedeemUnblindedPaymentTokens {
   void ScheduleNextTokenRedemption();
 
   BackoffTimer retry_timer_;
+  void Retry();
   void OnRetry();
 
   base::TimeDelta CalculateTokenRedemptionDelay();
