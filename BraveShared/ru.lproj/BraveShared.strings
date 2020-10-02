@@ -200,7 +200,7 @@
 "BraveRewardsTitle" = "Brave Rewards";
 
 /* No comment provided by engineer. */
-"BraveShieldsAndPrivacy" = "Щиты Brave и конфиденциальность";
+"BraveShieldsAndPrivacy" = "Brave Shields и конфиденциальность";
 
 /* Sync page title */
 "BraveSync" = "Синхронизация";
@@ -464,7 +464,7 @@
 "FavoritesRootLevelCellTitle" = "Избранное";
 
 /* No comment provided by engineer. */
-"Features" = "Возможности";
+"Features" = "Функции";
 
 /* Share action title */
 "FindInPage" = "Найти на странице";
@@ -965,10 +965,10 @@
 "ShareWithMenuItem" = "Поделиться…";
 
 /* Section title for adbblock, tracking protection, HTTPS-E, and cookies */
-"ShieldsDefaults" = "Общие настройки щитов Brave по умолчанию";
+"ShieldsDefaults" = "Общие настройки Brave Shields по умолчанию";
 
 /* Section footer for global shields defaults */
-"ShieldsDefaultsFooter" = "Это настройки щитов по умолчанию для новых сайтов. Их изменение не повлияет на уже заданные настройки для отдельных сайтов.";
+"ShieldsDefaultsFooter" = "Это настройки Brave Shields по умолчанию для новых сайтов. Их изменение не повлияет на уже заданные настройки для отдельных сайтов.";
 
 /* shields overview message */
 "ShieldsOverview" = "Щиты сайтов Shields позволяют контролировать блокировку рекламы и трекеров для каждого сайта, на который вы заходите. Если вы хотите видеть рекламу только на определенных сайтах, включите эту функцию ниже.";

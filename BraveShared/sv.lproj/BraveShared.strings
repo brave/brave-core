@@ -200,7 +200,7 @@
 "BraveRewardsTitle" = "Brave Rewards";
 
 /* No comment provided by engineer. */
-"BraveShieldsAndPrivacy" = "Braves sköldar och sekretess";
+"BraveShieldsAndPrivacy" = "Brave Shields och sekretess";
 
 /* Sync page title */
 "BraveSync" = "Synkronisera";
@@ -965,10 +965,10 @@
 "ShareWithMenuItem" = "Dela med …";
 
 /* Section title for adbblock, tracking protection, HTTPS-E, and cookies */
-"ShieldsDefaults" = "Globala standardinställningar för Braves sköldar";
+"ShieldsDefaults" = "Globala standardinställningar för Brave Shields";
 
 /* Section footer for global shields defaults */
-"ShieldsDefaultsFooter" = "Dessa är standardinställningar för sköldar för nya webbplatser. Om du ändrar dessa påverkas inte dina befintliga inställningar per webbplats.";
+"ShieldsDefaultsFooter" = "Dessa är Shields standardinställningar för nya webbplatser. Om du ändrar dessa påverkas inte dina befintliga inställningar per webbplats.";
 
 /* shields overview message */
 "ShieldsOverview" = "Sköldarna låter dig styra när annonser och spårare blockeras för varje webbplats du besöker. Om du föredrar att se annonser på en viss webbplats kan du aktivera dem här.";

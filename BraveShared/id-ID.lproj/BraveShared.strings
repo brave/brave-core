@@ -200,7 +200,7 @@
 "BraveRewardsTitle" = "Brave Rewards";
 
 /* No comment provided by engineer. */
-"BraveShieldsAndPrivacy" = "Perisai & Privasi Brave";
+"BraveShieldsAndPrivacy" = "Brave Shields & Privasi";
 
 /* Sync page title */
 "BraveSync" = "Sinkronisasi";
@@ -491,7 +491,7 @@
 "FingerprintingnProtection" = "Perlindungan\nSidik Jari";
 
 /* No comment provided by engineer. */
-"FingerprintingProtection" = "Blokir Deteksi Sidik Jari";
+"FingerprintingProtection" = "Blokir Pelacakan Situs";
 
 /* No comment provided by engineer. */
 "FingerprintingProtectionDescription" = "Mempersulit bagi situs untuk mengenali karakteristik unik perangkat Anda.";
@@ -968,7 +968,7 @@
 "ShieldsDefaults" = "Default Global Perisai Brave";
 
 /* Section footer for global shields defaults */
-"ShieldsDefaultsFooter" = "Ini adalah pengaturan Perisai default untuk situs baru. Mengubah nilai ini tidak akan memengaruhi pengaturan masing-masing situs yang telah ada.";
+"ShieldsDefaultsFooter" = "Ini adalah pengaturan Shields default untuk situs baru. Mengubah nilai ini tidak akan memengaruhi pengaturan masing-masing situs yang telah ada.";
 
 /* shields overview message */
 "ShieldsOverview" = "Perisai Situs memungkinkan Anda mengontrol saat iklan dan pelacak diblokir untuk setiap situs yang dikunjungi. Jika memilih untuk melihat iklan pada situs tertentu, Anda dapat mengaktifkannya di sini.";

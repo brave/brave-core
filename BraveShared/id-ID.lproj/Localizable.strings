@@ -30,7 +30,7 @@
 "BraveShieldsStatusValueUp" = "Naik";
 
 /* The accessibility hint spoken when focused on the main shields toggle */
-"BraveShieldsToggleHint" = "Ketuk dua kali untuk mengalihkan Perisai Brave";
+"BraveShieldsToggleHint" = "Ketuk dua kali untuk mengalihkan Brave Shields";
 
 /* The body of the notification that goes out monthly to users who can claim an ads grant */
 "MonthlyAdsClaimNotificationBody" = "Ketuk untuk mengklaim token gratis Anda.";
@@ -147,7 +147,7 @@
 "ReportABrokenSite" = "Laporkan situs rusak";
 
 /* First part of the report a broken site copy. After the colon is a new line and then a website address */
-"ReportBrokenSiteBody1" = "Memungkinkan pengembang Brave mengetahui bahwa situs ini tidak bekerja dengan benar dengan Perisai:";
+"ReportBrokenSiteBody1" = "Memungkinkan pengembang Brave mengetahui bahwa situs ini tidak bekerja dengan benar dengan Shields:";
 
 /* No comment provided by engineer. */
 "ReportBrokenSiteBody2" = "Catatan: Alamat situs ini akan dikirimkan bersama nomor versi Brave Anda dan alamat IP Anda (yang tidak akan disimpan).";

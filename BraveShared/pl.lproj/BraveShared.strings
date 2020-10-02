@@ -200,7 +200,7 @@
 "BraveRewardsTitle" = "Brave Rewards";
 
 /* No comment provided by engineer. */
-"BraveShieldsAndPrivacy" = "Brave Shield i prywatność";
+"BraveShieldsAndPrivacy" = "Brave Shields i prywatność";
 
 /* Sync page title */
 "BraveSync" = "Synchronizuj";
@@ -464,7 +464,7 @@
 "FavoritesRootLevelCellTitle" = "Ulubione";
 
 /* No comment provided by engineer. */
-"Features" = "Cechy";
+"Features" = "Funkcje";
 
 /* Share action title */
 "FindInPage" = "Znajdź na stronie";
@@ -965,7 +965,7 @@
 "ShareWithMenuItem" = "Udostępnij...";
 
 /* Section title for adbblock, tracking protection, HTTPS-E, and cookies */
-"ShieldsDefaults" = "Ogólne domyślne ustawienia Brave Shield";
+"ShieldsDefaults" = "Ogólne domyślne ustawienia Brave Shields";
 
 /* Section footer for global shields defaults */
 "ShieldsDefaultsFooter" = "Są to domyślne ustawienia Shields dla nowych stron. Ich zmiana nie wpłynie na istniejące ustawienia każdej strony.";

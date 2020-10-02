@@ -200,7 +200,7 @@
 "BraveRewardsTitle" = "Brave Rewards";
 
 /* No comment provided by engineer. */
-"BraveShieldsAndPrivacy" = "Proteções do Brave e privacidade";
+"BraveShieldsAndPrivacy" = "Brave Shields e privacidade";
 
 /* Sync page title */
 "BraveSync" = "Sincronizar";
@@ -965,10 +965,10 @@
 "ShareWithMenuItem" = "Compartilhar com...";
 
 /* Section title for adbblock, tracking protection, HTTPS-E, and cookies */
-"ShieldsDefaults" = "Padrões globais das Proteções do Brave";
+"ShieldsDefaults" = "Padrões globais do Brave Shields";
 
 /* Section footer for global shields defaults */
-"ShieldsDefaultsFooter" = "Essas são as configurações padrão das Proteções para novos sites. A alteração delas não afetará suas atuais configurações específicas por site.";
+"ShieldsDefaultsFooter" = "Essas são as configurações padrão do Shields para novos sites. A alteração delas não afetará suas atuais configurações específicas por site.";
 
 /* shields overview message */
 "ShieldsOverview" = "As Proteções de site permitem que você controle quando anúncios e rastreadores são bloqueados em cada site que você acessa. Se preferir ver anúncios em um site específico, você poderá ativá-los aqui.";

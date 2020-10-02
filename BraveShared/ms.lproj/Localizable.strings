@@ -30,7 +30,7 @@
 "BraveShieldsStatusValueUp" = "Atas";
 
 /* The accessibility hint spoken when focused on the main shields toggle */
-"BraveShieldsToggleHint" = "Ketik dua kali untuk togol Perisai Brave";
+"BraveShieldsToggleHint" = "Ketik dua kali untuk togol Brave Shields";
 
 /* The body of the notification that goes out monthly to users who can claim an ads grant */
 "MonthlyAdsClaimNotificationBody" = "Ketik untuk menuntut token percuma anda.";
@@ -147,7 +147,7 @@
 "ReportABrokenSite" = "Laporkan laman web yang rosak";
 
 /* First part of the report a broken site copy. After the colon is a new line and then a website address */
-"ReportBrokenSiteBody1" = "Beritahu pembangun Brave bahawa tapak ini tidak berfungsi dengan betul dengan Perisai:";
+"ReportBrokenSiteBody1" = "Beritahu pembangun Brave bahawa tapak ini tidak berfungsi dengan betul dengan Shields:";
 
 /* No comment provided by engineer. */
 "ReportBrokenSiteBody2" = "Nota: Alamat tapak ini akan diserahkan bersama nombor versi Brave anda dan alamat IP anda (yang tidak akan disimpan).";
