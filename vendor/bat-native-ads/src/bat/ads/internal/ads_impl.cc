@@ -236,12 +236,6 @@ void AdsImpl::InitializeStep6(
 
   MaybeStartDeliveringAdNotifications();
 
-  const CatalogIssuersInfo catalog_issuers =
-      confirmations_->GetCatalogIssuers();
-  if (catalog_issuers.IsValid()) {
-    confirmations_->RetryFailedConfirmationsAfterDelay();
-  }
-
   get_catalog_->MaybeDownload();
 }
 

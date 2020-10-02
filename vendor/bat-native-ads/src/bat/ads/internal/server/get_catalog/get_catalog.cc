@@ -95,6 +95,7 @@ void GetCatalog::OnDownloaded(
   }
 
   ads_->get_refill_unblinded_tokens()->MaybeRefill();
+  ads_->get_confirmations()->RetryFailedConfirmationsAfterDelay();
 
   if (should_retry) {
     Retry();
@@ -141,8 +142,6 @@ bool GetCatalog::Parse(
 
   CatalogIssuersInfo catalog_issuers = catalog.GetIssuers();
   ads_->get_confirmations()->SetCatalogIssuers(catalog_issuers);
-
-  ads_->get_confirmations()->RetryFailedConfirmationsAfterDelay();
 
   return true;
 }
