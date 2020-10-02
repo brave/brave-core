@@ -2,18 +2,22 @@
  * License. v. 2.0. If a copy of the MPL was not distributed with this file.
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-import styled from 'styled-components'
+import styled, { StyledInterface } from 'styled-components'
 interface StyleProps {
-  $color?: string
-  $hasSpacing?: boolean
   as?: any
+  $bg?: string
   center?: boolean
   clickable?: boolean
+  chartWidth?: number
+  chartHeight?: number
   column?: boolean
   disabled?: boolean
   flex?: number
+  $fontSize?: number
   hasBorder?: boolean
   hasPadding?: boolean
+  $hasSpacing?: boolean
+  $height?: number
   hide?: boolean
   hideBalance?: boolean
   hideOverflow?: boolean
@@ -25,14 +29,24 @@ interface StyleProps {
   isDeposit?: boolean
   isDetail?: boolean
   isFlex?: boolean
+  isFullWidth?: boolean
   isLast?: boolean
   isSmall?: boolean
   isSummary?: boolean
   itemsShowing?: boolean
   light?: boolean
-  noPadding?: boolean
+  $m?: number | string
+  $mt?: number | string
+  $mr?: number | string
+  $mb?: number | string
+  $ml?: number | string
   onClick?: Function
   position?: string
+  $p?: number | string
+  $pt?: number | string
+  $pr?: number | string
+  $pb?: number | string
+  $pl?: number | string
   showContent?: boolean
   small?: boolean
   large?: boolean
@@ -64,18 +78,86 @@ function getColor (p: any) {
 export const Text = styled<StyleProps, 'p'>('p')`
   font-family: ${p => p.theme.fontFamily.heading};
   font-weight: ${p => (p.weight || (p.small ? '500' : 'normal'))};
-  color: ${p => getColor(p.$color) || '#ffffff'};
-  font-size: ${p => (p.small ? '11px' : (p.large ? '19px' : '14px'))};
+  font-size: ${p => {
+    return p.$fontSize || (p.small ? '11px' : (p.large ? '19px' : '14px'))
+  }};
   margin: ${p => (p.$hasSpacing ? '20px 0px' : '0px')};
   text-align: ${p => (p.center ? 'center' : 'inherit')}
   display: ${p => (p.inline ? 'inline-block' : 'block')}
+
+  ${(p) =>
+    p.$p &&
+    `padding: ${p.$p}`}
+  ${(p) =>
+    p.$pt &&
+    `padding-top: ${p.$pt}`}
+  ${(p) =>
+    p.$pr &&
+    `padding-right: ${p.$pr}`}
+  ${(p) =>
+    p.$pb &&
+    `padding-bottom: ${p.$pb}`}
+  ${(p) =>
+    p.$pl &&
+    `padding-left: ${p.$pl}`}
+
+  ${(p) =>
+    p.$m &&
+    `margin: ${p.$m}`}
+  ${(p) =>
+    p.$mt &&
+    `margin-top: ${p.$mt}`}
+  ${(p) =>
+    p.$mr &&
+    `margin-right: ${p.$mr}`}
+  ${(p) =>
+    p.$mb &&
+    `margin-bottom: ${p.$mb}`}
+  ${(p) =>
+    p.$ml &&
+    `margin-left: ${p.$ml}`}
  `
 
-export const Box = styled<StyleProps, 'div'>('div')`
+export const BasicBox = styled<StyleProps, 'div'>('div')`
+  ${(p) =>
+    p.$p &&
+    `padding: ${p.$p}`}
+  ${(p) =>
+    p.$pt &&
+    `padding-top: ${p.$pt}`}
+  ${(p) =>
+    p.$pr &&
+    `padding-right: ${p.$pr}`}
+  ${(p) =>
+    p.$pb &&
+    `padding-bottom: ${p.$pb}`}
+  ${(p) =>
+    p.$pl &&
+    `padding-left: ${p.$pl}`}
+
+  ${(p) =>
+    p.$m &&
+    `margin: ${p.$m}`}
+  ${(p) =>
+    p.$mt &&
+    `margin-top: ${p.$mt}`}
+  ${(p) =>
+    p.$mr &&
+    `margin-right: ${p.$mr}`}
+  ${(p) =>
+    p.$mb &&
+    `margin-bottom: ${p.$mb}`}
+  ${(p) =>
+    p.$ml &&
+    `margin-left: ${p.$ml}`}
+ `
+
+export const Box = styled<StyleProps, StyledInterface>(BasicBox)`
   border: 1px solid rgba(79, 86, 97, 0.7);
-  padding: ${p => (p.noPadding ? '0' : '0.5em')};
+  padding: ${p => (p.hasPadding ? '0.5em' : '0')};
   border-radius: 2px;
   display: ${p => (p.isFlex ? 'flex' : 'block')};
+  height: ${p => (p.$height ? p.$height : 'auto')};
 
    ${(p) =>
      p.isFlex &&
@@ -87,9 +169,27 @@ export const Box = styled<StyleProps, 'div'>('div')`
  `
 
 export const FlexItem = styled<StyleProps, 'div'>('div')`
+  display: ${p => (p.isFlex ? 'flex' : 'block')};
   flex: ${p => p.flex || 'inherit'};
   text-align: ${p => p.textAlign || 'left'};
   padding: ${p => (p.hasPadding ? '0.5em' : '0px')};
+  width: ${p => (p.isFullWidth ? '100%' : 'auto')};
+  border-bottom: ${p => (p.hasPadding ? '1px solid rgba(79, 86, 97, 0.7)' : 'none')};
+
+  ${(p) =>
+    p.isFlex &&
+    `
+     flex-direction: ${p.column ? 'column' : 'row'};
+     justify-content: space-between;
+     align-items: center;
+   `}
+
+  ${(p) =>
+    p.$pl &&
+    `padding-left: ${p.$pl}`}
+  ${(p) =>
+    p.$pr &&
+    `padding-left: ${p.$pr}`}
  `
 
 export const PlainButton = styled<StyleProps, 'button'>('button')`
@@ -99,9 +199,25 @@ export const PlainButton = styled<StyleProps, 'button'>('button')`
   cursor: pointer;
   color: ${p => getColor(p.textColor) || '#ffffff'};
 
-   &:focus {
-     outline: 0;
-   }
+  &:focus {
+    outline: 0;
+  }
+
+  ${(p) =>
+    p.$m &&
+    `margin: ${p.$m}`}
+  ${(p) =>
+    p.$mt &&
+    `margin-top: ${p.$mt}`}
+  ${(p) =>
+    p.$mr &&
+    `margin-right: ${p.$mr}`}
+  ${(p) =>
+    p.$mb &&
+    `margin-bottom: ${p.$mb}`}
+  ${(p) =>
+    p.$ml &&
+    `margin-left: ${p.$ml}`}
  `
 
 export const WidgetWrapper = styled<StyleProps, 'div'>('div')`
@@ -160,6 +276,7 @@ export const ListItem = styled<StyleProps, 'li'>('li')`
   border-radius: 2px;
   display: ${p => (p.isFlex ? 'flex' : 'block')};
   cursor: ${p => (p.onClick ? 'pointer' : 'initial')}
+  height: ${p => (p.$height ? p.$height : 'auto')};
   ${(p) =>
     p.isFlex && `
     justify-content: space-between;
@@ -172,6 +289,10 @@ export const AssetIconWrapper = styled<StyleProps, 'div'>('div')`
   width: 18px;
   border-radius: 100px;
   display: inline-block;
+  cursor: ${p => (p.onClick ? 'pointer' : 'initial')}
+  height: ${p => (p.$height ? p.$height : 'auto')};
+  background: ${p => (p.$bg ? p.$bg : '#fff')};
+  color: ${p => (p.textColor ? p.textColor : '#000')};
  `
 
 export const AssetIcon = styled<StyleProps, 'span'>('span')`
@@ -198,6 +319,22 @@ export const ActionButton = styled<StyleProps, 'button'>('button')`
   color: #ffffff;
   line-height: 1;
   text-transform: uppercase;
+
+  ${(p) =>
+    p.$m &&
+    `margin: ${p.$m}`}
+  ${(p) =>
+    p.$mt &&
+    `margin-top: ${p.$mt}`}
+  ${(p) =>
+    p.$mr &&
+    `margin-right: ${p.$mr}`}
+  ${(p) =>
+    p.$mb &&
+    `margin-bottom: ${p.$mb}`}
+  ${(p) =>
+    p.$ml &&
+    `margin-left: ${p.$ml}`}
  `
 
 export const ActionAnchor = styled<StyleProps, 'span'>('span')`
@@ -219,4 +356,9 @@ export const ActionAnchor = styled<StyleProps, 'span'>('span')`
 
 export const UpperCaseText = styled<StyleProps, 'span'>('span')`
   text-transform: uppercase;
+`
+export const SVG = styled<StyleProps, 'svg'>('svg').attrs(props => ({
+  viewBox: `0 0 ${props.chartWidth} ${props.chartHeight}`
+}))`
+  margin: 1rem 0;
 `

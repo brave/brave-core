@@ -18,6 +18,7 @@ import {
   AssetIcon,
   AssetIconWrapper,
   BackArrow,
+  BasicBox,
   Box,
   CryptoDotComIcon,
   FlexItem,
@@ -27,6 +28,7 @@ import {
   PlainButton,
   StyledTitle,
   StyledTitleText,
+  SVG,
   Text,
   WidgetWrapper,
   UpperCaseText
@@ -207,7 +209,7 @@ class CryptoDotCom extends React.PureComponent<Props, State> {
     const iconBgColor = cryptoColors[key] || '#fff'
 
     return (
-      <AssetIconWrapper style={{ background: iconBgColor, color: '#000' }}>
+      <AssetIconWrapper $bg={iconBgColor} textColor='#000'>
         <AssetIcon
           isDetail={isDetail}
           className={`crypto-icon icon-${key}`}
@@ -225,19 +227,19 @@ class CryptoDotCom extends React.PureComponent<Props, State> {
     const { percentChange = null } = losersGainers[currency] || {}
     return (
       <>
-        <Box isFlex={true} style={{ height: 48 }}>
-          <FlexItem style={{ paddingLeft: 5, paddingRight: 5 }}>
+        <Box isFlex={true} $height={48}>
+          <FlexItem $pl={5} $pr={5}>
             {this.renderIconAsset(currency.toLowerCase())}
           </FlexItem>
           <FlexItem>
               <Text>{currency}</Text>
-              <Text small={true} $color='light'>{currencyNames[currency]}</Text>
+              <Text small={true} textColor='light'>{currencyNames[currency]}</Text>
           </FlexItem>
           <FlexItem textAlign='right' flex={1}>
             {optInBTCPrice ? (
               <>
                 {(price !== null) && <Text>{this.formattedNum(price)}</Text>}
-                {(percentChange !== null) && <Text $color={percentChange > 0 ? 'green' : 'red'}>{percentChange}%</Text>}
+                {(percentChange !== null) && <Text textColor={percentChange > 0 ? 'green' : 'red'}>{percentChange}%</Text>}
               </>
             ) : (
               <PlainButton onClick={onBtcPriceOptIn} textColor='green' inline={true}>
@@ -245,22 +247,22 @@ class CryptoDotCom extends React.PureComponent<Props, State> {
               </PlainButton>
             )}
           </FlexItem>
-          <FlexItem style={{ paddingLeft: 5 }}>
+          <FlexItem $pl={5}>
             <ActionButton onClick={this.onClickBuyTop} small={true} light={true}>
               {getLocale('cryptoDotComWidgetBuy')}
             </ActionButton>
           </FlexItem>
         </Box>
-        <Text center={true} style={{ padding: '1em 0 0.5em', fontSize: 15 }}>
+        <Text center={true} $p='1em 0 0.5em' $fontSize={15}>
           {getLocale('cryptoDotComWidgetCopyOne')}
         </Text>
-        <Text center={true} style={{ fontSize: 15 }}>
+        <Text center={true} $fontSize={15}>
           {getLocale('cryptoDotComWidgetCopyTwo')}
         </Text>
-        <ActionAnchor onClick={this.onClickBuyBottom} style={{ margin: '1em 0' }}>
+        <ActionAnchor onClick={this.onClickBuyBottom} $m='1em 0'>
           {getLocale('cryptoDotComWidgetBuyBtc')}
         </ActionAnchor>
-        <PlainButton textColor='light' onClick={this.handleViewMarketsClick} style={{ margin: '0 auto' }}>
+        <PlainButton textColor='light' onClick={this.handleViewMarketsClick} $m='0 auto'>
           {getLocale('cryptoDotComWidgetViewMarkets')}
         </PlainButton>
       </>
@@ -275,17 +277,17 @@ class CryptoDotCom extends React.PureComponent<Props, State> {
           const losersGainers = this.transformLosersGainers(this.props.losersGainers || {})
           const { percentChange = null } = losersGainers[currency] || {}
           return (
-            <ListItem key={currency} isFlex={true} onClick={this.handleAssetDetailClick.bind(this, currency)} style={{ height: 48 }}>
-              <FlexItem style={{ paddingLeft: 5, paddingRight: 5 }}>
+            <ListItem key={currency} isFlex={true} onClick={this.handleAssetDetailClick.bind(this, currency)} $height={48}>
+              <FlexItem $pl={5} $pr={5}>
                 {this.renderIconAsset(currency.toLowerCase())}
               </FlexItem>
               <FlexItem>
                 <Text>{currency}</Text>
-                <Text small={true} $color='light'>{currencyNames[currency]}</Text>
+                <Text small={true} textColor='light'>{currencyNames[currency]}</Text>
               </FlexItem>
               <FlexItem textAlign='right' flex={1}>
                 {(price !== null) && <Text>{this.formattedNum(price)}</Text>}
-                {(percentChange !== null) && <Text $color={percentChange > 0 ? 'green' : 'red'}>{percentChange}%</Text>}
+                {(percentChange !== null) && <Text textColor={percentChange > 0 ? 'green' : 'red'}>{percentChange}%</Text>}
               </FlexItem>
             </ListItem>
           )
@@ -306,32 +308,28 @@ class CryptoDotCom extends React.PureComponent<Props, State> {
     const chartHeight = 100
     const chartWidth = 309
     return (
-      <Box noPadding={true}>
+      <Box hasPadding={false}>
         <FlexItem
           hasPadding={true}
-          style={{
-            display: 'flex',
-            justifyContent: 'space-between',
-            alignItems: 'center',
-            width: '100%',
-            borderBottom: '1px solid rgba(79, 86, 97, 0.7)'
-          }}
+          isFlex={true}
+          isFullWidth={true}
+          hasBorder={true}
         >
           <FlexItem>
             <BackArrow>
               <CaratLeftIcon onClick={this.setSelectedAsset.bind(this, '')} />
             </BackArrow>
           </FlexItem>
-          <FlexItem style={{ paddingRight: 5 }}>
+          <FlexItem $pr={5}>
             {this.renderIconAsset(currency.toLowerCase())}
           </FlexItem>
           <FlexItem flex={1}>
             <Text>{currency}</Text>
-            <Text small={true} $color='light'>
+            <Text small={true} textColor='light'>
               {currencyNames[currency]}
             </Text>
           </FlexItem>
-          <FlexItem style={{ paddingLeft: 5 }}>
+          <FlexItem $pl={5}>
             <ActionButton onClick={this.onClickBuyPair.bind(this, `${currency}_USDT`)} small={true} light={true}>
               <UpperCaseText>
                 {getLocale('cryptoDotComWidgetBuy')}
@@ -341,23 +339,21 @@ class CryptoDotCom extends React.PureComponent<Props, State> {
         </FlexItem>
         <FlexItem
           hasPadding={true}
-          style={{
-            width: '100%',
-            borderBottom: '1px solid rgba(79, 86, 97, 0.7)'
-          }}
+          isFullWidth={true}
+          hasBorder={true}
         >
           {(price !== null) && <Text
             inline={true}
             large={true}
             weight={500}
-            style={{ marginRight: '0.5rem' }}
+            $mr='0.5rem'
           >
             {this.formattedNum(price)} USDT
           </Text>}
-          {(percentChange !== null) && <Text inline={true} $color={percentChange > 0 ? 'green' : 'red'}>{percentChange}%</Text>}
-          <svg
-            viewBox={`0 0 ${chartWidth} ${chartHeight}`}
-            style={{ margin: '1rem 0' }}
+          {(percentChange !== null) && <Text inline={true} textColor={percentChange > 0 ? 'green' : 'red'}>{percentChange}%</Text>}
+          <SVG
+            chartWidth={chartWidth}
+            chartHeight={chartHeight}
           >
             <polyline
               fill='none'
@@ -369,27 +365,25 @@ class CryptoDotCom extends React.PureComponent<Props, State> {
                 chartWidth
               })}
             />
-          </svg>
-        <Text small={true} $color='xlight'>
+          </SVG>
+        <Text small={true} textColor='xlight'>
           {getLocale('cryptoDotComWidgetGraph')}
         </Text>
         </FlexItem>
         <FlexItem
           hasPadding={true}
-          style={{
-            width: '100%'
-          }}
+          isFullWidth={true}
         >
-          <div style={{ marginTop: '0.2em' }}>
-            <Text small={true} $color='light' style={{ paddingBottom: '0.2rem' }}>
+          <BasicBox $mt='0.2em'>
+            <Text small={true} textColor='light' $pb='0.2rem'>
               <UpperCaseText>
                 {getLocale('cryptoDotComWidgetVolume')}
               </UpperCaseText>
             </Text>
             {volume && <Text weight={500}>{this.formattedNum(volume)} USDT</Text>}
-          </div>
-          <div style={{ marginTop: '1em' }}>
-            <Text small={true} $color='light' style={{ paddingBottom: '0.2rem' }}>
+          </BasicBox>
+          <BasicBox $mt='1em'>
+            <Text small={true} textColor='light' $pb='0.2rem'>
               <UpperCaseText>
                 {getLocale('cryptoDotComWidgetPairs')}
               </UpperCaseText>
@@ -397,12 +391,12 @@ class CryptoDotCom extends React.PureComponent<Props, State> {
             {pairs.map((pair, i) => {
               const pairName = pair.replace('_', '/')
               return (
-                <ActionButton onClick={this.onClickBuyPair.bind(this, pairName)} key={pair} small={true} inline={true} style={{ marginRight: i === 0 ? 5 : 0, marginBottom: 5 }}>
+                <ActionButton onClick={this.onClickBuyPair.bind(this, pairName)} key={pair} small={true} inline={true} $mr={i === 0 ? 5 : 0} $mb={5}>
                   {pairName}
                 </ActionButton>
               )
             })}
-          </div>
+          </BasicBox>
         </FlexItem>
       </Box>
     )
