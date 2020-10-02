@@ -53,11 +53,7 @@ void RefillUnblindedTokens::set_delegate(
 }
 
 void RefillUnblindedTokens::MaybeRefill() {
-  if (is_processing_) {
-    return;
-  }
-
-  if (retry_timer_.IsRunning()) {
+  if (is_processing_ || retry_timer_.IsRunning()) {
     return;
   }
 

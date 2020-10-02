@@ -239,7 +239,6 @@ void AdsImpl::InitializeStep6(
   const CatalogIssuersInfo catalog_issuers =
       confirmations_->GetCatalogIssuers();
   if (catalog_issuers.IsValid()) {
-    refill_unblinded_tokens_->MaybeRefill();
     confirmations_->RetryFailedConfirmationsAfterDelay();
   }
 
