@@ -98,7 +98,9 @@ void RegisterProfilePrefsForMigration(
 #endif
 
   dark_mode::RegisterBraveDarkModePrefsForMigration(registry);
+#if !defined(OS_ANDROID)
   new_tab_page::RegisterNewTabPagePrefsForMigration(registry);
+#endif
 
   // Restore "Other Bookmarks" migration
   registry->RegisterBooleanPref(kOtherBookmarksMigrated, false);
