@@ -9,7 +9,7 @@ import * as statsAPI from './api/stats'
 import * as topSitesAPI from './api/topSites'
 import * as privateTabDataAPI from './api/privateTabData'
 import * as torTabDataAPI from './api/torTabData'
-import { getInitialData, getRewardsInitialData, getRewardsPreInitialData, getBinanceBlackList } from './api/initialData'
+import { getInitialData, getRewardsInitialData, getRewardsPreInitialData } from './api/initialData'
 
 async function updatePreferences (prefData: preferencesAPI.Preferences) {
   getActions().preferencesUpdated(prefData)
@@ -47,7 +47,6 @@ export function wireApiEventsToStore () {
     if (initialData.preferences.showRewards) {
       rewardsInitData()
     }
-    binanceInitData()
     getActions().setInitialData(initialData)
     // Listen for API changes and dispatch to store
     topSitesAPI.addMostVistedInfoChangedListener(onMostVisitedInfoChanged)
@@ -72,20 +71,6 @@ export function rewardsInitData () {
   })
   .catch(e => {
     console.error('Error fetching pre-initial rewards data: ', e)
-  })
-}
-
-function binanceInitData () {
-  getBinanceBlackList()
-  .then(({ isSupportedRegion, onlyAnonWallet }) => {
-    if (onlyAnonWallet || !isSupportedRegion) {
-      getActions().removeStackWidget('binance')
-    }
-    getActions().setOnlyAnonWallet(onlyAnonWallet)
-    getActions().setBinanceSupported(isSupportedRegion && !onlyAnonWallet)
-  })
-  .catch(e => {
-    console.error('Error fetching binance init data')
   })
 }
 

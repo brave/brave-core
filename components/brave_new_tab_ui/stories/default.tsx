@@ -19,6 +19,8 @@ import * as binanceActions from '../actions/binance_actions'
 import * as geminiActions from '../actions/gemini_actions'
 import * as bitcoinDotComActions from '../actions/bitcoin_dot_com_actions'
 import * as cryptoDotComActions from '../actions/cryptoDotCom_actions'
+import * as stackWidgetActions from '../actions/stack_widget_actions'
+
 import store from '../store'
 import { getNewTabData, getGridSitesData } from './default/data/storybookState'
 
@@ -51,7 +53,7 @@ storiesOf('New Tab/Containers', module)
       <NewTabPage
         newTabData={newTabData}
         gridSitesData={gridSitesData}
-        actions={Object.assign({}, newTabActions, gridSitesActions, rewardsActions, binanceActions, geminiActions, bitcoinDotComActions, cryptoDotComActions)}
+        actions={Object.assign({}, newTabActions, stackWidgetActions, gridSitesActions, rewardsActions, binanceActions, geminiActions, bitcoinDotComActions, cryptoDotComActions)}
         saveShowBackgroundImage={doNothing}
         saveShowStats={doNothing}
         saveShowRewards={doNothing}
