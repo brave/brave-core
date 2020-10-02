@@ -48,23 +48,23 @@
   self->model_ = nullptr;
 }
 
-+ (NSString *)kRootNodeGuid {
++ (NSString *)rootNodeGuid {
   return base::SysUTF8ToNSString(bookmarks::BookmarkNode::kRootNodeGuid);
 }
 
-+ (NSString *)kBookmarkBarNodeGuid {
++ (NSString *)bookmarkBarNodeGuid {
   return base::SysUTF8ToNSString(bookmarks::BookmarkNode::kBookmarkBarNodeGuid);
 }
 
-+ (NSString *)kOtherBookmarksNodeGuid {
++ (NSString *)otherBookmarksNodeGuid {
   return base::SysUTF8ToNSString(bookmarks::BookmarkNode::kOtherBookmarksNodeGuid);
 }
 
-+ (NSString *)kMobileBookmarksNodeGuid {
++ (NSString *)mobileBookmarksNodeGuid {
   return base::SysUTF8ToNSString(bookmarks::BookmarkNode::kMobileBookmarksNodeGuid);
 }
 
-+ (NSString *)kManagedNodeGuid {
++ (NSString *)managedNodeGuid {
   return base::SysUTF8ToNSString(bookmarks::BookmarkNode::kManagedNodeGuid);
 }
 
@@ -76,15 +76,15 @@
   model_->SetTitle(node_, base::SysNSStringToUTF16(title));
 }
 
-- (NSUInteger)getNodeId {
+- (NSUInteger)nodeId {
   return node_->id();
 }
 
-- (NSString *)getGuid {
+- (NSString *)guid {
   return base::SysUTF8ToNSString(node_->guid());
 }
 
-- (NSURL *)getUrl {
+- (NSURL *)url {
   return net::NSURLWithGURL(node_->url());
 }
 
@@ -92,23 +92,23 @@
   model_->SetURL(node_, net::GURLWithNSURL(url));
 }
 
-- (NSURL *)getIconUrl {
+- (NSURL *)iconUrl {
   const GURL* url = node_->icon_url();
   return url ? net::NSURLWithGURL(*url) : nullptr;
 }
 
-- (BookmarksNodeType)getType {
+- (BookmarksNodeType)type {
   switch (node_->type()) {
-    case bookmarks::BookmarkNode::URL: return BookmarksNodeTypeURL;
-    case bookmarks::BookmarkNode::FOLDER: return BookmarksNodeTypeFOLDER;
-    case bookmarks::BookmarkNode::BOOKMARK_BAR: return BookmarksNodeTypeBOOKMARK_BAR;
-    case bookmarks::BookmarkNode::OTHER_NODE: return BookmarksNodeTypeOTHER_NODE;
-    case bookmarks::BookmarkNode::MOBILE: return BookmarksNodeTypeMOBILE;
+    case bookmarks::BookmarkNode::URL: return BookmarksNodeTypeUrl;
+    case bookmarks::BookmarkNode::FOLDER: return BookmarksNodeTypeFolder;
+    case bookmarks::BookmarkNode::BOOKMARK_BAR: return BookmarksNodeTypeBookmarkBar;
+    case bookmarks::BookmarkNode::OTHER_NODE: return BookmarksNodeTypeOtherNode;
+    case bookmarks::BookmarkNode::MOBILE: return BookmarksNodeTypeMobile;
   }
-  return BookmarksNodeTypeMOBILE;
+  return BookmarksNodeTypeMobile;
 }
 
-- (NSDate *)getDateAdded {
+- (NSDate *)dateAdded {
   return [NSDate dateWithTimeIntervalSince1970:node_->date_added().ToDoubleT()];
 }
 
@@ -116,7 +116,7 @@
     model_->SetDateAdded(node_, base::Time::FromDoubleT([date timeIntervalSince1970]));
 }
 
-- (NSDate *)getDateFolderModified {
+- (NSDate *)dateFolderModified {
   return [NSDate dateWithTimeIntervalSince1970:node_->date_folder_modified().ToDoubleT()];
 }
 
@@ -161,11 +161,11 @@
   return model_->DeleteNodeMetaInfo(node_, base::SysNSStringToUTF8(key));
 }
 
-- (NSString *)getTitleUrlNodeTitle {
+- (NSString *)titleUrlNodeTitle {
   return base::SysUTF16ToNSString(node_->GetTitledUrlNodeTitle());
 }
 
-- (NSURL *)getTitleUrlNodeUrl {
+- (NSURL *)titleUrlNodeUrl {
   return net::NSURLWithGURL(node_->GetTitledUrlNodeUrl());
 }
 
@@ -263,7 +263,7 @@
   bookmarkUndoService_ = nil;
 }
 
-- (BookmarkNode *)getRootNode {
+- (BookmarkNode *)rootNode {
   DCHECK_CURRENTLY_ON(web::WebThread::UI);
   const bookmarks::BookmarkNode *node = bookmarkModel_->root_node();
   if (node) {
@@ -272,7 +272,7 @@
   return nil;
 }
 
-- (BookmarkNode *)getOtherNode {
+- (BookmarkNode *)otherNode {
   DCHECK_CURRENTLY_ON(web::WebThread::UI);
   const bookmarks::BookmarkNode *node = bookmarkModel_->other_node();
   if (node) {
@@ -281,7 +281,7 @@
   return nil;
 }
 
-- (BookmarkNode *)getMobileNode {
+- (BookmarkNode *)mobileNode {
   DCHECK_CURRENTLY_ON(web::WebThread::UI);
   const bookmarks::BookmarkNode *node = bookmarkModel_->mobile_node();
   if (node) {
@@ -290,7 +290,7 @@
   return nil;
 }
 
-- (BookmarkNode *)getDesktopNode {
+- (BookmarkNode *)desktopNode {
   DCHECK_CURRENTLY_ON(web::WebThread::UI);
   const bookmarks::BookmarkNode *node = bookmarkModel_->bookmark_bar_node();
   if (node) {
@@ -311,7 +311,7 @@
   [observer destroy];
 }
 
-- (bool)isEditingEnabled {
+- (bool)editingEnabled {
   DCHECK_CURRENTLY_ON(web::WebThread::UI);
   ios::ChromeBrowserStateManager* browserStateManager =
       GetApplicationContext()->GetChromeBrowserStateManager();
@@ -324,8 +324,8 @@
 
 - (BookmarkNode *)createFolderWithTitle:(NSString *)title {
   DCHECK_CURRENTLY_ON(web::WebThread::UI);
-  if ([self getMobileNode]) {
-    return [self createFolderWithParent:[self getMobileNode] title:title];
+  if ([self mobileNode]) {
+    return [self createFolderWithParent:[self mobileNode] title:title];
   }
   return nil;
 }
@@ -344,8 +344,8 @@
 
 - (BookmarkNode *)createBookmarkWithTitle:(NSString *)title url:(NSURL *)url {
   DCHECK_CURRENTLY_ON(web::WebThread::UI);
-  if ([self getMobileNode]) {
-    return [self createBookmarkWithParent:[self getMobileNode] title:title withUrl:url];
+  if ([self mobileNode]) {
+    return [self createBookmarkWithParent:[self mobileNode] title:title withUrl:url];
   }
   return nil;
 }

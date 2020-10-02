@@ -11,17 +11,17 @@
 NS_ASSUME_NONNULL_BEGIN
 
 typedef NS_ENUM(NSUInteger, BookmarksNodeType) {
-  BookmarksNodeTypeURL,
-  BookmarksNodeTypeFOLDER,
-  BookmarksNodeTypeBOOKMARK_BAR,
-  BookmarksNodeTypeOTHER_NODE,
-  BookmarksNodeTypeMOBILE
+  BookmarksNodeTypeUrl,
+  BookmarksNodeTypeFolder,
+  BookmarksNodeTypeBookmarkBar,
+  BookmarksNodeTypeOtherNode,
+  BookmarksNodeTypeMobile
 };
 
 typedef NS_ENUM(NSUInteger, BookmarksNodeFaviconState) {
-  BookmarksNodeFaviconStateINVALID_FAVICON,
-  BookmarksNodeFaviconStateLOADING_FAVICON,
-  BookmarksNodeFaviconStateLOADED_FAVICON,
+  BookmarksNodeFaviconStateInvalidFavIcon,
+  BookmarksNodeFaviconStateLoadingFavIcon,
+  BookmarksNodeFaviconStateLoadedFavIcon,
 };
 
 @protocol BookmarkModelObserver;
@@ -29,31 +29,31 @@ typedef NS_ENUM(NSUInteger, BookmarksNodeFaviconState) {
 
 OBJC_EXPORT
 @interface BookmarkNode: NSObject
-@property (class, nonatomic, copy, readonly, getter=kRootNodeGuid) NSString *rootNodeGuid;
-@property (class, nonatomic, copy, readonly, getter=kBookmarkBarNodeGuid) NSString *bookmarkBarNodeGuid;
-@property (class, nonatomic, copy, readonly, getter=kOtherBookmarksNodeGuid) NSString *otherBookmarksNodeGuid;
-@property (class, nonatomic, copy, readonly, getter=kMobileBookmarksNodeGuid) NSString *mobileBookmarksNodeGuid;
-@property (class, nonatomic, copy, readonly, getter=kManagedNodeGuid) NSString *managedNodeGuid;
+@property (class, nonatomic, copy, readonly) NSString *rootNodeGuid;
+@property (class, nonatomic, copy, readonly) NSString *bookmarkBarNodeGuid;
+@property (class, nonatomic, copy, readonly) NSString *otherBookmarksNodeGuid;
+@property (class, nonatomic, copy, readonly) NSString *mobileBookmarksNodeGuid;
+@property (class, nonatomic, copy, readonly) NSString *managedNodeGuid;
 
-@property (nonatomic, assign, readonly) bool isPermanentNode;
+@property (nonatomic, readonly) bool isPermanentNode;
 
-@property (nonatomic, assign, readonly, getter=getNodeId) NSUInteger nodeId;
-@property (nonatomic, copy, readonly, getter=getGuid) NSString *guid;
-@property (nonatomic, nullable, copy, getter=getUrl) NSURL *url;
-@property (nonatomic, nullable, copy, readonly, getter=getIconUrl) NSURL *iconUrl;
+@property (nonatomic, readonly) NSUInteger nodeId;
+@property (nonatomic, copy, readonly) NSString *guid;
+@property (nonatomic, nullable, copy) NSURL *url;
+@property (nonatomic, nullable, copy, readonly) NSURL *iconUrl;
 
-@property (nonatomic, assign, readonly, getter=getType) BookmarksNodeType type;
-@property (nonatomic, copy, getter=getDateAdded) NSDate *dateAdded;
-@property (nonatomic, copy, getter=getDateFolderModified) NSDate *dateFolderModified;
+@property (nonatomic, readonly) BookmarksNodeType type;
+@property (nonatomic, copy) NSDate *dateAdded;
+@property (nonatomic, copy) NSDate *dateFolderModified;
 
-@property (nonatomic, assign, readonly) bool isFolder;
-@property (nonatomic, assign, readonly) bool isUrl;
-@property (nonatomic, assign, readonly) bool isFavIconLoaded;
-@property (nonatomic, assign, readonly) bool isFavIconLoading;
-@property (nonatomic, assign, readonly) bool isVisible;
+@property (nonatomic, readonly) bool isFolder;
+@property (nonatomic, readonly) bool isUrl;
+@property (nonatomic, readonly) bool isFavIconLoaded;
+@property (nonatomic, readonly) bool isFavIconLoading;
+@property (nonatomic, readonly) bool isVisible;
 
-@property (nonatomic, readonly, getter=getTitleUrlNodeTitle) NSString *titleUrlNodeTitle;
-@property (nonatomic, nullable, readonly, getter=getTitleUrlNodeUrl) NSURL *titleUrlNodeUrl;
+@property (nonatomic, readonly) NSString *titleUrlNodeTitle;
+@property (nonatomic, nullable, readonly) NSURL *titleUrlNodeUrl;
 
 @property (nonatomic, nullable, readonly) BookmarkNode *parent;
 @property (nonatomic, readonly) NSArray<BookmarkNode *> *children;
@@ -75,12 +75,12 @@ OBJC_EXPORT
 @interface BraveBookmarksAPI: NSObject
 
 @property (class, readonly, getter=sharedBookmarksAPI) BraveBookmarksAPI *shared;
-@property (nonatomic, nullable, readonly, getter=getRootNode) BookmarkNode *rootNode;
-@property (nonatomic, nullable, readonly, getter=getOtherNode) BookmarkNode *otherNode;
-@property (nonatomic, nullable, readonly, getter=getMobileNode) BookmarkNode *mobileNode;
-@property (nonatomic, nullable, readonly, getter=getDesktopNode) BookmarkNode *desktopNode;
-@property (nonatomic, assign, readonly) bool isLoaded;
-@property (nonatomic, assign, readonly, getter=isEditingEnabled) bool editingEnabled;
+@property (nonatomic, nullable, readonly) BookmarkNode *rootNode;
+@property (nonatomic, nullable, readonly) BookmarkNode *otherNode;
+@property (nonatomic, nullable, readonly) BookmarkNode *mobileNode;
+@property (nonatomic, nullable, readonly) BookmarkNode *desktopNode;
+@property (nonatomic, readonly) bool isLoaded;
+@property (nonatomic, readonly) bool editingEnabled;
 
 - (id<BookmarkModelListener>)addObserver:(id<BookmarkModelObserver>)observer;
 - (void)removeObserver:(id<BookmarkModelListener>)observer;

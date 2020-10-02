@@ -14,20 +14,26 @@ NS_ASSUME_NONNULL_BEGIN
 
 OBJC_EXPORT
 @protocol BookmarkModelObserver<NSObject>
+@optional
 - (void)bookmarkModelLoaded;
 
+@optional
 - (void)bookmarkNodeChanged:(BookmarkNode *)bookmarkNode;
 
+@optional
 - (void)bookmarkNodeChildrenChanged:
     (BookmarkNode *)bookmarkNode;
 
+@optional
 - (void)bookmarkNode:(BookmarkNode *)bookmarkNode
      movedFromParent:(BookmarkNode *)oldParent
             toParent:(BookmarkNode *)newParent;
 
+@optional
 - (void)bookmarkNodeDeleted:(BookmarkNode *)node
                  fromFolder:(BookmarkNode *)folder;
 
+@optional
 - (void)bookmarkModelRemovedAllNodes;
 
 @optional
