@@ -215,7 +215,7 @@ void AdsImpl::InitializeStep6(
 
   callback(SUCCESS);
 
-  UpdateAdRewards(/*should_reconcile*/ true);
+  ReconcileAdRewards();
 
   subdivision_targeting_->MaybeFetchForCurrentLocale();
 
@@ -510,7 +510,7 @@ void AdsImpl::OnWalletUpdated(
       << "\n  Private key: ********");
 
   if (IsInitialized()) {
-    UpdateAdRewards(/*should_reconcile*/ true);
+    ReconcileAdRewards();
   }
 }
 
@@ -1396,13 +1396,12 @@ void AdsImpl::AppendAdNotificationToHistory(
 
 //////////////////////////////////////////////////////////////////////////////
 
-void AdsImpl::UpdateAdRewards(
-    const bool should_reconcile) {
+void AdsImpl::ReconcileAdRewards() {
   if (!IsInitialized()) {
     return;
   }
 
-  ad_rewards_->Update(wallet_, should_reconcile);
+  ad_rewards_->MaybeReconcile(wallet_);
 }
 
 void AdsImpl::GetTransactionHistory(

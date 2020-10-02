@@ -144,7 +144,7 @@ void RedeemUnblindedPaymentTokens::OnRedeemUnblindedPaymentTokens(
     delegate_->OnDidRedeemUnblindedPaymentTokens();
   }
 
-  ads_->UpdateAdRewards(/*should_reconcile*/ true);
+  ads_->ReconcileAdRewards();
 }
 
 void RedeemUnblindedPaymentTokens::ScheduleNextTokenRedemption() {

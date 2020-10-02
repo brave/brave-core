@@ -30,9 +30,8 @@ class AdRewards {
 
   ~AdRewards();
 
-  void Update(
-      const WalletInfo& wallet,
-      const bool should_reconcile);
+  void MaybeReconcile(
+      const WalletInfo& wallet);
 
   double GetEstimatedPendingRewards() const;
   uint64_t GetNextPaymentDateInSeconds() const;
@@ -52,6 +51,8 @@ class AdRewards {
   WalletInfo wallet_;
 
   double unreconciled_estimated_pending_rewards_ = 0.0;
+
+  void Reconcile();
 
   void GetPayments();
   void OnGetPayments(

@@ -34,25 +34,19 @@ AdRewards::AdRewards(
 
 AdRewards::~AdRewards() = default;
 
-void AdRewards::Update(
-    const WalletInfo& wallet,
-    const bool should_reconcile) {
-  if (!should_reconcile) {
-    return;
-  }
-
+void AdRewards::MaybeReconcile(
+    const WalletInfo& wallet) {
   if (retry_timer_.IsRunning()) {
     return;
   }
 
   wallet_ = wallet;
   if (!wallet_.IsValid()) {
-    BLOG(0, "Failed to get ad rewards due to invalid wallet");
+    BLOG(0, "Failed to reconcile ad rewards due to invalid wallet");
     return;
   }
 
-  BLOG(1, "Reconcile ad rewards with server");
-  GetPayments();
+  Reconcile();
 }
 
 double AdRewards::GetEstimatedPendingRewards() const {
@@ -158,6 +152,12 @@ bool AdRewards::SetFromDictionary(
 
 ///////////////////////////////////////////////////////////////////////////////
 
+void AdRewards::Reconcile() {
+  BLOG(1, "Reconcile ad rewards");
+
+  GetPayments();
+}
+
 void AdRewards::GetPayments() {
   BLOG(1, "GetPayments");
   BLOG(2, "GET /v1/confirmation/payment/{payment_id}");
@@ -237,18 +237,18 @@ void AdRewards::OnGetAdGrants(
 void AdRewards::OnAdRewards(
     const Result result) {
   if (result != SUCCESS) {
-    BLOG(1, "Failed to get ad rewards");
+    BLOG(1, "Failed to reconcile ad rewards");
 
     const base::Time time = retry_timer_.StartWithPrivacy(
         base::TimeDelta::FromSeconds(kRetryAfterSeconds),
             base::BindOnce(&AdRewards::Retry, base::Unretained(this)));
 
-    BLOG(1, "Retry getting ad grants " << FriendlyDateAndTime(time));
+    BLOG(1, "Retry reconciling ad rewards " << FriendlyDateAndTime(time));
 
     return;
   }
 
-  BLOG(1, "Successfully retrieved ad rewards");
+  BLOG(1, "Successfully reconciled ad rewards");
 
   retry_timer_.Stop();
 
@@ -259,7 +259,7 @@ void AdRewards::OnAdRewards(
 }
 
 void AdRewards::Retry() {
-  BLOG(1, "Retrying getting ad rewards");
+  BLOG(1, "Retrying reconciling ad rewards");
 
   GetPayments();
 }
