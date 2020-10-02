@@ -36,7 +36,7 @@ AdRewards::~AdRewards() = default;
 
 void AdRewards::MaybeReconcile(
     const WalletInfo& wallet) {
-  if (retry_timer_.IsRunning()) {
+  if (is_processing_ || retry_timer_.IsRunning()) {
     return;
   }
 
@@ -153,7 +153,11 @@ bool AdRewards::SetFromDictionary(
 ///////////////////////////////////////////////////////////////////////////////
 
 void AdRewards::Reconcile() {
+  DCHECK(!is_processing_);
+
   BLOG(1, "Reconcile ad rewards");
+
+  is_processing_ = true;
 
   GetPayments();
 }
@@ -236,6 +240,8 @@ void AdRewards::OnGetAdGrants(
 
 void AdRewards::OnAdRewards(
     const Result result) {
+  is_processing_ = false;
+
   if (result != SUCCESS) {
     BLOG(1, "Failed to reconcile ad rewards");
 

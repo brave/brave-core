@@ -69,6 +69,8 @@ class AdRewards {
   void Retry();
   void OnRetry();
 
+  bool is_processing_ = false;
+
   uint64_t CalculateAdNotificationsReceivedThisMonthForTransactions(
       const TransactionList& transactions) const;
 
