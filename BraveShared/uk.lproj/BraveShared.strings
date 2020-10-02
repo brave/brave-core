@@ -200,7 +200,7 @@
 "BraveRewardsTitle" = "Brave Rewards";
 
 /* No comment provided by engineer. */
-"BraveShieldsAndPrivacy" = "Щити Brave і конфіденційність";
+"BraveShieldsAndPrivacy" = "Brave Shields і конфіденційність";
 
 /* Sync page title */
 "BraveSync" = "Синхронізація";
@@ -491,7 +491,7 @@
 "FingerprintingnProtection" = "Захист за допомогою\nвідбитків пальців";
 
 /* No comment provided by engineer. */
-"FingerprintingProtection" = "Заблокувати використання відбитків пальців";
+"FingerprintingProtection" = "Заблокувати відстеження вебсайтами";
 
 /* No comment provided by engineer. */
 "FingerprintingProtectionDescription" = "Вебсайтам буде складніше розпізнавати відмінні риси вашого пристрою.";
@@ -965,10 +965,10 @@
 "ShareWithMenuItem" = "Поділитися з…";
 
 /* Section title for adbblock, tracking protection, HTTPS-E, and cookies */
-"ShieldsDefaults" = "Глобальні налаштування щитів Brave за замовчуванням";
+"ShieldsDefaults" = "Глобальні налаштування Brave Shields за замовчуванням";
 
 /* Section footer for global shields defaults */
-"ShieldsDefaultsFooter" = "Це налаштування щитів за замовчуванням для нових вебсайтів. Якщо ви їх зміните, це не вплине на ваші налаштування для окремих вебсайтів.";
+"ShieldsDefaultsFooter" = "Це налаштування Shields за замовчуванням для нових вебсайтів. Якщо ви їх зміните, це не вплине на ваші налаштування для окремих вебсайтів.";
 
 /* shields overview message */
 "ShieldsOverview" = "Екрани дозволяють керувати блокуванням реклами або трекерів на кожному сайті, який ви переглядаєте. Для перегляду реклами на сайті увімкніть цей параметр тут.";

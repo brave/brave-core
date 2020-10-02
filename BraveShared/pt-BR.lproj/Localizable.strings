@@ -30,7 +30,7 @@
 "BraveShieldsStatusValueUp" = "Ativadas";
 
 /* The accessibility hint spoken when focused on the main shields toggle */
-"BraveShieldsToggleHint" = "Toque duas vezes para ativar/desativar as Proteções do Brave";
+"BraveShieldsToggleHint" = "Toque duas vezes para ativar/desativar o Brave Shields";
 
 /* The body of the notification that goes out monthly to users who can claim an ads grant */
 "MonthlyAdsClaimNotificationBody" = "Toque para reivindicar seus tokens gratuitos.";
@@ -147,7 +147,7 @@
 "ReportABrokenSite" = "Relatar um site com problemas";
 
 /* First part of the report a broken site copy. After the colon is a new line and then a website address */
-"ReportBrokenSiteBody1" = "Informe aos desenvolvedores do Brave que este site não funciona corretamente com as Proteções:";
+"ReportBrokenSiteBody1" = "Informe aos desenvolvedores do Brave que este site não funciona corretamente com o Shields:";
 
 /* No comment provided by engineer. */
 "ReportBrokenSiteBody2" = "Observação: o endereço deste site será enviado juntamente com o número da sua versão do Brave e seu endereço IP (que não será armazenado).";

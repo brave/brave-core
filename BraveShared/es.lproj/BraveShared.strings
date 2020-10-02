@@ -200,7 +200,7 @@
 "BraveRewardsTitle" = "Brave Rewards";
 
 /* No comment provided by engineer. */
-"BraveShieldsAndPrivacy" = "Privacidad y escudos de Brave";
+"BraveShieldsAndPrivacy" = "Brave Shields y privacidad";
 
 /* Sync page title */
 "BraveSync" = "Sincronización";
@@ -491,7 +491,7 @@
 "FingerprintingnProtection" = "Protección\ndactiloscópica";
 
 /* No comment provided by engineer. */
-"FingerprintingProtection" = "Bloquear huella dactilar";
+"FingerprintingProtection" = "Bloquear la identificación dactiloscópica";
 
 /* No comment provided by engineer. */
 "FingerprintingProtectionDescription" = "Dificulta que los sitios reconozcan las características distintivas de tu dispositivo.";
@@ -965,10 +965,10 @@
 "ShareWithMenuItem" = "Compartir con…";
 
 /* Section title for adbblock, tracking protection, HTTPS-E, and cookies */
-"ShieldsDefaults" = "Opciones por defecto globales de los escudos de Brave";
+"ShieldsDefaults" = "Opciones por defecto globales de Brave Shields";
 
 /* Section footer for global shields defaults */
-"ShieldsDefaultsFooter" = "Son ajustes de escudos por defecto para sitios nuevos. Se pueden cambiar sin que se alteren los ajustes actuales del sitio.";
+"ShieldsDefaultsFooter" = "Son ajustes por defecto Brave Shields para sitios nuevos. Se pueden cambiar sin que se alteren los ajustes actuales del sitio.";
 
 /* shields overview message */
 "ShieldsOverview" = "Los Shields del sitio le permiten controlar cuándo bloquear anuncios y rastreadores en cada sitio que visite. Si prefiere ver anuncios en un sitio en concreto, puede habilitarlos aquí.";
