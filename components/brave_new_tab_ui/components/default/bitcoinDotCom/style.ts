@@ -139,6 +139,7 @@ export const AmountInput = styled<StyleProps, 'input'>('input')`
   border-right: none;
   border-top-right-radius: 0px;
   border-bottom-right-radius: 0px;
+  width: 75%;
 
   ${(p) => p.dropdownShowing
     ? css`
@@ -160,7 +161,7 @@ export const FiatDropdown = styled<StyleProps, 'div'>('div')`
   display: inline-block;
   height: 40px;
   vertical-align: bottom;
-  width: 64px;
+  width: 25%;
   padding-top: 10px;
   cursor: pointer;
   border-top-left-radius: 0px;

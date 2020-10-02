@@ -18,7 +18,10 @@
 
 namespace {
 bool IsMoonpayAPIAvailable(content::BrowserContext* context) {
-  return brave::IsRegularProfile(context);
+  Profile* profile = Profile::FromBrowserContext(context);
+  return !brave::IsTorProfile(profile) &&
+    !profile->IsIncognitoProfile() &&
+    !profile->IsGuestSession();
 }
 }
 

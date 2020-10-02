@@ -59,20 +59,6 @@ source_set("extensions") {
     configs += [ ":infura_config" ]
   }
 
-  if (binance_enabled) {
-    sources += [
-      "api/binance_api.cc",
-      "api/binance_api.h",
-    ]
-  }
-
-  if (brave_together_enabled) {
-    sources += [
-      "api/brave_together_api.cc",
-      "api/brave_together_api.h",
-    ]
-  }
-
   deps = [
     ":resources",
     "//base",
