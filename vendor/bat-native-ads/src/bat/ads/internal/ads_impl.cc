@@ -243,7 +243,7 @@ void AdsImpl::InitializeStep6(
     confirmations_->RetryFailedConfirmationsAfterDelay();
   }
 
-  get_catalog_->Download();
+  get_catalog_->MaybeDownload();
 }
 
 #if defined(OS_ANDROID)
@@ -1286,7 +1286,7 @@ void AdsImpl::MaybeServeAdNotification(
   if (bundle_->IsOlderThanOneDay()) {
     FailedToServeAdNotification("Catalog older than one day");
 
-    get_catalog_->Download();
+    get_catalog_->MaybeDownload();
 
     return;
   }
