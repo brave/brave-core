@@ -590,6 +590,10 @@
             "type": "string"
           },
           {
+            "name": "favIconUrl",
+            "type": "string"
+          },
+          {
             "name": "postId",
             "type": "string"
           },

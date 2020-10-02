@@ -340,7 +340,7 @@ void BraveRewardsTipUserFunction::OnTipUserGetPublisherInfo(
   publisher_info->name = params->publisher_name;
   publisher_info->url = params->url;
   publisher_info->provider = params->media_type;
-  publisher_info->favicon_url = "";
+  publisher_info->favicon_url = params->fav_icon_url;
 
   Profile* profile = Profile::FromBrowserContext(browser_context());
   auto* rewards_service = RewardsServiceFactory::GetForProfile(profile);
