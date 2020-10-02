@@ -68,9 +68,18 @@ class BitcoinDotCom extends React.PureComponent<Props, State> {
   }
 
   toggleAssetsShowing = () => {
+    const { assetsShowing } = this.state
+
+    if (!assetsShowing) {
+      this.setState({
+        fiatCurrenciesShowing: false
+      })
+    }
+
     this.setState({
-      assetsShowing: !this.state.assetsShowing
+      assetsShowing: !assetsShowing
     })
+
     this.props.onInteraction()
   }
 
@@ -97,9 +106,18 @@ class BitcoinDotCom extends React.PureComponent<Props, State> {
   }
 
   toggleFiatCurrenciesShowing = () => {
+    const { fiatCurrenciesShowing } = this.state
+
+    if (!fiatCurrenciesShowing) {
+      this.setState({
+        assetsShowing: false
+      })
+    }
+
     this.setState({
-      fiatCurrenciesShowing: !this.state.fiatCurrenciesShowing
+      fiatCurrenciesShowing: !fiatCurrenciesShowing
     })
+
     this.props.onInteraction()
   }
 
