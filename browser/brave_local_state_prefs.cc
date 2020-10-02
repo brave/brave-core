@@ -43,7 +43,7 @@ namespace brave {
 
 void RegisterLocalStatePrefs(PrefRegistrySimple* registry) {
   brave_shields::RegisterPrefsForAdBlockService(registry);
-  brave_stats::RegisterPrefsForBraveStatsUpdater(registry);
+  brave_stats::RegisterLocalStatePrefs(registry);
   ntp_background_images::NTPBackgroundImagesService::RegisterLocalStatePrefs(
       registry);
 #if BUILDFLAG(ENABLE_BRAVE_REFERRALS)

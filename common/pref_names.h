@@ -18,6 +18,8 @@ extern const char kLastCheckYMD[];
 extern const char kLastCheckWOY[];
 extern const char kLastCheckMonth[];
 extern const char kFirstCheckMade[];
+extern const char kThresholdCheckMade[];
+extern const char kThresholdQuery[];
 extern const char kWeekOfInstallation[];
 extern const char kAdBlockCheckedDefaultRegion[];
 extern const char kAdBlockCustomFilters[];

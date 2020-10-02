@@ -22,7 +22,6 @@ source_set("stats_updater") {
     "brave_stats_updater_params.h",
     "brave_stats_updater_util.cc",
     "brave_stats_updater_util.h",
-    "switches.cc",
     "switches.h",
   ]
 

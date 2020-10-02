@@ -12,6 +12,7 @@
 #include "base/callback.h"
 #include "base/macros.h"
 #include "base/memory/scoped_refptr.h"
+#include "net/traffic_annotation/network_traffic_annotation.h"
 #include "url/gurl.h"
 
 class BraveStatsUpdaterBrowserTest;
@@ -49,9 +50,12 @@ class BraveStatsUpdater {
       base::RepeatingCallback<void(const GURL& url)>;
 
   void SetStatsUpdatedCallback(StatsUpdatedCallback stats_updated_callback);
+  void SetStatsThresholdCallback(StatsUpdatedCallback stats_threshold_callback);
 
  private:
   GURL BuildStatsEndpoint(const std::string& path);
+  void OnThresholdLoaderComplete(
+      scoped_refptr<net::HttpResponseHeaders>);
   // Invoked from SimpleURLLoader after download is complete.
   void OnSimpleLoaderComplete(
       std::unique_ptr<brave_stats::BraveStatsUpdaterParams>
@@ -64,26 +68,23 @@ class BraveStatsUpdater {
   // Invoked after browser has initialized with referral server.
   void OnReferralInitialization();
 
+  net::NetworkTrafficAnnotationTag AnonymousStatsAnnotation();
   void StartServerPingStartupTimer();
   void QueueServerPing();
+  void SendThresholdPing();
   void SendServerPing();
 
   bool IsReferralInitialized();
-
-  enum ThresholdPingState {
-    THRESHOLD_PING_INVALID = 0,
-    THRESHOLD_PING_INACTIVE,
-    THRESHOLD_PING_QUEUED,
-    THRESHOLD_PING_FIRED
-  };
+  bool HasDoneThresholdPing();
+  void DisableThresholdPing();
 
   friend class ::BraveStatsUpdaterBrowserTest;
 
   int threshold_score_;
-  ThresholdPingState threshold_ping_state_;
   PrefService* pref_service_;
   std::string usage_server_;
   StatsUpdatedCallback stats_updated_callback_;
+  StatsUpdatedCallback stats_threshold_callback_;
   std::unique_ptr<network::SimpleURLLoader> simple_url_loader_;
   std::unique_ptr<base::OneShotTimer> server_ping_startup_timer_;
   std::unique_ptr<base::RepeatingTimer> server_ping_periodic_timer_;
@@ -97,7 +98,7 @@ std::unique_ptr<BraveStatsUpdater> BraveStatsUpdaterFactory(
     PrefService* pref_service);
 
 // Registers the preferences used by BraveStatsUpdater
-void RegisterPrefsForBraveStatsUpdater(PrefRegistrySimple* registry);
+void RegisterLocalStatePrefs(PrefRegistrySimple* registry);
 
 }  // namespace brave_stats
 

@@ -12,10 +12,10 @@ namespace switches {
 
 // Allows setting the usage server to a custom host. Useful both for manual
 // testing against staging and for browser tests.
-extern const char kBraveStatsUpdaterServer[];
+constexpr char kBraveStatsUpdaterServer[] =
+    "brave-stats-updater-server";
 
 }  // namespace switches
-
 }  // namespace brave_stats
 
 #endif  // BRAVE_BROWSER_BRAVE_STATS_SWITCHES_H_

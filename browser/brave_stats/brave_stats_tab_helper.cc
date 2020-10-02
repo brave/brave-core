@@ -29,9 +29,12 @@ void BraveStatsTabHelper::DidStartNavigation(
   switch (ui::PageTransitionStripQualifier(transition)) {
     case ui::PAGE_TRANSITION_TYPED:
     case ui::PAGE_TRANSITION_AUTO_BOOKMARK:
-    case ui::PAGE_TRANSITION_GENERATED:
-      NotifyStatsUpdater();
+    case ui::PAGE_TRANSITION_GENERATED: {
+      auto url = handle->GetURL();
+      if (!(url.SchemeIs("chrome") || url.SchemeIs("brave")))
+        NotifyStatsUpdater();
       break;
+    }
     default:
       break;
   }

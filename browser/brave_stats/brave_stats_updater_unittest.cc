@@ -33,7 +33,7 @@ class BraveStatsUpdaterTest: public testing::Test {
   ~BraveStatsUpdaterTest() override {}
 
   void SetUp() override {
-    brave_stats::RegisterPrefsForBraveStatsUpdater(
+    brave_stats::RegisterLocalStatePrefs(
         testing_local_state_.registry());
     brave::RegisterPrefsForBraveReferralsService(
         testing_local_state_.registry());

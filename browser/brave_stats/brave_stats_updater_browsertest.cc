@@ -54,7 +54,7 @@ class BraveStatsUpdaterBrowserTest : public InProcessBrowserTest {
  public:
   void SetUpOnMainThread() override {
     InProcessBrowserTest::SetUpOnMainThread();
-    brave_stats::RegisterPrefsForBraveStatsUpdater(
+    brave_stats::RegisterLocalStatePrefs(
             testing_local_state_.registry());
     brave::RegisterPrefsForBraveReferralsService(
         testing_local_state_.registry());
@@ -112,7 +112,9 @@ class BraveStatsUpdaterBrowserTest : public InProcessBrowserTest {
   void OnStandardStatsUpdated(const GURL& update_url) {
     stats_standard_endpoint_was_called_ = true;
     // We get //1/usage/brave-core here, so ignore the first slash.
-    EXPECT_STREQ(update_url.path().c_str() + 1, "/1/usage/brave-core");
+    EXPECT_STREQ(
+      update_url.path().c_str() + 1,
+      "/1/usage/brave-core");
     update_url_ = update_url.spec();
     wait_for_callback_loop_->Quit();
   }
@@ -210,8 +212,8 @@ IN_PROC_BROWSER_TEST_F(BraveStatsUpdaterBrowserTest,
   // Start the stats updater, wait for it to perform its startup ping,
   // and then shut it down
   brave_stats::BraveStatsUpdater stats_updater(GetLocalState());
-  stats_updater.SetStatsUpdatedCallback(base::BindRepeating(
-      &BraveStatsUpdaterBrowserTest::OnStandardStatsUpdated,
+  stats_updater.SetStatsThresholdCallback(base::BindRepeating(
+      &BraveStatsUpdaterBrowserTest::OnThresholdStatsUpdated,
       base::Unretained(this)));
   stats_updater.Start();
   EXPECT_TRUE(stats_updater.MaybeDoThresholdPing(3));
@@ -221,8 +223,9 @@ IN_PROC_BROWSER_TEST_F(BraveStatsUpdaterBrowserTest,
   // Stop the referrals service
   referrals_service->Stop();
 
-  // First check preference should now be true
+  // First check and Threshold check should be set.
   EXPECT_TRUE(GetLocalState()->GetBoolean(kFirstCheckMade));
+  EXPECT_TRUE(GetLocalState()->GetBoolean(kThresholdCheckMade));
 }
 
 // Run the stats updater with no active referral and verify that the
