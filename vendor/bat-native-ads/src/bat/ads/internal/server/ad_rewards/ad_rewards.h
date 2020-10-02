@@ -67,6 +67,7 @@ class AdRewards {
 
   BackoffTimer retry_timer_;
   void Retry();
+  void OnRetry();
 
   uint64_t CalculateAdNotificationsReceivedThisMonthForTransactions(
       const TransactionList& transactions) const;

@@ -239,12 +239,7 @@ void AdRewards::OnAdRewards(
   if (result != SUCCESS) {
     BLOG(1, "Failed to reconcile ad rewards");
 
-    const base::Time time = retry_timer_.StartWithPrivacy(
-        base::TimeDelta::FromSeconds(kRetryAfterSeconds),
-            base::BindOnce(&AdRewards::Retry, base::Unretained(this)));
-
-    BLOG(1, "Retry reconciling ad rewards " << FriendlyDateAndTime(time));
-
+    Retry();
     return;
   }
 
@@ -259,9 +254,17 @@ void AdRewards::OnAdRewards(
 }
 
 void AdRewards::Retry() {
-  BLOG(1, "Retrying reconciling ad rewards");
+  const base::Time time = retry_timer_.StartWithPrivacy(
+      base::TimeDelta::FromSeconds(kRetryAfterSeconds),
+          base::BindOnce(&AdRewards::OnRetry, base::Unretained(this)));
 
-  GetPayments();
+  BLOG(1, "Retry reconciling ad rewards " << FriendlyDateAndTime(time));
+}
+
+void AdRewards::OnRetry() {
+  BLOG(1, "Retry reconciling ad rewards");
+
+  Reconcile();
 }
 
 uint64_t AdRewards::CalculateAdNotificationsReceivedThisMonthForTransactions(
