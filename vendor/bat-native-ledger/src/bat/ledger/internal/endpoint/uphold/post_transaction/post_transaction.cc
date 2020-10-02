@@ -38,7 +38,9 @@ std::string PostTransaction::GetUrl(const std::string& address) {
 std::string PostTransaction::GeneratePayload(
     const ::ledger::uphold::Transaction& transaction) {
   base::Value denomination(base::Value::Type::DICTIONARY);
-  denomination.SetDoubleKey("amount", transaction.amount);
+  denomination.SetStringKey(
+      "amount",
+      base::StringPrintf("%f", transaction.amount));
   denomination.SetStringKey("currency", "BAT");
 
   base::Value payload(base::Value::Type::DICTIONARY);
