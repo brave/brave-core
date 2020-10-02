@@ -45,21 +45,6 @@ typedef NS_ENUM(NSInteger, BATExcludeFilter) {
 } NS_SWIFT_NAME(ExcludeFilter);
 
 
-typedef NS_ENUM(NSInteger, BATContributionRetry) {
-  BATContributionRetryStepNo = 0,
-  BATContributionRetryStepReconcile = 1,
-  BATContributionRetryStepCurrent = 2,
-  BATContributionRetryStepPayload = 3,
-  BATContributionRetryStepRegister = 4,
-  BATContributionRetryStepViewing = 5,
-  BATContributionRetryStepWinners = 6,
-  BATContributionRetryStepPrepare = 7,
-  BATContributionRetryStepProof = 8,
-  BATContributionRetryStepVote = 9,
-  BATContributionRetryStepFinal = 10,
-} NS_SWIFT_NAME(ContributionRetry);
-
-
 typedef NS_ENUM(NSInteger, BATResult) {
   BATResultLedgerOk = 0,
   BATResultLedgerError = 1,
@@ -260,7 +245,7 @@ typedef NS_ENUM(NSInteger, BATInlineTipsPlatforms) {
 
 
 
-@class BATContributionInfo, BATContributionPublisher, BATPublisherInfo, BATPublisherBanner, BATPendingContribution, BATPendingContributionInfo, BATVisitData, BATRewardsParameters, BATBalance, BATAutoContributeProperties, BATMediaEventInfo, BATExternalWallet, BATBalanceReportInfo, BATActivityInfoFilterOrderPair, BATActivityInfoFilter, BATRewardsInternalsInfo, BATServerPublisherInfo, BATTransferFee, BATContributionQueue, BATContributionQueuePublisher, BATPromotion, BATUnblindedToken, BATClientInfo, BATRecurringTip, BATTransactionReportInfo, BATContributionReportInfo, BATMonthlyReportInfo, BATCredsBatch, BATSKUOrder, BATSKUOrderItem, BATSKUTransaction, BATUrlResponse, BATEventLog;
+@class BATContributionInfo, BATContributionPublisher, BATPublisherInfo, BATPublisherBanner, BATPendingContribution, BATPendingContributionInfo, BATVisitData, BATRewardsParameters, BATBalance, BATAutoContributeProperties, BATMediaEventInfo, BATExternalWallet, BATBalanceReportInfo, BATActivityInfoFilterOrderPair, BATActivityInfoFilter, BATRewardsInternalsInfo, BATServerPublisherInfo, BATTransferFee, BATContributionQueue, BATContributionQueuePublisher, BATPromotion, BATUnblindedToken, BATClientInfo, BATRecurringTip, BATTransactionReportInfo, BATContributionReportInfo, BATMonthlyReportInfo, BATCredsBatch, BATSKUOrder, BATSKUOrderItem, BATSKUTransaction, BATUrlRequest, BATUrlResponse, BATEventLog;
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -585,6 +570,16 @@ NS_SWIFT_NAME(SKUTransaction)
 @property (nonatomic) double amount;
 @property (nonatomic) BATSKUTransactionStatus status;
 @property (nonatomic) uint64_t createdAt;
+@end
+
+NS_SWIFT_NAME(UrlRequest)
+@interface BATUrlRequest : NSObject <NSCopying>
+@property (nonatomic, copy) NSString * url;
+@property (nonatomic) BATUrlMethod method;
+@property (nonatomic, copy) NSArray<NSString *> * headers;
+@property (nonatomic, copy) NSString * content;
+@property (nonatomic, copy) NSString * contentType;
+@property (nonatomic) bool skipLog;
 @end
 
 NS_SWIFT_NAME(UrlResponse)
