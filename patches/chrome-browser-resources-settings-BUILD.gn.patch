@@ -1,12 +1,12 @@
 diff --git a/chrome/browser/resources/settings/BUILD.gn b/chrome/browser/resources/settings/BUILD.gn
-index 2c3ac524ed8bf228b9667cc49e8b37732da6eabe..1c0267290ff29caec5f10c05f7d1847cd1b2e4aa 100644
+index 77e8782ec6f0d388cb77fb23dd8451170da5f65d..f8e56af49f9e47b41a88d84bf2145711ed409a40 100644
 --- a/chrome/browser/resources/settings/BUILD.gn
 +++ b/chrome/browser/resources/settings/BUILD.gn
 @@ -32,6 +32,7 @@ if (optimize_webui) {
-     deps = [
-       ":unpak",
+       ":preprocess",
+       ":preprocess_generated",
        "../../../../ui/webui/resources:preprocess",
 +      "//brave/browser/resources/settings:unpak",
      ]
-     excludes = [ "chrome://resources/js/cr.m.js" ]
-   }
+     excludes = [
+       "chrome://resources/js/cr.m.js",

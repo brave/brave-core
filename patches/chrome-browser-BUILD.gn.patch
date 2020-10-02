@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/BUILD.gn b/chrome/browser/BUILD.gn
-index 3f89c70d1fe370ef15db842266d767d214b57992..7fc8163f42af8edb05f804f5eeb0c99a0bb8f37f 100644
+index 51b25f1a89699984c4daf7e8da6e8c9fd5c59750..7c7478f1944fe76f71d4aab517f2b443177ba6ae 100644
 --- a/chrome/browser/BUILD.gn
 +++ b/chrome/browser/BUILD.gn
-@@ -2266,6 +2266,7 @@ static_library("browser") {
+@@ -2268,6 +2268,7 @@ static_library("browser") {
      "//ui/web_dialogs",
      "//ui/webui",
      "//ui/webui/resources/cr_components/customize_themes:mojom",
@@ -10,9 +10,9 @@ index 3f89c70d1fe370ef15db842266d767d214b57992..7fc8163f42af8edb05f804f5eeb0c99a
    ]
    if (is_chromeos) {
      deps += [
-@@ -4001,6 +4002,7 @@ static_library("browser") {
-         "task_manager/sampling/shared_sampler_posix.cc",
-       ]
+@@ -4003,6 +4004,7 @@ static_library("browser") {
+         sources += [ "first_run/first_run_internal_posix.cc" ]
+       }
      }
 +    sources += brave_chrome_browser_sources deps += brave_chrome_browser_deps
    }
