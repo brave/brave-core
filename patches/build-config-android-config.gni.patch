@@ -1,9 +1,9 @@
 diff --git a/build/config/android/config.gni b/build/config/android/config.gni
-index 42dae77e1709293ee3745469570d13404b1c8c65..858e9a3a03925fe1f7d39a57c318eab95e2ec914 100644
+index 0b942fa4cf9ce965d9ba5d93ac25e42baf7bbfe8..ee0e84a822681db8282e35d6d9e1f0d0c7aa7cb6 100644
 --- a/build/config/android/config.gni
 +++ b/build/config/android/config.gni
-@@ -7,6 +7,7 @@
- import("//build/config/chromeos/ui_mode.gni")
+@@ -3,6 +3,7 @@
+ # found in the LICENSE file.
  
  # This file contains common system config stuff for the Android build.
 +import("//brave/build/android/config.gni")

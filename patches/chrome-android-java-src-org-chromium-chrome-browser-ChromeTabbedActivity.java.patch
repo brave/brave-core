@@ -1,5 +1,5 @@
 diff --git a/chrome/android/java/src/org/chromium/chrome/browser/ChromeTabbedActivity.java b/chrome/android/java/src/org/chromium/chrome/browser/ChromeTabbedActivity.java
-index 1e8697a4a42e061cf4397f40fb62b698ce75f567..41364b1a5088077b88298ab142df1aa6c9ea2f02 100644
+index b2258ddf5738d94865bd543a55dec173cf28d1ff..334d2d7a5031fb3b18870b056b1c9c9ee424da34 100644
 --- a/chrome/android/java/src/org/chromium/chrome/browser/ChromeTabbedActivity.java
 +++ b/chrome/android/java/src/org/chromium/chrome/browser/ChromeTabbedActivity.java
 @@ -181,7 +181,7 @@ import java.util.Locale;
@@ -11,7 +11,7 @@ index 1e8697a4a42e061cf4397f40fb62b698ce75f567..41364b1a5088077b88298ab142df1aa6
          implements ChromeAccessibilityUtil.Observer {
      private static final String TAG = "ChromeTabbedActivity";
  
-@@ -984,7 +984,7 @@ public class ChromeTabbedActivity extends ChromeActivity<ChromeActivityComponent
+@@ -976,7 +976,7 @@ public class ChromeTabbedActivity extends ChromeActivity<ChromeActivityComponent
          if (ReengagementNotificationController.isEnabled()) {
              if (mCallbackController != null) {
                  new OneShotCallback<>(
@@ -20,7 +20,7 @@ index 1e8697a4a42e061cf4397f40fb62b698ce75f567..41364b1a5088077b88298ab142df1aa6
                              assert profile != null : "Unexpectedly null profile from TabModel.";
                              if (profile == null) return;
  
-@@ -1425,7 +1425,7 @@ public class ChromeTabbedActivity extends ChromeActivity<ChromeActivityComponent
+@@ -1417,7 +1417,7 @@ public class ChromeTabbedActivity extends ChromeActivity<ChromeActivityComponent
  
      @Override
      protected RootUiCoordinator createRootUiCoordinator() {
@@ -29,7 +29,7 @@ index 1e8697a4a42e061cf4397f40fb62b698ce75f567..41364b1a5088077b88298ab142df1aa6
                  mIntentWithEffectSupplier, getShareDelegateSupplier(), getActivityTabProvider(),
                  mEphemeralTabCoordinatorSupplier, mTabModelProfileSupplier, mBookmarkBridgeSupplier,
                  getOverviewModeBehaviorSupplier(), this::getContextualSearchManager,
-@@ -1577,7 +1577,7 @@ public class ChromeTabbedActivity extends ChromeActivity<ChromeActivityComponent
+@@ -1569,7 +1569,7 @@ public class ChromeTabbedActivity extends ChromeActivity<ChromeActivityComponent
  
      @Override
      public AppMenuPropertiesDelegate createAppMenuPropertiesDelegate() {
@@ -38,20 +38,20 @@ index 1e8697a4a42e061cf4397f40fb62b698ce75f567..41364b1a5088077b88298ab142df1aa6
                  getMultiWindowModeStateDispatcher(), getTabModelSelector(), getToolbarManager(),
                  getWindow().getDecorView(), this, mOverviewModeBehaviorSupplier,
                  mBookmarkBridgeSupplier);
-@@ -1601,10 +1601,10 @@ public class ChromeTabbedActivity extends ChromeActivity<ChromeActivityComponent
+@@ -1593,10 +1593,10 @@ public class ChromeTabbedActivity extends ChromeActivity<ChromeActivityComponent
                  }
              };
          }
 -        return Pair.create(new ChromeTabCreator(this, getWindowAndroid(), getStartupTabPreloader(),
 +        return Pair.create(new org.chromium.chrome.browser.tabmodel.BraveTabCreator(this, getWindowAndroid(), getStartupTabPreloader(),
                                     tabDelegateFactorySupplier, false, overviewNTPCreator,
-                                    AsyncTabParamsManager.getInstance()),
+                                    AsyncTabParamsManagerSingleton.getInstance()),
 -                new ChromeTabCreator(this, getWindowAndroid(), getStartupTabPreloader(),
 +                new org.chromium.chrome.browser.tabmodel.BraveTabCreator(this, getWindowAndroid(), getStartupTabPreloader(),
                          tabDelegateFactorySupplier, true, overviewNTPCreator,
-                         AsyncTabParamsManager.getInstance()));
+                         AsyncTabParamsManagerSingleton.getInstance()));
      }
-@@ -1998,7 +1998,7 @@ public class ChromeTabbedActivity extends ChromeActivity<ChromeActivityComponent
+@@ -1990,7 +1990,7 @@ public class ChromeTabbedActivity extends ChromeActivity<ChromeActivityComponent
          }
      }
  
