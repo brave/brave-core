@@ -200,7 +200,7 @@ def validate_tags_in_one_string(string_tag):
     string_text = textify_from_transifex(string_tag)
     string_text = (string_text.replace('&lt;', '<')
                               .replace('&gt;', '>'))
-    #print 'Validating: {}'.format(string_text.encode('utf-8'))
+    # print 'Validating: {}'.format(string_text.encode('utf-8'))
     try:
         string_xml = lxml.etree.fromstring('<string>' + string_text + '</string>')
     except lxml.etree.XMLSyntaxError as e:
@@ -214,8 +214,10 @@ def validate_tags_in_one_string(string_tag):
     errors = validate_elements_tags(list(string_xml))
     if errors is not None:
         errors = ("--------------------\n"
-                  "{0}\n").format(lxml.etree.tostring(string_tag,
-                  method='xml', encoding='utf-8', pretty_print=True)) + errors
+                  "{0}\n").format(
+                      lxml.etree.tostring(
+                          string_tag, method='xml', encoding='utf-8', pretty_print=True)
+                  ) + errors
     return errors
 
 
@@ -223,7 +225,7 @@ def validate_tags_in_transifex_strings(xml_content):
     """Validates that all child elements of all <string>s are allowed"""
     xml = lxml.etree.fromstring(xml_content)
     string_tags = xml.findall('.//string')
-    #print 'Validating HTML tags in {} strings'.format(len(string_tags))
+    # print 'Validating HTML tags in {} strings'.format(len(string_tags))
     errors = None
     for string_tag in string_tags:
         error = validate_tags_in_one_string(string_tag)
@@ -495,7 +497,7 @@ def is_translateable_string(grd_file_path, message_tag):
     return False
 
 
-def get_grd_strings(grd_file_path, validate_tags = True):
+def get_grd_strings(grd_file_path, validate_tags=True):
     """Obtains a tubple of (name, value, FP) for each string in a GRD file"""
     strings = []
     # Keep track of duplicate mesasge_names
@@ -906,8 +908,8 @@ def pull_xtb_without_transifex(grd_file_path, brave_source_root):
     chromium_grd_base_path = os.path.dirname(chromium_grd_file_path)
 
     # Update XTB FPs so it uses the branded source string
-    grd_strings = get_grd_strings(grd_file_path, validate_tags = False)
-    chromium_grd_strings = get_grd_strings(chromium_grd_file_path, validate_tags = False)
+    grd_strings = get_grd_strings(grd_file_path, validate_tags=False)
+    chromium_grd_strings = get_grd_strings(chromium_grd_file_path, validate_tags=False)
     assert(len(grd_strings) == len(chromium_grd_strings))
 
     fp_map = {chromium_grd_strings[idx][2]: grd_strings[idx][2] for
