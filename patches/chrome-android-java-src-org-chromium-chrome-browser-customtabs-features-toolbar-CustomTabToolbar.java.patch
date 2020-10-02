@@ -1,0 +1,13 @@
+diff --git a/chrome/android/java/src/org/chromium/chrome/browser/customtabs/features/toolbar/CustomTabToolbar.java b/chrome/android/java/src/org/chromium/chrome/browser/customtabs/features/toolbar/CustomTabToolbar.java
+index 1be17e15f4f6c3c8b7f4a0a3ee37161f35c16dcc..47087c7946b7a0581f1d6c516e18f52fbc9a50b1 100644
+--- a/chrome/android/java/src/org/chromium/chrome/browser/customtabs/features/toolbar/CustomTabToolbar.java
++++ b/chrome/android/java/src/org/chromium/chrome/browser/customtabs/features/toolbar/CustomTabToolbar.java
+@@ -97,7 +97,7 @@ import java.util.regex.Pattern;
+ /**
+  * The Toolbar layout to be used for a custom tab. This is used for both phone and tablet UIs.
+  */
+-public class CustomTabToolbar extends ToolbarLayout implements View.OnLongClickListener {
++public class CustomTabToolbar extends BraveToolbarLayout implements View.OnLongClickListener {
+     private static final Object ORIGIN_SPAN = new Object();
+ 
+     /**
