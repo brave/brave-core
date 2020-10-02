@@ -607,7 +607,9 @@ export default class WalletWrapper extends React.PureComponent<Props, State> {
     const connectedVerified = walletState === 'verified'
     const batFormatString = onlyAnonWallet ? getLocale('batPoints') : getLocale('bat')
 
-    const loginText = getLocaleTags('loginMessageText')
+    const loginText = getLocale('loginMessageText').split('$1')
+    const loginText1 = loginText[0]
+    const loginText2 = loginText[1]
     const rewardsText1 = getLocaleTags('rewardsPanelText1')
     const rewardsText2 = getLocaleTags('rewardsPanelText2')
 
@@ -679,9 +681,9 @@ export default class WalletWrapper extends React.PureComponent<Props, State> {
                   <LoginMessageText>
                     <b>{getLocale('loginMessageTitle')}</b>
                     <p>
-                      {loginText.beforeTag}
+                      {loginText1}
                       <br />
-                      {loginText.afterTag}
+                      {loginText2}
                     </p>
                   </LoginMessageText>
                   <LoginMessageButtons>
