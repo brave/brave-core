@@ -205,6 +205,13 @@ class Publisher {
       type::Result result,
       type::PublisherInfoPtr publisher_info);
 
+  void OnGetPublisherBannerForSavePublisherInfo(
+      type::PublisherBannerPtr banner,
+      const uint64_t window_id,
+      const std::string& publisher_key,
+      const type::VisitData& visit_data,
+      ledger::ResultCallback callback);
+
   type::PublisherStatus ParsePublisherStatus(const std::string& status);
 
   void OnServerPublisherInfoLoaded(

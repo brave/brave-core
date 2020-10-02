@@ -906,9 +906,36 @@ void Publisher::SavePublisherInfo(
     visit_data.favicon_url = publisher_info->favicon_url;
   }
 
-  SaveVisit(
+  auto banner_callback = std::bind(
+      &Publisher::OnGetPublisherBannerForSavePublisherInfo,
+      this,
+      _1,
+      window_id,
       publisher_info->id,
       visit_data,
+      callback);
+
+  GetPublisherBanner(publisher_info->id, banner_callback);
+}
+
+void Publisher::OnGetPublisherBannerForSavePublisherInfo(
+    type::PublisherBannerPtr banner,
+    const uint64_t window_id,
+    const std::string& publisher_key,
+    const type::VisitData& visit_data,
+    ledger::ResultCallback callback) {
+  type::VisitData new_visit_data = visit_data;
+
+  if (banner && !banner->logo.empty()) {
+    auto index = banner->logo.find("https://");
+    if (index != std::string::npos) {
+      new_visit_data.favicon_url = std::string(banner->logo, index);
+    }
+  }
+
+  SaveVisit(
+      publisher_key,
+      new_visit_data,
       0,
       true,
       window_id,
