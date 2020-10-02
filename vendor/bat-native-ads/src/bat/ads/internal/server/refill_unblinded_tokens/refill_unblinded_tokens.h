@@ -62,11 +62,14 @@ class RefillUnblindedTokens {
 
   BackoffTimer retry_timer_;
   void Retry();
+  void OnRetry();
 
   bool ShouldRefillUnblindedTokens() const;
   int CalculateAmountOfTokensToRefill() const;
 
   void GenerateAndBlindTokens(const int count);
+
+  bool is_processing_ = false;
 
   AdsImpl* ads_;  // NOT OWNED
 
