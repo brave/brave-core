@@ -240,27 +240,7 @@ void RefillUnblindedTokens::OnGetSignedTokens(
 
   if (batch_dleq_proof_unblinded_tokens.empty()) {
     BLOG(1, "Failed to verify and unblind tokens");
-
     BLOG(1, "  Batch proof: " << *batch_proof_base64);
-
-    BLOG(1, "  Tokens (" << tokens_.size() << "):");
-    for (const auto& token : tokens_) {
-      const std::string token_base64 = token.encode_base64();
-      BLOG(1, "    " << token_base64);
-    }
-
-    BLOG(1, "  Blinded tokens (" << blinded_tokens_.size() << "):");
-    for (const auto& blinded_token : blinded_tokens_) {
-      const std::string blinded_token_base64 = blinded_token.encode_base64();
-      BLOG(1, "    " << blinded_token_base64);
-    }
-
-    BLOG(1, "  Signed tokens (" << signed_tokens.size() << "):");
-    for (const auto& signed_token : signed_tokens) {
-      const std::string signed_token_base64 = signed_token.encode_base64();
-      BLOG(1, "    " << signed_token_base64);
-    }
-
     BLOG(1, "  Public key: " << public_key_);
 
     OnRefill(FAILED, false);
