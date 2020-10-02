@@ -47,10 +47,10 @@
   <!-- Browser managed status section -->
   <if expr="not chromeos">
     <message name="IDS_MANAGEMENT_BROWSER_NOTICE" desc="Message shown when the browser is managed, it indicates what the administrator can do on the browser.">
-      Your administrator can change your browser setup remotely. Activity on this device may also be managed outside of Brave. <ph name="BEGIN_LINK">&lt;a target="_blank" href="$1"&gt;</ph>Learn more<ph name="END_LINK">&lt;/a&gt;</ph>
+      Your administrator can change your browser setup remotely. Activity on this device may also be managed outside of Brave. <ph name="BEGIN_LINK">&lt;a target="_blank" rel="noopener noreferrer" href="$1"&gt;</ph>Learn more<ph name="END_LINK">&lt;/a&gt;</ph>
     </message>
     <message name="IDS_MANAGEMENT_NOT_MANAGED_NOTICE" desc="Message indicating that the browser is not managed">
-      This browser is not managed by a company or other organization. Activity on this device may be managed outside of Brave. <ph name="BEGIN_LINK">&lt;a target="_blank" href="$1"&gt;</ph>Learn more<ph name="END_LINK">&lt;/a&gt;</ph>
+      This browser is not managed by a company or other organization. Activity on this device may be managed outside of Brave. <ph name="BEGIN_LINK">&lt;a target="_blank" rel="noopener noreferrer" href="$1"&gt;</ph>Learn more<ph name="END_LINK">&lt;/a&gt;</ph>
     </message>
   </if>
 
@@ -125,7 +125,7 @@
       Which Google Play apps you have installed
     </message>
     <message name="IDS_MANAGEMENT_REPORT_PLUGIN_VM" desc="Message telling users that Plugin VM can collect data.">
-      Your administrator has allowed <ph name="APP_NAME">$1<ex>Plugin VM</ex></ph> to collect diagnostics data to improve the product experience. See <ph name="BEGIN_LINK">&lt;a target="_blank" href="https://www.parallels.com/pcep"&gt;</ph>https://www.parallels.com/pcep<ph name="END_LINK">&lt;/a&gt;</ph> for more information.
+      Your administrator has allowed <ph name="APP_NAME">$1<ex>Plugin VM</ex></ph> to collect diagnostics data to improve the product experience. See <ph name="BEGIN_LINK">&lt;a target="_blank" rel="noopener noreferrer" href="https://www.parallels.com/pcep"&gt;</ph>https://www.parallels.com/pcep<ph name="END_LINK">&lt;/a&gt;</ph> for more information.
     </message>
 
     <!-- Chrome OS update required end-of-life reached section -->
@@ -177,7 +177,7 @@
     Which extensions and plugins you have installed
   </message>
   <message name="IDS_MANAGEMENT_EXTENSION_REPORT_SAFE_BROWSING_WARNINGS" desc="Message explaining that an extension currently reports the user's Safe Browsing warnings and ignored warnings">
-    <ph name="BEGIN_LINK">&lt;a target="_blank" href="$1"&gt;<ex>&lt;a target="_blank" href="https://example.com"&gt;</ex></ph>Safe Browsing<ph name="END_LINK">&lt;/a&gt;<ex>&lt;/a&gt;</ex></ph> warnings
+    <ph name="BEGIN_LINK">&lt;a target="_blank" rel="noopener noreferrer" href="$1"&gt;<ex>&lt;a target="_blank" href="https://example.com"&gt;</ex></ph>Safe Browsing<ph name="END_LINK">&lt;/a&gt;<ex>&lt;/a&gt;</ex></ph> warnings
   </message>
   <message name="IDS_MANAGEMENT_EXTENSION_REPORT_USER_BROWSING_DATA" desc="Message explaining that an extension currently reports the user's browsing data">
     Websites you visit and time spent on them

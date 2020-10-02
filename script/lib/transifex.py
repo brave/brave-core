@@ -1,6 +1,8 @@
 from hashlib import md5
 from lib.config import get_env_var
-from lib.grd_string_replacements import generate_braveified_node, get_override_file_path
+from lib.grd_string_replacements import (generate_braveified_node,
+                                         get_override_file_path,
+                                         write_xml_file_from_tree)
 from xml.sax.saxutils import escape, unescape
 from collections import defaultdict
 import HTMLParser
@@ -21,6 +23,10 @@ transifex_handled_slugs = [
     'brave_components_resources',
     'brave_extension',
     'rewards_extension'
+]
+# List of HTML tags that we allowed to be present inside the translated text.
+allowed_html_tags = [
+  'a', 'abbr', 'b', 'br', 'code', 'h4', 'learnmore', 'li', 'ol', 'p', 'span', 'strong', 'ul'
 ]
 
 
@@ -168,13 +174,157 @@ def fixup_bad_ph_tags_from_raw_transifex_string(xml_content):
     return xml_content
 
 
+def validate_elements_tags(elements):
+    """Recursively validates elements for being in the allow list"""
+    errors = None
+    for element in elements:
+        if element.tag not in allowed_html_tags:
+            error = ("ERROR: Element <{0}> is not allowed.\n").format(element.tag)
+            errors = (errors or '') + error
+        if element.tag == 'a' and element.get('target') == '_blank':
+            rel = element.get('rel') or ''
+            if rel.find('noopener') == -1 or rel.find('noreferrer') == -1:
+                error = ("ERROR: Element <a> with target=\"_blank\" must set "
+                         "rel=\"noopener noreferrer\"\n")
+                errors = (errors or '') + error
+        rec_errors = validate_elements_tags(list(element))
+        if rec_errors is not None:
+            errors = (errors or '') + rec_errors
+    return errors
+
+
+def validate_tags_in_one_string(string_tag):
+    """Validates that all child elements of a <string> are allowed"""
+    lxml.etree.strip_elements(string_tag, 'ex', with_tail=False)
+    lxml.etree.strip_tags(string_tag, 'ph')
+    string_text = textify_from_transifex(string_tag)
+    string_text = (string_text.replace('&lt;', '<')
+                              .replace('&gt;', '>'))
+    #print 'Validating: {}'.format(string_text.encode('utf-8'))
+    try:
+        string_xml = lxml.etree.fromstring('<string>' + string_text + '</string>')
+    except lxml.etree.XMLSyntaxError as e:
+        errors = ("\n--------------------\n"
+                  "{0}\nERROR: {1}\n").format(string_text, str(e))
+        print errors
+        cont = raw_input('Enter C to ignore and continue. Enter anything else to exit : ')
+        if cont == 'C' or cont == 'c':
+            return None
+        return errors
+    errors = validate_elements_tags(list(string_xml))
+    if errors is not None:
+        errors = ("--------------------\n"
+                  "{0}\n").format(lxml.etree.tostring(string_tag,
+                  method='xml', encoding='utf-8', pretty_print=True)) + errors
+    return errors
+
+
+def validate_tags_in_transifex_strings(xml_content):
+    """Validates that all child elements of all <string>s are allowed"""
+    xml = lxml.etree.fromstring(xml_content)
+    string_tags = xml.findall('.//string')
+    #print 'Validating HTML tags in {} strings'.format(len(string_tags))
+    errors = None
+    for string_tag in string_tags:
+        error = validate_tags_in_one_string(string_tag)
+        if error is not None:
+            errors = (errors or '') + error
+    if errors is not None:
+        errors = ("\n") + errors
+    return errors
+
+
+def fix_links_with_target_blank_in_ph_text(text):
+    """A <ph> containing a link usually only has part of the <a> element, so
+       we can't convert it to proper xml and instead try to add rel attribute
+       via string search"""
+    target = text.find('target="_blank"')
+    if target == -1:
+        return text
+    target += 15
+    rel = text.find('rel="')
+    if rel == -1:
+        return text[:target] + ' rel="noopener noreferrer"' + text[target:]
+
+    rel += 5
+    rel_end = text[rel:].find('"')
+    rel_value = text[rel:rel_end]
+    rel_add = ''
+    if rel_value.find('noopener') == -1:
+        rel_add = 'noopener '
+    if rel_value.find('noreferrer') == -1:
+        rel_add = rel_add + 'noreferrer '
+    return text[:rel] + rel_add + text[rel:]
+
+
+def fix_links_with_target_blank_in_text(text):
+    """Process element text for embedded <a> elements"""
+    if text.find('target="_blank"') == -1:
+        return text
+    xml_text = (text.replace('&lt;', '<').replace('&gt;', '>'))
+    try:
+        xml_elem = lxml.etree.fromstring('<text>' + xml_text + '</text>')
+    except lxml.etree.XMLSyntaxError as e:
+        print ("\n--------------------\n"
+               "{0}\nERROR: {1}\n").format(xml_text.encode('utf-8'), str(e))
+        cont = raw_input('Enter C to ignore and continue. Enter anything else to exit : ')
+        if cont == 'C' or cont == 'c':
+            return text
+        raise
+    a_tags = xml_elem.findall('.//a')
+    for a_tag in a_tags:
+        if a_tag.get('target') == '_blank':
+            rel = a_tag.get('rel') or ''
+            if rel.find('noopener') == -1:
+                a_tag.set('rel', rel + (' noopener' if len(rel) else 'noopener'))
+            if rel.find('noreferrer') == -1:
+                a_tag.set('rel', a_tag.get('rel') + ' noreferrer')
+    new_text = lxml.etree.tostring(xml_elem, method='xml', encoding='unicode')
+    new_text = new_text[new_text.index('>')+1:new_text.rindex('<')]
+    return new_text
+
+
+def fix_links_with_target_blank_in_element(elem):
+    """Recursively process text, tail and children of an element for embedded
+       <a> elements and process them"""
+    if elem.text:
+        if elem.tag == 'ph':
+            elem.text = fix_links_with_target_blank_in_ph_text(elem.text)
+        else:
+            elem.text = fix_links_with_target_blank_in_text(elem.text)
+    if elem.tail:
+        if elem.tag == 'ph':
+            elem.tail = fix_links_with_target_blank_in_ph_text(elem.tail)
+        else:
+            elem.tail = fix_links_with_target_blank_in_text(elem.tail)
+    for child in elem:
+        if child.tag != 'ex':
+            fix_links_with_target_blank_in_element(child)
+
+
+def fix_links_with_target_blank(source_string_path):
+    """Takes in a grd(p) path, finds all <a> tags with target _blank and makes
+       sure they have rel attribute with noopener and noreferrer values"""
+    source_xml_tree = lxml.etree.parse(source_string_path)
+    for elem in source_xml_tree.xpath('//message'):
+        fix_links_with_target_blank_in_element(elem)
+    write_xml_file_from_tree(source_string_path, source_xml_tree)
+
+
+def fix_links_with_target_blank_in_xtb_tree(xtb_tree):
+    """Takes in an xtb tree, finds all <a> tags with target _blank and makes
+       sure they have rel attribute with noopener and noreferrer values"""
+    for elem in xtb_tree.xpath('//translation'):
+        fix_links_with_target_blank_in_element(elem)
+
+
 def trim_ph_tags_in_xtb_file_content(xml_content):
-    """Removes all children of <ph> tags including $X and %X text inside ph tag"""
+    """Removes all children of <ph> tags including text inside ph tag"""
     xml = lxml.etree.fromstring(xml_content)
     phs = xml.findall('.//ph')
     for ph in phs:
-        lxml.etree.strip_elements(ph, '*', with_tail=False)
-        if ph.text is not None and (ph.text.startswith('$') or ph.text.startswith('%')):
+        lxml.etree.strip_elements(ph, '*')
+        if ph.text is not None:
             ph.text = ''
     return lxml.etree.tostring(xml)
 
@@ -345,7 +495,7 @@ def is_translateable_string(grd_file_path, message_tag):
     return False
 
 
-def get_grd_strings(grd_file_path):
+def get_grd_strings(grd_file_path, validate_tags = True):
     """Obtains a tubple of (name, value, FP) for each string in a GRD file"""
     strings = []
     # Keep track of duplicate mesasge_names
@@ -365,6 +515,10 @@ def get_grd_strings(grd_file_path):
         # The only thing that matters is the fingerprint string hash.
         if dupe_dict[message_name] > 1:
             message_name += "_%s" % dupe_dict[message_name]
+        if validate_tags:
+            message_xml = lxml.etree.tostring(message_tag, method='xml', encoding='utf-8')
+            errors = validate_tags_in_one_string(lxml.etree.fromstring(message_xml))
+            assert errors is None, '\n' + errors
         message_desc = message_tag.get('desc') or ''
         message_value = textify(message_tag)
         assert not not message_name, 'Message name is empty'
@@ -662,6 +816,8 @@ def pull_source_files_from_transifex(source_file_path, filename):
             xml_content = get_transifex_translation_file_content(
                 source_file_path, filename, lang_code)
             xml_content = fixup_bad_ph_tags_from_raw_transifex_string(xml_content)
+            errors = validate_tags_in_transifex_strings(xml_content)
+            assert errors is None, errors
             xml_content = trim_ph_tags_in_xtb_file_content(xml_content)
             translations = get_strings_dict_from_xml_content(xml_content)
             xtb_content = generate_xtb_content(lang_code, grd_strings,
@@ -750,8 +906,8 @@ def pull_xtb_without_transifex(grd_file_path, brave_source_root):
     chromium_grd_base_path = os.path.dirname(chromium_grd_file_path)
 
     # Update XTB FPs so it uses the branded source string
-    grd_strings = get_grd_strings(grd_file_path)
-    chromium_grd_strings = get_grd_strings(chromium_grd_file_path)
+    grd_strings = get_grd_strings(grd_file_path, validate_tags = False)
+    chromium_grd_strings = get_grd_strings(chromium_grd_file_path, validate_tags = False)
     assert(len(grd_strings) == len(chromium_grd_strings))
 
     fp_map = {chromium_grd_strings[idx][2]: grd_strings[idx][2] for
@@ -782,7 +938,7 @@ def pull_xtb_without_transifex(grd_file_path, brave_source_root):
             # A node's fingerprint changes if the desc or the meaning change
             if (pre_text_node != textify(node) or
                     pre_meaning != meaning or
-                    pre_desc == desc):
+                    pre_desc != desc):
                 old_fp = node.attrib['id']
                 # It's possible for an xtb string to not be in our GRD
                 # This happens for exmaple with Chrome OS strings which
@@ -791,6 +947,7 @@ def pull_xtb_without_transifex(grd_file_path, brave_source_root):
                 if old_fp in fp_map:
                     node.attrib['id'] = fp_map.get(old_fp)
 
+        fix_links_with_target_blank_in_xtb_tree(xml_tree)
         transformed_content = ('<?xml version="1.0" ?>\n' +
                                lxml.etree.tostring(xml_tree, pretty_print=True,
                                                    xml_declaration=False,

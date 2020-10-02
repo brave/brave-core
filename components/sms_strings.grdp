@@ -1,0 +1,15 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!--This file is created by l10nUtil.js. Do not edit manually.-->
+<grit-part>
+    <message name="IDS_SMS_INFOBAR_TITLE" desc="Title shown when the browser is waiting for an SMS on the user's behalf">
+      Verify your phone number
+    </message>
+
+    <message name="IDS_SMS_INFOBAR_STATUS_SMS_RECEIVED" desc="Message shown when the browser has received an SMS on the user's behalf">
+      <ph name="ONE_TIME_CODE">$1<ex>123</ex></ph> is your code for <ph name="ORIGIN">$2<ex>example.com</ex></ph>
+    </message>
+
+    <message name="IDS_SMS_INFOBAR_BUTTON_OK" desc="Text for the button shown when the browser has received an SMS on the user's behalf">
+      Verify
+    </message>
+</grit-part>
