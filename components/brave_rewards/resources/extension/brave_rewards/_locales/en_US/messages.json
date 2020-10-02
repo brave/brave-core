@@ -612,7 +612,7 @@
     "description": "Text for login button"
   },
   "loginMessageText":  {
-    "message": "You need to have minimum 25 BAT to create an Uphold account. Please try again later. <br/> If you already have a verified Uphold account, continue to login.",
+    "message": "You need to have minimum 25 BAT to create an Uphold account. Please try again later. \n If you already have a verified Uphold account, continue to login.",
     "description": "Text for login button"
   },
   "walletConnected":  {
