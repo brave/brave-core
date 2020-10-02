@@ -10,9 +10,11 @@
 // wallet is not installed yet, then we'll prompt to install it.
 
 // Minified version of the comment block that follows
-const code = `(function(){let e=!1;function n(){if(!e){const n=document.createElement("meta");n.name="dapp-detected",document.head.appendChild(n),e=!0}}if(window.hasOwnProperty("ethereum")){if(window.__disableDappDetectionInsertion=!0,void 0===window.ethereum)return;n()}else{var t=window.ethereum;Object.defineProperty(window,"ethereum",{configurable:!0,set:function(e){window.__disableDappDetectionInsertion||n(),t=e},get:function(){return window.__disableDappDetectionInsertion||n(),t}})}})();`  // NOLINT
+// generated with pbpaste | uglifyjs --compress --mangle | pbcopy
+const code = `!function(){let e=!1;function n(){if(!e){const n=document.createElement("meta");n.name="dapp-detected",document.head.appendChild(n),e=!0}}if(window.hasOwnProperty("ethereum")){if(window.__disableDappDetectionInsertion=!0,void 0===window.ethereum)return;n()}else{var t=window.ethereum;Object.defineProperty(window,"ethereum",{configurable:!0,enumerable:!1,set:function(e){window.__disableDappDetectionInsertion||n(),t=e},get:function(){if(!window.__disableDappDetectionInsertion){const e=arguments.callee;e&&e.caller&&e.caller.toString&&-1!==e.caller.toString().indexOf("getOwnPropertyNames")||n()}return t}})}}();` // NOLINT
 
 /*
+const code = `
 (function() {
   let alreadyInsertedMetaTag = false
 
@@ -41,20 +43,42 @@ const code = `(function(){let e=!1;function n(){if(!e){const n=document.createEl
     var oldEthereum = window.ethereum
     Object.defineProperty(window, 'ethereum', {
       configurable: true,
+      enumerable: false,
       set: function (val) {
         if (!window.__disableDappDetectionInsertion)
           __insertDappDetected()
         oldEthereum = val
       },
       get: function () {
-        if (!window.__disableDappDetectionInsertion)
-          __insertDappDetected()
+        if (!window.__disableDappDetectionInsertion) {
+          // a special check to only detect when window.ethereum is used
+          // "explicitly", instead of accessed dynamically / enumerated through
+          // Object.getOwnPropertyNames
+          //
+          // getOwnPropertyNames will unfortunately enumerate propery names even when a property's
+          // enumerable flag is false :(
+          //
+          // this code will admittedly check source around the call site when source is available
+          // -- this is acknowledged to be a kludge.
+          //
+          // we want to err on the side of not showing this info bar, so adding some potential
+          // "false positives" here is not necessarily a bad thing.
+          //
+          // also, bbondy told me to do it. <duck>
+          // - mcu
+          //
+          const callee = arguments.callee
+          if (!callee || !callee.caller || !callee.caller.toString ||
+              callee.caller.toString().indexOf('getOwnPropertyNames') === -1) {
+            __insertDappDetected()
+          }
+        }
         return oldEthereum
       }
     })
   }
-})()`
-*/
+})()
+`*/
 
 // We need this script inserted as early as possible even before the load
 // We can't check if ethereum exists here because this is an isolated world.
