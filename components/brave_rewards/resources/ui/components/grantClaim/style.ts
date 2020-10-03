@@ -20,7 +20,6 @@ export const StyledWrapper = styled<StyleProps, 'div'>('div')`
   padding-left: 20px;
   margin-bottom: ${p => p.isMobile ? 15 : 19}px;
   width: 100%;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.2);
 `
 
 export const StyledIcon = styled<StyleProps, 'div'>('div')`

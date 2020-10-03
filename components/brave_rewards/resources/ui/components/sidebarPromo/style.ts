@@ -15,7 +15,6 @@ export const StyledWrapper = styled<{}, 'a'>('a')`
   background: #fff;
   margin-top: 30px;
   border-radius: 8px;
-  box-shadow: 0 0 13px 0 rgba(0,0,0,0.07);
   min-height: 157px;
   cursor: pointer;
   display: flex;

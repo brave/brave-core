@@ -30,6 +30,7 @@ const CustomCard: React.FC<CardProps> = (props) =>
 
 export const StyledCard = styled(CustomCard)`
   font-size: 14px;
+  box-shadow: 0 0;
 `
 
 export const StyledFlip = styled<StyleProps, 'div'>('div')`

@@ -12,7 +12,6 @@ export const MainToggleWrapper = styled<{}, 'div'>('div')`
   padding: 20px 32px;
   margin-bottom: 24px;
   width: 100%;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, .2);
   flex-direction: column;
 `
 
