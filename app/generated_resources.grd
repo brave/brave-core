@@ -1190,6 +1190,9 @@ are declared in tools/grit/grit_rule.gni.
         <message name="IDS_RESTORE_WINDOW" desc="The text label of the Restore Window menu item">
           R&amp;eopen closed window
         </message>
+        <message name="IDS_NAME_WINDOW" desc="The text label of the Name Window menu item, used to give a user-specified name to a window.">
+          &amp;Name window...
+        </message>
       </if>
       <if expr="use_titlecase">
         <message name="IDS_VIEW_SOURCE" desc="In Title Case: The text label of the View Page Source menu item">
@@ -1221,6 +1224,9 @@ are declared in tools/grit/grit_rule.gni.
         </message>
         <message name="IDS_RESTORE_WINDOW" desc="In Title Case: The text label of the Restore Window menu item">
           R&amp;eopen Closed Window
+        </message>
+        <message name="IDS_NAME_WINDOW" desc="In Title Case: The text label of the Name Window menu item, used to give a user-specified name to a window.">
+          &amp;Name Window...
         </message>
       </if>
 
@@ -1349,13 +1355,13 @@ are declared in tools/grit/grit_rule.gni.
         ''' - '''
       </message>
       <if expr="not use_titlecase">
-        <message name="IDS_EDIT_SEARCH_ENGINES" desc="Title of the popup menu item for editing search engines">
-          &amp;Edit search engines...
+        <message name="IDS_EDIT_SEARCH_ENGINES" desc="Title of the popup menu item that takes the user to 'Manage search engines' in Settings.">
+          &amp;Manage search engines...
         </message>
       </if>
       <if expr="use_titlecase">
-        <message name="IDS_EDIT_SEARCH_ENGINES" desc="In Title Case: Title of the popup menu item for editing search engines">
-          &amp;Edit Search Engines...
+        <message name="IDS_EDIT_SEARCH_ENGINES" desc="In Title Case: Title of the popup menu item that takes the user to 'Manage search engines' in Settings.">
+          &amp;Manage Search Engines...
         </message>
       </if>
 
@@ -5426,20 +5432,11 @@ Keep your key file in a safe place. You will need it to create new versions of y
       <message name="IDS_NTP_COLORS_DARK_PURPLE" desc="A color option in the customization menu on the New Tab Page.">
         Dark purple
       </message>
-      <message name="IDS_NTP_MODULES_DUMMY_NAME" translateable="false" desc="Name shown in the header of the dummy module.">
-        Dummy
-      </message>
       <message name="IDS_NTP_MODULES_DUMMY_TITLE" translateable="false" desc="Title shown in the header of the dummy module.">
         Super Duper Module
       </message>
-      <message name="IDS_NTP_MODULES_DUMMY2_NAME" translateable="false" desc="Name shown in the header of the dummy 2 module.">
-        Dummy 2
-      </message>
       <message name="IDS_NTP_MODULES_DUMMY2_TITLE" translateable="false" desc="Title shown in the header of the dummy 2 module.">
         Even Better Module
-      </message>
-      <message name="IDS_NTP_MODULES_KALEIDOSCOPE_NAME" translateable="false" desc="Name shown in the header of the Kaleidoscope module.">
-        Kaleidoscope
       </message>
       <message name="IDS_NTP_MODULES_KALEIDOSCOPE_TITLE" desc="Title shown in the header of the Kaleidoscope module.">
         Top picks for you
@@ -5492,15 +5489,28 @@ Keep your key file in a safe place. You will need it to create new versions of y
         </message>
       </if>
 
-      <!-- Read Later menu -->
-      <message name="IDS_READ_LATER_MENU_TITLE" desc="Title of the Read later menu">
-        Read later
-      </message>
+      <!-- Read Later button and menu -->
+      <if expr="use_titlecase">
+        <message name="IDS_READ_LATER_TITLE" desc="Title of the Read later menu">
+          Reading List
+        </message>
+      </if>
+      <if expr="not use_titlecase">
+        <message name="IDS_READ_LATER_TITLE" desc="Title of the Read later menu">
+          Reading list
+        </message>
+      </if>
       <message name="IDS_READ_LATER_MENU_UNREAD_HEADER" desc="Header for section of unread Read later items.">
         UNREAD
       </message>
       <message name="IDS_READ_LATER_MENU_READ_HEADER" desc="Header for section of read Read later items.">
         PAGES YOU'VE READ
+      </message>
+      <message name="IDS_READ_LATER_MENU_TOOLTIP_MARK_AS_READ" desc="Tooltip for the button to mark a read later entry as read.">
+        Mark as read
+      </message>
+      <message name="IDS_READ_LATER_MENU_TOOLTIP_MARK_AS_UNREAD" desc="Tooltip for the button to mark a read later entry as unread.">
+        Mark as unread
       </message>
 
       <!--Tooltip strings-->
@@ -5544,9 +5554,6 @@ Keep your key file in a safe place. You will need it to create new versions of y
       </message>
       <message name="IDS_TOOLTIP_MIC_SEARCH" desc="The tooltip for search-by-voice button">
         Search by voice
-      </message>
-      <message name="IDS_TOOLTIP_READ_LATER_BUTTON" desc="The tooltip for the read-later button">
-        Read later
       </message>
       <message name="IDS_TOOLTIP_SAVE_CREDIT_CARD" desc="The tooltip for the icon that shows the save credit card bubble">
         Save card
@@ -5978,8 +5985,11 @@ Keep your key file in a safe place. You will need it to create new versions of y
         <message name="IDS_PASSWORD_MANAGER_ACCESSORY_ALL_PASSWORDS_LINK" desc="The text of the link in the password sheet that opens the password management section.">
           Manage passwords
         </message>
-        <message name="IDS_PASSWORD_MANAGER_ACCESSORY_USE_OTHER_PASSWORD" desc="The text of the link in the password sheet that opens a bottom sheet which shows all saved passwords from any origin.">
+        <message name="IDS_PASSWORD_MANAGER_ACCESSORY_USE_OTHER_PASSWORD" desc="The text of the link in the password sheet that opens a bottom sheet which shows all saved passwords from any origin if the user is about to fill a password field.">
           Use other password
+        </message>
+        <message name="IDS_PASSWORD_MANAGER_ACCESSORY_USE_OTHER_USERNAME" desc="The text of the link in the password sheet that opens a bottom sheet which shows all saved usernames from any origin if the user is about to fill a username field.">
+          Use other username
         </message>
         <message name="IDS_PASSWORD_MANAGER_ACCESSORY_GENERATE_PASSWORD_BUTTON_TITLE" desc="Text for the button used to generate a password.">
           Suggest strong password
@@ -6420,6 +6430,11 @@ Keep your key file in a safe place. You will need it to create new versions of y
         <message name="IDS_TAB_CXMENU_SOUND_UNMUTE_SITE" desc="The label of the tab context menu item for unmuting one or more sites. NOTE: If having no explicit # makes the phrasing awkward, feel free to add a # as necessary. [ICU Syntax]">
           {NUM_TABS, plural, =1 {Unmute site} other {Unmute sites}}
         </message>
+        <message name="IDS_TAB_CXMENU_READ_LATER" desc="The label of the tab context menu item for adding one or more tabs to Read later.">
+          {NUM_TABS, plural,
+          =1 {Read tab later}
+          other {Read tabs later}}
+        </message>
         <message name="IDS_TAB_CXMENU_ADD_TAB_TO_GROUP" desc="The label of the tab context menu submenu for adding one or more tabs to either a new group or an existing tab group. NOTE: If having no explicit # makes the phrasing awkward, feel free to add a # as necessary. [ICU Syntax]">
           {NUM_TABS, plural,
           =1 {Add tab to group}
@@ -6487,6 +6502,11 @@ Keep your key file in a safe place. You will need it to create new versions of y
         <message name="IDS_TAB_CXMENU_SOUND_UNMUTE_SITE" desc="In Title Case: The label of the tab context menu item for unmuting one or more sites. NOTE: If having no explicit # makes the phrasing awkward, feel free to add a # as necessary. [ICU Syntax]">
           {NUM_TABS, plural, =1 {Unmute Site} other {Unmute Sites}}
         </message>
+        <message name="IDS_TAB_CXMENU_READ_LATER" desc="In Title Case: The label of the tab context menu item for adding one or more tabs to Read later.">
+          {NUM_TABS, plural,
+          =1 {Read Tab Later}
+          other {Read Tabs Later}}
+        </message>
         <message name="IDS_TAB_CXMENU_ADD_TAB_TO_GROUP" desc="In Title Case: The label of the tab context menu submenu for adding one or more tabs to either a new group or an existing tab group. NOTE: If having no explicit # makes the phrasing awkward, feel free to add a # as necessary. [ICU Syntax]">
           {NUM_TABS, plural,
           =1 {Add Tab to Group}
@@ -6545,6 +6565,37 @@ Keep your key file in a safe place. You will need it to create new versions of y
             Close Tab
           </message>
         </if>
+      </if>
+
+      <!-- Tab Search -->
+      <if expr="enable_tab_search">
+        <message name="IDS_TAB_SEARCH_SEARCH_TABS" desc="The label on the tab search search filed when user input is empty.">
+          Search Tabs
+        </message>
+        <message name="IDS_TAB_SEARCH_NO_RESULTS_FOUND" desc="Indicator when no tabs are found filtered by user search input.">
+          No Results Found
+        </message>
+        <message name="IDS_TAB_SEARCH_CLOSE_TAB" desc="Label of the close tab button in the tab list item.">
+          Close Tab
+        </message>
+        <message name="IDS_TAB_SEARCH_SUBMIT_FEEDBACK" desc="Label of the submit feedback button.">
+          Submit Feedback
+        </message>
+        <message name="IDS_TAB_SEARCH_A11Y_TAB_CLOSED" desc="A11y message after user clicks on the close tab button in the list item.">
+          Tab Closed
+        </message>
+        <message name="IDS_TAB_SEARCH_A11Y_FOUND_TAB" desc="Singular form of a11y message after user changes search field when search filed is empty.">
+          Found <ph name="NUM">$1<ex>1</ex></ph> Tab
+        </message>
+        <message name="IDS_TAB_SEARCH_A11Y_FOUND_TABS" desc="Plural form of a11y message after user changes search field when search filed is empty.">
+          Found <ph name="NUM">$1<ex>2</ex></ph> Tabs
+        </message>
+        <message name="IDS_TAB_SEARCH_A11Y_FOUND_TAB_FOR" desc="Singular form of a11y message after user changes search field when search filed is not empty.">
+          Found <ph name="NUM">$1<ex>1</ex></ph> Tab For '<ph name="SEARCH_TEXT">$2<ex>google</ex></ph>'
+        </message>
+        <message name="IDS_TAB_SEARCH_A11Y_FOUND_TABS_FOR" desc="Plural form of a11y message after user changes search field when search filed is not empty.">
+          Found <ph name="NUM">$1<ex>2</ex></ph> Tabs For '<ph name="SEARCH_TEXT">$2<ex>google</ex></ph>'
+        </message>
       </if>
 
       <!-- Strings for Window Titles in Menus -->
@@ -7051,6 +7102,11 @@ Keep your key file in a safe place. You will need it to create new versions of y
       </message>
       <message name="IDS_BROWSER_SHARING_QR_CODE_DIALOG_ERROR_UNKNOWN" desc="Error message displayed when an unknown error occurs.">
           Can't create QR code
+      </message>
+
+      <!-- Clipboard History Menu feature. -->
+      <message name="IDS_CONTEXT_MENU_SHOW_CLIPBOARD_HISTORY_MENU" desc="Show the clipboard history menu.">
+          Clipboard
       </message>
 
       <!-- Sharing features. -->
@@ -9644,6 +9700,9 @@ Please help our engineers fix this problem. Tell us what happened right before y
       <message name="IDS_DEVICE_LOG_TYPE_FIDO" desc="Checkbox to enable showing events related to security keys, which is physical devices used by users to log in to websites. It's called FIDO in English because that's the name of the standards body that defines security keys">
         FIDO
       </message>
+      <message name="IDS_DEVICE_LOG_TYPE_SERIAL" desc="Checkbox to enable showing events related to serial devices">
+        Serial
+      </message>
       <message name="IDS_DEVICE_LOG_FILEINFO" desc="File info checkbox in device event log">
         File Info
       </message>
@@ -10382,14 +10441,20 @@ Please help our engineers fix this problem. Tell us what happened right before y
       Exit Private
     </message>
     <message name="IDS_INCOGNITO_PROFILE_MENU_CLOSE_BUTTON_NEW" desc="The text of the button offering to close all private windows.">
-      Close private
+      Close Private
     </message>
 
    <!-- Guest Profile Menu bubble. -->
-    <message name="IDS_GUEST_PROFILE_MENU_CLOSE_BUTTON" desc="The text of the button offering to close all guest windows.">
+   <message name="IDS_GUEST_WINDOW_COUNT_MESSAGE" desc="The message showing the number of open guest windows. This is not used for zero windows.[ICU Syntax]">
       {0, plural,
-        =1 {Close guest}
-        other {Close guest}
+        =1 {# open window}
+        other {# open windows}
+      }
+    </message>
+    <message name="IDS_GUEST_PROFILE_MENU_CLOSE_BUTTON" desc="The text of the button offering to close all guest windows. The number in ICU syntax represents the number of open guest windows, but it is not used in the English text and can be used to choose singular/plural in translation to other languages, if needed.[ICU Syntax]">
+      {0, plural,
+        =1 {Close Guest}
+        other {Close Guest}
       }
     </message>
 
@@ -10606,15 +10671,19 @@ Please help our engineers fix this problem. Tell us what happened right before y
         Learn more
       </message>
       <message name="IDS_MAC_SYSTEM_INFOBAR_LINK_URL_ARM" desc="Mac system-specific infobar link for Arm64-on-Arm64." translateable="false">
-        https://www.google.com
+        https://support.google.com/chrome/?p=mac_ARM
       </message>
       <message name="IDS_MAC_SYSTEM_INFOBAR_LINK_TEXT_ROSETTA" desc="Mac system-specific infobar link text for Intel-on-Arm64." translateable="false">
         Learn more
       </message>
       <message name="IDS_MAC_SYSTEM_INFOBAR_LINK_URL_ROSETTA" desc="Mac system-specific infobar link for Intel-on-Arm64." translateable="false">
-        https://www.google.com
+        https://support.google.com/chrome/?p=mac_ARM
       </message>
     </if>
+
+    <message name="IDS_NAME_WINDOW_PROMPT_TITLE" desc="Title of the prompt to choose a new name for a window.">
+      Set Window Name
+    </message>
   </messages>
 </release>
 </grit>
