@@ -475,6 +475,10 @@ are declared in tools/grit/grit_rule.gni.
       <if expr="not use_titlecase">
         </if>
 
+      <if expr="use_titlecase">
+        </if>
+      <if expr="not use_titlecase">
+        </if>
       <if expr="is_macosx">
         </if>
       <if expr="not is_android">
@@ -569,6 +573,9 @@ are declared in tools/grit/grit_rule.gni.
         <if expr="use_titlecase">
           </if>
       </if>
+
+      <if expr="enable_tab_search">
+        </if>
 
       <if expr="not use_titlecase">
         </if>
@@ -873,7 +880,7 @@ are declared in tools/grit/grit_rule.gni.
       Exit Private
     </message>
     <message name="IDS_INCOGNITO_PROFILE_MENU_CLOSE_BUTTON_NEW" desc="The text of the button offering to close all private windows.">
-      Close private
+      Close Private
     </message>
 
    <if expr="not is_android">
@@ -887,6 +894,7 @@ are declared in tools/grit/grit_rule.gni.
 
     <if expr="is_macosx">
       </if>
-  </messages>
+
+    </messages>
 </release>
 </grit>

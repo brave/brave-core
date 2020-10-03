@@ -341,8 +341,14 @@ CHAR-LIMIT guidelines:
       <message name="IDS_URL_KEYED_ANONYMIZED_DATA_SUMMARY" desc="Summary for a checkbox in Settings that controls non-personalized URL collection and informs the user about the data shared by this feature.">
         Sends URLs of pages you visit to Brave
       </message>
-      <message name="IDS_PRIVACY_SYNC_AND_SERVICES_LINK" desc="The text for Privacy preferences that is shown after all preference rows.">
+      <message name="IDS_PRIVACY_SYNC_AND_SERVICES_LINK_LEGACY" desc="The text for Privacy preferences that is shown after all preference rows.">
         For more settings that relate to privacy, security, and data collection, see <ph name="BEGIN_LINK">&lt;link&gt;</ph>Sync and Brave services<ph name="END_LINK">&lt;/link&gt;</ph>
+      </message>
+      <message name="IDS_PRIVACY_SYNC_AND_SERVICES_LINK_SYNC_ON" desc="The text for Privacy preferences that is shown after all preference rows. This version of the text is shown if Sync has been turned on.">
+        For more settings that relate to privacy, security, and data collection, see <ph name="BEGIN_LINK1">&lt;link1&gt;</ph>Sync<ph name="END_LINK1">&lt;/link1&gt;</ph> and <ph name="BEGIN_LINK2">&lt;link2&gt;</ph>Brave services<ph name="END_LINK2">&lt;/link2&gt;</ph>
+      </message>
+      <message name="IDS_PRIVACY_SYNC_AND_SERVICES_LINK_SYNC_OFF" desc="The text for Privacy preferences that is shown after all preference rows. This version of the text is shown if Sync hasn't been turned on.">
+        For more settings that relate to privacy, security, and data collection, see <ph name="BEGIN_LINK">&lt;link&gt;</ph>Brave services<ph name="END_LINK">&lt;/link&gt;</ph>
       </message>
       <message name="IDS_USAGE_AND_CRASH_REPORTS_TITLE" desc="Title for a preference that enables sending usage statistics and crash reports.">
         Help improve Brave's features and performance
@@ -1089,14 +1095,41 @@ Your Brave account may have other forms of browsing history like searches and ac
       <message name="IDS_LANGUAGE_SETTINGS" desc="Title for the Languages settings screen that allows users to manage their languages preferences. [CHAR-LIMIT=32]">
         Languages
       </message>
+      <message name="IDS_APP_LANGUAGE_TITLE" desc="Title of Language settings section to change Brave’s user interface language. [CHAR-LIMIT=32]">
+        <ph name="APP_NAME">%1$s<ex>Brave</ex></ph>’s language
+      </message>
+      <message name="IDS_DEFAULT_LANG_SUBTITLE" desc="Subtile to use for the device’s default language. [CHAR-LIMIT=32]">
+        Default device language
+      </message>
       <message name="IDS_ADD_LANGUAGE" desc="Title for the screen that allows users to add languages to their preferred language list. [CHAR-LIMIT=32]">
         Add language
+      </message>
+      <message name="IDS_CHANGE_CHROME_LANG" desc="Title of page to select a language within Brave's language settings. [CHAR-LIMIT=32]">
+        Change language
+      </message>
+      <message name="IDS_LANGUAGES_SELECT" desc="Option in overflow menu on Language settings page to change Brave’s user interface language. [CHAR-LIMIT=32]">
+        Select language
+      </message>
+      <message name="IDS_LANGUAGES_SELECT_SUGGESTED" desc="Title appearing above list of languages ordered based on what users in that country might select. [CHAR-LIMIT=32]">
+        Suggested languages
+      </message>
+      <message name="IDS_LANGUAGES_SELECT_OTHER" desc="Subtile appearing above list of all languages not likely to be selected by users in that country. [CHAR-LIMIT=32]">
+        Other languages
+      </message>
+      <message name="IDS_LANGUAGES_CONTENT_TITLE" desc="Title of Language settings section to add or remove preferred content languages. Content languages are selected by the user and tell Brave what language the user prefers webpage content in.  [CHAR-LIMIT=32]">
+        Content languages
+      </message>
+      <message name="IDS_LANGUAGES_CONTENT_DESCRIPTION" desc="Description of Content language on the Language settings screen. Appears above a list of one or more languages that the user selects to tell Brave which languages they prefer webpage content in.">
+        To show content in your preferred languages, the sites you visit can see your preferences
       </message>
       <message name="IDS_LANGUAGES_LIST_DESCRIPTION" desc="Description on the Languages settings screen. Appears above a list of one or more languages that the user selects, to tell Brave which languages they prefer to use to read website content.">
         Websites will show text in your preferred language, when possible.
       </message>
       <message name="IDS_LANGUAGES_OFFER_TRANSLATE_SWITCH" desc="Appears next to the 'offer to translate' switch that controls whether or not Brave will display the Brave Translate UI on web pages that are not in the user's preferred language(s).">
         Offer to translate pages in other languages
+      </message>
+      <message name="IDS_LANGUAGES_SEND_TRANSLATE_SWITCH" desc="Appears next to the switch controling whether or not Brave will display the Brave Translate UI on web pages that are not in the user's preferred language(s).">
+        Offer to send pages in other languages to Brave Translate
       </message>
       <message name="IDS_LANGUAGES_ITEM_OPTION_OFFER_TO_TRANSLATE" desc="Option in language item menu. User can click the 'Offer to translate' option to toggle whether they want Brave to translate pages in this language. [CHAR-LIMIT=32]">
         Offer to translate
@@ -1109,6 +1142,36 @@ Your Brave account may have other forms of browsing history like searches and ac
       </message>
       <message name="IDS_LANGUAGES_EXPLICIT_ASK_TITLE" desc="Title of the dialog that explicitly asks the user which languages they can read.">
         What languages do you read?
+      </message>
+      <message name="IDS_LANGUAGES_SPLIT_DOWNLOADING" desc="Text to display next to a language when it is being downloaded to use as Brave's UI. [CHAR-LIMIT=32]">
+        Downloading <ph name="LANG">%1$s<ex>Hindi</ex></ph>…
+      </message>
+      <message name="IDS_LANGUAGES_SPLIT_READY" desc="Text to display next to a language once it has been downloaded telling user to restart the application.">
+        Language ready, restart <ph name="APP_NAME">%1$s<ex>Brave</ex></ph>
+      </message>
+      <message name="IDS_LANGUAGES_INFOBAR_READY" desc="Infobar text to appear when a new language pack has been downloaded. [CHAR-LIMIT=32]">
+        <ph name="LANG">%1$s<ex>Hindi</ex></ph> is ready.
+      </message>
+      <message name="IDS_LANGUAGES_INFOBAR_RESTART" desc="The clickable link letting the user know they can click to restart Brave. [CHAR-LIMIT=32]">
+        Restart Brave
+      </message>
+      <message name="IDS_LANGUAGES_SETTINGS_TITLE" desc="Title of Language settings section to control translation preferences. [CHAR-LIMIT=32]">
+        Translation settings
+      </message>
+      <message name="IDS_LANGUAGES_SETTINGS_ADVANCED" desc="Title of Language settings section that will show advanced translation settings. [CHAR-LIMIT=32]">
+        Advanced
+      </message>
+      <message name="IDS_LANGUAGES_SETTINGS_TARGET" desc="Title of Translation settings for the current translate targert. Tapping this opens a new screen to select the target language.  [CHAR-LIMIT=32]">
+        Translate into this language
+      </message>
+      <message name="IDS_LANGUAGES_SETTINGS_AUTOMATIC" desc="Title of Translation settings that lists languages that should be automatically translated.">
+        Automatically translate these languages
+      </message>
+      <message name="IDS_LANGUAGES_SETTINGS_DONT_OFFER_LANG" desc="Title of Translation settings that lists languages where no prompt to translate will be shown.">
+        Don’t offer to translate these languages
+      </message>
+      <message name="IDS_LANGUAGES_SETTINGS_DONT_OFFER_SITES" desc="Title of Translation settings that lists websites where no prompt to translate will be shown.">
+        Don’t offer to translate these sites
       </message>
 
       <!-- Lite Mode-->
@@ -1403,8 +1466,14 @@ Your Brave account may have other forms of browsing history like searches and ac
       <message name="IDS_SYNC_IS_DISABLED" desc="Message to show when Brave sync is disabled">
         Sync is off
       </message>
-      <message name="IDS_SYNC_SETTINGS_NOT_CONFIRMED" desc="The error message to display when sign-in was interrupted and the user didn't review the sync settings.">
+      <message name="IDS_SYNC_DATA_TYPES_OFF" desc="Message to show when all sync data types are off">
+        No data selected to sync
+      </message>
+      <message name="IDS_SYNC_SETTINGS_NOT_CONFIRMED_LEGACY" desc="The error message to display when sign-in was interrupted and the user didn't review the sync settings.">
         Initial sync setup was not finished. Sync is off.
+      </message>
+      <message name="IDS_SYNC_SETTINGS_NOT_CONFIRMED" desc="The error message to display when sign-in was interrupted and the user didn't review the sync settings.">
+        Tap to continue sync setup
       </message>
       <message name="IDS_SYNC_IS_DISABLED_BY_ADMINISTRATOR" desc="Message to show when Brave sync is disabled by administrator">
         Sync is disabled by your administrator
@@ -1690,6 +1759,9 @@ To change this setting, <ph name="BEGIN_LINK">&lt;resetlink&gt;</ph>reset sync<p
         Enter your passphrase to start sync
       </message>
       <message name="IDS_HINT_SYNC_SETTINGS_NOT_CONFIRMED_DESCRIPTION" desc="The error message to display when sign-in was interrupted and the user didn't review the sync settings.">
+        Choose what to sync below
+      </message>
+      <message name="IDS_HINT_SYNC_SETTINGS_NOT_CONFIRMED_DESCRIPTION_LEGACY" desc="The error message to display when sign-in was interrupted and the user didn't review the sync settings.">
         To start sync, turn on "Sync your Brave data".
       </message>
       <message name="IDS_HINT_OTHER_SYNC_ERRORS" desc="Hint message to resolve sync errors not listed independently.">
@@ -1711,12 +1783,6 @@ To change this setting, <ph name="BEGIN_LINK">&lt;resetlink&gt;</ph>reset sync<p
       </message>
       <message name="IDS_AUTH_ERROR_CARD_BUTTON" desc="Button text for auth error in sync error cards.">
         Sign in again
-      </message>
-      <message name="IDS_SYNC_SETUP_INCOMPLETE_ERROR_CARD_CONFIRM_BUTTON" desc="Positive button text for advanced sync interrupted error in sync error cards.">
-        Confirm sync
-      </message>
-      <message name="IDS_SYNC_SETUP_INCOMPLETE_ERROR_CARD_CANCEL_BUTTON" desc="Negative button text for advanced sync interrupted error in sync error cards. This button turns off Sync.">
-        Cancel sync setup
       </message>
       <message name="IDS_TRUSTED_VAULT_ERROR_CARD_BUTTON" desc="Button text for trusted vault error in sync error cards.">
         Unlock with Screen Lock
@@ -2635,6 +2701,67 @@ In Private, your activity might still be visible to websites that you visit, you
         See popular websites by tapping the "Top sites" button
       </message>
 
+      <!-- Video tutorials -->
+      <message name="IDS_VIDEO_TUTORIALS_CARD_CHROME_INTRO" desc="Card text prompting user to learn about an introduction to chrome. Tapping on this card will open a video tutorial.">
+        How to use Brave
+      </message>
+      <message name="IDS_VIDEO_TUTORIALS_CARD_SEARCH" desc="Card text prompting user to learn about how to search using chrome. Tapping on this card will open a video tutorial.">
+        How to search with Brave
+      </message>
+      <message name="IDS_VIDEO_TUTORIALS_CARD_VOICE_SEARCH" desc="Card text prompting user to learn about how use voice search inside chrome. Tapping on this card will open a video tutorial.">
+        How to search with your voice
+      </message>
+      <message name="IDS_VIDEO_TUTORIALS_CARD_DOWNLOAD" desc="Card text prompting user to learn about how to download content using chrome. Tapping on this card will open a video tutorial.">
+        How to download content for later
+      </message>
+      <message name="IDS_VIDEO_TUTORIALS_CARD_ALL_VIDEOS" desc="Card text prompting user to tap on this card and explore videos on various aspects of chrome. Tapping on this card will open up a page listing all the available video tutorials.">
+        Videos about how to use Brave
+      </message>
+      <message name="IDS_VIDEO_TUTORIALS_LEARN_CHROME" desc="Header text for the video tutorials home page that lists all the video tutorials.">
+        Learn Brave
+      </message>
+      <message name="IDS_VIDEO_TUTORIALS_POPULAR_VIDEOS" desc="Header text for the video tutorials carousel on the help and feedback page.">
+        Popular videos
+      </message>
+      <message name="IDS_VIDEO_TUTORIALS_TILE_CHROME_INTRO" desc="Text under image tile prompting user to learn about an introduction to chrome. Tapping on this image will open a video tutorial.">
+        Navigate Brave
+      </message>
+      <message name="IDS_VIDEO_TUTORIALS_TILE_SEARCH" desc="Text under image tile prompting user to learn about how to search using chrome. Tapping on this image will open a video tutorial.">
+        Search the internet
+      </message>
+      <message name="IDS_VIDEO_TUTORIALS_TILE_VOICE_SEARCH" desc="Text under image tile prompting user to learn about how use voice search inside chrome. Tapping on this image will open a video tutorial.">
+        Use voice search
+      </message>
+      <message name="IDS_VIDEO_TUTORIALS_TILE_DOWNLOAD" desc="Text under image tile prompting user to learn about how to download content using chrome. Tapping on this image will open a video tutorial.">
+        Download content
+      </message>
+      <message name="IDS_VIDEO_TUTORIALS_LANGUAGE_PICKER_TITLE" desc="Label text in the video player prompting user to pick a language.">
+        Pick your language
+      </message>
+      <message name="IDS_VIDEO_TUTORIALS_WATCH" desc="Button text in the video player prompting user to watch the video.">
+        Watch
+      </message>
+      <message name="IDS_VIDEO_TUTORIALS_TRY_NOW" desc="Button text in the video player prompting user to try out the steps mentioned in the tutorial.">
+        Try now
+      </message>
+      <message name="IDS_VIDEO_TUTORIALS_WATCH_NEXT_VIDEO" desc="Button text in the video player prompting user to watch the next video.">
+        Watch next video
+      </message>
+      <message name="IDS_VIDEO_TUTORIALS_CHANGE_LANGUAGE" desc="Button text in the video player prompting user to change the language.">
+        Change <ph name="LANGUAGE">%1$s<ex>Hindi</ex></ph>?
+      </message>
+      <message name="IDS_VIDEO_TUTORIALS_ACCESSIBILITY_SHARE" desc="Accessibility text in the video player describing that users can tap on this icon to share the video.">
+        Share
+      </message>
+      <message name="IDS_VIDEO_TUTORIALS_ACCESSIBILITY_CLOSE" desc="Accessibility text in the video player describing that users can tap on this icon to close the video.">
+        Close
+      </message>
+      <message name="IDS_VIDEO_TUTORIALS_IPH_TAP_HERE_TO_START" desc="In-product help bubble text prompting user to click on the search box to start.">
+        Tap here to start
+      </message>
+      <message name="IDS_VIDEO_TUTORIALS_IPH_TAP_VOICE_ICON_TO_START" desc="In-product help bubble text prompting user to start typing on the search box or tap on the microphone icon to start a voice search.">
+        Type here or tap the voice icon to start
+      </message>
 
       <!-- Toolbar button strings -->
       <message name="IDS_OPEN_TABS" desc="Text for button to enter the tab switcher and show tabs that are open on this device">
@@ -2743,6 +2870,12 @@ In Private, your activity might still be visible to websites that you visit, you
       </message>
       <message name="IDS_MENU_GROUP_TABS" desc="Menu item for grouping tabs. [CHAR-LIMIT=27]">
         Group tabs
+      </message>
+      <message name="IDS_MENU_GET_IMAGE_DESCRIPTIONS" desc="Menu item to start getting alt text accessibility image labels/descriptions [CHAR-LIMIT=27]">
+        Get image descriptions
+      </message>
+      <message name="IDS_MENU_STOP_IMAGE_DESCRIPTIONS" desc="Menu item to stop getting alt text accessibility image labels/descriptions [CHAR-LIMIT=27]">
+        Stop image descriptions
       </message>
 
       <!-- Bookmarks strings -->
@@ -3052,7 +3185,12 @@ In Private, your activity might still be visible to websites that you visit, you
       <message name="IDS_ACCESSIBILITY_OMNIBOX_SWITCH_TO_TAB" desc="Content description for the omnibox switch to tab button.">
         Switch To Tab
       </message>
-
+      <message name="IDS_ACCESSIBILITY_OMNIBOX_SHOWING_SUGGESTIONS_FOR_WEBSITE" desc="Whenever the User is visiting a Website, when they click the Omnibox, we will announce this message, if we have suggestions to show.">
+        Showing suggestion for <ph name="WEBSITE_TITLE">%1$s<ex>Crater Lake National Park (U.S. National Park Service)</ex></ph>
+      </message>
+      <message name="IDS_ACCESSIBILITY_OMNIBOX_MOST_VISITED_TILE" desc="When the user focuses a Frequently Visited URL tile suggestion, the tile will be crome://announced according to the following pattern">
+        <ph name="WEBSITE_TITLE">%1$s<ex>Crater Lake National Park (U.S. National Park Service)</ex></ph>: <ph name="WEBSITE_URL">%1$s<ex>https://www.nps.gov/crla</ex></ph>
+      </message> 
 
       <message name="IDS_ACCESSIBILITY_SHARE_SELECTED_ITEMS" desc="Content description for the button to share selected items. [ICU Syntax]">
         {NUM_SELECTED, plural,
@@ -3630,8 +3768,17 @@ In Private, your activity might still be visible to websites that you visit, you
       <message name="IDS_SHARING_HUB_OPEN_SETTINGS_LABEL" desc="Label for the open settings button.">
         Open Settings
       </message>
+      <message name="IDS_SHARING_HUB_AUDIO_PREVIEW_SUBTITLE" desc="Subtitle shown in the preview of Sharing Hub audio file shares.">
+        audio
+      </message>
       <message name="IDS_SHARING_HUB_IMAGE_PREVIEW_SUBTITLE" desc="Subtitle shown in the preview of Sharing Hub image shares.">
         image
+      </message>
+      <message name="IDS_SHARING_HUB_TEXT_PREVIEW_SUBTITLE" desc="Subtitle shown in the preview of Sharing Hub text file shares.">
+        text
+      </message>
+      <message name="IDS_SHARING_HUB_VIDEO_PREVIEW_SUBTITLE" desc="Subtitle shown in the preview of Sharing Hub video file shares.">
+        video
       </message>
 
       <!-- ClickToCall -->
@@ -3997,6 +4144,20 @@ In Private, your activity might still be visible to websites that you visit, you
       </message>
       <message name="IDS_CHROME_REENGAGEMENT_NOTIFICATION_3_DESCRIPTION" desc="The title of a notification shown to suggest that users use Brave.  Users probably have not opened Brave in a while.  Promotes data savings and relevant news.">
         Save up to 60% data, read today's news
+      </message>
+
+      <!-- Get Image Descriptions -->
+      <message name="IDS_IMAGE_DESCRIPTIONS_DIALOG_HEADER" desc="Header for confirmation dialog to enable image descriptions.">
+        Get image descriptions?
+      </message>
+      <message name="IDS_IMAGE_DESCRIPTIONS_DIALOG_CONTENT" desc="Content for confirmation dialog to enable image descriptions.">
+        Images are sent to Brave to improve descriptions for you.
+      </message>
+      <message name="IDS_IMAGE_DESCRIPTIONS_DIALOG_OPTION_ONLY_ON_WIFI" desc="Option for confirmation dialog to enable image descriptions.">
+        Only on Wi-Fi
+      </message>
+      <message name="IDS_IMAGE_DESCRIPTIONS_DIALOG_GET_DESCRIPTIONS_BUTTON" desc="Button for dialog to enable option to get image descriptions.">
+        Get descriptions
       </message>
     </messages>
   </release>

@@ -54,6 +54,17 @@
     Your device visibility controls who can share with you while your screen is unlocked
   </message>
 
+  <!-- Device name validation -->
+  <message name="IDS_NEARBY_DEVICE_NAME_EMPTY_ERROR" desc="Error message when the user has left the device name empty to indicate that they are required to provide a name.">
+    Add a device name to continue
+  </message>
+  <message name="IDS_NEARBY_DEVICE_NAME_TOO_LONG_ERROR" desc="Error message when the user has entered a device name that is too long and must enter a shorter one.">
+    Device name too long
+  </message>
+  <message name="IDS_NEARBY_DEVICE_NAME_INVALID_CHARACTERS_ERROR" desc="Error message when the user has entered a device name that contains invalid characters.">
+    Device name contains invalid characters
+  </message>
+
   <!-- Discovery page -->
   <message name="IDS_NEARBY_DISCOVERY_PAGE_INFO" desc="Help text on how to use the Nearby Share feature. Explains how to enable it on a nearby Bravebook to share with it.">
     Make sure both devices are unlocked, close together, and have Bluetooth turned on. If you’re sharing with a Bravebook, make sure it has Nearby Sharing turned on (open the status area by selecting the time, then select Nearby Share).
@@ -102,6 +113,9 @@
   </message>
   <message name="IDS_NEARBY_ACTIONS_REJECT" desc="Action button text to reject a transfer in the Nearby Share UI.">
     Reject
+  </message>
+  <message name="IDS_NEARBY_DEFAULT_DEVICE_NAME" desc="The default device name used unless a user explicitly sets the device name during onboarding or in settings. Displayed to other users during sharing.">
+    <ph name="GIVEN_NAME">$1<ex>Josh</ex></ph>'s <ph name="DEVICE_TYPE">$2<ex>Bravebook</ex></ph>
   </message>
   <message name="IDS_NEARBY_FILE_ATTACHMENTS_APPS" desc="Describes one or more apps being transfered via Nearby Share.">
     {COUNT, plural, =1 {1 app} other {# apps}}
