@@ -1,8 +1,8 @@
 diff --git a/build/config/BUILDCONFIG.gn b/build/config/BUILDCONFIG.gn
-index bb656fa19ff32fa407a01f302ea989ffcacc45f8..882a1b75b079151296497dbc9938dbba83924710 100644
+index 3082046a91da5fe400d8405da61f55ad66fa5e74..fed50d2b9c2350a1c159d7be696d6e0a4c1cd4f4 100644
 --- a/build/config/BUILDCONFIG.gn
 +++ b/build/config/BUILDCONFIG.gn
-@@ -328,6 +328,7 @@ set_sources_assignment_filter(sources_assignment_filter)
+@@ -315,6 +315,7 @@ is_posix = !is_win && !is_fuchsia
  
  # Holds all configs used for running the compiler.
  default_compiler_configs = [

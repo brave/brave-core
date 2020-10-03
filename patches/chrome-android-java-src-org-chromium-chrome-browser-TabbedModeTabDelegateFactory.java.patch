@@ -1,8 +1,8 @@
 diff --git a/chrome/android/java/src/org/chromium/chrome/browser/TabbedModeTabDelegateFactory.java b/chrome/android/java/src/org/chromium/chrome/browser/TabbedModeTabDelegateFactory.java
-index 9962326c6d99865c2c437587ad31d43fc0c88229..26f242820e5aad184f06fbdc4cc60fa8a240f121 100644
+index 8d2a47311ce2f686cc343fc16c775008bffe855a..c05e6c020335951b421dcfd4c3918415ffe6bf79 100644
 --- a/chrome/android/java/src/org/chromium/chrome/browser/TabbedModeTabDelegateFactory.java
 +++ b/chrome/android/java/src/org/chromium/chrome/browser/TabbedModeTabDelegateFactory.java
-@@ -55,7 +55,7 @@ public class TabbedModeTabDelegateFactory implements TabDelegateFactory {
+@@ -56,7 +56,7 @@ public class TabbedModeTabDelegateFactory implements TabDelegateFactory {
  
      @Override
      public ExternalNavigationHandler createExternalNavigationHandler(Tab tab) {

@@ -1,8 +1,8 @@
 diff --git a/chrome/renderer/BUILD.gn b/chrome/renderer/BUILD.gn
-index 62747b5714ed02fee4c9df7c55b28d95f3ac2a46..b262047966653217f82bdd0018cf3e8a0cfa3413 100644
+index 11e52c29181412d3853dc16e7106720613395384..74ccc65ae634a4a3bef2e482238131491edd8e09 100644
 --- a/chrome/renderer/BUILD.gn
 +++ b/chrome/renderer/BUILD.gn
-@@ -195,6 +195,7 @@ static_library("renderer") {
+@@ -202,6 +202,7 @@ static_library("renderer") {
      "//v8",
    ]
  

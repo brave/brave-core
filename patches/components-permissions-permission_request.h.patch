@@ -1,8 +1,8 @@
 diff --git a/components/permissions/permission_request.h b/components/permissions/permission_request.h
-index 20bedc709a3d96e8408fbbba60a2bdaf99a1ed8f..942b95442fb9b9bf78a17d3fb5dfb5d390b440ab 100644
+index 64358a516f01b2049e0228220ac19535ea5cab8b..c2a23a9d09d2855103ae866fe7e7f35e6ff10386 100644
 --- a/components/permissions/permission_request.h
 +++ b/components/permissions/permission_request.h
-@@ -58,6 +58,7 @@ enum class PermissionRequestType {
+@@ -59,6 +59,7 @@ enum class PermissionRequestType {
    PERMISSION_WINDOW_PLACEMENT = 25,
    PERMISSION_FONT_ACCESS = 26,
    PERMISSION_IDLE_DETECTION = 27,
