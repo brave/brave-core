@@ -1,8 +1,8 @@
 diff --git a/chrome/installer/mac/signing/signing.py b/chrome/installer/mac/signing/signing.py
-index eb3b4e4fe4628aab2441f4b83ff58ac982748756..decbf4310b8af915d763fd83a88678b330972b97 100644
+index a710b52cd8dbd2973476e125b04736aada73ff1e..b63e282672e86eaa8a17011e348f61a60b7825c6 100644
 --- a/chrome/installer/mac/signing/signing.py
 +++ b/chrome/installer/mac/signing/signing.py
-@@ -78,7 +78,7 @@ def sign_part(paths, config, part):
+@@ -69,7 +69,7 @@ def sign_part(paths, config, part):
          part: The |model.CodeSignedProduct| to sign. The product's |path| must
              be in |paths.work|.
      """

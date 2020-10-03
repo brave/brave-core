@@ -1,8 +1,8 @@
 diff --git a/chrome/android/java/src/org/chromium/chrome/browser/ui/RootUiCoordinator.java b/chrome/android/java/src/org/chromium/chrome/browser/ui/RootUiCoordinator.java
-index a6e0d0bb507d080885b477b96f480dc9a172b871..4f90f253c99107951c4a78dc2ff4f5b6dd58b485 100644
+index 6637681570bece4a834d6307f5c2f5125613114d..549a931654030190ee68d802102c80d1d57d9ccf 100644
 --- a/chrome/android/java/src/org/chromium/chrome/browser/ui/RootUiCoordinator.java
 +++ b/chrome/android/java/src/org/chromium/chrome/browser/ui/RootUiCoordinator.java
-@@ -505,7 +505,7 @@ public class RootUiCoordinator
+@@ -525,7 +525,7 @@ public class RootUiCoordinator
                      mActivityTabProvider, mShareDelegateSupplier, new ShareUtils(),
                      mActivity.getLifecycleDispatcher(), mActivity.getModalDialogManager());
              mButtonDataProviders = Arrays.asList(mIdentityDiscController, shareButtonController);

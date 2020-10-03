@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/notifications/notification_display_service_impl.cc b/chrome/browser/notifications/notification_display_service_impl.cc
-index f52424fc5203040ff2a68ddc8b0f6bfc7409a281..250bde945528eb536b18f696792b8c4e44499fc7 100644
+index 286b6af7d35c5acdebcbb41bc9acf468f93f5f0d..f168680bee4cbc64519004c38f92f2d80a2cb482 100644
 --- a/chrome/browser/notifications/notification_display_service_impl.cc
 +++ b/chrome/browser/notifications/notification_display_service_impl.cc
 @@ -100,6 +100,7 @@ NotificationDisplayServiceImpl::NotificationDisplayServiceImpl(Profile* profile)

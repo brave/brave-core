@@ -1,5 +1,5 @@
 diff --git a/tools/gritsettings/resource_ids.spec b/tools/gritsettings/resource_ids.spec
-index 9ee0acf3ade8dd4789f40a2b17bfeabbfa5e3cf8..2603cb4c8d213497bd633d27fee6888261cdf219 100644
+index a411c2a5788df546764d5c4493dff876a8c93156..b0b9f014193bb78f52606c3f8c76b89d8d00f1ff 100644
 --- a/tools/gritsettings/resource_ids.spec
 +++ b/tools/gritsettings/resource_ids.spec
 @@ -47,6 +47,9 @@
@@ -12,7 +12,7 @@ index 9ee0acf3ade8dd4789f40a2b17bfeabbfa5e3cf8..2603cb4c8d213497bd633d27fee68882
    "chrome/app/google_chrome_strings.grd": {
      "messages": [400],
    },
-@@ -393,6 +396,9 @@
+@@ -396,6 +399,9 @@
      "META": {"align": 100},
      "messages": [2700],
    },
