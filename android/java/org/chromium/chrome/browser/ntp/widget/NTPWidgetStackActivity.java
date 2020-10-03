@@ -9,16 +9,16 @@ package org.chromium.chrome.browser.ntp.widget;
 
 import android.app.Activity;
 import android.os.Bundle;
-import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.LinearLayout;
+import android.view.View;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-import androidx.appcompat.app.AppCompatActivity;
 
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.ntp.widget.NTPWidgetAdapter;
@@ -39,7 +39,8 @@ public class NTPWidgetStackActivity extends AppCompatActivity {
     public static final int AVAILABLE_WIDGET = 1;
 
     public interface NTPWidgetStackUpdateListener {
-        void onWidgetStackUpdate();
+        void onAddToWidget(String widget);
+        void onRemoveFromWidget(String widget);
     }
 
     public void setNTPWidgetListener(NTPWidgetAdapter.NTPWidgetListener ntpWidgetListener) {
@@ -85,11 +86,7 @@ public class NTPWidgetStackActivity extends AppCompatActivity {
         availableNtpWidgetListAdapter.setNTPWidgetType(AVAILABLE_WIDGET);
         availableWidgetsRecyclerView.setAdapter(availableNtpWidgetListAdapter);
         availableNtpWidgetListAdapter.setWidgetList(availableWidgetList);
-        if (availableWidgetList.size() > 0) {
-            availableWidgetLayout.setVisibility(View.VISIBLE);
-        } else {
-            availableWidgetLayout.setVisibility(View.GONE);
-        }
+        // updateAvailableNTPWidgetLayout();
     }
 
     @Override
@@ -98,27 +95,39 @@ public class NTPWidgetStackActivity extends AppCompatActivity {
             NTPWidgetManager.getInstance().setWidget(
                 usedNtpWidgetListAdapter.getWidgetList().get(i), i);
         }
+        for (int i = 0; i < availableNtpWidgetListAdapter.getWidgetList().size(); i++) {
+            NTPWidgetManager.getInstance().setWidget(
+                availableNtpWidgetListAdapter.getWidgetList().get(i), -1);
+        }
         super.onStop();
     }
 
     private NTPWidgetStackUpdateListener ntpWidgetStackUpdateListener =
     new NTPWidgetStackUpdateListener() {
         @Override
-        public void onWidgetStackUpdate() {
-            List<String> usedWidgetList = NTPWidgetManager.getInstance().getUsedWidgets();
-            List<String> availableWidgetList =
-                NTPWidgetManager.getInstance().getAvailableWidgets();
+        public void onAddToWidget(String widget) {
+            // int positionToInsert = usedNtpWidgetListAdapter.getWidgetList().size() -1;
+            // usedNtpWidgetListAdapter.addWidgetToPosition(positionToInsert, widget);
+            // NTPWidgetManager.getInstance().setWidget(widget, positionToInsert);
+            usedNtpWidgetListAdapter.addWidget(widget);
+            // updateAvailableNTPWidgetLayout();
+        }
 
-            usedNtpWidgetListAdapter.setWidgetList(usedWidgetList);
-            usedNtpWidgetListAdapter.notifyDataSetChanged();
+        @Override
+        public void onRemoveFromWidget(String widget) {
+            availableNtpWidgetListAdapter.addWidget(widget);
+            // updateAvailableNTPWidgetLayout();
+        }
+    };
 
-            if (availableWidgetList.size() > 0) {
+    private void updateAvailableNTPWidgetLayout() {
+        if (availableNtpWidgetListAdapter != null
+                && availableWidgetLayout != null) {
+            if (availableNtpWidgetListAdapter.getWidgetList().size() > 0) {
                 availableWidgetLayout.setVisibility(View.VISIBLE);
-                availableNtpWidgetListAdapter.setWidgetList(availableWidgetList);
-                availableNtpWidgetListAdapter.notifyDataSetChanged();
             } else {
                 availableWidgetLayout.setVisibility(View.GONE);
             }
         }
-    };
+    }
 }

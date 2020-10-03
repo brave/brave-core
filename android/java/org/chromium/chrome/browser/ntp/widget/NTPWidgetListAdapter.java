@@ -18,10 +18,11 @@ import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.RecyclerView;
 
 import org.chromium.chrome.R;
+import org.chromium.base.Log;
 import org.chromium.chrome.browser.ntp.widget.NTPWidgetAdapter;
 import org.chromium.chrome.browser.ntp.widget.NTPWidgetManager;
-import org.chromium.chrome.browser.ntp.widget.SwipeAndDragHelper;
 import org.chromium.chrome.browser.ntp.widget.NTPWidgetStackActivity;
+import org.chromium.chrome.browser.ntp.widget.SwipeAndDragHelper;
 
 import java.util.List;
 
@@ -30,8 +31,7 @@ public class NTPWidgetListAdapter extends RecyclerView.Adapter<RecyclerView.View
     private List<String> widgetList;
     private ItemTouchHelper touchHelper;
     private NTPWidgetAdapter.NTPWidgetListener ntpWidgetListener;
-    private NTPWidgetStackActivity
-            .NTPWidgetStackUpdateListener ntpWidgetStackUpdateListener;
+    private NTPWidgetStackActivity.NTPWidgetStackUpdateListener ntpWidgetStackUpdateListener;
     private int ntpWidgetType;
 
     public void setNTPWidgetListener(NTPWidgetAdapter.NTPWidgetListener ntpWidgetListener) {
@@ -39,8 +39,7 @@ public class NTPWidgetListAdapter extends RecyclerView.Adapter<RecyclerView.View
     }
 
     public void setNTPWidgetStackUpdateListener(
-            NTPWidgetStackActivity
-                    .NTPWidgetStackUpdateListener ntpWidgetStackUpdateListener) {
+            NTPWidgetStackActivity.NTPWidgetStackUpdateListener ntpWidgetStackUpdateListener) {
         this.ntpWidgetStackUpdateListener = ntpWidgetStackUpdateListener;
     }
 
@@ -79,11 +78,10 @@ public class NTPWidgetListAdapter extends RecyclerView.Adapter<RecyclerView.View
             ntpWidgetViewHolder.widgetReorderView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    int positionToInsert = NTPWidgetManager.getInstance().getUsedWidgets().size();
-                    NTPWidgetManager.getInstance().setWidget(
-                            widgetList.get(position), positionToInsert);
-                    notifyItemInserted(positionToInsert);
-                    ntpWidgetStackUpdateListener.onWidgetStackUpdate();
+                    int currentPosition = ntpWidgetViewHolder.getAdapterPosition();
+                    String widget = widgetList.get(currentPosition);
+                    removeWidgetFromList(currentPosition);
+                    ntpWidgetStackUpdateListener.onAddToWidget(widget);
                 }
             });
         }
@@ -102,8 +100,14 @@ public class NTPWidgetListAdapter extends RecyclerView.Adapter<RecyclerView.View
         return this.widgetList;
     }
 
-    public void clearWidgetList() {
-        this.widgetList.clear();
+    public void addWidget(String widget) {
+        this.widgetList.add(widget);
+        notifyItemInserted(this.widgetList.indexOf(widget));
+    }
+
+    public void addWidgetToPosition(int position, String widget) {
+        this.widgetList.add(position, widget);
+        notifyItemInserted(position);
     }
 
     @Override
@@ -118,10 +122,13 @@ public class NTPWidgetListAdapter extends RecyclerView.Adapter<RecyclerView.View
     @Override
     public void onViewSwiped(int position) {
         String widget = widgetList.get(position);
-        NTPWidgetManager.getInstance().setWidget(widget, -1);
+        removeWidgetFromList(position);
+        ntpWidgetStackUpdateListener.onRemoveFromWidget(widget);
+    }
+
+    private void removeWidgetFromList(int position) {
         widgetList.remove(position);
         notifyItemRemoved(position);
-        ntpWidgetStackUpdateListener.onWidgetStackUpdate();
     }
 
     void setTouchHelper(ItemTouchHelper touchHelper) {
@@ -135,7 +142,6 @@ public class NTPWidgetListAdapter extends RecyclerView.Adapter<RecyclerView.View
 
         NTPWidgetViewHolder(View itemView) {
             super(itemView);
-
             widgetTitle = itemView.findViewById(R.id.widget_title);
             widgetText = itemView.findViewById(R.id.widget_text);
             widgetReorderView = itemView.findViewById(R.id.widget_reorder);

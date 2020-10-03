@@ -59,6 +59,7 @@
             android:orientation="vertical">
 
             <LinearLayout
+                android:id="@+id/ntp_widget_layout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="12dp"
@@ -68,7 +69,7 @@
                     android:layout_width="0dp"
                     android:layout_height="180dp"
                     android:layout_weight="1"
-                    app:cardCornerRadius="6dp">
+                    app:cardCornerRadius="12dp">
 
                     <org.chromium.chrome.browser.custom_layout.VerticalViewPager
                         android:id="@+id/ntp_widget_view_pager"

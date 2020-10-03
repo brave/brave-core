@@ -5,9 +5,9 @@
 
 package org.chromium.chrome.browser.settings;
 
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.content.Intent;
 
 import androidx.preference.Preference;
 import androidx.preference.Preference.OnPreferenceChangeListener;
@@ -15,6 +15,7 @@ import androidx.preference.Preference.OnPreferenceChangeListener;
 import org.chromium.base.ContextUtils;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.BraveRelaunchUtils;
+import org.chromium.chrome.browser.ntp.widget.NTPWidgetStackActivity;
 import org.chromium.chrome.browser.ntp_background_images.NTPBackgroundImagesBridge;
 import org.chromium.chrome.browser.preferences.BravePref;
 import org.chromium.chrome.browser.profiles.Profile;
@@ -22,14 +23,12 @@ import org.chromium.chrome.browser.settings.BravePreferenceFragment;
 import org.chromium.components.browser_ui.settings.ChromeSwitchPreference;
 import org.chromium.components.browser_ui.settings.SettingsUtils;
 import org.chromium.components.user_prefs.UserPrefs;
-import org.chromium.chrome.browser.ntp.widget.NTPWidgetStackActivity;
 
 /**
  * Fragment to keep track of all the display related preferences.
  */
-public class BackgroundImagesPreferences extends BravePreferenceFragment
-    implements OnPreferenceChangeListener {
-
+public class BackgroundImagesPreferences
+        extends BravePreferenceFragment implements OnPreferenceChangeListener {
     // deprecated preferences from browser-android-tabs
     public static final String PREF_SHOW_BACKGROUND_IMAGES = "show_background_images";
     public static final String PREF_SHOW_SPONSORED_IMAGES = "show_sponsored_images";
@@ -106,13 +105,15 @@ public class BackgroundImagesPreferences extends BravePreferenceFragment
     }
 
     private void initWidgetStack() {
-        findPreference(PREF_WIDGET_STACK).setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
-            @Override
-            public boolean onPreferenceClick(Preference preference) {
-                Intent ntpWidgetStackActivityIntent = new Intent(getActivity(), NTPWidgetStackActivity.class);
-                getActivity().startActivity(ntpWidgetStackActivityIntent);
-                return true;
-            }
-        });
+        findPreference(PREF_WIDGET_STACK)
+                .setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+                    @Override
+                    public boolean onPreferenceClick(Preference preference) {
+                        Intent ntpWidgetStackActivityIntent =
+                                new Intent(getActivity(), NTPWidgetStackActivity.class);
+                        getActivity().startActivity(ntpWidgetStackActivityIntent);
+                        return true;
+                    }
+                });
     }
 }

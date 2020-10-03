@@ -61,11 +61,12 @@ public class NTPWidgetAdapter extends PagerAdapter {
 
     @Override
     public int getItemPosition(Object object) {
-        int index = widgetList.indexOf(object);
-        if (index == -1)
-            return POSITION_NONE;
-        else
-            return index;
+        // int index = widgetList.indexOf(object);
+        // if (index == -1)
+        //     return POSITION_NONE;
+        // else
+        //     return index;
+        return PagerAdapter.POSITION_NONE;
     }
 
     @Override
@@ -86,7 +87,8 @@ public class NTPWidgetAdapter extends PagerAdapter {
                 updateBraveStats(mainView);
             } else if (ntpWidgetItem.getWidgetType().equals(NTPWidgetManager.PREF_BINANCE)) {
                 Button connectButton = mainView.findViewById(R.id.btn_connect);
-                LinearLayout bianceDisconnectLayout= mainView.findViewById(R.id.binance_disconnect_layout);
+                LinearLayout bianceDisconnectLayout =
+                        mainView.findViewById(R.id.binance_disconnect_layout);
                 LinearLayout binanceWidgetLayout =
                         mainView.findViewById(R.id.binance_widget_layout);
                 TextView binanceBalanceText =
@@ -139,10 +141,6 @@ public class NTPWidgetAdapter extends PagerAdapter {
         NTPWidgetItem ntpWidgetItem = widgetList.get(position);
         NTPWidgetManager.getInstance().setWidget(ntpWidgetItem.getWidgetType(), -1);
         widgetList.remove(position);
-    }
-
-    public void clearWidgets() {
-        widgetList.clear();
     }
 
     private void updateBraveStats(View view) {

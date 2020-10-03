@@ -56,7 +56,6 @@ public class SwipeAndDragHelper extends ItemTouchHelper.Callback {
 
     public interface ActionCompletionContract {
         void onViewMoved(int oldPosition, int newPosition);
-
         void onViewSwiped(int position);
     }
 }

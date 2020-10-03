@@ -32,7 +32,7 @@ public class VerticalViewPager extends ViewPager {
     }
 
     /**
-     * @return {@code true} iff a normal view pager would support horizontal scrolling at this time
+     * @return {@code true} if a normal view pager would support horizontal scrolling at this time
      */
     @Override
     public boolean canScrollVertically(int direction) {
