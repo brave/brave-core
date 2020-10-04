@@ -19,6 +19,7 @@ export interface WidgetProps {
   hideMenu?: boolean
   isForeground?: boolean
   lightWidget?: boolean
+  paddingType: 'none' | 'right' | 'default'
   onLearnMore?: () => void
   onDisconnect?: () => void
   onRefreshData?: () => void
@@ -57,6 +58,7 @@ const createWidget = <P extends object>(WrappedComponent: React.ComponentType<P>
         hideMenu,
         isForeground,
         lightWidget,
+        paddingType,
         onLearnMore,
         onDisconnect,
         onRefreshData
@@ -73,6 +75,7 @@ const createWidget = <P extends object>(WrappedComponent: React.ComponentType<P>
             isCryptoTab={isCryptoTab}
             widgetMenuPersist={widgetMenuPersist}
             preventFocus={preventFocus}
+            paddingType={paddingType}
           >
             <WrappedComponent {...this.props as P}/>
           </StyledWidget>
@@ -90,6 +93,7 @@ const createWidget = <P extends object>(WrappedComponent: React.ComponentType<P>
             persistWidget={this.persistWidget}
             unpersistWidget={this.unpersistWidget}
             lightWidget={lightWidget}
+            paddingType={paddingType}
           />
           }
         </StyledWidgetContainer>
