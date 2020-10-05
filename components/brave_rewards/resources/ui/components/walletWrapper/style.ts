@@ -35,7 +35,6 @@ const wrapperBackgroundRules = (notification: Notification | undefined) => {
 
 export const StyledWrapper = styled<StyledProps, 'div'>('div')`
   overflow: hidden;
-  box-shadow: 0 2px 4px rgba(0,0,0,.2);
   font-family: ${p => p.theme.fontFamily.body};
   width: ${p => p.isMobile ? '100%' : '373px'};
   background: ${p => wrapperBackgroundRules(p.notification)};
