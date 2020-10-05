@@ -25,6 +25,12 @@ import BrandedWallpaperLogo from '../../components/default/brandedWallpaper/logo
 
 // Helpers
 import VisibilityTimer from '../../helpers/visibilityTimer'
+import {
+  fetchCryptoDotComTickerPrices,
+  fetchCryptoDotComLosersGainers,
+  fetchCryptoDotComCharts,
+  fetchCryptoDotComSupportedPairs
+} from '../../helpers/cryptoDotComApiHelpers'
 import { generateQRData } from '../../binance-utils'
 
 // Types
@@ -361,18 +367,6 @@ class NewTabPage extends React.Component<Props, State> {
     this.props.actions.setGeminiHideBalance(hide)
   }
 
-  onTotalPriceOptIn = () => {
-    this.props.actions.onTotalPriceOptIn()
-  }
-  onBtcPriceOptIn = async () => {
-    await Promise.all([
-      this.fetchCryptoDotComTickerPrices(['BTC']),
-      this.fetchCryptoDotComLosersGainers()
-    ])
-    this.props.actions.onBtcPriceOptIn()
-    this.props.actions.onCryptoDotComInteraction()
-  }
-
   disconnectBinance = () => {
     this.props.actions.disconnectBinance()
   }
@@ -568,69 +562,36 @@ class NewTabPage extends React.Component<Props, State> {
     })
   }
 
-  getCryptoDotComTickerInfo = (asset: string) => {
-    return new Promise((resolve: Function) => {
-      chrome.cryptoDotCom.getTickerInfo(`${asset}_USDT`, (resp: any) => {
-        resolve({ [asset]: resp })
-      })
-    })
+  onCryptoDotComMarketsRequested = async (assets: string[]) => {
+    const [tickerPrices, losersGainers] = await Promise.all([
+      fetchCryptoDotComTickerPrices(assets),
+      fetchCryptoDotComLosersGainers()
+    ])
+    this.props.actions.setCryptoDotComMarketsRequested(tickerPrices, losersGainers)
   }
 
-  getCryptoDotComAssetRankings = () => {
-    return new Promise((resolve: Function) => {
-      chrome.cryptoDotCom.getAssetRankings((resp: any) => {
-        resolve(resp)
-      })
-    })
-  }
-
-  getCryptoDotComChartData = (asset: string) => {
-    return new Promise((resolve: Function) => {
-      chrome.cryptoDotCom.getChartData(`${asset}_USDT`, (resp: any) => {
-        resolve({ [asset]: resp })
-      })
-    })
-  }
-
-  getCryptoDotComSupportedPairs = () => {
-    return new Promise((resolve: Function) => {
-      chrome.cryptoDotCom.getSupportedPairs((resp: any) => {
-        resolve(resp)
-      })
-    })
-  }
-
-  fetchCryptoDotComTickerPrices = async (assets: string[]) => {
-    const assetReqs = assets.map(asset => this.getCryptoDotComTickerInfo(asset))
-    const assetResps = await Promise.all(assetReqs).then((resps: object[]) => resps)
-    const assetPrices = assetResps.reduce((all, current) => ({ ...current, ...all }), {})
-    this.props.actions.setCryptoDotComTickerPrices(assetPrices)
-  }
-
-  fetchCryptoDotComCharts = async (assets: string[]) => {
-    const chartReqs = assets.map(asset => this.getCryptoDotComChartData(asset))
-    const chartResps = await Promise.all(chartReqs).then((resps: object[]) => resps)
-    const charts = chartResps.reduce((all, current) => ({ ...current, ...all }), {})
-    this.props.actions.setCryptoDotComCharts(charts)
-  }
-
-  fetchCryptoDotComLosersGainers = async () => {
-    const losersGainers = await this.getCryptoDotComAssetRankings().then((resp: any) => resp)
-    this.props.actions.setCryptoDotComLosersGainers(losersGainers)
-  }
-
-  fetchCryptoDotComSupportedPairs = async () => {
-    const pairs = await this.getCryptoDotComSupportedPairs().then((resp: any) => resp)
-    this.props.actions.setCryptoDotComSupportedPairs(pairs)
+  onCryptoDotComAssetData = async (assets: string[]) => {
+    const [charts, pairs] = await Promise.all([
+      fetchCryptoDotComCharts(assets),
+      fetchCryptoDotComSupportedPairs()
+    ])
+    this.props.actions.setCryptoDotComAssetData(charts, pairs)
   }
 
   cryptoDotComUpdateActions = async () => {
     const assets = Object.keys(this.props.newTabData.cryptoDotComState.tickerPrices)
-    return Promise.all([
-      this.fetchCryptoDotComTickerPrices(assets),
-      this.fetchCryptoDotComLosersGainers(),
-      this.fetchCryptoDotComCharts(assets)
+    const [tickerPrices, losersGainers, charts] = await Promise.all([
+      fetchCryptoDotComTickerPrices(assets),
+      fetchCryptoDotComLosersGainers(),
+      fetchCryptoDotComCharts(assets)
     ])
+    this.props.actions.onCryptoDotComRefreshData(tickerPrices, losersGainers, charts)
+  }
+
+  onBtcPriceOptIn = async () => {
+    this.props.actions.onBtcPriceOptIn()
+    this.props.actions.onCryptoDotComInteraction()
+    await this.onCryptoDotComMarketsRequested(['BTC'])
   }
 
   onCryptoDotComBuyCrypto = () => {
@@ -1066,6 +1027,7 @@ class NewTabPage extends React.Component<Props, State> {
       <CryptoDotCom
         {...cryptoDotComState}
         isCrypto={true}
+        paddingType={'none'}
         isCryptoTab={!showContent}
         menuPosition={'left'}
         widgetTitle={'Crypto.com'}
@@ -1076,13 +1038,10 @@ class NewTabPage extends React.Component<Props, State> {
         hideWidget={this.toggleShowCryptoDotCom}
         showContent={showContent}
         onShowContent={this.setForegroundStackWidget.bind(this, 'cryptoDotCom')}
-        onSetTickerPrices={this.fetchCryptoDotComTickerPrices}
-        onSetLosersGainers={this.fetchCryptoDotComLosersGainers}
-        onSetSupportedPairs={this.fetchCryptoDotComSupportedPairs}
-        onSetCharts={this.fetchCryptoDotComCharts}
+        onViewMarketsRequested={this.onCryptoDotComMarketsRequested}
+        onSetAssetData={this.onCryptoDotComAssetData}
         onUpdateActions={this.cryptoDotComUpdateActions}
         onDisableWidget={this.toggleShowCryptoDotCom}
-        onTotalPriceOptIn={this.onTotalPriceOptIn}
         onBtcPriceOptIn={this.onBtcPriceOptIn}
         onBuyCrypto={this.onCryptoDotComBuyCrypto}
         onInteraction={this.onCryptoDotComInteraction}

@@ -2,7 +2,7 @@
  * License. v. 2.0. If a copy of the MPL was not distributed with this file.
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-import styled, { StyledInterface } from 'styled-components'
+import styled from 'styled-components'
 interface StyleProps {
   as?: any
   $bg?: string
@@ -76,6 +76,7 @@ function getColor (p: any) {
 }
 
 export const Text = styled<StyleProps, 'p'>('p')`
+  color: ${p => getColor(p.textColor) || '#ffffff'};
   font-family: ${p => p.theme.fontFamily.heading};
   font-weight: ${p => (p.weight || (p.small ? '500' : 'normal'))};
   font-size: ${p => {
@@ -87,77 +88,77 @@ export const Text = styled<StyleProps, 'p'>('p')`
 
   ${(p) =>
     p.$p &&
-    `padding: ${p.$p}`}
+    `padding: ${typeof p.$p === 'number' ? `${p.$p}px` : p.$p}`}
   ${(p) =>
     p.$pt &&
-    `padding-top: ${p.$pt}`}
+    `padding-top: ${typeof p.$pt === 'number' ? `${p.$pt}px` : p.$pt}`}
   ${(p) =>
     p.$pr &&
-    `padding-right: ${p.$pr}`}
+    `padding-right: ${typeof p.$pr === 'number' ? `${p.$pr}px` : p.$pr}`}
   ${(p) =>
     p.$pb &&
-    `padding-bottom: ${p.$pb}`}
+    `padding-bottom: ${typeof p.$pb === 'number' ? `${p.$pb}px` : p.$pb}`}
   ${(p) =>
     p.$pl &&
-    `padding-left: ${p.$pl}`}
+    `padding-left: ${typeof p.$pl === 'number' ? `${p.$pl}px` : p.$pl}`}
 
   ${(p) =>
     p.$m &&
-    `margin: ${p.$m}`}
+    `margin: ${typeof p.$m === 'number' ? `${p.$m}px` : p.$m}`}
   ${(p) =>
     p.$mt &&
-    `margin-top: ${p.$mt}`}
+    `margin-top: ${typeof p.$mt === 'number' ? `${p.$mt}px` : p.$mt}`}
   ${(p) =>
     p.$mr &&
-    `margin-right: ${p.$mr}`}
+    `margin-right: ${typeof p.$mr === 'number' ? `${p.$mr}px` : p.$mr}`}
   ${(p) =>
     p.$mb &&
-    `margin-bottom: ${p.$mb}`}
+    `margin-bottom: ${typeof p.$mb === 'number' ? `${p.$mb}px` : p.$mb}`}
   ${(p) =>
     p.$ml &&
-    `margin-left: ${p.$ml}`}
+    `margin-left: ${typeof p.$ml === 'number' ? `${p.$ml}px` : p.$ml}`}
  `
 
 export const BasicBox = styled<StyleProps, 'div'>('div')`
   ${(p) =>
     p.$p &&
-    `padding: ${p.$p}`}
+    `padding: ${typeof p.$p === 'number' ? `${p.$p}px` : p.$p}`}
   ${(p) =>
     p.$pt &&
-    `padding-top: ${p.$pt}`}
+    `padding-top: ${typeof p.$pt === 'number' ? `${p.$pt}px` : p.$pt}`}
   ${(p) =>
     p.$pr &&
-    `padding-right: ${p.$pr}`}
+    `padding-right: ${typeof p.$pr === 'number' ? `${p.$pr}px` : p.$pr}`}
   ${(p) =>
     p.$pb &&
-    `padding-bottom: ${p.$pb}`}
+    `padding-bottom: ${typeof p.$pb === 'number' ? `${p.$pb}px` : p.$pb}`}
   ${(p) =>
     p.$pl &&
-    `padding-left: ${p.$pl}`}
+    `padding-left: ${typeof p.$pl === 'number' ? `${p.$pl}px` : p.$pl}`}
 
   ${(p) =>
     p.$m &&
-    `margin: ${p.$m}`}
+    `margin: ${typeof p.$m === 'number' ? `${p.$m}px` : p.$m}`}
   ${(p) =>
     p.$mt &&
-    `margin-top: ${p.$mt}`}
+    `margin-top: ${typeof p.$mt === 'number' ? `${p.$mt}px` : p.$mt}`}
   ${(p) =>
     p.$mr &&
-    `margin-right: ${p.$mr}`}
+    `margin-right: ${typeof p.$mr === 'number' ? `${p.$mr}px` : p.$mr}`}
   ${(p) =>
     p.$mb &&
-    `margin-bottom: ${p.$mb}`}
+    `margin-bottom: ${typeof p.$mb === 'number' ? `${p.$mb}px` : p.$mb}`}
   ${(p) =>
     p.$ml &&
-    `margin-left: ${p.$ml}`}
+    `margin-left: ${typeof p.$ml === 'number' ? `${p.$ml}px` : p.$ml}`}
  `
 
-export const Box = styled<StyleProps, StyledInterface>(BasicBox)`
+export const Box = styled<StyleProps>(BasicBox)`
   border: 1px solid rgba(79, 86, 97, 0.7);
   padding: ${p => (p.hasPadding ? '0.5em' : '0')};
   border-radius: 2px;
   display: ${p => (p.isFlex ? 'flex' : 'block')};
-  height: ${p => (p.$height ? p.$height : 'auto')};
+  height: ${p => (p.$height ? `${p.$height}px` : 'auto')};
 
    ${(p) =>
      p.isFlex &&
@@ -186,10 +187,10 @@ export const FlexItem = styled<StyleProps, 'div'>('div')`
 
   ${(p) =>
     p.$pl &&
-    `padding-left: ${p.$pl}`}
+    `padding-left: ${typeof p.$pl === 'number' ? `${p.$pl}px` : p.$pl}`}
   ${(p) =>
     p.$pr &&
-    `padding-left: ${p.$pr}`}
+    `padding-right: ${typeof p.$pr === 'number' ? `${p.$pr}px` : p.$pr}`}
  `
 
 export const PlainButton = styled<StyleProps, 'button'>('button')`
@@ -205,19 +206,19 @@ export const PlainButton = styled<StyleProps, 'button'>('button')`
 
   ${(p) =>
     p.$m &&
-    `margin: ${p.$m}`}
+    `margin: ${typeof p.$m === 'number' ? `${p.$m}px` : p.$m}`}
   ${(p) =>
     p.$mt &&
-    `margin-top: ${p.$mt}`}
+    `margin-top: ${typeof p.$mt === 'number' ? `${p.$mt}px` : p.$mt}`}
   ${(p) =>
     p.$mr &&
-    `margin-right: ${p.$mr}`}
+    `margin-right: ${typeof p.$mr === 'number' ? `${p.$mr}px` : p.$mr}`}
   ${(p) =>
     p.$mb &&
-    `margin-bottom: ${p.$mb}`}
+    `margin-bottom: ${typeof p.$mb === 'number' ? `${p.$mb}px` : p.$mb}`}
   ${(p) =>
     p.$ml &&
-    `margin-left: ${p.$ml}`}
+    `margin-left: ${typeof p.$ml === 'number' ? `${p.$ml}px` : p.$ml}`}
  `
 
 export const WidgetWrapper = styled<StyleProps, 'div'>('div')`
@@ -263,7 +264,7 @@ export const CryptoDotComIcon = styled<{}, 'div'>('div')`
 
 export const StyledTitleText = styled<{}, 'div'>('div')``
 
-export const List = styled(Box)`
+export const List = styled<StyleProps>(Box)`
   overflow-y: ${p => (p.hideOverflow ? 'hidden' : 'scroll')};
   height: 260px;
   padding: 0;
@@ -322,19 +323,19 @@ export const ActionButton = styled<StyleProps, 'button'>('button')`
 
   ${(p) =>
     p.$m &&
-    `margin: ${p.$m}`}
+    `margin: ${typeof p.$m === 'number' ? `${p.$m}px` : p.$m}`}
   ${(p) =>
     p.$mt &&
-    `margin-top: ${p.$mt}`}
+    `margin-top: ${typeof p.$mt === 'number' ? `${p.$mt}px` : p.$mt}`}
   ${(p) =>
     p.$mr &&
-    `margin-right: ${p.$mr}`}
+    `margin-right: ${typeof p.$mr === 'number' ? `${p.$mr}px` : p.$mr}`}
   ${(p) =>
     p.$mb &&
-    `margin-bottom: ${p.$mb}`}
+    `margin-bottom: ${typeof p.$mb === 'number' ? `${p.$mb}px` : p.$mb}`}
   ${(p) =>
     p.$ml &&
-    `margin-left: ${p.$ml}`}
+    `margin-left: ${typeof p.$ml === 'number' ? `${p.$ml}px` : p.$ml}`}
  `
 
 export const ActionAnchor = styled<StyleProps, 'span'>('span')`
@@ -346,6 +347,7 @@ export const ActionAnchor = styled<StyleProps, 'span'>('span')`
   background: ${p => (p.light ? 'rgba(255, 255, 255, 0.21)' : '#44B0FF')};
   border: 0;
   padding: ${p => (p.small ? '6px 10px' : '10px 0px')};
+  margin: 10px 0 15px;
   cursor: pointer;
   color: #ffffff;
   line-height: 1;
@@ -357,8 +359,6 @@ export const ActionAnchor = styled<StyleProps, 'span'>('span')`
 export const UpperCaseText = styled<StyleProps, 'span'>('span')`
   text-transform: uppercase;
 `
-export const SVG = styled<StyleProps, 'svg'>('svg').attrs(props => ({
-  viewBox: `0 0 ${props.chartWidth} ${props.chartHeight}`
-}))`
+export const SVG = styled<StyleProps, 'svg'>('svg')`
   margin: 1rem 0;
 `

@@ -76,13 +76,10 @@ interface Props {
   stackPosition: number
   onShowContent: () => void
   onDisableWidget: () => void
-  onTotalPriceOptIn: () => void
   onBtcPriceOptIn: () => void
-  onSetLosersGainers: () => Promise<void>
-  onSetSupportedPairs: () => Promise<void>
-  onSetTickerPrices: (assets: string[]) => Promise<void>
-  onSetCharts: (asset: string[]) => Promise<void>
-  onUpdateActions: () => Promise<void[]>
+  onUpdateActions: () => Promise<void>
+  onViewMarketsRequested: (assets: string[]) => Promise<void>
+  onSetAssetData: (assets: string[]) => Promise<void>
   onBuyCrypto: () => void
   onInteraction: () => void
   onOptInMarkets: () => void
@@ -147,20 +144,14 @@ class CryptoDotCom extends React.PureComponent<Props, State> {
   }
 
   handleViewMarketsClick = async () => {
-    await Promise.all([
-      this.props.onSetTickerPrices(this.topMovers),
-      this.props.onSetLosersGainers()
-    ])
     this.props.onInteraction()
     this.props.onOptInMarkets()
+    await this.props.onViewMarketsRequested(this.topMovers)
   }
 
   handleAssetDetailClick = async (asset: string) => {
-    await Promise.all([
-      this.props.onSetCharts([asset]),
-      this.props.onSetSupportedPairs()
-    ])
     this.setSelectedAsset(asset)
+    await this.props.onSetAssetData([asset])
   }
 
   onClickBuyTop = () => {
@@ -227,8 +218,8 @@ class CryptoDotCom extends React.PureComponent<Props, State> {
     const { percentChange = null } = losersGainers[currency] || {}
     return (
       <>
-        <Box isFlex={true} $height={48}>
-          <FlexItem $pl={5} $pr={5}>
+        <Box isFlex={true} $height={48} hasPadding={true}>
+          <FlexItem $pr={5}>
             {this.renderIconAsset(currency.toLowerCase())}
           </FlexItem>
           <FlexItem>
@@ -259,7 +250,7 @@ class CryptoDotCom extends React.PureComponent<Props, State> {
         <Text center={true} $fontSize={15}>
           {getLocale('cryptoDotComWidgetCopyTwo')}
         </Text>
-        <ActionAnchor onClick={this.onClickBuyBottom} $m='1em 0'>
+        <ActionAnchor onClick={this.onClickBuyBottom}>
           {getLocale('cryptoDotComWidgetBuyBtc')}
         </ActionAnchor>
         <PlainButton textColor='light' onClick={this.handleViewMarketsClick} $m='0 auto'>
@@ -351,10 +342,7 @@ class CryptoDotCom extends React.PureComponent<Props, State> {
             {this.formattedNum(price)} USDT
           </Text>}
           {(percentChange !== null) && <Text inline={true} textColor={percentChange > 0 ? 'green' : 'red'}>{percentChange}%</Text>}
-          <SVG
-            chartWidth={chartWidth}
-            chartHeight={chartHeight}
-          >
+          <SVG viewBox={`0 0 ${chartWidth} ${chartHeight}`}>
             <polyline
               fill='none'
               stroke='#44B0FF'

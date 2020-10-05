@@ -6,17 +6,19 @@
 import { action } from 'typesafe-actions'
 import { types } from '../constants/cryptoDotCom_types'
 
-export const onTotalPriceOptIn = () => action(types.ON_TOTAL_PRICE_OPT_IN)
-
 export const onBtcPriceOptIn = () => action(types.ON_BTC_PRICE_OPT_IN)
 
-export const setCryptoDotComTickerPrices = (assetData: object) => action(types.SET_TICKER_PRICES, assetData)
+export const setCryptoDotComMarketsRequested = (tickerPrices: object, losersGainers: object[]) => {
+  return action(types.SET_MARKETS_REQUESTED, { tickerPrices, losersGainers })
+}
 
-export const setCryptoDotComLosersGainers = (losersGainers: object) => action(types.SET_LOSERS_GAINERS, losersGainers)
+export const setCryptoDotComAssetData = (charts: object, pairs: object[]) => {
+  return action(types.SET_ASSET_DATA, { charts, pairs })
+}
 
-export const setCryptoDotComCharts = (charts: object) => action(types.SET_CHART_DATA, charts)
-
-export const setCryptoDotComSupportedPairs = (pairs: object) => action(types.SET_SUPPORTED_PAIRS, pairs)
+export const onCryptoDotComRefreshData = (tickerPrices: object, losersGainers: object[], charts: object) => {
+  return action(types.ON_REFRESH_DATA, { tickerPrices, losersGainers, charts })
+}
 
 export const onCryptoDotComBuyCrypto = () => action(types.ON_BUY_CRYPTO)
 

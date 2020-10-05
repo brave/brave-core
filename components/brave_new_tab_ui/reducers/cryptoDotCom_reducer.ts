@@ -15,51 +15,54 @@ function performSideEffect (fn: () => void): void {
   window.setTimeout(() => fn(), 0)
 }
 
+function reducePairs (rawPairs: SupportedPair[]) {
+  return rawPairs.reduce((pairs: object, currPair: SupportedPair) => {
+    const { base, pair } = currPair
+    pairs[base] = pairs[base]
+      ? [...pairs[base], pair]
+      : [pair]
+    return pairs
+  }, {})
+}
+
 const cryptoDotComReducer: Reducer<NewTab.State | undefined> = (state: NewTab.State, action) => {
   const payload = action.payload
 
   switch (action.type) {
-    case types.ON_TOTAL_PRICE_OPT_IN:
-      state = { ...state }
-      state.cryptoDotComState.optInTotal = true
-      break
-
     case types.ON_BTC_PRICE_OPT_IN:
       state = { ...state }
       state.cryptoDotComState.optInBTCPrice = true
       break
 
-    case types.SET_TICKER_PRICES:
+    case types.SET_MARKETS_REQUESTED:
       state = { ...state }
       state.cryptoDotComState.tickerPrices = {
         ...state.cryptoDotComState.tickerPrices,
-        ...payload
+        ...payload.tickerPrices
       }
+      state.cryptoDotComState.losersGainers = payload.losersGainers
       break
 
-    case types.SET_LOSERS_GAINERS:
-      state = { ...state }
-      state.cryptoDotComState.losersGainers = payload
-      break
-
-    case types.SET_CHART_DATA:
+    case types.SET_ASSET_DATA:
       state = { ...state }
       state.cryptoDotComState.charts = {
         ...state.cryptoDotComState.charts,
-        ...payload
+        ...payload.charts
       }
+      state.cryptoDotComState.supportedPairs = reducePairs(payload.pairs)
       break
 
-    case types.SET_SUPPORTED_PAIRS:
+    case types.ON_REFRESH_DATA:
       state = { ...state }
-      const supportedPairs = payload.reduce((pairs: object, currPair: SupportedPair) => {
-        const { base, pair } = currPair
-        pairs[base] = pairs[base]
-          ? [...pairs[base], pair]
-          : [pair]
-        return pairs
-      }, {})
-      state.cryptoDotComState.supportedPairs = supportedPairs
+      state.cryptoDotComState.tickerPrices = {
+        ...state.cryptoDotComState.tickerPrices,
+        ...payload.tickerPrices
+      }
+      state.cryptoDotComState.charts = {
+        ...state.cryptoDotComState.charts,
+        ...payload.charts
+      }
+      state.cryptoDotComState.losersGainers = payload.losersGainers
       break
 
     case types.ON_BUY_CRYPTO:
