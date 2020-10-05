@@ -188,7 +188,6 @@ TEST(BraveSiteHacksNetworkDelegateHelperTest, QueryStringExempted) {
   const GURL tracking_url("https://example.com/?fbclid=1");
 
   const std::string initiators[] = {
-      "",                              // Direct navigation
       "https://example.com/path",      // Same-origin
       "https://sub.example.com/path",  // Same-site
   };
@@ -281,6 +280,17 @@ TEST(BraveSiteHacksNetworkDelegateHelperTest, QueryStringFiltered) {
         GURL("https://example.com");  // same-origin
     brave_request_info->redirect_source =
         GURL("https://example.net");  // cross-site
+    int rc = brave::OnBeforeURLRequest_SiteHacksWork(ResponseCallback(),
+                                                     brave_request_info);
+    EXPECT_EQ(rc, net::OK);
+    EXPECT_EQ(brave_request_info->new_url_spec, "https://example.com/");
+  }
+
+  // Direct navigation
+  {
+    auto brave_request_info = std::make_shared<brave::BraveRequestInfo>(
+        GURL("https://example.com/?fbclid=2"));
+    brave_request_info->initiator_url = GURL();
     int rc = brave::OnBeforeURLRequest_SiteHacksWork(ResponseCallback(),
                                                      brave_request_info);
     EXPECT_EQ(rc, net::OK);

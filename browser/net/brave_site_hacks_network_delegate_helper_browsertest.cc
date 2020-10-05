@@ -204,3 +204,31 @@ IN_PROC_BROWSER_TEST_F(BraveSiteHacksNetworkDelegateBrowserTest,
         landing_url(inputs[i], simple_landing_url()));
   }
 }
+
+IN_PROC_BROWSER_TEST_F(BraveSiteHacksNetworkDelegateBrowserTest,
+                       QueryStringFilterDirectNavigation) {
+  const std::string inputs[] = {
+      "",
+      "abc=1",
+      "fbclid=1",
+  };
+  const std::string outputs[] = {
+      // URLs without trackers should be untouched.
+      "",
+      "abc=1",
+      // URLs with trackers should have those removed.
+      "",
+  };
+
+  constexpr size_t input_count = base::size(inputs);
+  static_assert(input_count == base::size(outputs),
+                "Inputs and outputs must have the same number of elements.");
+
+  for (size_t i = 0; i < input_count; i++) {
+    // Direct navigations go through the query filter.
+    GURL input = landing_url(inputs[i], simple_landing_url());
+    GURL output = landing_url(outputs[i], simple_landing_url());
+    ui_test_utils::NavigateToURL(browser(), input);
+    EXPECT_EQ(contents()->GetLastCommittedURL(), output);
+  }
+}
