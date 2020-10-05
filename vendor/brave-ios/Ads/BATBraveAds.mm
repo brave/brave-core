@@ -475,10 +475,10 @@ BATClassAdsBridge(BOOL, isDebug, setDebug, _is_debug)
                              static_cast<ads::AdNotificationEventType>(eventType));
 }
 
-- (void)updateAdRewards:(BOOL)shouldReconcile
+- (void)reconcileAdRewards
 {
   if (![self isAdsServiceRunning]) { return; }
-  ads->UpdateAdRewards(shouldReconcile);
+  ads->ReconcileAdRewards();
 }
 
 - (void)detailsForCurrentCycle:(void (^)(NSInteger adsReceived, double estimatedEarnings, NSDate *nextPaymentDate))completion

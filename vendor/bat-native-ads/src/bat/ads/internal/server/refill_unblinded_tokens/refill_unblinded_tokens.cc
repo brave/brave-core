@@ -53,37 +53,9 @@ void RefillUnblindedTokens::set_delegate(
 }
 
 void RefillUnblindedTokens::MaybeRefill() {
-  wallet_ = ads_->get_wallet();
-  if (!wallet_.IsValid()) {
-    BLOG(0, "Failed to refill unblinded tokens due to an invalid wallet");
+  if (is_processing_ || retry_timer_.IsRunning()) {
     return;
   }
-
-  public_key_ = ads_->get_confirmations()->GetCatalogIssuers().public_key;
-  if (public_key_.empty()) {
-    BLOG(0, "Failed to refill unblinded tokens due to an invalid public key");
-    return;
-  }
-
-  Refill();
-}
-
-///////////////////////////////////////////////////////////////////////////////
-
-void RefillUnblindedTokens::Refill() {
-  if (retry_timer_.IsRunning()) {
-    return;
-  }
-
-  BLOG(1, "Refill unblinded tokens");
-
-  nonce_ = "";
-
-  RequestSignedTokens();
-}
-
-void RefillUnblindedTokens::RequestSignedTokens() {
-  BLOG(1, "RequestSignedTokens");
 
   if (!ShouldRefillUnblindedTokens()) {
     BLOG(1, "No need to refill unblinded tokens as we already have "
@@ -93,6 +65,40 @@ void RefillUnblindedTokens::RequestSignedTokens() {
     return;
   }
 
+  wallet_ = ads_->get_wallet();
+  if (!wallet_.IsValid()) {
+    BLOG(0, "Failed to refill unblinded tokens due to an invalid wallet");
+    return;
+  }
+
+  const CatalogIssuersInfo catalog_issuers =
+      ads_->get_confirmations()->GetCatalogIssuers();
+  if (!catalog_issuers.IsValid()) {
+    BLOG(0, "Failed to refill unblinded tokens due to missing catalog issuers");
+    return;
+  }
+
+  public_key_ = catalog_issuers.public_key;
+
+  Refill();
+}
+
+///////////////////////////////////////////////////////////////////////////////
+
+void RefillUnblindedTokens::Refill() {
+  DCHECK(!is_processing_);
+
+  BLOG(1, "Refill unblinded tokens");
+
+  is_processing_ = true;
+
+  nonce_ = "";
+
+  RequestSignedTokens();
+}
+
+void RefillUnblindedTokens::RequestSignedTokens() {
+  BLOG(1, "RequestSignedTokens");
   BLOG(2, "POST /v1/confirmation/token/{payment_id}");
 
   const int refill_amount = CalculateAmountOfTokensToRefill();
@@ -234,27 +240,7 @@ void RefillUnblindedTokens::OnGetSignedTokens(
 
   if (batch_dleq_proof_unblinded_tokens.empty()) {
     BLOG(1, "Failed to verify and unblind tokens");
-
     BLOG(1, "  Batch proof: " << *batch_proof_base64);
-
-    BLOG(1, "  Tokens (" << tokens_.size() << "):");
-    for (const auto& token : tokens_) {
-      const std::string token_base64 = token.encode_base64();
-      BLOG(1, "    " << token_base64);
-    }
-
-    BLOG(1, "  Blinded tokens (" << blinded_tokens_.size() << "):");
-    for (const auto& blinded_token : blinded_tokens_) {
-      const std::string blinded_token_base64 = blinded_token.encode_base64();
-      BLOG(1, "    " << blinded_token_base64);
-    }
-
-    BLOG(1, "  Signed tokens (" << signed_tokens.size() << "):");
-    for (const auto& signed_token : signed_tokens) {
-      const std::string signed_token_base64 = signed_token.encode_base64();
-      BLOG(1, "    " << signed_token_base64);
-    }
-
     BLOG(1, "  Public key: " << public_key_);
 
     OnRefill(FAILED, false);
@@ -285,18 +271,15 @@ void RefillUnblindedTokens::OnGetSignedTokens(
 void RefillUnblindedTokens::OnRefill(
     const Result result,
     const bool should_retry) {
+  is_processing_ = false;
+
   if (result != SUCCESS) {
     if (delegate_) {
       delegate_->OnFailedToRefillUnblindedTokens();
     }
 
     if (should_retry) {
-      const base::Time time = retry_timer_.StartWithPrivacy(
-          base::TimeDelta::FromSeconds(kRetryAfterSeconds),
-              base::BindOnce(&RefillUnblindedTokens::Retry,
-                  base::Unretained(this)));
-
-      BLOG(1, "Retry refilling unblinded tokens " << FriendlyDateAndTime(time));
+      Retry();
     }
 
     return;
@@ -314,9 +297,20 @@ void RefillUnblindedTokens::OnRefill(
 }
 
 void RefillUnblindedTokens::Retry() {
+  const base::Time time = retry_timer_.StartWithPrivacy(
+      base::TimeDelta::FromSeconds(kRetryAfterSeconds),
+          base::BindOnce(&RefillUnblindedTokens::OnRetry,
+              base::Unretained(this)));
+
+  BLOG(1, "Retry refilling unblinded tokens " << FriendlyDateAndTime(time));
+}
+
+void RefillUnblindedTokens::OnRetry() {
   if (delegate_) {
     delegate_->OnDidRetryRefillingUnblindedTokens();
   }
+
+  is_processing_ = true;
 
   if (nonce_.empty()) {
     RequestSignedTokens();

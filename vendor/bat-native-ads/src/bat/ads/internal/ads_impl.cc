@@ -215,11 +215,11 @@ void AdsImpl::InitializeStep6(
 
   callback(SUCCESS);
 
-  UpdateAdRewards(/*should_reconcile*/ true);
+  ReconcileAdRewards();
 
   subdivision_targeting_->MaybeFetchForCurrentLocale();
 
-  redeem_unblinded_payment_tokens_->RedeemAfterDelay(wallet_);
+  redeem_unblinded_payment_tokens_->MaybeRedeemAfterDelay(wallet_);
 
   ad_conversions_->StartTimerIfReady();
 
@@ -236,14 +236,7 @@ void AdsImpl::InitializeStep6(
 
   MaybeStartDeliveringAdNotifications();
 
-  const CatalogIssuersInfo catalog_issuers =
-      confirmations_->GetCatalogIssuers();
-  if (catalog_issuers.IsValid()) {
-    refill_unblinded_tokens_->MaybeRefill();
-    confirmations_->RetryFailedConfirmationsAfterDelay();
-  }
-
-  get_catalog_->Download();
+  get_catalog_->MaybeDownload();
 }
 
 #if defined(OS_ANDROID)
@@ -510,7 +503,7 @@ void AdsImpl::OnWalletUpdated(
       << "\n  Private key: ********");
 
   if (IsInitialized()) {
-    UpdateAdRewards(/*should_reconcile*/ true);
+    ReconcileAdRewards();
   }
 }
 
@@ -1286,7 +1279,7 @@ void AdsImpl::MaybeServeAdNotification(
   if (bundle_->IsOlderThanOneDay()) {
     FailedToServeAdNotification("Catalog older than one day");
 
-    get_catalog_->Download();
+    get_catalog_->MaybeDownload();
 
     return;
   }
@@ -1396,13 +1389,12 @@ void AdsImpl::AppendAdNotificationToHistory(
 
 //////////////////////////////////////////////////////////////////////////////
 
-void AdsImpl::UpdateAdRewards(
-    const bool should_reconcile) {
+void AdsImpl::ReconcileAdRewards() {
   if (!IsInitialized()) {
     return;
   }
 
-  ad_rewards_->Update(wallet_, should_reconcile);
+  ad_rewards_->MaybeReconcile(wallet_);
 }
 
 void AdsImpl::GetTransactionHistory(
@@ -1490,6 +1482,8 @@ void AdsImpl::OnFailedToRedeemUnblindedToken(
 
 void AdsImpl::OnDidRedeemUnblindedPaymentTokens() {
   BLOG(1, "Successfully redeemed unblinded payment tokens");
+
+  ReconcileAdRewards();
 }
 
 void AdsImpl::OnFailedToRedeemUnblindedPaymentTokens() {

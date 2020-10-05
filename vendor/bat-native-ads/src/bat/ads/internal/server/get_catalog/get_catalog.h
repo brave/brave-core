@@ -26,11 +26,12 @@ class GetCatalog {
 
   ~GetCatalog();
 
-  void Download();
+  void MaybeDownload();
 
   uint64_t LastUpdated() const;
 
  private:
+  void Download();
   void OnDownloaded(
       const UrlResponse& url_response);
 
@@ -44,8 +45,11 @@ class GetCatalog {
 
   BackoffTimer retry_timer_;
   void Retry();
+  void OnRetry();
 
   void DownloadAfterDelay();
+
+  bool is_processing_ = false;
 
   uint64_t last_updated_ = 0;
 

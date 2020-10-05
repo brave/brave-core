@@ -109,8 +109,7 @@ class AdsService : public KeyedService {
   virtual void OnTabClosed(
       const SessionID& tab_id) = 0;
 
-  virtual void UpdateAdRewards(
-      const bool should_reconcile) = 0;
+  virtual void ReconcileAdRewards() = 0;
 
   virtual void GetAdsHistory(
       const uint64_t from_timestamp,
