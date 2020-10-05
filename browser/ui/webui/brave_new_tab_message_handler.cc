@@ -19,6 +19,7 @@
 #include "brave/components/brave_ads/browser/ads_service.h"
 #include "brave/components/brave_ads/browser/ads_service_factory.h"
 #include "brave/components/brave_perf_predictor/browser/buildflags.h"
+#include "brave/components/moonpay/browser/buildflags/buildflags.h"
 #include "brave/components/ntp_background_images/browser/features.h"
 #include "brave/components/ntp_background_images/browser/view_counter_service.h"
 #include "brave/components/ntp_background_images/common/pref_names.h"
@@ -36,6 +37,10 @@ using ntp_background_images::ViewCounterServiceFactory;
 
 #if BUILDFLAG(ENABLE_BRAVE_PERF_PREDICTOR)
 #include "brave/components/brave_perf_predictor/common/pref_names.h"
+#endif
+
+#if BUILDFLAG(MOONPAY_ENABLED)
+#include "brave/components/moonpay/common/pref_names.h"
 #endif
 
 namespace {
@@ -100,6 +105,11 @@ base::DictionaryValue GetPreferencesDictionary(PrefService* prefs) {
   pref_data.SetBoolean(
       "showGemini",
       prefs->GetBoolean(kNewTabPageShowGemini));
+#if BUILDFLAG(MOONPAY_ENABLED)
+  pref_data.SetBoolean(
+      "showBitcoinDotCom",
+      prefs->GetBoolean(kMoonpayNewTabPageShowBitcoinDotCom));
+#endif
   return pref_data;
 }
 
@@ -264,6 +274,11 @@ void BraveNewTabMessageHandler::OnJavascriptAllowed() {
   pref_change_registrar_.Add(kNewTabPageShowGemini,
     base::Bind(&BraveNewTabMessageHandler::OnPreferencesChanged,
     base::Unretained(this)));
+#if BUILDFLAG(MOONPAY_ENABLED)
+  pref_change_registrar_.Add(kMoonpayNewTabPageShowBitcoinDotCom,
+    base::Bind(&BraveNewTabMessageHandler::OnPreferencesChanged,
+    base::Unretained(this)));
+#endif
 }
 
 void BraveNewTabMessageHandler::OnJavascriptDisallowed() {
@@ -341,6 +356,10 @@ void BraveNewTabMessageHandler::HandleSaveNewTabPagePref(
     settingsKey = kNewTabPageShowAddCard;
   } else if (settingsKeyInput == "showGemini") {
     settingsKey = kNewTabPageShowGemini;
+#if BUILDFLAG(MOONPAY_ENABLED)
+  } else if (settingsKeyInput == "showBitcoinDotCom") {
+    settingsKey = kMoonpayNewTabPageShowBitcoinDotCom;
+#endif
   } else {
     LOG(ERROR) << "Invalid setting key";
     return;

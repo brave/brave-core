@@ -72,7 +72,7 @@ declare namespace NewTab {
     url: string
   }
 
-  export type StackWidget = 'rewards' | 'binance' | 'together' | 'gemini' | ''
+  export type StackWidget = 'rewards' | 'binance' | 'together' | 'gemini' | 'bitcoinDotCom' | ''
 
   export interface LegacyState {
     pinnedTopSites: Site[]
@@ -97,6 +97,7 @@ declare namespace NewTab {
   export interface PersistentState {
     togetherSupported: boolean
     geminiSupported: boolean
+    bitcoinDotComSupported: boolean
     showEmptyPage: boolean
     rewardsState: RewardsWidgetState
     currentStackWidget: StackWidget
@@ -126,6 +127,7 @@ declare namespace NewTab {
     showBinance: boolean
     showAddCard: boolean
     showGemini: boolean
+    showBitcoinDotCom: boolean
     brandedWallpaperOptIn: boolean
     isBrandedWallpaperNotificationDismissed: boolean
     stats: Stats,
