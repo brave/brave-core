@@ -27,6 +27,7 @@ interface Props {
   onDisconnect?: () => void
   onRefreshData?: () => void
   lightWidget?: boolean
+  paddingType: 'none' | 'right' | 'default'
 }
 
 interface State {
@@ -89,6 +90,7 @@ export default class WidgetMenu extends React.PureComponent<Props, State> {
       widgetTitle,
       isForeground,
       lightWidget,
+      paddingType,
       onLearnMore,
       onDisconnect,
       onRefreshData
@@ -97,7 +99,7 @@ export default class WidgetMenu extends React.PureComponent<Props, State> {
     const hideString = widgetTitle ? `${getLocale('hide')} ${widgetTitle}` : getLocale('hide')
 
     return (
-      <StyledWidgetMenuContainer innerRef={this.settingsMenuRef}>
+      <StyledWidgetMenuContainer innerRef={this.settingsMenuRef} paddingType={paddingType}>
         <StyledEllipsis widgetMenuPersist={widgetMenuPersist} isForeground={isForeground}>
           <IconButton isClickMenu={true} onClick={this.toggleMenu}>
             <EllipsisIcon lightWidget={lightWidget} />
