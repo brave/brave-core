@@ -11,6 +11,9 @@ namespace prefs {
 
 extern const char kTorDisabled[];
 
+// Automatically open onion site in tor window when available
+extern const char kAutoOnionLocation[];
+
 }  // namespace prefs
 }  // namespace tor
 

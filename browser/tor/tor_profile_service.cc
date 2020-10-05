@@ -30,6 +30,11 @@ void TorProfileService::RegisterLocalStatePrefs(PrefRegistrySimple* registry) {
 }
 
 // static
+void TorProfileService::RegisterPrefs(PrefRegistrySimple* registry) {
+  registry->RegisterBooleanPref(prefs::kAutoOnionLocation, false);
+}
+
+// static
 bool TorProfileService::IsTorDisabled() {
   if (!g_brave_browser_process)
     return false;

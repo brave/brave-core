@@ -463,7 +463,7 @@ BraveContentBrowserClient::CreateThrottlesForNavigation(
     throttles.push_back(std::move(tor_navigation_throttle));
   std::unique_ptr<content::NavigationThrottle>
       onion_location_navigation_throttle =
-          tor::OnionLocationNavigationThrottle::CreateThrottleFor(handle);
+          tor::OnionLocationNavigationThrottle::MaybeCreateThrottleFor(handle);
   if (onion_location_navigation_throttle)
     throttles.push_back(std::move(onion_location_navigation_throttle));
 #endif

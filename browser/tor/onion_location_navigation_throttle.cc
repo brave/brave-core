@@ -11,6 +11,8 @@
 #include "base/bind.h"
 #include "brave/browser/profiles/profile_util.h"
 #include "brave/browser/tor/onion_location_tab_helper.h"
+#include "brave/browser/tor/tor_profile_service.h"
+#include "brave/common/tor/pref_names.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/profiles/profile_window.h"
 #include "chrome/browser/ui/browser.h"
@@ -34,8 +36,10 @@ bool GetOnionLocation(const net::HttpResponseHeaders* headers,
 
 // static
 std::unique_ptr<OnionLocationNavigationThrottle>
-OnionLocationNavigationThrottle::CreateThrottleFor(
+OnionLocationNavigationThrottle::MaybeCreateThrottleFor(
     content::NavigationHandle* navigation_handle) {
+  if (tor::TorProfileService::IsTorDisabled())
+    return nullptr;
   return std::make_unique<OnionLocationNavigationThrottle>(navigation_handle);
 }
 
@@ -55,9 +59,10 @@ OnionLocationNavigationThrottle::WillProcessResponse() {
     std::string onion_location;
     if (headers && GetOnionLocation(headers, &onion_location) &&
         !navigation_handle()->GetURL().DomainIs("onion")) {
-      // TODO(darkdh): add pref for always redirect when onion available
-      // If we are in tor window, open onion site directly
-      if (brave::IsTorProfile(profile_)) {
+      // If we are in tor window, open onion site directly or user prefers
+      // opening it automatically
+      if (brave::IsTorProfile(profile_) ||
+          profile_->GetPrefs()->GetBoolean(prefs::kAutoOnionLocation)) {
         profiles::SwitchToTorProfile(base::BindRepeating(
             &OnionLocationNavigationThrottle::OnTorProfileCreated,
             weak_ptr_factory_.GetWeakPtr(), GURL(onion_location)));

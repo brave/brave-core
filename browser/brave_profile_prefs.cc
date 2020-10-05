@@ -7,6 +7,7 @@
 
 #include "brave/browser/search/ntp_utils.h"
 #include "brave/browser/themes/brave_dark_mode_utils.h"
+#include "brave/browser/tor/buildflags.h"
 #include "brave/browser/ui/omnibox/brave_omnibox_client_impl.h"
 #include "brave/common/pref_names.h"
 #include "brave/components/binance/browser/buildflags/buildflags.h"
@@ -85,6 +86,10 @@
 #if BUILDFLAG(CRYPTO_DOT_COM_ENABLED)
 #include "brave/components/crypto_dot_com/browser/crypto_dot_com_pref_utils.h"
 #include "brave/components/crypto_dot_com/common/pref_names.h"
+#endif
+
+#if BUILDFLAG(ENABLE_TOR)
+#include "brave/browser/tor/tor_profile_service.h"
 #endif
 
 #if defined(OS_ANDROID)
@@ -295,6 +300,10 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
 
 #if BUILDFLAG(CRYPTO_DOT_COM_ENABLED)
   crypto_dot_com::RegisterPrefs(registry);
+#endif
+
+#if BUILDFLAG(ENABLE_TOR)
+  tor::TorProfileService::RegisterPrefs(registry);
 #endif
 
 #if !defined(OS_ANDROID)

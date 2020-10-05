@@ -22,8 +22,8 @@ namespace tor {
 
 class OnionLocationNavigationThrottle : public content::NavigationThrottle {
  public:
-  static std::unique_ptr<OnionLocationNavigationThrottle> CreateThrottleFor(
-      content::NavigationHandle* navigation_handle);
+  static std::unique_ptr<OnionLocationNavigationThrottle>
+  MaybeCreateThrottleFor(content::NavigationHandle* navigation_handle);
   explicit OnionLocationNavigationThrottle(
       content::NavigationHandle* navigation_handle);
   ~OnionLocationNavigationThrottle() override;

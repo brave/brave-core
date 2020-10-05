@@ -10,5 +10,7 @@ namespace prefs {
 
 const char kTorDisabled[] = "tor.tor_disabled";
 
+const char kAutoOnionLocation[] = "tor.auto_onion_location";
+
 }  // namespace prefs
 }  // namespace tor
