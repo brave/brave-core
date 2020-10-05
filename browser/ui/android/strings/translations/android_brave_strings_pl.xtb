@@ -186,7 +186,6 @@ przez kolejne 90 dni lub do momentu zarejestrowania się twórców.</translation
 <translation id="8193724030871339658">INNE URZĄDZENIA W ŁAŃCUCHU</translation>
 <translation id="279635009973773843">WCZYTYWANIE URZĄDZEŃ...</translation>
 <translation id="6394333525003604181">OPUSZCZANIE ŁAŃCUCHA SYNCHRONIZACJI...</translation>
-<translation id="1604429341565715601">Trwa konfiguracja synchronizacji, spróbuj zresetować ją później</translation>
 <translation id="2569646144216067185">Liczba słów: <ph name="WORD_COUNT"/></translation>
 <translation id="4282642752844565114">Nieprawidłowa liczba słów</translation>
 <translation id="7507533586185621084">Nieprawidłowy kod synchronizacji</translation>
@@ -315,7 +314,7 @@ przez kolejne 90 dni lub do momentu zarejestrowania się twórców.</translation
 <translation id="1465733111003593696">Zyskujesz tokeny za oglądanie tego obrazu.</translation>
 <translation id="7877201489035217175">Dowiedz się więcej o sponsorowanych obrazach</translation>
 <translation id="828092975561478703">Za każdy sponsorowany obraz, który oglądasz, otrzymujesz 70% przychodu w tokenach. Dzięki Brave Ads zawsze masz kontrolę nad reklamami, które widzisz.</translation>
-<translation id="4941539331405513605">Zablokuj pliki cookies między witrynami</translation>
+<translation id="4941539331405513605">Zablokuj pliki cookie stron trzecich</translation>
 <translation id="3763681089644577874">Zablokuj pliki cookies</translation>
 <translation id="614747795780742163">Uniemożliwia stronom internetowym przechowywanie danych o wcześniejszych wizytach</translation>
 <translation id="6883611015375728278">Zablokuj wszystkie pliki cookie</translation>
@@ -323,7 +322,8 @@ przez kolejne 90 dni lub do momentu zarejestrowania się twórców.</translation
 <translation id="5963670684159057574">Zablokuj rozpoznawanie urządzenia przez strony trzecie</translation>
 <translation id="3895527457258986253">Zablokuj rozpoznawanie urządzenia</translation>
 <translation id="184568144098869637">Uniemożliwia przeglądarce rozpoznanie Twojego urządzenia</translation>
-<translation id="4540198958192073185">Zablokuj rozpoznawanie urządzenia</translation>
+<translation id="7396366757003005317">Blokuj rozpoznawanie urządzenia (ściśle, strony mogą nie działać)</translation>
+<translation id="700453611199558021">Blokuj rozpoznawanie urządzenia (standardowo)</translation>
 <translation id="769702552748212954">Zezwalaj na rozpoznawanie urządzenia</translation>
 <translation id="2888409909650566510">Zablokowane reklamy i inne straszne\nrzeczy</translation>
 <translation id="6930134873084561197">Witryny często zawierają pliki cookies i skrypty, które próbują zidentyfikować Ciebie i Twoje urządzenie. Chcą dowiedzieć się, kim jesteś, i śledzić Cię w sieci, monitorując wykonywane przez Ciebie czynności na każdej stronie.\n\nBrave blokuje to, dzięki czemu możesz przeglądać, i nikt nie będzie Cię śledzić.</translation>
@@ -351,7 +351,7 @@ przez kolejne 90 dni lub do momentu zarejestrowania się twórców.</translation
 <translation id="8374242949413616101">Ochrona prywatności</translation>
 <translation id="4955406228638026265">Przeglądarka Brave zapobiega zbieraniu informacji o Tobie bez Twojej zgody przez reklamy i narzędzia do monitorowania.</translation>
 <translation id="752842701893882688">Oszczędzaj dane i prąd</translation>
-<translation id="5739030256211745023">Bez reklam i narzędzi do monitorowania witryny internetowe zużywają mniej danych i prądu. Możesz nawet oszczędzić pieniądze na opłatach dostawców.</translation>
+<translation id="1685837926613452362">Blokowanie reklam i modułów śledzących na stronach internetowych pozwala zmniejszyć zużycie pakietu danych oraz baterii. Może to nawet przełożyć się na niższe opłaty za transmisję danych.</translation>
 <translation id="5440744330377972191">Witryny internetowe wczytują się szybciej</translation>
 <translation id="3000738865641747653">Wczytywanie mniejszej ilości danych oznacza, że witryny internetowe w przeglądarce Brave wczytują się szybciej – do 8 x szybciej niż w innych przeglądarkach.</translation>
 <translation id="8903462729414407077">Otrzymuj co tydzień aktualne wiadomości</translation>
@@ -366,6 +366,7 @@ przez kolejne 90 dni lub do momentu zarejestrowania się twórców.</translation
 <translation id="1581614543353331529">Na razie brak danych do pokazania</translation>
 <translation id="2401984885421380890">Zablokowano narzędzia do monitorowania\ni reklamy</translation>
 <translation id="2662183408296991265">Oszczędzono dane\n(<ph name="DATA_SAVED"/>)</translation>
+<translation id="3180928261057583677">Dane zapisane (<ph name="DATA_SAVED"/>)</translation>
 <translation id="6814582232712814369">Oszczędzony czas</translation>
 <translation id="3694122362646626770">Witryny internetowe</translation>
 <translation id="2225863440766607138">Narzędzia do monitorowania</translation>
@@ -375,12 +376,12 @@ przez kolejne 90 dni lub do momentu zarejestrowania się twórców.</translation
 <translation id="7427567994475794038">Włącz raporty o prywatności, aby zobaczyć, ile narzędzi do monitorowania i reklam zablokowano w ciągu ostatnich trzech godzin.</translation>
 <translation id="2053891538879944400">Oszczędziłeś(-aś) <ph name="DATA"/> <ph name="DATA_TEXT"/> danych z użyciem przeglądarki Brave.</translation>
 <translation id="8640064498452534195">Włącz raporty o prywatności, aby zobaczyć, ile danych oszczędziłeś(-aś).</translation>
-<translation id="4591582032282435287">Przeglądarka Brave zużywa średnio 45% mniej prądu.</translation>
+<translation id="2252497442547961651">Przeglądarka Brave zużywa średnio o 40% mniej baterii.&#128267;</translation>
 <translation id="1945330434665345785">W ubiegłym tygodniu zablokowałeś(-aś) z pomocą przeglądarki Brave <ph name="COUNT"/> trackers &amp; reklam.</translation>
 <translation id="2883868922264431515">Zarabiaj tokeny, oglądając reklamy z poszanowaniem Twojej prywatności i wspieraj ulubione witryny internetowe.</translation>
-<translation id="6840965284166256302">Miło! Z pomocą przeglądarki Brave zablokowałeś(-aś) 250 narzędzi do monitorowania i reklam.</translation>
-<translation id="2076976911561945584">Miło! Oszczędziłeś(-aś) 10 MB dzięki przeglądarce Brave.</translation>
-<translation id="6714550233326888315">Miło! Z pomocą przeglądarki Browse oszczędziłeś(-aś) 10 minut czasu wczytywania.</translation>
+<translation id="5678925890616256956">Brawo! Dzięki przeglądarce Brave udało Ci się zablokować 250 modułów śledzących i reklam.&#128293;</translation>
+<translation id="9199047775708635708">Brawo! Dzięki przeglądarce Brave udało Ci się zaoszczędzić 10 MB.&#128267;</translation>
+<translation id="1880168210969863408">Brawo! Dzięki przeglądarce Brave udało Ci się zaoszczędzić 10 minut na ładowaniu stron.&#128168;&#128168;</translation>
 <translation id="7408493389591475748">Zacznij przeglądać, aby zobaczyć raporty o prywatności.</translation>
 <translation id="9080777565335515917">Ustaw przeglądarkę Brave jako swoją domyślną do prywatnego i bezpiecznego przeglądania.</translation>
 <translation id="7801488941710395275">Umożliwia przeglądarce Brave pokazywanie Twoich statystyk prywatności.</translation>
@@ -389,4 +390,5 @@ przez kolejne 90 dni lub do momentu zarejestrowania się twórców.</translation
 <translation id="8089997572759938512">Resetuje Twoje raporty o prywatności do zera.</translation>
 <translation id="2718046830255553131">Wyczyszczono dane o raportach o prywatności.</translation>
 <translation id="7559243474426790340">Odśwież status</translation>
+<translation id="8376263745431603066">Włącz „Tryb nocny” (funkcja eksperymentalna)</translation>
 </translationbundle>

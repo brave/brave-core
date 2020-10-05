@@ -291,7 +291,7 @@
 <translation id="1361872463926621533">เปิดเสียงเมื่อเริ่มใช้</translation>
 <translation id="1363585519747660921">เครื่องพิมพ์ USB ต้องการการกำหนดค่า</translation>
 <translation id="1365180424462182382"><ph name="BEGIN_LINK"/>เบราว์เซอร์ของคุณได้รับการจัดการ<ph name="END_LINK"/>โดย <ph name="ENROLLMENT_DOMAIN"/></translation>
-<translation id="1366177842110999534">เรียกใช้เครื่องมือ ตัวแก้ไข และ IDE สำหรับ Linux ใน <ph name="DEVICE_TYPE"/> &lt;a target="_blank" href="<ph name="URL"/>"&gt;ดูข้อมูลเพิ่มเติม&lt;/a&gt;</translation>
+<translation id="1366177842110999534">เรียกใช้เครื่องมือ ตัวแก้ไข และ IDE สำหรับ Linux ใน <ph name="DEVICE_TYPE"/> &lt;a target="_blank" rel="noopener noreferrer" href="<ph name="URL"/>"&gt;ดูข้อมูลเพิ่มเติม&lt;/a&gt;</translation>
 <translation id="1367951781824006909">เลือกไฟล์</translation>
 <translation id="1369149969991017342">การเข้าถึงด้วยสวิตช์ (ควบคุมคอมพิวเตอร์ด้วยสวิตช์เพียง 1-2 ตัว)</translation>
 <translation id="1372841398847029212">ซิงค์กับบัญชีของคุณ</translation>
@@ -1354,7 +1354,7 @@
 <translation id="268053382412112343">ประวั&amp;ติ</translation>
 <translation id="2682498795777673382">อัปเดตจากผู้ปกครองของคุณ</translation>
 <translation id="2683638487103917598">จัดเรียงโฟลเดอร์แล้ว</translation>
-<translation id="2686222346846590368">นี่เป็นการอัปเดตซอฟต์แวร์และความปลอดภัยอัตโนมัติครั้งสุดท้ายสำหรับ <ph name="DEVICE_TYPE"/> เครื่องนี้ โปรดอัปเกรดเป็นรุ่นที่ใหม่กว่าเพื่อรับการอัปเดตในอนาคต &lt;a target="_blank" href="<ph name="URL"/>"&gt;ดูข้อมูลเพิ่มเติม<ph name="LINK_END"/></translation>
+<translation id="2686222346846590368">นี่เป็นการอัปเดตซอฟต์แวร์และความปลอดภัยอัตโนมัติครั้งสุดท้ายสำหรับ <ph name="DEVICE_TYPE"/> เครื่องนี้ โปรดอัปเกรดเป็นรุ่นที่ใหม่กว่าเพื่อรับการอัปเดตในอนาคต &lt;a target="_blank" rel="noopener noreferrer" href="<ph name="URL"/>"&gt;ดูข้อมูลเพิ่มเติม<ph name="LINK_END"/></translation>
 <translation id="2687403674020088961">บล็อกคุกกี้ทั้งหมด (ไม่แนะนำ)</translation>
 <translation id="2687407218262674387">ข้อกำหนดในการให้บริการ Brave</translation>
 <translation id="2688196195245426394">เกิดข้อผิดพลาดขณะลงทะเบียนอุปกรณ์กับเซิร์ฟเวอร์: <ph name="CLIENT_ERROR"/></translation>
@@ -4852,7 +4852,7 @@
 <translation id="7197632491113152433">เราพบแอป <ph name="NUMBER_OF_APPS"/> แอปจากบัญชีของคุณที่ใช้ในอุปกรณ์นี้ได้</translation>
 <translation id="7199158086730159431">รั&amp;บความช่วยเหลือ</translation>
 <translation id="7200083590239651963">เลือกการกำหนดค่า</translation>
-<translation id="7201042526153088083">ติดตั้งแอปและเกมจาก Google Play ใน <ph name="DEVICE_TYPE"/> &lt;a target="_blank" href="<ph name="URL"/>"&gt;ดูข้อมูลเพิ่มเติม&lt;/a&gt;</translation>
+<translation id="7201042526153088083">ติดตั้งแอปและเกมจาก Google Play ใน <ph name="DEVICE_TYPE"/> &lt;a target="_blank" rel="noopener noreferrer" href="<ph name="URL"/>"&gt;ดูข้อมูลเพิ่มเติม&lt;/a&gt;</translation>
 <translation id="720110658997053098">เก็บอุปกรณ์นี้ไว้ในโหมดคีออสก์อย่างถาวร</translation>
 <translation id="7201118060536064622">ลบ "<ph name="DELETED_ITEM_NAME"/>" แล้ว</translation>
 <translation id="7201420661433230412">ดูไฟล์</translation>
@@ -6611,7 +6611,7 @@
 <translation id="3860292630623580294">(ส่วนตัว)</translation>
 <translation id="4854477725773269949">อนุญาตในโหมดส่วนตัว</translation>
 <translation id="6436164536244065364">ดูในเว็บสโตร์</translation>
-<translation id="38046578254905003">หาธีมและส่วนขยายใน <ph name="BEGIN_LINK">&lt;a target="_blank" href="https://chrome.google.com/webstore/category/extensions"&gt;</ph>เว็บสโตร์<ph name="END_LINK">&lt;/a&gt;</ph></translation>
+<translation id="38046578254905003">ค้นหาส่วนขยายและธีมใน <ph name="BEGIN_LINK"/>Web Store<ph name="END_LINK"/></translation>
 <translation id="6336451774241870485">แท็บส่วนตัวใหม่</translation>
 <translation id="6610147964972079463">ปิดแท็บส่วนตัว</translation>
 <translation id="4933782374919065856">โปรดติดต่อผู้ที่ดูแลโปรไฟล์ของคุณหากมีคำถาม</translation>

@@ -291,7 +291,7 @@
 <translation id="1361872463926621533">शुरू होने पर आवाज़ चालू करें</translation>
 <translation id="1363585519747660921">यूएसबी प्रिंटर को कॉन्फ़िगर करना होगा</translation>
 <translation id="1365180424462182382"><ph name="ENROLLMENT_DOMAIN"/> आपके <ph name="BEGIN_LINK"/>ब्राउज़र को प्रबंधित करता है<ph name="END_LINK"/></translation>
-<translation id="1366177842110999534">अपने <ph name="DEVICE_TYPE"/> पर Linux टूल, एडिटर और आईडीई चलाएं. &lt;a target="_blank" href="<ph name="URL"/>"&gt;ज़्यादा जानें&lt;/a&gt;</translation>
+<translation id="1366177842110999534">अपने <ph name="DEVICE_TYPE"/> पर Linux टूल, एडिटर और आईडीई चलाएं. &lt;a target="_blank" rel="noopener noreferrer" href="<ph name="URL"/>"&gt;ज़्यादा जानें&lt;/a&gt;</translation>
 <translation id="1367951781824006909">कोई फ़ाइल चुनें</translation>
 <translation id="1369149969991017342">ऐक्सेस करने का तरीका बदलें (बस एक या दो स्विच से कंप्यूटर नियंत्रित करें)</translation>
 <translation id="1372841398847029212">अपने खाते से सिंक करें</translation>
@@ -1354,7 +1354,7 @@
 <translation id="268053382412112343">इति&amp;हास</translation>
 <translation id="2682498795777673382">आपके अभिभावक की तरफ़ से अपडेट</translation>
 <translation id="2683638487103917598">फ़ोल्डर क्रमबद्ध किया गया</translation>
-<translation id="2686222346846590368">इस <ph name="DEVICE_TYPE"/> के लिए, अपने-आप होने वाला यह आखिरी साॅफ़्टवेयर और सुरक्षा अपडेट है. आने वाले समय में अपडेट पाने के लिए, नए माॅडल पर अपग्रेड करें. &lt;a target="_blank" href="<ph name="URL"/>"&gt;ज़्यादा जानें<ph name="LINK_END"/></translation>
+<translation id="2686222346846590368">इस <ph name="DEVICE_TYPE"/> के लिए, अपने-आप होने वाला यह आखिरी साॅफ़्टवेयर और सुरक्षा अपडेट है. आने वाले समय में अपडेट पाने के लिए, नए माॅडल पर अपग्रेड करें. &lt;a target="_blank" rel="noopener noreferrer" href="<ph name="URL"/>"&gt;ज़्यादा जानें<ph name="LINK_END"/></translation>
 <translation id="2687403674020088961">सभी कुकी ब्लॉक करें (हम ऐसा करने का सुझाव नहीं देते)</translation>
 <translation id="2687407218262674387">Brave सेवा की शर्तें</translation>
 <translation id="2688196195245426394">डिवाइस को सर्वर के साथ पंजीकृत करते समय गड़बड़ी: <ph name="CLIENT_ERROR"/>.</translation>
@@ -4851,7 +4851,7 @@
 <translation id="7197632491113152433">हमें आपके खाते से ऐसे <ph name="NUMBER_OF_APPS"/> ऐप्लिकेशन मिले हैं जिनका इस्तेमाल इस डिवाइस पर किया जा सकता है.</translation>
 <translation id="7199158086730159431">स&amp;हायता पाएं</translation>
 <translation id="7200083590239651963">कॉन्फ़िगरेशन चुनें</translation>
-<translation id="7201042526153088083">अपने <ph name="DEVICE_TYPE"/> पर Google Play से ऐप्लिकेशन और गेम इंस्टॉल करें. &lt;a target="_blank" href="<ph name="URL"/>"&gt;ज़्यादा जानें&lt;/a&gt;</translation>
+<translation id="7201042526153088083">अपने <ph name="DEVICE_TYPE"/> पर Google Play से ऐप्लिकेशन और गेम इंस्टॉल करें. &lt;a target="_blank" rel="noopener noreferrer" href="<ph name="URL"/>"&gt;ज़्यादा जानें&lt;/a&gt;</translation>
 <translation id="720110658997053098">इस डिवाइस को हमेशा के लिए किओस्क मोड में रखें</translation>
 <translation id="7201118060536064622">'<ph name="DELETED_ITEM_NAME"/>' मिटाया गया</translation>
 <translation id="7201420661433230412">फ़ाइलें देखें</translation>
@@ -6609,7 +6609,7 @@
 <translation id="3860292630623580294">(प्राइवेट)</translation>
 <translation id="4854477725773269949">प्राइवेट में अनुमति दें</translation>
 <translation id="6436164536244065364">वेब स्टोर में देखें</translation>
-<translation id="38046578254905003">वेब स्टोर में एक्सटेंशन और थीम<ph name="BEGIN_LINK">&lt;a target="_blank" href="https://chrome.google.com/webstore/category/extensions"&gt;</ph> खोजें <ph name="END_LINK">&lt;/a&gt;</ph></translation>
+<translation id="38046578254905003"><ph name="BEGIN_LINK"/>Web Store<ph name="END_LINK"/> में एक्सटेंशन और थीम पाएँ</translation>
 <translation id="6336451774241870485">नया प्राइवेट टैब</translation>
 <translation id="6610147964972079463">प्राइवेट टैब बंद करें</translation>
 <translation id="4933782374919065856">प्रश्न पूछना चाहते हैं? तो उस व्यक्ति से संपर्क करें जो आपकी प्रोफ़ाइल की निगरानी करता है.</translation>

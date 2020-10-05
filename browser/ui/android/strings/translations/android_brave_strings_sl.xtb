@@ -28,6 +28,7 @@
 <translation id="1680858055899097121">Ne ohranjaj zavihkov med sejami brskanja</translation>
 <translation id="453601949003770390">Sledilniki in oglasi blokirani</translation>
 <translation id="347604927162577559">Prihranjeni\npodatki</translation>
+<translation id="9008534313521214777">Pribl. čas\nSaved</translation>
 <translation id="6572660632052512096">Namizni način</translation>
 <translation id="1340503115760585811">Omogoči namizni ogled za nove zavihke</translation>
 <translation id="7924540991929826186">Uporabi mobilne različice spletnih strani za nove zavihke (priporočeno)</translation>
@@ -60,12 +61,16 @@
 <translation id="7053983685419859001">Blokiraj</translation>
 <translation id="5806601733251372221">Ščiti Brave</translation>
 <translation id="2880356288762235261">oglasi in sledilniki, ki posegajo v zasebnost, tako da lahko brskate, ne da bi vam sledili po spletu.</translation>
+<translation id="8537217141725709400">Prislužite si <ph name="TOKEN"/>s</translation>
 <translation id="3333887201479867589">Storitev Brave Rewards</translation>
+<translation id="5870330605209713397">tako, da si ogledate oglase, ki spoštujejo zasebnost, in privzeto podpirate svoja najljubša spletna mesta in ustvarjalce.</translation>
 <translation id="821707262661492716">za ogled oglasov, ki spoštujejo zasebnost.</translation>
+<translation id="8267692331246948056">Z dotikom na Prislužite si &amp; se strinjate z</translation>
 <translation id="4281844954008187215">Pogoji poslovanja</translation>
 <translation id="6871397658902960384">Začnite z brskanjem</translation>
 <translation id="454386012157232640">Nisem videl oglasa</translation>
 <translation id="1448877943847791441">Brskalnik Brave vam bo pokazal prvi oglas v</translation>
+<translation id="4410793187232041318">Brave Ads vam bo zdaj podaril žeton.</translation>
 <translation id="6511854390690723657">To je vaš prvi oglas Brave. Dotaknite se za več informacij.</translation>
 <translation id="4930714375720679147">Vklop</translation>
 <translation id="2453860139492968684">Dokončaj</translation>
@@ -112,10 +117,13 @@
 <translation id="4254029385847607686">DECEMBER</translation>
 <translation id="1916285746997567466">Pripravite se na dobo
 novega interneta.</translation>
+<translation id="3540580927110899945">Zdaj si lahko prislužite <ph name="TOKEN"/>s za
+ogled oglasov, ki spoštujejo zasebnost.</translation>
 <translation id="1327938628925645979">PRIDRUŽI SE STORITVI REWARDS</translation>
 <translation id="5567439033041178034">PREBERITE VEČ</translation>
 <translation id="3780605330121608425">Vaša denarnica</translation>
 <translation id="8845154268466251503">BAT</translation>
+<translation id="7837083325641186736"><ph name="VALUE"/></translation>
 <translation id="3826081199286264109">USD</translation>
 <translation id="2104073734684466851">Sredstva</translation>
 <translation id="1165667598801520610">Dodaj sredstva</translation>
@@ -145,6 +153,7 @@ dejavnosti ...</translation>
 <translation id="5463954686005964104">Doniraj tej spletni strani vsak mesec</translation>
 <translation id="7530570094705720669">Ustvari denarnico</translation>
 <translation id="937392350501765664"><ph name="MONTH"/> <ph name="YEAR"/></translation>
+<translation id="4751553692764711651">Prispevali ste <ph name="BAT_VALUE"/> <ph name="BAT_TEXT"/>.</translation>
 <translation id="7997676409547731821">Vaših načrtovanih mesečnih plačil za samodejne donacije in mesečne donacije ni bilo mogoče izvesti zaradi nezadostnih sredstev. Poskusili bomo znova čez 30 dni.</translation>
 <translation id="5306913077198665897">Prišlo je do težave pri obdelavi vaše donacije, poskusite znova.</translation>
 <translation id="2429828319207652823">Pri obdelavi vaše donacije je prišlo do težave.</translation>
@@ -163,6 +172,8 @@ dejavnosti ...</translation>
 <translation id="4292832015778676417">zasluženo z ogledom oglasov</translation>
 <translation id="683765328936486920">na platformi YouTube</translation>
 <translation id="8969049974285901797">na platformi Twitch</translation>
+<translation id="4376933248999950592">Izbrali ste <ph name="BAT_VALUE"/> <ph name="BAT_TEXT"/> za ustvarjalce, ki se še niso prijavili za prejemanje prispevkov. Vaš brskalnik bo še naprej poskušal prispevati, dokler se ne verificirajo oziroma dokler ne mine 90 dni.</translation>
+<translation id="3101693828171454453">ni dovolj <ph name="TOKEN"/>s</translation>
 <translation id="6940273954212603510">prosimo,</translation>
 <translation id="1036277985068412734">dodaj sredstva</translation>
 <translation id="3492491948683276944">nastavite mesečno donacijo</translation>
@@ -173,7 +184,6 @@ dejavnosti ...</translation>
 <translation id="8193724030871339658">DRUGE NAPRAVE V VERIGI</translation>
 <translation id="279635009973773843">NALAGANJE NAPRAV ...</translation>
 <translation id="6394333525003604181">ZAPUŠČAM SINHRONIZACIJSKO VERIGO ...</translation>
-<translation id="1604429341565715601">Nastavitev sinhronizacije je v teku, poskusite jo ponastaviti pozneje</translation>
 <translation id="2569646144216067185">Število besed: <ph name="WORD_COUNT"/></translation>
 <translation id="4282642752844565114">Nepravilno število besed</translation>
 <translation id="7507533586185621084">Napačna sinhronizacijska koda</translation>
@@ -213,6 +223,7 @@ dejavnosti ...</translation>
 <translation id="327726072512457161">Izhod iz nastavitev</translation>
 <translation id="8050847734948770789">Omogoči storitev Brave Rewards</translation>
 <translation id="9187185473011056079">Želim sodelovati!</translation>
+<translation id="8185825081026121627">Prislužite si osnovni žeton za ogled oglasov Brave Rewards, ki ohranjajo zasebnost.</translation>
 <translation id="5321518976657560663">Napaka ponastavitve</translation>
 <translation id="4114170343590425996">Pri ponastavitvi storitve Brave Rewards je prišlo do napake. Ponovno zaženite brskalnik Brave in poskusite znova.</translation>
 <translation id="6393502589311632553">Prikazuj oglase, ko se storitev Brave Rewards ne uporablja</translation>
@@ -309,7 +320,8 @@ dejavnosti ...</translation>
 <translation id="5963670684159057574">Blokiraj ustvarjanje prstnih odtisov med mesti</translation>
 <translation id="3895527457258986253">Blokiraj ustvarjanje prstnih odtisov</translation>
 <translation id="184568144098869637">Brskalniku prepreči, da bi prepoznal vašo napravo</translation>
-<translation id="4540198958192073185">Blokiraj vsa ustvarjanja prstnih odtisov</translation>
+<translation id="7396366757003005317">Prstni odtisi blokirani (strogo, lahko vdrejo v spletna mesta)</translation>
+<translation id="700453611199558021">Prstni odtis je blokiran (standardno)</translation>
 <translation id="769702552748212954">Dovoli vsa ustvarjanja prstnih odtisov</translation>
 <translation id="2888409909650566510">Sledilniki in druge grozljive\nstvari so blokirani</translation>
 <translation id="6930134873084561197">Spletna mesta pogosto vključujejo piškotke in skripte, ki poskušajo prepoznati vas in vašo napravo. Želijo ugotoviti, kdo ste in vas spremljati po spletu - spremljati, kaj počnete na vsakem posameznem spletnem mestu.\nBrave to blokira, da lahko brskate, ne da bi vas povsod spremljali.</translation>
@@ -337,7 +349,7 @@ dejavnosti ...</translation>
 <translation id="8374242949413616101">Varovanje zasebnosti</translation>
 <translation id="4955406228638026265">Brave preprečuje, da bi sledilniki &amp; in oglasi brez vašega soglasja zbirali podatke o vas.</translation>
 <translation id="752842701893882688">Varčujte s podatki in energijo</translation>
-<translation id="5739030256211745023">Spletne strani brez sledilnikov &amp; oglasov porabijo manj podatkov in počasneje praznijo baterijo. Prihraniti utegnete celo pri stroških mobilnega prenosa.</translation>
+<translation id="1685837926613452362">Brez oglasov&amp; sledilci, spletna mesta porabljajo manj podatkov in baterije. Lahko celo prihranite denar za operaterja.</translation>
 <translation id="5440744330377972191">Spletne strani se nalagajo hitreje</translation>
 <translation id="3000738865641747653">Nalaganje manjše količine podatkov pomeni, da se spletne strani v brskalniku Brave nalagajo hitreje - tudi do 8-krat hitreje kot v drugih brskalnikih.</translation>
 <translation id="8903462729414407077">Prejemajte tedenske novice</translation>
@@ -352,6 +364,7 @@ dejavnosti ...</translation>
 <translation id="1581614543353331529">Ni še podatkov za prikaz</translation>
 <translation id="2401984885421380890">Sledilniki in oglasi\nblokirani</translation>
 <translation id="2662183408296991265">Prihranjeni podatki\n(<ph name="DATA_SAVED"/>)</translation>
+<translation id="3180928261057583677">Podatki shranjeni (<ph name="DATA_SAVED"/>)</translation>
 <translation id="6814582232712814369">Prihranjen čas</translation>
 <translation id="3694122362646626770">Spletna mesta</translation>
 <translation id="2225863440766607138">Sledilniki</translation>
@@ -361,12 +374,12 @@ dejavnosti ...</translation>
 <translation id="7427567994475794038">Vključite prejemanje poročil o zasebnosti in preverite, koliko sledilnikov &amp; oglasov ste blokirali v zadnjih 3 urah.</translation>
 <translation id="2053891538879944400">Z brskalnikom Brave ste prihranili <ph name="DATA"/> <ph name="DATA_TEXT"/> podatkov.</translation>
 <translation id="8640064498452534195">Vključite prejemanje poročil o zasebnosti in preverite, kolikšno količino podatkov ste prihranili.</translation>
-<translation id="4591582032282435287">Brskalnik Brave v povprečju porabi 40 % manj energije v bateriji.</translation>
+<translation id="2252497442547961651">Brskalnik Brave v povprečju porabi 40% manj baterije.&#128267;</translation>
 <translation id="1945330434665345785">Z brskalnikom Brave ste v zadnjem tednu blokirali <ph name="COUNT"/> sledilnikov &amp; oglasov.</translation>
 <translation id="2883868922264431515">Zaslužite z ogledom oglasov, ki spoštujejo zasebnost, in podprite svoja najljubša spletna mesta.</translation>
-<translation id="6840965284166256302">Krasno! Z brskalnikom Brave ste blokirali 250 sledilnikov &amp; oglasov.</translation>
-<translation id="2076976911561945584">Krasno! Z brskalnikom Brave ste prihranili 10 MB.</translation>
-<translation id="6714550233326888315">Krasno! Z brskalnikom Brave ste prihranili 10 minut časa za nalaganje.</translation>
+<translation id="5678925890616256956">Lepo! Blokirali ste 250 sledilcev &amp; oglasov z brskalnikom Brave browser.&#128293;</translation>
+<translation id="9199047775708635708">Lepo! Z brskalnikom Brave ste prihranili 10 MB.&#128267;</translation>
+<translation id="1880168210969863408">Lepo! Z brskalnikom Brave ste prihranili 10 minut časa nalaganja.&#128168;&#128168;</translation>
 <translation id="7408493389591475748">Začnite z brskanjem, da lahko pridobite poročilo o zasebnosti</translation>
 <translation id="9080777565335515917">Za zasebno in varno brskanje nastavite Brave kot privzeti brskalnik.</translation>
 <translation id="7801488941710395275">To brskalniku Brave omogoča prikaz statističnih podatkov o vaši zasebnosti</translation>
@@ -375,4 +388,5 @@ dejavnosti ...</translation>
 <translation id="8089997572759938512">Število poročil o zasebnosti ponastavi na vrednost nič</translation>
 <translation id="2718046830255553131">Podatki o poročilih o zasebnosti so bili izbrisani.</translation>
 <translation id="7559243474426790340">Osveži status</translation>
+<translation id="8376263745431603066">Omogoči "Nočni način" (poskusno)</translation>
 </translationbundle>

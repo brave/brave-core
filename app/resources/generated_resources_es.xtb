@@ -291,7 +291,7 @@
 <translation id="1361872463926621533">Reproducir sonido al iniciar</translation>
 <translation id="1363585519747660921">Es necesario configurar la impresora USB</translation>
 <translation id="1365180424462182382">El <ph name="BEGIN_LINK"/>navegador está gestionado<ph name="END_LINK"/> por <ph name="ENROLLMENT_DOMAIN"/></translation>
-<translation id="1366177842110999534">Ejecuta herramientas, editores e IDEs de Linux en tu <ph name="DEVICE_TYPE"/>. &lt;a target="_blank" href="<ph name="URL"/>"&gt;Más información&lt;/a&gt;</translation>
+<translation id="1366177842110999534">Ejecuta herramientas, editores e IDEs de Linux en tu <ph name="DEVICE_TYPE"/>. &lt;a target="_blank" rel="noopener noreferrer" href="<ph name="URL"/>"&gt;Más información&lt;/a&gt;</translation>
 <translation id="1367951781824006909">Selecciona un archivo</translation>
 <translation id="1369149969991017342">Accesibilidad mediante interruptores (controla el ordenador con uno o dos interruptores)</translation>
 <translation id="1372841398847029212">Sincronizar con tu cuenta</translation>
@@ -1354,7 +1354,7 @@ Puedes gestionar la configuración de esta cuenta instalando la aplicación Fami
 <translation id="268053382412112343">Hi&amp;storial</translation>
 <translation id="2682498795777673382">Actualizado por tu padre o madre</translation>
 <translation id="2683638487103917598">Carpeta ordenada</translation>
-<translation id="2686222346846590368">Esta es la última actualización automática de software y seguridad que recibirá este <ph name="DEVICE_TYPE"/>. Para recibir las futuras actualizaciones, cambia este modelo por otro más reciente. &lt;a target="_blank" href="<ph name="URL"/>"&gt;Más información<ph name="LINK_END"/></translation>
+<translation id="2686222346846590368">Esta es la última actualización automática de software y seguridad que recibirá este <ph name="DEVICE_TYPE"/>. Para recibir las futuras actualizaciones, cambia este modelo por otro más reciente. &lt;a target="_blank" rel="noopener noreferrer" href="<ph name="URL"/>"&gt;Más información<ph name="LINK_END"/></translation>
 <translation id="2687403674020088961">Bloquear todas las cookies (no recomendado)</translation>
 <translation id="2687407218262674387">Términos del Servicio de Brave</translation>
 <translation id="2688196195245426394">Error al registrar el dispositivo en el servidor (<ph name="CLIENT_ERROR"/>)</translation>
@@ -4851,7 +4851,7 @@ Exponente público (<ph name="PUBLIC_EXPONENT_NUM_BITS"/> bits):
 <translation id="7197632491113152433">Hemos encontrado <ph name="NUMBER_OF_APPS"/> aplicaciones en tu cuenta que se pueden utilizar en este dispositivo.</translation>
 <translation id="7199158086730159431">Obtener a&amp;yuda</translation>
 <translation id="7200083590239651963">Seleccionar configuración</translation>
-<translation id="7201042526153088083">Instala aplicaciones y juegos de Google Play en tu <ph name="DEVICE_TYPE"/>. &lt;a target="_blank" href="<ph name="URL"/>"&gt;Más información&lt;/a&gt;</translation>
+<translation id="7201042526153088083">Instala aplicaciones y juegos de Google Play en tu <ph name="DEVICE_TYPE"/>. &lt;a target="_blank" rel="noopener noreferrer" href="<ph name="URL"/>"&gt;Más información&lt;/a&gt;</translation>
 <translation id="720110658997053098">Mantener este dispositivo en modo kiosco de forma permanente</translation>
 <translation id="7201118060536064622">Se ha eliminado "<ph name="DELETED_ITEM_NAME"/>"</translation>
 <translation id="7201420661433230412">Ver archivos</translation>
@@ -6610,7 +6610,7 @@ Guarda tu archivo de clave en un lugar seguro, ya que lo necesitarás para crear
 <translation id="3860292630623580294">(Privado)</translation>
 <translation id="4854477725773269949">Permitir en Modo Privado</translation>
 <translation id="6436164536244065364">Ver en Web Store</translation>
-<translation id="38046578254905003">Encuentra extensiones y temas en la <ph name="BEGIN_LINK">&lt;a target="_blank" href="https://chrome.google.com/webstore/category/extensions"&gt;</ph>Web Store<ph name="END_LINK">&lt;/a&gt;</ph></translation>
+<translation id="38046578254905003">Encuentra extensiones y temas en la <ph name="BEGIN_LINK"/>Web Store<ph name="END_LINK"/></translation>
 <translation id="6336451774241870485">Nueva pestaña privada</translation>
 <translation id="6610147964972079463">Cerrar pestañas privadas</translation>
 <translation id="4933782374919065856">¿Tienes alguna pregunta? Ponte en contacto con la persona que supervisa tu perfil.</translation>

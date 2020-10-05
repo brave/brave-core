@@ -2,7 +2,7 @@
 <!DOCTYPE translationbundle>
 <translationbundle lang="sl">
 <translation id="3333887201479867589">Storitev Brave Rewards</translation>
-<translation id="7942180974165298215">Blokiranje oglasov Brave</translation>
+<translation id="7942180974165298215">Blokiranje oglasov Brave Ad Block</translation>
 <translation id="4615489450165434530">Prijavite nedelujočo spletno stran</translation>
 <translation id="6406506848690869874">Sinhronizacija</translation>
 <translation id="5655621391922317800">Kripto denarnice</translation>
@@ -25,7 +25,7 @@
 <translation id="3218385319396786393">Samodejno predvajanje je blokirano na tej strani</translation>
 <translation id="4988333904713528597">Vedno dovoli samodejno predvajanje na <ph name="HOST"/></translation>
 <translation id="4150684676757176434">Nadaljuj z blokiranjem samodejnega predvajanja</translation>
-<translation id="5883458389055721080">Brave ni pregledal zaščito in varnost te razširitve. To razširitev namestite samo, če razvijalcu zaupate.</translation>
+<translation id="8988939298652262600">Brave ne vrši pregledov razširitev zaradi varnosti in zaščite. To razširitev namestite samo, če zaupate razvijalcu.</translation>
 <translation id="8081858229109418493">Profilno ime in ikona</translation>
 <translation id="2044383478723007273">Barve brskalnika Brave</translation>
 <translation id="1692470335103807198">Pridobi več tem</translation>
@@ -37,7 +37,10 @@
 <translation id="5802665280774361839">Pokaži samodokončanje v naslovni vrstici.</translation>
 <translation id="597020512043916976">V samoizpolnjenih predlogih prikaži najbolj priljubljena spletna mesta</translation>
 <translation id="264150068416846820">V samoizpolnjenih predlogih prikaži spletna mesta, ki jih predlaga Brave</translation>
-<translation id="7781069478569868053">Stran »Nov zavihek«</translation>
+<translation id="6414370348346025511">Standardna zaščita je vklopljena.</translation>
+<translation id="814018970995616154">Preveri URL-je na seznamu nevarnih spletnih mest, shranjenih v programu Brave.</translation>
+<translation id="1144810021918451336">Pred nevarnimi spletnimi mesti, prenosi in razširitvami vam ne nudi zaščite.</translation>
+<translation id="7781069478569868053">Stran na novem zavihku</translation>
 <translation id="2467749191278759605">Prilagodite ozadje Brave</translation>
 <translation id="1717331825806276156">Slike ozadja</translation>
 <translation id="1820041496463124489">Sponzorirane slike</translation>
@@ -55,11 +58,11 @@
 <translation id="1434416574322382019">Novo zasebno okno v brskalniku Tor</translation>
 <translation id="4703780849509456860">Odpri povezavo v zasebnem oknu v brskalniku Tor</translation>
 <translation id="3488584642074079080">Odpri povezavo v zasebnem oknu Brave v brskalniku Tor</translation>
-<translation id="6313675821927505581">Novo zasebno okno z uporabo Tor</translation>
-<translation id="2638041073279639246">Odpri povezavo v zasebnem oknu z uporabo Tor</translation>
-<translation id="3425600262621021599">Odpri povezave v zasebnem oknu Brave z uporabo Tor</translation>
+<translation id="6313675821927505581">Novo zasebno okno z uporabo brskalnika Tor</translation>
+<translation id="2638041073279639246">Odpri povezavo v zasebnem oknu z uporabo brskalnika Tor</translation>
+<translation id="3425600262621021599">Odpri povezave v zasebnem oknu Brave z uporabo brskalnika Tor</translation>
 <translation id="3155170474926428993">Zaganjalnik brskalnika Tor</translation>
-<translation id="2515126961943087659">Storitev oglasov BAT</translation>
+<translation id="2515126961943087659">Storitev oglasov Bat Ads</translation>
 <translation id="7924918279836988121">Storitev poslovne knjige Bat</translation>
 <translation id="4472575034687746823">Kako začeti</translation>
 <translation id="3400357268283240774">Dodatne nastavitve</translation>
@@ -79,7 +82,7 @@
 <translation id="4824468494729001999">Blokiraj skripte</translation>
 <translation id="519861640102428255">Poglejte &amp; občutite</translation>
 <translation id="4800195524776354947">Pokaži število blokiranih elementov na ikoni Shields</translation>
-<translation id="3932286112122164477">Dovoli gumbe za prijavo Google na spletnih mestih drugih ponudnikov</translation>
+<translation id="7498695072878479744">Dovoli gumbe za prijavo Google na spletnih mestih drugih ponudnikov</translation>
 <translation id="863171915776379000">Dovoli prijavo v Facebook in vdelane objave nanj</translation>
 <translation id="5165042248369837294">Dovoli vdelane tvite s Twitterja</translation>
 <translation id="958971637207126733">Dovoli vdelane objave z LinkedIna</translation>
@@ -97,7 +100,7 @@
 <translation id="1689062823386843231">Onemogoči UDP, ki ne poteka prek strežnika proxy</translation>
 <translation id="8502234992433094996">Za potisno sporočanje uporabljajte Googlove storitve</translation>
 <translation id="5565355416171743213">Začni uporabljati sinhronizacijo</translation>
-<translation id="4332558599726753990">Nastavitev Sync</translation>
+<translation id="4332558599726753990">Nastavitev sinhronizacije</translation>
 <translation id="2187778349654214731">Za začetek boste morali Brave namestiti na vse naprave, ki jih nameravate sinhronizirati. Nato jih varno povežite s kodo za sinhronizacijo.</translation>
 <translation id="7530575064080939974">Upravljanje vaših sinhroniziranih podatkov</translation>
 <translation id="7575156386943878014">Upravitelj sinhronizacije</translation>
@@ -148,13 +151,17 @@
 <translation id="2356070529366658676">Vprašaj</translation>
 <translation id="7701040980221191251">Brez</translation>
 <translation id="1085027414516521238">MetaMask</translation>
-<translation id="3905324891414560921">Ponudnik Web3 za uporabo Dapps</translation>
+<translation id="7090046810227878892">Ponudnik Ethereum za uporabo storitve Dapps</translation>
 <translation id="5913089932885076110">Kripto denarnice naloži ob zagonu</translation>
+<translation id="6864914031231797928">Dovoli Googlovo prijavo za razširitve</translation>
+<translation id="1365342176656744625">Metoda za reševanje lokacij IPFS</translation>
+<translation id="1327977588028644528">Prehod</translation>
+<translation id="80225669816651290">Lokalno vozlišče</translation>
 <translation id="6554397389149987360">Uporabi komponento Hangouts za omogočanje skupne rabe zaslona in drugih funkcij v brskalniku.</translation>
 <translation id="1765684547504191670">Uporablja komponento Media Router, da omogoči Chromecast v brskalniku.</translation>
 <translation id="9156965752763025780">Spremembe bodo začele veljati ob naslednjem zagonu Bravea.</translation>
 <translation id="7179921470347911571">Znova zaženite zdaj</translation>
-<translation id="4154389611571860454">Uporablja razširitev IPFS za podporo IPFS-ja v brskalniku.</translation>
+<translation id="6222323340194834282">Za izboljšanje podpore IPFS v brskalniku uporablja spremljevalno razširitev IPFS.</translation>
 <translation id="8137559199583651773">Upravljanje razširitev</translation>
 <translation id="7013485839273047434">Več razširitev</translation>
 <translation id="4928988318462976765">Trgovina s spletnimi razširitvami</translation>
@@ -210,20 +217,19 @@
 <translation id="4394049700291259645">Onemogoči</translation>
 <translation id="6469509880167172749">Samodejno pošlji popolnoma zasebno analizo izdelkov na Brave</translation>
 <translation id="7090566321964540749">Ta anonimna informacija programski opremi Brave samo omogoča, da oceni splošno uporabo nekaterih funkcij.</translation>
-<translation id="9111960429693394744">Želite uporabiti kripto denarnice Brave ali MetaMask za Dapps?</translation>
-<translation id="8721775358057000783">Ali želite na tej strani zagnati kripto denarnice za podporo web3?</translation>
+<translation id="1947672064022327074">Želite zagnati denarnico Crypto Wallets za podporo Ethereumu?</translation>
 <translation id="7583735190612229830">Nastavite kripto denarnice za interakcijo s to aplikacijo in drugimi podobnimi.</translation>
 <translation id="4823406846571523661">Nastavi kripto denarnice</translation>
-<translation id="5756155765711979898">Uporabi funkcijo MetaMask</translation>
-<translation id="6754134632841262799">NASTAVITEV</translation>
 <translation id="8199661191594897555">Zaženi kripto denarnice in znova naloži</translation>
 <translation id="8428213095426709021">Nastavitve</translation>
+<translation id="1854270995641373652">Želite omogočiti podporo lokalnega daemona IPFS v programu Brave?</translation>
+<translation id="2366908098700680611">Omogoči IPFS</translation>
 <translation id="4552520379838695057">Ta stran manjka.</translation>
 <translation id="2609895996619941644">Želite preveriti, ali je na računalniku Wayback na voljo shranjena različica?</translation>
 <translation id="8053093028263274061">Žal ni na voljo nobene shranjene različice.</translation>
 <translation id="8517321676372639828">Preveri, ali je na voljo shranjena različica</translation>
-<translation id="191143826155037518">Brave vam je na voljo na <ph name="BEGIN_LINK_MPL">&lt;a target="_blank" href="$1"&gt;</ph>javna licenca Mozilla 2.0<ph name="END_LINK_MPL">&lt;/a&gt;</ph> (MPL) in vključuje <ph name="BEGIN_LINK_OSS">&lt;a target="_blank" href="$2"&gt;</ph>odprtokodno programsko opremo<ph name="END_LINK_OSS">&lt;/a&gt;</ph> pod različnimi drugimi licencami.
-Preberete si lahko <ph name="BEGIN_LINK_BUILD_INSTRUCTIONS">&lt;a target="_blank" href="$3"&gt;</ph>navodila o tem, kako prenesete in oblikujete<ph name="END_LINK_BUILD_INSTRUCTIONS">&lt;/a&gt;</ph> specifično <ph name="BEGIN_LINK_SOURCE_CODE">&lt;a target="_blank" href="$4"&gt;</ph>izvorno kodo, uporabljeno za ustvarjanje te kopije<ph name="END_LINK_SOURCE_CODE">&lt;/a&gt;</ph>.</translation>
+<translation id="191143826155037518">Brave vam je na voljo na <ph name="BEGIN_LINK_MPL"/>javna licenca Mozilla 2.0<ph name="END_LINK_MPL"/> (MPL) in vključuje <ph name="BEGIN_LINK_OSS"/>odprtokodno programsko opremo<ph name="END_LINK_OSS"/> pod različnimi drugimi licencami.
+Preberete si lahko <ph name="BEGIN_LINK_BUILD_INSTRUCTIONS"/>navodila o tem, kako prenesete in oblikujete<ph name="END_LINK_BUILD_INSTRUCTIONS"/> specifično <ph name="BEGIN_LINK_SOURCE_CODE"/>izvorno kodo, uporabljeno za ustvarjanje te kopije<ph name="END_LINK_SOURCE_CODE"/>.</translation>
 <translation id="4474155171896946103">Dodaj vse zavihke med zaznamke ...</translation>
 <translation id="2336228925368920074">Dodaj vse zavihke med zaznamke ...</translation>
 <translation id="796831669370432378">Če želite strani dodati med zaznamke, kliknite gumb za zaznamke v naslovni vrstici</translation>

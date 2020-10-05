@@ -291,7 +291,7 @@
 <translation id="1361872463926621533">स्टार्टअपवर ध्वनी प्ले करा</translation>
 <translation id="1363585519747660921">USB प्रिंटर कॉन्फिगर करणे आवश्यक आहे</translation>
 <translation id="1365180424462182382"><ph name="ENROLLMENT_DOMAIN"/>ने तुमचा <ph name="BEGIN_LINK"/>ब्राउझर व्यवस्थापित केला आहे<ph name="END_LINK"/></translation>
-<translation id="1366177842110999534">तुमच्या <ph name="DEVICE_TYPE"/> वर Linux टूल, संपादक आणि IDE रन करा. &lt;a target="_blank" href="<ph name="URL"/>"&gt;अधिक जाणून घ्या&lt;/a&gt;</translation>
+<translation id="1366177842110999534">तुमच्या <ph name="DEVICE_TYPE"/> वर Linux टूल, संपादक आणि IDE रन करा. &lt;a target="_blank" rel="noopener noreferrer" href="<ph name="URL"/>"&gt;अधिक जाणून घ्या&lt;/a&gt;</translation>
 <translation id="1367951781824006909">फाइल निवडा</translation>
 <translation id="1369149969991017342">स्विच ॲक्सेस (फक्त एक किंवा दोन स्विचसह कॉंप्युटर नियंत्रित करा)</translation>
 <translation id="1372841398847029212">तुमच्या खात्याशी सिंक करा</translation>
@@ -1353,7 +1353,7 @@
 <translation id="268053382412112343">इति&amp;हास</translation>
 <translation id="2682498795777673382">तुमच्या पालकाकडून अपडेट करा</translation>
 <translation id="2683638487103917598">क्रमवारी लावलेला फोल्डर</translation>
-<translation id="2686222346846590368">या <ph name="DEVICE_TYPE"/> साठी हे शेवटचे ऑटोमेटिक सॉफ्टवेअर आणि सुरक्षा अपडेट आहे. भविष्यामधील अपडेट मिळवण्यासाठी नवीन मॉडेलवर अपग्रेड करा. &lt;a target="_blank" href="<ph name="URL"/>"&gt;अधिक जाणून घ्या<ph name="LINK_END"/></translation>
+<translation id="2686222346846590368">या <ph name="DEVICE_TYPE"/> साठी हे शेवटचे ऑटोमेटिक सॉफ्टवेअर आणि सुरक्षा अपडेट आहे. भविष्यामधील अपडेट मिळवण्यासाठी नवीन मॉडेलवर अपग्रेड करा. &lt;a target="_blank" rel="noopener noreferrer" href="<ph name="URL"/>"&gt;अधिक जाणून घ्या<ph name="LINK_END"/></translation>
 <translation id="2687403674020088961">सर्व कुकी ब्लॉक करा (शिफारस केली जात नाही)</translation>
 <translation id="2687407218262674387">Brave सेवा अटी</translation>
 <translation id="2688196195245426394">सर्व्हरवर डिव्हाइसची नोंदणी करताना एरर: <ph name="CLIENT_ERROR"/>.</translation>
@@ -4850,7 +4850,7 @@
 <translation id="7197632491113152433">आम्हाला या डिव्हाइसवर वापरता येतील अशी <ph name="NUMBER_OF_APPS"/> ॲप्स तुमच्या खात्यात सापडली आहेत.</translation>
 <translation id="7199158086730159431">म&amp;दत मिळवा</translation>
 <translation id="7200083590239651963">काँफिगरेशन निवडा</translation>
-<translation id="7201042526153088083">तुमच्या <ph name="DEVICE_TYPE"/> वर Google Play मधून अ‍ॅप्स आणि गेम इंस्टॉल करा. &lt;a target="_blank" href="<ph name="URL"/>"&gt;अधिक जाणून घ्या&lt;/a&gt;</translation>
+<translation id="7201042526153088083">तुमच्या <ph name="DEVICE_TYPE"/> वर Google Play मधून अ‍ॅप्स आणि गेम इंस्टॉल करा. &lt;a target="_blank" rel="noopener noreferrer" href="<ph name="URL"/>"&gt;अधिक जाणून घ्या&lt;/a&gt;</translation>
 <translation id="720110658997053098">हे डिव्हाइस कायमचे कियोस्क मोडमध्ये ठेवा</translation>
 <translation id="7201118060536064622">'<ph name="DELETED_ITEM_NAME"/>' हटवले</translation>
 <translation id="7201420661433230412">फाइल पहा</translation>
@@ -6517,6 +6517,7 @@ https://www.chromium.org/chromium-os/how-tos-and-troubleshooting/debugging-featu
 <translation id="995782501881226248">YouTube</translation>
 <translation id="996250603853062861">सुरक्षित कनेक्शन इंस्टॉल करत आहे...</translation>
 <translation id="998747458861718449">तपासा</translation>
+<translation id="38046578254905003">विस्तार आणि थीम <ph name="BEGIN_LINK"/>Brave वेब स्टोअर<ph name="END_LINK"/> मध्ये शोधा</translation>
 <translation id="658539216370629794">लिंक गुप्त विंडो मध्ये उघडा</translation>
 <translation id="1432267168815937878">गुप्त विंडोमध्ये लिंक उघडा</translation>
 <translation id="6516243500644829484">नवीन &amp;गुप्त विंडो</translation>
@@ -6596,7 +6597,6 @@ https://www.chromium.org/chromium-os/how-tos-and-troubleshooting/debugging-featu
 <translation id="3860292630623580294">(गुप्त)</translation>
 <translation id="4854477725773269949">गुप्तमध्ये परवानगी द्या</translation>
 <translation id="6436164536244065364">वेब स्टोअर मध्‍ये पहा</translation>
-<translation id="38046578254905003">विस्तार आणि थीम <ph name="BEGIN_LINK"/>Brave वेब स्टोअर<ph name="END_LINK"/> मध्ये शोधा</translation>
 <translation id="6336451774241870485">नवीन गुप्त टॅब</translation>
 <translation id="6610147964972079463">गुप्त टॅब बंद करा</translation>
 <translation id="4933782374919065856">प्रश्न आहेत? तुमच्या प्रोफाइलचे निरीक्षण करणाऱ्या व्यक्तीशी संपर्क साधा.</translation>

@@ -25,7 +25,7 @@
 <translation id="3218385319396786393">Šiame puslapyje automatinio leidimo funkcija buvo užblokuota</translation>
 <translation id="4988333904713528597">Visada leisti automatinį leidimą svetainėje <ph name="HOST"/></translation>
 <translation id="4150684676757176434">Toliau blokuoti automatinį leidimą</translation>
-<translation id="5883458389055721080">„Brave“ nepatikrino šio plėtinio saugumo. Šį plėtinį įdiekite, tik jei pasitikite jo kūrėju.</translation>
+<translation id="8988939298652262600">„Brave“ netikrina šio plėtinio saugumo. Šį plėtinį įdiekite, tik jei pasitikite jo kūrėju.</translation>
 <translation id="8081858229109418493">Profilio pavadinimas ir piktograma</translation>
 <translation id="2044383478723007273">„Brave“ spalvos</translation>
 <translation id="1692470335103807198">Gauti daugiau temų</translation>
@@ -37,6 +37,9 @@
 <translation id="5802665280774361839">Rodyti automatinį užbaigimą adreso juostoje</translation>
 <translation id="597020512043916976">Rodyti populiariausias svetaines automatinio užbaigimo pasiūlymuose</translation>
 <translation id="264150068416846820">Rodyti „Brave“ siūlomas svetaines automatinio užbaigimo pasiūlymuose</translation>
+<translation id="6414370348346025511">Įjungta standartinė apsauga.</translation>
+<translation id="814018970995616154">Tikrina nesaugių svetainių sąrašą ir universaliuosius adresus, saugomus sistemoje „Brave“.</translation>
+<translation id="1144810021918451336">Neapsaugo nuo pavojingų svetainių, siuntų ir plėtinių.</translation>
 <translation id="7781069478569868053">Naujo skirtuko puslapis</translation>
 <translation id="2467749191278759605">Tinkinti „Brave“ ataskaitų sritį</translation>
 <translation id="1717331825806276156">Foniniai vaizdai</translation>
@@ -79,7 +82,7 @@
 <translation id="4824468494729001999">Blokuoti scenarijus</translation>
 <translation id="519861640102428255">Išvaizda ir turinys</translation>
 <translation id="4800195524776354947">Skydų piktogramoje rodyti užblokuotų elementų skaičių</translation>
-<translation id="3932286112122164477">Trečiųjų šalių svetainėse leisti „Google“ prisijungimo mygtukus</translation>
+<translation id="7498695072878479744">Trečiųjų šalių svetainėse leisti „Google“ prisijungimo mygtukus</translation>
 <translation id="863171915776379000">Leisti rodyti prisijungimo per „Facebook“ formą ir įterptuosius įrašus</translation>
 <translation id="5165042248369837294">Leisti rodyti įterptąsias „Twitter“ žinutes</translation>
 <translation id="958971637207126733">Leisti rodyti įterptuosius „LinkedIn“ įrašus</translation>
@@ -148,13 +151,17 @@
 <translation id="2356070529366658676">Paklausti</translation>
 <translation id="7701040980221191251">Nieko</translation>
 <translation id="1085027414516521238">„MetaMask“</translation>
-<translation id="3905324891414560921">Decentralizuotų programėlių „Web3“ teikėjas</translation>
+<translation id="7090046810227878892">Decentralizuotų programėlių „Ethereum“ teikėjas</translation>
 <translation id="5913089932885076110">Užkrauti kriptovaliutų pinigines paleidus kompiuterį</translation>
+<translation id="6864914031231797928">Leisti „Google“ prisijungti prie plėtinių</translation>
+<translation id="1365342176656744625">IPFS vietų nustatymo metodas</translation>
+<translation id="1327977588028644528">Tinklų sietuvas</translation>
+<translation id="80225669816651290">Vietinis mazgas</translation>
 <translation id="6554397389149987360">Naudodamas Hangouts komponentą įjunk ekrano bendrinimą ir kitas naršyklės funkcijas.</translation>
 <translation id="1765684547504191670">Naudojamas medijos maršruto parinktuvo komponentas, kad naršyklėje būtų įgalintas „Chromecast“</translation>
 <translation id="9156965752763025780">Pakeitimai įsigalios kitą kartą iš naujo paleidus „Brave“.</translation>
 <translation id="7179921470347911571">Paleisti iš naujo dabar</translation>
-<translation id="4154389611571860454">Siekiant naršyklėje palaikyti IPFS naudojamas IPFS partnerio plėtinys.</translation>
+<translation id="6222323340194834282">Siekiant naršyklėje palaikyti IPFS naudojamas IPFS partnerio plėtinys.</translation>
 <translation id="8137559199583651773">Tvarkyti plėtinius</translation>
 <translation id="7013485839273047434">Gauti daugiau plėtinių</translation>
 <translation id="4928988318462976765">Plėtinių parduotuvė</translation>
@@ -210,20 +217,19 @@
 <translation id="4394049700291259645">Neleisti</translation>
 <translation id="6469509880167172749">Automatiškai siųskite visiškai privačią produktų analizę „Brave“</translation>
 <translation id="7090566321964540749">Ši anoniminė informacija leidžia „Brave“ įvertinti tik bendrą tam tikrų funkcijų naudojimą.</translation>
-<translation id="9111960429693394744">Ar decentralizuotoms programėlėms norėtumėte naudoti „Brave“ kriptovaliutų pinigines ar „MetaMask“?</translation>
-<translation id="8721775358057000783">Ar norėtumėte paleisti kriptovaliutų pinigines „web3“ palaikyti šiame puslapyje?</translation>
+<translation id="1947672064022327074">Ar norėtumėte paleisti kriptovaliutų pinigines „Ethereum“ palaikyti?</translation>
 <translation id="7583735190612229830">Nustatykite, kad kriptovaliutų piniginės sąveikautų su šia programa ir kitomis panašiomis programomis.</translation>
 <translation id="4823406846571523661">Nustatyti kriptovaliutų pinigines</translation>
-<translation id="5756155765711979898">Naudoti „MetaMask“</translation>
-<translation id="6754134632841262799">SĄRANKA</translation>
 <translation id="8199661191594897555">Paleisti kriptovaliutų pinigines ir užkrauti iš naujo</translation>
 <translation id="8428213095426709021">Nustatymai</translation>
+<translation id="1854270995641373652">Ar norėtumėte įgalinti IPFS vietinės paslaugų teikimo sistemos palaikymą naudojant „Brave“?</translation>
+<translation id="2366908098700680611">Įgalinti IPFS</translation>
 <translation id="4552520379838695057">Deja, šio puslapio nėra.</translation>
 <translation id="2609895996619941644">Gal norite patikrinti, ar per „Wayback Machine“ pasiekiama įrašyta versija?</translation>
 <translation id="8053093028263274061">Deja, nėra įrašytos versijos.</translation>
 <translation id="8517321676372639828">Tikrinti, ar yra įrašyta versija</translation>
-<translation id="191143826155037518">„Brave“ jums pasiekiama pagal <ph name="BEGIN_LINK_MPL">&lt;a target="_blank" href="$1"&gt;</ph>„Mozilla“ viešąją licenciją 2.0<ph name="END_LINK_MPL">&lt;/a&gt;</ph> (MPL) ir apima <ph name="BEGIN_LINK_OSS">&lt;a target="_blank" href="$2"&gt;</ph>atvirojo kodo programinę įrangą<ph name="END_LINK_OSS">&lt;/a&gt;</ph> pagal įvairias kitas licencijas.
-        Galite perskaityti <ph name="BEGIN_LINK_BUILD_INSTRUCTIONS">&lt;a target="_blank" href="$3"&gt;</ph>instrukcijas, kaip atsisiųsti ir sau susikurti<ph name="END_LINK_BUILD_INSTRUCTIONS">&lt;/a&gt;</ph> specialų <ph name="BEGIN_LINK_SOURCE_CODE">&lt;a target="_blank" href="$4"&gt;</ph>šaltinio kodą, naudojamą šiai kopijai sukurti<ph name="END_LINK_SOURCE_CODE">&lt;/a&gt;</ph>.</translation>
+<translation id="191143826155037518">„Brave“ jums pasiekiama pagal <ph name="BEGIN_LINK_MPL"/>„Mozilla“ viešąją licenciją 2.0<ph name="END_LINK_MPL"/> (MPL) ir apima <ph name="BEGIN_LINK_OSS"/>atvirojo kodo programinę įrangą<ph name="END_LINK_OSS"/> pagal įvairias kitas licencijas.
+        Galite perskaityti <ph name="BEGIN_LINK_BUILD_INSTRUCTIONS"/>instrukcijas, kaip atsisiųsti ir sau susikurti<ph name="END_LINK_BUILD_INSTRUCTIONS"/> specialų <ph name="BEGIN_LINK_SOURCE_CODE"/>šaltinio kodą, naudojamą šiai kopijai sukurti<ph name="END_LINK_SOURCE_CODE"/>.</translation>
 <translation id="4474155171896946103">Pažymėti visus skirtukus...</translation>
 <translation id="2336228925368920074">Žymėti visus skirtukus...</translation>
 <translation id="796831669370432378">Jei norite pridėti žymę, spustelėkite žymių mygtuką greta adreso juostos</translation>

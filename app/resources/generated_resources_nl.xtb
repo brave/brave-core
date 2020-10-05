@@ -291,7 +291,7 @@
 <translation id="1361872463926621533">Geluid afspelen bij opstarten</translation>
 <translation id="1363585519747660921">USB-printer moet worden geconfigureerd</translation>
 <translation id="1365180424462182382">Je <ph name="BEGIN_LINK"/>browser wordt beheerd<ph name="END_LINK"/> door <ph name="ENROLLMENT_DOMAIN"/></translation>
-<translation id="1366177842110999534">Gebruik Linux-tools, editors en IDE's op je <ph name="DEVICE_TYPE"/>. &lt;a target="_blank" href="<ph name="URL"/>"&gt;Meer informatie&lt;/a&gt;</translation>
+<translation id="1366177842110999534">Gebruik Linux-tools, editors en IDE's op je <ph name="DEVICE_TYPE"/>. &lt;a target="_blank" rel="noopener noreferrer" href="<ph name="URL"/>"&gt;Meer informatie&lt;/a&gt;</translation>
 <translation id="1367951781824006909">Een bestand selecteren</translation>
 <translation id="1369149969991017342">Toegang via schakelaar (de computer bedienen met slechts één of twee schakelaars)</translation>
 <translation id="1372841398847029212">Synchroniseren met je account</translation>
@@ -1354,7 +1354,7 @@ Je kunt de instellingen van dit account beheren door de Family Link-app op je ap
 <translation id="268053382412112343">Geschi&amp;edenis</translation>
 <translation id="2682498795777673382">Update van je ouder</translation>
 <translation id="2683638487103917598">Map gesorteerd</translation>
-<translation id="2686222346846590368">Dit is de laatste automatische software- en beveiligingsupdate voor deze <ph name="DEVICE_TYPE"/>. Upgrade naar een nieuwer model om nieuwe updates te ontvangen. &lt;a target="_blank" href="<ph name="URL"/>"&gt;Meer informatie<ph name="LINK_END"/></translation>
+<translation id="2686222346846590368">Dit is de laatste automatische software- en beveiligingsupdate voor deze <ph name="DEVICE_TYPE"/>. Upgrade naar een nieuwer model om nieuwe updates te ontvangen. &lt;a target="_blank" rel="noopener noreferrer" href="<ph name="URL"/>"&gt;Meer informatie<ph name="LINK_END"/></translation>
 <translation id="2687403674020088961">Alle cookies blokkeren (niet aanbevolen)</translation>
 <translation id="2687407218262674387">Servicevoorwaarden van Brave</translation>
 <translation id="2688196195245426394">Fout bij het registreren van het apparaat bij de server: <ph name="CLIENT_ERROR"/>.</translation>
@@ -4852,7 +4852,7 @@ Je kunt de instellingen van dit account beheren door de Family Link-app op je ap
 <translation id="7197632491113152433">We hebben in je account <ph name="NUMBER_OF_APPS"/> apps gevonden die op dit apparaat kunnen worden gebruikt.</translation>
 <translation id="7199158086730159431">H&amp;ulp vragen</translation>
 <translation id="7200083590239651963">Configuratie selecteren</translation>
-<translation id="7201042526153088083">Apps en games van Google Play installeren op je <ph name="DEVICE_TYPE"/>. &lt;a target="_blank" href="<ph name="URL"/>"&gt;Meer informatie&lt;/a&gt;</translation>
+<translation id="7201042526153088083">Apps en games van Google Play installeren op je <ph name="DEVICE_TYPE"/>. &lt;a target="_blank" rel="noopener noreferrer" href="<ph name="URL"/>"&gt;Meer informatie&lt;/a&gt;</translation>
 <translation id="720110658997053098">Dit apparaat permanent in kioskmodus houden</translation>
 <translation id="7201118060536064622">'<ph name="DELETED_ITEM_NAME"/>' verwijderd</translation>
 <translation id="7201420661433230412">Bestanden weergeven</translation>
@@ -6611,7 +6611,7 @@ Bewaar je sleutelbestand op een veilige plaats. Je hebt het bestand nodig om nie
 <translation id="3860292630623580294">(Privé)</translation>
 <translation id="4854477725773269949">Toestaan in privé</translation>
 <translation id="6436164536244065364">Bekijken in Web Store</translation>
-<translation id="38046578254905003">Vind extensies en thema's in de <ph name="BEGIN_LINK">&lt;a target="_blank" href="https://chrome.google.com/webstore/category/extensions"&gt;</ph>Web Store<ph name="END_LINK">&lt;/a&gt;</ph></translation>
+<translation id="38046578254905003">Zoek extensies en thema's in de <ph name="BEGIN_LINK"/>Web Store<ph name="END_LINK"/></translation>
 <translation id="6336451774241870485">Nieuw privétabblad</translation>
 <translation id="6610147964972079463">Sluit privétabbladen af</translation>
 <translation id="4933782374919065856">Vragen? Neem contact op met de persoon die je profiel beheert.</translation>

@@ -1024,6 +1024,8 @@ Por exemplo, alguns Sites podem responder a este pedido ao mostrar-lhe anúncios
 <translation id="983192555821071799">Fechar todos os separadores</translation>
 <translation id="987264212798334818">Geral</translation>
 <translation id="996149300115483134">O menu do cartão do feed está fechado.</translation>
+<translation id="4540437243849625078">Este site está prestes a partilhar informações com uma aplicação fora do modo de navegação anónima.</translation>
+<translation id="1227836882233136433">Sair da navegação anónima?</translation>
 <translation id="5186185447130319458">Privado</translation>
 <translation id="9063160602596686558">Envia automaticamente estatísticas de utilização e relatórios de falhas para a Brave Software.</translation>
 <translation id="1438581767753657407">Quando o «Modo Lite» está ativado, Brave utiliza os servidores Brave para um carregamento mais rápido das páginas. Este modo rescreve as páginas muito lentas para carregar apenas o conteúdo essencial. O modo Lite não é aplicável aos separadores «Privado»s.</translation>
@@ -1033,8 +1035,7 @@ Por exemplo, alguns Sites podem responder a este pedido ao mostrar-lhe anúncios
 <translation id="3110967157686007724">Aba Privada</translation>
 <translation id="4526803704855831732">Abas Privadas</translation>
 <translation id="7465104139234185284">Encerrar todas as abas privadas</translation>
-<translation id="4540437243849625078">Este site está prestes a partilhar informações com uma aplicação fora do modo de navegação anónima.</translation>
-<translation id="1227836882233136433">Sair da navegação anónima?</translation>
+<translation id="21023559487771014">Ir para modo privado</translation>
 <translation id="6336451774241870485">Nova Tabela Privada</translation>
 <translation id="3234355010754616171">Nova Tabela Privada</translation>
 <translation id="6610147964972079463">Encerrar  abas pribadas</translation>

@@ -291,7 +291,7 @@
 <translation id="1361872463926621533">Putar suara saat dimulai</translation>
 <translation id="1363585519747660921">Printer USB membutuhkan konfigurasi</translation>
 <translation id="1365180424462182382"><ph name="BEGIN_LINK"/>Browser Anda dikelola<ph name="END_LINK"/> oleh <ph name="ENROLLMENT_DOMAIN"/></translation>
-<translation id="1366177842110999534">Menjalankan IDE, editor, dan fitur Linux di <ph name="DEVICE_TYPE"/> Anda. &lt;a target="_blank" href="<ph name="URL"/>"&gt;Pelajari lebih lanjut&lt;/a&gt;</translation>
+<translation id="1366177842110999534">Menjalankan IDE, editor, dan fitur Linux di <ph name="DEVICE_TYPE"/> Anda. &lt;a target="_blank" rel="noopener noreferrer" href="<ph name="URL"/>"&gt;Pelajari lebih lanjut&lt;/a&gt;</translation>
 <translation id="1367951781824006909">Pilih file</translation>
 <translation id="1369149969991017342">Tombol Akses (mengontrol komputer hanya menggunakan satu atau dua tombol)</translation>
 <translation id="1372841398847029212">Sinkronkan ke akun Anda</translation>
@@ -1354,7 +1354,7 @@ Anda dapat mengelola setelan akun ini dengan menginstal aplikasi Family Link di 
 <translation id="268053382412112343">Ri&amp;wayat</translation>
 <translation id="2682498795777673382">Pembaruan dari orang tua</translation>
 <translation id="2683638487103917598">Folder diurutkan</translation>
-<translation id="2686222346846590368">Ini adalah update otomatis keamanan dan software terakhir untuk <ph name="DEVICE_TYPE"/> ini. Untuk mendapatkan update mendatang, upgrade ke model yang lebih baru. &lt;a target="_blank" href="<ph name="URL"/>"&gt;Pelajari lebih lanjut<ph name="LINK_END"/></translation>
+<translation id="2686222346846590368">Ini adalah update otomatis keamanan dan software terakhir untuk <ph name="DEVICE_TYPE"/> ini. Untuk mendapatkan update mendatang, upgrade ke model yang lebih baru. &lt;a target="_blank" rel="noopener noreferrer" href="<ph name="URL"/>"&gt;Pelajari lebih lanjut<ph name="LINK_END"/></translation>
 <translation id="2687403674020088961">Blokir semua cookie (tidak direkomendasikan)</translation>
 <translation id="2687407218262674387">Persyaratan layanan Brave</translation>
 <translation id="2688196195245426394">Terjadi kesalahan saat mendaftarkan perangkat dengan server: <ph name="CLIENT_ERROR"/>.</translation>
@@ -4852,7 +4852,7 @@ Anda dapat mengelola setelan akun ini dengan menginstal aplikasi Family Link di 
 <translation id="7197632491113152433">Kami menemukan <ph name="NUMBER_OF_APPS"/> aplikasi dari akun Anda yang dapat digunakan di perangkat ini.</translation>
 <translation id="7199158086730159431">Dapatkan Bantuan</translation>
 <translation id="7200083590239651963">Pilih konfigurasi</translation>
-<translation id="7201042526153088083">Instal aplikasi dan game dari Google Play di <ph name="DEVICE_TYPE"/> Anda. &lt;a target="_blank" href="<ph name="URL"/>"&gt;Pelajari lebih lanjut&lt;/a&gt;</translation>
+<translation id="7201042526153088083">Instal aplikasi dan game dari Google Play di <ph name="DEVICE_TYPE"/> Anda. &lt;a target="_blank" rel="noopener noreferrer" href="<ph name="URL"/>"&gt;Pelajari lebih lanjut&lt;/a&gt;</translation>
 <translation id="720110658997053098">Simpan perangkat ini dalam mode kios secara permanen</translation>
 <translation id="7201118060536064622">'<ph name="DELETED_ITEM_NAME"/>' dihapus</translation>
 <translation id="7201420661433230412">Lihat file</translation>
@@ -6611,7 +6611,7 @@ Simpan file kunci Anda di tempat yang aman. Anda akan membutuhkannya untuk membu
 <translation id="3860292630623580294">(Pribadi)</translation>
 <translation id="4854477725773269949">Izinkan di mode pribadi</translation>
 <translation id="6436164536244065364">Lihat di Toko Web</translation>
-<translation id="38046578254905003">Temukan ekstensi dan tema di the <ph name="BEGIN_LINK">&lt;a target="_blank" href="https://chrome.google.com/webstore/category/extensions"&gt;</ph>Toko Web<ph name="END_LINK">&lt;/a&gt;</ph></translation>
+<translation id="38046578254905003">Temukan ekstensi dan tema di <ph name="BEGIN_LINK"/>Toko Web<ph name="END_LINK"/></translation>
 <translation id="6336451774241870485">Tab pribadi baru</translation>
 <translation id="6610147964972079463">Tutup tab pribadi</translation>
 <translation id="4933782374919065856">Ada pertanyaan? Hubungi orang yang memantau profil Anda.</translation>

@@ -25,7 +25,7 @@
 <translation id="3218385319396786393">此頁面已禁止自動播放</translation>
 <translation id="4988333904713528597">永遠允許自動播放 <ph name="HOST"/></translation>
 <translation id="4150684676757176434">繼續阻擋自動撥放</translation>
-<translation id="5883458389055721080">Brave 未驗證過此擴充套件的安全性。只在您信任此開開發者時才安裝此擴充套件。</translation>
+<translation id="8988939298652262600">Brave 不會審查延伸套件的漏洞和安全性。僅在您信任開發者的情況下，才安裝這個延伸套件。</translation>
 <translation id="8081858229109418493">設定檔名稱和圖示</translation>
 <translation id="2044383478723007273">Brave 顏色</translation>
 <translation id="1692470335103807198">取得更多主題</translation>
@@ -37,6 +37,9 @@
 <translation id="5802665280774361839">在網址列顯示自動完成</translation>
 <translation id="597020512043916976">在自動完成建議中顯示熱門網站</translation>
 <translation id="264150068416846820">在自動完成建議中顯示 Brave 建議的網站</translation>
+<translation id="6414370348346025511">標準防護已開啟。</translation>
+<translation id="814018970995616154">以 Brave 中儲存的不安全網站清單檢查 URL。</translation>
+<translation id="1144810021918451336">無法協助您防護危險網站、下載和延伸套件。</translation>
 <translation id="7781069478569868053">新分頁</translation>
 <translation id="2467749191278759605">自訂您的 Brave 儀表板</translation>
 <translation id="1717331825806276156">背景圖片</translation>
@@ -79,7 +82,7 @@
 <translation id="4824468494729001999">封鎖指令碼</translation>
 <translation id="519861640102428255">外觀</translation>
 <translation id="4800195524776354947">在 Shields 圖示上顯示封鎖項目的數量</translation>
-<translation id="3932286112122164477">在第三方網站上允許 Google 登入按鈕</translation>
+<translation id="7498695072878479744">在第三方網站上允許 Google 登入按鈕</translation>
 <translation id="863171915776379000">允許 Facebook 登入與嵌入貼文</translation>
 <translation id="5165042248369837294">允許 Twitter 嵌入推文</translation>
 <translation id="958971637207126733">允許 Linkedin 嵌入貼文</translation>
@@ -148,13 +151,17 @@
 <translation id="2356070529366658676">詢問</translation>
 <translation id="7701040980221191251">無</translation>
 <translation id="1085027414516521238">MetaMask</translation>
-<translation id="3905324891414560921">使用 Dapps 的 Web3 提供者</translation>
+<translation id="7090046810227878892">用於使用去中央化應用程式 (Dapp) 的乙太坊提供者</translation>
 <translation id="5913089932885076110">啟動時載入加密錢包</translation>
+<translation id="6864914031231797928">允許延伸套件登入 Google</translation>
+<translation id="1365342176656744625">解析 IPFS 位置的方法</translation>
+<translation id="1327977588028644528">閘道</translation>
+<translation id="80225669816651290">本地節點</translation>
 <translation id="6554397389149987360">使用 Hangouts 元件來啟用畫面分享和其它瀏覽器功能。</translation>
 <translation id="1765684547504191670">使用媒體路由器元件以在瀏覽器中啟用 Chromecast。</translation>
 <translation id="9156965752763025780">你的變更將於下次重新啟動 Brave 時生效。</translation>
 <translation id="7179921470347911571">立刻重新啟動</translation>
-<translation id="4154389611571860454">使用 IPFS 配對擴充套件以在瀏覽器中支援 IPFS。</translation>
+<translation id="6222323340194834282">使用 IPFS 伴隨延伸套件，增強瀏覽器的 IPFS 支援。</translation>
 <translation id="8137559199583651773">管理擴充功能</translation>
 <translation id="7013485839273047434">取得更多擴充功能</translation>
 <translation id="4928988318462976765">網路擴充功能商店</translation>
@@ -210,20 +217,19 @@
 <translation id="4394049700291259645">停用</translation>
 <translation id="6469509880167172749">自動傳送完全私密的產品分析給 Brave</translation>
 <translation id="7090566321964540749">此匿名資訊只會讓 Brave 評估特定功能的整題使用量。</translation>
-<translation id="9111960429693394744">您想要為 Dapps 使用 Brave 的加密錢包或 MetaMask 呢？</translation>
-<translation id="8721775358057000783">您想要在此頁面上啟動 web3 支援的加密錢包嗎？</translation>
+<translation id="1947672064022327074">您想開啟加密錢包以支援乙太坊嗎？</translation>
 <translation id="7583735190612229830">設定 Crypto Wallets 以與此應用程式和其他類似的應用程式互動。</translation>
 <translation id="4823406846571523661">設定加密錢包</translation>
-<translation id="5756155765711979898">使用 MetaMask</translation>
-<translation id="6754134632841262799">設定</translation>
 <translation id="8199661191594897555">啟動加密錢包並重新載入</translation>
 <translation id="8428213095426709021">設定</translation>
+<translation id="1854270995641373652">您想在 Brave 中啟用 IPFS 本地常駐程式支援嗎？</translation>
+<translation id="2366908098700680611">啟用 IPFS</translation>
 <translation id="4552520379838695057">抱歉，頁面遺失。</translation>
 <translation id="2609895996619941644">您想要檢查 Wayback Machine 上是否有已儲存的版本嗎？</translation>
 <translation id="8053093028263274061">抱歉，無可用的已儲存版本。</translation>
 <translation id="8517321676372639828">檢查已儲存的版本</translation>
-<translation id="191143826155037518">Brave 是以 <ph name="BEGIN_LINK_MPL">&lt;a target="_blank" href="$1"&gt;</ph>Mozilla 公眾授權條款 2.0<ph name="END_LINK_MPL">&lt;/a&gt;</ph> (MPL) 提供，其包含了其他多種授權條款的 <ph name="BEGIN_LINK_OSS">&lt;a target="_blank" href="$2"&gt;</ph>開放原始碼軟體<ph name="END_LINK_OSS">&lt;/a&gt;</ph>。
-        您可以閱讀 <ph name="BEGIN_LINK_BUILD_INSTRUCTIONS">&lt;a target="_blank" href="$3"&gt;</ph>如何下載並自行建構<ph name="END_LINK_BUILD_INSTRUCTIONS">&lt;/a&gt;</ph> 特定 <ph name="BEGIN_LINK_SOURCE_CODE">&lt;a target="_blank" href="$4"&gt;</ph>原始碼來建立此副本<ph name="END_LINK_SOURCE_CODE">&lt;/a&gt;</ph> 的說明。</translation>
+<translation id="191143826155037518">Brave 是以 <ph name="BEGIN_LINK_MPL"/>Mozilla 公眾授權條款 2.0<ph name="END_LINK_MPL"/> (MPL) 提供，其包含了其他多種授權條款的 <ph name="BEGIN_LINK_OSS"/>開放原始碼軟體<ph name="END_LINK_OSS"/>。
+        您可以閱讀 <ph name="BEGIN_LINK_BUILD_INSTRUCTIONS"/>如何下載並自行建構<ph name="END_LINK_BUILD_INSTRUCTIONS"/> 特定 <ph name="BEGIN_LINK_SOURCE_CODE"/>原始碼來建立此副本<ph name="END_LINK_SOURCE_CODE"/> 的說明。</translation>
 <translation id="4474155171896946103">將所有分頁加入書籤...</translation>
 <translation id="2336228925368920074">將所有分頁加入書籤...</translation>
 <translation id="796831669370432378">要新增書籤，點擊網址列旁的書籤按鈕</translation>

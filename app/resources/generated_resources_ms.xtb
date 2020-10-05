@@ -291,7 +291,7 @@
 <translation id="1361872463926621533">Mainkan bunyi semasa permulaan</translation>
 <translation id="1363585519747660921">Pencetak USB memerlukan konfigurasi</translation>
 <translation id="1365180424462182382"><ph name="BEGIN_LINK"/>Penyemak imbas anda diurus<ph name="END_LINK"/> oleh <ph name="ENROLLMENT_DOMAIN"/></translation>
-<translation id="1366177842110999534">Jalankan alatan, editor dan IDE Linux pada <ph name="DEVICE_TYPE"/> anda. &lt;a target="_blank" href="<ph name="URL"/>"&gt;Ketahui lebih lanjut&lt;/a&gt;</translation>
+<translation id="1366177842110999534">Jalankan alatan, editor dan IDE Linux pada <ph name="DEVICE_TYPE"/> anda. &lt;a target="_blank" rel="noopener noreferrer" href="<ph name="URL"/>"&gt;Ketahui lebih lanjut&lt;/a&gt;</translation>
 <translation id="1367951781824006909">Pilih fail</translation>
 <translation id="1369149969991017342">Akses Suis (kawal komputer dengan satu atau dua suis sahaja)</translation>
 <translation id="1372841398847029212">Segerakkan ke akaun anda</translation>
@@ -1354,7 +1354,7 @@ Anda boleh mengurus tetapan akaun ini dengan memasang apl Family Link pada peran
 <translation id="268053382412112343">Se&amp;jarah</translation>
 <translation id="2682498795777673382">Kemas kini daripada ibu atau bapa anda</translation>
 <translation id="2683638487103917598">Folder diisih</translation>
-<translation id="2686222346846590368">Ini ialah kemas kini perisian dan keselamatan automatik yang terakhir untuk <ph name="DEVICE_TYPE"/> ini. Untuk mendapatkan kemas kini pada masa akan datang, tingkatkan kepada model yang lebih baharu. &lt;a target="_blank" href="<ph name="URL"/>"&gt;Ketahui lebih lanjut<ph name="LINK_END"/></translation>
+<translation id="2686222346846590368">Ini ialah kemas kini perisian dan keselamatan automatik yang terakhir untuk <ph name="DEVICE_TYPE"/> ini. Untuk mendapatkan kemas kini pada masa akan datang, tingkatkan kepada model yang lebih baharu. &lt;a target="_blank" rel="noopener noreferrer" href="<ph name="URL"/>"&gt;Ketahui lebih lanjut<ph name="LINK_END"/></translation>
 <translation id="2687403674020088961">Sekat semua kuki (tidak disyorkan)</translation>
 <translation id="2687407218262674387">Syarat perkhidmatan Brave</translation>
 <translation id="2688196195245426394">Ralat semasa mendaftarkan peranti dengan pelayan: <ph name="CLIENT_ERROR"/>.</translation>
@@ -4852,7 +4852,7 @@ Anda boleh mengurus tetapan akaun ini dengan memasang apl Family Link pada peran
 <translation id="7197632491113152433">Kami menemui <ph name="NUMBER_OF_APPS"/> apl daripada akaun anda yang boleh digunakan pada peranti ini.</translation>
 <translation id="7199158086730159431">Dapatkan B&amp;antuan</translation>
 <translation id="7200083590239651963">Pilih konfigurasi</translation>
-<translation id="7201042526153088083">Pasang apl dan permainan daripada Google Play pada <ph name="DEVICE_TYPE"/> anda. &lt;a target="_blank" href="<ph name="URL"/>"&gt;Ketahui lebih lanjut&lt;/a&gt;</translation>
+<translation id="7201042526153088083">Pasang apl dan permainan daripada Google Play pada <ph name="DEVICE_TYPE"/> anda. &lt;a target="_blank" rel="noopener noreferrer" href="<ph name="URL"/>"&gt;Ketahui lebih lanjut&lt;/a&gt;</translation>
 <translation id="720110658997053098">Pastikan peranti ini kekal dalam mod kios</translation>
 <translation id="7201118060536064622">'<ph name="DELETED_ITEM_NAME"/>' dipadamkan</translation>
 <translation id="7201420661433230412">Lihat fail</translation>
@@ -6612,7 +6612,7 @@ perubahan ini berlaku, anda mungkin tidak mahukannya.</translation>
 <translation id="3860292630623580294">(Sulit)</translation>
 <translation id="4854477725773269949">Benarkan dalam sulit</translation>
 <translation id="6436164536244065364">Lihat di Kedai Web</translation>
-<translation id="38046578254905003">Cari sambungan dan tema di <ph name="BEGIN_LINK">&lt;a target="_blank" href="https://chrome.google.com/webstore/category/extensions"&gt;</ph>Gedung Web<ph name="END_LINK">&lt;/a&gt;</ph></translation>
+<translation id="38046578254905003">Cari sambungan dan tema di <ph name="BEGIN_LINK"/>Gedung Web<ph name="END_LINK"/></translation>
 <translation id="6336451774241870485">Tab sulit baru</translation>
 <translation id="6610147964972079463">Tutup tab sulit</translation>
 <translation id="4933782374919065856">Ada soalan? Hubungi orang yang menyelia profil anda.</translation>

@@ -291,7 +291,7 @@
 <translation id="1361872463926621533">Phát âm thanh khi khởi động</translation>
 <translation id="1363585519747660921">Máy in USB cần định cấu hình</translation>
 <translation id="1365180424462182382"><ph name="ENROLLMENT_DOMAIN"/> <ph name="BEGIN_LINK"/>quản lý trình duyệt<ph name="END_LINK"/> của bạn</translation>
-<translation id="1366177842110999534">Chạy các công cụ, trình chỉnh sửa và môi trường phát triển được tích hợp (IDE) của Linux trên <ph name="DEVICE_TYPE"/> của bạn. &lt;a target="_blank" href="<ph name="URL"/>"&gt;Tìm hiểu thêm&lt;/a&gt;</translation>
+<translation id="1366177842110999534">Chạy các công cụ, trình chỉnh sửa và môi trường phát triển được tích hợp (IDE) của Linux trên <ph name="DEVICE_TYPE"/> của bạn. &lt;a target="_blank" rel="noopener noreferrer" href="<ph name="URL"/>"&gt;Tìm hiểu thêm&lt;/a&gt;</translation>
 <translation id="1367951781824006909">Chọn tệp</translation>
 <translation id="1369149969991017342">Tiếp cận bằng công tắc (điều khiển máy tính chỉ bằng một hoặc hai công tắc)</translation>
 <translation id="1372841398847029212">Đồng bộ hóa với tài khoản của bạn</translation>
@@ -1354,7 +1354,7 @@ Bạn có thể quản lý các tùy chọn cài đặt của tài khoản này 
 <translation id="268053382412112343">Lị&amp;ch sử</translation>
 <translation id="2682498795777673382">Thông tin mới từ cha mẹ</translation>
 <translation id="2683638487103917598">Đẵ sắp xếp thư mục</translation>
-<translation id="2686222346846590368">Đây là bản tự động cập nhật bảo mật và phần mềm mới nhất cho <ph name="DEVICE_TYPE"/> này. Để nhận các bản cập nhật trong tương lai, hãy nâng cấp lên mẫu thiết bị mới hơn. &lt;a target="_blank" href="<ph name="URL"/>"&gt;Tìm hiểu thêm<ph name="LINK_END"/></translation>
+<translation id="2686222346846590368">Đây là bản tự động cập nhật bảo mật và phần mềm mới nhất cho <ph name="DEVICE_TYPE"/> này. Để nhận các bản cập nhật trong tương lai, hãy nâng cấp lên mẫu thiết bị mới hơn. &lt;a target="_blank" rel="noopener noreferrer" href="<ph name="URL"/>"&gt;Tìm hiểu thêm<ph name="LINK_END"/></translation>
 <translation id="2687403674020088961">Chặn tất cả cookie (không khuyến nghị)</translation>
 <translation id="2687407218262674387">Điều khoản dịch vụ của Brave</translation>
 <translation id="2688196195245426394">Lỗi khi đăng ký thiết bị với máy chủ: <ph name="CLIENT_ERROR"/>.</translation>
@@ -4852,7 +4852,7 @@ Bạn có thể quản lý các tùy chọn cài đặt của tài khoản này 
 <translation id="7197632491113152433">Chúng tôi tìm thấy <ph name="NUMBER_OF_APPS"/> ứng dụng từ tài khoản của bạn có thể dùng trên thiết bị này.</translation>
 <translation id="7199158086730159431">Nhận &amp;trợ giúp</translation>
 <translation id="7200083590239651963">Chọn cấu hình</translation>
-<translation id="7201042526153088083">Cài đặt ứng dụng và trò chơi từ Google Play trên <ph name="DEVICE_TYPE"/>. &lt;a target="_blank" href="<ph name="URL"/>"&gt;Tìm hiểu thêm&lt;/a&gt;</translation>
+<translation id="7201042526153088083">Cài đặt ứng dụng và trò chơi từ Google Play trên <ph name="DEVICE_TYPE"/>. &lt;a target="_blank" rel="noopener noreferrer" href="<ph name="URL"/>"&gt;Tìm hiểu thêm&lt;/a&gt;</translation>
 <translation id="720110658997053098">Vĩnh viễn giữ thiết bị này ở chế độ kiosk</translation>
 <translation id="7201118060536064622">Đã xóa '<ph name="DELETED_ITEM_NAME"/>'</translation>
 <translation id="7201420661433230412">Xem tệp</translation>
@@ -6611,7 +6611,7 @@ Giữ tệp khóa của bạn ở nơi an toàn. Bạn sẽ cần tệp khóa đ
 <translation id="3860292630623580294">(Riêng tư)</translation>
 <translation id="4854477725773269949">Cho phép trong chế độ riêng tư</translation>
 <translation id="6436164536244065364">Xem trong Cửa hàng trực tuyến</translation>
-<translation id="38046578254905003">Tìm các phần mở rộng và chủ đề trong <ph name="BEGIN_LINK">&lt;a target="_blank" href="https://chrome.google.com/webstore/category/extensions"&gt;</ph>Web Store<ph name="END_LINK">&lt;/a&gt;</ph></translation>
+<translation id="38046578254905003">Tìm các tiện ích mở rộng và chủ đề trong <ph name="BEGIN_LINK"/>Web Store<ph name="END_LINK"/></translation>
 <translation id="6336451774241870485">Thẻ riêng tư mới</translation>
 <translation id="6610147964972079463">Đóng các thẻ riêng tư</translation>
 <translation id="4933782374919065856">Bạn có câu hỏi? Hãy liên hệ với người giám sát hồ sơ của bạn.</translation>

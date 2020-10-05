@@ -1911,6 +1911,25 @@ További részletek:
     &lt;/ul&gt;</translation>
 <translation id="994346157028146140">JIS B1</translation>
 <translation id="6771143571626203666">A Brave Payről</translation>
+<translation id="2586968635953373425">Privát ablak megnyitása</translation>
+<translation id="3489858312836205593">Új Brave privát ablak megnyitása</translation>
+<translation id="1426112902089905810">&lt;h4&gt;1. lépés: Jelentkezzen be  a portálra&lt;/h4&gt;
+    &lt;p&gt;a kávézók és repterek wifi-hálózataiba be kell jelentkezni. A bejelentkezési oldal megtekintéséhez látogasson el egy oldalra, ami &lt;code&gt;http://&lt;/kódot használ&gt;.&lt;/p&gt;
+    &lt;ol&gt;
+    &lt;li&gt;Keressen fel bármilyen &lt;code&gt;http:// kezdetű weboldalra&lt;/code&gt;, például &lt;a href="http://example.com" target="_blank"&gt;http://example.com&lt;/a&gt;.&lt;/li&gt;
+    &lt;li&gt;A megnyíló bejelentkezési oldalon jelentkezzen be az internet használatára.&lt;/li&gt;
+    &lt;/ol&gt;
+    &lt;h4&gt;2. lépés: Nyissa meg az oldalt privát módban (csak számítógépen)&lt;/h4&gt;
+    &lt;p&gt;Nyissa meg a privát ablakban felkeresett oldalt.&lt;/p&gt;
+    &lt;p&gt;Ha az oldal elindul, egy Brave kiterjesztés nem működik megfelelően. A hiba javításához kapcsolja ki a kiterjesztést.&lt;/p&gt;
+    &lt;h4&gt;3. lépés: Frissítse operációs rendszerét&lt;/h4&gt;
+    &lt;p&gt;Győződjön meg róla, hogy készüléke naprakész.&lt;/p&gt;
+    &lt;h4&gt;4. lépés: Ideiglenesen kapcsolja ki a vírusvédelmét&lt;/h4&gt;
+    &lt;p&gt;Ezt a hibát látja, ha „HTTPS védelmet” vagy „HTTPS szkennelést” nyújtó vírusvédelme van. A vírusvédelem gátolja a Brave-et a védelem biztosításában.&lt;/p&gt;
+    &lt;p&gt;A probléma megoldásához kapcsolja ki a vírusvédelmi szoftvert. Ha szoftver kikapcsolása után az oldal működik, kapcsolja ki ezt a szoftvert, amikor biztonságos oldalakat használ.&lt;/p&gt;
+    &lt;p&gt;Ne feledje visszakapcsolni a vírusvédelmi programot, ha végzett.&lt;/p&gt;
+    &lt;h4&gt;5. lépés: Kérjen további segítséget&lt;/h4&gt;
+    &lt;p&gt;Ha továbbra is fennáll a probléma, vegye fel a kapcsolatot a weboldal tulajdonosával.&lt;/p&gt;</translation>
 <translation id="8820817407110198400">Könyvjelzők</translation>
 <translation id="8362995731815961365">A számítógépet beállító profil az oldal blokkolása mellett döntött.</translation>
 <translation id="4075123085690634698">Nyissa meg az oldalt egy privát ablakban (⇧⌘N)</translation>
@@ -1921,13 +1940,15 @@ További részletek:
 <translation id="9177896974490719854">Ennek ellenére ön nem láthatatlan. A privát mód nem rejti el böngészését alkalmazója, internetszolgáltatója vagy a felkeresett weboladalak elől.</translation>
 <translation id="2227116904818538760">Privát módra váltott</translation>
 <translation id="2007417459975034427">Most már privátban böngészhet, és a készüléket használó többi profil nem fogja látni tevékenységét. A letöltések és könyvjelzők viszont elmentődnek.</translation>
-<translation id="2586968635953373425">Privát ablak megnyitása</translation>
-<translation id="3489858312836205593">Új Brave privát ablak megnyitása</translation>
+<translation id="5549245478906381817">Privát ablak megnyitása</translation>
+<translation id="5497977785983089120">Nyisson meg egy új privát ablakot a privát böngészéshez</translation>
+<translation id="1819281525814582516"><ph name="LAUNCH_INCOGNITO_FOCUSED_FRIENDLY_MATCH_TEXT"/>, nyomja meg a Tab és Enter billentyűket új privát ablak megnyitásához és privát böngészéshez</translation>
+<translation id="2418728264526266844">Privát ablak megnyitása gomb, az Enter billentyű lenyomásával új privát ablakot nyithat privát böngészéshez</translation>
 <translation id="6984479912851154518">Kilép a privát módból, hogy fizessen egy külső alkalmazással. Folytatja?</translation>
-<translation id="1426112902089905810">&lt;h4&gt;1. lépés: Jelentkezzen be  a portálra&lt;/h4&gt;
-    &lt;p&gt;a kávézók és repterek wifi-hálózataiba be kell jelentkezni. A bejelentkezési oldal megtekintéséhez látogasson el egy oldalra, ami &lt;code&gt;http://&lt;/kódot használ&gt;.&lt;/p&gt;
+<translation id="7243899945709472787">&lt;h4&gt;1. lépés: Jelentkezzen be  a portálra&lt;/h4&gt;
+    &lt;p&gt;a kávézók és repterek wifi-hálózataiba be kell jelentkezni. A bejelentkezési oldal megtekintéséhez látogasson el egy oldalra, ami &lt;code&gt;http://&lt;/code&gt; használ&lt;/p&gt;
     &lt;ol&gt;
-    &lt;li&gt;Keressen fel bármilyen &lt;code&gt;http:// kezdetű weboldalra&lt;/code&gt;, például &lt;a href="http://example.com" target="_blank"&gt;http://example.com&lt;/a&gt;.&lt;/li&gt;
+    &lt;li&gt;Keressen fel bármilyen &lt;code&gt;http:// kezdetű weboldalra&lt;/code&gt;, például &lt;a href="http://example.com" target="_blank" rel="noopener noreferrer"&gt;http://example.com&lt;/a&gt;.&lt;/li&gt;
     &lt;li&gt;A megnyíló bejelentkezési oldalon jelentkezzen be az internet használatára.&lt;/li&gt;
     &lt;/ol&gt;
     &lt;h4&gt;2. lépés: Nyissa meg az oldalt privát módban (csak számítógépen)&lt;/h4&gt;

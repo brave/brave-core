@@ -291,7 +291,7 @@
 <translation id="1361872463926621533">Pri spustení prehrávať zvuk</translation>
 <translation id="1363585519747660921">Je potrebné nakonfigurovať tlačiareň USB</translation>
 <translation id="1365180424462182382">Váš <ph name="BEGIN_LINK"/>prehliadač spravuje<ph name="END_LINK"/> doména <ph name="ENROLLMENT_DOMAIN"/></translation>
-<translation id="1366177842110999534">Vo svojom zariadení <ph name="DEVICE_TYPE"/> používate linuxové nástroje, editory a prostredia IDE. &lt;a target="_blank" href="<ph name="URL"/>"&gt;Ďalšie nástroje&lt;/a&gt;</translation>
+<translation id="1366177842110999534">Vo svojom zariadení <ph name="DEVICE_TYPE"/> používate linuxové nástroje, editory a prostredia IDE. &lt;a target="_blank" rel="noopener noreferrer" href="<ph name="URL"/>"&gt;Ďalšie nástroje&lt;/a&gt;</translation>
 <translation id="1367951781824006909">Vybrať súbor</translation>
 <translation id="1369149969991017342">Ovládanie prepínačmi (ovládajte počítač len jedným či dvoma prepínačmi)</translation>
 <translation id="1372841398847029212">Synchronizovať do účtu</translation>
@@ -1353,7 +1353,7 @@ Ak chcete spravovať nastavenia tohto účtu, nainštalujte si do zariadenia apl
 <translation id="268053382412112343">Hi&amp;stória</translation>
 <translation id="2682498795777673382">Aktualizácia od rodiča</translation>
 <translation id="2683638487103917598">Priečinok je zoradený</translation>
-<translation id="2686222346846590368">Toto je posledná automatická aktualizácia softvéru a zabezpečenia zariadenia <ph name="DEVICE_TYPE"/>. Ak chcete v budúcnosti dostávať aktualizácie, prejdite na novší model. &lt;a target="_blank" href="<ph name="URL"/>"&gt;Ďalšie informácie<ph name="LINK_END"/></translation>
+<translation id="2686222346846590368">Toto je posledná automatická aktualizácia softvéru a zabezpečenia zariadenia <ph name="DEVICE_TYPE"/>. Ak chcete v budúcnosti dostávať aktualizácie, prejdite na novší model. &lt;a target="_blank" rel="noopener noreferrer" href="<ph name="URL"/>"&gt;Ďalšie informácie<ph name="LINK_END"/></translation>
 <translation id="2687403674020088961">Blokovať všetky súbory cookie (neodporúča sa)</translation>
 <translation id="2687407218262674387">Zmluvné podmienky spoločnosti Brave</translation>
 <translation id="2688196195245426394">Pri registrácii zariadenia na serveri <ph name="CLIENT_ERROR"/> sa vyskytla chyba.</translation>
@@ -4851,7 +4851,7 @@ Ak chcete spravovať nastavenia tohto účtu, nainštalujte si do zariadenia apl
 <translation id="7197632491113152433">Vo vašom účte sme našli niekoľko aplikácií, ktoré sa dajú použiť v tomto zariadení (počet: <ph name="NUMBER_OF_APPS"/>).</translation>
 <translation id="7199158086730159431">Získať p&amp;omoc</translation>
 <translation id="7200083590239651963">Výber konfigurácie</translation>
-<translation id="7201042526153088083">Nainštalujte si aplikácie a hry zo služby Google Play v zariadení <ph name="DEVICE_TYPE"/>. &lt;a target="_blank" href="<ph name="URL"/>"&gt;Ďalšie informácie&lt;/a&gt;</translation>
+<translation id="7201042526153088083">Nainštalujte si aplikácie a hry zo služby Google Play v zariadení <ph name="DEVICE_TYPE"/>. &lt;a target="_blank" rel="noopener noreferrer" href="<ph name="URL"/>"&gt;Ďalšie informácie&lt;/a&gt;</translation>
 <translation id="720110658997053098">Udržiavať toto zariadenie trvale v režime kiosku</translation>
 <translation id="7201118060536064622">Položka <ph name="DELETED_ITEM_NAME"/> bola odstránená</translation>
 <translation id="7201420661433230412">Zobraziť súbory</translation>
@@ -6609,7 +6609,7 @@ Súbor kľúča uložte na bezpečné miesto. Budete ho potrebovať na vytvoreni
 <translation id="3860292630623580294">(Súkromný)</translation>
 <translation id="4854477725773269949">Povoliť v súkromí</translation>
 <translation id="6436164536244065364">Zobraziť v Internetovom obchode</translation>
-<translation id="38046578254905003">Nájsť rozšírenia a témy v <ph name="BEGIN_LINK">&lt;a target="_blank" href="https://chrome.google.com/webstore/category/extensions"&gt;</ph>Web Store<ph name="END_LINK">&lt;/a&gt;</ph></translation>
+<translation id="38046578254905003">Rozšírenia a témy nájdete v <ph name="BEGIN_LINK"/>Web Store<ph name="END_LINK"/></translation>
 <translation id="6336451774241870485">Nová súkromná karta</translation>
 <translation id="6610147964972079463">Zatvoriť súkromné karty</translation>
 <translation id="4933782374919065856">Máte otázky? Obráťte sa na osobu, ktorá kontroluje váš profil.</translation>

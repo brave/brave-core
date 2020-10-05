@@ -766,7 +766,7 @@ Ef þú gerir það ekki loka persónuverndarstillingar þínar á þennan aðga
 <translation id="1426112902089905810">&lt;h4&gt;Skref 1: Skráðu þig inn á gáttina&lt;/h4&gt;
     &lt;p&gt;Þegar þú notar Wi-Fi net á stöðum eins og kaffihúsum og flugvöllum þarftu að skrá þig inn. Innskráningarsíðan birtist þegar þú ferð á síðu sem notar &lt;code&gt;http://&lt;/code&gt;.&lt;/p&gt;
     &lt;ol&gt;
-    &lt;li&gt;Farðu á vefsvæði sem byrjar á &lt;code&gt;http://&lt;/code&gt;, eins og &lt;a href="http://example.com" target="_blank"&gt;http://example.com&lt;/a&gt;.&lt;/li&gt;
+    &lt;li&gt;Farðu á vefsvæði sem byrjar á &lt;code&gt;http://&lt;/code&gt;, eins og &lt;a href="http://example.com" target="_blank" rel="noopener noreferrer"&gt;http://example.com&lt;/a&gt;.&lt;/li&gt;
     &lt;li&gt;Á innskráningarsíðunni sem opnast skráirðu þig inn til að nota internetið.&lt;/li&gt;
     &lt;/ol&gt;
     &lt;h4&gt;Skref 2: Opnaðu síðuna í huliðsstillingu (aðeins í tölvu)&lt;/h4&gt;

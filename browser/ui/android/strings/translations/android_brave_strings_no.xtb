@@ -310,7 +310,8 @@ helt til vedkommende verifiserer bidraget, eller til det har gått 90 dager.</tr
 <translation id="5963670684159057574">Blokker bruk av fingeravtrykk på tvers av nettsteder</translation>
 <translation id="3895527457258986253">Blokker fingerprinting</translation>
 <translation id="184568144098869637">Hindrer nettleseren fra å gjenkjenne din enhet</translation>
-<translation id="4540198958192073185">Blokker alle fingeravtrykk</translation>
+<translation id="7396366757003005317">Fingeravtrykk blokkert (restriktivt; kan gjøre at nettsteder slutter å fungere)</translation>
+<translation id="700453611199558021">Fingeravtrykk er blokkert (standard)</translation>
 <translation id="769702552748212954">Tillat all bruk av fingeravtrykk</translation>
 <translation id="2888409909650566510">Annonser og andre uhyggelige\nting blokkert</translation>
 <translation id="6930134873084561197">Nettsteder inkluderer ofte informasjonskapsler og skript som prøver å identifisere deg og din enhet. De ønsker å finne ut av hvem du er, følge deg på nettet og spore det du gjør på alle nettsider. \n\nBrave blokkerer dette, slik at du kan surfe på nett uten å bli fulgt.</translation>
@@ -331,7 +332,7 @@ helt til vedkommende verifiserer bidraget, eller til det har gått 90 dager.</tr
 <translation id="8374242949413616101">Personvernbeskyttelse</translation>
 <translation id="4955406228638026265">Brave hindrer annonser &amp; trackere i å samle inn informasjon om deg uten ditt samtykke.</translation>
 <translation id="752842701893882688">Spar data og batteri</translation>
-<translation id="5739030256211745023">Når de er frie for annonser &amp; trackere bruker nettsteder mindre data og batterikapasitet. Du kan til og med spare inn på avgifter fra nettleverandøren.</translation>
+<translation id="1685837926613452362">Uten annonser og sporingskapsler bruker nettsteder mindre data og batteri. Du kan til og med spare penger på operatørgebyrer.</translation>
 <translation id="5440744330377972191">Nettsteder lastes raskere</translation>
 <translation id="3000738865641747653">Mindre lasting av data betyr at nettsteder i Brave laster raskere – opptil 8x raskere enn andre nettlesere.</translation>
 <translation id="8903462729414407077">Få ukentlige oppdateringer</translation>
@@ -347,6 +348,7 @@ helt til vedkommende verifiserer bidraget, eller til det har gått 90 dager.</tr
 <translation id="1581614543353331529">Ingen data å vise ennå</translation>
 <translation id="2401984885421380890">Trackere &amp; annonser blokkert</translation>
 <translation id="2662183408296991265">Data Saved\n(<ph name="DATA_SAVED"/>)</translation>
+<translation id="3180928261057583677">Data spart (<ph name="DATA_SAVED"/>)</translation>
 <translation id="6814582232712814369">Tid spart</translation>
 <translation id="3694122362646626770">Nettsteder</translation>
 <translation id="2225863440766607138">Trackere</translation>
@@ -356,12 +358,12 @@ helt til vedkommende verifiserer bidraget, eller til det har gått 90 dager.</tr
 <translation id="7427567994475794038">Slå på Personvernrapporter for å se hvor mange trackere og annonser som har blitt blokkert de siste 3 timene.</translation>
 <translation id="2053891538879944400">Du lagret <ph name="DATA"/> <ph name="DATA_TEXT"/> data med Brave-nettleseren.</translation>
 <translation id="8640064498452534195">Slå på Personvernrapporter for å se hvor mye data du har spart.</translation>
-<translation id="4591582032282435287">Brave-nettleseren bruker 40 % mindre batteri i gjennomsnitt.</translation>
+<translation id="2252497442547961651">Brave-nettleseren bruker i gjennomsnitt 40 % mindre batteri.&#128267;</translation>
 <translation id="1945330434665345785">Du blokkerte <ph name="COUNT"/> trackere &amp; annonser med Brave-nettleseren  forrige uke.</translation>
 <translation id="2883868922264431515">Tjen polletter ved å se annonser som repekterer personvernet ditt og støtt favorittnettstedene dine.</translation>
-<translation id="6840965284166256302">Flott! Du har blokkert 250 trackere og annonser med Brave-nettleseren.</translation>
-<translation id="2076976911561945584">Flott! Du har spart 10 MB med Brave-nettleseren.</translation>
-<translation id="6714550233326888315">Flott! Du har spart 10 minutter innlastingstid med Brave-nettleseren.</translation>
+<translation id="5678925890616256956">Flott! Du har blokkert 250 sporingskapsler og annonser med Brave-nettleseren.&#128293;</translation>
+<translation id="9199047775708635708">Flott! Du har spart 10 MB med Brave-nettleseren.&#128267;</translation>
+<translation id="1880168210969863408">Flott! Du har spart ti minutters innlastingstid med Brave-nettleseren.&#128168;&#128168;</translation>
 <translation id="7408493389591475748">Begynn å bruke nettleseren for å se personvernrapportering</translation>
 <translation id="9080777565335515917">Sett Brave som din standardnettleser for privat og trygg weblesing.</translation>
 <translation id="7801488941710395275">Lar Brave se personvernstatistikken din</translation>
@@ -370,4 +372,5 @@ helt til vedkommende verifiserer bidraget, eller til det har gått 90 dager.</tr
 <translation id="8089997572759938512">Tilbakestiller personvernrapportene dine til null</translation>
 <translation id="2718046830255553131">Data for personvernrapporter er slettet.</translation>
 <translation id="7559243474426790340">Oppdater status</translation>
+<translation id="8376263745431603066">Slå på «Nattmodus» (eksperimentelt)</translation>
 </translationbundle>

@@ -291,7 +291,7 @@
 <translation id="1361872463926621533">Toista ääni käynnistyksen yhteydessä</translation>
 <translation id="1363585519747660921">USB-tulostin on määritettävä</translation>
 <translation id="1365180424462182382"><ph name="BEGIN_LINK"/>Selaintasi ylläpitää<ph name="END_LINK"/> <ph name="ENROLLMENT_DOMAIN"/></translation>
-<translation id="1366177842110999534">Käytä Linux-työkaluja, muokkausohjelmia ja integroituja kehitysympäristöjä (<ph name="DEVICE_TYPE"/>). &lt;a target="_blank" href="<ph name="URL"/>"&gt;Lue lisää&lt;/a&gt;</translation>
+<translation id="1366177842110999534">Käytä Linux-työkaluja, muokkausohjelmia ja integroituja kehitysympäristöjä (<ph name="DEVICE_TYPE"/>). &lt;a target="_blank" rel="noopener noreferrer" href="<ph name="URL"/>"&gt;Lue lisää&lt;/a&gt;</translation>
 <translation id="1367951781824006909">Valitse tiedosto</translation>
 <translation id="1369149969991017342">Kytkimen käyttö (ohjaa tietokonetta yhdellä tai kahdella kytkimellä)</translation>
 <translation id="1372841398847029212">Synkronoi tilillesi</translation>
@@ -1354,7 +1354,7 @@ Voit ylläpitää tilin asetuksia asentamalla laitteellesi Family Link ‑sovell
 <translation id="268053382412112343">Hi&amp;storia</translation>
 <translation id="2682498795777673382">Päivitys vanhemmalta</translation>
 <translation id="2683638487103917598">Kansio lajiteltu</translation>
-<translation id="2686222346846590368">Tämä on viimeinen automaattinen ohjelmisto- ja tietoturvapäivitys, jonka <ph name="DEVICE_TYPE"/> saa. Vaihda uudempaan malliin, jos haluat jatkossa päivityksiä. &lt;a target="_blank" href="<ph name="URL"/>"&gt;Lue lisää<ph name="LINK_END"/></translation>
+<translation id="2686222346846590368">Tämä on viimeinen automaattinen ohjelmisto- ja tietoturvapäivitys, jonka <ph name="DEVICE_TYPE"/> saa. Vaihda uudempaan malliin, jos haluat jatkossa päivityksiä. &lt;a target="_blank" rel="noopener noreferrer" href="<ph name="URL"/>"&gt;Lue lisää<ph name="LINK_END"/></translation>
 <translation id="2687403674020088961">Estä kaikki evästeet (ei suositella)</translation>
 <translation id="2687407218262674387">Braven käyttöehdot</translation>
 <translation id="2688196195245426394">Virhe rekisteröitäessä laitetta palvelimelle: <ph name="CLIENT_ERROR"/>.</translation>
@@ -4851,7 +4851,7 @@ Julkinen eksponentti (<ph name="PUBLIC_EXPONENT_NUM_BITS"/> bittiä):
 <translation id="7197632491113152433">Löysimme tililtäsi <ph name="NUMBER_OF_APPS"/> sovellusta, joita voidaan käyttää tällä laitteella.</translation>
 <translation id="7199158086730159431">Pyydä ohj&amp;eita</translation>
 <translation id="7200083590239651963">Valitse konfiguraatio</translation>
-<translation id="7201042526153088083">Asenna sovelluksia ja pelejä Google Playsta (<ph name="DEVICE_TYPE"/>). &lt;a target="_blank" href="<ph name="URL"/>"&gt;Lue lisää&lt;/a&gt;</translation>
+<translation id="7201042526153088083">Asenna sovelluksia ja pelejä Google Playsta (<ph name="DEVICE_TYPE"/>). &lt;a target="_blank" rel="noopener noreferrer" href="<ph name="URL"/>"&gt;Lue lisää&lt;/a&gt;</translation>
 <translation id="720110658997053098">Pidä tämä laite pysyvästi kioskitilassa</translation>
 <translation id="7201118060536064622"><ph name="DELETED_ITEM_NAME"/> poistettu</translation>
 <translation id="7201420661433230412">Näytä tiedostot</translation>
@@ -6609,7 +6609,7 @@ Tallenna avaintiedosto suojattuun sijaintiin. Tarvitset sitä, jos haluat luoda 
 <translation id="3860292630623580294">(Yksityinen)</translation>
 <translation id="4854477725773269949">Salli yksityisessä tilassa</translation>
 <translation id="6436164536244065364">Näytä Web Storessa</translation>
-<translation id="38046578254905003">Löydä laajennuksia ja teemoja <ph name="BEGIN_LINK">&lt;a target="_blank" href="https://chrome.google.com/webstore/category/extensions"&gt;</ph>verkkokaupasta<ph name="END_LINK">&lt;/a&gt;</ph></translation>
+<translation id="38046578254905003">Löydä laajennuksia ja teemoja <ph name="BEGIN_LINK"/>Web Storesta<ph name="END_LINK"/></translation>
 <translation id="6336451774241870485">Uusi yksityinen välilehti</translation>
 <translation id="6610147964972079463">Sulje yksityiset välilehdet</translation>
 <translation id="4933782374919065856">Onko sinulla kysyttävää? Ota yhteyttä profiiliasi valvovaan henkilöön.</translation>

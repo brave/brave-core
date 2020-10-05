@@ -291,7 +291,7 @@
 <translation id="1361872463926621533">પ્રારંભ થાય ત્યારે સાઉન્ડ ચાલુ કરો</translation>
 <translation id="1363585519747660921">USB પ્રિન્ટર માટે ગોઠવણી જરૂરી છે</translation>
 <translation id="1365180424462182382"><ph name="ENROLLMENT_DOMAIN"/>તમારા <ph name="BEGIN_LINK"/>બ્રાઉઝરને મેનેજ કરે છે<ph name="END_LINK"/></translation>
-<translation id="1366177842110999534">તમારા <ph name="DEVICE_TYPE"/> પર Linuxના સાધનો, એડિટર અને IDEs ચલાવો. &lt;a target="_blank" href="<ph name="URL"/>"&gt;વધુ જાણો&lt;/a&gt;</translation>
+<translation id="1366177842110999534">તમારા <ph name="DEVICE_TYPE"/> પર Linuxના સાધનો, એડિટર અને IDEs ચલાવો. &lt;a target="_blank" rel="noopener noreferrer" href="<ph name="URL"/>"&gt;વધુ જાણો&lt;/a&gt;</translation>
 <translation id="1367951781824006909">એક ફાઇલ પસંદ કરો</translation>
 <translation id="1369149969991017342">સ્વિચ ઍક્સેસ (એક કે બે સ્વિચ વડે કમ્પ્યુટરને નિયંત્રિત કરો)</translation>
 <translation id="1372841398847029212">તમારા એકાઉન્ટ સાથે સિંક કરો</translation>
@@ -1350,7 +1350,7 @@
 <translation id="268053382412112343">Hi&amp;story</translation>
 <translation id="2682498795777673382">તમારા માતાપિતા પાસે અપડેટ કરાવો</translation>
 <translation id="2683638487103917598">ફોલ્ડર સૉર્ટ કર્યુ</translation>
-<translation id="2686222346846590368">આ <ph name="DEVICE_TYPE"/> માટે આ છેલ્લું ઑટોમૅટિક સૉફ્ટવેર અને સુરક્ષા અપડેટ છે. ભાવિ અપડેટ મેળવવા માટે, નવા મૉડલ પર અપગ્રેડ કરો. &lt;a target="_blank" href="<ph name="URL"/>"&gt;વધુ જાણો<ph name="LINK_END"/></translation>
+<translation id="2686222346846590368">આ <ph name="DEVICE_TYPE"/> માટે આ છેલ્લું ઑટોમૅટિક સૉફ્ટવેર અને સુરક્ષા અપડેટ છે. ભાવિ અપડેટ મેળવવા માટે, નવા મૉડલ પર અપગ્રેડ કરો. &lt;a target="_blank" rel="noopener noreferrer" href="<ph name="URL"/>"&gt;વધુ જાણો<ph name="LINK_END"/></translation>
 <translation id="2687403674020088961">બધી કુકીને બ્લૉક કરો (સુઝાવ આપતા નથી)</translation>
 <translation id="2687407218262674387">Braveની સેવાની શરતો</translation>
 <translation id="2688196195245426394">સર્વર સાથે ઉપકરણની નોંધણી કરતી વખતે ભૂલ: <ph name="CLIENT_ERROR"/>.</translation>
@@ -4850,7 +4850,7 @@ USB ડિવાઇસ</translation>
 <translation id="7197632491113152433">અમને તમારા એકાઉન્ટમાંથી આ ડિવાઇસ પર ઉપયોગ કરી શકાય તેવી <ph name="NUMBER_OF_APPS"/> ઍપ મળી છે.</translation>
 <translation id="7199158086730159431">સહાય મેળવો</translation>
 <translation id="7200083590239651963">ગોઠવણી પસંદ કરો</translation>
-<translation id="7201042526153088083">Google Playમાંથી તમારા <ph name="DEVICE_TYPE"/> પર ઍપ અને ગેમ ઇન્સ્ટૉલ કરો. &lt;a target="_blank" href="<ph name="URL"/>"&gt;વધુ જાણો&lt;/a&gt;</translation>
+<translation id="7201042526153088083">Google Playમાંથી તમારા <ph name="DEVICE_TYPE"/> પર ઍપ અને ગેમ ઇન્સ્ટૉલ કરો. &lt;a target="_blank" rel="noopener noreferrer" href="<ph name="URL"/>"&gt;વધુ જાણો&lt;/a&gt;</translation>
 <translation id="720110658997053098">આ ઉપકરણને કાયમ માટે કિઓસ્ક મોડમાં રાખો</translation>
 <translation id="7201118060536064622">'<ph name="DELETED_ITEM_NAME"/>' ડિલીટ કર્યું</translation>
 <translation id="7201420661433230412">ફાઇલો જુઓ</translation>
@@ -6512,6 +6512,7 @@ USB ડિવાઇસ</translation>
 <translation id="995782501881226248">YouTube</translation>
 <translation id="996250603853062861">સુરક્ષિત કનેક્શન સ્થાપિત કરી રહ્યું છે...</translation>
 <translation id="998747458861718449">ત&amp;પાસ કરો</translation>
+<translation id="38046578254905003"><ph name="BEGIN_LINK">&lt;a target="_blank" rel="noopener noreferrer" href="https://chrome.google.com/webstore/category/extensions"&gt;</ph>Web Store<ph name="END_LINK">&lt;/a&gt;</ph>માં એક્સ્ટેન્શન અને થીમ શોધો</translation>
 <translation id="658539216370629794">લિંકને &amp;ખાનગી વિંડોમાં ખોલો</translation>
 <translation id="1432267168815937878">લિંકને &amp;ખાનગી વિંડોમાં ખોલો</translation>
 <translation id="6516243500644829484">નવી &amp;ખાનગી વિંડો</translation>
@@ -6603,7 +6604,6 @@ USB ડિવાઇસ</translation>
 <translation id="3860292630623580294">(ખાનગી)</translation>
 <translation id="4854477725773269949">ખાનગીમાં મંજૂરી આપો</translation>
 <translation id="6436164536244065364">વેબ દુકાનમાં જુઓ</translation>
-<translation id="38046578254905003"><ph name="BEGIN_LINK">&lt;a target="_blank" href="https://chrome.google.com/webstore/category/extensions"&gt;</ph>Web Store<ph name="END_LINK">&lt;/a&gt;</ph>માં એક્સ્ટેન્શન અને થીમ શોધો</translation>
 <translation id="6336451774241870485">નવું ખાનગી ટૅબ</translation>
 <translation id="6610147964972079463">ખાનગી ટૅબ્સ બંધ કરો</translation>
 <translation id="4933782374919065856">પ્રશ્નો છે? તમારી પ્રોફાઇલનું નિરીક્ષણ કરનાર વ્યક્તિનો સંપર્ક કરો.</translation>

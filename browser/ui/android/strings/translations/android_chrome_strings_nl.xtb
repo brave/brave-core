@@ -1024,6 +1024,8 @@ Zo kunnen sommige websites op dit verzoek reageren door advertenties weer te gev
 <translation id="983192555821071799">Alle tabbladen sluiten</translation>
 <translation id="987264212798334818">Algemeen</translation>
 <translation id="996149300115483134">Feedkaartmenu is gesloten</translation>
+<translation id="4540437243849625078">Deze site staat op het punt informatie te delen met een app buiten de privémodus om.</translation>
+<translation id="1227836882233136433">Wilt u de privémodus verlaten?</translation>
 <translation id="5186185447130319458">Privé</translation>
 <translation id="9063160602596686558">Hiermee worden automatisch gebruiksstatistieken en crashrapporten naar Brave Software verzonden</translation>
 <translation id="1438581767753657407">Wanneer de Lite-modus is ingeschakeld, gebruikt Brave Brave-servers om pagina's sneller te laden. De eenvoudige modus herschrijft zeer trage pagina's om alleen essentiële inhoud te laden. De eenvoudige modus is niet van toepassing op privétabbladen.</translation>
@@ -1033,8 +1035,7 @@ Zo kunnen sommige websites op dit verzoek reageren door advertenties weer te gev
 <translation id="3110967157686007724">Privétabblad</translation>
 <translation id="4526803704855831732">Privétabbladen</translation>
 <translation id="7465104139234185284">Sluit alle privétabbladen</translation>
-<translation id="4540437243849625078">Deze site staat op het punt informatie te delen met een app buiten de privémodus om.</translation>
-<translation id="1227836882233136433">Wilt u de privémodus verlaten?</translation>
+<translation id="21023559487771014">Ga naar privémodus</translation>
 <translation id="6336451774241870485">Nieuw privétabblad</translation>
 <translation id="3234355010754616171">Nieuw privétabblad</translation>
 <translation id="6610147964972079463">Sluit privé-tabbladen</translation>

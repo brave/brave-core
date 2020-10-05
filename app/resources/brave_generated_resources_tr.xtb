@@ -25,7 +25,7 @@ Bu eklentiyi yükleyerek, Google Widevine Kullanım Koşulları'nı kabul etmiş
 <translation id="3218385319396786393">Bu sayfada otomatik oynatma engellenmiş</translation>
 <translation id="4988333904713528597"><ph name="HOST"/> her zaman otomatik oynatmaya izin ver</translation>
 <translation id="4150684676757176434">Oto-Oynatmayı engellemeye devam et</translation>
-<translation id="5883458389055721080">Brave bu eklentiyi, koruma ve güvenlik bakımından henüz değerlendirmedi. Bu eklentiyi yalnızca geliştiricisine güveniyorsanız yükleyin.</translation>
+<translation id="8988939298652262600">Brave uzantıları güvenlik ve emniyet bakımından gözden geçirmez. Yalnızca geliştiricisine güvendiğiniz uzantıları yükleyin.</translation>
 <translation id="8081858229109418493">Profil adı ve simgesi</translation>
 <translation id="2044383478723007273">Brave renkleri</translation>
 <translation id="1692470335103807198">Daha fazla tema al</translation>
@@ -37,6 +37,9 @@ Bu eklentiyi yükleyerek, Google Widevine Kullanım Koşulları'nı kabul etmiş
 <translation id="5802665280774361839">Adres çubuğunda otomatik tamamlamayı göster</translation>
 <translation id="597020512043916976">Otomatik tamamlamalı önerilerde en popüler siteleri göster</translation>
 <translation id="264150068416846820">Otomatik tamamlamalı önerilerde Brave'in önerdiği siteleri göster</translation>
+<translation id="6414370348346025511">Standart koruma açık.</translation>
+<translation id="814018970995616154">URL'leri Brave'de kayıtlı güvenli olmayan sitelerin listesine göre kontrol eder.</translation>
+<translation id="1144810021918451336">Sizi tehlikeli web siteleri, indirmeler ve uzantılardan korumaz.</translation>
 <translation id="7781069478569868053">Yeni Sekme Sayfası</translation>
 <translation id="2467749191278759605">Brave Panelinizi Özelleştirin</translation>
 <translation id="1717331825806276156">Arka plan görselleri</translation>
@@ -79,7 +82,7 @@ Bu eklentiyi yükleyerek, Google Widevine Kullanım Koşulları'nı kabul etmiş
 <translation id="4824468494729001999">Script'leri engelle</translation>
 <translation id="519861640102428255">Bak &amp; Hisset</translation>
 <translation id="4800195524776354947">Engellenen öğelerin sayısını Kalkanlar ikonunda göster</translation>
-<translation id="3932286112122164477">Üçüncü parti sitelerde Google giriş butonlarına izin ver</translation>
+<translation id="7498695072878479744">Üçüncü parti sitelerde Google giriş butonlarına izin ver</translation>
 <translation id="863171915776379000">Facebook ile giriş yapmaya ve gömülü gönderilere izin ver</translation>
 <translation id="5165042248369837294">Gömülü Twitter tweetlerine izin ver</translation>
 <translation id="958971637207126733">LinkedIn gömülü gönderilere izin ver</translation>
@@ -148,13 +151,17 @@ Bu eklentiyi yükleyerek, Google Widevine Kullanım Koşulları'nı kabul etmiş
 <translation id="2356070529366658676">Sor</translation>
 <translation id="7701040980221191251">Yok</translation>
 <translation id="1085027414516521238">MetaMask</translation>
-<translation id="3905324891414560921">Dapps kullanmak için Web3 sağlayıcı</translation>
+<translation id="7090046810227878892">Dapps kullanmak için Ethereum sağlayıcı</translation>
 <translation id="5913089932885076110">Başlangıçta Kripto Cüzdanı Yükle</translation>
+<translation id="6864914031231797928">Uzantılar için Google ile oturum açmaya izin ver</translation>
+<translation id="1365342176656744625">IPFS konumlarını çözümleme yöntemi</translation>
+<translation id="1327977588028644528">Ağ geçidi</translation>
+<translation id="80225669816651290">Yerel düğüm</translation>
 <translation id="6554397389149987360">Ekran paylaşımını ve tarayıcıdaki diğer özellikleri etkinleştirmek için Hangouts bileşenini kullanır.</translation>
 <translation id="1765684547504191670">Tarayıcıda Chromecast'i etkinleştirmek için Medya Yönlendiricisi bileşenini kullanır.</translation>
 <translation id="9156965752763025780">Değişiklikleriniz, Brave tekrar başlatıldığında geçerli olacak.</translation>
 <translation id="7179921470347911571">Şimdi Tekrar Başlat</translation>
-<translation id="4154389611571860454">Tarayıcıda IPFS'yi desteklemek için IPFS eşlikçi eklentisini kullanır.</translation>
+<translation id="6222323340194834282">Tarayıcıda IPFS desteğini artırmak için IPFS yardımcı uzantısını kullanır.</translation>
 <translation id="8137559199583651773">Uzantıları yönet</translation>
 <translation id="7013485839273047434">Daha fazla uzatma edin</translation>
 <translation id="4928988318462976765">Web Uzantıları Mağazası</translation>
@@ -210,20 +217,19 @@ Bu eklentiyi yükleyerek, Google Widevine Kullanım Koşulları'nı kabul etmiş
 <translation id="4394049700291259645">Devre dışı bırak</translation>
 <translation id="6469509880167172749">Brave'e otomatik olarak tamamıyla gizli ürün analizi gönder</translation>
 <translation id="7090566321964540749">Bu anonim bilgi, yalnızca Brave'in belirli özelliklerin genel kullanımını tahmin etmesine olanak tanır.</translation>
-<translation id="9111960429693394744">Brave'in Crypto Wallets ya da MetaMask for Dapps'ini kullanmak ister misiniz?</translation>
-<translation id="8721775358057000783">Bu sayfada web3 desteği için Kripto Cüzdan başlatmak ister misiniz?</translation>
+<translation id="1947672064022327074">Ethereum desteği için Crypto Wallets'ı başlatmak ister misiniz?</translation>
 <translation id="7583735190612229830">Bu ve bunun gibi uygulamalarla etkileşime geçebilmesi için Kripto Cüzdanları ayarla.</translation>
 <translation id="4823406846571523661">Kripto Cüzdan Kurun</translation>
-<translation id="5756155765711979898">MetaMask Kullan</translation>
-<translation id="6754134632841262799">KURULUM</translation>
 <translation id="8199661191594897555">Kripto Cüzdanı başlat ve yeniden yükle</translation>
 <translation id="8428213095426709021">Ayarlar</translation>
+<translation id="1854270995641373652">Brave'de IPFS yerel hayalet program desteğini etkinleştirmek ister misiniz?</translation>
+<translation id="2366908098700680611">IPFS'i etkinleştir</translation>
 <translation id="4552520379838695057">Üzgünüz, bu sayfa mevcut değil.</translation>
 <translation id="2609895996619941644">Kayıtlı bir versiyonun Wayback Machine'de olup olmadığını kontrol etmek ister misiniz?</translation>
 <translation id="8053093028263274061">Üzgünüz, kaydedilmiş bir versiyon mevcut değil.</translation>
 <translation id="8517321676372639828">Kayıtlı versiyonu kontrol et</translation>
-<translation id="191143826155037518">Brave'i <ph name="BEGIN_LINK_MPL">&lt;a target="_blank" href="$1"&gt;</ph>Mozilla Kamu Lisansı 2.0<ph name="END_LINK_MPL">&lt;/a&gt;</ph> (MPL) altında ve <ph name="BEGIN_LINK_OSS">&lt;a target="_blank" href="$2"&gt;</ph>açık kaynak yazılım<ph name="END_LINK_OSS">&lt;/a&gt;</ph> dahil çeşitli diğer lisanslar altında kullanabilirsiniz.
-        <ph name="BEGIN_LINK_SOURCE_CODE">&lt;a target="_blank" href="$4"&gt;</ph>Bu kopyayı oluşturmak için kullanılan kaynak kodunu<ph name="END_LINK_SOURCE_CODE">&lt;/a&gt;</ph> <ph name="BEGIN_LINK_BUILD_INSTRUCTIONS">&lt;a target="_blank" href="$3"&gt;</ph>indirmek ve inşa etmek için talimatları<ph name="END_LINK_BUILD_INSTRUCTIONS">&lt;/a&gt;</ph> okuyabilirsiniz.</translation>
+<translation id="191143826155037518">Brave'i <ph name="BEGIN_LINK_MPL"/>Mozilla Kamu Lisansı 2.0<ph name="END_LINK_MPL"/> (MPL) altında ve <ph name="BEGIN_LINK_OSS"/>açık kaynak yazılım<ph name="END_LINK_OSS"/> dahil çeşitli diğer lisanslar altında kullanabilirsiniz.
+        <ph name="BEGIN_LINK_SOURCE_CODE"/>Bu kopyayı oluşturmak için kullanılan kaynak kodunu<ph name="END_LINK_SOURCE_CODE"/> <ph name="BEGIN_LINK_BUILD_INSTRUCTIONS"/>indirmek ve inşa etmek için talimatları<ph name="END_LINK_BUILD_INSTRUCTIONS"/> okuyabilirsiniz.</translation>
 <translation id="4474155171896946103">Tüm sekmelere yer işareti koy...</translation>
 <translation id="2336228925368920074">Tüm Sekmelere Yer İşareti Koy...</translation>
 <translation id="796831669370432378">Bir yer işareti eklemek için, adres satırının yanında yer alan yer işareti butonuna tıklayın</translation>

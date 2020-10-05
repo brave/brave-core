@@ -291,7 +291,7 @@
 <translation id="1361872463926621533">Іске қосу кезінде дыбыс ойнатылсын</translation>
 <translation id="1363585519747660921">USB принтерін конфигурациялау қажет</translation>
 <translation id="1365180424462182382"><ph name="BEGIN_LINK"/>Браузеріңізді<ph name="END_LINK"/> <ph name="ENROLLMENT_DOMAIN"/> басқарады.</translation>
-<translation id="1366177842110999534"><ph name="DEVICE_TYPE"/> құрылғысында Linux құралдарын, редакторларын және интеграцияланған әзірлеу орталарын іске қосыңыз. &lt;a target="_blank" href="<ph name="URL"/>"&gt;Толығырақ&lt;/a&gt;</translation>
+<translation id="1366177842110999534"><ph name="DEVICE_TYPE"/> құрылғысында Linux құралдарын, редакторларын және интеграцияланған әзірлеу орталарын іске қосыңыз. &lt;a target="_blank" rel="noopener noreferrer" href="<ph name="URL"/>"&gt;Толығырақ&lt;/a&gt;</translation>
 <translation id="1367951781824006909">Файлды таңдау</translation>
 <translation id="1369149969991017342">Switch Access функциясымен қосу (компьютерді бір-екі ауыстырғышпен басқару)</translation>
 <translation id="1372841398847029212">Есептік жазбамен синхрондау</translation>
@@ -1351,7 +1351,7 @@
 <translation id="268053382412112343">Жу&amp;рнал</translation>
 <translation id="2682498795777673382">Ата-анаңыз өзгерту енгізді</translation>
 <translation id="2683638487103917598">Қалта сұрыпталды</translation>
-<translation id="2686222346846590368">Бұл – <ph name="DEVICE_TYPE"/> құрылғысына арналған бағдарламалық құрал мен қауіпсіздік жүйесінің соңғы автоматты жаңартуы. Бұдан кейін де жаңартулар алғыңыз келсе, жаңа үлгіге өтіңіз. &lt;a target="_blank" href="<ph name="URL"/>"&gt;Толығырақ<ph name="LINK_END"/></translation>
+<translation id="2686222346846590368">Бұл – <ph name="DEVICE_TYPE"/> құрылғысына арналған бағдарламалық құрал мен қауіпсіздік жүйесінің соңғы автоматты жаңартуы. Бұдан кейін де жаңартулар алғыңыз келсе, жаңа үлгіге өтіңіз. &lt;a target="_blank" rel="noopener noreferrer" href="<ph name="URL"/>"&gt;Толығырақ<ph name="LINK_END"/></translation>
 <translation id="2687403674020088961">Барлық cookie файлын бөгеу (ұсынылмайды)</translation>
 <translation id="2687407218262674387">Brave қызмет көрсету шарттары</translation>
 <translation id="2688196195245426394">Сервер арқылы құрылғыны тіркеу кезіндегі қате: <ph name="CLIENT_ERROR"/>.</translation>
@@ -4849,7 +4849,7 @@
 <translation id="7197632491113152433">Есептік жазбаңыздан осы құрылғыда пайдалануға болатын <ph name="NUMBER_OF_APPS"/> қолданба табылды.</translation>
 <translation id="7199158086730159431">К&amp;өмек алу</translation>
 <translation id="7200083590239651963">Конфигурацияны таңдау</translation>
-<translation id="7201042526153088083">Google Play дүкеніндегі қолданбалар мен ойындарды <ph name="DEVICE_TYPE"/> құрылғысына орнатыңыз. &lt;a target="_blank" href="<ph name="URL"/>"&gt;Толығырақ&lt;/a&gt;</translation>
+<translation id="7201042526153088083">Google Play дүкеніндегі қолданбалар мен ойындарды <ph name="DEVICE_TYPE"/> құрылғысына орнатыңыз. &lt;a target="_blank" rel="noopener noreferrer" href="<ph name="URL"/>"&gt;Толығырақ&lt;/a&gt;</translation>
 <translation id="720110658997053098">Бұл құрылғыны киоск режимінде тұрақты сақтау</translation>
 <translation id="7201118060536064622">"<ph name="DELETED_ITEM_NAME"/>" жойылды</translation>
 <translation id="7201420661433230412">Файлдарды көру</translation>
@@ -6516,6 +6516,7 @@
 <translation id="995782501881226248">YouTube</translation>
 <translation id="996250603853062861">Қауіпсіз байланыс орнату…</translation>
 <translation id="998747458861718449">Т&amp;ексеру</translation>
+<translation id="38046578254905003"><ph name="BEGIN_LINK"/>Brave Web Store<ph name="END_LINK"/> дүкенінен кеңейтімдер мен тақырыптар табу</translation>
 <translation id="658539216370629794">Сілтемені инкогнито терезесінде ашу</translation>
 <translation id="1432267168815937878">Сілтемені Инко&amp;гнито терезесінде ашу</translation>
 <translation id="6516243500644829484">Жаңа &amp;инкогнито терезесі</translation>
@@ -6595,7 +6596,6 @@
 <translation id="3860292630623580294">(Инкогнито)</translation>
 <translation id="4854477725773269949">Инкогнито режимінде рұқсат беру</translation>
 <translation id="6436164536244065364">Веб-дүкенде көру</translation>
-<translation id="38046578254905003"><ph name="BEGIN_LINK"/>Brave Web Store<ph name="END_LINK"/> дүкенінен кеңейтімдер мен тақырыптар табу</translation>
 <translation id="6336451774241870485">Жаңа жасырын қойынды</translation>
 <translation id="6610147964972079463">Жасырын қойындыларды жабу</translation>
 <translation id="4933782374919065856">Егер сұрақтарыңыз болса, профиліңізді басқаратын адаммен хабарласыңыз.</translation>

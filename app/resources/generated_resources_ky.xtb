@@ -291,7 +291,7 @@
 <translation id="1361872463926621533">Иштетилгенде добуш ойнотулсун</translation>
 <translation id="1363585519747660921">USB принтери конфигурацияланышы керек</translation>
 <translation id="1365180424462182382"><ph name="BEGIN_LINK"/>Серепчиңиз<ph name="END_LINK"/> <ph name="ENROLLMENT_DOMAIN"/> тарабынан башкарылууда</translation>
-<translation id="1366177842110999534">Linux куралдарын, түзөткүчтөрдү жана бирдиктүү колдонмо тутумдарын иштеп чыгуу куралдарын <ph name="DEVICE_TYPE"/> түзмөгүңүздө иштетиңиз. &lt;a target="_blank" href="<ph name="URL"/>"&gt;Кеңири маалымат&lt;/a&gt;</translation>
+<translation id="1366177842110999534">Linux куралдарын, түзөткүчтөрдү жана бирдиктүү колдонмо тутумдарын иштеп чыгуу куралдарын <ph name="DEVICE_TYPE"/> түзмөгүңүздө иштетиңиз. &lt;a target="_blank" rel="noopener noreferrer" href="<ph name="URL"/>"&gt;Кеңири маалымат&lt;/a&gt;</translation>
 <translation id="1367951781824006909">Файл тандаңыз</translation>
 <translation id="1369149969991017342">Коммутатор менен кирүү (компьютерди бир же эки которуу менен көзөмөлдөңүз)</translation>
 <translation id="1372841398847029212">Аккаунтуңуз менен шайкештирүү</translation>
@@ -1354,7 +1354,7 @@ Family Link колдонмосун түзмөгүңүзгө орнотуп, бу
 <translation id="268053382412112343">Та&amp;ржымал</translation>
 <translation id="2682498795777673382">Ата-эненин жаңыртуусу</translation>
 <translation id="2683638487103917598">Папка ылганды</translation>
-<translation id="2686222346846590368">Бул <ph name="DEVICE_TYPE"/> үчүн акыркы жолу автоматтык түрдө программаны жана коопсуздукту жаңыртуу аткарылат. Кийинки жаңыртууларды алуу үчүн учурдагы үлгүсүн жаңыртыңыз. &lt;a target="_blank" href="<ph name="URL"/>"&gt;Кеңири маалымат<ph name="LINK_END"/></translation>
+<translation id="2686222346846590368">Бул <ph name="DEVICE_TYPE"/> үчүн акыркы жолу автоматтык түрдө программаны жана коопсуздукту жаңыртуу аткарылат. Кийинки жаңыртууларды алуу үчүн учурдагы үлгүсүн жаңыртыңыз. &lt;a target="_blank" rel="noopener noreferrer" href="<ph name="URL"/>"&gt;Кеңири маалымат<ph name="LINK_END"/></translation>
 <translation id="2687403674020088961">Бардык cookie файлдарды бөгөттөө (сунушталбайт)</translation>
 <translation id="2687407218262674387">Brave'дун тейлөө шарттары</translation>
 <translation id="2688196195245426394">Түзмөктү серверге каттоо учурундагы ката: <ph name="CLIENT_ERROR"/>.</translation>
@@ -4852,7 +4852,7 @@ Family Link колдонмосун түзмөгүңүзгө орнотуп, бу
 <translation id="7197632491113152433">Аккаунтуңузда ушул түзмөктө колдонууга мүмкүн болгон <ph name="NUMBER_OF_APPS"/> колдонмо табылды.</translation>
 <translation id="7199158086730159431">Ж&amp;ардам алуу</translation>
 <translation id="7200083590239651963">Конфигурацияны тандоо</translation>
-<translation id="7201042526153088083">Google Play'ден колдонмолор менен оюндарды <ph name="DEVICE_TYPE"/> түзмөгүңүзгө орнотуп аласыз. &lt;a target="_blank" href="<ph name="URL"/>"&gt;Кеңири маалымат&lt;/a&gt;</translation>
+<translation id="7201042526153088083">Google Play'ден колдонмолор менен оюндарды <ph name="DEVICE_TYPE"/> түзмөгүңүзгө орнотуп аласыз. &lt;a target="_blank" rel="noopener noreferrer" href="<ph name="URL"/>"&gt;Кеңири маалымат&lt;/a&gt;</translation>
 <translation id="720110658997053098">Бул түзмөк биротоло киоск режиминде калсын</translation>
 <translation id="7201118060536064622">"<ph name="DELETED_ITEM_NAME"/>" өчүрүлдү</translation>
 <translation id="7201420661433230412">Файлдарды көрүү</translation>
@@ -6519,6 +6519,7 @@ Family Link колдонмосун түзмөгүңүзгө орнотуп, бу
 <translation id="995782501881226248">YouTube</translation>
 <translation id="996250603853062861">Коопсуз туташуу орнотулууда…</translation>
 <translation id="998747458861718449">И&amp;зилдөө</translation>
+<translation id="38046578254905003"><ph name="BEGIN_LINK"/>Brave Интернет дүкөнүнөн<ph name="END_LINK"/> кеңейтүүлөрдү жана темаларды таап алыңыз</translation>
 <translation id="658539216370629794">Шилтемени жашы&amp;руун терезеде ачуу</translation>
 <translation id="1432267168815937878">Шилтемени жашыр&amp;уун терезеде ачуу</translation>
 <translation id="6516243500644829484">Жаңы &amp;жашыруун терезе</translation>
@@ -6598,7 +6599,6 @@ Family Link колдонмосун түзмөгүңүзгө орнотуп, бу
 <translation id="3860292630623580294">(Жашыруун)</translation>
 <translation id="4854477725773269949">Жашыруун шартта уруксат берүү</translation>
 <translation id="6436164536244065364">Желе дүкөнүнөн карап көрүү</translation>
-<translation id="38046578254905003"><ph name="BEGIN_LINK"/>Brave Интернет дүкөнүнөн<ph name="END_LINK"/> кеңейтүүлөрдү жана темаларды таап алыңыз</translation>
 <translation id="6336451774241870485">Жаңы жашыруун өтмөк</translation>
 <translation id="6610147964972079463">Жашыруун кыстармаларды жабуу</translation>
 <translation id="4933782374919065856">Суроолоруңуз барбы? Профилиңизди башкарган киши менен байланышыңыз.</translation>
