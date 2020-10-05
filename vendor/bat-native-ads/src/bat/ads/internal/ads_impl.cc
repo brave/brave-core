@@ -219,7 +219,7 @@ void AdsImpl::InitializeStep6(
 
   subdivision_targeting_->MaybeFetchForCurrentLocale();
 
-  redeem_unblinded_payment_tokens_->RedeemAfterDelay(wallet_);
+  redeem_unblinded_payment_tokens_->MaybeRedeemAfterDelay(wallet_);
 
   ad_conversions_->StartTimerIfReady();
 
@@ -1482,6 +1482,8 @@ void AdsImpl::OnFailedToRedeemUnblindedToken(
 
 void AdsImpl::OnDidRedeemUnblindedPaymentTokens() {
   BLOG(1, "Successfully redeemed unblinded payment tokens");
+
+  ReconcileAdRewards();
 }
 
 void AdsImpl::OnFailedToRedeemUnblindedPaymentTokens() {

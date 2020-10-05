@@ -50,9 +50,9 @@ void RedeemUnblindedPaymentTokens::set_delegate(
   delegate_ = delegate;
 }
 
-void RedeemUnblindedPaymentTokens::RedeemAfterDelay(
+void RedeemUnblindedPaymentTokens::MaybeRedeemAfterDelay(
     const WalletInfo& wallet) {
-  if (retry_timer_.IsRunning()) {
+  if (is_processing_ || retry_timer_.IsRunning()) {
     return;
   }
 
@@ -74,6 +74,8 @@ void RedeemUnblindedPaymentTokens::RedeemAfterDelay(
 ///////////////////////////////////////////////////////////////////////////////
 
 void RedeemUnblindedPaymentTokens::Redeem() {
+  DCHECK(!is_processing_);
+
   BLOG(1, "RedeemUnblindedPaymentTokens");
 
   if (ads_->get_confirmations()->get_unblinded_payment_tokens()->IsEmpty()) {
@@ -83,6 +85,8 @@ void RedeemUnblindedPaymentTokens::Redeem() {
   }
 
   BLOG(2, "PUT /v1/confirmation/payment/{payment_id}");
+
+  is_processing_ = true;
 
   const privacy::UnblindedTokenList unblinded_tokens =
       ads_->get_confirmations()->get_unblinded_payment_tokens()->GetAllTokens();
@@ -102,6 +106,8 @@ void RedeemUnblindedPaymentTokens::OnRedeem(
 
   BLOG(6, UrlResponseToString(url_response));
   BLOG(7, UrlResponseHeadersToString(url_response));
+
+  is_processing_ = false;
 
   if (url_response.status_code != net::HTTP_OK) {
     BLOG(1, "Failed to redeem unblinded payment tokens");
@@ -136,8 +142,6 @@ void RedeemUnblindedPaymentTokens::OnRedeemUnblindedPaymentTokens(
   if (delegate_) {
     delegate_->OnDidRedeemUnblindedPaymentTokens();
   }
-
-  ads_->ReconcileAdRewards();
 }
 
 void RedeemUnblindedPaymentTokens::ScheduleNextTokenRedemption() {
@@ -147,7 +151,7 @@ void RedeemUnblindedPaymentTokens::ScheduleNextTokenRedemption() {
   ads_->get_confirmations()->set_next_token_redemption_date(
       next_token_redemption_date);
 
-  RedeemAfterDelay(wallet_);
+  MaybeRedeemAfterDelay(wallet_);
 }
 
 void RedeemUnblindedPaymentTokens::Retry() {
