@@ -146,7 +146,6 @@ class SettingsPage extends React.Component<Props, State> {
     }, 60000)
 
     this.actions.fetchPromotions()
-    this.actions.updateAdsRewards()
     this.actions.getExternalWallet('uphold')
 
     if (window.location.pathname.length > 1) {

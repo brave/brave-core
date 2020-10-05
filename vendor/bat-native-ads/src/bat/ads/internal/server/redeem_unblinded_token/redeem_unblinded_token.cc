@@ -297,25 +297,7 @@ void RedeemUnblindedToken::OnFetchPaymentToken(
 
   if (batch_dleq_proof_unblinded_tokens.size() != 1) {
     BLOG(1, "Failed to verify and unblind tokens");
-
-    BLOG(1, "  Batch proof: " << batch_dleq_proof_base64);
-
-    BLOG(1, "  Tokens (" << tokens.size() << "):");
-    const std::string payment_token_base64 =
-        confirmation.payment_token.encode_base64();
-    BLOG(1, "    " << payment_token_base64);
-
-    BLOG(1, "  Blinded tokens (" << blinded_tokens.size() << "):");
-    const std::string blinded_payment_token_base64 =
-        confirmation.blinded_payment_token.encode_base64();
-    BLOG(1, "    " << blinded_payment_token_base64);
-
-    BLOG(1, "  Signed tokens (" << signed_tokens.size() << "):");
-    for (const auto& signed_token : signed_tokens) {
-      const std::string signed_token_base64 = signed_token.encode_base64();
-      BLOG(1, "    " << signed_token_base64);
-    }
-
+    BLOG(1, "  Batch proof: " << *batch_dleq_proof_base64);
     BLOG(1, "  Public key: " << *public_key_base64);
 
     OnRedeem(FAILED, confirmation, true);

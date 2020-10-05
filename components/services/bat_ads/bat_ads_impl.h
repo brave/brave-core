@@ -87,8 +87,7 @@ class BatAdsImpl :
       const std::string& payment_id,
       const std::string& recovery_seed_base64) override;
 
-  void UpdateAdRewards(
-      const bool should_reconcile) override;
+  void ReconcileAdRewards() override;
 
   void GetAdsHistory(
       const uint64_t from_timestamp,
