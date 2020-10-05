@@ -1366,13 +1366,16 @@ until they verify, or until 90 days have passed.
         Privacy Stats
       </message>
       <message name="IDS_FAVORITES" desc="Favorites title text.">
-        Favorites
+        Top Sites
       </message>
       <message name="IDS_BINANCE" desc="Binance title text.">
         Binance
       </message>
       <message name="IDS_PRIVACY_STATS_TEXT" desc="Private stats text.">
         Trackers &amp; Ads Blocked, Saved Bandwidth, and Time Saved Estimates.
+      </message>
+      <message name="IDS_FAVORITES_TEXT" desc="Private stats text.">
+        Open top sites you frequently visit.
       </message>
       <message name="IDS_SUMMARY" desc="Binance detail section title.">
         Summary
@@ -1388,6 +1391,15 @@ until they verify, or until 90 days have passed.
       </message>
       <message name="IDS_BINANCE_DISCONNECT_TEXT" desc="Binance disconnected state text.">
         Enable Binance connection to view Binance account balance and trade crypto.
+      </message>
+      <message name="IDS_I_WANT_TO_CONVERT" desc="Binance convert text hint.">
+        I want to convert...
+      </message>
+      <message name="IDS_I_WANT_TO_SPEND" desc="Binance buy text hint.">
+        I want to spend...
+      </message>
+      <message name="IDS_AVAILABLE" desc="Binance available text.">
+        Available
       </message>
     </messages>
   </release>

@@ -41,7 +41,7 @@
             android:gravity="center"
             android:layout_gravity="center"
             android:background="@drawable/rounded_filled_binance"
-            android:textColor="@android:color/white"
+            android:textColor="@android:color/black"
             android:textSize="12sp"
             android:text="@string/retry" />
 
@@ -149,7 +149,7 @@
             android:gravity="center"
             android:layout_gravity="center"
             android:background="@drawable/rounded_filled_binance"
-            android:textColor="@android:color/white"
+            android:textColor="@android:color/black"
             android:textSize="12sp"
             android:text="@string/confirm"/>
 
@@ -200,8 +200,8 @@
                     android:layout_weight="1"
                     android:padding="8dp"
                     android:textColor="@android:color/white"
-                    android:textColorHint="#80FFFFFF"
-                    android:hint="I want to convert..."
+                    android:textColorHint="@color/white_alpha_50"
+                    android:hint="@string/i_want_to_convert"
                     android:background="@drawable/binance_edittext"/>
 
                 <Spinner
@@ -211,7 +211,6 @@
                     android:textColor="@android:color/white"
                     android:padding="8dp"
                     android:background="@drawable/binance_edittext"
-                    android:popupBackground="@color/spinner_bg_color"
                     style="@android:style/Widget.Spinner"
                     android:spinnerMode="dropdown"/>
 
@@ -221,13 +220,12 @@
                 android:id="@+id/crypto_spinner_2"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="32dp"
+                android:layout_marginTop="16dp"
                 android:layout_marginStart="16dp"
                 android:layout_marginEnd="16dp"
                 android:textColor="@android:color/white"
                 android:padding="8dp"
                 style="@android:style/Widget.Spinner"
-                android:popupBackground="@color/spinner_bg_color"
                 android:background="@drawable/binance_edittext"
                 android:spinnerMode="dropdown"/>
 
@@ -240,7 +238,7 @@
                 android:layout_marginTop="32dp"
                 android:background="@drawable/rounded_filled_binance"
                 android:layout_gravity="center"
-                android:textColor="@android:color/white"
+                android:textColor="@android:color/black"
                 android:padding="16dp"
                 android:text="@string/preview_conversion" />
 

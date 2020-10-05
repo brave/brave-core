@@ -3,8 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginStart="16dp"
-    android:layout_marginEnd="16dp"
+    android:paddingEnd="16dp"
     android:orientation="horizontal">
 
     <ImageView
@@ -12,8 +11,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_vertical"
-        android:padding="8dp"
-        app:srcCompat="@drawable/ic_sort" />
+        android:padding="8dp"/>
 
     <TextView
         android:id="@+id/currency_text"
@@ -36,7 +34,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="16sp"
-            android:text="0.00000000"
             android:textColor="@android:color/white" />
 
         <TextView
@@ -44,7 +41,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="12sp"
-            android:text="≈ $0.00"
             android:alpha="0.6"
             android:textColor="@android:color/white" />
 

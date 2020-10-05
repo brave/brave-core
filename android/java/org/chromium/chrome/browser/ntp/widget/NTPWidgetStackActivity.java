@@ -8,6 +8,7 @@
 package org.chromium.chrome.browser.ntp.widget;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -21,9 +22,11 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import org.chromium.chrome.R;
+import org.chromium.chrome.browser.app.BraveActivity;
+import org.chromium.chrome.browser.ntp.BraveNewTabPageLayout;
 import org.chromium.chrome.browser.ntp.widget.NTPWidgetAdapter;
-import org.chromium.chrome.browser.ntp.widget.NTPWidgetListAdapter;
 import org.chromium.chrome.browser.ntp.widget.NTPWidgetManager;
+import org.chromium.chrome.browser.ntp.widget.NTPWidgetStackAdapter;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -32,11 +35,13 @@ public class NTPWidgetStackActivity extends AppCompatActivity {
     private NTPWidgetAdapter.NTPWidgetListener ntpWidgetListener;
     private RecyclerView usedWidgetsRecyclerView;
     private RecyclerView availableWidgetsRecyclerView;
-    private NTPWidgetListAdapter usedNtpWidgetListAdapter;
-    private NTPWidgetListAdapter availableNtpWidgetListAdapter;
+    private NTPWidgetStackAdapter usedNTPWidgetStackAdapter;
+    private NTPWidgetStackAdapter availableNTPWidgetStackAdapter;
     private LinearLayout availableWidgetLayout;
+    private boolean isFromSettings;
     public static final int USED_WIDGET = 0;
     public static final int AVAILABLE_WIDGET = 1;
+    public static final String FROM_SETTINGS = "from_settings";
 
     public interface NTPWidgetStackUpdateListener {
         void onAddToWidget(String widget);
@@ -52,6 +57,10 @@ public class NTPWidgetStackActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_ntp_widget_stack);
 
+        if (getIntent() != null) {
+            isFromSettings = getIntent().getBooleanExtra("from_settings", false);
+        }
+
         List<String> usedWidgetList = NTPWidgetManager.getInstance().getUsedWidgets();
         List<String> availableWidgetList = NTPWidgetManager.getInstance().getAvailableWidgets();
 
@@ -59,75 +68,79 @@ public class NTPWidgetStackActivity extends AppCompatActivity {
         backButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                finish();
+                returnResult();
             }
         });
 
         usedWidgetsRecyclerView = findViewById(R.id.used_widget_list);
         usedWidgetsRecyclerView.setLayoutManager(new LinearLayoutManager(this));
-        usedNtpWidgetListAdapter = new NTPWidgetListAdapter();
-        SwipeAndDragHelper swipeAndDragHelper = new SwipeAndDragHelper(usedNtpWidgetListAdapter);
+        usedNTPWidgetStackAdapter = new NTPWidgetStackAdapter();
+        SwipeAndDragHelper swipeAndDragHelper = new SwipeAndDragHelper(usedNTPWidgetStackAdapter);
         ItemTouchHelper touchHelper = new ItemTouchHelper(swipeAndDragHelper);
-        usedNtpWidgetListAdapter.setTouchHelper(touchHelper);
-        usedNtpWidgetListAdapter.setNTPWidgetListener(ntpWidgetListener);
-        usedNtpWidgetListAdapter.setNTPWidgetStackUpdateListener(ntpWidgetStackUpdateListener);
-        usedNtpWidgetListAdapter.setNTPWidgetType(USED_WIDGET);
-        usedWidgetsRecyclerView.setAdapter(usedNtpWidgetListAdapter);
+        usedNTPWidgetStackAdapter.setTouchHelper(touchHelper);
+        usedNTPWidgetStackAdapter.setNTPWidgetListener(ntpWidgetListener);
+        usedNTPWidgetStackAdapter.setNTPWidgetStackUpdateListener(ntpWidgetStackUpdateListener);
+        usedNTPWidgetStackAdapter.setNTPWidgetType(USED_WIDGET);
+        usedWidgetsRecyclerView.setAdapter(usedNTPWidgetStackAdapter);
         touchHelper.attachToRecyclerView(usedWidgetsRecyclerView);
-        usedNtpWidgetListAdapter.setWidgetList(usedWidgetList);
+        usedNTPWidgetStackAdapter.setWidgetList(usedWidgetList);
 
         availableWidgetLayout = findViewById(R.id.available_widget_layout);
 
         availableWidgetsRecyclerView = findViewById(R.id.available_widget_list);
         availableWidgetsRecyclerView.setLayoutManager(new LinearLayoutManager(this));
-        availableNtpWidgetListAdapter = new NTPWidgetListAdapter();
-        availableNtpWidgetListAdapter.setNTPWidgetListener(ntpWidgetListener);
-        availableNtpWidgetListAdapter.setNTPWidgetStackUpdateListener(ntpWidgetStackUpdateListener);
-        availableNtpWidgetListAdapter.setNTPWidgetType(AVAILABLE_WIDGET);
-        availableWidgetsRecyclerView.setAdapter(availableNtpWidgetListAdapter);
-        availableNtpWidgetListAdapter.setWidgetList(availableWidgetList);
-        // updateAvailableNTPWidgetLayout();
+        availableNTPWidgetStackAdapter = new NTPWidgetStackAdapter();
+        availableNTPWidgetStackAdapter.setNTPWidgetListener(ntpWidgetListener);
+        availableNTPWidgetStackAdapter.setNTPWidgetStackUpdateListener(
+                ntpWidgetStackUpdateListener);
+        availableNTPWidgetStackAdapter.setNTPWidgetType(AVAILABLE_WIDGET);
+        availableWidgetsRecyclerView.setAdapter(availableNTPWidgetStackAdapter);
+        availableNTPWidgetStackAdapter.setWidgetList(availableWidgetList);
     }
 
     @Override
-    protected void onStop() {
-        for (int i = 0; i < usedNtpWidgetListAdapter.getWidgetList().size(); i++) {
-            NTPWidgetManager.getInstance().setWidget(
-                usedNtpWidgetListAdapter.getWidgetList().get(i), i);
-        }
-        for (int i = 0; i < availableNtpWidgetListAdapter.getWidgetList().size(); i++) {
-            NTPWidgetManager.getInstance().setWidget(
-                availableNtpWidgetListAdapter.getWidgetList().get(i), -1);
-        }
-        super.onStop();
+    public void onBackPressed() {
+        returnResult();
     }
 
     private NTPWidgetStackUpdateListener ntpWidgetStackUpdateListener =
-    new NTPWidgetStackUpdateListener() {
-        @Override
-        public void onAddToWidget(String widget) {
-            // int positionToInsert = usedNtpWidgetListAdapter.getWidgetList().size() -1;
-            // usedNtpWidgetListAdapter.addWidgetToPosition(positionToInsert, widget);
-            // NTPWidgetManager.getInstance().setWidget(widget, positionToInsert);
-            usedNtpWidgetListAdapter.addWidget(widget);
-            // updateAvailableNTPWidgetLayout();
-        }
+            new NTPWidgetStackUpdateListener() {
+                @Override
+                public void onAddToWidget(String widget) {
+                    usedNTPWidgetStackAdapter.addWidget(widget);
+                }
 
-        @Override
-        public void onRemoveFromWidget(String widget) {
-            availableNtpWidgetListAdapter.addWidget(widget);
-            // updateAvailableNTPWidgetLayout();
-        }
-    };
+                @Override
+                public void onRemoveFromWidget(String widget) {
+                    availableNTPWidgetStackAdapter.addWidget(widget);
+                }
+            };
 
     private void updateAvailableNTPWidgetLayout() {
-        if (availableNtpWidgetListAdapter != null
-                && availableWidgetLayout != null) {
-            if (availableNtpWidgetListAdapter.getWidgetList().size() > 0) {
+        if (availableNTPWidgetStackAdapter != null && availableWidgetLayout != null) {
+            if (availableNTPWidgetStackAdapter.getWidgetList().size() > 0) {
                 availableWidgetLayout.setVisibility(View.VISIBLE);
             } else {
                 availableWidgetLayout.setVisibility(View.GONE);
             }
         }
+    }
+
+    private void returnResult() {
+        for (int i = 0; i < usedNTPWidgetStackAdapter.getWidgetList().size(); i++) {
+            NTPWidgetManager.getInstance().setWidget(
+                    usedNTPWidgetStackAdapter.getWidgetList().get(i), i);
+        }
+        for (int i = 0; i < availableNTPWidgetStackAdapter.getWidgetList().size(); i++) {
+            NTPWidgetManager.getInstance().setWidget(
+                    availableNTPWidgetStackAdapter.getWidgetList().get(i), -1);
+        }
+        if (isFromSettings) {
+            BraveActivity.getBraveActivity().getActivityTab().reloadIgnoringCache();
+        } else {
+            Intent intent = new Intent();
+            setResult(BraveNewTabPageLayout.NTP_WIDGET_STACK_CODE, intent);
+        }
+        finish();
     }
 }

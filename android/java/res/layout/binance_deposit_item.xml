@@ -11,8 +11,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_vertical"
-        android:padding="8dp"
-        app:srcCompat="@drawable/ic_sort" />
+        android:padding="8dp"/>
 
     <TextView
         android:id="@+id/currency_text"

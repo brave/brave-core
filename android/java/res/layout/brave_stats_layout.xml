@@ -10,7 +10,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="#212529"
-    android:padding="8dp"
+    android:padding="16dp"
     android:orientation="vertical">
 
     <LinearLayout
@@ -73,7 +73,7 @@
                 android:gravity="center"
                 android:textSize="12sp"
                 android:textColor="#868E96"
-                android:text="@string/brave_stats_text_ads" />
+                android:text="@string/ads_trackers_text" />
 
         </LinearLayout>
 

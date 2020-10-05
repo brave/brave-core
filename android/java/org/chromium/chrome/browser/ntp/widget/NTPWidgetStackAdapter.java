@@ -17,8 +17,8 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.RecyclerView;
 
-import org.chromium.chrome.R;
 import org.chromium.base.Log;
+import org.chromium.chrome.R;
 import org.chromium.chrome.browser.ntp.widget.NTPWidgetAdapter;
 import org.chromium.chrome.browser.ntp.widget.NTPWidgetManager;
 import org.chromium.chrome.browser.ntp.widget.NTPWidgetStackActivity;
@@ -26,7 +26,7 @@ import org.chromium.chrome.browser.ntp.widget.SwipeAndDragHelper;
 
 import java.util.List;
 
-public class NTPWidgetListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
+public class NTPWidgetStackAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
         implements SwipeAndDragHelper.ActionCompletionContract {
     private List<String> widgetList;
     private ItemTouchHelper touchHelper;

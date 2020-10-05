@@ -17,7 +17,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/btc_balance"
-                android:textColor="#FFFFFF"
+                android:textColor="@android:color/white"
                 android:layout_marginBottom="4dp"
                 android:textSize="24sp" />
 
@@ -26,7 +26,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/usd_balance"
-                android:textColor="#FFFFFF"
+                android:textColor="@android:color/white"
                 android:alpha="0.6"
                 android:textSize="12sp" />
 
@@ -36,7 +36,7 @@
         android:layout_width="match_parent"
         android:layout_height="2dp"
         android:layout_marginBottom="16dp"
-        android:background="#c0c0c0"/>
+        android:background="@color/binance_divider_color"/>
 
     <androidx.core.widget.NestedScrollView
         android:id="@+id/summary_scrollview"

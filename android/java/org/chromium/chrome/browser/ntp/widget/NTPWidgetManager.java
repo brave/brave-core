@@ -23,7 +23,6 @@ import java.util.TreeMap;
 public class NTPWidgetManager {
     public static final String PREF_PRIVATE_STATS = "private_stats";
     public static final String PREF_FAVORITES = "favorites";
-    // public static final String PREF_BRAVE_REWARDS = "brave_rewards";
     public static final String PREF_BINANCE = "binance";
     public static final String PREF_NTP_WIDGET_ORDER = "ntp_widget_order";
 
@@ -41,11 +40,11 @@ public class NTPWidgetManager {
             put(PREF_FAVORITES,
                     new NTPWidgetItem(PREF_FAVORITES,
                             mContext.getResources().getString(R.string.favorites),
-                            mContext.getResources().getString(R.string.privacy_stats_text)));
+                            mContext.getResources().getString(R.string.favorites_text)));
             put(PREF_BINANCE,
                     new NTPWidgetItem(PREF_BINANCE,
                             mContext.getResources().getString(R.string.binance),
-                            mContext.getResources().getString(R.string.privacy_stats_text)));
+                            mContext.getResources().getString(R.string.binance_disconnect_text)));
         }
     };
 
@@ -67,10 +66,6 @@ public class NTPWidgetManager {
     public int getFavoritesWidget() {
         return mSharedPreferences.getInt(PREF_FAVORITES, 1);
     }
-
-    // public int getBraveRewardsWidget() {
-    //     return mSharedPreferences.getInt(PREF_BRAVE_REWARDS, 2);
-    // }
 
     public int getBinanceWidget() {
         return mSharedPreferences.getInt(PREF_BINANCE, 2);

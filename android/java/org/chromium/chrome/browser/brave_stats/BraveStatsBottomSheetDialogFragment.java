@@ -189,10 +189,10 @@ public class BraveStatsBottomSheetDialogFragment extends BottomSheetDialogFragme
 
     private void updateBraveStatsLayoutAsync() {
         new AsyncTask<Void>() {
-            long adsTrackersCount = 0L;
-            long totalSavedBandwidth = 0L;
-            long adsTrackersCountToCheckForMonth = 0L;
-            long adsTrackersCountToCheckFor3Month = 0L;
+            long adsTrackersCount;
+            long totalSavedBandwidth;
+            long adsTrackersCountToCheckForMonth;
+            long adsTrackersCountToCheckFor3Month;
             @Override
             protected Void doInBackground() {
                 adsTrackersCount =
@@ -279,12 +279,12 @@ public class BraveStatsBottomSheetDialogFragment extends BottomSheetDialogFragme
                 }
                 showWebsitesTrackers();
             }
-        } .executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+        }.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
     }
 
     private void showWebsitesTrackers() {
         new AsyncTask<Void>() {
-            List<Pair<String, Integer>> websiteTrackers = null;
+            List<Pair<String, Integer>> websiteTrackers;
             @Override
             protected Void doInBackground() {
                 if (selectedType == WEBSITES) {
@@ -342,6 +342,6 @@ public class BraveStatsBottomSheetDialogFragment extends BottomSheetDialogFragme
                     braveStatsSubSectionText.setVisibility(View.GONE);
                 }
             }
-        } .executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+        }.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
     }
 }

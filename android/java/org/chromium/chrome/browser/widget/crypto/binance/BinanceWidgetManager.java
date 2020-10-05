@@ -33,7 +33,7 @@ public class BinanceWidgetManager {
 
     private final SharedPreferences mSharedPreferences;
 
-    private static BinanceAccountBalance binanceAccountBalance;
+    public static BinanceAccountBalance binanceAccountBalance;
 
     public static final List<String> fiatList = Arrays.asList("USD", "AUD", "ARS", "BGN", "BRL",
             "CAD", "CHF", "CNY", "COP", "CZK", "DKK", "EUR", "GBP", "HKD", "HRK", "HUF", "IDR",
@@ -47,11 +47,11 @@ public class BinanceWidgetManager {
                     put("BNB", new CoinNetworkModel("BNB", "Binance Coin", R.drawable.bnb));
                     put("BCH", new CoinNetworkModel("BCH", "Bitcoin Cash", R.drawable.bch));
                     put("XRP", new CoinNetworkModel("XRP", "Ripple", R.drawable.xrp));
-                    put("BUSD", new CoinNetworkModel("BUSD", "US Dollar", R.drawable.eth));
+                    put("BUSD", new CoinNetworkModel("BUSD", "US Dollar", 0));
                     put("BAT",
                             new CoinNetworkModel("BAT", "Basic Attention Token", R.drawable.bat));
                     put("XTZ", new CoinNetworkModel("XTZ", "", R.drawable.xtz));
-                    put("ALGO", new CoinNetworkModel("ALGO", "", R.drawable.eth));
+                    put("ALGO", new CoinNetworkModel("ALGO", "", 0));
                     put("ATOM", new CoinNetworkModel("ATOM", "", R.drawable.atom));
                     put("LINK", new CoinNetworkModel("LINK", "", R.drawable.link));
                     put("VET", new CoinNetworkModel("VET", "", R.drawable.vet));
@@ -62,7 +62,7 @@ public class BinanceWidgetManager {
                     put("ZIL", new CoinNetworkModel("ZIL", "", R.drawable.zil));
                     put("RVN", new CoinNetworkModel("RVN", "", R.drawable.rvn));
                     put("ONT", new CoinNetworkModel("ONT", "", R.drawable.ont));
-                    put("HBAR", new CoinNetworkModel("HBAR", "", R.drawable.eth));
+                    put("HBAR", new CoinNetworkModel("HBAR", "", 0));
                     put("MATIC", new CoinNetworkModel("MATIC", "", R.drawable.matic));
                 }
             };
@@ -81,19 +81,11 @@ public class BinanceWidgetManager {
                     put("NANO", new CoinNetworkModel("NANO", "", R.drawable.nano));
                     put("PAX", new CoinNetworkModel("PAX", "", R.drawable.pax));
                     put("TRX", new CoinNetworkModel("TRX", "", R.drawable.trx));
-                    put("BUSD", new CoinNetworkModel("BUSD", "US Dollar", R.drawable.eth));
+                    put("BUSD", new CoinNetworkModel("BUSD", "US Dollar", 0));
                     put("TUSD", new CoinNetworkModel("TUSD", "", R.drawable.tusd));
                     put("USDT", new CoinNetworkModel("USDT", "", R.drawable.usdt));
                 }
             };
-
-    public BinanceAccountBalance getBinanceAccountBalance() {
-        return binanceAccountBalance;
-    }
-
-    public void setBinanceAccountBalance(BinanceAccountBalance binanceAccountBalance) {
-        this.binanceAccountBalance = binanceAccountBalance;
-    }
 
     private BinanceWidgetManager() {
         mSharedPreferences = ContextUtils.getAppSharedPreferences();

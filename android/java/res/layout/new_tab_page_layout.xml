@@ -69,7 +69,8 @@
                     android:layout_width="0dp"
                     android:layout_height="180dp"
                     android:layout_weight="1"
-                    app:cardCornerRadius="12dp">
+                    app:cardCornerRadius="12dp"
+                    app:cardElevation="10dp">
 
                     <org.chromium.chrome.browser.custom_layout.VerticalViewPager
                         android:id="@+id/ntp_widget_view_pager"
@@ -83,7 +84,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
-                    android:background="@android:color/black"
+                    android:background="@drawable/ntp_widget_indicator_bg"
                     android:padding="2dp"
                     android:orientation="vertical"/>
 

@@ -61,11 +61,6 @@ public class NTPWidgetAdapter extends PagerAdapter {
 
     @Override
     public int getItemPosition(Object object) {
-        // int index = widgetList.indexOf(object);
-        // if (index == -1)
-        //     return POSITION_NONE;
-        // else
-        //     return index;
         return PagerAdapter.POSITION_NONE;
     }
 
@@ -95,15 +90,16 @@ public class NTPWidgetAdapter extends PagerAdapter {
                         binanceWidgetLayout.findViewById(R.id.binance_balance_text);
                 TextView binanceUSDBalanceText =
                         binanceWidgetLayout.findViewById(R.id.binance_usd_balance_text);
-                BinanceAccountBalance binanceAccountBalance =
-                        BinanceWidgetManager.getInstance().getBinanceAccountBalance();
-                if (binanceAccountBalance != null) {
-                    binanceBalanceText.setText(
-                            String.format(mContext.getResources().getString(R.string.btc_balance),
-                                    String.valueOf(binanceAccountBalance.getTotalBTC())));
-                    binanceUSDBalanceText.setText(
-                            String.format(mContext.getResources().getString(R.string.usd_balance),
-                                    String.valueOf(binanceAccountBalance.getTotalUSD())));
+
+                if (BinanceWidgetManager.binanceAccountBalance != null) {
+                    binanceBalanceText.setText(String.format(
+                            mContext.getResources().getString(R.string.btc_balance),
+                            String.valueOf(
+                                    BinanceWidgetManager.binanceAccountBalance.getTotalBTC())));
+                    binanceUSDBalanceText.setText(String.format(
+                            mContext.getResources().getString(R.string.usd_balance),
+                            String.valueOf(
+                                    BinanceWidgetManager.binanceAccountBalance.getTotalUSD())));
                 }
                 if (BinanceWidgetManager.getInstance().isUserAuthenticatedForBinance()) {
                     binanceWidgetLayout.setVisibility(View.VISIBLE);
@@ -141,6 +137,7 @@ public class NTPWidgetAdapter extends PagerAdapter {
         NTPWidgetItem ntpWidgetItem = widgetList.get(position);
         NTPWidgetManager.getInstance().setWidget(ntpWidgetItem.getWidgetType(), -1);
         widgetList.remove(position);
+        notifyDataSetChanged();
     }
 
     private void updateBraveStats(View view) {
@@ -174,9 +171,7 @@ public class NTPWidgetAdapter extends PagerAdapter {
     }
 
     private void showPopupMenu(Context context, View view, final int position) {
-        // Creating the instance of PopupMenu
         PopupMenu popup = new PopupMenu(context, view);
-        // Inflating the Popup using xml file
         popup.getMenuInflater().inflate(R.menu.ntp_widget_menu, popup.getMenu());
 
         NTPWidgetItem ntpWidgetItem = widgetList.get(position);
@@ -186,7 +181,6 @@ public class NTPWidgetAdapter extends PagerAdapter {
             popup.getMenu().findItem(R.id.refresh_data).setVisible(true);
             popup.getMenu().findItem(R.id.disconnect).setVisible(true);
         }
-        // registering popup with OnMenuItemClickListener
         popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
             @Override
             public boolean onMenuItemClick(MenuItem item) {
@@ -194,6 +188,7 @@ public class NTPWidgetAdapter extends PagerAdapter {
                 if (id == R.id.edit) {
                     ntpWidgetListener.onMenuEdit();
                 } else if (id == R.id.remove) {
+                    removeWidgetItem(position);
                     ntpWidgetListener.onMenuRemove(position);
                 } else if (id == R.id.learn_more) {
                     ntpWidgetListener.onMenuLearnMore();
@@ -205,6 +200,6 @@ public class NTPWidgetAdapter extends PagerAdapter {
                 return true;
             }
         });
-        popup.show(); // showing popup menu
+        popup.show();
     }
 }

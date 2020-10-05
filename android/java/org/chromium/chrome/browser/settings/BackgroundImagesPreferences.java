@@ -111,6 +111,8 @@ public class BackgroundImagesPreferences
                     public boolean onPreferenceClick(Preference preference) {
                         Intent ntpWidgetStackActivityIntent =
                                 new Intent(getActivity(), NTPWidgetStackActivity.class);
+                        ntpWidgetStackActivityIntent.putExtra(
+                                NTPWidgetStackActivity.FROM_SETTINGS, true);
                         getActivity().startActivity(ntpWidgetStackActivityIntent);
                         return true;
                     }

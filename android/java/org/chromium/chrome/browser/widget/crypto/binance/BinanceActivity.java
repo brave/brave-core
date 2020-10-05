@@ -31,17 +31,8 @@ public class BinanceActivity extends AppCompatActivity {
         Uri data = getIntent().getData();
         if (data != null && !TextUtils.isEmpty(data.getScheme())) {
             if (REDIRECT_URI_ROOT.equals(data.getScheme())) {
-                Log.e("NTP", "scheme : " + data.getScheme());
-                String host = data.getHost();
-                Log.e("NTP", "host : " + data.getHost());
-                List<String> params = data.getPathSegments();
-                // Set<String> args = data.getQueryParameterNames();
-                for (String arg : params) {
-                    Log.e("NTP", "Path segments : " + arg);
-                }
                 String code = data.getQueryParameter(CODE);
                 if (!TextUtils.isEmpty(code)) {
-                    Log.e("NTP", "Code : " + code);
                     TabUtils.openUrlInSameTab(UrlConstants.NTP_URL);
                     BinanceNativeWorker.getInstance().setAuthToken(code);
                     BinanceNativeWorker.getInstance().getAccessToken();

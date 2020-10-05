@@ -38,19 +38,17 @@ import org.chromium.chrome.browser.widget.crypto.binance.BinanceAccountBalance;
 import org.chromium.chrome.browser.widget.crypto.binance.BinanceCoinNetworks;
 import org.chromium.chrome.browser.widget.crypto.binance.BinanceNativeWorker;
 import org.chromium.chrome.browser.widget.crypto.binance.BinanceObserver;
+import org.chromium.chrome.browser.widget.crypto.binance.BinanceSpinnerAdapter;
 import org.chromium.chrome.browser.widget.crypto.binance.BinanceWidgetManager;
 import org.chromium.chrome.browser.widget.crypto.binance.CoinNetworkModel;
 import org.chromium.chrome.browser.widget.crypto.binance.CryptoWidgetBottomSheetDialogFragment;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
-/**
- * A simple {@link Fragment} subclass.
- */
 public class BinanceBuyFragment extends Fragment {
     private BinanceNativeWorker mBinanceNativeWorker;
-    private CurrencyListAdapter mCurrencyListAdapter;
 
     private Button buyButton;
 
@@ -60,8 +58,8 @@ public class BinanceBuyFragment extends Fragment {
     private String selectedFiat;
     private String selectedCrypto;
 
-    private String[] fiatArray;
-    private String[] cryptoArray;
+    private List<String> fiatList = new ArrayList<String>();
+    private List<String> cryptoList = new ArrayList<String>();
 
     public BinanceBuyFragment() {
         // Required empty public constructor
@@ -76,7 +74,6 @@ public class BinanceBuyFragment extends Fragment {
     @Override
     public View onCreateView(
             LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
         mBinanceNativeWorker.AddObserver(mBinanaceObserver);
         return inflater.inflate(R.layout.fragment_binance_buy, container, false);
     }
@@ -114,34 +111,24 @@ public class BinanceBuyFragment extends Fragment {
         });
 
         fiatSpinner = (Spinner) view.findViewById(R.id.fiat_spinner);
-        fiatArray = (String[]) BinanceWidgetManager.fiatList.toArray(
-                new String[BinanceWidgetManager.fiatList.size()]);
         fiatSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(
                     AdapterView<?> parentView, View selectedItemView, int position, long id) {
-                selectedFiat = fiatArray[position];
+                selectedFiat = fiatList.get(position);
             }
 
             @Override
-            public void onNothingSelected(AdapterView<?> parentView) {
-                // your code here
-            }
+            public void onNothingSelected(AdapterView<?> parentView) {}
         });
-        ArrayAdapter<String> fiatAdapter = new ArrayAdapter<String>(
-                getActivity(), R.layout.binance_spinner_text_layout, fiatArray);
-
-        fiatAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        fiatSpinner.setAdapter(fiatAdapter);
-
-        selectedFiat = fiatArray[0];
+        setFiatSpinner(BinanceWidgetManager.fiatList);
 
         cryptoSpinner = (Spinner) view.findViewById(R.id.crypto_spinner);
         cryptoSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(
                     AdapterView<?> parentView, View selectedItemView, int position, long id) {
-                selectedCrypto = cryptoArray[position];
+                selectedCrypto = cryptoList.get(position);
                 if (buyButton != null) {
                     buyButton.setText(
                             String.format(getResources().getString(R.string.buy_crypto_button_text),
@@ -150,12 +137,37 @@ public class BinanceBuyFragment extends Fragment {
             }
 
             @Override
-            public void onNothingSelected(AdapterView<?> parentView) {
-                // your code here
+            public void onNothingSelected(AdapterView<?> parentView) {}
+        });
+
+        buyRadioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(RadioGroup group, int checkedId) {
+                if (R.id.com_radio == checkedId) {
+                    setFiatSpinner(BinanceWidgetManager.fiatList);
+                } else {
+                    setFiatSpinner(new ArrayList<String>(
+                            Arrays.asList(BinanceWidgetManager.fiatList.get(0))));
+                }
             }
         });
 
         mBinanceNativeWorker.getCoinNetworks();
+    }
+
+    private void setFiatSpinner(List<String> fiatSpinnerList) {
+        fiatList = fiatSpinnerList;
+
+        List<CoinNetworkModel> tempFiatList = new ArrayList<CoinNetworkModel>();
+        for (String fiat : fiatList) {
+            tempFiatList.add(new CoinNetworkModel(fiat, "", 0));
+        }
+
+        BinanceSpinnerAdapter binanceSpinnerAdapter =
+                new BinanceSpinnerAdapter(getActivity(), tempFiatList, false);
+        fiatSpinner.setAdapter(binanceSpinnerAdapter);
+
+        selectedFiat = fiatList.get(0);
     }
 
     private void dismissBinanceBottomSheet() {
@@ -175,9 +187,7 @@ public class BinanceBuyFragment extends Fragment {
         public void OnGetAccessToken(boolean isSuccess){};
 
         @Override
-        public void OnGetAccountBalances(String jsonBalances, boolean isSuccess){
-                // Log.e("NTP", "AccountBalances : " + jsonBalances);
-        };
+        public void OnGetAccountBalances(String jsonBalances, boolean isSuccess){};
 
         @Override
         public void OnGetConvertQuote(
@@ -185,22 +195,20 @@ public class BinanceBuyFragment extends Fragment {
 
         @Override
         public void OnGetCoinNetworks(String jsonNetworks) {
-            // Log.e("NTP", "OnGetCoinNetworks"+jsonNetworks);
             try {
                 BinanceCoinNetworks binanceCoinNetworks = new BinanceCoinNetworks(jsonNetworks);
-                List<String> cryptoList = new ArrayList<String>();
+                List<String> tempCryptoList = new ArrayList<String>();
                 for (CoinNetworkModel coinNetworkModel :
                         binanceCoinNetworks.getCoinNetworksList()) {
-                    cryptoList.add(coinNetworkModel.getCoin());
+                    tempCryptoList.add(coinNetworkModel.getCoin());
                 }
                 if (cryptoSpinner != null) {
-                    cryptoArray = (String[]) cryptoList.toArray(new String[cryptoList.size()]);
-                    ArrayAdapter<String> cryptoAdapter = new ArrayAdapter<String>(
-                            getActivity(), R.layout.binance_spinner_text_layout, cryptoArray);
-                    cryptoAdapter.setDropDownViewResource(
-                            android.R.layout.simple_spinner_dropdown_item);
-                    cryptoSpinner.setAdapter(cryptoAdapter);
-                    selectedCrypto = cryptoArray[0];
+                    cryptoList = tempCryptoList;
+
+                    BinanceSpinnerAdapter binanceSpinnerAdapter = new BinanceSpinnerAdapter(
+                            getActivity(), binanceCoinNetworks.getCoinNetworksList(), true);
+                    cryptoSpinner.setAdapter(binanceSpinnerAdapter);
+                    selectedCrypto = cryptoList.get(0);
                     buyButton.setText(
                             String.format(getResources().getString(R.string.buy_crypto_button_text),
                                     selectedCrypto));
@@ -218,9 +226,7 @@ public class BinanceBuyFragment extends Fragment {
         public void OnConfirmConvert(boolean isSuccess, String message){};
 
         @Override
-        public void OnGetConvertAssets(String jsonAssets){
-                // Log.e("NTP", "OnGetConvertAssets"+jsonAssets);
-        };
+        public void OnGetConvertAssets(String jsonAssets){};
 
         @Override
         public void OnRevokeToken(boolean isSuccess){};

@@ -10,6 +10,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.graphics.Bitmap;
+import android.graphics.Point;
 import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.Build;
@@ -21,6 +22,7 @@ import android.text.SpannableStringBuilder;
 import android.util.AttributeSet;
 import android.util.Pair;
 import android.view.ContextMenu;
+import android.view.Display;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
@@ -35,6 +37,8 @@ import android.widget.TextView;
 
 import androidx.annotation.Nullable;
 import androidx.cardview.widget.CardView;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 import androidx.viewpager.widget.ViewPager;
 
 import com.airbnb.lottie.LottieAnimationView;
@@ -55,7 +59,6 @@ import org.chromium.chrome.browser.app.BraveActivity;
 import org.chromium.chrome.browser.brave_stats.BraveStatsUtil;
 import org.chromium.chrome.browser.compositor.layouts.OverviewModeBehavior;
 import org.chromium.chrome.browser.custom_layout.VerticalViewPager;
-import org.chromium.chrome.browser.custom_layout.CircularViewPagerHandler;
 import org.chromium.chrome.browser.explore_sites.ExploreSitesBridge;
 import org.chromium.chrome.browser.lifecycle.ActivityLifecycleDispatcher;
 import org.chromium.chrome.browser.local_database.DatabaseHelper;
@@ -137,7 +140,7 @@ public class BraveNewTabPageLayout extends NewTabPageLayout {
     private LinearLayout ntpWidgetLayout;
 
     private BinanceNativeWorker mBinanceNativeWorker;
-    private CountDownTimer countDownTimer = null;
+    private CountDownTimer countDownTimer;
     private List<NTPWidgetItem> widgetList = new ArrayList<NTPWidgetItem>();
     public static final int NTP_WIDGET_STACK_CODE = 3333;
 
@@ -160,7 +163,8 @@ public class BraveNewTabPageLayout extends NewTabPageLayout {
         ntpWidgetAdapter = new NTPWidgetAdapter();
         ntpWidgetAdapter.setNTPWidgetListener(ntpWidgetListener);
         ntpWidgetViewPager.setAdapter(ntpWidgetAdapter);
-        // ntpWidgetViewPager.setOnPageChangeListener(new CircularViewPagerHandler(ntpWidgetViewPager));
+        // ntpWidgetViewPager.setOnPageChangeListener(new
+        // CircularViewPagerHandler(ntpWidgetViewPager));
 
         ntpWidgetViewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
@@ -221,8 +225,7 @@ public class BraveNewTabPageLayout extends NewTabPageLayout {
                             getTileGroup().hasReceivedData() && getTileGroup().isEmpty();
                     if (mSiteSectionView != null && !showPlaceholder) {
                         if (mSiteSectionView.getParent() != null) {
-                            ((ViewGroup) mSiteSectionView.getParent())
-                                    .removeView(mSiteSectionView);
+                            ((ViewGroup) mSiteSectionView.getParent()).removeView(mSiteSectionView);
                         }
                         mTopSitesGridLayout.addView(mSiteSectionView);
                         ntpWidgetItem.setWidgetView(mTopSitesLayout);
@@ -268,23 +271,23 @@ public class BraveNewTabPageLayout extends NewTabPageLayout {
 
     private void showWidgetBasedOnOrder() {
         if (ntpWidgetViewPager != null) {
-            // int selectedOrder = NTPWidgetManager.getInstance().getNTPWidgetOrder();
-            // ntpWidgetViewPager.setCurrentItem(selectedOrder);
-            updateAndShowIndicators(0);
+            int selectedOrder = NTPWidgetManager.getInstance().getNTPWidgetOrder();
+            ntpWidgetViewPager.setCurrentItem(selectedOrder, true);
+            updateAndShowIndicators(selectedOrder);
         }
     }
 
     private void showWidgets() {
-        if(setWidgetList().size() > 0) {
+        if (setWidgetList().size() > 0) {
             ntpWidgetLayout.setVisibility(View.VISIBLE);
         } else {
             ntpWidgetLayout.setVisibility(View.GONE);
         }
 
         if (ntpWidgetAdapter != null) {
-            setWidgetList();
-            List<NTPWidgetItem> tempList = widgetList;
-            ntpWidgetAdapter.setWidgetList(setWidgetList());
+            // setWidgetList();
+            List<NTPWidgetItem> tempList = setWidgetList();
+            ntpWidgetAdapter.setWidgetList(tempList);
             ntpWidgetAdapter.notifyDataSetChanged();
             showWidgetBasedOnOrder();
         }
@@ -369,19 +372,6 @@ public class BraveNewTabPageLayout extends NewTabPageLayout {
         super.onDetachedFromWindow();
     }
 
-    // @Override
-    // public void onWindowFocusChanged(boolean hasWindowFocus) {
-    //     super.onWindowFocusChanged(hasWindowFocus);
-    //     if (hasWindowFocus) {
-    //         //onresume() called
-    //         showWidgets();
-    //         Log.e("NTP", "onResume new tab");
-    //     } else {
-    //         // onPause() called
-    //         Log.e("NTP", "onPause new tab");
-    //     }
-    // }
-
     @Override
     public void onConfigurationChanged(Configuration newConfig) {
         if (sponsoredTab != null && NTPUtil.shouldEnableNTPFeature()) {
@@ -422,7 +412,10 @@ public class BraveNewTabPageLayout extends NewTabPageLayout {
     }
 
     private void showNTPImage(NTPImage ntpImage) {
-        NTPUtil.updateOrientedUI(mActivity, this);
+        Display display = mActivity.getWindowManager().getDefaultDisplay();
+        Point size = new Point();
+        display.getSize(size);
+        NTPUtil.updateOrientedUI(mActivity, this, size);
         ImageView mSponsoredLogo = (ImageView) findViewById(R.id.sponsored_logo);
         FloatingActionButton mSuperReferralLogo = (FloatingActionButton) findViewById(R.id.super_referral_logo);
         TextView mCreditText = (TextView) findViewById(R.id.credit_text);
@@ -730,31 +723,12 @@ public class BraveNewTabPageLayout extends NewTabPageLayout {
                 @Override
                 public void onMenuEdit() {
                     cancelTimer();
-                    // final FragmentManager fm = ((BraveActivity)
-                    // mActivity).getSupportFragmentManager(); Fragment auxiliary = new Fragment() {
-                    //     @Override
-                    //     public void onActivityResult(int requestCode, int resultCode, Intent
-                    //     data) {
-                    //         //DO WHATEVER YOU NEED
-                    //         super.onActivityResult(requestCode, resultCode, data);
-                    //         fm.beginTransaction().remove(this).commit();
-                    //     }
-                    // };
-                    // fm.beginTransaction().add(auxiliary, "FRAGMENT_TAG").commit();
-                    // fm.executePendingTransactions();
-
-                    // auxiliary.startActivityForResult(new Intent(mActivity,
-                    // NTPWidgetStackActivity.class), NTP_WIDGET_STACK_CODE);
-                    Intent ntpWidgetStackActivityIntent =
-                            new Intent(mActivity, NTPWidgetStackActivity.class);
-                    mActivity.startActivity(ntpWidgetStackActivityIntent);
+                    openWidgetStack();
                 }
 
                 @Override
                 public void onMenuRemove(int position) {
-                    ntpWidgetAdapter.removeWidgetItem(position);
-                    ntpWidgetAdapter.notifyDataSetChanged();
-                    showWidgetBasedOnOrder();
+                    showWidgets();
                 }
 
                 @Override
@@ -789,13 +763,13 @@ public class BraveNewTabPageLayout extends NewTabPageLayout {
                 BinanceWidgetManager.getInstance().setUserAuthenticationForBinance(isSuccess);
             }
             try {
-                BinanceWidgetManager.getInstance().setBinanceAccountBalance(
-                        new BinanceAccountBalance(jsonBalances));
+                BinanceWidgetManager.binanceAccountBalance =
+                        new BinanceAccountBalance(jsonBalances);
             } catch (JSONException e) {
                 Log.e("NTP", e.getMessage());
             }
             // Reset binance widget to connect page
-            ntpWidgetAdapter.notifyDataSetChanged();
+            showWidgets();
         };
 
         @Override
@@ -805,9 +779,7 @@ public class BraveNewTabPageLayout extends NewTabPageLayout {
         };
 
         @Override
-        public void OnGetCoinNetworks(String jsonNetworks){
-                // Log.e("NTP", "CoinNetworks : " + jsonNetworks);
-        };
+        public void OnGetCoinNetworks(String jsonNetworks){};
 
         @Override
         public void OnGetDepositInfo(String depositAddress, String depositTag, boolean isSuccess){};
@@ -828,7 +800,9 @@ public class BraveNewTabPageLayout extends NewTabPageLayout {
     // start timer function
     public void startTimer() {
         countDownTimer = new CountDownTimer(30000, 1000) {
+            @Override
             public void onTick(long millisUntilFinished) {}
+            @Override
             public void onFinish() {
                 if (BinanceWidgetManager.getInstance().isUserAuthenticatedForBinance()) {
                     mBinanceNativeWorker.getAccountBalances();
@@ -842,5 +816,26 @@ public class BraveNewTabPageLayout extends NewTabPageLayout {
     // cancel timer
     public void cancelTimer() {
         if (countDownTimer != null) countDownTimer.cancel();
+    }
+
+    public void openWidgetStack() {
+        final FragmentManager fm = ((BraveActivity) mActivity).getSupportFragmentManager();
+        Fragment auxiliary = new Fragment() {
+            @Override
+            public void onActivityResult(int requestCode, int resultCode, Intent data) {
+                super.onActivityResult(requestCode, resultCode, data);
+                fm.beginTransaction().remove(this).commit();
+                if (requestCode == NTP_WIDGET_STACK_CODE) {
+                    Log.e("NTP", "Inside result");
+                    showWidgets();
+                }
+            }
+        };
+        fm.beginTransaction().add(auxiliary, "FRAGMENT_TAG").commit();
+        fm.executePendingTransactions();
+
+        Intent ntpWidgetStackActivityIntent = new Intent(mActivity, NTPWidgetStackActivity.class);
+        ntpWidgetStackActivityIntent.putExtra(NTPWidgetStackActivity.FROM_SETTINGS, false);
+        auxiliary.startActivityForResult(ntpWidgetStackActivityIntent, NTP_WIDGET_STACK_CODE);
     }
 }

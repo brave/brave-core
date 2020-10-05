@@ -42,9 +42,6 @@ import org.chromium.ui.widget.Toast;
 
 import java.util.List;
 
-/**
- * A simple {@link Fragment} subclass.
- */
 public class BinanceDepositFragment extends Fragment {
     private BinanceNativeWorker mBinanceNativeWorker;
 
@@ -65,7 +62,6 @@ public class BinanceDepositFragment extends Fragment {
     @Override
     public View onCreateView(
             LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
         mBinanceNativeWorker.AddObserver(mBinanaceObserver);
         return inflater.inflate(R.layout.fragment_binance_deposit, container, false);
     }
@@ -82,16 +78,6 @@ public class BinanceDepositFragment extends Fragment {
         depositCoinListLayout = view.findViewById(R.id.deposit_layout);
         mBinanceNativeWorker.getCoinNetworks();
     }
-
-    private BinanceDepositAdapter.BinanceDepositListener binanceDepositListener =
-            new BinanceDepositAdapter.BinanceDepositListener() {
-                @Override
-                public void onItemClick(CoinNetworkModel coinNetworkModel) {
-                    selectedCoinNetworkModel = coinNetworkModel;
-                    mBinanceNativeWorker.getDepositInfo(
-                            coinNetworkModel.getCoin(), coinNetworkModel.getTickerNetwork());
-                }
-            };
 
     private BinanceObserver mBinanaceObserver = new BinanceObserver() {
         @Override
@@ -110,6 +96,9 @@ public class BinanceDepositFragment extends Fragment {
                 BinanceCoinNetworks binanceCoinNetworks = new BinanceCoinNetworks(jsonNetworks);
                 LayoutInflater inflater = (LayoutInflater) getActivity().getSystemService(
                         Context.LAYOUT_INFLATER_SERVICE);
+                if (depositCoinListLayout != null) {
+                    depositCoinListLayout.removeAllViews();
+                }
                 for (CoinNetworkModel coinNetworkModel :
                         binanceCoinNetworks.getCoinNetworksList()) {
                     final View view = inflater.inflate(R.layout.binance_deposit_item, null);
@@ -121,7 +110,12 @@ public class BinanceDepositFragment extends Fragment {
                             + (TextUtils.isEmpty(coinNetworkModel.getCoinDesc())
                                             ? ""
                                             : " (" + coinNetworkModel.getCoinDesc() + ")"));
-                    currencyImageView.setImageResource(coinNetworkModel.getCoinRes());
+                    if (coinNetworkModel.getCoinRes() == 0) {
+                        currencyImageView.setImageResource(R.drawable.eth);
+                        currencyImageView.setVisibility(View.INVISIBLE);
+                    } else {
+                        currencyImageView.setImageResource(coinNetworkModel.getCoinRes());
+                    }
                     view.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View view) {
@@ -146,8 +140,8 @@ public class BinanceDepositFragment extends Fragment {
                         (FrameLayout) getView().findViewById(R.id.binance_deposit_layout);
                 ImageView depositBack = depositLayout.findViewById(R.id.currency_back);
                 TextView currencyTitleText = depositLayout.findViewById(R.id.currency_text);
-                ImageView deposiIcon = depositLayout.findViewById(R.id.currency_image);
-                ImageView deposiQrIcon = depositLayout.findViewById(R.id.currency_qr_image);
+                ImageView depositIcon = depositLayout.findViewById(R.id.currency_image);
+                ImageView depositQrIcon = depositLayout.findViewById(R.id.currency_qr_image);
                 TextView currencyAddressText =
                         depositLayout.findViewById(R.id.currency_address_text);
                 TextView currencyMemoText = depositLayout.findViewById(R.id.currency_memo_text);
@@ -158,7 +152,7 @@ public class BinanceDepositFragment extends Fragment {
                 Button btnCopyAddress = depositLayout.findViewById(R.id.btn_copy_address);
                 Button btnCopyMemo = depositLayout.findViewById(R.id.btn_copy_memo);
 
-                deposiQrIcon.setOnClickListener(new View.OnClickListener() {
+                depositQrIcon.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
                         QRCodeShareDialogFragment mQRCodeShareDialogFragment =
@@ -180,7 +174,7 @@ public class BinanceDepositFragment extends Fragment {
                     currencyMemoText.setText(
                             String.format(getResources().getString(R.string.currency_memo_text),
                                     selectedCoinNetworkModel.getCoin()));
-                    deposiIcon.setImageResource(selectedCoinNetworkModel.getCoinRes());
+                    depositIcon.setImageResource(selectedCoinNetworkModel.getCoinRes());
                 }
 
                 depositBack.setOnClickListener(new View.OnClickListener() {

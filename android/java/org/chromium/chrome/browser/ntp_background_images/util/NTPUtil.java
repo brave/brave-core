@@ -11,6 +11,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Point;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -21,6 +22,7 @@ import android.text.TextPaint;
 import android.text.method.LinkMovementMethod;
 import android.text.style.ClickableSpan;
 import android.text.style.ForegroundColorSpan;
+import android.util.DisplayMetrics;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
@@ -73,7 +75,7 @@ public class NTPUtil {
         BraveAdsNativeHelper.nativeSetAdsEnabled(Profile.getLastUsedRegularProfile());
     }
 
-    public static void updateOrientedUI(Context context, ViewGroup view) {
+    public static void updateOrientedUI(Context context, ViewGroup view, Point size) {
         LinearLayout parentLayout = (LinearLayout)view.findViewById(R.id.parent_layout);
         ViewGroup mainLayout = view.findViewById(R.id.ntp_main_layout);
         ViewGroup imageCreditLayout = view.findViewById(R.id.image_credit_layout);
@@ -81,30 +83,30 @@ public class NTPUtil {
         ImageView sponsoredLogo = (ImageView)view.findViewById(R.id.sponsored_logo);
         FrameLayout.LayoutParams layoutParams = new FrameLayout.LayoutParams(dpToPx(context, 170), dpToPx(context, 170));
 
+        parentLayout.removeView(mainLayout);
+        parentLayout.removeView(imageCreditLayout);
+
         boolean isTablet = DeviceFormFactor.isNonMultiDisplayContextOnTablet(context);
+        if (isTablet) {
+            parentLayout.addView(mainLayout);
+            parentLayout.addView(imageCreditLayout);
 
-        if (ConfigurationUtils.isLandscape(context) && UserPrefs.get(Profile.getLastUsedRegularProfile()).getBoolean(BravePref.NEW_TAB_PAGE_SHOW_BACKGROUND_IMAGE)) {
-            // In landscape
-            parentLayout.removeView(mainLayout);
-            parentLayout.removeView(imageCreditLayout);
+            parentLayout.setOrientation(LinearLayout.VERTICAL);
+            LinearLayout.LayoutParams mainLayoutLayoutParams =
+                    new LinearLayout.LayoutParams(dpToPx(context, 400), 0);
+            mainLayoutLayoutParams.weight = 1f;
+            mainLayout.setLayoutParams(mainLayoutLayoutParams);
 
-            if (isTablet) {
-                parentLayout.addView(mainLayout);
-                parentLayout.addView(imageCreditLayout);
+            LinearLayout.LayoutParams imageCreditLayoutParams = new LinearLayout.LayoutParams(
+                    LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+            imageCreditLayout.setLayoutParams(imageCreditLayoutParams);
 
-                parentLayout.setOrientation(LinearLayout.VERTICAL);
-
-                LinearLayout.LayoutParams mainLayoutLayoutParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, 0);
-                mainLayoutLayoutParams.weight = 1f;
-                mainLayout.setLayoutParams(mainLayoutLayoutParams);
-
-                LinearLayout.LayoutParams imageCreditLayoutParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-                imageCreditLayout.setLayoutParams(imageCreditLayoutParams);
-
-                layoutParams.gravity = Gravity.BOTTOM | Gravity.CENTER_HORIZONTAL;
-                sponsoredLogo.setLayoutParams(layoutParams);
-
-            } else {
+            layoutParams.gravity = Gravity.BOTTOM | Gravity.CENTER_HORIZONTAL;
+            sponsoredLogo.setLayoutParams(layoutParams);
+        } else {
+            if (ConfigurationUtils.isLandscape(context)
+                    && UserPrefs.get(Profile.getLastUsedRegularProfile())
+                               .getBoolean(BravePref.NEW_TAB_PAGE_SHOW_BACKGROUND_IMAGE)) {
                 parentLayout.addView(imageCreditLayout);
                 parentLayout.addView(mainLayout);
 
@@ -121,26 +123,25 @@ public class NTPUtil {
                 layoutParams.setMargins(dpToPx(context, 32), 0, 0, 0);
                 layoutParams.gravity = Gravity.BOTTOM | Gravity.START;
                 sponsoredLogo.setLayoutParams(layoutParams);
+            } else {
+                parentLayout.addView(mainLayout);
+                parentLayout.addView(imageCreditLayout);
+
+                parentLayout.setOrientation(LinearLayout.VERTICAL);
+
+                LinearLayout.LayoutParams mainLayoutLayoutParams =
+                        new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, 0);
+                mainLayoutLayoutParams.weight = 1f;
+                mainLayout.setLayoutParams(mainLayoutLayoutParams);
+
+                LinearLayout.LayoutParams imageCreditLayoutParams =
+                        new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,
+                                LinearLayout.LayoutParams.WRAP_CONTENT);
+                imageCreditLayout.setLayoutParams(imageCreditLayoutParams);
+
+                layoutParams.gravity = Gravity.BOTTOM | Gravity.CENTER_HORIZONTAL;
+                sponsoredLogo.setLayoutParams(layoutParams);
             }
-        } else {
-            // In portrait
-            parentLayout.removeView(mainLayout);
-            parentLayout.removeView(imageCreditLayout);
-
-            parentLayout.addView(mainLayout);
-            parentLayout.addView(imageCreditLayout);
-
-            parentLayout.setOrientation(LinearLayout.VERTICAL);
-
-            LinearLayout.LayoutParams mainLayoutLayoutParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, 0);
-            mainLayoutLayoutParams.weight = 1f;
-            mainLayout.setLayoutParams(mainLayoutLayoutParams);
-
-            LinearLayout.LayoutParams imageCreditLayoutParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-            imageCreditLayout.setLayoutParams(imageCreditLayoutParams);
-
-            layoutParams.gravity = Gravity.BOTTOM | Gravity.CENTER_HORIZONTAL;
-            sponsoredLogo.setLayoutParams(layoutParams);
         }
     }
 

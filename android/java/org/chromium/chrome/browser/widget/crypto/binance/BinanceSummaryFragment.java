@@ -35,12 +35,8 @@ import org.chromium.chrome.browser.widget.crypto.binance.BinanceWidgetManager;
 
 import java.util.List;
 
-/**
- * A simple {@link Fragment} subclass.
- */
 public class BinanceSummaryFragment extends Fragment {
     private BinanceNativeWorker mBinanceNativeWorker;
-    private CurrencyListAdapter mCurrencyListAdapter;
     private LinearLayout summaryLayout;
 
     public BinanceSummaryFragment() {
@@ -56,7 +52,6 @@ public class BinanceSummaryFragment extends Fragment {
     @Override
     public View onCreateView(
             LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
         mBinanceNativeWorker.AddObserver(mBinanaceObserver);
         return inflater.inflate(R.layout.fragment_binance_summary, container, false);
     }
@@ -72,15 +67,14 @@ public class BinanceSummaryFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         TextView binanceBalanceText = view.findViewById(R.id.binance_balance_text);
         TextView binanceUSDBalanceText = view.findViewById(R.id.binance_usd_balance_text);
-        BinanceAccountBalance binanceAccountBalance =
-                BinanceWidgetManager.getInstance().getBinanceAccountBalance();
-        if (binanceAccountBalance != null) {
-            binanceBalanceText.setText(
-                    String.format(getActivity().getResources().getString(R.string.btc_balance),
-                            String.valueOf(binanceAccountBalance.getTotalBTC())));
-            binanceUSDBalanceText.setText(
-                    String.format(getActivity().getResources().getString(R.string.usd_balance),
-                            String.valueOf(binanceAccountBalance.getTotalUSD())));
+
+        if (BinanceWidgetManager.binanceAccountBalance != null) {
+            binanceBalanceText.setText(String.format(
+                    getActivity().getResources().getString(R.string.btc_balance),
+                    String.valueOf(BinanceWidgetManager.binanceAccountBalance.getTotalBTC())));
+            binanceUSDBalanceText.setText(String.format(
+                    getActivity().getResources().getString(R.string.usd_balance),
+                    String.valueOf(BinanceWidgetManager.binanceAccountBalance.getTotalUSD())));
         }
         summaryLayout = view.findViewById(R.id.summary_layout);
         mBinanceNativeWorker.getCoinNetworks();
@@ -103,9 +97,12 @@ public class BinanceSummaryFragment extends Fragment {
                 BinanceCoinNetworks binanceCoinNetworks = new BinanceCoinNetworks(jsonNetworks);
                 LayoutInflater inflater = (LayoutInflater) getActivity().getSystemService(
                         Context.LAYOUT_INFLATER_SERVICE);
+                if (summaryLayout != null) {
+                    summaryLayout.removeAllViews();
+                }
                 for (CoinNetworkModel coinNetworkModel :
                         binanceCoinNetworks.getCoinNetworksList()) {
-                    final View view = inflater.inflate(R.layout.binance_currency_item, null);
+                    final View view = inflater.inflate(R.layout.binance_summary_item, null);
 
                     ImageView currencyImageView = view.findViewById(R.id.currency_image);
                     TextView currencyText = view.findViewById(R.id.currency_text);
@@ -113,13 +110,20 @@ public class BinanceSummaryFragment extends Fragment {
                     TextView currencyUsdText = view.findViewById(R.id.currency_usd_text);
 
                     currencyText.setText(coinNetworkModel.getCoin());
-                    currencyImageView.setImageResource(coinNetworkModel.getCoinRes());
-                    BinanceAccountBalance binanceAccountBalance =
-                            BinanceWidgetManager.getInstance().getBinanceAccountBalance();
-                    if (binanceAccountBalance.getCurrencyValue(coinNetworkModel.getCoin())
+
+                    if (coinNetworkModel.getCoinRes() == 0) {
+                        currencyImageView.setImageResource(R.drawable.eth);
+                        currencyImageView.setVisibility(View.INVISIBLE);
+                    } else {
+                        currencyImageView.setImageResource(coinNetworkModel.getCoinRes());
+                    }
+
+                    if (BinanceWidgetManager.binanceAccountBalance.getCurrencyValue(
+                                coinNetworkModel.getCoin())
                             != null) {
                         Pair<Double, Double> currencyValue =
-                                binanceAccountBalance.getCurrencyValue(coinNetworkModel.getCoin());
+                                BinanceWidgetManager.binanceAccountBalance.getCurrencyValue(
+                                        coinNetworkModel.getCoin());
                         currencyValueText.setText(String.valueOf(currencyValue.first));
                         currencyUsdText.setText(String.format(
                                 getActivity().getResources().getString(R.string.usd_balance),

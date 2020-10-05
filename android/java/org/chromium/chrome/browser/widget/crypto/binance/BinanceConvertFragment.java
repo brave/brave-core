@@ -48,12 +48,8 @@ import org.chromium.ui.widget.Toast;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * A simple {@link Fragment} subclass.
- */
 public class BinanceConvertFragment extends Fragment {
     private BinanceNativeWorker mBinanceNativeWorker;
-    private CurrencyListAdapter mCurrencyListAdapter;
 
     private Button convertButton;
 
@@ -63,8 +59,8 @@ public class BinanceConvertFragment extends Fragment {
     private String selectedCrypto1;
     private ConvertAsset selectedCrypto2;
 
-    private String[] cryptoArray1;
-    private ConvertAsset[] cryptoArray2;
+    private List<String> cryptoList1 = new ArrayList<String>();
+    private List<ConvertAsset> cryptoList2 = new ArrayList<ConvertAsset>();
 
     private BinanceConvert binanceConvert;
 
@@ -76,6 +72,8 @@ public class BinanceConvertFragment extends Fragment {
     private TextView convertCurrencyText;
     private TextView convertFeeText;
     private TextView convertBalanceText;
+
+    private static final String ZERO_BALANCE = "0.000000";
 
     private Button confirmButton;
 
@@ -92,7 +90,6 @@ public class BinanceConvertFragment extends Fragment {
     @Override
     public View onCreateView(
             LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
         mBinanceNativeWorker.AddObserver(mBinanaceObserver);
         return inflater.inflate(R.layout.fragment_binance_convert, container, false);
     }
@@ -144,12 +141,12 @@ public class BinanceConvertFragment extends Fragment {
                 double convertAmount = !TextUtils.isEmpty(amountEditText.getText().toString())
                         ? Double.valueOf(amountEditText.getText().toString())
                         : 0.0;
-                BinanceAccountBalance binanceAccountBalance =
-                        BinanceWidgetManager.getInstance().getBinanceAccountBalance();
                 double availableBalance =
-                        binanceAccountBalance.getCurrencyValue(selectedCrypto1) != null
-                        ? Double.valueOf(
-                                binanceAccountBalance.getCurrencyValue(selectedCrypto1).first)
+                        BinanceWidgetManager.binanceAccountBalance.getCurrencyValue(selectedCrypto1)
+                                != null
+                        ? Double.valueOf(BinanceWidgetManager.binanceAccountBalance
+                                                 .getCurrencyValue(selectedCrypto1)
+                                                 .first)
                         : 0.0;
                 if (availableBalance < convertAmount) {
                     convertLayout.setVisibility(View.GONE);
@@ -172,15 +169,13 @@ public class BinanceConvertFragment extends Fragment {
             @Override
             public void onItemSelected(
                     AdapterView<?> parentView, View selectedItemView, int position, long id) {
-                selectedCrypto1 = cryptoArray1[position];
+                selectedCrypto1 = cryptoList1.get(position);
                 setCryptoSpinner(selectedCrypto1);
                 setTitle();
             }
 
             @Override
-            public void onNothingSelected(AdapterView<?> parentView) {
-                // your code here
-            }
+            public void onNothingSelected(AdapterView<?> parentView) {}
         });
 
         cryptoSpinner2 = (Spinner) view.findViewById(R.id.crypto_spinner_2);
@@ -188,13 +183,11 @@ public class BinanceConvertFragment extends Fragment {
             @Override
             public void onItemSelected(
                     AdapterView<?> parentView, View selectedItemView, int position, long id) {
-                selectedCrypto2 = cryptoArray2[position];
+                selectedCrypto2 = cryptoList2.get(position);
             }
 
             @Override
-            public void onNothingSelected(AdapterView<?> parentView) {
-                // your code here
-            }
+            public void onNothingSelected(AdapterView<?> parentView) {}
         });
 
         mBinanceNativeWorker.getConvertAssets();
@@ -255,14 +248,24 @@ public class BinanceConvertFragment extends Fragment {
         public void OnGetConvertAssets(String jsonAssets) {
             try {
                 binanceConvert = new BinanceConvert(jsonAssets);
-                cryptoArray1 = (String[]) binanceConvert.getCurrencyKeys().toArray(
-                        new String[binanceConvert.getCurrencyKeys().size()]);
-                ArrayAdapter<String> cryptoAdapter1 = new ArrayAdapter<String>(
-                        getActivity(), R.layout.binance_spinner_text_layout, cryptoArray1);
-                cryptoAdapter1.setDropDownViewResource(android.R.layout.simple_list_item_1);
-                cryptoSpinner1.setAdapter(cryptoAdapter1);
+                cryptoList1 = binanceConvert.getCurrencyKeys();
 
-                selectedCrypto1 = cryptoArray1[0];
+                List<CoinNetworkModel> tempCryptoList = new ArrayList<CoinNetworkModel>();
+                for (String crypto : cryptoList1) {
+                    int cryptoRes = 0;
+                    if (BinanceWidgetManager.usCurrenciesMap.containsKey(crypto)) {
+                        cryptoRes = BinanceWidgetManager.usCurrenciesMap.get(crypto).getCoinRes();
+                    } else if (BinanceWidgetManager.comCurrenciesMap.containsKey(crypto)) {
+                        cryptoRes = BinanceWidgetManager.comCurrenciesMap.get(crypto).getCoinRes();
+                    }
+                    tempCryptoList.add(new CoinNetworkModel(crypto, "", cryptoRes));
+                }
+
+                BinanceSpinnerAdapter binanceSpinnerAdapter =
+                        new BinanceSpinnerAdapter(getActivity(), tempCryptoList, true);
+                cryptoSpinner1.setAdapter(binanceSpinnerAdapter);
+
+                selectedCrypto1 = cryptoList1.get(0);
                 setCryptoSpinner(selectedCrypto1);
                 setTitle();
             } catch (JSONException e) {
@@ -275,32 +278,40 @@ public class BinanceConvertFragment extends Fragment {
     };
 
     private void setCryptoSpinner(String key) {
-        List<ConvertAsset> convertCryptoList = binanceConvert.getCurrencyValue(key);
+        cryptoList2 = binanceConvert.getCurrencyValue(key);
         if (cryptoSpinner2 != null) {
-            cryptoArray2 = (ConvertAsset[]) convertCryptoList.toArray(new ConvertAsset[0]);
-            List<String> tempCryptoList = new ArrayList<>();
-            for (ConvertAsset convertAsset : convertCryptoList) {
-                tempCryptoList.add(convertAsset.getAsset());
+            List<CoinNetworkModel> tempCryptoList = new ArrayList<CoinNetworkModel>();
+            for (ConvertAsset convertAsset : cryptoList2) {
+                int cryptoRes = 0;
+                if (BinanceWidgetManager.usCurrenciesMap.containsKey(convertAsset.getAsset())) {
+                    cryptoRes = BinanceWidgetManager.usCurrenciesMap.get(convertAsset.getAsset())
+                                        .getCoinRes();
+                } else if (BinanceWidgetManager.comCurrenciesMap.containsKey(
+                                   convertAsset.getAsset())) {
+                    cryptoRes = BinanceWidgetManager.comCurrenciesMap.get(convertAsset.getAsset())
+                                        .getCoinRes();
+                }
+                tempCryptoList.add(new CoinNetworkModel(convertAsset.getAsset(), "", cryptoRes));
             }
-            ArrayAdapter<String> cryptoAdapter2 =
-                    new ArrayAdapter<String>(getActivity(), R.layout.binance_spinner_text_layout,
-                            (String[]) tempCryptoList.toArray(new String[tempCryptoList.size()]));
-            cryptoAdapter2.setDropDownViewResource(android.R.layout.simple_list_item_1);
-            cryptoSpinner2.setAdapter(cryptoAdapter2);
-            selectedCrypto2 = cryptoArray2[0];
+
+            BinanceSpinnerAdapter binanceSpinnerAdapter =
+                    new BinanceSpinnerAdapter(getActivity(), tempCryptoList, true);
+            cryptoSpinner2.setAdapter(binanceSpinnerAdapter);
+
+            selectedCrypto2 = cryptoList2.get(0);
         }
     }
 
     private void setTitle() {
         if (binanceConvertTitle != null) {
-            BinanceAccountBalance binanceAccountBalance =
-                    BinanceWidgetManager.getInstance().getBinanceAccountBalance();
             binanceConvertTitle.setText(String.format(
                     getResources().getString(R.string.available_balance_text),
-                    binanceAccountBalance.getCurrencyValue(selectedCrypto1) != null
-                            ? String.valueOf(
-                                    binanceAccountBalance.getCurrencyValue(selectedCrypto1).first)
-                            : "0.000000",
+                    BinanceWidgetManager.binanceAccountBalance.getCurrencyValue(selectedCrypto1)
+                                    != null
+                            ? String.valueOf(BinanceWidgetManager.binanceAccountBalance
+                                                     .getCurrencyValue(selectedCrypto1)
+                                                     .first)
+                            : ZERO_BALANCE,
                     selectedCrypto1));
         }
     }
