@@ -65,11 +65,6 @@ const rewardsReducer: Reducer<Rewards.State | undefined> = (state: Rewards.State
         chrome.send('brave_rewards.saveSetting', [key, value.toString()])
       }
       break
-    case types.UPDATE_ADS_REWARDS: {
-      state = { ...state }
-      chrome.send('brave_rewards.updateAdRewards')
-      break
-    }
     case types.ON_MODAL_BACKUP_CLOSE: {
       state = { ...state }
       let ui = state.ui

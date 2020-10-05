@@ -304,8 +304,7 @@ class AdsImpl
       const ConfirmationType& confirmation_type);
 
   // Ad rewards
-  void UpdateAdRewards(
-      const bool should_reconcile) override;
+  void ReconcileAdRewards() override;
 
   // Transaction history
   void GetTransactionHistory(
