@@ -58,7 +58,7 @@ BraveRewardsActionStubView::BraveRewardsActionStubView(Profile* profile,
       profile_(profile),
       delegate_(delegate) {
   SetInkDropMode(InkDropMode::ON);
-  set_has_ink_drop_action_on_click(true);
+  SetHasInkDropActionOnClick(true);
   SetHorizontalAlignment(gfx::ALIGN_CENTER);
   SetInkDropVisibleOpacity(kToolbarInkDropVisibleOpacity);
   // Create badge-and-image source like an extension icon would
