@@ -12,7 +12,7 @@ class BraveBrowserWindow : public BrowserWindow {
  public:
   ~BraveBrowserWindow() override {}
 
-  virtual void StartMRUCycling() = 0;
+  virtual void StartTabCycling() = 0;
 };
 
 #endif  // BRAVE_BROWSER_UI_BRAVE_BROWSER_WINDOW_H_

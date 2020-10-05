@@ -27,12 +27,10 @@ class BraveBrowserView : public BrowserView {
       translate::TranslateErrors::Type error_type,
       bool is_user_gesture) override;
 
-  void StartMRUCycling() override;
-
-  void StopMRUCycling();
+  void StartTabCycling() override;
 
  private:
-  class MRUCyclingEventHandler;
+  class TabCyclingEventHandler;
 
   // BrowserView overrides:
   void OnTabStripModelChanged(
@@ -40,7 +38,9 @@ class BraveBrowserView : public BrowserView {
       const TabStripModelChange& change,
       const TabStripSelectionChange& selection) override;
 
-  std::unique_ptr<MRUCyclingEventHandler> mru_cycling_event_handler_;
+  void StopTabCycling();
+
+  std::unique_ptr<TabCyclingEventHandler> tab_cycling_event_handler_;
 
   DISALLOW_COPY_AND_ASSIGN(BraveBrowserView);
 };

@@ -24,28 +24,27 @@
 #include "extensions/common/constants.h"
 #endif
 
-class BraveBrowserView::MRUCyclingEventHandler : public ui::EventObserver,
+class BraveBrowserView::TabCyclingEventHandler : public ui::EventObserver,
                                                  public views::WidgetObserver {
  public:
-  explicit MRUCyclingEventHandler(BraveBrowserView* browser_view)
+  explicit TabCyclingEventHandler(BraveBrowserView* browser_view)
       : browser_view_(browser_view) {
     Start();
   }
 
-  ~MRUCyclingEventHandler() override {
+  ~TabCyclingEventHandler() override {
     Stop();
   }
 
-  MRUCyclingEventHandler(const MRUCyclingEventHandler&) = delete;
-  MRUCyclingEventHandler& operator=(const MRUCyclingEventHandler&) = delete;
+  TabCyclingEventHandler(const TabCyclingEventHandler&) = delete;
+  TabCyclingEventHandler& operator=(const TabCyclingEventHandler&) = delete;
 
  private:
   // ui::EventObserver overrides:
   void OnEvent(const ui::Event& event) override {
     if (event.type() == ui::ET_KEY_RELEASED &&
-        (event.IsKeyEvent() &&
-         event.AsKeyEvent()->key_code() == ui::VKEY_CONTROL)) {
-      // Ctrl key was released, stop the MRU cycling
+        event.AsKeyEvent()->key_code() == ui::VKEY_CONTROL) {
+      // Ctrl key was released, stop the tab cycling
       Stop();
       return;
     }
@@ -61,7 +60,7 @@ class BraveBrowserView::MRUCyclingEventHandler : public ui::EventObserver,
       Stop();
   }
 
-  // Handle Browser widget closing while MRU Cycling is in-progress.
+  // Handle Browser widget closing while tab Cycling is in-progress.
   void OnWidgetClosing(views::Widget* widget) override {
     Stop();
   }
@@ -88,7 +87,7 @@ class BraveBrowserView::MRUCyclingEventHandler : public ui::EventObserver,
     auto* widget = browser_view_->GetWidget();
     monitor_.reset();
     widget->RemoveObserver(this);
-    browser_view_->StopMRUCycling();
+    browser_view_->StopTabCycling();
   }
 
   BraveBrowserView* browser_view_;
@@ -99,8 +98,8 @@ BraveBrowserView::BraveBrowserView(std::unique_ptr<Browser> browser)
     : BrowserView(std::move(browser)) {}
 
 BraveBrowserView::~BraveBrowserView() {
-  mru_cycling_event_handler_.reset();
-  DCHECK(!mru_cycling_event_handler_);
+  tab_cycling_event_handler_.reset();
+  DCHECK(!tab_cycling_event_handler_);
 }
 
 void BraveBrowserView::SetStarredState(bool is_starred) {
@@ -161,19 +160,19 @@ void BraveBrowserView::OnTabStripModelChanged(
   BrowserView::OnTabStripModelChanged(tab_strip_model, change, selection);
 
   if (change.type() != TabStripModelChange::kSelectionOnly) {
-    // Stop mru cycling if tab is closed dusing the cycle.
+    // Stop tab cycling if tab is closed dusing the cycle.
     // This can happen when tab is closed by shortcut (ex, ctrl + F4).
-    // After stopping, current mru cycling, new mru cycling will be started.
-    StopMRUCycling();
+    // After stopping, current tab cycling, new tab cycling will be started.
+    StopTabCycling();
   }
 }
 
-void BraveBrowserView::StartMRUCycling() {
-  mru_cycling_event_handler_ = std::make_unique<MRUCyclingEventHandler>(this);
+void BraveBrowserView::StartTabCycling() {
+  tab_cycling_event_handler_ = std::make_unique<TabCyclingEventHandler>(this);
 }
 
-void BraveBrowserView::StopMRUCycling() {
-  mru_cycling_event_handler_.reset();
+void BraveBrowserView::StopTabCycling() {
+  tab_cycling_event_handler_.reset();
   static_cast<BraveTabStripModel*>(browser()->tab_strip_model())->
       StopMRUCycling();
 }

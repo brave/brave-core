@@ -53,7 +53,7 @@ void BraveTabStripModel::SelectMRUTab(bool forward, UserGestureDetails detail) {
               });
 
     // Tell the cycling controller that we start cycling to handle tabs keys
-    static_cast<BraveBrowserWindow*>(browser->window())->StartMRUCycling();
+    static_cast<BraveBrowserWindow*>(browser->window())->StartTabCycling();
   }
 
   if (forward) {
