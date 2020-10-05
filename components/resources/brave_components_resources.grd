@@ -57,6 +57,9 @@
       <include name="IDR_BRAVE_PRIVATE_TAB_IMG" file="../img/newtab/private-window.svg" type="BINDATA" />
       <include name="IDR_BRAVE_PRIVATE_TAB_TOR_IMG" file="../img/newtab/private-window-tor.svg" type="BINDATA" />
 
+      <!-- TODO: move to components/tor after it is refactored -->
+      <include name="IDR_BRAVE_OPEN_IN_TOR_WINDOW_IMG" file="../img/toolbar/open-in-tor-window.png" type="BINDATA" />
+
       <if expr="enable_brave_perf_predictor">
         <part file="../brave_perf_predictor/resources/brave_perf_predictor_resources.grdp" />
       </if>
