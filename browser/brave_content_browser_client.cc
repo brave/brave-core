@@ -296,6 +296,7 @@ bool BraveContentBrowserClient::WillCreateURLLoaderFactory(
     URLLoaderFactoryType type,
     const url::Origin& request_initiator,
     base::Optional<int64_t> navigation_id,
+    base::UkmSourceId ukm_source_id,
     mojo::PendingReceiver<network::mojom::URLLoaderFactory>* factory_receiver,
     mojo::PendingRemote<network::mojom::TrustedURLLoaderHeaderClient>*
         header_client,
@@ -311,7 +312,7 @@ bool BraveContentBrowserClient::WillCreateURLLoaderFactory(
 
   use_proxy |= ChromeContentBrowserClient::WillCreateURLLoaderFactory(
       browser_context, frame, render_process_id, type, request_initiator,
-      std::move(navigation_id), factory_receiver, header_client,
+      std::move(navigation_id), ukm_source_id, factory_receiver, header_client,
       bypass_redirect_checks, disable_secure_dns, factory_override);
 
   return use_proxy;
