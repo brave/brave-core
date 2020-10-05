@@ -744,6 +744,7 @@ class NewTabPage extends React.Component<Props, State> {
         {shouldShowAddCard &&
           <AddCard
             isCrypto={true}
+            paddingType={'none'}
             menuPosition={'left'}
             widgetTitle={getLocale('addCardWidgetTitle')}
             textDirection={textDirection}
@@ -780,6 +781,7 @@ class NewTabPage extends React.Component<Props, State> {
         onLearnMore={this.learnMoreRewards}
         menuPosition={'left'}
         isCrypto={true}
+        paddingType={'none'}
         isCryptoTab={!showContent}
         isForeground={showContent}
         stackPosition={position}
@@ -813,6 +815,7 @@ class NewTabPage extends React.Component<Props, State> {
     return (
       <Together
         isCrypto={true}
+        paddingType={'none'}
         menuPosition={'left'}
         widgetTitle={getLocale('togetherWidgetTitle')}
         isForeground={showContent}
@@ -844,6 +847,7 @@ class NewTabPage extends React.Component<Props, State> {
         {...menuActions}
         {...binanceState}
         isCrypto={true}
+        paddingType={'none'}
         isCryptoTab={!showContent}
         menuPosition={'left'}
         widgetTitle={'Binance'}
@@ -893,6 +897,7 @@ class NewTabPage extends React.Component<Props, State> {
         {...geminiState}
         {...menuActions}
         isCrypto={true}
+        paddingType={'none'}
         isCryptoTab={!showContent}
         menuPosition={'left'}
         widgetTitle={'Gemini'}
@@ -928,6 +933,7 @@ class NewTabPage extends React.Component<Props, State> {
     return(
       <BitcoinDotCom
         isCrypto={true}
+        paddingType={'none'}
         isCryptoTab={!showContent}
         menuPosition={'left'}
         widgetTitle={'Bitcoin.com'}
@@ -987,6 +993,7 @@ class NewTabPage extends React.Component<Props, State> {
           {newTabData.showStats &&
           <Page.GridItemStats>
             <Stats
+              paddingType={'right'}
               widgetTitle={getLocale('statsTitle')}
               textDirection={newTabData.textDirection}
               stats={newTabData.stats}
@@ -998,6 +1005,7 @@ class NewTabPage extends React.Component<Props, State> {
           {newTabData.showClock &&
           <Page.GridItemClock>
             <Clock
+              paddingType={'right'}
               widgetTitle={getLocale('clockTitle')}
               textDirection={newTabData.textDirection}
               hideWidget={this.toggleShowClock}
@@ -1013,6 +1021,7 @@ class NewTabPage extends React.Component<Props, State> {
               <Page.GridItemTopSites>
                 <TopSitesGrid
                   actions={actions}
+                  paddingType={'right'}
                   widgetTitle={getLocale('topSitesTitle')}
                   gridSites={gridSitesData.gridSites}
                   menuPosition={'right'}
@@ -1038,6 +1047,7 @@ class NewTabPage extends React.Component<Props, State> {
             <Page.GridItemBrandedLogo>
               <BrandedWallpaperLogo
                 menuPosition={'right'}
+                paddingType={'default'}
                 textDirection={newTabData.textDirection}
                 data={newTabData.brandedWallpaperData.logo}
               />
