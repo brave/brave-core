@@ -14,9 +14,8 @@ import org.chromium.chrome.browser.ui.appmenu.internal.R;
 import org.chromium.ui.base.DeviceFormFactor;
 
 class BraveAppMenu {
-    private static final String BRAVE_BOTTOM_TOOLBAR_ENABLED_KEY =
-            "brave_bottom_toolbar_enabled_key";
-    private static final String BRAVE_BOTTOM_TOOLBAR_SET_KEY = "brave_bottom_toolbar_enabled";
+    private static final String BRAVE_BOTTOM_TOOLBAR_CURRENTLY_VISIBLE =
+            "brave_bottom_toolbar_currently_visible";
 
     public static int[] getPopupPosition(int[] tempLocation, boolean isByPermanentButton,
             int negativeSoftwareVerticalOffset, int negativeVerticalOffsetNotTopAnchored,
@@ -26,7 +25,7 @@ class BraveAppMenu {
                 negativeSoftwareVerticalOffset, negativeVerticalOffsetNotTopAnchored,
                 screenRotation, appRect, padding, anchorView, popupWidth, popupHeight,
                 viewLayoutDirection);
-        if (isBottomToolbarEnabled()) {
+        if (isMenuFromBottom()) {
             anchorView.getLocationOnScreen(tempLocation);
             int anchorViewLocationOnScreenY = tempLocation[1];
             position[1] += appRect.bottom - anchorViewLocationOnScreenY - popupHeight;
@@ -37,19 +36,11 @@ class BraveAppMenu {
     }
 
     public static int getAnimationStyle() {
-        return isBottomToolbarEnabled() ? R.style.OverflowMenuAnimBottom : R.style.OverflowMenuAnim;
+        return isMenuFromBottom() ? R.style.OverflowMenuAnimBottom : R.style.OverflowMenuAnim;
     }
 
-    private static boolean isBottomToolbarEnabled() {
-        if (DeviceFormFactor.isNonMultiDisplayContextOnTablet(
-                    ContextUtils.getApplicationContext())) {
-            return false;
-        }
+    private static boolean isMenuFromBottom() {
         SharedPreferences sharedPreferences = ContextUtils.getAppSharedPreferences();
-        if (sharedPreferences.getBoolean(BRAVE_BOTTOM_TOOLBAR_SET_KEY, false)) {
-            return sharedPreferences.getBoolean(BRAVE_BOTTOM_TOOLBAR_ENABLED_KEY, true);
-        }
-        assert (false);
-        return false;
+        return sharedPreferences.getBoolean(BRAVE_BOTTOM_TOOLBAR_CURRENTLY_VISIBLE, false);
     }
 }

@@ -1,0 +1,13 @@
+diff --git a/chrome/android/java/src/org/chromium/chrome/browser/toolbar/ToolbarManager.java b/chrome/android/java/src/org/chromium/chrome/browser/toolbar/ToolbarManager.java
+index f81d95ee4b71dfc9e8ef5f57c7b063cbc3a8773e..eb9a71f600adf495be5b3baf8bc8062ca0a21355 100644
+--- a/chrome/android/java/src/org/chromium/chrome/browser/toolbar/ToolbarManager.java
++++ b/chrome/android/java/src/org/chromium/chrome/browser/toolbar/ToolbarManager.java
+@@ -314,7 +314,7 @@ public class ToolbarManager implements UrlFocusChangeListener, ThemeColorObserve
+                 mActivity.getCompositorViewHolder()::requestFocus, shouldShowUpdateBadge,
+                 mActivity::isInOverviewMode, overviewModeThemeColorProvider, R.id.none);
+ 
+-        mToolbar = new TopToolbarCoordinator(controlContainer, toolbarLayout,
++        mToolbar = new org.chromium.chrome.browser.toolbar.top.BraveTopToolbarCoordinator(controlContainer, toolbarLayout,
+                 identityDiscController, mLocationBarModel, mToolbarTabController,
+                 new UserEducationHelper(mActivity, mHandler), buttonDataProviders,
+                 mOverviewModeBehaviorSupplier, browsingModeThemeColorProvider,

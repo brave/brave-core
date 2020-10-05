@@ -1,0 +1,13 @@
+diff --git a/chrome/android/java/src/org/chromium/chrome/browser/toolbar/top/TopToolbarCoordinator.java b/chrome/android/java/src/org/chromium/chrome/browser/toolbar/top/TopToolbarCoordinator.java
+index 56c47a13226b23e6c18853003a53ecc562d397ea..df5108d48232123f619b774ff02bf6f6cb08e6e8 100644
+--- a/chrome/android/java/src/org/chromium/chrome/browser/toolbar/top/TopToolbarCoordinator.java
++++ b/chrome/android/java/src/org/chromium/chrome/browser/toolbar/top/TopToolbarCoordinator.java
+@@ -134,7 +134,7 @@ public class TopToolbarCoordinator implements Toolbar {
+                         mIdentityDiscController, userEducationHelper, overviewModeBehaviorSupplier,
+                         overviewThemeColorProvider, startSurfaceMenuButtonCoordinator);
+             } else {
+-                mTabSwitcherModeCoordinatorPhone = new TabSwitcherModeTTCoordinatorPhone(
++                mTabSwitcherModeCoordinatorPhone = new BraveTabSwitcherModeTTCoordinatorPhone(
+                         controlContainer.getRootView().findViewById(
+                                 R.id.tab_switcher_toolbar_stub));
+             }
