@@ -9,13 +9,22 @@
 #include <vector>
 
 #include "base/logging.h"
+#include "base/task/post_task.h"
 #include "brave/components/brave_sync/crypto/crypto.h"
 #include "brave/components/sync/driver/brave_sync_auth_manager.h"
+#include "chrome/browser/profiles/profile_manager.h"
+#include "chrome/browser/sync/device_info_sync_service_factory.h"
 #include "components/prefs/pref_service.h"
+#include "components/sync_device_info/device_info_sync_service.h"
+#include "components/sync_device_info/device_info_tracker.h"
+#include "components/sync_device_info/local_device_info_provider.h"
+#include "content/public/browser/browser_task_traits.h"
+#include "content/public/browser/browser_thread.h"
 
 namespace syncer {
 
-BraveProfileSyncService::BraveProfileSyncService(InitParams init_params)
+BraveProfileSyncService::BraveProfileSyncService(InitParams init_params,
+                                                 Profile* profile)
     : ProfileSyncService(std::move(init_params)),
       brave_sync_prefs_(sync_client_->GetPrefService()),
       weak_ptr_factory_(this) {
@@ -29,6 +38,18 @@ BraveProfileSyncService::BraveProfileSyncService(InitParams init_params)
     StopImpl(CLEAR_DATA);
     brave_sync_prefs_.SetSyncV1Migrated(true);
   }
+
+  syncer::DeviceInfoSyncService* device_info_sync_service =
+      DeviceInfoSyncServiceFactory::GetForProfile(profile);
+  DCHECK(device_info_sync_service);
+
+  local_device_info_provider_ =
+      device_info_sync_service->GetLocalDeviceInfoProvider();
+
+  device_info_tracker_ = device_info_sync_service->GetDeviceInfoTracker();
+  DCHECK(device_info_tracker_);
+
+  device_info_observer_.Add(device_info_tracker_);
 }
 
 BraveProfileSyncService::~BraveProfileSyncService() {
@@ -85,6 +106,37 @@ void BraveProfileSyncService::OnBraveSyncPrefsChanged(const std::string& path) {
       VLOG(1) << "Brave sync seed cleared";
       GetBraveSyncAuthManager()->ResetKeys();
     }
+  }
+}
+
+void BraveProfileSyncService::OnDeviceInfoChange() {
+  DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
+  const syncer::DeviceInfo* local_device_info =
+      local_device_info_provider_->GetLocalDeviceInfo();
+
+  bool found_local_device = false;
+  const auto all_devices = device_info_tracker_->GetAllDeviceInfo();
+  for (const auto& device : all_devices) {
+    if (local_device_info->guid() == device->guid()) {
+      found_local_device = true;
+      break;
+    }
+  }
+
+  // When our device was removed from the sync chain by some other device,
+  // we don't seee it in devices list, we must reset sync in a proper way
+  if (!found_local_device) {
+    if (device_info_observer_.IsObserving(device_info_tracker_)) {
+      device_info_observer_.Remove(device_info_tracker_);
+    }
+
+    // We can't call OnSelfDeviceInfoDeleted directly because we are on
+    // remove device execution path, so posting task
+    base::OnceClosure empty_cb = base::BindOnce([]() {});
+    base::PostTask(
+        FROM_HERE, {content::BrowserThread::UI},
+        base::BindOnce(&BraveProfileSyncService::OnSelfDeviceInfoDeleted,
+                       weak_ptr_factory_.GetWeakPtr(), std::move(empty_cb)));
   }
 }
 

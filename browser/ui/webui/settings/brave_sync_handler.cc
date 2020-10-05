@@ -196,15 +196,27 @@ void BraveSyncHandler::HandleDeleteDevice(const base::ListValue* args) {
   const base::Value* device_id_value;
   CHECK(args->Get(1, &device_id_value));
 
-  std::string device_id = device_id_value->GetString();
-DLOG(ERROR) << "[BraveSync] " << __func__ << " device_id=" << device_id;
-  if (device_id.empty()) {
+  std::string device_guid = device_id_value->GetString();
+  if (device_guid.empty()) {
     LOG(ERROR) << "No device id to remove!";
     RejectJavascriptCallback(*callback_id, base::Value(false));
     return;
   }
 
-  // TODO(alexeybarabash): implement the logic
+  auto* sync_service = GetSyncService();
+  if (!sync_service) {
+    ResolveJavascriptCallback(*callback_id, base::Value(false));
+    return;
+  }
+
+  base::Value callback_id_arg(callback_id->Clone());
+  auto* device_info_sync_service =
+      DeviceInfoSyncServiceFactory::GetForProfile(profile_);
+  // TODO(AlexeyBarabash): do we need the callback here?
+  brave_sync::DeleteDevice(sync_service, device_info_sync_service, device_guid,
+                           base::BindOnce(&BraveSyncHandler::OnDeleteDeviceDone,
+                                          weak_ptr_factory_.GetWeakPtr(),
+                                          std::move(callback_id_arg)));
 }
 
 syncer::BraveProfileSyncService* BraveSyncHandler::GetSyncService() const {
@@ -231,6 +243,10 @@ void BraveSyncHandler::OnResetDone(base::Value callback_id) {
   ResolveJavascriptCallback(callback_id, base::Value(true));
 }
 
+void BraveSyncHandler::OnDeleteDeviceDone(base::Value callback_id) {
+  ResolveJavascriptCallback(callback_id, base::Value(true));
+}
+
 base::Value BraveSyncHandler::GetSyncDeviceList() {
   AllowJavascript();
   syncer::DeviceInfoTracker* tracker = GetDeviceInfoTracker();
@@ -246,7 +262,8 @@ base::Value BraveSyncHandler::GetSyncDeviceList() {
         local_device_info ? local_device_info->guid() == device->guid() : false;
     device_value.SetBoolKey("isCurrentDevice", is_current_device);
     device_value.SetStringKey("signinScopedDeviceId",
-        device->signin_scoped_device_id());
+                              device->signin_scoped_device_id());
+    device_value.SetStringKey("guid", device->guid());
     device_list.Append(std::move(device_value));
   }
   return device_list;

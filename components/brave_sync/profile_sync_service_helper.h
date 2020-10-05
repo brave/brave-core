@@ -21,6 +21,11 @@ void ResetSync(syncer::BraveProfileSyncService* sync_service,
                syncer::DeviceInfoSyncService* device_info_service,
                base::OnceClosure on_reset_done);
 
+void DeleteDevice(syncer::BraveProfileSyncService* sync_service,
+                  syncer::DeviceInfoSyncService* device_info_service,
+                  const std::string& device_guid,
+                  base::OnceClosure on_delete_done);
+
 }  // namespace brave_sync
 
 #endif  // BRAVE_COMPONENTS_BRAVE_SYNC_PROFILE_SYNC_SERVICE_HELPER_H_

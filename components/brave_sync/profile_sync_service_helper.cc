@@ -39,4 +39,26 @@ void ResetSync(syncer::BraveProfileSyncService* sync_service,
           sync_service, std::move(on_reset_done)));
 }
 
+void DeleteDevice(syncer::BraveProfileSyncService* sync_service,
+                  syncer::DeviceInfoSyncService* device_info_service,
+                  const std::string& device_guid,
+                  base::OnceClosure on_delete_done) {
+  if (sync_service->GetTransportState() !=
+      syncer::SyncService::TransportState::ACTIVE) {
+    std::move(on_delete_done).Run();
+    return;
+  }
+  syncer::DeviceInfoTracker* tracker =
+      device_info_service->GetDeviceInfoTracker();
+  DCHECK(tracker);
+
+  tracker->DeleteDeviceInfo(
+      device_guid, base::BindOnce(
+                       [](syncer::BraveProfileSyncService* sync_service,
+                          base::OnceClosure on_delete_done) {
+                         std::move(on_delete_done).Run();
+                       },
+                       sync_service, std::move(on_delete_done)));
+}
+
 }  // namespace brave_sync

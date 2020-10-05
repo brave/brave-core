@@ -1,0 +1,13 @@
+diff --git a/components/sync_device_info/device_info_sync_bridge.cc b/components/sync_device_info/device_info_sync_bridge.cc
+index a62efcfd6346bbf8a4c532c4c20c43ce8564bbb3..bad210e701b57c8f4b151c1f96a30cae2e2d2dc7 100644
+--- a/components/sync_device_info/device_info_sync_bridge.cc
++++ b/components/sync_device_info/device_info_sync_bridge.cc
+@@ -284,7 +284,7 @@ base::Optional<ModelError> DeviceInfoSyncBridge::ApplySyncChanges(
+     // Each device is the authoritative source for itself, ignore any remote
+     // changes that have a cache guid that is or was this local device.
+     if (device_info_prefs_->IsRecentLocalCacheGuid(guid)) {
+-      continue;
++      if (change->type() != EntityChange::ACTION_DELETE) continue;
+     }
+ 
+     if (change->type() == EntityChange::ACTION_DELETE) {
