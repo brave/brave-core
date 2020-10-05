@@ -324,7 +324,6 @@ class LEDGER_EXPORT Ledger {
       const type::InlineTipsPlatforms platform) = 0;
 
   virtual std::string GetShareURL(
-      const std::string& type,
       const std::map<std::string, std::string>& args) = 0;
 
   virtual void GetPendingContributions(

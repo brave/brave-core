@@ -43,12 +43,11 @@ declare namespace RewardsTip {
 
   type MediaMetaData = {
     mediaType: 'twitter',
-    twitterName: string
-    screenName: string
-    userId: string
-    tweetId: string
-    tweetTimestamp: number
-    tweetText: string
+    publisherKey: string
+    publisherName: string
+    postId: string
+    postTimestamp: string
+    postText: string
   } | {
     mediaType: 'reddit'
     userName: string

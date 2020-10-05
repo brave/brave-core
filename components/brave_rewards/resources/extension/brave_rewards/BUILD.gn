@@ -10,7 +10,6 @@ transpile_web_ui("brave_rewards_panel") {
   entry_points = [
     ["brave_rewards_panel", rebase_path("brave_rewards_panel.tsx")],
     ["brave_rewards_panel_background", rebase_path("background.ts")],
-    ["brave_rewards_panel_content_twitter", rebase_path("content_scripts/twitter.ts")],
     ["brave_rewards_panel_content_reddit", rebase_path("content_scripts/reddit.ts")],
     ["brave_rewards_panel_content_github", rebase_path("content_scripts/github.ts")]
   ]

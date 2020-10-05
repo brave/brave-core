@@ -160,9 +160,8 @@ class MockRewardsService : public RewardsService {
   MOCK_METHOD2(GetInlineTippingPlatformEnabled,
              void(const std::string& key,
                   brave_rewards::GetInlineTippingPlatformEnabledCallback));
-  MOCK_METHOD3(GetShareURL,
-             void(const std::string& type,
-                  const std::map<std::string, std::string>& args,
+  MOCK_METHOD2(GetShareURL,
+             void(const std::map<std::string, std::string>& args,
                   brave_rewards::GetShareURLCallback callback));
   MOCK_METHOD1(GetPendingContributions,
       void(brave_rewards::GetPendingContributionsCallback));

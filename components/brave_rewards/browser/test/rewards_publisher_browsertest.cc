@@ -162,7 +162,7 @@ IN_PROC_BROWSER_TEST_F(RewardsPublisherBrowserTest, VisitRegisteredPublisher) {
 // Brave tip icon is injected when visiting Twitter
 IN_PROC_BROWSER_TEST_F(
     RewardsPublisherBrowserTest,
-    TwitterTipsInjectedOnTwitter) {
+    DISABLED_TwitterTipsInjectedOnTwitter) {
   rewards_browsertest_util::EnableRewardsViaCode(browser(), rewards_service_);
 
   // Navigate to Twitter in a new tab
@@ -180,7 +180,7 @@ IN_PROC_BROWSER_TEST_F(
 // Rewards is disabled
 IN_PROC_BROWSER_TEST_F(
     RewardsPublisherBrowserTest,
-    TwitterTipsNotInjectedWhenRewardsDisabled) {
+    DISABLED_TwitterTipsNotInjectedWhenRewardsDisabled) {
   // Navigate to Twitter in a new tab
   rewards_browsertest_util::NavigateToPublisherPage(
       browser(),
@@ -195,7 +195,7 @@ IN_PROC_BROWSER_TEST_F(
 // Brave tip icon is injected when visiting old Twitter
 IN_PROC_BROWSER_TEST_F(
     RewardsPublisherBrowserTest,
-    TwitterTipsInjectedOnOldTwitter) {
+    DISABLED_TwitterTipsInjectedOnOldTwitter) {
   rewards_browsertest_util::EnableRewardsViaCode(browser(), rewards_service_);
 
   // Navigate to Twitter in a new tab
@@ -213,7 +213,7 @@ IN_PROC_BROWSER_TEST_F(
 // Brave Rewards is disabled
 IN_PROC_BROWSER_TEST_F(
     RewardsPublisherBrowserTest,
-    TwitterTipsNotInjectedWhenRewardsDisabledOldTwitter) {
+    DISABLED_TwitterTipsNotInjectedWhenRewardsDisabledOldTwitter) {
   // Navigate to Twitter in a new tab
   rewards_browsertest_util::NavigateToPublisherPage(
       browser(),
@@ -228,7 +228,7 @@ IN_PROC_BROWSER_TEST_F(
 // Brave tip icon is not injected into non-Twitter sites
 IN_PROC_BROWSER_TEST_F(
     RewardsPublisherBrowserTest,
-    TwitterTipsNotInjectedOnNonTwitter) {
+    DISABLED_TwitterTipsNotInjectedOnNonTwitter) {
   rewards_browsertest_util::EnableRewardsViaCode(browser(), rewards_service_);
 
   // Navigate to a non-Twitter site in a new tab

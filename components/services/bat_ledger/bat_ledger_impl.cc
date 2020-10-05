@@ -713,10 +713,9 @@ void BatLedgerImpl::GetInlineTippingPlatformEnabled(
 }
 
 void BatLedgerImpl::GetShareURL(
-    const std::string& type,
     const base::flat_map<std::string, std::string>& args,
     GetShareURLCallback callback) {
-  std::move(callback).Run(ledger_->GetShareURL(type, base::FlatMapToMap(args)));
+  std::move(callback).Run(ledger_->GetShareURL(base::FlatMapToMap(args)));
 }
 
 // static

@@ -299,7 +299,6 @@ class RewardsService : public KeyedService {
       GetInlineTippingPlatformEnabledCallback callback) = 0;
 
   virtual void GetShareURL(
-      const std::string& type,
       const std::map<std::string, std::string>& args,
       GetShareURLCallback callback) = 0;
 

@@ -71,7 +71,7 @@ class RewardsTipDOMHandler : public WebUIMessageHandler,
 
   void OnPublisherBanner(ledger::type::PublisherBannerPtr banner);
 
-  void OnTwitterShareURL(const std::string& url);
+  void OnGetShareURL(const std::string& url);
 
   void FetchBalance(const base::ListValue* args);
   void OnFetchBalance(
@@ -376,12 +376,12 @@ void RewardsTipDOMHandler::TweetTip(const base::ListValue *args) {
   share_url_args["name"] = name.erase(0, 1);
   share_url_args["tweet_id"] = tweet_id;
   rewards_service_->GetShareURL(
-      "twitter", share_url_args,
-      base::BindOnce(&RewardsTipDOMHandler::OnTwitterShareURL,
+      share_url_args,
+      base::BindOnce(&RewardsTipDOMHandler::OnGetShareURL,
                      base::Unretained(this)));
 }
 
-void RewardsTipDOMHandler::OnTwitterShareURL(const std::string& url) {
+void RewardsTipDOMHandler::OnGetShareURL(const std::string& url) {
   GURL gurl(url);
   if (!gurl.is_valid())
     return;
