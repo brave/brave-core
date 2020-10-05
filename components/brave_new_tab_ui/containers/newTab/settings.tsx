@@ -53,6 +53,7 @@ export interface Props {
   toggleShowBinance: () => void
   toggleShowGemini: () => void
   toggleBrandedWallpaperOptIn: () => void
+  toggleShowBitcoinDotCom: () => void
   showBackgroundImage: boolean
   showStats: boolean
   showClock: boolean
@@ -68,6 +69,8 @@ export interface Props {
   showGemini: boolean
   geminiSupported: boolean
   focusMoreCards: boolean
+  showBitcoinDotCom: boolean
+  bitcoinDotComSupported: boolean
 }
 
 type ActiveTabType = 'BackgroundImage' | 'BraveStats' | 'TopSites' | 'Clock' | 'MoreCards'
@@ -196,7 +199,10 @@ export default class Settings extends React.PureComponent<Props, State> {
       togetherSupported,
       toggleShowGemini,
       geminiSupported,
-      showGemini
+      showGemini,
+      toggleShowBitcoinDotCom,
+      showBitcoinDotCom,
+      bitcoinDotComSupported
     } = this.props
     const { activeTab } = this.state
 
@@ -297,6 +303,9 @@ export default class Settings extends React.PureComponent<Props, State> {
                         showGemini={showGemini}
                         toggleShowGemini={toggleShowGemini}
                         geminiSupported={geminiSupported}
+                        bitcoinDotComSupported={bitcoinDotComSupported}
+                        showBitcoinDotCom={showBitcoinDotCom}
+                        toggleShowBitcoinDotCom={toggleShowBitcoinDotCom}
                       />
                     ) : null
                 }

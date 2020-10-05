@@ -10,8 +10,10 @@
 #include "base/strings/utf_string_conversions.h"
 #include "brave/browser/ui/webui/settings/brave_privacy_handler.h"
 #include "brave/browser/version_info.h"
+#include "brave/components/moonpay/browser/buildflags/buildflags.h"
 #include "chrome/browser/ui/webui/webui_util.h"
 #include "chrome/common/pref_names.h"
+#include "components/grit/brave_components_strings.h"
 #include "components/prefs/pref_service.h"
 
 namespace settings {
@@ -260,6 +262,9 @@ void BraveAddCommonStrings(content::WebUIDataSource* html_source,
     { "braveNewTabBraveRewards", IDS_SETTINGS_NEW_TAB_BRAVE_REWARDS },
     { "braveNewTabBinance", IDS_SETTINGS_NEW_TAB_BINANCE },
     { "braveNewTabGemini", IDS_SETTINGS_NEW_TAB_GEMINI },
+#if BUILDFLAG(MOONPAY_ENABLED)
+    { "braveNewTabBitcoinDotCom", IDS_SETTINGS_NEW_TAB_BITCOIN_DOT_COM },
+#endif
     { "braveNewTabTogether", IDS_SETTINGS_NEW_TAB_TOGETHER },
     { "braveNewTabTopSites", IDS_SETTINGS_NEW_TAB_TOP_SITES },
     { "braveNewTabClock", IDS_SETTINGS_NEW_TAB_CLOCK },
