@@ -77,7 +77,7 @@ source_set("net") {
       "ipfs_redirect_network_delegate_helper.h",
     ]
     deps += [
-      "//brave/components/ipfs/browser",
+      "//brave/components/ipfs/common",
     ]
   }
 

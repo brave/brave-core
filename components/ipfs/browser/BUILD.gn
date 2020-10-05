@@ -13,8 +13,6 @@ source_set("browser") {
     "ipfs_service.cc",
     "ipfs_service.h",
     "ipfs_service_observer.h",
-    "translate_ipfs_uri.cc",
-    "translate_ipfs_uri.h",
   ]
 
   deps = [

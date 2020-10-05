@@ -13,8 +13,8 @@ source_set("brave_ipfs_unit_tests") {
     sources = [
       "//brave/components/ipfs/browser/ipfs_json_parser_unittest.cc",
       "//brave/components/ipfs/browser/ipfs_navigation_throttle_unittest.cc",
-      "//brave/components/ipfs/browser/translate_ipfs_uri_unittest.cc",
       "//brave/components/ipfs/common/ipfs_utils_unittest.cc",
+      "//brave/components/ipfs/common/translate_ipfs_uri_unittest.cc",
     ]
 
     deps = [
