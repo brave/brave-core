@@ -21,6 +21,11 @@ public class BraveClassAdapter {
         chain = new BraveSearchEngineAdapterClassAdapter(chain);
         chain = new BraveCommandLineInitUtilClassAdapter(chain);
         chain = new BraveAppMenuClassAdapter(chain);
+        chain = new BraveBottomControlsCoordinatorClassAdapter(chain);
+        chain = new BraveToolbarManagerClassAdapter(chain);
+        chain = new BraveTopToolbarCoordinatorClassAdapter(chain);
+        chain = new BraveTabSwitcherModeTTCoordinatorPhoneClassAdapter(chain);
+        chain = new BraveTabSwitcherModeTTPhoneClassAdapter(chain);
         return chain;
     }
 }

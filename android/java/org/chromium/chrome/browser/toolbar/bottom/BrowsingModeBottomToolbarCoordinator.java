@@ -10,15 +10,19 @@ import android.view.View.OnClickListener;
 import android.view.View.OnLongClickListener;
 
 import org.chromium.base.Callback;
+import org.chromium.base.CallbackController;
 import org.chromium.base.supplier.ObservableSupplier;
+import org.chromium.base.supplier.OneshotSupplier;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.ActivityTabProvider;
 import org.chromium.chrome.browser.ActivityTabProvider.HintlessActivityTabObserver;
 import org.chromium.chrome.browser.ThemeColorProvider;
+import org.chromium.chrome.browser.app.BraveActivity;
 import org.chromium.chrome.browser.compositor.layouts.OverviewModeBehavior;
 import org.chromium.chrome.browser.feature_engagement.TrackerFactory;
 import org.chromium.chrome.browser.profiles.Profile;
 import org.chromium.chrome.browser.tab.Tab;
+import org.chromium.chrome.browser.tab.TabImpl;
 import org.chromium.chrome.browser.tab.TabUtils;
 import org.chromium.chrome.browser.tasks.ReturnToChromeExperimentsUtil;
 import org.chromium.chrome.browser.toolbar.HomeButton;
@@ -26,13 +30,11 @@ import org.chromium.chrome.browser.toolbar.IncognitoStateProvider;
 import org.chromium.chrome.browser.toolbar.TabCountProvider;
 import org.chromium.chrome.browser.toolbar.TabSwitcherButtonCoordinator;
 import org.chromium.chrome.browser.toolbar.TabSwitcherButtonView;
+import org.chromium.chrome.browser.toolbar.menu_button.MenuButton;
 import org.chromium.chrome.browser.ui.appmenu.AppMenuButtonHelper;
 import org.chromium.components.feature_engagement.FeatureConstants;
 import org.chromium.components.feature_engagement.Tracker;
 import org.chromium.ui.modelutil.PropertyModelChangeProcessor;
-import org.chromium.chrome.browser.tab.TabImpl;
-import org.chromium.chrome.browser.app.BraveActivity;
-import org.chromium.chrome.browser.toolbar.menu_button.MenuButton;
 
 /**
  * The coordinator for the browsing mode bottom toolbar. This class has two primary components,
@@ -76,8 +78,7 @@ public class BrowsingModeBottomToolbarCoordinator {
     /** The activity tab provider that used for making the IPH. */
     private final ActivityTabProvider mTabProvider;
 
-    private Callback<OverviewModeBehavior> mOverviewModeBehaviorSupplierObserver;
-    private ObservableSupplier<OverviewModeBehavior> mOverviewModeBehaviorSupplier;
+    private CallbackController mCallbackController = new CallbackController();
     private final BookmarksButton mBookmarkButton;
     private final MenuButton mMenuButton;
 
@@ -94,7 +95,7 @@ public class BrowsingModeBottomToolbarCoordinator {
             OnClickListener homeButtonListener, OnClickListener searchAcceleratorListener,
             ObservableSupplier<OnClickListener> shareButtonListenerSupplier,
             OnLongClickListener tabSwitcherLongClickListener,
-            ObservableSupplier<OverviewModeBehavior> overviewModeBehaviorSupplier) {
+            OneshotSupplier<OverviewModeBehavior> overviewModeBehaviorSupplier) {
         mModel = new BrowsingModeBottomToolbarModel();
         mToolbarRoot = root.findViewById(R.id.bottom_toolbar_browsing);
         mTabProvider = tabProvider;
@@ -140,9 +141,10 @@ public class BrowsingModeBottomToolbarCoordinator {
             mShareButtonListenerSupplier.addObserver(mShareButtonListenerSupplierCallback);
         }
 
-        mOverviewModeBehaviorSupplier = overviewModeBehaviorSupplier;
-        mOverviewModeBehaviorSupplierObserver = this::setOverviewModeBehavior;
-        mOverviewModeBehaviorSupplier.addObserver(mOverviewModeBehaviorSupplierObserver);
+        overviewModeBehaviorSupplier.onAvailable(
+                mCallbackController.makeCancelable((overviewModeBehavior) -> {
+                    setOverviewModeBehavior(overviewModeBehavior);
+                }));
 
         mBookmarkButton = mToolbarRoot.findViewById(R.id.bottom_bookmark_button);
         if (BottomToolbarVariationManager.isBookmarkButtonOnBottom()) {
@@ -278,11 +280,6 @@ public class BrowsingModeBottomToolbarCoordinator {
     public void destroy() {
         if (mShareButtonListenerSupplier != null) {
             mShareButtonListenerSupplier.removeObserver(mShareButtonListenerSupplierCallback);
-        }
-        if (mOverviewModeBehaviorSupplier != null) {
-            mOverviewModeBehaviorSupplier.removeObserver(mOverviewModeBehaviorSupplierObserver);
-            mOverviewModeBehaviorSupplier = null;
-            mOverviewModeBehaviorSupplierObserver = null;
         }
         mMediator.destroy();
         mHomeButton.destroy();

@@ -1,5 +1,5 @@
 diff --git a/chrome/android/java/src/org/chromium/chrome/browser/ChromeTabbedActivity.java b/chrome/android/java/src/org/chromium/chrome/browser/ChromeTabbedActivity.java
-index 1e8697a4a42e061cf4397f40fb62b698ce75f567..a5d1f5044c0bd31cbba83881ba33ec81068e754d 100644
+index 1e8697a4a42e061cf4397f40fb62b698ce75f567..41364b1a5088077b88298ab142df1aa6c9ea2f02 100644
 --- a/chrome/android/java/src/org/chromium/chrome/browser/ChromeTabbedActivity.java
 +++ b/chrome/android/java/src/org/chromium/chrome/browser/ChromeTabbedActivity.java
 @@ -181,7 +181,7 @@ import java.util.Locale;
@@ -20,6 +20,15 @@ index 1e8697a4a42e061cf4397f40fb62b698ce75f567..a5d1f5044c0bd31cbba83881ba33ec81
                              assert profile != null : "Unexpectedly null profile from TabModel.";
                              if (profile == null) return;
  
+@@ -1425,7 +1425,7 @@ public class ChromeTabbedActivity extends ChromeActivity<ChromeActivityComponent
+ 
+     @Override
+     protected RootUiCoordinator createRootUiCoordinator() {
+-        return new TabbedRootUiCoordinator(this, this::onOmniboxFocusChanged,
++        return new org.chromium.chrome.browser.tabbed_mode.BraveTabbedRootUiCoordinator(this, this::onOmniboxFocusChanged,
+                 mIntentWithEffectSupplier, getShareDelegateSupplier(), getActivityTabProvider(),
+                 mEphemeralTabCoordinatorSupplier, mTabModelProfileSupplier, mBookmarkBridgeSupplier,
+                 getOverviewModeBehaviorSupplier(), this::getContextualSearchManager,
 @@ -1577,7 +1577,7 @@ public class ChromeTabbedActivity extends ChromeActivity<ChromeActivityComponent
  
      @Override

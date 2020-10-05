@@ -77,3 +77,50 @@
 -keep class org.chromium.chrome.browser.ui.appmenu.AppMenu {
     *** getPopupPosition(...);
 }
+
+-keep class org.chromium.chrome.browser.toolbar.bottom.BottomControlsCoordinator {
+    *** mMediator;
+}
+
+-keep class org.chromium.chrome.browser.toolbar.ToolbarManager {
+    *** mBottomControlsCoordinator;
+    *** mBrowserControlsSizer;
+    *** mFullscreenManager;
+    *** mActivityTabProvider;
+    *** mAppThemeColorProvider;
+    *** mShareDelegateSupplier;
+    *** mScrimCoordinator;
+    *** mActivity;
+    *** mShowStartSurfaceSupplier;
+    *** mOverviewModeBehaviorSupplier;
+    *** mMenuButtonCoordinator;
+    *** mToolbarTabController;
+    *** mLocationBar;
+    *** mActionModeController;
+    *** mLocationBarModel;
+    *** mToolbar;
+    *** mBookmarkBridgeSupplier;
+    *** onOrientationChange(...);
+    *** updateButtonStatus(...);
+    *** updateBookmarkButtonStatus(...);
+    *** updateReloadState(...);
+}
+
+-keep class org.chromium.chrome.browser.toolbar.top.TopToolbarCoordinator {
+    *** mTabSwitcherModeCoordinatorPhone;
+    *** mOptionalButtonController;
+}
+
+-keep class org.chromium.chrome.browser.toolbar.top.TabSwitcherModeTTCoordinatorPhone {
+    *** mTabSwitcherModeToolbar;
+}
+
+-keep class org.chromium.chrome.browser.toolbar.top.TabSwitcherModeTTPhone {
+    *** mNewTabViewButton;
+    *** mNewTabImageButton;
+    *** mToggleTabStackButton;
+    *** mMenuButton;
+    *** mShouldShowNewTabVariation;
+    *** updateNewTabButtonVisibility(...);
+    *** shouldShowIncognitoToggle(...);
+}
