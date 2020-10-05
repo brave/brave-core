@@ -89,7 +89,7 @@ class MoreCardsSettings extends React.PureComponent<Props, {}> {
       bitcoinDotComSupported
     } = this.props
     return (
-      <StyledWidgetSettings>
+      <StyledWidgetSettings hasFeatured={togetherSupported}>
         {
           togetherSupported
           ? <FeaturedSettingsWidget>

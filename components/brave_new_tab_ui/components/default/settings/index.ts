@@ -295,11 +295,15 @@ export const SettingsWidget = styled<{}, 'div'>('div')`
   margin-top: 20px;
 `
 
-export const StyledWidgetSettings = styled<{}, 'div'>('div')`
+interface WidgetSettingsProps {
+  hasFeatured: boolean
+}
+
+export const StyledWidgetSettings = styled<WidgetSettingsProps, 'div'>('div')`
   font-family: ${p => p.theme.fontFamily.heading};
 
-  ${SettingsWidget}:nth-child(even) {
-    margin-right: 17px;
+  ${SettingsWidget}:nth-child(${p => p.hasFeatured ? 'odd' : 'even'}) {
+    margin-left: 17px;
   }
 `
 
