@@ -33,9 +33,9 @@ std::unique_ptr<NTPBackgroundImagesData> GetDemoWallpaper(bool super_referral) {
       { base::FilePath(FILE_PATH_LITERAL("wallpaper2.jpg")), { 5233, 3464 } },
       { base::FilePath(FILE_PATH_LITERAL("wallpaper3.jpg")), {  0, 0 } },
   };
-  demo->logo_alt_text = "Technikke: For music lovers.";
-  demo->logo_company_name = "Technikke";
-  demo->logo_destination_url = "https://brave.com";
+  demo->default_logo.alt_text = "Technikke: For music lovers.";
+  demo->default_logo.company_name = "Technikke";
+  demo->default_logo.destination_url = "https://brave.com";
 
   if (super_referral) {
     demo->theme_name = "Technikke";

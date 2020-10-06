@@ -8,15 +8,55 @@
 
 namespace ntp_background_images {
 
-extern const char kBrandedWallpaperHost[];
-extern const char kLogoPath[];
-extern const char kWallpaperPathPrefix[];
-extern const char kSuperReferralPath[];
-extern const char kSponsoredImagesPath[];
+constexpr char kBrandedWallpaperHost[] = "branded-wallpaper";
+constexpr char kDefaultLogoFileName[] = "logo.png";
+constexpr char kLogoFileNamePrefix[] = "logo-";
+constexpr char kWallpaperPathPrefix[] = "wallpaper-";
+constexpr char kSuperReferralPath[] = "super-referral/";
+constexpr char kSponsoredImagesPath[] = "sponsored-images/";
 
-extern const char kPublicKey[];
-extern const char kComponentID[];
-extern const char kThemeName[];
+constexpr char kPublicKey[] = "publicKey";
+constexpr char kComponentIDKey[] = "componentID";
+
+constexpr char kThemeNameKey[] = "themeName";
+
+constexpr char kLogoKey[] = "logo";
+
+constexpr char kWallpapersKey[] = "wallpapers";
+constexpr char kWallpaperFocalPointKey[] = "focalPoint";
+
+constexpr char kTopSitesKey[] = "topSites";
+constexpr char kTopSiteNameKey[] = "name";
+constexpr char kTopSiteIconURLKey[] = "iconUrl";
+
+constexpr char kImageURLKey[] = "imageUrl";
+constexpr char kDestinationURLKey[] = "destinationUrl";
+constexpr char kBackgroundColorKey[] = "backgroundColor";
+constexpr char kCompanyNameKey[] = "companyName";
+constexpr char kViewboxKey[] = "viewbox";
+
+constexpr char kCreativeInstanceIDKey[] = "creativeInstanceId";
+constexpr char kCreativeSetIDKey[] = "creativeSetId";
+constexpr char kCampaignIDKey[] = "campaignId";
+constexpr char kAdvertiserIDKey[] = "advertiserId";
+
+constexpr char kIsSponsoredKey[] = "isSponsored";
+constexpr char kWallpaperImageURLKey[] = "wallpaperImageUrl";
+constexpr char kWallpaperImagePathKey[] = "wallpaperImagePath";
+constexpr char kWallpaperFocalPointXKey[] = "wallpaperFocalPointX";
+constexpr char kWallpaperFocalPointYKey[] = "wallpaperFocalPointY";
+constexpr char kImageKey[] = "image";
+constexpr char kImagePathKey[] = "imagePath";
+constexpr char kLogoDestinationURLPath[] = "logo.destinationUrl";
+constexpr char kLogoImagePath[] = "logo.imagePath";
+
+constexpr char kAltKey[] = "alt";
+constexpr char kXKey[] = "x";
+constexpr char kYKey[] = "y";
+constexpr char kWidthKey[] = "width";
+constexpr char kHeightKey[] = "height";
+
+constexpr char kSchemaVersionKey[] = "schemaVersion";
 
 }  // namespace ntp_background_images
 

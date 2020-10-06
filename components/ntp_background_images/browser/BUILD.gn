@@ -14,7 +14,6 @@ static_library("browser") {
     "sponsored_images_component_data.h",
     "switches.cc",
     "switches.h",
-    "url_constants.cc",
     "url_constants.h",
     "view_counter_model.cc",
     "view_counter_model.h",

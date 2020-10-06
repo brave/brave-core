@@ -10,8 +10,11 @@
 #include <vector>
 
 #include "base/files/file_path.h"
+#include "base/optional.h"
 #include "base/values.h"
 #include "ui/gfx/geometry/point.h"
+#include "ui/gfx/geometry/rect.h"
+#include "third_party/skia/include/core/SkColor.h"
 
 namespace ntp_background_images {
 
@@ -23,19 +26,47 @@ struct TopSite {
   base::FilePath image_file;
 
   TopSite();
+  // For unit test.
   TopSite(const std::string& name, const std::string destination_url,
           const std::string& image_path, const base::FilePath& image_file);
   TopSite(const TopSite& data);
   TopSite& operator=(const TopSite& data);
-  TopSite(TopSite&& data);
   ~TopSite();
 
   bool IsValid() const;
 };
 
+struct Logo {
+  base::FilePath image_file;
+  std::string image_url;
+  std::string alt_text;
+  std::string destination_url;
+  std::string company_name;
+
+  Logo();
+  Logo(const Logo&);
+  ~Logo();
+};
+
 struct Background {
   base::FilePath image_file;
   gfx::Point focal_point;
+  std::string background_color;
+
+  std::string creative_instance_id;
+  std::string creative_set_id;
+  std::string campaign_id;
+  std::string advertiser_id;
+
+  base::Optional<Logo> logo;
+  base::Optional<gfx::Rect> viewbox;
+
+  Background();
+  // For unit test.
+  Background(const base::FilePath& image_file_path, const gfx::Point& point);
+  Background(const Background&);
+
+  ~Background();
 };
 
 struct NTPBackgroundImagesData {
@@ -44,7 +75,6 @@ struct NTPBackgroundImagesData {
                           const base::FilePath& installed_dir);
   NTPBackgroundImagesData(const NTPBackgroundImagesData& data);
   NTPBackgroundImagesData& operator=(const NTPBackgroundImagesData& data);
-  NTPBackgroundImagesData(NTPBackgroundImagesData&& data);
   ~NTPBackgroundImagesData();
 
   bool IsValid() const;
@@ -56,14 +86,10 @@ struct NTPBackgroundImagesData {
 
   std::string GetURLPrefix() const;
 
-  std::string logo_image_url() const;
   std::vector<std::string> wallpaper_image_urls() const;
 
+  Logo default_logo;
   std::string theme_name;
-  base::FilePath logo_image_file;
-  std::string logo_alt_text;
-  std::string logo_destination_url;
-  std::string logo_company_name;
   std::vector<Background> backgrounds;
   std::vector<TopSite> top_sites;
   std::string url_prefix;
