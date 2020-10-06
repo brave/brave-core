@@ -38,6 +38,7 @@ source_set("profiles") {
     "//chrome/common",
     "//components/gcm_driver:gcm_buildflags",
     "//components/prefs",
+    "//components/search_engines",
     "//ui/base",
   ]
 

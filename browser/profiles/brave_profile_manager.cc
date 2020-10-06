@@ -72,6 +72,12 @@ BraveProfileManager::~BraveProfileManager() {
   }
 }
 
+void BraveProfileManager::InitProfileUserPrefs(Profile* profile) {
+  ProfileManager::InitProfileUserPrefs(profile);
+  brave::RecordInitialP3AValues(profile);
+  brave::SetDefaultSearchVersion(profile, profile->IsNewProfile());
+}
+
 std::string BraveProfileManager::GetLastUsedProfileName() {
   PrefService* local_state = g_browser_process->local_state();
   DCHECK(local_state);
@@ -128,19 +134,6 @@ bool BraveProfileManager::LoadProfileByPath(const base::FilePath& profile_path,
 
   return ProfileManager::LoadProfileByPath(profile_path, incognito,
                                            std::move(callback));
-}
-
-// Profile can be loaded sync or async; if sync, there is a matching block
-// in `browser/profiles/brave_profile_impl.cc` (constructor)
-void BraveProfileManager::OnProfileCreated(Profile* profile,
-                                           bool success,
-                                           bool is_new_profile) {
-  ProfileManager::OnProfileCreated(profile, success, is_new_profile);
-
-  if (!success)
-    return;
-
-  brave::RecordInitialP3AValues(profile);
 }
 
 // This overridden method doesn't clear |kDefaultSearchProviderDataPrefName|.

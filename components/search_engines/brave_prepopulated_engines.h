@@ -15,6 +15,7 @@
 namespace TemplateURLPrepopulateData {
 
 extern const int kBraveCurrentDataVersion;
+extern const int kBraveFirstTrackedDataVersion;
 
 // See comments on prepopulated engines ids in
 // components/search_engines/prepopulated_engines_schema.json above the

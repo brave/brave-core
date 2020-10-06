@@ -8,8 +8,11 @@
 #include <map>
 #include <vector>
 
+#include "base/containers/flat_map.h"
+#include "base/no_destructor.h"
 #include "base/stl_util.h"
 #include "base/strings/utf_string_conversions.h"
+#include "brave/common/pref_names.h"
 #include "brave/components/search_engines/brave_prepopulated_engines.h"
 #include "components/country_codes/country_codes.h"
 
@@ -152,13 +155,13 @@ const std::map<int, const std::vector<BravePrepopulatedEngineID>*>
         {country_codes::CountryCharsToCountryID('V', 'N'),
          &brave_engines_with_yahoo}};
 
-// Default search engine. Overridable on a per-country basis.
-const BravePrepopulatedEngineID default_engine =
+// A versioned map tracking the singular default search engine per-country.
+BravePrepopulatedEngineID GetDefaultSearchEngine(int country_id, int version) {
+  const BravePrepopulatedEngineID default_v6 =
     PREPOPULATED_ENGINE_ID_GOOGLE;
-
-// A map tracking the singular default search engine per-country.
-const std::map<int, BravePrepopulatedEngineID>
-    default_engine_by_country_id_map = {
+  static const base::NoDestructor<base::flat_map<int,
+        BravePrepopulatedEngineID>>
+      content_v6({
         {country_codes::CountryCharsToCountryID('A', 'U'),
          PREPOPULATED_ENGINE_ID_DUCKDUCKGO_AU_NZ_IE},
         {country_codes::CountryCharsToCountryID('F', 'R'),
@@ -168,12 +171,27 @@ const std::map<int, BravePrepopulatedEngineID>
         {country_codes::CountryCharsToCountryID('I', 'E'),
          PREPOPULATED_ENGINE_ID_DUCKDUCKGO_AU_NZ_IE},
         {country_codes::CountryCharsToCountryID('N', 'Z'),
-         PREPOPULATED_ENGINE_ID_DUCKDUCKGO_AU_NZ_IE}};
+         PREPOPULATED_ENGINE_ID_DUCKDUCKGO_AU_NZ_IE},
+      });
+  switch (version) {
+    case 6:
+      FALLTHROUGH;
+    default: {
+        auto it = content_v6->find(country_id);
+        if (it == content_v6->end()) {
+            return default_v6;
+        }
+        return it->second;
+    } break;
+  }
+}
 
 // A map to keep track of country-specific implementations of Yahoo.
 // Used in LocalizeEngineList.
-const std::map<int, BravePrepopulatedEngineID>
-    yahoo_engines_by_country_id_map = {
+BravePrepopulatedEngineID GetLocalizedEngineYahoo(int country_id) {
+  static const base::NoDestructor<base::flat_map<int,
+        BravePrepopulatedEngineID>>
+      content({
         {country_codes::CountryCharsToCountryID('A', 'R'),
          PREPOPULATED_ENGINE_ID_YAHOO_AR},
         {country_codes::CountryCharsToCountryID('A', 'T'),
@@ -237,7 +255,14 @@ const std::map<int, BravePrepopulatedEngineID>
         {country_codes::CountryCharsToCountryID('V', 'E'),
          PREPOPULATED_ENGINE_ID_YAHOO_VE},
         {country_codes::CountryCharsToCountryID('V', 'N'),
-         PREPOPULATED_ENGINE_ID_YAHOO_VN}};
+         PREPOPULATED_ENGINE_ID_YAHOO_VN},
+      });
+  auto it = content->find(country_id);
+  if (it == content->end()) {
+    return PREPOPULATED_ENGINE_ID_YAHOO;
+  }
+  return it->second;
+}
 
 // Builds a vector of PrepulatedEngine objects from the given array of
 // |engine_ids|. Fills in the default engine index for the given |country_id|,
@@ -283,7 +308,8 @@ void UpdateTemplateURLDataKeyword(
 std::vector<std::unique_ptr<TemplateURLData>>
 GetBravePrepopulatedEnginesForCountryID(
     int country_id,
-    size_t* default_search_provider_index = nullptr) {
+    size_t* default_search_provider_index = nullptr,
+    int version = kBraveCurrentDataVersion) {
   std::vector<BravePrepopulatedEngineID> brave_engine_ids =
       brave_engines_default;
 
@@ -294,12 +320,9 @@ GetBravePrepopulatedEnginesForCountryID(
   }
   DCHECK_GT(brave_engine_ids.size(), 0ul);
 
-  // Get the default engine (overridable by country)
-  BravePrepopulatedEngineID default_id = default_engine;
-  const auto& it_default = default_engine_by_country_id_map.find(country_id);
-  if (it_default != default_engine_by_country_id_map.end()) {
-    default_id = it_default->second;
-  }
+  // Get the default engine (overridable by country) for this version
+  BravePrepopulatedEngineID default_id =
+      GetDefaultSearchEngine(country_id, version);
 
   // Allow for per-country overrides
   LocalizeEngineList(country_id, &brave_engine_ids);
@@ -333,11 +356,12 @@ GetBravePrepopulatedEnginesForCountryID(
 void LocalizeEngineList(int country_id,
                         std::vector<BravePrepopulatedEngineID>* engines) {
   for (size_t i = 0; i < engines->size(); ++i) {
-    if ((*engines)[i] == PREPOPULATED_ENGINE_ID_YAHOO) {
-      const auto& it = yahoo_engines_by_country_id_map.find(country_id);
-      if (it != yahoo_engines_by_country_id_map.end()) {
-        (*engines)[i] = it->second;
-      }
+    switch ((*engines)[i]) {
+        case PREPOPULATED_ENGINE_ID_YAHOO:
+            (*engines)[i] = GetLocalizedEngineYahoo(country_id);
+            break;
+        default:
+            continue;
     }
   }
 }
@@ -370,9 +394,15 @@ std::vector<std::unique_ptr<TemplateURLData>> GetPrepopulatedEngines(
   if (!t_urls.empty())
     return t_urls;
 
+  int version = kBraveFirstTrackedDataVersion;
+  if (prefs && prefs->HasPrefPath(kBraveDefaultSearchVersion)) {
+    version = prefs->GetInteger(kBraveDefaultSearchVersion);
+  }
+
   return GetBravePrepopulatedEnginesForCountryID(
       country_codes::GetCountryIDFromPrefs(prefs),
-      default_search_provider_index);
+      default_search_provider_index,
+      version);
 }
 
 // Redefines function with the same name in Chromium. Modifies the function to
