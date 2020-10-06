@@ -1024,6 +1024,8 @@
 <translation id="983192555821071799">すべてのタブを閉じる</translation>
 <translation id="987264212798334818">全般</translation>
 <translation id="996149300115483134">フィードカード メニューは閉じています</translation>
+<translation id="4540437243849625078">このサイトは、プライベートモードの外部のアプリと情報を共有しようとしています。</translation>
+<translation id="1227836882233136433">プライベートモードを離れますか？</translation>
 <translation id="5186185447130319458">プライベート</translation>
 <translation id="9063160602596686558">使用統計情報や障害レポートを Brave Software に自動送信します</translation>
 <translation id="1438581767753657407">Liteモードがオンの場合、BraveはBraveサーバーを使用してページの読み込みを高速化します。Liteモードは、非常に遅いページを書き換えて、重要なコンテンツのみを読み込みます。Liteモードは、プライベートタブには適用されません。</translation>
@@ -1033,8 +1035,7 @@
 <translation id="3110967157686007724">プライベートタブ</translation>
 <translation id="4526803704855831732">プライベートタブ</translation>
 <translation id="7465104139234185284">すべてのプライベートタブを閉じます</translation>
-<translation id="4540437243849625078">このサイトは、プライベートモードの外部のアプリと情報を共有しようとしています。</translation>
-<translation id="1227836882233136433">プライベートモードを離れますか？</translation>
+<translation id="21023559487771014">プライベートモードに進む</translation>
 <translation id="6336451774241870485">新しいプライベートタブ</translation>
 <translation id="3234355010754616171">新しいプライベートタブ</translation>
 <translation id="6610147964972079463">プライベートタブを閉じます</translation>

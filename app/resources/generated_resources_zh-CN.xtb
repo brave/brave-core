@@ -291,7 +291,7 @@
 <translation id="1361872463926621533">启动时播放声音</translation>
 <translation id="1363585519747660921">USB 打印机需要配置</translation>
 <translation id="1365180424462182382">您的<ph name="BEGIN_LINK"/>浏览器<ph name="END_LINK"/>由 <ph name="ENROLLMENT_DOMAIN"/> 管理</translation>
-<translation id="1366177842110999534">在 <ph name="DEVICE_TYPE"/> 上运行 Linux 工具、编辑器和 IDE。&lt;a target="_blank" href="<ph name="URL"/>"&gt;了解详情&lt;/a&gt;</translation>
+<translation id="1366177842110999534">在 <ph name="DEVICE_TYPE"/> 上运行 Linux 工具、编辑器和 IDE。&lt;a target="_blank" rel="noopener noreferrer" href="<ph name="URL"/>"&gt;了解详情&lt;/a&gt;</translation>
 <translation id="1367951781824006909">选择文件</translation>
 <translation id="1369149969991017342">开关控制（只需 1-2 个开关即可控制计算机）</translation>
 <translation id="1372841398847029212">同步到您的帐号中</translation>
@@ -1350,7 +1350,7 @@
 <translation id="268053382412112343">历史记录(&amp;S)</translation>
 <translation id="2682498795777673382">您的家长已更新设置</translation>
 <translation id="2683638487103917598">文件夹内容已排序</translation>
-<translation id="2686222346846590368">这是最后一次为此 <ph name="DEVICE_TYPE"/> 提供自动的软件和安全更新。如需接收以后的更新，请升级至较新的型号。&lt;a target="_blank" href="<ph name="URL"/>"&gt;了解详情<ph name="LINK_END"/></translation>
+<translation id="2686222346846590368">这是最后一次为此 <ph name="DEVICE_TYPE"/> 提供自动的软件和安全更新。如需接收以后的更新，请升级至较新的型号。&lt;a target="_blank" rel="noopener noreferrer" href="<ph name="URL"/>"&gt;了解详情<ph name="LINK_END"/></translation>
 <translation id="2687403674020088961">阻止所有 Cookie（不建议）</translation>
 <translation id="2687407218262674387">Brave 服务条款</translation>
 <translation id="2688196195245426394">向服务器注册设备时出错：<ph name="CLIENT_ERROR"/>。</translation>
@@ -4847,7 +4847,7 @@
 <translation id="7197632491113152433">我们发现，您的帐号中有 <ph name="NUMBER_OF_APPS"/> 款可在此设备上使用的应用。</translation>
 <translation id="7199158086730159431">获取帮助(&amp;E)</translation>
 <translation id="7200083590239651963">选择配置</translation>
-<translation id="7201042526153088083">在 <ph name="DEVICE_TYPE"/> 上通过 Google Play 安装应用和游戏。&lt;a target="_blank" href="<ph name="URL"/>"&gt;了解详情&lt;/a&gt;</translation>
+<translation id="7201042526153088083">在 <ph name="DEVICE_TYPE"/> 上通过 Google Play 安装应用和游戏。&lt;a target="_blank" rel="noopener noreferrer" href="<ph name="URL"/>"&gt;了解详情&lt;/a&gt;</translation>
 <translation id="720110658997053098">让此设备永久处于自助服务终端模式</translation>
 <translation id="7201118060536064622">已删除“<ph name="DELETED_ITEM_NAME"/>”</translation>
 <translation id="7201420661433230412">查看文件</translation>
@@ -6593,7 +6593,7 @@
 <translation id="3860292630623580294">（无痕）</translation>
 <translation id="4854477725773269949">在无痕模式下启用</translation>
 <translation id="6436164536244065364">在 Brave 网上应用店中查看详情</translation>
-<translation id="38046578254905003">在 <ph name="BEGIN_LINK"/>Brave 网上应用店<ph name="END_LINK"/>中查找扩展程序和主题背景</translation>
+<translation id="38046578254905003">在<ph name="BEGIN_LINK"/>Web Store<ph name="END_LINK"/>中查找扩展程序和主题背景</translation>
 <translation id="6336451774241870485">打开新的无痕式标签页</translation>
 <translation id="6610147964972079463">关闭隐身标签页</translation>
 <translation id="4933782374919065856">有问题？请与负责监管您的个人资料的人员联系。</translation>

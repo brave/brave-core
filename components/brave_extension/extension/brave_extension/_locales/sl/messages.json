@@ -80,7 +80,7 @@
     "description": "Message for the main blocked resources text when there is one connection upgraded (singular) and no other ads/trackers blocked"
   },
   "scriptsBlocked": {
-    "message": "Blokirane skripte",
+    "message": "Skripte blokirane",
     "description": "Message for the scripts blocked row label"
   },
   "thirdPartyCookiesBlocked": {

@@ -25,7 +25,7 @@ Instaliranjem ove ekstenzije, slažete se sa Google Widevine uslovima korišće
 <translation id="3218385319396786393">Automatska reprodukcija je blokirana na ovoj strani</translation>
 <translation id="4988333904713528597">Uvek dozvoli automatsko puštanje na <ph name="HOST"/></translation>
 <translation id="4150684676757176434">Nastavite da blokirate automatsku reprodukciju</translation>
-<translation id="5883458389055721080">Brave nije pregledao ovu ekstenziju zbog bezbednosti i sigurnosti. Instalirajte ovu ekstenziju samo ako verujete razvojnom programeru.</translation>
+<translation id="8988939298652262600">Brave ne pregledava proširenja radi sigurnosti i bezbednosti. Instalirajte ovo proširenje samo ako verujete programeru.</translation>
 <translation id="8081858229109418493">Ime profila i ikona</translation>
 <translation id="2044383478723007273">Boje Brave-a</translation>
 <translation id="1692470335103807198">Dobijte više tema</translation>
@@ -37,6 +37,9 @@ Instaliranjem ove ekstenzije, slažete se sa Google Widevine uslovima korišće
 <translation id="5802665280774361839">Na traci sa adresama prikaži automatsko dovršavanje</translation>
 <translation id="597020512043916976">Prikaži najpopularnije veb stranice u predlozima za automatsko dovršavanje</translation>
 <translation id="264150068416846820">Prikažite Brave predložene veb stranice u automatskom dovršavanju</translation>
+<translation id="6414370348346025511">Uključena je standardna zaštita.</translation>
+<translation id="814018970995616154">Proverava URL adrese sa listom nebezbednih veb lokacija uskladištenih u Brave-u.</translation>
+<translation id="1144810021918451336">Ne štiti vas od opasnih veb lokacija, preuzimanja i proširenja.</translation>
 <translation id="7781069478569868053">Stranica nove kartice</translation>
 <translation id="2467749191278759605">Prilagodite svoju Brave kontrolnu tablu</translation>
 <translation id="1717331825806276156">Pozadinske slike</translation>
@@ -79,7 +82,7 @@ Instaliranjem ove ekstenzije, slažete se sa Google Widevine uslovima korišće
 <translation id="4824468494729001999">Blokiraj skripte</translation>
 <translation id="519861640102428255">Pogledaj &amp; Oseti</translation>
 <translation id="4800195524776354947">Pokaži broj blokiranih stavki na Štit ikonici</translation>
-<translation id="3932286112122164477">Dozvoli Google tastere za prijavljivanje na lokacijama treće strane</translation>
+<translation id="7498695072878479744">Dozvoli Google tastere za prijavljivanje na lokacijama treće strane</translation>
 <translation id="863171915776379000">Dozvoli prijavljivanje putem Facebook-a i ugrađene objave</translation>
 <translation id="5165042248369837294">Dozvoli Twitter ugrađene tvitove</translation>
 <translation id="958971637207126733">Dozvolite ugrađene objave Linkedinu</translation>
@@ -148,13 +151,17 @@ Instaliranjem ove ekstenzije, slažete se sa Google Widevine uslovima korišće
 <translation id="2356070529366658676">Питај</translation>
 <translation id="7701040980221191251">Ниједна</translation>
 <translation id="1085027414516521238">MetaMask</translation>
-<translation id="3905324891414560921">Web3 dobavljač za korišćenje Dapps-a</translation>
+<translation id="7090046810227878892">Ethereum provajder za korišćenje Dapps-a</translation>
 <translation id="5913089932885076110">Učitajte kripto novčanike pri pokretanju</translation>
+<translation id="6864914031231797928">Dozvolite Google prijavu za proširenja</translation>
+<translation id="1365342176656744625">Metoda za rešavanje IPFS lokacija</translation>
+<translation id="1327977588028644528">Мрежни пролаз</translation>
+<translation id="80225669816651290">Lokalni čvor</translation>
 <translation id="6554397389149987360">Koristi komponentu Hangouts da biste omogućili deljenje ekrana i druge funkcije u pregledaču.</translation>
 <translation id="1765684547504191670">Koristi komponentu Media Router-a da bi omogućio Chromecast u pregledaču.</translation>
 <translation id="9156965752763025780">Промене ће ступити на снагу када следећи пут поново покренете Brave.</translation>
 <translation id="7179921470347911571">Ponovo pokreni sada</translation>
-<translation id="4154389611571860454">Koristi IPFS propratno proširenje da podrži IPFS u pregledaču.</translation>
+<translation id="6222323340194834282">Koristi IPFS prateće proširenje za poboljšanje IPFS podrške u pregledaču.</translation>
 <translation id="8137559199583651773">Управљај додацима</translation>
 <translation id="7013485839273047434">Nabavi još ekstenzija</translation>
 <translation id="4928988318462976765">Prodavnica Veb proširenja</translation>
@@ -210,20 +217,19 @@ Instaliranjem ove ekstenzije, slažete se sa Google Widevine uslovima korišće
 <translation id="4394049700291259645">Онемогући</translation>
 <translation id="6469509880167172749">Automatski pošalji potpuno privatnu analitiku proizvoda Brave-u</translation>
 <translation id="7090566321964540749">Ova anonimna informacija samo Brave-u dozvoljava da procenjuje ukupno korišćenje određenih karakteristika.</translation>
-<translation id="9111960429693394744">Da li želite da koristite kripto novčanike Brave-a ili MetaMask za Dapps?</translation>
-<translation id="8721775358057000783">Želite li da pokrenete Crypto Wallets za veb3 podršku na ovoj stranici?</translation>
+<translation id="1947672064022327074">Da li želite da pokrenete Kripto Novčanike za podršku Ethereumu?</translation>
 <translation id="7583735190612229830">Podesi kripto novčanik za interakciju sa ovom aplikacijom i nekim drugim sličnim aplikacijama.</translation>
 <translation id="4823406846571523661">Podesite kripto novčanike</translation>
-<translation id="5756155765711979898">Koristi MetaMask</translation>
-<translation id="6754134632841262799">PODEŠAVANJE</translation>
 <translation id="8199661191594897555">Pokrenite Crypto Wallets i ponovo učitajte</translation>
 <translation id="8428213095426709021">Подешавања</translation>
+<translation id="1854270995641373652">Da li biste želeli da omogućite lokalnu daemon IPFS podršku u Brave-u?</translation>
+<translation id="2366908098700680611">Omogući IPFS</translation>
 <translation id="4552520379838695057">Žao nam je, ta stranica nedostaje.</translation>
 <translation id="2609895996619941644">Da li želite da proverite da li je sačuvana verzija dostupna u Wayback Machine arhivi?</translation>
 <translation id="8053093028263274061">Žao nam je, nisu dostupne sačuvane verzije.</translation>
 <translation id="8517321676372639828">Proveri da li ima sačuvane verzije</translation>
-<translation id="191143826155037518">Brave vam je dostupan pod <ph name="BEGIN_LINK_MPL">&lt;a target="_blank" href="$1"&gt;</ph>Javnom licencom kompanije Mozilla 2.0<ph name="END_LINK_MPL">&lt;/a&gt;</ph> (MPL) i uključuje <ph name="BEGIN_LINK_OSS">&lt;a target="_blank" href="$2"&gt;</ph>softver otvorenog kôda<ph name="END_LINK_OSS">&lt;/a&gt;</ph> pod različitim licencama.
-        Možete da pročitate <ph name="BEGIN_LINK_BUILD_INSTRUCTIONS">&lt;a target="_blank" href="$3"&gt;</ph>instrukcije kako da preuzmete i izradite za sebe<ph name="END_LINK_BUILD_INSTRUCTIONS">&lt;/a&gt;</ph> the specific <ph name="BEGIN_LINK_SOURCE_CODE">&lt;a target="_blank" href="$4"&gt;</ph>izvorni kôd koji je korišćen za kreiranje ove kopije<ph name="END_LINK_SOURCE_CODE">&lt;/a&gt;</ph>.</translation>
+<translation id="191143826155037518">Brave vam je dostupan pod <ph name="BEGIN_LINK_MPL"/>Javnom licencom kompanije Mozilla 2.0<ph name="END_LINK_MPL"/> (MPL) i uključuje <ph name="BEGIN_LINK_OSS"/>softver otvorenog kôda<ph name="END_LINK_OSS"/> pod različitim licencama.
+        Možete da pročitate <ph name="BEGIN_LINK_BUILD_INSTRUCTIONS"/>instrukcije kako da preuzmete i izradite za sebe<ph name="END_LINK_BUILD_INSTRUCTIONS"/> the specific <ph name="BEGIN_LINK_SOURCE_CODE"/>izvorni kôd koji je korišćen za kreiranje ove kopije<ph name="END_LINK_SOURCE_CODE"/>.</translation>
 <translation id="4474155171896946103">Обележи све картице...</translation>
 <translation id="2336228925368920074">Обележи све картице...</translation>
 <translation id="796831669370432378">Da biste dodali obeleživač, kliknite dugne za obeleživanje koje se nalazi pored trake adresa</translation>

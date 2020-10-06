@@ -1024,6 +1024,8 @@ Për shembull, disa sajte uebi mund t'i përgjigjen kësaj kërkese duke të tre
 <translation id="983192555821071799">Mbyll të gjitha skedat</translation>
 <translation id="987264212798334818">Të përgjithshme</translation>
 <translation id="996149300115483134">Menyja e kartave të furnizimit është mbyllur</translation>
+<translation id="4540437243849625078">Ky sajt është gati për të ndarë informacione me një aplikacion jashtë modalitetit "të fshehtë".</translation>
+<translation id="1227836882233136433">Dëshiron të dalësh nga modaliteti "i fshehtë"?</translation>
 <translation id="5186185447130319458">Private</translation>
 <translation id="9063160602596686558">Dërgon automatikisht te Brave Software statistika të përdorimit dhe raportet e ndërprerjeve aksidentale</translation>
 <translation id="1438581767753657407">Kur "Modaliteti i lehtë" është aktiv, Brave përdor serverët e Brave Software për të bërë që faqet të ngarkohen më shpejt. "Modaliteti i lehtë" i rishkruan faqet shumë të ngadalta për të ngarkuar vetëm përmbajtjen thelbësore. "Modaliteti i lehtë" nuk zbatohet në skedat "e fshehta".</translation>
@@ -1033,8 +1035,6 @@ Për shembull, disa sajte uebi mund t'i përgjigjen kësaj kërkese duke të tre
 <translation id="3110967157686007724">Skeda "e fshehtë"</translation>
 <translation id="4526803704855831732">Skedat "e fshehura"</translation>
 <translation id="7465104139234185284">Mbylli të gjitha skedat "e fshehta"</translation>
-<translation id="4540437243849625078">Ky sajt është gati për të ndarë informacione me një aplikacion jashtë modalitetit "të fshehtë".</translation>
-<translation id="1227836882233136433">Dëshiron të dalësh nga modaliteti "i fshehtë"?</translation>
 <translation id="6336451774241870485">Skedë e re e fshehtë</translation>
 <translation id="3234355010754616171">Skedë e re e fshehtë</translation>
 <translation id="6610147964972079463">Mbyll skedat e fshehta</translation>

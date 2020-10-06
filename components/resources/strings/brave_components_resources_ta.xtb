@@ -4,10 +4,12 @@
 <translation id="2079545284768500474">செயல்தவிர்</translation>
 <translation id="6040143037577758943">மூடு</translation>
 <translation id="7108338896283013870">மறை</translation>
+<translation id="604124094241169006">தானியங்கு</translation>
 <translation id="7791543448312431591">சேர்</translation>
 <translation id="6165508094623778733">மேலும் அறிக</translation>
 <translation id="8730621377337864115">முடிந்தது</translation>
 <translation id="6248988683584659830">தேடல் அமைப்புகள்</translation>
+<translation id="3368922792935385530">இணைக்கப்பட்டது</translation>
 <translation id="7658239707568436148">ரத்து செய்</translation>
 <translation id="2653659639078652383">சமர்ப்பி</translation>
 <translation id="3958088479270651626">புக்மார்க்குகளையும் அமைப்புகளையும் இறக்குமதி செய்</translation>
@@ -32,7 +34,6 @@
 <translation id="3798449238516105146">பதிப்பு</translation>
 <translation id="7180611975245234373">புதுப்பி</translation>
 <translation id="4309915981827077375">பொதுவான தகவல்</translation>
-<translation id="3368922792935385530">இணைக்கப்பட்டது</translation>
 <translation id="8874184842967597500">இணைக்கப்படவில்லை</translation>
 <translation id="4918086044614829423">ஏற்கிறேன்</translation>
 <translation id="3587482841069643663">அனைத்தும்</translation>
@@ -51,4 +52,6 @@
 <translation id="8428213095426709021">அமைப்புகள்</translation>
 <translation id="1963227389609234879">அனைத்தையும் அகற்று</translation>
 <translation id="923467487918828349">அனைத்தும் காண்பி</translation>
+<translation id="1327977588028644528">கேட்வே</translation>
+<translation id="1895658205118569222">நிறுத்தம்</translation>
 </translationbundle>

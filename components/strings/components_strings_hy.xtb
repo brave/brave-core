@@ -766,7 +766,7 @@
 <translation id="1426112902089905810">&lt;h4&gt;Քայլ 1. մուտք գործեք պորտալ&lt;/h4&gt;
     &lt;p&gt;Որոշ հանրային վայրերում, օրինակ՝ սրճարաններում և օդանավակայաններում, Wi-Fi ցանցին միանալու համար անհրաժեշտ է մտնել հատուկ վեբ պորտալ։ Մուտքի էջը տեսնելու համար բացեք &lt;code&gt;http://&lt;/code&gt;-ով սկսվող որևէ կայք։&lt;/p&gt;
     &lt;ol&gt;
-    &lt;li&gt;Այցելեք ցանկացած կայք, որի հասցեն սկսվում է &lt;code&gt;http://&lt;/code&gt;-ով, օրինակ՝ &lt;a href="http://example.com" target="_blank"&gt;http://example.com&lt;/a&gt;։&lt;/li&gt;
+    &lt;li&gt;Այցելեք ցանկացած կայք, որի հասցեն սկսվում է &lt;code&gt;http://&lt;/code&gt;-ով, օրինակ՝ &lt;a href="http://example.com" target="_blank" rel="noopener noreferrer"&gt;http://example.com&lt;/a&gt;։&lt;/li&gt;
     &lt;li&gt;Բացվող էջում մուտք գործեք՝ ինտերնետից օգտվելու համար։&lt;/li&gt;
     &lt;/ol&gt;
     &lt;h4&gt;Քայլ 2. բացեք էջը ինկոգնիտո ռեժիմում (միայն համակարգչում)&lt;/h4&gt;

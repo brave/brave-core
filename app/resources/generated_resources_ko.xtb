@@ -291,7 +291,7 @@
 <translation id="1361872463926621533">시작 시 소리 재생</translation>
 <translation id="1363585519747660921">USB 프린터를 구성해야 함</translation>
 <translation id="1365180424462182382"><ph name="ENROLLMENT_DOMAIN"/>에서 <ph name="BEGIN_LINK"/>관리하는 브라우저<ph name="END_LINK"/>입니다.</translation>
-<translation id="1366177842110999534"><ph name="DEVICE_TYPE"/>에서 Linux 도구, 편집기, IDE를 실행하세요. &lt;a target="_blank" href="<ph name="URL"/>"&gt;자세히 알아보기&lt;/a&gt;</translation>
+<translation id="1366177842110999534"><ph name="DEVICE_TYPE"/>에서 Linux 도구, 편집기, IDE를 실행하세요. &lt;a target="_blank" rel="noopener noreferrer" href="<ph name="URL"/>"&gt;자세히 알아보기&lt;/a&gt;</translation>
 <translation id="1367951781824006909">파일 선택</translation>
 <translation id="1369149969991017342">스위치 제어(스위치 1~2개로 컴퓨터 제어)</translation>
 <translation id="1372841398847029212">내 계정에 동기화</translation>
@@ -1354,7 +1354,7 @@
 <translation id="268053382412112343">내역(&amp;S)</translation>
 <translation id="2682498795777673382">보호자가 업데이트한 내용</translation>
 <translation id="2683638487103917598">폴더가 정렬됨</translation>
-<translation id="2686222346846590368"><ph name="DEVICE_TYPE"/>의 마지막 자동 소프트웨어 및 보안 업데이트입니다. 향후 업데이트를 받으려면 최신 모델로 업그레이드하세요. &lt;a target="_blank" href="<ph name="URL"/>"&gt;자세히 알아보기<ph name="LINK_END"/></translation>
+<translation id="2686222346846590368"><ph name="DEVICE_TYPE"/>의 마지막 자동 소프트웨어 및 보안 업데이트입니다. 향후 업데이트를 받으려면 최신 모델로 업그레이드하세요. &lt;a target="_blank" rel="noopener noreferrer" href="<ph name="URL"/>"&gt;자세히 알아보기<ph name="LINK_END"/></translation>
 <translation id="2687403674020088961">모든 쿠키 차단(권장되지 않음)</translation>
 <translation id="2687407218262674387">Brave 서비스 약관</translation>
 <translation id="2688196195245426394">기기를 서버에 등록하는 중에 오류 발생: <ph name="CLIENT_ERROR"/>.</translation>
@@ -4850,7 +4850,7 @@
 <translation id="7197632491113152433">이 기기에서 사용할 수 있는 앱을 계정에서 <ph name="NUMBER_OF_APPS"/>개 찾았습니다.</translation>
 <translation id="7199158086730159431">도움말 보기</translation>
 <translation id="7200083590239651963">설정 선택</translation>
-<translation id="7201042526153088083"><ph name="DEVICE_TYPE"/>에서 Google Play 앱 및 게임을 설치하세요. &lt;a target="_blank" href="<ph name="URL"/>"&gt;자세히 알아보기&lt;/a&gt;</translation>
+<translation id="7201042526153088083"><ph name="DEVICE_TYPE"/>에서 Google Play 앱 및 게임을 설치하세요. &lt;a target="_blank" rel="noopener noreferrer" href="<ph name="URL"/>"&gt;자세히 알아보기&lt;/a&gt;</translation>
 <translation id="720110658997053098">이 기기를 키오스크 모드로 영구 고정</translation>
 <translation id="7201118060536064622">'<ph name="DELETED_ITEM_NAME"/>' 삭제됨</translation>
 <translation id="7201420661433230412">파일 보기</translation>
@@ -6609,7 +6609,7 @@
 <translation id="3860292630623580294">(시크릿)</translation>
 <translation id="4854477725773269949">시크릿 모드에서 허용하기</translation>
 <translation id="6436164536244065364">웹 스토어에서 보기</translation>
-<translation id="38046578254905003"><ph name="BEGIN_LINK">&lt;a target="_blank" href="https://chrome.google.com/webstore/category/extensions"&gt;</ph>Web Store<ph name="END_LINK">&lt;/a&gt;</ph>에서 확장 기능과 테마를 찾아보세요</translation>
+<translation id="38046578254905003"><ph name="BEGIN_LINK"/>웹 스토어<ph name="END_LINK"/>에서 확장 프로그램 및 테마 찾기</translation>
 <translation id="6336451774241870485">새 시크릿 창</translation>
 <translation id="6610147964972079463">시크릿 탭 닫기</translation>
 <translation id="4933782374919065856">질문이 있으신가요? 프로필 관리자에게 문의하세요.</translation>

@@ -291,7 +291,7 @@
 <translation id="1361872463926621533">Atskaņot skaņu sākumā</translation>
 <translation id="1363585519747660921">USB printerim ir nepieciešama konfigurācija</translation>
 <translation id="1365180424462182382">Jūsu <ph name="BEGIN_LINK"/>pārlūkprogrammu pārvalda<ph name="END_LINK"/> <ph name="ENROLLMENT_DOMAIN"/></translation>
-<translation id="1366177842110999534">Palaidiet Linux rīkus, redaktorus un IDE savā <ph name="DEVICE_TYPE"/>. &lt;a target="_blank" href="<ph name="URL"/>"&gt;Uzziniet vairāk&lt;/a&gt;</translation>
+<translation id="1366177842110999534">Palaidiet Linux rīkus, redaktorus un IDE savā <ph name="DEVICE_TYPE"/>. &lt;a target="_blank" rel="noopener noreferrer" href="<ph name="URL"/>"&gt;Uzziniet vairāk&lt;/a&gt;</translation>
 <translation id="1367951781824006909">Izvēlēties failu</translation>
 <translation id="1369149969991017342">Slēdžu piekļuve (kontrolējiet datoru ar vienu vai diviem slēdžiem)</translation>
 <translation id="1372841398847029212">Sinhronizēt ar jūsu kontu</translation>
@@ -1354,7 +1354,7 @@ Varat pārvaldīt šī konta iestatījumus, savā ierīcē instalējot lietotni 
 <translation id="268053382412112343">Vēsture</translation>
 <translation id="2682498795777673382">Atjauninājums no vecākiem</translation>
 <translation id="2683638487103917598">Mape ir sakārtota</translation>
-<translation id="2686222346846590368">Šis ir pēdējais automātiskais programmatūras un drošības atjauninājums šai ierīcei (<ph name="DEVICE_TYPE"/>). Lai saņemtu turpmākus atjauninājumus, veiciet jaunināšanu uz jaunāku modeli. &lt;a target="_blank" href="<ph name="URL"/>"&gt;Uzzināt vairāk<ph name="LINK_END"/></translation>
+<translation id="2686222346846590368">Šis ir pēdējais automātiskais programmatūras un drošības atjauninājums šai ierīcei (<ph name="DEVICE_TYPE"/>). Lai saņemtu turpmākus atjauninājumus, veiciet jaunināšanu uz jaunāku modeli. &lt;a target="_blank" rel="noopener noreferrer" href="<ph name="URL"/>"&gt;Uzzināt vairāk<ph name="LINK_END"/></translation>
 <translation id="2687403674020088961">Bloķēt visus sīkfailus (nav ieteicams)</translation>
 <translation id="2687407218262674387">Brave pakalpojumu sniegšanas noteikumi</translation>
 <translation id="2688196195245426394">Reģistrējot ierīci serverī, radās kļūda: <ph name="CLIENT_ERROR"/>.</translation>
@@ -4852,7 +4852,7 @@ Vai vēlaties palaist rīku <ph name="CONTROL_PANEL_APPLET_NAME"/>?</translation
 <translation id="7197632491113152433">Mēs atradām <ph name="NUMBER_OF_APPS"/> lietotni(-es) jūsu kontā, ko var izmantot šajā ierīcē.</translation>
 <translation id="7199158086730159431">Saņemt p&amp;alīdzību</translation>
 <translation id="7200083590239651963">Konfigurācijas atlasīšana</translation>
-<translation id="7201042526153088083">Instalējiet lietotnes un spēles no pakalpojuma Brave Play <ph name="DEVICE_TYPE"/> ierīcē. &lt;a target="_blank" href="<ph name="URL"/>"&gt;Uzzināt vairāk&lt;/a&gt;</translation>
+<translation id="7201042526153088083">Instalējiet lietotnes un spēles no pakalpojuma Brave Play <ph name="DEVICE_TYPE"/> ierīcē. &lt;a target="_blank" rel="noopener noreferrer" href="<ph name="URL"/>"&gt;Uzzināt vairāk&lt;/a&gt;</translation>
 <translation id="720110658997053098">Pastāvīgi turēt ierīcei ieslēgtu kioska režīmu</translation>
 <translation id="7201118060536064622">Vienums “<ph name="DELETED_ITEM_NAME"/>” ir izdzēsts.</translation>
 <translation id="7201420661433230412">Skatīt failus</translation>
@@ -6610,7 +6610,7 @@ Glabājiet atslēgas failu drošā vietā. Tas būs vajadzīgs, lai izveidotu ja
 <translation id="3860292630623580294">(Inkognito)</translation>
 <translation id="4854477725773269949">Atļaut inkognito režīmā</translation>
 <translation id="6436164536244065364">Skatiet interneta veikalā</translation>
-<translation id="38046578254905003">Atrodiet paplašinājumus un motīvus <ph name="BEGIN_LINK">&lt;a target="_blank" href="https://chrome.google.com/webstore/category/extensions"&gt;</ph>Web Store<ph name="END_LINK">&lt;/a&gt;</ph></translation>
+<translation id="38046578254905003">Atrodiet paplašinājumus un motīvus <ph name="BEGIN_LINK"/>Web Store<ph name="END_LINK"/></translation>
 <translation id="6336451774241870485">Jauna inkognito režīma cilne</translation>
 <translation id="6610147964972079463">Aizvērt inkognito režīma cilnes</translation>
 <translation id="4933782374919065856">Vai radušies jautājumi? Sazinieties ar personu, kas uzrauga jūsu profilu.</translation>

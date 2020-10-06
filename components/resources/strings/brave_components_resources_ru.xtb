@@ -28,9 +28,13 @@
 <translation id="5550994254534676787">Показать историю просмотров</translation>
 <translation id="985862351129593673">Настроить панель</translation>
 <translation id="7180865173735832675">Настроить</translation>
-<translation id="5783793537552649286">Показать фоновое изображение</translation>
+<translation id="8522669544471808198">Показывать фоновые изображения</translation>
 <translation id="7275773481201277457">Показать статистику Brave</translation>
 <translation id="6836061097810262923">Показывать часы</translation>
+<translation id="5912396950572065471">Формат</translation>
+<translation id="604124094241169006">Автоматически</translation>
+<translation id="867722069064361487">12-часовой</translation>
+<translation id="4064062743338217840">24-часовой</translation>
 <translation id="8643377320501056697">Показывать лучшие сайты</translation>
 <translation id="3446024864193919737">Показать Вознаграждение Brave</translation>
 <translation id="6274899614137380422">Показать Binance</translation>
@@ -68,6 +72,10 @@
 <translation id="8958799246752641148">Tor скрывает ваш IP-адрес от посещаемых сайтов, маршрутизируя ваши поиски через различные серверы Tor, прежде чем они достигнут цели. Эти соединения зашифрованы, так что ваш провайдер или работодатель не могут видеть, какие сайты вы посещаете. Tor может замедлять просмотр, а некоторые сайты могут совсем не работать.</translation>
 <translation id="520608572871993342">Использование Приватного окна влияет лишь на поведение Brave на вашем устройстве — это не меняет чье-либо еще поведение. Tor скрывает ваш IP-адрес от посещаемых сайтов, и скрывает посещаемые вами сайты от вашего провайдера и работодателя. Откройте Приватное окно с Tor через меню либо с помощью {{ key }}.</translation>
 <translation id="6975708438781948564">Узнать больше о Tor в Brave</translation>
+<translation id="4712050378540986986">Статус сети Tor</translation>
+<translation id="3368922792935385530">Подключено</translation>
+<translation id="8030169304546394654">Отключен</translation>
+<translation id="3705383383955310071">Инициализация:  {{percentage}}%</translation>
 <translation id="4272382368346338917">Дополнительные фильтры</translation>
 <translation id="8949292968394988358">Внимание: Включение большого количества фильтров ухудшит производительность</translation>
 <translation id="8686201964111147748">Всего заблокировано объявлений и трекеров:</translation>
@@ -102,7 +110,7 @@
 <translation id="3829010735958850433">Пропустить ознакомительный тур</translation>
 <translation id="1201402288615127009">Далее</translation>
 <translation id="7954950242989581218">Работайте в интернете в полной безопасности</translation>
-<translation id="2188651882929633653">Brave Shields блокируют все, что пытается отследить вас онлайн, включая большинство рекламных объявлений. Если сайт не работает, то выключите Shields. Brave использует <ph name="BEGIN_LINK_P3A">&lt;a target="_blank" href="$1"&gt;</ph>полностью конфиденциальную аналитику<ph name="END_LINK_P3A">&lt;/a&gt;</ph> для оценки общего использования определенных функций. Вы можете выключить ее в <ph name="BEGIN_LINK_P3A_SETTINGS">&lt;a target="_blank" href="$2"&gt;</ph>настройках<ph name="END_LINK_P3A_SETTINGS">&lt;/a&gt;</ph>.</translation>
+<translation id="2188651882929633653">Защита Brave блокирует недобросовестный контент, который пытается отслеживать ваши действия в сети — включая большинство интернет-рекламы. Вы можете “отключить” Защиту, если сайт не работает, как должен. Brave использует <ph name="BEGIN_LINK_P3A"/>абсолютно конфиденциальную систему аналитики<ph name="END_LINK_P3A"/>, чтобы оценивать общее использование определенных функций. Вы можете отключить такое поведение в <ph name="BEGIN_LINK_P3A_SETTINGS"/>Настройках<ph name="END_LINK_P3A_SETTINGS"/>.</translation>
 <translation id="1919345977826869612">Реклама</translation>
 <translation id="2128226640852355533">Зарабатывайте {{currency}}, просматривая рекламу Brave Ads. Реклама показывается на основе ваших интересов, выведенных в результате вашего поведения в интернете. Личные данные и история браузера никогда не покидают ваш браузер.</translation>
 <translation id="6112368337882254910">Автоматический Взнос</translation>
@@ -174,7 +182,7 @@
 <translation id="4875485795191140618">Ключ вашего кошелька был верифицирован и успешно загружен.</translation>
 <translation id="1083279119532577005">Кошелек восстановлен!</translation>
 <translation id="7841456038054167122">Введите повторно ключи или попробуйте другие ключи.</translation>
-<translation id="340102383764929340">Введенный ключ восстановления более не поддерживается. Пожалуйста, посетите <ph name="BEGIN_LINK_REGION_TEXT">&lt;a target="_blank" href="http://brave.com/faq#convert-old-keys"&gt;</ph>here<ph name="END_LINK_REGION_TEXT">&lt;/a&gt;</ph> для получения нового ключа.</translation>
+<translation id="1911900517212490188">Введенный ключ восстановления больше не действителен. Пожалуйста, посетите <ph name="BEGIN_LINK"/>эту страницу<ph name="END_LINK"/>, чтобы получить новый ключ.</translation>
 <translation id="2195074481553016770">Почти готово</translation>
 <translation id="5254740304961202261">Докажите, что вы не робот.</translation>
 <translation id="2187043784382239974">Хм, не совсем...</translation>
@@ -192,7 +200,7 @@
 <translation id="3082557070674409251">Нажато</translation>
 <translation id="7119308337584989771">Отклонено</translation>
 <translation id="6805660603861526473">Просмотрено</translation>
-<translation id="2852258589816753010">В настоящее время BAT не поддерживается в вашем регионе. Обратитесь к <ph name="BEGIN_LINK_REGION_TEXT">&lt;a target="_blank" href="$1"&gt;</ph>этой статье<ph name="END_LINK_REGION_TEXT">&lt;/a&gt;</ph> для получения последней информации.</translation>
+<translation id="2359865110462963929">В данный момент BAT не поддерживается в вашем регионе. Пожалуйста, следите за обновлениями <ph name="BEGIN_LINK"/>здесь<ph name="END_LINK"/>.</translation>
 <translation id="2564425876266960486">Ошибка при создании карты BAT браузера Brave</translation>
 <translation id="6473583070570450185">Для выполнения входа вам нужен верифицированный кошелек</translation>
 <translation id="2106271389438168634">Для создания кошелька Uphold вам нужно иметь минимум 25 BAT. Пожалуйста, повторите попытку после верификации своего кошелька в Uphold.</translation>
@@ -219,6 +227,9 @@
 <translation id="386483240851194811">Вознаграждения выключены</translation>
 <translation id="3354337256330577726">Автовзнос выключен</translation>
 <translation id="6727186931929643711">Повтор попыток прекращен</translation>
+<translation id="680983167891198932">Ключ</translation>
+<translation id="7535087603100972091">Значение</translation>
+<translation id="45591635423975492">Время записи:</translation>
 <translation id="2059498613853603008">ВНИМАНИЕ: Данные на этой странице могут быть конфиденциальными. Относитесь к ним так же, как к секретным ключам своего кошелька. Не делитесь ими с ненадежными людьми.</translation>
 <translation id="7375125077091615385">Тип:</translation>
 <translation id="4973347371961481083">Взносы</translation>
@@ -252,6 +263,7 @@
 <translation id="2152423226436243241">Авто-взнос</translation>
 <translation id="2927922949538312364">Единоразовые чаевые</translation>
 <translation id="3164105678355419142">Регулярные чаевые</translation>
+<translation id="7806880412350961625">Журнал событий</translation>
 <translation id="4309915981827077375">Общая информация</translation>
 <translation id="3662406032239313663">Журналы</translation>
 <translation id="9001933311880936179">Общая сумма:</translation>
@@ -262,7 +274,6 @@
 <translation id="2326487656644542536">Информация о кошельке</translation>
 <translation id="8559420016582377654">ID оплаты кошелька:</translation>
 <translation id="438586487791444158">Статус кошелька:</translation>
-<translation id="3368922792935385530">Подключено</translation>
 <translation id="8874184842967597500">Не подключено</translation>
 <translation id="4569155249847375786">Проверен</translation>
 <translation id="922103963921062336">Отключено (Не верифицировано)</translation>
@@ -351,7 +362,7 @@
 <translation id="7335371657242627509">Включить в автоматический взнос</translation>
 <translation id="1864111464094315414">Вход</translation>
 <translation id="4556504723624686474">Верификация кошелька позволит вам более эффективно управлять своими средствами.</translation>
-<translation id="4188679602963314994">Для создания аккаунта Uphold вам нужно иметь минимум 25 BAT. Пожалуйста, повторите попытку позже. <ph name="BREAK">&lt;br/&gt;</ph>Если у вас уже есть подтвержденный аккаунт Uphold, выполните вход в систему.</translation>
+<translation id="5594737784294211654">На вашем счету должно быть минимум 25 BAT для открытия аккаунта на Uphold. Пожалуйста, повторите попытку позже. <ph name="NEWLINE"/> Если у вас уже есть подтвержденный аккаунт на Uphold, пожалуйста, продолжайте вход.</translation>
 <translation id="3250511771491660127">Повторять ежемесячно</translation>
 <translation id="6028954173739504682">Настройки кошелька</translation>
 <translation id="7886389832052393750">Апр.</translation>
@@ -443,8 +454,8 @@
 <translation id="8014425282125849700">Иногда Brave будет предлагать вознаграждения в виде бесплатных бонусов. Следите за предупреждениями!</translation>
 <translation id="2185598236335233939">Следите за уведомлениями о рекламе при использовании Brave. Число очков BAT будет увеличиваться с каждым просмотренным вами объявлением.</translation>
 <translation id="1370034647041840967">Зарабатывайте токены за ваше внимание к рекламе и платите напрямую, чтобы поддержать создателей контента, которых Вы цените!</translation>
-<translation id="1701701253000051237">Кладите, снимайте и управляйте средствами на <ph name="BEGIN_BOLD">&lt;b&gt;</ph>Uphold<ph name="BEGIN_END">&lt;/b&gt;</ph>.</translation>
-<translation id="4208741993667364007">Brave Wallet работает на основе <ph name="BEGIN_BOLD">&lt;b&gt;</ph>Uphold<ph name="BEGIN_END">&lt;/b&gt;</ph>.</translation>
+<translation id="4600224932216165965">Вносите, выводите и управляйте своими средствами на <ph name="BEGIN_BOLD"/>Uphold<ph name="END_BOLD"/>.</translation>
+<translation id="3580616436301227919">Ваш кошелек Brave работает на технологиях <ph name="BEGIN_BOLD"/>Uphold<ph name="END_BOLD"/>.</translation>
 <translation id="6401272292123354754">Вознаграждения Brave построены на Basic Attention Token. Узнайте больше о BAT</translation>
 <translation id="7823359893981882407">здесь</translation>
 <translation id="4483635855837696643">Восстановите свой кошелек</translation>
@@ -453,7 +464,7 @@
 <translation id="3267911153934785912">Введите ключ восстановления или</translation>
 <translation id="6548189695918108191">Выполните резервное копирование своего кошелька перед заменой. Или вы потеряете средства {{funds}}, находящиеся в вашем текущем кошельке.</translation>
 <translation id="5423214929210538027">Вы уверены, что хотите сбросить кошелек вознаграждений?</translation>
-<translation id="9106875682287489763">Ваши <ph name="BEGIN_BOLD">&lt;b&gt;</ph>{{amount}} BAT-ы<ph name="BEGIN_END">&lt;/b&gt;</ph> и данные о других вознаграждениях будут безвозвратно потеряны, если вы сбросите свой кошелек. Убедитесь, что вы подтвердили свой кошелек с помощью Uphold, чтобы вы смогли хранить свои BAT-ы.</translation>
+<translation id="7428521340740703492">Ваши <ph name="BEGIN_BOLD"/>{{amount}} BAT<ph name="END_BOLD"/> и остальные вознаграждения будут безвозвратно утеряны, если бы сбросите свой кошелек. Пожалуйста, убедитесь, что ваш кошелек верифицирован на Uphold, чтобы не потерять свои BAT.</translation>
 <translation id="2028613172174411919">Данные о ваших вознагражденияз будут потеряны навсегда, если вы сбросите ваш кошелек.</translation>
 <translation id="4914597931214386232">Полученные токен-гранты</translation>
 <translation id="3494964159182650590">Суммарное вознаграждение</translation>
@@ -533,14 +544,13 @@
 <translation id="5030988785798407804">Ваш бонус {{currency}} уже в обработке.</translation>
 <translation id="2132683977638223450">Бесплатные бонусные очки</translation>
 <translation id="7512440811010447157">проверить</translation>
-<translation id="8030169304546394654">Отключен</translation>
 <translation id="8267327690882073581">Проверить кошелек</translation>
 <translation id="543510923939676996">Кошелек проверен</translation>
 <translation id="7591798679868259510">Перейти к моей учетной записи Uphold</translation>
 <translation id="3699674790322420653">Завершить проверку кошелька</translation>
 <translation id="9200453331904391567">Отключиться от храбрых наград Brave Rewards</translation>
 <translation id="46988480989545156">Проверить кошелек</translation>
-<translation id="4986087720311945758">Наш сервис кошельков предоставлен <ph name="BEGIN_BOLD">&lt;b&gt;</ph>Uphold<ph name="BEGIN_END">&lt;/b&gt;</ph></translation>
+<translation id="160145159036553575">Сервис электронных платежей предоставлен <ph name="BEGIN_BOLD"/>Uphold.<ph name="END_BOLD"/></translation>
 <translation id="6771734945114850124">Подготовьте удостоверение личности, выданное государственным учреждением.</translation>
 <translation id="8697510149346635496">Вывести BAT, которые вы заработали за просмотр рекламы, уважающей вашу конфиденциальность</translation>
 <translation id="1481480653609649134">Приобретите дополнительные BAT с помощью кредитных карт или других средств</translation>
@@ -552,7 +562,7 @@
 <translation id="7404779623219601861">Использовать BAT для подарочных карт</translation>
 <translation id="6215565499749144110">С сетью TAP вы можете использовать BAT для оплаты подарочных карт популярных торговых брендов.</translation>
 <translation id="6915065518766963119">*Требует верификации в Uphold.</translation>
-<translation id="651649139059930379">Получите 2% возврата криптовалюты с картой Uphold</translation>
+<translation id="7703007724342399482">Получите назад 2% криптоплатежей при использовании карты Uphold</translation>
 <translation id="1109729143147368573">Тратьте свои криптовалюты и другие активы в практически 50 миллионах торговых точек и банкоматов по всему миру. Тратьте криптовалюту, чтобы получить криптовалюту!</translation>
 <translation id="4360054110030715117"><ph name="LINK_BEGIN"/>Подробнее<ph name="LINK_END"/> о Brave Rewards</translation>
 <translation id="5826706758731195747">Включая Rewards, вы принимаете <ph name="LINK_BEGIN"/>Условия использования<ph name="LINK_END"/>.</translation>
@@ -608,6 +618,7 @@
 <translation id="6409345078064530735">Адрес депозита</translation>
 <translation id="7153116947319792513">Внести Memo</translation>
 <translation id="1383876407941801731">Поиск</translation>
+<translation id="3781412534383755121">Минимальная сумма для конвертации:</translation>
 <translation id="6432284126416751397">Подтвердить конвертацию</translation>
 <translation id="1301340234286078471">Конвертировать</translation>
 <translation id="6680650203439190394">Оценить</translation>
@@ -648,4 +659,21 @@
 <translation id="453977518730680921">Автозапуск аудио и видео</translation>
 <translation id="7701466644604753106">Включить Speedreader</translation>
 <translation id="763042262431778831">Выключить Speedreader</translation>
+<translation id="9020818404803201080">Подключено пиров:</translation>
+<translation id="6717690610234999751">Настройка адресов</translation>
+<translation id="9182285671734219088">Состояние службы</translation>
+<translation id="6599816589121202398">API</translation>
+<translation id="1327977588028644528">Шлюз</translation>
+<translation id="2551123942222622809">Swarm</translation>
+<translation id="3967335629471284781">Запущено</translation>
+<translation id="1515163294334130951">Запустить</translation>
+<translation id="1895658205118569222">Завершение работы</translation>
+<translation id="6762417584993757344">Не установлено</translation>
+<translation id="8428368469058794536">Служба IPFS</translation>
+<translation id="2901715907314796027">Покупка криптовалюты на Bitcoin.com.</translation>
+<translation id="4065681313949497252">Валюта</translation>
+<translation id="3833315885381772739">Введите количество</translation>
+<translation id="4011828592358027165">Новичок в криптовалюте?</translation>
+<translation id="3358050091139900813">Откройте кошелек сейчас, чтобы начать</translation>
+<translation id="3105412115725259537">Bitcoin.com</translation>
 </translationbundle>

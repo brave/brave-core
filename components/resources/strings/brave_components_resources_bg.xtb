@@ -28,9 +28,13 @@
 <translation id="5550994254534676787">Вижте хронологията на браузването</translation>
 <translation id="985862351129593673">Персонализиране на таблото</translation>
 <translation id="7180865173735832675">Персонализиране</translation>
-<translation id="5783793537552649286">Показване на фоново изображение</translation>
+<translation id="8522669544471808198">Показване на фонови изображения</translation>
 <translation id="7275773481201277457">Покажи Brave статистики</translation>
 <translation id="6836061097810262923">Покажи часовника</translation>
+<translation id="5912396950572065471">Формат</translation>
+<translation id="604124094241169006">Автоматично</translation>
+<translation id="867722069064361487">12-часов часовник</translation>
+<translation id="4064062743338217840">24-часов часовник</translation>
 <translation id="8643377320501056697">Покажи най-добрите сайтове</translation>
 <translation id="3446024864193919737">Покажи Brave Rewards</translation>
 <translation id="6274899614137380422">Покажи Binance</translation>
@@ -68,6 +72,10 @@
 <translation id="8958799246752641148">Tor скрива Вашия IP адрес от сайтовете, които посещавате, като насочва сърфирането Ви през няколко сървъра на Tor, преди да достигне до Вашата дестинация. Тези връзки са шифрирани, така че Вашият интернет доставчик или работодател не може да види кои сайтове посещавате. Tor може да забави сърфирането, а някои сайтове може изобщо да не функционират.</translation>
 <translation id="520608572871993342">Използването на поверителни прозорци само променя това, което Brave прави на вашето устройство — той не променя поведението на някой друг. Tor скрива вашия IP адрес от посещаваните сайтове и ги скрива от вашия Интернет доставчик или работодател.  Отворете поверителен прозорец с Tor от менюто или с {{ key }}.</translation>
 <translation id="6975708438781948564">Научете повече за Tor в Brave</translation>
+<translation id="4712050378540986986">Tor статус</translation>
+<translation id="3368922792935385530">Установена е връзка</translation>
+<translation id="8030169304546394654">Разкачен</translation>
+<translation id="3705383383955310071">Инициализиране на {{percentage}}%</translation>
 <translation id="4272382368346338917">Допълнителни филтри</translation>
 <translation id="8949292968394988358">Внимание: включване на твърде много филтри ще понижи качеството</translation>
 <translation id="8686201964111147748">Общо блокирани реклами и проследяващи скриптове:</translation>
@@ -102,7 +110,7 @@
 <translation id="3829010735958850433">Пропуснете увода за добре дошли</translation>
 <translation id="1201402288615127009">Напред</translation>
 <translation id="7954950242989581218">Браузвайте безопасно и сигурно</translation>
-<translation id="2188651882929633653">Brave Shields блокира онези страшни неща, които се опитват да ви проследят из мрежата включително повечето реклами. Настройте Shields на “down” ако сайтът не работи. Brave използва <ph name="BEGIN_LINK_P3A">&lt;a target="_blank" href="$1"&gt;</ph>completely private product analytics<ph name="END_LINK_P3A">&lt;/a&gt;</ph> да определи общото използване на някои характеристики. Можете да изключите това в <ph name="BEGIN_LINK_P3A_SETTINGS">&lt;a target="_blank" href="$2"&gt;</ph>Settings<ph name="END_LINK_P3A_SETTINGS">&lt;/a&gt;</ph>.</translation>
+<translation id="2188651882929633653">Brave Shields блокира зловещите неща, които се опитват да ви проследят в мрежата — включително повечето реклами. Задайте Shields на “down” ако сайтът не работи. Brave използва <ph name="BEGIN_LINK_P3A"/>напълно частен продуктов анализ <ph name="END_LINK_P3A"/> за оценка на общото използване на определени функции. Можете да изключите това в <ph name="BEGIN_LINK_P3A_SETTINGS"/>Settings<ph name="END_LINK_P3A_SETTINGS"/>.</translation>
 <translation id="1919345977826869612">Реклами</translation>
 <translation id="2128226640852355533">Печелете {{currency}}, като гледате Brave Ads. Представените реклами се основават на вашите интереси, както се извежда от поведението ви на сърфиране. Никакви лични данни или история на сърфиране никога не напускат браузъра ви.</translation>
 <translation id="6112368337882254910">Автоматично даряване</translation>
@@ -174,7 +182,7 @@
 <translation id="4875485795191140618">Ключът за вашия портфейл е потвърден и зареден успешно.</translation>
 <translation id="1083279119532577005">Портфейлът е възстановен!</translation>
 <translation id="7841456038054167122">Моля, въведете отново ключовете или опитайте с различни ключове.</translation>
-<translation id="340102383764929340">Въведеният ключ за възстановяване вече не се поддържа. Моля, посетете <ph name="BEGIN_LINK_REGION_TEXT">&lt;a target="_blank" href="http://brave.com/faq#convert-old-keys"&gt;</ph>here<ph name="END_LINK_REGION_TEXT">&lt;/a&gt;</ph>, за да получите нов ключ.</translation>
+<translation id="1911900517212490188">Въведеният ключ за възстановяване вече не се поддържа. Моля, посетете <ph name="BEGIN_LINK"/>here<ph name="END_LINK"/> за да получите нов ключ.</translation>
 <translation id="2195074481553016770">Почти сме готови…</translation>
 <translation id="5254740304961202261">Докажете, че не сте робот!</translation>
 <translation id="2187043784382239974">Хмм, не твърде...</translation>
@@ -192,7 +200,7 @@
 <translation id="3082557070674409251">Щракнат</translation>
 <translation id="7119308337584989771">Освободен</translation>
 <translation id="6805660603861526473">Прегледан</translation>
-<translation id="2852258589816753010">BAT в момента не се поддържа във вашия регион. Моля, вижте <ph name="BEGIN_LINK_REGION_TEXT">&lt;a target="_blank" href="$1"&gt;</ph>here<ph name="END_LINK_REGION_TEXT">&lt;/a&gt;</ph> за актуализации.</translation>
+<translation id="2359865110462963929">BAT в момента не се поддържа във вашия регион. Моля, вижте <ph name="BEGIN_LINK"/>here<ph name="END_LINK"/> за актуализации.</translation>
 <translation id="2564425876266960486">Грешка при създаването на BAT карта на Brave Browser</translation>
 <translation id="6473583070570450185">Имате нужда от потвърден портфейл, за да влезете</translation>
 <translation id="2106271389438168634">Трябват ви минимум 25 BAT, за да създадете портфейл в Uphold. Моля, опитайте отново, след като потвърдите портфейла си с Uphold.</translation>
@@ -219,6 +227,9 @@
 <translation id="386483240851194811">Наградите са изключени</translation>
 <translation id="3354337256330577726">Автоматичният принос е изключен</translation>
 <translation id="6727186931929643711">Повторните опити са спрени</translation>
+<translation id="680983167891198932">Ключ</translation>
+<translation id="7535087603100972091">Стойност</translation>
+<translation id="45591635423975492">Влезли в</translation>
 <translation id="2059498613853603008">ВНИМАНИЕ: Данните на тази страница може да са конфиденциални. Отнасяйте се с тях както към личните си ключове за портфейла. Внимавайте с кого ги споделяте.</translation>
 <translation id="7375125077091615385">Тип:</translation>
 <translation id="4973347371961481083">Приноси</translation>
@@ -252,6 +263,7 @@
 <translation id="2152423226436243241">Автоматичен принос</translation>
 <translation id="2927922949538312364">Еднократен бакшиш</translation>
 <translation id="3164105678355419142">Повтарящ се бакшиш</translation>
+<translation id="7806880412350961625">Дневници на събитията</translation>
 <translation id="4309915981827077375">Обща информация</translation>
 <translation id="3662406032239313663">Дневници</translation>
 <translation id="9001933311880936179">Обща сума:</translation>
@@ -262,7 +274,6 @@
 <translation id="2326487656644542536">Информация за портфейла</translation>
 <translation id="8559420016582377654">Идент. № за плащане на портфейла:</translation>
 <translation id="438586487791444158">Състояние на портфейла:</translation>
-<translation id="3368922792935385530">Установена е връзка</translation>
 <translation id="8874184842967597500">Няма връзка</translation>
 <translation id="4569155249847375786">Потвърдено</translation>
 <translation id="922103963921062336">Прекъсната връзка (непотвърден)</translation>
@@ -351,7 +362,7 @@
 <translation id="7335371657242627509">Включено в автоматичния принос</translation>
 <translation id="1864111464094315414">Вход</translation>
 <translation id="4556504723624686474">Потвърждаването на портфейла ви позволява да управлявате средствата си по-ефективно.</translation>
-<translation id="4188679602963314994">Трябва да имате минимум 25 BAT, за да създадете акаунт в Uphold. Моля, опитайте отново по-късно. <ph name="BREAK">&lt;br/&gt;</ph>Ако вече имате потвърден акаунт в Uphold, продължете с влизането.</translation>
+<translation id="5594737784294211654">Трябва да имате минимум 25 BAT за да създадете Uphold акаунт. Моля, опитайте отново по-късно. <ph name="NEWLINE"/>Ако вече имате потвърден Uphold акаунт, продължете с влизането.</translation>
 <translation id="3250511771491660127">Направи това месечно</translation>
 <translation id="6028954173739504682">Управление на портфейла ви</translation>
 <translation id="7886389832052393750">Април</translation>
@@ -443,8 +454,8 @@
 <translation id="8014425282125849700">От време на време ще ви се предлагат безплатни жетони от Brave. Наблюдавайте, за да не пропуснете известяването!</translation>
 <translation id="2185598236335233939">Потърсете известия за реклами, докато продължавате да използвате Brave. Балансът на BAT точките ще се увеличава с всяка реклама, която разгледате.</translation>
 <translation id="1370034647041840967">Печелете токени за вниманието ви към рекламите и ги платете по-нататък, за да подкрепите създателите на съдържание, които цените!</translation>
-<translation id="1701701253000051237">Добавяйте, изтегляйте и управлявайте средства в <ph name="BEGIN_BOLD">&lt;b&gt;</ph>Uphold<ph name="BEGIN_END">&lt;/b&gt;</ph>.</translation>
-<translation id="4208741993667364007">Вашият Brave портфейл се предоставя от <ph name="BEGIN_BOLD">&lt;b&gt;</ph>Uphold<ph name="BEGIN_END">&lt;/b&gt;</ph>.</translation>
+<translation id="4600224932216165965">Добавяйте, теглете и управлявайте средства на <ph name="BEGIN_BOLD"/>Uphold<ph name="END_BOLD"/>.</translation>
+<translation id="3580616436301227919">Вашият Brave се поддържа от <ph name="BEGIN_BOLD"/>Uphold<ph name="END_BOLD"/>.</translation>
 <translation id="6401272292123354754">Наградите на Brave са основани на Basic Attention Token (жетон за основно внимание). Научете повече за BAT</translation>
 <translation id="7823359893981882407">тук</translation>
 <translation id="4483635855837696643">Възстановете вашето портмоне</translation>
@@ -453,7 +464,7 @@
 <translation id="3267911153934785912">Въведете ключа си за възстановяване или</translation>
 <translation id="6548189695918108191">Направете резервно копие на портфейла си, преди да го смените. Иначе ще загубите средствата, {{funds}}, в сегашния си портфейл.</translation>
 <translation id="5423214929210538027">Наистина ли искате да рестартирате портфейла си с награди?</translation>
-<translation id="9106875682287489763">Вашият <ph name="BEGIN_BOLD">&lt;b&gt;</ph>{{amount}} BATs<ph name="BEGIN_END">&lt;/b&gt;</ph> и други данни за награди ще бъдат загубени завинаги, ако рестартирате портфейла си. Моля, уверете се, че сте потвърдили портфейла си с Uphold, за да можете да запазите вашите BAT.</translation>
+<translation id="7428521340740703492">Вашият <ph name="BEGIN_BOLD"/>{{amount}} BATs<ph name="END_BOLD"/> и други данни за награди ще бъдат изгубени за постоянно, ако нулирате портфейла си. Моля, уверете се, че сте потвърдили портфейла си с Uphold, за да можете да запазите BAT.</translation>
 <translation id="2028613172174411919">Данните за наградите ви ще бъдат загубени завинаги, ако рестартирате портфейла си.</translation>
 <translation id="4914597931214386232">Изискани субсидии на жетони</translation>
 <translation id="3494964159182650590">Резюме на наградите</translation>
@@ -533,14 +544,13 @@
 <translation id="5030988785798407804">Вашите безвъзмездни средства в  {{currency}} са на път.</translation>
 <translation id="2132683977638223450">Безвъзмездни средства като точка</translation>
 <translation id="7512440811010447157">потвърди</translation>
-<translation id="8030169304546394654">Разкачен</translation>
 <translation id="8267327690882073581">Потвърди портфейла</translation>
 <translation id="543510923939676996">Портфейлът е потвърден</translation>
 <translation id="7591798679868259510">Отидете на своя Uphold акаунт</translation>
 <translation id="3699674790322420653">Завършете проверката на портфейла</translation>
 <translation id="9200453331904391567">Разкачане от Brave награди</translation>
 <translation id="46988480989545156">Потвърди портфейла</translation>
-<translation id="4986087720311945758">Услугата ни за портфейла се предоставя от <ph name="BEGIN_BOLD">&lt;b&gt;</ph>Uphold<ph name="BEGIN_END">&lt;/b&gt;</ph></translation>
+<translation id="160145159036553575">Нашата услуга за портфейли се осигурява от <ph name="BEGIN_BOLD"/>Uphold.<ph name="END_BOLD"/></translation>
 <translation id="6771734945114850124">Моля, дръжте под ръка вашия документ за самоличност.</translation>
 <translation id="8697510149346635496">Изтеглете BAT, която печелите от гледане на реклами, зачитащи поверителността</translation>
 <translation id="1481480653609649134">Купете допълнителни BAT с кредитни карти и други източници</translation>
@@ -552,7 +562,7 @@
 <translation id="7404779623219601861">Осребряване на карти за подаръци</translation>
 <translation id="6215565499749144110">С TAP Network можете да осребрите BAT за популярни карти за подаръци с имена.</translation>
 <translation id="6915065518766963119">* Изисква поддържана проверка.</translation>
-<translation id="651649139059930379">Върнете си 2% от криптовалута с карта Uphold</translation>
+<translation id="7703007724342399482">Вземете 2% криптовалута с картата Uphold</translation>
 <translation id="1109729143147368573">Похарчете своите криптовалути и други активи при близо 50 милиона търговци и банкомати по целия свят. Похарчете крипто, за да получите крипто!</translation>
 <translation id="4360054110030715117"><ph name="LINK_BEGIN"/>Научете повече <ph name="LINK_END"/> за Brave Rewards</translation>
 <translation id="5826706758731195747">Чрез включване на Rewards вие се съгласявате с <ph name="LINK_BEGIN"/>Условия за ползване<ph name="LINK_END"/>.</translation>
@@ -608,6 +618,7 @@
 <translation id="6409345078064530735">Адрес за депозиране</translation>
 <translation id="7153116947319792513">Депозитна бележка</translation>
 <translation id="1383876407941801731">Търсене</translation>
+<translation id="3781412534383755121">Минималната сума за конвертиране е:</translation>
 <translation id="6432284126416751397">Потвърди конвертирането</translation>
 <translation id="1301340234286078471">Конвертиер</translation>
 <translation id="6680650203439190394">Курс</translation>
@@ -648,4 +659,21 @@
 <translation id="453977518730680921">Автоматично възпр. на медия</translation>
 <translation id="7701466644604753106">ВКЛЮЧВАНЕ на Speedreader</translation>
 <translation id="763042262431778831">ИЗКЛЮЧВАНЕ на Speedreader</translation>
+<translation id="9020818404803201080">Свързани връстници:</translation>
+<translation id="6717690610234999751">Конфигуриране на адреси</translation>
+<translation id="9182285671734219088">Daemon статус</translation>
+<translation id="6599816589121202398">API</translation>
+<translation id="1327977588028644528">Шлюз</translation>
+<translation id="2551123942222622809">Swarm</translation>
+<translation id="3967335629471284781">Стартиран</translation>
+<translation id="1515163294334130951">Стартиране</translation>
+<translation id="1895658205118569222">Изключване</translation>
+<translation id="6762417584993757344">Не е инсталирано</translation>
+<translation id="8428368469058794536">IPFS услуга</translation>
+<translation id="2901715907314796027">Закупете крипто от Bitcoin.com.</translation>
+<translation id="4065681313949497252">Валута</translation>
+<translation id="3833315885381772739">Въведете количество</translation>
+<translation id="4011828592358027165">Нови сте в крипто?</translation>
+<translation id="3358050091139900813">Вземете портфейла тук, за да започнете</translation>
+<translation id="3105412115725259537">Bitcoin.com</translation>
 </translationbundle>

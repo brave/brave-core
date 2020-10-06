@@ -291,7 +291,7 @@
 <translation id="1361872463926621533">ხმის დაკვრა გაშვებისას</translation>
 <translation id="1363585519747660921">USB პრინტერი საჭიროებს კონფიგურაციას</translation>
 <translation id="1365180424462182382">თქვენს <ph name="BEGIN_LINK"/>ბრაუზერს მართავს<ph name="END_LINK"/> <ph name="ENROLLMENT_DOMAIN"/></translation>
-<translation id="1366177842110999534">გაუშვით Linux ხელსაწყოები, რედაქტორები და IDE-ები თქვენს <ph name="DEVICE_TYPE"/>-ზე. &lt;a target="_blank" href="<ph name="URL"/>"&gt;შეიტყვეთ მეტი&lt;/a&gt;</translation>
+<translation id="1366177842110999534">გაუშვით Linux ხელსაწყოები, რედაქტორები და IDE-ები თქვენს <ph name="DEVICE_TYPE"/>-ზე. &lt;a target="_blank" rel="noopener noreferrer" href="<ph name="URL"/>"&gt;შეიტყვეთ მეტი&lt;/a&gt;</translation>
 <translation id="1367951781824006909">აირჩიეთ ფაილი</translation>
 <translation id="1369149969991017342">გადამრთველებით წვდომა (მართეთ კომპიუტერი მხოლოდ რამდენიმე გადამრთველის მეშვეობით)</translation>
 <translation id="1372841398847029212">თქვენს ანგარიშთან სინქრონიზაცია</translation>
@@ -1353,7 +1353,7 @@
 <translation id="268053382412112343">ი&amp;სტორია</translation>
 <translation id="2682498795777673382">განახლება თქვენი მშობლისგან</translation>
 <translation id="2683638487103917598">საქაღალდე დალაგებულია</translation>
-<translation id="2686222346846590368">ეს არის პროგრამული უზრუნველყოფისა და უსაფრთხოების ბოლო განახლება, რომელსაც თქვენი <ph name="DEVICE_TYPE"/> იღებს. მომავალი განახლებების მისაღებად გადადით ახალ მოდელზე. &lt;a target="_blank" href="<ph name="URL"/>"&gt;შეიტყვეთ მეტი<ph name="LINK_END"/></translation>
+<translation id="2686222346846590368">ეს არის პროგრამული უზრუნველყოფისა და უსაფრთხოების ბოლო განახლება, რომელსაც თქვენი <ph name="DEVICE_TYPE"/> იღებს. მომავალი განახლებების მისაღებად გადადით ახალ მოდელზე. &lt;a target="_blank" rel="noopener noreferrer" href="<ph name="URL"/>"&gt;შეიტყვეთ მეტი<ph name="LINK_END"/></translation>
 <translation id="2687403674020088961">ყველა ქუქი-ჩანაწერის დაბლოკვა (არარეკომენდებული)</translation>
 <translation id="2687407218262674387">Brave-ის მომსახურების პირობები</translation>
 <translation id="2688196195245426394">შეცდომა სერვერზე მოწყობილობის დარეგისტრირებისას: <ph name="CLIENT_ERROR"/>.</translation>
@@ -4851,7 +4851,7 @@
 <translation id="7197632491113152433">თქვენს ანგარიშში მოიძებნა <ph name="NUMBER_OF_APPS"/> აპი, რომელიც შეგიძლიათ გამოიყენოთ ამ მოწყობილობაზე.</translation>
 <translation id="7199158086730159431">მიიღეთ დახმარ&amp;ება</translation>
 <translation id="7200083590239651963">აირჩიეთ კონფიგურაცია</translation>
-<translation id="7201042526153088083">დააინსტალირეთ აპები და თამაშები Google Play-დან თქვენს <ph name="DEVICE_TYPE"/>-ზე. &lt;a target="_blank" href="<ph name="URL"/>"&gt;შეიტყვეთ მეტი&lt;/a&gt;</translation>
+<translation id="7201042526153088083">დააინსტალირეთ აპები და თამაშები Google Play-დან თქვენს <ph name="DEVICE_TYPE"/>-ზე. &lt;a target="_blank" rel="noopener noreferrer" href="<ph name="URL"/>"&gt;შეიტყვეთ მეტი&lt;/a&gt;</translation>
 <translation id="720110658997053098">მოწყობილობის kiosk რეჟიმში სამუდამოდ შენარჩუნება</translation>
 <translation id="7201118060536064622">„<ph name="DELETED_ITEM_NAME"/>“ წაიშალა</translation>
 <translation id="7201420661433230412">ფაილების ნახვა</translation>
@@ -6517,6 +6517,7 @@
 <translation id="995782501881226248">YouTube</translation>
 <translation id="996250603853062861">დაცული კავშირის დამყარება…</translation>
 <translation id="998747458861718449">შ&amp;ემოწმება</translation>
+<translation id="38046578254905003">იპოვეთ გაფართოებები და თემები <ph name="BEGIN_LINK"/>Brave Web Store<ph name="END_LINK"/>-ში</translation>
 <translation id="658539216370629794">ბმულის გახსნა ინკო&amp;გნიტო ფანჯარაში</translation>
 <translation id="1432267168815937878">ბმულის გახსნა ინკო&amp;გნიტო ფანჯარაში</translation>
 <translation id="6516243500644829484">ახალი &amp;ინკოგნიტო ფანჯარა</translation>
@@ -6596,7 +6597,6 @@
 <translation id="3860292630623580294">(ინკოგნიტო)</translation>
 <translation id="4854477725773269949">ინკოგნიტოში დაშვება</translation>
 <translation id="6436164536244065364">იხილეთ ვებ მაღაზიაში</translation>
-<translation id="38046578254905003">იპოვეთ გაფართოებები და თემები <ph name="BEGIN_LINK"/>Brave Web Store<ph name="END_LINK"/>-ში</translation>
 <translation id="6336451774241870485">ახალი ინკოგნიტო ჩანართი</translation>
 <translation id="6610147964972079463">ინკოგნ. ჩანართების დახურვა</translation>
 <translation id="4933782374919065856">შეკითხვა გაქვთ? დაუკავშირდით იმ პიროვნებას, რომელიც აკონტროლებს თქვენს პროფილს.</translation>

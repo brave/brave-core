@@ -291,7 +291,7 @@
 <translation id="1361872463926621533">Luaj një tingull në nisje</translation>
 <translation id="1363585519747660921">Printeri USB ka nevojë për printim</translation>
 <translation id="1365180424462182382"><ph name="BEGIN_LINK"/>Shfletuesi yt menaxhohet<ph name="END_LINK"/> nga <ph name="ENROLLMENT_DOMAIN"/></translation>
-<translation id="1366177842110999534">Ekzekuto veglat e Linux, redaktorët dhe IDE-të në pajisjen tënde <ph name="DEVICE_TYPE"/>. &lt;a target="_blank" href="<ph name="URL"/>"&gt;Mëso më shumë&lt;/a&gt;</translation>
+<translation id="1366177842110999534">Ekzekuto veglat e Linux, redaktorët dhe IDE-të në pajisjen tënde <ph name="DEVICE_TYPE"/>. &lt;a target="_blank" rel="noopener noreferrer" href="<ph name="URL"/>"&gt;Mëso më shumë&lt;/a&gt;</translation>
 <translation id="1367951781824006909">Zgjidh një skedar</translation>
 <translation id="1369149969991017342">Qasja me çelës (kontrollo kompjuterin me vetëm një ose dy çelësa)</translation>
 <translation id="1372841398847029212">Sinkronizoje me llogarinë tënde</translation>
@@ -1351,7 +1351,7 @@ Cilësimet e kësaj llogarie mund t'i menaxhosh duke instaluar aplikacionin Fami
 <translation id="268053382412112343">Hi&amp;storiku</translation>
 <translation id="2682498795777673382">Përditësim nga prindi</translation>
 <translation id="2683638487103917598">Dosja u sistemua</translation>
-<translation id="2686222346846590368">Ky është përditësimi i fundit automatik i softuerit dhe i sigurisë për këtë pajisje <ph name="DEVICE_TYPE"/>. Për të marrë përditësime të ardhshme, përmirësoje në një model më të ri. &lt;a target="_blank" href="<ph name="URL"/>"&gt;Mëso më shumë<ph name="LINK_END"/></translation>
+<translation id="2686222346846590368">Ky është përditësimi i fundit automatik i softuerit dhe i sigurisë për këtë pajisje <ph name="DEVICE_TYPE"/>. Për të marrë përditësime të ardhshme, përmirësoje në një model më të ri. &lt;a target="_blank" rel="noopener noreferrer" href="<ph name="URL"/>"&gt;Mëso më shumë<ph name="LINK_END"/></translation>
 <translation id="2687403674020088961">Blloko të gjitha kukit (nuk rekomandohet)</translation>
 <translation id="2687407218262674387">Kushtet e shërbimit të Brave</translation>
 <translation id="2688196195245426394">Gabim gjatë regjistrimit të pajisjes në server: <ph name="CLIENT_ERROR"/>.</translation>
@@ -4849,7 +4849,7 @@ Cilësimet e kësaj llogarie mund t'i menaxhosh duke instaluar aplikacionin Fami
 <translation id="7197632491113152433">Gjetëm <ph name="NUMBER_OF_APPS"/> aplikacione nga llogaria jote që mund të përdoren në këtë pajisje.</translation>
 <translation id="7199158086730159431">Merr n&amp;dihmë</translation>
 <translation id="7200083590239651963">Zgjidh konfigurimin</translation>
-<translation id="7201042526153088083">Instalo aplikacione dhe lojëra nga Google Play në <ph name="DEVICE_TYPE"/>. &lt;a target="_blank" href="<ph name="URL"/>"&gt;Mëso më shumë&lt;/a&gt;</translation>
+<translation id="7201042526153088083">Instalo aplikacione dhe lojëra nga Google Play në <ph name="DEVICE_TYPE"/>. &lt;a target="_blank" rel="noopener noreferrer" href="<ph name="URL"/>"&gt;Mëso më shumë&lt;/a&gt;</translation>
 <translation id="720110658997053098">Mbaje pajisjen gjithmonë në modalitetin "kioskë"</translation>
 <translation id="7201118060536064622">"<ph name="DELETED_ITEM_NAME"/>" u fshi</translation>
 <translation id="7201420661433230412">Shiko skedarët</translation>
@@ -6515,6 +6515,7 @@ Mbaje skedarin e çelësit tënd në një vend të sigurt. Do të të duhet për
 <translation id="995782501881226248">YouTube</translation>
 <translation id="996250603853062861">Po vendos një lidhje të sigurt...</translation>
 <translation id="998747458861718449">I&amp;nspekto</translation>
+<translation id="38046578254905003">Gjej shtesa dhe tema në <ph name="BEGIN_LINK"/>Dyqanin e uebit të Brave<ph name="END_LINK"/></translation>
 <translation id="658539216370629794">Hape lidhjen në dritare &amp;private</translation>
 <translation id="1432267168815937878">Hape Lidhjen në Dritare &amp;Private</translation>
 <translation id="6516243500644829484">Dritare e re &amp;private</translation>
@@ -6606,7 +6607,6 @@ Mbaje skedarin e çelësit tënd në një vend të sigurt. Do të të duhet për
 <translation id="3860292630623580294">(I fshehtë)</translation>
 <translation id="4854477725773269949">Lejo në modalitetin "i fshehtë"</translation>
 <translation id="6436164536244065364">Shikoje në dyqanin e uebit</translation>
-<translation id="38046578254905003">Gjej shtesa dhe tema në <ph name="BEGIN_LINK"/>Dyqanin e uebit të Brave<ph name="END_LINK"/></translation>
 <translation id="6336451774241870485">Skedë e re e fshehtë</translation>
 <translation id="6610147964972079463">Mbyll skedat e fshehta</translation>
 <translation id="4933782374919065856">Ke pyetje? Kontakto me personin që mbikëqyrë profilin tënd.</translation>

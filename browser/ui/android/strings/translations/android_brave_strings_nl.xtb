@@ -183,7 +183,6 @@ deze maand...</translation>
 <translation id="8193724030871339658">ANDERE APPARATEN IN DE REEKS</translation>
 <translation id="279635009973773843">APPARATEN LADEN...</translation>
 <translation id="6394333525003604181">DE SYNC-KETTING VERLATEN</translation>
-<translation id="1604429341565715601">Synchronisatie wordt uitgevoerd, probeer het later opnieuw te resetten</translation>
 <translation id="2569646144216067185">Aantal woorden: <ph name="WORD_COUNT"/></translation>
 <translation id="4282642752844565114">Onjuist aantal woorden</translation>
 <translation id="7507533586185621084">Verkeerde synchronisatiecode</translation>
@@ -320,7 +319,8 @@ deze maand...</translation>
 <translation id="5963670684159057574">Vingerafdrukken tussen sites blokkeren</translation>
 <translation id="3895527457258986253">Blokkeer fingerprinting</translation>
 <translation id="184568144098869637">Voorkomt dat browsers je apparaat herkennen</translation>
-<translation id="4540198958192073185">Blokkeer alle vingerafdrukverzoeken</translation>
+<translation id="7396366757003005317">Vingerafdruk geblokkeerd(strikt, kan ervoor zorgen dat sites niet werken)</translation>
+<translation id="700453611199558021">Vingerafdruk geblokkeerd(standaard)</translation>
 <translation id="769702552748212954">Sta alle vingerafdrukken toe</translation>
 <translation id="2888409909650566510">Advertenties en andere griezelige\ndingen zijn geblokkeerd.</translation>
 <translation id="6930134873084561197">Sites bevatten vaak cookies en scripts die zowel jou als je apparaat proberen te identificeren. Ze willen erachter komen wie je bent en je volgen over het hele web; ze volgen op elke site wat je doet.\n\nBrave blokkeert deze dingen, zodat je kunt surfen zonder dat je gevolgd wordt.</translation>
@@ -348,7 +348,7 @@ deze maand...</translation>
 <translation id="8374242949413616101">Privacybescherming</translation>
 <translation id="4955406228638026265">Brave stopt advertenties en trackers die zonder uw toestemming informatie over u verzamelen.</translation>
 <translation id="752842701893882688">Bespaar data en batterij</translation>
-<translation id="5739030256211745023">Zonder advertenties en trackers, gebruiken websites minder data en batterij. Zo bespaart u mogelijk zelfs geld op de kosten van uw bundel.</translation>
+<translation id="1685837926613452362">Zonder reclames &amp; trackers gebruiken websites minder data en energie. U kunt zelfs geld besparen op uw mobiele telefoonrekening.</translation>
 <translation id="5440744330377972191">Websites laden sneller</translation>
 <translation id="3000738865641747653">Minder gegevens laden betekent dat websites in Brave sneller laden - tot wel 8x sneller dan andere browsers.</translation>
 <translation id="8903462729414407077">Ontvang wekelijks updates</translation>
@@ -363,6 +363,7 @@ deze maand...</translation>
 <translation id="1581614543353331529">Nog geen gegevens beschikbaar</translation>
 <translation id="2401984885421380890">Trackers en Advertenties\nGeblokkeerd</translation>
 <translation id="2662183408296991265">Bespaarde data\n(<ph name="DATA_SAVED"/>)</translation>
+<translation id="3180928261057583677">Gegevens opgeslagen (<ph name="DATA_SAVED"/>)</translation>
 <translation id="6814582232712814369">Bespaarde tijd</translation>
 <translation id="3694122362646626770">Websites</translation>
 <translation id="2225863440766607138">Trackers</translation>
@@ -372,12 +373,12 @@ deze maand...</translation>
 <translation id="7427567994475794038">Schakel Privacyrapporten in om te zien hoeveel trackers &amp; advertenties er in de afgelopen 3 uur zijn geblokkeerd.</translation>
 <translation id="2053891538879944400">U hebt <ph name="DATA"/> <ph name="DATA_TEXT"/> data bespaard met Brave browser.</translation>
 <translation id="8640064498452534195">Schakel Privacyrapporten in om te zien hoeveel data u hebt bespaard.</translation>
-<translation id="4591582032282435287">Brave browser gebruikt gemiddeld 40% minder batterij.</translation>
+<translation id="2252497442547961651">Brave browser gebruikt gemiddeld 40% minder energie.&#128267;</translation>
 <translation id="1945330434665345785">U hebt vorige week <ph name="COUNT"/> trackers en advertenties geblokkeerd met Brave browser.</translation>
 <translation id="2883868922264431515">Verdien tokens door privacy-vriendelijke advertenties te bekijken en steun uw favoriete websites.</translation>
-<translation id="6840965284166256302">Fijn! U hebt 250 trackers en advertenties geblokkeerd met Brave browser.</translation>
-<translation id="2076976911561945584">Mooi! U hebt 10MB bespaard met Brave browser.</translation>
-<translation id="6714550233326888315">Fijn! U hebt 10 minuten laadtijd bespaard met Brave browser.</translation>
+<translation id="5678925890616256956">Mooi! U hebt 250 trackers &amp; reclames geblokkeerd met Brave browser.&#128293;</translation>
+<translation id="9199047775708635708">Mooi! U heeft 10MB bespaard met Brave browser.&#128267;</translation>
+<translation id="1880168210969863408">Mooi! U hebt 10 minuten laadtijd bespaard met Brave browser.&#128168;&#128168;</translation>
 <translation id="7408493389591475748">Begin met browsen om uw privacyrapport te zien</translation>
 <translation id="9080777565335515917">Stel Brave in als uw standaardbrowser om privé en veilig te kunnen surfen.</translation>
 <translation id="7801488941710395275">Staat Brave toe om uw privacystatistieken weer te geven</translation>
@@ -386,4 +387,5 @@ deze maand...</translation>
 <translation id="8089997572759938512">Zet uw privacyrapporten op nul</translation>
 <translation id="2718046830255553131">Gegevens van privacyrapporten zijn gewist.</translation>
 <translation id="7559243474426790340">Status vernieuwen</translation>
+<translation id="8376263745431603066">"Nachtmodus" inschakelen (experimenteel)</translation>
 </translationbundle>

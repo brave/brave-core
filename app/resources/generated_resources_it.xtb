@@ -291,7 +291,7 @@
 <translation id="1361872463926621533">Riproduci suono all'avvio</translation>
 <translation id="1363585519747660921">La stampante USB deve essere configurata</translation>
 <translation id="1365180424462182382">Il tuo <ph name="BEGIN_LINK"/>browser è gestito<ph name="END_LINK"/> da <ph name="ENROLLMENT_DOMAIN"/></translation>
-<translation id="1366177842110999534">Esegui strumenti, editor e IDE di Linux sul tuo dispositivo <ph name="DEVICE_TYPE"/>. &lt;a target="_blank" href="<ph name="URL"/>"&gt;Ulteriori informazioni&lt;/a&gt;</translation>
+<translation id="1366177842110999534">Esegui strumenti, editor e IDE di Linux sul tuo dispositivo <ph name="DEVICE_TYPE"/>. &lt;a target="_blank" rel="noopener noreferrer" href="<ph name="URL"/>"&gt;Ulteriori informazioni&lt;/a&gt;</translation>
 <translation id="1367951781824006909">Scegli un file</translation>
 <translation id="1369149969991017342">Switch Access (consente l'utilizzo del computer semplicemente mediante uno o due sensori)</translation>
 <translation id="1372841398847029212">Sincronizza con il tuo account</translation>
@@ -1353,7 +1353,7 @@ Puoi gestire le impostazioni dell'account installando l'app Family Link su quest
 <translation id="268053382412112343">Cr&amp;onologia</translation>
 <translation id="2682498795777673382">Aggiornato da un genitore</translation>
 <translation id="2683638487103917598">Cartella ordinata</translation>
-<translation id="2686222346846590368">Questo è l'ultimo aggiornamento software e di sicurezza automatico per il dispositivo <ph name="DEVICE_TYPE"/>. Per ricevere gli aggiornamenti futuri, esegui l'upgrade a un modello più recente. &lt;a target="_blank" href="<ph name="URL"/>"&gt;Ulteriori informazioni<ph name="LINK_END"/></translation>
+<translation id="2686222346846590368">Questo è l'ultimo aggiornamento software e di sicurezza automatico per il dispositivo <ph name="DEVICE_TYPE"/>. Per ricevere gli aggiornamenti futuri, esegui l'upgrade a un modello più recente. &lt;a target="_blank" rel="noopener noreferrer" href="<ph name="URL"/>"&gt;Ulteriori informazioni<ph name="LINK_END"/></translation>
 <translation id="2687403674020088961">Blocca tutti i cookie (non consigliato)</translation>
 <translation id="2687407218262674387">Termini di servizio di Brave</translation>
 <translation id="2688196195245426394">Errore durante la registrazione del dispositivo con il server. <ph name="CLIENT_ERROR"/>.</translation>
@@ -4851,7 +4851,7 @@ Puoi gestire le impostazioni dell'account installando l'app Family Link su quest
 <translation id="7197632491113152433">Nel tuo account abbiamo trovato <ph name="NUMBER_OF_APPS"/> app che possono essere utilizzate su questo dispositivo.</translation>
 <translation id="7199158086730159431">Ricevi assistenza</translation>
 <translation id="7200083590239651963">Seleziona configurazione</translation>
-<translation id="7201042526153088083">Installa app e giochi da Google Play su <ph name="DEVICE_TYPE"/>. &lt;a target="_blank" href="<ph name="URL"/>"&gt;Ulteriori informazioni&lt;/a&gt;</translation>
+<translation id="7201042526153088083">Installa app e giochi da Google Play su <ph name="DEVICE_TYPE"/>. &lt;a target="_blank" rel="noopener noreferrer" href="<ph name="URL"/>"&gt;Ulteriori informazioni&lt;/a&gt;</translation>
 <translation id="720110658997053098">Mantieni definitivamente questo dispositivo in modalità kiosk</translation>
 <translation id="7201118060536064622">"<ph name="DELETED_ITEM_NAME"/>" eliminato</translation>
 <translation id="7201420661433230412">Visualizza i file</translation>
@@ -5495,7 +5495,7 @@ Puoi gestire le impostazioni dell'account installando l'app Family Link su quest
 <translation id="7994702968232966508">Metodo EAP</translation>
 <translation id="7997826902155442747">Priorità processo</translation>
 <translation id="7999229196265990314">Sono stati creati i file seguenti:
-        
+
 Estensione: <ph name="EXTENSION_FILE"/>
 File di chiave: <ph name="KEY_FILE"/>
 
@@ -6609,7 +6609,7 @@ Conserva il file di chiave in un luogo sicuro. Ti servirà per creare nuove vers
 <translation id="3860292630623580294">(Privato)</translation>
 <translation id="4854477725773269949">Abilita in privato</translation>
 <translation id="6436164536244065364">Visualizza nel Web Store</translation>
-<translation id="38046578254905003">Trova estensioni e temi nel <ph name="BEGIN_LINK">&lt;a target="_blank" href="https://chrome.google.com/webstore/category/extensions"&gt;</ph>Web Store<ph name="END_LINK">&lt;/a&gt;</ph></translation>
+<translation id="38046578254905003">Trova estensioni e temi nel <ph name="BEGIN_LINK"/>Web Store<ph name="END_LINK"/></translation>
 <translation id="6336451774241870485">Nuova scheda privata</translation>
 <translation id="6610147964972079463">Chiudi schede private</translation>
 <translation id="4933782374919065856">Domande? Contatta il supervisore del tuo profilo.</translation>

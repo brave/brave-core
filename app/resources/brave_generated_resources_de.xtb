@@ -25,7 +25,7 @@ Mit der Installation dieser Erweiterung erklären Sie sich mit den Google Widevi
 <translation id="3218385319396786393">Automatisches Abspielen wurde auf dieser Seite blockiert</translation>
 <translation id="4988333904713528597">Autoplay auf <ph name="HOST"/> immer erlauben?</translation>
 <translation id="4150684676757176434">Automatische Wiedergabe weiterhin blockieren</translation>
-<translation id="5883458389055721080">Diese Erweiterung wurde noch nicht von Brave auf ihre Sicherheit überprüft. Sie sollten sie nur installieren, wenn Sie dem Entwickler vertrauen.</translation>
+<translation id="8988939298652262600">Brave überprüft Erweiterungen nicht auf ihre Sicherheit. Installieren Sie diese Erweiterung nur, wenn Sie dem Entwickler vertrauen.</translation>
 <translation id="8081858229109418493">Profilname und -symbol</translation>
 <translation id="2044383478723007273">Brave Farben</translation>
 <translation id="1692470335103807198">Mehr Themen erhalten</translation>
@@ -37,6 +37,9 @@ Mit der Installation dieser Erweiterung erklären Sie sich mit den Google Widevi
 <translation id="5802665280774361839">Autovervollständigung in der Adressleiste anzeigen</translation>
 <translation id="597020512043916976">Top-Sites in den Vorschlägen für die Autovervollständigung anzeigen</translation>
 <translation id="264150068416846820">Von Brave vorgeschlagene Sites in den Vorschlägen für die Autovervollständigung anzeigen</translation>
+<translation id="6414370348346025511">Standardschutz ist aktiviert.</translation>
+<translation id="814018970995616154">Überprüft URLs anhand einer Liste mit unsicheren Seiten, die in Brave gespeichert ist.</translation>
+<translation id="1144810021918451336">Schützt Sie nicht vor gefährlichen Websites, Downloads und Erweiterungen.</translation>
 <translation id="7781069478569868053">Neuer-Tab-Seite</translation>
 <translation id="2467749191278759605">Passen Sie Ihr Brave-Dashboard an</translation>
 <translation id="1717331825806276156">Hintergrundbilder</translation>
@@ -79,7 +82,7 @@ Mit der Installation dieser Erweiterung erklären Sie sich mit den Google Widevi
 <translation id="4824468494729001999">JavaScript blockieren</translation>
 <translation id="519861640102428255">Look and Feel</translation>
 <translation id="4800195524776354947">Zahl der blockierten Elemente auf dem Shields-Icon anzeigen</translation>
-<translation id="3932286112122164477">Google-Anmelde-Buttons auf Drittwebsites erlauben</translation>
+<translation id="7498695072878479744">Google-Anmelde-Buttons auf Drittwebsites erlauben</translation>
 <translation id="863171915776379000">Facebook-Anmeldungen und eingebettete Posts erlauben</translation>
 <translation id="5165042248369837294">Eingebettete Twitter-Nachrichten erlauben</translation>
 <translation id="958971637207126733">In LinkedIn eingebettete Beiträge erlauben</translation>
@@ -148,13 +151,17 @@ Mit der Installation dieser Erweiterung erklären Sie sich mit den Google Widevi
 <translation id="2356070529366658676">Fragen</translation>
 <translation id="7701040980221191251">Keine</translation>
 <translation id="1085027414516521238">MetaMask</translation>
-<translation id="3905324891414560921">Web3-Anbieter für die Nutzung von DApps</translation>
+<translation id="7090046810227878892">Ethereum-Anbieter zur Nutzung von Dapps</translation>
 <translation id="5913089932885076110">Crypto Wallets bei Start laden</translation>
+<translation id="6864914031231797928">Erlauben Sie die Google-Anmeldung bei Erweiterungen</translation>
+<translation id="1365342176656744625">Methode, um IPFS-Pfade aufzulösen</translation>
+<translation id="1327977588028644528">Gateway</translation>
+<translation id="80225669816651290">Lokaler Knoten</translation>
 <translation id="6554397389149987360">Nutzt Hangouts-Komponente, um das Teilen des Bildschirms und andere Funktionen im Browser zu ermöglichen.</translation>
 <translation id="1765684547504191670">Eine Media-Router-Komponente wird verwendet, um Chromecast in dem Browser zu aktivieren.</translation>
 <translation id="9156965752763025780">Ihre Änderungen werden beim nächsten Neustart von Brave wirksam.</translation>
 <translation id="7179921470347911571">Jetzt neustarten</translation>
-<translation id="4154389611571860454">Verwendet die IPFS-Erweiterung, um IPFS im Browser zu unterstützen.</translation>
+<translation id="6222323340194834282">Nutzt die IPFS-Companion-Erweiterung, um die IPFS-Unterstützung im Browser zu verbessern.</translation>
 <translation id="8137559199583651773">Erweiterungen verwalten</translation>
 <translation id="7013485839273047434">Weitere Erweiterungen holen</translation>
 <translation id="4928988318462976765">Web Extensions Store</translation>
@@ -210,20 +217,19 @@ Mit der Installation dieser Erweiterung erklären Sie sich mit den Google Widevi
 <translation id="4394049700291259645">Deaktivieren</translation>
 <translation id="6469509880167172749">Automatisch vollständig private Produktanalysen an Brave senden</translation>
 <translation id="7090566321964540749">Mit dieser anonymen Information kann Brave nur die Gesamtnutzung bestimmter Funktionen einschätzen.</translation>
-<translation id="9111960429693394744">Möchten Sie Braves Krypto-Wallets oder MetaMask für DApps verwenden?</translation>
-<translation id="8721775358057000783">Möchten Sie Crypto Wallets für die Web3-Unterstützung auf dieser Seite starten?</translation>
+<translation id="1947672064022327074">Möchten Sie Crypto Wallets zur Ethereum-Unterstützung anlegen?</translation>
 <translation id="7583735190612229830">Richten Sie Krypto-Wallets ein, um mit dieser und ähnlichen Apps zu interagieren.</translation>
 <translation id="4823406846571523661">Setup von Crypto Wallets</translation>
-<translation id="5756155765711979898">MetaMask nutzen</translation>
-<translation id="6754134632841262799">EINRICHTUNG</translation>
 <translation id="8199661191594897555">Crypto Wallets starten und neu laden</translation>
 <translation id="8428213095426709021">Einstellungen</translation>
+<translation id="1854270995641373652">Möchten Sie die Unterstützung eines lokalen IPFS-Daemons in Brave aktivieren?</translation>
+<translation id="2366908098700680611">IPFS einschalten</translation>
 <translation id="4552520379838695057">Diese Seite fehlt leider.</translation>
 <translation id="2609895996619941644">Möchten Sie überprüfen, ob eine gespeicherte Version in der Wayback Machine verfügbar ist?</translation>
 <translation id="8053093028263274061">Leider ist keine gespeicherte Version verfügbar.</translation>
 <translation id="8517321676372639828">Auf gespeicherte Version überprüfen</translation>
-<translation id="191143826155037518">Brave wird Ihnen unter der <ph name="BEGIN_LINK_MPL">&lt;a target="_blank" href="$1"&gt;</ph>Mozilla Public License 2.0<ph name="END_LINK_MPL">&lt;/a&gt;</ph> (MPL) und verwendet weitere <ph name="BEGIN_LINK_OSS">&lt;a target="_blank" href="$2"&gt;</ph>Open Source Software<ph name="END_LINK_OSS">&lt;/a&gt;</ph> die unter verschiedenen anderen Lizenzen veröffentlicht wurden.
-        Lesen Sie die <ph name="BEGIN_LINK_BUILD_INSTRUCTIONS">&lt;a target="_blank" href="$3"&gt;</ph>Anleitung<ph name="END_LINK_BUILD_INSTRUCTIONS">&lt;/a&gt;</ph> , wie man das Brave-Projekt herunterlädt und selbst aus dem  <ph name="BEGIN_LINK_SOURCE_CODE">&lt;a target="_blank" href="$4"&gt;</ph>Quellcode<ph name="END_LINK_SOURCE_CODE">&lt;/a&gt;</ph> zu erstellen.</translation>
+<translation id="191143826155037518">Brave wird Ihnen unter der <ph name="BEGIN_LINK_MPL"/>Mozilla Public License 2.0<ph name="END_LINK_MPL"/> (MPL) und verwendet weitere <ph name="BEGIN_LINK_OSS"/>Open Source Software<ph name="END_LINK_OSS"/> die unter verschiedenen anderen Lizenzen veröffentlicht wurden.
+        Lesen Sie die <ph name="BEGIN_LINK_BUILD_INSTRUCTIONS"/>Anleitung<ph name="END_LINK_BUILD_INSTRUCTIONS"/> , wie man das Brave-Projekt herunterlädt und selbst aus dem  <ph name="BEGIN_LINK_SOURCE_CODE"/>Quellcode<ph name="END_LINK_SOURCE_CODE"/> zu erstellen.</translation>
 <translation id="4474155171896946103">Alle Tabs als Lesezeichen speichern...</translation>
 <translation id="2336228925368920074">Alle Tabs als Lesezeichen speichern...</translation>
 <translation id="796831669370432378">Um ein Lesezeichen hinzuzufügen, klicken Sie auf die Lesezeichen-Schaltfläche neben der Adressleiste</translation>

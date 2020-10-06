@@ -25,7 +25,7 @@
 <translation id="3218385319396786393">تم حظر التشغيل التلقائي في هذه الصفحة</translation>
 <translation id="4988333904713528597">اسمح دائماً بالتشغيل الأوتوماتيكي على <ph name="HOST"/></translation>
 <translation id="4150684676757176434">متابعة حظر التشغيل التلقائي</translation>
-<translation id="5883458389055721080">لم يراجع Brave هذا الملحق للأمان والسلامة. قم بتثبيت هذا الملحق فقط إذا كنت تثق في المطور.</translation>
+<translation id="8988939298652262600">لا يقوم متصفّح Brave بمراجعة الامتدادات لأسباب تتعلق بأمن وسلامة المعلومات. قم بتثبيت هذا الامتداد فقط إذا كنت تثق بالمطور.</translation>
 <translation id="8081858229109418493">اسم ورمز الملف الشخصي</translation>
 <translation id="2044383478723007273">ألوان Brave</translation>
 <translation id="1692470335103807198">الحصول على المزيد من السمات</translation>
@@ -37,6 +37,9 @@
 <translation id="5802665280774361839">إظهار الإكمال التلقائي في شريط العناوين</translation>
 <translation id="597020512043916976">عرض أهم المواقع في اقتراحات الإكمال التلقائي</translation>
 <translation id="264150068416846820">إظهار مواقع Brave المقترحة ضمن اقتراحات الإكمال التلقائي</translation>
+<translation id="6414370348346025511">الحماية القياسية قيد التشغيل.</translation>
+<translation id="814018970995616154">يتحقق من عناوين URL بقائمة من المواقع غير الآمنة المخزنة في متصفّح Brave.</translation>
+<translation id="1144810021918451336">لا يحميك من مواقع الويب والتنزيلات والإضافات الخطيرة.</translation>
 <translation id="7781069478569868053">صفحة في علامة تبويب جديدة</translation>
 <translation id="2467749191278759605">تخصيص لوحة تحكم متصفح Brave الخاصة بك</translation>
 <translation id="1717331825806276156">صور الخلفية</translation>
@@ -79,7 +82,7 @@
 <translation id="4824468494729001999">حظر البرامج النصية</translation>
 <translation id="519861640102428255">المظهر والملمس</translation>
 <translation id="4800195524776354947">إظهار عدد العناصر المحظورة على أيقونة Shields</translation>
-<translation id="3932286112122164477">السماح بأزرار تسجيل الدخول إلى Google على مواقع أطراف خارجية</translation>
+<translation id="7498695072878479744">السماح بأزرار تسجيل الدخول إلى Google على مواقع أطراف خارجية</translation>
 <translation id="863171915776379000">السماح بتسجيل الدخول إلى فيسبوك والمشاركات المدمجة</translation>
 <translation id="5165042248369837294">السماح بدمج تغريدات من تويتر</translation>
 <translation id="958971637207126733">السماح بالمشاركات المدمجة في LinkedIn</translation>
@@ -148,13 +151,17 @@
 <translation id="2356070529366658676">طلب</translation>
 <translation id="7701040980221191251">بلا</translation>
 <translation id="1085027414516521238">MetaMask</translation>
-<translation id="3905324891414560921">مزود Web3 لاستخدام Dapps</translation>
+<translation id="7090046810227878892">مزوّد منصة إيثريوم لاستخدام تطبيقات Dapps</translation>
 <translation id="5913089932885076110">تحميل Crypto Wallets عند بدء التشغيل</translation>
+<translation id="6864914031231797928">قم بالسماح بتسجيل الدخول إلى Google للحصول على الإضافات</translation>
+<translation id="1365342176656744625">طريقة لحل مشكلة مواقع "أي بي إف إس/ IPFS"</translation>
+<translation id="1327977588028644528">المدخل</translation>
+<translation id="80225669816651290">عقدة محلية</translation>
 <translation id="6554397389149987360">يستخدم عنصر تطبيق Hangouts لتمكين مشاركة الشاشة وغيرها من الميزات في المتصفح.</translation>
 <translation id="1765684547504191670">يستخدم مكوّن Media Router لتمكين Chromecast في المتصفح.</translation>
 <translation id="9156965752763025780">‏ستسري التغييرات في المرة التالية التي تعيد فيها تشغيل Brave.</translation>
 <translation id="7179921470347911571">أعد التشغيل الآن</translation>
-<translation id="4154389611571860454">يستخدم ملحق رفيق IPFS لدعم IPFS في المستعرض.</translation>
+<translation id="6222323340194834282">يستخدم ملحق "أي بي إف إس / IPFS" المصاحب لتحسين دعم "أي بي إف إس" في المتصفح.</translation>
 <translation id="8137559199583651773">إدارة الإضافات</translation>
 <translation id="7013485839273047434">احصل على المزيد من الإضافات</translation>
 <translation id="4928988318462976765">متجر إضافات الويب</translation>
@@ -210,20 +217,19 @@
 <translation id="4394049700291259645">إيقاف</translation>
 <translation id="6469509880167172749">إرسال تحليلات المنتج الخاصة بالكامل تلقائيًا إلى Brave</translation>
 <translation id="7090566321964540749">تتيح هذه المعلومات المُجهلة فقط لمتصفح Brave تقدير الاستخدام الكلي لبعض الميزات.</translation>
-<translation id="9111960429693394744">هل ترغب باستخدام محافظ Brave's Crypto أو MetaMask لـ Dapps؟</translation>
-<translation id="8721775358057000783">هل ترغب في بدء Crypto Wallets لدعم web3 على هذه الصفحة؟</translation>
+<translation id="1947672064022327074">هل ترغب في بدء استخدام المحافظ المشفرة (Crypto Wallets) للحصول على دعم إيثريوم ؟</translation>
 <translation id="7583735190612229830">قم بإعداد Crypto Wallets للتفاعل مع هذا التطبيق وما يماثله من التطبيقات الأخرى.</translation>
 <translation id="4823406846571523661">إعداد Crypto Wallets</translation>
-<translation id="5756155765711979898">استخدام MetaMask</translation>
-<translation id="6754134632841262799">الإعدادات</translation>
 <translation id="8199661191594897555">بدء تشغيل Crypto Wallets وإعادة التحميل</translation>
 <translation id="8428213095426709021">الإعدادات</translation>
+<translation id="1854270995641373652">هل ترغب في تمكين دعم البرنامج الخفيّ المحلي "أي بي إف إس / IPFS" في Brave؟</translation>
+<translation id="2366908098700680611">تمكين "أي بي إف إس/ IPFS"</translation>
 <translation id="4552520379838695057">عذراً، هذه الصفحة مفقودة.</translation>
 <translation id="2609895996619941644">هل تريد التحقق مما إذا كان هناك إصدار محفوظ متاح على "واي باك مشين"؟</translation>
 <translation id="8053093028263274061">عذراً، لا توجد نسخة محفوظة متاحة.</translation>
 <translation id="8517321676372639828">تحقق من وجود نسخة محفوظة</translation>
-<translation id="191143826155037518">يتم توفير Brave لك بموجب <ph name="BEGIN_LINK_MPL">&lt;a target="_blank" href="$1"&gt;</ph>ترخيص Mozilla العام 2.0<ph name="END_LINK_MPL">&lt;/a&gt;</ph> (MPL) ويشمل <ph name="BEGIN_LINK_OSS">&lt;a target="_blank" href="$2"&gt;</ph>برمجيات مفتوحة المصدر<ph name="END_LINK_OSS">&lt;/a&gt;</ph> بموجب مختلف التراخيص الأخرى.
-        يمكنك قراءة <ph name="BEGIN_LINK_BUILD_INSTRUCTIONS">&lt;a target="_blank" href="$3"&gt;</ph>التعليمات حول كيفية تنزيل وبناء<ph name="END_LINK_BUILD_INSTRUCTIONS">&lt;/a&gt;</ph> <ph name="BEGIN_LINK_SOURCE_CODE">&lt;a target="_blank" href="$4"&gt;</ph> التعليمات البرمجية الأصلية المحددة المستخدمة لإنشاء هذه النسخة<ph name="END_LINK_SOURCE_CODE">&lt;/a&gt;</ph> لنفسك.</translation>
+<translation id="191143826155037518">يتم توفير Brave لك بموجب <ph name="BEGIN_LINK_MPL"/>ترخيص Mozilla العام 2.0<ph name="END_LINK_MPL"/> (MPL) ويشمل <ph name="BEGIN_LINK_OSS"/>برمجيات مفتوحة المصدر<ph name="END_LINK_OSS"/> بموجب مختلف التراخيص الأخرى.
+        يمكنك قراءة <ph name="BEGIN_LINK_BUILD_INSTRUCTIONS"/>التعليمات حول كيفية تنزيل وبناء<ph name="END_LINK_BUILD_INSTRUCTIONS"/> <ph name="BEGIN_LINK_SOURCE_CODE"/> التعليمات البرمجية الأصلية المحددة المستخدمة لإنشاء هذه النسخة<ph name="END_LINK_SOURCE_CODE"/> لنفسك.</translation>
 <translation id="4474155171896946103">وضع إشارات على كل علامات التبويب...</translation>
 <translation id="2336228925368920074">وضع إشارة على جميع علامات التبويب...</translation>
 <translation id="796831669370432378">لإضافة إشارة مرجعية، انقر فوق زر الإشارة المرجعية بجوار شريط العنوان</translation>

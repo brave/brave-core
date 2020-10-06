@@ -291,7 +291,7 @@
 <translation id="1361872463926621533">Пусти звук при покретању</translation>
 <translation id="1363585519747660921">USB штампач треба да се конфигурише</translation>
 <translation id="1365180424462182382"><ph name="BEGIN_LINK"/>Прегледачем управља<ph name="END_LINK"/> <ph name="ENROLLMENT_DOMAIN"/></translation>
-<translation id="1366177842110999534">Покрените Linux алатке, уређиваче и IDE-ове на <ph name="DEVICE_TYPE"/>-у. &lt;a target="_blank" href="<ph name="URL"/>"&gt;Сазнајте више&lt;/a&gt;</translation>
+<translation id="1366177842110999534">Покрените Linux алатке, уређиваче и IDE-ове на <ph name="DEVICE_TYPE"/>-у. &lt;a target="_blank" rel="noopener noreferrer" href="<ph name="URL"/>"&gt;Сазнајте више&lt;/a&gt;</translation>
 <translation id="1367951781824006909">Изабери датотеку</translation>
 <translation id="1369149969991017342">Приступ помоћу прекидача (контролишите рачунар помоћу само једног или два прекидача)</translation>
 <translation id="1372841398847029212">Синхронизујте са налогом</translation>
@@ -1351,7 +1351,7 @@
 <translation id="268053382412112343">Hi&amp;story (Историја)</translation>
 <translation id="2682498795777673382">Новости од родитеља</translation>
 <translation id="2683638487103917598">Директоријум је сортиран</translation>
-<translation id="2686222346846590368">Ово је последње аутоматско безбедносно ажурирање и ажурирање софтвера за <ph name="DEVICE_TYPE"/>. Надоградите на новији модел да бисте добијали будућа ажурирања. &lt;a target="_blank" href="<ph name="URL"/>"&gt;Сазнајте више<ph name="LINK_END"/></translation>
+<translation id="2686222346846590368">Ово је последње аутоматско безбедносно ажурирање и ажурирање софтвера за <ph name="DEVICE_TYPE"/>. Надоградите на новији модел да бисте добијали будућа ажурирања. &lt;a target="_blank" rel="noopener noreferrer" href="<ph name="URL"/>"&gt;Сазнајте више<ph name="LINK_END"/></translation>
 <translation id="2687403674020088961">Блокирај све колачиће (не препоручује се)</translation>
 <translation id="2687407218262674387">Brave услови коришћења услуге</translation>
 <translation id="2688196195245426394">Грешка при регистровању уређаја на сервер: <ph name="CLIENT_ERROR"/>.</translation>
@@ -4850,7 +4850,7 @@
 <translation id="7197632491113152433">На налогу смо пронашли апликације (<ph name="NUMBER_OF_APPS"/>) које могу да се користе на овом уређају.</translation>
 <translation id="7199158086730159431">Потражи помоћ</translation>
 <translation id="7200083590239651963">Изаберите конфигурацију</translation>
-<translation id="7201042526153088083">Инсталирајте апликације и игре са Google Play-а на уређају <ph name="DEVICE_TYPE"/>. &lt;a target="_blank" href="<ph name="URL"/>"&gt;Сазнајте више&lt;/a&gt;</translation>
+<translation id="7201042526153088083">Инсталирајте апликације и игре са Google Play-а на уређају <ph name="DEVICE_TYPE"/>. &lt;a target="_blank" rel="noopener noreferrer" href="<ph name="URL"/>"&gt;Сазнајте више&lt;/a&gt;</translation>
 <translation id="720110658997053098">Трајно задржи овај уређај у режиму киоска</translation>
 <translation id="7201118060536064622">Ставка „<ph name="DELETED_ITEM_NAME"/>“ је избрисана</translation>
 <translation id="7201420661433230412">Прикажи датотеке</translation>
@@ -6609,7 +6609,7 @@
 <translation id="3860292630623580294">(Privatno)</translation>
 <translation id="4854477725773269949">Dozvoli u privatnom</translation>
 <translation id="6436164536244065364">Прикажи у Веб продавници</translation>
-<translation id="38046578254905003">Nađi ekstenzije i teme u <ph name="BEGIN_LINK">&lt;a target="_blank" href="https://chrome.google.com/webstore/category/extensions"&gt;</ph>Web Store<ph name="END_LINK">&lt;/a&gt;</ph></translation>
+<translation id="38046578254905003">Pronađite proširenja i teme u <ph name="BEGIN_LINK"/>Web Store<ph name="END_LINK"/></translation>
 <translation id="6336451774241870485">Nova privatna kartica</translation>
 <translation id="6610147964972079463">Zatvori privatne kartice</translation>
 <translation id="4933782374919065856">Имате питања? Контактирајте особу која вам надгледа профил.</translation>

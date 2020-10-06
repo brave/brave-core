@@ -291,7 +291,7 @@
 <translation id="1361872463926621533">起動時にサウンドを再生する</translation>
 <translation id="1363585519747660921">USB プリンタの設定が必要です</translation>
 <translation id="1365180424462182382">ご使用の<ph name="BEGIN_LINK"/>ブラウザは <ph name="ENROLLMENT_DOMAIN"/> によって管理されています<ph name="END_LINK"/></translation>
-<translation id="1366177842110999534">ご使用の <ph name="DEVICE_TYPE"/> で Linux のツール、エディタ、IDE を実行します。&lt;a target="_blank" href="<ph name="URL"/>"&gt;詳細&lt;/a&gt;</translation>
+<translation id="1366177842110999534">ご使用の <ph name="DEVICE_TYPE"/> で Linux のツール、エディタ、IDE を実行します。&lt;a target="_blank" rel="noopener noreferrer" href="<ph name="URL"/>"&gt;詳細&lt;/a&gt;</translation>
 <translation id="1367951781824006909">ファイルを選択</translation>
 <translation id="1369149969991017342">スイッチ アクセス（スイッチ 1 つまたは 2 つでパソコンを制御）</translation>
 <translation id="1372841398847029212">アカウントに同期</translation>
@@ -1354,7 +1354,7 @@
 <translation id="268053382412112343">履歴(&amp;S)</translation>
 <translation id="2682498795777673382">保護者の方による更新</translation>
 <translation id="2683638487103917598">フォルダが並べ替えられました</translation>
-<translation id="2686222346846590368">この <ph name="DEVICE_TYPE"/> でソフトウェアとセキュリティの自動アップデートが行われるのは今回が最後です。今後もアップデートを取得するには、新しいモデルにアップグレードしてください。&lt;a target="_blank" href="<ph name="URL"/>"&gt;詳細<ph name="LINK_END"/></translation>
+<translation id="2686222346846590368">この <ph name="DEVICE_TYPE"/> でソフトウェアとセキュリティの自動アップデートが行われるのは今回が最後です。今後もアップデートを取得するには、新しいモデルにアップグレードしてください。&lt;a target="_blank" rel="noopener noreferrer" href="<ph name="URL"/>"&gt;詳細<ph name="LINK_END"/></translation>
 <translation id="2687403674020088961">すべての Cookie をブロックする（推奨されません）</translation>
 <translation id="2687407218262674387">Brave 利用規約</translation>
 <translation id="2688196195245426394">デバイスをサーバーに登録するときにエラーが発生しました: <ph name="CLIENT_ERROR"/>。</translation>
@@ -4852,7 +4852,7 @@
 <translation id="7197632491113152433">お使いのアカウントから、このデバイスで使用できるアプリが <ph name="NUMBER_OF_APPS"/> 個見つかりました。</translation>
 <translation id="7199158086730159431">ヘルプ(&amp;E)</translation>
 <translation id="7200083590239651963">設定の選択</translation>
-<translation id="7201042526153088083">Google Play のアプリとゲームを <ph name="DEVICE_TYPE"/> にインストールします。&lt;a target="_blank" href="<ph name="URL"/>"&gt;詳細&lt;/a&gt;</translation>
+<translation id="7201042526153088083">Google Play のアプリとゲームを <ph name="DEVICE_TYPE"/> にインストールします。&lt;a target="_blank" rel="noopener noreferrer" href="<ph name="URL"/>"&gt;詳細&lt;/a&gt;</translation>
 <translation id="720110658997053098">このデバイスをキオスクモードに固定する</translation>
 <translation id="7201118060536064622">「<ph name="DELETED_ITEM_NAME"/>」が削除されました</translation>
 <translation id="7201420661433230412">ファイルを表示する</translation>
@@ -6611,7 +6611,7 @@
 <translation id="3860292630623580294">(プライベート)</translation>
 <translation id="4854477725773269949">プライベートで許可する</translation>
 <translation id="6436164536244065364">ウェブストアで見る</translation>
-<translation id="38046578254905003">拡張機能とテーマを見つける <ph name="BEGIN_LINK">&lt;a target="_blank" href="https://chrome.google.com/webstore/category/extensions"&gt;</ph>ウェブストア<ph name="END_LINK">&lt;/a&gt;</ph></translation>
+<translation id="38046578254905003"><ph name="BEGIN_LINK"/>ウェブストア<ph name="END_LINK"/>で拡張機能やテーマを見つけましょう</translation>
 <translation id="6336451774241870485">新しいプライベートタブ</translation>
 <translation id="6610147964972079463">プライベートタブを閉じる</translation>
 <translation id="4933782374919065856">ご不明な点は、プロフィールの管理担当者にお問い合わせください。</translation>

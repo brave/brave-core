@@ -291,7 +291,7 @@
 <translation id="1361872463926621533">Reprodueix un so a l'inici</translation>
 <translation id="1363585519747660921">La impressora USB s'ha de configurar</translation>
 <translation id="1365180424462182382">El <ph name="BEGIN_LINK"/>navegador està gestionat<ph name="END_LINK"/> per <ph name="ENROLLMENT_DOMAIN"/></translation>
-<translation id="1366177842110999534">Executa les eines, els editors i els IDE de Linux a <ph name="DEVICE_TYPE"/>. &lt;a target="_blank" href="<ph name="URL"/>"&gt;Més informació&lt;/a&gt;</translation>
+<translation id="1366177842110999534">Executa les eines, els editors i els IDE de Linux a <ph name="DEVICE_TYPE"/>. &lt;a target="_blank" rel="noopener noreferrer" href="<ph name="URL"/>"&gt;Més informació&lt;/a&gt;</translation>
 <translation id="1367951781824006909">Trieu un fitxer</translation>
 <translation id="1369149969991017342">Accés amb interruptors (controla l'ordinador amb només un o dos interruptors)</translation>
 <translation id="1372841398847029212">Sincronitza amb el meu compte</translation>
@@ -1353,7 +1353,7 @@ Pots gestionar la configuració d'aquest compte instal·lant l'aplicació Family
 <translation id="268053382412112343">Hi&amp;storial</translation>
 <translation id="2682498795777673382">El pare o la mare han introduït un canvi</translation>
 <translation id="2683638487103917598">Carpeta ordenada</translation>
-<translation id="2686222346846590368">Aquesta actualització de programari i seguretat és l'última que rebràs per a aquest <ph name="DEVICE_TYPE"/>. Per obtenir actualitzacions en el futur, canvia el dispositiu per un model més nou. &lt;a target="_blank" href="<ph name="URL"/>"&gt;Més informació<ph name="LINK_END"/></translation>
+<translation id="2686222346846590368">Aquesta actualització de programari i seguretat és l'última que rebràs per a aquest <ph name="DEVICE_TYPE"/>. Per obtenir actualitzacions en el futur, canvia el dispositiu per un model més nou. &lt;a target="_blank" rel="noopener noreferrer" href="<ph name="URL"/>"&gt;Més informació<ph name="LINK_END"/></translation>
 <translation id="2687403674020088961">Bloqueja totes les galetes (opció no recomanada)</translation>
 <translation id="2687407218262674387">Condicions del servei de Brave</translation>
 <translation id="2688196195245426394">S'ha produït un error en registrar el dispositiu amb el servidor: <ph name="CLIENT_ERROR"/>.</translation>
@@ -4852,7 +4852,7 @@ Assegureu-vos que no es pugui accedir a informació sensible.</translation>
 <translation id="7197632491113152433">Hem trobat <ph name="NUMBER_OF_APPS"/> aplicacions al compte que es poden utilitzar en aquest dispositiu.</translation>
 <translation id="7199158086730159431">Obtén a&amp;juda</translation>
 <translation id="7200083590239651963">Selecciona la configuració</translation>
-<translation id="7201042526153088083">Instal·la aplicacions i jocs de Brave Play al dispositiu <ph name="DEVICE_TYPE"/>. &lt;a target="_blank" href="<ph name="URL"/>"&gt;Més informació&lt;/a&gt;</translation>
+<translation id="7201042526153088083">Instal·la aplicacions i jocs de Brave Play al dispositiu <ph name="DEVICE_TYPE"/>. &lt;a target="_blank" rel="noopener noreferrer" href="<ph name="URL"/>"&gt;Més informació&lt;/a&gt;</translation>
 <translation id="720110658997053098">Activa permanentment el mode quiosc en aquest dispositiu</translation>
 <translation id="7201118060536064622">S'ha suprimit <ph name="DELETED_ITEM_NAME"/></translation>
 <translation id="7201420661433230412">Visualitza els fitxers</translation>
@@ -6611,7 +6611,7 @@ Deseu el fitxer de clau en una ubicació segura. El necessitareu per crear versi
 <translation id="3860292630623580294">(Privat)</translation>
 <translation id="4854477725773269949">Permetre en privat</translation>
 <translation id="6436164536244065364">Mostra-ho a Web Store</translation>
-<translation id="38046578254905003">Troba extensions i temes al <ph name="BEGIN_LINK">&lt;a target="_blank" href="https://chrome.google.com/webstore/category/extensions"&gt;</ph>Web Store<ph name="END_LINK">&lt;/a&gt;</ph></translation>
+<translation id="38046578254905003">Cerqueu extensions i temes a <ph name="BEGIN_LINK"/>Web Store<ph name="END_LINK"/></translation>
 <translation id="6336451774241870485">Nova Pestanya Privada</translation>
 <translation id="6610147964972079463">Tanca les pestanyes privades</translation>
 <translation id="4933782374919065856">Tens preguntes? Contacta amb la persona que et supervisa el perfil.</translation>

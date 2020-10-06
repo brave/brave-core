@@ -28,9 +28,13 @@
 <translation id="5550994254534676787">Vaata oma sirvimisajalugu</translation>
 <translation id="985862351129593673">Töölaua kohandamine</translation>
 <translation id="7180865173735832675">Kohanda</translation>
-<translation id="5783793537552649286">Näita taustapilti</translation>
+<translation id="8522669544471808198">Kuva taustapildid</translation>
 <translation id="7275773481201277457">Kuva Brave’i statistika</translation>
 <translation id="6836061097810262923">Kuva kell</translation>
+<translation id="5912396950572065471">Vorming</translation>
+<translation id="604124094241169006">Automaatne</translation>
+<translation id="867722069064361487">12 tunni kell</translation>
+<translation id="4064062743338217840">24 tunni kell</translation>
 <translation id="8643377320501056697">Kuva popid saidid</translation>
 <translation id="3446024864193919737">Kuva Brave Rewards</translation>
 <translation id="6274899614137380422">Näita Binance'i</translation>
@@ -68,6 +72,10 @@
 <translation id="8958799246752641148">See peidab teie IP-aadressi saitide eest, mida külastate, juhtides teie sirvimise läbi mitme Tor'i serveri, enne kui see jõuab sihtkohta. Need ühendused on krüpteeritud, nii et teie Interneti-teenuse pakkuja või tööandja ei näe, milliseid saite külastate. Tor võib aeglustada sirvimist ja mõned saidid võivad üldse mitte töötada.</translation>
 <translation id="520608572871993342">Privaatsete akende kasutamine muudab vaid seda, mida Brave teeb sinu seadmes, see ei muuda kellegi teise käitumist. Tor peidab sinu IP-aadressi külastatavate saitide eest ning peidab külastatavad saidid interneti teenusepakkuja või tööandja eest. Ava Tor'iga privaatne aken menüüst või nupust {{ key }}.</translation>
 <translation id="6975708438781948564">Loe lisaks Tor'i kohta Brave'is</translation>
+<translation id="4712050378540986986">Tor-i olek</translation>
+<translation id="3368922792935385530">Ühendatud</translation>
+<translation id="8030169304546394654">Ühendus katkestatud</translation>
+<translation id="3705383383955310071">Lähtestamine {{percentage}}%</translation>
 <translation id="4272382368346338917">Lisafiltrid</translation>
 <translation id="8949292968394988358">Hoiatus: kui lubatud on liiga palju filtreid, siis langeb jõudlus</translation>
 <translation id="8686201964111147748">Reklaame ja jälitajaid kokku blokeeritud:</translation>
@@ -102,7 +110,7 @@
 <translation id="3829010735958850433">Jäta tervitustuur vahele</translation>
 <translation id="1201402288615127009">Edasi</translation>
 <translation id="7954950242989581218">Sirvige ohutult</translation>
-<translation id="2188651882929633653">Brave’i kaitse blokeerib kahtlased asjad, mis üritavad teid veebis jälgida sh suurema osa reklaamidest. Määrake kaitse “välja”, kui tundub, et veebisait ei tööta. Brave kasutab <ph name="BEGIN_LINK_P3A">&lt;a target="_blank" href="$1"&gt;</ph>täiesti privaatset tooteanalüüsi<ph name="END_LINK_P3A">&lt;/a&gt;</ph>, et prognoosida teatud funktsioonide üldist kasutamist. Saate selle <ph name="BEGIN_LINK_P3A_SETTINGS">&lt;a target="_blank" href="$2"&gt;</ph>seadetes<ph name="END_LINK_P3A_SETTINGS">&lt;/a&gt;</ph> välja lülitada.</translation>
+<translation id="2188651882929633653">Brave’i kaitse blokeerib kahtlased asjad, mis üritavad sind veebis jälgida, sh suurema osa reklaamidest. Lülita kaitse “välja”, kui tundub, et veebisait ei tööta. Brave kasutab <ph name="BEGIN_LINK_P3A"/>täiesti privaatset tooteanalüüsi<ph name="END_LINK_P3A"/>, et prognoosida teatud funktsioonide üldist kasutamist. Saad selle <ph name="BEGIN_LINK_P3A_SETTINGS"/>seadetes<ph name="END_LINK_P3A_SETTINGS"/> välja lülitada.</translation>
 <translation id="1919345977826869612">Reklaamid</translation>
 <translation id="2128226640852355533">Teenige {{currency}}, vaadates Brave'i reklaame. Reklaamid põhinevad teie eelistustel ja sirvimise ajalool. Teie isikuandmed ega sirvimise ajalugu ei jõua kunagi brauserist väljapoole.</translation>
 <translation id="6112368337882254910">Automaatne panustamine</translation>
@@ -174,7 +182,7 @@
 <translation id="4875485795191140618">Sinu rahakoti taastevõti on kinnitatud ja rahakott edukalt täidetud.</translation>
 <translation id="1083279119532577005">Rahakott on taastatud!</translation>
 <translation id="7841456038054167122">Sisestage võti uuesti või proovige teisi võtmeid.</translation>
-<translation id="340102383764929340">Sisestatud taastevõtit ei toetata enam. Uue võtme saamiseks külasta veebilehte <ph name="BEGIN_LINK_REGION_TEXT">&lt;a target="_blank" href="http://brave.com/faq#convert-old-keys"&gt;</ph>here<ph name="END_LINK_REGION_TEXT">&lt;/a&gt;</ph>.</translation>
+<translation id="1911900517212490188">Sisestatud taastevõtit ei toetata enam. Uue võtme saamiseks külastage <ph name="BEGIN_LINK"/>veebilehte <ph name="END_LINK"/></translation>
 <translation id="2195074481553016770">Peaaegu valmis…</translation>
 <translation id="5254740304961202261">Tõesta, et oled inimene!</translation>
 <translation id="2187043784382239974">Hmm, mitte päris...</translation>
@@ -192,7 +200,7 @@
 <translation id="3082557070674409251">Klõpsatud</translation>
 <translation id="7119308337584989771">Suletud</translation>
 <translation id="6805660603861526473">Vaadatud</translation>
-<translation id="2852258589816753010">BAT pole teie piirkonnas praegu saadaval. Uuenduste puhul vt <ph name="BEGIN_LINK_REGION_TEXT">&lt;a target="_blank" href="$1"&gt;</ph>here<ph name="END_LINK_REGION_TEXT">&lt;/a&gt;</ph>.</translation>
+<translation id="2359865110462963929">BAT pole sinu piirkonnas praegu saadaval. Uuenduste puhul vt <ph name="BEGIN_LINK"/>siia<ph name="END_LINK"/> for updates.</translation>
 <translation id="2564425876266960486">Brave’i veebilehitseja BAT kaardi loomisel ilmnes viga</translation>
 <translation id="6473583070570450185">Sisselogimiseks on sul vaja kinnitatud rahakotti</translation>
 <translation id="2106271389438168634">Upholdi rahakoti loomiseks peab sul olema vähemalt 25 BATi. Proovi uuesti pärast Upholdi konto kinnitamist.</translation>
@@ -219,6 +227,9 @@
 <translation id="386483240851194811">Rewards on välja lülitatud</translation>
 <translation id="3354337256330577726">Automaatne sissemakse on välja lülitatud</translation>
 <translation id="6727186931929643711">Uuesti proovimine peatati</translation>
+<translation id="680983167891198932">Võti</translation>
+<translation id="7535087603100972091">Väärtus</translation>
+<translation id="45591635423975492">Logimise aeg</translation>
 <translation id="2059498613853603008">HOIATUS! Sellel lehel olevad andmed võivad olla tundlikud. Käsitle neid nii, nagu käsitleksid oma rahakoti privaatseid võtmeid. Ära jaga neid igaühele.</translation>
 <translation id="7375125077091615385">Tüüp:</translation>
 <translation id="4973347371961481083">Sissemaksed</translation>
@@ -252,6 +263,7 @@
 <translation id="2152423226436243241">Automaatne sissemakse</translation>
 <translation id="2927922949538312364">Ühekordne tipp</translation>
 <translation id="3164105678355419142">Korduv tipp</translation>
+<translation id="7806880412350961625">Sündmuste logid</translation>
 <translation id="4309915981827077375">Üldine teave</translation>
 <translation id="3662406032239313663">Logid</translation>
 <translation id="9001933311880936179">Kogu kogus:</translation>
@@ -262,7 +274,6 @@
 <translation id="2326487656644542536">Rahakoti andmed</translation>
 <translation id="8559420016582377654">Rahakotimakse ID:</translation>
 <translation id="438586487791444158">Rahakoti olek:</translation>
-<translation id="3368922792935385530">Ühendatud</translation>
 <translation id="8874184842967597500">Ühendus puudub</translation>
 <translation id="4569155249847375786">Kinnitatud</translation>
 <translation id="922103963921062336">Ühendus katkestatud (kinnitamata)</translation>
@@ -351,7 +362,7 @@
 <translation id="7335371657242627509">Kaasa automaatsesse panustamisse</translation>
 <translation id="1864111464094315414">Sisselogimine</translation>
 <translation id="4556504723624686474">Rahakoti kinnitamine võimaldab sul hallata oma raha tõhusamalt.</translation>
-<translation id="4188679602963314994">Upholdi konto loomiseks peab sul olema vähemalt 25 BATi. Proovi hiljem uuesti. <ph name="BREAK">&lt;br/&gt;</ph>Kui sul on juba kinnitatud Upholdi konto, jätka sisselogimisega.</translation>
+<translation id="5594737784294211654">Upholdi konto loomiseks peab sul olema vähemalt 25 BATi. Proovi hiljem uuesti.<ph name="NEWLINE"/>Kui sul on juba kinnitatud Upholdi konto, jätka sisselogimisega.</translation>
 <translation id="3250511771491660127">Muuda see igakuiseks</translation>
 <translation id="6028954173739504682">Hallake oma rahakotti</translation>
 <translation id="7886389832052393750">aprill</translation>
@@ -443,8 +454,8 @@
 <translation id="8014425282125849700">Mõnikord jagab Brave ka tasuta tokenivõimalusi. Olge tähelepanelikud!</translation>
 <translation id="2185598236335233939">Otsige Brave’i kasutamisel reklaamteateid. Teie BAT-punktide saldo suureneb iga vaadatud reklaamiga.</translation>
 <translation id="1370034647041840967">Teenige reklaamide vaatamise eest tokeneid ja toetage oma lemmiksisuloojaid.</translation>
-<translation id="1701701253000051237">Lisage, võtke välja ja kinnitage raha aadressil <ph name="BEGIN_BOLD">&lt;b&gt;</ph>Uphold<ph name="BEGIN_END">&lt;/b&gt;</ph>.</translation>
-<translation id="4208741993667364007">Brave’i rahakotti toetab <ph name="BEGIN_BOLD">&lt;b&gt;</ph>Uphold<ph name="BEGIN_END">&lt;/b&gt;</ph>.</translation>
+<translation id="4600224932216165965">Lisa, võta välja ja kinnita raha aadressil <ph name="BEGIN_BOLD"/>Uphold<ph name="END_BOLD"/>.</translation>
+<translation id="3580616436301227919">Brave’i rahakotti toetab <ph name="BEGIN_BOLD"/>Uphold<ph name="END_BOLD"/>.</translation>
 <translation id="6401272292123354754">Brave Rewards põhineb aktiivsustokenitel ehk BATil. Saage lisateavet BATi kohta</translation>
 <translation id="7823359893981882407">siin</translation>
 <translation id="4483635855837696643">Taastage oma rahakott</translation>
@@ -453,7 +464,7 @@
 <translation id="3267911153934785912">Sisestage oma taastamisvõti või</translation>
 <translation id="6548189695918108191">Varunda oma rahakott enne asendamist. Või kaotad praegusest rahakotist vahendid, {{Funds}}.</translation>
 <translation id="5423214929210538027">Oled kindel, et soovid oma Rewards rahakoti lähtestada?</translation>
-<translation id="9106875682287489763">Sinu <ph name="BEGIN_BOLD">&lt;b&gt;</ph>{{amount}} BATs<ph name="BEGIN_END">&lt;/b&gt;</ph> ja muud Rewards andmed lähevad rahakoti lähtestamisel jäädavalt kaduma. Veendu, et oled oma rahakoti Upholdiga kinnitanud, et saaksite oma BATi säilitada.</translation>
+<translation id="7428521340740703492">Sinu <ph name="BEGIN_BOLD"/>{{amount}} BAT-id<ph name="END_BOLD"/> ja muud Rewardsi andmed lähevad rahakoti lähtestamisel jäädavalt kaduma. Veendu, et oled oma rahakoti Upholdiga kinnitanud, et saaksid oma BATi säilitada.</translation>
 <translation id="2028613172174411919">Sinu Rewards andmed lähevad rahakoti lähtestamisel jäädavalt kaduma.</translation>
 <translation id="4914597931214386232">Kasutatud tokenivõimalused</translation>
 <translation id="3494964159182650590">Preemiate kokkuvõte</translation>
@@ -533,14 +544,13 @@
 <translation id="5030988785798407804">Teie valuuta {{currency}} võimalus on teel!</translation>
 <translation id="2132683977638223450">Tasuta punktivõimalus</translation>
 <translation id="7512440811010447157">kinnita</translation>
-<translation id="8030169304546394654">Ühendus katkestatud</translation>
 <translation id="8267327690882073581">Kinnita rahakott</translation>
 <translation id="543510923939676996">Rahakott on kinnitatud</translation>
 <translation id="7591798679868259510">Ava minu Upholdi konto</translation>
 <translation id="3699674790322420653">Lõpetage rahakoti kinnitamine</translation>
 <translation id="9200453331904391567">Katkesta Brave Rewardsi ühendus</translation>
 <translation id="46988480989545156">Kinnita rahakott</translation>
-<translation id="4986087720311945758">Meie rahakotiteenust pakub <ph name="BEGIN_BOLD">&lt;b&gt;</ph>Uphold<ph name="BEGIN_END">&lt;/b&gt;</ph></translation>
+<translation id="160145159036553575">Meie rahakotiteenust pakub <ph name="BEGIN_BOLD"/>Uphold.<ph name="END_BOLD"/></translation>
 <translation id="6771734945114850124">Hoidke oma ametlik isikutunnistus käepärast.</translation>
 <translation id="8697510149346635496">Võtke välja BAT, mille teenite privaatsust austavate reklaamide vaatamise eest</translation>
 <translation id="1481480653609649134">Ostke täiendavat BAT-i krediitkaartide ja muude vahenditega</translation>
@@ -552,7 +562,7 @@
 <translation id="7404779623219601861">Lunasta BAT-d kinkekaartide vastu</translation>
 <translation id="6215565499749144110">TAP-võrgustikuga saad lunastada oma BAT-sid populaarsete kaubamärkide kinkekaartide vastu.</translation>
 <translation id="6915065518766963119">* Vajalik hoidmise kinnitus.</translation>
-<translation id="651649139059930379">Saa Upholdi kaardiga 2% krüptoraha tagasi</translation>
+<translation id="7703007724342399482">Saa Upholdi kaardiga 2% krüptoraha tagasi</translation>
 <translation id="1109729143147368573">Kasuta krüptot ja muid vahendeid umbes 50 miljoni kaupmehe ja sularahaautomaadi juures ülemaailmselt. Kuluta krüptot, et teenida krüptot!</translation>
 <translation id="4360054110030715117"><ph name="LINK_BEGIN"/>Lisateave<ph name="LINK_END"/> Brave Rewardsi kohta</translation>
 <translation id="5826706758731195747">Rewardsi lubamisel nõustute <ph name="LINK_BEGIN"/>teenusetingimustega<ph name="LINK_END"/>.</translation>
@@ -608,6 +618,7 @@
 <translation id="6409345078064530735">Sissemakse aadress</translation>
 <translation id="7153116947319792513">Sissemakse meeldetuletus</translation>
 <translation id="1383876407941801731">Otsi</translation>
+<translation id="3781412534383755121">Minimaalne konverteeritav summa on:</translation>
 <translation id="6432284126416751397">Kinnita teisendamine</translation>
 <translation id="1301340234286078471">Teisenda</translation>
 <translation id="6680650203439190394">Kurss</translation>
@@ -648,4 +659,21 @@
 <translation id="453977518730680921">Meedia automaatesitamine</translation>
 <translation id="7701466644604753106">Lülitage kiirlugeja SISSE</translation>
 <translation id="763042262431778831">Lülitage kiirlugeja VÄLJA</translation>
+<translation id="9020818404803201080">Ühendatud partnerid:</translation>
+<translation id="6717690610234999751">Aadresside seadistamine</translation>
+<translation id="9182285671734219088">Deemoni olek</translation>
+<translation id="6599816589121202398">API</translation>
+<translation id="1327977588028644528">Lüüs</translation>
+<translation id="2551123942222622809">Parv</translation>
+<translation id="3967335629471284781">Käivitatud</translation>
+<translation id="1515163294334130951">Käivita</translation>
+<translation id="1895658205118569222">Sulgemine</translation>
+<translation id="6762417584993757344">Pole paigaldatud</translation>
+<translation id="8428368469058794536">IPFS-teenus</translation>
+<translation id="2901715907314796027">Osta saidilt Bitcoin.com krüptoraha.</translation>
+<translation id="4065681313949497252">Valuuta</translation>
+<translation id="3833315885381772739">Sisesta summa</translation>
+<translation id="4011828592358027165">Kas on vaja krüptoraha?</translation>
+<translation id="3358050091139900813">Alustamiseks hangi siit rahakott</translation>
+<translation id="3105412115725259537">Bitcoin.com</translation>
 </translationbundle>

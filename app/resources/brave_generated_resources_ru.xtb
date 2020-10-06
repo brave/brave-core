@@ -25,7 +25,7 @@
 <translation id="3218385319396786393">На этой странице заблокирован автозапуск</translation>
 <translation id="4988333904713528597">Всегда разрешать автоматическое воспроизведение на <ph name="HOST"/></translation>
 <translation id="4150684676757176434">Продолжить блокирование автоматического воспроизведения</translation>
-<translation id="5883458389055721080">Brave не проверяет, безопасны ли расширения. Устанавливайте расширения только в том случае, если полностью доверяете их разработчикам.</translation>
+<translation id="8988939298652262600">Brave не контролирует безопасность и безвредность устанавливаемых расширений. Устанавливайте только те расширения, разработчикам которых вы доверяете.</translation>
 <translation id="8081858229109418493">Имя и иконка профиля</translation>
 <translation id="2044383478723007273">Цвета Brave</translation>
 <translation id="1692470335103807198">Больше тем</translation>
@@ -37,6 +37,9 @@
 <translation id="5802665280774361839">Показывать автозаполнение в адресной строке</translation>
 <translation id="597020512043916976">Показывать лучшие сайты при автодополнении ввода</translation>
 <translation id="264150068416846820">Показывать предлагаемые Brave сайты при автодополнении ввода</translation>
+<translation id="6414370348346025511">Включена стандартная защита.</translation>
+<translation id="814018970995616154">Проверяет адреса по списку опасных сайтов, сохраненному в Brave.</translation>
+<translation id="1144810021918451336">Не защищает вас от угроз на опасных веб-сайтах, в загрузках и расширениях.</translation>
 <translation id="7781069478569868053">Страница новой вкладки</translation>
 <translation id="2467749191278759605">Настройте свою панель Brave</translation>
 <translation id="1717331825806276156">Фоновые изображения</translation>
@@ -79,7 +82,7 @@
 <translation id="4824468494729001999">Блокировать скрипты</translation>
 <translation id="519861640102428255">Смотрите и чувствуйте</translation>
 <translation id="4800195524776354947">Показывать количество заблокированных элементов на значке Shields</translation>
-<translation id="3932286112122164477">Разрешить кнопки входа через Google на сторонних сайтах</translation>
+<translation id="7498695072878479744">Разрешить кнопки входа через Google на сторонних сайтах</translation>
 <translation id="863171915776379000">Разрешить вход в Facebook и встроенные посты</translation>
 <translation id="5165042248369837294">Разрешить встроенные твиты Twitter</translation>
 <translation id="958971637207126733">Разрешить встроенные сообщения LinkedIn</translation>
@@ -148,13 +151,17 @@
 <translation id="2356070529366658676">Спрашивать</translation>
 <translation id="7701040980221191251">Нет</translation>
 <translation id="1085027414516521238">MetaMask</translation>
-<translation id="3905324891414560921">Провайдер web3 для Dapps</translation>
+<translation id="7090046810227878892">Провайдер Эфириума для использования Dapps</translation>
 <translation id="5913089932885076110">Загружать криптовалютные кошельки при запуске</translation>
+<translation id="6864914031231797928">Разрешить вход с помощью Google для расширений</translation>
+<translation id="1365342176656744625">Способ получения адресов IPFS</translation>
+<translation id="1327977588028644528">Шлюз</translation>
+<translation id="80225669816651290">Локальный узел</translation>
 <translation id="6554397389149987360">С помощью компонента Hangouts можно прямо в браузере демонстрировать свой экран и пользоваться другими возможностями.</translation>
 <translation id="1765684547504191670">Использует компонент Media Router для включения Chromecast в браузере.</translation>
 <translation id="9156965752763025780">Изменения вступят в силу при следующем входе в Brave.</translation>
 <translation id="7179921470347911571">Перезапустить</translation>
-<translation id="4154389611571860454">Использует расширение IPFS для поддержки IPFS в браузере.</translation>
+<translation id="6222323340194834282">Использует дополнительное расширение IPFS для улучшения поддержки IPFS в браузере.</translation>
 <translation id="8137559199583651773">Управление расширениями</translation>
 <translation id="7013485839273047434">Получить больше расширений</translation>
 <translation id="4928988318462976765">Магазин расширений</translation>
@@ -210,20 +217,19 @@
 <translation id="4394049700291259645">Отключить</translation>
 <translation id="6469509880167172749">Автоматически отправлять полностью конфиденциальную аналитику в Brave</translation>
 <translation id="7090566321964540749">Эта анонимная информация позволяет Brave оценить, как люди используют определенные функции.</translation>
-<translation id="9111960429693394744">Хотите ли вы использовать криптокошельки Brave или MetaMask для Dapps?</translation>
-<translation id="8721775358057000783">Хотите запустить криптовалютные кошельки для включения поддержки web3 на этой странице?</translation>
+<translation id="1947672064022327074">Вы хотите открыть Криптокошельки для работы с Эфириумом?</translation>
 <translation id="7583735190612229830">Настройте Криптовалютные кошельки для взаимодействия с этим и другими похожими приложениями.</translation>
 <translation id="4823406846571523661">Настройка криптовалютных кошельков</translation>
-<translation id="5756155765711979898">Использовать MetaMask</translation>
-<translation id="6754134632841262799">ЗАГРУЗКА</translation>
 <translation id="8199661191594897555">Запустить криптовалютные кошельки и перезагрузить</translation>
 <translation id="8428213095426709021">Настройки</translation>
+<translation id="1854270995641373652">Вы хотите включить локальную службу поддержки IPFS в Brave?</translation>
+<translation id="2366908098700680611">Включить IPFS</translation>
 <translation id="4552520379838695057">Извините, этой страницы не существует.</translation>
 <translation id="2609895996619941644">Хотите проверить, доступна ли сохраненная версия на Wayback Machine?</translation>
 <translation id="8053093028263274061">К сожалению, сохраненной версии нет.</translation>
 <translation id="8517321676372639828">Проверить наличие сохраненной версии</translation>
-<translation id="191143826155037518">Brave работает в соответствии с <ph name="BEGIN_LINK_MPL">&lt;a target="_blank" href="$1"&gt;</ph>лицензией Mozilla Public License 2.0<ph name="END_LINK_MPL">&lt;/a&gt;</ph> (MPL) и включает <ph name="BEGIN_LINK_OSS">&lt;a target="_blank" href="$2"&gt;</ph>программное обеспечение с открытым кодом<ph name="END_LINK_OSS">&lt;/a&gt;</ph> под многочисленными лицензиями других компаний.
-        Вы можете прочитать <ph name="BEGIN_LINK_BUILD_INSTRUCTIONS">&lt;a target="_blank" href="$3"&gt;</ph>инструкции о том, как скачать и написать самому<ph name="END_LINK_BUILD_INSTRUCTIONS">&lt;/a&gt;</ph> конкретный <ph name="BEGIN_LINK_SOURCE_CODE">&lt;a target="_blank" href="$4"&gt;</ph>исходный код, используемый для создания этой копии<ph name="END_LINK_SOURCE_CODE">&lt;/a&gt;</ph>.</translation>
+<translation id="191143826155037518">Brave работает в соответствии с <ph name="BEGIN_LINK_MPL"/>лицензией Mozilla Public License 2.0<ph name="END_LINK_MPL"/> (MPL) и включает <ph name="BEGIN_LINK_OSS"/>программное обеспечение с открытым кодом<ph name="END_LINK_OSS"/> под многочисленными лицензиями других компаний.
+        Вы можете прочитать <ph name="BEGIN_LINK_BUILD_INSTRUCTIONS"/>инструкции о том, как скачать и написать самому<ph name="END_LINK_BUILD_INSTRUCTIONS"/> конкретный <ph name="BEGIN_LINK_SOURCE_CODE"/>исходный код, используемый для создания этой копии<ph name="END_LINK_SOURCE_CODE"/>.</translation>
 <translation id="4474155171896946103">Добавить все вкладки в закладки…</translation>
 <translation id="2336228925368920074">Добавить все вкладки в закладки…</translation>
 <translation id="796831669370432378">Для добавления закладки нажмите кнопку закладки рядом с адресной строкой.</translation>

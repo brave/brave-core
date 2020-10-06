@@ -291,7 +291,7 @@
 <translation id="1361872463926621533">Αναπαραγωγή ήχου κατά την εκκίνηση</translation>
 <translation id="1363585519747660921">Ο εκτυπωτής USB χρειάζεται διαμόρφωση</translation>
 <translation id="1365180424462182382">Το <ph name="BEGIN_LINK"/>πρόγραμμα περιήγησής σας είναι διαχειριζόμενο<ph name="END_LINK"/> από τον τομέα <ph name="ENROLLMENT_DOMAIN"/></translation>
-<translation id="1366177842110999534">Εκτελέστε εργαλεία, προγράμματα επεξεργασίας και IDE Linux στη συσκευή <ph name="DEVICE_TYPE"/>. &lt;a target="_blank" href="<ph name="URL"/>"&gt;Μάθετε περισσότερα&lt;/a&gt;</translation>
+<translation id="1366177842110999534">Εκτελέστε εργαλεία, προγράμματα επεξεργασίας και IDE Linux στη συσκευή <ph name="DEVICE_TYPE"/>. &lt;a target="_blank" rel="noopener noreferrer" href="<ph name="URL"/>"&gt;Μάθετε περισσότερα&lt;/a&gt;</translation>
 <translation id="1367951781824006909">Επιλογή αρχείου</translation>
 <translation id="1369149969991017342">Πρόσβαση με διακόπτη (ελέγξτε τον υπολογιστή χρησιμοποιώντας μόνο έναν ή δύο διακόπτες).</translation>
 <translation id="1372841398847029212">Συγχρονισμός με τον λογαριασμό σας</translation>
@@ -1354,7 +1354,7 @@
 <translation id="268053382412112343">Ιστορικό</translation>
 <translation id="2682498795777673382">Ενημέρωση από τον γονέα σου</translation>
 <translation id="2683638487103917598">Ο φάκελος είναι ταξινομημένος</translation>
-<translation id="2686222346846590368">Αυτή είναι η τελευταία αυτόματη ενημέρωση λογισμικού και ασφαλείας για αυτήν τη συσκευή <ph name="DEVICE_TYPE"/>. Για να λαμβάνετε μελλοντικές ενημερώσεις, αναβαθμίστε σε νεότερο μοντέλο. &lt;a target="_blank" href="<ph name="URL"/>"&gt;Μάθετε περισσότερα<ph name="LINK_END"/></translation>
+<translation id="2686222346846590368">Αυτή είναι η τελευταία αυτόματη ενημέρωση λογισμικού και ασφαλείας για αυτήν τη συσκευή <ph name="DEVICE_TYPE"/>. Για να λαμβάνετε μελλοντικές ενημερώσεις, αναβαθμίστε σε νεότερο μοντέλο. &lt;a target="_blank" rel="noopener noreferrer" href="<ph name="URL"/>"&gt;Μάθετε περισσότερα<ph name="LINK_END"/></translation>
 <translation id="2687403674020088961">Αποκλεισμός όλων των cookie (δεν συνιστάται)</translation>
 <translation id="2687407218262674387">Όροι Παροχής Υπηρεσιών Brave</translation>
 <translation id="2688196195245426394">Σφάλμα εγγραφής της συσκευής στο διακομιστή: <ph name="CLIENT_ERROR"/>.</translation>
@@ -4853,7 +4853,7 @@
 <translation id="7197632491113152433">Εντοπίσαμε <ph name="NUMBER_OF_APPS"/> εφαρμογές από τον λογαριασμό σας, η χρήση των οποίων δεν είναι δυνατή σε αυτήν τη συσκευή.</translation>
 <translation id="7199158086730159431">Λάβετε β&amp;οήθεια</translation>
 <translation id="7200083590239651963">Επιλογή διαμόρφωσης</translation>
-<translation id="7201042526153088083">Εγκαταστήστε εφαρμογές και παιχνίδια από το Google Play στη συσκευή <ph name="DEVICE_TYPE"/>. &lt;a target="_blank" href="<ph name="URL"/>"&gt;Μάθετε περισσότερα&lt;/a&gt;</translation>
+<translation id="7201042526153088083">Εγκαταστήστε εφαρμογές και παιχνίδια από το Google Play στη συσκευή <ph name="DEVICE_TYPE"/>. &lt;a target="_blank" rel="noopener noreferrer" href="<ph name="URL"/>"&gt;Μάθετε περισσότερα&lt;/a&gt;</translation>
 <translation id="720110658997053098">Μόνιμη διατήρηση της παρούσας συσκευής σε λειτουργία Kiosk</translation>
 <translation id="7201118060536064622">Το "<ph name="DELETED_ITEM_NAME"/>" διαγράφηκε</translation>
 <translation id="7201420661433230412">Προβολή αρχείων</translation>
@@ -6610,7 +6610,7 @@
 <translation id="3860292630623580294">(Ιδιωτικό)</translation>
 <translation id="4854477725773269949">Επιτρέψτε σε ιδιωτικό</translation>
 <translation id="6436164536244065364">Προβολή στο Web Store</translation>
-<translation id="38046578254905003">Βρείτε επεκτάσεις και θέματα στο <ph name="BEGIN_LINK">&lt;a target="_blank" href="https://chrome.google.com/webstore/category/extensions"&gt;</ph>Διαδικτυακό Κατάστημα<ph name="END_LINK">&lt;/a&gt;</ph></translation>
+<translation id="38046578254905003">Βρείτε επεκτάσεις και θέματα στο <ph name="BEGIN_LINK"/>Web Store<ph name="END_LINK"/></translation>
 <translation id="6336451774241870485">Νέα ιδιωτική καρτέλα</translation>
 <translation id="6610147964972079463">Κλείστε ιδιωτικές καρτέλες</translation>
 <translation id="4933782374919065856">Έχετε ερωτήσεις; Επικοινωνήστε με το άτομο που επιβλέπει το προφίλ σας.</translation>

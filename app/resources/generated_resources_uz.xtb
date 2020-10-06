@@ -1352,7 +1352,7 @@ Oʻz qurilmangizda Family Link ilovasini oʻrnatib, bu hisob sozlamalarini boshq
 <translation id="268053382412112343">&amp;Tarix</translation>
 <translation id="2682498795777673382">Ota-onangiz sozlamalarni yangiladi</translation>
 <translation id="2683638487103917598">Jild tarkibi saralandi</translation>
-<translation id="2686222346846590368">Bu <ph name="DEVICE_TYPE"/> qurilmasidagi DT va xavfsizlik sozlamalari uchun oxirgi avtomatik yangilanish. Keyingi chiqadigan yangilanishlar uchun qurilmaning yangiroq modeli kerak boʻladi. &lt;a target="_blank" href="<ph name="URL"/>"&gt;Batafsil<ph name="LINK_END"/></translation>
+<translation id="2686222346846590368">Bu <ph name="DEVICE_TYPE"/> qurilmasidagi DT va xavfsizlik sozlamalari uchun oxirgi avtomatik yangilanish. Keyingi chiqadigan yangilanishlar uchun qurilmaning yangiroq modeli kerak boʻladi. &lt;a target="_blank" rel="noopener noreferrer" href="<ph name="URL"/>"&gt;Batafsil<ph name="LINK_END"/></translation>
 <translation id="2687403674020088961">Barcha cookie fayllarini taqiqlash (tavsiya etilmaydi)</translation>
 <translation id="2687407218262674387">Brave xizmat shartlari</translation>
 <translation id="2688196195245426394">Qurilmani server ro‘yxatidan o‘tkazishda xatolik: <ph name="CLIENT_ERROR"/>.</translation>
@@ -4850,7 +4850,7 @@ Ochiq eksponenta (<ph name="PUBLIC_EXPONENT_NUM_BITS"/> bit):
 <translation id="7197632491113152433">Biz hisobingizda bu qurilmaga mos <ph name="NUMBER_OF_APPS"/> ta ilova topdik.</translation>
 <translation id="7199158086730159431">&amp;Yordam olish</translation>
 <translation id="7200083590239651963">Konfiguratsiyani tanlash</translation>
-<translation id="7201042526153088083"><ph name="DEVICE_TYPE"/> qurilmasida Google Play Marketdan ilova va oʻyinlarni yuklab oling &lt;a target="_blank" href="<ph name="URL"/>"&gt;Batafsil&lt;/a&gt;</translation>
+<translation id="7201042526153088083"><ph name="DEVICE_TYPE"/> qurilmasida Google Play Marketdan ilova va oʻyinlarni yuklab oling &lt;a target="_blank" rel="noopener noreferrer" href="<ph name="URL"/>"&gt;Batafsil&lt;/a&gt;</translation>
 <translation id="720110658997053098">Qurilmani har doim kiosk rejimida ishga tushirish</translation>
 <translation id="7201118060536064622">“<ph name="DELETED_ITEM_NAME"/>” o‘chirildi</translation>
 <translation id="7201420661433230412">Fayllarni ochish</translation>
@@ -6517,6 +6517,7 @@ parollar va boshqa sozlamalaringiz Brave hisobingizga sinxronlanadi.</translatio
 <translation id="995782501881226248">YouTube</translation>
 <translation id="996250603853062861">Xavfsiz aloqa o‘rnatilmoqda...</translation>
 <translation id="998747458861718449">Kodini ko‘rish</translation>
+<translation id="38046578254905003"><ph name="BEGIN_LINK"/>Brave internet-do‘konidan<ph name="END_LINK"/> kengaytma va mavzularni topish</translation>
 <translation id="658539216370629794">Havolani &amp;inkognito rejimi oynasida ochish</translation>
 <translation id="1432267168815937878">Havolani &amp;inkognito rejimida ochish</translation>
 <translation id="6516243500644829484">Yangi &amp;inkognito oynasi</translation>
@@ -6596,7 +6597,6 @@ parollar va boshqa sozlamalaringiz Brave hisobingizga sinxronlanadi.</translatio
 <translation id="3860292630623580294">(inkognito)</translation>
 <translation id="4854477725773269949">Inkognito rejimidan foydalanishga ruxsat berish</translation>
 <translation id="6436164536244065364">Internet-do‘konda ko‘rish</translation>
-<translation id="38046578254905003"><ph name="BEGIN_LINK"/>Brave internet-do‘konidan<ph name="END_LINK"/> kengaytma va mavzularni topish</translation>
 <translation id="6336451774241870485">Yangi inkognito ichki oynasi</translation>
 <translation id="6610147964972079463">Inkognito oynalarini yopish</translation>
 <translation id="4933782374919065856">Savollar bormi? Profilingizni nazorat qiladigan shaxsga murojaat qiling.</translation>

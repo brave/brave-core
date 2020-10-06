@@ -1024,6 +1024,8 @@ Einige Websites schalten möglicherweise Werbeanzeigen, deren Auswahl nicht dara
 <translation id="983192555821071799">Alle Tabs schließen</translation>
 <translation id="987264212798334818">Allgemein</translation>
 <translation id="996149300115483134">Feedkartenmenü ist geschlossen</translation>
+<translation id="4540437243849625078">Diese Website möchte Informationen an eine App außerhalb des Privatmodus weitergeben.</translation>
+<translation id="1227836882233136433">Privatmodus verlassen</translation>
 <translation id="5186185447130319458">Privat</translation>
 <translation id="9063160602596686558">Nutzungsstatistiken und Absturzberichte automatisch an Brave Software senden</translation>
 <translation id="1438581767753657407">Wenn der Lite-Modus aktiviert ist, verwendet Brave Brave-Server, die das Laden von Seiten beschleunigen. Im Lite-Modus werden sehr langsame Seiten neu geschrieben, um nur die wichtigsten Inhalte zu laden. Der Lite-Modus gilt nicht für private Registerkarten.</translation>
@@ -1033,8 +1035,7 @@ Einige Websites schalten möglicherweise Werbeanzeigen, deren Auswahl nicht dara
 <translation id="3110967157686007724">Private Registerkarte</translation>
 <translation id="4526803704855831732">Private Registerkarten</translation>
 <translation id="7465104139234185284">Alle privaten Registerkarten schließen</translation>
-<translation id="4540437243849625078">Diese Website möchte Informationen an eine App außerhalb des Privatmodus weitergeben.</translation>
-<translation id="1227836882233136433">Privatmodus verlassen</translation>
+<translation id="21023559487771014">Privatmodus einschalten</translation>
 <translation id="6336451774241870485">Neue private Registerkarte</translation>
 <translation id="3234355010754616171">Neuer privater Tab</translation>
 <translation id="6610147964972079463">Private Registerkarten schließen</translation>

@@ -291,7 +291,7 @@
 <translation id="1361872463926621533">Reproducir son ao iniciar</translation>
 <translation id="1363585519747660921">É necesario configurar a impresora USB</translation>
 <translation id="1365180424462182382">O dominio <ph name="ENROLLMENT_DOMAIN"/> <ph name="BEGIN_LINK"/>xestiona o teu navegador<ph name="END_LINK"/></translation>
-<translation id="1366177842110999534">Executa IDE, editores e ferramentas de Linux no teu <ph name="DEVICE_TYPE"/>. &lt;a target="_blank" href="<ph name="URL"/>"&gt;Máis información&lt;/a&gt;</translation>
+<translation id="1366177842110999534">Executa IDE, editores e ferramentas de Linux no teu <ph name="DEVICE_TYPE"/>. &lt;a target="_blank" rel="noopener noreferrer" href="<ph name="URL"/>"&gt;Máis información&lt;/a&gt;</translation>
 <translation id="1367951781824006909">Selecciona un ficheiro</translation>
 <translation id="1369149969991017342">Acceso con interruptores (controla o ordenador cun ou dous interruptores)</translation>
 <translation id="1372841398847029212">Sincronizar coa túa conta</translation>
@@ -1353,7 +1353,7 @@ Instala a aplicación Family Link no teu dispositivo e poderás xestionar a conf
 <translation id="268053382412112343">Hi&amp;storial</translation>
 <translation id="2682498795777673382">Cambio feito polo teu pai ou nai</translation>
 <translation id="2683638487103917598">Cartafol ordenado</translation>
-<translation id="2686222346846590368">Esta é a última actualización automática de software e seguranza para este dispositivo (<ph name="DEVICE_TYPE"/>). Se queres obter futuras actualizacións, cambia a un modelo máis novo. &lt;a target="_blank" href="<ph name="URL"/>"&gt;Máis información<ph name="LINK_END"/></translation>
+<translation id="2686222346846590368">Esta é a última actualización automática de software e seguranza para este dispositivo (<ph name="DEVICE_TYPE"/>). Se queres obter futuras actualizacións, cambia a un modelo máis novo. &lt;a target="_blank" rel="noopener noreferrer" href="<ph name="URL"/>"&gt;Máis información<ph name="LINK_END"/></translation>
 <translation id="2687403674020088961">Bloquear todas as cookies (non recomendado)</translation>
 <translation id="2687407218262674387">Condicións de servizo de Brave</translation>
 <translation id="2688196195245426394">Produciuse un erro ao rexistrar o dispositivo co servidor: <ph name="CLIENT_ERROR"/>.</translation>
@@ -4851,7 +4851,7 @@ Instala a aplicación Family Link no teu dispositivo e poderás xestionar a conf
 <translation id="7197632491113152433">Atopamos <ph name="NUMBER_OF_APPS"/> aplicacións da túa conta que se poden utilizar neste dispositivo.</translation>
 <translation id="7199158086730159431">Obter a&amp;xuda</translation>
 <translation id="7200083590239651963">Seleccionar configuración</translation>
-<translation id="7201042526153088083">Instala aplicacións e xogos de Google Play no <ph name="DEVICE_TYPE"/>. &lt;a target="_blank" href="<ph name="URL"/>"&gt;Máis información&lt;/a&gt;</translation>
+<translation id="7201042526153088083">Instala aplicacións e xogos de Google Play no <ph name="DEVICE_TYPE"/>. &lt;a target="_blank" rel="noopener noreferrer" href="<ph name="URL"/>"&gt;Máis información&lt;/a&gt;</translation>
 <translation id="720110658997053098">Manter este dispositivo permanentemente no modo de quiosco</translation>
 <translation id="7201118060536064622">Eliminouse "<ph name="DELETED_ITEM_NAME"/>"</translation>
 <translation id="7201420661433230412">Ver ficheiros</translation>

@@ -291,7 +291,7 @@
 <translation id="1361872463926621533">ആരംഭിക്കുമ്പോൾ ശബ്‌ദം പ്ലേ ചെയ്യുക</translation>
 <translation id="1363585519747660921">USB പ്രിൻ്ററിന് കോൺഫിഗറേഷൻ ആവശ്യമുണ്ട്</translation>
 <translation id="1365180424462182382">നിങ്ങളുടെ <ph name="BEGIN_LINK"/>ബ്രൗസർ മാനേജ് ചെയ്യുന്നത്<ph name="END_LINK"/><ph name="ENROLLMENT_DOMAIN"/> ആണ്</translation>
-<translation id="1366177842110999534">നിങ്ങളുടെ <ph name="DEVICE_TYPE"/> എന്ന ഉപകരണത്തിലെ Linux ടൂളുകൾ, എഡിറ്ററുകൾ, IDE-കൾ എന്നിവ റൺ ചെയ്യുക. &lt;a target="_blank" href="<ph name="URL"/>"&gt;കൂടുതലറിയുക&lt;/a&gt;</translation>
+<translation id="1366177842110999534">നിങ്ങളുടെ <ph name="DEVICE_TYPE"/> എന്ന ഉപകരണത്തിലെ Linux ടൂളുകൾ, എഡിറ്ററുകൾ, IDE-കൾ എന്നിവ റൺ ചെയ്യുക. &lt;a target="_blank" rel="noopener noreferrer" href="<ph name="URL"/>"&gt;കൂടുതലറിയുക&lt;/a&gt;</translation>
 <translation id="1367951781824006909">ഒരു ഫയല്‍ തിരഞ്ഞെടുക്കുക</translation>
 <translation id="1369149969991017342">ആക്‌സസ് മാറുക (ഒന്നോ രണ്ടോ തവണ മാറുന്നതിലൂടെ കമ്പ്യൂട്ടർ നിയന്ത്രിക്കുക)</translation>
 <translation id="1372841398847029212">നിങ്ങളുടെ അക്കൗണ്ടിലേക്ക് സമന്വയിപ്പിക്കുക</translation>
@@ -1351,7 +1351,7 @@
 <translation id="268053382412112343">ച&amp;രിത്രം</translation>
 <translation id="2682498795777673382">രക്ഷിതാവിൽ നിന്നുള്ള അപ്‌ഡേറ്റ്</translation>
 <translation id="2683638487103917598">ഫോൾഡർ അടുക്കി</translation>
-<translation id="2686222346846590368">ഈ <ph name="DEVICE_TYPE"/>-ന് സ്വയമേവയുള്ള അവസാനത്തെ സോഫ്റ്റ്‌വെയർ, സുരക്ഷാ അപ്ഡേറ്റ് ആണിത്. ഭാവി അപ്ഡേറ്റുകൾ ലഭിക്കാൻ പുതിയൊരു മോഡലിലേക്ക് അപ്ഗ്രേഡ് ചെയ്യൂ. &lt;a target="_blank" href="<ph name="URL"/>"&gt;കൂടുതലറിയുക<ph name="LINK_END"/></translation>
+<translation id="2686222346846590368">ഈ <ph name="DEVICE_TYPE"/>-ന് സ്വയമേവയുള്ള അവസാനത്തെ സോഫ്റ്റ്‌വെയർ, സുരക്ഷാ അപ്ഡേറ്റ് ആണിത്. ഭാവി അപ്ഡേറ്റുകൾ ലഭിക്കാൻ പുതിയൊരു മോഡലിലേക്ക് അപ്ഗ്രേഡ് ചെയ്യൂ. &lt;a target="_blank" rel="noopener noreferrer" href="<ph name="URL"/>"&gt;കൂടുതലറിയുക<ph name="LINK_END"/></translation>
 <translation id="2687403674020088961">എല്ലാ കുക്കികളും ബ്ലോക്ക് ചെയ്യുക (ശുപാർശ ചെയ്യുന്നില്ല)</translation>
 <translation id="2687407218262674387">Brave സേവന നിബന്ധനകൾ</translation>
 <translation id="2688196195245426394">ഉപകരണം സെർവറിൽ രജിസ്റ്റർ ചെയ്യുന്നതിൽ പിശക്: <ph name="CLIENT_ERROR"/>.</translation>
@@ -4850,7 +4850,7 @@
 <translation id="7197632491113152433">ഈ ഉപകരണത്തിൽ ഉപയോഗിക്കാവുന്ന <ph name="NUMBER_OF_APPS"/> ആപ്പുകൾ നിങ്ങളുടെ അക്കൗണ്ടിൽ നിന്ന് കണ്ടെത്തി.</translation>
 <translation id="7199158086730159431">സ&amp;ഹായം നേടുക</translation>
 <translation id="7200083590239651963">കോൺഫിഗറേഷൻ തിരഞ്ഞെടുക്കുക</translation>
-<translation id="7201042526153088083">Google Play-യിൽ നിന്ന് നിങ്ങളുടെ <ph name="DEVICE_TYPE"/>-ൽ ആപ്പുകളും ഗെയിമുകളും ഇൻസ്‌റ്റാൾ ചെയ്യുക. &lt;a target="_blank" href="<ph name="URL"/>"&gt;കൂടുതലറിയുക&lt;/a&gt;</translation>
+<translation id="7201042526153088083">Google Play-യിൽ നിന്ന് നിങ്ങളുടെ <ph name="DEVICE_TYPE"/>-ൽ ആപ്പുകളും ഗെയിമുകളും ഇൻസ്‌റ്റാൾ ചെയ്യുക. &lt;a target="_blank" rel="noopener noreferrer" href="<ph name="URL"/>"&gt;കൂടുതലറിയുക&lt;/a&gt;</translation>
 <translation id="720110658997053098">ഈ ഉപകരണം ശാശ്വതമായി കിയോസ്‍ക് മോഡിൽ നിലനിർത്തുക</translation>
 <translation id="7201118060536064622">'<ph name="DELETED_ITEM_NAME"/>' ഇല്ലാതാക്കി</translation>
 <translation id="7201420661433230412">ഫയലുകൾ കാണുക</translation>
@@ -6519,6 +6519,7 @@
 <translation id="995782501881226248">YouTube</translation>
 <translation id="996250603853062861">സുരക്ഷിത കണക്ഷന്‍‌ സ്ഥാപിക്കുന്നു...</translation>
 <translation id="998747458861718449">പരിശോധിക്കുക</translation>
+<translation id="38046578254905003"><ph name="BEGIN_LINK"/>Brave വെബ് സ്‌റ്റോറിൽ<ph name="END_LINK"/> വിപുലീകരണങ്ങളും തീമുകളും കണ്ടെത്തുക</translation>
 <translation id="658539216370629794">അദൃശ്യ വിൻഡോയിൽ ലിങ്ക് തുറക്കുക</translation>
 <translation id="1432267168815937878">ലിങ്ക് അദൃശ്യ വിൻഡോയിൽ തുറക്കുക</translation>
 <translation id="6516243500644829484">പുതിയ &amp;അദൃശ്യ വിൻഡോ</translation>
@@ -6598,7 +6599,6 @@
 <translation id="3860292630623580294">(ആള്‍മാറാട്ടം)</translation>
 <translation id="4854477725773269949">ആള്‍‌മാറാട്ടത്തില്‍‌ അനുവദിക്കുക</translation>
 <translation id="6436164536244065364">വെബ് സ്റ്റോറിൽ കാണുക</translation>
-<translation id="38046578254905003"><ph name="BEGIN_LINK"/>Brave വെബ് സ്‌റ്റോറിൽ<ph name="END_LINK"/> വിപുലീകരണങ്ങളും തീമുകളും കണ്ടെത്തുക</translation>
 <translation id="6336451774241870485">പുതിയ അദൃശ്യ ടാബ്</translation>
 <translation id="6610147964972079463">ആൾമാറാട്ട ടാബുകൾ അടയ്‌ക്കുക</translation>
 <translation id="4933782374919065856">ചോദ്യങ്ങളുണ്ടോ? നിങ്ങളുടെ പ്രൊഫൈൽ മേൽനോട്ടത്തിലുള്ള വ്യക്തിയെ ബന്ധപ്പെടുക.</translation>
