@@ -1024,6 +1024,8 @@ Ví dụ: một số trang web có thể phản hồi yêu cầu này bằng cá
 <translation id="983192555821071799">Đóng tất cả các thẻ</translation>
 <translation id="987264212798334818">Chung</translation>
 <translation id="996149300115483134">Trình đơn thẻ nguồn cấp dữ liệu đang đóng</translation>
+<translation id="4540437243849625078">Trang này sẽ chia sẻ thông tin với một ứng dụng khác ở ngoài chế độ riêng tư.</translation>
+<translation id="1227836882233136433">Rời khỏi chế độ riêng tư?</translation>
 <translation id="5186185447130319458">Riêng tư</translation>
 <translation id="9063160602596686558">Tự động gửi số liệu thống kê sử dụng và báo cáo sự cố cho Brave Software</translation>
 <translation id="1438581767753657407">Khi chế độ Lite đang bật, Brave sử dụng các máy chủ Brave để đẩy nhanh tốc độ tải các trang. Chế độ Lite sẽ viết lại các trang tải rất chậm để chỉ tải nội dung thiết yếu. Chế độ Lite không áp dụng cho các tab Riêng tư.</translation>
@@ -1033,8 +1035,7 @@ Ví dụ: một số trang web có thể phản hồi yêu cầu này bằng cá
 <translation id="3110967157686007724">Tab riêng tư</translation>
 <translation id="4526803704855831732">Tab riêng tư</translation>
 <translation id="7465104139234185284">Đóng mọi tab riêng tư</translation>
-<translation id="4540437243849625078">Trang này sẽ chia sẻ thông tin với một ứng dụng khác ở ngoài chế độ riêng tư.</translation>
-<translation id="1227836882233136433">Rời khỏi chế độ riêng tư?</translation>
+<translation id="21023559487771014">Chuyển sang chế độ Riêng tư</translation>
 <translation id="6336451774241870485">Tab riêng tư mới</translation>
 <translation id="3234355010754616171">Tab riêng tư mới</translation>
 <translation id="6610147964972079463">Đóng các tab riêng tư</translation>

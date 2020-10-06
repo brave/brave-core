@@ -291,7 +291,7 @@
 <translation id="1361872463926621533">Reproduciraj zvuk pri pokretanju</translation>
 <translation id="1363585519747660921">Potrebno je konfigurirati USB pisač</translation>
 <translation id="1365180424462182382">Vašim <ph name="BEGIN_LINK"/>preglednikom upravlja<ph name="END_LINK"/> <ph name="ENROLLMENT_DOMAIN"/></translation>
-<translation id="1366177842110999534">Pokrenite Linuxove alate, uređivače i IDE-jeve na uređaju <ph name="DEVICE_TYPE"/>. &lt;a target="_blank" href="<ph name="URL"/>"&gt;Saznajte više&lt;/a&gt;</translation>
+<translation id="1366177842110999534">Pokrenite Linuxove alate, uređivače i IDE-jeve na uređaju <ph name="DEVICE_TYPE"/>. &lt;a target="_blank" rel="noopener noreferrer" href="<ph name="URL"/>"&gt;Saznajte više&lt;/a&gt;</translation>
 <translation id="1367951781824006909">Odaberite datoteku</translation>
 <translation id="1369149969991017342">Prekidač za pristup (upravljajte računalom uz pomoć jednog ili dvaju prekidača)</translation>
 <translation id="1372841398847029212">Sinkroniziraj sa svojim računom</translation>
@@ -1354,7 +1354,7 @@ Postavkama računa možete upravljati tako da instalirate aplikaciju Family Link
 <translation id="268053382412112343">Hi&amp;story (Povijest)</translation>
 <translation id="2682498795777673382">Ažuriranje tvog roditelja</translation>
 <translation id="2683638487103917598">Mapa je sortirana</translation>
-<translation id="2686222346846590368">To je posljednje automatsko ažuriranje softvera i sigurnosno ažuriranje za taj <ph name="DEVICE_TYPE"/>. Za buduća ažuriranja potrebna je nadogradnja na noviji model. &lt;a target="_blank" href="<ph name="URL"/>"&gt;Saznajte više<ph name="LINK_END"/></translation>
+<translation id="2686222346846590368">To je posljednje automatsko ažuriranje softvera i sigurnosno ažuriranje za taj <ph name="DEVICE_TYPE"/>. Za buduća ažuriranja potrebna je nadogradnja na noviji model. &lt;a target="_blank" rel="noopener noreferrer" href="<ph name="URL"/>"&gt;Saznajte više<ph name="LINK_END"/></translation>
 <translation id="2687403674020088961">Blokiranje svih kolačića (ne preporučuje se)</translation>
 <translation id="2687407218262674387">Braveovi uvjeti pružanja usluge</translation>
 <translation id="2688196195245426394">Pogreška pri registraciji uređaja na poslužitelju: <ph name="CLIENT_ERROR"/>.</translation>
@@ -4852,7 +4852,7 @@ Postavkama računa možete upravljati tako da instalirate aplikaciju Family Link
 <translation id="7197632491113152433">Pronašli smo <ph name="NUMBER_OF_APPS"/> aplik. s vašeg računa koje se mogu upotrebljavati na ovom uređaju.</translation>
 <translation id="7199158086730159431">P&amp;omoć</translation>
 <translation id="7200083590239651963">Odabir konfiguracije</translation>
-<translation id="7201042526153088083">Instalirajte aplikacije i igre s Google Playa na <ph name="DEVICE_TYPE"/>. &lt;a target="_blank" href="<ph name="URL"/>"&gt;Saznajte više&lt;/a&gt;</translation>
+<translation id="7201042526153088083">Instalirajte aplikacije i igre s Google Playa na <ph name="DEVICE_TYPE"/>. &lt;a target="_blank" rel="noopener noreferrer" href="<ph name="URL"/>"&gt;Saznajte više&lt;/a&gt;</translation>
 <translation id="720110658997053098">Trajno zadrži uređaj u načinu kioska</translation>
 <translation id="7201118060536064622">Izbrisana je stavka "<ph name="DELETED_ITEM_NAME"/>"</translation>
 <translation id="7201420661433230412">Pregled datoteka</translation>
@@ -6528,13 +6528,13 @@ Mislim da ta web-lokacija ne bi trebala biti blokirana!</translation>
 <translation id="203837651858678035">Svejedno izaći iz privatnog načina?</translation>
 <translation id="7376221878517288144">Svejedno odustati od privatnog načina?</translation>
 <translation id="871606814707918245">Većina korisnika blokira obavijesti s te web-lokacije</translation>
-<translation id="5053701565089446556">Privatni dodatak: <ph name="EXTENSION_NAME"/></translation>
+<translation id="5053701565089446556">Privatno proširenje: <ph name="EXTENSION_NAME"/></translation>
 <translation id="611296870688433505">Privatna aplikacija: <ph name="APP_NAME"/></translation>
 <translation id="9048137919253433011">Privatna kartica: <ph name="TAB_NAME"/></translation>
 <translation id="1799432502220762862">Privatni podokvir: <ph name="SUBFRAME_SITE"/></translation>
-<translation id="3193187622878830588">Portal u anonimnom načinu: <ph name="SUBFRAME_SITE"/></translation>
+<translation id="3193187622878830588">Privatni portal: <ph name="SUBFRAME_SITE"/></translation>
 <translation id="8808478386290700967">Mrežna trgovina</translation>
-<translation id="8261378640211443080">To proširenje nije navedeno u trgovini <ph name="IDS_EXTENSION_WEB_STORE_TITLE"/> i možda je dodano bez vašeg znanja.</translation>
+<translation id="8261378640211443080">Ovo proširenje nije navedeno u <ph name="IDS_EXTENSION_WEB_STORE_TITLE"/> i možda je dodano bez vašeg znanja.</translation>
 <translation id="6827869674836193263"><ph name="WINDOW_TITLE"/> (Privatno)</translation>
 <translation id="4369414322596874629">Možete pretraživati internet privatno korištenjem privatnim prozorom</translation>
 <translation id="3772947852642271642">Pretražujte internet bez spremanja povijesti pretraživanja uporabom privatnog prozora</translation>
@@ -6542,7 +6542,7 @@ Mislim da ta web-lokacija ne bi trebala biti blokirana!</translation>
 <translation id="5808622652939943719">Kako biste privatno pretraživali internet, kliknite na izbornik u obliku točkica za otvaranje privatnog prozora.</translation>
 <translation id="9079153198295609735">Automatski šalji Brave Softwareu statistiku o upotrebi i izvješća o padu programa</translation>
 <translation id="8839398440242019256">Ne iz mrežne trgovine.</translation>
-<translation id="6945695820322143954">Ovim se dodatkom krši pravilnik za mrežnu trgovinu.</translation>
+<translation id="6945695820322143954">Ovim se proširenjem krši pravilnik za mrežnu trgovinu.</translation>
 <translation id="1676595396635191120">Novi privatni prozor</translation>
 <translation id="5094764494104066239">Uvijek prikaži traku oznake</translation>
 <translation id="4471385409549756595">Novi privatni prozor</translation>
@@ -6581,7 +6581,7 @@ Mislim da ta web-lokacija ne bi trebala biti blokirana!</translation>
 <translation id="688280436658139163">Upravljaj profilima</translation>
 <translation id="4133080584509825342">Uredi profil, <ph name="PROFILE_NAME"/></translation>
 <translation id="4848862725510532982">Uredi profil, <ph name="PROFILE_NAME"/>, <ph name="USERNAME"/></translation>
-<translation id="4536111748245793305">Profil <ph name="VALUE"/></translation>
+<translation id="4536111748245793305">Profile <ph name="VALUE"/></translation>
 <translation id="5828545842856466741">Dodavanje osobe...</translation>
 <translation id="2254158488150713536">Za nastavak kliknite U radu, a zatim kliknite Dodaj osobu da biste izradili novi profil za svoju e-adresu.</translation>
 <translation id="1725743343613175327">Za nastavak kliknite U redu, a zatim kliknite Dodaj osobu da biste izradili novi profil za svoju <ph name="DOMAIN"/> e-adresu.</translation>
@@ -6598,9 +6598,9 @@ Mislim da ta web-lokacija ne bi trebala biti blokirana!</translation>
 <translation id="5840822070878669614">Otvori mrežnu trgovinu</translation>
 <translation id="383007806262310953">Prikaži traku oznaka</translation>
 <translation id="2890280714162339872">Trenutačna anonimna sesija: <ph name="RECENT_PERMISSIONS_CHANGE_SENTENCE_START"/></translation>
-<translation id="4207277598811881727">Trenutačna anonimna sesija: <ph name="RECENT_PERMISSIONS_CHANGE_SENTENCE_START"/>, <ph name="RECENT_PERMISSIONS_CHANGE_1"/></translation>
-<translation id="4470052247371020791">Trenutačna anonimna sesija: <ph name="RECENT_PERMISSIONS_CHANGE_SENTENCE_START"/>, <ph name="RECENT_PERMISSIONS_CHANGE_1"/>, <ph name="RECENT_PERMISSIONS_CHANGE_2"/></translation>
-<translation id="4332019753717105077">Trenutačna anonimna sesija: <ph name="RECENT_PERMISSIONS_CHANGE_SENTENCE_START"/>, <ph name="RECENT_PERMISSIONS_CHANGE_1"/>, <ph name="RECENT_PERMISSIONS_CHANGE_2"/> i više</translation>
+<translation id="4207277598811881727">Trenutačna privatna sesija: <ph name="RECENT_PERMISSIONS_CHANGE_SENTENCE_START"/>, <ph name="RECENT_PERMISSIONS_CHANGE_1"/></translation>
+<translation id="4470052247371020791">Trenutačna privatna sesija: <ph name="RECENT_PERMISSIONS_CHANGE_SENTENCE_START"/>, <ph name="RECENT_PERMISSIONS_CHANGE_1"/>, <ph name="RECENT_PERMISSIONS_CHANGE_2"/></translation>
+<translation id="4332019753717105077">Trenutačna privatna sesija: <ph name="RECENT_PERMISSIONS_CHANGE_SENTENCE_START"/>, <ph name="RECENT_PERMISSIONS_CHANGE_1"/>, <ph name="RECENT_PERMISSIONS_CHANGE_2"/>, i više</translation>
 <translation id="8648684608605749476">Blokiranje kolačića trećih strana u anonimnom načinu</translation>
 <translation id="2199515977216775204">Dok ste u anonimnom načinu, web-lokacije ne mogu upotrebljavati vaše kolačiće za uvid u vašu aktivnost pregledavanja na različitim web-lokacijama, primjerice radi prilagođavanja oglasa. Značajke na nekim web-lokacijama mogu prestati funkcionirati.</translation>
 <translation id="6105125042109106861">Kolačići trećih strana blokirani su u anonimnom načinu</translation>
@@ -6611,7 +6611,7 @@ Mislim da ta web-lokacija ne bi trebala biti blokirana!</translation>
 <translation id="3860292630623580294">(Privatno)</translation>
 <translation id="4854477725773269949">Dopusti u privatnom</translation>
 <translation id="6436164536244065364">Pogledaj u web-trgovini</translation>
-<translation id="38046578254905003">Pronađite dodatke i teme u stavci <ph name="BEGIN_LINK">&lt;a target="_blank" href="https://chrome.google.com/webstore/category/extensions"&gt;</ph>Web Store<ph name="END_LINK">&lt;/a&gt;</ph></translation>
+<translation id="38046578254905003">Pronađite proširenja i teme u <ph name="BEGIN_LINK"/>mrežnoj trgovini<ph name="END_LINK"/></translation>
 <translation id="6336451774241870485">Nova privatna kartica</translation>
 <translation id="6610147964972079463">Zatvori privatne kartice</translation>
 <translation id="4933782374919065856">Imate li pitanja? Obratite se osobi koja nadzire vaš profil.</translation>

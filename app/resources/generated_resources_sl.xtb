@@ -291,7 +291,7 @@
 <translation id="1361872463926621533">Predvajaj zvok ob zagonu</translation>
 <translation id="1363585519747660921">Tiskalnik USB je treba konfigurirati</translation>
 <translation id="1365180424462182382"><ph name="BEGIN_LINK"/>Brskalnik upravlja<ph name="END_LINK"/> domena <ph name="ENROLLMENT_DOMAIN"/></translation>
-<translation id="1366177842110999534">Izvajanje orodij, urejevalnikov in vdelanih orodij za razvoj programske opreme (IDE) za Linux v napravi <ph name="DEVICE_TYPE"/>. &lt;a target="_blank" href="<ph name="URL"/>"&gt;Več o tem&lt;/a&gt;</translation>
+<translation id="1366177842110999534">Izvajanje orodij, urejevalnikov in vdelanih orodij za razvoj programske opreme (IDE) za Linux v napravi <ph name="DEVICE_TYPE"/>. &lt;a target="_blank" rel="noopener noreferrer" href="<ph name="URL"/>"&gt;Več o tem&lt;/a&gt;</translation>
 <translation id="1367951781824006909">Izberite datoteko</translation>
 <translation id="1369149969991017342">Stikalni dostop (upravljanje računalnika z enim ali dvema stikaloma)</translation>
 <translation id="1372841398847029212">Sinhroniziraj z računom</translation>
@@ -1354,7 +1354,7 @@ Nastavitve tega računa je mogoče upravljati z namestitvijo aplikacije Family L
 <translation id="268053382412112343">Z&amp;godovina</translation>
 <translation id="2682498795777673382">Starš je izvedel posodobitev</translation>
 <translation id="2683638487103917598">Mapa je razvrščena</translation>
-<translation id="2686222346846590368">To je zadnja samodejna posodobitev programske opreme in varnostna posodobitev za to napravo <ph name="DEVICE_TYPE"/>. Če želite v prihodnje prejemati posodobitve, nadgradite na novejši model. &lt;a target="_blank" href="<ph name="URL"/>"&gt;Več o tem<ph name="LINK_END"/></translation>
+<translation id="2686222346846590368">To je zadnja samodejna posodobitev programske opreme in varnostna posodobitev za to napravo <ph name="DEVICE_TYPE"/>. Če želite v prihodnje prejemati posodobitve, nadgradite na novejši model. &lt;a target="_blank" rel="noopener noreferrer" href="<ph name="URL"/>"&gt;Več o tem<ph name="LINK_END"/></translation>
 <translation id="2687403674020088961">Blokiranje vseh piškotkov (ni priporočljivo)</translation>
 <translation id="2687407218262674387">Googlovi pogoji storitve</translation>
 <translation id="2688196195245426394">Napaka pri registraciji naprave v strežniku: <ph name="CLIENT_ERROR"/>.</translation>
@@ -4854,7 +4854,7 @@ Poskrbite, da ne boste razkrili morebitnih občutljivih podatkov.</translation>
 <translation id="7197632491113152433">V računu smo našli toliko aplikacij, ki jih je mogoče uporabljati v tej napravi: <ph name="NUMBER_OF_APPS"/>.</translation>
 <translation id="7199158086730159431">Pomoč</translation>
 <translation id="7200083590239651963">Izbira konfiguracije</translation>
-<translation id="7201042526153088083">Namestite aplikacije in igre iz Googla Play v napravi <ph name="DEVICE_TYPE"/>. &lt;a target="_blank" href="<ph name="URL"/>"&gt;Več o tem&lt;/a&gt;</translation>
+<translation id="7201042526153088083">Namestite aplikacije in igre iz Googla Play v napravi <ph name="DEVICE_TYPE"/>. &lt;a target="_blank" rel="noopener noreferrer" href="<ph name="URL"/>"&gt;Več o tem&lt;/a&gt;</translation>
 <translation id="720110658997053098">Ta naprava naj bo trajno v načinu kioska</translation>
 <translation id="7201118060536064622">Element »<ph name="DELETED_ITEM_NAME"/>« je izbrisan</translation>
 <translation id="7201420661433230412">Prikaz datotek</translation>
@@ -6534,10 +6534,10 @@ Datoteko s ključem shranite na varnem. Potrebovali jo boste za izdelavo novih r
 <translation id="611296870688433505">Zasebna aplikacija: <ph name="APP_NAME"/></translation>
 <translation id="9048137919253433011">Zasebni zavihek: <ph name="TAB_NAME"/></translation>
 <translation id="1799432502220762862">Zasebni podokvir: <ph name="SUBFRAME_SITE"/></translation>
-<translation id="3193187622878830588">Portal brez beleženja dejavnosti: <ph name="SUBFRAME_SITE"/></translation>
+<translation id="3193187622878830588">Zasebni portal: <ph name="SUBFRAME_SITE"/></translation>
 <translation id="8808478386290700967">Spletna trgovina</translation>
 <translation id="8261378640211443080">Ta razširitev ni navedena v storitvi <ph name="IDS_EXTENSION_WEB_STORE_TITLE"/> in je bila morda dodana brez vaše vednosti.</translation>
-<translation id="6827869674836193263"><ph name="WINDOW_TITLE"/> (Zasebno)</translation>
+<translation id="6827869674836193263"><ph name="WINDOW_TITLE"/> (brez beleženja zgodovine)</translation>
 <translation id="4369414322596874629">Z oknom brez beleženja zgodovine lahko zasebno brskate</translation>
 <translation id="3772947852642271642">Uporabljajte splet brez shranjevanja zgodovine brskanja z oknom brez beleženja zgodovine</translation>
 <translation id="3871738366246972820">Uporabljate računalnik v skupni rabi? Poskusite odpreti okno brez beleženja zgodovine.</translation>
@@ -6548,7 +6548,7 @@ Datoteko s ključem shranite na varnem. Potrebovali jo boste za izdelavo novih r
 <translation id="1676595396635191120">Novo zasebno okno</translation>
 <translation id="5094764494104066239">Vedno pokaži vrstico z zaznamki</translation>
 <translation id="4471385409549756595">Novo zasebno okno</translation>
-<translation id="7618452966706304788">Ali želite uporabiti funkcijo Touch ID <ph name="APP_NAME"/> v načinu brez beleženja zgodovine?</translation>
+<translation id="7618452966706304788">Ali želite z <ph name="APP_NAME"/> uporabiti funkcijo Touch ID v načinu brez beleženja zgodovine?</translation>
 <translation id="3098826269712097986">Podatki za prijavo bodo shranjeni v programu Brave, ko zapustite brez beleženja zgodovine. S tem boste pozneje znova uporabili funkcijo Touch ID s to spletno stranjo.</translation>
 <translation id="5186185447130319458">Način brez beleženja zgodovine</translation>
 <translation id="2579188629646253712">Izhod iz načina brez beleženja zgodovine</translation>
@@ -6581,8 +6581,8 @@ Datoteko s ključem shranite na varnem. Potrebovali jo boste za izdelavo novih r
 <translation id="2935225303485967257">Upravljanje profilov</translation>
 <translation id="8966809848145604011">Drugi</translation>
 <translation id="688280436658139163">Upravljanje profilov</translation>
-<translation id="4133080584509825342">Urejanje profila, <ph name="PROFILE_NAME"/></translation>
-<translation id="4848862725510532982">Urejanje profila, <ph name="PROFILE_NAME"/>, <ph name="USERNAME"/></translation>
+<translation id="4133080584509825342">Uredi profil, <ph name="PROFILE_NAME"/></translation>
+<translation id="4848862725510532982">Uredi profil, <ph name="PROFILE_NAME"/>, <ph name="USERNAME"/></translation>
 <translation id="4536111748245793305">Profil <ph name="VALUE"/></translation>
 <translation id="5828545842856466741">Dodaj osebo ...</translation>
 <translation id="2254158488150713536">Če želite nadaljevati, kliknite »V redu«, nato »Dodajanje osebe«, če želite za e-poštni naslov ustvariti nov profil.</translation>
@@ -6602,7 +6602,7 @@ Datoteko s ključem shranite na varnem. Potrebovali jo boste za izdelavo novih r
 <translation id="2890280714162339872">Trenutna seja brez beleženja dejavnosti: <ph name="RECENT_PERMISSIONS_CHANGE_SENTENCE_START"/></translation>
 <translation id="4207277598811881727">Trenutna seja brez beleženja dejavnosti: <ph name="RECENT_PERMISSIONS_CHANGE_SENTENCE_START"/>, <ph name="RECENT_PERMISSIONS_CHANGE_1"/></translation>
 <translation id="4470052247371020791">Trenutna seja brez beleženja dejavnosti: <ph name="RECENT_PERMISSIONS_CHANGE_SENTENCE_START"/>, <ph name="RECENT_PERMISSIONS_CHANGE_1"/>, <ph name="RECENT_PERMISSIONS_CHANGE_2"/></translation>
-<translation id="4332019753717105077">Trenutna seja brez beleženja dejavnosti: <ph name="RECENT_PERMISSIONS_CHANGE_SENTENCE_START"/>, <ph name="RECENT_PERMISSIONS_CHANGE_1"/>, <ph name="RECENT_PERMISSIONS_CHANGE_2"/> in drugo</translation>
+<translation id="4332019753717105077">Trenutna seja brez beleženja dejavnosti: <ph name="RECENT_PERMISSIONS_CHANGE_SENTENCE_START"/>, <ph name="RECENT_PERMISSIONS_CHANGE_1"/>, <ph name="RECENT_PERMISSIONS_CHANGE_2"/>, in drugo</translation>
 <translation id="8648684608605749476">Blokiranje piškotkov drugih mest v načinu brez beleženja dejavnosti</translation>
 <translation id="2199515977216775204">Ko uporabljate način brez beleženja dejavnosti, spletna mesta ne morejo uporabljati piškotkov za ogled dejavnosti brskanja na različnih spletnih mestih, na primer za osebno prilagajanje oglasov. Funkcije na nekaterih spletnih mestih morda ne bodo delovale.</translation>
 <translation id="6105125042109106861">Piškotki drugih spletnih mest so blokirani v načinu brez beleženja dejavnosti</translation>
@@ -6613,7 +6613,7 @@ Datoteko s ključem shranite na varnem. Potrebovali jo boste za izdelavo novih r
 <translation id="3860292630623580294">(Način brez beleženja zgodovine)</translation>
 <translation id="4854477725773269949">Omogoči v načinu brez beleženja zgodovine</translation>
 <translation id="6436164536244065364">Ogled v spletni trgovini</translation>
-<translation id="38046578254905003">Poiščite razširitve in teme v <ph name="BEGIN_LINK">&lt;a target="_blank" href="https://chrome.google.com/webstore/category/extensions"&gt;</ph>Web Store<ph name="END_LINK">&lt;/a&gt;</ph></translation>
+<translation id="38046578254905003">Poiščite razširitve in teme v <ph name="BEGIN_LINK"/>Web Store<ph name="END_LINK"/></translation>
 <translation id="6336451774241870485">Novi zasebni zavihek</translation>
 <translation id="6610147964972079463">Zapri zasebne zavihke</translation>
 <translation id="4933782374919065856">Imate kakšno vprašanje? Obrnite se na osebo, ki nadzira vaš profil.</translation>

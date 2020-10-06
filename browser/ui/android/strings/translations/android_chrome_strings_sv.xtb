@@ -1024,6 +1024,8 @@ Vissa webbplatser kan till exempel svara på begäran genom att visa annonser so
 <translation id="983192555821071799">Stäng alla flikar</translation>
 <translation id="987264212798334818">Allmänt</translation>
 <translation id="996149300115483134">Menyn med flödeskort är stängd</translation>
+<translation id="4540437243849625078">Denna webbplats är på väg att dela information med en app utanför privat läge.</translation>
+<translation id="1227836882233136433">Lämna privat läge?</translation>
 <translation id="5186185447130319458">Privat</translation>
 <translation id="9063160602596686558">Skickar användningsstatistik och felrapporter till Brave Software automatiskt</translation>
 <translation id="1438581767753657407">När Lite-läget är på använder Brave sina servrar för att få sidorna att laddas snabbare. Lite-läget skriver om väldigt långsamma sidor så att endast viktigt innehåll laddas. Lite-läget gäller inte för privata flikar.</translation>
@@ -1033,8 +1035,7 @@ Vissa webbplatser kan till exempel svara på begäran genom att visa annonser so
 <translation id="3110967157686007724">Privat flik</translation>
 <translation id="4526803704855831732">Privata flikar</translation>
 <translation id="7465104139234185284">Stäng alla privata flikar</translation>
-<translation id="4540437243849625078">Denna webbplats är på väg att dela information med en app utanför privat läge.</translation>
-<translation id="1227836882233136433">Lämna privat läge?</translation>
+<translation id="21023559487771014">Gå till Privat läge</translation>
 <translation id="6336451774241870485">Ny privat flik</translation>
 <translation id="3234355010754616171">Ny privat flik</translation>
 <translation id="6610147964972079463">Stäng privata flikar</translation>

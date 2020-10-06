@@ -28,9 +28,13 @@
 <translation id="5550994254534676787">اعرض سجل التصفح الخاص بك</translation>
 <translation id="985862351129593673">لوحة تحكم مخصصة</translation>
 <translation id="7180865173735832675">تخصيص</translation>
-<translation id="5783793537552649286">إظهار صورة الخلفية</translation>
+<translation id="8522669544471808198">إظهار صور الخلفية</translation>
 <translation id="7275773481201277457">إظهار إحصائيات Brave</translation>
 <translation id="6836061097810262923">إظهار الساعة</translation>
+<translation id="5912396950572065471">التنسيق</translation>
+<translation id="604124094241169006">تلقائي</translation>
+<translation id="867722069064361487">تنسيق 12 ساعة</translation>
+<translation id="4064062743338217840">تنسيق 24 ساعة</translation>
 <translation id="8643377320501056697">عرض أهم المواقع</translation>
 <translation id="3446024864193919737">عرض مكافآت Brave</translation>
 <translation id="6274899614137380422">أظهر تبادل العملات المشفرة</translation>
@@ -68,6 +72,10 @@
 <translation id="8958799246752641148">يخفي Tor عنوان IP الخاص بك من المواقع التي تزورها، عن طريق توجيه التصفح عبر عدة خوادم Tor قبل أن يصل إلى وجهتك. يتم تشفير هذه الاتصالات، بحيث يتعذر على موفر خدمة الإنترنت أو صاحب العمل معرفة المواقع التي تزورها. يمكن أن يبطئ Tor التصفح، وقد لا تعمل بعض المواقع على الإطلاق.</translation>
 <translation id="520608572871993342">يؤدي استخدام النوافذ الخاصة فقط إلى تغيير ما يفعله Brave على جهازك - فهو لا يغير سلوك أي شخص آخر. يخفي Tor عنوان IP الخاص بك من المواقع التي تزورها، ويخفي المواقع التي تزورها من مزود خدمة الإنترنت أو صاحب العمل الخاص بك. افتح نافذة خاصة مع Tor من القائمة، أو باستخدام {{key}}.</translation>
 <translation id="6975708438781948564">اعرف المزيد عن Tor في Brave</translation>
+<translation id="4712050378540986986">حالة متصفّح Tor</translation>
+<translation id="3368922792935385530">متصل</translation>
+<translation id="8030169304546394654">قُطع الاتصال</translation>
+<translation id="3705383383955310071">جارِ التهيئة {{percentage}}%</translation>
 <translation id="4272382368346338917">المرشحات الإضافية</translation>
 <translation id="8949292968394988358">تحذير: سيؤدي تشغيل العديد من المرشحات إلى انخفاض الأداء</translation>
 <translation id="8686201964111147748">إجمالي الإعلانات وبرامج التتبع التي تم حجبها:</translation>
@@ -102,7 +110,7 @@
 <translation id="3829010735958850433">تخطى جولة الترحيب</translation>
 <translation id="1201402288615127009">التالي</translation>
 <translation id="7954950242989581218">قم بتصفح آمن وسليم</translation>
-<translation id="2188651882929633653">تقوم دروع Brave بحظر العناصر المريبة التي تحاول تتبعك عبر الويب  بما في ذلك معظم الإعلانات. عيّن الدروع إلى "مُعطلة" إذا كان الموقع لا يبدو أنه يعمل. يستخدم Brave  <ph name="BEGIN_LINK_P3A">&lt;a target="_blank" href="$1"&gt;</ph>completely private product analytics<ph name="END_LINK_P3A">&lt;/a&gt;</ph> لتقدير الاستخدام الكلي لبعض الميزات. يمكنك إيقاف تشغيل هذا من <ph name="BEGIN_LINK_P3A_SETTINGS">&lt;a target="_blank" href="$2"&gt;</ph>Settings<ph name="END_LINK_P3A_SETTINGS">&lt;/a&gt;</ph>.</translation>
+<translation id="2188651882929633653">تمنع Brave Shields الأشياء المخيفة التي تحاول تعقبك عبر الويب — بما في ذلك معظم الإعلانات. اضبط الدروع على “ وضع الإيقاف” إذا كان هناك موقع لا يبدو’ أنه يعمل جيداً. يستخدم Brave <ph name="BEGIN_LINK_P3A"/>تحليلات منتج خاصة تماماً <ph name="END_LINK_P3A"/>لتقدير الاستخدام العام لبعض الميزات. يمكنك إيقاف هذا في<ph name="BEGIN_LINK_P3A_SETTINGS"/>الإعدادات<ph name="END_LINK_P3A_SETTINGS"/>.</translation>
 <translation id="1919345977826869612">إعلانات</translation>
 <translation id="2128226640852355533">اكسب {{currency}} عبر مشاهدة إعلانات Brave. تستند الإعلانات المعروضة إلى اهتماماتك كما يُستدل من سلوك تصفحك. لا تُستخرج من متصفحك أية بيانات شخصية أو سجلات تصفح أبداً.</translation>
 <translation id="6112368337882254910">مساهمة تلقائية</translation>
@@ -174,7 +182,7 @@
 <translation id="4875485795191140618">لقد تم تفعيل وتحميل مفتاح محفظتك بنجاح.</translation>
 <translation id="1083279119532577005">تمت استعادة المحفظة!</translation>
 <translation id="7841456038054167122">يرجى إعادة إدخال المفاتيح أو تجربة مفاتيح مختلفة.</translation>
-<translation id="340102383764929340">مفتاح الاستعادة الذي تم إدخاله لم يعد مدعوماً. يرجى زيارة <ph name="BEGIN_LINK_REGION_TEXT">&lt;a target="_blank" href="http://brave.com/faq#convert-old-keys"&gt;</ph>here<ph name="END_LINK_REGION_TEXT">&lt;/a&gt;</ph> للحصول على مفتاح جديد.</translation>
+<translation id="1911900517212490188">مفتاح الاستعادة الذي تم إدخاله لم يعد مدعوماً. يُرجى زيارة <ph name="BEGIN_LINK"/>هنا<ph name="END_LINK"/> للحصول على مفتاح جديد.</translation>
 <translation id="2195074481553016770">لقد أوشكت على الانتهاء…</translation>
 <translation id="5254740304961202261">أثبت أنك إنسان!</translation>
 <translation id="2187043784382239974">هممم، ليس تماما ...</translation>
@@ -192,7 +200,7 @@
 <translation id="3082557070674409251">تم النقر عليه</translation>
 <translation id="7119308337584989771">تم رفضه</translation>
 <translation id="6805660603861526473">تمت مشاهدته</translation>
-<translation id="2852258589816753010">BAT غير مُعتَمد حاليًا في منطقتك. يُرجى الرجوع إلى <ph name="BEGIN_LINK_REGION_TEXT">&lt;a target="_blank" href="$1"&gt;</ph>here<ph name="END_LINK_REGION_TEXT">&lt;/a&gt;</ph> للحصول على التحديثات.</translation>
+<translation id="2359865110462963929">إنّ عملة BAT الرمزية غير مدعومة حالياً في منطقتك. يُرجى الرجوع إلى <ph name="BEGIN_LINK"/>هنا<ph name="END_LINK"/> للحصول على التحديثات.</translation>
 <translation id="2564425876266960486">خطأ في إنشاء بطاقة BAT لمتصفح Brave</translation>
 <translation id="6473583070570450185">أنت بحاجة إلى محفظة مفعلة لتسجيل الدخول</translation>
 <translation id="2106271389438168634">يجب أن يكون لديك 25 BAT كحد أدنى لإنشاء محفظة Uphold. الرجاء إعادة المحاولة بعد أن تقوم بتفعيل محفظتك مع Uphold.</translation>
@@ -219,6 +227,9 @@
 <translation id="386483240851194811">تم إيقاف المكافآت</translation>
 <translation id="3354337256330577726">تم إيقاف المساهمة التلقائية</translation>
 <translation id="6727186931929643711">تم إيقاف إعادة المحاولة</translation>
+<translation id="680983167891198932">المفتاح</translation>
+<translation id="7535087603100972091">القيمة</translation>
+<translation id="45591635423975492">مسجّل في</translation>
 <translation id="2059498613853603008">تحذير: قد تكون البيانات الموجودة في هذه الصفحة حساسة. تعامل معها كما تفعل مع المفاتيح الخاصة بمحفظتك. كن حذراً مع من تشاركهم إياها.</translation>
 <translation id="7375125077091615385">النوع:</translation>
 <translation id="4973347371961481083">المساهمات</translation>
@@ -252,6 +263,7 @@
 <translation id="2152423226436243241">المساهمة التلقائية</translation>
 <translation id="2927922949538312364">إكرامية لمرة واحدة</translation>
 <translation id="3164105678355419142">إكرامية دورية</translation>
+<translation id="7806880412350961625">سجلات الأحداث</translation>
 <translation id="4309915981827077375">معلومات عامة</translation>
 <translation id="3662406032239313663">السجلات</translation>
 <translation id="9001933311880936179">المبلغ الإجمالي:</translation>
@@ -262,7 +274,6 @@
 <translation id="2326487656644542536">معلومات المحفظة</translation>
 <translation id="8559420016582377654">معرف دفع المحفظة:</translation>
 <translation id="438586487791444158">حالة المحفظة:</translation>
-<translation id="3368922792935385530">متصل</translation>
 <translation id="8874184842967597500">غير متصل</translation>
 <translation id="4569155249847375786">محقَّق</translation>
 <translation id="922103963921062336">غير متصل (غير مفعل)</translation>
@@ -351,7 +362,7 @@
 <translation id="7335371657242627509">تضمين في المساهمة التلقائية</translation>
 <translation id="1864111464094315414">تسجيل الدخول</translation>
 <translation id="4556504723624686474">تفعيل المحفظة يتيح لك إدارة أموالك بشكل أكثر كفاءة.</translation>
-<translation id="4188679602963314994">يجب أن يكون لديك 25 BAT كحد أدنى لإنشاء حساب على Uphold. الرجاء إعادة المحاولة في وقت لاحق. <ph name="BREAK">&lt;br/&gt;</ph>إذا كان لديك بالفعل حساب مفعل على Uphold، فتابع لتسجيل الدخول.</translation>
+<translation id="5594737784294211654">تحتاج إلى 25 عملة BAT رمزية على الأقل لإنشاء حساب على Uphold. يُرجى المحاولة مرة أخرى لاحقاً. <ph name="NEWLINE"/> إذا كان لديك بالفعل حساب Uphold قد تم التحقق من صحته، فتابع تسجيل الدخول.</translation>
 <translation id="3250511771491660127">اجعل هذا شهرياً</translation>
 <translation id="6028954173739504682">إدارة محفظتك</translation>
 <translation id="7886389832052393750">شروط اعتماد المشاركة</translation>
@@ -443,8 +454,8 @@
 <translation id="8014425282125849700">من حين لآخر، ستحصل على منح رمزية مجانية من Brave. تأكد من ترقب التنبيه!</translation>
 <translation id="2185598236335233939">ابحث عن إشعارات الإعلانات بينما تستمر في استخدام Brave. سيزداد رصيدك من نقاط BAT مع كل إعلان تشاهده.</translation>
 <translation id="1370034647041840967">اربح رموزًا مميزة مقابل انتباهك إلى الإعلانات وادفعها لدعم منشئي المحتوى الذين تقدّرهم!</translation>
-<translation id="1701701253000051237">إضافة وسحب وإدارة الأموال في <ph name="BEGIN_BOLD">&lt;b&gt;</ph>Uphold<ph name="BEGIN_END">&lt;/b&gt;</ph>.</translation>
-<translation id="4208741993667364007">يتم تشغيل محفظتك من Brave بواسطة <ph name="BEGIN_BOLD">&lt;b&gt;</ph>Uphold<ph name="BEGIN_END">&lt;/b&gt;</ph>.</translation>
+<translation id="4600224932216165965">قم بإضافة وسحب وإدارة الأموال في <ph name="BEGIN_BOLD"/>Uphold<ph name="END_BOLD"/>.</translation>
+<translation id="3580616436301227919">إنّ محفظة Brave الخاصة بك مدعومة بواسطة <ph name="BEGIN_BOLD"/>Uphold<ph name="END_BOLD"/>.</translation>
 <translation id="6401272292123354754">تم إنشاء مكافآت Brave بناءً على Basic Attention Token. اعرف المزيد حول BAT</translation>
 <translation id="7823359893981882407">هنا</translation>
 <translation id="4483635855837696643">استعادة محفظتك</translation>
@@ -453,7 +464,7 @@
 <translation id="3267911153934785912">أدخِل مفتاح الاسترداد أو</translation>
 <translation id="6548189695918108191">قم بعمل نسخة احتياطية من محفظتك قبل استبدالها. أو ستفقد الأموال {{funds}}، الموجودة في محفظتك الحالية.</translation>
 <translation id="5423214929210538027">هل أنت متأكد من أنك تريد إعادة تعيين محفظة المكافآت الخاصة بك؟</translation>
-<translation id="9106875682287489763">ستفقد الـ <ph name="BEGIN_BOLD">&lt;b&gt;</ph>{{amount}} BATs<ph name="BEGIN_END">&lt;/b&gt;</ph> الخاصة بك وبيانات المكافآت الأخرى بشكلٍ دائم إذا قمت بإعادة ضبط محفظتك. يُرجى التأكد من أنك قمت بالتحقق من محفظتك باستخدام Uphold حتى تتمكن من الاحتفاظ بالـ BAT الخاص بك.</translation>
+<translation id="7428521340740703492">سيتم فقدان مبلغ<ph name="BEGIN_BOLD"/>{{amount}} من عملة BAT<ph name="END_BOLD"/> الرمزية وبيانات Rewards الأخرى الخاصة بك بشكلٍ دائم إذا قمت بتصفير محفظتك. يُرجى التأكد من أنك قد قمت بالتحقق من فعالية محفظتك باستخدام Uphold حتى تتمكن من الاحتفاظ برصيدك من عملة BAT الرمزية.</translation>
 <translation id="2028613172174411919">ستفقد بيانات المكافآت الخاصة بك نهائياً إذا قمت بإعادة ضبط محفظتك.</translation>
 <translation id="4914597931214386232">تم جمع المكافأة المالية التي منحت لك</translation>
 <translation id="3494964159182650590">ملخص المكافآت</translation>
@@ -533,14 +544,13 @@
 <translation id="5030988785798407804">منحة {{currency}} الخاصة بك في طريقها إليك.</translation>
 <translation id="2132683977638223450">نقاط ممنوحة مجانية</translation>
 <translation id="7512440811010447157">تحقق</translation>
-<translation id="8030169304546394654">قُطع الاتصال</translation>
 <translation id="8267327690882073581">التحقق من المحفظة</translation>
 <translation id="543510923939676996">تمَّ التحقق من المحفظة</translation>
 <translation id="7591798679868259510">الانتقال إلى حساب Uphold الخاص بي</translation>
 <translation id="3699674790322420653">أكمل التحقق من المحفظة</translation>
 <translation id="9200453331904391567">قطع الاتصال بـ Brave Rewards</translation>
 <translation id="46988480989545156">التحقق من المحفظة</translation>
-<translation id="4986087720311945758">يتم توفير خدمة المحافظ لدينا من قبل <ph name="BEGIN_BOLD">&lt;b&gt;</ph>Uphold<ph name="BEGIN_END">&lt;/b&gt;</ph></translation>
+<translation id="160145159036553575">خدمة المحفظة لدينا مدعومة بواسطة <ph name="BEGIN_BOLD"/>Uphold.<ph name="END_BOLD"/></translation>
 <translation id="6771734945114850124">يرجى أن تكون هويتك الصادرة من الحكومة متاحة.</translation>
 <translation id="8697510149346635496">اسحب رموز BAT التي تكسبها من عرض الإعلانات التي تحترم الخصوصية</translation>
 <translation id="1481480653609649134">قم بشراء رموز BAT إضافية بواسطة بطاقات الائتمان وغيرها من المصادر</translation>
@@ -552,7 +562,7 @@
 <translation id="7404779623219601861">تبديل BAT ببطاقات هدايا</translation>
 <translation id="6215565499749144110">مع شبكة TAP فبإمكانك تبديل BAT ببطاقات هدايا ذات علامات تجارية شهيرة.</translation>
 <translation id="6915065518766963119">* يتطلب التحقق من Uphold.</translation>
-<translation id="651649139059930379">احصل على 2% Cryptoback مع بطاقة Uphold</translation>
+<translation id="7703007724342399482">احصل على استرداد لقيمة العملة المشفرة بنسبة 2% مع بطاقة Uphold</translation>
 <translation id="1109729143147368573">أنفق عملاتك المشفرة وأصولك الأخرى لدى ما يقرب من 50 مليون تاجر وماكينات صراف آلي في جميع أنحاء العالم. أنفق عملات المشفرة للحصول على عملات المشفرة!</translation>
 <translation id="4360054110030715117"><ph name="LINK_BEGIN"/>أعرف أكثر<ph name="LINK_END"/> عن Brave Rewards</translation>
 <translation id="5826706758731195747">بتشغيلك لـ Rewards، فإنك توافق على <ph name="LINK_BEGIN"/>شروط الخدمة<ph name="LINK_END"/>.</translation>
@@ -608,6 +618,7 @@
 <translation id="6409345078064530735">عنوان الوديعة</translation>
 <translation id="7153116947319792513">إيداع المذكرة</translation>
 <translation id="1383876407941801731">بحث</translation>
+<translation id="3781412534383755121">الحد الأدنى للمبلغ المطلوب التحويل هو:</translation>
 <translation id="6432284126416751397">تأكيد التحويل</translation>
 <translation id="1301340234286078471">تحويل</translation>
 <translation id="6680650203439190394">المعدل</translation>
@@ -648,4 +659,21 @@
 <translation id="453977518730680921">وسائط التشغيل التلقائي</translation>
 <translation id="7701466644604753106">تشغيل قارئ السرعة</translation>
 <translation id="763042262431778831">أوقف قارئ السرعة</translation>
+<translation id="9020818404803201080">الأقران المتصلون:</translation>
+<translation id="6717690610234999751">تهيئة العناوين</translation>
+<translation id="9182285671734219088">حالة التخفّي</translation>
+<translation id="6599816589121202398">واجهة برمجة التطبيقات</translation>
+<translation id="1327977588028644528">المدخل</translation>
+<translation id="2551123942222622809">سرب</translation>
+<translation id="3967335629471284781">تم الإطلاق</translation>
+<translation id="1515163294334130951">إطلاق</translation>
+<translation id="1895658205118569222">إيقاف التشغيل</translation>
+<translation id="6762417584993757344">غير مثبت</translation>
+<translation id="8428368469058794536">خدمة "أي بي إف إس / IPFS"</translation>
+<translation id="2901715907314796027">قم بشراء العملات المشفرة من Bitcoin.com.</translation>
+<translation id="4065681313949497252">العملة</translation>
+<translation id="3833315885381772739">أدخل مبلغاً</translation>
+<translation id="4011828592358027165">هل أنت جديد في عالم العملات المشفرة؟</translation>
+<translation id="3358050091139900813">احصل على المحفظة من هنا للبدء</translation>
+<translation id="3105412115725259537">Bitcoin.com</translation>
 </translationbundle>

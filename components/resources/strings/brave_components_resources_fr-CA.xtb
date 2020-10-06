@@ -28,9 +28,13 @@
 <translation id="5550994254534676787">Consulter votre historique de navigation</translation>
 <translation id="985862351129593673">Personnaliser le tableau de bord</translation>
 <translation id="7180865173735832675">Personnaliser</translation>
-<translation id="5783793537552649286">Afficher l'image de fond</translation>
+<translation id="8522669544471808198">Afficher les images de fond</translation>
 <translation id="7275773481201277457">Afficher des statistiques de Brave</translation>
 <translation id="6836061097810262923">Afficher l'horloge</translation>
+<translation id="5912396950572065471">Format</translation>
+<translation id="604124094241169006">Automatique</translation>
+<translation id="867722069064361487">Horloge de 12 heures</translation>
+<translation id="4064062743338217840">Horloge de 24 heures</translation>
 <translation id="8643377320501056697">Afficher les sites principaux</translation>
 <translation id="3446024864193919737">Afficher les récompenses de Brave</translation>
 <translation id="6274899614137380422">Afficher Binance</translation>
@@ -68,6 +72,10 @@
 <translation id="8958799246752641148">Tor cache votre adresse IP des sites que vous visitez, en acheminant votre navigation à travers plusieurs serveurs de Tor avant qu'elle n'atteigne votre destination. Ces connexions sont chiffrées, de sorte que votre FAI ou votre employeur ne peuvent pas non plus voir quels sites vous visitez. Tor peut ralentir la navigation et certains sites peuvent ne pas fonctionner du tout.</translation>
 <translation id="520608572871993342">Utiliser des fenêtres privées ne change que ce que Brave fait sur votre appareil — cela ne change le comportement de personne d'autre. Tor cache votre adresse IP des sites que vous visitez, et cache les sites que vous visitez de votre FAI ou de votre employeur. Ouvrez une fenêtre privée avec Tor à partir du menu, ou avec {{ key }}.</translation>
 <translation id="6975708438781948564">En savoir plus sur Tor dans Brave</translation>
+<translation id="4712050378540986986">Statut de Tor</translation>
+<translation id="3368922792935385530">Connecté</translation>
+<translation id="8030169304546394654">Déconnecté</translation>
+<translation id="3705383383955310071">Initialisation {{percentage}} %</translation>
 <translation id="4272382368346338917">Filtres additionnels</translation>
 <translation id="8949292968394988358">Avertissement : L'activation d'un trop grand nombre de filtres dégradera les performances</translation>
 <translation id="8686201964111147748">Nombre total de publicités et de pisteurs bloqués :</translation>
@@ -102,7 +110,7 @@
 <translation id="3829010735958850433">Sauter le tour d'accueil</translation>
 <translation id="1201402288615127009">Suivant</translation>
 <translation id="7954950242989581218">Naviguer en toute sécurité</translation>
-<translation id="2188651882929633653">Les boucliers de Brave bloquent les trucs flippants qui essaient de vous suivre sur le Web — y compris la plupart des publicités. Réglez les boucliers en position “ basse ” si un site ne semble pas fonctionner. Brave utilise <ph name="BEGIN_LINK_P3A">&lt;a target="_blank" href="$1"&gt;</ph>des analyses de produits entièrement privées<ph name="END_LINK_P3A">&lt;/a&gt;</ph> pour estimer l'utilisation globale de certaines fonctionnalités. Vous pouvez désactiver cette fonctionnalité dans <ph name="BEGIN_LINK_P3A_SETTINGS">&lt;a target="_blank" href="$2"&gt;</ph> Paramètres <ph name="END_LINK_P3A_SETTINGS">&lt;/a&gt;</ph>.</translation>
+<translation id="2188651882929633653">Brave Shields bloque les éléments effrayants qui tentent de vous suivre sur le web — y compris la plupart des publicités. Réglez Shields sur “bas” si un site ne semble pas fonctionner. Brave utilise <ph name="BEGIN_LINK_P3A"/>des analyses produit entièrement privées<ph name="END_LINK_P3A"/> pour estimer l'utilisation globale de certaines fonctionnalités. Vous pouvez désactiver cela dans <ph name="BEGIN_LINK_P3A_SETTINGS"/>Paramètres<ph name="END_LINK_P3A_SETTINGS"/>.</translation>
 <translation id="1919345977826869612">Publicités</translation>
 <translation id="2128226640852355533">Gagnez {{currency}} en visionnant des publicités Brave. Les publicités présentées sont basées sur vos intérêts, tels qu'ils sont déduits de votre comportement de navigation. Aucune donnée personnelle ou historique de navigation ne quitte jamais votre navigateur.</translation>
 <translation id="6112368337882254910">Contribuer automatiquement</translation>
@@ -174,7 +182,7 @@
 <translation id="4875485795191140618">Votre clé de portefeuille a été vérifiée et chargée avec succès.</translation>
 <translation id="1083279119532577005">Portefeuille rétabli !</translation>
 <translation id="7841456038054167122">Veuillez ressaisir les clés ou essayer d'autres clés.</translation>
-<translation id="340102383764929340">La clé de restauration entrée n'est plus supportée. Veuillez visiter le <ph name="BEGIN_LINK_REGION_TEXT">&lt;a target="_blank" href="http://brave.com/faq#convert-old-keys"&gt;</ph>here<ph name="END_LINK_REGION_TEXT">&lt;/a&gt;</ph> pour obtenir une nouvelle clé.</translation>
+<translation id="1911900517212490188">La clé de restauration saisie n'est plus prise en charge. Veuillez cliquer <ph name="BEGIN_LINK"/>ici<ph name="END_LINK"/> pour obtenir une nouvelle clé.</translation>
 <translation id="2195074481553016770">Presque là…</translation>
 <translation id="5254740304961202261">Prouvez que vous êtes humain!</translation>
 <translation id="2187043784382239974">Hmmm, pas tout à fait ...</translation>
@@ -192,7 +200,7 @@
 <translation id="3082557070674409251">Cliqué</translation>
 <translation id="7119308337584989771">Rejeté</translation>
 <translation id="6805660603861526473">Vu</translation>
-<translation id="2852258589816753010">BAT n'est pas actuellement pris en charge dans votre région. Veuillez vous référer à <ph name="BEGIN_LINK_REGION_TEXT">&lt;a target="_blank" href="$1"&gt;</ph>here<ph name="END_LINK_REGION_TEXT">&lt;/a&gt;</ph> afin d'obtenir des mises à jour.</translation>
+<translation id="2359865110462963929">BAT n'est pas actuellement pris en charge dans votre région. Veuillez cliquer <ph name="BEGIN_LINK"/>ici<ph name="END_LINK"/> afin d'obtenir des mises à jour.</translation>
 <translation id="2564425876266960486">Erreur lors de la création de la carte BAT du navigateur Brave</translation>
 <translation id="6473583070570450185">Vous avez besoin d'un portefeuille vérifié pour vous connecter</translation>
 <translation id="2106271389438168634">Vous avez besoin d'un minimum de 25 BAT pour créer un portefeuille Uphold. Veuillez essayer à nouveau après avoir vérifié votre portefeuille avec Uphold.</translation>
@@ -219,6 +227,9 @@
 <translation id="386483240851194811">Les récompenses ont été désactivées</translation>
 <translation id="3354337256330577726">La contribution automatique a été désactivée</translation>
 <translation id="6727186931929643711">Nouvel essai arrété</translation>
+<translation id="680983167891198932">Clé</translation>
+<translation id="7535087603100972091">Valeur</translation>
+<translation id="45591635423975492">Connecté à</translation>
 <translation id="2059498613853603008">ATTENTION : Les données présentées sur cette page peuvent être sensibles. Traitez-les comme vous le feriez avec votre portefeuille ou vos clés personnelles. Faites attention aux personnes avec qui vous les partagez.</translation>
 <translation id="7375125077091615385">Type :</translation>
 <translation id="4973347371961481083">Contributions</translation>
@@ -252,6 +263,7 @@
 <translation id="2152423226436243241">Contribuer automatiquement</translation>
 <translation id="2927922949538312364">Pourboire unique</translation>
 <translation id="3164105678355419142">Pourboire récurrent</translation>
+<translation id="7806880412350961625">Journal des événements</translation>
 <translation id="4309915981827077375">Informations générales</translation>
 <translation id="3662406032239313663">Journaux</translation>
 <translation id="9001933311880936179">Montant total :</translation>
@@ -262,7 +274,6 @@
 <translation id="2326487656644542536">Informations sur le portefeuille</translation>
 <translation id="8559420016582377654">Identifiant de paiement du portefeuille :</translation>
 <translation id="438586487791444158">Statut du portefeuille :</translation>
-<translation id="3368922792935385530">Connecté</translation>
 <translation id="8874184842967597500">Non connecté</translation>
 <translation id="4569155249847375786">Vérifié</translation>
 <translation id="922103963921062336">Déconnecté (non vérifié)</translation>
@@ -351,7 +362,7 @@
 <translation id="7335371657242627509">Inclure dans la contribution automatique</translation>
 <translation id="1864111464094315414">Connexion</translation>
 <translation id="4556504723624686474">La vérification du portefeuille vous permet de gérer vos fonds de manière plus efficace.</translation>
-<translation id="4188679602963314994">Vous devez avoir au moins 25 BAT pour créer un compte Uphold. Veuillez essayer plus tard. <ph name="BREAK">&lt;br/&gt;</ph> Si vous avec déjà un compte Uphold vérifié, continuez pour vous connecter.</translation>
+<translation id="5594737784294211654">Vous devez disposer d'un minimum de 25 BAT pour créer un compte Uphold. Veuillez réessayer plus tard. <ph name="NEWLINE"/>Si vous avez déjà un compte Uphold vérifié, veuillez poursuivre votre connexion.</translation>
 <translation id="3250511771491660127">Faire ça tous les mois</translation>
 <translation id="6028954173739504682">Gérez votre portefeuille</translation>
 <translation id="7886389832052393750">Avr</translation>
@@ -443,8 +454,8 @@
 <translation id="8014425282125849700">De temps en temps, Brave vous attribuera gratuitement des jetons. Assurez-vous de garder un œil sur l'alerte !</translation>
 <translation id="2185598236335233939">Recherchez les annonces publicitaires en continuant à utiliser Brave. Votre solde de points BAT augmentera à chaque fois que vous regarderez une annonce.</translation>
 <translation id="1370034647041840967">Gagnez des jetons pour avoir prêter attention aux annonces et donnez au suivant pour aider les créateurs de contenu que vous appréciez!</translation>
-<translation id="1701701253000051237">Ajouter, retirer et gérer des fonds à <ph name="BEGIN_BOLD">&lt;b&gt;</ph>Uphold<ph name="BEGIN_END">&lt;/b&gt;</ph>.</translation>
-<translation id="4208741993667364007">Votre portefeuille Brave est alimenté par <ph name="BEGIN_BOLD">&lt;b&gt;</ph>Uphold<ph name="BEGIN_END">&lt;/b&gt;</ph>.</translation>
+<translation id="4600224932216165965">Ajoutez, retirez et gérez vos fonds sur <ph name="BEGIN_BOLD"/>Uphold<ph name="END_BOLD"/>.</translation>
+<translation id="3580616436301227919">Votre portefeuille Brave est développé par <ph name="BEGIN_BOLD"/>Uphold<ph name="END_BOLD"/>.</translation>
 <translation id="6401272292123354754">Brave Récompenses est construit sur le jeton d'attention de base. En savoir plus sur le BAT (sigle en anglais)</translation>
 <translation id="7823359893981882407">ici</translation>
 <translation id="4483635855837696643">Restaurez votre portefeuille</translation>
@@ -453,7 +464,7 @@
 <translation id="3267911153934785912">Entrez votre clé de récupération ou</translation>
 <translation id="6548189695918108191">Sauvegardez votre portefeuille avant le remplacement, ou vous perdrez les fonds, {{funds}} dans votre portefeuille actuel.</translation>
 <translation id="5423214929210538027">Êtes-vous sûr de vouloir réinitialiser votre portefeuille de récompense?</translation>
-<translation id="9106875682287489763">Votre <ph name="BEGIN_BOLD">&lt;b&gt;</ph>{{amount}} BAT<ph name="BEGIN_END">&lt;/b&gt;</ph> et autres données de récompenses seront perdus de manière permanente si vous réinitialisez votre portefeuille. Veuillez vous assurer d'avoir vérifié votre portefeuille avec Uphold afin de conserver votre BAT.</translation>
+<translation id="7428521340740703492">Vos <ph name="BEGIN_BOLD"/>{{amount}} BAT<ph name="END_BOLD"/> et autres données relatives aux récompenses seront définitivement perdus si vous réinitialisez votre portefeuille. Veuillez vous assurer d'avoir vérifié votre portefeuille auprès de Uphold afin de pouvoir conserver vos jetons BAT.</translation>
 <translation id="2028613172174411919">Vos données de récompenses seront perdues de manière permanentes si vous réinitialisez votre portefeuille.</translation>
 <translation id="4914597931214386232">Octrois de jetons réclamés</translation>
 <translation id="3494964159182650590">Résumé des récompenses</translation>
@@ -533,14 +544,13 @@
 <translation id="5030988785798407804">Votre subvention en {{currency}} est en cours.</translation>
 <translation id="2132683977638223450">Subvention de points gratuits</translation>
 <translation id="7512440811010447157">vérifier</translation>
-<translation id="8030169304546394654">Déconnecté</translation>
 <translation id="8267327690882073581">Vérifier le porte-monnaie</translation>
 <translation id="543510923939676996">Porte-monnaie vérifié</translation>
 <translation id="7591798679868259510">Accéder à mon compte Uphold</translation>
 <translation id="3699674790322420653">Vérification complète du portefeuille</translation>
 <translation id="9200453331904391567">Se déconnecter des Récompenses de Brave</translation>
 <translation id="46988480989545156">Vérifier le portefeuille</translation>
-<translation id="4986087720311945758">Notre service portefeuille est assuré par <ph name="BEGIN_BOLD">&lt;b&gt;</ph>Uphold<ph name="BEGIN_END">&lt;/b&gt;</ph></translation>
+<translation id="160145159036553575">Notre service de portefeuille est fourni par <ph name="BEGIN_BOLD"/>Uphold.<ph name="END_BOLD"/></translation>
 <translation id="6771734945114850124">Veuillez vous munir d'une pièce d'identité délivrée par votre gouvernement.</translation>
 <translation id="8697510149346635496">Retirer le BAT que vous gagnez en regardant des annonces respectueuses de la vie privée</translation>
 <translation id="1481480653609649134">Acheter des BAT supplémentaires avec des cartes de crédit et d'autres modes de paiement</translation>
@@ -552,7 +562,7 @@
 <translation id="7404779623219601861">Échange de BAT contre des cartes-cadeaux</translation>
 <translation id="6215565499749144110">Avec le TAP réseau, vous pouvez échanger votre BAT contre des cartes-cadeaux de marques connues.</translation>
 <translation id="6915065518766963119">* Nécessite une vérification de conformité.</translation>
-<translation id="651649139059930379">Recevez un crédit de 2 % en cryptomonnaie avec la carte Uphold</translation>
+<translation id="7703007724342399482">Récupérez 2 % en cryptomonnaie avec la carte Uphold</translation>
 <translation id="1109729143147368573">Dépensez votre cryptomonnaie et autres actifs chez presque 50 millions de marchants et de GAB dans le monde entier. Dépensez votre cryptomonnaie pour obtenir de la cryptomonnaie!</translation>
 <translation id="4360054110030715117"><ph name="LINK_BEGIN"/>En savoir plus<ph name="LINK_END"/> sur les récompenses de Brave</translation>
 <translation id="5826706758731195747">En activant Rewards, vous acceptez les <ph name="LINK_BEGIN"/>Conditions d'utilisation<ph name="LINK_END"/>.</translation>
@@ -608,6 +618,7 @@
 <translation id="6409345078064530735">Adresse de dépôt</translation>
 <translation id="7153116947319792513">Note de dépôt</translation>
 <translation id="1383876407941801731">Recherche</translation>
+<translation id="3781412534383755121">Le montant minimum à convertir est :</translation>
 <translation id="6432284126416751397">Confirmer la conversion</translation>
 <translation id="1301340234286078471">Convertir</translation>
 <translation id="6680650203439190394">Taux</translation>
@@ -648,4 +659,21 @@
 <translation id="453977518730680921">Lecture automatique des médias</translation>
 <translation id="7701466644604753106">Allumer le lecteur de vitesse</translation>
 <translation id="763042262431778831">Éteindre le lecteur de vitesse</translation>
+<translation id="9020818404803201080">Pairs connectés :</translation>
+<translation id="6717690610234999751">Configuration des adresses</translation>
+<translation id="9182285671734219088">Statut du démon</translation>
+<translation id="6599816589121202398">API</translation>
+<translation id="1327977588028644528">Passerelle</translation>
+<translation id="2551123942222622809">Swarm</translation>
+<translation id="3967335629471284781">Lancé</translation>
+<translation id="1515163294334130951">Lancement</translation>
+<translation id="1895658205118569222">Arrêt</translation>
+<translation id="6762417584993757344">Pas installé</translation>
+<translation id="8428368469058794536">Service IPFS</translation>
+<translation id="2901715907314796027">Achetez des cryptomonnaies sur Bitcoin.com.</translation>
+<translation id="4065681313949497252">Monnaie</translation>
+<translation id="3833315885381772739">Saisir un montant</translation>
+<translation id="4011828592358027165">Vous découvrez les cryptomonnaies?</translation>
+<translation id="3358050091139900813">Obtenez un portefeuille ici pour commencer</translation>
+<translation id="3105412115725259537">Bitcoin.com</translation>
 </translationbundle>

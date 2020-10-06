@@ -1024,6 +1024,8 @@ Na primer, neki veb-sajtovi mogu da odgovore na ovaj zahtev prikazivanjem oglasa
 <translation id="983192555821071799">Zatvori sve kartice</translation>
 <translation id="987264212798334818">Opšte</translation>
 <translation id="996149300115483134">Meni kartice fida je zatvoren</translation>
+<translation id="4540437243849625078">Ovaj sajt će deliti informacije sa aplikacijom izvan režima bez arhiviranja.</translation>
+<translation id="1227836882233136433">Izlazite iz režima bez arhiviranja?</translation>
 <translation id="5186185447130319458">Bez arhiviranja</translation>
 <translation id="9063160602596686558">Automatski šalje Brave Software-u statistiku korišćenja i izveštaje o otkazivanju</translation>
 <translation id="1438581767753657407">Kada je Lite režim uključen, Brave ubrzava učitavanje stranica pomoću Brave Software servera. Lite režim ponovo upisuje veoma spore stranice da bi učitavale samo sadržaj koji je neophodan. Lite režim se ne primenjuje na kartice bez arhiviranja.</translation>
@@ -1033,8 +1035,6 @@ Na primer, neki veb-sajtovi mogu da odgovore na ovaj zahtev prikazivanjem oglasa
 <translation id="3110967157686007724">Kartica bez arhiviranja</translation>
 <translation id="4526803704855831732">Kartice Bez arhiviranja</translation>
 <translation id="7465104139234185284">Zatvori sve kartice bez arhiviranja</translation>
-<translation id="4540437243849625078">Ovaj sajt će deliti informacije sa aplikacijom izvan režima bez arhiviranja.</translation>
-<translation id="1227836882233136433">Izlazite iz režima bez arhiviranja?</translation>
 <translation id="6336451774241870485">Nova kartica bez arhiviranja</translation>
 <translation id="3234355010754616171">Nova kartica bez arhiviranja</translation>
 <translation id="6610147964972079463">Zatvori kartice bez arhiv.</translation>

@@ -25,7 +25,7 @@ Genom att installera detta tillägg godkänner du användarvillkoren för Google
 <translation id="3218385319396786393">Autouppspelning blockerades på denna sida</translation>
 <translation id="4988333904713528597">Autospela alltid på <ph name="HOST"/></translation>
 <translation id="4150684676757176434">Fortsätt blockera automatisk uppspelning</translation>
-<translation id="5883458389055721080">Brave har inte granskat detta tillägg gällande säkerhet. Installera bara tillägget om du litar på utvecklaren.</translation>
+<translation id="8988939298652262600">Brave granskar inte tillägg gällande säkerhet och trygghet. Installera bara det här tillägget om du litar på utvecklaren.</translation>
 <translation id="8081858229109418493">Profilnamn och ikon</translation>
 <translation id="2044383478723007273">Bravefärger</translation>
 <translation id="1692470335103807198">Få fler teman</translation>
@@ -37,6 +37,9 @@ Genom att installera detta tillägg godkänner du användarvillkoren för Google
 <translation id="5802665280774361839">Visa textförslag i adressfältet</translation>
 <translation id="597020512043916976">Vissa toppsajter i förslagen</translation>
 <translation id="264150068416846820">Visa av Brave föreslagna sajter i automatiska förslag.</translation>
+<translation id="6414370348346025511">Standardskyddet är på.</translation>
+<translation id="814018970995616154">Kontrollerar webbadresser mot en lista över osäkra webbplatser som lagras i Brave.</translation>
+<translation id="1144810021918451336">Skyddar dig inte mot farliga webbplatser, nedladdningar eller tillägg.</translation>
 <translation id="7781069478569868053">Ny flik</translation>
 <translation id="2467749191278759605">Anpassa din översikt i Brave</translation>
 <translation id="1717331825806276156">Bakgrundsbilder</translation>
@@ -79,7 +82,7 @@ Genom att installera detta tillägg godkänner du användarvillkoren för Google
 <translation id="4824468494729001999">Blockera skript</translation>
 <translation id="519861640102428255">Utseende och känsla</translation>
 <translation id="4800195524776354947">Visa antalet saker som blockeras på ikonen med en sköld</translation>
-<translation id="3932286112122164477">Tillåt Googles inloggningsknappar på tredjepartssajter</translation>
+<translation id="7498695072878479744">Tillåt Googles inloggningsknappar på tredjepartssajter</translation>
 <translation id="863171915776379000">Tillåt Facebook-inloggningar och inbäddade poster</translation>
 <translation id="5165042248369837294">Tillåt inbäddade tweets från Twitter</translation>
 <translation id="958971637207126733">Tillåt inbäddningar från LinkedIn</translation>
@@ -148,13 +151,17 @@ Genom att installera detta tillägg godkänner du användarvillkoren för Google
 <translation id="2356070529366658676">Fråga</translation>
 <translation id="7701040980221191251">Inget</translation>
 <translation id="1085027414516521238">MetaMask</translation>
-<translation id="3905324891414560921">Web3-leverantör för användning av Dapps</translation>
+<translation id="7090046810227878892">Ethereum-leverantör för användning av Dapps</translation>
 <translation id="5913089932885076110">Ladda Crypto Wallets vid start</translation>
+<translation id="6864914031231797928">Tillåt Google-inloggning för tillägg</translation>
+<translation id="1365342176656744625">Metod för att anropa IPFS-platser</translation>
+<translation id="1327977588028644528">Gateway</translation>
+<translation id="80225669816651290">Lokal nod</translation>
 <translation id="6554397389149987360">Använder komponenten Hangouts för att aktivera skärmdelning och andra funktioner i webbläsaren.</translation>
 <translation id="1765684547504191670">Använder komponenten Media Router för att aktivera Chromecast i webbläsaren.</translation>
 <translation id="9156965752763025780">Ändringarna tillämpas nästa gång du startar om Brave.</translation>
 <translation id="7179921470347911571">Starta om nu</translation>
-<translation id="4154389611571860454">Använder IPFS-tillägget för att stödja IPFS i webbläsaren.</translation>
+<translation id="6222323340194834282">Använder IPFS companion-tillägg för att förbättra IPFS-stöd i webbläsaren.</translation>
 <translation id="8137559199583651773">Hantera tillägg</translation>
 <translation id="7013485839273047434">Skaffa fler tillägg</translation>
 <translation id="4928988318462976765">Web Extensions Store</translation>
@@ -210,20 +217,19 @@ Genom att installera detta tillägg godkänner du användarvillkoren för Google
 <translation id="4394049700291259645">Inaktivera</translation>
 <translation id="6469509880167172749">Skicka automatiskt helt privat produktanalys till Brave</translation>
 <translation id="7090566321964540749">Denna anonyma information används endast för att Brave ska kunna uppskatta generella användningen av vissa funktioner.</translation>
-<translation id="9111960429693394744">Vill du använda Braves Crypto Wallets eller MetaMask för Dapps?</translation>
-<translation id="8721775358057000783">Vill du starta Crypto Wallets för web3-stöd på denna sida?</translation>
+<translation id="1947672064022327074">Vill du starta kryptoplånböcker för Ethereum-support?</translation>
 <translation id="7583735190612229830">Ställ in Crypto Wallets för att interagera med denna app och andra som den.</translation>
 <translation id="4823406846571523661">Installera kryptoplånböcker</translation>
-<translation id="5756155765711979898">Använd MetaMask</translation>
-<translation id="6754134632841262799">INSTÄLLNINGAR</translation>
 <translation id="8199661191594897555">Starta Crypto Wallets och ladda om</translation>
 <translation id="8428213095426709021">Inställningar</translation>
+<translation id="1854270995641373652">Vill du aktivera stöd för IPFS lokal daemon i Brave?</translation>
+<translation id="2366908098700680611">Aktivera IPFS</translation>
 <translation id="4552520379838695057">Tyvärr, den sidan saknas.</translation>
 <translation id="2609895996619941644">Vill du kolla om det finns en sparad version tillgänglig på Wayback Machine?</translation>
 <translation id="8053093028263274061">Tyvärr finns det ingen sparad version tillgänglig.</translation>
 <translation id="8517321676372639828">Kolla efter sparad version</translation>
-<translation id="191143826155037518">Brave görs tillgängligt för dig under <ph name="BEGIN_LINK_MPL">&lt;a target="_blank" href="$1"&gt;</ph>Mozilla Public License 2.0<ph name="END_LINK_MPL">&lt;/a&gt;</ph> (MPL) och inkluderar <ph name="BEGIN_LINK_OSS">&lt;a target="_blank" href="$2"&gt;</ph>öppen källkod<ph name="END_LINK_OSS">&lt;/a&gt;</ph> under flera andra licenser.
-        Du kan läsa <ph name="BEGIN_LINK_BUILD_INSTRUCTIONS">&lt;a target="_blank" href="$3"&gt;</ph>instruktioner om hur du laddar ner och själv kan bygga<ph name="END_LINK_BUILD_INSTRUCTIONS">&lt;/a&gt;</ph> den specifika <ph name="BEGIN_LINK_SOURCE_CODE">&lt;a target="_blank" href="$4"&gt;</ph>källkod som använts för att skapa denna version<ph name="END_LINK_SOURCE_CODE">&lt;/a&gt;</ph>.</translation>
+<translation id="191143826155037518">Brave görs tillgängligt för dig under <ph name="BEGIN_LINK_MPL"/>Mozilla Public License 2.0<ph name="END_LINK_MPL"/> (MPL) och inkluderar <ph name="BEGIN_LINK_OSS"/>öppen källkod<ph name="END_LINK_OSS"/> under flera andra licenser.
+        Du kan läsa <ph name="BEGIN_LINK_BUILD_INSTRUCTIONS"/>instruktioner om hur du laddar ner och själv kan bygga<ph name="END_LINK_BUILD_INSTRUCTIONS"/> den specifika <ph name="BEGIN_LINK_SOURCE_CODE"/>källkod som använts för att skapa denna version<ph name="END_LINK_SOURCE_CODE"/>.</translation>
 <translation id="4474155171896946103">Skapa bokmärken för alla flikar ...</translation>
 <translation id="2336228925368920074">Skapa bokmärken för alla flikar ...</translation>
 <translation id="796831669370432378">För att spara ett bokmärke, klicka på bokmärkesknappen bredvid adressraden</translation>

@@ -1024,6 +1024,8 @@ Ad esempio, alcuni siti web potrebbero rispondere alla richiesta mostrando annun
 <translation id="983192555821071799">Chiudi tutte le schede</translation>
 <translation id="987264212798334818">Generali</translation>
 <translation id="996149300115483134">Menu scheda feed chiuso</translation>
+<translation id="4540437243849625078">Questo sito sta per condividere informazioni con una app al di fuori della modalità privata.</translation>
+<translation id="1227836882233136433">Uscire da modalità privata?</translation>
 <translation id="5186185447130319458">Privato</translation>
 <translation id="9063160602596686558">Invia automaticamente a Brave Software statistiche sull'utilizzo e rapporti sugli arresti anomali</translation>
 <translation id="1438581767753657407">Quando la modalità Lite è attiva, Brave utilizza i server Brave per rendere più veloce il caricamento delle pagine. La modalità Lite riscrive pagine molto lente per caricare solo contenuti essenziali. La modalità Lite non si applica alle schede private.</translation>
@@ -1033,8 +1035,7 @@ Ad esempio, alcuni siti web potrebbero rispondere alla richiesta mostrando annun
 <translation id="3110967157686007724">Scheda privata</translation>
 <translation id="4526803704855831732">Schede private</translation>
 <translation id="7465104139234185284">Chiudi tutte le schede private</translation>
-<translation id="4540437243849625078">Questo sito sta per condividere informazioni con una app al di fuori della modalità privata.</translation>
-<translation id="1227836882233136433">Uscire da modalità privata?</translation>
+<translation id="21023559487771014">Vai alla modalità Privata</translation>
 <translation id="6336451774241870485">Nuova scheda privata</translation>
 <translation id="3234355010754616171">Nuova scheda privata</translation>
 <translation id="6610147964972079463">Chiudi le schede private</translation>

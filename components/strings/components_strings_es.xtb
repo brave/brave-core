@@ -1914,6 +1914,25 @@ Más información:
     &lt;/ul&gt;</translation>
 <translation id="994346157028146140">JIS B1</translation>
 <translation id="6771143571626203666">De Brave Pay</translation>
+<translation id="2586968635953373425">Abrir Ventana Privada</translation>
+<translation id="3489858312836205593">Abrir nueva ventana privada</translation>
+<translation id="1426112902089905810">&lt;h4&gt;Paso 1: Iniciar sesión en el portal&lt;/h4&gt;
+    &lt;p&gt;Wi-Fi networks at places like cafes or airports need you to sign in. To see the sign-in page, visit a page that uses &lt;code&gt;http://&lt;/code&gt;.&lt;/p&gt;
+    &lt;ol&gt;
+    &lt;li&gt;Go to any website starting with &lt;code&gt;http://&lt;/code&gt;, like &lt;a href="http://example.com" target="_blank" rel="noopener noreferrer"&gt;http://example.com&lt;/a&gt;.&lt;/li&gt;
+    &lt;li&gt;En la página de inicio de sesión abierta, inicia sesión para usar Internet.&lt;/li&gt;
+    &lt;/ol&gt;
+    &lt;h4&gt;Paso 2: Abrir la página en modo privado (solo PC)&lt;/h4&gt;
+    &lt;p&gt;Open the page you were visiting in a Private window.&lt;/p&gt;
+    &lt;p&gt;If the page opens, a Brave extension isn't working right. Para solucionar este error, deshabilita la extensión.&lt;/p&gt;
+    &lt;h4&gt;Paso 3: Actualiza tu sistema operativo&lt;/h4&gt;
+    &lt;p&gt;Make sure your device is up-to-date.&lt;/p&gt;
+    &lt;h4&gt;Paso 4: Desactiva tu antivirus temporalmente&lt;/h4&gt;
+    &lt;p&gt;You'll see this error if you have antivirus software that provides "HTTPS protection" or "HTTPS scanning." The antivirus is preventing Brave from providing security.&lt;/p&gt;
+    &lt;p&gt;To fix the problem, turn off your antivirus software. If the page works after turning off the software, desactiva este software cuando navegues en sitios seguros.&lt;/p&gt;
+    &lt;p&gt;Remember to turn your antivirus program back on when you're done.&lt;/p&gt;
+    &lt;h4&gt;Paso 5: Recibe ayuda extra&lt;/h4&gt;
+    &lt;p&gt;Si continúas viendo un error, contacta con el propietario del sitio web.&lt;/p&gt;</translation>
 <translation id="8820817407110198400">Marcadores</translation>
 <translation id="8362995731815961365">El perfil que ha configurado este ordenador ha elegido bloquear este sitio.</translation>
 <translation id="4075123085690634698">Abrir página en una nueva ventana privada (⇧⌘N)</translation>
@@ -1924,13 +1943,15 @@ Más información:
 <translation id="9177896974490719854">Sin embargo, no eres invisible. Ser privado no oculta tu navegación a tu empresa, tu proveedor de servicios de Internet o los sitios web que visitas.</translation>
 <translation id="2227116904818538760">Te has convertido en privado</translation>
 <translation id="2007417459975034427">No se ha informado de ningún fallo reciente. Los fallos que ocurrieron cuando el informe de error estaba deshabilitado no aparecerán aquí.</translation>
-<translation id="2586968635953373425">Abrir Ventana Privada</translation>
-<translation id="3489858312836205593">Abrir nueva ventana privada</translation>
+<translation id="5549245478906381817">Abrir ventana privada</translation>
+<translation id="5497977785983089120">Abre una nueva ventana privada para navegar con privacidad</translation>
+<translation id="1819281525814582516"><ph name="LAUNCH_INCOGNITO_FOCUSED_FRIENDLY_MATCH_TEXT"/>, pulsa la tecla Tab y después Enter para abrir una nueva ventana privada y navegar con privacidad</translation>
+<translation id="2418728264526266844">Botón para abrir una ventana privada, pulsa "Enter" para abrir una nueva ventana privada para navegar con privacidad</translation>
 <translation id="6984479912851154518">Abandonando el modo privado para pagar mediante una aplicación externa. ¿Quieres continuar?</translation>
-<translation id="1426112902089905810">&lt;h4&gt;Paso 1: Iniciar sesión en el portal&lt;/h4&gt;
+<translation id="7243899945709472787">&lt;h4&gt;Paso 1: Iniciar sesión en el portal&lt;/h4&gt;
     &lt;p&gt;Wi-Fi networks at places like cafes or airports need you to sign in. To see the sign-in page, visit a page that uses &lt;code&gt;http://&lt;/code&gt;.&lt;/p&gt;
     &lt;ol&gt;
-    &lt;li&gt;Go to any website starting with &lt;code&gt;http://&lt;/code&gt;, like &lt;a href="http://example.com" target="_blank"&gt;http://example.com&lt;/a&gt;.&lt;/li&gt;
+    &lt;li&gt;Go to any website starting with &lt;code&gt;http://&lt;/code&gt;, like &lt;a href="http://example.com" target="_blank" rel="noopener noreferrer"&gt;http://example.com&lt;/a&gt;.&lt;/li&gt;
     &lt;li&gt;En la página de inicio de sesión abierta, inicia sesión para usar Internet.&lt;/li&gt;
     &lt;/ol&gt;
     &lt;h4&gt;Paso 2: Abrir la página en modo privado (solo PC)&lt;/h4&gt;

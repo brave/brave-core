@@ -179,7 +179,6 @@
 <translation id="8193724030871339658">OSTATNÉ ZARIADENIA V REŤAZCI</translation>
 <translation id="279635009973773843">NAČÍTANIE ZARIADENÍ ...</translation>
 <translation id="6394333525003604181">ODPÁJANIE REŤAZCA SYNCHRONIZÁCIE...</translation>
-<translation id="1604429341565715601">Prebieha nastavenie synchronizácie, skúste ho resetovať neskôr</translation>
 <translation id="2569646144216067185">Počet slov: <ph name="WORD_COUNT"/></translation>
 <translation id="4282642752844565114">Nesprávny počet slov</translation>
 <translation id="7507533586185621084">Zlý synchronizačný kód</translation>
@@ -316,7 +315,8 @@
 <translation id="5963670684159057574">Blokovať cross-site odtlačky prstov</translation>
 <translation id="3895527457258986253">Blokovať Odtlačky prstov</translation>
 <translation id="184568144098869637">Zabraňuje prehliadaču rozpoznať vaše zariadenie</translation>
-<translation id="4540198958192073185">Blokovať fingerprinting</translation>
+<translation id="7396366757003005317">Odtlačky prstov blokované (striktne, môžu poškodiť stránky)</translation>
+<translation id="700453611199558021">Odtlačok prsta blokovaný (štandard)</translation>
 <translation id="769702552748212954">Povoliť všetky odtlačky prstov</translation>
 <translation id="2888409909650566510">Reklamy a ďalšie hrozné\nveci blokované</translation>
 <translation id="6930134873084561197">Webové stránky často obsahujú súbory cookie a skripty, ktoré sa snažia identifikovať vás a vaše zariadenie. Chcú zistiť, kto ste, a sledovať čo robíte na každej stránke naprieč webom.\n\nBrave tieto veci blokuje, takže môžete prehliadať bez toho, aby ste boli všade prenasledovaní.</translation>
@@ -344,7 +344,7 @@
 <translation id="8374242949413616101">Ochrana súkromia</translation>
 <translation id="4955406228638026265">Prehliadač Brave zabraňuje reklamám a sledovačom zhromažďovať informácie o vás bez vášho súhlasu.</translation>
 <translation id="752842701893882688">Šetrite dáta a batériu</translation>
-<translation id="5739030256211745023">Bez reklám &amp; sledovačov používajú webové stránky menej dát a batérie. Môžete dokonca ušetriť peniaze za poplatky operátorom.</translation>
+<translation id="1685837926613452362">Bez reklám a sledovačov, webové stránky používajú menej dát a menej využívajú batériu. Môžete dokonca ušetriť na poplatkoch operátorov.</translation>
 <translation id="5440744330377972191">Webové stránky sa načítajú rýchlejšie</translation>
 <translation id="3000738865641747653">Načítanie menšieho počtu dát znamená, že webové stránky sa v prehliadači Brave načítajú rýchlejšie - až 8x rýchlejšie než v iných prehliadačoch.</translation>
 <translation id="8903462729414407077">Získajte týždenné aktualizácie</translation>
@@ -359,6 +359,7 @@
 <translation id="1581614543353331529">Zatiaľ nie sú k dispozícii žiadne údaje</translation>
 <translation id="2401984885421380890">Sledovače &amp; Reklamy\nBlokované</translation>
 <translation id="2662183408296991265">Ušetrené dáta\n(<ph name="DATA_SAVED"/>)</translation>
+<translation id="3180928261057583677">Údaje uložené (<ph name="DATA_SAVED"/>)</translation>
 <translation id="6814582232712814369">Ušetrený čas</translation>
 <translation id="3694122362646626770">Webové stránky</translation>
 <translation id="2225863440766607138">Sledovače</translation>
@@ -368,12 +369,12 @@
 <translation id="7427567994475794038">Zapnite si Hlásenia o súkromí a zistite, koľko sledovačov a reklám bolo za posledné 3 hodiny zablokovaných.</translation>
 <translation id="2053891538879944400">Pomocou prehliadača Brave ste ušetrili <ph name="DATA"/> <ph name="DATA_TEXT"/> dát.</translation>
 <translation id="8640064498452534195">Na zobrazenie množstva údajov, ktoré ste ušetrili, zapnite Hlásenia o súkromí.</translation>
-<translation id="4591582032282435287">Prehliadač Brave spotrebuje v priemere o 40% menej batérie.</translation>
+<translation id="2252497442547961651">Prehliadač Brave používa v priemere o 40 % menej batérie.&#128267;</translation>
 <translation id="1945330434665345785">Za posledný týždeň ste pomocou prehliadača Brave zablokovali <ph name="COUNT"/> trackers &amp; reklám.</translation>
 <translation id="2883868922264431515">Získajte tokeny sledovaním reklám rešpektujúcich súkromie a podporte svoje obľúbené webové stránky.</translation>
-<translation id="6840965284166256302">Super! Pomocou prehliadača Brave ste zablokovali 250 sledovačov &amp;reklám.</translation>
-<translation id="2076976911561945584">Super! S prehliadačom Brave ste ušetrili 10 MB.</translation>
-<translation id="6714550233326888315">Super! Pomocou prehliadača Brave ste ušetrili ste 10 minút načítavacieho času.</translation>
+<translation id="5678925890616256956">Super! Zablokovali ste 250 sledovačov a reklám pomocou prehliadača Brave.&#128293;</translation>
+<translation id="9199047775708635708">Super! Pomocou Brave ste ušetrili 10 MB.&#128267;</translation>
+<translation id="1880168210969863408">Super! V Brave ste ušetrili 10 minút času načítavania.&#128168;&#128168;</translation>
 <translation id="7408493389591475748">Na zobrazenie hlásenia o súkromí začnite prehliadať</translation>
 <translation id="9080777565335515917">Nastaviť Brave ako predvolený prehliadač pre súkromné a zabezpečené prehliadanie.</translation>
 <translation id="7801488941710395275">Povoľte prehliadaču Brave, aby vám zobrazil údaje o súkromí</translation>
@@ -382,4 +383,5 @@
 <translation id="8089997572759938512">Vynulovať vaše hlásenia o súkromí</translation>
 <translation id="2718046830255553131">Údaje o Hláseniach o súkromí boli vymazané.</translation>
 <translation id="7559243474426790340">Obnoviť stav</translation>
+<translation id="8376263745431603066">Povoliť Nočný režim (experimentálne)</translation>
 </translationbundle>

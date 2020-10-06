@@ -291,7 +291,7 @@
 <translation id="1361872463926621533">پخش صدا هنگام شروع به کار</translation>
 <translation id="1363585519747660921">‏چاپگر USB باید پیکربندی شود</translation>
 <translation id="1365180424462182382"><ph name="BEGIN_LINK"/>مرورگرتان<ph name="END_LINK"/> توسط <ph name="ENROLLMENT_DOMAIN"/> مدیریت می‌شود</translation>
-<translation id="1366177842110999534">‏اجرای ابزارها، ویرایشگرها و محیط‌های یکپارچه توسعه نرم‌افزار (IDE) ‏Linux در <ph name="DEVICE_TYPE"/>. &lt;a target="_blank" href="<ph name="URL"/>"&gt;بیشتر بدانید&lt;/a&gt;</translation>
+<translation id="1366177842110999534">‏اجرای ابزارها، ویرایشگرها و محیط‌های یکپارچه توسعه نرم‌افزار (IDE) ‏Linux در <ph name="DEVICE_TYPE"/>. &lt;a target="_blank" rel="noopener noreferrer" href="<ph name="URL"/>"&gt;بیشتر بدانید&lt;/a&gt;</translation>
 <translation id="1367951781824006909">انتخاب یک فایل</translation>
 <translation id="1369149969991017342">دسترسی کلیدی (رایانه را فقط با یک یا دو سوئیچ کنترل کنید)</translation>
 <translation id="1372841398847029212">همگام‌سازی با حسابتان</translation>
@@ -1351,7 +1351,7 @@
 <translation id="268053382412112343">&amp;سابقه</translation>
 <translation id="2682498795777673382">به‌روزرسانی ازطرف والدین شما</translation>
 <translation id="2683638487103917598">پوشه مرتب شد</translation>
-<translation id="2686222346846590368">‏این آخرین به‌روزرسانی خودکار امنیتی و نرم‌افزار برای این <ph name="DEVICE_TYPE"/> است. برای دریافت به‌روزرسانی‌های بعدی، به مدل جدیدتری ارتقا دهید. &lt;a target="_blank" href="<ph name="URL"/>"&gt;بیشتر بدانید<ph name="LINK_END"/></translation>
+<translation id="2686222346846590368">‏این آخرین به‌روزرسانی خودکار امنیتی و نرم‌افزار برای این <ph name="DEVICE_TYPE"/> است. برای دریافت به‌روزرسانی‌های بعدی، به مدل جدیدتری ارتقا دهید. &lt;a target="_blank" rel="noopener noreferrer" href="<ph name="URL"/>"&gt;بیشتر بدانید<ph name="LINK_END"/></translation>
 <translation id="2687403674020088961">مسدود کردن همه کوکی‌ها (توصیه نمی‌شود)</translation>
 <translation id="2687407218262674387">‏شرایط خدمات Brave</translation>
 <translation id="2688196195245426394">خطا هنگام ثبت دستگاه با سرور: <ph name="CLIENT_ERROR"/>.</translation>
@@ -4849,7 +4849,7 @@
 <translation id="7197632491113152433"><ph name="NUMBER_OF_APPS"/> برنامه از حسابتان پیدا کردیم که می‌توان در این دستگاه از آن‌ها استفاده کرد.</translation>
 <translation id="7199158086730159431">دریافت راهنمایی</translation>
 <translation id="7200083590239651963">انتخاب پیکربندی</translation>
-<translation id="7201042526153088083">‏برنامه‌ها و بازی‌ها را از Google Play در <ph name="DEVICE_TYPE"/> نصب کنید. &lt;a target="_blank" href="<ph name="URL"/>"&gt;بیشتر بدانید&lt;/a&gt;</translation>
+<translation id="7201042526153088083">‏برنامه‌ها و بازی‌ها را از Google Play در <ph name="DEVICE_TYPE"/> نصب کنید. &lt;a target="_blank" rel="noopener noreferrer" href="<ph name="URL"/>"&gt;بیشتر بدانید&lt;/a&gt;</translation>
 <translation id="720110658997053098">این دستگاه همیشه در حالت کیوسک نگه داشته شود</translation>
 <translation id="7201118060536064622">«<ph name="DELETED_ITEM_NAME"/>» حذف شد</translation>
 <translation id="7201420661433230412">مشاهده فایل‌ها</translation>
@@ -6608,7 +6608,7 @@ other {# پنجره خصوصی باز}
 <translation id="3860292630623580294">(خصوصی)</translation>
 <translation id="4854477725773269949">در حالت خصوصی مجاز باشد</translation>
 <translation id="6436164536244065364">نمایش در فروشگاه وب</translation>
-<translation id="38046578254905003">در <ph name="BEGIN_LINK">&lt;a target="_blank" href="https://chrome.google.com/webstore/category/extensions"&gt;</ph>فروشگاه وب<ph name="END_LINK">&lt;/a&gt;</ph> افزونه و طرح زمینه پیدا کنید</translation>
+<translation id="38046578254905003">افزونه‌ها و طرح‌های زمینه را در <ph name="BEGIN_LINK"/>فروشگاه وب<ph name="END_LINK"/> پیدا کنید</translation>
 <translation id="6336451774241870485">برگه خصوصی جدید</translation>
 <translation id="6610147964972079463">بستن برگه‌های خصوصی</translation>
 <translation id="4933782374919065856">سؤال دارید؟ با فردی که بر نمایه‌تان نظارت دارد تماس بگیرید.</translation>

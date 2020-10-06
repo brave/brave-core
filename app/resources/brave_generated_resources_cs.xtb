@@ -25,7 +25,7 @@ Instalací tohoto rozšíření souhlasíte s podmínkami použití služby Goog
 <translation id="3218385319396786393">Automatické přehrávání bylo na této stránce zablokováno</translation>
 <translation id="4988333904713528597">Vždy povolit automatické přehrávání na <ph name="HOST"/></translation>
 <translation id="4150684676757176434">Pokračovat v blokování automatického přehrávání</translation>
-<translation id="5883458389055721080">Brave nepřezkoumal bezpečnost tohoto rozšíření. Toto rozšíření nainstalujte pouze tehdy, pokud důvěřujete vývojáři.</translation>
+<translation id="8988939298652262600">Brave nekontroluje bezpečnost rozšíření. Nainstalujte si toto rozšíření, jen pokud důvěřujete jeho vývojáři.</translation>
 <translation id="8081858229109418493">Název profilu a ikona</translation>
 <translation id="2044383478723007273">Barvy Brave</translation>
 <translation id="1692470335103807198">Získejte další témata</translation>
@@ -37,6 +37,9 @@ Instalací tohoto rozšíření souhlasíte s podmínkami použití služby Goog
 <translation id="5802665280774361839">V adresním řádku používat automatické doplňování</translation>
 <translation id="597020512043916976">Ukazovat nejoblíbenější stránky v návrzích automatického dokončení</translation>
 <translation id="264150068416846820">Ukázat doporučené stránky Brave v návrzích automatického dokončování</translation>
+<translation id="6414370348346025511">Je zapnutá standardní ochrana.</translation>
+<translation id="814018970995616154">Kontroluje URL adresy pomocí seznamu nebezpečných webů, který je uložen v Brave.</translation>
+<translation id="1144810021918451336">Nechrání vás před nebezpečnými weby, staženými soubory a rozšířeními.</translation>
 <translation id="7781069478569868053">Stránka nové karty</translation>
 <translation id="2467749191278759605">Přizpůsobte si Ovládací panel Brave</translation>
 <translation id="1717331825806276156">Obrázky na pozadí</translation>
@@ -79,7 +82,7 @@ Instalací tohoto rozšíření souhlasíte s podmínkami použití služby Goog
 <translation id="4824468494729001999">Blokovat skripty</translation>
 <translation id="519861640102428255">Vzhled a dojem</translation>
 <translation id="4800195524776354947">Ukázat na ikoně štítů počet zablokovaných položek</translation>
-<translation id="3932286112122164477">Povolit na webech třetích stran přihlašovací tlačítka Google</translation>
+<translation id="7498695072878479744">Povolit na webech třetích stran přihlašovací tlačítka Google</translation>
 <translation id="863171915776379000">Povolit přihlašování na Facebook a sdílení příspěvků</translation>
 <translation id="5165042248369837294">Povolit sdílení tweetů z Twitteru</translation>
 <translation id="958971637207126733">Povolit příspěvky vložené na LinkedIn</translation>
@@ -148,13 +151,17 @@ Instalací tohoto rozšíření souhlasíte s podmínkami použití služby Goog
 <translation id="2356070529366658676">Zeptat se</translation>
 <translation id="7701040980221191251">Žádné</translation>
 <translation id="1085027414516521238">MetaMask</translation>
-<translation id="3905324891414560921">Web3 poskytovatel pro využívání Dapps</translation>
+<translation id="7090046810227878892">Poskytovatel Etherea pro používání Dapps</translation>
 <translation id="5913089932885076110">Načíst Kryptopeněženky při zapnutí</translation>
+<translation id="6864914031231797928">Povolit rozšířením přihlášení pomocí Googlu</translation>
+<translation id="1365342176656744625">Metoda řešení lokalit IPFS</translation>
+<translation id="1327977588028644528">Brána</translation>
+<translation id="80225669816651290">Lokální uzel</translation>
 <translation id="6554397389149987360">Používá komponentu Hangouts k umožnění sdílení obrazovek a dalších funkcí prohlížeče.</translation>
 <translation id="1765684547504191670">Využívá Media Router komponent umožňující Chromecast v prohlížeči.</translation>
 <translation id="9156965752763025780">Změny se projeví po příštím restartu prohlížeče Brave.</translation>
 <translation id="7179921470347911571">Znovu spustit</translation>
-<translation id="4154389611571860454">Používá rozšíření IPFS doprovodného programu pro podporu IPFS v prohlížeči.</translation>
+<translation id="6222323340194834282">Používá doprovodné IPFS rozšíření určené ke zlepšení podpory IPFS v prohlížeči.</translation>
 <translation id="8137559199583651773">Správa rozšíření</translation>
 <translation id="7013485839273047434">Získejte další rozšíření</translation>
 <translation id="4928988318462976765">Obchod webových rozšíření</translation>
@@ -210,20 +217,19 @@ Instalací tohoto rozšíření souhlasíte s podmínkami použití služby Goog
 <translation id="4394049700291259645">Deaktivovat</translation>
 <translation id="6469509880167172749">Automaticky posílat zcela soukromé produktové analýzy společnosti Brave</translation>
 <translation id="7090566321964540749">Tyto anonymní informace prohlížeči Brave umožní pouze odhadnout celkové využití určitých funkcí.</translation>
-<translation id="9111960429693394744">Chcete pro Dapps použít kryptopeněženky Brave nebo MetaMask?</translation>
-<translation id="8721775358057000783">Přejete si začít s kryptopeněženkami pro podporu web3 na této stránce?</translation>
+<translation id="1947672064022327074">Chcete přidat kryptopeněženku pro podporu Etherea?</translation>
 <translation id="7583735190612229830">Pro vzájemné fungování s touto aplikací a dalšími podobnými si Nastavte peněženky Crypto.</translation>
 <translation id="4823406846571523661">Nastavit kryptopeněženky</translation>
-<translation id="5756155765711979898">Použít MetaMask</translation>
-<translation id="6754134632841262799">NASTAVENÍ</translation>
 <translation id="8199661191594897555">Začít kryptopeněženky a načíst znovu</translation>
 <translation id="8428213095426709021">Nastavení</translation>
+<translation id="1854270995641373652">Chcete v Brave zapnout podporu lokálního IPFS daemonu?</translation>
+<translation id="2366908098700680611">Zapnout IPFS</translation>
 <translation id="4552520379838695057">Je nám líto, tato stránka chybí.</translation>
 <translation id="2609895996619941644">Chcete zkontrolovat, zda je na Wayback Machine k dispozici uložená verze?</translation>
 <translation id="8053093028263274061">Litujeme, není k dispozici žádná uložená verze.</translation>
 <translation id="8517321676372639828">Pokusit se najít uloženou verzi</translation>
-<translation id="191143826155037518">Brave máte k dispozici v rámci <ph name="BEGIN_LINK_MPL">&lt;a target="_blank" href="$1"&gt;</ph>veřejné licence Mozilla 2.0<ph name="END_LINK_MPL">&lt;/a&gt;</ph> (MPL) a obsahuje <ph name="BEGIN_LINK_OSS">&lt;a target="_blank" href="$2"&gt;</ph>otevřený software<ph name="END_LINK_OSS">&lt;/a&gt;</ph> na základě různých jiných licencí.
-        Můžete si sami přečíst <ph name="BEGIN_LINK_BUILD_INSTRUCTIONS">&lt;a target="_blank" href="$3"&gt;</ph>pokyny ke způsobu stahování a tvorby<ph name="END_LINK_BUILD_INSTRUCTIONS">&lt;/a&gt;</ph> specifického <ph name="BEGIN_LINK_SOURCE_CODE">&lt;a target="_blank" href="$4"&gt;</ph>zdrojového kódu používaného k vytváření této kopie<ph name="END_LINK_SOURCE_CODE">&lt;/a&gt;</ph>.</translation>
+<translation id="191143826155037518">Brave máte k dispozici v rámci <ph name="BEGIN_LINK_MPL"/>veřejné licence Mozilla 2.0<ph name="END_LINK_MPL"/> (MPL) a obsahuje <ph name="BEGIN_LINK_OSS"/>otevřený software<ph name="END_LINK_OSS"/> na základě různých jiných licencí.
+        Můžete si sami přečíst <ph name="BEGIN_LINK_BUILD_INSTRUCTIONS"/>pokyny ke způsobu stahování a tvorby<ph name="END_LINK_BUILD_INSTRUCTIONS"/> specifického <ph name="BEGIN_LINK_SOURCE_CODE"/>zdrojového kódu používaného k vytváření této kopie<ph name="END_LINK_SOURCE_CODE"/>.</translation>
 <translation id="4474155171896946103">Přidat do záložek všechny karty...</translation>
 <translation id="2336228925368920074">Přidat do záložek všechny karty...</translation>
 <translation id="796831669370432378">Chcete-li přidat záložku, klikněte na tlačítko záložky vedle adresního řádku</translation>

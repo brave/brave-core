@@ -1024,6 +1024,8 @@ Noen nettsteder kan for eksempel svare på denne forespørselen ved å vise deg 
 <translation id="983192555821071799">Lukk alle faner</translation>
 <translation id="987264212798334818">Generelt</translation>
 <translation id="996149300115483134">Feedkortmenyen er lukket</translation>
+<translation id="4540437243849625078">Denne siden er i ferd med å dele informasjon med en app utenfor privat modus.</translation>
+<translation id="1227836882233136433">Forlate privat modus?</translation>
 <translation id="5186185447130319458">Privat</translation>
 <translation id="9063160602596686558">Sender automatisk brukerstatistikk og programstopprapporter til Brave Software</translation>
 <translation id="1438581767753657407">Når forenklet modus er på, brukes Brave-tjenerne til å laste inn sider raskere. Forenklet modus omskriver svært trege sider, slik at kun essensielt innhold lastes inn. Forenklet modus brukes ikke på private faner.</translation>
@@ -1033,8 +1035,7 @@ Noen nettsteder kan for eksempel svare på denne forespørselen ved å vise deg 
 <translation id="3110967157686007724">Privat fane</translation>
 <translation id="4526803704855831732">Private faner</translation>
 <translation id="7465104139234185284">Lukk alle private faner</translation>
-<translation id="4540437243849625078">Denne siden er i ferd med å dele informasjon med en app utenfor privat modus.</translation>
-<translation id="1227836882233136433">Forlate privat modus?</translation>
+<translation id="21023559487771014">Gå over i privat modus</translation>
 <translation id="6336451774241870485">Ny privat fane</translation>
 <translation id="3234355010754616171">Ny privat fane</translation>
 <translation id="6610147964972079463">Lukk private faner</translation>

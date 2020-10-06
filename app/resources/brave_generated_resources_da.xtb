@@ -25,7 +25,7 @@ Ved at installere denne udvidelse accepterer du Google Widevines betingelser for
 <translation id="3218385319396786393">Autoplay er blevet blokeret på denne side</translation>
 <translation id="4988333904713528597">Slå altid autoplay til <ph name="HOST"/></translation>
 <translation id="4150684676757176434">Fortsæt med at blokere autoplay</translation>
-<translation id="5883458389055721080">Brave har ikke kontrolleret denne udvidelse for sikkerhed og tryghed. Installer kun denne udvidelse, hvis du har tillid til udvikleren.</translation>
+<translation id="8988939298652262600">Brave gennemgår ikke udvidelser af hensyn til sikkerhed. Installer kun denne udvidelse, hvis du har tillid til udvikleren.</translation>
 <translation id="8081858229109418493">Profilnavn og ikon</translation>
 <translation id="2044383478723007273">Brave farver</translation>
 <translation id="1692470335103807198">Få flere temaer</translation>
@@ -37,6 +37,9 @@ Ved at installere denne udvidelse accepterer du Google Widevines betingelser for
 <translation id="5802665280774361839">Vis autofuldførelse i addressefeltet</translation>
 <translation id="597020512043916976">Vis øverste sider i forslag til automatisk udfyldning</translation>
 <translation id="264150068416846820">Vis Braves foreslåede sider i forslag fra automatisk udfyldning</translation>
+<translation id="6414370348346025511">Standardbeskyttelse er aktiveret.</translation>
+<translation id="814018970995616154">Kontrollerer URL'er med en liste over usikre websteder, der er gemt i Brave.</translation>
+<translation id="1144810021918451336">Beskytter dig ikke mod farlige websteder, downloads og udvidelser.</translation>
 <translation id="7781069478569868053">Side på ny fane</translation>
 <translation id="2467749191278759605">Tilpas dit Brave Dashboard</translation>
 <translation id="1717331825806276156">Baggrundsbilleder</translation>
@@ -80,7 +83,7 @@ vindue med Tor</translation>
 <translation id="4824468494729001999">Bloker scripts</translation>
 <translation id="519861640102428255">Se &amp; Føl</translation>
 <translation id="4800195524776354947">Vis antallet af blokerede emner på Skjold-ikonet</translation>
-<translation id="3932286112122164477">Tillad Google login-knapper på tredjeparts sider</translation>
+<translation id="7498695072878479744">Tillad Google login-knapper på tredjeparts sider</translation>
 <translation id="863171915776379000">Tillad Facebook-logins og indlejrede opslag</translation>
 <translation id="5165042248369837294">Tillad indlejrede tweets fra Twitter</translation>
 <translation id="958971637207126733">Tillad indlejrede LinkedIn-opslag</translation>
@@ -149,13 +152,17 @@ vindue med Tor</translation>
 <translation id="2356070529366658676">Spørg</translation>
 <translation id="7701040980221191251">Ingen</translation>
 <translation id="1085027414516521238">MetaMask\n</translation>
-<translation id="3905324891414560921">Web3 udbyder for brug af Dapps</translation>
+<translation id="7090046810227878892">Ethereum-udbyder til brug af Dapps</translation>
 <translation id="5913089932885076110">Hent Krypto-tegnebøger ved opstart</translation>
+<translation id="6864914031231797928">Tillad Google-login for udvidelser</translation>
+<translation id="1365342176656744625">Metode til håndtering af IPFS-placeringer</translation>
+<translation id="1327977588028644528">Gateway</translation>
+<translation id="80225669816651290">Lokal node</translation>
 <translation id="6554397389149987360">Bruger Hangouts-komponent til at aktivere skærmdeling samt andre browserfunktioner.</translation>
 <translation id="1765684547504191670">Bruger Media Router-komponent til at aktivere Chromecast i browseren.</translation>
 <translation id="9156965752763025780">Dine ændringer træder i kraft, næste gang du genstarter Brave.</translation>
 <translation id="7179921470347911571">Genstart nu</translation>
-<translation id="4154389611571860454">Bruger IPFS Companion-udvidelsen for at understøtte IPFS i browseren.</translation>
+<translation id="6222323340194834282">Bruger IPFS-ledsagerextension til at forbedre IPFS-support i browseren.</translation>
 <translation id="8137559199583651773">Administrer udvidelser</translation>
 <translation id="7013485839273047434">Hent flere extensions</translation>
 <translation id="4928988318462976765">Internetadresse-Butik</translation>
@@ -211,20 +218,19 @@ vindue med Tor</translation>
 <translation id="4394049700291259645">Deaktiver</translation>
 <translation id="6469509880167172749">Send automatisk fuldstændig private produktanalyser til Brave</translation>
 <translation id="7090566321964540749">Disse anonyme informationer giver kun Brave tilladelse til at anslå det generelle forbrug af visse funktioner.</translation>
-<translation id="9111960429693394744">Ønsker du at bruge Braves Krypto-tegnebøger eller MetaMask til Dapps?</translation>
-<translation id="8721775358057000783">Ønsker du at starte Krypto-tegnebøger for web3 understøttelse på denne side?</translation>
+<translation id="1947672064022327074">Vil du starte Crypto Wallets for Ethereum support?</translation>
 <translation id="7583735190612229830">Sæt dine krypto wallets op til at interagere med denne app og andre som den</translation>
 <translation id="4823406846571523661">Opsæt Krypto-tegnebøger</translation>
-<translation id="5756155765711979898">Brug MetaMask</translation>
-<translation id="6754134632841262799">OPSÆTNING</translation>
 <translation id="8199661191594897555">Åbn Krypto-tegnebøger og genindlæs</translation>
 <translation id="8428213095426709021">Indstillinger</translation>
+<translation id="1854270995641373652">Vil du aktivere IPFS lokal daemon-support i Brave?</translation>
+<translation id="2366908098700680611">Aktivér IPFS</translation>
 <translation id="4552520379838695057">Beklager, den side mangler.</translation>
 <translation id="2609895996619941644">Ønsker du at tjekke om en gemt version er tilgængelig på Wayback Machine?</translation>
 <translation id="8053093028263274061">Beklager, der er ingen gemt version til rådighed.</translation>
 <translation id="8517321676372639828">Tjek efter gemt version</translation>
-<translation id="191143826155037518">Brave bliver gjort tilgængelig for dig under <ph name="BEGIN_LINK_MPL">&lt;a target="_blank" href="$1"&gt;</ph>Mozilla Public License 2.0<ph name="END_LINK_MPL">&lt;/a&gt;</ph> (MPL) og inkluderer <ph name="BEGIN_LINK_OSS">&lt;a target="_blank" href="$2"&gt;</ph> open-source software <ph name="END_LINK_OSS">&lt;/a&gt;</ph> under forskellige andre licensaftaler.
-DU kan læse <ph name="BEGIN_LINK_BUILD_INSTRUCTIONS">&lt;a target="_blank" href="$3"&gt;</ph>instruktioner om hvordan du downloader og bygger selv<ph name="END_LINK_BUILD_INSTRUCTIONS">&lt;/a&gt;</ph> <ph name="BEGIN_LINK_SOURCE_CODE">&lt;a target="_blank" href="$4"&gt;</ph>den kildekode som bruges til at lave denne kopi<ph name="END_LINK_SOURCE_CODE">&lt;/a&gt;</ph>.</translation>
+<translation id="191143826155037518">Brave bliver gjort tilgængelig for dig under <ph name="BEGIN_LINK_MPL"/>Mozilla Public License 2.0<ph name="END_LINK_MPL"/> (MPL) og inkluderer <ph name="BEGIN_LINK_OSS"/> open-source software <ph name="END_LINK_OSS"/> under forskellige andre licensaftaler.
+DU kan læse <ph name="BEGIN_LINK_BUILD_INSTRUCTIONS"/>instruktioner om hvordan du downloader og bygger selv<ph name="END_LINK_BUILD_INSTRUCTIONS"/> <ph name="BEGIN_LINK_SOURCE_CODE"/>den kildekode som bruges til at lave denne kopi<ph name="END_LINK_SOURCE_CODE"/>.</translation>
 <translation id="4474155171896946103">Tilføj alle faner som bogmærker...</translation>
 <translation id="2336228925368920074">Tilføj alle faner som bogmærker...</translation>
 <translation id="796831669370432378">Klik på bogmærkeknappen for at tilføje et bogmærke ved siden af adresselinjen</translation>

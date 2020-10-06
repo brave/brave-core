@@ -25,7 +25,7 @@ Al instalar esta extensión, aceptas los Términos de uso de Google Widevine. Ac
 <translation id="3218385319396786393">La reproducción automática se ha bloqueado en esta página</translation>
 <translation id="4988333904713528597">Permitir siempre la reproducción automática en <ph name="HOST"/></translation>
 <translation id="4150684676757176434">Continuar bloqueando la reproducción automática</translation>
-<translation id="5883458389055721080">Brave no ha revisado esta extensión por razones de seguridad. Instala esta extensión solo si confías en el desarrollador.</translation>
+<translation id="8988939298652262600">Brave no revisa la seguridad y protección de las extensiones. Instala esta extensión solo si confías en el desarrollador.</translation>
 <translation id="8081858229109418493">Nombre e icono del perfil</translation>
 <translation id="2044383478723007273">Aspecto de Brave</translation>
 <translation id="1692470335103807198">Obtener más temas</translation>
@@ -37,6 +37,9 @@ Al instalar esta extensión, aceptas los Términos de uso de Google Widevine. Ac
 <translation id="5802665280774361839">Mostrar autocompletar en la barra de direcciones</translation>
 <translation id="597020512043916976">Mostrar los sitios principales en las sugerencias de autocompletar</translation>
 <translation id="264150068416846820">Mostrar sitios sugeridos por Brave en sugerencias de autocompletar</translation>
+<translation id="6414370348346025511">La protección estándar está activada.</translation>
+<translation id="814018970995616154">Comprobar las URL con una lista de sitios inseguros guardados en Brave.</translation>
+<translation id="1144810021918451336">No protege contra extensiones, descargas ni sitios web peligrosos.</translation>
 <translation id="7781069478569868053">Página Nueva pestaña</translation>
 <translation id="2467749191278759605">Personaliza tu Brave Dashboard</translation>
 <translation id="1717331825806276156">Imágenes de fondo</translation>
@@ -79,7 +82,7 @@ Al instalar esta extensión, aceptas los Términos de uso de Google Widevine. Ac
 <translation id="4824468494729001999">Bloquear scripts</translation>
 <translation id="519861640102428255">Aspecto de Escudos</translation>
 <translation id="4800195524776354947">Mostrar el número de elementos bloqueados en el icono de los Escudos</translation>
-<translation id="3932286112122164477">Permitir botones de acceso a Google en sitios externos</translation>
+<translation id="7498695072878479744">Permitir los botones de acceso de Google en sitios web de terceros</translation>
 <translation id="863171915776379000">Permitir los inicios de sesión de Facebook y los mensajes incrustados</translation>
 <translation id="5165042248369837294">Permitir tweets incrustados de Twitter</translation>
 <translation id="958971637207126733">Permitir mensajes incrustados de LinkedIn</translation>
@@ -148,13 +151,17 @@ Al instalar esta extensión, aceptas los Términos de uso de Google Widevine. Ac
 <translation id="2356070529366658676">Preguntar</translation>
 <translation id="7701040980221191251">Ninguno</translation>
 <translation id="1085027414516521238">MetaMask</translation>
-<translation id="3905324891414560921">Proveedor Web3 para utilizar Dapps</translation>
+<translation id="7090046810227878892">Proveedor Ethereum para utilizar Dapps</translation>
 <translation id="5913089932885076110">Cargar Crypto Wallets en el inicio</translation>
+<translation id="6864914031231797928">Permitir el inicio de sesión con Google para conseguir extensiones</translation>
+<translation id="1365342176656744625">Método para resolver localizaciones IPFS</translation>
+<translation id="1327977588028644528">Pasarela</translation>
+<translation id="80225669816651290">Nodo local</translation>
 <translation id="6554397389149987360">Usa el componente de Hangouts para habilitar la compartición de la pantalla y otras funciones en el navegador.</translation>
 <translation id="1765684547504191670">Utiliza el componente Media Router para habilitar Chromecast en el navegador.</translation>
 <translation id="9156965752763025780">Tus cambios se aplicarán la próxima vez que reinicies Brave.</translation>
 <translation id="7179921470347911571">Relanzar Ahora</translation>
-<translation id="4154389611571860454">Utiliza la extensión complementaria IPFS para soportar IPFS en el navegador.</translation>
+<translation id="6222323340194834282">Utiliza la extensión complementaria IPFS para mejorar la compatibilidad con IPFS en el navegador.</translation>
 <translation id="8137559199583651773">Administrar extensiones</translation>
 <translation id="7013485839273047434">Obtener más extensiones</translation>
 <translation id="4928988318462976765">Web Extensions Store</translation>
@@ -210,20 +217,19 @@ Al instalar esta extensión, aceptas los Términos de uso de Google Widevine. Ac
 <translation id="4394049700291259645">Deshabilitar</translation>
 <translation id="6469509880167172749">Enviar automáticamente los análisis de productos de manera completamente privada a Brave</translation>
 <translation id="7090566321964540749">Esta información anónima solo le permite a Brave estimar el uso general de ciertas funciones.</translation>
-<translation id="9111960429693394744">¿Te gustaría utilizar Crypto Wallets de Brave o MetaMask para las Dapps?</translation>
-<translation id="8721775358057000783">¿Quiere iniciar Crypto Wallets para admitir web3 en esta página?</translation>
+<translation id="1947672064022327074">¿Quieres iniciar carteras de criptomonedas para la compatibilidad con Ethereum?</translation>
 <translation id="7583735190612229830">Configura Crypto Wallets para interactuar con esta aplicación y otras similares.</translation>
 <translation id="4823406846571523661">Configurar Crypto Wallets</translation>
-<translation id="5756155765711979898">Usar MetaMask</translation>
-<translation id="6754134632841262799">CONFIGURACIÓN</translation>
 <translation id="8199661191594897555">Iniciar Crypto Wallets y volver a cargar</translation>
 <translation id="8428213095426709021">Configuración</translation>
+<translation id="1854270995641373652">¿Quieres habilitar la compatibilidad con el daemon local IPFS en Brave?</translation>
+<translation id="2366908098700680611">Habilitar IPFS</translation>
 <translation id="4552520379838695057">Lo sentimos, esta página no se ha encontrado.</translation>
 <translation id="2609895996619941644">¿Quieres comprobar si hay una versión guardada disponible en la Wayback Machine?</translation>
 <translation id="8053093028263274061">Lo sentimos, no hay una versión guardada disponible.</translation>
 <translation id="8517321676372639828">Comprueba si hay una versión guardada</translation>
-<translation id="191143826155037518">Brave está disponible para ti bajo la <ph name="BEGIN_LINK_MPL">&lt;a target="_blank" href="$1"&gt;</ph>Mozilla Public License 2.0<ph name="END_LINK_MPL">&lt;/a&gt;</ph> (MPL) e incluye <ph name="BEGIN_LINK_OSS">&lt;a target="_blank" href="$2"&gt;</ph>software de código abierto<ph name="END_LINK_OSS">&lt;/a&gt;</ph> bajo una variedad de otras licencias.
-        Puedes leer las <ph name="BEGIN_LINK_BUILD_INSTRUCTIONS">&lt;a target="_blank" href="$3"&gt;</ph>instrucciones sobre cómo descargar y compilar por ti mismo<ph name="END_LINK_BUILD_INSTRUCTIONS">&lt;/a&gt;</ph> el <ph name="BEGIN_LINK_SOURCE_CODE">&lt;a target="_blank" href="$4"&gt;</ph>código fuente específico utilizado para crear esta copia<ph name="END_LINK_SOURCE_CODE">&lt;/a&gt;</ph>.</translation>
+<translation id="191143826155037518">Brave está disponible para ti bajo la <ph name="BEGIN_LINK_MPL"/>Mozilla Public License 2.0<ph name="END_LINK_MPL"/> (MPL) e incluye <ph name="BEGIN_LINK_OSS"/>software de código abierto<ph name="END_LINK_OSS"/> bajo una variedad de otras licencias.
+        Puedes leer las <ph name="BEGIN_LINK_BUILD_INSTRUCTIONS"/>instrucciones sobre cómo descargar y compilar por ti mismo<ph name="END_LINK_BUILD_INSTRUCTIONS"/> el <ph name="BEGIN_LINK_SOURCE_CODE"/>código fuente específico utilizado para crear esta copia<ph name="END_LINK_SOURCE_CODE"/>.</translation>
 <translation id="4474155171896946103">Añadir todas las pestañas a marcadores...</translation>
 <translation id="2336228925368920074">Añadir todas las pestañas a Marcadores...</translation>
 <translation id="796831669370432378">Para añadir un marcador, haz click en el botón de marcadores, junto a la barra de direcciones</translation>

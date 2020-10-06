@@ -25,7 +25,7 @@
 <translation id="3218385319396786393">การเล่นอัตโนมัติถูกบล็อกในหน้านี้</translation>
 <translation id="4988333904713528597">ยินยอมให้ทำการเล่นแบบอัตโนมัติบน <ph name="HOST"/> เสมอ</translation>
 <translation id="4150684676757176434">ทำการบล็อกการเล่นอัตโนมัติต่อ</translation>
-<translation id="5883458389055721080">Brave ยังไม่ได้ตรวจสอบความมั่นคงและความปลอดภัยของส่วนขยายนี้ ติดตั้งส่วนขยายนี้ถ้าคุณไว้ใจผู้พัฒนาได้เท่านั้น</translation>
+<translation id="8988939298652262600">Brave จะไม่ตรวจสอบความมั่นคงและปลอดภัยของส่วนขยาย โปรดติดตั้งส่วนขยายนี้ในกรณีที่คุณเชื่อมั่นในผู้พัฒนาเท่านั้น</translation>
 <translation id="8081858229109418493">ชื่อโปรไฟล์และไอคอน</translation>
 <translation id="2044383478723007273">สี Brave</translation>
 <translation id="1692470335103807198">รับธีมเพิ่มเติม</translation>
@@ -37,6 +37,9 @@
 <translation id="5802665280774361839">แสดงรายการที่ดำเนินการอัตโนมัติในแถบแอดเดรส</translation>
 <translation id="597020512043916976">แสดงเว็บยอดนิยมในช่องแนะนำกรอกอัตโนมัติ</translation>
 <translation id="264150068416846820">แสดงเว็บที่แนะนำของ Brave ในช่องแนะนำแบบกรอกอัตโนมัติ</translation>
+<translation id="6414370348346025511">การป้องกันมาตรฐานเปิดทำงาน</translation>
+<translation id="814018970995616154">ตรวจสอบ URL ที่มีรายชื่อเว็บไซต์ที่ไม่ปลอดภัยเก็บไว้ใน Brave</translation>
+<translation id="1144810021918451336">ไม่ป้องกันคุณจากเว็บไซต์ การดาวน์โหลด และส่วนขยายที่เป็นอันตราย</translation>
 <translation id="7781069478569868053">หน้าแท็บใหม่</translation>
 <translation id="2467749191278759605">ปรับแต่ง Brave Dashboard ของคุณ</translation>
 <translation id="1717331825806276156">ภาพพื้นหลัง</translation>
@@ -79,7 +82,7 @@
 <translation id="4824468494729001999">บล็อกสคริปต์</translation>
 <translation id="519861640102428255">ดูและรู้สึก</translation>
 <translation id="4800195524776354947">แสดงจำนวนรายการที่ถูกบล็อคบนไอคอนชิลด์</translation>
-<translation id="3932286112122164477">อนุญาตให้ใช้ปุ่มเข้าสู่ระบบผ่าน Google บนเว็บไซต์ภายนอก</translation>
+<translation id="7498695072878479744">อนุญาตให้ใช้ปุ่มเข้าสู่ระบบผ่าน Google บนเว็บไซต์ภายนอก</translation>
 <translation id="863171915776379000">อนุญาตให้เข้าสู่ระบบผ่าน Facebook และโพสต์แบบฝัง</translation>
 <translation id="5165042248369837294">อนุญาตให้ทวีตแบบฝังบน Twitter</translation>
 <translation id="958971637207126733">อนุญาตโพสต์แบบฝัง LinkedIn</translation>
@@ -148,13 +151,17 @@
 <translation id="2356070529366658676">ถาม</translation>
 <translation id="7701040980221191251">ไม่มี</translation>
 <translation id="1085027414516521238">MetaMask</translation>
-<translation id="3905324891414560921">ผู้ให้บริการ Web3 สำหรับใช้งาน Dapps</translation>
+<translation id="7090046810227878892">ผู้ให้บริการ Ethereum สำหรับใช้งาน Dapps</translation>
 <translation id="5913089932885076110">โหลด Crypto Wallets เมื่อเริ่มต้น</translation>
+<translation id="6864914031231797928">อนุญาตการล็อกอินด้วย Google สำหรับส่วนขยาย</translation>
+<translation id="1365342176656744625">วิธีการแก้ไขตำแหน่ง IPFS</translation>
+<translation id="1327977588028644528">เกตเวย์</translation>
+<translation id="80225669816651290">โหนดภายใน</translation>
 <translation id="6554397389149987360">ใช้ส่วนประกอบ Hangouts เพื่อเปิดใช้งานการแชร์หน้าจอและฟีเจอร์อื่น ๆ ในเบราว์เซอร์</translation>
 <translation id="1765684547504191670">ใช้คอมโพเนนต์ Media Router เพื่อเปิดใช้งาน Chromecast ในเบราว์เซอร์</translation>
 <translation id="9156965752763025780">การเปลี่ยนแปลงของคุณจะมีผลในครั้งถัดไปที่คุณเปิด Brave ขึ้นอีก</translation>
 <translation id="7179921470347911571">เปิดใหม่อีกครั้ง</translation>
-<translation id="4154389611571860454">ใช้ส่วนขยาย IPFS Companion เพื่อรองรับ IPFS ในเบราว์เซอร์</translation>
+<translation id="6222323340194834282">ใช้ส่วนขยายประกอบ IPFS เพื่อเพิ่มการสนับสนุน IPFS ในเบราว์เซอร์</translation>
 <translation id="8137559199583651773">จัดการส่วนขยาย</translation>
 <translation id="7013485839273047434">รับส่วนขยายเพิ่มเติม</translation>
 <translation id="4928988318462976765">Web Extensions Store</translation>
@@ -210,20 +217,19 @@
 <translation id="4394049700291259645">ปิดการใช้งาน</translation>
 <translation id="6469509880167172749">ส่งผลการวิเคราะห์ผลิตภัณฑ์แบบส่วนตัวโดยสมบูรณ์ให้ Brave โดยอัตโนมัติ</translation>
 <translation id="7090566321964540749">ข้อมูลแบบไม่ระบุตัวตนนี้จะช่วยให้ Brave คาดคะเนการใช้งานโดยรวมของฟีเจอร์บางอย่างได้เท่านั้น</translation>
-<translation id="9111960429693394744">คุณต้องการใช้ Crypto Wallet ของ Brave หรือ MetaMask สำหรับ Dapps</translation>
-<translation id="8721775358057000783">คุณต้องการเริ่ม Crypto Wallets สำหรับการสนับสนุน web3 บนหน้านี้หรือไม่?</translation>
+<translation id="1947672064022327074">คุณต้องการเริ่มต้น Crypto Wallets สำหรับรองรับ Ethereum หรือไม่</translation>
 <translation id="7583735190612229830">ตั้งค่ากระเป๋าสตางค์ดิจิตอลเพื่อโต้ตอบกับแอปนี้และแอปอื่นๆ ที่คล้ายกันนี้</translation>
 <translation id="4823406846571523661">ติดตั้ง Crypto Wallets</translation>
-<translation id="5756155765711979898">ใช้ MetaMask</translation>
-<translation id="6754134632841262799">ตั้งค่า</translation>
 <translation id="8199661191594897555">เริ่ม Crypto Wallets และโหลดใหม่</translation>
 <translation id="8428213095426709021">การตั้งค่า</translation>
+<translation id="1854270995641373652">คุณต้องการเปิดใช้งานการสนับสนุน IPFS local daemon ใน Brave หรือไม่</translation>
+<translation id="2366908098700680611">เปิดใช้งาน IPFS</translation>
 <translation id="4552520379838695057">ขออภัย หน้านั้นหายไปแล้ว</translation>
 <translation id="2609895996619941644">คุณต้องการตรวจสอบไหมว่ามีเวอร์ชันที่บันทึกไว้ใน Wayback Machine หรือไม่</translation>
 <translation id="8053093028263274061">ขออภัย ไม่มีเวอร์ชันที่บันทึกไว้</translation>
 <translation id="8517321676372639828">ตรวจสอบเวอร์ชันที่บันทึกไว้</translation>
-<translation id="191143826155037518">การให้บริการ Brave อยู่ภายใต้ <ph name="BEGIN_LINK_MPL">&lt;a target="_blank" href="$1"&gt;</ph>ใบอนุญาต Mozilla Public License รุ่น 2.0<ph name="END_LINK_MPL">&lt;/a&gt;</ph> (MPL) และมี <ph name="BEGIN_LINK_OSS">&lt;a target="_blank" href="$2"&gt;</ph>ซอฟต์แวร์โอเพ่นซอร์ส<ph name="END_LINK_OSS">&lt;/a&gt;</ph> ซึ่งอยู่ภายใต้ใบอนุญาตอื่นๆ อีกมากมาย
-        คุณสามารถอ่าน <ph name="BEGIN_LINK_BUILD_INSTRUCTIONS">&lt;a target="_blank" href="$3"&gt;</ph>คำแนะนำวิธีดาวน์โหลดและสร้าง<ph name="END_LINK_BUILD_INSTRUCTIONS">&lt;/a&gt;</ph> the specific <ph name="BEGIN_LINK_SOURCE_CODE">&lt;a target="_blank" href="$4"&gt;</ph>ซอร์ซโค้ดที่ใช้สร้างสำเนานี้<ph name="END_LINK_SOURCE_CODE">&lt;/a&gt;</ph>ด้วยตัวเองได้</translation>
+<translation id="191143826155037518">การให้บริการ Brave อยู่ภายใต้ <ph name="BEGIN_LINK_MPL"/>ใบอนุญาต Mozilla Public License รุ่น 2.0<ph name="END_LINK_MPL"/> (MPL) และมี <ph name="BEGIN_LINK_OSS"/>ซอฟต์แวร์โอเพ่นซอร์ส<ph name="END_LINK_OSS"/> ซึ่งอยู่ภายใต้ใบอนุญาตอื่นๆ อีกมากมาย
+        คุณสามารถอ่าน <ph name="BEGIN_LINK_BUILD_INSTRUCTIONS"/>คำแนะนำวิธีดาวน์โหลดและสร้าง<ph name="END_LINK_BUILD_INSTRUCTIONS"/> the specific <ph name="BEGIN_LINK_SOURCE_CODE"/>ซอร์ซโค้ดที่ใช้สร้างสำเนานี้<ph name="END_LINK_SOURCE_CODE"/>ด้วยตัวเองได้</translation>
 <translation id="4474155171896946103">บุ๊กมาร์กแท็บทั้งหมด...</translation>
 <translation id="2336228925368920074">บุ๊กมาร์กแท็บทั้งหมด...</translation>
 <translation id="796831669370432378">หากต้องการเพิ่มบุ๊กมาร์ก ให้คลิกปุ่มบุ๊กมาร์กที่อยู่ถัดจากแถบที่อยู่</translation>

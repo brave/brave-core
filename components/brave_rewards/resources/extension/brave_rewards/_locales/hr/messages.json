@@ -1,6 +1,6 @@
 {
   "braveRewards": {
-    "message": "Sustav nagrada u pregledniku Brave",
+    "message": "Brave Rewards",
     "description": "Title in welcome screen for the panel"
   },
   "welcomeButtonTextOne": {
@@ -32,7 +32,7 @@
     "description": "Link in the footer (takes you to rewards settings page) for welcome screen in the panel, new user"
   },
   "welcomeHeaderOne": {
-    "message": "Značajno smo nadogradili nagrade Brave.",
+    "message": "Značajno smo nadogradili Brave Rewards.",
     "description": "Main header title for welcome screen in the panel, existing user"
   },
   "welcomeHeaderTwo": {
@@ -60,7 +60,7 @@
     "description": "BAT Points text"
   },
   "batPointsMessage": {
-    "message": "može se upotrebljavati u stavci Nagrade Brave za doprinošenje vašim omiljenim stvarateljima sadržaja. Bodovi se BAT ne mogu zamijeniti za BAT.",
+    "message": "može se upotrebljavati u značajki Brave Rewards za doprinošenje vašim omiljenim stvarateljima sadržaja. Bodovi se BAT ne mogu zamijeniti za BAT.",
     "description": "Text for BAT Point helper message"
   },
   "on": {
@@ -198,11 +198,11 @@
     "description": "Message for ads launch notification"
   },
   "braveAdsLaunchTitle": {
-    "message": "Oglasi su Brave stigli!",
+    "message": "Stigli su Brave Ads!",
     "description": "Message used in notification to let users know Ads is available"
   },
   "braveAdsTitle": {
-    "message": "Oglasi u pregledniku Brave",
+    "message": "Brave Ads",
     "description": "Notification title when we display info about ads"
   },
   "braveContributeTitle": {
@@ -240,7 +240,7 @@
     "description": "Description for backup wallet notification"
   },
   "insufficientFundsNotification": {
-    "message": "Na vašem se računu za nagrade Brave očekuje depozit.",
+    "message": "Na vašem se računu za Brave Rewards očekuje depozit.",
     "description": "Description for new insufficient funds notification"
   },
   "insufficientFunds": {
@@ -300,7 +300,7 @@
     "description": "Button text for clearing the error."
   },
   "grantGeneralErrorText": {
-    "message": "Imamo poteškoća sa značajkom Nagrade Brave. Pokušajte kasnije.",
+    "message": "Imamo poteškoća sa značajkom Brave Rewards. Pokušajte kasnije.",
     "description": "Error text when user is having problems claiming a grant."
   },
   "grantGeneralErrorTitle": {
@@ -344,7 +344,7 @@
     "description": "Text for Panel's disabled state"
   },
   "disabledPanelTitle": {
-    "message": "Nagrade Brave su",
+    "message": "Brave Rewards su",
     "description": "Title for Panel's disabled state"
   },
   "walletFailedTitle": {
@@ -380,7 +380,7 @@
     "description": "Text block for wallet disabled panel"
   },
   "enableRewards": {
-    "message": "Omogućite sustav nagrada u pregledniku Brave",
+    "message": "Omogući Brave Rewards",
     "description": "Subtitle for wallet disabled panel"
   },
   "privacyPolicy": {
@@ -388,7 +388,7 @@
     "description": "Privacy Policy"
   },
   "serviceText": {
-    "message": "Klikom na značajku „Omogući nagrade Brave” naznačujete da ste pročitali i da se slažete s",
+    "message": "Klikom na značajku „Omogući Brave Rewards” naznačujete da ste pročitali i da se slažete s",
     "description": "Terms of service main text"
   },
   "termsOfService": {
@@ -496,7 +496,7 @@
     "description": "Cosmetic text upon captcha success for ads"
   },
   "grantFinishTextAds": {
-    "message": "Vaša je nagrada poslana u vaš novčanik za nagrade Brave.",
+    "message": "Vaša je nagrada poslana u vaš novčanik za Brave Rewards.",
     "description": "Cosmetic text indicating ads funds are on the way"
   },
   "grantFinishTokenTitleAds": {
@@ -524,7 +524,7 @@
     "description": "CTA to open uphold account"
   },
   "walletDisconnect":  {
-    "message": "Poništi vezu s nagradama Brave",
+    "message": "Poništi vezu s Brave Rewards",
     "description": "CTA to disconnect user wallet from rewards"
   },
   "walletVerified":  {
@@ -582,7 +582,7 @@
     "description": "BAT Points text"
   },
   "tokenGrants":  {
-    "message": "Davanje žetona",
+    "message": "Dodjele tokena",
     "description": "BAT Tokens Grant Text"
   },
   "pointGrants":  {

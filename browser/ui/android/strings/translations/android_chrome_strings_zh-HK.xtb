@@ -1024,6 +1024,8 @@
 <translation id="983192555821071799">關閉所有分頁</translation>
 <translation id="987264212798334818">一般</translation>
 <translation id="996149300115483134">資訊提供卡選單閂咗</translation>
+<translation id="4540437243849625078">此網站即將與外部應用程式分享資料，分享時會離開無痕模式。</translation>
+<translation id="1227836882233136433">要離開無痕模式嗎？</translation>
 <translation id="5186185447130319458">無痕模式</translation>
 <translation id="9063160602596686558">自動將使用情況統計和當機報告傳送給 Brave Software</translation>
 <translation id="1438581767753657407">開啟精簡模式後，Brave 會使用 Brave Software 伺服器以加快網頁載入。精簡模式重新編寫緩慢的網頁，讓網頁只載入重要內容。 精簡模式不會套用至無痕分頁。</translation>
@@ -1033,8 +1035,6 @@
 <translation id="3110967157686007724">無痕式分頁</translation>
 <translation id="4526803704855831732">無痕式分頁</translation>
 <translation id="7465104139234185284">關閉所有無痕式分頁</translation>
-<translation id="4540437243849625078">此網站即將與外部應用程式分享資料，分享時會離開無痕模式。</translation>
-<translation id="1227836882233136433">要離開無痕模式嗎？</translation>
 <translation id="6336451774241870485">新增無痕式分頁</translation>
 <translation id="3234355010754616171">新增無痕式分頁</translation>
 <translation id="6610147964972079463">關閉無痕式分頁</translation>

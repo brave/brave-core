@@ -291,7 +291,7 @@
 <translation id="1361872463926621533">Magpatugtog sa startup</translation>
 <translation id="1363585519747660921">Kailangan ng pag-configure ng USB printer</translation>
 <translation id="1365180424462182382">Pinaapamahalaan ang iyong <ph name="BEGIN_LINK"/>browser<ph name="END_LINK"/> ng <ph name="ENROLLMENT_DOMAIN"/></translation>
-<translation id="1366177842110999534">Magpatakbo ng mga Linux tool, editor, at IDE sa iyong <ph name="DEVICE_TYPE"/>. &lt;a target="_blank" href="<ph name="URL"/>"&gt;Matuto pa&lt;/a&gt;</translation>
+<translation id="1366177842110999534">Magpatakbo ng mga Linux tool, editor, at IDE sa iyong <ph name="DEVICE_TYPE"/>. &lt;a target="_blank" rel="noopener noreferrer" href="<ph name="URL"/>"&gt;Matuto pa&lt;/a&gt;</translation>
 <translation id="1367951781824006909">Pumili ng isang file</translation>
 <translation id="1369149969991017342">Switch Access (kontrolin ang computer gamit lang ang isa o dalawang switch)</translation>
 <translation id="1372841398847029212">I-sync sa iyong account</translation>
@@ -1354,7 +1354,7 @@ Puwede mong pamahalaan ang mga setting ng account na ito sa pamamagitan ng pag-i
 <translation id="268053382412112343">Ka&amp;saysayan</translation>
 <translation id="2682498795777673382">Update mula sa iyong magulang</translation>
 <translation id="2683638487103917598">Pinagbukod-bukod ang folder</translation>
-<translation id="2686222346846590368">Ito na ang huling awtomatikong pag-update ng software at seguridad para sa ganitong <ph name="DEVICE_TYPE"/>. Para makakuha ng mga update sa hinaharap, mag-upgrade sa mas bagong modelo. &lt;a target="_blank" href="<ph name="URL"/>"&gt;Matuto pa<ph name="LINK_END"/></translation>
+<translation id="2686222346846590368">Ito na ang huling awtomatikong pag-update ng software at seguridad para sa ganitong <ph name="DEVICE_TYPE"/>. Para makakuha ng mga update sa hinaharap, mag-upgrade sa mas bagong modelo. &lt;a target="_blank" rel="noopener noreferrer" href="<ph name="URL"/>"&gt;Matuto pa<ph name="LINK_END"/></translation>
 <translation id="2687403674020088961">I-block ang lahat ng cookies (hindi inirerekomenda)</translation>
 <translation id="2687407218262674387">Mga tuntunin ng serbisyo ng Brave</translation>
 <translation id="2688196195245426394">Error kapag inirerehistro ang device sa server: <ph name="CLIENT_ERROR"/>.</translation>
@@ -4852,7 +4852,7 @@ Puwede mong pamahalaan ang mga setting ng account na ito sa pamamagitan ng pag-i
 <translation id="7197632491113152433">May nakita kaming <ph name="NUMBER_OF_APPS"/> (na) app mula sa iyong account na maaaring gamitin sa device na ito.</translation>
 <translation id="7199158086730159431">Humingi ng Tulong</translation>
 <translation id="7200083590239651963">Pumili ng configuration</translation>
-<translation id="7201042526153088083">Mag-install ng mga app at laro mula sa Google Play sa iyong <ph name="DEVICE_TYPE"/>. &lt;a target="_blank" href="<ph name="URL"/>"&gt;Matuto pa&lt;/a&gt;</translation>
+<translation id="7201042526153088083">Mag-install ng mga app at laro mula sa Google Play sa iyong <ph name="DEVICE_TYPE"/>. &lt;a target="_blank" rel="noopener noreferrer" href="<ph name="URL"/>"&gt;Matuto pa&lt;/a&gt;</translation>
 <translation id="720110658997053098">Permanenteng panatilihin sa kiosk mode ang device na ito</translation>
 <translation id="7201118060536064622">Na-delete ang '<ph name="DELETED_ITEM_NAME"/>'</translation>
 <translation id="7201420661433230412">Tingnan ang mga file</translation>
@@ -6613,7 +6613,7 @@ Ilagay ang iyong key file sa ligtas na lugar. Kailangan mo ito upang lumikha ng 
 <translation id="3860292630623580294">(Pribado)</translation>
 <translation id="4854477725773269949">Pahintulutan sa pribado</translation>
 <translation id="6436164536244065364">Tingnan sa Web Store</translation>
-<translation id="38046578254905003">Maghanap ng mga extension at tema sa <ph name="BEGIN_LINK">&lt;a target="_blank" href="https://chrome.google.com/webstore/category/extensions"&gt;</ph>Web Store<ph name="END_LINK">&lt;/a&gt;</ph></translation>
+<translation id="38046578254905003">Maghanap ng mga extension at tema sa <ph name="BEGIN_LINK"/>Web Store<ph name="END_LINK"/></translation>
 <translation id="6336451774241870485">Bagong pribadong tab</translation>
 <translation id="6610147964972079463">Isara ang mga pribadong tab</translation>
 <translation id="4933782374919065856">May mga tanong? Makipag-ugnayan sa taong nangangasiwa sa iyong profile.</translation>

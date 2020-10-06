@@ -181,7 +181,6 @@ hónapban...</translation>
 <translation id="8193724030871339658">MÁS KÉSZÜLÉKEK A LÁNCON</translation>
 <translation id="279635009973773843">KÉSZÜLÉKEK BETÖLTÉSE...</translation>
 <translation id="6394333525003604181">SZINKRONIZÁLÁSI LÁNC ELHAGYÁSA</translation>
-<translation id="1604429341565715601">A szinkronizálási beállítás folyamatban van, próbálja újraállítani később.</translation>
 <translation id="2569646144216067185">Szavak száma: <ph name="WORD_COUNT"/></translation>
 <translation id="4282642752844565114">Szavak száma helytelen</translation>
 <translation id="7507533586185621084">Rossz szinkronizálási kód</translation>
@@ -318,7 +317,8 @@ hónapban...</translation>
 <translation id="5963670684159057574">Webhelyközi ujjlenyomat-beállítás tiltása</translation>
 <translation id="3895527457258986253">Lenyomatkészítés blokkolása</translation>
 <translation id="184568144098869637">Nem engedi, hogy a böngésző felismerje készülékedet</translation>
-<translation id="4540198958192073185">Minden ujjlenyomat-leolvasás blokkolása</translation>
+<translation id="7396366757003005317">Ujjlenyomat-vétel blokkolva (szigorú, néhány oldal összeomolhat)</translation>
+<translation id="700453611199558021">Ujjlenyomat letiltva (alap)</translation>
 <translation id="769702552748212954">Minden ujjlenyomat-beállítás engedélyezése</translation>
 <translation id="2888409909650566510">Reklámok és más ijesztő\ndolgok blokkolva</translation>
 <translation id="6930134873084561197">A weboldalak gyakran olyan sütiket és parancsfájlokat tartalmaznak, amelyek azonosítani akarnak téged vagy a készülékedet. Megpróbálják kideríteni, hogy ki vagy, és követik webes tevékenységedet minden oldalon\n\nA Brave letiltja ezeket a dolgokat, így követés nélkül böngészhetsz.</translation>
@@ -346,7 +346,7 @@ hónapban...</translation>
 <translation id="8374242949413616101">Adatvédelem</translation>
 <translation id="4955406228638026265">A Brave megakadályozza, hogy a hirdetések és követők a beleegyezésed nélkül információkat gyűjtsenek rólad.</translation>
 <translation id="752842701893882688">Spórolj adatokat és akkumulátort</translation>
-<translation id="5739030256211745023">Reklámok és követők nélkül a weboldalak kevesebb adatot és akkumulátort használnak. Még a szállítói díjakon is spórolni tudsz.</translation>
+<translation id="1685837926613452362">Hirdetések és követők nélkül a webhelyek kevesebb adatot és akkumulátort használnak. Még pénzt is spórolhat a szolgáltatói díjakon.</translation>
 <translation id="5440744330377972191">A weboldalak gyorsabban töltődnek</translation>
 <translation id="3000738865641747653">Kevesebb adat betöltésével a weboldalak akár 8x gyorsabban töltődnek be Brave-ben, mint más böngészőkben.</translation>
 <translation id="8903462729414407077">Kapj heti híreket</translation>
@@ -361,6 +361,7 @@ hónapban...</translation>
 <translation id="1581614543353331529">Még nincs mutatható adat</translation>
 <translation id="2401984885421380890">Követők és reklámok\nletiltva</translation>
 <translation id="2662183408296991265">Megtakarított adatok\n(<ph name="DATA_SAVED"/>)</translation>
+<translation id="3180928261057583677">Adat mentve (<ph name="DATA_SAVED"/>)</translation>
 <translation id="6814582232712814369">Megtakarított idő</translation>
 <translation id="3694122362646626770">Weboldalak</translation>
 <translation id="2225863440766607138">Követők</translation>
@@ -370,12 +371,12 @@ hónapban...</translation>
 <translation id="7427567994475794038">Kapcsold be az adatvédelmi jelentéseket, hogy lásd mennyi hirdetés és követő lett letiltva az elmúlt 3 órában.</translation>
 <translation id="2053891538879944400"><ph name="DATA"/> <ph name="DATA_TEXT"/> adatot spóroltál a Brave böngészővel.</translation>
 <translation id="8640064498452534195">Kapcsold be az adatvédelmi jelentéseket, hogy lásd mennyi adatot spóroltál.</translation>
-<translation id="4591582032282435287">A Brave böngésző átlagosan 40%-kal kevesebb energiát fogyaszt.</translation>
+<translation id="2252497442547961651">A Brave böngésző átlagosan 40%-kal kevesebb akkumulátort használ.&#128267;</translation>
 <translation id="1945330434665345785">Az elmúlt héten <ph name="COUNT"/> követőt és reklámot blokkoltál a Brave böngészővel.</translation>
 <translation id="2883868922264431515">Szerezz tokeneket magánéletet tiszteletben tartó reklámok nézésével, és támogasd kedvenc weboldalaidat.</translation>
-<translation id="6840965284166256302">Szép! 250 követőt és reklámot blokkoltál a Brave böngészővel.</translation>
-<translation id="2076976911561945584">Szép! 10MB-t spóroltál a Brave böngészővel.</translation>
-<translation id="6714550233326888315">Szép! A Brave böngészővel 10 perc betöltési időt takarítottál meg.</translation>
+<translation id="5678925890616256956">Remek! Blokkolt 250 követőt &amp; hirdetést a Brave böngészővel.&#128293;</translation>
+<translation id="9199047775708635708">Nagyszerű! Már 10MB-ot takarított meg a Brave böngészővel.</translation>
+<translation id="1880168210969863408">Nagyszerű! 10 perc töltési időt spórolt meg a Brave böngészővel.&#128168;&#128168;</translation>
 <translation id="7408493389591475748">Az adatvédelmi jelentés megtekintéséhez kezdj el böngészni</translation>
 <translation id="9080777565335515917">Tedd a Brave-et alapértelmezett böngésződdé, hogy a böngészés privát és biztonságos legyen.</translation>
 <translation id="7801488941710395275">Engedélyezi, hogy a Brave megmutassa adatvédelmi statisztikáidat</translation>
@@ -384,4 +385,5 @@ hónapban...</translation>
 <translation id="8089997572759938512">Lenullázza az adatvédelmi jelentéseidet</translation>
 <translation id="2718046830255553131">Az adatvédelmi jelentések adatai törölve lettek.</translation>
 <translation id="7559243474426790340">Frissítési állapot</translation>
+<translation id="8376263745431603066">"Éjszakai mód” engedélyezése (kísérleti)</translation>
 </translationbundle>

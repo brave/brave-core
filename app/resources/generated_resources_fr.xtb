@@ -291,7 +291,7 @@
 <translation id="1361872463926621533">Jouer un son au démarrage</translation>
 <translation id="1363585519747660921">L'imprimante USB n'est pas configurée</translation>
 <translation id="1365180424462182382">Votre <ph name="BEGIN_LINK"/>navigateur est géré<ph name="END_LINK"/> par <ph name="ENROLLMENT_DOMAIN"/></translation>
-<translation id="1366177842110999534">Exécutez des outils, des éditeurs et des IDE Linux sur votre <ph name="DEVICE_TYPE"/>. &lt;a target="_blank" href="<ph name="URL"/>"&gt;En savoir plus&lt;/a&gt;</translation>
+<translation id="1366177842110999534">Exécutez des outils, des éditeurs et des IDE Linux sur votre <ph name="DEVICE_TYPE"/>. &lt;a target="_blank" rel="noopener noreferrer" href="<ph name="URL"/>"&gt;En savoir plus&lt;/a&gt;</translation>
 <translation id="1367951781824006909">Choisir un fichier</translation>
 <translation id="1369149969991017342">Switch Access (contrôler l'ordinateur avec un ou deux contacteurs seulement)</translation>
 <translation id="1372841398847029212">Synchroniser avec votre compte</translation>
@@ -1354,7 +1354,7 @@ Vous pouvez gérer les paramètres de ce compte en installant l'application Fami
 <translation id="268053382412112343">&amp;Historique</translation>
 <translation id="2682498795777673382">Modification effectuée par un parent</translation>
 <translation id="2683638487103917598">Dossier trié</translation>
-<translation id="2686222346846590368">C'est la dernière mise à jour logicielle de sécurité automatique pour votre <ph name="DEVICE_TYPE"/>. Pour bénéficier des futures mises à jour, passez à un modèle plus récent. &lt;a target="_blank" href="<ph name="URL"/>"&gt;En savoir plus<ph name="LINK_END"/></translation>
+<translation id="2686222346846590368">C'est la dernière mise à jour logicielle de sécurité automatique pour votre <ph name="DEVICE_TYPE"/>. Pour bénéficier des futures mises à jour, passez à un modèle plus récent. &lt;a target="_blank" rel="noopener noreferrer" href="<ph name="URL"/>"&gt;En savoir plus<ph name="LINK_END"/></translation>
 <translation id="2687403674020088961">Bloquer tous les cookies (non recommandé)</translation>
 <translation id="2687407218262674387">Conditions d'utilisation de Brave</translation>
 <translation id="2688196195245426394">Erreur survenue lors de l'enregistrement de l'appareil avec le serveur : <ph name="CLIENT_ERROR"/>.</translation>
@@ -4853,7 +4853,7 @@ Assurez-vous de ne pas dévoiler d'informations sensibles.</translation>
 <translation id="7197632491113152433">Vous avez la possibilité d'utiliser <ph name="NUMBER_OF_APPS"/> application(s) de votre compte sur cet appareil.</translation>
 <translation id="7199158086730159431">Obtenir de l'aid&amp;e</translation>
 <translation id="7200083590239651963">Sélectionner la configuration</translation>
-<translation id="7201042526153088083">Installez des applications et des jeux sur votre <ph name="DEVICE_TYPE"/> depuis Brave Play. &lt;a target="_blank" href="<ph name="URL"/>"&gt;En savoir plus&lt;/a&gt;</translation>
+<translation id="7201042526153088083">Installez des applications et des jeux sur votre <ph name="DEVICE_TYPE"/> depuis Brave Play. &lt;a target="_blank" rel="noopener noreferrer" href="<ph name="URL"/>"&gt;En savoir plus&lt;/a&gt;</translation>
 <translation id="720110658997053098">Conserver cet appareil en mode Kiosque de manière permanente</translation>
 <translation id="7201118060536064622">"<ph name="DELETED_ITEM_NAME"/>" supprimé</translation>
 <translation id="7201420661433230412">Afficher les fichiers</translation>
@@ -6612,7 +6612,7 @@ Conservez votre fichier de clé en lieu sûr. Vous en aurez besoin lors de la cr
 <translation id="3860292630623580294">(Privé)</translation>
 <translation id="4854477725773269949">Autoriser en privé</translation>
 <translation id="6436164536244065364">Afficher dans le Web Store</translation>
-<translation id="38046578254905003">Rechercher des extensions et des thèmes dans le <ph name="BEGIN_LINK">&lt;a target="_blank" href="https://chrome.google.com/webstore/category/extensions"&gt;</ph>Web Store<ph name="END_LINK">&lt;/a&gt;</ph></translation>
+<translation id="38046578254905003">Trouvez des extensions et des thèmes sur le <ph name="BEGIN_LINK"/>Web Store<ph name="END_LINK"/></translation>
 <translation id="6336451774241870485">Nouvel onglet privé</translation>
 <translation id="6610147964972079463">Fermer les onglets privés</translation>
 <translation id="4933782374919065856">Des questions ? Contactez la personne qui supervise votre profil.</translation>

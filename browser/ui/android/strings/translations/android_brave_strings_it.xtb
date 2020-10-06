@@ -181,7 +181,6 @@ attività in questo mese...</translation>
 <translation id="8193724030871339658">ALTRI DISPOSITIVI SULLA CATENA</translation>
 <translation id="279635009973773843">CARICAMENTO DEI DISPOSITIVI...</translation>
 <translation id="6394333525003604181">USCITA DALLA CATENA DI SINCRONIZZAZIONE...</translation>
-<translation id="1604429341565715601">La configurazione della sincronizzazione è in corso, prova a ripristinarla in seguito</translation>
 <translation id="2569646144216067185">Conteggio delle parole: <ph name="WORD_COUNT"/></translation>
 <translation id="4282642752844565114">Numero di parole errato</translation>
 <translation id="7507533586185621084">Codice di sincronizzazione errato</translation>
@@ -318,7 +317,8 @@ attività in questo mese...</translation>
 <translation id="5963670684159057574">Blocca l'analisi delle impronte cross-site</translation>
 <translation id="3895527457258986253">Blocca le impronte digitali</translation>
 <translation id="184568144098869637">Impedisce al browser di riconoscere il dispositivo</translation>
-<translation id="4540198958192073185">Blocca il rilevamento di tutte le impronte</translation>
+<translation id="7396366757003005317">Impronta digitale bloccata(stretto, potrebbe interferire con le funzionalità dei siti)</translation>
+<translation id="700453611199558021">Blocco impronta digitale(standard)</translation>
 <translation id="769702552748212954">Consenti tutte le impronte digirali</translation>
 <translation id="2888409909650566510">Annunci e altre cose\ninquietanti bloccati</translation>
 <translation id="6930134873084561197">I siti spesso includono cookie e script che cercano di identificare te e il tuo dispositivo. Vogliono capire chi tu sia e seguirti in tutto il web tracciando quello che fai su ogni sito.\n\nBrave li blocca in modo che tu possa navigare senza essere seguito in giro.</translation>
@@ -346,7 +346,7 @@ attività in questo mese...</translation>
 <translation id="8374242949413616101">Protezione Privacy</translation>
 <translation id="4955406228638026265">Brave ferma ad &amp; tracker dal raccogliere informazioni su di te senza il tuo consenso.</translation>
 <translation id="752842701893882688">Risparmia traffico dati e batteria</translation>
-<translation id="5739030256211745023">Senza ad &amp; tracker, i siti utilizzano meno dati e meno batteria. Potresti anche risparmiare su eventuali costi dell'operatore.</translation>
+<translation id="1685837926613452362">Senza pubblicità &amp; tracciatori, siti web usa meno dati e batteria. Potresti anche risparmiare denaro sulle imposte di trasporto.</translation>
 <translation id="5440744330377972191">I siti web caricano più velocemente</translation>
 <translation id="3000738865641747653">Caricare meno dati significa che Brave carica i siti più velocemente - fino ad 8 volte più veloce degli altri browser.</translation>
 <translation id="8903462729414407077">Ricevi aggiornamenti settimanali</translation>
@@ -361,6 +361,7 @@ attività in questo mese...</translation>
 <translation id="1581614543353331529">Nessun dato ancora da mostrare</translation>
 <translation id="2401984885421380890">Tracker &amp; Ad\nBloccate</translation>
 <translation id="2662183408296991265">Dati Risparmiati\n(<ph name="DATA_SAVED"/>)</translation>
+<translation id="3180928261057583677">Dati Salvati (<ph name="DATA_SAVED"/>)</translation>
 <translation id="6814582232712814369">Tempo risparmiato</translation>
 <translation id="3694122362646626770">Siti web</translation>
 <translation id="2225863440766607138">Tracker</translation>
@@ -370,12 +371,12 @@ attività in questo mese...</translation>
 <translation id="7427567994475794038">Attiva il Report Privacy per vedere quanti tracker &amp;ad sono state bloccate nelle ultime 3 ore.</translation>
 <translation id="2053891538879944400">Hai risparmiato <ph name="DATA"/> <ph name="DATA_TEXT"/> dati con Brave browser.</translation>
 <translation id="8640064498452534195">Attiva il Report Privacy per vedere quanti dati hai risparmiato.</translation>
-<translation id="4591582032282435287">Il Brave browser usa in media il 40% di batteria in meno.</translation>
+<translation id="2252497442547961651">Il browser Brave usa 40% in meno di batteria in media.&#128267;</translation>
 <translation id="1945330434665345785">Hai bloccato <ph name="COUNT"/> tracker &amp; ad con Brave browser la scorsa settimana.</translation>
 <translation id="2883868922264431515">Guadagna token guardando ad tutela-privacy e supporta i tuoi siti preferiti.</translation>
-<translation id="6840965284166256302">Grande! Hai bloccato 250 tracker &amp; ad con Brave browser.</translation>
-<translation id="2076976911561945584">Bene! Hai risparmiato 10MB con Brave browser.</translation>
-<translation id="6714550233326888315">Bene! Hai risparmiato 10 minuti di caricamento con Brave browser.</translation>
+<translation id="5678925890616256956">Ottimo! Hai bloccato 250 localizzatori &amp; pubblicità con il browser Brave.&#128293;</translation>
+<translation id="9199047775708635708">Ottimo! Hai risparmiato 10MB con il browser Brave.&#128267;</translation>
+<translation id="1880168210969863408">Ottimo! Hai risparmiato 10 minuti di tempo di carimento con il browser Brave.&#128168;&#128168;</translation>
 <translation id="7408493389591475748">Comincia a navigare per visualizzare il report sulla privacy</translation>
 <translation id="9080777565335515917">Imposta Brave come browser di default per una navigazione privata e sicura.</translation>
 <translation id="7801488941710395275">Permetti a Brave di mostrare le tue statistiche privacy</translation>
@@ -384,4 +385,5 @@ attività in questo mese...</translation>
 <translation id="8089997572759938512">Resetta a zero i report sulla privacy</translation>
 <translation id="2718046830255553131">Il resoconto dati privacy è stato cancellato.</translation>
 <translation id="7559243474426790340">Aggiorna status</translation>
+<translation id="8376263745431603066">Abilita "Modalità Notturna" (Sperimentale)</translation>
 </translationbundle>

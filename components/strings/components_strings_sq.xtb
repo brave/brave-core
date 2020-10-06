@@ -1908,6 +1908,25 @@ Detaje shtesë:
     &lt;/ul&gt;</translation>
 <translation id="994346157028146140">JIS B1</translation>
 <translation id="6771143571626203666">Nga Brave Pay</translation>
+<translation id="2586968635953373425">Hap Dritare Private</translation>
+<translation id="3489858312836205593">Hap dritare të re private Brave</translation>
+<translation id="1426112902089905810">&lt;h4&gt;Hapi 1: Identifikohu në portal&lt;/h4&gt;
+    &lt;p&gt;Rrjetet Wi-Fi në vende të tilla si kafenetë apo aeroportet kërkojnë që të identifikohesh. Për të parë faqen e identifikimit, vizito një faqe që përdor &lt;code&gt;http://&lt;/code&gt;.&lt;/p&gt;
+    &lt;ol&gt;
+    &lt;li&gt;Shko te një sajt uebi që fillon me &lt;code&gt;http://&lt;/code&gt;, si &lt;a href="http://example.com" target="_blank" rel="noopener noreferrer"&gt;http://example.com&lt;/a&gt;.&lt;/li&gt;
+    &lt;li&gt;Në faqen e identifikimit që hapet, identifikohu për të përdorur internetin.&lt;/li&gt;
+    &lt;/ol&gt;
+    &lt;h4&gt;Hapi 2: Hap faqen në modalitetin "e fshehtë" (vetëm kompjuter)&lt;/h4&gt;
+    &lt;p&gt;Hap faqen që po viziton në një dritare "të fshehtë".&lt;/p&gt;
+    &lt;p&gt;Nëse faqja hapet, një shtesë e Brave nuk po funksionon siç duhet. Për të rregulluar gabimin, çaktivizo shtesën.&lt;/p&gt;
+    &lt;h4&gt;Hapi 3: Përditëso sistemin operativ&lt;/h4&gt;
+    &lt;p&gt;Sigurohu që pajisja jote të jetë e përditësuar.&lt;/p&gt;
+    &lt;h4&gt;Hapi 4: Çaktivizo përkohësisht antivirusin&lt;/h4&gt;
+    &lt;p&gt;Do të shohësh këtë gabim nëse ke softuer antivirusi që ofron "Mbrojtje HTTPS" ose "Skanim HTTPS". Antivirusi nuk lejon që Brave të ofrojë siguri.&lt;/p&gt;
+    &lt;p&gt;Për të rregulluar problemin, çaktivizo softuerin e antivirusit. Nëse faqja funksionon pasi çaktivizohet softueri, çaktivizo këtë softuer kur përdor sajte të sigurta.&lt;/p&gt;
+    &lt;p&gt;Mos harro të aktivizosh sërish programin e antivirusit kur të mbarosh.&lt;/p&gt;
+    &lt;h4&gt;Hapi 5: Merr më shumë ndihmë&lt;/h4&gt;
+    &lt;p&gt;Nëse ende e sheh gabimin, kontakto me zotëruesin e sajtit të uebit.&lt;/p&gt;</translation>
 <translation id="8820817407110198400">Faqerojtës</translation>
 <translation id="8362995731815961365">Profili që ka ngritur këtë kompjuter ka zgjedhur ta bllokojë këtë faqe interneti.</translation>
 <translation id="4075123085690634698">Hap faqen në një dritare të re Private (⇧⌘N)</translation>
@@ -1918,13 +1937,11 @@ Detaje shtesë:
 <translation id="9177896974490719854">Sidoqoftë ti nuk’ je i padukshëm. Kalimi në privat nuk’ fsheh shfletimin tënd nga punëdhënësi, ofrues yt i sherbimit internet apo faqet e internetit që ti viziton.</translation>
 <translation id="2227116904818538760">Ti kalove privat</translation>
 <translation id="2007417459975034427">Tani ti mund të shfletosh në mënyrë private dhe profilet e tjera që përdorin këtë pajisje nuk do ta shohin aktivitetin tënd. Gjithsesi shkarkimet dhe faqeruajtësit do të ruhen.</translation>
-<translation id="2586968635953373425">Hap Dritare Private</translation>
-<translation id="3489858312836205593">Hap dritare të re private Brave</translation>
 <translation id="6984479912851154518">Po lihet mënyra private për të paguar me një aplikacion të jashtëm. Të vazhdohet?</translation>
-<translation id="1426112902089905810">&lt;h4&gt;Hapi 1: Identifikohu në portal&lt;/h4&gt;
+<translation id="7243899945709472787">&lt;h4&gt;Hapi 1: Identifikohu në portal&lt;/h4&gt;
     &lt;p&gt;Rrjetet Wi-Fi në vende të tilla si kafenetë apo aeroportet kërkojnë që të identifikohesh. Për të parë faqen e identifikimit, vizito një faqe që përdor &lt;code&gt;http://&lt;/code&gt;.&lt;/p&gt;
     &lt;ol&gt;
-    &lt;li&gt;Shko te një sajt uebi që fillon me &lt;code&gt;http://&lt;/code&gt;, si &lt;a href="http://example.com" target="_blank"&gt;http://example.com&lt;/a&gt;.&lt;/li&gt;
+    &lt;li&gt;Shko te një sajt uebi që fillon me &lt;code&gt;http://&lt;/code&gt;, si &lt;a href="http://example.com" target="_blank" rel="noopener noreferrer"&gt;http://example.com&lt;/a&gt;.&lt;/li&gt;
     &lt;li&gt;Në faqen e identifikimit që hapet, identifikohu për të përdorur internetin.&lt;/li&gt;
     &lt;/ol&gt;
     &lt;h4&gt;Hapi 2: Hap faqen në modalitetin "e fshehtë" (vetëm kompjuter)&lt;/h4&gt;

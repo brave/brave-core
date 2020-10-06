@@ -25,7 +25,7 @@ Inštaláciou tohto rozšírenia súhlasíte so Zmluvnými podmienkami Google Wi
 <translation id="3218385319396786393">Funkcia autoplay bola na tejto stránke zakázaná</translation>
 <translation id="4988333904713528597">Vždy povoliť automatické prehrávanie na <ph name="HOST"/></translation>
 <translation id="4150684676757176434">Pokračovať v blokovaní funkcie autoplay</translation>
-<translation id="5883458389055721080">Toto rozšírenie bezpečnosti a ochrany Brave neprehodnotil. Toto rozšírenie nainštalujte iba ak vývojárovi dôverujete.</translation>
+<translation id="8988939298652262600">Brave nekontroluje rozšírenia z hľadiska bezpečnosti a ochrany. Toto rozšírenie nainštalujte, iba ak dôverujete vývojárovi.</translation>
 <translation id="8081858229109418493">Meno a ikonka profilu</translation>
 <translation id="2044383478723007273">Farby Brave</translation>
 <translation id="1692470335103807198">Získať viac tém</translation>
@@ -37,6 +37,9 @@ Inštaláciou tohto rozšírenia súhlasíte so Zmluvnými podmienkami Google Wi
 <translation id="5802665280774361839">Zobraziť automatické dopĺňanie na paneli s adresou</translation>
 <translation id="597020512043916976">Zobraziť top stránky v návrhoch na automatické dopĺňanie</translation>
 <translation id="264150068416846820">Zobraziť stránky, ktoré odporúča Brave, v návrhoch na automatické dopĺňanie</translation>
+<translation id="6414370348346025511">Štandardná ochrana je zapnutá.</translation>
+<translation id="814018970995616154">Kontroluje adresy URL so zoznamom nebezpečných stránok uloženým v Brave.</translation>
+<translation id="1144810021918451336">Nechráni vás pred nebezpečnými webovými stránkami, stiahnutými súbormi a rozšíreniami.</translation>
 <translation id="7781069478569868053">Stránka novej karty</translation>
 <translation id="2467749191278759605">Prispôsobte si svoj informačný panel Brave</translation>
 <translation id="1717331825806276156">Obrázky na pozadí</translation>
@@ -79,7 +82,7 @@ Inštaláciou tohto rozšírenia súhlasíte so Zmluvnými podmienkami Google Wi
 <translation id="4824468494729001999">Blokovať skripty</translation>
 <translation id="519861640102428255">Pozrieť &amp; Pocítiť</translation>
 <translation id="4800195524776354947">Zobraziť počet blokovaných položiek na ikone Štíty</translation>
-<translation id="3932286112122164477">Povoliť prihlasovacie tlačidlá Google na stránkach tretích strán</translation>
+<translation id="7498695072878479744">Povoliť prihlasovacie tlačidlá Google na stránkach tretích strán</translation>
 <translation id="863171915776379000">Povoliť prihlasovanie Facebook a embedované príspevky</translation>
 <translation id="5165042248369837294">Povoliť embedované tweety pre Twitter</translation>
 <translation id="958971637207126733">Povoliť vložené príspevky z LinkedIn</translation>
@@ -148,13 +151,17 @@ Inštaláciou tohto rozšírenia súhlasíte so Zmluvnými podmienkami Google Wi
 <translation id="2356070529366658676">Opýtať sa</translation>
 <translation id="7701040980221191251">Žiadne</translation>
 <translation id="1085027414516521238">MetaMask</translation>
-<translation id="3905324891414560921">Poskytovateľ Web3 na používanie Dapps</translation>
+<translation id="7090046810227878892">Poskytovateľ Ethereum na používanie Dapps</translation>
 <translation id="5913089932885076110">Načítať Crypto Wallets pri štarte</translation>
+<translation id="6864914031231797928">Povoliť prihlasovanie Google pre rozšírenia</translation>
+<translation id="1365342176656744625">Metóda riešenia umiestnení IPFS</translation>
+<translation id="1327977588028644528">Brána</translation>
+<translation id="80225669816651290">Lokálny uzol</translation>
 <translation id="6554397389149987360">Používa komponenty služby Hangouts, ktoré umožňujú zdieľanie obrazovky a ďalšie funkcie v prehliadači.</translation>
 <translation id="1765684547504191670">Používa prvok Media Router na povolenie Chromecastu v prehliadači.</translation>
 <translation id="9156965752763025780">Zmeny sa prejavia pri nasledujúcom reštartovaní prehliadača Brave.</translation>
 <translation id="7179921470347911571">Spustiť ešte raz</translation>
-<translation id="4154389611571860454">Používa rozšírenie  IPFS companion na podporu IPFS v prehliadači.</translation>
+<translation id="6222323340194834282">Používa rozšírenie IPFS Companion na zvýšenie podpory IPFS v prehliadači.</translation>
 <translation id="8137559199583651773">Spravovať rozšírenia</translation>
 <translation id="7013485839273047434">Získať ďalšie rozšírenia</translation>
 <translation id="4928988318462976765">Obchod s webovými rozšíreniami</translation>
@@ -210,20 +217,19 @@ Inštaláciou tohto rozšírenia súhlasíte so Zmluvnými podmienkami Google Wi
 <translation id="4394049700291259645">Zakázať</translation>
 <translation id="6469509880167172749">Automatické odosielanie výlučne vlastných produktových analýz do Brave</translation>
 <translation id="7090566321964540749">Táto anonymná informácia umožní Brave len odhadnúť celkové využívanie určitých funkcií .</translation>
-<translation id="9111960429693394744">Chceli by ste pre Dapps použiť krypto peňaženku Brave alebo MetaMask?</translation>
-<translation id="8721775358057000783">Chcete na tejto stránke spustiť Crypto Wallets pre web3 podporu?</translation>
+<translation id="1947672064022327074">Prajete si spustiť Crypto Peňaženky pre podporu Etherea?</translation>
 <translation id="7583735190612229830">Nastavte Krypto peňaženky na interakciu s touto aplikáciou a ďalšími podobnými.</translation>
 <translation id="4823406846571523661">Nastaviť Crypto Wallets</translation>
-<translation id="5756155765711979898">Použiť MetaMasku</translation>
-<translation id="6754134632841262799">NASTAVENIA</translation>
 <translation id="8199661191594897555">Spustite Crypto Wallets a znova načítajte</translation>
 <translation id="8428213095426709021">Nastavenia</translation>
+<translation id="1854270995641373652">Prajete si v Brave povoliť podporu lokálneho démona IPFS?</translation>
+<translation id="2366908098700680611">Povoliť IPFS</translation>
 <translation id="4552520379838695057">Ľutujeme, táto stránka chýba.</translation>
 <translation id="2609895996619941644">Chcete skontrolovať, či je k dispozícii uložená verzia na Wayback Machine?</translation>
 <translation id="8053093028263274061">Ľutujeme, žiadna uložená verzia nie je k dispozícii.</translation>
 <translation id="8517321676372639828">Skontrolovať uloženú verziu</translation>
-<translation id="191143826155037518">Brave je vám k dispozícii na <ph name="BEGIN_LINK_MPL">&lt;a target="_blank" href="$1"&gt;</ph>Mozilla Public License 2.0<ph name="END_LINK_MPL">&lt;/a&gt;</ph> (MPL) a zahŕňa <ph name="BEGIN_LINK_OSS">&lt;a target="_blank" href="$2"&gt;</ph>open source software<ph name="END_LINK_OSS">&lt;/a&gt;</ph> na základe rôznych iných licencií.
-        Môžete si prečítať <ph name="BEGIN_LINK_BUILD_INSTRUCTIONS">&lt;a target="_blank" href="$3"&gt;</ph>pokyny na stiahnutie a buildovanie pre sebaf<ph name="END_LINK_BUILD_INSTRUCTIONS">&lt;/a&gt;</ph> špecifický <ph name="BEGIN_LINK_SOURCE_CODE">&lt;a target="_blank" href="$4"&gt;</ph>zdrojový kód použitý na vytvorenie tejto kópie<ph name="END_LINK_SOURCE_CODE">&lt;/a&gt;</ph>.</translation>
+<translation id="191143826155037518">Brave je vám k dispozícii na <ph name="BEGIN_LINK_MPL"/>Mozilla Public License 2.0<ph name="END_LINK_MPL"/> (MPL) a zahŕňa <ph name="BEGIN_LINK_OSS"/>open source software<ph name="END_LINK_OSS"/> na základe rôznych iných licencií.
+        Môžete si prečítať <ph name="BEGIN_LINK_BUILD_INSTRUCTIONS"/>pokyny na stiahnutie a buildovanie pre sebaf<ph name="END_LINK_BUILD_INSTRUCTIONS"/> špecifický <ph name="BEGIN_LINK_SOURCE_CODE"/>zdrojový kód použitý na vytvorenie tejto kópie<ph name="END_LINK_SOURCE_CODE"/>.</translation>
 <translation id="4474155171896946103">Všetky karty uložiť ako záložky...</translation>
 <translation id="2336228925368920074">Všetky karty uložiť ako záložky...</translation>
 <translation id="796831669370432378">Ak chcete pridať záložku, kliknite na tlačidlo záložky vedľa panela s adresou</translation>

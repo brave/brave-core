@@ -291,7 +291,7 @@
 <translation id="1361872463926621533">ప్రారంభంలో ధ్వనిని ప్లే చేయండి</translation>
 <translation id="1363585519747660921">USB ప్రింటర్ కోసం తప్పక కాన్ఫిగర్ చేయాలి</translation>
 <translation id="1365180424462182382">మీ <ph name="BEGIN_LINK"/>బ్రౌజర్ నిర్వహణ<ph name="END_LINK"/> <ph name="ENROLLMENT_DOMAIN"/> ద్వారా చేయబడుతోంది</translation>
-<translation id="1366177842110999534">మీ <ph name="DEVICE_TYPE"/>లో Linux సాధనాలు, ఎడిటర్‌లు, IDEలను అమలు చేయండి. &lt;a target="_blank" href="<ph name="URL"/>"&gt;మరింత తెలుసుకోండి&lt;/a&gt;</translation>
+<translation id="1366177842110999534">మీ <ph name="DEVICE_TYPE"/>లో Linux సాధనాలు, ఎడిటర్‌లు, IDEలను అమలు చేయండి. &lt;a target="_blank" rel="noopener noreferrer" href="<ph name="URL"/>"&gt;మరింత తెలుసుకోండి&lt;/a&gt;</translation>
 <translation id="1367951781824006909">ఒక ఫైల్‌ని ఎంచుకోండి</translation>
 <translation id="1369149969991017342">స్విచ్ యాక్సెస్ (కేవలం ఒకటి లేదా రెండు స్విచ్‌లతో కంప్యూటర్‌ను నియంత్రించండి)</translation>
 <translation id="1372841398847029212">మీ ఖాతాకు సింక్ చేయండి</translation>
@@ -1354,7 +1354,7 @@
 <translation id="268053382412112343">&amp;చరిత్ర</translation>
 <translation id="2682498795777673382">మీ తల్లి/తండ్రి నుండి అప్‌డేట్</translation>
 <translation id="2683638487103917598">ఫోల్డర్ క్రమబద్ధీకరించబడింది</translation>
-<translation id="2686222346846590368">ఈ <ph name="DEVICE_TYPE"/>కు ఇదే చివరి ఆటోమేటిక్ సాఫ్ట్‌వేర్, భద్రతాపరమైన అప్‌డేట్. భవిష్యత్తు అప్‌డేట్‌లను పొందడానికి, సరికొత్త మోడల్‌కు అప్‌గ్రేడ్ చేయండి. &lt;a target="_blank" href="<ph name="URL"/>"&gt;మరింత తెలుసుకోండి<ph name="LINK_END"/></translation>
+<translation id="2686222346846590368">ఈ <ph name="DEVICE_TYPE"/>కు ఇదే చివరి ఆటోమేటిక్ సాఫ్ట్‌వేర్, భద్రతాపరమైన అప్‌డేట్. భవిష్యత్తు అప్‌డేట్‌లను పొందడానికి, సరికొత్త మోడల్‌కు అప్‌గ్రేడ్ చేయండి. &lt;a target="_blank" rel="noopener noreferrer" href="<ph name="URL"/>"&gt;మరింత తెలుసుకోండి<ph name="LINK_END"/></translation>
 <translation id="2687403674020088961">అన్ని కుక్కీలను బ్లాక్ చేయండి (సిఫార్సు చేయడం లేదు)</translation>
 <translation id="2687407218262674387">Brave సేవా నిబంధనలు</translation>
 <translation id="2688196195245426394">పరికరం సర్వర్‌తో నమోదు అవుతున్నప్పుడు లోపం: <ph name="CLIENT_ERROR"/>.</translation>
@@ -4852,7 +4852,7 @@
 <translation id="7197632491113152433">మేము ఈ పరికరంలో ఉపయోగించగల <ph name="NUMBER_OF_APPS"/> యాప్‌లను మీ ఖాతాలో కనుగొన్నాము.</translation>
 <translation id="7199158086730159431">సహా&amp;యం పొందండి</translation>
 <translation id="7200083590239651963">కాన్ఫిగరేషన్‌‌ను ఎంచుకోండి</translation>
-<translation id="7201042526153088083">మీ <ph name="DEVICE_TYPE"/>లో Google Play నుండి యాప్‌లను, గేమ్‌లను ఇన్‌స్టాల్ చేసుకోండి. &lt;a target="_blank" href="<ph name="URL"/>"&gt;మరింత తెలుసుకోండి&lt;/a&gt;</translation>
+<translation id="7201042526153088083">మీ <ph name="DEVICE_TYPE"/>లో Google Play నుండి యాప్‌లను, గేమ్‌లను ఇన్‌స్టాల్ చేసుకోండి. &lt;a target="_blank" rel="noopener noreferrer" href="<ph name="URL"/>"&gt;మరింత తెలుసుకోండి&lt;/a&gt;</translation>
 <translation id="720110658997053098">ఈ పరికరాన్ని శాశ్వతంగా కియోస్క్ మోడ్‌లో ఉంచు</translation>
 <translation id="7201118060536064622">'<ph name="DELETED_ITEM_NAME"/>' తొలగించబడింది</translation>
 <translation id="7201420661433230412">ఫైల్‌లను వీక్షించండి</translation>
@@ -6516,6 +6516,7 @@
 <translation id="995782501881226248">YouTube</translation>
 <translation id="996250603853062861">సురక్షిత కనెక్షన్‌ను ప్రారంభిస్తోంది...</translation>
 <translation id="998747458861718449">ప&amp;ర్యవేక్షించు</translation>
+<translation id="38046578254905003"><ph name="BEGIN_LINK"/>Brave వెబ్ స్టోర్‌లో<ph name="END_LINK"/> ఎక్స్‌టెన్ష‌న్‌లు మరియు థీమ్‌లను కనుగొనండి</translation>
 <translation id="658539216370629794">అ&amp;జ్ఞాత విండోలో లింక్‌ను తెరువు</translation>
 <translation id="1432267168815937878">అజ్ఞా&amp;త విండోలో లింక్‌ను తెరువు</translation>
 <translation id="6516243500644829484">కొత్త &amp;అజ్ఞాత విండో</translation>
@@ -6595,7 +6596,6 @@
 <translation id="3860292630623580294">(అజ్ఞాతంగా)</translation>
 <translation id="4854477725773269949">అజ్ఞాతంలో అనుమతించు</translation>
 <translation id="6436164536244065364">వెబ్ స్టోర్‌లో వీక్షించండి</translation>
-<translation id="38046578254905003"><ph name="BEGIN_LINK"/>Brave వెబ్ స్టోర్‌లో<ph name="END_LINK"/> ఎక్స్‌టెన్ష‌న్‌లు మరియు థీమ్‌లను కనుగొనండి</translation>
 <translation id="6336451774241870485">కొత్త అజ్ఞాత ట్యాబ్</translation>
 <translation id="6610147964972079463">అజ్ఞాత ట్యాబ్‌లను మూసివేయి</translation>
 <translation id="4933782374919065856">ప్రశ్నలు ఏమైనా ఉన్నాయా? మీ ప్రొఫైల్‌ను పర్యవేక్షించే వ్యక్తిని సంప్రదించండి.</translation>

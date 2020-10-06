@@ -291,7 +291,7 @@
 <translation id="1361872463926621533">Pusti zvuk pri pokretanju</translation>
 <translation id="1363585519747660921">USB štampač treba da se konfiguriše</translation>
 <translation id="1365180424462182382"><ph name="BEGIN_LINK"/>Pregledačem upravlja<ph name="END_LINK"/> <ph name="ENROLLMENT_DOMAIN"/></translation>
-<translation id="1366177842110999534">Pokrenite Linux alatke, uređivače i IDE-ove na <ph name="DEVICE_TYPE"/>-u. &lt;a target="_blank" href="<ph name="URL"/>"&gt;Saznajte više&lt;/a&gt;</translation>
+<translation id="1366177842110999534">Pokrenite Linux alatke, uređivače i IDE-ove na <ph name="DEVICE_TYPE"/>-u. &lt;a target="_blank" rel="noopener noreferrer" href="<ph name="URL"/>"&gt;Saznajte više&lt;/a&gt;</translation>
 <translation id="1367951781824006909">Izaberi datoteku</translation>
 <translation id="1369149969991017342">Pristup pomoću prekidača (kontrolišite računar pomoću samo jednog ili dva prekidača)</translation>
 <translation id="1372841398847029212">Sinhronizujte sa nalogom</translation>
@@ -1351,7 +1351,7 @@ Možete da upravljate podešavanjima ovog naloga ako instalirate aplikaciju Fami
 <translation id="268053382412112343">Hi&amp;story (Istorija)</translation>
 <translation id="2682498795777673382">Novosti od roditelja</translation>
 <translation id="2683638487103917598">Direktorijum je sortiran</translation>
-<translation id="2686222346846590368">Ovo je poslednje automatsko bezbednosno ažuriranje i ažuriranje softvera za <ph name="DEVICE_TYPE"/>. Nadogradite na noviji model da biste dobijali buduća ažuriranja. &lt;a target="_blank" href="<ph name="URL"/>"&gt;Saznajte više<ph name="LINK_END"/></translation>
+<translation id="2686222346846590368">Ovo je poslednje automatsko bezbednosno ažuriranje i ažuriranje softvera za <ph name="DEVICE_TYPE"/>. Nadogradite na noviji model da biste dobijali buduća ažuriranja. &lt;a target="_blank" rel="noopener noreferrer" href="<ph name="URL"/>"&gt;Saznajte više<ph name="LINK_END"/></translation>
 <translation id="2687403674020088961">Blokiraj sve kolačiće (ne preporučuje se)</translation>
 <translation id="2687407218262674387">Brave uslovi korišćenja usluge</translation>
 <translation id="2688196195245426394">Greška pri registrovanju uređaja na server: <ph name="CLIENT_ERROR"/>.</translation>
@@ -4850,7 +4850,7 @@ Vodite računa da ne otkrijete nikakve osetljive informacije.</translation>
 <translation id="7197632491113152433">Na nalogu smo pronašli aplikacije (<ph name="NUMBER_OF_APPS"/>) koje mogu da se koriste na ovom uređaju.</translation>
 <translation id="7199158086730159431">Potraži pomoć</translation>
 <translation id="7200083590239651963">Izaberite konfiguraciju</translation>
-<translation id="7201042526153088083">Instalirajte aplikacije i igre sa Google Play-a na uređaju <ph name="DEVICE_TYPE"/>. &lt;a target="_blank" href="<ph name="URL"/>"&gt;Saznajte više&lt;/a&gt;</translation>
+<translation id="7201042526153088083">Instalirajte aplikacije i igre sa Google Play-a na uređaju <ph name="DEVICE_TYPE"/>. &lt;a target="_blank" rel="noopener noreferrer" href="<ph name="URL"/>"&gt;Saznajte više&lt;/a&gt;</translation>
 <translation id="720110658997053098">Trajno zadrži ovaj uređaj u režimu kioska</translation>
 <translation id="7201118060536064622">Stavka „<ph name="DELETED_ITEM_NAME"/>“ je izbrisana</translation>
 <translation id="7201420661433230412">Prikaži datoteke</translation>
@@ -6518,6 +6518,7 @@ Datoteka ključa: <ph name="KEY_FILE"/>
 <translation id="995782501881226248">YouTube</translation>
 <translation id="996250603853062861">Uspostavljanje bezbedne veze...</translation>
 <translation id="998747458861718449">P&amp;regledaj</translation>
+<translation id="38046578254905003">Pronađite dodatke i teme u <ph name="BEGIN_LINK"/>Brave veb-prodavnici<ph name="END_LINK"/></translation>
 <translation id="658539216370629794">Otvori link u prozoru bez arhiviranja</translation>
 <translation id="1432267168815937878">Otvori link u prozoru za pre&amp;gledanje bez arhiviranja</translation>
 <translation id="6516243500644829484">Novi &amp;prozor „Bez arhiviranja“</translation>
@@ -6597,7 +6598,6 @@ Datoteka ključa: <ph name="KEY_FILE"/>
 <translation id="3860292630623580294">(Bez arhiviranja)</translation>
 <translation id="4854477725773269949">Omogući u režimu bez arhiviranja</translation>
 <translation id="6436164536244065364">Prikaži u Brave veb-prodavnici</translation>
-<translation id="38046578254905003">Pronađite dodatke i teme u <ph name="BEGIN_LINK"/>Brave veb-prodavnici<ph name="END_LINK"/></translation>
 <translation id="6336451774241870485">Nova kartica bez arhiviranja</translation>
 <translation id="6610147964972079463">Zatvori kartice bez arhiv.</translation>
 <translation id="4933782374919065856">Imate pitanja? Kontaktirajte osobu koja vam nadgleda profil.</translation>

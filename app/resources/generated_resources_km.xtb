@@ -291,7 +291,7 @@
 <translation id="1361872463926621533">ចាក់សំឡេង​នៅពេលចាប់ផ្តើម</translation>
 <translation id="1363585519747660921">ម៉ាស៊ីនបោះពុម្ព USB ត្រូវការ​ការកំណត់រចនាសម្ព័ន្ធ</translation>
 <translation id="1365180424462182382"><ph name="BEGIN_LINK"/>កម្មវិធីរុករក​តាមអ៊ីនធឺណិត​របស់អ្នក​ស្ថិតក្រោមការ​គ្រប់គ្រង<ph name="END_LINK"/>របស់ <ph name="ENROLLMENT_DOMAIN"/></translation>
-<translation id="1366177842110999534">ដំណើរការ​ឧបករណ៍ Linux, កម្មវិធីកែសម្រួល និង IDE នៅលើ <ph name="DEVICE_TYPE"/> របស់អ្នក។ &lt;a target="_blank" href="<ph name="URL"/>"&gt;ស្វែងយល់បន្ថែម&lt;/a&gt;</translation>
+<translation id="1366177842110999534">ដំណើរការ​ឧបករណ៍ Linux, កម្មវិធីកែសម្រួល និង IDE នៅលើ <ph name="DEVICE_TYPE"/> របស់អ្នក។ &lt;a target="_blank" rel="noopener noreferrer" href="<ph name="URL"/>"&gt;ស្វែងយល់បន្ថែម&lt;/a&gt;</translation>
 <translation id="1367951781824006909">ជ្រើសរើសឯកសារមួយ</translation>
 <translation id="1369149969991017342">ការប្រើប៊ូតុងចុច (គ្រប់គ្រង​កុំព្យូទ័រ​ដោយប្រើ​ប៊ូតុង​បិទបើក​មួយ ឬពីរ​ប៉ុណ្ណោះ)</translation>
 <translation id="1372841398847029212">ធ្វើសមកាលកម្មទៅគណនីរបស់អ្នក</translation>
@@ -1354,7 +1354,7 @@
 <translation id="268053382412112343">ប្រវតិ្ត</translation>
 <translation id="2682498795777673382">បច្ចុប្បន្នភាពពីមាតាបិតារបស់អ្នក</translation>
 <translation id="2683638487103917598">បានតម្រៀបថត</translation>
-<translation id="2686222346846590368">នេះគឺជា​កំណែថ្មី​របស់កម្មវិធី និង​សុវត្ថិភាព​ចុងក្រោយ​ដែលបានដំឡើង​ដោយស្វ័យប្រវត្តិ​សម្រាប់ <ph name="DEVICE_TYPE"/> នេះ។ ដើម្បី​ទទួលបាន​កំណែថ្មីក្នុងពេលអនាគត សូមប្ដូរទៅប្រើម៉ូដែលថ្មីជាងនេះ។ &lt;a target="_blank" href="<ph name="URL"/>"&gt;ស្វែងយល់បន្ថែម<ph name="LINK_END"/></translation>
+<translation id="2686222346846590368">នេះគឺជា​កំណែថ្មី​របស់កម្មវិធី និង​សុវត្ថិភាព​ចុងក្រោយ​ដែលបានដំឡើង​ដោយស្វ័យប្រវត្តិ​សម្រាប់ <ph name="DEVICE_TYPE"/> នេះ។ ដើម្បី​ទទួលបាន​កំណែថ្មីក្នុងពេលអនាគត សូមប្ដូរទៅប្រើម៉ូដែលថ្មីជាងនេះ។ &lt;a target="_blank" rel="noopener noreferrer" href="<ph name="URL"/>"&gt;ស្វែងយល់បន្ថែម<ph name="LINK_END"/></translation>
 <translation id="2687403674020088961">ទប់ស្កាត់ខូគីទាំងអស់ (មិនណែនាំ)</translation>
 <translation id="2687407218262674387">លក្ខខណ្ឌប្រើប្រាស់ Brave</translation>
 <translation id="2688196195245426394">កំហុសឆ្គងនៅពេលចុះឈ្មោះឧបករណ៍ជាមួយម៉ាស៊ីនមេ៖ <ph name="CLIENT_ERROR"/>។</translation>
@@ -4853,7 +4853,7 @@
 <translation id="7197632491113152433">យើង​បានរកឃើញ​កម្មវិធី <ph name="NUMBER_OF_APPS"/> ពីគណនីរបស់អ្នក​ដែល​អាចប្រើបាននៅលើ​ឧបករណ៍នេះ។</translation>
 <translation id="7199158086730159431">ទទួលជំនួយ</translation>
 <translation id="7200083590239651963">ជ្រើសរើស​ការកំណត់​រចនា​សម្ព័ន្ធ</translation>
-<translation id="7201042526153088083">ដំឡើង​កម្មវិធី និង​ហ្គេមពី Google Play នៅលើ <ph name="DEVICE_TYPE"/> របស់អ្នក។ &lt;a target="_blank" href="<ph name="URL"/>"&gt;ស្វែងយល់បន្ថែម&lt;/a&gt;</translation>
+<translation id="7201042526153088083">ដំឡើង​កម្មវិធី និង​ហ្គេមពី Google Play នៅលើ <ph name="DEVICE_TYPE"/> របស់អ្នក។ &lt;a target="_blank" rel="noopener noreferrer" href="<ph name="URL"/>"&gt;ស្វែងយល់បន្ថែម&lt;/a&gt;</translation>
 <translation id="720110658997053098">កំណត់ឧបករណ៍នេះឱ្យដំណើរការមុខងារបញ្ជរជាអចិន្ត្រៃយ៍</translation>
 <translation id="7201118060536064622">បានលុប '<ph name="DELETED_ITEM_NAME"/>'</translation>
 <translation id="7201420661433230412">មើល​ឯកសារ</translation>
@@ -6520,6 +6520,7 @@
 <translation id="995782501881226248">YouTube</translation>
 <translation id="996250603853062861">កំពុងបង្កើតការភ្ជាប់ដែលមានសុវត្ថិភាព...</translation>
 <translation id="998747458861718449">ធ្វើការត្រួតពិនិត្យ</translation>
+<translation id="38046578254905003">ស្វែងរក​កម្មវិធី​បន្ថែម និងរចនាប័ទ្ម​នៅក្នុង <ph name="BEGIN_LINK"/>Brave Web Store<ph name="END_LINK"/></translation>
 <translation id="658539216370629794">បើកតំណនៅក្នុងផ្ទាំងអនាមិក</translation>
 <translation id="1432267168815937878">បើកតំណនៅក្នុងផ្ទាំងអនាមិក</translation>
 <translation id="6516243500644829484">ផ្ទាំងអនាមិកថ្មី</translation>
@@ -6599,7 +6600,6 @@
 <translation id="3860292630623580294">(អនាមិក)</translation>
 <translation id="4854477725773269949">អនុញ្ញាតនៅក្នុងអនាមិក</translation>
 <translation id="6436164536244065364">មើលនៅក្នុង Web Store</translation>
-<translation id="38046578254905003">ស្វែងរក​កម្មវិធី​បន្ថែម និងរចនាប័ទ្ម​នៅក្នុង <ph name="BEGIN_LINK"/>Brave Web Store<ph name="END_LINK"/></translation>
 <translation id="6336451774241870485">ផ្ទាំងអនាមិកថ្មី</translation>
 <translation id="6610147964972079463">បិទផ្ទាំងអនាមិក</translation>
 <translation id="4933782374919065856">មានសំណួរមែនទេ? សូមទាក់ទងអ្នកដែលមើលការខុសត្រូវលើកម្រងព័ត៌មានរបស់អ្នក។</translation>

@@ -1024,6 +1024,8 @@ Naprimjer, neke web lokacije mogu reagirati na ovaj zahtjev prikazivanjem oglasa
 <translation id="983192555821071799">Zatvori sve kartice</translation>
 <translation id="987264212798334818">Opće</translation>
 <translation id="996149300115483134">Meni kartice za sažetak sadržaja je zatvoren</translation>
+<translation id="4540437243849625078">Ova stranica će podijeliti informacije s aplikacijom izvan anonimnog načina rada.</translation>
+<translation id="1227836882233136433">Izaći iz anonimnog načina rada?</translation>
 <translation id="5186185447130319458">Anonimno</translation>
 <translation id="9063160602596686558">Automatski šalje Brave Softwareu statistiku korištenja i izvještaje o padovima aplikacije</translation>
 <translation id="1438581767753657407">Kada je uključen Jednostavni način rada, Brave koristi Brave Softwareove servere da bi se stranice brže učitavale. Jednostavni način rada ponovo ispisuje izuzetno spore stranice da bi se učitao samo ključni sadržaj. Jednostavni način rada se ne primjenjuje na anonimne kartice.</translation>
@@ -1033,8 +1035,6 @@ Naprimjer, neke web lokacije mogu reagirati na ovaj zahtjev prikazivanjem oglasa
 <translation id="3110967157686007724">Anonimna kartica</translation>
 <translation id="4526803704855831732">Anonimne kartice</translation>
 <translation id="7465104139234185284">Zatvori sve anonimne kartice</translation>
-<translation id="4540437243849625078">Ova stranica će podijeliti informacije s aplikacijom izvan anonimnog načina rada.</translation>
-<translation id="1227836882233136433">Izaći iz anonimnog načina rada?</translation>
 <translation id="6336451774241870485">Nova anonimna kartica</translation>
 <translation id="3234355010754616171">Nova anonimna kartica</translation>
 <translation id="6610147964972079463">Zatvori anonimne kartice</translation>

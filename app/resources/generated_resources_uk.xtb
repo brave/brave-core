@@ -291,7 +291,7 @@
 <translation id="1361872463926621533">Відтворювати звук під час запуску</translation>
 <translation id="1363585519747660921">USB-принтер потрібно налаштувати</translation>
 <translation id="1365180424462182382">Вашим <ph name="BEGIN_LINK"/>веб-переглядачем керує<ph name="END_LINK"/> домен <ph name="ENROLLMENT_DOMAIN"/></translation>
-<translation id="1366177842110999534">Користуйтесь інструментами, редакторами й ІСР Linux на <ph name="DEVICE_TYPE"/>. &lt;a target="_blank" href="<ph name="URL"/>"&gt;Докладніше&lt;/a&gt;</translation>
+<translation id="1366177842110999534">Користуйтесь інструментами, редакторами й ІСР Linux на <ph name="DEVICE_TYPE"/>. &lt;a target="_blank" rel="noopener noreferrer" href="<ph name="URL"/>"&gt;Докладніше&lt;/a&gt;</translation>
 <translation id="1367951781824006909">Вибрати файл</translation>
 <translation id="1369149969991017342">Кнопковий доступ (керуйте комп'ютером одним чи двома перемикачами)</translation>
 <translation id="1372841398847029212">Синхронізувати з обліковим записом</translation>
@@ -1354,7 +1354,7 @@
 <translation id="268053382412112343">Іс&amp;торія</translation>
 <translation id="2682498795777673382">Батьки змінили налаштування</translation>
 <translation id="2683638487103917598">Папку відсортовано</translation>
-<translation id="2686222346846590368">Це останнє автоматичне оновлення програмного забезпечення й системи безпеки на пристрої <ph name="DEVICE_TYPE"/>. Щоб отримувати оновлення надалі, придбайте новішу модель. &lt;a target="_blank" href="<ph name="URL"/>"&gt;Докладніше<ph name="LINK_END"/></translation>
+<translation id="2686222346846590368">Це останнє автоматичне оновлення програмного забезпечення й системи безпеки на пристрої <ph name="DEVICE_TYPE"/>. Щоб отримувати оновлення надалі, придбайте новішу модель. &lt;a target="_blank" rel="noopener noreferrer" href="<ph name="URL"/>"&gt;Докладніше<ph name="LINK_END"/></translation>
 <translation id="2687403674020088961">Блокувати всі файли cookie (не рекомендовано)</translation>
 <translation id="2687407218262674387">Загальні положення та умови Brave</translation>
 <translation id="2688196195245426394">Помилка під час реєстрації пристрою на сервері: <ph name="CLIENT_ERROR"/>.</translation>
@@ -4852,7 +4852,7 @@
 <translation id="7197632491113152433">Ми знайшли в обліковому записі додатки (<ph name="NUMBER_OF_APPS"/>), які можна використовувати на цьому пристрої.</translation>
 <translation id="7199158086730159431">Довідка</translation>
 <translation id="7200083590239651963">Виберіть налаштування</translation>
-<translation id="7201042526153088083">Встановлюйте додатки й ігри з Google Play на <ph name="DEVICE_TYPE"/>. &lt;a target="_blank" href="<ph name="URL"/>"&gt;Докладніше&lt;/a&gt;</translation>
+<translation id="7201042526153088083">Встановлюйте додатки й ігри з Google Play на <ph name="DEVICE_TYPE"/>. &lt;a target="_blank" rel="noopener noreferrer" href="<ph name="URL"/>"&gt;Докладніше&lt;/a&gt;</translation>
 <translation id="720110658997053098">Назавжди перевести цей пристрій у режим термінала</translation>
 <translation id="7201118060536064622">Елемент "<ph name="DELETED_ITEM_NAME"/>" видалено</translation>
 <translation id="7201420661433230412">Переглянути файли</translation>
@@ -6611,7 +6611,7 @@
 <translation id="3860292630623580294">(Приватне)</translation>
 <translation id="4854477725773269949">Дозволити в приватному</translation>
 <translation id="6436164536244065364">Переглянути у веб-магазині</translation>
-<translation id="38046578254905003">Знаходьте розширення та теми у <ph name="BEGIN_LINK">&lt;a target="_blank" href="https://chrome.google.com/webstore/category/extensions"&gt;</ph>Вебмагазині<ph name="END_LINK">&lt;/a&gt;</ph></translation>
+<translation id="38046578254905003">Знаходьте розширення та теми у <ph name="BEGIN_LINK"/>веб-магазині<ph name="END_LINK"/></translation>
 <translation id="6336451774241870485">Нова приватна вкладка</translation>
 <translation id="6610147964972079463">Закрити приватні вкладки</translation>
 <translation id="4933782374919065856">Маєте запитання? Зв’яжіться з особою, яка контролює ваш профіль.</translation>
