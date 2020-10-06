@@ -676,4 +676,13 @@
 <translation id="4011828592358027165">Нови сте в крипто?</translation>
 <translation id="3358050091139900813">Вземете портфейла тук, за да започнете</translation>
 <translation id="3105412115725259537">Bitcoin.com</translation>
+<translation id="5783793537552649286">Показване на фоново изображение</translation>
+<translation id="340102383764929340">Въведеният ключ за възстановяване вече не се поддържа. Моля, посетете <ph name="BEGIN_LINK_REGION_TEXT">&lt;a target="_blank" rel="noopener noreferrer" href="http://brave.com/faq#convert-old-keys"&gt;</ph>here<ph name="END_LINK_REGION_TEXT">&lt;/a&gt;</ph>, за да получите нов ключ.</translation>
+<translation id="2852258589816753010">BAT в момента не се поддържа във вашия регион. Моля, вижте <ph name="BEGIN_LINK_REGION_TEXT">&lt;a target="_blank" rel="noopener noreferrer" href="$1"&gt;</ph>here<ph name="END_LINK_REGION_TEXT">&lt;/a&gt;</ph> за актуализации.</translation>
+<translation id="4188679602963314994">Трябва да имате минимум 25 BAT, за да създадете акаунт в Uphold. Моля, опитайте отново по-късно. <ph name="BREAK">&lt;br/&gt;</ph>Ако вече имате потвърден акаунт в Uphold, продължете с влизането.</translation>
+<translation id="1701701253000051237">Добавяйте, изтегляйте и управлявайте средства в <ph name="BEGIN_BOLD">&lt;b&gt;</ph>Uphold<ph name="BEGIN_END">&lt;/b&gt;</ph>.</translation>
+<translation id="4208741993667364007">Вашият Brave портфейл се предоставя от <ph name="BEGIN_BOLD">&lt;b&gt;</ph>Uphold<ph name="BEGIN_END">&lt;/b&gt;</ph>.</translation>
+<translation id="9106875682287489763">Вашият <ph name="BEGIN_BOLD">&lt;b&gt;</ph>{{amount}} BATs<ph name="BEGIN_END">&lt;/b&gt;</ph> и други данни за награди ще бъдат загубени завинаги, ако рестартирате портфейла си. Моля, уверете се, че сте потвърдили портфейла си с Uphold, за да можете да запазите вашите BAT.</translation>
+<translation id="4986087720311945758">Услугата ни за портфейла се предоставя от <ph name="BEGIN_BOLD">&lt;b&gt;</ph>Uphold<ph name="BEGIN_END">&lt;/b&gt;</ph></translation>
+<translation id="651649139059930379">Върнете си 2% от криптовалута с карта Uphold</translation>
 </translationbundle>

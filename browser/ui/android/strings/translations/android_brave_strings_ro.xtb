@@ -372,12 +372,12 @@ lună...</translation>
 <translation id="7427567994475794038">Activați Rapoartele de confidențialitate pentru a vedea câte urmăriri și reclame au fost blocate în ultimele 3 ore.</translation>
 <translation id="2053891538879944400">Ați economisit <ph name="DATA"/> <ph name="DATA_TEXT"/> date cu browserul Brave.</translation>
 <translation id="8640064498452534195">Activați Rapoartele de confidențialitate pentru a vedea câte date ați economisit.</translation>
-<translation id="2252497442547961651">Browserul Brave folosește în medie cu 40% mai puțină baterie.&#128267;</translation>
+<translation id="2252497442547961651">Browserul Brave folosește în medie cu 40% mai puțină baterie.🔋</translation>
 <translation id="1945330434665345785">Ați blocat <ph name="COUNT"/> (de) urmăriri și reclame cu browserul Brave săptămâna trecută.</translation>
 <translation id="2883868922264431515">Câștigați tokenuri vizualizând reclame care respectă confidențialitate și susțineți website-urile favorite.</translation>
-<translation id="5678925890616256956">Bravo! Ai blocat 250 de reclame &amp; cu browserul Brave.&#128293;</translation>
-<translation id="9199047775708635708">Bravo! Ai economisit 10MB cu browserul Brave.&#128267;</translation>
-<translation id="1880168210969863408">Bravo! Ai economisit 10 minute din timpul de încărcare cu browserul Brave.&#128168;&#128168;</translation>
+<translation id="5678925890616256956">Bravo! Ai blocat 250 de reclame &amp; cu browserul Brave.🔥</translation>
+<translation id="9199047775708635708">Bravo! Ai economisit 10MB cu browserul Brave.🔋</translation>
+<translation id="1880168210969863408">Bravo! Ai economisit 10 minute din timpul de încărcare cu browserul Brave.💨💨</translation>
 <translation id="7408493389591475748">Începeți să navigați pentru a vedea rapoartele de confidențialitate</translation>
 <translation id="9080777565335515917">Setați Brave ca browser prestabilit pentru o navigare privată și sigură.</translation>
 <translation id="7801488941710395275">Permite browserului Brave să afișeze statisticile privind confidențialitatea</translation>
@@ -387,4 +387,11 @@ lună...</translation>
 <translation id="2718046830255553131">Datele rapoartelor de confidențialitate au fost șterse.</translation>
 <translation id="7559243474426790340">Reîmprospătați starea</translation>
 <translation id="8376263745431603066">Activează "modul nocturn" (experimental)</translation>
+<translation id="1604429341565715601">Se efectuează configurarea sincronizării, încercați să resetați mai târziu</translation>
+<translation id="4540198958192073185">Blochează toate amprentările</translation>
+<translation id="5739030256211745023">Fără reclame și urmărire, site-urile web utilizează mai puține date și mai puțină baterie. Este posibil și să economisiți bani cu taxele de transport.</translation>
+<translation id="4591582032282435287">Browserul brave utilizează, în medie, cu 40% mai puțină baterie.</translation>
+<translation id="6840965284166256302">Bravo! Ați blocat 250 de urmări și reclame cu browserul Brave.</translation>
+<translation id="2076976911561945584">Bravo! Ați economisit 10 MB cu browserul Brave.</translation>
+<translation id="6714550233326888315">Bravo! Ați economisit 10 minute de încărcare cu browserul Brave.</translation>
 </translationbundle>

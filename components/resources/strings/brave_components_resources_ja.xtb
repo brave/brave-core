@@ -679,4 +679,13 @@
 <translation id="4011828592358027165">仮想通貨の初心者ですか？</translation>
 <translation id="3358050091139900813">ここでウォレットを入手して始めましょう</translation>
 <translation id="3105412115725259537">Bitcoin.com</translation>
+<translation id="5783793537552649286">背景画像を表示</translation>
+<translation id="340102383764929340">入力された復元キーはサポートされていません。新しいキーを手に入れるには、<ph name="BEGIN_LINK_REGION_TEXT">&lt;a target="_blank" rel="noopener noreferrer" href="http://brave.com/faq#convert-old-keys"&gt;</ph>here<ph name="END_LINK_REGION_TEXT">&lt;/a&gt;</ph> にアクセスしてください。</translation>
+<translation id="2852258589816753010">現在、お客様の地域ではBAPはサポートされていません。最新情報は、<ph name="BEGIN_LINK_REGION_TEXT">&lt;a target="_blank" rel="noopener noreferrer" href="$1"&gt;</ph>here<ph name="END_LINK_REGION_TEXT">&lt;/a&gt;</ph> をご確認ください。</translation>
+<translation id="4188679602963314994">Upholdアカウントを作成するには、最低25 BATが必要です。後でもう一度やり直してください。<ph name="BREAK">&lt;br/&gt;</ph>すでに認証済みのUpholdアカウントをお持ちの場合は、このままログインを続けてください。</translation>
+<translation id="1701701253000051237">資金の管理(追加・引出し) <ph name="BEGIN_BOLD">&lt;b&gt;</ph>Uphold<ph name="BEGIN_END">&lt;/b&gt;</ph>.</translation>
+<translation id="4208741993667364007">Braveウォレットは <ph name="BEGIN_BOLD">&lt;b&gt;</ph>Uphold<ph name="BEGIN_END">&lt;/b&gt;</ph>. の機能を利用しています</translation>
+<translation id="9106875682287489763">ウォレットをリセットすると、あなたの <ph name="BEGIN_BOLD">&lt;b&gt;</ph>{{amount}} BATs<ph name="BEGIN_END">&lt;/b&gt;</ph> や報酬に関するデータが永久に失われます。BATトークンを失わないように、Upholdを使ってウォレットの内容を必ず確認してください。</translation>
+<translation id="4986087720311945758">Braveのウォレット機能は<ph name="BEGIN_BOLD">&lt;b&gt;</ph>Uphold<ph name="BEGIN_END">&lt;/b&gt;</ph>を利用しています。</translation>
+<translation id="651649139059930379">Upholdカードで2%のクリプトバックを獲得しましょう</translation>
 </translationbundle>

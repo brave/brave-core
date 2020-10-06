@@ -676,4 +676,13 @@
 <translation id="4011828592358027165">Ești un începător în ceea ce privește cripto monedele?</translation>
 <translation id="3358050091139900813">Obține portofelul aici pentru a începe</translation>
 <translation id="3105412115725259537">Bitcoin.com</translation>
+<translation id="5783793537552649286">Afișare imagine fundal</translation>
+<translation id="340102383764929340">Cheia de restabilire introdusă nu mai este acceptată. Accesați <ph name="BEGIN_LINK_REGION_TEXT">&lt;a target="_blank" rel="noopener noreferrer" href="http://brave.com/faq#convert-old-keys"&gt;</ph>here<ph name="END_LINK_REGION_TEXT">&lt;/a&gt;</ph> to get a new key.</translation>
+<translation id="2852258589816753010">BAT nu este disponibil în regiunea dvs. în acest moment. Vă rugăm să faceți clic <ph name="BEGIN_LINK_REGION_TEXT">&lt;a target="_blank" rel="noopener noreferrer" href="$1"&gt;</ph>aici<ph name="END_LINK_REGION_TEXT">&lt;/a&gt;</ph> pentru vedea cele mai recente informații.</translation>
+<translation id="4188679602963314994">Trebuie să aveți cel puțin 25 BAT pentru a crea un cont Uphold. Încercați din nou mai târziu. <ph name="BREAK">&lt;br/&gt;</ph>Dacă aveți deja un cont Uphold confirmat, continuați conectarea.</translation>
+<translation id="1701701253000051237">Adăugați, retrageți și administrați fonduri la <ph name="BEGIN_BOLD">&lt;b&gt;</ph>Uphold<ph name="BEGIN_END">&lt;/b&gt;</ph>.</translation>
+<translation id="4208741993667364007">Portofelul dvs. Brave este susținut de <ph name="BEGIN_BOLD">&lt;b&gt;</ph>Uphold<ph name="BEGIN_END">&lt;/b&gt;</ph>.</translation>
+<translation id="9106875682287489763"><ph name="BEGIN_BOLD">&lt;b&gt;</ph>{{amount}} BAT-urile dvs.<ph name="BEGIN_END">&lt;/b&gt;</ph> și alte date despre recompense se vor pierde pentru totdeauna dacă vă resetați portofelul. Asigurați-vă că v-ați verificat portofelul cu Uphold, ca să vă puteți păstra BAT.</translation>
+<translation id="4986087720311945758">Serviciul nostru de portofele este furnizat de <ph name="BEGIN_BOLD">&lt;b&gt;</ph>Uphold<ph name="BEGIN_END">&lt;/b&gt;</ph></translation>
+<translation id="651649139059930379">Obțineți 2% cryptoback cu cardul Uphold</translation>
 </translationbundle>

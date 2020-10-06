@@ -676,4 +676,13 @@
 <translation id="4011828592358027165">ক্রিপ্টোতে নতুন?</translation>
 <translation id="3358050091139900813">শুরু করতে এখানে ওয়ালেট পান</translation>
 <translation id="3105412115725259537">Bitcoin.com</translation>
+<translation id="5783793537552649286">পটভূমি চিত্র দেখান</translation>
+<translation id="340102383764929340">লেখা রিস্টোর কীটি আর সমর্থিত নয়। একটি নতুন কী পেতে অনুগ্রহ করে <ph name="BEGIN_LINK_REGION_TEXT">&lt;a target="_blank" rel="noopener noreferrer" href="http://brave.com/faq#convert-old-keys"&gt;</ph>here<ph name="END_LINK_REGION_TEXT">&lt;/a&gt;</ph> ভিজিট করুন।</translation>
+<translation id="2852258589816753010">বর্তমানে আপনার অঞ্চলে BAT সমর্থিত নয়। আপডেটগুলির জন্য অনুগ্রহ করে <ph name="BEGIN_LINK_REGION_TEXT">&lt;a target="_blank" rel="noopener noreferrer" href="$1"&gt;</ph>এখানে<ph name="END_LINK_REGION_TEXT">&lt;/a&gt;</ph> রেফার করুন।</translation>
+<translation id="4188679602963314994">একটি আপহোল্ড অ্যাকাউন্ট তৈরি করতে আপনার অন্তত 25 BAT থাকতে হবে। অনুগ্রহ করে পরে আবার চেষ্টা করুন। <ph name="BREAK">&lt;br/&gt;</ph>আপনার ইতিমধ্যে একটি যাচাইকৃত আপহোল্ড অ্যাকাউন্ট থাকলে, লগইন করা অবিরত রাখুন।</translation>
+<translation id="1701701253000051237">তহবিল যোগ করুন, প্রত্যাহার করুন এবং পরিচালনা করুন <ph name="BEGIN_BOLD">&lt;b&gt;</ph>Uphold<ph name="BEGIN_END">&lt;/b&gt;</ph> এইগুলিতে।</translation>
+<translation id="4208741993667364007">আপনার ব্রেভ ওয়ালেট চালিত হয় <ph name="BEGIN_BOLD">&lt;b&gt;</ph>Uphold<ph name="BEGIN_END">&lt;/b&gt;</ph>  এর দ্বারা।</translation>
+<translation id="9106875682287489763">যদি আপনি আপনার ওয়ালেট রিসেট করেন তাহলে <ph name="BEGIN_BOLD">&lt;b&gt;</ph>{{amount}} BATs<ph name="BEGIN_END">&lt;/b&gt;</ph> এবং অন্যান্য পুরষ্কারের ডেটা স্থায়ীভাবে হারাবে। অনুগ্রহ করে নিশ্চিত করুন যে আপনি নিজের ওয়ালেটটি আপহোল্ড এর সাথে যাচাই করেছেন সুতারং আপনি আপনার BAT রাখতে পারেন।</translation>
+<translation id="4986087720311945758">আমাদের ওয়ালেট পরিষেবা সরবরাহ করা হয় <ph name="BEGIN_BOLD">&lt;b&gt;</ph>Uphold<ph name="BEGIN_END">&lt;/b&gt;</ph> এর দ্বারা</translation>
+<translation id="651649139059930379">আপহোল্ড কার্ড দিয়ে 2% ক্রিপ্টোব্যাক পান</translation>
 </translationbundle>

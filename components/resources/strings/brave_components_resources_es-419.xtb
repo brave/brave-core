@@ -676,4 +676,13 @@
 <translation id="4011828592358027165">¿Eres nuevo en esto de las criptomonedas?</translation>
 <translation id="3358050091139900813">Consigue la billetera aquí para empezar</translation>
 <translation id="3105412115725259537">Bitcoin.com</translation>
+<translation id="5783793537552649286">Mostrar imagen de fondo</translation>
+<translation id="340102383764929340">La clave de recuperación ingresada ya no es compatible. Visita <ph name="BEGIN_LINK_REGION_TEXT">&lt;a target="_blank" rel="noopener noreferrer" href="http://brave.com/faq#convert-old-keys"&gt;</ph>here<ph name="END_LINK_REGION_TEXT">&lt;/a&gt;</ph> para obtener una nueva.</translation>
+<translation id="2852258589816753010">BAT no está disponible en tu región. Consulta <ph name="BEGIN_LINK_REGION_TEXT">&lt;a target="_blank" rel="noopener noreferrer" href="$1"&gt;</ph>aquí<ph name="END_LINK_REGION_TEXT">&lt;/a&gt;</ph> para obtener novedades.</translation>
+<translation id="4188679602963314994">Debes tener 25 BAT como mínimo para crear una cuenta de Uphold. Vuelve a intentarlo más tarde. <ph name="BREAK">&lt;br/&gt;</ph>Si ya tienes una cuenta de Uphold verificada, inicia sesión.</translation>
+<translation id="1701701253000051237">Agrega, retira y administra fondos en <ph name="BEGIN_BOLD">&lt;b&gt;</ph>Uphold<ph name="BEGIN_END">&lt;/b&gt;</ph>.</translation>
+<translation id="4208741993667364007">Tu billetera de Brave cuenta con tecnología de <ph name="BEGIN_BOLD">&lt;b&gt;</ph>Uphold<ph name="BEGIN_END">&lt;/b&gt;</ph>.</translation>
+<translation id="9106875682287489763">Tu <ph name="BEGIN_BOLD">&lt;b&gt;</ph>{{amount}} BATs<ph name="BEGIN_END">&lt;/b&gt;</ph> y otros datos de Recompensas se perderán de forma permanente si restableces tu billetera. Asegúrate de haber verificado tu billetera con Uphold para mantener tu BAT.</translation>
+<translation id="4986087720311945758">Nuestro servicio de billetera es proporcionado por <ph name="BEGIN_BOLD">&lt;b&gt;</ph>Uphold<ph name="BEGIN_END">&lt;/b&gt;</ph></translation>
+<translation id="651649139059930379">Consigue 2 % en criptomoneda con la tarjeta Uphold</translation>
 </translationbundle>

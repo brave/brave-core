@@ -676,4 +676,13 @@
 <translation id="4011828592358027165">تازه در کریپتو عضو شده‌اید؟</translation>
 <translation id="3358050091139900813">برای شروع به کار، از اینجا کیف پول دریافت کنید</translation>
 <translation id="3105412115725259537">Bitcoin.com</translation>
+<translation id="5783793537552649286">نمایش تصویر پس‌زمینه</translation>
+<translation id="340102383764929340">از کلید بازنشانی واردشده دیگر پشتیبانی نمی‌شود. لطفاً برای دریافت کلیدی جدید، به <ph name="BEGIN_LINK_REGION_TEXT">&lt;a target="_blank" rel="noopener noreferrer" href="http://brave.com/faq#convert-old-keys"&gt;</ph>here<ph name="END_LINK_REGION_TEXT">&lt;/a&gt;</ph> بروید.</translation>
+<translation id="2852258589816753010">BAT در حال حاضر در منطقه شما پشتیبانی نمی شود، مراجعه کنید به <ph name="BEGIN_LINK_REGION_TEXT">&lt;a target="_blank" rel="noopener noreferrer" href="$1"&gt;</ph>here<ph name="END_LINK_REGION_TEXT">&lt;/a&gt;</ph> for updates.</translation>
+<translation id="4188679602963314994">برای ایجاد یک حساب Uphold، به حداقل 25 BAT نیاز دارید. لطفاً بعداً دوباره امتحان کنید. <ph name="BREAK">&lt;br/&gt;</ph>اگر یک حساب تأییدشده Uphold دارید، ورود به سیستم را ادامه دهید.</translation>
+<translation id="1701701253000051237">افزودن، برداشتن و مدیریت سرمایه را در <ph name="BEGIN_BOLD">&lt;b&gt;</ph>Uphold<ph name="BEGIN_END">&lt;/b&gt;</ph> انجام دهید.</translation>
+<translation id="4208741993667364007">کیف پول Brave شما از سوی <ph name="BEGIN_BOLD">&lt;b&gt;</ph>Uphold<ph name="BEGIN_END">&lt;/b&gt;</ph> ارائه می‌شود.</translation>
+<translation id="9106875682287489763">اگر کیف پول خود را بازنشانی کنید، داده‌های <ph name="BEGIN_BOLD">&lt;b&gt;</ph>{{amount}} BATs<ph name="BEGIN_END">&lt;/b&gt;</ph> و پاداش‌های دیگر شما به‌طور دائمی از بین خواهد رفت. لطفاً مطمئن شوید که کیف پول خود را با Uphold تأیید کرده‌اید و بنابراین می‌توانید BAT خود را حفظ کنید.</translation>
+<translation id="4986087720311945758">سرویس کیف پول ما را <ph name="BEGIN_BOLD">&lt;b&gt;</ph>Uphold<ph name="BEGIN_END">&lt;/b&gt;</ph> ارائه می‌کند</translation>
+<translation id="651649139059930379">با کارت Uphold ، ‏2 درصد کریپتوبک دریافت کنید</translation>
 </translationbundle>

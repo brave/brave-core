@@ -676,4 +676,13 @@
 <translation id="4011828592358027165">ለክሪፕቶ አዲስ ነዎት?</translation>
 <translation id="3358050091139900813">ለመጀመር ዋሌቱን እዚህ ያግኙ</translation>
 <translation id="3105412115725259537">Bitcoin.com</translation>
+<translation id="5783793537552649286">የዳራ ምስልን አሳይ</translation>
+<translation id="340102383764929340">የገባው የተመለስ ቁልፍ ከአሁን በኋላ አይሠራም። አዲስ ቁልፍ ለማግኘት እባክዎን <ph name="BEGIN_LINK_REGION_TEXT">&lt;a target="_blank" rel="noopener noreferrer" href="http://brave.com/faq#convert-old-keys"&gt;</ph>here<ph name="END_LINK_REGION_TEXT">&lt;/a&gt;</ph> ን ይጎበኙ።</translation>
+<translation id="2852258589816753010">BAT በአሁኑ ወቅት በእርሶ ክልል ውስጥ አይደገፍም፡፡ እባኮት ያጣቅሱ <ph name="BEGIN_LINK_REGION_TEXT">&lt;a target="_blank" rel="noopener noreferrer" href="$1"&gt;</ph>here<ph name="END_LINK_REGION_TEXT">&lt;/a&gt;</ph> ለዝመናዎች፡፡</translation>
+<translation id="4188679602963314994">የመያዣ መለያ ለመፍጠር ቢያንስ 25 BAT ያስፈልግዎታል። እባክዎን ቆየት ብለው ይሞክሩ። <ph name="BREAK">&lt;br/&gt;</ph> አስቀድሞ የተረጋገጠ የመያዣ መለያ ካለዎት መግባትዎን ይቀጥሉ።</translation>
+<translation id="1701701253000051237">እዚህ ገንዘብ ያስገቡ፣ ያውጡ እና ያስተዳድሩ <ph name="BEGIN_BOLD">&lt;b&gt;</ph>Uphold<ph name="BEGIN_END">&lt;/b&gt;</ph>.</translation>
+<translation id="4208741993667364007">የ Brave ዋሌት የጎለበተው በዚህ ነው <ph name="BEGIN_BOLD">&lt;b&gt;</ph>Uphold<ph name="BEGIN_END">&lt;/b&gt;</ph>.</translation>
+<translation id="9106875682287489763">የእርስዎ <ph name="BEGIN_BOLD">&lt;b&gt;</ph> {{amount}} BATs <ph name="BEGIN_END">&lt;/b&gt;</ph> የኪስ ቦርሳዎን እንደገና ካስተካከሉ እና ሌሎች የሽልማት መረጃዎች እስከመጨረሻው ይጠፋሉ። የእርስዎን BAT ለመጠበቅ እንዲችሉ እባክዎን የኪስ ቦርሳዎን ከመያዣ ጋር ማረጋገጥዎን ያረጋግጡ።</translation>
+<translation id="4986087720311945758">የዋሌት አገልግሎታችን አቅራቢ <ph name="BEGIN_BOLD">&lt;b&gt;</ph>Uphold<ph name="BEGIN_END">&lt;/b&gt;</ph></translation>
+<translation id="651649139059930379">ከ   መያዣ ካርድ 2% ክሪፕቶ ተመላሽ ያድርጉ</translation>
 </translationbundle>

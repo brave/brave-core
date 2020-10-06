@@ -371,12 +371,12 @@ attività in questo mese...</translation>
 <translation id="7427567994475794038">Attiva il Report Privacy per vedere quanti tracker &amp;ad sono state bloccate nelle ultime 3 ore.</translation>
 <translation id="2053891538879944400">Hai risparmiato <ph name="DATA"/> <ph name="DATA_TEXT"/> dati con Brave browser.</translation>
 <translation id="8640064498452534195">Attiva il Report Privacy per vedere quanti dati hai risparmiato.</translation>
-<translation id="2252497442547961651">Il browser Brave usa 40% in meno di batteria in media.&#128267;</translation>
+<translation id="2252497442547961651">Il browser Brave usa 40% in meno di batteria in media.🔋</translation>
 <translation id="1945330434665345785">Hai bloccato <ph name="COUNT"/> tracker &amp; ad con Brave browser la scorsa settimana.</translation>
 <translation id="2883868922264431515">Guadagna token guardando ad tutela-privacy e supporta i tuoi siti preferiti.</translation>
-<translation id="5678925890616256956">Ottimo! Hai bloccato 250 localizzatori &amp; pubblicità con il browser Brave.&#128293;</translation>
-<translation id="9199047775708635708">Ottimo! Hai risparmiato 10MB con il browser Brave.&#128267;</translation>
-<translation id="1880168210969863408">Ottimo! Hai risparmiato 10 minuti di tempo di carimento con il browser Brave.&#128168;&#128168;</translation>
+<translation id="5678925890616256956">Ottimo! Hai bloccato 250 localizzatori &amp; pubblicità con il browser Brave.🔥</translation>
+<translation id="9199047775708635708">Ottimo! Hai risparmiato 10MB con il browser Brave.🔋</translation>
+<translation id="1880168210969863408">Ottimo! Hai risparmiato 10 minuti di tempo di carimento con il browser Brave.💨💨</translation>
 <translation id="7408493389591475748">Comincia a navigare per visualizzare il report sulla privacy</translation>
 <translation id="9080777565335515917">Imposta Brave come browser di default per una navigazione privata e sicura.</translation>
 <translation id="7801488941710395275">Permetti a Brave di mostrare le tue statistiche privacy</translation>
@@ -386,4 +386,11 @@ attività in questo mese...</translation>
 <translation id="2718046830255553131">Il resoconto dati privacy è stato cancellato.</translation>
 <translation id="7559243474426790340">Aggiorna status</translation>
 <translation id="8376263745431603066">Abilita "Modalità Notturna" (Sperimentale)</translation>
+<translation id="1604429341565715601">La configurazione della sincronizzazione è in corso, prova a ripristinarla in seguito</translation>
+<translation id="4540198958192073185">Blocca il rilevamento di tutte le impronte</translation>
+<translation id="5739030256211745023">Senza ad &amp; tracker, i siti utilizzano meno dati e meno batteria. Potresti anche risparmiare su eventuali costi dell'operatore.</translation>
+<translation id="4591582032282435287">Il Brave browser usa in media il 40% di batteria in meno.</translation>
+<translation id="6840965284166256302">Grande! Hai bloccato 250 tracker &amp; ad con Brave browser.</translation>
+<translation id="2076976911561945584">Bene! Hai risparmiato 10MB con Brave browser.</translation>
+<translation id="6714550233326888315">Bene! Hai risparmiato 10 minuti di caricamento con Brave browser.</translation>
 </translationbundle>

@@ -676,4 +676,13 @@
 <translation id="4011828592358027165">New to crypto?</translation>
 <translation id="3358050091139900813">Get the wallet here to get started</translation>
 <translation id="3105412115725259537">Bitcoin.com</translation>
+<translation id="5783793537552649286">Show background image</translation>
+<translation id="340102383764929340">The restore key entered is not supported anymore. Please visit <ph name="BEGIN_LINK_REGION_TEXT">&lt;a target="_blank" rel="noopener noreferrer" href="http://brave.com/faq#convert-old-keys"&gt;</ph>here<ph name="END_LINK_REGION_TEXT">&lt;/a&gt;</ph> to get a new key.</translation>
+<translation id="2852258589816753010">BAT is not currently supported in your region. Please refer to <ph name="BEGIN_LINK_REGION_TEXT">&lt;a target="_blank" rel="noopener noreferrer" href="$1"&gt;</ph>here<ph name="END_LINK_REGION_TEXT">&lt;/a&gt;</ph> for updates.</translation>
+<translation id="4188679602963314994">You need to have minimum 25 BAT to create an Uphold account. Please try again later. <ph name="BREAK">&lt;br/&gt;</ph>If you already have a verified Uphold account, continue to login.</translation>
+<translation id="1701701253000051237">Add, withdraw and manage funds at <ph name="BEGIN_BOLD">&lt;b&gt;</ph>Uphold<ph name="BEGIN_END">&lt;/b&gt;</ph>.</translation>
+<translation id="4208741993667364007">Your Brave wallet is powered by <ph name="BEGIN_BOLD">&lt;b&gt;</ph>Uphold<ph name="BEGIN_END">&lt;/b&gt;</ph>.</translation>
+<translation id="9106875682287489763">Your <ph name="BEGIN_BOLD">&lt;b&gt;</ph>{{amount}} BATs<ph name="BEGIN_END">&lt;/b&gt;</ph> and other Rewards data will be permanently lost if you reset your wallet. Please ensure you have verified your wallet with Uphold so you can keep your BAT.</translation>
+<translation id="4986087720311945758">Our wallet service is provided by <ph name="BEGIN_BOLD">&lt;b&gt;</ph>Uphold<ph name="BEGIN_END">&lt;/b&gt;</ph></translation>
+<translation id="651649139059930379">Get 2% crypto back with the Uphold card</translation>
 </translationbundle>

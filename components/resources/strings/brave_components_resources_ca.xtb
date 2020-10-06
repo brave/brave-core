@@ -676,4 +676,13 @@
 <translation id="4011828592358027165">Sou nou en el món de les criptomonedes?</translation>
 <translation id="3358050091139900813">Aconseguiu aquí la cartera per començar</translation>
 <translation id="3105412115725259537">Bitcoin.com</translation>
+<translation id="5783793537552649286">Mostrar imatge de fons</translation>
+<translation id="340102383764929340">La clau de restauració introduïda ja no és compatible. Si us plau, visiteu <ph name="BEGIN_LINK_REGION_TEXT">&lt;a target="_blank" rel="noopener noreferrer" href="http://brave.com/faq#convert-old-keys"&gt;</ph>here<ph name="END_LINK_REGION_TEXT">&lt;/a&gt;</ph> per obtindre una nova clau.</translation>
+<translation id="2852258589816753010">BAT actualment no està suportat en la vostra regió. Si us plau dirigiu-vos a <ph name="BEGIN_LINK_REGION_TEXT">&lt;a target="_blank" rel="noopener noreferrer" href="$1"&gt;</ph>here<ph name="END_LINK_REGION_TEXT">&lt;/a&gt;</ph> per a actualitzacions.</translation>
+<translation id="4188679602963314994">Necessiteu tindre un mínim de 25 BAT per crear un compte de Uphold. Si us plau, torneu-ho a provar més tard. <ph name="BREAK">&lt;br/&gt;</ph>Si ja teniu un compte Uphold verificat, continueu per accedir.</translation>
+<translation id="1701701253000051237">Afegiu, <ph name="BEGIN_BOLD">&lt;b&gt;</ph>Uphold<ph name="BEGIN_END">&lt;/b&gt;</ph>.</translation>
+<translation id="4208741993667364007">El vostre moneder Brave és impulsat per <ph name="BEGIN_BOLD">&lt;b&gt;</ph>Uphold<ph name="BEGIN_END">&lt;/b&gt;</ph>.</translation>
+<translation id="9106875682287489763">Tu <ph name="BEGIN_BOLD">&lt;b&gt;</ph>{{amount}} BATs<ph name="BEGIN_END">&lt;/b&gt;</ph> i altres dades de Recompenses es perdran de manera permanent si restabliu la cartera. Si us plau assegureu-vos d'haver verificat la vostra cartera amb Uphold de manera que pogueu mantenir els BAT.</translation>
+<translation id="4986087720311945758">El nostre servei de moneder està proporcionat per <ph name="BEGIN_BOLD">&lt;b&gt;</ph>Uphold<ph name="BEGIN_END">&lt;/b&gt;</ph></translation>
+<translation id="651649139059930379">Obtingueu un criptoback del 2% amb the  targeta Uphold</translation>
 </translationbundle>

@@ -677,4 +677,14 @@
 <translation id="4011828592358027165">חדש/ה בקריפטו?</translation>
 <translation id="3358050091139900813">הבא/י לכאן את הארנק והתחל/י</translation>
 <translation id="3105412115725259537">Bitcoin.com</translation>
+<translation id="5783793537552649286">הצג תמונת רקע</translation>
+<translation id="340102383764929340">מפתח השחזור שהוזן אינו נתמך יותר. נא לבקר ב-<ph name="BEGIN_LINK_REGION_TEXT">&lt;a target="_blank" rel="noopener noreferrer" href="http://brave.com/faq#convert-old-keys"&gt;</ph>here<ph name="END_LINK_REGION_TEXT">&lt;/a&gt;</ph> לקבלת מפתח חדש.</translation>
+<translation id="2852258589816753010">BAT אינו נתמך כרגע באזורך. נא להתעדכן ב-
+<ph name="BEGIN_LINK_REGION_TEXT">&lt;a target="_blank" rel="noopener noreferrer" href="$1"&gt;</ph>here<ph name="END_LINK_REGION_TEXT">&lt;/a&gt;</ph></translation>
+<translation id="4188679602963314994">נדרשים לכם מינימום של 25 BAT כדי ליצור חשבון Uphold. נא לנסות שוב מאוחר יותר. <ph name="BREAK">&lt;br/&gt;</ph>If יש לכם כבר חשבון Uphold מאומת, המשיכו להתחברות.</translation>
+<translation id="1701701253000051237">הוספ/י, משכ/י ונהל/י כספים ב-<ph name="BEGIN_BOLD">&lt;b&gt;</ph>Uphold<ph name="BEGIN_END">&lt;/b&gt;</ph>.</translation>
+<translation id="4208741993667364007">ארנק Brave שלך מופעל על ידי <ph name="BEGIN_BOLD">&lt;b&gt;</ph>Uphold<ph name="BEGIN_END">&lt;/b&gt;</ph>.</translation>
+<translation id="9106875682287489763"><ph name="BEGIN_BOLD">&lt;b&gt;</ph>{{amount}} BATs<ph name="BEGIN_END">&lt;/b&gt;</ph>  שלך ונתוני Rewards אחרים יאבדו לצמיתות אם תאפס/י את הארנק שלך. נא לוודא שביצעת אימות של הארנק באמצעות Uphold כדי שתוכל/י לשמור על ה-BAT שלך.</translation>
+<translation id="4986087720311945758">שירות הארנק שלנו מסופק על ידי <ph name="BEGIN_BOLD">&lt;b&gt;</ph>Uphold<ph name="BEGIN_END">&lt;/b&gt;</ph></translation>
+<translation id="651649139059930379">קבלו 2% קריפטו בחזרה עם כרטיס  Uphold</translation>
 </translationbundle>

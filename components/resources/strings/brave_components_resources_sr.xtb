@@ -677,4 +677,13 @@ ažuriranja.</translation>
 <translation id="4011828592358027165">Novi u kripto?</translation>
 <translation id="3358050091139900813">Donesite novčanik ovde da biste počeli</translation>
 <translation id="3105412115725259537">Bitcoin.com</translation>
+<translation id="5783793537552649286">Pokaži pozadinsku sliku</translation>
+<translation id="340102383764929340">Uneseni ključ za vraćanje u prethodno stanje više nije podržan. Molimo posetite <ph name="BEGIN_LINK_REGION_TEXT">&lt;a target="_blank" rel="noopener noreferrer" href="http://brave.com/faq#convert-old-keys"&gt;</ph>here<ph name="END_LINK_REGION_TEXT">&lt;/a&gt;</ph> da dobijete novi ključ.</translation>
+<translation id="2852258589816753010">BAT trenutno nije podržan u vašem regionu. Molimo Vas pogledajte ažuriranja na <ph name="BEGIN_LINK_REGION_TEXT">&lt;a target="_blank" rel="noopener noreferrer" href="$1"&gt;</ph>here<ph name="END_LINK_REGION_TEXT">&lt;/a&gt;</ph></translation>
+<translation id="4188679602963314994">Morate imati najmanje 25 BAT-a da biste kreirali Uphold nalog. Pokušajte ponovo kasnije. <ph name="BREAK">&lt;br/&gt;</ph>Ako već imate verifikovani Uphold nalog, nastavite sa prijavljivanjem.</translation>
+<translation id="1701701253000051237">Dodajte, povucite i upravljajte sredstvima na <ph name="BEGIN_BOLD">&lt;b&gt;</ph>Uphold<ph name="BEGIN_END">&lt;/b&gt;</ph>.</translation>
+<translation id="4208741993667364007">Vaš Brave novčanik pokreće <ph name="BEGIN_BOLD">&lt;b&gt;</ph>Uphold<ph name="BEGIN_END">&lt;/b&gt;</ph>.</translation>
+<translation id="9106875682287489763">Vaše <ph name="BEGIN_BOLD">&lt;b&gt;</ph>{{amount}} BATs<ph name="BEGIN_END">&lt;/b&gt;</ph> i drugi podaci o nagradama će biti trajno izgubljeni ako ponovo postavite vaš novčanik. Budite sigurni da ste verifikovali vaš novčanik sa Uphold, tako da možete da zadržite vaš BAT.</translation>
+<translation id="4986087720311945758">Naša novčanik usluga je omogućena od strane <ph name="BEGIN_BOLD">&lt;b&gt;</ph>Uphold<ph name="BEGIN_END">&lt;/b&gt;</ph></translation>
+<translation id="651649139059930379">Dobijte 2% cryptoback-a sa the Uphold karticom</translation>
 </translationbundle>

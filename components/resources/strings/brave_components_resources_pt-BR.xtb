@@ -676,4 +676,13 @@
 <translation id="4011828592358027165">Novato no assunto criptomoeda?</translation>
 <translation id="3358050091139900813">Obtenha a carteira aqui para começar</translation>
 <translation id="3105412115725259537">Bitcoin.com</translation>
+<translation id="5783793537552649286">Mostrar imagem de plano de fundo</translation>
+<translation id="340102383764929340">A chave de restauração informada não é mais compatível. Acesse <ph name="BEGIN_LINK_REGION_TEXT">&lt;a target="_blank" rel="noopener noreferrer" href="http://brave.com/faq#convert-old-keys"&gt;</ph>here<ph name="END_LINK_REGION_TEXT">&lt;/a&gt;</ph> para obter uma chave nova.</translation>
+<translation id="2852258589816753010">BAT atualmente não possui suporte para a sua região. Favor consultar <ph name="BEGIN_LINK_REGION_TEXT">&lt;a target="_blank" rel="noopener noreferrer" href="$1"&gt;</ph>here<ph name="END_LINK_REGION_TEXT">&lt;/a&gt;</ph> para receber atualizações.</translation>
+<translation id="4188679602963314994">Você precisa ter no mínimo 25 BAT para criar uma conta Uphold. Tente novamente mais tarde. <ph name="BREAK">&lt;br/&gt;</ph>Se já tiver uma conta Uphold confirmada, inicie a sessão.</translation>
+<translation id="1701701253000051237">Acrescente, saque e administre os fundos no <ph name="BEGIN_BOLD">&lt;b&gt;</ph>Uphold<ph name="BEGIN_END">&lt;/b&gt;</ph>.</translation>
+<translation id="4208741993667364007">Sua carteira no Brave foi desenvolvida por <ph name="BEGIN_BOLD">&lt;b&gt;</ph>Uphold<ph name="BEGIN_END">&lt;/b&gt;</ph>.</translation>
+<translation id="9106875682287489763">O seu <ph name="BEGIN_BOLD">&lt;b&gt;</ph>{{amount}} BATs<ph name="BEGIN_END">&lt;/b&gt;</ph> e outros dados de recompensa serão permanentemente perdidos se você redefinir a sua carteira. Por favor, certifique-se de já ter verificado a sua carteira com o Uphold para que você possa manter o seu BAT.</translation>
+<translation id="4986087720311945758">Nosso serviço de carteira é fornecido por <ph name="BEGIN_BOLD">&lt;b&gt;</ph>Uphold<ph name="BEGIN_END">&lt;/b&gt;</ph></translation>
+<translation id="651649139059930379">Ganhe 2% de rebate em criptomoedas com o cartão Uphold</translation>
 </translationbundle>

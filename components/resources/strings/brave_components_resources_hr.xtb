@@ -676,4 +676,13 @@
 <translation id="4011828592358027165">Tek se upoznajete s kriptovalutama?</translation>
 <translation id="3358050091139900813">Za početak, ovdje nabavite novčanik</translation>
 <translation id="3105412115725259537">Bitcoin.com</translation>
+<translation id="5783793537552649286">Prikaži pozadinsku sliku</translation>
+<translation id="340102383764929340">Upisani se ključ za oporavak više ne podržava. Posjetite <ph name="BEGIN_LINK_REGION_TEXT">&lt;a target="_blank" rel="noopener noreferrer" href="http://brave.com/faq#convert-old-keys"&gt;</ph>here<ph name="END_LINK_REGION_TEXT">&lt;/a&gt;</ph> za dobivanje novog ključa.</translation>
+<translation id="2852258589816753010">BAT se trenutačno ne podržava u vašoj regiji. Pogledajte <ph name="BEGIN_LINK_REGION_TEXT">&lt;a target="_blank" rel="noopener noreferrer" href="$1"&gt;</ph>here<ph name="END_LINK_REGION_TEXT">&lt;/a&gt;</ph> za ažuriranja.</translation>
+<translation id="4188679602963314994">Morate imati najmanje 25 BATA za stvaranje računa za uslugu Uphold. Pokušajte ponovno kasnije. <ph name="BREAK">&lt;br/&gt;</ph>Ako već imate provjereni račun za uslugu Uphold, nastavite do prijave.</translation>
+<translation id="1701701253000051237">Dodajte, podignite i upravljate sredstvima na <ph name="BEGIN_BOLD">&lt;b&gt;</ph>Uphold<ph name="BEGIN_END">&lt;/b&gt;</ph>.</translation>
+<translation id="4208741993667364007">Vaš novčanik Brave pruža <ph name="BEGIN_BOLD">&lt;b&gt;</ph>Uphold<ph name="BEGIN_END">&lt;/b&gt;</ph>.</translation>
+<translation id="9106875682287489763">Stavka <ph name="BEGIN_BOLD">&lt;b&gt;</ph>{{amount}} BATs<ph name="BEGIN_END">&lt;/b&gt;</ph> i ostali podatci o nagradama nepovratno se gube ako poništite svoj novčanik. Provjerite jeste li provjerili svoj novčanik pri usluzi Uphold kako biste zadržali svoj BAT.</translation>
+<translation id="4986087720311945758">Našu uslugu novčanika pruža <ph name="BEGIN_BOLD">&lt;b&gt;</ph>Uphold<ph name="BEGIN_END">&lt;/b&gt;</ph></translation>
+<translation id="651649139059930379">Dobijte natrag 2 % kriptovalute pomoću kartice usluge Uphold</translation>
 </translationbundle>

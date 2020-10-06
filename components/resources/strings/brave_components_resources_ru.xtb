@@ -676,4 +676,13 @@
 <translation id="4011828592358027165">Новичок в криптовалюте?</translation>
 <translation id="3358050091139900813">Откройте кошелек сейчас, чтобы начать</translation>
 <translation id="3105412115725259537">Bitcoin.com</translation>
+<translation id="5783793537552649286">Показать фоновое изображение</translation>
+<translation id="340102383764929340">Введенный ключ восстановления более не поддерживается. Пожалуйста, посетите <ph name="BEGIN_LINK_REGION_TEXT">&lt;a target="_blank" rel="noopener noreferrer" href="http://brave.com/faq#convert-old-keys"&gt;</ph>here<ph name="END_LINK_REGION_TEXT">&lt;/a&gt;</ph> для получения нового ключа.</translation>
+<translation id="2852258589816753010">В настоящее время BAT не поддерживается в вашем регионе. Обратитесь к <ph name="BEGIN_LINK_REGION_TEXT">&lt;a target="_blank" rel="noopener noreferrer" href="$1"&gt;</ph>этой статье<ph name="END_LINK_REGION_TEXT">&lt;/a&gt;</ph> для получения последней информации.</translation>
+<translation id="4188679602963314994">Для создания аккаунта Uphold вам нужно иметь минимум 25 BAT. Пожалуйста, повторите попытку позже. <ph name="BREAK">&lt;br/&gt;</ph>Если у вас уже есть подтвержденный аккаунт Uphold, выполните вход в систему.</translation>
+<translation id="1701701253000051237">Кладите, снимайте и управляйте средствами на <ph name="BEGIN_BOLD">&lt;b&gt;</ph>Uphold<ph name="BEGIN_END">&lt;/b&gt;</ph>.</translation>
+<translation id="4208741993667364007">Brave Wallet работает на основе <ph name="BEGIN_BOLD">&lt;b&gt;</ph>Uphold<ph name="BEGIN_END">&lt;/b&gt;</ph>.</translation>
+<translation id="9106875682287489763">Ваши <ph name="BEGIN_BOLD">&lt;b&gt;</ph>{{amount}} BAT-ы<ph name="BEGIN_END">&lt;/b&gt;</ph> и данные о других вознаграждениях будут безвозвратно потеряны, если вы сбросите свой кошелек. Убедитесь, что вы подтвердили свой кошелек с помощью Uphold, чтобы вы смогли хранить свои BAT-ы.</translation>
+<translation id="4986087720311945758">Наш сервис кошельков предоставлен <ph name="BEGIN_BOLD">&lt;b&gt;</ph>Uphold<ph name="BEGIN_END">&lt;/b&gt;</ph></translation>
+<translation id="651649139059930379">Получите 2% возврата криптовалюты с картой Uphold</translation>
 </translationbundle>

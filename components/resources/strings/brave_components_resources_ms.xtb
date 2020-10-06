@@ -676,4 +676,13 @@
 <translation id="4011828592358027165">Baru dengan kripto?</translation>
 <translation id="3358050091139900813">Dapatkan dompet tersebut di sini untuk bermula</translation>
 <translation id="3105412115725259537">Bitcoin.com</translation>
+<translation id="5783793537552649286">Papar Imej Latar Belakang</translation>
+<translation id="340102383764929340">Kekunci pulihkan semula tidak disokong lagi. Sila layari <ph name="BEGIN_LINK_REGION_TEXT">&lt;a target="_blank" rel="noopener noreferrer" href="http://brave.com/faq#convert-old-keys"&gt;</ph>here<ph name="END_LINK_REGION_TEXT">&lt;/a&gt;</ph> untuk mendapatkan kekunci baharu.</translation>
+<translation id="2852258589816753010">BAT pada masa ini tidak diskong di kawasan anda. Sila rujuk kepada <ph name="BEGIN_LINK_REGION_TEXT">&lt;a target="_blank" rel="noopener noreferrer" href="$1"&gt;</ph>here<ph name="END_LINK_REGION_TEXT">&lt;/a&gt;</ph> untuk berita terkini.</translation>
+<translation id="4188679602963314994">Anda perlu mempunyai minimum 25 BAT untuk mencipta sebuah akaun Uphold. Sila cuba lagi kemudian. <ph name="BREAK">&lt;br/&gt;</ph>Sekiranya anda sudah mempunyai sebuah akaun Uphold yang ditentusahkan, teruskan untuk mengelog masuk.</translation>
+<translation id="1701701253000051237">Tambah, keluarkan dan uruskan dana pada <ph name="BEGIN_BOLD">&lt;b&gt;</ph>Uphold<ph name="BEGIN_END">&lt;/b&gt;</ph>.</translation>
+<translation id="4208741993667364007">Dompet Brave anda dikuasakan oleh <ph name="BEGIN_BOLD">&lt;b&gt;</ph>Uphold<ph name="BEGIN_END">&lt;/b&gt;</ph>.</translation>
+<translation id="9106875682287489763">BAT <ph name="BEGIN_BOLD">&lt;b&gt;</ph>{{amount}} andas<ph name="BEGIN_END">&lt;/b&gt;</ph> dan data Ganjaran lain akan hilang selamanya sekiranya anda menetapkan semula dompet anda. Sila pastikan bahawa anda telah menentusahkan dompet anda dengan Uphold supaya anda boleh mengekalkan BAT anda.</translation>
+<translation id="4986087720311945758">Perkhidmatan dompet kami disediakan oleh <ph name="BEGIN_BOLD">&lt;b&gt;</ph>Uphold<ph name="BEGIN_END">&lt;/b&gt;</ph></translation>
+<translation id="651649139059930379">Dapatkan 2% pulangan kripto dengan kad Uphold</translation>
 </translationbundle>

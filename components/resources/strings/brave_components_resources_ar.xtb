@@ -676,4 +676,13 @@
 <translation id="4011828592358027165">هل أنت جديد في عالم العملات المشفرة؟</translation>
 <translation id="3358050091139900813">احصل على المحفظة من هنا للبدء</translation>
 <translation id="3105412115725259537">Bitcoin.com</translation>
+<translation id="5783793537552649286">إظهار صورة الخلفية</translation>
+<translation id="340102383764929340">مفتاح الاستعادة الذي تم إدخاله لم يعد مدعوماً. يرجى زيارة <ph name="BEGIN_LINK_REGION_TEXT">&lt;a target="_blank" rel="noopener noreferrer" href="http://brave.com/faq#convert-old-keys"&gt;</ph>here<ph name="END_LINK_REGION_TEXT">&lt;/a&gt;</ph> للحصول على مفتاح جديد.</translation>
+<translation id="2852258589816753010">BAT غير مُعتَمد حاليًا في منطقتك. يُرجى الرجوع إلى <ph name="BEGIN_LINK_REGION_TEXT">&lt;a target="_blank" rel="noopener noreferrer" href="$1"&gt;</ph>here<ph name="END_LINK_REGION_TEXT">&lt;/a&gt;</ph> للحصول على التحديثات.</translation>
+<translation id="4188679602963314994">يجب أن يكون لديك 25 BAT كحد أدنى لإنشاء حساب على Uphold. الرجاء إعادة المحاولة في وقت لاحق. <ph name="BREAK">&lt;br/&gt;</ph>إذا كان لديك بالفعل حساب مفعل على Uphold، فتابع لتسجيل الدخول.</translation>
+<translation id="1701701253000051237">إضافة وسحب وإدارة الأموال في <ph name="BEGIN_BOLD">&lt;b&gt;</ph>Uphold<ph name="BEGIN_END">&lt;/b&gt;</ph>.</translation>
+<translation id="4208741993667364007">يتم تشغيل محفظتك من Brave بواسطة <ph name="BEGIN_BOLD">&lt;b&gt;</ph>Uphold<ph name="BEGIN_END">&lt;/b&gt;</ph>.</translation>
+<translation id="9106875682287489763">ستفقد الـ <ph name="BEGIN_BOLD">&lt;b&gt;</ph>{{amount}} BATs<ph name="BEGIN_END">&lt;/b&gt;</ph> الخاصة بك وبيانات المكافآت الأخرى بشكلٍ دائم إذا قمت بإعادة ضبط محفظتك. يُرجى التأكد من أنك قمت بالتحقق من محفظتك باستخدام Uphold حتى تتمكن من الاحتفاظ بالـ BAT الخاص بك.</translation>
+<translation id="4986087720311945758">يتم توفير خدمة المحافظ لدينا من قبل <ph name="BEGIN_BOLD">&lt;b&gt;</ph>Uphold<ph name="BEGIN_END">&lt;/b&gt;</ph></translation>
+<translation id="651649139059930379">احصل على 2% Cryptoback مع بطاقة Uphold</translation>
 </translationbundle>

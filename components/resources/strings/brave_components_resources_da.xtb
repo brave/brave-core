@@ -676,4 +676,13 @@
 <translation id="4011828592358027165">Ny i krypto?</translation>
 <translation id="3358050091139900813">Få tegnebogen her for at komme i gang</translation>
 <translation id="3105412115725259537">Bitcoin.com</translation>
+<translation id="5783793537552649286">Vis baggrundsbillede</translation>
+<translation id="340102383764929340">Den indtastede gendannelsesnøgle understøttes ikke længere. Gå venligst til <ph name="BEGIN_LINK_REGION_TEXT">&lt;a target="_blank" rel="noopener noreferrer" href="http://brave.com/faq#convert-old-keys"&gt;</ph>here<ph name="END_LINK_REGION_TEXT">&lt;/a&gt;</ph> for at få en ny nøgle.</translation>
+<translation id="2852258589816753010">BAT er i øjeblikket ikke understøttet i din region. Se venligst <ph name="BEGIN_LINK_REGION_TEXT">&lt;a target="_blank" rel="noopener noreferrer" href="$1"&gt;</ph>her<ph name="END_LINK_REGION_TEXT">&lt;/a&gt;</ph> for opdateringer.</translation>
+<translation id="4188679602963314994">Du skal have minimum 25 BAT for at oprette en Uphold-konto. Prøv venligst igen senere. <ph name="BREAK">&lt;br/&gt;</ph>Hvis du allerede har en bekræftet Uphold-konto, skal du fortsætte til login.</translation>
+<translation id="1701701253000051237">Indsæt, hæv og administrer beløb på <ph name="BEGIN_BOLD">&lt;b&gt;</ph>Uphold<ph name="BEGIN_END">&lt;/b&gt;</ph>.</translation>
+<translation id="4208741993667364007">Din Brave-tegnebog er drevet af <ph name="BEGIN_BOLD">&lt;b&gt;</ph>Uphold<ph name="BEGIN_END">&lt;/b&gt;</ph>.</translation>
+<translation id="9106875682287489763">Din <ph name="BEGIN_BOLD">&lt;b&gt;</ph>{{amount}} BATs<ph name="BEGIN_END">&lt;/b&gt;</ph> og andre Belønnings-data mistes permanent, hvis du nulstiller din tegnebog. Sørg venligst for, at du har verificeret din tegnebog med Uphold, så du kan beholde din BAT.</translation>
+<translation id="4986087720311945758">Vores tegnebogs-service udbydes af <ph name="BEGIN_BOLD">&lt;b&gt;</ph>Uphold<ph name="BEGIN_END">&lt;/b&gt;</ph></translation>
+<translation id="651649139059930379">Få 2% kryptoback med Uphold-kortet</translation>
 </translationbundle>

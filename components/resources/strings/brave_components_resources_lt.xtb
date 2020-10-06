@@ -677,4 +677,13 @@
 <translation id="4011828592358027165">Pirmą kartą naudojate kriptovaliutą?</translation>
 <translation id="3358050091139900813">Norėdami pradėti, gaukite piniginę čia</translation>
 <translation id="3105412115725259537">Bitcoin.com</translation>
+<translation id="5783793537552649286">Rodyti foninį vaizdą</translation>
+<translation id="340102383764929340">Įvestas atkūrimo kodas daugiau nepalaikomas. Norėdami gauti naują kodą apsilankykite <ph name="BEGIN_LINK_REGION_TEXT">&lt;a target="_blank" rel="noopener noreferrer" href="http://brave.com/faq#convert-old-keys"&gt;</ph>čia<ph name="END_LINK_REGION_TEXT">&lt;/a&gt;</ph>.</translation>
+<translation id="2852258589816753010">BAT šiuo metu jūsų regione nepalaikoma. Naujinių ieškokite <ph name="BEGIN_LINK_REGION_TEXT">&lt;a target="_blank" rel="noopener noreferrer" href="$1"&gt;</ph>here<ph name="END_LINK_REGION_TEXT">&lt;/a&gt;</ph>.</translation>
+<translation id="4188679602963314994">Jums reikia turėti mažiausiai 25 BAT, kad galėtumėte susikurti „Uphold“ paskyrą. Bandykite dar kartą vėliau. <ph name="BREAK">&lt;br/&gt;</ph>Jei jau turite patvirtintą „Uphold“ paskyrą, tęskite, kad prisijungtumėte.</translation>
+<translation id="1701701253000051237">Įneškite, išsiimkite ir valdykite lėšas su <ph name="BEGIN_BOLD">&lt;b&gt;</ph>„Uphold“<ph name="BEGIN_END">&lt;/b&gt;</ph>.</translation>
+<translation id="4208741993667364007">Jūsų „Brave“ piniginę sukūrė <ph name="BEGIN_BOLD">&lt;b&gt;</ph>„Uphold“<ph name="BEGIN_END">&lt;/b&gt;</ph>.</translation>
+<translation id="9106875682287489763">Jei iš naujo nustatysite piniginę, jūsų <ph name="BEGIN_BOLD">&lt;b&gt;</ph>{{amount}} BAT<ph name="BEGIN_END">&lt;/b&gt;</ph> ir kiti „Rewards“ duomenys bus prarasti visam laikui. Patvirtinkite savo piniginę naudodami „Uphold“, kad neprarastumėte BAT.</translation>
+<translation id="4986087720311945758">Mūsų piniginės paslaugą teikia <ph name="BEGIN_BOLD">&lt;b&gt;</ph>„Uphold“<ph name="BEGIN_END">&lt;/b&gt;</ph></translation>
+<translation id="651649139059930379">Susigrąžinkite 2 % kriptovaliutos su „Uphold“ kortele</translation>
 </translationbundle>

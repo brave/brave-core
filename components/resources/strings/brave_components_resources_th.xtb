@@ -677,4 +677,13 @@ DuckDuckGo ไม่บันทึกประวัติการค้นห
 <translation id="4011828592358027165">เพิ่งรู้จักเงินดิจิทัลใช่ไหม</translation>
 <translation id="3358050091139900813">รับวอลเล็ทที่นี่เพื่อเริ่มต้นใช้งาน</translation>
 <translation id="3105412115725259537">Bitcoin.com</translation>
+<translation id="5783793537552649286">แสดงรูปภาพพื้นหลัง</translation>
+<translation id="340102383764929340">ไม่รองรับรหัสกู้คืนที่ใส่อีกต่อไป โปรดไปที่ <ph name="BEGIN_LINK_REGION_TEXT">&lt;a target="_blank" rel="noopener noreferrer" href="http://brave.com/faq#convert-old-keys"&gt;</ph>here<ph name="END_LINK_REGION_TEXT">&lt;/a&gt;</ph> เพื่อรับรหัสใหม่</translation>
+<translation id="2852258589816753010">ภูมิภาคของคุณยังไม่รองรับ BAT ในขณะนี้ โปรดดูข่าวสารจาก<ph name="BEGIN_LINK_REGION_TEXT">&lt;a target="_blank" rel="noopener noreferrer" href="$1"&gt;</ph>ที่นี่<ph name="END_LINK_REGION_TEXT">&lt;/a&gt;</ph></translation>
+<translation id="4188679602963314994">คุณต้องมีอย่างน้อย 25 BAT เพื่อสร้างบัญชี Uphold โปรดลองใหม่อีกครั้งภายหลัง <ph name="BREAK">&lt;br/&gt;</ph> หากคุณมีบัญชี Uphold ที่ได้รับการยืนยันแล้ว ดำเนินการต่อที่หน้าล็อกอิน</translation>
+<translation id="1701701253000051237">เพิ่ม ถอน และบริหารเงินทุนที่ <ph name="BEGIN_BOLD">&lt;b&gt;</ph>Uphold<ph name="BEGIN_END">&lt;/b&gt;</ph>.</translation>
+<translation id="4208741993667364007">Brave wallet ของคุณขับเคลื่อนโดย is powered by <ph name="BEGIN_BOLD">&lt;b&gt;</ph>Uphold<ph name="BEGIN_END">&lt;/b&gt;</ph>.</translation>
+<translation id="9106875682287489763"><ph name="BEGIN_BOLD">&lt;b&gt;</ph>{{amount}} BATs<ph name="BEGIN_END">&lt;/b&gt;</ph> ของและข้อมูลรางวัลอื่น ๆ ของคุณจะสูญหายไปถาวรหากคุณรีเซ็ตกระเป๋าเงินของคุณ โปรดตรวจสอบให้แน่ใจว่าคุณได้ยืนยันกระเป๋าเงินของคุณกับ Uphold แล้วเพื่อที่คุณสามารถเก็บ BAT ของคุณได้</translation>
+<translation id="4986087720311945758">บริการกระเป๋าเงินของเราให้บริการโดย <ph name="BEGIN_BOLD">&lt;b&gt;</ph>Uphold<ph name="BEGIN_END">&lt;/b&gt;</ph></translation>
+<translation id="651649139059930379">รับเงินคริปโตคืน 2% ด้วยบัตร Uphold</translation>
 </translationbundle>

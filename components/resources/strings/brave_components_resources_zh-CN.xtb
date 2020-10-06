@@ -676,4 +676,13 @@
 <translation id="4011828592358027165">加密货币新手？</translation>
 <translation id="3358050091139900813">从这里获取钱包开始</translation>
 <translation id="3105412115725259537">Bitcoin.com</translation>
+<translation id="5783793537552649286">显示背景图片</translation>
+<translation id="340102383764929340">我们已不再支持输入的还原密钥。如需获取新密钥，请访问 <ph name="BEGIN_LINK_REGION_TEXT">&lt;a target="_blank" rel="noopener noreferrer" href="http://brave.com/faq#convert-old-keys"&gt;</ph>here<ph name="END_LINK_REGION_TEXT">&lt;/a&gt;</ph>。</translation>
+<translation id="2852258589816753010">您所在的地区不支持 BAT。请参考 <ph name="BEGIN_LINK_REGION_TEXT">&lt;a target="_blank" rel="noopener noreferrer" href="$1"&gt;</ph>here<ph name="END_LINK_REGION_TEXT">&lt;/a&gt;</ph> 获取更新。</translation>
+<translation id="4188679602963314994">您需要至少有 25 个 BAT 才能创建一个“Uphold”帐户。请稍后再试。 <ph name="BREAK">&lt;br/&gt;</ph>如果您已经有经验证的“Uphold”帐户，请继续登录。</translation>
+<translation id="1701701253000051237">在<ph name="BEGIN_BOLD">&lt;b&gt;</ph>Uphold<ph name="BEGIN_END">&lt;b&gt;</ph>中添加、提取和管理资金</translation>
+<translation id="4208741993667364007">您 Brave 钱包的技术支持：<ph name="BEGIN_BOLD">&lt;b&gt;</ph>Uphold<ph name="BEGIN_END">&lt;/b&gt;</ph></translation>
+<translation id="9106875682287489763">如果您重置了您的钱包，则您的 <ph name="BEGIN_BOLD">&lt;b&gt;</ph>{{amount}} BATs<ph name="BEGIN_END">&lt;/b&gt;</ph>及其它奖励数据将永远丢失。请确保您已经验证过您的钱包，并托管，以便保留您的 BAT。</translation>
+<translation id="4986087720311945758">我们的钱包服务提供商：<ph name="BEGIN_BOLD">&lt;b&gt;</ph>Uphold<ph name="BEGIN_END">&lt;/b&gt;</ph></translation>
+<translation id="651649139059930379">使用 “Uphold”卡可获得 2% 的加密返还</translation>
 </translationbundle>

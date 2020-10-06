@@ -676,4 +676,13 @@
 <translation id="4011828592358027165">Sind Sie neu im Bereich der Kryptowährungen?</translation>
 <translation id="3358050091139900813">Legen Sie hier das Wallet an, um loszulegen</translation>
 <translation id="3105412115725259537">Bitcoin.com</translation>
+<translation id="5783793537552649286">Hintergrundbild anzeigen</translation>
+<translation id="340102383764929340">Der eingegebene Wiederherstellungschlüssel wird nicht mehr unterstützt. Bitte besuchen Sie <ph name="BEGIN_LINK_REGION_TEXT">&lt;a target="_blank" rel="noopener noreferrer" href="http://brave.com/faq#convert-old-keys"&gt;</ph>here<ph name="END_LINK_REGION_TEXT">&lt;/a&gt;</ph>, um einen neuen Schlüssel zu erhalten.</translation>
+<translation id="2852258589816753010">BAT wird in Ihrer Region derzeit nicht unterstützt. Bitte sehen Sie <ph name="BEGIN_LINK_REGION_TEXT">&lt;a target="_blank" rel="noopener noreferrer" href="$1"&gt;</ph>hier<ph name="END_LINK_REGION_TEXT">&lt;/a&gt;</ph> nach, um weitere Informationen zu erhalten.</translation>
+<translation id="4188679602963314994">Sie brauchen ein Minimum von 25 BAT, um ein Uphold-Konto zu erstellen. Bitte versuchen Sie es später erneut. <ph name="BREAK">&lt;br/&gt;</ph>Falls Sie schon ein verifiziertes Uphold-Konto haben, fahren Sie mit dem Login fort.</translation>
+<translation id="1701701253000051237">Zahlen Sie bei <ph name="BEGIN_BOLD">&lt;b&gt;</ph>Uphold<ph name="BEGIN_END">&lt;/b&gt;</ph> Geld ein und aus und verwalten Sie es.</translation>
+<translation id="4208741993667364007">Ihr Brave-Wallet wird von <ph name="BEGIN_BOLD">&lt;b&gt;</ph>Uphold<ph name="BEGIN_END">&lt;/b&gt;</ph> betrieben.</translation>
+<translation id="9106875682287489763">Ihre <ph name="BEGIN_BOLD">&lt;b&gt;</ph>{{amount}} BAT-<ph name="BEGIN_END">&lt;/b&gt;</ph> und andere Rewards-Daten gehen dauerhaft verloren, wenn Sie Ihre Wallet zurücksetzen. Bitte vergewissern Sie sich, dass Ihre Wallet bei Uphold verifiziert ist, damit Ihre BAT erhalten bleiben.</translation>
+<translation id="4986087720311945758">Unser Walletdienst wird von <ph name="BEGIN_BOLD">&lt;b&gt;</ph>Uphold<ph name="BEGIN_END">&lt;/b&gt;</ph> bereitgestellt</translation>
+<translation id="651649139059930379">Erhalten Sie mit der Uphold Card 2 % Cryptoback</translation>
 </translationbundle>
