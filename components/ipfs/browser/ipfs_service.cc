@@ -217,6 +217,12 @@ void IpfsService::GetConnectedPeers(GetConnectedPeersCallback callback) {
     return;
   }
 
+  if (skip_get_connected_peers_callback_for_test_) {
+    // Early return for tests that wish to  manually run the callback with
+    // desired values directly, could be useful in unit tests.
+    return;
+  }
+
   auto url_loader = CreateURLLoader(server_endpoint_.Resolve(kSwarmPeersPath));
   auto iter = url_loaders_.insert(url_loaders_.begin(), std::move(url_loader));
 
@@ -350,6 +356,10 @@ void IpfsService::SetIpfsLaunchedForTest(bool launched) {
 
 void IpfsService::SetServerEndpointForTest(const GURL& gurl) {
   server_endpoint_ = gurl;
+}
+
+void IpfsService::SetSkipGetConnectedPeersCallbackForTest(bool skip) {
+  skip_get_connected_peers_callback_for_test_ = skip;
 }
 
 }  // namespace ipfs

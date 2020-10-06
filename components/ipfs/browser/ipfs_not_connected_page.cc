@@ -16,6 +16,11 @@
 
 namespace ipfs {
 
+// static
+const security_interstitials::SecurityInterstitialPage::TypeID
+    IPFSNotConnectedPage::kTypeForTesting =
+        &IPFSNotConnectedPage::kTypeForTesting;
+
 IPFSNotConnectedPage::IPFSNotConnectedPage(
     content::WebContents* web_contents,
     const GURL& request_url,
@@ -76,6 +81,11 @@ void IPFSNotConnectedPage::PopulateInterstitialStrings(
 
 int IPFSNotConnectedPage::GetHTMLTemplateId() {
   return IDR_IPFS_INTERSTITIAL_HTML;
+}
+
+security_interstitials::SecurityInterstitialPage::TypeID
+IPFSNotConnectedPage::GetTypeForTesting() {
+  return IPFSNotConnectedPage::kTypeForTesting;
 }
 
 }  // namespace ipfs

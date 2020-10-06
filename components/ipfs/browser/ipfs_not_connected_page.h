@@ -26,6 +26,10 @@ namespace ipfs {
 class IPFSNotConnectedPage
     : public security_interstitials::SecurityInterstitialPage {
  public:
+  // Interstitial type, used in tests.
+  static const security_interstitials::SecurityInterstitialPage::TypeID
+      kTypeForTesting;
+
   IPFSNotConnectedPage(
       content::WebContents* web_contents,
       const GURL& request_url,
@@ -40,12 +44,17 @@ class IPFSNotConnectedPage
   // SecurityInterstitialPage::
   void OnInterstitialClosing() override {}
   void CommandReceived(const std::string& command) override;
+  security_interstitials::SecurityInterstitialPage::TypeID GetTypeForTesting()
+      override;
 
  protected:
   // SecurityInterstitialPage::
   void PopulateInterstitialStrings(
       base::DictionaryValue* load_time_data) override;
   int GetHTMLTemplateId() override;
+
+ private:
+  friend class IpfsNavigationThrottleBrowserTest;
 };
 
 }  // namespace ipfs

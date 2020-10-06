@@ -115,6 +115,12 @@ TEST_F(IpfsNavigationThrottleUnitTest, DeferUntilIpfsProcessLaunched) {
   profile()->GetPrefs()->SetInteger(
       kIPFSResolveMethod, static_cast<int>(IPFSResolveMethodTypes::IPFS_LOCAL));
 
+  auto peers = std::vector<std::string>{
+      "/ip4/101.101.101.101/tcp/4001/p2p/"
+      "QmaCpDMGvV2BGHeYERUEnRQAwe3N8SzbUtfsmvsqQLuvuJ"};
+
+  ipfs_service()->SetSkipGetConnectedPeersCallbackForTest(true);
+
   content::MockNavigationHandle test_handle(web_contents());
   test_handle.set_url(GetIPFSURL());
   auto throttle = IpfsNavigationThrottle::MaybeCreateThrottleFor(
@@ -127,9 +133,13 @@ TEST_F(IpfsNavigationThrottleUnitTest, DeferUntilIpfsProcessLaunched) {
       << GetIPFSURL();
   throttle->OnIpfsLaunched(true, 5566);
   EXPECT_TRUE(was_navigation_resumed);
+
+  was_navigation_resumed = false;
   ipfs_service()->SetIpfsLaunchedForTest(true);
-  EXPECT_EQ(NavigationThrottle::PROCEED, throttle->WillStartRequest().action())
+  EXPECT_EQ(NavigationThrottle::DEFER, throttle->WillStartRequest().action())
       << GetIPFSURL();
+  throttle->OnGetConnectedPeers(true, peers);
+  EXPECT_TRUE(was_navigation_resumed);
 
   ipfs_service()->SetIpfsLaunchedForTest(false);
 
@@ -139,9 +149,13 @@ TEST_F(IpfsNavigationThrottleUnitTest, DeferUntilIpfsProcessLaunched) {
       << GetIPNSURL();
   throttle->OnIpfsLaunched(true, 5566);
   EXPECT_TRUE(was_navigation_resumed);
+
+  was_navigation_resumed = false;
   ipfs_service()->SetIpfsLaunchedForTest(true);
-  EXPECT_EQ(NavigationThrottle::PROCEED, throttle->WillStartRequest().action())
+  EXPECT_EQ(NavigationThrottle::DEFER, throttle->WillStartRequest().action())
       << GetIPNSURL();
+  throttle->OnGetConnectedPeers(true, peers);
+  EXPECT_TRUE(was_navigation_resumed);
 }
 
 TEST_F(IpfsNavigationThrottleUnitTest, ProceedForGatewayNodeMode) {
