@@ -329,6 +329,7 @@ export const IconButtonSideText = styled<IconButtonSideTextProps, 'label'>('labe
   color: inherit;
   cursor: pointer;
   user-select: none;
+  width: max-content;
 
   &:focus-within {
     /* get the browser defaults */
