@@ -110,12 +110,6 @@ export default class WidgetMenu extends React.PureComponent<Props, State> {
           menuPosition={menuPosition}
           widgetMenuPersist={widgetMenuPersist}
         >
-          <StyledWidgetButton
-            onClick={this.unmountWidget}
-          >
-            <StyledWidgetIcon><HideIcon/></StyledWidgetIcon>
-            <StyledSpan>{hideString}</StyledSpan>
-          </StyledWidgetButton>
           {
             onLearnMore
             ? <StyledWidgetLink
@@ -150,6 +144,12 @@ export default class WidgetMenu extends React.PureComponent<Props, State> {
               </StyledWidgetButton>
             : null
           }
+          <StyledWidgetButton
+            onClick={this.unmountWidget}
+          >
+            <StyledWidgetIcon><HideIcon/></StyledWidgetIcon>
+            <StyledSpan>{hideString}</StyledSpan>
+          </StyledWidgetButton>
         </StyledWidgetMenu>}
       </StyledWidgetMenuContainer>
     )
