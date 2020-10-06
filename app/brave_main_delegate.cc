@@ -207,8 +207,6 @@ bool BraveMainDelegate::BasicStartupComplete(int* exit_code) {
       blink::features::kMixedContentAutoupgrade.name,
       password_manager::features::kPasswordImport.name,
       net::features::kLegacyTLSEnforced.name,
-      // Remove URL bar mixed control and allow site specific override instead
-      features::kMixedContentSiteSetting.name,
       // Enable webui dark theme: @media (prefers-color-scheme: dark) is gated
       // on this feature.
       features::kWebUIDarkMode.name,
