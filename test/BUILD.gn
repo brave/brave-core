@@ -59,18 +59,21 @@ static_library("brave_test_support_unit") {
   }
 }
 
-if (!is_ios) {
-group("other_unit_tests") {
+source_set("test_support") {
   testonly = true
-  deps = [
-    "//brave/components/brave_ads/test:brave_ads_unit_tests",
-    "//brave/components/brave_rewards/test:brave_rewards_unit_tests",
-  ]
-
   if (!is_android) {
-    deps += [ ":brave_installer_unittests" ]
-  } else {
-    deps += [ ":brave_public_test_apk" ]
+    sources = [
+      "//brave/browser/profiles/brave_unittest_profile_manager.cc",
+      "//brave/browser/profiles/brave_unittest_profile_manager.h",
+    ]
+    deps = [
+      "//base",
+      "//brave/browser/profiles",
+      "//brave/test:brave_test_support_unit",
+      "//chrome/browser",
+      "//chrome/test:test_support",
+      "//components/sync_preferences",
+    ]
   }
 }
 
@@ -136,11 +139,14 @@ test("brave_unit_tests") {
   defines = brave_service_key_defines
 
   deps = [
-    ":other_unit_tests",
+    ":test_support",
     "//brave/base:base_unittests",
     "//brave/browser/safebrowsing",
+    "//brave/components/brave_ads/test:brave_ads_unit_tests",
     "//brave/components/brave_private_cdn",
     "//brave/components/brave_referrals/common",
+    "//brave/components/brave_rewards/test:brave_rewards_unit_tests",
+    "//brave/components/ipfs/test:brave_ipfs_unit_tests",
     "//brave/components/ntp_background_images/browser",
     "//brave/components/ntp_widget_utils/browser",
     "//brave/vendor/brave_base",
@@ -208,8 +214,6 @@ test("brave_unit_tests") {
 
       # TODO(samartnik): this should work on Android, we will review it once unit tests are set up on CI
       "//brave/browser/autoplay/autoplay_permission_context_unittest.cc",
-      "//brave/browser/profiles/brave_unittest_profile_manager.cc",
-      "//brave/browser/profiles/brave_unittest_profile_manager.h",
       "//brave/components/brave_shields/browser/brave_shields_util_unittest.cc",
       "//brave/components/omnibox/browser/fake_autocomplete_provider_client.cc",
       "//brave/components/omnibox/browser/fake_autocomplete_provider_client.h",
@@ -232,22 +236,6 @@ test("brave_unit_tests") {
   if (is_mac) {
     sources += [
       "//brave/chromium_src/chrome/common/chrome_constants_unittest_mac.cc",
-    ]
-  }
-
-  if (ipfs_enabled) {
-    sources += [
-      "//brave/browser/ipfs/content_browser_client_helper_unittest.cc",
-      "//brave/browser/net/ipfs_redirect_network_delegate_helper_unittest.cc",
-      "//brave/components/ipfs/browser/ipfs_json_parser_unittest.cc",
-      "//brave/components/ipfs/browser/ipfs_navigation_throttle_unittest.cc",
-      "//brave/components/ipfs/browser/translate_ipfs_uri_unittest.cc",
-      "//brave/components/ipfs/common/ipfs_utils_unittest.cc",
-    ]
-
-    deps += [
-      "//brave/components/ipfs/browser",
-      "//brave/components/ipfs/common",
     ]
   }
 
@@ -274,6 +262,7 @@ test("brave_unit_tests") {
 
   if (is_android) {
     deps += [
+      ":brave_public_test_apk",
       "//brave:brave_pak_assets",
       "//chrome:chrome_android_core",
       "//chrome/android:chrome_apk_paks",
@@ -289,6 +278,8 @@ test("brave_unit_tests") {
       "$root_out_dir/brave_resources.pak",
       "//brave/components/brave_perf_predictor/resources/entities-httparchive-nostats.json",
     ]
+  } else {
+    deps += [ ":brave_installer_unittests" ]
   }
 
   if (enable_extensions) {
@@ -413,7 +404,17 @@ test("brave_unit_tests") {
       "//brave/components/speedreader"
     ]
   }
-}
+
+  if (ipfs_enabled) {
+    sources += [
+      "//brave/browser/ipfs/content_browser_client_helper_unittest.cc",
+      "//brave/browser/net/ipfs_redirect_network_delegate_helper_unittest.cc",
+    ]
+    deps += [
+      "//brave/components/ipfs/browser",
+      "//brave/components/ipfs/common",
+    ]
+  }
 }
 
 if (!is_android && !is_ios) {
@@ -603,7 +604,9 @@ test("brave_browser_tests") {
     ]
   }
 
-  deps = []
+  deps = [
+    "//brave/components/ipfs/test:brave_ipfs_browser_tests",
+  ]
 
   if (enable_widevine && !is_asan) {
     # Remove the !is_asan check once
@@ -714,14 +717,6 @@ test("brave_browser_tests") {
     ]
   }
 
-  if (ipfs_enabled) {
-    sources += [
-      "//brave/browser/ipfs/ipfs_tab_helper_browsertest.cc",
-      "//brave/components/ipfs/browser/brave_ipfs_client_updater_browsertest.cc",
-      "//brave/components/ipfs/browser/ipfs_service_browsertest.cc",
-    ]
-  }
-
   if (enable_brave_wayback_machine) {
     sources += [
       "//brave/components/brave_wayback_machine/brave_wayback_machine_browsertest.cc",
@@ -731,6 +726,16 @@ test("brave_browser_tests") {
   if (enable_speedreader) {
     sources += [
       "//brave/browser/speedreader/speedreader_browsertest.cc",
+    ]
+  }
+
+  if (ipfs_enabled) {
+    sources += [
+      "//brave/browser/ipfs/ipfs_tab_helper_browsertest.cc",
+    ]
+    deps += [
+      "//brave/components/ipfs/browser",
+      "//brave/components/ipfs/common",
     ]
   }
 

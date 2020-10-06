@@ -36,6 +36,7 @@ source_set("browser_process") {
     "//brave/components/brave_ads/test:*",
     "//brave/components/brave_rewards/browser:testutil",
     "//brave/components/brave_rewards/test:*",
+    "//brave/components/ipfs/test:*",
     "//brave/test:*",
   ]
 
