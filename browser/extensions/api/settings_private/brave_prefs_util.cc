@@ -161,6 +161,8 @@ const PrefsUtil::TypedPrefMap& BravePrefsUtil::GetWhitelistedKeys() {
 #if BUILDFLAG(IPFS_ENABLED)
   (*s_brave_whitelist)[kIPFSResolveMethod] =
       settings_api::PrefType::PREF_TYPE_NUMBER;
+  (*s_brave_whitelist)[kIPFSAutoFallbackToGateway] =
+      settings_api::PrefType::PREF_TYPE_BOOLEAN;
 #endif
   // Media Router Pref
   (*s_brave_whitelist)[kBraveEnabledMediaRouter] =
