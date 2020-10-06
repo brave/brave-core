@@ -53,15 +53,16 @@ BraveRequestInfo::BraveRequestInfo(const GURL& url) : request_url(url) {}
 BraveRequestInfo::~BraveRequestInfo() = default;
 
 // static
-void BraveRequestInfo::FillCTX(
+std::shared_ptr<brave::BraveRequestInfo> BraveRequestInfo::MakeCTX(
     const network::ResourceRequest& request,
     int render_process_id,
     int frame_tree_node_id,
     uint64_t request_identifier,
     content::BrowserContext* browser_context,
-    std::shared_ptr<brave::BraveRequestInfo> ctx,
     std::shared_ptr<brave::BraveRequestInfo> old_ctx) {
   DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
+
+  auto ctx = std::make_shared<brave::BraveRequestInfo>();
   ctx->request_identifier = request_identifier;
   ctx->method = request.method;
   ctx->request_url = request.url;
@@ -148,6 +149,8 @@ void BraveRequestInfo::FillCTX(
     ctx->internal_redirect = old_ctx->internal_redirect;
     ctx->redirect_source = old_ctx->redirect_source;
   }
+
+  return ctx;
 }
 
 }  // namespace brave
