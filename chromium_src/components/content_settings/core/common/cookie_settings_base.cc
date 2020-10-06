@@ -32,6 +32,8 @@ constexpr char kAexp[] = "https://[*.]aexp-static.com/*";
 constexpr char kSony[] = "https://[*.]sony.com/*";
 constexpr char kGoogle[] = "https://[*.]google.com/*";
 constexpr char kGoogleusercontent[] = "https://[*.]googleusercontent.com/*";
+constexpr char kOrigin[] = "https://[*.]origin.com/*";
+constexpr char kEA[] = "https://[*.]ea.com/*";
 
 bool BraveIsAllowedThirdParty(
     const GURL& url,
@@ -96,6 +98,10 @@ bool BraveIsAllowedThirdParty(
           {
             ContentSettingsPattern::FromString(kTwitch),
             ContentSettingsPattern::FromString(kDiscord)
+          },
+          {
+            ContentSettingsPattern::FromString(kEA),
+            ContentSettingsPattern::FromString(kOrigin)
           }
       });
 
