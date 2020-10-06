@@ -108,6 +108,7 @@ void IpfsService::RegisterPrefs(PrefRegistrySimple* registry) {
       kIPFSResolveMethod,
       static_cast<int>(ipfs::IPFSResolveMethodTypes::IPFS_ASK));
   registry->RegisterBooleanPref(kIPFSBinaryAvailable, false);
+  registry->RegisterBooleanPref(kIPFSAutoFallbackToGateway, false);
 }
 
 base::FilePath IpfsService::GetIpfsExecutablePath() {
