@@ -19,4 +19,10 @@ const base::Feature kBraveRewards{"BraveRewards",
 #endif
 #endif  // defined(OS_ANDROID)
 
+// Toggles Global Privacy Control, which conveys a user's request to websites
+// and services to not sell or share their personal information with third
+// parties.
+const base::Feature kGlobalPrivacyControl{"GlobalPrivacyControl",
+                                          base::FEATURE_DISABLED_BY_DEFAULT};
+
 }  // namespace features

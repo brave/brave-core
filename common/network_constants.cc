@@ -54,3 +54,5 @@ const char kBraveServicesKeyHeader[] = "BraveServiceKey";
 
 const char kBittorrentMimeType[] = "application/x-bittorrent";
 const char kOctetStreamMimeType[] = "application/octet-stream";
+
+const char kSecGpcHeader[] = "Sec-GPC";

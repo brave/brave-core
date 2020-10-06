@@ -41,4 +41,6 @@ extern const char kBraveServicesKeyHeader[];
 
 extern const char kBittorrentMimeType[];
 extern const char kOctetStreamMimeType[];
+
+extern const char kSecGpcHeader[];
 #endif  // BRAVE_COMMON_NETWORK_CONSTANTS_H_
