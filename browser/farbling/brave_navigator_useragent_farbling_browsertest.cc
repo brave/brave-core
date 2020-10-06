@@ -14,6 +14,7 @@
 #include "brave/common/pref_names.h"
 #include "brave/components/brave_component_updater/browser/local_data_files_service.h"
 #include "brave/components/brave_shields/browser/brave_shields_util.h"
+#include "chrome/browser/chrome_content_browser_client.h"
 #include "chrome/browser/content_settings/host_content_settings_map_factory.h"
 #include "chrome/browser/extensions/extension_browsertest.h"
 #include "chrome/browser/ui/browser.h"
@@ -31,6 +32,7 @@ using brave_shields::ControlType;
 
 const char kUserAgentScript[] =
     "domAutomationController.send(navigator.userAgent);";
+const char kTitleScript[] = "domAutomationController.send(document.title);";
 
 class BraveNavigatorUserAgentFarblingBrowserTest : public InProcessBrowserTest {
  public:
@@ -115,17 +117,19 @@ IN_PROC_BROWSER_TEST_F(BraveNavigatorUserAgentFarblingBrowserTest,
   std::string domain_z = "z.com";
   GURL url_b = embedded_test_server()->GetURL(domain_b, "/simple.html");
   GURL url_z = embedded_test_server()->GetURL(domain_z, "/simple.html");
-
-  // Farbling level: off
   // get real navigator.userAgent
+  std::string real_ua = ::GetUserAgent();
+  // Farbling level: off
   AllowFingerprinting(domain_b);
   NavigateToURLUntilLoadStop(url_b);
   std::string off_ua_b = ExecScriptGetStr(kUserAgentScript, contents());
+  // user agent should be the same as the real user agent
+  EXPECT_EQ(off_ua_b, real_ua);
   AllowFingerprinting(domain_z);
   NavigateToURLUntilLoadStop(url_z);
   std::string off_ua_z = ExecScriptGetStr(kUserAgentScript, contents());
   // user agent should be the same on every domain if farbling is off
-  EXPECT_EQ(off_ua_b, off_ua_z);
+  EXPECT_EQ(off_ua_z, real_ua);
 
   // Farbling level: default
   // navigator.userAgent may be farbled, but the farbling is not
@@ -144,6 +148,7 @@ IN_PROC_BROWSER_TEST_F(BraveNavigatorUserAgentFarblingBrowserTest,
   // farbling level, further suffixed by a pseudo-random number of spaces based
   // on domain and session key
   BlockFingerprinting(domain_b);
+  // test known values
   NavigateToURLUntilLoadStop(url_b);
   std::string max_ua_b = ExecScriptGetStr(kUserAgentScript, contents());
   EXPECT_EQ(max_ua_b, default_ua_b + "   ");
@@ -151,6 +156,17 @@ IN_PROC_BROWSER_TEST_F(BraveNavigatorUserAgentFarblingBrowserTest,
   NavigateToURLUntilLoadStop(url_z);
   std::string max_ua_z = ExecScriptGetStr(kUserAgentScript, contents());
   EXPECT_EQ(max_ua_z, default_ua_z + "  ");
+
+  // test that iframes also inherit the farbled user agent
+  // (farbling level is still maximum)
+  NavigateToURLUntilLoadStop(embedded_test_server()->GetURL(
+      domain_b, "/navigator/ua-local-iframe.html"));
+  std::string local_iframe_ua = ExecScriptGetStr(kTitleScript, contents());
+  EXPECT_EQ(local_iframe_ua, "pass");
+  NavigateToURLUntilLoadStop(embedded_test_server()->GetURL(
+      domain_b, "/navigator/ua-remote-iframe.html"));
+  std::string remote_iframe_ua = ExecScriptGetStr(kTitleScript, contents());
+  EXPECT_EQ(remote_iframe_ua, "pass");
 
   // Farbling level: off
   // verify that user agent is reset properly after having been farbled
