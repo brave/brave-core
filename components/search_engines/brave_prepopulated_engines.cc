@@ -12,7 +12,7 @@ namespace TemplateURLPrepopulateData {
 
 // IMPORTANT! Make sure to bump this value if you make changes to the
 // engines below or add/remove engines.
-const int kBraveCurrentDataVersion = 7;
+const int kBraveCurrentDataVersion = 8;
 // DO NOT CHANGE THIS ONE. Used for backfilling kBraveDefaultSearchVersion.
 const int kBraveFirstTrackedDataVersion = 6;
 
@@ -23,6 +23,7 @@ const std::map<BravePrepopulatedEngineID, const PrepopulatedEngine*>
     brave_engines_map = {
         {PREPOPULATED_ENGINE_ID_GOOGLE, &google},
         {PREPOPULATED_ENGINE_ID_YAHOO, &brave_yahoo},
+        {PREPOPULATED_ENGINE_ID_YANDEX, &brave_yandex},
         {PREPOPULATED_ENGINE_ID_YAHOO_AR, &brave_yahoo_ar},
         {PREPOPULATED_ENGINE_ID_YAHOO_AT, &brave_yahoo_at},
         {PREPOPULATED_ENGINE_ID_YAHOO_AU, &brave_yahoo_au},
@@ -194,6 +195,21 @@ const PrepopulatedEngine startpage = {
     SEARCH_ENGINE_OTHER,
     PREPOPULATED_ENGINE_ID_STARTPAGE,
 };
+
+const PrepopulatedEngine brave_yandex =
+  ModifyEngineParams(yandex_com,
+    L"Yandex",
+    NULL,
+    "https://yandex.ru/search/?clid="
+#if defined(OS_ANDROID)
+    "2423859"
+#else
+    "2353835"
+#endif
+    "&text={searchTerms}",
+    "https://suggest.yandex.com/suggest-ff.cgi?"
+    "part={searchTerms}&uil=en&v=3&sn=5&srv=brave_desktop",
+    PREPOPULATED_ENGINE_ID_YANDEX);
 
 #define kBraveYahooName L"Yahoo"
 #define kBraveYahooKeyword L":y"
