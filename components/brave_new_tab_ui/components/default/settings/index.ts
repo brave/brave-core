@@ -188,6 +188,7 @@ export const SettingsSidebarButton = styled<SettingsSidebarButtonProps, 'button'
   }
 
   &:focus {
+    outline-style: solid;
     outline-color: ${p => p.theme.color.brandBrave};
     outline-width: 1px;
   }
