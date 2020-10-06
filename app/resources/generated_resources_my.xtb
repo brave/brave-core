@@ -291,7 +291,7 @@
 <translation id="1361872463926621533">အစပြုချိန်တွင် အသံဖွင့်ရန်</translation>
 <translation id="1363585519747660921">USB ပုံနှိပ်စက်အတွက် စီစဉ်သတ်မှတ်မှု လိုအပ်သည်</translation>
 <translation id="1365180424462182382"><ph name="ENROLLMENT_DOMAIN"/> က သင့် <ph name="BEGIN_LINK"/>ဘရောင်ဇာကို စီမံခန့်ခွဲထားသည်<ph name="END_LINK"/></translation>
-<translation id="1366177842110999534">သင်၏ <ph name="DEVICE_TYPE"/> တွင် Linux တူးလ်၊ တည်းဖြတ်စနစ်နှင့် IDE များကို ဖွင့်သည်။ &lt;a target="_blank" href="<ph name="URL"/>"&gt;ပိုမိုလေ့လာရန်&lt;/a&gt;</translation>
+<translation id="1366177842110999534">သင်၏ <ph name="DEVICE_TYPE"/> တွင် Linux တူးလ်၊ တည်းဖြတ်စနစ်နှင့် IDE များကို ဖွင့်သည်။ &lt;a target="_blank" rel="noopener noreferrer" href="<ph name="URL"/>"&gt;ပိုမိုလေ့လာရန်&lt;/a&gt;</translation>
 <translation id="1367951781824006909">ဖိုင်ကို ရွေးရန်</translation>
 <translation id="1369149969991017342">ခလုတ်သုံးခြင်း (အသွင်တူခလုတ် တစ်ခု သို့မဟုတ် နှစ်ခုတည်းဖြင့် ကွန်ပျူတာကို ထိန်းချုပ်ပါ)</translation>
 <translation id="1372841398847029212">သင့်အကောင့်သို့ စင့်ခ်လုပ်ရန်</translation>
@@ -1355,7 +1355,7 @@
 <translation id="268053382412112343">မှတ်&amp;တမ်း</translation>
 <translation id="2682498795777673382">သင့်မိဘထံမှ အပ်ဒိတ်</translation>
 <translation id="2683638487103917598">အကန့်ကို အစီအစဉ်တကျ စီစဉ်ထားသည်</translation>
-<translation id="2686222346846590368">၎င်းသည် <ph name="DEVICE_TYPE"/> အတွက် နောက်ဆုံးထုတ် ဆော့ဖ်ဝဲနှင့် လုံခြုံရေး အလိုအလျောက်အပ်ဒိတ် ဖြစ်သည်။ နောင်လာမည့်အပ်ဒိတ်များ ရယူရန် မော်ဒယ်အသစ်သို့ အဆင့်မြှင့်ပါ။ &lt;a target="_blank" href="<ph name="URL"/>"&gt;ပိုမိုလေ့လာရန်<ph name="LINK_END"/></translation>
+<translation id="2686222346846590368">၎င်းသည် <ph name="DEVICE_TYPE"/> အတွက် နောက်ဆုံးထုတ် ဆော့ဖ်ဝဲနှင့် လုံခြုံရေး အလိုအလျောက်အပ်ဒိတ် ဖြစ်သည်။ နောင်လာမည့်အပ်ဒိတ်များ ရယူရန် မော်ဒယ်အသစ်သို့ အဆင့်မြှင့်ပါ။ &lt;a target="_blank" rel="noopener noreferrer" href="<ph name="URL"/>"&gt;ပိုမိုလေ့လာရန်<ph name="LINK_END"/></translation>
 <translation id="2687403674020088961">ကွတ်ကီးများအားလုံးကို ပိတ်ရန် (အကြံမပြုပါ)</translation>
 <translation id="2687407218262674387">Brave ဝန်ဆောင်မှု စည်းမျဉ်းများ</translation>
 <translation id="2688196195245426394">ကိရိယာကို ဆာဗာမှာ မှတ်ပုံတင်စဉ် အမှား: <ph name="CLIENT_ERROR"/>။</translation>
@@ -4850,7 +4850,7 @@
 <translation id="7197632491113152433">ဤစက်ပစ္စည်းတွင် အသုံးပြုနိုင်မည့် အက်ပ် <ph name="NUMBER_OF_APPS"/> ခုကို သင့်အကောင့်တွင် တွေ့ထားသည်။</translation>
 <translation id="7199158086730159431">အကူ&amp;အညီ ရယူပါ</translation>
 <translation id="7200083590239651963">စီစဉ်သတ်မှတ်မှုကို ရွေးချယ်ပါ</translation>
-<translation id="7201042526153088083">Google Play မှ အက်ပ်နှင့်ဂိမ်းများကို သင်၏ <ph name="DEVICE_TYPE"/> တွင် ထည့်သွင်းနိုင်သည်။ &lt;a target="_blank" href="<ph name="URL"/>"&gt;ပိုမိုလေ့လာရန်&lt;/a&gt;</translation>
+<translation id="7201042526153088083">Google Play မှ အက်ပ်နှင့်ဂိမ်းများကို သင်၏ <ph name="DEVICE_TYPE"/> တွင် ထည့်သွင်းနိုင်သည်။ &lt;a target="_blank" rel="noopener noreferrer" href="<ph name="URL"/>"&gt;ပိုမိုလေ့လာရန်&lt;/a&gt;</translation>
 <translation id="720110658997053098">ဤစက်ပစ္စည်းကို kiosk မုဒ်တွင် အမြဲတမ်းထားရန်</translation>
 <translation id="7201118060536064622">'<ph name="DELETED_ITEM_NAME"/>' ကို ဖျက်လိုက်ပါပြီ</translation>
 <translation id="7201420661433230412">ဖိုင်များကို ကြည့်ရန်</translation>
@@ -6517,6 +6517,7 @@
 <translation id="995782501881226248">YouTube</translation>
 <translation id="996250603853062861">လုံခြုံသည့် ချိတ်ဆက်မှုကို ထူထောင်နေ...</translation>
 <translation id="998747458861718449">စုံ&amp;စမ်းပါ</translation>
+<translation id="38046578254905003"><ph name="BEGIN_LINK"/>Brave ဝဘ် စတိုး<ph name="END_LINK"/> တွင် နောက်ဆက်တွဲနှင့် အပြင်အဆင်များ ရှာရန်</translation>
 <translation id="658539216370629794">လင့်ကို ရုပ်ဖျက် &amp;ဝင်ဒိုး အသစ်ထဲ ဖွင့်ရန်</translation>
 <translation id="1432267168815937878">ရုပ်&amp;ဖျက် ဝင်ဒိုး ထဲမှာ လင့်ကို ဖွင့်ရန်</translation>
 <translation id="6516243500644829484">ရုပ်ဖျက် &amp;ဝင်ဒိုး အသစ်</translation>
@@ -6596,7 +6597,6 @@
 <translation id="3860292630623580294">(ရုပ်ဖျက်)</translation>
 <translation id="4854477725773269949">ရုပ်ဖျက် ခွင့်ပြုရန်</translation>
 <translation id="6436164536244065364">ဝဘ်စတိုးမှာ ကြည့်ရန်</translation>
-<translation id="38046578254905003"><ph name="BEGIN_LINK"/>Brave ဝဘ် စတိုး<ph name="END_LINK"/> တွင် နောက်ဆက်တွဲနှင့် အပြင်အဆင်များ ရှာရန်</translation>
 <translation id="6336451774241870485">ကိုယ်ပျောက် တဘ်အသစ်</translation>
 <translation id="6610147964972079463">လျှို့ဝှက်သုံးတဘ်များပိတ်ပါ</translation>
 <translation id="4933782374919065856">မေးစရာများ ရှိပါသလား။ သင်၏ ပရိုဖိုင်ကို ကြီးကြပ်သူထံ ဆက်သွယ်ပါ။</translation>

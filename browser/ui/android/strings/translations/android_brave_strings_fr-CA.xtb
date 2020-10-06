@@ -182,7 +182,6 @@ mois-ci...</translation>
 <translation id="8193724030871339658">AUTRES DISPOSITIFS SUR LA CHAINE</translation>
 <translation id="279635009973773843">CHARGEMENT DES DISPOSITIFS...</translation>
 <translation id="6394333525003604181">QUITTER LA CHAÎNE DE SYNCHRONISATION...</translation>
-<translation id="1604429341565715601">Configuration de la synchronisation en cours, essayez de la réinitialiser plus tard</translation>
 <translation id="2569646144216067185">Nombre de mots : <ph name="WORD_COUNT"/></translation>
 <translation id="4282642752844565114">Nombre de mots incorrect</translation>
 <translation id="7507533586185621084">Mauvais code de sychronisation</translation>
@@ -319,7 +318,8 @@ mois-ci...</translation>
 <translation id="5963670684159057574">Bloquer le relevé d'empreintes digitales intersites</translation>
 <translation id="3895527457258986253">Bloquer la prise d'empreintes digitales</translation>
 <translation id="184568144098869637">Empêche le navigateur de reconnaître votre appareil</translation>
-<translation id="4540198958192073185">Bloquer toutes les empreintes digitales</translation>
+<translation id="7396366757003005317">Suivi par empreinte digitale numérique bloqué(strict, peut rendre des sites indisponibles)</translation>
+<translation id="700453611199558021">Suivi par empreinte digitale numérique bloqué(standard)</translation>
 <translation id="769702552748212954">Autoriser toutes les empreintes digitales</translation>
 <translation id="2888409909650566510">Annonces et autres choses effrayantes bloquées</translation>
 <translation id="6930134873084561197">Les sites incluent souvent des cookies et des scripts qui tentent de vous identifier, vous et votre appareil. Ils veulent savoir qui vous êtes et vous suivre sur le web en suivant ce que vous faites sur chaque site. Brave bloque ces éléments afin que vous puissiez naviguer sans être suivi.</translation>
@@ -347,7 +347,7 @@ mois-ci...</translation>
 <translation id="8374242949413616101">Protection de la confidentialité</translation>
 <translation id="4955406228638026265">Brave empêche les publicités et les traqueurs de collecter des informations à propos de vous sans votre consentement.</translation>
 <translation id="752842701893882688">Économisez des données et votre batterie</translation>
-<translation id="5739030256211745023">Sans publicités et traqueurs, les sites web utilisent moins de données et de batterie. Vous pourriez même économiser de l'argent sur vos frais d'opérateur.</translation>
+<translation id="1685837926613452362">Sans publicités et pistage, les sites web utilisent moins de données et de batterie. Vous pourriez même économiser sur les frais d'opérateur.</translation>
 <translation id="5440744330377972191">Les sites web chargent plus rapidement</translation>
 <translation id="3000738865641747653">Télécharger moins de données signifie que les site web se chargent plus vite sur Brave -- jusqu'à 8x plus vite que les autres navigateurs.</translation>
 <translation id="8903462729414407077">Obtenir des mises à jour hebdomadaires</translation>
@@ -362,6 +362,7 @@ mois-ci...</translation>
 <translation id="1581614543353331529">Encore aucunes données à afficher</translation>
 <translation id="2401984885421380890">Traqueurs &amp; publicités\nbloqués</translation>
 <translation id="2662183408296991265">Données sauvegardées\n(<ph name="DATA_SAVED"/>)</translation>
+<translation id="3180928261057583677">Données sauvegardées (<ph name="DATA_SAVED"/>)</translation>
 <translation id="6814582232712814369">Temps gagné</translation>
 <translation id="3694122362646626770">Sites web</translation>
 <translation id="2225863440766607138">Traqueurs</translation>
@@ -371,12 +372,12 @@ mois-ci...</translation>
 <translation id="7427567994475794038">Activez les rapports de confidentialité pour voir combien de traqueurs et de publicités ont été bloqués dans les 3 derniers jours.</translation>
 <translation id="2053891538879944400">Vous avez économisé <ph name="DATA"/> <ph name="DATA_TEXT"/> de données avec le navigateur Brave.</translation>
 <translation id="8640064498452534195">Activez les Rapports de confidentialité pour voir combien de données vous avez sauvegardées.</translation>
-<translation id="4591582032282435287">Le navigateur Brave utilise 40 % moins de batterie que la moyenne.</translation>
+<translation id="2252497442547961651">Le navigateur Brave utilise en moyenne 40 % de batterie en moins.&#128267;</translation>
 <translation id="1945330434665345785">Vous avez bloqué <ph name="COUNT"/> traqueurs et publicités avec le navigateur Brave la semaine dernière.</translation>
 <translation id="2883868922264431515">Gagnez des jetons en regardant des publicités respectant la confidentialité et en soutenant vos sites web favoris.</translation>
-<translation id="6840965284166256302">Bravo! Vous avez bloqué 250 traqueurs et publicités avec le navigateur Brave.</translation>
-<translation id="2076976911561945584">Bien! Vous avez économisé 10 MB avec le navigateur Brave.</translation>
-<translation id="6714550233326888315">Bravo! Vous avez gagné 10 min. de temps de chargement avec le navigateur Brave.</translation>
+<translation id="5678925890616256956">Bravo! Vous avez bloqué 250 publicités et éléments de pistage avec le navigateur Brave.&#128293;</translation>
+<translation id="9199047775708635708">Bravo! Vous avez économisé 10 Mo avec le navigateur Brave.&#128267;</translation>
+<translation id="1880168210969863408">Bravo! Vous avez gagné 10 minutes de temps de chargement avec le navigateur Brave.&#128168;&#128168;</translation>
 <translation id="7408493389591475748">Commencez à naviguer pour voir les rapports de confidentialité</translation>
 <translation id="9080777565335515917">Configurez Brave comme navigateur par défaut pour une navigation confidentielle et sûre.</translation>
 <translation id="7801488941710395275">Autoriser Brave à afficher vos statistiques de confidentialité</translation>
@@ -385,4 +386,5 @@ mois-ci...</translation>
 <translation id="8089997572759938512">Réinitialise vos rapports de confidentialité à zéro</translation>
 <translation id="2718046830255553131">Les données de rapports de confidentialité ont été effacées.</translation>
 <translation id="7559243474426790340">Actualiser l'état</translation>
+<translation id="8376263745431603066">Activer le « mode nuit » (expérimental)</translation>
 </translationbundle>

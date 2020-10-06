@@ -289,7 +289,7 @@
 <translation id="1361872463926621533">Başladıqda səs çıxarılsın</translation>
 <translation id="1363585519747660921">USB printer konfiqurasiya edilməlidir</translation>
 <translation id="1365180424462182382"><ph name="BEGIN_LINK"/>Brauzeri idarə edir<ph name="END_LINK"/>: <ph name="ENROLLMENT_DOMAIN"/></translation>
-<translation id="1366177842110999534"><ph name="DEVICE_TYPE"/> cihazında Linux aləti, redaktor və IDE-lərindən istifadə edin. &lt;a target="_blank" href="<ph name="URL"/>"&gt;Ətraflı məlumat&lt;/a&gt;</translation>
+<translation id="1366177842110999534"><ph name="DEVICE_TYPE"/> cihazında Linux aləti, redaktor və IDE-lərindən istifadə edin. &lt;a target="_blank" rel="noopener noreferrer" href="<ph name="URL"/>"&gt;Ətraflı məlumat&lt;/a&gt;</translation>
 <translation id="1367951781824006909">Fayl seçin</translation>
 <translation id="1369149969991017342">Keçid Düyməsi (yalnız bir və ya iki dəyişdirici ilə komputerə nəzarət edin)</translation>
 <translation id="1372841398847029212">Hesabınıza sinxronizasiya edin</translation>
@@ -1349,7 +1349,7 @@ Cihazda Family Link tətbiqini quraşdırmaqla bu hesabın ayarlarını idarə e
 <translation id="268053382412112343">Tarixçə</translation>
 <translation id="2682498795777673382">Valideyninizdən yeniləmə</translation>
 <translation id="2683638487103917598">Qovluq çeşidləndi</translation>
-<translation id="2686222346846590368">Bu, <ph name="DEVICE_TYPE"/> cihazı üçün sonuncu avtomatik proqram təminatı və təhlükəsizlik güncəlləməsidir. Növbəti güncəlləmələri əldə etmək üçün cihazı yeni modelə güncəlləşdirin. &lt;a target="_blank" href="<ph name="URL"/>"&gt;Ətraflı məlumat<ph name="LINK_END"/></translation>
+<translation id="2686222346846590368">Bu, <ph name="DEVICE_TYPE"/> cihazı üçün sonuncu avtomatik proqram təminatı və təhlükəsizlik güncəlləməsidir. Növbəti güncəlləmələri əldə etmək üçün cihazı yeni modelə güncəlləşdirin. &lt;a target="_blank" rel="noopener noreferrer" href="<ph name="URL"/>"&gt;Ətraflı məlumat<ph name="LINK_END"/></translation>
 <translation id="2687403674020088961">Bütün kukiləri bloklayın (tövsiyə edilmir)</translation>
 <translation id="2687407218262674387">Brave xidmət şərtləri</translation>
 <translation id="2688196195245426394">Cihazı server ilə qeydiyyat edərkən xəta: <ph name="CLIENT_ERROR"/>.</translation>
@@ -4843,7 +4843,7 @@ Cihazda Family Link tətbiqini quraşdırmaqla bu hesabın ayarlarını idarə e
 <translation id="7197632491113152433">Hesabınızda <ph name="NUMBER_OF_APPS"/> tətbiq tapıldı. Onlardan bu cihazda istifadə edə bilərsiniz.</translation>
 <translation id="7199158086730159431">Yardım əldə edin</translation>
 <translation id="7200083590239651963">Konfiqurasiya seçin</translation>
-<translation id="7201042526153088083"><ph name="DEVICE_TYPE"/> cihazında Google Play'dən tətbiq və oyunlar quraşdırın. &lt;a target="_blank" href="<ph name="URL"/>"&gt;Ətraflı məlumat&lt;/a&gt;</translation>
+<translation id="7201042526153088083"><ph name="DEVICE_TYPE"/> cihazında Google Play'dən tətbiq və oyunlar quraşdırın. &lt;a target="_blank" rel="noopener noreferrer" href="<ph name="URL"/>"&gt;Ətraflı məlumat&lt;/a&gt;</translation>
 <translation id="720110658997053098">Bu cihazı daimi olaraq kiosk rejimində saxlayın</translation>
 <translation id="7201118060536064622">"<ph name="DELETED_ITEM_NAME"/>" silindi</translation>
 <translation id="7201420661433230412">Fayllara baxın</translation>
@@ -6507,6 +6507,7 @@ Bu saytın blok edilməsini düşünmürəm!</translation>
 <translation id="995782501881226248">YouTube</translation>
 <translation id="996250603853062861">Güvənli bağlantı qurulur...</translation>
 <translation id="998747458861718449">Yoxlayın</translation>
+<translation id="38046578254905003">Artırma və temalara <ph name="BEGIN_LINK"/>Brave Veb Mağazada<ph name="END_LINK"/> baxın</translation>
 <translation id="658539216370629794">Linki inkoqnito pəncərəsində açın</translation>
 <translation id="1432267168815937878">Linki gizli pəncərədə açın</translation>
 <translation id="6516243500644829484">Yeni inkoqnito pəncərə</translation>
@@ -6586,7 +6587,6 @@ Bu saytın blok edilməsini düşünmürəm!</translation>
 <translation id="3860292630623580294">(İnkoqnito)</translation>
 <translation id="4854477725773269949">Gizli paneldə icazə verin</translation>
 <translation id="6436164536244065364">Veb dükanda baxın</translation>
-<translation id="38046578254905003">Artırma və temalara <ph name="BEGIN_LINK"/>Brave Veb Mağazada<ph name="END_LINK"/> baxın</translation>
 <translation id="6336451774241870485">Yeni gizli panel</translation>
 <translation id="6610147964972079463">Gizli panelləri bağlayın</translation>
 <translation id="4933782374919065856">Sualınız var? Profilinizə nəzarət edən şəxslə əlaqə saxlayın.</translation>

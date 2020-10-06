@@ -1900,6 +1900,25 @@ Jika tidak, ini akan diblokir oleh setelan privasi Anda. Ini akan memungkinkan k
     &lt;/ul&gt;</translation>
 <translation id="994346157028146140">JIS B1</translation>
 <translation id="6771143571626203666">Dari Brave Pay</translation>
+<translation id="2586968635953373425">Buka Jendela Privat</translation>
+<translation id="3489858312836205593">Buka jendela privat Brave baru</translation>
+<translation id="1426112902089905810">&lt;h4&gt;Langkah 1: Masuklah ke dalam portal&lt;/h4&gt;
+    &lt;p&gt;Jaringan Wi-Fi di lokasi seperti kafe atau bandara mengharuskan Anda masuk. Untuk mengunjungi halaman masuk, kunjungi halaman yang menggunakan &lt;code&gt;http://&lt;/code&gt;.&lt;/p&gt;
+    &lt;ol&gt;
+    &lt;li&gt;Pergilah ke sembarang website yang dimulai dengan &lt;code&gt;http://&lt;/code&gt;, seperti &lt;a href="http://example.com" target="_blank"&gt;http://example.com&lt;/a&gt;.&lt;/li&gt;
+    &lt;li&gt;Di halaman masuk yang terbuka, masuklah untuk menggunakan internet.&lt;/li&gt;
+    &lt;/ol&gt;
+    &lt;h4&amp;gtLangkah 2: Buka halaman dalam modus Privat (hanya di komputer)&lt;/h4&gt;
+    &lt;p&gt;Buka halaman yang pernah Anda kunjungi di jendela Privat.&lt;/p&gt;
+    &lt;p&gt;Jika halamannya terbuka, berarti ekstensi Brave tidak berfungsi dengan benar. Untuk memperbaiki eror ini, matikan ekstensinya.&lt;/p&gt;
+    &lt;h4&gt;Langkah 3: Perbarui sistem operasi Anda&lt;/h4&gt;
+    &lt;p&gt;Pastikan perangkat Anda terperbarui.&lt;/p&gt;
+    &lt;h4&gt;Langkah 4: Matikan sementara antivirus Anda&lt;/h4&gt;
+    &lt;p&gt;Anda akan menjumpai eror ini jika memiliki antivirus yang memberikan "proteksi HTTPS" atau "pemindaian HTTPS". Antivirus tersebut mencegah Brave memberikan keamanan.&lt;/p&gt;
+    &lt;p&gt;Untuk mengatasi masalah ini, matikan antivirus Anda. Jika halaman bekerja setelah mematikan antivirus, matikan itu saat menggunakan situs yang aman.&lt;/p&gt;
+    &lt;p&gt;Jangan lupa nyalakan kembali antivirus setelah Anda selesai.&lt;/p&gt;
+    &lt;h4&gt;Langkah 5: Dapatkan bantuan ekstra&lt;/h4&gt;
+    &lt;p&gt;Jika eror berlanjut, hubungi pemilik website.&lt;/p&gt;</translation>
 <translation id="8820817407110198400">Markah</translation>
 <translation id="8362995731815961365">Profil yang menata komputer ini telah memblokir situs ini.</translation>
 <translation id="4075123085690634698">Buka halaman di jendela Privat baru (⇧⌘N)</translation>
@@ -1910,16 +1929,18 @@ Jika tidak, ini akan diblokir oleh setelan privasi Anda. Ini akan memungkinkan k
 <translation id="9177896974490719854">Hanya saja, Anda bukannya tidak terlihat. Menjadi privat tidak menyembunyikan rambanan Anda dari atasan, penyedia internet, atau website yang Anda kunjungi.</translation>
 <translation id="2227116904818538760">Anda telah privat</translation>
 <translation id="2007417459975034427">Kini Anda bisa meramban dengan privat, dan profil lain yang menggunakan perangkat ini tidak dapat melihat aktivitas Anda. Hanya saja, unduhan dan markah buku akan tersimpan.</translation>
-<translation id="2586968635953373425">Buka Jendela Privat</translation>
-<translation id="3489858312836205593">Buka jendela privat Brave baru</translation>
+<translation id="5549245478906381817">Buka jendela Pribadi</translation>
+<translation id="5497977785983089120">Membuka jendela Pribadi baru untuk meramban secara pribadi</translation>
+<translation id="1819281525814582516"><ph name="LAUNCH_INCOGNITO_FOCUSED_FRIENDLY_MATCH_TEXT"/>, tekan Tab lalu Enter untuk membuka jendela Pribadi baru untuk meramban secara pribadi</translation>
+<translation id="2418728264526266844">Tombol Buka Jendela Pribadi, tekan Enter untuk membuka jendela Pribadi baru untuk menjelajah secara pribadi</translation>
 <translation id="6984479912851154518">Meninggalkan modus privat untuk membayar lewat aplikasi eksternal. Lanjutkan?</translation>
-<translation id="1426112902089905810">&lt;h4&gt;Langkah 1: Masuklah ke dalam portal&lt;/h4&gt;
+<translation id="7243899945709472787">&lt;h4&gt;Langkah 1: Masuklah ke dalam portal&lt;/h4&gt;
     &lt;p&gt;Jaringan Wi-Fi di lokasi seperti kafe atau bandara mengharuskan Anda masuk. Untuk mengunjungi halaman masuk, kunjungi halaman yang menggunakan &lt;code&gt;http://&lt;/code&gt;.&lt;/p&gt;
     &lt;ol&gt;
-    &lt;li&gt;Pergilah ke sembarang website yang dimulai dengan &lt;code&gt;http://&lt;/code&gt;, seperti &lt;a href="http://example.com" target="_blank"&gt;http://example.com&lt;/a&gt;.&lt;/li&gt;
+    &lt;li&gt;Pergilah ke sembarang website yang dimulai dengan &lt;code&gt;http://&lt;/code&gt;, seperti &lt;a href="http://example.com" target="_blank" rel="noopener noreferrer"&gt;http://example.com&lt;/a&gt;.&lt;/li&gt;
     &lt;li&gt;Di halaman masuk yang terbuka, masuklah untuk menggunakan internet.&lt;/li&gt;
     &lt;/ol&gt;
-    &lt;h4&amp;gtLangkah 2: Buka halaman dalam modus Privat (hanya di komputer)&lt;/h4&gt;
+    &lt;h4&gt;Langkah 2: Buka halaman dalam modus Privat (hanya di komputer)&lt;/h4&gt;
     &lt;p&gt;Buka halaman yang pernah Anda kunjungi di jendela Privat.&lt;/p&gt;
     &lt;p&gt;Jika halamannya terbuka, berarti ekstensi Brave tidak berfungsi dengan benar. Untuk memperbaiki eror ini, matikan ekstensinya.&lt;/p&gt;
     &lt;h4&gt;Langkah 3: Perbarui sistem operasi Anda&lt;/h4&gt;

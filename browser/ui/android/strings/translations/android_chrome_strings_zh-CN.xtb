@@ -1024,6 +1024,8 @@
 <translation id="983192555821071799">关闭所有标签页</translation>
 <translation id="987264212798334818">常规</translation>
 <translation id="996149300115483134">动态卡片上的菜单已关闭</translation>
+<translation id="4540437243849625078">该网站即将与某个并非处于隐身模式下的应用共享信息。</translation>
+<translation id="1227836882233136433">退出隐身模式？</translation>
 <translation id="5186185447130319458">私有</translation>
 <translation id="9063160602596686558">自动将使用情况统计信息和崩溃报告发送至 Brave Software</translation>
 <translation id="1438581767753657407">启用精简模式后，Brave 使用 Brave 服务器来提高页面加载速度。精简模式重写非常慢的页面以仅加载基本内容。精简模式不适用于私有标签页。</translation>
@@ -1033,8 +1035,7 @@
 <translation id="3110967157686007724">私有标签页</translation>
 <translation id="4526803704855831732">私有标签页</translation>
 <translation id="7465104139234185284">关闭所有的私有标签页</translation>
-<translation id="4540437243849625078">该网站即将与某个并非处于隐身模式下的应用共享信息。</translation>
-<translation id="1227836882233136433">退出隐身模式？</translation>
+<translation id="21023559487771014">进入私人模式</translation>
 <translation id="6336451774241870485">新的私有标签页</translation>
 <translation id="3234355010754616171">新的私有标签页</translation>
 <translation id="6610147964972079463">关闭私有模式</translation>

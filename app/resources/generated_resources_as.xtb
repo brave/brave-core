@@ -291,7 +291,7 @@
 <translation id="1361872463926621533">ষ্টাৰ্টআপ হওঁতে শব্দ কৰক</translation>
 <translation id="1363585519747660921">USB প্ৰিণ্টাৰ কনফিগাৰেশ্বন কৰা প্ৰয়োজন</translation>
 <translation id="1365180424462182382">আপোনাৰ <ph name="BEGIN_LINK"/>ব্ৰাউজাৰটো<ph name="END_LINK"/> <ph name="ENROLLMENT_DOMAIN"/>এ পৰিচালনা কৰে</translation>
-<translation id="1366177842110999534">Linux সঁজুলিসমূহ, সম্পাদকসমূহ আৰু IDEসমূহ আপোনাৰ <ph name="DEVICE_TYPE"/>ত চলাওক। &lt;a target="_blank" href="<ph name="URL"/>"&gt;অধিক জানক&lt;/a&gt;</translation>
+<translation id="1366177842110999534">Linux সঁজুলিসমূহ, সম্পাদকসমূহ আৰু IDEসমূহ আপোনাৰ <ph name="DEVICE_TYPE"/>ত চলাওক। &lt;a target="_blank" rel="noopener noreferrer" href="<ph name="URL"/>"&gt;অধিক জানক&lt;/a&gt;</translation>
 <translation id="1367951781824006909">কোনো ফাইল বাছনি কৰক</translation>
 <translation id="1369149969991017342">এক্সেছ সলনি কৰক (কম্পিউটাৰটো মাত্ৰ এটা বা দুটা ছুইচ্‌ ব্যৱহাৰ কৰি নিয়ন্ত্ৰণ কৰক)</translation>
 <translation id="1372841398847029212">আপোনাৰ একাউণ্টত ছিংক কৰক</translation>
@@ -1351,7 +1351,7 @@
 <translation id="268053382412112343">ইতি&amp;হাস</translation>
 <translation id="2682498795777673382">আপোনাৰ অভিভাৱকে কৰা আপডে'ট</translation>
 <translation id="2683638487103917598">ফ’ল্ডাৰ ক্ৰমবদ্ধ কৰা হ’ল</translation>
-<translation id="2686222346846590368">এই <ph name="DEVICE_TYPE"/>টোৰ বাবে এয়া অন্তিমটো স্বয়ংক্ৰিয় ছফ্টৱেৰ আৰু সুৰক্ষাৰ আপডে’ট। ভৱিষ্যতৰ আপডে’টসমূহ পাবলৈ এটা নতুন ম’ডেললৈ আপগ্ৰে’ড কৰক। &lt;a target="_blank" href="<ph name="URL"/>"&gt;অধিক জানক<ph name="LINK_END"/></translation>
+<translation id="2686222346846590368">এই <ph name="DEVICE_TYPE"/>টোৰ বাবে এয়া অন্তিমটো স্বয়ংক্ৰিয় ছফ্টৱেৰ আৰু সুৰক্ষাৰ আপডে’ট। ভৱিষ্যতৰ আপডে’টসমূহ পাবলৈ এটা নতুন ম’ডেললৈ আপগ্ৰে’ড কৰক। &lt;a target="_blank" rel="noopener noreferrer" href="<ph name="URL"/>"&gt;অধিক জানক<ph name="LINK_END"/></translation>
 <translation id="2687403674020088961">সকলো কুকি অৱৰোধ কৰক (চুপাৰিছ কৰা নহয়)</translation>
 <translation id="2687407218262674387">Braveৰ সেৱাৰ চৰ্তাৱলী</translation>
 <translation id="2688196195245426394">ডিভাইচটো ছার্ভাৰৰ সৈতে পঞ্জীয়ন কৰোঁতে আসোঁৱাহ হৈছে: <ph name="CLIENT_ERROR"/>।</translation>
@@ -4839,7 +4839,7 @@
 <translation id="7197632491113152433">আমি আপোনাৰ একাউণ্টত এই ডিভাইচটোত ব্যৱহাৰ কৰিব পৰা <ph name="NUMBER_OF_APPS"/>টা এপ্ পাইছোঁ।</translation>
 <translation id="7199158086730159431">স&amp;হায় পাওক</translation>
 <translation id="7200083590239651963">কনফিগাৰেশ্বন বাছনি কৰক</translation>
-<translation id="7201042526153088083">আপোনাৰ <ph name="DEVICE_TYPE"/>ত Google Playৰ পৰা এপ্‌ আৰু গে’মসমূহ ইনষ্টল কৰক। &lt;a target="_blank" href="<ph name="URL"/>"&gt;অধিক জানক&lt;/a&gt;</translation>
+<translation id="7201042526153088083">আপোনাৰ <ph name="DEVICE_TYPE"/>ত Google Playৰ পৰা এপ্‌ আৰু গে’মসমূহ ইনষ্টল কৰক। &lt;a target="_blank" rel="noopener noreferrer" href="<ph name="URL"/>"&gt;অধিক জানক&lt;/a&gt;</translation>
 <translation id="720110658997053098">আপুনি এই ডিভাইচটো স্থায়ীভাৱে কিঅ’স্ক ম’ডত ৰাখক</translation>
 <translation id="7201118060536064622">'<ph name="DELETED_ITEM_NAME"/>' মচা হ’ল</translation>
 <translation id="7201420661433230412">ফাইলবোৰ চাওক</translation>
@@ -6503,6 +6503,7 @@
 <translation id="995782501881226248">YouTube</translation>
 <translation id="996250603853062861">সুৰক্ষিত সংযোগ স্থাপন কৰি থকা হৈছে...</translation>
 <translation id="998747458861718449">প&amp;ৰীক্ষা কৰক</translation>
+<translation id="38046578254905003"><ph name="BEGIN_LINK"/>Brave Web Store<ph name="END_LINK"/>ত এক্সটেনশ্বন আৰু থীমসমূহ পাওক</translation>
 <translation id="658539216370629794">লিংকটো ইনক’&amp;গনিট’ ৱিণ্ড'ত খোলক</translation>
 <translation id="1432267168815937878">লিংকটো ইনক’&amp;গনিট’ ৱিণ্ড'ত খোলক</translation>
 <translation id="6516243500644829484">নতুন &amp;ইনক'গনিট' ৱিণ্ড'</translation>
@@ -6582,7 +6583,6 @@
 <translation id="3860292630623580294">(ইনক’গনিট’)</translation>
 <translation id="4854477725773269949">ইনক’গনিট’ ম'ডত সক্ষম কৰিবলৈ অনুমতি দিয়ক</translation>
 <translation id="6436164536244065364">Web Storeত চাওক</translation>
-<translation id="38046578254905003"><ph name="BEGIN_LINK"/>Brave Web Store<ph name="END_LINK"/>ত এক্সটেনশ্বন আৰু থীমসমূহ পাওক</translation>
 <translation id="6336451774241870485">নতুন ইনকগনিট’ টেব</translation>
 <translation id="6610147964972079463">ইনক’গনিট’ টেবসমূহ বন্ধ কৰক</translation>
 <translation id="4933782374919065856">প্ৰশ্ন সুধিব লগা আছে নেকি? আপোনাৰ প্ৰ’ফাইল তদাৰক কৰা লোকৰ সৈতে যোগাযোগ কৰক।</translation>

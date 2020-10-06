@@ -291,7 +291,7 @@
 <translation id="1361872463926621533">Նվագարկել ազդանշան մեկնարկի ժամանակ</translation>
 <translation id="1363585519747660921">USB տպիչը հարկավոր է կարգավորել</translation>
 <translation id="1365180424462182382">Ձեր <ph name="BEGIN_LINK"/>դիտարկիչը կառավարվում է<ph name="END_LINK"/> <ph name="ENROLLMENT_DOMAIN"/> կայքի կողմից</translation>
-<translation id="1366177842110999534">Աշխատեցրեք Լինուքսի գործիքներ, խմբագրիչներ ու IDE-ներ ձեր <ph name="DEVICE_TYPE"/>-ում: &lt;a target="_blank" href="<ph name="URL"/>"&gt;Իմանալ ավելին&lt;/a&gt;</translation>
+<translation id="1366177842110999534">Աշխատեցրեք Լինուքսի գործիքներ, խմբագրիչներ ու IDE-ներ ձեր <ph name="DEVICE_TYPE"/>-ում: &lt;a target="_blank" rel="noopener noreferrer" href="<ph name="URL"/>"&gt;Իմանալ ավելին&lt;/a&gt;</translation>
 <translation id="1367951781824006909">Ընտրել ֆայլ</translation>
 <translation id="1369149969991017342">Միացնել Switch Access-ը (թույլ է տալիս կառավարել համակարգիչը մեկ կամ երկու փոխանջատիչով)</translation>
 <translation id="1372841398847029212">Համաժամացնել ձեր հաշվի հետ</translation>
@@ -1354,7 +1354,7 @@
 <translation id="268053382412112343">Պատ&amp;մություն</translation>
 <translation id="2682498795777673382">Ծնողը փոխել է կարգավորումները</translation>
 <translation id="2683638487103917598">Պանակի պարունակությունը տեսակավորվել է</translation>
-<translation id="2686222346846590368">Սա ծրագրային և անվտանգության կարգավորումների վերջին ավտոմատ թարմացումն է <ph name="DEVICE_TYPE"/> սարքի համար։ Հետագա թարմացումները ստանալու համար անցեք ավելի նոր մոդելի։ &lt;a target="_blank" href="<ph name="URL"/>"&gt;Իմանալ ավելին<ph name="LINK_END"/></translation>
+<translation id="2686222346846590368">Սա ծրագրային և անվտանգության կարգավորումների վերջին ավտոմատ թարմացումն է <ph name="DEVICE_TYPE"/> սարքի համար։ Հետագա թարմացումները ստանալու համար անցեք ավելի նոր մոդելի։ &lt;a target="_blank" rel="noopener noreferrer" href="<ph name="URL"/>"&gt;Իմանալ ավելին<ph name="LINK_END"/></translation>
 <translation id="2687403674020088961">Արգելափակել բոլոր քուքիները (խորհուրդ չի տրվում)</translation>
 <translation id="2687407218262674387">Brave-ի օգտագործման պայմաններ</translation>
 <translation id="2688196195245426394">Սարքը սերվերում գրանցելիս սխալ առաջացավ` <ph name="CLIENT_ERROR"/>:</translation>
@@ -4855,7 +4855,7 @@
 <translation id="7197632491113152433">Ձեր հաշվում գտնվել է <ph name="NUMBER_OF_APPS"/> հավելված, որոնք կարող են օգտագործվել այս սարքում:</translation>
 <translation id="7199158086730159431">Ստանալ օ&amp;գնություն</translation>
 <translation id="7200083590239651963">Ընտրեք կարգավորումը</translation>
-<translation id="7201042526153088083"><ph name="DEVICE_TYPE"/> սարքում տեղադրեք հավելվածներ ու խաղեր Google Play-ից։ &lt;a target="_blank" href="<ph name="URL"/>"&gt;Իմանալ ավելին&lt;/a&gt;</translation>
+<translation id="7201042526153088083"><ph name="DEVICE_TYPE"/> սարքում տեղադրեք հավելվածներ ու խաղեր Google Play-ից։ &lt;a target="_blank" rel="noopener noreferrer" href="<ph name="URL"/>"&gt;Իմանալ ավելին&lt;/a&gt;</translation>
 <translation id="720110658997053098">Մշտապես պահել այս սարքը կրպակի ռեժիմում</translation>
 <translation id="7201118060536064622">«<ph name="DELETED_ITEM_NAME"/>» տարրը ջնջվեց</translation>
 <translation id="7201420661433230412">Դիտել ֆայլերը</translation>
@@ -6521,6 +6521,7 @@
 <translation id="995782501881226248">YouTube</translation>
 <translation id="996250603853062861">Ապահով կապակցում…</translation>
 <translation id="998747458861718449">Ստուգել</translation>
+<translation id="38046578254905003">Գտեք ընդլայնումներ և թեմաներ <ph name="BEGIN_LINK"/>Brave Web Store<ph name="END_LINK"/>-ում</translation>
 <translation id="658539216370629794">Բացել հղումը ինկ&amp;ոգնիտո պատուհանով</translation>
 <translation id="1432267168815937878">Բացել հղումը ինկոգ&amp;նիտո պատուհանով</translation>
 <translation id="6516243500644829484">Նոր &amp;ինկոգնիտո պատուհան</translation>
@@ -6600,7 +6601,6 @@
 <translation id="3860292630623580294">(Ինկոգնիտո)</translation>
 <translation id="4854477725773269949">Թույլ տալ ինկոգնիտո ռեժիմում</translation>
 <translation id="6436164536244065364">Դիտել Web Store-ում</translation>
-<translation id="38046578254905003">Գտեք ընդլայնումներ և թեմաներ <ph name="BEGIN_LINK"/>Brave Web Store<ph name="END_LINK"/>-ում</translation>
 <translation id="6336451774241870485">Նոր ինկոգնիտո ներդիր</translation>
 <translation id="6610147964972079463">Փակել ինկոգնիտո ներդիրները</translation>
 <translation id="4933782374919065856">Հարցերի դեպքում կապվեք ձեր պրոֆիլը վերահսկող անձի հետ:</translation>

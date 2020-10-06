@@ -181,7 +181,6 @@ måned...</translation>
 <translation id="8193724030871339658">ANDRE ENHEDER PÅ KÆDE</translation>
 <translation id="279635009973773843">INDLÆSER ENHEDER</translation>
 <translation id="6394333525003604181">FORLADER SYNKRONISERINGSKÆDEN...</translation>
-<translation id="1604429341565715601">Opsætning af synkronisering er i gang, prøv at nulstille senere</translation>
 <translation id="2569646144216067185">Ordtælling: <ph name="WORD_COUNT"/></translation>
 <translation id="4282642752844565114">Forkert antal ord</translation>
 <translation id="7507533586185621084">Forkert synkroniseringskode</translation>
@@ -318,7 +317,8 @@ måned...</translation>
 <translation id="5963670684159057574">Bloker cross-site-fingeraftryk</translation>
 <translation id="3895527457258986253">Blokér fingeraftrykslæsning</translation>
 <translation id="184568144098869637">Forhindrer browser i at genkende din enhed</translation>
-<translation id="4540198958192073185">Bloker altid for at der kan tages fingeraftryk</translation>
+<translation id="7396366757003005317">Fingeraftryk blokeret (meget strengt, kan ødelægge websteder)</translation>
+<translation id="700453611199558021">Fingeraftryk blokeret (standard)</translation>
 <translation id="769702552748212954">Tillad al fingeraftrykning</translation>
 <translation id="2888409909650566510">Reklamer og andre væmmelige\nting blokeret</translation>
 <translation id="6930134873084561197">Sider indeholder ofte cookies og scripts som forsøger at identificere dig og din enhed. De vil vide hvem du er og følge dig via web-tracking, for at se hvad du laver på hver side.\n\nBrave blokerer disse, så du kan browse uden at blive forfulgt.</translation>
@@ -346,7 +346,7 @@ måned...</translation>
 <translation id="8374242949413616101">Databeskyttelse</translation>
 <translation id="4955406228638026265">Brave stopper reklamer og trackere fra at samle oplysninger om dig, uden dit samtykke.</translation>
 <translation id="752842701893882688">Spar data og batteri</translation>
-<translation id="5739030256211745023">Uden reklamer og trackere, bruger hjemmesider mindre data og batteri. Du sparer måske endda penge på dine internetregninger.</translation>
+<translation id="1685837926613452362">Uden reklame &amp;-trackere, bruger websteder mindre data og batteri. Du kan endda spare penge på operatørgebyrer.</translation>
 <translation id="5440744330377972191">Hjemmesider indlæses hurtigere</translation>
 <translation id="3000738865641747653">Indlæsning af mindre data betyder, at hjemmesider i Brave indlæses hurtigere – op til 8x hurtigere end andre browsere.</translation>
 <translation id="8903462729414407077">Få ugentlige opdateringer</translation>
@@ -361,6 +361,7 @@ måned...</translation>
 <translation id="1581614543353331529">Ingen data at vise endnu</translation>
 <translation id="2401984885421380890">Trackere og reklamer\nblokeret</translation>
 <translation id="2662183408296991265">Data sparet\n(<ph name="DATA_SAVED"/>)</translation>
+<translation id="3180928261057583677">Data Sparet (<ph name="DATA_SAVED"/>)</translation>
 <translation id="6814582232712814369">Tid sparet</translation>
 <translation id="3694122362646626770">Hjemmesider</translation>
 <translation id="2225863440766607138">Trackere</translation>
@@ -370,12 +371,12 @@ måned...</translation>
 <translation id="7427567994475794038">Aktivér Databeskyttelsesrapporter for at se hvor mange trackere og rekalmer der er blevet blokeret de sidste tre timer.</translation>
 <translation id="2053891538879944400">Du sparede <ph name="DATA"/> <ph name="DATA_TEXT"/> data med Brave-browseren.</translation>
 <translation id="8640064498452534195">Aktivér databeskyttelsesrapporter for at se hvor meget data du har sparet</translation>
-<translation id="4591582032282435287">Brave-browseren bruger 40% batteri i gennemsnit.</translation>
+<translation id="2252497442547961651">Modig browser bruger i gennemsnit 40% mindre batteri. &#128267;</translation>
 <translation id="1945330434665345785">Du blokerede <ph name="COUNT"/> trackere og reklamer med Brave-browseren sidste uge.</translation>
 <translation id="2883868922264431515">Optjen tokens ved at se datarespekterende reklamer og støtte dine yndlingshjemmesider.</translation>
-<translation id="6840965284166256302">Sådan! Du har blokeret 250 trackere og reklamer med Brave-browseren.</translation>
-<translation id="2076976911561945584">Sådan! Du har sparet 10MB med Brave-browseren.</translation>
-<translation id="6714550233326888315">Sådan! Du sparede 10 minutters indlæsningstid med Brave-browseren.</translation>
+<translation id="5678925890616256956">Nice! Du har blokeret 250 trackere&amp; annoncer med Brave browser.&#128293;</translation>
+<translation id="9199047775708635708">Pæn! Du har sparet 10 MB med Brave browser.&#128267;</translation>
+<translation id="1880168210969863408">Nice! Du har sparet 10 min. Indlæsningstid med Brave browser.&#128168;&#128168;</translation>
 <translation id="7408493389591475748">Begynd at browse for at se databeskyttelsesrapportering</translation>
 <translation id="9080777565335515917">Indstil Brave som din standardbrowser for privat og sikker browsing.</translation>
 <translation id="7801488941710395275">Tillader Brave at vise dine databeskyttelsesstatistikker</translation>
@@ -384,4 +385,5 @@ måned...</translation>
 <translation id="8089997572759938512">Nulstil dine databeskyttelsesrapporter til nul</translation>
 <translation id="2718046830255553131">Data fra databeskyttelsesrapporter er blevet ryddet.</translation>
 <translation id="7559243474426790340">Genopfrisk status</translation>
+<translation id="8376263745431603066">Aktivér "Nattilstand" (eksperimentel)</translation>
 </translationbundle>

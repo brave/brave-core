@@ -291,7 +291,7 @@
 <translation id="1361872463926621533">ຫຼິ້ນສຽງໃນເວລາເປີດເຄື່ອງ</translation>
 <translation id="1363585519747660921">ເຄື່ອງພິມ USB ຈໍາເປັນຕ້ອງກຳນົດຄ່າ</translation>
 <translation id="1365180424462182382"><ph name="BEGIN_LINK"/>ໂປຣແກຣມທ່ອງເວັບຂອງທ່ານຖືກຈັດການ<ph name="END_LINK"/> ໂດຍ <ph name="ENROLLMENT_DOMAIN"/></translation>
-<translation id="1366177842110999534">ເປີດເຄື່ອງມື Linux, ຕົວແກ້ໄຂ ແລະ IDE ໃນ <ph name="DEVICE_TYPE"/> ຂອງທ່ານ. &lt;a target="_blank" href="<ph name="URL"/>"&gt;ສຶກສາເພີ່ມເຕີມ&lt;/a&gt;</translation>
+<translation id="1366177842110999534">ເປີດເຄື່ອງມື Linux, ຕົວແກ້ໄຂ ແລະ IDE ໃນ <ph name="DEVICE_TYPE"/> ຂອງທ່ານ. &lt;a target="_blank" rel="noopener noreferrer" href="<ph name="URL"/>"&gt;ສຶກສາເພີ່ມເຕີມ&lt;/a&gt;</translation>
 <translation id="1367951781824006909">ເລືອກໄຟລ໌</translation>
 <translation id="1369149969991017342">ການເຂົ້າເຖິງດ້ວຍປຸ່ມ (ຄວບຄຸມຄອມພິວເຕີດ້ວຍປຸ່ມພຽງໜຶ່ງ ຫຼື ສອງຕົວເທົ່ານັ້ນ)</translation>
 <translation id="1372841398847029212">ຊິ້ງຂໍ້ມູນກັບບັນຊີຂອງທ່ານ</translation>
@@ -1352,7 +1352,7 @@
 <translation id="268053382412112343">ປະຫວັດ</translation>
 <translation id="2682498795777673382">ການອັບເດດຈາກພໍ່ແມ່ຂອງທ່ານ</translation>
 <translation id="2683638487103917598">ຮຽງລຳດັບໂຟນເດີແລ້ວ</translation>
-<translation id="2686222346846590368">ນີ້ແມ່ນການອັບເດດຊອບແວ ແລະ ຄວາມປອດໄພອັດຕະໂນມັດສຸດທ້າຍສຳລັບ <ph name="DEVICE_TYPE"/> ນີ້. ເພື່ອຮັບການອັບເດດໃນອະນາຄົດ, ກະລຸນາອັບເກຣດເປັນຮຸ່ນໃໝ່ກວ່າ. &lt;a target="_blank" href="<ph name="URL"/>"&gt;ສຶກສາເພີ່ມເຕີມ<ph name="LINK_END"/></translation>
+<translation id="2686222346846590368">ນີ້ແມ່ນການອັບເດດຊອບແວ ແລະ ຄວາມປອດໄພອັດຕະໂນມັດສຸດທ້າຍສຳລັບ <ph name="DEVICE_TYPE"/> ນີ້. ເພື່ອຮັບການອັບເດດໃນອະນາຄົດ, ກະລຸນາອັບເກຣດເປັນຮຸ່ນໃໝ່ກວ່າ. &lt;a target="_blank" rel="noopener noreferrer" href="<ph name="URL"/>"&gt;ສຶກສາເພີ່ມເຕີມ<ph name="LINK_END"/></translation>
 <translation id="2687403674020088961">ບລັອກຄຸກກີ້ທັງໝົດ (ບໍ່ແນະນຳ)</translation>
 <translation id="2687407218262674387">ຂໍ້ກຳນົດການບໍລິການຂອງ Brave</translation>
 <translation id="2688196195245426394">ຜິດພາດເມື່ອລົງທະບຽນກັບເຊີບເວີ: <ph name="CLIENT_ERROR"/>.</translation>
@@ -4850,7 +4850,7 @@
 <translation id="7197632491113152433">ພວກເຮົາພົບ <ph name="NUMBER_OF_APPS"/> ແອັບຈາກບັນຊີຂອງທ່ານທີ່ສາມາດໃຊ້ໃນອຸປະກອນນີ້ໄດ້.</translation>
 <translation id="7199158086730159431">ເອົາການຊ່ວຍເຫຼືອ</translation>
 <translation id="7200083590239651963">ເລືອກການກຳນົດຄ່າ</translation>
-<translation id="7201042526153088083">ຕິດຕັ້ງແອັບ ແລະ ເກມຈາກ Google Play ໃນ <ph name="DEVICE_TYPE"/> ຂອງທ່ານ. &lt;a target="_blank" href="<ph name="URL"/>"&gt;ສຶກສາເພີ່ມເຕີມ&lt;/a&gt;</translation>
+<translation id="7201042526153088083">ຕິດຕັ້ງແອັບ ແລະ ເກມຈາກ Google Play ໃນ <ph name="DEVICE_TYPE"/> ຂອງທ່ານ. &lt;a target="_blank" rel="noopener noreferrer" href="<ph name="URL"/>"&gt;ສຶກສາເພີ່ມເຕີມ&lt;/a&gt;</translation>
 <translation id="720110658997053098">ຮັກສາອຸປະກອນນີ້ຢູ່ໃນໂໝດ kiosk ຢ່າງຖາວອນ</translation>
 <translation id="7201118060536064622">ລຶບ '<ph name="DELETED_ITEM_NAME"/>' ແລ້ວ</translation>
 <translation id="7201420661433230412">ເບິ່ງໄຟລ໌</translation>
@@ -6516,6 +6516,7 @@
 <translation id="995782501881226248">YouTube</translation>
 <translation id="996250603853062861">ກໍາລັງຕັ້ງການເຊື່ອມຕໍ່ທີ່ປອດໄພ...</translation>
 <translation id="998747458861718449">ກວດ​ກາ</translation>
+<translation id="38046578254905003">ຊອກຫາສ່ວນຂະຫຍາຍ ແລະ ສີສັນໜ້າຕາໃນ <ph name="BEGIN_LINK"/>Brave Web Store<ph name="END_LINK"/></translation>
 <translation id="658539216370629794">ເປີດລິ້ງຢູ່ໃນໜ້າ​ຕ່າງ​ທີ່ບໍ່ເປີດເຜີຍຕົນຕົວ</translation>
 <translation id="1432267168815937878">ເປີດລິ້ງຢູ່ໃນໜ້າ​ຕ່າງທີ່ບໍ່ເຜີຍຕົນຕົວ</translation>
 <translation id="6516243500644829484">ໜ້າ​ຕ່າງ​ທີ່ບໍ່ເປີດເຜີຍຕົນຕົວໃໝ່</translation>
@@ -6595,7 +6596,6 @@
 <translation id="3860292630623580294">(ບໍ່​ເຜີຍ​ຕົນ​ຕົວ)</translation>
 <translation id="4854477725773269949">ອະນຸຍາດຢູ່ໃນການບໍ່ເປີດເຜີຍຕົນຕົວ</translation>
 <translation id="6436164536244065364">ເບິ່ງຢູ່ໃນ Web Store</translation>
-<translation id="38046578254905003">ຊອກຫາສ່ວນຂະຫຍາຍ ແລະ ສີສັນໜ້າຕາໃນ <ph name="BEGIN_LINK"/>Brave Web Store<ph name="END_LINK"/></translation>
 <translation id="6336451774241870485">ແຖບບໍ່ເຜີຍຕົວຕົນໃໝ່</translation>
 <translation id="6610147964972079463">ປິດແຖບທີ່ບໍ່ເຜີຍຕົວຕົນ</translation>
 <translation id="4933782374919065856">ມີຄຳຖາມບໍ? ກະລຸນາຕິດຕໍ່ຫາບຸກຄົນທີ່ຄວບຄຸມເບິ່ງແຍງໂປຣໄຟລ໌ຂອງທ່ານ.</translation>

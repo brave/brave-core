@@ -291,7 +291,7 @@ I-<ph name="EXTENSION_NAME"/></translation>
 <translation id="1361872463926621533">Dlala umsindo ekuqaleni</translation>
 <translation id="1363585519747660921">Iphrinta ye-USB idinga ukulungiselelwa</translation>
 <translation id="1365180424462182382">Isiphequluli sakho <ph name="BEGIN_LINK"/>siphethwe<ph name="END_LINK"/> yi-<ph name="ENROLLMENT_DOMAIN"/></translation>
-<translation id="1366177842110999534">Qalisa amathuluzi e-Linux, izihleli nama-IDE ku-<ph name="DEVICE_TYPE"/> yakho. &lt;a target="_blank" href="<ph name="URL"/>"&gt;Funda kabanzi&lt;/a&gt;</translation>
+<translation id="1366177842110999534">Qalisa amathuluzi e-Linux, izihleli nama-IDE ku-<ph name="DEVICE_TYPE"/> yakho. &lt;a target="_blank" rel="noopener noreferrer" href="<ph name="URL"/>"&gt;Funda kabanzi&lt;/a&gt;</translation>
 <translation id="1367951781824006909">Khetha ifayela</translation>
 <translation id="1369149969991017342">Shintsha ukufinyelela (lawula ikhompuyutha ngeswishi eyodwa noma amabili)</translation>
 <translation id="1372841398847029212">Vumelanisa ku-akawunti yakho</translation>
@@ -1352,7 +1352,7 @@ Ungaphatha izilungiselelo zale akhawunti ngokufaka uhlelo lokusebenza lwe-Family
 <translation id="268053382412112343">Umlando</translation>
 <translation id="2682498795777673382">Isibuyekezo kusuka kumzali wakho</translation>
 <translation id="2683638487103917598">Ifolda ihlungiwe</translation>
-<translation id="2686222346846590368">Lena isofthiwe yokugcina ezenzakalelayo nesibuyekezo sokuvikelwa sale-<ph name="DEVICE_TYPE"/>. Ukuze uthole izibuyekezo ezizayo, thuthukela kumodeli entsha. &lt;a target="_blank" href="<ph name="URL"/>"&gt;Funda kabanzi<ph name="LINK_END"/></translation>
+<translation id="2686222346846590368">Lena isofthiwe yokugcina ezenzakalelayo nesibuyekezo sokuvikelwa sale-<ph name="DEVICE_TYPE"/>. Ukuze uthole izibuyekezo ezizayo, thuthukela kumodeli entsha. &lt;a target="_blank" rel="noopener noreferrer" href="<ph name="URL"/>"&gt;Funda kabanzi<ph name="LINK_END"/></translation>
 <translation id="2687403674020088961">Vimbela wonke amakhukhi (akunconywa)</translation>
 <translation id="2687407218262674387">Imigomo yesevisi ye-Brave</translation>
 <translation id="2688196195245426394">Iphutha ngenkathi kubhaliswa idivayisi neseva: <ph name="CLIENT_ERROR"/>.</translation>
@@ -4852,7 +4852,7 @@ Qiniseka ukuthi awuvezi noma yiluphi ulwazi olubucayi.</translation>
 <translation id="7197632491113152433">Sithole izinhlelo zokusebenza ezingu-<ph name="NUMBER_OF_APPS"/> kusukela ku-akhawunti yakho ezingasetshenziswa kule divayisi.</translation>
 <translation id="7199158086730159431">Thola usizo</translation>
 <translation id="7200083590239651963">Khetha ukulungiselelwa</translation>
-<translation id="7201042526153088083">Faka izinhlelo zokusebenza namageyimu kusuka ku-Google Play ku-<ph name="DEVICE_TYPE"/> yakho. &lt;a target="_blank" href="<ph name="URL"/>"&gt;Funda kabanzi&lt;/a&gt;</translation>
+<translation id="7201042526153088083">Faka izinhlelo zokusebenza namageyimu kusuka ku-Google Play ku-<ph name="DEVICE_TYPE"/> yakho. &lt;a target="_blank" rel="noopener noreferrer" href="<ph name="URL"/>"&gt;Funda kabanzi&lt;/a&gt;</translation>
 <translation id="720110658997053098">Gcina ingunaphakade le divayisi kumodi yekhiyoski</translation>
 <translation id="7201118060536064622">'<ph name="DELETED_ITEM_NAME"/>' kususiwe</translation>
 <translation id="7201420661433230412">Buka amafayela</translation>
@@ -6519,6 +6519,7 @@ Gcina ifayela lakho elingukhiye endaweni evikelekile. Uzolidinga ukuze udale izi
 <translation id="995782501881226248">I-YouTube</translation>
 <translation id="996250603853062861">Isungula ukuxhumeka okuvikelekile...</translation>
 <translation id="998747458861718449">H&amp;lola</translation>
+<translation id="38046578254905003">Thola izandiso namatimu <ph name="BEGIN_LINK"/>Esitolo sewebhu se-Brave<ph name="END_LINK"/></translation>
 <translation id="658539216370629794">Vula isixhumanisi kuwindi le-incognito</translation>
 <translation id="1432267168815937878">Vula isixhumanisi kuwindi le-Inco&amp;gnito</translation>
 <translation id="6516243500644829484">Iwindi le-incognito elisha</translation>
@@ -6598,7 +6599,6 @@ Gcina ifayela lakho elingukhiye endaweni evikelekile. Uzolidinga ukuze udale izi
 <translation id="3860292630623580294">(I-Incognito)</translation>
 <translation id="4854477725773269949">Vumela ku-incognito</translation>
 <translation id="6436164536244065364">Buka kusitolo sewebhu</translation>
-<translation id="38046578254905003">Thola izandiso namatimu <ph name="BEGIN_LINK"/>Esitolo sewebhu se-Brave<ph name="END_LINK"/></translation>
 <translation id="6336451774241870485">Ithebhu entsha ye-incognito</translation>
 <translation id="6610147964972079463">Vala amathebhu we-incognito</translation>
 <translation id="4933782374919065856">Imibuzo? Xhumana nomuntu ogada iphrofayela yakho.</translation>

@@ -291,7 +291,7 @@
 <translation id="1361872463926621533">Spela upp ljud vid start</translation>
 <translation id="1363585519747660921">USB-skrivaren behöver konfigureras</translation>
 <translation id="1365180424462182382">Din <ph name="BEGIN_LINK"/>webbläsare hanteras<ph name="END_LINK"/> av <ph name="ENROLLMENT_DOMAIN"/></translation>
-<translation id="1366177842110999534">Kör Linux-verktyg, redigerare och IDE:er på <ph name="DEVICE_TYPE"/>. &lt;a target="_blank" href="<ph name="URL"/>"&gt;Läs mer&lt;/a&gt;</translation>
+<translation id="1366177842110999534">Kör Linux-verktyg, redigerare och IDE:er på <ph name="DEVICE_TYPE"/>. &lt;a target="_blank" rel="noopener noreferrer" href="<ph name="URL"/>"&gt;Läs mer&lt;/a&gt;</translation>
 <translation id="1367951781824006909">Välj fil</translation>
 <translation id="1369149969991017342">Brytarstyrning (styr datorn med bara en eller två brytare)</translation>
 <translation id="1372841398847029212">Synkronisera till ditt konto</translation>
@@ -1354,7 +1354,7 @@ Du kan hantera inställningarna för det här kontot genom att installera Family
 <translation id="268053382412112343">Hi&amp;storik</translation>
 <translation id="2682498795777673382">Uppdatering från din förälder</translation>
 <translation id="2683638487103917598">Mappens innehåll har sorterats</translation>
-<translation id="2686222346846590368">Detta är den sista automatiska programvaru- och säkerhetsuppdateringen för <ph name="DEVICE_TYPE"/>. Uppgradera till en nyare modell om du vill få uppdateringar i framtiden. &lt;a target="_blank" href="<ph name="URL"/>"&gt;Läs mer<ph name="LINK_END"/></translation>
+<translation id="2686222346846590368">Detta är den sista automatiska programvaru- och säkerhetsuppdateringen för <ph name="DEVICE_TYPE"/>. Uppgradera till en nyare modell om du vill få uppdateringar i framtiden. &lt;a target="_blank" rel="noopener noreferrer" href="<ph name="URL"/>"&gt;Läs mer<ph name="LINK_END"/></translation>
 <translation id="2687403674020088961">Blockera alla cookies (rekommenderas inte)</translation>
 <translation id="2687407218262674387">Braves användarvillkor</translation>
 <translation id="2688196195245426394">Det uppstod ett fel när enheten registrerades med servern: <ph name="CLIENT_ERROR"/>.</translation>
@@ -4852,7 +4852,7 @@ Du kan hantera inställningarna för det här kontot genom att installera Family
 <translation id="7197632491113152433">Vi hittade <ph name="NUMBER_OF_APPS"/> appar i ditt konto som kan användas på den här enheten.</translation>
 <translation id="7199158086730159431">Få h&amp;jälp</translation>
 <translation id="7200083590239651963">Välj konfiguration</translation>
-<translation id="7201042526153088083">Installera appar och spel från Google Play på <ph name="DEVICE_TYPE"/>. &lt;a target="_blank" href="<ph name="URL"/>"&gt;Läs mer&lt;/a&gt;</translation>
+<translation id="7201042526153088083">Installera appar och spel från Google Play på <ph name="DEVICE_TYPE"/>. &lt;a target="_blank" rel="noopener noreferrer" href="<ph name="URL"/>"&gt;Läs mer&lt;/a&gt;</translation>
 <translation id="720110658997053098">Behåll enheten permanent i kioskläge</translation>
 <translation id="7201118060536064622"><ph name="DELETED_ITEM_NAME"/> har raderats</translation>
 <translation id="7201420661433230412">Visa filer</translation>
@@ -6611,7 +6611,7 @@ Spara nyckelfilen på ett säkert ställe. Den behövs om du ska skapa nya versi
 <translation id="3860292630623580294">(Privat)</translation>
 <translation id="4854477725773269949">Tillåt i privat läge</translation>
 <translation id="6436164536244065364">Visa i Web Store</translation>
-<translation id="38046578254905003">Hitta tillägg och teman i <ph name="BEGIN_LINK">&lt;a target="_blank" href="https://chrome.google.com/webstore/category/extensions"&gt;</ph>Web Store<ph name="END_LINK">&lt;/a&gt;</ph></translation>
+<translation id="38046578254905003">Hitta tillägg och teman i <ph name="BEGIN_LINK"/>Web Store<ph name="END_LINK"/></translation>
 <translation id="6336451774241870485">Ny privat flik</translation>
 <translation id="6610147964972079463">Stäng privata flikar</translation>
 <translation id="4933782374919065856">Frågor? Kontakta den som kontrollerar profilen.</translation>

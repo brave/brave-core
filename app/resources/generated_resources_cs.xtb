@@ -291,7 +291,7 @@
 <translation id="1361872463926621533">Přehrát zvuk při spuštění</translation>
 <translation id="1363585519747660921">Tiskárnu USB je potřeba nakonfigurovat</translation>
 <translation id="1365180424462182382">Váš <ph name="BEGIN_LINK"/>prohlížeč je spravován<ph name="END_LINK"/> doménou <ph name="ENROLLMENT_DOMAIN"/></translation>
-<translation id="1366177842110999534">Spouštějte ve svém zařízení <ph name="DEVICE_TYPE"/> nástroje, editory a prostředí IDE pro Linux. &lt;a target="_blank" href="<ph name="URL"/>"&gt;Další informace&lt;/a&gt;</translation>
+<translation id="1366177842110999534">Spouštějte ve svém zařízení <ph name="DEVICE_TYPE"/> nástroje, editory a prostředí IDE pro Linux. &lt;a target="_blank" rel="noopener noreferrer" href="<ph name="URL"/>"&gt;Další informace&lt;/a&gt;</translation>
 <translation id="1367951781824006909">Vybrat soubor</translation>
 <translation id="1369149969991017342">Přístup pomocí přepínačů (ovládání počítače pouze jedním nebo dvěma přepínači)</translation>
 <translation id="1372841398847029212">Synchronizovat do vašeho účtu</translation>
@@ -1353,7 +1353,7 @@ Chcete-li spravovat nastavení tohoto účtu, nainstalujte si do zařízení apl
 <translation id="268053382412112343">&amp;Historie</translation>
 <translation id="2682498795777673382">Novinka od rodiče</translation>
 <translation id="2683638487103917598">Složka je seřazena</translation>
-<translation id="2686222346846590368">Toto je poslední automatická aktualizace softwaru a zabezpečení pro toto zařízení typu <ph name="DEVICE_TYPE"/>. Chcete-li dostávat budoucí aktualizace, upgradujte na novější model. &lt;a target="_blank" href="<ph name="URL"/>"&gt;Další informace<ph name="LINK_END"/></translation>
+<translation id="2686222346846590368">Toto je poslední automatická aktualizace softwaru a zabezpečení pro toto zařízení typu <ph name="DEVICE_TYPE"/>. Chcete-li dostávat budoucí aktualizace, upgradujte na novější model. &lt;a target="_blank" rel="noopener noreferrer" href="<ph name="URL"/>"&gt;Další informace<ph name="LINK_END"/></translation>
 <translation id="2687403674020088961">Blokovat všechny soubory cookie (nedoporučujeme)</translation>
 <translation id="2687407218262674387">Smluvní podmínky Brave</translation>
 <translation id="2688196195245426394">Při registraci zařízení na serveru došlo k chybě: <ph name="CLIENT_ERROR"/>.</translation>
@@ -4850,7 +4850,7 @@ Zpráva serveru: <ph name="SERVER_MSG"/></translation>
 <translation id="7197632491113152433">Ve vašem účtu jsme našli aplikace, které lze použít na tomto zařízení, celkem <ph name="NUMBER_OF_APPS"/>.</translation>
 <translation id="7199158086730159431">Zobrazit nápovědu</translation>
 <translation id="7200083590239651963">Vyberte konfiguraci</translation>
-<translation id="7201042526153088083">Instalujte do svého zařízení <ph name="DEVICE_TYPE"/> aplikace a hry z Google Play. &lt;a target="_blank" href="<ph name="URL"/>"&gt;Další informace&lt;/a&gt;</translation>
+<translation id="7201042526153088083">Instalujte do svého zařízení <ph name="DEVICE_TYPE"/> aplikace a hry z Google Play. &lt;a target="_blank" rel="noopener noreferrer" href="<ph name="URL"/>"&gt;Další informace&lt;/a&gt;</translation>
 <translation id="720110658997053098">Trvale toto zařízení ponechat v režimu veřejného terminálu</translation>
 <translation id="7201118060536064622">Položka „<ph name="DELETED_ITEM_NAME"/>“ byla smazána</translation>
 <translation id="7201420661433230412">Zobrazit soubory</translation>
@@ -6608,7 +6608,7 @@ Svůj soubor klíče uchovávejte na bezpečném místě. Budete jej potřebovat
 <translation id="3860292630623580294">(Soukromé)</translation>
 <translation id="4854477725773269949">Povolit v soukromém režimu</translation>
 <translation id="6436164536244065364">Zobrazit v Internetovém obchodu</translation>
-<translation id="38046578254905003">Vyhledejte si rozšíření a témata v <ph name="BEGIN_LINK">&lt;a target="_blank" href="https://chrome.google.com/webstore/category/extensions"&gt;</ph>Internetovém obchodě<ph name="END_LINK">&lt;/a&gt;</ph></translation>
+<translation id="38046578254905003">Najděte si rozšíření a témata na <ph name="BEGIN_LINK"/>Internetovém obchodu<ph name="END_LINK"/></translation>
 <translation id="6336451774241870485">Nový soukromý panel</translation>
 <translation id="6610147964972079463">Zavřít soukromé panely</translation>
 <translation id="4933782374919065856">Máte nějaké dotazy? Kontaktujte osobu, která dohlíží na váš profil.</translation>

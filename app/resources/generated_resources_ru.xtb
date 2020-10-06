@@ -291,7 +291,7 @@
 <translation id="1361872463926621533">Воспроизводить звук при запуске</translation>
 <translation id="1363585519747660921">Необходимо настроить USB-принтер</translation>
 <translation id="1365180424462182382"><ph name="BEGIN_LINK"/>Браузер находится под управлением<ph name="END_LINK"/> домена <ph name="ENROLLMENT_DOMAIN"/>.</translation>
-<translation id="1366177842110999534">Запускайте инструменты, редакторы и интегрированные среды разработки Linux на устройстве <ph name="DEVICE_TYPE"/>. &lt;a target="_blank" href="<ph name="URL"/>"&gt;Подробнее…&lt;/a&gt;</translation>
+<translation id="1366177842110999534">Запускайте инструменты, редакторы и интегрированные среды разработки Linux на устройстве <ph name="DEVICE_TYPE"/>. &lt;a target="_blank" rel="noopener noreferrer" href="<ph name="URL"/>"&gt;Подробнее…&lt;/a&gt;</translation>
 <translation id="1367951781824006909">Выберите файл</translation>
 <translation id="1369149969991017342">Включить функцию Switch Access (позволяет управлять компьютером с помощью переключателей)</translation>
 <translation id="1372841398847029212">Синхронизировать с моим аккаунтом</translation>
@@ -1352,7 +1352,7 @@
 <translation id="268053382412112343">&amp;История</translation>
 <translation id="2682498795777673382">Ваш родитель изменил настройки</translation>
 <translation id="2683638487103917598">Содержимое папки отсортировано</translation>
-<translation id="2686222346846590368">Это последнее автоматическое обновление ПО и системы безопасности для устройства <ph name="DEVICE_TYPE"/>. Если вы хотите получать обновления в дальнейшем, перейдите на более новую модель. &lt;a target="_blank" href="<ph name="URL"/>"&gt;Подробнее…<ph name="LINK_END"/></translation>
+<translation id="2686222346846590368">Это последнее автоматическое обновление ПО и системы безопасности для устройства <ph name="DEVICE_TYPE"/>. Если вы хотите получать обновления в дальнейшем, перейдите на более новую модель. &lt;a target="_blank" rel="noopener noreferrer" href="<ph name="URL"/>"&gt;Подробнее…<ph name="LINK_END"/></translation>
 <translation id="2687403674020088961">Заблокировать все файлы cookie (не рекомендуется)</translation>
 <translation id="2687407218262674387">Условия использования Brave</translation>
 <translation id="2688196195245426394">Ошибка при регистрации устройства на сервере: <ph name="CLIENT_ERROR"/>.</translation>
@@ -4850,7 +4850,7 @@
 <translation id="7197632491113152433">С вашим аккаунтом связано несколько приложений (<ph name="NUMBER_OF_APPS"/>), которые можно использовать на этом устройстве.</translation>
 <translation id="7199158086730159431">&amp;Справка</translation>
 <translation id="7200083590239651963">Выбор конфигурации</translation>
-<translation id="7201042526153088083">Устанавливайте приложения и игры из Google Play на устройство <ph name="DEVICE_TYPE"/>. &lt;a target="_blank" href="<ph name="URL"/>"&gt;Подробнее…&lt;/a&gt;</translation>
+<translation id="7201042526153088083">Устанавливайте приложения и игры из Google Play на устройство <ph name="DEVICE_TYPE"/>. &lt;a target="_blank" rel="noopener noreferrer" href="<ph name="URL"/>"&gt;Подробнее…&lt;/a&gt;</translation>
 <translation id="720110658997053098">Всегда запускать устройство в режиме киоска</translation>
 <translation id="7201118060536064622">Объект "<ph name="DELETED_ITEM_NAME"/>" удален</translation>
 <translation id="7201420661433230412">Просмотреть файлы</translation>
@@ -6608,7 +6608,8 @@ other {Приватное (#)}
 <translation id="3860292630623580294">(Приватное)</translation>
 <translation id="4854477725773269949">Разрешить в приватном</translation>
 <translation id="6436164536244065364">Просмотреть в Интернет-магазине</translation>
-<translation id="38046578254905003">Найти расширения и темы можно в <ph name="BEGIN_LINK">&lt;a target="_blank" href="https://chrome.google.com/webstore/category/extensions"&gt;</ph>интернет-магазине<ph name="END_LINK">&lt;/a&gt;</ph></translation>
+<translation id="38046578254905003">Вы можете найти темы и расширения в <ph name="BEGIN_LINK"/>
+Интернет-магазине<ph name="END_LINK"/></translation>
 <translation id="6336451774241870485">Новая приватная вкладка</translation>
 <translation id="6610147964972079463">Закрыть приватные вкладки</translation>
 <translation id="4933782374919065856">Есть вопросы? Обратитесь к человеку, который контролирует ваш профиль.</translation>

@@ -1024,6 +1024,8 @@ Par exemple, certains sites Web peuvent répondre à cette demande en diffusant 
 <translation id="983192555821071799">Fermer tous les onglets</translation>
 <translation id="987264212798334818">Général</translation>
 <translation id="996149300115483134">Le menu de la carte de flux est fermé</translation>
+<translation id="4540437243849625078">Ce site est sur le point de partager des informations avec une application en dehors du mode privé.</translation>
+<translation id="1227836882233136433">Quitter le mode privé ?</translation>
 <translation id="5186185447130319458">Privé</translation>
 <translation id="9063160602596686558">Envoie automatiquement des statistiques d'utilisation et des rapports d'erreur à Brave Software</translation>
 <translation id="1438581767753657407">Lorsque le mode Lite est activé, Brave utilise des serveurs Brave pour accélérer le chargement des pages. Le mode Lite réécrit les pages très lentes pour ne charger que le contenu essentiel. Le mode Lite ne s'applique pas aux onglets privés.</translation>
@@ -1033,8 +1035,7 @@ Par exemple, certains sites Web peuvent répondre à cette demande en diffusant 
 <translation id="3110967157686007724">Onglet privé</translation>
 <translation id="4526803704855831732">Onglets privés</translation>
 <translation id="7465104139234185284">Fermer tous les onglets privés</translation>
-<translation id="4540437243849625078">Ce site est sur le point de partager des informations avec une application en dehors du mode privé.</translation>
-<translation id="1227836882233136433">Quitter le mode privé ?</translation>
+<translation id="21023559487771014">Passer en mode privé</translation>
 <translation id="6336451774241870485">Nouvel onglet privé</translation>
 <translation id="3234355010754616171">Nouvel onglet privé</translation>
 <translation id="6610147964972079463">Fermer les onglets privés</translation>

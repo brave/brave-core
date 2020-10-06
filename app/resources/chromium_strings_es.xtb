@@ -255,4 +255,5 @@ Brave no puede recuperar tu configuración.</translation>
               =0 {Tu administrador requiere que reinicies Brave para aplicar una actualización}
               =1 {Tu administrador requiere que reinicies Brave para aplicar una actualización. Tu ventana privada no volverá a abrirse.}
               other {Tu administrador requiere que reinicies Brave para aplicar una actualización. Tus # ventanas privadas no volverán a abrirse.}}</translation>
+<translation id="8343715364130396793">Usa diferentes perfiles en Brave para separar la navegación de trabajo y la personal, o para distintos perfiles que utilicen este dispositivo</translation>
 </translationbundle>

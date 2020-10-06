@@ -291,7 +291,7 @@
 <translation id="1361872463926621533">Эхлүүлэхэд дуу тоглуулах</translation>
 <translation id="1363585519747660921">USB хэвлэгчид тохируулга хийх шаардлагатай</translation>
 <translation id="1365180424462182382"><ph name="ENROLLMENT_DOMAIN"/>-с таны <ph name="BEGIN_LINK"/>хөтчийг удирдаж байна<ph name="END_LINK"/></translation>
-<translation id="1366177842110999534"><ph name="DEVICE_TYPE"/> дээр Linux-н хэрэгслүүд, засварлагч болон IDE-г ажиллуулна уу. &lt;a target="_blank" href="<ph name="URL"/>"&gt;Нэмэлт мэдээлэл авах&lt;/a&gt;</translation>
+<translation id="1366177842110999534"><ph name="DEVICE_TYPE"/> дээр Linux-н хэрэгслүүд, засварлагч болон IDE-г ажиллуулна уу. &lt;a target="_blank" rel="noopener noreferrer" href="<ph name="URL"/>"&gt;Нэмэлт мэдээлэл авах&lt;/a&gt;</translation>
 <translation id="1367951781824006909">Файлыг сонгоно уу</translation>
 <translation id="1369149969991017342">Сэлгүүр хэрэглэх боломж (нэг эсвэл хоёр сэлгүүрээр л компьютерыг удирдах)</translation>
 <translation id="1372841398847029212">Бүртгэлдээ синк хийх</translation>
@@ -1349,7 +1349,7 @@
 <translation id="268053382412112343">Түүх</translation>
 <translation id="2682498795777673382">Таны эцэг эхийн хийсэн шинэчлэлт</translation>
 <translation id="2683638487103917598">Эрэмбэлсэн фолдер</translation>
-<translation id="2686222346846590368">Энэ бол энэ <ph name="DEVICE_TYPE"/>-н программ хангамж болон аюулгүй байдлын сүүлийн автомат шинэчлэлт юм. Цаашид шинэчлэлт авахын тулд шинэ загвар луу сайжруулна уу. &lt;a target="_blank" href="<ph name="URL"/>"&gt;Нэмэлт мэдээлэл авах<ph name="LINK_END"/></translation>
+<translation id="2686222346846590368">Энэ бол энэ <ph name="DEVICE_TYPE"/>-н программ хангамж болон аюулгүй байдлын сүүлийн автомат шинэчлэлт юм. Цаашид шинэчлэлт авахын тулд шинэ загвар луу сайжруулна уу. &lt;a target="_blank" rel="noopener noreferrer" href="<ph name="URL"/>"&gt;Нэмэлт мэдээлэл авах<ph name="LINK_END"/></translation>
 <translation id="2687403674020088961">Бүх күүкиг блоклох (зөвлөдөггүй)</translation>
 <translation id="2687407218262674387">Brave-н үйлчилгээний нөхцөл</translation>
 <translation id="2688196195245426394">Төхөөрөмжийг серверт бүртгүүлэх үед алдаа гарлаа: <ph name="CLIENT_ERROR"/> .</translation>
@@ -4846,7 +4846,7 @@
 <translation id="7197632491113152433">Таны бүртгэлээс энэ төхөөрөмж дээр ашиглах боломжтой <ph name="NUMBER_OF_APPS"/> апп олдлоо.</translation>
 <translation id="7199158086730159431">Тусламж хүсэх</translation>
 <translation id="7200083590239651963">Тохируулга сонгох</translation>
-<translation id="7201042526153088083"><ph name="DEVICE_TYPE"/> дээрээ Google Play-с апп, тоглоом суулгах. &lt;a target="_blank" href="<ph name="URL"/>"&gt;Нэмэлт мэдээлэл авах&lt;/a&gt;</translation>
+<translation id="7201042526153088083"><ph name="DEVICE_TYPE"/> дээрээ Google Play-с апп, тоглоом суулгах. &lt;a target="_blank" rel="noopener noreferrer" href="<ph name="URL"/>"&gt;Нэмэлт мэдээлэл авах&lt;/a&gt;</translation>
 <translation id="720110658997053098">Энэ төхөөрөмжийг kiosk горимоор бүрмөсөн тохируулах</translation>
 <translation id="7201118060536064622">'<ph name="DELETED_ITEM_NAME"/>'-г устгасан</translation>
 <translation id="7201420661433230412">Файл харах</translation>
@@ -6508,6 +6508,7 @@
 <translation id="995782501881226248">YouTube</translation>
 <translation id="996250603853062861">Аюулгүй холболт хийж байна...</translation>
 <translation id="998747458861718449">Шалгах</translation>
+<translation id="38046578254905003"><ph name="BEGIN_LINK"/>Brave Вэб Дэлгүүрээс<ph name="END_LINK"/> өргөтгөл, загвар олох</translation>
 <translation id="658539216370629794">Incognito цонхонд холбоосыг нээх</translation>
 <translation id="1432267168815937878">Холбоосыг нууцлалтай цонхонд нээх</translation>
 <translation id="6516243500644829484">Шинэ incognito цонх</translation>
@@ -6587,7 +6588,6 @@
 <translation id="3860292630623580294">(Нэрээ нууцлах)</translation>
 <translation id="4854477725773269949">Нууцлалыг зөвшөөрөх</translation>
 <translation id="6436164536244065364">Вэб Дэлгүүрт харах</translation>
-<translation id="38046578254905003"><ph name="BEGIN_LINK"/>Brave Вэб Дэлгүүрээс<ph name="END_LINK"/> өргөтгөл, загвар олох</translation>
 <translation id="6336451774241870485">Нууцлал бүхий шинэ цонх</translation>
 <translation id="6610147964972079463">Нууцлал бүхий цонхыг хаах</translation>
 <translation id="4933782374919065856">Асуух зүйл байвал профайлынхаа хянагчтай холбогдоно уу.</translation>

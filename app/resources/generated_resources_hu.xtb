@@ -291,7 +291,7 @@
 <translation id="1361872463926621533">Hang lejátszása indításkor</translation>
 <translation id="1363585519747660921">Be kell állítani az USB-nyomtatót</translation>
 <translation id="1365180424462182382"><ph name="BEGIN_LINK"/>Böngészőjét<ph name="END_LINK"/> a(z) <ph name="ENROLLMENT_DOMAIN"/> felügyeli</translation>
-<translation id="1366177842110999534">Linuxos eszközöket, szerkesztőket és IDE-ket futtathat <ph name="DEVICE_TYPE"/> eszközén. &lt;a target="_blank" href="<ph name="URL"/>"&gt;További információ&lt;/a&gt;.</translation>
+<translation id="1366177842110999534">Linuxos eszközöket, szerkesztőket és IDE-ket futtathat <ph name="DEVICE_TYPE"/> eszközén. &lt;a target="_blank" rel="noopener noreferrer" href="<ph name="URL"/>"&gt;További információ&lt;/a&gt;.</translation>
 <translation id="1367951781824006909">Válasszon egy fájlt</translation>
 <translation id="1369149969991017342">Kapcsolóalapú hozzáférés (a számítógép irányítása egy vagy két kapcsolóval)</translation>
 <translation id="1372841398847029212">Szinkronizálás saját fiókkal</translation>
@@ -1354,7 +1354,7 @@ Ha kezelni szeretné a fiók beállításait, telepítse eszközére a Family Li
 <translation id="268053382412112343">Elő&amp;zmények</translation>
 <translation id="2682498795777673382">Frissítés a szülőtől</translation>
 <translation id="2683638487103917598">A mappa rendezése kész</translation>
-<translation id="2686222346846590368">Ez az utolsó automatikus szoftver- és biztonsági frissítés ehhez a <ph name="DEVICE_TYPE"/> eszközhöz. Ha a jövőben is szeretne frissítéseket kapni, váltson újabb modellre. &lt;a target="_blank" href="<ph name="URL"/>"&gt;További információ<ph name="LINK_END"/>.</translation>
+<translation id="2686222346846590368">Ez az utolsó automatikus szoftver- és biztonsági frissítés ehhez a <ph name="DEVICE_TYPE"/> eszközhöz. Ha a jövőben is szeretne frissítéseket kapni, váltson újabb modellre. &lt;a target="_blank" rel="noopener noreferrer" href="<ph name="URL"/>"&gt;További információ<ph name="LINK_END"/>.</translation>
 <translation id="2687403674020088961">Az összes cookie letiltása (nem ajánlott)</translation>
 <translation id="2687407218262674387">Brave Szerződési Feltételek</translation>
 <translation id="2688196195245426394">Hiba az eszköz szerveren való regisztrálásakor: <ph name="CLIENT_ERROR"/>.</translation>
@@ -4853,7 +4853,7 @@ Győződjön meg arról, hogy nem ad ki bizalmas adatokat.</translation>
 <translation id="7197632491113152433"><ph name="NUMBER_OF_APPS"/> olyan alkalmazást találtunk a fiókjában, amely használható ezen az eszközön.</translation>
 <translation id="7199158086730159431">Súgó</translation>
 <translation id="7200083590239651963">Konfiguráció kiválasztása</translation>
-<translation id="7201042526153088083">Alkalmazásokat és játékokat telepíthet a Google Playről <ph name="DEVICE_TYPE"/> eszközére. &lt;a target="_blank" href="<ph name="URL"/>"&gt;További információ.&lt;/a&gt;</translation>
+<translation id="7201042526153088083">Alkalmazásokat és játékokat telepíthet a Google Playről <ph name="DEVICE_TYPE"/> eszközére. &lt;a target="_blank" rel="noopener noreferrer" href="<ph name="URL"/>"&gt;További információ.&lt;/a&gt;</translation>
 <translation id="720110658997053098">Az eszköz állandó kioszk módban tartása</translation>
 <translation id="7201118060536064622">„<ph name="DELETED_ITEM_NAME"/>” törölve</translation>
 <translation id="7201420661433230412">Fájlok megtekintése</translation>
@@ -6612,7 +6612,7 @@ A kulcsfájlt tartsa biztonságos helyen. Szüksége lesz rá ahhoz, hogy új ve
 <translation id="3860292630623580294">(Privát)</translation>
 <translation id="4854477725773269949">Engedélyezés privátban</translation>
 <translation id="6436164536244065364">Megtekintés az Internetes áruházban</translation>
-<translation id="38046578254905003">Bővítmények és témák keresése: <ph name="BEGIN_LINK">&lt;a target="_blank" href="https://chrome.google.com/webstore/category/extensions"&gt;</ph>Web Store<ph name="END_LINK">&lt;/a&gt;</ph></translation>
+<translation id="38046578254905003">Keressen bővítményeket és témákat az <ph name="BEGIN_LINK"/>Internetes áruházban<ph name="END_LINK"/></translation>
 <translation id="6336451774241870485">Új privát fül</translation>
 <translation id="6610147964972079463">Privát ablakok bezárása</translation>
 <translation id="4933782374919065856">Kérdése van? Vegye fel a kapcsolatot a fiókját felügyelő személlyel.</translation>

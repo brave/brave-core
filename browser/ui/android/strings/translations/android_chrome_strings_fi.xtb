@@ -1024,6 +1024,8 @@ Jotkin verkkosivustot voivat vastata tähän pyyntöön esimerkiksi näyttämäl
 <translation id="983192555821071799">Sulje kaikki välilehdet</translation>
 <translation id="987264212798334818">Yleistä</translation>
 <translation id="996149300115483134">Fiidikorttien valikko on suljettu</translation>
+<translation id="4540437243849625078">Tämä sivusto on aikeissa jakaa tietoja yksityisen tilan ulkopuolisen sovelluksen kanssa.</translation>
+<translation id="1227836882233136433">Poistutaanko yksityisestä tilasta?</translation>
 <translation id="5186185447130319458">Yksityinen</translation>
 <translation id="9063160602596686558">Lähettää automaattisesti käyttötilastoja ja virheraportteja Brave Softwarelle</translation>
 <translation id="1438581767753657407">Kun kevyt tila on käytössä, Brave käyttää Brave-palvelimia saadakseen sivut latautumaan nopeammin. Kevyt tila pakottaa hyvin hitaat sivut lataamaan vain keskeisimmän sisällön. Kevyt tila ei vaikuta yksityisten välilehtien toimintaan.</translation>
@@ -1033,8 +1035,7 @@ Jotkin verkkosivustot voivat vastata tähän pyyntöön esimerkiksi näyttämäl
 <translation id="3110967157686007724">Yksityinen välilehti</translation>
 <translation id="4526803704855831732">Yksityiset välilehdet</translation>
 <translation id="7465104139234185284">Sulje kaikki yksityiset välilehdet</translation>
-<translation id="4540437243849625078">Tämä sivusto on aikeissa jakaa tietoja yksityisen tilan ulkopuolisen sovelluksen kanssa.</translation>
-<translation id="1227836882233136433">Poistutaanko yksityisestä tilasta?</translation>
+<translation id="21023559487771014">Siirry yksityiseen tilaan</translation>
 <translation id="6336451774241870485">Uusi yksityinen välilehti</translation>
 <translation id="3234355010754616171">Uusi yksityinen välilehti</translation>
 <translation id="6610147964972079463">Sulje yksityiset välilehdet</translation>

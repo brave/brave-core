@@ -25,7 +25,7 @@ Bằng cách cài đặt tiện ích mở rộng này, bạn đồng ý với c�
 <translation id="3218385319396786393">Tự động phát bị chặn trên trang này</translation>
 <translation id="4988333904713528597">Luôn cho phép tự động phát trên <ph name="HOST"/></translation>
 <translation id="4150684676757176434">Tiếp tục chặn tự động phát</translation>
-<translation id="5883458389055721080">Brave chưa rà soát tính bảo mật và an toàn của phần mở rộng này. Hãy chỉ cài đặt phần mở rộng này nếu bạn tin tưởng nhà phát triển đó.</translation>
+<translation id="8988939298652262600">Brave không đánh giá tính bảo mật và an toàn của các tiện ích mở rộng. Chỉ nên cài đặt tiện ích mở rộng này nếu bạn tin tưởng nhà phát triển.</translation>
 <translation id="8081858229109418493">Tên và ảnh đại diện hồ sơ</translation>
 <translation id="2044383478723007273">Màu sắc của brave</translation>
 <translation id="1692470335103807198">Lấy thêm chủ đề</translation>
@@ -37,6 +37,9 @@ Bằng cách cài đặt tiện ích mở rộng này, bạn đồng ý với c�
 <translation id="5802665280774361839">Hiện đề xuất tự động hoàn thành trên thanh địa chỉ</translation>
 <translation id="597020512043916976">Hiển thị các trang web hàng đầu trong các đề xuất tự động hoàn thành</translation>
 <translation id="264150068416846820">Hiển thị các trang web được đề xuất của Brave trong các đề xuất tự động hoàn thành</translation>
+<translation id="6414370348346025511">Chế độ bảo vệ tiêu chuẩn đang bật.</translation>
+<translation id="814018970995616154">Kiểm tra các URL với danh sách những trang web không an toàn được lưu trữ trong Brave.</translation>
+<translation id="1144810021918451336">Không bảo vệ bạn khỏi các trang web, nội dung tải xuống và tiện ích mở rộng nguy hiểm.</translation>
 <translation id="7781069478569868053">Trang Tab Mới</translation>
 <translation id="2467749191278759605">Tùy chỉnh Bảng điều khiển Brave của bạn</translation>
 <translation id="1717331825806276156">Ảnh nền</translation>
@@ -79,7 +82,7 @@ Bằng cách cài đặt tiện ích mở rộng này, bạn đồng ý với c�
 <translation id="4824468494729001999">Chặn các tập lệnh script</translation>
 <translation id="519861640102428255">Giao diện</translation>
 <translation id="4800195524776354947">Hiển thị số lượng các mục bị chặn trên biểu tượng Khiên</translation>
-<translation id="3932286112122164477">Cho phép các nút đăng nhập Google trên các website bên thứ ba</translation>
+<translation id="7498695072878479744">Cho phép các nút đăng nhập Google trên các website bên thứ ba</translation>
 <translation id="863171915776379000">Cho phép đăng nhập và nhúng bài viết Facebook</translation>
 <translation id="5165042248369837294">Cho phép nhúng bài viết Twitter</translation>
 <translation id="958971637207126733">Cho phép các bài viết nhúng trên LinkedIn</translation>
@@ -148,13 +151,17 @@ Bằng cách cài đặt tiện ích mở rộng này, bạn đồng ý với c�
 <translation id="2356070529366658676">Yêu cầu</translation>
 <translation id="7701040980221191251">Không</translation>
 <translation id="1085027414516521238">MetaMask</translation>
-<translation id="3905324891414560921">Nhà cung cấp Web3 để sử dụng Dapp</translation>
+<translation id="7090046810227878892">Nhà cung cấp Ethereum để sử dụng Dapps</translation>
 <translation id="5913089932885076110">Tải Ví Tiền điện tử lúc khởi động</translation>
+<translation id="6864914031231797928">Cho phép đăng nhập bằng Google cho các tiện ích mở rộng</translation>
+<translation id="1365342176656744625">Phương pháp giải quyết các vị trí IPFS</translation>
+<translation id="1327977588028644528">Cổng vào</translation>
+<translation id="80225669816651290">Nút cục bộ</translation>
 <translation id="6554397389149987360">Sử dụng thành phần của Hangouts để cho phép chia sẻ màn hình và các tính năng khác trong trình duyệt.</translation>
 <translation id="1765684547504191670">Sử dụng cấu phần Bộ định tuyến Phương tiện để bật Chromecast trong trình duyệt.</translation>
 <translation id="9156965752763025780">Các thay đổi của bạn sẽ có hiệu lực vào lần tới khi bạn chạy lại Brave.</translation>
 <translation id="7179921470347911571">Khởi chạy lại Ngay</translation>
-<translation id="4154389611571860454">Sử dụng tiện ích mở rộng đi kèm IPFS để hỗ trợ IPFS trong trình duyệt.</translation>
+<translation id="6222323340194834282">Sử dụng tiện ích mở rộng IPFS Companion để nâng cao hỗ trợ IPFS trong trình duyệt.</translation>
 <translation id="8137559199583651773">Quản lý tiện ích</translation>
 <translation id="7013485839273047434">Tải về thêm phần mở rộng</translation>
 <translation id="4928988318462976765">Cửa hàng Tiện ích mở rộng Web</translation>
@@ -210,20 +217,19 @@ Bằng cách cài đặt tiện ích mở rộng này, bạn đồng ý với c�
 <translation id="4394049700291259645">Vô hiệu hóa</translation>
 <translation id="6469509880167172749">Tự động gửi dữ liệu phân tích sản phẩm hoàn toàn riêng tư đến Brave</translation>
 <translation id="7090566321964540749">Thông tin ẩn danh này chỉ cho phép Brave ước tính mức độ sử dụng tổng thể của một số tính năng nhất định.</translation>
-<translation id="9111960429693394744">Bạn muốn sử dụng Ví tiền Điện tử hay MetaMask của Brave cho các Dapp?</translation>
-<translation id="8721775358057000783">Bạn có muốn bắt đầu Ví Tiền điện tử để hỗ trợ web3 trên trang này không?</translation>
+<translation id="1947672064022327074">Bạn có muốn bắt đầu Ví tiền Điện tử để được hỗ trợ Ethereum không?</translation>
 <translation id="7583735190612229830">Thiết lập Crypto Wallets để tương tác với ứng dụng này và các ứng dụng khác giống như vậy.</translation>
 <translation id="4823406846571523661">Thiết lập Ví Tiền điện tử</translation>
-<translation id="5756155765711979898">Dùng MetaMask</translation>
-<translation id="6754134632841262799">THIẾT LẬP</translation>
 <translation id="8199661191594897555">Bắt đầu Ví Tiền điện tử và tải lại</translation>
 <translation id="8428213095426709021">Cài đặt</translation>
+<translation id="1854270995641373652">Bạn có muốn bật hỗ trợ daemon cục bộ IPFS trong Brave không?</translation>
+<translation id="2366908098700680611">Bật IPFS</translation>
 <translation id="4552520379838695057">Rất tiếc, không tìm thấy trang này.</translation>
 <translation id="2609895996619941644">Bạn có muốn kiểm tra xem phiên bản đã lưu đã có trên Wayback Machine chưa không?</translation>
 <translation id="8053093028263274061">Rất tiếc, không có phiên bản đã lưu nào.</translation>
 <translation id="8517321676372639828">Kiểm tra phiên bản đã lưu</translation>
-<translation id="191143826155037518">Chúng tôi cung cấp Brave cho bạn theo <ph name="BEGIN_LINK_MPL">&lt;a target="_blank" href="$1"&gt;</ph>Giấy phép công cộng 2.0 của Mozilla<ph name="END_LINK_MPL">&lt;/a&gt;</ph> (MPL). Ngoài ra, Brave còn có <ph name="BEGIN_LINK_OSS">&lt;a target="_blank" href="$2"&gt;</ph>phần mềm nguồn mở<ph name="END_LINK_OSS">&lt;/a&gt;</ph> tuân theo nhiều loại giấy phép khác.
-        Bạn có thể đọc <ph name="BEGIN_LINK_BUILD_INSTRUCTIONS">&lt;a target="_blank" href="$3"&gt;</ph>hướng dẫn cách tải xuống và tự xây dựng cho mình<ph name="END_LINK_BUILD_INSTRUCTIONS">&lt;/a&gt;</ph> <ph name="BEGIN_LINK_SOURCE_CODE">&lt;a target="_blank" href="$4"&gt;</ph>mã nguồn cụ thể dùng để tạo bản sao này<ph name="END_LINK_SOURCE_CODE">&lt;/a&gt;</ph>.</translation>
+<translation id="191143826155037518">Chúng tôi cung cấp Brave cho bạn theo <ph name="BEGIN_LINK_MPL"/>Giấy phép công cộng 2.0 của Mozilla<ph name="END_LINK_MPL"/> (MPL). Ngoài ra, Brave còn có <ph name="BEGIN_LINK_OSS"/>phần mềm nguồn mở<ph name="END_LINK_OSS"/> tuân theo nhiều loại giấy phép khác.
+        Bạn có thể đọc <ph name="BEGIN_LINK_BUILD_INSTRUCTIONS"/>hướng dẫn cách tải xuống và tự xây dựng cho mình<ph name="END_LINK_BUILD_INSTRUCTIONS"/> <ph name="BEGIN_LINK_SOURCE_CODE"/>mã nguồn cụ thể dùng để tạo bản sao này<ph name="END_LINK_SOURCE_CODE"/>.</translation>
 <translation id="4474155171896946103">Đánh dấu tất cả các tab...</translation>
 <translation id="2336228925368920074">Đánh dấu trang Tất cả các Tab...</translation>
 <translation id="796831669370432378">Để thêm dấu trang, hãy nhấp vào nút dấu trang kế bên thanh địa chỉ</translation>

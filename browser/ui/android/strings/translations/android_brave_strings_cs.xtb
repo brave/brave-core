@@ -180,7 +180,6 @@ ještě nezaregistrovali k příjmu příspěvků. Váš prohlížeč se bude i 
 <translation id="8193724030871339658">DALŠÍ ZAŘÍZENÍ V ŘETĚZCI</translation>
 <translation id="279635009973773843">NAČÍTÁNÍ ZAŘÍZENÍ...</translation>
 <translation id="6394333525003604181">OPOUŠTĚNÍ SYNCHRONIZAČNÍHO ŘETĚZCE...</translation>
-<translation id="1604429341565715601">Probíhá nastavení synchronizace, zkuste resetovat později</translation>
 <translation id="2569646144216067185">Počet slov: <ph name="WORD_COUNT"/></translation>
 <translation id="4282642752844565114">Nesprávný počet slov</translation>
 <translation id="7507533586185621084">Nesprávný synchronizační kód</translation>
@@ -317,7 +316,8 @@ ještě nezaregistrovali k příjmu příspěvků. Váš prohlížeč se bude i 
 <translation id="5963670684159057574">Blokovat získávání otisku napříč weby</translation>
 <translation id="3895527457258986253">Blokovat otisky prstů</translation>
 <translation id="184568144098869637">Zabraňuje prohlížeči rozpoznávat vaše zařízení</translation>
-<translation id="4540198958192073185">Blokovat všechny otisky prstů</translation>
+<translation id="7396366757003005317">Získávání otisku blokováno (striktně, weby nemusí správně fungovat)</translation>
+<translation id="700453611199558021">Získávání otisku blokováno (standardně)</translation>
 <translation id="769702552748212954">Povolit všechna získávání otisku</translation>
 <translation id="2888409909650566510">Reklamy a další podezřelé\nthings blokovány</translation>
 <translation id="6930134873084561197">Stránky často obsahují cookies a skripty, které se pokoušejí identifikovat vás a vaše zařízení. Chtějí pracovat s daty o vaší identitě a sledovat vás skrze webovou dokumentaci toho, co děláte na každé stránce.\n\nBrave tyto věci blokuje, abyste mohli prohlížet bez toho, abyste byli sledováni.</translation>
@@ -345,7 +345,7 @@ ještě nezaregistrovali k příjmu příspěvků. Váš prohlížeč se bude i 
 <translation id="8374242949413616101">Ochrana soukromí</translation>
 <translation id="4955406228638026265">Prohlížeč Brave brání reklamám a sledovacím prvkům ve shromažďování informací o vás bez vašeho souhlasu.</translation>
 <translation id="752842701893882688">Šetřete data a baterii</translation>
-<translation id="5739030256211745023">Bez reklam a sledovacích prvků spotřebovávají webové stránky méně dat a baterie. Je možné, že jste dokonce ušetřili peníze za mobilní data.</translation>
+<translation id="1685837926613452362">Bez reklam a sledovačů spotřebovávají weby méně dat a baterie. Můžete dokonce ušetřit na poplatcích, které platíte poskytovateli.</translation>
 <translation id="5440744330377972191">Webové stránky se načítají rychleji</translation>
 <translation id="3000738865641747653">Načítání menších objemů dat znamená, že se stránky v prohlížeči Brave načítají rychleji – až osmkrát rychleji než v jiných prohlížečích.</translation>
 <translation id="8903462729414407077">Získejte týdenní aktualizace</translation>
@@ -360,6 +360,7 @@ ještě nezaregistrovali k příjmu příspěvků. Váš prohlížeč se bude i 
 <translation id="1581614543353331529">Zatím se nezobrazila žádná data</translation>
 <translation id="2401984885421380890">Zablokované sledovací \nprvky a reklamy</translation>
 <translation id="2662183408296991265">Ušetřená data\n(<ph name="DATA_SAVED"/>)</translation>
+<translation id="3180928261057583677">Ušetřená data (<ph name="DATA_SAVED"/>)</translation>
 <translation id="6814582232712814369">Ušetřený čas</translation>
 <translation id="3694122362646626770">Webové stránky</translation>
 <translation id="2225863440766607138">Sledovací prvky</translation>
@@ -369,12 +370,12 @@ ještě nezaregistrovali k příjmu příspěvků. Váš prohlížeč se bude i 
 <translation id="7427567994475794038">Zapněte funkci Hlášení o porušení soukromí a zjistěte, kolik sledovacích prvků a reklam bylo v posledních třech hodinách zablokováno.</translation>
 <translation id="2053891538879944400">S prohlížečem Brave jste ušetřili <ph name="DATA"/> <ph name="DATA_TEXT"/> dat.</translation>
 <translation id="8640064498452534195">Zapněte funkci Hlášení o porušení soukromí a zjistěte, kolik dat jste ušetřili.</translation>
-<translation id="4591582032282435287">Prohlížeč Brave průměrně využívá o 40 % méně baterie.</translation>
+<translation id="2252497442547961651">Prohlížeč Brave využívá průměrně o 40 % méně baterie. &#128267;</translation>
 <translation id="1945330434665345785">Prostřednictvím prohlížeče Brave jste minulý týden zablokovali <ph name="COUNT"/> sledovacích prvků a reklam.</translation>
 <translation id="2883868922264431515">Vydělávejte tokeny za sledování reklam, které respektují vaše soukromí, a podpořte své oblíbené webové stránky.</translation>
-<translation id="6840965284166256302">Pěkné! V prohlížeči Brave jste zablokovali 250 sledovacích prvků a reklam.</translation>
-<translation id="2076976911561945584">Pěkné! S prohlížečem Brave jste ušetřili 10 MB.</translation>
-<translation id="6714550233326888315">Pěkné! S prohlížečem Brave jste ušetřili 10 minut při načítání.</translation>
+<translation id="5678925890616256956">Krása! S prohlížečem Brave jste zablokovali 250 sledovačů a reklam. &#128293;</translation>
+<translation id="9199047775708635708">Krása! S prohlížečem Brave jste uspořili 10 MB. &#128267;</translation>
+<translation id="1880168210969863408">Krása! S prohlížečem Brave jste si během načítání stránek ušetřili 10 minut. &#128168;&#128168;</translation>
 <translation id="7408493389591475748">Hlášení o porušení soukromí uvidíte, jakmile začnete procházet web</translation>
 <translation id="9080777565335515917">Nastavte prohlížeč Brave jako výchozí prohlížeč pro soukromé a bezpečné prohlížení stránek.</translation>
 <translation id="7801488941710395275">Umožňuje prohlížeči Brave zobrazit statistiky soukromí</translation>
@@ -383,4 +384,5 @@ ještě nezaregistrovali k příjmu příspěvků. Váš prohlížeč se bude i 
 <translation id="8089997572759938512">Vynuluje vaše hlášení o porušení soukromí</translation>
 <translation id="2718046830255553131">Data hlášení o porušení soukromí byla vymazána.</translation>
 <translation id="7559243474426790340">Obnovit status</translation>
+<translation id="8376263745431603066">Zapnout Noční režim (experimentální)</translation>
 </translationbundle>

@@ -1024,6 +1024,8 @@ Por ejemplo, algunos sitios web pueden responder a la solicitud mostrándote anu
 <translation id="983192555821071799">Cerrar todas las pestañas</translation>
 <translation id="987264212798334818">General</translation>
 <translation id="996149300115483134">El menú de la tarjeta del feed está cerrado</translation>
+<translation id="4540437243849625078">Este sitio está a punto de compartir información con una aplicación fuera del modo privado.</translation>
+<translation id="1227836882233136433">¿Salir del modo privado?</translation>
 <translation id="5186185447130319458">Privado</translation>
 <translation id="9063160602596686558">Envía automáticamente estadísticas de uso e informes sobre fallos a Brave</translation>
 <translation id="1438581767753657407">Cuando el modo de bajo consumo está activado, Brave utiliza sus servidores para que las páginas se carguen más rápido. El modo de bajo consumo reescribe páginas muy lentas para cargar únicamente el contenido esencial. El modo de bajo consumo no se aplica a las pestañas privadas.</translation>
@@ -1033,8 +1035,7 @@ Por ejemplo, algunos sitios web pueden responder a la solicitud mostrándote anu
 <translation id="3110967157686007724">Pestaña privada</translation>
 <translation id="4526803704855831732">Pestañas Privadas</translation>
 <translation id="7465104139234185284">Cerrar todas las pestañas privadas</translation>
-<translation id="4540437243849625078">Este sitio está a punto de compartir información con una aplicación fuera del modo privado.</translation>
-<translation id="1227836882233136433">¿Salir del modo privado?</translation>
+<translation id="21023559487771014">Ir a modo privado</translation>
 <translation id="6336451774241870485">Nueva pestaña privada</translation>
 <translation id="3234355010754616171">Nueva pestaña privada</translation>
 <translation id="6610147964972079463">Cerrar pestañas privadas</translation>

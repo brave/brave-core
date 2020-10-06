@@ -291,7 +291,7 @@
 <translation id="1361872463926621533">Odtwórz dźwięk podczas uruchamiania</translation>
 <translation id="1363585519747660921">Drukarka USB wymaga konfiguracji</translation>
 <translation id="1365180424462182382">Twoją <ph name="BEGIN_LINK"/>przeglądarką zarządza<ph name="END_LINK"/> domena <ph name="ENROLLMENT_DOMAIN"/></translation>
-<translation id="1366177842110999534">Używaj na urządzeniu <ph name="DEVICE_TYPE"/> narzędzi, edytorów i IDE na Linuksa. &lt;a target="_blank" href="<ph name="URL"/>"&gt;Więcej informacji&lt;/a&gt;</translation>
+<translation id="1366177842110999534">Używaj na urządzeniu <ph name="DEVICE_TYPE"/> narzędzi, edytorów i IDE na Linuksa. &lt;a target="_blank" rel="noopener noreferrer" href="<ph name="URL"/>"&gt;Więcej informacji&lt;/a&gt;</translation>
 <translation id="1367951781824006909">Wybierz plik</translation>
 <translation id="1369149969991017342">Switch Access (sterowanie komputerem za pomocą jednego lub dwóch przełączników)</translation>
 <translation id="1372841398847029212">Zsynchronizuj ze swoim kontem</translation>
@@ -1350,7 +1350,7 @@ Możesz zarządzać ustawieniami konta, korzystając z aplikacji Family Link na
 <translation id="268053382412112343">Hi&amp;storia</translation>
 <translation id="2682498795777673382">Rodzic wprowadził zmianę</translation>
 <translation id="2683638487103917598">Posortowano zawartość folderu</translation>
-<translation id="2686222346846590368">To jest ostatnia automatyczna aktualizacja oprogramowania i zabezpieczeń, którą otrzymuje to urządzenie (<ph name="DEVICE_TYPE"/>). Aby otrzymywać aktualizacje w przyszłości, przejdź na nowszy model. &lt;a target="_blank" href="<ph name="URL"/>"&gt;Więcej informacji<ph name="LINK_END"/></translation>
+<translation id="2686222346846590368">To jest ostatnia automatyczna aktualizacja oprogramowania i zabezpieczeń, którą otrzymuje to urządzenie (<ph name="DEVICE_TYPE"/>). Aby otrzymywać aktualizacje w przyszłości, przejdź na nowszy model. &lt;a target="_blank" rel="noopener noreferrer" href="<ph name="URL"/>"&gt;Więcej informacji<ph name="LINK_END"/></translation>
 <translation id="2687403674020088961">Blokuj wszystkie pliki cookie (niezalecane)</translation>
 <translation id="2687407218262674387">Warunki usług Brave</translation>
 <translation id="2688196195245426394">Podczas rejestrowania urządzenia na serwerze wystąpił błąd: <ph name="CLIENT_ERROR"/>.</translation>
@@ -4848,7 +4848,7 @@ Możesz zarządzać ustawieniami konta, korzystając z aplikacji Family Link na
 <translation id="7197632491113152433">Na tym urządzeniu możesz używać <ph name="NUMBER_OF_APPS"/> aplikacji, które znaleźliśmy na Twoim koncie.</translation>
 <translation id="7199158086730159431">Uzyskaj p&amp;omoc</translation>
 <translation id="7200083590239651963">Wybierz konfigurację</translation>
-<translation id="7201042526153088083">Instaluj aplikacje i gry z Google Play na urządzeniu <ph name="DEVICE_TYPE"/>. &lt;a target="_blank" href="<ph name="URL"/>"&gt;Więcej informacji&lt;/a&gt;</translation>
+<translation id="7201042526153088083">Instaluj aplikacje i gry z Google Play na urządzeniu <ph name="DEVICE_TYPE"/>. &lt;a target="_blank" rel="noopener noreferrer" href="<ph name="URL"/>"&gt;Więcej informacji&lt;/a&gt;</translation>
 <translation id="720110658997053098">Trwale utrzymuj to urządzenie w trybie kiosku</translation>
 <translation id="7201118060536064622">Element „<ph name="DELETED_ITEM_NAME"/>” został usunięty</translation>
 <translation id="7201420661433230412">Wyświetl pliki</translation>
@@ -6607,7 +6607,7 @@ Przechowuj plik klucza w bezpiecznym miejscu. Będzie on potrzebny do utworzenia
 <translation id="3860292630623580294">(Prywatne)</translation>
 <translation id="4854477725773269949">Zezwól w prywatnym</translation>
 <translation id="6436164536244065364">Zobacz w Web Store</translation>
-<translation id="38046578254905003">Znajdź rozszerzenia i motywy w <ph name="BEGIN_LINK">&lt;a target="_blank" href="https://chrome.google.com/webstore/category/extensions"&gt;</ph>Web Store<ph name="END_LINK">&lt;/a&gt;</ph></translation>
+<translation id="38046578254905003">Znajdź rozszerzenia i motywy w <ph name="BEGIN_LINK"/>Web Store<ph name="END_LINK"/></translation>
 <translation id="6336451774241870485">Nowa karta prywatna</translation>
 <translation id="6610147964972079463">Zamknij prywatne karty</translation>
 <translation id="4933782374919065856">Masz pytania? Skontaktuj się z osobą, która nadzoruje Twój profil.</translation>
