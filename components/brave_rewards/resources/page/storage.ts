@@ -45,7 +45,7 @@ export const defaultState: Rewards.State = {
     adsEnabled: false,
     adsPerHour: 0,
     adsSubdivisionTargeting: '',
-    autoDetectedAdsSubdivisionTargeting: '',
+    automaticallyDetectedAdsSubdivisionTargeting: '',
     shouldAllowAdsSubdivisionTargeting: true,
     adsUIEnabled: false,
     adsIsSupported: false,
