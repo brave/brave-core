@@ -270,7 +270,11 @@ class ShieldsViewController: UIViewController, PopoverContentComponent, Themeabl
             toggle.valueToggled = { [unowned self] on in
                 // Localized / per domain toggles triggered here
                 self.updateBraveShieldState(shield: shield, on: on, option: option)
-                self.shieldsSettingsChanged?(self)
+                // Wait a fraction of a second to allow DB write to complete otherwise it will not use the
+                // updated shield settings when reloading the page
+                DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
+                    self.shieldsSettingsChanged?(self)
+                }
             }
         }
     }
@@ -279,7 +283,11 @@ class ShieldsViewController: UIViewController, PopoverContentComponent, Themeabl
         let isOn = shieldsUpSwitch.isOn
         self.updateGlobalShieldState(isOn, animated: true)
         self.updateBraveShieldState(shield: .AllOff, on: isOn, option: nil)
-        self.shieldsSettingsChanged?(self)
+        // Wait a fraction of a second to allow DB write to complete otherwise it will not use the updated
+        // shield settings when reloading the page
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
+            self.shieldsSettingsChanged?(self)
+        }
     }
     
     private var advancedControlsShowing: Bool {
