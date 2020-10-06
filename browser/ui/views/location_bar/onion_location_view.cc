@@ -21,7 +21,23 @@
 #include "ui/views/background.h"
 
 namespace {
+
 constexpr SkColor kOpenInTorBg = SkColorSetRGB(0x6a, 0x37, 0x85);
+
+void OnTorProfileCreated(GURL onion_location,
+                         Profile* profile,
+                         Profile::CreateStatus status) {
+  if (status != Profile::CreateStatus::CREATE_STATUS_INITIALIZED)
+    return;
+  Browser* browser = chrome::FindTabbedBrowser(profile, true);
+  if (!browser)
+    return;
+  content::OpenURLParams open_tor(onion_location, content::Referrer(),
+                                  WindowOpenDisposition::OFF_THE_RECORD,
+                                  ui::PAGE_TRANSITION_TYPED, false);
+  browser->OpenURL(open_tor);
+}
+
 }  // namespace
 
 OnionLocationView::OnionLocationView()
@@ -57,21 +73,6 @@ void OnionLocationView::Update(content::WebContents* web_contents) {
 }
 
 void OnionLocationView::ButtonPressed(Button* sender, const ui::Event& event) {
-  profiles::SwitchToTorProfile(base::BindRepeating(
-      &OnionLocationView::OnTorProfileCreated, weak_ptr_factory_.GetWeakPtr(),
-      GURL(onion_location_)));
-}
-
-void OnionLocationView::OnTorProfileCreated(GURL onion_location,
-                                            Profile* profile,
-                                            Profile::CreateStatus status) {
-  if (status != Profile::CreateStatus::CREATE_STATUS_INITIALIZED)
-    return;
-  Browser* browser = chrome::FindTabbedBrowser(profile, true);
-  if (!browser)
-    return;
-  content::OpenURLParams open_tor(onion_location, content::Referrer(),
-                                  WindowOpenDisposition::OFF_THE_RECORD,
-                                  ui::PAGE_TRANSITION_TYPED, false);
-  browser->OpenURL(open_tor);
+  profiles::SwitchToTorProfile(
+      base::BindRepeating(&OnTorProfileCreated, GURL(onion_location_)));
 }

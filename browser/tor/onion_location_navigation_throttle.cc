@@ -23,6 +23,7 @@
 namespace tor {
 
 namespace {
+
 bool GetOnionLocation(const net::HttpResponseHeaders* headers,
                       std::string* onion_location) {
   onion_location->clear();
@@ -32,6 +33,21 @@ bool GetOnionLocation(const net::HttpResponseHeaders* headers,
     return false;
   return true;
 }
+
+void OnTorProfileCreated(GURL onion_location,
+                         Profile* profile,
+                         Profile::CreateStatus status) {
+  if (status != Profile::CreateStatus::CREATE_STATUS_INITIALIZED)
+    return;
+  Browser* browser = chrome::FindTabbedBrowser(profile, true);
+  if (!browser)
+    return;
+  content::OpenURLParams open_tor(onion_location, content::Referrer(),
+                                  WindowOpenDisposition::OFF_THE_RECORD,
+                                  ui::PAGE_TRANSITION_TYPED, false);
+  browser->OpenURL(open_tor);
+}
+
 }  // namespace
 
 // static
@@ -63,9 +79,8 @@ OnionLocationNavigationThrottle::WillProcessResponse() {
       // opening it automatically
       if (brave::IsTorProfile(profile_) ||
           profile_->GetPrefs()->GetBoolean(prefs::kAutoOnionLocation)) {
-        profiles::SwitchToTorProfile(base::BindRepeating(
-            &OnionLocationNavigationThrottle::OnTorProfileCreated,
-            weak_ptr_factory_.GetWeakPtr(), GURL(onion_location)));
+        profiles::SwitchToTorProfile(
+            base::BindRepeating(&OnTorProfileCreated, GURL(onion_location)));
       } else {
         OnionLocationTabHelper::SetOnionLocation(
             navigation_handle()->GetWebContents(), GURL(onion_location));
@@ -82,10 +97,10 @@ content::NavigationThrottle::ThrottleCheckResult
 OnionLocationNavigationThrottle::WillStartRequest() {
   if (!brave::IsTorProfile(profile_)) {
     GURL url = navigation_handle()->GetURL();
-    if (url.SchemeIsHTTPOrHTTPS() && url.DomainIs("onion")) {
-      profiles::SwitchToTorProfile(base::BindRepeating(
-          &OnionLocationNavigationThrottle::OnTorProfileCreated,
-          weak_ptr_factory_.GetWeakPtr(), std::move(url)));
+    if (url.SchemeIsHTTPOrHTTPS() && url.DomainIs("onion") &&
+        navigation_handle()->IsInMainFrame()) {
+      profiles::SwitchToTorProfile(
+          base::BindRepeating(&OnTorProfileCreated, std::move(url)));
       return content::NavigationThrottle::CANCEL_AND_IGNORE;
     }
   }
@@ -94,21 +109,6 @@ OnionLocationNavigationThrottle::WillStartRequest() {
 
 const char* OnionLocationNavigationThrottle::GetNameForLogging() {
   return "OnionLocationNavigationThrottle";
-}
-
-void OnionLocationNavigationThrottle::OnTorProfileCreated(
-    GURL onion_location,
-    Profile* profile,
-    Profile::CreateStatus status) {
-  if (status != Profile::CreateStatus::CREATE_STATUS_INITIALIZED)
-    return;
-  Browser* browser = chrome::FindTabbedBrowser(profile, true);
-  if (!browser)
-    return;
-  content::OpenURLParams open_tor(onion_location, content::Referrer(),
-                                  WindowOpenDisposition::OFF_THE_RECORD,
-                                  ui::PAGE_TRANSITION_TYPED, false);
-  browser->OpenURL(open_tor);
 }
 
 }  // namespace tor

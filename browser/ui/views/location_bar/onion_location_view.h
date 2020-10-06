@@ -6,7 +6,6 @@
 #ifndef BRAVE_BROWSER_UI_VIEWS_LOCATION_BAR_ONION_LOCATION_VIEW_H_
 #define BRAVE_BROWSER_UI_VIEWS_LOCATION_BAR_ONION_LOCATION_VIEW_H_
 
-#include "base/memory/weak_ptr.h"
 #include "chrome/browser/profiles/profile.h"
 #include "ui/views/controls/button/label_button.h"
 
@@ -26,13 +25,7 @@ class OnionLocationView : public views::LabelButton,
   void ButtonPressed(Button* sender, const ui::Event& event) override;
 
  private:
-  void OnTorProfileCreated(
-      GURL onion_location,
-      Profile* proile, Profile::CreateStatus status);
-
   GURL onion_location_;
-
-  base::WeakPtrFactory<OnionLocationView> weak_ptr_factory_{this};
 
   OnionLocationView(const OnionLocationView&) = delete;
   OnionLocationView& operator=(const OnionLocationView&) = delete;

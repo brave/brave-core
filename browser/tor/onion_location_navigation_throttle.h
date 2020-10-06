@@ -8,7 +8,6 @@
 
 #include <memory>
 
-#include "base/memory/weak_ptr.h"
 #include "chrome/browser/profiles/profile.h"
 #include "content/public/browser/navigation_throttle.h"
 
@@ -34,13 +33,7 @@ class OnionLocationNavigationThrottle : public content::NavigationThrottle {
   const char* GetNameForLogging() override;
 
  private:
-  void OnTorProfileCreated(GURL onion_location,
-                           Profile* proile,
-                           Profile::CreateStatus status);
-
   Profile* profile_;
-
-  base::WeakPtrFactory<OnionLocationNavigationThrottle> weak_ptr_factory_{this};
 
   OnionLocationNavigationThrottle(const OnionLocationNavigationThrottle&) =
       delete;
