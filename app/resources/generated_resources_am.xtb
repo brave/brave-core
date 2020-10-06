@@ -291,7 +291,7 @@
 <translation id="1361872463926621533">ጅምር ላይ ድምጽ አጫውት</translation>
 <translation id="1363585519747660921">ዩኤስቢ አታሚ ውቅረት ያስፈልገዋል</translation>
 <translation id="1365180424462182382">የእርስዎ <ph name="BEGIN_LINK"/>አሳሽ የሚተዳደረው<ph name="END_LINK"/> በ<ph name="ENROLLMENT_DOMAIN"/> ነው</translation>
-<translation id="1366177842110999534">የLinux መሣሪያዎች፣ አርታዒዎች፣ እና IDEዎች በእርስዎ <ph name="DEVICE_TYPE"/> ላይ ያሂዱ። &lt;a target="_blank" href="<ph name="URL"/>"&gt;የበለጠ ለመረዳት&lt;/a&gt;</translation>
+<translation id="1366177842110999534">የLinux መሣሪያዎች፣ አርታዒዎች፣ እና IDEዎች በእርስዎ <ph name="DEVICE_TYPE"/> ላይ ያሂዱ። &lt;a target="_blank" rel="noopener noreferrer" href="<ph name="URL"/>"&gt;የበለጠ ለመረዳት&lt;/a&gt;</translation>
 <translation id="1367951781824006909">ፋይል ይምረጡ</translation>
 <translation id="1369149969991017342">የማብሪያ/ማጥፊያ መዳረሻ (ኮምፒውተሩን በአንድ ወይም ሁለት ማብሪያ ማጥፊያዎች ይቆጣጠሩ)</translation>
 <translation id="1372841398847029212">ከመለያዎ ጋር ያስምሩ</translation>
@@ -1353,7 +1353,7 @@
 <translation id="268053382412112343">&amp;ታሪክ</translation>
 <translation id="2682498795777673382">ዝማኔ ከእርስዎ ወላጅ</translation>
 <translation id="2683638487103917598">አቃፊ ተለይቶ ተደርድሯል</translation>
-<translation id="2686222346846590368">ይህ ለዚህ <ph name="DEVICE_TYPE"/> የመጨረሻው ራስሰር ሶፍትዌር እና የደህንነት ዝማኔ ነው። የወደፊት ዝማኔዎችን ለማግኘት ወደ ይበልጥ አዲሱ ሞዴል ያልቁ። &lt;a target="_blank" href="<ph name="URL"/>"&gt;የበለጠ ለመረዳት<ph name="LINK_END"/></translation>
+<translation id="2686222346846590368">ይህ ለዚህ <ph name="DEVICE_TYPE"/> የመጨረሻው ራስሰር ሶፍትዌር እና የደህንነት ዝማኔ ነው። የወደፊት ዝማኔዎችን ለማግኘት ወደ ይበልጥ አዲሱ ሞዴል ያልቁ። &lt;a target="_blank" rel="noopener noreferrer" href="<ph name="URL"/>"&gt;የበለጠ ለመረዳት<ph name="LINK_END"/></translation>
 <translation id="2687403674020088961">ሁሉንም ኩኪዎች አግድ (አይመከርም)</translation>
 <translation id="2687407218262674387">የBrave አገልግሎት ውል</translation>
 <translation id="2688196195245426394">መሣሪያውን በዚህ አገልጋይ ላይ በመመዝገብ ላይ ሳለ ስህተት፦ <ph name="CLIENT_ERROR"/>።</translation>
@@ -4849,7 +4849,7 @@
 <translation id="7197632491113152433">በዚህ መሣሪያ ላይ መጠቀም የሚቻሉ <ph name="NUMBER_OF_APPS"/> መተግበሪያዎችን ከመለያዎ አግኝተናል።</translation>
 <translation id="7199158086730159431">እ&amp;ገዛ አግኝ</translation>
 <translation id="7200083590239651963">ውቅረትን ይምረጡ</translation>
-<translation id="7201042526153088083">በእርስዎ <ph name="DEVICE_TYPE"/> ላይ መተግበሪያዎችን እና ጨዋታዎችን ከGoogle Play ይጫኑ። &lt;a target="_blank" href="<ph name="URL"/>"&gt;የበለጠ ለመረዳት&lt;/a&gt;</translation>
+<translation id="7201042526153088083">በእርስዎ <ph name="DEVICE_TYPE"/> ላይ መተግበሪያዎችን እና ጨዋታዎችን ከGoogle Play ይጫኑ። &lt;a target="_blank" rel="noopener noreferrer" href="<ph name="URL"/>"&gt;የበለጠ ለመረዳት&lt;/a&gt;</translation>
 <translation id="720110658997053098">ይህን መሣሪያ እስከመጨረሻው በኪዮስክ ሁነታ አቆየው</translation>
 <translation id="7201118060536064622">«<ph name="DELETED_ITEM_NAME"/>» ተሰርዟል</translation>
 <translation id="7201420661433230412">ፋይሎችን ይመልከቱ</translation>
@@ -6612,7 +6612,7 @@ nil</translation>
 <translation id="3860292630623580294">(ስውር)</translation>
 <translation id="4854477725773269949">ማንነትን በማያሳውቅ ውስጥ ይፍቀዱ</translation>
 <translation id="6436164536244065364">በድር  መደብር  ውስጥ ይመልከቱ</translation>
-<translation id="38046578254905003">ቅጥያዎችን እና ገጽታዎችን ያግኙ <ph name="BEGIN_LINK">&lt;a target="_blank" href="https://chrome.google.com/webstore/category/extensions"&gt;</ph>Web Store<ph name="END_LINK">&lt;/a&gt;</ph></translation>
+<translation id="38046578254905003">ቅጥያዎችን እና ገጽታዎችን በ <ph name="BEGIN_LINK"/>Web Store<ph name="END_LINK"/> ውስጥ ያግኙ</translation>
 <translation id="6336451774241870485">አዲስ የግል ትር</translation>
 <translation id="6610147964972079463">የግል ትሮችን ዝጋ</translation>
 <translation id="4933782374919065856">ጥያቄዎች አለዎት? የእርስዎን መገለጫ የሚቆጣጠረውን ግለሰብ ያነጋግሩ።</translation>

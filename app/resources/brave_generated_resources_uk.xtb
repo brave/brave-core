@@ -24,7 +24,7 @@
 <translation id="3218385319396786393">Автопрогравання заблоковано на цій сторінці</translation>
 <translation id="4988333904713528597">Завжди дозволяти автоматичне відтворення на <ph name="HOST"/></translation>
 <translation id="4150684676757176434">Продовжити блокувати автоматичне програвання</translation>
-<translation id="5883458389055721080">Ця розширення не було перевірене Brave на безпеку й надійність. Вставнолюйте це розширення, лише якщо ви довіряєте його розробнику.</translation>
+<translation id="8988939298652262600">Brave не перевіряє розширення на предмет безпеки. Встановлюйте це розширення, лише якщо довіряєте його розробнику.</translation>
 <translation id="8081858229109418493">Ім'я та іконка профіля</translation>
 <translation id="2044383478723007273">Кольори Brave</translation>
 <translation id="1692470335103807198">Отримати більше тем</translation>
@@ -36,6 +36,9 @@
 <translation id="5802665280774361839">Показати автозаповнення в адресному рядку</translation>
 <translation id="597020512043916976">Показувати найпопулярніші сайти в пропозиціях щодо автозаповнення</translation>
 <translation id="264150068416846820">Показувати запропоновані сайти Brave як варіанти автозаповнення</translation>
+<translation id="6414370348346025511">Стандартний захист увімкнено.</translation>
+<translation id="814018970995616154">Перевіряє URL-адреси за списком небезпечних сайтів, який зберігається у Brave.</translation>
+<translation id="1144810021918451336">Не захищає від небезпечних сайтів, завантажень та розширень.</translation>
 <translation id="7781069478569868053">Сторінка нової вкладки</translation>
 <translation id="2467749191278759605">Персоналізуйте свою панель керування Brave</translation>
 <translation id="1717331825806276156">Зображення тла</translation>
@@ -78,7 +81,7 @@
 <translation id="4824468494729001999">Блокувати скрипти</translation>
 <translation id="519861640102428255">Дивіться таamp;amp; Відчувайте</translation>
 <translation id="4800195524776354947">Показати кількість блокованих зображень на іконці Щитів</translation>
-<translation id="3932286112122164477">Дозволити кнопки входу Google на сайтах третіх сторін</translation>
+<translation id="7498695072878479744">Дозволити кнопки входу Google на сайтах третіх сторін</translation>
 <translation id="863171915776379000">Дозвольте вхід через Facebook та вбудовані публікації</translation>
 <translation id="5165042248369837294">Дозволити вбудовані твіти Twitter</translation>
 <translation id="958971637207126733">Дозволити вбудовані пости LinkedIn</translation>
@@ -147,13 +150,17 @@
 <translation id="2356070529366658676">Запитати</translation>
 <translation id="7701040980221191251">Немає</translation>
 <translation id="1085027414516521238">MetaMask</translation>
-<translation id="3905324891414560921">Провайдер Web3 для використання Dapps</translation>
+<translation id="7090046810227878892">Провайдер Ethereum для використання Dapps</translation>
 <translation id="5913089932885076110">Завантажувати Криптогаманці при запуску роботи</translation>
+<translation id="6864914031231797928">Дозволити вхід через Google для розширень</translation>
+<translation id="1365342176656744625">Спосіб вирішення проблем з локаціями IPFS</translation>
+<translation id="1327977588028644528">Шлюз</translation>
+<translation id="80225669816651290">Локальний вузол</translation>
 <translation id="6554397389149987360">Використовує компоненти Hangouts, щоб увімкнути поширення екрану та інші функції у браузері.</translation>
 <translation id="1765684547504191670">Використовує компонент Media Router для увімкнення Chromecast у браузері.</translation>
 <translation id="9156965752763025780">Ваші зміни почнуть діяти після наступного перезапуску Brave.</translation>
 <translation id="7179921470347911571">Перезапустити зараз</translation>
-<translation id="4154389611571860454">Використовує супутнє розширення IPFS для підтримки IPFS у браузері.</translation>
+<translation id="6222323340194834282">Використовує супровідне розширення IPFS для покращення підтримки IPFS у веб-переглядачі.</translation>
 <translation id="8137559199583651773">Керувати розширеннями</translation>
 <translation id="7013485839273047434">Отримайте більше розширень</translation>
 <translation id="4928988318462976765">Веб Магазин Розширень</translation>
@@ -209,20 +216,19 @@
 <translation id="4394049700291259645">Вимкнути</translation>
 <translation id="6469509880167172749">Автоматично надсилати повністю конфіденційну аналітику продуктів до Brave</translation>
 <translation id="7090566321964540749">Ця анонімна інформація дозволяє Brave лише визначати загальний об'єм користування певними функціями.</translation>
-<translation id="9111960429693394744">Чи хотіли б ви використовувати Крипто гаманці Brave чи MetaMask для Dapps?</translation>
-<translation id="8721775358057000783">Чи хотіли б ви запустити Crypto Wallets для підтримки web3 на цій сторінці?</translation>
+<translation id="1947672064022327074">Бажаєте відкрити криптогаманці для підтримки Ethereum?</translation>
 <translation id="7583735190612229830">Налаштувати Крипто-гаманці для взаємозв'язку з цим додатком та іншими схожими.</translation>
 <translation id="4823406846571523661">Створити Криптогаманці</translation>
-<translation id="5756155765711979898">Скористатись MetaMask</translation>
-<translation id="6754134632841262799">НАЛАШТУВАТИ</translation>
 <translation id="8199661191594897555">Запустіть криптогаманці та перезавантажте</translation>
 <translation id="8428213095426709021">Налаштування</translation>
+<translation id="1854270995641373652">Бажаєте увімкнути підтримку локального демона IPFS у Brave?</translation>
+<translation id="2366908098700680611">Увімкнути IPFS</translation>
 <translation id="4552520379838695057">Вибачте, сторінка відсутня.</translation>
 <translation id="2609895996619941644">Бажаєте перевірити, чи є збережена версія в Архіві?</translation>
 <translation id="8053093028263274061">Вибачте, збереженої версії немає.</translation>
 <translation id="8517321676372639828">Перевірити збережену версію</translation>
-<translation id="191143826155037518">Brave надається вам за умовами <ph name="BEGIN_LINK_MPL">&lt;a target="_blank" href="$1"&gt;</ph>Публічної Ліцензії Mozilla 2.0 <ph name="END_LINK_MPL">&lt;/a&gt;</ph> (MPL) та включає <ph name="BEGIN_LINK_OSS">&lt;a target="_blank" href="$2"&gt;</ph>програмне забезпечення з відкритим кодом <ph name="END_LINK_OSS">&lt;/a&gt;</ph> за умовами багатьох інших ліцензій.
-Ви можете прочитати <ph name="BEGIN_LINK_BUILD_INSTRUCTIONS">&lt;a target="_blank" href="$3"&gt;</ph>інструкції, як завантажити та створити самостійно <ph name="END_LINK_BUILD_INSTRUCTIONS">&lt;/a&gt;</ph>конкретний <ph name="BEGIN_LINK_SOURCE_CODE">&lt;a target="_blank" href="$4"&gt;</ph>вихідний код, використаний для створення цієї копії<ph name="END_LINK_SOURCE_CODE">&lt;/a&gt;</ph>.</translation>
+<translation id="191143826155037518">Brave надається вам за умовами <ph name="BEGIN_LINK_MPL"/>Публічної Ліцензії Mozilla 2.0 <ph name="END_LINK_MPL"/> (MPL) та включає <ph name="BEGIN_LINK_OSS"/>програмне забезпечення з відкритим кодом <ph name="END_LINK_OSS"/> за умовами багатьох інших ліцензій.
+Ви можете прочитати <ph name="BEGIN_LINK_BUILD_INSTRUCTIONS"/>інструкції, як завантажити та створити самостійно <ph name="END_LINK_BUILD_INSTRUCTIONS"/>конкретний <ph name="BEGIN_LINK_SOURCE_CODE"/>вихідний код, використаний для створення цієї копії<ph name="END_LINK_SOURCE_CODE"/>.</translation>
 <translation id="4474155171896946103">Позначити закладками всі вкладки...</translation>
 <translation id="2336228925368920074">Позначити закладками всі вкладки...</translation>
 <translation id="796831669370432378">Щоб додати закладку, натисніть кнопку закладки поруч з адресним рядком</translation>

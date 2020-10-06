@@ -28,9 +28,13 @@
 <translation id="5550994254534676787">Veure la teva història de navegació</translation>
 <translation id="985862351129593673">Personalitzar el Panell</translation>
 <translation id="7180865173735832675">Personalitzar</translation>
-<translation id="5783793537552649286">Mostrar imatge de fons</translation>
+<translation id="8522669544471808198">Mostra imatges de fons</translation>
 <translation id="7275773481201277457">Mostrar Estrelles Brave</translation>
 <translation id="6836061097810262923">Mostrar el rellotge</translation>
+<translation id="5912396950572065471">Format</translation>
+<translation id="604124094241169006">Automàtic</translation>
+<translation id="867722069064361487">Rellotge de 12 hores</translation>
+<translation id="4064062743338217840">Rellotge de 24 hores</translation>
 <translation id="8643377320501056697">Mostrar llocs destacats</translation>
 <translation id="3446024864193919737">Mostra les recompenses de Brave</translation>
 <translation id="6274899614137380422">Mostra Binance</translation>
@@ -68,6 +72,10 @@
 <translation id="8958799246752641148">Tor oculta la teva adreça IP als llocs que visites, encaminant la teva navegació a través de diversos servidors Tor abans d'arribar a la teva destinació. Aquestes connexions es xifren, de manera que el teu ISP o empresari no pot veure quins llocs estàs visitant. Tor pot frenar la navegació i és possible que alguns llocs no funcionin.</translation>
 <translation id="520608572871993342">L'ús de Finestres privades només canvia el que fa el Brave al teu dispositiu: no canvia el comportament de ningú altre. Tor oculta la teva adreça IP als llocs que visites i oculta els llocs que visites al teu ISP o al teu empresari. Obri una finestra privada amb Tor des del menú o amb {{key}}.</translation>
 <translation id="6975708438781948564">Saber més sobre Tor a Brave</translation>
+<translation id="4712050378540986986">Estat de Tor</translation>
+<translation id="3368922792935385530">Connectat</translation>
+<translation id="8030169304546394654">Sense connexió</translation>
+<translation id="3705383383955310071">S'està iniciant {{percentage}}%</translation>
 <translation id="4272382368346338917">Filtres addicionals</translation>
 <translation id="8949292968394988358">Advertiment: Si actives massa filtres, es degradarà el rendiment</translation>
 <translation id="8686201964111147748">Total d'anuncis i rastrejadors blocats:</translation>
@@ -102,7 +110,7 @@
 <translation id="3829010735958850433">Omet el recorregut de benvinguda</translation>
 <translation id="1201402288615127009">Següent</translation>
 <translation id="7954950242989581218">Navegueu sans i estalvis</translation>
-<translation id="2188651882929633653">Els Escuts de Brave bloquen les coses desagradables que intenten seguir la vostra petja al web inclosos la majoria d'anuncis. Configureu els Escuts “avall” si un lloc no sembla funcionar. Brave fa servir <ph name="BEGIN_LINK_P3A">&lt;a target="_blank" href="$1"&gt;</ph>analítiques de productes totalment privades<ph name="END_LINK_P3A">&lt;/a&gt;</ph> per a estimar l'ús global de determinades característiques. Podeu desactivar això a  <ph name="BEGIN_LINK_P3A_SETTINGS">&lt;a target="_blank" href="$2"&gt;</ph>Settings<ph name="END_LINK_P3A_SETTINGS">&lt;/a&gt;</ph>.</translation>
+<translation id="2188651882929633653">Brave Shields bloqueja les coses esgarrifoses que intenten seguir-vos arreu d'Internet— inclosos la majoria d'anuncis. “Desactivi” Shields; si sembla que una pàgina no funciona. Brave utilitza <ph name="BEGIN_LINK_P3A"/>anàlisis de productes completament privades<ph name="END_LINK_P3A"/> per estimar l'ús general de determinades funcions. Podeu desactivar-ho a <ph name="BEGIN_LINK_P3A_SETTINGS"/>Settings<ph name="END_LINK_P3A_SETTINGS"/>.</translation>
 <translation id="1919345977826869612">Anuncis</translation>
 <translation id="2128226640852355533">Guanyeu {{currency}} mirant Brave Ads. Els anuncis presentats es basen en els vostres interessos, segons es dedueix del vostre comportament de navegació. No hi ha cap dada personal ni historial de navegació que surti del vostre navegador.</translation>
 <translation id="6112368337882254910">Auto-Contribució</translation>
@@ -174,7 +182,7 @@
 <translation id="4875485795191140618">La clau de la seva cartera ha estat verificada i carregada amb èxit.</translation>
 <translation id="1083279119532577005">S'ha restablert la cartera!</translation>
 <translation id="7841456038054167122">Tornar a posar les claus o prova claus diferents per favor.</translation>
-<translation id="340102383764929340">La clau de restauració introduïda ja no és compatible. Si us plau, visiteu <ph name="BEGIN_LINK_REGION_TEXT">&lt;a target="_blank" href="http://brave.com/faq#convert-old-keys"&gt;</ph>here<ph name="END_LINK_REGION_TEXT">&lt;/a&gt;</ph> per obtindre una nova clau.</translation>
+<translation id="1911900517212490188">La clau de restauració introduïda ja no és compatible. Si us plau visiteu <ph name="BEGIN_LINK"/>aquesta pàgina<ph name="END_LINK"/> per aconseguir una nova clau.</translation>
 <translation id="2195074481553016770">Ja quasi hem arribat…</translation>
 <translation id="5254740304961202261">Demostra que ets un humà!</translation>
 <translation id="2187043784382239974">Hmmm, no exactament...</translation>
@@ -192,7 +200,7 @@
 <translation id="3082557070674409251">Clicat</translation>
 <translation id="7119308337584989771">Descartat</translation>
 <translation id="6805660603861526473">Vist</translation>
-<translation id="2852258589816753010">BAT actualment no està suportat en la vostra regió. Si us plau dirigiu-vos a <ph name="BEGIN_LINK_REGION_TEXT">&lt;a target="_blank" href="$1"&gt;</ph>here<ph name="END_LINK_REGION_TEXT">&lt;/a&gt;</ph> per a actualitzacions.</translation>
+<translation id="2359865110462963929">BAT no està disponible actualment a la vostra regió. Si us plau, Consulteu <ph name="BEGIN_LINK"/>aquí<ph name="END_LINK"/> per a actualitzacions.</translation>
 <translation id="2564425876266960486">Error en crear la targeta Brave Browser BAT</translation>
 <translation id="6473583070570450185">Necessiteu una cartera verificada per accedir</translation>
 <translation id="2106271389438168634">Necessiteu un mínim de 25 BAT per crear una cartera de Uphold. Si us plau, torneu-ho a provar després d'haver verificat la seva cartera amb Uphold.</translation>
@@ -219,6 +227,9 @@
 <translation id="386483240851194811">Les recompenses han estat desactivades</translation>
 <translation id="3354337256330577726">La contribució automàtica s'ha desactivat</translation>
 <translation id="6727186931929643711">S'ha parat de reintentar</translation>
+<translation id="680983167891198932">Clau</translation>
+<translation id="7535087603100972091">Valor</translation>
+<translation id="45591635423975492">Sessió iniciada a</translation>
 <translation id="2059498613853603008">ADVERTÈNCIA: Les dades d'aquesta pàgina poden ser confidencials. Tracteu-les com si fossin les claus privades de la vostra cartera. Aneu amb compte amb qui les compartiu.</translation>
 <translation id="7375125077091615385">Tipus:</translation>
 <translation id="4973347371961481083">Contribucions</translation>
@@ -252,6 +263,7 @@
 <translation id="2152423226436243241">Contribuir automaticament</translation>
 <translation id="2927922949538312364">Propina d'una sola vegada</translation>
 <translation id="3164105678355419142">Propina recurrent</translation>
+<translation id="7806880412350961625">Registres d'esdeveniments</translation>
 <translation id="4309915981827077375">Informació general</translation>
 <translation id="3662406032239313663">Registres</translation>
 <translation id="9001933311880936179">Quantitat total:</translation>
@@ -262,7 +274,6 @@
 <translation id="2326487656644542536">Informació del Moneder</translation>
 <translation id="8559420016582377654">Identificador de pagament de cartera:</translation>
 <translation id="438586487791444158">Estat de la cartera:</translation>
-<translation id="3368922792935385530">Connectat</translation>
 <translation id="8874184842967597500">No connectat</translation>
 <translation id="4569155249847375786">Verificat</translation>
 <translation id="922103963921062336">Desconnectat (no verificat)</translation>
@@ -351,7 +362,7 @@
 <translation id="7335371657242627509">Inclou a Auto-Contribució</translation>
 <translation id="1864111464094315414">Inicia la sessió</translation>
 <translation id="4556504723624686474">La verificació de la cartera us permet gestionar els vostres fons de manera més eficient.</translation>
-<translation id="4188679602963314994">Necessiteu tindre un mínim de 25 BAT per crear un compte de Uphold. Si us plau, torneu-ho a provar més tard. <ph name="BREAK">&lt;br/&gt;</ph>Si ja teniu un compte Uphold verificat, continueu per accedir.</translation>
+<translation id="5594737784294211654">Cal un mínim de 25 BAT per crear un compte Uphold. Si us plau, intenti-ho més tard. <ph name="NEWLINE"/>Si ja disposeu d'un compte Uphold verificat, continueu per iniciar la sessió.</translation>
 <translation id="3250511771491660127">Fes això mensualment</translation>
 <translation id="6028954173739504682">Gestiona la teva cartera</translation>
 <translation id="7886389832052393750">abril</translation>
@@ -443,8 +454,8 @@
 <translation id="8014425282125849700">Ocasionalment t'oferirem ajuts de tokens des de Brave. Estigués atent a l'alerta!</translation>
 <translation id="2185598236335233939">Busca notificacions d'anuncis mentre utilitzes Brave. El saldo dels teus punts BAT augmentarà per cada anunci que visualitzis.</translation>
 <translation id="1370034647041840967">Guanya tokens per la teva atenció als anuncis i utilitza'ls per donar suport als creadors de contingut que t'agraden!</translation>
-<translation id="1701701253000051237">Afegiu, <ph name="BEGIN_BOLD">&lt;b&gt;</ph>Uphold<ph name="BEGIN_END">&lt;/b&gt;</ph>.</translation>
-<translation id="4208741993667364007">El vostre moneder Brave és impulsat per <ph name="BEGIN_BOLD">&lt;b&gt;</ph>Uphold<ph name="BEGIN_END">&lt;/b&gt;</ph>.</translation>
+<translation id="4600224932216165965">Afegiu, retireu i gestioneu els dipositis a <ph name="BEGIN_BOLD"/>Uphold<ph name="END_BOLD"/>.</translation>
+<translation id="3580616436301227919">La vostra cartera de Brave funciona gràcies a <ph name="BEGIN_BOLD"/>Uphold<ph name="END_BOLD"/>.</translation>
 <translation id="6401272292123354754">Els Premis de Brave són creats per Basic Attention Token. Saber més de BAT</translation>
 <translation id="7823359893981882407">aquí</translation>
 <translation id="4483635855837696643">Restaura la teva cartera</translation>
@@ -453,7 +464,7 @@
 <translation id="3267911153934785912">Introdueix la clau de recuperació o</translation>
 <translation id="6548189695918108191">Feu una còpia de seguretat de la cartera abans de reemplaçar-la. O perdreu els fons, {{funds}}, a la cartera actual.</translation>
 <translation id="5423214929210538027">Esteu segurs que voleu restablir la Cartera de Recompenses?</translation>
-<translation id="9106875682287489763">Tu <ph name="BEGIN_BOLD">&lt;b&gt;</ph>{{amount}} BATs<ph name="BEGIN_END">&lt;/b&gt;</ph> i altres dades de Recompenses es perdran de manera permanent si restabliu la cartera. Si us plau assegureu-vos d'haver verificat la vostra cartera amb Uphold de manera que pogueu mantenir els BAT.</translation>
+<translation id="7428521340740703492">Si restabliu la cartera, es perdran permanentment les vostres dades de <ph name="BEGIN_BOLD"/>{{amount}} BATs<ph name="END_BOLD"/> i altres recompenses. Si us plau, assegureu-vos que heu verificat la vostra cartera amb Uphold per poder conservar els vostres BAT.</translation>
 <translation id="2028613172174411919">Les dades de Recompenses es perdran permanentment si restabliu la cartera.</translation>
 <translation id="4914597931214386232">Donacions sol·licitades</translation>
 <translation id="3494964159182650590">Resum de recompenses</translation>
@@ -533,14 +544,13 @@
 <translation id="5030988785798407804">La teva subvenció de {{currency}} ja</translation>
 <translation id="2132683977638223450">Subvenció de punts gratuïta</translation>
 <translation id="7512440811010447157">verificar</translation>
-<translation id="8030169304546394654">Sense connexió</translation>
 <translation id="8267327690882073581">Verificar el moneder</translation>
 <translation id="543510923939676996">Moneder Verificat</translation>
 <translation id="7591798679868259510">Anar al meu compte d'Uphold</translation>
 <translation id="3699674790322420653">Completeu la verificació del moneder</translation>
 <translation id="9200453331904391567">Desconnectar de Gratificacions Brave</translation>
 <translation id="46988480989545156">Verificar el moneder</translation>
-<translation id="4986087720311945758">El nostre servei de moneder està proporcionat per <ph name="BEGIN_BOLD">&lt;b&gt;</ph>Uphold<ph name="BEGIN_END">&lt;/b&gt;</ph></translation>
+<translation id="160145159036553575">El nostre servei de carteres el proporciona <ph name="BEGIN_BOLD"/>Uphold.<ph name="END_BOLD"/></translation>
 <translation id="6771734945114850124">Si us plau, tingues a mà el teu  document d'identitat.</translation>
 <translation id="8697510149346635496">Retirar BAT que guanyis per veure anuncis respectuosos amb la privacitat</translation>
 <translation id="1481480653609649134">Comprar BAT addicional amb targetes de crèdit o altres mètodes</translation>
@@ -552,7 +562,7 @@
 <translation id="7404779623219601861">Bescanvieu BAT per Targetes Regal</translation>
 <translation id="6215565499749144110">Amb TAP Network, podeu bescanviar els vostres BAT per targetes regal de marques populars.</translation>
 <translation id="6915065518766963119">* Requereix Verificació Uphold.</translation>
-<translation id="651649139059930379">Obtingueu un criptoback del 2% amb the  targeta Uphold</translation>
+<translation id="7703007724342399482">Aconseguiu un 2% de cryptoback amb la targeta Uphold</translation>
 <translation id="1109729143147368573">Gasteu les vostres criptomonedes i altres actius amb gairebé 50 milions de comerciants i caixers automàtics d'arreu del món. Gasteu criptomonedes per guanyar criptomonedes!</translation>
 <translation id="4360054110030715117"><ph name="LINK_BEGIN"/>Learn more<ph name="LINK_END"/> sobre les Recompenses de Brave.</translation>
 <translation id="5826706758731195747">Si activeu les Recompenses, esteu d'acord amb <ph name="LINK_BEGIN"/>Terms of Service<ph name="LINK_END"/>.</translation>
@@ -608,6 +618,7 @@
 <translation id="6409345078064530735">Adreça de dipòsit</translation>
 <translation id="7153116947319792513">Nota de Dipòsit</translation>
 <translation id="1383876407941801731">Cerca</translation>
+<translation id="3781412534383755121">La quantitat mínima per convertir és:</translation>
 <translation id="6432284126416751397">Confirmar Conversió</translation>
 <translation id="1301340234286078471">Convertir</translation>
 <translation id="6680650203439190394">Valorar</translation>
@@ -648,4 +659,21 @@
 <translation id="453977518730680921">Reproducció automàtica multimèdia</translation>
 <translation id="7701466644604753106">Activar el lector de velocitat</translation>
 <translation id="763042262431778831">Desactivar el lector de velocitat</translation>
+<translation id="9020818404803201080">Parells connectats:</translation>
+<translation id="6717690610234999751">Configuració d'adreces</translation>
+<translation id="9182285671734219088">Estat de Daemon</translation>
+<translation id="6599816589121202398">API</translation>
+<translation id="1327977588028644528">Passarel·la</translation>
+<translation id="2551123942222622809">Eixam</translation>
+<translation id="3967335629471284781">Iniciat</translation>
+<translation id="1515163294334130951">Iniciar</translation>
+<translation id="1895658205118569222">Aturada</translation>
+<translation id="6762417584993757344">No està instal·lat</translation>
+<translation id="8428368469058794536">Servei IPFS</translation>
+<translation id="2901715907314796027">Comprar criptomonedes a Bitcoin.com.</translation>
+<translation id="4065681313949497252">Moneda</translation>
+<translation id="3833315885381772739">Introduïu l'import</translation>
+<translation id="4011828592358027165">Sou nou en el món de les criptomonedes?</translation>
+<translation id="3358050091139900813">Aconseguiu aquí la cartera per començar</translation>
+<translation id="3105412115725259537">Bitcoin.com</translation>
 </translationbundle>

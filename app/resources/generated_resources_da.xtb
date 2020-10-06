@@ -291,7 +291,7 @@
 <translation id="1361872463926621533">Afspil lyd ved opstart</translation>
 <translation id="1363585519747660921">USB-printeren skal konfigureres</translation>
 <translation id="1365180424462182382">Din <ph name="BEGIN_LINK"/>browser administreres<ph name="END_LINK"/> af <ph name="ENROLLMENT_DOMAIN"/></translation>
-<translation id="1366177842110999534">Kør værktøjer, redigeringsværktøjer og IDE-pakker fra Linux på din <ph name="DEVICE_TYPE"/>. &lt;a target="_blank" href="<ph name="URL"/>"&gt;Få flere oplysninger&lt;/a&gt;</translation>
+<translation id="1366177842110999534">Kør værktøjer, redigeringsværktøjer og IDE-pakker fra Linux på din <ph name="DEVICE_TYPE"/>. &lt;a target="_blank" rel="noopener noreferrer" href="<ph name="URL"/>"&gt;Få flere oplysninger&lt;/a&gt;</translation>
 <translation id="1367951781824006909">Vælg en fil</translation>
 <translation id="1369149969991017342">Kontaktadgang (styr computeren med blot én eller to kontakter)</translation>
 <translation id="1372841398847029212">Synkroniser med din konto</translation>
@@ -1354,7 +1354,7 @@ Du kan administrere indstillingerne for denne konto ved at installere Family Lin
 <translation id="268053382412112343">Over&amp;sigt</translation>
 <translation id="2682498795777673382">Opdatering fra din forælder</translation>
 <translation id="2683638487103917598">Mappen er sorteret</translation>
-<translation id="2686222346846590368">Dette er den sidste automatiske software- og sikkerhedsopdatering til denne <ph name="DEVICE_TYPE"/>. Opgrader til en nyere model for at få opdateringer fremover. &lt;a target="_blank" href="<ph name="URL"/>"&gt;Få flere oplysninger<ph name="LINK_END"/></translation>
+<translation id="2686222346846590368">Dette er den sidste automatiske software- og sikkerhedsopdatering til denne <ph name="DEVICE_TYPE"/>. Opgrader til en nyere model for at få opdateringer fremover. &lt;a target="_blank" rel="noopener noreferrer" href="<ph name="URL"/>"&gt;Få flere oplysninger<ph name="LINK_END"/></translation>
 <translation id="2687403674020088961">Bloker alle cookies (anbefales ikke)</translation>
 <translation id="2687407218262674387">Braves servicevilkår</translation>
 <translation id="2688196195245426394">Fejl ved registrering af enheden med serveren: <ph name="CLIENT_ERROR"/>.</translation>
@@ -4853,7 +4853,7 @@ slettes permanent, når den administrerede bruger fjernes. Besøgte websites og 
 <translation id="7197632491113152433">Vi fandt <ph name="NUMBER_OF_APPS"/> apps på din konto, der kan bruges på denne enhed.</translation>
 <translation id="7199158086730159431">Få H&amp;jælp</translation>
 <translation id="7200083590239651963">Vælg konfiguration</translation>
-<translation id="7201042526153088083">Installer apps og spil fra Google Play på din <ph name="DEVICE_TYPE"/>. &lt;a target="_blank" href="<ph name="URL"/>"&gt;Få flere oplysninger&lt;/a&gt;</translation>
+<translation id="7201042526153088083">Installer apps og spil fra Google Play på din <ph name="DEVICE_TYPE"/>. &lt;a target="_blank" rel="noopener noreferrer" href="<ph name="URL"/>"&gt;Få flere oplysninger&lt;/a&gt;</translation>
 <translation id="720110658997053098">Lad kiosktilstand forblive aktiveret på denne enhed</translation>
 <translation id="7201118060536064622">"<ph name="DELETED_ITEM_NAME"/>" er slettet</translation>
 <translation id="7201420661433230412">Få vist filer</translation>
@@ -6612,7 +6612,7 @@ Opbevar din nøglefil på et sikkert sted. Du skal bruge den til at oprette nye 
 <translation id="3860292630623580294">(Privat)</translation>
 <translation id="4854477725773269949">Tillad i privat</translation>
 <translation id="6436164536244065364">Vis i Webshop</translation>
-<translation id="38046578254905003">Find extensions og temaer i <ph name="BEGIN_LINK">&lt;a target="_blank" href="https://chrome.google.com/webstore/category/extensions"&gt;</ph>Web Store<ph name="END_LINK">&lt;/a&gt;</ph></translation>
+<translation id="38046578254905003">Find udvidelser og temaer i <ph name="BEGIN_LINK"/>Web Store<ph name="END_LINK"/></translation>
 <translation id="6336451774241870485">Ny privat fane</translation>
 <translation id="6610147964972079463">Luk private faner</translation>
 <translation id="4933782374919065856">Har du spørgsmål? Kontakt din profiladministrator.</translation>

@@ -291,7 +291,7 @@
 <translation id="1361872463926621533">השמעת צליל בהפעלה</translation>
 <translation id="1363585519747660921">‏יש להגדיר מדפסת USB</translation>
 <translation id="1365180424462182382"><ph name="BEGIN_LINK"/>הדפדפן שלך מנוהל<ph name="END_LINK"/> על ידי <ph name="ENROLLMENT_DOMAIN"/></translation>
-<translation id="1366177842110999534">‏הפעלת כלים, עורכים וסביבות פיתוח משולבות (IDE) של Linux ב-<ph name="DEVICE_TYPE"/>. &lt;a target="_blank" href="<ph name="URL"/>"&gt;מידע נוסף&lt;/a&gt;</translation>
+<translation id="1366177842110999534">‏הפעלת כלים, עורכים וסביבות פיתוח משולבות (IDE) של Linux ב-<ph name="DEVICE_TYPE"/>. &lt;a target="_blank" rel="noopener noreferrer" href="<ph name="URL"/>"&gt;מידע נוסף&lt;/a&gt;</translation>
 <translation id="1367951781824006909">בחר קובץ</translation>
 <translation id="1369149969991017342">גישה באמצעות מתג (שליטה במחשב בעזרת מתג אחד או שניים בלבד)</translation>
 <translation id="1372841398847029212">סנכרון עם החשבון שלך</translation>
@@ -1351,7 +1351,7 @@
 <translation id="268053382412112343">הי&amp;סטוריה</translation>
 <translation id="2682498795777673382">בוצע עדכון על-ידי הורה</translation>
 <translation id="2683638487103917598">התיקיה מוינה</translation>
-<translation id="2686222346846590368">‏אחרי העדכון הנוכחי, מכשיר <ph name="DEVICE_TYPE"/> זה לא יקבל יותר עדכוני תוכנה ועדכוני אבטחה אוטומטיים. כדי לקבל עדכונים בעתיד, יש לשדרג לדגם חדש יותר. &lt;a target="_blank" href="<ph name="URL"/>"&gt;מידע נוסף<ph name="LINK_END"/></translation>
+<translation id="2686222346846590368">‏אחרי העדכון הנוכחי, מכשיר <ph name="DEVICE_TYPE"/> זה לא יקבל יותר עדכוני תוכנה ועדכוני אבטחה אוטומטיים. כדי לקבל עדכונים בעתיד, יש לשדרג לדגם חדש יותר. &lt;a target="_blank" rel="noopener noreferrer" href="<ph name="URL"/>"&gt;מידע נוסף<ph name="LINK_END"/></translation>
 <translation id="2687403674020088961">‏חסימה של כל קובצי ה-cookie (לא מומלץ)</translation>
 <translation id="2687407218262674387">‏תנאים והגבלות של Brave</translation>
 <translation id="2688196195245426394">אירעה שגיאה בעת רישום המכשיר בשרת: <ph name="CLIENT_ERROR"/>.</translation>
@@ -4850,7 +4850,7 @@
 <translation id="7197632491113152433">מצאנו <ph name="NUMBER_OF_APPS"/> אפליקציות מהחשבון שלך שבהן אפשר להשתמש במכשיר הזה.</translation>
 <translation id="7199158086730159431">קבל עזרה</translation>
 <translation id="7200083590239651963">בחירת תצורה</translation>
-<translation id="7201042526153088083">‏ניתן להתקין אפליקציות ומשחקים מ-Google Play ב-<ph name="DEVICE_TYPE"/>. &lt;a target="_blank" href="<ph name="URL"/>"&gt;מידע נוסף&lt;/a&gt;</translation>
+<translation id="7201042526153088083">‏ניתן להתקין אפליקציות ומשחקים מ-Google Play ב-<ph name="DEVICE_TYPE"/>. &lt;a target="_blank" rel="noopener noreferrer" href="<ph name="URL"/>"&gt;מידע נוסף&lt;/a&gt;</translation>
 <translation id="720110658997053098">השארת המכשיר הזה במצב קיוסק באופן קבוע</translation>
 <translation id="7201118060536064622">הפריט '<ph name="DELETED_ITEM_NAME"/>' נמחק</translation>
 <translation id="7201420661433230412">הצג קבצים</translation>
@@ -6598,7 +6598,7 @@
 <translation id="3860292630623580294">(גלישה בסתר)</translation>
 <translation id="4854477725773269949">אפשר במצב גלישה פרטית</translation>
 <translation id="6436164536244065364">הצג בחנות אינטרנט</translation>
-<translation id="38046578254905003">‏תוספים ועיצובים זמינים ב<ph name="BEGIN_LINK"/>חנות האינטרנט של Brave<ph name="END_LINK"/></translation>
+<translation id="38046578254905003">מצא/י הרחבות וערכות נושא ב- <ph name="BEGIN_LINK"/>Web Store<ph name="END_LINK"/></translation>
 <translation id="6336451774241870485">כרטיסייה חדשה לגלישה בסתר</translation>
 <translation id="6610147964972079463">סגור כרטיסיות גלישה בסתר</translation>
 <translation id="4933782374919065856">יש לך שאלות? עליך לפנות לאיש הקשר שמפקח על הפרופיל שלך.</translation>

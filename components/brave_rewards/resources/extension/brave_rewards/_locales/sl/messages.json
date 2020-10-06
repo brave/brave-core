@@ -158,7 +158,7 @@
     }
   },
   "tokenGrantClaimed": {
-    "message": "Zahteva za sredstva v obliki žetonov",
+    "message": "Zahtevki za dodelitev žetonov",
     "description": "Title for grant section in wallet summary"
   },
   "pointGrantClaimed": {
@@ -348,11 +348,11 @@
     "description": "Title for Panel's disabled state"
   },
   "walletFailedTitle": {
-    "message": "Denarnice ni bilo mogoče ustvariti.",
+    "message": "Denarnice ni bilo mogoče ustvariti",
     "description": "Failure title for wallet creation"
   },
   "walletFailedButton": {
-    "message": "Poskusi znova",
+    "message": "Poskusite znova",
     "description": "Button for re-try after wallet creation failed"
   },
   "addFunds": {

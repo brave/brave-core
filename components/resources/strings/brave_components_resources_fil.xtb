@@ -28,9 +28,13 @@
 <translation id="5550994254534676787">Tingnan ang iyong history ng pagba-browse</translation>
 <translation id="985862351129593673">I-customize ang Dashboard</translation>
 <translation id="7180865173735832675">I-customize</translation>
-<translation id="5783793537552649286">Ipakita ang Larawan sa Background</translation>
+<translation id="8522669544471808198">Ipakita ang Mga Larawan sa Background</translation>
 <translation id="7275773481201277457">Ipakita ang Mga Istatistika ng Brave</translation>
 <translation id="6836061097810262923">Ipakita ang Orasan</translation>
+<translation id="5912396950572065471">Format</translation>
+<translation id="604124094241169006">Awtomatiko</translation>
+<translation id="867722069064361487">12-oras na orasan</translation>
+<translation id="4064062743338217840">24-oras na orasan</translation>
 <translation id="8643377320501056697">Ipakita ang Mga Nangungunang Site</translation>
 <translation id="3446024864193919737">Ipakita ang Mga Reward ng Brave</translation>
 <translation id="6274899614137380422">Ipakita ang Binance</translation>
@@ -68,6 +72,10 @@
 <translation id="8958799246752641148">Itinatago ng Tor ang iyong IP address sa mga site na binibisita mo sa pamamagitan ng pagruruta ng iyong pagba-browse sa ilang Tor server bago ito makarating sa iyong destinasyon. Naka-encrypt ang mga koneksyong ito nang sa gayon ay hindi rin makikita ng iyong ISP o employer kung aling mga site ang binibisita mo. Maaaring mapabagal ng Tor ang pagba-browse at maaaring hindi gumana ang ilang site.</translation>
 <translation id="520608572871993342">Kapag gumagamit ng mga Pribadong Window, nababago lang kung anong ginagawa ng Brave sa iyong device — hindi nito binabago ang pagkilos ng ibang tao. Itinatago ng Tor ang iyong IP address mula sa mga site na binibisita mo, at itinatago nito ang mga site na binibisita mo sa iyong ISP o sa iyong employer. Magbukas ng Pribadong Window na may Tor sa menu, o gamit ang {{ key }}.</translation>
 <translation id="6975708438781948564">Matuto pa tungkol sa Tor sa Brave</translation>
+<translation id="4712050378540986986">Status ng Tor</translation>
+<translation id="3368922792935385530">Nakakonekta</translation>
+<translation id="8030169304546394654">Nadiskonekta</translation>
+<translation id="3705383383955310071">Sinisimulan {{percentage}}%</translation>
 <translation id="4272382368346338917">Mga Karagdagang Filter</translation>
 <translation id="8949292968394988358">Babala: Ang pag-on sa masyadong maraming filter ay makakabawas sa performance</translation>
 <translation id="8686201964111147748">Kabuuang mga ad at tracker na na-block:</translation>
@@ -102,7 +110,7 @@
 <translation id="3829010735958850433">Laktawan ang welcome tour</translation>
 <translation id="1201402288615127009">Susunod</translation>
 <translation id="7954950242989581218">Mag-browse nang ligtas at maayos</translation>
-<translation id="2188651882929633653">Bina-block ng Brave Shields ang mga nakakatakot na bagay na sumusubok na i-track ka sa web kabilang ang karamihan sa mga ad. Itakda ang Shields sa “down” kung mukhang hindi gumagana ang isang site. Gumagamit ang Brave ng <ph name="BEGIN_LINK_P3A">&lt;a target="_blank" href="$1"&gt;</ph>ganap na pribadong analytics ng produkto<ph name="END_LINK_P3A">&lt;/a&gt;</ph> upang matantya ang kabuuang paggamit ng mga partikular na feature. Maaari mong itong i-off sa <ph name="BEGIN_LINK_P3A_SETTINGS">&lt;a target="_blank" href="$2"&gt;</ph>Settings<ph name="END_LINK_P3A_SETTINGS">&lt;/a&gt;</ph>.</translation>
+<translation id="2188651882929633653">Bina-block ng Brave Shields ang mga nakakatakot na bagay na sumusubok na i-track ka sa web — kabilang ang karamihan sa mga ad. Itakda ang Shields sa “down” kung mukhang hindi gumagana ang isang site. Gumagamit ang Brave ng <ph name="BEGIN_LINK_P3A"/>ganap na pribadong analytics ng produkto<ph name="END_LINK_P3A"/> upang matantya ang kabuuang paggamit ng mga partikular na feature. Puwede mo itong i-off sa <ph name="BEGIN_LINK_P3A_SETTINGS"/>Settings<ph name="END_LINK_P3A_SETTINGS"/>.</translation>
 <translation id="1919345977826869612">Mga Ad</translation>
 <translation id="2128226640852355533">Makakuha ng mga {{currency}} sa pamamagitan ng panonood ng mga ad sa Brave. Ang ipinapakitang mga ad ay batay sa iyong mga interes, gaya ng natukoy sa iyong gawi sa pag-browse. Walang lalabas na personal na data o history sa pag-browse sa iyong browser kailanman.</translation>
 <translation id="6112368337882254910">Awtomatikong Mag-ambag</translation>
@@ -174,7 +182,7 @@
 <translation id="4875485795191140618">Na-verify at matagumpay na na-load ang key ng wallet mo.</translation>
 <translation id="1083279119532577005">Na-restore ang wallet!</translation>
 <translation id="7841456038054167122">Pakilagay muli ang mga key o sumubok ng ibang mga key.</translation>
-<translation id="340102383764929340">Hindi na sinusuportahan ang key sa pag-restore. Pakibisita ang <ph name="BEGIN_LINK_REGION_TEXT">&lt;a target="_blank" href="http://brave.com/faq#convert-old-keys"&gt;</ph>here<ph name="END_LINK_REGION_TEXT">&lt;/a&gt;</ph> para kumuha ng bagong key.</translation>
+<translation id="1911900517212490188">Hindi na sinusuportahan ang inilagay na key sa pag-restore. Bumisita <ph name="BEGIN_LINK"/>rito<ph name="END_LINK"/> upang makakuha ng bagong key.</translation>
 <translation id="2195074481553016770">Malapit na…</translation>
 <translation id="5254740304961202261">Patunayan na tao ka!</translation>
 <translation id="2187043784382239974">Hmmm, may mali...</translation>
@@ -192,7 +200,7 @@
 <translation id="3082557070674409251">Na-click</translation>
 <translation id="7119308337584989771">Na-dismiss</translation>
 <translation id="6805660603861526473">Natingnan</translation>
-<translation id="2852258589816753010">Hindi kasalukuyang sinusuportahan sa iyong rehiyon ang BAT. Mangyaring sumangguni <ph name="BEGIN_LINK_REGION_TEXT">&lt;a target="_blank" href="$1"&gt;</ph>dito<ph name="END_LINK_REGION_TEXT">&lt;/a&gt;</ph> para sa mga update.</translation>
+<translation id="2359865110462963929">Kasalukuyang hindi sinusuportahan ang BAT sa iyong rehiyon. Sumangguni <ph name="BEGIN_LINK"/>rito<ph name="END_LINK"/> para sa mga update.</translation>
 <translation id="2564425876266960486">Nagka-error sa paggawa ng Brave Browser BAT</translation>
 <translation id="6473583070570450185">Kailangan mo ng na-verify na wallet upang Mag-log in</translation>
 <translation id="2106271389438168634">Kailangan mo ng minimum na 25 BAT para makagawa ng wallet sa Uphold. Pakisubukang muli pagkatapos mong ma-verify ang iyong wallet sa Uphold.</translation>
@@ -219,6 +227,9 @@
 <translation id="386483240851194811">Na-off ang Rewards</translation>
 <translation id="3354337256330577726">Na-off ang Auto-contribute</translation>
 <translation id="6727186931929643711">Ihinto ang pag-retry</translation>
+<translation id="680983167891198932">Key</translation>
+<translation id="7535087603100972091">Value</translation>
+<translation id="45591635423975492">Na-log nang</translation>
 <translation id="2059498613853603008">BABALA: Posibleng sensitibo ang data sa page na ito. Ingatan ang mga ito gaya ng pag-iingat mo sa mga pribadong key ng wallet mo. Mag-ingat sa pagbabahagi nito sa iba.</translation>
 <translation id="7375125077091615385">Uri:</translation>
 <translation id="4973347371961481083">Mga kontribusyon</translation>
@@ -252,6 +263,7 @@
 <translation id="2152423226436243241">Auto Contribute</translation>
 <translation id="2927922949538312364">Isang beses na tip</translation>
 <translation id="3164105678355419142">Umuulit na tip</translation>
+<translation id="7806880412350961625">Mga log ng event</translation>
 <translation id="4309915981827077375">Pangkalahatang impormasyon</translation>
 <translation id="3662406032239313663">Mga log</translation>
 <translation id="9001933311880936179">Kabuuang halaga:</translation>
@@ -262,7 +274,6 @@
 <translation id="2326487656644542536">Impormasyon ng Wallet</translation>
 <translation id="8559420016582377654">ID sa pagbabayad sa wallet:</translation>
 <translation id="438586487791444158">Status ng wallet:</translation>
-<translation id="3368922792935385530">Nakakonekta</translation>
 <translation id="8874184842967597500">Hindi nakakonekta</translation>
 <translation id="4569155249847375786">Na-verify</translation>
 <translation id="922103963921062336">Nadiskonekta (Hindi na-verify)</translation>
@@ -351,7 +362,7 @@
 <translation id="7335371657242627509">Isama sa Awtomatikong Pag-ambag</translation>
 <translation id="1864111464094315414">Mag-login</translation>
 <translation id="4556504723624686474">Nagbibigay-daan sa iyo ang pag-verify sa wallet na mas mabisa mong mapamahalaan ang iyong mga pondo.</translation>
-<translation id="4188679602963314994">Kailangang may minimum ka na 25 BAT para makagawa ng Uphold account. Pakisubukang muli sa ibang pagkakataon. <ph name="BREAK">&lt;br/&gt;</ph>Kung mayroon ka nang na-verify na Uphold account, magpatuloy sa pag-log in.</translation>
+<translation id="5594737784294211654">Kailangang may minimum ka na 25 BAT upang makagawa ng Uphold account. Pakisubukang muli sa ibang pagkakataon. <ph name="NEWLINE"/>Kung mayroon ka nang na-verify na Uphold account, magpatuloy sa pag-log in.</translation>
 <translation id="3250511771491660127">Gawin itong buwan-buwan</translation>
 <translation id="6028954173739504682">Pamahalaan ang Iyong Wallet</translation>
 <translation id="7886389832052393750">Abr</translation>
@@ -443,8 +454,8 @@
 <translation id="8014425282125849700">Paminsan-minsan, aalukin ka ng mga libreng grant para sa token mula sa Brave. Tiyaking abangan ang mga alerto!</translation>
 <translation id="2185598236335233939">Maghanap ng mga notification ng ad habang patuloy mong ginagamit ang Brave. Tataas ang balanse ng iyong BAT Points sa bawat ad na titingnan mo.</translation>
 <translation id="1370034647041840967">Makakakuha ka ng mga token para sa pagpansin mo sa mga ad at pagbibigay ng tip upang suportahan ang mga creator ng content na pinapahalagahan mo!</translation>
-<translation id="1701701253000051237">Magdagdag, mag-withdraw at mamahala ng mga pondo sa <ph name="BEGIN_BOLD">&lt;b&gt;</ph>Uphold<ph name="BEGIN_END">&lt;/b&gt;</ph>.</translation>
-<translation id="4208741993667364007">Ang iyong Brave wallet ay pinapagana ng <ph name="BEGIN_BOLD">&lt;b&gt;</ph>Uphold<ph name="BEGIN_END">&lt;/b&gt;</ph>.</translation>
+<translation id="4600224932216165965">Magdagdag, mag-withdraw, at mamahala ng pondo sa <ph name="BEGIN_BOLD"/>Uphold<ph name="END_BOLD"/>.</translation>
+<translation id="3580616436301227919">Ang iyong Brave wallet ay pinapagana ng <ph name="BEGIN_BOLD"/>Uphold<ph name="END_BOLD"/>.</translation>
 <translation id="6401272292123354754">Binuo ang Mga Reward sa Brave batay sa Basic Attention Token. Matuto pa tungkol sa BAT</translation>
 <translation id="7823359893981882407">dito</translation>
 <translation id="4483635855837696643">I-restore ang iyong Wallet</translation>
@@ -453,7 +464,7 @@
 <translation id="3267911153934785912">Ilagay ang iyong recovery key o</translation>
 <translation id="6548189695918108191">I-back up ang wallet mo bago ito palitan. Kung hindi ay mawawala mo ang pondong {{funds}} sa kasalukuyan mong wallet.</translation>
 <translation id="5423214929210538027">Sigurado ka bang gusto mong i-reset ang Rewards Wallet mo?</translation>
-<translation id="9106875682287489763">Permanenteng mawawala ang <ph name="BEGIN_BOLD">&lt;b&gt;</ph>{{amount}} BATs<ph name="BEGIN_END">&lt;/b&gt;</ph> mo at iba pang Rewards data kung ire-reset mo ang wallet mo. Pakitiyak na na-verify mo ang iyong wallet sa Uphold para mapanatili mo ang BAT mo.</translation>
+<translation id="7428521340740703492">Permanenteng mawawala ang iyong <ph name="BEGIN_BOLD"/>{{amount}} BAT<ph name="END_BOLD"/> at iba pang Rewards data kung ire-reset mo ang wallet mo. Pakitiyak na na-verify mo ang iyong wallet sa Uphold upang mapanatili mo ang BAT mo.</translation>
 <translation id="2028613172174411919">Permanenteng mawawala ang Rewards data mo kung ire-reset mo ang wallet mo.</translation>
 <translation id="4914597931214386232">Mga Na-claim na Grant para sa Token</translation>
 <translation id="3494964159182650590">Buod ng Mga Reward</translation>
@@ -533,14 +544,13 @@
 <translation id="5030988785798407804">Paparating na ang iyong grant na {{currency}}.</translation>
 <translation id="2132683977638223450">Libreng Grant para sa Puntos</translation>
 <translation id="7512440811010447157">i-verify</translation>
-<translation id="8030169304546394654">Nadiskonekta</translation>
 <translation id="8267327690882073581">I-verify ang Wallet</translation>
 <translation id="543510923939676996">Na-verify ang Wallet</translation>
 <translation id="7591798679868259510">Pumunta sa aking Uphold account</translation>
 <translation id="3699674790322420653">Kumpletuhin ang pag-verify ng wallet</translation>
 <translation id="9200453331904391567">Idiskonekta mula sa Mga Reward ng Brave</translation>
 <translation id="46988480989545156">I-verify ang wallet</translation>
-<translation id="4986087720311945758">Ang aming serbisyong wallet ay ibinibigay ng <ph name="BEGIN_BOLD">&lt;b&gt;</ph>Uphold<ph name="BEGIN_END">&lt;/b&gt;</ph></translation>
+<translation id="160145159036553575">Ang aming serbisyong wallet ay ibinibigay ng <ph name="BEGIN_BOLD"/>Uphold.<ph name="END_BOLD"/></translation>
 <translation id="6771734945114850124">Pakihanda ang iyong ID na bigay ng gobyerno.</translation>
 <translation id="8697510149346635496">Mag-withdraw ng BAT na naipon mo mula sa pagtingin sa mga ad na may pagsasaalang-alang sa privacy</translation>
 <translation id="1481480653609649134">Bumili ng karagdagang BAT gamit ang mga credit card at iba pang source</translation>
@@ -552,7 +562,7 @@
 <translation id="7404779623219601861">I-redeem ang BAT para sa Mga Gift Card</translation>
 <translation id="6215565499749144110">Gamit ang TAP Network, mare-redeem mo ang iyong BAT para sa mga gift card ng mga sikat na tatak.</translation>
 <translation id="6915065518766963119">* Kailangan ng Pag-verify sa Uphold.</translation>
-<translation id="651649139059930379">Makakuha ng 2% cryptoback gamit ang Uphold card</translation>
+<translation id="7703007724342399482">Makakuha ng 2% cryptoback gamit ang Uphold card</translation>
 <translation id="1109729143147368573">Gastusin ang iyong crypto at ina pang asset sa halos 50 milyong merchant at ATM sa buong mundo. Gumastos ng crypto para makakuha ng crypto!</translation>
 <translation id="4360054110030715117"><ph name="LINK_BEGIN"/>Matuto pa<ph name="LINK_END"/> tungkol sa Brave Rewards</translation>
 <translation id="5826706758731195747">Sa pamamagitan ng pag-on sa Rewards, sumasang-ayon ka sa <ph name="LINK_BEGIN"/>Mga Tuntunin ng Serbsisyo<ph name="LINK_END"/>.</translation>
@@ -608,6 +618,7 @@
 <translation id="6409345078064530735">Deposit Address</translation>
 <translation id="7153116947319792513">Memo ng Deposito</translation>
 <translation id="1383876407941801731">Search</translation>
+<translation id="3781412534383755121">Ang minimum na halagang puwedeng i-convert ay:</translation>
 <translation id="6432284126416751397">I-confirm ang Conversion</translation>
 <translation id="1301340234286078471">I-convert</translation>
 <translation id="6680650203439190394">Rate</translation>
@@ -648,4 +659,21 @@
 <translation id="453977518730680921">Mag-autoplay ng media</translation>
 <translation id="7701466644604753106">I-ON ang Speedreader</translation>
 <translation id="763042262431778831">I-OFF ang Speedreader</translation>
+<translation id="9020818404803201080">Mga nakakonektang peer:</translation>
+<translation id="6717690610234999751">Config ng Mga Address</translation>
+<translation id="9182285671734219088">Status ng Daemon</translation>
+<translation id="6599816589121202398">API</translation>
+<translation id="1327977588028644528">Gateway</translation>
+<translation id="2551123942222622809">Swarm</translation>
+<translation id="3967335629471284781">Inilunsad</translation>
+<translation id="1515163294334130951">Ilunsad</translation>
+<translation id="1895658205118569222">Shutdown</translation>
+<translation id="6762417584993757344">Hindi Naka-install</translation>
+<translation id="8428368469058794536">Serbisyo ng IPFS</translation>
+<translation id="2901715907314796027">Bumili ng crypto mula sa Bitcoin.com.</translation>
+<translation id="4065681313949497252">Currency</translation>
+<translation id="3833315885381772739">Maglagay ng halaga</translation>
+<translation id="4011828592358027165">Bago sa crypto?</translation>
+<translation id="3358050091139900813">Kunin ang wallet dito upang magsimula</translation>
+<translation id="3105412115725259537">Bitcoin.com</translation>
 </translationbundle>

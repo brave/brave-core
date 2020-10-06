@@ -291,7 +291,7 @@
 <translation id="1361872463926621533">Erreproduzitu soinua abioan</translation>
 <translation id="1363585519747660921">USB bidezko inprimagailua konfiguratu egin behar da</translation>
 <translation id="1365180424462182382"><ph name="ENROLLMENT_DOMAIN"/> da <ph name="BEGIN_LINK"/>arakatzailearen kudeatzailea<ph name="END_LINK"/></translation>
-<translation id="1366177842110999534">Abiarazi Linux tresnak, editoreak eta IDEak <ph name="DEVICE_TYPE"/> gailuan. &lt;a target="_blank" href="<ph name="URL"/>"&gt;Lortu informazio gehiago&lt;/a&gt;</translation>
+<translation id="1366177842110999534">Abiarazi Linux tresnak, editoreak eta IDEak <ph name="DEVICE_TYPE"/> gailuan. &lt;a target="_blank" rel="noopener noreferrer" href="<ph name="URL"/>"&gt;Lortu informazio gehiago&lt;/a&gt;</translation>
 <translation id="1367951781824006909">Aukeratu fitxategi bat</translation>
 <translation id="1369149969991017342">Erabilerraztasun-osagarria (kontrolatu ordenagailua etengailu bakarra edo bi erabilita)</translation>
 <translation id="1372841398847029212">Sinkronizatu kontuarekin</translation>
@@ -1354,7 +1354,7 @@ Kontu honen ezarpenak kudeatzeko, instalatu Family Link aplikazioa zure gailuan.
 <translation id="268053382412112343">Hi&amp;storia</translation>
 <translation id="2682498795777673382">Gurasoak aldaketa bat egin du</translation>
 <translation id="2683638487103917598">Ordenatu da karpeta</translation>
-<translation id="2686222346846590368"><ph name="DEVICE_TYPE"/> gailurako azken software- eta segurtasun-eguneratze automatikoa da hau. Eguneratze gehiago jasotzeko, lortu modelo berriago bat. &lt;a target="_blank" href="<ph name="URL"/>"&gt;Lortu informazio gehiago<ph name="LINK_END"/></translation>
+<translation id="2686222346846590368"><ph name="DEVICE_TYPE"/> gailurako azken software- eta segurtasun-eguneratze automatikoa da hau. Eguneratze gehiago jasotzeko, lortu modelo berriago bat. &lt;a target="_blank" rel="noopener noreferrer" href="<ph name="URL"/>"&gt;Lortu informazio gehiago<ph name="LINK_END"/></translation>
 <translation id="2687403674020088961">Blokeatu cookie guztiak (ez da gomendatzen)</translation>
 <translation id="2687407218262674387">Brave-ren Zerbitzu-baldintzak</translation>
 <translation id="2688196195245426394">Errore bat gertatu da gailua zerbitzariarekin erregistratzean: <ph name="CLIENT_ERROR"/>.</translation>
@@ -4852,7 +4852,7 @@ Kontu honen ezarpenak kudeatzeko, instalatu Family Link aplikazioa zure gailuan.
 <translation id="7197632491113152433">Gailu honetan erabil daitezkeen <ph name="NUMBER_OF_APPS"/> aplikazio aurkitu ditugu zure kontuan.</translation>
 <translation id="7199158086730159431">Lortu l&amp;aguntza</translation>
 <translation id="7200083590239651963">Hautatu konfigurazioa</translation>
-<translation id="7201042526153088083">Instalatu Google Play-ko aplikazioak eta jokoak <ph name="DEVICE_TYPE"/> gailuan. &lt;a target="_blank" href="<ph name="URL"/>"&gt;Lortu informazio gehiago&lt;/a&gt;</translation>
+<translation id="7201042526153088083">Instalatu Google Play-ko aplikazioak eta jokoak <ph name="DEVICE_TYPE"/> gailuan. &lt;a target="_blank" rel="noopener noreferrer" href="<ph name="URL"/>"&gt;Lortu informazio gehiago&lt;/a&gt;</translation>
 <translation id="720110658997053098">Ezarri gailu hau pantaila osoko moduan betiko</translation>
 <translation id="7201118060536064622">Ezabatu da "<ph name="DELETED_ITEM_NAME"/>"</translation>
 <translation id="7201420661433230412">Ikusi fitxategiak</translation>
@@ -6519,6 +6519,7 @@ Gorde gakoen fitxategia leku seguru batean. Zure luzapenaren bertsio berriak sor
 <translation id="995782501881226248">YouTube</translation>
 <translation id="996250603853062861">Konexio segurua ezartzen…</translation>
 <translation id="998747458861718449">I&amp;kuskatu</translation>
+<translation id="38046578254905003">Aurkitu luzapenak eta gaiak <ph name="BEGIN_LINK"/>Brave Web Store<ph name="END_LINK"/> dendan</translation>
 <translation id="658539216370629794">Ireki esteka &amp;ezkutuko moduko leihoan</translation>
 <translation id="1432267168815937878">Ireki esteka &amp;ezkutuko moduko leihoan</translation>
 <translation id="6516243500644829484">&amp;Ezkutuko leiho berria</translation>
@@ -6598,7 +6599,6 @@ Gorde gakoen fitxategia leku seguru batean. Zure luzapenaren bertsio berriak sor
 <translation id="3860292630623580294">(Ezkutuko modua)</translation>
 <translation id="4854477725773269949">Baimendu ezkutuko moduan</translation>
 <translation id="6436164536244065364">Ikusi Web Store dendan</translation>
-<translation id="38046578254905003">Aurkitu luzapenak eta gaiak <ph name="BEGIN_LINK"/>Brave Web Store<ph name="END_LINK"/> dendan</translation>
 <translation id="6336451774241870485">Ezkutuko moduko fitxa berria</translation>
 <translation id="6610147964972079463">Itxi ezkutuko moduko fitxak</translation>
 <translation id="4933782374919065856">Galderak dituzu? Jarri harremanetan zure profila gainbegiratzen duen pertsonarekin.</translation>

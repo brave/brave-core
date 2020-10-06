@@ -31,9 +31,13 @@
 <translation id="5550994254534676787">あなたのサイト閲覧履歴を表示する</translation>
 <translation id="985862351129593673">ダッシュボードをカスタマイズする</translation>
 <translation id="7180865173735832675">設定</translation>
-<translation id="5783793537552649286">背景画像を表示</translation>
+<translation id="8522669544471808198">背景画像を表示</translation>
 <translation id="7275773481201277457">Braveのデータを表示</translation>
 <translation id="6836061097810262923">時計を表示</translation>
+<translation id="5912396950572065471">フォーマット</translation>
+<translation id="604124094241169006">自動設定</translation>
+<translation id="867722069064361487">12時間表示</translation>
+<translation id="4064062743338217840">24時間表示</translation>
 <translation id="8643377320501056697">トップサイトを表示</translation>
 <translation id="3446024864193919737">Brave Rewardsを表示する</translation>
 <translation id="6274899614137380422">Binanceを表示する</translation>
@@ -71,6 +75,10 @@
 <translation id="8958799246752641148">Torはあなたがサイトを訪れる際、複数のTorサーバーを経由させることで、訪問サイトからあなたのIPアドレスを秘匿化します。この接続は暗号化されているため、インターネットサービスプロバイダも雇用者もあなたの訪れているサイトを知ることはできません。Torによりブラウジングが遅くなることがあり、一部のサイトで機能しないことがあります。</translation>
 <translation id="520608572871993342">プライベートウィンドウを使用すると、あなたのデバイスでBraveに関することだけが変更されます。— 他のものの動作は何も変更されません。TorはあなたのIPアドレスを訪れるサイトに対して秘匿し、訪れたサイトをあなたのISPや雇用者からも秘匿します。プライベートウィンドウ+Torはメニューから、または{{ key }}で開きます。</translation>
 <translation id="6975708438781948564">BraveにおけるTorの詳細を表示</translation>
+<translation id="4712050378540986986">Torステータス</translation>
+<translation id="3368922792935385530">接続済み</translation>
+<translation id="8030169304546394654">切断されました</translation>
+<translation id="3705383383955310071">初期化しています {{percentage}}%</translation>
 <translation id="4272382368346338917">追加フィルター設定</translation>
 <translation id="8949292968394988358">警告：フィルターを設定し過ぎるとパフォーマンスが悪化します。</translation>
 <translation id="8686201964111147748">ブロック済みの広告とトラッカーの総数：</translation>
@@ -105,7 +113,7 @@
 <translation id="3829010735958850433">ウェルカムツアーをスキップする</translation>
 <translation id="1201402288615127009">次へ</translation>
 <translation id="7954950242989581218">安心・安全にブラウズする</translation>
-<translation id="2188651882929633653">Brave Shieldは、ウェブのあらゆる場所でユーザーを追跡しようとする不要なファイルをブロックします。ほとんどの広告が含まれます。特定のサイトがうまく機能しない時は、Shieldをオフに設定してみてください。Braveは<ph name="BEGIN_LINK_P3A">&lt;a target="_blank" href="$1"&gt;</ph>完全に匿名のアナリティクス<ph name="END_LINK_P3A">&lt;/a&gt;</ph>を使い、特定の機能がどの程度使われているか予測します。これは<ph name="BEGIN_LINK_P3A_SETTINGS">&lt;a target="_blank" href="$2"&gt;</ph>設定<ph name="END_LINK_P3A_SETTINGS">&lt;/a&gt;</ph>でオフにできます。</translation>
+<translation id="2188651882929633653">Brave Shieldは、広告などウェブ全体であなたの追跡を試みる不快なものブロックします。サイトの動作に問題がある場合、Shieldを無効にしてしましょう。Braveは<ph name="BEGIN_LINK_P3A"/>完全にプライベートな分析機能<ph name="END_LINK_P3A"/>により、特定の機能の一般的な使用状況を推定しています。こちらは<ph name="BEGIN_LINK_P3A_SETTINGS"/>設定<ph name="END_LINK_P3A_SETTINGS"/>でオフにすることができます。</translation>
 <translation id="1919345977826869612">広告</translation>
 <translation id="2128226640852355533">Brave広告を表示することによって、{{currency}}を稼げます。表示される広告は、閲覧行動から推測されるように、あなたの興味に基づいています。個人データや閲覧履歴がブラウザーから離れることはありません。</translation>
 <translation id="6112368337882254910">自動支援</translation>
@@ -177,7 +185,7 @@
 <translation id="4875485795191140618">ウォレットキーが認証され、正常に読み込まれました。</translation>
 <translation id="1083279119532577005">ウォレットは復元されました！</translation>
 <translation id="7841456038054167122">キーを再入力または別のキーを入力してください。</translation>
-<translation id="340102383764929340">入力された復元キーはサポートされていません。新しいキーを手に入れるには、<ph name="BEGIN_LINK_REGION_TEXT">&lt;a target="_blank" href="http://brave.com/faq#convert-old-keys"&gt;</ph>here<ph name="END_LINK_REGION_TEXT">&lt;/a&gt;</ph> にアクセスしてください。</translation>
+<translation id="1911900517212490188">入力された回復キーはもうサポートされていません。<ph name="BEGIN_LINK"/>こちら<ph name="END_LINK"/>に進んで、新しいキーを取得してください。</translation>
 <translation id="2195074481553016770">もう少しです…</translation>
 <translation id="5254740304961202261">人間であることを証明してください!</translation>
 <translation id="2187043784382239974">う～ん</translation>
@@ -195,7 +203,7 @@
 <translation id="3082557070674409251">クリック済み</translation>
 <translation id="7119308337584989771">却下済み</translation>
 <translation id="6805660603861526473">表示済み</translation>
-<translation id="2852258589816753010">現在、お客様の地域ではBAPはサポートされていません。最新情報は、<ph name="BEGIN_LINK_REGION_TEXT">&lt;a target="_blank" href="$1"&gt;</ph>here<ph name="END_LINK_REGION_TEXT">&lt;/a&gt;</ph> をご確認ください。</translation>
+<translation id="2359865110462963929">お住まいの地域で、現在BATはサポートされていません。最新の情報につきましては、<ph name="BEGIN_LINK"/>こちら<ph name="END_LINK"/>をご参照ください。</translation>
 <translation id="2564425876266960486">BraveブラウザBAPカードの作成エラー</translation>
 <translation id="6473583070570450185">ログインするには、認証済みのウォレットが必要です</translation>
 <translation id="2106271389438168634">Upholdウォレットを作成するには、最低25 BATが必要です。Upholdでウォレットを認証した後、もう一度試してください。</translation>
@@ -222,6 +230,9 @@
 <translation id="386483240851194811">Rewardsが停止しました</translation>
 <translation id="3354337256330577726">自動貢献はオフになりました</translation>
 <translation id="6727186931929643711">再試行を中断しました</translation>
+<translation id="680983167891198932">キー</translation>
+<translation id="7535087603100972091">値</translation>
+<translation id="45591635423975492">ログ日時</translation>
 <translation id="2059498613853603008">警告：このページのデータは機密性の高いデータである可能性があります。ウォレットのプライベートキーと同じように扱ってください。誰と共有するかについては慎重に判断してください。</translation>
 <translation id="7375125077091615385">タイプ:</translation>
 <translation id="4973347371961481083">貢献</translation>
@@ -255,6 +266,7 @@
 <translation id="2152423226436243241">自動貢献</translation>
 <translation id="2927922949538312364">１回限りのチップ</translation>
 <translation id="3164105678355419142">定期的に支払うチップ</translation>
+<translation id="7806880412350961625">イベントログ</translation>
 <translation id="4309915981827077375">一般情報</translation>
 <translation id="3662406032239313663">ログ</translation>
 <translation id="9001933311880936179">総額：</translation>
@@ -265,7 +277,6 @@
 <translation id="2326487656644542536">ウォレットの情報</translation>
 <translation id="8559420016582377654">ウォレット支払いID：</translation>
 <translation id="438586487791444158">ウォレットのステータス：</translation>
-<translation id="3368922792935385530">接続済み</translation>
 <translation id="8874184842967597500">未接続</translation>
 <translation id="4569155249847375786">確認済み</translation>
 <translation id="922103963921062336">切断（認証されていません）</translation>
@@ -354,7 +365,7 @@
 <translation id="7335371657242627509">自動支援の対象にする</translation>
 <translation id="1864111464094315414">ログイン</translation>
 <translation id="4556504723624686474">ウォレットを認証すると、資金をより効率的に管理することができます。</translation>
-<translation id="4188679602963314994">Upholdアカウントを作成するには、最低25 BATが必要です。後でもう一度やり直してください。<ph name="BREAK">&lt;br/&gt;</ph>すでに認証済みのUpholdアカウントをお持ちの場合は、このままログインを続けてください。</translation>
+<translation id="5594737784294211654">Upholdアカウントの作成には25 BAT以上保有している必要があります。後で改めてお試しください。<ph name="NEWLINE"/>すでに確認済みのUpholdアカウントをお持ちでしたら、引き続きログインしてください。</translation>
 <translation id="3250511771491660127">毎月行う</translation>
 <translation id="6028954173739504682">ウォレットを管理</translation>
 <translation id="7886389832052393750">4月</translation>
@@ -446,8 +457,8 @@
 <translation id="8014425282125849700">Braveからの無料ポイントを受け取る (通知をお見逃しなく！)</translation>
 <translation id="2185598236335233939">Braveを使用しているとき広告の通知表示されます。広告が表示されるたびにBATポイントの残高が増えます。</translation>
 <translation id="1370034647041840967">広告に閲覧することでポイントを獲得し、あなたがサポートしたいコンテンツクリエイターに支払いましょう！</translation>
-<translation id="1701701253000051237">資金の管理(追加・引出し) <ph name="BEGIN_BOLD">&lt;b&gt;</ph>Uphold<ph name="BEGIN_END">&lt;/b&gt;</ph>.</translation>
-<translation id="4208741993667364007">Braveウォレットは <ph name="BEGIN_BOLD">&lt;b&gt;</ph>Uphold<ph name="BEGIN_END">&lt;/b&gt;</ph>. の機能を利用しています</translation>
+<translation id="4600224932216165965"><ph name="BEGIN_BOLD"/>Uphold<ph name="END_BOLD"/>で資金を追加、引き出し、管理しましょう</translation>
+<translation id="3580616436301227919">お使いのBraveウォレットは、<ph name="BEGIN_BOLD"/>Uphold<ph name="END_BOLD"/>が提供しています</translation>
 <translation id="6401272292123354754">Brave RewardsはBasic Attention Token(BAT)で構築されています。BATの詳細をもっと知る</translation>
 <translation id="7823359893981882407">こちら</translation>
 <translation id="4483635855837696643">ウォレットを復元する</translation>
@@ -456,7 +467,7 @@
 <translation id="3267911153934785912">回復キーを入力</translation>
 <translation id="6548189695918108191">移行する前にウォレットをバックアップしてください。そうしないと現在のウォレットにある資金が失われます。</translation>
 <translation id="5423214929210538027">本当にRewards Walletをリセットしてよろしいですか？</translation>
-<translation id="9106875682287489763">ウォレットをリセットすると、あなたの <ph name="BEGIN_BOLD">&lt;b&gt;</ph>{{amount}} BATs<ph name="BEGIN_END">&lt;/b&gt;</ph> や報酬に関するデータが永久に失われます。BATトークンを失わないように、Upholdを使ってウォレットの内容を必ず確認してください。</translation>
+<translation id="7428521340740703492">ウォレットをリセットすると、あなたの<ph name="BEGIN_BOLD"/>{{amount}} BAT<ph name="END_BOLD"/>とその他の報酬データは恒久的に失われます。ご自身のBATを維持することができるよう、必ずUpholdでウォレットの確認を行ってください。</translation>
 <translation id="2028613172174411919">ウォレットをリセットすると、あなたが受け取った報酬のデータが永久に失われます。</translation>
 <translation id="4914597931214386232">取得済のポイント付与</translation>
 <translation id="3494964159182650590">Rewardsのサマリ</translation>
@@ -536,14 +547,13 @@
 <translation id="5030988785798407804">あなたの{{currency}}は処理中です。</translation>
 <translation id="2132683977638223450">無料のポイント付与</translation>
 <translation id="7512440811010447157">確認</translation>
-<translation id="8030169304546394654">切断されました</translation>
 <translation id="8267327690882073581">ウォレットを確認</translation>
 <translation id="543510923939676996">ウォレットが検証済み</translation>
 <translation id="7591798679868259510">Upholdのアカウントに移動</translation>
 <translation id="3699674790322420653">ウォレットの検証を完了</translation>
 <translation id="9200453331904391567">Braveの報酬から切断</translation>
 <translation id="46988480989545156">ウォレットを確認</translation>
-<translation id="4986087720311945758">Braveのウォレット機能は<ph name="BEGIN_BOLD">&lt;b&gt;</ph>Uphold<ph name="BEGIN_END">&lt;/b&gt;</ph>を利用しています。</translation>
+<translation id="160145159036553575">当ウォレットサービスは、<ph name="BEGIN_BOLD"/>Uphold<ph name="END_BOLD"/>によって提供されています。</translation>
 <translation id="6771734945114850124">政府発行の身分証明書をご用意ください。</translation>
 <translation id="8697510149346635496">プライバシーを尊重する広告表示で獲得したBAPを引き出す</translation>
 <translation id="1481480653609649134">クレジットカードやその他の資金源で追加のBAPを購入する</translation>
@@ -555,7 +565,7 @@
 <translation id="7404779623219601861">BATをギフトカードと交換する</translation>
 <translation id="6215565499749144110">TAPネットワークを使用すると、BATを人気の有名ブランドのギフトカードと交換できます。</translation>
 <translation id="6915065518766963119">*「Uphold検証」が必要です。</translation>
-<translation id="651649139059930379">Upholdカードで2%のクリプトバックを獲得しましょう</translation>
+<translation id="7703007724342399482">Upholdカードで2%のクリプトバックを受けましょう</translation>
 <translation id="1109729143147368573">世界中の約5,000万の販売業者とATMで、暗号通貨とその他の資産を使いましょう。暗号通貨を使ってさらに暗号通貨を獲得しましょう！</translation>
 <translation id="4360054110030715117">Brave Rewardsに関する<ph name="LINK_BEGIN"/>詳細を確認<ph name="LINK_END"/></translation>
 <translation id="5826706758731195747">Rewardsをオンにすることにより、<ph name="LINK_BEGIN"/>サービス規約<ph name="LINK_END"/>に同意したことになります。</translation>
@@ -611,6 +621,7 @@
 <translation id="6409345078064530735">預金アドレス</translation>
 <translation id="7153116947319792513">デポジットメモ</translation>
 <translation id="1383876407941801731">検索</translation>
+<translation id="3781412534383755121">最少換金額は：</translation>
 <translation id="6432284126416751397">変換を確認する</translation>
 <translation id="1301340234286078471">変換</translation>
 <translation id="6680650203439190394">レート</translation>
@@ -651,4 +662,21 @@
 <translation id="453977518730680921">メディアの自動再生</translation>
 <translation id="7701466644604753106">Speedreaderをオンにする</translation>
 <translation id="763042262431778831">Speedreaderをオフにする</translation>
+<translation id="9020818404803201080">接続されたピア：</translation>
+<translation id="6717690610234999751">アドレス構成</translation>
+<translation id="9182285671734219088">デーモンのステータス</translation>
+<translation id="6599816589121202398">API</translation>
+<translation id="1327977588028644528">ゲートウェイ</translation>
+<translation id="2551123942222622809">Swarm</translation>
+<translation id="3967335629471284781">ローンチ済み</translation>
+<translation id="1515163294334130951">ローンチ</translation>
+<translation id="1895658205118569222">シャットダウン</translation>
+<translation id="6762417584993757344">インストールされていません</translation>
+<translation id="8428368469058794536">IPFSサービス</translation>
+<translation id="2901715907314796027">Bitcoin.comから仮想通貨を購入する。</translation>
+<translation id="4065681313949497252">通貨</translation>
+<translation id="3833315885381772739">金額を入力してください</translation>
+<translation id="4011828592358027165">仮想通貨の初心者ですか？</translation>
+<translation id="3358050091139900813">ここでウォレットを入手して始めましょう</translation>
+<translation id="3105412115725259537">Bitcoin.com</translation>
 </translationbundle>

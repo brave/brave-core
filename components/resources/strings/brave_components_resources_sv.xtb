@@ -28,9 +28,13 @@
 <translation id="5550994254534676787">Visa webbhistorik</translation>
 <translation id="985862351129593673">Anpassa översikten</translation>
 <translation id="7180865173735832675">Anpassa</translation>
-<translation id="5783793537552649286">Visa bakgrundsbild</translation>
+<translation id="8522669544471808198">Visa bakgrundsbilder</translation>
 <translation id="7275773481201277457">Visa Brave-statistik</translation>
 <translation id="6836061097810262923">Visa klockan</translation>
+<translation id="5912396950572065471">Format</translation>
+<translation id="604124094241169006">Automatisk</translation>
+<translation id="867722069064361487">12-timmars klocka</translation>
+<translation id="4064062743338217840">24-timmars klocka</translation>
 <translation id="8643377320501056697">Visa populäraste webbplatser</translation>
 <translation id="3446024864193919737">Visa Brave Rewards</translation>
 <translation id="6274899614137380422">Visa Binance</translation>
@@ -45,7 +49,7 @@
 <translation id="1776831331757823105">Klocka</translation>
 <translation id="4643117005422448078">Toppsajter</translation>
 <translation id="7791543448312431591">Lägg till</translation>
-<translation id="7679334366167089823">Tjäna tokens när du tittar på annonser som respekterar din integritet.</translation>
+<translation id="7679334366167089823">Tjäna token när du tittar på annonser som respekterar din integritet.</translation>
 <translation id="1531133232292396145">Handla krypto på Binance direkt i din webbläsare.</translation>
 <translation id="2166494527623220386">Handla krypto på Gemini direkt i din webbläsare.</translation>
 <translation id="6165508094623778733">Läs mer</translation>
@@ -68,6 +72,10 @@
 <translation id="8958799246752641148">Tor döljer din IP-adress från de webbplatser du besöker genom att dirigera din surfning genom flera Tor-servrar innan den når din destination. Dessa anslutningar är krypterade, så din internetleverantör eller arbetsgivare kan inte se vilka webbplatser du besöker. Tor kan göra att det går långsammare och vissa webbplatser kanske inte fungerar alls.</translation>
 <translation id="520608572871993342">Att använda privata fönster ändrar bara vad Brave gör på din enhet — det förändrar inte någon annans beteende. Tor döljer din IP-adress för de webbsidor du besöker och döljer de webbplatser du besöker för din internetleverantör eller din arbetsgivare. Öppna ett privat fönster med Tor från menyn eller med {{ key }}.</translation>
 <translation id="6975708438781948564">Läs mer om Tor i Brave</translation>
+<translation id="4712050378540986986">Tor-status</translation>
+<translation id="3368922792935385530">Ansluten</translation>
+<translation id="8030169304546394654">Frånkopplad</translation>
+<translation id="3705383383955310071">Initierar {{percentage}} %</translation>
 <translation id="4272382368346338917">Ytterligare filter</translation>
 <translation id="8949292968394988358">Varning: om du aktiverar för många filter kan prestanda bli lidande</translation>
 <translation id="8686201964111147748">Totalt antal annonser och spårningsprogram som har blockerats:</translation>
@@ -99,10 +107,10 @@
 <translation id="438216590634144114">Välj den sökmotor du vill använda som standard när du söker på nätet från adressfältet.</translation>
 <translation id="5804484488647369316">Ange standardsökmotor</translation>
 <translation id="4428458837269935199">För en mer privat sökupplevelse, prova DuckDuckGo.</translation>
-<translation id="3829010735958850433">Hoppa över välkomsttur</translation>
+<translation id="3829010735958850433">Hoppa över välkomstturen</translation>
 <translation id="1201402288615127009">Nästa</translation>
 <translation id="7954950242989581218">Surfa säkert och tryggt</translation>
-<translation id="2188651882929633653">Brave Shields blockerar de läskiga grejerna som försöker spåra dig på nätet, inklusive största delen av all reklam. Ställ in Shields som "nere" om en webbplats inte verkar fungera. Brave använder <ph name="BEGIN_LINK_P3A">&lt;a target="_blank" href="$1"&gt;</ph>helt privat produktanalys <ph name="END_LINK_P3A">&lt;/a&gt;</ph> för att uppskatta den sammanlagda användningen av vissa funktioner. Du kan stänga av detta i <ph name="BEGIN_LINK_P3A_SETTINGS">&lt;a target="_blank" href="$2"&gt;</ph>Settings<ph name="END_LINK_P3A_SETTINGS">&lt;/a&gt;</ph>.</translation>
+<translation id="2188651882929633653">Brave Shields blockerar de läskiga sakerna som försöker spåra dig över nätet — inklusive de flesta annonser. Sätt Shields till “nere” om en webbplats inte verkar fungera. Brave använder <ph name="BEGIN_LINK_P3A"/>fullständigt privat produktanalys<ph name="END_LINK_P3A"/> för att uppskatta den totala användningen av vissa funktioner. Du kan stänga av detta i <ph name="BEGIN_LINK_P3A_SETTINGS"/>Inställningar<ph name="END_LINK_P3A_SETTINGS"/>.</translation>
 <translation id="1919345977826869612">Annonser</translation>
 <translation id="2128226640852355533">Tjäna {{currency}} genom att titta på Brave Ads. Annonserna som visas är anpassade efter dina intressen, baserat på hur du surfar. Din webbläsare lämnar aldrig ifrån sig personuppgifter eller surfhistorik.</translation>
 <translation id="6112368337882254910">Bidra automatiskt</translation>
@@ -174,7 +182,7 @@
 <translation id="4875485795191140618">Din plånboksnyckel har verifierats och laddats.</translation>
 <translation id="1083279119532577005">Plånbok återställd!</translation>
 <translation id="7841456038054167122">Vänligen skriv in nycklarna igen eller prova andra nycklar</translation>
-<translation id="340102383764929340">Återställningsnyckeln som angavs stöds inte längre. Besök <ph name="BEGIN_LINK_REGION_TEXT">&lt;a target="_blank" href="http://brave.com/faq#convert-old-keys"&gt;</ph>här<ph name="END_LINK_REGION_TEXT">&lt;/a&gt;</ph> för att få en ny nyckel.</translation>
+<translation id="1911900517212490188">Den angivna återställningsnyckeln stöds inte längre. Gå <ph name="BEGIN_LINK"/>hit<ph name="END_LINK"/> för att få en ny nyckel.</translation>
 <translation id="2195074481553016770">Nästan där…</translation>
 <translation id="5254740304961202261">Bevisa att du är en människa!</translation>
 <translation id="2187043784382239974">Hmmm, inte riktigt...</translation>
@@ -192,7 +200,7 @@
 <translation id="3082557070674409251">Klickat</translation>
 <translation id="7119308337584989771">Avfärdat</translation>
 <translation id="6805660603861526473">Sett</translation>
-<translation id="2852258589816753010">BAT stöds för närvarande inte i din region. Uppdateringar hittar du <ph name="BEGIN_LINK_REGION_TEXT">&lt;a target="_blank" href="$1"&gt;</ph>här<ph name="END_LINK_REGION_TEXT">&lt;/a&gt;</ph>.</translation>
+<translation id="2359865110462963929">BAT stöds för närvarande inte i din region. Se <ph name="BEGIN_LINK"/>här<ph name="END_LINK"/> för uppdateringar.</translation>
 <translation id="2564425876266960486">Fel vid skapande av BAT-kort för webbläsaren Brave</translation>
 <translation id="6473583070570450185">Du måste ha en verifierad plånbok för att logga in</translation>
 <translation id="2106271389438168634">Du behöver minst 25 BAT för att skapa en Uphold-plånbok. Försök igen när du har verifierat din plånbok med Uphold.</translation>
@@ -219,6 +227,9 @@
 <translation id="386483240851194811">Rewards stängdes av</translation>
 <translation id="3354337256330577726">Automatiska bidrag stängdes av</translation>
 <translation id="6727186931929643711">Slutade försöka</translation>
+<translation id="680983167891198932">Nyckel</translation>
+<translation id="7535087603100972091">Värde</translation>
+<translation id="45591635423975492">Loggat</translation>
 <translation id="2059498613853603008">VARNING: Data på denna sida kan vara känsliga. Behandla informationen som din plånboks privata nycklar. Var försiktig med vem du delar den med.</translation>
 <translation id="7375125077091615385">Typ:</translation>
 <translation id="4973347371961481083">Bidrag</translation>
@@ -252,6 +263,7 @@
 <translation id="2152423226436243241">Bidra automatiskt</translation>
 <translation id="2927922949538312364">Engångsdricks</translation>
 <translation id="3164105678355419142">Återkommande dricks</translation>
+<translation id="7806880412350961625">Händelseloggar</translation>
 <translation id="4309915981827077375">Allmän information</translation>
 <translation id="3662406032239313663">Loggar</translation>
 <translation id="9001933311880936179">Totalt belopp:</translation>
@@ -262,7 +274,6 @@
 <translation id="2326487656644542536">Plånboksinfo</translation>
 <translation id="8559420016582377654">Plånbokens betalnings-ID:</translation>
 <translation id="438586487791444158">Plånbokens status:</translation>
-<translation id="3368922792935385530">Ansluten</translation>
 <translation id="8874184842967597500">Inte ansluten</translation>
 <translation id="4569155249847375786">Verifierad</translation>
 <translation id="922103963921062336">Frånkopplad (inte verifierad)</translation>
@@ -338,7 +349,7 @@
 <translation id="8003573781961874199">Ladda ned som pdf</translation>
 <translation id="298067735430872465">Förtjänst från annonser</translation>
 <translation id="2266556115441975588">Dina belöningar från annonser har kommit!</translation>
-<translation id="8764029012618014430">Sätt på dricks</translation>
+<translation id="8764029012618014430">Aktivera dricks</translation>
 <translation id="3412655388715513818">Exkludera denna sida</translation>
 <translation id="418343137736963579">Totala antalet sidor du exluderade från auto-bidrag:</translation>
 <translation id="1759104587873258696">Går ut den</translation>
@@ -351,7 +362,7 @@
 <translation id="7335371657242627509">Inkludera i automatiska bidrag</translation>
 <translation id="1864111464094315414">Inloggning</translation>
 <translation id="4556504723624686474">Genom att verifiera plånboken kan du hantera dina pengar mer effektivt.</translation>
-<translation id="4188679602963314994">Du måste ha minst 25 BAT för att skapa ett Uphold-konto. Vänligen försök igen senare. <ph name="BREAK">&lt;br/&gt;</ph>Om du redan har ett verifierat Uphold-konto, fortsätt till inloggningen.</translation>
+<translation id="5594737784294211654">Du måste ha minst 25 BAT för att skapa ett Uphold-konto. Vänligen försök igen senare. <ph name="NEWLINE"/>Om du redan har ett verifierat Uphold-konto, fortsätt till inloggningen.</translation>
 <translation id="3250511771491660127">Gör det här varje månad</translation>
 <translation id="6028954173739504682">Hantera din plånbok</translation>
 <translation id="7886389832052393750">Apr</translation>
@@ -443,8 +454,8 @@
 <translation id="8014425282125849700">Då och då kommer du att erbjudas tilldelning av token från Brave. Så håll utkik efter erbjudandet!</translation>
 <translation id="2185598236335233939">Titta efter annonsnotifieringar när du surfar med Brave. Saldot för dina BAT Points kommer att öka med varje annons du tittar på.</translation>
 <translation id="1370034647041840967">Få token för din uppmärksamhet på annonser och betala vidare för att stödja innehållskreatörer du värdesätter!</translation>
-<translation id="1701701253000051237">Lägg till, ta ut och hantera medel på <ph name="BEGIN_BOLD">&lt;b&gt;</ph>Uphold<ph name="BEGIN_END">&lt;/b&gt;</ph></translation>
-<translation id="4208741993667364007">Din Brave-plånbok drivs av <ph name="BEGIN_BOLD">&lt;b&gt;</ph>Uphold<ph name="BEGIN_END">&lt;/b&gt;</ph>.</translation>
+<translation id="4600224932216165965">Lägg till, ta ut och hantera medel på <ph name="BEGIN_BOLD"/>Uphold<ph name="END_BOLD"/>.</translation>
+<translation id="3580616436301227919">Din Brave-plånbok drivs av <ph name="BEGIN_BOLD"/>Uphold<ph name="END_BOLD"/>.</translation>
 <translation id="6401272292123354754">Brave Rewards bygger på Basic Attention Token. Läs mer om BAT</translation>
 <translation id="7823359893981882407">här</translation>
 <translation id="4483635855837696643">Återställ din plånbok</translation>
@@ -453,7 +464,7 @@
 <translation id="3267911153934785912">Skriv in din återställningsnyckel eller</translation>
 <translation id="6548189695918108191">Säkerhetskopiera din plånbok innan du ersätter den. Annars kommer du att förlora medlen i din nuvarande plånbok.</translation>
 <translation id="5423214929210538027">Är du säker på att du vill nollställa din Rewards-plånbok?</translation>
-<translation id="9106875682287489763">Dina <ph name="BEGIN_BOLD">&lt;b&gt;</ph>{{amount}} BATs<ph name="BEGIN_END">&lt;/b&gt;</ph> och andra Rewards-data kommer att gå förlorade permanent om du nollställer plånboken. Se till att din plånbok är verifierad med Uphold så att du behåller dina BAT.</translation>
+<translation id="7428521340740703492">Dina <ph name="BEGIN_BOLD"/>{{amount}} BAT<ph name="END_BOLD"/> och andra Rewards-data kommer permanent att gå förlorade om du återställer din plånbok. Se till att du har verifierat din plånbok med Uphold så att du kan behålla dina BAT.</translation>
 <translation id="2028613172174411919">Dina Rewards-data kommer att gå förlorade permanent om du nollställer plånboken.</translation>
 <translation id="4914597931214386232">Tilldelning av token utnyttjades</translation>
 <translation id="3494964159182650590">Sammanfattning av Rewards</translation>
@@ -486,7 +497,7 @@
 <translation id="1193434225710679930">Poängbidrag</translation>
 <translation id="3535654229833214438">Transaktioner</translation>
 <translation id="1605521356929094020">Aktivera Brave Ads</translation>
-<translation id="8987812599455325915">Detta sätter på både Brave-annonser och Auto-bidrag. Du kan stänga av eller sätta på dem separat när som helst.</translation>
+<translation id="8987812599455325915">Detta aktiverar både Brave-annonser och Auto-bidrag. Du kan stänga av eller sätta på dem separat när som helst.</translation>
 <translation id="1485484147452131556">Aktivera Rewards</translation>
 <translation id="3983104749597726322">Tweet</translation>
 <translation id="5636843789453098076">Ge @{{ user }} dricks för deras tweet:</translation>
@@ -533,14 +544,13 @@
 <translation id="5030988785798407804">Ditt {{currency}}-bidrag är på väg.</translation>
 <translation id="2132683977638223450">Gratis Poängbidrag</translation>
 <translation id="7512440811010447157">verifiera</translation>
-<translation id="8030169304546394654">Frånkopplad</translation>
 <translation id="8267327690882073581">Verifiera plånbok</translation>
 <translation id="543510923939676996">Plånbok verifierad</translation>
 <translation id="7591798679868259510">Gå till mitt Uphold-konto</translation>
 <translation id="3699674790322420653">Slutför verifiering av plånbok</translation>
 <translation id="9200453331904391567">Frånkoppla Brave Rewards</translation>
 <translation id="46988480989545156">Verifiera plånbok</translation>
-<translation id="4986087720311945758">Vår plånbokstjänst tillhandahålls av <ph name="BEGIN_BOLD">&lt;b&gt;</ph>Uphold<ph name="BEGIN_END">&lt;/b&gt;</ph></translation>
+<translation id="160145159036553575">Vår plånbokstjänst tillhandahålls av <ph name="BEGIN_BOLD"/>Uphold.<ph name="END_BOLD"/></translation>
 <translation id="6771734945114850124">Ha din myndighetsutfärdade id-handling till hands.</translation>
 <translation id="8697510149346635496">Ta ut BAT som du tjänar genom att se integritetsrespekterande annonser</translation>
 <translation id="1481480653609649134">Köp ytterligare BAT med kreditkort och andra källor</translation>
@@ -552,10 +562,10 @@
 <translation id="7404779623219601861">Lös in BAT mot presentkort</translation>
 <translation id="6215565499749144110">Med TAP Network kan du lösa in din BAT och få presentkort på populära märken.</translation>
 <translation id="6915065518766963119">* Kräver godkänd verifiering.</translation>
-<translation id="651649139059930379">Få 2 % cryptoback med Uphold-kortet</translation>
+<translation id="7703007724342399482">Få 2 % cryptoback med Uphold-kortet</translation>
 <translation id="1109729143147368573">Spendera din krypto och andra tillgångar hos nästan 50 miljoner handlare och bankomater över hela världen. Spendera krypto för att få krypto!</translation>
 <translation id="4360054110030715117"><ph name="LINK_BEGIN"/>Lär dig mer<ph name="LINK_END"/> om Brave Rewards</translation>
-<translation id="5826706758731195747">Genom att sätta på Rewards, godkänner du <ph name="LINK_BEGIN"/>tjänstevillkoren<ph name="LINK_END"/>.</translation>
+<translation id="5826706758731195747">Genom att aktivera Rewards, godkänner du <ph name="LINK_BEGIN"/>tjänstevillkoren<ph name="LINK_END"/>.</translation>
 <translation id="8344084848798035850">Beräknad inkomst hittills denna månad</translation>
 <translation id="6778392839723468409">Tjäna token genom att se annonser som respekterar din integritet.</translation>
 <translation id="5235444069025581717">Dricks och bidrag denna månad</translation>
@@ -566,7 +576,7 @@
 <translation id="3264975266761862670">Redo att börja tjäna?</translation>
 <translation id="8092889639392847252">Få betalt för att se denna sponsrade bakgrundsbild.</translation>
 <translation id="2542495049135486284">Testa Brave Rewards igen och betala vidare allteftersom du tjänar!</translation>
-<translation id="53513464591392992">Sätt på Brave Rewards och få betalt för att se sekretessrespekterande annonser.</translation>
+<translation id="53513464591392992">Aktivera Brave Rewards och få betalt för att se sekretessrespekterande annonser.</translation>
 <translation id="8463996294416161140">Aktivera <ph name="PRODUCT_NAME"/> för att reservera din andel. Du kan också välja att <ph name="LINK_BEGIN"/>dölja sponsrade bilder<ph name="LINK_END"/>.</translation>
 <translation id="8568666589217601917">Så ska det se ut!</translation>
 <translation id="764235488372037377">Dina belöningar från annonser har kommit</translation>
@@ -608,6 +618,7 @@
 <translation id="6409345078064530735">Insättningsadress</translation>
 <translation id="7153116947319792513">Insättningsanteckning</translation>
 <translation id="1383876407941801731">Sök</translation>
+<translation id="3781412534383755121">Minsta belopp att konvertera är:</translation>
 <translation id="6432284126416751397">Bekräfta omvandling</translation>
 <translation id="1301340234286078471">Omvandla</translation>
 <translation id="6680650203439190394">Taxa</translation>
@@ -619,7 +630,7 @@
 <translation id="6755546361496900700">Förhandsgranska omvandling</translation>
 <translation id="2956070106555335453">Sammanfattning</translation>
 <translation id="439104575421522802">Sessionen upphörde</translation>
-<translation id="8558560988211507902">Ditt verifieringsbevis från Binance slutade gälla. Anslut på nytt för att fortsätta använda widgeten.</translation>
+<translation id="8558560988211507902">Ditt åtkomsttoken från Binance har slutat gälla. Anslut på nytt för att fortsätta använda widgeten.</translation>
 <translation id="1543656153506416324">Köp och handla med Gemini</translation>
 <translation id="8960333903621861280">Aktivera en Gemini-anslutning för att se ditt Gemini-saldo och handla med krypto.</translation>
 <translation id="7604416013180651887">Anslut till Gemini</translation>
@@ -648,4 +659,21 @@
 <translation id="453977518730680921">Spela upp media automatiskt</translation>
 <translation id="7701466644604753106">Slå PÅ snabbläsaren</translation>
 <translation id="763042262431778831">Slå AV snabbläsaren</translation>
+<translation id="9020818404803201080">Anslutna peers:</translation>
+<translation id="6717690610234999751">Adresskonfiguration</translation>
+<translation id="9182285671734219088">Daemon-status</translation>
+<translation id="6599816589121202398">API</translation>
+<translation id="1327977588028644528">Gateway</translation>
+<translation id="2551123942222622809">Swarm</translation>
+<translation id="3967335629471284781">Startat</translation>
+<translation id="1515163294334130951">Starta</translation>
+<translation id="1895658205118569222">Stängning</translation>
+<translation id="6762417584993757344">Inte installerat</translation>
+<translation id="8428368469058794536">IPFS-tjänst</translation>
+<translation id="2901715907314796027">Köp krypto från Bitcoin.com.</translation>
+<translation id="4065681313949497252">Valuta</translation>
+<translation id="3833315885381772739">Ange belopp</translation>
+<translation id="4011828592358027165">Ny på krypto?</translation>
+<translation id="3358050091139900813">Skaffa plånboken här för att komma igång</translation>
+<translation id="3105412115725259537">Bitcoin.com</translation>
 </translationbundle>

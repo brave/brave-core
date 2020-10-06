@@ -291,7 +291,7 @@
 <translation id="1361872463926621533">Reproduzir som ao arrancar</translation>
 <translation id="1363585519747660921">É necessário configurar a impressora USB</translation>
 <translation id="1365180424462182382">O <ph name="BEGIN_LINK"/>navegador é gerido<ph name="END_LINK"/> por <ph name="ENROLLMENT_DOMAIN"/></translation>
-<translation id="1366177842110999534">Execute ferramentas, editores e IDEs de Linux no seu <ph name="DEVICE_TYPE"/>. &lt;a target="_blank" href="<ph name="URL"/>"&gt;Saiba mais&lt;/a&gt;</translation>
+<translation id="1366177842110999534">Execute ferramentas, editores e IDEs de Linux no seu <ph name="DEVICE_TYPE"/>. &lt;a target="_blank" rel="noopener noreferrer" href="<ph name="URL"/>"&gt;Saiba mais&lt;/a&gt;</translation>
 <translation id="1367951781824006909">Selecione um ficheiro</translation>
 <translation id="1369149969991017342">Acesso por comutador (controlar o computador com apenas um ou dois comutadores)</translation>
 <translation id="1372841398847029212">Sincronizar com a sua conta</translation>
@@ -1353,7 +1353,7 @@ Pode gerir as definições desta conta ao instalar a aplicação Family Link no 
 <translation id="268053382412112343">&amp;Histórico</translation>
 <translation id="2682498795777673382">Atualização de um dos pais</translation>
 <translation id="2683638487103917598">Pasta ordenada</translation>
-<translation id="2686222346846590368">Esta é a última atualização automática de software e de segurança deste <ph name="DEVICE_TYPE"/>. Para obter atualizações futuras, atualize para um modelo mais recente. &lt;a target="_blank" href="<ph name="URL"/>"&gt;Saiba mais<ph name="LINK_END"/></translation>
+<translation id="2686222346846590368">Esta é a última atualização automática de software e de segurança deste <ph name="DEVICE_TYPE"/>. Para obter atualizações futuras, atualize para um modelo mais recente. &lt;a target="_blank" rel="noopener noreferrer" href="<ph name="URL"/>"&gt;Saiba mais<ph name="LINK_END"/></translation>
 <translation id="2687403674020088961">Bloquear todos os cookies (não recomendado).</translation>
 <translation id="2687407218262674387">Termos de Utilização do Brave</translation>
 <translation id="2688196195245426394">Erro ao registar o dispositivo no servidor: <ph name="CLIENT_ERROR"/>.</translation>
@@ -4853,7 +4853,7 @@ Certifique-se de que não revela informações confidenciais.</translation>
 <translation id="7197632491113152433">Encontrámos <ph name="NUMBER_OF_APPS"/> aplicações na sua conta que podem ser utilizadas neste dispositivo.</translation>
 <translation id="7199158086730159431">Obter a&amp;juda</translation>
 <translation id="7200083590239651963">Selecionar configuração</translation>
-<translation id="7201042526153088083">Instale apps e jogos do Google Play no dispositivo <ph name="DEVICE_TYPE"/>. &lt;a target="_blank" href="<ph name="URL"/>"&gt;Saiba mais&lt;/a&gt;</translation>
+<translation id="7201042526153088083">Instale apps e jogos do Google Play no dispositivo <ph name="DEVICE_TYPE"/>. &lt;a target="_blank" rel="noopener noreferrer" href="<ph name="URL"/>"&gt;Saiba mais&lt;/a&gt;</translation>
 <translation id="720110658997053098">Manter este dispositivo permanentemente no modo quiosque</translation>
 <translation id="7201118060536064622">"<ph name="DELETED_ITEM_NAME"/>" eliminado</translation>
 <translation id="7201420661433230412">Ver ficheiros</translation>
@@ -6599,7 +6599,7 @@ Mantenha o seu ficheiro de chave num local seguro, pois irá precisar dele para 
 <translation id="3860292630623580294">(Navegação anónima)</translation>
 <translation id="4854477725773269949">Permitir em modo de navegação anónima</translation>
 <translation id="6436164536244065364">Ver na Web Store do Brave</translation>
-<translation id="38046578254905003">Encontre extensões e temas na <ph name="BEGIN_LINK"/>Web Store do Brave<ph name="END_LINK"/>.</translation>
+<translation id="38046578254905003">Encontre extensões e temas na <ph name="BEGIN_LINK"/>Web Store<ph name="END_LINK"/></translation>
 <translation id="6336451774241870485">Novo separador anónimo</translation>
 <translation id="6610147964972079463">Fechar sep. de naveg. anón.</translation>
 <translation id="4933782374919065856">Tem dúvidas? Contacte a pessoa que supervisiona o seu perfil.</translation>

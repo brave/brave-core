@@ -291,7 +291,7 @@
 <translation id="1361872463926621533">تشغيل الصوت عند بدء التشغيل</translation>
 <translation id="1363585519747660921">‏طابعة USB بحاجة إلى الضبط</translation>
 <translation id="1365180424462182382"><ph name="BEGIN_LINK"/>تتم إدارة متصفّحك<ph name="END_LINK"/> من خلال <ph name="ENROLLMENT_DOMAIN"/></translation>
-<translation id="1366177842110999534">‏يمكنك تشغيل أدوات Linux وأدوات التحرير وبرامج IDE على <ph name="DEVICE_TYPE"/>. &lt;a target="_blank" href="<ph name="URL"/>"&gt;مزيد من المعلومات&lt;/a&gt;</translation>
+<translation id="1366177842110999534">‏يمكنك تشغيل أدوات Linux وأدوات التحرير وبرامج IDE على <ph name="DEVICE_TYPE"/>. &lt;a target="_blank" rel="noopener noreferrer" href="<ph name="URL"/>"&gt;مزيد من المعلومات&lt;/a&gt;</translation>
 <translation id="1367951781824006909">اختيار ملف</translation>
 <translation id="1369149969991017342">الوصول عبر مفتاح التحويل (التحكم في جهاز الكمبيوتر بمفتاح واحد فقط أو مفتاحَين للتحويل)</translation>
 <translation id="1372841398847029212">المزامنة مع حسابك</translation>
@@ -1354,7 +1354,7 @@
 <translation id="268053382412112343">ال&amp;سجل</translation>
 <translation id="2682498795777673382">تحديث من أحد والديك</translation>
 <translation id="2683638487103917598">تم تصنيف المجلد</translation>
-<translation id="2686222346846590368">‏هذا هو آخر تحديث تلقائي للبرنامج والأمان لجهاز <ph name="DEVICE_TYPE"/>. للحصول على التحديثات في المستقبل، يُمكنك الترقية إلى طراز أحدث. &lt;a target="_blank" herf="<ph name="URL"/>"&gt;مزيد من المعلومات<ph name="LINK_END"/></translation>
+<translation id="2686222346846590368">‏هذا هو آخر تحديث تلقائي للبرنامج والأمان لجهاز <ph name="DEVICE_TYPE"/>. للحصول على التحديثات في المستقبل، يُمكنك الترقية إلى طراز أحدث. &lt;a target="_blank" rel="noopener noreferrer" herf="<ph name="URL"/>"&gt;مزيد من المعلومات<ph name="LINK_END"/></translation>
 <translation id="2687403674020088961">حظر كل ملفات تعريف الارتباط (غير مُستحسَن)</translation>
 <translation id="2687407218262674387">‏بنود خدمة Brave</translation>
 <translation id="2688196195245426394">حدث خطأ عند تسجيل الجهاز مع الخادم: <ph name="CLIENT_ERROR"/>.</translation>
@@ -4850,7 +4850,7 @@
 <translation id="7197632491113152433">لقد عثرنا على <ph name="NUMBER_OF_APPS"/> من التطبيقات من حسابك التي يمكن استخدامها على هذا الجهاز.</translation>
 <translation id="7199158086730159431">الحصول على مساعدة</translation>
 <translation id="7200083590239651963">اختيار تهيئة</translation>
-<translation id="7201042526153088083">‏يمكنك تثبيت التطبيقات والألعاب من Google Play على الجهاز <ph name="DEVICE_TYPE"/>. &lt;a target="_blank" href="<ph name="URL"/>"&gt;مزيد من المعلومات&lt;/a&gt;</translation>
+<translation id="7201042526153088083">‏يمكنك تثبيت التطبيقات والألعاب من Google Play على الجهاز <ph name="DEVICE_TYPE"/>. &lt;a target="_blank" rel="noopener noreferrer" href="<ph name="URL"/>"&gt;مزيد من المعلومات&lt;/a&gt;</translation>
 <translation id="720110658997053098">تشغيل هذا الجهاز في وضع الكشك دائمًا</translation>
 <translation id="7201118060536064622">تم حذف "<ph name="DELETED_ITEM_NAME"/>"</translation>
 <translation id="7201420661433230412">عرض الملفات</translation>
@@ -6610,7 +6610,7 @@
 <translation id="3860292630623580294">(خاص)</translation>
 <translation id="4854477725773269949">السماح في الوضع الخاص</translation>
 <translation id="6436164536244065364">عرض في السوق الإلكتروني</translation>
-<translation id="38046578254905003">ابحث عن الامتدادات والسمات في  <ph name="BEGIN_LINK">&lt;a target="_blank" href="https://chrome.google.com/webstore/category/extensions"&gt;</ph>متجر الويب<ph name="END_LINK">&lt;/a&gt;</ph></translation>
+<translation id="38046578254905003">ابحث عن الملحقات والموضوعات في <ph name="BEGIN_LINK"/>متجر الويب<ph name="END_LINK"/>;</translation>
 <translation id="6336451774241870485">علامة تبويب خاصة جديدة</translation>
 <translation id="6610147964972079463">إغلاق علامات التبويب الخاصة</translation>
 <translation id="4933782374919065856">هل هناك أي أسئلة؟ اتصل بالشخص الذي يشرف على ملفك الشخصي.</translation>

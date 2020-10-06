@@ -28,9 +28,13 @@
 <translation id="5550994254534676787">Εμφάνιση του ιστορικού περιήγησής σου</translation>
 <translation id="985862351129593673">Προσαρμογή Πίνακα Ελέγχου</translation>
 <translation id="7180865173735832675">Προσαρμογή</translation>
-<translation id="5783793537552649286">Εμφάνιση Εικόνας Φόντου</translation>
+<translation id="8522669544471808198">Εμφάνιση Εικόνων Φόντου</translation>
 <translation id="7275773481201277457">Εμφάνιση Στατιστικών Brave</translation>
 <translation id="6836061097810262923">Εμφάνιση Ρολογιού</translation>
+<translation id="5912396950572065471">Μορφή</translation>
+<translation id="604124094241169006">Αυτόματη</translation>
+<translation id="867722069064361487">Ρολόι 12 ωρών</translation>
+<translation id="4064062743338217840">Ρολόι 24 ωρών</translation>
 <translation id="8643377320501056697">Εμφάνιση Κορυφαίων Ιστοσελίδων</translation>
 <translation id="3446024864193919737">Εμφάνιση Ανταμοιβών Brave</translation>
 <translation id="6274899614137380422">Εμφάνιση του Binance</translation>
@@ -68,6 +72,10 @@
 <translation id="8958799246752641148">Το Tor αποκρύπτει τη διεύθυνση IP σου από τις ιστοσελίδες που επισκέπτεσαι, δρομολογώντας την περιήγησή σου μέσω αρκετών διακομιστών Tor πριν φτάσει στον προορισμό σου. Αυτές οι συνδέσεις είναι κρυπτογραφημένες, άρα ο ΠΥΔ σου ή ο εργοδότης σου δεν μπορεί να δει ποιες ιστοσελίδες επισκέπτεσαι. Το Tor ίσως επιβραδύνει την περιήγησή σου και ορισμένες ιστοσελίδες ίσως δε λειτουργούν καθόλου.</translation>
 <translation id="520608572871993342">Η χρήση Ιδιωτικών Παραθύρων αλλάζει μόνο τι κάνει η Brave στη συσκευή σας - δεν αλλάζει τη συμπεριφορά κανενός άλλου. Το Tor κρύβει τη διεύθυνση IP σας από τις τοποθεσίες που επισκέπτεστε και αποκρύπτει τους ιστότοπους που επισκέπτεστε από τον ISP ή τον εργοδότη σας. Ανοίξτε ένα Ιδιωτικό Παράθυρο με Tor από το μενού ή με {{ key }}.</translation>
 <translation id="6975708438781948564">Μάθε περισσότερα σχετικά με το Tor στο Brave</translation>
+<translation id="4712050378540986986">Κατάσταση Tor</translation>
+<translation id="3368922792935385530">Σε σύνδεση</translation>
+<translation id="8030169304546394654">Αποσυνδέθηκε</translation>
+<translation id="3705383383955310071">Προετοιμασία {{percentage}}%</translation>
 <translation id="4272382368346338917">Πρόσθετα Φίλτρα</translation>
 <translation id="8949292968394988358">Προειδοποίηση: Η ενεργοποίηση παρά πολλών φίλτρων θα υποβαθμίσει την απόδοση</translation>
 <translation id="8686201964111147748">Συνολικές διαφημίσεις και ιχνηλάτες που αποκλείστηκαν:</translation>
@@ -102,7 +110,7 @@
 <translation id="3829010735958850433">Παράλειψη της περιήγησης καλωσορίσματος</translation>
 <translation id="1201402288615127009">Επόμενο</translation>
 <translation id="7954950242989581218">Περιηγηθείτε με ασφάλεια και αξιοπιστία</translation>
-<translation id="2188651882929633653">Οι Ασπίδες Brave αποκλείουν τα ανατριχιαστικά πράγματα που προσπαθούν να σας παρακολουθήσουν σε ολόκληρο τον ιστό περιλαμβανομένων των περισσότερων διαφημίσεων. Ορίστε τις Ασπίδες σε “κάτω” αν ένας ιστότοπος φαίνεται να μην λειτουργεί. Το Brave χρησιμοποιεί <ph name="BEGIN_LINK_P3A">&lt;a target="_blank" href="$1"&gt;</ph>εντελώς εμπιστευτική ανάλυση προϊόντος<ph name="END_LINK_P3A">&lt;/a&gt;</ph> για να εκτιμήσει τη συνολική χρήση ορισμένων χαρακτηριστικών. Μπορείτε να το απενεργοποιήσετε αυτό στις <ph name="BEGIN_LINK_P3A_SETTINGS">&lt;a target="_blank" href="$2"&gt;</ph>Ρυθμίσεις<ph name="END_LINK_P3A_SETTINGS">&lt;/a&gt;</ph>.</translation>
+<translation id="2188651882929633653">Οι Ασπίδες Brave αποκλείουν τα τρομακτικά πράγματα που προσπαθούν να σας παρακολουθούν στον ιστό — περιλαμβανομένων των περισσότερων διαφημίσεων. Ορίστε τις Ασπίδες σε “κάτω” αν ένας ιστότοπος δεν φαίνεται να λειτουργεί. Το Brave χρησιμοποιεί <ph name="BEGIN_LINK_P3A"/>εντελώς ιδιωτική ανάλυση προϊόντος<ph name="END_LINK_P3A"/> για την εκτίμηση της συνολικής χρήσης ορισμένων χαρακτηριστικών. Μπορείτε να την απενεργοποιήσετε στις <ph name="BEGIN_LINK_P3A_SETTINGS"/>Ρυθμίσεις<ph name="END_LINK_P3A_SETTINGS"/>.</translation>
 <translation id="1919345977826869612">Διαφημίσεις</translation>
 <translation id="2128226640852355533">Κερδίστε {{currency}} βλέποντας Διαφημίσεις Brave. Οι διαφημίσεις που παρουσιάζονται βασίζονται στα ενδιαφέροντά σας, όπως προκύπτουν από τη συμπεριφορά περιήγησής σας. Κανένα προσωπικό στοιχείο ή ιστορικό περιήγησης δεν φεύγει ποτέ από το πρόγραμμα περιήγησής σας.</translation>
 <translation id="6112368337882254910">Auto-Contribute</translation>
@@ -174,7 +182,7 @@
 <translation id="4875485795191140618">Το κλειδί του πορτοφολιού σας έχει επαληθευτεί και φορτωθεί με επιτυχία.</translation>
 <translation id="1083279119532577005">Πορτοφόλι αποκαταστάθηκε!</translation>
 <translation id="7841456038054167122">Παρακαλώ εισάγετε ξανά τα κλειδιά ή δοκιμάστε διαφορετικά κλειδιά.</translation>
-<translation id="340102383764929340">Το κλειδί επαναφοράς που έχει εισαχθεί δεν υποστηρίζεται πλέον. Παρακαλώ επισκεφθείτε <ph name="BEGIN_LINK_REGION_TEXT">&lt;a target="_blank" href="http://brave.com/faq#convert-old-keys"&gt;</ph>here<ph name="END_LINK_REGION_TEXT">&lt;/a&gt;</ph> για να λάβετε ένα νέο κλειδί.</translation>
+<translation id="1911900517212490188">Το κλειδί επαναφοράς που έχει εισαχθεί δεν υποστηρίζεται πλέον. Παρακαλούμε επισκεφθείτε το <ph name="BEGIN_LINK"/>here<ph name="END_LINK"/> για να πάρετε ένα νέο κλειδί.</translation>
 <translation id="2195074481553016770">Σχεδόν εκεί</translation>
 <translation id="5254740304961202261">Αποδείξτε ότι είστε άνθρωπος!</translation>
 <translation id="2187043784382239974">Χμμμ, όχι ακριβώς...</translation>
@@ -192,7 +200,7 @@
 <translation id="3082557070674409251">Θεωρημένο</translation>
 <translation id="7119308337584989771">Απόρριψη</translation>
 <translation id="6805660603861526473">Προβεβλημένη</translation>
-<translation id="2852258589816753010">Το BAT δεν υποστηρίζεται αυτήν τη στιγμή στην περιοχή σας. Παρακαλούμε ανατρέξτε σε <ph name="BEGIN_LINK_REGION_TEXT">&lt;a target="_blank" href="$1"&gt;</ph>here<ph name="END_LINK_REGION_TEXT">&lt;/a&gt;</ph> για ενημερώσεις.</translation>
+<translation id="2359865110462963929">Το BAT δεν υποστηρίζεται προς το παρόν στην περιοχή σας. Παρακαλούμε αναφερθείτε <ph name="BEGIN_LINK"/>εδώ<ph name="END_LINK"/> για ενημερώσεις.</translation>
 <translation id="2564425876266960486">Σφάλμα κατά τη δημιουργία της κάρτας Brave Browser BAT</translation>
 <translation id="6473583070570450185">Χρειάζεστε ένα επαληθευμένο πορτοφόλι για να συνδεθείτε</translation>
 <translation id="2106271389438168634">Χρειάζεστε τουλάχιστον 25 BAT για να δημιουργήσετε ένα πορτοφόλι Uphold. Παρακαλώ δοκιμάστε ξανά αφού έχετε επαληθεύσει το πορτοφόλι σας με το Uphold.</translation>
@@ -219,6 +227,9 @@
 <translation id="386483240851194811">Οι ανταμοιβές απενεργοποιήθηκαν</translation>
 <translation id="3354337256330577726">Η αυτόματη συνεισφορά απενεργοποιήθηκε</translation>
 <translation id="6727186931929643711">Διακοπή νέας προσπάθειας</translation>
+<translation id="680983167891198932">Κλειδί</translation>
+<translation id="7535087603100972091">Αξία</translation>
+<translation id="45591635423975492">Καταγράφηκε στις</translation>
 <translation id="2059498613853603008">ΠΡΟΕΙΔΟΠΟΙΗΣΗ: Τα δεδομένα σε αυτήν τη σελίδα ενδέχεται να είναι ευαίσθητα. Αντιμετωπίστε τα όπως θα κάνατε με τα ιδιωτικά κλειδιά του πορτοφολιού σας. Προσέξτε με ποιον τα μοιράζεστε.</translation>
 <translation id="7375125077091615385">Τύπος:</translation>
 <translation id="4973347371961481083">Συνεισφορές</translation>
@@ -252,6 +263,7 @@
 <translation id="2152423226436243241">Αυτόματη Συνεισφορά</translation>
 <translation id="2927922949538312364">Φιλοδώρημα για μια φορά</translation>
 <translation id="3164105678355419142">Επαναλαμβανόμενο φιλοδώρημα</translation>
+<translation id="7806880412350961625">Αρχεία καταγραφής γεγονότων</translation>
 <translation id="4309915981827077375">Γενικές πληροφορίες</translation>
 <translation id="3662406032239313663">Αρχεία καταγραφής</translation>
 <translation id="9001933311880936179">Συνολικό Ποσό:</translation>
@@ -262,7 +274,6 @@
 <translation id="2326487656644542536">Πληροφορίες Πορτοφολιού</translation>
 <translation id="8559420016582377654">Αναγνωριστικό πληρωμής πορτοφολιού:</translation>
 <translation id="438586487791444158">Κατάσταση πορτοφολιού:</translation>
-<translation id="3368922792935385530">Σε σύνδεση</translation>
 <translation id="8874184842967597500">Δεν υπάρχει σύνδεση</translation>
 <translation id="4569155249847375786">Επαληθεύτηκε</translation>
 <translation id="922103963921062336">Έγινε αποσύνδεση (Δεν επαληθεύτηκε)</translation>
@@ -351,7 +362,7 @@
 <translation id="7335371657242627509">Συμπερίληψη στο Auto-Contribute</translation>
 <translation id="1864111464094315414">Σύνδεση</translation>
 <translation id="4556504723624686474">Η επαλήθευση του πορτοφολιού σάς επιτρέπει να διαχειρίζεστε τα χρήματά σας πιο αποτελεσματικά.</translation>
-<translation id="4188679602963314994">Θα πρέπει να έχετε τουλάχιστον 25 BAT για να δημιουργήσετε έναν λογαριασμό Uphold. Παρακαλώ δοκιμάστε ξανά αργότερα. <ph name="BREAK">&lt;br/&gt;</ph>Αν έχετε ήδη εναν επικυρωμένο λογαριασμό Uphold, πραγματοποιήστε σύνδεση.</translation>
+<translation id="5594737784294211654">Πρέπει να έχετε τουλάχιστον 25 BAT για να δημιουργήσετε έναν λογαριασμό Uphold. Παρακαλούμε δοκιμάστε πάλι αργότερα. <ph name="NEWLINE"/>Αν έχετε ήδη επαληθευμένο λογαριασμό Uphold, προχωρήστε στη σύνδεση.</translation>
 <translation id="3250511771491660127">Να γίνει μηνιαίο</translation>
 <translation id="6028954173739504682">Διαχειριστείτε το πορτοφόλι σας</translation>
 <translation id="7886389832052393750">Απρίλιος</translation>
@@ -443,8 +454,8 @@
 <translation id="8014425282125849700">Περιστασιακά θα λαμβάνεις δωρεάν χορηγίες token από το Brave. Βεβαιώσου ότι έχεις το νου σου για την ειδοποίηση!</translation>
 <translation id="2185598236335233939">Ψάξτε για ειδοποιήσεις διαφημίσεων καθώς συνεχίζετε να χρησιμοποιείτε το Brave. Το υπόλοιπό σας BAT Points θα αυξηθεί με κάθε διαφήμιση που βλέπετε.</translation>
 <translation id="1370034647041840967">Κέρδισε μάρκες για την προσοχή που δίνεις σε διαφημίσεις και ανταπόδωσε στηρίζοντας δημιουργούς περιεχομένου που εκτιμάς!</translation>
-<translation id="1701701253000051237">Προσθήκη, ανάληψη και διαχείριση χρημάτων στο <ph name="BEGIN_BOLD">&lt;b&gt;</ph>Uphold<ph name="BEGIN_END">&lt;/b&gt;</ph>.</translation>
-<translation id="4208741993667364007">Το Brave πορτοφόλι σας τροφοδοτείται από <ph name="BEGIN_BOLD">&lt;b&gt;</ph>Uphold<ph name="BEGIN_END">&lt;/b&gt;</ph>.</translation>
+<translation id="4600224932216165965">Προσθήκη, ανάληψη και διαχείριση χρημάτων στο <ph name="BEGIN_BOLD"/>Uphold<ph name="END_BOLD"/>.</translation>
+<translation id="3580616436301227919">Το πρτοφόλι σας Brave παρέχεται από την by <ph name="BEGIN_BOLD"/>Uphold<ph name="END_BOLD"/>.</translation>
 <translation id="6401272292123354754">Οι ανταμοιβές του Brave στηρίζονται στο Basic Attention Token. Μάθετε περισσότερα για τo ΒΑΤ</translation>
 <translation id="7823359893981882407">εδώ</translation>
 <translation id="4483635855837696643">Ανακτήστε το Πορτοφόλι σας</translation>
@@ -453,7 +464,7 @@
 <translation id="3267911153934785912">Εισαγάγετε το κλειδί ανάκτησης ή</translation>
 <translation id="6548189695918108191">Δημιουργήστε αντίγραφα ασφαλείας του πορτοφολιού σας πριν από την αντικατάσταση. Διαφορετικά, θα χάσετε τα κεφάλαια {{funds}} στο τρέχον πορτοφόλι σας.</translation>
 <translation id="5423214929210538027">Σίγουρα θέλετε να επαναφέρετε το Πορτοφόλι Ανταμοιβών σας;</translation>
-<translation id="9106875682287489763">Τα <ph name="BEGIN_BOLD">&lt;b&gt;</ph>{{amount}} BATs<ph name="BEGIN_END">&lt;/b&gt;</ph> και άλλα δεδομένα Ανταμοιβών θα χαθούν μόνιμα εάν επαναφέρετε το πορτοφόλι σας. Βεβαιωθείτε ότι έχετε επαληθεύσει το πορτοφόλι σας στο Uphold, ώστε να μπορείτε να διατηρήσετε το BAT σας.</translation>
+<translation id="7428521340740703492">Το <ph name="BEGIN_BOLD"/>{{amount}} BATs<ph name="END_BOLD"/> και άλλα δεδομένα Επιβράβευσης θα χαθούν οριστικά αν επαναφέρετε το πορτοφόλι σας. Βεβαιωθείτε ότι έχετε επαληθεύσει το πορτοφόλι σας με την Uphold, ώστε να μπορείτε να διατηρήσετε το BAT σας.</translation>
 <translation id="2028613172174411919">Τα δεδομένα Ανταμοιβών σας θα χαθούν οριστικά εάν κάνετε επαναφορά στο πορτοφόλι σας.</translation>
 <translation id="4914597931214386232">Το Κέρμα Επιχορηγήσεων Αποκτήθηκε</translation>
 <translation id="3494964159182650590">Σύνοψη Ανταμοιβών</translation>
@@ -533,14 +544,13 @@
 <translation id="5030988785798407804">Η επιχορήγησή σας {{currency}} είναι καθ' οδόν.</translation>
 <translation id="2132683977638223450">Δωρεάν Πόντος Επιχορήγησης</translation>
 <translation id="7512440811010447157">επαλήθευση</translation>
-<translation id="8030169304546394654">Αποσυνδέθηκε</translation>
 <translation id="8267327690882073581">Επαλήθευση Πορτοφολιού</translation>
 <translation id="543510923939676996">Πορτοφόλι Επαληθεύτηκε</translation>
 <translation id="7591798679868259510">Μετάβαση στον λογαριασμό μου Uphold</translation>
 <translation id="3699674790322420653">Ολοκλήρωση επαλήθευσης πορτοφολιού</translation>
 <translation id="9200453331904391567">Αποσύνδεση από τις Ανταμοιβές Brave</translation>
 <translation id="46988480989545156">Επαληθεύστε πορτοφόλι</translation>
-<translation id="4986087720311945758">Η υπηρεσία πορτοφολιού μας παρέχεται από <ph name="BEGIN_BOLD">&lt;b&gt;</ph>Uphold<ph name="BEGIN_END">&lt;/b&gt;</ph></translation>
+<translation id="160145159036553575">Η υπηρεσίς πορτοφολιού μας παρέχεται από την <ph name="BEGIN_BOLD"/>Uphold.<ph name="END_BOLD"/></translation>
 <translation id="6771734945114850124">Παρακαλούμε να έχετε διαθέσιμη την αστυνομική σας ταυτότητα.</translation>
 <translation id="8697510149346635496">Κάνετε ανάληψη των ΒΑΤ που κερδίσατε από την προβολή διαφημίσεων, που σέβονται το απόρρητο</translation>
 <translation id="1481480653609649134">Αγοράστε επιπλέον ΒΑΤ με πιστωτικές κάρτες και άλλους τρόπους</translation>
@@ -552,7 +562,7 @@
 <translation id="7404779623219601861">Εξαργυρώστε BAT με Δωροκάρτες</translation>
 <translation id="6215565499749144110">Με το δίκτυο TAP, μπορείτε να εξαργυρώσετε τα BAT σας με δημοφιλείς επώνυμες δωροκάρτες.</translation>
 <translation id="6915065518766963119">* Απαιτείται Υποστηρικτική Επιβεβαίωση.</translation>
-<translation id="651649139059930379">Λάβετε 2% επιστροφή crypto με την κάρτα Uphold</translation>
+<translation id="7703007724342399482">Κερδίστε επιστροφή κρυπτονομίσματος 2% με την κάρτα Uphold</translation>
 <translation id="1109729143147368573">Ξοδέψτε τα crypto και τα άλλα στοιχεία σας σε περίπου 50 εκατομμύρια εμπόρους και ATM παγκοσμίως. Ξοδέψτε crypto για να λάβετε crypto!</translation>
 <translation id="4360054110030715117"><ph name="LINK_BEGIN"/>Μάθετε περισσότερα<ph name="LINK_END"/> για τις Ανταμοιβές Brave.</translation>
 <translation id="5826706758731195747">Ενεργοποιώντας τις Ανταμοιβές, συμφωνείτε με τους <ph name="LINK_BEGIN"/>Όρους Παροχής Υπηρεσιών<ph name="LINK_END"/>.</translation>
@@ -608,6 +618,7 @@
 <translation id="6409345078064530735">Διεύθυνση Κατάθεσης</translation>
 <translation id="7153116947319792513">Υπόμνημα Καταθέσεων</translation>
 <translation id="1383876407941801731">Αναζήτηση</translation>
+<translation id="3781412534383755121">Το ελάχιστο ποσό μετατροπής είναι:</translation>
 <translation id="6432284126416751397">Επιβεβαίωση Μετατροπής</translation>
 <translation id="1301340234286078471">Μετατροπή</translation>
 <translation id="6680650203439190394">Τιμή</translation>
@@ -648,4 +659,21 @@
 <translation id="453977518730680921">Αυτόματη εκτέλεση πολυμέσων</translation>
 <translation id="7701466644604753106">Ενεργοποιήστε το Γρήγορο Γράψιμο</translation>
 <translation id="763042262431778831">Απενεργοποιήστε το Γρήγορο Γράψιμο</translation>
+<translation id="9020818404803201080">Συνδεδεμένοι ομότιμοι:</translation>
+<translation id="6717690610234999751">Παράμετροι Διευθύνσεων</translation>
+<translation id="9182285671734219088">Κατάσταση Daemon</translation>
+<translation id="6599816589121202398">API</translation>
+<translation id="1327977588028644528">Πύλη</translation>
+<translation id="2551123942222622809">Πλήθος</translation>
+<translation id="3967335629471284781">Ξεκίνησε</translation>
+<translation id="1515163294334130951">Ξεκινήστε</translation>
+<translation id="1895658205118569222">Τερματισμός λειτουργίας</translation>
+<translation id="6762417584993757344">Δεν έχει εγκατασταθεί</translation>
+<translation id="8428368469058794536">Υπηρεσία IPFS</translation>
+<translation id="2901715907314796027">Αγοράστε κρυπτονομίσματα από το Bitcoin.com.</translation>
+<translation id="4065681313949497252">Νόμισμα</translation>
+<translation id="3833315885381772739">Δώστε ποσό</translation>
+<translation id="4011828592358027165">Νέοι στο κρυπτονόμσμα;</translation>
+<translation id="3358050091139900813">Πάρτε το πορτοφόλι εδώ για να ξεκινήσετε</translation>
+<translation id="3105412115725259537">Bitcoin.com</translation>
 </translationbundle>

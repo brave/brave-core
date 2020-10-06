@@ -291,7 +291,7 @@
 <translation id="1361872463926621533">চালু করার সময় সাউন্ড চালান</translation>
 <translation id="1363585519747660921">ইউএসবি প্রিন্টার কনফিগার করা প্রয়োজন</translation>
 <translation id="1365180424462182382"><ph name="ENROLLMENT_DOMAIN"/> আপনার <ph name="BEGIN_LINK"/>ব্রাউজার ম্যানেজ করে<ph name="END_LINK"/></translation>
-<translation id="1366177842110999534">আপনার <ph name="DEVICE_TYPE"/>-এ Linux টুল, এডিটর, এবং IDEs চালান। &lt;a target="_blank" href="<ph name="URL"/>"&gt;আরও জানুন&lt;/a&gt;</translation>
+<translation id="1366177842110999534">আপনার <ph name="DEVICE_TYPE"/>-এ Linux টুল, এডিটর, এবং IDEs চালান। &lt;a target="_blank" rel="noopener noreferrer" href="<ph name="URL"/>"&gt;আরও জানুন&lt;/a&gt;</translation>
 <translation id="1367951781824006909">একটি ফাইল বেছে নিন</translation>
 <translation id="1369149969991017342">অ্যাক্সেস পাল্টান (মাত্র এক অথবা দুইবার অ্যাক্সেস পাল্টে কম্পিউটার নিয়ন্ত্রণ করুন)</translation>
 <translation id="1372841398847029212">আপনার অ্যাকাউন্টে সিঙ্ক করুন</translation>
@@ -1353,7 +1353,7 @@
 <translation id="268053382412112343">Hi&amp;story</translation>
 <translation id="2682498795777673382">তোমার অভিভাবকের থেকে আপডেট</translation>
 <translation id="2683638487103917598">ফোল্ডার সাজানো হয়েছে</translation>
-<translation id="2686222346846590368">এই <ph name="DEVICE_TYPE"/>-এর জন্য এটি হল সফ্টওয়্যার এবং নিরাপত্তা সংক্রান্ত শেষ অটোমেটিক আপডেট। আগামী আপডেটগুলি পেতে, কোনও নতুন মডেলে আপগ্রেড করুন। &lt;a target="_blank" href="<ph name="URL"/>"&gt;আরও জানুন<ph name="LINK_END"/></translation>
+<translation id="2686222346846590368">এই <ph name="DEVICE_TYPE"/>-এর জন্য এটি হল সফ্টওয়্যার এবং নিরাপত্তা সংক্রান্ত শেষ অটোমেটিক আপডেট। আগামী আপডেটগুলি পেতে, কোনও নতুন মডেলে আপগ্রেড করুন। &lt;a target="_blank" rel="noopener noreferrer" href="<ph name="URL"/>"&gt;আরও জানুন<ph name="LINK_END"/></translation>
 <translation id="2687403674020088961">সব কুকি ব্লক করুন (সাজেস্ট করা হচ্ছে না)</translation>
 <translation id="2687407218262674387">Brave পরিষেবার শর্তাবলী</translation>
 <translation id="2688196195245426394">ডিভাইসটি সার্ভারে নথিভুক্ত করার সময়ে ত্রুটি: <ph name="CLIENT_ERROR"/>৷</translation>
@@ -4852,7 +4852,7 @@
 <translation id="7197632491113152433">আমরা আপনার অ্যাকাউন্ট থেকে <ph name="NUMBER_OF_APPS"/>টি অ্যাপ পেয়েছি যা এই ডিভাইসে ব্যবহার করা যাবে।</translation>
 <translation id="7199158086730159431">সহায়তা পান</translation>
 <translation id="7200083590239651963">কনফিগারেশন বেছে নিন</translation>
-<translation id="7201042526153088083">আপনার <ph name="DEVICE_TYPE"/>-এ Google Play থেকে অ্যাপ এবং গেম ইনস্টল করুন। &lt;a target="_blank" href="<ph name="URL"/>"&gt;আরও জানুন&lt;/a&gt;</translation>
+<translation id="7201042526153088083">আপনার <ph name="DEVICE_TYPE"/>-এ Google Play থেকে অ্যাপ এবং গেম ইনস্টল করুন। &lt;a target="_blank" rel="noopener noreferrer" href="<ph name="URL"/>"&gt;আরও জানুন&lt;/a&gt;</translation>
 <translation id="720110658997053098">স্থায়ীভাবে এই ডিভাইসটিকে কিয়স্ক মোডে রাখুন</translation>
 <translation id="7201118060536064622">'<ph name="DELETED_ITEM_NAME"/>' মুছে ফেলা হয়েছে</translation>
 <translation id="7201420661433230412">ফাইলগুলি দেখুন</translation>
@@ -6609,7 +6609,7 @@
 <translation id="3860292630623580294">(ছদ্মবেশী)</translation>
 <translation id="4854477725773269949">ছদ্মবেশে মঞ্জুর করুন</translation>
 <translation id="6436164536244065364">ওয়েব স্টোর-এ দেখুন</translation>
-<translation id="38046578254905003"><ph name="BEGIN_LINK">&lt;a target="_blank" href="https://chrome.google.com/webstore/category/extensions"&gt;</ph>Web Store<ph name="END_LINK">&lt;/a&gt;</ph> এ এক্সটেস্নশন এবং থিমগুলি খুঁজুন</translation>
+<translation id="38046578254905003"><ph name="BEGIN_LINK"/>Web Store<ph name="END_LINK"/> এ এক্সটেনশন এবং থিমগুলি খুঁজুন</translation>
 <translation id="6336451774241870485">নতুন ছদ্মবেশী ট্যাব</translation>
 <translation id="6610147964972079463">ছদ্মবেশী ট্যাবগুলি বন্ধ করুন</translation>
 <translation id="4933782374919065856">প্রশ্ন? আপনার প্রোফাইল যে তত্ত্বাবধান করে তার সাথে যোগাযোগ করুন।</translation>

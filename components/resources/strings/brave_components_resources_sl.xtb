@@ -28,9 +28,13 @@
 <translation id="5550994254534676787">Ogled zgodovine brskanja</translation>
 <translation id="985862351129593673">Ozadje po meri</translation>
 <translation id="7180865173735832675">Prilagodi</translation>
-<translation id="5783793537552649286">Prikaži sliko ozadja</translation>
+<translation id="8522669544471808198">Prikaži slike ozadja</translation>
 <translation id="7275773481201277457">Pokaži Braveove statistike</translation>
 <translation id="6836061097810262923">Pokaži uro</translation>
+<translation id="5912396950572065471">Format</translation>
+<translation id="604124094241169006">Samodejno</translation>
+<translation id="867722069064361487">12-urni časovni format</translation>
+<translation id="4064062743338217840">24-urni časovni format</translation>
 <translation id="8643377320501056697">Prikaži najbolj priljubljena spletna mesta</translation>
 <translation id="3446024864193919737">Pokaži nagrade Brave Rewards</translation>
 <translation id="6274899614137380422">Pokaži Binance</translation>
@@ -68,6 +72,10 @@
 <translation id="8958799246752641148">Tor skrije vaš naslov IP na straneh, ki jih obiščete, in sicer tako, da vaše brskanje, še preden to doseže cilj, usmeri na več strežnikov Tor. Te povezave so šifrirane, zato vaš ponudnik internetnih storitev ali delodajalec ne more videti, katere spletne strani obiskujete. Tor lahko upočasni brskanje in nekatera spletna mesta morda sploh ne delujejo.</translation>
 <translation id="520608572871993342">Uporaba zasebnega okna spremeni samo način delovanja Brave na vaši napravi, ničesar drugega. Tor skrije vaš naslov IP na straneh, ki jih obiščete, pri vašem ponudniku internetnih storitev ali delodajalcu pa skrije strani, ki jih obiščete. Odprite zasebno okno v brskalniku Tor v meniju ali s {{key}}.</translation>
 <translation id="6975708438781948564">Več o brskalnikih Tor in Brave</translation>
+<translation id="4712050378540986986">Stanje brskalnika Tor</translation>
+<translation id="3368922792935385530">Povezano</translation>
+<translation id="8030169304546394654">Prekinjeno</translation>
+<translation id="3705383383955310071">Zaganjam {{percentage}}%</translation>
 <translation id="4272382368346338917">Dodatni filtri</translation>
 <translation id="8949292968394988358">Opozorilo: Izbira preveč filtrov bo upočasnilo delovanje</translation>
 <translation id="8686201964111147748">Skupno blokiranih oglasov in sledilcev:</translation>
@@ -102,7 +110,7 @@
 <translation id="3829010735958850433">Preskoči uvodno predstavitev</translation>
 <translation id="1201402288615127009">Naprej</translation>
 <translation id="7954950242989581218">Brskajte varno in zanesljivo</translation>
-<translation id="2188651882929633653">Ščiti Brave blokirajo nezaželene stvari, ki vam poskušajo slediti po spletu, vključno z večino oglasov. Ščite nastavite navzdol, če se zdi, da spletna stran ne deluje. Brave uporablja <ph name="BEGIN_LINK_P3A">&lt;a target="_blank" href="$1"&gt;</ph>popolnoma zasebno analizo izdelkov<ph name="END_LINK_P3A">&lt;/a&gt;</ph> za oceno splošne uporabe nekaterih funkcij. To lahko izklopite v <ph name="BEGIN_LINK_P3A_SETTINGS">&lt;a target="_blank" href="$2"&gt;</ph>nastavitvah<ph name="END_LINK_P3A_SETTINGS">&lt;/a&gt;</ph>.</translation>
+<translation id="2188651882929633653">Brave Shields blokira neprimerne vsebine, ki vam poskušajo po spletu slediti — kamor spada večina oglasov. Ščite nastavite na “izklop”  v primeru, da spletna stran ne deluje. Brave uporablja <ph name="BEGIN_LINK_P3A"/>popolnoma zasebno analitiko izdelkov<ph name="END_LINK_P3A"/> za oceno splošne uporabe nekaterih funkcij. To lahko izklopite v <ph name="BEGIN_LINK_P3A_SETTINGS"/>NAstavitvah<ph name="END_LINK_P3A_SETTINGS"/>.</translation>
 <translation id="1919345977826869612">Oglasi</translation>
 <translation id="2128226640852355533">Pridobite {{currency}} z ogledom oglasov Brave. Oglasi so izbrani glede na vaša zanimanja oziroma vaše izbire med brskanjem. Osebni podatki ali podatki o zgodovini brskanja nikoli ne zapustijo vašega brskalnika.</translation>
 <translation id="6112368337882254910">Samodejni prispevek</translation>
@@ -174,7 +182,7 @@
 <translation id="4875485795191140618">Ključ vaše denarnice je bil preverjen in uspešno naložen.</translation>
 <translation id="1083279119532577005">Denarnica je obnovljena!</translation>
 <translation id="7841456038054167122">Ponovno vnesite ključ ali poskusite z drugim.</translation>
-<translation id="340102383764929340">Vnesen obnovitveni ključ ni več podprt. Za nov ključ se obrnite se na <ph name="BEGIN_LINK_REGION_TEXT">&lt;a target="_blank" href="http://brave.com/faq#convert-old-keys"&gt;</ph>here<ph name="END_LINK_REGION_TEXT">&lt;/a&gt;</ph></translation>
+<translation id="1911900517212490188">Vneseni obnovitveni ključ ni več podprt. Prosimo, obiščite <ph name="BEGIN_LINK"/>here<ph name="END_LINK"/> in boste prejeli nov ključ.</translation>
 <translation id="2195074481553016770">Skoraj ste končali…</translation>
 <translation id="5254740304961202261">Dokažite, da niste robot.</translation>
 <translation id="2187043784382239974">Hmmm, ni čisto tako.</translation>
@@ -192,7 +200,7 @@
 <translation id="3082557070674409251">Kliknjeno</translation>
 <translation id="7119308337584989771">Opuščeno</translation>
 <translation id="6805660603861526473">Ogledano</translation>
-<translation id="2852258589816753010">Trenutno BAT ni podprt v vaši regiji. Za posodobitve se obrnite se na <ph name="BEGIN_LINK_REGION_TEXT">&lt;a target="_blank" href="$1"&gt;</ph>here<ph name="END_LINK_REGION_TEXT">&lt;/a&gt;</ph>.</translation>
+<translation id="2359865110462963929">BAT v vaši regiji trenutno ni podprt. Za posodobitve glejte <ph name="BEGIN_LINK"/>here<ph name="END_LINK"/>.</translation>
 <translation id="2564425876266960486">Napaka pri ustvarjanju kartice BAT brskalnika Brave</translation>
 <translation id="6473583070570450185">Za prijavo potrebujete potrjeno denarnico</translation>
 <translation id="2106271389438168634">Za denarnico Uphold potrebujete vsaj 25 BAT. Potrdite svojo denarnico na spletnem mestu Uphold in poskusite znova.</translation>
@@ -219,6 +227,9 @@
 <translation id="386483240851194811">Nagrade Rewards so izklopljene</translation>
 <translation id="3354337256330577726">Samodejne donacije so izklopljene</translation>
 <translation id="6727186931929643711">Poskušanje je zaustavljeno</translation>
+<translation id="680983167891198932">Ključ</translation>
+<translation id="7535087603100972091">Vrednost</translation>
+<translation id="45591635423975492">Zabeleženo</translation>
 <translation id="2059498613853603008">OPOZORILO: Podatki na tem spletnem mestu so lahko občutljive narave. Z njimi ravnajte, kot bi ravnali s svojimi zasebnimi ključi do denarnice. Pazite, s kom delite te podatke.</translation>
 <translation id="7375125077091615385">Vrsta:</translation>
 <translation id="4973347371961481083">Donacije</translation>
@@ -252,6 +263,7 @@
 <translation id="2152423226436243241">Samodejni prispevek</translation>
 <translation id="2927922949538312364">Enkratna donacija</translation>
 <translation id="3164105678355419142">Ponavljajoča se donacija</translation>
+<translation id="7806880412350961625">Zabeleženi dogodki</translation>
 <translation id="4309915981827077375">Splošni podatki</translation>
 <translation id="3662406032239313663">Dnevniki</translation>
 <translation id="9001933311880936179">Skupni znesek:</translation>
@@ -262,7 +274,6 @@
 <translation id="2326487656644542536">Informacije o denarnici</translation>
 <translation id="8559420016582377654">Plačilni ID denarnice:</translation>
 <translation id="438586487791444158">Stanje denarnice:</translation>
-<translation id="3368922792935385530">Povezano</translation>
 <translation id="8874184842967597500">Povezava ni vzpostavljena</translation>
 <translation id="4569155249847375786">Preverjeno</translation>
 <translation id="922103963921062336">Prekinjeno (ni preverjeno)</translation>
@@ -351,7 +362,7 @@
 <translation id="7335371657242627509">Vključi v samodejno doniranje</translation>
 <translation id="1864111464094315414">Prijava</translation>
 <translation id="4556504723624686474">Potrditev denarnice vam omogoča, da s svojim sredstvi upravljate učinkoviteje.</translation>
-<translation id="4188679602963314994">Za račun Uphold potrebujete vsaj 25 BAT. Prosimo, poskusite znova kasneje. <ph name="BREAK">&lt;br/&gt;</ph>Če že imate potrjen uporabniški račun na Uphold, nadaljujte z vpisom.</translation>
+<translation id="5594737784294211654">Za ustvarjanje računa Uphold morate imeti najmanj 25 BAT-ov. Prosimo, poskusite kasneje. <ph name="NEWLINE"/>Če že imate preverjen račun Uphold, nadaljujte s prijavo.</translation>
 <translation id="3250511771491660127">Izvedi vsak mesec</translation>
 <translation id="6028954173739504682">Upravljanje denarnice</translation>
 <translation id="7886389832052393750">Apr</translation>
@@ -443,8 +454,8 @@
 <translation id="8014425282125849700">Občasno vam bo podjetje Brave ponudilo brezplačna sredstva v obliki žetonov, zato bodite pozorni!</translation>
 <translation id="2185598236335233939">Poiščite obvestila o oglasih med uporabo Brave. Vaš znesek BAT točk se bo povečal z vsakim oglasom, ki si ga ogledate.</translation>
 <translation id="1370034647041840967">Zaslužite žetone za pozornost, ki jo namenjate oglasom, in z njim podprite ustvarjalce vsebine, ki jih cenite!</translation>
-<translation id="1701701253000051237">Pologi, dvigi in upravljanje sredstev na <ph name="BEGIN_BOLD">&lt;b&gt;</ph>Uphold<ph name="BEGIN_END">&lt;/b&gt;</ph>.</translation>
-<translation id="4208741993667364007">Vašo denarnico Brave poganja by <ph name="BEGIN_BOLD">&lt;b&gt;</ph>Uphold<ph name="BEGIN_END">&lt;/b&gt;</ph>.</translation>
+<translation id="4600224932216165965">Dodajte, dvignite in upravljajte sredstva na <ph name="BEGIN_BOLD"/>Uphold<ph name="END_BOLD"/>.</translation>
+<translation id="3580616436301227919">Vašo Brave denarnico poganja <ph name="BEGIN_BOLD"/>Uphold<ph name="END_BOLD"/>.</translation>
 <translation id="6401272292123354754">Storitev Brave Rewards temelji na platformi Basic Attention Token. Več o BAT lahko izveste</translation>
 <translation id="7823359893981882407">tukaj</translation>
 <translation id="4483635855837696643">Obnovi denarnico</translation>
@@ -453,7 +464,7 @@
 <translation id="3267911153934785912">Vnesite svoj obnovitveni ključ ali</translation>
 <translation id="6548189695918108191">Pred zamenjavo varnostno kopirajte denarnico. Sicer boste izgubili sredstva, {{funds}}, v svoji trenutni denarnici.</translation>
 <translation id="5423214929210538027">Ali ste prepričani, da želite ponastaviti denarnico Rewards?</translation>
-<translation id="9106875682287489763">Vaši <ph name="BEGIN_BOLD">&lt;b&gt;</ph>{{amount}} BATs<ph name="BEGIN_END">&lt;/b&gt;</ph> in drugi podatki nagrad Rewards bodo trajno izgubljeni, če ponastavite denarnico. Prepričajte se, da ste denarnico preverili s programom Uphold, da boste lahko obdržali BAT.</translation>
+<translation id="7428521340740703492">Vašii <ph name="BEGIN_BOLD"/>{{amount}} BATs<ph name="END_BOLD"/> in drugi podatki o nagradah bodo trajno izgubljeni, če ponastavite denarnico. Prepričajte se, da ste denarnico potrdili z Uphold, da boste lahko obdržali BAT.</translation>
 <translation id="2028613172174411919">Podatki o nagradah Rewards bodo trajno izgubljeni, če ponastavite denarnico.</translation>
 <translation id="4914597931214386232">Zahteva za sredstva v obliki žetonov</translation>
 <translation id="3494964159182650590">Povzetek nagrad</translation>
@@ -533,14 +544,13 @@
 <translation id="5030988785798407804">Vaše {{currency}} sredstvo je na poti.</translation>
 <translation id="2132683977638223450">Brezplačna točka za sredstva</translation>
 <translation id="7512440811010447157">preveri</translation>
-<translation id="8030169304546394654">Prekinjeno</translation>
 <translation id="8267327690882073581">Preveri denarnico</translation>
 <translation id="543510923939676996">Denarnica preverjena</translation>
 <translation id="7591798679868259510">Pojdi na moj račun Uphold</translation>
 <translation id="3699674790322420653">Zaključi preverjanje denarnice</translation>
 <translation id="9200453331904391567">Prekinite povezavo z Brave Rewards</translation>
 <translation id="46988480989545156">Preveri denarnico</translation>
-<translation id="4986087720311945758">Našo storitev denarnice omogoča <ph name="BEGIN_BOLD">&lt;b&gt;</ph>Uphold<ph name="BEGIN_END">&lt;/b&gt;</ph></translation>
+<translation id="160145159036553575">Naše denarnice zagotavlja <ph name="BEGIN_BOLD"/>Uphold.<ph name="END_BOLD"/></translation>
 <translation id="6771734945114850124">Prosimo, da imate na razpolago vašo identifikacijsko številko ki jo je izdala vlada</translation>
 <translation id="8697510149346635496">Umaknite BAT, ki ste ga zaslužili z ogledom oglasov, ki spoštujejo zasebnost</translation>
 <translation id="1481480653609649134">Nakup dodatnih BAT s kreditnimi karticami in drugimi viri</translation>
@@ -552,7 +562,7 @@
 <translation id="7404779623219601861">Unovčite BAT za darilne kartice</translation>
 <translation id="6215565499749144110">Z omrežjem TAP Network lahko svoj BAT unovčite za darilne kartice priljubljene blagovne znamke.</translation>
 <translation id="6915065518766963119">* Zahteva preverjanje računa Uphold.</translation>
-<translation id="651649139059930379">Pridobite 2 % cryptobacka s kartico  Uphold</translation>
+<translation id="7703007724342399482">Prislužite si 2% Cryptoback-a s kartico Uphold</translation>
 <translation id="1109729143147368573">Svoje kriptovalute in druga sredstva lahko porabite pri skoraj 50 milijonih trgovcev in bankomatov po vsem svetu. Porabite kriptovalute, da jih dobite še več!</translation>
 <translation id="4360054110030715117"><ph name="LINK_BEGIN"/>Več<ph name="LINK_END"/> o nagradah Brave Rewards</translation>
 <translation id="5826706758731195747">Z vklopom storitve Rewards se strinjate s <ph name="LINK_BEGIN"/>Pogoji poslovanja<ph name="LINK_END"/>.</translation>
@@ -608,6 +618,7 @@
 <translation id="6409345078064530735">Naslov za polog</translation>
 <translation id="7153116947319792513">Dopis o pologu</translation>
 <translation id="1383876407941801731">Išči</translation>
+<translation id="3781412534383755121">Najmanjši znesek za menjavo je:</translation>
 <translation id="6432284126416751397">Potrdi pretvorbo</translation>
 <translation id="1301340234286078471">Pretvori</translation>
 <translation id="6680650203439190394">Tečaj</translation>
@@ -648,4 +659,21 @@
 <translation id="453977518730680921">Samodejno predvajanje posnetkov</translation>
 <translation id="7701466644604753106">Vklopi Speedreader</translation>
 <translation id="763042262431778831">Izklopi Speedreader</translation>
+<translation id="9020818404803201080">Povezani omrežni vrstniki:</translation>
+<translation id="6717690610234999751">Konfiguracija naslovov</translation>
+<translation id="9182285671734219088">Stanje daemona</translation>
+<translation id="6599816589121202398">API</translation>
+<translation id="1327977588028644528">Prehod</translation>
+<translation id="2551123942222622809">Grupiranje</translation>
+<translation id="3967335629471284781">Poslano</translation>
+<translation id="1515163294334130951">Pošlji</translation>
+<translation id="1895658205118569222">Zaprt</translation>
+<translation id="6762417584993757344">Ni nameščeno</translation>
+<translation id="8428368469058794536">Storitev IPFS</translation>
+<translation id="2901715907314796027">Kupujte kripto na strani Bitcoin.com.</translation>
+<translation id="4065681313949497252">Valuta</translation>
+<translation id="3833315885381772739">Vnesite znesek</translation>
+<translation id="4011828592358027165">Vam je kripto tuj?</translation>
+<translation id="3358050091139900813">Najprej prinesite denarnico</translation>
+<translation id="3105412115725259537">Bitcoin.com</translation>
 </translationbundle>
