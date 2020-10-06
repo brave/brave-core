@@ -215,7 +215,6 @@ bool BraveMainDelegate::BasicStartupComplete(int* exit_code) {
 #if defined(OS_WIN)
       features::kWinrtGeolocationImplementation.name,
 #endif
-      omnibox::kOmniboxContextMenuShowFullUrls.name,
   };
 
   if (!base::CommandLine::ForCurrentProcess()->HasSwitch(

@@ -88,7 +88,6 @@ IN_PROC_BROWSER_TEST_F(BraveMainDelegateBrowserTest, EnabledFeatures) {
 #if defined(OS_WIN)
     &features::kWinrtGeolocationImplementation,
 #endif
-    &omnibox::kOmniboxContextMenuShowFullUrls,
     &net::features::kLegacyTLSEnforced,
   };
 
