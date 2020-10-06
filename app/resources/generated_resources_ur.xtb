@@ -292,7 +292,7 @@ myaccount.google.com/activitycontrols/search پر تبدیل کر سکتے ہي�
 <translation id="1361872463926621533">اسٹارٹ اپ پر آواز چلائیں</translation>
 <translation id="1363585519747660921">‏USB پرنٹر کو کنفیگریشن کی ضرورت ہے</translation>
 <translation id="1365180424462182382"><ph name="ENROLLMENT_DOMAIN"/> آپ کے <ph name="BEGIN_LINK"/>براؤزر کا نظم کرتا ہے<ph name="END_LINK"/></translation>
-<translation id="1366177842110999534">‏اپنے <ph name="DEVICE_TYPE"/> پر Linux ٹولز، ایڈیٹرز اور IDEs چلائیں۔ &lt;a target="_blank" href="<ph name="URL"/>"&gt;مزید جانیں&lt;/a&gt;</translation>
+<translation id="1366177842110999534">‏اپنے <ph name="DEVICE_TYPE"/> پر Linux ٹولز، ایڈیٹرز اور IDEs چلائیں۔ &lt;a target="_blank" rel="noopener noreferrer" href="<ph name="URL"/>"&gt;مزید جانیں&lt;/a&gt;</translation>
 <translation id="1367951781824006909">ایک فائل منتخب کریں</translation>
 <translation id="1369149969991017342">سوئچ رسائی (صرف ایک یا دو سوئچز کے ساتھ کمپیوٹر کو کنٹرول کریں)</translation>
 <translation id="1372841398847029212">اپنے اکاؤنٹ سے مطابقت پذیر بنائیں</translation>
@@ -1355,7 +1355,7 @@ myaccount.google.com/activitycontrols/search پر تبدیل کر سکتے ہي�
 <translation id="268053382412112343">سر&amp;گزشت</translation>
 <translation id="2682498795777673382">آپ کے والدین کی جانب سے اپ ڈیٹ</translation>
 <translation id="2683638487103917598">فولڈر ترتیب شدہ ہیں</translation>
-<translation id="2686222346846590368">‏یہ اس <ph name="DEVICE_TYPE"/> کے لیے آخری خودکار سافٹ ویئر اور سیکیورٹی اپ ڈیٹ ہے۔ آئندہ کے اپ ڈیٹس حاصل کرنے کے لیے، نئے ماڈل پر اپ گریڈ کریں۔ &lt;a target="_blank" href="<ph name="URL"/>"&gt;مزید جانیں<ph name="LINK_END"/></translation>
+<translation id="2686222346846590368">‏یہ اس <ph name="DEVICE_TYPE"/> کے لیے آخری خودکار سافٹ ویئر اور سیکیورٹی اپ ڈیٹ ہے۔ آئندہ کے اپ ڈیٹس حاصل کرنے کے لیے، نئے ماڈل پر اپ گریڈ کریں۔ &lt;a target="_blank" rel="noopener noreferrer" href="<ph name="URL"/>"&gt;مزید جانیں<ph name="LINK_END"/></translation>
 <translation id="2687403674020088961">سبھی کوکیز مسدود کریں (تجویز نہیں کی جاتی ہے)</translation>
 <translation id="2687407218262674387">‏Brave کی سروس کی شرائط</translation>
 <translation id="2688196195245426394">سرور کے ساتھ آلہ رجسٹر کرتے وقت خرابی پیش آ گئی: <ph name="CLIENT_ERROR"/>۔</translation>
@@ -4853,7 +4853,7 @@ myaccount.google.com/activitycontrols/search پر تبدیل کر سکتے ہي�
 <translation id="7197632491113152433">ہمیں آپ کے اکاؤنٹ سے <ph name="NUMBER_OF_APPS"/> ایسی ایپس کا پتا چلا ہے، جنہیں اس آلہ پر استعمال کیا جا سکتا ہے۔</translation>
 <translation id="7199158086730159431">&amp;مدد حاصل کریں</translation>
 <translation id="7200083590239651963">کنفیگریشن منتخب کریں</translation>
-<translation id="7201042526153088083">‏اپنے <ph name="DEVICE_TYPE"/> پر Google Play سے ایپس اور گیمز انسٹال کریں۔ &lt;a target="_blank" href="<ph name="URL"/>"&gt;مزید جانیں&lt;/a&gt;</translation>
+<translation id="7201042526153088083">‏اپنے <ph name="DEVICE_TYPE"/> پر Google Play سے ایپس اور گیمز انسٹال کریں۔ &lt;a target="_blank" rel="noopener noreferrer" href="<ph name="URL"/>"&gt;مزید جانیں&lt;/a&gt;</translation>
 <translation id="720110658997053098">اس آلہ کو مستقل طور پر کیوسک وضع میں رکھیں</translation>
 <translation id="7201118060536064622">'<ph name="DELETED_ITEM_NAME"/>' حذف کر دیا گیا</translation>
 <translation id="7201420661433230412">فائلیں دیکھیں</translation>
@@ -6521,6 +6521,7 @@ myaccount.google.com/activitycontrols/search پر تبدیل کر سکتے ہي�
 <translation id="995782501881226248">YouTube</translation>
 <translation id="996250603853062861">محفوظ کنکشن تشکیل دیا جا رہا ہے…</translation>
 <translation id="998747458861718449">م&amp;عائنہ کریں</translation>
+<translation id="38046578254905003">‏<ph name="BEGIN_LINK"/>Brave ویب اسٹور<ph name="END_LINK"/> میں ایکسٹینشنز اور تھیمز تلاش کریں</translation>
 <translation id="658539216370629794">لنک پوشید&amp;گی ونڈو میں کھولیں</translation>
 <translation id="1432267168815937878">لنک پوشید&amp;گی ونڈو میں کھولیں</translation>
 <translation id="6516243500644829484">نئی &amp;پوشیدگی ونڈو</translation>
@@ -6600,7 +6601,6 @@ myaccount.google.com/activitycontrols/search پر تبدیل کر سکتے ہي�
 <translation id="3860292630623580294">(پوشیدگی)</translation>
 <translation id="4854477725773269949">پوشیدگی میں اجازت دیں</translation>
 <translation id="6436164536244065364">ویب اسٹور میں دیکھیں</translation>
-<translation id="38046578254905003">‏<ph name="BEGIN_LINK"/>Brave ویب اسٹور<ph name="END_LINK"/> میں ایکسٹینشنز اور تھیمز تلاش کریں</translation>
 <translation id="6336451774241870485">نیا پوشیدگی ٹیب</translation>
 <translation id="6610147964972079463">پوشیدگی ٹیبز بند کریں</translation>
 <translation id="4933782374919065856">آپ کے پاس سوالات ہیں؟ اپنی پروفائل کی نگرانی کرنے والے شخص سے رابطہ کریں۔</translation>

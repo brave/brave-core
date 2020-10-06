@@ -291,7 +291,7 @@
 <translation id="1361872463926621533">Leisti garsą paleidžiant</translation>
 <translation id="1363585519747660921">Reikia konfigūruoti USB spausdintuvą</translation>
 <translation id="1365180424462182382">Jūsų <ph name="BEGIN_LINK"/>naršyklę tvarko<ph name="END_LINK"/> <ph name="ENROLLMENT_DOMAIN"/></translation>
-<translation id="1366177842110999534">Paleiskite „Linux“ įrankius, redagavimo priemones ir IDE savo „<ph name="DEVICE_TYPE"/>“. &lt;a target="_blank" href="<ph name="URL"/>"&gt;Sužinokite daugiau&lt;/a&gt;</translation>
+<translation id="1366177842110999534">Paleiskite „Linux“ įrankius, redagavimo priemones ir IDE savo „<ph name="DEVICE_TYPE"/>“. &lt;a target="_blank" rel="noopener noreferrer" href="<ph name="URL"/>"&gt;Sužinokite daugiau&lt;/a&gt;</translation>
 <translation id="1367951781824006909">Pasirinkti failą</translation>
 <translation id="1369149969991017342">Prieiga jungikliu (valdykite kompiuterį tik vienu ar dviem jungikliais)</translation>
 <translation id="1372841398847029212">Sinchronizuoti paskyroje</translation>
@@ -1354,7 +1354,7 @@ Jei nenorite, dabar atsijunkite, kad šios paskyros pakeitimai būtų matomi ši
 <translation id="268053382412112343">Is&amp;torija</translation>
 <translation id="2682498795777673382">Vieno iš tėvų naujinys</translation>
 <translation id="2683638487103917598">Aplankas surūšiuotas</translation>
-<translation id="2686222346846590368">Tai yra paskutinis automatinis programinės įrangos ir saugos naujinys, skirtas „<ph name="DEVICE_TYPE"/>“. Kad gautumėte būsimus naujinius, įsigykite naujesnį modelį. &lt;a target="_blank" href="<ph name="URL"/>"&gt;Sužinokite daugiau<ph name="LINK_END"/></translation>
+<translation id="2686222346846590368">Tai yra paskutinis automatinis programinės įrangos ir saugos naujinys, skirtas „<ph name="DEVICE_TYPE"/>“. Kad gautumėte būsimus naujinius, įsigykite naujesnį modelį. &lt;a target="_blank" rel="noopener noreferrer" href="<ph name="URL"/>"&gt;Sužinokite daugiau<ph name="LINK_END"/></translation>
 <translation id="2687403674020088961">Blokuoti visus slapukus (nerekomenduojama)</translation>
 <translation id="2687407218262674387">„Brave“ paslaugų teikimo sąlygos</translation>
 <translation id="2688196195245426394">Įrenginio registravimo serveryje klaida: <ph name="CLIENT_ERROR"/>.</translation>
@@ -4853,7 +4853,7 @@ Ar norite paleisti „<ph name="CONTROL_PANEL_APPLET_NAME"/>“?</translation>
 <translation id="7197632491113152433">Radome <ph name="NUMBER_OF_APPS"/> progr. iš jūsų paskyros, kurias galima naudoti šiame įrenginyje.</translation>
 <translation id="7199158086730159431">Gauti pagalbos</translation>
 <translation id="7200083590239651963">Konfigūracijos pasirinkimas</translation>
-<translation id="7201042526153088083">Diekite programas ir žaidimus iš „Google Play“ įrenginyje „<ph name="DEVICE_TYPE"/>“. &lt;a target="_blank" href="<ph name="URL"/>"&gt;Sužinokite daugiau&lt;/a&gt;</translation>
+<translation id="7201042526153088083">Diekite programas ir žaidimus iš „Google Play“ įrenginyje „<ph name="DEVICE_TYPE"/>“. &lt;a target="_blank" rel="noopener noreferrer" href="<ph name="URL"/>"&gt;Sužinokite daugiau&lt;/a&gt;</translation>
 <translation id="720110658997053098">Įgalinti nuolatinį šio įrenginio veikimą viešojo terminalo režimu</translation>
 <translation id="7201118060536064622">„<ph name="DELETED_ITEM_NAME"/>“ ištrintas (-a)</translation>
 <translation id="7201420661433230412">Peržiūrėti failus</translation>
@@ -6612,7 +6612,7 @@ Rakto failą laikykite saugioje vietoje. Jo reikės, kai norėsite sukurti nauja
 <translation id="3860292630623580294">(Inkognito)</translation>
 <translation id="4854477725773269949">Leisti inkognito režimą</translation>
 <translation id="6436164536244065364">Žiūrėti internetinėje parduotuvėje</translation>
-<translation id="38046578254905003">Raskite plėtinių ir temų <ph name="BEGIN_LINK">&lt;a target="_blank" href="https://chrome.google.com/webstore/category/extensions"&gt;</ph>internetinėje parduotuvėje<ph name="END_LINK">&lt;/a&gt;</ph></translation>
+<translation id="38046578254905003">Raskite plėtinių ir temų internetinėje parduotuvėje <ph name="BEGIN_LINK"/>Web Store<ph name="END_LINK"/></translation>
 <translation id="6336451774241870485">Naujas inkognito skirtukas</translation>
 <translation id="6610147964972079463">Uždaryti inkognito skirtukus</translation>
 <translation id="4933782374919065856">Turite klausimų? Susisiekite su jūsų profilį prižiūrinčiu asmeniu.</translation>

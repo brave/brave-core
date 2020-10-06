@@ -291,7 +291,7 @@
 <translation id="1361872463926621533">啟動時播放音效</translation>
 <translation id="1363585519747660921">USB 列印機需要設定</translation>
 <translation id="1365180424462182382">您的<ph name="BEGIN_LINK"/>瀏覽器由 <ph name="END_LINK"/><ph name="ENROLLMENT_DOMAIN"/> 管理</translation>
-<translation id="1366177842110999534">在您的 <ph name="DEVICE_TYPE"/> 執行 Linux 工具、編輯器和整合開發環境 (IDE)。&lt;a target="_blank" href="<ph name="URL"/>"&gt;瞭解詳情&lt;/a&gt;</translation>
+<translation id="1366177842110999534">在您的 <ph name="DEVICE_TYPE"/> 執行 Linux 工具、編輯器和整合開發環境 (IDE)。&lt;a target="_blank" rel="noopener noreferrer" href="<ph name="URL"/>"&gt;瞭解詳情&lt;/a&gt;</translation>
 <translation id="1367951781824006909">選擇檔案</translation>
 <translation id="1369149969991017342">按鈕控制 (使用一或兩個按鈕就能操控電腦)</translation>
 <translation id="1372841398847029212">同步至您的帳戶</translation>
@@ -1353,7 +1353,7 @@
 <translation id="268053382412112343">記錄(&amp;S)</translation>
 <translation id="2682498795777673382">您的家長已更新設定</translation>
 <translation id="2683638487103917598">資料夾已排序</translation>
-<translation id="2686222346846590368">這是此 <ph name="DEVICE_TYPE"/> 最後一次自動更新軟件和安全性。如要取得後續更新，請升級為較新的型號。&lt;a target="_blank" href="<ph name="URL"/>"&gt;瞭解詳情<ph name="LINK_END"/></translation>
+<translation id="2686222346846590368">這是此 <ph name="DEVICE_TYPE"/> 最後一次自動更新軟件和安全性。如要取得後續更新，請升級為較新的型號。&lt;a target="_blank" rel="noopener noreferrer" href="<ph name="URL"/>"&gt;瞭解詳情<ph name="LINK_END"/></translation>
 <translation id="2687403674020088961">封鎖所有 Cookie (不建議)</translation>
 <translation id="2687407218262674387">Brave 服務條款</translation>
 <translation id="2688196195245426394">向伺服器註冊裝置時發生錯誤：<ph name="CLIENT_ERROR"/>。</translation>
@@ -4851,7 +4851,7 @@
 <translation id="7197632491113152433">我們在您的帳戶中找到 <ph name="NUMBER_OF_APPS"/> 個可於此裝置上使用的應用程式。</translation>
 <translation id="7199158086730159431">取得說明(&amp;E)</translation>
 <translation id="7200083590239651963">選取設定</translation>
-<translation id="7201042526153088083">在 <ph name="DEVICE_TYPE"/> 上透過 Google Play 安裝應用程式和遊戲。&lt;a target="_blank" href="<ph name="URL"/>"&gt;瞭解詳情&lt;/a&gt;</translation>
+<translation id="7201042526153088083">在 <ph name="DEVICE_TYPE"/> 上透過 Google Play 安裝應用程式和遊戲。&lt;a target="_blank" rel="noopener noreferrer" href="<ph name="URL"/>"&gt;瞭解詳情&lt;/a&gt;</translation>
 <translation id="720110658997053098">讓此裝置永久使用 Kiosk 模式</translation>
 <translation id="7201118060536064622">已刪除「<ph name="DELETED_ITEM_NAME"/>」</translation>
 <translation id="7201420661433230412">查看檔案</translation>
@@ -6518,6 +6518,7 @@
 <translation id="995782501881226248">YouTube</translation>
 <translation id="996250603853062861">正在建立安全連線…</translation>
 <translation id="998747458861718449">檢查(&amp;N)</translation>
+<translation id="38046578254905003">在「<ph name="BEGIN_LINK"/>Brave 網上應用程式商店<ph name="END_LINK"/>」中尋找擴充程式和主題背景</translation>
 <translation id="658539216370629794">在無痕式視窗中開啟連結(&amp;G)</translation>
 <translation id="1432267168815937878">在無痕式視窗中開啟連結(&amp;G)</translation>
 <translation id="6516243500644829484">新增無痕式視窗(&amp;I)</translation>
@@ -6597,7 +6598,6 @@
 <translation id="3860292630623580294">(無痕模式)</translation>
 <translation id="4854477725773269949">允許在無痕模式中執行</translation>
 <translation id="6436164536244065364">在「Brave 網上應用程式商店」上查看</translation>
-<translation id="38046578254905003">在「<ph name="BEGIN_LINK"/>Brave 網上應用程式商店<ph name="END_LINK"/>」中尋找擴充程式和主題背景</translation>
 <translation id="6336451774241870485">新增無痕式分頁</translation>
 <translation id="6610147964972079463">關閉無痕式分頁</translation>
 <translation id="4933782374919065856">有問題嗎？請與您個人資料的監管者聯絡。</translation>

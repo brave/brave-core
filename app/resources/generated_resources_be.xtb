@@ -291,7 +291,7 @@
 <translation id="1361872463926621533">Прайграваць гук пры запуску</translation>
 <translation id="1363585519747660921">Неабходна наладзіць USB-прынтар</translation>
 <translation id="1365180424462182382"><ph name="BEGIN_LINK"/>Браўзер знаходзіцца пад кіраваннем<ph name="END_LINK"/> дамена <ph name="ENROLLMENT_DOMAIN"/>.</translation>
-<translation id="1366177842110999534">Запускайце IDE, рэдактары і інструменты Linux на прыладзе <ph name="DEVICE_TYPE"/>. &lt;a target="_blank" href="<ph name="URL"/>"&gt;Даведацца больш&lt;/a&gt;</translation>
+<translation id="1366177842110999534">Запускайце IDE, рэдактары і інструменты Linux на прыладзе <ph name="DEVICE_TYPE"/>. &lt;a target="_blank" rel="noopener noreferrer" href="<ph name="URL"/>"&gt;Даведацца больш&lt;/a&gt;</translation>
 <translation id="1367951781824006909">Выбраць файл</translation>
 <translation id="1369149969991017342">Доступ праз пераключальнікі (кіраванне камп'ютарам з дапамогай аднаго або двух пераключальнікаў)</translation>
 <translation id="1372841398847029212">Сінхранізаваць з уліковым запісам</translation>
@@ -1354,7 +1354,7 @@
 <translation id="268053382412112343">Гі&amp;сторыя</translation>
 <translation id="2682498795777673382">Вашы бацькі змянілі налады</translation>
 <translation id="2683638487103917598">Папка адсартавана</translation>
-<translation id="2686222346846590368">Гэта апошняе аўтаматычнае абнаўленне праграмнага забеспячэння і сістэмы бяспекі для гэтай прылады <ph name="DEVICE_TYPE"/>. Каб атрымліваць наступныя абнаўленні, перайдзіце на новую мадэль. &lt;a target="_blank" href="<ph name="URL"/>"&gt;Даведацца больш<ph name="LINK_END"/></translation>
+<translation id="2686222346846590368">Гэта апошняе аўтаматычнае абнаўленне праграмнага забеспячэння і сістэмы бяспекі для гэтай прылады <ph name="DEVICE_TYPE"/>. Каб атрымліваць наступныя абнаўленні, перайдзіце на новую мадэль. &lt;a target="_blank" rel="noopener noreferrer" href="<ph name="URL"/>"&gt;Даведацца больш<ph name="LINK_END"/></translation>
 <translation id="2687403674020088961">Блакіраваць усе файлы cookie (не рэкамендуецца)</translation>
 <translation id="2687407218262674387">Умовы выкарыстання Brave</translation>
 <translation id="2688196195245426394">Пры рэгістрацыі прылады на серверы адбылася памылка: <ph name="CLIENT_ERROR"/>.</translation>
@@ -4852,7 +4852,7 @@
 <translation id="7197632491113152433">Мы знайшлі ў вашым уліковым запісе праграмы (<ph name="NUMBER_OF_APPS"/> шт.), якія можна выкарыстоўваць на гэтай прыладзе.</translation>
 <translation id="7199158086730159431">Атрымаць д&amp;аведку</translation>
 <translation id="7200083590239651963">Выберыце канфігурацыю</translation>
-<translation id="7201042526153088083">Усталёўвайце праграмы і гульні з Google Play на сваёй прыладзе <ph name="DEVICE_TYPE"/>. &lt;a target="_blank" href="<ph name="URL"/>"&gt;Даведацца больш&lt;/a&gt;</translation>
+<translation id="7201042526153088083">Усталёўвайце праграмы і гульні з Google Play на сваёй прыладзе <ph name="DEVICE_TYPE"/>. &lt;a target="_blank" rel="noopener noreferrer" href="<ph name="URL"/>"&gt;Даведацца больш&lt;/a&gt;</translation>
 <translation id="720110658997053098">Заўсёды ўжываць на гэтай прыладзе рэжым кіёска</translation>
 <translation id="7201118060536064622"><ph name="DELETED_ITEM_NAME"/> – выдалена</translation>
 <translation id="7201420661433230412">Праглядзець файлы</translation>
@@ -6519,6 +6519,7 @@
 <translation id="995782501881226248">YouTube</translation>
 <translation id="996250603853062861">Устанаўленне бяспечнага падключэння...</translation>
 <translation id="998747458861718449">Пра&amp;верыць</translation>
+<translation id="38046578254905003">Шукайце пашырэнні і тэмы ў <ph name="BEGIN_LINK"/>Вэб-краме Brave<ph name="END_LINK"/></translation>
 <translation id="658539216370629794">Адкрыць спасылку ў акне інко&amp;гніта</translation>
 <translation id="1432267168815937878">Адкрыць спасылку ў акне інко&amp;гніта</translation>
 <translation id="6516243500644829484">Новае &amp;акно ў рэжыме інкогніта</translation>
@@ -6598,7 +6599,6 @@
 <translation id="3860292630623580294">(інкогніта)</translation>
 <translation id="4854477725773269949">Дазволіць у рэжыме інкогніта</translation>
 <translation id="6436164536244065364">Прагледзець у Вэб-краме</translation>
-<translation id="38046578254905003">Шукайце пашырэнні і тэмы ў <ph name="BEGIN_LINK"/>Вэб-краме Brave<ph name="END_LINK"/></translation>
 <translation id="6336451774241870485">Новая ўкладка інкогніта</translation>
 <translation id="6610147964972079463">Закрыць укладкі інкогніта</translation>
 <translation id="4933782374919065856">Засталіся пытанні? Звяжыцеся з тым, хто кантралюе ваш профіль.</translation>

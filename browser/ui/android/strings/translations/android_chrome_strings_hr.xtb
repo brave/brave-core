@@ -1024,6 +1024,8 @@ Na primjer, neke web-lokacije na taj zahtjev mogu odgovoriti tako da vam prikaž
 <translation id="983192555821071799">Zatvori sve kartice</translation>
 <translation id="987264212798334818">Općenito</translation>
 <translation id="996149300115483134">Izbornik kartice feeda je zatvoren</translation>
+<translation id="4540437243849625078">Ovim se mrežnim mjestom dijele informacije s aplikacijom izvan privatnog načina.</translation>
+<translation id="1227836882233136433">Napustiti privatni način?</translation>
 <translation id="5186185447130319458">Privatno</translation>
 <translation id="9063160602596686558">Automatski šalje Brave Softwareu statistiku upotrebe i izvješća o rušenju</translation>
 <translation id="1438581767753657407">Kada se primjenjuje način Lite, preglednik Brave upotrebljava poslužitelje Brave za brže učitavanje stranica. Načinom se Lite iznimno sporo ponovno zapisuju stranice radi učitavanja samo osnovnog sadržaja. Način Lite ne odnosi se na kartice Privatno.</translation>
@@ -1033,8 +1035,7 @@ Na primjer, neke web-lokacije na taj zahtjev mogu odgovoriti tako da vam prikaž
 <translation id="3110967157686007724">Kartica Privatno</translation>
 <translation id="4526803704855831732">Kartice Privatno</translation>
 <translation id="7465104139234185284">Zatvori sve privatne kartice</translation>
-<translation id="4540437243849625078">Ovim se mrežnim mjestom dijele informacije s aplikacijom izvan privatnog načina.</translation>
-<translation id="1227836882233136433">Napustiti privatni način?</translation>
+<translation id="21023559487771014">Idi u privatni način</translation>
 <translation id="6336451774241870485">Nova privatna kartica</translation>
 <translation id="3234355010754616171">Nova privatna kartica</translation>
 <translation id="6610147964972079463">Zatvori privatne kartice</translation>

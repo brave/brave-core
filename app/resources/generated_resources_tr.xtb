@@ -291,7 +291,7 @@
 <translation id="1361872463926621533">Başlangıçta ses çal</translation>
 <translation id="1363585519747660921">USB yazıcının yapılandırılması gerekiyor</translation>
 <translation id="1365180424462182382"><ph name="BEGIN_LINK"/>Tarayıcınız<ph name="END_LINK"/>, <ph name="ENROLLMENT_DOMAIN"/> tarafından yönetilmektedir</translation>
-<translation id="1366177842110999534"><ph name="DEVICE_TYPE"/> cihazınızda Linux araçlarını, düzenleyicilerini ve IDE'lerini çalıştırın. &lt;a target="_blank" href="<ph name="URL"/>"&gt;Daha fazla bilgi&lt;/a&gt;</translation>
+<translation id="1366177842110999534"><ph name="DEVICE_TYPE"/> cihazınızda Linux araçlarını, düzenleyicilerini ve IDE'lerini çalıştırın. &lt;a target="_blank" rel="noopener noreferrer" href="<ph name="URL"/>"&gt;Daha fazla bilgi&lt;/a&gt;</translation>
 <translation id="1367951781824006909">Dosya seç</translation>
 <translation id="1369149969991017342">Anahtar Erişimi (bilgisayarı yalnızca bir veya iki anahtarla kontrol edin)</translation>
 <translation id="1372841398847029212">Hesabınızla senkronize edin</translation>
@@ -1354,7 +1354,7 @@ Cihazınızda Family Link uygulamasını yükleyerek bu hesabın ayarlarını y�
 <translation id="268053382412112343">Geç&amp;miş</translation>
 <translation id="2682498795777673382">Ebeveyniniz güncelleme yaptı</translation>
 <translation id="2683638487103917598">Klasör sıralandı</translation>
-<translation id="2686222346846590368">Bu, <ph name="DEVICE_TYPE"/> için son otomatik yazılım ve güvenlik güncellemesidir. Gelecekteki güncellemeleri almak için daha yeni bir sürüme geçin. &lt;a target="_blank" href="<ph name="URL"/>"&gt;Daha fazla bilgi<ph name="LINK_END"/></translation>
+<translation id="2686222346846590368">Bu, <ph name="DEVICE_TYPE"/> için son otomatik yazılım ve güvenlik güncellemesidir. Gelecekteki güncellemeleri almak için daha yeni bir sürüme geçin. &lt;a target="_blank" rel="noopener noreferrer" href="<ph name="URL"/>"&gt;Daha fazla bilgi<ph name="LINK_END"/></translation>
 <translation id="2687403674020088961">Tüm çerezleri engelle (önerilmez)</translation>
 <translation id="2687407218262674387">Brave hizmet şartları</translation>
 <translation id="2688196195245426394">Cihaz sunucuya kaydedilirken hata oluştu: <ph name="CLIENT_ERROR"/>.</translation>
@@ -4853,7 +4853,7 @@ Hassas bilgileri vermediğinizden emin olun.</translation>
 <translation id="7197632491113152433">Hesabınızdan bu cihazda kullanılabilecek <ph name="NUMBER_OF_APPS"/> uygulama bulduk.</translation>
 <translation id="7199158086730159431">&amp;Yardım Al</translation>
 <translation id="7200083590239651963">Yapılandırmayı seçin</translation>
-<translation id="7201042526153088083"><ph name="DEVICE_TYPE"/> cihazınıza Google Play'den uygulama ve oyunlar yükleyin. &lt;a target="_blank" href="<ph name="URL"/>"&gt;Daha fazla bilgi&lt;/a&gt;</translation>
+<translation id="7201042526153088083"><ph name="DEVICE_TYPE"/> cihazınıza Google Play'den uygulama ve oyunlar yükleyin. &lt;a target="_blank" rel="noopener noreferrer" href="<ph name="URL"/>"&gt;Daha fazla bilgi&lt;/a&gt;</translation>
 <translation id="720110658997053098">Bu cihazı kalıcı olarak kiosk modunda tut</translation>
 <translation id="7201118060536064622">"<ph name="DELETED_ITEM_NAME"/>" silindi</translation>
 <translation id="7201420661433230412">Dosyaları görüntüle</translation>
@@ -6611,7 +6611,7 @@ Anahtar dosyanızı güvenli bir yerde saklayın. Uzantınızın yeni sürümler
 <translation id="3860292630623580294">{Kişisel}</translation>
 <translation id="4854477725773269949">Kişiselde izin ver</translation>
 <translation id="6436164536244065364">Web Mağazasında Görüntüle</translation>
-<translation id="38046578254905003"><ph name="BEGIN_LINK">&lt;a target="_blank" href="https://chrome.google.com/webstore/category/extensions"&gt;</ph>Web Store<ph name="END_LINK">&lt;/a&gt;</ph> içinde uzantı ve tema bul</translation>
+<translation id="38046578254905003"><ph name="BEGIN_LINK"/>Web Store<ph name="END_LINK"/> içinde uzantılar ve temalar bulun</translation>
 <translation id="6336451774241870485">Yeni kişisel sekme</translation>
 <translation id="6610147964972079463">Kişisel sekmeleri kapat</translation>
 <translation id="4933782374919065856">Sorularınız mı var? Profilinizi denetleyen kişiyle iletişime geçin.</translation>

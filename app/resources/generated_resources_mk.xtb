@@ -291,7 +291,7 @@
 <translation id="1361872463926621533">Пуштај звук при стартување</translation>
 <translation id="1363585519747660921">Потребно е конфигурирање на USB-печатачот</translation>
 <translation id="1365180424462182382">Вашиот <ph name="BEGIN_LINK"/>прелистувач е управуван<ph name="END_LINK"/> од <ph name="ENROLLMENT_DOMAIN"/></translation>
-<translation id="1366177842110999534">Извршувајте ги алатките на Linux, уредувачите и интегрираните средини за програмери на вашиот <ph name="DEVICE_TYPE"/>. &lt;a target="_blank" href="<ph name="URL"/>"&gt;Дознајте повеќе&lt;/a&gt;</translation>
+<translation id="1366177842110999534">Извршувајте ги алатките на Linux, уредувачите и интегрираните средини за програмери на вашиот <ph name="DEVICE_TYPE"/>. &lt;a target="_blank" rel="noopener noreferrer" href="<ph name="URL"/>"&gt;Дознајте повеќе&lt;/a&gt;</translation>
 <translation id="1367951781824006909">Избери датотека</translation>
 <translation id="1369149969991017342">Пристап со прекинувачи (контролирајте го компјутерот со само еден или два прекинувачи)</translation>
 <translation id="1372841398847029212">Синхронизирајте со вашата сметка</translation>
@@ -1354,7 +1354,7 @@
 <translation id="268053382412112343">И&amp;сторија</translation>
 <translation id="2682498795777673382">Ажурирање од родителот</translation>
 <translation id="2683638487103917598">Папката е подредена</translation>
-<translation id="2686222346846590368">Ова е последното автоматско ажурирање на софтверот и безбедноста за овој <ph name="DEVICE_TYPE"/>. За да добивате идни ажурирања, надградете на понов модел. &lt;a target="_blank" href="<ph name="URL"/>"&gt;Дознајте повеќе<ph name="LINK_END"/></translation>
+<translation id="2686222346846590368">Ова е последното автоматско ажурирање на софтверот и безбедноста за овој <ph name="DEVICE_TYPE"/>. За да добивате идни ажурирања, надградете на понов модел. &lt;a target="_blank" rel="noopener noreferrer" href="<ph name="URL"/>"&gt;Дознајте повеќе<ph name="LINK_END"/></translation>
 <translation id="2687403674020088961">Блокирај ги сите колачиња (не се препорачува)</translation>
 <translation id="2687407218262674387">Услови за користење на Brave</translation>
 <translation id="2688196195245426394">Грешка при регистрирање на уредот на серверот: <ph name="CLIENT_ERROR"/>.</translation>
@@ -4852,7 +4852,7 @@
 <translation id="7197632491113152433">Најдовме <ph name="NUMBER_OF_APPS"/> аплкации од вашата сметка што може да се користат на уредов.</translation>
 <translation id="7199158086730159431">Побарај п&amp;омош</translation>
 <translation id="7200083590239651963">Избор на конфигурација</translation>
-<translation id="7201042526153088083">Инсталирајте апликации и игри од Google Play на вашиот <ph name="DEVICE_TYPE"/>. &lt;a target="_blank" href="<ph name="URL"/>"&gt;Дознајте повеќе&lt;/a&gt;</translation>
+<translation id="7201042526153088083">Инсталирајте апликации и игри од Google Play на вашиот <ph name="DEVICE_TYPE"/>. &lt;a target="_blank" rel="noopener noreferrer" href="<ph name="URL"/>"&gt;Дознајте повеќе&lt;/a&gt;</translation>
 <translation id="720110658997053098">Трајно задржи го уредов во режим на киоск</translation>
 <translation id="7201118060536064622">Ставката „<ph name="DELETED_ITEM_NAME"/>“ е избришана</translation>
 <translation id="7201420661433230412">Прикажи ги датотеките</translation>
@@ -6522,6 +6522,7 @@
 <translation id="995782501881226248">YouTube</translation>
 <translation id="996250603853062861">Се воспоставува безбедна врска...</translation>
 <translation id="998747458861718449">Провери&amp;</translation>
+<translation id="38046578254905003">Најдете екстензии и теми во <ph name="BEGIN_LINK"/>Веб-продавницата на Brave<ph name="END_LINK"/></translation>
 <translation id="658539216370629794">Отвори ја врската во инко&amp;гнито прозорец</translation>
 <translation id="1432267168815937878">Отвори ја врската во инко&amp;гнито прозорец</translation>
 <translation id="6516243500644829484">Нов &amp;инкогнито прозорец</translation>
@@ -6601,7 +6602,6 @@
 <translation id="3860292630623580294">(Инкогнито)</translation>
 <translation id="4854477725773269949">Овозможи во инкогнито</translation>
 <translation id="6436164536244065364">Прикажи во веб-продавница</translation>
-<translation id="38046578254905003">Најдете екстензии и теми во <ph name="BEGIN_LINK"/>Веб-продавницата на Brave<ph name="END_LINK"/></translation>
 <translation id="6336451774241870485">Нова картичка „Инкогнито“</translation>
 <translation id="6610147964972079463">Затвори инкогнито-картички</translation>
 <translation id="4933782374919065856">Имате прашања? Контактирајте со лицето што го надгледува вашиот профил.</translation>

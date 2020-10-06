@@ -170,7 +170,6 @@ aquest mes...</translation>
 <translation id="8193724030871339658">ALTRES DISPOSITIUS EN CADENA</translation>
 <translation id="279635009973773843">CARREGANT DISPOSITIUS...</translation>
 <translation id="6394333525003604181">SORTINT DE LA CADENA DE SINCRONITZACIÓ...</translation>
-<translation id="1604429341565715601">La configuració de sincronització està en curs, intenteu-ho restablir després.</translation>
 <translation id="2569646144216067185">Nombre de paraules: <ph name="WORD_COUNT"/></translation>
 <translation id="4282642752844565114">Nombre de paraules incorrecte</translation>
 <translation id="7507533586185621084">Codi de sincronització incorrecte</translation>
@@ -306,7 +305,8 @@ aquest mes...</translation>
 <translation id="5963670684159057574">Bloqueja l’empremta digital en llocs creuats</translation>
 <translation id="3895527457258986253">Bloquegeu l'empremta digital</translation>
 <translation id="184568144098869637">Eviteu que el navegador reconegui el dispositiu</translation>
-<translation id="4540198958192073185">Bloqueja tot el sistema d'empremta digital</translation>
+<translation id="7396366757003005317">Empremta digital bloquejada (estricta, pot trencar llocs web)</translation>
+<translation id="700453611199558021">Empremta digital bloquejada (estàndard)</translation>
 <translation id="769702552748212954">Permet totes les empremtes dactilars</translation>
 <translation id="2888409909650566510">S'han bloquejat anuncis i altres coses\nestranyes</translation>
 <translation id="6930134873084561197">Els llocs sovint inclouen galetes i scripts que intenten indentificar-vos i identificar el vostre dispositiu. Volen esbrinar qui sou i seguir a partir del web tot el que feu a cada lloc. \n\nBrave bloqueja aquestes coses de manera que podeu navegar sense ser seguits.</translation>
@@ -334,7 +334,7 @@ aquest mes...</translation>
 <translation id="8374242949413616101">Protecció de privadesa</translation>
 <translation id="4955406228638026265">Brave impedeix que els anuncis &amp; rastrejadors recopilin informació sobre vós sense el vostre consentiment.</translation>
 <translation id="752842701893882688">Deseu les dades i la bateria</translation>
-<translation id="5739030256211745023">Sense anuncis &amp; rastrejadors, els llocs web utilitzen menys dades i bateria. Fins i tot es pot estalviar diners en les despeses de la companyia telefònica.</translation>
+<translation id="1685837926613452362">Les pàgines web utilitzen menys dades i bateria quan no hi ha anuncis ni rastrejadors. Fins i tot podeu estalviar diners en les tarifes de l'operador d'Internet.</translation>
 <translation id="5440744330377972191">Els llocs web es carreguen més ràpidament</translation>
 <translation id="3000738865641747653">Carregar menys dades significa que amb Brave els llocs web carreguen més ràpidament - fins a 8 vegades més ràpids que amb altres navegadors.</translation>
 <translation id="8903462729414407077">Rebi actualitzacions setmanals</translation>
@@ -349,6 +349,7 @@ aquest mes...</translation>
 <translation id="1581614543353331529">Encara no es mostren dades</translation>
 <translation id="2401984885421380890">Rastrejadors &amp; Ads\nBlocked</translation>
 <translation id="2662183408296991265">Data Saved\n(<ph name="DATA_SAVED"/>)</translation>
+<translation id="3180928261057583677">Dades Desades (<ph name="DATA_SAVED"/>)</translation>
 <translation id="6814582232712814369">Estalvi de temps</translation>
 <translation id="3694122362646626770">Llocs web</translation>
 <translation id="2225863440766607138">Rastrejadors</translation>
@@ -358,12 +359,12 @@ aquest mes...</translation>
 <translation id="7427567994475794038">Activeu els informes de privadesa per veure quants rastrejadors &amp;amp anuncis s'han bloquejat en les darreres 3 hores.</translation>
 <translation id="2053891538879944400">Heu desat <ph name="DATA"/> <ph name="DATA_TEXT"/> dades amb el navegador Brave.</translation>
 <translation id="8640064498452534195">Activeu els Informes de privadesa per veure quantes dades heu salvat.</translation>
-<translation id="4591582032282435287">El navegador Brave utilitza un 40% menys de bateria de mitjana</translation>
+<translation id="2252497442547961651">El navegador Brave consumeix de mitjana un 40% menys de bateria.&#128267;</translation>
 <translation id="1945330434665345785">Heu bloquejat <ph name="COUNT"/> rastrejadors &amp; anuncis amb navegador Brave la setmana passada.</translation>
 <translation id="2883868922264431515">Guanyeu tokens visualitzant anuncis que respectin la privadesa i donin suport als vostres llocs web preferits.</translation>
-<translation id="6840965284166256302">Genial! Heu bloquejat 250 rastrejadors &amp; anuncis amb el navegador Brave.</translation>
-<translation id="2076976911561945584">Genial! Heu estalviat 10 MB amb el navegador Brave.</translation>
-<translation id="6714550233326888315">Genial! Heu estalviat 10 min de temps de càrrega amb el navegador Brave.</translation>
+<translation id="5678925890616256956">Genial! Heu bloquejat 250 seguidors i anuncis amb el navegador Brave.&#128293;</translation>
+<translation id="9199047775708635708">Genial! Heu estalviat 10 MB amb el navegador Brave.&#128267;</translation>
+<translation id="1880168210969863408">Genial! Heu estalviat 10 minuts de temps de càrrega amb el navegador Brave.&#128168;&#128168;</translation>
 <translation id="7408493389591475748">Comenceu a navegar per veure els informes de privadesa</translation>
 <translation id="9080777565335515917">Definiu Brave com a navegador predeterminat per a una navegació privada i segura.</translation>
 <translation id="7801488941710395275">Permeti a Brave mostrar les vostres estadístiques de privadesa</translation>
@@ -372,4 +373,5 @@ aquest mes...</translation>
 <translation id="8089997572759938512">Restableixi els informes de privadesa a zero</translation>
 <translation id="2718046830255553131">Les dades dels informes de privadesa han sigut esborrades.</translation>
 <translation id="7559243474426790340">Actualitza l'estat</translation>
+<translation id="8376263745431603066">Activar el "mode nocturn" (experimental)</translation>
 </translationbundle>

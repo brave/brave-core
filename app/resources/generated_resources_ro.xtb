@@ -291,7 +291,7 @@
 <translation id="1361872463926621533">Redă sunetul la pornire</translation>
 <translation id="1363585519747660921">Imprimanta USB necesită configurare</translation>
 <translation id="1365180424462182382"><ph name="BEGIN_LINK"/>Browserul tău este gestionat<ph name="END_LINK"/> de <ph name="ENROLLMENT_DOMAIN"/></translation>
-<translation id="1366177842110999534">Rulează instrumentele, aplicațiile de editare și IDE-urile Linux pe <ph name="DEVICE_TYPE"/>. &lt;a target="_blank" href="<ph name="URL"/>"&gt;Află mai multe&lt;/a&gt;</translation>
+<translation id="1366177842110999534">Rulează instrumentele, aplicațiile de editare și IDE-urile Linux pe <ph name="DEVICE_TYPE"/>. &lt;a target="_blank" rel="noopener noreferrer" href="<ph name="URL"/>"&gt;Află mai multe&lt;/a&gt;</translation>
 <translation id="1367951781824006909">Alege un fișier</translation>
 <translation id="1369149969991017342">Accesul prin comutare (controlează computerul cu numai un comutator sau două)</translation>
 <translation id="1372841398847029212">Sincronizează cu contul tău</translation>
@@ -1354,7 +1354,7 @@ Poți gestiona setările contului dacă instalezi aplicația Family Link pe disp
 <translation id="268053382412112343">Is&amp;toric</translation>
 <translation id="2682498795777673382">Actualizare de la părintele tău</translation>
 <translation id="2683638487103917598">Dosar sortat</translation>
-<translation id="2686222346846590368">Aceasta este ultima actualizare automată de software și de securitate pentru acest dispozitiv <ph name="DEVICE_TYPE"/>. Pentru a primi actualizări viitoare, fă upgrade la un model mai nou. &lt;a target="_blank" href="<ph name="URL"/>"&gt;Află mai multe<ph name="LINK_END"/></translation>
+<translation id="2686222346846590368">Aceasta este ultima actualizare automată de software și de securitate pentru acest dispozitiv <ph name="DEVICE_TYPE"/>. Pentru a primi actualizări viitoare, fă upgrade la un model mai nou. &lt;a target="_blank" rel="noopener noreferrer" href="<ph name="URL"/>"&gt;Află mai multe<ph name="LINK_END"/></translation>
 <translation id="2687403674020088961">Blochează toate cookie-urile (nu este recomandat)</translation>
 <translation id="2687407218262674387">Termenii și condițiile Brave</translation>
 <translation id="2688196195245426394">Eroare la înregistrarea gadgetului pe server: <ph name="CLIENT_ERROR"/>.</translation>
@@ -4852,7 +4852,7 @@ Mesaj de la server: <ph name="SERVER_MSG"/></translation>
 <translation id="7197632491113152433">Am găsit <ph name="NUMBER_OF_APPS"/> aplicații din contul tău care pot fi folosite pe acest dispozitiv.</translation>
 <translation id="7199158086730159431">Obțineți a&amp;jutor</translation>
 <translation id="7200083590239651963">Selectează configurația</translation>
-<translation id="7201042526153088083">Instalează aplicații și jocuri din Google Play pe <ph name="DEVICE_TYPE"/>. &lt;a target="_blank" href="<ph name="URL"/>"&gt;Află mai multe&lt;/a&gt;</translation>
+<translation id="7201042526153088083">Instalează aplicații și jocuri din Google Play pe <ph name="DEVICE_TYPE"/>. &lt;a target="_blank" rel="noopener noreferrer" href="<ph name="URL"/>"&gt;Află mai multe&lt;/a&gt;</translation>
 <translation id="720110658997053098">Menține permanent acest dispozitiv în modul chioșc</translation>
 <translation id="7201118060536064622">„<ph name="DELETED_ITEM_NAME"/>” a fost șters</translation>
 <translation id="7201420661433230412">Afișați fișierele</translation>
@@ -6611,7 +6611,7 @@ Păstrează fișierul cu cheia într-un loc sigur. Acesta va fi necesar la crear
 <translation id="3860292630623580294">(Privat)</translation>
 <translation id="4854477725773269949">Permite în privat</translation>
 <translation id="6436164536244065364">Vizualizați în Magazinul web Brave</translation>
-<translation id="38046578254905003">Găsește extensii și teme în <ph name="BEGIN_LINK">&lt;a target="_blank" href="https://chrome.google.com/webstore/category/extensions"&gt;</ph>Magazinul Web<ph name="END_LINK">&lt;/a&gt;</ph></translation>
+<translation id="38046578254905003">Găsești extensii și teme în <ph name="BEGIN_LINK"/>Web Store<ph name="END_LINK"/></translation>
 <translation id="6336451774241870485">Tab privat nou</translation>
 <translation id="6610147964972079463">Închide taburi private</translation>
 <translation id="4933782374919065856">Întrebări? Contactează persoana care îți monitorizează profilul.</translation>

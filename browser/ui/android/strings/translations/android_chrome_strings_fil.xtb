@@ -1024,6 +1024,8 @@ Halimbawa, puwedeng tumugon ang ilang website sa kahilingang ito sa pamamagitan 
 <translation id="983192555821071799">Isara ang lahat ng tab</translation>
 <translation id="987264212798334818">Pangkalahatan</translation>
 <translation id="996149300115483134">Nakasara ang menu ng feed card</translation>
+<translation id="4540437243849625078">Magbabahagi ang site na ito ng impormasyon sa app na wala sa private mode.</translation>
+<translation id="1227836882233136433">Umalis sa private mode?</translation>
 <translation id="5186185447130319458">Pribado</translation>
 <translation id="9063160602596686558">Awtomatikong nagpapadala sa Brave Software ng mga istatistika ng paggamit at ulat ng pag-crash</translation>
 <translation id="1438581767753657407">Kapag naka-on ang Lite mode, ginagamit ng Brave ang mga server ng Brave para mapabilis ang pag-load ng mga page. Nire-rewrite ng Lite mode ang mga napakabagal na page para i-load lang ang mahalagang content. Hindi nagagamit ang Lite mode sa Mga pribadong tab.</translation>
@@ -1033,8 +1035,7 @@ Halimbawa, puwedeng tumugon ang ilang website sa kahilingang ito sa pamamagitan 
 <translation id="3110967157686007724">Pribadong tab</translation>
 <translation id="4526803704855831732">Mga Pribadong Tab</translation>
 <translation id="7465104139234185284">Isara ang lahat ng pribadong tab</translation>
-<translation id="4540437243849625078">Magbabahagi ang site na ito ng impormasyon sa app na wala sa private mode.</translation>
-<translation id="1227836882233136433">Umalis sa private mode?</translation>
+<translation id="21023559487771014">Mag-Private mode</translation>
 <translation id="6336451774241870485">Bagong pribadong tab</translation>
 <translation id="3234355010754616171">Bagong pribadong tab</translation>
 <translation id="6610147964972079463">Isara ang mga pribadong tab</translation>

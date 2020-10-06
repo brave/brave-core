@@ -1024,6 +1024,8 @@
 <translation id="983192555821071799">탭 모두 닫기</translation>
 <translation id="987264212798334818">일반</translation>
 <translation id="996149300115483134">피드 카드 메뉴가 닫힘</translation>
+<translation id="4540437243849625078">이 사이트가 시크릿 모드 외부의 앱과 정보를 공유하려고 합니다.</translation>
+<translation id="1227836882233136433">시크릿 모드를 끝내시겠습니까?</translation>
 <translation id="5186185447130319458">비공개</translation>
 <translation id="9063160602596686558">사용 통계 및 비정상 종료 보고서를 Brave Software로 자동 전송</translation>
 <translation id="1438581767753657407">Lite 모드가 켜지면 Brave는 Brave 서버를 이용해 페이지를 더욱 빠르게 로드합니다. Lite 모드는 느린 페이지를 다시 작성해 필수적인 콘텐츠만을 로드합니다. Lite 모드는 비공개 탭에 적용되지 않습니다.</translation>
@@ -1033,8 +1035,7 @@
 <translation id="3110967157686007724">비공개 탭</translation>
 <translation id="4526803704855831732">비공개 탭</translation>
 <translation id="7465104139234185284">모든 비공개 탭 닫기</translation>
-<translation id="4540437243849625078">이 사이트가 시크릿 모드 외부의 앱과 정보를 공유하려고 합니다.</translation>
-<translation id="1227836882233136433">시크릿 모드를 끝내시겠습니까?</translation>
+<translation id="21023559487771014">비공개 모드 시작</translation>
 <translation id="6336451774241870485">새 비공개 탭</translation>
 <translation id="3234355010754616171">새 비공개 탭</translation>
 <translation id="6610147964972079463">비공개 탭 닫기</translation>

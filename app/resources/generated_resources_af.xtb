@@ -291,7 +291,7 @@
 <translation id="1361872463926621533">Speel klank aan die begin</translation>
 <translation id="1363585519747660921">USB-drukker moet opgestel word</translation>
 <translation id="1365180424462182382">Jou <ph name="BEGIN_LINK"/>blaaier word bestuur<ph name="END_LINK"/> deur <ph name="ENROLLMENT_DOMAIN"/></translation>
-<translation id="1366177842110999534">Laat loop Linux-nutsgoed, -redigeerders en -IDE's op jou <ph name="DEVICE_TYPE"/>. &lt;a target="_blank" href="<ph name="URL"/>"&gt;Kom meer te wete&lt;/a&gt;</translation>
+<translation id="1366177842110999534">Laat loop Linux-nutsgoed, -redigeerders en -IDE's op jou <ph name="DEVICE_TYPE"/>. &lt;a target="_blank" rel="noopener noreferrer" href="<ph name="URL"/>"&gt;Kom meer te wete&lt;/a&gt;</translation>
 <translation id="1367951781824006909">Kies 'n lêer</translation>
 <translation id="1369149969991017342">Skakelaartoegang (beheer die rekenaar met net een of twee skakelaars)</translation>
 <translation id="1372841398847029212">Sinkroniseer met jou rekening</translation>
@@ -1354,7 +1354,7 @@ Jy kan hierdie rekening se instellings bestuur deur die Family Link-program op j
 <translation id="268053382412112343">Geskiedenis</translation>
 <translation id="2682498795777673382">Opdatering van jou ouer af</translation>
 <translation id="2683638487103917598">Vouer is gerangskik</translation>
-<translation id="2686222346846590368">Dit is die laaste outomatiese sagteware- en sekuriteitopdatering vir hierdie <ph name="DEVICE_TYPE"/>. Gradeer na 'n nuwer model toe op om toekomstige opdaterings te kry. &lt;a target="_blank" href="<ph name="URL"/>"&gt;Kom meer te wete<ph name="LINK_END"/></translation>
+<translation id="2686222346846590368">Dit is die laaste outomatiese sagteware- en sekuriteitopdatering vir hierdie <ph name="DEVICE_TYPE"/>. Gradeer na 'n nuwer model toe op om toekomstige opdaterings te kry. &lt;a target="_blank" rel="noopener noreferrer" href="<ph name="URL"/>"&gt;Kom meer te wete<ph name="LINK_END"/></translation>
 <translation id="2687403674020088961">Blokkeer alle webkoekies (nie aanbeveel nie)</translation>
 <translation id="2687407218262674387">Brave se diensbepalings</translation>
 <translation id="2688196195245426394">Kon nie die toestel by die bediener registreer nie: <ph name="CLIENT_ERROR"/>.</translation>
@@ -4853,7 +4853,7 @@ Maak seker jy wys nie enige sensitiewe inligting nie.</translation>
 <translation id="7197632491113152433">Ons het <ph name="NUMBER_OF_APPS"/> programme in jou rekening gekry wat op hierdie toestel gebruik kan word.</translation>
 <translation id="7199158086730159431">Kry hulp</translation>
 <translation id="7200083590239651963">Kies opstelling</translation>
-<translation id="7201042526153088083">Installeer programme en speletjies uit Google Play op jou <ph name="DEVICE_TYPE"/>. &lt;a target="_blank" href="<ph name="URL"/>"&gt;Kom meer te wete&lt;/a&gt;</translation>
+<translation id="7201042526153088083">Installeer programme en speletjies uit Google Play op jou <ph name="DEVICE_TYPE"/>. &lt;a target="_blank" rel="noopener noreferrer" href="<ph name="URL"/>"&gt;Kom meer te wete&lt;/a&gt;</translation>
 <translation id="720110658997053098">Hou hierdie toestel permanent in kioskmodus</translation>
 <translation id="7201118060536064622">"<ph name="DELETED_ITEM_NAME"/>" is uitgevee</translation>
 <translation id="7201420661433230412">Bekyk lêers</translation>
@@ -6520,6 +6520,7 @@ Hou jou sleutellêer op 'n veilige plek. Jy gaan dit nodig hê om nuwe weergawes
 <translation id="995782501881226248">YouTube</translation>
 <translation id="996250603853062861">Vestig tans beveiligde verbinding …</translation>
 <translation id="998747458861718449">Ondersoek</translation>
+<translation id="38046578254905003">Kry uitbreidings en temas in die <ph name="BEGIN_LINK"/>Brave Webwinkel<ph name="END_LINK"/></translation>
 <translation id="658539216370629794">Maak skakel in incognito-venster oop</translation>
 <translation id="1432267168815937878">Maak skakel in incognito-venster oop</translation>
 <translation id="6516243500644829484">Nuwe incognito-venster</translation>
@@ -6599,7 +6600,6 @@ Hou jou sleutellêer op 'n veilige plek. Jy gaan dit nodig hê om nuwe weergawes
 <translation id="3860292630623580294">(Incognito)</translation>
 <translation id="4854477725773269949">Laat in incognito toe</translation>
 <translation id="6436164536244065364">Bekyk in webwinkel</translation>
-<translation id="38046578254905003">Kry uitbreidings en temas in die <ph name="BEGIN_LINK"/>Brave Webwinkel<ph name="END_LINK"/></translation>
 <translation id="6336451774241870485">Nuwe incognito-oortjie</translation>
 <translation id="6610147964972079463">Maak incognito-oortjies toe</translation>
 <translation id="4933782374919065856">Vrae? Kontak die persoon wat toesig oor jou profiel het.</translation>

@@ -28,9 +28,13 @@
 <translation id="5550994254534676787">Rodyti naršymo istoriją</translation>
 <translation id="985862351129593673">Tinkinti ataskaitų sritį</translation>
 <translation id="7180865173735832675">Tinkinti</translation>
-<translation id="5783793537552649286">Rodyti foninį vaizdą</translation>
+<translation id="8522669544471808198">Rodyti foninius vaizdus</translation>
 <translation id="7275773481201277457">Rodyti „Brave“ statistiką</translation>
 <translation id="6836061097810262923">Rodyti laikrodį</translation>
+<translation id="5912396950572065471">Formatas</translation>
+<translation id="604124094241169006">Automatinis</translation>
+<translation id="867722069064361487">12 val. laikrodis</translation>
+<translation id="4064062743338217840">24 val. laikrodis</translation>
 <translation id="8643377320501056697">Rodyti populiarias svetaines</translation>
 <translation id="3446024864193919737">Rodyti „Brave Rewards“</translation>
 <translation id="6274899614137380422">Rodyti „Binance“</translation>
@@ -68,6 +72,10 @@
 <translation id="8958799246752641148">„Tor“ slepia jūsų IP adresą nuo svetainių, kuriose lankotės, nukreipdama jūsų naršymą per kelis „Tor“ serverius ir tik po to nuvesdama į paskirties vietą. Šie ryšiai yra šifruoti, todėl jūsų interneto paslaugų teikėjas ar darbdavys taip pat nemato, kokiose svetainėse lankotės. Dėl „Tor“ naršymas gali sulėtėti, o kai kurios svetainės gali visai neveikti.</translation>
 <translation id="520608572871993342">Naudojant privačius langus keičiasi tik tai, ką „Brave“ atlieka jūsų įrenginyje — niekieno kito elgesys nepasikeičia. „Tor“ paslepia jūsų IP adresą nuo svetainių, kuriose lankotės, taip pat paslepia svetaines, kuriose lankotės, nuo jūsų interneto paslaugų teikėjo ar darbdavio. Privatų langą galite atverti su „Tor“ per meniu arba naudodami {{ key }}.</translation>
 <translation id="6975708438781948564">Daugiau sužinokite apie „Tor“ naršyklėje „Brave“</translation>
+<translation id="4712050378540986986">„Tor“ būsena</translation>
+<translation id="3368922792935385530">Prijungta</translation>
+<translation id="8030169304546394654">Atsijungta</translation>
+<translation id="3705383383955310071">Inicijuojama {{procentinė dalis}} %</translation>
 <translation id="4272382368346338917">Papildomi filtrai</translation>
 <translation id="8949292968394988358">Įspėjimas. Įjungus per daug filtrų sumažėja efektyvumas</translation>
 <translation id="8686201964111147748">Iš viso užblokuotų reklamų ir sekiklių:</translation>
@@ -102,7 +110,7 @@
 <translation id="3829010735958850433">Praleisti pristatymą</translation>
 <translation id="1201402288615127009">Toliau</translation>
 <translation id="7954950242989581218">Naršykite saugiai ir patikimai</translation>
-<translation id="2188651882929633653">„Brave“ skydai užblokuoja pavojingus elementus, bandančius jus sekti žiniatinklyje, įskaitant daugumą skelbimų. Nustatykite skydus „žemyn“, jei panašu, kad svetainė neveikia. „Brave“ naudoja <ph name="BEGIN_LINK_P3A">&lt;a target="_blank" href="$1"&gt;</ph>visiškai privačią produktų analizę<ph name="END_LINK_P3A">&lt;/a&gt;</ph> bendram tam tikrų funkcijų naudojimui įvertinti. Galite ją išjungti dalyje <ph name="BEGIN_LINK_P3A_SETTINGS">&lt;a target="_blank" href="$2"&gt;</ph>Nustatymai<ph name="END_LINK_P3A_SETTINGS">&lt;/a&gt;</ph>.</translation>
+<translation id="2188651882929633653">„Brave“ skydai užblokuoja pavojingus elementus, bandančius jus sekti žiniatinklyje —, įskaitant daugumą skelbimų. Nustatykite skydus “„žemyn“”, jei panašu, kad svetainė neveikia’t. „Brave“ naudoja <ph name="BEGIN_LINK_P3A"/>visiškai privačią produktų analizę<ph name="END_LINK_P3A"/> bendram tam tikrų funkcijų naudojimui įvertinti. Galite ją išjungti dalyje „Nustatymai“ <ph name="BEGIN_LINK_P3A_SETTINGS"/>Settings<ph name="END_LINK_P3A_SETTINGS"/>.</translation>
 <translation id="1919345977826869612">Reklama</translation>
 <translation id="2128226640852355533">Pelnykite {{currency}} už „Brave“ reklamos peržiūrą. Pateikiamos reklamos paremtos jūsų interesais ir susijusios su jūsų naršymo elgesiu. Iš jūsų naršyklės neperduodami jokie asmens duomenys ar naršymo istorija.</translation>
 <translation id="6112368337882254910">Automatinis indėlis</translation>
@@ -174,7 +182,7 @@
 <translation id="4875485795191140618">Jūsų piniginės kodas patikrintas ir įkeltas sėkmingai.</translation>
 <translation id="1083279119532577005">Piniginė atkurta!</translation>
 <translation id="7841456038054167122">Iš naujo įveskite kodus arba išbandykite kitokius kodus.</translation>
-<translation id="340102383764929340">Įvestas atkūrimo kodas daugiau nepalaikomas. Norėdami gauti naują kodą apsilankykite <ph name="BEGIN_LINK_REGION_TEXT">&lt;a target="_blank" href="http://brave.com/faq#convert-old-keys"&gt;</ph>čia<ph name="END_LINK_REGION_TEXT">&lt;/a&gt;</ph>.</translation>
+<translation id="1911900517212490188">Įvestas atkūrimo kodas daugiau nepalaikomas. Norėdami gauti naują kodą, apsilankykite <ph name="BEGIN_LINK"/>here<ph name="END_LINK"/>.</translation>
 <translation id="2195074481553016770">Beveik baigta…</translation>
 <translation id="5254740304961202261">Įrodykite, kad esate žmogus!</translation>
 <translation id="2187043784382239974">Hmmm, ne visai...</translation>
@@ -192,7 +200,7 @@
 <translation id="3082557070674409251">Spustelėta</translation>
 <translation id="7119308337584989771">Atsisakyta</translation>
 <translation id="6805660603861526473">Žiūrėta</translation>
-<translation id="2852258589816753010">BAT šiuo metu jūsų regione nepalaikoma. Naujinių ieškokite <ph name="BEGIN_LINK_REGION_TEXT">&lt;a target="_blank" href="$1"&gt;</ph>here<ph name="END_LINK_REGION_TEXT">&lt;/a&gt;</ph>.</translation>
+<translation id="2359865110462963929">BAT šiuo metu jūsų regione nepalaikoma. Naujinių ieškokite <ph name="BEGIN_LINK"/>here<ph name="END_LINK"/>.</translation>
 <translation id="2564425876266960486">Kuriant „Brave“ naršyklės BAT kortelę, įvyko klaida</translation>
 <translation id="6473583070570450185">Jums reikia patvirtintos piniginės, kad galėtumėte prisijungti</translation>
 <translation id="2106271389438168634">Jums reikia mažiausiai 25 BAT, kad galėtumėte susikurti „Uphold“ piniginę. Patvirtinę savo piniginę su „Uphold“ bandykite dar kartą.</translation>
@@ -219,6 +227,9 @@
 <translation id="386483240851194811">„Rewards“ buvo išjungtos</translation>
 <translation id="3354337256330577726">Automatinis indėlis buvo išjungtas</translation>
 <translation id="6727186931929643711">Pakartojimas sustabdytas</translation>
+<translation id="680983167891198932">Raktas</translation>
+<translation id="7535087603100972091">Vertė</translation>
+<translation id="45591635423975492">Užregistruota</translation>
 <translation id="2059498613853603008">ĮSPĖJIMAS. Šiame puslapyje esantys duomenys gali būti slapti. Elkitės su jais taip, kaip su privačiais savo piniginės kodais. Būkite atidūs, su kuo nors juos bendrindami.</translation>
 <translation id="7375125077091615385">Tipas:</translation>
 <translation id="4973347371961481083">Indėliai</translation>
@@ -252,6 +263,7 @@
 <translation id="2152423226436243241">Automatinis indėlis</translation>
 <translation id="2927922949538312364">Vienkartiniai arbatpinigiai</translation>
 <translation id="3164105678355419142">Pasikartojantys arbatpinigiai</translation>
+<translation id="7806880412350961625">Įvykių žurnalai</translation>
 <translation id="4309915981827077375">Bendroji informacija</translation>
 <translation id="3662406032239313663">Žurnalai</translation>
 <translation id="9001933311880936179">Bendroji suma:</translation>
@@ -262,7 +274,6 @@
 <translation id="2326487656644542536">Piniginės informacija</translation>
 <translation id="8559420016582377654">Piniginės mokėjimo ID:</translation>
 <translation id="438586487791444158">Piniginės būsena:</translation>
-<translation id="3368922792935385530">Prijungta</translation>
 <translation id="8874184842967597500">Neprisijungta</translation>
 <translation id="4569155249847375786">Jūsų piniginė patvirtinta</translation>
 <translation id="922103963921062336">Atjungta (nepatvirtinta)</translation>
@@ -351,7 +362,7 @@
 <translation id="7335371657242627509">Įtraukti į automatinį indėlį</translation>
 <translation id="1864111464094315414">Prisijungimas</translation>
 <translation id="4556504723624686474">Kai jūsų piniginė bus patvirtinta, galėsite efektyviau tvarkyti savo pinigus.</translation>
-<translation id="4188679602963314994">Jums reikia turėti mažiausiai 25 BAT, kad galėtumėte susikurti „Uphold“ paskyrą. Bandykite dar kartą vėliau. <ph name="BREAK">&lt;br/&gt;</ph>Jei jau turite patvirtintą „Uphold“ paskyrą, tęskite, kad prisijungtumėte.</translation>
+<translation id="5594737784294211654">Jums reikia turėti mažiausiai 25 BAT, kad galėtumėte susikurti „Uphold“ paskyrą. Bandykite dar kartą vėliau. <ph name="NEWLINE"/>Jei jau turite patvirtintą „Uphold“ paskyrą, tęskite, kad prisijungtumėte.</translation>
 <translation id="3250511771491660127">Padaryti mėnesinį</translation>
 <translation id="6028954173739504682">Valdyti piniginę</translation>
 <translation id="7886389832052393750">Bal</translation>
@@ -443,8 +454,8 @@
 <translation id="8014425282125849700">Retkarčiais „Brave“ jums pasiūlys nemokamų žetonų išmokų. Nepražiopsokite pranešimo!</translation>
 <translation id="2185598236335233939">Toliau naudodami „Brave“, ieškokite pranešimų apie reklamas. Jūsų BAT taškų likutis padidės su kiekviena peržiūrėta reklama.</translation>
 <translation id="1370034647041840967">Gaukite žetonų už dėmesį reklamai ir perveskite šiuos pinigus, kad paremtumėte turinio kūrėjus, kuriuos vertinate!</translation>
-<translation id="1701701253000051237">Įneškite, išsiimkite ir valdykite lėšas su <ph name="BEGIN_BOLD">&lt;b&gt;</ph>„Uphold“<ph name="BEGIN_END">&lt;/b&gt;</ph>.</translation>
-<translation id="4208741993667364007">Jūsų „Brave“ piniginę sukūrė <ph name="BEGIN_BOLD">&lt;b&gt;</ph>„Uphold“<ph name="BEGIN_END">&lt;/b&gt;</ph>.</translation>
+<translation id="4600224932216165965">Įneškite, išsiimkite ir valdykite lėšas su <ph name="BEGIN_BOLD"/>Uphold<ph name="END_BOLD"/>.</translation>
+<translation id="3580616436301227919">Jūsų „Brave“ piniginę sukūrė <ph name="BEGIN_BOLD"/>Uphold<ph name="END_BOLD"/>.</translation>
 <translation id="6401272292123354754">„Brave Rewards“ atlygio pagrindas – kriptovaliuta „Basic Attention Token“. Sužinokite daugiau apie BAT</translation>
 <translation id="7823359893981882407">čia</translation>
 <translation id="4483635855837696643">Atkurti piniginę</translation>
@@ -453,7 +464,7 @@
 <translation id="3267911153934785912">Įveskite atkūrimo kodą arba</translation>
 <translation id="6548189695918108191">Prieš pakeisdami sukurkite piniginės atsarginę kopiją. Antraip prarasite pinigus, {{funds}}, esančius dabartinėje piniginėje.</translation>
 <translation id="5423214929210538027">Ar tikrai norite iš naujo nustatyti „Rewards“ piniginę?</translation>
-<translation id="9106875682287489763">Jei iš naujo nustatysite piniginę, jūsų <ph name="BEGIN_BOLD">&lt;b&gt;</ph>{{amount}} BAT<ph name="BEGIN_END">&lt;/b&gt;</ph> ir kiti „Rewards“ duomenys bus prarasti visam laikui. Patvirtinkite savo piniginę naudodami „Uphold“, kad neprarastumėte BAT.</translation>
+<translation id="7428521340740703492">Jei iš naujo nustatysite piniginę, jūsų <ph name="BEGIN_BOLD"/>{{amount}} BATs<ph name="END_BOLD"/> ir kiti „Rewards“ duomenys bus prarasti visam laikui. Patvirtinkite savo piniginę naudodami „Uphold“, kad neprarastumėte BAT.</translation>
 <translation id="2028613172174411919">Jei iš naujo nustatysite piniginę, jūsų „Rewards“ duomenys bus prarasti visam laikui.</translation>
 <translation id="4914597931214386232">Atsiimtos žetonų išmokos</translation>
 <translation id="3494964159182650590">„Rewards“ suvestinė</translation>
@@ -534,14 +545,13 @@
 <translation id="5030988785798407804">Jūsų {{currency}} išmoka netrukus bus suteikta.</translation>
 <translation id="2132683977638223450">Nemokamas suteiktas taškas</translation>
 <translation id="7512440811010447157">patvirtinti</translation>
-<translation id="8030169304546394654">Atsijungta</translation>
 <translation id="8267327690882073581">Patvirtinti piniginę</translation>
 <translation id="543510923939676996">Piniginė patvirtinta</translation>
 <translation id="7591798679868259510">Eiti į mano „Uphold“ paskyrą</translation>
 <translation id="3699674790322420653">Baigti piniginės patvirtinimą</translation>
 <translation id="9200453331904391567">Atsijungti nuo „Brave Rewards“</translation>
 <translation id="46988480989545156">Patvirtinti piniginę</translation>
-<translation id="4986087720311945758">Mūsų piniginės paslaugą teikia <ph name="BEGIN_BOLD">&lt;b&gt;</ph>„Uphold“<ph name="BEGIN_END">&lt;/b&gt;</ph></translation>
+<translation id="160145159036553575">Mūsų piniginės paslaugą teikia <ph name="BEGIN_BOLD"/>Uphold.<ph name="END_BOLD"/>.</translation>
 <translation id="6771734945114850124">Pasiruoškite valdžios institucijos išduotą asmens tapatybės dokumentą.</translation>
 <translation id="8697510149346635496">Išmokėti BAT, kuriuos pelnėte už privatumą gerbiančių reklamų peržiūrą</translation>
 <translation id="1481480653609649134">Įsigyti papildomų BAT, sumokant kreditine kortele ir iš kitų šaltinių</translation>
@@ -553,7 +563,7 @@
 <translation id="7404779623219601861">Iškeisti BAT į dovanų korteles</translation>
 <translation id="6215565499749144110">TAP tinkle savo BAT galite iškeisti į populiarių prekių ženklų dovanų korteles.</translation>
 <translation id="6915065518766963119">* Reikia „Uphold“ patvirtinimo.</translation>
-<translation id="651649139059930379">Susigrąžinkite 2 % kriptovaliutos su „Uphold“ kortele</translation>
+<translation id="7703007724342399482">Susigrąžinkite 2 % kriptovaliutos su „Uphold“ kortele</translation>
 <translation id="1109729143147368573">Leiskite turimas kriptovaliutas ir kitą turtą, pirkdami iš beveik 50 milijonų pardavėjų ir išsigrynindami pinigus bankomatuose visame pasaulyje. Leiskite kriptovaliutas, kad gautumėte kriptovaliutų!</translation>
 <translation id="4360054110030715117"><ph name="LINK_BEGIN"/>Sužinoti daugiau<ph name="LINK_END"/> apie „Brave Rewards“</translation>
 <translation id="5826706758731195747">Įjungdami „Rewards“, sutinkate su <ph name="LINK_BEGIN"/>paslaugų teikimo sąlygomis<ph name="LINK_END"/>.</translation>
@@ -609,6 +619,7 @@
 <translation id="6409345078064530735">Depozito adresas</translation>
 <translation id="7153116947319792513">Depozito pastaba</translation>
 <translation id="1383876407941801731">Ieškoti</translation>
+<translation id="3781412534383755121">Minimali konvertuojama suma:</translation>
 <translation id="6432284126416751397">Patvirtinti konvertavimą</translation>
 <translation id="1301340234286078471">Konvertuoti</translation>
 <translation id="6680650203439190394">Kursas</translation>
@@ -649,4 +660,21 @@
 <translation id="453977518730680921">Automatiškai leisti mediją</translation>
 <translation id="7701466644604753106">ĮJUNGTI spartųjį skaitlį</translation>
 <translation id="763042262431778831">IŠJUNGTI spartųjį skaitlį</translation>
+<translation id="9020818404803201080">Prisijungę kolegos:</translation>
+<translation id="6717690610234999751">Adresų konfigūravimas</translation>
+<translation id="9182285671734219088">Paslaugų teikimo sistemos būsena</translation>
+<translation id="6599816589121202398">API</translation>
+<translation id="1327977588028644528">Tinklų sietuvas</translation>
+<translation id="2551123942222622809">Spiečius</translation>
+<translation id="3967335629471284781">Paleista</translation>
+<translation id="1515163294334130951">Paleisti</translation>
+<translation id="1895658205118569222">Išjungimas</translation>
+<translation id="6762417584993757344">Neįdiegta</translation>
+<translation id="8428368469058794536">IPFS paslauga</translation>
+<translation id="2901715907314796027">Pirkti kriptovaliutos iš Bitcoin.com.</translation>
+<translation id="4065681313949497252">Valiuta</translation>
+<translation id="3833315885381772739">Įvesti sumą</translation>
+<translation id="4011828592358027165">Pirmą kartą naudojate kriptovaliutą?</translation>
+<translation id="3358050091139900813">Norėdami pradėti, gaukite piniginę čia</translation>
+<translation id="3105412115725259537">Bitcoin.com</translation>
 </translationbundle>

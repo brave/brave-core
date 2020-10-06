@@ -291,7 +291,7 @@
 <translation id="1361872463926621533">Émettre un son au démarrage</translation>
 <translation id="1363585519747660921">L'imprimante USB doit être configurée</translation>
 <translation id="1365180424462182382">Votre <ph name="BEGIN_LINK"/>navigateur est géré<ph name="END_LINK"/> par <ph name="ENROLLMENT_DOMAIN"/></translation>
-<translation id="1366177842110999534">Exécutez les outils, les éditeurs et les environnements de conception intégrés de Linux sur votre <ph name="DEVICE_TYPE"/>. &lt;a target="_blank" href="<ph name="URL"/>"&gt;En savoir plus&lt;/a&gt;</translation>
+<translation id="1366177842110999534">Exécutez les outils, les éditeurs et les environnements de conception intégrés de Linux sur votre <ph name="DEVICE_TYPE"/>. &lt;a target="_blank" rel="noopener noreferrer" href="<ph name="URL"/>"&gt;En savoir plus&lt;/a&gt;</translation>
 <translation id="1367951781824006909">Choisir un fichier</translation>
 <translation id="1369149969991017342">Switch Access (contrôler l'ordinateur avec uniquement un ou deux commutateurs)</translation>
 <translation id="1372841398847029212">Synchroniser vers votre compte</translation>
@@ -1355,7 +1355,7 @@ https://support.google.com/chrome/?p=applescript</translation>
 <translation id="268053382412112343">Hi&amp;storique</translation>
 <translation id="2682498795777673382">Demande à un parent d'effectuer la mise à jour</translation>
 <translation id="2683638487103917598">Dossier trié</translation>
-<translation id="2686222346846590368">Il s'agit de la dernière mise à jour logicielle et de sécurité pour cet appareil <ph name="DEVICE_TYPE"/>. Pour recevoir les mises à jour ultérieures, procurez-vous un modèle plus récent. &lt;a target="_blank" href="<ph name="URL"/>"&gt;En savoir plus<ph name="LINK_END"/></translation>
+<translation id="2686222346846590368">Il s'agit de la dernière mise à jour logicielle et de sécurité pour cet appareil <ph name="DEVICE_TYPE"/>. Pour recevoir les mises à jour ultérieures, procurez-vous un modèle plus récent. &lt;a target="_blank" rel="noopener noreferrer" href="<ph name="URL"/>"&gt;En savoir plus<ph name="LINK_END"/></translation>
 <translation id="2687403674020088961">Bloquer tous les témoins (non recommandé)</translation>
 <translation id="2687407218262674387">Conditions d'utilisation de Brave</translation>
 <translation id="2688196195245426394">Erreur lors de l'enregistrement de l'appareil avec le serveur : <ph name="CLIENT_ERROR"/>.</translation>
@@ -4853,7 +4853,7 @@ Souhaitez-vous lancer <ph name="CONTROL_PANEL_APPLET_NAME"/>?</translation>
 <translation id="7197632491113152433">Nous avons trouvé dans votre compte <ph name="NUMBER_OF_APPS"/> applications que vous pouvez utiliser sur cet appareil.</translation>
 <translation id="7199158086730159431">Obtenir de l'aide</translation>
 <translation id="7200083590239651963">Sélectionner la configuration</translation>
-<translation id="7201042526153088083">Installez des applications et des jeux de Google Play sur votre <ph name="DEVICE_TYPE"/>. &lt;a target="_blank" href="<ph name="URL"/>"&gt;En savoir plus&lt;/a&gt;</translation>
+<translation id="7201042526153088083">Installez des applications et des jeux de Google Play sur votre <ph name="DEVICE_TYPE"/>. &lt;a target="_blank" rel="noopener noreferrer" href="<ph name="URL"/>"&gt;En savoir plus&lt;/a&gt;</translation>
 <translation id="720110658997053098">Conserver cet appareil en mode kiosque de manière permanente</translation>
 <translation id="7201118060536064622">« <ph name="DELETED_ITEM_NAME"/> » supprimé</translation>
 <translation id="7201420661433230412">Afficher les fichiers</translation>
@@ -6599,7 +6599,7 @@ Conservez votre fichier de clé en lieu sûr. Vous en aurez besoin lors de la cr
 <translation id="3860292630623580294">(Mode privé)</translation>
 <translation id="4854477725773269949">Autoriser en mode de navigation privée</translation>
 <translation id="6436164536244065364">Afficher dans la boutique en ligne Brave Web Store</translation>
-<translation id="38046578254905003">Trouvez des extensions et des thèmes dans la boutique en ligne <ph name="BEGIN_LINK"/>Brave Web Store<ph name="END_LINK"/></translation>
+<translation id="38046578254905003">Trouvez des extensions et des thèmes dans la <ph name="BEGIN_LINK"/>boutique web<ph name="END_LINK"/></translation>
 <translation id="6336451774241870485">Nouvel onglet de navigation privée</translation>
 <translation id="6610147964972079463">Fermer les onglets de navigation privée</translation>
 <translation id="4933782374919065856">Des questions? Communiquez avec la personne qui supervise votre profil.</translation>

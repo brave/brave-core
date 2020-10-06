@@ -291,7 +291,7 @@
 <translation id="1361872463926621533">Play sound on startup</translation>
 <translation id="1363585519747660921">USB printer needs configuration</translation>
 <translation id="1365180424462182382">Your <ph name="BEGIN_LINK"/>browser is managed<ph name="END_LINK"/> by <ph name="ENROLLMENT_DOMAIN"/></translation>
-<translation id="1366177842110999534">Run Linux tools, editors and IDEs on your <ph name="DEVICE_TYPE"/>. &lt;a target="_blank" href="<ph name="URL"/>"&gt;Find out more&lt;/a&gt;</translation>
+<translation id="1366177842110999534">Run Linux tools, editors and IDEs on your <ph name="DEVICE_TYPE"/>. &lt;a target="_blank" rel="noopener noreferrer" href="<ph name="URL"/>"&gt;Find out more&lt;/a&gt;</translation>
 <translation id="1367951781824006909">Choose a file</translation>
 <translation id="1369149969991017342">Switch Access (control the computer with just one or two switches)</translation>
 <translation id="1372841398847029212">Sync to your account</translation>
@@ -1354,7 +1354,7 @@ You can manage this account’s settings by installing the Family Link app on yo
 <translation id="268053382412112343">Hi&amp;story</translation>
 <translation id="2682498795777673382">Update from a parent</translation>
 <translation id="2683638487103917598">Folder sorted</translation>
-<translation id="2686222346846590368">This is the last automatic software and security update for this <ph name="DEVICE_TYPE"/>. To get future updates, upgrade to a newer model. &lt;a target="_blank" href="<ph name="URL"/>"&gt;Learn more<ph name="LINK_END"/></translation>
+<translation id="2686222346846590368">This is the last automatic software and security update for this <ph name="DEVICE_TYPE"/>. To get future updates, upgrade to a newer model. &lt;a target="_blank" rel="noopener noreferrer" href="<ph name="URL"/>"&gt;Learn more<ph name="LINK_END"/></translation>
 <translation id="2687403674020088961">Block all cookies (not recommended)</translation>
 <translation id="2687407218262674387">Brave Terms of Service</translation>
 <translation id="2688196195245426394">Error when registering the device with the server: <ph name="CLIENT_ERROR"/>.</translation>
@@ -4852,7 +4852,7 @@ You can manage this account’s settings by installing the Family Link app on yo
 <translation id="7197632491113152433">We found <ph name="NUMBER_OF_APPS"/> apps from your account that can be used on this device.</translation>
 <translation id="7199158086730159431">Get H&amp;elp</translation>
 <translation id="7200083590239651963">Select configuration</translation>
-<translation id="7201042526153088083">Install apps and games from Google Play on your <ph name="DEVICE_TYPE"/>. &lt;a target="_blank" href="<ph name="URL"/>"&gt;Learn more&lt;/a&gt;</translation>
+<translation id="7201042526153088083">Install apps and games from Google Play on your <ph name="DEVICE_TYPE"/>. &lt;a target="_blank" rel="noopener noreferrer" href="<ph name="URL"/>"&gt;Learn more&lt;/a&gt;</translation>
 <translation id="720110658997053098">Permanently keep this device in kiosk mode</translation>
 <translation id="7201118060536064622">'<ph name="DELETED_ITEM_NAME"/>' deleted</translation>
 <translation id="7201420661433230412">View files</translation>
@@ -6599,7 +6599,7 @@ Keep your key file in a safe place. You will need it to create new versions of y
 <translation id="3860292630623580294">(Private)</translation>
 <translation id="4854477725773269949">Allow in private</translation>
 <translation id="6436164536244065364">View in Brave Web Store</translation>
-<translation id="38046578254905003">Find extensions and themes in the <ph name="BEGIN_LINK"/>Brave Web Store<ph name="END_LINK"/></translation>
+<translation id="38046578254905003">Find extensions and themes in the <ph name="BEGIN_LINK"/>Web Store<ph name="END_LINK"/></translation>
 <translation id="6336451774241870485">New private tab</translation>
 <translation id="6610147964972079463">Close private tabs</translation>
 <translation id="4933782374919065856">Questions? Contact the person who supervises your profile.</translation>

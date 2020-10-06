@@ -28,9 +28,13 @@
 <translation id="5550994254534676787">अपनी ब्राउज़िंग हिस्ट्री को देखें.</translation>
 <translation id="985862351129593673">डैशबोर्ड को कस्टमाइज़ करें</translation>
 <translation id="7180865173735832675">कस्टमाइज़ करें</translation>
-<translation id="5783793537552649286">बैकग्राउंड इमेज दिखाएँ</translation>
+<translation id="8522669544471808198">बैकग्राउंड इमेज दिखाएँ</translation>
 <translation id="7275773481201277457">Brave के आँकड़े दिखाएँ</translation>
 <translation id="6836061097810262923">घडी दिखाएँ</translation>
+<translation id="5912396950572065471">फ़ॉर्मेट</translation>
+<translation id="604124094241169006">स्वचालित</translation>
+<translation id="867722069064361487">12-घंटे की घडी</translation>
+<translation id="4064062743338217840">24-घंटे की घडी</translation>
 <translation id="8643377320501056697">मुख्य साइटों को दिखाएँ</translation>
 <translation id="3446024864193919737">Brave पुरस्कार दिखाएँ</translation>
 <translation id="6274899614137380422">Binance दिखाएँ</translation>
@@ -68,6 +72,10 @@
 <translation id="8958799246752641148">टोर आपके लक्ष्य तक पहुँचने से पहले कई टोर सर्वरों के माध्यम से आपके ब्राउज़िंग को रूट करके, आपके द्वारा देखी जाने वाली साइटों से आपके आईपी एड्रेस को छुपाता है। ये कनेक्शन एन्क्रिप्टेड होते हैं, इसलिए आपका ISP या नियोक्ता और #8217; यह नहीं देख सकते कि आप और #8217 किन साइट पर जा रहे हैं. टोर ब्राउज़िंग को धीमा कर सकता है और कुछ साइटें तो बिकुल काम नहीं कर पाती हैं.</translation>
 <translation id="520608572871993342">निजी विंडोज का उपयोग केवल वही बदलाव करता है जो आपके डिवाइस पर ब्रेव  करता है — यह किसी और के व्यवहार को नहीं बदलता है। टोर आपके द्वारा देखी जाने वाली साइटों से आपके IP एड्रेस को छुपाता है, और आपके IP या आपके नियोक्ता से आने वाली साइटों को छुपाता है। मेनू से टोर के साथ या {{key}} के साथ एक गोपनीय विंडो खोलें।</translation>
 <translation id="6975708438781948564">ब्रेव में टर के बारे में अधिक जानें</translation>
+<translation id="4712050378540986986">टॉर स्टेटस</translation>
+<translation id="3368922792935385530">कनेक्टेड</translation>
+<translation id="8030169304546394654">डिसकनेक्ट करें</translation>
+<translation id="3705383383955310071">शुरू कर रहे हैं {{percentage}}%</translation>
 <translation id="4272382368346338917">अतिरिक्त फ़िल्टर</translation>
 <translation id="8949292968394988358">चेतावनी: अत्यधिक फ़िल्टर चालू करने से प्रदर्शन में गिरावट आएगी</translation>
 <translation id="8686201964111147748">अवरुद्ध किए गए कुल विज्ञापन और ट्रैकर:</translation>
@@ -102,7 +110,7 @@
 <translation id="3829010735958850433">स्वागत यात्रा को छोड़ें</translation>
 <translation id="1201402288615127009">अगला</translation>
 <translation id="7954950242989581218">सुरक्षित और अच्छा ब्राउज़ करें</translation>
-<translation id="2188651882929633653">Brave शील्ड उस क्रीपी स्टफ को ब्लॉक करता है जो आपको पूरे वेब पर ट्रैक करने की कोशिश करता है अधिकांश विज्ञापनों सहित. शील्ड को डाउन सेट करेंयदि कोई साइटकाम नहीं कर रही है. Brave कुछ फ़ीचर्स के समग्र उपयोग का अनुमान लगाने के लिए <ph name="BEGIN_LINK_P3A">&lt;a target="_blank" href="$1"&gt;</ph>पूरी तरह से निजी प्रोडक्ट एनालिटिक्स का<ph name="END_LINK_P3A">&lt;/a&gt;</ph> उपयोग करता है. आप इसे सेटिंग्स में बंद कर सकते<ph name="BEGIN_LINK_P3A_SETTINGS">&lt;a target="_blank" href="$2"&gt;</ph>Settings<ph name="END_LINK_P3A_SETTINGS">&lt;/a&gt;</ph>.</translation>
+<translation id="2188651882929633653">Brave शील्ड अधिकतर विज्ञापनों सहित वेब — पर आपके एक्सेस को ट्रैक करनेवाली अनचाही वस्तुओं को ब्लॉक करता है। यदि किसी साइट पर यह काम नहीं कर रहा है तो शील्ड को “down” पर सेट करें। Brave कुछ विशिष्ट सुविधाओं का समग्र आंकलन करने लिए <ph name="BEGIN_LINK_P3A"/>पूरी तरह से निजी उत्पाद विश्लेषण<ph name="END_LINK_P3A"/> का उपयोग करता है। आप <ph name="BEGIN_LINK_P3A_SETTINGS"/>Settings<ph name="END_LINK_P3A_SETTINGS"/> से इसे बंद कर सकते हैं।</translation>
 <translation id="1919345977826869612">विज्ञापन</translation>
 <translation id="2128226640852355533">Brave विज्ञापन देखकर {{currency}} अर्जित करें। दर्शाए गए विज्ञापन आपके ब्राउज़िंग व्यवहार के अनुसार, आपकी रुचियों पर आधारित हैं। कोई भी व्यक्तिगत डेटा या ब्राउज़िंग विवरण कभी भी आपके ब्राउज़र से बाहर नहीं जाते हैं।</translation>
 <translation id="6112368337882254910">स्वतः-योगदान</translation>
@@ -174,7 +182,7 @@
 <translation id="4875485795191140618">आपकी वॉलेट की को सफलतापूर्वक सत्यापित और लोड कर दिया गया है।</translation>
 <translation id="1083279119532577005">वॉलेट पुनःस्थापित!</translation>
 <translation id="7841456038054167122">कृपया कुंजी पुनः दर्ज करें या विभिन्न कुंजी का प्रयास करें।</translation>
-<translation id="340102383764929340">डाली गई रीस्टोर की ज़्यादा सपोर्ट नहीं करती है। कृपया नई की पाने के लिए<ph name="BEGIN_LINK_REGION_TEXT">&lt;a target="_blank" href="http://brave.com/faq#convert-old-keys"&gt; </ph>here<ph name="END_LINK_REGION_TEXT">&lt;/a&gt;</ph> पर जाएं;</translation>
+<translation id="1911900517212490188">दर्ज की गई की अब समर्थित नहीं है। नई की प्राप्त करने के लिए <ph name="BEGIN_LINK"/>here<ph name="END_LINK"/> पर जाएँ।</translation>
 <translation id="2195074481553016770">लगभग पहुँच गए …</translation>
 <translation id="5254740304961202261">साबित करें की आप इंसान हैं!</translation>
 <translation id="2187043784382239974">हमम, काफी नहीं ...</translation>
@@ -192,7 +200,7 @@
 <translation id="3082557070674409251">क्लिक किया गया</translation>
 <translation id="7119308337584989771">बरखास्त</translation>
 <translation id="6805660603861526473">देखा गया</translation>
-<translation id="2852258589816753010">वर्तमान में आपके क्षेत्र में BAT समर्थित नहीं है। अपडेट के लिए कृपया <ph name="BEGIN_LINK_REGION_TEXT">&lt;a target="_blank" href="$1"&gt;</ph>here<ph name="END_LINK_REGION_TEXT">&lt;/a&gt;</ph> को देखें।</translation>
+<translation id="2359865110462963929">वर्तमान में BAT आपके क्षेत्र में समर्थित नहीं है। अपडेट के लिए कृपया <ph name="BEGIN_LINK"/>here<ph name="END_LINK"/> को देखें।</translation>
 <translation id="2564425876266960486">Brave ब्राउज़र BAT कार्ड निर्माण में समस्या हुई है</translation>
 <translation id="6473583070570450185">लॉग इन करने के लिए आपको एक सत्यापित वॉलेट ज़रूरत है</translation>
 <translation id="2106271389438168634">Uphold वॉलेट बनाने के लिए आपको न्यूनतम 25 BAT की ज़रूरत होती है। Uphold के साथ अपने वॉलेट को सत्यापित करने के बाद कृपया फिर कोशिश करें।</translation>
@@ -219,6 +227,9 @@
 <translation id="386483240851194811">इनाम बंद कर दिए गए थे</translation>
 <translation id="3354337256330577726">ऑटो-योगदान बंद कर दिया गया था</translation>
 <translation id="6727186931929643711">पुनः प्रयास करना बंद कर दिया है</translation>
+<translation id="680983167891198932">की</translation>
+<translation id="7535087603100972091">मान</translation>
+<translation id="45591635423975492">लॉग हुआ</translation>
 <translation id="2059498613853603008">चेतावनी: इस पेज का डेटा संवेदनशील हो सकता है। उनके साथ वैसा ही व्यवहार करें जैसाकि आप अपने वॉलेट की निजी की के साथ करेंगे। सावधान रहें कि आप उन्हें किसके साथ साझा करते हैं।</translation>
 <translation id="7375125077091615385">प्रकार:</translation>
 <translation id="4973347371961481083">योगदान</translation>
@@ -253,6 +264,7 @@
 <translation id="2152423226436243241">ऑटो योगदान</translation>
 <translation id="2927922949538312364">एक बार की बख्शीश</translation>
 <translation id="3164105678355419142">आवर्ती बख्शीश</translation>
+<translation id="7806880412350961625">इवेंट लॉग</translation>
 <translation id="4309915981827077375">सामान्य जानकारी</translation>
 <translation id="3662406032239313663">लॉग्स</translation>
 <translation id="9001933311880936179">कुल राशि:</translation>
@@ -263,7 +275,6 @@
 <translation id="2326487656644542536">वॉलेट की जानकारी</translation>
 <translation id="8559420016582377654">वॉलेट पेमेंट आईडी::</translation>
 <translation id="438586487791444158">वॉलेट स्थिति:</translation>
-<translation id="3368922792935385530">कनेक्टेड</translation>
 <translation id="8874184842967597500">कनेक्ट नहीं है</translation>
 <translation id="4569155249847375786">सत्यापित है</translation>
 <translation id="922103963921062336">डिस्कनेक्ट किया गया (सत्यापित नहीं)</translation>
@@ -352,7 +363,7 @@
 <translation id="7335371657242627509">ऑटो-योगदान को शामिल करें</translation>
 <translation id="1864111464094315414">प्रवेश करें</translation>
 <translation id="4556504723624686474">वॉलेट को सत्यापित करने से आप अपने फंड को अधिक कुशलता से प्रबंधित कर सकते हैं।</translation>
-<translation id="4188679602963314994">Uphold खाता बनाने के लिए आपके पास न्यूनतम 25 BAT होना आवश्यक है। बाद में फिर से कोशिश करें। <ph name="BREAK">&lt;br/&gt;</ph> यदि आपके पास पहले से सत्यापित Uphold खाता है, तो लॉग इन करना जारी रखें</translation>
+<translation id="5594737784294211654">अपहोल्ड खाता बनाने के लिए आपके पास न्यूनतम 25 BAT होना आवश्यक है। कृपया बाद में पुन: प्रयास करें। <ph name="NEWLINE"/> यदि आपके पास पहले से सत्यापित अपहोल्ड खाता है, तो लॉग इन करना जारी रखें।</translation>
 <translation id="3250511771491660127">इसे मासिक बनाएं</translation>
 <translation id="6028954173739504682">अपना वॉलेट प्रबंधित करें</translation>
 <translation id="7886389832052393750">अप्रैल</translation>
@@ -444,8 +455,8 @@
 <translation id="8014425282125849700">कभी-कभी, आपको ब्रेव की ओर से मुफ्त टोकन अनुदान की पेशकश की जाएगी। सूचना के लिए नजर रखना सुनिश्चित करें!</translation>
 <translation id="2185598236335233939">आप Brave का उपयोग जारी रखते हुए विज्ञापन सूचनाओं की तलाश करें। आपके BAT अंको का बैलेंस आपके द्वारा देखे जाने वाले प्रत्येक विज्ञापन के साथ बढ़ेगा।</translation>
 <translation id="1370034647041840967">विज्ञापनों पर ध्यान देने के लिए टोकन कमाएं और आपके लिए महत्वपूर्ण सामग्री निर्माताओं का समर्थन करने के लिए इसे आगे भेजें!</translation>
-<translation id="1701701253000051237"><ph name="BEGIN_BOLD">&lt;b&gt;</ph>Uphold<ph name="BEGIN_END">&lt;/b&gt;</ph> से धन राशि जोड़े, निकासी करें या प्रबंधित करें।</translation>
-<translation id="4208741993667364007">आपका Brave वॉलेट <ph name="BEGIN_BOLD">&lt;b&gt;</ph>Uphold<ph name="BEGIN_END">&lt;/b&gt;</ph> द्वारा संचालित है।</translation>
+<translation id="4600224932216165965"><ph name="BEGIN_BOLD"/>Uphold<ph name="END_BOLD"/> से फ़ंड जोड़ें, निकालें और प्रबंधित करें।</translation>
+<translation id="3580616436301227919">आपका Brave वॉलेट <ph name="BEGIN_BOLD"/>Uphold<ph name="END_BOLD"/> से संचालित है।</translation>
 <translation id="6401272292123354754">Brave रिवार्ड्स बेसिक अटेंशन टोकन पर बने हैं| BAT के बारे में और जानें</translation>
 <translation id="7823359893981882407">यहाँ</translation>
 <translation id="4483635855837696643">अपने वॉलेट को पुनर्स्थापित करें</translation>
@@ -454,7 +465,7 @@
 <translation id="3267911153934785912">अपनी पुनर्प्राप्ति कुंजी दर्ज करें या</translation>
 <translation id="6548189695918108191">बदलने से पहले अपने वॉलेट का बैकअप लें। या आप अपने मौजूदा वॉलेट के फ़ंड, {{funds}}} खो देंगे।</translation>
 <translation id="5423214929210538027">क्या आप वाकई अपना पुरस्कार वॉलेट रिसेट करना चाहते हैं?</translation>
-<translation id="9106875682287489763">यदि आप अपना वॉलेट रिसेट करते हैं तो आपके <ph name="BEGIN_BOLD">&lt;b&gt;</ph>{{amount}} BATs<ph name="BEGIN_END">&lt;/b&gt;</ph> और अन्य रिवार्ड डेटा स्थायी रूप से हट जाएँगे। कृपया सुनिश्चित करें कि आपने अपने वॉलेट को Uphold के साथ सत्यापित किया है ताकि आप अपना BAT रख सकें।</translation>
+<translation id="7428521340740703492">यदि आप अपना वॉलेट रिसेट करते हैं तो <ph name="BEGIN_BOLD"/>{{amount}} BATs<ph name="END_BOLD"/> और अन्य रिवॉर्ड डेटा स्थायी रूप निकल जाएँगे। कृपया अपने BAT को बनाए रखने के लिए अपने वॉलेट को अपहोल्ड के साथ सत्यापित करना सुनिश्चित करें।</translation>
 <translation id="2028613172174411919">यदि आप अपना वॉलेट रिसेट करते हैं तो आपका पुरस्कार डेटा स्थायी रूप से हट जाएगा।</translation>
 <translation id="4914597931214386232">टोकन अनुदान पर दावा किया गया</translation>
 <translation id="3494964159182650590">इनामों का संक्षिप्त विवरण</translation>
@@ -534,14 +545,13 @@
 <translation id="5030988785798407804">आपका {{currency}} अनुदान जल्द ही आने वाला है।</translation>
 <translation id="2132683977638223450">मुफ़्त अंक अनुदान</translation>
 <translation id="7512440811010447157">सत्यापित करें</translation>
-<translation id="8030169304546394654">डिसकनेक्ट करें</translation>
 <translation id="8267327690882073581">वॉलेट सत्यापित करें</translation>
 <translation id="543510923939676996">वॉलेट सत्यापन पूरा हुआ</translation>
 <translation id="7591798679868259510">मेरे मान्य खाते पर जाएँ</translation>
 <translation id="3699674790322420653">वॉलेट सत्यापन पूरा करें</translation>
 <translation id="9200453331904391567">Brave Rewards से डिसकनेक्ट करें</translation>
 <translation id="46988480989545156">वॉलेट सत्यापित करें</translation>
-<translation id="4986087720311945758">हमारी वॉलेट सेवा <ph name="BEGIN_BOLD">&lt;b&gt;</ph>Uphold<ph name="BEGIN_END">&lt;/b&gt;</ph> द्वारा प्रदान की जाती है</translation>
+<translation id="160145159036553575">हमारी वॉलेट सेवा <ph name="BEGIN_BOLD"/>Uphold.<ph name="END_BOLD"/> द्वारा प्रदान की जाती है</translation>
 <translation id="6771734945114850124">कृपया प्रशासन द्वारा जारी ID अपने पास रखें।</translation>
 <translation id="8697510149346635496">BAT को वापस लें जो आप गोपनीयता-सम्मान वाले विज्ञापन देखने से कमाते हैं</translation>
 <translation id="1481480653609649134">क्रेडिट कार्ड और अन्य स्रोतों से अतिरिक्त BAT खरीदें</translation>
@@ -553,7 +563,7 @@
 <translation id="7404779623219601861">उपहार कार्ड के लिए BAT को रिडीम करें</translation>
 <translation id="6215565499749144110">TAP नेटवर्क के साथ, आप अपने BAT को लोकप्रिय नाम-ब्रांड के उपहार कार्ड के लिए रिडीम कर सकते हैं।</translation>
 <translation id="6915065518766963119">* अपहोल्ड सत्यापन की आवश्यकता है।</translation>
-<translation id="651649139059930379">Uphold कार्ड के साथ 2% क्रिप्टोबैक प्राप्त करें</translation>
+<translation id="7703007724342399482">अपहोल्ड कार्ड के साथ 2% क्रिप्टोबैक पाएँ</translation>
 <translation id="1109729143147368573">दुनिया भर में लगभग 50 मिलियन व्यापारियों और एटीएम में अपनी क्रिप्टो और अन्य संपत्ति को खर्च करें। क्रिप्टो प्राप्त करने के लिए क्रिप्टो खर्च करें!</translation>
 <translation id="4360054110030715117"><ph name="LINK_BEGIN"/>Brave रिवॉर्ड्स<ph name="LINK_END"/> के बारे में अधिक जानें</translation>
 <translation id="5826706758731195747">रिवार्ड को चालू कर, आप <ph name="LINK_BEGIN"/>सेवा की शर्तों <ph name="LINK_END"/>से सहमत होते हैं।</translation>
@@ -609,6 +619,7 @@
 <translation id="6409345078064530735">जमा पता</translation>
 <translation id="7153116947319792513">डिपॉज़िट मेमो</translation>
 <translation id="1383876407941801731">खोज</translation>
+<translation id="3781412534383755121">परिवर्तित करने के लिए न्यूनतम मात्रा:</translation>
 <translation id="6432284126416751397">संवाद की पुष्टि करें</translation>
 <translation id="1301340234286078471">परिवर्तन करना</translation>
 <translation id="6680650203439190394">शुल्क</translation>
@@ -649,4 +660,21 @@
 <translation id="453977518730680921">मीडिया स्वतः चालू</translation>
 <translation id="7701466644604753106">स्पीड रीडर चालू करें</translation>
 <translation id="763042262431778831">स्‍पीडरीडर बंद करें</translation>
+<translation id="9020818404803201080">कनेक्ट हुए पीयर</translation>
+<translation id="6717690610234999751">पता कॉन्फ़िग</translation>
+<translation id="9182285671734219088">डेमन स्टेटस</translation>
+<translation id="6599816589121202398">API</translation>
+<translation id="1327977588028644528">गेटवे</translation>
+<translation id="2551123942222622809">स्वर्म</translation>
+<translation id="3967335629471284781">लॉन्च किया गया</translation>
+<translation id="1515163294334130951">लॉन्च</translation>
+<translation id="1895658205118569222">बंद करें</translation>
+<translation id="6762417584993757344">इनस्टॉल नहीं है</translation>
+<translation id="8428368469058794536">IPFS सर्विस</translation>
+<translation id="2901715907314796027">Bitcoin.com से क्रिप्टो खरीदें।</translation>
+<translation id="4065681313949497252">मुद्रा</translation>
+<translation id="3833315885381772739">मात्रा दर्ज करें</translation>
+<translation id="4011828592358027165">क्रिप्टो में नए हैं?</translation>
+<translation id="3358050091139900813">शुरू करने के लिए यहाँ से वॉलेट प्राप्त करें</translation>
+<translation id="3105412115725259537">Bitcoin.com</translation>
 </translationbundle>
