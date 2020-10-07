@@ -334,19 +334,8 @@ class AdsServiceImpl : public AdsService,
   void DisableAdsForUnsupportedCountryCodes(
       const std::string& country_code,
       const std::vector<std::string>& country_codes);
-  void MayBeShowOnboardingForSupportedCountryCode(
-      const std::string& country_code,
-      const std::vector<std::string>& country_codes);
   uint64_t MigrateTimestampToDoubleT(
       const uint64_t timestamp_in_seconds) const;
-
-  void MaybeShowOnboarding();
-  bool ShouldShowOnboarding();
-  void ShowOnboarding();
-  void RemoveOnboarding();
-  void MaybeStartRemoveOnboardingTimer();
-  bool ShouldRemoveOnboarding() const;
-  void StartRemoveOnboardingTimer();
 
   void MaybeShowMyFirstAdNotification();
   bool ShouldShowMyFirstAdNotification() const;

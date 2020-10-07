@@ -33,11 +33,6 @@ void AdsService::RegisterProfilePrefs(
       prefs::kHasAdsP3AState, false);
 
   registry->RegisterBooleanPref(
-      prefs::kShouldShowOnboarding, true);
-  registry->RegisterUint64Pref(
-      prefs::kOnboardingTimestamp, 0);
-
-  registry->RegisterBooleanPref(
       prefs::kShouldShowMyFirstAdNotification, true);
 
   registry->RegisterIntegerPref(

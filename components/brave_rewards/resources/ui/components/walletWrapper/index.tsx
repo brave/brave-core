@@ -92,7 +92,6 @@ export interface ActionWallet {
 
 export type NotificationType =
   'ads' |
-  'ads-launch' |
   'backupWallet' |
   'contribute' |
   'grant' |
@@ -270,10 +269,6 @@ export default class WalletWrapper extends React.PureComponent<Props, State> {
       case 'ads':
       case 'grant':
         buttonText = getLocale('claim')
-        buttonAction = this.onNotificationClick
-        break
-      case 'ads-launch':
-        buttonText = getLocale('turnOnAds')
         buttonAction = this.onNotificationClick
         break
       case 'backupWallet':
@@ -456,7 +451,6 @@ export default class WalletWrapper extends React.PureComponent<Props, State> {
 
     switch (notification.type) {
       case 'ads':
-      case 'ads-launch':
       case 'backupWallet':
       case 'insufficientFunds':
       case 'verifyWallet':
@@ -490,9 +484,6 @@ export default class WalletWrapper extends React.PureComponent<Props, State> {
     switch (notification.type) {
       case 'ads':
         typeText = getLocale('braveAdsTitle')
-        break
-      case 'ads-launch':
-        typeText = getLocale('braveAdsLaunchTitle')
         break
       case 'backupWallet':
         typeText = getLocale('backupWalletTitle')
