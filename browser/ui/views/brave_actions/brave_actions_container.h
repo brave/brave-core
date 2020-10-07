@@ -107,6 +107,8 @@ class BraveActionsContainer : public views::View,
   // views::View:
   void ChildPreferredSizeChanged(views::View* child) override;
 
+  views::LabelButton* GetOnionLocationViewForTest();
+
  private:
   friend class ::BraveActionsContainerTest;
   friend class ::RewardsBrowserTest;

@@ -448,6 +448,10 @@ void BraveActionsContainer::ChildPreferredSizeChanged(views::View* child) {
   PreferredSizeChanged();
 }
 
+views::LabelButton* BraveActionsContainer::GetOnionLocationViewForTest() {
+  return static_cast<views::LabelButton*>(onion_location_view_);
+}
+
 // Brave Rewards preferences change observers callback
 void BraveActionsContainer::OnBraveRewardsPreferencesChanged() {
   ShowAction(brave_rewards_extension_id, ShouldAddBraveRewardsAction());

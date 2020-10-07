@@ -3,13 +3,18 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
+#include "base/strings/utf_string_conversions.h"
 #include "brave/browser/profiles/profile_util.h"
 #include "brave/browser/tor/onion_location_tab_helper.h"
 #include "brave/browser/ui/browser_commands.h"
+#include "brave/browser/ui/views/brave_actions/brave_actions_container.h"
+#include "brave/browser/ui/views/location_bar/brave_location_bar_view.h"
+#include "brave/grit/brave_generated_resources.h"
 #include "brave/common/tor/pref_names.h"
 #include "chrome/browser/chrome_notification_types.h"
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/browser_list.h"
+#include "chrome/browser/ui/views/frame/browser_view.h"
 #include "chrome/test/base/in_process_browser_test.h"
 #include "chrome/test/base/ui_test_utils.h"
 #include "components/prefs/pref_service.h"
@@ -54,11 +59,26 @@ class OnionLocationNavigationThrottleBrowserTest : public InProcessBrowserTest {
 
   net::EmbeddedTestServer* test_server() { return test_server_.get(); }
 
+  void CheckOnionLocationLabel(Browser* browser) {
+    BrowserView* browser_view = BrowserView::GetBrowserViewForBrowser(browser);
+    ASSERT_NE(browser_view, nullptr);
+    BraveLocationBarView* brave_location_bar_view =
+        static_cast<BraveLocationBarView*>(browser_view->GetLocationBarView());
+    ASSERT_NE(brave_location_bar_view, nullptr);
+    BraveActionsContainer* brave_actions =
+        brave_location_bar_view->GetBraveActionsContainer();
+    ASSERT_NE(brave_actions, nullptr);
+    views::LabelButton* onion_label =
+        brave_actions->GetOnionLocationViewForTest();
+    EXPECT_TRUE(onion_label->GetVisible());
+    EXPECT_EQ(onion_label->GetText(),
+              l10n_util::GetStringUTF16((IDS_LOCATION_BAR_OPEN_IN_TOR)));
+  }
+
  private:
   std::unique_ptr<net::EmbeddedTestServer> test_server_;
 };
 
-// TODO(darkdh): check label button
 IN_PROC_BROWSER_TEST_F(OnionLocationNavigationThrottleBrowserTest,
                        OnionLocationHeader) {
   GURL url1 = test_server()->GetURL("/onion");
@@ -69,6 +89,7 @@ IN_PROC_BROWSER_TEST_F(OnionLocationNavigationThrottleBrowserTest,
       tor::OnionLocationTabHelper::FromWebContents(web_contents);
   EXPECT_TRUE(helper->should_show_icon());
   EXPECT_EQ(helper->onion_location(), GURL(kTestOnionURL));
+  CheckOnionLocationLabel(browser());
 
   GURL url2 = test_server()->GetURL("/no_onion");
   ui_test_utils::NavigateToURL(browser(), url2);
@@ -95,6 +116,28 @@ IN_PROC_BROWSER_TEST_F(OnionLocationNavigationThrottleBrowserTest,
   content::WebContents* web_contents =
       browser_list->get(1)->tab_strip_model()->GetActiveWebContents();
   EXPECT_EQ(web_contents->GetURL(), GURL(kTestOnionURL));
+}
+
+IN_PROC_BROWSER_TEST_F(OnionLocationNavigationThrottleBrowserTest,
+                       OnionDomain_TorWindow) {
+  content::WindowedNotificationObserver tor_browser_creation_observer(
+      chrome::NOTIFICATION_BROWSER_OPENED,
+      content::NotificationService::AllSources());
+  brave::NewOffTheRecordWindowTor(browser());
+  tor_browser_creation_observer.Wait();
+
+  BrowserList* browser_list = BrowserList::GetInstance();
+  Browser* tor_browser = browser_list->get(1);
+  ASSERT_TRUE(brave::IsTorProfile(tor_browser->profile()));
+  EXPECT_EQ(2U, browser_list->size());
+
+  ui_test_utils::NavigateToURL(browser(), GURL("https://brave.com"));
+  ui_test_utils::NavigateToURL(browser(), GURL(kTestOnionURL));
+  EXPECT_EQ(2U, browser_list->size());
+  content::WebContents* web_contents =
+      tor_browser->tab_strip_model()->GetActiveWebContents();
+  EXPECT_EQ(web_contents->GetURL(), GURL(kTestOnionURL));
+  EXPECT_EQ(tor_browser->tab_strip_model()->count(), 2);
 }
 
 IN_PROC_BROWSER_TEST_F(OnionLocationNavigationThrottleBrowserTest,
