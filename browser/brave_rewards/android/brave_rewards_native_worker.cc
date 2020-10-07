@@ -700,6 +700,9 @@ void BraveRewardsNativeWorker::GetExternalWallet(
 void BraveRewardsNativeWorker::OnGetExternalWallet(
     const ledger::type::Result result,
     ledger::type::UpholdWalletPtr wallet) {
+  if (!wallet) {
+    return;
+  }
   std::string json_wallet;
   base::Value dict(base::Value::Type::DICTIONARY);
   dict.SetStringKey("token", wallet->token);
