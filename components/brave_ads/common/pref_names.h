@@ -14,9 +14,6 @@ extern const char kAdsWereDisabled[];
 extern const char kHasAdsP3AState[];
 extern const char kAdViewConfirmationCountPrefName[];
 
-extern const char kShouldShowOnboarding[];
-extern const char kOnboardingTimestamp[];
-
 extern const char kShouldShowMyFirstAdNotification[];
 
 extern const char kSupportedCountryCodesLastSchemaVersion[];

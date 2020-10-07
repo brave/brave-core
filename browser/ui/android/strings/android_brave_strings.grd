@@ -858,9 +858,6 @@ until they verify, or until 90 days have passed.
       <message name="IDS_BRAVE_UI_BRAVE_ADS_LAUNCH_TITLE" desc="Message used in notification to let users know Ads is available">
         Brave Ads has arrived!
       </message>
-      <message name="IDS_BRAVE_UI_BRAVE_ADS_LAUNCH_MSG" desc="Message for ads launch notification">
-        Now you can earn by viewing ads.
-      </message>
       <message name="IDS_BRAVE_UI_PENDING_CONTRIBUTION_TITLE" desc="Notification title for pending contribution type">
         Pending Contribution
       </message>

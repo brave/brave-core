@@ -20,14 +20,6 @@ const char kHasAdsP3AState[] = "brave.brave_ads.has_p3a_state";
 const char kAdViewConfirmationCountPrefName[] =
     "brave.weekly_storage.p2a_ad_view_confirmation_count";
 
-// Stores whether onboarding should be shown
-const char kShouldShowOnboarding[] =
-    "brave.brave_ads.should_show_first_launch_notification";
-
-// Stores the timestamp of when onboarding was shown
-const char kOnboardingTimestamp[] =
-    "brave.brave_ads.launch_notification_timestamp";
-
 // Stores whether we should show the My First Ad notification
 const char kShouldShowMyFirstAdNotification[] =
     "brave.brave_ads.should_show_my_first_ad_notification";

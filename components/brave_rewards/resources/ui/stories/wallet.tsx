@@ -31,12 +31,6 @@ storiesOf('Rewards/Wallet/Desktop', module)
       type: 'success',
       onAlertClose: doNothing
     }
-    const adsLaunchNotification: Notification = {
-      id: '001',
-      type: 'ads-launch',
-      onCloseNotification: doNothing,
-      text: <span>Now you can earn by viewing ads.</span>
-    }
     const showAlert = boolean('Show alert', false)
 
     const state: WalletState = select('wallet status', {
@@ -51,7 +45,7 @@ storiesOf('Rewards/Wallet/Desktop', module)
         compact={false}
         contentPadding={false}
         onNotificationClick={onEnableAds}
-        notification={boolean('Show notification', true) ? adsLaunchNotification : undefined}
+        notification={undefined}
         showCopy={boolean('Show Uphold', false)}
         onlyAnonWallet={boolean('Anon Wallet Only', false)}
         showSecActions={boolean('Show secondary actions', true)}

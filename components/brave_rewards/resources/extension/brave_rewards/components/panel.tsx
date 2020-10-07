@@ -320,9 +320,6 @@ export class Panel extends React.Component<Props, State> {
       case 'backupWallet':
         clickEvent = this.onBackupWallet.bind(this, id)
         break
-      case 'ads-launch':
-        clickEvent = this.openRewardsPage.bind(this, id)
-        break
       case 'insufficientFunds':
         clickEvent = this.onAddFunds.bind(this, id)
         break
@@ -404,10 +401,6 @@ export class Panel extends React.Component<Props, State> {
       case RewardsNotificationType.REWARDS_NOTIFICATION_TIPS_PROCESSED:
         type = 'tipsProcessed'
         text = getMessage('tipsProcessedNotification')
-        break
-      case RewardsNotificationType.REWARDS_NOTIFICATION_ADS_ONBOARDING:
-        type = 'ads-launch'
-        text = getMessage('braveAdsLaunchMsg')
         break
       case RewardsNotificationType.REWARDS_NOTIFICATION_VERIFIED_PUBLISHER: {
         let name = ''
@@ -700,12 +693,6 @@ export class Panel extends React.Component<Props, State> {
       ? this.generateAmounts(publisher)
       : undefined
     const { onlyAnonWallet } = this.props
-
-    if (notification &&
-        notification.notification &&
-        notificationType === 'ads-launch') {
-      delete notification.notification['date']
-    }
 
     const pendingTotal = parseFloat(
       (pendingContributionTotal || 0).toFixed(3))
