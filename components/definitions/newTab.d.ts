@@ -41,21 +41,6 @@ declare namespace NewTab {
     defaultSRTopSite: boolean | undefined
   }
 
-  // This is preserved for migration reasons.
-  // Do not tyoe new code using this interface.
-  export interface LegacySite {
-    index: number
-    url: string
-    title: string
-    favicon: string
-    letter: string
-    thumb: string
-    themeColor: string
-    computedThemeColor: string
-    pinned: boolean
-    bookmarked?: Bookmark
-  }
-
   export interface Stats {
     adsBlockedStat: number
     javascriptBlockedStat: number
@@ -74,16 +59,10 @@ declare namespace NewTab {
 
   export type StackWidget = 'rewards' | 'binance' | 'together' | 'gemini' | 'bitcoinDotCom' | ''
 
-  export interface LegacyState {
-    pinnedTopSites: Site[]
-    ignoredTopSites: Site[]
-  }
-
   export interface GridSitesState {
     removedSites: Site[]
     gridSites: Site[]
     shouldShowSiteRemovedNotification: boolean
-    legacy: LegacyState
   }
 
   export interface PageState {
@@ -125,6 +104,7 @@ declare namespace NewTab {
     showClock: boolean
     clockFormat: string
     showTopSites: boolean
+    customLinksEnabled: boolean
     showRewards: boolean
     showTogether: boolean
     showBinance: boolean

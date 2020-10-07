@@ -6,36 +6,28 @@
 // Types
 import { types } from '../constants/grid_sites_types'
 import { action } from 'typesafe-actions'
-import { InitialData } from '../api/initialData'
 
-export const setFirstRenderGridSitesData = (initialData: InitialData) => {
-  return action(types.GRID_SITES_SET_FIRST_RENDER_DATA, initialData)
+export const tilesUpdated = (gridSites: NewTab.Site[]) => {
+  return action(types.TILES_UPDATED, { gridSites })
 }
 
-export const gridSitesDataUpdated = (gridSites: NewTab.Site[]) => {
-  return action(types.GRID_SITES_DATA_UPDATED, { gridSites })
+export const tileRemoved = (url: string) => {
+  return action(types.TILE_REMOVED, { url })
 }
 
-export const toggleGridSitePinned = (pinnedSite: NewTab.Site) => {
-  return action(types.GRID_SITES_TOGGLE_SITE_PINNED, { pinnedSite })
+export const tilesReordered = (gridSites: NewTab.Site[],
+    oldPos: number, newPos: number) => {
+  return action(types.TILES_REORDERED, { gridSites, oldPos, newPos })
 }
 
-export const removeGridSite = (removedSite: NewTab.Site) => {
-  return action(types.GRID_SITES_REMOVE_SITE, { removedSite })
+export const restoreDefaultTiles = () => {
+  return action(types.RESTORE_DEFAULT_TILES, {})
 }
 
-export const undoRemoveGridSite = () => {
-  return action(types.GRID_SITES_UNDO_REMOVE_SITE)
+export const showTilesRemovedNotice = (shouldShow: boolean) => {
+  return action(types.SHOW_TILES_REMOVED_NOTICE, { shouldShow })
 }
 
-export const undoRemoveAllGridSites = () => {
-  return action(types.GRID_SITES_UNDO_REMOVE_ALL_SITES)
-}
-
-export const addGridSites = (site: NewTab.Site) => {
-  return action(types.GRID_SITES_ADD_SITES, { site })
-}
-
-export const showGridSiteRemovedNotification = (shouldShow: boolean) => {
-  return action(types.GRID_SITES_SHOW_SITE_REMOVED_NOTIFICATION, { shouldShow })
+export const undoRemoveTile = () => {
+  return action(types.UNDO_REMOVE_TILE, {})
 }

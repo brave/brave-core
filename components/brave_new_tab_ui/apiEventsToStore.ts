@@ -6,6 +6,7 @@
 import getActions from './api/getActions'
 import * as preferencesAPI from './api/preferences'
 import * as statsAPI from './api/stats'
+import * as topSitesAPI from './api/topSites'
 import * as privateTabDataAPI from './api/privateTabData'
 import * as torTabDataAPI from './api/torTabData'
 import { getInitialData, getRewardsInitialData, getRewardsPreInitialData, getBinanceBlackList } from './api/initialData'
@@ -32,6 +33,11 @@ function onRewardsToggled (prefData: preferencesAPI.Preferences): void {
   }
 }
 
+async function onMostVisitedInfoChanged (topSites: topSitesAPI.MostVisitedInfoChanged) {
+  getActions().tilesUpdated(topSites.tiles)
+  getActions().topSitesStateUpdated(topSites.visible, topSites.custom_links_enabled)
+}
+
 // Not marked as async so we don't return a promise
 // and confuse callers
 export function wireApiEventsToStore () {
@@ -43,8 +49,9 @@ export function wireApiEventsToStore () {
     }
     binanceInitData()
     getActions().setInitialData(initialData)
-    getActions().setFirstRenderGridSitesData(initialData)
     // Listen for API changes and dispatch to store
+    topSitesAPI.addMostVistedInfoChangedListener(onMostVisitedInfoChanged)
+    topSitesAPI.updateMostVisitedInfo()
     statsAPI.addChangeListener(updateStats)
     preferencesAPI.addChangeListener(updatePreferences)
     preferencesAPI.addChangeListener(onRewardsToggled)

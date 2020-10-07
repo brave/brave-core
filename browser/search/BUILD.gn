@@ -1,0 +1,20 @@
+source_set("search") {
+  sources = []
+
+  deps = []
+
+  if (!is_android) {
+    sources += [
+      "ntp_utils.cc",
+      "ntp_utils.h",
+    ]
+
+    deps += [
+      "//brave/browser/profiles:profiles",
+      "//brave/common:pref_names",
+      "//chrome/common",
+      "//components/pref_registry",
+      "//components/prefs",
+    ]
+  }
+}

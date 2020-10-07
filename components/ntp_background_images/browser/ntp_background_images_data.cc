@@ -183,23 +183,14 @@ std::string NTPBackgroundImagesData::GetURLPrefix() const {
                                          : kSponsoredImagesPath);
 }
 
-base::Value NTPBackgroundImagesData::GetTopSites(bool for_webui) const {
-  base::Value top_sites_list_value(base::Value::Type::LIST);
-  int index = 0;
+std::vector<TopSite> NTPBackgroundImagesData::GetTopSitesForWebUI() const {
+  std::vector<TopSite> top_sites_for_webui;
   for (const auto& top_site : top_sites) {
-    base::Value top_site_value(base::Value::Type::DICTIONARY);
-    top_site_value.SetStringKey(for_webui ? "title" : "name", top_site.name);
-    top_site_value.SetStringKey(for_webui ? "url" : "destinationUrl",
-                                top_site.destination_url);
-    top_site_value.SetStringKey(for_webui? "favicon" : "iconUrl",
-                                GetURLPrefix() + top_site.image_path);
-    if (for_webui)
-      top_site_value.SetIntKey("pinnedIndex", index++);
-    if (!for_webui)
-      top_site_value.SetStringKey("backgroundColor", top_site.background_color);
-    top_sites_list_value.Append(std::move(top_site_value));
+    TopSite top_site_for_webui = top_site;
+    top_site_for_webui.image_path =  GetURLPrefix() + top_site.image_path;
+    top_sites_for_webui.push_back(top_site_for_webui);
   }
-  return top_sites_list_value;
+  return top_sites_for_webui;
 }
 
 std::string NTPBackgroundImagesData::logo_image_url() const {

@@ -24,12 +24,9 @@ import BrandedWallpaperLogo from '../../components/default/brandedWallpaper/logo
 
 // Helpers
 import VisibilityTimer from '../../helpers/visibilityTimer'
-import arrayMove from 'array-move'
-import { isGridSitePinned } from '../../helpers/newTabUtils'
 import { generateQRData } from '../../binance-utils'
 
 // Types
-import { SortEnd } from 'react-sortable-hoc'
 import { getLocale } from '../../../common/locale'
 import currencyData from '../../components/default/binance/data'
 import geminiData from '../../components/default/gemini/data'
@@ -43,7 +40,6 @@ interface Props {
   gridSitesData: NewTab.GridSitesState
   actions: NewTabActions
   saveShowBackgroundImage: (value: boolean) => void
-  saveShowTopSites: (value: boolean) => void
   saveShowStats: (value: boolean) => void
   saveShowRewards: (value: boolean) => void
   saveShowTogether: (value: boolean) => void
@@ -105,7 +101,7 @@ class NewTabPage extends React.Component<Props, State> {
 
   componentDidMount () {
     // if a notification is open at component mounting time, close it
-    this.props.actions.showGridSiteRemovedNotification(false)
+    this.props.actions.showTilesRemovedNotice(false)
     this.imageSource = GetBackgroundImageSrc(this.props)
     this.trackCachedImage()
     if (GetShouldShowBrandedWallpaperNotification(this.props)) {
@@ -190,18 +186,6 @@ class NewTabPage extends React.Component<Props, State> {
     this.visibilityTimer.stopTracking()
   }
 
-  onSortEnd = ({ oldIndex, newIndex }: SortEnd) => {
-    const { gridSitesData } = this.props
-    // Do not update topsites order if the drag
-    // destination is a pinned tile
-    const gridSite = gridSitesData.gridSites[newIndex]
-    if (!gridSite || isGridSitePinned(gridSite)) {
-      return
-    }
-    const items = arrayMove(gridSitesData.gridSites, oldIndex, newIndex)
-    this.props.actions.gridSitesDataUpdated(items)
-  }
-
   toggleShowBackgroundImage = () => {
     this.props.saveShowBackgroundImage(
       !this.props.newTabData.showBackgroundImage
@@ -236,9 +220,13 @@ class NewTabPage extends React.Component<Props, State> {
   }
 
   toggleShowTopSites = () => {
-    this.props.saveShowTopSites(
-      !this.props.newTabData.showTopSites
-    )
+    const { showTopSites, customLinksEnabled } = this.props.newTabData
+    this.props.actions.setMostVisitedSettings(!showTopSites, customLinksEnabled)
+  }
+
+  toggleCustomLinksEnabled = () => {
+    const { showTopSites, customLinksEnabled } = this.props.newTabData
+    this.props.actions.setMostVisitedSettings(showTopSites, !customLinksEnabled)
   }
 
   toggleShowRewards = () => {
@@ -1022,6 +1010,7 @@ class NewTabPage extends React.Component<Props, State> {
                 <TopSitesGrid
                   actions={actions}
                   paddingType={'right'}
+                  customLinksEnabled={newTabData.customLinksEnabled}
                   widgetTitle={getLocale('topSitesTitle')}
                   gridSites={gridSitesData.gridSites}
                   menuPosition={'right'}
@@ -1070,12 +1059,14 @@ class NewTabPage extends React.Component<Props, State> {
           toggleShowClock={this.toggleShowClock}
           toggleShowStats={this.toggleShowStats}
           toggleShowTopSites={this.toggleShowTopSites}
+          toggleCustomLinksEnabled={this.toggleCustomLinksEnabled}
           toggleBrandedWallpaperOptIn={this.toggleShowBrandedWallpaper}
           showBackgroundImage={newTabData.showBackgroundImage}
           showClock={newTabData.showClock}
           clockFormat={newTabData.clockFormat}
           showStats={newTabData.showStats}
           showTopSites={newTabData.showTopSites}
+          customLinksEnabled={newTabData.customLinksEnabled}
           showRewards={newTabData.showRewards}
           showBinance={newTabData.showBinance}
           brandedWallpaperOptIn={newTabData.brandedWallpaperOptIn}

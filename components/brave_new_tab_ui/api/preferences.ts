@@ -44,10 +44,6 @@ export function saveClockFormat (value: string): void {
   sendSavePref('clockFormat', value)
 }
 
-export function saveShowTopSites (value: boolean): void {
-  sendSavePref('showTopSites', value)
-}
-
 export function saveShowStats (value: boolean): void {
   sendSavePref('showStats', value)
 }

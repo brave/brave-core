@@ -87,9 +87,6 @@ base::DictionaryValue GetPreferencesDictionary(PrefService* prefs) {
       "clockFormat",
       prefs->GetString(kNewTabPageClockFormat));
   pref_data.SetBoolean(
-      "showTopSites",
-      prefs->GetBoolean(kNewTabPageShowTopSites));
-  pref_data.SetBoolean(
       "showStats",
       prefs->GetBoolean(kNewTabPageShowStats));
   pref_data.SetBoolean(
@@ -224,11 +221,6 @@ void BraveNewTabMessageHandler::RegisterMessages() {
     base::BindRepeating(
       &BraveNewTabMessageHandler::HandleGetBrandedWallpaperData,
       base::Unretained(this)));
-  web_ui()->RegisterMessageCallback(
-    "getDefaultSuperReferralTopSitesData",
-    base::BindRepeating(
-      &BraveNewTabMessageHandler::HandleGetDefaultSuperReferralTopSitesData,
-      base::Unretained(this)));
 }
 
 void BraveNewTabMessageHandler::OnJavascriptAllowed() {
@@ -275,9 +267,6 @@ void BraveNewTabMessageHandler::OnJavascriptAllowed() {
     base::Bind(&BraveNewTabMessageHandler::OnPreferencesChanged,
     base::Unretained(this)));
   pref_change_registrar_.Add(kNewTabPageShowStats,
-    base::Bind(&BraveNewTabMessageHandler::OnPreferencesChanged,
-    base::Unretained(this)));
-  pref_change_registrar_.Add(kNewTabPageShowTopSites,
     base::Bind(&BraveNewTabMessageHandler::OnPreferencesChanged,
     base::Unretained(this)));
   pref_change_registrar_.Add(kNewTabPageShowRewards,
@@ -390,8 +379,6 @@ void BraveNewTabMessageHandler::HandleSaveNewTabPagePref(
     settingsKey = kNewTabPageShowSponsoredImagesBackgroundImage;
   } else if (settingsKeyInput == "showClock") {
     settingsKey = kNewTabPageShowClock;
-  } else if (settingsKeyInput == "showTopSites") {
-    settingsKey = kNewTabPageShowTopSites;
   } else if (settingsKeyInput == "showStats") {
     settingsKey = kNewTabPageShowStats;
   } else if (settingsKeyInput == "showRewards") {
@@ -434,16 +421,6 @@ void BraveNewTabMessageHandler::HandleGetBrandedWallpaperData(
   ResolveJavascriptCallback(
       args->GetList()[0],
       service ? service->GetCurrentWallpaperForDisplay() : base::Value());
-}
-
-void BraveNewTabMessageHandler::HandleGetDefaultSuperReferralTopSitesData(
-    const base::ListValue* args) {
-  AllowJavascript();
-
-  auto* service = ViewCounterServiceFactory::GetForProfile(profile_);
-  ResolveJavascriptCallback(
-      args->GetList()[0],
-      service ? service->GetTopSites(true) : base::Value());
 }
 
 void BraveNewTabMessageHandler::OnPrivatePropertiesChanged() {

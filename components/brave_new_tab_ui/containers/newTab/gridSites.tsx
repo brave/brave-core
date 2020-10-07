@@ -11,7 +11,6 @@ import {
   SortEnd,
   SortableContainerProps
 } from 'react-sortable-hoc'
-import arrayMove from 'array-move'
 
 // Feature-specific components
 import { List } from '../../components/default/gridSites'
@@ -19,9 +18,6 @@ import createWidget from '../../components/default/widget'
 
 // Component groups
 import GridSiteTile from './gridTile'
-
-// Helpers
-import { isGridSitePinned } from '../../helpers/newTabUtils'
 
 // Constants
 import { MAX_GRID_SIZE } from '../../constants/new_tab_ui'
@@ -32,6 +28,7 @@ import * as gridSitesActions from '../../actions/grid_sites_actions'
 
 interface Props {
   actions: typeof newTabActions & typeof gridSitesActions
+  customLinksEnabled: boolean
   gridSites: NewTab.Site[]
 }
 
@@ -42,12 +39,13 @@ const DynamicList = SortableContainer((props: DynamicListProps) => {
 
 class TopSitesList extends React.PureComponent<Props, {}> {
   onSortEnd = ({ oldIndex, newIndex }: SortEnd) => {
-    // do not update topsites order if the drag destination is a pinned tile
-    if (this.props.gridSites[newIndex].pinnedIndex) {
+    // User can't change order in "Most Visited" mode
+    // and they can't change position of super referral tiles
+    if (this.props.gridSites[newIndex].defaultSRTopSite ||
+        !this.props.customLinksEnabled) {
       return
     }
-    const items = arrayMove(this.props.gridSites, oldIndex, newIndex)
-    this.props.actions.gridSitesDataUpdated(items)
+    this.props.actions.tilesReordered(this.props.gridSites, oldIndex, newIndex)
   }
 
   render () {
@@ -75,8 +73,9 @@ class TopSitesList extends React.PureComponent<Props, {}> {
                   actions={actions}
                   index={index}
                   siteData={siteData}
-                  // Do not allow sorting pinned items
-                  disabled={isGridSitePinned(siteData)}
+                  // User can't change order in "Most Visited" mode
+                  // and they can't change position of super referral tiles
+                  disabled={siteData.defaultSRTopSite || !this.props.customLinksEnabled}
                 />
           ))}
         </DynamicList>

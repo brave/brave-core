@@ -239,13 +239,9 @@ BraveBrowserProcessImpl::ntp_background_images_service() {
     return nullptr;
 
   if (!ntp_background_images_service_) {
-    base::FilePath user_data_dir;
-    base::PathService::Get(chrome::DIR_USER_DATA, &user_data_dir);
     ntp_background_images_service_ =
-        std::make_unique<NTPBackgroundImagesService>(
-            component_updater(),
-            local_state(),
-            user_data_dir);
+        std::make_unique<NTPBackgroundImagesService>(component_updater(),
+                                                     local_state());
     ntp_background_images_service_->Init();
   }
 

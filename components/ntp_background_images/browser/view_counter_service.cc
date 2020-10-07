@@ -94,15 +94,14 @@ base::Value ViewCounterService::GetCurrentWallpaper() const {
   return base::Value();
 }
 
-base::Value ViewCounterService::GetTopSites(bool for_webui) const {
+std::vector<TopSite> ViewCounterService::GetTopSitesVectorForWebUI() const {
 #if BUILDFLAG(ENABLE_BRAVE_REFERRALS)
   if (auto* data = GetCurrentBrandedWallpaperData()) {
-    if (data->IsSuperReferral())
-      return GetCurrentBrandedWallpaperData()->GetTopSites(for_webui);
+      return GetCurrentBrandedWallpaperData()->GetTopSitesForWebUI();
   }
 #endif
 
-  return base::Value();
+  return {};
 }
 
 std::vector<TopSite> ViewCounterService::GetTopSitesVectorData() const {

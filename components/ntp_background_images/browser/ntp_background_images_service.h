@@ -45,8 +45,7 @@ class NTPBackgroundImagesService {
 
   NTPBackgroundImagesService(
       component_updater::ComponentUpdateService* cus,
-      PrefService* local_pref,
-      const base::FilePath& user_data_dir);
+      PrefService* local_pref);
   virtual ~NTPBackgroundImagesService();
 
   NTPBackgroundImagesService(const NTPBackgroundImagesService&) = delete;
@@ -67,7 +66,7 @@ class NTPBackgroundImagesService {
   std::string GetSuperReferralThemeName() const;
   std::string GetSuperReferralCode() const;
 
-  std::vector<std::string> GetCachedTopSitesFaviconList() const;
+  std::vector<std::string> GetTopSitesFaviconList() const;
 
  private:
   friend class TestNTPBackgroundImagesService;
@@ -121,7 +120,6 @@ class NTPBackgroundImagesService {
       const base::Value& component_info) const;
 
   void CacheTopSitesFaviconList();
-  void RestoreCachedTopSitesFaviconList();
   void CheckSIComponentUpdate(const std::string& component_id);
 
   // virtual for test.
@@ -134,11 +132,10 @@ class NTPBackgroundImagesService {
   virtual void MarkThisInstallIsNotSuperReferralForever();
 
   base::RepeatingTimer si_update_check_timer_;
-  std::vector<std::string> cached_top_site_favicon_list_;
+  std::vector<std::string> top_site_favicon_list_;
   bool test_data_used_ = false;
   component_updater::ComponentUpdateService* component_update_service_;
   PrefService* local_pref_;
-  const base::FilePath super_referral_cache_dir_;
   base::FilePath si_installed_dir_;
   base::FilePath sr_installed_dir_;
   base::ObserverList<Observer>::Unchecked observer_list_;

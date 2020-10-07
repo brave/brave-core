@@ -86,8 +86,10 @@
       </template>
       <settings-toggle-button
           class="cr-row"
-          pref="{{prefs.brave.new_tab_page.show_top_sites}}"
-          label="$i18n{braveNewTabTopSites}">
+          pref=""
+          checked="[[showTopSites_]]"
+          label="$i18n{braveNewTabTopSites}"
+          on-settings-boolean-control-change="onShowTopSitesChange_">
       </settings-toggle-button>
       <settings-toggle-button
           class="cr-row"

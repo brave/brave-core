@@ -33,6 +33,15 @@ cr.define('settings', function() {
      * @return {!Promise<Boolean>}
      */
     getIsBitcoinDotComSupported() {}
+
+    /**
+     * @return {!Promise<Boolean>}
+     */
+    getShowTopSites() {}
+
+    /**
+     */
+    toggleTopSitesVisible() {}
   }
 
   /**
@@ -62,6 +71,16 @@ cr.define('settings', function() {
     /** @override */
     getIsBitcoinDotComSupported() {
       return cr.sendWithPromise('getIsBitcoinDotComSupported')
+    }
+
+    /** @override */
+    getShowTopSites() {
+      return cr.sendWithPromise('getShowTopSites')
+    }
+
+    /** @override */
+    toggleTopSitesVisible() {
+      chrome.send('toggleTopSitesVisible', [])
     }
   }
 

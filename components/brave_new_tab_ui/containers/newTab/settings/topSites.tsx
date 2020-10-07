@@ -16,11 +16,18 @@ import { getLocale } from '../../../../common/locale'
 interface Props {
   toggleShowTopSites: () => void
   showTopSites: boolean
+  toggleCustomLinksEnabled: () => void
+  customLinksEnabled: boolean
 }
 
 class TopSitesSettings extends React.PureComponent<Props, {}> {
   render () {
-    const { toggleShowTopSites, showTopSites } = this.props
+    const {
+      toggleShowTopSites,
+      showTopSites,
+      toggleCustomLinksEnabled,
+      customLinksEnabled
+    } = this.props
     return (
       <div>
         <SettingsRow>
@@ -28,6 +35,14 @@ class TopSitesSettings extends React.PureComponent<Props, {}> {
           <Toggle
             onChange={toggleShowTopSites}
             checked={showTopSites}
+            size='large'
+          />
+        </SettingsRow>
+        <SettingsRow>
+          <SettingsText>{getLocale('topSiteCustomLinksEnabled')}</SettingsText>
+          <Toggle
+            onChange={toggleCustomLinksEnabled}
+            checked={customLinksEnabled}
             size='large'
           />
         </SettingsRow>

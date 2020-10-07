@@ -113,14 +113,15 @@ class BraveClearDataOnExitTest
 
     // Take care of any remaining message loop work.
     content::RunAllPendingInMessageLoop();
-
-    // At this point, quit should be for real now.
-    ASSERT_EQ(0u, chrome::GetTotalBrowserCount());
   }
 
   void TearDownInProcessBrowserTestFixture() override {
     // Verify expected number of calls to remove browsing data.
     EXPECT_EQ(remove_data_call_count_, expected_remove_data_call_count_);
+
+    // At this point, quit should be for real now.
+    ASSERT_EQ(0u, chrome::GetTotalBrowserCount());
+
     BraveClearBrowsingData::SetOnExitTestingCallback(nullptr);
   }
 

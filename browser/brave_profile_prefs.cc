@@ -5,6 +5,7 @@
 
 #include "brave/browser/brave_profile_prefs.h"
 
+#include "brave/browser/search/ntp_utils.h"
 #include "brave/browser/themes/brave_dark_mode_utils.h"
 #include "brave/browser/ui/omnibox/brave_omnibox_client_impl.h"
 #include "brave/common/pref_names.h"
@@ -97,6 +98,9 @@ void RegisterProfilePrefsForMigration(
 #endif
 
   dark_mode::RegisterBraveDarkModePrefsForMigration(registry);
+#if !defined(OS_ANDROID)
+  new_tab_page::RegisterNewTabPagePrefsForMigration(registry);
+#endif
 
   // Restore "Other Bookmarks" migration
   registry->RegisterBooleanPref(kOtherBookmarksMigrated, false);
@@ -232,7 +236,6 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
   // New Tab Page
   registry->RegisterBooleanPref(kNewTabPageShowClock, true);
   registry->RegisterStringPref(kNewTabPageClockFormat, "");
-  registry->RegisterBooleanPref(kNewTabPageShowTopSites, true);
   registry->RegisterBooleanPref(kNewTabPageShowStats, true);
   registry->RegisterBooleanPref(kNewTabPageShowRewards, true);
   registry->RegisterBooleanPref(kNewTabPageShowBinance, true);
