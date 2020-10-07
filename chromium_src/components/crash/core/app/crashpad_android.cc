@@ -48,6 +48,8 @@ class BraveCrashpadClient {
       const std::map<std::string, std::string>& annotations,
       const std::vector<std::string>& arguments);
 
+  void SetUnhandledSignals(const std::set<int>& unhandled_signals);
+
   static bool StartHandlerWithLinkerForClient(
       const std::string& handler_trampoline,
       const std::string& handler_library,
@@ -145,6 +147,12 @@ bool BraveCrashpadClient::StartHandlerWithLinkerAtCrash(
   return crash_reporter::GetCrashpadClient().StartHandlerWithLinkerAtCrash(
       handler_trampoline, handler_library, is_64_bit, env, database,
       metrics_dir, brave_crash_url, annotations, arguments);
+}
+
+void BraveCrashpadClient::SetUnhandledSignals(
+    const std::set<int>& unhandled_signals) {
+  return crash_reporter::GetCrashpadClient().SetUnhandledSignals(
+      unhandled_signals);
 }
 
 // static
