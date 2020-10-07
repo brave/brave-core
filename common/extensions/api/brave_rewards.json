@@ -612,39 +612,6 @@
         ]
       },
       {
-        "name": "tipRedditUser",
-        "type": "function",
-        "description": "Allow the user to perform a donation to a Reddit user",
-        "parameters": [
-          {
-            "name": "tabID",
-            "type": "integer"
-          },
-          {
-            "name": "mediaMetaData",
-            "type": "object",
-            "properties": {
-              "mediaType": {
-                "type": "string",
-                "description": "description used in UI to identify the media type"
-              },
-              "userName": {
-                "type": "string",
-                "description": "User name of the Reddit post/comment author"
-              },
-              "postText": {
-                "type": "string",
-                "description": "Textual contents of comment/post"
-              },
-              "postRelDate": {
-                "type": "string",
-                "description": "Date of post relative to current date"
-              }
-            }
-          }
-        ]
-      },
-      {
         "name": "getPublisherData",
         "type": "function",
         "description": "Get publisher data",
