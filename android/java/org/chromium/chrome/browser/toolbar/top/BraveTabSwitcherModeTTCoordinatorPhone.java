@@ -7,13 +7,16 @@ package org.chromium.chrome.browser.toolbar.top;
 
 import android.view.ViewStub;
 
+import org.chromium.chrome.browser.toolbar.menu_button.MenuButtonCoordinator;
+
 class BraveTabSwitcherModeTTCoordinatorPhone extends TabSwitcherModeTTCoordinatorPhone {
     private TabSwitcherModeTTPhone mTabSwitcherModeToolbar;
 
     private boolean mIsBottomToolbarVisible;
 
-    BraveTabSwitcherModeTTCoordinatorPhone(ViewStub tabSwitcherToolbarStub) {
-        super(tabSwitcherToolbarStub);
+    BraveTabSwitcherModeTTCoordinatorPhone(
+            ViewStub tabSwitcherToolbarStub, MenuButtonCoordinator menuButtonCoordinator) {
+        super(tabSwitcherToolbarStub, menuButtonCoordinator);
     }
 
     @Override
