@@ -104,9 +104,13 @@ class NewTabPageBackgroundButtonsView: UIView, PreferencesObserver {
         
         let isLandscape = frame.width > frame.height
         
+        #if NO_BRAVE_TODAY
+        let braveTodayVisible = false
+        #else
         let braveTodayVisible =
             !PrivateBrowsingManager.shared.isPrivateBrowsing &&
             Preferences.BraveToday.isEnabled.value
+        #endif
         
         imageCreditButton.snp.remakeConstraints {
             $0.leading.equalTo(collectionViewSafeAreaLayoutGuide).inset(16)
