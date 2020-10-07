@@ -151,7 +151,7 @@ export const AmountInput = styled<StyleProps, 'input'>('input')`
 export const FiatLabel = styled<{}, 'span'>('span')`
   color: #000;
   font-weight: bold;
-  margin-left: 8px;
+  margin-left: 6px;
   font-size: 15px;
 `
 
