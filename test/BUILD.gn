@@ -77,15 +77,6 @@ source_set("test_support") {
   }
 }
 
-if (!is_android) {
-group("other_browser_tests") {
-  testonly = true
-  deps = [
-    "//brave/browser/ui/tabs/test:browser_tests",
-  ]
-}
-}
-
 test("brave_unit_tests") {
   testonly = true
 
@@ -587,7 +578,10 @@ if (!is_android) {
       ]
     }
 
-    deps = [ "//brave/components/ipfs/test:brave_ipfs_browser_tests" ]
+    deps = [
+      "//brave/components/ipfs/test:brave_ipfs_browser_tests",
+      "//brave/browser/ui/tabs/test:browser_tests",
+    ]
 
     if (enable_widevine && !is_asan) {
       # Remove the !is_asan check once
