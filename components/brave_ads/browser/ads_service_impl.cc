@@ -1346,7 +1346,8 @@ bool AdsServiceImpl::MigratePrefs(
     {{3, 4}, &AdsServiceImpl::MigratePrefsVersion3To4},
     {{4, 5}, &AdsServiceImpl::MigratePrefsVersion4To5},
     {{5, 6}, &AdsServiceImpl::MigratePrefsVersion5To6},
-    {{6, 7}, &AdsServiceImpl::MigratePrefsVersion6To7}
+    {{6, 7}, &AdsServiceImpl::MigratePrefsVersion6To7},
+    {{7, 8}, &AdsServiceImpl::MigratePrefsVersion7To8}
   };
 
   // Cycle through migration paths, i.e. if upgrading from version 2 to 5 we
@@ -1548,6 +1549,14 @@ void AdsServiceImpl::MigratePrefsVersion6To7() {
   }
 
   SetEnabled(false);
+}
+
+
+void AdsServiceImpl::MigratePrefsVersion7To8() {
+  const bool rewards_enabled = GetBooleanPref(brave_rewards::prefs::kEnabled);
+  if (!rewards_enabled) {
+    SetEnabled(false);
+  }
 }
 
 int AdsServiceImpl::GetPrefsVersion() const {

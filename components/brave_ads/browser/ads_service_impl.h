@@ -326,6 +326,7 @@ class AdsServiceImpl : public AdsService,
   void MigratePrefsVersion4To5();
   void MigratePrefsVersion5To6();
   void MigratePrefsVersion6To7();
+  void MigratePrefsVersion7To8();
   int GetPrefsVersion() const;
 
   bool IsUpgradingFromPreBraveAdsBuild();

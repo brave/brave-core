@@ -34,7 +34,7 @@ const int kSupportedCountryCodesSchemaVersionNumber = 9;
 // Stores the preferences version number
 const char kVersion[] = "brave.brave_ads.prefs.version";
 
-const int kCurrentVersionNumber = 7;
+const int kCurrentVersionNumber = 8;
 
 }  // namespace prefs
 
