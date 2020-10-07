@@ -56,6 +56,7 @@ source_set("ui") {
       "brave_browser_command_controller.h",
       "brave_browser_content_setting_bubble_model_delegate.cc",
       "brave_browser_content_setting_bubble_model_delegate.h",
+      "brave_browser_window.h",
       "brave_layout_constants.cc",
       "brave_layout_constants.h",
       "brave_pages.cc",
@@ -73,8 +74,6 @@ source_set("ui") {
       "content_settings/brave_content_setting_image_models.h",
       "omnibox/brave_omnibox_client_impl.cc",
       "omnibox/brave_omnibox_client_impl.h",
-      "tabs/brave_tab_menu_model.cc",
-      "tabs/brave_tab_menu_model.h",
       "toolbar/brave_app_menu_model.cc",
       "toolbar/brave_app_menu_model.h",
       "webui/brave_new_tab_message_handler.cc",
@@ -181,6 +180,7 @@ source_set("ui") {
   }
 
   deps = [
+    "tabs",
     "//base",
     "//brave/app:command_ids",
     "//brave/app/theme:brave_theme_resources",
@@ -368,7 +368,10 @@ source_set("ui") {
   }
 
   if (toolkit_views) {
-    deps += [ "//ui/views" ]
+    deps += [
+      "//ui/events",
+      "//ui/views",
+    ]
 
     if (enable_brave_translate_extension) {
       deps += [ "//components/translate/core/browser" ]

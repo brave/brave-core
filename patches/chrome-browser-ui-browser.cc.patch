@@ -1,0 +1,13 @@
+diff --git a/chrome/browser/ui/browser.cc b/chrome/browser/ui/browser.cc
+index 609203c8e769f745617f3996670512309ac7bf7c..2a814f74b2ccdd283a9c2063f02524c8a6641389 100644
+--- a/chrome/browser/ui/browser.cc
++++ b/chrome/browser/ui/browser.cc
+@@ -455,7 +455,7 @@ Browser::Browser(const CreateParams& params)
+       tab_strip_model_delegate_(
+           std::make_unique<chrome::BrowserTabStripModelDelegate>(this)),
+       tab_strip_model_(
+-          std::make_unique<TabStripModel>(tab_strip_model_delegate_.get(),
++          std::make_unique<BraveTabStripModel>(tab_strip_model_delegate_.get(),
+                                           params.profile)),
+       app_name_(params.app_name),
+       is_trusted_source_(params.trusted_source),

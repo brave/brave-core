@@ -6,13 +6,16 @@
 #ifndef BRAVE_BROWSER_UI_VIEWS_FRAME_BRAVE_BROWSER_VIEW_H_
 #define BRAVE_BROWSER_UI_VIEWS_FRAME_BRAVE_BROWSER_VIEW_H_
 
+#include <memory>
 #include <string>
 
+#include "brave/browser/ui/tabs/brave_tab_strip_model.h"
 #include "chrome/browser/ui/views/frame/browser_view.h"
 
 class BraveBrowserView : public BrowserView {
  public:
-  using BrowserView::BrowserView;
+  explicit BraveBrowserView(std::unique_ptr<Browser> browser);
+  ~BraveBrowserView() override;
 
   void SetStarredState(bool is_starred) override;
   void ShowUpdateChromeDialog() override;
@@ -24,7 +27,21 @@ class BraveBrowserView : public BrowserView {
       translate::TranslateErrors::Type error_type,
       bool is_user_gesture) override;
 
+  void StartTabCycling() override;
+
  private:
+  class TabCyclingEventHandler;
+
+  // BrowserView overrides:
+  void OnTabStripModelChanged(
+      TabStripModel* tab_strip_model,
+      const TabStripModelChange& change,
+      const TabStripSelectionChange& selection) override;
+
+  void StopTabCycling();
+
+  std::unique_ptr<TabCyclingEventHandler> tab_cycling_event_handler_;
+
   DISALLOW_COPY_AND_ASSIGN(BraveBrowserView);
 };
 

@@ -120,6 +120,7 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
   registry->RegisterBooleanPref(
       brave_rewards::prefs::kHideButton,
       false);
+  registry->RegisterBooleanPref(kMRUCyclingEnabled, false);
 
   brave_sync::Prefs::RegisterProfilePrefs(registry);
 
