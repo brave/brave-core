@@ -137,10 +137,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UIViewControllerRestorati
             class_addMethod(clazz, MenuHelper.selectorFindInPage, method_getImplementation(swizzledMethod), method_getTypeEncoding(swizzledMethod))
         }
         
+        #if !NO_BRAVE_TODAY
         if !Preferences.BraveToday.languageChecked.value {
             Preferences.BraveToday.languageChecked.value = true
             Preferences.BraveToday.isEnabled.value = Locale.preferredLanguages.first?.prefix(2) == "en"
         }
+        #endif
 
         self.tabManager = TabManager(prefs: profile.prefs, imageStore: imageStore)
 

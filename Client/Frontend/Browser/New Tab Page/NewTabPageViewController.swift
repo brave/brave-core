@@ -134,6 +134,7 @@ class NewTabPageViewController: UIViewController, Themeable {
             sections.insert(DefaultBrowserCalloutProvider(), at: 0)
         }
         
+        #if !NO_BRAVE_TODAY
         if !PrivateBrowsingManager.shared.isPrivateBrowsing {
             sections.append(
                 BraveTodaySectionProvider(
@@ -145,6 +146,7 @@ class NewTabPageViewController: UIViewController, Themeable {
             )
             layout.braveTodaySection = sections.firstIndex(where: { $0 is BraveTodaySectionProvider })
         }
+        #endif
         
         collectionView.delegate = self
         collectionView.dataSource = self
@@ -154,11 +156,13 @@ class NewTabPageViewController: UIViewController, Themeable {
             self?.setupBackgroundImage()
         }
         
+        #if !NO_BRAVE_TODAY
         Preferences.BraveToday.isEnabled.observe(from: self)
         feedDataSource.observeState(from: self) { [weak self] in
             self?.handleFeedStateChange($0, $1)
         }
         NotificationCenter.default.addObserver(self, selector: #selector(checkForUpdatedFeed), name: UIApplication.didBecomeActiveNotification, object: nil)
+        #endif
     }
     
     @available(*, unavailable)
@@ -585,6 +589,7 @@ class NewTabPageViewController: UIViewController, Themeable {
     }
     
     @objc private func checkForUpdatedFeed() {
+        #if !NO_BRAVE_TODAY
         if !isBraveTodayVisible { return }
         if collectionView.contentOffset.y == collectionView.contentInset.top {
             // Reload contents if the user is not currently scrolled into the feed
@@ -595,6 +600,7 @@ class NewTabPageViewController: UIViewController, Themeable {
                 feedOverlayView.showNewContentAvailableButton()
             }
         }
+        #endif
     }
     
     private func loadFeedContents(completion: (() -> Void)? = nil) {
@@ -701,8 +707,12 @@ extension NewTabPageViewController: PreferencesObserver {
 // MARK: - UIScrollViewDelegate
 extension NewTabPageViewController {
     var isBraveTodayVisible: Bool {
-        !PrivateBrowsingManager.shared.isPrivateBrowsing &&
+        #if NO_BRAVE_TODAY
+        return false
+        #else
+        return !PrivateBrowsingManager.shared.isPrivateBrowsing &&
             Preferences.BraveToday.isEnabled.value
+        #endif
     }
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
         guard isBraveTodayVisible, let braveTodaySection = layout.braveTodaySection else { return }
