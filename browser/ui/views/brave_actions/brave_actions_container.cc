@@ -137,7 +137,7 @@ void BraveActionsContainer::Init() {
   SetLayoutManager(std::move(vertical_container_layout));
 
   // children
-  onion_location_view_ = new OnionLocationView();
+  onion_location_view_ = new OnionLocationView(browser_->profile());
   AddChildViewAt(onion_location_view_, 0);
 
   RoundedSeparator* brave_button_separator_ = new RoundedSeparator();

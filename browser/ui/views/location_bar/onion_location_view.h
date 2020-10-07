@@ -9,6 +9,8 @@
 #include "chrome/browser/profiles/profile.h"
 #include "ui/views/controls/button/label_button.h"
 
+class Profile;
+
 namespace content {
 class WebContents;
 }  // namespace content
@@ -16,7 +18,7 @@ class WebContents;
 class OnionLocationView : public views::LabelButton,
                           public views::ButtonListener {
  public:
-  OnionLocationView();
+  explicit OnionLocationView(Profile* profile);
   ~OnionLocationView() override;
 
   void Update(content::WebContents* web_contents);

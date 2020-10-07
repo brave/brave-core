@@ -40,9 +40,11 @@ void OnTorProfileCreated(GURL onion_location,
 
 }  // namespace
 
-OnionLocationView::OnionLocationView()
+OnionLocationView::OnionLocationView(Profile* profile)
     : LabelButton(this,
-                  l10n_util::GetStringUTF16((IDS_LOCATION_BAR_OPEN_IN_TOR))) {
+                  l10n_util::GetStringUTF16(IDS_LOCATION_BAR_OPEN_IN_TOR)) {
+  if (brave::IsTorProfile(profile))
+    SetText(l10n_util::GetStringUTF16(IDS_LOCATION_BAR_ONION_AVAILABLE));
   SetBackground(views::CreateSolidBackground(kOpenInTorBg));
   ui::ResourceBundle& rb = ui::ResourceBundle::GetSharedInstance();
   gfx::ImageSkia image;

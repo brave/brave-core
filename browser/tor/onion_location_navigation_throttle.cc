@@ -75,10 +75,8 @@ OnionLocationNavigationThrottle::WillProcessResponse() {
     std::string onion_location;
     if (headers && GetOnionLocation(headers, &onion_location) &&
         !navigation_handle()->GetURL().DomainIs("onion")) {
-      // If we are in tor window, open onion site directly or user prefers
-      // opening it automatically
-      if (brave::IsTorProfile(profile_) ||
-          profile_->GetPrefs()->GetBoolean(prefs::kAutoOnionLocation)) {
+      // If user prefers opening it automatically
+      if (profile_->GetPrefs()->GetBoolean(prefs::kAutoOnionLocation)) {
         profiles::SwitchToTorProfile(
             base::BindRepeating(&OnTorProfileCreated, GURL(onion_location)));
       } else {
