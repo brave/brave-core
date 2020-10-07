@@ -52,7 +52,7 @@ class EnableVPNSettingHeader: UIView {
             make.height.equalTo(44)
             make.width.greaterThanOrEqualTo(120)
         }
-        $0.contentEdgeInsets = UIEdgeInsets(top: 0, left: 25, bottom: 0, right: 25)
+        
         $0.setContentCompressionResistancePriority(.required, for: .vertical)
     }
     
@@ -69,8 +69,8 @@ class EnableVPNSettingHeader: UIView {
     }
     
     private let closeButton = UIButton().then {
-        $0.setImage(#imageLiteral(resourceName: "close_popup").template, for: .normal)
-        $0.appearanceTintColor = .lightGray
+        $0.setImage(#imageLiteral(resourceName: "card_close"), for: .normal)
+        $0.appearanceTintColor = .white
     }
     
     override init(frame: CGRect) {
@@ -91,13 +91,20 @@ class EnableVPNSettingHeader: UIView {
         }
         
         contentView.snp.makeConstraints {
-            $0.top.leading.trailing.equalToSuperview().inset(8)
+            $0.top.equalToSuperview().inset(8)
+            if #available(iOS 13, *) {
+                // Settings screen on iOS 13 uses .insetGrouped style which adds their own insets.
+                // No need for extra insets then.
+                $0.leading.trailing.equalToSuperview()
+            } else {
+                $0.leading.trailing.equalToSuperview().inset(16)
+            }
             $0.bottom.equalToSuperview()
         }
         
-        addSubview(closeButton)
+        contentView.addSubview(closeButton)
         closeButton.snp.makeConstraints {
-            $0.top.trailing.equalToSuperview().inset(8)
+            $0.top.trailing.equalToSuperview()
             $0.size.equalTo(44)
         }
         
