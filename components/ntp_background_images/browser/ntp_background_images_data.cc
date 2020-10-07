@@ -247,6 +247,13 @@ base::Value NTPBackgroundImagesData::GetBackgroundAt(size_t index) {
                     backgrounds[index].image_file.AsUTF8Unsafe());
   data.SetIntKey(kWallpaperFocalPointXKey, backgrounds[index].focal_point.x());
   data.SetIntKey(kWallpaperFocalPointYKey, backgrounds[index].focal_point.y());
+
+  data.SetStringKey(kCreativeInstanceIDKey,
+                    backgrounds[index].creative_instance_id);
+  data.SetStringKey(kCreativeSetIDKey, backgrounds[index].creative_set_id);
+  data.SetStringKey(kCampaignIDKey, backgrounds[index].campaign_id);
+  data.SetStringKey(kAdvertiserIDKey, backgrounds[index].advertiser_id);
+
   base::Value logo_data(base::Value::Type::DICTIONARY);
   Logo logo = backgrounds[index].logo ? backgrounds[index].logo.value()
                                       : default_logo;

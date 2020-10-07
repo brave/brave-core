@@ -18,6 +18,7 @@
 #include "brave/components/brave_rewards/common/pref_names.h"
 #include "brave/components/ntp_background_images/browser/features.h"
 #include "brave/components/ntp_background_images/browser/ntp_background_images_data.h"
+#include "brave/components/ntp_background_images/browser/url_constants.h"
 #include "brave/components/ntp_background_images/common/pref_names.h"
 #include "components/pref_registry/pref_registry_syncable.h"
 #include "components/prefs/pref_service.h"
@@ -170,6 +171,19 @@ void ViewCounterService::ResetNotificationState() {
 }
 
 void ViewCounterService::RegisterPageView() {
+  // This method is called whenever NTP page is loaded.
+  // So, it's good to ping to ads service by checking whether branded wallpaper
+  // is used or not here.
+  base::Value data = ViewCounterService::GetCurrentWallpaperForDisplay();
+  // If |data| is none, it means lastly shown NTP doesn't use branded wallpaper.
+  if (!data.is_none()) {
+    const std::string id = *data.FindStringKey(kCreativeInstanceIDKey);
+    if (!id.empty()) {
+      // Ping to ads service if data has proper ids.
+      LOG(ERROR) << "CreativeInstanceID: " << id;
+    }
+  }
+
   // Don't do any counting if we will never be showing the data
   // since we want the count to start at the point of data being available
   // or the user opt-in status changing.
