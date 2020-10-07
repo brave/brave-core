@@ -356,9 +356,9 @@ typedef NS_ENUM(NSInteger, BATLedgerDatabaseMigrationType) {
 - (void)savePrefs
 {
   NSDictionary *prefs = [self.prefs copy];
-  NSString *path = [self prefsPath];
+  NSString *path = [[self prefsPath] copy];
   dispatch_async(self.fileWriteThread, ^{
-    [prefs writeToFile:path atomically:YES];
+    [prefs writeToURL:[NSURL fileURLWithPath:path isDirectory:NO] error:nil];
   });
 }
 
@@ -958,8 +958,9 @@ BATLedgerReadonlyBridge(BOOL, isWalletCreated, IsWalletCreated)
   }
   const auto jsonString = [[NSString alloc] initWithData:jsonData encoding:NSUTF8StringEncoding];
   ledger->ClaimPromotion(promotionId.UTF8String, jsonString.UTF8String, ^(const ledger::type::Result result, const std::string& nonce) {
+    const auto bridgedNonce = [NSString stringWithUTF8String:nonce.c_str()];
     dispatch_async(dispatch_get_main_queue(), ^{
-      completion(static_cast<BATResult>(result), [NSString stringWithUTF8String:nonce.c_str()]);
+      completion(static_cast<BATResult>(result), bridgedNonce);
     });
   });
 }
@@ -967,7 +968,14 @@ BATLedgerReadonlyBridge(BOOL, isWalletCreated, IsWalletCreated)
 - (void)attestPromotion:(NSString *)promotionId solution:(BATPromotionSolution *)solution completion:(void (^)(BATResult result, BATPromotion * _Nullable promotion))completion
 {
   ledger->AttestPromotion(std::string(promotionId.UTF8String), solution.JSONPayload.UTF8String, ^(const ledger::type::Result result, ledger::type::PromotionPtr promotion) {
-    if (promotion.get() == nullptr) return;
+    if (promotion.get() == nullptr) {
+      if (completion) {
+        dispatch_async(dispatch_get_main_queue(), ^{
+          completion(static_cast<BATResult>(result), nil);
+        });
+      }
+      return;
+    }
     
     const auto bridgedPromotion = [[BATPromotion alloc] initWithPromotion:*promotion];
     if (result == ledger::type::Result::LEDGER_OK) {
@@ -1649,9 +1657,7 @@ BATLedgerBridge(BOOL,
     return;
   }
 
-  dispatch_async(self.fileWriteThread, ^{
-    [data writeToFile:path atomically:YES];
-  });
+  [data writeToURL:[NSURL fileURLWithPath:path isDirectory:NO] options:NSDataWritingAtomic error:nil];
 }
 
 #pragma mark - State
@@ -1697,7 +1703,7 @@ BATLedgerBridge(BOOL,
   NSDictionary *state = [self.state copy];
   NSString *path = [self.randomStatePath copy];
   dispatch_async(self.fileWriteThread, ^{
-    [state writeToFile:path atomically:YES];
+    [state writeToURL:[NSURL fileURLWithPath:path isDirectory:NO] error:nil];
   });
 }
 
@@ -1710,7 +1716,7 @@ BATLedgerBridge(BOOL,
   NSDictionary *state = [self.state copy];
   NSString *path = [self.randomStatePath copy];
   dispatch_async(self.fileWriteThread, ^{
-    [state writeToFile:path atomically:YES];
+    [state writeToURL:[NSURL fileURLWithPath:path isDirectory:NO] error:nil];
   });
 }
 

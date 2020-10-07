@@ -133,7 +133,14 @@ static NSString * const kUserModelMetadataPrefKey = @"BATUserModelMetadata";
 
 + (BOOL)isCurrentLocaleSupported
 {
-  return [self isSupportedLocale:[[NSLocale preferredLanguages] firstObject]];
+  return [self isSupportedLocale:[self currentLocaleCode]];
+}
+
++ (NSString *)currentLocaleCode
+{
+  const auto locale = NSLocale.currentLocale;
+  return [NSString stringWithFormat:@"%@_%@",
+          locale.languageCode, locale.countryCode];
 }
 
 BATClassAdsBridge(BOOL, isDebug, setDebug, _is_debug)
@@ -177,10 +184,7 @@ BATClassAdsBridge(BOOL, isDebug, setDebug, _is_debug)
     ads = ads::Ads::CreateInstance(adsClient);
     ads->Initialize(^(bool) {
       [self periodicallyCheckForUserModelUpdates];
-
-      NSString *localeIdentifier = [[NSLocale preferredLanguages] firstObject];
-      NSLocale *locale = [NSLocale localeWithLocaleIdentifier:localeIdentifier];
-      [self registerUserModels:locale];
+      [self registerUserModels];
     });
   }
 }
@@ -307,8 +311,10 @@ BATClassAdsBridge(BOOL, isDebug, setDebug, _is_debug)
 
 - (void)savePrefs
 {
+  NSDictionary *prefs = [self.prefs copy];
+  NSString *path = [[self prefsPath] copy];
   dispatch_async(self.prefsWriteThread, ^{
-    [self.prefs writeToFile:[self prefsPath] atomically:YES];
+    [prefs writeToURL:[NSURL fileURLWithPath:path isDirectory:NO] error:nil];
   });
 }
 
@@ -437,6 +443,7 @@ BATClassAdsBridge(BOOL, isDebug, setDebug, _is_debug)
 
 - (void)detailsForCurrentCycle:(void (^)(NSInteger adsReceived, double estimatedEarnings, NSDate *nextPaymentDate))completion
 {
+  if (![self isAdsServiceRunning]) { return; }
   ads->GetTransactionHistory(^(bool success, ads::StatementInfo list) {
     if (!success) {
       completion(0, 0, nil);
@@ -543,6 +550,10 @@ BATClassAdsBridge(BOOL, isDebug, setDebug, _is_debug)
 
 - (BOOL)registerUserModelsForLanguageCode:(NSString *)languageCode
 {
+  if (!languageCode) {
+    return NO;
+  }
+  
   NSString *isoLanguageCode = [@"iso_639_1_" stringByAppendingString:[languageCode lowercaseString]];
 
   NSArray *languageCodeUserModelIds = [self.userModelPaths allKeysForObject:isoLanguageCode];
@@ -562,6 +573,10 @@ BATClassAdsBridge(BOOL, isDebug, setDebug, _is_debug)
 
 - (BOOL)registerUserModelsForCountryCode:(NSString *)countryCode
 {
+  if (!countryCode) {
+    return NO;
+  }
+  
   NSString *isoCountryCode = [@"iso_3166_1_" stringByAppendingString:[countryCode lowercaseString]];
 
   NSArray *countryCodeUserModelIds = [self.userModelPaths allKeysForObject:isoCountryCode];
@@ -579,14 +594,16 @@ BATClassAdsBridge(BOOL, isDebug, setDebug, _is_debug)
   return YES;
 }
 
-- (void)registerUserModels:(NSLocale *)locale
+- (void)registerUserModels
 {
-  if (![self registerUserModelsForLanguageCode:locale.languageCode]) {
-    BLOG(1, @"%@ not supported for user model installer", locale.languageCode);
+  const auto currentLocale = [NSLocale currentLocale];
+  
+  if (![self registerUserModelsForLanguageCode:currentLocale.languageCode]) {
+    BLOG(1, @"%@ not supported for user model installer", currentLocale.languageCode);
   }
 
-  if (![self registerUserModelsForCountryCode:locale.countryCode]) {
-    BLOG(1, @"%@ not supported for user model installer", locale.countryCode);
+  if (![self registerUserModelsForCountryCode:currentLocale.countryCode]) {
+    BLOG(1, @"%@ not supported for user model installer", currentLocale.countryCode);
   }
 }
 
