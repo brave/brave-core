@@ -1,5 +1,5 @@
 diff --git a/chrome/android/java/src/org/chromium/chrome/browser/suggestions/tile/SuggestionsTileView.java b/chrome/android/java/src/org/chromium/chrome/browser/suggestions/tile/SuggestionsTileView.java
-index 219aad30b54a4cdbd9530b7f908ec07c4910b174..6ae04ddfe9e0188c81ba2ca3b81f568086299135 100644
+index 219aad30b54a4cdbd9530b7f908ec07c4910b174..032f16f18f71ad72eebec2c0e8bdae869d5b73a6 100644
 --- a/chrome/android/java/src/org/chromium/chrome/browser/suggestions/tile/SuggestionsTileView.java
 +++ b/chrome/android/java/src/org/chromium/chrome/browser/suggestions/tile/SuggestionsTileView.java
 @@ -17,7 +17,7 @@ import org.chromium.url.GURL;
@@ -7,7 +7,7 @@ index 219aad30b54a4cdbd9530b7f908ec07c4910b174..6ae04ddfe9e0188c81ba2ca3b81f5680
   * large icon isn't available, displays a rounded rectangle with a single letter in its place.
   */
 -public class SuggestionsTileView extends TileView {
-+public class SuggestionsTileView extends org.chromium.chrome.browser.widget.tile.BraveTileWithTextView {
++public class SuggestionsTileView extends org.chromium.chrome.browser.suggestions.tile.BraveTileView {
      /** The data currently associated to this tile. */
      private SiteSuggestion mData;
  
