@@ -12,7 +12,9 @@
 #include "base/macros.h"
 #include "base/memory/weak_ptr.h"
 #include "build/build_config.h"
+#if !defined(OS_ANDROID)
 #include "chrome/browser/ui/browser_list_observer.h"
+#endif
 #include "components/sessions/core/session_id.h"
 #include "content/public/browser/media_player_id.h"
 #include "content/public/browser/web_contents_observer.h"
