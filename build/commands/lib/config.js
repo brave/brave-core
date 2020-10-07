@@ -377,6 +377,8 @@ Config.prototype.buildArgs = function () {
     delete args.gemini_client_secret
     delete args.brave_services_key
     delete args.webcompat_report_api_endpoint
+    delete args.use_blink_v8_binding_new_idl_interface
+    delete args.v8_enable_verify_heap
   }
 
   if (process.platform === 'win32') {
