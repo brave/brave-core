@@ -1,12 +1,12 @@
 diff --git a/build/toolchain/win/setup_toolchain.py b/build/toolchain/win/setup_toolchain.py
-index 58bf3e8caf4e0a0fdcba03c5b8bf72b30ea8f075..81e1ccc1b8ccff4ebce2b93519ceaa5975f5a55f 100644
+index 58bf3e8caf4e0a0fdcba03c5b8bf72b30ea8f075..b504e562355cc2468a1c661a4daec983e68dfb6a 100644
 --- a/build/toolchain/win/setup_toolchain.py
 +++ b/build/toolchain/win/setup_toolchain.py
 @@ -277,6 +277,7 @@ def main():
          return s if re.match(r'^[a-zA-Z0-9._/\\:-]*$', s) else '"' + s + '"'
        include_I = ' '.join([q('/I' + i) for i in include])
        include_imsvc = ' '.join([q('-imsvc' + i) for i in include])
-+      import win32api; include_imsvc = ' '.join([q('-imsvc' + win32api.GetShortPathName(i)) for i in include])
++      open(os.path.abspath(os.path.join(SCRIPT_DIR, '..', '..', '..', "include_imsvc")), "w").writelines([(q('-imsvc' + i) + '\n') for i in include])
        libpath_flags = ' '.join([q('-libpath:' + i) for i in lib])
  
        if (environment_block_name != ''):
