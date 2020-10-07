@@ -56,7 +56,7 @@ interface WidgetPaddingProps {
 export const StyledWidget = styled<WidgetVisibilityProps & WidgetPaddingProps, 'div'>('div')`
   padding: ${({ paddingType }) => getWidgetPadding(paddingType)};
   max-width: 100%;
-  min-width: ${p => p.isCrypto ? '284px' : 'initial'};
+  width: ${p => p.isCrypto ? '284px' : 'initial'};
   position: relative;
   transition: background 0.5s ease;
   border-radius: ${p => p.isCrypto ? '6px' : '16px'};
