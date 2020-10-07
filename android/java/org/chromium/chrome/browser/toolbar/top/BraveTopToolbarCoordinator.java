@@ -7,13 +7,16 @@ package org.chromium.chrome.browser.toolbar.top;
 
 import android.content.Context;
 
+import org.chromium.base.Callback;
 import org.chromium.base.supplier.ObservableSupplier;
 import org.chromium.base.supplier.OneshotSupplier;
+import org.chromium.base.supplier.Supplier;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.ThemeColorProvider;
 import org.chromium.chrome.browser.compositor.layouts.OverviewModeBehavior;
 import org.chromium.chrome.browser.identity_disc.IdentityDiscController;
 import org.chromium.chrome.browser.tabmodel.TabModelSelector;
+import org.chromium.chrome.browser.toolbar.ButtonData;
 import org.chromium.chrome.browser.toolbar.ButtonDataProvider;
 import org.chromium.chrome.browser.toolbar.ToolbarDataProvider;
 import org.chromium.chrome.browser.toolbar.ToolbarTabController;
@@ -29,27 +32,32 @@ public class BraveTopToolbarCoordinator extends TopToolbarCoordinator {
     private OptionalBrowsingModeButtonController mOptionalButtonController;
 
     public BraveTopToolbarCoordinator(ToolbarControlContainer controlContainer,
-            ToolbarLayout toolbarLayout, IdentityDiscController identityDiscController,
-            ToolbarDataProvider toolbarDataProvider, ToolbarTabController tabController,
-            UserEducationHelper userEducationHelper, List<ButtonDataProvider> buttonDataProviders,
+            ToolbarLayout toolbarLayout, ToolbarDataProvider toolbarDataProvider,
+            ToolbarTabController tabController, UserEducationHelper userEducationHelper,
+            List<ButtonDataProvider> buttonDataProviders,
             OneshotSupplier<OverviewModeBehavior> overviewModeBehaviorSupplier,
             ThemeColorProvider normalThemeColorProvider,
             ThemeColorProvider overviewThemeColorProvider,
             MenuButtonCoordinator browsingModeMenuButtonCoordinator,
-            MenuButtonCoordinator startSurfaceMenuButtonCoordinator,
-            ObservableSupplier<AppMenuButtonHelper> appMenuButtonHelperSupplier, Context context,
-            ObservableSupplier<TabModelSelector> tabModelSelectorSupplier) {
-        super(controlContainer, toolbarLayout, identityDiscController, toolbarDataProvider,
-                tabController, userEducationHelper, buttonDataProviders,
-                overviewModeBehaviorSupplier, normalThemeColorProvider, overviewThemeColorProvider,
-                browsingModeMenuButtonCoordinator, startSurfaceMenuButtonCoordinator,
-                appMenuButtonHelperSupplier, context, tabModelSelectorSupplier);
+            MenuButtonCoordinator overviewModeMenuButtonCoordinator,
+            ObservableSupplier<AppMenuButtonHelper> appMenuButtonHelperSupplier,
+            ObservableSupplier<TabModelSelector> tabModelSelectorSupplier,
+            ObservableSupplier<Boolean> homeButtonVisibilitySupplier,
+            ObservableSupplier<Boolean> identityDiscStateSupplier,
+            Callback<Runnable> invalidatorCallback,
+            Supplier<ButtonData> identityDiscButtonSupplier) {
+        super(controlContainer, toolbarLayout, toolbarDataProvider, tabController,
+                userEducationHelper, buttonDataProviders, overviewModeBehaviorSupplier,
+                normalThemeColorProvider, overviewThemeColorProvider,
+                browsingModeMenuButtonCoordinator, overviewModeMenuButtonCoordinator,
+                appMenuButtonHelperSupplier, tabModelSelectorSupplier, homeButtonVisibilitySupplier,
+                identityDiscStateSupplier, invalidatorCallback, identityDiscButtonSupplier);
 
         if (toolbarLayout instanceof ToolbarPhone) {
             if (!StartSurfaceConfiguration.isStartSurfaceEnabled()) {
-                mTabSwitcherModeCoordinatorPhone = new BraveTabSwitcherModeTTCoordinatorPhone(
-                        controlContainer.getRootView().findViewById(
-                                R.id.tab_switcher_toolbar_stub));
+                mTabSwitcherModeCoordinatorPhone = new TabSwitcherModeTTCoordinatorPhone(
+                        controlContainer.getRootView().findViewById(R.id.tab_switcher_toolbar_stub),
+                        overviewModeMenuButtonCoordinator);
             }
         }
     }

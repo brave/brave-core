@@ -238,13 +238,13 @@ public abstract class BraveToolbarLayout extends ToolbarLayout implements OnClic
     updateBraveShieldsButtonState(null);
     if (this instanceof ToolbarPhone) {
       if (super.getMenuButtonCoordinator() != null && BottomToolbarVariationManager.isMenuButtonOnBottom()) {
-        super.getMenuButtonCoordinator().setVisibility(View.GONE);
+        super.getMenuButtonCoordinator().setVisibility(false);
       }
     }
   }
 
   @Override
-  void onNativeLibraryReady() {
+  protected void onNativeLibraryReady() {
     super.onNativeLibraryReady();
     mBraveShieldsContentSettings = BraveShieldsContentSettings.getInstance();
     mBraveShieldsContentSettings.addObserver(mBraveShieldsContentSettingsObserver);
@@ -772,7 +772,7 @@ public abstract class BraveToolbarLayout extends ToolbarLayout implements OnClic
 
   public void onBottomToolbarVisibilityChanged(boolean isVisible) {
     if (this instanceof ToolbarPhone && super.getMenuButtonCoordinator() != null) {
-      super.getMenuButtonCoordinator().setVisibility(isVisible ? View.GONE : View.VISIBLE);
+      super.getMenuButtonCoordinator().setVisibility(isVisible);
     }
   }
 

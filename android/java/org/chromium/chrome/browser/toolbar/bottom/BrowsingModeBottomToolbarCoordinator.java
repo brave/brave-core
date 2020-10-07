@@ -215,7 +215,6 @@ public class BrowsingModeBottomToolbarCoordinator {
         mBookmarkButton.setThemeColorProvider(themeColorProvider);
 
         mMenuButton.setAppMenuButtonHelper(menuButtonHelper);
-        mMenuButton.setThemeColorProvider(themeColorProvider);
     }
 
     private void setOverviewModeBehavior(OverviewModeBehavior overviewModeBehavior) {
@@ -287,7 +286,6 @@ public class BrowsingModeBottomToolbarCoordinator {
         mSearchAccelerator.destroy();
         mTabSwitcherButtonCoordinator.destroy();
         mBookmarkButton.destroy();
-        mMenuButton.destroy();
     }
 
     public void updateBookmarkButton(boolean isBookmarked, boolean editingAllowed) {

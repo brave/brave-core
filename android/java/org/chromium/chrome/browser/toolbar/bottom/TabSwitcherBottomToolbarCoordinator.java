@@ -83,7 +83,6 @@ public class TabSwitcherBottomToolbarCoordinator {
 
         assert menuButtonHelper != null;
         mMenuButton = root.findViewById(R.id.menu_button_wrapper);
-        mMenuButton.setThemeColorProvider(themeColorProvider);
         mMenuButton.setAppMenuButtonHelper(menuButtonHelper);
     }
 
@@ -107,6 +106,5 @@ public class TabSwitcherBottomToolbarCoordinator {
     public void destroy() {
         mMediator.destroy();
         mNewTabButton.destroy();
-        mMenuButton.destroy();
     }
 }
