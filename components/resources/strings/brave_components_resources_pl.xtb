@@ -676,4 +676,13 @@
 <translation id="4011828592358027165">Pierwszy raz w świecie kryptowalut?</translation>
 <translation id="3358050091139900813">Załóż portfel tutaj, aby rozpocząć</translation>
 <translation id="3105412115725259537">Bitcoin.com</translation>
+<translation id="5783793537552649286">Wyświetl obraz w tle</translation>
+<translation id="340102383764929340">Klucz przywracania nie jest już wspierany. Odwiedź <ph name="BEGIN_LINK_REGION_TEXT">&lt;a target="_blank" rel="noopener noreferrer" href="http://brave.com/faq#convert-old-keys"&gt;</ph>here<ph name="END_LINK_REGION_TEXT">&lt;/a&gt;</ph> to get a new key.</translation>
+<translation id="2852258589816753010">Token BAT nie jest obecnie obsługiwany w Twoim regionie. Informacje o aktualizacjach znajdziesz <ph name="BEGIN_LINK_REGION_TEXT">&lt;a target="_blank" rel="noopener noreferrer" href="$1"&gt;</ph>tutaj<ph name="END_LINK_REGION_TEXT">&lt;/a&gt;</ph>.</translation>
+<translation id="4188679602963314994">Do utworzenia konta Uphold potrzebujesz co najmniej 25 BAT. Spróbuj ponownie później. <ph name="BREAK">&lt;br/&gt;</ph>Jeśli masz już zweryfikowane konto Uphold, kontynuj, aby się zalogować.</translation>
+<translation id="1701701253000051237">Dodawaj, wypłacaj i zarządzaj funduszami w <ph name="BEGIN_BOLD">&lt;b&gt;</ph>Uphold<ph name="BEGIN_END">&lt;/b&gt;</ph>.</translation>
+<translation id="4208741993667364007">Twój portfel Brave jest napędzany przez <ph name="BEGIN_BOLD">&lt;b&gt;</ph>Uphold<ph name="BEGIN_END">&lt;/b&gt;</ph>.</translation>
+<translation id="9106875682287489763">Twoje <ph name="BEGIN_BOLD">&lt;b&gt;</ph>{{amount}} BAT<ph name="BEGIN_END">&lt;/b&gt;</ph> i inne dane dotyczące nagród zostaną trwale utracone, jeśli zresetujesz swój portfel. Aby zachować BAT, upewnij się, że Twój portfel został zweryfikowany za pośrednictwem Uphold.</translation>
+<translation id="4986087720311945758">Nasz serwis portfelu jest napędzany przez <ph name="BEGIN_BOLD">&lt;b&gt;</ph>Uphold<ph name="BEGIN_END">&lt;/b&gt;</ph></translation>
+<translation id="651649139059930379">Otrzymaj z powrotem 2% kryptowalut dzięki karcie Uphold</translation>
 </translationbundle>

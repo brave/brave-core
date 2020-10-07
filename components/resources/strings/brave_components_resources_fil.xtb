@@ -676,4 +676,13 @@
 <translation id="4011828592358027165">Bago sa crypto?</translation>
 <translation id="3358050091139900813">Kunin ang wallet dito upang magsimula</translation>
 <translation id="3105412115725259537">Bitcoin.com</translation>
+<translation id="5783793537552649286">Ipakita ang Larawan sa Background</translation>
+<translation id="340102383764929340">Hindi na sinusuportahan ang key sa pag-restore. Pakibisita ang <ph name="BEGIN_LINK_REGION_TEXT">&lt;a target="_blank" rel="noopener noreferrer" href="http://brave.com/faq#convert-old-keys"&gt;</ph>here<ph name="END_LINK_REGION_TEXT">&lt;/a&gt;</ph> para kumuha ng bagong key.</translation>
+<translation id="2852258589816753010">Hindi kasalukuyang sinusuportahan sa iyong rehiyon ang BAT. Mangyaring sumangguni <ph name="BEGIN_LINK_REGION_TEXT">&lt;a target="_blank" rel="noopener noreferrer" href="$1"&gt;</ph>dito<ph name="END_LINK_REGION_TEXT">&lt;/a&gt;</ph> para sa mga update.</translation>
+<translation id="4188679602963314994">Kailangang may minimum ka na 25 BAT para makagawa ng Uphold account. Pakisubukang muli sa ibang pagkakataon. <ph name="BREAK">&lt;br/&gt;</ph>Kung mayroon ka nang na-verify na Uphold account, magpatuloy sa pag-log in.</translation>
+<translation id="1701701253000051237">Magdagdag, mag-withdraw at mamahala ng mga pondo sa <ph name="BEGIN_BOLD">&lt;b&gt;</ph>Uphold<ph name="BEGIN_END">&lt;/b&gt;</ph>.</translation>
+<translation id="4208741993667364007">Ang iyong Brave wallet ay pinapagana ng <ph name="BEGIN_BOLD">&lt;b&gt;</ph>Uphold<ph name="BEGIN_END">&lt;/b&gt;</ph>.</translation>
+<translation id="9106875682287489763">Permanenteng mawawala ang <ph name="BEGIN_BOLD">&lt;b&gt;</ph>{{amount}} BATs<ph name="BEGIN_END">&lt;/b&gt;</ph> mo at iba pang Rewards data kung ire-reset mo ang wallet mo. Pakitiyak na na-verify mo ang iyong wallet sa Uphold para mapanatili mo ang BAT mo.</translation>
+<translation id="4986087720311945758">Ang aming serbisyong wallet ay ibinibigay ng <ph name="BEGIN_BOLD">&lt;b&gt;</ph>Uphold<ph name="BEGIN_END">&lt;/b&gt;</ph></translation>
+<translation id="651649139059930379">Makakuha ng 2% cryptoback gamit ang Uphold card</translation>
 </translationbundle>

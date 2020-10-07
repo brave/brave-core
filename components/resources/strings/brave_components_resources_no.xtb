@@ -640,4 +640,12 @@
 <translation id="4011828592358027165">Er krypto nytt for deg?</translation>
 <translation id="3358050091139900813">Få lommeboken her for å komme i gang</translation>
 <translation id="3105412115725259537">Bitcoin.com</translation>
+<translation id="5783793537552649286">Vis bakgrunnsbilde</translation>
+<translation id="340102383764929340">Gjenopprett-nøkkelen støttes ikke lenger. Vennligst besøk <ph name="BEGIN_LINK_REGION_TEXT">&lt;a target="_blank" rel="noopener noreferrer" href="http://brave.com/faq#convert-old-keys"&gt;</ph>here<ph name="END_LINK_REGION_TEXT">&lt;/a&gt;</ph> for å få en ny nøkkel.</translation>
+<translation id="2852258589816753010">BAT støttes for tiden ikke i din region. Se <ph name="BEGIN_LINK_REGION_TEXT">&lt;a target="_blank" rel="noopener noreferrer" href="$1"&gt;</ph>her<ph name="END_LINK_REGION_TEXT">&lt;/a&gt;</ph> for oppdateringer.</translation>
+<translation id="4188679602963314994">Du må ha minst 25 BAT for å opprette en Uphold-konto. Vennligst prøv igjen senere. <ph name="BREAK">&lt;br/&gt;</ph> Dersom du allerede har en verifisert Uphold-konto: Fortsett til innloggingen.</translation>
+<translation id="1701701253000051237">Legg til, gjør uttak og administrer midler på <ph name="BEGIN_BOLD">&lt;b&gt;</ph>Uphold<ph name="BEGIN_END">&lt;/b&gt;</ph>.</translation>
+<translation id="4208741993667364007">Din Brave-lommebok drives av <ph name="BEGIN_BOLD">&lt;b&gt;</ph>Uphold<ph name="BEGIN_END">&lt;/b&gt;</ph>.</translation>
+<translation id="4986087720311945758">Vår lommeboktjeneste leveres av <ph name="BEGIN_BOLD">&lt;b&gt;</ph>Uphold<ph name="BEGIN_END">&lt;/b&gt;</ph></translation>
+<translation id="651649139059930379">Få 2 % cryptoback med Uphold-kortet</translation>
 </translationbundle>

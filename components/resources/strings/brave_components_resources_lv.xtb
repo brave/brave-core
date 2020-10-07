@@ -676,4 +676,13 @@
 <translation id="4011828592358027165">Vēl nepazīstat kripto?</translation>
 <translation id="3358050091139900813">Lai sāktu, iegūstiet maku šeit</translation>
 <translation id="3105412115725259537">Bitcoin.com</translation>
+<translation id="5783793537552649286">Rādīt fona attēlu</translation>
+<translation id="340102383764929340">Ievadītā atkopšanas atslēga vairs netiek atbalstīta. Lūdzu, ienāciet <ph name="BEGIN_LINK_REGION_TEXT">&lt;a target="_blank" rel="noopener noreferrer" href="http://brave.com/faq#convert-old-keys"&gt;</ph>šeit<ph name="END_LINK_REGION_TEXT">&lt;/a&gt;</ph>, lai iegūtu jaunu atslēgu.</translation>
+<translation id="2852258589816753010">BAT pašlaik netiek atbalstīts jūsu reģionā. Jaunāko informāciju, lūdzu, skatīt <ph name="BEGIN_LINK_REGION_TEXT">&lt;a target="_blank" rel="noopener noreferrer" href="$1"&gt;</ph>here<ph name="END_LINK_REGION_TEXT">&lt;/a&gt;</ph>.</translation>
+<translation id="4188679602963314994">Lai izveidotu Uphold kontu, jums vajag vismaz 25 BAT. Lūdzu, mēģiniet vēlreiz vēlāk. <ph name="BREAK">&lt;br/&gt;</ph>Ja jums jau ir verificēts Uphold konts, turpiniet pieteikties.</translation>
+<translation id="1701701253000051237">Pievienojiet, izņemiet un pārvaldiet līdzekļus <ph name="BEGIN_BOLD">&lt;b&gt;</ph>Uphold<ph name="BEGIN_END">&lt;/b&gt;</ph>.</translation>
+<translation id="4208741993667364007">Jūsu Brave maka darbību nodrošina <ph name="BEGIN_BOLD">&lt;b&gt;</ph>Uphold<ph name="BEGIN_END">&lt;/b&gt;</ph>.</translation>
+<translation id="9106875682287489763">Ja atiestatīsiet maku, jūsu <ph name="BEGIN_BOLD">&lt;b&gt;</ph>{{amount}} BAT<ph name="BEGIN_END">&lt;/b&gt;</ph> un citi Rewards dati tiks neatgriezeniski zaudēti. Lūdzu, pārliecinieties, ka esat verificējis savu maku ar Uphold, lai jūs saglabātu savu BAT.</translation>
+<translation id="4986087720311945758">Mūsu maka pakalpojumu nodrošina <ph name="BEGIN_BOLD">&lt;b&gt;</ph>Uphold<ph name="BEGIN_END">&lt;/b&gt;</ph></translation>
+<translation id="651649139059930379">Atgūstiet 2 % kripto ar Uphold karti</translation>
 </translationbundle>

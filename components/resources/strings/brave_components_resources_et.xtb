@@ -676,4 +676,13 @@
 <translation id="4011828592358027165">Kas on vaja krüptoraha?</translation>
 <translation id="3358050091139900813">Alustamiseks hangi siit rahakott</translation>
 <translation id="3105412115725259537">Bitcoin.com</translation>
+<translation id="5783793537552649286">Näita taustapilti</translation>
+<translation id="340102383764929340">Sisestatud taastevõtit ei toetata enam. Uue võtme saamiseks külasta veebilehte <ph name="BEGIN_LINK_REGION_TEXT">&lt;a target="_blank" rel="noopener noreferrer" href="http://brave.com/faq#convert-old-keys"&gt;</ph>here<ph name="END_LINK_REGION_TEXT">&lt;/a&gt;</ph>.</translation>
+<translation id="2852258589816753010">BAT pole teie piirkonnas praegu saadaval. Uuenduste puhul vt <ph name="BEGIN_LINK_REGION_TEXT">&lt;a target="_blank" rel="noopener noreferrer" href="$1"&gt;</ph>here<ph name="END_LINK_REGION_TEXT">&lt;/a&gt;</ph>.</translation>
+<translation id="4188679602963314994">Upholdi konto loomiseks peab sul olema vähemalt 25 BATi. Proovi hiljem uuesti. <ph name="BREAK">&lt;br/&gt;</ph>Kui sul on juba kinnitatud Upholdi konto, jätka sisselogimisega.</translation>
+<translation id="1701701253000051237">Lisage, võtke välja ja kinnitage raha aadressil <ph name="BEGIN_BOLD">&lt;b&gt;</ph>Uphold<ph name="BEGIN_END">&lt;/b&gt;</ph>.</translation>
+<translation id="4208741993667364007">Brave’i rahakotti toetab <ph name="BEGIN_BOLD">&lt;b&gt;</ph>Uphold<ph name="BEGIN_END">&lt;/b&gt;</ph>.</translation>
+<translation id="9106875682287489763">Sinu <ph name="BEGIN_BOLD">&lt;b&gt;</ph>{{amount}} BATs<ph name="BEGIN_END">&lt;/b&gt;</ph> ja muud Rewards andmed lähevad rahakoti lähtestamisel jäädavalt kaduma. Veendu, et oled oma rahakoti Upholdiga kinnitanud, et saaksite oma BATi säilitada.</translation>
+<translation id="4986087720311945758">Meie rahakotiteenust pakub <ph name="BEGIN_BOLD">&lt;b&gt;</ph>Uphold<ph name="BEGIN_END">&lt;/b&gt;</ph></translation>
+<translation id="651649139059930379">Saa Upholdi kaardiga 2% krüptoraha tagasi</translation>
 </translationbundle>

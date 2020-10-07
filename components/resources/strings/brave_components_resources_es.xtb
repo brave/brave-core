@@ -676,4 +676,13 @@
 <translation id="4011828592358027165">¿Eres nuevo en las criptomonedas?</translation>
 <translation id="3358050091139900813">Consigue aquí la cartera para empezar</translation>
 <translation id="3105412115725259537">Bitcoin.com</translation>
+<translation id="5783793537552649286">Mostrar imagen de fondo</translation>
+<translation id="340102383764929340">La clave de restablecimiento introducida ya no se acepta. Visite <ph name="BEGIN_LINK_REGION_TEXT">&lt;a target="_blank" rel="noopener noreferrer" href="http://brave.com/faq#convert-old-keys"&gt;</ph>here<ph name="END_LINK_REGION_TEXT">&lt;/a&gt;</ph> para obtener una clave nueva.</translation>
+<translation id="2852258589816753010">BAT no está disponible actualmente en tu región. Consulta <ph name="BEGIN_LINK_REGION_TEXT">&lt;a target="_blank" rel="noopener noreferrer" href="$1"&gt;</ph>esto<ph name="END_LINK_REGION_TEXT">&lt;/a&gt;</ph> para ver las novedades.</translation>
+<translation id="4188679602963314994">Tiene que tener al menos 25 BAT para crear una cuenta en Uphold. Inténtelo de nuevo más tarde. <ph name="BREAK">&lt;br/&gt;</ph>Si ya tiene una cuenta verificada en Uphold, continúe para iniciar sesión.</translation>
+<translation id="1701701253000051237">Añadir, retirar y gestionar los fondos en <ph name="BEGIN_BOLD">&lt;b&gt;</ph>Uphold<ph name="BEGIN_END">&lt;/b&gt;</ph>.</translation>
+<translation id="4208741993667364007">Su monedero Brave cuenta con la tecnología de <ph name="BEGIN_BOLD">&lt;b&gt;</ph>Uphold<ph name="BEGIN_END">&lt;/b&gt;</ph>.</translation>
+<translation id="9106875682287489763">Tus <ph name="BEGIN_BOLD">&lt;b&gt;</ph>{{amount}} BATs<ph name="BEGIN_END">&lt;/b&gt;</ph> y otros datos de Brave Rewards se perderán para siempre si restableces tu monedero. Por favor, asegúrate de que has verificado tu monedero con Uphold para que puedas conservar tus BATs.</translation>
+<translation id="4986087720311945758">Nuestro servicio de monedero lo ofrece <ph name="BEGIN_BOLD">&lt;b&gt;</ph>Uphold<ph name="BEGIN_END">&lt;/b&gt;</ph></translation>
+<translation id="651649139059930379">Obtenga un 2 % de Cryptoback con la tarjeta Uphold</translation>
 </translationbundle>

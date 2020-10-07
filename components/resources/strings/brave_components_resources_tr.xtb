@@ -676,4 +676,13 @@
 <translation id="4011828592358027165">Kriptoya yeni misiniz?</translation>
 <translation id="3358050091139900813">Başlamak için cüzdanı buradan alın</translation>
 <translation id="3105412115725259537">Bitcoin.com</translation>
+<translation id="5783793537552649286">Arka Plan Resmini Göster</translation>
+<translation id="340102383764929340">Girilen geri alma anahtarı artık desteklenmiyor. Yeni bir anahtar almak için lütfen <ph name="BEGIN_LINK_REGION_TEXT">&lt;a target="_blank" rel="noopener noreferrer" href="http://brave.com/faq#convert-old-keys"&gt;</ph>burayı<ph name="END_LINK_REGION_TEXT">&lt;/a&gt;</ph> ziyaret edin.</translation>
+<translation id="2852258589816753010">BAT henüz bölgenizde desteklenmiyor. Güncellemeler için lüften buraya bakın: <ph name="BEGIN_LINK_REGION_TEXT">&lt;a target="_blank" rel="noopener noreferrer" href="$1"&gt;</ph>here<ph name="END_LINK_REGION_TEXT">&lt;/a&gt;</ph></translation>
+<translation id="4188679602963314994">Bir Uphold hesabı açabilmek için en az 25 BAT'ınızın olması gerekiyor. Lütfen daha sonra tekrar deneyin. <ph name="BREAK">&lt;br/&gt;</ph>Onaylanmış bir Uphold hesabınız zaten varsa, giriş yapın.</translation>
+<translation id="1701701253000051237"><ph name="BEGIN_BOLD">&lt;b&gt;</ph>Uphold<ph name="BEGIN_END">&lt;/b&gt;</ph>'da para ekleyin, çekin ve paralarınızı yönetin.</translation>
+<translation id="4208741993667364007">Brave cüzdanınız <ph name="BEGIN_BOLD">&lt;b&gt;</ph>Uphold<ph name="BEGIN_END">&lt;/b&gt;</ph> tarafından sağlanmaktadır.</translation>
+<translation id="9106875682287489763"><ph name="BEGIN_BOLD">&lt;b&gt;</ph>{{amount}} BATs<ph name="BEGIN_END">&lt;/b&gt;</ph> ve diğer Kazanç verileriniz, cüzdanınızı sıfırlarsanız, kalıcı olarak kaybedilecektir. BAT'inizi elinizde tutmak için Uphold'daki cüzdanınızın doğrulanmış olduğundan emin olun.</translation>
+<translation id="4986087720311945758">Cüzdan hizmetimiz <ph name="BEGIN_BOLD">&lt;b&gt;</ph>Uphold<ph name="BEGIN_END">&lt;/b&gt;</ph> tarafından sağlanmaktadır</translation>
+<translation id="651649139059930379">Uphold kart ile %2 cryptoback alın</translation>
 </translationbundle>

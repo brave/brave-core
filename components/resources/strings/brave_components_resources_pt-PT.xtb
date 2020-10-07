@@ -675,4 +675,13 @@
 <translation id="4011828592358027165">Novo nas criptomoedas?</translation>
 <translation id="3358050091139900813">Obtenha aqui a carteira para começar</translation>
 <translation id="3105412115725259537">Bitcoin.com</translation>
+<translation id="5783793537552649286">Mostrar Imagem de Fundo</translation>
+<translation id="340102383764929340">A chave de restauração inserida não é mais suportada.  Por favor, visite <ph name="BEGIN_LINK_REGION_TEXT">&lt;a target="_blank" rel="noopener noreferrer" href="http://brave.com/faq#convert-old-keys"&gt;</ph>here<ph name="END_LINK_REGION_TEXT">&lt;/a&gt;</ph> para obter uma nova chave.</translation>
+<translation id="2852258589816753010">Presentemente, o BAT não é suportado na sua região. Por favor, consulte <ph name="BEGIN_LINK_REGION_TEXT">&lt;a target="_blank" rel="noopener noreferrer" href="$1"&gt;</ph>here<ph name="END_LINK_REGION_TEXT">&lt;/a&gt;</ph> para atualizações.</translation>
+<translation id="4188679602963314994">Precisa no mínimo de 25 BAT para criar uma conta Uphold. Por favor, tente de novo mais tarde. <ph name="BREAK">&lt;br/&gt;</ph>caso já possua uma conta Uphold verificada, proceda para o login.</translation>
+<translation id="1701701253000051237">Adicione, retire e gerencie fundos no <ph name="BEGIN_BOLD">&lt;b&gt;</ph>Uphold<ph name="BEGIN_END">&lt;/b&gt;</ph>.</translation>
+<translation id="4208741993667364007">A sua Carteira Brave é possibilitada pelo <ph name="BEGIN_BOLD">&lt;b&gt;</ph>Uphold<ph name="BEGIN_END">&lt;/b&gt;</ph>.</translation>
+<translation id="9106875682287489763">Os seus <ph name="BEGIN_BOLD">&lt;b&gt;</ph>{{amount}} BATs<ph name="BEGIN_END">&lt;/b&gt;</ph> e outros dados de Recompensas perder-se-ão definitivamente caso proceda à redefinição da sua carteira (wallet), Por favor, certifique-se que procedeu à verificação da sua carteira com o Uphold para a manutenção do seu BAT.</translation>
+<translation id="4986087720311945758">O nosso serviço de carteira é fornecido por <ph name="BEGIN_BOLD">&lt;b&gt;</ph>Uphold<ph name="BEGIN_END">&lt;/b&gt;</ph></translation>
+<translation id="651649139059930379">Obtenha 2% de reembolso das criptomoedas com o  vartão Uphold</translation>
 </translationbundle>

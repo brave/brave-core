@@ -677,4 +677,13 @@ Povolte je návštěvou</translation>
 <translation id="4011828592358027165">Jste v kryptoměnách nováčkem?</translation>
 <translation id="3358050091139900813">Tady si opatřete peněženku a můžete začít</translation>
 <translation id="3105412115725259537">Bitcoin.com</translation>
+<translation id="5783793537552649286">Zobrazit pozadí</translation>
+<translation id="340102383764929340">Zadaný klíč pro obnovení již není podporován. Přejděte prosím <ph name="BEGIN_LINK_REGION_TEXT">&lt;a target="_blank" rel="noopener noreferrer" href="http://brave.com/faq#convert-old-keys"&gt;</ph>sem<ph name="END_LINK_REGION_TEXT">&lt;/a&gt;</ph> a získejte nový klíč.</translation>
+<translation id="2852258589816753010">BAT není ve vašem regionu podporovaný. Pro aktualizace se prosím odkazujte zde: <ph name="BEGIN_LINK_REGION_TEXT">&lt;a target="_blank" rel="noopener noreferrer" href="$1"&gt;</ph>here<ph name="END_LINK_REGION_TEXT">&lt;/a&gt;</ph></translation>
+<translation id="4188679602963314994">Pokud chcete vytvořit účet služby Uphold, musíte mít alespoň 25 BAT. Zkuste to prosím znovu později. <ph name="BREAK">&lt;br/&gt;</ph>Pokud již máte ověřený účet služby Uphold, pokračujte přihlášením.</translation>
+<translation id="1701701253000051237">Přidávejte, vybírejte a spravujte finance na <ph name="BEGIN_BOLD">&lt;b&gt;</ph>Uphold<ph name="BEGIN_END">&lt;/b&gt;</ph>.</translation>
+<translation id="4208741993667364007">Vaši Brave peněženku poskytuje <ph name="BEGIN_BOLD">&lt;b&gt;</ph>Uphold<ph name="BEGIN_END">&lt;/b&gt;</ph>.</translation>
+<translation id="9106875682287489763">Vaše <ph name="BEGIN_BOLD">&lt;b&gt;</ph>{{amount}} BATs<ph name="BEGIN_END">&lt;/b&gt;</ph> a data ostatních Odměn se nenávratně ztratí, pokud si peněženku resetujete. Zkontrolujte si, že jste peněženku ověřili pomocí Uphold, abyste si mohli BAT ponechat.</translation>
+<translation id="4986087720311945758">Naši službu peněženky poskytuje <ph name="BEGIN_BOLD">&lt;b&gt;</ph>Uphold<ph name="BEGIN_END">&lt;/b&gt;</ph></translation>
+<translation id="651649139059930379">Získejte zpět 2 % kryptoměn při používání karty Uphold</translation>
 </translationbundle>

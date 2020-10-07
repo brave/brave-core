@@ -676,4 +676,13 @@
 <translation id="4011828592358027165">新接觸加密貨幣？</translation>
 <translation id="3358050091139900813">在此取得錢包以開始</translation>
 <translation id="3105412115725259537">Bitcoin.com</translation>
+<translation id="5783793537552649286">顯示背景圖片</translation>
+<translation id="340102383764929340">所輸入的復原金鑰已不再受支援。請造訪 <ph name="BEGIN_LINK_REGION_TEXT">&lt;a target="_blank" rel="noopener noreferrer" href="http://brave.com/faq#convert-old-keys"&gt;</ph>here<ph name="END_LINK_REGION_TEXT">&lt;/a&gt;</ph> 來取得新的金鑰。</translation>
+<translation id="2852258589816753010">您的所在地區目前不支援 BAT。請參閱 <ph name="BEGIN_LINK_REGION_TEXT">&lt;a target="_blank" rel="noopener noreferrer" href="$1"&gt;</ph>here<ph name="END_LINK_REGION_TEXT">&lt;/a&gt;</ph> 來查詢更新。</translation>
+<translation id="4188679602963314994">您至少需有 25 BAT 才能建立 Uphold 帳戶。請稍後再試。<ph name="BREAK">&lt;br/&gt;</ph>如果您已有經驗證的 Uphold 帳戶，請繼續登入。</translation>
+<translation id="1701701253000051237">在 <ph name="BEGIN_BOLD">&lt;b&gt;</ph>Uphold<ph name="BEGIN_END">&lt;/b&gt;</ph> 新增、提款與管理款項。</translation>
+<translation id="4208741993667364007">您的 Brave 錢包威力本源 <ph name="BEGIN_BOLD">&lt;b&gt;</ph>Uphold<ph name="BEGIN_END">&lt;/b&gt;</ph>。</translation>
+<translation id="9106875682287489763">您 <ph name="BEGIN_BOLD">&lt;b&gt;</ph>{{amount}} BATs<ph name="BEGIN_END">&lt;/b&gt;</ph> 和其它 Rewards 資訊將會永久遺失，如果您重置您的錢包的話。請確認您已向 Uphold 認證您的錢包，這樣您才能保留您的 BAT。</translation>
+<translation id="4986087720311945758">我們的錢包服務是由 <ph name="BEGIN_BOLD">&lt;b&gt;</ph>Uphold<ph name="BEGIN_END">&lt;/b&gt;</ph> 提供</translation>
+<translation id="651649139059930379">以本  Uphold 卡取得 2% 的 cryptoback</translation>
 </translationbundle>

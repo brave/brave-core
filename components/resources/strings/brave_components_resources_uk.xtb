@@ -676,4 +676,13 @@
 <translation id="4011828592358027165">Новачок у криптовалютах?</translation>
 <translation id="3358050091139900813">Отримайте гаманець тут, щоб розпочати</translation>
 <translation id="3105412115725259537">Bitcoin.com</translation>
+<translation id="5783793537552649286">Показати фонове зображення</translation>
+<translation id="340102383764929340">Введений ключ відновлення більше не підтримується. Будь ласка, завітайте на <ph name="BEGIN_LINK_REGION_TEXT">&lt;a target="_blank" rel="noopener noreferrer" href="http://brave.com/faq#convert-old-keys"&gt;</ph>here<ph name="END_LINK_REGION_TEXT">&lt;/a&gt;</ph> для отримання нового ключа.</translation>
+<translation id="2852258589816753010">BAT на даний момент не підтримується у вашому регіоні. Будь ласка, зверніться <ph name="BEGIN_LINK_REGION_TEXT">&lt;a target="_blank" rel="noopener noreferrer" href="$1"&gt;</ph>here<ph name="END_LINK_REGION_TEXT">&lt;/a&gt;</ph> для оновлень.</translation>
+<translation id="4188679602963314994">Для створення рахунку Uphold вам потрібно мати принаймні 25 BAT. Будь ласка, повторіть спробу пізніше. <ph name="BREAK">&lt;br/&gt;</ph>Якщо ви вже маєте верифікований рахунок Uphold, виконайте вхід у систему.</translation>
+<translation id="1701701253000051237">Додавайте й знімайте кошти та керуйте ними на <ph name="BEGIN_BOLD">&lt;b&gt;</ph>Uphold<ph name="BEGIN_END">&lt;/b&gt;</ph>.</translation>
+<translation id="4208741993667364007">Ваш гаманець Brave обслуговується <ph name="BEGIN_BOLD">&lt;b&gt;</ph>Uphold<ph name="BEGIN_END">&lt;/b&gt;</ph>.</translation>
+<translation id="9106875682287489763">Ваші <ph name="BEGIN_BOLD">&lt;b&gt;</ph>{{amount}} BATs<ph name="BEGIN_END">&lt;/b&gt;</ph> та інші дані нагород будуть назавжди втрачені, якщо ви скинете свій гаманець. Будь ласка, переконайтесь, що підтвердили свій гаманець в Uphold, щоб мати змогу зберегти свої BAT.</translation>
+<translation id="4986087720311945758">Наші послуги гаманця надаються <ph name="BEGIN_BOLD">&lt;b&gt;</ph>Uphold<ph name="BEGIN_END">&lt;/b&gt;</ph></translation>
+<translation id="651649139059930379">Отримайте 2% кешбек криптовалюти з карткою Uphold</translation>
 </translationbundle>

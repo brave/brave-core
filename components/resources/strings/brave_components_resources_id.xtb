@@ -676,4 +676,13 @@
 <translation id="4011828592358027165">Baru mengenal kripto?</translation>
 <translation id="3358050091139900813">Dapatkan dompet di sini untuk memulai</translation>
 <translation id="3105412115725259537">Bitcoin.com</translation>
+<translation id="5783793537552649286">Tampilkan Gambar Latar Belakang</translation>
+<translation id="340102383764929340">Kunci pemulihan yang dimasukkan tidak lagi didukung. Silakan kunjungi <ph name="BEGIN_LINK_REGION_TEXT">&lt;a target="_blank" rel="noopener noreferrer" href="http://brave.com/faq#convert-old-keys"&gt;</ph>here<ph name="END_LINK_REGION_TEXT">&lt;/a&gt;</ph> untuk memperoleh kunci baru.</translation>
+<translation id="2852258589816753010">Saat ini BAT tidak didukung di wilayah Anda. Silakan merujuk <ph name="BEGIN_LINK_REGION_TEXT">&lt;a target="_blank" rel="noopener noreferrer" href="$1"&gt;</ph>ke sini<ph name="END_LINK_REGION_TEXT">&lt;/a&gt;</ph> untuk info terkini.</translation>
+<translation id="4188679602963314994">Anda perlu minimal 25 BAT untuk membuat dompet Uphold. Silakan coba kembali nanti. <ph name="BREAK">&lt;br/&gt;</ph>Jika Anda sudah memiliki akun Uphold yang terverifikasi, lanjutkan ke masuk akun.</translation>
+<translation id="1701701253000051237">Tambahkan, tarik dan kelola dana di <ph name="BEGIN_BOLD">&lt;b&gt;</ph>Uphold<ph name="BEGIN_END">&lt;/b&gt;</ph>.</translation>
+<translation id="4208741993667364007">Dompet Brave Anda didayai oleh <ph name="BEGIN_BOLD">&lt;b&gt;</ph>Uphold<ph name="BEGIN_END">&lt;/b&gt;</ph>.</translation>
+<translation id="9106875682287489763"><ph name="BEGIN_BOLD">&lt;b&gt;</ph>{{amount}} BATs<ph name="BEGIN_END">&lt;/b&gt;</ph> dan data Reward Anda lainnya akan hilang permanen jika mengatur ulang dompet. Harap pastikan Anda sudah memverifikasi dompet dengan Uphold agar BAT Anda tersimpan.</translation>
+<translation id="4986087720311945758">Layanan dompet kami disediakan oleh <ph name="BEGIN_BOLD">&lt;b&gt;</ph>Uphold<ph name="BEGIN_END">&lt;/b&gt;</ph></translation>
+<translation id="651649139059930379">Dapatkan 2% cryptoback dengan kartu Uphold</translation>
 </translationbundle>

@@ -676,4 +676,13 @@
 <translation id="4011828592358027165">Vous découvrez les cryptomonnaies?</translation>
 <translation id="3358050091139900813">Obtenez un portefeuille ici pour commencer</translation>
 <translation id="3105412115725259537">Bitcoin.com</translation>
+<translation id="5783793537552649286">Afficher l'image de fond</translation>
+<translation id="340102383764929340">La clé de restauration entrée n'est plus supportée. Veuillez visiter le <ph name="BEGIN_LINK_REGION_TEXT">&lt;a target="_blank" rel="noopener noreferrer" href="http://brave.com/faq#convert-old-keys"&gt;</ph>here<ph name="END_LINK_REGION_TEXT">&lt;/a&gt;</ph> pour obtenir une nouvelle clé.</translation>
+<translation id="2852258589816753010">BAT n'est pas actuellement pris en charge dans votre région. Veuillez vous référer à <ph name="BEGIN_LINK_REGION_TEXT">&lt;a target="_blank" rel="noopener noreferrer" href="$1"&gt;</ph>here<ph name="END_LINK_REGION_TEXT">&lt;/a&gt;</ph> afin d'obtenir des mises à jour.</translation>
+<translation id="4188679602963314994">Vous devez avoir au moins 25 BAT pour créer un compte Uphold. Veuillez essayer plus tard. <ph name="BREAK">&lt;br/&gt;</ph> Si vous avec déjà un compte Uphold vérifié, continuez pour vous connecter.</translation>
+<translation id="1701701253000051237">Ajouter, retirer et gérer des fonds à <ph name="BEGIN_BOLD">&lt;b&gt;</ph>Uphold<ph name="BEGIN_END">&lt;/b&gt;</ph>.</translation>
+<translation id="4208741993667364007">Votre portefeuille Brave est alimenté par <ph name="BEGIN_BOLD">&lt;b&gt;</ph>Uphold<ph name="BEGIN_END">&lt;/b&gt;</ph>.</translation>
+<translation id="9106875682287489763">Votre <ph name="BEGIN_BOLD">&lt;b&gt;</ph>{{amount}} BAT<ph name="BEGIN_END">&lt;/b&gt;</ph> et autres données de récompenses seront perdus de manière permanente si vous réinitialisez votre portefeuille. Veuillez vous assurer d'avoir vérifié votre portefeuille avec Uphold afin de conserver votre BAT.</translation>
+<translation id="4986087720311945758">Notre service portefeuille est assuré par <ph name="BEGIN_BOLD">&lt;b&gt;</ph>Uphold<ph name="BEGIN_END">&lt;/b&gt;</ph></translation>
+<translation id="651649139059930379">Recevez un crédit de 2 % en cryptomonnaie avec la carte Uphold</translation>
 </translationbundle>

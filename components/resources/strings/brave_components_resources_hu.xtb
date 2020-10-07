@@ -676,4 +676,13 @@
 <translation id="4011828592358027165">Új a kriptovalutában?</translation>
 <translation id="3358050091139900813">A kezdéshez szerezzen be itt egy pénztárcát</translation>
 <translation id="3105412115725259537">Bitcoin.com</translation>
+<translation id="5783793537552649286">Háttérkép megjelenítése</translation>
+<translation id="340102383764929340">A beírt helyreállítási kulcs többé nem támogatott. Látogass el a <ph name="BEGIN_LINK_REGION_TEXT">&lt;a target="_blank" rel="noopener noreferrer" href="http://brave.com/faq#convert-old-keys"&gt;</ph>here<ph name="END_LINK_REGION_TEXT">&lt;/a&gt;</ph> oldalra, és szerezz egy új kulcsot.</translation>
+<translation id="2852258589816753010">A BAT jelenleg nem támogatott az ön régiójában. Kérjük hivatkozzon <ph name="BEGIN_LINK_REGION_TEXT">&lt;a target="_blank" rel="noopener noreferrer" href="$1"&gt;</ph>here<ph name="END_LINK_REGION_TEXT">&lt;/a&gt;</ph> a frissítésekhez.</translation>
+<translation id="4188679602963314994">Uphold fiókhoz minimum 25 BAT szükséges. Próbáld újra később. <ph name="BREAK">&lt;br/&gt;</ph>Ha már van egy ellenőrzött Uphold fiókod, folytasd a bejelentkezést.</translation>
+<translation id="1701701253000051237">Tegyél hozzá, vegyél ki és rendezd pénzedet:  <ph name="BEGIN_BOLD">&lt;b&gt;</ph>Uphold<ph name="BEGIN_END">&lt;/b&gt;</ph>.</translation>
+<translation id="4208741993667364007">Brave pénztárcádat az <ph name="BEGIN_BOLD">&lt;b&gt;</ph>Uphold<ph name="BEGIN_END">&lt;/b&gt;</ph> biztosítja.</translation>
+<translation id="9106875682287489763">Az ön <ph name="BEGIN_BOLD">&lt;b&gt;</ph>{{amount}} BAT-je<ph name="BEGIN_END">&lt;/b&gt;</ph> és egyéb Rewards adatai végleg elvesznek, ha újraállítja pénztárcáját. Győződjön meg róla, hogy ellenőrizte pénztárcáját az Upholddal, hogy megtarthassa a BAT-okat.</translation>
+<translation id="4986087720311945758">Pénztárca-szolgáltatásunkat az <ph name="BEGIN_BOLD">&lt;b&gt;</ph>Uphold<ph name="BEGIN_END">&lt;/b&gt;</ph> biztosítja</translation>
+<translation id="651649139059930379">Szerezz 2% kripto-visszafizetést az Uphold kártyával</translation>
 </translationbundle>

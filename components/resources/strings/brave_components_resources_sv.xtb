@@ -676,4 +676,13 @@
 <translation id="4011828592358027165">Ny på krypto?</translation>
 <translation id="3358050091139900813">Skaffa plånboken här för att komma igång</translation>
 <translation id="3105412115725259537">Bitcoin.com</translation>
+<translation id="5783793537552649286">Visa bakgrundsbild</translation>
+<translation id="340102383764929340">Återställningsnyckeln som angavs stöds inte längre. Besök <ph name="BEGIN_LINK_REGION_TEXT">&lt;a target="_blank" rel="noopener noreferrer" href="http://brave.com/faq#convert-old-keys"&gt;</ph>här<ph name="END_LINK_REGION_TEXT">&lt;/a&gt;</ph> för att få en ny nyckel.</translation>
+<translation id="2852258589816753010">BAT stöds för närvarande inte i din region. Uppdateringar hittar du <ph name="BEGIN_LINK_REGION_TEXT">&lt;a target="_blank" rel="noopener noreferrer" href="$1"&gt;</ph>här<ph name="END_LINK_REGION_TEXT">&lt;/a&gt;</ph>.</translation>
+<translation id="4188679602963314994">Du måste ha minst 25 BAT för att skapa ett Uphold-konto. Vänligen försök igen senare. <ph name="BREAK">&lt;br/&gt;</ph>Om du redan har ett verifierat Uphold-konto, fortsätt till inloggningen.</translation>
+<translation id="1701701253000051237">Lägg till, ta ut och hantera medel på <ph name="BEGIN_BOLD">&lt;b&gt;</ph>Uphold<ph name="BEGIN_END">&lt;/b&gt;</ph></translation>
+<translation id="4208741993667364007">Din Brave-plånbok drivs av <ph name="BEGIN_BOLD">&lt;b&gt;</ph>Uphold<ph name="BEGIN_END">&lt;/b&gt;</ph>.</translation>
+<translation id="9106875682287489763">Dina <ph name="BEGIN_BOLD">&lt;b&gt;</ph>{{amount}} BATs<ph name="BEGIN_END">&lt;/b&gt;</ph> och andra Rewards-data kommer att gå förlorade permanent om du nollställer plånboken. Se till att din plånbok är verifierad med Uphold så att du behåller dina BAT.</translation>
+<translation id="4986087720311945758">Vår plånbokstjänst tillhandahålls av <ph name="BEGIN_BOLD">&lt;b&gt;</ph>Uphold<ph name="BEGIN_END">&lt;/b&gt;</ph></translation>
+<translation id="651649139059930379">Få 2 % cryptoback med Uphold-kortet</translation>
 </translationbundle>

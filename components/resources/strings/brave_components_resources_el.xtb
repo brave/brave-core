@@ -676,4 +676,13 @@
 <translation id="4011828592358027165">Νέοι στο κρυπτονόμσμα;</translation>
 <translation id="3358050091139900813">Πάρτε το πορτοφόλι εδώ για να ξεκινήσετε</translation>
 <translation id="3105412115725259537">Bitcoin.com</translation>
+<translation id="5783793537552649286">Εμφάνιση Εικόνας Φόντου</translation>
+<translation id="340102383764929340">Το κλειδί επαναφοράς που έχει εισαχθεί δεν υποστηρίζεται πλέον. Παρακαλώ επισκεφθείτε <ph name="BEGIN_LINK_REGION_TEXT">&lt;a target="_blank" rel="noopener noreferrer" href="http://brave.com/faq#convert-old-keys"&gt;</ph>here<ph name="END_LINK_REGION_TEXT">&lt;/a&gt;</ph> για να λάβετε ένα νέο κλειδί.</translation>
+<translation id="2852258589816753010">Το BAT δεν υποστηρίζεται αυτήν τη στιγμή στην περιοχή σας. Παρακαλούμε ανατρέξτε σε <ph name="BEGIN_LINK_REGION_TEXT">&lt;a target="_blank" rel="noopener noreferrer" href="$1"&gt;</ph>here<ph name="END_LINK_REGION_TEXT">&lt;/a&gt;</ph> για ενημερώσεις.</translation>
+<translation id="4188679602963314994">Θα πρέπει να έχετε τουλάχιστον 25 BAT για να δημιουργήσετε έναν λογαριασμό Uphold. Παρακαλώ δοκιμάστε ξανά αργότερα. <ph name="BREAK">&lt;br/&gt;</ph>Αν έχετε ήδη εναν επικυρωμένο λογαριασμό Uphold, πραγματοποιήστε σύνδεση.</translation>
+<translation id="1701701253000051237">Προσθήκη, ανάληψη και διαχείριση χρημάτων στο <ph name="BEGIN_BOLD">&lt;b&gt;</ph>Uphold<ph name="BEGIN_END">&lt;/b&gt;</ph>.</translation>
+<translation id="4208741993667364007">Το Brave πορτοφόλι σας τροφοδοτείται από <ph name="BEGIN_BOLD">&lt;b&gt;</ph>Uphold<ph name="BEGIN_END">&lt;/b&gt;</ph>.</translation>
+<translation id="9106875682287489763">Τα <ph name="BEGIN_BOLD">&lt;b&gt;</ph>{{amount}} BATs<ph name="BEGIN_END">&lt;/b&gt;</ph> και άλλα δεδομένα Ανταμοιβών θα χαθούν μόνιμα εάν επαναφέρετε το πορτοφόλι σας. Βεβαιωθείτε ότι έχετε επαληθεύσει το πορτοφόλι σας στο Uphold, ώστε να μπορείτε να διατηρήσετε το BAT σας.</translation>
+<translation id="4986087720311945758">Η υπηρεσία πορτοφολιού μας παρέχεται από <ph name="BEGIN_BOLD">&lt;b&gt;</ph>Uphold<ph name="BEGIN_END">&lt;/b&gt;</ph></translation>
+<translation id="651649139059930379">Λάβετε 2% επιστροφή crypto με την κάρτα Uphold</translation>
 </translationbundle>

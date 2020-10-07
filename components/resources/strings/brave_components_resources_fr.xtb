@@ -676,4 +676,13 @@
 <translation id="4011828592358027165">Vous débutez en crypto ?</translation>
 <translation id="3358050091139900813">Obtenez le porte-monnaie ici pour démarrer</translation>
 <translation id="3105412115725259537">Bitcoin.com</translation>
+<translation id="5783793537552649286">Afficher l'image d'arrière-plan</translation>
+<translation id="340102383764929340">La clé de restauration saisie n'est plus prise en charge. Veuillez vous rendre sur <ph name="BEGIN_LINK_REGION_TEXT">&lt;a target="_blank" rel="noopener noreferrer" href="http://brave.com/faq#convert-old-keys"&gt;</ph>here<ph name="END_LINK_REGION_TEXT">&lt;/a&gt;</ph> pour obtenir une nouvelle clé.</translation>
+<translation id="2852258589816753010">BAT n'est pas pris en charge dans votre région actuellement. Veuillez consulter <ph name="BEGIN_LINK_REGION_TEXT">&lt;a target="_blank" rel="noopener noreferrer" href="$1"&gt;</ph>cette page<ph name="END_LINK_REGION_TEXT">&lt;/a&gt;</ph> pour obtenir des mises à jour.</translation>
+<translation id="4188679602963314994">Vous devez disposer d'un minimum de 25 BAT pour créer un compte Uphold. Veuillez réessayer plus tard. <ph name="BREAK">&lt;br/&gt;</ph>Si vous avez déjà un compte Uphold vérifié, poursuivez en vous connectant.</translation>
+<translation id="1701701253000051237">Ajoutez, retirez et gérez des fonds sur <ph name="BEGIN_BOLD">&lt;b&gt;</ph>Uphold<ph name="BEGIN_END">&lt;/b&gt;</ph>.</translation>
+<translation id="4208741993667364007">Votre portefeuille Brave est motorisé par <ph name="BEGIN_BOLD">&lt;b&gt;</ph>Uphold<ph name="BEGIN_END">&lt;/b&gt;</ph>.</translation>
+<translation id="9106875682287489763">Votre <ph name="BEGIN_BOLD">&lt;b&gt;</ph>{{amount}} BATs<ph name="BEGIN_END">&lt;/b&gt;</ph> et d'autres données relatives à Rewards seront définitivement perdues si vous réinitialisez votre portefeuille. Veuillez vous assurer que vous avez bien vérifié votre portefeuille auprès de Uphold afin de pouvoir conserver vos BAT.</translation>
+<translation id="4986087720311945758">Notre service de portefeuille est assuré par <ph name="BEGIN_BOLD">&lt;b&gt;</ph>Uphold<ph name="BEGIN_END">&lt;/b&gt;</ph></translation>
+<translation id="651649139059930379">Obtenez 2 % de cryptoback avec la carte Uphold</translation>
 </translationbundle>

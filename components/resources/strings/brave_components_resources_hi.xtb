@@ -677,4 +677,13 @@
 <translation id="4011828592358027165">क्रिप्टो में नए हैं?</translation>
 <translation id="3358050091139900813">शुरू करने के लिए यहाँ से वॉलेट प्राप्त करें</translation>
 <translation id="3105412115725259537">Bitcoin.com</translation>
+<translation id="5783793537552649286">बैकग्राउंड इमेज दिखाएँ</translation>
+<translation id="340102383764929340">डाली गई रीस्टोर की ज़्यादा सपोर्ट नहीं करती है। कृपया नई की पाने के लिए<ph name="BEGIN_LINK_REGION_TEXT">&lt;a target="_blank" rel="noopener noreferrer" href="http://brave.com/faq#convert-old-keys"&gt; </ph>here<ph name="END_LINK_REGION_TEXT">&lt;/a&gt;</ph> पर जाएं;</translation>
+<translation id="2852258589816753010">वर्तमान में आपके क्षेत्र में BAT समर्थित नहीं है। अपडेट के लिए कृपया <ph name="BEGIN_LINK_REGION_TEXT">&lt;a target="_blank" rel="noopener noreferrer" href="$1"&gt;</ph>here<ph name="END_LINK_REGION_TEXT">&lt;/a&gt;</ph> को देखें।</translation>
+<translation id="4188679602963314994">Uphold खाता बनाने के लिए आपके पास न्यूनतम 25 BAT होना आवश्यक है। बाद में फिर से कोशिश करें। <ph name="BREAK">&lt;br/&gt;</ph> यदि आपके पास पहले से सत्यापित Uphold खाता है, तो लॉग इन करना जारी रखें</translation>
+<translation id="1701701253000051237"><ph name="BEGIN_BOLD">&lt;b&gt;</ph>Uphold<ph name="BEGIN_END">&lt;/b&gt;</ph> से धन राशि जोड़े, निकासी करें या प्रबंधित करें।</translation>
+<translation id="4208741993667364007">आपका Brave वॉलेट <ph name="BEGIN_BOLD">&lt;b&gt;</ph>Uphold<ph name="BEGIN_END">&lt;/b&gt;</ph> द्वारा संचालित है।</translation>
+<translation id="9106875682287489763">यदि आप अपना वॉलेट रिसेट करते हैं तो आपके <ph name="BEGIN_BOLD">&lt;b&gt;</ph>{{amount}} BATs<ph name="BEGIN_END">&lt;/b&gt;</ph> और अन्य रिवार्ड डेटा स्थायी रूप से हट जाएँगे। कृपया सुनिश्चित करें कि आपने अपने वॉलेट को Uphold के साथ सत्यापित किया है ताकि आप अपना BAT रख सकें।</translation>
+<translation id="4986087720311945758">हमारी वॉलेट सेवा <ph name="BEGIN_BOLD">&lt;b&gt;</ph>Uphold<ph name="BEGIN_END">&lt;/b&gt;</ph> द्वारा प्रदान की जाती है</translation>
+<translation id="651649139059930379">Uphold कार्ड के साथ 2% क्रिप्टोबैक प्राप्त करें</translation>
 </translationbundle>

@@ -676,4 +676,13 @@
 <translation id="4011828592358027165">Začínate s krypto?</translation>
 <translation id="3358050091139900813">Tu získajte peňaženku, aby ste mohli začať</translation>
 <translation id="3105412115725259537">Bitcoin.com</translation>
+<translation id="5783793537552649286">Zobraziť obrázok na pozadí</translation>
+<translation id="340102383764929340">Zadaný obnovovací kľúč už nie je podporovaný. Na získanie nového kľúču, navštívte <ph name="BEGIN_LINK_REGION_TEXT">&lt;a target="_blank" rel="noopener noreferrer" href="http://brave.com/faq#convert-old-keys"&gt;</ph>here<ph name="END_LINK_REGION_TEXT">&lt;/a&gt;</ph>.</translation>
+<translation id="2852258589816753010">Vo vašom regióne BAT nie je momentne podporovaný. Pozrite si <ph name="BEGIN_LINK_REGION_TEXT">&lt;a target="_blank" rel="noopener noreferrer" href="$1"&gt;</ph>here<ph name="END_LINK_REGION_TEXT">&lt;/a&gt;</ph> pre aktualizácie.</translation>
+<translation id="4188679602963314994">Na vytvorenie účtu Uphold potrebujete minimálne 25 tokenov BAT. Skúste neskôr prosím. <ph name="BREAK">&lt;br/&gt;</ph>Ak už máte overený účet Uphold, pokračujte v prihlásení.</translation>
+<translation id="1701701253000051237">Pridávať, vyberať a spravovať finančné prostriedky na <ph name="BEGIN_BOLD">&lt;b&gt;</ph>Uphold<ph name="BEGIN_END">&lt;/b&gt;</ph>.</translation>
+<translation id="4208741993667364007">Vašú peňaženku Brave podporuje <ph name="BEGIN_BOLD">&lt;b&gt;</ph>Uphold<ph name="BEGIN_END">&lt;/b&gt;</ph>.</translation>
+<translation id="9106875682287489763">Vaše <ph name="BEGIN_BOLD">&lt;b&gt;</ph>{{amount}} BATs<ph name="BEGIN_END">&lt;/b&gt;</ph> a iné dáta Odmien budú navždy stratené ak reštartujete svoju peňaženku. Uistite sa, že ste si overili svoju peňaženku prostredníctvom Upholdu, aby ste si mohli ponechať svoje BAT.</translation>
+<translation id="4986087720311945758">Našu službu peňaženky poskytuje <ph name="BEGIN_BOLD">&lt;b&gt;</ph>Uphold<ph name="BEGIN_END">&lt;/b&gt;</ph></translation>
+<translation id="651649139059930379">Získajte 2% späť z krypto s  kartou Uphold.</translation>
 </translationbundle>

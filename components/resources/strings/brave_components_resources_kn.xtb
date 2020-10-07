@@ -676,4 +676,13 @@
 <translation id="4011828592358027165">ಕ್ರಿಪ್ಟೋಗೆ ಹೊಸಬರೇ?</translation>
 <translation id="3358050091139900813">ಆರಂಭಿಸಲು ವ್ಯಾಲೆಟ್ ಪಡೆಯಿರಿ</translation>
 <translation id="3105412115725259537">Bitcoin.com</translation>
+<translation id="5783793537552649286">ಹಿನ್ನೆಲೆ ಚಿತ್ರವನ್ನು ತೋರಿಸಿ</translation>
+<translation id="340102383764929340">ನಮೂದಿಸಿದ ಮರುಹೊಂದಿಸುವಿಕೆ ಕೀ ಇನ್ನು ಮುಂದೆ ಬೆಂಬಲಿಸುವುದಿಲ್ಲ. ಹೊಸ ಕೀ ಪಡೆಯಲು ದಯವಿಟ್ಟು <ph name="BEGIN_LINK_REGION_TEXT">&lt;a target="_blank" rel="noopener noreferrer" href="http://brave.com/faq#convert-old-keys"&gt;</ph>ಇಲ್ಲಿಗೆ<ph name="END_LINK_REGION_TEXT">&lt;/a&gt;</ph> ಭೇಟಿ ನೀಡಿ.</translation>
+<translation id="2852258589816753010">ನಿಮ್ಮ ಪ್ರದೇಶದಲ್ಲಿ ಪ್ರಸ್ತುತ BAT ಬೆಂಬಲಿಸುವುದಿಲ್ಲ. ನವೀಕರಣಗಳಿಗಾಗಿ ದಯವಿಟ್ಟು <ph name="BEGIN_LINK_REGION_TEXT">&lt;a target="_blank" rel="noopener noreferrer" href="$1"&gt;</ph>here<ph name="END_LINK_REGION_TEXT">&lt;/a&gt;</ph> ಅನ್ನು ಉಲ್ಲೇಖಿಸಿ.</translation>
+<translation id="4188679602963314994">ಅಪ್‌ಹೋಲ್ಡ್ ಖಾತೆಯನ್ನು ರಚಿಸಲು ನೀವು ಕನಿಷ್ಠ 25 BAT ಹೊಂದಿರಬೇಕಾಗುತ್ತದೆ. ದಯವಿಟ್ಟು ನಂತರ ಮತ್ತೊಮ್ಮೆ ಪ್ರಯತ್ನಿಸಿ. <ph name="BREAK">&lt;br/&gt;</ph>ನೀವು ಈಗಾಗಲೇ ಪರಿಶೀಲಿಸಲ್ಪಟ್ಟ ಅಪ್‌ಹೋಲ್ಡ್ ಖಾತೆಯನ್ನು ಹೊಂದಿದ್ದರೆ, ಲಾಗಿನ್ ಮಾಡಲು ಮುಂದುವರಿಯಿರಿ.</translation>
+<translation id="1701701253000051237"><ph name="BEGIN_BOLD">&lt;b&gt;</ph>Uphold<ph name="BEGIN_END">&lt;/b&gt;</ph> ರಲ್ಲಿ ಹಣವನ್ನು ಸೇರಿಸಿ, ಹಿಂತೆಗೆದುಕೊಳ್ಳಿ ಮತ್ತು ನಿರ್ವಹಿಸಿ.</translation>
+<translation id="4208741993667364007">ನಿಮ್ಮ Brave ವ್ಯಾಲೆಟ್ ಅನ್ನು <ph name="BEGIN_BOLD">&lt;b&gt;</ph>Uphold<ph name="BEGIN_END">&lt;/b&gt;</ph> ನಿಂದ ನಡೆಸಲ್ಪಡುತ್ತಿದೆ.</translation>
+<translation id="9106875682287489763">ನಿಮ್ಮ <ph name="BEGIN_BOLD">&lt;b&gt;</ph>{{amount}} BATs<ph name="BEGIN_END">&lt;/b&gt;</ph> ಮತ್ತು ನಿಮ್ಮ ವ್ಯಾಲೆಟ್ ಅನ್ನು ನೀವು ಮರುಹೊಂದಿಸಿದರೆ ಇತರ ರಿವಾರ್ಡ್‌ಗಳ ಡೇಟಾ ಶಾಶ್ವತವಾಗಿ ಕಳೆದುಹೋಗುತ್ತದೆ. ದಯವಿಟ್ಟು ನಿಮ್ಮ ವ್ಯಾಲೆಟ್ ಅನ್ನು ಅಪ್‌ಹೋಲ್ಡ್‌ಗಳೊಂದಿಗೆ ಪರಿಶೀಲಿಸಿದ್ದೀರಾ ಎಂದು ಖಚಿತಪಡಿಸಿಕೊಳ್ಳಿ ಇದರಿಂದ ನಿಮ್ಮ BAT ಅನ್ನು ನೀವು ಇರಿಸಿಕೊಳ್ಳಬಹುದು.</translation>
+<translation id="4986087720311945758">ನಮ್ಮ ವ್ಯಾಲೆಟ್ ಸೇವೆಯನ್ನು <ph name="BEGIN_BOLD">&lt;b&gt;</ph>Uphold<ph name="BEGIN_END">&lt;/b&gt;</ph> ನಿಂದ ಒದಗಿಸಲಾಗಿದೆ</translation>
+<translation id="651649139059930379">ಇದರೊಂದಿಗೆ 2% ಕ್ರಿಪ್ಟೋಬ್ಯಾಕ್ ಪಡೆಯಿರಿ ಅಪ್ಹೋಲ್ಡ್ ಕಾರ್ಡ್</translation>
 </translationbundle>
