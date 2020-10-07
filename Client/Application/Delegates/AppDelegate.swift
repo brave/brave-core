@@ -392,6 +392,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UIViewControllerRestorati
 
         if let profile = self.profile {
             profile.reopen()
+            setUpWebServer(profile)
         }
         
         self.receivedURLs = nil
