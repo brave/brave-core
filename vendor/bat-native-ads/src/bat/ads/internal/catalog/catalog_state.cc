@@ -44,7 +44,7 @@ Result CatalogState::FromJson(
 
   new_version = document["version"].GetUint64();
   if (new_version != 4) {
-    return SUCCESS;
+    return FAILED;
   }
 
   new_ping = document["ping"].GetUint64();
