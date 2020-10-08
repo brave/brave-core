@@ -6,6 +6,7 @@
 #include "base/strings/utf_string_conversions.h"
 #include "brave/browser/profiles/profile_util.h"
 #include "brave/browser/tor/onion_location_tab_helper.h"
+#include "brave/browser/tor/tor_profile_service.h"
 #include "brave/browser/ui/browser_commands.h"
 #include "brave/browser/ui/views/brave_actions/brave_actions_container.h"
 #include "brave/browser/ui/views/location_bar/brave_location_bar_view.h"
@@ -164,4 +165,31 @@ IN_PROC_BROWSER_TEST_F(OnionLocationNavigationThrottleBrowserTest,
   web_contents =
       browser_list->get(1)->tab_strip_model()->GetActiveWebContents();
   EXPECT_EQ(web_contents->GetURL(), GURL(kTestOnionURL));
+}
+
+IN_PROC_BROWSER_TEST_F(OnionLocationNavigationThrottleBrowserTest,
+                       TorDisabled) {
+  // Disable tor
+  tor::TorProfileService::SetTorDisabled(true);
+
+  // OnionLocationHeader_
+  GURL url = test_server()->GetURL("/onion");
+  ui_test_utils::NavigateToURL(browser(), url);
+  content::WebContents* web_contents =
+      browser()->tab_strip_model()->GetActiveWebContents();
+  tor::OnionLocationTabHelper* helper =
+      tor::OnionLocationTabHelper::FromWebContents(web_contents);
+  EXPECT_FALSE(helper->should_show_icon());
+  EXPECT_TRUE(helper->onion_location().is_empty());
+
+  // Onion Domain
+  ui_test_utils::NavigateToURL(browser(), GURL(kTestOnionURL));
+  BrowserList* browser_list = BrowserList::GetInstance();
+  EXPECT_EQ(1U, browser_list->size());
+
+  // AutoOnionLocationPref
+  browser()->profile()->GetPrefs()->SetBoolean(tor::prefs::kAutoOnionLocation,
+                                               true);
+  ui_test_utils::NavigateToURL(browser(), url);
+  EXPECT_EQ(1U, browser_list->size());
 }
