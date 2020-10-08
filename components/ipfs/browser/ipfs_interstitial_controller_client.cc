@@ -45,7 +45,7 @@ void IPFSInterstitialControllerClient::Proceed() {
   DCHECK(prefs);
   prefs->SetBoolean(kIPFSAutoFallbackToGateway, true);
 
-  GURL url = IpfsUtils::ToPublicGatewayURL(request_url_);
+  GURL url = ToPublicGatewayURL(request_url_);
   DCHECK(!url.is_empty());
 
   content::OpenURLParams params(url, content::Referrer(),

@@ -91,7 +91,7 @@ IpfsNavigationThrottle::~IpfsNavigationThrottle() {
 content::NavigationThrottle::ThrottleCheckResult
 IpfsNavigationThrottle::WillStartRequest() {
   GURL url = navigation_handle()->GetURL();
-  if (IpfsUtils::IsDefaultGatewayURL(url) || !IpfsUtils::IsIPFSURL(url)) {
+  if (IsDefaultGatewayURL(url) || !IsIPFSURL(url)) {
     return content::NavigationThrottle::PROCEED;
   }
 
@@ -171,7 +171,7 @@ void IpfsNavigationThrottle::LoadPublicGatewayURL() {
   if (!web_contents)
     return;
 
-  const GURL url = IpfsUtils::ToPublicGatewayURL(navigation_handle()->GetURL());
+  const GURL url = ToPublicGatewayURL(navigation_handle()->GetURL());
   if (url.is_empty())
     return;
 
