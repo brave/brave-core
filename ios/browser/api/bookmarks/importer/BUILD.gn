@@ -6,29 +6,29 @@
 import("//build/config/ios/rules.gni")
 import("//ios/build/config.gni")
 
-source_set("sync") {
+source_set("importer") {
   configs += [ "//build/config/compiler:enable_arc" ]
 
   sources = [
-    "brave_sync_api.h",
-    "brave_sync_api.mm",
-    "brave_sync_worker.h",
-    "brave_sync_worker.cc"
+    "brave_bookmarks_importer.h",
+    "brave_bookmarks_importer.mm",
+    "bookmark_html_reader.h",
+    "bookmark_html_reader.cc",
+    "imported_bookmark_entry.h",
+    "imported_bookmark_entry.cc",
+    "favicon_reencode.h",
+    "favicon_reencode.cc",
   ]
 
   deps = [
     "//base",
-    "//brave/components/brave_sync",
-    "//components/sync/driver",
-    "//components/sync_device_info",
-    "//ios/chrome/browser",
-    "//ios/chrome/browser/browser_state",
-    "//ios/chrome/browser/sync",
+    "//components/favicon_base",
     "//ios/web/public/thread",
+    "//net",
+    "//url",
   ]
 
   frameworks = [
     "Foundation.framework",
-    "UIKit.framework"
   ]
 }

@@ -8,7 +8,6 @@ import("//ios/build/config.gni")
 
 source_set("app") {
   configs += [ "//build/config/compiler:enable_arc" ]
-  configs -= [ "//build/config/gcc:symbol_visibility_hidden" ]
 
   sources = [
     "brave_core_main.h",

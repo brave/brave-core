@@ -18,6 +18,8 @@ source_set("browser") {
 
   deps = [
     "api/bookmarks",
+    "api/bookmarks/importer",
+    "api/bookmarks/exporter",
     "api/sync",
     "metrics",
     "//base",
