@@ -4,6 +4,7 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 #include "base/path_service.h"
+#include "base/strings/string_number_conversions.h"
 #include "base/strings/stringprintf.h"
 #include "base/task/post_task.h"
 #include "base/test/thread_test_helper.h"
@@ -52,10 +53,6 @@ class BraveWebGLFarblingBrowserTest : public InProcessBrowserTest {
     embedded_test_server()->ServeFilesFromDirectory(test_data_dir);
 
     ASSERT_TRUE(embedded_test_server()->Start());
-
-    top_level_page_url_ = embedded_test_server()->GetURL("a.com", "/");
-    get_parameter_url_ =
-        embedded_test_server()->GetURL("a.com", "/getParameter.html");
   }
 
   void TearDown() override {
@@ -63,25 +60,26 @@ class BraveWebGLFarblingBrowserTest : public InProcessBrowserTest {
     content_client_.reset();
   }
 
-  const GURL& get_parameter_url() { return get_parameter_url_; }
-
   HostContentSettingsMap* content_settings() {
     return HostContentSettingsMapFactory::GetForProfile(browser()->profile());
   }
 
-  void AllowFingerprinting() {
+  void AllowFingerprinting(std::string domain) {
     brave_shields::SetFingerprintingControlType(
-        content_settings(), ControlType::ALLOW, top_level_page_url_);
+        content_settings(), ControlType::ALLOW,
+        embedded_test_server()->GetURL(domain, "/"));
   }
 
-  void BlockFingerprinting() {
+  void BlockFingerprinting(std::string domain) {
     brave_shields::SetFingerprintingControlType(
-        content_settings(), ControlType::BLOCK, top_level_page_url_);
+        content_settings(), ControlType::BLOCK,
+        embedded_test_server()->GetURL(domain, "/"));
   }
 
-  void SetFingerprintingDefault() {
+  void SetFingerprintingDefault(std::string domain) {
     brave_shields::SetFingerprintingControlType(
-        content_settings(), ControlType::DEFAULT, top_level_page_url_);
+        content_settings(), ControlType::DEFAULT,
+        embedded_test_server()->GetURL(domain, "/"));
   }
 
   template <typename T>
@@ -100,41 +98,93 @@ class BraveWebGLFarblingBrowserTest : public InProcessBrowserTest {
     return WaitForLoadStop(contents());
   }
 
+  std::vector<int64_t> SplitStringAsInts(std::string raw_values) {
+    std::vector<int64_t> results;
+    for (const auto& cur : base::SplitStringPiece(
+             raw_values, base::kWhitespaceASCII, base::TRIM_WHITESPACE,
+             base::SPLIT_WANT_NONEMPTY)) {
+      int64_t value;
+      base::StringToInt64(cur, &value);
+      results.push_back(value);
+    }
+    return results;
+  }
+
+  std::string DiffsAsString(std::vector<int64_t> real_values,
+                            std::vector<int64_t> farbled_values) {
+    std::string diffs;
+    for (uint64_t i = 0; i < real_values.size(); i++) {
+      diffs = diffs + base::NumberToString(real_values[i] - farbled_values[i]);
+    }
+    return diffs;
+  }
+
  private:
-  GURL top_level_page_url_;
-  GURL get_parameter_url_;
   std::unique_ptr<ChromeContentClient> content_client_;
   std::unique_ptr<BraveContentBrowserClient> browser_content_client_;
 };
 
-IN_PROC_BROWSER_TEST_F(BraveWebGLFarblingBrowserTest, FarbleGetParameter) {
+IN_PROC_BROWSER_TEST_F(BraveWebGLFarblingBrowserTest, FarbleGetParameterWebGL) {
+  std::string domain = "a.com";
+  GURL url = embedded_test_server()->GetURL(domain, "/getParameter.html");
   const std::string kExpectedRandomString = "UKlSpUqV,TJEix48e";
   // Farbling level: maximum
   // WebGL getParameter of restricted values: pseudo-random data with no
   // relation to original data
-  BlockFingerprinting();
-  NavigateToURLUntilLoadStop(get_parameter_url());
+  BlockFingerprinting(domain);
+  NavigateToURLUntilLoadStop(url);
   EXPECT_EQ(ExecScriptGetStr(kTitleScript, contents()), kExpectedRandomString);
   // second time, same as the first (tests that results are consistent for the
   // lifetime of a session, and that the PRNG properly resets itself at the
   // beginning of each calculation)
-  NavigateToURLUntilLoadStop(get_parameter_url());
+  NavigateToURLUntilLoadStop(url);
   EXPECT_EQ(ExecScriptGetStr(kTitleScript, contents()), kExpectedRandomString);
 
   std::string actual;
   // Farbling level: balanced (default)
   // WebGL getParameter of restricted values: original data
-  SetFingerprintingDefault();
-  NavigateToURLUntilLoadStop(get_parameter_url());
+  SetFingerprintingDefault(domain);
+  NavigateToURLUntilLoadStop(url);
   actual = ExecScriptGetStr(kTitleScript, contents());
 
   // Farbling level: off
   // WebGL getParameter of restricted values: original data
-  AllowFingerprinting();
-  NavigateToURLUntilLoadStop(get_parameter_url());
+  AllowFingerprinting(domain);
+  NavigateToURLUntilLoadStop(url);
   // Since this value depends on the underlying hardware, we just test that the
   // results for "off" are the same as the results for "balanced", and that
   // they're different than the results for "maximum".
   EXPECT_EQ(ExecScriptGetStr(kTitleScript, contents()), actual);
   EXPECT_NE(kExpectedRandomString, actual);
+}
+
+IN_PROC_BROWSER_TEST_F(BraveWebGLFarblingBrowserTest,
+                       FarbleGetParameterWebGL2) {
+  const std::map<std::string, std::string> tests = {{"a.com", "101111101011"},
+                                                    {"b.com", "111011111011"},
+                                                    {"c.com", "101111000110"}};
+  for (const auto& pair : tests) {
+    std::string domain = pair.first;
+    std::string expected_diff = pair.second;
+    GURL url =
+        embedded_test_server()->GetURL(pair.first, "/webgl2-parameters.html");
+
+    // Farbling level: off
+    // Get the actual WebGL2 parameter values.
+    AllowFingerprinting(domain);
+    NavigateToURLUntilLoadStop(url);
+    std::vector<int64_t> real_values =
+        SplitStringAsInts(ExecScriptGetStr(kTitleScript, contents()));
+    ASSERT_EQ(real_values.size(), 12UL);
+
+    // Farbling level: default
+    // WebGL2 parameter values will be farbled based on session+domain keys,
+    // so we get the farbled values and look at the differences.
+    SetFingerprintingDefault(domain);
+    NavigateToURLUntilLoadStop(url);
+    std::vector<int64_t> farbled_values =
+        SplitStringAsInts(ExecScriptGetStr(kTitleScript, contents()));
+    ASSERT_EQ(farbled_values.size(), 12UL);
+    ASSERT_EQ(DiffsAsString(real_values, farbled_values), expected_diff);
+  }
 }
