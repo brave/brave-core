@@ -57,6 +57,10 @@ bool SubdivisionTargetingFrequencyCap::DoesRespectCap(
   const std::string subdivision_targeting_code =
       ads_->get_subdivision_targeting()->GetAdsSubdivisionTargetingCode();
 
+  if (subdivision_targeting_code.empty()) {
+    return false;
+  }
+
   return DoesAdSupportSubdivisionTargetingCode(ad, subdivision_targeting_code);
 }
 
