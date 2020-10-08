@@ -1,8 +1,8 @@
 diff --git a/chrome/android/chrome_java_sources.gni b/chrome/android/chrome_java_sources.gni
-index 65fa9615d45d7b88bff488ea7812dcaad8032f6d..250dd262477a180c3de40b1961676fbb4844c7d3 100644
+index 9caba09c98899c4e6b1889d4ce7d76320f7cb81a..a76d0af46bce46f69f78c9431bea46a6b5feeab4 100644
 --- a/chrome/android/chrome_java_sources.gni
 +++ b/chrome/android/chrome_java_sources.gni
-@@ -1695,3 +1695,4 @@ chrome_java_sources = [
+@@ -1702,3 +1702,4 @@ chrome_java_sources = [
    "java/src/org/chromium/chrome/browser/webauth/HandlerResponseCallback.java",
    "java/src/org/chromium/chrome/browser/webshare/ShareServiceImplementationFactory.java",
  ]

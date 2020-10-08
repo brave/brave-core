@@ -1,5 +1,5 @@
 diff --git a/components/vector_icons/vector_icons.gni b/components/vector_icons/vector_icons.gni
-index d068c55a04ac027af5c3c3c9be8e13df4df5f09a..47609044402cde99c4beceb8a97c234bd11be2f9 100644
+index 0bff996946f6d1bd82fdee1751986a73b9779529..26fd3ae4ca37496a81f53299232b23402b25553e 100644
 --- a/components/vector_icons/vector_icons.gni
 +++ b/components/vector_icons/vector_icons.gni
 @@ -42,6 +42,8 @@ template("aggregate_vector_icons2") {
