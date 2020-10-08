@@ -11,13 +11,14 @@ import * as Styled from './logo-style'
 
 interface Props {
   data: NewTab.BrandedWallpaperLogo
+  onClickLogo: () => void
 }
 
-function Logo ({ data }: Props) {
+function Logo ({ data, onClickLogo }: Props) {
   return (
     <>
       <Styled.Image src={data.image} alt={data.alt} />
-      <Styled.Anchor href={data.destinationUrl} title={data.alt}>
+      <Styled.Anchor title={data.alt} onClick={onClickLogo}>
         <Styled.Indicator><OpenNewIcon /></Styled.Indicator>
       </Styled.Anchor>
     </>

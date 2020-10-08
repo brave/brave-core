@@ -192,6 +192,22 @@ void ViewCounterService::RegisterPageView() {
   }
 }
 
+void ViewCounterService::BrandedWallpaperLogoClicked(base::Value data) {
+  if (data.is_none())
+    return
+
+  // Get various ids.
+  LOG(ERROR) << ": creative instance id: "
+             << *data.FindStringKey(kCreativeInstanceIDKey);
+  LOG(ERROR) << ": creative set id: " << *data.FindStringKey(kCreativeSetIDKey);
+  LOG(ERROR) << ": campaign id: " << *data.FindStringKey(kCampaignIDKey);
+  LOG(ERROR) << ": advertiser id: " << *data.FindStringKey(kAdvertiserIDKey);
+  LOG(ERROR) << ": destination url: "
+             << *data.FindStringPath("logo.destinationUrl");
+
+  // TODO: Ping click confirmation to ads service.
+}
+
 bool ViewCounterService::ShouldShowBrandedWallpaper() const {
   return IsBrandedWallpaperActive() && model_.ShouldShowBrandedWallpaper();
 }

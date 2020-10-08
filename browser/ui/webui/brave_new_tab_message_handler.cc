@@ -230,6 +230,11 @@ void BraveNewTabMessageHandler::RegisterMessages() {
       &BraveNewTabMessageHandler::HandleRegisterNewTabPageView,
       base::Unretained(this)));
   web_ui()->RegisterMessageCallback(
+    "brandedWallpaperLogoClicked",
+    base::BindRepeating(
+      &BraveNewTabMessageHandler::HandleBrandedWallpaperLogoClicked,
+      base::Unretained(this)));
+  web_ui()->RegisterMessageCallback(
     "getBrandedWallpaperData",
     base::BindRepeating(
       &BraveNewTabMessageHandler::HandleGetBrandedWallpaperData,
@@ -433,6 +438,19 @@ void BraveNewTabMessageHandler::HandleRegisterNewTabPageView(
   // Decrement original value only if there's actual branded content
   if (auto* service = ViewCounterServiceFactory::GetForProfile(profile_))
     service->RegisterPageView();
+}
+
+void BraveNewTabMessageHandler::HandleBrandedWallpaperLogoClicked(
+    const base::ListValue* args) {
+  AllowJavascript();
+  if (args->GetSize() != 1) {
+    LOG(ERROR) << "Invalid input";
+    return;
+  }
+
+  if (auto* service = ViewCounterServiceFactory::GetForProfile(profile_)) {
+    service->BrandedWallpaperLogoClicked(args->GetList()[0].Clone());
+  }
 }
 
 void BraveNewTabMessageHandler::HandleGetBrandedWallpaperData(

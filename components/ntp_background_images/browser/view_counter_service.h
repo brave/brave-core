@@ -49,6 +49,8 @@ class ViewCounterService : public KeyedService,
   // opted-in or data is available.
   void RegisterPageView();
 
+  void BrandedWallpaperLogoClicked(base::Value data);
+
   base::Value GetCurrentWallpaperForDisplay() const;
   base::Value GetCurrentWallpaper() const;
   std::vector<TopSite> GetTopSitesVectorForWebUI() const;

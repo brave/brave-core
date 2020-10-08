@@ -10,3 +10,7 @@ export function getBrandedWallpaper (): Promise<undefined | NewTab.BrandedWallpa
 export function registerViewCount (): Promise<void> {
   return window.cr.sendWithPromise<void>('registerNewTabPageView')
 }
+
+export function brandedWallpaperLogoClicked(data: NewTab.BrandedWallpaper | undefined) {
+  chrome.send('brandedWallpaperLogoClicked', [ data ])
+}
