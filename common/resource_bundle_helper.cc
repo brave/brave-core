@@ -10,7 +10,6 @@
 #include "base/command_line.h"
 #include "base/path_service.h"
 #include "chrome/common/chrome_paths.h"
-#include "services/service_manager/embedder/switches.h"
 #include "ui/base/resource/resource_bundle.h"
 
 #if !defined(OS_IOS)
@@ -96,7 +95,7 @@ bool SubprocessNeedsResourceBundle() {
   return
 #if defined(OS_POSIX) && !defined(OS_MAC)
       // The zygote process opens the resources for the renderers.
-      process_type == service_manager::switches::kZygoteProcess ||
+      process_type == switches::kZygoteProcess ||
 #endif  // defined(OS_POSIX) && !defined(OS_MAC)
 #if defined(OS_MAC)
       // Mac needs them too for scrollbar related images and for sandbox
