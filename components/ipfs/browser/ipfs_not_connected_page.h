@@ -23,6 +23,11 @@ class SecurityInterstitialControllerClient;
 
 namespace ipfs {
 
+// IPFSNotConnectedPage is the interstitial page which will be shown when the
+// browser failed to access IPFS contents through the local node due to no
+// connected peers or it fails to start the daemon during page load. A proceed
+// button is provided in the page to turn on the setting for automatically
+// fallback to the public gateway in these cases.
 class IPFSNotConnectedPage
     : public security_interstitials::SecurityInterstitialPage {
  public:

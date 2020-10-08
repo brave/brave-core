@@ -45,10 +45,9 @@ const GURL& GetIPFSURL() {
 }
 
 const GURL& GetIPNSURL() {
-  static const GURL
-      ipns_url(
-          "http://localhost:8080/ipns/tr.wikipedia-on-ipfs.org/wiki/"
-          "Anasayfa.html");  // NOLINT
+  static const GURL ipns_url(
+      "http://localhost:8080/ipns/tr.wikipedia-on-ipfs.org/wiki/"
+      "Anasayfa.html");  // NOLINT
   return ipns_url;
 }
 

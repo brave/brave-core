@@ -95,7 +95,8 @@ IpfsNavigationThrottle::WillStartRequest() {
     return content::NavigationThrottle::PROCEED;
   }
 
-  bool is_local_mode = pref_service_->FindPreference(kIPFSResolveMethod) &&
+  bool is_local_mode =
+      pref_service_->FindPreference(kIPFSResolveMethod) &&
       pref_service_->GetInteger(kIPFSResolveMethod) ==
           static_cast<int>(ipfs::IPFSResolveMethodTypes::IPFS_LOCAL);
 
@@ -170,8 +171,7 @@ void IpfsNavigationThrottle::LoadPublicGatewayURL() {
   if (!web_contents)
     return;
 
-  const GURL url = IpfsUtils::ToPublicGatewayURL(
-      navigation_handle()->GetURL());
+  const GURL url = IpfsUtils::ToPublicGatewayURL(navigation_handle()->GetURL());
   if (url.is_empty())
     return;
 

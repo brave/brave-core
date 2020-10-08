@@ -46,7 +46,7 @@ GURL IpfsUtils::ToPublicGatewayURL(const GURL& url) {
   DCHECK(IsIPFSScheme(url) || IsIPFSURL(url));
   GURL new_url;
 
-  // For ipfs/ipfs schemes, use TranslateIPFSURI directly.
+  // For ipfs/ipns schemes, use TranslateIPFSURI directly.
   if (IsIPFSScheme(url) && TranslateIPFSURI(url, &new_url, false)) {
     return new_url;
   }

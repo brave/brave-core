@@ -31,7 +31,7 @@
       Hide Advanced
     </message>
     <message name="IDS_IPFS_NOT_CONNECTED_EXPLANATION" desc="The text of the IPFS not connected interstitial that will be displayed when the user presses the 'Advanced' button for additional information.">
-      We cannot connect to the requested content using the local IPFS node at the moment because the local node doesn't seem to start or there are no connected peers available at the moment. By proceeding we will automatically fallback to the default public gateway in the future when we cannot connect to IPFS contents using the local IPFS node, this could be turned off later in settings.
+      We cannot connect to the requested content using the local IPFS node because the local node didn't start or because there are no connected peers available at the moment. By proceeding, we will automatically fallback to the default public gateway in the future when we cannot connect to IPFS content using the local IPFS node. This can be turned off later in settings.
     </message>
   </if>
 </grit-part>
