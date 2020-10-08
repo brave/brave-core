@@ -9,6 +9,7 @@ import android.content.Context;
 import android.util.AttributeSet;
 import android.view.View;
 
+import org.chromium.chrome.R;
 import org.chromium.chrome.browser.toolbar.NewTabButton;
 import org.chromium.chrome.browser.toolbar.bottom.BottomToolbarConfiguration;
 import org.chromium.chrome.browser.toolbar.bottom.BottomToolbarVariationManager;
@@ -25,6 +26,7 @@ public class BraveTabSwitcherModeTTPhone extends TabSwitcherModeTTPhone {
 
     public BraveTabSwitcherModeTTPhone(Context context, AttributeSet attrs) {
         super(context, attrs);
+        mMenuButton = findViewById(R.id.menu_button_wrapper);
     }
 
     protected void updateNewTabButtonVisibility() {
