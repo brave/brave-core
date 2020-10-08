@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/flags/android/chrome_feature_list.cc b/chrome/browser/flags/android/chrome_feature_list.cc
-index 45429c5ff6d3cc95543109b7707242481670b59b..213b7978d352fb4080b4b15c12f8cd82d7c04e97 100644
+index 08dcb6405f5dc717fc59f28a0a9c24fd7092336c..a304556de0bbceaf3eae78c52e26232bfba1af82 100644
 --- a/chrome/browser/flags/android/chrome_feature_list.cc
 +++ b/chrome/browser/flags/android/chrome_feature_list.cc
 @@ -266,6 +266,7 @@ const base::Feature* kFeaturesExposedToJava[] = {

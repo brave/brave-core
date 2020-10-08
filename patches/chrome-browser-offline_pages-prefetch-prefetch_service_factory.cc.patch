@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/offline_pages/prefetch/prefetch_service_factory.cc b/chrome/browser/offline_pages/prefetch/prefetch_service_factory.cc
-index 8f6d95dda58140306405948ba124b8ad3fc95620..9e91d9a86ec3e5d59e8a1c7a833ede2f81aebdee 100644
+index d2c8ad6ca350d7ac7eaceb8a0b71d8fa551740ec..f25aebb0450e625cd5c8b482400e5c45b5a69556 100644
 --- a/chrome/browser/offline_pages/prefetch/prefetch_service_factory.cc
 +++ b/chrome/browser/offline_pages/prefetch/prefetch_service_factory.cc
 @@ -51,6 +51,7 @@ namespace {

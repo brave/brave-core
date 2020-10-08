@@ -1,8 +1,8 @@
 diff --git a/chrome/utility/services.cc b/chrome/utility/services.cc
-index a1e8b1f17864e009e92d19944a7352e9a72af138..1eb196a840cf1a228ee9508958547c91b721383f 100644
+index 8fd970b5b092212288a1a45e0f739f231b89610c..a61344b90a0c38b65a726b34ab040a9dd9da20af 100644
 --- a/chrome/utility/services.cc
 +++ b/chrome/utility/services.cc
-@@ -324,6 +324,7 @@ mojo::ServiceFactory* GetMainThreadServiceFactory() {
+@@ -325,6 +325,7 @@ mojo::ServiceFactory* GetMainThreadServiceFactory() {
      RunAssistantAudioDecoder,
  #endif
  #endif

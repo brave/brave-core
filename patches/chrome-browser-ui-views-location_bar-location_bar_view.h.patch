@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/ui/views/location_bar/location_bar_view.h b/chrome/browser/ui/views/location_bar/location_bar_view.h
-index 2da858b874e505c380a2fb09a1b8cf4b1619a61f..63e626d051c1a6207a7eb18e3d4bde274af45239 100644
+index 8471c31543ae1de888975623f8935bf507141ea8..8a073c38f7ae6a1a32905a247951d888091369f8 100644
 --- a/chrome/browser/ui/views/location_bar/location_bar_view.h
 +++ b/chrome/browser/ui/views/location_bar/location_bar_view.h
-@@ -107,6 +107,7 @@ class LocationBarView : public LocationBar,
+@@ -105,6 +105,7 @@ class LocationBarView : public LocationBar,
    int GetBorderRadius() const;
  
    // Initializes the LocationBarView.
@@ -10,7 +10,7 @@ index 2da858b874e505c380a2fb09a1b8cf4b1619a61f..63e626d051c1a6207a7eb18e3d4bde27
    void Init();
  
    // True if this instance has been initialized by calling Init, which can only
-@@ -162,6 +163,7 @@ class LocationBarView : public LocationBar,
+@@ -160,6 +161,7 @@ class LocationBarView : public LocationBar,
  
    // Updates the controller, and, if |contents| is non-null, restores saved
    // state that the tab holds.
@@ -18,7 +18,7 @@ index 2da858b874e505c380a2fb09a1b8cf4b1619a61f..63e626d051c1a6207a7eb18e3d4bde27
    void Update(content::WebContents* contents);
  
    // Clears the location bar's state for |contents|.
-@@ -232,6 +234,7 @@ class LocationBarView : public LocationBar,
+@@ -227,6 +229,7 @@ class LocationBarView : public LocationBar,
        security_state::SecurityLevel security_level) const override;
    ui::ImageModel GetLocationIcon(LocationIconView::Delegate::IconFetchedCallback
                                       on_icon_fetched) const override;
