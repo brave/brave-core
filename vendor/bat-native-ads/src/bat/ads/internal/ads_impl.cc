@@ -1443,7 +1443,7 @@ TransactionList AdsImpl::GetTransactions(
 }
 
 TransactionList AdsImpl::GetUnredeemedTransactions() {
-  auto count = confirmations_->get_unblinded_payment_tokens()->Count();
+  const size_t count = confirmations_->get_unblinded_payment_tokens()->Count();
   if (count == 0) {
     // There are no outstanding unblinded payment tokens to redeem
     return {};
@@ -1451,11 +1451,17 @@ TransactionList AdsImpl::GetUnredeemedTransactions() {
 
   // Unredeemed transactions are always at the end of the transaction history
   const TransactionList transactions = confirmations_->get_transactions();
+  if (transactions.size() < count) {
+    // There are fewer transactions than unblinded payment tokens which is
+    // likely due to manually editing transactions in confirmations.json
+    NOTREACHED();
+    return transactions;
+  }
 
-  const TransactionList filtered_transactions(transactions.end() - count,
+  const TransactionList tail_transactions(transactions.end() - count,
       transactions.end());
 
-  return filtered_transactions;
+  return tail_transactions;
 }
 
 WalletInfo AdsImpl::get_wallet() const {
