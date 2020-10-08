@@ -13,8 +13,8 @@ source_set("brave_ipfs_unit_tests") {
     sources = [
       "//brave/components/ipfs/browser/ipfs_json_parser_unittest.cc",
       "//brave/components/ipfs/browser/ipfs_navigation_throttle_unittest.cc",
-      "//brave/components/ipfs/browser/translate_ipfs_uri_unittest.cc",
       "//brave/components/ipfs/common/ipfs_utils_unittest.cc",
+      "//brave/components/ipfs/common/translate_ipfs_uri_unittest.cc",
     ]
 
     deps = [
@@ -40,6 +40,7 @@ source_set("brave_ipfs_browser_tests") {
   if (ipfs_enabled) {
     sources = [
       "//brave/components/ipfs/browser/brave_ipfs_client_updater_browsertest.cc",
+      "//brave/components/ipfs/browser/ipfs_navigation_throttle_browsertest.cc",
       "//brave/components/ipfs/browser/ipfs_service_browsertest.cc",
     ]
 
@@ -52,6 +53,7 @@ source_set("brave_ipfs_browser_tests") {
       "//chrome/browser",
       "//chrome/test:test_support",
       "//chrome/test:test_support_ui",
+      "//components/security_interstitials/content:security_interstitial_page",
       "//content/test:test_support",
       "//net:test_support",
     ]

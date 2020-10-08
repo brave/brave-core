@@ -6,10 +6,13 @@ source_set("common") {
     "ipfs_utils.h",
     "pref_names.cc",
     "pref_names.h",
+    "translate_ipfs_uri.cc",
+    "translate_ipfs_uri.h",
   ]
 
   deps = [
     "//extensions/common",
+    "//net",
     "//url",
   ]
 }

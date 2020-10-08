@@ -108,6 +108,7 @@ void IpfsService::RegisterPrefs(PrefRegistrySimple* registry) {
       kIPFSResolveMethod,
       static_cast<int>(ipfs::IPFSResolveMethodTypes::IPFS_ASK));
   registry->RegisterBooleanPref(kIPFSBinaryAvailable, false);
+  registry->RegisterBooleanPref(kIPFSAutoFallbackToGateway, false);
 }
 
 base::FilePath IpfsService::GetIpfsExecutablePath() {
@@ -213,6 +214,12 @@ std::unique_ptr<network::SimpleURLLoader> IpfsService::CreateURLLoader(
 void IpfsService::GetConnectedPeers(GetConnectedPeersCallback callback) {
   if (!IsDaemonLaunched()) {
     std::move(callback).Run(false, std::vector<std::string>{});
+    return;
+  }
+
+  if (skip_get_connected_peers_callback_for_test_) {
+    // Early return for tests that wish to  manually run the callback with
+    // desired values directly, could be useful in unit tests.
     return;
   }
 
@@ -349,6 +356,10 @@ void IpfsService::SetIpfsLaunchedForTest(bool launched) {
 
 void IpfsService::SetServerEndpointForTest(const GURL& gurl) {
   server_endpoint_ = gurl;
+}
+
+void IpfsService::SetSkipGetConnectedPeersCallbackForTest(bool skip) {
+  skip_get_connected_peers_callback_for_test_ = skip;
 }
 
 }  // namespace ipfs
