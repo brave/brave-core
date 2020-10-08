@@ -10,12 +10,16 @@
 
 #include "base/android/jni_android.h"
 #include "base/android/jni_string.h"
+#include "base/bind_helpers.h"
 #include "base/json/json_writer.h"
 
 #include "brave/build/android/jni_headers/BraveSyncDevices_jni.h"
+#include "brave/components/brave_sync/profile_sync_service_helper.h"
+#include "brave/components/sync/driver/brave_sync_profile_sync_service.h"
 
 #include "chrome/browser/profiles/profile_manager.h"
 #include "chrome/browser/sync/device_info_sync_service_factory.h"
+#include "chrome/browser/sync/profile_sync_service_factory.h"
 
 #include "components/sync_device_info/device_info_sync_service.h"
 #include "components/sync_device_info/device_info_tracker.h"
@@ -76,6 +80,8 @@ base::Value BraveSyncDevicesAndroid::GetSyncDeviceList() {
         ? local_device_info->guid() == device->guid()
         : false;
     device_value.SetBoolKey("isCurrentDevice", is_current_device);
+    // DeviceInfo::ToValue doesn't put guid
+    device_value.SetStringKey("guid", device->guid());
     device_list.Append(std::move(device_value));
   }
 
@@ -93,6 +99,33 @@ base::android::ScopedJavaLocalRef<jstring>
   }
 
   return base::android::ConvertUTF8ToJavaString(env, json_string);
+}
+
+// TODO(AlexeyBarabash): duplicate with BraveSyncWorker?
+syncer::BraveProfileSyncService* BraveSyncDevicesAndroid::GetSyncService()
+    const {
+  return ProfileSyncServiceFactory::IsSyncAllowed(profile_)
+             ? static_cast<syncer::BraveProfileSyncService*>(
+                   ProfileSyncServiceFactory::GetForProfile(profile_))
+             : nullptr;
+}
+
+void BraveSyncDevicesAndroid::DeleteDevice(
+    JNIEnv* env,
+    const base::android::JavaParamRef<jobject>& jcaller,
+    const base::android::JavaParamRef<jstring>& device_guid) {
+  std::string str_device_guid =
+      base::android::ConvertJavaStringToUTF8(device_guid);
+  auto* sync_service = GetSyncService();
+  DCHECK(sync_service);
+
+  auto* device_info_sync_service =
+      DeviceInfoSyncServiceFactory::GetForProfile(profile_);
+  DCHECK(device_info_sync_service);
+
+  // TODO(AlexeyBarabash): do we need the callback here?
+  brave_sync::DeleteDevice(sync_service, device_info_sync_service,
+                           str_device_guid, base::DoNothing());
 }
 
 static void JNI_BraveSyncDevices_Init(

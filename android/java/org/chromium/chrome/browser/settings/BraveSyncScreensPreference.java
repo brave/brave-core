@@ -144,7 +144,7 @@ public class BraveSyncScreensPreference extends BravePreferenceFragment
     private TextView mBraveSyncAddDeviceCodeWords;
     private CameraSource mCameraSource;
     private CameraSourcePreview mCameraSourcePreview;
-    private String mDeviceName = "";
+    private BraveSyncDevices.SyncDeviceInfo mThisDevice;
     private ListView mDevicesListView;
     private ArrayAdapter<String> mDevicesAdapter;
     private List<String> mDevicesList;
@@ -292,9 +292,13 @@ public class BraveSyncScreensPreference extends BravePreferenceFragment
                                 textView.setText(device.mName);
                             }
 
+                            AppCompatImageView deleteButton =
+                                    (AppCompatImageView) listItemView.findViewById(
+                                            R.id.brave_sync_remove_device);
                             if (device.mIsCurrentDevice) {
-                                mDeviceName = device.mName;
+                                mThisDevice = device;
                                 // Current device is deleted by button on the bottom
+                                deleteButton.setVisibility(View.GONE);
                                 if (null != textView) {
                                     // Highlight curret device
                                     textView.setTextColor(ApiCompatibilityUtils.getColor(
@@ -307,6 +311,13 @@ public class BraveSyncScreensPreference extends BravePreferenceFragment
                                 }
                                 // mRemoveDeviceButton is always visible, we can leave the chain
                                 // in any time with sync v2 (except we are now doing reset)
+                            } else {
+                                deleteButton.setTag(device);
+                                deleteButton.setOnClickListener(v -> {
+                                    BraveSyncDevices.SyncDeviceInfo deviceToDelete =
+                                            (BraveSyncDevices.SyncDeviceInfo) v.getTag();
+                                    deleteDeviceDialog(deviceToDelete);
+                                });
                             }
                             insertPoint.addView(separator, index++);
                             insertPoint.addView(listItemView, index++);
@@ -684,7 +695,7 @@ public class BraveSyncScreensPreference extends BravePreferenceFragment
                 });
             }
         } else if (mRemoveDeviceButton == v) {
-            deleteDeviceDialog(mDeviceName);
+            deleteDeviceDialog(mThisDevice);
         } else if (mShowCategoriesButton == v) {
             SettingsLauncher settingsLauncher = new SettingsLauncherImpl();
             settingsLauncher.launchSettingsActivity(getContext(), BraveManageSyncSettings.class);
@@ -949,8 +960,7 @@ public class BraveSyncScreensPreference extends BravePreferenceFragment
         alertDialog.show();
     }
 
-    private void deleteDeviceDialog(String deviceName) {
-        Log.v(TAG, "deleteDeviceDialog deviceName=" + deviceName);
+    private void deleteDeviceDialog(BraveSyncDevices.SyncDeviceInfo device) {
         AlertDialog.Builder alert = new AlertDialog.Builder(getActivity(), R.style.Theme_Chromium_AlertDialog);
         if (null == alert) {
             return;
@@ -960,14 +970,21 @@ public class BraveSyncScreensPreference extends BravePreferenceFragment
             public void onClick(DialogInterface dialog, int button) {
                 if (button == AlertDialog.BUTTON_POSITIVE) {
                     if (getBraveSyncWorker() != null) {
-                        getBraveSyncWorker().ResetSync();
-                        startLeaveSyncChainOperations();
+                        if (device.mIsCurrentDevice) {
+                            getBraveSyncWorker().ResetSync();
+                            startLeaveSyncChainOperations();
+                        } else {
+                            BraveSyncDevices.get().DeleteDevice(device.mGuid);
+                        }
                     }
                 }
             }
         };
-        String deviceNameToDisplay =
-                deviceName + " " + getResources().getString(R.string.brave_sync_this_device_text);
+        String deviceNameToDisplay = device.mName;
+        if (device.mIsCurrentDevice) {
+            deviceNameToDisplay = deviceNameToDisplay + " "
+                    + getResources().getString(R.string.brave_sync_this_device_text);
+        }
         AlertDialog alertDialog =
                 alert.setTitle(getResources().getString(R.string.brave_sync_remove_device_text))
                         .setMessage(
