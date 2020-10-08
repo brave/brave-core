@@ -39,6 +39,19 @@ public class BinanceWidgetManager {
             "CAD", "CHF", "CNY", "COP", "CZK", "DKK", "EUR", "GBP", "HKD", "HRK", "HUF", "IDR",
             "ILS", "INR", "JPY", "KRW", "KZT", "MXN", "NGN", "NOK", "NZD", "PLN", "RON", "RUB",
             "SEK", "THB", "TRY", "UAH", "VND", "ZAR");
+    public static final Map<String, CoinNetworkModel> extraCurrenciesMap =
+            new HashMap<String, CoinNetworkModel>() {
+                {
+                    put("XVG", new CoinNetworkModel("XVG", "", R.drawable.xvg));
+                    put("DOGE", new CoinNetworkModel("DOGE", "", R.drawable.doge));
+                    put("ETC", new CoinNetworkModel("ETC", "", R.drawable.etc));
+                    put("ZEC", new CoinNetworkModel("ZEC", "", R.drawable.zec));
+                    put("LTC", new CoinNetworkModel("LTC", "", R.drawable.ltc));
+                    put("USDC", new CoinNetworkModel("USDC", "", R.drawable.usdc));
+                    put("ENG", new CoinNetworkModel("ENG", "", R.drawable.eng));
+                    put("ADX", new CoinNetworkModel("ADX", "", R.drawable.adx));
+                }
+            };
     public static final Map<String, CoinNetworkModel> usCurrenciesMap =
             new HashMap<String, CoinNetworkModel>() {
                 {

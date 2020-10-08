@@ -151,12 +151,13 @@ public class BinanceConvertFragment extends Fragment {
                 if (availableBalance < convertAmount) {
                     convertLayout.setVisibility(View.GONE);
                     errorLayout.setVisibility(View.VISIBLE);
-                    errorText.setText("Not enough balance for conversion");
+                    errorText.setText(getResources().getString(R.string.not_enough_balance));
                 } else if (Double.valueOf(selectedCrypto2.getMinAmount()) > convertAmount) {
                     convertLayout.setVisibility(View.GONE);
                     errorLayout.setVisibility(View.VISIBLE);
-                    errorText.setText("The minimum amount to convert is : "
-                            + selectedCrypto2.getMinAmount() + " " + selectedCrypto1);
+                    errorText.setText(String.format(
+                            getResources().getString(R.string.minimum_amount_to_convert),
+                            selectedCrypto2.getMinAmount(), selectedCrypto1));
                 } else {
                     mBinanceNativeWorker.getConvertQuote(selectedCrypto1,
                             selectedCrypto2.getAsset(), String.valueOf(convertAmount));
@@ -217,9 +218,13 @@ public class BinanceConvertFragment extends Fragment {
                 String quoteId, String quotePrice, String totalFee, String totalAmount) {
             convertLayout.setVisibility(View.GONE);
             confirmLayout.setVisibility(View.VISIBLE);
-            convertCurrencyText.setText(quotePrice + selectedCrypto1);
-            convertFeeText.setText(totalFee + selectedCrypto1);
-            convertBalanceText.setText(totalAmount + selectedCrypto2.getAsset());
+            convertCurrencyText.setText(String.format(
+                    getResources().getString(R.string.ntp_stat_text), quotePrice, selectedCrypto1));
+            convertFeeText.setText(String.format(
+                    getResources().getString(R.string.ntp_stat_text), totalFee, selectedCrypto1));
+            convertBalanceText.setText(
+                    String.format(getResources().getString(R.string.ntp_stat_text), totalAmount,
+                            selectedCrypto2.getAsset()));
 
             confirmButton.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -257,6 +262,9 @@ public class BinanceConvertFragment extends Fragment {
                         cryptoRes = BinanceWidgetManager.usCurrenciesMap.get(crypto).getCoinRes();
                     } else if (BinanceWidgetManager.comCurrenciesMap.containsKey(crypto)) {
                         cryptoRes = BinanceWidgetManager.comCurrenciesMap.get(crypto).getCoinRes();
+                    } else if (BinanceWidgetManager.extraCurrenciesMap.containsKey(crypto)) {
+                        cryptoRes =
+                                BinanceWidgetManager.extraCurrenciesMap.get(crypto).getCoinRes();
                     }
                     tempCryptoList.add(new CoinNetworkModel(crypto, "", cryptoRes));
                 }
@@ -289,6 +297,10 @@ public class BinanceConvertFragment extends Fragment {
                 } else if (BinanceWidgetManager.comCurrenciesMap.containsKey(
                                    convertAsset.getAsset())) {
                     cryptoRes = BinanceWidgetManager.comCurrenciesMap.get(convertAsset.getAsset())
+                                        .getCoinRes();
+                } else if (BinanceWidgetManager.extraCurrenciesMap.containsKey(
+                                   convertAsset.getAsset())) {
+                    cryptoRes = BinanceWidgetManager.extraCurrenciesMap.get(convertAsset.getAsset())
                                         .getCoinRes();
                 }
                 tempCryptoList.add(new CoinNetworkModel(convertAsset.getAsset(), "", cryptoRes));

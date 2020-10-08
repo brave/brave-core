@@ -241,19 +241,11 @@ public class BinanceDepositFragment extends Fragment {
     };
 
     private void copyTextToClipboard(String title, String textToCopy) {
-        if (android.os.Build.VERSION.SDK_INT < android.os.Build.VERSION_CODES.HONEYCOMB) {
-            android.text.ClipboardManager clipboard =
-                    (android.text.ClipboardManager) getActivity().getSystemService(
-                            Context.CLIPBOARD_SERVICE);
-            clipboard.setText(textToCopy);
-        } else {
-            android.content.ClipboardManager clipboard =
-                    (android.content.ClipboardManager) getActivity().getSystemService(
-                            Context.CLIPBOARD_SERVICE);
-            android.content.ClipData clip =
-                    android.content.ClipData.newPlainText(title, textToCopy);
-            clipboard.setPrimaryClip(clip);
-        }
+        android.content.ClipboardManager clipboard =
+                (android.content.ClipboardManager) getActivity().getSystemService(
+                        Context.CLIPBOARD_SERVICE);
+        android.content.ClipData clip = android.content.ClipData.newPlainText(title, textToCopy);
+        clipboard.setPrimaryClip(clip);
         Toast.makeText(getActivity(), R.string.text_has_been_copied, Toast.LENGTH_LONG).show();
     }
 }

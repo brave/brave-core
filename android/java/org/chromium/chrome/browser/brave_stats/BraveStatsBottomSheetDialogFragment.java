@@ -250,8 +250,11 @@ public class BraveStatsBottomSheetDialogFragment extends BottomSheetDialogFragme
                 }
 
                 long timeSavedCount = adsTrackersCount * BraveStatsUtil.MILLISECONDS_PER_ITEM;
+                Pair<String, String> timeSavedPair =
+                        BraveStatsUtil.getBraveStatsStringFromTime(timeSavedCount / 1000);
                 timeSavedCountText.setText(
-                    BraveStatsUtil.getBraveStatsStringFromTime(timeSavedCount / 1000));
+                        String.format(getResources().getString(R.string.ntp_stat_text),
+                                timeSavedPair.first, timeSavedPair.second));
                 timeSavedText.setText(mContext.getResources().getString(R.string.time_saved_text));
 
                 if (adsTrackersCount > 0) {

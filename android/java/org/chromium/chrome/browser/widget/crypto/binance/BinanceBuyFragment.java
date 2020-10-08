@@ -15,6 +15,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -61,6 +62,9 @@ public class BinanceBuyFragment extends Fragment {
     private List<String> fiatList = new ArrayList<String>();
     private List<String> cryptoList = new ArrayList<String>();
 
+    private static final String US = ".us";
+    private static final String COM = ".com";
+
     public BinanceBuyFragment() {
         // Required empty public constructor
     }
@@ -89,6 +93,10 @@ public class BinanceBuyFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
 
         RadioGroup buyRadioGroup = view.findViewById(R.id.buy_radio_group);
+        RadioButton usRadioButton = view.findViewById(R.id.us_radio);
+        usRadioButton.setText(US);
+        RadioButton comRadioButton = view.findViewById(R.id.com_radio);
+        comRadioButton.setText(COM);
         EditText amountEditText = view.findViewById(R.id.amount_edittext);
 
         buyButton = view.findViewById(R.id.btn_buy);

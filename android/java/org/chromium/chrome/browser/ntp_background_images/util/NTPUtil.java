@@ -93,7 +93,7 @@ public class NTPUtil {
 
             parentLayout.setOrientation(LinearLayout.VERTICAL);
             LinearLayout.LayoutParams mainLayoutLayoutParams =
-                    new LinearLayout.LayoutParams(dpToPx(context, 400), 0);
+                    new LinearLayout.LayoutParams(dpToPx(context, 390), 0);
             mainLayoutLayoutParams.weight = 1f;
             mainLayout.setLayoutParams(mainLayoutLayoutParams);
 

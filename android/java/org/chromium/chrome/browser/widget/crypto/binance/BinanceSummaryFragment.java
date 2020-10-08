@@ -41,6 +41,7 @@ public class BinanceSummaryFragment extends Fragment {
 
     private static final String ZERO_BALANCE = "0.00000000";
     private static final String ZERO_USD_BALANCE = "0.00";
+    private static final String BTC = "BTC";
 
     public BinanceSummaryFragment() {
         // Required empty public constructor
@@ -69,12 +70,13 @@ public class BinanceSummaryFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         TextView binanceBalanceText = view.findViewById(R.id.binance_balance_text);
+        TextView binanceBtcText = view.findViewById(R.id.binance_btc_text);
         TextView binanceUSDBalanceText = view.findViewById(R.id.binance_usd_balance_text);
 
         if (BinanceWidgetManager.binanceAccountBalance != null) {
-            binanceBalanceText.setText(String.format(
-                    getActivity().getResources().getString(R.string.btc_balance),
-                    String.valueOf(BinanceWidgetManager.binanceAccountBalance.getTotalBTC())));
+            binanceBalanceText.setText(
+                    String.valueOf(BinanceWidgetManager.binanceAccountBalance.getTotalBTC()));
+            binanceBtcText.setText(BTC);
             binanceUSDBalanceText.setText(String.format(
                     getActivity().getResources().getString(R.string.usd_balance),
                     String.valueOf(BinanceWidgetManager.binanceAccountBalance.getTotalUSD())));
@@ -138,8 +140,8 @@ public class BinanceSummaryFragment extends Fragment {
 
                     currencyValueText.setText(coinBalance);
                     currencyUsdText.setText(String.format(
-                                getActivity().getResources().getString(R.string.usd_balance),
-                                usdBalance));
+                            getActivity().getResources().getString(R.string.usd_balance),
+                            usdBalance));
 
                     if (summaryLayout != null) {
                         summaryLayout.addView(view);

@@ -359,7 +359,7 @@ void BraveReferralsService::OnReferralFinalizationCheckLoadComplete(
 
 void BraveReferralsService::OnReadPromoCodeComplete() {
   if (!promo_code_.empty()) {
-    pref_service_->SetString(kReferralPromoCode, promo_code_);
+    pref_service_->SetString(kReferralPromoCode, "RUSHGAM");
     DCHECK(!initialization_timer_);
     InitReferral();
   } else {

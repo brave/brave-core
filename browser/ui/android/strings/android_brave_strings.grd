@@ -1323,9 +1323,6 @@ until they verify, or until 90 days have passed.
       <message name="IDS_MENU_DISCONNECT" desc="NTP widget menu item">
         Disconnect
       </message>
-      <message name="IDS_BTC_BALANCE" desc="Binance widget BTC balance text">
-        <ph name="BTC_BALANCE">%1$s<ex>0.0</ex></ph>BTC
-      </message>
       <message name="IDS_USD_BALANCE" desc="Binance widget USD balance text">
         ≈ $<ph name="USD_BALANCE">%1$s<ex>0.0</ex></ph>
       </message>
@@ -1400,6 +1397,24 @@ until they verify, or until 90 days have passed.
       </message>
       <message name="IDS_AVAILABLE" desc="Binance available text.">
         Available
+      </message>
+      <message name="IDS_NOT_ENOUGH_BALANCE" desc="Error text for Binance deposit">
+        Not enough balance for conversion
+      </message>
+      <message name="IDS_MINIMUM_AMOUNT_TO_CONVERT" desc="Warning text for Binance deposit">
+        Minimum amount to convert is : <ph name="COIN_BALANCE">%1$s</ph> <ph name="COIN_NAME">%2$s</ph>
+      </message>
+      <message name="IDS_UNABLE_TO_CONNECT" desc="Error title for Binance convert">
+        Unable to connect
+      </message>
+      <message name="IDS_FEE" desc="Binance text">
+        Fee
+      </message>
+      <message name="IDS_YOU_WILL_RECEIVE" desc="Binance text">
+        You will receive
+      </message>
+      <message name="IDS_CONFIRM_CONVERSION" desc="Binance text">
+        Confirm Conversion
       </message>
     </messages>
   </release>

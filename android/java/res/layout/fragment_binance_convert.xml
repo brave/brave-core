@@ -18,7 +18,7 @@
             android:layout_marginStart="32dp"
             android:layout_marginEnd="32dp"
             android:gravity="center_horizontal"
-            android:text="Unable to connect"
+            android:text="@string/unable_to_connect"
             android:textColor="@android:color/white"/>
 
         <TextView
@@ -62,7 +62,7 @@
             android:layout_height="wrap_content"
             android:layout_marginBottom="16dp"
             android:gravity="center_horizontal"
-            android:text="Confirm Conversion"
+            android:text="@string/confirm_conversion"
             android:textColor="@android:color/white"/>
 
         <LinearLayout
@@ -76,7 +76,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:layout_marginEnd="16dp"
-                android:text="Convert"
+                android:text="@string/convert"
                 android:textColor="@android:color/white"/>
 
             <TextView
@@ -101,7 +101,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:layout_marginEnd="16dp"
-                android:text="Fee"
+                android:text="@string/fee"
                 android:textColor="@android:color/white"/>
 
             <TextView
@@ -126,7 +126,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:layout_marginEnd="16dp"
-                android:text="You will receive"
+                android:text="@string/you_will_receive"
                 android:textColor="@android:color/white"/>
 
             <TextView
@@ -199,6 +199,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:padding="8dp"
+                    android:inputType="numberDecimal"
                     android:textColor="@android:color/white"
                     android:textColorHint="@color/white_alpha_50"
                     android:hint="@string/i_want_to_convert"
@@ -211,6 +212,7 @@
                     android:textColor="@android:color/white"
                     android:padding="8dp"
                     android:background="@drawable/binance_edittext"
+                    android:popupBackground="@color/spinner_bg_color"
                     style="@android:style/Widget.Spinner"
                     android:spinnerMode="dropdown"/>
 
@@ -227,6 +229,7 @@
                 android:padding="8dp"
                 style="@android:style/Widget.Spinner"
                 android:background="@drawable/binance_edittext"
+                android:popupBackground="@color/spinner_bg_color"
                 android:spinnerMode="dropdown"/>
 
             <Button

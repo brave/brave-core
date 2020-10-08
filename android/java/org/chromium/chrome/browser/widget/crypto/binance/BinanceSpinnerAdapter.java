@@ -52,6 +52,8 @@ public class BinanceSpinnerAdapter extends ArrayAdapter<CoinNetworkModel> {
         if (shouldShowIcon && items.get(position).getCoinRes() != 0) {
             currencyImage.setVisibility(View.VISIBLE);
             currencyImage.setImageResource(items.get(position).getCoinRes());
+        } else if (!shouldShowIcon) {
+            currencyImage.setVisibility(View.GONE);
         } else {
             currencyImage.setVisibility(View.INVISIBLE);
         }

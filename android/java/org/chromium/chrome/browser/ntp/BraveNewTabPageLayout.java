@@ -5,6 +5,8 @@
 
 package org.chromium.chrome.browser.ntp;
 
+import static org.chromium.ui.base.ViewUtils.dpToPx;
+
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
@@ -163,8 +165,6 @@ public class BraveNewTabPageLayout extends NewTabPageLayout {
         ntpWidgetAdapter = new NTPWidgetAdapter();
         ntpWidgetAdapter.setNTPWidgetListener(ntpWidgetListener);
         ntpWidgetViewPager.setAdapter(ntpWidgetAdapter);
-        // ntpWidgetViewPager.setOnPageChangeListener(new
-        // CircularViewPagerHandler(ntpWidgetViewPager));
 
         ntpWidgetViewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
@@ -227,6 +227,11 @@ public class BraveNewTabPageLayout extends NewTabPageLayout {
                         if (mSiteSectionView.getParent() != null) {
                             ((ViewGroup) mSiteSectionView.getParent()).removeView(mSiteSectionView);
                         }
+                        if (mSiteSectionView.getLayoutParams()
+                                        instanceof ViewGroup.MarginLayoutParams) {
+                            mSiteSectionView.setPadding(0, dpToPx(mActivity, 12), 0, 0);
+                            mSiteSectionView.requestLayout();
+                        }
                         mTopSitesGridLayout.addView(mSiteSectionView);
                         ntpWidgetItem.setWidgetView(mTopSitesLayout);
                         ntpWidgetMap.put(ntpWidgetManager.getFavoritesWidget(), ntpWidgetItem);
@@ -245,6 +250,8 @@ public class BraveNewTabPageLayout extends NewTabPageLayout {
                             cryptoWidgetBottomSheetDialogFragment.show(
                                     ((BraveActivity) mActivity).getSupportFragmentManager(),
                                     CryptoWidgetBottomSheetDialogFragment.TAG_FRAGMENT);
+                        } else {
+                            TabUtils.openUrlInSameTab(mBinanceNativeWorker.getOAuthClientUrl());
                         }
                     }
                 });
@@ -285,7 +292,6 @@ public class BraveNewTabPageLayout extends NewTabPageLayout {
         }
 
         if (ntpWidgetAdapter != null) {
-            // setWidgetList();
             List<NTPWidgetItem> tempList = setWidgetList();
             ntpWidgetAdapter.setWidgetList(tempList);
             ntpWidgetAdapter.notifyDataSetChanged();
@@ -602,10 +608,11 @@ public class BraveNewTabPageLayout extends NewTabPageLayout {
     private void loadTopSites(List<TopSiteTable> topSites) {
         superReferralSitesLayout = new LinearLayout(mActivity);
         superReferralSitesLayout.setWeightSum(1f);
-        LinearLayout.LayoutParams params =
-                new LinearLayout.LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT);
-        params.setMargins(16, 16, 16, 16);
-        superReferralSitesLayout.setLayoutParams(params);
+        // LinearLayout.LayoutParams params =
+        //         new LinearLayout.LayoutParams(LayoutParams.MATCH_PARENT,
+        //         LayoutParams.WRAP_CONTENT);
+        // params.setMargins(16, 16, 16, 16);
+        // superReferralSitesLayout.setLayoutParams(params);
         superReferralSitesLayout.setOrientation(LinearLayout.HORIZONTAL);
         superReferralSitesLayout.setBackgroundColor(
                 mActivity.getResources().getColor(R.color.topsite_bg_color));
@@ -634,8 +641,7 @@ public class BraveNewTabPageLayout extends NewTabPageLayout {
                 }
             });
 
-            int paddingTop = getResources().getDimensionPixelSize(R.dimen.tile_grid_layout_no_logo_padding_top);
-            view.setPadding(0, paddingTop, 0, view.getPaddingBottom());
+            view.setPadding(0, dpToPx(mActivity, 12), 0, 0);
 
             LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.MATCH_PARENT);
             layoutParams.weight = 0.25f;
@@ -793,7 +799,8 @@ public class BraveNewTabPageLayout extends NewTabPageLayout {
         @Override
         public void OnRevokeToken(boolean isSuccess) {
             BinanceWidgetManager.getInstance().setUserAuthenticationForBinance(!isSuccess);
-            ntpWidgetAdapter.notifyDataSetChanged();
+            // Reset binance widget to connect page
+            showWidgets();
         };
     };
 

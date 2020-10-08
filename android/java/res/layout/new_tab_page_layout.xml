@@ -67,10 +67,9 @@
 
                 <androidx.cardview.widget.CardView
                     android:layout_width="0dp"
-                    android:layout_height="180dp"
+                    android:layout_height="140dp"
                     android:layout_weight="1"
-                    app:cardCornerRadius="12dp"
-                    app:cardElevation="10dp">
+                    app:cardCornerRadius="12dp">
 
                     <org.chromium.chrome.browser.custom_layout.VerticalViewPager
                         android:id="@+id/ntp_widget_view_pager"

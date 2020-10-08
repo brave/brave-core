@@ -38,6 +38,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class NTPWidgetAdapter extends PagerAdapter {
+    private static final String BTC = "BTC";
     private List<NTPWidgetItem> widgetList = new ArrayList<NTPWidgetItem>();
     private NTPWidgetListener ntpWidgetListener;
     private Context mContext = ContextUtils.getApplicationContext();
@@ -88,14 +89,14 @@ public class NTPWidgetAdapter extends PagerAdapter {
                         mainView.findViewById(R.id.binance_widget_layout);
                 TextView binanceBalanceText =
                         binanceWidgetLayout.findViewById(R.id.binance_balance_text);
+                TextView binanceBtcText = binanceWidgetLayout.findViewById(R.id.binance_btc_text);
                 TextView binanceUSDBalanceText =
                         binanceWidgetLayout.findViewById(R.id.binance_usd_balance_text);
 
                 if (BinanceWidgetManager.binanceAccountBalance != null) {
-                    binanceBalanceText.setText(String.format(
-                            mContext.getResources().getString(R.string.btc_balance),
-                            String.valueOf(
-                                    BinanceWidgetManager.binanceAccountBalance.getTotalBTC())));
+                    binanceBalanceText.setText(String.format(String.valueOf(
+                            BinanceWidgetManager.binanceAccountBalance.getTotalBTC())));
+                    binanceBtcText.setText(BTC);
                     binanceUSDBalanceText.setText(String.format(
                             mContext.getResources().getString(R.string.usd_balance),
                             String.valueOf(
@@ -147,6 +148,12 @@ public class NTPWidgetAdapter extends PagerAdapter {
                 (TextView) view.findViewById(R.id.brave_stats_data_saved_value);
         TextView mEstTimeSavedCountTextView =
                 (TextView) view.findViewById(R.id.brave_stats_text_time_count);
+        TextView mAdsBlockedCountTextTextView =
+                (TextView) view.findViewById(R.id.brave_stats_text_ads_count_text);
+        TextView mDataSavedValueTextTextView =
+                (TextView) view.findViewById(R.id.brave_stats_data_saved_value_text);
+        TextView mEstTimeSavedCountTextTextView =
+                (TextView) view.findViewById(R.id.brave_stats_text_time_count_text);
 
         long trackersBlockedCount =
                 BravePrefServiceBridge.getInstance().getTrackersBlockedCount(mProfile);
@@ -159,15 +166,15 @@ public class NTPWidgetAdapter extends PagerAdapter {
                 BraveStatsUtil.getBraveStatsStringFormNumberPair(adsBlockedCount, false);
         Pair<String, String> dataSavedPair =
                 BraveStatsUtil.getBraveStatsStringFormNumberPair(dataSaved, true);
+        Pair<String, String> timeSavedPair =
+                BraveStatsUtil.getBraveStatsStringFromTime(estimatedMillisecondsSaved / 1000);
 
-        mAdsBlockedCountTextView.setText(
-                String.format(mContext.getResources().getString(R.string.ntp_stat_text),
-                        adsTrackersPair.first, adsTrackersPair.second));
-        mDataSavedValueTextView.setText(
-                String.format(mContext.getResources().getString(R.string.ntp_stat_text),
-                        dataSavedPair.first, dataSavedPair.second));
-        mEstTimeSavedCountTextView.setText(
-                BraveStatsUtil.getBraveStatsStringFromTime(estimatedMillisecondsSaved / 1000));
+        mAdsBlockedCountTextView.setText(adsTrackersPair.first);
+        mDataSavedValueTextView.setText(dataSavedPair.first);
+        mEstTimeSavedCountTextView.setText(timeSavedPair.first);
+        mAdsBlockedCountTextTextView.setText(adsTrackersPair.second);
+        mDataSavedValueTextTextView.setText(dataSavedPair.second);
+        mEstTimeSavedCountTextTextView.setText(timeSavedPair.second);
     }
 
     private void showPopupMenu(Context context, View view, final int position) {

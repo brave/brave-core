@@ -17,6 +17,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -38,6 +39,7 @@ public class NTPWidgetStackActivity extends AppCompatActivity {
     private NTPWidgetStackAdapter usedNTPWidgetStackAdapter;
     private NTPWidgetStackAdapter availableNTPWidgetStackAdapter;
     private LinearLayout availableWidgetLayout;
+    private CardView usedWidgetLayout;
     private boolean isFromSettings;
     public static final int USED_WIDGET = 0;
     public static final int AVAILABLE_WIDGET = 1;
@@ -72,6 +74,8 @@ public class NTPWidgetStackActivity extends AppCompatActivity {
             }
         });
 
+        usedWidgetLayout = findViewById(R.id.used_widget_layout);
+
         usedWidgetsRecyclerView = findViewById(R.id.used_widget_list);
         usedWidgetsRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         usedNTPWidgetStackAdapter = new NTPWidgetStackAdapter();
@@ -96,6 +100,7 @@ public class NTPWidgetStackActivity extends AppCompatActivity {
         availableNTPWidgetStackAdapter.setNTPWidgetType(AVAILABLE_WIDGET);
         availableWidgetsRecyclerView.setAdapter(availableNTPWidgetStackAdapter);
         availableNTPWidgetStackAdapter.setWidgetList(availableWidgetList);
+        updateNTPWidgetStackLayout();
     }
 
     @Override
@@ -108,20 +113,30 @@ public class NTPWidgetStackActivity extends AppCompatActivity {
                 @Override
                 public void onAddToWidget(String widget) {
                     usedNTPWidgetStackAdapter.addWidget(widget);
+                    updateNTPWidgetStackLayout();
                 }
 
                 @Override
                 public void onRemoveFromWidget(String widget) {
                     availableNTPWidgetStackAdapter.addWidget(widget);
+                    updateNTPWidgetStackLayout();
                 }
             };
 
-    private void updateAvailableNTPWidgetLayout() {
+    private void updateNTPWidgetStackLayout() {
         if (availableNTPWidgetStackAdapter != null && availableWidgetLayout != null) {
             if (availableNTPWidgetStackAdapter.getWidgetList().size() > 0) {
                 availableWidgetLayout.setVisibility(View.VISIBLE);
             } else {
                 availableWidgetLayout.setVisibility(View.GONE);
+            }
+        }
+
+        if (usedNTPWidgetStackAdapter != null && usedWidgetLayout != null) {
+            if (usedNTPWidgetStackAdapter.getWidgetList().size() > 0) {
+                usedWidgetLayout.setVisibility(View.VISIBLE);
+            } else {
+                usedWidgetLayout.setVisibility(View.GONE);
             }
         }
     }

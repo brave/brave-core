@@ -19,18 +19,23 @@ public class BraveStatsUtil {
     /*
      * Gets string view of specific time in seconds for Brave stats
      */
-    public static String getBraveStatsStringFromTime(long seconds) {
+    public static Pair<String, String> getBraveStatsStringFromTime(long seconds) {
         String result = "";
+        String suffix = "";
         if (seconds > 24 * 60 * 60) {
-            result = result + (seconds / (24 * 60 * 60)) + "d";
+            result = result + (seconds / (24 * 60 * 60));
+            suffix = "d";
         } else if (seconds > 60 * 60) {
-            result = result + (seconds / (60 * 60)) + "h";
+            result = result + (seconds / (60 * 60));
+            suffix = "h";
         } else if (seconds > 60) {
-            result = result + (seconds / 60) + "m";
+            result = result + (seconds / 60);
+            suffix = "m";
         } else {
-            result = result + seconds + "s";
+            result = result + seconds;
+            suffix = "s";
         }
-        return result;
+        return new Pair<>(result, suffix);
     }
 
     public static Pair<String, String> getBraveStatsStringFormNumberPair(
