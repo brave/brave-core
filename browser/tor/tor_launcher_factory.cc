@@ -114,9 +114,13 @@ void TorLauncherFactory::LaunchTorProcess(const tor::TorConfig& config) {
 
 void TorLauncherFactory::OnTorControlCheckComplete() {
   DCHECK_CURRENTLY_ON(BrowserThread::UI);
-  tor_launcher_->Launch(config_,
-                        base::BindOnce(&TorLauncherFactory::OnTorLaunched,
-                                       weak_ptr_factory_.GetWeakPtr()));
+  if (tor_launcher_.is_bound()) {
+    tor_launcher_->Launch(config_,
+                          base::BindOnce(&TorLauncherFactory::OnTorLaunched,
+                                         weak_ptr_factory_.GetWeakPtr()));
+  } else {
+    is_starting_ = false;
+  }
 }
 
 void TorLauncherFactory::KillTorProcess() {
