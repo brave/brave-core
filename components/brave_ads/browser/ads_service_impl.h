@@ -391,6 +391,12 @@ class AdsServiceImpl : public AdsService,
   void LoadUserModelForId(
       const std::string& id,
       ads::LoadCallback callback) override;
+
+  void RecordP2AEvent(
+      const std::string& name,
+      const ads::P2AEventType type,
+      const std::string& value) override;
+
   void Load(
       const std::string& name,
       ads::LoadCallback callback) override;

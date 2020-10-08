@@ -122,3 +122,7 @@ uint64_t NativeAdsClient::GetUint64Pref(const std::string& path) const {
 void NativeAdsClient::ClearPref(const std::string & path) {
   [bridge_ clearPref:path];
 }
+
+void NativeAdsClient::RecordP2AEvent(const std::string& name, const ads::P2AEventType type, const std::string& value) {
+  [bridge_ recordP2AEvent:name type:type value:value];
+}

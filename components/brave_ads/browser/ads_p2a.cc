@@ -6,8 +6,10 @@
 #include "brave/components/brave_ads/browser/ads_p2a.h"
 
 #include <stdint.h>
+#include <map>
+#include <string>
 
-#include "base/metrics/histogram_macros.h"
+#include "base/metrics/histogram_functions.h"
 #include "brave/components/brave_ads/common/pref_names.h"
 #include "brave/components/weekly_storage/weekly_storage.h"
 #include "components/prefs/pref_registry_simple.h"
@@ -16,37 +18,116 @@
 namespace brave_ads {
 namespace {
 
-const char kAdViewConfirmationCountHistogramName[] =
-    "Brave.P2A.ViewConfirmationCount";
-const uint16_t kAdViewConfirmationCountIntervals[] =
-    { 0, 5, 10, 20, 50, 100, 250, 500 };
+constexpr const char* kP2AQuestionList[] = {
+    // Ad Opportunities
+    "Brave.P2A.TotalAdOpportunities",
+    "Brave.P2A.AdOpportunitiesPerSegment.architecture",
+    "Brave.P2A.AdOpportunitiesPerSegment.artsentertainment",
+    "Brave.P2A.AdOpportunitiesPerSegment.automotive",
+    "Brave.P2A.AdOpportunitiesPerSegment.business",
+    "Brave.P2A.AdOpportunitiesPerSegment.careers",
+    "Brave.P2A.AdOpportunitiesPerSegment.cellphones",
+    "Brave.P2A.AdOpportunitiesPerSegment.crypto",
+    "Brave.P2A.AdOpportunitiesPerSegment.education",
+    "Brave.P2A.AdOpportunitiesPerSegment.familyparenting",
+    "Brave.P2A.AdOpportunitiesPerSegment.fashion",
+    "Brave.P2A.AdOpportunitiesPerSegment.folklore",
+    "Brave.P2A.AdOpportunitiesPerSegment.fooddrink",
+    "Brave.P2A.AdOpportunitiesPerSegment.gaming",
+    "Brave.P2A.AdOpportunitiesPerSegment.healthfitness",
+    "Brave.P2A.AdOpportunitiesPerSegment.history",
+    "Brave.P2A.AdOpportunitiesPerSegment.hobbiesinterests",
+    "Brave.P2A.AdOpportunitiesPerSegment.home",
+    "Brave.P2A.AdOpportunitiesPerSegment.law",
+    "Brave.P2A.AdOpportunitiesPerSegment.military",
+    "Brave.P2A.AdOpportunitiesPerSegment.other",
+    "Brave.P2A.AdOpportunitiesPerSegment.personalfinance",
+    "Brave.P2A.AdOpportunitiesPerSegment.pets",
+    "Brave.P2A.AdOpportunitiesPerSegment.realestate",
+    "Brave.P2A.AdOpportunitiesPerSegment.science",
+    "Brave.P2A.AdOpportunitiesPerSegment.sports",
+    "Brave.P2A.AdOpportunitiesPerSegment.technologycomputing",
+    "Brave.P2A.AdOpportunitiesPerSegment.travel",
+    "Brave.P2A.AdOpportunitiesPerSegment.weather",
+    "Brave.P2A.AdOpportunitiesPerSegment.untargeted",
+    // Ad Impressions
+    "Brave.P2A.TotalAdImpressions",
+    "Brave.P2A.AdImpressionsPerSegment.architecture",
+    "Brave.P2A.AdImpressionsPerSegment.artsentertainment",
+    "Brave.P2A.AdImpressionsPerSegment.automotive",
+    "Brave.P2A.AdImpressionsPerSegment.business",
+    "Brave.P2A.AdImpressionsPerSegment.careers",
+    "Brave.P2A.AdImpressionsPerSegment.cellphones",
+    "Brave.P2A.AdImpressionsPerSegment.crypto",
+    "Brave.P2A.AdImpressionsPerSegment.education",
+    "Brave.P2A.AdImpressionsPerSegment.familyparenting",
+    "Brave.P2A.AdImpressionsPerSegment.fashion",
+    "Brave.P2A.AdImpressionsPerSegment.folklore",
+    "Brave.P2A.AdImpressionsPerSegment.fooddrink",
+    "Brave.P2A.AdImpressionsPerSegment.gaming",
+    "Brave.P2A.AdImpressionsPerSegment.healthfitness",
+    "Brave.P2A.AdImpressionsPerSegment.history",
+    "Brave.P2A.AdImpressionsPerSegment.hobbiesinterests",
+    "Brave.P2A.AdImpressionsPerSegment.home",
+    "Brave.P2A.AdImpressionsPerSegment.law",
+    "Brave.P2A.AdImpressionsPerSegment.military",
+    "Brave.P2A.AdImpressionsPerSegment.other",
+    "Brave.P2A.AdImpressionsPerSegment.personalfinance",
+    "Brave.P2A.AdImpressionsPerSegment.pets",
+    "Brave.P2A.AdImpressionsPerSegment.realestate",
+    "Brave.P2A.AdImpressionsPerSegment.science",
+    "Brave.P2A.AdImpressionsPerSegment.sports",
+    "Brave.P2A.AdImpressionsPerSegment.technologycomputing",
+    "Brave.P2A.AdImpressionsPerSegment.travel",
+    "Brave.P2A.AdImpressionsPerSegment.weather",
+    "Brave.P2A.AdImpressionsPerSegment.untargeted"
+};
 
-void EmitAdViewConfirmationHistogram(uint64_t number_of_confirmations) {
-    const uint16_t* it = std::lower_bound(kAdViewConfirmationCountIntervals,
-    std::end(kAdViewConfirmationCountIntervals), number_of_confirmations);
-  const uint16_t answer = it - kAdViewConfirmationCountIntervals;
-  EmitConfirmationsCountMetric(answer);
-}
+const uint16_t kBinIntervals[] =
+    { 0, 5, 10, 20, 50, 100, 250, 500 };
 
 }  // namespace
 
-void RegisterP2APrefs(PrefRegistrySimple* registry) {
-  registry->RegisterListPref(prefs::kAdViewConfirmationCountPrefName);
-}
-
-void RecordEventInWeeklyStorage(
-    PrefService* prefs,
-    const std::string& pref_name) {
-  if (pref_name == prefs::kAdViewConfirmationCountPrefName) {
-    WeeklyStorage storage(prefs, prefs::kAdViewConfirmationCountPrefName);
-    storage.AddDelta(1);
-    EmitAdViewConfirmationHistogram(storage.GetWeeklySum());
+void RegisterP2APrefs(
+    PrefRegistrySimple* registry) {
+  for (const char* question_name : kP2AQuestionList) {
+      std::string pref_path(prefs::kP2AStoragePrefNamePrefix);
+      pref_path.append(question_name);
+      registry->RegisterListPref(pref_path);
   }
 }
 
-void EmitConfirmationsCountMetric(int answer) {
-  UMA_HISTOGRAM_EXACT_LINEAR(kAdViewConfirmationCountHistogramName,
-                             answer, 8);
+void RecordInWeeklyStorageAndEmitP2AHistogramAnswer(
+    PrefService* prefs,
+    const std::string& name) {
+  std::string pref_path(prefs::kP2AStoragePrefNamePrefix);
+  pref_path.append(name);
+  if (!prefs->FindPreference(pref_path)) {
+    return;
+  }
+  WeeklyStorage storage(prefs, pref_path.c_str());
+  storage.AddDelta(1);
+  EmitP2AHistogramAnswer(name, storage.GetWeeklySum());
+}
+
+void EmitP2AHistogramAnswer(
+    const std::string& name,
+    int count_value) {
+  const uint16_t* it =
+      std::lower_bound(kBinIntervals, std::end(kBinIntervals), count_value);
+  const uint16_t answer = it - kBinIntervals;
+
+  for (const char* question_name : kP2AQuestionList) {
+    if (name == question_name) {
+      base::UmaHistogramExactLinear(question_name, answer, 8);
+    }
+  }
+}
+
+void SuspendP2AHistograms() {
+  for (const char* question_name : kP2AQuestionList) {
+      base::UmaHistogramExactLinear(question_name, INT_MAX, 8);
+  }
 }
 
 }  // namespace brave_ads

@@ -44,4 +44,5 @@ class NativeAdsClient : public ads::AdsClient {
   void SetUint64Pref(const std::string & path, const uint64_t value) override;
   uint64_t GetUint64Pref(const std::string & path) const override;
   void ClearPref(const std::string & path) override;
+  void RecordP2AEvent(const std::string& name, const ads::P2AEventType type, const std::string& value) override;
 };

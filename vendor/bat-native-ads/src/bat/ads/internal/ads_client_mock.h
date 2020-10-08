@@ -51,6 +51,11 @@ class AdsClientMock : public AdsClient {
       const std::string& id,
       LoadCallback callback));
 
+  MOCK_METHOD3(RecordP2AEvent, void(
+      const std::string& name,
+      const ads::P2AEventType type,
+      const std::string& value));
+
   MOCK_METHOD2(Load, void(
       const std::string& name,
       LoadCallback callback));

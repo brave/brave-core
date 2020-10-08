@@ -16,9 +16,9 @@ const char kAdsWereDisabled[] = "brave.brave_ads.were_disabled";
 // "No Wallet".
 const char kHasAdsP3AState[] = "brave.brave_ads.has_p3a_state";
 
-// Stores ad view confirmation count
-const char kAdViewConfirmationCountPrefName[] =
-    "brave.weekly_storage.p2a_ad_view_confirmation_count";
+// Prefix for preference names pertaining to p2a weekly metrics
+const char kP2AStoragePrefNamePrefix[] =
+    "brave.weekly_storage.";
 
 // Stores whether onboarding should be shown
 const char kShouldShowOnboarding[] =

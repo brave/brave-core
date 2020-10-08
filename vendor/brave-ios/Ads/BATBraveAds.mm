@@ -1545,4 +1545,9 @@ BATClassAdsBridge(BOOL, isDebug, setDebug, _is_debug)
   return  _paths;
 }
 
+- (void)recordP2AEvent:(const std::string&)name type:(const ads::P2AEventType)type value:(const std::string&)value
+{
+  // Not needed on iOS
+}
+
 @end

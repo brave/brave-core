@@ -48,6 +48,7 @@ source_set("brave_ads_unit_tests") {
       "//brave/vendor/bat-native-ads/src/bat/ads/internal/frequency_capping/permission_rules/new_tab_page_ads_per_hour_frequency_cap_unittest.cc",
       "//brave/vendor/bat-native-ads/src/bat/ads/internal/frequency_capping/permission_rules/unblinded_tokens_frequency_cap_unittest.cc",
       "//brave/vendor/bat-native-ads/src/bat/ads/internal/frequency_capping/permission_rules/user_activity_frequency_cap_unittest.cc",
+      "//brave/vendor/bat-native-ads/src/bat/ads/internal/p2a/p2a_util_unittest.cc",
       "//brave/vendor/bat-native-ads/src/bat/ads/internal/platform/platform_helper_mock.cc",
       "//brave/vendor/bat-native-ads/src/bat/ads/internal/platform/platform_helper_mock.h",
       "//brave/vendor/bat-native-ads/src/bat/ads/internal/privacy/privacy_util_unittest.cc",

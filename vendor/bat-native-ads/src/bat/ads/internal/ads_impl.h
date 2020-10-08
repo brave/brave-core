@@ -23,6 +23,7 @@
 #include "bat/ads/internal/client/client.h"
 #include "bat/ads/internal/confirmations/confirmation_info.h"
 #include "bat/ads/internal/database/database_initialize.h"
+#include "bat/ads/internal/p2a/p2a.h"
 #include "bat/ads/internal/server/redeem_unblinded_payment_tokens/redeem_unblinded_payment_tokens_delegate.h"
 #include "bat/ads/internal/server/redeem_unblinded_token/redeem_unblinded_token_delegate.h"
 #include "bat/ads/internal/server/refill_unblinded_tokens/refill_unblinded_tokens_delegate.h"
@@ -85,6 +86,10 @@ class AdsImpl
 
   Bundle* get_bundle() const {
     return bundle_.get();
+  }
+
+  P2A* get_p2a() const {
+    return p2a_.get();
   }
 
   classification::PageClassifier* get_page_classifier() const {
@@ -378,6 +383,7 @@ class AdsImpl
   std::unique_ptr<Confirmations> confirmations_;
   std::unique_ptr<database::Initialize> database_;
   std::unique_ptr<GetCatalog> get_catalog_;
+  std::unique_ptr<P2A> p2a_;
   std::unique_ptr<classification::PageClassifier> page_classifier_;
   std::unique_ptr<classification::PurchaseIntentClassifier>
       purchase_intent_classifier_;
