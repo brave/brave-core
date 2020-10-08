@@ -7,17 +7,33 @@
 
     <include layout="@layout/binance_deposit_layout"/>
 
-    <androidx.core.widget.NestedScrollView
-	 	android:id="@+id/deposit_scrollview"
-	    android:layout_width="match_parent"
-	    android:layout_height="match_parent">
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
 
-	    <LinearLayout
-	        android:id="@+id/deposit_layout"
-	        android:layout_width="match_parent"
-	        android:layout_height="match_parent"
-	        android:orientation="vertical"/>
+        <ProgressBar
+            android:id="@+id/binance_coins_progress"
+            style="?android:attr/progressBarStyleLarge"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="gone"
+            android:layout_gravity="center_horizontal"
+            android:indeterminateTintMode="src_atop"
+            android:indeterminateTint="@color/binance_theme_color" />
 
-	</androidx.core.widget.NestedScrollView>
+	    <androidx.core.widget.NestedScrollView
+		 	android:id="@+id/deposit_scrollview"
+		    android:layout_width="match_parent"
+		    android:layout_height="match_parent">
+
+		    <LinearLayout
+		        android:id="@+id/deposit_layout"
+		        android:layout_width="match_parent"
+		        android:layout_height="match_parent"
+		        android:orientation="vertical"/>
+
+		</androidx.core.widget.NestedScrollView>
+
+	</FrameLayout>
 
 </LinearLayout>

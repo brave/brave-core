@@ -16,6 +16,7 @@ import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -47,6 +48,7 @@ public class BinanceDepositFragment extends Fragment {
 
     private CoinNetworkModel selectedCoinNetworkModel;
     private LinearLayout depositCoinListLayout;
+    private ProgressBar binanceCoinsProgress;
     private NestedScrollView currentNestedScrollView;
 
     public BinanceDepositFragment() {
@@ -76,6 +78,9 @@ public class BinanceDepositFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         depositCoinListLayout = view.findViewById(R.id.deposit_layout);
+        binanceCoinsProgress = view.findViewById(R.id.binance_coins_progress);
+        depositCoinListLayout.setVisibility(View.GONE);
+        binanceCoinsProgress.setVisibility(View.VISIBLE);
         mBinanceNativeWorker.getCoinNetworks();
     }
 
@@ -126,6 +131,10 @@ public class BinanceDepositFragment extends Fragment {
                     });
                     if (depositCoinListLayout != null) {
                         depositCoinListLayout.addView(view);
+                        depositCoinListLayout.setVisibility(View.VISIBLE);
+                    }
+                    if (binanceCoinsProgress != null) {
+                        binanceCoinsProgress.setVisibility(View.GONE);
                     }
                 }
             } catch (JSONException e) {

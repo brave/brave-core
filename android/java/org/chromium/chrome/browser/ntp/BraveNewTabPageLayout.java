@@ -35,6 +35,7 @@ import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import androidx.annotation.Nullable;
@@ -140,6 +141,9 @@ public class BraveNewTabPageLayout extends NewTabPageLayout {
     private LinearLayout indicatorLayout;
     private LinearLayout superReferralSitesLayout;
     private LinearLayout ntpWidgetLayout;
+    private LinearLayout bianceDisconnectLayout;
+    private LinearLayout binanceWidgetLayout;
+    private ProgressBar binanceWidgetProgress;
 
     private BinanceNativeWorker mBinanceNativeWorker;
     private CountDownTimer countDownTimer;
@@ -239,6 +243,12 @@ public class BraveNewTabPageLayout extends NewTabPageLayout {
                 }
             } else if (widget.equals(NTPWidgetManager.PREF_BINANCE)) {
                 View binanceWidgetView = inflater.inflate(R.layout.crypto_widget_layout, null);
+                binanceWidgetLayout = binanceWidgetView.findViewById(R.id.binance_widget_layout);
+                bianceDisconnectLayout =
+                        binanceWidgetView.findViewById(R.id.binance_disconnect_layout);
+                binanceWidgetProgress =
+                        binanceWidgetView.findViewById(R.id.binance_widget_progress);
+                binanceWidgetProgress.setVisibility(View.GONE);
                 binanceWidgetView.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
@@ -252,6 +262,8 @@ public class BraveNewTabPageLayout extends NewTabPageLayout {
                                     CryptoWidgetBottomSheetDialogFragment.TAG_FRAGMENT);
                         } else {
                             TabUtils.openUrlInSameTab(mBinanceNativeWorker.getOAuthClientUrl());
+                            bianceDisconnectLayout.setVisibility(View.GONE);
+                            binanceWidgetProgress.setVisibility(View.VISIBLE);
                         }
                     }
                 });
@@ -260,6 +272,8 @@ public class BraveNewTabPageLayout extends NewTabPageLayout {
                     @Override
                     public void onClick(View view) {
                         TabUtils.openUrlInSameTab(mBinanceNativeWorker.getOAuthClientUrl());
+                        bianceDisconnectLayout.setVisibility(View.GONE);
+                        binanceWidgetProgress.setVisibility(View.VISIBLE);
                     }
                 });
                 ntpWidgetItem.setWidgetView(binanceWidgetView);
@@ -353,6 +367,12 @@ public class BraveNewTabPageLayout extends NewTabPageLayout {
         }
         showWidgets();
         if (BinanceWidgetManager.getInstance().isUserAuthenticatedForBinance()) {
+            if (binanceWidgetLayout != null) {
+                binanceWidgetLayout.setVisibility(View.GONE);
+            }
+            if (binanceWidgetProgress != null) {
+                binanceWidgetProgress.setVisibility(View.VISIBLE);
+            }
             mBinanceNativeWorker.getAccountBalances();
         }
         mBinanceNativeWorker.AddObserver(mBinanaceObserver);
@@ -608,11 +628,6 @@ public class BraveNewTabPageLayout extends NewTabPageLayout {
     private void loadTopSites(List<TopSiteTable> topSites) {
         superReferralSitesLayout = new LinearLayout(mActivity);
         superReferralSitesLayout.setWeightSum(1f);
-        // LinearLayout.LayoutParams params =
-        //         new LinearLayout.LayoutParams(LayoutParams.MATCH_PARENT,
-        //         LayoutParams.WRAP_CONTENT);
-        // params.setMargins(16, 16, 16, 16);
-        // superReferralSitesLayout.setLayoutParams(params);
         superReferralSitesLayout.setOrientation(LinearLayout.HORIZONTAL);
         superReferralSitesLayout.setBackgroundColor(
                 mActivity.getResources().getColor(R.color.topsite_bg_color));
@@ -760,6 +775,12 @@ public class BraveNewTabPageLayout extends NewTabPageLayout {
             BinanceWidgetManager.getInstance().setUserAuthenticationForBinance(isSuccess);
             if (isSuccess) {
                 mBinanceNativeWorker.getAccountBalances();
+                if (bianceDisconnectLayout != null) {
+                    bianceDisconnectLayout.setVisibility(View.GONE);
+                }
+                if (binanceWidgetProgress != null) {
+                    binanceWidgetProgress.setVisibility(View.VISIBLE);
+                }
             }
         };
 

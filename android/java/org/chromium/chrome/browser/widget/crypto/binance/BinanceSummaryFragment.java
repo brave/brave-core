@@ -13,6 +13,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -38,6 +39,7 @@ import java.util.List;
 public class BinanceSummaryFragment extends Fragment {
     private BinanceNativeWorker mBinanceNativeWorker;
     private LinearLayout summaryLayout;
+    private ProgressBar binanceCoinsProgress;
 
     private static final String ZERO_BALANCE = "0.00000000";
     private static final String ZERO_USD_BALANCE = "0.00";
@@ -73,6 +75,8 @@ public class BinanceSummaryFragment extends Fragment {
         TextView binanceBtcText = view.findViewById(R.id.binance_btc_text);
         TextView binanceUSDBalanceText = view.findViewById(R.id.binance_usd_balance_text);
 
+        binanceCoinsProgress = view.findViewById(R.id.binance_coins_progress);
+
         if (BinanceWidgetManager.binanceAccountBalance != null) {
             binanceBalanceText.setText(
                     String.valueOf(BinanceWidgetManager.binanceAccountBalance.getTotalBTC()));
@@ -82,6 +86,8 @@ public class BinanceSummaryFragment extends Fragment {
                     String.valueOf(BinanceWidgetManager.binanceAccountBalance.getTotalUSD())));
         }
         summaryLayout = view.findViewById(R.id.summary_layout);
+        binanceCoinsProgress.setVisibility(View.VISIBLE);
+        summaryLayout.setVisibility(View.GONE);
         mBinanceNativeWorker.getCoinNetworks();
     }
 
@@ -145,6 +151,10 @@ public class BinanceSummaryFragment extends Fragment {
 
                     if (summaryLayout != null) {
                         summaryLayout.addView(view);
+                        summaryLayout.setVisibility(View.VISIBLE);
+                    }
+                    if (binanceCoinsProgress != null) {
+                        binanceCoinsProgress.setVisibility(View.GONE);
                     }
                 }
             } catch (JSONException e) {

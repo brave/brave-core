@@ -46,6 +46,16 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
+        <ProgressBar
+            android:id="@+id/binance_widget_progress"
+            style="?android:attr/progressBarStyleLarge"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="gone"
+            android:layout_gravity="center"
+            android:indeterminateTintMode="src_atop"
+            android:indeterminateTint="@color/binance_theme_color" /> 
+
         <LinearLayout
             android:id="@+id/binance_disconnect_layout"
             android:layout_width="match_parent"
@@ -123,7 +133,6 @@
                 android:id="@+id/binance_usd_balance_text"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/usd_balance"
                 android:textColor="@android:color/white"
                 android:alpha="0.6"
                 android:textSize="12sp" />

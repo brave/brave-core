@@ -15,6 +15,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.PopupMenu;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import androidx.appcompat.widget.AppCompatImageView;
@@ -92,6 +93,9 @@ public class NTPWidgetAdapter extends PagerAdapter {
                 TextView binanceBtcText = binanceWidgetLayout.findViewById(R.id.binance_btc_text);
                 TextView binanceUSDBalanceText =
                         binanceWidgetLayout.findViewById(R.id.binance_usd_balance_text);
+
+                ProgressBar binanceWidgetProgress =
+                        binanceWidgetLayout.findViewById(R.id.binance_widget_progress);
 
                 if (BinanceWidgetManager.binanceAccountBalance != null) {
                     binanceBalanceText.setText(String.format(String.valueOf(
