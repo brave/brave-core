@@ -69,6 +69,16 @@ ViewCounterService::ViewCounterService(NTPBackgroundImagesService* service,
 
 ViewCounterService::~ViewCounterService() = default;
 
+void ViewCounterService::BrandedWallpaperWillBeDisplayed() {
+  base::Value data = ViewCounterService::GetCurrentWallpaperForDisplay();
+  DCHECK(!data.is_none());
+  const std::string id = *data.FindStringKey(kCreativeInstanceIDKey);
+  if (!id.empty()) {
+    // Ping to ads service if data has proper ids.
+    LOG(ERROR) << "CreativeInstanceID: " << id;
+  }
+}
+
 NTPBackgroundImagesData*
 ViewCounterService::GetCurrentBrandedWallpaperData() const {
   auto* sr_data = service_->GetBackgroundImagesData(true /* for_sr */);
@@ -171,19 +181,6 @@ void ViewCounterService::ResetNotificationState() {
 }
 
 void ViewCounterService::RegisterPageView() {
-  // This method is called whenever NTP page is loaded.
-  // So, it's good to ping to ads service by checking whether branded wallpaper
-  // is used or not here.
-  base::Value data = ViewCounterService::GetCurrentWallpaperForDisplay();
-  // If |data| is none, it means lastly shown NTP doesn't use branded wallpaper.
-  if (!data.is_none()) {
-    const std::string id = *data.FindStringKey(kCreativeInstanceIDKey);
-    if (!id.empty()) {
-      // Ping to ads service if data has proper ids.
-      LOG(ERROR) << "CreativeInstanceID: " << id;
-    }
-  }
-
   // Don't do any counting if we will never be showing the data
   // since we want the count to start at the point of data being available
   // or the user opt-in status changing.

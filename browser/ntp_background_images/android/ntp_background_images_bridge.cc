@@ -139,6 +139,8 @@ NTPBackgroundImagesBridge::CreateWallpaper() {
   if (data.is_none())
     return base::android::ScopedJavaLocalRef<jobject>();
 
+  view_counter_service_->BrandedWallpaperWillBeDisplayed();
+
   auto* image_path =
       data.FindStringKey(ntp_background_images::kWallpaperImagePathKey);
   auto* logo_image_path =
