@@ -25,13 +25,13 @@ interface PageProps {
 }
 
 function getItemRowCount (p: PageProps): number {
-  let right = (p.showClock ? 1 : 0) + (p.showRewards ? 2 : 0)
+  let right = (p.showClock ? 1 : 0) + (p.showRewards ? 1 : 0)
   let left = (p.showStats ? 1 : 0) + (p.showTopSites ? 1 : 0)
   // Has space for branded logo to sit next to something on right?
-  if (p.showBrandedWallpaper && left >= right) {
+  if (0 && left >= right) {
     left++
   }
-  return Math.max(left, right) + 1 // extra 1 for footer
+  return Math.max(2, left, right) + 1 // extra 1 for footer
 }
 
 export const Page = styled<PageProps, 'div'>('div')`
@@ -94,7 +94,7 @@ export const GridItemClock = styled('section')`
 
 export const GridItemWidgetStack = styled('section')`
   grid-column: 3 / span 1;
-  grid-row-end: span 2;
+  grid-row-end: 3;
   @media screen and (max-width: ${breakpointLargeBlocks}) {
     max-width: 284px;
   }
@@ -102,6 +102,7 @@ export const GridItemWidgetStack = styled('section')`
 
 export const GridItemTopSites = styled('section')`
   grid-column: 1 / span 2;
+  grid-row: 2 / span 1;
   ${singleColumnSmallViewport}
 `
 
@@ -117,7 +118,7 @@ export const GridItemCredits = styled('section')`
   --ntp-grid-item-credits-bottom-margin-wide: 36px;
   --ntp-grid-item-credits-left-margin-narrow: 10px;
   --ntp-grid-item-credits-left-margin-wide: var(--ntp-grid-item-credits-bottom-margin-wide);
-  grid-column: 1 / span 1;
+  grid-column: 1 / 1;
   grid-row: calc(-2 - var(--ntp-extra-footer-rows)) / span calc(1 + var(--ntp-extra-footer-rows));
   align-self: end;
 
@@ -136,8 +137,8 @@ export const GridItemBrandedLogo = styled(GridItemCredits)`
 `
 
 export const GridItemNavigation = styled('section')`
-  grid-column: 3 / span 1;
-  grid-row: -2 / span 1;
+  grid-column: 3 / -1;
+  grid-row: 3 / -1;
   align-self: end;
   margin: 0 24px 24px 0;
   @media screen and (max-width: ${breakpointEveryBlock}) {
