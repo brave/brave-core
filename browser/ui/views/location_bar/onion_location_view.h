@@ -6,7 +6,6 @@
 #ifndef BRAVE_BROWSER_UI_VIEWS_LOCATION_BAR_ONION_LOCATION_VIEW_H_
 #define BRAVE_BROWSER_UI_VIEWS_LOCATION_BAR_ONION_LOCATION_VIEW_H_
 
-#include "chrome/browser/profiles/profile.h"
 #include "ui/views/controls/button/label_button.h"
 
 class Profile;

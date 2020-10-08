@@ -137,11 +137,11 @@
         on-settings-boolean-control-change="onTorEnabledChange_">
     </settings-toggle-button>
     <settings-toggle-button
-      pref="{{prefs.tor.auto_onion_location}}"
-      class="cr-row"
-      label="$i18n{autoOnionLocationLabel}"
-      sub-label="$i18n{autoOnionLocationDesc}"
-      disabled="[[!torEnabled_]]">
+        pref="{{prefs.tor.auto_onion_location}}"
+        class="cr-row"
+        label="$i18n{autoOnionLocationLabel}"
+        sub-label="$i18n{autoOnionLocationDesc}"
+        disabled="[[!torEnabled_]]">
     </settings-toggle-button>
     </if>
     <settings-toggle-button id="webTorrentEnabled"

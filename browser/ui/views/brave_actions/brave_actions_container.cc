@@ -39,7 +39,6 @@
 #include "ui/views/layout/grid_layout.h"
 #include "ui/views/view.h"
 
-
 class BraveActionsContainer::EmptyExtensionsContainer
     : public ExtensionsContainer {
  public:

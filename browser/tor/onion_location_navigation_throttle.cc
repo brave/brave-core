@@ -26,6 +26,8 @@ namespace {
 
 bool GetOnionLocation(const net::HttpResponseHeaders* headers,
                       std::string* onion_location) {
+  DCHECK(onion_location);
+
   onion_location->clear();
   std::string name = "onion-location";
 
@@ -54,7 +56,8 @@ void OnTorProfileCreated(GURL onion_location,
 std::unique_ptr<OnionLocationNavigationThrottle>
 OnionLocationNavigationThrottle::MaybeCreateThrottleFor(
     content::NavigationHandle* navigation_handle) {
-  if (tor::TorProfileService::IsTorDisabled())
+  if (tor::TorProfileService::IsTorDisabled() ||
+      !navigation_handle->IsInMainFrame())
     return nullptr;
   return std::make_unique<OnionLocationNavigationThrottle>(navigation_handle);
 }
@@ -70,23 +73,24 @@ OnionLocationNavigationThrottle::~OnionLocationNavigationThrottle() {}
 
 content::NavigationThrottle::ThrottleCheckResult
 OnionLocationNavigationThrottle::WillProcessResponse() {
-  if (navigation_handle()->IsInMainFrame()) {
-    auto* headers = navigation_handle()->GetResponseHeaders();
-    std::string onion_location;
-    if (headers && GetOnionLocation(headers, &onion_location) &&
-        !navigation_handle()->GetURL().DomainIs("onion")) {
-      // If user prefers opening it automatically
-      if (profile_->GetPrefs()->GetBoolean(prefs::kAutoOnionLocation)) {
-        profiles::SwitchToTorProfile(
-            base::BindRepeating(&OnTorProfileCreated, GURL(onion_location)));
-      } else {
-        OnionLocationTabHelper::SetOnionLocation(
-            navigation_handle()->GetWebContents(), GURL(onion_location));
-      }
-    } else {
+  auto* headers = navigation_handle()->GetResponseHeaders();
+  std::string onion_location;
+  if (headers && GetOnionLocation(headers, &onion_location) &&
+      !navigation_handle()->GetURL().DomainIs("onion")) {
+    // If user prefers opening it automatically
+    if (profile_->GetPrefs()->GetBoolean(prefs::kAutoOnionLocation)) {
+      // Cleanup previous label before user switching to kAutoOnionLocation
       OnionLocationTabHelper::SetOnionLocation(
           navigation_handle()->GetWebContents(), GURL());
+      profiles::SwitchToTorProfile(
+          base::BindRepeating(&OnTorProfileCreated, GURL(onion_location)));
+    } else {
+      OnionLocationTabHelper::SetOnionLocation(
+          navigation_handle()->GetWebContents(), GURL(onion_location));
     }
+  } else {
+    OnionLocationTabHelper::SetOnionLocation(
+        navigation_handle()->GetWebContents(), GURL());
   }
   return content::NavigationThrottle::PROCEED;
 }
@@ -95,8 +99,7 @@ content::NavigationThrottle::ThrottleCheckResult
 OnionLocationNavigationThrottle::WillStartRequest() {
   if (!brave::IsTorProfile(profile_)) {
     GURL url = navigation_handle()->GetURL();
-    if (url.SchemeIsHTTPOrHTTPS() && url.DomainIs("onion") &&
-        navigation_handle()->IsInMainFrame()) {
+    if (url.SchemeIsHTTPOrHTTPS() && url.DomainIs("onion")) {
       profiles::SwitchToTorProfile(
           base::BindRepeating(&OnTorProfileCreated, std::move(url)));
       return content::NavigationThrottle::CANCEL_AND_IGNORE;

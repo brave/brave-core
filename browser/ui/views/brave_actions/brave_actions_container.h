@@ -27,8 +27,8 @@
 #endif
 
 class BraveActionViewController;
-class OnionLocationView;
 class BraveActionsContainerTest;
+class OnionLocationView;
 class RewardsBrowserTest;
 
 namespace extensions {
