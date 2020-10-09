@@ -13,7 +13,7 @@
     ],
     "functions": [
       {
-        "name": "getIPFSResolveMethodList",
+        "name": "getResolveMethodList",
         "type": "function",
         "description": "Get methods for resolving IPFS URIs",
         "parameters": [
@@ -42,6 +42,90 @@
             "parameters": [
               {
                 "name": "enabled",
+                "type": "boolean"
+              }
+            ]
+          }
+        ]
+      }, {
+        "name": "getResolveMethodType",
+        "type": "function",
+        "description": "Obtains the gateway setting for IPFS",
+        "parameters": [
+          {
+            "name": "callback",
+            "type": "function",
+            "description": "Function called with enabled status",
+            "parameters": [
+              {
+                "name": "type",
+                "type": "string"
+              }
+            ]
+          }
+        ]
+      }, {
+        "name": "launch",
+        "type": "function",
+        "description": "Called to launch the IPFS daemon",
+        "parameters": [
+          {
+            "type": "function",
+            "name": "callback",
+            "parameters": [
+              {
+                "name": "success",
+                "type": "boolean"
+              }
+            ]
+          }
+        ]
+      }, {
+        "name": "shutdown",
+        "type": "function",
+        "description": "Called to shutdown the IPFS daemon",
+        "parameters": [
+          {
+            "type": "function",
+            "name": "callback",
+            "parameters": [
+              {
+                "name": "success",
+                "type": "boolean"
+              }
+            ]
+          }
+        ]
+      }, {
+        "name": "getConfig",
+        "type": "function",
+        "description": "Called to get the IPFS config path",
+        "parameters": [
+        {
+            "type": "function",
+            "name": "callback",
+            "parameters": [
+              {
+                "name": "success",
+                "type": "boolean"
+              }, {
+                "name": "path",
+                "type": "string"
+              }
+            ]
+          }
+        ]
+      }, {
+        "name": "getExecutableAvailable",
+        "type": "function",
+        "description": "Called to determine if a local node is installed",
+        "parameters": [
+          {
+            "type": "function",
+            "name": "callback",
+            "parameters": [
+              {
+                "name": "available",
                 "type": "boolean"
               }
             ]

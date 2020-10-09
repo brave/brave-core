@@ -698,7 +698,10 @@ if (!is_android) {
     }
 
     if (ipfs_enabled) {
-      sources += [ "//brave/browser/ipfs/ipfs_tab_helper_browsertest.cc" ]
+      sources += [
+        "//brave/browser/extensions/api/ipfs_apitest.cc",
+        "//brave/browser/ipfs/ipfs_tab_helper_browsertest.cc",
+      ]
       deps += [
         "//brave/components/ipfs/browser",
         "//brave/components/ipfs/common",

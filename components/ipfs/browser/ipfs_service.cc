@@ -9,9 +9,12 @@
 
 #include "base/command_line.h"
 #include "base/feature_list.h"
+#include "base/files/file_util.h"
 #include "base/json/json_reader.h"
 #include "base/strings/strcat.h"
 #include "base/strings/string_util.h"
+#include "base/task/post_task.h"
+#include "base/task_runner_util.h"
 #include "brave/components/ipfs/browser/features.h"
 #include "brave/components/ipfs/browser/ipfs_json_parser.h"
 #include "brave/components/ipfs/browser/ipfs_service_observer.h"
@@ -59,6 +62,18 @@ net::NetworkTrafficAnnotationTag GetNetworkTrafficAnnotationTag() {
     )");
 }
 
+std::pair<bool, std::string> LoadConfigFileOnFileTaskRunner(
+    const base::FilePath& path) {
+  std::string data;
+  bool success = base::ReadFileToString(path, &data);
+  std::pair<bool, std::string> result;
+  result.first = success;
+  if (success) {
+    result.second = data;
+  }
+  return result;
+}
+
 }  // namespace
 
 namespace ipfs {
@@ -69,7 +84,12 @@ IpfsService::IpfsService(content::BrowserContext* context,
     : context_(context),
       server_endpoint_(GURL(kServerEndpoint)),
       user_data_dir_(user_data_dir),
-      ipfs_client_updater_(ipfs_client_updater) {
+      ipfs_client_updater_(ipfs_client_updater),
+      file_task_runner_(base::CreateSequencedTaskRunner(
+          {base::ThreadPool(), base::MayBlock(),
+           base::TaskPriority::BEST_EFFORT,
+           base::TaskShutdownBehavior::BLOCK_SHUTDOWN})),
+      weak_factory_(this) {
   DCHECK(!user_data_dir.empty());
   url_loader_factory_ =
       content::BrowserContext::GetDefaultStoragePartition(context)
@@ -140,17 +160,11 @@ void IpfsService::LaunchIfNotRunning(const base::FilePath& executable_path) {
 
   ipfs_service_.set_disconnect_handler(
       base::BindOnce(&IpfsService::OnIpfsCrashed, base::Unretained(this)));
-
   ipfs_service_->SetCrashHandler(
       base::Bind(&IpfsService::OnIpfsDaemonCrashed, base::Unretained(this)));
 
-  base::FilePath data_root_path =
-      user_data_dir_.Append(FILE_PATH_LITERAL("brave_ipfs"));
-  base::FilePath config_path =
-      data_root_path.Append(FILE_PATH_LITERAL("config"));
-
-  auto config =
-      mojom::IpfsConfig::New(executable_path, config_path, data_root_path);
+  auto config = mojom::IpfsConfig::New(executable_path, GetConfigFilePath(),
+                                       GetDataPath());
 
   ipfs_service_->Launch(
       std::move(config),
@@ -165,6 +179,16 @@ void IpfsService::OnIpfsCrashed() {
 void IpfsService::OnIpfsDaemonCrashed(int64_t pid) {
   VLOG(0) << "IPFS daemon crashed";
   Shutdown();
+}
+
+base::FilePath IpfsService::GetDataPath() const {
+  return user_data_dir_.Append(FILE_PATH_LITERAL("brave_ipfs"));
+}
+
+base::FilePath IpfsService::GetConfigFilePath() const {
+  base::FilePath config_path =
+      GetDataPath().Append(FILE_PATH_LITERAL("config"));
+  return config_path;
 }
 
 void IpfsService::OnIpfsLaunched(bool result, int64_t pid) {
@@ -331,6 +355,19 @@ void IpfsService::ShutdownDaemon(ShutdownDaemonCallback callback) {
   std::move(callback).Run(true);
 }
 
+void IpfsService::GetConfig(GetConfigCallback callback) {
+  base::PostTaskAndReplyWithResult(
+      file_task_runner_.get(), FROM_HERE,
+      base::BindOnce(&LoadConfigFileOnFileTaskRunner, GetConfigFilePath()),
+      base::BindOnce(&IpfsService::OnConfigLoaded, weak_factory_.GetWeakPtr(),
+                     std::move(callback)));
+}
+
+void IpfsService::OnConfigLoaded(GetConfigCallback callback,
+                                 const std::pair<bool, std::string>& result) {
+  std::move(callback).Run(result.first, result.second);
+}
+
 bool IpfsService::IsIPFSExecutableAvailable() const {
   PrefService* prefs = user_prefs::UserPrefs::Get(context_);
   return prefs->GetBoolean(kIPFSBinaryAvailable);
@@ -360,6 +397,12 @@ void IpfsService::SetServerEndpointForTest(const GURL& gurl) {
 
 void IpfsService::SetSkipGetConnectedPeersCallbackForTest(bool skip) {
   skip_get_connected_peers_callback_for_test_ = skip;
+}
+
+IPFSResolveMethodTypes IpfsService::GetIPFSResolveMethodType() const {
+  PrefService* prefs = user_prefs::UserPrefs::Get(context_);
+  return static_cast<IPFSResolveMethodTypes>(
+      prefs->GetInteger(kIPFSResolveMethod));
 }
 
 }  // namespace ipfs
