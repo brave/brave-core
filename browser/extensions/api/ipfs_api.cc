@@ -20,13 +20,11 @@
 
 namespace {
 
-ipfs::IpfsService* GetIPFSService(
-    content::BrowserContext* context) {
-  return ipfs::IpfsServiceFactory::GetInstance()
-      ->GetForContext(context);
+ipfs::IpfsService* GetIpfsService(content::BrowserContext* context) {
+  return ipfs::IpfsServiceFactory::GetInstance()->GetForContext(context);
 }
 
-base::Value MakeSelectValue(const  base::string16& name,
+base::Value MakeSelectValue(const base::string16& name,
                             ipfs::IPFSResolveMethodTypes value) {
   base::Value item(base::Value::Type::DICTIONARY);
   item.SetKey("value", base::Value(static_cast<int>(value)));
@@ -39,18 +37,17 @@ base::Value MakeSelectValue(const  base::string16& name,
 namespace extensions {
 namespace api {
 
-ExtensionFunction::ResponseAction
-IpfsGetIPFSResolveMethodListFunction::Run() {
+ExtensionFunction::ResponseAction IpfsGetResolveMethodListFunction::Run() {
   base::Value list(base::Value::Type::LIST);
-  list.Append(MakeSelectValue(
-      l10n_util::GetStringUTF16(IDS_IPFS_RESOLVE_OPTION_ASK),
-      ipfs::IPFSResolveMethodTypes::IPFS_ASK));
+  list.Append(
+      MakeSelectValue(l10n_util::GetStringUTF16(IDS_IPFS_RESOLVE_OPTION_ASK),
+                      ipfs::IPFSResolveMethodTypes::IPFS_ASK));
   list.Append(MakeSelectValue(
       l10n_util::GetStringUTF16(IDS_IPFS_RESOLVE_OPTION_GATEWAY),
       ipfs::IPFSResolveMethodTypes::IPFS_GATEWAY));
 
-  if (GetIPFSService(browser_context()) &&
-      GetIPFSService(browser_context())->IsIPFSExecutableAvailable()) {
+  if (GetIpfsService(browser_context()) &&
+      GetIpfsService(browser_context())->IsIPFSExecutableAvailable()) {
     list.Append(MakeSelectValue(
         l10n_util::GetStringUTF16(IDS_IPFS_RESOLVE_OPTION_LOCAL),
         ipfs::IPFSResolveMethodTypes::IPFS_LOCAL));
@@ -63,10 +60,79 @@ IpfsGetIPFSResolveMethodListFunction::Run() {
   return RespondNow(OneArgument(std::make_unique<base::Value>(json_string)));
 }
 
-ExtensionFunction::ResponseAction
-IpfsGetIPFSEnabledFunction::Run() {
+ExtensionFunction::ResponseAction IpfsGetIPFSEnabledFunction::Run() {
   bool enabled = base::FeatureList::IsEnabled(ipfs::features::kIpfsFeature);
   return RespondNow(OneArgument(std::make_unique<base::Value>(enabled)));
+}
+
+ExtensionFunction::ResponseAction IpfsGetResolveMethodTypeFunction::Run() {
+  std::string value = "invalid";
+  if (base::FeatureList::IsEnabled(ipfs::features::kIpfsFeature)) {
+    switch (GetIpfsService(browser_context())->GetIPFSResolveMethodType()) {
+      case ipfs::IPFSResolveMethodTypes::IPFS_ASK:
+        value = "ask";
+        break;
+      case ipfs::IPFSResolveMethodTypes::IPFS_GATEWAY:
+        value = "gateway";
+        break;
+      case ipfs::IPFSResolveMethodTypes::IPFS_LOCAL:
+        value = "local";
+        break;
+      case ipfs::IPFSResolveMethodTypes::IPFS_DISABLED:
+        value = "disabled";
+        break;
+    }
+  }
+  return RespondNow(OneArgument(std::make_unique<base::Value>(value)));
+}
+
+ExtensionFunction::ResponseAction IpfsLaunchFunction::Run() {
+  if (!base::FeatureList::IsEnabled(ipfs::features::kIpfsFeature)) {
+    return RespondNow(Error("IPFS not enabled"));
+  }
+  GetIpfsService(browser_context())
+      ->LaunchDaemon(base::BindOnce(&IpfsLaunchFunction::OnLaunch, this));
+  return RespondLater();
+}
+
+void IpfsLaunchFunction::OnLaunch(bool launched) {
+  Respond(OneArgument(std::make_unique<base::Value>(launched)));
+}
+
+ExtensionFunction::ResponseAction IpfsShutdownFunction::Run() {
+  if (!base::FeatureList::IsEnabled(ipfs::features::kIpfsFeature)) {
+    return RespondNow(Error("IPFS not enabled"));
+  }
+  GetIpfsService(browser_context())
+      ->ShutdownDaemon(base::BindOnce(&IpfsShutdownFunction::OnShutdown, this));
+  return RespondLater();
+}
+
+void IpfsShutdownFunction::OnShutdown(bool shutdown) {
+  Respond(OneArgument(std::make_unique<base::Value>(shutdown)));
+}
+
+ExtensionFunction::ResponseAction IpfsGetConfigFunction::Run() {
+  if (!base::FeatureList::IsEnabled(ipfs::features::kIpfsFeature)) {
+    return RespondNow(Error("IPFS not enabled"));
+  }
+  GetIpfsService(browser_context())
+      ->GetConfig(base::BindOnce(&IpfsGetConfigFunction::OnGetConfig, this));
+  return RespondLater();
+}
+
+void IpfsGetConfigFunction::OnGetConfig(bool success,
+                                        const std::string& value) {
+  Respond(TwoArguments(std::make_unique<base::Value>(success),
+                       std::make_unique<base::Value>(value)));
+}
+
+ExtensionFunction::ResponseAction IpfsGetExecutableAvailableFunction::Run() {
+  if (!base::FeatureList::IsEnabled(ipfs::features::kIpfsFeature)) {
+    return RespondNow(Error("IPFS not enabled"));
+  }
+  bool avail = GetIpfsService(browser_context())->IsIPFSExecutableAvailable();
+  return RespondNow(OneArgument(std::make_unique<base::Value>(avail)));
 }
 
 }  // namespace api

@@ -9,15 +9,22 @@
 #include <list>
 #include <memory>
 #include <string>
+#include <utility>
 #include <vector>
 
+#include "base/memory/scoped_refptr.h"
 #include "base/observer_list.h"
 #include "brave/components/ipfs/browser/addresses_config.h"
 #include "brave/components/ipfs/browser/brave_ipfs_client_updater.h"
+#include "brave/components/ipfs/common/ipfs_constants.h"
 #include "brave/components/services/ipfs/public/mojom/ipfs_service.mojom.h"
 #include "components/keyed_service/core/keyed_service.h"
 #include "mojo/public/cpp/bindings/remote.h"
 #include "url/gurl.h"
+
+namespace base {
+class SequencedTaskRunner;
+}  // namespace base
 
 namespace content {
 class BrowserContext;
@@ -53,6 +60,7 @@ class IpfsService : public KeyedService,
       base::OnceCallback<void(bool, const ipfs::AddressesConfig&)>;
   using LaunchDaemonCallback = base::OnceCallback<void(bool)>;
   using ShutdownDaemonCallback = base::OnceCallback<void(bool)>;
+  using GetConfigCallback = base::OnceCallback<void(bool, const std::string&)>;
 
   void AddObserver(IpfsServiceObserver* observer);
   void RemoveObserver(IpfsServiceObserver* observer);
@@ -61,6 +69,9 @@ class IpfsService : public KeyedService,
   static void RegisterPrefs(PrefRegistrySimple* registry);
   bool IsIPFSExecutableAvailable() const;
   void RegisterIpfsClientUpdater();
+  IPFSResolveMethodTypes GetIPFSResolveMethodType() const;
+  base::FilePath GetDataPath() const;
+  base::FilePath GetConfigFilePath() const;
 
   // KeyedService
   void Shutdown() override;
@@ -69,6 +80,7 @@ class IpfsService : public KeyedService,
   void GetAddressesConfig(GetAddressesConfigCallback callback);
   void LaunchDaemon(LaunchDaemonCallback callback);
   void ShutdownDaemon(ShutdownDaemonCallback callback);
+  void GetConfig(GetConfigCallback);
 
   void SetIpfsLaunchedForTest(bool launched);
   void SetServerEndpointForTest(const GURL& gurl);
@@ -76,6 +88,7 @@ class IpfsService : public KeyedService,
 
  protected:
   base::FilePath GetIpfsExecutablePath();
+  void OnConfigLoaded(GetConfigCallback, const std::pair<bool, std::string>&);
 
  private:
   using SimpleURLLoaderList =
@@ -120,6 +133,9 @@ class IpfsService : public KeyedService,
 
   base::FilePath user_data_dir_;
   BraveIpfsClientUpdater* ipfs_client_updater_;
+
+  scoped_refptr<base::SequencedTaskRunner> file_task_runner_;
+  base::WeakPtrFactory<IpfsService> weak_factory_;
 
   DISALLOW_COPY_AND_ASSIGN(IpfsService);
 };
