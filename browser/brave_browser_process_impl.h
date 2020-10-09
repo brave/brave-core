@@ -22,7 +22,6 @@
 
 namespace brave {
 class BraveReferralsService;
-class BraveStatsUpdater;
 class BraveP3AService;
 }  // namespace brave
 
@@ -44,6 +43,10 @@ class AdBlockRegionalServiceManager;
 class HTTPSEverywhereService;
 class TrackingProtectionService;
 }  // namespace brave_shields
+
+namespace brave_stats {
+class BraveStatsUpdater;
+}  // namespace brave_stats
 
 namespace greaselion {
 #if BUILDFLAG(ENABLE_GREASELION)
@@ -106,7 +109,7 @@ class BraveBrowserProcessImpl : public BrowserProcessImpl {
 #if BUILDFLAG(BUNDLE_WIDEVINE_CDM)
   BraveWidevineBundleManager* brave_widevine_bundle_manager();
 #endif
-  brave::BraveStatsUpdater* brave_stats_updater();
+  brave_stats::BraveStatsUpdater* brave_stats_updater();
   ntp_background_images::NTPBackgroundImagesService*
   ntp_background_images_service();
 #if BUILDFLAG(ENABLE_SPEEDREADER)
@@ -152,7 +155,7 @@ class BraveBrowserProcessImpl : public BrowserProcessImpl {
       tracking_protection_service_;
   std::unique_ptr<brave_shields::HTTPSEverywhereService>
       https_everywhere_service_;
-  std::unique_ptr<brave::BraveStatsUpdater> brave_stats_updater_;
+  std::unique_ptr<brave_stats::BraveStatsUpdater> brave_stats_updater_;
 #if BUILDFLAG(ENABLE_BRAVE_REFERRALS)
   std::unique_ptr<brave::BraveReferralsService> brave_referrals_service_;
 #endif

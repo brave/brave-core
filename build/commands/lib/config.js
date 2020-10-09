@@ -112,6 +112,7 @@ const Config = function () {
   this.git_cache_path = getNPMConfig(['git_cache_path'])
   this.sccache = getNPMConfig(['sccache'])
   this.braveStatsApiKey = getNPMConfig(['brave_stats_api_key']) || ''
+  this.braveStatsUpdaterUrl = getNPMConfig(['brave_stats_updater_url']) || ''
   this.ignore_compile_failure = false
   this.enable_hangout_services_extension = true
   this.widevineVersion = getNPMConfig(['widevine', 'version'])
@@ -216,6 +217,7 @@ Config.prototype.buildArgs = function () {
     updater_dev_endpoint: this.updaterDevEndpoint,
     webcompat_report_api_endpoint: this.webcompatReportApiEndpoint,
     brave_stats_api_key: this.braveStatsApiKey,
+    brave_stats_updater_url: this.braveStatsUpdaterUrl,
     enable_hangout_services_extension: this.enable_hangout_services_extension,
     enable_cdm_host_verification: this.enableCDMHostVerification(),
     skip_signing: !this.shouldSign(),
@@ -371,6 +373,7 @@ Config.prototype.buildArgs = function () {
     delete args.brave_google_api_endpoint
     delete args.brave_google_api_key
     delete args.brave_stats_api_key
+    delete args.brave_stats_updater_url
     delete args.brave_infura_project_id
     delete args.binance_client_id
     delete args.gemini_client_id
@@ -542,6 +545,10 @@ Config.prototype.update = function (options) {
 
   if (options.brave_stats_api_key) {
     this.braveStatsApiKey = options.brave_stats_api_key
+  }
+
+  if (options.brave_stats_updater_url) {
+    this.braveStatsUpdaterUrl = options.brave_stats_updater_url
   }
 
   if (options.channel) {

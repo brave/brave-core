@@ -22,10 +22,6 @@ import("//extensions/buildflags/buildflags.gni")
 import("//third_party/protobuf/proto_library.gni")
 import("//third_party/widevine/cdm/widevine.gni")
 
-declare_args() {
-  brave_stats_api_key = ""
-}
-
 source_set("browser_process") {
   # Remove when https://github.com/brave/brave-browser/issues/10657 is resolved
   check_includes = false
@@ -108,7 +104,6 @@ source_set("browser_process") {
 
   deps = [
     ":sparkle_buildflags",
-    ":stats_updater",
     ":version_info",
     "autoplay",
     "content_settings",
@@ -178,6 +173,7 @@ source_set("browser_process") {
     "//content/public/common",
     "//extensions/buildflags",
     "//brave/chromium_src:browser",
+    "brave_stats:stats_updater",
     "browsing_data",
     "search",
     "themes",
@@ -330,6 +326,7 @@ source_set("browser_process") {
     deps += [
       "//brave/components/brave_referrals/browser",
       "//brave/components/brave_referrals/common",
+      "//brave/components/brave_stats/browser",
     ]
   }
 
@@ -444,34 +441,6 @@ source_set("version_info") {
     "version_info.cc",
     "version_info.h",
   ]
-}
-
-source_set("stats_updater") {
-  # Remove when https://github.com/brave/brave-browser/issues/10657 is resolved
-  check_includes = false
-  defines = [ "BRAVE_STATS_API_KEY=\"$brave_stats_api_key\"" ]
-
-  sources = [
-    "brave_stats_updater.cc",
-    "brave_stats_updater.h",
-    "brave_stats_updater_params.cc",
-    "brave_stats_updater_params.h",
-    "brave_stats_updater_util.cc",
-    "brave_stats_updater_util.h",
-  ]
-
-  deps = [
-    ":version_info",
-    "//brave/common:pref_names",
-    "//brave/components/brave_referrals/buildflags",
-    "//chrome/common",
-  ]
-
-  if (enable_brave_referrals) {
-    deps += [
-      "//brave/components/brave_referrals/common",
-    ]
-  }
 }
 
 source_set("browser") {

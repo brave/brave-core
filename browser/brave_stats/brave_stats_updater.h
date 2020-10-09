@@ -3,8 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#ifndef BRAVE_BROWSER_BRAVE_STATS_UPDATER_H_
-#define BRAVE_BROWSER_BRAVE_STATS_UPDATER_H_
+#ifndef BRAVE_BROWSER_BRAVE_STATS_BRAVE_STATS_UPDATER_H_
+#define BRAVE_BROWSER_BRAVE_STATS_BRAVE_STATS_UPDATER_H_
 
 #include <memory>
 #include <string>
@@ -32,7 +32,7 @@ namespace network {
 class SimpleURLLoader;
 }
 
-namespace brave {
+namespace brave_stats {
 
 class BraveStatsUpdaterParams;
 
@@ -43,16 +43,24 @@ class BraveStatsUpdater {
 
   void Start();
   void Stop();
+  bool MaybeDoThresholdPing(int score);
 
   using StatsUpdatedCallback =
-      base::RepeatingCallback<void(const std::string& url)>;
+      base::RepeatingCallback<void(const GURL& url)>;
 
-  void SetStatsUpdatedCallback(StatsUpdatedCallback stats_updated_callback);
+  void SetStatsUpdatedCallback(
+      StatsUpdatedCallback stats_updated_callback);
+  void SetStatsThresholdCallback(
+      StatsUpdatedCallback stats_threshold_callback);
 
  private:
+  GURL BuildStatsEndpoint(const std::string& path);
+  void OnThresholdLoaderComplete(
+      scoped_refptr<net::HttpResponseHeaders>);
   // Invoked from SimpleURLLoader after download is complete.
   void OnSimpleLoaderComplete(
-      std::unique_ptr<brave::BraveStatsUpdaterParams> stats_updater_params,
+      std::unique_ptr<brave_stats::BraveStatsUpdaterParams>
+          stats_updater_params,
       scoped_refptr<net::HttpResponseHeaders> headers);
 
   // Invoked when server ping timer fires.
@@ -62,14 +70,21 @@ class BraveStatsUpdater {
   void OnReferralInitialization();
 
   void StartServerPingStartupTimer();
+  void QueueServerPing();
+  void SendUserTriggeredPing();
   void SendServerPing();
 
-  friend class ::BraveStatsUpdaterBrowserTest;
-  static void SetBaseUpdateURLForTest(const std::string& base_update_url);
-  static std::string g_base_update_url_;
+  bool IsReferralInitialized();
+  bool HasDoneThresholdPing();
+  void DisableThresholdPing();
 
+  friend class ::BraveStatsUpdaterBrowserTest;
+
+  int threshold_score_ = 0;
   PrefService* pref_service_;
+  std::string usage_server_;
   StatsUpdatedCallback stats_updated_callback_;
+  StatsUpdatedCallback stats_threshold_callback_;
   std::unique_ptr<network::SimpleURLLoader> simple_url_loader_;
   std::unique_ptr<base::OneShotTimer> server_ping_startup_timer_;
   std::unique_ptr<base::RepeatingTimer> server_ping_periodic_timer_;
@@ -83,8 +98,8 @@ std::unique_ptr<BraveStatsUpdater> BraveStatsUpdaterFactory(
     PrefService* pref_service);
 
 // Registers the preferences used by BraveStatsUpdater
-void RegisterPrefsForBraveStatsUpdater(PrefRegistrySimple* registry);
+void RegisterLocalStatePrefs(PrefRegistrySimple* registry);
 
-}  // namespace brave
+}  // namespace brave_stats
 
-#endif  // BRAVE_BROWSER_BRAVE_STATS_UPDATER_H_
+#endif  // BRAVE_BROWSER_BRAVE_STATS_BRAVE_STATS_UPDATER_H_

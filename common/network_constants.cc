@@ -8,6 +8,9 @@
 const char kBraveProxyPattern[] = "https://*.brave.com/*";
 const char kBraveSoftwareProxyPattern[] = "https://*.bravesoftware.com/*";
 
+const char kBraveUsageStandardPath[] = "/1/usage/brave-core";
+const char kBraveUsageThresholdPath[] = "/1/usage/brave-core-threshold";
+
 const char kBraveReferralsServer[] = "laptop-updates.brave.com";
 const char kBraveReferralsHeadersPath[] = "/promo/custom-headers";
 const char kBraveReferralsInitPath[] = "/promo/initialize/nonua";
