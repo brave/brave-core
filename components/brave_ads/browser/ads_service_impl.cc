@@ -230,7 +230,7 @@ AdsServiceImpl::AdsServiceImpl(Profile* profile) :
 
 AdsServiceImpl::~AdsServiceImpl() {
   file_task_runner_->DeleteSoon(FROM_HERE, database_.release());
-  g_brave_browser_process->user_model_file_service()->RemoveObserver(this);
+  RemoveObservers();
 }
 
 void AdsServiceImpl::OnUserModelUpdated(
@@ -566,6 +566,8 @@ GetAutoDetectedAdsSubdivisionTargetingCode() const {
 void AdsServiceImpl::Shutdown() {
   BackgroundHelper::GetInstance()->RemoveObserver(this);
 
+  RemoveObservers();
+
   for (auto* const url_loader : url_loaders_) {
     delete url_loader;
   }
@@ -656,8 +658,6 @@ void AdsServiceImpl::Initialize() {
   MaybeShowOnboarding();
 #endif
 
-  g_brave_browser_process->user_model_file_service()->AddObserver(this);
-
   MaybeStart(false);
 }
 
@@ -715,6 +715,10 @@ void AdsServiceImpl::OnShutdownBatAds(
   Shutdown();
 
   VLOG(1) << "Successfully shutdown ads";
+}
+
+void AdsServiceImpl::RemoveObservers() {
+  g_brave_browser_process->user_model_file_service()->RemoveObserver(this);
 }
 
 bool AdsServiceImpl::StartService() {
@@ -847,6 +851,8 @@ void AdsServiceImpl::OnEnsureBaseDirectoryExists(
     VLOG(0) << "Failed to create base directory";
     return;
   }
+
+  g_brave_browser_process->user_model_file_service()->AddObserver(this);
 
   BackgroundHelper::GetInstance()->AddObserver(this);
 
