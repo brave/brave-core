@@ -190,8 +190,6 @@ class AdsServiceImpl : public AdsService,
   void OnShutdownBatAds(
       const int32_t result);
 
-  void RemoveObservers();
-
   bool StartService();
 
   void MaybeStart(

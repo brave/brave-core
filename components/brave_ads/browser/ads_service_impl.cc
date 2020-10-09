@@ -230,7 +230,6 @@ AdsServiceImpl::AdsServiceImpl(Profile* profile) :
 
 AdsServiceImpl::~AdsServiceImpl() {
   file_task_runner_->DeleteSoon(FROM_HERE, database_.release());
-  RemoveObservers();
 }
 
 void AdsServiceImpl::OnUserModelUpdated(
@@ -566,7 +565,7 @@ GetAutoDetectedAdsSubdivisionTargetingCode() const {
 void AdsServiceImpl::Shutdown() {
   BackgroundHelper::GetInstance()->RemoveObserver(this);
 
-  RemoveObservers();
+  g_brave_browser_process->user_model_file_service()->RemoveObserver(this);
 
   for (auto* const url_loader : url_loaders_) {
     delete url_loader;
@@ -715,10 +714,6 @@ void AdsServiceImpl::OnShutdownBatAds(
   Shutdown();
 
   VLOG(1) << "Successfully shutdown ads";
-}
-
-void AdsServiceImpl::RemoveObservers() {
-  g_brave_browser_process->user_model_file_service()->RemoveObserver(this);
 }
 
 bool AdsServiceImpl::StartService() {
