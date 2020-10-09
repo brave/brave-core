@@ -10,8 +10,8 @@
 #include "brave/browser/ui/browser_commands.h"
 #include "brave/browser/ui/views/brave_actions/brave_actions_container.h"
 #include "brave/browser/ui/views/location_bar/brave_location_bar_view.h"
-#include "brave/grit/brave_generated_resources.h"
 #include "brave/common/tor/pref_names.h"
+#include "brave/grit/brave_generated_resources.h"
 #include "chrome/browser/chrome_notification_types.h"
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/browser_list.h"
@@ -152,6 +152,8 @@ IN_PROC_BROWSER_TEST_F(OnionLocationNavigationThrottleBrowserTest,
   GURL url = test_server()->GetURL("/onion");
   ui_test_utils::NavigateToURL(browser(), url);
   tor_browser_creation_observer.Wait();
+  // Last tab will not be closed
+  EXPECT_EQ(browser()->tab_strip_model()->count(), 1);
   content::WebContents* web_contents =
       browser()->tab_strip_model()->GetActiveWebContents();
   tor::OnionLocationTabHelper* helper =
@@ -161,9 +163,22 @@ IN_PROC_BROWSER_TEST_F(OnionLocationNavigationThrottleBrowserTest,
 
   BrowserList* browser_list = BrowserList::GetInstance();
   EXPECT_EQ(2U, browser_list->size());
-  ASSERT_TRUE(brave::IsTorProfile(browser_list->get(1)->profile()));
-  web_contents =
-      browser_list->get(1)->tab_strip_model()->GetActiveWebContents();
+  Browser* tor_browser = browser_list->get(1);
+  ASSERT_TRUE(brave::IsTorProfile(tor_browser->profile()));
+  web_contents = tor_browser->tab_strip_model()->GetActiveWebContents();
+  EXPECT_EQ(web_contents->GetURL(), GURL(kTestOnionURL));
+
+  // Open a new tab
+  NavigateParams params(
+      NavigateParams(browser(), url, ui::PAGE_TRANSITION_TYPED));
+  params.disposition = WindowOpenDisposition::NEW_FOREGROUND_TAB;
+  ui_test_utils::NavigateToURL(&params);
+
+  EXPECT_EQ(browser()->tab_strip_model()->count(), 1);
+
+  EXPECT_EQ(2U, browser_list->size());
+  web_contents = tor_browser->tab_strip_model()->GetWebContentsAt(2);
+  EXPECT_EQ(tor_browser->tab_strip_model()->count(), 3);
   EXPECT_EQ(web_contents->GetURL(), GURL(kTestOnionURL));
 }
 

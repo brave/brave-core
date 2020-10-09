@@ -79,11 +79,12 @@ OnionLocationNavigationThrottle::WillProcessResponse() {
       !navigation_handle()->GetURL().DomainIs("onion")) {
     // If user prefers opening it automatically
     if (profile_->GetPrefs()->GetBoolean(prefs::kAutoOnionLocation)) {
-      // Cleanup previous label before user switching to kAutoOnionLocation
-      OnionLocationTabHelper::SetOnionLocation(
-          navigation_handle()->GetWebContents(), GURL());
       profiles::SwitchToTorProfile(
           base::BindRepeating(&OnTorProfileCreated, GURL(onion_location)));
+      // We do not close last tab of the window
+      Browser* browser = chrome::FindBrowserWithProfile(profile_);
+      if (browser && browser->tab_strip_model()->count() > 1)
+        navigation_handle()->GetWebContents()->ClosePage();
     } else {
       OnionLocationTabHelper::SetOnionLocation(
           navigation_handle()->GetWebContents(), GURL(onion_location));
