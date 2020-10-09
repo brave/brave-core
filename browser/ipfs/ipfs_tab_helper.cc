@@ -46,7 +46,7 @@ void IPFSTabHelper::UpdateActiveState(content::NavigationHandle* handle) {
   auto resolve_method = static_cast<ipfs::IPFSResolveMethodTypes>(
       pref_service_->GetInteger(kIPFSResolveMethod));
   if (resolve_method == ipfs::IPFSResolveMethodTypes::IPFS_ASK &&
-      IpfsUtils::IsIPFSURL(handle->GetURL())) {
+      IsIPFSURL(handle->GetURL())) {
     InfoBarService* infobar_service =
         InfoBarService::FromWebContents(web_contents());
     if (infobar_service) {

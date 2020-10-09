@@ -10,14 +10,11 @@ class GURL;
 
 namespace ipfs {
 
-class IpfsUtils {
- public:
-  static bool IsIPFSURL(const GURL& url);
-  static bool IsDefaultGatewayURL(const GURL& url);
-  static bool IsLocalGatewayURL(const GURL& url);
-  static bool IsIPFSScheme(const GURL& url);
-  static GURL ToPublicGatewayURL(const GURL& url);
-};
+bool IsIPFSURL(const GURL& url);
+bool IsDefaultGatewayURL(const GURL& url);
+bool IsLocalGatewayURL(const GURL& url);
+bool IsIPFSScheme(const GURL& url);
+GURL ToPublicGatewayURL(const GURL& url);
 
 }  // namespace ipfs
 

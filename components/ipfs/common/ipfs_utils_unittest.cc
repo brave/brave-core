@@ -21,7 +21,7 @@ TEST_F(IpfsUtilsUnitTest, IsIPFSURL) {
             "Anasayfa.html")});
 
   for (auto url : ipfs_urls) {
-    EXPECT_TRUE(ipfs::IpfsUtils::IsIPFSURL(url)) << url;
+    EXPECT_TRUE(ipfs::IsIPFSURL(url)) << url;
   }
 }
 
@@ -43,11 +43,11 @@ TEST_F(IpfsUtilsUnitTest, IsDefaultGatewayURL) {
             "/wiki/Vincent_van_Gogh.html")});
 
   for (auto url : gateway_urls) {
-    EXPECT_TRUE(ipfs::IpfsUtils::IsDefaultGatewayURL(url)) << url;
+    EXPECT_TRUE(ipfs::IsDefaultGatewayURL(url)) << url;
   }
 
   for (auto url : ipfs_urls) {
-    EXPECT_FALSE(ipfs::IpfsUtils::IsDefaultGatewayURL(url)) << url;
+    EXPECT_FALSE(ipfs::IsDefaultGatewayURL(url)) << url;
   }
 }
 
@@ -74,11 +74,11 @@ TEST_F(IpfsUtilsUnitTest, IsLocalGatewayURL) {
             "Vincent_van_Gogh.html")});
 
   for (auto url : local_gateway_urls) {
-    EXPECT_TRUE(ipfs::IpfsUtils::IsLocalGatewayURL(url)) << url;
+    EXPECT_TRUE(ipfs::IsLocalGatewayURL(url)) << url;
   }
 
   for (auto url : non_local_gateway_urls) {
-    EXPECT_FALSE(ipfs::IpfsUtils::IsLocalGatewayURL(url)) << url;
+    EXPECT_FALSE(ipfs::IsLocalGatewayURL(url)) << url;
   }
 }
 
@@ -99,7 +99,7 @@ TEST_F(IpfsUtilsUnitTest, ToPublicGatewayURL) {
       "Vincent_van_Gogh.html");
 
   for (auto url : ipfs_urls) {
-    GURL new_url = ipfs::IpfsUtils::ToPublicGatewayURL(url);
+    GURL new_url = ipfs::ToPublicGatewayURL(url);
     EXPECT_EQ(new_url, expected_new_url) << url;
   }
 }
