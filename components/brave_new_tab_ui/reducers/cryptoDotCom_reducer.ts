@@ -34,35 +34,44 @@ const cryptoDotComReducer: Reducer<NewTab.State | undefined> = (state: NewTab.St
       state.cryptoDotComState.optInBTCPrice = true
       break
 
-    case types.SET_MARKETS_REQUESTED:
+    case types.MARKET_DATA_UPDATED:
       state = { ...state }
-      state.cryptoDotComState.tickerPrices = {
-        ...state.cryptoDotComState.tickerPrices,
-        ...payload.tickerPrices
+      state.cryptoDotComState = {
+        ...state.cryptoDotComState,
+        tickerPrices: {
+          ...state.cryptoDotComState.tickerPrices,
+          ...payload.tickerPrices
+        },
+        losersGainers: payload.losersGainers
       }
-      state.cryptoDotComState.losersGainers = payload.losersGainers
       break
 
     case types.SET_ASSET_DATA:
       state = { ...state }
-      state.cryptoDotComState.charts = {
-        ...state.cryptoDotComState.charts,
-        ...payload.charts
+      state.cryptoDotComState = {
+        ...state.cryptoDotComState,
+        charts: {
+          ...state.cryptoDotComState.charts,
+          ...payload.charts
+        },
+        supportedPairs: reducePairs(payload.pairs)
       }
-      state.cryptoDotComState.supportedPairs = reducePairs(payload.pairs)
       break
 
     case types.ON_REFRESH_DATA:
       state = { ...state }
-      state.cryptoDotComState.tickerPrices = {
-        ...state.cryptoDotComState.tickerPrices,
-        ...payload.tickerPrices
+      state.cryptoDotComState = {
+        ...state.cryptoDotComState,
+        tickerPrices: {
+          ...state.cryptoDotComState.tickerPrices,
+          ...payload.tickerPrices
+        },
+        charts: {
+          ...state.cryptoDotComState.charts,
+          ...payload.charts
+        },
+        losersGainers: payload.losersGainers
       }
-      state.cryptoDotComState.charts = {
-        ...state.cryptoDotComState.charts,
-        ...payload.charts
-      }
-      state.cryptoDotComState.losersGainers = payload.losersGainers
       break
 
     case types.ON_BUY_CRYPTO:

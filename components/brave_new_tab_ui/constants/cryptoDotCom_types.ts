@@ -4,7 +4,7 @@
 // you can obtain one at http://mozilla.org/MPL/2.0/.
 
 export const enum types {
-  SET_MARKETS_REQUESTED = '@@cryptoDotCom/SET_MARKETS_REQUESTED',
+  MARKET_DATA_UPDATED = '@@cryptoDotCom/MARKET_DATA_UPDATED',
   SET_ASSET_DATA = '@@cryptoDotCom/SET_ASSET_DATA',
   ON_REFRESH_DATA = '@@cryptoDotCom/ON_REFRESH_DATA',
   ON_TOTAL_PRICE_OPT_IN = '@@cryptoDotCom/ON_TOTAL_PRICE_OPT_IN',

@@ -30,7 +30,7 @@ import {
   fetchCryptoDotComLosersGainers,
   fetchCryptoDotComCharts,
   fetchCryptoDotComSupportedPairs
-} from '../../helpers/cryptoDotComApiHelpers'
+} from '../../api/cryptoDotCom'
 import { generateQRData } from '../../binance-utils'
 
 // Types
@@ -567,7 +567,7 @@ class NewTabPage extends React.Component<Props, State> {
       fetchCryptoDotComTickerPrices(assets),
       fetchCryptoDotComLosersGainers()
     ])
-    this.props.actions.setCryptoDotComMarketsRequested(tickerPrices, losersGainers)
+    this.props.actions.cryptoDotComMarketDataUpdate(tickerPrices, losersGainers)
   }
 
   onCryptoDotComAssetData = async (assets: string[]) => {
