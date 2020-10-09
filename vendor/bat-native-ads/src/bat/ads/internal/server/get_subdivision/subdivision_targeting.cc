@@ -81,6 +81,10 @@ bool SubdivisionTargeting::IsDisabled() const {
 
 void SubdivisionTargeting::MaybeFetchForLocale(
     const std::string& locale) {
+  if (retry_timer_.IsRunning()) {
+    return;
+  }
+
   if (!IsSupportedLocale(locale)) {
     BLOG(1, "Ads subdivision targeting is not supported for " << locale
         << " locale");
@@ -164,10 +168,6 @@ bool SubdivisionTargeting::ShouldAutoDetect() const {
 }
 
 void SubdivisionTargeting::Fetch() {
-  if (retry_timer_.IsRunning()) {
-    return;
-  }
-
   BLOG(1, "Fetch ads subdivision");
   BLOG(2, "GET /v5/getstate");
 
@@ -188,19 +188,14 @@ void SubdivisionTargeting::OnFetch(
   bool should_retry = false;
 
   if (url_response.status_code / 100 == 2) {
-    if (!url_response.body.empty()) {
-      BLOG(1, "Successfully fetched ads subdivision");
-    }
+    BLOG(1, "Successfully fetched ads subdivision");
 
     if (!ParseJson(url_response.body)) {
       BLOG(1, "Failed to parse ads subdivision");
       should_retry = true;
     }
-  } else if (url_response.status_code == 304) {
-    BLOG(1, "Ads subdivision is up to date");
   } else {
     BLOG(1, "Failed to fetch ads subdivision");
-
     should_retry = true;
   }
 
@@ -249,8 +244,7 @@ bool SubdivisionTargeting::ParseJson(
       base::StringPrintf("%s-%s", country->c_str(), region->c_str());
 
   ads_->get_ads_client()->SetStringPref(
-      prefs::kAutoDetectedAdsSubdivisionTargetingCode,
-          subdivision_code);
+      prefs::kAutoDetectedAdsSubdivisionTargetingCode, subdivision_code);
 
   return true;
 }
