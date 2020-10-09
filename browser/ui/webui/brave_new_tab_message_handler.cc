@@ -172,7 +172,10 @@ BraveNewTabMessageHandler::BraveNewTabMessageHandler(Profile* profile)
   }
 }
 
-BraveNewTabMessageHandler::~BraveNewTabMessageHandler() {}
+BraveNewTabMessageHandler::~BraveNewTabMessageHandler() {
+  if (tor_profile_service_)
+    tor_profile_service_->RemoveObserver(this);
+}
 
 void BraveNewTabMessageHandler::RegisterMessages() {
   // TODO(petemill): This MessageHandler can be split up to
