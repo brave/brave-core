@@ -25,9 +25,6 @@ public class BraveTabSwitcherModeTTPhoneClassAdapter extends BraveClassVisitor {
         deleteField(sBraveTabSwitcherModeTTPhoneClassName, "mToggleTabStackButton");
         makeProtectedField(sTabSwitcherModeTTPhoneClassName, "mToggleTabStackButton");
 
-        deleteField(sBraveTabSwitcherModeTTPhoneClassName, "mMenuButton");
-        makeProtectedField(sTabSwitcherModeTTPhoneClassName, "mMenuButton");
-
         deleteField(sBraveTabSwitcherModeTTPhoneClassName, "mShouldShowNewTabVariation");
         makeProtectedField(sTabSwitcherModeTTPhoneClassName, "mShouldShowNewTabVariation");
 
