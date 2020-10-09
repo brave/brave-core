@@ -195,6 +195,8 @@ public class BraveSyncScreensPreference extends BravePreferenceFragment
     @Override
     public View onCreateView(
             LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        ProfileSyncService.get().addSyncStateChangedListener(this);
+
         InvalidateCodephrase();
 
         if (ensureCameraPermission()) {
@@ -888,6 +890,9 @@ public class BraveSyncScreensPreference extends BravePreferenceFragment
         if (mCameraSourcePreview != null) {
             mCameraSourcePreview.release();
         }
+
+        ProfileSyncService.get().removeSyncStateChangedListener(this);
+
         if (deviceInfoObserverSet) {
             BraveSyncDevices.get().removeDeviceInfoChangedListener(this);
             deviceInfoObserverSet = false;
@@ -1009,8 +1014,6 @@ public class BraveSyncScreensPreference extends BravePreferenceFragment
         mAddDeviceButton.setVisibility(View.GONE);
         mRemoveDeviceButton.setVisibility(View.GONE);
 
-        ProfileSyncService.get().addSyncStateChangedListener(this);
-
         PostTask.postDelayedTask(
                 UiThreadTaskTraits.USER_VISIBLE, () -> leaveSyncChainComplete(), 5 * 1000);
 
@@ -1024,8 +1027,6 @@ public class BraveSyncScreensPreference extends BravePreferenceFragment
         if (mLeaveSyncChainInProgress) {
             mLeaveSyncChainInProgress = false;
 
-            ProfileSyncService.get().removeSyncStateChangedListener(this);
-
             mShowCategoriesButton.setVisibility(View.VISIBLE);
             mAddDeviceButton.setVisibility(View.VISIBLE);
             mRemoveDeviceButton.setVisibility(View.VISIBLE);
@@ -1036,8 +1037,13 @@ public class BraveSyncScreensPreference extends BravePreferenceFragment
 
     @Override
     public void syncStateChanged() {
-        if (ProfileSyncService.get().isFirstSetupComplete() == false && mLeaveSyncChainInProgress) {
-            leaveSyncChainComplete();
+        if (ProfileSyncService.get().isFirstSetupComplete() == false) {
+            if (mLeaveSyncChainInProgress) {
+                leaveSyncChainComplete();
+            } else {
+                InvalidateCodephrase();
+                setAppropriateView();
+            }
         }
     }
 
