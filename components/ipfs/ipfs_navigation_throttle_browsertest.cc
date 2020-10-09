@@ -89,7 +89,7 @@ class IpfsNavigationThrottleBrowserTest : public InProcessBrowserTest {
     ipfs_service_->SetIpfsLaunchedForTest(true);
 
     ipfs_url_ = GURL(
-        "http://127.0.0.1:8080/ipfs/"
+        "http://127.0.0.1:48080/ipfs/"
         "QmbWqxBEKC3P8tqsKc98xmWNzrzDtRLMiMPL8wBuTGsMnR");
     gateway_url_ = GURL(
         "https://dweb.link/ipfs/"

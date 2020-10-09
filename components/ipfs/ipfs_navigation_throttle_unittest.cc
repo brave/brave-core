@@ -38,7 +38,7 @@ namespace {
 
 const GURL& GetIPFSURL() {
   static const GURL ipfs_url(
-      "http://localhost:8080/ipfs/"
+      "http://localhost:48080/ipfs/"
       "bafybeiemxf5abjwjbikoz4mc3a3dla6ual3jsgpdr4cjr3oz3evfyavhwq/wiki/"
       "Vincent_van_Gogh.html");  // NOLINT
   return ipfs_url;
@@ -46,7 +46,7 @@ const GURL& GetIPFSURL() {
 
 const GURL& GetIPNSURL() {
   static const GURL ipns_url(
-      "http://localhost:8080/ipns/tr.wikipedia-on-ipfs.org/wiki/"
+      "http://localhost:48080/ipns/tr.wikipedia-on-ipfs.org/wiki/"
       "Anasayfa.html");  // NOLINT
   return ipns_url;
 }
