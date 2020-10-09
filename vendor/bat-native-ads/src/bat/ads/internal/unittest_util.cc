@@ -113,18 +113,30 @@ bool ParseTimeTag(
   return true;
 }
 
-void ParseAndReplaceTags(
+std::vector<std::string> ParseTagsForText(
     std::string* text) {
   DCHECK(text);
 
   re2::StringPiece text_string_piece(*text);
   RE2 r("<(.*)>");
 
-  std::string tag;
+  std::vector<std::string> tags;
 
+  std::string tag;
   while (RE2::FindAndConsume(&text_string_piece, r, &tag)) {
     tag = base::ToLowerASCII(tag);
+    tags.push_back(tag);
+  }
 
+  return tags;
+}
+
+void ReplaceTagsForText(
+    std::string* text,
+    const std::vector<std::string>& tags) {
+  DCHECK(text);
+
+  for (const auto& tag : tags) {
     const std::vector<std::string> components = base::SplitString(tag, ":",
         base::TRIM_WHITESPACE, base::SPLIT_WANT_ALL);
 
@@ -151,6 +163,12 @@ void ParseAndReplaceTags(
 
     RE2::Replace(text, escaped_enclosed_tag, value);
   }
+}
+
+void ParseAndReplaceTagsForText(
+    std::string* text) {
+  const std::vector<std::string> tags = ParseTagsForText(text);
+  ReplaceTagsForText(text, tags);
 }
 
 std::string GetUuid(
@@ -577,7 +595,7 @@ void MockUrlRequest(
               ASSERT_TRUE(base::ReadFileToString(path, &body));
             }
 
-            ParseAndReplaceTags(&body);
+            ParseAndReplaceTagsForText(&body);
           }
         }
 
