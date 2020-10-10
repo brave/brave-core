@@ -18,6 +18,7 @@ interface State {
   currentAmount: string
   assetsShowing: boolean
   fiatCurrenciesShowing: boolean
+  amountError: boolean
 }
 
 interface Props {
@@ -29,6 +30,7 @@ interface Props {
 }
 
 class BitcoinDotCom extends React.PureComponent<Props, State> {
+  private minimumFiatAmount: number = 20
   private fiatCurrencies: Record<string, string> = fiatData
   private assets: Record<string, string> = {
     'BCH': 'Bitcoin Cash',
@@ -46,7 +48,8 @@ class BitcoinDotCom extends React.PureComponent<Props, State> {
       selectedFiat: 'EUR',
       currentAmount: '',
       assetsShowing: false,
-      fiatCurrenciesShowing: false
+      fiatCurrenciesShowing: false,
+      amountError: false
     }
   }
 
@@ -102,7 +105,11 @@ class BitcoinDotCom extends React.PureComponent<Props, State> {
       return
     }
 
-    this.setState({ currentAmount: value })
+    const parsedInput = parseFloat(value)
+    this.setState({
+      currentAmount: value,
+      amountError: (parsedInput < this.minimumFiatAmount)
+    })
   }
 
   toggleFiatCurrenciesShowing = () => {
@@ -145,10 +152,7 @@ class BitcoinDotCom extends React.PureComponent<Props, State> {
     const asset = selectedAsset.toLowerCase()
     const fiat = selectedFiat.toLowerCase()
 
-    if (amount.length) {
-      window.open(`https://bitcoincom.moonpay.io/?currencyCode=${asset}&baseCurrencyCode=${fiat}&baseCurrencyAmount=${amount}`, '_blank', 'noopener')
-    }
-
+    window.open(`https://bitcoincom.moonpay.io/?currencyCode=${asset}&baseCurrencyCode=${fiat}&baseCurrencyAmount=${amount}`, '_blank', 'noopener')
     this.props.onBuyCrypto()
   }
 
@@ -218,8 +222,28 @@ class BitcoinDotCom extends React.PureComponent<Props, State> {
     )
   }
 
+  renderAmountInputError () {
+    const { selectedFiat } = this.state
+
+    return (
+      <Styled.AmountErrorWrapper>
+        <Styled.AmountErrorLabel>
+          {getLocale('bitcoinDotComAmountError', {
+            fiat: selectedFiat,
+            minimumAmount: this.minimumFiatAmount.toString()
+          })}
+        </Styled.AmountErrorLabel>
+      </Styled.AmountErrorWrapper>
+    )
+  }
+
   renderAmountInput () {
-    const { currentAmount, fiatCurrenciesShowing, selectedFiat } = this.state
+    const {
+      amountError,
+      currentAmount,
+      fiatCurrenciesShowing,
+      selectedFiat
+    } = this.state
 
     return (
       <>
@@ -231,6 +255,7 @@ class BitcoinDotCom extends React.PureComponent<Props, State> {
         <Styled.AmountInputWrapper>
           <Styled.AmountInput
             type={'text'}
+            error={amountError}
             value={currentAmount}
             onChange={this.setCurrentAmount}
             dropdownShowing={fiatCurrenciesShowing}
@@ -238,6 +263,7 @@ class BitcoinDotCom extends React.PureComponent<Props, State> {
             placeholder={getLocale('bitcoinDotComWidgetEnterAmount')}
           />
           <Styled.FiatDropdown
+            error={amountError}
             dropdownShowing={fiatCurrenciesShowing}
             onClick={this.toggleFiatCurrenciesShowing}
           >
@@ -248,6 +274,7 @@ class BitcoinDotCom extends React.PureComponent<Props, State> {
               <CaratDownIcon />
             </Styled.DropdownIcon>
           </Styled.FiatDropdown>
+          {amountError && this.renderAmountInputError()}
           {fiatCurrenciesShowing && this.renderFiatItems()}
         </Styled.AmountInputWrapper>
       </>
@@ -283,9 +310,12 @@ class BitcoinDotCom extends React.PureComponent<Props, State> {
   }
 
   renderFooter () {
+    const { amountError, currentAmount } = this.state
+    const buyDisabled = amountError || !currentAmount.trim().length
+
     return (
       <Styled.FooterWrapper>
-        <Styled.BuyButton onClick={this.openBuyURL}>
+        <Styled.BuyButton disabled={buyDisabled} onClick={this.openBuyURL}>
           {getLocale('bitcoinDotComWidgetBuy')}
         </Styled.BuyButton>
         <Styled.FooterInfo>
