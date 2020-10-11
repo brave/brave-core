@@ -294,6 +294,7 @@ export const SettingsWidget = styled<{}, 'div'>('div')`
   float: left;
   width: 48%;
   margin-top: 20px;
+  padding: 0px 1px;
 `
 
 interface WidgetSettingsProps {
@@ -351,6 +352,12 @@ export const StyledWidgetToggle = styled<WidgetToggleProps, 'button'>('button')`
   margin-top: 8px;
   cursor: pointer;
   background: ${p => p.isAdd ? '#FB542B' : '#212529'};
+
+  &:focus {
+    outline-style: solid;
+    outline-color: ${p => p.theme.color.brandBrave};
+    outline-width: 1px;
+  }
 `
 
 export const StyledButtonIcon = styled<{}, 'div'>('div')`
