@@ -21,6 +21,7 @@
 #include "brave/components/brave_ads/browser/ads_service_factory.h"
 #include "brave/components/brave_perf_predictor/browser/buildflags.h"
 #include "brave/components/moonpay/browser/buildflags/buildflags.h"
+#include "brave/components/crypto_dot_com/browser/buildflags/buildflags.h"
 #include "brave/components/ntp_background_images/browser/features.h"
 #include "brave/components/ntp_background_images/browser/view_counter_service.h"
 #include "brave/components/ntp_background_images/common/pref_names.h"
@@ -43,6 +44,10 @@ using ntp_background_images::ViewCounterServiceFactory;
 
 #if BUILDFLAG(MOONPAY_ENABLED)
 #include "brave/components/moonpay/common/pref_names.h"
+#endif
+
+#if BUILDFLAG(CRYPTO_DOT_COM_ENABLED)
+#include "brave/components/crypto_dot_com/common/pref_names.h"
 #endif
 
 namespace {
@@ -114,6 +119,11 @@ base::DictionaryValue GetPreferencesDictionary(PrefService* prefs) {
   pref_data.SetBoolean(
       "showBitcoinDotCom",
       prefs->GetBoolean(kMoonpayNewTabPageShowBitcoinDotCom));
+#endif
+#if BUILDFLAG(CRYPTO_DOT_COM_ENABLED)
+  pref_data.SetBoolean(
+      "showCryptoDotCom",
+      prefs->GetBoolean(kCryptoDotComNewTabPageShowCryptoDotCom));
 #endif
   return pref_data;
 }
@@ -303,6 +313,11 @@ void BraveNewTabMessageHandler::OnJavascriptAllowed() {
     base::Bind(&BraveNewTabMessageHandler::OnPreferencesChanged,
     base::Unretained(this)));
 #endif
+#if BUILDFLAG(CRYPTO_DOT_COM_ENABLED)
+  pref_change_registrar_.Add(kCryptoDotComNewTabPageShowCryptoDotCom,
+    base::Bind(&BraveNewTabMessageHandler::OnPreferencesChanged,
+    base::Unretained(this)));
+#endif
 
   if (tor_profile_service_)
     tor_profile_service_->AddObserver(this);
@@ -409,6 +424,10 @@ void BraveNewTabMessageHandler::HandleSaveNewTabPagePref(
 #if BUILDFLAG(MOONPAY_ENABLED)
   } else if (settingsKeyInput == "showBitcoinDotCom") {
     settingsKey = kMoonpayNewTabPageShowBitcoinDotCom;
+#endif
+#if BUILDFLAG(CRYPTO_DOT_COM_ENABLED)
+  } else if (settingsKeyInput == "showCryptoDotCom") {
+    settingsKey = kCryptoDotComNewTabPageShowCryptoDotCom;
 #endif
   } else {
     LOG(ERROR) << "Invalid setting key";

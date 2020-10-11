@@ -18,6 +18,7 @@ import * as binanceActions from '../actions/binance_actions'
 import * as rewardsActions from '../actions/rewards_actions'
 import * as geminiActions from '../actions/gemini_actions'
 import * as bitcoinDotComActions from '../actions/bitcoin_dot_com_actions'
+import * as cryptoDotComActions from '../actions/cryptoDotCom_actions'
 import * as PreferencesAPI from '../api/preferences'
 
 // Types
@@ -54,6 +55,7 @@ class DefaultPage extends React.Component<Props, {}> {
           saveShowAddCard={PreferencesAPI.saveShowAddCard}
           saveShowGemini={PreferencesAPI.saveShowGemini}
           saveShowBitcoinDotCom={PreferencesAPI.saveShowBitcoinDotCom}
+          saveShowCryptoDotCom={PreferencesAPI.saveShowCryptoDotCom}
           saveBrandedWallpaperOptIn={PreferencesAPI.saveBrandedWallpaperOptIn}
         />
       )
@@ -66,7 +68,7 @@ const mapStateToProps = (state: NewTab.ApplicationState) => ({
 })
 
 const mapDispatchToProps = (dispatch: Dispatch) => {
-  const allActions = Object.assign({}, newTabActions, gridSitesActions, binanceActions, rewardsActions, geminiActions, bitcoinDotComActions)
+  const allActions = Object.assign({}, newTabActions, gridSitesActions, binanceActions, rewardsActions, geminiActions, bitcoinDotComActions, cryptoDotComActions)
   return {
     actions: bindActionCreators(allActions, dispatch)
   }

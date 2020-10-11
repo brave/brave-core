@@ -19,6 +19,7 @@
 #include "brave/components/brave_wayback_machine/buildflags.h"
 #include "brave/components/brave_webtorrent/browser/buildflags/buildflags.h"
 #include "brave/components/moonpay/browser/buildflags/buildflags.h"
+#include "brave/components/crypto_dot_com/browser/buildflags/buildflags.h"
 #include "brave/components/ipfs/browser/buildflags/buildflags.h"
 #include "brave/components/speedreader/buildflags.h"
 #include "chrome/browser/net/prediction_options.h"
@@ -78,6 +79,11 @@
 
 #if BUILDFLAG(ENABLE_SPEEDREADER)
 #include "brave/components/speedreader/speedreader_service.h"
+#endif
+
+#if BUILDFLAG(CRYPTO_DOT_COM_ENABLED)
+#include "brave/components/crypto_dot_com/browser/crypto_dot_com_pref_utils.h"
+#include "brave/components/crypto_dot_com/common/pref_names.h"
 #endif
 
 #if defined(OS_ANDROID)
@@ -236,7 +242,7 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
   registry->RegisterBooleanPref(kNewTabPageShowStats, true);
   registry->RegisterBooleanPref(kNewTabPageShowRewards, true);
   registry->RegisterBooleanPref(kNewTabPageShowBinance, true);
-  registry->RegisterBooleanPref(kNewTabPageShowTogether, true);
+  registry->RegisterBooleanPref(kNewTabPageShowTogether, false);
   registry->RegisterBooleanPref(kNewTabPageShowAddCard, true);
   registry->RegisterBooleanPref(kNewTabPageShowGemini, true);
 
@@ -281,6 +287,10 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
 
 #if BUILDFLAG(MOONPAY_ENABLED)
   moonpay::MoonpayPrefUtils::RegisterPrefs(registry);
+#endif
+
+#if BUILDFLAG(CRYPTO_DOT_COM_ENABLED)
+  crypto_dot_com::RegisterPrefs(registry);
 #endif
 
 #if !defined(OS_ANDROID)

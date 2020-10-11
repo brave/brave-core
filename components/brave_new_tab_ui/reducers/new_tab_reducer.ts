@@ -42,7 +42,8 @@ export const newTabReducer: Reducer<NewTab.State | undefined> = (state: NewTab.S
         ...initialDataPayload.torTabData,
         togetherSupported: initialDataPayload.togetherSupported,
         geminiSupported: initialDataPayload.geminiSupported,
-        bitcoinDotComSupported: initialDataPayload.bitcoinDotComSupported
+        bitcoinDotComSupported: initialDataPayload.bitcoinDotComSupported,
+        cryptoDotComSupported: initialDataPayload.cryptoDotComSupported
       }
       if (state.brandedWallpaperData && !state.brandedWallpaperData.isSponsored) {
         // Update feature flag if this is super referral wallpaper.
