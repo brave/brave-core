@@ -80,6 +80,10 @@ export function saveShowBitcoinDotCom (value: boolean): void {
   sendSavePref('showBitcoinDotCom', value)
 }
 
+export function saveShowCryptoDotCom (value: boolean): void {
+  sendSavePref('showCryptoDotCom', value)
+}
+
 export function addChangeListener (listener: PreferencesUpdatedHandler): void {
   window.cr.addWebUIListener('preferences-changed', listener)
 }
