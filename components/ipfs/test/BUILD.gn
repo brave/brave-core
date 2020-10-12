@@ -4,17 +4,17 @@
 # You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 import("//brave/build/config.gni")
-import("//brave/components/ipfs/browser/buildflags/buildflags.gni")
+import("//brave/components/ipfs/buildflags/buildflags.gni")
 import("//testing/test.gni")
 
 source_set("brave_ipfs_unit_tests") {
   testonly = true
   if (ipfs_enabled) {
     sources = [
-      "//brave/components/ipfs/browser/ipfs_json_parser_unittest.cc",
-      "//brave/components/ipfs/browser/ipfs_navigation_throttle_unittest.cc",
-      "//brave/components/ipfs/common/ipfs_utils_unittest.cc",
-      "//brave/components/ipfs/common/translate_ipfs_uri_unittest.cc",
+      "//brave/components/ipfs/ipfs_json_parser_unittest.cc",
+      "//brave/components/ipfs/ipfs_navigation_throttle_unittest.cc",
+      "//brave/components/ipfs/ipfs_utils_unittest.cc",
+      "//brave/components/ipfs/translate_ipfs_uri_unittest.cc",
     ]
 
     deps = [
@@ -22,8 +22,7 @@ source_set("brave_ipfs_unit_tests") {
       "//brave/browser:browser_process",
       "//brave/browser/profiles",
       "//brave/browser/tor:buildflags",
-      "//brave/components/ipfs/browser",
-      "//brave/components/ipfs/common",
+      "//brave/components/ipfs",
       "//brave/test:test_support",
       "//chrome:browser_dependencies",
       "//chrome/test:test_support",
@@ -39,17 +38,16 @@ source_set("brave_ipfs_browser_tests") {
   testonly = true
   if (ipfs_enabled) {
     sources = [
-      "//brave/components/ipfs/browser/brave_ipfs_client_updater_browsertest.cc",
-      "//brave/components/ipfs/browser/ipfs_navigation_throttle_browsertest.cc",
-      "//brave/components/ipfs/browser/ipfs_service_browsertest.cc",
+      "//brave/components/ipfs/brave_ipfs_client_updater_browsertest.cc",
+      "//brave/components/ipfs/ipfs_navigation_throttle_browsertest.cc",
+      "//brave/components/ipfs/ipfs_service_browsertest.cc",
     ]
 
     deps = [
       "//base/test:test_support",
       "//brave/browser:browser_process",
       "//brave/common",
-      "//brave/components/ipfs/browser",
-      "//brave/components/ipfs/common",
+      "//brave/components/ipfs",
       "//chrome/browser",
       "//chrome/test:test_support",
       "//chrome/test:test_support_ui",

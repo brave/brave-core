@@ -8,7 +8,7 @@
 #include "base/path_service.h"
 #include "brave/browser/brave_browser_process_impl.h"
 #include "brave/browser/profiles/profile_util.h"
-#include "brave/components/ipfs/browser/ipfs_service.h"
+#include "brave/components/ipfs/ipfs_service.h"
 #include "chrome/browser/profiles/incognito_helpers.h"
 #include "chrome/common/chrome_paths.h"
 #include "components/keyed_service/content/browser_context_dependency_manager.h"

@@ -21,7 +21,7 @@
 #include "brave/components/brave_referrals/buildflags/buildflags.h"
 #include "brave/components/brave_rewards/browser/buildflags/buildflags.h"
 #include "brave/components/brave_webtorrent/browser/buildflags/buildflags.h"
-#include "brave/components/ipfs/browser/buildflags/buildflags.h"
+#include "brave/components/ipfs/buildflags/buildflags.h"
 #include "chrome/browser/browser_process.h"
 #include "components/prefs/pref_change_registrar.h"
 #include "components/prefs/pref_service.h"

@@ -11,7 +11,7 @@
 #include "brave/components/brave_component_updater/browser/features.h"
 #include "brave/components/brave_shields/common/features.h"
 #include "brave/components/brave_sync/buildflags/buildflags.h"
-#include "brave/components/ipfs/browser/buildflags/buildflags.h"
+#include "brave/components/ipfs/buildflags/buildflags.h"
 #include "brave/components/ntp_background_images/browser/features.h"
 #include "brave/components/speedreader/buildflags.h"
 #include "chrome/browser/profiles/profile.h"
@@ -49,7 +49,7 @@ using ntp_background_images::features::kBraveNTPSuperReferralWallpaper;
 #endif
 
 #if BUILDFLAG(IPFS_ENABLED)
-#include "brave/components/ipfs/browser/features.h"
+#include "brave/components/ipfs/features.h"
 
 #define BRAVE_IPFS_FEATURE_ENTRIES                                         \
     {"brave-ipfs",                                                         \

@@ -16,7 +16,7 @@ import("//brave/components/brave_wayback_machine/buildflags/buildflags.gni")
 import("//brave/components/brave_webtorrent/browser/buildflags/buildflags.gni")
 import("//brave/components/gemini/browser/buildflags/buildflags.gni")
 import("//brave/components/greaselion/browser/buildflags/buildflags.gni")
-import("//brave/components/ipfs/browser/buildflags/buildflags.gni")
+import("//brave/components/ipfs/buildflags/buildflags.gni")
 import("//brave/components/moonpay/browser/buildflags/buildflags.gni")
 import("//brave/components/speedreader/buildflags.gni")
 import("//brave/test/testing.gni")
@@ -408,8 +408,7 @@ test("brave_unit_tests") {
       "//brave/browser/net/ipfs_redirect_network_delegate_helper_unittest.cc",
     ]
     deps += [
-      "//brave/components/ipfs/browser",
-      "//brave/components/ipfs/common",
+      "//brave/components/ipfs",
     ]
   }
 }
@@ -718,8 +717,7 @@ if (!is_android) {
         "//brave/browser/ipfs/ipfs_tab_helper_browsertest.cc",
       ]
       deps += [
-        "//brave/components/ipfs/browser",
-        "//brave/components/ipfs/common",
+        "//brave/components/ipfs",
       ]
     }
 
@@ -752,7 +750,7 @@ if (!is_android) {
       "//brave/components/brave_rewards/browser/buildflags:buildflags",
       "//brave/components/brave_sync/buildflags:buildflags",
       "//brave/components/brave_wallet/browser/buildflags:buildflags",
-      "//brave/components/ipfs/browser/buildflags:buildflags",
+      "//brave/components/ipfs/buildflags:buildflags",
       "//chrome/browser/ui",
       "//chrome/test:test_support_ui",
       "//components/embedder_support",

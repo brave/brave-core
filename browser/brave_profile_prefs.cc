@@ -21,7 +21,7 @@
 #include "brave/components/brave_webtorrent/browser/buildflags/buildflags.h"
 #include "brave/components/moonpay/browser/buildflags/buildflags.h"
 #include "brave/components/crypto_dot_com/browser/buildflags/buildflags.h"
-#include "brave/components/ipfs/browser/buildflags/buildflags.h"
+#include "brave/components/ipfs/buildflags/buildflags.h"
 #include "brave/components/speedreader/buildflags.h"
 #include "chrome/browser/net/prediction_options.h"
 #include "chrome/browser/prefs/session_startup_pref.h"
@@ -57,7 +57,7 @@
 #endif
 
 #if BUILDFLAG(IPFS_ENABLED)
-#include "brave/components/ipfs/browser/ipfs_service.h"
+#include "brave/components/ipfs/ipfs_service.h"
 #endif
 
 #if BUILDFLAG(GEMINI_ENABLED)

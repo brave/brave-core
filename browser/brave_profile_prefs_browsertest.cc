@@ -8,7 +8,7 @@
 #include "brave/components/brave_rewards/common/pref_names.h"
 #include "brave/components/brave_wallet/browser/buildflags/buildflags.h"
 #include "brave/components/brave_wayback_machine/buildflags.h"
-#include "brave/components/ipfs/browser/buildflags/buildflags.h"
+#include "brave/components/ipfs/buildflags/buildflags.h"
 #include "chrome/browser/net/prediction_options.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser.h"
@@ -23,8 +23,8 @@
 #include "content/public/test/browser_test.h"
 
 #if BUILDFLAG(IPFS_ENABLED)
-#include "brave/components/ipfs/common/ipfs_constants.h"
-#include "brave/components/ipfs/common/pref_names.h"
+#include "brave/components/ipfs/ipfs_constants.h"
+#include "brave/components/ipfs/pref_names.h"
 #endif
 
 #if BUILDFLAG(BRAVE_WALLET_ENABLED)

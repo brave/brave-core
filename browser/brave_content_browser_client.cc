@@ -32,8 +32,8 @@
 #include "brave/components/brave_shields/common/brave_shield_constants.h"
 #include "brave/components/brave_wallet/browser/buildflags/buildflags.h"
 #include "brave/components/brave_webtorrent/browser/buildflags/buildflags.h"
-#include "brave/components/ipfs/browser/buildflags/buildflags.h"
-#include "brave/components/ipfs/browser/features.h"
+#include "brave/components/ipfs/buildflags/buildflags.h"
+#include "brave/components/ipfs/features.h"
 #include "brave/components/speedreader/buildflags.h"
 #include "brave/grit/brave_generated_resources.h"
 #include "chrome/browser/content_settings/host_content_settings_map_factory.h"
@@ -77,7 +77,7 @@ using extensions::ChromeContentBrowserClientExtensionsPart;
 #if BUILDFLAG(IPFS_ENABLED)
 #include "brave/browser/ipfs/content_browser_client_helper.h"
 #include "brave/browser/ipfs/ipfs_service_factory.h"
-#include "brave/components/ipfs/browser/ipfs_navigation_throttle.h"
+#include "brave/components/ipfs/ipfs_navigation_throttle.h"
 #endif
 
 #if BUILDFLAG(BRAVE_REWARDS_ENABLED)

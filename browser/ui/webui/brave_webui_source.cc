@@ -9,7 +9,7 @@
 #include <vector>
 
 #include "brave/components/crypto_dot_com/browser/buildflags/buildflags.h"
-#include "brave/components/ipfs/browser/buildflags/buildflags.h"
+#include "brave/components/ipfs/buildflags/buildflags.h"
 #include "base/strings/utf_string_conversions.h"
 #include "brave/common/url_constants.h"
 #include "brave/components/moonpay/browser/buildflags/buildflags.h"

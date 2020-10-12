@@ -10,9 +10,9 @@
 
 #include "brave/browser/brave_browser_process_impl.h"
 #include "brave/browser/ui/brave_pages.h"
-#include "brave/components/ipfs/browser/brave_ipfs_client_updater.h"
-#include "brave/components/ipfs/common/ipfs_constants.h"
-#include "brave/components/ipfs/common/pref_names.h"
+#include "brave/components/ipfs/brave_ipfs_client_updater.h"
+#include "brave/components/ipfs/ipfs_constants.h"
+#include "brave/components/ipfs/pref_names.h"
 #include "brave/grit/brave_generated_resources.h"
 #include "chrome/browser/infobars/infobar_service.h"
 #include "chrome/browser/ui/browser_finder.h"

@@ -75,7 +75,7 @@
 #endif
 
 #if BUILDFLAG(IPFS_ENABLED)
-#include "brave/components/ipfs/browser/brave_ipfs_client_updater.h"
+#include "brave/components/ipfs/brave_ipfs_client_updater.h"
 #endif
 
 #if BUILDFLAG(ENABLE_SPEEDREADER)
