@@ -1,0 +1,12 @@
+diff --git a/chrome/utility/importer/safari_importer.mm b/chrome/utility/importer/safari_importer.mm
+index a83d19200f9b73f3adb22db0005891ab80d3dc80..7943f958997afe14390df7ceb77e95ade3385b5d 100644
+--- a/chrome/utility/importer/safari_importer.mm
++++ b/chrome/utility/importer/safari_importer.mm
+@@ -47,6 +47,7 @@ void SafariImporter::StartImport(const importer::SourceProfile& source_profile,
+     ImportBookmarks();
+     bridge_->NotifyItemEnded(importer::FAVORITES);
+   }
++  BRAVE_START_IMPORT
+ 
+   bridge_->NotifyEnded();
+ }

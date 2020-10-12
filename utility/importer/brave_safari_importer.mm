@@ -33,7 +33,6 @@ void BraveSafariImporter::ImportHistory() {
   NSString* history_db = [safari_dir
       stringByAppendingPathComponent:@"History.db"];
 
-  // Import favicons.
   sql::Database db;
   const char* db_path = [history_db fileSystemRepresentation];
   if (!db.Open(base::FilePath(db_path)))
