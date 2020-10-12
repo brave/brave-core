@@ -6,14 +6,12 @@
 #ifndef BRAVE_BROWSER_TOR_ONION_LOCATION_TAB_HELPER_H_
 #define BRAVE_BROWSER_TOR_ONION_LOCATION_TAB_HELPER_H_
 
-#include "content/public/browser/web_contents_observer.h"
 #include "content/public/browser/web_contents_user_data.h"
 
 namespace tor {
 
 class OnionLocationTabHelper
-    : public content::WebContentsObserver,
-      public content::WebContentsUserData<OnionLocationTabHelper> {
+    : public content::WebContentsUserData<OnionLocationTabHelper> {
  public:
   ~OnionLocationTabHelper() override;
 
