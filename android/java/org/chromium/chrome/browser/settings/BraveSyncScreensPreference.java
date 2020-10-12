@@ -1262,10 +1262,6 @@ public class BraveSyncScreensPreference extends BravePreferenceFragment
           return;
       }
 
-      boolean firstSetupComplete = getBraveSyncWorker().IsFirstSetupComplete();
-      getBraveSyncWorker().SaveCodephrase(GetCodephrase());
-      getBraveSyncWorker().FinalizeSyncSetup();
-
       if (!deviceInfoObserverSet) {
           BraveSyncDevices.get().addDeviceInfoChangedListener(this);
           deviceInfoObserverSet = true;
