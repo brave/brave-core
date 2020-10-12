@@ -4,9 +4,49 @@
 # You can obtain one at http://mozilla.org/MPL/2.0/.
 
 import("//brave/browser/importer/sources.gni")
+import("//brave/components/binance/browser/buildflags/buildflags.gni")
+import("//third_party/widevine/cdm/widevine.gni")
 
-brave_chrome_browser_sources = []
+brave_chrome_browser_sources = [
+  "//brave/browser/autocomplete/brave_autocomplete_scheme_classifier.cc",
+  "//brave/browser/autocomplete/brave_autocomplete_scheme_classifier.h",
+  "//brave/browser/brave_local_state_prefs.cc",
+  "//brave/browser/brave_local_state_prefs.h",
+  "//brave/browser/brave_browser_main_extra_parts.cc",
+  "//brave/browser/brave_browser_main_extra_parts.h",
+  "//brave/browser/brave_browser_main_parts.cc",
+  "//brave/browser/brave_browser_main_parts.h",
+  "//brave/browser/brave_browser_process_impl.cc",
+  "//brave/browser/brave_browser_process_impl.h",
+  "//brave/browser/brave_profile_prefs.cc",
+  "//brave/browser/brave_profile_prefs.h",
+  "//brave/browser/brave_shields/cookie_pref_service_factory.cc",
+  "//brave/browser/brave_shields/cookie_pref_service_factory.h",
+]
 brave_chrome_browser_sources += brave_chrome_browser_importer_sources
 
 brave_chrome_browser_deps = []
 brave_chrome_browser_deps += brave_chrome_browser_importer_deps
+
+if (binance_enabled) {
+  brave_chrome_browser_sources += [
+    "//brave/browser/binance/binance_service_factory.cc",
+    "//brave/browser/binance/binance_service_factory.h",
+    "//brave/browser/binance/binance_protocol_handler.cc",
+    "//brave/browser/binance/binance_protocol_handler.h",
+  ]
+
+  brave_chrome_browser_deps += [
+    "//brave/components/binance/browser",
+    "//components/country_codes",
+  ]
+}
+
+if (enable_widevine) {
+    brave_chrome_browser_sources += [
+      "brave_drm_tab_helper.cc",
+      "brave_drm_tab_helper.h",
+    ]
+    brave_chrome_browser_deps += [ "//brave/browser/widevine" ]
+}
+
