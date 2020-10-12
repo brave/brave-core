@@ -7,9 +7,8 @@
 #define BRAVE_CHROMIUM_SRC_CHROME_UTILITY_IMPORTER_SAFARI_IMPORTER_H_
 
 #define BRAVE_SAFARI_IMPORTER_H \
-  friend class BraveSafariImporter;
-
-#define ImportHistory virtual ImportHistory
+  friend class BraveSafariImporter; \
+  virtual void ImportHistory() {}
 
 #include "../../../../../chrome/utility/importer/safari_importer.h"
 
