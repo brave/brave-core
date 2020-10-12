@@ -120,6 +120,9 @@ class GreaselionServiceTest : public BaseLocalDataFilesBrowserTest {
     GreaselionDownloadServiceWaiter(download_service).Wait();
     GreaselionService* greaselion_service =
         GreaselionServiceFactory::GetForBrowserContext(profile());
+    // Give a consistent browser version for testing.
+    static const base::NoDestructor<base::Version> version("1.2.3.4");
+    greaselion_service->SetBrowserVersionForTesting(*version);
     // wait for the Greaselion service to install all the extensions it creates
     GreaselionServiceWaiter(greaselion_service).Wait();
   }
@@ -357,6 +360,176 @@ IN_PROC_BROWSER_TEST_F(GreaselionServiceTest, IsNotGreaselionExtension) {
   ASSERT_TRUE(greaselion_service);
 
   EXPECT_FALSE(greaselion_service->IsGreaselionExtension("INVALID"));
+}
+
+
+IN_PROC_BROWSER_TEST_F(GreaselionServiceTest,
+                      ScriptInjectionWithBrowserVersionConditionLowWild) {
+  ASSERT_TRUE(InstallMockExtension());
+
+  GURL url = embedded_test_server()->GetURL(
+      "version-low-wild.example.com", "/simple.html");
+  ui_test_utils::NavigateToURL(browser(), url);
+  content::WebContents* contents =
+      browser()->tab_strip_model()->GetActiveWebContents();
+  ASSERT_TRUE(content::WaitForLoadStop(contents));
+  EXPECT_EQ(url, contents->GetURL());
+  std::string title;
+  ASSERT_TRUE(
+      ExecuteScriptAndExtractString(contents,
+                                    "window.domAutomationController.send("
+                                    "document.title)",
+                                    &title));
+  // Should be altered because version is lower than current.
+  EXPECT_EQ(title, "Altered");
+}
+
+IN_PROC_BROWSER_TEST_F(GreaselionServiceTest,
+                      ScriptInjectionWithBrowserVersionConditionLowFormat) {
+  ASSERT_TRUE(InstallMockExtension());
+
+  GURL url = embedded_test_server()->GetURL(
+      "version-low-format.example.com", "/simple.html");
+  ui_test_utils::NavigateToURL(browser(), url);
+  content::WebContents* contents =
+      browser()->tab_strip_model()->GetActiveWebContents();
+  ASSERT_TRUE(content::WaitForLoadStop(contents));
+  EXPECT_EQ(url, contents->GetURL());
+  std::string title;
+  ASSERT_TRUE(
+      ExecuteScriptAndExtractString(contents,
+                                    "window.domAutomationController.send("
+                                    "document.title)",
+                                    &title));
+  // Should be altered because version is lower than current, even though it
+  // omits last component.
+  EXPECT_EQ(title, "Altered");
+}
+
+IN_PROC_BROWSER_TEST_F(GreaselionServiceTest,
+                      ScriptInjectionWithBrowserVersionConditionMatchWild) {
+  ASSERT_TRUE(InstallMockExtension());
+
+  GURL url = embedded_test_server()->GetURL(
+      "version-match-wild.example.com", "/simple.html");
+  ui_test_utils::NavigateToURL(browser(), url);
+  content::WebContents* contents =
+      browser()->tab_strip_model()->GetActiveWebContents();
+  ASSERT_TRUE(content::WaitForLoadStop(contents));
+  EXPECT_EQ(url, contents->GetURL());
+  std::string title;
+  ASSERT_TRUE(
+      ExecuteScriptAndExtractString(contents,
+                                    "window.domAutomationController.send("
+                                    "document.title)",
+                                    &title));
+  // Should be altered because version is wild match.
+  EXPECT_EQ(title, "Altered");
+}
+
+IN_PROC_BROWSER_TEST_F(GreaselionServiceTest,
+                      ScriptInjectionWithBrowserVersionConditionMatchExact) {
+  ASSERT_TRUE(InstallMockExtension());
+
+  GURL url = embedded_test_server()->GetURL(
+      "version-match-exact.example.com", "/simple.html");
+  ui_test_utils::NavigateToURL(browser(), url);
+  content::WebContents* contents =
+      browser()->tab_strip_model()->GetActiveWebContents();
+  ASSERT_TRUE(content::WaitForLoadStop(contents));
+  EXPECT_EQ(url, contents->GetURL());
+  std::string title;
+  ASSERT_TRUE(
+      ExecuteScriptAndExtractString(contents,
+                                    "window.domAutomationController.send("
+                                    "document.title)",
+                                    &title));
+  // Should be altered because version is exact match.
+  EXPECT_EQ(title, "Altered");
+}
+
+IN_PROC_BROWSER_TEST_F(GreaselionServiceTest,
+                      ScriptInjectionWithBrowserVersionConditionHighWild) {
+  ASSERT_TRUE(InstallMockExtension());
+
+  GURL url = embedded_test_server()->GetURL(
+      "version-high-wild.example.com", "/simple.html");
+  ui_test_utils::NavigateToURL(browser(), url);
+  content::WebContents* contents =
+      browser()->tab_strip_model()->GetActiveWebContents();
+  ASSERT_TRUE(content::WaitForLoadStop(contents));
+  EXPECT_EQ(url, contents->GetURL());
+  std::string title;
+  ASSERT_TRUE(
+      ExecuteScriptAndExtractString(contents,
+                                    "window.domAutomationController.send("
+                                    "document.title)",
+                                    &title));
+  // Should be unaltered because version is too high.
+  EXPECT_EQ(title, "OK");
+}
+
+IN_PROC_BROWSER_TEST_F(GreaselionServiceTest,
+                      ScriptInjectionWithBrowserVersionConditionHighExact) {
+  ASSERT_TRUE(InstallMockExtension());
+
+  GURL url = embedded_test_server()->GetURL(
+      "version-high-exact.example.com", "/simple.html");
+  ui_test_utils::NavigateToURL(browser(), url);
+  content::WebContents* contents =
+      browser()->tab_strip_model()->GetActiveWebContents();
+  ASSERT_TRUE(content::WaitForLoadStop(contents));
+  EXPECT_EQ(url, contents->GetURL());
+  std::string title;
+  ASSERT_TRUE(
+      ExecuteScriptAndExtractString(contents,
+                                    "window.domAutomationController.send("
+                                    "document.title)",
+                                    &title));
+  // Should be unaltered because version is too high.
+  EXPECT_EQ(title, "OK");
+}
+
+IN_PROC_BROWSER_TEST_F(GreaselionServiceTest,
+                      ScriptInjectionWithBrowserVersionConditionEmpty) {
+  ASSERT_TRUE(InstallMockExtension());
+
+  GURL url = embedded_test_server()->GetURL(
+      "version-empty.example.com", "/simple.html");
+  ui_test_utils::NavigateToURL(browser(), url);
+  content::WebContents* contents =
+      browser()->tab_strip_model()->GetActiveWebContents();
+  ASSERT_TRUE(content::WaitForLoadStop(contents));
+  EXPECT_EQ(url, contents->GetURL());
+  std::string title;
+  ASSERT_TRUE(
+      ExecuteScriptAndExtractString(contents,
+                                    "window.domAutomationController.send("
+                                    "document.title)",
+                                    &title));
+  // Should be altered because version is not good format.
+  EXPECT_EQ(title, "Altered");
+}
+
+IN_PROC_BROWSER_TEST_F(GreaselionServiceTest,
+                      ScriptInjectionWithBrowserVersionConditionBadFormat) {
+  ASSERT_TRUE(InstallMockExtension());
+
+  GURL url = embedded_test_server()->GetURL(
+      "version-bad-format.example.com", "/simple.html");
+  ui_test_utils::NavigateToURL(browser(), url);
+  content::WebContents* contents =
+      browser()->tab_strip_model()->GetActiveWebContents();
+  ASSERT_TRUE(content::WaitForLoadStop(contents));
+  EXPECT_EQ(url, contents->GetURL());
+  std::string title;
+  ASSERT_TRUE(
+      ExecuteScriptAndExtractString(contents,
+                                    "window.domAutomationController.send("
+                                    "document.title)",
+                                    &title));
+  // Should be altered because version is not good format.
+  EXPECT_EQ(title, "Altered");
 }
 
 #if !defined(OS_MAC)
