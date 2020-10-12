@@ -9,8 +9,8 @@
 
 #include "brave/browser/infobars/ipfs_infobar_delegate.h"
 #include "brave/browser/ipfs/ipfs_service_factory.h"
-#include "brave/components/ipfs/ipfs_service.h"
 #include "brave/components/ipfs/ipfs_constants.h"
+#include "brave/components/ipfs/ipfs_service.h"
 #include "brave/components/ipfs/ipfs_utils.h"
 #include "brave/components/ipfs/pref_names.h"
 #include "chrome/browser/infobars/infobar_service.h"

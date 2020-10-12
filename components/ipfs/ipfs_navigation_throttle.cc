@@ -10,10 +10,10 @@
 
 #include "base/bind.h"
 #include "base/threading/thread_task_runner_handle.h"
+#include "brave/components/ipfs/ipfs_constants.h"
 #include "brave/components/ipfs/ipfs_interstitial_controller_client.h"
 #include "brave/components/ipfs/ipfs_not_connected_page.h"
 #include "brave/components/ipfs/ipfs_service.h"
-#include "brave/components/ipfs/ipfs_constants.h"
 #include "brave/components/ipfs/ipfs_utils.h"
 #include "brave/components/ipfs/pref_names.h"
 #include "components/prefs/pref_service.h"

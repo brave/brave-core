@@ -13,8 +13,8 @@
 #include "base/values.h"
 #include "brave/browser/ipfs/ipfs_service_factory.h"
 #include "brave/components/ipfs/features.h"
-#include "brave/components/ipfs/ipfs_service.h"
 #include "brave/components/ipfs/ipfs_constants.h"
+#include "brave/components/ipfs/ipfs_service.h"
 #include "brave/grit/brave_generated_resources.h"
 #include "ui/base/l10n/l10n_util.h"
 

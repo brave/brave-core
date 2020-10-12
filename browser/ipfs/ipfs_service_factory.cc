@@ -17,7 +17,6 @@
 #include "extensions/browser/extension_system_provider.h"
 #include "extensions/browser/extensions_browser_client.h"
 
-
 namespace ipfs {
 
 // static

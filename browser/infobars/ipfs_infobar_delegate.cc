@@ -26,8 +26,7 @@
 // static
 void IPFSInfoBarDelegate::Create(InfoBarService* infobar_service) {
   infobar_service->AddInfoBar(infobar_service->CreateConfirmInfoBar(
-      std::unique_ptr<ConfirmInfoBarDelegate>(
-          new IPFSInfoBarDelegate())));
+      std::unique_ptr<ConfirmInfoBarDelegate>(new IPFSInfoBarDelegate())));
 }
 
 IPFSInfoBarDelegate::IPFSInfoBarDelegate() {}
@@ -43,8 +42,7 @@ const gfx::VectorIcon& IPFSInfoBarDelegate::GetVectorIcon() const {
   return views::kInfoIcon;
 }
 
-void IPFSInfoBarDelegate::InfoBarDismissed() {
-}
+void IPFSInfoBarDelegate::InfoBarDismissed() {}
 
 base::string16 IPFSInfoBarDelegate::GetMessageText() const {
   return l10n_util::GetStringUTF16(IDS_BRAVE_IPFS_INSTALL);
@@ -54,8 +52,7 @@ int IPFSInfoBarDelegate::GetButtons() const {
   return BUTTON_OK | BUTTON_CANCEL;
 }
 
-base::string16 IPFSInfoBarDelegate::GetButtonLabel(
-    InfoBarButton button) const {
+base::string16 IPFSInfoBarDelegate::GetButtonLabel(InfoBarButton button) const {
   if (button == BUTTON_CANCEL) {
     return l10n_util::GetStringUTF16(IDS_BRAVE_IPFS_SETTINGS);
   }
@@ -73,18 +70,18 @@ GURL IPFSInfoBarDelegate::GetLinkURL() const {
 
 bool IPFSInfoBarDelegate::Accept() {
   content::WebContents* web_contents =
-    InfoBarService::WebContentsFromInfoBar(infobar());
+      InfoBarService::WebContentsFromInfoBar(infobar());
   auto* browser_context = web_contents->GetBrowserContext();
-  user_prefs::UserPrefs::Get(browser_context)->
-      SetInteger(kIPFSResolveMethod,
-          static_cast<int>(ipfs::IPFSResolveMethodTypes::IPFS_LOCAL));
+  user_prefs::UserPrefs::Get(browser_context)
+      ->SetInteger(kIPFSResolveMethod,
+                   static_cast<int>(ipfs::IPFSResolveMethodTypes::IPFS_LOCAL));
   g_brave_browser_process->ipfs_client_updater()->Register();
   return true;
 }
 
 bool IPFSInfoBarDelegate::Cancel() {
   content::WebContents* web_contents =
-    InfoBarService::WebContentsFromInfoBar(infobar());
+      InfoBarService::WebContentsFromInfoBar(infobar());
   if (web_contents) {
     Browser* browser = chrome::FindBrowserWithWebContents(web_contents);
     brave::ShowExtensionSettings(browser);

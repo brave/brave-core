@@ -12,8 +12,7 @@
 
 namespace ipfs {
 
-bool TranslateIPFSURI(
-    const GURL& url, GURL* new_url, bool local) {
+bool TranslateIPFSURI(const GURL& url, GURL* new_url, bool local) {
   if (!url.SchemeIs(kIPFSScheme) && !url.SchemeIs(kIPNSScheme)) {
     return false;
   }
@@ -21,8 +20,7 @@ bool TranslateIPFSURI(
   std::string path = url.path();
   // In the case of a URL like ipfs://[cid]/wiki/Vincent_van_Gogh.html
   // host is empty and path is //wiki/Vincent_van_Gogh.html
-  if (url.host().empty() && path.length() > 2 &&
-      path.substr(0, 2) == "//") {
+  if (url.host().empty() && path.length() > 2 && path.substr(0, 2) == "//") {
     std::string cid(path.substr(2));
     // If we have a path after the CID, get at the real resource path
     size_t pos = cid.find("/");
@@ -36,15 +34,16 @@ bool TranslateIPFSURI(
     bool ipfs_scheme = url.scheme() == kIPFSScheme;
     bool ipns_scheme = url.scheme() == kIPNSScheme;
     if ((ipfs_scheme && std::all_of(cid.begin(), cid.end(),
-                    [loc = std::locale{}](char c) {
-                      return std::isalnum(c, loc);
-                    })) || ipns_scheme) {
+                                    [loc = std::locale{}](char c) {
+                                      return std::isalnum(c, loc);
+                                    })) ||
+        ipns_scheme) {
       // new_url would be:
       // https://dweb.link/ipfs/[cid]//wiki/Vincent_van_Gogh.html
       if (new_url) {
-        *new_url = GURL(std::string(
-            local ? kDefaultIPFSLocalGateway : kDefaultIPFSGateway) +
-                (ipfs_scheme ? "/ipfs/" : "/ipns/") + cid + path);
+        *new_url = GURL(std::string(local ? kDefaultIPFSLocalGateway
+                                          : kDefaultIPFSGateway) +
+                        (ipfs_scheme ? "/ipfs/" : "/ipns/") + cid + path);
         VLOG(1) << "[IPFS] " << __func__ << " new URL: " << *new_url;
       }
 

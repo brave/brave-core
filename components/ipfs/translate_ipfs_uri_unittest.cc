@@ -10,8 +10,8 @@
 
 #include "base/test/bind_test_util.h"
 #include "brave/browser/ipfs/ipfs_service_factory.h"
-#include "brave/components/ipfs/ipfs_service.h"
 #include "brave/components/ipfs/ipfs_constants.h"
+#include "brave/components/ipfs/ipfs_service.h"
 #include "chrome/test/base/chrome_render_view_host_test_harness.h"
 #include "chrome/test/base/scoped_testing_local_state.h"
 #include "chrome/test/base/testing_browser_process.h"
@@ -30,58 +30,51 @@ namespace ipfs {
 TEST_F(IPFSBraveContentBrowserClientTest, TranslateIPFSURINotIPFSScheme) {
   GURL url("http://a.com/ipfs/QmfM2r8seH2GiRaC4esTjeraXEachRt8ZsSeGaWTPLyMoG");
   GURL new_url;
-  ASSERT_FALSE(
-      ipfs::TranslateIPFSURI(url, &new_url, false));
+  ASSERT_FALSE(ipfs::TranslateIPFSURI(url, &new_url, false));
 }
 
 TEST_F(IPFSBraveContentBrowserClientTest, TranslateIPFSURIIPFSScheme) {
   GURL url("ipfs://QmfM2r8seH2GiRaC4esTjeraXEachRt8ZsSeGaWTPLyMoG");
   GURL new_url;
-  ASSERT_TRUE(
-      ipfs::TranslateIPFSURI(url, &new_url, false));
-  EXPECT_EQ(new_url, GURL(
-      "https://dweb.link/ipfs/QmfM2r8seH2GiRaC4esTjeraXEachRt8ZsSeGaWTPLyMoG"));
+  ASSERT_TRUE(ipfs::TranslateIPFSURI(url, &new_url, false));
+  EXPECT_EQ(new_url, GURL("https://dweb.link/ipfs/"
+                          "QmfM2r8seH2GiRaC4esTjeraXEachRt8ZsSeGaWTPLyMoG"));
 }
 
 TEST_F(IPFSBraveContentBrowserClientTest, TranslateIPFSURIIPNSScheme) {
   GURL url("ipns://QmSrPmbaUKA3ZodhzPWZnpFgcPMFWF4QsxXbkWfEptTBJd");
   GURL new_url;
-  ASSERT_TRUE(
-      ipfs::TranslateIPFSURI(url, &new_url, false));
-  EXPECT_EQ(new_url, GURL(
-      "https://dweb.link/ipns/QmSrPmbaUKA3ZodhzPWZnpFgcPMFWF4QsxXbkWfEptTBJd"));
+  ASSERT_TRUE(ipfs::TranslateIPFSURI(url, &new_url, false));
+  EXPECT_EQ(new_url, GURL("https://dweb.link/ipns/"
+                          "QmSrPmbaUKA3ZodhzPWZnpFgcPMFWF4QsxXbkWfEptTBJd"));
 }
 
 TEST_F(IPFSBraveContentBrowserClientTest, TranslateIPFSURIIPFSSchemeLocal) {
   GURL url("ipfs://QmfM2r8seH2GiRaC4esTjeraXEachRt8ZsSeGaWTPLyMoG");
   GURL new_url;
-  ASSERT_TRUE(
-      ipfs::TranslateIPFSURI(url, &new_url, true));
-  EXPECT_EQ(new_url, GURL(
-      "http://127.0.0.1:8080/ipfs/"
-      "QmfM2r8seH2GiRaC4esTjeraXEachRt8ZsSeGaWTPLyMoG"));
+  ASSERT_TRUE(ipfs::TranslateIPFSURI(url, &new_url, true));
+  EXPECT_EQ(new_url, GURL("http://127.0.0.1:8080/ipfs/"
+                          "QmfM2r8seH2GiRaC4esTjeraXEachRt8ZsSeGaWTPLyMoG"));
 }
 
 TEST_F(IPFSBraveContentBrowserClientTest, TranslateIPFSURIIPNSSchemeLocal) {
   GURL url("ipns://QmSrPmbaUKA3ZodhzPWZnpFgcPMFWF4QsxXbkWfEptTBJd");
   GURL new_url;
-  ASSERT_TRUE(
-      ipfs::TranslateIPFSURI(url, &new_url, true));
-  EXPECT_EQ(new_url, GURL(
-      "http://127.0.0.1:8080/ipns/"
-      "QmSrPmbaUKA3ZodhzPWZnpFgcPMFWF4QsxXbkWfEptTBJd"));
+  ASSERT_TRUE(ipfs::TranslateIPFSURI(url, &new_url, true));
+  EXPECT_EQ(new_url, GURL("http://127.0.0.1:8080/ipns/"
+                          "QmSrPmbaUKA3ZodhzPWZnpFgcPMFWF4QsxXbkWfEptTBJd"));
 }
 
 TEST_F(IPFSBraveContentBrowserClientTest, TranslateIPFSURIIPFSSchemeWithPath) {
-  GURL url("ipfs://bafybeiemxf5abjwjbikoz4mc3a3dla6ual3jsgpdr4cjr3oz3evfyavhwq"
-           "/wiki/Vincent_van_Gogh.html");
+  GURL url(
+      "ipfs://bafybeiemxf5abjwjbikoz4mc3a3dla6ual3jsgpdr4cjr3oz3evfyavhwq"
+      "/wiki/Vincent_van_Gogh.html");
   GURL new_url;
-  ASSERT_TRUE(
-      ipfs::TranslateIPFSURI(url, &new_url, false));
-  EXPECT_EQ(new_url, GURL(
-      "https://dweb.link/ipfs/"
-      "bafybeiemxf5abjwjbikoz4mc3a3dla6ual3jsgpdr4cjr3oz3evfyavhwq"
-      "/wiki/Vincent_van_Gogh.html"));
+  ASSERT_TRUE(ipfs::TranslateIPFSURI(url, &new_url, false));
+  EXPECT_EQ(new_url,
+            GURL("https://dweb.link/ipfs/"
+                 "bafybeiemxf5abjwjbikoz4mc3a3dla6ual3jsgpdr4cjr3oz3evfyavhwq"
+                 "/wiki/Vincent_van_Gogh.html"));
 }
 
 }  // namespace ipfs
