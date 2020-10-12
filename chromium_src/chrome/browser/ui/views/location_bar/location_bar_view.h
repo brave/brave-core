@@ -11,7 +11,7 @@
   friend class BraveLocationBarView; \
                                      \
  public:                             \
-  void Layout(std::vector<views::View*> trailing_views);
+  virtual std::vector<views::View*> GetTrailingViews();
 
 #define GetBorderRadius virtual GetBorderRadius
 #include "../../../../../../../chrome/browser/ui/views/location_bar/location_bar_view.h"

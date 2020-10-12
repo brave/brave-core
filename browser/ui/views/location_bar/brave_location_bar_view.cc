@@ -6,8 +6,6 @@
 #include "brave/browser/ui/views/location_bar/brave_location_bar_view.h"
 
 #include <memory>
-#include <utility>
-#include <vector>
 
 #include "brave/browser/profiles/profile_util.h"
 #include "brave/browser/themes/brave_theme_service.h"
@@ -65,15 +63,6 @@ void BraveLocationBarView::Init() {
     content_setting_view->disable_animation();
 }
 
-void BraveLocationBarView::Layout() {
-  std::vector<views::View*> views;
-  if (onion_location_view_)
-    views.push_back(onion_location_view_);
-  if (brave_actions_)
-    views.push_back(brave_actions_);
-  LocationBarView::Layout(std::move(views));
-}
-
 void BraveLocationBarView::Update(content::WebContents* contents) {
   // base Init calls update before our Init is run, so our children
   // may not be initialized yet
@@ -98,6 +87,16 @@ void BraveLocationBarView::OnChanged() {
 
   // OnChanged calls Layout
   LocationBarView::OnChanged();
+}
+
+std::vector<views::View*> BraveLocationBarView::GetTrailingViews() {
+  std::vector<views::View*> views;
+  if (onion_location_view_)
+    views.push_back(onion_location_view_);
+  if (brave_actions_)
+    views.push_back(brave_actions_);
+
+  return views;
 }
 
 gfx::Size BraveLocationBarView::CalculatePreferredSize() const {
@@ -145,11 +144,4 @@ ContentSettingImageView*
 BraveLocationBarView::GetContentSettingsImageViewForTesting(size_t idx) {
   DCHECK(idx < content_setting_views_.size());
   return content_setting_views_[idx];
-}
-
-// Provide base class implementation for Update override that has been added to
-// header via a patch. This should never be called as the only instantiated
-// implementation should be our |BraveLocationBarView|.
-void LocationBarView::Layout() {
-  Layout(std::vector<views::View*>());
 }
