@@ -34,6 +34,7 @@
 #include "components/embedder_support/switches.h"
 #include "components/feed/feed_feature_list.h"
 #include "components/language/core/common/language_experiments.h"
+#include "components/network_time/network_time_tracker.h"
 #include "components/offline_pages/core/offline_page_feature.h"
 #include "components/omnibox/common/omnibox_features.h"
 #include "components/password_manager/core/common/password_manager_features.h"
@@ -243,6 +244,7 @@ bool BraveMainDelegate::BasicStartupComplete(int* exit_code) {
     features::kSmsReceiver.name,
     features::kVideoPlaybackQuality.name,
     features::kTabHoverCards.name,
+    network_time::kNetworkTimeServiceQuerying.name,
     password_manager::features::kPasswordCheck.name,
     safe_browsing::kEnhancedProtection.name,
 #if defined(OS_ANDROID)
