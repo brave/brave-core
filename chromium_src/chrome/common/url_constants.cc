@@ -250,7 +250,7 @@ const char kEnhancedPlaybackNotificationLearnMoreURL[] =
 const char kChromeEnterpriseSignInLearnMoreURL[] =
     "https://support.brave.com/";
 
-const char kMac10_9_ObsoleteURL[] =
+const char kMac10_10_ObsoleteURL[] =
     "https://support.brave.com/hc/en-us/articles/"
     "360025390311-How-do-I-download-and-install-Brave-";
 #endif
