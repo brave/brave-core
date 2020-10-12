@@ -28,7 +28,6 @@
 
 class BraveActionViewController;
 class BraveActionsContainerTest;
-class OnionLocationView;
 class RewardsBrowserTest;
 
 namespace extensions {
@@ -106,8 +105,6 @@ class BraveActionsContainer : public views::View,
 
   // views::View:
   void ChildPreferredSizeChanged(views::View* child) override;
-
-  views::LabelButton* GetOnionLocationViewForTest();
 
  private:
   friend class ::BraveActionsContainerTest;
@@ -189,8 +186,6 @@ class BraveActionsContainer : public views::View,
   BooleanPrefMember hide_brave_rewards_button_;
 
   std::unique_ptr<EmptyExtensionsContainer> empty_extensions_container_;
-
-  OnionLocationView* onion_location_view_ = nullptr;
 
   base::WeakPtrFactory<BraveActionsContainer> weak_ptr_factory_;
 

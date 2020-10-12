@@ -15,7 +15,6 @@
 #include "brave/browser/ui/brave_actions/brave_action_view_controller.h"
 #include "brave/browser/ui/views/brave_actions/brave_action_view.h"
 #include "brave/browser/ui/views/brave_actions/brave_rewards_action_stub_view.h"
-#include "brave/browser/ui/views/location_bar/onion_location_view.h"
 #include "brave/browser/ui/views/rounded_separator.h"
 #include "brave/common/brave_switches.h"
 #include "brave/common/pref_names.h"
@@ -136,9 +135,6 @@ void BraveActionsContainer::Init() {
   SetLayoutManager(std::move(vertical_container_layout));
 
   // children
-  onion_location_view_ = new OnionLocationView(browser_->profile());
-  AddChildViewAt(onion_location_view_, 0);
-
   RoundedSeparator* brave_button_separator_ = new RoundedSeparator();
   // TODO(petemill): theme color
   brave_button_separator_->SetColor(SkColorSetRGB(0xb2, 0xb5, 0xb7));
@@ -151,10 +147,10 @@ void BraveActionsContainer::Init() {
   brave_button_separator_->SetBorder(
       views::CreateEmptyBorder(0, kSeparatorMargin, 0, kSeparatorMargin));
   // Just in case the extensions load before this function does (not likely!)
-  // make sure separator is at index 1
-  AddChildViewAt(brave_button_separator_, 1);
+  // make sure separator is at index 0
+  AddChildViewAt(brave_button_separator_, 0);
   // Populate actions
-  actions_[brave_extension_id].position_ = 2;
+  actions_[brave_extension_id].position_ = 1;
   actions_[brave_rewards_extension_id].position_ = ACTION_ANY_POSITION;
 
   // React to Brave Rewards preferences changes.
@@ -316,7 +312,6 @@ void BraveActionsContainer::Update() {
   // only show separator if we're showing any buttons
   const bool visible = !should_hide_ && can_show;
   SetVisible(visible);
-  onion_location_view_->Update(GetCurrentWebContents());
   Layout();
 }
 
@@ -445,10 +440,6 @@ void BraveActionsContainer::OnBraveActionShouldTrigger(
 
 void BraveActionsContainer::ChildPreferredSizeChanged(views::View* child) {
   PreferredSizeChanged();
-}
-
-views::LabelButton* BraveActionsContainer::GetOnionLocationViewForTest() {
-  return static_cast<views::LabelButton*>(onion_location_view_);
 }
 
 // Brave Rewards preferences change observers callback

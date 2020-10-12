@@ -8,8 +8,8 @@
 #include "brave/browser/tor/onion_location_tab_helper.h"
 #include "brave/browser/tor/tor_profile_service.h"
 #include "brave/browser/ui/browser_commands.h"
-#include "brave/browser/ui/views/brave_actions/brave_actions_container.h"
 #include "brave/browser/ui/views/location_bar/brave_location_bar_view.h"
+#include "brave/browser/ui/views/location_bar/onion_location_view.h"
 #include "brave/common/tor/pref_names.h"
 #include "brave/grit/brave_generated_resources.h"
 #include "chrome/browser/chrome_notification_types.h"
@@ -66,11 +66,8 @@ class OnionLocationNavigationThrottleBrowserTest : public InProcessBrowserTest {
     BraveLocationBarView* brave_location_bar_view =
         static_cast<BraveLocationBarView*>(browser_view->GetLocationBarView());
     ASSERT_NE(brave_location_bar_view, nullptr);
-    BraveActionsContainer* brave_actions =
-        brave_location_bar_view->GetBraveActionsContainer();
-    ASSERT_NE(brave_actions, nullptr);
-    views::LabelButton* onion_label =
-        brave_actions->GetOnionLocationViewForTest();
+    OnionLocationView* onion_label =
+        brave_location_bar_view->GetOnionLocationView();
     EXPECT_TRUE(onion_label->GetVisible());
     EXPECT_EQ(onion_label->GetText(),
               l10n_util::GetStringUTF16((IDS_LOCATION_BAR_OPEN_IN_TOR)));

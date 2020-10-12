@@ -6,10 +6,13 @@
 #include "brave/browser/ui/views/location_bar/brave_location_bar_view.h"
 
 #include <memory>
+#include <utility>
+#include <vector>
 
 #include "brave/browser/profiles/profile_util.h"
 #include "brave/browser/themes/brave_theme_service.h"
 #include "brave/browser/ui/views/brave_actions/brave_actions_container.h"
+#include "brave/browser/ui/views/location_bar/onion_location_view.h"
 #include "brave/browser/ui/views/toolbar/brave_toolbar_view.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/themes/theme_service_factory.h"
@@ -49,8 +52,10 @@ void BraveLocationBarView::Init() {
             BraveLocationBarViewFocusRingHighlightPathGenerator>());
   }
   // brave action buttons
+  onion_location_view_ = new OnionLocationView(browser_->profile());
   brave_actions_ = new BraveActionsContainer(browser_, profile());
   brave_actions_->Init();
+  AddChildView(onion_location_view_);
   AddChildView(brave_actions_);
   // Call Update again to cause a Layout
   Update(nullptr);
@@ -61,7 +66,12 @@ void BraveLocationBarView::Init() {
 }
 
 void BraveLocationBarView::Layout() {
-  LocationBarView::Layout(brave_actions_ ? brave_actions_ : nullptr);
+  std::vector<views::View*> views;
+  if (onion_location_view_)
+    views.push_back(onion_location_view_);
+  if (brave_actions_)
+    views.push_back(brave_actions_);
+  LocationBarView::Layout(std::move(views));
 }
 
 void BraveLocationBarView::Update(content::WebContents* contents) {
@@ -70,6 +80,8 @@ void BraveLocationBarView::Update(content::WebContents* contents) {
   if (brave_actions_) {
     brave_actions_->Update();
   }
+  if (onion_location_view_)
+    onion_location_view_->Update(contents);
   LocationBarView::Update(contents);
 }
 
@@ -80,6 +92,9 @@ void BraveLocationBarView::OnChanged() {
         ShouldHidePageActionIcons() && !omnibox_view_->GetText().empty();
     brave_actions_->SetShouldHide(should_hide);
   }
+  if (onion_location_view_)
+    onion_location_view_->Update(
+        browser_->tab_strip_model()->GetActiveWebContents());
 
   // OnChanged calls Layout
   LocationBarView::OnChanged();
@@ -136,6 +151,5 @@ BraveLocationBarView::GetContentSettingsImageViewForTesting(size_t idx) {
 // header via a patch. This should never be called as the only instantiated
 // implementation should be our |BraveLocationBarView|.
 void LocationBarView::Layout() {
-  Layout(nullptr);
+  Layout(std::vector<views::View*>());
 }
-

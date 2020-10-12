@@ -10,6 +10,7 @@
 
 class BraveActionsContainer;
 class BraveActionsContainerTest;
+class OnionLocationView;
 class RewardsBrowserTest;
 class SkPath;
 
@@ -23,6 +24,7 @@ class BraveLocationBarView : public LocationBarView {
   void Update(content::WebContents* contents) override;
   void OnChanged() override;
   BraveActionsContainer* GetBraveActionsContainer() { return brave_actions_; }
+  OnionLocationView* GetOnionLocationView() { return onion_location_view_; }
 
   // views::View:
   gfx::Size CalculatePreferredSize() const override;
@@ -38,6 +40,7 @@ class BraveLocationBarView : public LocationBarView {
   friend class ::BraveActionsContainerTest;
   friend class ::RewardsBrowserTest;
   BraveActionsContainer* brave_actions_ = nullptr;
+  OnionLocationView* onion_location_view_ = nullptr;
 
   DISALLOW_COPY_AND_ASSIGN(BraveLocationBarView);
 };
