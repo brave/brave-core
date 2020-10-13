@@ -43,7 +43,7 @@ import {
   LoginMessageText
 } from './style'
 import { getLocale } from 'brave-ui/helpers'
-import { getLocaleTags } from '../../../../../common/locale'
+import { getLocaleWithTag } from '../../../../../common/locale'
 import { GrantCaptcha, GrantComplete, GrantError, GrantWrapper, WalletPopup } from '../'
 import Alert, { Type as AlertType } from '../alert'
 import Button, { Props as ButtonProps } from 'brave-ui/components/buttonsIndicators/button'
@@ -602,8 +602,8 @@ export default class WalletWrapper extends React.PureComponent<Props, State> {
     const loginText = getLocale('loginMessageText').split('$1')
     const loginText1 = loginText[0]
     const loginText2 = loginText[1]
-    const rewardsText1 = getLocaleTags('rewardsPanelText1')
-    const rewardsText2 = getLocaleTags('rewardsPanelText2')
+    const rewardsText1 = getLocaleWithTag('rewardsPanelText1')
+    const rewardsText2 = getLocaleWithTag('rewardsPanelText2')
 
     return (
       <>

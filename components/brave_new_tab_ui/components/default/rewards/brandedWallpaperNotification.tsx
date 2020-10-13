@@ -30,7 +30,7 @@ export default class BrandedWallpaperRewardsNotification extends React.PureCompo
 
   renderPostAdsOptInContent () {
     const text = getLocale('rewardsWidgetBrandedNotificationDescription')
-    const { beforeTag, duringTag, afterTag } = splitStringForTag(text, '$1', '$2')
+    const { beforeTag, duringTag, afterTag } = splitStringForTag(text)
     return (
       <>
         <Title>
@@ -53,7 +53,7 @@ export default class BrandedWallpaperRewardsNotification extends React.PureCompo
   renderPreAdsOptInContent () {
     const text = getLocale('rewardsWidgetEnableBrandedWallpaperSubTitle')
       .replace('$3', 'Brave Ads')
-    const { beforeTag, duringTag, afterTag } = splitStringForTag(text, '$1', '$2')
+    const { beforeTag, duringTag, afterTag } = splitStringForTag(text)
     return (
       <>
         <Title>
