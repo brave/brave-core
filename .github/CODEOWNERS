@@ -1,5 +1,5 @@
-patches/ @bridiver
-chromium_src/ @bridiver
+patches/ @brave/patch-reviewers
+chromium_src/ @brave/patch-reviewers
 script/build-bisect.py @bsclifton
 script/uplift.py @bsclifton
 vendor/brave-ios/ @kylehickinson
