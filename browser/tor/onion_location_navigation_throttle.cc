@@ -75,6 +75,8 @@ content::NavigationThrottle::ThrottleCheckResult
 OnionLocationNavigationThrottle::WillProcessResponse() {
   auto* headers = navigation_handle()->GetResponseHeaders();
   std::string onion_location;
+  // The webpage defining the Onion-Location header must not be an onionsite.
+  // https://gitweb.torproject.org/tor-browser-spec.git/plain/proposals/100-onion-location-header.txt
   if (headers && GetOnionLocation(headers, &onion_location) &&
       !navigation_handle()->GetURL().DomainIs("onion")) {
     // If user prefers opening it automatically
@@ -98,6 +100,7 @@ OnionLocationNavigationThrottle::WillProcessResponse() {
 
 content::NavigationThrottle::ThrottleCheckResult
 OnionLocationNavigationThrottle::WillStartRequest() {
+  // Open .onion site in Tor window
   if (!brave::IsTorProfile(profile_)) {
     GURL url = navigation_handle()->GetURL();
     if (url.SchemeIsHTTPOrHTTPS() && url.DomainIs("onion")) {
