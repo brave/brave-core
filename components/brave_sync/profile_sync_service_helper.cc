@@ -5,6 +5,7 @@
 
 #include "brave/components/brave_sync/profile_sync_service_helper.h"
 
+#include <string>
 #include <utility>
 
 #include "brave/components/sync/driver/brave_sync_profile_sync_service.h"

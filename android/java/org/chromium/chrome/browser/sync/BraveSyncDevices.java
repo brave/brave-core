@@ -100,6 +100,7 @@ public class BraveSyncDevices {
     public class SyncDeviceInfo {
         public String mName;
         public boolean mIsCurrentDevice;
+        public boolean mSupportsSelfDelete;
         public String mType;
         public Date mLastUpdatedTimestamp;
         public String mGuid;
@@ -123,6 +124,7 @@ public class BraveSyncDevices {
                 long lastUpdatedTimestamp = device.getLong("lastUpdatedTimestamp");
                 deviceInfo.mLastUpdatedTimestamp = new Date(lastUpdatedTimestamp);
                 deviceInfo.mGuid = device.getString("guid");
+                deviceInfo.mSupportsSelfDelete = device.getBoolean("supportsSelfDelete");
                 deviceList.add(deviceInfo);
             }
         } catch (JSONException e) {

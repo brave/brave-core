@@ -313,14 +313,18 @@ public class BraveSyncScreensPreference extends BravePreferenceFragment
                                 }
                                 // mRemoveDeviceButton is always visible, we can leave the chain
                                 // in any time with sync v2 (except we are now doing reset)
-                            } else {
+                            } else if (device.mSupportsSelfDelete) {
                                 deleteButton.setTag(device);
                                 deleteButton.setOnClickListener(v -> {
                                     BraveSyncDevices.SyncDeviceInfo deviceToDelete =
                                             (BraveSyncDevices.SyncDeviceInfo) v.getTag();
                                     deleteDeviceDialog(deviceToDelete);
                                 });
+                            } else {
+                                // Current device does not support self-delete
+                                deleteButton.setVisibility(View.GONE);
                             }
+
                             insertPoint.addView(separator, index++);
                             insertPoint.addView(listItemView, index++);
                         }

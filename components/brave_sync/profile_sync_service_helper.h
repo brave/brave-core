@@ -6,6 +6,8 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_SYNC_PROFILE_SYNC_SERVICE_HELPER_H_
 #define BRAVE_COMPONENTS_BRAVE_SYNC_PROFILE_SYNC_SERVICE_HELPER_H_
 
+#include <string>
+
 #include "base/callback.h"
 
 namespace syncer {

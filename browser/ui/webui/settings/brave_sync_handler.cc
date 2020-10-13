@@ -261,9 +261,9 @@ base::Value BraveSyncHandler::GetSyncDeviceList() {
     bool is_current_device =
         local_device_info ? local_device_info->guid() == device->guid() : false;
     device_value.SetBoolKey("isCurrentDevice", is_current_device);
-    device_value.SetStringKey("signinScopedDeviceId",
-                              device->signin_scoped_device_id());
     device_value.SetStringKey("guid", device->guid());
+    device_value.SetBoolKey("supportsSelfDelete", !is_current_device);
+
     device_list.Append(std::move(device_value));
   }
   return device_list;
