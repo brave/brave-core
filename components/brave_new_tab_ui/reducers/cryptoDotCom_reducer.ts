@@ -91,6 +91,14 @@ const cryptoDotComReducer: Reducer<NewTab.State | undefined> = (state: NewTab.St
       state.cryptoDotComState.optInMarkets = true
       break
 
+    case types.SET_SUPPORTED_PAIRS:
+      state = { ...state }
+      state.cryptoDotComState = {
+        ...state.cryptoDotComState,
+        supportedPairs: reducePairs(payload.pairs)
+      }
+      break
+
     default:
       break
   }
