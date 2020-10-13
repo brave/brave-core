@@ -49,7 +49,7 @@ const GURL& GetIPFSGatewayURL() {
 
 const GURL& GetIPFSLocalURL() {
   static const GURL ipfs_url(
-      "http://127.0.0.1:8080/ipfs/"
+      "http://127.0.0.1:48080/ipfs/"
       "bafybeiemxf5abjwjbikoz4mc3a3dla6ual3jsgpdr4cjr3oz3evfyavhwq/wiki/"
       "Vincent_van_Gogh.html");  // NOLINT
   return ipfs_url;

@@ -92,9 +92,9 @@ class IpfsServiceBrowserTest : public InProcessBrowserTest {
       "Key": "Addresses",
       "Value":
         {
-          "API": "/ip4/127.0.0.1/tcp/5001",
+          "API": "/ip4/127.0.0.1/tcp/45001",
           "Announce": [],
-          "Gateway": "/ip4/127.0.0.1/tcp/8080",
+          "Gateway": "/ip4/127.0.0.1/tcp/48080",
           "NoAnnounce": [],
           "Swarm": [
             "/ip4/0.0.0.0/tcp/4001",
@@ -160,8 +160,8 @@ class IpfsServiceBrowserTest : public InProcessBrowserTest {
       wait_for_request_->Quit();
     }
     EXPECT_TRUE(success);
-    EXPECT_EQ(config.api, "/ip4/127.0.0.1/tcp/5001");
-    EXPECT_EQ(config.gateway, "/ip4/127.0.0.1/tcp/8080");
+    EXPECT_EQ(config.api, "/ip4/127.0.0.1/tcp/45001");
+    EXPECT_EQ(config.gateway, "/ip4/127.0.0.1/tcp/48080");
     EXPECT_EQ(config.swarm, GetExpectedSwarm());
   }
 

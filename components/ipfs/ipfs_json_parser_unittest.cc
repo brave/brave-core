@@ -49,9 +49,9 @@ TEST_F(IPFSJSONParserTest, GetAddressesConfigFromJSON) {
       "Key": "Addresses",
       "Value":
         {
-          "API": "/ip4/127.0.0.1/tcp/5001",
+          "API": "/ip4/127.0.0.1/tcp/45001",
           "Announce": [],
-          "Gateway": "/ip4/127.0.0.1/tcp/8080",
+          "Gateway": "/ip4/127.0.0.1/tcp/48080",
           "NoAnnounce": [],
           "Swarm": [
             "/ip4/0.0.0.0/tcp/4001",
@@ -63,8 +63,8 @@ TEST_F(IPFSJSONParserTest, GetAddressesConfigFromJSON) {
       })",
                                                          &config));
 
-  ASSERT_EQ(config.api, "/ip4/127.0.0.1/tcp/5001");
-  ASSERT_EQ(config.gateway, "/ip4/127.0.0.1/tcp/8080");
+  ASSERT_EQ(config.api, "/ip4/127.0.0.1/tcp/45001");
+  ASSERT_EQ(config.gateway, "/ip4/127.0.0.1/tcp/48080");
   ASSERT_EQ(config.swarm,
             (std::vector<std::string>{
                 "/ip4/0.0.0.0/tcp/4001", "/ip6/::/tcp/4001",

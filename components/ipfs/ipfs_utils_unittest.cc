@@ -14,10 +14,10 @@ typedef testing::Test IpfsUtilsUnitTest;
 
 TEST_F(IpfsUtilsUnitTest, IsIPFSURL) {
   std::vector<GURL> ipfs_urls(
-      {GURL("http://localhost:8080/ipfs/"
+      {GURL("http://localhost:48080/ipfs/"
             "bafybeiemxf5abjwjbikoz4mc3a3dla6ual3jsgpdr4cjr3oz3evfyavhwq/wiki/"
             "Vincent_van_Gogh.html"),
-       GURL("http://localhost:8080/ipns/tr.wikipedia-on-ipfs.org/wiki/"
+       GURL("http://localhost:48080/ipns/tr.wikipedia-on-ipfs.org/wiki/"
             "Anasayfa.html")});
 
   for (auto url : ipfs_urls) {
@@ -34,10 +34,10 @@ TEST_F(IpfsUtilsUnitTest, IsDefaultGatewayURL) {
             "Anasayfa.html")});
 
   std::vector<GURL> ipfs_urls(
-      {GURL("http://localhost:8080/ipfs/"
+      {GURL("http://localhost:48080/ipfs/"
             "bafybeiemxf5abjwjbikoz4mc3a3dla6ual3jsgpdr4cjr3oz3evfyavhwq/wiki/"
             "Vincent_van_Gogh.html"),
-       GURL("http://localhost:8080/ipns/tr.wikipedia-on-ipfs.org/wiki/"
+       GURL("http://localhost:48080/ipns/tr.wikipedia-on-ipfs.org/wiki/"
             "Anasayfa.html"),
        GURL("ipfs://bafybeiemxf5abjwjbikoz4mc3a3dla6ual3jsgpdr4cjr3oz3evfyavhwq"
             "/wiki/Vincent_van_Gogh.html")});
@@ -53,10 +53,10 @@ TEST_F(IpfsUtilsUnitTest, IsDefaultGatewayURL) {
 
 TEST_F(IpfsUtilsUnitTest, IsLocalGatewayURL) {
   std::vector<GURL> local_gateway_urls(
-      {GURL("http://localhost:8080/ipfs/"
+      {GURL("http://localhost:48080/ipfs/"
             "bafybeiemxf5abjwjbikoz4mc3a3dla6ual3jsgpdr4cjr3oz3evfyavhwq/wiki/"
             "Vincent_van_Gogh.html"),
-       GURL("http://127.0.0.1:8080/ipfs/"
+       GURL("http://127.0.0.1:48080/ipfs/"
             "bafybeiemxf5abjwjbikoz4mc3a3dla6ual3jsgpdr4cjr3oz3evfyavhwq/wiki/"
             "Vincent_van_Gogh.html")});
 
@@ -84,10 +84,10 @@ TEST_F(IpfsUtilsUnitTest, IsLocalGatewayURL) {
 
 TEST_F(IpfsUtilsUnitTest, ToPublicGatewayURL) {
   std::vector<GURL> ipfs_urls(
-      {GURL("http://localhost:8080/ipfs/"
+      {GURL("http://localhost:48080/ipfs/"
             "bafybeiemxf5abjwjbikoz4mc3a3dla6ual3jsgpdr4cjr3oz3evfyavhwq/wiki/"
             "Vincent_van_Gogh.html"),
-       GURL("http://127.0.0.1:8080/ipfs/"
+       GURL("http://127.0.0.1:48080/ipfs/"
             "bafybeiemxf5abjwjbikoz4mc3a3dla6ual3jsgpdr4cjr3oz3evfyavhwq/wiki/"
             "Vincent_van_Gogh.html"),
        GURL("ipfs://bafybeiemxf5abjwjbikoz4mc3a3dla6ual3jsgpdr4cjr3oz3evfyavhwq"
