@@ -36,7 +36,7 @@ group("brave") {
 
   exe_path = "$app_path/Contents/MacOS/$chrome_product_full_name"
 
-  write_file("$root_out_dir/brave_helper", [ string_replace(rebase_path(exe_path), " ", "\\ ") + " \$@" ])
+  write_file("$root_out_dir/brave_helper", [ string_replace(rebase_path(exe_path), " ", "\\ ") ])
 }
 
 ds_store_file_name = "DS_Store"
