@@ -10,11 +10,20 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
+typedef NS_ENUM(NSUInteger, BraveBookmarksExporterState) {
+  BraveBookmarksExporterStateCompleted,
+  BraveBookmarksExporterStateStarted,
+  BraveBookmarksExporterStateErrorCreatingFile,
+  BraveBookmarksExporterStateErrorWritingHeader,
+  BraveBookmarksExporterStateErrorWritingNodes
+};
+
 OBJC_EXPORT
 @interface BraveBookmarksExporter: NSObject
 - (instancetype)init;
 
-- (bool)exportToFile:(NSString *)filePath;
+- (void)exportToFile:(NSString *)filePath
+       withListener:(void(^)(BraveBookmarksExporterState))listener;
 @end
 
 NS_ASSUME_NONNULL_END

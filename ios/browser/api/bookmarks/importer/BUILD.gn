@@ -12,6 +12,8 @@ source_set("importer") {
   sources = [
     "brave_bookmarks_importer.h",
     "brave_bookmarks_importer.mm",
+    "bookmarks_importer.h",
+    "bookmarks_importer.cc",
     "bookmark_html_reader.h",
     "bookmark_html_reader.cc",
     "imported_bookmark_entry.h",
@@ -23,6 +25,9 @@ source_set("importer") {
   deps = [
     "//base",
     "//components/favicon_base",
+    "//ios/chrome/browser/bookmarks",
+    "//ios/chrome/browser/bookmarks",
+    "//ios/chrome/browser/browser_state",
     "//ios/web/public/thread",
     "//net",
     "//url",

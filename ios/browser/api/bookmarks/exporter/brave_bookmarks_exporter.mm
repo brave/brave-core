@@ -14,34 +14,30 @@
 
 class BraveBookmarksExportObserver: public BookmarksExportObserver {
 public:
-  BraveBookmarksExportObserver(std::function<void(bool)> on_export_finished);
+  BraveBookmarksExportObserver(std::function<void(BraveBookmarksExporterState)> on_export_finished);
   void OnExportFinished(Result result) override;
     
 private:
-  std::function<void(bool)> _on_export_finished;
+  std::function<void(BraveBookmarksExporterState)> _on_export_finished;
 };
 
-BraveBookmarksExportObserver::BraveBookmarksExportObserver(std::function<void(bool)> on_export_finished):
+BraveBookmarksExportObserver::BraveBookmarksExportObserver(std::function<void(BraveBookmarksExporterState)> on_export_finished):
     _on_export_finished(on_export_finished) {
 }
 
 void BraveBookmarksExportObserver::OnExportFinished(Result result) {
   switch(result) {
     case Result::kSuccess:
-      _on_export_finished(true);
-      break;
-        
+      return _on_export_finished(BraveBookmarksExporterStateCompleted);
     case Result::kCouldNotCreateFile:
+      return _on_export_finished(BraveBookmarksExporterStateErrorCreatingFile);
     case Result::kCouldNotWriteHeader:
+      return _on_export_finished(BraveBookmarksExporterStateErrorWritingHeader);
     case Result::kCouldNotWriteNodes:
-      _on_export_finished(false);
-      break;
-        
+      return _on_export_finished(BraveBookmarksExporterStateErrorWritingNodes);
     default:
-      _on_export_finished(false);
-      break;
+      NOTREACHED();
   }
-    
   delete this;
 }
 
@@ -52,13 +48,18 @@ void BraveBookmarksExportObserver::OnExportFinished(Result result) {
 
 - (instancetype)init {
   if ((self = [super init])) {
+      
   }
   return self;
 }
 
-- (bool)exportToFile:(NSString *)filePath {
+- (void)exportToFile:(NSString *)filePath
+       withListener:(void(^)(BraveBookmarksExporterState))listener {
+    
   base::FilePath destination_file_path =
       base::FilePath::FromUTF8Unsafe([filePath UTF8String]);
+    
+  listener(BraveBookmarksExporterStateStarted);
     
   ios::ChromeBrowserStateManager* browserStateManager =
       GetApplicationContext()->GetChromeBrowserStateManager();
@@ -67,11 +68,7 @@ void BraveBookmarksExportObserver::OnExportFinished(Result result) {
     
   bookmark_html_writer::WriteBookmarks(chromeBrowserState,
       destination_file_path,
-      new BraveBookmarksExportObserver([](bool did_succeed) {
-        fprintf(stderr, "FINISHED EXPORTING BOOKMARKS: %s\n", did_succeed ? "true" : "false");
-      })
+      new BraveBookmarksExportObserver(listener)
   );
-  return true;
 }
-
 @end

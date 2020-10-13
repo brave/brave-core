@@ -10,11 +10,34 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
+typedef NS_ENUM(NSUInteger, BraveBookmarksImporterState) {
+  BraveBookmarksImporterStateCompleted,
+  BraveBookmarksImporterStateAutoCompleted,
+  BraveBookmarksImporterStateStarted,
+  BraveBookmarksImporterStateCancelled
+};
+
+OBJC_EXPORT
+@interface BraveImportedBookmark: NSObject
+@property (nonatomic, readonly) bool inToolbar;
+@property (nonatomic, readonly) bool isFolder;
+@property (nullable, nonatomic, readonly, copy) NSURL *url;
+@property (nullable, nonatomic, readonly, copy) NSArray<NSString *> *path;
+@property (nonatomic, readonly, copy) NSString *title;
+@property (nonatomic, readonly, copy) NSDate *creationTime;
+@end
+
 OBJC_EXPORT
 @interface BraveBookmarksImporter: NSObject
 - (instancetype)init;
 
-- (void)importFromFile:(NSString *)filePath;
+- (void)cancel;
+
+- (void)importFromFile:(NSString *)filePath
+       automaticImport:(bool)automaticImport
+          withListener:(void(^)(BraveBookmarksImporterState, NSArray<BraveImportedBookmark *> * _Nullable))listener;
+
+- (void)importFromArray:(NSArray<BraveImportedBookmark *> *)bookmarks;
 @end
 
 NS_ASSUME_NONNULL_END
