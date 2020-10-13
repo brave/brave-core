@@ -211,11 +211,11 @@ void CustomizeWebUIHTMLSource(const std::string &name,
         { "rewardsWidgetBat", IDS_BRAVE_UI_BAT_REWARDS_TEXT },
         { "rewardsWidgetBraveRewards", IDS_BRAVE_UI_BRAVE_REWARDS },
         { "rewardsWidgetTurnOnAds", IDS_BRAVE_UI_TURN_ON_ADS },
+        { "rewardsWidgetTurnOnText", IDS_BRAVE_UI_TURN_ON_TEXT },
         { "rewardsWidgetClaimMyRewards", IDS_REWARDS_WIDGET_CLAIM_MY_REWARDS },
         { "rewardsWidgetAboutRewards", IDS_REWARDS_WIDGET_ABOUT_REWARDS },
         { "rewardsWidgetServiceText", IDS_REWARDS_WIDGET_SERVICE_TEXT },
         { "rewardsWidgetEstimatedEarnings", IDS_REWARDS_WIDGET_ESTIMATED_EARNINGS },      // NOLINT
-        { "rewardsWidgetAdsOptInDescription", IDS_REWARDS_WIDGET_ADS_OPT_IN_DESCRIPTION },      // NOLINT
         { "rewardsWidgetMonthlyTips", IDS_REWARDS_WIDGET_MONTHLY_TIPS },
         { "rewardsWidgetEnableBrandedWallpaperTitle", IDS_REWARDS_WIDGET_ENABLE_BRANDED_WALLPAPER_TITLE },  // NOLINT
         { "rewardsWidgetEnableBrandedWallpaperSubTitle", IDS_REWARDS_WIDGET_ENABLE_BRANDED_WALLPAPER_SUBTITLE },            // NOLINT
@@ -227,6 +227,8 @@ void CustomizeWebUIHTMLSource(const std::string &name,
         { "rewardsWidgetBrandedNotificationDescription", IDS_REWARDS_WIDGET_BRANDED_NOTIFICATION_DESCRIPTION }, // NOLINT
         { "rewardsWidgetBrandedNotificationHideAction", IDS_REWARDS_WIDGET_BRANDED_NOTIFICATION_HIDE_ACTION }, // NOLINT
         { "addCardWidgetTitle", IDS_ADD_CARD_WIDGET_TITLE },
+        { "tosAndPp", IDS_REWARDS_WIDGET_TOS_AND_PP},     // NOLINT
+        { "rewardsWidgetEarnAndGive", IDS_REWARDS_WIDGET_EARN_AND_GIVE},     // NOLINT
         // Together Widget
         { "togetherWidgetTitle", IDS_TOGETHER_WIDGET_TITLE },
         { "togetherWidgetWelcomeTitle", IDS_TOGETHER_WIDGET_WELCOME_TITLE },
@@ -475,6 +477,7 @@ void CustomizeWebUIHTMLSource(const std::string &name,
         { "redirectModalBatLimitTitle", IDS_BRAVE_REWARDS_LOCAL_REDIRECT_MODAL_BAT_LIMIT_TITLE },     // NOLINT
         { "redirectModalBatLimitText", IDS_BRAVE_REWARDS_LOCAL_REDIRECT_MODAL_BAT_LIMIT_TEXT },     // NOLINT
         { "redirectModalNotAllowed", IDS_BRAVE_REWARDS_LOCAL_REDIRECT_MODAL_NOT_ALLOWED},     // NOLINT
+        { "tosAndPp", IDS_BRAVE_REWARDS_LOCAL_TOS_AND_PP},     // NOLINT
 
         { "click",  IDS_BRAVE_REWARDS_LOCAL_ADS_CONFIRMATION_TYPE_CLICK },
         { "dismiss",  IDS_BRAVE_REWARDS_LOCAL_ADS_CONFIRMATION_TYPE_DISMISS },
@@ -925,6 +928,7 @@ void CustomizeWebUIHTMLSource(const std::string &name,
         { "valid", IDS_BRAVE_REWARDS_INTERNALS_VALID },
         { "walletAddress", IDS_BRAVE_REWARDS_INTERNALS_WALLET_ADDRESS },
         { "walletInfo", IDS_BRAVE_REWARDS_INTERNALS_WALLET_INFO },
+        { "walletNotCreated", IDS_BRAVE_REWARDS_INTERNALS_WALLET_NOT_CREATED },
         { "walletPaymentId", IDS_BRAVE_REWARDS_INTERNALS_WALLET_PAYMENT_ID },
         { "walletStatus", IDS_BRAVE_REWARDS_INTERNALS_WALLET_STATUS },
         { "walletStatusConnected", IDS_BRAVE_REWARDS_INTERNALS_WALLET_STATUS_CONNECTED },    // NOLINT

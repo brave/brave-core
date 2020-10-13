@@ -37,7 +37,6 @@ export class RewardsInternalsPage extends React.Component<Props, State> {
   }
 
   componentDidMount () {
-    // TODO we probably need to init first
     this.getGeneralInfo()
   }
 

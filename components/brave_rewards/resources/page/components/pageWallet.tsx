@@ -20,7 +20,7 @@ import { AlertWallet, WalletState } from '../../ui/components/walletWrapper'
 import { Provider } from '../../ui/components/profile'
 import { DetailRow as PendingDetailRow, PendingType } from '../../ui/components/tablePending'
 // Utils
-import { getLocale, getLocaleTags } from '../../../../common/locale'
+import { getLocale, getLocaleWithTag } from '../../../../common/locale'
 import * as rewardsActions from '../actions/rewards_actions'
 import * as utils from '../utils'
 import { ExtendedActivityRow, SummaryItem, SummaryType } from '../../ui/components/modalActivity'
@@ -737,7 +737,7 @@ class PageWallet extends React.Component<Props, State> {
 
     // ledger::type::Result::CORRUPTED_DATA
     if (walletRecoveryStatus === 17) {
-      const tags = getLocaleTags('walletRecoveryOutdated')
+      const tags = getLocaleWithTag('walletRecoveryOutdated')
       return (
         <span>
           {tags.beforeTag}

@@ -4,7 +4,7 @@
 
 import * as React from 'react'
 
-import { LocaleContext, getLocaleTags } from '../localeContext'
+import { LocaleContext, getLocaleWithTag } from '../localeContext'
 import { DialogTitle } from '../dialogTitle'
 import { FormSection } from '../formSection'
 import { CreditCardForm, CreditCardFormHandle, CreditCardDetails } from '../creditCardForm'
@@ -119,7 +119,7 @@ export function AddFundsPanel (props: AddFundsPanelProps) {
     }
   }
 
-  const tags = getLocaleTags(locale.get('addFundsTermsOfSale'))
+  const tags = getLocaleWithTag(locale.get('addFundsTermsOfSale'))
 
   return (
     <>

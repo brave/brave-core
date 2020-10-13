@@ -2,11 +2,12 @@
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // you can obtain one at http://mozilla.org/MPL/2.0/.
-
 import * as React from 'react'
 import styled, { css } from 'brave-ui/theme'
 import palette from 'brave-ui/theme/colors'
 import confettiImageUrl from './confetti.png'
+import Button, { Props as ButtonProps } from 'brave-ui/components/buttonsIndicators/button'
+import TOSAndPP, { Props as TOSProps } from '../../../../brave_rewards/resources/ui/components/TOSAndPP'
 
 interface StyleProps {
   isLast?: boolean
@@ -152,8 +153,9 @@ const CoinsButton: React.FunctionComponent<CoinsButtonProps> = ({ onClick, class
   )
 }
 
-export const TurnOnAdsButton = styled(CoinsButton)`
-  margin-bottom: 8px;
+export const TurnOnAdsButton = styled(Button as React.ComponentType<ButtonProps>)`
+  margin: 15px 0;
+  display: inline-block;
 `
 
 export const NotificationButton = styled(CoinsButton)`
@@ -226,7 +228,7 @@ export const NotificationAction = styled<{}, 'a'>('a')`
   display: block;
   cursor: pointer;
   font-size: 14px;
-  color: ${p => palette.blurple300};
+  color: ${palette.blurple300};
   font-weight: 700;
   text-decoration: none;
   &:hover {
@@ -248,4 +250,22 @@ export const UnsupportedMessage = styled<{}, 'div'>('div')`
   font-size: 14px;
   max-width: 235px;
   margin-top: 8px;
+`
+
+export const TurnOnText = styled<{}, 'div'>('div')`
+  font-size: 14px;
+  color: ${palette.grey300};
+  margin-top: 8px;
+`
+
+export const StyledTOS = styled(TOSAndPP as React.ComponentType<TOSProps>)`
+  font-size: 12px;
+
+  a {
+    color: ${p => p.theme.color.brandBrave};
+  }
+`
+
+export const StyleCenter = styled<{}, 'div'>('div')`
+  text-align: center;
 `

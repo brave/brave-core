@@ -23,7 +23,9 @@ import {
   ConvertedAmount,
   AmountUSD,
   TurnOnAdsButton,
-  UnsupportedMessage
+  UnsupportedMessage,
+  TurnOnText,
+  StyledTOS
 } from './style'
 import { StyledTitleTab } from '../widgetTitleTab'
 import Notification from './notification'
@@ -52,44 +54,43 @@ export interface RewardsProps {
   onDisableBrandedWallpaper: () => void
 }
 
-const enum AmountItemType {
-  ADS = 0,
-  TIPS = 1
-}
-
 class Rewards extends React.PureComponent<RewardsProps, {}> {
-
-  renderAmountItem = (type: AmountItemType) => {
+  renderAmountItem = () => {
     const {
       parameters,
       enabledAds,
       onEnableAds,
       adsEstimatedEarnings,
       onlyAnonWallet,
-      totalContribution,
       adsSupported
     } = this.props
 
     const rate = parameters.rate || 0.0
-    const showEnableAds = type === AmountItemType.ADS && !enabledAds && adsSupported
-    const amount = type === AmountItemType.TIPS
-      ? totalContribution
-      : adsEstimatedEarnings
+    const showEnableAds = !enabledAds && adsSupported
+    const amount = adsEstimatedEarnings
     const converted = convertBalance(amount, rate)
     const batFormatString = onlyAnonWallet ? getLocale('rewardsWidgetBap') : getLocale('rewardsWidgetBat')
 
     return (
-      <AmountItem isActionPrompt={!!showEnableAds} isLast={type === AmountItemType.TIPS}>
+      <AmountItem isActionPrompt={!!showEnableAds} isLast={false}>
         {
           showEnableAds
-          ? <TurnOnAdsButton onClick={onEnableAds}>
-              {getLocale('rewardsWidgetTurnOnAds')}
-            </TurnOnAdsButton>
+          ? <>
+            <TurnOnText>
+              {getLocale('rewardsWidgetTurnOnText')}
+            </TurnOnText>
+            <TurnOnAdsButton
+              onClick={onEnableAds}
+              type={'accent'}
+              brand={'rewards'}
+              text={getLocale('rewardsWidgetTurnOnAds')}
+            />
+          </>
           : null
         }
         {
-          !showEnableAds && !(type === AmountItemType.ADS && !adsSupported)
-          ? <div data-test-id={`widget-amount-total-${type}`}>
+          !showEnableAds && adsSupported
+          ? <div data-test-id={`widget-amount-total-ads`}>
               <Amount>{amount.toFixed(3)}</Amount>
               <ConvertedAmount>
                 {batFormatString}<AmountUSD>{converted} USD</AmountUSD>
@@ -98,7 +99,7 @@ class Rewards extends React.PureComponent<RewardsProps, {}> {
           : null
         }
         {
-          type === AmountItemType.ADS && !adsSupported
+          !adsSupported
           ? <UnsupportedMessage>
               {getLocale('rewardsWidgetAdsNotSupported')}
             </UnsupportedMessage>
@@ -106,12 +107,37 @@ class Rewards extends React.PureComponent<RewardsProps, {}> {
         }
         <AmountDescription>
           {
-            type === AmountItemType.ADS
-            ? showEnableAds
-                ? getLocale('rewardsWidgetAdsOptInDescription')
-                : getLocale('rewardsWidgetEstimatedEarnings')
-            : getLocale('rewardsWidgetMonthlyTips')
+            showEnableAds
+            ? <StyledTOS title={getLocale('rewardsWidgetEarnAndGive')} />
+            : getLocale('rewardsWidgetEstimatedEarnings')
           }
+        </AmountDescription>
+      </AmountItem>
+    )
+  }
+
+  renderTipsBox = () => {
+    const {
+      parameters,
+      onlyAnonWallet,
+      totalContribution
+    } = this.props
+
+    const rate = parameters.rate || 0.0
+    const amount = totalContribution
+    const converted = convertBalance(amount, rate)
+    const batFormatString = onlyAnonWallet ? getLocale('rewardsWidgetBap') : getLocale('rewardsWidgetBat')
+
+    return (
+      <AmountItem isLast={true}>
+        <div data-test-id={`widget-amount-total-tips`}>
+          <Amount>{amount.toFixed(3)}</Amount>
+          <ConvertedAmount>
+            {batFormatString}<AmountUSD>{converted} USD</AmountUSD>
+          </ConvertedAmount>
+        </div>
+        <AmountDescription>
+          {getLocale('rewardsWidgetMonthlyTips')}
         </AmountDescription>
       </AmountItem>
     )
@@ -124,15 +150,15 @@ class Rewards extends React.PureComponent<RewardsProps, {}> {
 
     return (
       <div>
-        {adsSupported && this.renderAmountItem(AmountItemType.ADS)}
-        {this.renderAmountItem(AmountItemType.TIPS)}
+        {adsSupported && this.renderAmountItem()}
+        {this.renderTipsBox()}
       </div>
     )
   }
 
   renderLearnMore = () => {
     const text = getLocale('rewardsWidgetAboutRewards')
-    const { beforeTag, duringTag, afterTag } = splitStringForTag(text, '$1', '$2')
+    const { beforeTag, duringTag, afterTag } = splitStringForTag(text)
     return (
       <LearnMoreText>
         {beforeTag}
@@ -151,16 +177,6 @@ class Rewards extends React.PureComponent<RewardsProps, {}> {
       enabledAds,
       onEnableAds
     } = this.props
-
-    // Uncomment for demo promotion notifications data:
-    //
-    // const showDummyPromotion = true
-    // if (showDummyPromotion) {
-    //   promotions = [{
-    //     type: 1,
-    //     promotionId: '1234'
-    //   }]
-    // }
 
     // TODO(petemill): If we want a true 'single' mode then
     // only show a single notification from any source.

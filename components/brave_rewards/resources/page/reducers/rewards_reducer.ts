@@ -428,6 +428,7 @@ const rewardsReducer: Reducer<Rewards.State | undefined> = (state: Rewards.State
         ...state,
         paymentId: action.payload.paymentId
       }
+      break
     }
     case types.SET_FIRST_LOAD: {
       state.firstLoad = action.payload.firstLoad
