@@ -3,8 +3,8 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // you can obtain one at http://mozilla.org/MPL/2.0/.
 
-#ifndef BRAVE_BROWSER_UI_WEBUI_BRAVE_NEW_TAB_MESSAGE_HANDLER_H_
-#define BRAVE_BROWSER_UI_WEBUI_BRAVE_NEW_TAB_MESSAGE_HANDLER_H_
+#ifndef BRAVE_BROWSER_UI_WEBUI_NEW_TAB_PAGE_BRAVE_NEW_TAB_MESSAGE_HANDLER_H_
+#define BRAVE_BROWSER_UI_WEBUI_NEW_TAB_PAGE_BRAVE_NEW_TAB_MESSAGE_HANDLER_H_
 
 #include <string>
 
@@ -69,4 +69,4 @@ class BraveNewTabMessageHandler : public content::WebUIMessageHandler,
   DISALLOW_COPY_AND_ASSIGN(BraveNewTabMessageHandler);
 };
 
-#endif  // BRAVE_BROWSER_UI_WEBUI_BRAVE_NEW_TAB_MESSAGE_HANDLER_H_
+#endif  // BRAVE_BROWSER_UI_WEBUI_NEW_TAB_PAGE_BRAVE_NEW_TAB_MESSAGE_HANDLER_H_

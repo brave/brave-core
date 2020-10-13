@@ -3,7 +3,7 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // you can obtain one at http://mozilla.org/MPL/2.0/.
 
-#include "brave/browser/ui/webui/brave_new_tab_message_handler.h"
+#include "brave/browser/ui/webui/new_tab_page/brave_new_tab_message_handler.h"
 
 #include <memory>
 #include <utility>
@@ -11,26 +11,26 @@
 #include "base/guid.h"
 #include "base/json/json_writer.h"
 #include "base/values.h"
+#include "brave/browser/ntp_background_images/view_counter_service_factory.h"
 #include "brave/browser/profiles/profile_util.h"
 #include "brave/browser/search_engines/search_engine_provider_util.h"
-#include "brave/browser/ui/webui/brave_new_tab_ui.h"
+#include "brave/browser/ui/webui/new_tab_page/brave_new_tab_ui.h"
 #include "brave/browser/ntp_background_images/view_counter_service_factory.h"
 #include "brave/common/pref_names.h"
 #include "brave/components/brave_ads/browser/ads_service.h"
 #include "brave/components/brave_ads/browser/ads_service_factory.h"
 #include "brave/components/brave_perf_predictor/browser/buildflags.h"
-#include "brave/components/moonpay/browser/buildflags/buildflags.h"
 #include "brave/components/crypto_dot_com/browser/buildflags/buildflags.h"
+#include "brave/components/moonpay/browser/buildflags/buildflags.h"
 #include "brave/components/ntp_background_images/browser/features.h"
 #include "brave/components/ntp_background_images/browser/url_constants.h"
 #include "brave/components/ntp_background_images/browser/view_counter_service.h"
 #include "brave/components/ntp_background_images/common/pref_names.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/common/chrome_features.h"
-#include "content/public/browser/web_ui_data_source.h"
 #include "components/prefs/pref_change_registrar.h"
 #include "components/prefs/pref_service.h"
-
+#include "content/public/browser/web_ui_data_source.h"
 
 using ntp_background_images::features::kBraveNTPBrandedWallpaper;
 using ntp_background_images::prefs::kNewTabPageShowBackgroundImage;
