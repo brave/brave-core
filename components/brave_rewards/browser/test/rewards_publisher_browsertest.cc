@@ -293,7 +293,7 @@ IN_PROC_BROWSER_TEST_F(
 // Brave tip icon is injected when visiting GitHub
 IN_PROC_BROWSER_TEST_F(
     RewardsPublisherBrowserTest,
-    GitHubTipsInjectedOnGitHub) {
+    DISABLED_GitHubTipsInjectedOnGitHub) {
   rewards_browsertest_util::EnableRewardsViaCode(browser(), rewards_service_);
 
   // Navigate to GitHub in a new tab
@@ -311,7 +311,7 @@ IN_PROC_BROWSER_TEST_F(
 // Rewards is disabled
 IN_PROC_BROWSER_TEST_F(
     RewardsPublisherBrowserTest,
-    GitHubTipsNotInjectedWhenRewardsDisabled) {
+    DISABLED_GitHubTipsNotInjectedWhenRewardsDisabled) {
   // Navigate to GitHub in a new tab
   rewards_browsertest_util::NavigateToPublisherPage(
       browser(),
@@ -326,7 +326,7 @@ IN_PROC_BROWSER_TEST_F(
 // Brave tip icon is not injected when not visiting GitHub
 IN_PROC_BROWSER_TEST_F(
     RewardsPublisherBrowserTest,
-    GitHubTipsNotInjectedOnNonGitHub) {
+    DISABLED_GitHubTipsNotInjectedOnNonGitHub) {
   rewards_browsertest_util::EnableRewardsViaCode(browser(), rewards_service_);
 
   // Navigate to GitHub in a new tab

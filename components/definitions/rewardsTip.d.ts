@@ -42,9 +42,10 @@ declare namespace RewardsTip {
   }
 
   type MediaMetaData = {
-    mediaType: 'twitter',
+    mediaType: 'github' | 'twitter',
     publisherKey: string
     publisherName: string
+    publisherScreenName: string
     postId: string
     postTimestamp: string
     postText: string
@@ -53,13 +54,6 @@ declare namespace RewardsTip {
     userName: string
     postText: string
     postRelDate: string
-  } | {
-    mediaType: 'github'
-    userName: string
-  }
-
-  interface GitHubMetaData {
-    userName: string
   }
 
   interface RedditMetaData {

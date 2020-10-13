@@ -49,23 +49,6 @@ chrome.runtime.onStartup.addListener(function () {
   })
 })
 
-const tipGitHubMedia = (mediaMetaData: RewardsTip.MediaMetaData) => {
-  mediaMetaData.mediaType = 'github'
-  chrome.tabs.query({
-    active: true,
-    windowId: chrome.windows.WINDOW_ID_CURRENT
-  }, (tabs) => {
-    if (!tabs || tabs.length === 0) {
-      return
-    }
-    const tabId = tabs[0].id
-    if (tabId === undefined) {
-      return
-    }
-    chrome.braveRewards.tipGitHubUser(tabId, mediaMetaData)
-  })
-}
-
 const tipRedditMedia = (mediaMetaData: RewardsTip.MediaMetaData) => {
   mediaMetaData.mediaType = 'reddit'
   chrome.tabs.query({
@@ -90,9 +73,6 @@ chrome.runtime.onMessage.addListener((msg, sender, sendResponse) => {
       switch (msg.mediaMetaData.mediaType) {
         case 'reddit':
           tipRedditMedia(msg.mediaMetaData)
-          break
-        case 'github':
-          tipGitHubMedia(msg.mediaMetaData)
           break
       }
       return false

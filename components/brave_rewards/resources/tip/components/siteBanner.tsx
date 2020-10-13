@@ -134,7 +134,7 @@ class Banner extends React.Component<Props, State> {
     } else if (mediaMetaData.mediaType === 'reddit') {
       return `u/${mediaMetaData.userName}`
     } else if (mediaMetaData.mediaType === 'github') {
-      return `@${mediaMetaData.userName}`
+      return `@${mediaMetaData.publisherScreenName}`
     }
     return ''
   }

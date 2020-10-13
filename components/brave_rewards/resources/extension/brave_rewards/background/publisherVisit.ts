@@ -42,6 +42,7 @@ interface TipUser {
   url: string
   publisherKey: string
   publisherName: string
+  publisherScreenName: string
   favIconUrl: string
   postId: string
   postTimestamp: string
@@ -271,6 +272,7 @@ const handleTipUser = (tabId: number, mediaType: string, data: TipUser) => {
     data.url,
     data.publisherKey,
     data.publisherName,
+    data.publisherScreenName,
     data.favIconUrl,
     data.postId,
     data.postTimestamp,
