@@ -335,11 +335,12 @@ void GreaselionServiceImpl::RemoveObserver(Observer* observer) {
 void GreaselionServiceImpl::MaybeNotifyObservers() {
   if (!pending_installs_) {
     update_in_progress_ = false;
-    for (Observer& observer : observers_)
-      observer.OnExtensionsReady(this, all_rules_installed_successfully_);
     if (update_pending_) {
       update_pending_ = false;
       UpdateInstalledExtensions();
+    } else {
+      for (Observer& observer : observers_)
+        observer.OnExtensionsReady(this, all_rules_installed_successfully_);
     }
   }
 }
