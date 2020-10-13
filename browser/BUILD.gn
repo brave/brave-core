@@ -13,7 +13,7 @@ import("//brave/components/brave_wallet/browser/buildflags/buildflags.gni")
 import("//brave/components/brave_wayback_machine/buildflags/buildflags.gni")
 import("//brave/components/brave_webtorrent/browser/buildflags/buildflags.gni")
 import("//brave/components/greaselion/browser/buildflags/buildflags.gni")
-import("//brave/components/ipfs/browser/buildflags/buildflags.gni")
+import("//brave/components/ipfs/buildflags/buildflags.gni")
 import("//brave/components/speedreader/buildflags.gni")
 import("//build/buildflag_header.gni")
 import("//build/config/features.gni")
@@ -136,7 +136,7 @@ source_set("browser_process") {
     "//brave/components/brave_webtorrent/browser/buildflags",
     "//brave/components/content_settings/core/browser",
     "//brave/components/greaselion/browser/buildflags",
-    "//brave/components/ipfs/browser/buildflags",
+    "//brave/components/ipfs/buildflags",
     "//brave/components/l10n/browser",
     "//brave/components/moonpay/browser/buildflags",
     "//brave/components/ntp_background_images/browser",
@@ -299,8 +299,7 @@ source_set("browser_process") {
 
     deps += [
       "//brave/browser/infobars",
-      "//brave/components/ipfs/browser",
-      "//brave/components/ipfs/common",
+      "//brave/components/ipfs",
       "//brave/components/services/ipfs/public/mojom",
       "//extensions/browser",
       "//extensions/common",

@@ -2,7 +2,7 @@ import("//build/config/features.gni")
 import("//brave/components/brave_wayback_machine/buildflags/buildflags.gni")
 import("//brave/components/brave_wallet/browser/buildflags/buildflags.gni")
 import("//brave/components/brave_sync/buildflags/buildflags.gni")
-import("//brave/components/ipfs/browser/buildflags/buildflags.gni")
+import("//brave/components/ipfs/buildflags/buildflags.gni")
 
 source_set("infobars") {
   # Remove when https://github.com/brave/brave-browser/issues/10649 is resolved
@@ -49,8 +49,7 @@ source_set("infobars") {
       "ipfs_infobar_delegate.h",
     ]
     deps += [
-      "//brave/components/ipfs/browser",
-      "//brave/components/ipfs/common",
+      "//brave/components/ipfs",
       "//components/user_prefs"
     ]
   }

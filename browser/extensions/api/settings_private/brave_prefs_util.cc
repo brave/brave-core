@@ -6,12 +6,12 @@
 #include "brave/browser/extensions/api/settings_private/brave_prefs_util.h"
 
 #include "brave/common/pref_names.h"
+#include "brave/components/brave_rewards/common/pref_names.h"
 #include "brave/components/brave_wallet/browser/buildflags/buildflags.h"
 #include "brave/components/brave_wayback_machine/buildflags.h"
-#include "brave/components/brave_rewards/common/pref_names.h"
-#include "brave/components/ipfs/browser/buildflags/buildflags.h"
-#include "brave/components/moonpay/browser/buildflags/buildflags.h"
 #include "brave/components/crypto_dot_com/browser/buildflags/buildflags.h"
+#include "brave/components/ipfs/buildflags/buildflags.h"
+#include "brave/components/moonpay/browser/buildflags/buildflags.h"
 #include "brave/components/ntp_background_images/common/pref_names.h"
 #include "chrome/browser/extensions/api/settings_private/prefs_util.h"
 #include "chrome/common/extensions/api/settings_private.h"
@@ -28,7 +28,7 @@
 #endif
 
 #if BUILDFLAG(IPFS_ENABLED)
-#include "brave/components/ipfs/common/pref_names.h"
+#include "brave/components/ipfs/pref_names.h"
 #endif
 
 #if BUILDFLAG(MOONPAY_ENABLED)
@@ -41,10 +41,10 @@
 
 namespace extensions {
 
-using ntp_background_images::prefs::kNewTabPageSuperReferralThemesOption;
-using
-    ntp_background_images::prefs::kNewTabPageShowSponsoredImagesBackgroundImage;
 using ntp_background_images::prefs::kNewTabPageShowBackgroundImage;
+using ntp_background_images::prefs::
+    kNewTabPageShowSponsoredImagesBackgroundImage;
+using ntp_background_images::prefs::kNewTabPageSuperReferralThemesOption;
 
 namespace settings_api = api::settings_private;
 
@@ -85,7 +85,7 @@ const PrefsUtil::TypedPrefMap& BravePrefsUtil::GetWhitelistedKeys() {
 
   // appearance prefs
   (*s_brave_whitelist)[kLocationBarIsWide] =
-    settings_api::PrefType::PREF_TYPE_BOOLEAN;
+      settings_api::PrefType::PREF_TYPE_BOOLEAN;
   (*s_brave_whitelist)[kAutocompleteEnabled] =
       settings_api::PrefType::PREF_TYPE_BOOLEAN;
   (*s_brave_whitelist)[kTopSiteSuggestionsEnabled] =
@@ -100,52 +100,52 @@ const PrefsUtil::TypedPrefMap& BravePrefsUtil::GetWhitelistedKeys() {
       settings_api::PrefType::PREF_TYPE_NUMBER;
   // new tab prefs
   (*s_brave_whitelist)[kNewTabPageShowSponsoredImagesBackgroundImage] =
-        settings_api::PrefType::PREF_TYPE_BOOLEAN;
+      settings_api::PrefType::PREF_TYPE_BOOLEAN;
   (*s_brave_whitelist)[kNewTabPageShowBackgroundImage] =
-        settings_api::PrefType::PREF_TYPE_BOOLEAN;
+      settings_api::PrefType::PREF_TYPE_BOOLEAN;
   (*s_brave_whitelist)[kNewTabPageShowClock] =
-        settings_api::PrefType::PREF_TYPE_BOOLEAN;
+      settings_api::PrefType::PREF_TYPE_BOOLEAN;
   (*s_brave_whitelist)[kNewTabPageShowStats] =
-        settings_api::PrefType::PREF_TYPE_BOOLEAN;
+      settings_api::PrefType::PREF_TYPE_BOOLEAN;
   (*s_brave_whitelist)[kNewTabPageShowRewards] =
-        settings_api::PrefType::PREF_TYPE_BOOLEAN;
+      settings_api::PrefType::PREF_TYPE_BOOLEAN;
   (*s_brave_whitelist)[kNewTabPageShowBinance] =
-        settings_api::PrefType::PREF_TYPE_BOOLEAN;
+      settings_api::PrefType::PREF_TYPE_BOOLEAN;
   (*s_brave_whitelist)[kNewTabPageShowTogether] =
-        settings_api::PrefType::PREF_TYPE_BOOLEAN;
+      settings_api::PrefType::PREF_TYPE_BOOLEAN;
   (*s_brave_whitelist)[kNewTabPageShowAddCard] =
-        settings_api::PrefType::PREF_TYPE_BOOLEAN;
+      settings_api::PrefType::PREF_TYPE_BOOLEAN;
   (*s_brave_whitelist)[kNewTabPageShowGemini] =
-        settings_api::PrefType::PREF_TYPE_BOOLEAN;
+      settings_api::PrefType::PREF_TYPE_BOOLEAN;
 #if BUILDFLAG(MOONPAY_ENABLED)
   (*s_brave_whitelist)[kMoonpayNewTabPageShowBitcoinDotCom] =
-        settings_api::PrefType::PREF_TYPE_BOOLEAN;
+      settings_api::PrefType::PREF_TYPE_BOOLEAN;
 #endif
 #if BUILDFLAG(CRYPTO_DOT_COM_ENABLED)
   (*s_brave_whitelist)[kCryptoDotComNewTabPageShowCryptoDotCom] =
-        settings_api::PrefType::PREF_TYPE_BOOLEAN;
+      settings_api::PrefType::PREF_TYPE_BOOLEAN;
 #endif
   // Clear browsing data on exit prefs.
   (*s_brave_whitelist)[browsing_data::prefs::kDeleteBrowsingHistoryOnExit] =
-    settings_api::PrefType::PREF_TYPE_BOOLEAN;
+      settings_api::PrefType::PREF_TYPE_BOOLEAN;
   (*s_brave_whitelist)[browsing_data::prefs::kDeleteDownloadHistoryOnExit] =
-    settings_api::PrefType::PREF_TYPE_BOOLEAN;
+      settings_api::PrefType::PREF_TYPE_BOOLEAN;
   (*s_brave_whitelist)[browsing_data::prefs::kDeleteCacheOnExit] =
-    settings_api::PrefType::PREF_TYPE_BOOLEAN;
+      settings_api::PrefType::PREF_TYPE_BOOLEAN;
   (*s_brave_whitelist)[browsing_data::prefs::kDeleteCookiesOnExit] =
-    settings_api::PrefType::PREF_TYPE_BOOLEAN;
+      settings_api::PrefType::PREF_TYPE_BOOLEAN;
   (*s_brave_whitelist)[browsing_data::prefs::kDeletePasswordsOnExit] =
-    settings_api::PrefType::PREF_TYPE_BOOLEAN;
+      settings_api::PrefType::PREF_TYPE_BOOLEAN;
   (*s_brave_whitelist)[browsing_data::prefs::kDeleteFormDataOnExit] =
-    settings_api::PrefType::PREF_TYPE_BOOLEAN;
+      settings_api::PrefType::PREF_TYPE_BOOLEAN;
   (*s_brave_whitelist)[browsing_data::prefs::kDeleteSiteSettingsOnExit] =
-    settings_api::PrefType::PREF_TYPE_BOOLEAN;
+      settings_api::PrefType::PREF_TYPE_BOOLEAN;
   (*s_brave_whitelist)[browsing_data::prefs::kDeleteHostedAppsDataOnExit] =
-    settings_api::PrefType::PREF_TYPE_BOOLEAN;
+      settings_api::PrefType::PREF_TYPE_BOOLEAN;
   (*s_brave_whitelist)[kAlwaysShowBookmarkBarOnNTP] =
       settings_api::PrefType::PREF_TYPE_BOOLEAN;
   (*s_brave_whitelist)[kMRUCyclingEnabled] =
-    settings_api::PrefType::PREF_TYPE_BOOLEAN;
+      settings_api::PrefType::PREF_TYPE_BOOLEAN;
   // WebTorrent pref
   (*s_brave_whitelist)[kWebTorrentEnabled] =
       settings_api::PrefType::PREF_TYPE_BOOLEAN;

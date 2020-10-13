@@ -14,7 +14,7 @@
 #include "brave/browser/tor/buildflags.h"
 #include "brave/common/brave_paths.h"
 #include "brave/components/brave_ads/browser/ads_service_factory.h"
-#include "brave/components/ipfs/browser/buildflags/buildflags.h"
+#include "brave/components/ipfs/buildflags/buildflags.h"
 #include "chrome/browser/bookmarks/bookmark_model_factory.h"
 #include "chrome/browser/browser_process.h"
 #include "chrome/browser/chrome_notification_types.h"
@@ -52,7 +52,7 @@
 #if BUILDFLAG(IPFS_ENABLED)
 #include "base/test/scoped_feature_list.h"
 #include "brave/browser/ipfs/ipfs_service_factory.h"
-#include "brave/components/ipfs/browser/features.h"
+#include "brave/components/ipfs/features.h"
 #endif
 
 namespace {

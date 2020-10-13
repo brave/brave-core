@@ -7,7 +7,7 @@ import("//brave/components/brave_wallet/browser/buildflags/buildflags.gni")
 import("//brave/components/brave_wayback_machine/buildflags/buildflags.gni")
 import("//brave/components/brave_webtorrent/browser/buildflags/buildflags.gni")
 import("//brave/components/brave_together/buildflags/buildflags.gni")
-import("//brave/components/ipfs/browser/buildflags/buildflags.gni")
+import("//brave/components/ipfs/buildflags/buildflags.gni")
 import("//brave/components/moonpay/browser/buildflags/buildflags.gni")
 import("//build/config/features.gni")
 import("//components/gcm_driver/config.gni")
@@ -65,7 +65,7 @@ source_set("extensions") {
     "//brave/components/brave_shields/browser",
     "//brave/components/brave_shields/common",
     "//brave/components/brave_wayback_machine:buildflags",
-    "//brave/components/ipfs/browser/buildflags",
+    "//brave/components/ipfs/buildflags",
     "//chrome/browser/extensions",
     "//chrome/common",
     "//components/gcm_driver:gcm_driver",
@@ -117,8 +117,7 @@ source_set("extensions") {
       "api/ipfs_api.h",
     ]
     deps += [
-      "//brave/components/ipfs/browser",
-      "//brave/components/ipfs/common",
+      "//brave/components/ipfs",
     ]
   }
 

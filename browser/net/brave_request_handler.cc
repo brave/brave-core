@@ -21,7 +21,7 @@
 #include "brave/components/brave_referrals/buildflags/buildflags.h"
 #include "brave/components/brave_rewards/browser/buildflags/buildflags.h"
 #include "brave/components/brave_webtorrent/browser/buildflags/buildflags.h"
-#include "brave/components/ipfs/browser/buildflags/buildflags.h"
+#include "brave/components/ipfs/buildflags/buildflags.h"
 #include "chrome/browser/browser_process.h"
 #include "components/prefs/pref_change_registrar.h"
 #include "components/prefs/pref_service.h"
@@ -92,8 +92,7 @@ void BraveRequestHandler::SetupCallbacks() {
 #endif
 
 #if BUILDFLAG(IPFS_ENABLED)
-  callback =
-      base::BindRepeating(ipfs::OnBeforeURLRequest_IPFSRedirectWork);
+  callback = base::BindRepeating(ipfs::OnBeforeURLRequest_IPFSRedirectWork);
   before_url_request_callbacks_.push_back(callback);
 #endif
 
@@ -240,10 +239,9 @@ void BraveRequestHandler::RunNextCallback(
            ctx->next_url_request_index) {
       brave::OnBeforeURLRequestCallback callback =
           before_url_request_callbacks_[ctx->next_url_request_index++];
-      brave::ResponseCallback next_callback = base::Bind(
-          &BraveRequestHandler::RunNextCallback,
-          weak_factory_.GetWeakPtr(),
-          ctx);
+      brave::ResponseCallback next_callback =
+          base::Bind(&BraveRequestHandler::RunNextCallback,
+                     weak_factory_.GetWeakPtr(), ctx);
       rv = callback.Run(next_callback, ctx);
       if (rv == net::ERR_IO_PENDING) {
         return;
@@ -257,10 +255,9 @@ void BraveRequestHandler::RunNextCallback(
            ctx->next_url_request_index) {
       brave::OnBeforeStartTransactionCallback callback =
           before_start_transaction_callbacks_[ctx->next_url_request_index++];
-      brave::ResponseCallback next_callback = base::Bind(
-          &BraveRequestHandler::RunNextCallback,
-          weak_factory_.GetWeakPtr(),
-          ctx);
+      brave::ResponseCallback next_callback =
+          base::Bind(&BraveRequestHandler::RunNextCallback,
+                     weak_factory_.GetWeakPtr(), ctx);
       rv = callback.Run(ctx->headers, next_callback, ctx);
       if (rv == net::ERR_IO_PENDING) {
         return;
@@ -273,10 +270,9 @@ void BraveRequestHandler::RunNextCallback(
     while (headers_received_callbacks_.size() != ctx->next_url_request_index) {
       brave::OnHeadersReceivedCallback callback =
           headers_received_callbacks_[ctx->next_url_request_index++];
-      brave::ResponseCallback next_callback = base::Bind(
-          &BraveRequestHandler::RunNextCallback,
-          weak_factory_.GetWeakPtr(),
-          ctx);
+      brave::ResponseCallback next_callback =
+          base::Bind(&BraveRequestHandler::RunNextCallback,
+                     weak_factory_.GetWeakPtr(), ctx);
       rv = callback.Run(ctx->original_response_headers,
                         ctx->override_response_headers,
                         ctx->allowed_unsafe_redirect_url, next_callback, ctx);
