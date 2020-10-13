@@ -30,9 +30,8 @@ class AdRewards {
 
   ~AdRewards();
 
-  void Update(
-      const WalletInfo& wallet,
-      const bool should_reconcile);
+  void MaybeReconcile(
+      const WalletInfo& wallet);
 
   double GetEstimatedPendingRewards() const;
   uint64_t GetNextPaymentDateInSeconds() const;
@@ -53,6 +52,8 @@ class AdRewards {
 
   double unreconciled_estimated_pending_rewards_ = 0.0;
 
+  void Reconcile();
+
   void GetPayments();
   void OnGetPayments(
       const UrlResponse& url_response);
@@ -66,6 +67,9 @@ class AdRewards {
 
   BackoffTimer retry_timer_;
   void Retry();
+  void OnRetry();
+
+  bool is_processing_ = false;
 
   uint64_t CalculateAdNotificationsReceivedThisMonthForTransactions(
       const TransactionList& transactions) const;

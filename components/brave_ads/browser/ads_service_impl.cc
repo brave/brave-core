@@ -389,13 +389,12 @@ void AdsServiceImpl::OnWalletUpdated() {
   bat_ads_->OnWalletUpdated(payment_id, recovery_seed_base64);
 }
 
-void AdsServiceImpl::UpdateAdRewards(
-      const bool should_reconcile) {
+void AdsServiceImpl::ReconcileAdRewards() {
   if (!connected()) {
     return;
   }
 
-  bat_ads_->UpdateAdRewards(should_reconcile);
+  bat_ads_->ReconcileAdRewards();
 }
 
 void AdsServiceImpl::GetAdsHistory(

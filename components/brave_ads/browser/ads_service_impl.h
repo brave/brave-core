@@ -109,8 +109,7 @@ class AdsServiceImpl : public AdsService,
 
   void OnWalletUpdated();
 
-  void UpdateAdRewards(
-      const bool should_reconcile) override;
+  void ReconcileAdRewards() override;
 
   void GetAdsHistory(
       const uint64_t from_timestamp,

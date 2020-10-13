@@ -906,7 +906,7 @@ BATLedgerReadonlyBridge(BOOL, isWalletCreated, IsWalletCreated)
         [self.mFinishedPromotions addObject:promotion];
 
         if (promotion.type == BATPromotionTypeAds) {
-          [self.ads updateAdRewards:true];
+          [self.ads reconcileAdRewards];
         }
       } else if (promotion.status == BATPromotionStatusActive ||
                  promotion.status == BATPromotionStatusAttested) {
