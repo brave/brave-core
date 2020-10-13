@@ -217,17 +217,12 @@ bool BraveMainDelegate::BasicStartupComplete(int* exit_code) {
 #endif
   };
 
-  if (!base::CommandLine::ForCurrentProcess()->HasSwitch(
-          switches::kDisableDnsOverHttps)) {
-    enabled_features.insert(features::kDnsOverHttps.name);
-  }
-
   if (chrome::GetChannel() == version_info::Channel::CANARY) {
     enabled_features.insert(features::kGlobalPrivacyControl.name);
   }
 
   // Disabled features.
-  const std::unordered_set<const char*> disabled_features = {
+  std::unordered_set<const char*> disabled_features = {
     autofill::features::kAutofillEnableAccountWalletStorage.name,
     autofill::features::kAutofillServerCommunication.name,
     blink::features::kTextFragmentAnchor.name,
@@ -246,6 +241,19 @@ bool BraveMainDelegate::BasicStartupComplete(int* exit_code) {
     offline_pages::kPrefetchingOfflinePagesFeature.name,
 #endif
   };
+
+#if defined(OS_WIN) || defined(OS_MAC) || defined(OS_ANDROID)
+  if (base::CommandLine::ForCurrentProcess()->HasSwitch(
+          switches::kDisableDnsOverHttps)) {
+    disabled_features.insert(features::kDnsOverHttps.name);
+  }
+#else
+  if (!base::CommandLine::ForCurrentProcess()->HasSwitch(
+          switches::kDisableDnsOverHttps)) {
+    enabled_features.insert(features::kDnsOverHttps.name);
+  }
+#endif
+
   command_line.AppendFeatures(enabled_features, disabled_features);
 
   bool ret = ChromeMainDelegate::BasicStartupComplete(exit_code);
