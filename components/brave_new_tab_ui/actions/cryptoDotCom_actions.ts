@@ -20,6 +20,10 @@ export const onCryptoDotComRefreshData = (tickerPrices: object, losersGainers: o
   return action(types.ON_REFRESH_DATA, { tickerPrices, losersGainers, charts })
 }
 
+export const setCryptoDotComSupportedPairs = (pairs: object[]) => {
+  return action(types.SET_SUPPORTED_PAIRS, { pairs })
+}
+
 export const onCryptoDotComBuyCrypto = () => action(types.ON_BUY_CRYPTO)
 
 export const onCryptoDotComInteraction = () => action(types.ON_INTERACTION)
