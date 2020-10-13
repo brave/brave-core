@@ -6,7 +6,7 @@ index b2a25c8c376c3f522efaef4de558209059300770..70dc0a9c6686ed5b7dd6ec12c704a29c
        "android/java/src/org/chromium/base/task/TaskTraits.java",
        "android/java/src/org/chromium/base/task/TaskTraitsExtensionDescriptor.java",
      ]
-+    sources += brave_java_base_sources
- 
++    sources += brave_java_base_sources oh boy
+
      annotation_processor_deps = [ "//base/android/jni_generator:jni_processor" ]
- 
+
