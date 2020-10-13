@@ -20,11 +20,45 @@ declare_args() {
   notarize_argument = "False"
 }
 
+target_sign_app_path = "$root_out_dir/$mac_signing_output_prefix/" + string_replace("$chrome_product_full_name", " ", "") + "-$chrome_version_full/$brave_exe"
+target_unsigned_app_path = "$root_out_dir/$chrome_product_full_name.app"
+
 if (!skip_signing) {
-  target_sign_app_path = "$root_out_dir/$mac_signing_output_prefix/" + string_replace("$chrome_product_full_name", " ", "") + "-$chrome_version_full/$brave_exe"
   packaging_dir = "$root_out_dir/" + string_replace("$chrome_product_full_name Packaging", " ", "_")
-  unsigned_pkg_path = "$root_out_dir/unsigned/$brave_pkg"
   keychain_db = getenv("HOME") + "/Library/Keychains/${mac_signing_keychain}.keychain-db"
+  unsigned_pkg_path = "$root_out_dir/unsigned/$brave_pkg"
+}
+
+action("build_delta_installer") {
+  script="build_delta_installer.py"
+
+  target_app_path = target_sign_app_path
+  if (skip_signing) {
+    target_app_path = target_unsigned_app_path
+  }
+
+  args = [
+    "--binary-delta", rebase_path("$root_out_dir/BinaryDelta"),
+    "--sign-update", rebase_path("$root_out_dir/sign_update"),
+    "--old-app", rebase_path("$root_out_dir/$last_chrome_installer"),
+    "--new-app", rebase_path("$target_app_path"),
+    "--output", rebase_path("$root_out_dir/patch.delta"),
+  ]
+
+  inputs = [
+    script,
+    "$root_out_dir/BinaryDelta",
+    "$root_out_dir/sign_update",
+  ]
+
+  outputs = [
+    "$root_out_dir/patch.delta",
+  ]
+
+  deps = [
+    "//chrome:chrome_app",
+    "//brave/vendor/sparkle:build_sparkle_framework",
+  ]
 }
 
 group("brave") {
@@ -93,7 +127,7 @@ if (skip_signing) {
       script = "//third_party/widevine/scripts/signature_generator.py"
 
       chrome_framework_name = chrome_product_full_name + " Framework"
-      target_app_path = "$root_out_dir/$chrome_product_full_name.app"
+      target_app_path = target_unsigned_app_path
 
       brave_version_path = "$target_app_path/Contents/Frameworks/$chrome_framework_name.framework/Versions/$chrome_version_full"
       framework_file = "$brave_version_path/$chrome_framework_name"

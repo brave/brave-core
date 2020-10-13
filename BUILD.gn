@@ -245,6 +245,12 @@ group("create_dist") {
         "build/mac:finalize_dmg_pkg"
       ]
     }
+
+    if (build_delta_installer) {
+      deps += [
+        "build/mac:build_delta_installer",
+      ]
+    }
   }
   if (is_linux) {
     deps += [
@@ -510,6 +516,7 @@ if (is_mac) {
       "--brave_feed_url=" + brave_feed_url,
       "--brave_dsa_file=" + brave_dsa_file,
       "--brave_version=" + brave_version,
+      "--brave_eddsa_key=" + sparkle_eddsa_key,
     ]
 
     deps = [

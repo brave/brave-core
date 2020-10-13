@@ -74,6 +74,8 @@ def Main(argv):
       type='string', default=None, help='Target url for update feed')
   parser.add_option('--brave_dsa_file', dest='brave_dsa_file', action='store',
       type='string', default=None, help='Public DSA file for update')
+  parser.add_option('--brave_eddsa_key', dest='brave_eddsa_key', action='store',
+      type='string', default=None, help='Public EdDSA key for update')
   parser.add_option('--brave_version', dest='brave_version', action='store',
       type='string', default=None, help='brave version string')
   parser.add_option('--format', choices=('binary1', 'xml1', 'json'),
@@ -111,6 +113,9 @@ def Main(argv):
 
   if options.brave_dsa_file:
     plist['SUPublicDSAKeyFile'] = options.brave_dsa_file
+
+  if options.brave_eddsa_key:
+    plist['SUPublicEDKey'] = options.brave_eddsa_key
 
   _OverrideVersionKey(plist, options.brave_version)
 

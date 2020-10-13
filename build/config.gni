@@ -13,6 +13,7 @@ declare_args() {
   enable_sparkle = is_official_build && is_mac
 
   brave_dsa_file = "dsa_pub.pem"
+  sparkle_eddsa_key = ""
 
   brave_product_name = ""
   brave_project_name = ""
@@ -33,7 +34,7 @@ declare_args() {
 
   skip_signing = false
 
-  # Used for generating delta installer on Win.
+  # Used for generating delta installer on Win/macOS.
   build_delta_installer = false
   last_chrome_installer = ""
 }
