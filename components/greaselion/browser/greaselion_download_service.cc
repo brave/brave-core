@@ -7,6 +7,7 @@
 
 #include <memory>
 #include <utility>
+#include <vector>
 
 #include "base/base_paths.h"
 #include "base/bind.h"
@@ -58,8 +59,8 @@ GreaselionRule::GreaselionRule(const std::string& name)
     : name_(name), weak_factory_(this) {}
 
 void GreaselionRule::Parse(base::DictionaryValue* preconditions_value,
-                           base::ListValue* urls_value,
-                           base::ListValue* scripts_value,
+                           base::Value* urls_value,
+                           base::Value* scripts_value,
                            const std::string& run_at_value,
                            const base::FilePath& messages_value,
                            const base::FilePath& resource_dir) {
@@ -83,24 +84,29 @@ void GreaselionRule::Parse(base::DictionaryValue* preconditions_value,
       }
     }
   }
-  for (const auto& urls_it : urls_value->GetList()) {
-    std::string pattern_string = urls_it.GetString();
-    URLPattern pattern;
-    pattern.SetValidSchemes(URLPattern::SCHEME_HTTP | URLPattern::SCHEME_HTTPS);
-    if (pattern.Parse(pattern_string) != URLPattern::ParseResult::kSuccess) {
-      LOG(ERROR) << "Malformed pattern in Greaselion configuration";
-      url_patterns_.clear();
-      return;
+  if (urls_value && urls_value->is_list()) {
+    for (const auto& urls_it : urls_value->GetList()) {
+      std::string pattern_string = urls_it.GetString();
+      URLPattern pattern;
+      pattern.SetValidSchemes(
+          URLPattern::SCHEME_HTTP | URLPattern::SCHEME_HTTPS);
+      if (pattern.Parse(pattern_string) != URLPattern::ParseResult::kSuccess) {
+        LOG(ERROR) << "Malformed pattern in Greaselion configuration";
+        url_patterns_.clear();
+        return;
+      }
+      url_patterns_.push_back(pattern_string);
     }
-    url_patterns_.push_back(pattern_string);
   }
-  for (const auto& scripts_it : scripts_value->GetList()) {
-    base::FilePath script_path = resource_dir.AppendASCII(
-        scripts_it.GetString());
-    if (script_path.ReferencesParent()) {
-      LOG(ERROR) << "Malformed filename in Greaselion configuration";
-    } else {
-      scripts_.push_back(script_path);
+  if (scripts_value && scripts_value->is_list()) {
+    for (const auto& scripts_it : scripts_value->GetList()) {
+      base::FilePath script_path = resource_dir.AppendASCII(
+          scripts_it.GetString());
+      if (script_path.ReferencesParent()) {
+        LOG(ERROR) << "Malformed filename in Greaselion configuration";
+      } else {
+        scripts_.push_back(script_path);
+      }
     }
   }
   run_at_ = run_at_value;
@@ -124,6 +130,12 @@ bool GreaselionRule::PreconditionFulfilled(
   }
 }
 
+bool GreaselionRule::IsValid() const {
+  // Must have scripts and urls
+  bool is_valid = !(url_patterns_.empty() || scripts_.empty());
+  return is_valid;
+}
+
 bool GreaselionRule::Matches(GreaselionFeatures state) const {
   if (!PreconditionFulfilled(preconditions_.rewards_enabled,
                              state[greaselion::REWARDS]))
@@ -140,6 +152,10 @@ bool GreaselionRule::Matches(GreaselionFeatures state) const {
   if (!PreconditionFulfilled(preconditions_.auto_contribution_enabled,
                              state[greaselion::AUTO_CONTRIBUTION]))
     return false;
+  // Don't run if preconditions we don't yet know about.
+  if (has_unknown_preconditions()) {
+    return false;
+  }
   return true;
 }
 
@@ -211,10 +227,8 @@ void GreaselionDownloadService::OnDATFileDataReady(std::string contents) {
     rule_it.GetAsDictionary(&rule_dict);
     base::DictionaryValue* preconditions_value = nullptr;
     rule_dict->GetDictionary(kPreconditions, &preconditions_value);
-    base::ListValue* urls_value = nullptr;
-    rule_dict->GetList(kURLs, &urls_value);
-    base::ListValue* scripts_value = nullptr;
-    rule_dict->GetList(kScripts, &scripts_value);
+    base::Value* urls_value = rule_it.FindListPath(kURLs);
+    base::Value* scripts_value = rule_it.FindListPath(kScripts);
     const std::string* run_at_ptr = rule_it.FindStringPath(kRunAt);
     const std::string run_at_value = run_at_ptr ? *run_at_ptr : "";
     const std::string* messages = rule_it.FindStringPath(kMessages);

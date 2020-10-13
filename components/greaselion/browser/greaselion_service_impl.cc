@@ -249,7 +249,7 @@ void GreaselionServiceImpl::CreateAndInstallExtensions() {
   std::vector<std::unique_ptr<GreaselionRule>>* rules =
       download_service_->rules();
   for (const std::unique_ptr<GreaselionRule>& rule : *rules) {
-    if (rule->Matches(state_) && rule->has_unknown_preconditions() == false) {
+    if (rule->IsValid() && rule->Matches(state_)) {
       pending_installs_ += 1;
     }
   }
@@ -259,7 +259,7 @@ void GreaselionServiceImpl::CreateAndInstallExtensions() {
     return;
   }
   for (const std::unique_ptr<GreaselionRule>& rule : *rules) {
-    if (rule->Matches(state_) && rule->has_unknown_preconditions() == false) {
+    if (rule->IsValid() && rule->Matches(state_)) {
       // Convert script file to component extension. This must run on extension
       // file task runner, which was passed in in the constructor.
       base::PostTaskAndReplyWithResult(

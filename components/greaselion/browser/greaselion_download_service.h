@@ -47,13 +47,14 @@ class GreaselionRule {
  public:
   explicit GreaselionRule(const std::string& name);
   void Parse(base::DictionaryValue* preconditions_value,
-             base::ListValue* urls_value,
-             base::ListValue* scripts_value,
+             base::Value* urls_value,
+             base::Value* scripts_value,
              const std::string& run_at_value,
              const base::FilePath& messages_value,
              const base::FilePath& resource_dir);
   ~GreaselionRule();
 
+  bool IsValid() const;
   bool Matches(GreaselionFeatures state) const;
   std::string name() const { return name_; }
   std::vector<std::string> url_patterns() const { return url_patterns_; }
