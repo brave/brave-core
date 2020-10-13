@@ -10,6 +10,7 @@
 
 #include "base/guid.h"
 #include "base/json/json_writer.h"
+#include "base/metrics/histogram_macros.h"
 #include "base/values.h"
 #include "brave/browser/ntp_background_images/view_counter_service_factory.h"
 #include "brave/browser/profiles/profile_util.h"
@@ -446,6 +447,12 @@ void BraveNewTabMessageHandler::HandleSaveNewTabPagePref(
     return;
   }
   prefs->SetBoolean(settingsKey, settingsValueBool);
+
+  // P3A can only be recorded after profile is updated
+  if (settingsKeyInput == "showBackgroundImage" ||
+      settingsKeyInput == "brandedWallpaperOptIn") {
+    brave::RecordSponsoredImagesEnabledP3A(profile_);
+  }
 }
 
 void BraveNewTabMessageHandler::HandleRegisterNewTabPageView(

@@ -6,9 +6,11 @@
 #include "brave/browser/ui/webui/settings/brave_appearance_handler.h"
 
 #include "base/bind.h"
+#include "base/metrics/histogram_macros.h"
 #include "base/strings/string_number_conversions.h"
 #include "brave/browser/new_tab/new_tab_shows_options.h"
 #include "brave/browser/ntp_background_images/view_counter_service_factory.h"
+#include "brave/browser/profiles/profile_util.h"
 #include "brave/browser/themes/brave_dark_mode_utils.h"
 #include "brave/common/pref_names.h"
 #include "brave/components/binance/browser/buildflags/buildflags.h"
@@ -85,7 +87,18 @@ void BraveAppearanceHandler::RegisterMessages() {
   profile_state_change_registrar_.Add(
       kNewTabPageSuperReferralThemesOption,
       base::BindRepeating(&BraveAppearanceHandler::OnPreferenceChanged,
-      base::Unretained(this)));
+                          base::Unretained(this)));
+  profile_state_change_registrar_.Add(
+      ntp_background_images::prefs::kNewTabPageShowBackgroundImage,
+      base::BindRepeating(
+          &BraveAppearanceHandler::OnBackgroundPreferenceChanged,
+          base::Unretained(this)));
+  profile_state_change_registrar_.Add(
+      ntp_background_images::prefs::
+          kNewTabPageShowSponsoredImagesBackgroundImage,
+      base::BindRepeating(
+          &BraveAppearanceHandler::OnBackgroundPreferenceChanged,
+          base::Unretained(this)));
   profile_state_change_registrar_.Add(
       kNewTabPageShowsOptions,
       base::BindRepeating(&BraveAppearanceHandler::OnPreferenceChanged,
@@ -101,7 +114,7 @@ void BraveAppearanceHandler::RegisterMessages() {
   profile_state_change_registrar_.Add(
       prefs::kNtpShortcutsVisible,
       base::BindRepeating(&BraveAppearanceHandler::TopSitesVisibleChanged,
-      base::Unretained(this)));
+                          base::Unretained(this)));
   web_ui()->RegisterMessageCallback(
       "setBraveThemeType",
       base::BindRepeating(&BraveAppearanceHandler::SetBraveThemeType,
@@ -273,6 +286,11 @@ void BraveAppearanceHandler::OnBraveDarkModeChanged() {
         "brave-theme-type-changed",
         base::Value(static_cast<int>(dark_mode::GetBraveDarkModeType())));
   }
+}
+
+void BraveAppearanceHandler::OnBackgroundPreferenceChanged(
+    const std::string& pref_name) {
+  brave::RecordSponsoredImagesEnabledP3A(profile_);
 }
 
 void BraveAppearanceHandler::OnPreferenceChanged(const std::string& pref_name) {

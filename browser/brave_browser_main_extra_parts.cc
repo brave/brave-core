@@ -30,6 +30,8 @@ namespace {
 // Records default values for some histograms because we want these stats to be
 // uploaded anyways. Corresponding components will write new values according
 // to their usage scenarios.
+//
+// For profile specific values, see browser/profiles/profile_util.cc
 void RecordInitialP3AValues() {
 #if !defined(OS_ANDROID)
   if (first_run::IsChromeFirstRun()) {
