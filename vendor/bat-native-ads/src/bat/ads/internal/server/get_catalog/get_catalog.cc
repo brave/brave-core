@@ -38,13 +38,27 @@ GetCatalog::GetCatalog(
 
 GetCatalog::~GetCatalog() = default;
 
-void GetCatalog::Download() {
-  if (retry_timer_.IsRunning()) {
+void GetCatalog::MaybeDownload() {
+  if (is_processing_ || retry_timer_.IsRunning()) {
     return;
   }
 
+  Download();
+}
+
+uint64_t GetCatalog::LastUpdated() const {
+  return last_updated_;
+}
+
+///////////////////////////////////////////////////////////////////////////////
+
+void GetCatalog::Download() {
+  DCHECK(!is_processing_);
+
   BLOG(1, "Download catalog");
   BLOG(2, "GET /v3/catalog");
+
+  is_processing_ = true;
 
   GetCatalogUrlRequestBuilder url_request_builder;
   UrlRequestPtr url_request = url_request_builder.Build();
@@ -55,16 +69,12 @@ void GetCatalog::Download() {
   ads_->get_ads_client()->UrlRequest(std::move(url_request), callback);
 }
 
-uint64_t GetCatalog::LastUpdated() const {
-  return last_updated_;
-}
-
-///////////////////////////////////////////////////////////////////////////////
-
 void GetCatalog::OnDownloaded(
     const UrlResponse& url_response) {
   BLOG(7, UrlResponseToString(url_response));
   BLOG(7, UrlResponseHeadersToString(url_response));
+
+  is_processing_ = false;
 
   bool should_retry = false;
 
@@ -83,6 +93,9 @@ void GetCatalog::OnDownloaded(
 
     should_retry = true;
   }
+
+  ads_->get_refill_unblinded_tokens()->MaybeRefill();
+  ads_->get_confirmations()->RetryFailedConfirmationsAfterDelay();
 
   if (should_retry) {
     Retry();
@@ -130,9 +143,6 @@ bool GetCatalog::Parse(
   CatalogIssuersInfo catalog_issuers = catalog.GetIssuers();
   ads_->get_confirmations()->SetCatalogIssuers(catalog_issuers);
 
-  ads_->get_refill_unblinded_tokens()->MaybeRefill();
-  ads_->get_confirmations()->RetryFailedConfirmationsAfterDelay();
-
   return true;
 }
 
@@ -153,9 +163,15 @@ void GetCatalog::OnSaved(
 void GetCatalog::Retry() {
   const base::Time time = retry_timer_.StartWithPrivacy(
       base::TimeDelta::FromSeconds(kRetryAfterSeconds),
-          base::BindOnce(&GetCatalog::Download, base::Unretained(this)));
+          base::BindOnce(&GetCatalog::OnRetry, base::Unretained(this)));
 
   BLOG(1, "Retry downloading catalog " << FriendlyDateAndTime(time));
+}
+
+void GetCatalog::OnRetry() {
+  BLOG(1, "Retry downloading catalog");
+
+  Download();
 }
 
 void GetCatalog::DownloadAfterDelay() {

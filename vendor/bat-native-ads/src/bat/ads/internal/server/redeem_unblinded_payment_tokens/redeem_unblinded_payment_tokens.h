@@ -27,7 +27,7 @@ class RedeemUnblindedPaymentTokens {
   void set_delegate(
       RedeemUnblindedPaymentTokensDelegate* delegate);
 
-  void RedeemAfterDelay(
+  void MaybeRedeemAfterDelay(
       const WalletInfo& wallet);
 
  private:
@@ -45,7 +45,10 @@ class RedeemUnblindedPaymentTokens {
   void ScheduleNextTokenRedemption();
 
   BackoffTimer retry_timer_;
+  void Retry();
   void OnRetry();
+
+  bool is_processing_ = false;
 
   base::TimeDelta CalculateTokenRedemptionDelay();
   base::Time CalculateNextTokenRedemptionDate();

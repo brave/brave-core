@@ -168,10 +168,9 @@ class ADS_EXPORT Ads {
   virtual void RemoveAllHistory(
       RemoveAllHistoryCallback callback) = 0;
 
-  // Should be called to update the ad rewards UI. |should_reconcile| should be
-  // set to |true| to reconcile with the server, i.e. after a grant is claimed
-  virtual void UpdateAdRewards(
-      const bool should_reconcile) = 0;
+  // Should be called to reconcile ad rewards with the server, i.e. after an
+  // ad grant is claimed
+  virtual void ReconcileAdRewards() = 0;
 
   // Should be called to get ads history. Returns |AdsHistory|
   virtual AdsHistory GetAdsHistory(

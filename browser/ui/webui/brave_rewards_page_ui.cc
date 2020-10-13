@@ -80,7 +80,6 @@ class RewardsDOMHandler : public WebUIMessageHandler,
   void RecoverWallet(const base::ListValue* args);
   void GetReconcileStamp(const base::ListValue* args);
   void SaveSetting(const base::ListValue* args);
-  void UpdateAdRewards(const base::ListValue* args);
   void OnPublisherList(ledger::type::PublisherInfoList list);
   void OnExcludedSiteList(ledger::type::PublisherInfoList list);
   void ExcludePublisher(const base::ListValue* args);
@@ -371,9 +370,6 @@ void RewardsDOMHandler::RegisterMessages() {
       base::Unretained(this)));
   web_ui()->RegisterMessageCallback("brave_rewards.saveSetting",
       base::BindRepeating(&RewardsDOMHandler::SaveSetting,
-      base::Unretained(this)));
-  web_ui()->RegisterMessageCallback("brave_rewards.updateAdRewards",
-      base::BindRepeating(&RewardsDOMHandler::UpdateAdRewards,
       base::Unretained(this)));
   web_ui()->RegisterMessageCallback("brave_rewards.excludePublisher",
       base::BindRepeating(&RewardsDOMHandler::ExcludePublisher,
@@ -908,14 +904,6 @@ void RewardsDOMHandler::SaveSetting(const base::ListValue* args) {
       rewards_service_->SetAutoContributeEnabled(value == "true");
     }
   }
-}
-
-void RewardsDOMHandler::UpdateAdRewards(const base::ListValue* args) {
-  if (!ads_service_) {
-    return;
-  }
-
-  ads_service_->UpdateAdRewards(/*should_reconcile*/false);
 }
 
 void RewardsDOMHandler::ExcludePublisher(const base::ListValue *args) {

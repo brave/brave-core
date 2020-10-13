@@ -1336,7 +1336,7 @@ void RewardsServiceImpl::OnAttestPromotion(
   if (promotion->type == ledger::type::PromotionType::ADS) {
     auto* ads_service = brave_ads::AdsServiceFactory::GetForProfile(profile_);
     if (ads_service) {
-      ads_service->UpdateAdRewards(/*should_reconcile*/ true);
+      ads_service->ReconcileAdRewards();
     }
   }
 

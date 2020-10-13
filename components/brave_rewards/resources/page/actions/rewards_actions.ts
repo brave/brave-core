@@ -21,8 +21,6 @@ export const onSettingSave = (key: string, value: any, persist: boolean = true) 
   persist
 })
 
-export const updateAdsRewards = () => action(types.UPDATE_ADS_REWARDS)
-
 export const getRewardsParameters = () => action(types.GET_REWARDS_PARAMETERS)
 
 export const onRewardsParameters = (properties: Rewards.RewardsParameters) =>
