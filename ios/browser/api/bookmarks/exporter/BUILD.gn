@@ -21,6 +21,7 @@ source_set("exporter") {
     "//components/bookmarks/browser",
     "//components/favicon_base",
     "//components/favicon/core",
+    "//ios/chrome/browser",
     "//ios/chrome/browser/browser_state",
     "//ios/web/public/thread",
     "//net",

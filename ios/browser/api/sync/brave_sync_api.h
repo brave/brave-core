@@ -28,6 +28,8 @@ OBJC_EXPORT
 
 - (bool)setSyncEnabled:(bool)enabled;
 
+- (bool)removeDevice:(NSString *)deviceGuid;
+
 - (bool)resetSync;
 
 - (bool)isValidSyncCode:(NSString *)syncCode;

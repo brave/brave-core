@@ -10,6 +10,13 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
+OBJC_EXPORT
+@interface BraveBookmarksImporter: NSObject
+- (instancetype)init;
+
+- (void)importFromFile:(NSString *)filePath;
+@end
+
 NS_ASSUME_NONNULL_END
 
 #endif  // BRAVE_IOS_BROWSER_API_BOOKMARKS_IMPORTER_BRAVE_BOOKMARKS_IMPORTER_H_

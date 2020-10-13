@@ -166,26 +166,31 @@
 }
 
 - (NSString *)getDeviceListJSON {
-    auto deviceList = _worker->GetDeviceList();
-    auto* localDeviecInfo = _worker->GetLocalDeviceInfo();
+    auto device_list = _worker->GetDeviceList();
+    auto* local_device_info = _worker->GetLocalDeviceInfo();
 
-    base::Value deviceListValue(base::Value::Type::LIST);
+    base::Value device_list_value(base::Value::Type::LIST);
 
-    for (const auto& device : deviceList) {
-        auto deviceValue = base::Value::FromUniquePtrValue(device->ToValue());
-        bool is_current_device = localDeviecInfo
-            ? localDeviecInfo->guid() == device->guid()
+    for (const auto& device : _worker->GetDeviceList()) {
+        auto device_value = base::Value::FromUniquePtrValue(device->ToValue());
+        bool is_current_device = local_device_info
+            ? local_device_info->guid() == device->guid()
             : false;
-        deviceValue.SetBoolKey("isCurrentDevice", is_current_device);
-        deviceListValue.Append(std::move(deviceValue));
+        device_value.SetBoolKey("isCurrentDevice", is_current_device);
+        device_value.SetStringKey("guid", device->guid());
+        device_list_value.Append(std::move(device_value));
     }
 
     std::string json_string;
-    if (!base::JSONWriter::Write(deviceListValue, &json_string)) {
+    if (!base::JSONWriter::Write(device_list_value, &json_string)) {
       return nil;
     }
 
     return base::SysUTF8ToNSString(json_string);
+}
+
+- (bool)removeDevice:(NSString *)deviceGuid {
+  return _worker->RemoveDevice(base::SysNSStringToUTF8(deviceGuid));
 }
 
 - (bool)resetSync {

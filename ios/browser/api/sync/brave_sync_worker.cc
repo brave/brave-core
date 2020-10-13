@@ -259,6 +259,32 @@ bool BraveSyncWorker::IsFirstSetupComplete() {
 										sync_service->GetUserSettings()->IsFirstSetupComplete();
 }
 
+bool BraveSyncWorker::RemoveDevice(const std::string& device_guid) {
+    DCHECK_CURRENTLY_ON(web::WebThread::UI);
+    auto* sync_service =
+        ProfileSyncServiceFactory::GetForBrowserState(browser_state_);
+
+    if (!sync_service || sync_service->GetTransportState() !=
+            syncer::SyncService::TransportState::ACTIVE) {
+      //OnRemoteDeviceInfoDeleted();
+      return false;
+    }
+
+    auto* device_info_service =
+        DeviceInfoSyncServiceFactory::GetForBrowserState(browser_state_);
+    auto* tracker = device_info_service->GetDeviceInfoTracker();
+
+    if (!tracker) {
+      return false;
+    }
+      
+    tracker->DeleteDeviceInfo(device_guid,
+                              base::BindOnce(&BraveSyncWorker::OnRemoteDeviceInfoDeleted,
+                                             weak_ptr_factory_.GetWeakPtr()));
+
+    return true;
+}
+
 bool BraveSyncWorker::ResetSync() {
   DCHECK_CURRENTLY_ON(web::WebThread::UI);
   auto* sync_service =
@@ -350,6 +376,10 @@ void BraveSyncWorker::OnSyncShutdown(syncer::SyncService* service) {
   if (sync_service_observer_.IsObserving(service)) {
     sync_service_observer_.Remove(service);
   }
+}
+
+void BraveSyncWorker::OnRemoteDeviceInfoDeleted() {
+  VLOG(0) << __func__ << " local device successfully removed";
 }
 
 void BraveSyncWorker::OnLocalDeviceInfoDeleted() {
