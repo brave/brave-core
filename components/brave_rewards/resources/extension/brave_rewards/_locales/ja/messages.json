@@ -52,7 +52,7 @@
     "description": "Title for grant section in wallet panel summary"
   },
   "yourBalance": {
-    "message": "あなたの残高",
+    "message": "残高",
     "description": "Wallet panel title for anon wallets"
   },
   "batPoints": {
@@ -76,7 +76,7 @@
     "description": "Label for auto contribute table attention for the publisher"
   },
   "donateMonthly": {
-    "message": "毎月の寄付",
+    "message": "毎月の支援",
     "description": "Label for drop down menu where user select amount for monthly contribution for particular publisher"
   },
   "includeInAuto": {
@@ -88,11 +88,11 @@
     "description": "CTA for sending tip form site banner"
   },
   "enableTips": {
-    "message": "ヒントをオンにする",
+    "message": "チップをオンにする",
     "description": "The whole string is 'Enable tips on YouTube for like.'"
   },
   "for": {
-    "message": "のための",
+    "message": ":",
     "description": "The whole string is 'Enable tips on YouTube for like.'"
   },
   "rewardsSummary": {
@@ -182,7 +182,7 @@
     "description": "Used for grant representation. Whole string is '30.0 BAT expires on 08/05/2022'"
   },
   "recurringDonations": {
-    "message": "毎月の寄付額",
+    "message": "毎月の支援額",
     "description": "Title for monthly contributions section in wallet summary"
   },
   "off": {
@@ -240,7 +240,7 @@
     "description": "Description for backup wallet notification"
   },
   "insufficientFundsNotification": {
-    "message": "あなたのBrave Rewardsアカウントは入金を待っています。",
+    "message": "Brave Rewardsアカウントは入金を待っています。",
     "description": "Description for new insufficient funds notification"
   },
   "insufficientFunds": {
@@ -256,11 +256,11 @@
     "description": "We show this string in notification when contribution fails"
   },
   "contributeNotificationNotEnoughFunds": {
-    "message": "資金が不足しているため、あなたの自動貢献への予定されていた毎月の支払いと毎月の貢献が完了できませんでした。30日以内に再試行します。",
+    "message": "資金が不足しているため、あなたの自動支援への予定されていた毎月の支払いと毎月の支援が完了できませんでした。30日以内に再試行します。",
     "description": "We show this string in the notification when you don't have enough funds for contribution"
   },
   "contributeNotificationTipError": {
-    "message": "あなたのチップを送ることができません。時間をおいて、もう一度試してください。",
+    "message": "チップを送ることができませんでした。時間をおいてもう一度試してください。",
     "description": "We show this string in notification when tip fails"
   },
   "noActivity": {
@@ -324,7 +324,7 @@
     "description": "Text for the link that explains more about reserved amount"
   },
   "reservedAmountText": {
-    "message": "あなたは{{reservedAmount}} {{currency}}分を、まだ支援の受け取り登録が完了していないクリエイターに送信しました。あなたのブラウザはそのクリエイターが受け取り設定を完了するかもしくは90日間が経過するまで、寄付の実行を試み続けます。",
+    "message": "{{reservedAmount}} {{currency}}分を、まだ支援の受け取り登録が完了していないクリエイターに送信しました。あなたのブラウザはそのクリエイターが受け取り設定を完了するかもしくは90日間が経過するまで、支援の実行を試み続けます。",
     "description": "Notification about how much BAT do you have reserved"
   },
   "reservedMoreLink": {
@@ -376,7 +376,7 @@
     "description": "Subtitle for wallet disabled panel"
   },
   "disabledPanelTextTwo": {
-    "message": "プライバシーを尊重する広告表示してトークンを稼ぎ、あなたのお気に入りのコンテンツ制作者を支援しましょう！",
+    "message": "プライバシーを尊重する広告表示してトークンを稼ぎ、お気に入りのコンテンツ制作者を支援しましょう！",
     "description": "Text block for wallet disabled panel"
   },
   "enableRewards": {
@@ -400,7 +400,7 @@
     "description": "Title message for wallet disabled panel"
   },
   "tipsProcessedNotification": {
-    "message": "あなたの毎月の貢献が処理されました！",
+    "message": "毎月定期支援が処理されました！",
     "description": "Message for monthly contributions processed notification"
   },
   "contributionTips": {
@@ -444,7 +444,7 @@
     "description": "Icon label for Reddit tips"
   },
   "githubTipsHoverText": {
-    "message": "ヒントを送る",
+    "message": "チップを送る",
     "description": "Hover text for GitHub tips action"
   },
   "githubTipsIconLabel": {
@@ -554,7 +554,7 @@
     "description": "Title for notification when wallet is disconnected"
   },
   "connectedText":  {
-    "message": "このBrave認定クリエーターは、Braveユーザーからの寄付を受け取るためのアカウント設定を完了していません。設定が完了するまで、チップは全て送ったユーザーのウォレット内に留まります。",
+    "message": "このBrave認定クリエーターは、Braveユーザーからの支援を受け取るためのアカウント設定を完了していません。設定が完了するまで、チップは全て送ったユーザーのウォレット内に留まります。",
     "description": "Text shown for connected publishers that are not fully verified in the panel"
   },
   "walletGoToVerifyPage":  {
