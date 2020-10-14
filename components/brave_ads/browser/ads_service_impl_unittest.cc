@@ -239,6 +239,10 @@ class MockRewardsService : public RewardsService {
   MOCK_METHOD2(
       SetEncryptedStringState,
       bool(const std::string&, const std::string&));
+
+  MOCK_METHOD1(
+      GetBraveWallet,
+      void(brave_rewards::GetBraveWalletCallback));
 };
 
 class AdsServiceTest : public testing::Test {

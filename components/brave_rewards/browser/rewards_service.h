@@ -129,6 +129,9 @@ using SuccessCallback = base::OnceCallback<void(const bool success)>;
 using GetEventLogsCallback =
     base::OnceCallback<void(ledger::type::EventLogs logs)>;
 
+using GetBraveWalletCallback =
+    base::OnceCallback<void(ledger::type::BraveWalletPtr wallet)>;
+
 class RewardsService : public KeyedService {
  public:
   RewardsService();
@@ -354,6 +357,8 @@ class RewardsService : public KeyedService {
   virtual bool SetEncryptedStringState(
       const std::string& key,
       const std::string& value) = 0;
+
+  virtual void GetBraveWallet(GetBraveWalletCallback callback) = 0;
 
  protected:
   base::ObserverList<RewardsServiceObserver> observers_;
