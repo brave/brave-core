@@ -107,6 +107,11 @@ gfx::Size BraveLocationBarView::CalculatePreferredSize() const {
                               GetLayoutConstant(LOCATION_BAR_ELEMENT_PADDING);
     min_size.Enlarge(extra_width, 0);
   }
+  if (onion_location_view_ && onion_location_view_->GetVisible()) {
+    const int extra_width = GetLayoutConstant(LOCATION_BAR_ELEMENT_PADDING) +
+        onion_location_view_->GetMinimumSize().width();
+    min_size.Enlarge(extra_width, 0);
+  }
   return min_size;
 }
 
