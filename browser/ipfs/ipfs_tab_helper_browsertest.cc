@@ -46,7 +46,6 @@ class IPFSTabHelperTest : public InProcessBrowserTest,
   void SetUpOnMainThread() override {
     InProcessBrowserTest::SetUpOnMainThread();
     host_resolver()->AddRule("*", "127.0.0.1");
-    content::SetupCrossSiteRedirector(embedded_test_server());
     brave::RegisterPathProvider();
     base::FilePath test_data_dir;
     base::PathService::Get(brave::DIR_TEST_DATA, &test_data_dir);
@@ -131,7 +130,7 @@ IN_PROC_BROWSER_TEST_F(IPFSTabHelperTest, InfobarAddWithAccept) {
       InfoBarService::FromWebContents(active_contents());
   AddInfoBarObserver(infobar_service);
   EXPECT_TRUE(NavigateToURLUntilLoadStop(
-      "dweb.link", "/ipfs/QmbWqxBEKC3P8tqsKc98xmWNzrzDtRLMiMPL8wBuTGsMnR"));
+      "cloudflare-ipfs.com", "/ipfs/QmbWqxBEKC3P8tqsKc98xmWNzrzDtRLMiMPL8wBuTGsMnR"));
 
   WaitForInfobarAdded();
   InfoBarAccept(ConfirmInfoBarDelegate::BUTTON_OK |
@@ -148,7 +147,7 @@ IN_PROC_BROWSER_TEST_F(IPFSTabHelperTest, InfobarAddWithSettings) {
       InfoBarService::FromWebContents(active_contents());
   AddInfoBarObserver(infobar_service);
   EXPECT_TRUE(NavigateToURLUntilLoadStop(
-      "dweb.link", "/ipfs/QmbWqxBEKC3P8tqsKc98xmWNzrzDtRLMiMPL8wBuTGsMnR"));
+      "cloudflare-ipfs.com", "/ipfs/QmbWqxBEKC3P8tqsKc98xmWNzrzDtRLMiMPL8wBuTGsMnR"));
 
   WaitForInfobarAdded();
   InfoBarCancel(ConfirmInfoBarDelegate::BUTTON_OK |
