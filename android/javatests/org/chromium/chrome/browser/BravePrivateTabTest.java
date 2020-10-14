@@ -21,8 +21,8 @@ import org.chromium.chrome.browser.ntp.IncognitoNewTabPage;
 import org.chromium.chrome.browser.onboarding.OnboardingPrefManager;
 import org.chromium.chrome.browser.preferences.SharedPreferencesManager;
 import org.chromium.chrome.browser.settings.BraveSearchEngineUtils;
-import org.chromium.chrome.test.ChromeActivityTestRule;
 import org.chromium.chrome.test.ChromeJUnit4ClassRunner;
+import org.chromium.chrome.test.ChromeTabbedActivityTestRule;
 import org.chromium.components.search_engines.TemplateUrl;
 import org.chromium.content_public.browser.test.util.TestThreadUtils;
 
@@ -32,8 +32,7 @@ import org.chromium.content_public.browser.test.util.TestThreadUtils;
 @RunWith(ChromeJUnit4ClassRunner.class)
 public class BravePrivateTabTest {
     @Rule
-    public ChromeActivityTestRule<ChromeActivity> mActivityTestRule = new ChromeActivityTestRule<>(
-            ChromeActivity.class);
+    public ChromeTabbedActivityTestRule mActivityTestRule = new ChromeTabbedActivityTestRule();
 
     @Before
     public void setUp() throws Exception {
