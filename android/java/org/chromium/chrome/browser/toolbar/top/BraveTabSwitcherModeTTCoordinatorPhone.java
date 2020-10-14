@@ -13,10 +13,12 @@ class BraveTabSwitcherModeTTCoordinatorPhone extends TabSwitcherModeTTCoordinato
     private TabSwitcherModeTTPhone mTabSwitcherModeToolbar;
 
     private boolean mIsBottomToolbarVisible;
+    private MenuButtonCoordinator mBraveMenuButtonCoordinator;
 
     BraveTabSwitcherModeTTCoordinatorPhone(
             ViewStub tabSwitcherToolbarStub, MenuButtonCoordinator menuButtonCoordinator) {
         super(tabSwitcherToolbarStub, menuButtonCoordinator);
+        mBraveMenuButtonCoordinator = menuButtonCoordinator;
     }
 
     @Override
@@ -25,6 +27,9 @@ class BraveTabSwitcherModeTTCoordinatorPhone extends TabSwitcherModeTTCoordinato
         if (inTabSwitcherMode && (mTabSwitcherModeToolbar instanceof BraveTabSwitcherModeTTPhone)) {
             ((BraveTabSwitcherModeTTPhone) mTabSwitcherModeToolbar)
                     .onBottomToolbarVisibilityChanged(mIsBottomToolbarVisible);
+        }
+        if (mBraveMenuButtonCoordinator != null && mIsBottomToolbarVisible) {
+            mBraveMenuButtonCoordinator.setVisibility(!inTabSwitcherMode);
         }
     }
 

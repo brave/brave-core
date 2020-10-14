@@ -14,8 +14,7 @@ import org.chromium.chrome.browser.ui.appmenu.internal.R;
 import org.chromium.ui.base.DeviceFormFactor;
 
 class BraveAppMenu {
-    private static final String BRAVE_BOTTOM_TOOLBAR_CURRENTLY_VISIBLE =
-            "brave_bottom_toolbar_currently_visible";
+    private static final String BRAVE_IS_MENU_FROM_BOTTOM = "brave_is_menu_from_bottom";
 
     public static int[] getPopupPosition(int[] tempLocation, boolean isByPermanentButton,
             int negativeSoftwareVerticalOffset, int negativeVerticalOffsetNotTopAnchored,
@@ -41,6 +40,6 @@ class BraveAppMenu {
 
     private static boolean isMenuFromBottom() {
         SharedPreferences sharedPreferences = ContextUtils.getAppSharedPreferences();
-        return sharedPreferences.getBoolean(BRAVE_BOTTOM_TOOLBAR_CURRENTLY_VISIBLE, false);
+        return sharedPreferences.getBoolean(BRAVE_IS_MENU_FROM_BOTTOM, false);
     }
 }

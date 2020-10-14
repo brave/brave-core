@@ -1,7 +1,16 @@
 diff --git a/chrome/android/java/src/org/chromium/chrome/browser/toolbar/ToolbarManager.java b/chrome/android/java/src/org/chromium/chrome/browser/toolbar/ToolbarManager.java
-index dbffdea2287f9d3d008cde7068c1ace68a0d70fe..23a6f93b9d0c11e99467f1ee8302a35c71f56f15 100644
+index dbffdea2287f9d3d008cde7068c1ace68a0d70fe..a4b1c87b3896aef7b1948ddb020f2c0f306c9978 100644
 --- a/chrome/android/java/src/org/chromium/chrome/browser/toolbar/ToolbarManager.java
 +++ b/chrome/android/java/src/org/chromium/chrome/browser/toolbar/ToolbarManager.java
+@@ -304,7 +304,7 @@ public class ToolbarManager implements UrlFocusChangeListener, ThemeColorObserve
+         ThemeColorProvider overviewModeThemeColorProvider = mAppThemeColorProvider;
+         ToolbarLayout toolbarLayout = mActivity.findViewById(R.id.toolbar);
+ 
+-        mMenuButtonCoordinator = new MenuButtonCoordinator(appMenuCoordinatorSupplier,
++        mMenuButtonCoordinator = new org.chromium.chrome.browser.toolbar.menu_button.BraveMenuButtonCoordinator(appMenuCoordinatorSupplier,
+                 mControlsVisibilityDelegate, mActivity,
+                 (focus, type)
+                         -> setUrlBarFocus(focus, type),
 @@ -631,7 +631,7 @@ public class ToolbarManager implements UrlFocusChangeListener, ThemeColorObserve
              ThemeColorProvider browsingModeThemeColorProvider,
              MenuButtonCoordinator startSurfaceMenuButtonCoordinator, Invalidator invalidator,

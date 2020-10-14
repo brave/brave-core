@@ -19,14 +19,12 @@ public class BraveTabSwitcherModeTTPhone extends TabSwitcherModeTTPhone {
     private View mNewTabViewButton;
     private NewTabButton mNewTabImageButton;
     private ToggleTabStackButton mToggleTabStackButton;
-    private MenuButton mMenuButton;
     private boolean mShouldShowNewTabVariation;
 
     private boolean mShouldShowNewTabButton;
 
     public BraveTabSwitcherModeTTPhone(Context context, AttributeSet attrs) {
         super(context, attrs);
-        mMenuButton = findViewById(R.id.menu_button_wrapper);
     }
 
     protected void updateNewTabButtonVisibility() {
@@ -45,12 +43,6 @@ public class BraveTabSwitcherModeTTPhone extends TabSwitcherModeTTPhone {
         return false;
     }
 
-    private void setMenuButtonVisibility(boolean isButtonVisible) {
-        if (mMenuButton != null) {
-            mMenuButton.setVisibility(isButtonVisible ? VISIBLE : GONE);
-        }
-    }
-
     void onBottomToolbarVisibilityChanged(boolean isVisible) {
         mShouldShowNewTabButton = !isVisible
                 || (BottomToolbarConfiguration.isBottomToolbarEnabled()
@@ -60,8 +52,5 @@ public class BraveTabSwitcherModeTTPhone extends TabSwitcherModeTTPhone {
         if (BottomToolbarVariationManager.isTabSwitcherOnBottom() && !shouldShowIncognitoToggle()) {
             mToggleTabStackButton.setVisibility(isVisible ? GONE : VISIBLE);
         }
-        setMenuButtonVisibility(!isVisible
-                || (BottomToolbarConfiguration.isBottomToolbarEnabled()
-                        && !BottomToolbarVariationManager.isMenuButtonOnBottom()));
     }
 }

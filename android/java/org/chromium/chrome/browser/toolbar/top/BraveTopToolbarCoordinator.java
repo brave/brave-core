@@ -30,6 +30,7 @@ import java.util.List;
 public class BraveTopToolbarCoordinator extends TopToolbarCoordinator {
     private TabSwitcherModeTTCoordinatorPhone mTabSwitcherModeCoordinatorPhone;
     private OptionalBrowsingModeButtonController mOptionalButtonController;
+    private ToolbarLayout mBraveToolbarLayout;
 
     public BraveTopToolbarCoordinator(ToolbarControlContainer controlContainer,
             ToolbarLayout toolbarLayout, ToolbarDataProvider toolbarDataProvider,
@@ -53,9 +54,11 @@ public class BraveTopToolbarCoordinator extends TopToolbarCoordinator {
                 appMenuButtonHelperSupplier, tabModelSelectorSupplier, homeButtonVisibilitySupplier,
                 identityDiscStateSupplier, invalidatorCallback, identityDiscButtonSupplier);
 
+        mBraveToolbarLayout = toolbarLayout;
+
         if (toolbarLayout instanceof ToolbarPhone) {
             if (!StartSurfaceConfiguration.isStartSurfaceEnabled()) {
-                mTabSwitcherModeCoordinatorPhone = new TabSwitcherModeTTCoordinatorPhone(
+                mTabSwitcherModeCoordinatorPhone = new BraveTabSwitcherModeTTCoordinatorPhone(
                         controlContainer.getRootView().findViewById(R.id.tab_switcher_toolbar_stub),
                         overviewModeMenuButtonCoordinator);
             }
@@ -63,6 +66,9 @@ public class BraveTopToolbarCoordinator extends TopToolbarCoordinator {
     }
 
     public void onBottomToolbarVisibilityChanged(boolean isVisible) {
+        if (mBraveToolbarLayout instanceof BraveToolbarLayout) {
+            ((BraveToolbarLayout) mBraveToolbarLayout).onBottomToolbarVisibilityChanged(isVisible);
+        }
         if (mTabSwitcherModeCoordinatorPhone instanceof BraveTabSwitcherModeTTCoordinatorPhone) {
             ((BraveTabSwitcherModeTTCoordinatorPhone) mTabSwitcherModeCoordinatorPhone)
                     .onBottomToolbarVisibilityChanged(isVisible);
