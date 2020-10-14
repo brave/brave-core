@@ -1933,7 +1933,7 @@ BATLedgerBridge(BOOL,
 
 - (void)deleteLog:(ledger::ResultCallback)callback
 {
-  // TODO implement
+  callback(ledger::type::Result::LEDGER_OK);
 }
 
 @end
