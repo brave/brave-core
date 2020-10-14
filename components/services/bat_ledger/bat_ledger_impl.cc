@@ -1118,7 +1118,6 @@ void BatLedgerImpl::Shutdown(ShutdownCallback callback) {
           _1));
 }
 
-
 // static
 void BatLedgerImpl::OnGetEventLogs(
     CallbackHolder<GetEventLogsCallback>* holder,
@@ -1137,6 +1136,28 @@ void BatLedgerImpl::GetEventLogs(GetEventLogsCallback callback) {
 
   ledger_->GetEventLogs(
       std::bind(BatLedgerImpl::OnGetEventLogs,
+          holder,
+          _1));
+}
+
+// static
+void BatLedgerImpl::OnGetBraveWallet(
+    CallbackHolder<GetBraveWalletCallback>* holder,
+    ledger::type::BraveWalletPtr wallet) {
+  DCHECK(holder);
+  if (holder->is_valid()) {
+    std::move(holder->get()).Run(std::move(wallet));
+  }
+
+  delete holder;
+}
+
+void BatLedgerImpl::GetBraveWallet(GetBraveWalletCallback callback) {
+  auto* holder = new CallbackHolder<GetBraveWalletCallback>(
+      AsWeakPtr(), std::move(callback));
+
+  ledger_->GetBraveWallet(
+      std::bind(BatLedgerImpl::OnGetBraveWallet,
           holder,
           _1));
 }

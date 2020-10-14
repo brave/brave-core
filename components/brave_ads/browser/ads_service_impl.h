@@ -22,6 +22,7 @@
 #include "bat/ads/ads_client.h"
 #include "bat/ads/database.h"
 #include "bat/ads/mojom.h"
+#include "bat/ledger/mojom_structs.h"
 #include "brave/components/brave_ads/browser/ads_service.h"
 #include "brave/components/brave_ads/browser/background_helper.h"
 #include "brave/components/brave_ads/browser/notification_helper.h"
@@ -122,6 +123,8 @@ class AdsServiceImpl : public AdsService,
       const SessionID& tab_id) override;
 
   void OnWalletUpdated();
+
+  void OnGetBraveWallet(ledger::type::BraveWalletPtr wallet);
 
   void ReconcileAdRewards() override;
 

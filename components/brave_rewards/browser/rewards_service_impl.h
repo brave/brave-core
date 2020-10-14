@@ -333,6 +333,8 @@ class RewardsServiceImpl : public RewardsService,
       const std::string& name,
       const std::string& value) override;
 
+  void GetBraveWallet(GetBraveWalletCallback callback) override;
+
   // Testing methods
   void SetLedgerEnvForTesting();
   void PrepareLedgerEnvForTesting();
@@ -728,6 +730,10 @@ class RewardsServiceImpl : public RewardsService,
   void OnGetEventLogs(
       GetEventLogsCallback callback,
       ledger::type::EventLogs logs);
+
+  void OnGetBraveWallet(
+      GetBraveWalletCallback callback,
+      ledger::type::BraveWalletPtr wallet);
 
 #if defined(OS_ANDROID)
   ledger::type::Environment GetServerEnvironmentForAndroid();
