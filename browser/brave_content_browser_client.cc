@@ -474,7 +474,8 @@ BraveContentBrowserClient::CreateThrottlesForNavigation(
   std::unique_ptr<content::NavigationThrottle> ipfs_navigation_throttle =
     ipfs::IpfsNavigationThrottle::MaybeCreateThrottleFor(handle,
         ipfs::IpfsServiceFactory::GetForContext(context),
-        brave::IsRegularProfile(context));
+        brave::IsRegularProfile(context),
+        g_brave_browser_process->GetApplicationLocale());
   if (ipfs_navigation_throttle)
     throttles.push_back(std::move(ipfs_navigation_throttle));
 #endif

@@ -7,6 +7,7 @@
 #define BRAVE_COMPONENTS_IPFS_IPFS_INTERSTITIAL_CONTROLLER_CLIENT_H_
 
 #include <memory>
+#include <string>
 
 #include "components/security_interstitials/content/security_interstitial_controller_client.h"
 #include "url/gurl.h"
@@ -29,7 +30,8 @@ class IPFSInterstitialControllerClient
 
   IPFSInterstitialControllerClient(content::WebContents* web_contents,
                                    const GURL& request_url,
-                                   PrefService* prefs);
+                                   PrefService* prefs,
+                                   const std::string& locale);
   ~IPFSInterstitialControllerClient() override = default;
 
   IPFSInterstitialControllerClient(const IPFSInterstitialControllerClient&) =

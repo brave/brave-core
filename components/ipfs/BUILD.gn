@@ -35,7 +35,6 @@ source_set("ipfs") {
     "//brave/components/services/ipfs/public/mojom",
     "//components/infobars/core",
     "//components/keyed_service/core",
-    "//components/language/core/browser:browser",
     "//components/prefs",
     "//components/security_interstitials/content:security_interstitial_page",
     "//components/security_interstitials/core",
