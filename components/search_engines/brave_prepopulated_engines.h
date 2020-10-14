@@ -7,6 +7,7 @@
 #define BRAVE_COMPONENTS_SEARCH_ENGINES_BRAVE_PREPOPULATED_ENGINES_H_
 
 #include <cstddef>
+#include <map>
 
 #include "build/build_config.h"
 #include "components/search_engines/prepopulated_engines.h"
@@ -130,6 +131,9 @@ extern const PrepopulatedEngine brave_yahoo_tw;
 extern const PrepopulatedEngine brave_yahoo_uk;
 extern const PrepopulatedEngine brave_yahoo_ve;
 extern const PrepopulatedEngine brave_yahoo_vn;
+
+const std::map<BravePrepopulatedEngineID, const PrepopulatedEngine*>&
+GetBraveEnginesMap();
 
 }  // namespace TemplateURLPrepopulateData
 
