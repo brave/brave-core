@@ -454,6 +454,18 @@ BATLedgerReadonlyBridge(BOOL, isWalletCreated, IsWalletCreated)
   });
 }
 
+- (void)currentWalletInfo:(void (^)(BATBraveWallet *_Nullable wallet))completion
+{
+  ledger->GetBraveWallet(^(ledger::type::BraveWalletPtr wallet){
+    if (wallet.get() == nullptr) {
+      completion(nil);
+      return;
+    }
+    const auto bridgedWallet = [[BATBraveWallet alloc] initWithBraveWallet:*wallet];
+    completion(bridgedWallet);
+  });
+}
+
 - (void)getRewardsParameters:(void (^)(BATRewardsParameters * _Nullable))completion
 {
   ledger->GetRewardsParameters(^(ledger::type::RewardsParametersPtr info) {
