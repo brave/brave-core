@@ -46,6 +46,13 @@ class AdBlockService : public AdBlockBaseService {
   explicit AdBlockService(BraveComponent::Delegate* delegate);
   ~AdBlockService() override;
 
+  bool ShouldStartRequest(const GURL& url,
+                          blink::mojom::ResourceType resource_type,
+                          const std::string& tab_host,
+                          bool* did_match_exception,
+                          bool* cancel_request_explicitly,
+                          std::string* mock_data_url) override;
+
   AdBlockRegionalServiceManager* regional_service_manager();
   AdBlockCustomFiltersService* custom_filters_service();
 

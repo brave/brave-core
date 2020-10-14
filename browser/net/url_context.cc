@@ -91,8 +91,9 @@ void BraveRequestInfo::FillCTX(const network::ResourceRequest& request,
     // cross-site top-level navigations. Fortunately for now it is not a problem
     // for shields functionality. We should reconsider this machinery, also
     // given that this is always empty for subresources.
-    ctx->tab_origin =
-        request.trusted_params->isolation_info.network_isolation_key()
+    ctx->network_isolation_key =
+        request.trusted_params->isolation_info.network_isolation_key();
+    ctx->tab_origin = ctx->network_isolation_key
             .GetTopFrameOrigin()
             .value_or(url::Origin())
             .GetURL();

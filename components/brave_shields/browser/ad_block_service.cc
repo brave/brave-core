@@ -72,6 +72,44 @@ std::string AdBlockService::g_ad_block_component_id_(kAdBlockComponentId);
 std::string AdBlockService::g_ad_block_component_base64_public_key_(
     kAdBlockComponentBase64PublicKey);
 
+bool AdBlockService::ShouldStartRequest(
+    const GURL& url,
+    blink::mojom::ResourceType resource_type,
+    const std::string& tab_host,
+    bool* did_match_exception,
+    bool* cancel_request_explicitly,
+    std::string* mock_data_url) {
+
+  if (!AdBlockBaseService::ShouldStartRequest(
+          url, resource_type, tab_host, did_match_exception,
+          cancel_request_explicitly, mock_data_url)) {
+    return false;
+  }
+  if (did_match_exception && *did_match_exception) {
+    return true;
+  }
+
+  if (!regional_service_manager()->ShouldStartRequest(
+          url, resource_type, tab_host, did_match_exception,
+          cancel_request_explicitly, mock_data_url)) {
+    return false;
+  }
+  if (did_match_exception && *did_match_exception) {
+    return true;
+  }
+
+  if (!custom_filters_service()->ShouldStartRequest(
+        url, resource_type, tab_host, did_match_exception,
+        cancel_request_explicitly, mock_data_url)) {
+    return false;
+  }
+  if (did_match_exception && *did_match_exception) {
+    return true;
+  }
+
+  return true;
+}
+
 AdBlockRegionalServiceManager* AdBlockService::regional_service_manager() {
   if (!regional_service_manager_)
     regional_service_manager_ =
