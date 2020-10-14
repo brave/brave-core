@@ -24,6 +24,9 @@ class TorProfileService;
 }  // namespace tor
 #endif
 
+class PrefRegistrySimple;
+class PrefService;
+
 // Handles messages to and from the New Tab Page javascript
 class BraveNewTabMessageHandler : public content::WebUIMessageHandler,
                                   public tor::TorLauncherServiceObserver {
@@ -31,8 +34,11 @@ class BraveNewTabMessageHandler : public content::WebUIMessageHandler,
   explicit BraveNewTabMessageHandler(Profile* profile);
   ~BraveNewTabMessageHandler() override;
 
+  static void RegisterLocalStatePrefs(PrefRegistrySimple* local_state);
+  static void RecordInitialP3AValues(PrefService* local_state);
   static BraveNewTabMessageHandler* Create(
-      content::WebUIDataSource* html_source, Profile* profile);
+      content::WebUIDataSource* html_source,
+      Profile* profile);
 
  private:
   // WebUIMessageHandler implementation.
@@ -50,6 +56,7 @@ class BraveNewTabMessageHandler : public content::WebUIMessageHandler,
   void HandleRegisterNewTabPageView(const base::ListValue* args);
   void HandleBrandedWallpaperLogoClicked(const base::ListValue* args);
   void HandleGetBrandedWallpaperData(const base::ListValue* args);
+  void HandleCustomizeClicked(const base::ListValue* args);
 
   void OnStatsChanged();
   void OnPreferencesChanged();

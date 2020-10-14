@@ -9,6 +9,7 @@
 #include "brave/browser/brave_stats/brave_stats_updater.h"
 #include "brave/browser/metrics/metrics_reporting_util.h"
 #include "brave/browser/themes/brave_dark_mode_utils.h"
+#include "brave/browser/ui/webui/new_tab_page/brave_new_tab_message_handler.h"
 #include "brave/common/pref_names.h"
 #include "brave/components/brave_referrals/buildflags/buildflags.h"
 #include "brave/components/brave_shields/browser/ad_block_service.h"
@@ -48,6 +49,7 @@ namespace brave {
 
 void RegisterLocalStatePrefs(PrefRegistrySimple* registry) {
   brave_shields::RegisterPrefsForAdBlockService(registry);
+  BraveNewTabMessageHandler::RegisterLocalStatePrefs(registry);
   brave_stats::RegisterLocalStatePrefs(registry);
   ntp_background_images::NTPBackgroundImagesService::RegisterLocalStatePrefs(
       registry);

@@ -27,9 +27,12 @@
 #include "brave/components/ntp_background_images/browser/url_constants.h"
 #include "brave/components/ntp_background_images/browser/view_counter_service.h"
 #include "brave/components/ntp_background_images/common/pref_names.h"
+#include "brave/components/p3a/brave_p3a_utils.h"
+#include "chrome/browser/browser_process.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/common/chrome_features.h"
 #include "components/prefs/pref_change_registrar.h"
+#include "components/prefs/pref_registry_simple.h"
 #include "components/prefs/pref_service.h"
 #include "content/public/browser/web_ui_data_source.h"
 
@@ -147,9 +150,31 @@ base::DictionaryValue GetTorPropertiesDictionary(bool connected,
   return tor_data;
 }
 
+enum class NTPCustomizeUsage {
+  kNeverOpened,
+  kOpened,
+  kOpenedAndEdited,
+  kSize
+};
+
+const char kNTPCustomizeUsageStatus[] =
+    "brave.new_tab_page.customize_p3a_usage";
+
 }  // namespace
 
 // static
+void BraveNewTabMessageHandler::RegisterLocalStatePrefs(
+    PrefRegistrySimple* local_state) {
+  local_state->RegisterIntegerPref(kNTPCustomizeUsageStatus, -1);
+}
+
+void BraveNewTabMessageHandler::RecordInitialP3AValues(
+    PrefService* local_state) {
+  brave::RecordValueIfGreater<NTPCustomizeUsage>(
+      NTPCustomizeUsage::kNeverOpened, "Brave.NTP.CustomizeUsageStatus",
+      kNTPCustomizeUsageStatus, local_state);
+}
+
 BraveNewTabMessageHandler* BraveNewTabMessageHandler::Create(
       content::WebUIDataSource* source, Profile* profile) {
   //
@@ -205,50 +230,50 @@ void BraveNewTabMessageHandler::RegisterMessages() {
   // - Preferences
   // - PrivatePage properties
   web_ui()->RegisterMessageCallback(
-    "getNewTabPagePreferences",
-    base::BindRepeating(
-      &BraveNewTabMessageHandler::HandleGetPreferences,
-      base::Unretained(this)));
+      "getNewTabPagePreferences",
+      base::BindRepeating(&BraveNewTabMessageHandler::HandleGetPreferences,
+                          base::Unretained(this)));
   web_ui()->RegisterMessageCallback(
-    "getNewTabPageStats",
-    base::BindRepeating(
-      &BraveNewTabMessageHandler::HandleGetStats,
-      base::Unretained(this)));
+      "getNewTabPageStats",
+      base::BindRepeating(&BraveNewTabMessageHandler::HandleGetStats,
+                          base::Unretained(this)));
   web_ui()->RegisterMessageCallback(
-    "getNewTabPagePrivateProperties",
-    base::BindRepeating(
-      &BraveNewTabMessageHandler::HandleGetPrivateProperties,
-      base::Unretained(this)));
+      "getNewTabPagePrivateProperties",
+      base::BindRepeating(
+          &BraveNewTabMessageHandler::HandleGetPrivateProperties,
+          base::Unretained(this)));
   web_ui()->RegisterMessageCallback(
-    "getNewTabPageTorProperties",
-    base::BindRepeating(
-      &BraveNewTabMessageHandler::HandleGetTorProperties,
-      base::Unretained(this)));
+      "getNewTabPageTorProperties",
+      base::BindRepeating(&BraveNewTabMessageHandler::HandleGetTorProperties,
+                          base::Unretained(this)));
   web_ui()->RegisterMessageCallback(
-    "toggleAlternativePrivateSearchEngine",
-    base::BindRepeating(
-      &BraveNewTabMessageHandler::HandleToggleAlternativeSearchEngineProvider,
-      base::Unretained(this)));
+      "toggleAlternativePrivateSearchEngine",
+      base::BindRepeating(&BraveNewTabMessageHandler::
+                              HandleToggleAlternativeSearchEngineProvider,
+                          base::Unretained(this)));
   web_ui()->RegisterMessageCallback(
-    "saveNewTabPagePref",
-    base::BindRepeating(
-      &BraveNewTabMessageHandler::HandleSaveNewTabPagePref,
-      base::Unretained(this)));
+      "saveNewTabPagePref",
+      base::BindRepeating(&BraveNewTabMessageHandler::HandleSaveNewTabPagePref,
+                          base::Unretained(this)));
   web_ui()->RegisterMessageCallback(
-    "registerNewTabPageView",
-    base::BindRepeating(
-      &BraveNewTabMessageHandler::HandleRegisterNewTabPageView,
-      base::Unretained(this)));
+      "registerNewTabPageView",
+      base::BindRepeating(
+          &BraveNewTabMessageHandler::HandleRegisterNewTabPageView,
+          base::Unretained(this)));
   web_ui()->RegisterMessageCallback(
-    "brandedWallpaperLogoClicked",
-    base::BindRepeating(
-      &BraveNewTabMessageHandler::HandleBrandedWallpaperLogoClicked,
-      base::Unretained(this)));
+      "brandedWallpaperLogoClicked",
+      base::BindRepeating(
+          &BraveNewTabMessageHandler::HandleBrandedWallpaperLogoClicked,
+          base::Unretained(this)));
   web_ui()->RegisterMessageCallback(
-    "getBrandedWallpaperData",
-    base::BindRepeating(
-      &BraveNewTabMessageHandler::HandleGetBrandedWallpaperData,
-      base::Unretained(this)));
+      "getBrandedWallpaperData",
+      base::BindRepeating(
+          &BraveNewTabMessageHandler::HandleGetBrandedWallpaperData,
+          base::Unretained(this)));
+  web_ui()->RegisterMessageCallback(
+      "customizeClicked",
+      base::BindRepeating(&BraveNewTabMessageHandler::HandleCustomizeClicked,
+                          base::Unretained(this)));
 }
 
 void BraveNewTabMessageHandler::OnJavascriptAllowed() {
@@ -387,6 +412,9 @@ void BraveNewTabMessageHandler::HandleSaveNewTabPagePref(
     LOG(ERROR) << "Invalid input";
     return;
   }
+  brave::RecordValueIfGreater<NTPCustomizeUsage>(
+      NTPCustomizeUsage::kOpenedAndEdited, "Brave.NTP.CustomizeUsageStatus",
+      kNTPCustomizeUsageStatus, g_browser_process->local_state());
   PrefService* prefs = profile_->GetPrefs();
   // Collect args
   std::string settingsKeyInput = args->GetList()[0].GetString();
@@ -507,6 +535,14 @@ void BraveNewTabMessageHandler::HandleGetBrandedWallpaperData(
   }
 
   ResolveJavascriptCallback(args->GetList()[0], std::move(data));
+}
+
+void BraveNewTabMessageHandler::HandleCustomizeClicked(
+    const base::ListValue* args) {
+  AllowJavascript();
+  brave::RecordValueIfGreater<NTPCustomizeUsage>(
+      NTPCustomizeUsage::kOpened, "Brave.NTP.CustomizeUsageStatus",
+      kNTPCustomizeUsageStatus, g_browser_process->local_state());
 }
 
 void BraveNewTabMessageHandler::OnPrivatePropertiesChanged() {

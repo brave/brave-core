@@ -7,6 +7,7 @@
 
 #include "base/logging.h"
 #include "base/metrics/histogram_macros.h"
+#include "brave/components/p3a/brave_p3a_utils.h"
 #include "components/prefs/pref_registry_simple.h"
 #include "components/prefs/pref_service.h"
 
@@ -19,16 +20,8 @@ constexpr char kPrefName[] = "brave_shields.p3a_usage";
 
 void MaybeRecordShieldsUsageP3A(ShieldsIconUsage usage,
                                 PrefService* local_state) {
-  // May be null in tests.
-  if (!local_state) {
-    return;
-  }
-  int last_value = local_state->GetInteger(kPrefName);
-
-  if (last_value < usage) {
-    UMA_HISTOGRAM_ENUMERATION("Brave.Shields.UsageStatus", usage, kSize);
-    local_state->SetInteger(kPrefName, usage);
-  }
+  ::brave::RecordValueIfGreater<ShieldsIconUsage>(
+      usage, "Brave.Shields.UsageStatus", kPrefName, local_state);
 }
 
 void RegisterShieldsP3APrefs(PrefRegistrySimple* local_state) {

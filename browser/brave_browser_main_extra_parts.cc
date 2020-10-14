@@ -7,11 +7,12 @@
 
 #include "base/metrics/histogram_macros.h"
 #include "brave/browser/brave_browser_process_impl.h"
+#include "brave/browser/ui/webui/new_tab_page/brave_new_tab_message_handler.h"
 #include "brave/components/brave_shields/browser/brave_shields_p3a.h"
-#include "brave/components/p3a/buildflags.h"
 #include "brave/components/p3a/brave_p3a_service.h"
-#include "components/prefs/pref_service.h"
+#include "brave/components/p3a/buildflags.h"
 #include "components/metrics/metrics_pref_names.h"
+#include "components/prefs/pref_service.h"
 #include "services/network/public/cpp/shared_url_loader_factory.h"
 #include "third_party/widevine/cdm/buildflags.h"
 
@@ -41,6 +42,8 @@ void RecordInitialP3AValues() {
 
   brave_shields::MaybeRecordShieldsUsageP3A(brave_shields::kNeverClicked,
                                             g_browser_process->local_state());
+  BraveNewTabMessageHandler::RecordInitialP3AValues(
+      g_browser_process->local_state());
 
   // Record crash reporting status stats.
   const bool crash_reports_enabled = g_browser_process->local_state()->
