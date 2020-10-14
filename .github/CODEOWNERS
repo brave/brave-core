@@ -7,16 +7,16 @@ vendor/brave-ios/ @kylehickinson
 Jenkinsfile @mihaiplesa
 
 # Rewards
-browser/brave_rewards/ @NejcZdovc
-browser/extensions/api/brave_rewards_api.cc @NejcZdovc
-browser/extensions/api/brave_rewards_api.h @NejcZdovc
-browser/ui/webui/brave_rewards_page_ui.cc @NejcZdovc
-browser/ui/webui/brave_rewards_page_ui.h @NejcZdovc
-browser/ui/webui/brave_rewards_ui.cc @NejcZdovc
-browser/ui/webui/brave_rewards_ui.h @NejcZdovc
-components/brave_rewards/ @NejcZdovc
-components/services/bat_ledger/ @NejcZdovc
-vendor/bat-native-ledger/ @NejcZdovc
+browser/brave_rewards/ @brave/rewards
+browser/extensions/api/brave_rewards_api.cc @brave/rewards
+browser/extensions/api/brave_rewards_api.h @brave/rewards
+browser/ui/webui/brave_rewards_page_ui.cc @brave/rewards
+browser/ui/webui/brave_rewards_page_ui.h @brave/rewards
+browser/ui/webui/brave_rewards_ui.cc @brave/rewards
+browser/ui/webui/brave_rewards_ui.h @brave/rewards
+components/brave_rewards/ @brave/rewards
+components/services/bat_ledger/ @brave/rewards
+vendor/bat-native-ledger/ @brave/rewards
 
 # Ads
 vendor/bat-native-ads/ @tmancey
