@@ -182,10 +182,19 @@ BATClassAdsBridge(BOOL, isDebug, setDebug, _is_debug)
 
     adsClient = new NativeAdsClient(self);
     ads = ads::Ads::CreateInstance(adsClient);
-    ads->Initialize(^(bool) {
-      [self periodicallyCheckForUserModelUpdates];
-      [self registerUserModels];
-    });
+    
+    if (!self.ledger) { return; }
+    [self.ledger currentWalletInfo:^(NSString * _Nullable paymentId, NSString * _Nullable seed) {
+      if (!paymentId || !seed) {
+        BLOG(0, @"Failed to obtain wallet information to initialize ads");
+        return;
+      }
+      ads->OnWalletUpdated(paymentId.UTF8String, seed.UTF8String);
+      ads->Initialize(^(bool) {
+        [self periodicallyCheckForUserModelUpdates];
+        [self registerUserModels];
+      });
+    }];
   }
 }
 
