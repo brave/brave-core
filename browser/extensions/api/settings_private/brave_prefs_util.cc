@@ -5,6 +5,7 @@
 
 #include "brave/browser/extensions/api/settings_private/brave_prefs_util.h"
 
+#include "brave/browser/tor/buildflags.h"
 #include "brave/common/pref_names.h"
 #include "brave/components/brave_rewards/common/pref_names.h"
 #include "brave/components/brave_wallet/browser/buildflags/buildflags.h"
@@ -37,6 +38,10 @@
 
 #if BUILDFLAG(CRYPTO_DOT_COM_ENABLED)
 #include "brave/components/crypto_dot_com/common/pref_names.h"
+#endif
+
+#if BUILDFLAG(ENABLE_TOR)
+#include "brave/common/tor/pref_names.h"
 #endif
 
 namespace extensions {
@@ -185,6 +190,10 @@ const PrefsUtil::TypedPrefMap& BravePrefsUtil::GetWhitelistedKeys() {
   // Omnibox pref
   (*s_brave_whitelist)[omnibox::kPreventUrlElisionsInOmnibox] =
       settings_api::PrefType::PREF_TYPE_BOOLEAN;
+#if BUILDFLAG(ENABLE_TOR)
+  (*s_brave_whitelist)[tor::prefs::kAutoOnionLocation] =
+      settings_api::PrefType::PREF_TYPE_BOOLEAN;
+#endif
 
   return *s_brave_whitelist;
 }

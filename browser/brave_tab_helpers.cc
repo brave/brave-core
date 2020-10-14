@@ -60,6 +60,7 @@
 
 #if BUILDFLAG(ENABLE_TOR)
 #include "brave/browser/tor/tor_tab_helper.h"
+#include "brave/browser/tor/onion_location_tab_helper.h"
 #endif
 
 #if BUILDFLAG(IPFS_ENABLED)
@@ -118,6 +119,7 @@ void AttachTabHelpers(content::WebContents* web_contents) {
 
 #if BUILDFLAG(ENABLE_TOR)
   tor::TorTabHelper::MaybeCreateForWebContents(web_contents);
+  tor::OnionLocationTabHelper::CreateForWebContents(web_contents);
 #endif
 
 #if BUILDFLAG(IPFS_ENABLED)

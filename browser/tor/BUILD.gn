@@ -24,12 +24,14 @@ source_set("tor") {
     "//mojo/public/cpp/bindings",
   ]
 
-  public_deps = [
-    ":buildflags",
-  ]
+  public_deps = [ ":buildflags" ]
 
   if (enable_tor) {
     sources += [
+      "onion_location_navigation_throttle.cc",
+      "onion_location_navigation_throttle.h",
+      "onion_location_tab_helper.cc",
+      "onion_location_tab_helper.h",
       "tor_control.cc",
       "tor_control.h",
       "tor_launcher_factory.cc",

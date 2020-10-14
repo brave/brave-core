@@ -138,14 +138,14 @@ void BraveActionsContainer::Init() {
   RoundedSeparator* brave_button_separator_ = new RoundedSeparator();
   // TODO(petemill): theme color
   brave_button_separator_->SetColor(SkColorSetRGB(0xb2, 0xb5, 0xb7));
-  constexpr int kSeparatorRightMargin = 2;
+  constexpr int kSeparatorMargin = 3;
   constexpr int kSeparatorWidth = 1;
   brave_button_separator_->SetPreferredSize(gfx::Size(
-                                    kSeparatorWidth + kSeparatorRightMargin,
+                                    kSeparatorWidth + kSeparatorMargin*2,
                                     GetLayoutConstant(LOCATION_BAR_ICON_SIZE)));
-  // separator right margin
+  // separator left & right margin
   brave_button_separator_->SetBorder(
-      views::CreateEmptyBorder(0, 0, 0, kSeparatorRightMargin));
+      views::CreateEmptyBorder(0, kSeparatorMargin, 0, kSeparatorMargin));
   // Just in case the extensions load before this function does (not likely!)
   // make sure separator is at index 0
   AddChildViewAt(brave_button_separator_, 0);

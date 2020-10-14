@@ -6,10 +6,13 @@
 #ifndef BRAVE_BROWSER_UI_VIEWS_LOCATION_BAR_BRAVE_LOCATION_BAR_VIEW_H_
 #define BRAVE_BROWSER_UI_VIEWS_LOCATION_BAR_BRAVE_LOCATION_BAR_VIEW_H_
 
+#include <vector>
+
 #include "chrome/browser/ui/views/location_bar/location_bar_view.h"
 
 class BraveActionsContainer;
 class BraveActionsContainerTest;
+class OnionLocationView;
 class RewardsBrowserTest;
 class SkPath;
 
@@ -19,10 +22,13 @@ class BraveLocationBarView : public LocationBarView {
  public:
   using LocationBarView::LocationBarView;
   void Init() override;
-  void Layout() override;
   void Update(content::WebContents* contents) override;
   void OnChanged() override;
   BraveActionsContainer* GetBraveActionsContainer() { return brave_actions_; }
+  OnionLocationView* GetOnionLocationView() { return onion_location_view_; }
+
+  // LocationBarView:
+  std::vector<views::View*> GetTrailingViews() override;
 
   // views::View:
   gfx::Size CalculatePreferredSize() const override;
@@ -38,6 +44,7 @@ class BraveLocationBarView : public LocationBarView {
   friend class ::BraveActionsContainerTest;
   friend class ::RewardsBrowserTest;
   BraveActionsContainer* brave_actions_ = nullptr;
+  OnionLocationView* onion_location_view_ = nullptr;
 
   DISALLOW_COPY_AND_ASSIGN(BraveLocationBarView);
 };

@@ -10,6 +10,7 @@
 #include "brave/browser/profiles/profile_util.h"
 #include "brave/browser/themes/brave_theme_service.h"
 #include "brave/browser/ui/views/brave_actions/brave_actions_container.h"
+#include "brave/browser/ui/views/location_bar/onion_location_view.h"
 #include "brave/browser/ui/views/toolbar/brave_toolbar_view.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/themes/theme_service_factory.h"
@@ -49,8 +50,10 @@ void BraveLocationBarView::Init() {
             BraveLocationBarViewFocusRingHighlightPathGenerator>());
   }
   // brave action buttons
+  onion_location_view_ = new OnionLocationView(browser_->profile());
   brave_actions_ = new BraveActionsContainer(browser_, profile());
   brave_actions_->Init();
+  AddChildView(onion_location_view_);
   AddChildView(brave_actions_);
   // Call Update again to cause a Layout
   Update(nullptr);
@@ -60,16 +63,14 @@ void BraveLocationBarView::Init() {
     content_setting_view->disable_animation();
 }
 
-void BraveLocationBarView::Layout() {
-  LocationBarView::Layout(brave_actions_ ? brave_actions_ : nullptr);
-}
-
 void BraveLocationBarView::Update(content::WebContents* contents) {
   // base Init calls update before our Init is run, so our children
   // may not be initialized yet
   if (brave_actions_) {
     brave_actions_->Update();
   }
+  if (onion_location_view_)
+    onion_location_view_->Update(contents);
   LocationBarView::Update(contents);
 }
 
@@ -80,9 +81,22 @@ void BraveLocationBarView::OnChanged() {
         ShouldHidePageActionIcons() && !omnibox_view_->GetText().empty();
     brave_actions_->SetShouldHide(should_hide);
   }
+  if (onion_location_view_)
+    onion_location_view_->Update(
+        browser_->tab_strip_model()->GetActiveWebContents());
 
   // OnChanged calls Layout
   LocationBarView::OnChanged();
+}
+
+std::vector<views::View*> BraveLocationBarView::GetTrailingViews() {
+  std::vector<views::View*> views;
+  if (onion_location_view_)
+    views.push_back(onion_location_view_);
+  if (brave_actions_)
+    views.push_back(brave_actions_);
+
+  return views;
 }
 
 gfx::Size BraveLocationBarView::CalculatePreferredSize() const {
@@ -91,6 +105,11 @@ gfx::Size BraveLocationBarView::CalculatePreferredSize() const {
     const int brave_actions_min = brave_actions_->GetMinimumSize().width();
     const int extra_width = brave_actions_min +
                               GetLayoutConstant(LOCATION_BAR_ELEMENT_PADDING);
+    min_size.Enlarge(extra_width, 0);
+  }
+  if (onion_location_view_ && onion_location_view_->GetVisible()) {
+    const int extra_width = GetLayoutConstant(LOCATION_BAR_ELEMENT_PADDING) +
+        onion_location_view_->GetMinimumSize().width();
     min_size.Enlarge(extra_width, 0);
   }
   return min_size;
@@ -131,11 +150,3 @@ BraveLocationBarView::GetContentSettingsImageViewForTesting(size_t idx) {
   DCHECK(idx < content_setting_views_.size());
   return content_setting_views_[idx];
 }
-
-// Provide base class implementation for Update override that has been added to
-// header via a patch. This should never be called as the only instantiated
-// implementation should be our |BraveLocationBarView|.
-void LocationBarView::Layout() {
-  Layout(nullptr);
-}
-
