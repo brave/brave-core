@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/BUILD.gn b/chrome/browser/BUILD.gn
-index e462f7d8bef19577547cacc76fc794ab6fa17dcf..17ab7457880c8bf2cb19e71482664e0da93dc744 100644
+index 8379e32d09d03fd3572beba90aaa182a3982a118..624283a688b79bda0df3104beea3179d079f802a 100644
 --- a/chrome/browser/BUILD.gn
 +++ b/chrome/browser/BUILD.gn
-@@ -2274,6 +2274,7 @@ static_library("browser") {
+@@ -2278,6 +2278,7 @@ static_library("browser") {
      "//ui/web_dialogs",
      "//ui/webui",
      "//ui/webui/resources/cr_components/customize_themes:mojom",
@@ -10,7 +10,7 @@ index e462f7d8bef19577547cacc76fc794ab6fa17dcf..17ab7457880c8bf2cb19e71482664e0d
    ]
    if (is_chromeos) {
      deps += [
-@@ -4014,6 +4015,7 @@ static_library("browser") {
+@@ -4020,6 +4021,7 @@ static_library("browser") {
          sources += [ "first_run/first_run_internal_posix.cc" ]
        }
      }
