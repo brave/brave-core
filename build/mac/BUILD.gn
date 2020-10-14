@@ -21,7 +21,6 @@ declare_args() {
 }
 
 target_sign_app_path = "$root_out_dir/$mac_signing_output_prefix/" + string_replace("$chrome_product_full_name", " ", "") + "-$chrome_version_full/$brave_exe"
-target_unsigned_app_path = "$root_out_dir/$chrome_product_full_name.app"
 
 if (!skip_signing) {
   packaging_dir = "$root_out_dir/" + string_replace("$chrome_product_full_name Packaging", " ", "_")
@@ -36,7 +35,7 @@ action("reverse_framework_version_symlink") {
 
   target_app_path = target_sign_app_path
   if (skip_signing) {
-    target_app_path = target_unsigned_app_path
+    target_app_path = "$root_out_dir/$chrome_product_full_name.app"
   }
   chrome_framework_name = chrome_product_full_name + " Framework"
 
@@ -55,7 +54,7 @@ action("build_delta_installer") {
 
   target_app_path = target_sign_app_path
   if (skip_signing) {
-    target_app_path = target_unsigned_app_path
+    target_app_path = "$root_out_dir/$chrome_product_full_name.app"
   }
 
   args = [
@@ -148,7 +147,7 @@ if (skip_signing) {
       script = "//third_party/widevine/scripts/signature_generator.py"
 
       chrome_framework_name = chrome_product_full_name + " Framework"
-      target_app_path = target_unsigned_app_path
+      target_app_path = "$root_out_dir/$chrome_product_full_name.app"
 
       brave_version_path = "$target_app_path/Contents/Frameworks/$chrome_framework_name.framework/Versions/$chrome_version_full"
       framework_file = "$brave_version_path/$chrome_framework_name"
