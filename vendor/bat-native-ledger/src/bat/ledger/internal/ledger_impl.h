@@ -351,6 +351,8 @@ class LedgerImpl : public ledger::Ledger {
 
   void GetEventLogs(ledger::GetEventLogsCallback callback) override;
 
+  void GetBraveWallet(GetBraveWalletCallback callback) override;
+
   // end ledger.h
 
   void OnAllDone(const type::Result result, ledger::ResultCallback callback);
