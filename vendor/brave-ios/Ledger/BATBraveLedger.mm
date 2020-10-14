@@ -1866,7 +1866,7 @@ BATLedgerBridge(BOOL,
 
 - (void)deleteLog:(ledger::ResultCallback)callback
 {
-  // TODO implement
+  callback(ledger::type::Result::LEDGER_OK);
 }
 
 - (bool)setEncryptedStringState:(const std::string&)key value:(const std::string&)value
