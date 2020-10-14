@@ -1,5 +1,5 @@
 diff --git a/chrome/android/java/src/org/chromium/chrome/browser/ChromeTabbedActivity.java b/chrome/android/java/src/org/chromium/chrome/browser/ChromeTabbedActivity.java
-index f065dec4047591e6e764a2fde92639992bb7c2b5..b107bab44e8033ac72195f632c84af05d14a0e6c 100644
+index 9cafb3fe5fa0fe0da154be0a9b3356e65e001606..ffeba32ce1ba6ce2afb88f6bb60a9a8d7de5363a 100644
 --- a/chrome/android/java/src/org/chromium/chrome/browser/ChromeTabbedActivity.java
 +++ b/chrome/android/java/src/org/chromium/chrome/browser/ChromeTabbedActivity.java
 @@ -184,7 +184,7 @@ import java.util.Locale;
@@ -29,7 +29,7 @@ index f065dec4047591e6e764a2fde92639992bb7c2b5..b107bab44e8033ac72195f632c84af05
                  mIntentWithEffectSupplier, getShareDelegateSupplier(), getActivityTabProvider(),
                  mEphemeralTabCoordinatorSupplier, mTabModelProfileSupplier, mBookmarkBridgeSupplier,
                  getOverviewModeBehaviorSupplier(), this::getContextualSearchManager,
-@@ -1573,7 +1573,7 @@ public class ChromeTabbedActivity extends ChromeActivity<ChromeActivityComponent
+@@ -1575,7 +1575,7 @@ public class ChromeTabbedActivity extends ChromeActivity<ChromeActivityComponent
  
      @Override
      public AppMenuPropertiesDelegate createAppMenuPropertiesDelegate() {
@@ -38,7 +38,7 @@ index f065dec4047591e6e764a2fde92639992bb7c2b5..b107bab44e8033ac72195f632c84af05
                  getMultiWindowModeStateDispatcher(), getTabModelSelector(), getToolbarManager(),
                  getWindow().getDecorView(), this, mOverviewModeBehaviorSupplier,
                  mBookmarkBridgeSupplier);
-@@ -1597,10 +1597,10 @@ public class ChromeTabbedActivity extends ChromeActivity<ChromeActivityComponent
+@@ -1599,10 +1599,10 @@ public class ChromeTabbedActivity extends ChromeActivity<ChromeActivityComponent
                  }
              };
          }
@@ -51,7 +51,7 @@ index f065dec4047591e6e764a2fde92639992bb7c2b5..b107bab44e8033ac72195f632c84af05
                          tabDelegateFactorySupplier, true, overviewNTPCreator,
                          AsyncTabParamsManagerSingleton.getInstance()));
      }
-@@ -1994,7 +1994,7 @@ public class ChromeTabbedActivity extends ChromeActivity<ChromeActivityComponent
+@@ -1996,7 +1996,7 @@ public class ChromeTabbedActivity extends ChromeActivity<ChromeActivityComponent
          }
      }
  
