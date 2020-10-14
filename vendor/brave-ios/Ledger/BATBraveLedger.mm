@@ -446,6 +446,14 @@ BATLedgerReadonlyBridge(BOOL, isWalletCreated, IsWalletCreated)
   });
 }
 
+- (void)currentWalletInfo:(void (^)(NSString *_Nullable paymentId, NSString *_Nullable seed))completion
+{
+  // TODO: Replace this in 1.16 by obtaining a BraveWallet from ledger
+  NSString *paymentID = self.prefs[@"wallet.payment_id"];
+  NSString *seed = self.prefs[@"wallet.seed"];
+  completion(paymentID, seed);
+}
+
 - (void)getRewardsParameters:(void (^)(BATRewardsParameters * _Nullable))completion
 {
   ledger->GetRewardsParameters(^(ledger::type::RewardsParametersPtr info) {

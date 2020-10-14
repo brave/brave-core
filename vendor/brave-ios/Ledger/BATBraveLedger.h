@@ -87,6 +87,9 @@ NS_SWIFT_NAME(BraveLedger)
 /// Creates a cryptocurrency wallet
 - (void)createWallet:(nullable void (^)(NSError * _Nullable error))completion;
 
+/// Get the brave wallet's payment ID and seed for ads confirmations
+- (void)currentWalletInfo:(void (^)(NSString *_Nullable paymentId, NSString *_Nullable seed))completion;
+
 /// Get parameters served from the server
 - (void)getRewardsParameters:(nullable void (^)(BATRewardsParameters * _Nullable))completion;
 
