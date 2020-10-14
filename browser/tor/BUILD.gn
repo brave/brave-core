@@ -1,10 +1,4 @@
-import("//build/buildflag_header.gni")
-import("buildflags/buildflags.gni")
-
-buildflag_header("buildflags") {
-  header = "buildflags.h"
-  flags = [ "ENABLE_TOR=$enable_tor" ]
-}
+import("//brave/components/tor/buildflags/buildflags.gni")
 
 source_set("tor") {
   # Remove when https://github.com/brave/brave-browser/issues/10655 is resolved
@@ -24,7 +18,9 @@ source_set("tor") {
     "//mojo/public/cpp/bindings",
   ]
 
-  public_deps = [ ":buildflags" ]
+  public_deps = [
+    "//brave/components/tor/buildflags",
+  ]
 
   if (enable_tor) {
     sources += [

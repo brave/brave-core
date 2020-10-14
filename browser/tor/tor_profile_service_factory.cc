@@ -9,8 +9,8 @@
 #include <set>
 
 #include "brave/browser/tor/tor_profile_service_impl.h"
-#include "brave/browser/tor/buildflags.h"
 #include "brave/common/tor/pref_names.h"
+#include "brave/components/tor/buildflags/buildflags.h"
 #include "chrome/browser/profiles/incognito_helpers.h"
 #include "chrome/browser/profiles/profile.h"
 #include "components/keyed_service/content/browser_context_dependency_manager.h"

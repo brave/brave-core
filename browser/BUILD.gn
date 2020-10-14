@@ -1,4 +1,3 @@
-import("//brave/browser/tor/buildflags/buildflags.gni")
 import("//brave/build/config.gni")
 import("//brave/components/binance/browser/buildflags/buildflags.gni")
 import("//brave/components/brave_ads/browser/buildflags/buildflags.gni")
@@ -16,6 +15,7 @@ import("//brave/components/greaselion/browser/buildflags/buildflags.gni")
 import("//brave/components/ipfs/buildflags/buildflags.gni")
 import("//brave/components/moonpay/browser/buildflags/buildflags.gni")
 import("//brave/components/speedreader/buildflags.gni")
+import("//brave/components/tor/buildflags/buildflags.gni")
 import("//build/buildflag_header.gni")
 import("//build/config/features.gni")
 import("//chrome/common/features.gni")
@@ -130,7 +130,6 @@ source_set("browser_process") {
     "//base",
     "//brave/browser/net",
     "//brave/browser/notifications",
-    "//brave/browser/tor:buildflags",
     "//brave/browser/translate/buildflags",
     "//brave/chromium_src:browser",
     "//brave/chromium_src:browser",
@@ -160,6 +159,7 @@ source_set("browser_process") {
     "//brave/components/p3a",
     "//brave/components/resources",
     "//brave/components/speedreader:buildflags",
+    "//brave/components/tor/buildflags",
     "//brave/components/weekly_storage",
     "//brave/services/network/public/cpp",
     "//chrome/common",

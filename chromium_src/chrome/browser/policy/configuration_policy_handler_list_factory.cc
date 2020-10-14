@@ -4,9 +4,9 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 #include "base/stl_util.h"
-#include "brave/browser/tor/buildflags.h"
 #include "brave/common/pref_names.h"
 #include "brave/common/tor/pref_names.h"
+#include "brave/components/tor/buildflags/buildflags.h"
 #include "chrome/browser/policy/configuration_policy_handler_list_factory.h"
 #include "components/policy/core/browser/configuration_policy_handler.h"
 #include "components/policy/policy_constants.h"

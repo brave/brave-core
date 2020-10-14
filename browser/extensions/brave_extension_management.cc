@@ -8,10 +8,10 @@
 #include <memory>
 
 #include "brave/browser/brave_browser_process_impl.h"
-#include "brave/browser/tor/buildflags.h"
+#include "brave/browser/extensions/brave_extension_provider.h"
 #include "brave/common/pref_names.h"
 #include "brave/common/tor/pref_names.h"
-#include "brave/browser/extensions/brave_extension_provider.h"
+#include "brave/components/tor/buildflags/buildflags.h"
 #include "chrome/browser/extensions/external_policy_loader.h"
 #include "chrome/browser/profiles/profile.h"
 #include "components/prefs/pref_service.h"

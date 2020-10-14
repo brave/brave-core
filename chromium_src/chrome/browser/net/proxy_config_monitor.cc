@@ -6,7 +6,7 @@
 #include <memory>
 
 #include "brave/browser/profiles/profile_util.h"
-#include "brave/browser/tor/buildflags.h"
+#include "brave/components/tor/buildflags/buildflags.h"
 
 #if BUILDFLAG(ENABLE_TOR)
 #include "net/proxy_resolution/proxy_config_service.h"

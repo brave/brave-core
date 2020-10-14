@@ -5,7 +5,6 @@
 
 #include "brave/browser/extensions/api/settings_private/brave_prefs_util.h"
 
-#include "brave/browser/tor/buildflags.h"
 #include "brave/common/pref_names.h"
 #include "brave/components/brave_rewards/common/pref_names.h"
 #include "brave/components/brave_wallet/buildflags/buildflags.h"
@@ -14,6 +13,7 @@
 #include "brave/components/ipfs/buildflags/buildflags.h"
 #include "brave/components/moonpay/browser/buildflags/buildflags.h"
 #include "brave/components/ntp_background_images/common/pref_names.h"
+#include "brave/components/tor/buildflags/buildflags.h"
 #include "chrome/browser/extensions/api/settings_private/prefs_util.h"
 #include "chrome/common/extensions/api/settings_private.h"
 #include "chrome/common/pref_names.h"
