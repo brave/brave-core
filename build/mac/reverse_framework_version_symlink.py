@@ -25,18 +25,18 @@ def Main(argv):
     print >> sys.stderr, parser.get_usage()
     return 1
 
-  CURRENT = 'Current'
-
-  full_current_path = os.path.join(options.version_directory, CURRENT)
-  full_versioned_path = os.path.join(options.version_directory, options.version)
+  os.chdir(options.version_directory)
 
   # If already reversed, just return.
-  if os.path.islink(full_versioned_path):
+  if os.path.islink(options.version):
     return 0
 
-  os.remove(full_current_path)
-  os.rename(full_versioned_path, full_current_path)
-  os.symlink(full_current_path, full_versioned_path)
+  CURRENT = 'Current'
+
+  os.remove(CURRENT)
+  os.rename(options.version, CURRENT)
+  # Create relative symlink
+  os.symlink(CURRENT, options.version)
 
   return 0
 
