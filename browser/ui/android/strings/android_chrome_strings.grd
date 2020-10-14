@@ -663,6 +663,13 @@ CHAR-LIMIT guidelines:
         Homepage changed
       </message>
 
+      <!-- Enhanced Protection Promo card -->
+      <message name="IDS_ENHANCED_PROTECTION_PROMO_TITLE" desc="The title displayed on homepage promo card, which guides the user to the chrome settings page to select the enhanced protection option.">
+        Get Brave’s strongest security
+      </message>
+      <message name="IDS_ENHANCED_PROTECTION_PROMO_DESCRIPTION" desc="The description displayed on enhanced protection promo card, which guides the user to the chrome settings page to select the enhanced protection option.">
+        Enhanced protection does more to block phishing and malware
+      </message>
 
       <!-- Notifications preferences -->
       <message name="IDS_PREFS_NOTIFICATIONS" desc="Title for Notification preferences.">
@@ -2364,7 +2371,7 @@ To change this setting, <ph name="BEGIN_LINK">&lt;resetlink&gt;</ph>reset sync<p
       <message name="IDS_DOWNLOAD_MANAGER_SEARCH" desc="Placeholder text for the input field that allows users to search downloads.">
         Search your downloads
       </message>
-      <message name="IDS_DOWNLOAD_MANAGER_LIST_ITEM_DESCRIPTION" desc="Text containing the download list item description.">
+      <message name="IDS_DOWNLOAD_MANAGER_LIST_ITEM_DESCRIPTION" desc="Text containing the download list item description. This is also used warn user that the current download location does not have enough space.">
         <ph name="FILE_SIZE">%1$s<ex>1.56 MB</ex></ph> <ph name="SEPARATOR">•</ph> <ph name="DESCRIPTION">%2$s<ex>www.example.com</ex></ph>
       </message>
       <message name="IDS_DOWNLOAD_MANAGER_LIST_ITEM_DESCRIPTION_NO_SIZE" desc="Text containing the download list item description.">

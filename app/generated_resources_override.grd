@@ -695,8 +695,6 @@ are declared in tools/grit/grit_rule.gni.
 
       <if expr="is_win">
         </if>
-      <if expr="not chromeos">
-        </if>
       <if expr="chromeos">
         </if>
 

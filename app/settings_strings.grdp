@@ -146,11 +146,11 @@
     Change
   </message>
   <message name="IDS_SETTINGS_WEB_STORE" desc="Sub-label about choosing something from the Web Store.">
-    Open web store
+    Open Web Store
   </message>
   <if expr="is_macosx">
     <message name="IDS_SETTINGS_TABS_TO_LINKS_PREF" desc="The documentation string of the 'Tabs to Links' preference">
-      Pressing tab on a webpage highlights links, as well as form fields
+      Pressing Tab on a webpage highlights links, as well as form fields
     </message>
     <message name="IDS_SETTINGS_WARN_BEFORE_QUITTING_PREF" desc="The documentation string of the 'Warn Before Quitting' preference which is also available in the Brave app menu.">
       Show warning before quitting with ⌘Q
@@ -358,6 +358,9 @@
       =0 {No security issues found}
       =1 {Found {COUNT} security issue}
       other {Found {COUNT} security issues}}
+  </message>
+  <message name="IDS_SETTINGS_NO_WEAK_PASSWORDS_FOUND" desc="Description used only when user is signed out and full password check was not completed and no weak passwords found afther the password weakness check.">
+    No weak passwords found
   </message>
   <message name="IDS_SETTINGS_CHECK_PASSWORDS_AGAIN" desc="Button to start bulk password check manually in passwords check section.">
     Check again
