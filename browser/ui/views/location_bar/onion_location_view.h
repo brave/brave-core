@@ -6,9 +6,9 @@
 #ifndef BRAVE_BROWSER_UI_VIEWS_LOCATION_BAR_ONION_LOCATION_VIEW_H_
 #define BRAVE_BROWSER_UI_VIEWS_LOCATION_BAR_ONION_LOCATION_VIEW_H_
 
+#include "ui/gfx/geometry/size.h"
 #include "ui/views/controls/button/label_button.h"
 #include "ui/views/controls/button/label_button_border.h"
-#include "ui/gfx/geometry/size.h"
 
 class Profile;
 
@@ -23,8 +23,10 @@ class OnionLocationView : public views::View {
 
   void Update(content::WebContents* web_contents);
 
+  views::LabelButton* GetButton() { return button_; }
+
  private:
-  View* button_ = nullptr;
+  views::LabelButton* button_ = nullptr;
 
   OnionLocationView(const OnionLocationView&) = delete;
   OnionLocationView& operator=(const OnionLocationView&) = delete;

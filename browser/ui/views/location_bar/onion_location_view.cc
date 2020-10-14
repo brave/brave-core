@@ -20,8 +20,8 @@
 #include "chrome/browser/ui/views/toolbar/toolbar_ink_drop_util.h"
 #include "components/grit/brave_components_resources.h"
 #include "ui/base/l10n/l10n_util.h"
-#include "ui/base/resource/resource_bundle.h"
 #include "ui/base/models/image_model.h"
+#include "ui/base/resource/resource_bundle.h"
 #include "ui/gfx/color_palette.h"
 #include "ui/gfx/geometry/size.h"
 #include "ui/gfx/image/image_skia.h"
@@ -59,8 +59,7 @@ void OnTorProfileCreated(GURL onion_location,
 
 // Sets the focus and ink drop highlight path to match the background
 // along with it's corner radius.
-class HighlightPathGenerator
-    : public views::HighlightPathGenerator {
+class HighlightPathGenerator : public views::HighlightPathGenerator {
  public:
   HighlightPathGenerator() = default;
 
@@ -77,18 +76,18 @@ class HighlightPathGenerator
 };
 
 class OnionLocationButtonView : public views::LabelButton,
-                              public views::ButtonListener {
+                                public views::ButtonListener {
  public:
   explicit OnionLocationButtonView(Profile* profile)
       : LabelButton(this,
-              l10n_util::GetStringUTF16(IDS_LOCATION_BAR_OPEN_IN_TOR)) {
+                    l10n_util::GetStringUTF16(IDS_LOCATION_BAR_OPEN_IN_TOR)) {
     if (brave::IsTorProfile(profile))
       SetText(l10n_util::GetStringUTF16(IDS_LOCATION_BAR_ONION_AVAILABLE));
     // Render vector icon
-    const gfx::ImageSkia image = gfx::CreateVectorIcon(
-        kOpenInTorIcon, kIconSize, kIconColor);
+    const gfx::ImageSkia image =
+        gfx::CreateVectorIcon(kOpenInTorIcon, kIconSize, kIconColor);
     SetImageModel(views::Button::STATE_NORMAL,
-        ui::ImageModel::FromImageSkia(image));
+                  ui::ImageModel::FromImageSkia(image));
     // Set style specifics
     SetEnabledTextColors(kTextColor);
     SetHorizontalAlignment(gfx::ALIGN_RIGHT);
@@ -104,7 +103,7 @@ class OnionLocationButtonView : public views::LabelButton,
         this, std::make_unique<HighlightPathGenerator>());
   }
 
-  ~OnionLocationButtonView() override { }
+  ~OnionLocationButtonView() override {}
 
   // views::ButtonListener
   void ButtonPressed(Button* sender, const ui::Event& event) override {
@@ -112,9 +111,7 @@ class OnionLocationButtonView : public views::LabelButton,
         base::BindRepeating(&OnTorProfileCreated, GURL(onion_location_)));
   }
 
-  void SetOnionLocation(GURL location) {
-    onion_location_ = location;
-  }
+  void SetOnionLocation(GURL location) { onion_location_ = location; }
 
  private:
   // views::View
@@ -125,7 +122,7 @@ class OnionLocationButtonView : public views::LabelButton,
 
   void UpdateBorder() {
     SetBackground(
-      views::CreateRoundedRectBackground(kOpenInTorBg, height() / 2));
+        views::CreateRoundedRectBackground(kOpenInTorBg, height() / 2));
   }
 
   GURL onion_location_;
@@ -138,7 +135,6 @@ class OnionLocationButtonView : public views::LabelButton,
 
 OnionLocationView::OnionLocationView(Profile* profile) {
   SetBorder(views::CreateEmptyBorder(gfx::Insets(3, 3)));
-      // GetLayoutInsets(LOCATION_BAR_ICON_INTERIOR_PADDING)));
   SetVisible(false);
   // automatic layout
   auto vertical_container_layout = std::make_unique<views::BoxLayout>(

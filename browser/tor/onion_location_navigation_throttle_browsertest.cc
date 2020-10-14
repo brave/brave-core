@@ -66,10 +66,10 @@ class OnionLocationNavigationThrottleBrowserTest : public InProcessBrowserTest {
     BraveLocationBarView* brave_location_bar_view =
         static_cast<BraveLocationBarView*>(browser_view->GetLocationBarView());
     ASSERT_NE(brave_location_bar_view, nullptr);
-    OnionLocationView* onion_label =
-        brave_location_bar_view->GetOnionLocationView();
-    EXPECT_TRUE(onion_label->GetVisible());
-    EXPECT_EQ(onion_label->GetText(),
+    views::LabelButton* onion_button =
+        brave_location_bar_view->GetOnionLocationView()->GetButton();
+    EXPECT_TRUE(onion_button->GetVisible());
+    EXPECT_EQ(onion_button->GetText(),
               l10n_util::GetStringUTF16((IDS_LOCATION_BAR_OPEN_IN_TOR)));
   }
 
