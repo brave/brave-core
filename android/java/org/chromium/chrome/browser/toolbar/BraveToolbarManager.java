@@ -5,7 +5,6 @@
 
 package org.chromium.chrome.browser.toolbar;
 
-import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -15,7 +14,6 @@ import androidx.annotation.Nullable;
 
 import org.chromium.base.ApiCompatibilityUtils;
 import org.chromium.base.Callback;
-import org.chromium.base.ContextUtils;
 import org.chromium.base.supplier.ObservableSupplier;
 import org.chromium.base.supplier.OneshotSupplier;
 import org.chromium.base.supplier.Supplier;
@@ -41,6 +39,7 @@ import org.chromium.chrome.browser.toolbar.bottom.BottomTabSwitcherActionMenuCoo
 import org.chromium.chrome.browser.toolbar.bottom.BottomToolbarConfiguration;
 import org.chromium.chrome.browser.toolbar.bottom.BottomToolbarVariationManager;
 import org.chromium.chrome.browser.toolbar.bottom.BraveBottomControlsCoordinator;
+import org.chromium.chrome.browser.toolbar.menu_button.BraveMenuButtonCoordinator;
 import org.chromium.chrome.browser.toolbar.menu_button.MenuButtonCoordinator;
 import org.chromium.chrome.browser.toolbar.top.ActionModeController;
 import org.chromium.chrome.browser.toolbar.top.BraveTopToolbarCoordinator;
@@ -54,9 +53,6 @@ import org.chromium.components.browser_ui.widget.scrim.ScrimCoordinator;
 import java.util.List;
 
 public class BraveToolbarManager extends ToolbarManager {
-    private static final String BRAVE_BOTTOM_TOOLBAR_CURRENTLY_VISIBLE =
-            "brave_bottom_toolbar_currently_visible";
-
     private BottomControlsCoordinator mBottomControlsCoordinator;
     private BrowserControlsSizer mBrowserControlsSizer;
     private FullscreenManager mFullscreenManager;
@@ -189,14 +185,13 @@ public class BraveToolbarManager extends ToolbarManager {
 
     private void setBottomToolbarVisible(boolean visible) {
         mIsBottomToolbarVisible = visible;
+        Boolean isMenuFromBottom =
+                mIsBottomToolbarVisible && BottomToolbarConfiguration.isBottomToolbarEnabled();
+        BraveMenuButtonCoordinator.setMenuFromBottom(isMenuFromBottom);
         if (mToolbar instanceof BraveTopToolbarCoordinator) {
             ((BraveTopToolbarCoordinator) mToolbar).onBottomToolbarVisibilityChanged(visible);
         }
         mBottomControlsCoordinator.setBottomControlsVisible(visible);
-        SharedPreferences prefs = ContextUtils.getAppSharedPreferences();
-        Boolean isMenuFromBottom =
-                mIsBottomToolbarVisible && BottomToolbarConfiguration.isBottomToolbarEnabled();
-        prefs.edit().putBoolean(BRAVE_BOTTOM_TOOLBAR_CURRENTLY_VISIBLE, isMenuFromBottom).apply();
     }
 
     public boolean isBottomToolbarVisible() {

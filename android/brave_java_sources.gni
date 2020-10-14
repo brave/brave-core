@@ -169,6 +169,7 @@ brave_java_sources = [
   "../../brave/android/java/org/chromium/chrome/browser/toolbar/bottom/TabSwitcherBottomToolbarMediator.java",
   "../../brave/android/java/org/chromium/chrome/browser/toolbar/bottom/TabSwitcherBottomToolbarModel.java",
   "../../brave/android/java/org/chromium/chrome/browser/toolbar/bottom/TabSwitcherBottomToolbarViewBinder.java",
+  "../../brave/android/java/org/chromium/chrome/browser/toolbar/menu_button/BraveMenuButtonCoordinator.java",
   "../../brave/android/java/org/chromium/chrome/browser/toolbar/top/BraveTabSwitcherModeTTCoordinatorPhone.java",
   "../../brave/android/java/org/chromium/chrome/browser/toolbar/top/BraveTabSwitcherModeTTPhone.java",
   "../../brave/android/java/org/chromium/chrome/browser/toolbar/top/BraveToolbarLayout.java",
