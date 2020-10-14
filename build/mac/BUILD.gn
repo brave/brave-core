@@ -67,6 +67,7 @@ action("build_delta_installer") {
 
   inputs = [
     script,
+    "$root_out_dir/$brave_exe",
     "$root_out_dir/BinaryDelta",
     "$root_out_dir/sign_update",
   ]
@@ -78,6 +79,7 @@ action("build_delta_installer") {
   deps = [
     ":reverse_framework_version_symlink",
     "//brave/vendor/sparkle:build_sparkle_framework",
+    "//chrome:chrome_app",
   ]
 }
 
@@ -134,6 +136,7 @@ if (skip_signing) {
 
     deps = [
       ":reverse_framework_version_symlink",
+      "//chrome:chrome_app",
       "//chrome/installer/mac"
     ]
 
@@ -178,7 +181,10 @@ if (skip_signing) {
         getenv("SIGN_WIDEVINE_PASSPHRASE"),
       ]
 
-      deps = [ ":reverse_framework_version_symlink" ]
+      deps = [
+        ":reverse_framework_version_symlink",
+        "//chrome:chrome_app",
+      ]
     }
   }
 } else {
@@ -188,6 +194,7 @@ if (skip_signing) {
 
     deps = [
       ":reverse_framework_version_symlink",
+      "//chrome:chrome_app",
       "//chrome/installer/mac",
       ":copies",
     ]
