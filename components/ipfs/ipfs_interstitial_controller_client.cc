@@ -8,6 +8,7 @@
 #include "brave/components/ipfs/ipfs_utils.h"
 #include "brave/components/ipfs/pref_names.h"
 #include "components/prefs/pref_service.h"
+#include "components/security_interstitials/content/settings_page_helper.h"
 #include "components/security_interstitials/core/metrics_helper.h"
 #include "content/public/browser/page_navigator.h"
 #include "content/public/browser/web_contents.h"
@@ -37,7 +38,8 @@ IPFSInterstitialControllerClient::IPFSInterstitialControllerClient(
           GetMetricsHelper(request_url),
           prefs,
           locale,
-          GURL("about:blank") /* default_safe_page */),
+          GURL("about:blank") /* default_safe_page */,
+          nullptr /* settings_page_helper */),
       request_url_(request_url) {}
 
 void IPFSInterstitialControllerClient::Proceed() {
