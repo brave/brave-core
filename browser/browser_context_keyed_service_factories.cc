@@ -15,7 +15,7 @@
 #include "brave/browser/brave_rewards/rewards_service_factory.h"
 #include "brave/components/greaselion/browser/buildflags/buildflags.h"
 #include "brave/browser/ntp_background_images/view_counter_service_factory.h"
-#include "brave/components/brave_wallet/browser/buildflags/buildflags.h"
+#include "brave/components/brave_wallet/buildflags/buildflags.h"
 
 #if BUILDFLAG(ENABLE_GREASELION)
 #include "brave/browser/greaselion/greaselion_service_factory.h"

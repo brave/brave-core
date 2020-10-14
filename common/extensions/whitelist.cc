@@ -6,12 +6,8 @@
 #include "brave/common/extensions/whitelist.h"
 
 #include "brave/components/brave_component_updater/browser/local_data_files_service.h"
-#include "brave/components/brave_wallet/browser/buildflags/buildflags.h"
+#include "brave/components/brave_wallet/buildflags/buildflags.h"
 #include "extensions/common/constants.h"
-
-#if BUILDFLAG(BRAVE_WALLET_ENABLED)
-#include "brave/components/brave_wallet/common/brave_wallet_constants.h"
-#endif
 
 // This is a hardcoded list of vetted extensions, mostly
 // the built-in ones that ship with Brave or are used for
@@ -23,12 +19,11 @@ const std::vector<std::string> kVettedExtensions{
     brave_rewards_extension_id,
     brave_webtorrent_extension_id,
     crl_set_extension_id,
-#if BUILDFLAG(BRAVE_WALLET_ENABLED)
-    ethereum_remote_client_extension_id,
-#endif
     hangouts_extension_id,
     widevine_extension_id,
     brave_component_updater::kLocalDataFilesComponentId,
+    // Ethereum remote client
+    "odbfpeeihdkbihmopkbjmoonfanlbfcl",
     // Web Store
     "ahfgeienlihckogmohjhadlkjgocpleb",
     // Brave Automation Extension
