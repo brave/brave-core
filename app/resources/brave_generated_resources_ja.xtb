@@ -3,7 +3,7 @@
 <translationbundle lang="ja">
 <translation id="3333887201479867589">Brave Rewards</translation>
 <translation id="7942180974165298215">Brave Ad Block</translation>
-<translation id="4615489450165434530">壊れたサイトを報告</translation>
+<translation id="4615489450165434530">サイト表示の不具合を報告</translation>
 <translation id="6406506848690869874">同期</translation>
 <translation id="5655621391922317800">仮想通貨ウォレット</translation>
 <translation id="2445484935443597917">新しいプロフィールを作成</translation>
@@ -39,13 +39,13 @@
 <translation id="264150068416846820">Braveの推奨サイトをオートコンプリートで表示</translation>
 <translation id="6414370348346025511">標準保護がオンになっています。</translation>
 <translation id="814018970995616154">Braveに保存された安全でないサイトのリストを使ってURLをチェックします。</translation>
-<translation id="1144810021918451336">危険なウェブサイト、ダウンロード、拡張機能からユーザーを保護しません。</translation>
+<translation id="1144810021918451336">危険なウェブサイト、ダウンロード、拡張機能からの保護を無効にする</translation>
 <translation id="7781069478569868053">新しいタブページ</translation>
 <translation id="2467749191278759605">Braveダッシュボードをカスタマイズする</translation>
 <translation id="1717331825806276156">背景画像</translation>
 <translation id="1820041496463124489">スポンサー画像</translation>
 <translation id="8173998484743827990">Brave統計データ</translation>
-<translation id="5551238871320268996">ブレイブ・トゥギャザー</translation>
+<translation id="5551238871320268996">Brave Together</translation>
 <translation id="6966052266404721769">バイナンス</translation>
 <translation id="8533411848724153701">Gemini</translation>
 <translation id="4643117005422448078">トップサイト</translation>
@@ -165,7 +165,7 @@
 <translation id="6222323340194834282">ブラウザのIPFSサポートを強化するために、IPFSコンパニオン拡張機能を使用します。</translation>
 <translation id="8137559199583651773">拡張機能を管理</translation>
 <translation id="7013485839273047434">機能拡張をさらに取得</translation>
-<translation id="4928988318462976765">ウェブ拡張ストア</translation>
+<translation id="4928988318462976765">ウェブ拡張機能ストア</translation>
 <translation id="9181207987584064303">ウェブ拡張ストアを見る</translation>
 <translation id="4846154056248462491">終了時に</translation>
 <translation id="5057399635433117814">このページを翻訳しますか？このページのテキストはマイクロソフトに送られて翻訳されます。</translation>
@@ -229,14 +229,14 @@
 <translation id="2609895996619941644">ウェイバックマシンで保存されたバージョンが利用可能か確認しますか？</translation>
 <translation id="8053093028263274061">申し訳ございません、利用可能な保存されたバージョンはありません。</translation>
 <translation id="8517321676372639828">保存されたバージョンをチェックする</translation>
-<translation id="191143826155037518">Braveは、<ph name="BEGIN_LINK_MPL"/>Mozilla Public License 2.0<ph name="END_LINK_MPL"/> (MPL) に基づき利用可能となっており、そこには他のさまざまなライセンスに基づく<ph name="BEGIN_LINK_OSS"/>オープンソース・ソフトウェア<ph name="END_LINK_OSS"/>が含まれています。
+<translation id="191143826155037518">Braveは、<ph name="BEGIN_LINK_MPL"/>Mozilla Public License 2.0<ph name="END_LINK_MPL"/> (MPL) に基づき利用可能となっており、他のさまざまなライセンスに基づく<ph name="BEGIN_LINK_OSS"/>オープンソース・ソフトウェア<ph name="END_LINK_OSS"/>が含まれています。
 <ph name="BEGIN_LINK_SOURCE_CODE"/>このコピーの作成に使われた特定のソースコード<ph name="END_LINK_SOURCE_CODE"/>を<ph name="BEGIN_LINK_BUILD_INSTRUCTIONS"/>ダウンロードして、自分で構築する方法についてはドキュメント<ph name="END_LINK_BUILD_INSTRUCTIONS"/>をお読みください。</translation>
 <translation id="4474155171896946103">すべてのタブをブックマークに追加...</translation>
 <translation id="2336228925368920074">すべてのタブをブックマークに追加...</translation>
 <translation id="796831669370432378">ブックマークを追加するには、アドレスバーの横にあるブックマークボタンをクリックしてください</translation>
 <translation id="4989337484121655457">フルディスクアクセスが必要です</translation>
 <translation id="5501596373144334003">Braveは、Safariからブックマークや履歴をインポートするために、フルディスクアクセスが必要です。</translation>
-<translation id="8515328844674404333">システム環境設定からフルディスクアクセスを許可する方法を説明します。</translation>
+<translation id="8515328844674404333">システム環境設定からフルディスクアクセスを許可する方法についてご確認ください</translation>
 <translation id="6414878884710400018">システム環境設定を開く</translation>
 <translation id="5570470519803062774">サイトとシールドの設定</translation>
 <translation id="8487693399751278191">今すぐブックマークをインポート...</translation>
