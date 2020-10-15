@@ -3,8 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#ifndef BRAVE_BROWSER_TOR_TOR_CONTROL_H_
-#define BRAVE_BROWSER_TOR_TOR_CONTROL_H_
+#ifndef BRAVE_COMPONENTS_TOR_TOR_CONTROL_H_
+#define BRAVE_COMPONENTS_TOR_TOR_CONTROL_H_
 
 #include <map>
 #include <memory>
@@ -13,7 +13,7 @@
 #include <utility>
 #include <vector>
 
-#include "brave/common/tor/tor_control_event.h"
+#include "brave/components/tor/tor_control_event.h"
 
 #include "base/callback.h"
 #include "base/files/file_path.h"
@@ -241,4 +241,4 @@ class TorControl {
 
 }  // namespace tor
 
-#endif  // BRAVE_BROWSER_TOR_TOR_CONTROL_H_
+#endif  // BRAVE_COMPONENTS_TOR_TOR_CONTROL_H_

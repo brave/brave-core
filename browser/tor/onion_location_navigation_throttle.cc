@@ -11,8 +11,8 @@
 #include "base/bind.h"
 #include "brave/browser/profiles/profile_util.h"
 #include "brave/browser/tor/onion_location_tab_helper.h"
-#include "brave/browser/tor/tor_profile_service.h"
-#include "brave/common/tor/pref_names.h"
+#include "brave/browser/tor/tor_profile_service_factory.h"
+#include "brave/components/tor/pref_names.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/profiles/profile_window.h"
 #include "chrome/browser/ui/browser.h"
@@ -56,7 +56,7 @@ void OnTorProfileCreated(GURL onion_location,
 std::unique_ptr<OnionLocationNavigationThrottle>
 OnionLocationNavigationThrottle::MaybeCreateThrottleFor(
     content::NavigationHandle* navigation_handle) {
-  if (tor::TorProfileService::IsTorDisabled() ||
+  if (TorProfileServiceFactory::IsTorDisabled() ||
       !navigation_handle->IsInMainFrame())
     return nullptr;
   return std::make_unique<OnionLocationNavigationThrottle>(navigation_handle);

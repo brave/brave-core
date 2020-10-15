@@ -3,22 +3,19 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#include "brave/browser/tor/tor_profile_service_impl.h"
+#include "brave/components/tor/tor_profile_service_impl.h"
 
 #include <memory>
 #include <string>
 #include <utility>
 
 #include "base/bind.h"
-#include "base/path_service.h"
 #include "base/task/post_task.h"
-#include "brave/browser/brave_browser_process_impl.h"
-#include "brave/browser/tor/tor_launcher_service_observer.h"
-#include "brave/common/tor/pref_names.h"
-#include "brave/common/tor/tor_constants.h"
+#include "brave/components/tor/pref_names.h"
+#include "brave/components/tor/tor_constants.h"
+#include "brave/components/tor/tor_launcher_service_observer.h"
 #include "brave/net/proxy_resolution/proxy_config_service_tor.h"
-#include "chrome/browser/profiles/profile.h"
-#include "chrome/common/chrome_paths.h"
+#include "content/public/browser/browser_context.h"
 #include "content/public/browser/browser_task_traits.h"
 #include "content/public/browser/browser_thread.h"
 #include "content/public/browser/navigation_controller.h"
@@ -116,20 +113,19 @@ void OnNewTorCircuit(std::unique_ptr<NewTorCircuitTracker> tracker,
 
 }  // namespace
 
-TorProfileServiceImpl::TorProfileServiceImpl(Profile* profile)
-    : profile_(profile),
+TorProfileServiceImpl::TorProfileServiceImpl(
+    content::BrowserContext* context,
+    BraveTorClientUpdater* tor_client_updater,
+    const base::FilePath& user_data_dir)
+    : context_(context),
+      tor_client_updater_(tor_client_updater),
+      user_data_dir_(user_data_dir),
       tor_launcher_factory_(nullptr),
       weak_ptr_factory_(this) {
-  // Return early since g_brave_browser_process and tor_client_updater are not
-  // available in unit tests.
-  if (profile_->AsTestingProfile()) {
-    return;
-  }
-
-  tor_launcher_factory_ = TorLauncherFactory::GetInstance();
-  tor_launcher_factory_->AddObserver(this);
-  if (g_brave_browser_process) {
-    g_brave_browser_process->tor_client_updater()->AddObserver(this);
+  if (tor_client_updater_) {
+    tor_client_updater_->AddObserver(this);
+    tor_launcher_factory_ = TorLauncherFactory::GetInstance();
+    tor_launcher_factory_->AddObserver(this);
   }
 }
 
@@ -137,8 +133,8 @@ TorProfileServiceImpl::~TorProfileServiceImpl() {
   if (tor_launcher_factory_)
     tor_launcher_factory_->RemoveObserver(this);
 
-  if (g_brave_browser_process) {
-    g_brave_browser_process->tor_client_updater()->RemoveObserver(this);
+  if (tor_client_updater_) {
+    tor_client_updater_->RemoveObserver(this);
   }
 }
 
@@ -156,19 +152,34 @@ void TorProfileServiceImpl::LaunchTor() {
                                GetTorWatchPath());
   tor_launcher_factory_->LaunchTorProcess(config);
 }
+
+base::FilePath TorProfileServiceImpl::GetTorExecutablePath() {
+  return tor_client_updater_ ? tor_client_updater_->GetExecutablePath()
+                             : base::FilePath();
+}
+
 base::FilePath TorProfileServiceImpl::GetTorDataPath() {
-  base::FilePath user_data_dir;
-  base::PathService::Get(chrome::DIR_USER_DATA, &user_data_dir);
-  DCHECK(!user_data_dir.empty());
-  return user_data_dir.Append(FILE_PATH_LITERAL("tor"))
+  DCHECK(!user_data_dir_.empty());
+  return user_data_dir_.Append(FILE_PATH_LITERAL("tor"))
       .Append(FILE_PATH_LITERAL("data"));
 }
+
 base::FilePath TorProfileServiceImpl::GetTorWatchPath() {
-  base::FilePath user_data_dir;
-  base::PathService::Get(chrome::DIR_USER_DATA, &user_data_dir);
-  DCHECK(!user_data_dir.empty());
-  return user_data_dir.Append(FILE_PATH_LITERAL("tor"))
+  DCHECK(!user_data_dir_.empty());
+  return user_data_dir_.Append(FILE_PATH_LITERAL("tor"))
       .Append(FILE_PATH_LITERAL("watch"));
+}
+
+void TorProfileServiceImpl::RegisterTorClientUpdater() {
+  if (tor_client_updater_) {
+    tor_client_updater_->Register();
+  }
+}
+
+void TorProfileServiceImpl::UnregisterTorClientUpdater() {
+  if (tor_client_updater_) {
+    tor_client_updater_->Unregister();
+  }
 }
 
 void TorProfileServiceImpl::SetNewTorCircuit(WebContents* tab) {
@@ -185,10 +196,10 @@ void TorProfileServiceImpl::SetNewTorCircuit(WebContents* tab) {
   // Force lookup to erase the old circuit and also get a callback
   // so we know when it is safe to reload the tab
   auto* storage_partition =
-      BrowserContext::GetStoragePartitionForSite(profile_, url, false);
+      BrowserContext::GetStoragePartitionForSite(context_, url, false);
   if (!storage_partition) {
     storage_partition =
-        content::BrowserContext::GetDefaultStoragePartition(profile_);
+        content::BrowserContext::GetDefaultStoragePartition(context_);
   }
   auto proxy_lookup_client =
       TorProxyLookupClient::CreateTorProxyLookupClient(std::move(callback));

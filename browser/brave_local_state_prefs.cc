@@ -28,7 +28,7 @@
 #endif
 
 #if BUILDFLAG(ENABLE_TOR)
-#include "brave/browser/tor/tor_profile_service.h"
+#include "brave/components/tor/tor_profile_service.h"
 #endif
 
 #if !defined(OS_ANDROID)

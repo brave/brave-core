@@ -9,7 +9,7 @@
 #include <memory>
 
 #include "base/gtest_prod_util.h"
-#include "brave/browser/tor/tor_launcher_service_observer.h"
+#include "brave/components/tor/tor_launcher_service_observer.h"
 #include "content/public/browser/navigation_throttle.h"
 
 namespace content {

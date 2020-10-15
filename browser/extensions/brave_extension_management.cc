@@ -10,8 +10,9 @@
 #include "brave/browser/brave_browser_process_impl.h"
 #include "brave/browser/extensions/brave_extension_provider.h"
 #include "brave/common/pref_names.h"
-#include "brave/common/tor/pref_names.h"
+#include "brave/browser/tor/tor_profile_service_factory.h"
 #include "brave/components/tor/buildflags/buildflags.h"
+#include "brave/components/tor/pref_names.h"
 #include "chrome/browser/extensions/external_policy_loader.h"
 #include "chrome/browser/profiles/profile.h"
 #include "components/prefs/pref_service.h"
@@ -22,7 +23,6 @@
 
 #if BUILDFLAG(ENABLE_TOR)
 #include "brave/browser/extensions/brave_tor_client_updater.h"
-#include "brave/browser/tor/tor_profile_service.h"
 #endif
 
 namespace extensions {
@@ -65,7 +65,7 @@ void BraveExtensionManagement::OnExtensionUnloaded(
 
 void BraveExtensionManagement::OnTorDisabledChanged() {
 #if BUILDFLAG(ENABLE_TOR)
-  if (tor::TorProfileService::IsTorDisabled())
+  if (TorProfileServiceFactory::IsTorDisabled())
     g_brave_browser_process->tor_client_updater()->Cleanup();
 #endif
 }

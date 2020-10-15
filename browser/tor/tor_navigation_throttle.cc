@@ -8,8 +8,8 @@
 #include <utility>
 
 #include "brave/browser/profiles/profile_util.h"
-#include "brave/browser/tor/tor_profile_service.h"
 #include "brave/browser/tor/tor_profile_service_factory.h"
+#include "brave/components/tor/tor_profile_service.h"
 #include "chrome/browser/profiles/profile.h"
 #include "content/public/browser/navigation_handle.h"
 #include "content/public/browser/web_contents.h"

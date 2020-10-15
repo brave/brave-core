@@ -38,7 +38,7 @@
 #include "content/public/test/test_utils.h"
 
 #if BUILDFLAG(ENABLE_TOR)
-#include "brave/browser/tor/tor_launcher_factory.h"
+#include "brave/components/tor/tor_launcher_factory.h"
 #endif
 
 #if BUILDFLAG(ENABLE_EXTENSIONS)

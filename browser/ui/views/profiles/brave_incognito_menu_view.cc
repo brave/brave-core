@@ -10,6 +10,7 @@
 
 #include "brave/browser/brave_browser_process_impl.h"
 #include "brave/browser/profiles/profile_util.h"
+#include "brave/browser/tor/tor_profile_service_factory.h"
 #include "brave/components/tor/buildflags/buildflags.h"
 #include "brave/grit/brave_generated_resources.h"
 #include "chrome/app/vector_icons/vector_icons.h"
@@ -26,7 +27,6 @@
 
 #if BUILDFLAG(ENABLE_TOR)
 #include "brave/browser/extensions/brave_tor_client_updater.h"
-#include "brave/browser/tor/tor_profile_service.h"
 #endif
 
 namespace {
@@ -34,7 +34,7 @@ namespace {
 bool ShouldShowTorProfileButton(Profile* profile) {
   DCHECK(profile);
 #if BUILDFLAG(ENABLE_TOR)
-  return !tor::TorProfileService::IsTorDisabled() &&
+  return !TorProfileServiceFactory::IsTorDisabled() &&
          !brave::IsTorProfile(profile) &&
          !g_brave_browser_process->tor_client_updater()
               ->GetExecutablePath()

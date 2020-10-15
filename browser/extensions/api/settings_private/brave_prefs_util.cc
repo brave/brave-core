@@ -42,7 +42,7 @@
 #endif
 
 #if BUILDFLAG(ENABLE_TOR)
-#include "brave/common/tor/pref_names.h"
+#include "brave/components/tor/pref_names.h"
 #endif
 
 namespace extensions {

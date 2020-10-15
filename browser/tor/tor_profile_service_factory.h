@@ -22,6 +22,9 @@ class TorProfileServiceFactory : public BrowserContextKeyedServiceFactory {
   static tor::TorProfileService* GetForProfile(Profile* profile);
   static TorProfileServiceFactory* GetInstance();
 
+  static void SetTorDisabled(bool disabled);
+  static bool IsTorDisabled();
+
  private:
   friend struct base::DefaultSingletonTraits<TorProfileServiceFactory>;
 

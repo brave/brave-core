@@ -28,7 +28,7 @@
 
 #if BUILDFLAG(ENABLE_TOR)
 #include "brave/browser/extensions/brave_tor_client_updater.h"
-#include "brave/browser/tor/tor_launcher_factory.h"
+#include "brave/components/tor/tor_launcher_factory.h"
 #endif
 
 class SearchEngineProviderServiceTest : public InProcessBrowserTest {

@@ -1,10 +1,10 @@
-/* Copyright (c) 2019 The Brave Authors. All rights reserved.
+/* Copyright (c) 2020 The Brave Authors. All rights reserved.
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#ifndef BRAVE_BROWSER_TOR_TOR_PROFILE_SERVICE_H_
-#define BRAVE_BROWSER_TOR_TOR_PROFILE_SERVICE_H_
+#ifndef BRAVE_COMPONENTS_TOR_TOR_PROFILE_SERVICE_H_
+#define BRAVE_COMPONENTS_TOR_TOR_PROFILE_SERVICE_H_
 
 #include <memory>
 #include <string>
@@ -12,7 +12,6 @@
 #include "base/macros.h"
 #include "base/observer_list.h"
 #include "components/keyed_service/core/keyed_service.h"
-#include "url/gurl.h"
 
 namespace base {
 class FilePath;
@@ -31,7 +30,6 @@ class PrefRegistrySyncable;
 }
 
 class PrefRegistrySimple;
-class BraveAppMenuBrowserTestWithTorDisabled;
 
 namespace tor {
 
@@ -44,11 +42,9 @@ class TorProfileService : public KeyedService {
 
   static void RegisterLocalStatePrefs(PrefRegistrySimple* registry);
   static void RegisterPrefs(PrefRegistrySimple* registry);
-  static void SetTorDisabled(bool disabled);
-  static bool IsTorDisabled();
-  static void RegisterTorClientUpdater();
-  static void UnregisterTorClientUpdater();
 
+  virtual void RegisterTorClientUpdater() = 0;
+  virtual void UnregisterTorClientUpdater() = 0;
   virtual void SetNewTorCircuit(content::WebContents* web_contents) = 0;
   virtual std::unique_ptr<net::ProxyConfigService>
       CreateProxyConfigService() = 0;
@@ -58,7 +54,6 @@ class TorProfileService : public KeyedService {
   void RemoveObserver(TorLauncherServiceObserver* observer);
 
  protected:
-  base::FilePath GetTorExecutablePath();
   base::ObserverList<TorLauncherServiceObserver> observers_;
 
  private:
@@ -67,4 +62,4 @@ class TorProfileService : public KeyedService {
 
 }  // namespace tor
 
-#endif  // BRAVE_BROWSER_TOR_TOR_PROFILE_SERVICE_H_
+#endif  // BRAVE_COMPONENTS_TOR_TOR_PROFILE_SERVICE_H_

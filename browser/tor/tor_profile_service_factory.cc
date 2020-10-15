@@ -8,16 +8,19 @@
 #include <memory>
 #include <set>
 
-#include "brave/browser/tor/tor_profile_service_impl.h"
-#include "brave/common/tor/pref_names.h"
+#include "base/path_service.h"
+#include "brave/browser/brave_browser_process_impl.h"
 #include "brave/components/tor/buildflags/buildflags.h"
+#include "brave/components/tor/pref_names.h"
 #include "chrome/browser/profiles/incognito_helpers.h"
 #include "chrome/browser/profiles/profile.h"
+#include "chrome/common/chrome_paths.h"
 #include "components/keyed_service/content/browser_context_dependency_manager.h"
 #include "components/prefs/pref_service.h"
 
 #if BUILDFLAG(ENABLE_TOR)
 #include "brave/browser/profiles/profile_util.h"
+#include "brave/components/tor/tor_profile_service_impl.h"
 #endif
 
 namespace {
@@ -43,6 +46,21 @@ TorProfileServiceFactory* TorProfileServiceFactory::GetInstance() {
   return base::Singleton<TorProfileServiceFactory>::get();
 }
 
+// static
+void TorProfileServiceFactory::SetTorDisabled(bool disabled) {
+  if (g_brave_browser_process)
+    g_brave_browser_process->local_state()->SetBoolean(tor::prefs::kTorDisabled,
+                                                       disabled);
+}
+
+// static
+bool TorProfileServiceFactory::IsTorDisabled() {
+  if (g_brave_browser_process)
+    return g_brave_browser_process->local_state()->GetBoolean(
+        tor::prefs::kTorDisabled);
+  return false;
+}
+
 TorProfileServiceFactory::TorProfileServiceFactory()
     : BrowserContextKeyedServiceFactory(
           "TorProfileService",
@@ -55,13 +73,20 @@ TorProfileServiceFactory::~TorProfileServiceFactory() {}
 KeyedService* TorProfileServiceFactory::BuildServiceInstanceFor(
     content::BrowserContext* context) const {
 #if BUILDFLAG(ENABLE_TOR)
-  Profile* profile = Profile::FromBrowserContext(context);
+  base::FilePath user_data_dir;
+  base::PathService::Get(chrome::DIR_USER_DATA, &user_data_dir);
+  DCHECK(!user_data_dir.empty());
   std::unique_ptr<tor::TorProfileService> tor_profile_service(
-      new tor::TorProfileServiceImpl(profile));
+      new tor::TorProfileServiceImpl(
+          context,
+          g_brave_browser_process
+              ? g_brave_browser_process->tor_client_updater()
+              : nullptr,
+          user_data_dir));
 
   // We only care about Tor incognito profiles for deciding whether to KillTor.
   if (context->IsOffTheRecord()) {
-    g_profile_set.emplace(profile);
+    g_profile_set.emplace(Profile::FromBrowserContext(context));
   }
 
   return tor_profile_service.release();

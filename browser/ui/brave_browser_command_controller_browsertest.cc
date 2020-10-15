@@ -6,6 +6,7 @@
 #include <memory>
 
 #include "brave/browser/profiles/profile_util.h"
+#include "brave/browser/tor/tor_profile_service_factory.h"
 #include "brave/browser/ui/brave_browser_command_controller.h"
 #include "brave/browser/ui/browser_commands.h"
 #include "brave/components/brave_rewards/browser/buildflags/buildflags.h"
@@ -22,10 +23,6 @@
 #include "content/public/browser/notification_service.h"
 #include "content/public/test/browser_test.h"
 #include "content/public/test/test_utils.h"
-
-#if BUILDFLAG(ENABLE_TOR)
-#include "brave/browser/tor/tor_profile_service.h"
-#endif
 
 #if BUILDFLAG(ENABLE_BRAVE_SYNC)
 #include "components/sync/driver/sync_driver_switches.h"
@@ -201,7 +198,7 @@ IN_PROC_BROWSER_TEST_F(BraveBrowserCommandControllerTest,
 
   // Check tor commands when tor is disabled.
 #if BUILDFLAG(ENABLE_TOR)
-  tor::TorProfileService::SetTorDisabled(true);
+  TorProfileServiceFactory::SetTorDisabled(true);
   command_controller = browser()->command_controller();
   EXPECT_FALSE(
       command_controller->IsCommandEnabled(IDC_NEW_TOR_CONNECTION_FOR_SITE));

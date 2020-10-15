@@ -3,16 +3,16 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#include "brave/browser/tor/tor_launcher_factory.h"
+#include "brave/components/tor/tor_launcher_factory.h"
 
 #include <utility>
 
 #include "base/bind.h"
 #include "base/process/kill.h"
 #include "base/task/post_task.h"
-#include "brave/browser/tor/tor_profile_service_impl.h"
+#include "brave/components/tor/service_sandbox_type.h"
+#include "brave/components/tor/tor_profile_service_impl.h"
 #include "brave/grit/brave_generated_resources.h"
-#include "chrome/browser/service_sandbox_type.h"
 #include "content/public/browser/browser_task_traits.h"
 #include "content/public/browser/browser_thread.h"
 #include "content/public/browser/child_process_launcher_utils.h"

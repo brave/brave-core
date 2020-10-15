@@ -6,9 +6,9 @@
 #include "brave/browser/ui/browser_commands.h"
 
 #include "brave/browser/profiles/profile_util.h"
-#include "brave/browser/tor/tor_profile_service.h"
 #include "brave/browser/tor/tor_profile_service_factory.h"
 #include "brave/components/speedreader/buildflags.h"
+#include "brave/components/tor/tor_profile_service.h"
 #include "chrome/browser/browser_process.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/profiles/profile_manager.h"

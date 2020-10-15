@@ -8,7 +8,7 @@
 
 #include <string>
 
-#include "brave/browser/tor/tor_launcher_service_observer.h"
+#include "brave/components/tor/tor_launcher_service_observer.h"
 #include "components/prefs/pref_change_registrar.h"
 #include "content/public/browser/web_ui_message_handler.h"
 

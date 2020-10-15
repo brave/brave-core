@@ -16,7 +16,7 @@
 #include "base/task/post_task.h"
 #include "base/task_runner.h"
 #include "base/task_runner_util.h"
-#include "brave/browser/tor/tor_profile_service.h"
+#include "brave/browser/tor/tor_profile_service_factory.h"
 #include "brave/common/brave_switches.h"
 #include "chrome/browser/browser_process.h"
 #include "chrome/browser/profiles/profile_manager.h"
@@ -124,7 +124,7 @@ BraveTorClientUpdater::~BraveTorClientUpdater() {
 void BraveTorClientUpdater::Register() {
   const base::CommandLine& command_line =
       *base::CommandLine::ForCurrentProcess();
-  if (tor::TorProfileService::IsTorDisabled() ||
+  if (TorProfileServiceFactory::IsTorDisabled() ||
       command_line.HasSwitch(switches::kDisableTorClientUpdaterExtension) ||
       registered_) {
     return;
@@ -144,7 +144,7 @@ void BraveTorClientUpdater::Unregister() {
 
 void BraveTorClientUpdater::Cleanup() {
   // Delete tor binaries if tor is disabled.
-  if (tor::TorProfileService::IsTorDisabled()) {
+  if (TorProfileServiceFactory::IsTorDisabled()) {
     ProfileManager* profile_manager = g_browser_process->profile_manager();
     base::FilePath tor_component_dir =
       profile_manager->user_data_dir().AppendASCII(kTorClientComponentId);

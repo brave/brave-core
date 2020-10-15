@@ -10,8 +10,8 @@
 
 #if BUILDFLAG(ENABLE_TOR)
 #include "net/proxy_resolution/proxy_config_service.h"
-#include "brave/browser/tor/tor_profile_service.h"
 #include "brave/browser/tor/tor_profile_service_factory.h"
+#include "brave/components/tor/tor_profile_service.h"
 #endif
 
 namespace {

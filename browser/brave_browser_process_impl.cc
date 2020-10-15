@@ -70,7 +70,7 @@
 
 #if BUILDFLAG(ENABLE_TOR)
 #include "brave/browser/extensions/brave_tor_client_updater.h"
-#include "brave/common/tor/pref_names.h"
+#include "brave/components/tor/pref_names.h"
 #endif
 
 #if BUILDFLAG(IPFS_ENABLED)

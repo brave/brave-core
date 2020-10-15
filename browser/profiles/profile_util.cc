@@ -12,16 +12,13 @@
 #include "base/files/file_path.h"
 #include "base/memory/ptr_util.h"
 #include "base/no_destructor.h"
-#include "brave/common/tor/tor_constants.h"
+#include "brave/browser/tor/tor_profile_service_factory.h"
 #include "brave/components/tor/buildflags/buildflags.h"
+#include "brave/components/tor/tor_constants.h"
 #include "chrome/browser/browser_process.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/profiles/profile_key.h"
 #include "chrome/browser/profiles/profile_manager.h"
-
-#if BUILDFLAG(ENABLE_TOR)
-#include "brave/browser/tor/tor_profile_service.h"
-#endif
 
 namespace brave {
 
@@ -201,7 +198,7 @@ bool IsGuestProfile(content::BrowserContext* context) {
 
 bool IsTorDisabledForProfile(Profile* profile) {
 #if BUILDFLAG(ENABLE_TOR)
-  return tor::TorProfileService::IsTorDisabled() ||
+  return TorProfileServiceFactory::IsTorDisabled() ||
          profile->IsGuestSession();
 #else
   return true;

@@ -330,7 +330,7 @@ source_set("browser_process") {
   if (enable_tor) {
     deps += [
       "//brave/browser/tor",
-      "//brave/common/tor:pref_names",
+      "//brave/components/tor",
     ]
   }
 
