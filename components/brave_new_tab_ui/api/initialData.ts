@@ -59,6 +59,7 @@ export async function getInitialData (): Promise<InitialData> {
       new Promise((resolve) => {
         if (!('braveTogether' in chrome)) {
           resolve(false)
+          return
         }
 
         chrome.braveTogether.isSupported((supported: boolean) => {
