@@ -1,12 +1,12 @@
 diff --git a/components/content_settings/core/browser/BUILD.gn b/components/content_settings/core/browser/BUILD.gn
-index 411368e75877d0cfaafd65846bad99be676eef72..4ce51717cc74901a28ccef1ae1a60199fcc53028 100644
+index 411368e75877d0cfaafd65846bad99be676eef72..299a9ed313aa06977d564a82eb498dcd4c0a3d3b 100644
 --- a/components/content_settings/core/browser/BUILD.gn
 +++ b/components/content_settings/core/browser/BUILD.gn
 @@ -66,6 +66,7 @@ static_library("browser") {
      "//services/preferences/public/cpp",
      "//url",
    ]
-+  deps += [ "//brave/components/content_settings/core/browser" ]
++  deps += [ "//brave/components/content_settings/core/browser" ] if (!is_ios) { sources += brave_components_content_settings_core_browser_sources deps += brave_components_content_settings_core_browser_deps }
  
    if (is_android) {
      deps += [ "//media" ]
