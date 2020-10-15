@@ -100,8 +100,9 @@ public class NTPUtil {
             LinearLayout.LayoutParams imageCreditLayoutParams = new LinearLayout.LayoutParams(
                     LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
             imageCreditLayout.setLayoutParams(imageCreditLayoutParams);
-
-            layoutParams.gravity = Gravity.BOTTOM | Gravity.CENTER_HORIZONTAL;
+            
+            layoutParams.setMargins(dpToPx(context, 32), 0, 0, 0);
+            layoutParams.gravity = Gravity.BOTTOM | Gravity.START;
             sponsoredLogo.setLayoutParams(layoutParams);
         } else {
             if (ConfigurationUtils.isLandscape(context)

@@ -213,6 +213,7 @@ public class BraveNewTabPageLayout extends NewTabPageLayout {
                 View mTopSitesLayout = inflater.inflate(R.layout.top_sites_layout, null);
                 FrameLayout mTopSitesGridLayout =
                         mTopSitesLayout.findViewById(R.id.top_sites_grid_layout);
+                TextView topsiteErrorMessage = mTopSitesLayout.findViewById(R.id.widget_error_title);
 
                 if (shouldShowSuperReferral() && superReferralSitesLayout != null) {
                     if (superReferralSitesLayout.getParent() != null) {
@@ -228,6 +229,7 @@ public class BraveNewTabPageLayout extends NewTabPageLayout {
                     boolean showPlaceholder =
                             getTileGroup().hasReceivedData() && getTileGroup().isEmpty();
                     if (mSiteSectionView != null && !showPlaceholder) {
+                        topsiteErrorMessage.setVisibility(View.GONE);
                         if (mSiteSectionView.getParent() != null) {
                             ((ViewGroup) mSiteSectionView.getParent()).removeView(mSiteSectionView);
                         }
@@ -237,9 +239,11 @@ public class BraveNewTabPageLayout extends NewTabPageLayout {
                             mSiteSectionView.requestLayout();
                         }
                         mTopSitesGridLayout.addView(mSiteSectionView);
-                        ntpWidgetItem.setWidgetView(mTopSitesLayout);
-                        ntpWidgetMap.put(ntpWidgetManager.getFavoritesWidget(), ntpWidgetItem);
+                    } else {
+                        topsiteErrorMessage.setVisibility(View.VISIBLE);
                     }
+                    ntpWidgetItem.setWidgetView(mTopSitesLayout);
+                    ntpWidgetMap.put(ntpWidgetManager.getFavoritesWidget(), ntpWidgetItem);
                 }
             } else if (widget.equals(NTPWidgetManager.PREF_BINANCE)) {
                 View binanceWidgetView = inflater.inflate(R.layout.crypto_widget_layout, null);

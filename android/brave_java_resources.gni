@@ -227,6 +227,7 @@ brave_java_resources = [
   "java/res/drawable-nodpi/ben_karpinski.jpg",
   "java/res/drawable-nodpi/bnb.png",
   "java/res/drawable-nodpi/btc.png",
+  "java/res/drawable-nodpi/busd.png",
   "java/res/drawable-nodpi/dash.png",
   "java/res/drawable-nodpi/dc_cavalleri.jpg",
   "java/res/drawable-nodpi/doge.png",

@@ -60,7 +60,7 @@ public class BinanceWidgetManager {
                     put("BNB", new CoinNetworkModel("BNB", "Binance Coin", R.drawable.bnb));
                     put("BCH", new CoinNetworkModel("BCH", "Bitcoin Cash", R.drawable.bch));
                     put("XRP", new CoinNetworkModel("XRP", "Ripple", R.drawable.xrp));
-                    put("BUSD", new CoinNetworkModel("BUSD", "US Dollar", 0));
+                    put("BUSD", new CoinNetworkModel("BUSD", "US Dollar", R.drawable.busd));
                     put("BAT",
                             new CoinNetworkModel("BAT", "Basic Attention Token", R.drawable.bat));
                     put("XTZ", new CoinNetworkModel("XTZ", "", R.drawable.xtz));
@@ -94,7 +94,7 @@ public class BinanceWidgetManager {
                     put("NANO", new CoinNetworkModel("NANO", "", R.drawable.nano));
                     put("PAX", new CoinNetworkModel("PAX", "", R.drawable.pax));
                     put("TRX", new CoinNetworkModel("TRX", "", R.drawable.trx));
-                    put("BUSD", new CoinNetworkModel("BUSD", "US Dollar", 0));
+                    put("BUSD", new CoinNetworkModel("BUSD", "US Dollar", R.drawable.busd));
                     put("TUSD", new CoinNetworkModel("TUSD", "", R.drawable.tusd));
                     put("USDT", new CoinNetworkModel("USDT", "", R.drawable.usdt));
                 }

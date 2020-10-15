@@ -1416,6 +1416,12 @@ until they verify, or until 90 days have passed.
       <message name="IDS_CONFIRM_CONVERSION" desc="Binance text">
         Confirm Conversion
       </message>
+      <message name="IDS_THERES_NOTHING" desc="Top sites error message">
+        There's nothing here yet on the top sites.
+      </message>
+      <message name="IDS_PRICE" desc="Binance convert item text">
+        Price
+      </message>
     </messages>
   </release>
 </grit>
