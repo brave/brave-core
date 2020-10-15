@@ -1092,6 +1092,8 @@
 		F9B23EE223F61173000EB3D8 /* PaymentRequest.js in Resources */ = {isa = PBXBuildFile; fileRef = F9B23EE123F61173000EB3D8 /* PaymentRequest.js */; };
 		F9B23EE523F613E8000EB3D8 /* PaymentRequestExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9B23EE423F613E8000EB3D8 /* PaymentRequestExtension.swift */; };
 		F9C6B7D623886EF8003F7D16 /* SceneObserver.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9C6B7D523886EF8003F7D16 /* SceneObserver.swift */; };
+		F9F859702533CE52000CEB24 /* LoginsHelper.js in Resources */ = {isa = PBXBuildFile; fileRef = D0C95DF5200EADD500E4E51C /* LoginsHelper.js */; };
+		F9F8597C2533CEBC000CEB24 /* DownloadHelper.js in Resources */ = {isa = PBXBuildFile; fileRef = F9F8597B2533CEBC000CEB24 /* DownloadHelper.js */; };
 		FA6B2AC21D41F02D00429414 /* Punycode.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA6B2AC11D41F02D00429414 /* Punycode.swift */; };
 		FA9293D41D6580E100AC8D33 /* QRCodeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA9293D31D6580E100AC8D33 /* QRCodeViewController.swift */; };
 		FA9294011D6584A200AC8D33 /* QRCode.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = FA9294001D6584A200AC8D33 /* QRCode.xcassets */; };
@@ -2722,6 +2724,7 @@
 		F9B23EE123F61173000EB3D8 /* PaymentRequest.js */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.javascript; path = PaymentRequest.js; sourceTree = "<group>"; };
 		F9B23EE423F613E8000EB3D8 /* PaymentRequestExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaymentRequestExtension.swift; sourceTree = "<group>"; };
 		F9C6B7D523886EF8003F7D16 /* SceneObserver.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneObserver.swift; sourceTree = "<group>"; };
+		F9F8597B2533CEBC000CEB24 /* DownloadHelper.js */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.javascript; path = DownloadHelper.js; sourceTree = "<group>"; };
 		FA6B2AC11D41F02D00429414 /* Punycode.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Punycode.swift; sourceTree = "<group>"; };
 		FA9293D31D6580E100AC8D33 /* QRCodeViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = QRCodeViewController.swift; sourceTree = "<group>"; };
 		FA9294001D6584A200AC8D33 /* QRCode.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = QRCode.xcassets; sourceTree = "<group>"; };
@@ -4789,9 +4792,11 @@
 		D03F8F11200EAB8C003C2224 /* AtDocumentStart */ = {
 			isa = PBXGroup;
 			children = (
+				D0C95DF5200EADD500E4E51C /* LoginsHelper.js */,
 				2755AB7C23107BC600F0721F /* AdsReporting.js */,
 				276E7A2E22F21A7700939424 /* RewardsReporting.js */,
 				D03F8F20200EABB0003C2224 /* __firefox__.js */,
+				F9F8597B2533CEBC000CEB24 /* DownloadHelper.js */,
 			);
 			path = AtDocumentStart;
 			sourceTree = "<group>";
@@ -4839,7 +4844,6 @@
 				D000661320472890009BA6F6 /* __firefox__.js */,
 				D03F8F24200EACD8003C2224 /* ContextMenu.js */,
 				39F4C0F92045D87400746155 /* FocusHelper.js */,
-				D0C95DF5200EADD500E4E51C /* LoginsHelper.js */,
 				D0FCF7F61FE45E5D004A7995 /* PrintHandler.js */,
 			);
 			path = AtDocumentEnd;
@@ -6222,6 +6226,7 @@
 				0A2FF33F24A4B75100F88F43 /* vpncheckmark.json in Resources */,
 				E4B7B7621A793CF20022C5E0 /* CharisSILBI.ttf in Resources */,
 				5D5374A723846FFC00A2B587 /* andreas-gucklhorn.jpg in Resources */,
+				F9F859702533CE52000CEB24 /* LoginsHelper.js in Resources */,
 				27F56F8D24E447020018F2F9 /* DateTools.bundle in Resources */,
 				5D53749E23846FFC00A2B587 /* louis-kim.jpg in Resources */,
 				78A9D0942407B3110077576C /* BraveGetUA.js in Resources */,
@@ -6235,6 +6240,7 @@
 				5E3477E922D7771700B0D5F8 /* ResourceDownloader.js in Resources */,
 				F99505FF22937E3900CC6543 /* U2F-low-level.js in Resources */,
 				59D4161B232681080087A6E1 /* Localizable.strings in Resources */,
+				F9F8597C2533CEBC000CEB24 /* DownloadHelper.js in Resources */,
 				D0FCF8081FE4772D004A7995 /* MainFrameAtDocumentStart.js in Resources */,
 				0A0D3D5021A5609600BEE65B /* SafeBrowsingError.html in Resources */,
 				5D5374A623846FFC00A2B587 /* oliwier gesla.jpg in Resources */,
