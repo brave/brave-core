@@ -337,14 +337,14 @@ void IpfsService::LaunchDaemon(LaunchDaemonCallback callback) {
     std::move(callback).Run(true);
   }
 
-  base::FilePath path(GetIpfsExecutablePath());
-  if (path.empty()) {  // Cannot launch if path is not ready.
-    std::move(callback).Run(false);
-    return;
-  }
-
   launch_daemon_callback_ = std::move(callback);
-  LaunchIfNotRunning(path);
+  base::FilePath path(GetIpfsExecutablePath());
+  if (path.empty()) {
+    // Daemon will be launched later in OnExecutableReady.
+    RegisterIpfsClientUpdater();
+  } else {
+    LaunchIfNotRunning(path);
+  }
 }
 
 void IpfsService::ShutdownDaemon(ShutdownDaemonCallback callback) {

@@ -82,14 +82,9 @@ IpfsNavigationThrottle::IpfsNavigationThrottle(
   content::BrowserContext* context =
       navigation_handle->GetWebContents()->GetBrowserContext();
   pref_service_ = user_prefs::UserPrefs::Get(context);
-
-  DCHECK(ipfs_service_);
-  ipfs_service_->AddObserver(this);
 }
 
-IpfsNavigationThrottle::~IpfsNavigationThrottle() {
-  ipfs_service_->RemoveObserver(this);
-}
+IpfsNavigationThrottle::~IpfsNavigationThrottle() = default;
 
 content::NavigationThrottle::ThrottleCheckResult
 IpfsNavigationThrottle::WillStartRequest() {
@@ -105,7 +100,9 @@ IpfsNavigationThrottle::WillStartRequest() {
 
   if (is_local_mode && !ipfs_service_->IsDaemonLaunched()) {
     resume_pending_ = true;
-    ipfs_service_->RegisterIpfsClientUpdater();
+    ipfs_service_->LaunchDaemon(
+        base::BindOnce(&IpfsNavigationThrottle::OnIpfsLaunched,
+                       weak_ptr_factory_.GetWeakPtr()));
     return content::NavigationThrottle::DEFER;
   }
 
@@ -199,7 +196,7 @@ const char* IpfsNavigationThrottle::GetNameForLogging() {
   return "IpfsNavigationThrottle";
 }
 
-void IpfsNavigationThrottle::OnIpfsLaunched(bool result, int64_t pid) {
+void IpfsNavigationThrottle::OnIpfsLaunched(bool result) {
   if (!resume_pending_)
     return;
 

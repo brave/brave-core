@@ -11,7 +11,7 @@
 #include <vector>
 
 #include "base/gtest_prod_util.h"
-#include "brave/components/ipfs/ipfs_service_observer.h"
+#include "base/memory/weak_ptr.h"
 #include "content/public/browser/navigation_throttle.h"
 
 namespace content {
@@ -24,10 +24,8 @@ class PrefService;
 namespace ipfs {
 
 class IpfsService;
-class IpfsServiceObserver;
 
-class IpfsNavigationThrottle : public content::NavigationThrottle,
-                               public IpfsServiceObserver {
+class IpfsNavigationThrottle : public content::NavigationThrottle {
  public:
   explicit IpfsNavigationThrottle(content::NavigationHandle* navigation_handle,
                                   IpfsService* ipfs_service,
@@ -53,9 +51,7 @@ class IpfsNavigationThrottle : public content::NavigationThrottle,
   void ShowInterstitial();
   void LoadPublicGatewayURL();
   void OnGetConnectedPeers(bool success, const std::vector<std::string>& peers);
-
-  // IpfsServiceObserver:
-  void OnIpfsLaunched(bool result, int64_t pid) override;
+  void OnIpfsLaunched(bool result);
 
   bool resume_pending_ = false;
   IpfsService* ipfs_service_ = nullptr;
