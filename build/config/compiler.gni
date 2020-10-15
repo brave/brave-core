@@ -5,6 +5,14 @@
 
 # Adjusts compiler flags in //build/config/compiler:chromium_code.
 brave_removed_chromium_code_cflags = []
+brave_removed_compiler_cflags = []
+brave_added_compiler_cflags = []
 if (is_clang) {
   brave_removed_chromium_code_cflags += [ "-Wunreachable-code" ]
+  if (is_android) {
+    # We need to remove combination of "-mllvm" and "-enable-dse-memoryssa=false",
+    # but "-instcombine-lower-dbg-declare=0" is also used with "-mllvm" so we re-add that combination
+    brave_removed_compiler_cflags = [ "-mllvm", "-instcombine-lower-dbg-declare=0", "-enable-dse-memoryssa=false", ]
+    brave_added_compiler_cflags = [ "-mllvm", "-instcombine-lower-dbg-declare=0", ]
+  }
 }

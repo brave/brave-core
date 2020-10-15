@@ -1,8 +1,16 @@
 diff --git a/build/config/compiler/BUILD.gn b/build/config/compiler/BUILD.gn
-index 4f6461b6b5f5b42669e03e4334a297011caa2e98..ed4e2540fc50bb3d20ce65fd4db9dce12815039c 100644
+index 4f6461b6b5f5b42669e03e4334a297011caa2e98..d1bd50b0e40ddea005c55f14a1962252fce5bf25 100644
 --- a/build/config/compiler/BUILD.gn
 +++ b/build/config/compiler/BUILD.gn
-@@ -1646,6 +1646,7 @@ config("chromium_code") {
+@@ -730,6 +730,7 @@ config("compiler") {
+     asmflags += cflags
+     asmflags += cflags_c
+   }
++  cflags -= brave_removed_compiler_cflags cflags += brave_added_compiler_cflags
+ }
+ 
+ # This provides the basic options to select the target CPU and ABI.
+@@ -1646,6 +1647,7 @@ config("chromium_code") {
        cflags += [ "-Wextra-semi" ]
      }
    }
