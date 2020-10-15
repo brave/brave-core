@@ -7,10 +7,11 @@ import * as React from 'react'
 
 // Feature-specific components
 import * as Card from './style'
-import { Debugger } from '../../default'
+import PublisherMeta from '../PublisherMeta'
 
 interface Props {
   content: (BraveToday.Article | undefined)[]
+  publishers: BraveToday.Publishers
 }
 
 class CardOrderedList extends React.PureComponent<Props, {}> {
@@ -22,36 +23,32 @@ class CardOrderedList extends React.PureComponent<Props, {}> {
       return null
     }
 
+    // @ts-ignore
+    const publisherId = content && content[0] && content[0].publisher_id
+    let allSamePublisher = false
+    if (publisherId) {
+      if (
+        // @ts-ignore
+        (content && content[1] && content[1].publisher_id) &&
+        // @ts-ignore
+        (content && content[1] && content[1].publisher_id) ===
+        // @ts-ignore
+        (content && content[2] && content[2].publisher_id)
+      ) {
+        allSamePublisher = true
+      }
+    }
+
     return (
       <Card.OrderedList>
         {
           // If all posts are from the same publisher,
           // show their logo
-          // @ts-ignore
-          (content && content[0] && content[0].publisher_logo) ===
-          // @ts-ignore
-          (content && content[1] && content[1].publisher_logo) &&
-          // @ts-ignore
-          (content && content[1] && content[1].publisher_logo) ===
-          // @ts-ignore
-          (content && content[2] && content[2].publisher_logo)
-            ? (
-              <>
-              <Debugger>all same PUBLISHER</Debugger>
-              {
-                // @ts-ignore
-                content && content[0] && content[0].content_type === 'product'
-                ? <Debugger style={{ top: '60px' }}>THIS COMES FROM A DEAL</Debugger>
-                : null
-              }
-              <Card.PublisherLogo
-                // @ts-ignore
-                src={content && content[0] && content[0].publisher_logo}
-                // @ts-ignore
-                alt={''}
-              />
-              </>
-            ) : null
+          allSamePublisher && publisherId &&
+            <PublisherMeta
+              publisher={this.props.publishers[publisherId]}
+              title={true}
+            />
         }
         <Card.List>
         {

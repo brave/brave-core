@@ -8,20 +8,20 @@ import * as Card from '../cardSizes'
 import * as Background from '../../../../../common/Background'
 
 
-export default function CardImage (props: { size: string, imageUrl: string }) {
+export default function CardImage (props: { size: string, fit?: boolean, imageUrl: string }) {
   const [data, setData] = React.useState('');
 
   React.useEffect(() => {
     Background.send<
-    BraveToday.Messages.GetFeedImageDataResponse,
-      BraveToday.Messages.GetFeedImageDataPayload
+    BraveToday.Messages.GetImageDataResponse,
+      BraveToday.Messages.GetImageDataPayload
     >(
-      Background.MessageTypes.Today.getFeedImageData,
+      Background.MessageTypes.Today.getImageData,
       { url: props.imageUrl }
     ).then(result => {
       setData(result.dataUrl);
     })
   });
 
-  return <Card.Image size={props.size} src={data} />
+  return <Card.Image fit={props.fit} size={props.size} src={data} />
 }

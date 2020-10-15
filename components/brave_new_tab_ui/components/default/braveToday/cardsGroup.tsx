@@ -37,8 +37,15 @@ const PageContentOrder = [
   CardType.HeadlinePaired,
 ]
 
+const RandomContentOrder = [
+  CardType.Headline,
+  CardType.HeadlinePaired,
+  CardType.Headline,
+]
+
 interface Props {
   content: BraveToday.Page
+  publishers: BraveToday.Publishers
 }
 
 interface State {
@@ -57,11 +64,13 @@ class CardsGroup extends React.PureComponent<Props, State> {
         // adapt accordingly.
         return <CardLarge
                 content={headlines.splice(0, 1)}
+                publishers={this.props.publishers}
               />
       case CardType.HeadlinePaired:
         // TODO: handle content length < 2
         return <CardSmall
                 content={headlines.splice(0, 2)}
+                publishers={this.props.publishers}
               />
       case CardType.CategoryGroup:
         if (!this.props.content.itemsByCategory) {
@@ -69,6 +78,7 @@ class CardsGroup extends React.PureComponent<Props, State> {
         }
         return <CardBrandedList
           content={this.props.content.itemsByCategory.items}
+          publishers={this.props.publishers}
         />
       case CardType.PublisherGroup:
         if (!this.props.content.itemsByPublisher) {
@@ -76,6 +86,7 @@ class CardsGroup extends React.PureComponent<Props, State> {
         }
         return <CardOrderedList
           content={this.props.content.itemsByPublisher.items}
+          publishers={this.props.publishers}
         />
       case CardType.Deals:
         return <CardDeals content={this.props.content.deals} />
@@ -84,14 +95,23 @@ class CardsGroup extends React.PureComponent<Props, State> {
     return null
   }
 
-  render () {
-    // Duplicate array so we can splice without affecting state
-    const headlines = [...this.props.content.headlines]
-
+  renderOrder (order: CardType[], articles: BraveToday.Article[]) {
     return (
       <BraveTodayElement.ArticlesGroup>
-        { PageContentOrder.map(cardType => this.renderCard(cardType, headlines)) }
+        { order.map(cardType => this.renderCard(cardType, articles)) }
       </BraveTodayElement.ArticlesGroup>
+    )
+  }
+
+  render () {
+    // Duplicate array so we can splice without affecting state
+    const headlines = [...this.props.content.articles]
+    const randomHeadlines = [...this.props.content.randomArticles]
+    return (
+      <>
+        {this.renderOrder(PageContentOrder, headlines)}
+        {this.renderOrder(RandomContentOrder, randomHeadlines)}
+      </>
     )
   }
 }

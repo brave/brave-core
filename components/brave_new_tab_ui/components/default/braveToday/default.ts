@@ -105,10 +105,16 @@ export const PublisherLogo = styled<{}, 'img'>('img')`
   background-color: rgba(188,188,188,0.2);
   margin-top: 12px;
   display: inline-block;
+`
 
-  &::before {
-    content: "LOGO PATH MISSING FROM API";
-    background: red;
-    font-size: 16px;
-  }
+export const PublisherName = styled<{}, 'span'>('span')`
+  box-sizing: border-box;
+  margin-top: 12px;
+  max-width: 100%;
+  display: inline-block;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  font-size: 14px;
+  font-family: ${p => p.theme.fontFamily.heading};
+  color: #fff;
 `

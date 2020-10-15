@@ -7,11 +7,11 @@ import * as React from 'react'
 
 // Feature-specific components
 import * as Card from './style'
-// import CardImage from '../CardImage'
-import { Debugger } from '../../default'
+import PublisherMeta from '../PublisherMeta'
 
 interface Props {
   content: (BraveToday.Article | undefined)[]
+  publishers: BraveToday.Publishers
 }
 
 class CardBrandedList extends React.PureComponent<Props, {}> {
@@ -21,6 +21,22 @@ class CardBrandedList extends React.PureComponent<Props, {}> {
     // No content no render®
     if (content.length < 3) {
       return null
+    }
+
+    // @ts-ignore
+    const publisherId = content && content[0] && content[0].publisher_id
+    let allSamePublisher = false
+    if (publisherId) {
+      if (
+        // @ts-ignore
+        (content && content[1] && content[1].publisher_id) &&
+        // @ts-ignore
+        (content && content[1] && content[1].publisher_id) ===
+        // @ts-ignore
+        (content && content[2] && content[2].publisher_id)
+      ) {
+        allSamePublisher = true
+      }
     }
 
     return (
@@ -37,7 +53,6 @@ class CardBrandedList extends React.PureComponent<Props, {}> {
         (content && content[2] && content[2].category)
         ? (
           <>
-              <Debugger>all same CATEGORY</Debugger>
               <Card.Title>{
                 // @ts-ignore
                 content && content[0] && content[0].category
@@ -70,21 +85,10 @@ class CardBrandedList extends React.PureComponent<Props, {}> {
       {
         // If all posts are from the same publisher,
         // show their logo
-        // @ts-ignore
-        (content && content[0] && content[0].publisher_logo) ===
-        // @ts-ignore
-        (content && content[1] && content[1].publisher_logo) &&
-        // @ts-ignore
-        (content && content[1] && content[1].publisher_logo) ===
-        // @ts-ignore
-        (content && content[2] && content[2].publisher_logo)
-          ? (
-            <Card.PublisherLogo
-              // @ts-ignore
-              src={content && content[0] && content[0].publisher_logo}
-              alt={''}
-            />
-          ) : null
+        allSamePublisher && publisherId &&
+          <PublisherMeta
+            publisher={this.props.publishers[publisherId]}
+          />
       }
     </Card.BrandedList>
     )

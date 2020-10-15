@@ -9,6 +9,7 @@ export const init = createAction<void>('init')
 
 type DataReceivedPayload = {
   feed: BraveToday.Feed | undefined
+  publishers: BraveToday.Publishers | undefined
 }
 export const dataReceived = createAction<DataReceivedPayload>('dataReceived')
 

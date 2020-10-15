@@ -6,10 +6,11 @@
 import * as React from 'react';
 import CardImage from '../CardImage'
 import * as Card from '../../cardSizes'
-import { Debugger } from '../../default'
+import PublisherMeta from '../PublisherMeta'
 
 interface Props {
-  content: (BraveToday.Article | BraveToday.Deal | undefined)[]
+  content: (BraveToday.Article)[]
+  publishers: BraveToday.Publishers
 }
 
 export default function CardSingleArticleMedium (props: Props) {
@@ -28,19 +29,19 @@ export default function CardSingleArticleMedium (props: Props) {
           if (item === undefined) {
             return null
           }
+          const publisher = props.publishers[item.publisher_id]
           return (
             <Card.Small key={`card-smallest-key-${index}`}>
-              {
-                item.content_type === 'product'
-                  ? <Debugger>this comes from a sponsor</Debugger>
-                  : null
-              }
               <a href={item.url}>
                 <CardImage size="medium" imageUrl={item.img} />
                 <Card.Content>
                   <Card.Text>
                     {item.title}
                     <Card.Time>{item.relative_time}</Card.Time>
+                    {
+                      publisher &&
+                        <PublisherMeta publisher={publisher} />
+                    }
                   </Card.Text>
                 </Card.Content>
               </a>

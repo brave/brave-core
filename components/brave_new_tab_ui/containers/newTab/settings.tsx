@@ -28,6 +28,7 @@ import NraveStatsIcon from './settings/icons/braveStats.svg'
 import TopSitesIcon from './settings/icons/topSites.svg'
 import ClockIcon from './settings/icons/clock.svg'
 import MoreCardsIcon from './settings/icons/moreCards.svg'
+import TodayIcon from './settings/icons/braveToday.svg'
 
 // Tabs
 import BackgroundImageSettings from './settings/backgroundImage'
@@ -35,6 +36,7 @@ import BraveStatsSettings from './settings/braveStats'
 import TopSitesSettings from './settings/topSites'
 import ClockSettings from './settings/clock'
 import MoreCardsSettings from './settings/moreCards'
+import BraveTodaySettings from './settings/braveToday'
 
 // Types
 import * as newTabActions from '../../actions/new_tab_actions'
@@ -76,9 +78,10 @@ export interface Props {
   focusMoreCards: boolean
   showBitcoinDotCom: boolean
   bitcoinDotComSupported: boolean
+  todayPublishers?: BraveToday.Publishers
 }
 
-type ActiveTabType = 'BackgroundImage' | 'BraveStats' | 'TopSites' | 'Clock' | 'MoreCards'
+type ActiveTabType = 'BackgroundImage' | 'BraveStats' | 'TopSites' | 'BraveToday' | 'Clock' | 'MoreCards'
 
 interface State {
   activeTab: number
@@ -133,7 +136,7 @@ export default class Settings extends React.PureComponent<Props, State> {
 
   get activeTabOptions (): ActiveTabType[] {
     return [
-      'BackgroundImage', 'BraveStats', 'TopSites', 'Clock', 'MoreCards'
+      'BackgroundImage', 'BraveStats', 'TopSites', 'BraveToday', 'Clock', 'MoreCards'
     ]
   }
 
@@ -150,9 +153,12 @@ export default class Settings extends React.PureComponent<Props, State> {
         srcUrl = TopSitesIcon
         break
       case 3:
-        srcUrl = ClockIcon
+        srcUrl = TodayIcon
         break
       case 4:
+        srcUrl = ClockIcon
+        break
+      case 5:
         srcUrl = MoreCardsIcon
         break
       default:
@@ -170,6 +176,8 @@ export default class Settings extends React.PureComponent<Props, State> {
         return 'statsTitle'
       case 'TopSites':
         return 'topSitesTitle'
+      case 'BraveToday':
+        return 'braveTodayTitle'
       case 'Clock':
         return 'clockTitle'
       case 'MoreCards':
@@ -294,6 +302,14 @@ export default class Settings extends React.PureComponent<Props, State> {
                 }
                 {
                   activeTab === 3
+                  ? (
+                    <BraveTodaySettings
+                      publishers={this.props.todayPublishers}
+                    />
+                  ) : null
+                }
+                {
+                  activeTab === 4
                     ? (
                       <ClockSettings
                         actions={this.props.actions}
@@ -304,7 +320,7 @@ export default class Settings extends React.PureComponent<Props, State> {
                     ) : null
                 }
                 {
-                  activeTab === 4
+                  activeTab === 5
                     ? (
                       <MoreCardsSettings
                         toggleShowBinance={toggleShowBinance}

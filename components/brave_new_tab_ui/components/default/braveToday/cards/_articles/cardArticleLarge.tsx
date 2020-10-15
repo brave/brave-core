@@ -8,59 +8,46 @@ import * as React from 'react'
 // Feature-specific components
 import * as Card from '../../cardSizes'
 import CardImage from '../CardImage'
-import { Debugger } from '../../default'
+import PublisherMeta from '../PublisherMeta'
 
 interface Props {
   content: (BraveToday.Article | undefined)[]
+  publishers: BraveToday.Publishers
 }
 
-class CardSingleArticleLarge extends React.PureComponent<Props, {}> {
-  render () {
-    const { content }: Props = this.props
+export default function CardSingleArticleLarge (props: Props) {
+  // no full content no render®
+  if (props.content.length === 0) {
+    return <></>
+  }
 
-    // no full content no render®
-    if (content.length === 0) {
-      return null
+  return <>{props.content.map((item, index) => {
+    // If there is a missing item, return nothing
+    if (item === undefined) {
+      return <></>
     }
 
-    return content.map((item, index) => {
-      // If there is a missing item, return nothing
-      if (item === undefined) {
-        return null
-      }
+    const publisher = props.publishers[item.publisher_id]
 
-      return (
-        <Card.Large key={`card-key-${index}`}>
-          <a href={item.url}>
+    return (
+      <Card.Large key={`card-key-${index}`}>
+        <a href={item.url}>
+          <CardImage
+            size='large'
+            imageUrl={item.img}
+          />
+          <Card.Content>
+            <Card.Heading>
+              {item.title}
+            </Card.Heading>
+            <Card.Time>{item.relative_time}</Card.Time>
             {
-              item.content_type === 'product'
-                ? <Debugger>this comes from a sponsor</Debugger>
-                : null
+              publisher &&
+                <PublisherMeta publisher={publisher} />
             }
-            <CardImage
-              size='large'
-              imageUrl={item.img}
-            />
-            <Card.Content>
-              <Card.Heading>
-                {item.title}
-              </Card.Heading>
-              <Card.Time>{item.relative_time}</Card.Time>
-              {
-                item.publisher_logo !== ''
-                ? (
-                  <Card.PublisherLogo
-                    src={item.publisher_logo}
-                    alt={item.publisher_id}
-                  />
-                ) : null
-              }
-            </Card.Content>
-          </a>
-        </Card.Large>
-      )
-    })
-  }
+          </Card.Content>
+        </a>
+      </Card.Large>
+    )
+  })}</>
 }
-
-export default CardSingleArticleLarge

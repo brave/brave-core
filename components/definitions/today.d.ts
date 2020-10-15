@@ -8,17 +8,20 @@ declare namespace BraveToday {
   // Messages
   namespace Messages {
     export type GetFeedResponse = {
-      feed: BraveToday.Feed | undefined
+      feed: Feed | undefined
     }
-    export type GetFeedImageDataPayload = {
+    export type GetPublishersResponse = {
+      publishers: Publishers | undefined
+    }
+    export type GetImageDataPayload = {
       url: string
     }
-    export type GetFeedImageDataResponse = {
+    export type GetImageDataResponse = {
       dataUrl: string
     }
   }
 
-  export type ContentFromFeed = (Article | Deal | Media)
+  export type FeedItem = (Article | Deal)
 
   export interface Feed {
     featuredSponsor?: Article
@@ -28,7 +31,8 @@ declare namespace BraveToday {
   }
 
   export interface Page {
-    headlines: Article[] // 16
+    articles: Article[] // 13
+    randomArticles: Article[] // 4
     itemsByCategory?: {
       categoryName: string
       items: Article[] // 3
@@ -44,93 +48,47 @@ declare namespace BraveToday {
   export interface ScrollingList {
     sponsors: Article[]
     deals: Deal[]
-    media: Media[]
     articles: Article[]
   }
 
-  interface IContentItem {
+  type BaseFeedItem = {
+    content_type: 'article' | 'product'
+    category: string // 'Tech', 'Business', 'Top News', 'Crypto', 'Cars', 'Culture', 'Fashion', 'Sports', 'Entertainment'
     publish_time: string // UTC "2020-04-17 19:21:10"
     title: string // "14 Truly Incredible Catfish Makeup Transformations From TikTok"
     description: string // "# Makeup skill level: Expert.↵↵![](https://img.buzzfeed.com/buzzfeed-↵static/static/2020-04/6/20/enhanced/a3cd932e6db6/original-567-1586204318-9.jpg?crop=1244:829;0,0)↵↵* * *↵↵[View Entire Post ›](https://www.buzzfeed.com/kristatorres/13-truly-↵incredible-catfish-makeup-transformations)↵↵"
     url: string // "https://www.buzzfeed.com/kristatorres/13-truly-incredible-catfish-makeup-transformations"
+    url_hash: string // '0e57ac...'
+    padded_img: string
     img: string // '',
-    // Custom for this application. Does not come from source
-    relative_time?: string // "1 hour ago"
-    seen?: boolean // whether or not thus content have been loaded before
-  }
-
-  export type Article = IContentItem & {
-    category: string // 'Tech', 'Business', 'Top News', 'Crypto', 'Cars', 'Culture', 'Fashion', 'Sports', 'Entertainment'
-    content_type: 'article' | 'product' | 'image'
-    default?: boolean // true
-    domain: null // ???
-    publish_time: string // UTC "2020-04-17 19:21:10"
-    relative_time?: string // "1 hour ago"
-    publisher_id: string // "buzzfeed"
-    publisher_logo: string // "https://nlbtest.rapidpacket.com/logos/buzzfeed.com.png"
-    publisher_name: string // "BuzzFeed"
+    publisher_id: string // 'afd9...'
+    publisher_name: string
+    score: number
+    relative_time?: string
     // Custom for this application. Does not come from source
     points?: number
   }
 
-  export type Media = Article
-
-  export type Deal = IContentItem & {
-    status: string // 'live',
-    partner_name: string // 'LG',
-    partner_id: string // '',
-    partner_logo: string // '',
-    category: string // 'Electronics',
-    content_type: string // 'product',
-    price: string // '$1,899',
-    date_live_from: string // '2020-04-15 00:00:00',
-    date_live_to: string // '2020-04-29 00:00:00',
-    // Custom for this application. Does not come from source
-    seen?: boolean // whether or not thus content have been loaded before
+  export type Article = BaseFeedItem & {
+    content_type: 'article'
   }
 
-  export type OneOfPublishers = string
-    // 'buzzfeed' |
-    // 'netflix' |
-    // 'amazon' |
-    // 'tigerdirect' |
-    // 'slickdeals' |
-    // 'digitaltrends' |
-    // 'wirecutter' |
-    // 'askreddit' |
-    // 'lifehacker' |
-    // 'wikihow' |
-    // 'buzzfeed_quizzes' |
-    // 'mentalfloss' |
-    // 'wotd' |
-    // 'digg' |
-    // 'ign' |
-    // 'nature' |
-    // 'cnet' |
-    // 'yahoo_sports' |
-    // 'yahoo_finance' |
-    // 'popsci' |
-    // 'mashable' |
-    // 'techcrunch' |
-    // 'wired' |
-    // 'nasa_photo' |
-    // 'reddit' |
-    // 'giphy' |
-    // 'newegg' |
-    // 'bbc' |
-    // 'cnn' |
-    // 'nytimes' |
-    // 'theguardian' |
-    // 'dailymail' |
-    // 'washingtonpost' |
-    // 'businessinsider' |
-    // 'foxnews' |
-    // 'reuters' |
-    // 'wsj' |
-    // 'npr' |
-    // 'nbcnews' |
-    // 'ft'
+  export type Deal = BaseFeedItem & {
+    content_type: 'product'
+    offers_category: string // 'Companion Products
+  }
 
-    export type OneOfCategories =
-      'Fashion' | string
+  export type Publisher = {
+    publisher_id: string,
+    publisher_name: string,
+    category: string,
+    publisher_logo_padded: string,
+    enabled: boolean
+    user_enabled: boolean | null
+  }
+
+  export type Publishers = {
+    // tslint:disable-next-line
+    [publisher_id: string]: Publisher
+  }
 }

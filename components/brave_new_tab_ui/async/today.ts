@@ -16,9 +16,12 @@ const handler = new AsyncActionHandler()
 
 handler.on(init.getType(), async (store, action) => {
   try {
-    const data = await Background.send<Messages.GetFeedResponse>(MessageTypes.getFeed)
-    console.log('got feed', data)
-    store.dispatch(Actions.dataReceived(data))
+    const [{feed}, {publishers}] = await Promise.all([
+      Background.send<Messages.GetFeedResponse>(MessageTypes.getFeed),
+      Background.send<Messages.GetPublishersResponse>(MessageTypes.getPublishers)
+    ])
+    console.log('got feed', { feed, publishers })
+    store.dispatch(Actions.dataReceived({feed, publishers}))
   } catch (e) {
     console.error('error receiving feed', e)
     store.dispatch(Actions.errorGettingDataFromBackground(e))

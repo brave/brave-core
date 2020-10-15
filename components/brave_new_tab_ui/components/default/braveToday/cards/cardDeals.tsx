@@ -6,9 +6,8 @@
 import * as React from 'react'
 
 // Feature-specific components
-import CardSmall from './_deals/cardDealMedium'
-import CardSmallest from './_deals/cardDealSmall'
-import CardMedium from './_deals/cardDealLarge'
+import * as Card from '../cardSizes'
+import CardImage from './CardImage'
 
 interface Props {
   content?: BraveToday.Deal[]
@@ -22,15 +21,28 @@ class CardDeals extends React.PureComponent<Props, {}> {
     if (!content || content.length === 0) {
       return null
     }
-
-    if (content.length % 2 === 0) {
-      return <CardSmall content={content} />
-    }
-    if (content.length % 3 === 0) {
-      return <CardSmallest content={content} />
-    }
-    // Defaults to 1 large card at a time
-    return <CardMedium content={content} />
+    return (
+      <Card.DealsCard>
+        <Card.Heading>{content[0].offers_category}</Card.Heading>
+        <Card.ContainerForThree>
+          {
+            content.map((item, index) => {
+              // If there is a missing item, return nothing
+              if (item === undefined) {
+                return null
+              }
+              return (
+                <Card.DealItem href={item.url} key={`card-smallest-key-${index}`}>
+                  <CardImage size="small" fit={false} imageUrl={item.padded_img} />
+                  <Card.Text>{item.title}</Card.Text>
+                  <Card.Time>{item.description}</Card.Time>
+                </Card.DealItem>
+              )
+            })
+          }
+        </Card.ContainerForThree>
+      </Card.DealsCard>
+    )
   }
 }
 

@@ -21,6 +21,7 @@ interface State {
 
 interface Props {
   feed?: BraveToday.Feed
+  publishers?: BraveToday.Publishers
   setOpacityForItems: (opacity: boolean) => void
   onAnotherPageNeeded: () => any
   displayedPageCount: number
@@ -40,14 +41,6 @@ class BraveToday extends React.PureComponent<Props, State> {
       contentPage: 1,
       previousYAxis: 0
     }
-  }
-
-  get featuredPublisher (): BraveToday.OneOfPublishers {
-    return "http://www.cbssports.com/partners/feeds/rss/home_news"
-  }
-
-  get featuredCategory (): BraveToday.OneOfCategories {
-    return 'Entertainment'
   }
 
   componentDidMount () {
@@ -87,10 +80,16 @@ class BraveToday extends React.PureComponent<Props, State> {
   }
 
   render () {
-    const { feed } = this.props
+    const { feed, publishers } = this.props
 
     if (!feed) {
       // TODO: loading state
+      console.warn('today: no feed yet')
+      return null
+    }
+
+    if (!publishers) {
+      console.warn('today: no publishers yet')
       return null
     }
 
@@ -103,10 +102,11 @@ class BraveToday extends React.PureComponent<Props, State> {
           style={{ position: 'sticky', top: '100px' }}
         />
         <CardIntro />
-        {/* sponsors */}
-        <CardLarge content={[feed.featuredSponsor]} />
         {/* featured item */}
-        <CardLarge content={[feed.featuredArticle]} />
+        <CardLarge
+          content={[feed.featuredArticle]}
+          publishers={publishers}
+        />
         {/* deals */}
         <CardDeals content={feed.featuredDeals} />
         {
@@ -117,6 +117,7 @@ class BraveToday extends React.PureComponent<Props, State> {
                 <CardsGroup
                   key={`cards-group-key-${index}`}
                   content={feed.pages[index]}
+                  publishers={publishers}
                 />
               </>
             )

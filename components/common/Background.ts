@@ -8,8 +8,9 @@ const braveExtensionId = 'mnojpmjdmbbfmejpflffifhffcmidifd'
 export namespace MessageTypes {
   export enum Today {
     getFeed = 'getFeed',
+    getPublishers = 'getPublishers',
     indicatingOpen = 'indicatingOpen',
-    getFeedImageData = 'getFeedImageData',
+    getImageData = 'getImageData',
   }
 }
 export type Payload = any
