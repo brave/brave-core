@@ -286,23 +286,6 @@ export const ListItem = styled<StyleProps, 'li'>('li')`
   `};
 `
 
-export const AssetIconWrapper = styled<StyleProps, 'div'>('div')`
-  height: 18px;
-  width: 18px;
-  border-radius: 100px;
-  display: inline-block;
-  cursor: ${p => (p.onClick ? 'pointer' : 'initial')}
-  height: ${p => (p.$height ? p.$height : 'auto')};
-  background: ${p => (p.$bg ? p.$bg : '#fff')};
-  color: ${p => (p.textColor ? p.textColor : '#000')};
- `
-
-export const AssetIcon = styled<StyleProps, 'span'>('span')`
-  font-size: 0.9em;
-  margin-top: 0.3em;
-  margin-left: 0.2em;
- `
-
 export const BackArrow = styled<StyleProps, 'div'>('div')`
   width: 20px;
   cursor: pointer;

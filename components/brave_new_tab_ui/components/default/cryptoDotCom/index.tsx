@@ -15,8 +15,6 @@ import {
 import {
   ActionAnchor,
   ActionButton,
-  AssetIcon,
-  AssetIconWrapper,
   BackArrow,
   BasicBox,
   Box,
@@ -35,9 +33,9 @@ import {
 } from './style'
 import CryptoDotComLogo from './assets/cryptoDotCom-logo'
 import { CaratLeftIcon } from 'brave-ui/components/icons'
+import icons from './assets/icons'
 
 // Utils
-import cryptoColors from '../exchangeWidget/colors'
 import { getLocale } from '../../../../common/locale'
 
 interface State {
@@ -92,7 +90,7 @@ interface ChartConfig {
 
 class CryptoDotCom extends React.PureComponent<Props, State> {
   private refreshInterval: any
-  private topMovers: string[] = [ 'BTC', 'ETH', 'CRO' ]
+  private topMovers: string[] = Object.keys(currencyNames)
 
   constructor (props: Props) {
     super(props)
@@ -196,16 +194,15 @@ class CryptoDotCom extends React.PureComponent<Props, State> {
       .join('\n')
   }
 
-  renderIconAsset = (key: string, isDetail: boolean = false) => {
-    const iconBgColor = cryptoColors[key] || '#fff'
+  renderIconAsset = (key: string) => {
+    if (!(key in icons)) {
+      return null
+    }
 
     return (
-      <AssetIconWrapper $bg={iconBgColor} textColor='#000'>
-        <AssetIcon
-          isDetail={isDetail}
-          className={`crypto-icon icon-${key}`}
-        />
-      </AssetIconWrapper>
+      <>
+        <img width={25} src={icons[key]} />
+      </>
     )
   }
 
