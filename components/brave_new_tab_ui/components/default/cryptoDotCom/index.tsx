@@ -115,11 +115,15 @@ class CryptoDotCom extends React.PureComponent<Props, State> {
   }
 
   componentDidMount () {
-    this.checkSetRefreshInterval()
+    const { optInBTCPrice, optInMarkets } = this.props
+
+    if (optInBTCPrice || optInMarkets) {
+      this.checkSetRefreshInterval()
+    }
   }
 
   componentWillUnmount () {
-    clearInterval(this.refreshInterval)
+    this.clearIntervals()
   }
 
   checkSetRefreshInterval = () => {
@@ -133,6 +137,7 @@ class CryptoDotCom extends React.PureComponent<Props, State> {
 
   clearIntervals = () => {
     clearInterval(this.refreshInterval)
+    this.refreshInterval = null
   }
 
   setSelectedAsset = (asset: string) => {
@@ -143,8 +148,26 @@ class CryptoDotCom extends React.PureComponent<Props, State> {
 
   handleViewMarketsClick = async () => {
     this.props.onInteraction()
-    this.props.onOptInMarkets(true)
+    this.optInMarkets(true)
     await this.props.onViewMarketsRequested(this.topMovers)
+  }
+
+  optInMarkets = (show: boolean) => {
+    if (show) {
+      this.checkSetRefreshInterval()
+    } else {
+      if (!this.props.optInBTCPrice) {
+        this.clearIntervals()
+      }
+      this.setState({ selectedAsset: '' })
+    }
+
+    this.props.onOptInMarkets(show)
+  }
+
+  btcPriceOptIn = () => {
+    this.props.onBtcPriceOptIn()
+    this.checkSetRefreshInterval()
   }
 
   handleAssetDetailClick = async (asset: string) => {
@@ -207,7 +230,7 @@ class CryptoDotCom extends React.PureComponent<Props, State> {
   }
 
   renderIndexView () {
-    const { optInBTCPrice, onBtcPriceOptIn } = this.props
+    const { optInBTCPrice } = this.props
     const currency = 'BTC'
     const { price = null } = this.props.tickerPrices[currency] || {}
 
@@ -230,7 +253,7 @@ class CryptoDotCom extends React.PureComponent<Props, State> {
                 {(percentChange !== null) && <Text textColor={percentChange > 0 ? 'green' : 'red'}>{percentChange}%</Text>}
               </>
             ) : (
-              <PlainButton onClick={onBtcPriceOptIn} textColor='green' inline={true}>
+              <PlainButton onClick={this.btcPriceOptIn} textColor='green' inline={true}>
                 {getLocale('cryptoDotComWidgetShowPrice')}
               </PlainButton>
             )}
@@ -401,7 +424,7 @@ class CryptoDotCom extends React.PureComponent<Props, State> {
           {optInMarkets &&
               <BackArrow marketView={true}>
                 <CaratLeftIcon
-                  onClick={this.props.onOptInMarkets.bind(this, false)}
+                  onClick={this.optInMarkets.bind(this, false)}
                 />
               </BackArrow>
           }
