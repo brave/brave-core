@@ -16,9 +16,9 @@ import sys
 def Main(argv):
   parser = optparse.OptionParser('%prog [options]')
   parser.add_option('--version-directory-path', dest='version_directory', action='store',
-      type='string', default=None, help='The path of BinaryDelta binary.')
+      type='string', default=None, help='The path of version directory in framework bundle.')
   parser.add_option('--version', dest='version', action='store',
-      type='string', default=None, help='The path of sign_update binary')
+      type='string', default=None, help='brave version string')
   (options, args) = parser.parse_args(argv)
 
   if len(args) > 0:

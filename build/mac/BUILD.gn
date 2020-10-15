@@ -60,6 +60,7 @@ action("build_delta_installer") {
   args = [
     "--binary-delta", rebase_path("$root_out_dir/BinaryDelta"),
     "--sign-update", rebase_path("$root_out_dir/sign_update"),
+    "--sign-key", "$sparkle_eddsa_private_key",
     "--old-app", rebase_path("$root_out_dir/$last_chrome_installer"),
     "--new-app", rebase_path("$target_app_path"),
     "--output", rebase_path("$root_out_dir/patch.delta"),

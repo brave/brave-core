@@ -15,6 +15,8 @@ def Main(argv):
       type='string', default=None, help='The path of BinaryDelta binary.')
   parser.add_option('--sign-update', dest='sign_update_path', action='store',
       type='string', default=None, help='The path of sign_update binary')
+  parser.add_option('--sign-key', dest='sign_key', action='store',
+      type='string', default=None, help='The private key to sign patch file')
   parser.add_option('--old-app', dest='old_app_path', action='store',
       type='string', default=None, help='The path of old app bundle.')
   parser.add_option('--new-app', dest='new_app_path', action='store',
@@ -36,7 +38,7 @@ def Main(argv):
       raise e
 
   # sign patch file
-  command = [options.sign_update_path, options.output_path]
+  command = [options.sign_update_path, '-s', options.sign_key, options.output_path]
   try:
       subprocess.check_call(command)
   except subprocess.CalledProcessError as e:
