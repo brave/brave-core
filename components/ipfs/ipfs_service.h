@@ -85,6 +85,7 @@ class IpfsService : public KeyedService,
   void SetIpfsLaunchedForTest(bool launched);
   void SetServerEndpointForTest(const GURL& gurl);
   void SetSkipGetConnectedPeersCallbackForTest(bool skip);
+  void RunLaunchDaemonCallbackForTest(bool result);
 
  protected:
   base::FilePath GetIpfsExecutablePath();

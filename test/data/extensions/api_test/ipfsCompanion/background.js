@@ -32,9 +32,9 @@ function executableAvailableChangeIsReflected(expectedAvail) {
   })
 }
 
-function launchFail() {
+function launchSuccess() {
   chrome.ipfs.launch((success) => {
-    if (!success) {
+    if (success) {
       chrome.test.succeed();
     } else {
       chrome.test.fail();
@@ -42,9 +42,9 @@ function launchFail() {
   })
 }
 
-function shutdownFail() {
-  chrome.ipfs.launch((success) => {
-    if (!success) {
+function shutdownSuccess() {
+  chrome.ipfs.shutdown((success) => {
+    if (success) {
       chrome.test.succeed();
     } else {
       chrome.test.fail();
