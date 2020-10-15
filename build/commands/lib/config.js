@@ -347,15 +347,10 @@ Config.prototype.buildArgs = function () {
     // https://github.com/brave/brave-browser/issues/10334
     args.dcheck_always_on = this.isDebug()
 
-    // args.ios_chrome_links_with_material_components_framework = false
     args.ios_enable_content_widget_extension = false
     args.ios_enable_search_widget_extension = false
     args.ios_enable_share_extension = false
     args.ios_enable_credential_provider_extension = false
-
-  // # Label of the target providing implementation for AccountVerificationProvider.
-  // # Overridden when using the Google-internal repository to build Chrome on iOS.
-  // ios_account_verification_provider_target = "//ios/chrome/credential_provider_extension:account_verification_provider_implementation"
 
     delete args.safebrowsing_api_endpoint
     delete args.updater_prod_endpoint
