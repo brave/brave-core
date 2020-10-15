@@ -7,6 +7,9 @@
 // FIDO2 - WebAuthn
 var $<webauthn> = {}
 
+// Default string for toString outputs
+var defaultU2FString = "function () { [native code] }";
+
 // We use the define property method to avoid the properties from being changed
 // by default configurable, enumerable and writable properties of the object
 // are false
@@ -206,10 +209,16 @@ Object.defineProperty($<webauthn>, 'create', {
         $<webauthn>.reject[handle] = reject
         $<webauthn>.resolve[handle] = resolve
         window.top.$<webauthn>.caller[handle] = window
-        webkit.messageHandlers.U2F.postMessage({ name: 'fido2-create', data: cleanedArgs, handle: handle })
+        webkit.messageHandlers.$<handler>.postMessage({ name: 'fido2-create', data: cleanedArgs, handle: handle })
       }
     )
   }
+})
+
+Object.defineProperty($<webauthn>.create, 'toString', {
+    value: function () {
+        return defaultU2FString
+    }
 })
 
 Object.defineProperty($<webauthn>, 'get', {
@@ -222,10 +231,16 @@ Object.defineProperty($<webauthn>, 'get', {
         $<webauthn>.reject[handle] = reject
         $<webauthn>.resolve[handle] = resolve
         window.top.$<webauthn>.caller[handle] = window
-        webkit.messageHandlers.U2F.postMessage({ name: 'fido2-get', data: cleanedArgs, handle: handle })
+        webkit.messageHandlers.$<handler>.postMessage({ name: 'fido2-get', data: cleanedArgs, handle: handle })
       }
     )
   }
+})
+
+Object.defineProperty($<webauthn>.get, 'toString', {
+    value: function () {
+        return defaultU2FString
+    }
 })
 
 Object.defineProperty($<u2f>, 'sign', {
@@ -235,10 +250,16 @@ Object.defineProperty($<u2f>, 'sign', {
         const handle = $<u2f>.id++
         $<u2f>.resolve[handle] = callback
         window.top.$<u2f>.caller[handle] = window
-        webkit.messageHandlers.U2F.postMessage({ name: 'fido-sign', appId: appId, challenge: challenge, keys: JSON.stringify(registeredKeys), handle: handle })
+        webkit.messageHandlers.$<handler>.postMessage({ name: 'fido-sign', appId: appId, challenge: challenge, keys: JSON.stringify(registeredKeys), handle: handle })
       }
     )
   }
+})
+
+Object.defineProperty($<u2f>.sign, 'toString', {
+    value: function () {
+        return defaultU2FString
+    }
 })
                       
 // From: https://developer.mozilla.org/en-US/docs/Web/API/PublicKeyCredential/isUserVerifyingPlatformAuthenticatorAvailable
@@ -261,9 +282,15 @@ Object.defineProperty($<u2f>, 'register', {
         const handle = $<u2f>.id++
         $<u2f>.resolve[handle] = responseHandler
         window.top.$<u2f>.caller[handle] = window
-        webkit.messageHandlers.U2F.postMessage({ name: 'fido-register', appId: appId, requests: JSON.stringify(registerRequests), keys: JSON.stringify(registeredKeys), handle: handle })
+        webkit.messageHandlers.$<handler>.postMessage({ name: 'fido-register', appId: appId, requests: JSON.stringify(registerRequests), keys: JSON.stringify(registeredKeys), handle: handle })
       })
   }
+})
+
+Object.defineProperty($<u2f>.register, 'toString', {
+    value: function () {
+        return defaultU2FString
+    }
 })
 
 // FIDO2 APIs are not available in 3p iframes
