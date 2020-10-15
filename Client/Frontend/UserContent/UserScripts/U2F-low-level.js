@@ -5,6 +5,10 @@
 // FIDO - Low Level API
 var $<u2f> = window.u2f
 
+// Default string for toString outputs
+var defaultU2FString = "function () { [native code] }";
+
+
 try {
     var sameOrigin = (window.top.location.origin == window.location.origin)
     if (!sameOrigin) {
@@ -121,8 +125,14 @@ Object.defineProperty($<u2f>, 'getPortSingleton_', {
 
 $<u2f>.receiveChannel.port2.onmessage = function (e) {
   const handle = $<u2f>.low_level_id++
-  webkit.messageHandlers.U2F.postMessage({ name: 'fido-low-level', handle: handle, data: JSON.stringify(e.data) })
+  webkit.messageHandlers.$<handler>.postMessage({ name: 'fido-low-level', handle: handle, data: JSON.stringify(e.data) })
 }
+
+Object.defineProperty($<u2f>.receiveChannel.port2.onmessage, 'toString', {
+    value: function () {
+        return defaultU2FString
+    }
+})
 
 try {
     var sameOrigin = (window.top.location.origin == window.location.origin)
