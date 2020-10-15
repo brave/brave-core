@@ -41,7 +41,7 @@
 #endif
 
 #if BUILDFLAG(BRAVE_WALLET_ENABLED)
-#include "brave/components/brave_wallet/common/brave_wallet_constants.h"
+#include "brave/components/brave_wallet/brave_wallet_constants.h"
 #endif
 
 BraveDefaultExtensionsHandler::BraveDefaultExtensionsHandler()

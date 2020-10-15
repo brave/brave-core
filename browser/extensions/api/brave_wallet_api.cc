@@ -14,8 +14,8 @@
 #include "brave/browser/infobars/crypto_wallets_infobar_delegate.h"
 #include "brave/browser/profiles/profile_util.h"
 #include "brave/common/extensions/api/brave_wallet.h"
-#include "brave/components/brave_wallet/common/brave_wallet_constants.h"
-#include "brave/components/brave_wallet/common/pref_names.h"
+#include "brave/components/brave_wallet/brave_wallet_constants.h"
+#include "brave/components/brave_wallet/pref_names.h"
 #include "brave/grit/brave_generated_resources.h"
 #include "chrome/browser/extensions/api/tabs/tabs_constants.h"
 #include "chrome/browser/extensions/extension_tab_util.h"
@@ -27,7 +27,7 @@
 #include "extensions/browser/extension_util.h"
 #include "extensions/common/constants.h"
 #include "brave/browser/brave_wallet/brave_wallet_service_factory.h"
-#include "brave/components/brave_wallet/browser/brave_wallet_service.h"
+#include "brave/components/brave_wallet/brave_wallet_service.h"
 #include "ui/base/l10n/l10n_util.h"
 
 namespace {
