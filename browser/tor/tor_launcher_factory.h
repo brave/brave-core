@@ -15,7 +15,6 @@
 #include "base/memory/weak_ptr.h"
 #include "base/observer_list.h"
 #include "brave/browser/tor/tor_control.h"
-#include "brave/common/tor/tor_common.h"
 #include "brave/components/services/tor/public/interfaces/tor.mojom.h"
 #include "mojo/public/cpp/bindings/remote.h"
 
@@ -28,9 +27,8 @@ class TorLauncherFactory : public tor::TorControl::Delegate {
   static TorLauncherFactory* GetInstance();
 
   void Init();
-  void LaunchTorProcess(const tor::TorConfig& config);
+  void LaunchTorProcess(const tor::mojom::TorConfig& config);
   void KillTorProcess();
-  const tor::TorConfig& GetTorConfig() const { return config_; }
   int64_t GetTorPid() const { return tor_pid_; }
   bool IsTorConnected() const { return is_connected_; }
 
@@ -58,8 +56,6 @@ class TorLauncherFactory : public tor::TorControl::Delegate {
 
   void OnTorControlCheckComplete();
 
-  bool SetConfig(const tor::TorConfig& config);
-
   void OnTorLauncherCrashed();
   void OnTorCrashed(int64_t pid);
   void OnTorLaunched(bool result, int64_t pid);
@@ -78,7 +74,7 @@ class TorLauncherFactory : public tor::TorControl::Delegate {
 
   int64_t tor_pid_;
 
-  tor::TorConfig config_;
+  tor::mojom::TorConfig config_;
 
   base::ObserverList<tor::TorProfileServiceImpl> observers_;
 

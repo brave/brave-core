@@ -55,6 +55,9 @@ class TorProfileServiceImpl : public TorProfileService,
  private:
   void LaunchTor();
 
+  base::FilePath GetTorDataPath();
+  base::FilePath GetTorWatchPath();
+
   // BraveTorClientUpdater::Observer
   void OnExecutableReady(const base::FilePath& path) override;
 

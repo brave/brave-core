@@ -10,6 +10,7 @@
 #include <utility>
 
 #include "base/bind.h"
+#include "base/path_service.h"
 #include "base/task/post_task.h"
 #include "brave/browser/brave_browser_process_impl.h"
 #include "brave/browser/tor/tor_launcher_service_observer.h"
@@ -17,6 +18,7 @@
 #include "brave/common/tor/tor_constants.h"
 #include "brave/net/proxy_resolution/proxy_config_service_tor.h"
 #include "chrome/browser/profiles/profile.h"
+#include "chrome/common/chrome_paths.h"
 #include "content/public/browser/browser_task_traits.h"
 #include "content/public/browser/browser_thread.h"
 #include "content/public/browser/navigation_controller.h"
@@ -78,9 +80,7 @@ class TorProxyLookupClient : public network::mojom::ProxyLookupClient {
   explicit TorProxyLookupClient(NewTorCircuitCallback callback)
       : callback_(std::move(callback)) {}
 
-  ~TorProxyLookupClient() override {
-    receiver_.reset();
-  }
+  ~TorProxyLookupClient() override { receiver_.reset(); }
 
   mojo::PendingRemote<network::mojom::ProxyLookupClient>
   GetProxyLookupClient() {
@@ -96,8 +96,8 @@ class TorProxyLookupClient : public network::mojom::ProxyLookupClient {
 
   // network::mojom::ProxyLookupClient:
   void OnProxyLookupComplete(
-        int32_t net_error,
-        const base::Optional<net::ProxyInfo>& proxy_info) override {
+      int32_t net_error,
+      const base::Optional<net::ProxyInfo>& proxy_info) override {
     std::move(callback_).Run(proxy_info);
     delete this;
   }
@@ -109,9 +109,9 @@ class TorProxyLookupClient : public network::mojom::ProxyLookupClient {
 };
 
 void OnNewTorCircuit(std::unique_ptr<NewTorCircuitTracker> tracker,
-                            const base::Optional<net::ProxyInfo>& proxy_info) {
-  tracker->NewIdentityLoaded(
-      proxy_info.has_value() && !proxy_info->is_direct());
+                     const base::Optional<net::ProxyInfo>& proxy_info) {
+  tracker->NewIdentityLoaded(proxy_info.has_value() &&
+                             !proxy_info->is_direct());
 }
 
 }  // namespace
@@ -152,8 +152,23 @@ void TorProfileServiceImpl::OnExecutableReady(const base::FilePath& path) {
 }
 
 void TorProfileServiceImpl::LaunchTor() {
-  tor::TorConfig config(GetTorExecutablePath());
+  tor::mojom::TorConfig config(GetTorExecutablePath(), GetTorDataPath(),
+                               GetTorWatchPath());
   tor_launcher_factory_->LaunchTorProcess(config);
+}
+base::FilePath TorProfileServiceImpl::GetTorDataPath() {
+  base::FilePath user_data_dir;
+  base::PathService::Get(chrome::DIR_USER_DATA, &user_data_dir);
+  DCHECK(!user_data_dir.empty());
+  return user_data_dir.Append(FILE_PATH_LITERAL("tor"))
+      .Append(FILE_PATH_LITERAL("data"));
+}
+base::FilePath TorProfileServiceImpl::GetTorWatchPath() {
+  base::FilePath user_data_dir;
+  base::PathService::Get(chrome::DIR_USER_DATA, &user_data_dir);
+  DCHECK(!user_data_dir.empty());
+  return user_data_dir.Append(FILE_PATH_LITERAL("tor"))
+      .Append(FILE_PATH_LITERAL("watch"));
 }
 
 void TorProfileServiceImpl::SetNewTorCircuit(WebContents* tab) {

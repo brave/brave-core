@@ -114,9 +114,9 @@ void TorLauncherImpl::Shutdown() {
   Cleanup();
 }
 
-void TorLauncherImpl::Launch(const TorConfig& config,
+void TorLauncherImpl::Launch(mojom::TorConfigPtr config,
                              LaunchCallback callback) {
-  base::CommandLine args(config.binary_path());
+  base::CommandLine args(config->binary_path);
   args.AppendArg("--ignore-missing-torrc");
   args.AppendArg("-f");
   args.AppendArg("/nonexistent");
@@ -126,7 +126,7 @@ void TorLauncherImpl::Launch(const TorConfig& config,
   args.AppendArg("auto");
   args.AppendArg("--TruncateLogFile");
   args.AppendArg("1");
-  base::FilePath tor_data_path = config.tor_data_path();
+  base::FilePath tor_data_path = config->tor_data_path;
   if (!tor_data_path.empty()) {
     if (!base::DirectoryExists(tor_data_path))
       base::CreateDirectory(tor_data_path);
@@ -138,7 +138,7 @@ void TorLauncherImpl::Launch(const TorConfig& config,
     args.AppendArgNative(log_file +
                          tor_data_path.AppendASCII("tor.log").value());
   }
-  base::FilePath tor_watch_path = config.tor_watch_path();
+  base::FilePath tor_watch_path = config->tor_watch_path;
   if (!tor_watch_path.empty()) {
     if (!base::DirectoryExists(tor_watch_path))
       base::CreateDirectory(tor_watch_path);

@@ -11,9 +11,12 @@
 
 #include "base/macros.h"
 #include "base/observer_list.h"
-#include "brave/common/tor/tor_common.h"
 #include "components/keyed_service/core/keyed_service.h"
 #include "url/gurl.h"
+
+namespace base {
+class FilePath;
+}
 
 namespace content {
 class WebContents;

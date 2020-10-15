@@ -68,14 +68,7 @@ void TorLauncherFactory::Init() {
 
 TorLauncherFactory::~TorLauncherFactory() {}
 
-bool TorLauncherFactory::SetConfig(const tor::TorConfig& config) {
-  if (config.empty())
-    return false;
-  config_ = config;
-  return true;
-}
-
-void TorLauncherFactory::LaunchTorProcess(const tor::TorConfig& config) {
+void TorLauncherFactory::LaunchTorProcess(const tor::mojom::TorConfig& config) {
   DCHECK_CURRENTLY_ON(BrowserThread::UI);
   if (g_prevent_tor_launch_for_tests) {
     VLOG(1) << "Skipping the tor process launch in tests.";
@@ -93,10 +86,11 @@ void TorLauncherFactory::LaunchTorProcess(const tor::TorConfig& config) {
     LOG(WARNING) << "tor process(" << tor_pid_ << ") is running";
     return;
   }
-  if (!SetConfig(config)) {
-    LOG(WARNING) << "config is empty";
-    return;
-  }
+
+  DCHECK(!config.binary_path.empty());
+  DCHECK(!config.tor_data_path.empty());
+  DCHECK(!config.tor_watch_path.empty());
+  config_ = config;
 
   // Tor launcher could be null if we created Tor process and killed it
   // through KillTorProcess function before. So we need to initialize
@@ -107,7 +101,7 @@ void TorLauncherFactory::LaunchTorProcess(const tor::TorConfig& config) {
 
   // Launch tor after cleanup is done
   control_->PreStartCheck(
-      config_.tor_watch_path(),
+      config_.tor_watch_path,
       base::BindOnce(&TorLauncherFactory::OnTorControlCheckComplete,
                      weak_ptr_factory_.GetWeakPtr()));
 }
@@ -115,7 +109,8 @@ void TorLauncherFactory::LaunchTorProcess(const tor::TorConfig& config) {
 void TorLauncherFactory::OnTorControlCheckComplete() {
   DCHECK_CURRENTLY_ON(BrowserThread::UI);
   if (tor_launcher_.is_bound()) {
-    tor_launcher_->Launch(config_,
+    auto config = tor::mojom::TorConfig::New(config_);
+    tor_launcher_->Launch(std::move(config),
                           base::BindOnce(&TorLauncherFactory::OnTorLaunched,
                                          weak_ptr_factory_.GetWeakPtr()));
   } else {
@@ -251,7 +246,7 @@ void TorLauncherFactory::KillOldTorProcess(base::ProcessId id) {
 void TorLauncherFactory::RelaunchTor() {
   Init();
   control_->PreStartCheck(
-      config_.tor_watch_path(),
+      config_.tor_watch_path,
       base::BindOnce(&TorLauncherFactory::OnTorControlCheckComplete,
                      weak_ptr_factory_.GetWeakPtr()));
 }

@@ -1,9 +1,5 @@
-import("//mojo/public/tools/bindings/mojom.gni")
-
 source_set("tor") {
   sources = [
-    "tor_common.cc",
-    "tor_common.h",
     "tor_constants.cc",
     "tor_constants.h",
     "tor_control_event.cc",
@@ -14,7 +10,6 @@ source_set("tor") {
   deps = [
     ":pref_names",
     "//base",
-    "//brave/components/services/tor/public/interfaces",
     "//chrome/common:constants",
     "//url:url",
   ]
