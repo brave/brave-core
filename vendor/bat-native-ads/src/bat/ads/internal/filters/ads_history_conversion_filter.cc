@@ -26,8 +26,8 @@ std::deque<AdHistory> AdsHistoryConversionFilter::Apply(
 }
 
 bool AdsHistoryConversionFilter::ShouldFilterConfirmationType(
-    const ConfirmationType& type) const {
-  switch (type.value()) {
+    const ConfirmationType& confirmation_type) const {
+  switch (confirmation_type.value()) {
     case ConfirmationType::kClicked:
     case ConfirmationType::kViewed: {
       return false;

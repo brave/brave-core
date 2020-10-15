@@ -3,7 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#include "bat/ads/internal/ad_events/ad_notification_event_viewed.h"
+#include "bat/ads/internal/ad_events/ad_notifications/ad_notification_event_viewed.h"
 
 #include "bat/ads/confirmation_type.h"
 #include "bat/ads/internal/ads_impl.h"
@@ -25,13 +25,14 @@ AdNotificationEventViewed::AdNotificationEventViewed(
 AdNotificationEventViewed::~AdNotificationEventViewed() = default;
 
 void AdNotificationEventViewed::Trigger(
-    const AdNotificationInfo& ad_notification) {
-  BLOG(3, "Viewed ad notification with uuid " << ad_notification.uuid << " and "
-      << ad_notification.creative_instance_id << " creative instance id");
+    const AdNotificationInfo& ad) {
+  BLOG(3, "Viewed ad notification with uuid " << ad.uuid
+      << " and creative instance id " << ad.creative_instance_id);
 
-  ads_->AppendAdNotificationToHistory(ad_notification, kConfirmationType);
+  ads_->AppendAdNotificationToHistory(ad, kConfirmationType);
 
-  ads_->get_confirmations()->ConfirmAd(ad_notification, kConfirmationType);
+  ads_->get_confirmations()->ConfirmAd(ad.creative_instance_id,
+      kConfirmationType);
 }
 
 }  // namespace ads

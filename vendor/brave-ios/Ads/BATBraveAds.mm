@@ -488,11 +488,19 @@ BATClassAdsBridge(BOOL, isDebug, setDebug, _is_debug)
   ads->OnTabClosed((int32_t)tabId);
 }
 
-- (void)reportAdNotificationEvent:(NSString *)notificationUuid eventType:(BATAdNotificationEventType)eventType
+- (void)reportAdNotificationEvent:(NSString *)uuid eventType:(BATAdNotificationEventType)eventType
 {
   if (![self isAdsServiceRunning]) { return; }
-  ads->OnAdNotificationEvent(notificationUuid.UTF8String,
+  ads->OnAdNotificationEvent(uuid.UTF8String,
                              static_cast<ads::AdNotificationEventType>(eventType));
+}
+
+- (void)reportNewTabPageAdEvent:(NSString *)wallpaperId creativeInstanceId:(NSString *)creativeInstanceId eventType:(BATNewTabPageAdEventType)eventType
+{
+  if (![self isAdsServiceRunning]) { return; }
+  ads->OnNewTabPageAdEvent(wallpaperId.UTF8String,
+                           creativeInstanceId.UTF8String,
+                           static_cast<ads::NewTabPageAdEventType>(eventType));
 }
 
 - (void)reconcileAdRewards

@@ -58,15 +58,15 @@ void RedeemUnblindedToken::set_delegate(
 }
 
 void RedeemUnblindedToken::Redeem(
-    const AdInfo& ad,
+    const std::string& creative_instance_id,
     const ConfirmationType confirmation_type) {
   BLOG(1, "Redeem token");
 
   if (ads_->get_confirmations()->get_unblinded_tokens()->IsEmpty()) {
     BLOG(1, "There are no unblinded tokens to redeem");
 
-    BLOG(3, "Failed to redeem unblinded token for ad with "
-        << ad.creative_instance_id << " creative instance id");
+    BLOG(3, "Failed to redeem unblinded token with creative instance id "
+        << creative_instance_id);
 
     return;
   }
@@ -76,8 +76,8 @@ void RedeemUnblindedToken::Redeem(
   ads_->get_confirmations()->get_unblinded_tokens()->
       RemoveToken(unblinded_token);
 
-  const ConfirmationInfo confirmation =
-      CreateConfirmationInfo(ad, confirmation_type, unblinded_token);
+  const ConfirmationInfo confirmation = CreateConfirmationInfo(
+      creative_instance_id, confirmation_type, unblinded_token);
   CreateConfirmation(confirmation);
 
   ads_->get_refill_unblinded_tokens()->MaybeRefill();
@@ -372,16 +372,13 @@ void RedeemUnblindedToken::CreateAndAppendNewConfirmationToRetryQueue(
     return;
   }
 
-  AdInfo ad;
-  ad.creative_instance_id = confirmation.creative_instance_id;
-
   const privacy::UnblindedTokenInfo unblinded_token =
       ads_->get_confirmations()->get_unblinded_tokens()->GetToken();
   ads_->get_confirmations()->get_unblinded_tokens()->
       RemoveToken(unblinded_token);
 
-  const ConfirmationInfo new_confirmation =
-      CreateConfirmationInfo(ad, confirmation.type, unblinded_token);
+  const ConfirmationInfo new_confirmation = CreateConfirmationInfo(
+      confirmation.creative_instance_id, confirmation.type, unblinded_token);
 
   AppendConfirmationToRetryQueue(new_confirmation);
 
@@ -394,15 +391,15 @@ void RedeemUnblindedToken::AppendConfirmationToRetryQueue(
 }
 
 ConfirmationInfo RedeemUnblindedToken::CreateConfirmationInfo(
-    const AdInfo& ad,
+    const std::string& creative_instance_id,
     const ConfirmationType confirmation_type,
     const privacy::UnblindedTokenInfo& unblinded_token) {
-  DCHECK(!ad.creative_instance_id.empty());
+  DCHECK(!creative_instance_id.empty());
 
   ConfirmationInfo confirmation;
 
   confirmation.id = base::GenerateGUID();
-  confirmation.creative_instance_id = ad.creative_instance_id;
+  confirmation.creative_instance_id = creative_instance_id;
   confirmation.type = confirmation_type;
   confirmation.unblinded_token = unblinded_token;
 

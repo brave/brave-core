@@ -23,7 +23,7 @@ class AdsHistoryConversionFilter : public AdsHistoryFilter {
 
  private:
   bool ShouldFilterConfirmationType(
-      const ConfirmationType& type) const;
+      const ConfirmationType& confirmation_type) const;
 };
 
 }  // namespace ads

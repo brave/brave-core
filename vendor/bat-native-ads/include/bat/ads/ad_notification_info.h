@@ -25,7 +25,6 @@ struct ADS_EXPORT AdNotificationInfo : AdInfo {
       const std::string& json);
 
   std::string uuid;
-  std::string parent_uuid;
   std::string title;
   std::string body;
 };

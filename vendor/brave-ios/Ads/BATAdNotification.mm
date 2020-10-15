@@ -8,7 +8,6 @@
 
 @interface BATAdNotification ()
 @property (nonatomic, copy) NSString *uuid;
-@property (nonatomic, copy) NSString *parentUuid;
 @property (nonatomic, copy) NSString *creativeInstanceID;
 @property (nonatomic, copy) NSString *creativeSetID;
 @property (nonatomic, copy) NSString *campaignID;
@@ -25,7 +24,6 @@
 {
   if ((self = [super init])) {
     self.uuid = [NSString stringWithUTF8String:info.uuid.c_str()];
-    self.parentUuid = [NSString stringWithUTF8String:info.parent_uuid.c_str()];
     self.creativeInstanceID = [NSString stringWithUTF8String:info.creative_instance_id.c_str()];
     self.creativeSetID = [NSString stringWithUTF8String:info.creative_set_id.c_str()];
     self.campaignID = [NSString stringWithUTF8String:info.campaign_id.c_str()];

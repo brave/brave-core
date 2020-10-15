@@ -192,7 +192,7 @@ void AdConversions::OnGetAdConversions(
 
   AdConversionList ad_conversions;
 
-  for (auto const& record : response->result->get_records()) {
+  for (const auto& record : response->result->get_records()) {
     AdConversionInfo info = GetAdConversionFromRecord(record.get());
 
     ad_conversions.emplace_back(info);
@@ -240,14 +240,14 @@ void AdConversions::CreateIndexV1(
     DBTransaction* transaction) {
   DCHECK(transaction);
 
-  CreateIndex(transaction, get_table_name(), "creative_set_id");
+  util::CreateIndex(transaction, get_table_name(), "creative_set_id");
 }
 
 void AdConversions::MigrateToV1(
     DBTransaction* transaction) {
   DCHECK(transaction);
 
-  Drop(transaction, get_table_name());
+  util::Drop(transaction, get_table_name());
 
   CreateTableV1(transaction);
   CreateIndexV1(transaction);

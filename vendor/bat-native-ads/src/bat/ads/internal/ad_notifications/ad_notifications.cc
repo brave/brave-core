@@ -24,7 +24,6 @@ const char kNotificationsFilename[] = "notifications.json";
 const char kNotificationsListKey[] = "notifications";
 
 const char kNotificationUuidKey[] = "id";
-const char kNotificationParentUuidKey[] = "parent_id";
 const char kNotificationCreativeInstanceIdKey[] = "uuid";
 const char kNotificationCreativeSetIdKey[] = "creative_set_id";
 const char kNotificationCampaignIdKey[] = "campaign_id";
@@ -183,12 +182,6 @@ bool AdNotifications::GetNotificationFromDictionary(
     return false;
   }
 
-  if (!GetParentUuidFromDictionary(dictionary,
-      &notification_info.parent_uuid)) {
-    // Migrate for legacy notifications
-    notification_info.parent_uuid = "";
-  }
-
   if (!GetCreativeInstanceIdFromDictionary(dictionary,
       &notification_info.creative_instance_id)) {
     return false;
@@ -234,12 +227,6 @@ bool AdNotifications::GetUuidFromDictionary(
     base::DictionaryValue* dictionary,
     std::string* value) const {
   return GetStringFromDictionary(kNotificationUuidKey, dictionary, value);
-}
-
-bool AdNotifications::GetParentUuidFromDictionary(
-    base::DictionaryValue* dictionary,
-    std::string* value) const {
-  return GetStringFromDictionary(kNotificationParentUuidKey, dictionary, value);
 }
 
 bool AdNotifications::GetCreativeInstanceIdFromDictionary(
@@ -430,8 +417,6 @@ base::Value AdNotifications::GetAsList() {
 
     dictionary.SetKey(kNotificationUuidKey,
         base::Value(ad_notification.uuid));
-    dictionary.SetKey(kNotificationParentUuidKey,
-        base::Value(ad_notification.parent_uuid));
     dictionary.SetKey(kNotificationCreativeInstanceIdKey,
         base::Value(ad_notification.creative_instance_id));
     dictionary.SetKey(kNotificationCreativeSetIdKey,

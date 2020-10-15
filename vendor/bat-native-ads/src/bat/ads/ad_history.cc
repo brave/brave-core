@@ -21,8 +21,6 @@ AdHistory::~AdHistory() = default;
 bool AdHistory::operator==(
     const AdHistory& rhs) const {
   return timestamp_in_seconds == rhs.timestamp_in_seconds &&
-      uuid == rhs.uuid &&
-      parent_uuid == rhs.parent_uuid &&
       ad_content == rhs.ad_content &&
       category_content == rhs.category_content;
 }
@@ -54,17 +52,6 @@ Result AdHistory::FromJson(
     timestamp_in_seconds = migrated_timestamp_in_seconds;
   }
 
-  if (document.HasMember("uuid")) {
-    uuid = document["uuid"].GetString();
-  }
-
-  if (document.HasMember("parent_uuid")) {
-    parent_uuid = document["parent_uuid"].GetString();
-  } else {
-    // Migration for legacy ad history
-    parent_uuid = "";
-  }
-
   if (document.HasMember("ad_content")) {
     rapidjson::StringBuffer buffer;
     rapidjson::Writer<rapidjson::StringBuffer> writer(buffer);
@@ -93,12 +80,6 @@ void SaveToJson(JsonWriter* writer, const AdHistory& history) {
 
   writer->String("timestamp_in_seconds");
   writer->Uint64(history.timestamp_in_seconds);
-
-  writer->String("uuid");
-  writer->String(history.uuid.c_str());
-
-  writer->String("parent_uuid");
-  writer->String(history.parent_uuid.c_str());
 
   writer->String("ad_content");
   SaveToJson(writer, history.ad_content);

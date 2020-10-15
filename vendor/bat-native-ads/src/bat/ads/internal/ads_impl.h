@@ -13,13 +13,16 @@
 #include <string>
 #include <vector>
 
+#include "bat/ads/ad_info.h"
 #include "bat/ads/ads.h"
+#include "bat/ads/new_tab_page_ad_info.h"
 #include "bat/ads/internal/bundle/creative_ad_notification_info.h"
+#include "bat/ads/internal/bundle/creative_new_tab_page_ad_info.h"
 #include "bat/ads/internal/classification/page_classifier/page_classifier.h"
 #include "bat/ads/internal/classification/purchase_intent_classifier/purchase_intent_classifier.h"
 #include "bat/ads/internal/client/client.h"
 #include "bat/ads/internal/confirmations/confirmation_info.h"
-#include "bat/ads/internal/database/tables/creative_ad_notifications_database_table.h"
+#include "bat/ads/internal/database/database_initialize.h"
 #include "bat/ads/internal/server/redeem_unblinded_payment_tokens/redeem_unblinded_payment_tokens_delegate.h"
 #include "bat/ads/internal/server/redeem_unblinded_token/redeem_unblinded_token_delegate.h"
 #include "bat/ads/internal/server/refill_unblinded_tokens/refill_unblinded_tokens_delegate.h"
@@ -172,6 +175,18 @@ class AdsImpl
       const std::string& uuid,
       const AdNotificationEventType event_type) override;
 
+  void OnNewTabPageAdEvent(
+      const std::string& wallpaper_id,
+      const std::string& creative_instance_id,
+      const NewTabPageAdEventType event_type) override;
+
+  void OnGetCreativeNewTabPageAd(
+      const std::string& wallpaper_id,
+      const NewTabPageAdEventType event_type,
+      const Result result,
+      const std::string& creative_instance_id,
+      const CreativeNewTabPageAdInfo& creative_new_tab_page_ad);
+
   bool ShouldNotDisturb() const;
 
   int32_t get_active_tab_id() const;
@@ -237,7 +252,7 @@ class AdsImpl
       const std::string& url,
       const std::string& content) override;
 
-  void MaybeSustainAdNotification(
+  void MaybeSustainAd(
       const int32_t tab_id,
       const std::string& url);
 
@@ -284,7 +299,6 @@ class AdsImpl
       const CreativeAdNotificationInfo& info);
   bool ShowAdNotification(
       const CreativeAdNotificationInfo& info);
-  bool IsAllowedToServeAdNotifications();
 
   Timer deliver_ad_notification_timer_;
   void MaybeStartDeliveringAdNotifications();
@@ -298,13 +312,19 @@ class AdsImpl
   void RemoveAllAdNotificationsAfterUpdate();
   #endif
 
-  const AdNotificationInfo& get_last_shown_ad_notification() const;
-  void set_last_shown_ad_notification(
-      const AdNotificationInfo& info);
+  void set_last_clicked_ad(
+      const AdInfo& ad);
 
   void AppendAdNotificationToHistory(
       const AdNotificationInfo& info,
       const ConfirmationType& confirmation_type);
+
+  void AppendNewTabPageAdToHistory(
+      const NewTabPageAdInfo& info,
+      const ConfirmationType& confirmation_type);
+
+  bool IsAdAllowed(
+      const std::vector<std::unique_ptr<PermissionRule>>& permission_rules);
 
   // Ad rewards
   void ReconcileAdRewards() override;
@@ -327,20 +347,24 @@ class AdsImpl
   std::string active_tab_url_;
   std::string previous_tab_url_;
 
-  AdNotificationInfo last_shown_ad_notification_;
   CreativeAdNotificationInfo last_shown_creative_ad_notification_;
-  Timer sustain_ad_notification_interaction_timer_;
-  std::set<int32_t> sustained_ad_notifications_;
-  std::set<int32_t> sustaining_ad_notifications_;
-  void MaybeStartSustainingAdNotificationInteraction(
+
+  AdInfo last_clicked_ad_;
+  Timer sustain_ad_interaction_timer_;
+  std::set<int32_t> sustained_ads_;
+  std::set<int32_t> sustaining_ads_;
+  void MaybeStartSustainingAdInteraction(
       const int32_t tab_id,
       const std::string& url);
-  void SustainAdNotificationInteractionIfNeeded(
+  void SustainAdInteractionIfNeeded(
       const int32_t tab_id,
       const std::string& url);
 
-  std::vector<std::unique_ptr<PermissionRule>> CreatePermissionRules() const;
-  std::vector<std::unique_ptr<ExclusionRule>> CreateExclusionRules() const;
+  std::vector<std::unique_ptr<PermissionRule>>
+      CreateAdNotificationPermissionRules() const;
+
+  std::vector<std::unique_ptr<ExclusionRule>>
+      CreateAdNotificationExclusionRules() const;
 
   WalletInfo wallet_;
 

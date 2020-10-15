@@ -35,6 +35,22 @@ class Bundle {
   uint64_t GetCatalogVersion() const;
   uint64_t GetCatalogPing() const;
 
+  void DeleteCreativeAdNotifications();
+  void DeleteCreativeNewTabPageAds();
+  void DeleteCampaigns();
+  void DeleteCategories();
+  void DeleteCreativeAds();
+  void DeleteGeoTargets();
+
+  void SaveCreativeAdNotifications(
+      const CreativeAdNotificationList& creative_ad_notifications);
+
+  void SaveCreativeNewTabPageAds(
+      const CreativeNewTabPageAdList& creative_new_tab_page_ads);
+
+  void SaveAdConversions(
+      const AdConversionList& ad_conversions);
+
   bool IsOlderThanOneDay() const;
 
   bool Exists() const;
@@ -45,8 +61,23 @@ class Bundle {
   bool DoesOsSupportCreativeSet(
       const CatalogCreativeSetInfo& creative_set);
 
+  void OnCreativeAdNotificationsDeleted(
+      const Result result);
+  void OnCreativeNewTabPageAdsDeleted(
+      const Result result);
+  void OnCampaignsDeleted(
+      const Result result);
+  void OnCategoriesDeleted(
+      const Result result);
+  void OnCreativeAdsDeleted(
+      const Result result);
+  void OnGeoTargetsDeleted(
+      const Result result);
   void OnCreativeAdNotificationsSaved(
       const Result result);
+  void OnCreativeNewTabPageAdsSaved(
+      const Result result);
+
   void OnPurgedExpiredAdConversions(
       const Result result);
   void OnAdConversionsSaved(

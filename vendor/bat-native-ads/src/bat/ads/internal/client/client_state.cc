@@ -139,20 +139,21 @@ Result ClientState::FromJson(
         timestamps_in_seconds.push_back(migrated_timestamp_in_seconds);
       }
 
-      std::string creative_set_id = creative_set.name.GetString();
+      const std::string creative_set_id = creative_set.name.GetString();
       creative_set_history.insert({creative_set_id, timestamps_in_seconds});
     }
   }
 
   if (document.HasMember("adConversionHistory")) {
-    for (const auto& conversion : document["adConversionHistory"].GetObject()) {
+    for (const auto& ad_conversion :
+        document["adConversionHistory"].GetObject()) {
       std::deque<uint64_t> timestamps_in_seconds;
 
-      for (const auto& timestamp_in_seconds : conversion.value.GetArray()) {
+      for (const auto& timestamp_in_seconds : ad_conversion.value.GetArray()) {
         timestamps_in_seconds.push_back(timestamp_in_seconds.GetUint64());
       }
 
-      std::string creative_set_id = conversion.name.GetString();
+      const std::string creative_set_id = ad_conversion.name.GetString();
       ad_conversion_history.insert({creative_set_id, timestamps_in_seconds});
     }
   }
@@ -167,8 +168,36 @@ Result ClientState::FromJson(
         timestamps_in_seconds.push_back(migrated_timestamp_in_seconds);
       }
 
-      std::string campaign_id = campaign.name.GetString();
+      const std::string campaign_id = campaign.name.GetString();
       campaign_history.insert({campaign_id, timestamps_in_seconds});
+    }
+  }
+
+  if (document.HasMember("landedHistory")) {
+    for (const auto& landed : document["landedHistory"].GetObject()) {
+      std::deque<uint64_t> timestamps_in_seconds;
+
+      for (const auto& timestamp_in_seconds : landed.value.GetArray()) {
+        timestamps_in_seconds.push_back(timestamp_in_seconds.GetUint64());
+      }
+
+      const std::string campaign_id = landed.name.GetString();
+      landed_history.insert({campaign_id, timestamps_in_seconds});
+    }
+  }
+
+  if (document.HasMember("newTabPageAdHistory")) {
+    for (const auto& new_tab_page_ad :
+        document["newTabPageAdHistory"].GetObject()) {
+      std::deque<uint64_t> timestamps_in_seconds;
+
+      for (const auto& timestamp_in_seconds :
+          new_tab_page_ad.value.GetArray()) {
+        timestamps_in_seconds.push_back(timestamp_in_seconds.GetUint64());
+      }
+
+      const std::string uuid = new_tab_page_ad.name.GetString();
+      new_tab_page_ad_history.insert({uuid, timestamps_in_seconds});
     }
   }
 
@@ -264,10 +293,10 @@ void SaveToJson(JsonWriter* writer, const ClientState& state) {
 
   writer->String("creativeSetHistory");
   writer->StartObject();
-  for (const auto& creative_set_id : state.creative_set_history) {
-    writer->String(creative_set_id.first.c_str());
+  for (const auto& creative_set : state.creative_set_history) {
+    writer->String(creative_set.first.c_str());
     writer->StartArray();
-    for (const auto& timestamp_in_seconds : creative_set_id.second) {
+    for (const auto& timestamp_in_seconds : creative_set.second) {
       writer->Uint64(timestamp_in_seconds);
     }
     writer->EndArray();
@@ -276,10 +305,10 @@ void SaveToJson(JsonWriter* writer, const ClientState& state) {
 
   writer->String("adConversionHistory");
   writer->StartObject();
-  for (const auto& creative_set_id : state.ad_conversion_history) {
-    writer->String(creative_set_id.first.c_str());
+  for (const auto& ad_conversion : state.ad_conversion_history) {
+    writer->String(ad_conversion.first.c_str());
     writer->StartArray();
-    for (const auto& timestamp_in_seconds : creative_set_id.second) {
+    for (const auto& timestamp_in_seconds : ad_conversion.second) {
       writer->Uint64(timestamp_in_seconds);
     }
     writer->EndArray();
@@ -292,6 +321,30 @@ void SaveToJson(JsonWriter* writer, const ClientState& state) {
     writer->String(campaign_id.first.c_str());
     writer->StartArray();
     for (const auto& timestamp_in_seconds : campaign_id.second) {
+      writer->Uint64(timestamp_in_seconds);
+    }
+    writer->EndArray();
+  }
+  writer->EndObject();
+
+  writer->String("landedHistory");
+  writer->StartObject();
+  for (const auto& landed : state.landed_history) {
+    writer->String(landed.first.c_str());
+    writer->StartArray();
+    for (const auto& timestamp_in_seconds : landed.second) {
+      writer->Uint64(timestamp_in_seconds);
+    }
+    writer->EndArray();
+  }
+  writer->EndObject();
+
+  writer->String("newTabPageAdHistory");
+  writer->StartObject();
+  for (const auto& new_tab_page_ad : state.new_tab_page_ad_history) {
+    writer->String(new_tab_page_ad.first.c_str());
+    writer->StartArray();
+    for (const auto& timestamp_in_seconds : new_tab_page_ad.second) {
       writer->Uint64(timestamp_in_seconds);
     }
     writer->EndArray();

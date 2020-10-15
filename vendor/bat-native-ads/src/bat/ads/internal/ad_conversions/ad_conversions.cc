@@ -273,14 +273,11 @@ void AdConversions::ProcessQueueItem(
     const std::string creative_instance_id = queue_item.creative_instance_id;
 
     BLOG(1, "Successfully converted ad with creative instance id "
-        << queue_item.creative_instance_id << " and creative set id "
-            << queue_item.creative_set_id << " " << friendly_date_and_time);
+        << creative_instance_id << " and creative set id " << creative_set_id
+            << " " << friendly_date_and_time);
 
-    AdInfo ad;
-    ad.creative_instance_id = creative_instance_id;
-    ad.creative_set_id = creative_set_id;
-
-    ads_->get_confirmations()->ConfirmAd(ad, ConfirmationType::kConversion);
+    ads_->get_confirmations()->ConfirmAd(creative_instance_id,
+        ConfirmationType::kConversion);
   }
 
   RemoveItemFromQueue(queue_item.creative_instance_id);

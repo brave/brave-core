@@ -132,6 +132,13 @@ void BatAdsImpl::OnAdNotificationEvent(
   ads_->OnAdNotificationEvent(uuid, event_type);
 }
 
+void BatAdsImpl::OnNewTabPageAdEvent(
+    const std::string& wallpaper_id,
+    const std::string& creative_instance_id,
+    const ads::NewTabPageAdEventType event_type) {
+  ads_->OnNewTabPageAdEvent(wallpaper_id, creative_instance_id, event_type);
+}
+
 void BatAdsImpl::RemoveAllHistory(
     RemoveAllHistoryCallback callback) {
   auto* holder = new CallbackHolder<RemoveAllHistoryCallback>(AsWeakPtr(),

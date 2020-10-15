@@ -56,7 +56,7 @@ void GetCatalog::Download() {
   DCHECK(!is_processing_);
 
   BLOG(1, "Download catalog");
-  BLOG(2, "GET /v4/catalog");
+  BLOG(2, "GET /v5/catalog");
 
   is_processing_ = true;
 

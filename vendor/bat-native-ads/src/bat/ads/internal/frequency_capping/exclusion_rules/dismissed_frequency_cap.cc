@@ -74,7 +74,8 @@ std::deque<AdHistory> DismissedFrequencyCap::FilterHistory(
   const uint64_t now_in_seconds = base::Time::Now().ToDoubleT();
 
   for (const auto& ad : history) {
-    if (ad.ad_content.campaign_id != campaign_id ||
+    if (ad.ad_content.type != AdContent::AdType::kAdNotification ||
+        ad.ad_content.campaign_id != campaign_id ||
         now_in_seconds - ad.timestamp_in_seconds >= time_constraint) {
       continue;
     }

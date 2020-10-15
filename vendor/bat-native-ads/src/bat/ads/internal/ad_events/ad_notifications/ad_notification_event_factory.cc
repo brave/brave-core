@@ -3,17 +3,17 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#include "bat/ads/internal/ad_events/ad_notification_event_factory.h"
+#include "bat/ads/internal/ad_events/ad_notifications/ad_notification_event_factory.h"
 
 #include "bat/ads/ad_notification_info.h"
-#include "bat/ads/internal/ad_events/ad_notification_event_clicked.h"
-#include "bat/ads/internal/ad_events/ad_notification_event_dismissed.h"
-#include "bat/ads/internal/ad_events/ad_notification_event_timed_out.h"
-#include "bat/ads/internal/ad_events/ad_notification_event_viewed.h"
+#include "bat/ads/internal/ad_events/ad_notifications/ad_notification_event_clicked.h"
+#include "bat/ads/internal/ad_events/ad_notifications/ad_notification_event_dismissed.h"
+#include "bat/ads/internal/ad_events/ad_notifications/ad_notification_event_timed_out.h"
+#include "bat/ads/internal/ad_events/ad_notifications/ad_notification_event_viewed.h"
 
 namespace ads {
 
-std::unique_ptr<AdEvent<AdNotificationInfo>> AdEventFactory::Build(
+std::unique_ptr<AdEvent<AdNotificationInfo>> AdNotificationEventFactory::Build(
     AdsImpl* ads,
     const AdNotificationEventType event_type) {
   DCHECK(ads);

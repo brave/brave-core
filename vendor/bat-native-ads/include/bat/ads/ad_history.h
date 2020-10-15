@@ -33,8 +33,6 @@ struct ADS_EXPORT AdHistory {
       const std::string& json);
 
   uint64_t timestamp_in_seconds = 0;
-  std::string uuid;
-  std::string parent_uuid;
   AdContent ad_content;
   CategoryContent category_content;
 };

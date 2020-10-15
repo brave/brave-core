@@ -19,7 +19,9 @@ AdContent::~AdContent() = default;
 
 bool AdContent::operator==(
     const AdContent& rhs) const {
-  return creative_instance_id == rhs.creative_instance_id &&
+  return type == rhs.type &&
+      uuid == rhs.uuid &&
+      creative_instance_id == rhs.creative_instance_id &&
       creative_set_id == rhs.creative_set_id &&
       campaign_id == rhs.campaign_id &&
       brand == rhs.brand &&
@@ -54,16 +56,26 @@ Result AdContent::FromJson(
     return FAILED;
   }
 
-  if (document.HasMember("uuid")) {
-    creative_instance_id = document["uuid"].GetString();
+  if (document.HasMember("type")) {
+    type = static_cast<AdType>(document["type"].GetInt());
+  } else {
+    type = AdType::kAdNotification;
   }
 
-  if (document.HasMember("campaign_id")) {
-    campaign_id = document["campaign_id"].GetString();
+  if (document.HasMember("uuid")) {
+    uuid = document["uuid"].GetString();
+  }
+
+  if (document.HasMember("creative_instance_id")) {
+    creative_instance_id = document["creative_instance_id"].GetString();
   }
 
   if (document.HasMember("creative_set_id")) {
     creative_set_id = document["creative_set_id"].GetString();
+  }
+
+  if (document.HasMember("campaign_id")) {
+    campaign_id = document["campaign_id"].GetString();
   }
 
   if (document.HasMember("brand")) {
@@ -109,7 +121,13 @@ Result AdContent::FromJson(
 void SaveToJson(JsonWriter* writer, const AdContent& content) {
   writer->StartObject();
 
+  writer->String("type");
+  writer->Int(static_cast<int>(content.type));
+
   writer->String("uuid");
+  writer->String(content.uuid.c_str());
+
+  writer->String("creative_instance_id");
   writer->String(content.creative_instance_id.c_str());
 
   writer->String("creative_set_id");

@@ -18,7 +18,6 @@
 #include "bat/ads/internal/ads_client_mock.h"
 #include "bat/ads/internal/ads_impl.h"
 #include "bat/ads/internal/bundle/creative_ad_info.h"
-#include "bat/ads/internal/frequency_capping/frequency_capping_unittest_util.h"
 #include "bat/ads/internal/platform/platform_helper_mock.h"
 #include "bat/ads/internal/time_util.h"
 #include "bat/ads/internal/unittest_util.h"
@@ -146,9 +145,7 @@ TEST_F(BatAdsLandedFrequencyCapTest,
   ad_2.creative_instance_id = kCreativeInstanceId;
   ad_2.campaign_id = kCampaignIds.at(1);
 
-  const AdHistory ad_history =
-      GenerateAdHistory(ad_2, ConfirmationType::kLanded);
-  get_client()->AppendAdHistoryToAdsHistory(ad_history);
+  get_client()->AppendCampaignIdToLandedHistory(ad_2.campaign_id);
 
   task_environment_.FastForwardBy(base::TimeDelta::FromHours(47));
 
@@ -166,9 +163,7 @@ TEST_F(BatAdsLandedFrequencyCapTest,
   ad.creative_instance_id = kCreativeInstanceId;
   ad.campaign_id = kCampaignIds.at(0);
 
-  const AdHistory ad_history =
-      GenerateAdHistory(ad, ConfirmationType::kLanded);
-  get_client()->AppendAdHistoryToAdsHistory(ad_history);
+  get_client()->AppendCampaignIdToLandedHistory(ad.campaign_id);
 
   task_environment_.FastForwardBy(base::TimeDelta::FromHours(47));
 
@@ -186,9 +181,7 @@ TEST_F(BatAdsLandedFrequencyCapTest,
   ad.creative_instance_id = kCreativeInstanceId;
   ad.campaign_id = kCampaignIds.at(0);
 
-  const AdHistory ad_history =
-      GenerateAdHistory(ad, ConfirmationType::kLanded);
-  get_client()->AppendAdHistoryToAdsHistory(ad_history);
+  get_client()->AppendCampaignIdToLandedHistory(ad.campaign_id);
 
   task_environment_.FastForwardBy(base::TimeDelta::FromHours(48));
 
@@ -210,9 +203,7 @@ TEST_F(BatAdsLandedFrequencyCapTest,
   ad_2.creative_instance_id = kCreativeInstanceId;
   ad_2.campaign_id = kCampaignIds.at(1);
 
-  const AdHistory ad_history =
-      GenerateAdHistory(ad_2, ConfirmationType::kLanded);
-  get_client()->AppendAdHistoryToAdsHistory(ad_history);
+  get_client()->AppendCampaignIdToLandedHistory(ad_2.campaign_id);
 
   task_environment_.FastForwardBy(base::TimeDelta::FromHours(48));
 

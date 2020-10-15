@@ -29,12 +29,20 @@ struct ADS_EXPORT AdContent {
   Result FromJson(
       const std::string& json);
 
+  enum class AdType {
+    kNone = 0,
+    kAdNotification,
+    kNewTabPageAd
+  };
+
   enum class LikeAction {
     kNone = 0,
     kThumbsUp,
     kThumbsDown
   };
 
+  AdType type = AdType::kNone;
+  std::string uuid;
   std::string creative_instance_id;
   std::string creative_set_id;
   std::string campaign_id;

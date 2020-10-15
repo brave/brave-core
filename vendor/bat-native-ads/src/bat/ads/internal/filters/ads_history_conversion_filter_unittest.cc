@@ -18,37 +18,53 @@ namespace ads {
 TEST(BatAdsHistoryConversionFilterTest,
     FilterUnsupportedActions) {
   // Arrange
-  AdHistory ad1;
-  ad1.parent_uuid = "69b684d7-d893-4f4e-b156-859919a0fcc9";
-  ad1.ad_content.ad_action = ConfirmationType::kLanded;       // Unsupported
+  AdHistory ad1;  // Unsupported
+  ad1.ad_content.uuid = "69b684d7-d893-4f4e-b156-859919a0fcc9";
+  ad1.ad_content.type = AdContent::AdType::kAdNotification;
+  ad1.ad_content.creative_instance_id = "69b684d7-d893-4f4e-b156-859919a0fcc9";
+  ad1.ad_content.ad_action = ConfirmationType::kLanded;
 
-  AdHistory ad2;
-  ad2.parent_uuid = "d3be2e79-ffa8-4b4e-b61e-88545055fbad";
-  ad2.ad_content.ad_action = ConfirmationType::kFlagged;      // Unsupported
+  AdHistory ad2;  // Unsupported
+  ad2.ad_content.uuid = "d3be2e79-ffa8-4b4e-b61e-88545055fbad";
+  ad2.ad_content.type = AdContent::AdType::kAdNotification;
+  ad2.ad_content.creative_instance_id = "d3be2e79-ffa8-4b4e-b61e-88545055fbad";
+  ad2.ad_content.ad_action = ConfirmationType::kFlagged;
 
-  AdHistory ad3;
-  ad3.parent_uuid = "9390f66a-d4f2-4c8a-8315-1baed4aae612";
-  ad3.ad_content.ad_action = ConfirmationType::kUpvoted;      // Unsupported
+  AdHistory ad3;  // Unsupported
+  ad3.ad_content.uuid = "9390f66a-d4f2-4c8a-8315-1baed4aae612";
+  ad3.ad_content.type = AdContent::AdType::kAdNotification;
+  ad3.ad_content.creative_instance_id = "9390f66a-d4f2-4c8a-8315-1baed4aae612";
+  ad3.ad_content.ad_action = ConfirmationType::kUpvoted;
 
-  AdHistory ad4;
-  ad4.parent_uuid = "47c73793-d1c1-4fdb-8530-4ae478c79783";
-  ad4.ad_content.ad_action = ConfirmationType::kDownvoted;    // Unsupported
+  AdHistory ad4;  // Unsupported
+  ad4.ad_content.uuid = "47c73793-d1c1-4fdb-8530-4ae478c79783";
+  ad4.ad_content.type = AdContent::AdType::kAdNotification;
+  ad4.ad_content.creative_instance_id = "47c73793-d1c1-4fdb-8530-4ae478c79783";
+  ad4.ad_content.ad_action = ConfirmationType::kDownvoted;
 
-  AdHistory ad5;
-  ad5.parent_uuid = "b7e1314c-73b0-4291-9cdd-6c5d2374c28f";
-  ad5.ad_content.ad_action = ConfirmationType::kConversion;   // Unsupported
+  AdHistory ad5;  // Unsupported
+  ad5.ad_content.uuid = "b7e1314c-73b0-4291-9cdd-6c5d2374c28f";
+  ad5.ad_content.type = AdContent::AdType::kAdNotification;
+  ad5.ad_content.creative_instance_id = "b7e1314c-73b0-4291-9cdd-6c5d2374c28f";
+  ad5.ad_content.ad_action = ConfirmationType::kConversion;
 
-  AdHistory ad6;
-  ad6.parent_uuid = "ab9deba5-01bf-492b-9bb8-7bc4318fe272";
-  ad6.ad_content.ad_action = ConfirmationType::kViewed;       // Ad 1 (Viewed)
+  AdHistory ad6;  // Ad 1 (Viewed)
+  ad6.ad_content.uuid = "ab9deba5-01bf-492b-9bb8-7bc4318fe272";
+  ad5.ad_content.type = AdContent::AdType::kAdNotification;
+  ad6.ad_content.creative_instance_id = "ab9deba5-01bf-492b-9bb8-7bc4318fe272";
+  ad6.ad_content.ad_action = ConfirmationType::kViewed;
 
-  AdHistory ad7;
-  ad7.parent_uuid = "5da2f2b3-85ca-4ba3-b879-634c5da9bdc6";
-  ad7.ad_content.ad_action = ConfirmationType::kDismissed;    // Unsupported
+  AdHistory ad7;  // Unsupported
+  ad7.ad_content.uuid = "5da2f2b3-85ca-4ba3-b879-634c5da9bdc6";
+  ad7.ad_content.type = AdContent::AdType::kAdNotification;
+  ad7.ad_content.creative_instance_id = "5da2f2b3-85ca-4ba3-b879-634c5da9bdc6";
+  ad7.ad_content.ad_action = ConfirmationType::kDismissed;
 
-  AdHistory ad8;
-  ad8.parent_uuid = "ab9deba5-01bf-492b-9bb8-7bc4318fe272";
-  ad8.ad_content.ad_action = ConfirmationType::kClicked;      // Ad 1 (Clicked)
+  AdHistory ad8;  // Ad 1 (Clicked)
+  ad8.ad_content.uuid = "ab9deba5-01bf-492b-9bb8-7bc4318fe272";
+  ad8.ad_content.type = AdContent::AdType::kAdNotification;
+  ad8.ad_content.creative_instance_id = "ab9deba5-01bf-492b-9bb8-7bc4318fe272";
+  ad8.ad_content.ad_action = ConfirmationType::kClicked;
 
   std::deque<AdHistory> history = {
     ad1,

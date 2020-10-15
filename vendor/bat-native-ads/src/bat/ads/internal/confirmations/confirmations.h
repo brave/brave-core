@@ -41,7 +41,7 @@ class Confirmations {
       const base::Time& next_token_redemption_date);
 
   void ConfirmAd(
-      const AdInfo& info,
+      const std::string& creative_instance_id,
       const ConfirmationType confirmation_type);
 
   void RetryFailedConfirmationsAfterDelay();
