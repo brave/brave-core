@@ -1336,6 +1336,10 @@ void AdsImpl::MaybeStartSustainingAdNotificationInteraction(
   const base::TimeDelta delay = base::TimeDelta::FromSeconds(
       kSustainAdNotificationInteractionAfterSeconds);
 
+  if (sustain_ad_notification_interaction_timer_.IsRunning()) {
+    sustain_ad_notification_interaction_timer_.FireNow();
+  }
+
   const base::Time time = sustain_ad_notification_interaction_timer_.Start(
       delay, base::BindOnce(&AdsImpl::SustainAdNotificationInteractionIfNeeded,
           base::Unretained(this), tab_id, url));

@@ -34,6 +34,8 @@ void AdNotificationEventClicked::Trigger(
   ads_->get_ad_notifications()->Remove(ad_notification.uuid,
       /* should dismiss */ true);
 
+  ads_->set_last_shown_ad_notification(ad_notification);
+
   ads_->AppendAdNotificationToHistory(ad_notification, kConfirmationType);
 
   ads_->get_confirmations()->ConfirmAd(ad_notification, kConfirmationType);
