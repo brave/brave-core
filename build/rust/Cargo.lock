@@ -30,7 +30,7 @@ dependencies = [
 [[package]]
 name = "adblock"
 version = "0.3.1"
-source = "git+https://github.com/brave/adblock-rust?rev=1f8dd4273ebc0339babb1cc3e38bd6f14d44e7e1#1f8dd4273ebc0339babb1cc3e38bd6f14d44e7e1"
+source = "git+https://github.com/brave/adblock-rust?rev=9032b8bb07bb71879120fc8228c0d4d1d75a0894#9032b8bb07bb71879120fc8228c0d4d1d75a0894"
 dependencies = [
  "base64 0.10.1",
  "bitflags",
