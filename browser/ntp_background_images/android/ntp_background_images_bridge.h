@@ -44,7 +44,8 @@ class NTPBackgroundImagesBridge : public NTPBackgroundImagesService::Observer,
       const base::android::JavaParamRef<jstring>& jcreativeSetId,
       const base::android::JavaParamRef<jstring>& jcampaignId,
       const base::android::JavaParamRef<jstring>& jadvertiserId,
-      const base::android::JavaParamRef<jstring>& jdestinationUrl);
+      const base::android::JavaParamRef<jstring>& jdestinationUrl,
+      const base::android::JavaParamRef<jstring>& jwallpaperId);
   base::android::ScopedJavaLocalRef<jobject> GetCurrentWallpaper(
       JNIEnv* env, const base::android::JavaParamRef<jobject>& obj);
   void GetTopSites(JNIEnv* env,

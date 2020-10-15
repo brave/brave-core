@@ -56,6 +56,8 @@ constexpr char kYKey[] = "y";
 constexpr char kWidthKey[] = "width";
 constexpr char kHeightKey[] = "height";
 
+constexpr char kWallpaperIDKey[] = "wallpaperId";
+
 constexpr char kSchemaVersionKey[] = "schemaVersion";
 
 }  // namespace ntp_background_images

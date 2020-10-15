@@ -16,6 +16,7 @@
 #include "base/bind.h"
 #include "base/files/file_path.h"
 #include "base/files/file_util.h"
+#include "base/guid.h"
 #include "base/task/post_task.h"
 #include "brave/browser/brave_browser_process_impl.h"
 #include "brave/browser/ntp_background_images/view_counter_service_factory.h"
@@ -117,7 +118,8 @@ void NTPBackgroundImagesBridge::WallpaperLogoClicked(
     const base::android::JavaParamRef<jstring>& jcreativeSetId,
     const base::android::JavaParamRef<jstring>& jcampaignId,
     const base::android::JavaParamRef<jstring>& jadvertiserId,
-    const base::android::JavaParamRef<jstring>& jdestinationUrl) {
+    const base::android::JavaParamRef<jstring>& jdestinationUrl,
+    const base::android::JavaParamRef<jstring>& jwallpaperId) {
   DCHECK_CURRENTLY_ON(BrowserThread::UI);
   if (view_counter_service_) {
     view_counter_service_->BrandedWallpaperLogoClicked(
@@ -125,7 +127,8 @@ void NTPBackgroundImagesBridge::WallpaperLogoClicked(
         base::android::ConvertJavaStringToUTF8(env, jcreativeSetId),
         base::android::ConvertJavaStringToUTF8(env, jcampaignId),
         base::android::ConvertJavaStringToUTF8(env, jadvertiserId),
-        base::android::ConvertJavaStringToUTF8(env, jdestinationUrl));
+        base::android::ConvertJavaStringToUTF8(env, jdestinationUrl),
+        base::android::ConvertJavaStringToUTF8(env, jwallpaperId));
   }
 }
 
@@ -139,7 +142,8 @@ NTPBackgroundImagesBridge::CreateWallpaper() {
   if (data.is_none())
     return base::android::ScopedJavaLocalRef<jobject>();
 
-  view_counter_service_->BrandedWallpaperWillBeDisplayed();
+  const std::string wallpaper_id = base::GenerateGUID();
+  view_counter_service_->BrandedWallpaperWillBeDisplayed(wallpaper_id);
 
   auto* image_path =
       data.FindStringKey(ntp_background_images::kWallpaperImagePathKey);
@@ -180,7 +184,8 @@ NTPBackgroundImagesBridge::CreateWallpaper() {
                                                         : ""),
       ConvertUTF8ToJavaString(env, creative_set_id ? *creative_set_id : ""),
       ConvertUTF8ToJavaString(env, campaign_id ? *campaign_id : ""),
-      ConvertUTF8ToJavaString(env, advertiser_id ? *advertiser_id : ""));
+      ConvertUTF8ToJavaString(env, advertiser_id ? *advertiser_id : ""),
+      ConvertUTF8ToJavaString(env, wallpaper_id));
 }
 
 void NTPBackgroundImagesBridge::GetTopSites(

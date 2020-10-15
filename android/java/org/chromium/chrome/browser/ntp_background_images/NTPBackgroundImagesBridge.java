@@ -96,7 +96,7 @@ public class NTPBackgroundImagesBridge {
                 mNativeNTPBackgroundImagesBridge, NTPBackgroundImagesBridge.this,
                 wallpaper.getCreativeInstanceId(), wallpaper.getCreativeSetId(),
                 wallpaper.getCampaignId(), wallpaper.getAdvertiserId(),
-                wallpaper.getLogoDestinationUrl());
+                wallpaper.getLogoDestinationUrl(), wallpaper.getWallpaperId());
     }
 
     public boolean isSuperReferral() {
@@ -145,11 +145,12 @@ public class NTPBackgroundImagesBridge {
             String logoPath, String logoDestinationUrl,
             String themeName, boolean isSponsored,
             String creativeInstanceId, String creativeSetId,
-            String campaignId, String advertiserId) {
+            String campaignId, String advertiserId, String wallpaperId) {
         return new Wallpaper(imagePath, focalPointX, focalPointY,
                              logoPath, logoDestinationUrl,
                              themeName, isSponsored, creativeInstanceId,
-                             creativeSetId, campaignId, advertiserId);
+                             creativeSetId, campaignId, advertiserId,
+                             wallpaperId);
     }
 
     @CalledByNative
@@ -170,7 +171,7 @@ public class NTPBackgroundImagesBridge {
                                   NTPBackgroundImagesBridge caller,
                                   String creativeInstanceId, String creativeSetId,
                                   String campaignId, String advertiserId,
-                                  String destinationUrl);
+                                  String destinationUrl, String wallpaperId);
         void getTopSites(long nativeNTPBackgroundImagesBridge,
                               NTPBackgroundImagesBridge caller);
         boolean isSuperReferral(long nativeNTPBackgroundImagesBridge,

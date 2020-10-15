@@ -19,6 +19,7 @@ declare namespace NewTab {
     creativeSetId: string
     campaignId: string
     advertiserId: string
+    wallpaperId: string
     logo: BrandedWallpaperLogo
   }
   export interface ApplicationState {

@@ -8,6 +8,7 @@
 #include <memory>
 #include <utility>
 
+#include "base/guid.h"
 #include "base/json/json_writer.h"
 #include "base/values.h"
 #include "brave/browser/profiles/profile_util.h"
@@ -460,19 +461,23 @@ void BraveNewTabMessageHandler::HandleBrandedWallpaperLogoClicked(
         ntp_background_images::kAdvertiserIDKey);
     auto* destination_url = args->GetList()[0].FindStringPath(
         ntp_background_images::kLogoDestinationURLPath);
+    auto* wallpaper_id = args->GetList()[0].FindStringPath(
+        ntp_background_images::kWallpaperIDKey);
 
     DCHECK(creative_instance_id);
     DCHECK(creative_set_id);
     DCHECK(campaign_id);
     DCHECK(advertiser_id);
     DCHECK(destination_url);
+    DCHECK(wallpaper_id);
 
     service->BrandedWallpaperLogoClicked(
         creative_instance_id ? *creative_instance_id : "",
         creative_set_id ? *creative_set_id : "",
         campaign_id ? *campaign_id : "",
         advertiser_id ? *advertiser_id : "",
-        destination_url ? *destination_url : "");
+        destination_url ? *destination_url : "",
+        wallpaper_id ? *wallpaper_id : "");
   }
 }
 
@@ -483,8 +488,13 @@ void BraveNewTabMessageHandler::HandleGetBrandedWallpaperData(
   auto* service = ViewCounterServiceFactory::GetForProfile(profile_);
   auto data = service ? service->GetCurrentWallpaperForDisplay()
                       : base::Value();
-  if (!data.is_none())
-    service->BrandedWallpaperWillBeDisplayed();
+  if (!data.is_none()) {
+    DCHECK(data.is_dict());
+
+    const std::string wallpaper_id = base::GenerateGUID();
+    data.SetStringKey(ntp_background_images::kWallpaperIDKey, wallpaper_id);
+    service->BrandedWallpaperWillBeDisplayed(wallpaper_id);
+  }
 
   ResolveJavascriptCallback(args->GetList()[0], std::move(data));
 }

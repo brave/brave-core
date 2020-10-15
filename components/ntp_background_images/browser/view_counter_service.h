@@ -53,7 +53,8 @@ class ViewCounterService : public KeyedService,
                                    const std::string& creative_set_id,
                                    const std::string& campaign_id,
                                    const std::string& advertiser_id,
-                                   const std::string& destination_url);
+                                   const std::string& destination_url,
+                                   const std::string& wallpaper_id);
 
   base::Value GetCurrentWallpaperForDisplay() const;
   base::Value GetCurrentWallpaper() const;
@@ -64,7 +65,7 @@ class ViewCounterService : public KeyedService,
   std::string GetSuperReferralThemeName() const;
   std::string GetSuperReferralCode() const;
 
-  void BrandedWallpaperWillBeDisplayed();
+  void BrandedWallpaperWillBeDisplayed(const std::string& wallpaper_id);
 
   // Gets the current data for branded wallpaper, if there
   // is a wallpaper active. Does not consider user opt-in

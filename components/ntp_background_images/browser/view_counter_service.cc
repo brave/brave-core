@@ -69,13 +69,15 @@ ViewCounterService::ViewCounterService(NTPBackgroundImagesService* service,
 
 ViewCounterService::~ViewCounterService() = default;
 
-void ViewCounterService::BrandedWallpaperWillBeDisplayed() {
+void ViewCounterService::BrandedWallpaperWillBeDisplayed(
+    const std::string& wallpaper_id) {
   base::Value data = ViewCounterService::GetCurrentWallpaperForDisplay();
   DCHECK(!data.is_none());
   const std::string id = *data.FindStringKey(kCreativeInstanceIDKey);
+  LOG(ERROR) << "CreativeInstanceID: " << id;
+  LOG(ERROR) << "WallpaperID: " << wallpaper_id;
   if (!id.empty()) {
     // Ping to ads service if data has proper ids.
-    LOG(ERROR) << "CreativeInstanceID: " << id;
   }
 }
 
@@ -194,12 +196,14 @@ void ViewCounterService::BrandedWallpaperLogoClicked(
     const std::string& creative_set_id,
     const std::string& campaign_id,
     const std::string& advertiser_id,
-    const std::string& destination_url) {
+    const std::string& destination_url,
+    const std::string& wallpaper_id) {
   LOG(ERROR) << ": creative instance id: " << creative_instance_id;
   LOG(ERROR) << ": creative set id: " << creative_set_id;
   LOG(ERROR) << ": campaign id: " << campaign_id;
   LOG(ERROR) << ": advertiser id: " << advertiser_id;
   LOG(ERROR) << ": destination url: " << destination_url;
+  LOG(ERROR) << ": wallpaper id: " << wallpaper_id;
 
   // TODO: Ping click confirmation to ads service.
 }
