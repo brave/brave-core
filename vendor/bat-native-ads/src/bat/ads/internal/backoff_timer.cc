@@ -42,6 +42,10 @@ bool BackoffTimer::IsRunning() const {
   return timer_.IsRunning();
 }
 
+void BackoffTimer::FireNow() {
+  return timer_.FireNow();
+}
+
 void BackoffTimer::Stop() {
   timer_.Stop();
 

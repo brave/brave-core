@@ -29,8 +29,6 @@ void AdNotificationEventViewed::Trigger(
   BLOG(3, "Viewed ad notification with uuid " << ad_notification.uuid << " and "
       << ad_notification.creative_instance_id << " creative instance id");
 
-  ads_->set_last_shown_ad_notification(ad_notification);
-
   ads_->AppendAdNotificationToHistory(ad_notification, kConfirmationType);
 
   ads_->get_confirmations()->ConfirmAd(ad_notification, kConfirmationType);
