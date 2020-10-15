@@ -28,7 +28,7 @@
     "description": "Message telling the user that shields are disabled, and prompting them towards reporting an issue if necessary"
   },
   "reportBrokenSite": {
-    "message": "壊れたサイトを報告",
+    "message": "サイト表示の不具合を報告",
     "description": "Message for the button allowing users to report a broken site to Brave developers"
   },
   "itemsBlocked": {
@@ -104,11 +104,11 @@
     "description": "Message for the option in the fingerprinting select field to block all 3rd party recognition attempts"
   },
   "strictFingerprinting": {
-    "message": "フィンガープリントがブロックされました（厳格、サイトの表示が崩れる可能性）",
+    "message": "フィンガープリントがブロックされました（強、サイトの表示が崩れる可能性）",
     "description": "Message for the option in the fingerprinting select field to block all fingerprinting attempts"
   },
   "allowAllFingerprinting": {
-    "message": "全てのフィンガープリンティングを許可する",
+    "message": "全てのフィンガープリントを許可する",
     "description": "Message for the option in the fingerprinting select field to allow all fingerprinting attempts"
   },
   "deviceRecognitionAttempts": {
