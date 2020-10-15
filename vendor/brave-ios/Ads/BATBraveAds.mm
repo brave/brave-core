@@ -21,6 +21,7 @@
 
 #import "base/strings/sys_string_conversions.h"
 #import "brave/base/containers/utils.h"
+#import "base/base64.h"
 
 #import "RewardsLogging.h"
 
@@ -182,10 +183,23 @@ BATClassAdsBridge(BOOL, isDebug, setDebug, _is_debug)
 
     adsClient = new NativeAdsClient(self);
     ads = ads::Ads::CreateInstance(adsClient);
-    ads->Initialize(^(bool) {
-      [self periodicallyCheckForUserModelUpdates];
-      [self registerUserModels];
-    });
+    
+    if (!self.ledger) { return; }
+    [self.ledger currentWalletInfo:^(BATBraveWallet * _Nullable wallet) {
+      if (!wallet || wallet.recoverySeed.count == 0) {
+        BLOG(0, @"Failed to obtain wallet information to initialize ads");
+        return;
+      }
+      std::vector<uint8_t> seed;
+      for (NSNumber *number in wallet.recoverySeed) {
+        seed.push_back(static_cast<uint8_t>(number.unsignedCharValue));
+      }
+      ads->OnWalletUpdated(wallet.paymentId.UTF8String, base::Base64Encode(seed));
+      ads->Initialize(^(bool) {
+        [self periodicallyCheckForUserModelUpdates];
+        [self registerUserModels];
+      });
+    }];
   }
 }
 
