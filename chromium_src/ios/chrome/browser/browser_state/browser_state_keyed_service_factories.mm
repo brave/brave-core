@@ -48,18 +48,3 @@ void EnsureBrowserStateKeyedServiceFactoriesBuilt() {
   SessionSyncServiceFactory::GetInstance();
   SyncSetupServiceFactory::GetInstance();
 }
-
-// TODO(bridiver) - should we add these?
-// ios::AccountReconcilorFactory::GetInstance();
-// ios::CookieSettingsFactory::GetInstance();
-// ios::WebHistoryServiceFactory::GetInstance();
-// AuthenticationServiceFactory::GetInstance();
-// BrowsingDataRemoverFactory::GetInstance();
-// CredentialProviderServiceFactory::GetInstance();
-// IOSChromeFaviconLoaderFactory::GetInstance();
-// IOSChromeLargeIconCacheFactory::GetInstance();
-// IOSChromeLargeIconServiceFactory::GetInstance();
-// ManagedBookmarkServiceFactory::GetInstance();
-// SigninBrowserStateInfoUpdaterFactory::GetInstance();
-// SigninClientFactory::GetInstance();
-// UnifiedConsentServiceFactory::GetInstance();
