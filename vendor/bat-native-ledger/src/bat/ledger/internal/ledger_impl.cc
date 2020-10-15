@@ -836,4 +836,8 @@ bool LedgerImpl::IsShuttingDown() const {
   return shutting_down_;
 }
 
+void LedgerImpl::GetBraveWallet(GetBraveWalletCallback callback) {
+  callback(wallet()->GetWallet());
+}
+
 }  // namespace ledger

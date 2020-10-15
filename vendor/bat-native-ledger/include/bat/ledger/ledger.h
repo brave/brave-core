@@ -98,6 +98,8 @@ using PublisherInfoCallback =
 using GetPublisherInfoCallback =
     std::function<void(const type::Result, type::PublisherInfoPtr)>;
 
+using GetBraveWalletCallback = std::function<void(type::BraveWalletPtr)>;
+
 class LEDGER_EXPORT Ledger {
  public:
   static bool IsMediaLink(
@@ -388,6 +390,8 @@ class LEDGER_EXPORT Ledger {
   virtual void Shutdown(ResultCallback callback) = 0;
 
   virtual void GetEventLogs(GetEventLogsCallback callback) = 0;
+
+  virtual void GetBraveWallet(GetBraveWalletCallback callback) = 0;
 };
 
 }  // namespace ledger

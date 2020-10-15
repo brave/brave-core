@@ -249,6 +249,8 @@ class BatLedgerImpl :
 
   void GetEventLogs(GetEventLogsCallback callback) override;
 
+  void GetBraveWallet(GetBraveWalletCallback callback) override;
+
  private:
   // workaround to pass base::OnceCallback into std::bind
   template <typename Callback>
@@ -448,6 +450,10 @@ class BatLedgerImpl :
   static void OnGetEventLogs(
       CallbackHolder<GetEventLogsCallback>* holder,
       ledger::type::EventLogs logs);
+
+  static void OnGetBraveWallet(
+      CallbackHolder<GetBraveWalletCallback>* holder,
+      ledger::type::BraveWalletPtr wallet);
 
   std::unique_ptr<BatLedgerClientMojoBridge> bat_ledger_client_mojo_bridge_;
   std::unique_ptr<ledger::Ledger> ledger_;

@@ -8,6 +8,7 @@
 #include <limits>
 #include <utility>
 
+#include "base/base64.h"
 #include "base/bind.h"
 #include "base/command_line.h"
 #include "base/containers/flat_map.h"
@@ -381,39 +382,19 @@ void AdsServiceImpl::OnWalletUpdated() {
     return;
   }
 
-  const std::string json = rewards_service_->GetEncryptedStringState(
-      "wallets.brave");
+  rewards_service_->GetBraveWallet(
+      base::BindOnce(&AdsServiceImpl::OnGetBraveWallet, AsWeakPtr()));
+}
 
-  if (json.empty()) {
+void AdsServiceImpl::OnGetBraveWallet(ledger::type::BraveWalletPtr wallet) {
+  if (!wallet) {
+    VLOG(0) << "Failed to get wallet";
     return;
   }
 
-  base::Optional<base::Value> value = base::JSONReader::Read(json);
-  if (!value || !value->is_dict()) {
-    VLOG(0) << "Failed to parse wallet";
-    return;
-  }
-
-  base::DictionaryValue* dictionary = nullptr;
-  if (!value->GetAsDictionary(&dictionary)) {
-    VLOG(0) << "Failed to parse wallet";
-    return;
-  }
-
-  const std::string* payment_id = dictionary->FindStringKey("payment_id");
-  if (!payment_id) {
-    VLOG(0) << "Wallet missing payment_id";
-    return;
-  }
-
-  const std::string* recovery_seed_base64 =
-      dictionary->FindStringKey("recovery_seed");
-  if (!recovery_seed_base64) {
-    VLOG(0) << "Wallet missing recovery_seed";
-    return;
-  }
-
-  bat_ads_->OnWalletUpdated(*payment_id, *recovery_seed_base64);
+  bat_ads_->OnWalletUpdated(
+      wallet->payment_id,
+      base::Base64Encode(wallet->recovery_seed));
 }
 
 void AdsServiceImpl::ReconcileAdRewards() {

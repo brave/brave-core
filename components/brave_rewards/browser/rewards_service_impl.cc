@@ -3450,4 +3450,22 @@ std::string RewardsServiceImpl::GetEncryptedStringState(
   return value;
 }
 
+void RewardsServiceImpl::GetBraveWallet(GetBraveWalletCallback callback) {
+  if (!Connected()) {
+    std::move(callback).Run(nullptr);
+    return;
+  }
+
+  bat_ledger_->GetBraveWallet(
+    base::BindOnce(&RewardsServiceImpl::OnGetBraveWallet,
+        AsWeakPtr(),
+        std::move(callback)));
+}
+
+void RewardsServiceImpl::OnGetBraveWallet(
+    GetBraveWalletCallback callback,
+    ledger::type::BraveWalletPtr wallet) {
+  std::move(callback).Run(std::move(wallet));
+}
+
 }  // namespace brave_rewards
