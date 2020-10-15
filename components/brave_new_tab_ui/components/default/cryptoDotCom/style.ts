@@ -55,6 +55,7 @@ interface StyleProps {
   textColor?: string
   userAuthed?: boolean
   weight?: string | number
+  marketView?: boolean
 }
 
 const colorNameToHex = {
@@ -302,9 +303,10 @@ export const AssetIcon = styled<StyleProps, 'span'>('span')`
   margin-left: 0.2em;
  `
 
-export const BackArrow = styled<{}, 'div'>('div')`
+export const BackArrow = styled<StyleProps, 'div'>('div')`
   width: 20px;
   cursor: pointer;
+  margin-left: ${p => p.marketView ? 60 : 0}px;
  `
 
 export const ActionButton = styled<StyleProps, 'button'>('button')`

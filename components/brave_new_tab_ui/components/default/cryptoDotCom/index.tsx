@@ -82,7 +82,7 @@ interface Props {
   onSetAssetData: (assets: string[]) => Promise<void>
   onBuyCrypto: () => void
   onInteraction: () => void
-  onOptInMarkets: () => void
+  onOptInMarkets: (show: boolean) => void
 }
 interface ChartConfig {
   data: Array<any>
@@ -145,7 +145,7 @@ class CryptoDotCom extends React.PureComponent<Props, State> {
 
   handleViewMarketsClick = async () => {
     this.props.onInteraction()
-    this.props.onOptInMarkets()
+    this.props.onOptInMarkets(true)
     await this.props.onViewMarketsRequested(this.topMovers)
   }
 
@@ -391,7 +391,7 @@ class CryptoDotCom extends React.PureComponent<Props, State> {
   }
 
   renderTitle () {
-    const { showContent } = this.props
+    const { optInMarkets, showContent } = this.props
     return (
       <Header showContent={showContent}>
         <StyledTitle>
@@ -401,6 +401,13 @@ class CryptoDotCom extends React.PureComponent<Props, State> {
           <StyledTitleText>
             {'Crypto.com'}
           </StyledTitleText>
+          {optInMarkets &&
+              <BackArrow marketView={true}>
+                <CaratLeftIcon
+                  onClick={this.props.onOptInMarkets.bind(this, false)}
+                />
+              </BackArrow>
+          }
         </StyledTitle>
       </Header>
     )

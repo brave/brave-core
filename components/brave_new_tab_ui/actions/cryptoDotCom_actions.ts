@@ -28,4 +28,6 @@ export const onCryptoDotComBuyCrypto = () => action(types.ON_BUY_CRYPTO)
 
 export const onCryptoDotComInteraction = () => action(types.ON_INTERACTION)
 
-export const onCryptoDotComOptInMarkets = () => action(types.ON_MARKETS_OPT_IN)
+export const onCryptoDotComOptInMarkets = (show: boolean) => {
+  return action(types.ON_MARKETS_OPT_IN, { show })
+}
