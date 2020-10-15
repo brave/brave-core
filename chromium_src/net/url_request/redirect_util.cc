@@ -20,12 +20,12 @@ void RedirectUtil::UpdateHttpRequest(
     HttpRequestHeaders* request_headers,
     bool* should_clear_upload) {
   UpdateHttpRequest_ChromiumImpl(original_url,
-                                           original_method,
-                                           redirect_info,
-                                           removed_headers,
-                                           modified_headers,
-                                           request_headers,
-                                           should_clear_upload);
+                                 original_method,
+                                 redirect_info,
+                                 removed_headers,
+                                 modified_headers,
+                                 request_headers,
+                                 should_clear_upload);
   // Hack for dropping referrer at the network layer.
   if (removed_headers) {
     if (removed_headers->end() != std::find(removed_headers->begin(),
