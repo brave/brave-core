@@ -30,7 +30,8 @@ class IpfsNavigationThrottle : public content::NavigationThrottle,
                                public IpfsServiceObserver {
  public:
   explicit IpfsNavigationThrottle(content::NavigationHandle* navigation_handle,
-                                  IpfsService* ipfs_service);
+                                  IpfsService* ipfs_service,
+                                  const std::string& locale);
   ~IpfsNavigationThrottle() override;
 
   IpfsNavigationThrottle(const IpfsNavigationThrottle&) = delete;
@@ -39,7 +40,8 @@ class IpfsNavigationThrottle : public content::NavigationThrottle,
   static std::unique_ptr<IpfsNavigationThrottle> MaybeCreateThrottleFor(
       content::NavigationHandle* navigation_handle,
       IpfsService* ipfs_service,
-      bool regular_profile);
+      bool regular_profile,
+      const std::string& locale);
 
   // content::NavigationThrottle implementation:
   ThrottleCheckResult WillStartRequest() override;
@@ -58,6 +60,7 @@ class IpfsNavigationThrottle : public content::NavigationThrottle,
   bool resume_pending_ = false;
   IpfsService* ipfs_service_ = nullptr;
   PrefService* pref_service_ = nullptr;
+  std::string locale_;
   base::WeakPtrFactory<IpfsNavigationThrottle> weak_ptr_factory_{this};
 };
 

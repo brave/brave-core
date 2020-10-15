@@ -62,20 +62,23 @@ std::unique_ptr<IpfsNavigationThrottle>
 IpfsNavigationThrottle::MaybeCreateThrottleFor(
     content::NavigationHandle* navigation_handle,
     IpfsService* ipfs_service,
-    bool regular_profile) {
+    bool regular_profile,
+    const std::string& locale) {
   auto* context = navigation_handle->GetWebContents()->GetBrowserContext();
   if (!IpfsService::IsIpfsEnabled(context, regular_profile))
     return nullptr;
 
   return std::make_unique<IpfsNavigationThrottle>(navigation_handle,
-                                                  ipfs_service);
+                                                  ipfs_service, locale);
 }
 
 IpfsNavigationThrottle::IpfsNavigationThrottle(
     content::NavigationHandle* navigation_handle,
-    IpfsService* ipfs_service)
+    IpfsService* ipfs_service,
+    const std::string& locale)
     : content::NavigationThrottle(navigation_handle),
-      ipfs_service_(ipfs_service) {
+      ipfs_service_(ipfs_service),
+      locale_(locale) {
   content::BrowserContext* context =
       navigation_handle->GetWebContents()->GetBrowserContext();
   pref_service_ = user_prefs::UserPrefs::Get(context);
@@ -151,7 +154,7 @@ void IpfsNavigationThrottle::ShowInterstitial() {
   const GURL& request_url = handle->GetURL();
 
   auto controller_client = std::make_unique<IPFSInterstitialControllerClient>(
-      web_contents, request_url, pref_service_);
+      web_contents, request_url, pref_service_, locale_);
   auto page = std::make_unique<IPFSNotConnectedPage>(
       web_contents, handle->GetURL(), std::move(controller_client));
 

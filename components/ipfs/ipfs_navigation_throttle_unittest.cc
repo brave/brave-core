@@ -6,6 +6,7 @@
 #include "brave/components/ipfs/ipfs_navigation_throttle.h"
 
 #include <memory>
+#include <string>
 #include <vector>
 
 #include "base/test/bind_test_util.h"
@@ -75,6 +76,7 @@ class IpfsNavigationThrottleUnitTest : public testing::Test {
     web_contents_ =
         content::WebContentsTester::CreateTestWebContents(profile_, nullptr);
     ipfs_service_ = IpfsServiceFactory::GetForContext(profile_);
+    locale_ = "en-US";
   }
 
   void TearDown() override {
@@ -97,6 +99,8 @@ class IpfsNavigationThrottleUnitTest : public testing::Test {
 
   Profile* profile() { return profile_; }
 
+  const std::string& locale() { return locale_; }
+
  private:
   content::BrowserTaskEnvironment task_environment_;
   base::ScopedTempDir temp_dir_;
@@ -106,6 +110,7 @@ class IpfsNavigationThrottleUnitTest : public testing::Test {
   IpfsService* ipfs_service_;
   Profile* profile_;
   base::test::ScopedFeatureList feature_list_;
+  std::string locale_;
 
   DISALLOW_COPY_AND_ASSIGN(IpfsNavigationThrottleUnitTest);
 };
@@ -123,7 +128,8 @@ TEST_F(IpfsNavigationThrottleUnitTest, DeferUntilIpfsProcessLaunched) {
   content::MockNavigationHandle test_handle(web_contents());
   test_handle.set_url(GetIPFSURL());
   auto throttle = IpfsNavigationThrottle::MaybeCreateThrottleFor(
-      &test_handle, ipfs_service(), brave::IsRegularProfile(profile()));
+      &test_handle, ipfs_service(), brave::IsRegularProfile(profile()),
+      locale());
   ASSERT_TRUE(throttle != nullptr);
   bool was_navigation_resumed = false;
   throttle->set_resume_callback_for_testing(
@@ -165,7 +171,8 @@ TEST_F(IpfsNavigationThrottleUnitTest, ProceedForGatewayNodeMode) {
   content::MockNavigationHandle test_handle(web_contents());
   test_handle.set_url(GetIPFSURL());
   auto throttle = IpfsNavigationThrottle::MaybeCreateThrottleFor(
-      &test_handle, ipfs_service(), brave::IsRegularProfile(profile()));
+      &test_handle, ipfs_service(), brave::IsRegularProfile(profile()),
+      locale());
   ASSERT_TRUE(throttle != nullptr);
   EXPECT_EQ(NavigationThrottle::PROCEED, throttle->WillStartRequest().action())
       << GetIPFSURL();
@@ -184,7 +191,8 @@ TEST_F(IpfsNavigationThrottleUnitTest, ProceedForAskNodeMode) {
   content::MockNavigationHandle test_handle(web_contents());
   test_handle.set_url(GetIPFSURL());
   auto throttle = IpfsNavigationThrottle::MaybeCreateThrottleFor(
-      &test_handle, ipfs_service(), brave::IsRegularProfile(profile()));
+      &test_handle, ipfs_service(), brave::IsRegularProfile(profile()),
+      locale());
   ASSERT_TRUE(throttle != nullptr);
   EXPECT_EQ(NavigationThrottle::PROCEED, throttle->WillStartRequest().action())
       << GetIPFSURL();
@@ -199,7 +207,8 @@ TEST_F(IpfsNavigationThrottleUnitTest, ProceedForAskNodeMode) {
 TEST_F(IpfsNavigationThrottleUnitTest, Instantiation) {
   content::MockNavigationHandle test_handle(web_contents());
   auto throttle = IpfsNavigationThrottle::MaybeCreateThrottleFor(
-      &test_handle, ipfs_service(), brave::IsRegularProfile(profile()));
+      &test_handle, ipfs_service(), brave::IsRegularProfile(profile()),
+      locale());
   EXPECT_TRUE(throttle != nullptr);
 
   // Disable in OTR profile.
@@ -208,7 +217,7 @@ TEST_F(IpfsNavigationThrottleUnitTest, Instantiation) {
   content::MockNavigationHandle otr_test_handle(otr_web_contents.get());
   auto throttle_in_otr = IpfsNavigationThrottle::MaybeCreateThrottleFor(
       &otr_test_handle, ipfs_service(),
-      brave::IsRegularProfile(profile()->GetPrimaryOTRProfile()));
+      brave::IsRegularProfile(profile()->GetPrimaryOTRProfile()), locale());
   EXPECT_EQ(throttle_in_otr, nullptr);
 
   // Disable in guest sessions.
@@ -218,7 +227,7 @@ TEST_F(IpfsNavigationThrottleUnitTest, Instantiation) {
   content::MockNavigationHandle guest_test_handle(guest_web_contents.get());
   auto throttle_in_guest = IpfsNavigationThrottle::MaybeCreateThrottleFor(
       &guest_test_handle, ipfs_service(),
-      brave::IsRegularProfile(guest_profile.get()));
+      brave::IsRegularProfile(guest_profile.get()), locale());
   EXPECT_EQ(throttle_in_guest, nullptr);
 }
 
@@ -238,7 +247,7 @@ TEST_F(IpfsNavigationThrottleUnitTest, NotInstantiatedInTor) {
   content::MockNavigationHandle tor_reg_test_handle(tor_reg_web_contents.get());
   auto throttle_in_tor_reg = IpfsNavigationThrottle::MaybeCreateThrottleFor(
       &tor_reg_test_handle, ipfs_service(),
-      brave::IsRegularProfile(tor_reg_profile));
+      brave::IsRegularProfile(tor_reg_profile), locale());
   EXPECT_EQ(throttle_in_tor_reg, nullptr);
 
   auto tor_otr_web_contents = content::WebContentsTester::CreateTestWebContents(
@@ -246,7 +255,7 @@ TEST_F(IpfsNavigationThrottleUnitTest, NotInstantiatedInTor) {
   content::MockNavigationHandle tor_otr_test_handle(tor_otr_web_contents.get());
   auto throttle_in_tor_otr = IpfsNavigationThrottle::MaybeCreateThrottleFor(
       &tor_otr_test_handle, ipfs_service(),
-      brave::IsRegularProfile(tor_reg_profile));
+      brave::IsRegularProfile(tor_reg_profile), locale());
   EXPECT_EQ(throttle_in_tor_otr, nullptr);
 }
 #endif

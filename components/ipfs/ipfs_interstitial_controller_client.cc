@@ -7,7 +7,6 @@
 
 #include "brave/components/ipfs/ipfs_utils.h"
 #include "brave/components/ipfs/pref_names.h"
-#include "components/language/core/browser/locale_util.h"
 #include "components/prefs/pref_service.h"
 #include "components/security_interstitials/core/metrics_helper.h"
 #include "content/public/browser/page_navigator.h"
@@ -31,12 +30,13 @@ IPFSInterstitialControllerClient::GetMetricsHelper(const GURL& url) {
 IPFSInterstitialControllerClient::IPFSInterstitialControllerClient(
     content::WebContents* web_contents,
     const GURL& request_url,
-    PrefService* prefs)
+    PrefService* prefs,
+    const std::string& locale)
     : security_interstitials::SecurityInterstitialControllerClient(
           web_contents,
           GetMetricsHelper(request_url),
           prefs,
-          language::GetApplicationLocale(prefs),
+          locale,
           GURL("about:blank") /* default_safe_page */),
       request_url_(request_url) {}
 
