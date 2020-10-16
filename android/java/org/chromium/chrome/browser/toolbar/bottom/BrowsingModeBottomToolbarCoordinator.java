@@ -81,6 +81,7 @@ public class BrowsingModeBottomToolbarCoordinator {
     private CallbackController mCallbackController = new CallbackController();
     private final BookmarksButton mBookmarkButton;
     private final MenuButton mMenuButton;
+    private ThemeColorProvider mThemeColorProvider;
 
     /**
      * Build the coordinator that manages the browsing mode bottom toolbar.
@@ -189,6 +190,7 @@ public class BrowsingModeBottomToolbarCoordinator {
     void initializeWithNative(OnClickListener newTabListener, OnClickListener tabSwitcherListener,
             AppMenuButtonHelper menuButtonHelper, TabCountProvider tabCountProvider,
             ThemeColorProvider themeColorProvider, IncognitoStateProvider incognitoStateProvider) {
+        mThemeColorProvider = themeColorProvider;
         mMediator.setThemeColorProvider(themeColorProvider);
         if (BottomToolbarVariationManager.isNewTabButtonOnBottom()) {
             mNewTabButton.setOnClickListener(newTabListener);
@@ -215,6 +217,7 @@ public class BrowsingModeBottomToolbarCoordinator {
         mBookmarkButton.setThemeColorProvider(themeColorProvider);
 
         mMenuButton.setAppMenuButtonHelper(menuButtonHelper);
+        mThemeColorProvider.addTintObserver(mMenuButton);
     }
 
     private void setOverviewModeBehavior(OverviewModeBehavior overviewModeBehavior) {
@@ -286,6 +289,9 @@ public class BrowsingModeBottomToolbarCoordinator {
         mSearchAccelerator.destroy();
         mTabSwitcherButtonCoordinator.destroy();
         mBookmarkButton.destroy();
+        if (mThemeColorProvider != null) {
+            mThemeColorProvider.removeTintObserver(mMenuButton);
+        }
     }
 
     public void updateBookmarkButton(boolean isBookmarked, boolean editingAllowed) {
