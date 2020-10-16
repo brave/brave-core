@@ -14,6 +14,10 @@ source_set("exporter") {
     "brave_bookmarks_exporter.mm",
     "bookmark_html_writer.h",
     "bookmark_html_writer.cc",
+    "exported_bookmark_entry.h",
+    "exported_bookmark_entry.cc",
+    "bookmarks_encoder.h",
+    "bookmarks_encoder.cc"
   ]
 
   deps = [

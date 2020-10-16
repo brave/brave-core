@@ -460,6 +460,24 @@ class Writer : public base::RefCountedThreadSafe<Writer> {
   DISALLOW_COPY_AND_ASSIGN(Writer);
 };
 
+// A class that allows to export a set of bookmarks encoded as a `base::Value`
+class BookmarkWriter {
+public:
+  BookmarkWriter(std::unique_ptr<base::Value> bookmarks,
+                 const base::FilePath& path,
+                 BookmarksExportObserver* observer);
+  
+  void ExportBookmarks();
+  
+private:
+  void ExecuteWriter();
+  
+  std::unique_ptr<base::Value> bookmarks_;
+  base::FilePath path_;
+  BookmarksExportObserver* observer_;
+  std::unique_ptr<BookmarkFaviconFetcher::URLFaviconMap> favicons_map_;
+};
+
 }  // namespace
 
 BookmarkFaviconFetcher::BookmarkFaviconFetcher(
@@ -558,6 +576,31 @@ void BookmarkFaviconFetcher::OnFaviconDataAvailable(
   ExecuteWriter();
 }
 
+
+BookmarkWriter::BookmarkWriter(std::unique_ptr<base::Value> bookmarks,
+                               const base::FilePath& path,
+                               BookmarksExportObserver* observer)
+    : bookmarks_(std::move(bookmarks)),
+      path_(path),
+      observer_(observer) {
+  favicons_map_.reset(new BookmarkFaviconFetcher::URLFaviconMap());
+}
+
+void BookmarkWriter::ExportBookmarks() {
+  ExecuteWriter();
+}
+
+void BookmarkWriter::ExecuteWriter() {
+  base::ThreadPool::PostTask(
+      FROM_HERE, {base::MayBlock(), base::TaskPriority::BEST_EFFORT},
+      base::BindOnce(
+          &Writer::DoWrite,
+          base::MakeRefCounted<Writer>(
+              std::move(bookmarks_), path_,
+              favicons_map_.release(), observer_)));
+  delete this;
+}
+
 namespace bookmark_html_writer {
 
 void WriteBookmarks(ChromeBrowserState* browser_state,
@@ -572,6 +615,17 @@ void WriteBookmarks(ChromeBrowserState* browser_state,
   auto* fetcher_ptr = fetcher.get();
   browser_state->SetUserData(kBookmarkFaviconFetcherKey, std::move(fetcher));
   fetcher_ptr->ExportBookmarks();
+}
+
+void WriteBookmarks(std::unique_ptr<base::Value> encoded_bookmarks,
+                    const base::FilePath& path,
+                    BookmarksExportObserver* observer) {
+  
+  //Deleted in |ios::BookmarkWriter::ExecuteWriter|
+  BookmarkWriter* fetcher = new BookmarkWriter(std::move(encoded_bookmarks),
+                                               path,
+                                               observer);
+  fetcher->ExportBookmarks();
 }
 
 }  // namespace bookmark_html_writer
