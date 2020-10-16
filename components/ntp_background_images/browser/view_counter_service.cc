@@ -77,7 +77,7 @@ void ViewCounterService::BrandedWallpaperWillBeDisplayed(
   LOG(ERROR) << "CreativeInstanceID: " << id;
   LOG(ERROR) << "WallpaperID: " << wallpaper_id;
   if (!id.empty()) {
-    // Ping to ads service if data has proper ids.
+    // TODO(Terry): Ping NTP displayed event to ads service.
   }
 }
 
@@ -199,7 +199,7 @@ void ViewCounterService::BrandedWallpaperLogoClicked(
   LOG(ERROR) << ": destination url: " << destination_url;
   LOG(ERROR) << ": wallpaper id: " << wallpaper_id;
 
-  // TODO: Ping click confirmation to ads service.
+  // TODO(Terry): Ping click confirmation to ads service.
 }
 
 bool ViewCounterService::ShouldShowBrandedWallpaper() const {
