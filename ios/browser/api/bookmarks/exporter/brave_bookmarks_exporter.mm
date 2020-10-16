@@ -48,6 +48,22 @@ void BraveBookmarksExportObserver::OnExportFinished(Result result) {
 }
 
 @implementation BraveExportedBookmark
+- (instancetype)initWithTitle:(NSString *)title id:(int64_t)id guid:(NSString *)guid
+              url:(NSURL * _Nullable)url dateAdded:(NSDate *)dateAdded
+                 dateModified:(NSDate *)dateModified
+                    children:(NSArray<BraveExportedBookmark *> * _Nullable)children {
+  if ((self = [super init])) {
+    _title = title;
+    _id = id;
+    _guid = guid;
+    _url = url;
+    _dateAdded = dateAdded;
+    _dateModified = dateModified;
+    _children = children;
+  }
+  return self;
+}
+
 - (instancetype)initFromChromiumExportedBookmark:(const ExportedBookmarkEntry*)entry {
   if ((self = [super init])) {
     DCHECK(entry);
