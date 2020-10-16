@@ -175,8 +175,8 @@ void IpfsServiceImpl::Launch(mojom::IpfsConfigPtr config,
   std::initializer_list<std::initializer_list<std::string>> config_args = {
       {"config", "Addresses.API", "/ip4/127.0.0.1/tcp/45001"},
       {"config", "Addresses.Gateway", "/ip4/127.0.0.1/tcp/48080"},
-      {"config", "profile", "apply", "randomports"}  // for swarm addresses
-  };
+      {"config", "--json", "Addresses.Swarm",
+       "[\"/ip4/0.0.0.0/tcp/44001\", \"/ip6/::/tcp/44001\"]"}};
 
   for (auto args : config_args) {
     if (!LaunchProcessAndExit(config->binary_path, args, options)) {
