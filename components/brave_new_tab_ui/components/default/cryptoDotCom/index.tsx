@@ -76,10 +76,9 @@ interface Props {
   onDisableWidget: () => void
   onBtcPriceOptIn: () => void
   onUpdateActions: () => Promise<void>
-  onViewMarketsRequested: (assets: string[]) => Promise<void>
-  onSetAssetData: (assets: string[]) => Promise<void>
+  onViewMarketsRequested: (assets: string[]) => void
+  onAssetsDetailsRequested: (assets: string[]) => void
   onBuyCrypto: () => void
-  onInteraction: () => void
   onOptInMarkets: (show: boolean) => void
 }
 interface ChartConfig {
@@ -146,10 +145,8 @@ class CryptoDotCom extends React.PureComponent<Props, State> {
     })
   }
 
-  handleViewMarketsClick = async () => {
-    this.props.onInteraction()
-    this.optInMarkets(true)
-    await this.props.onViewMarketsRequested(this.topMovers)
+  handleViewMarketsClick = () => {
+    this.props.onViewMarketsRequested(this.topMovers)
   }
 
   optInMarkets = (show: boolean) => {
@@ -172,7 +169,7 @@ class CryptoDotCom extends React.PureComponent<Props, State> {
 
   handleAssetDetailClick = async (asset: string) => {
     this.setSelectedAsset(asset)
-    await this.props.onSetAssetData([asset])
+    await this.props.onAssetsDetailsRequested([asset])
   }
 
   onClickBuyTop = () => {
