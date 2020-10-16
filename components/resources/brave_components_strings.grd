@@ -471,6 +471,33 @@
       <message name="IDS_BRAVE_REWARDS_INTERNALS_WALLET_STATUS_DISCONNECTED_VERIFIED" desc="">Disconnected (Verified)</message>
       <message name="IDS_BRAVE_REWARDS_INTERNALS_WALLET_STATUS_PENDING" desc="">Pending</message>
 
+      <!-- WebUI brave tip dialog resources -->
+      <message name="IDS_BRAVE_REWARDS_TIP_BAP_FUNDS" desc="">BAP Funds</message>
+      <message name="IDS_BRAVE_REWARDS_TIP_BAT_FUNDS" desc="">BAT Funds</message>
+      <message name="IDS_BRAVE_REWARDS_TIP_CANCEL" desc="">Cancel</message>
+      <message name="IDS_BRAVE_REWARDS_TIP_CANCEL_CONFIRMATION_TEXT" desc="">Are you sure you want to stop supporting this creator?</message>
+      <message name="IDS_BRAVE_REWARDS_TIP_CANCEL_MONTHLY_CONTRIBUTION" desc="">Cancel Monthly Contribution</message>
+      <message name="IDS_BRAVE_REWARDS_TIP_CHANGE_AMOUNT" desc="">Change Amount</message>
+      <message name="IDS_BRAVE_REWARDS_TIP_CONFIRM_CANCEL" desc="">Confirm Canceling Monthly</message>
+      <message name="IDS_BRAVE_REWARDS_TIP_CONTRIBUTION_AMOUNT" desc="">Contribution amount:</message>
+      <message name="IDS_BRAVE_REWARDS_TIP_CONTRIBUTION_CANCELED" desc="">Your monthly contribution to this creator has been canceled.</message>
+      <message name="IDS_BRAVE_REWARDS_TIP_CURRENTLY_SUPPORTING" desc="">You’re currently supporting this creator</message>
+      <message name="IDS_BRAVE_REWARDS_TIP_CURRENT_MONTHLY_CONTRIBUTION" desc="">Current monthly contribution</message>
+      <message name="IDS_BRAVE_REWARDS_TIP_ERROR_HAS_OCCURRED" desc="">Oops - an error has occurred.</message>
+      <message name="IDS_BRAVE_REWARDS_TIP_MONTHLY_CONTRIBUTION_SET" desc="">Monthly contribution has been set.</message>
+      <message name="IDS_BRAVE_REWARDS_TIP_NEXT_CONTRIBUTION_DATE" desc="">Next contribution date:</message>
+      <message name="IDS_BRAVE_REWARDS_TIP_ONE_TIME_TIP" desc="">One Time Tip</message>
+      <message name="IDS_BRAVE_REWARDS_TIP_ONE_TIME_TIP_AMOUNT" desc="">One time tip amount:</message>
+      <message name="IDS_BRAVE_REWARDS_TIP_POST_HEADER" desc="">{{user}}’s post</message>
+      <message name="IDS_BRAVE_REWARDS_TIP_POST_HEADER_TWITTER" desc="">{{user}}’s tweet</message>
+      <message name="IDS_BRAVE_REWARDS_TIP_SORRY_TO_SEE_YOU_GO" desc="">Sorry to see you go…</message>
+      <message name="IDS_BRAVE_REWARDS_TIP_SUPPORT_THIS_CREATOR" desc="">Support this creator</message>
+      <message name="IDS_BRAVE_REWARDS_TIP_TERMS_OF_SERVICE" desc="">By proceeding, you agree to the <ph name="LINK_BEGIN">$1</ph>Terms of Service<ph name="LINK_END">$2</ph>.</message>
+      <message name="IDS_BRAVE_REWARDS_TIP_THANKS_FOR_THE_SUPPORT" desc="">Thanks for the support!</message>
+      <message name="IDS_BRAVE_REWARDS_TIP_TIP_HAS_BEEN_SET" desc="">Your one time tip has been sent.</message>
+      <message name="IDS_BRAVE_REWARDS_TIP_TIP_POST_SUBTITLE" desc="">for their post</message>
+      <message name="IDS_BRAVE_REWARDS_TIP_TWEET_ABOUT_SUPPORT" desc="">Tweet about your support</message>
+
       <!-- WebUI brave ui resources -->
       <message name="IDS_BRAVE_UI_ABOUT" desc="">about</message>
       <message name="IDS_BRAVE_UI_ACCEPT" desc="">Accept</message>
@@ -492,7 +519,6 @@
       <message name="IDS_BRAVE_UI_ADS_OPT_OUT_TOOLTIP" desc="">You will no longer receive ads from this category</message>
       <message name="IDS_BRAVE_UI_ADS_SAVED">Saved</message>
       <message name="IDS_BRAVE_UI_ADS_SAVE_AD">Save</message>
-      <message name="IDS_BRAVE_UI_AUTO_TIP_TEXT" desc="">You are automatically sending a tip to:</message>
       <message name="IDS_BRAVE_UI_BAT_TEXT" desc="">BAT</message>
       <message name="IDS_BRAVE_UI_ALLOW_TIP" desc="">Allow tips on</message>
       <message name="IDS_BRAVE_UI_AMOUNT" desc="">Amount</message>
@@ -512,8 +538,6 @@
       <message name="IDS_BRAVE_UI_SERVICE_TEXT_TOGGLE" desc="">By turning on Brave Rewards, you indicate that you have read and agree to the</message>
       <message name="IDS_BRAVE_UI_SERVICE_TEXT_WELCOME" desc="">By clicking ‘Yes, I'm in!’, you indicate that you have read and agree to the</message>
       <message name="IDS_BRAVE_UI_SERVICE_TEXT_READY" desc="">By clicking ‘Yes, I'm Ready!’, you indicate that you have read and agree to the</message>
-      <message name="IDS_BRAVE_UI_SET_CONTRIBUTION" desc="">Set Contribution</message>
-      <message name="IDS_BRAVE_UI_SHARE_TEXT" desc="">Share the good news:</message>
       <message name="IDS_BRAVE_UI_BRAVE_REWARDS_CREATING_TEXT" desc="">Creating wallet</message>
       <message name="IDS_BRAVE_UI_BRAVE_REWARDS_DESC" desc="">Your attention is valuable. Earn by viewing privacy-respecting ads, and pay it forward to support content creators you love.</message>
       <message name="IDS_BRAVE_UI_BRAVE_REWARDS_OPT_IN_TEXT" desc="">Yes, I'm In!</message>
@@ -545,11 +569,9 @@
       <message name="IDS_BRAVE_UI_DND_CAPTCHA_TEXT_2" desc="">target</message>
       <message name="IDS_BRAVE_UI_DONATION" desc="">Tip</message>
       <message name="IDS_BRAVE_UI_DONATION_AMOUNT" desc="">Tip amount</message>
-      <message name="IDS_BRAVE_UI_CONTRIBUTION_AMOUNT" desc="">Contribution amount</message>
       <message name="IDS_BRAVE_UI_DONATE_MONTHLY" desc="">Tip this site Monthly</message>
       <message name="IDS_BRAVE_UI_DONATE_NOW" desc="">Send a Tip…</message>
       <message name="IDS_BRAVE_UI_DONE" desc="">Done</message>
-      <message name="IDS_BRAVE_UI_FIRST_TIP_TEXT" desc="">Your first monthly contribution will be sent on:</message>
       <message name="IDS_BRAVE_UI_DO_MONTHLY" desc="">Set monthly contribution</message>
       <message name="IDS_BRAVE_UI_DOWNLOAD_PDF" desc="">Download as PDF</message>
       <message name="IDS_BRAVE_UI_EARNINGS_ADS" desc="">Earnings from Ads</message>
@@ -596,7 +618,6 @@
       <message name="IDS_BRAVE_UI_GRANT_DATE_TITLE_ADS" desc="">Rewards Period</message>
       <message name="IDS_BRAVE_UI_NEW_TOKEN_GRANT" desc="">Free Token Grant</message>
       <message name="IDS_BRAVE_UI_MONTHLY_CONTRIBUTION" desc="">Monthly Contribution</message>
-      <message name="IDS_BRAVE_UI_NEXT_CONTRIBUTION" desc="">Next Contribution</message>
       <message name="IDS_BRAVE_UI_NO_GRANTS" desc="">Currently no token grant is available.</message>
       <message name="IDS_BRAVE_UI_NO_ACTIVITY" desc="">No activities yet…</message>
       <message name="IDS_BRAVE_UI_NO_THANK_YOU" desc="">No, thank you</message>
@@ -632,10 +653,6 @@
       <message name="IDS_BRAVE_UI_RECURRING" desc="">Recurring</message>
       <message name="IDS_BRAVE_UI_RECURRING_DONATION" desc="">Monthly Contributions</message>
       <message name="IDS_BRAVE_UI_RECURRING_DONATIONS" desc="">Monthly Contributions</message>
-      <message name="IDS_BRAVE_UI_REDDIT_TIP_TITLE" desc="">Tip {{ user }} for their post:</message>
-      <message name="IDS_BRAVE_UI_REDDIT_TIP_TITLE_EMPTY" desc="We use this title when reddit text is empty">Tip {{ user }} for their post!</message>
-      <message name="IDS_BRAVE_UI_GITHUB_TIP_TITLE" desc="">Tip {{ user }} for their post:</message>
-      <message name="IDS_BRAVE_UI_GITHUB_TIP_TITLE_EMPTY" desc="We use this title when github text is empty">Tip {{ user }} </message>
       <message name="IDS_BRAVE_UI_REMOVE" desc="">remove</message>
       <message name="IDS_BRAVE_UI_REMOVE_AD_FROM_SAVED" desc="">Remove From Saved</message>
       <message name="IDS_BRAVE_UI_RESERVED_AMOUNT_TEXT" desc="Notification about how much BAT do you have reserved">You’ve designated {{reservedAmount}} {{currency}} for creators who haven’t yet signed up to receive contributions. Your browser will keep trying to contribute until they verify, or until 90 days have passed.</message>
@@ -655,7 +672,6 @@
       <message name="IDS_BRAVE_UI_REWARDS_BACKUP_TEXT6" desc="">connecting to a verified Uphold wallet.</message>
       <message name="IDS_BRAVE_UI_REWARDS_BANNER_TEXT1" desc="">You can support this content creator by sending a tip. It’s a way of thanking them for making great content. Verified creators get paid for their tips during the first week of each calendar month.</message>
       <message name="IDS_BRAVE_UI_REWARDS_BANNER_TEXT2" desc="">You can also set a monthly recurring contribution from within the Brave Rewards panel.</message>
-      <message name="IDS_BRAVE_UI_REWARDS_BANNER_MONTHLY_TEXT1" desc="">You can support this content creator by setting a monthly contribution. It’s a way of thanking them for making great content on an ongoing basis. Verified creators get paid for their contributions during the first week of each calendar month.</message>
       <message name="IDS_BRAVE_UI_REWARDS_CONTRIBUTE" desc="">Auto-Contribute</message>
       <message name="IDS_BRAVE_UI_REWARDS_CONTRIBUTE_ATTENTION" desc="">Attention</message>
       <message name="IDS_BRAVE_UI_REWARDS_CONTRIBUTE_ATTENTION_SCORE" desc="">Attention</message>
@@ -696,11 +712,6 @@
       <message name="IDS_BRAVE_UI_SETTINGS" desc="">Settings</message>
       <message name="IDS_BRAVE_UI_SITE" desc="">site</message>
       <message name="IDS_BRAVE_UI_SITES" desc="">sites</message>
-      <message name="IDS_BRAVE_UI_TELL_OTHERS" desc="">Tell others about your tip.</message>
-      <message name="IDS_BRAVE_UI_THANK_YOU" desc="">Thank you</message>
-      <message name="IDS_BRAVE_UI_TIP_SENT" desc="">Tip sent!</message>
-      <message name="IDS_BRAVE_UI_CONTRIBUTION_SET" desc="">Monthly contribution has been set!</message>
-      <message name="IDS_BRAVE_UI_TIP_TEXT" desc="">You've just sent a tip to:</message>
       <message name="IDS_BRAVE_UI_TIP_ON_LIKE" desc="">Tip on like</message>
       <message name="IDS_BRAVE_UI_TITLE_BAT" desc="">Basic Attention Token (BAT)</message>
       <message name="IDS_BRAVE_UI_TITLE_BTC" desc="">Bitcoin (BTC)</message>
@@ -720,9 +731,6 @@
       <message name="IDS_BRAVE_UI_TURN_ON_ADS" desc="">Turn on Brave Ads</message>
       <message name="IDS_BRAVE_UI_TURN_ON_REWARDS_DESC" desc="">This enables both ads and automatic contributions. You can turn them on or off separately at any time.</message>
       <message name="IDS_BRAVE_UI_TURN_ON_REWARDS_TITLE" desc="">Activate Rewards</message>
-      <message name="IDS_BRAVE_UI_TWEET_NOW" desc="">Tweet</message>
-      <message name="IDS_BRAVE_UI_TWEET_TIP_TITLE" desc="">Tip @{{ user }} for their tweet:</message>
-      <message name="IDS_BRAVE_UI_TWEET_TIP_TITLE_EMPTY" desc="We use this title when twitter text is empty">Tip @{{ user }} for their tweet!</message>
       <message name="IDS_BRAVE_UI_TYPE" desc="">Type</message>
       <message name="IDS_BRAVE_UI_VERIFIED_PUBLISHER" desc="">Brave Verified Publisher</message>
       <message name="IDS_BRAVE_UI_VIEW_MONTHLY" desc="">View Monthly Statement for Details</message>

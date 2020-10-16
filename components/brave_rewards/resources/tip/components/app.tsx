@@ -3,107 +3,60 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 import * as React from 'react'
-import { bindActionCreators, Dispatch } from 'redux'
-import { connect } from 'react-redux'
 
-// Components
-import TipSite from './tipSite'
-import TipMediaUser from './tipMediaUser'
+import { HostError } from '../lib/interfaces'
+import { HostContext } from '../lib/host_context'
+import { Locale, LocaleContext } from '../lib/locale_context'
+import { injectThemeVariables } from '../lib/theme_loader'
 
-// Utils
-import * as rewardsActions from '../actions/tip_actions'
+import { PublisherBanner } from './publisher_banner'
+import { TipForm } from './tip_form'
+import { CloseIcon } from './icons/close_icon'
 
-interface TipDialogArgs {
-  url: string
-  monthly: boolean
-  publisherKey: string
-  mediaMetaData?: RewardsTip.MediaMetaData
+import * as style from './app.style'
+
+function getErrorDisplay (locale: Locale, error: HostError) {
+  return (
+    <style.error>
+      {locale.getString('errorHasOccurred')}
+      <style.errorDetails>
+        {error.type} {error.code ? `(${error.code})` : ''}
+      </style.errorDetails>
+    </style.error>
+  )
 }
 
-interface Props extends RewardsTip.ComponentProps {
-  dialogArgs: TipDialogArgs
+export function App () {
+  const host = React.useContext(HostContext)
+  const locale = React.useContext(LocaleContext)
+  const [hostError, setHostError] = React.useState(host.state.hostError)
+
+  React.useEffect(() => {
+    return host.addListener((state) => {
+      setHostError(state.hostError)
+    })
+  })
+
+  function onMount (element: HTMLElement | null) {
+    if (!element) {
+      return
+    }
+    injectThemeVariables(element)
+  }
+
+  return (
+    <div ref={onMount}>
+      <style.root>
+        <style.banner>
+          <PublisherBanner />
+        </style.banner>
+        <style.form>
+          <style.close>
+            <button onClick={host.closeDialog}><CloseIcon /></button>
+          </style.close>
+          {hostError ? getErrorDisplay(locale, hostError) : <TipForm />}
+        </style.form>
+      </style.root>
+    </div>
+  )
 }
-
-export class App extends React.Component<Props, {}> {
-  get actions () {
-    return this.props.actions
-  }
-
-  componentDidMount () {
-    this.actions.onlyAnonWallet()
-  }
-
-  getTipBanner = (url: string, publisher: RewardsTip.Publisher, mediaMetaData: RewardsTip.MediaMetaData | undefined) => {
-    let monthlyDate
-
-    const {
-      currentTipAmount,
-      currentTipRecurring,
-      reconcileStamp
-    } = this.props.rewardsDonateData
-    const monthly = this.props.dialogArgs.monthly
-
-    if (currentTipRecurring && reconcileStamp) {
-      monthlyDate = new Date(reconcileStamp * 1000).toLocaleDateString()
-    }
-
-    if (!mediaMetaData) {
-      return (
-        <TipSite
-          url={url}
-          monthly={monthly}
-          publisher={publisher}
-          monthlyDate={monthlyDate}
-          amount={currentTipAmount}
-        />
-      )
-    } else {
-      return (
-        <TipMediaUser
-          url={url}
-          monthly={monthly}
-          publisher={publisher}
-          mediaMetaData={mediaMetaData}
-          monthlyDate={monthlyDate}
-          amount={currentTipAmount}
-        />
-      )
-    }
-  }
-
-  render () {
-    const { publishers } = this.props.rewardsDonateData
-
-    if (!publishers) {
-      return null
-    }
-
-    const url = this.props.dialogArgs.url
-    const mediaMetaData = this.props.dialogArgs.mediaMetaData
-    const publisherKey = this.props.dialogArgs.publisherKey
-    const publisher = publishers[publisherKey]
-
-    if (!publisher) {
-      return null
-    }
-
-    return (
-      <div>
-        {this.getTipBanner(url, publisher, mediaMetaData)}
-      </div>
-    )
-  }
-}
-
-export const mapStateToProps = (state: RewardsTip.ApplicationState) => ({
-  rewardsDonateData: state.rewardsDonateData
-})
-
-export const mapDispatchToProps = (dispatch: Dispatch) => ({
-  actions: bindActionCreators(rewardsActions, dispatch)
-})
-
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(App)

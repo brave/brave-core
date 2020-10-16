@@ -97,12 +97,12 @@ void RewardsBrowserTestContribution::TipPublisher(
   auto tip_options = rewards_browsertest_util::GetSiteBannerTipOptions(
           site_banner_contents);
   const double amount = tip_options.at(selection);
-  const std::string amount_str = base::StringPrintf("%.3f", amount);
 
   // Select the tip amount (default is 1.000 BAT)
   std::string amount_selector = base::StringPrintf(
-      "div:nth-of-type(%u)>[data-test-id=amount-wrapper]",
-      selection + 1);
+      "[data-test-id=tip-amount-options] [data-option-index='%u'] button",
+      selection);
+
   rewards_browsertest_util::WaitForElementThenClick(
       site_banner_contents,
       amount_selector);
@@ -110,7 +110,7 @@ void RewardsBrowserTestContribution::TipPublisher(
   // Send the tip
   rewards_browsertest_util::WaitForElementThenClick(
       site_banner_contents,
-      "[data-test-id='send-tip-button']");
+      "[data-test-id=form-submit-button]");
 
   // Signal that direct tip was made and update wallet with new
   // balance
@@ -122,11 +122,6 @@ void RewardsBrowserTestContribution::TipPublisher(
 
   // Wait for thank you banner to load
   ASSERT_TRUE(WaitForLoadStop(site_banner_contents));
-
-  const std::string confirmationText =
-      type == rewards_browsertest_util::ContributionType::MonthlyTip
-      ? "Monthly contribution has been set!"
-      : "Tip sent!";
 
   if (type == rewards_browsertest_util::ContributionType::MonthlyTip) {
     WaitForRecurringTipToBeSaved();
@@ -160,24 +155,15 @@ void RewardsBrowserTestContribution::TipPublisher(
   }
 
   // Make sure that thank you banner shows correct publisher data
-  // (domain and amount)
   {
     rewards_browsertest_util::WaitForElementToContain(
         site_banner_contents,
         "body",
-        confirmationText);
+        "Thanks for the support!");
     rewards_browsertest_util::WaitForElementToContain(
         site_banner_contents,
         "body",
-        amount_str + " BAT");
-    rewards_browsertest_util::WaitForElementToContain(
-        site_banner_contents,
-        "body",
-        "Share the good news:");
-    rewards_browsertest_util::WaitForElementToContain(
-        site_banner_contents,
-        "body",
-        GetStringBalance());
+        base::StringPrintf("%.3f BAT", amount));
   }
 
   const bool is_monthly =
