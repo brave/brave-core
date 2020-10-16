@@ -44,9 +44,6 @@
       },
       "backgroundColor": "#FFFFFF",
       "creativeInstanceId": "3e47ee7a-8d2d-445b-8e60-d987fdeea613",
-      "creativeSetId": "5647ef7b-8d2d-445b-8e60-d987fdeea6222",
-      "campaignId": "fe37ee7a-8d2d-445b-8e60-d987fdeea625",
-      "advertiserId": "2f47ef7a-8d2d-445b-8e60-d987fdeea6fe",
       "logo": {
         "imageUrl": "logo-2.png",
         "alt": "basic attention token",
@@ -179,12 +176,6 @@ NTPBackgroundImagesData::NTPBackgroundImagesData(
               wallpaper.FindStringKey(kCreativeInstanceIDKey)) {
         background.creative_instance_id =  *creative_instance_id;
       }
-      if (auto* creative_set_id = wallpaper.FindStringKey(kCreativeSetIDKey))
-        background.creative_set_id =  *creative_set_id;
-      if (auto* campaign_id = wallpaper.FindStringKey(kCampaignIDKey))
-        background.campaign_id =  *campaign_id;
-      if (auto* advertiser_id = wallpaper.FindStringKey(kAdvertiserIDKey))
-        background.advertiser_id =  *advertiser_id;
       if (auto* wallpaper_logo = wallpaper.FindDictKey(kLogoKey)) {
         background.logo.emplace(GetLogoFromValue(
             installed_dir, GetURLPrefix(), i, wallpaper_logo));
@@ -250,9 +241,6 @@ base::Value NTPBackgroundImagesData::GetBackgroundAt(size_t index) {
 
   data.SetStringKey(kCreativeInstanceIDKey,
                     backgrounds[index].creative_instance_id);
-  data.SetStringKey(kCreativeSetIDKey, backgrounds[index].creative_set_id);
-  data.SetStringKey(kCampaignIDKey, backgrounds[index].campaign_id);
-  data.SetStringKey(kAdvertiserIDKey, backgrounds[index].advertiser_id);
 
   base::Value logo_data(base::Value::Type::DICTIONARY);
   Logo logo = backgrounds[index].logo ? backgrounds[index].logo.value()

@@ -94,8 +94,7 @@ public class NTPBackgroundImagesBridge {
     public void wallpaperLogoClicked(Wallpaper wallpaper) {
         NTPBackgroundImagesBridgeJni.get().wallpaperLogoClicked(
                 mNativeNTPBackgroundImagesBridge, NTPBackgroundImagesBridge.this,
-                wallpaper.getCreativeInstanceId(), wallpaper.getCreativeSetId(),
-                wallpaper.getCampaignId(), wallpaper.getAdvertiserId(),
+                wallpaper.getCreativeInstanceId(),
                 wallpaper.getLogoDestinationUrl(), wallpaper.getWallpaperId());
     }
 
@@ -144,12 +143,10 @@ public class NTPBackgroundImagesBridge {
             String imagePath, int focalPointX, int focalPointY,
             String logoPath, String logoDestinationUrl,
             String themeName, boolean isSponsored,
-            String creativeInstanceId, String creativeSetId,
-            String campaignId, String advertiserId, String wallpaperId) {
+            String creativeInstanceId, String wallpaperId) {
         return new Wallpaper(imagePath, focalPointX, focalPointY,
                              logoPath, logoDestinationUrl,
                              themeName, isSponsored, creativeInstanceId,
-                             creativeSetId, campaignId, advertiserId,
                              wallpaperId);
     }
 
@@ -169,8 +166,7 @@ public class NTPBackgroundImagesBridge {
                               NTPBackgroundImagesBridge caller);
         void wallpaperLogoClicked(long nativeNTPBackgroundImagesBridge,
                                   NTPBackgroundImagesBridge caller,
-                                  String creativeInstanceId, String creativeSetId,
-                                  String campaignId, String advertiserId,
+                                  String creativeInstanceId,
                                   String destinationUrl, String wallpaperId);
         void getTopSites(long nativeNTPBackgroundImagesBridge,
                               NTPBackgroundImagesBridge caller);

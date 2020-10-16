@@ -36,9 +36,7 @@ constexpr char kCompanyNameKey[] = "companyName";
 constexpr char kViewboxKey[] = "viewbox";
 
 constexpr char kCreativeInstanceIDKey[] = "creativeInstanceId";
-constexpr char kCreativeSetIDKey[] = "creativeSetId";
-constexpr char kCampaignIDKey[] = "campaignId";
-constexpr char kAdvertiserIDKey[] = "advertiserId";
+constexpr char kWallpaperIDKey[] = "wallpaperId";
 
 constexpr char kIsSponsoredKey[] = "isSponsored";
 constexpr char kWallpaperImageURLKey[] = "wallpaperImageUrl";
@@ -55,8 +53,6 @@ constexpr char kXKey[] = "x";
 constexpr char kYKey[] = "y";
 constexpr char kWidthKey[] = "width";
 constexpr char kHeightKey[] = "height";
-
-constexpr char kWallpaperIDKey[] = "wallpaperId";
 
 constexpr char kSchemaVersionKey[] = "schemaVersion";
 

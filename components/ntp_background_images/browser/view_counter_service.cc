@@ -193,15 +193,9 @@ void ViewCounterService::RegisterPageView() {
 
 void ViewCounterService::BrandedWallpaperLogoClicked(
     const std::string& creative_instance_id,
-    const std::string& creative_set_id,
-    const std::string& campaign_id,
-    const std::string& advertiser_id,
     const std::string& destination_url,
     const std::string& wallpaper_id) {
   LOG(ERROR) << ": creative instance id: " << creative_instance_id;
-  LOG(ERROR) << ": creative set id: " << creative_set_id;
-  LOG(ERROR) << ": campaign id: " << campaign_id;
-  LOG(ERROR) << ": advertiser id: " << advertiser_id;
   LOG(ERROR) << ": destination url: " << destination_url;
   LOG(ERROR) << ": wallpaper id: " << wallpaper_id;
 

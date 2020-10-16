@@ -54,9 +54,6 @@ struct Background {
   std::string background_color;
 
   std::string creative_instance_id;
-  std::string creative_set_id;
-  std::string campaign_id;
-  std::string advertiser_id;
 
   base::Optional<Logo> logo;
   base::Optional<gfx::Rect> viewbox;

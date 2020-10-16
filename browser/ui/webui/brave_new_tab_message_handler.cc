@@ -453,29 +453,17 @@ void BraveNewTabMessageHandler::HandleBrandedWallpaperLogoClicked(
   if (auto* service = ViewCounterServiceFactory::GetForProfile(profile_)) {
     auto* creative_instance_id = args->GetList()[0].FindStringKey(
         ntp_background_images::kCreativeInstanceIDKey);
-    auto* creative_set_id = args->GetList()[0].FindStringKey(
-        ntp_background_images::kCreativeSetIDKey);
-    auto* campaign_id = args->GetList()[0].FindStringKey(
-        ntp_background_images::kCampaignIDKey);
-    auto* advertiser_id = args->GetList()[0].FindStringKey(
-        ntp_background_images::kAdvertiserIDKey);
     auto* destination_url = args->GetList()[0].FindStringPath(
         ntp_background_images::kLogoDestinationURLPath);
     auto* wallpaper_id = args->GetList()[0].FindStringPath(
         ntp_background_images::kWallpaperIDKey);
 
     DCHECK(creative_instance_id);
-    DCHECK(creative_set_id);
-    DCHECK(campaign_id);
-    DCHECK(advertiser_id);
     DCHECK(destination_url);
     DCHECK(wallpaper_id);
 
     service->BrandedWallpaperLogoClicked(
         creative_instance_id ? *creative_instance_id : "",
-        creative_set_id ? *creative_set_id : "",
-        campaign_id ? *campaign_id : "",
-        advertiser_id ? *advertiser_id : "",
         destination_url ? *destination_url : "",
         wallpaper_id ? *wallpaper_id : "");
   }

@@ -16,9 +16,6 @@ declare namespace NewTab {
     isSponsored: boolean
     wallpaperImageUrl: string
     creativeInstanceId: string
-    creativeSetId: string
-    campaignId: string
-    advertiserId: string
     wallpaperId: string
     logo: BrandedWallpaperLogo
   }

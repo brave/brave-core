@@ -50,9 +50,6 @@ class ViewCounterService : public KeyedService,
   void RegisterPageView();
 
   void BrandedWallpaperLogoClicked(const std::string& creative_instance_id,
-                                   const std::string& creative_set_id,
-                                   const std::string& campaign_id,
-                                   const std::string& advertiser_id,
                                    const std::string& destination_url,
                                    const std::string& wallpaper_id);
 
