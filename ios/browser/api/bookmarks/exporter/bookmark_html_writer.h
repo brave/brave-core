@@ -6,10 +6,13 @@
 #ifndef BRAVE_IOS_BROWSER_API_BOOKMARKS_IMPORTER_BOOKMARK_HTML_WRITER_H_
 #define BRAVE_IOS_BROWSER_API_BOOKMARKS_IMPORTER_BOOKMARK_HTML_WRITER_H_
 
+#include <memory>
+
 class ChromeBrowserState;
 
 namespace base {
 class FilePath;
+class Value;
 }
 
 // Observer for bookmark html output. Used only in tests.
@@ -35,6 +38,10 @@ namespace bookmark_html_writer {
 // Before writing to the file favicons are fetched on the main thread.
 // TODO(sky): need a callback on failure.
 void WriteBookmarks(ChromeBrowserState* browser_state,
+                    const base::FilePath& path,
+                    BookmarksExportObserver* observer);
+
+void WriteBookmarks(std::unique_ptr<base::Value>,
                     const base::FilePath& path,
                     BookmarksExportObserver* observer);
 

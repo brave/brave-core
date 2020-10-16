@@ -19,11 +19,28 @@ typedef NS_ENUM(NSUInteger, BraveBookmarksExporterState) {
 };
 
 OBJC_EXPORT
+@interface BraveExportedBookmark: NSObject
+@property (nonatomic, readonly, copy) NSString *title;
+@property (nonatomic, readonly) int64_t id;
+@property (nonatomic, readonly, copy) NSString *guid;
+@property (nullable, nonatomic, readonly, copy) NSURL *url;
+@property (nonatomic, readonly, copy) NSDate *dateAdded;
+@property (nonatomic, readonly, copy) NSDate *dateModified;
+@property (nonatomic, readonly) bool isFolder;
+
+@property (nullable, nonatomic, readonly, copy) NSArray<BraveExportedBookmark *> *children;
+@end
+
+OBJC_EXPORT
 @interface BraveBookmarksExporter: NSObject
 - (instancetype)init;
 
 - (void)exportToFile:(NSString *)filePath
        withListener:(void(^)(BraveBookmarksExporterState))listener;
+
+- (void)exportToFile:(NSString *)filePath
+           bookmarks:(NSArray<BraveExportedBookmark *> *)bookmarks
+              withListener:(void(^)(BraveBookmarksExporterState))listener;
 @end
 
 NS_ASSUME_NONNULL_END
