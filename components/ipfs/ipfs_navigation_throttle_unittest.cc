@@ -136,11 +136,11 @@ TEST_F(IpfsNavigationThrottleUnitTest, DeferUntilIpfsProcessLaunched) {
       base::BindLambdaForTesting([&]() { was_navigation_resumed = true; }));
   EXPECT_EQ(NavigationThrottle::DEFER, throttle->WillStartRequest().action())
       << GetIPFSURL();
-  throttle->OnIpfsLaunched(true, 5566);
+  ipfs_service()->SetIpfsLaunchedForTest(true);
+  ipfs_service()->RunLaunchDaemonCallbackForTest(true);
   EXPECT_TRUE(was_navigation_resumed);
 
   was_navigation_resumed = false;
-  ipfs_service()->SetIpfsLaunchedForTest(true);
   EXPECT_EQ(NavigationThrottle::DEFER, throttle->WillStartRequest().action())
       << GetIPFSURL();
   throttle->OnGetConnectedPeers(true, peers);
@@ -152,11 +152,11 @@ TEST_F(IpfsNavigationThrottleUnitTest, DeferUntilIpfsProcessLaunched) {
   test_handle.set_url(GetIPNSURL());
   EXPECT_EQ(NavigationThrottle::DEFER, throttle->WillStartRequest().action())
       << GetIPNSURL();
-  throttle->OnIpfsLaunched(true, 5566);
+  ipfs_service()->SetIpfsLaunchedForTest(true);
+  ipfs_service()->RunLaunchDaemonCallbackForTest(true);
   EXPECT_TRUE(was_navigation_resumed);
 
   was_navigation_resumed = false;
-  ipfs_service()->SetIpfsLaunchedForTest(true);
   EXPECT_EQ(NavigationThrottle::DEFER, throttle->WillStartRequest().action())
       << GetIPNSURL();
   throttle->OnGetConnectedPeers(true, peers);

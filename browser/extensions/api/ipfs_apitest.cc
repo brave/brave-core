@@ -128,20 +128,27 @@ IN_PROC_BROWSER_TEST_F(IpfsExtensionApiTest, GetConfig) {
   ASSERT_TRUE(catcher.GetNextResult()) << message_;
 }
 
-// No great way to test launch and shutdown succeeding easily
-// so at least just make sure the API call works.
-IN_PROC_BROWSER_TEST_F(IpfsExtensionApiTest, LaunchShutdownFail) {
+// No great way to test launch and shutdown succeeding easily, so at least
+// just make sure the API call works. IpfsService::SetIpfsLaunchedForTest
+// is used to short-circuit the launch and shutdown process.
+IN_PROC_BROWSER_TEST_F(IpfsExtensionApiTest, LaunchShutdownSuccess) {
   ResultCatcher catcher;
   const Extension* extension =
       LoadExtension(extension_dir_.AppendASCII("ipfsCompanion"));
   ASSERT_TRUE(extension);
+  ipfs::IpfsService* service =
+      ipfs::IpfsServiceFactory::GetInstance()->GetForContext(
+          browser()->profile());
+  ASSERT_TRUE(service);
 
+  service->SetIpfsLaunchedForTest(true);
   ASSERT_TRUE(browsertest_util::ExecuteScriptInBackgroundPageNoWait(
-      browser()->profile(), ipfs_companion_extension_id, "launchFail()"));
+      browser()->profile(), ipfs_companion_extension_id, "launchSuccess()"));
   ASSERT_TRUE(catcher.GetNextResult()) << message_;
 
+  service->SetIpfsLaunchedForTest(false);
   ASSERT_TRUE(browsertest_util::ExecuteScriptInBackgroundPageNoWait(
-      browser()->profile(), ipfs_companion_extension_id, "shutdownFail()"));
+      browser()->profile(), ipfs_companion_extension_id, "shutdownSuccess()"));
   ASSERT_TRUE(catcher.GetNextResult()) << message_;
 }
 

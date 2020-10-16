@@ -132,7 +132,9 @@ void IpfsService::RegisterPrefs(PrefRegistrySimple* registry) {
 }
 
 base::FilePath IpfsService::GetIpfsExecutablePath() {
-  return ipfs_client_updater_->GetExecutablePath();
+  // ipfs_client_updater is not available in unit tests.
+  return ipfs_client_updater_ ? ipfs_client_updater_->GetExecutablePath()
+                              : base::FilePath();
 }
 
 void IpfsService::OnExecutableReady(const base::FilePath& path) {
@@ -333,22 +335,22 @@ void IpfsService::LaunchDaemon(LaunchDaemonCallback callback) {
     std::move(callback).Run(false);
   }
 
-  if (ipfs_pid_ > 0) {
+  if (IsDaemonLaunched()) {
     std::move(callback).Run(true);
   }
 
-  base::FilePath path(GetIpfsExecutablePath());
-  if (path.empty()) {  // Cannot launch if path is not ready.
-    std::move(callback).Run(false);
-    return;
-  }
-
   launch_daemon_callback_ = std::move(callback);
-  LaunchIfNotRunning(path);
+  base::FilePath path(GetIpfsExecutablePath());
+  if (path.empty()) {
+    // Daemon will be launched later in OnExecutableReady.
+    RegisterIpfsClientUpdater();
+  } else {
+    LaunchIfNotRunning(path);
+  }
 }
 
 void IpfsService::ShutdownDaemon(ShutdownDaemonCallback callback) {
-  if (ipfs_pid_ > 0) {
+  if (IsDaemonLaunched()) {
     Shutdown();
   }
 
@@ -393,6 +395,12 @@ void IpfsService::SetIpfsLaunchedForTest(bool launched) {
 
 void IpfsService::SetServerEndpointForTest(const GURL& gurl) {
   server_endpoint_ = gurl;
+}
+
+void IpfsService::RunLaunchDaemonCallbackForTest(bool result) {
+  if (launch_daemon_callback_) {
+    std::move(launch_daemon_callback_).Run(result);
+  }
 }
 
 void IpfsService::SetSkipGetConnectedPeersCallbackForTest(bool skip) {
