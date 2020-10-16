@@ -15,8 +15,6 @@ import {
 import {
   ActionAnchor,
   ActionButton,
-  AssetIcon,
-  AssetIconWrapper,
   BackArrow,
   BasicBox,
   Box,
@@ -35,9 +33,9 @@ import {
 } from './style'
 import CryptoDotComLogo from './assets/cryptoDotCom-logo'
 import { CaratLeftIcon } from 'brave-ui/components/icons'
+import icons from './assets/icons'
 
 // Utils
-import cryptoColors from '../exchangeWidget/colors'
 import { getLocale } from '../../../../common/locale'
 
 interface State {
@@ -82,7 +80,7 @@ interface Props {
   onSetAssetData: (assets: string[]) => Promise<void>
   onBuyCrypto: () => void
   onInteraction: () => void
-  onOptInMarkets: () => void
+  onOptInMarkets: (show: boolean) => void
 }
 interface ChartConfig {
   data: Array<any>
@@ -92,7 +90,7 @@ interface ChartConfig {
 
 class CryptoDotCom extends React.PureComponent<Props, State> {
   private refreshInterval: any
-  private topMovers: string[] = [ 'BTC', 'ETH', 'CRO' ]
+  private topMovers: string[] = Object.keys(currencyNames)
 
   constructor (props: Props) {
     super(props)
@@ -117,11 +115,15 @@ class CryptoDotCom extends React.PureComponent<Props, State> {
   }
 
   componentDidMount () {
-    this.checkSetRefreshInterval()
+    const { optInBTCPrice, optInMarkets } = this.props
+
+    if (optInBTCPrice || optInMarkets) {
+      this.checkSetRefreshInterval()
+    }
   }
 
   componentWillUnmount () {
-    clearInterval(this.refreshInterval)
+    this.clearIntervals()
   }
 
   checkSetRefreshInterval = () => {
@@ -135,6 +137,7 @@ class CryptoDotCom extends React.PureComponent<Props, State> {
 
   clearIntervals = () => {
     clearInterval(this.refreshInterval)
+    this.refreshInterval = null
   }
 
   setSelectedAsset = (asset: string) => {
@@ -145,8 +148,26 @@ class CryptoDotCom extends React.PureComponent<Props, State> {
 
   handleViewMarketsClick = async () => {
     this.props.onInteraction()
-    this.props.onOptInMarkets()
+    this.optInMarkets(true)
     await this.props.onViewMarketsRequested(this.topMovers)
+  }
+
+  optInMarkets = (show: boolean) => {
+    if (show) {
+      this.checkSetRefreshInterval()
+    } else {
+      if (!this.props.optInBTCPrice) {
+        this.clearIntervals()
+      }
+      this.setState({ selectedAsset: '' })
+    }
+
+    this.props.onOptInMarkets(show)
+  }
+
+  btcPriceOptIn = () => {
+    this.props.onBtcPriceOptIn()
+    this.checkSetRefreshInterval()
   }
 
   handleAssetDetailClick = async (asset: string) => {
@@ -196,21 +217,20 @@ class CryptoDotCom extends React.PureComponent<Props, State> {
       .join('\n')
   }
 
-  renderIconAsset = (key: string, isDetail: boolean = false) => {
-    const iconBgColor = cryptoColors[key] || '#fff'
+  renderIconAsset = (key: string) => {
+    if (!(key in icons)) {
+      return null
+    }
 
     return (
-      <AssetIconWrapper $bg={iconBgColor} textColor='#000'>
-        <AssetIcon
-          isDetail={isDetail}
-          className={`crypto-icon icon-${key}`}
-        />
-      </AssetIconWrapper>
+      <>
+        <img width={25} src={icons[key]} />
+      </>
     )
   }
 
   renderIndexView () {
-    const { optInBTCPrice, onBtcPriceOptIn } = this.props
+    const { optInBTCPrice } = this.props
     const currency = 'BTC'
     const { price = null } = this.props.tickerPrices[currency] || {}
 
@@ -233,7 +253,7 @@ class CryptoDotCom extends React.PureComponent<Props, State> {
                 {(percentChange !== null) && <Text textColor={percentChange > 0 ? 'green' : 'red'}>{percentChange}%</Text>}
               </>
             ) : (
-              <PlainButton onClick={onBtcPriceOptIn} textColor='green' inline={true}>
+              <PlainButton onClick={this.btcPriceOptIn} textColor='green' inline={true}>
                 {getLocale('cryptoDotComWidgetShowPrice')}
               </PlainButton>
             )}
@@ -391,7 +411,7 @@ class CryptoDotCom extends React.PureComponent<Props, State> {
   }
 
   renderTitle () {
-    const { showContent } = this.props
+    const { optInMarkets, showContent } = this.props
     return (
       <Header showContent={showContent}>
         <StyledTitle>
@@ -401,6 +421,13 @@ class CryptoDotCom extends React.PureComponent<Props, State> {
           <StyledTitleText>
             {'Crypto.com'}
           </StyledTitleText>
+          {optInMarkets &&
+              <BackArrow marketView={true}>
+                <CaratLeftIcon
+                  onClick={this.optInMarkets.bind(this, false)}
+                />
+              </BackArrow>
+          }
         </StyledTitle>
       </Header>
     )
