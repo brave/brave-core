@@ -44,6 +44,8 @@ const handledByGreaselion = (url: URL) => {
 
   return url.hostname.endsWith('.github.com') ||
          url.hostname === 'github.com' ||
+         url.hostname.endsWith('.reddit.com') ||
+         url.hostname === 'reddit.com' ||
          url.hostname.endsWith('.twitter.com') ||
          url.hostname === 'twitter.com' ||
          url.hostname.endsWith('.youtube.com') ||

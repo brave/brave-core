@@ -73,10 +73,11 @@ function getProviderName (publisherInfo: PublisherInfo) {
 function getSocialScreenName (mediaMetaData: MediaMetaData) {
   switch (mediaMetaData.mediaType) {
     case 'twitter':
-    case 'github':
       return '@' + mediaMetaData.publisherName
+    case 'github':
+      return '@' + mediaMetaData.publisherScreenName
     case 'reddit':
-      return 'u/' + mediaMetaData.userName
+      return 'u/' + mediaMetaData.publisherName
   }
   return ''
 }
@@ -252,7 +253,7 @@ function getDescription (
   }
 
   if (mediaMetaData.mediaType === 'reddit') {
-    const postTime = getPostTimeString(mediaMetaData.postRelDate)
+    const postTime = getPostTimeString(mediaMetaData.postTimestamp)
     const title = formatLocaleTemplate(getString('postHeader'), {
       user: publisherInfo.name
     })

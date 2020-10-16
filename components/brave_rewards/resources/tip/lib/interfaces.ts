@@ -6,7 +6,7 @@ type EmptyMediaData = {
   mediaType: 'none'
 }
 
-export type TwitterMediaData = {
+type TwitterMediaData = {
   mediaType: 'twitter'
   publisherName: string
   postId: string
@@ -16,14 +16,15 @@ export type TwitterMediaData = {
 
 type RedditMediaData = {
   mediaType: 'reddit'
-  userName: string
+  publisherName: string
+  postTimestamp: string
   postText: string
-  postRelDate: string
 }
 
 type GithubMediaData = {
   mediaType: 'github'
   publisherName: string
+  publisherScreenName: string
 }
 
 export type MediaMetaData =

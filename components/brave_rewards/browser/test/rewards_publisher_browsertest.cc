@@ -244,7 +244,7 @@ IN_PROC_BROWSER_TEST_F(
 // Brave tip icon is injected when visiting Reddit
 IN_PROC_BROWSER_TEST_F(
     RewardsPublisherBrowserTest,
-    RedditTipsInjectedOnReddit) {
+    DISABLED_RedditTipsInjectedOnReddit) {
   rewards_browsertest_util::EnableRewardsViaCode(browser(), rewards_service_);
 
   // Navigate to Reddit in a new tab
@@ -261,7 +261,7 @@ IN_PROC_BROWSER_TEST_F(
 // Brave tip icon is not injected when visiting Reddit
 IN_PROC_BROWSER_TEST_F(
     RewardsPublisherBrowserTest,
-    RedditTipsNotInjectedWhenRewardsDisabled) {
+    DISABLED_RedditTipsNotInjectedWhenRewardsDisabled) {
   // Navigate to Reddit in a new tab
   rewards_browsertest_util::NavigateToPublisherPage(
       browser(),
@@ -276,7 +276,7 @@ IN_PROC_BROWSER_TEST_F(
 // Brave tip icon is not injected when visiting Reddit
 IN_PROC_BROWSER_TEST_F(
     RewardsPublisherBrowserTest,
-    RedditTipsNotInjectedOnNonReddit) {
+    DISABLED_RedditTipsNotInjectedOnNonReddit) {
   rewards_browsertest_util::EnableRewardsViaCode(browser(), rewards_service_);
 
   // Navigate to Reddit in a new tab
