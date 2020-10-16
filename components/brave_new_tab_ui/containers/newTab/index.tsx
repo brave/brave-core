@@ -625,8 +625,8 @@ class NewTabPage extends React.Component<Props, State> {
     this.props.actions.onCryptoDotComInteraction()
   }
 
-  onCryptoDotComOptInMarkets = () => {
-    this.props.actions.onCryptoDotComOptInMarkets()
+  onCryptoDotComOptInMarkets = (show: boolean) => {
+    this.props.actions.onCryptoDotComOptInMarkets(show)
   }
 
   fetchGeminiBalances = () => {
