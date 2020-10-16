@@ -130,7 +130,8 @@ IN_PROC_BROWSER_TEST_F(IPFSTabHelperTest, InfobarAddWithAccept) {
       InfoBarService::FromWebContents(active_contents());
   AddInfoBarObserver(infobar_service);
   EXPECT_TRUE(NavigateToURLUntilLoadStop(
-      "cloudflare-ipfs.com", "/ipfs/QmbWqxBEKC3P8tqsKc98xmWNzrzDtRLMiMPL8wBuTGsMnR"));
+      "cloudflare-ipfs.com",
+      "/ipfs/QmbWqxBEKC3P8tqsKc98xmWNzrzDtRLMiMPL8wBuTGsMnR"));
 
   WaitForInfobarAdded();
   InfoBarAccept(ConfirmInfoBarDelegate::BUTTON_OK |
@@ -147,7 +148,8 @@ IN_PROC_BROWSER_TEST_F(IPFSTabHelperTest, InfobarAddWithSettings) {
       InfoBarService::FromWebContents(active_contents());
   AddInfoBarObserver(infobar_service);
   EXPECT_TRUE(NavigateToURLUntilLoadStop(
-      "cloudflare-ipfs.com", "/ipfs/QmbWqxBEKC3P8tqsKc98xmWNzrzDtRLMiMPL8wBuTGsMnR"));
+      "cloudflare-ipfs.com",
+      "/ipfs/QmbWqxBEKC3P8tqsKc98xmWNzrzDtRLMiMPL8wBuTGsMnR"));
 
   WaitForInfobarAdded();
   InfoBarCancel(ConfirmInfoBarDelegate::BUTTON_OK |
