@@ -103,6 +103,15 @@
           pref="{{prefs.brave.new_tab_page.show_clock}}"
           label="$i18n{braveNewTabClock}">
       </settings-toggle-button>
+      <div class="cr-row">
+        <div class="flex cr-padded-text" aria-hidden="true">
+          $i18n{braveNewTabNewTabPageShows}
+        </div>
+        <settings-dropdown-menu label="$i18n{braveNewTabNewTabPageShows}"
+            pref="{{prefs.brave.new_tab_page.shows_options}}"
+            menu-options="[[showOptions_]]">
+        </settings-dropdown-menu>
+      </div>
     </div>
   </template>
   <script src="brave_new_tab_page.js"></script>

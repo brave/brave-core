@@ -9,6 +9,7 @@
 
 #include "brave/browser/ui/views/tabs/brave_tab_context_menu_contents.h"
 #include "chrome/browser/ui/views/frame/browser_view.h"
+#include "chrome/browser/ui/browser_commands.h"
 #include "chrome/browser/ui/views/tabs/tab_strip.h"
 
 BraveBrowserTabStripController::BraveBrowserTabStripController(
@@ -35,4 +36,8 @@ void BraveBrowserTabStripController::ShowContextMenuForTab(
       this,
       browser_view->tabstrip()->GetModelIndexOf(tab));
   context_menu_contents_->RunMenuAt(p, source_type);
+}
+
+void BraveBrowserTabStripController::CreateNewTab() {
+  chrome::NewTab(BrowserView::GetBrowserViewForBrowser(browser())->browser());
 }

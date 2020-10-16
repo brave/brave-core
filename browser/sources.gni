@@ -3,16 +3,19 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at http://mozilla.org/MPL/2.0/.
 
-import("//brave/browser/importer/sources.gni")
 import("//brave/browser/brave_wallet/sources.gni")
+import("//brave/browser/importer/sources.gni")
+import("//brave/browser/new_tab/sources.gni")
 import("//brave/browser/themes/sources.gni")
 
 brave_chrome_browser_sources = []
 brave_chrome_browser_sources += brave_browser_themes_sources
 brave_chrome_browser_sources += brave_browser_wallet_sources
 brave_chrome_browser_sources += brave_chrome_browser_importer_sources
+brave_chrome_browser_sources += brave_browser_new_tab_sources
 
 brave_chrome_browser_deps = []
 brave_chrome_browser_deps += brave_browser_themes_deps
 brave_chrome_browser_deps += brave_browser_wallet_deps
 brave_chrome_browser_deps += brave_chrome_browser_importer_deps
+brave_chrome_browser_deps += brave_browser_new_tab_deps

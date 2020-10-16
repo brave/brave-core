@@ -28,6 +28,18 @@
       isBitcoinDotComSupported_: Boolean,
       showTopSites_: Boolean,
       isCryptoDotComSupported_: Boolean,
+
+      showOptions_: {
+        readOnly: true,
+        type: Array,
+        value() {
+          return [
+            {value: 0, name: loadTimeData.getString('braveNewTabNewTabPageShowsDashboardWithImages')},
+            {value: 1, name: loadTimeData.getString('braveNewTabNewTabPageShowsHomepage')},
+            {value: 2, name: loadTimeData.getString('braveNewTabNewTabPageShowsBlankPage')},
+          ];
+        },
+      },
     },
 
     /** @override */
