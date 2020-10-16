@@ -420,6 +420,9 @@ void CustomizeWebUIHTMLSource(const std::string &name,
         { "adsSubdivisionTargetingDisabled",  IDS_BRAVE_REWARDS_LOCAL_ADS_SUBDIVISION_TARGETING_DISABLED },  // NOLINT
         { "adsTitle",  IDS_BRAVE_REWARDS_LOCAL_ADS_TITLE },
 
+        { "qrBoxText",  IDS_BRAVE_REWARDS_LOCAL_QR_BOX_TEXT },
+        { "qrBoxButton",  IDS_BRAVE_REWARDS_LOCAL_QR_BOX_BUTTON },
+
         { "bat", IDS_BRAVE_UI_BAT_REWARDS_TEXT },
         { "bap", IDS_BRAVE_UI_BAP_REWARDS_TEXT },
         { "batPoints", IDS_BRAVE_UI_BAT_POINTS_TEXT },
@@ -726,6 +729,7 @@ void CustomizeWebUIHTMLSource(const std::string &name,
         { "tokens", IDS_BRAVE_UI_TOKENS },
         { "tokenGrants", IDS_BRAVE_UI_TOKEN_GRANTS },
         { "pointGrants", IDS_BRAVE_UI_POINT_GRANTS },
+        { "qrCodeLoading", IDS_BRAVE_UI_QR_CODE_LOADING },
         { "total", IDS_BRAVE_UI_TOTAL },
         { "transactions", IDS_BRAVE_UI_TRANSACTIONS },
         { "turnOnAds", IDS_BRAVE_UI_TURN_ON_ADS },
