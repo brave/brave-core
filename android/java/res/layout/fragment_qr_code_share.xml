@@ -24,6 +24,7 @@
             android:text="@string/share_brave_with_your_friends"
             android:textColor="@color/default_icon_color_tint_list"
             android:fontFamily="sans-serif"
+            android:visibility="gone"
             android:textStyle="bold"/>
 
         <ImageView android:id="@+id/share_qr_code_image"

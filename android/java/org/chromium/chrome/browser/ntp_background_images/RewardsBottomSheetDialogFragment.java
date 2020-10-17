@@ -49,6 +49,7 @@ import org.chromium.chrome.browser.tab.Tab;
 import org.chromium.chrome.browser.tab.TabAttributes;
 import org.chromium.chrome.browser.tab.TabImpl;
 import org.chromium.chrome.browser.util.ConfigurationUtils;
+import org.chromium.chrome.browser.util.TabUtils;
 import org.chromium.ui.base.DeviceFormFactor;
 
 public class RewardsBottomSheetDialogFragment extends BottomSheetDialogFragment {
@@ -144,7 +145,7 @@ public class RewardsBottomSheetDialogFragment extends BottomSheetDialogFragment 
             learnMoreText.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    NTPUtil.openUrlInSameTab(BRAVE_REWARDS_LEARN_MORE);
+                    TabUtils.openUrlInSameTab(BRAVE_REWARDS_LEARN_MORE);
                     dismiss();
                 }
             });

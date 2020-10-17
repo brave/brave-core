@@ -20,6 +20,7 @@ import org.chromium.base.supplier.Supplier;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.ActivityTabProvider;
 import org.chromium.chrome.browser.ThemeColorProvider;
+import org.chromium.chrome.browser.app.BraveActivity;
 import org.chromium.chrome.browser.app.ChromeActivity;
 import org.chromium.chrome.browser.compositor.layouts.EmptyOverviewModeObserver;
 import org.chromium.chrome.browser.compositor.layouts.OverviewModeBehavior;
@@ -191,10 +192,12 @@ public class BraveBottomToolbarCoordinator
                 mOverviewModeBehavior.addOverviewModeObserver(mOverviewModeObserver);
             }
         }
-        ChromeActivity activity = TabUtils.getChromeActivity();
-        if (rootView != null && activity != null) {
-            rootView.setSwipeDetector(
-                        activity.getCompositorViewHolder().getLayoutManager().getToolbarSwipeHandler());
+
+        BraveActivity braveActivity = BraveActivity.getBraveActivity();
+        if (rootView != null && braveActivity != null) {
+            rootView.setSwipeDetector(braveActivity.getCompositorViewHolder()
+                                              .getLayoutManager()
+                                              .getToolbarSwipeHandler());
         }
     }
 }

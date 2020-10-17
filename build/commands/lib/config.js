@@ -337,7 +337,6 @@ Config.prototype.buildArgs = function () {
     // not have a default value for this. But we'll
     // eventually want it on Android, so keeping CI
     // unchanged and deleting here for now.
-    delete args.binance_client_id
     delete args.gemini_client_id
     delete args.gemini_client_secret
   }

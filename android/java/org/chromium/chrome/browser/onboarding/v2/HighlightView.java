@@ -28,7 +28,7 @@ public class HighlightView extends FrameLayout {
 
     private HighlightItem item;
 
-    private boolean shouldShowHighlight = false;
+    private boolean shouldShowHighlight;
 
     public HighlightView(Context context, AttributeSet attrs) {
         super(context, attrs);

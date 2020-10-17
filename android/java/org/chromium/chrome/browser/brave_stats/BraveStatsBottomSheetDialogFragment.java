@@ -49,7 +49,6 @@ import org.chromium.chrome.browser.brave_stats.BraveStatsUtil;
 import org.chromium.chrome.browser.local_database.BraveStatsTable;
 import org.chromium.chrome.browser.local_database.DatabaseHelper;
 import org.chromium.chrome.browser.local_database.SavedBandwidthTable;
-import org.chromium.chrome.browser.ntp.BraveNewTabPageLayout;
 import org.chromium.chrome.browser.onboarding.OnboardingPrefManager;
 import org.chromium.chrome.browser.util.ConfigurationUtils;
 import org.chromium.ui.base.DeviceFormFactor;
@@ -69,7 +68,6 @@ public class BraveStatsBottomSheetDialogFragment extends BottomSheetDialogFragme
     private static final int DAYS_7 = -7;
     private static final int DAYS_30 = -30;
     private static final int DAYS_90 = -90;
-
 
     private TextView adsTrackersCountText;
     private TextView adsTrackersText;
@@ -191,10 +189,10 @@ public class BraveStatsBottomSheetDialogFragment extends BottomSheetDialogFragme
 
     private void updateBraveStatsLayoutAsync() {
         new AsyncTask<Void>() {
-            long adsTrackersCount = 0L;
-            long totalSavedBandwidth = 0L;
-            long adsTrackersCountToCheckForMonth = 0L;
-            long adsTrackersCountToCheckFor3Month = 0L;
+            long adsTrackersCount;
+            long totalSavedBandwidth;
+            long adsTrackersCountToCheckForMonth;
+            long adsTrackersCountToCheckFor3Month;
             @Override
             protected Void doInBackground() {
                 adsTrackersCount =
@@ -251,10 +249,12 @@ public class BraveStatsBottomSheetDialogFragment extends BottomSheetDialogFragme
                                       dataSavedPair.second));
                 }
 
-                long timeSavedCount =
-                    adsTrackersCount * BraveNewTabPageLayout.MILLISECONDS_PER_ITEM;
+                long timeSavedCount = adsTrackersCount * BraveStatsUtil.MILLISECONDS_PER_ITEM;
+                Pair<String, String> timeSavedPair =
+                        BraveStatsUtil.getBraveStatsStringFromTime(timeSavedCount / 1000);
                 timeSavedCountText.setText(
-                    BraveStatsUtil.getBraveStatsStringFromTime(timeSavedCount / 1000));
+                        String.format(getResources().getString(R.string.ntp_stat_text),
+                                timeSavedPair.first, timeSavedPair.second));
                 timeSavedText.setText(mContext.getResources().getString(R.string.time_saved_text));
 
                 if (adsTrackersCount > 0) {
@@ -282,12 +282,12 @@ public class BraveStatsBottomSheetDialogFragment extends BottomSheetDialogFragme
                 }
                 showWebsitesTrackers();
             }
-        } .executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+        }.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
     }
 
     private void showWebsitesTrackers() {
         new AsyncTask<Void>() {
-            List<Pair<String, Integer>> websiteTrackers = null;
+            List<Pair<String, Integer>> websiteTrackers;
             @Override
             protected Void doInBackground() {
                 if (selectedType == WEBSITES) {
@@ -345,6 +345,6 @@ public class BraveStatsBottomSheetDialogFragment extends BottomSheetDialogFragme
                     braveStatsSubSectionText.setVisibility(View.GONE);
                 }
             }
-        } .executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+        }.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
     }
 }
