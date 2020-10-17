@@ -27,13 +27,14 @@ function getMediaMetaData (type: MediaType): MediaMetaData {
     case 'github':
       return {
         mediaType: 'github',
-        publisherName: 'brave'
+        publisherName: 'brave',
+        publisherScreenName: 'brave'
       }
     case 'reddit':
       return {
         mediaType: 'reddit',
-        userName: 'brave',
-        postRelDate: new Date().toISOString(),
+        publisherName: 'brave',
+        postTimestamp: new Date().toISOString(),
         postText: 'It\'s all bravey baby'
       }
     default:
