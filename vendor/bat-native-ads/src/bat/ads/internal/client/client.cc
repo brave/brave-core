@@ -24,7 +24,7 @@ struct PurchaseIntentSignalHistory;
 
 namespace {
 
-const char kClientFilename[] = "client.json";
+const char kClientFilename[] = "client";
 
 // Maximum entries based upon 7 days of history, 20 ads per day and 4
 // confirmation types

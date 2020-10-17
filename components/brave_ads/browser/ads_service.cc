@@ -47,6 +47,9 @@ void AdsService::RegisterProfilePrefs(
       prefs::kSupportedCountryCodesSchemaVersion,
           prefs::kSupportedCountryCodesSchemaVersionNumber);
 
+  registry->RegisterBooleanPref(
+      prefs::kShouldMigrateState, true);
+
   registry->RegisterIntegerPref(
       prefs::kVersion, prefs::kCurrentVersionNumber);
 

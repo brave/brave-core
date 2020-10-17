@@ -65,6 +65,7 @@ source_set("browser") {
       "//brave/components/services/bat_ads/public/cpp",
       "//components/history/core/browser",
       "//components/history/core/common",
+      "//components/os_crypt",
       "//components/wifi",
       "//net",
       "//services/network/public/cpp",

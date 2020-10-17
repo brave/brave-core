@@ -324,7 +324,7 @@ TEST_F(BatAdsAdConversionsDatabaseTableTest,
     {
       "/v4/catalog", {
         {
-          net::HTTP_OK, "/catalog.json"
+          net::HTTP_OK, "/catalog"
         }
       }
     }

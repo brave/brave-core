@@ -31,7 +31,7 @@ using std::placeholders::_2;
 
 namespace {
 
-const char kAdConversionsFilename[] = "ad_conversions.json";
+const char kAdConversionsFilename[] = "ad_conversions";
 
 const char kAdConversionsListKey[] = "ad_conversions";
 const char kAdConversionTimestampKey[] = "timestamp_in_seconds";

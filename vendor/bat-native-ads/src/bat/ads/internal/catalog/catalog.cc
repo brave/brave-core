@@ -13,7 +13,7 @@
 namespace ads {
 
 namespace {
-const char kCatalogFilename[] = "catalog.json";
+const char kCatalogFilename[] = "catalog";
 }  // namespace
 
 Catalog::Catalog(

@@ -23,6 +23,8 @@ extern const char kSupportedCountryCodesLastSchemaVersion[];
 extern const char kSupportedCountryCodesSchemaVersion[];
 extern const int kSupportedCountryCodesSchemaVersionNumber;
 
+extern const char kShouldMigrateState[];
+
 extern const char kVersion[];
 extern const int kCurrentVersionNumber;
 

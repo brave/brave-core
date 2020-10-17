@@ -19,7 +19,7 @@ using std::placeholders::_2;
 
 namespace {
 
-const char kConfirmationsFilename[] = "confirmations.json";
+const char kConfirmationsFilename[] = "confirmations";
 
 const uint64_t kRetryAfterSeconds = 5 * base::Time::kSecondsPerMinute;
 

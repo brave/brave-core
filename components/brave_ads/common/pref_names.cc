@@ -39,6 +39,9 @@ const char kSupportedCountryCodesSchemaVersion[] =
     "brave.brave_ads.supported_regions_schema_version_number";
 const int kSupportedCountryCodesSchemaVersionNumber = 9;
 
+// Stores whether we should migrate state
+const char kShouldMigrateState[] = "brave.brave_ads.should_migrate_state";
+
 // Stores the preferences version number
 const char kVersion[] = "brave.brave_ads.prefs.version";
 
