@@ -16,7 +16,6 @@
 #include "base/task/post_task.h"
 #include "brave/browser/brave_browser_main_extra_parts.h"
 #include "brave/browser/brave_browser_process_impl.h"
-#include "brave/browser/extensions/brave_tor_client_updater.h"
 #include "brave/browser/net/brave_proxying_url_loader_factory.h"
 #include "brave/browser/net/brave_proxying_web_socket.h"
 #include "brave/browser/profiles/profile_util.h"

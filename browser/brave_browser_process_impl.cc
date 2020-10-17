@@ -69,7 +69,8 @@
 #endif
 
 #if BUILDFLAG(ENABLE_TOR)
-#include "brave/browser/extensions/brave_tor_client_updater.h"
+#include "brave/browser/tor/brave_tor_client_updater_delegate.h"
+#include "brave/components/tor/brave_tor_client_updater.h"
 #include "brave/components/tor/pref_names.h"
 #endif
 
@@ -308,13 +309,18 @@ void BraveBrowserProcessImpl::OnBraveDarkModeChanged() {
 }
 
 #if BUILDFLAG(ENABLE_TOR)
-extensions::BraveTorClientUpdater*
+tor::BraveTorClientUpdater*
 BraveBrowserProcessImpl::tor_client_updater() {
   if (tor_client_updater_)
     return tor_client_updater_.get();
 
-  tor_client_updater_ = extensions::BraveTorClientUpdaterFactory(
-      brave_component_updater_delegate());
+  base::FilePath user_data_dir;
+  base::PathService::Get(chrome::DIR_USER_DATA, &user_data_dir);
+  std::unique_ptr<tor::BraveTorClientUpdaterDelegate> delegate =
+      std::make_unique<tor::BraveTorClientUpdaterDelegate>(user_data_dir);
+
+  tor_client_updater_.reset(new tor::BraveTorClientUpdater(
+      brave_component_updater_delegate(), std::move(delegate)));
   return tor_client_updater_.get();
 }
 

@@ -27,7 +27,7 @@
 #include "content/public/test/test_utils.h"
 
 #if BUILDFLAG(ENABLE_TOR)
-#include "brave/browser/extensions/brave_tor_client_updater.h"
+#include "brave/components/tor/brave_tor_client_updater.h"
 #include "brave/components/tor/tor_launcher_factory.h"
 #endif
 

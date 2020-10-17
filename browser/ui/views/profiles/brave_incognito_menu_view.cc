@@ -26,7 +26,7 @@
 #include "ui/base/models/image_model.h"
 
 #if BUILDFLAG(ENABLE_TOR)
-#include "brave/browser/extensions/brave_tor_client_updater.h"
+#include "brave/components/tor/brave_tor_client_updater.h"
 #endif
 
 namespace {

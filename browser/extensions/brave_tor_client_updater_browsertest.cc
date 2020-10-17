@@ -10,7 +10,7 @@
 #include "base/process/launch.h"
 #include "base/test/thread_test_helper.h"
 #include "brave/browser/brave_browser_process_impl.h"
-#include "brave/browser/extensions/brave_tor_client_updater.h"
+#include "brave/components/tor/brave_tor_client_updater.h"
 #include "brave/common/brave_paths.h"
 #include "chrome/browser/extensions/extension_browsertest.h"
 #include "content/public/test/browser_test.h"
@@ -64,7 +64,7 @@ class BraveTorClientUpdaterTest : public ExtensionBrowserTest {
   void SetComponentIdAndBase64PublicKeyForTest(
       const std::string& component_id,
       const std::string& component_base64_public_key) {
-    extensions::BraveTorClientUpdater::SetComponentIdAndBase64PublicKeyForTest(
+    tor::BraveTorClientUpdater::SetComponentIdAndBase64PublicKeyForTest(
         component_id, component_base64_public_key);
   }
 

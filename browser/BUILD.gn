@@ -197,15 +197,6 @@ source_set("browser_process") {
     "//ui/base",
   ]
 
-  if (enable_tor) {
-    sources += [
-      # TODO(bridiver) - change the directory for these
-      "extensions/brave_tor_client_updater.cc",
-      "extensions/brave_tor_client_updater.h",
-    ]
-    deps += [ "//third_party/re2" ]
-  }
-
   if (brave_wallet_enabled) {
     deps += [
       "//brave/components/brave_wallet",

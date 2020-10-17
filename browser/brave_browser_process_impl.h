@@ -58,7 +58,7 @@ namespace ntp_background_images {
 class NTPBackgroundImagesService;
 }  // namespace ntp_background_images
 
-namespace extensions {
+namespace tor {
 class BraveTorClientUpdater;
 }
 
@@ -100,7 +100,7 @@ class BraveBrowserProcessImpl : public BrowserProcessImpl {
   brave_shields::HTTPSEverywhereService* https_everywhere_service();
   brave_component_updater::LocalDataFilesService* local_data_files_service();
 #if BUILDFLAG(ENABLE_TOR)
-  extensions::BraveTorClientUpdater* tor_client_updater();
+  tor::BraveTorClientUpdater* tor_client_updater();
 #endif
 #if BUILDFLAG(IPFS_ENABLED)
   ipfs::BraveIpfsClientUpdater* ipfs_client_updater();
@@ -160,7 +160,7 @@ class BraveBrowserProcessImpl : public BrowserProcessImpl {
   std::unique_ptr<brave::BraveReferralsService> brave_referrals_service_;
 #endif
 #if BUILDFLAG(ENABLE_TOR)
-  std::unique_ptr<extensions::BraveTorClientUpdater> tor_client_updater_;
+  std::unique_ptr<tor::BraveTorClientUpdater> tor_client_updater_;
 #endif
 #if BUILDFLAG(IPFS_ENABLED)
   std::unique_ptr<ipfs::BraveIpfsClientUpdater> ipfs_client_updater_;

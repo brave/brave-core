@@ -1,10 +1,10 @@
-/* Copyright (c) 2019 The Brave Authors. All rights reserved.
+/* Copyright (c) 2020 The Brave Authors. All rights reserved.
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#ifndef BRAVE_BROWSER_EXTENSIONS_BRAVE_TOR_CLIENT_UPDATER_H_
-#define BRAVE_BROWSER_EXTENSIONS_BRAVE_TOR_CLIENT_UPDATER_H_
+#ifndef BRAVE_COMPONENTS_TOR_BRAVE_TOR_CLIENT_UPDATER_H_
+#define BRAVE_COMPONENTS_TOR_BRAVE_TOR_CLIENT_UPDATER_H_
 
 #include <memory>
 #include <string>
@@ -22,8 +22,7 @@ class SearchEngineProviderServiceTest;
 
 using brave_component_updater::BraveComponent;
 
-// TODO(bridiver) - this doesn't belong under extensions
-namespace extensions {
+namespace tor {
 
 #if defined(OS_WIN)
 extern const char kTorClientComponentName[];
@@ -48,7 +47,15 @@ class BraveTorClientUpdater : public BraveComponent {
     ~Observer() override = default;
   };
 
-  explicit BraveTorClientUpdater(BraveComponent::Delegate* delegate);
+  class Delegate {
+   public:
+    virtual ~Delegate() = default;
+    virtual void Cleanup(const char* component_id) = 0;
+    virtual bool IsTorDisabled() = 0;
+  };
+
+  BraveTorClientUpdater(BraveComponent::Delegate* component_delegate,
+                        std::unique_ptr<Delegate> delegate);
   ~BraveTorClientUpdater() override;
 
   void Register();
@@ -86,15 +93,13 @@ class BraveTorClientUpdater : public BraveComponent {
   base::FilePath executable_path_;
   base::ObserverList<Observer> observers_;
 
+  std::unique_ptr<Delegate> delegate_;
+
   base::WeakPtrFactory<BraveTorClientUpdater> weak_ptr_factory_;
 
   DISALLOW_COPY_AND_ASSIGN(BraveTorClientUpdater);
 };
 
-// Creates the BraveTorClientUpdater
-std::unique_ptr<BraveTorClientUpdater>
-BraveTorClientUpdaterFactory(BraveComponent::Delegate* delegate);
+}  // namespace tor
 
-}  // namespace extensions
-
-#endif  // BRAVE_BROWSER_EXTENSIONS_BRAVE_TOR_CLIENT_UPDATER_H_
+#endif  // BRAVE_COMPONENTS_TOR_BRAVE_TOR_CLIENT_UPDATER_H_

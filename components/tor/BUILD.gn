@@ -13,11 +13,14 @@ source_set("tor") {
 
   deps = [
     ":pref_names",
+    ":switches",
     "//base",
   ]
 
   if (enable_tor) {
     sources += [
+      "brave_tor_client_updater.cc",
+      "brave_tor_client_updater.h",
       "service_sandbox_type.h",
       "tor_control.cc",
       "tor_control.h",
@@ -40,6 +43,7 @@ source_set("tor") {
     "//extensions/common:common_constants",
     "//net",
     "//services/service_manager",
+      "//third_party/re2",
     "//url",
   ]
 }
@@ -48,5 +52,12 @@ source_set("pref_names") {
   sources = [
     "pref_names.cc",
     "pref_names.h",
+  ]
+}
+
+source_set("switches") {
+  sources = [
+    "tor_switches.cc",
+    "tor_switches.h",
   ]
 }

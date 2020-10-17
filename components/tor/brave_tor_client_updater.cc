@@ -1,12 +1,13 @@
-/* Copyright (c) 2019 The Brave Authors. All rights reserved.
+/* Copyright (c) 2020 The Brave Authors. All rights reserved.
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#include "brave/browser/extensions/brave_tor_client_updater.h"
+#include "brave/components/tor/brave_tor_client_updater.h"
 
 #include <memory>
 #include <string>
+#include <utility>
 
 #include "base/command_line.h"
 #include "base/files/file_enumerator.h"
@@ -16,21 +17,12 @@
 #include "base/task/post_task.h"
 #include "base/task_runner.h"
 #include "base/task_runner_util.h"
-#include "brave/browser/tor/tor_profile_service_factory.h"
-#include "brave/common/brave_switches.h"
-#include "chrome/browser/browser_process.h"
-#include "chrome/browser/profiles/profile_manager.h"
+#include "brave/components/tor/tor_switches.h"
 #include "third_party/re2/src/re2/re2.h"
 
 using brave_component_updater::BraveComponent;
 
-namespace {
-void DeleteDir(const base::FilePath& path) {
-  base::DeletePathRecursively(path);
-}
-}  // namespace
-
-namespace extensions {
+namespace tor {
 
 namespace {
 
@@ -111,21 +103,25 @@ std::string BraveTorClientUpdater::g_tor_client_component_id_(
 std::string BraveTorClientUpdater::g_tor_client_component_base64_public_key_(
     kTorClientComponentBase64PublicKey);
 
-BraveTorClientUpdater::BraveTorClientUpdater(BraveComponent::Delegate* delegate)
-    : BraveComponent(delegate),
+BraveTorClientUpdater::BraveTorClientUpdater(
+    BraveComponent::Delegate* component_delegate,
+    std::unique_ptr<Delegate> delegate)
+    : BraveComponent(component_delegate),
       task_runner_(base::CreateSequencedTaskRunner(
           {base::ThreadPool(), base::MayBlock()})),
       registered_(false),
-      weak_ptr_factory_(this) {}
-
-BraveTorClientUpdater::~BraveTorClientUpdater() {
+      delegate_(std::move(delegate)),
+      weak_ptr_factory_(this) {
+  DCHECK(delegate_);
 }
+
+BraveTorClientUpdater::~BraveTorClientUpdater() {}
 
 void BraveTorClientUpdater::Register() {
   const base::CommandLine& command_line =
       *base::CommandLine::ForCurrentProcess();
-  if (TorProfileServiceFactory::IsTorDisabled() ||
-      command_line.HasSwitch(switches::kDisableTorClientUpdaterExtension) ||
+  if (delegate_->IsTorDisabled() ||
+      command_line.HasSwitch(tor::kDisableTorClientUpdaterExtension) ||
       registered_) {
     return;
   }
@@ -143,14 +139,7 @@ void BraveTorClientUpdater::Unregister() {
 }
 
 void BraveTorClientUpdater::Cleanup() {
-  // Delete tor binaries if tor is disabled.
-  if (TorProfileServiceFactory::IsTorDisabled()) {
-    ProfileManager* profile_manager = g_browser_process->profile_manager();
-    base::FilePath tor_component_dir =
-      profile_manager->user_data_dir().AppendASCII(kTorClientComponentId);
-    GetTaskRunner()->PostTask(FROM_HERE,
-                              base::BindOnce(&DeleteDir, tor_component_dir));
-  }
+  delegate_->Cleanup(kTorClientComponentId);
 }
 
 void BraveTorClientUpdater::SetExecutablePath(const base::FilePath& path) {
@@ -190,12 +179,4 @@ void BraveTorClientUpdater::SetComponentIdAndBase64PublicKeyForTest(
   g_tor_client_component_base64_public_key_ = component_base64_public_key;
 }
 
-///////////////////////////////////////////////////////////////////////////////
-
-// The Brave Tor client extension factory.
-std::unique_ptr<BraveTorClientUpdater>
-BraveTorClientUpdaterFactory(BraveComponent::Delegate* delegate) {
-  return std::make_unique<BraveTorClientUpdater>(delegate);
-}
-
-}  // namespace extensions
+}  // namespace tor

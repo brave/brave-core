@@ -24,6 +24,8 @@ source_set("tor") {
 
   if (enable_tor) {
     sources += [
+      "brave_tor_client_updater_delegate.cc",
+      "brave_tor_client_updater_delegate.h",
       "onion_location_navigation_throttle.cc",
       "onion_location_navigation_throttle.h",
       "onion_location_tab_helper.cc",

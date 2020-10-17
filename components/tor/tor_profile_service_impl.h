@@ -11,8 +11,7 @@
 
 #include "base/memory/weak_ptr.h"
 #include "base/optional.h"
-// TODO(darkdh): move to components/tor in a following commit
-#include "brave/browser/extensions/brave_tor_client_updater.h"
+#include "brave/components/tor/brave_tor_client_updater.h"
 #include "brave/components/tor/tor_launcher_factory.h"
 #include "brave/components/tor/tor_profile_service.h"
 #include "net/proxy_resolution/proxy_info.h"
@@ -25,8 +24,6 @@ namespace net {
 class ProxyConfigService;
 class ProxyConfigServiceTor;
 }
-
-using extensions::BraveTorClientUpdater;
 
 namespace tor {
 
