@@ -331,7 +331,6 @@ source_set("browser_process") {
     deps += [
       "//brave/browser/tor",
       "//brave/common/tor:pref_names",
-      "//brave/components/services/tor/public/cpp:manifest",
     ]
   }
 
