@@ -35,13 +35,14 @@ import org.chromium.chrome.browser.widget.crypto.binance.BinanceObserver;
 import org.chromium.chrome.browser.widget.crypto.binance.BinanceWidgetManager;
 
 import java.util.List;
+import java.util.Locale;
 
 public class BinanceSummaryFragment extends Fragment {
     private BinanceNativeWorker mBinanceNativeWorker;
     private LinearLayout summaryLayout;
     private ProgressBar binanceCoinsProgress;
 
-    private static final String ZERO_BALANCE = "0.00000000";
+    private static final String ZERO_BALANCE = "0.000000";
     private static final String ZERO_USD_BALANCE = "0.00";
     private static final String BTC = "BTC";
 
@@ -78,12 +79,13 @@ public class BinanceSummaryFragment extends Fragment {
         binanceCoinsProgress = view.findViewById(R.id.binance_coins_progress);
 
         if (BinanceWidgetManager.binanceAccountBalance != null) {
-            binanceBalanceText.setText(
-                    String.valueOf(BinanceWidgetManager.binanceAccountBalance.getTotalBTC()));
+            binanceBalanceText.setText(String.format(Locale.getDefault(), "%.6f",
+                    BinanceWidgetManager.binanceAccountBalance.getTotalBTC()));
             binanceBtcText.setText(BTC);
-            binanceUSDBalanceText.setText(String.format(
-                    getActivity().getResources().getString(R.string.usd_balance),
-                    String.valueOf(BinanceWidgetManager.binanceAccountBalance.getTotalUSD())));
+            binanceUSDBalanceText.setText(
+                    String.format(getActivity().getResources().getString(R.string.usd_balance),
+                            String.format(Locale.getDefault(), "%.2f",
+                                    BinanceWidgetManager.binanceAccountBalance.getTotalUSD())));
         }
         summaryLayout = view.findViewById(R.id.summary_layout);
         binanceCoinsProgress.setVisibility(View.VISIBLE);
@@ -137,8 +139,10 @@ public class BinanceSummaryFragment extends Fragment {
                         Pair<Double, Double> currencyValue =
                                 BinanceWidgetManager.binanceAccountBalance.getCurrencyValue(
                                         coinNetworkModel.getCoin());
-                        coinBalance = String.valueOf(currencyValue.first);
-                        usdBalance = String.valueOf(currencyValue.second);
+                        coinBalance =
+                                String.format(Locale.getDefault(), "%.6f", currencyValue.first);
+                        usdBalance =
+                                String.format(Locale.getDefault(), "%.2f", currencyValue.second);
                     } else {
                         coinBalance = ZERO_BALANCE;
                         usdBalance = ZERO_USD_BALANCE;

@@ -7,12 +7,15 @@ package org.chromium.chrome.browser.widget.crypto.binance;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.text.Editable;
 import android.text.TextUtils;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -50,6 +53,8 @@ public class BinanceDepositFragment extends Fragment {
     private LinearLayout depositCoinListLayout;
     private ProgressBar binanceCoinsProgress;
     private NestedScrollView currentNestedScrollView;
+    private EditText searchEditText;
+    private String networksJson;
 
     public BinanceDepositFragment() {
         // Required empty public constructor
@@ -79,33 +84,39 @@ public class BinanceDepositFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         depositCoinListLayout = view.findViewById(R.id.deposit_layout);
         binanceCoinsProgress = view.findViewById(R.id.binance_coins_progress);
+        searchEditText = view.findViewById(R.id.binance_coin_search);
+        searchEditText.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {}
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                if (networksJson != null && !TextUtils.isEmpty(networksJson)) {
+                    showCoinList(networksJson, charSequence.toString().toLowerCase());
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {}
+        });
         depositCoinListLayout.setVisibility(View.GONE);
         binanceCoinsProgress.setVisibility(View.VISIBLE);
         mBinanceNativeWorker.getCoinNetworks();
     }
 
-    private BinanceObserver mBinanaceObserver = new BinanceObserver() {
-        @Override
-        public void OnGetAccessToken(boolean isSuccess){};
-
-        @Override
-        public void OnGetAccountBalances(String jsonBalances, boolean isSuccess){};
-
-        @Override
-        public void OnGetConvertQuote(
-                String quoteId, String quotePrice, String totalFee, String totalAmount){};
-
-        @Override
-        public void OnGetCoinNetworks(String jsonNetworks) {
-            try {
-                BinanceCoinNetworks binanceCoinNetworks = new BinanceCoinNetworks(jsonNetworks);
-                LayoutInflater inflater = (LayoutInflater) getActivity().getSystemService(
-                        Context.LAYOUT_INFLATER_SERVICE);
-                if (depositCoinListLayout != null) {
-                    depositCoinListLayout.removeAllViews();
-                }
-                for (CoinNetworkModel coinNetworkModel :
-                        binanceCoinNetworks.getCoinNetworksList()) {
+    private void showCoinList(String networks, String filterQuery) {
+        try {
+            BinanceCoinNetworks binanceCoinNetworks = new BinanceCoinNetworks(networks);
+            LayoutInflater inflater = (LayoutInflater) getActivity().getSystemService(
+                    Context.LAYOUT_INFLATER_SERVICE);
+            if (depositCoinListLayout != null) {
+                depositCoinListLayout.removeAllViews();
+            }
+            for (CoinNetworkModel coinNetworkModel : binanceCoinNetworks.getCoinNetworksList()) {
+                if (filterQuery == null
+                        || (coinNetworkModel.getCoin().toLowerCase().contains(filterQuery)
+                                || coinNetworkModel.getCoinDesc().toLowerCase().contains(
+                                        filterQuery))) {
                     final View view = inflater.inflate(R.layout.binance_deposit_item, null);
 
                     ImageView currencyImageView = view.findViewById(R.id.currency_image);
@@ -131,15 +142,35 @@ public class BinanceDepositFragment extends Fragment {
                     });
                     if (depositCoinListLayout != null) {
                         depositCoinListLayout.addView(view);
-                        depositCoinListLayout.setVisibility(View.VISIBLE);
-                    }
-                    if (binanceCoinsProgress != null) {
-                        binanceCoinsProgress.setVisibility(View.GONE);
                     }
                 }
-            } catch (JSONException e) {
-                Log.e("NTP", e.getMessage());
             }
+            if (depositCoinListLayout != null) {
+                depositCoinListLayout.setVisibility(View.VISIBLE);
+            }
+            if (binanceCoinsProgress != null) {
+                binanceCoinsProgress.setVisibility(View.GONE);
+            }
+        } catch (JSONException e) {
+            Log.e("NTP", e.getMessage());
+        }
+    }
+
+    private BinanceObserver mBinanaceObserver = new BinanceObserver() {
+        @Override
+        public void OnGetAccessToken(boolean isSuccess){};
+
+        @Override
+        public void OnGetAccountBalances(String jsonBalances, boolean isSuccess){};
+
+        @Override
+        public void OnGetConvertQuote(
+                String quoteId, String quotePrice, String totalFee, String totalAmount){};
+
+        @Override
+        public void OnGetCoinNetworks(String jsonNetworks) {
+            networksJson = jsonNetworks;
+            showCoinList(jsonNetworks, null);
         };
 
         @Override
@@ -177,12 +208,12 @@ public class BinanceDepositFragment extends Fragment {
                             + (TextUtils.isEmpty(selectedCoinNetworkModel.getCoinDesc())
                                             ? ""
                                             : " (" + selectedCoinNetworkModel.getCoinDesc() + ")"));
-                    currencyAddressText.setText(
-                            String.format(getResources().getString(R.string.currency_address_text),
-                                    selectedCoinNetworkModel.getCoin()));
-                    currencyMemoText.setText(
-                            String.format(getResources().getString(R.string.currency_memo_text),
-                                    selectedCoinNetworkModel.getCoin()));
+                    currencyAddressText.setText(String.format(
+                            getActivity().getResources().getString(R.string.currency_address_text),
+                            selectedCoinNetworkModel.getCoin()));
+                    currencyMemoText.setText(String.format(
+                            getActivity().getResources().getString(R.string.currency_memo_text),
+                            selectedCoinNetworkModel.getCoin()));
                     depositIcon.setImageResource(selectedCoinNetworkModel.getCoinRes());
                 }
 
@@ -196,12 +227,19 @@ public class BinanceDepositFragment extends Fragment {
                             currencyMemoValueText.setVisibility(View.GONE);
                             btnCopyMemo.setVisibility(View.GONE);
                         }
+                        if (searchEditText != null) {
+                            searchEditText.setVisibility(View.VISIBLE);
+                        }
                         selectedCoinNetworkModel = null;
                     }
                 });
                 depositLayout.setVisibility(View.VISIBLE);
                 if (depositCoinListLayout != null) {
                     depositCoinListLayout.setVisibility(View.GONE);
+                }
+
+                if (searchEditText != null) {
+                    searchEditText.setVisibility(View.GONE);
                 }
 
                 currencyAddressValueText.setText(depositAddress);
@@ -217,7 +255,7 @@ public class BinanceDepositFragment extends Fragment {
                     public void onClick(View view) {
                         if (selectedCoinNetworkModel != null) {
                             copyTextToClipboard(
-                                    String.format(getResources().getString(
+                                    String.format(getActivity().getResources().getString(
                                                           R.string.currency_address_text),
                                             selectedCoinNetworkModel.getCoin()),
                                     depositAddress);
@@ -229,9 +267,10 @@ public class BinanceDepositFragment extends Fragment {
                     @Override
                     public void onClick(View view) {
                         if (selectedCoinNetworkModel != null) {
-                            copyTextToClipboard(String.format(getResources().getString(
-                                                                      R.string.currency_memo_text),
-                                                        selectedCoinNetworkModel.getCoin()),
+                            copyTextToClipboard(
+                                    String.format(getActivity().getResources().getString(
+                                                          R.string.currency_memo_text),
+                                            selectedCoinNetworkModel.getCoin()),
                                     depositTag);
                         }
                     }

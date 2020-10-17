@@ -110,6 +110,7 @@ import org.chromium.components.user_prefs.UserPrefs;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.TreeMap;
 
@@ -213,7 +214,8 @@ public class BraveNewTabPageLayout extends NewTabPageLayout {
                 View mTopSitesLayout = inflater.inflate(R.layout.top_sites_layout, null);
                 FrameLayout mTopSitesGridLayout =
                         mTopSitesLayout.findViewById(R.id.top_sites_grid_layout);
-                TextView topsiteErrorMessage = mTopSitesLayout.findViewById(R.id.widget_error_title);
+                TextView topsiteErrorMessage =
+                        mTopSitesLayout.findViewById(R.id.widget_error_title);
 
                 if (shouldShowSuperReferral() && superReferralSitesLayout != null) {
                     if (superReferralSitesLayout.getParent() != null) {
@@ -235,7 +237,7 @@ public class BraveNewTabPageLayout extends NewTabPageLayout {
                         }
                         if (mSiteSectionView.getLayoutParams()
                                         instanceof ViewGroup.MarginLayoutParams) {
-                            mSiteSectionView.setPadding(0, dpToPx(mActivity, 12), 0, 0);
+                            mSiteSectionView.setPadding(0, dpToPx(mActivity, 8), 0, 0);
                             mSiteSectionView.requestLayout();
                         }
                         mTopSitesGridLayout.addView(mSiteSectionView);
@@ -303,14 +305,14 @@ public class BraveNewTabPageLayout extends NewTabPageLayout {
     }
 
     private void showWidgets() {
-        if (setWidgetList().size() > 0) {
+        List<NTPWidgetItem> tempList = setWidgetList();
+        if (tempList.size() > 0) {
             ntpWidgetLayout.setVisibility(View.VISIBLE);
         } else {
             ntpWidgetLayout.setVisibility(View.GONE);
         }
 
         if (ntpWidgetAdapter != null) {
-            List<NTPWidgetItem> tempList = setWidgetList();
             ntpWidgetAdapter.setWidgetList(tempList);
             ntpWidgetAdapter.notifyDataSetChanged();
             showWidgetBasedOnOrder();
@@ -373,9 +375,6 @@ public class BraveNewTabPageLayout extends NewTabPageLayout {
         if (BinanceWidgetManager.getInstance().isUserAuthenticatedForBinance()) {
             if (binanceWidgetLayout != null) {
                 binanceWidgetLayout.setVisibility(View.GONE);
-            }
-            if (binanceWidgetProgress != null) {
-                binanceWidgetProgress.setVisibility(View.VISIBLE);
             }
             mBinanceNativeWorker.getAccountBalances();
         }
@@ -752,7 +751,10 @@ public class BraveNewTabPageLayout extends NewTabPageLayout {
                 }
 
                 @Override
-                public void onMenuRemove(int position) {
+                public void onMenuRemove(int position, boolean isBinanceWidget) {
+                    if (isBinanceWidget) {
+                        mBinanceNativeWorker.revokeToken();
+                    }
                     showWidgets();
                 }
 

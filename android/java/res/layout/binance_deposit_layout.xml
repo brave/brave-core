@@ -82,6 +82,7 @@
 	        		android:layout_width="0dp"
 		        	android:layout_height="wrap_content"
 		        	android:layout_weight="1"
+		        	android:layout_marginRight="8dp"
 		        	android:orientation="vertical">
 
 		        	<TextView
@@ -111,7 +112,10 @@
 		            android:layout_gravity="center"
 		            android:background="@drawable/rounded_filled_binance"
 		            android:textColor="@android:color/black"
+		            android:padding="8dp"
 		            android:textSize="12sp"
+		            android:minHeight="0dp"
+		            android:minWidth="0dp"
 		            android:text="@string/copy" />
 
 	        </LinearLayout>
@@ -126,6 +130,7 @@
 	        		android:layout_width="0dp"
 		        	android:layout_height="wrap_content"
 		        	android:layout_weight="1"
+		        	android:layout_marginRight="8dp"
 		        	android:orientation="vertical">
 
 		        	<TextView
@@ -158,6 +163,9 @@
 		            android:background="@drawable/rounded_filled_binance"
 		            android:textColor="@android:color/black"
 		            android:textSize="12sp"
+		            android:padding="8dp"
+		            android:minHeight="0dp"
+		            android:minWidth="0dp"
 		            android:visibility="gone"
 		            android:text="@string/copy" />
 

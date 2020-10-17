@@ -6,6 +6,7 @@
 package org.chromium.chrome.browser.widget.crypto.binance;
 
 import android.os.Bundle;
+import android.os.CountDownTimer;
 import android.text.TextUtils;
 import android.util.Pair;
 import android.view.LayoutInflater;
@@ -16,6 +17,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.RadioGroup;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -47,6 +49,7 @@ import org.chromium.ui.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 public class BinanceConvertFragment extends Fragment {
     private BinanceNativeWorker mBinanceNativeWorker;
@@ -72,6 +75,8 @@ public class BinanceConvertFragment extends Fragment {
     private TextView convertCurrencyText;
     private TextView convertFeeText;
     private TextView convertBalanceText;
+    private CountDownTimer countDownTimer;
+    private ProgressBar binanceWidgetProgress;
 
     private static final String ZERO_BALANCE = "0.000000";
 
@@ -97,6 +102,7 @@ public class BinanceConvertFragment extends Fragment {
     @Override
     public void onDestroyView() {
         mBinanceNativeWorker.RemoveObserver(mBinanaceObserver);
+        cancelTimer();
         super.onDestroyView();
     }
 
@@ -107,6 +113,8 @@ public class BinanceConvertFragment extends Fragment {
         binanceConvertTitle = view.findViewById(R.id.binance_convert_title);
 
         convertLayout = view.findViewById(R.id.convert_layout);
+        convertLayout.setVisibility(View.GONE);
+        binanceWidgetProgress = view.findViewById(R.id.binance_widget_progress);
         errorLayout = view.findViewById(R.id.error_layout);
         TextView errorText = view.findViewById(R.id.error_message_text);
 
@@ -129,6 +137,7 @@ public class BinanceConvertFragment extends Fragment {
         cancelButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                cancelTimer();
                 convertLayout.setVisibility(View.VISIBLE);
                 confirmLayout.setVisibility(View.GONE);
             }
@@ -151,12 +160,13 @@ public class BinanceConvertFragment extends Fragment {
                 if (availableBalance < convertAmount) {
                     convertLayout.setVisibility(View.GONE);
                     errorLayout.setVisibility(View.VISIBLE);
-                    errorText.setText(getResources().getString(R.string.not_enough_balance));
+                    errorText.setText(
+                            getActivity().getResources().getString(R.string.not_enough_balance));
                 } else if (Double.valueOf(selectedCrypto2.getMinAmount()) > convertAmount) {
                     convertLayout.setVisibility(View.GONE);
                     errorLayout.setVisibility(View.VISIBLE);
-                    errorText.setText(String.format(
-                            getResources().getString(R.string.minimum_amount_to_convert),
+                    errorText.setText(String.format(getActivity().getResources().getString(
+                                                            R.string.minimum_amount_to_convert),
                             selectedCrypto2.getMinAmount(), selectedCrypto1));
                 } else {
                     mBinanceNativeWorker.getConvertQuote(selectedCrypto1,
@@ -192,6 +202,7 @@ public class BinanceConvertFragment extends Fragment {
         });
 
         mBinanceNativeWorker.getConvertAssets();
+        binanceWidgetProgress.setVisibility(View.VISIBLE);
     }
 
     private void dismissBinanceBottomSheet() {
@@ -219,17 +230,30 @@ public class BinanceConvertFragment extends Fragment {
             convertLayout.setVisibility(View.GONE);
             confirmLayout.setVisibility(View.VISIBLE);
             convertCurrencyText.setText(String.format(
-                    getResources().getString(R.string.ntp_stat_text), quotePrice, selectedCrypto1));
+                    getActivity().getResources().getString(R.string.convert_stat_text),
+                    !TextUtils.isEmpty(quotePrice) ? String.format(
+                            Locale.getDefault(), "%.6f", Double.parseDouble(quotePrice))
+                                                   : ZERO_BALANCE,
+                    selectedCrypto1));
             convertFeeText.setText(String.format(
-                    getResources().getString(R.string.ntp_stat_text), totalFee, selectedCrypto1));
-            convertBalanceText.setText(
-                    String.format(getResources().getString(R.string.ntp_stat_text), totalAmount,
-                            selectedCrypto2.getAsset()));
+                    getActivity().getResources().getString(R.string.convert_stat_text),
+                    !TextUtils.isEmpty(totalFee) ? String.format(
+                            Locale.getDefault(), "%.6f", Double.parseDouble(totalFee))
+                                                 : ZERO_BALANCE,
+                    selectedCrypto1));
+            convertBalanceText.setText(String.format(
+                    getActivity().getResources().getString(R.string.convert_stat_text),
+                    !TextUtils.isEmpty(totalAmount) ? String.format(
+                            Locale.getDefault(), "%.6f", Double.parseDouble(totalAmount))
+                                                    : ZERO_BALANCE,
+                    selectedCrypto2.getAsset()));
+            startTimer();
 
             confirmButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     mBinanceNativeWorker.confirmConvert(quoteId);
+                    cancelTimer();
                 }
             });
         };
@@ -243,10 +267,12 @@ public class BinanceConvertFragment extends Fragment {
 
         @Override
         public void OnConfirmConvert(boolean isSuccess, String message) {
-            if (isSuccess) {
-                convertLayout.setVisibility(View.VISIBLE);
-                confirmLayout.setVisibility(View.GONE);
+            if (!isSuccess) {
+                Toast.makeText(getActivity(), R.string.conversion_failed, Toast.LENGTH_LONG).show();
             }
+            cancelTimer();
+            convertLayout.setVisibility(View.VISIBLE);
+            confirmLayout.setVisibility(View.GONE);
         };
 
         @Override
@@ -276,6 +302,8 @@ public class BinanceConvertFragment extends Fragment {
                 selectedCrypto1 = cryptoList1.get(0);
                 setCryptoSpinner(selectedCrypto1);
                 setTitle();
+                convertLayout.setVisibility(View.VISIBLE);
+                binanceWidgetProgress.setVisibility(View.GONE);
             } catch (JSONException e) {
                 Log.e("NTP", e.getMessage());
             }
@@ -317,14 +345,42 @@ public class BinanceConvertFragment extends Fragment {
     private void setTitle() {
         if (binanceConvertTitle != null) {
             binanceConvertTitle.setText(String.format(
-                    getResources().getString(R.string.available_balance_text),
+                    getActivity().getResources().getString(R.string.available_balance_text),
                     BinanceWidgetManager.binanceAccountBalance.getCurrencyValue(selectedCrypto1)
                                     != null
-                            ? String.valueOf(BinanceWidgetManager.binanceAccountBalance
-                                                     .getCurrencyValue(selectedCrypto1)
-                                                     .first)
+                            ? String.format(Locale.getDefault(), "%.6f",
+                                    BinanceWidgetManager.binanceAccountBalance
+                                            .getCurrencyValue(selectedCrypto1)
+                                            .first)
                             : ZERO_BALANCE,
                     selectedCrypto1));
         }
+    }
+
+    // start timer function
+    public void startTimer() {
+        countDownTimer = new CountDownTimer(60000, 1000) {
+            @Override
+            public void onTick(long millisUntilFinished) {
+                if (confirmButton != null) {
+                    confirmButton.setText(String.format(getActivity().getResources().getString(
+                                                                R.string.confirm_convert_binance),
+                            String.valueOf(millisUntilFinished / 1000)));
+                }
+            }
+
+            @Override
+            public void onFinish() {
+                cancelTimer();
+                convertLayout.setVisibility(View.VISIBLE);
+                confirmLayout.setVisibility(View.GONE);
+            }
+        };
+        countDownTimer.start();
+    }
+
+    // cancel timer
+    public void cancelTimer() {
+        if (countDownTimer != null) countDownTimer.cancel();
     }
 }

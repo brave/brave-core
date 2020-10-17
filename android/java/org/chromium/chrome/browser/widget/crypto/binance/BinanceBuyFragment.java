@@ -138,9 +138,9 @@ public class BinanceBuyFragment extends Fragment {
                     AdapterView<?> parentView, View selectedItemView, int position, long id) {
                 selectedCrypto = cryptoList.get(position);
                 if (buyButton != null) {
-                    buyButton.setText(
-                            String.format(getResources().getString(R.string.buy_crypto_button_text),
-                                    selectedCrypto));
+                    buyButton.setText(String.format(
+                            getActivity().getResources().getString(R.string.buy_crypto_button_text),
+                            selectedCrypto));
                 }
             }
 
@@ -217,9 +217,9 @@ public class BinanceBuyFragment extends Fragment {
                             getActivity(), binanceCoinNetworks.getCoinNetworksList(), true);
                     cryptoSpinner.setAdapter(binanceSpinnerAdapter);
                     selectedCrypto = cryptoList.get(0);
-                    buyButton.setText(
-                            String.format(getResources().getString(R.string.buy_crypto_button_text),
-                                    selectedCrypto));
+                    buyButton.setText(String.format(
+                            getActivity().getResources().getString(R.string.buy_crypto_button_text),
+                            selectedCrypto));
                 }
             } catch (JSONException e) {
                 Log.e("NTP", e.getMessage());

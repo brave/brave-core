@@ -62,7 +62,9 @@
                 android:id="@+id/ntp_widget_layout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="12dp"
+                android:layout_marginTop="12dp"
+                android:layout_marginStart="12dp"
+                android:layout_marginBottom="12dp"
                 android:orientation="horizontal">
 
                 <androidx.cardview.widget.CardView
@@ -80,7 +82,7 @@
 
                 <LinearLayout
                     android:id="@+id/indicator_layout"
-                    android:layout_width="wrap_content"
+                    android:layout_width="12dp"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
                     android:background="@drawable/ntp_widget_indicator_bg"

@@ -1,9 +1,6 @@
+import("//brave/browser/tor/buildflags/buildflags.gni")
 import("//brave/build/config.gni")
 import("//brave/components/binance/browser/buildflags/buildflags.gni")
-import("//brave/components/moonpay/browser/buildflags/buildflags.gni")
-import("//brave/components/gemini/browser/buildflags/buildflags.gni")
-import("//brave/components/crypto_dot_com/browser/buildflags/buildflags.gni")
-import("//brave/browser/tor/buildflags/buildflags.gni")
 import("//brave/components/brave_ads/browser/buildflags/buildflags.gni")
 import(
     "//brave/components/brave_perf_predictor/browser/buildflags/buildflags.gni")
@@ -13,8 +10,11 @@ import("//brave/components/brave_together/buildflags/buildflags.gni")
 import("//brave/components/brave_wallet/browser/buildflags/buildflags.gni")
 import("//brave/components/brave_wayback_machine/buildflags/buildflags.gni")
 import("//brave/components/brave_webtorrent/browser/buildflags/buildflags.gni")
+import("//brave/components/crypto_dot_com/browser/buildflags/buildflags.gni")
+import("//brave/components/gemini/browser/buildflags/buildflags.gni")
 import("//brave/components/greaselion/browser/buildflags/buildflags.gni")
 import("//brave/components/ipfs/buildflags/buildflags.gni")
+import("//brave/components/moonpay/browser/buildflags/buildflags.gni")
 import("//brave/components/speedreader/buildflags.gni")
 import("//build/buildflag_header.gni")
 import("//build/config/features.gni")
@@ -108,6 +108,8 @@ source_set("browser_process") {
     ":sparkle_buildflags",
     ":version_info",
     "autoplay",
+    "brave_stats:stats_updater",
+    "browsing_data",
     "browsing_data",
     "browsing_data",
     "content_settings",
@@ -116,9 +118,12 @@ source_set("browser_process") {
     "net",
     "ntp_background_images",
     "ntp_background_images",
+    "ntp_background_images",
     "profiles",
     "renderer_context_menu",
     "search",
+    "search",
+    "themes",
     "themes",
     "themes",
     "ui",
@@ -129,11 +134,10 @@ source_set("browser_process") {
     "//brave/browser/translate/buildflags",
     "//brave/chromium_src:browser",
     "//brave/chromium_src:browser",
+    "//brave/chromium_src:browser",
     "//brave/common",
     "//brave/common:pref_names",
     "//brave/components/binance/browser/buildflags",
-    "//brave/components/gemini/browser/buildflags",
-    "//brave/components/crypto_dot_com/browser/buildflags",
     "//brave/components/brave_component_updater/browser",
     "//brave/components/brave_drm",
     "//brave/components/brave_referrals/buildflags",
@@ -145,6 +149,8 @@ source_set("browser_process") {
     "//brave/components/brave_wayback_machine:buildflags",
     "//brave/components/brave_webtorrent/browser/buildflags",
     "//brave/components/content_settings/core/browser",
+    "//brave/components/crypto_dot_com/browser/buildflags",
+    "//brave/components/gemini/browser/buildflags",
     "//brave/components/greaselion/browser/buildflags",
     "//brave/components/ipfs/buildflags",
     "//brave/components/l10n/browser",
@@ -184,12 +190,6 @@ source_set("browser_process") {
     "//content/public/browser",
     "//content/public/common",
     "//extensions/buildflags",
-    "//brave/chromium_src:browser",
-    "brave_stats:stats_updater",
-    "browsing_data",
-    "search",
-    "themes",
-    "ntp_background_images",
     "//services/network/public/cpp",
     "//services/service_manager/embedder",
     "//third_party/blink/public/mojom:mojom_platform_headers",
@@ -294,7 +294,7 @@ source_set("browser_process") {
       "//brave/components/crypto_dot_com/browser",
       "//brave/components/crypto_dot_com/common",
       "//components/keyed_service/content",
-    ]    
+    ]
   }
 
   if (ipfs_enabled) {

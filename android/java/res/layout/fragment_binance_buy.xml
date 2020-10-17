@@ -86,6 +86,7 @@
                 android:layout_height="match_parent"
                 android:textColor="@android:color/white"
                 android:padding="8dp"
+                android:dropDownWidth="100dp"
                 android:background="@drawable/binance_edittext"
                 style="@android:style/Widget.Spinner"
                 android:popupBackground="@color/spinner_bg_color"

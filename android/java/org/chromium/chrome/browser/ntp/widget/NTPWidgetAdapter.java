@@ -15,7 +15,6 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.PopupMenu;
-import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import androidx.appcompat.widget.AppCompatImageView;
@@ -37,6 +36,7 @@ import org.chromium.chrome.browser.widget.crypto.binance.BinanceWidgetManager;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 public class NTPWidgetAdapter extends PagerAdapter {
     private static final String BTC = "BTC";
@@ -48,7 +48,7 @@ public class NTPWidgetAdapter extends PagerAdapter {
     public interface NTPWidgetListener {
         void onMenuEdit();
 
-        void onMenuRemove(int position);
+        void onMenuRemove(int position, boolean isBinanceWidget);
 
         void onMenuLearnMore();
 
@@ -94,16 +94,14 @@ public class NTPWidgetAdapter extends PagerAdapter {
                 TextView binanceUSDBalanceText =
                         binanceWidgetLayout.findViewById(R.id.binance_usd_balance_text);
 
-                ProgressBar binanceWidgetProgress =
-                        binanceWidgetLayout.findViewById(R.id.binance_widget_progress);
-
                 if (BinanceWidgetManager.binanceAccountBalance != null) {
-                    binanceBalanceText.setText(String.format(String.valueOf(
-                            BinanceWidgetManager.binanceAccountBalance.getTotalBTC())));
+                    binanceBalanceText.setText(String.format(Locale.getDefault(), "%.6f",
+                            BinanceWidgetManager.binanceAccountBalance.getTotalBTC()));
                     binanceBtcText.setText(BTC);
+
                     binanceUSDBalanceText.setText(String.format(
                             mContext.getResources().getString(R.string.usd_balance),
-                            String.valueOf(
+                            String.format(Locale.getDefault(), "%.2f",
                                     BinanceWidgetManager.binanceAccountBalance.getTotalUSD())));
                 }
                 if (BinanceWidgetManager.getInstance().isUserAuthenticatedForBinance()) {
@@ -199,8 +197,10 @@ public class NTPWidgetAdapter extends PagerAdapter {
                 if (id == R.id.edit) {
                     ntpWidgetListener.onMenuEdit();
                 } else if (id == R.id.remove) {
+                    NTPWidgetItem ntpWidgetItem = widgetList.get(position);
                     removeWidgetItem(position);
-                    ntpWidgetListener.onMenuRemove(position);
+                    ntpWidgetListener.onMenuRemove(position,
+                            ntpWidgetItem.getWidgetType().equals(NTPWidgetManager.PREF_BINANCE));
                 } else if (id == R.id.learn_more) {
                     ntpWidgetListener.onMenuLearnMore();
                 } else if (id == R.id.refresh_data) {

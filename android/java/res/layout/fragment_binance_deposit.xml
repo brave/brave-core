@@ -7,6 +7,21 @@
 
     <include layout="@layout/binance_deposit_layout"/>
 
+    <EditText  
+        android:id="@+id/binance_coin_search"
+        android:layout_width="match_parent" 
+        android:layout_height="wrap_content"
+        android:layout_margin="8dp"
+        android:padding="8dp"
+        android:inputType="text"
+        android:drawableStart="@android:drawable/ic_menu_search"
+        android:drawablePadding="4dp"
+        android:textColor="@android:color/white"
+        android:textColorHint="@color/white_alpha_50"
+        android:imeOptions="actionSearch"
+        android:hint="@string/search_coin"
+        android:background="@drawable/binance_edittext"/>
+
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
