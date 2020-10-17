@@ -14,6 +14,7 @@
 #include "base/files/file_path.h"
 #include "base/logging.h"
 #include "bat/ads/pref_names.h"
+#include "bat/ads/public/interfaces/ads.mojom.h"
 #include "brave/components/brave_referrals/buildflags/buildflags.h"
 #include "brave/components/brave_rewards/common/pref_names.h"
 #include "brave/components/ntp_background_images/browser/features.h"
@@ -77,12 +78,14 @@ void ViewCounterService::BrandedWallpaperWillBeDisplayed(
     const std::string& wallpaper_id) {
   base::Value data = ViewCounterService::GetCurrentWallpaperForDisplay();
   DCHECK(!data.is_none());
-  const std::string id = *data.FindStringKey(kCreativeInstanceIDKey);
-  LOG(ERROR) << "CreativeInstanceID: " << id;
-  LOG(ERROR) << "WallpaperID: " << wallpaper_id;
-  if (!id.empty()) {
-    // TODO(Terry): Ping NTP displayed event to ads service.
-  }
+  const std::string creative_instance_id =
+      *data.FindStringKey(kCreativeInstanceIDKey);
+
+  if (!ads_service_)
+    return;
+
+  ads_service_->OnNewTabPageAdEvent(wallpaper_id, creative_instance_id, "",
+      ads::mojom::BraveAdsNewTabPageAdEventType::kViewed);
 }
 
 NTPBackgroundImagesData*
@@ -199,11 +202,11 @@ void ViewCounterService::BrandedWallpaperLogoClicked(
     const std::string& creative_instance_id,
     const std::string& destination_url,
     const std::string& wallpaper_id) {
-  LOG(ERROR) << ": creative instance id: " << creative_instance_id;
-  LOG(ERROR) << ": destination url: " << destination_url;
-  LOG(ERROR) << ": wallpaper id: " << wallpaper_id;
+  if (!ads_service_)
+    return;
 
-  // TODO(Terry): Ping click confirmation to ads service.
+  ads_service_->OnNewTabPageAdEvent(wallpaper_id, creative_instance_id,
+      destination_url, ads::mojom::BraveAdsNewTabPageAdEventType::kClicked);
 }
 
 bool ViewCounterService::ShouldShowBrandedWallpaper() const {
