@@ -49,7 +49,11 @@ class ViewCounterService : public KeyedService,
   // opted-in or data is available.
   void RegisterPageView();
 
-  void BrandedWallpaperLogoClicked(base::Value data);
+  void BrandedWallpaperLogoClicked(const std::string& creative_instance_id,
+                                   const std::string& creative_set_id,
+                                   const std::string& campaign_id,
+                                   const std::string& advertiser_id,
+                                   const std::string& destination_url);
 
   base::Value GetCurrentWallpaperForDisplay() const;
   base::Value GetCurrentWallpaper() const;

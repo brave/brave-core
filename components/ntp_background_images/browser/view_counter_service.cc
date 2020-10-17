@@ -192,18 +192,17 @@ void ViewCounterService::RegisterPageView() {
   }
 }
 
-void ViewCounterService::BrandedWallpaperLogoClicked(base::Value data) {
-  if (data.is_none())
-    return
-
-  // Get various ids.
-  LOG(ERROR) << ": creative instance id: "
-             << *data.FindStringKey(kCreativeInstanceIDKey);
-  LOG(ERROR) << ": creative set id: " << *data.FindStringKey(kCreativeSetIDKey);
-  LOG(ERROR) << ": campaign id: " << *data.FindStringKey(kCampaignIDKey);
-  LOG(ERROR) << ": advertiser id: " << *data.FindStringKey(kAdvertiserIDKey);
-  LOG(ERROR) << ": destination url: "
-             << *data.FindStringPath("logo.destinationUrl");
+void ViewCounterService::BrandedWallpaperLogoClicked(
+    const std::string& creative_instance_id,
+    const std::string& creative_set_id,
+    const std::string& campaign_id,
+    const std::string& advertiser_id,
+    const std::string& destination_url) {
+  LOG(ERROR) << ": creative instance id: " << creative_instance_id;
+  LOG(ERROR) << ": creative set id: " << creative_set_id;
+  LOG(ERROR) << ": campaign id: " << campaign_id;
+  LOG(ERROR) << ": advertiser id: " << advertiser_id;
+  LOG(ERROR) << ": destination url: " << destination_url;
 
   // TODO: Ping click confirmation to ads service.
 }

@@ -23,6 +23,7 @@
 #include "brave/components/moonpay/browser/buildflags/buildflags.h"
 #include "brave/components/crypto_dot_com/browser/buildflags/buildflags.h"
 #include "brave/components/ntp_background_images/browser/features.h"
+#include "brave/components/ntp_background_images/browser/url_constants.h"
 #include "brave/components/ntp_background_images/browser/view_counter_service.h"
 #include "brave/components/ntp_background_images/common/pref_names.h"
 #include "chrome/browser/profiles/profile.h"
@@ -449,7 +450,29 @@ void BraveNewTabMessageHandler::HandleBrandedWallpaperLogoClicked(
   }
 
   if (auto* service = ViewCounterServiceFactory::GetForProfile(profile_)) {
-    service->BrandedWallpaperLogoClicked(args->GetList()[0].Clone());
+    auto* creative_instance_id = args->GetList()[0].FindStringKey(
+        ntp_background_images::kCreativeInstanceIDKey);
+    auto* creative_set_id = args->GetList()[0].FindStringKey(
+        ntp_background_images::kCreativeSetIDKey);
+    auto* campaign_id = args->GetList()[0].FindStringKey(
+        ntp_background_images::kCampaignIDKey);
+    auto* advertiser_id = args->GetList()[0].FindStringKey(
+        ntp_background_images::kAdvertiserIDKey);
+    auto* destination_url = args->GetList()[0].FindStringPath(
+        ntp_background_images::kLogoDestinationURLPath);
+
+    DCHECK(creative_instance_id);
+    DCHECK(creative_set_id);
+    DCHECK(campaign_id);
+    DCHECK(advertiser_id);
+    DCHECK(destination_url);
+
+    service->BrandedWallpaperLogoClicked(
+        creative_instance_id ? *creative_instance_id : "",
+        creative_set_id ? *creative_set_id : "",
+        campaign_id ? *campaign_id : "",
+        advertiser_id ? *advertiser_id : "",
+        destination_url ? *destination_url : "");
   }
 }
 

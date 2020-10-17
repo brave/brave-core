@@ -110,6 +110,25 @@ void NTPBackgroundImagesBridge::RegisterPageView(
     view_counter_service_->RegisterPageView();
 }
 
+void NTPBackgroundImagesBridge::WallpaperLogoClicked(
+    JNIEnv* env,
+    const base::android::JavaParamRef<jobject>& obj,
+    const base::android::JavaParamRef<jstring>& jcreativeInstanceId,
+    const base::android::JavaParamRef<jstring>& jcreativeSetId,
+    const base::android::JavaParamRef<jstring>& jcampaignId,
+    const base::android::JavaParamRef<jstring>& jadvertiserId,
+    const base::android::JavaParamRef<jstring>& jdestinationUrl) {
+  DCHECK_CURRENTLY_ON(BrowserThread::UI);
+  if (view_counter_service_) {
+    view_counter_service_->BrandedWallpaperLogoClicked(
+        base::android::ConvertJavaStringToUTF8(env, jcreativeInstanceId),
+        base::android::ConvertJavaStringToUTF8(env, jcreativeSetId),
+        base::android::ConvertJavaStringToUTF8(env, jcampaignId),
+        base::android::ConvertJavaStringToUTF8(env, jadvertiserId),
+        base::android::ConvertJavaStringToUTF8(env, jdestinationUrl));
+  }
+}
+
 base::android::ScopedJavaLocalRef<jobject>
 NTPBackgroundImagesBridge::CreateWallpaper() {
   JNIEnv* env = AttachCurrentThread();
@@ -136,6 +155,14 @@ NTPBackgroundImagesBridge::CreateWallpaper() {
   auto* theme_name = data.FindStringKey(ntp_background_images::kThemeNameKey);
   auto is_sponsored = data.FindBoolKey(
       ntp_background_images::kIsSponsoredKey).value_or(false);
+  auto* creative_instance_id =
+      data.FindStringKey(ntp_background_images::kCreativeInstanceIDKey);
+  auto* creative_set_id =
+      data.FindStringKey(ntp_background_images::kCreativeSetIDKey);
+  auto* campaign_id =
+      data.FindStringKey(ntp_background_images::kCampaignIDKey);
+  auto* advertiser_id =
+      data.FindStringKey(ntp_background_images::kAdvertiserIDKey);
 
   return Java_NTPBackgroundImagesBridge_createWallpaper(
       env,
@@ -146,7 +173,12 @@ NTPBackgroundImagesBridge::CreateWallpaper() {
       ConvertUTF8ToJavaString(env, logo_destination_url ? *logo_destination_url
                                                         : ""),
       ConvertUTF8ToJavaString(env, *theme_name),
-      is_sponsored);
+      is_sponsored,
+      ConvertUTF8ToJavaString(env, creative_instance_id ? *creative_instance_id
+                                                        : ""),
+      ConvertUTF8ToJavaString(env, creative_set_id ? *creative_set_id : ""),
+      ConvertUTF8ToJavaString(env, campaign_id ? *campaign_id : ""),
+      ConvertUTF8ToJavaString(env, advertiser_id ? *advertiser_id : ""));
 }
 
 void NTPBackgroundImagesBridge::GetTopSites(
