@@ -9,9 +9,9 @@
 #include <stdint.h>
 
 #include <deque>
+#include <map>
 #include <string>
 
-#include "bat/ads/ad_history.h"
 #include "bat/ads/internal/bundle/creative_ad_info.h"
 #include "bat/ads/internal/frequency_capping/exclusion_rules/exclusion_rule.h"
 
@@ -44,8 +44,8 @@ class LandedFrequencyCap : public ExclusionRule {
       const CreativeAdInfo& ad);
 
   std::deque<uint64_t> FilterHistory(
-      const std::deque<AdHistory>& history,
-      const std::string& campaign_id);
+      const std::map<std::string, std::deque<uint64_t>>& history,
+      const std::string& creative_set_id);
 };
 
 }  // namespace ads

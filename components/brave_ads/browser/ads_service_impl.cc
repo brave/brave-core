@@ -1005,6 +1005,22 @@ void AdsServiceImpl::OnViewAdNotification(
       ads::AdNotificationEventType::kClicked);
 }
 
+void AdsServiceImpl::OnNewTabPageAdEvent(
+    const std::string& wallpaper_id,
+    const std::string& creative_instance_id,
+    const std::string& target_url,
+    const ads::NewTabPageAdEventType event_type) {
+  if (event_type == ads::NewTabPageAdEventType::kClicked) {
+    OpenNewTabWithUrl(target_url);
+  }
+
+  if (!connected()) {
+    return;
+  }
+
+  bat_ads_->OnNewTabPageAdEvent(wallpaper_id, creative_instance_id, event_type);
+}
+
 void AdsServiceImpl::RetryViewingAdNotification(
     const std::string& uuid) {
   VLOG(1) << "Retry viewing ad notification with uuid " << uuid;
@@ -1156,8 +1172,6 @@ void AdsServiceImpl::OnGetAdsHistory(
         base::Value(entry.ad_content.creative_instance_id));
     ad_content_dictionary.SetKey("creativeSetId",
         base::Value(entry.ad_content.creative_set_id));
-    ad_content_dictionary.SetKey("campaignId",
-        base::Value(entry.ad_content.campaign_id));
     ad_content_dictionary.SetKey("brand",
         base::Value(entry.ad_content.brand));
     ad_content_dictionary.SetKey("brandInfo",
@@ -1184,8 +1198,6 @@ void AdsServiceImpl::OnGetAdsHistory(
         base::Value(static_cast<int>(entry.category_content.opt_action)));
 
     base::DictionaryValue ad_history_dictionary;
-    ad_history_dictionary.SetKey("uuid", base::Value(entry.uuid));
-    ad_history_dictionary.SetKey("parentUuid", base::Value(entry.parent_uuid));
     ad_history_dictionary.SetPath("adContent",
         std::move(ad_content_dictionary));
     ad_history_dictionary.SetPath("categoryContent",
@@ -2214,6 +2226,20 @@ void AdsServiceImpl::OnForeground() {
   if (!connected()) {
     return;
   }
+
+  // OnNewTabPageAdEvent("1", "d3e91864-e5fc-45d9-ba4e-144f272c119e",
+  //     "https://brave.com", ads::NewTabPageAdEventType::kViewed);
+  // OnNewTabPageAdEvent("1", "d3e91864-e5fc-45d9-ba4e-144f272c119e",
+  //     "https://brave.com", ads::NewTabPageAdEventType::kViewed);
+
+  // OnNewTabPageAdEvent("1", "d3e91864-e5fc-45d9-ba4e-144f272c119e",
+  //     "https://brave.com", ads::NewTabPageAdEventType::kClicked);
+
+  // OnNewTabPageAdEvent("2", "d3e91864-e5fc-45d9-ba4e-144f272c119e",
+  //     "https://brave.com", ads::NewTabPageAdEventType::kViewed);
+
+  // OnNewTabPageAdEvent("3", "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
+  //     "https://foobar.com", ads::NewTabPageAdEventType::kViewed);
 
   bat_ads_->OnForeground();
 }

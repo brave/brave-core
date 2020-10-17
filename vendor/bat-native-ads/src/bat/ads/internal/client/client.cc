@@ -26,9 +26,10 @@ namespace {
 
 const char kClientFilename[] = "client.json";
 
-// Maximum entries based upon 7 days of history, 20 ads per day and 4
-// confirmation types
-const uint64_t kMaximumEntriesInAdsShownHistory = 7 * (20 * 4);
+// Maximum entries based upon 7 days of history for 20 ads per day, 3
+// confirmation types (viewed, clicked and dismissed) for ad notifications and
+// 2 confirmation types (viewed and clicked) for new tab page ads
+const uint64_t kMaximumEntriesInAdsShownHistory = 7 * ((20 * 3) + (20 * 2));
 
 const uint64_t kMaximumEntriesPerSegmentInPurchaseIntentSignalHistory = 100;
 
@@ -508,6 +509,47 @@ void Client::AppendCampaignIdToCampaignHistory(
 const std::map<std::string, std::deque<uint64_t>>&
 Client::GetCampaignHistory() const {
   return client_state_->campaign_history;
+}
+
+void Client::AppendCampaignIdToLandedHistory(
+    const std::string& campaign_id) {
+  if (client_state_->landed_history.find(campaign_id) ==
+      client_state_->landed_history.end()) {
+    client_state_->landed_history.insert({campaign_id, {}});
+  }
+
+  const uint64_t timestamp_in_seconds =
+      static_cast<uint64_t>(base::Time::Now().ToDoubleT());
+
+  client_state_->landed_history.at(campaign_id).push_back(timestamp_in_seconds);
+
+  Save();
+}
+
+const std::map<std::string, std::deque<uint64_t>>&
+Client::GetLandedHistory() const {
+  return client_state_->landed_history;
+}
+
+void Client::AppendUuidToNewTabPageAdHistory(
+    const std::string& uuid) {
+  if (client_state_->new_tab_page_ad_history.find(uuid) ==
+      client_state_->new_tab_page_ad_history.end()) {
+    client_state_->new_tab_page_ad_history.insert({uuid, {}});
+  }
+
+  const uint64_t timestamp_in_seconds =
+      static_cast<uint64_t>(base::Time::Now().ToDoubleT());
+
+  client_state_->new_tab_page_ad_history.at(uuid).push_back(
+      timestamp_in_seconds);
+
+  Save();
+}
+
+const std::map<std::string, std::deque<uint64_t>>&
+Client::GetNewTabPageAdHistory() const {
+  return client_state_->new_tab_page_ad_history;
 }
 
 void Client::RemoveAllHistory() {

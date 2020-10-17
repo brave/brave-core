@@ -11,11 +11,12 @@
 namespace ads {
 
 AdHistory GenerateAdHistory(
+    const AdContent::AdType type,
     const CreativeAdInfo& ad,
     const ConfirmationType& confirmation_type) {
   AdHistory history;
 
-  history.uuid = base::GenerateGUID();
+  history.ad_content.type = type;
   history.ad_content.creative_instance_id = ad.creative_instance_id;
   history.ad_content.creative_set_id = ad.creative_set_id;
   history.ad_content.campaign_id = ad.campaign_id;

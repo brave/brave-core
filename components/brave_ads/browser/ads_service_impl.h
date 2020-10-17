@@ -250,6 +250,12 @@ class AdsServiceImpl : public AdsService,
   void NotificationTimedOut(
       const std::string& uuid);
 
+  void OnNewTabPageAdEvent(
+      const std::string& wallpaper_id,
+      const std::string& creative_instance_id,
+      const std::string& target_url,
+      const ads::NewTabPageAdEventType event_type);
+
   void RegisterUserModelComponentsForLocale(
       const std::string& locale);
 

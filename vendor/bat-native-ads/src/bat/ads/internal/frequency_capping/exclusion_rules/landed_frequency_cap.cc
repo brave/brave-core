@@ -8,10 +8,14 @@
 #include "base/strings/stringprintf.h"
 #include "bat/ads/internal/ads_impl.h"
 #include "bat/ads/internal/frequency_capping/frequency_capping_util.h"
-#include "bat/ads/internal/sorts/ads_history/ads_history_sort_factory.h"
+#include "bat/ads/internal/logging.h"
 #include "bat/ads/internal/time_util.h"
 
 namespace ads {
+
+namespace {
+const int kLandedCap = 1;
+}  // namespace
 
 LandedFrequencyCap::LandedFrequencyCap(
     const AdsImpl* const ads)
@@ -23,7 +27,9 @@ LandedFrequencyCap::~LandedFrequencyCap() = default;
 
 bool LandedFrequencyCap::ShouldExclude(
     const CreativeAdInfo& ad) {
-  const std::deque<AdHistory> history = ads_->get_client()->GetAdsHistory();
+  const std::map<std::string, std::deque<uint64_t>>& history =
+      ads_->get_client()->GetLandedHistory();
+
   const std::deque<uint64_t> filtered_history =
       FilterHistory(history, ad.campaign_id);
 
@@ -46,24 +52,19 @@ bool LandedFrequencyCap::DoesRespectCap(
   const uint64_t time_constraint =
       2 * (base::Time::kSecondsPerHour * base::Time::kHoursPerDay);
 
-  const uint64_t cap = 1;
+  const uint64_t cap = kLandedCap;
 
   return DoesHistoryRespectCapForRollingTimeConstraint(history,
       time_constraint, cap);
 }
 
 std::deque<uint64_t> LandedFrequencyCap::FilterHistory(
-    const std::deque<AdHistory>& history,
+    const std::map<std::string, std::deque<uint64_t>>& history,
     const std::string& campaign_id) {
   std::deque<uint64_t> filtered_history;
 
-  for (const auto& ad : history) {
-    if (ad.ad_content.campaign_id != campaign_id ||
-        ad.ad_content.ad_action != ConfirmationType::kLanded) {
-      continue;
-    }
-
-    filtered_history.push_back(ad.timestamp_in_seconds);
+  if (history.find(campaign_id) != history.end()) {
+    filtered_history = history.at(campaign_id);
   }
 
   return filtered_history;

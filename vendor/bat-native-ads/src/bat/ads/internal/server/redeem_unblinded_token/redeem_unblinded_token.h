@@ -31,7 +31,7 @@ class RedeemUnblindedToken {
       RedeemUnblindedTokenDelegate* delegate);
 
   void Redeem(
-      const AdInfo& ad,
+      const std::string& creative_instance_id,
       const ConfirmationType confirmation_type);
   void Redeem(
       const ConfirmationInfo& confirmation);
@@ -60,7 +60,7 @@ class RedeemUnblindedToken {
       const ConfirmationInfo& confirmation);
 
   ConfirmationInfo CreateConfirmationInfo(
-      const AdInfo& ad,
+      const std::string& creative_instance_id,
       const ConfirmationType confirmation_type,
       const privacy::UnblindedTokenInfo& unblinded_token);
 

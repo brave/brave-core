@@ -136,8 +136,8 @@ TEST_F(BatAdsMinimumWaitTimeFrequencyCapTest,
   CreativeAdInfo ad;
   ad.creative_instance_id = kCreativeInstanceId;
 
-  const AdHistory ad_history =
-      GenerateAdHistory(ad, ConfirmationType::kViewed);
+  const AdHistory ad_history = GenerateAdHistory(
+      AdContent::AdType::kAdNotification, ad, ConfirmationType::kViewed);
   get_client()->AppendAdHistoryToAdsHistory(ad_history);
 
   task_environment_.FastForwardBy(base::TimeDelta::FromMinutes(12));
@@ -157,8 +157,8 @@ TEST_F(BatAdsMinimumWaitTimeFrequencyCapTest,
   CreativeAdInfo ad;
   ad.creative_instance_id = kCreativeInstanceId;
 
-  const AdHistory ad_history =
-      GenerateAdHistory(ad, ConfirmationType::kViewed);
+  const AdHistory ad_history = GenerateAdHistory(
+      AdContent::AdType::kAdNotification, ad, ConfirmationType::kViewed);
   get_client()->AppendAdHistoryToAdsHistory(ad_history);
 
   task_environment_.FastForwardBy(base::TimeDelta::FromMinutes(11));

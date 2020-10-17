@@ -156,11 +156,17 @@ class ADS_EXPORT Ads {
       const std::string& uuid,
       AdNotificationInfo* info) = 0;
 
-  // Should be called when a user implicitly views, clicks or dismisses a
-  // notification; or a notification times out
+  // Should be called when a user views, clicks or dismisses an ad notification;
+  // or an ad notification times out
   virtual void OnAdNotificationEvent(
       const std::string& uuid,
       const AdNotificationEventType event_type) = 0;
+
+  // Should be called when a user views or clicks a new tab page ad
+  virtual void OnNewTabPageAdEvent(
+      const std::string& wallpaper_id,
+      const std::string& creative_instance_id,
+      const NewTabPageAdEventType event_type) = 0;
 
   // Should be called to remove all cached history. The callback takes one
   // argument — |Result| should be set to |SUCCESS| if successful; otherwise,

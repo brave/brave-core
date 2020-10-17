@@ -64,9 +64,6 @@ class AdNotifications {
   bool GetUuidFromDictionary(
       base::DictionaryValue* dictionary,
       std::string* value) const;
-  bool GetParentUuidFromDictionary(
-      base::DictionaryValue* dictionary,
-      std::string* value) const;
   bool GetCreativeInstanceIdFromDictionary(
       base::DictionaryValue* dictionary,
       std::string* value) const;

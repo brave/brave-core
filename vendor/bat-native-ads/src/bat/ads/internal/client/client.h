@@ -113,6 +113,13 @@ class Client {
   void AppendCampaignIdToCampaignHistory(
       const std::string& campaign_id);
   const std::map<std::string, std::deque<uint64_t>>& GetCampaignHistory() const;
+  void AppendCampaignIdToLandedHistory(
+      const std::string& campaign_id);
+  const std::map<std::string, std::deque<uint64_t>>& GetLandedHistory() const;
+  void AppendUuidToNewTabPageAdHistory(
+      const std::string& uuid);
+  const std::map<std::string, std::deque<uint64_t>>&
+      GetNewTabPageAdHistory() const;
   std::string GetVersionCode() const;
   void SetVersionCode(
       const std::string& value);

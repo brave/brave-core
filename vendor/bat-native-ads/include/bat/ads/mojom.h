@@ -18,6 +18,8 @@ using BuildChannelPtr = mojom::BraveAdsBuildChannelPtr;
 
 using AdNotificationEventType = mojom::BraveAdsAdNotificationEventType;
 
+using NewTabPageAdEventType = mojom::BraveAdsNewTabPageAdEventType;
+
 using UrlRequest = mojom::BraveAdsUrlRequest;
 using UrlRequestPtr = mojom::BraveAdsUrlRequestPtr;
 using UrlRequestMethod = mojom::BraveAdsUrlRequestMethod;
