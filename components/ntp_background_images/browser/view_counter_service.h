@@ -13,6 +13,7 @@
 #include "base/values.h"
 #include "components/keyed_service/core/keyed_service.h"
 #include "components/prefs/pref_change_registrar.h"
+#include "brave/components/brave_ads/browser/ads_service.h"
 #include "brave/components/ntp_background_images/browser/ntp_background_images_service.h"
 #include "brave/components/ntp_background_images/browser/view_counter_model.h"
 
@@ -35,6 +36,7 @@ class ViewCounterService : public KeyedService,
                            public NTPBackgroundImagesService::Observer {
  public:
   ViewCounterService(NTPBackgroundImagesService* service,
+                     brave_ads::AdsService* ads_service,
                      PrefService* prefs,
                      bool is_supported_locale);
   ~ViewCounterService() override;
@@ -115,6 +117,7 @@ class ViewCounterService : public KeyedService,
   void ResetModel();
 
   NTPBackgroundImagesService* service_ = nullptr;  // not owned
+  brave_ads::AdsService* ads_service_ = nullptr;  // not owned
   PrefService* prefs_ = nullptr;  // not owned
   bool is_supported_locale_ = false;
   PrefChangeRegistrar pref_change_registrar_;

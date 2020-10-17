@@ -42,12 +42,16 @@ void ViewCounterService::RegisterProfilePrefs(
 }
 
 ViewCounterService::ViewCounterService(NTPBackgroundImagesService* service,
+                                       brave_ads::AdsService* ads_service,
                                        PrefService* prefs,
                                        bool is_supported_locale)
     : service_(service),
+      ads_service_(ads_service),
       prefs_(prefs),
       is_supported_locale_(is_supported_locale) {
   DCHECK(service_);
+  DCHECK(ads_service_);
+
   service_->AddObserver(this);
 
   if (auto* data = GetCurrentBrandedWallpaperData())
