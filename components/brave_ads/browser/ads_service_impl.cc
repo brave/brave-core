@@ -2227,20 +2227,6 @@ void AdsServiceImpl::OnForeground() {
     return;
   }
 
-  // OnNewTabPageAdEvent("1", "d3e91864-e5fc-45d9-ba4e-144f272c119e",
-  //     "https://brave.com", ads::NewTabPageAdEventType::kViewed);
-  // OnNewTabPageAdEvent("1", "d3e91864-e5fc-45d9-ba4e-144f272c119e",
-  //     "https://brave.com", ads::NewTabPageAdEventType::kViewed);
-
-  // OnNewTabPageAdEvent("1", "d3e91864-e5fc-45d9-ba4e-144f272c119e",
-  //     "https://brave.com", ads::NewTabPageAdEventType::kClicked);
-
-  // OnNewTabPageAdEvent("2", "d3e91864-e5fc-45d9-ba4e-144f272c119e",
-  //     "https://brave.com", ads::NewTabPageAdEventType::kViewed);
-
-  // OnNewTabPageAdEvent("3", "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
-  //     "https://foobar.com", ads::NewTabPageAdEventType::kViewed);
-
   bat_ads_->OnForeground();
 }
 
