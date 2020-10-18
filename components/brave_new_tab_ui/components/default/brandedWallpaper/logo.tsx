@@ -18,7 +18,7 @@ function Logo ({ data, onClickLogo }: Props) {
   return (
     <>
       <Styled.Image src={data.image} alt={data.alt} />
-      <Styled.Anchor title={data.alt} onClick={onClickLogo}>
+      <Styled.Anchor href={data.destinationUrl} title={data.alt} onClick={onClickLogo}>
         <Styled.Indicator><OpenNewIcon /></Styled.Indicator>
       </Styled.Anchor>
     </>

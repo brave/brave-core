@@ -202,8 +202,6 @@ void ViewCounterService::BrandedWallpaperLogoClicked(
     const std::string& creative_instance_id,
     const std::string& destination_url,
     const std::string& wallpaper_id) {
-  // TODO(Simon): Open destination url in same tab for desktop/android
-
   if (!ads_service_)
     return;
 
