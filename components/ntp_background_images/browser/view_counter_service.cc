@@ -84,7 +84,7 @@ void ViewCounterService::BrandedWallpaperWillBeDisplayed(
   if (!ads_service_)
     return;
 
-  ads_service_->OnNewTabPageAdEvent(wallpaper_id, creative_instance_id, "",
+  ads_service_->OnNewTabPageAdEvent(wallpaper_id, creative_instance_id,
       ads::mojom::BraveAdsNewTabPageAdEventType::kViewed);
 }
 
@@ -202,11 +202,13 @@ void ViewCounterService::BrandedWallpaperLogoClicked(
     const std::string& creative_instance_id,
     const std::string& destination_url,
     const std::string& wallpaper_id) {
+  // TODO(Simon): Open destination url in same tab for desktop/android
+
   if (!ads_service_)
     return;
 
   ads_service_->OnNewTabPageAdEvent(wallpaper_id, creative_instance_id,
-      destination_url, ads::mojom::BraveAdsNewTabPageAdEventType::kClicked);
+      ads::mojom::BraveAdsNewTabPageAdEventType::kClicked);
 }
 
 bool ViewCounterService::ShouldShowBrandedWallpaper() const {

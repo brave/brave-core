@@ -1008,14 +1008,8 @@ void AdsServiceImpl::OnViewAdNotification(
 void AdsServiceImpl::OnNewTabPageAdEvent(
     const std::string& wallpaper_id,
     const std::string& creative_instance_id,
-    const std::string& target_url,
     const ads::NewTabPageAdEventType event_type) {
-  if (!target_url.empty() &&
-      event_type == ads::NewTabPageAdEventType::kClicked) {
-    OpenNewTabWithUrl(target_url);
-  }
-
-  if (!connected() || wallpaper_id.empty()) {
+  if (!connected()) {
     return;
   }
 

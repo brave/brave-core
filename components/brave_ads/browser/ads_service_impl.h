@@ -99,7 +99,6 @@ class AdsServiceImpl : public AdsService,
   void OnNewTabPageAdEvent(
       const std::string& wallpaper_id,
       const std::string& creative_instance_id,
-      const std::string& target_url,
       const ads::NewTabPageAdEventType event_type) override;
 
   void SetAllowAdConversionTracking(
