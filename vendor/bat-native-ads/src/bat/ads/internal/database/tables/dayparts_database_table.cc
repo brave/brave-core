@@ -11,7 +11,7 @@
 #include "base/strings/string_util.h"
 #include "base/strings/stringprintf.h"
 #include "bat/ads/internal/ads_impl.h"
-#include "bat/ads/internal/bundle/creative_ad_notification_info.h"
+#include "bat/ads/internal/bundle/creative_ad_info.h"
 #include "bat/ads/internal/database/database_statement_util.h"
 #include "bat/ads/internal/database/database_table_util.h"
 #include "bat/ads/internal/database/database_util.h"
@@ -36,17 +36,17 @@ Dayparts::~Dayparts() = default;
 
 void Dayparts::InsertOrUpdate(
     DBTransaction* transaction,
-    const CreativeAdNotificationList& creative_ad_notifications) {
+    const CreativeAdList& creative_ads) {
   DCHECK(transaction);
 
-  if (creative_ad_notifications.empty()) {
+  if (creative_ads.empty()) {
     return;
   }
 
   DBCommandPtr command = DBCommand::New();
   command->type = DBCommand::Type::RUN;
   std::string result = BuildInsertOrUpdateQuery(command.get(),
-      creative_ad_notifications);
+      creative_ads);
 
   if (result.compare("") != 0) {
     command->command = result;
@@ -64,8 +64,8 @@ void Dayparts::Migrate(
   DCHECK(transaction);
 
   switch (to_version) {
-    case 1: {
-      MigrateToV1(transaction);
+    case 3: {
+      MigrateToV3(transaction);
       break;
     }
 
@@ -79,15 +79,15 @@ void Dayparts::Migrate(
 
 int Dayparts::BindParameters(
     DBCommand* command,
-    const CreativeAdNotificationList& creative_ad_notifications) {
+    const CreativeAdList& creative_ads) {
   DCHECK(command);
 
   int count = 0;
   int index = 0;
   std::vector<std::string> parsed_daypart;
 
-  for (const auto& creative_ad_notification : creative_ad_notifications) {
-    for (const auto& daypart : creative_ad_notification.dayparts) {
+  for (const auto& creative_ad : creative_ads) {
+    for (const auto& daypart : creative_ad.dayparts) {
       if (&daypart == NULL || daypart.compare("") == 0) {
         std::cout << "**** albert SKIPPED inserting into database" << std::endl;
         continue;
@@ -96,13 +96,13 @@ int Dayparts::BindParameters(
       parsed_daypart = DaypartFrequencyCap::ParseDaypart(daypart);
       /*
       BindString(command, index++,
-          creative_ad_notification.creative_instance_id);
+          creative_ad.campaign_id);
       BindString(command, index++, parsed_daypart[0]);
       BindInt(command, index++, std::stoi(parsed_daypart[1]));
       BindInt(command, index++, std::stoi(parsed_daypart[2]));
       */
       BindString(command, index++,
-          creative_ad_notification.creative_instance_id);
+          creative_ad.campaign_id);
       BindString(command, index++, daypart);
 
       count++;
@@ -114,8 +114,8 @@ int Dayparts::BindParameters(
 
 std::string Dayparts::BuildInsertOrUpdateQuery(
     DBCommand* command,
-    const CreativeAdNotificationList& creative_ad_notifications) {
-  const int count = BindParameters(command, creative_ad_notifications);
+    const CreativeAdList& creative_ads) {
+  const int count = BindParameters(command, creative_ads);
 
   // Since there's a LEFT JOIN, the daypart code allows the field to be null
   if (count == 0) {
@@ -125,7 +125,7 @@ std::string Dayparts::BuildInsertOrUpdateQuery(
   /*
   return base::StringPrintf(
       "INSERT OR REPLACE INTO %s "
-          "(creative_instance_id, "
+          "(campaign_id, "
           "days_of_week, "
           "start_minute, "
           "end_minute) VALUES %s",
@@ -134,36 +134,36 @@ std::string Dayparts::BuildInsertOrUpdateQuery(
       */
   return base::StringPrintf(
       "INSERT OR REPLACE INTO %s "
-          "(creative_instance_id, "
+          "(campaign_id, "
           "daypart) VALUES %s",
       get_table_name().c_str(),
       BuildBindingParameterPlaceholders(2, count).c_str());
 }
 
-void Dayparts::CreateTableV1(
+void Dayparts::CreateTableV3(
     DBTransaction* transaction) {
   DCHECK(transaction);
 
   /*
   const std::string query = base::StringPrintf(
       "CREATE TABLE %s "
-          "(creative_instance_id TEXT NOT NULL, "
+          "(campaign_id TEXT NOT NULL, "
           "days_of_week TEXT NOT NULL, "
           "start_minute INT NOT NULL, "
           "end_minute INT NOT NULL, "
-          "CONSTRAINT fk_creative_instance_id "
-              "FOREIGN KEY (creative_instance_id) "
-              "REFERENCES creative_ad_notifications (creative_instance_id) "
+          "CONSTRAINT fk_campaign_id "
+              "FOREIGN KEY (campaign_id) "
+              "REFERENCES creative_ads (campaign_id) "
               "ON DELETE CASCADE)",
       get_table_name().c_str());
       */
   const std::string query = base::StringPrintf(
       "CREATE TABLE %s "
-          "(creative_instance_id TEXT NOT NULL, "
+          "(campaign_id TEXT NOT NULL, "
           "daypart TEXT NOT NULL, "
-          "CONSTRAINT fk_creative_instance_id "
-              "FOREIGN KEY (creative_instance_id) "
-              "REFERENCES creative_ad_notifications (creative_instance_id) "
+          "CONSTRAINT fk_campaign_id "
+              "FOREIGN KEY (campaign_id) "
+              "REFERENCES creative_ads (campaign_id) "
               "ON DELETE CASCADE)",
       get_table_name().c_str());
 
@@ -174,20 +174,20 @@ void Dayparts::CreateTableV1(
   transaction->commands.push_back(std::move(command));
 }
 
-void Dayparts::CreateIndexV1(
+void Dayparts::CreateIndexV3(
     DBTransaction* transaction) {
   DCHECK(transaction);
 
-  CreateIndex(transaction, get_table_name(), "daypart");
+  util::CreateIndex(transaction, get_table_name(), "daypart");
 }
 
-void Dayparts::MigrateToV1(
+void Dayparts::MigrateToV3(
     DBTransaction* transaction) {
   DCHECK(transaction);
 
-  Drop(transaction, get_table_name());
+  util::Drop(transaction, get_table_name());
 
-  CreateTableV1(transaction);
+  CreateTableV3(transaction);
 //  CreateIndexV1(transaction);
 }
 

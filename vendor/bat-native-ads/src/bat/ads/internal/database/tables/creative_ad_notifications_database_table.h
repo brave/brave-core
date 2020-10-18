@@ -16,11 +16,8 @@
 #include "bat/ads/internal/database/database_table.h"
 #include "bat/ads/internal/database/tables/campaigns_database_table.h"
 #include "bat/ads/internal/database/tables/categories_database_table.h"
-<<<<<<< HEAD
 #include "bat/ads/internal/database/tables/creative_ads_database_table.h"
-=======
 #include "bat/ads/internal/database/tables/dayparts_database_table.h"
->>>>>>> Feature: Day Parting
 #include "bat/ads/internal/database/tables/geo_targets_database_table.h"
 #include "bat/ads/mojom.h"
 #include "bat/ads/result.h"

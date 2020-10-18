@@ -8,7 +8,7 @@
 
 #include <string>
 
-#include "bat/ads/internal/bundle/creative_ad_notification_info.h"
+#include "bat/ads/internal/bundle/creative_ad_info.h"
 #include "bat/ads/internal/database/database_table.h"
 
 namespace ads {
@@ -27,7 +27,7 @@ class Dayparts : public Table {
 
   void InsertOrUpdate(
       DBTransaction* transaction,
-      const CreativeAdNotificationList& creative_ad_notifications);
+      const CreativeAdList& creative_ads);
 
   std::string get_table_name() const override;
 
@@ -38,17 +38,17 @@ class Dayparts : public Table {
  private:
   int BindParameters(
       DBCommand* command,
-      const CreativeAdNotificationList& creative_ad_notifications);
+      const CreativeAdList& creative_ads);
 
   std::string BuildInsertOrUpdateQuery(
       DBCommand* command,
-      const CreativeAdNotificationList& creative_ad_notifications);
+      const CreativeAdList& creative_ads);
 
-  void CreateTableV1(
+  void CreateTableV3(
       DBTransaction* transaction);
-  void CreateIndexV1(
+  void CreateIndexV3(
       DBTransaction* transaction);
-  void MigrateToV1(
+  void MigrateToV3(
       DBTransaction* transaction);
 
   AdsImpl* ads_;  // NOT OWNED
