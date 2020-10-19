@@ -884,7 +884,7 @@ Your Brave account may have other forms of browsing history like searches and ac
         Safety check <ph name="BEGIN_NEW">&lt;new&gt;</ph>New<ph name="END_NEW">&lt;/new&gt;</ph>
       </message>
       <message name="IDS_SAFETY_CHECK_DESCRIPTION" desc="Introduces the safety check categories to the user. Followed by several items, such as 'Safe Browsing', 'Updates', 'Passwords'.">
-        Brave can help keep you safe from data breaches, unsafe websites, and more
+        Brave can help keep you safe from malicious websites, bad extensions, and more
       </message>
       <message name="IDS_SAFETY_CHECK_SAFE_BROWSING_TITLE" desc="Title for the Safe Browsing section.">
         Safe Browsing
