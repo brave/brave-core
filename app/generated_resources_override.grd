@@ -422,9 +422,6 @@ are declared in tools/grit/grit_rule.gni.
       <if expr="not use_titlecase">
         </if>
 
-      <if expr="enable_plugins">
-        </if>
-
       <if expr="use_titlecase">
         </if>
       <if expr="not use_titlecase">
@@ -792,6 +789,12 @@ are declared in tools/grit/grit_rule.gni.
       <if expr="chromeos">
         </if>
 
+      <if expr="chromeos">
+      </if>
+    <if expr="is_macosx">
+      </if>
+    <if expr="is_win or desktop_linux">
+      </if>
       <if expr="not chromeos">
         </if>
       <if expr="chromeos">

@@ -96,6 +96,8 @@
         </if>
       <if expr="is_ios">
         </if>
+      <if expr="enable_vr">
+        </if>
 
       <if expr="is_android">
         </if>

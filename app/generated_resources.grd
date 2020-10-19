@@ -2057,6 +2057,9 @@ are declared in tools/grit/grit_rule.gni.
         <message name="IDS_TOUCH_BAR_NEW_TAB_CUSTOMIZATION_LABEL" desc="Customization label for the new tab button in the touch bar.">
           New Tab
         </message>
+        <message name="IDS_TOUCH_BAR_URL_CUSTOMIZATION_LABEL" desc="Customization label for the URL field in the touch bar.">
+          Page URL
+        </message>
       </if>
 
       <!-- Abandon in-progress downloads confirmation dialog -->
@@ -3841,9 +3844,6 @@ are declared in tools/grit/grit_rule.gni.
         <message name="IDS_EXTENSION_PROMPT_WARNING_NETWORK_STATE" desc="Permission string for network list access.">
           Access list of network connections
         </message>
-        <message name="IDS_EXTENSION_PROMPT_WARNING_NETWORKING_CONFIG" desc="Permission string for Networking Config API.">
-          Configure network connections
-        </message>
         <message name="IDS_EXTENSION_PROMPT_WARNING_NETWORKING_PRIVATE" desc="Permission string for Networking Private API.">
           Manage network connections
         </message>
@@ -4713,12 +4713,6 @@ Keep your key file in a safe place. You will need it to create new versions of y
       <message name="IDS_COMPONENTS_EVT_STATUS_UPDATING" desc="Service Status">
         Component updating
       </message>
-
-      <if expr="enable_plugins">
-        <message name="IDS_PLUGINS_DISABLED_PLUGIN" desc="Text that signifies that the plugin is currently disabled.">
-          (Disabled)
-        </message>
-      </if>
 
       <message name="IDS_PASSWORD_MANAGER_ACCOUNT_CHOOSER_TITLE" desc="The title of the account chooser dialog.">
         Sign in as
@@ -6119,6 +6113,9 @@ Keep your key file in a safe place. You will need it to create new versions of y
         <message name="IDS_FEEDBACK_CLOSE_BUTTON_LABEL" desc="Label of the app close button.">
           Close
         </message>
+        <message name="IDS_FEEDBACK_FREE_TEXT_LABEL" desc="Label of the text box where users can describe a problem they are having">
+          Describe the issue in detail
+        </message>
         <message name="IDS_FEEDBACK_REPORT_URL_LABEL" desc="Label showing the URL that will be reported">
           URL
         </message>
@@ -6184,7 +6181,7 @@ Keep your key file in a safe place. You will need it to create new versions of y
           Go to the <ph name="BEGIN_LINK1">&lt;a href="#" id="legal-help-page-url"&gt;</ph>Legal Help page<ph name="END_LINK1">&lt;/a&gt;</ph> to request content changes for legal reasons.  Some account and system information may be sent to Brave.  We will use the information you give us to help address technical issues and to improve our services, subject to our <ph name="BEGIN_LINK2">&lt;a href="#" id="privacy-policy-url"&gt;</ph>Privacy Policy<ph name="END_LINK2">&lt;/a&gt;</ph> and <ph name="BEGIN_LINK3">&lt;a href="#" id="terms-of-service-url"&gt;</ph>Terms of Service<ph name="END_LINK3">&lt;/a&gt;</ph>.
         </message>
         <message name="IDS_FEEDBACK_NO_DESCRIPTION" desc="Message shown when no text is entered before hitting send feedback">
-          Please tell us what is happening before sending the feedback.
+          Please describe the problem before sending feedback.
         </message>
         <message name="IDS_FEEDBACK_SEND_REPORT" desc="Text for OK button of the send feedback dialog">
           Send
@@ -7703,6 +7700,12 @@ Keep your key file in a safe place. You will need it to create new versions of y
         <message name="IDS_SIGNIN_DICE_WEB_INTERCEPT_BUBBLE_CANCEL_BUTTON_LABEL" desc="Label of the cancel button in the web signin interception bubble">
           No thanks
         </message>
+        <message name="IDS_SIGNIN_DICE_WEB_INTERCEPT_BUBBLE_CANCEL_SWITCH_BUTTON_LABEL" desc="Label of the cancel button in the web signin interception bubble (profile switch variant)">
+          Cancel
+        </message>
+        <message name="IDS_SIGNIN_DICE_WEB_INTERCEPT_BUBBLE_CONFIRM_SWITCH_BUTTON_LABEL" desc="Label of the profile switch button in the web signin interception bubble">
+          Switch
+        </message>
         <message name="IDS_SIGNIN_DICE_WEB_INTERCEPT_CONSUMER_BUBBLE_DESC" desc="Body of the web signin interception bubble">
           To keep your browsing separate, you can create a new profile for <ph name="NEW_USER">$1<ex>Bob</ex></ph>
         </message>
@@ -7717,6 +7720,12 @@ Keep your key file in a safe place. You will need it to create new versions of y
         </message>
         <message name="IDS_SIGNIN_DICE_WEB_INTERCEPT_ENTERPRISE_PROFILE_NAME" desc="Default name for work profiles created after signin interception">
           Work
+        </message>
+        <message name="IDS_SIGNIN_DICE_WEB_INTERCEPT_SWITCH_BUBBLE_TITLE" desc="Title for the profile switch interception bubble">
+          Switch to another profile?
+        </message>
+        <message name="IDS_SIGNIN_DICE_WEB_INTERCEPT_SWITCH_BUBBLE_DESC" desc="Description for the profile switch interception bubble">
+          <ph name="EXISTING_USER">$2<ex>Bob</ex></ph>'s profile is already signed in to <ph name="NEW_USER">$1<ex>bob@gmail.com</ex></ph>
         </message>
       </if>
 
@@ -9219,6 +9228,24 @@ Please help our engineers fix this problem. Tell us what happened right before y
       <message name="IDS_LIVE_CAPTION_BUBBLE_ERROR" desc="Error message for the Live Caption bubble when Live Captions are unavailable.">
         Live Caption is not available right now
       </message>
+    <if expr="chromeos">
+      <message name="IDS_LIVE_CAPTION_BUBBLE_APPEAR_SCREENREADER_ANNOUNCEMENT" desc="Announcement to screen readers on BraveOS when the Live Caption bubble appears to inform users of how to focus the bubble.">
+        Live Caption visible, press Ctrl + Back or Ctrl + Forward to cycle focus
+      </message>
+    </if>
+    <if expr="is_macosx">
+      <message name="IDS_LIVE_CAPTION_BUBBLE_APPEAR_SCREENREADER_ANNOUNCEMENT" desc="Announcement to screen readers on MacOS when the Live Caption bubble appears to inform users of how to focus the bubble.">
+        Live Caption visible, press ⌘ + Option + Up arrow or Down arrow to cycle focus
+      </message>
+    </if>
+    <if expr="is_win or desktop_linux">
+      <message name="IDS_LIVE_CAPTION_BUBBLE_APPEAR_SCREENREADER_ANNOUNCEMENT" desc="Announcement to screen readers on Windows or Linux when the Live Caption bubble appears to inform users of how to focus the bubble.">
+        Live Caption visible, press F6 to cycle focus
+      </message>
+    </if>
+      <message name="IDS_LIVE_CAPTION_BUBBLE_MOVE_SCREENREADER_ANNOUNCEMENT" desc="Announcement to screen readers when the Live Caption bubble moves.">
+        Moved caption bubble to <ph name="POSITION_ON_SCREEN_FROM_LEFT">$1<ex>20</ex></ph>% across, <ph name="POSITION_ON_SCREEN_FROM_TOP">$2<ex>80</ex></ph>% down
+      </message>
 
       <!-- Caret browsing. -->
       <if expr="not chromeos">
@@ -9941,18 +9968,6 @@ Please help our engineers fix this problem. Tell us what happened right before y
     </message>
 
     <!-- Ad Blocking UI strings. -->
-    <message name="IDS_ALWAYS_ALLOW_ADS" desc="Explanation associated with a toggle to allow ads after ads have been blocked on the page. To be used on pages where the ad blocking UI is governed by a persistent permissions-based allowlist.">
-      Always allow ads on this site
-    </message>
-    <message name="IDS_BLOCKED_ADS_INFOBAR_MESSAGE" desc="The mini infobar message shown to users on Android when Brave has blocked ads on the site because the site tends to show intrusive ads. Will be presented as a sentence, next to a Details link to expand the infobar.">
-      Ads blocked.
-    </message>
-    <message name="IDS_BLOCKED_ADS_PROMPT_TITLE" desc="Title of the prompt shown to users in the omnibox or infobar when Brave has blocked ads on the site because the site tends to show intrusive ads. The title will stand alone next to an icon so there is no need for a period." formatter_data="android_java">
-      Ads blocked
-    </message>
-    <message name="IDS_BLOCKED_ADS_PROMPT_EXPLANATION" desc="A warning that a site has, in the past, shown intrusive or misleading ads. To be shown in an expanded infobar / bubble">
-      This site shows intrusive or misleading ads.
-    </message>
     <message name="IDS_BLOCKED_ADS_PROMPT_TOOLTIP" desc="Explanation that Brave blocked ads on this site. To be shown as a tooltip on the Ads blocked desktop bubble">
       Ads blocked on this site
     </message>

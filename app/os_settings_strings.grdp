@@ -70,6 +70,9 @@
   <message name="IDS_SETTINGS_ABOUT_PAGE_END_OF_LIFE_TITLE" desc="Title used for End of Life section on the About Page.">
     Update schedule
   </message>
+  <message name="IDS_SETTINGS_ABOUT_PAGE_DEVICE_NAME" desc="Title of the line item on the about page that allows the user to edit the device hostname.">
+    Device name
+  </message>
   <message name="IDS_SETTINGS_UPGRADE_ROLLBACK_IN_PROGRESS" desc="Status label: Rolling back BraveOS or Chrome OS.">
     Your administrator is rolling back this device (<ph name="PROGRESS_PERCENT">$1<ex>90%</ex></ph>)
   </message>
@@ -499,7 +502,7 @@
 
   <!-- Device Page (OS Settings) -->
   <message name="IDS_OS_SETTINGS_TOUCHPAD_REVERSE_SCROLL_LABEL">
-    Enable reverse scrolling <ph name="LINK_BEGIN">&lt;a&gt;</ph>Learn more<ph name="LINK_END">&lt;/a&gt;</ph>
+    Enable reverse scrolling. <ph name="LINK_BEGIN">&lt;a&gt;</ph>Learn more<ph name="LINK_END">&lt;/a&gt;</ph>
   </message>
   <message name="IDS_SETTINGS_DEVICE_TITLE" desc="Name of the settings page which displays device and peripheral settings.">
     Device
@@ -1020,28 +1023,28 @@
     Rate
   </message>
   <message name="IDS_SETTINGS_TEXT_TO_SPEECH_RATE_MINIMUM_LABEL" desc="A label for the minimum side of a slider allowing users to change their text-to-speech speech rate">
-    Slowest
+    Slow
   </message>
   <message name="IDS_SETTINGS_TEXT_TO_SPEECH_RATE_MAXIMUM_LABEL" desc="A label for the maximum side of a slider allowing users to change their text-to-speech speech rate">
-    Fastest
+    Fast
   </message>
   <message name="IDS_SETTINGS_TEXT_TO_SPEECH_PITCH" desc="The pitch of speech in text-to-speech settings.">
     Pitch
   </message>
   <message name="IDS_SETTINGS_TEXT_TO_SPEECH_PITCH_MINIMUM_LABEL" desc="A label for the minimum side of a slider allowing users to change their text-to-speech speech pitch">
-    Lowest
+    Low
   </message>
   <message name="IDS_SETTINGS_TEXT_TO_SPEECH_PITCH_MAXIMUM_LABEL" desc="A label for the maximum side of a slider allowing users to change their text-to-speech speech pitch">
-    Highest
+    High
   </message>
   <message name="IDS_SETTINGS_TEXT_TO_SPEECH_VOLUME" desc="The volume of speech compared to system volume in text-to-speech settings.">
     Volume
   </message>
   <message name="IDS_SETTINGS_TEXT_TO_SPEECH_VOLUME_MINIMUM_LABEL" desc="A label for the minimum side of a slider allowing users to change their text-to-speech speech volume">
-    Quietest
+    Quiet
   </message>
   <message name="IDS_SETTINGS_TEXT_TO_SPEECH_VOLUME_MAXIMUM_LABEL" desc="A label for the maximum side of a slider allowing users to change their text-to-speech speech volume">
-    Loudest
+    Loud
   </message>
   <message name="IDS_SETTINGS_PERCENTAGE" desc="A number displayed as a percentage">
     <ph name="PERCENTAGE">$1<ex>120</ex></ph>%
@@ -1638,8 +1641,14 @@
   <message name="IDS_SETTINGS_MOUSE_SWAP_BUTTONS_LABEL" desc="In Device Settings, the text next to the checkbox to set the primary mouse button to the right button instead of the left button.">
     Swap primary mouse button
   </message>
+  <message name="IDS_SETTINGS_PRIMARY_MOUSE_BUTTON_LEFT_LABEL" desc="In Device Settings, the text labelling the dropdown menu item for the left mouse button.">
+    Left button
+  </message>
+  <message name="IDS_SETTINGS_PRIMARY_MOUSE_BUTTON_RIGHT_LABEL" desc="In Device Settings, the text labelling the dropdown menu item for the right mouse button.">
+    Right button
+  </message>
   <message name="IDS_SETTINGS_MOUSE_REVERSE_SCROLL_LABEL" desc="In Device Settings, the text next to the checkbox to set reverse scrolling.">
-    Enable reverse scrolling <ph name="LINK_BEGIN">&lt;a&gt;</ph>Learn more<ph name="LINK_END">&lt;/a&gt;</ph>
+    Enable reverse scrolling. <ph name="LINK_BEGIN">&lt;a&gt;</ph>Learn more<ph name="LINK_END">&lt;/a&gt;</ph>
   </message>
   <message name="IDS_SETTINGS_MOUSE_ACCELERATION_LABEL" desc="In Device Settings, the text next to the checkbox to disable mouse acceleration.">
     Enable mouse acceleration
@@ -2246,6 +2255,9 @@
   <message name="IDS_SETTINGS_MULTIDEVICE_DISABLED" desc="Text to tell user multidevice features are turned off">
     Disabled
   </message>
+  <message name="IDS_SETTINGS_MULTIDEVICE_SUITE_TOGGLE_A11Y_LABEL" desc="Accessibility label for toggle button that enables/disables connected phone features.">
+    Connected phone features enable.
+  </message>
   <message name="IDS_SETTINGS_MULTIDEVICE_INSTANT_TETHERING" desc="Name of a feature. This feature automatically offers the user to tether to their phone if their Bravebook is offline and their phone supports tethering.">
     Instant Tethering
   </message>
@@ -2300,8 +2312,17 @@
   <message name="IDS_SETTINGS_MULTIDEVICE_WIFI_SYNC_SECTION_TITLE" translateable="false" desc="The title of the Wifi Sync section on the settings page. Wi-Fi Sync V2 allows user to sync network configurations between Chrome OS devices and a connected Android phone.">
     Wi-Fi Sync
   </message>
-  <message name="IDS_SETTINGS_MULTIDEVICE_WIFI_SYNC_SUMMARY" translateable="false" desc="Description of for the 'Wifi Sync' setting. This feature lets the user sync wifi network configurations between Chrome OS devices and a connected Android phone">
+  <message name="IDS_SETTINGS_MULTIDEVICE_WIFI_SYNC_SUMMARY" translateable="false" desc="Description for the 'Wifi Sync' section on the settings page. This feature lets the user sync wifi network configurations between Chrome OS devices and a connected Android phone">
     Sync Wi-Fi networks with your phone <ph name="LINK_BEGIN">&lt;a target="_blank" rel="noopener noreferrer" href="$1<ex>https://google.com/</ex>"&gt;</ph>Learn more<ph name="LINK_END">&lt;/a&gt;</ph>
+  </message>
+  <message name="IDS_SETTINGS_MULTIDEVICE_ENABLE_WIFI_SYNC_V1_SUMMARY" desc="Description for the 'Wifi Sync' section on the settings page when the prerequisite 'Brave Sync' setting is not activated. This feature lets the user sync wifi network configurations between Chrome OS devices and a connected Android phone. The description contains a link that leads to the toggle where the prerequisite 'Brave Sync' feature can be turned on and a 'Learn More' link to learn more about the 'Wifi Sync' feature.">
+    Turn on <ph name="LINK1_BEGIN">&lt;a id="chromeSyncLink"&gt;</ph>Brave Sync<ph name="LINK1_END">&lt;/a&gt;</ph> to use Wi-Fi Sync. <ph name="LINK2_BEGIN">&lt;a id="learnMoreLink" target="_blank" rel="noopener noreferrer" href="$1<ex>https://google.com/</ex>"&gt;</ph>Learn more<ph name="LINK2_END">&lt;/a&gt;</ph>
+  </message>
+  <message name="IDS_SETTINGS_MULTIDEVICE_WIFI_SYNC_CHROME_SYNC_LABEL" desc="Accessibility label (used by screen readers, not shown in UI) for a link that leads to the Brave Sync toggle that needs to be enabled as a prerequisite for the 'Wifi Sync' feature to be enabled. This feature lets the user sync wifi network configurations between Chrome OS devices and a connected Android phone.">
+    Turn on Brave Sync to use Wi-Fi Sync
+  </message>
+  <message name="IDS_SETTINGS_MULTIDEVICE_WIFI_SYNC_LEARN_MORE_LABEL" desc="Accessibility label (used by screen readers, not shown in UI) for a link that leads to a page with more information about the 'Wifi Sync' feature. This feature lets the user sync wifi network configurations between Chrome OS devices and a connected Android phone.">
+    Wi-Fi Sync, Learn More
   </message>
 
   <!-- Lock Screen Page (OS settings) -->
