@@ -1,0 +1,13 @@
+diff --git a/components/sync_device_info/device_info_sync_bridge_unittest.cc b/components/sync_device_info/device_info_sync_bridge_unittest.cc
+index 39c86c3cc1adf31034bdb60994b6b7faf794feb2..e4a76dc82e9dbbb424ef05df5fb2dbd3d9f1cc5b 100644
+--- a/components/sync_device_info/device_info_sync_bridge_unittest.cc
++++ b/components/sync_device_info/device_info_sync_bridge_unittest.cc
+@@ -804,7 +804,7 @@ TEST_F(DeviceInfoSyncBridgeTest, ApplySyncChangesWithLocalGuid) {
+   auto error_on_delete = bridge()->ApplySyncChanges(
+       bridge()->CreateMetadataChangeList(), std::move(entity_change_list));
+   EXPECT_FALSE(error_on_delete);
+-  EXPECT_EQ(1, change_count());
++  EXPECT_EQ(2, change_count());  // Brave can delete other device in chain, delete record should be also processed
+ }
+ 
+ TEST_F(DeviceInfoSyncBridgeTest, ApplyDeleteNonexistent) {
