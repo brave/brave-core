@@ -269,10 +269,6 @@ TEST(BraveStaticRedirectNetworkDelegateHelperTest,
   EXPECT_EQ(rc, net::OK);
 }
 
-// TODO(@fmarier): Re-enable download protection once we have
-// truncated the list of metadata that it sends to the server
-// (brave/brave-browser#6267).
-#if 0
 TEST(BraveStaticRedirectNetworkDelegateHelperTest,
      ModifySafeBrowsingFileCheckURL) {
   const GURL url(
@@ -288,7 +284,6 @@ TEST(BraveStaticRedirectNetworkDelegateHelperTest,
   EXPECT_EQ(request_info->new_url_spec, expected_url);
   EXPECT_EQ(rc, net::OK);
 }
-#endif  // 0
 
 #if BUILDFLAG(ENABLE_BRAVE_TRANSLATE_GO)
 TEST(BraveStaticRedirectNetworkDelegateHelperTest, RedirectTranslate) {
