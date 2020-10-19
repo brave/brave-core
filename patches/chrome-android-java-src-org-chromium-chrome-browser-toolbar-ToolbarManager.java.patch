@@ -1,5 +1,5 @@
 diff --git a/chrome/android/java/src/org/chromium/chrome/browser/toolbar/ToolbarManager.java b/chrome/android/java/src/org/chromium/chrome/browser/toolbar/ToolbarManager.java
-index f47d98236abb257f3a87e44c216f15bec6928b3c..bb361c1df24d7529e97aa5d516d55dc195457036 100644
+index f47d98236abb257f3a87e44c216f15bec6928b3c..0b8d4f7d51be81e3258ff399e427c20b4718f9f9 100644
 --- a/chrome/android/java/src/org/chromium/chrome/browser/toolbar/ToolbarManager.java
 +++ b/chrome/android/java/src/org/chromium/chrome/browser/toolbar/ToolbarManager.java
 @@ -304,7 +304,7 @@ public class ToolbarManager implements UrlFocusChangeListener, ThemeColorObserve
@@ -9,6 +9,15 @@ index f47d98236abb257f3a87e44c216f15bec6928b3c..bb361c1df24d7529e97aa5d516d55dc1
 -        mMenuButtonCoordinator = new MenuButtonCoordinator(appMenuCoordinatorSupplier,
 +        mMenuButtonCoordinator = new org.chromium.chrome.browser.toolbar.menu_button.BraveMenuButtonCoordinator(appMenuCoordinatorSupplier,
                  mControlsVisibilityDelegate, mActivity,
+                 (focus, type)
+                         -> setUrlBarFocus(focus, type),
+@@ -313,7 +313,7 @@ public class ToolbarManager implements UrlFocusChangeListener, ThemeColorObserve
+                 mActivity.isCustomTab() ? mCustomTabThemeColorProvider
+                                         : browsingModeThemeColorProvider,
+                 R.id.menu_button_wrapper);
+-        MenuButtonCoordinator startSurfaceMenuButtonCoordinator = new MenuButtonCoordinator(
++        MenuButtonCoordinator startSurfaceMenuButtonCoordinator = new org.chromium.chrome.browser.toolbar.menu_button.BraveMenuButtonCoordinator(
+                 appMenuCoordinatorSupplier, mControlsVisibilityDelegate, mActivity,
                  (focus, type)
                          -> setUrlBarFocus(focus, type),
 @@ -631,7 +631,7 @@ public class ToolbarManager implements UrlFocusChangeListener, ThemeColorObserve
