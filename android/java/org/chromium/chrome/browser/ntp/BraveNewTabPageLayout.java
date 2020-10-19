@@ -621,6 +621,7 @@ public class BraveNewTabPageLayout extends NewTabPageLayout {
                     public void onClick(View view) {
                         if (mWallpaper.getLogoDestinationUrl() != null) {
                             TabUtils.openUrlInSameTab(mWallpaper.getLogoDestinationUrl());
+                            mNTPBackgroundImagesBridge.wallpaperLogoClicked(mWallpaper);
                         }
                     }
                 });

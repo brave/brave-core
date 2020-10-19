@@ -8,6 +8,7 @@
 #include <memory>
 #include <utility>
 
+#include "base/guid.h"
 #include "base/json/json_writer.h"
 #include "base/values.h"
 #include "brave/browser/profiles/profile_util.h"
@@ -23,6 +24,7 @@
 #include "brave/components/moonpay/browser/buildflags/buildflags.h"
 #include "brave/components/crypto_dot_com/browser/buildflags/buildflags.h"
 #include "brave/components/ntp_background_images/browser/features.h"
+#include "brave/components/ntp_background_images/browser/url_constants.h"
 #include "brave/components/ntp_background_images/browser/view_counter_service.h"
 #include "brave/components/ntp_background_images/common/pref_names.h"
 #include "chrome/browser/profiles/profile.h"
@@ -230,6 +232,11 @@ void BraveNewTabMessageHandler::RegisterMessages() {
       &BraveNewTabMessageHandler::HandleRegisterNewTabPageView,
       base::Unretained(this)));
   web_ui()->RegisterMessageCallback(
+    "brandedWallpaperLogoClicked",
+    base::BindRepeating(
+      &BraveNewTabMessageHandler::HandleBrandedWallpaperLogoClicked,
+      base::Unretained(this)));
+  web_ui()->RegisterMessageCallback(
     "getBrandedWallpaperData",
     base::BindRepeating(
       &BraveNewTabMessageHandler::HandleGetBrandedWallpaperData,
@@ -435,14 +442,49 @@ void BraveNewTabMessageHandler::HandleRegisterNewTabPageView(
     service->RegisterPageView();
 }
 
+void BraveNewTabMessageHandler::HandleBrandedWallpaperLogoClicked(
+    const base::ListValue* args) {
+  AllowJavascript();
+  if (args->GetSize() != 1) {
+    LOG(ERROR) << "Invalid input";
+    return;
+  }
+
+  if (auto* service = ViewCounterServiceFactory::GetForProfile(profile_)) {
+    auto* creative_instance_id = args->GetList()[0].FindStringKey(
+        ntp_background_images::kCreativeInstanceIDKey);
+    auto* destination_url = args->GetList()[0].FindStringPath(
+        ntp_background_images::kLogoDestinationURLPath);
+    auto* wallpaper_id = args->GetList()[0].FindStringPath(
+        ntp_background_images::kWallpaperIDKey);
+
+    DCHECK(creative_instance_id);
+    DCHECK(destination_url);
+    DCHECK(wallpaper_id);
+
+    service->BrandedWallpaperLogoClicked(
+        creative_instance_id ? *creative_instance_id : "",
+        destination_url ? *destination_url : "",
+        wallpaper_id ? *wallpaper_id : "");
+  }
+}
+
 void BraveNewTabMessageHandler::HandleGetBrandedWallpaperData(
     const base::ListValue* args) {
   AllowJavascript();
 
   auto* service = ViewCounterServiceFactory::GetForProfile(profile_);
-  ResolveJavascriptCallback(
-      args->GetList()[0],
-      service ? service->GetCurrentWallpaperForDisplay() : base::Value());
+  auto data = service ? service->GetCurrentWallpaperForDisplay()
+                      : base::Value();
+  if (!data.is_none()) {
+    DCHECK(data.is_dict());
+
+    const std::string wallpaper_id = base::GenerateGUID();
+    data.SetStringKey(ntp_background_images::kWallpaperIDKey, wallpaper_id);
+    service->BrandedWallpaperWillBeDisplayed(wallpaper_id);
+  }
+
+  ResolveJavascriptCallback(args->GetList()[0], std::move(data));
 }
 
 void BraveNewTabMessageHandler::OnPrivatePropertiesChanged() {

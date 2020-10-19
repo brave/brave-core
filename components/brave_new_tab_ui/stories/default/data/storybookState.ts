@@ -39,6 +39,8 @@ function shouldShowBrandedWallpaperData (shouldShow: boolean) {
     return {
       wallpaperImageUrl: '',
       isSponsored: false,
+      creativeInstanceId: '12345abcde',
+      wallpaperId: 'abcde12345',
       logo: { image: '', companyName: '', alt: '', destinationUrl: '' }
     }
   }

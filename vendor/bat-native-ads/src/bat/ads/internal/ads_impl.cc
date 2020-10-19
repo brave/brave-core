@@ -408,8 +408,12 @@ void AdsImpl::OnNewTabPageAdEvent(
     const std::string& wallpaper_id,
     const std::string& creative_instance_id,
     const NewTabPageAdEventType event_type) {
-  DCHECK(!wallpaper_id.empty());
-  DCHECK(!creative_instance_id.empty());
+  if (wallpaper_id.empty() || creative_instance_id.empty()) {
+    BLOG(1, "Failed to trigger new tab page ad " << event_type
+        << " event for wallpaper id " << wallpaper_id
+            << " and creative instance id " << creative_instance_id);
+    return;
+  }
 
   const auto callback = std::bind(&AdsImpl::OnGetCreativeNewTabPageAd,
       this, wallpaper_id, event_type, _1, _2, _3);

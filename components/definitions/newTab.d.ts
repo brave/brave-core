@@ -15,6 +15,8 @@ declare namespace NewTab {
   export interface BrandedWallpaper {
     isSponsored: boolean
     wallpaperImageUrl: string
+    creativeInstanceId: string
+    wallpaperId: string
     logo: BrandedWallpaperLogo
   }
   export interface ApplicationState {

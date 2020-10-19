@@ -44,6 +44,7 @@ class BraveNewTabMessageHandler : public content::WebUIMessageHandler,
   void HandleToggleAlternativeSearchEngineProvider(
       const base::ListValue* args);
   void HandleRegisterNewTabPageView(const base::ListValue* args);
+  void HandleBrandedWallpaperLogoClicked(const base::ListValue* args);
   void HandleGetBrandedWallpaperData(const base::ListValue* args);
 
   void OnStatsChanged();

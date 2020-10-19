@@ -290,14 +290,14 @@ void NTPBackgroundImagesService::RegisterSuperReferralComponent() {
   std::string theme_name;
   if (initial_sr_component_info_.is_dict()) {
     public_key = *initial_sr_component_info_.FindStringKey(kPublicKey);
-    id = *initial_sr_component_info_.FindStringKey(kComponentID);
-    theme_name = *initial_sr_component_info_.FindStringKey(kThemeName);
+    id = *initial_sr_component_info_.FindStringKey(kComponentIDKey);
+    theme_name = *initial_sr_component_info_.FindStringKey(kThemeNameKey);
   } else {
     const auto* value = local_pref_->Get(
         prefs::kNewTabPageCachedSuperReferralComponentInfo);
     public_key = *value->FindStringKey(kPublicKey);
-    id = *value->FindStringKey(kComponentID);
-    theme_name = *value->FindStringKey(kThemeName);
+    id = *value->FindStringKey(kComponentIDKey);
+    theme_name = *value->FindStringKey(kThemeNameKey);
   }
 
   RegisterNTPBackgroundImagesComponent(
@@ -509,9 +509,9 @@ bool NTPBackgroundImagesService::IsValidSuperReferralComponentInfo(
 
   if (!component_info.FindStringKey(kPublicKey))
     return false;
-  if (!component_info.FindStringKey(kComponentID))
+  if (!component_info.FindStringKey(kComponentIDKey))
     return false;
-  if (!component_info.FindStringKey(kThemeName))
+  if (!component_info.FindStringKey(kThemeNameKey))
     return false;
 
   return true;
@@ -529,7 +529,7 @@ void NTPBackgroundImagesService::UnRegisterSuperReferralComponent() {
   const auto* value = local_pref_->Get(
       prefs::kNewTabPageCachedSuperReferralComponentInfo);
   DCHECK(value);
-  const std::string sr_component_id = *value->FindStringKey(kComponentID);
+  const std::string sr_component_id = *value->FindStringKey(kComponentIDKey);
   DVLOG(2) << __func__ << ": Unregister NTP SR component";
   component_update_service_->UnregisterComponent(sr_component_id);
 }
@@ -552,7 +552,7 @@ std::string NTPBackgroundImagesService::GetSuperReferralThemeName() const {
       prefs::kNewTabPageCachedSuperReferralComponentInfo);
   if (base::FeatureList::IsEnabled(features::kBraveNTPSuperReferralWallpaper) &&
       IsValidSuperReferralComponentInfo(*value)) {
-    theme_name = *value->FindStringKey(kThemeName);
+    theme_name = *value->FindStringKey(kThemeNameKey);
   }
 
   return theme_name;

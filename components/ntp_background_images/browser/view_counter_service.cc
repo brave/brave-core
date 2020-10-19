@@ -14,10 +14,12 @@
 #include "base/files/file_path.h"
 #include "base/logging.h"
 #include "bat/ads/pref_names.h"
+#include "bat/ads/public/interfaces/ads.mojom.h"
 #include "brave/components/brave_referrals/buildflags/buildflags.h"
 #include "brave/components/brave_rewards/common/pref_names.h"
 #include "brave/components/ntp_background_images/browser/features.h"
 #include "brave/components/ntp_background_images/browser/ntp_background_images_data.h"
+#include "brave/components/ntp_background_images/browser/url_constants.h"
 #include "brave/components/ntp_background_images/common/pref_names.h"
 #include "components/pref_registry/pref_registry_syncable.h"
 #include "components/prefs/pref_service.h"
@@ -41,9 +43,11 @@ void ViewCounterService::RegisterProfilePrefs(
 }
 
 ViewCounterService::ViewCounterService(NTPBackgroundImagesService* service,
+                                       brave_ads::AdsService* ads_service,
                                        PrefService* prefs,
                                        bool is_supported_locale)
     : service_(service),
+      ads_service_(ads_service),
       prefs_(prefs),
       is_supported_locale_(is_supported_locale) {
   DCHECK(service_);
@@ -67,6 +71,20 @@ ViewCounterService::ViewCounterService(NTPBackgroundImagesService* service,
 }
 
 ViewCounterService::~ViewCounterService() = default;
+
+void ViewCounterService::BrandedWallpaperWillBeDisplayed(
+    const std::string& wallpaper_id) {
+  base::Value data = ViewCounterService::GetCurrentWallpaperForDisplay();
+  DCHECK(!data.is_none());
+  const std::string creative_instance_id =
+      *data.FindStringKey(kCreativeInstanceIDKey);
+
+  if (!ads_service_)
+    return;
+
+  ads_service_->OnNewTabPageAdEvent(wallpaper_id, creative_instance_id,
+      ads::mojom::BraveAdsNewTabPageAdEventType::kViewed);
+}
 
 NTPBackgroundImagesData*
 ViewCounterService::GetCurrentBrandedWallpaperData() const {
@@ -176,6 +194,17 @@ void ViewCounterService::RegisterPageView() {
   if (IsBrandedWallpaperActive()) {
     model_.RegisterPageView();
   }
+}
+
+void ViewCounterService::BrandedWallpaperLogoClicked(
+    const std::string& creative_instance_id,
+    const std::string& destination_url,
+    const std::string& wallpaper_id) {
+  if (!ads_service_)
+    return;
+
+  ads_service_->OnNewTabPageAdEvent(wallpaper_id, creative_instance_id,
+      ads::mojom::BraveAdsNewTabPageAdEventType::kClicked);
 }
 
 bool ViewCounterService::ShouldShowBrandedWallpaper() const {

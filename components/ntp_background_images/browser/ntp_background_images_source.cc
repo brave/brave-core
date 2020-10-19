@@ -79,7 +79,13 @@ void NTPBackgroundImagesSource::StartDataRequest(
 
   base::FilePath image_file_path;
   if (IsLogoPath(path)) {
-    image_file_path = images_data->logo_image_file;
+    if (IsDefaultLogoPath(path)) {
+      image_file_path = images_data->default_logo.image_file;
+    } else {
+      DCHECK(images_data->backgrounds[GetLogoIndexFromPath(path)].logo);
+      image_file_path =
+          images_data->backgrounds[GetLogoIndexFromPath(path)].logo->image_file;
+    }
   } else {
     DCHECK(IsWallpaperPath(path));
     image_file_path =
@@ -139,11 +145,41 @@ bool NTPBackgroundImagesSource::IsWallpaperPath(const std::string& path) const {
   return GetWallpaperIndexFromPath(path) != -1;
 }
 
-bool NTPBackgroundImagesSource::IsLogoPath(const std::string& path) const {
-  const std::string target_logo_path =
-      IsSuperReferralPath(path) ? std::string(kSuperReferralPath) + kLogoPath
-                                : std::string(kSponsoredImagesPath) + kLogoPath;
+bool NTPBackgroundImagesSource::IsDefaultLogoPath(
+    const std::string& path) const {
+  std::string target_logo_path =
+      IsSuperReferralPath(path) ? std::string(kSuperReferralPath)
+                                : std::string(kSponsoredImagesPath);
+  target_logo_path += kDefaultLogoFileName;
   return target_logo_path.compare(path) == 0;
+}
+
+bool NTPBackgroundImagesSource::IsLogoPath(const std::string& path) const {
+  if (IsDefaultLogoPath(path))
+    return true;
+
+  return GetLogoIndexFromPath(path) != -1;
+}
+
+int NTPBackgroundImagesSource::GetLogoIndexFromPath(
+    const std::string& path) const {
+  const bool is_super_referral_path = IsSuperReferralPath(path);
+  auto* images_data = service_->GetBackgroundImagesData(is_super_referral_path);
+  if (!images_data)
+    return -1;
+
+  const int wallpaper_count = images_data->backgrounds.size();
+  for (int i = 0; i < wallpaper_count; ++i) {
+    const std::string generated_path =
+        base::StringPrintf("%s%s%d.png",
+                           is_super_referral_path ? kSuperReferralPath
+                                                  : kSponsoredImagesPath,
+                           kLogoFileNamePrefix, i);
+    if (path.compare(generated_path) == 0)
+      return i;
+  }
+
+  return -1;
 }
 
 int NTPBackgroundImagesSource::GetWallpaperIndexFromPath(

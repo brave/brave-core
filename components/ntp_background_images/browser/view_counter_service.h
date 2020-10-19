@@ -13,6 +13,7 @@
 #include "base/values.h"
 #include "components/keyed_service/core/keyed_service.h"
 #include "components/prefs/pref_change_registrar.h"
+#include "brave/components/brave_ads/browser/ads_service.h"
 #include "brave/components/ntp_background_images/browser/ntp_background_images_service.h"
 #include "brave/components/ntp_background_images/browser/view_counter_model.h"
 
@@ -35,6 +36,7 @@ class ViewCounterService : public KeyedService,
                            public NTPBackgroundImagesService::Observer {
  public:
   ViewCounterService(NTPBackgroundImagesService* service,
+                     brave_ads::AdsService* ads_service,
                      PrefService* prefs,
                      bool is_supported_locale);
   ~ViewCounterService() override;
@@ -49,6 +51,10 @@ class ViewCounterService : public KeyedService,
   // opted-in or data is available.
   void RegisterPageView();
 
+  void BrandedWallpaperLogoClicked(const std::string& creative_instance_id,
+                                   const std::string& destination_url,
+                                   const std::string& wallpaper_id);
+
   base::Value GetCurrentWallpaperForDisplay() const;
   base::Value GetCurrentWallpaper() const;
   std::vector<TopSite> GetTopSitesVectorForWebUI() const;
@@ -57,6 +63,8 @@ class ViewCounterService : public KeyedService,
   bool IsSuperReferral() const;
   std::string GetSuperReferralThemeName() const;
   std::string GetSuperReferralCode() const;
+
+  void BrandedWallpaperWillBeDisplayed(const std::string& wallpaper_id);
 
   // Gets the current data for branded wallpaper, if there
   // is a wallpaper active. Does not consider user opt-in
@@ -109,6 +117,7 @@ class ViewCounterService : public KeyedService,
   void ResetModel();
 
   NTPBackgroundImagesService* service_ = nullptr;  // not owned
+  brave_ads::AdsService* ads_service_ = nullptr;  // not owned
   PrefService* prefs_ = nullptr;  // not owned
   bool is_supported_locale_ = false;
   PrefChangeRegistrar pref_change_registrar_;
