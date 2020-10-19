@@ -54,7 +54,6 @@ module.exports = (env, argv) => ({
       }]
   },
   node: {
-    fs: 'empty',
-    stream: 'empty'
+    fs: 'empty'
   }
 })
