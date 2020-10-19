@@ -178,7 +178,7 @@ source_set("ui") {
     }
   }
 
-  if (is_win || is_mac || is_desktop_linux) {
+  if (is_win || is_mac || is_linux) {
     sources += [
       "views/profiles/brave_incognito_menu_view.cc",
       "views/profiles/brave_incognito_menu_view.h",
