@@ -8,28 +8,28 @@ import { types } from '../constants/cryptoDotCom_types'
 
 export const onBtcPriceOptIn = () => action(types.ON_BTC_PRICE_OPT_IN)
 
-export const onCryptoDotComMarketsRequested = (markets: string[]) => {
-  return action(types.MARKETS_RECEIVED, { markets })
+export const onCryptoDotComMarketsRequested = () => {
+  return action(types.MARKETS_REQUESTED)
 }
 
 export const onCryptoDotComMarketDataReceived = (tickerPrices: object, losersGainers: object[]) => {
   return action(types.MARKETS_RECEIVED, { tickerPrices, losersGainers })
 }
 
-export const onCryptoDotComAssetsDetailsRequested = (asset: string) => {
-  return action(types.ALL_ASSETS_DETAILS_REQUESTED, asset)
+export const onCryptoDotComAssetsDetailsRequested = () => {
+  return action(types.ALL_ASSETS_DETAILS_REQUESTED)
 }
 
 export const onCryptoDotComAssetsDetailsReceived = (charts: object, pairs: object[]) => {
   return action(types.ALL_ASSETS_DETAILS_RECEIVED, { charts, pairs })
 }
 
-export const onCryptoDotComRefreshData = () => {
+export const onCryptoDotComRefreshRequested = () => {
   return action(types.ON_REFRESH_DATA)
 }
 
-export const onCryptoDotComRefreshedDataReceived = (tickerPrices: object, losersGainers: object[], charts: object) => {
-  return action(types.REFRESHED_DATA_RECEIVED, { tickerPrices, losersGainers, charts })
+export const onCryptoDotComRefreshedDataReceived = (tickerPrices: object, losersGainers: object[], charts: object, supportedPairs?: string[]) => {
+  return action(types.REFRESHED_DATA_RECEIVED, { tickerPrices, losersGainers, charts, supportedPairs })
 }
 
 export const onCryptoDotComBuyCrypto = () => action(types.ON_BUY_CRYPTO)

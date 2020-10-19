@@ -4,17 +4,6 @@
 
 import { Reducer } from 'redux'
 import { types } from '../constants/cryptoDotCom_types'
-import {
-  onCryptoDotComMarketDataReceived,
-  onCryptoDotComAssetsDetailsReceived,
-  onCryptoDotComRefreshData
-} from '../actions/cryptoDotCom_actions'
-import {
-  fetchCryptoDotComTickerPrices,
-  fetchCryptoDotComLosersGainers,
-  fetchCryptoDotComCharts,
-  fetchCryptoDotComSupportedPairs
-} from '../api/cryptoDotCom'
 
 interface SupportedPair {
   base: string
@@ -47,33 +36,22 @@ const cryptoDotComReducer: Reducer<NewTab.State | undefined> = (state: NewTab.St
       state = { ...state }
       state.cryptoDotComState = {
         ...state.cryptoDotComState,
-        optInBTCPrice: true
+        optInBTCPrice: true,
+        fetchStatus: 'pending'
       }
       performSideEffect(async function () {
         chrome.cryptoDotCom.onInteraction()
-
-        const [tickerPrices, losersGainers] = await Promise.all([
-          fetchCryptoDotComTickerPrices(['BTC']),
-          fetchCryptoDotComLosersGainers()
-        ])
-        onCryptoDotComMarketDataReceived(tickerPrices, losersGainers)
       })
       break
 
     case types.MARKETS_REQUESTED:
       state.cryptoDotComState = {
         ...state.cryptoDotComState,
-        // fetchStatus: 'pending',
+        fetchStatus: 'pending',
         optInMarkets: true
       }
       performSideEffect(async function () {
         chrome.cryptoDotCom.onInteraction()
-
-        const [tickerPrices, losersGainers] = await Promise.all([
-          fetchCryptoDotComTickerPrices(payload.markets),
-          fetchCryptoDotComLosersGainers()
-        ])
-        onCryptoDotComMarketDataReceived(tickerPrices, losersGainers)
       })
       break
 
@@ -81,6 +59,7 @@ const cryptoDotComReducer: Reducer<NewTab.State | undefined> = (state: NewTab.St
       state = { ...state }
       state.cryptoDotComState = {
         ...state.cryptoDotComState,
+        fetchStatus: 'completed',
         tickerPrices: {
           ...state.cryptoDotComState.tickerPrices,
           ...payload.tickerPrices
@@ -92,26 +71,20 @@ const cryptoDotComReducer: Reducer<NewTab.State | undefined> = (state: NewTab.St
     case types.ALL_ASSETS_DETAILS_REQUESTED:
       state.cryptoDotComState = {
         ...state.cryptoDotComState,
-        // fetchStatus: 'pending'
+        fetchStatus: 'pending'
       }
-      performSideEffect(async function () {
-        const [charts, pairs] = await Promise.all([
-          fetchCryptoDotComCharts(payload.assets),
-          fetchCryptoDotComSupportedPairs()
-        ])
-        onCryptoDotComAssetsDetailsReceived(charts, pairs)
-      })
       break
 
     case types.ALL_ASSETS_DETAILS_RECEIVED:
       state = { ...state }
       state.cryptoDotComState = {
         ...state.cryptoDotComState,
+        fetchStatus: 'completed',
         charts: {
           ...state.cryptoDotComState.charts,
           ...payload.charts
         },
-        supportedPairs: reducePairs(payload.pairs)
+        supportedPairs: reducePairs(payload.pairs) || {}
       }
       break
 
@@ -119,35 +92,15 @@ const cryptoDotComReducer: Reducer<NewTab.State | undefined> = (state: NewTab.St
       state = { ...state }
       state.cryptoDotComState = {
         ...state.cryptoDotComState,
-        // fetchStatus: 'refreshing'
+        fetchStatus: 'refreshing'
       }
-      performSideEffect(async function () {
-        const { supportedPairs, tickerPrices: prices } = state.cryptoDotComState
-        const assets = Object.keys(prices)
-        const supportedPairsSet = Object.keys(supportedPairs).length
-
-        const requests = [
-          fetchCryptoDotComTickerPrices(assets),
-          fetchCryptoDotComLosersGainers(),
-          fetchCryptoDotComCharts(assets)
-        ]
-
-        // These are rarely updated, so we only need to fetch them
-        // in the refresh interval if they aren't set yet (perhaps due to no connection)
-        if (!supportedPairsSet) {
-          requests.push(fetchCryptoDotComSupportedPairs())
-        }
-
-        const [tickerPrices, losersGainers, charts, newSupportedPairs] = await Promise.all(requests)
-
-        onCryptoDotComRefreshData(tickerPrices, losersGainers, charts, newSupportedPairs)
-      })
       break
 
     case types.REFRESHED_DATA_RECEIVED:
       state = { ...state }
       state.cryptoDotComState = {
         ...state.cryptoDotComState,
+        fetchStatus: 'completed',
         tickerPrices: {
           ...state.cryptoDotComState.tickerPrices,
           ...payload.tickerPrices
