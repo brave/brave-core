@@ -378,6 +378,13 @@ void NTPBackgroundImagesService::OnGetMappingTableData(
 
   DVLOG(2) << __func__ << ": This is non super referral.";
   MarkThisInstallIsNotSuperReferralForever();
+
+  // When we know this install is not SR, notify about si data is ready.
+  // If si data is not ready yet, noti will be fired when it's ready.
+  if (si_images_data_) {
+    for (auto& observer : observer_list_)
+      observer.OnUpdated(si_images_data_.get());
+  }
 }
 
 void NTPBackgroundImagesService::AddObserver(Observer* observer) {

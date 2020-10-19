@@ -374,6 +374,8 @@ TEST_F(NTPBackgroundImagesServiceTest, WithDefaultReferralCodeTest2) {
 // Sponsored Images component will be run after getting mapping table.
 TEST_F(NTPBackgroundImagesServiceTest, WithNonSuperReferralCodeTest) {
   Init();
+  TestObserver observer;
+  service_->AddObserver(&observer);
 
   EXPECT_TRUE(service_->sponsored_images_component_started_);
   EXPECT_TRUE(service_->checked_super_referral_component_);
@@ -387,9 +389,18 @@ TEST_F(NTPBackgroundImagesServiceTest, WithNonSuperReferralCodeTest) {
   EXPECT_TRUE(service_->mapping_table_requested_);
   EXPECT_FALSE(service_->marked_this_install_is_not_super_referral_forever_);
 
-  // If it's not super-referral, we mark this install is not a valid SR.
-  service_->OnGetMappingTableData(kTestMappingTable);
+  // Initialize NTP SI data.
+  service_->OnGetComponentJsonData(false, kTestSponsoredImages);
+  // NTP SI data is ready but don't give data until NTP SR initialization is
+  // complete. Only gives NTP SI data when browser confirms this is not NTP SR.
+  EXPECT_EQ(nullptr, service_->GetBackgroundImagesData(false));
 
+  observer.on_updated_ = false;
+  service_->OnGetMappingTableData(kTestMappingTable);
+  // We should notify OnUpdated if this is not NTP SR.
+  EXPECT_TRUE(observer.on_updated_);
+
+  // If it's not super-referral, we mark this install is not a valid SR.
   EXPECT_TRUE(service_->marked_this_install_is_not_super_referral_forever_);
   EXPECT_FALSE(service_->super_referral_component_started_);
 }
