@@ -153,7 +153,13 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
 #endif
 
   registry->RegisterBooleanPref(kShieldsStatsBadgeVisible, true);
+
+#if defined(OS_ANDROID)
+  registry->RegisterBooleanPref(kGoogleLoginControlType, false);
+#else
   registry->RegisterBooleanPref(kGoogleLoginControlType, true);
+#endif
+
   registry->RegisterBooleanPref(kFBEmbedControlType, true);
   registry->RegisterBooleanPref(kTwitterEmbedControlType, true);
   registry->RegisterBooleanPref(kLinkedInEmbedControlType, false);
