@@ -47,7 +47,7 @@ class BraveShieldStatsView: UIView, Themeable {
     
     private lazy var adsStatView: StatView = {
         let statView = StatView(frame: CGRect.zero)
-        statView.title = Strings.shieldsAdAndTrackerStats
+        statView.title = Strings.shieldsAdAndTrackerStats.capitalized
         return statView
     }()
     
