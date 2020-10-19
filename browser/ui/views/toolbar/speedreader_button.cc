@@ -13,6 +13,7 @@
 #include "brave/components/speedreader/speedreader_pref_names.h"
 #include "chrome/app/chrome_command_ids.h"
 #include "chrome/browser/themes/theme_properties.h"
+#include "chrome/browser/ui/views/toolbar/toolbar_view.h"
 #include "chrome/grit/generated_resources.h"
 #include "components/grit/brave_components_strings.h"
 #include "components/prefs/pref_service.h"
@@ -22,10 +23,10 @@
 #include "ui/base/l10n/l10n_util.h"
 #include "ui/base/theme_provider.h"
 #include "ui/gfx/paint_vector_icon.h"
+#include "ui/views/controls/button/button.h"
 
-SpeedreaderButton::SpeedreaderButton(views::ButtonListener* listener,
-                                     PrefService* prefs)
-    : ToolbarButton(listener), prefs_(prefs) {
+SpeedreaderButton::SpeedreaderButton(PrefService* prefs)
+    : ToolbarButton(views::Button::PressedCallback()), prefs_(prefs) {
   SetID(BRAVE_VIEW_ID_SPEEDREADER_BUTTON);
   set_tag(IDC_TOGGLE_SPEEDREADER);
   SetAccessibleName(l10n_util::GetStringUTF16(IDS_ACCNAME_FORWARD));

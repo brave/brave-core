@@ -14,7 +14,7 @@
 
 class BookmarkButton : public ToolbarButton {
  public:
-    explicit BookmarkButton(views::ButtonListener* listener);
+    explicit BookmarkButton();
     ~BookmarkButton() override;
 
     void SetToggled(bool on);

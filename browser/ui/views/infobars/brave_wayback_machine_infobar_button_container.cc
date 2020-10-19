@@ -20,9 +20,9 @@ constexpr int kInsetOffsetsForThrobber = kThrobberDiameter;
 }  // namespace
 
 BraveWaybackMachineInfoBarButtonContainer::
-BraveWaybackMachineInfoBarButtonContainer(views::ButtonListener* listener) {
+BraveWaybackMachineInfoBarButtonContainer(views::Button::PressedCallback callback) {
   auto button = std::make_unique<views::MdTextButton>(
-      listener,
+      std::move(callback),
       l10n_util::GetStringUTF16(IDS_BRAVE_WAYBACK_MACHINE_CHECK_BUTTON_TEXT));
   button_ = button.get();
   button->SetProminent(true);
