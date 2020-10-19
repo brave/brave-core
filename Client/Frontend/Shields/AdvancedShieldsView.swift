@@ -16,7 +16,7 @@ class AdvancedShieldsView: UIStackView, Themeable {
     let httpsUpgradesControl = ToggleView(title: Strings.HTTPSEverywhere)
     let blockMalwareControl = ToggleView(title: Strings.blockPhishing)
     let blockScriptsControl = ToggleView(title: Strings.blockScripts)
-    let fingerprintingControl = ToggleView(title: Strings.fingerprintingProtectionWrapped)
+    let fingerprintingControl = ToggleView(title: Strings.fingerprintingProtection)
     let globalControlsTitleView = HeaderTitleView().then {
         $0.titleLabel.text = Strings.Shields.globalControls.uppercased()
     }
