@@ -7,9 +7,9 @@
 <translation id="7835726359440951858">広告とトラッキングをブロックします</translation>
 <translation id="3570081523466826008">接続をHTTPSにアップグレードする</translation>
 <translation id="94154759592465111">スクリプトをブロックする</translation>
-<translation id="7458422973722236530">フィンガープリンティング対策</translation>
+<translation id="7458422973722236530">フィンガープリント対策</translation>
 <translation id="5709627087332022422">クロスサイトのトラッカーをブロックする</translation>
-<translation id="6754976710186182237">フィンガープリンティング手法</translation>
+<translation id="6754976710186182237">フィンガープリント手法</translation>
 <translation id="2313532038420432247">HTTPSアップグレード</translation>
 <translation id="7461425058443653485">ブロック済み
 のスクリプト</translation>
@@ -17,22 +17,22 @@
 <translation id="1713450908129883784">個別設定</translation>
 <translation id="6302422639282249274">Brave Rewardsの管理</translation>
 <translation id="1506061864768559482">検索エンジン</translation>
-<translation id="1468415711258933398">標準タブ</translation>
+<translation id="1468415711258933398">通常タブ</translation>
 <translation id="3377025655491224618">プライベートタブ</translation>
 <translation id="9148058034647219655">終了</translation>
 <translation id="520895744850022668">HTTPS Everywhere</translation>
 <translation id="8710614491157212477">利用可能な場合、HTTPではなくHTTPSを使用してサイトを開きます</translation>
 <translation id="8387201461264842096">広告ブロック</translation>
 <translation id="1934885595886623674">広告を読み込まない</translation>
-<translation id="5787084571334399599">フィンガープリンティングを防止します</translation>
+<translation id="5787084571334399599">フィンガープリントを防止します</translation>
 <translation id="7459000603787995422">終了時にタブを閉じる</translation>
-<translation id="1680858055899097121">セッション間でタブを保持しません</translation>
+<translation id="1680858055899097121">セッション間でタブを保持しない</translation>
 <translation id="453601949003770390">ブロック済みのトラッカーと広告</translation>
 <translation id="347604927162577559">節約された\n通信量</translation>
 <translation id="9008534313521214777">節約できた\n時間(推定)</translation>
 <translation id="6572660632052512096">デスクトップモード</translation>
-<translation id="1340503115760585811">新しいタブでデスクトップモードを有効にします</translation>
-<translation id="7924540991929826186">新しいタブ用にサイトのモバイルサイトを表示します（推奨）</translation>
+<translation id="1340503115760585811">新しいタブ用にデスクトップ版サイトを表示する</translation>
+<translation id="7924540991929826186">新しいタブ用にモバイル版サイトを表示する（推奨）</translation>
 <translation id="807636106793708118">モバイルサイトを優先して表示</translation>
 <translation id="4479934682648362332">PCサイトを優先して表示</translation>
 <translation id="1842747674580016420">Braveで動画を再生</translation>
@@ -66,7 +66,7 @@
 <translation id="3333887201479867589">Brave Rewards</translation>
 <translation id="5870330605209713397">プライバシーを侵害しない広告を閲覧して、お気に入りのサイトやクリエイターをデフォルト設定でサポートしましょう。</translation>
 <translation id="821707262661492716">プライバシーを重視する広告を表示することによって</translation>
-<translation id="8267692331246948056">獲得とチップをタップすると、あなたは以下に同意したとみなされます</translation>
+<translation id="8267692331246948056">獲得とチップをタップすると、以下に同意したとみなされます</translation>
 <translation id="4281844954008187215">利用規約</translation>
 <translation id="6871397658902960384">ブラウジングを開始します</translation>
 <translation id="454386012157232640">広告が表示されませんでした</translation>
@@ -200,7 +200,7 @@
 <translation id="1602067095281698985">新しい同期チェーンを始める</translation>
 <translation id="1475223680121592371">モバイルデバイスを追加します</translation>
 <translation id="2965377893636908578">コンピューターを追加します</translation>
-<translation id="6604289897677913048">2つ目の携帯電話やタブレットをでBraveの設定画面を開き、Syncの設定メニューからスキャンして追加を選択してください。</translation>
+<translation id="6604289897677913048">2台目のスマートフォンとやタブレットでBraveの設定画面を開き、Syncの設定メニューからスキャンして追加を選択してください。</translation>
 <translation id="8508856434435157945">モバイルデバイスでBraveの設定画面を開き、Sycnのメニューから「同期コードをスキャン」をクリックしてください。その後、カメラで以下のQRコードをスキャンしてください。</translation>
 <translation id="2590683710114839102">お使いのコンピューター上で、Braveの設定画面を開き、「同期チェーンコードを入力」を選択してください。</translation>
 <translation id="65315202420929965">この同期コードをスキャンします</translation>
@@ -291,8 +291,8 @@
 <translation id="4190454391025419535">サポートされていない地域です</translation>
 <translation id="6830703472632069884">お客様のウォレットの確認中に問題が発生しました。あとで再度実行してください。</translation>
 <translation id="3512533646933434345">ウォレットの認証エラー</translation>
-<translation id="2260513517001048012">注意：このBrave承認済みクリエイターのアカウントは、まだBraveユーザーの貢献を受け取る設定がされていません。お使いのブラウザはクリエイターが確認するまで、または90日経過するまで試行を続けます。</translation>
-<translation id="4488355059795908907">このBrave承認済みクリエイターのアカウントは、まだBraveユーザーの貢献を受け取る設定がされていません。クリエイター側でプロセスが完了するまであなたが送ったチップは、ウォレットに残ります。</translation>
+<translation id="2260513517001048012">注意：このBrave承認済みクリエイターのアカウントは、まだBraveユーザーの支援を受け取る設定がされていません。お使いのブラウザはクリエイターが確認するまで、または90日経過するまで試行を続けます。</translation>
+<translation id="4488355059795908907">このBrave承認済みクリエイターのアカウントは、まだ支援を受け取る設定が完了していません。クリエイターがプロセスが完了するまで、あなたの送ったチップはウォレット内に残ります。</translation>
 <translation id="2495032782748793764">Braveのデフォルト</translation>
 <translation id="9132378787893584761">友だちとBraveを共有しましょう！</translation>
 <translation id="717952606991220586">おや、問題が発生しました。後でもう一度試してみて下さい。</translation>
@@ -305,9 +305,9 @@
 <translation id="6991128190741664836">後で</translation>
 <translation id="8851456134224363571">素晴らしい！Play Storeで評価を残していただけませんか？</translation>
 <translation id="8668962040900592974">どうしたらBraveがもっとよくなるか教えていただけますか。</translation>
-<translation id="4406937629441301400">この画像を表示することでトークンを獲得し、クリエイターへの支払いに使うことができます。<ph name="LEARN_MORE"/></translation>
+<translation id="4406937629441301400">この画像を表示するとトークンを受け取ることができ、クリエイターへの支払いに使うことができます。<ph name="LEARN_MORE"/></translation>
 <translation id="7894626572714595717">この画像を表示するにはトークンを獲得してください。分け前を獲得するにはBrave Adsをオンにしてください。</translation>
-<translation id="6632345639591919543">この画像を表示することでトークンを獲得しています。\n<ph name="LEARN_MORE"/></translation>
+<translation id="6632345639591919543">この画像を表示することでトークンを受け取ることができます。\n<ph name="LEARN_MORE"/></translation>
 <translation id="1465733111003593696">この画像を表示するためのトークンを獲得しています。</translation>
 <translation id="7877201489035217175">スポンサー画像の詳細について</translation>
 <translation id="828092975561478703">スポンサーの画像を見ると、毎回売上の70％をトークンで受け取ることができます。Brave Adsにより、閲覧する広告を常にコントロールできます。</translation>
@@ -316,18 +316,18 @@
 <translation id="614747795780742163">以前の訪問に関する情報を、ウェブサイトが保存しないようにします</translation>
 <translation id="6883611015375728278">すべてのクッキーをブロック</translation>
 <translation id="5657156137487675418">すべてのクッキーを許可する</translation>
-<translation id="5963670684159057574">フィンガープリンティングをブロック</translation>
-<translation id="3895527457258986253">フィンガープリンティングをブロック</translation>
+<translation id="5963670684159057574">フィンガープリントをブロック</translation>
+<translation id="3895527457258986253">フィンガープリントをブロック</translation>
 <translation id="184568144098869637">ブラウザがお使いのデバイスを認識しないようにする</translation>
-<translation id="7396366757003005317">フィンガープリンティングをブロック（強、サイト破損の可能性あり）</translation>
-<translation id="700453611199558021">指紋認証をブロック（標準）</translation>
-<translation id="769702552748212954">すべてのフィンガープリンティングを許可する</translation>
+<translation id="7396366757003005317">フィンガープリントをブロック（強、サイト破損の可能性あり）</translation>
+<translation id="700453611199558021">フィンガープリントをブロック（標準）</translation>
+<translation id="769702552748212954">すべてのフィンガープリントを許可する</translation>
 <translation id="2888409909650566510">ブロック済の広告・トラッカー</translation>
-<translation id="6930134873084561197">サイトには多くの場合、あなたとあなたのデバイスを識別しようとするクッキーとスクリプトが含まれています。これらはあなたが誰であるかを判別し、ウェブ追跡であなたが他のサイトで何をしているかを追跡する物です。\n\nBraveはこれらをブロックし、あなたが追跡されることなくブラウザできるようにします。</translation>
+<translation id="6930134873084561197">多くの場合、ウェブサイトにはあなた(のデバイス)を識別するためにクッキーとスクリプトが含まれます。あなたが誰であるかを判別・追跡しあなたが他のサイトで何をしているかを知ろうとします。\n\nBraveはこれらをブロックし、あなたが追跡されることなくブラウザできるようにします。</translation>
 <translation id="8553998445606452168">Brave Shieldsについて</translation>
 <translation id="8912304686498704084">オン</translation>
 <translation id="4963218453264888510">オフ</translation>
-<translation id="7474113515179313724">あなたはBraveのプライバシー保護なしでこのサイトを閲覧しています。Shieldsを起動しても正しく機能しませんか？</translation>
+<translation id="7474113515179313724">現在、Braveのプライバシー保護機能なしでこのサイトを閲覧しています。Shieldsを有効にするとサイトに問題がありましたか？</translation>
 <translation id="9055546041146396417">ウェブサイトが正常に動作していないように見える場合は、Shieldをオフにしてみてください。</translation>
 <translation id="1209739344687072997">サイト表示の不具合を報告</translation>
 <translation id="8510478288840333677">Shieldを使うとこのサイトが適切に動作しないことをBraveの開発者に知らせましょう：</translation>
@@ -344,11 +344,11 @@
 <translation id="3286927551967858325">見てみる</translation>
 <translation id="2929661208078053609">いいですね！</translation>
 <translation id="4776948189086901857">Braveはどこでも機能します</translation>
-<translation id="1606322780901645965">brave.comでノートPCまたはタブレットにBraveをダウンロードし、より高速でプライベートなウェブを実現</translation>
+<translation id="1606322780901645965">是非、パソコンやタブレットでもBraveをダウンロードして、高速でプライベートなウェブ体験をお楽しみください</translation>
 <translation id="8374242949413616101">プライバシー保護</translation>
 <translation id="4955406228638026265">Braveは、あなたの同意なしに広告およびトラッカーがあなたに関する情報を収集するのを防ぎます。</translation>
 <translation id="752842701893882688">データとバッテリーを見る</translation>
-<translation id="1685837926613452362">広告&amp;トラッカーがないので、ウェブサイトのデータおよびバッテリー使用量は少なくなっています。通信会社の料金も節約できる可能性があります。</translation>
+<translation id="1685837926613452362">広告&amp;トラッカーを読み込まないことで、データ通信量とバッテリー使用量を節約することができます。通信会社の料金も節約できるかもしれません。</translation>
 <translation id="5440744330377972191">より速くウェブサイトを読み込み</translation>
 <translation id="3000738865641747653">ロードするデータが少ないということは、Braveのウェブサイトのロードが速くなることを意味します - 他のブラウザより最大8倍速い速度です</translation>
 <translation id="8903462729414407077">毎週のアップデートを利用</translation>
@@ -362,21 +362,21 @@
 <translation id="1274039301958114163">プライバシーレポートの通知</translation>
 <translation id="1581614543353331529">まだ表示するデータがありません</translation>
 <translation id="2401984885421380890">トラッカーと広告が\nブロックされました</translation>
-<translation id="2662183408296991265">データが保存されました\n(<ph name="DATA_SAVED"/>)</translation>
-<translation id="3180928261057583677">データが保存されました (<ph name="DATA_SAVED"/>)</translation>
+<translation id="2662183408296991265">節約済の通信量\n(<ph name="DATA_SAVED"/>)</translation>
+<translation id="3180928261057583677">節約済みの通信量 (<ph name="DATA_SAVED"/>)</translation>
 <translation id="6814582232712814369">節約された時間</translation>
 <translation id="3694122362646626770">ウェブサイト</translation>
 <translation id="2225863440766607138">トラッカー</translation>
 <translation id="2993367530362078067"><ph name="COUNT"/><ph name="COUNT_TEXT"/></translation>
-<translation id="6737820963776538947">この3時間で、 Braveブラウザで<ph name="COUNT"/>のトラッカーと &amp; 広告をブロックしました。</translation>
+<translation id="6737820963776538947">この3時間で、 Braveブラウザで<ph name="COUNT"/>件のトラッカーと &amp; 広告をブロックしました。</translation>
 <translation id="3621193901658023971">トラック広告をブロックすることで、Braveで主要なニュースサイトを最大6倍の速さで閲覧しましょう。</translation>
 <translation id="7427567994475794038">プライバシーレポートをONにして、過去3時間にブロックされたトラッカー広告の数を確認しましょう。</translation>
-<translation id="2053891538879944400">Braveブラウザで <ph name="DATA"/> <ph name="DATA_TEXT"/> のデータを保存しました。</translation>
+<translation id="2053891538879944400">Braveブラウザで <ph name="DATA"/> <ph name="DATA_TEXT"/> の通信量を節約しました。</translation>
 <translation id="8640064498452534195">プライバシーレポートをONにして、保存したデータ量を確認します。</translation>
-<translation id="2252497442547961651">Braveブラウザは平均でバッテリー使用量が40%少なくなっています。&#128267;</translation>
-<translation id="1945330434665345785">先週、Braveブラウザで <ph name="COUNT"/>のトラッカーと広告をブロックしました。</translation>
+<translation id="2252497442547961651">Braveブラウザは他のブラウザと比べ、バッテリー使用量が平均40%少なくなっています。&#128267;</translation>
+<translation id="1945330434665345785">先週、Braveブラウザで <ph name="COUNT"/>件のトラッカーと広告をブロックしました。</translation>
 <translation id="2883868922264431515">プライバシーを尊重する広告を表示してトークンを獲得し、お気に入りのウェブサイトをサポートしましょう。</translation>
-<translation id="5678925890616256956">いいですね！Braveブラウザを使って、250個のトラッカー&amp;広告をブロックしました。&#128293;</translation>
+<translation id="5678925890616256956">いいですね！Braveブラウザを使って、250件のトラッカー&amp;広告をブロックしました。&#128293;</translation>
 <translation id="9199047775708635708">いいですね！Braveブラウザで10MBを節約しました。&#128267;</translation>
 <translation id="1880168210969863408">いいですね！Braveブラウザを使って、読み込み時間を10分節約しました。&#128168;&#128168;</translation>
 <translation id="7408493389591475748">ブラウジングを開始してプライバシーレポートを表示</translation>
