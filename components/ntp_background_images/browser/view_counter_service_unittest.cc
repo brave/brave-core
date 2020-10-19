@@ -66,7 +66,7 @@ class NTPBackgroundImagesViewCounterTest : public testing::Test {
     service_ = std::make_unique<NTPBackgroundImagesService>(nullptr,
                                                             &local_pref_);
     view_counter_ = std::make_unique<ViewCounterService>(
-        service_.get(), prefs(), true);
+        service_.get(), nullptr, prefs(), true);
 
     // Set referral service is properly initialized sr component is set.
     local_pref_.SetBoolean(kReferralCheckedForPromoCodeFile, true);

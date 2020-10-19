@@ -51,8 +51,6 @@ ViewCounterService::ViewCounterService(NTPBackgroundImagesService* service,
       prefs_(prefs),
       is_supported_locale_(is_supported_locale) {
   DCHECK(service_);
-  DCHECK(ads_service_);
-
   service_->AddObserver(this);
 
   if (auto* data = GetCurrentBrandedWallpaperData())
