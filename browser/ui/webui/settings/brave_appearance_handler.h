@@ -36,6 +36,7 @@ class BraveAppearanceHandler : public settings::SettingsPageUIHandler {
   void GetIsBraveTogetherSupported(const base::ListValue* args);
   void GetIsGeminiSupported(const base::ListValue* args);
   void GetIsBitcoinDotComSupported(const base::ListValue* args);
+  void GetIsCryptoDotComSupported(const base::ListValue* args);
 
   Profile* profile_ = nullptr;
   PrefChangeRegistrar local_state_change_registrar_;

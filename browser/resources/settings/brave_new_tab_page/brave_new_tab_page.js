@@ -26,6 +26,7 @@
       isBraveTogetherSupported_: Boolean,
       isGeminiSupported_: Boolean,
       isBitcoinDotComSupported_: Boolean,
+      isCryptoDotComSupported_: Boolean,
     },
 
     /** @override */
@@ -36,6 +37,7 @@
       this.isBraveTogetherSupported_ = false;
       this.isGeminiSupported_ = false;
       this.isBitcoinDotComSupported_ = false;
+      this.isCryptoDotComSupported_ = false;
     },
 
     /** @override */
@@ -54,6 +56,9 @@
       })
       this.browserProxy_.getIsBitcoinDotComSupported().then(isBitcoinDotComSupported => {
         this.isBitcoinDotComSupported_ = isBitcoinDotComSupported;
+      })
+      this.browserProxy_.getIsCryptoDotComSupported().then(isCryptoDotComSupported => {
+        this.isCryptoDotComSupported_ = isCryptoDotComSupported;
       })
 
       this.addWebUIListener('super-referral-active-state-changed', (isSuperReferralActive) => {

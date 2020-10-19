@@ -1,0 +1,9 @@
+import("//build/buildflag_header.gni")
+import("//brave/components/crypto_dot_com/browser/buildflags/buildflags.gni")
+
+buildflag_header("buildflags") {
+  header = "buildflags.h"
+  flags = [
+    "CRYPTO_DOT_COM_ENABLED=$crypto_dot_com_enabled",
+  ]
+}

@@ -12,6 +12,7 @@ import("//brave/components/brave_sync/buildflags/buildflags.gni")
 import("//brave/components/brave_wallet/browser/buildflags/buildflags.gni")
 import("//brave/components/brave_wayback_machine/buildflags/buildflags.gni")
 import("//brave/components/brave_webtorrent/browser/buildflags/buildflags.gni")
+import("//brave/components/crypto_dot_com/browser/buildflags/buildflags.gni")
 import("//brave/components/greaselion/browser/buildflags/buildflags.gni")
 import("//brave/components/ipfs/browser/buildflags/buildflags.gni")
 import("//brave/components/moonpay/browser/buildflags/buildflags.gni")
@@ -263,6 +264,15 @@ test("brave_unit_tests") {
     deps += [
       "//brave/components/gemini/browser",
     ]
+  }
+
+  if (crypto_dot_com_enabled) {
+    sources += [
+      "//brave/components/crypto_dot_com/browser/crypto_dot_com_json_parser_unittest.cc"
+    ]
+    deps += [
+      "//brave/components/crypto_dot_com/browser",
+    ]    
   }
 
   if (is_linux) {
@@ -646,6 +656,10 @@ test("brave_browser_tests") {
     deps += [
       "//brave/components/moonpay/common",
     ]
+  }
+
+  if (crypto_dot_com_enabled) {
+    sources += [ "//brave/components/crypto_dot_com/browser/crypto_dot_com_service_browsertest.cc" ]    
   }
 
   if (brave_rewards_enabled) {

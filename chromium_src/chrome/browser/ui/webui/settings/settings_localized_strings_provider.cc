@@ -11,6 +11,7 @@
 #include "brave/browser/ui/webui/settings/brave_privacy_handler.h"
 #include "brave/browser/version_info.h"
 #include "brave/components/moonpay/browser/buildflags/buildflags.h"
+#include "brave/components/crypto_dot_com/browser/buildflags/buildflags.h"
 #include "chrome/browser/ui/webui/webui_util.h"
 #include "chrome/common/pref_names.h"
 #include "components/grit/brave_components_strings.h"
@@ -264,6 +265,9 @@ void BraveAddCommonStrings(content::WebUIDataSource* html_source,
     { "braveNewTabGemini", IDS_SETTINGS_NEW_TAB_GEMINI },
 #if BUILDFLAG(MOONPAY_ENABLED)
     { "braveNewTabBitcoinDotCom", IDS_SETTINGS_NEW_TAB_BITCOIN_DOT_COM },
+#endif
+#if BUILDFLAG(CRYPTO_DOT_COM_ENABLED)
+    { "braveNewTabCryptoDotCom", IDS_SETTINGS_NEW_TAB_CRYPTO_DOT_COM },
 #endif
     { "braveNewTabTogether", IDS_SETTINGS_NEW_TAB_TOGETHER },
     { "braveNewTabTopSites", IDS_SETTINGS_NEW_TAB_TOP_SITES },

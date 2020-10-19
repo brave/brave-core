@@ -21,6 +21,7 @@ export type InitialData = {
   togetherSupported: boolean
   geminiSupported: boolean
   bitcoinDotComSupported: boolean
+  cryptoDotComSupported: boolean
 }
 
 export type PreInitialRewardsData = {
@@ -52,7 +53,8 @@ export async function getInitialData (): Promise<InitialData> {
       brandedWallpaperData,
       togetherSupported,
       geminiSupported,
-      bitcoinDotComSupported
+      bitcoinDotComSupported,
+      cryptoDotComSupported
     ] = await Promise.all([
       preferencesAPI.getPreferences(),
       statsAPI.getStats(),
@@ -79,6 +81,11 @@ export async function getInitialData (): Promise<InitialData> {
         chrome.moonpay.isBitcoinDotComSupported((supported: boolean) => {
           resolve(supported)
         })
+      }),
+      new Promise((resolve) => {
+        chrome.cryptoDotCom.isSupported((supported: boolean) => {
+          resolve(supported)
+        })
       })
     ])
     console.timeStamp('Got all initial data.')
@@ -92,7 +99,8 @@ export async function getInitialData (): Promise<InitialData> {
       brandedWallpaperData,
       togetherSupported,
       geminiSupported,
-      bitcoinDotComSupported
+      bitcoinDotComSupported,
+      cryptoDotComSupported
     } as InitialData
   } catch (e) {
     console.error(e)

@@ -10,6 +10,7 @@ import * as binanceActions from '../actions/binance_actions'
 import * as rewardsActions from '../actions/rewards_actions'
 import * as geminiActions from '../actions/gemini_actions'
 import * as bitcoinDotComActions from '../actions/bitcoin_dot_com_actions'
+import * as cryptoDotComActions from '../actions/cryptoDotCom_actions'
 import store from '../store'
 import { NewTabActions } from '../constants/new_tab_types'
 
@@ -21,7 +22,7 @@ export default function getActions () {
   if (actions) {
     return actions
   }
-  const allActions = Object.assign({}, newTabActions, gridSitesActions, binanceActions, rewardsActions, geminiActions, bitcoinDotComActions)
+  const allActions = Object.assign({}, newTabActions, gridSitesActions, binanceActions, rewardsActions, geminiActions, bitcoinDotComActions, cryptoDotComActions)
   actions = bindActionCreators(allActions, store.dispatch.bind(store))
   return actions
 }

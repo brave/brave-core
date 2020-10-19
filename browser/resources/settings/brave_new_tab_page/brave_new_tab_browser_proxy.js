@@ -33,6 +33,11 @@ cr.define('settings', function() {
      * @return {!Promise<Boolean>}
      */
     getIsBitcoinDotComSupported() {}
+
+    /**
+     * @return {!Promise<Boolean>}
+     */
+    isCryptoDotComSupported() {}
   }
 
   /**
@@ -62,6 +67,11 @@ cr.define('settings', function() {
     /** @override */
     getIsBitcoinDotComSupported() {
       return cr.sendWithPromise('getIsBitcoinDotComSupported')
+    }
+
+    /** @override */
+    getIsCryptoDotComSupported() {
+      return cr.sendWithPromise('getIsCryptoDotComSupported')
     }
   }
 
