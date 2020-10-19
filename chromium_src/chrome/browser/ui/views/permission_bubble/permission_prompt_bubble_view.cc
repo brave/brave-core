@@ -24,14 +24,12 @@
 namespace {
 
 #if BUILDFLAG(ENABLE_WIDEVINE)
-class DontAskAgainCheckbox : public views::Checkbox,
-                             public views::ButtonListener {
+class DontAskAgainCheckbox : public views::Checkbox {
  public:
   explicit DontAskAgainCheckbox(WidevinePermissionRequest* request);
 
  private:
-  // views::ButtonListener overrides:
-  void ButtonPressed(Button* sender, const ui::Event& event) override;
+  void ButtonPressed();
 
   WidevinePermissionRequest* request_;
 
@@ -39,13 +37,13 @@ class DontAskAgainCheckbox : public views::Checkbox,
 };
 
 DontAskAgainCheckbox::DontAskAgainCheckbox(WidevinePermissionRequest* request)
-    : Checkbox(l10n_util::GetStringUTF16(IDS_WIDEVINE_DONT_ASK_AGAIN_CHECKBOX),
-               this),
-      request_(request) {
-}
+    : views::Checkbox(
+          l10n_util::GetStringUTF16(IDS_WIDEVINE_DONT_ASK_AGAIN_CHECKBOX),
+          base::BindRepeating(&DontAskAgainCheckbox::ButtonPressed,
+                              base::Unretained(this))),
+      request_(request) {}
 
-void DontAskAgainCheckbox::ButtonPressed(Button* sender,
-                                         const ui::Event& event) {
+void DontAskAgainCheckbox::ButtonPressed() {
   request_->set_dont_ask_widevine_install(GetChecked());
 }
 
