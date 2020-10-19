@@ -79,9 +79,13 @@ static void TearDownPipeHack() {
 bool LaunchProcessAndExit(const base::FilePath& path,
                           std::initializer_list<std::string> args,
                           const base::LaunchOptions& options) {
+  bool shutdown = false;
   base::CommandLine cmdline(path);
-  for (auto arg : args)
+  for (auto arg : args) {
+    if (arg == "shutdown")
+      shutdown = true;
     cmdline.AppendArg(arg);
+  }
   base::Process process = base::LaunchProcess(cmdline, options);
   if (!process.IsValid()) {
     return false;
@@ -95,7 +99,8 @@ bool LaunchProcessAndExit(const base::FilePath& path,
     return false;
   }
 
-  if (exit_code) {
+  // `ipfs shutdown` could return error if daemon is not running.
+  if (exit_code && !shutdown) {
     VLOG(0) << "Failed at running cmd: " << cmdline.GetCommandLineString();
     return false;
   }
@@ -173,10 +178,11 @@ void IpfsServiceImpl::Launch(mojom::IpfsConfigPtr config,
   }
 
   std::initializer_list<std::initializer_list<std::string>> config_args = {
+      {"shutdown"},  // Cleanup left-over daemon process.
       {"config", "Addresses.API", "/ip4/127.0.0.1/tcp/45001"},
       {"config", "Addresses.Gateway", "/ip4/127.0.0.1/tcp/48080"},
-      {"config", "profile", "apply", "randomports"}  // for swarm addresses
-  };
+      {"config", "--json", "Addresses.Swarm",
+       "[\"/ip4/0.0.0.0/tcp/44001\", \"/ip6/::/tcp/44001\"]"}};
 
   for (auto args : config_args) {
     if (!LaunchProcessAndExit(config->binary_path, args, options)) {
