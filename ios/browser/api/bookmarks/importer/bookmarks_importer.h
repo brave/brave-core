@@ -9,10 +9,15 @@
 #include "brave/ios/browser/api/bookmarks/importer/imported_bookmark_entry.h"
 
 #include <vector>
+#include "base/strings/string16.h"
 
 class BookmarksImporter {
 public:
-  static void AddBookmarks(const std::vector<ImportedBookmarkEntry>& bookmarks);
+  // top_level_folder_name is usually set to IDS_BOOKMARK_GROUP
+  // Which is the name of the folder bookmarks will be imported into,
+  // if the root folder is not empty.
+  static void AddBookmarks(const base::string16& top_level_folder_name,
+                           const std::vector<ImportedBookmarkEntry>& bookmarks);
 };
 
 #endif  // BRAVE_IOS_BROWSER_API_BOOKMARKS_IMPORTER_BOOKMARKS_IMPORTER_H_
