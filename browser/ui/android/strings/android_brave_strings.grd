@@ -175,6 +175,21 @@ This file contains all "about" strings.  It is set to NOT be translated, in tran
       <message name="IDS_BRAVE_SHIELDS_SCRIPTS_BLOCKED" desc="Scripts Blocked.">
         Scripts Blocked
       </message>
+      <message name="IDS_BRAVE_SHIELDS_SOCIAL_BLOCKING_TITLE" desc="Title for social media blocking.">
+        Social Media Blocking
+      </message>
+      <message name="IDS_BRAVE_SHIELDS_SOCIAL_BLOCKING_GOOGLE" desc="Label for a switch control which allows Google social buttons to be enabled/disabled">
+        Allow Google login buttons on third party sites
+      </message>
+      <message name="IDS_BRAVE_SHIELDS_SOCIAL_BLOCKING_FACEBOOK" desc="Label for a switch control which allows Facebook embedded posts">
+        Allow Facebook logins and embedded posts
+      </message>
+      <message name="IDS_BRAVE_SHIELDS_SOCIAL_BLOCKING_TWITTER" desc="Label for a switch control which allows Twitter embedded tweets">
+        Allow Twitter embedded tweets
+      </message>
+      <message name="IDS_BRAVE_SHIELDS_SOCIAL_BLOCKING_LINKEDIN" desc="Label for a switch control which allows LinkedIn embedded posts">
+        Allow LinkedIn embedded posts
+      </message>
       <message name="IDS_BRAVE_SHIELDS_FIRST_GROUP_TITLE" desc="Title for the first group of Brave's shields panel.">
         Blocking Monitor
       </message>
