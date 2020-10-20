@@ -17,6 +17,12 @@
 #include "extensions/common/extension_id.h"
 #include "url/gurl.h"
 
+class GreaselionServiceTest;
+
+namespace base {
+class Version;
+}
+
 namespace greaselion {
 
 enum GreaselionFeature {
@@ -26,6 +32,7 @@ enum GreaselionFeature {
   REDDIT_TIPS,
   GITHUB_TIPS,
   AUTO_CONTRIBUTION,
+  SUPPORTS_MINIMUM_BRAVE_VERSION,
   LAST_FEATURE
 };
 
@@ -52,6 +59,8 @@ class GreaselionService : public KeyedService,
   virtual void RemoveObserver(Observer* observer) = 0;
 
  private:
+  friend class ::GreaselionServiceTest;
+  virtual void SetBrowserVersionForTesting(const base::Version& version);
   DISALLOW_COPY_AND_ASSIGN(GreaselionService);
 };
 

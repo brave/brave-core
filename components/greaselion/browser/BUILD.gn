@@ -15,6 +15,7 @@ source_set("browser") {
     "//base",
     "//brave/components/brave_component_updater/browser",
     "//chrome/browser/extensions:extensions",
+    "//components/version_info",
     "//content/public/browser",
     "//content/public/common",
     "//extensions/browser",
