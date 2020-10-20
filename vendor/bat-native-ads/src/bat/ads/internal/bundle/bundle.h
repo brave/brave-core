@@ -40,6 +40,7 @@ class Bundle {
   void DeleteCampaigns();
   void DeleteCategories();
   void DeleteCreativeAds();
+  void DeleteDayparts();
   void DeleteGeoTargets();
 
   void SaveCreativeAdNotifications(
@@ -70,6 +71,8 @@ class Bundle {
   void OnCategoriesDeleted(
       const Result result);
   void OnCreativeAdsDeleted(
+      const Result result);
+  void OnDaypartsDeleted(
       const Result result);
   void OnGeoTargetsDeleted(
       const Result result);

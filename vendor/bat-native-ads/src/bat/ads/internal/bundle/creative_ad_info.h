@@ -10,6 +10,7 @@
 
 #include <string>
 #include <vector>
+#include "bat/ads/internal/bundle/creative_daypart_info.h"
 
 namespace ads {
 
@@ -34,6 +35,7 @@ struct CreativeAdInfo {
   std::string category;
   std::vector<std::string> geo_targets;
   std::string target_url;
+  std::vector<CreativeDaypartInfo> dayparts;
 };
 
 using CreativeAdList = std::vector<CreativeAdInfo>;

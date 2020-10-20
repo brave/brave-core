@@ -33,6 +33,7 @@
 #include "bat/ads/internal/filters/ads_history_filter_factory.h"
 #include "bat/ads/internal/frequency_capping/exclusion_rules/conversion_frequency_cap.h"
 #include "bat/ads/internal/frequency_capping/exclusion_rules/daily_cap_frequency_cap.h"
+#include "bat/ads/internal/frequency_capping/exclusion_rules/daypart_frequency_cap.h"
 #include "bat/ads/internal/frequency_capping/exclusion_rules/exclusion_rule.h"
 #include "bat/ads/internal/frequency_capping/exclusion_rules/dismissed_frequency_cap.h"
 #include "bat/ads/internal/frequency_capping/exclusion_rules/landed_frequency_cap.h"
@@ -950,6 +951,10 @@ AdsImpl::CreateAdNotificationExclusionRules() const {
   std::unique_ptr<ExclusionRule> subdivision_targeting_frequency_cap =
       std::make_unique<SubdivisionTargetingFrequencyCap>(this);
   exclusion_rules.push_back(std::move(subdivision_targeting_frequency_cap));
+
+  std::unique_ptr<ExclusionRule> daypart_frequency_cap =
+      std::make_unique<DaypartFrequencyCap>(this);
+  exclusion_rules.push_back(std::move(daypart_frequency_cap));
 
   std::unique_ptr<ExclusionRule> dismissed_frequency_cap =
       std::make_unique<DismissedFrequencyCap>(this);

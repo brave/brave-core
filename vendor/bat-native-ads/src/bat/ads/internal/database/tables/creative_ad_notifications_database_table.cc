@@ -40,6 +40,7 @@ CreativeAdNotifications::CreativeAdNotifications(
       campaigns_database_table_(std::make_unique<Campaigns>(ads_)),
       categories_database_table_(std::make_unique<Categories>(ads_)),
       creative_ads_database_table_(std::make_unique<CreativeAds>(ads_)),
+      dayparts_database_table_(std::make_unique<Dayparts>(ads_)),
       geo_targets_database_table_(std::make_unique<GeoTargets>(ads_)) {
   DCHECK(ads_);
 }
@@ -69,6 +70,7 @@ void CreativeAdNotifications::Save(
         transaction.get(), creative_ads);
     creative_ads_database_table_->InsertOrUpdate(
         transaction.get(), creative_ads);
+    dayparts_database_table_->InsertOrUpdate(transaction.get(), creative_ads);
     geo_targets_database_table_->InsertOrUpdate(
         transaction.get(), creative_ads);
   }
@@ -113,7 +115,10 @@ void CreativeAdNotifications::GetForCategories(
           "ca.target_url, "
           "can.title, "
           "can.body, "
-          "cam.ptr "
+          "cam.ptr, "
+          "dp.dow, "
+          "dp.start_minute, "
+          "dp.end_minute "
       "FROM %s AS can "
           "INNER JOIN campaigns AS cam "
               "ON cam.campaign_id = can.campaign_id "
@@ -123,6 +128,8 @@ void CreativeAdNotifications::GetForCategories(
               "ON ca.creative_set_id = can.creative_set_id "
           "INNER JOIN geo_targets AS gt "
               "ON gt.campaign_id = can.campaign_id "
+          "INNER JOIN dayparts AS dp "
+              "ON dp.campaign_id = can.campaign_id "
       "WHERE c.category IN %s "
           "AND %s BETWEEN cam.start_at_timestamp AND cam.end_at_timestamp",
       get_table_name().c_str(),
@@ -156,7 +163,10 @@ void CreativeAdNotifications::GetForCategories(
     DBCommand::RecordBindingType::STRING_TYPE,  // target_url
     DBCommand::RecordBindingType::STRING_TYPE,  // title
     DBCommand::RecordBindingType::STRING_TYPE,  // body
-    DBCommand::RecordBindingType::DOUBLE_TYPE   // ptr
+    DBCommand::RecordBindingType::DOUBLE_TYPE,  // ptr
+    DBCommand::RecordBindingType::STRING_TYPE,  // dayparts->dow
+    DBCommand::RecordBindingType::INT_TYPE,     // dayparts->start_minute
+    DBCommand::RecordBindingType::INT_TYPE      // dayparts->end_minute
   };
 
   DBTransactionPtr transaction = DBTransaction::New();
@@ -187,7 +197,10 @@ void CreativeAdNotifications::GetAll(
           "ca.target_url, "
           "can.title, "
           "can.body, "
-          "cam.ptr "
+          "cam.ptr, "
+          "dp.dow, "
+          "dp.start_minute, "
+          "dp.end_minute "
       "FROM %s AS can "
           "INNER JOIN campaigns AS cam "
               "ON cam.campaign_id = can.campaign_id "
@@ -197,6 +210,8 @@ void CreativeAdNotifications::GetAll(
               "ON ca.creative_set_id = can.creative_set_id "
           "INNER JOIN geo_targets AS gt "
               "ON gt.campaign_id = can.campaign_id "
+          "INNER JOIN dayparts AS dp "
+              "ON dp.campaign_id = can.campaign_id "
       "WHERE %s BETWEEN cam.start_at_timestamp AND cam.end_at_timestamp",
       get_table_name().c_str(),
       NowAsString().c_str());
@@ -222,7 +237,10 @@ void CreativeAdNotifications::GetAll(
     DBCommand::RecordBindingType::STRING_TYPE,  // target_url
     DBCommand::RecordBindingType::STRING_TYPE,  // title
     DBCommand::RecordBindingType::STRING_TYPE,  // body
-    DBCommand::RecordBindingType::DOUBLE_TYPE   // ptr
+    DBCommand::RecordBindingType::DOUBLE_TYPE,  // ptr
+    DBCommand::RecordBindingType::STRING_TYPE,  // dayparts->dow
+    DBCommand::RecordBindingType::INT_TYPE,     // dayparts->start_minute
+    DBCommand::RecordBindingType::INT_TYPE      // dayparts->end_minute
   };
 
   DBTransactionPtr transaction = DBTransaction::New();
@@ -399,6 +417,12 @@ CreativeAdNotificationInfo CreativeAdNotifications::GetFromRecord(
   creative_ad_notification.title = ColumnString(record, 14);
   creative_ad_notification.body = ColumnString(record, 15);
   creative_ad_notification.ptr = ColumnDouble(record, 16);
+
+  CreativeDaypartInfo daypart;
+  daypart.dow = ColumnString(record, 17);
+  daypart.start_minute = ColumnInt(record, 18);
+  daypart.end_minute = ColumnInt(record, 19);
+  creative_ad_notification.dayparts.push_back(daypart);
 
   return creative_ad_notification;
 }
