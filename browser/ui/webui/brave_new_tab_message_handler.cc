@@ -180,7 +180,7 @@ BraveNewTabMessageHandler* BraveNewTabMessageHandler::Create(
 BraveNewTabMessageHandler::BraveNewTabMessageHandler(Profile* profile)
     : profile_(profile) {
   if (brave::IsTorProfile(profile)) {
-    tor_profile_service_ = TorProfileServiceFactory::GetForProfile(profile);
+    tor_profile_service_ = TorProfileServiceFactory::GetForContext(profile);
   }
 }
 

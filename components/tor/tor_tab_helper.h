@@ -3,8 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#ifndef BRAVE_BROWSER_TOR_TOR_TAB_HELPER_H_
-#define BRAVE_BROWSER_TOR_TOR_TAB_HELPER_H_
+#ifndef BRAVE_COMPONENTS_TOR_TOR_TAB_HELPER_H_
+#define BRAVE_COMPONENTS_TOR_TOR_TAB_HELPER_H_
 
 #include "base/memory/weak_ptr.h"
 #include "content/public/browser/web_contents_observer.h"
@@ -23,7 +23,8 @@ class TorTabHelper : public content::WebContentsObserver,
  public:
   ~TorTabHelper() override;
 
-  static void MaybeCreateForWebContents(content::WebContents* web_contents);
+  static void MaybeCreateForWebContents(content::WebContents* web_contents,
+                                        bool is_tor_profile);
 
  private:
   friend class content::WebContentsUserData<TorTabHelper>;
@@ -42,4 +43,4 @@ class TorTabHelper : public content::WebContentsObserver,
 
 }  // namespace tor
 
-#endif  // BRAVE_BROWSER_TOR_TOR_TAB_HELPER_H_
+#endif  // BRAVE_COMPONENTS_TOR_TOR_TAB_HELPER_H_

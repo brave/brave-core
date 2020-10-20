@@ -9,6 +9,7 @@
 #include "base/feature_list.h"
 #include "brave/browser/brave_stats/brave_stats_tab_helper.h"
 #include "brave/browser/farbling/farbling_tab_helper.h"
+#include "brave/browser/profiles/profile_util.h"
 #include "brave/browser/ui/bookmark/brave_bookmark_tab_helper.h"
 #include "brave/components/brave_ads/browser/ads_tab_helper.h"
 #include "brave/components/brave_perf_predictor/browser/buildflags.h"
@@ -59,8 +60,8 @@
 #endif
 
 #if BUILDFLAG(ENABLE_TOR)
-#include "brave/browser/tor/tor_tab_helper.h"
-#include "brave/browser/tor/onion_location_tab_helper.h"
+#include "brave/components/tor/onion_location_tab_helper.h"
+#include "brave/components/tor/tor_tab_helper.h"
 #endif
 
 #if BUILDFLAG(IPFS_ENABLED)
@@ -118,7 +119,8 @@ void AttachTabHelpers(content::WebContents* web_contents) {
 #endif
 
 #if BUILDFLAG(ENABLE_TOR)
-  tor::TorTabHelper::MaybeCreateForWebContents(web_contents);
+  tor::TorTabHelper::MaybeCreateForWebContents(
+      web_contents, brave::IsTorProfile(web_contents->GetBrowserContext()));
   tor::OnionLocationTabHelper::CreateForWebContents(web_contents);
 #endif
 

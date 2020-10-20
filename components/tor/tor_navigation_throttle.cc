@@ -1,16 +1,13 @@
-/* Copyright (c) 2019 The Brave Authors. All rights reserved.
+/* Copyright (c) 2020 The Brave Authors. All rights reserved.
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#include "brave/browser/tor/tor_navigation_throttle.h"
+#include "brave/components/tor/tor_navigation_throttle.h"
 
 #include <utility>
 
-#include "brave/browser/profiles/profile_util.h"
-#include "brave/browser/tor/tor_profile_service_factory.h"
 #include "brave/components/tor/tor_profile_service.h"
-#include "chrome/browser/profiles/profile.h"
 #include "content/public/browser/navigation_handle.h"
 #include "content/public/browser/web_contents.h"
 #include "content/public/common/url_constants.h"
@@ -21,21 +18,19 @@ namespace tor {
 // static
 std::unique_ptr<TorNavigationThrottle>
 TorNavigationThrottle::MaybeCreateThrottleFor(
-    content::NavigationHandle* navigation_handle) {
-  Profile* profile = Profile::FromBrowserContext(
-      navigation_handle->GetWebContents()->GetBrowserContext());
-  if (!brave::IsTorProfile(profile))
+    content::NavigationHandle* navigation_handle,
+    TorProfileService* service,
+    bool is_tor_profile) {
+  if (!is_tor_profile || !service)
     return nullptr;
-  return std::make_unique<TorNavigationThrottle>(navigation_handle);
+  return std::make_unique<TorNavigationThrottle>(navigation_handle, service);
 }
 
 TorNavigationThrottle::TorNavigationThrottle(
-    content::NavigationHandle* navigation_handle)
-    : content::NavigationThrottle(navigation_handle) {
-  Profile* profile = Profile::FromBrowserContext(
-      navigation_handle->GetWebContents()->GetBrowserContext());
-  DCHECK(brave::IsTorProfile(profile));
-  tor_profile_service_ = TorProfileServiceFactory::GetForProfile(profile);
+    content::NavigationHandle* navigation_handle,
+    TorProfileService* service)
+    : content::NavigationThrottle(navigation_handle),
+      tor_profile_service_(service) {
   DCHECK(tor_profile_service_);
   tor_profile_service_->AddObserver(this);
 }
@@ -47,8 +42,7 @@ TorNavigationThrottle::~TorNavigationThrottle() {
 content::NavigationThrottle::ThrottleCheckResult
 TorNavigationThrottle::WillStartRequest() {
   GURL url = navigation_handle()->GetURL();
-  if (url.SchemeIsHTTPOrHTTPS() ||
-      url.SchemeIs(content::kChromeUIScheme) ||
+  if (url.SchemeIsHTTPOrHTTPS() || url.SchemeIs(content::kChromeUIScheme) ||
       url.SchemeIs(extensions::kExtensionScheme) ||
       url.SchemeIs(content::kChromeDevToolsScheme)) {
     if (!tor_profile_service_->IsTorConnected() &&

@@ -26,20 +26,8 @@ source_set("tor") {
     sources += [
       "brave_tor_client_updater_delegate.cc",
       "brave_tor_client_updater_delegate.h",
-      "onion_location_navigation_throttle.cc",
-      "onion_location_navigation_throttle.h",
-      "onion_location_tab_helper.cc",
-      "onion_location_tab_helper.h",
-      "tor_navigation_throttle.cc",
-      "tor_navigation_throttle.h",
-      "tor_tab_helper.cc",
-      "tor_tab_helper.h",
-    ]
-
-    deps += [
-      "//content/public/browser",
-      "//content/public/common",
-      "//extensions/common:common_constants",
+      "onion_location_navigation_throttle_delegate.cc",
+      "onion_location_navigation_throttle_delegate.h",
     ]
 
     # Below dep list are not directly used tor target.

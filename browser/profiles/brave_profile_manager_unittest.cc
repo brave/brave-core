@@ -257,7 +257,7 @@ TEST_F(BraveProfileManagerTest, ProxyConfigMonitorInTorProfile) {
   EXPECT_TRUE(config.value().proxy_rules().empty());
 
   // Emulate get socks info from tor control
-  auto* tor_profile_service = TorProfileServiceFactory::GetForProfile(profile);
+  auto* tor_profile_service = TorProfileServiceFactory::GetForContext(profile);
   static_cast<tor::TorProfileServiceImpl*>(tor_profile_service)
     ->NotifyTorNewProxyURI("socks5://127.0.0.1:5566");
 

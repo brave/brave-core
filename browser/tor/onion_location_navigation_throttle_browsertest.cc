@@ -5,11 +5,11 @@
 
 #include "base/strings/utf_string_conversions.h"
 #include "brave/browser/profiles/profile_util.h"
-#include "brave/browser/tor/onion_location_tab_helper.h"
 #include "brave/browser/tor/tor_profile_service_factory.h"
 #include "brave/browser/ui/browser_commands.h"
 #include "brave/browser/ui/views/location_bar/brave_location_bar_view.h"
 #include "brave/browser/ui/views/location_bar/onion_location_view.h"
+#include "brave/components/tor/onion_location_tab_helper.h"
 #include "brave/components/tor/pref_names.h"
 #include "brave/grit/brave_generated_resources.h"
 #include "chrome/browser/chrome_notification_types.h"

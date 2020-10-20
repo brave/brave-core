@@ -3,11 +3,9 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#include "brave/browser/tor/tor_tab_helper.h"
+#include "brave/components/tor/tor_tab_helper.h"
 
 #include "base/threading/sequenced_task_runner_handle.h"
-#include "brave/browser/profiles/profile_util.h"
-#include "chrome/browser/profiles/profile.h"
 #include "content/public/browser/navigation_handle.h"
 
 namespace tor {
@@ -18,11 +16,9 @@ TorTabHelper::TorTabHelper(content::WebContents* web_contents)
 TorTabHelper::~TorTabHelper() = default;
 
 // static
-void TorTabHelper::MaybeCreateForWebContents(
-    content::WebContents* web_contents) {
-  Profile* profile =
-      Profile::FromBrowserContext(web_contents->GetBrowserContext());
-  if (!brave::IsTorProfile(profile))
+void TorTabHelper::MaybeCreateForWebContents(content::WebContents* web_contents,
+                                             bool is_tor_profile) {
+  if (!is_tor_profile)
     return;
   TorTabHelper::CreateForWebContents(web_contents);
 }

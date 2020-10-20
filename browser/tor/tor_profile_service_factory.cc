@@ -13,7 +13,6 @@
 #include "brave/components/tor/buildflags/buildflags.h"
 #include "brave/components/tor/pref_names.h"
 #include "chrome/browser/profiles/incognito_helpers.h"
-#include "chrome/browser/profiles/profile.h"
 #include "chrome/common/chrome_paths.h"
 #include "components/keyed_service/content/browser_context_dependency_manager.h"
 #include "components/prefs/pref_service.h"
@@ -28,17 +27,17 @@ std::set<Profile*> g_profile_set;
 }
 
 // static
-tor::TorProfileService* TorProfileServiceFactory::GetForProfile(
-    Profile* profile) {
-  return GetForProfile(profile, true);
+tor::TorProfileService* TorProfileServiceFactory::GetForContext(
+    content::BrowserContext* context) {
+  return GetForContext(context, true);
 }
 
 // static
-tor::TorProfileService* TorProfileServiceFactory::GetForProfile(
-  Profile* profile,
-  bool create) {
+tor::TorProfileService* TorProfileServiceFactory::GetForContext(
+    content::BrowserContext* context,
+    bool create) {
   return static_cast<tor::TorProfileService*>(
-      GetInstance()->GetServiceForBrowserContext(profile, create));
+      GetInstance()->GetServiceForBrowserContext(context, create));
 }
 
 // static
@@ -73,6 +72,8 @@ TorProfileServiceFactory::~TorProfileServiceFactory() {}
 KeyedService* TorProfileServiceFactory::BuildServiceInstanceFor(
     content::BrowserContext* context) const {
 #if BUILDFLAG(ENABLE_TOR)
+  if (!brave::IsTorProfile(context))
+    return nullptr;
   base::FilePath user_data_dir;
   base::PathService::Get(chrome::DIR_USER_DATA, &user_data_dir);
   DCHECK(!user_data_dir.empty());
@@ -108,8 +109,7 @@ void TorProfileServiceFactory::BrowserContextShutdown(
   // KillTor when the last Tor incognito profile is shutting down.
   if (g_profile_set.size() == 1) {
     auto* service = static_cast<tor::TorProfileServiceImpl*>(
-        TorProfileServiceFactory::GetForProfile(
-            Profile::FromBrowserContext(context), false));
+        TorProfileServiceFactory::GetForContext(context, false));
     if (service) {
       service->KillTor();
     } else {

@@ -3,20 +3,17 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#include "brave/browser/tor/onion_location_navigation_throttle.h"
+#include "brave/components/tor/onion_location_navigation_throttle.h"
 
 #include <string>
 #include <utility>
 
 #include "base/bind.h"
-#include "brave/browser/profiles/profile_util.h"
-#include "brave/browser/tor/onion_location_tab_helper.h"
-#include "brave/browser/tor/tor_profile_service_factory.h"
+#include "brave/components/tor/onion_location_tab_helper.h"
 #include "brave/components/tor/pref_names.h"
-#include "chrome/browser/profiles/profile.h"
-#include "chrome/browser/profiles/profile_window.h"
-#include "chrome/browser/ui/browser.h"
-#include "chrome/browser/ui/browser_finder.h"
+#include "components/prefs/pref_service.h"
+#include "components/user_prefs/user_prefs.h"
+#include "content/public/browser/browser_context.h"
 #include "content/public/browser/navigation_handle.h"
 #include "content/public/browser/web_contents.h"
 
@@ -36,37 +33,31 @@ bool GetOnionLocation(const net::HttpResponseHeaders* headers,
   return true;
 }
 
-void OnTorProfileCreated(GURL onion_location,
-                         Profile* profile,
-                         Profile::CreateStatus status) {
-  if (status != Profile::CreateStatus::CREATE_STATUS_INITIALIZED)
-    return;
-  Browser* browser = chrome::FindTabbedBrowser(profile, true);
-  if (!browser)
-    return;
-  content::OpenURLParams open_tor(onion_location, content::Referrer(),
-                                  WindowOpenDisposition::OFF_THE_RECORD,
-                                  ui::PAGE_TRANSITION_TYPED, false);
-  browser->OpenURL(open_tor);
-}
-
 }  // namespace
 
 // static
 std::unique_ptr<OnionLocationNavigationThrottle>
 OnionLocationNavigationThrottle::MaybeCreateThrottleFor(
-    content::NavigationHandle* navigation_handle) {
-  if (TorProfileServiceFactory::IsTorDisabled() ||
-      !navigation_handle->IsInMainFrame())
+    content::NavigationHandle* navigation_handle,
+    bool is_tor_disabled,
+    std::unique_ptr<Delegate> delegate,
+    bool is_tor_profile) {
+  if (is_tor_disabled || !navigation_handle->IsInMainFrame())
     return nullptr;
-  return std::make_unique<OnionLocationNavigationThrottle>(navigation_handle);
+  return std::make_unique<OnionLocationNavigationThrottle>(
+      navigation_handle, std::move(delegate), is_tor_profile);
 }
 
 OnionLocationNavigationThrottle::OnionLocationNavigationThrottle(
-    content::NavigationHandle* navigation_handle)
-    : content::NavigationThrottle(navigation_handle) {
-  profile_ = Profile::FromBrowserContext(
-      navigation_handle->GetWebContents()->GetBrowserContext());
+    content::NavigationHandle* navigation_handle,
+    std::unique_ptr<Delegate> delegate,
+    bool is_tor_profile)
+    : content::NavigationThrottle(navigation_handle),
+      is_tor_profile_(is_tor_profile),
+      delegate_(std::move(delegate)) {
+  content::BrowserContext* context =
+      navigation_handle->GetWebContents()->GetBrowserContext();
+  pref_service_ = user_prefs::UserPrefs::Get(context);
 }
 
 OnionLocationNavigationThrottle::~OnionLocationNavigationThrottle() {}
@@ -80,13 +71,9 @@ OnionLocationNavigationThrottle::WillProcessResponse() {
   if (headers && GetOnionLocation(headers, &onion_location) &&
       !navigation_handle()->GetURL().DomainIs("onion")) {
     // If user prefers opening it automatically
-    if (profile_->GetPrefs()->GetBoolean(prefs::kAutoOnionLocation)) {
-      profiles::SwitchToTorProfile(
-          base::BindRepeating(&OnTorProfileCreated, GURL(onion_location)));
-      // We do not close last tab of the window
-      Browser* browser = chrome::FindBrowserWithProfile(profile_);
-      if (browser && browser->tab_strip_model()->count() > 1)
-        navigation_handle()->GetWebContents()->ClosePage();
+    if (pref_service_->GetBoolean(prefs::kAutoOnionLocation)) {
+      delegate_->OpenInTorWindow(navigation_handle()->GetWebContents(),
+                                 GURL(onion_location));
     } else {
       OnionLocationTabHelper::SetOnionLocation(
           navigation_handle()->GetWebContents(), GURL(onion_location));
@@ -101,11 +88,11 @@ OnionLocationNavigationThrottle::WillProcessResponse() {
 content::NavigationThrottle::ThrottleCheckResult
 OnionLocationNavigationThrottle::WillStartRequest() {
   // Open .onion site in Tor window
-  if (!brave::IsTorProfile(profile_)) {
+  if (!is_tor_profile_) {
     GURL url = navigation_handle()->GetURL();
     if (url.SchemeIsHTTPOrHTTPS() && url.DomainIs("onion")) {
-      profiles::SwitchToTorProfile(
-          base::BindRepeating(&OnTorProfileCreated, std::move(url)));
+      delegate_->OpenInTorWindow(navigation_handle()->GetWebContents(),
+                                 std::move(url));
       return content::NavigationThrottle::CANCEL_AND_IGNORE;
     }
   }

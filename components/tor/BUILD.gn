@@ -29,21 +29,31 @@ source_set("tor") {
       "tor_control_event_list.h",
       "tor_launcher_factory.cc",
       "tor_launcher_factory.h",
+      "tor_navigation_throttle.cc",
+      "tor_navigation_throttle.h",
       "tor_profile_service.cc",
       "tor_profile_service.h",
       "tor_profile_service_impl.cc",
       "tor_profile_service_impl.h",
+      "tor_tab_helper.cc",
+      "tor_tab_helper.h",
+      "onion_location_navigation_throttle.cc",
+      "onion_location_navigation_throttle.h",
+      "onion_location_tab_helper.cc",
+      "onion_location_tab_helper.h",
     ]
   }
   
   deps += [
     "//brave/app:brave_generated_resources_grit",
     "//brave/components/services/tor/public/interfaces",
+    "//components/prefs",
+    "//components/user_prefs",
     "//content/public/browser",
     "//extensions/common:common_constants",
     "//net",
     "//services/service_manager",
-      "//third_party/re2",
+    "//third_party/re2",
     "//url",
   ]
 }

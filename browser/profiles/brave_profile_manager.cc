@@ -203,7 +203,7 @@ void BraveProfileManager::OnProfileCreated(Profile* profile,
 
     // We need to wait until OnProfileCreated to
     // ensure that the request context is available.
-    TorProfileServiceFactory::GetForProfile(profile);
+    TorProfileServiceFactory::GetForContext(profile);
   }
 #endif
 }

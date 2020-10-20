@@ -1,10 +1,10 @@
-/* Copyright (c) 2019 The Brave Authors. All rights reserved.
+/* Copyright (c) 2020 The Brave Authors. All rights reserved.
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#ifndef BRAVE_BROWSER_TOR_TOR_NAVIGATION_THROTTLE_H_
-#define BRAVE_BROWSER_TOR_TOR_NAVIGATION_THROTTLE_H_
+#ifndef BRAVE_COMPONENTS_TOR_TOR_NAVIGATION_THROTTLE_H_
+#define BRAVE_COMPONENTS_TOR_TOR_NAVIGATION_THROTTLE_H_
 
 #include <memory>
 
@@ -23,9 +23,12 @@ class TorProfileService;
 class TorNavigationThrottle : public content::NavigationThrottle,
                               public TorLauncherServiceObserver {
  public:
-  static std::unique_ptr<TorNavigationThrottle>
-    MaybeCreateThrottleFor(content::NavigationHandle* navigation_handle);
-  explicit TorNavigationThrottle(content::NavigationHandle* navigation_handle);
+  static std::unique_ptr<TorNavigationThrottle> MaybeCreateThrottleFor(
+      content::NavigationHandle* navigation_handle,
+      TorProfileService* service,
+      bool is_tor_profile);
+  TorNavigationThrottle(content::NavigationHandle* navigation_handle,
+                        TorProfileService* service);
   ~TorNavigationThrottle() override;
 
   // content::NavigationThrottle implementation:
@@ -47,4 +50,4 @@ class TorNavigationThrottle : public content::NavigationThrottle,
 
 }  // namespace tor
 
-#endif  // BRAVE_BROWSER_TOR_TOR_NAVIGATION_THROTTLE_H_
+#endif  // BRAVE_COMPONENTS_TOR_TOR_NAVIGATION_THROTTLE_H_

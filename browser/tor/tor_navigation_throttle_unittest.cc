@@ -1,9 +1,7 @@
-/* Copyright (c) 2019 The Brave Authors. All rights reserved.
+/* Copyright (c) 2020 The Brave Authors. All rights reserved.
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
-
-#include "brave/browser/tor/tor_navigation_throttle.h"
 
 #include <utility>
 
@@ -13,13 +11,14 @@
 #include "brave/browser/profiles/brave_unittest_profile_manager.h"
 #include "brave/browser/profiles/profile_util.h"
 #include "brave/browser/tor/tor_profile_service_factory.h"
+#include "brave/components/tor/tor_navigation_throttle.h"
 #include "brave/components/tor/tor_profile_service.h"
 #include "chrome/test/base/scoped_testing_local_state.h"
 #include "chrome/test/base/testing_browser_process.h"
 #include "chrome/test/base/testing_profile.h"
 #include "content/public/browser/navigation_handle.h"
-#include "content/public/test/mock_navigation_handle.h"
 #include "content/public/test/browser_task_environment.h"
+#include "content/public/test/mock_navigation_handle.h"
 #include "content/public/test/test_renderer_host.h"
 #include "content/public/test/web_contents_tester.h"
 #include "testing/gtest/include/gtest/gtest.h"
@@ -45,14 +44,15 @@ class TorNavigationThrottleUnitTest : public testing::Test {
     ASSERT_TRUE(profile_manager);
     Profile* profile = profile_manager->GetProfile(
         temp_dir_.GetPath().AppendASCII(TestingProfile::kTestUserProfileDir));
-    Profile* tor_profile = profile_manager->GetProfile(
-        BraveProfileManager::GetTorProfilePath());
+    Profile* tor_profile =
+        profile_manager->GetProfile(BraveProfileManager::GetTorProfilePath());
     ASSERT_EQ(brave::GetParentProfile(tor_profile), profile);
     web_contents_ =
         content::WebContentsTester::CreateTestWebContents(profile, nullptr);
     tor_web_contents_ =
         content::WebContentsTester::CreateTestWebContents(tor_profile, nullptr);
-    tor_profile_service_ = TorProfileServiceFactory::GetForProfile(tor_profile);
+    tor_profile_service_ = TorProfileServiceFactory::GetForContext(tor_profile);
+    ASSERT_EQ(TorProfileServiceFactory::GetForContext(profile), nullptr);
   }
 
   void TearDown() override {
@@ -61,17 +61,11 @@ class TorNavigationThrottleUnitTest : public testing::Test {
     TestingBrowserProcess::GetGlobal()->SetProfileManager(nullptr);
   }
 
-  content::WebContents* web_contents() {
-    return web_contents_.get();
-  }
+  content::WebContents* web_contents() { return web_contents_.get(); }
 
-  content::WebContents* tor_web_contents() {
-    return tor_web_contents_.get();
-  }
+  content::WebContents* tor_web_contents() { return tor_web_contents_.get(); }
 
-  TorProfileService* tor_profile_service() {
-    return tor_profile_service_;
-  }
+  TorProfileService* tor_profile_service() { return tor_profile_service_; }
 
  private:
   content::BrowserTaskEnvironment task_environment_;
@@ -89,12 +83,16 @@ class TorNavigationThrottleUnitTest : public testing::Test {
 TEST_F(TorNavigationThrottleUnitTest, Instantiation) {
   content::MockNavigationHandle test_handle(tor_web_contents());
   std::unique_ptr<TorNavigationThrottle> throttle =
-    TorNavigationThrottle::MaybeCreateThrottleFor(&test_handle);
+      TorNavigationThrottle::MaybeCreateThrottleFor(
+          &test_handle, tor_profile_service(),
+          brave::IsTorProfile(tor_web_contents()->GetBrowserContext()));
   EXPECT_TRUE(throttle != nullptr);
 
   content::MockNavigationHandle test_handle2(web_contents());
   std::unique_ptr<TorNavigationThrottle> throttle2 =
-    TorNavigationThrottle::MaybeCreateThrottleFor(&test_handle2);
+      TorNavigationThrottle::MaybeCreateThrottleFor(
+          &test_handle2, nullptr,
+          brave::IsTorProfile(web_contents()->GetBrowserContext()));
   EXPECT_TRUE(throttle2 == nullptr);
 }
 
@@ -102,7 +100,9 @@ TEST_F(TorNavigationThrottleUnitTest, WhitelistedScheme) {
   tor_profile_service()->SetTorLaunchedForTest();
   content::MockNavigationHandle test_handle(tor_web_contents());
   std::unique_ptr<TorNavigationThrottle> throttle =
-    TorNavigationThrottle::MaybeCreateThrottleFor(&test_handle);
+      TorNavigationThrottle::MaybeCreateThrottleFor(
+          &test_handle, tor_profile_service(),
+          brave::IsTorProfile(tor_web_contents()->GetBrowserContext()));
   GURL url("http://www.example.com");
   test_handle.set_url(url);
   EXPECT_EQ(NavigationThrottle::PROCEED, throttle->WillStartRequest().action())
@@ -136,27 +136,34 @@ TEST_F(TorNavigationThrottleUnitTest, BlockedScheme) {
   tor_profile_service()->SetTorLaunchedForTest();
   content::MockNavigationHandle test_handle(tor_web_contents());
   std::unique_ptr<TorNavigationThrottle> throttle =
-    TorNavigationThrottle::MaybeCreateThrottleFor(&test_handle);
+      TorNavigationThrottle::MaybeCreateThrottleFor(
+          &test_handle, tor_profile_service(),
+          brave::IsTorProfile(tor_web_contents()->GetBrowserContext()));
   GURL url("ftp://ftp.example.com");
   test_handle.set_url(url);
   EXPECT_EQ(NavigationThrottle::BLOCK_REQUEST,
-            throttle->WillStartRequest().action()) << url;
+            throttle->WillStartRequest().action())
+      << url;
 
   GURL url2("mailto:example@www.example.com");
   test_handle.set_url(url2);
   EXPECT_EQ(NavigationThrottle::BLOCK_REQUEST,
-            throttle->WillStartRequest().action()) << url2;
+            throttle->WillStartRequest().action())
+      << url2;
 
   GURL url3("magnet:?xt=urn:btih:***.torrent");
   test_handle.set_url(url3);
   EXPECT_EQ(NavigationThrottle::BLOCK_REQUEST,
-            throttle->WillStartRequest().action()) << url3;
+            throttle->WillStartRequest().action())
+      << url3;
 }
 
 TEST_F(TorNavigationThrottleUnitTest, DeferUntilTorProcessLaunched) {
   content::MockNavigationHandle test_handle(tor_web_contents());
   std::unique_ptr<TorNavigationThrottle> throttle =
-    TorNavigationThrottle::MaybeCreateThrottleFor(&test_handle);
+      TorNavigationThrottle::MaybeCreateThrottleFor(
+          &test_handle, tor_profile_service(),
+          brave::IsTorProfile(tor_web_contents()->GetBrowserContext()));
   bool was_navigation_resumed = false;
   throttle->set_resume_callback_for_testing(
       base::BindLambdaForTesting([&]() { was_navigation_resumed = true; }));

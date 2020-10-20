@@ -46,7 +46,7 @@ void NewTorConnectionForSite(Browser* browser) {
   Profile* profile = browser->profile();
   DCHECK(profile);
   tor::TorProfileService* service =
-    TorProfileServiceFactory::GetForProfile(profile);
+    TorProfileServiceFactory::GetForContext(profile);
   DCHECK(service);
   WebContents* current_tab =
     browser->tab_strip_model()->GetActiveWebContents();
