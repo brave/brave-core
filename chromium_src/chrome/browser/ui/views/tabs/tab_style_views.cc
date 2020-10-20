@@ -16,7 +16,7 @@ namespace {
 class BraveGM2TabStyle : public GM2TabStyle {
  public:
   explicit BraveGM2TabStyle(Tab* tab);
-  BraveGM2TabStyle(const GM2TabStyle&) = delete;
+  BraveGM2TabStyle(const BraveGM2TabStyle&) = delete;
   BraveGM2TabStyle& operator=(const BraveGM2TabStyle&) = delete;
 
  protected:
