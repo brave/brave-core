@@ -33,6 +33,10 @@ enum BraveAdsUrlRequestMethod {
   POST
 };
 
+enum BraveAdsP2AEventType {
+  kListType = 0
+};
+
 struct BraveAdsUrlRequest {
   string url;
   array<string> headers;

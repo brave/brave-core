@@ -72,6 +72,12 @@ class ADS_EXPORT AdsClient {
   virtual void LoadUserModelForId(
       const std::string& name, LoadCallback callback) = 0;
 
+  // Should record a P2A event of the given type
+  virtual void RecordP2AEvent(
+      const std::string& name,
+      const ads::P2AEventType type,
+      const std::string& value) = 0;
+
   // Should load a value from persistent storage. The callback takes 2 arguments
   // — |Result| should be set to |SUCCESS| if successful; otherwise, should be
   // set to |FAILED|. |value| should contain the persisted value

@@ -161,6 +161,17 @@ void BatAdsClientMojoBridge::LoadUserModelForId(
       base::BindOnce(&OnLoadUserModelForId, std::move(callback)));
 }
 
+void BatAdsClientMojoBridge::RecordP2AEvent(
+    const std::string& name,
+    const ads::P2AEventType type,
+    const std::string& value) {
+  if (!connected()) {
+    return;
+  }
+
+  bat_ads_client_->RecordP2AEvent(name, type, value);
+}
+
 void OnLoad(
     const ads::LoadCallback& callback,
     const int32_t result,

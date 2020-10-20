@@ -1830,7 +1830,8 @@ void AdsServiceImpl::OnPrefsChanged(
       // Record "special value" to prevent sending this week's data to P2A
       // server. Matches INT_MAX - 1 for |kSuspendedMetricValue| in
       // |brave_p3a_service.cc|
-      brave_ads::EmitConfirmationsCountMetric(INT_MAX);
+      brave_ads::SuspendP2AHistograms();
+      VLOG(1) << "P2A histograms suspended";
       Stop();
     }
 
@@ -2010,6 +2011,31 @@ void AdsServiceImpl::LoadUserModelForId(
       base::BindOnce(&LoadOnFileTaskRunner, path.value()),
       base::BindOnce(&AdsServiceImpl::OnLoaded, AsWeakPtr(),
           std::move(callback)));
+}
+
+void AdsServiceImpl::RecordP2AEvent(
+    const std::string& name,
+    const ads::P2AEventType type,
+    const std::string& value) {
+  switch (type) {
+    case ads::P2AEventType::kListType: {
+      base::Optional<base::Value> maybe_list = base::JSONReader::Read(value);
+      if (!maybe_list || !maybe_list->is_list()) {
+        break;
+      }
+
+      base::ListValue* list = nullptr;
+      if (!maybe_list->GetAsList(&list)) {
+        break;
+      }
+
+      for (auto& item : *list) {
+        brave_ads::RecordInWeeklyStorageAndEmitP2AHistogramAnswer(
+          profile_->GetPrefs(), item.GetString());
+      }
+      break;
+    }
+  }
 }
 
 void AdsServiceImpl::Load(

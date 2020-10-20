@@ -49,6 +49,7 @@
 #include "bat/ads/internal/frequency_capping/permission_rules/unblinded_tokens_frequency_cap.h"
 #include "bat/ads/internal/frequency_capping/permission_rules/user_activity_frequency_cap.h"
 #include "bat/ads/internal/logging.h"
+#include "bat/ads/internal/p2a/p2a_util.h"
 #include "bat/ads/internal/platform/platform_helper.h"
 #include "bat/ads/internal/reports/reports.h"
 #include "bat/ads/internal/search_engine/search_providers.h"
@@ -114,6 +115,7 @@ AdsImpl::AdsImpl(
       confirmations_(std::make_unique<Confirmations>(this)),
       database_(std::make_unique<database::Initialize>(this)),
       get_catalog_(std::make_unique<GetCatalog>(this)),
+      p2a_(std::make_unique<P2A>(this)),
       page_classifier_(std::make_unique<classification::PageClassifier>(this)),
       purchase_intent_classifier_(std::make_unique<
           classification::PurchaseIntentClassifier>(this)),
@@ -751,6 +753,11 @@ void AdsImpl::ServeAdNotificationIfReady() {
   }
 
   classification::CategoryList categories = GetCategoriesToServeAd();
+
+  std::vector<std::string> ad_opportunity_question_list =
+      CreateAdOpportunityQuestionList(categories);
+  p2a_->RecordEvent("ad_opportunity", ad_opportunity_question_list);
+
   ServeAdNotificationFromCategories(categories);
 }
 
@@ -1152,6 +1159,10 @@ bool AdsImpl::ShowAdNotification(
       << "  title: " << ad_notification->title << "\n"
       << "  body: " << ad_notification->body << "\n"
       << "  targetUrl: " << ad_notification->target_url);
+
+  std::vector<std::string> ad_impression_question_list =
+      CreateAdImpressionQuestionList(info.category);
+  p2a_->RecordEvent("ad_impression", ad_impression_question_list);
 
   ad_notifications_->PushBack(*ad_notification);
 

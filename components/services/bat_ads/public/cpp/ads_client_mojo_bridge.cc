@@ -123,6 +123,13 @@ void AdsClientMojoBridge::LoadUserModelForId(
       id, std::bind(AdsClientMojoBridge::OnLoadUserModelForId, holder, _1, _2));
 }
 
+void AdsClientMojoBridge::RecordP2AEvent(
+    const std::string& name,
+    const ads::P2AEventType type,
+    const std::string& out_value) {
+  ads_client_->RecordP2AEvent(name, type, out_value);
+}
+
 // static
 void AdsClientMojoBridge::OnLoad(
     CallbackHolder<LoadCallback>* holder,
