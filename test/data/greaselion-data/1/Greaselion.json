@@ -60,5 +60,37 @@
             "scripts/messages-example-com.js"
         ],
         "messages": "messages"
+    },
+    {
+        "urls": [
+            "http://missing.scripts.property.example.com/*"
+        ],
+        "messages": "messages"
+    },
+    {
+        "scripts": [
+            "missing-url-property.js"
+        ],
+        "messages": "messages"
+    },
+    {
+        "scripts": "bad-script-property",
+        "urls": [
+            "http://bad.scripts.property.example.com/*"
+        ]
+    },
+    {
+        "urls": "bad-url-property",
+        "scripts": [
+            "bad-url-property.js"
+        ],
+        "messages": "messages"
+    },
+    {
+        "urls": 2,
+        "scripts": [
+            "bad-url-property.js"
+        ],
+        "messages": "messages"
     }
 ]
