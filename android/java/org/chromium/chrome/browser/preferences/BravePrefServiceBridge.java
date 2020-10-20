@@ -35,6 +35,34 @@ public class BravePrefServiceBridge {
     }
 
     /**
+     * @param whether google login is enabled on third party sites.
+     */
+    public void setThirdPartyGoogleLoginEnabled(boolean enabled) {
+        BravePrefServiceBridgeJni.get().setThirdPartyGoogleLoginEnabled(enabled);
+    }
+
+    /**
+     * @param whether facebook embeds are allowed on third party sites.
+     */
+    public void setThirdPartyFacebookEmbedEnabled(boolean enabled) {
+        BravePrefServiceBridgeJni.get().setThirdPartyFacebookEmbedEnabled(enabled);
+    }
+
+    /**
+     * @param whether twitter embeds are allowed on third party sites.
+     */
+    public void setThirdPartyTwitterEmbedEnabled(boolean enabled) {
+        BravePrefServiceBridgeJni.get().setThirdPartyTwitterEmbedEnabled(enabled);
+    }
+
+    /**
+     * @param whether linkedin embeds are allowed on third party sites.
+     */
+    public void setThirdPartyLinkedinEmbedEnabled(boolean enabled) {
+        BravePrefServiceBridgeJni.get().setThirdPartyLinkedinEmbedEnabled(enabled);
+    }
+
+    /**
      * @param whether AdBlock should be enabled.
      */
     public void setAdBlockEnabled(boolean enabled) {
@@ -148,6 +176,11 @@ public class BravePrefServiceBridge {
         void setHTTPSEEnabled(boolean enabled);
         void setAdBlockEnabled(boolean enabled);
         void setFingerprintingProtectionEnabled(boolean enabled);
+
+        void setThirdPartyGoogleLoginEnabled(boolean enabled);
+        void setThirdPartyFacebookEmbedEnabled(boolean enabled);
+        void setThirdPartyTwitterEmbedEnabled(boolean enabled);
+        void setThirdPartyLinkedinEmbedEnabled(boolean enabled);
 
         void setPlayYTVideoInBrowserEnabled(boolean enabled);
         boolean getPlayYTVideoInBrowserEnabled();

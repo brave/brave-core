@@ -52,6 +52,34 @@ void JNI_BravePrefServiceBridge_SetHTTPSEEnabled(
       g_browser_process->local_state());
 }
 
+void JNI_BravePrefServiceBridge_SetThirdPartyGoogleLoginEnabled(
+    JNIEnv* env,
+    jboolean enabled) {
+  GetOriginalProfile()->GetPrefs()->SetBoolean(
+      kGoogleLoginControlType, enabled);
+}
+
+void JNI_BravePrefServiceBridge_SetThirdPartyFacebookEmbedEnabled(
+    JNIEnv* env,
+    jboolean enabled) {
+  GetOriginalProfile()->GetPrefs()->SetBoolean(
+      kFBEmbedControlType, enabled);
+}
+
+void JNI_BravePrefServiceBridge_SetThirdPartyTwitterEmbedEnabled(
+    JNIEnv* env,
+    jboolean enabled) {
+  GetOriginalProfile()->GetPrefs()->SetBoolean(
+      kTwitterEmbedControlType, enabled);
+}
+
+void JNI_BravePrefServiceBridge_SetThirdPartyLinkedinEmbedEnabled(
+    JNIEnv* env,
+    jboolean enabled) {
+  GetOriginalProfile()->GetPrefs()->SetBoolean(
+      kLinkedInEmbedControlType, enabled);
+}
+
 void JNI_BravePrefServiceBridge_SetAdBlockEnabled(
     JNIEnv* env,
     jboolean enabled) {
