@@ -21,6 +21,7 @@
 #include "third_party/blink/renderer/platform/heap/handle.h"
 #include "third_party/blink/renderer/platform/network/network_utils.h"
 #include "third_party/blink/renderer/platform/supplementable.h"
+#include "third_party/blink/renderer/platform/wtf/text/string_builder.h"
 
 namespace {
 
@@ -58,6 +59,7 @@ namespace brave {
 
 const char kBraveSessionToken[] = "brave_session_token";
 const char BraveSessionCache::kSupplementName[] = "BraveSessionCache";
+const int kFarbledUserAgentMaxExtraSpaces = 5;
 
 // acceptable letters for generating random strings
 const char kLettersForRandomStrings[] =
@@ -231,6 +233,16 @@ WTF::String BraveSessionCache::GenerateRandomString(std::string seed,
     v = lfsr_next(v);
   }
   return value;
+}
+
+WTF::String BraveSessionCache::FarbledUserAgent(WTF::String real_user_agent) {
+  std::mt19937_64 prng = MakePseudoRandomGenerator();
+  WTF::StringBuilder result;
+  result.Append(real_user_agent);
+  int extra = prng() % kFarbledUserAgentMaxExtraSpaces;
+  for (int i = 0; i < extra; i++)
+    result.Append(" ");
+  return result.ToString();
 }
 
 std::mt19937_64 BraveSessionCache::MakePseudoRandomGenerator() {

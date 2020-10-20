@@ -49,6 +49,7 @@ class CORE_EXPORT BraveSessionCache final
       blink::WebContentSettingsClient* settings,
       scoped_refptr<blink::StaticBitmapImage> image_bitmap);
   WTF::String GenerateRandomString(std::string seed, wtf_size_t length);
+  WTF::String FarbledUserAgent(WTF::String real_user_agent);
   std::mt19937_64 MakePseudoRandomGenerator();
 
  private:
