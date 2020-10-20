@@ -455,6 +455,16 @@ const rewardsReducer: Reducer<Rewards.State | undefined> = (state: Rewards.State
       }
       break
     }
+    case types.GET_PAYMENT_ID: {
+      chrome.send('brave_rewards.getPaymentId')
+      break
+    }
+    case types.ON_PAYMENT_ID: {
+      state = {
+        ...state,
+        paymentId: action.payload.paymentId
+      }
+    }
   }
 
   return state

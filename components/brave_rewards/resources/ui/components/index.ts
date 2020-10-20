@@ -30,6 +30,7 @@ import ModalPending from './modalPending'
 import ModalRedirect from './modalRedirect'
 import ModalShowAdsHistory from './modalShowAdsHistory'
 import ModalVerify from './modalVerify'
+import ModalQRCode from './modalQRCode'
 import NextContribution from './nextContribution'
 import PanelWelcome from './panelWelcome'
 import Profile from './profile'
@@ -89,6 +90,7 @@ export {
   ModalRedirect,
   ModalShowAdsHistory,
   ModalVerify,
+  ModalQRCode,
   NextContribution,
   PanelWelcome,
   Profile,

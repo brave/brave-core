@@ -78,7 +78,8 @@ export const defaultState: Rewards.State = {
     autoContributeChoices: [],
     rate: 0
   },
-  initializing: true
+  initializing: true,
+  paymentId: ''
 }
 
 const cleanData = (state: Rewards.State) => {

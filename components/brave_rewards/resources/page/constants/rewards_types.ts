@@ -97,5 +97,7 @@ export const enum types {
   TOGGLE_ENABLE_MAIN = '@@rewards/TOGGLE_ENABLE_MAIN',
   ON_INITIALIZED = '@@rewards/ON_INITIALIZED',
   COMPLETE_RESET = '@@rewards/COMPLETE_RESET',
-  ON_COMPLETE_RESET = '@@rewards/ON_COMPLETE_RESET'
+  ON_COMPLETE_RESET = '@@rewards/ON_COMPLETE_RESET',
+  GET_PAYMENT_ID = '@@rewards/GET_PAYMENT_ID',
+  ON_PAYMENT_ID = '@@rewards/ON_PAYMENT_ID'
 }

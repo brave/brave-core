@@ -55,6 +55,7 @@ declare namespace Rewards {
     monthlyReport: MonthlyReport
     monthlyReportIds: string[]
     parameters: RewardsParameters
+    paymentId: string
     promotions?: Promotion[]
     pendingContributions: PendingContribution[]
     pendingContributionTotal: number
