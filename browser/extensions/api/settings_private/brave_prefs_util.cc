@@ -16,6 +16,7 @@
 #include "brave/components/ntp_background_images/common/pref_names.h"
 #include "chrome/browser/extensions/api/settings_private/prefs_util.h"
 #include "chrome/common/extensions/api/settings_private.h"
+#include "chrome/common/pref_names.h"
 #include "components/browsing_data/core/pref_names.h"
 #include "components/gcm_driver/gcm_buildflags.h"
 #include "components/omnibox/browser/omnibox_prefs.h"
@@ -194,6 +195,8 @@ const PrefsUtil::TypedPrefMap& BravePrefsUtil::GetWhitelistedKeys() {
   (*s_brave_whitelist)[tor::prefs::kAutoOnionLocation] =
       settings_api::PrefType::PREF_TYPE_BOOLEAN;
 #endif
+  (*s_brave_whitelist)[prefs::kWebRTCIPHandlingPolicy] =
+      settings_api::PrefType::PREF_TYPE_STRING;
 
   return *s_brave_whitelist;
 }
