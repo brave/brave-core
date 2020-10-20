@@ -3,7 +3,6 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#include "brave/browser/brave_first_run_browsertest.h"
 #include "brave/common/pref_names.h"
 #include "brave/components/brave_rewards/common/pref_names.h"
 #include "brave/components/brave_wallet/buildflags/buildflags.h"
@@ -49,6 +48,9 @@ IN_PROC_BROWSER_TEST_F(BraveProfilePrefsBrowserTest, MiscBravePrefs) {
       kHTTPSEVerywhereControlType));
   EXPECT_FALSE(
       browser()->profile()->GetPrefs()->GetBoolean(kNoScriptControlType));
+  EXPECT_FALSE(
+      browser()->profile()->GetPrefs()->GetBoolean(
+        kShieldsAdvancedViewEnabled));
   EXPECT_TRUE(
       browser()->profile()->GetPrefs()->GetBoolean(
         kShieldsStatsBadgeVisible));
@@ -99,38 +101,6 @@ IN_PROC_BROWSER_TEST_F(BraveProfilePrefsBrowserTest, MiscBravePrefs) {
       browser()->profile()->GetPrefs()->GetBoolean(kBraveGCMChannelStatus));
 #endif
 }
-
-// First run of Brave should default Shields to Simple view
-#if !defined(OS_ANDROID)
-const char kFirstRunEmptyPrefs[] = "{}";
-typedef FirstRunMasterPrefsBrowserTestT<kFirstRunEmptyPrefs>
-    BraveProfilePrefsFirstRunBrowserTest;
-IN_PROC_BROWSER_TEST_F(BraveProfilePrefsFirstRunBrowserTest,
-                       AdvancedShieldsNewUserValue) {
-  // verify value of pref (default to simple view)
-  EXPECT_FALSE(browser()->profile()->GetPrefs()->GetBoolean(
-          kShieldsAdvancedViewEnabled));
-  // verify that pref was set (and is not default)
-  const PrefService::Preference* pref =
-      browser()->profile()->GetPrefs()->FindPreference(
-          kShieldsAdvancedViewEnabled);
-  EXPECT_TRUE(pref->HasUserSetting());
-}
-
-// Existing Brave users should default shields to Advanced view
-IN_PROC_BROWSER_TEST_F(BraveProfilePrefsBrowserTest,
-                       AdvancedShieldsExistingUserValue) {
-  // verify value of pref (default to advanced view)
-  EXPECT_TRUE(
-        browser()->profile()->GetPrefs()->GetBoolean(
-          kShieldsAdvancedViewEnabled));
-  // verify that pref was set (and is not default)
-  const PrefService::Preference* pref =
-      browser()->profile()->GetPrefs()->FindPreference(
-          kShieldsAdvancedViewEnabled);
-  EXPECT_TRUE(pref->HasUserSetting());
-}
-#endif
 
 IN_PROC_BROWSER_TEST_F(BraveProfilePrefsBrowserTest,
                        DisableGoogleServicesByDefault) {
