@@ -421,12 +421,12 @@ class CryptoDotCom extends React.PureComponent<Props, State> {
           <StyledTitleText>
             {'Crypto.com'}
           </StyledTitleText>
-          {optInMarkets &&
-              <BackArrow marketView={true}>
-                <CaratLeftIcon
-                  onClick={this.optInMarkets.bind(this, false)}
-                />
-              </BackArrow>
+          {showContent && optInMarkets &&
+            <BackArrow marketView={true}>
+              <CaratLeftIcon
+                onClick={this.optInMarkets.bind(this, false)}
+              />
+            </BackArrow>
           }
         </StyledTitle>
       </Header>
