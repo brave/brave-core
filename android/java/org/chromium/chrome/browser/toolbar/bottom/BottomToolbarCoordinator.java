@@ -24,6 +24,7 @@ import org.chromium.base.supplier.OneshotSupplier;
 import org.chromium.base.supplier.Supplier;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.ActivityTabProvider;
+import org.chromium.chrome.browser.app.BraveActivity;
 import org.chromium.chrome.browser.app.ChromeActivity;
 import org.chromium.chrome.browser.compositor.layouts.EmptyOverviewModeObserver;
 import org.chromium.chrome.browser.compositor.layouts.OverviewModeBehavior;
@@ -292,7 +293,7 @@ class BottomToolbarCoordinator implements View.OnLongClickListener {
             mNewTabButton.setOnLongClickListener(this);
         }
 
-        ChromeActivity activity = TabUtils.getChromeActivity();
+        ChromeActivity activity = BraveActivity.getBraveActivity();
         if (mScrollingBottomView != null && activity != null) {
             mScrollingBottomView.setSwipeDetector(
                     activity.getCompositorViewHolder().getLayoutManager().getToolbarSwipeHandler());
