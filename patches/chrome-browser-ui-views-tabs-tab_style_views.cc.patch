@@ -1,24 +1,16 @@
 diff --git a/chrome/browser/ui/views/tabs/tab_style_views.cc b/chrome/browser/ui/views/tabs/tab_style_views.cc
-index 950c967b5f87a6e3f531e3155a420002a7510d3a..d488846079f3d0521bd9d1bbe6ffeae158c3393b 100644
+index 950c967b5f87a6e3f531e3155a420002a7510d3a..5e139df9f2061712ec7ed890dc493d5e27a32691 100644
 --- a/chrome/browser/ui/views/tabs/tab_style_views.cc
 +++ b/chrome/browser/ui/views/tabs/tab_style_views.cc
-@@ -65,6 +65,7 @@ class GM2TabStyle : public TabStyleViews {
-   void ShowHover(ShowHoverStyle style) override;
+@@ -66,6 +66,7 @@ class GM2TabStyle : public TabStyleViews {
    void HideHover(HideHoverStyle style) override;
  
-+  BRAVE_GM2_TAB_STYLE_H
   private:
++  BRAVE_GM2_TAB_STYLE_H
    // Gets the bounds for the leading and trailing separators for a tab.
    SeparatorBounds GetSeparatorBounds(float scale) const;
-@@ -191,6 +192,7 @@ GM2TabStyle::GM2TabStyle(Tab* tab)
-                                          views::style::STYLE_PRIMARY)),
-       heavy_font_(views::style::GetFont(views::style::CONTEXT_BUTTON_MD,
-                                         views::style::STYLE_PRIMARY)) {
-+  BRAVE_GM2_TAB_STYLE
-   // TODO(dfried): create a new STYLE_PROMINENT or similar to use instead of
-   // repurposing CONTEXT_BUTTON_MD.
- }
-@@ -280,6 +282,7 @@ SkPath GM2TabStyle::GetPath(PathType path_type,
+ 
+@@ -280,6 +281,7 @@ SkPath GM2TabStyle::GetPath(PathType path_type,
    const ShapeModifier shape_modifier = GetShapeModifier(path_type);
    const bool extend_left_to_bottom = shape_modifier & kNoLowerLeftArc;
    const bool extend_right_to_bottom = shape_modifier & kNoLowerRightArc;
@@ -26,23 +18,7 @@ index 950c967b5f87a6e3f531e3155a420002a7510d3a..d488846079f3d0521bd9d1bbe6ffeae1
  
    SkPath path;
  
-@@ -459,6 +462,7 @@ TabStyle::TabColors GM2TabStyle::CalculateColors() const {
-       expected_opacity > 0.5f ? TabActive::kActive : TabActive::kInactive,
-       background_color);
- 
-+  BRAVE_CALCULATE_COLORS
-   return {foreground_color, background_color};
- }
- 
-@@ -472,6 +476,7 @@ const gfx::FontList& GM2TabStyle::GetFontList() const {
-     return heavy_font_;
-   }
- 
-+  BRAVE_GET_FONT_LIST
-   return normal_font_;
- }
- 
-@@ -533,7 +538,7 @@ TabStyle::SeparatorBounds GM2TabStyle::GetSeparatorBounds(float scale) const {
+@@ -533,7 +535,7 @@ TabStyle::SeparatorBounds GM2TabStyle::GetSeparatorBounds(float scale) const {
    separator_bounds.leading =
        gfx::RectF(aligned_bounds.x() + corner_radius,
                   aligned_bounds.y() +
@@ -51,7 +27,7 @@ index 950c967b5f87a6e3f531e3155a420002a7510d3a..d488846079f3d0521bd9d1bbe6ffeae1
                   separator_size.width(), separator_size.height());
  
    separator_bounds.trailing = separator_bounds.leading;
-@@ -888,12 +893,16 @@ void GM2TabStyle::PaintSeparators(gfx::Canvas* canvas) const {
+@@ -888,12 +890,16 @@ void GM2TabStyle::PaintSeparators(gfx::Canvas* canvas) const {
                                                     SK_AlphaOPAQUE));
    };
  
