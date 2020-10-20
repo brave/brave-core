@@ -45,6 +45,7 @@ const cryptoDotComReducer: Reducer<NewTab.State | undefined> = (state: NewTab.St
       break
 
     case types.MARKETS_REQUESTED:
+      state = { ...state }
       state.cryptoDotComState = {
         ...state.cryptoDotComState,
         fetchStatus: 'pending',
@@ -69,6 +70,7 @@ const cryptoDotComReducer: Reducer<NewTab.State | undefined> = (state: NewTab.St
       break
 
     case types.ALL_ASSETS_DETAILS_REQUESTED:
+      state = { ...state }
       state.cryptoDotComState = {
         ...state.cryptoDotComState,
         fetchStatus: 'pending'
