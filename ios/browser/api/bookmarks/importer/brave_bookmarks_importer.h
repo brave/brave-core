@@ -34,10 +34,13 @@ OBJC_EXPORT
 - (void)cancel;
 
 - (void)importFromFile:(NSString *)filePath
+    topLevelFolderName:(NSString *)folderName
        automaticImport:(bool)automaticImport
           withListener:(void(^)(BraveBookmarksImporterState, NSArray<BraveImportedBookmark *> * _Nullable))listener;
 
-- (void)importFromArray:(NSArray<BraveImportedBookmark *> *)bookmarks;
+- (void)importFromArray:(NSArray<BraveImportedBookmark *> *)bookmarks
+     topLevelFolderName:(NSString *)folderName
+           withListener:(void(^)(BraveBookmarksImporterState))listener;
 @end
 
 NS_ASSUME_NONNULL_END

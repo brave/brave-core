@@ -30,6 +30,8 @@ OBJC_EXPORT
 
 @property (nullable, nonatomic, readonly, copy) NSArray<BraveExportedBookmark *> *children;
 
+- (instancetype)init NS_UNAVAILABLE;
+
 - (instancetype)initWithTitle:(NSString *)title id:(int64_t)id guid:(NSString *)guid
               url:(NSURL * _Nullable)url dateAdded:(NSDate *)dateAdded
                  dateModified:(NSDate *)dateModified
