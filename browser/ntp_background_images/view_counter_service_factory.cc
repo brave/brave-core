@@ -67,6 +67,7 @@ KeyedService* ViewCounterServiceFactory::BuildServiceInstanceFor(
     return new ViewCounterService(service,
                                   ads_service,
                                   profile->GetPrefs(),
+                                  g_brave_browser_process->local_state(),
                                   is_supported_locale);
   }
 
