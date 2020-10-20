@@ -32,6 +32,13 @@ if (is_win) {
       rust_flags += " -C link-arg=--sysroot=$target_sysroot "
       rust_flags += " -C link-arg=-Wl,-rpath=\$ORIGIN "
     }
+  } else if (current_cpu == "arm64") {
+    rustc_target = "aarch64-unknown-linux-gnu"
+    rustc_toolchain = "arm64"
+    if (use_sysroot) {
+      rust_flags += " -C link-arg=--sysroot=$target_sysroot "
+      rust_flags += " -C link-arg=-Wl,-rpath=\$ORIGIN "
+    }
   }
 } else if (is_android) {
   if (current_cpu == "arm") {
