@@ -18,6 +18,7 @@ class BraveTabStrip : public TabStrip {
  private:
   // TabStrip overrides:
   bool ShouldHideCloseButtonForTab(Tab* tab) const override;
+  SkColor GetTabSeparatorColor() const override;
 };
 
 #endif  // BRAVE_BROWSER_UI_VIEWS_TABS_BRAVE_TAB_STRIP_H_
