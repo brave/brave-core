@@ -14,7 +14,7 @@ void ContentSettingsRegistry::BraveInit() {
   content_settings_info_.erase(ContentSettingsType::AUTOPLAY);
   website_settings_registry_->UnRegister(ContentSettingsType::AUTOPLAY);
   Register(ContentSettingsType::AUTOPLAY, "autoplay", CONTENT_SETTING_ALLOW,
-           WebsiteSettingsInfo::UNSYNCABLE, WhitelistedSchemes(),
+           WebsiteSettingsInfo::UNSYNCABLE, AllowlistedSchemes(),
            ValidSettings(CONTENT_SETTING_ALLOW, CONTENT_SETTING_BLOCK,
                          CONTENT_SETTING_ASK),
            WebsiteSettingsInfo::SINGLE_ORIGIN_ONLY_SCOPE,
@@ -29,7 +29,7 @@ void ContentSettingsRegistry::BraveInit() {
   website_settings_registry_->UnRegister(ContentSettingsType::PLUGINS);
   Register(ContentSettingsType::PLUGINS, "plugins", CONTENT_SETTING_BLOCK,
            WebsiteSettingsInfo::SYNCABLE,
-           WhitelistedSchemes(kChromeUIScheme, kChromeDevToolsScheme),
+           AllowlistedSchemes(kChromeUIScheme, kChromeDevToolsScheme),
            ValidSettings(CONTENT_SETTING_ALLOW, CONTENT_SETTING_BLOCK,
                          CONTENT_SETTING_ASK,
                          CONTENT_SETTING_DETECT_IMPORTANT_CONTENT),
@@ -45,7 +45,7 @@ void ContentSettingsRegistry::BraveInit() {
   website_settings_registry_->UnRegister(ContentSettingsType::BACKGROUND_SYNC);
   Register(ContentSettingsType::BACKGROUND_SYNC, "background-sync",
            CONTENT_SETTING_BLOCK, WebsiteSettingsInfo::UNSYNCABLE,
-           WhitelistedSchemes(),
+           AllowlistedSchemes(),
            ValidSettings(CONTENT_SETTING_ALLOW, CONTENT_SETTING_BLOCK),
            WebsiteSettingsInfo::SINGLE_ORIGIN_ONLY_SCOPE,
            WebsiteSettingsRegistry::DESKTOP |
@@ -58,7 +58,7 @@ void ContentSettingsRegistry::BraveInit() {
   content_settings_info_.erase(ContentSettingsType::SENSORS);
   website_settings_registry_->UnRegister(ContentSettingsType::SENSORS);
   Register(ContentSettingsType::SENSORS, "sensors", CONTENT_SETTING_BLOCK,
-           WebsiteSettingsInfo::UNSYNCABLE, WhitelistedSchemes(),
+           WebsiteSettingsInfo::UNSYNCABLE, AllowlistedSchemes(),
            ValidSettings(CONTENT_SETTING_ALLOW, CONTENT_SETTING_BLOCK),
            WebsiteSettingsInfo::SINGLE_ORIGIN_ONLY_SCOPE,
            WebsiteSettingsRegistry::DESKTOP |
