@@ -25,7 +25,7 @@ type Handlers = Map<string, Function>
 export default class AsyncHandler {
   handlersByType: Handlers = new Map()
 
-  on<T>(actionType: string, doStuff: (store: MiddlewareAPI, payload: T) => void) {
+  on<T>(actionType: string, doStuff: (store: MiddlewareAPI, dispatch: Dispatch, payload: T) => void) {
     this.handlersByType.set(actionType, doStuff)
   }
 
@@ -33,7 +33,7 @@ export default class AsyncHandler {
     const result = next(action)
     const doStuff = this.handlersByType.get(action.type)
     if (doStuff) {
-      doStuff(store, next, action)
+      doStuff(store, next, action.payload)
     }
     return result
   }

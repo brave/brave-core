@@ -12,6 +12,7 @@ import PublisherMeta from '../PublisherMeta'
 interface Props {
   content: (BraveToday.Article | undefined)[]
   publishers: BraveToday.Publishers
+  onReadFeedItem: (item: BraveToday.FeedItem) => any
 }
 
 class CardOrderedList extends React.PureComponent<Props, {}> {
@@ -58,7 +59,7 @@ class CardOrderedList extends React.PureComponent<Props, {}> {
             }
             return (
               <Card.ListItem key={`card-ordered-list-key-${index}`}>
-                <a href={item.url}>
+                <a onClick={() => this.props.onReadFeedItem(item)} href={item.url}>
                   <Card.Heading>
                     {item.title}
                   </Card.Heading>

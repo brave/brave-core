@@ -7,8 +7,14 @@ import * as React from 'react'
 import * as Card from '../cardSizes'
 import * as Background from '../../../../../common/Background'
 
+type Props = {
+  size: string
+  imageUrl: string
+  onLoaded?: () => any
+  fit?: boolean
+}
 
-export default function CardImage (props: { size: string, fit?: boolean, imageUrl: string }) {
+export default function CardImage (props: Props) {
   const [data, setData] = React.useState('');
 
   React.useEffect(() => {
@@ -20,6 +26,10 @@ export default function CardImage (props: { size: string, fit?: boolean, imageUr
       { url: props.imageUrl }
     ).then(result => {
       setData(result.dataUrl);
+      window.requestAnimationFrame(() => {
+        if (props.onLoaded)
+          props.onLoaded()
+      })
     })
   });
 

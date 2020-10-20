@@ -46,6 +46,8 @@ const RandomContentOrder = [
 interface Props {
   content: BraveToday.Page
   publishers: BraveToday.Publishers
+  articleToScrollTo?: BraveToday.FeedItem
+  onReadFeedItem: (item: BraveToday.FeedItem) => any
 }
 
 interface State {
@@ -65,12 +67,16 @@ class CardsGroup extends React.PureComponent<Props, State> {
         return <CardLarge
                 content={headlines.splice(0, 1)}
                 publishers={this.props.publishers}
+                articleToScrollTo={this.props.articleToScrollTo}
+                onReadFeedItem={this.props.onReadFeedItem}
               />
       case CardType.HeadlinePaired:
         // TODO: handle content length < 2
         return <CardSmall
                 content={headlines.splice(0, 2)}
                 publishers={this.props.publishers}
+                articleToScrollTo={this.props.articleToScrollTo}
+                onReadFeedItem={this.props.onReadFeedItem}
               />
       case CardType.CategoryGroup:
         if (!this.props.content.itemsByCategory) {
@@ -79,6 +85,7 @@ class CardsGroup extends React.PureComponent<Props, State> {
         return <CardBrandedList
           content={this.props.content.itemsByCategory.items}
           publishers={this.props.publishers}
+          onReadFeedItem={this.props.onReadFeedItem}
         />
       case CardType.PublisherGroup:
         if (!this.props.content.itemsByPublisher) {
@@ -87,6 +94,7 @@ class CardsGroup extends React.PureComponent<Props, State> {
         return <CardOrderedList
           content={this.props.content.itemsByPublisher.items}
           publishers={this.props.publishers}
+          onReadFeedItem={this.props.onReadFeedItem}
         />
       case CardType.Deals:
         return <CardDeals content={this.props.content.deals} />

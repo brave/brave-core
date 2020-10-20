@@ -22,3 +22,7 @@ type BackgroundErrorPayload = {
   error: Error
 }
 export const errorGettingDataFromBackground = createAction<BackgroundErrorPayload>('errorGettingDataFromBackground')
+
+/** User has requested to read an article */
+export type ReadFeedItemPayload = BraveToday.FeedItem
+export const readFeedItem = createAction<ReadFeedItemPayload>('readFeedItem')

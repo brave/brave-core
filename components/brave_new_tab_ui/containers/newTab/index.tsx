@@ -1089,9 +1089,11 @@ class NewTabPage extends React.Component<Props, State> {
         <BraveToday
           setOpacityForItems={this.setOpacityForItems}
           feed={this.props.todayData.feed}
+          articleToScrollTo={this.props.todayData.articleScrollTo}
           onAnotherPageNeeded={this.props.actions.anotherPageNeeded}
           displayedPageCount={this.props.todayData.currentPageIndex}
           publishers={this.props.todayData.publishers}
+          onReadFeedItem={this.props.actions.readFeedItem}
         />
         }
         <Settings

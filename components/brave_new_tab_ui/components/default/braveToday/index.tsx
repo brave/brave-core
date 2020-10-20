@@ -23,7 +23,9 @@ interface Props {
   feed?: BraveToday.Feed
   publishers?: BraveToday.Publishers
   setOpacityForItems: (opacity: boolean) => void
+  onReadFeedItem: (item: BraveToday.FeedItem) => any
   onAnotherPageNeeded: () => any
+  articleToScrollTo?: BraveToday.FeedItem
   displayedPageCount: number
 }
 
@@ -106,6 +108,8 @@ class BraveToday extends React.PureComponent<Props, State> {
         <CardLarge
           content={[feed.featuredArticle]}
           publishers={publishers}
+          articleToScrollTo={this.props.articleToScrollTo}
+          onReadFeedItem={this.props.onReadFeedItem}
         />
         {/* deals */}
         <CardDeals content={feed.featuredDeals} />
@@ -118,6 +122,8 @@ class BraveToday extends React.PureComponent<Props, State> {
                   key={`cards-group-key-${index}`}
                   content={feed.pages[index]}
                   publishers={publishers}
+                  articleToScrollTo={this.props.articleToScrollTo}
+                  onReadFeedItem={this.props.onReadFeedItem}
                 />
               </>
             )

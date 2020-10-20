@@ -15,12 +15,30 @@ export type BraveTodayState = {
   // Feed data
   feed?: BraveToday.Feed
   publishers?: BraveToday.Publishers
+  articleScrollTo?: BraveToday.FeedItem
+}
+
+function storeInHistoryState (data: Object) {
+  const oldHistoryState = (typeof history.state === 'object') ? history.state : {}
+  const newHistoryState = { ...oldHistoryState, ...data }
+  history.pushState(newHistoryState, document.title)
 }
 
 const defaultState: BraveTodayState = {
   isFetching: true,
   currentPageIndex: 0,
 }
+// Get previously-clicked article from history state
+if (history.state && history.state.todayArticle) {
+  defaultState.currentPageIndex = history.state.todayPageIndex as number || 0
+  defaultState.articleScrollTo = history.state.todayArticle as BraveToday.FeedItem
+  // Clear history state now that we have the info on app state
+  storeInHistoryState({todayArticle: null, todayPageIndex: null})
+}
+
+// TODO(petemill): Make sure we don't keep scrolling to the scrolled-to article
+// if it gets removed and rendered again (e.g. if brave today is toggled off and on).
+// Reset to defaultState when Today is turned off or refreshed.
 
 const reducer = createReducer<BraveTodayState>({}, defaultState)
 
@@ -44,7 +62,7 @@ reducer.on(Actions.dataReceived, (state, payload) => {
     publishers: payload.publishers,
     // Reset page index to ask for, even if we have current paged
     // content since feed might be new content.
-    currentPageIndex: 0
+    currentPageIndex: state.articleScrollTo ? state.currentPageIndex : 0
   }
 })
 
