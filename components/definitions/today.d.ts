@@ -82,7 +82,6 @@ declare namespace BraveToday {
     publisher_id: string,
     publisher_name: string,
     category: string,
-    publisher_logo_padded: string,
     enabled: boolean
     user_enabled: boolean | null
   }
