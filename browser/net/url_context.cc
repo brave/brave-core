@@ -99,7 +99,7 @@ std::shared_ptr<brave::BraveRequestInfo> BraveRequestInfo::MakeCTX(
     ctx->network_isolation_key =
         request.trusted_params->isolation_info.network_isolation_key();
     ctx->tab_origin = ctx->network_isolation_key
-            .GetTopFrameOrigin()
+            .GetTopFrameSite()
             .value_or(url::Origin())
             .GetURL();
   }
