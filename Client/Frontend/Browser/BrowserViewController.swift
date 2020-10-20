@@ -1993,6 +1993,9 @@ extension BrowserViewController: TopToolbarDelegate {
         }
         let shields = ShieldsViewController(tab: selectedTab)
         shields.shieldsSettingsChanged = { [unowned self] _ in
+            // Update the shields status immediately
+            self.topToolbar.refreshShieldsStatus()
+            
             // Reload this tab. This will also trigger an update of the brave icon in `TabLocationView` if
             // the setting changed is the global `.AllOff` shield
             self.tabManager.selectedTab?.reload()
