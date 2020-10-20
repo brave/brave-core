@@ -13,12 +13,13 @@ import android.provider.Browser;
 
 import org.chromium.base.Log;
 import org.chromium.chrome.browser.feedback.FeedbackCollector;
+import org.chromium.chrome.browser.feedback.HelpAndFeedbackLauncherImpl;
 
 import javax.annotation.Nonnull;
 
-public class BraveHelpAndFeedback extends HelpAndFeedback {
+public class BraveHelpAndFeedbackLauncher extends HelpAndFeedbackLauncherImpl {
     protected static final String FALLBACK_SUPPORT_URL = "https://community.brave.com/";
-    private static final String TAG = "BraveHelpAndFeedback";
+    private static final String TAG = "BraveHelpAndFeedbackLauncher";
 
     @Override
     protected void show(
