@@ -18,6 +18,7 @@ export const QRBoxStyle = styled(CustomCard)`
   display: flex;
   justify-content: space-between;
   align-items: center;
+  width: 100%;
 `
 
 export const QRText = styled<{}, 'div'>('div')`
