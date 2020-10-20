@@ -26,13 +26,6 @@ using bookmarks::BookmarkModel;
 using bookmarks::BookmarkNode;
 
 namespace {
-//FROM: "chrome/grit/generated_resources.h"
-#define IDS_BOOKMARK_GROUP_FROM_FIREFOX 802
-#define IDS_BOOKMARK_GROUP_FROM_SAFARI 803
-#define IDS_BOOKMARK_GROUP 804
-}
-
-namespace {
 
 // Generates a unique folder name. If |folder_name| is not unique, then this
 // repeatedly tests for '|folder_name| + (i)' until a unique name is found.
@@ -69,11 +62,8 @@ void ShowBookmarkBar(ChromeBrowserState* browser_state) {
 
 }  // namespace
 
-void BookmarksImporter::AddBookmarks(const std::vector<ImportedBookmarkEntry>& bookmarks) {
-  // Default top level folder
-  base::string16 top_level_folder_name =
-    l10n_util::GetStringUTF16(IDS_BOOKMARK_GROUP);
-    
+void BookmarksImporter::AddBookmarks(const base::string16& top_level_folder_name,
+                                     const std::vector<ImportedBookmarkEntry>& bookmarks) {
   if (bookmarks.empty())
     return;
     
@@ -87,7 +77,8 @@ void BookmarksImporter::AddBookmarks(const std::vector<ImportedBookmarkEntry>& b
 
   // If the bookmark bar is currently empty, we should import directly to it.
   // Otherwise, we should import everything to a subfolder.
-  const BookmarkNode* bookmark_bar = model->bookmark_bar_node();
+  // For iOS, import into the Mobile Bookmarks Node - Brandon T.
+  const BookmarkNode* bookmark_bar = model->mobile_node();
   bool import_to_top_level = bookmark_bar->children().empty();
 
   // Reorder bookmarks so that the toolbar entries come first.

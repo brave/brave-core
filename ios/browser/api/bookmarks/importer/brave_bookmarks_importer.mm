@@ -9,7 +9,12 @@
 #include "base/files/file_path.h"
 #include "base/base_paths.h"
 #include "base/path_service.h"
+#include "base/sequenced_task_runner.h"
 #include "base/strings/sys_string_conversions.h"
+#include "base/task/post_task.h"
+#include "base/task/thread_pool.h"
+#include "ios/web/public/thread/web_task_traits.h"
+#include "ios/web/public/thread/web_thread.h"
 #import "net/base/mac/url_conversions.h"
 #include "url/gurl.h"
 
@@ -48,6 +53,9 @@
 @end
 
 @interface BraveBookmarksImporter()
+{
+  scoped_refptr<base::SequencedTaskRunner> import_thread_;
+}
 @property (atomic) bool cancelled; // atomic
 @end
 
@@ -59,42 +67,115 @@
     return self;
 }
 
+- (void)dealloc {
+  [self cancel];
+  self->import_thread_.reset();
+}
+
 - (void)cancel {
   self.cancelled = true;
 }
 
 - (void)importFromFile:(NSString *)filePath
+    topLevelFolderName:(NSString *)folderName
        automaticImport:(bool)automaticImport
           withListener:(void(^)(BraveBookmarksImporterState, NSArray<BraveImportedBookmark *> * _Nullable))listener {
+  
   base::FilePath source_file_path =
       base::FilePath::FromUTF8Unsafe([filePath UTF8String]);
+  
+  //In Chromium, this is IDS_BOOKMARK_GROUP (804)
+  base::string16 top_level_folder_name =
+      base::SysNSStringToUTF16(folderName);
+  
+  auto start_import = [](BraveBookmarksImporter* importer,
+                         const base::FilePath& source_file_path,
+                         const base::string16& top_level_folder_name,
+                         bool automaticImport,
+                         std::function<void(BraveBookmarksImporterState, NSArray<BraveImportedBookmark *> *)> listener){
+    listener(BraveBookmarksImporterStateStarted, nullptr);
+      
+    std::vector<ImportedBookmarkEntry> bookmarks;
+    bookmark_html_reader::ImportBookmarksFile(
+        base::BindRepeating([](BraveBookmarksImporter* importer) -> bool {
+            return importer ? [importer isImporterCancelled] : true;
+        }, base::Unretained(importer)),
+        base::BindRepeating([](BraveBookmarksImporter* importer, const GURL& url) -> bool {
+            return [importer canImportURL:url];
+        }, base::Unretained(importer)), source_file_path,
+        &bookmarks, nullptr);
     
-  listener(BraveBookmarksImporterStateStarted, nullptr);
-    
-  std::vector<ImportedBookmarkEntry> bookmarks;
-  bookmark_html_reader::ImportBookmarksFile(
-      base::BindRepeating([](BraveBookmarksImporter* importer) -> bool {
-          return [importer isImporterCancelled];
-      }, base::Unretained(self)),
-      base::BindRepeating([](BraveBookmarksImporter* importer, const GURL& url) -> bool {
-          return [importer canImportURL:url];
-      }, base::Unretained(self)), source_file_path,
-      &bookmarks, nullptr);
-    
-  if (!bookmarks.empty() && ![self isImporterCancelled]) {
-    if (automaticImport) {
-      BookmarksImporter::AddBookmarks(bookmarks);
-      listener(BraveBookmarksImporterStateAutoCompleted, nullptr);
+    if (!bookmarks.empty() && ![importer isImporterCancelled]) {
+      if (automaticImport) {
+        auto complete_import = [](std::vector<ImportedBookmarkEntry> bookmarks,
+                                  const base::string16& top_level_folder_name,
+                                  std::function<void(BraveBookmarksImporterState, NSArray<BraveImportedBookmark *> *)> listener){
+          BookmarksImporter::AddBookmarks(top_level_folder_name, bookmarks);
+          listener(BraveBookmarksImporterStateAutoCompleted, nullptr);
+        };
+        
+        // Import into the Profile/ChromeBrowserState on the main-thread.
+        base::PostTask(FROM_HERE,
+                       {web::WebThread::UI},
+                       base::BindOnce(complete_import,
+                                      base::Passed(std::move(bookmarks)),
+                                      top_level_folder_name,
+                                      listener)
+                       );
+      } else {
+        listener(BraveBookmarksImporterStateCompleted, [importer convertToIOSImportedBookmarks:bookmarks]);
+      }
     } else {
-      listener(BraveBookmarksImporterStateCompleted, [self convertToIOSImportedBookmarks:bookmarks]);
+      listener(BraveBookmarksImporterStateCancelled, nullptr);
     }
-  } else {
-    listener(BraveBookmarksImporterStateCancelled, nullptr);
+  };
+  
+  // Create worker thread in which importer runs.
+  // In Chromium, this is created with `base::Thread("import_thread")`
+  if (!self->import_thread_) {
+    self->import_thread_ = base::CreateSequencedTaskRunner(
+                                 {base::ThreadPool(), base::MayBlock(),
+                                  base::TaskPriority::USER_VISIBLE,
+                                  base::TaskShutdownBehavior::BLOCK_SHUTDOWN});
   }
+  
+  // Run the importer on the sequenced task runner.
+  self->import_thread_->PostTask(FROM_HERE,
+                                 base::BindOnce(start_import,
+                                                base::Unretained(self),
+                                                source_file_path,
+                                                top_level_folder_name,
+                                                automaticImport,
+                                                listener)
+                                 );
 }
 
-- (void)importFromArray:(NSArray<BraveImportedBookmark *> *)bookmarks {
-  BookmarksImporter::AddBookmarks([self convertToChromiumImportedBookmarks:bookmarks]);
+- (void)importFromArray:(NSArray<BraveImportedBookmark *> *)bookmarks
+     topLevelFolderName:(NSString *)folderName
+           withListener:(void(^)(BraveBookmarksImporterState))listener {
+  
+  //In Chromium, this is IDS_BOOKMARK_GROUP (804)
+  base::string16 top_level_folder_name =
+      base::SysNSStringToUTF16(folderName);
+  
+  auto start_import = [](BraveBookmarksImporter* importer,
+                         NSArray<BraveImportedBookmark *> *bookmarks,
+                         const base::string16& top_level_folder_name,
+                         std::function<void(BraveBookmarksImporterState)> listener){
+    BookmarksImporter::AddBookmarks(top_level_folder_name,
+                                    [importer convertToChromiumImportedBookmarks:bookmarks]);
+    listener(BraveBookmarksImporterStateCompleted);
+  };
+  
+  // Import into the Profile/ChromeBrowserState on the main-thread.
+  base::PostTask(FROM_HERE,
+                 {web::WebThread::UI},
+                 base::BindOnce(start_import,
+                                base::Unretained(self),
+                                bookmarks,
+                                top_level_folder_name,
+                                listener)
+                 );
 }
 
 // MARK: - Private
