@@ -62,7 +62,6 @@ public class BraveRewardsNativeWorker {
 
     private static BraveRewardsNativeWorker instance;
     private static final Object lock = new Object();
-    private boolean createWalletInProcess;  // flag: wallet is being created
     private boolean grantClaimInProcess;  // flag: wallet is being created
 
     public static  BraveRewardsNativeWorker getInstance() {
@@ -146,7 +145,7 @@ public class BraveRewardsNativeWorker {
         }
     }
 
-    private void TriggerOnNotifyFrontTabUrlChanged() {
+    public void TriggerOnNotifyFrontTabUrlChanged() {
         // Clear frontTabUrl so that all observers are updated.
         frontTabUrl = "";
         mHandler.post(new Runnable() {
@@ -160,31 +159,9 @@ public class BraveRewardsNativeWorker {
         });
     }
 
-    public void CreateWallet() {
-        synchronized(lock) {
-            if (createWalletInProcess) {
-                return;
-            }
-            createWalletInProcess = true;
-            nativeCreateWallet(mNativeBraveRewardsNativeWorker);
-        }
-    }
-
-    public boolean IsCreateWalletInProcess() {
-        synchronized(lock) {
-          return createWalletInProcess;
-        }
-    }
-
     public boolean IsGrantClaimInProcess() {
         synchronized(lock) {
           return grantClaimInProcess;
-        }
-    }
-
-    public void WalletExist() {
-        synchronized(lock) {
-            nativeWalletExist(mNativeBraveRewardsNativeWorker);
         }
     }
 
@@ -339,18 +316,6 @@ public class BraveRewardsNativeWorker {
         }
     }
 
-    public void SetRewardsMainEnabled(boolean enabled) {
-        synchronized(lock) {
-            nativeSetRewardsMainEnabled(mNativeBraveRewardsNativeWorker, enabled);
-        }
-    }
-
-    public void GetRewardsMainEnabled() {
-        synchronized(lock) {
-            nativeGetRewardsMainEnabled(mNativeBraveRewardsNativeWorker);
-        }
-    }
-
     public void GetAutoContributeProperties() {
         synchronized(lock) {
             nativeGetAutoContributeProperties(mNativeBraveRewardsNativeWorker);
@@ -443,6 +408,12 @@ public class BraveRewardsNativeWorker {
         }
     }
 
+    public void SetAutoContributeEnabled(boolean isSetAutoContributeEnabled) {
+        synchronized(lock) {
+            nativeSetAutoContributeEnabled(mNativeBraveRewardsNativeWorker, isSetAutoContributeEnabled);
+        }
+    }
+
     @CalledByNative
     public void OnRefreshPublisher(int status, String publisherKey) {
         for (BraveRewardsObserver observer : mObservers) {
@@ -451,29 +422,9 @@ public class BraveRewardsNativeWorker {
     }
 
     @CalledByNative
-    public void OnGetRewardsMainEnabled(boolean enabled) {
-        int oldRewardsStatus = rewardsStatus;
-        rewardsStatus = (enabled) ? REWARDS_ENABLED : REWARDS_DISABLED;
-        if (oldRewardsStatus != rewardsStatus) {
-            TriggerOnNotifyFrontTabUrlChanged();
-        }
-
-        for (BraveRewardsObserver observer : mObservers) {
-            observer.OnGetRewardsMainEnabled(enabled);
-        }
-    }
-
-    @CalledByNative
     public void OnRewardsParameters(int errorCode) {
         for (BraveRewardsObserver observer : mObservers) {
             observer.OnRewardsParameters(errorCode);
-        }
-    }
-
-    @CalledByNative
-    public void OnIsWalletCreated(boolean created) {
-        for (BraveRewardsObserver observer : mObservers) {
-            observer.OnIsWalletCreated(created);
         }
     }
 
@@ -488,25 +439,6 @@ public class BraveRewardsNativeWorker {
     private void setNativePtr(long nativePtr) {
         assert mNativeBraveRewardsNativeWorker == 0;
         mNativeBraveRewardsNativeWorker = nativePtr;
-    }
-
-    @CalledByNative
-    public void OnWalletInitialized(int error_code) {
-        createWalletInProcess = false;
-
-        // Query rewards state.
-        if (LEDGER_OK == error_code) {
-            mHandler.post(new Runnable() {
-                @Override
-                public void run() {
-                    instance.GetRewardsMainEnabled();
-                }
-            });
-        }
-
-        for (BraveRewardsObserver observer : mObservers) {
-            observer.OnWalletInitialized(error_code);
-        }
     }
 
     @CalledByNative
@@ -596,19 +528,6 @@ public class BraveRewardsNativeWorker {
     }
 
     @CalledByNative
-    public void OnRewardsMainEnabled(boolean enabled) {
-        int oldRewardsStatus = rewardsStatus;
-        rewardsStatus = (enabled) ? REWARDS_ENABLED : REWARDS_DISABLED;
-        if (oldRewardsStatus != rewardsStatus) {
-            TriggerOnNotifyFrontTabUrlChanged();
-        }
-
-        for (BraveRewardsObserver observer : mObservers) {
-            observer.OnRewardsMainEnabled(enabled);
-        }
-    }
-
-    @CalledByNative
     public void OnGetExternalWallet(int error_code, String external_wallet) {
         for (BraveRewardsObserver observer : mObservers) {
             observer.OnGetExternalWallet(error_code, external_wallet);
@@ -639,10 +558,15 @@ public class BraveRewardsNativeWorker {
         }
     }
 
+    @CalledByNative
+    public void OnOneTimeTip() {
+        for (BraveRewardsObserver observer : mObservers) {
+            observer.OnOneTimeTip();
+        }
+    }
+
     private native void nativeInit();
     private native void nativeDestroy(long nativeBraveRewardsNativeWorker);
-    private native void nativeCreateWallet(long nativeBraveRewardsNativeWorker);
-    private native void nativeWalletExist(long nativeBraveRewardsNativeWorker);
     private native String nativeGetWalletBalance(long nativeBraveRewardsNativeWorker);
     private native double nativeGetWalletRate(long nativeBraveRewardsNativeWorker);
     private native void nativeGetPublisherInfo(long nativeBraveRewardsNativeWorker, int tabId, String host);
@@ -668,8 +592,6 @@ public class BraveRewardsNativeWorker {
     private native void nativeGetRecurringDonations(long nativeBraveRewardsNativeWorker);
     private native boolean nativeIsCurrentPublisherInRecurrentDonations(long nativeBraveRewardsNativeWorker,
         String publisher);
-    private native void nativeGetRewardsMainEnabled(long nativeBraveRewardsNativeWorker);
-    private native void nativeSetRewardsMainEnabled(long nativeBraveRewardsNativeWorker, boolean enabled);
     private native void nativeGetAutoContributeProperties(long nativeBraveRewardsNativeWorker);
     private native boolean nativeIsAutoContributeEnabled(long nativeBraveRewardsNativeWorker);
     private native void nativeGetReconcileStamp(long nativeBraveRewardsNativeWorker);
@@ -686,4 +608,5 @@ public class BraveRewardsNativeWorker {
     private native void nativeRecoverWallet(long nativeBraveRewardsNativeWorker, String passPhrase);
     private native void nativeRefreshPublisher(long nativeBraveRewardsNativeWorker, String publisherKey);
     private native void nativeGetRewardsParameters(long nativeBraveRewardsNativeWorker);
+    private native void nativeSetAutoContributeEnabled(long nativeBraveRewardsNativeWorker, boolean isSetAutoContributeEnabled);
 }

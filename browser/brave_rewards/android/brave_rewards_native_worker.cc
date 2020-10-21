@@ -289,17 +289,17 @@ void BraveRewardsNativeWorker::OnGetCurrentBalanceReport(
         brave_rewards::RewardsService* rewards_service,
         const ledger::type::Result result,
         ledger::type::BalanceReportInfoPtr report) {
-  std::vector<double> values;
-  values.push_back(report->grants);
-  values.push_back(report->earning_from_ads);
-  values.push_back(report->auto_contribute);
-  values.push_back(report->recurring_donation);
-  values.push_back(report->one_time_donation);
-
+  base::android::ScopedJavaLocalRef<jdoubleArray> java_array;
   JNIEnv* env = base::android::AttachCurrentThread();
-  base::android::ScopedJavaLocalRef<jdoubleArray> java_array =
-      base::android::ToJavaDoubleArray(env, values);
-
+  if (report) {
+    std::vector<double> values;
+    values.push_back(report->grants);
+    values.push_back(report->earning_from_ads);
+    values.push_back(report->auto_contribute);
+    values.push_back(report->recurring_donation);
+    values.push_back(report->one_time_donation);
+    java_array = base::android::ToJavaDoubleArray(env, values);
+  }
   Java_BraveRewardsNativeWorker_OnGetCurrentBalanceReport(env,
         weak_java_brave_rewards_native_worker_.get(env), java_array);
 }
@@ -312,6 +312,10 @@ void BraveRewardsNativeWorker::Donate(JNIEnv* env,
     brave_rewards_service_->OnTip(
       base::android::ConvertJavaStringToUTF8(env, publisher_key), amount,
         recurring);
+    if (!recurring) {
+      Java_BraveRewardsNativeWorker_OnOneTimeTip(env,
+        weak_java_brave_rewards_native_worker_.get(env));
+    }
   }
 }
 
@@ -629,24 +633,24 @@ void BraveRewardsNativeWorker::GetExternalWallet(
 void BraveRewardsNativeWorker::OnGetExternalWallet(
     const ledger::type::Result result,
     ledger::type::UpholdWalletPtr wallet) {
-  if (!wallet) {
-    return;
-  }
   std::string json_wallet;
-  base::Value dict(base::Value::Type::DICTIONARY);
-  dict.SetStringKey("token", wallet->token);
-  dict.SetStringKey("address", wallet->address);
+  if (!wallet) {
+    json_wallet = "";
+  } else {
+    base::Value dict(base::Value::Type::DICTIONARY);
+    dict.SetStringKey("token", wallet->token);
+    dict.SetStringKey("address", wallet->address);
 
-  // enum class WalletStatus : int32_t
-  dict.SetIntKey("status", static_cast<int32_t>(wallet->status));
-  dict.SetStringKey("verify_url", wallet->verify_url);
-  dict.SetStringKey("add_url", wallet->add_url);
-  dict.SetStringKey("withdraw_url", wallet->withdraw_url);
-  dict.SetStringKey("user_name", wallet->user_name);
-  dict.SetStringKey("account_url", wallet->account_url);
-  dict.SetStringKey("login_url", wallet->login_url);
-  base::JSONWriter::Write(dict, &json_wallet);
-
+    // enum class WalletStatus : int32_t
+    dict.SetIntKey("status", static_cast<int32_t>(wallet->status));
+    dict.SetStringKey("verify_url", wallet->verify_url);
+    dict.SetStringKey("add_url", wallet->add_url);
+    dict.SetStringKey("withdraw_url", wallet->withdraw_url);
+    dict.SetStringKey("user_name", wallet->user_name);
+    dict.SetStringKey("account_url", wallet->account_url);
+    dict.SetStringKey("login_url", wallet->login_url);
+    base::JSONWriter::Write(dict, &json_wallet);
+  }
   JNIEnv* env = base::android::AttachCurrentThread();
   Java_BraveRewardsNativeWorker_OnGetExternalWallet(env,
       weak_java_brave_rewards_native_worker_.get(env),
@@ -756,6 +760,15 @@ void BraveRewardsNativeWorker::OnRefreshPublisher(
       env, weak_java_brave_rewards_native_worker_.get(env),
       static_cast<int>(status),
       base::android::ConvertUTF8ToJavaString(env, publisher_key));
+}
+
+void BraveRewardsNativeWorker::SetAutoContributeEnabled(
+    JNIEnv* env,
+    const base::android::JavaParamRef<jobject>& obj,
+    bool isAutoContributeEnabled) {
+  if (brave_rewards_service_) {
+    brave_rewards_service_->SetAutoContributeEnabled(isAutoContributeEnabled);
+  }
 }
 
 static void JNI_BraveRewardsNativeWorker_Init(
