@@ -234,8 +234,6 @@ public class BrowsingModeBottomToolbarCoordinator {
         // disabled based on the overview state.
         if (ReturnToChromeExperimentsUtil.shouldShowStartSurfaceAsTheHomePage()) {
             mShareButton.setOverviewModeBehavior(overviewModeBehavior);
-            // mTabSwitcherButtonCoordinator.setOverviewModeBehavior(overviewModeBehavior);
-            mHomeButton.setOverviewModeBehavior(overviewModeBehavior);
         }
     }
 

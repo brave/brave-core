@@ -48,6 +48,7 @@ import org.chromium.chrome.browser.toolbar.top.ToolbarControlContainer;
 import org.chromium.chrome.browser.toolbar.top.TopToolbarCoordinator;
 import org.chromium.chrome.browser.ui.TabObscuringHandler;
 import org.chromium.chrome.browser.ui.appmenu.AppMenuCoordinator;
+import org.chromium.chrome.features.start_surface.StartSurface;
 import org.chromium.components.browser_ui.widget.scrim.ScrimCoordinator;
 
 import java.util.List;
@@ -70,7 +71,6 @@ public class BraveToolbarManager extends ToolbarManager {
     private LocationBarModel mLocationBarModel;
     private TopToolbarCoordinator mToolbar;
     private ObservableSupplier<BookmarkBridge> mBookmarkBridgeSupplier;
-    private ObservableSupplier<Boolean> mOmniboxFocusStateSupplier;
 
     private boolean mIsBottomToolbarVisible;
     private View mRootBottomView;
@@ -90,15 +90,14 @@ public class BraveToolbarManager extends ToolbarManager {
             OneshotSupplier<AppMenuCoordinator> appMenuCoordinatorSupplier,
             boolean shouldShowUpdateBadge,
             ObservableSupplier<TabModelSelector> tabModelSelectorSupplier,
-            ObservableSupplier<Boolean> omniboxFocusStateSupplier) {
+            OneshotSupplier<StartSurface> startSurfaceSupplier) {
         super(activity, controlsSizer, fullscreenManager, controlContainer, invalidator,
                 urlFocusChangedCallback, themeColorProvider, tabObscuringHandler,
                 shareDelegateSupplier, identityDiscController, buttonDataProviders, tabProvider,
                 scrimCoordinator, toolbarActionModeCallback, findToolbarManager, profileSupplier,
                 bookmarkBridgeSupplier, canAnimateNativeBrowserControls,
                 overviewModeBehaviorSupplier, appMenuCoordinatorSupplier, shouldShowUpdateBadge,
-                tabModelSelectorSupplier, omniboxFocusStateSupplier);
-        mOmniboxFocusStateSupplier = omniboxFocusStateSupplier;
+                tabModelSelectorSupplier, startSurfaceSupplier);
     }
 
     @Override
@@ -118,7 +117,7 @@ public class BraveToolbarManager extends ToolbarManager {
                 mToolbarTabController::openHomepage,
                 (reason)
                         -> setUrlBarFocus(true, reason),
-                mOverviewModeBehaviorSupplier, mScrimCoordinator, mOmniboxFocusStateSupplier);
+                mOverviewModeBehaviorSupplier, mScrimCoordinator);
         ((BraveBottomControlsCoordinator) mBottomControlsCoordinator).setRootView(mRootBottomView);
         boolean isBottomToolbarVisible = BottomToolbarConfiguration.isBottomToolbarEnabled()
                 && mActivity.getResources().getConfiguration().orientation
