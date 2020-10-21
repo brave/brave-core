@@ -145,6 +145,7 @@ test("brave_unit_tests") {
     ":test_support",
     "//brave/base:base_unittests",
     "//brave/browser/safebrowsing",
+    "//brave/browser/tor:unit_tests",
     "//brave/components/brave_ads/test:brave_ads_unit_tests",
     "//brave/components/brave_private_cdn",
     "//brave/components/brave_referrals/common",
@@ -152,6 +153,8 @@ test("brave_unit_tests") {
     "//brave/components/ipfs/test:brave_ipfs_unit_tests",
     "//brave/components/ntp_background_images/browser",
     "//brave/components/ntp_widget_utils/browser",
+    "//brave/components/tor:tor_unit_tests",
+    "//brave/net/proxy_resolution:unit_tests",
     "//brave/vendor/brave_base",
     "//chrome:browser_dependencies",
     "//chrome:child_dependencies",
@@ -356,12 +359,6 @@ test("brave_unit_tests") {
     sources += [
       # TODO(darkdh): move these out and use buildflag guard once it contains non tor specifics
       "//brave/browser/profiles/brave_profile_manager_unittest.cc",
-      "//brave/browser/tor/tor_control_unittest.cc",
-      "//brave/browser/tor/tor_navigation_throttle_unittest.cc",
-      "//brave/common/tor/tor_test_constants.cc",
-      "//brave/common/tor/tor_test_constants.h",
-      "//brave/net/proxy_resolution/configured_proxy_resolution_service_unittest.cc",
-      "//brave/net/proxy_resolution/proxy_config_service_tor_unittest.cc",
     ]
 
     deps += [ "//third_party/blink/public/common" ]
@@ -535,7 +532,6 @@ if (!is_android) {
       "//brave/browser/search_engines/search_engine_tracker_browsertest.cc",
       "//brave/browser/themes/brave_dark_mode_prefs_migration_browsertest.cc",
       "//brave/browser/themes/brave_theme_service_browsertest.cc",
-      "//brave/browser/tor/onion_location_navigation_throttle_browsertest.cc",
       "//brave/browser/ui/bookmark/bookmark_tab_helper_browsertest.cc",
       "//brave/browser/ui/brave_browser_command_controller_browsertest.cc",
       "//brave/browser/ui/content_settings/brave_autoplay_blocked_image_model_browsertest.cc",
@@ -599,6 +595,7 @@ if (!is_android) {
     }
 
     deps = [
+      "//brave/browser/tor:browser_tests",
       "//brave/components/ipfs/test:brave_ipfs_browser_tests",
       "//brave/browser/ui/tabs/test:browser_tests",
     ]
@@ -697,12 +694,6 @@ if (!is_android) {
       configs += [ "//brave/vendor/bat-native-ledger:internal_config" ]
     }
 
-    if (enable_tor) {
-      sources += [
-        "//brave/browser/extensions/brave_tor_client_updater_browsertest.cc",
-      ]
-    }
-
     if (enable_brave_wayback_machine) {
       sources += [ "//brave/components/brave_wayback_machine/brave_wayback_machine_browsertest.cc" ]
     }
@@ -749,8 +740,6 @@ if (!is_android) {
       "//brave/components/brave_sync/buildflags:buildflags",
       "//brave/components/brave_wallet/buildflags:buildflags",
       "//brave/components/ipfs/buildflags:buildflags",
-      "//brave/components/tor/buildflags",
-      "//brave/components/tor:pref_names",
       "//chrome/browser/ui",
       "//chrome/test:test_support_ui",
       "//components/embedder_support",

@@ -3,6 +3,14 @@ import("//brave/components/tor/buildflags/buildflags.gni")
 source_set("tor") {
   # Remove when https://github.com/brave/brave-browser/issues/10655 is resolved
   check_includes = false
+  visibility = [
+    "//brave/browser:browser_process",
+    "//brave/browser/profiles",
+    "//brave/browser/ui",
+    ":browser_tests",
+    ":unit_tests",
+  ]
+
   sources = [
     "tor_profile_service_factory.cc",
     "tor_profile_service_factory.h",
@@ -11,15 +19,10 @@ source_set("tor") {
   deps = [
     "//base",
     "//brave/components/tor",
+    "//brave/components/tor:pref_names",
     "//chrome/common",
     "//components/keyed_service/content",
-    "//components/keyed_service/core",
     "//content/public/browser",
-    "//mojo/public/cpp/bindings",
-  ]
-
-  public_deps = [
-    "//brave/components/tor/buildflags",
   ]
 
   if (enable_tor) {
@@ -40,5 +43,57 @@ source_set("tor") {
       "//brave/components/greaselion/browser/buildflags",
       "//brave/components/speedreader:buildflags",
     ]
+  }
+}
+
+source_set("unit_tests") {
+  testonly = true
+  if (enable_tor) {
+    sources = [
+      "tor_navigation_throttle_unittest.cc",
+    ]
+
+    deps = [
+      "//base",
+      "//brave/browser/profiles",
+      "//brave/browser/tor",
+      "//base/test:test_support",
+      "//brave/test:test_support",
+      "//brave/components/tor",
+      "//chrome/test:test_support",
+      "//content/public/browser",
+      "//content/test:test_support",
+      "//testing/gtest",
+      "//url",
+    ]
+  }
+}
+
+source_set("browser_tests") {
+  testonly = true
+  if (enable_tor) {
+    sources = [
+      "brave_tor_client_updater_browsertest.cc",
+      "onion_location_navigation_throttle_browsertest.cc",
+    ]
+
+    deps = [
+      "//base",
+      "//brave/app:brave_generated_resources_grit",
+      "//brave/browser:browser_process",
+      "//brave/browser/profiles",
+      "//brave/browser/tor",
+      "//brave/browser/ui",
+      "//brave/common",
+      "//brave/components/tor",
+      "//brave/components/tor:pref_names",
+      "//chrome/browser",
+      "//chrome/test:test_support",
+      "//chrome/test:test_support_ui",
+      "//content/public/browser",
+      "//content/test:test_support",
+      "//net:test_support",
+    ]
+    defines = [ "HAS_OUT_OF_PROC_TEST_RUNNER" ]
   }
 }

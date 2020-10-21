@@ -46,7 +46,9 @@ source_set("tor") {
   
   deps += [
     "//brave/app:brave_generated_resources_grit",
+    "//brave/components/brave_component_updater/browser",
     "//brave/components/services/tor/public/interfaces",
+    "//components/pref_registry",
     "//components/prefs",
     "//components/user_prefs",
     "//content/public/browser",
@@ -70,4 +72,22 @@ source_set("switches") {
     "tor_switches.cc",
     "tor_switches.h",
   ]
+}
+
+source_set("tor_unit_tests") {
+  testonly = true
+  if (enable_tor) {
+    sources = [
+      "tor_control_unittest.cc",
+    ]
+
+    deps = [
+      "//base/test:test_support",
+      "//brave/components/tor",
+      "//brave/test:test_support",
+      "//content/public/browser",
+      "//content/test:test_support",
+      "//testing/gtest",
+    ]
+  }
 }

@@ -12,7 +12,6 @@
 #include "brave/browser/brave_browser_process_impl.h"
 #include "brave/components/tor/buildflags/buildflags.h"
 #include "brave/components/tor/pref_names.h"
-#include "chrome/browser/profiles/incognito_helpers.h"
 #include "chrome/common/chrome_paths.h"
 #include "components/keyed_service/content/browser_context_dependency_manager.h"
 #include "components/prefs/pref_service.h"
@@ -100,7 +99,7 @@ content::BrowserContext* TorProfileServiceFactory::GetBrowserContextToUse(
     content::BrowserContext* context) const {
   // Not shared with our dummy regular Tor profile because we want to trigger
   // LaunchTor when a new Tor window is created.
-  return chrome::GetBrowserContextOwnInstanceInIncognito(context);
+  return context;
 }
 
 void TorProfileServiceFactory::BrowserContextShutdown(
