@@ -77,10 +77,6 @@ bool IsUsingSystemTheme(const CustomThemeSupplier* theme_supplier) {
 
 BraveThemeHelper::~BraveThemeHelper() = default;
 
-void BraveThemeHelper::SetTorOrGuest() {
-  is_tor_or_guest_ = true;
-}
-
 SkColor BraveThemeHelper::GetDefaultColor(
     int id,
     bool incognito,
@@ -98,13 +94,13 @@ SkColor BraveThemeHelper::GetDefaultColor(
     return ThemeHelper::GetDefaultColor(id, incognito, theme_supplier);
 
   // Brave Tor profiles are always 'incognito' (for now)
-  if (!incognito && is_tor_or_guest_) {
+  if (!incognito && (is_tor_ || is_guest_)) {
     incognito = true;
   }
   const dark_mode::BraveDarkModeType type =
       dark_mode::GetActiveBraveDarkModeType();
   const base::Optional<SkColor> braveColor =
-      MaybeGetDefaultColorForBraveUi(id, incognito, type);
+      MaybeGetDefaultColorForBraveUi(id, incognito, is_tor_, type);
   if (braveColor) {
     return braveColor.value();
   }
@@ -136,7 +132,7 @@ base::Optional<SkColor> BraveThemeHelper::GetOmniboxColor(
 
   const bool dark = dark_mode::GetActiveBraveDarkModeType() ==
                     dark_mode::BraveDarkModeType::BRAVE_DARK_MODE_TYPE_DARK;
-  incognito = incognito || is_tor_or_guest_;
+  incognito = incognito || is_tor_ || is_guest_;
   // TODO(petemill): Get colors from color-pallete and theme constants
   switch (id) {
     case ThemeProperties::COLOR_OMNIBOX_BACKGROUND: {
