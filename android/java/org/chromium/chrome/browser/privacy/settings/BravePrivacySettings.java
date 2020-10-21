@@ -9,6 +9,7 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 
 import androidx.preference.Preference;
+import androidx.preference.PreferenceCategory;
 
 import org.chromium.base.ContextUtils;
 import org.chromium.chrome.R;
@@ -34,6 +35,11 @@ public class BravePrivacySettings extends PrivacySettings {
     private static final String PREF_AUTOCOMPLETE_TOP_SITES = "autocomplete_top_sites";
     private static final String PREF_AUTOCOMPLETE_BRAVE_SUGGESTED_SITES = "autocomplete_brave_suggested_sites";
     private static final String PREF_CLEAR_BROWSING_DATA = "clear_browsing_data";
+    private static final String PREF_SOCIAL_BLOCKING = "brave_shields_social_blocking";
+    private static final String PREF_SOCIAL_BLOCKING_GOOGLE = "social_blocking_google";
+    private static final String PREF_SOCIAL_BLOCKING_FACEBOOK = "social_blocking_facebook";
+    private static final String PREF_SOCIAL_BLOCKING_TWITTER = "social_blocking_twitter";
+    private static final String PREF_SOCIAL_BLOCKING_LINKEDIN = "social_blocking_linkedin";
 
     private final PrefService mPrefServiceBridge = UserPrefs.get(Profile.getLastUsedRegularProfile());
     private final ChromeManagedPreferenceDelegate mManagedPreferenceDelegate =
@@ -45,6 +51,11 @@ public class BravePrivacySettings extends PrivacySettings {
     private ChromeBaseCheckBoxPreference mAdBlockPref;
     private ChromeBaseCheckBoxPreference mFingerprintingProtectionPref;
     private ChromeBaseCheckBoxPreference mCloseTabsOnExitPref;
+    private PreferenceCategory mSocialBlockingCategory;
+    private ChromeSwitchPreference mSocialBlockingGoogle;
+    private ChromeSwitchPreference mSocialBlockingFacebook;
+    private ChromeSwitchPreference mSocialBlockingTwitter;
+    private ChromeSwitchPreference mSocialBlockingLinkedin;
 
     @Override
     public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
@@ -76,6 +87,21 @@ public class BravePrivacySettings extends PrivacySettings {
         mAutocompleteBraveSuggestedSites = (ChromeSwitchPreference) findPreference(PREF_AUTOCOMPLETE_BRAVE_SUGGESTED_SITES);
         mAutocompleteBraveSuggestedSites.setOnPreferenceChangeListener(this);
 
+        mSocialBlockingCategory = (PreferenceCategory) findPreference(PREF_SOCIAL_BLOCKING);
+        mSocialBlockingCategory.setOnPreferenceChangeListener(this);
+
+        mSocialBlockingGoogle = (ChromeSwitchPreference) findPreference(PREF_SOCIAL_BLOCKING_GOOGLE);
+        mSocialBlockingGoogle.setOnPreferenceChangeListener(this);
+
+        mSocialBlockingFacebook = (ChromeSwitchPreference) findPreference(PREF_SOCIAL_BLOCKING_FACEBOOK);
+        mSocialBlockingFacebook.setOnPreferenceChangeListener(this);
+
+        mSocialBlockingTwitter = (ChromeSwitchPreference) findPreference(PREF_SOCIAL_BLOCKING_TWITTER);
+        mSocialBlockingTwitter.setOnPreferenceChangeListener(this);
+
+        mSocialBlockingLinkedin = (ChromeSwitchPreference) findPreference(PREF_SOCIAL_BLOCKING_LINKEDIN);
+        mSocialBlockingLinkedin.setOnPreferenceChangeListener(this);
+
         updatePreferences();
     }
 
@@ -103,6 +129,18 @@ public class BravePrivacySettings extends PrivacySettings {
         } else if (PREF_AUTOCOMPLETE_BRAVE_SUGGESTED_SITES.equals(key)) {
             UserPrefs.get(Profile.getLastUsedRegularProfile()).setBoolean(BravePref.BRAVE_SUGGESTED_SITE_SUGGESTIONS_ENABLED,
                     (boolean) newValue);
+        } else if (PREF_SOCIAL_BLOCKING_GOOGLE.equals(key)) {
+            BravePrefServiceBridge.getInstance().setThirdPartyGoogleLoginEnabled(
+                    (boolean) newValue);
+        } else if (PREF_SOCIAL_BLOCKING_FACEBOOK.equals(key)) {
+            BravePrefServiceBridge.getInstance().setThirdPartyFacebookEmbedEnabled(
+                    (boolean) newValue);
+        } else if (PREF_SOCIAL_BLOCKING_TWITTER.equals(key)) {
+            BravePrefServiceBridge.getInstance().setThirdPartyTwitterEmbedEnabled(
+                    (boolean) newValue);
+        } else if (PREF_SOCIAL_BLOCKING_LINKEDIN.equals(key)) {
+            BravePrefServiceBridge.getInstance().setThirdPartyLinkedinEmbedEnabled(
+                    (boolean) newValue);
         }
 
         return true;
@@ -129,6 +167,7 @@ public class BravePrivacySettings extends PrivacySettings {
         mAutocompleteBraveSuggestedSites.setChecked(
                 UserPrefs.get(Profile.getLastUsedRegularProfile()).getBoolean(BravePref.BRAVE_SUGGESTED_SITE_SUGGESTIONS_ENABLED));
         mAutocompleteBraveSuggestedSites.setOrder(++order);
+        mSocialBlockingCategory.setOrder(++order);
     }
 
     private void removePreferenceIfPresent(String key) {
