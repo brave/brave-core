@@ -25,8 +25,7 @@ void ResetSync(syncer::BraveProfileSyncService* sync_service,
 
 void DeleteDevice(syncer::BraveProfileSyncService* sync_service,
                   syncer::DeviceInfoSyncService* device_info_service,
-                  const std::string& device_guid,
-                  base::OnceClosure on_delete_done);
+                  const std::string& device_guid);
 
 }  // namespace brave_sync
 

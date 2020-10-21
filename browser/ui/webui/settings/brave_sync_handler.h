@@ -44,7 +44,6 @@ class BraveSyncHandler : public settings::SettingsPageUIHandler,
   void HandleDeleteDevice(const base::ListValue* args);
 
   void OnResetDone(base::Value callback_id);
-  void OnDeleteDeviceDone(base::Value callback_id);
 
   base::Value GetSyncDeviceList();
   syncer::BraveProfileSyncService* GetSyncService() const;

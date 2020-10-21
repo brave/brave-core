@@ -10,7 +10,6 @@
 
 #include "base/android/jni_android.h"
 #include "base/android/jni_string.h"
-#include "base/bind_helpers.h"
 #include "base/json/json_writer.h"
 
 #include "brave/build/android/jni_headers/BraveSyncDevices_jni.h"
@@ -124,9 +123,8 @@ void BraveSyncDevicesAndroid::DeleteDevice(
       DeviceInfoSyncServiceFactory::GetForProfile(profile_);
   DCHECK(device_info_sync_service);
 
-  // TODO(AlexeyBarabash): do we need the callback here?
   brave_sync::DeleteDevice(sync_service, device_info_sync_service,
-                           str_device_guid, base::DoNothing());
+                           str_device_guid);
 }
 
 static void JNI_BraveSyncDevices_Init(
