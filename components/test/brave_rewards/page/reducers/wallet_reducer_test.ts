@@ -129,10 +129,11 @@ describe('wallet reducer', () => {
         }
       }
 
-      expect(chromeSpy).toHaveBeenCalledTimes(3)
+      expect(chromeSpy).toHaveBeenCalledTimes(4)
       expect(chromeSpy.mock.calls[0][0]).toEqual('brave_rewards.fetchPromotions')
       expect(chromeSpy.mock.calls[1][0]).toEqual('brave_rewards.fetchBalance')
-      expect(chromeSpy.mock.calls[2][0]).toEqual('brave_rewards.getBalanceReport')
+      expect(chromeSpy.mock.calls[2][0]).toEqual('brave_rewards.getPaymentId')
+      expect(chromeSpy.mock.calls[3][0]).toEqual('brave_rewards.getBalanceReport')
 
       expect(assertion).toEqual({
         rewardsData: expectedState
