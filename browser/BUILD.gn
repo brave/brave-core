@@ -110,8 +110,6 @@ source_set("browser_process") {
     "autoplay",
     "brave_stats:stats_updater",
     "browsing_data",
-    "browsing_data",
-    "browsing_data",
     "content_settings",
     "download",
     "farbling",
