@@ -1,5 +1,5 @@
 diff --git a/chrome/android/java/src/org/chromium/chrome/browser/ntp/NewTabPageLayout.java b/chrome/android/java/src/org/chromium/chrome/browser/ntp/NewTabPageLayout.java
-index ce17e603c0d6285d2d07434c57e50de45ffdd6c6..cc98df12021cd52f257fe7b8f9fe9f9b6846a6dd 100644
+index 9309cd5f92bcc357c7f336e0e5c01cb61ee966ab..379d98e5f838a8574659f7e52456444987645cc6 100644
 --- a/chrome/android/java/src/org/chromium/chrome/browser/ntp/NewTabPageLayout.java
 +++ b/chrome/android/java/src/org/chromium/chrome/browser/ntp/NewTabPageLayout.java
 @@ -59,7 +59,7 @@ import org.chromium.ui.vr.VrModeObserver;

@@ -1,5 +1,5 @@
 diff --git a/chrome/android/BUILD.gn b/chrome/android/BUILD.gn
-index f8b356750cc629d80a409c8c0975eff1e3094e94..d1210468de4e9bb7811a755a334f69a5ca5dfa6e 100644
+index ab247dad56e8cc2ed16d3a9730a2f3403e50bf0b..ca4002ae3579327f935024cbc322bb2468307a10 100644
 --- a/chrome/android/BUILD.gn
 +++ b/chrome/android/BUILD.gn
 @@ -234,6 +234,7 @@ android_resources("chrome_app_java_resources") {
@@ -34,7 +34,7 @@ index f8b356750cc629d80a409c8c0975eff1e3094e94..d1210468de4e9bb7811a755a334f69a5
  }
  
  action("chrome_android_java_google_api_keys_srcjar") {
-@@ -1760,6 +1764,7 @@ if (current_toolchain == default_toolchain) {
+@@ -1761,6 +1765,7 @@ if (current_toolchain == default_toolchain) {
          ":${_variant}_locale_pak_assets",
          ":${_variant}_paks",
        ]
