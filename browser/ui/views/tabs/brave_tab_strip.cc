@@ -32,8 +32,13 @@ bool BraveTabStrip::ShouldHideCloseButtonForTab(Tab* tab) const {
 
 SkColor BraveTabStrip::GetTabSeparatorColor() const {
   Profile* profile = controller()->GetProfile();
-  if (!brave::IsRegularProfile(profile))
-    return TabStrip::GetTabSeparatorColor();
+  if (!brave::IsRegularProfile(profile)) {
+    if (brave::IsTorProfile(profile))
+      return SkColorSetRGB(0x5A, 0x53, 0x66);
+
+    // For incognito/guest window.
+    return SkColorSetRGB(0x3F, 0x32, 0x56);
+  }
 
   // If custom theme is used, follow upstream separator color.
   auto* theme_service = ThemeServiceFactory::GetForProfile(profile);
