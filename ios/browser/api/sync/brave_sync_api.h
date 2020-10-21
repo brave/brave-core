@@ -25,8 +25,8 @@ OBJC_EXPORT
 @interface BraveSyncAPI : NSObject
 
 @property(class, readonly, strong) BraveSyncAPI *sharedSyncAPI NS_SWIFT_NAME(shared);
-
-- (bool)setSyncEnabled:(bool)enabled;
+@property(nonatomic) bool syncEnabled;
+@property(nonatomic, readonly) bool isSyncFeatureActive;
 
 - (bool)removeDevice:(NSString *)deviceGuid;
 
@@ -44,12 +44,6 @@ OBJC_EXPORT
 - (nullable UIImage *)getQRCodeImage:(CGSize)size;
 
 - (nullable NSString *)getDeviceListJSON;
-
-// has the user enabled sync
-- (bool)isSyncEnabled;
-
-// is sync configured and running
-- (bool)isSyncFeatureActive;
 @end
 
 NS_ASSUME_NONNULL_END

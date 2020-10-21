@@ -19,7 +19,7 @@ source_set("importer") {
     "imported_bookmark_entry.h",
     "imported_bookmark_entry.cc",
     "favicon_reencode.h",
-    "favicon_reencode.cc",
+    "favicon_reencode.mm",
   ]
 
   deps = [

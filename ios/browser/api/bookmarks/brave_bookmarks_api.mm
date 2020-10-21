@@ -97,6 +97,11 @@
   return url ? net::NSURLWithGURL(*url) : nullptr;
 }
 
+- (UIImage *)icon {
+  gfx::Image icon = model_->GetFavicon(node_);
+  return icon.IsEmpty() ? nullptr : icon.ToUIImage();
+}
+
 - (BookmarksNodeType)type {
   switch (node_->type()) {
     case bookmarks::BookmarkNode::URL: return BookmarksNodeTypeUrl;
