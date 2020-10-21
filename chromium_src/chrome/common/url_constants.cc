@@ -180,6 +180,8 @@ const char kPageInfoHelpCenterURL[] =
 
 const char kPasswordCheckLearnMoreURL[] = "https://support.brave.com/";
 
+const char kPasswordGenerationLearnMoreURL[] = "https://support.brave.com/";
+
 const char kPasswordManagerLearnMoreURL[] =
     "https://support.brave.com/hc/en-us/articles/"
     "360018185951-How-do-I-use-the-built-in-password-manager-";
