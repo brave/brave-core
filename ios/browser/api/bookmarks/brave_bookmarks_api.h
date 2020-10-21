@@ -7,6 +7,7 @@
 #define BRAVE_IOS_BROWSER_API_BOOKMARKS_BRAVE_BOOKMARKS_API_H_
 
 #import <Foundation/Foundation.h>
+#import <UIKit/UIKit.h>
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -41,6 +42,7 @@ OBJC_EXPORT
 @property (nonatomic, copy, readonly) NSString *guid;
 @property (nonatomic, nullable, copy) NSURL *url;
 @property (nonatomic, nullable, copy, readonly) NSURL *iconUrl;
+@property (nonatomic, nullable, copy, readonly) UIImage *icon;
 
 @property (nonatomic, readonly) BookmarksNodeType type;
 @property (nonatomic, copy) NSDate *dateAdded;
