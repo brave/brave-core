@@ -685,6 +685,8 @@ export default class WalletWrapper extends React.PureComponent<Props, State> {
                       <br />
                       {loginText2}
                     </p>
+                    <br/>
+                    {getLocale('walletVerificationNote3')}
                   </LoginMessageText>
                   <LoginMessageButtons>
                     <Button

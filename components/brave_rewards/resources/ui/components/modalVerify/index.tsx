@@ -22,7 +22,8 @@ import {
   StyledLeftSide,
   StyledRightSide,
   StyledContent,
-  StyledNote
+  StyledNote,
+  NoteText
 } from './style'
 
 import {
@@ -121,6 +122,9 @@ export default class ModalVerify extends React.PureComponent<Props, {}> {
               </StyledNote>
             </StyledRightSide>
           </StyledContent>
+          <NoteText>
+            {getLocale('walletVerificationNote3')}
+          </NoteText>
         </StyledWrapper>
       </Modal>
     )
