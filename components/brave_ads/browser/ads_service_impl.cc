@@ -579,8 +579,20 @@ bool MigrateConfirmationsStateOnFileTaskRunner(
       rewards_service_base_path.AppendASCII("confirmations.json");
 
   if (base::PathExists(legacy_confirmations_state_path)) {
+    const base::FilePath ads_service_base_path =
+        path.AppendASCII("ads_service");
+
+    if (!base::DirectoryExists(ads_service_base_path)) {
+      if (!base::CreateDirectory(ads_service_base_path)) {
+        VLOG(0) << "Failed to create " << ads_service_base_path.value();
+        return false;
+      }
+
+      VLOG(1) << "Created " << ads_service_base_path.value();
+    }
+
     base::FilePath confirmations_state_path =
-        path.AppendASCII("ads_service").AppendASCII("confirmations.json");
+        ads_service_base_path.AppendASCII("confirmations.json");
 
     VLOG(1) << "Migrating " << legacy_confirmations_state_path.value()
         << " to " << confirmations_state_path.value();
