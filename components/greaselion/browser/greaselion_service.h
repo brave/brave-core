@@ -60,7 +60,7 @@ class GreaselionService : public KeyedService,
 
  private:
   friend class ::GreaselionServiceTest;
-  virtual void SetBrowserVersionForTesting(const base::Version& version);
+  virtual void SetBrowserVersionForTesting(const base::Version& version) = 0;
   DISALLOW_COPY_AND_ASSIGN(GreaselionService);
 };
 
