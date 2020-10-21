@@ -106,8 +106,16 @@
   _worker.reset();
 }
 
-- (bool)setSyncEnabled:(bool)enabled {
-  return _worker->SetSyncEnabled(enabled);
+- (bool)syncEnabled {
+  return _worker->IsSyncEnabled();
+}
+
+- (void)setSyncEnabled:(bool)enabled {
+  _worker->SetSyncEnabled(enabled);
+}
+
+- (bool)isSyncFeatureActive {
+  return _worker->IsSyncFeatureActive();
 }
 
 - (bool)isValidSyncCode:(NSString *)syncCode {
@@ -195,13 +203,5 @@
 
 - (bool)resetSync {
   return _worker->ResetSync();
-}
-
-- (bool)isSyncEnabled {
-  return _worker->IsSyncEnabled();
-}
-
-- (bool)isSyncFeatureActive {
-  return _worker->IsSyncFeatureActive();
 }
 @end
