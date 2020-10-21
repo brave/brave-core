@@ -5,11 +5,14 @@
 
 import("//brave/browser/importer/sources.gni")
 import("//brave/browser/brave_wallet/sources.gni")
+import("//brave/browser/themes/sources.gni")
 
 brave_chrome_browser_sources = []
+brave_chrome_browser_sources += brave_browser_themes_sources
 brave_chrome_browser_sources += brave_browser_wallet_sources
 brave_chrome_browser_sources += brave_chrome_browser_importer_sources
 
 brave_chrome_browser_deps = []
+brave_chrome_browser_deps += brave_browser_themes_deps
 brave_chrome_browser_deps += brave_browser_wallet_deps
 brave_chrome_browser_deps += brave_chrome_browser_importer_deps

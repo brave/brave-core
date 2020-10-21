@@ -1,0 +1,35 @@
+# Copyright (c) 2020 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at http://mozilla.org/MPL/2.0/.
+
+brave_browser_themes_sources = []
+
+brave_browser_themes_deps = []
+
+if (!is_android) {
+  brave_browser_themes_sources += [
+    "//brave/browser/themes/brave_dark_mode_utils.cc",
+    "//brave/browser/themes/brave_theme_helper.cc",
+    "//brave/browser/themes/brave_theme_helper.h",
+    "//brave/browser/themes/brave_theme_service.cc",
+    "//brave/browser/themes/brave_theme_service.h",
+  ]
+
+  if (is_win) {
+    brave_browser_themes_sources += [
+      "//brave/browser/themes/brave_theme_helper_win.cc",
+      "//brave/browser/themes/brave_theme_helper_win.h",
+    ]
+  }
+
+  brave_browser_themes_deps += [
+    "//base",
+    "//brave/app:brave_generated_resources_grit",
+    "//brave/common:pref_names",
+    "//brave/common:switches",
+    "//chrome/common",
+    "//components/prefs",
+    "//components/pref_registry",
+  ]
+}
