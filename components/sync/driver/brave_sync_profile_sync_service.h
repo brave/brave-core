@@ -40,6 +40,12 @@ class BraveProfileSyncService : public ProfileSyncService,
   // OnDeviceInfoChange internally
   void OnSelfDeviceInfoDeleted(base::OnceClosure cb);
 
+  // These functions are for disabling device_info_observer_ from firing
+  // when the device is doing own reset sync operation, to prevent early call
+  // of StopAndClear prior to device sends delete record
+  void SuspendDeviceObserverForOwnReset();
+  void ResumeDeviceObserver();
+
  private:
   BraveSyncAuthManager* GetBraveSyncAuthManager();
 

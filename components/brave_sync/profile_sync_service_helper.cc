@@ -30,12 +30,15 @@ void ResetSync(syncer::BraveProfileSyncService* sync_service,
   const syncer::DeviceInfo* local_device_info =
       device_info_service->GetLocalDeviceInfoProvider()->GetLocalDeviceInfo();
 
+  sync_service->SuspendDeviceObserverForOwnReset();
+
   tracker->DeleteDeviceInfo(
       local_device_info->guid(),
       base::BindOnce(
           [](syncer::BraveProfileSyncService* sync_service,
              base::OnceClosure on_reset_done) {
             sync_service->OnSelfDeviceInfoDeleted(std::move(on_reset_done));
+            sync_service->ResumeDeviceObserver();
           },
           sync_service, std::move(on_reset_done)));
 }

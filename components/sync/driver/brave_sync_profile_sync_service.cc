@@ -126,10 +126,6 @@ void BraveProfileSyncService::OnDeviceInfoChange() {
   // When our device was removed from the sync chain by some other device,
   // we don't seee it in devices list, we must reset sync in a proper way
   if (!found_local_device) {
-    if (device_info_observer_.IsObserving(device_info_tracker_)) {
-      device_info_observer_.Remove(device_info_tracker_);
-    }
-
     // We can't call OnSelfDeviceInfoDeleted directly because we are on
     // remove device execution path, so posting task
     base::OnceClosure empty_cb = base::BindOnce([]() {});
@@ -137,6 +133,18 @@ void BraveProfileSyncService::OnDeviceInfoChange() {
         FROM_HERE, {content::BrowserThread::UI},
         base::BindOnce(&BraveProfileSyncService::OnSelfDeviceInfoDeleted,
                        weak_ptr_factory_.GetWeakPtr(), std::move(empty_cb)));
+  }
+}
+
+void BraveProfileSyncService::SuspendDeviceObserverForOwnReset() {
+  if (device_info_observer_.IsObserving(device_info_tracker_)) {
+    device_info_observer_.Remove(device_info_tracker_);
+  }
+}
+
+void BraveProfileSyncService::ResumeDeviceObserver() {
+  if (!device_info_observer_.IsObserving(device_info_tracker_)) {
+    device_info_observer_.Add(device_info_tracker_);
   }
 }
 
