@@ -148,6 +148,11 @@ extension BraveLedger {
         return
       }
       
+      self.minimumVisitDuration = 8
+      self.minimumNumberOfVisits = 1
+      self.allowVideoContributions = true
+      self.allowUnverifiedPublishers = true
+      
       let group = DispatchGroup()
       var success = true
       group.enter()
