@@ -301,6 +301,7 @@ source_set("browser_process") {
       "//brave/browser/infobars",
       "//brave/components/ipfs",
       "//brave/components/services/ipfs/public/mojom",
+      "//components/user_prefs",
       "//extensions/browser",
       "//extensions/common",
     ]

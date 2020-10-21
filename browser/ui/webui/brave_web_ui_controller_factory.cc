@@ -21,6 +21,7 @@
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/common/url_constants.h"
 #include "components/prefs/pref_service.h"
+#include "content/public/browser/web_contents.h"
 #include "url/gurl.h"
 
 #if !defined(OS_ANDROID)
@@ -40,6 +41,7 @@
 #endif
 
 #if BUILDFLAG(IPFS_ENABLED)
+#include "brave/browser/ipfs/ipfs_service_factory.h"
 #include "brave/browser/ui/webui/ipfs_ui.h"
 #endif
 
@@ -68,7 +70,8 @@ WebUIController* NewWebUI<BasicUI>(WebUI* web_ui, const GURL& url) {
     return new WebcompatReporterUI(web_ui, url.host());
 #if BUILDFLAG(IPFS_ENABLED)
   } else if (host == kIPFSHost &&
-      base::FeatureList::IsEnabled(ipfs::features::kIpfsFeature)) {
+             ipfs::IpfsServiceFactory::IsIpfsEnabled(
+                 web_ui->GetWebContents()->GetBrowserContext())) {
     return new IPFSUI(web_ui, url.host());
 #endif  // BUILDFLAG(IPFS_ENABLED)
 #if BUILDFLAG(BRAVE_WALLET_ENABLED)

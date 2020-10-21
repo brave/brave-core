@@ -38,7 +38,6 @@ class IpfsNavigationThrottle : public content::NavigationThrottle {
   static std::unique_ptr<IpfsNavigationThrottle> MaybeCreateThrottleFor(
       content::NavigationHandle* navigation_handle,
       IpfsService* ipfs_service,
-      bool regular_profile,
       const std::string& locale);
 
   // content::NavigationThrottle implementation:

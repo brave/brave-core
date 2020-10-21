@@ -10,7 +10,6 @@
 #include <vector>
 
 #include "base/bind.h"
-#include "base/feature_list.h"
 #include "base/json/json_reader.h"
 #include "base/rand_util.h"
 #include "base/task/post_task.h"
@@ -31,7 +30,6 @@
 #include "brave/components/brave_wallet/buildflags/buildflags.h"
 #include "brave/components/brave_webtorrent/browser/buildflags/buildflags.h"
 #include "brave/components/ipfs/buildflags/buildflags.h"
-#include "brave/components/ipfs/features.h"
 #include "brave/components/speedreader/buildflags.h"
 #include "brave/components/tor/buildflags/buildflags.h"
 #include "brave/grit/brave_generated_resources.h"
@@ -160,11 +158,9 @@ void BraveContentBrowserClient::BrowserURLHandlerCreated(
                           &webtorrent::HandleTorrentURLReverseRewrite);
 #endif
 #if BUILDFLAG(IPFS_ENABLED)
-  if (base::FeatureList::IsEnabled(ipfs::features::kIpfsFeature)) {
-    handler->AddHandlerPair(
-        &ipfs::ContentBrowserClientHelper::HandleIPFSURLRewrite,
-        &ipfs::ContentBrowserClientHelper::HandleIPFSURLReverseRewrite);
-  }
+  handler->AddHandlerPair(
+      &ipfs::ContentBrowserClientHelper::HandleIPFSURLRewrite,
+      &ipfs::ContentBrowserClientHelper::HandleIPFSURLReverseRewrite);
 #endif
   handler->AddHandlerPair(&HandleURLRewrite, &HandleURLReverseOverrideRewrite);
   ChromeContentBrowserClient::BrowserURLHandlerCreated(handler);
@@ -197,8 +193,7 @@ bool BraveContentBrowserClient::HandleExternalProtocol(
   }
 #endif
 #if BUILDFLAG(IPFS_ENABLED)
-  if (base::FeatureList::IsEnabled(ipfs::features::kIpfsFeature) &&
-      ipfs::ContentBrowserClientHelper::IsIPFSProtocol(url)) {
+  if (ipfs::ContentBrowserClientHelper::IsIPFSProtocol(url)) {
     ipfs::ContentBrowserClientHelper::HandleIPFSProtocol(url,
         std::move(web_contents_getter),
         page_transition, has_user_gesture,
@@ -499,10 +494,9 @@ BraveContentBrowserClient::CreateThrottlesForNavigation(
 
 #if BUILDFLAG(IPFS_ENABLED)
   std::unique_ptr<content::NavigationThrottle> ipfs_navigation_throttle =
-    ipfs::IpfsNavigationThrottle::MaybeCreateThrottleFor(handle,
-        ipfs::IpfsServiceFactory::GetForContext(context),
-        brave::IsRegularProfile(context),
-        g_brave_browser_process->GetApplicationLocale());
+      ipfs::IpfsNavigationThrottle::MaybeCreateThrottleFor(handle,
+          ipfs::IpfsServiceFactory::GetForContext(context),
+          g_brave_browser_process->GetApplicationLocale());
   if (ipfs_navigation_throttle)
     throttles.push_back(std::move(ipfs_navigation_throttle));
 #endif

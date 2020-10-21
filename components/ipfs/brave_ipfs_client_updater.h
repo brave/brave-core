@@ -69,7 +69,8 @@ class BraveIpfsClientUpdater : public BraveComponent {
     ~Observer() override = default;
   };
 
-  explicit BraveIpfsClientUpdater(BraveComponent::Delegate* delegate);
+  explicit BraveIpfsClientUpdater(BraveComponent::Delegate* delegate,
+                                  const base::FilePath& user_data_dir);
   ~BraveIpfsClientUpdater() override;
 
   void Register();
@@ -80,6 +81,7 @@ class BraveIpfsClientUpdater : public BraveComponent {
 
   void AddObserver(Observer* observer);
   void RemoveObserver(Observer* observer);
+  void Cleanup();
 
  protected:
   void OnComponentReady(const std::string& component_id,
@@ -98,6 +100,7 @@ class BraveIpfsClientUpdater : public BraveComponent {
 
   scoped_refptr<base::SequencedTaskRunner> task_runner_;
   bool registered_;
+  base::FilePath user_data_dir_;
   base::FilePath executable_path_;
   base::ObserverList<Observer> observers_;
   base::WeakPtrFactory<BraveIpfsClientUpdater> weak_ptr_factory_;
@@ -107,7 +110,8 @@ class BraveIpfsClientUpdater : public BraveComponent {
 
 // Creates the BraveIpfsClientUpdater
 std::unique_ptr<BraveIpfsClientUpdater> BraveIpfsClientUpdaterFactory(
-    BraveComponent::Delegate* delegate);
+    BraveComponent::Delegate* delegate,
+    const base::FilePath& user_data_dir);
 
 }  // namespace ipfs
 

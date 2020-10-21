@@ -419,8 +419,11 @@ BraveBrowserProcessImpl::ipfs_client_updater() {
   if (ipfs_client_updater_)
     return ipfs_client_updater_.get();
 
+  base::FilePath user_data_dir;
+  base::PathService::Get(chrome::DIR_USER_DATA, &user_data_dir);
+
   ipfs_client_updater_ = ipfs::BraveIpfsClientUpdaterFactory(
-      brave_component_updater_delegate());
+      brave_component_updater_delegate(), user_data_dir);
   return ipfs_client_updater_.get();
 }
 #endif  // BUILDFLAG(IPFS_ENABLED)
