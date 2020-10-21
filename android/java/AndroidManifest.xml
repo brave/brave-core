@@ -37,10 +37,6 @@
     android:theme="@style/Theme.Chromium.Activity.Fullscreen"
     android:screenOrientation="sensorPortrait"/>
 
-<service android:name="org.chromium.chrome.browser.onboarding.BraveRewardsService"
-    android:exported="false">
-</service>
-
 <!-- Upgrade related -->
 <receiver android:name="org.chromium.chrome.browser.upgrade.BravePackageReplacedBroadcastReceiver"
     android:exported="false">

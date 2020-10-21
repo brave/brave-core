@@ -117,7 +117,6 @@ public abstract class BraveToolbarLayout extends ToolbarLayout implements OnClic
   private boolean mIsPublisherVerified;
   private boolean mIsNotificationPosted;
   private boolean mIsInitialNotificationPosted; // initial red circle notification
-  private boolean mIsRewardsEnabled;
 
   private PopupWindow mShieldsTooltipPopupWindow;
 
@@ -266,6 +265,7 @@ public abstract class BraveToolbarLayout extends ToolbarLayout implements OnClic
     if (mBraveRewardsNativeWorker != null) {
       mBraveRewardsNativeWorker.AddObserver(this);
       mBraveRewardsNativeWorker.AddPublisherObserver(this);
+      mBraveRewardsNativeWorker.TriggerOnNotifyFrontTabUrlChanged();
       mBraveRewardsNativeWorker.GetAllNotifications();
     }
   }
@@ -640,53 +640,6 @@ public abstract class BraveToolbarLayout extends ToolbarLayout implements OnClic
   }
 
   @Override
-  public void OnWalletInitialized(int error_code) {
-    if (error_code == BraveRewardsNativeWorker.SAFETYNET_ATTESTATION_FAILED) {
-      BravePrefServiceBridge.getInstance().setSafetynetCheckFailed(true);
-      if (mRewardsLayout != null && mShieldsLayout != null) {
-        mRewardsLayout.setVisibility(View.GONE);
-        updateShieldsLayoutBackground(true);
-      }
-      // Show message
-      AlertDialog.Builder alert = new AlertDialog.Builder(getContext(), R.style.Theme_Chromium_AlertDialog);
-      AlertDialog alertDialog = alert.setMessage(getResources().getString(R.string.brave_rewards_not_available))
-                                .setPositiveButton(R.string.ok, null)
-                                .create();
-      alertDialog.getDelegate().setHandleNativeActionModesEnabled(false);
-      alertDialog.show();
-      // If current tab is rewards tab we close it, as it is not valid anymore
-      Tab currentTab = getToolbarDataProvider().getTab();
-      if (currentTab != null && getToolbarDataProvider().getCurrentUrl().equals(BraveActivity.REWARDS_SETTINGS_URL)) {
-        if (getContext() instanceof BraveActivity) {
-          BraveActivity activity = (BraveActivity)getContext();
-          activity.getCurrentTabModel().closeTab(currentTab);
-        }
-      }
-    } else if (error_code == BraveRewardsNativeWorker.WALLET_CREATED) { // Wallet created code
-      // Make sure that flag is set as panel can be closed before wallet is created
-      BraveAdsNativeHelper.nativeSetAdsEnabled(Profile.getLastUsedRegularProfile());
-      // Check and set flag to show Brave Rewards icon if enabled
-      SharedPreferences sharedPreferences = ContextUtils.getAppSharedPreferences();
-      SharedPreferences.Editor sharedPreferencesEditor = sharedPreferences.edit();
-      // Set preferences that Brave Rewards was turned On and that Brave Rewards icon is not hidden
-      sharedPreferencesEditor.putBoolean(BraveRewardsPanelPopup.PREF_WAS_BRAVE_REWARDS_TURNED_ON, true);
-      mIsRewardsEnabled = true;
-      if (sharedPreferences.getBoolean(PREF_HIDE_BRAVE_REWARDS_ICON, false)) {
-        sharedPreferencesEditor.putBoolean(PREF_HIDE_BRAVE_REWARDS_ICON, false);
-        sharedPreferencesEditor.apply();
-        BraveRelaunchUtils.askForRelaunch((ChromeActivity)getContext());
-      }
-      sharedPreferencesEditor.apply();
-    }
-  }
-
-  @Override
-  public void OnPublisherInfo(int tabId) {}
-
-  @Override
-  public void OnGetCurrentBalanceReport(double[] report) {}
-
-  @Override
   public void OnNotificationAdded(String id, int type, long timestamp,
                                   String[] args) {
     if (mBraveRewardsNativeWorker == null) {
@@ -764,62 +717,6 @@ public abstract class BraveToolbarLayout extends ToolbarLayout implements OnClic
     }
   }
 
-  @Override
-  public void OnGetLatestNotification(String id, int type, long timestamp,
-                                      String[] args) {}
-
-  @Override
-  public void OnNotificationDeleted(String id) {}
-
-  @Override
-  public void OnIsWalletCreated(boolean created) {}
-
-  @Override
-  public void OnGetPendingContributionsTotal(double amount) {}
-
-  @Override
-  public void OnGetRewardsMainEnabled(boolean enabled) {
-    mIsRewardsEnabled = enabled;
-  }
-
-  @Override
-  public void OnGetAutoContributeProperties() {}
-
-  @Override
-  public void OnGetReconcileStamp(long timestamp) {}
-
-  @Override
-  public void OnRecurringDonationUpdated() {}
-
-  @Override
-  public void OnResetTheWholeState(boolean success) {}
-
-  @Override
-  public void OnRewardsMainEnabled(boolean enabled) {
-
-    Log.e("OnRewardsMainEnabled", "isEnabled : " + enabled);
-
-    SharedPreferences sharedPreferences = ContextUtils.getAppSharedPreferences();
-    SharedPreferences.Editor sharedPreferencesEditor = sharedPreferences.edit();
-
-    boolean needRelaunch = false;
-    if (enabled && sharedPreferences.getBoolean(PREF_HIDE_BRAVE_REWARDS_ICON, false)) {
-      sharedPreferencesEditor.putBoolean(PREF_HIDE_BRAVE_REWARDS_ICON, false);
-      needRelaunch = true;
-    }
-
-    if (mBraveRewardsNotificationsCount != null) {
-      String count = mBraveRewardsNotificationsCount.getText().toString();
-      if (!count.isEmpty()) {
-        mBraveRewardsNotificationsCount.setVisibility(enabled ? View.VISIBLE : View.GONE);
-      }
-    }
-
-    if (needRelaunch) BraveRelaunchUtils.askForRelaunch(getContext());
-    mIsRewardsEnabled = enabled;
-    updateVerifiedPublisherMark();
-  }
-
   private void updateNotificationBadgeForNewInstall(boolean rewardsEnabled) {
     SharedPreferences sharedPref = ContextUtils.getAppSharedPreferences();
     boolean shownBefore = sharedPref.getBoolean(BraveRewardsPanelPopup.PREF_WAS_TOOLBAR_BAT_LOGO_BUTTON_PRESSED, false);
@@ -860,9 +757,6 @@ public abstract class BraveToolbarLayout extends ToolbarLayout implements OnClic
     }
     if (mIsInitialNotificationPosted) {
       return;
-    } else if (!mIsRewardsEnabled) {
-      mBraveRewardsNotificationsCount.setBackgroundResource(0);
-      mBraveRewardsNotificationsCount.setVisibility(View.INVISIBLE);
     } else if (!mIsNotificationPosted) {
       if (mIsPublisherVerified) {
         mBraveRewardsNotificationsCount.setVisibility(View.VISIBLE);

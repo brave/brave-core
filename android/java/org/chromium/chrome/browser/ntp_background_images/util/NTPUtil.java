@@ -57,6 +57,7 @@ import org.chromium.chrome.browser.util.ConfigurationUtils;
 import org.chromium.chrome.browser.util.ImageUtils;
 import org.chromium.content_public.browser.LoadUrlParams;
 import org.chromium.ui.base.DeviceFormFactor;
+import org.chromium.chrome.browser.util.PackageUtils;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -74,6 +75,7 @@ public class NTPUtil {
 
     public static void turnOnAds() {
         BraveAdsNativeHelper.nativeSetAdsEnabled(Profile.getLastUsedRegularProfile());
+        BraveRewardsNativeWorker.getInstance().SetAutoContributeEnabled(true);
     }
 
     public static void updateOrientedUI(Context context, ViewGroup view) {
@@ -148,25 +150,16 @@ public class NTPUtil {
     }
 
     public static int checkForNonDistruptiveBanner(NTPImage ntpImage, SponsoredTab sponsoredTab) {
-        BraveRewardsNativeWorker mBraveRewardsNativeWorker = BraveRewardsNativeWorker.getInstance();
-
-        if (sponsoredTab.shouldShowBanner()) {
-            if (UserPrefs.get(Profile.getLastUsedRegularProfile()).getBoolean(BravePref.ENABLED)) {
-                if (BraveAdsNativeHelper.nativeIsBraveAdsEnabled(Profile.getLastUsedRegularProfile())) {
-                    if (ntpImage instanceof Wallpaper) {
-                        return SponsoredImageUtil.BR_ON_ADS_ON;
-                    }
-                } else if (BraveAdsNativeHelper.nativeIsLocaleValid(Profile.getLastUsedRegularProfile())) {
-                    if (ntpImage instanceof Wallpaper) {
-                        return SponsoredImageUtil.BR_ON_ADS_OFF ;
-                    } else {
-                        return SponsoredImageUtil.BR_INVALID_OPTION;
-                    }
-                }
-            } else {
-                if (ntpImage instanceof Wallpaper && !mBraveRewardsNativeWorker.IsCreateWalletInProcess()) {
-                    return SponsoredImageUtil.BR_INVALID_OPTION;
-                }
+        Context context = ContextUtils.getApplicationContext();
+        if(sponsoredTab.shouldShowBanner()) {
+            if(PackageUtils.isFirstInstall(context)
+                && ntpImage instanceof Wallpaper
+                && !BraveAdsNativeHelper.nativeIsBraveAdsEnabled(Profile.getLastUsedRegularProfile())) {
+                return SponsoredImageUtil.BR_ON_ADS_OFF ;
+            } else if (!PackageUtils.isFirstInstall(context)
+                && ntpImage instanceof Wallpaper
+                && BraveAdsNativeHelper.nativeIsBraveAdsEnabled(Profile.getLastUsedRegularProfile()) ) {
+                return SponsoredImageUtil.BR_ON_ADS_ON;
             }
         }
         return SponsoredImageUtil.BR_INVALID_OPTION;
