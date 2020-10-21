@@ -33,10 +33,7 @@ if (!skip_signing) {
 action("reverse_framework_version_symlink") {
   script="reverse_framework_version_symlink.py"
 
-  target_app_path = target_sign_app_path
-  if (skip_signing) {
-    target_app_path = "$root_out_dir/$chrome_product_full_name.app"
-  }
+  target_app_path = "$root_out_dir/$chrome_product_full_name.app"
   chrome_framework_name = chrome_product_full_name + " Framework"
 
   args = [
@@ -82,6 +79,10 @@ action("build_delta_installer") {
     "//brave/vendor/sparkle:build_sparkle_framework",
     "//chrome:chrome_app",
   ]
+
+  if (!skip_signing) {
+    deps += [ ":sign_app" ]
+  }
 }
 
 group("brave") {
