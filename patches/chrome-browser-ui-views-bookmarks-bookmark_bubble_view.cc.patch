@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/ui/views/bookmarks/bookmark_bubble_view.cc b/chrome/browser/ui/views/bookmarks/bookmark_bubble_view.cc
-index 8c04e080a6465dbfde11d379b8db5e49393e99d6..86b023b2e4df3f13343725266c244bd404434303 100644
+index 71cd964ce9c9968410426e033f70bb5169f97824..4433726b4a5bfef828317963e53f0027ff0dadd7 100644
 --- a/chrome/browser/ui/views/bookmarks/bookmark_bubble_view.cc
 +++ b/chrome/browser/ui/views/bookmarks/bookmark_bubble_view.cc
-@@ -226,6 +226,7 @@ void BookmarkBubbleView::ShowBubble(
+@@ -229,6 +229,7 @@ void BookmarkBubbleView::ShowBubble(
    bookmark_bubble_ = bubble.get();
    bubble->SetAnchorView(anchor_view);
    bubble->SetArrow(views::BubbleBorder::TOP_RIGHT);
