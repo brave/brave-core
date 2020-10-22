@@ -1,10 +1,12 @@
+/* Copyright (c) 2020 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this file,
+ * You can obtain one at http://mozilla.org/MPL/2.0/. */
+
 #include "brave/ios/browser/api/bookmarks/exporter/brave_bookmarks_exporter.h"
 
 #include <vector>
 #include <functional>
-#include "brave/ios/browser/api/bookmarks/exporter/bookmark_html_writer.h"
-#include "brave/ios/browser/api/bookmarks/exporter/exported_bookmark_entry.h"
-#include "brave/ios/browser/api/bookmarks/exporter/bookmarks_encoder.h"
 #include "base/bind.h"
 #include "base/bind_helpers.h"
 #include "base/files/file_path.h"
@@ -16,6 +18,9 @@
 #include "base/task/post_task.h"
 #include "base/task/thread_pool.h"
 #include "base/values.h"
+#include "brave/ios/browser/api/bookmarks/exporter/bookmark_html_writer.h"
+#include "brave/ios/browser/api/bookmarks/exporter/exported_bookmark_entry.h"
+#include "brave/ios/browser/api/bookmarks/exporter/bookmarks_encoder.h"
 #include "ios/chrome/browser/application_context.h"
 #include "ios/chrome/browser/browser_state/chrome_browser_state.h"
 #include "ios/chrome/browser/browser_state/chrome_browser_state_manager.h"

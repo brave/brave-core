@@ -1,3 +1,8 @@
+/* Copyright (c) 2020 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this file,
+ * You can obtain one at http://mozilla.org/MPL/2.0/. */
+
 #include "brave/ios/browser/api/bookmarks/importer/brave_bookmarks_importer.h"
 
 #include <vector>
@@ -68,13 +73,19 @@
 - (instancetype)init {
     if ((self = [super init])) {
       self.cancelled = false;
+      
+      // Create worker thread in which importer runs.
+      // In Chromium, this is created with `base::Thread("import_thread")`
+      import_thread_ = base::CreateSequencedTaskRunner(
+                                   {base::ThreadPool(), base::MayBlock(),
+                                    base::TaskPriority::USER_VISIBLE,
+                                    base::TaskShutdownBehavior::BLOCK_SHUTDOWN});
     }
     return self;
 }
 
 - (void)dealloc {
   [self cancel];
-  import_thread_.reset();
 }
 
 - (void)cancel {
@@ -141,15 +152,6 @@
       listener(BraveBookmarksImporterStateCancelled, nullptr);
     }
   };
-  
-  // Create worker thread in which importer runs.
-  // In Chromium, this is created with `base::Thread("import_thread")`
-  if (!import_thread_) {
-    import_thread_ = base::CreateSequencedTaskRunner(
-                                 {base::ThreadPool(), base::MayBlock(),
-                                  base::TaskPriority::USER_VISIBLE,
-                                  base::TaskShutdownBehavior::BLOCK_SHUTDOWN});
-  }
   
   // Run the importer on the sequenced task runner.
   __weak BraveBookmarksImporter* weakSelf = self;
