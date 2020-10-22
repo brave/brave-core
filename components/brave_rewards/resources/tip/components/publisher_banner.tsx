@@ -113,10 +113,23 @@ function getSocialIcon (type: string) {
   }
 }
 
+function isValidSocialLink (url: string) {
+  try {
+    // The URL constructor will throw when provided with any
+    // string that is not an absolute URL. If the URL constuctor
+    // does not throw, consider it a valid social link URL.
+    // tslint:disable-next-line:no-unused-expression
+    new URL(url)
+    return true
+  } catch (_) {
+    return false
+  }
+}
+
 function getSocialLinks (publisherInfo: PublisherInfo) {
   return Object.entries(publisherInfo.links).map(([type, url]) => {
     const icon = getSocialIcon(type)
-    return icon
+    return icon && isValidSocialLink(url)
       ? <NewTabLink key={type} href={url}>{icon}</NewTabLink>
       : null
   })
