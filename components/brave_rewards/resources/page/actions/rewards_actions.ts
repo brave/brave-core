@@ -344,3 +344,9 @@ export const completeReset = () => action(types.COMPLETE_RESET)
 export const onCompleteReset = (success: boolean) => action(types.ON_COMPLETE_RESET, {
   success
 })
+
+export const getPaymentId = () => action(types.GET_PAYMENT_ID)
+
+export const onPaymentId = (paymentId: string) => action(types.ON_PAYMENT_ID, {
+  paymentId
+})

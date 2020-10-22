@@ -82,6 +82,7 @@ const walletReducer: Reducer<Rewards.State | undefined> = (state: Rewards.State,
       if (result === 0) {
         chrome.send('brave_rewards.fetchPromotions')
         chrome.send('brave_rewards.fetchBalance')
+        chrome.send('brave_rewards.getPaymentId')
         getCurrentBalanceReport()
         ui.modalBackup = false
         ui.walletCorrupted = false

@@ -196,6 +196,10 @@ class RewardsDOMHandler : public WebUIMessageHandler,
 
   void CompleteReset(const base::ListValue* args);
 
+  void GetPaymentId(const base::ListValue* args);
+
+  void OnGetPaymentId(ledger::type::BraveWalletPtr wallet);
+
   // RewardsServiceObserver implementation
   void OnWalletInitialized(
       brave_rewards::RewardsService* rewards_service,
@@ -486,6 +490,9 @@ void RewardsDOMHandler::RegisterMessages() {
       base::Unretained(this)));
   web_ui()->RegisterMessageCallback("brave_rewards.completeReset",
       base::BindRepeating(&RewardsDOMHandler::CompleteReset,
+      base::Unretained(this)));
+  web_ui()->RegisterMessageCallback("brave_rewards.getPaymentId",
+      base::BindRepeating(&RewardsDOMHandler::GetPaymentId,
       base::Unretained(this)));
 }
 
@@ -1957,6 +1964,31 @@ void RewardsDOMHandler::OnCompleteReset(const bool success) {
 
   web_ui()->CallJavascriptFunctionUnsafe(
       "brave_rewards.completeReset", base::Value(success));
+}
+
+void RewardsDOMHandler::GetPaymentId(const base::ListValue* args) {
+  if (!rewards_service_) {
+    return;
+  }
+
+  rewards_service_->GetBraveWallet(
+      base::BindOnce(&RewardsDOMHandler::OnGetPaymentId,
+          weak_factory_.GetWeakPtr()));
+}
+
+void RewardsDOMHandler::OnGetPaymentId(ledger::type::BraveWalletPtr wallet) {
+  if (!web_ui()->CanCallJavascript()) {
+    return;
+  }
+
+  std::string payment_id;
+  if (wallet) {
+    payment_id = wallet->payment_id;
+  }
+
+  web_ui()->CallJavascriptFunctionUnsafe(
+      "brave_rewards.paymentId",
+      base::Value(payment_id));
 }
 
 }  // namespace

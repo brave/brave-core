@@ -261,6 +261,10 @@ window.cr.define('brave_rewards', function () {
     getActions().onCompleteReset(success)
   }
 
+  function paymentId (paymentId: string) {
+    getActions().onPaymentId(paymentId)
+  }
+
   return {
     initialize,
     walletCreated,
@@ -309,7 +313,8 @@ window.cr.define('brave_rewards', function () {
     monthlyReportIds,
     countryCode,
     initialized,
-    completeReset
+    completeReset,
+    paymentId
   }
 })
 
