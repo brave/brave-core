@@ -28,6 +28,7 @@
 #include "base/task_runner_util.h"
 #include "base/values.h"
 #include "base/version.h"
+#include "brave/browser/version_info.h"
 #include "brave/components/brave_component_updater/browser/features.h"
 #include "brave/components/brave_component_updater/browser/switches.h"
 #include "brave/components/greaselion/browser/greaselion_download_service.h"
@@ -197,7 +198,8 @@ GreaselionServiceImpl::GreaselionServiceImpl(
       update_pending_(false),
       pending_installs_(0),
       task_runner_(std::move(task_runner)),
-      browser_version_(version_info::GetVersion()),
+      browser_version_(
+          version_info::GetBraveVersionWithoutChromiumMajorVersion()),
       weak_factory_(this) {
   extension_registry_->AddObserver(this);
   for (int i = FIRST_FEATURE; i != LAST_FEATURE; i++)

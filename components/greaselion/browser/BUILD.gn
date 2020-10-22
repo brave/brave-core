@@ -13,6 +13,7 @@ source_set("browser") {
 
   deps = [
     "//base",
+    "//brave/browser:version_info",
     "//brave/components/brave_component_updater/browser",
     "//chrome/browser/extensions:extensions",
     "//components/version_info",
