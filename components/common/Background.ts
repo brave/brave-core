@@ -26,6 +26,13 @@ export type HandlerFunction<T, U> = (payload: T, sender: any, sendResponse: Send
 export type NHandlerFunction<U> = (payload: void, sender: any, sendResponse: SendResponseFunction<U>)
   => void
 
+function isAllowedMessageSender (sender: chrome.runtime.MessageSender): boolean {
+  if (sender.origin && sender.origin.startsWith('chrome://')) {
+    return true
+  }
+  return false
+}
+
 // Client-side scripts call this to send a message to the background
 export function send<U=void, T=void>(messageType: string, payload?: T): Promise<U> {
   // TODO: verify comms channel isn't closed prematurely first. If so, wait and try again.
@@ -53,19 +60,23 @@ export function setListener<U, T=void>(messageType: MessageName, handler: Handle
   }
 }
 
-function onMessageExternal<T> (req: Action, sender: any, sendResponse: SendResponseFunction<T>) {
-  console.log('onMessageExternal', req, sender)
-  // TODO: check sender
-  // validate
-  if (!req.messageType) {
+function onMessageExternal<T> (req: Action, sender: chrome.runtime.MessageSender, sendResponse: SendResponseFunction<T>) {
+  // Check Permissions
+  if (!isAllowedMessageSender(sender)) {
+    console.warn(`Received external message from a sender who is not allowed to send messages to this background. Origin: ${sender.origin}, URL: ${sender.url}`)
     return
   }
-  const handler = messageHandlers.get(req.messageType)
-  if (handler) {
-    handler(req.payload, sender, sendResponse)
-    return true
-  } else {
-    console.error('No handler for incoming external message', { req, sender })
+  // validate
+  if (!req.messageType) {
+    console.warn(`Unknown external message sent to Background from url ${sender.url}. No messageType property specified.`)
+    return
   }
-  return false
+  console.debug(`Background received external message from ${sender.origin}: ${req.messageType}.`, sender.url)
+  const handler = messageHandlers.get(req.messageType)
+  if (!handler) {
+    console.error(`No handler for received external message '${req.messageType}' received from ${sender.origin}`)
+    return false
+  }
+  handler(req.payload, sender, sendResponse)
+  return true
 }
