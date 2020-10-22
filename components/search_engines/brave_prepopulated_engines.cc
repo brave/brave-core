@@ -12,7 +12,7 @@ namespace TemplateURLPrepopulateData {
 
 // IMPORTANT! Make sure to bump this value if you make changes to the
 // engines below or add/remove engines.
-const int kBraveCurrentDataVersion = 6;
+const int kBraveCurrentDataVersion = 7;
 
 PrepopulatedEngine ModifyEngineParams(const PrepopulatedEngine& engine,
                                       const wchar_t* const name,
@@ -122,11 +122,11 @@ const PrepopulatedEngine qwant = {
 };
 
 const PrepopulatedEngine startpage = {
-    L"StartPage",
+    L"Startpage",
     L":sp",
     "https://www.startpage.com/favicon.ico",
     "https://www.startpage.com/do/"
-    "dsearch?query={searchTerms}&cat=web&pl=opensearch",
+    "search?q={searchTerms}&segment=startpage.brave",
     "UTF-8",
     "https://www.startpage.com/cgi-bin/"
     "csuggest?query={searchTerms}&limit=10&format=json",
