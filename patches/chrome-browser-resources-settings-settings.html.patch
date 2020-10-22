@@ -1,7 +1,7 @@
-diff --git a/chrome/browser/resources/settings/settings_v3.html b/chrome/browser/resources/settings/settings_v3.html
+diff --git a/chrome/browser/resources/settings/settings.html b/chrome/browser/resources/settings/settings.html
 index ff56fe3396acbd37ec45be3ba62c94d148a80f29..1d7def51e1cb0e48207dd0ea0fa646d762230b2a 100644
---- a/chrome/browser/resources/settings/settings_v3.html
-+++ b/chrome/browser/resources/settings/settings_v3.html
+--- a/chrome/browser/resources/settings/settings.html
++++ b/chrome/browser/resources/settings/settings.html
 @@ -4,6 +4,7 @@
    <meta charset="utf-8">
    <title>$i18n{settings}</title>

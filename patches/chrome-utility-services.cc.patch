@@ -1,5 +1,5 @@
 diff --git a/chrome/utility/services.cc b/chrome/utility/services.cc
-index 8fd970b5b092212288a1a45e0f739f231b89610c..a61344b90a0c38b65a726b34ab040a9dd9da20af 100644
+index 0c00f9c774f301c17201d37ef15332f120ccb713..16bfe176c1eebd42eeb263b2771dd8a9dcb7b390 100644
 --- a/chrome/utility/services.cc
 +++ b/chrome/utility/services.cc
 @@ -325,6 +325,7 @@ mojo::ServiceFactory* GetMainThreadServiceFactory() {

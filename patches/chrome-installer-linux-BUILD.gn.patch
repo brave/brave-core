@@ -1,5 +1,5 @@
 diff --git a/chrome/installer/linux/BUILD.gn b/chrome/installer/linux/BUILD.gn
-index f5543a3271a7cd239d2f41516cb8a992bffa36dc..a0184a1a116e8d01fe68471b09068e3a9b8776cf 100644
+index 4fceedf2791bcf979eba86b0cff0a1980ff0cacf..1f2bf8b55eb19cee6ba8cbe7883eef8a41cc480c 100644
 --- a/chrome/installer/linux/BUILD.gn
 +++ b/chrome/installer/linux/BUILD.gn
 @@ -72,6 +72,8 @@ if (enable_swiftshader) {

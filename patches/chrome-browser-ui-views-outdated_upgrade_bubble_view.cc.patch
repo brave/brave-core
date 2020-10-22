@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/ui/views/outdated_upgrade_bubble_view.cc b/chrome/browser/ui/views/outdated_upgrade_bubble_view.cc
-index 649bc9614dcf60ef8e631ef4b7f99adb6d29a03b..117d58f2b87882cea4eb8bb485614599ebe6d46b 100644
+index 884c739a0cf60db19aba93b418f32949cfa1bc78..351b0017c209343f9694b8db9a00c500dee1f743 100644
 --- a/chrome/browser/ui/views/outdated_upgrade_bubble_view.cc
 +++ b/chrome/browser/ui/views/outdated_upgrade_bubble_view.cc
 @@ -37,8 +37,12 @@ namespace {

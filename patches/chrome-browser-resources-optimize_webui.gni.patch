@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/resources/optimize_webui.gni b/chrome/browser/resources/optimize_webui.gni
-index dad606df8225e38ee74f2db4bc40197f0b5948d9..25fa7208aa175b6d3dbc86ce75b6d6ac8f27be7b 100644
+index 9427d71b23d6cfb09fd43a7afb0284b6b63dfb4f..845c8d56a331153bc77b09f3bdc11f1968b85252 100644
 --- a/chrome/browser/resources/optimize_webui.gni
 +++ b/chrome/browser/resources/optimize_webui.gni
 @@ -45,6 +45,7 @@ template("optimize_webui") {

@@ -1,8 +1,8 @@
 diff --git a/chrome/android/java/src/org/chromium/chrome/browser/omnibox/suggestions/DropdownItemViewInfoListBuilder.java b/chrome/android/java/src/org/chromium/chrome/browser/omnibox/suggestions/DropdownItemViewInfoListBuilder.java
-index 5623cc5b7be3abedc440df0657b581992c11009b..d36afd4d8094f5df1212b0f1faf5ab76a4b6abd0 100644
+index b5b0cf9312532775a220d7c981eaa667ef0cecfd..f7b55473204583a03787180e3e5f1c8c0a80405c 100644
 --- a/chrome/android/java/src/org/chromium/chrome/browser/omnibox/suggestions/DropdownItemViewInfoListBuilder.java
 +++ b/chrome/android/java/src/org/chromium/chrome/browser/omnibox/suggestions/DropdownItemViewInfoListBuilder.java
-@@ -89,7 +89,7 @@ class DropdownItemViewInfoListBuilder {
+@@ -90,7 +90,7 @@ class DropdownItemViewInfoListBuilder {
                  () -> mShareDelegateSupplier == null ? null : mShareDelegateSupplier.get();
  
          mHeaderProcessor = new HeaderProcessor(context, host, delegate);
