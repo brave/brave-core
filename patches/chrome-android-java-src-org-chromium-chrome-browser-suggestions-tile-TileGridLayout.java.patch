@@ -1,0 +1,17 @@
+diff --git a/chrome/android/java/src/org/chromium/chrome/browser/suggestions/tile/TileGridLayout.java b/chrome/android/java/src/org/chromium/chrome/browser/suggestions/tile/TileGridLayout.java
+index 71ee0a73800d7764d79ce01b6958d9baf54eae26..3d57465cd73a632502f99e8dcf6aebee8c07c5f8 100644
+--- a/chrome/android/java/src/org/chromium/chrome/browser/suggestions/tile/TileGridLayout.java
++++ b/chrome/android/java/src/org/chromium/chrome/browser/suggestions/tile/TileGridLayout.java
+@@ -158,10 +158,10 @@ public class TileGridLayout extends FrameLayout {
+                 gridStart = 0;
+             }
+         }
+-
++if(false){
+         assert horizontalSpacing >= mMinHorizontalSpacing;
+         assert horizontalSpacing <= mMaxHorizontalSpacing;
+-
++}
+         return Pair.create(gridStart, Math.round(horizontalSpacing));
+     }
+ 
