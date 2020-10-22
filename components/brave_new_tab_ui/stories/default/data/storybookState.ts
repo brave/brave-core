@@ -56,7 +56,7 @@ function getWidgetStackOrder (firstWidget: string): NewTab.StackWidget[] {
   }
 }
 
-export const getNewTabData = (state: NewTab.State = defaultState) => ({
+export const getNewTabData = (state: NewTab.State = defaultState): NewTab.State => ({
   ...state,
   brandedWallpaperData: shouldShowBrandedWallpaperData(
     boolean('Show branded background image?', true)

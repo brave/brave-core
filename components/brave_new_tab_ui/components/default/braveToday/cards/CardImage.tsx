@@ -14,24 +14,34 @@ type Props = {
   fit?: boolean
 }
 
-export default function CardImage (props: Props) {
-  const [data, setData] = React.useState('');
-
+function useGetUnpaddedImage (paddedUrl: string, onLoaded?: () => any) {
+  const [unpaddedUrl, setUnpaddedUrl] = React.useState('');
+  const onReceiveUnpaddedUrl = (result: string) => {
+    setUnpaddedUrl(result);
+    window.requestAnimationFrame(() => {
+      if (onLoaded)
+        onLoaded()
+    })
+  }
   React.useEffect(() => {
+    // Storybook method
+    // @ts-ignore
+    if (window.braveStorybookUnpadUrl) {
+      // @ts-ignore
+      window.braveStorybookUnpadUrl(paddedUrl)
+      .then(onReceiveUnpaddedUrl)
+      return
+    }
     Background.send<
     BraveToday.Messages.GetImageDataResponse,
       BraveToday.Messages.GetImageDataPayload
     >(
       Background.MessageTypes.Today.getImageData,
-      { url: props.imageUrl }
-    ).then(result => {
-      setData(result.dataUrl);
-      window.requestAnimationFrame(() => {
-        if (props.onLoaded)
-          props.onLoaded()
-      })
-    })
-  });
+      { url: paddedUrl }
+    ).then(result => onReceiveUnpaddedUrl(result.dataUrl))
+  }, [paddedUrl]);
+  return unpaddedUrl
+}
 
   return <Card.Image fit={props.fit} size={props.size} src={data} />
 }
