@@ -5,7 +5,7 @@
 
 #include "brave/ios/browser/brave_web_main_parts.h"
 
-#include "base/allocator/buildflags.h"
+//#include "base/allocator/buildflags.h"
 #include "base/base_switches.h"
 #include "base/metrics/user_metrics.h"
 #include "base/path_service.h"
@@ -26,9 +26,9 @@
 #include "ui/base/l10n/l10n_util_mac.h"
 #include "ui/base/resource/resource_bundle.h"
 
-#if BUILDFLAG(USE_ALLOCATOR_SHIM)
-#include "base/allocator/allocator_shim.h"
-#endif
+//#if BUILDFLAG(USE_ALLOCATOR_SHIM)
+//#include "base/allocator/allocator_shim.h"
+//#endif
 
 #if !defined(__has_feature) || !__has_feature(objc_arc)
 #error "This file requires ARC support."
@@ -39,9 +39,12 @@ BraveWebMainParts::BraveWebMainParts() {}
 BraveWebMainParts::~BraveWebMainParts() {}
 
 void BraveWebMainParts::PreEarlyInitialization() {
-#if BUILDFLAG(USE_ALLOCATOR_SHIM)
-  base::allocator::InitializeAllocatorShim();
-#endif
+  // Uses Private API _performMemoryWarning causing iOS to get rejected.
+  // Crashes very badly on iOS 13.4.0, 13.5.0 according to:
+  // ios_chrome_main_parts.mm -> InitializeAllocatorShim & ShouldInstallAllocatorShim
+//#if BUILDFLAG(USE_ALLOCATOR_SHIM)
+//  base::allocator::InitializeAllocatorShim();
+//#endif
 }
 
 void BraveWebMainParts::PreMainMessageLoopStart() {
