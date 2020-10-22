@@ -35,29 +35,6 @@ using brave_rewards::RewardsServiceFactory;
 namespace extensions {
 namespace api {
 
-BraveRewardsCreateWalletFunction::BraveRewardsCreateWalletFunction()
-    : weak_factory_(this) {
-}
-
-BraveRewardsCreateWalletFunction::~BraveRewardsCreateWalletFunction() {
-}
-
-void BraveRewardsCreateWalletFunction::OnCreateWallet(
-    const ledger::type::Result result) {
-}
-
-ExtensionFunction::ResponseAction BraveRewardsCreateWalletFunction::Run() {
-  Profile* profile = Profile::FromBrowserContext(browser_context());
-  auto* rewards_service = RewardsServiceFactory::GetForProfile(profile);
-  if (rewards_service) {
-    rewards_service->CreateWallet(
-        base::Bind(
-            &BraveRewardsCreateWalletFunction::OnCreateWallet,
-            weak_factory_.GetWeakPtr()));
-  }
-  return RespondNow(NoArguments());
-}
-
 BraveRewardsOpenBrowserActionUIFunction::
 ~BraveRewardsOpenBrowserActionUIFunction() {
 }
@@ -563,7 +540,6 @@ void BraveRewardsClaimPromotionFunction::OnClaimPromotion(
     const std::string& captcha_image,
     const std::string& hint,
     const std::string& captcha_id) {
-
   auto data = std::make_unique<base::Value>(base::Value::Type::DICTIONARY);
   data->SetIntKey("result", static_cast<int>(result));
   data->SetStringKey("promotionId", promotion_id);
@@ -643,31 +619,6 @@ void BraveRewardsGetPendingContributionsTotalFunction::OnGetPendingTotal(
   Respond(OneArgument(std::make_unique<base::Value>(amount)));
 }
 
-BraveRewardsGetRewardsMainEnabledFunction::
-~BraveRewardsGetRewardsMainEnabledFunction() {
-}
-
-ExtensionFunction::ResponseAction
-BraveRewardsGetRewardsMainEnabledFunction::Run() {
-  Profile* profile = Profile::FromBrowserContext(browser_context());
-  RewardsService* rewards_service =
-    RewardsServiceFactory::GetForProfile(profile);
-
-  if (!rewards_service) {
-    return RespondNow(Error("Rewards service is not initialized"));
-  }
-
-  rewards_service->GetRewardsMainEnabled(base::Bind(
-        &BraveRewardsGetRewardsMainEnabledFunction::OnGetRewardsMainEnabled,
-        this));
-  return RespondLater();
-}
-
-void BraveRewardsGetRewardsMainEnabledFunction::OnGetRewardsMainEnabled(
-    bool enabled) {
-  Respond(OneArgument(std::make_unique<base::Value>(enabled)));
-}
-
 BraveRewardsSaveAdsSettingFunction::~BraveRewardsSaveAdsSettingFunction() {
 }
 
@@ -708,27 +659,6 @@ BraveRewardsGetACEnabledFunction::Run() {
 
 void BraveRewardsGetACEnabledFunction::OnGetACEnabled(bool enabled) {
   Respond(OneArgument(std::make_unique<base::Value>(enabled)));
-}
-
-BraveRewardsSaveSettingFunction::~BraveRewardsSaveSettingFunction() {
-}
-
-ExtensionFunction::ResponseAction BraveRewardsSaveSettingFunction::Run() {
-  std::unique_ptr<brave_rewards::SaveSetting::Params> params(
-      brave_rewards::SaveSetting::Params::Create(*args_));
-
-  Profile* profile = Profile::FromBrowserContext(browser_context());
-  RewardsService* rewards_service =
-    RewardsServiceFactory::GetForProfile(profile);
-
-  if (rewards_service) {
-    if (params->key == "enabledMain") {
-      rewards_service->SetRewardsMainEnabled(
-          std::stoi(params->value.c_str()));
-    }
-  }
-
-  return RespondNow(NoArguments());
 }
 
 BraveRewardsSaveRecurringTipFunction::
@@ -1153,31 +1083,6 @@ void BraveRewardsGetAdsEstimatedEarningsFunction::OnAdsEstimatedEarnings(
     const uint64_t ad_notifications_received_this_month) {
   Respond(OneArgument(
       std::make_unique<base::Value>(estimated_pending_rewards)));
-}
-
-BraveRewardsGetWalletExistsFunction::
-~BraveRewardsGetWalletExistsFunction() {
-}
-
-ExtensionFunction::ResponseAction
-BraveRewardsGetWalletExistsFunction::Run() {
-  Profile* profile = Profile::FromBrowserContext(browser_context());
-  RewardsService* rewards_service =
-    RewardsServiceFactory::GetForProfile(profile);
-
-  if (!rewards_service) {
-    return RespondNow(Error("Rewards service is not initialized"));
-  }
-
-  rewards_service->IsWalletCreated(base::Bind(
-        &BraveRewardsGetWalletExistsFunction::OnGetWalletExists,
-        this));
-  return RespondLater();
-}
-
-void BraveRewardsGetWalletExistsFunction::OnGetWalletExists(
-    const bool exists) {
-  Respond(OneArgument(std::make_unique<base::Value>(exists)));
 }
 
 BraveRewardsGetAdsSupportedFunction::

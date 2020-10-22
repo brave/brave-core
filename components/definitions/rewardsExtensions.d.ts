@@ -3,16 +3,11 @@ declare namespace RewardsExtension {
     balance: Balance
     currentNotification?: string
     enabledAC: boolean
-    enabledMain: boolean
     notifications: Record<string, Notification>
     publishers: Record<string, Publisher>
     balanceReport: BalanceReport
     promotions?: Promotion[]
     pendingContributionTotal: number
-    walletCorrupted: boolean
-    walletCreated: boolean
-    walletCreating: boolean
-    walletCreateFailed: boolean
     parameters: RewardsParameters
     recurringTips: Record<string, number>[]
     tipAmounts: Record<string, number[]>

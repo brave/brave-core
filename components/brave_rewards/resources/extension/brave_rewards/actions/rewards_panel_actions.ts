@@ -7,14 +7,6 @@ import { action } from 'typesafe-actions'
 // Constants
 import { types } from '../constants/rewards_panel_types'
 
-export const createWallet = () => action(types.CREATE_WALLET, {})
-
-export const walletCreated = () => action(types.WALLET_CREATED)
-
-export const walletCreationFailed = (result: RewardsExtension.Result) => action(types.WALLET_CREATION_FAILED, {
-  result
-})
-
 export const onTabRetrieved = (tab: chrome.tabs.Tab, activeTabIsLoadingTriggered: boolean, publisherBlob: string = 'ignore') => action(types.ON_TAB_RETRIEVED, {
   tab,
   activeTabIsLoadingTriggered,
@@ -84,10 +76,6 @@ export const OnPendingContributionsTotal = (amount: number) => action(types.ON_P
   amount
 })
 
-export const onEnabledMain = (enabledMain: boolean) => action(types.ON_ENABLED_MAIN, {
-  enabledMain
-})
-
 export const onEnabledAC = (enabled: boolean) => action(types.ON_ENABLED_AC, {
   enabled
 })
@@ -146,22 +134,10 @@ export const onExternalWallet = (wallet: RewardsExtension.ExternalWallet) => act
   wallet
 })
 
-export const onAnonWalletStatus = (result: RewardsExtension.Result) => action(types.ON_ANON_WALLET_STATUS, {
-  result
-})
-
 export const onAllNotificationsDeleted = () => action(types.ON_ALL_NOTIFICATIONS_DELETED)
 
 export const onCompleteReset = (success: boolean) => action(types.ON_COMPLETE_RESET, {
   success
 })
 
-export const toggleEnableMain = (enable: boolean) => action(types.TOGGLE_ENABLE_MAIN, {
-  enable
-})
-
 export const initialized = () => action(types.INITIALIZED)
-
-export const walletExists = (exists: boolean) => action(types.WALLET_EXISTS, {
-  exists
-})

@@ -12,7 +12,9 @@ import {
   NotificationWrapper,
   OrphanedNotificationWrapper,
   NotificationAction,
-  NotificationButton
+  TurnOnAdsButton,
+  StyledTOS,
+  StyleCenter
 } from './style'
 import { CloseStrokeIcon } from 'brave-ui/components/icons'
 import { getLocale, splitStringForTag } from '../../../../common/locale'
@@ -30,9 +32,9 @@ export default class BrandedWallpaperRewardsNotification extends React.PureCompo
 
   renderPostAdsOptInContent () {
     const text = getLocale('rewardsWidgetBrandedNotificationDescription')
-    const { beforeTag, duringTag, afterTag } = splitStringForTag(text, '$1', '$2')
+    const { beforeTag, duringTag, afterTag } = splitStringForTag(text)
     return (
-      <>
+      <StyleCenter>
         <Title>
           {getLocale('rewardsWidgetBrandedNotificationTitle')}
         </Title>
@@ -46,16 +48,15 @@ export default class BrandedWallpaperRewardsNotification extends React.PureCompo
         <NotificationAction onClick={this.props.onHideSponsoredImages}>
           {getLocale('rewardsWidgetBrandedNotificationHideAction')}
         </NotificationAction>
-      </>
+      </StyleCenter>
     )
   }
 
   renderPreAdsOptInContent () {
     const text = getLocale('rewardsWidgetEnableBrandedWallpaperSubTitle')
-      .replace('$3', 'Brave Ads')
-    const { beforeTag, duringTag, afterTag } = splitStringForTag(text, '$1', '$2')
+    const { beforeTag, duringTag, afterTag } = splitStringForTag(text)
     return (
-      <>
+      <StyleCenter>
         <Title>
           {getLocale('rewardsWidgetEnableBrandedWallpaperTitle')}
         </Title>
@@ -66,10 +67,14 @@ export default class BrandedWallpaperRewardsNotification extends React.PureCompo
           </SubTitleLink>
           {afterTag}
         </SubTitle>
-        <NotificationButton onClick={this.props.onEnableAds}>
-          {getLocale('rewardsWidgetTurnOnAds')}
-        </NotificationButton>
-      </>
+        <TurnOnAdsButton
+          onClick={this.props.onEnableAds}
+          type={'accent'}
+          brand={'rewards'}
+          text={getLocale('rewardsWidgetTurnOnAds')}
+        />
+        <StyledTOS title={getLocale('rewardsWidgetEarnAndGive')} />
+      </StyleCenter>
     )
   }
 

@@ -12,7 +12,7 @@ using std::placeholders::_1;
 
 namespace {
 
-const int kCurrentVersionNumber = 7;
+const int kCurrentVersionNumber = 8;
 
 }  // namespace
 
@@ -27,8 +27,9 @@ StateMigration::StateMigration(LedgerImpl* ledger) :
     v5_(std::make_unique<StateMigrationV5>(ledger)),
     v6_(std::make_unique<StateMigrationV6>(ledger)),
     v7_(std::make_unique<StateMigrationV7>(ledger)),
+    v8_(std::make_unique<StateMigrationV8>(ledger)),
     ledger_(ledger) {
-  DCHECK(v1_ && v2_ && v3_ && v4_ && v5_ && v6_ && v7_);
+  DCHECK(v1_ && v2_ && v3_ && v4_ && v5_ && v6_ && v7_ && v8_);
 }
 
 StateMigration::~StateMigration() = default;
@@ -38,13 +39,26 @@ void StateMigration::Start(ledger::ResultCallback callback) {
   const bool fresh_install = current_version == 0;
 
   if (fresh_install) {
-    BLOG(1, "Fresh install, state version set to " << kCurrentVersionNumber);
-    ledger_->state()->SetVersion(kCurrentVersionNumber);
-    callback(type::Result::LEDGER_OK);
+    FreshInstall(callback);
     return;
   }
 
   Migrate(callback);
+}
+
+void StateMigration::FreshInstall(ledger::ResultCallback callback) {
+  BLOG(1, "Fresh install, state version set to " << kCurrentVersionNumber);
+  ledger_->state()->SetInlineTippingPlatformEnabled(
+      type::InlineTipsPlatforms::REDDIT,
+      true);
+  ledger_->state()->SetInlineTippingPlatformEnabled(
+      type::InlineTipsPlatforms::TWITTER,
+      true);
+  ledger_->state()->SetInlineTippingPlatformEnabled(
+      type::InlineTipsPlatforms::GITHUB,
+      true);
+  ledger_->state()->SetVersion(kCurrentVersionNumber);
+  callback(type::Result::LEDGER_OK);
 }
 
 void StateMigration::Migrate(ledger::ResultCallback callback) {
@@ -94,6 +108,10 @@ void StateMigration::Migrate(ledger::ResultCallback callback) {
     }
     case 7: {
       v7_->Migrate(migrate_callback);
+      return;
+    }
+    case 8: {
+      v8_->Migrate(migrate_callback);
       return;
     }
   }

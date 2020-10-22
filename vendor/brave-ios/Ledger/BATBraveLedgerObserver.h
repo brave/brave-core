@@ -22,9 +22,6 @@ NS_SWIFT_NAME(LedgerObserver)
 
 - (instancetype)initWithLedger:(BATBraveLedger *)ledger;
 
-/// Rewards was enabled or disabled globally
-@property (nonatomic, copy, nullable) void (^rewardsEnabledStateUpdated)(BOOL enabled);
-
 /// Executed when the wallet is first initialized
 @property (nonatomic, copy, nullable) void (^walletInitalized)(BATResult result);
 

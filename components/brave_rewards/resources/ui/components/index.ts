@@ -8,7 +8,6 @@ import Amount from './amount'
 import Box from './box'
 import BoxAlert from './boxAlert'
 import CategoryLikePicker from './categoryLikePicker'
-import DisabledBox from './disabledBox'
 import DisabledContent from './disabledContent'
 import DisabledPanel from './disabledPanel'
 import Donate from './donate'
@@ -32,7 +31,6 @@ import ModalShowAdsHistory from './modalShowAdsHistory'
 import ModalVerify from './modalVerify'
 import ModalQRCode from './modalQRCode'
 import NextContribution from './nextContribution'
-import PanelWelcome from './panelWelcome'
 import Profile from './profile'
 import RestoreSites from './restoreSites'
 import RewardsButton from './rewardsButton'
@@ -52,14 +50,11 @@ import ToggleTips from './toggleTips'
 import Tokens from './tokens'
 import Tooltip from './tooltip'
 import WalletEmpty from './walletEmpty'
-import WalletOff from './walletOff'
 import WalletPanel from './walletPanel'
-import WalletPanelDisabled from './walletPanelDisabled'
 import WalletPopup from './walletPopup'
 import WalletSummary from './walletSummary'
 import WalletSummarySlider from './walletSummarySlider'
 import WalletWrapper from './walletWrapper'
-import WelcomePage from './welcomePage'
 
 export {
   AdRowsDetails,
@@ -68,7 +63,6 @@ export {
   Box,
   BoxAlert,
   CategoryLikePicker,
-  DisabledBox,
   DisabledContent,
   DisabledPanel,
   Donate,
@@ -92,7 +86,6 @@ export {
   ModalVerify,
   ModalQRCode,
   NextContribution,
-  PanelWelcome,
   Profile,
   RestoreSites,
   RewardsButton,
@@ -112,12 +105,9 @@ export {
   Tokens,
   Tooltip,
   WalletEmpty,
-  WalletOff,
   WalletPanel,
-  WalletPanelDisabled,
   WalletPopup,
   WalletSummary,
   WalletSummarySlider,
-  WalletWrapper,
-  WelcomePage
+  WalletWrapper
 }

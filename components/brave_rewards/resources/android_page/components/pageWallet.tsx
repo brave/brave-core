@@ -11,8 +11,7 @@ import { AlertWallet } from '../../ui/components/walletWrapper'
 import {
   WalletSummary,
   WalletWrapper,
-  WalletEmpty,
-  WalletOff
+  WalletEmpty
 } from '../../ui/components'
 import { CloseStrokeIcon } from 'brave-ui/components/icons'
 import { StyledWalletClose, StyledWalletOverlay, StyledWalletWrapper } from './style'
@@ -89,7 +88,6 @@ class PageWallet extends React.Component<Props, State> {
   render () {
     const { visible, toggleAction } = this.props
     const {
-      enabledMain,
       balance,
       ui,
       pendingContributionTotal
@@ -126,16 +124,14 @@ class PageWallet extends React.Component<Props, State> {
               onlyAnonWallet={onlyAnonWallet}
             >
               {
-                enabledMain
-                ? emptyWallet
-                  ? <WalletEmpty hideAddFundsText={true} />
-                  : <WalletSummary
-                    reservedAmount={pendingTotal}
-                    onlyAnonWallet={onlyAnonWallet}
-                    reservedMoreLink={'https://brave.com/faq-rewards/#unclaimed-funds'}
-                    {...this.getWalletSummary()}
-                  />
-                : <WalletOff/>
+                emptyWallet
+                ? <WalletEmpty hideAddFundsText={true} />
+                : <WalletSummary
+                  reservedAmount={pendingTotal}
+                  onlyAnonWallet={onlyAnonWallet}
+                  reservedMoreLink={'https://brave.com/faq-rewards/#unclaimed-funds'}
+                  {...this.getWalletSummary()}
+                />
               }
             </WalletWrapper>
           </StyledWalletWrapper>

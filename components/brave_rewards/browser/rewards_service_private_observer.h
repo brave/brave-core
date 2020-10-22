@@ -22,10 +22,6 @@ class RewardsServicePrivateObserver : public base::CheckedObserver {
       const ledger::type::Result result,
       const ledger::type::PublisherInfo* info,
       uint64_t windowId) {}
-
-  virtual void OnRewardsMainEnabled(
-      RewardsService* rewards_service,
-      bool rewards_main_enabled) {}
 };
 
 }  // namespace brave_rewards

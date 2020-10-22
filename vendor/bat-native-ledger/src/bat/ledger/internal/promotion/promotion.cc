@@ -107,24 +107,6 @@ void Promotion::Initialize() {
 }
 
 void Promotion::Fetch(ledger::FetchPromotionCallback callback) {
-  // make sure wallet/client state is sane here as this is the first
-  // panel call.
-  type::PromotionList empty_list;
-  const auto wallet = ledger_->wallet()->GetWallet();
-  if (!wallet) {
-    BLOG(0, "Wallet is null");
-    callback(type::Result::CORRUPTED_DATA, std::move(empty_list));
-    return;
-  }
-
-  const std::string& passphrase =
-      ledger_->wallet()->GetWalletPassphrase(wallet->Clone());
-  if (wallet->payment_id.empty() || passphrase.empty()) {
-    BLOG(0, "Corrupted wallet");
-    callback(type::Result::CORRUPTED_DATA, std::move(empty_list));
-    return;
-  }
-
   // If we fetched promotions recently, fulfill this request from the
   // database instead of querying the server again
   if (!ledger::is_testing) {
@@ -318,7 +300,22 @@ void Promotion::OnClaimPromotion(
     return;
   }
 
-  attestation_->Start(payload, callback);
+  const auto wallet = ledger_->wallet()->GetWallet();
+  if (wallet) {
+    attestation_->Start(payload, callback);
+    return;
+  }
+
+  ledger_->wallet()->CreateWalletIfNecessary(
+      [this, payload, callback](const type::Result result) {
+        if (result != type::Result::WALLET_CREATED) {
+          BLOG(0, "Wallet couldn't be created");
+          callback(type::Result::LEDGER_ERROR, "");
+          return;
+        }
+
+        attestation_->Start(payload, callback);
+      });
 }
 
 void Promotion::Attest(

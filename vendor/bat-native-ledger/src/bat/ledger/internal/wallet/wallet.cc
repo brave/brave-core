@@ -93,6 +93,22 @@ void Wallet::ExternalWalletAuthorization(
     const std::string& wallet_type,
     const std::map<std::string, std::string>& args,
     ledger::ExternalWalletAuthorizationCallback callback) {
+  ledger_->wallet()->CreateWalletIfNecessary(
+    [this, wallet_type, args, callback](const type::Result result) {
+      if (result != type::Result::WALLET_CREATED) {
+        BLOG(0, "Wallet couldn't be created");
+        callback(type::Result::LEDGER_ERROR, {});
+        return;
+      }
+
+      AuthorizeWallet(wallet_type, args, callback);
+    });
+}
+
+void Wallet::AuthorizeWallet(
+    const std::string& wallet_type,
+    const std::map<std::string, std::string>& args,
+    ledger::ExternalWalletAuthorizationCallback callback) {
   if (wallet_type == constant::kWalletUphold) {
     ledger_->uphold()->WalletAuthorization(args, callback);
     return;

@@ -17,7 +17,7 @@
     },
     {
         "preconditions": {
-            "rewards-enabled": true
+            "auto-contribution-enabled": true
         },
         "urls": [
             "http://pre1.example.com/*"

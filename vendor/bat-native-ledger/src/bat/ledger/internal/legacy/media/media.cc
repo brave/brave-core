@@ -73,9 +73,7 @@ void Media::ProcessMedia(
     const std::map<std::string, std::string>& parts,
     const std::string& type,
     ledger::type::VisitDataPtr visit_data) {
-  if (parts.empty() ||
-      !ledger_->state()->GetRewardsMainEnabled() ||
-      !visit_data) {
+  if (parts.empty() || !visit_data) {
     return;
   }
 

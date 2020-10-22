@@ -326,6 +326,7 @@ class AdsServiceImpl : public AdsService,
   void MigratePrefsVersion4To5();
   void MigratePrefsVersion5To6();
   void MigratePrefsVersion6To7();
+  void MigratePrefsVersion7To8();
   int GetPrefsVersion() const;
 
   bool IsUpgradingFromPreBraveAdsBuild();
@@ -334,19 +335,8 @@ class AdsServiceImpl : public AdsService,
   void DisableAdsForUnsupportedCountryCodes(
       const std::string& country_code,
       const std::vector<std::string>& country_codes);
-  void MayBeShowOnboardingForSupportedCountryCode(
-      const std::string& country_code,
-      const std::vector<std::string>& country_codes);
   uint64_t MigrateTimestampToDoubleT(
       const uint64_t timestamp_in_seconds) const;
-
-  void MaybeShowOnboarding();
-  bool ShouldShowOnboarding();
-  void ShowOnboarding();
-  void RemoveOnboarding();
-  void MaybeStartRemoveOnboardingTimer();
-  bool ShouldRemoveOnboarding() const;
-  void StartRemoveOnboardingTimer();
 
   void MaybeShowMyFirstAdNotification();
   bool ShouldShowMyFirstAdNotification() const;
@@ -355,6 +345,9 @@ class AdsServiceImpl : public AdsService,
       const std::string& path) const;
   void OnPrefsChanged(
       const std::string& pref);
+
+  void OnWalletCreated(
+      const ledger::type::Result result);
 
   std::string GetLocale() const;
 

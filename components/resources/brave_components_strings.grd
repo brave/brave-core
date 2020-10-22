@@ -374,8 +374,6 @@
       <message name="IDS_BRAVE_REWARDS_LOCAL_GENERAL_GRANT_ERROR_TITLE" desc="">Oops, something is wrong. Please try again later.</message>
       <message name="IDS_BRAVE_REWARDS_LOCAL_GENERAL_GRANT_ERROR_BUTTON" desc="">OK</message>
       <message name="IDS_BRAVE_REWARDS_LOCAL_GENERAL_GRANT_ERROR_TEXT" desc="">Brave Rewards is having an issue. Please try again later.</message>
-      <message name="IDS_BRAVE_REWARDS_LOCAL_WALLET_CORRUPTED" desc="">We detected that something is wrong with your wallet. You must recover your backup wallet before any transactions can be processed.</message>
-      <message name="IDS_BRAVE_REWARDS_LOCAL_WALLET_CORRUPTED_NOW" desc="">Recover now!</message>
       <message name="IDS_BRAVE_REWARDS_LOCAL_DONAT_NEXT_DATE" desc="Description of the date in the donation box">Next monthly contribution date</message>
       <message name="IDS_BRAVE_REWARDS_LOCAL_COMPLIMENT_TWEET" desc="">
         I just tipped <ph name="NAME">$1<ex>user</ex></ph> using the Brave Browser. Check it out at https://brave.com/tips.
@@ -387,6 +385,7 @@
       <message name="IDS_BRAVE_REWARDS_LOCAL_ADS_CONFIRMATION_TYPE_LANDED" desc="">Clicked</message>
       <message name="IDS_BRAVE_REWARDS_LOCAL_ADS_CONFIRMATION_TYPE_VIEW" desc="">Viewed</message>
       <message name="IDS_BRAVE_REWARDS_LOCAL_REDIRECT_MODAL_NOT_ALLOWED" desc="">BAT is not currently supported in your region. Please refer <ph name="BEGIN_LINK">$1</ph>here<ph name="END_LINK">$2</ph> for updates.</message>
+      <message name="IDS_BRAVE_REWARDS_LOCAL_TOS_AND_PP" desc="">By turning on {{title}}, you agree to the <ph name="BEGIN_LINK1">$1</ph>Terms of Service<ph name="END_LINK1">$2</ph> and <ph name="BEGIN_LINK2">$3</ph>Privacy Policy<ph name="END_LINK2">$4</ph>.</message>
       <message name="IDS_BRAVE_REWARDS_LOCAL_REDIRECT_MODAL_CLOSE" desc="">Close</message>
       <message name="IDS_BRAVE_REWARDS_LOCAL_REDIRECT_MODAL_ERROR_WALLET" desc="">Error creating Brave Browser BAT card</message>
       <message name="IDS_BRAVE_REWARDS_LOCAL_REDIRECT_MODAL_BAT_LIMIT_TITLE" desc="">You need a verified wallet to Login</message>
@@ -449,7 +448,6 @@
       <message name="IDS_BRAVE_REWARDS_INTERNALS_PROMOTION_VERSION" desc="">Version</message>
       <message name="IDS_BRAVE_REWARDS_INTERNALS_REFRESH_BUTTON" desc="Refresh button">Refresh</message>
       <message name="IDS_BRAVE_REWARDS_INTERNALS_RETRY_COUNT" desc="Retry count">Retry Count:</message>
-      <message name="IDS_BRAVE_REWARDS_INTERNALS_REWARDS_NOT_ENABLED" desc="Rewards not enabled">Brave Rewards is not enabled. Enable it by visiting</message>
       <message name="IDS_BRAVE_REWARDS_INTERNALS_REWARDS_TYPE_AUTO" desc="Auto Contribute">Auto Contribute</message>
       <message name="IDS_BRAVE_REWARDS_INTERNALS_REWARDS_TYPE_ONE_TIME_TIP" desc="One-time tip">One-time tip</message>
       <message name="IDS_BRAVE_REWARDS_INTERNALS_REWARDS_TYPE_RECURRING_TIP" desc="Recurring tip">Recurring tip</message>
@@ -464,6 +462,7 @@
       <message name="IDS_BRAVE_REWARDS_INTERNALS_VALID" desc="Valid indicator">Valid</message>
       <message name="IDS_BRAVE_REWARDS_INTERNALS_WALLET_ADDRESS" desc="">Wallet address:</message>
       <message name="IDS_BRAVE_REWARDS_INTERNALS_WALLET_INFO" desc="">Wallet info</message>
+      <message name="IDS_BRAVE_REWARDS_INTERNALS_WALLET_NOT_CREATED" desc="">Wallet was not yet created</message>
       <message name="IDS_BRAVE_REWARDS_INTERNALS_WALLET_PAYMENT_ID" desc="Wallet payment ID">Wallet payment ID:</message>
       <message name="IDS_BRAVE_REWARDS_INTERNALS_WALLET_STATUS" desc="Wallet status">Wallet status:</message>
       <message name="IDS_BRAVE_REWARDS_INTERNALS_WALLET_STATUS_CONNECTED" desc="">Connected</message>
@@ -527,7 +526,6 @@
       <message name="IDS_BRAVE_UI_BACKUP" desc="">Backup</message>
       <message name="IDS_BRAVE_UI_BRAVE_ADS_DESC" desc="">Get paid to view relevant ads that respect your privacy.</message>
       <message name="IDS_BRAVE_UI_BRAVE_ADS_DESC_POINTS" desc="">Collect points when you view relevant ads that respect your privacy.</message>
-      <message name="IDS_BRAVE_UI_BRAVE_ADS_LAUNCH_MSG" desc="">Now you can earn by viewing ads.</message>
       <message name="IDS_BRAVE_UI_BRAVE_ADS_LAUNCH_TITLE" desc="">Brave Ads has arrived!</message>
       <message name="IDS_BRAVE_UI_BRAVE_ADS_TITLE" desc="">Ads</message>
       <message name="IDS_BRAVE_UI_BRAVE_CONTRIBUTE_DESC" desc="">Support your favorite sites just by browsing – or tip a site any time you like.</message>
@@ -537,7 +535,6 @@
       <message name="IDS_BRAVE_UI_AND" desc="">and</message>
       <message name="IDS_BRAVE_UI_PRIVACY_POLICY" desc="">Privacy Policy</message>
       <message name="IDS_BRAVE_UI_TERMS_OF_SERVICE" desc="">Terms of Service</message>
-      <message name="IDS_BRAVE_UI_SERVICE_TEXT_TOGGLE" desc="">By turning on Brave Rewards, you indicate that you have read and agree to the</message>
       <message name="IDS_BRAVE_UI_SERVICE_TEXT_WELCOME" desc="">By clicking ‘Yes, I'm in!’, you indicate that you have read and agree to the</message>
       <message name="IDS_BRAVE_UI_SERVICE_TEXT_READY" desc="">By clicking ‘Yes, I'm Ready!’, you indicate that you have read and agree to the</message>
       <message name="IDS_BRAVE_UI_BRAVE_REWARDS_CREATING_TEXT" desc="">Creating wallet</message>
@@ -704,7 +701,6 @@
       <message name="IDS_BRAVE_UI_REWARDS_RESET_TEXT_NO_FUNDS" desc="">Your Rewards data will be permanently lost if you reset your wallet.</message>
       <message name="IDS_BRAVE_UI_TOKEN_GRANT" desc="">Token Grants Claimed</message>
       <message name="IDS_BRAVE_UI_REWARDS_SUMMARY" desc="">Rewards Summary</message>
-      <message name="IDS_BRAVE_UI_REWARDS_WHY" desc="">Why Brave Rewards?</message>
       <message name="IDS_BRAVE_UI_SAVE_AS_FILE" desc="">Save as File</message>
       <message name="IDS_BRAVE_UI_SAVE" desc="">Save</message>
       <message name="IDS_BRAVE_UI_SEE_ALL_ITEMS" desc="">See all {{numItems}} items</message>
@@ -731,7 +727,8 @@
       <message name="IDS_BRAVE_UI_POINT_GRANTS" desc="">Point Grants</message>
       <message name="IDS_BRAVE_UI_QR_CODE_LOADING" desc="">Loading image...</message>
       <message name="IDS_BRAVE_UI_TRANSACTIONS" desc="">Transactions</message>
-      <message name="IDS_BRAVE_UI_TURN_ON_ADS" desc="">Turn on Brave Ads</message>
+      <message name="IDS_BRAVE_UI_TURN_ON_ADS" desc="">I'm ready to Earn &amp; Give</message>
+      <message name="IDS_BRAVE_UI_TURN_ON_TEXT" desc="">Earn tokens by viewing privacy-respecting ads and support your favorite web content creators by default.</message>
       <message name="IDS_BRAVE_UI_TURN_ON_REWARDS_DESC" desc="">This enables both ads and automatic contributions. You can turn them on or off separately at any time.</message>
       <message name="IDS_BRAVE_UI_TURN_ON_REWARDS_TITLE" desc="">Activate Rewards</message>
       <message name="IDS_BRAVE_UI_TYPE" desc="">Type</message>
@@ -740,7 +737,6 @@
       <message name="IDS_BRAVE_UI_WALLET_ACTIVITY" desc="">Wallet Activity</message>
       <message name="IDS_BRAVE_UI_WALLET_ADDRESS" desc="">Wallet Address</message>
       <message name="IDS_BRAVE_UI_WALLET_BALANCE" desc="">wallet balance</message>
-      <message name="IDS_BRAVE_UI_WALLET_FAILED_BUTTON" desc="">Try again</message>
       <message name="IDS_BRAVE_UI_WALLET_FAILED_TITLE" desc="">Wallet creation failed</message>
       <message name="IDS_BRAVE_UI_WALLET_FAILED_TEXT" desc="">Please check your internet connection.</message>
       <message name="IDS_BRAVE_UI_WELCOME" desc="">Welcome!</message>
@@ -754,8 +750,6 @@
       <message name="IDS_BRAVE_UI_WELCOME_HEADER_ONE" desc="">We’ve given Brave Payments a big upgrade.</message>
       <message name="IDS_BRAVE_UI_WELCOME_HEADER_TWO" desc="">Get ready to experience the next Internet.</message>
       <message name="IDS_BRAVE_UI_WHY_BRAVE_REWARDS" desc="">Why Brave Rewards?</message>
-      <message name="IDS_BRAVE_UI_WHY_BRAVE_REWARDS_DESC_1" desc="">With your old browser, you paid to browse the web by viewing ads with your valuable attention. You spent your valuable time downloading invasive ad technology that transmitted your valuable private data to advertisers — without your consent.</message>
-      <message name="IDS_BRAVE_UI_WHY_BRAVE_REWARDS_DESC_2" desc="">Today, Brave welcomes you to the new Internet. One where your time is valued, your personal data is kept private, and you actually get paid for your attention.</message>
       <message name="IDS_BRAVE_UI_YOUR_BALANCE" desc="">Your Balance</message>
       <message name="IDS_BRAVE_UI_YOUR_WALLET" desc="">Your wallet</message>
       <message name="IDS_BRAVE_UI_VIEW_DETAILS" desc="">View Details</message>
@@ -824,36 +818,20 @@
       <message name="IDS_REWARDS_WIDGET_SERVICE_TEXT"
         desc="Small-print for enabling Brave Rewards on the New Tab Page"
       >
-        By turning on Rewards, you agree to the <ph name="LINK_BEGIN">$1</ph>Terms of Service<ph name="LINK_END">$2</ph>.
+        By clicking Earn &amp; Give, you agree to the <ph name="LINK_BEGIN">$1</ph>Terms of Service<ph name="LINK_END">$2</ph> and <ph name="LINK_BEGIN">$3</ph>Privacy Policy<ph name="LINK_END">$4</ph>.
       </message>
       <message name="IDS_REWARDS_WIDGET_ESTIMATED_EARNINGS" desc="">Estimated earnings so far this month</message>
-      <message name="IDS_REWARDS_WIDGET_ADS_OPT_IN_DESCRIPTION"
-        desc="Prompt for turning on the Ads feature"
-      >
-        Earn tokens by viewing privacy-respecting ads.
-      </message>
       <message name="IDS_REWARDS_WIDGET_MONTHLY_TIPS" desc="">Tips and contributions this month</message>
       <message name="IDS_REWARDS_WIDGET_CLAIM_MY_REWARDS" desc="">Claim my Rewards</message>
-      <message name="IDS_REWARDS_WIDGET_TURNING_ON" desc="">Turning on...</message>
-      <message name="IDS_REWARDS_WIDGET_TURN_ON_REWARDS" desc="">Turn on Rewards</message>
-      <message name="IDS_REWARDS_WIDGET_REENABLE_TITLE" desc="">Feeling Generous?</message>
-      <message name="IDS_REWARDS_WIDGET_TURN_ON_LEARN_MORE"
-        desc="Button text to learn more about Brave Rewards"
-      >
-        Learn more
-      </message>
-      <message name="IDS_REWARDS_WIDGET_ENABLE_TITLE" desc="">Ready to start earning?</message>
       <message name="IDS_REWARDS_WIDGET_ENABLE_BRANDED_WALLPAPER_TITLE"
         desc="Title for prompt to enable Brave Rewards when a Branded Wallpaper is currently being displayed"
       >
         Get paid to view this sponsored background image.
       </message>
-      <message name="IDS_REWARDS_WIDGET_REENABLE_SUBTITLE" desc="">Try Brave Rewards again and pay it forward as you earn!</message>
-      <message name="IDS_REWARDS_WIDGET_ENABLE_SUBTITLE" desc="">Turn on Brave Rewards and get paid to view privacy-respecting ads.</message>
       <message name="IDS_REWARDS_WIDGET_ENABLE_BRANDED_WALLPAPER_SUBTITLE"
         desc="Description for prompt to enable Brave Rewards when a Branded Wallpaper is currently being displayed"
       >
-        Turn on <ph name="PRODUCT_NAME">$3<ex>Brave Rewards</ex></ph> to claim your share. You can also choose to <ph name="LINK_BEGIN">$1</ph>hide sponsored images<ph name="LINK_END">$2</ph>.
+        Turn on Brave Ads to claim your share. You can also choose to <ph name="LINK_BEGIN">$1</ph>hide sponsored images<ph name="LINK_END">$2</ph>.
       </message>
       <message name="IDS_REWARDS_WIDGET_NOTIFICATION_TITLE" desc="">Way to Go!</message>
       <message name="IDS_REWARDS_WIDGET_NOTIFICATION_TEXT_ADS" desc="">Your rewards from Ads are here</message>
@@ -874,6 +852,8 @@
         Hide sponsored images
       </message>
       <message name="IDS_ADD_CARD_WIDGET_TITLE" desc="">Add Card</message>
+      <message name="IDS_REWARDS_WIDGET_TOS_AND_PP" desc="">By clicking {{title}}, you agree to the <ph name="BEGIN_LINK1">$1</ph>Terms of Service<ph name="END_LINK1">$2</ph> and <ph name="BEGIN_LINK2">$3</ph>Privacy Policy<ph name="END_LINK2">$4</ph>.</message>
+      <message name="IDS_REWARDS_WIDGET_EARN_AND_GIVE" desc="">Earn &amp; Give</message>
       <message name="IDS_TOGETHER_WIDGET_TITLE" desc="">Brave Together</message>
       <message name="IDS_TOGETHER_WIDGET_WELCOME_TITLE" desc="">Start a private video call with your friends and colleagues.</message>
       <message name="IDS_TOGETHER_WIDGET_START_BUTTON" desc="">Start video call</message>

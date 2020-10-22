@@ -151,10 +151,6 @@ void Contribution::StartMonthlyContribution() {
   const auto reconcile_stamp = ledger_->state()->GetReconcileStamp();
   ResetReconcileStamp();
 
-  if (!ledger_->state()->GetRewardsMainEnabled()) {
-    return;
-  }
-
   BLOG(1, "Staring monthly contribution");
 
   auto callback = std::bind(&Contribution::StartAutoContribute,
@@ -351,7 +347,7 @@ void Contribution::CreateNewEntry(
   }
 
   BLOG(1, "Creating contribution(" << wallet_type << ") for " <<
-      queue->amount << " type " << queue->type);
+      contribution->amount << " type " << queue->type);
 
   type::ContributionPublisherList publisher_list;
   for (const auto& item : queue_publishers) {
@@ -706,14 +702,6 @@ void Contribution::Retry(
 
   // negative steps are final steps, nothing to retry
   if (static_cast<int>((*shared_contribution)->step) < 0) {
-    return;
-  }
-
-  if (!ledger_->state()->GetRewardsMainEnabled()) {
-    BLOG(1, "Rewards is disabled, completing contribution");
-    ledger_->contribution()->ContributionCompleted(
-        type::Result::REWARDS_OFF,
-        std::move(*shared_contribution));
     return;
   }
 

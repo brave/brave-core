@@ -81,9 +81,6 @@ NS_SWIFT_NAME(BraveLedger)
 /// Whether or not the wallet is currently in the process of being created
 @property (nonatomic, readonly, getter=isInitializingWallet) BOOL initializingWallet;
 
-/// Whether or not the wallet has been created
-@property (nonatomic, readonly, getter=isWalletCreated) BOOL walletCreated;
-
 /// Creates a cryptocurrency wallet
 - (void)createWallet:(nullable void (^)(NSError * _Nullable error))completion;
 
@@ -277,8 +274,6 @@ NS_SWIFT_NAME(BraveLedger)
 
 #pragma mark - Preferences
 
-/// Whether or not brave rewards is enabled
-@property (nonatomic, assign, getter=isEnabled) BOOL enabled;
 /// The number of seconds before a publisher is added.
 @property (nonatomic, assign) int minimumVisitDuration;
 /// The minimum number of visits before a publisher is added

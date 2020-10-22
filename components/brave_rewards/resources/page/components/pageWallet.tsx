@@ -20,10 +20,9 @@ import { AlertWallet, WalletState } from '../../ui/components/walletWrapper'
 import { Provider } from '../../ui/components/profile'
 import { DetailRow as PendingDetailRow, PendingType } from '../../ui/components/tablePending'
 // Utils
-import { getLocale, getLocaleTags } from '../../../../common/locale'
+import { getLocale, getLocaleWithTag } from '../../../../common/locale'
 import * as rewardsActions from '../actions/rewards_actions'
 import * as utils from '../utils'
-import WalletOff from '../../ui/components/walletOff'
 import { ExtendedActivityRow, SummaryItem, SummaryType } from '../../ui/components/modalActivity'
 import { DetailRow as TransactionRow } from '../../ui/components/tableTransactions'
 
@@ -222,8 +221,7 @@ class PageWallet extends React.Component<Props, State> {
   walletAlerts = (): AlertWallet | null => {
     const {
       walletRecoveryStatus,
-      walletServerProblem,
-      walletCorrupted
+      walletServerProblem
     } = this.props.rewardsData.ui
 
     if (walletServerProblem) {
@@ -240,19 +238,6 @@ class PageWallet extends React.Component<Props, State> {
         onAlertClose: () => {
           this.actions.onClearAlert('walletRecoveryStatus')
         }
-      }
-    }
-
-    if (walletCorrupted) {
-      return {
-        node: (
-          <>
-            <b>{getLocale('uhOh')}</b> {getLocale('walletCorrupted')} <a href={'#'} style={{ 'color': '#838391' }} onClick={this.onModalBackupOpen}>
-               {getLocale('walletCorruptedNow')}
-             </a>
-          </>
-        ),
-        type: 'error'
       }
     }
 
@@ -752,7 +737,7 @@ class PageWallet extends React.Component<Props, State> {
 
     // ledger::type::Result::CORRUPTED_DATA
     if (walletRecoveryStatus === 17) {
-      const tags = getLocaleTags('walletRecoveryOutdated')
+      const tags = getLocaleWithTag('walletRecoveryOutdated')
       return (
         <span>
           {tags.beforeTag}
@@ -780,7 +765,6 @@ class PageWallet extends React.Component<Props, State> {
 
   render () {
     const {
-      enabledMain,
       balance,
       ui,
       pendingContributionTotal
@@ -816,17 +800,15 @@ class PageWallet extends React.Component<Props, State> {
           showLoginMessage={this.showLoginMessage()}
         >
           {
-            enabledMain
-            ? emptyWallet && pendingTotal === 0
-              ? <WalletEmpty onlyAnonWallet={onlyAnonWallet} />
-              : <WalletSummary
-                reservedAmount={pendingTotal}
-                onlyAnonWallet={onlyAnonWallet}
-                reservedMoreLink={'https://brave.com/faq/#unclaimed-funds'}
-                onActivity={this.onModalActivityToggle}
-                {...this.getWalletSummary()}
-              />
-            : <WalletOff/>
+            emptyWallet && pendingTotal === 0
+            ? <WalletEmpty onlyAnonWallet={onlyAnonWallet} />
+            : <WalletSummary
+              reservedAmount={pendingTotal}
+              onlyAnonWallet={onlyAnonWallet}
+              reservedMoreLink={'https://brave.com/faq/#unclaimed-funds'}
+              onActivity={this.onModalActivityToggle}
+              {...this.getWalletSummary()}
+            />
           }
         </WalletWrapper>
         {

@@ -36,13 +36,13 @@ import org.chromium.base.ContextUtils;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.BraveAdsNativeHelper;
 import org.chromium.chrome.browser.BraveRewardsHelper;
+import org.chromium.chrome.browser.BraveRewardsNativeWorker;
 import org.chromium.chrome.browser.ChromeTabbedActivity;
 import org.chromium.chrome.browser.customtabs.CustomTabActivity;
 import org.chromium.chrome.browser.ntp_background_images.model.SponsoredTab;
 import org.chromium.chrome.browser.ntp_background_images.util.NTPUtil;
 import org.chromium.chrome.browser.ntp_background_images.util.NewTabPageListener;
 import org.chromium.chrome.browser.ntp_background_images.util.SponsoredImageUtil;
-import org.chromium.chrome.browser.onboarding.BraveRewardsService;
 import org.chromium.chrome.browser.profiles.Profile;
 import org.chromium.chrome.browser.settings.BackgroundImagesPreferences;
 import org.chromium.chrome.browser.tab.Tab;
@@ -201,13 +201,9 @@ public class RewardsBottomSheetDialogFragment extends BottomSheetDialogFragment 
         reloadTab();
     }
 
-    private void turnOnRewards() {
-        Intent mBraveRewardsServiceIntent = new Intent(ContextUtils.getApplicationContext(), BraveRewardsService.class);
-        ContextUtils.getApplicationContext().startService(mBraveRewardsServiceIntent);
-    }
-
     private void turnOnAds() {
         BraveAdsNativeHelper.nativeSetAdsEnabled(Profile.getLastUsedRegularProfile());
+        BraveRewardsNativeWorker.getInstance().SetAutoContributeEnabled(true);
     }
 
     private void reloadTab() {

@@ -129,6 +129,7 @@ source_set("extensions") {
     deps += [
       "//brave/components/brave_rewards/browser",
       "//brave/vendor/bat-native-ledger:headers",
+      "//brave/vendor/bat-native-ads:headers",
     ]
   }
   if (enable_brave_webtorrent) {

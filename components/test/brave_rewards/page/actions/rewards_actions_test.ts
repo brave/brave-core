@@ -6,30 +6,6 @@ import { types } from '../../../../brave_rewards/resources/page/constants/reward
 import * as actions from '../../../../brave_rewards/resources/page/actions/rewards_actions'
 
 describe('rewards_actions', () => {
-  it('createWallet', () => {
-    expect(actions.createWallet()).toEqual({
-      type: types.CREATE_WALLET,
-      meta: undefined,
-      payload: undefined
-    })
-  })
-
-  it('onWalletCreated', () => {
-    expect(actions.onWalletCreated()).toEqual({
-      type: types.WALLET_CREATED,
-      meta: undefined,
-      payload: undefined
-    })
-  })
-
-  it('onWalletCreateFailed', () => {
-    expect(actions.onWalletCreateFailed()).toEqual({
-      type: types.WALLET_CREATE_FAILED,
-      meta: undefined,
-      payload: undefined
-    })
-  })
-
   it('onSettingSave', () => {
     expect(actions.onSettingSave('key', 'value')).toEqual({
       type: types.ON_SETTING_SAVE,

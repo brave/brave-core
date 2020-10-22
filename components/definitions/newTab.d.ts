@@ -128,15 +128,10 @@ declare namespace NewTab {
     balance: RewardsBalance
     dismissedNotifications: string[]
     enabledAds: boolean
-    enabledMain: boolean
     promotions: Promotion[]
     parameters: RewardsParameters
     onlyAnonWallet: boolean
     totalContribution: number
-    walletCreated: boolean
-    walletCreating: boolean
-    walletCreateFailed: boolean
-    walletCorrupted: boolean
   }
 
   export interface BinanceWidgetState {

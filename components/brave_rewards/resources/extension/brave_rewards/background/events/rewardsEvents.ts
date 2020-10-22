@@ -4,14 +4,6 @@
 
 import rewardsPanelActions from '../actions/rewardsPanelActions'
 
-// Handle all rewards events and pass to actions
-chrome.braveRewards.walletCreated.addListener(() => {
-  rewardsPanelActions.walletCreated()
-})
-chrome.braveRewards.walletCreationFailed.addListener((result: RewardsExtension.Result) => {
-  rewardsPanelActions.walletCreationFailed(result)
-})
-
 chrome.braveRewards.onPublisherData.addListener((windowId: number, publisher: RewardsExtension.Publisher) => {
   rewardsPanelActions.onPublisherData(windowId, publisher)
 
@@ -39,10 +31,6 @@ chrome.rewardsNotifications.onNotificationDeleted.addListener((id: string, type:
 
 chrome.rewardsNotifications.onAllNotificationsDeleted.addListener(() => {
   rewardsPanelActions.onAllNotificationsDeleted()
-})
-
-chrome.braveRewards.onEnabledMain.addListener((enabledMain: boolean) => {
-  rewardsPanelActions.onEnabledMain(enabledMain)
 })
 
 chrome.braveRewards.onPendingContributionSaved.addListener((result: number) => {
@@ -123,26 +111,4 @@ chrome.braveRewards.onCompleteReset.addListener((properties: { success: boolean 
 
 chrome.braveRewards.initialized.addListener((result: RewardsExtension.Result) => {
   rewardsPanelActions.initialized()
-})
-
-// Fetch initial data required to refresh state, keeping in mind
-// that the extension process be restarted at any time.
-// TODO(petemill): Move to initializer function or single 'init' action.
-chrome.braveRewards.getRewardsMainEnabled((enabledMain: boolean) => {
-  rewardsPanelActions.onEnabledMain(enabledMain)
-  if (enabledMain) {
-    chrome.braveRewards.getAnonWalletStatus((result: RewardsExtension.Result) => {
-      rewardsPanelActions.onAnonWalletStatus(result)
-    })
-    chrome.braveRewards.fetchPromotions()
-    chrome.braveRewards.fetchBalance((balance: RewardsExtension.Balance) => {
-      rewardsPanelActions.onBalance(balance)
-    })
-    chrome.braveRewards.getAllNotifications((list: RewardsExtension.Notification[]) => {
-      rewardsPanelActions.onAllNotifications(list)
-    })
-    chrome.braveRewards.getRewardsParameters((parameters: RewardsExtension.RewardsParameters) => {
-      rewardsPanelActions.onRewardsParameters(parameters)
-    })
-  }
 })

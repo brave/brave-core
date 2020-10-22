@@ -61,7 +61,7 @@ class BraveComponentLoader : public ComponentLoader {
 #endif  // BUILDFLAG(ENABLE_HANGOUT_SERVICES_EXTENSION)
 
 #if BUILDFLAG(BRAVE_REWARDS_ENABLED)
-  void HandleRewardsEnabledStatus();
+  void CheckRewardsStatus();
 #endif
 
   Profile* profile_;

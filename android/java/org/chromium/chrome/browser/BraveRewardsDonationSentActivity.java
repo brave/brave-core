@@ -186,42 +186,6 @@ public class BraveRewardsDonationSentActivity extends Activity implements BraveR
 
     // BraveRewardsObserver/////////////////////////////////////
     @Override
-    public void OnWalletInitialized(int error_code) {}
-
-    @Override
-    public void OnPublisherInfo(int tabId) {}
-
-    @Override
-    public void OnGetCurrentBalanceReport(double[] report) {}
-
-    @Override
-    public void OnNotificationAdded(String id, int type, long timestamp, String[] args) {}
-
-    @Override
-    public void OnNotificationsCount(int count) {}
-
-    @Override
-    public void OnGetLatestNotification(String id, int type, long timestamp, String[] args) {}
-
-    @Override
-    public void OnNotificationDeleted(String id) {}
-
-    @Override
-    public void OnIsWalletCreated(boolean created) {}
-
-    @Override
-    public void OnGetPendingContributionsTotal(double amount) {}
-
-    @Override
-    public void OnGetRewardsMainEnabled(boolean enabled) {}
-
-    @Override
-    public void OnGetAutoContributeProperties() {}
-
-    @Override
-    public void OnRecurringDonationUpdated() {}
-
-    @Override
     public void OnGetReconcileStamp(long timestamp) {
         //make reconcile date views visible
         if (true == mMonthly_tip_) {
@@ -234,10 +198,4 @@ public class BraveRewardsDonationSentActivity extends Activity implements BraveR
             send_date.setText(formatter.format (mReconcileStamp_));
         }
     }
-
-    @Override
-    public void OnResetTheWholeState(boolean success) {}
-
-    @Override
-    public void OnRewardsMainEnabled(boolean enabled) {}
 }
