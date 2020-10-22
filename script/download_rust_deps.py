@@ -132,7 +132,7 @@ def get_linux_target(target_arch):
 
 
 def get_linux_linker(target_arch):
-    return get_linux_target(target_arch) + "-clang"
+    return get_linux_target(target_arch) + "-gnu-gcc"
 
 
 def make_rustup_config_for_linux():
