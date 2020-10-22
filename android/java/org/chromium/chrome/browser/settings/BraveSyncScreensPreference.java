@@ -128,7 +128,6 @@ public class BraveSyncScreensPreference extends BravePreferenceFragment
     private ImageButton mPasteButton;
     private Button mCopyButton;
     private Button mAddDeviceButton;
-    private Button mRemoveDeviceButton;
     private Button mShowCategoriesButton;
     private Button mQRCodeButton;
     private Button mCodeWordsButton;
@@ -144,7 +143,6 @@ public class BraveSyncScreensPreference extends BravePreferenceFragment
     private TextView mBraveSyncAddDeviceCodeWords;
     private CameraSource mCameraSource;
     private CameraSourcePreview mCameraSourcePreview;
-    private BraveSyncDevices.SyncDeviceInfo mThisDevice;
     private ListView mDevicesListView;
     private ArrayAdapter<String> mDevicesAdapter;
     private List<String> mDevicesList;
@@ -291,17 +289,7 @@ public class BraveSyncScreensPreference extends BravePreferenceFragment
                             TextView textView = (TextView) listItemView.findViewById(
                                     R.id.brave_sync_device_text);
                             if (null != textView) {
-                                textView.setText(device.mName);
-                            }
-
-                            AppCompatImageView deleteButton =
-                                    (AppCompatImageView) listItemView.findViewById(
-                                            R.id.brave_sync_remove_device);
-                            if (device.mIsCurrentDevice) {
-                                mThisDevice = device;
-                                // Current device is deleted by button on the bottom
-                                deleteButton.setVisibility(View.GONE);
-                                if (null != textView) {
+                                if (device.mIsCurrentDevice) {
                                     // Highlight curret device
                                     textView.setTextColor(ApiCompatibilityUtils.getColor(
                                             getActivity().getResources(),
@@ -310,10 +298,15 @@ public class BraveSyncScreensPreference extends BravePreferenceFragment
                                             + getResources().getString(
                                                     R.string.brave_sync_this_device_text);
                                     textView.setText(currentDevice);
+                                } else {
+                                    textView.setText(device.mName);
                                 }
-                                // mRemoveDeviceButton is always visible, we can leave the chain
-                                // in any time with sync v2 (except we are now doing reset)
-                            } else if (device.mSupportsSelfDelete) {
+                            }
+
+                            AppCompatImageView deleteButton =
+                                    (AppCompatImageView) listItemView.findViewById(
+                                            R.id.brave_sync_remove_device);
+                            if (device.mSupportsSelfDelete || device.mIsCurrentDevice) {
                                 deleteButton.setTag(device);
                                 deleteButton.setOnClickListener(v -> {
                                     BraveSyncDevices.SyncDeviceInfo deviceToDelete =
@@ -321,7 +314,6 @@ public class BraveSyncScreensPreference extends BravePreferenceFragment
                                     deleteDeviceDialog(deviceToDelete);
                                 });
                             } else {
-                                // Current device does not support self-delete
                                 deleteButton.setVisibility(View.GONE);
                             }
 
@@ -456,11 +448,6 @@ public class BraveSyncScreensPreference extends BravePreferenceFragment
             mAddDeviceButton.setOnClickListener(this);
         }
 
-        mRemoveDeviceButton = (Button) getView().findViewById(R.id.brave_sync_btn_remove_device);
-        if (null != mRemoveDeviceButton) {
-            mRemoveDeviceButton.setOnClickListener(this);
-        }
-
         mShowCategoriesButton =
                 (Button) getView().findViewById(R.id.brave_sync_btn_show_categories);
         if (null != mShowCategoriesButton) {
@@ -567,9 +554,8 @@ public class BraveSyncScreensPreference extends BravePreferenceFragment
                         && v != mEnterCodeWordsButton && v != mDoneButton && v != mDoneLaptopButton
                         && v != mUseCameraButton && v != mConfirmCodeWordsButton
                         && v != mMobileButton && v != mLaptopButton && v != mPasteButton
-                        && v != mCopyButton && v != mRemoveDeviceButton
-                        && v != mShowCategoriesButton && v != mAddDeviceButton && v != mQRCodeButton
-                        && v != mCodeWordsButton))
+                        && v != mCopyButton && v != mShowCategoriesButton && v != mAddDeviceButton
+                        && v != mQRCodeButton && v != mCodeWordsButton))
             return;
 
         if (mScanChainCodeButton == v) {
@@ -700,8 +686,6 @@ public class BraveSyncScreensPreference extends BravePreferenceFragment
                     }
                 });
             }
-        } else if (mRemoveDeviceButton == v) {
-            deleteDeviceDialog(mThisDevice);
         } else if (mShowCategoriesButton == v) {
             SettingsLauncher settingsLauncher = new SettingsLauncherImpl();
             settingsLauncher.launchSettingsActivity(getContext(), BraveManageSyncSettings.class);
@@ -1016,7 +1000,6 @@ public class BraveSyncScreensPreference extends BravePreferenceFragment
 
         mShowCategoriesButton.setVisibility(View.GONE);
         mAddDeviceButton.setVisibility(View.GONE);
-        mRemoveDeviceButton.setVisibility(View.GONE);
 
         PostTask.postDelayedTask(
                 UiThreadTaskTraits.USER_VISIBLE, () -> leaveSyncChainComplete(), 5 * 1000);
@@ -1033,7 +1016,6 @@ public class BraveSyncScreensPreference extends BravePreferenceFragment
 
             mShowCategoriesButton.setVisibility(View.VISIBLE);
             mAddDeviceButton.setVisibility(View.VISIBLE);
-            mRemoveDeviceButton.setVisibility(View.VISIBLE);
 
             setAppropriateView();
         }
@@ -1298,8 +1280,7 @@ public class BraveSyncScreensPreference extends BravePreferenceFragment
           adjustWidth(mScrollViewSyncDone, false);
           mScrollViewSyncDone.setVisibility(View.VISIBLE);
       }
-      // With sync v2 we may leave the sync chain even if we don't see other
-      // devices in chain, mRemoveDeviceButton is always visible
+
       BraveActivity mainActivity = BraveActivity.getBraveActivity();
       if (null != mainActivity) {
           mBraveSyncTextDevicesTitle.setText(getResources().getString(R.string.brave_sync_loading_devices_title));

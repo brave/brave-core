@@ -666,7 +666,7 @@ until they verify, or until 90 days have passed.
 	(this device)
       </message>
       <message name="IDS_BRAVE_SYNC_DEVICES_TITLE" desc="Text for Brave Sync devices title.">
-	OTHER DEVICES ON CHAIN
+	DEVICES ON SYNC CHAIN
       </message>
       <message name="IDS_BRAVE_SYNC_LOADING_DEVICES_TITLE" desc="Text for Brave Sync loading devices title.">
 	LOADING DEVICES...
@@ -696,7 +696,7 @@ until they verify, or until 90 days have passed.
 	Simply scan the code from your sync chain that you created on another device. Or start a new sync chain.
       </message>
       <message name="IDS_BRAVE_SYNC_QRCODE_MESSAGE_V2" desc="Text for Brave Sync QR code message.">
-	Using existing synced device, open Brave Settings and navigate to Settings > Sync. Choose "Add Device" and scan the QR Code displayed on the screen.
+	Using existing synced device, open Brave Settings and navigate to Settings > Sync. Choose "Add New Device" and scan the QR Code displayed on the screen.
       </message>
       <message name="IDS_BRAVE_SYNC_COPIED_TEXT" desc="Text for Brave Sync copied text message.">
 	Copied to Clipboard
@@ -704,11 +704,11 @@ until they verify, or until 90 days have passed.
       <message name="IDS_BRAVE_SYNC_CODE_WORDS_TITLE" desc="Text for Brave Sync code words title.">
 	Pair
       </message>
-      <message name="IDS_BRAVE_SYNC_CATEGORIES_TEXT" desc="Text for show categories to sync button.">
-  Categories
+      <message name="IDS_BRAVE_SYNC_CATEGORIES_TEXT" desc="Text for button to show data types to sync. Renamed from Categories">
+  Data Preferences
       </message>
       <message name="IDS_BRAVE_SYNC_REMOVE_DEVICE_TEXT" desc="Text for Brave Sync remove device message.">
-	Remove this device
+	Remove device
       </message>
       <message name="IDS_BRAVE_SYNC_DELETE_DEVICE" desc="Text for Brave Sync delete device message.">
 	Are you sure you want to delete device '<ph name="DEVICE_NAME">%1$s</ph>'?
@@ -765,13 +765,13 @@ until they verify, or until 90 days have passed.
 	Changing settings will only affect data that this device shares with others.
       </message>
       <message name="IDS_BRAVE_SYNC_ADD_DEVICE_TEXT" desc="Text for Brave Sync add device message.">
-	Add another device
+	Add New Device
       </message>
       <message name="IDS_ENTER_CODE_WORDS_SYNC" desc="Text for Brave Sync enter code words message.">
 	Enter code words
       </message>
       <message name="IDS_BRAVE_SYNC_CODEWORDS_MESSAGE" desc="Text for Brave Sync code words message.">
-	Using existing synced device, open Brave Settings and navigate to Settings > Sync. Choose "Add Device" then "Display code words instead".
+	Using existing synced device, open Brave Settings and navigate to Settings > Sync. Choose "Add New Device" then "Display code words instead".
       </message>
       <message name="IDS_BRAVE_SYNC_CONFIRM_CODE_WORDS_TEXT" desc="Text for Brave Sync confirm code words message.">
 	Confirm
