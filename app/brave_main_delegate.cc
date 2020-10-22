@@ -229,6 +229,7 @@ bool BraveMainDelegate::BasicStartupComplete(int* exit_code) {
     features::kAllowPopupsDuringPageUnload.name,
     features::kNotificationTriggers.name,
     features::kPrivacySettingsRedesign.name,
+    features::kSignedExchangeSubresourcePrefetch.name,
     features::kSmsReceiver.name,
     features::kVideoPlaybackQuality.name,
     features::kTabHoverCards.name,
