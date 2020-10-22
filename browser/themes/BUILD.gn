@@ -9,9 +9,7 @@ source_set("themes") {
 
   if (is_android) {
     sources += [ "brave_dark_mode_utils_android.cc" ]
-  }
-
-  if (!is_android) {
+  } else {
     sources += [
       "brave_dark_mode_utils_internal.cc",
       "brave_dark_mode_utils_internal.h",
