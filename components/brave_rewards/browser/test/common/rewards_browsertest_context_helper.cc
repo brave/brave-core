@@ -96,7 +96,7 @@ content::WebContents* RewardsBrowserTestContextHelper::OpenRewardsPopup() {
 }
 
 content::WebContents* RewardsBrowserTestContextHelper::OpenSiteBanner(
-    rewards_browsertest_util::ContributionType banner_type) {
+    rewards_browsertest_util::TipAction tip_action) {
   content::WebContents* popup_contents = OpenRewardsPopup();
 
   // Construct an observer to wait for the site banner to load.
@@ -104,10 +104,32 @@ content::WebContents* RewardsBrowserTestContextHelper::OpenSiteBanner(
       content::NOTIFICATION_LOAD_COMPLETED_MAIN_FRAME,
       content::NotificationService::AllSources());
 
-  const std::string button_selector =
-      banner_type == rewards_browsertest_util::ContributionType::MonthlyTip
-      ? "[type='tip-monthly']"
-      : "[type='tip']";
+  std::string button_selector;
+  bool open_tip_actions = false;
+
+  switch (tip_action) {
+    case rewards_browsertest_util::TipAction::OneTime:
+      button_selector = "[type=tip]";
+      break;
+    case rewards_browsertest_util::TipAction::SetMonthly:
+      button_selector = "[type=tip-monthly]";
+      break;
+    case rewards_browsertest_util::TipAction::ChangeMonthly:
+      button_selector = "[data-test-id=change-monthly-amount]";
+      open_tip_actions = true;
+      break;
+    case rewards_browsertest_util::TipAction::ClearMonthly:
+      button_selector = "[data-test-id=clear-monthly-amount]";
+      open_tip_actions = true;
+      break;
+  }
+
+  // If necessary, show the monthly tip actions menu.
+  if (open_tip_actions) {
+    rewards_browsertest_util::WaitForElementThenClick(
+        popup_contents,
+        "[data-test-id=toggle-monthly-actions]");
+  }
 
   // Click button to initiate sending a tip.
   rewards_browsertest_util::WaitForElementThenClick(

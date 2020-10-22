@@ -27,7 +27,7 @@ class RewardsBrowserTestContextHelper {
   content::WebContents* OpenRewardsPopup();
 
   content::WebContents* OpenSiteBanner(
-      rewards_browsertest_util::ContributionType banner_type);
+      rewards_browsertest_util::TipAction tip_action);
 
   void VisitPublisher(
       const GURL& url,

@@ -110,36 +110,16 @@ storiesOf('Rewards/Wallet/Desktop', module)
           platform={select<any>('Provider', { youtube: 'youtube', twitter: 'twitter', twitch: 'twitch', reddit: 'reddit', vimeo: 'vimeo', github: 'github' }, 'youtube')}
           publisherImg={favicon}
           publisherName={'Jonathan Doe'}
-          monthlyAmount={'10.0'}
+          monthlyAmount={'10.000'}
           isVerified={boolean('Verified', true)}
           tipsEnabled={boolean('Tips Enabled', true)}
           includeInAuto={boolean('Include in monthly', true)}
           acEnabled={boolean('AC enabled?', true)}
           attentionScore={'15'}
-          donationAmounts={
-            [
-              {
-                tokens: '0.0',
-                converted: '0.00'
-              },
-              {
-                tokens: '1.0',
-                converted: '0.50'
-              },
-              {
-                tokens: '5.0',
-                converted: '2.50'
-              },
-              {
-                tokens: '10.0',
-                converted: '5.00'
-              }
-            ]
-          }
           onToggleTips={doNothing}
           setMonthlyAction={doNothing}
+          cancelMonthlyAction={doNothing}
           donationAction={doNothing}
-          onAmountChange={doNothing}
           onIncludeInAuto={doNothing}
           showUnVerified={boolean('Show unverified content', true)}
           onRefreshPublisher={doNothing}

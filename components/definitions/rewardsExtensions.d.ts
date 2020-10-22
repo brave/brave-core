@@ -154,6 +154,8 @@ declare namespace RewardsExtension {
     status: PublisherStatus
   }
 
+  export type TipDialogEntryPoint = 'one-time' | 'set-monthly' | 'clear-monthly'
+
   export interface Balance {
     total: number
     wallets: Record<string, number>

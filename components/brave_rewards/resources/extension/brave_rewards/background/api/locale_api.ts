@@ -145,6 +145,7 @@ export const getUIMessages = (): Record<string, string> => {
     'walletVerified',
     'yourBalance',
     'cancel',
+    'changeAmount',
     'login',
     'loginMessageTitle',
     'loginMessageText',
