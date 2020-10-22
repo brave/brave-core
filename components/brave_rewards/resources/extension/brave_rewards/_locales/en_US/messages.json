@@ -618,5 +618,9 @@
   "walletPending":  {
     "message": "Pending",
     "description": "Status button that tells user that he is currently pending"
+  },
+  "walletVerificationNote3":  {
+    "message": "Note: Your transactions will be visible to Uphold once you authorize; for instance, they will be able to see the recipient and amount of your tips.",
+    "description": "Displayed in login modal for uphold"
   }
 }
