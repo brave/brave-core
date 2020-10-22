@@ -124,6 +124,29 @@ def make_standalone_toolchain_for_android():
     fp.close()
 
 
+def get_linux_target(target_arch):
+    return {
+        'arm64': 'aarch64-linux',
+        'x86_64': 'x86_64-linux',
+    }[target_arch]
+
+
+def get_linux_linker(target_arch):
+    return get_linux_target(target_arch) + "-clang"
+
+
+def make_rustup_config_for_linux():
+    config_path = os.path.join(RUSTUP_HOME, 'config')
+    fp = open(config_path, "w+")
+
+    for target_arch in ['arm64', 'x86_64']:
+        # Add target to rustup config
+        fp.write("[target." + get_linux_target(target_arch) + "]\r\n")
+        fp.write("linker = \"" + get_linux_linker(target_arch) + "\"\r\n")
+
+    fp.close()
+
+
 def parse_args():
     parser = argparse.ArgumentParser(description='Download rust deps')
 
@@ -171,6 +194,8 @@ def main():
 
     if args.platform == 'android':
         make_standalone_toolchain_for_android()
+    elif args.platform == 'linux':
+        make_rustup_config_for_linux()
 
     tools = [
         {
