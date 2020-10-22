@@ -164,7 +164,8 @@ bool BraveSyncWorker::SetSyncEnabled(bool enabled) {
   setup_service->SetSyncEnabled(enabled);
 
   if (enabled && !sync_service->GetUserSettings()->IsFirstSetupComplete()) {
-    setup_service->PrepareForFirstSyncSetup();
+    //setup_service->PrepareForFirstSyncSetup();
+    //setup_service->CommitSyncChanges();
     setup_service->SetFirstSetupComplete(
         syncer::SyncFirstSetupCompleteSource::ADVANCED_FLOW_CONFIRM);
   }

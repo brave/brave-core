@@ -351,6 +351,7 @@ Config.prototype.buildArgs = function () {
     args.ios_enable_search_widget_extension = false
     args.ios_enable_share_extension = false
     args.ios_enable_credential_provider_extension = false
+    args.use_allocator_shim = false
 
     delete args.safebrowsing_api_endpoint
     delete args.updater_prod_endpoint
