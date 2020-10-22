@@ -4,10 +4,10 @@
 // you can obtain one at http://mozilla.org/MPL/2.0/.
 import { formatDistanceToNow } from 'date-fns'
 
-function shuffleArray(array: Array<any>) {
+function shuffleArray (array: Array<any>) {
   for (let i = array.length - 1; i > 0; i--) {
-      const j = Math.floor(Math.random() * (i + 1));
-      [array[i], array[j]] = [array[j], array[i]];
+    const j = Math.floor(Math.random() * (i + 1));
+    [array[i], array[j]] = [array[j], array[i]]
   }
 }
 
@@ -21,13 +21,13 @@ export function generateRelativeTimeFormat (publishTime: string) {
   ) + ' ago'
 }
 
-function convertFeedItem(item: BraveToday.FeedItem): BraveToday.FeedItem {
+function convertFeedItem (item: BraveToday.FeedItem): BraveToday.FeedItem {
   const publishTime = item.publish_time + ' UTC'
   return {
     ...item,
     img: item.padded_img,
     publish_time: publishTime,
-    relative_time: generateRelativeTimeFormat(publishTime),
+    relative_time: generateRelativeTimeFormat(publishTime)
   }
 }
 
@@ -40,8 +40,9 @@ export default async function getBraveTodayData (
   const deals: (BraveToday.Deal)[] = []
   let articles: (BraveToday.Article)[] = []
 
-  // Filter to only enabled sources
-  feedContent = feedContent.filter(f => !!enabledPublishers[f.publisher_id])
+  // Filter to only enabled sources and images
+  feedContent = feedContent
+    .filter(f => isItemWithImage(f) && !!enabledPublishers[f.publisher_id])
   feedContent = await weightArticles(feedContent)
 
   for (let feedItem of feedContent) {
@@ -51,10 +52,10 @@ export default async function getBraveTodayData (
       //   sponsors.push(feedItem as BraveToday.Article)
       //   break
       case 'product':
-        deals.push(feedItem as BraveToday.Deal)
+        deals.push(feedItem)
         break
       case 'article':
-        articles.push(feedItem as BraveToday.Article)
+        articles.push(feedItem)
         break
     }
   }
@@ -70,7 +71,7 @@ export default async function getBraveTodayData (
   // Get unique categories present
   const categoryCounts = new Map<string, number>()
   for (const article of articles) {
-    if (article.category && article.category !== "Top News") {
+    if (article.category && article.category !== 'Top News') {
       const existingCount = categoryCounts.get(article.category) || 0
       categoryCounts.set(article.category, existingCount + 1)
     }
@@ -78,7 +79,7 @@ export default async function getBraveTodayData (
 
   // Ordered by # of occurrences
   const categoriesByPriority = [
-    "Top News",
+    'Top News',
     ...Array.from(
         categoryCounts.keys()
       ).sort((a, b) => categoryCounts[a] - categoryCounts[b])
@@ -95,25 +96,20 @@ export default async function getBraveTodayData (
   const dealsCategoriesByPriority = Array.from(dealsCategoryCounts.keys())
     .sort((a, b) => dealsCategoryCounts[a] - dealsCategoryCounts[b])
 
-  // .sponsor,
-  // .headline(paired: false),
-  // .deals,
-
+  // TODO(petemill): Sponsor
   // const firstSponsors = sponsors.splice(0, 1) // Featured sponsor is the first sponsor
 
-  const firstHeadlines = take(articles, isArticleTopNews, 1)
+  const firstHeadlines = take(articles, 1, isArticleTopNews)
   const firstDeals = deals.splice(0, 3)
 
-  // generate as many pages of content as possible
+  // Generate as many pages of content as possible.
   const pages: BraveToday.Page[] = []
   let canGenerateAnotherPage = true
   // Sanity check: arbitrary max pages so we don't end up
   // in infinite loop.
-  const maxPages = 4000;
-  let curPage = 0;
-  while (canGenerateAnotherPage) {
-    curPage++
-    if (curPage > maxPages) break
+  const maxPages = 4000
+  let curPage = 0
+  while (canGenerateAnotherPage && curPage++ < maxPages) {
     const category = categoriesByPriority.shift()
     const dealsCategory = dealsCategoriesByPriority.shift()
     const nextPage = generateNextPage(articles, deals, category, dealsCategory)
@@ -132,8 +128,8 @@ export default async function getBraveTodayData (
   }
 }
 
-function isArticleWithImage (article: BraveToday.Article) {
-  return !!article.padded_img
+function isItemWithImage (item: BraveToday.FeedItem) {
+  return !!item.padded_img
 }
 
 function isArticleTopNews (article: BraveToday.Article) {
@@ -166,7 +162,7 @@ function generateNextPage (
   //    .headline(paired: false),
 
   // Collect headlines
-  const headlines = take(articles, isArticleWithImage, 13)
+  const headlines = take(articles, 13)
   if (!headlines.length) {
     return null
   }
@@ -174,28 +170,28 @@ function generateNextPage (
   const articlesWithCategory = featuredCategory
     ? take(
         articles,
-        a => a.category === featuredCategory,
-        3
+        3,
+        a => a.category === featuredCategory
       )
     : []
 
   let deals = !dealsCategory
     ? []
-    : take(allDeals, d => d.offers_category === dealsCategory, 3)
+    : take(allDeals, 3, d => d.offers_category === dealsCategory)
   if (deals.length < 3) {
     deals = deals.concat(allDeals.splice(0, 3 - deals.length))
   }
 
   const publisherInfo = generateArticleSourceGroup(articles)
 
-  const randomArticles = take(articles, isArticleWithin48Hours, 4)
+  const randomArticles = take(articles, 4, isArticleWithin48Hours)
 
   return {
     articles: headlines,
     randomArticles,
     deals,
     itemsByCategory: (featuredCategory && articlesWithCategory.length) ? { categoryName: featuredCategory, items: articlesWithCategory } : undefined,
-    itemsByPublisher: publisherInfo ? { name: publisherInfo[0], items: publisherInfo[1] } : undefined,
+    itemsByPublisher: publisherInfo ? { name: publisherInfo[0], items: publisherInfo[1] } : undefined
   }
 }
 
@@ -206,18 +202,18 @@ function generateArticleSourceGroup (articles: BraveToday.Article[]): [string, B
       firstArticleWithSource.publisher_id,
       take(
         articles,
-        a => a.publisher_id === firstArticleWithSource.publisher_id,
-        3
+        3,
+        a => a.publisher_id === firstArticleWithSource.publisher_id
       )
     ]
   }
   return undefined
 }
 
-function take<T>(items: T[], matching: (item: T) => boolean, count?: number, random: boolean = false): T[] {
+function take<T> (items: T[], count: number, matching?: (item: T) => boolean, random: boolean = false): T[] {
   let indicesToTake: number[] = []
-  for (const [i, item] of items.entries())  {
-    const shouldTake = matching(item)
+  for (const [i, item] of items.entries()) {
+    const shouldTake = matching ? matching(item) : true
     if (!shouldTake) {
       continue
     }
@@ -244,13 +240,17 @@ function take<T>(items: T[], matching: (item: T) => boolean, count?: number, ran
   return takenItems.reverse()
 }
 
-function domainFromUrlString(urlString: string): string {
+function domainFromUrlString (urlString: string): string {
   return new window.URL(urlString).host
 }
 
-async function weightArticles(articles: BraveToday.FeedItem[]): Promise<BraveToday.FeedItem[]> {
+async function weightArticles (articles: BraveToday.FeedItem[]): Promise<BraveToday.FeedItem[]> {
   // hosts from latest max-200 history items
-  const historyItems: chrome.history.HistoryItem[] = await new Promise(resolve => chrome.history.search({ text: '', maxResults: 200 }, resolve))
+  const historyItems: chrome.history.HistoryItem[] = chrome.history
+    ? await new Promise(
+        resolve => chrome.history.search({ text: '', maxResults: 200 }, resolve)
+      )
+    : []
   const historyHosts: string[] = historyItems.map(h => h.url).filter(i => i).map((u: string) => domainFromUrlString(u))
   for (const article of articles) {
     let score = article.score
