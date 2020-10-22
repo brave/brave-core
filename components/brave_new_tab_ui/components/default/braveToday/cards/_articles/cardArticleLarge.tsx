@@ -4,11 +4,10 @@
 // you can obtain one at http://mozilla.org/MPL/2.0/.
 
 import * as React from 'react'
-
-// Feature-specific components
 import * as Card from '../../cardSizes'
 import CardImage from '../CardImage'
 import PublisherMeta from '../PublisherMeta'
+import useScrollIntoView from '../../useScrollIntoView'
 
 // TODO(petemill): Large and Medium article should be combined to 1 component.
 
@@ -28,38 +27,12 @@ type ArticleProps = {
 
 function LargeArticle (props: ArticleProps) {
   const {publisher, item} = props
-  // If we need to scroll the article in to view after render,
-  // do so after the image has been loaded. Assume that all the other
-  // previous images are loaded and the articles are occupying
-  // the size they would do with images.
-  const cardRef = React.useRef<HTMLAnchorElement>(null)
-  let onImageLoaded = undefined
-  if (props.shouldScrollIntoView) {
-    const hasScrolled = React.useRef<boolean>(false)
-    const hasImageLoaded = React.useRef<boolean>(false)
-    const scrollIntoViewConditionally = function () {
-      if (!hasScrolled.current && hasImageLoaded.current && cardRef.current) {
-        hasScrolled.current = true
-        cardRef.current.scrollIntoView({block: 'center'})
-      }
-    }
-    onImageLoaded = () => {
-      hasImageLoaded.current = true
-      requestAnimationFrame(() => {
-        scrollIntoViewConditionally()
-      })
-    }
-    React.useEffect(() => {
-      scrollIntoViewConditionally()
-    }, []); // empty array so only runs on first render
-  }
-
+  const [cardRef] = useScrollIntoView(props.shouldScrollIntoView || false)
   return (
     <Card.Large>
-      <a onClick={() => props.onReadFeedItem(item)} ref={cardRef}>
+      <a onClick={() => props.onReadFeedItem(item)} href={item.url} ref={cardRef}>
         <CardImage
           imageUrl={item.img}
-          onLoaded={onImageLoaded}
         />
         <Card.Content>
           <Card.Heading>

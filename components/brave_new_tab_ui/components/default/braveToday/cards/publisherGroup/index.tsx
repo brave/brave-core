@@ -7,15 +7,41 @@ import * as React from 'react'
 
 // Feature-specific components
 import * as Card from './style'
+import useScrollIntoView from '../../useScrollIntoView'
 import PublisherMeta from '../PublisherMeta'
 
 interface Props {
   content: BraveToday.Article[]
   publisher: BraveToday.Publisher
+  articleToScrollTo?: BraveToday.FeedItem
   onReadFeedItem: (item: BraveToday.FeedItem) => any
 }
 
-export default function PublisherGroup(props: Props) {
+type ListItemProps = {
+  item: BraveToday.Article
+  publisher: BraveToday.Publisher
+  onReadFeedItem: (item: BraveToday.FeedItem) => any
+  shouldScrollIntoView: boolean
+}
+
+function ListItem (props: ListItemProps) {
+  const [cardRef] = useScrollIntoView(props.shouldScrollIntoView)
+  const onClick = React.useCallback(() => {
+    props.onReadFeedItem(props.item)
+  }, [props.onReadFeedItem, props.item])
+  return (
+    <Card.ListItem>
+      <a onClick={onClick} href={props.item.url} ref={cardRef}>
+        <Card.Heading>
+          {props.item.title}
+        </Card.Heading>
+        <Card.Time>{props.item.relative_time}</Card.Time>
+      </a>
+    </Card.ListItem>
+  )
+}
+
+export default function PublisherGroup (props: Props) {
   // No content no render®
   if (props.content.length < 3) {
     return null
@@ -29,19 +55,17 @@ export default function PublisherGroup(props: Props) {
       <Card.List>
         {
           props.content.map((item, index) => {
-            if (item === undefined) {
-              return null
-            }
-            return (
-              <Card.ListItem key={index}>
-                <a onClick={() => this.props.onReadFeedItem(item)} href={item.url}>
-                  <Card.Heading>
-                    {item.title}
-                  </Card.Heading>
-                  <Card.Time>{item.relative_time}</Card.Time>
-                </a>
-              </Card.ListItem>
+            const shouldScrollTo = (
+              !!props.articleToScrollTo &&
+              props.articleToScrollTo.url === item.url
             )
+            return <ListItem
+              publisher={props.publisher}
+              item={item}
+              key={index}
+              shouldScrollIntoView={shouldScrollTo}
+              onReadFeedItem={props.onReadFeedItem}
+            />
           })
         }
       </Card.List>

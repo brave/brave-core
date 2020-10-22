@@ -117,15 +117,13 @@ class BraveToday extends React.PureComponent<Props, State> {
           /* Infinitely repeating collections of content. */
           Array(displayedPageCount).fill(undefined).map((_: undefined, index: number) => {
             return (
-              <>
-                <CardsGroup
-                  key={`cards-group-key-${index}`}
-                  content={feed.pages[index]}
-                  publishers={publishers}
-                  articleToScrollTo={this.props.articleToScrollTo}
-                  onReadFeedItem={this.props.onReadFeedItem}
-                />
-              </>
+              <CardsGroup
+                key={`cards-group-key-${index}`}
+                content={feed.pages[index]}
+                publishers={publishers}
+                articleToScrollTo={this.props.articleToScrollTo}
+                onReadFeedItem={this.props.onReadFeedItem}
+              />
             )
           })
         }

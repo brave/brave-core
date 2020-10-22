@@ -4,6 +4,7 @@
 // you can obtain one at http://mozilla.org/MPL/2.0/.
 
 import * as React from 'react'
+import useScrollIntoView from '../../useScrollIntoView'
 import CardImage from '../CardImage'
 import * as Card from './style'
 
@@ -11,7 +12,36 @@ interface Props {
   content: (BraveToday.Article)[]
   publishers: BraveToday.Publishers
   categoryName: string
+  articleToScrollTo?: BraveToday.FeedItem
   onReadFeedItem: (item: BraveToday.FeedItem) => any
+}
+
+type ListItemProps = {
+  item: BraveToday.Article
+  publisher: BraveToday.Publisher
+  onReadFeedItem: (item: BraveToday.FeedItem) => any
+  shouldScrollIntoView: boolean
+}
+
+function ListItem (props: ListItemProps) {
+  const [cardRef] = useScrollIntoView(props.shouldScrollIntoView)
+  const onClick = React.useCallback(() => {
+    props.onReadFeedItem(props.item)
+  }, [props.onReadFeedItem, props.item])
+  return (
+    <Card.ListItem>
+      <a onClick={onClick} href={props.item.url} ref={cardRef}>
+        <Card.Content>
+          <Card.Heading>{props.publisher.publisher_name}</Card.Heading>
+          <Card.Heading>{props.item.title}</Card.Heading>
+          <Card.Time>{props.item.relative_time}</Card.Time>
+        </Card.Content>
+        <Card.ListItemImageFrame>
+          <CardImage list={true} imageUrl={props.item.img} />
+        </Card.ListItemImageFrame>
+      </a>
+    </Card.ListItem>
+  )
 }
 
 export default function CategoryGroup (props: Props) {
@@ -21,28 +51,25 @@ export default function CategoryGroup (props: Props) {
   }
   return (
     <Card.BrandedList>
-      <Card.Title>{ props.categoryName }</Card.Title>
+      <Card.Title>{props.categoryName}</Card.Title>
       <Card.List>
         {
           props.content.map((item, index) => {
-            const publisher = props.publishers[item.publisher_id]
-            return (
-              <Card.ListItem key={index}>
-                <a onClick={() => this.props.onReadFeedItem(item)} href={item.url}>
-                  <Card.Content>
-                    <Card.Heading>{publisher.publisher_name}</Card.Heading>
-                    <Card.Heading>{item.title}</Card.Heading>
-                    <Card.Time>{item.relative_time}</Card.Time>
-                  </Card.Content>
-                  <Card.ListItemImageFrame>
-                    <CardImage list={true} imageUrl={item.img} />
-                  </Card.ListItemImageFrame>
-                </a>
-              </Card.ListItem>
+            const shouldScrollTo = (
+              !!props.articleToScrollTo &&
+              props.articleToScrollTo.url === item.url
             )
+            const publisher = props.publishers[item.publisher_id]
+            return <ListItem
+              publisher={publisher}
+              item={item}
+              key={index}
+              shouldScrollIntoView={shouldScrollTo}
+              onReadFeedItem={props.onReadFeedItem}
+            />
           })
         }
       </Card.List>
     </Card.BrandedList>
-    )
+  )
 }

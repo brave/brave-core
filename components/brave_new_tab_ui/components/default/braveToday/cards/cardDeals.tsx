@@ -13,6 +13,20 @@ interface Props {
   content: BraveToday.Deal[]
 }
 
+type ListItemProps = {
+  item: BraveToday.Deal
+}
+
+function ListItem (props: ListItemProps) {
+  return (
+    <Card.DealItem href={props.item.url}>
+      <CardImage imageUrl={props.item.padded_img} />
+      <Card.Text>{props.item.title}</Card.Text>
+      <Card.Time>{props.item.description}</Card.Time>
+    </Card.DealItem>
+  )
+}
+
 export default function CardDeals (props: Props) {
   // no full content no render®
   if (props.content.length === 0) {
@@ -25,13 +39,10 @@ export default function CardDeals (props: Props) {
       <Card.DealsList>
         {
           props.content.map((item, index) => {
-            return (
-              <Card.DealItem href={item.url} key={`card-smallest-key-${index}`}>
-                <CardImage imageUrl={item.padded_img} />
-                <Card.Text>{item.title}</Card.Text>
-                <Card.Time>{item.description}</Card.Time>
-              </Card.DealItem>
-            )
+            return <ListItem
+              item={item}
+              key={index}
+            />
           })
         }
       </Card.DealsList>

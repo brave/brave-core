@@ -12,14 +12,16 @@ import CategoryGroup from './cards/categoryGroup'
 import PublisherGroup from './cards/publisherGroup'
 import CardDeals from './cards/cardDeals'
 
-import * as BraveTodayElement from './default'
+// Disabled rules because we have a function
+// which returns elements in a switch.
+// tslint:disable:jsx-wrap-multiline jsx-alignment
 
 enum CardType {
   Headline,
   HeadlinePaired,
   CategoryGroup,
   Deals,
-  PublisherGroup,
+  PublisherGroup
 }
 
 const PageContentOrder = [
@@ -34,98 +36,93 @@ const PageContentOrder = [
   CardType.HeadlinePaired,
   CardType.PublisherGroup,
   CardType.Headline,
-  CardType.HeadlinePaired,
+  CardType.HeadlinePaired
 ]
 
 const RandomContentOrder = [
   CardType.Headline,
   CardType.HeadlinePaired,
-  CardType.Headline,
+  CardType.Headline
 ]
 
-interface Props {
+type Props = {
   content: BraveToday.Page
   publishers: BraveToday.Publishers
   articleToScrollTo?: BraveToday.FeedItem
   onReadFeedItem: (item: BraveToday.FeedItem) => any
 }
 
-interface State {
-  setFocusOnBraveToday: boolean
+type CardProps = Props & {
+  cardType: CardType
+  headlines: BraveToday.Article[]
 }
 
-class CardsGroup extends React.PureComponent<Props, State> {
-  state = {
-    setFocusOnBraveToday: false
+function Card (props: CardProps) {
+  switch (props.cardType) {
+    case CardType.Headline:
+      // TODO: article card should handle any number of articles and
+      // adapt accordingly.
+      return <CardLarge
+              content={props.headlines.splice(0, 1)}
+              publishers={props.publishers}
+              articleToScrollTo={props.articleToScrollTo}
+              onReadFeedItem={props.onReadFeedItem}
+             />
+    case CardType.HeadlinePaired:
+      // TODO: handle content length < 2
+      return <CardSmall
+              content={props.headlines.splice(0, 2)}
+              publishers={props.publishers}
+              articleToScrollTo={props.articleToScrollTo}
+              onReadFeedItem={props.onReadFeedItem}
+             />
+    case CardType.CategoryGroup:
+      if (!props.content.itemsByCategory) {
+        return null
+      }
+      const categoryName = props.content.itemsByCategory.categoryName
+      return <CategoryGroup
+        content={props.content.itemsByCategory.items}
+        publishers={props.publishers}
+        categoryName={categoryName}
+        onReadFeedItem={props.onReadFeedItem}
+        articleToScrollTo={props.articleToScrollTo}
+             />
+    case CardType.PublisherGroup:
+      if (!props.content.itemsByPublisher) {
+        return null
+      }
+      const publisherId = props.content.itemsByPublisher.name
+      const publisher = props.publishers[publisherId]
+      return <PublisherGroup
+        content={props.content.itemsByPublisher.items}
+        publisher={publisher}
+        articleToScrollTo={props.articleToScrollTo}
+        onReadFeedItem={props.onReadFeedItem}
+             />
+    case CardType.Deals:
+      return <CardDeals content={props.content.deals} />
   }
-
-  renderCard (cardType: CardType, headlines: BraveToday.Article[]) {
-    switch (cardType) {
-      case CardType.Headline:
-        // TODO: article card should handle any number of articles and
-        // adapt accordingly.
-        return <CardLarge
-                content={headlines.splice(0, 1)}
-                publishers={this.props.publishers}
-                articleToScrollTo={this.props.articleToScrollTo}
-                onReadFeedItem={this.props.onReadFeedItem}
-              />
-      case CardType.HeadlinePaired:
-        // TODO: handle content length < 2
-        return <CardSmall
-                content={headlines.splice(0, 2)}
-                publishers={this.props.publishers}
-                articleToScrollTo={this.props.articleToScrollTo}
-                onReadFeedItem={this.props.onReadFeedItem}
-              />
-      case CardType.CategoryGroup:
-        if (!this.props.content.itemsByCategory) {
-          return null
-        }
-        const categoryName = this.props.content.itemsByCategory.categoryName
-        return <CategoryGroup
-          content={this.props.content.itemsByCategory.items}
-          publishers={this.props.publishers}
-          categoryName={categoryName}
-          onReadFeedItem={this.props.onReadFeedItem}
-        />
-      case CardType.PublisherGroup:
-        if (!this.props.content.itemsByPublisher) {
-          return null
-        }
-        const publisherId = this.props.content.itemsByPublisher.name
-        const publisher = this.props.publishers[publisherId]
-        return <PublisherGroup
-          content={this.props.content.itemsByPublisher.items}
-          publisher={publisher}
-          onReadFeedItem={this.props.onReadFeedItem}
-        />
-      case CardType.Deals:
-        return <CardDeals content={this.props.content.deals} />
-    }
-    console.error('Asked to render unknown card type', cardType)
-    return null
-  }
-
-  renderOrder (order: CardType[], articles: BraveToday.Article[]) {
-    return (
-      <BraveTodayElement.ArticlesGroup>
-        { order.map(cardType => this.renderCard(cardType, articles)) }
-      </BraveTodayElement.ArticlesGroup>
-    )
-  }
-
-  render () {
-    // Duplicate array so we can splice without affecting state
-    const headlines = [...this.props.content.articles]
-    const randomHeadlines = [...this.props.content.randomArticles]
-    return (
-      <>
-        {this.renderOrder(PageContentOrder, headlines)}
-        {this.renderOrder(RandomContentOrder, randomHeadlines)}
-      </>
-    )
-  }
+  console.error('Asked to render unknown card type', props.cardType)
+  return null
 }
 
-export default CardsGroup
+export default function CardsGroups (props: Props) {
+  // Duplicate array so we can splice without affecting state
+  const headlines = [...props.content.articles]
+  const randomHeadlines = [...props.content.randomArticles]
+  const groups = [
+    { order: PageContentOrder, items: headlines },
+    { order: RandomContentOrder, items: randomHeadlines }
+  ]
+  return <>{groups.flatMap((group, groupIndex) => group.order.map(
+    (cardType, orderIndex) => (
+      <Card
+          key={`${groupIndex}-${orderIndex}`}
+          {...props}
+          cardType={cardType}
+          headlines={group.items}
+        />
+    )
+  ))}</>
+}
