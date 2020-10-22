@@ -348,35 +348,34 @@ export function PublisherBanner () {
     : 'verified'
 
   return (
-    <style.root
-      className={getBackgroundClass(publisherInfo)}
-      style={{ backgroundImage }}
-    >
-      <style.card>
-        <style.header>
-          <style.logo>
-            <style.logoMask>
-              {getLogo(publisherInfo)}
-            </style.logoMask>
-            <style.verifiedIcon className={verifiedType}>
-              {getVerifiedIcon(publisherInfo)}
-            </style.verifiedIcon>
-          </style.logo>
-          <style.name>
-            {getPublisherName(locale, publisherInfo, mediaMetaData)}
-          </style.name>
-        </style.header>
-        <style.socialLinks>
-          {getSocialLinks(publisherInfo)}
-        </style.socialLinks>
-        {getUnverifiedNotice(locale, publisherInfo, balanceInfo, walletInfo)}
-        <style.title>
-          {getTitle(locale, publisherInfo, mediaMetaData)}
-        </style.title>
-        <style.description>
-          {getDescription(locale, publisherInfo, mediaMetaData)}
-        </style.description>
-      </style.card>
+    <style.root style={{ backgroundImage }}>
+      <style.background className={getBackgroundClass(publisherInfo)}>
+        <style.card>
+          <style.header>
+            <style.logo>
+              <style.logoMask>
+                {getLogo(publisherInfo)}
+              </style.logoMask>
+              <style.verifiedIcon className={verifiedType}>
+                {getVerifiedIcon(publisherInfo)}
+              </style.verifiedIcon>
+            </style.logo>
+            <style.name>
+              {getPublisherName(locale, publisherInfo, mediaMetaData)}
+            </style.name>
+          </style.header>
+          <style.socialLinks>
+            {getSocialLinks(publisherInfo)}
+          </style.socialLinks>
+          {getUnverifiedNotice(locale, publisherInfo, balanceInfo, walletInfo)}
+          <style.title>
+            {getTitle(locale, publisherInfo, mediaMetaData)}
+          </style.title>
+          <style.description>
+            {getDescription(locale, publisherInfo, mediaMetaData)}
+          </style.description>
+        </style.card>
+      </style.background>
     </style.root>
   )
 }
