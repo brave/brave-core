@@ -34,7 +34,7 @@ const char kBraveSyncServiceURL[] = "https://sync-v2.brave.software/v2";
 
 }  // namespace
 
-BraveMainDelegate::BraveMainDelegate() {
+BraveMainDelegate::BraveMainDelegate() : brave_sync_service_url_(kBraveSyncServiceURL) {
   base::FilePath path;
   base::PathService::Get(base::DIR_MODULE, &path);
   base::mac::SetOverrideFrameworkBundlePath(path);
@@ -42,11 +42,13 @@ BraveMainDelegate::BraveMainDelegate() {
 
 BraveMainDelegate::~BraveMainDelegate() {}
 
+void BraveMainDelegate::SetSyncServiceURL(const std::string& url) {
+  brave_sync_service_url_ = url.empty() ? std::string(kBraveSyncServiceURL) : url;
+}
+
 void BraveMainDelegate::BasicStartupComplete() {
   auto* command_line(base::CommandLine::ForCurrentProcess());
-
-  std::string brave_sync_service_url = kBraveSyncServiceURL;
-
+  
   syncer::ModelTypeSet disabledTypes = syncer::ModelTypeSet(
     syncer::TYPED_URLS,
     // syncer::PASSWORDS,
@@ -62,7 +64,7 @@ void BraveMainDelegate::BasicStartupComplete() {
 
   // Brave's sync protocol does not use the sync service url
   command_line->AppendSwitchASCII(switches::kSyncServiceURL,
-                                 brave_sync_service_url.c_str());
+                                 brave_sync_service_url_.c_str());
 
   IOSChromeMainDelegate::BasicStartupComplete();
 }

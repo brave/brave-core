@@ -28,6 +28,10 @@
 @implementation BraveCoreMain
 
 - (instancetype)init {
+  return [self initWithSyncServiceURL:@""];
+}
+
+- (instancetype)initWithSyncServiceURL:(NSString *)syncServiceURL {
   if ((self = [super init])) {
     // Register all providers before calling any Chromium code.
     [ProviderRegistration registerProviders];
@@ -36,6 +40,7 @@
     web::SetWebClient(_webClient.get());
 
     _delegate.reset(new BraveMainDelegate());
+    _delegate->SetSyncServiceURL(base::SysNSStringToUTF8(syncServiceURL));
 
     web::WebMainParams params(_delegate.get());
 
