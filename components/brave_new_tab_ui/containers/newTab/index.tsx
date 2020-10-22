@@ -591,12 +591,23 @@ class NewTabPage extends React.Component<Props, State> {
   }
 
   cryptoDotComUpdateActions = async () => {
-    const assets = Object.keys(this.props.newTabData.cryptoDotComState.tickerPrices)
+    const { supportedPairs, tickerPrices: prices } = this.props.newTabData.cryptoDotComState
+    const assets = Object.keys(prices)
+    const supportedPairsSet = Object.keys(supportedPairs).length
+
     const [tickerPrices, losersGainers, charts] = await Promise.all([
       fetchCryptoDotComTickerPrices(assets),
       fetchCryptoDotComLosersGainers(),
       fetchCryptoDotComCharts(assets)
     ])
+
+    // These are rarely updated, so we only need to fetch them
+    // in the refresh interval if they aren't set yet (perhaps due to no connection)
+    if (!supportedPairsSet) {
+      const pairs = await fetchCryptoDotComSupportedPairs()
+      this.props.actions.setCryptoDotComSupportedPairs(pairs)
+    }
+
     this.props.actions.onCryptoDotComRefreshData(tickerPrices, losersGainers, charts)
   }
 
@@ -614,8 +625,8 @@ class NewTabPage extends React.Component<Props, State> {
     this.props.actions.onCryptoDotComInteraction()
   }
 
-  onCryptoDotComOptInMarkets = () => {
-    this.props.actions.onCryptoDotComOptInMarkets()
+  onCryptoDotComOptInMarkets = (show: boolean) => {
+    this.props.actions.onCryptoDotComOptInMarkets(show)
   }
 
   fetchGeminiBalances = () => {

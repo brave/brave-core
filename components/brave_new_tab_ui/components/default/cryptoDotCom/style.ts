@@ -55,6 +55,7 @@ interface StyleProps {
   textColor?: string
   userAuthed?: boolean
   weight?: string | number
+  marketView?: boolean
 }
 
 const colorNameToHex = {
@@ -285,26 +286,10 @@ export const ListItem = styled<StyleProps, 'li'>('li')`
   `};
 `
 
-export const AssetIconWrapper = styled<StyleProps, 'div'>('div')`
-  height: 18px;
-  width: 18px;
-  border-radius: 100px;
-  display: inline-block;
-  cursor: ${p => (p.onClick ? 'pointer' : 'initial')}
-  height: ${p => (p.$height ? p.$height : 'auto')};
-  background: ${p => (p.$bg ? p.$bg : '#fff')};
-  color: ${p => (p.textColor ? p.textColor : '#000')};
- `
-
-export const AssetIcon = styled<StyleProps, 'span'>('span')`
-  font-size: 0.9em;
-  margin-top: 0.3em;
-  margin-left: 0.2em;
- `
-
-export const BackArrow = styled<{}, 'div'>('div')`
+export const BackArrow = styled<StyleProps, 'div'>('div')`
   width: 20px;
   cursor: pointer;
+  margin-left: ${p => p.marketView ? 60 : 0}px;
  `
 
 export const ActionButton = styled<StyleProps, 'button'>('button')`
