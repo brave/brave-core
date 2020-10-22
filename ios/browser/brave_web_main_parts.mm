@@ -39,6 +39,9 @@ BraveWebMainParts::BraveWebMainParts() {}
 BraveWebMainParts::~BraveWebMainParts() {}
 
 void BraveWebMainParts::PreEarlyInitialization() {
+  // Uses Private API _performMemoryWarning causing iOS to get rejected.
+  // Crashes very badly on iOS 13.4.0, 13.5.0 according to:
+  // ios_chrome_main_parts.mm -> InitializeAllocatorShim & ShouldInstallAllocatorShim
 #if BUILDFLAG(USE_ALLOCATOR_SHIM)
   base::allocator::InitializeAllocatorShim();
 #endif
