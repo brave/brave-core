@@ -15,6 +15,7 @@
 #include "base/strings/sys_string_conversions.h"
 #include "brave/components/brave_sync/brave_sync_prefs.h"
 #include "brave/components/brave_sync/crypto/crypto.h"
+#include "brave/components/sync/driver/brave_sync_profile_sync_service.h"
 #include "components/sync/driver/profile_sync_service.h"
 #include "components/sync/driver/sync_service.h"
 #include "components/sync/driver/sync_service_observer.h"
@@ -27,7 +28,6 @@
 #include "ios/chrome/browser/browser_state/chrome_browser_state_manager.h"
 #include "ios/chrome/browser/sync/device_info_sync_service_factory.h"
 #include "ios/chrome/browser/sync/profile_sync_service_factory.h"
-#include "brave/components/sync/driver/brave_sync_profile_sync_service.h"
 #include "ios/chrome/browser/sync/sync_setup_service.h"
 #include "ios/chrome/browser/sync/sync_setup_service_factory.h"
 #include "ios/web/public/thread/web_thread.h"
@@ -234,7 +234,7 @@ std::string BraveSyncWorker::GetSyncCodeFromHexSeed(const std::string& hex_code_
   DCHECK(!hex_code_seed.empty());
 
   std::vector<uint8_t> bytes;
-		std::string sync_code_words;
+  std::string sync_code_words;
 		if (base::HexStringToBytes(hex_code_seed, &bytes)) {
 				DCHECK_EQ(bytes.size(), SEED_BYTES_COUNT);
 				if (bytes.size(), SEED_BYTES_COUNT) {
@@ -379,7 +379,7 @@ void BraveSyncWorker::OnSyncShutdown(syncer::SyncService* service) {
 }
 
 void BraveSyncWorker::OnRemoteDeviceInfoDeleted() {
-  VLOG(0) << __func__ << " local device successfully removed";
+  VLOG(0) << __func__ << " remote device successfully removed";
 }
 
 void BraveSyncWorker::OnLocalDeviceInfoDeleted() {

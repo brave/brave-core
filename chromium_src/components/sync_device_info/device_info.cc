@@ -12,33 +12,25 @@
 #undef ToValue
 
 namespace syncer {
-  std::string GetMobileOSString(const std::string user_agent) {
-    if (user_agent.find("IOS") != std::string::npos) {
-	  return "ios";
-	}
-
-	if (user_agent.find("android") != std::string::npos) {
-	  return "android";
-	}
-	return "unknown";
+std::string GetMobileOSString(const std::string user_agent) {
+  if (user_agent.find("IOS") != std::string::npos) {
+    return "ios";
   }
-
-  std::unique_ptr<base::DictionaryValue> DeviceInfo::ToValue() const {
-	  std::unique_ptr<base::DictionaryValue> value(new base::DictionaryValue());
-	  value->SetString("name", client_name_);
-	  value->SetString("id", public_id_);
-	  if (device_type_ == sync_pb::SyncEnums_DeviceType_TYPE_PHONE ||
-	  	  device_type_ == sync_pb::SyncEnums_DeviceType_TYPE_TABLET ) {
-	    value->SetString("os", GetMobileOSString(sync_user_agent_));  
-	  } else {
-	  	value->SetString("os", GetOSString());
-	  }
-	  value->SetString("type", GetDeviceTypeString());
-	  value->SetString("chromeVersion", chrome_version_);
-	  value->SetInteger("lastUpdatedTimestamp", last_updated_timestamp().ToTimeT());
-	  value->SetBoolean("sendTabToSelfReceivingEnabled",
-	                    send_tab_to_self_receiving_enabled());
-	  value->SetBoolean("hasSharingInfo", sharing_info().has_value());
-	  return value;
+  
+  if (user_agent.find("android") != std::string::npos) {
+    return "android";
   }
+  return "unknown";
+}
+
+std::unique_ptr<base::DictionaryValue> DeviceInfo::ToValue() const {
+  std::unique_ptr<base::DictionaryValue> value = ToValue_ChromiumImpl();
+  if (device_type_ == sync_pb::SyncEnums_DeviceType_TYPE_PHONE ||
+      device_type_ == sync_pb::SyncEnums_DeviceType_TYPE_TABLET ) {
+    value->SetString("os", GetMobileOSString(sync_user_agent_));
+  } else {
+    value->SetString("os", GetOSString());
+  }
+  return value;
+}
 }  // namespace syncer
