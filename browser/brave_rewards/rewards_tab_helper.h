@@ -11,12 +11,13 @@
 #include "base/macros.h"
 #include "brave/components/brave_rewards/browser/rewards_service_observer.h"
 #include "build/build_config.h"
-#if !defined(OS_ANDROID)
-#include "chrome/browser/ui/browser_list_observer.h"
-#endif
 #include "components/sessions/core/session_id.h"
 #include "content/public/browser/web_contents_observer.h"
 #include "content/public/browser/web_contents_user_data.h"
+
+#if !defined(OS_ANDROID)
+#include "chrome/browser/ui/browser_list_observer.h"
+#endif
 
 class Browser;
 
