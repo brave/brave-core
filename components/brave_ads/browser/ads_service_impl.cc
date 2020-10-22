@@ -211,7 +211,6 @@ net::NetworkTrafficAnnotationTag GetNetworkTrafficAnnotationTag() {
 
 AdsServiceImpl::AdsServiceImpl(Profile* profile) :
     profile_(profile),
-    is_initialized_(false),
     file_task_runner_(base::CreateSequencedTaskRunner(
           {base::ThreadPool(), base::MayBlock(),
            base::TaskPriority::BEST_EFFORT,
@@ -229,9 +228,7 @@ AdsServiceImpl::AdsServiceImpl(Profile* profile) :
   MaybeInitialize();
 }
 
-AdsServiceImpl::~AdsServiceImpl() {
-  file_task_runner_->DeleteSoon(FROM_HERE, database_.release());
-}
+AdsServiceImpl::~AdsServiceImpl() = default;
 
 void AdsServiceImpl::OnUserModelUpdated(
     const std::string& id) {
@@ -544,6 +541,8 @@ GetAutoDetectedAdsSubdivisionTargetingCode() const {
 ///////////////////////////////////////////////////////////////////////////////
 
 void AdsServiceImpl::Shutdown() {
+  is_initialized_ = false;
+
   BackgroundHelper::GetInstance()->RemoveObserver(this);
 
   g_brave_browser_process->user_model_file_service()->RemoveObserver(this);
@@ -559,7 +558,9 @@ void AdsServiceImpl::Shutdown() {
   bat_ads_client_receiver_.reset();
   bat_ads_service_.reset();
 
-  is_initialized_ = false;
+  const bool success =
+      file_task_runner_->DeleteSoon(FROM_HERE, database_.release());
+  VLOG_IF(1, !success) << "Failed to release database";
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -675,10 +676,6 @@ void AdsServiceImpl::ShutdownBatAds() {
 
   VLOG(1) << "Shutting down ads";
 
-  const bool success = file_task_runner_->DeleteSoon(FROM_HERE,
-      database_.release());
-  VLOG_IF(1, !success) << "Failed to release database";
-
   bat_ads_->Shutdown(base::BindOnce(&AdsServiceImpl::OnShutdownBatAds,
       AsWeakPtr()));
 }
@@ -779,10 +776,6 @@ void AdsServiceImpl::ResetAllState(
 
   VLOG(1) << "Shutting down and resetting ads state";
 
-  const bool success = file_task_runner_->DeleteSoon(FROM_HERE,
-      database_.release());
-  VLOG_IF(1, !success) << "Failed to release database";
-
   bat_ads_->Shutdown(base::BindOnce(&AdsServiceImpl::OnShutdownAndResetBatAds,
       AsWeakPtr()));
 }
@@ -832,13 +825,13 @@ void AdsServiceImpl::OnEnsureBaseDirectoryExists(
 
   BackgroundHelper::GetInstance()->AddObserver(this);
 
+  database_ = std::make_unique<ads::Database>(
+      base_path_.AppendASCII("database.sqlite"));
+
   bat_ads_service_->Create(
       bat_ads_client_receiver_.BindNewEndpointAndPassRemote(),
       bat_ads_.BindNewEndpointAndPassReceiver(),
       base::BindOnce(&AdsServiceImpl::OnCreate, AsWeakPtr()));
-
-  database_ = std::make_unique<ads::Database>(
-      base_path_.AppendASCII("database.sqlite"));
 
   OnWalletUpdated();
 
