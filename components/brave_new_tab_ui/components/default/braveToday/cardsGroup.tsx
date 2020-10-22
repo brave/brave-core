@@ -8,8 +8,8 @@ import * as React from 'react'
 // Feature Containers
 import CardLarge from './cards/_articles/cardArticleLarge'
 import CardSmall from './cards/_articles/cardArticleMedium'
-import CardBrandedList from './cards/brandedList'
-import CardOrderedList from './cards/orderedList'
+import CategoryGroup from './cards/categoryGroup'
+import PublisherGroup from './cards/publisherGroup'
 import CardDeals from './cards/cardDeals'
 
 import * as BraveTodayElement from './default'
@@ -82,18 +82,22 @@ class CardsGroup extends React.PureComponent<Props, State> {
         if (!this.props.content.itemsByCategory) {
           return null
         }
-        return <CardBrandedList
+        const categoryName = this.props.content.itemsByCategory.categoryName
+        return <CategoryGroup
           content={this.props.content.itemsByCategory.items}
           publishers={this.props.publishers}
+          categoryName={categoryName}
           onReadFeedItem={this.props.onReadFeedItem}
         />
       case CardType.PublisherGroup:
         if (!this.props.content.itemsByPublisher) {
           return null
         }
-        return <CardOrderedList
+        const publisherId = this.props.content.itemsByPublisher.name
+        const publisher = this.props.publishers[publisherId]
+        return <PublisherGroup
           content={this.props.content.itemsByPublisher.items}
-          publishers={this.props.publishers}
+          publisher={publisher}
           onReadFeedItem={this.props.onReadFeedItem}
         />
       case CardType.Deals:

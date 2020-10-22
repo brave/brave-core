@@ -112,7 +112,7 @@ class BraveToday extends React.PureComponent<Props, State> {
           onReadFeedItem={this.props.onReadFeedItem}
         />
         {/* deals */}
-        <CardDeals content={feed.featuredDeals} />
+        { feed.featuredDeals && <CardDeals content={feed.featuredDeals} /> }
         {
           /* Infinitely repeating collections of content. */
           Array(displayedPageCount).fill(undefined).map((_: undefined, index: number) => {

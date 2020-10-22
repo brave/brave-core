@@ -26,9 +26,11 @@ export const ListItem = styled<{}, 'li'>('li')`
 
   a {
     text-decoration: none;
-    display: grid;
-    grid-template-columns: 1fr auto;
-    grid-gap: 56px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    gap: 50px;
   }
 `
 
@@ -37,6 +39,11 @@ export const Content = styled<{}, 'div'>('div')`
   display: flex;
   flex-direction: column;
   justify-content: center;
+`
+
+export const ListItemImageFrame = styled('div')`
+  flex: 0 0 100px;
+  height: 100px;
 `
 
 export const Image = styled(StandardImage)`

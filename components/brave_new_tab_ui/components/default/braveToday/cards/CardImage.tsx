@@ -8,19 +8,19 @@ import * as Card from '../cardSizes'
 import * as Background from '../../../../../common/Background'
 
 type Props = {
-  size: string
   imageUrl: string
+  list?: boolean
   onLoaded?: () => any
-  fit?: boolean
 }
 
 function useGetUnpaddedImage (paddedUrl: string, onLoaded?: () => any) {
-  const [unpaddedUrl, setUnpaddedUrl] = React.useState('');
+  const [unpaddedUrl, setUnpaddedUrl] = React.useState('')
   const onReceiveUnpaddedUrl = (result: string) => {
-    setUnpaddedUrl(result);
+    setUnpaddedUrl(result)
     window.requestAnimationFrame(() => {
-      if (onLoaded)
+      if (onLoaded) {
         onLoaded()
+      }
     })
   }
   React.useEffect(() => {
@@ -32,16 +32,36 @@ function useGetUnpaddedImage (paddedUrl: string, onLoaded?: () => any) {
       .then(onReceiveUnpaddedUrl)
       return
     }
-    Background.send<
-    BraveToday.Messages.GetImageDataResponse,
-      BraveToday.Messages.GetImageDataPayload
-    >(
+    Background.send<BraveToday.Messages.GetImageDataResponse,
+        BraveToday.Messages.GetImageDataPayload>(
       Background.MessageTypes.Today.getImageData,
       { url: paddedUrl }
-    ).then(result => onReceiveUnpaddedUrl(result.dataUrl))
-  }, [paddedUrl]);
+    )
+    .then(result => onReceiveUnpaddedUrl(result.dataUrl))
+    .catch(err => {
+      console.error(`Error getting image for ${paddedUrl}.`, err)
+    })
+
+  }, [paddedUrl])
   return unpaddedUrl
 }
 
-  return <Card.Image fit={props.fit} size={props.size} src={data} />
+export default function CardImage (props: Props) {
+  const unpaddedUrl = useGetUnpaddedImage(props.imageUrl, props.onLoaded)
+  const [isImageLoaded, setIsImageLoaded] = React.useState(false)
+  React.useEffect(() => {
+    if (unpaddedUrl) {
+      const img = new Image()
+      img.addEventListener('load', () => {
+        setIsImageLoaded(true)
+      })
+      img.src = unpaddedUrl
+    }
+  }, [unpaddedUrl])
+  const Frame = props.list ? Card.ListImageFrame : Card.ImageFrame
+  return (
+    <Frame isImageLoaded={isImageLoaded}>
+      <Card.Image src={unpaddedUrl} />
+    </Frame>
+  )
 }

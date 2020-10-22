@@ -30,20 +30,44 @@ export const DealsCard = styled(StandardBlock)`
 
 `
 
-
 export const Content = styled<{}, 'div'>('div')`
   box-sizing: border-box;
   padding: 25px 35px;
 `
-interface StandardImageProps {
-  size: 'large' | 'medium' | 'small'
-  fit: boolean | undefined
+
+type ImageFrameProps = {
+  isImageLoaded: boolean
 }
 
-export const Image = styled<StandardImageProps, any>(StandardImage)`
+export const ImageFrame = styled<ImageFrameProps, 'figure'>('figure')`
+  opacity: ${p => p.isImageLoaded ? 1 : 0};
+  margin: 0;
   width: 100%;
-  min-height: ${p => p.size === 'large' ? '200px' : p.size === 'medium' ? '150px' : null};
-  ${p => p.fit && css`object-fit: contain;`}
+  position: relative;
+  padding-top: 67%;
+  display: block;
+  height: auto;
+  overflow: hidden;
+  transition: opacity 240ms ease-out;
+`
+
+export const ListImageFrame = styled(ImageFrame)`
+  height: 100%;
+  padding-top: 0;
+`
+
+export const Image = styled(StandardImage)`
+  display: block;
+  position: absolute;
+  border: none;
+  background: none;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
   background-color: rgba(188,188,188,0.2);
 `
 
@@ -80,8 +104,10 @@ export const ContainerForTwo = styled<{}, 'div'>('div')`
   grid-gap: 30px;
 `
 
-export const ContainerForThree = styled(ContainerForTwo)`
+export const DealsList = styled('div')`
+  display: grid;
   grid-template-columns: 1fr 1fr 1fr;
+  grid-gap: 30px;
 `
 
 export const DealItem = styled('a')`

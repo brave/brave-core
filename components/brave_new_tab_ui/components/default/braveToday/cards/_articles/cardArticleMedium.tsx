@@ -56,7 +56,6 @@ function MediumArticle (props: ArticleProps) {
     <Card.Small>
       <a onClick={() => props.onReadFeedItem(item)} ref={cardRef}>
         <CardImage
-          size='medium'
           imageUrl={item.img}
           onLoaded={onImageLoaded}
         />

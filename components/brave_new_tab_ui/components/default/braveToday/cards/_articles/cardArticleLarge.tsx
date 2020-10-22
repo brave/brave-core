@@ -58,7 +58,6 @@ function LargeArticle (props: ArticleProps) {
     <Card.Large>
       <a onClick={() => props.onReadFeedItem(item)} ref={cardRef}>
         <CardImage
-          size='large'
           imageUrl={item.img}
           onLoaded={onImageLoaded}
         />
