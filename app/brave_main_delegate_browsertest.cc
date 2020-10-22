@@ -14,6 +14,7 @@
 #include "components/autofill/core/common/autofill_payments_features.h"
 #include "components/embedder_support/switches.h"
 #include "components/language/core/common/language_experiments.h"
+#include "components/network_time/network_time_tracker.h"
 #include "components/omnibox/common/omnibox_features.h"
 #include "components/password_manager/core/common/password_manager_features.h"
 #include "components/safe_browsing/core/features.h"
@@ -70,6 +71,7 @@ IN_PROC_BROWSER_TEST_F(BraveMainDelegateBrowserTest, DisabledFeatures) {
       &features::kSmsReceiver,
       &features::kVideoPlaybackQuality,
       &features::kTabHoverCards,
+      &network_time::kNetworkTimeServiceQuerying,
       &password_manager::features::kPasswordCheck,
       &safe_browsing::kEnhancedProtection,
   };
