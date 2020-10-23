@@ -16,8 +16,8 @@ function performSideEffect (fn: () => void): void {
 }
 
 function reducePairs (rawPairs: SupportedPair[]) {
-  if (!rawPairs || rawPairs.length <= 0) {
-    return null
+  if (!rawPairs || !rawPairs.length) {
+    return {}
   }
   return rawPairs.reduce((pairs: object, currPair: SupportedPair) => {
     const { base, pair } = currPair
@@ -112,7 +112,7 @@ const cryptoDotComReducer: Reducer<NewTab.State | undefined> = (state: NewTab.St
           ...payload.charts
         },
         losersGainers: payload.losersGainers,
-        supportedPairs: reducePairs(payload.pairs) || state.cryptoDotComState.supportedPairs
+        supportedPairs: payload.pairs ? reducePairs(payload.pairs) : state.cryptoDotComState.supportedPairs
       }
       break
 
