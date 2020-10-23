@@ -315,13 +315,13 @@ By installing this extension, you are agreeing to the Google Widevine Terms of U
       <message name="IDS_SETTINGS_NEW_TAB_NEW_TAB_PAGE_SHOWS" desc="The label for New Tab Page shows customization">
         New tab page shows
       </message>
-      <message name="IDS_SETTINGS_NEW_TAB_NEW_TAB_PAGE_SHOWS_DASHBOARD_WITH_IMAGES" desc="The label for dashboard with images option">
-        Dashboard with images
+      <message name="IDS_SETTINGS_NEW_TAB_NEW_TAB_PAGE_SHOWS_DASHBOARD" desc="The label for dashboard option">
+        Dashboard
       </message>
       <message name="IDS_SETTINGS_NEW_TAB_NEW_TAB_PAGE_SHOWS_HOMEPAGE" desc="The label for homepage option">
         Homepage
       </message>
-      <message name="IDS_SETTINGS_NEW_TAB_NEW_TAB_PAGE_SHOWS_BLANK_PAGE" desc="The label for blank page option">
+      <message name="IDS_SETTINGS_NEW_TAB_NEW_TAB_PAGE_SHOWS_BLANKPAGE" desc="The label for blank page option">
         Blank page
       </message>
       <!-- Tor -->

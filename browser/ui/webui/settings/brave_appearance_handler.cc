@@ -7,6 +7,7 @@
 
 #include "base/bind.h"
 #include "base/strings/string_number_conversions.h"
+#include "brave/browser/new_tab/new_tab_shows_options.h"
 #include "brave/browser/ntp_background_images/view_counter_service_factory.h"
 #include "brave/browser/themes/brave_dark_mode_utils.h"
 #include "brave/common/pref_names.h"
@@ -77,6 +78,7 @@ BraveAppearanceHandler::BraveAppearanceHandler() {
 
 BraveAppearanceHandler::~BraveAppearanceHandler() = default;
 
+// TODO(simonhong): Use separate handler for NTP settings.
 void BraveAppearanceHandler::RegisterMessages() {
   profile_ = Profile::FromWebUI(web_ui());
   profile_state_change_registrar_.Init(profile_->GetPrefs());
@@ -123,6 +125,10 @@ void BraveAppearanceHandler::RegisterMessages() {
   web_ui()->RegisterMessageCallback(
       "getShowTopSites",
       base::BindRepeating(&BraveAppearanceHandler::GetShowTopSites,
+                          base::Unretained(this)));
+  web_ui()->RegisterMessageCallback(
+      "getNewTabShowsOptionsList",
+      base::BindRepeating(&BraveAppearanceHandler::GetNewTabShowsOptionsList,
                           base::Unretained(this)));
 #if BUILDFLAG(CRYPTO_DOT_COM_ENABLED)
   web_ui()->RegisterMessageCallback(
@@ -290,4 +296,12 @@ void BraveAppearanceHandler::TopSitesVisibleChanged(
     FireWebUIListener("ntp-shortcut-visibility-changed",
         base::Value(top_sites_visible));
   }
+}
+
+void BraveAppearanceHandler::GetNewTabShowsOptionsList(
+    const base::ListValue* args) {
+  CHECK_EQ(args->GetSize(), 1U);
+  AllowJavascript();
+  ResolveJavascriptCallback(args->GetList()[0],
+                            brave::GetNewTabShowsOptionsList(profile_));
 }

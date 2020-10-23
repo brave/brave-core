@@ -10,15 +10,20 @@
 
 class Profile;
 
+namespace base {
+class Value;
+}  // namespace base
+
 namespace brave {
 
 enum NewTabPageShowsOptions {
-  DASHBOARD_WITH_IMAGES,
+  DASHBOARD,
   HOMEPAGE,
   BLANKPAGE
 };
 
 GURL GetNewTabPageURL(Profile* profile);
+base::Value GetNewTabShowsOptionsList(Profile* profile);
 
 }  // namespace brave
 

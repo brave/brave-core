@@ -18,6 +18,7 @@
 namespace chrome {
 
 // Whole logic is copied from upstream chrome::NewTab().
+// The only change is new_tab_url instead of GURL().
 void NewTab(Browser* browser) {
   base::RecordAction(UserMetricsAction("NewTab"));
   // TODO(asvitkine): This is invoked programmatically from several places.

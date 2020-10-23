@@ -47,6 +47,11 @@ cr.define('settings', function() {
      * @return {!Promise<Boolean>}
      */
     isCryptoDotComSupported() {}
+
+    /**
+     * @return {!Promise<Array>}
+     */
+    getNewTabShowsOptionsList() {}
   }
 
   /**
@@ -92,6 +97,12 @@ cr.define('settings', function() {
     getIsCryptoDotComSupported() {
       return cr.sendWithPromise('getIsCryptoDotComSupported')
     }
+
+    /** @override */
+    getNewTabShowsOptionsList() {
+      return cr.sendWithPromise('getNewTabShowsOptionsList')
+    }
+
   }
 
   cr.addSingletonGetter(BraveNewTabBrowserProxyImpl);

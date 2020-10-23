@@ -5,11 +5,14 @@
 
 #include "brave/browser/new_tab/new_tab_shows_options.h"
 
+#include "base/values.h"
 #include "brave/browser/profiles/profile_util.h"
 #include "brave/common/pref_names.h"
+#include "brave/grit/brave_generated_resources.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/common/pref_names.h"
 #include "components/prefs/pref_service.h"
+#include "ui/base/l10n/l10n_util.h"
 #include "url/url_constants.h"
 
 namespace brave {
@@ -30,11 +33,40 @@ GURL GetNewTabPageURL(Profile* profile) {
   } else if (option == brave::NewTabPageShowsOptions::BLANKPAGE) {
     return GURL(url::kAboutBlankURL);
   } else {
-    DCHECK_EQ(brave::NewTabPageShowsOptions::DASHBOARD_WITH_IMAGES, option);
+    DCHECK_EQ(brave::NewTabPageShowsOptions::DASHBOARD, option);
     return GURL();
   }
 
   return GURL();
+}
+
+base::Value GetNewTabShowsOptionsList(Profile* profile) {
+  base::Value list(base::Value::Type::LIST);
+
+  base::Value dashboard_option(base::Value::Type::DICTIONARY);
+  dashboard_option.SetIntKey("value", DASHBOARD);
+  dashboard_option.SetStringKey(
+      "name",
+      l10n_util::GetStringUTF8(
+          IDS_SETTINGS_NEW_TAB_NEW_TAB_PAGE_SHOWS_DASHBOARD));
+  list.Append(std::move(dashboard_option));
+
+  base::Value homepage_option(base::Value::Type::DICTIONARY);
+  homepage_option.SetIntKey("value", HOMEPAGE);
+  homepage_option.SetStringKey(
+      "name",
+      l10n_util::GetStringUTF8(
+          IDS_SETTINGS_NEW_TAB_NEW_TAB_PAGE_SHOWS_HOMEPAGE));
+  list.Append(std::move(homepage_option));
+
+  base::Value blankpage_option(base::Value::Type::DICTIONARY);
+  blankpage_option.SetIntKey("value", BLANKPAGE);
+  blankpage_option.SetStringKey(
+      "name",
+      l10n_util::GetStringUTF8(
+          IDS_SETTINGS_NEW_TAB_NEW_TAB_PAGE_SHOWS_BLANKPAGE));
+  list.Append(std::move(blankpage_option));
+  return list;
 }
 
 }  // namespace brave

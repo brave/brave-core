@@ -41,7 +41,7 @@ TEST_F(BraveNewTabTest, BasicTest) {
 
   // Check NTP url is empty for DASHBOARD_WITH_IMAGES.
   prefs->SetInteger(kNewTabPageShowsOptions,
-                    brave::NewTabPageShowsOptions::DASHBOARD_WITH_IMAGES);
+                    brave::NewTabPageShowsOptions::DASHBOARD);
   EXPECT_EQ(GURL(), brave::GetNewTabPageURL(profile));
   EXPECT_EQ(GURL(), brave::GetNewTabPageURL(otr_profile));
 

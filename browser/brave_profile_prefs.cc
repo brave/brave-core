@@ -256,7 +256,7 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
   registry->RegisterBooleanPref(kNewTabPageShowAddCard, true);
   registry->RegisterBooleanPref(kNewTabPageShowGemini, true);
   registry->RegisterIntegerPref(kNewTabPageShowsOptions,
-                                NewTabPageShowsOptions::DASHBOARD_WITH_IMAGES);
+                                NewTabPageShowsOptions::DASHBOARD);
 
   // Brave Wallet
 #if BUILDFLAG(BRAVE_WALLET_ENABLED)
