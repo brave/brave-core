@@ -125,8 +125,7 @@ bool BraveContentSettingsAgentImpl::AllowScript(
   blocked_script_url_ = GURL::EmptyGURL();
 
   blink::WebLocalFrame* frame = render_frame()->GetWebFrame();
-  const GURL secondary_url(
-      url::Origin(frame->GetDocument().GetSecurityOrigin()).GetURL());
+  const GURL secondary_url(url::Origin(frame->GetSecurityOrigin()).GetURL());
 
   bool allow = ContentSettingsAgentImpl::AllowScript(enabled_per_settings);
   allow = allow ||
@@ -189,8 +188,7 @@ bool BraveContentSettingsAgentImpl::AllowFingerprinting(
   if (!enabled_per_settings)
     return false;
   blink::WebLocalFrame* frame = render_frame()->GetWebFrame();
-  const GURL secondary_url(
-      url::Origin(frame->GetDocument().GetSecurityOrigin()).GetURL());
+  const GURL secondary_url(url::Origin(frame->GetSecurityOrigin()).GetURL());
   if (IsBraveShieldsDown(frame, secondary_url)) {
     return true;
   }
@@ -203,9 +201,8 @@ BraveFarblingLevel BraveContentSettingsAgentImpl::GetBraveFarblingLevel() {
 
   ContentSetting setting = CONTENT_SETTING_DEFAULT;
   if (content_setting_rules_) {
-    if (IsBraveShieldsDown(
-            frame,
-            url::Origin(frame->GetDocument().GetSecurityOrigin()).GetURL())) {
+    if (IsBraveShieldsDown(frame,
+                           url::Origin(frame->GetSecurityOrigin()).GetURL())) {
       setting = CONTENT_SETTING_ALLOW;
     } else {
       setting = GetBraveFPContentSettingFromRules(
@@ -228,7 +225,7 @@ BraveFarblingLevel BraveContentSettingsAgentImpl::GetBraveFarblingLevel() {
 
 bool BraveContentSettingsAgentImpl::AllowAutoplay(bool default_value) {
   blink::WebLocalFrame* frame = render_frame()->GetWebFrame();
-  auto origin = frame->GetDocument().GetSecurityOrigin();
+  auto origin = frame->GetSecurityOrigin();
   // default allow local files
   if (origin.IsNull() || origin.Protocol().Ascii() == url::kFileScheme) {
     VLOG(1) << "AllowAutoplay=true because no origin or file scheme";
@@ -240,7 +237,7 @@ bool BraveContentSettingsAgentImpl::AllowAutoplay(bool default_value) {
   if (content_setting_rules_) {
     ContentSetting setting = GetContentSettingFromRules(
         content_setting_rules_->autoplay_rules, frame,
-        url::Origin(frame->GetDocument().GetSecurityOrigin()).GetURL());
+        url::Origin(origin).GetURL());
     if (setting == CONTENT_SETTING_BLOCK) {
       VLOG(1) << "AllowAutoplay=false because rule=CONTENT_SETTING_BLOCK";
       return false;
