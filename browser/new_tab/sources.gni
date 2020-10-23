@@ -8,6 +8,8 @@ brave_browser_new_tab_deps = []
 
 if (!is_android) {
   brave_browser_new_tab_sources += [
+    "//brave/browser/new_tab/new_tab_shows_navigation_throttle.cc",
+    "//brave/browser/new_tab/new_tab_shows_navigation_throttle.h",
     "//brave/browser/new_tab/new_tab_shows_options.cc",
     "//brave/browser/new_tab/new_tab_shows_options.h",
   ]
@@ -18,6 +20,7 @@ if (!is_android) {
     "//brave/common:pref_names",
     "//chrome/common",
     "//components/prefs",
+    "//content/public/browser",
     "//ui/base",
     "//url",
   ]

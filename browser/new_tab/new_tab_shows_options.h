@@ -14,10 +14,6 @@ namespace base {
 class Value;
 }  // namespace base
 
-namespace content {
-class BrowserContext;
-}  // namespace content
-
 namespace brave {
 
 enum NewTabPageShowsOptions {
@@ -29,8 +25,6 @@ enum NewTabPageShowsOptions {
 GURL GetNewTabPageURL(Profile* profile);
 base::Value GetNewTabShowsOptionsList(Profile* profile);
 bool ShouldUseNewTabURLForNewTab(Profile* profile);
-bool HandleNewTabPageURLRewrite(GURL* url,
-                                content::BrowserContext* browser_context);
 
 }  // namespace brave
 

@@ -5,6 +5,8 @@
 
 #include "brave/browser/new_tab/new_tab_shows_options.h"
 
+#include <utility>
+
 #include "base/values.h"
 #include "brave/browser/profiles/profile_util.h"
 #include "brave/common/pref_names.h"
@@ -76,17 +78,6 @@ bool ShouldUseNewTabURLForNewTab(Profile* profile) {
   return url.is_empty() ||
          url.host() == chrome::kChromeUINewTabHost ||
          NewTabUI::IsNewTab(url);
-}
-
-bool HandleNewTabPageURLRewrite(GURL* url,
-                                content::BrowserContext* browser_context) {
-  Profile* profile = Profile::FromBrowserContext(browser_context);
-  if (!NewTabUI::IsNewTab(*url) || ShouldUseNewTabURLForNewTab(profile)) {
-    return false;
-  }
-
-  *url = GetNewTabPageURL(profile);
-  return true;
 }
 
 }  // namespace brave
