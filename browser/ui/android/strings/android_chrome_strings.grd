@@ -3401,6 +3401,9 @@ Data from your Private session will only be cleared from Brave when you <ph name
       <message name="IDS_EPHEMERAL_TAB_SHEET_DESCRIPTION" desc="The content description of the preview tab bottom sheet.">
         Preview tab
       </message>
+      <message name="IDS_EPHEMERAL_TAB_SHEET_NOT_VIEWABLE" desc="Notifies the user that the link they are trying to preview cannot be viewed.">
+        Preview tab content is not viewable.
+      </message>
       <message name="IDS_EPHEMERAL_TAB_SHEET_OPENED_HALF" desc="Accessibility string read when the preview tab bottom sheet is opened at half height. The sheet will occupy up to half the screen.">
         Preview tab is half-opened
       </message>
@@ -3506,9 +3509,6 @@ Data from your Private session will only be cleared from Brave when you <ph name
       </message>
 
       <!-- WebAPK/TWA related strings -->
-      <message name="IDS_APP_RUNNING_IN_CHROME_DISCLOSURE" desc="Message on the snackbar that indicates an app may use Brave data.">
-        This app is running in Brave
-      </message>
       <message name="IDS_TWA_RUNNING_IN_CHROME" desc="Message on a snackbar indicating that the current Activity may use Brave data (the rest of the app may not be).">
         Running in Brave
       </message>
@@ -3980,7 +3980,7 @@ Data from your Private session will only be cleared from Brave when you <ph name
       </message>
 
       <message name="IDS_CABLEV2_ACTIVITY_TITLE" desc="The label of the Activity for using your phone as a security key. A 'security key' in this context is generally a small USB device that is used for logging into websites. This feature allows Brave on an Android phone to act as a security key. A user may see it in Android permissions prompts (see screenshot).">
-         Brave <ph name="APP_NAME">%1$s<ex>Brave</ex></ph> as a Security Key
+         Brave as a Security Key
       </message>
 
       <!-- QR Code -->
@@ -4224,6 +4224,21 @@ Data from your Private session will only be cleared from Brave when you <ph name
       </message>
       <message name="IDS_IMAGE_DESCRIPTIONS_DIALOG_GET_DESCRIPTIONS_BUTTON" desc="Button for dialog to enable option to get image descriptions.">
         Get descriptions
+      </message>
+      <message name="IDS_IMAGE_DESCRIPTIONS_SETTINGS_TITLE" desc="Title of the preference that allows user to update accessibility image descriptions settings. [CHAR-LIMIT=32]">
+        Image descriptions
+      </message>
+      <message name="IDS_IMAGE_DESCRIPTIONS_SETTINGS_TOGGLE_TITLE" desc="Title of the toggle to turn preference on and off for accessibility image descriptions.">
+        Get image descriptions
+      </message>
+      <message name="IDS_IMAGE_DESCRIPTIONS_SETTINGS_TOGGLE_CONTENT" desc="Content of the toggle to turn preference on and off for accessibility image descriptions.">
+        Some images are sent to Brave to improve descriptions for you
+      </message>
+      <message name="IDS_IMAGE_DESCRIPTIONS_SETTINGS_USE_MOBILE_DATA_TITLE" desc="Title of radio button to allow user to specify getting accessibility image descriptions while on mobile data.">
+        Use mobile data
+      </message>
+      <message name="IDS_IMAGE_DESCRIPTIONS_SETTINGS_USE_MOBILE_DATA_CONTENT" desc="Content of radio button to allow user to specify getting accessibility image descriptions while on mobile data.">
+        Wi-Fi is used when available
       </message>
     </messages>
   </release>
