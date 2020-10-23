@@ -53,15 +53,18 @@ BraveRequestInfo::BraveRequestInfo(const GURL& url) : request_url(url) {}
 BraveRequestInfo::~BraveRequestInfo() = default;
 
 // static
-void BraveRequestInfo::FillCTX(const network::ResourceRequest& request,
-                               int render_process_id,
-                               int frame_tree_node_id,
-                               uint64_t request_identifier,
-                               content::BrowserContext* browser_context,
-                               std::shared_ptr<brave::BraveRequestInfo> old_ctx,
-                               std::shared_ptr<brave::BraveRequestInfo> ctx) {
+std::shared_ptr<brave::BraveRequestInfo> BraveRequestInfo::MakeCTX(
+    const network::ResourceRequest& request,
+    int render_process_id,
+    int frame_tree_node_id,
+    uint64_t request_identifier,
+    content::BrowserContext* browser_context,
+    std::shared_ptr<brave::BraveRequestInfo> old_ctx) {
   DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
+
+  auto ctx = std::make_shared<brave::BraveRequestInfo>();
   ctx->request_identifier = request_identifier;
+  ctx->method = request.method;
   ctx->request_url = request.url;
   // TODO(iefremov): Replace GURL with Origin
   ctx->initiator_url =
@@ -109,6 +112,11 @@ void BraveRequestInfo::FillCTX(const network::ResourceRequest& request,
                               .GetOrigin();
   }
 
+  if (old_ctx) {
+    ctx->internal_redirect = old_ctx->internal_redirect;
+    ctx->redirect_source = old_ctx->redirect_source;
+  }
+
   Profile* profile = Profile::FromBrowserContext(browser_context);
   auto* map = HostContentSettingsMapFactory::GetForProfile(profile);
   ctx->allow_brave_shields =
@@ -117,7 +125,14 @@ void BraveRequestInfo::FillCTX(const network::ResourceRequest& request,
       map, ctx->tab_origin) == brave_shields::ControlType::ALLOW;
   ctx->allow_http_upgradable_resource =
       !brave_shields::GetHTTPSEverywhereEnabled(map, ctx->tab_origin);
-  ctx->allow_referrers = brave_shields::AllowReferrers(map, ctx->tab_origin);
+
+  // HACK: after we fix multiple creations of BraveRequestInfo we should
+  // use only tab_origin. Since we recreate BraveRequestInfo during consequent
+  // stages of navigation, |tab_origin| changes and so does |allow_referrers|
+  // flag, which is not what we want for determining referrers.
+  ctx->allow_referrers = brave_shields::AllowReferrers(
+      map, ctx->redirect_source.is_empty() ? ctx->tab_origin :
+                                             ctx->redirect_source);
   ctx->upload_data = GetUploadData(request);
 
 #if BUILDFLAG(IPFS_ENABLED)
@@ -134,6 +149,8 @@ void BraveRequestInfo::FillCTX(const network::ResourceRequest& request,
     ctx->internal_redirect = old_ctx->internal_redirect;
     ctx->redirect_source = old_ctx->redirect_source;
   }
+
+  return ctx;
 }
 
 }  // namespace brave
