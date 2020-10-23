@@ -282,9 +282,6 @@ By installing this extension, you are agreeing to the Google Widevine Terms of U
       <message name="IDS_SETTINGS_NEW_TAB" desc="The text label for the New Tab settings page">
        New Tab Page
       </message>
-      <message name="IDS_SETTINGS_NEW_TAB_CUSTOMIZE_BRAVE_DASHBOARD" desc="The description label for Dashboard Customization">
-        Customize your Brave Dashboard
-      </message>
       <message name="IDS_SETTINGS_NEW_TAB_BACKGROUND_IMAGES" desc="The label for Background images show/hide feature toggle">
         Background images
       </message>
