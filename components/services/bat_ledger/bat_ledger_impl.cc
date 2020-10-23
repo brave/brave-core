@@ -1162,4 +1162,8 @@ void BatLedgerImpl::GetBraveWallet(GetBraveWalletCallback callback) {
           _1));
 }
 
+void BatLedgerImpl::GetWalletPassphrase(GetWalletPassphraseCallback callback) {
+  std::move(callback).Run(ledger_->GetWalletPassphrase());
+}
+
 }  // namespace bat_ledger

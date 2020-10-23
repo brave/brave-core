@@ -391,6 +391,8 @@ class LEDGER_EXPORT Ledger {
   virtual void GetEventLogs(GetEventLogsCallback callback) = 0;
 
   virtual void GetBraveWallet(GetBraveWalletCallback callback) = 0;
+
+  virtual std::string GetWalletPassphrase() const = 0;
 };
 
 }  // namespace ledger

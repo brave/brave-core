@@ -3466,4 +3466,14 @@ void RewardsServiceImpl::OnGetBraveWallet(
   std::move(callback).Run(std::move(wallet));
 }
 
+void RewardsServiceImpl::GetWalletPassphrase(
+    GetWalletPassphraseCallback callback) {
+  if (!Connected()) {
+    std::move(callback).Run("");
+    return;
+  }
+
+  bat_ledger_->GetWalletPassphrase(callback);
+}
+
 }  // namespace brave_rewards
