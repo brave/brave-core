@@ -336,6 +336,8 @@ class RewardsServiceImpl : public RewardsService,
 
   void GetBraveWallet(GetBraveWalletCallback callback) override;
 
+  void GetWalletPassphrase(GetWalletPassphraseCallback callback) override;
+
   // Testing methods
   void SetLedgerEnvForTesting();
   void PrepareLedgerEnvForTesting();

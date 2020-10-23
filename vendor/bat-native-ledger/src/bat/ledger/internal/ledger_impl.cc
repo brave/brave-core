@@ -840,4 +840,13 @@ void LedgerImpl::GetBraveWallet(GetBraveWalletCallback callback) {
   callback(wallet()->GetWallet());
 }
 
+std::string LedgerImpl::GetWalletPassphrase() const {
+  const auto brave_wallet = wallet()->GetWallet();
+  if (!brave_wallet) {
+    return "";
+  }
+
+  return wallet()->GetWalletPassphrase(brave_wallet->Clone());
+}
+
 }  // namespace ledger

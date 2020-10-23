@@ -350,3 +350,9 @@ export const getPaymentId = () => action(types.GET_PAYMENT_ID)
 export const onPaymentId = (paymentId: string) => action(types.ON_PAYMENT_ID, {
   paymentId
 })
+
+export const getWalletPassphrase = () => action(types.GET_WALLET_PASSPHRASE)
+
+export const onWalletPassphrase = (passphrase: string) => action(types.ON_WALLET_PASSPHRASE, {
+  passphrase
+})
