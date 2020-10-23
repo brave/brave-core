@@ -411,7 +411,10 @@ class CryptoDotCom extends React.PureComponent<Props, State> {
   }
 
   renderTitle () {
+    const { selectedAsset } = this.state
     const { optInMarkets, showContent } = this.props
+    const shouldShowBackArrow = !selectedAsset && showContent && optInMarkets
+
     return (
       <Header showContent={showContent}>
         <StyledTitle>
@@ -421,7 +424,7 @@ class CryptoDotCom extends React.PureComponent<Props, State> {
           <StyledTitleText>
             {'Crypto.com'}
           </StyledTitleText>
-          {showContent && optInMarkets &&
+          {shouldShowBackArrow &&
             <BackArrow marketView={true}>
               <CaratLeftIcon
                 onClick={this.optInMarkets.bind(this, false)}
