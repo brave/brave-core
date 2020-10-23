@@ -155,6 +155,7 @@ IN_PROC_BROWSER_TEST_F(BraveBrowserCommandControllerTest,
   EXPECT_TRUE(command_controller->IsCommandEnabled(
                   IDC_SHOW_BRAVE_WEBCOMPAT_REPORTER));
 
+#if BUILDFLAG(ENABLE_TOR)
   // Launch tor window and check its command status.
   content::WindowedNotificationObserver tor_browser_creation_observer(
       chrome::NOTIFICATION_BROWSER_OPENED,
@@ -176,12 +177,10 @@ IN_PROC_BROWSER_TEST_F(BraveBrowserCommandControllerTest,
 
   EXPECT_TRUE(command_controller->IsCommandEnabled(IDC_SHOW_BRAVE_ADBLOCK));
 
-#if BUILDFLAG(ENABLE_TOR)
   EXPECT_TRUE(
       command_controller->IsCommandEnabled(IDC_NEW_TOR_CONNECTION_FOR_SITE));
   EXPECT_TRUE(
       command_controller->IsCommandEnabled(IDC_NEW_OFFTHERECORD_WINDOW_TOR));
-#endif
 
 #if BUILDFLAG(ENABLE_BRAVE_SYNC)
   if (switches::IsSyncAllowedByFlag())
@@ -200,7 +199,6 @@ IN_PROC_BROWSER_TEST_F(BraveBrowserCommandControllerTest,
                   IDC_SHOW_BRAVE_WEBCOMPAT_REPORTER));
 
   // Check tor commands when tor is disabled.
-#if BUILDFLAG(ENABLE_TOR)
   TorProfileServiceFactory::SetTorDisabled(true);
   command_controller = browser()->command_controller();
   EXPECT_FALSE(

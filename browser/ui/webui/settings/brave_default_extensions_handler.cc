@@ -83,7 +83,6 @@ void BraveDefaultExtensionsHandler::RegisterMessages() {
       "getRestartNeeded",
       base::BindRepeating(&BraveDefaultExtensionsHandler::GetRestartNeeded,
                           base::Unretained(this)));
-#if BUILDFLAG(ENABLE_TOR)
   web_ui()->RegisterMessageCallback(
       "setTorEnabled",
       base::BindRepeating(
@@ -97,7 +96,6 @@ void BraveDefaultExtensionsHandler::RegisterMessages() {
       "isTorManaged",
       base::BindRepeating(&BraveDefaultExtensionsHandler::IsTorManaged,
                           base::Unretained(this)));
-#endif
 
   // Can't call this in ctor because it needs to access web_ui().
   InitializePrefCallbacks();
@@ -233,13 +231,14 @@ void BraveDefaultExtensionsHandler::SetMediaRouterEnabled(
   about_flags::SetFeatureEntryEnabled(&flags_storage, feature_name, true);
 }
 
-#if BUILDFLAG(ENABLE_TOR)
 void BraveDefaultExtensionsHandler::SetTorEnabled(const base::ListValue* args) {
+#if BUILDFLAG(ENABLE_TOR)
   CHECK_EQ(args->GetSize(), 1U);
   bool enabled;
   args->GetBoolean(0, &enabled);
   AllowJavascript();
   TorProfileServiceFactory::SetTorDisabled(!enabled);
+#endif
 }
 
 void BraveDefaultExtensionsHandler::IsTorEnabled(
@@ -248,14 +247,22 @@ void BraveDefaultExtensionsHandler::IsTorEnabled(
   AllowJavascript();
   ResolveJavascriptCallback(
       args->GetList()[0],
+#if BUILDFLAG(ENABLE_TOR)
       base::Value(!TorProfileServiceFactory::IsTorDisabled()));
+#else
+      base::Value(false));
+#endif
 }
 
 void BraveDefaultExtensionsHandler::OnTorEnabledChanged() {
   if (IsJavascriptAllowed()) {
     FireWebUIListener(
         "tor-enabled-changed",
+#if BUILDFLAG(ENABLE_TOR)
         base::Value(!TorProfileServiceFactory::IsTorDisabled()));
+#else
+        base::Value(false));
+#endif
   }
 }
 
@@ -263,13 +270,16 @@ void BraveDefaultExtensionsHandler::IsTorManaged(
     const base::ListValue* args) {
   CHECK_EQ(args->GetSize(), 1U);
 
+#if BUILDFLAG(ENABLE_TOR)
   const bool is_managed = g_brave_browser_process->local_state()->
       FindPreference(tor::prefs::kTorDisabled)->IsManaged();
+#else
+  const bool is_managed = false;
+#endif
 
   AllowJavascript();
   ResolveJavascriptCallback(args->GetList()[0], base::Value(is_managed));
 }
-#endif
 
 void BraveDefaultExtensionsHandler::SetIPFSCompanionEnabled(
     const base::ListValue* args) {

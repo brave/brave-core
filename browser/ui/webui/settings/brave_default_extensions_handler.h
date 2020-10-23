@@ -36,12 +36,10 @@ class BraveDefaultExtensionsHandler : public settings::SettingsPageUIHandler {
 #if BUILDFLAG(BRAVE_WALLET_ENABLED)
   void SetBraveWalletEnabled(const base::ListValue* args);
 #endif
-#if BUILDFLAG(ENABLE_TOR)
   void SetTorEnabled(const base::ListValue* args);
   void IsTorEnabled(const base::ListValue* args);
   void OnTorEnabledChanged();
   void IsTorManaged(const base::ListValue* args);
-#endif
 
   void InitializePrefCallbacks();
 

@@ -115,9 +115,9 @@ void BraveRenderViewContextMenu::AddSpellCheckServiceItem(
 void BraveRenderViewContextMenu::InitMenu() {
   RenderViewContextMenu_Chromium::InitMenu();
 
+  int index = -1;
 #if BUILDFLAG(ENABLE_TOR)
   // Add Open Link with Tor
-  int index = -1;
   if (!TorProfileServiceFactory::IsTorDisabled() &&
       !params_.link_url.is_empty()) {
     const Browser* browser = GetBrowser();

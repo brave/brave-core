@@ -5,6 +5,7 @@ import("//brave/components/brave_wallet/buildflags/buildflags.gni")
 import("//brave/components/brave_wayback_machine/buildflags/buildflags.gni")
 import("//brave/components/ipfs/buildflags/buildflags.gni")
 import("//brave/components/speedreader/buildflags.gni")
+import("//brave/components/tor/buildflags/buildflags.gni")
 import("//build/config/features.gni")
 import("//components/gcm_driver/config.gni")
 import("//chrome/common/features.gni")
@@ -293,8 +294,6 @@ source_set("ui") {
       "views/location_bar/brave_location_bar_view.h",
       "views/location_bar/brave_star_view.cc",
       "views/location_bar/brave_star_view.h",
-      "views/location_bar/onion_location_view.cc",
-      "views/location_bar/onion_location_view.h",
       "views/profiles/brave_avatar_toolbar_button.cc",
       "views/profiles/brave_avatar_toolbar_button.h",
       "views/tabs/brave_alert_indicator.cc",
@@ -316,6 +315,13 @@ source_set("ui") {
       sources += [
         "views/brave_actions/brave_rewards_action_stub_view.cc",
         "views/brave_actions/brave_rewards_action_stub_view.h",
+      ]
+    }
+
+    if (enable_tor) {
+      sources += [
+        "views/location_bar/onion_location_view.cc",
+        "views/location_bar/onion_location_view.h",
       ]
     }
 
