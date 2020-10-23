@@ -71,7 +71,10 @@ blink::WebContentSettingsClient* GetContentSettingsClientFor(
   if (!context)
     return settings;
   if (auto* window = blink::DynamicTo<blink::LocalDOMWindow>(context)) {
-    if (auto* frame = window->GetFrame())
+    auto* frame = window->GetFrame();
+    if (!frame)
+      frame = window->GetDisconnectedFrame();
+    if (frame)
       settings = frame->GetContentSettingsClient();
   } else if (context->IsWorkerGlobalScope()) {
     settings =
@@ -84,10 +87,15 @@ BraveSessionCache::BraveSessionCache(ExecutionContext& context)
     : Supplement<ExecutionContext>(context) {
   farbling_enabled_ = false;
   scoped_refptr<const blink::SecurityOrigin> origin;
-  if (auto* window = blink::DynamicTo<blink::LocalDOMWindow>(context))
-    origin = window->document()->TopFrameOrigin();
-  else
+  if (auto* window = blink::DynamicTo<blink::LocalDOMWindow>(context)) {
+    auto* frame = window->GetFrame();
+    if (!frame)
+      frame = window->GetDisconnectedFrame();
+    if (frame)
+      origin = frame->Tree().Top().GetSecurityContext()->GetSecurityOrigin();
+  } else {
     origin = context.GetSecurityContext().GetSecurityOrigin();
+  }
   if (!origin || origin->IsOpaque())
     return;
   const auto host = origin->Host();
