@@ -29,6 +29,7 @@
       showTopSites_: Boolean,
       isCryptoDotComSupported_: Boolean,
       newTabShowOptions_: Array,
+      shouldNewTabShowDashboardSettings_: Boolean,
     },
 
     /** @override */
@@ -41,6 +42,7 @@
       this.isBitcoinDotComSupported_ = false;
       this.showTopSites_ = false;
       this.isCryptoDotComSupported_ = false;
+      this.showNewTabDashboardSettings_ = false;
     },
 
     /** @override */
@@ -69,12 +71,18 @@
       this.browserProxy_.getNewTabShowsOptionsList().then(list => {
         this.newTabShowOptions_ = list;
       })
+      this.browserProxy_.shouldShowNewTabDashboardSettings().then(showNewTabDashboardSettings => {
+        this.showNewTabDashboardSettings_ = showNewTabDashboardSettings;
+      })
 
       this.addWebUIListener('super-referral-active-state-changed', (isSuperReferralActive) => {
         this.isSuperReferralActive_ = isSuperReferralActive;
       })
       this.addWebUIListener('ntp-shortcut-visibility-changed', (visible) => {
         this.showTopSites_ = visible;
+      })
+      this.addWebUIListener('show-new-tab-dashboard-settings-changed', (show) => {
+        this.showNewTabDashboardSettings_ = show
       })
     },
 

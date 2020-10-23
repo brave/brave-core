@@ -10,7 +10,9 @@
 #include "brave/common/pref_names.h"
 #include "brave/grit/brave_generated_resources.h"
 #include "chrome/browser/profiles/profile.h"
+#include "chrome/browser/ui/webui/ntp/new_tab_ui.h"
 #include "chrome/common/pref_names.h"
+#include "chrome/common/webui_url_constants.h"
 #include "components/prefs/pref_service.h"
 #include "ui/base/l10n/l10n_util.h"
 #include "url/url_constants.h"
@@ -27,9 +29,9 @@ GURL GetNewTabPageURL(Profile* profile) {
 
   int option = prefs->GetInteger(kNewTabPageShowsOptions);
   if (option == brave::NewTabPageShowsOptions::HOMEPAGE) {
-    if (!prefs->GetBoolean(prefs::kHomePageIsNewTabPage))
-      return GURL(prefs->GetString(prefs::kHomePage));
-    return GURL();
+    if (prefs->GetBoolean(prefs::kHomePageIsNewTabPage))
+      return GURL();
+    return GURL(prefs->GetString(prefs::kHomePage));
   } else if (option == brave::NewTabPageShowsOptions::BLANKPAGE) {
     return GURL(url::kAboutBlankURL);
   } else {
@@ -67,6 +69,13 @@ base::Value GetNewTabShowsOptionsList(Profile* profile) {
           IDS_SETTINGS_NEW_TAB_NEW_TAB_PAGE_SHOWS_BLANKPAGE));
   list.Append(std::move(blankpage_option));
   return list;
+}
+
+bool ShouldShowNewTabDashboardSettings(Profile* profile) {
+  const GURL url = GetNewTabPageURL(profile);
+  return url.is_empty() ||
+         url.host() == chrome::kChromeUINewTabHost ||
+         NewTabUI::IsNewTab(url);
 }
 
 }  // namespace brave

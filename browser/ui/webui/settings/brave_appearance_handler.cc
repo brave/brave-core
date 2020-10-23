@@ -87,6 +87,18 @@ void BraveAppearanceHandler::RegisterMessages() {
       base::BindRepeating(&BraveAppearanceHandler::OnPreferenceChanged,
       base::Unretained(this)));
   profile_state_change_registrar_.Add(
+      kNewTabPageShowsOptions,
+      base::BindRepeating(&BraveAppearanceHandler::OnPreferenceChanged,
+      base::Unretained(this)));
+  profile_state_change_registrar_.Add(
+      prefs::kHomePageIsNewTabPage,
+      base::BindRepeating(&BraveAppearanceHandler::OnPreferenceChanged,
+      base::Unretained(this)));
+  profile_state_change_registrar_.Add(
+      prefs::kHomePage,
+      base::BindRepeating(&BraveAppearanceHandler::OnPreferenceChanged,
+      base::Unretained(this)));
+  profile_state_change_registrar_.Add(
       prefs::kNtpShortcutsVisible,
       base::BindRepeating(&BraveAppearanceHandler::TopSitesVisibleChanged,
       base::Unretained(this)));
@@ -130,6 +142,11 @@ void BraveAppearanceHandler::RegisterMessages() {
       "getNewTabShowsOptionsList",
       base::BindRepeating(&BraveAppearanceHandler::GetNewTabShowsOptionsList,
                           base::Unretained(this)));
+  web_ui()->RegisterMessageCallback(
+      "shouldShowNewTabDashboardSettings",
+      base::BindRepeating(
+          &BraveAppearanceHandler::ShouldShowNewTabDashboardSettings,
+          base::Unretained(this)));
 #if BUILDFLAG(CRYPTO_DOT_COM_ENABLED)
   web_ui()->RegisterMessageCallback(
       "getIsCryptoDotComSupported",
@@ -259,10 +276,22 @@ void BraveAppearanceHandler::OnBraveDarkModeChanged() {
 }
 
 void BraveAppearanceHandler::OnPreferenceChanged(const std::string& pref_name) {
-  DCHECK_EQ(kNewTabPageSuperReferralThemesOption, pref_name);
   if (IsJavascriptAllowed()) {
-    FireWebUIListener("super-referral-active-state-changed",
-                      base::Value(IsSuperReferralActive(profile_)));
+    if (pref_name == kNewTabPageSuperReferralThemesOption) {
+      FireWebUIListener("super-referral-active-state-changed",
+                        base::Value(IsSuperReferralActive(profile_)));
+      return;
+    }
+
+    if (pref_name == kNewTabPageShowsOptions ||
+        pref_name == prefs::kHomePage ||
+        pref_name == prefs::kHomePageIsNewTabPage) {
+      const bool show_dashboard_settings =
+          brave::ShouldShowNewTabDashboardSettings(profile_);
+      FireWebUIListener("show-new-tab-dashboard-settings-changed",
+                        base::Value(show_dashboard_settings));
+      return;
+    }
   }
 }
 
@@ -304,4 +333,14 @@ void BraveAppearanceHandler::GetNewTabShowsOptionsList(
   AllowJavascript();
   ResolveJavascriptCallback(args->GetList()[0],
                             brave::GetNewTabShowsOptionsList(profile_));
+}
+
+void BraveAppearanceHandler::ShouldShowNewTabDashboardSettings(
+    const base::ListValue* args) {
+  CHECK_EQ(args->GetSize(), 1U);
+  AllowJavascript();
+  bool show_dashboard_settings =
+      brave::ShouldShowNewTabDashboardSettings(profile_);
+  ResolveJavascriptCallback(args->GetList()[0],
+                            base::Value(show_dashboard_settings));
 }

@@ -52,6 +52,11 @@ cr.define('settings', function() {
      * @return {!Promise<Array>}
      */
     getNewTabShowsOptionsList() {}
+
+    /**
+     * @return {!Promise<Boolean>}
+     */
+    shouldShowNewTabDashboardSettings() {}
   }
 
   /**
@@ -103,6 +108,10 @@ cr.define('settings', function() {
       return cr.sendWithPromise('getNewTabShowsOptionsList')
     }
 
+    /** @override */
+    shouldShowNewTabDashboardSettings() {
+      return cr.sendWithPromise('shouldShowNewTabDashboardSettings')
+    }
   }
 
   cr.addSingletonGetter(BraveNewTabBrowserProxyImpl);
