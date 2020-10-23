@@ -126,12 +126,12 @@ class CryptoDotCom extends React.PureComponent<Props, State> {
   }
 
   checkSetRefreshInterval = () => {
-    // if (!this.refreshInterval) {
-    //   this.refreshInterval = setInterval(async () => {
-    //     await this.props.onUpdateActions()
-    //       .catch((_e) => console.debug('Could not update crypto.com data'))
-    //   }, 30000)
-    // }
+    if (!this.refreshInterval) {
+      this.refreshInterval = setInterval(async () => {
+        await this.props.onUpdateActions()
+          .catch((_e) => console.debug('Could not update crypto.com data'))
+      }, 30000)
+    }
   }
 
   clearIntervals = () => {
