@@ -1,8 +1,8 @@
 diff --git a/chrome/android/java/src/org/chromium/chrome/browser/toolbar/top/ToolbarPhone.java b/chrome/android/java/src/org/chromium/chrome/browser/toolbar/top/ToolbarPhone.java
-index 6edd3d4eb3a60d68cd8c4232214973605d114b63..f6414080d183455a34dddcf0a98f38a1edc2574c 100644
+index ee9975389c4051eea7f184790068d7d379e67e16..62c3ef7b794f3ea81fc682fed38daf2441ca443d 100644
 --- a/chrome/android/java/src/org/chromium/chrome/browser/toolbar/top/ToolbarPhone.java
 +++ b/chrome/android/java/src/org/chromium/chrome/browser/toolbar/top/ToolbarPhone.java
-@@ -85,7 +85,7 @@ import java.util.List;
+@@ -87,7 +87,7 @@ import java.util.List;
  /**
   * Phone specific toolbar implementation.
   */
@@ -11,7 +11,7 @@ index 6edd3d4eb3a60d68cd8c4232214973605d114b63..f6414080d183455a34dddcf0a98f38a1
          implements OnClickListener, NewTabPage.OnSearchBoxScrollListener, TabCountObserver {
      /** The amount of time transitioning from one theme color to another should take in ms. */
      public static final long THEME_COLOR_TRANSITION_DURATION = 250;
-@@ -405,10 +405,12 @@ public class ToolbarPhone extends ToolbarLayout
+@@ -407,10 +407,12 @@ public class ToolbarPhone extends ToolbarLayout
      /**
       * Set the background color of the location bar to appropriately match the theme color.
       */
@@ -25,7 +25,7 @@ index 6edd3d4eb3a60d68cd8c4232214973605d114b63..f6414080d183455a34dddcf0a98f38a1
      }
  
      /**
-@@ -525,6 +527,7 @@ public class ToolbarPhone extends ToolbarLayout
+@@ -529,6 +531,7 @@ public class ToolbarPhone extends ToolbarLayout
                          EventConstants.PARTNER_HOME_PAGE_BUTTON_PRESSED);
              }
          }
@@ -33,7 +33,7 @@ index 6edd3d4eb3a60d68cd8c4232214973605d114b63..f6414080d183455a34dddcf0a98f38a1
      }
  
      @Override
-@@ -693,7 +696,7 @@ public class ToolbarPhone extends ToolbarLayout
+@@ -698,7 +701,7 @@ public class ToolbarPhone extends ToolbarLayout
       * @return The right bounds of the location bar after accounting for any visible left buttons.
       */
      private int getBoundsAfterAccountingForRightButtons() {
@@ -42,7 +42,7 @@ index 6edd3d4eb3a60d68cd8c4232214973605d114b63..f6414080d183455a34dddcf0a98f38a1
      }
  
      private void updateToolbarBackground(int color) {
-@@ -2088,6 +2091,7 @@ public class ToolbarPhone extends ToolbarLayout
+@@ -2109,6 +2112,7 @@ public class ToolbarPhone extends ToolbarLayout
          } else {
              populateUrlClearFocusingAnimatorSet(animators);
          }

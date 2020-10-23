@@ -1,5 +1,5 @@
 diff --git a/chrome/android/java/src/org/chromium/chrome/browser/sync/settings/ManageSyncSettings.java b/chrome/android/java/src/org/chromium/chrome/browser/sync/settings/ManageSyncSettings.java
-index 2838a1246cb0c8e1967d877919cc9a192e773545..c90744ccf003fdd855c1cf47d2908861e8419e81 100644
+index c437801b2a1f8d69acf5c6d9aa28478f4656027e..aefc7b706f29763af10a3a78aece2b215c0b7ddf 100644
 --- a/chrome/android/java/src/org/chromium/chrome/browser/sync/settings/ManageSyncSettings.java
 +++ b/chrome/android/java/src/org/chromium/chrome/browser/sync/settings/ManageSyncSettings.java
 @@ -26,7 +26,7 @@ import androidx.appcompat.app.AlertDialog;

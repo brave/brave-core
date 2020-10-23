@@ -1,8 +1,8 @@
 diff --git a/components/sync/driver/profile_sync_service.h b/components/sync/driver/profile_sync_service.h
-index 03ead027fba7ebfa7afaaec676bdf7e5cffc924a..0051caf68dbe146e641a876e1deed11cb6167aa0 100644
+index 99ece8b31fc49ae4492efd49944ae9c45e639af6..be6a449da333a2c84b0282ecc26b32a8596373bd 100644
 --- a/components/sync/driver/profile_sync_service.h
 +++ b/components/sync/driver/profile_sync_service.h
-@@ -248,6 +248,7 @@ class ProfileSyncService : public SyncService,
+@@ -245,6 +245,7 @@ class ProfileSyncService : public SyncService,
  
    static std::string GenerateCacheGUIDForTest();
  
