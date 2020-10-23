@@ -245,6 +245,8 @@ class BatLedgerImpl :
 
   void GetBraveWallet(GetBraveWalletCallback callback) override;
 
+  void GetWalletPassphrase(GetWalletPassphraseCallback callback) override;
+
  private:
   // workaround to pass base::OnceCallback into std::bind
   template <typename Callback>

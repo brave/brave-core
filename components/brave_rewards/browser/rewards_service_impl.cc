@@ -3373,5 +3373,14 @@ void RewardsServiceImpl::StartProcess(StartProcessCallback callback) {
   StartLedger(std::move(callback));
 }
 
+void RewardsServiceImpl::GetWalletPassphrase(
+    GetWalletPassphraseCallback callback) {
+  if (!Connected()) {
+    std::move(callback).Run("");
+    return;
+  }
+
+  bat_ledger_->GetWalletPassphrase(callback);
+}
 
 }  // namespace brave_rewards

@@ -58,6 +58,7 @@ declare namespace Rewards {
     pendingContributions: PendingContribution[]
     pendingContributionTotal: number
     reconcileStamp: number
+    recoveryKey: string
     recurringList: Publisher[]
     recurringLoad: boolean
     safetyNetFailed?: boolean

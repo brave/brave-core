@@ -133,6 +133,8 @@ using GetBraveWalletCallback =
 using StartProcessCallback =
     base::OnceCallback<void(ledger::type::Result result)>;
 
+using GetWalletPassphraseCallback = base::Callback<void(const std::string&)>;
+
 class RewardsService : public KeyedService {
  public:
   RewardsService();
@@ -357,6 +359,8 @@ class RewardsService : public KeyedService {
   virtual void GetBraveWallet(GetBraveWalletCallback callback) = 0;
 
   virtual void StartProcess(StartProcessCallback callback) = 0;
+
+  virtual void GetWalletPassphrase(GetWalletPassphraseCallback callback) = 0;
 
  protected:
   base::ObserverList<RewardsServiceObserver> observers_;

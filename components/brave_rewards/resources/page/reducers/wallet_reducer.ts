@@ -56,6 +56,7 @@ const walletReducer: Reducer<Rewards.State | undefined> = (state: Rewards.State,
         getCurrentBalanceReport()
         ui.modalBackup = false
         ui.emptyWallet = false
+        state.recoveryKey = ''
       }
 
       state = {
@@ -194,6 +195,24 @@ const walletReducer: Reducer<Rewards.State | undefined> = (state: Rewards.State,
     case types.ON_MONTHLY_REPORT_IDS: {
       state = { ...state }
       state.monthlyReportIds = action.payload
+      break
+    }
+    case types.GET_WALLET_PASSPHRASE:	{
+      chrome.send('brave_rewards.getWalletPassphrase')
+      break
+    }
+    case types.ON_WALLET_PASSPHRASE: {
+      const value = action.payload.passphrase
+      if (value && value.length > 0) {
+        state = { ...state }
+        let ui = state.ui
+        state.recoveryKey = value
+
+        state = {
+          ...state,
+          ui
+        }
+      }
       break
     }
   }
