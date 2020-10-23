@@ -200,9 +200,7 @@ class BraveTranslateBubbleViewTest : public ChromeViewsTestBase {
     views::LabelButton button(nullptr, base::ASCIIToUTF16("dummy"));
     button.SetID(id);
 
-    bubble_->ButtonPressed(&button,
-        ui::KeyEvent(ui::ET_KEY_PRESSED, ui::VKEY_RETURN,
-          ui::DomCode::ENTER, ui::EF_NONE));
+    bubble_->ButtonPressed(id);
   }
 
   void TearDown() override {

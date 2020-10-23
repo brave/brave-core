@@ -29,7 +29,6 @@ class BraveTranslateBubbleView : public TranslateBubbleView {
 
   // views::BubbleDialogDelegateView methods.
   void Init() override;
-  void ButtonPressed(views::Button* sender, const ui::Event& event) override;
 
   // views::View methods.
   bool AcceleratorPressed(const ui::Accelerator& accelerator) override;
@@ -44,6 +43,7 @@ class BraveTranslateBubbleView : public TranslateBubbleView {
   friend class BraveTranslateBubbleViewTest;
   views::View* BraveCreateViewBeforeTranslate();
   void DisableOfferTranslatePref();
+  void ButtonPressed(ButtonID button_id);
 
   DISALLOW_COPY_AND_ASSIGN(BraveTranslateBubbleView);
 };
