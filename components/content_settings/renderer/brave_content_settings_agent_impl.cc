@@ -24,9 +24,9 @@
 #include "mojo/public/cpp/bindings/remote.h"
 #include "services/service_manager/public/cpp/interface_provider.h"
 #include "third_party/blink/public/common/browser_interface_broker_proxy.h"
-#include "third_party/blink/public/mojom/permissions/permission.mojom.h"
-#include "third_party/blink/public/mojom/permissions/permission.mojom-blink.h"
 #include "third_party/blink/public/mojom/permissions/permission.mojom-blink-forward.h"
+#include "third_party/blink/public/mojom/permissions/permission.mojom-blink.h"
+#include "third_party/blink/public/mojom/permissions/permission.mojom.h"
 #include "third_party/blink/public/platform/web_url.h"
 #include "third_party/blink/public/web/web_document.h"
 #include "third_party/blink/public/web/web_frame.h"
@@ -36,8 +36,7 @@
 namespace content_settings {
 namespace {
 
-GURL GetOriginOrURL(
-    const blink::WebFrame* frame) {
+GURL GetOriginOrURL(const blink::WebFrame* frame) {
   url::Origin top_origin = url::Origin(frame->Top()->GetSecurityOrigin());
   // The |top_origin| is unique ("null") e.g., for file:// URLs. Use the
   // document URL as the primary URL in those cases.
@@ -76,8 +75,7 @@ BraveContentSettingsAgentImpl::BraveContentSettingsAgentImpl(
                                should_whitelist,
                                std::move(delegate)) {}
 
-BraveContentSettingsAgentImpl::~BraveContentSettingsAgentImpl() {
-}
+BraveContentSettingsAgentImpl::~BraveContentSettingsAgentImpl() {}
 
 bool BraveContentSettingsAgentImpl::OnMessageReceived(
     const IPC::Message& message) {
@@ -87,7 +85,8 @@ bool BraveContentSettingsAgentImpl::OnMessageReceived(
     IPC_MESSAGE_UNHANDLED(handled = false)
   IPC_END_MESSAGE_MAP()
 
-  if (handled) return true;
+  if (handled)
+    return true;
   return ContentSettingsAgentImpl::OnMessageReceived(message);
 }
 
@@ -108,9 +107,9 @@ bool BraveContentSettingsAgentImpl::IsScriptTemporilyAllowed(
   // Check if scripts from this origin are temporily allowed or not.
   // Also matches the full script URL to support data URL cases which we use
   // the full URL to allow it.
-  return base::Contains(
-      temporarily_allowed_scripts_, script_url.GetOrigin().spec()) ||
-    base::Contains(temporarily_allowed_scripts_, script_url.spec());
+  return base::Contains(temporarily_allowed_scripts_,
+                        script_url.GetOrigin().spec()) ||
+         base::Contains(temporarily_allowed_scripts_, script_url.spec());
 }
 
 void BraveContentSettingsAgentImpl::BraveSpecificDidBlockJavaScript(
@@ -118,8 +117,7 @@ void BraveContentSettingsAgentImpl::BraveSpecificDidBlockJavaScript(
   Send(new BraveViewHostMsg_JavaScriptBlocked(routing_id(), details));
 }
 
-bool BraveContentSettingsAgentImpl::AllowScript(
-    bool enabled_per_settings) {
+bool BraveContentSettingsAgentImpl::AllowScript(bool enabled_per_settings) {
   // clear cached url for other flow like directly calling `DidNotAllowScript`
   // without calling `AllowScriptFromSource` first
   blocked_script_url_ = GURL::EmptyGURL();
@@ -128,9 +126,8 @@ bool BraveContentSettingsAgentImpl::AllowScript(
   const GURL secondary_url(url::Origin(frame->GetSecurityOrigin()).GetURL());
 
   bool allow = ContentSettingsAgentImpl::AllowScript(enabled_per_settings);
-  allow = allow ||
-    IsBraveShieldsDown(frame, secondary_url) ||
-    IsScriptTemporilyAllowed(secondary_url);
+  allow = allow || IsBraveShieldsDown(frame, secondary_url) ||
+          IsScriptTemporilyAllowed(secondary_url);
 
   return allow;
 }
@@ -138,7 +135,7 @@ bool BraveContentSettingsAgentImpl::AllowScript(
 void BraveContentSettingsAgentImpl::DidNotAllowScript() {
   if (!blocked_script_url_.is_empty()) {
     BraveSpecificDidBlockJavaScript(
-      base::UTF8ToUTF16(blocked_script_url_.spec()));
+        base::UTF8ToUTF16(blocked_script_url_.spec()));
     blocked_script_url_ = GURL::EmptyGURL();
   }
   ContentSettingsAgentImpl::DidNotAllowScript();
@@ -158,10 +155,9 @@ bool BraveContentSettingsAgentImpl::AllowScriptFromSource(
       blink::WebSecurityOrigin::Create(script_url),
       render_frame()->GetWebFrame()->GetDocument().Url());
 
-  allow = allow ||
-    should_white_list ||
-    IsBraveShieldsDown(render_frame()->GetWebFrame(), secondary_url) ||
-    IsScriptTemporilyAllowed(secondary_url);
+  allow = allow || should_white_list ||
+          IsBraveShieldsDown(render_frame()->GetWebFrame(), secondary_url) ||
+          IsScriptTemporilyAllowed(secondary_url);
 
   if (!allow) {
     blocked_script_url_ = secondary_url;
@@ -206,8 +202,7 @@ BraveFarblingLevel BraveContentSettingsAgentImpl::GetBraveFarblingLevel() {
       setting = CONTENT_SETTING_ALLOW;
     } else {
       setting = GetBraveFPContentSettingFromRules(
-          content_setting_rules_->fingerprinting_rules,
-          GetOriginOrURL(frame));
+          content_setting_rules_->fingerprinting_rules, GetOriginOrURL(frame));
     }
   }
 
@@ -235,9 +230,9 @@ bool BraveContentSettingsAgentImpl::AllowAutoplay(bool default_value) {
   // respect user's site blocklist, if any
   bool ask = false;
   if (content_setting_rules_) {
-    ContentSetting setting = GetContentSettingFromRules(
-        content_setting_rules_->autoplay_rules, frame,
-        url::Origin(origin).GetURL());
+    ContentSetting setting =
+        GetContentSettingFromRules(content_setting_rules_->autoplay_rules,
+                                   frame, url::Origin(origin).GetURL());
     if (setting == CONTENT_SETTING_BLOCK) {
       VLOG(1) << "AllowAutoplay=false because rule=CONTENT_SETTING_BLOCK";
       return false;
