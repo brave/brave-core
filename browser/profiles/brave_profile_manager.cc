@@ -12,7 +12,6 @@
 #include "base/metrics/histogram_macros.h"
 #include "brave/browser/brave_rewards/rewards_service_factory.h"
 #include "brave/browser/profiles/profile_util.h"
-#include "brave/browser/tor/tor_profile_service_factory.h"
 #include "brave/browser/translate/buildflags/buildflags.h"
 #include "brave/common/pref_names.h"
 #include "brave/components/brave_ads/browser/ads_service_factory.h"
@@ -64,6 +63,10 @@
 
 #if BUILDFLAG(IPFS_ENABLED)
 #include "brave/browser/ipfs/ipfs_service_factory.h"
+#endif
+
+#if BUILDFLAG(ENABLE_TOR)
+#include "brave/browser/tor/tor_profile_service_factory.h"
 #endif
 
 using content::BrowserThread;

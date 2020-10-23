@@ -5,6 +5,7 @@
 
 #include "brave/browser/tor/tor_profile_service_factory.h"
 #include "brave/common/pref_names.h"
+#include "brave/components/tor/buildflags/buildflags.h"
 #include "chrome/browser/browser_process.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser.h"
@@ -35,6 +36,7 @@ class BravePolicyTest : public InProcessBrowserTest {
   MockConfigurationPolicyProvider provider_;
 };
 
+#if BUILDFLAG(ENABLE_TOR)
 // This policy only exists on Windows.
 // Sets the tor policy before the browser is started.
 class TorDisabledPolicyBrowserTest : public BravePolicyTest {
@@ -80,5 +82,6 @@ IN_PROC_BROWSER_TEST_F(TorEnabledPolicyBrowserTest, TorDisabledPrefValueTest) {
   TorProfileServiceFactory::SetTorDisabled(true);
   EXPECT_FALSE(TorProfileServiceFactory::IsTorDisabled());
 }
+#endif
 
 }  // namespace policy

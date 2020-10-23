@@ -7,30 +7,27 @@ source_set("tor") {
     "//brave/browser:browser_process",
     "//brave/browser/profiles",
     "//brave/browser/ui",
-    ":browser_tests",
-    ":unit_tests",
-  ]
-
-  sources = [
-    "tor_profile_service_factory.cc",
-    "tor_profile_service_factory.h",
-  ]
-
-  deps = [
-    "//base",
-    "//brave/components/tor",
-    "//brave/components/tor:pref_names",
-    "//chrome/common",
-    "//components/keyed_service/content",
-    "//content/public/browser",
+    "//brave/test:*",
+    ":*",
   ]
 
   if (enable_tor) {
-    sources += [
+    sources = [
       "brave_tor_client_updater_delegate.cc",
       "brave_tor_client_updater_delegate.h",
       "onion_location_navigation_throttle_delegate.cc",
       "onion_location_navigation_throttle_delegate.h",
+      "tor_profile_service_factory.cc",
+      "tor_profile_service_factory.h",
+    ]
+
+    deps = [
+      "//base",
+      "//brave/components/tor",
+      "//brave/components/tor:pref_names",
+      "//chrome/common",
+      "//components/keyed_service/content",
+      "//content/public/browser",
     ]
 
     # Below dep list are not directly used tor target.
@@ -49,17 +46,15 @@ source_set("tor") {
 source_set("unit_tests") {
   testonly = true
   if (enable_tor) {
-    sources = [
-      "tor_navigation_throttle_unittest.cc",
-    ]
+    sources = [ "tor_navigation_throttle_unittest.cc" ]
 
     deps = [
       "//base",
+      "//base/test:test_support",
       "//brave/browser/profiles",
       "//brave/browser/tor",
-      "//base/test:test_support",
-      "//brave/test:test_support",
       "//brave/components/tor",
+      "//brave/test:test_support",
       "//chrome/test:test_support",
       "//content/public/browser",
       "//content/test:test_support",

@@ -6,7 +6,6 @@
 #include <memory>
 
 #include "brave/browser/profiles/profile_util.h"
-#include "brave/browser/tor/tor_profile_service_factory.h"
 #include "brave/browser/ui/brave_browser_command_controller.h"
 #include "brave/browser/ui/browser_commands.h"
 #include "brave/components/brave_rewards/browser/buildflags/buildflags.h"
@@ -26,6 +25,10 @@
 
 #if BUILDFLAG(ENABLE_BRAVE_SYNC)
 #include "components/sync/driver/sync_driver_switches.h"
+#endif
+
+#if BUILDFLAG(ENABLE_TOR)
+#include "brave/browser/tor/tor_profile_service_factory.h"
 #endif
 
 using BraveBrowserCommandControllerTest = InProcessBrowserTest;

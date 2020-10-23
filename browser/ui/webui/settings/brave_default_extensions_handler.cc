@@ -11,7 +11,6 @@
 #include "base/values.h"
 #include "brave/browser/brave_browser_process_impl.h"
 #include "brave/browser/extensions/brave_component_loader.h"
-#include "brave/browser/tor/tor_profile_service_factory.h"
 #include "brave/common/pref_names.h"
 #include "brave/components/brave_webtorrent/grit/brave_webtorrent_resources.h"
 #include "chrome/browser/about_flags.h"
@@ -36,6 +35,7 @@
 #include "extensions/common/feature_switch.h"
 
 #if BUILDFLAG(ENABLE_TOR)
+#include "brave/browser/tor/tor_profile_service_factory.h"
 #include "brave/components/tor/pref_names.h"
 #endif
 

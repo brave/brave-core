@@ -7,11 +7,15 @@
 #include "brave/browser/autocomplete/brave_autocomplete_scheme_classifier.h"
 #include "brave/browser/profiles/profile_util.h"
 #include "brave/browser/renderer_context_menu/brave_spelling_options_submenu_observer.h"
-#include "brave/browser/tor/tor_profile_service_factory.h"
 #include "brave/browser/translate/buildflags/buildflags.h"
+#include "brave/components/tor/buildflags/buildflags.h"
 #include "chrome/browser/autocomplete/chrome_autocomplete_provider_client.h"
 #include "components/omnibox/browser/autocomplete_classifier.h"
 #include "components/omnibox/browser/autocomplete_controller.h"
+
+#if BUILDFLAG(ENABLE_TOR)
+#include "brave/browser/tor/tor_profile_service_factory.h"
+#endif
 
 // Our .h file creates a masquerade for RenderViewContextMenu.  Switch
 // back to the Chromium one for the Chromium implementation.
@@ -63,12 +67,16 @@ BraveRenderViewContextMenu::BraveRenderViewContextMenu(
 bool BraveRenderViewContextMenu::IsCommandIdEnabled(int id) const {
   switch (id) {
     case IDC_CONTENT_CONTEXT_OPENLINKTOR:
+#if BUILDFLAG(ENABLE_TOR)
       if (brave::IsTorDisabledForProfile(GetProfile()))
         return false;
 
       return params_.link_url.is_valid() &&
              IsURLAllowedInIncognito(params_.link_url, browser_context_) &&
              !brave::IsTorProfile(GetProfile());
+#else
+      return false;
+#endif
     default:
       return RenderViewContextMenu_Chromium::IsCommandIdEnabled(id);
   }
@@ -107,6 +115,7 @@ void BraveRenderViewContextMenu::AddSpellCheckServiceItem(
 void BraveRenderViewContextMenu::InitMenu() {
   RenderViewContextMenu_Chromium::InitMenu();
 
+#if BUILDFLAG(ENABLE_TOR)
   // Add Open Link with Tor
   int index = -1;
   if (!TorProfileServiceFactory::IsTorDisabled() &&
@@ -124,6 +133,7 @@ void BraveRenderViewContextMenu::InitMenu() {
         is_app ? IDS_CONTENT_CONTEXT_OPENLINKTOR_INAPP
                : IDS_CONTENT_CONTEXT_OPENLINKTOR);
   }
+#endif
 
   // Only show the translate item when go-translate is enabled.
 #if !BUILDFLAG(ENABLE_BRAVE_TRANSLATE_GO)
