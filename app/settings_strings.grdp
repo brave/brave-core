@@ -365,8 +365,11 @@
       =1 {Found {COUNT} security issue}
       other {Found {COUNT} security issues}}
   </message>
-  <message name="IDS_SETTINGS_NO_WEAK_PASSWORDS_FOUND" desc="Description used only when user is signed out and full password check was not completed and no weak passwords found afther the password weakness check.">
-    No weak passwords found
+  <message name="IDS_SETTINGS_WEAK_PASSWORDS_COUNT" desc="Number of weak passwords present in the database. Displayed when the user is signed out and no compromised passwords exist">
+    {COUNT, plural,
+      =0 {No weak passwords found}
+      =1 {Found {COUNT} weak password}
+      other {Found {COUNT} weak passwords}}
   </message>
   <message name="IDS_SETTINGS_CHECK_PASSWORDS_AGAIN" desc="Button to start bulk password check manually in passwords check section.">
     Check again
@@ -393,8 +396,7 @@
     Weak passwords
   </message>
   <message name="IDS_SETTINGS_WEAK_PASSWORDS_DESCRIPTION" desc="Information about why weak passwords are a security issue and what user should do to fix the problem. Has a link.">
-    Weak passwords are easy to guess. Make sure you're creating strong passwords.
-    <ph name="BEGIN_LINK">&lt;br/&gt;&lt;a target='_blank' href='$1'&gt;</ph>See more security tips.<ph name="END_LINK">&lt;/a&gt;</ph>
+    Weak passwords are easy to guess. Make sure you're creating strong passwords. <ph name="BEGIN_LINK">&lt;a target='_blank' href='$1'&gt;</ph>See more security tips.<ph name="END_LINK">&lt;/a&gt;</ph>
   </message>
   <message name="IDS_SETTINGS_CHANGE_PASSWORD_BUTTON" desc="Button inside password check section which opens url for changing leaked password.">
     Change password
@@ -2423,7 +2425,7 @@
     Block sites from using fonts installed on your device
   </message>
   <message name="IDS_SETTINGS_SITE_SETTINGS_IDLE_DETECTION" desc="Label for the idle detection site settings.">
-    User presence
+    Your presence
   </message>
   <message name="IDS_SETTINGS_SITE_SETTINGS_IDLE_DETECTION_ASK" desc="The ask label for the idle detection site settings.">
     Ask when a site wants to know when you're present
