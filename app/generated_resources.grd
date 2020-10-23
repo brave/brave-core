@@ -435,12 +435,6 @@ are declared in tools/grit/grit_rule.gni.
       <message name="IDS_HISTORY_SIGN_IN_PROMO_DESC" desc="Description of the sign-in promo. Further tells users to sign in to Brave to see synced tabs from other devices.">
         To get your tabs from your other devices, sign in to Brave.
       </message>
-      <message name="IDS_HISTORY_MENU_PROMO" desc="Text body of a promotional tooltip that shows up the first time a user runs the Material Design History UI in narrow mode to help find 'Clear Browsing Data' and the side navigation.">
-        You can clear your browsing data from this menu
-      </message>
-      <message name="IDS_HISTORY_CLOSE_MENU_PROMO" desc="Title text of the close button of a promotional tooltip that shows up the first time a user runs the Material Design History UI in narrow mode to help find 'Clear Browsing Data' and the side navigation.">
-        Close
-      </message>
 
       <!-- Generic terms -->
       <message name="IDS_EDIT" desc="Edit menu item">
@@ -7602,6 +7596,9 @@ Keep your key file in a safe place. You will need it to create new versions of y
             Split vertical
           </message>
         </if>
+        <message name="IDS_APP_CONTEXT_MENU_RUN_ON_OS_LOGIN" desc="Text for the button that toggles open app automatically at OS Login. (In sentence case.)">
+          Start app when you sign in
+        </message>
       </if>
 
       <if expr="use_titlecase">
@@ -7659,6 +7656,9 @@ Keep your key file in a safe place. You will need it to create new versions of y
             Split Vertical
           </message>
         </if>
+        <message name="IDS_APP_CONTEXT_MENU_RUN_ON_OS_LOGIN" desc="Text for the button that toggles open app automatically at OS Login. (In title case.)">
+          Start App When You Sign In
+        </message>
       </if>
 
       <!--  Sync Confirmation section of the tab modal signin flow -->
@@ -10746,6 +10746,9 @@ Please help our engineers fix this problem. Tell us what happened right before y
     </message>
     <message name="IDS_NAME_WINDOW_PROMPT_WINDOW_NAME" desc="Label of the textfield to choose a new name for a window.">
       Window name
+    </message>
+    <message name="IDS_COMMANDER_LABEL" desc="Label to identify the Commander feature in Task Manager">
+      Commander
     </message>
   </messages>
 </release>
