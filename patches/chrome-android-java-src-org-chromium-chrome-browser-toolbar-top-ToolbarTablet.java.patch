@@ -1,8 +1,8 @@
 diff --git a/chrome/android/java/src/org/chromium/chrome/browser/toolbar/top/ToolbarTablet.java b/chrome/android/java/src/org/chromium/chrome/browser/toolbar/top/ToolbarTablet.java
-index f22638537239c7ffc4608d12c2a4fa8ffbe20709..289d555ce51fe05c67709942b56de129bfbfc1d9 100644
+index 381f15f3c8fb6db460ab6c519a7435ee63749dcd..781f350683a7e5544310d6d2fbf3c879cb9dfe76 100644
 --- a/chrome/android/java/src/org/chromium/chrome/browser/toolbar/top/ToolbarTablet.java
 +++ b/chrome/android/java/src/org/chromium/chrome/browser/toolbar/top/ToolbarTablet.java
-@@ -58,7 +58,7 @@ import java.util.Collection;
+@@ -59,7 +59,7 @@ import java.util.Collection;
   * The Toolbar object for Tablet screens.
   */
  @SuppressLint("Instantiatable")
@@ -11,7 +11,7 @@ index f22638537239c7ffc4608d12c2a4fa8ffbe20709..289d555ce51fe05c67709942b56de129
          implements OnClickListener, View.OnLongClickListener, TabCountObserver {
      // The number of toolbar buttons that can be hidden at small widths (reload, back, forward).
      public static final int HIDEABLE_BUTTON_COUNT = 3;
-@@ -327,10 +327,12 @@ public class ToolbarTablet extends ToolbarLayout
+@@ -332,10 +332,12 @@ public class ToolbarTablet extends ToolbarLayout
              DownloadUtils.downloadOfflinePage(getContext(), getToolbarDataProvider().getTab());
              RecordUserAction.record("MobileToolbarDownloadPage");
          }
@@ -24,8 +24,8 @@ index f22638537239c7ffc4608d12c2a4fa8ffbe20709..289d555ce51fe05c67709942b56de129
          String description = null;
          Context context = getContext();
          Resources resources = context.getResources();
-@@ -395,6 +397,7 @@ public class ToolbarTablet extends ToolbarLayout
-         mLocationBarTablet.getBackground().setColorFilter(textBoxColor, PorterDuff.Mode.SRC_IN);
+@@ -401,6 +403,7 @@ public class ToolbarTablet extends ToolbarLayout
+                 textBoxColor, PorterDuff.Mode.SRC_IN);
  
          mLocationBar.updateVisualsForState();
 +        super.onThemeColorChanged(color, shouldAnimate);
