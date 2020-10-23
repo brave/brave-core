@@ -469,7 +469,7 @@ class AdsServiceImpl : public AdsService,
 
   Profile* profile_;  // NOT OWNED
 
-  bool is_initialized_;
+  bool is_initialized_ = false;
 
   bool is_upgrading_from_pre_brave_ads_build_;
 
