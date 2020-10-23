@@ -50,7 +50,7 @@ interface TickerPrice {
 interface AssetRanking {
   lastPrice: number
   pair: string
-  percentChange: number
+  percentChange: string
 }
 
 interface ChartDataPoint {
@@ -195,6 +195,11 @@ class CryptoDotCom extends React.PureComponent<Props, State> {
     }).format(price)
   }
 
+  getPercentColor = (percentChange: string) => {
+    const percentChangeNum = parseFloat(percentChange)
+    return percentChangeNum === 0 ? 'light' : (percentChangeNum > 0 ? 'green' : 'red')
+  }
+
   plotData ({ data, chartHeight, chartWidth }: ChartConfig) {
     const pointsPerDay = 4
     const daysInrange = 7
@@ -247,7 +252,7 @@ class CryptoDotCom extends React.PureComponent<Props, State> {
             {optInBTCPrice ? (
               <>
                 {(price !== null) && <Text>{this.formattedNum(price)}</Text>}
-                {(percentChange !== null) && <Text textColor={percentChange > 0 ? 'green' : 'red'}>{percentChange}%</Text>}
+                {(percentChange !== null) && <Text textColor={this.getPercentColor(percentChange)}>{percentChange}%</Text>}
               </>
             ) : (
               <PlainButton onClick={this.btcPriceOptIn} textColor='green' inline={true}>
@@ -295,7 +300,7 @@ class CryptoDotCom extends React.PureComponent<Props, State> {
               </FlexItem>
               <FlexItem textAlign='right' flex={1}>
                 {(price !== null) && <Text>{this.formattedNum(price)}</Text>}
-                {(percentChange !== null) && <Text textColor={percentChange > 0 ? 'green' : 'red'}>{percentChange}%</Text>}
+                {(percentChange !== null) && <Text textColor={this.getPercentColor(percentChange)}>{percentChange}%</Text>}
               </FlexItem>
             </ListItem>
           )
@@ -358,7 +363,7 @@ class CryptoDotCom extends React.PureComponent<Props, State> {
           >
             {this.formattedNum(price)} USDT
           </Text>}
-          {(percentChange !== null) && <Text inline={true} textColor={percentChange > 0 ? 'green' : 'red'}>{percentChange}%</Text>}
+          {(percentChange !== null) && <Text inline={true} textColor={this.getPercentColor(percentChange)}>{percentChange}%</Text>}
           <SVG viewBox={`0 0 ${chartWidth} ${chartHeight}`}>
             <polyline
               fill='none'
