@@ -18,6 +18,7 @@
 #include "brave/browser/brave_browser_process_impl.h"
 #include "brave/browser/net/brave_proxying_url_loader_factory.h"
 #include "brave/browser/net/brave_proxying_web_socket.h"
+#include "brave/browser/new_tab/new_tab_shows_options.h"
 #include "brave/browser/profiles/profile_util.h"
 #include "brave/common/pref_names.h"
 #include "brave/common/webui_url_constants.h"
@@ -163,6 +164,8 @@ void BraveContentBrowserClient::BrowserURLHandlerCreated(
   }
 #endif
   handler->AddHandlerPair(&HandleURLRewrite, &HandleURLReverseOverrideRewrite);
+  handler->AddHandlerPair(&brave::HandleNewTabPageURLRewrite,
+                          content::BrowserURLHandler::null_handler());
   ChromeContentBrowserClient::BrowserURLHandlerCreated(handler);
 }
 

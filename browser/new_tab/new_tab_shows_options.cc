@@ -71,11 +71,22 @@ base::Value GetNewTabShowsOptionsList(Profile* profile) {
   return list;
 }
 
-bool ShouldShowNewTabDashboardSettings(Profile* profile) {
+bool ShouldUseNewTabURLForNewTab(Profile* profile) {
   const GURL url = GetNewTabPageURL(profile);
   return url.is_empty() ||
          url.host() == chrome::kChromeUINewTabHost ||
          NewTabUI::IsNewTab(url);
+}
+
+bool HandleNewTabPageURLRewrite(GURL* url,
+                                content::BrowserContext* browser_context) {
+  Profile* profile = Profile::FromBrowserContext(browser_context);
+  if (!NewTabUI::IsNewTab(*url) || ShouldUseNewTabURLForNewTab(profile)) {
+    return false;
+  }
+
+  *url = GetNewTabPageURL(profile);
+  return true;
 }
 
 }  // namespace brave
