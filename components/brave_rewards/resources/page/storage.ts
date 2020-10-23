@@ -75,7 +75,8 @@ export const defaultState: Rewards.State = {
     rate: 0
   },
   initializing: true,
-  paymentId: ''
+  paymentId: '',
+  recoveryKey: ''
 }
 
 const cleanData = (state: Rewards.State) => {

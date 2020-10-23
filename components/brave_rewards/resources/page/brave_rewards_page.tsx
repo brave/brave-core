@@ -246,6 +246,10 @@ window.cr.define('brave_rewards', function () {
     getActions().onPaymentId(paymentId)
   }
 
+  function walletPassphrase (passphrase: string) {
+    getActions().onWalletPassphrase(passphrase)
+  }
+
   return {
     initialize,
     rewardsParameters,
@@ -290,7 +294,8 @@ window.cr.define('brave_rewards', function () {
     countryCode,
     initialized,
     completeReset,
-    paymentId
+    paymentId,
+    walletPassphrase
   }
 })
 

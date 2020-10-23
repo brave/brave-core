@@ -347,6 +347,8 @@ class LedgerImpl : public ledger::Ledger {
 
   void GetBraveWallet(GetBraveWalletCallback callback) override;
 
+  std::string GetWalletPassphrase() const override;
+
   // end ledger.h
 
   void OnAllDone(const type::Result result, ledger::ResultCallback callback);

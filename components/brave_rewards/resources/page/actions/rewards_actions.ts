@@ -332,3 +332,9 @@ export const onPaymentId = (paymentId: string) => action(types.ON_PAYMENT_ID, {
 export const setFirstLoad = (firstLoad: boolean) => action(types.SET_FIRST_LOAD, {
   firstLoad
 })
+
+export const getWalletPassphrase = () => action(types.GET_WALLET_PASSPHRASE)
+
+export const onWalletPassphrase = (passphrase: string) => action(types.ON_WALLET_PASSPHRASE, {
+  passphrase
+})
