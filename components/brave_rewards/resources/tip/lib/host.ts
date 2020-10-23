@@ -65,7 +65,7 @@ export function createHost (): Host {
 
       if (!publisherKey) {
         stateManager.update({
-          hostError: { type: 'INVALID_DIALOG_ARGS' }
+          hostError: { type: 'ERR_INVALID_DIALOG_ARGS' }
         })
         return
       }
@@ -117,7 +117,7 @@ export function createHost (): Host {
       } else {
         stateManager.update({
           hostError: {
-            type: 'ERROR_FETCHING_BALANCE',
+            type: 'ERR_FETCH_BALANCE',
             code: result.status
           }
         })
@@ -150,6 +150,18 @@ export function createHost (): Host {
 
   self.i18nTemplate.process(document, self.loadTimeData)
 
+  // Expose a symbol-keyed method for testing the display of
+  // error messaging which may be difficult to reproduce.
+  self[Symbol.for('setTipDialogErrorForTesting')] =
+    (type: unknown, code: unknown) => {
+      stateManager.update({
+        hostError: {
+          type: String(type),
+          code: code === undefined ? code : Number(code)
+        }
+      })
+    }
+
   chrome.send('dialogReady')
 
   return {
@@ -173,14 +185,14 @@ export function createHost (): Host {
     processTip (amount: number, kind: TipKind) {
       if (!dialogArgs.publisherKey) {
         stateManager.update({
-          hostError: { type: 'INVALID_PUBLISHER_KEY' }
+          hostError: { type: 'ERR_INVALID_PUBLISHER_KEY' }
         })
         return
       }
 
       if (amount < 0 || kind === 'one-time' && amount === 0) {
         stateManager.update({
-          hostError: { type: 'INVALID_TIP_AMOUNT' }
+          hostError: { type: 'ERR_INVALID_TIP_AMOUNT' }
         })
         return
       }
@@ -201,7 +213,7 @@ export function createHost (): Host {
       const { publisherInfo } = stateManager.getState()
       if (!publisherInfo) {
         stateManager.update({
-          hostError: { type: 'PUBLISHER_INFO_UNAVAILABLE' }
+          hostError: { type: 'ERR_PUBLISHER_INFO_UNAVAILABLE' }
         })
         return
       }
