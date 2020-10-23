@@ -1,0 +1,16 @@
+diff --git a/chrome/browser/ui/browser_commands.cc b/chrome/browser/ui/browser_commands.cc
+index 8044431f85ce64f2c84f8c42d1a4f89b55a05837..c7d40b97aadc02dc3c8086a6cf1904331ebb7ba3 100644
+--- a/chrome/browser/ui/browser_commands.cc
++++ b/chrome/browser/ui/browser_commands.cc
+@@ -427,7 +427,11 @@ void NewEmptyWindow(Profile* profile) {
+ Browser* OpenEmptyWindow(Profile* profile) {
+   Browser* browser =
+       new Browser(Browser::CreateParams(Browser::TYPE_NORMAL, profile, true));
++#if defined(BRAVE_CHROMIUM_BUILD)
++  AddTabAt(browser, brave::GetNewTabPageURL(profile), -1, true);
++#else
+   AddTabAt(browser, GURL(), -1, true);
++#endif
+   browser->window()->Show();
+   return browser;
+ }
