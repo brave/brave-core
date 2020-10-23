@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/ui/BUILD.gn b/chrome/browser/ui/BUILD.gn
-index 16ad3889dda6193a3ca154ad02e66f919d8bbf63..f361a5cf76a99e5efac8b5eac4b00c9ac9953ff3 100644
+index e27f0c5f73424d726a6589092542dd4d264c8890..8697b10ed3351796fbbf9310336aa2a49326ec55 100644
 --- a/chrome/browser/ui/BUILD.gn
 +++ b/chrome/browser/ui/BUILD.gn
-@@ -586,6 +586,7 @@ static_library("ui") {
+@@ -579,6 +579,7 @@ static_library("ui") {
      "//ui/webui/resources/cr_components/customize_themes:mojom",
      "//v8:v8_version",
    ]
@@ -10,7 +10,7 @@ index 16ad3889dda6193a3ca154ad02e66f919d8bbf63..f361a5cf76a99e5efac8b5eac4b00c9a
    allow_circular_includes_from +=
        [ "//chrome/browser/ui/webui/bluetooth_internals" ]
  
-@@ -3189,10 +3190,13 @@ static_library("ui") {
+@@ -3196,10 +3197,13 @@ static_library("ui") {
        ]
        deps += [ "//google_update" ]
      } else {

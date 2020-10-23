@@ -1,8 +1,8 @@
 diff --git a/chrome/android/java/src/org/chromium/chrome/browser/accessibility/settings/AccessibilitySettings.java b/chrome/android/java/src/org/chromium/chrome/browser/accessibility/settings/AccessibilitySettings.java
-index 421e6293e81d1487da93528a48758ede51bfd91e..22ccba1bfc6ea94ab2e045d2da9aa3c790c5c1b1 100644
+index 309e10098ecb597686fd053308ab970eb91d9321..26dc1daee0b5b8688d7035588f7ef8670b58e6b6 100644
 --- a/chrome/android/java/src/org/chromium/chrome/browser/accessibility/settings/AccessibilitySettings.java
 +++ b/chrome/android/java/src/org/chromium/chrome/browser/accessibility/settings/AccessibilitySettings.java
-@@ -27,7 +27,7 @@ import org.chromium.components.user_prefs.UserPrefs;
+@@ -28,7 +28,7 @@ import org.chromium.components.user_prefs.UserPrefs;
   * Fragment to keep track of all the accessibility related preferences.
   */
  public class AccessibilitySettings

@@ -1,5 +1,5 @@
 diff --git a/chrome/android/java/src/org/chromium/chrome/browser/homepage/settings/HomepageSettings.java b/chrome/android/java/src/org/chromium/chrome/browser/homepage/settings/HomepageSettings.java
-index 156eea09b9e0cc894b4263826f54055184970791..b62852518ef915d435ec6712ec5c470640f87f01 100644
+index cf2c13f43b168f69f59df0b318e0a9f4fa9967c2..c3a645b8fb6a6617efaac5142f25fda519014dd5 100644
 --- a/chrome/android/java/src/org/chromium/chrome/browser/homepage/settings/HomepageSettings.java
 +++ b/chrome/android/java/src/org/chromium/chrome/browser/homepage/settings/HomepageSettings.java
 @@ -28,7 +28,7 @@ import org.chromium.components.url_formatter.UrlFormatter;
