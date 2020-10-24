@@ -38,7 +38,7 @@ class RewardsBrowserTestContribution
 
   void TipPublisher(
       const GURL& url,
-      rewards_browsertest_util::ContributionType type,
+      rewards_browsertest_util::TipAction tip_action,
       const int32_t number_of_contributions = 0,
       const int32_t selection = 0);
 

@@ -18,15 +18,17 @@ import {
   StyledDonateText,
   StyledDonateWrapper,
   StyledToggleWrapper,
-  StyledSelectWrapper,
   StyledGrid,
   StyledColumn,
   StyleToggleTips,
   StyledNoticeWrapper,
   StyledNoticeLink,
-  StyledOptionShown,
   StyledProfileWrapper,
-  StyledSelect,
+  StyledMonthlyBorder,
+  StyledMonthlyWrapper,
+  StyledMonthlyAmount,
+  StyledMonthlyActions,
+  StyledMonthlyDownIcon,
   StyledSetButtonContainer,
   StyledSetButton
 } from './style'
@@ -38,11 +40,6 @@ import { RewardsButton } from '../'
 import ToggleTips from '../toggleTips/index'
 import Profile, { Provider } from '../profile/index'
 
-export type Token = {
-  tokens: string
-  converted: string
-}
-
 export interface Props {
   id?: string
   platform?: Provider
@@ -53,11 +50,9 @@ export interface Props {
   tipsEnabled: boolean
   includeInAuto: boolean
   monthlyAmount: string
-  donationAmounts?: Token[]
   toggleTips?: boolean
   donationAction: () => void
   onToggleTips: () => void
-  onAmountChange: (event: React.ChangeEvent<HTMLSelectElement>) => void
   onIncludeInAuto: () => void
   onRefreshPublisher?: () => void
   refreshingPublisher?: boolean
@@ -66,10 +61,22 @@ export interface Props {
   moreLink?: string
   acEnabled?: boolean
   setMonthlyAction: () => void
+  cancelMonthlyAction: () => void
   onlyAnonWallet?: boolean
 }
 
-export default class WalletPanel extends React.PureComponent<Props, {}> {
+interface State {
+  showMonthlyActions: boolean
+}
+
+export default class WalletPanel extends React.PureComponent<Props, State> {
+  constructor (props: Props) {
+    super(props)
+    this.state = {
+      showMonthlyActions: false
+    }
+  }
+
   publisherInfo () {
     const publisherTitle = this.props.publisherName || ''
 
@@ -94,48 +101,76 @@ export default class WalletPanel extends React.PureComponent<Props, {}> {
   }
 
   donationDropDown () {
-    const { donationAmounts, onlyAnonWallet } = this.props
-    const monthlyAmount = this.props.monthlyAmount || '5.0'
+    const { monthlyAmount, onlyAnonWallet } = this.props
+    const { showMonthlyActions } = this.state
     const batFormatString = onlyAnonWallet ? 'bap' : 'bat'
 
-    if (!donationAmounts) {
+    if (!monthlyAmount) {
       return null
     }
 
+    const toggleActionsShown = () => {
+      this.setState({ showMonthlyActions: !this.state.showMonthlyActions })
+    }
+
+    const onBlur = (event: React.FocusEvent) => {
+      // Hide the monthly contribution actions when focus has left the
+      // containing HTML element.
+      const { relatedTarget } = event
+      if (relatedTarget && relatedTarget instanceof Node) {
+        for (let e: Node | null = relatedTarget; e; e = e.parentNode) {
+          if (e === event.currentTarget) {
+            return
+          }
+        }
+      }
+      this.setState({ showMonthlyActions: false })
+    }
+
     return (
-      <StyledSelectWrapper>
-        <StyledSelect
-          value={monthlyAmount}
-          onChange={this.props.onAmountChange}
+      <StyledMonthlyWrapper>
+        <StyledMonthlyBorder
+          className={showMonthlyActions ? 'expanded' : ''}
+          onBlur={onBlur}
         >
-          {donationAmounts.map((token: Token, index: number) => {
-            return (
-              <option
-                key={`k-${token.tokens}`}
-                value={token.tokens}
-              >
-                {token.tokens} {getLocale(batFormatString)} ({token.converted} USD)
-              </option>
-            )
-          }).concat(
-             <StyledOptionShown
-               key={'k-show'}
-               value={'show'}
-               disabled={true}
-             >
-               {monthlyAmount} {getLocale(batFormatString)}
-             </StyledOptionShown>
-          )}
-        </StyledSelect>
-      </StyledSelectWrapper>
+          <StyledMonthlyAmount>
+            <button
+              onClick={toggleActionsShown}
+              data-test-id='toggle-monthly-actions'
+            >
+              {monthlyAmount} {getLocale(batFormatString)}
+              {showMonthlyActions ? null : <StyledMonthlyDownIcon />}
+            </button>
+          </StyledMonthlyAmount>
+          {
+            showMonthlyActions &&
+              <StyledMonthlyActions>
+                <a
+                  href='javascript:void 0'
+                  onClick={this.props.setMonthlyAction}
+                  data-test-id='change-monthly-amount'
+                >
+                  {getLocale('changeAmount')}
+                </a>
+                <a
+                  href='javascript:void 0'
+                  onClick={this.props.cancelMonthlyAction}
+                  data-test-id='clear-monthly-amount'
+                >
+                  {getLocale('cancel')}
+                </a>
+              </StyledMonthlyActions>
+          }
+        </StyledMonthlyBorder>
+      </StyledMonthlyWrapper>
     )
   }
 
   donationControls () {
-    const { donationAmounts, acEnabled, setMonthlyAction } = this.props
+    const { monthlyAmount, acEnabled, setMonthlyAction } = this.props
 
-    const firstColSpan = donationAmounts ? '5' : '4'
-    const secColSpan = donationAmounts ? '1' : '2'
+    const firstColSpan = monthlyAmount ? '5' : '4'
+    const secColSpan = monthlyAmount ? '0' : '2'
 
     return (
       <StyledWrapper>
@@ -145,7 +180,7 @@ export default class WalletPanel extends React.PureComponent<Props, {}> {
             <StyledColumn size={'5'}>
               <StyledDonateText>{getLocale('includeInAuto')}</StyledDonateText>
             </StyledColumn>
-            <StyledColumn size={'1'}>
+            <StyledColumn size={'0'}>
               <StyledToggleWrapper>
                 <Toggle
                   size={'small'}
@@ -165,7 +200,7 @@ export default class WalletPanel extends React.PureComponent<Props, {}> {
           </StyledColumn>
           <StyledColumn size={secColSpan}>
             {
-              donationAmounts
+              monthlyAmount
               ? this.donationDropDown()
               : <StyledSetButtonContainer>
                   <StyledSetButton type={'tip-monthly'} onClick={setMonthlyAction}>
@@ -221,7 +256,7 @@ export default class WalletPanel extends React.PureComponent<Props, {}> {
                     {getLocale('rewardsContributeAttentionScore')}
                   </StyledAttentionScoreTitle>
                 </StyledColumn>
-                <StyledColumn size={'1'}>
+                <StyledColumn size={'0'}>
                   <StyledAttentionScore data-test-id={'attention-score'}>
                     {attentionScore}%
                   </StyledAttentionScore>

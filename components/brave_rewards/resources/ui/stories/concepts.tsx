@@ -362,10 +362,6 @@ storiesOf('Rewards/Concepts/Desktop', module)
       store.set({ notification: undefined })
     }
 
-    const onAmountChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
-      console.log(`New value is: ${event.target.value}`)
-    }
-
     const onVerifyClick = () => console.log('onVerifyClick')
     const onDisconnectClick = () => console.log('onDisconnectClick')
 
@@ -430,13 +426,12 @@ storiesOf('Rewards/Concepts/Desktop', module)
               attentionScore={'17'}
               onToggleTips={onToggleTips}
               donationAction={doNothing}
-              onAmountChange={onAmountChange}
-              donationAmounts={donationAmounts}
               onIncludeInAuto={onIncludeInAuto}
               refreshingPublisher={store.state.refreshingPublisher}
               publisherRefreshed={store.state.publisherRefreshed}
               onRefreshPublisher={onRefreshPublisher}
               setMonthlyAction={doNothing}
+              cancelMonthlyAction={doNothing}
             />
             <WalletSummary
               compact={true}

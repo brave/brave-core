@@ -599,6 +599,10 @@
     "message": "Cancel",
     "description": "Text for cancel button"
   },
+  "changeAmount":  {
+    "message": "Change amount",
+    "description": "Button text for changing monthly contribution amount"
+  },
   "login":  {
     "message": "Login",
     "description": "Text for login button"

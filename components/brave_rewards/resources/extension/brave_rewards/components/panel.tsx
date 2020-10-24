@@ -279,7 +279,7 @@ export class Panel extends React.Component<Props, State> {
     utils.handleUpholdLink(balance, externalWallet)
   }
 
-  showTipSiteDetail = (monthly: boolean) => {
+  showTipSiteDetail = (entryPoint: RewardsExtension.TipDialogEntryPoint) => {
     const publisher: RewardsExtension.Publisher | undefined = this.getPublisher()
     const tabId = this.props.tabId
 
@@ -287,7 +287,7 @@ export class Panel extends React.Component<Props, State> {
       return
     }
 
-    chrome.braveRewards.tipSite(tabId, publisher.publisherKey, monthly)
+    chrome.braveRewards.tipSite(tabId, publisher.publisherKey, entryPoint)
     window.close()
   }
 
@@ -498,39 +498,8 @@ export class Panel extends React.Component<Props, State> {
     }
   }
 
-  generateAmounts = (publisher?: RewardsExtension.Publisher) => {
-    const { tipAmounts, parameters } = this.props.rewardsPanelData
-
-    const publisherKey = publisher && publisher.publisherKey
-    let publisherAmounts = null
-    if (publisherKey && tipAmounts && tipAmounts[publisherKey] && tipAmounts[publisherKey].length) {
-      publisherAmounts = tipAmounts[publisherKey]
-    }
-
-    // Prefer the publisher amounts, then the wallet's defaults. Fall back to defaultTipAmounts.
-    let initialAmounts = this.defaultTipAmounts
-    if (publisherAmounts) {
-      initialAmounts = publisherAmounts
-    } else if (parameters) {
-      const walletAmounts = parameters.monthlyTipChoices
-      if (walletAmounts.length) {
-        initialAmounts = walletAmounts
-      }
-    }
-
-    const amounts = [0, ...initialAmounts]
-
-    return amounts.map((value: number) => {
-      return {
-        tokens: value.toFixed(3),
-        converted: utils.convertBalance(value, parameters.rate),
-        selected: false
-      }
-    })
-  }
-
   getContribution = (publisher?: RewardsExtension.Publisher) => {
-    let defaultContribution = '0.000'
+    let defaultContribution = ''
     const { recurringTips } = this.props.rewardsPanelData
 
     if (!recurringTips ||
@@ -539,7 +508,7 @@ export class Panel extends React.Component<Props, State> {
     }
 
     recurringTips.map((tip: any) => {
-      if (tip.publisherKey === publisher.publisherKey) {
+      if (tip && tip.publisherKey === publisher.publisherKey && tip.amount > 0) {
         defaultContribution = tip.amount.toFixed(3)
       }
     })
@@ -689,9 +658,6 @@ export class Panel extends React.Component<Props, State> {
     const notificationClick = this.getNotificationClickEvent(notificationType, notificationId)
     const defaultContribution = this.getContribution(publisher)
     const checkmark = publisher && utils.isPublisherConnectedOrVerified(publisher.status)
-    const tipAmounts = defaultContribution !== '0.000'
-      ? this.generateAmounts(publisher)
-      : undefined
     const { onlyAnonWallet } = this.props
 
     const pendingTotal = parseFloat(
@@ -756,17 +722,16 @@ export class Panel extends React.Component<Props, State> {
               includeInAuto={!publisher.excluded}
               attentionScore={(publisher.percentage || 0).toString()}
               onToggleTips={this.doNothing}
-              donationAction={this.showTipSiteDetail.bind(this, false)}
-              onAmountChange={this.onContributionAmountChange}
+              donationAction={this.showTipSiteDetail.bind(this, 'one-time')}
               onIncludeInAuto={this.switchAutoContribute}
               showUnVerified={this.shouldShowConnectedMessage()}
               acEnabled={enabledAC}
-              donationAmounts={tipAmounts}
               moreLink={'https://brave.com/faq/#unclaimed-funds'}
               onRefreshPublisher={this.refreshPublisher}
               refreshingPublisher={this.state.refreshingPublisher}
               publisherRefreshed={this.state.publisherRefreshed}
-              setMonthlyAction={this.showTipSiteDetail.bind(this, true)}
+              setMonthlyAction={this.showTipSiteDetail.bind(this, 'set-monthly')}
+              cancelMonthlyAction={this.showTipSiteDetail.bind(this, 'clear-monthly')}
               onlyAnonWallet={onlyAnonWallet}
             />
             : null

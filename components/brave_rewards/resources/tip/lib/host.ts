@@ -41,9 +41,7 @@ function getDialogArgs (): DialogArgs {
   return {
     url: String(args.url || ''),
     publisherKey: String(args.publisherKey || ''),
-    entryPoint: args.entryPoint
-      ? getEntryPoint(String(args.entryPoint))
-      : args.monthly ? 'set-monthly' : 'one-time',
+    entryPoint: getEntryPoint(String(args.entryPoint)),
     mediaMetaData: args.mediaMetaData
       ? Object(args.mediaMetaData)
       : { mediaType: 'none' }

@@ -439,26 +439,20 @@ std::vector<double> GetSiteBannerTipOptions(content::WebContents* context) {
   return result;
 }
 
-std::vector<double> GetRewardsPopupTipOptions(content::WebContents* context) {
+double GetRewardsPopupMonthlyTipValue(content::WebContents* context) {
   DCHECK(context);
-  WaitForElementToAppear(context, "option:not(:disabled)");
-  auto options = content::EvalJs(
+  WaitForElementToAppear(context, "[data-test-id=toggle-monthly-actions]");
+  return content::EvalJs(
       context,
       R"_(
-        const delay = t => new Promise(resolve => setTimeout(resolve, t));
-        delay(0).then(() =>
-            Array.prototype.map.call(
-                document.querySelectorAll("option:not(:disabled)"),
-                node => parseFloat(node.value)))
+        new Promise(resolve => setTimeout(resolve, 0)).then(() => {
+          const elem = document.querySelector(
+            '[data-test-id=toggle-monthly-actions]')
+          return elem && parseFloat(elem.innerText) || 0
+        })
       )_",
       content::EXECUTE_SCRIPT_DEFAULT_OPTIONS,
-      content::ISOLATED_WORLD_ID_CONTENT_END).ExtractList();
-
-  std::vector<double> result;
-  for (const auto& value : options.GetList()) {
-    result.push_back(value.GetDouble());
-  }
-  return result;
+      content::ISOLATED_WORLD_ID_CONTENT_END).ExtractDouble();
 }
 
 }  // namespace rewards_browsertest_util

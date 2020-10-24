@@ -159,13 +159,13 @@ IN_PROC_BROWSER_TEST_F(RewardsBrowserTest, SiteBannerDefaultTipChoices) {
 
   content::WebContents* site_banner =
       context_helper_->OpenSiteBanner(
-          rewards_browsertest_util::ContributionType::OneTimeTip);
+          rewards_browsertest_util::TipAction::OneTime);
   auto tip_options = rewards_browsertest_util::GetSiteBannerTipOptions(
       site_banner);
   ASSERT_EQ(tip_options, std::vector<double>({ 1, 5, 50 }));
 
   site_banner = context_helper_->OpenSiteBanner(
-      rewards_browsertest_util::ContributionType::MonthlyTip);
+      rewards_browsertest_util::TipAction::SetMonthly);
   tip_options = rewards_browsertest_util::GetSiteBannerTipOptions(
       site_banner);
   ASSERT_EQ(tip_options, std::vector<double>({ 1, 10, 100 }));
@@ -181,7 +181,7 @@ IN_PROC_BROWSER_TEST_F(
 
   content::WebContents* site_banner =
       context_helper_->OpenSiteBanner(
-          rewards_browsertest_util::ContributionType::OneTimeTip);
+          rewards_browsertest_util::TipAction::OneTime);
   const auto tip_options = rewards_browsertest_util::GetSiteBannerTipOptions(
       site_banner);
   ASSERT_EQ(tip_options, std::vector<double>({ 5, 10, 20 }));

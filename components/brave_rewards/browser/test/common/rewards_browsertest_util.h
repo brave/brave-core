@@ -17,7 +17,7 @@
 
 namespace rewards_browsertest_util {
 
-enum class ContributionType { OneTimeTip, MonthlyTip };
+enum class TipAction { OneTime, SetMonthly, ChangeMonthly, ClearMonthly };
 
 void GetTestDataDir(base::FilePath* test_data_dir);
 

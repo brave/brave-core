@@ -526,8 +526,8 @@
             "type": "string"
           },
           {
-            "name": "monthly",
-            "type": "boolean"
+            "name": "entryPoint",
+            "type": "string"
           }
         ]
       },

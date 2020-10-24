@@ -53,6 +53,7 @@ const locale: Record<string, string> = {
   captchaTarget: 'target.',
   captchaMissedTarget: 'Hmm… Not Quite. Try Again.',
   category: 'Category',
+  changeAmount: 'Change amount',
   claim: 'Claim',
   click: 'Clicked',
   closeBalance: 'Closing Balance',

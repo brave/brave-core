@@ -75,7 +75,7 @@ void RewardsBrowserTestContribution::TipViaCode(
 
 void RewardsBrowserTestContribution::TipPublisher(
     const GURL& url,
-    rewards_browsertest_util::ContributionType type,
+    rewards_browsertest_util::TipAction tip_action,
     int32_t number_of_contributions,
     int32_t selection) {
   bool should_contribute = number_of_contributions > 0;
@@ -92,7 +92,7 @@ void RewardsBrowserTestContribution::TipPublisher(
       ui_test_utils::BROWSER_TEST_WAIT_FOR_LOAD_STOP);
 
   content::WebContents* site_banner_contents =
-      context_helper_->OpenSiteBanner(type);
+      context_helper_->OpenSiteBanner(tip_action);
   ASSERT_TRUE(site_banner_contents);
 
   auto tip_options = rewards_browsertest_util::GetSiteBannerTipOptions(
@@ -115,7 +115,7 @@ void RewardsBrowserTestContribution::TipPublisher(
 
   // Signal that direct tip was made and update wallet with new
   // balance
-  if (type == rewards_browsertest_util::ContributionType::OneTimeTip &&
+  if (tip_action == rewards_browsertest_util::TipAction::OneTime &&
       !should_contribute) {
     WaitForPendingTipToBeSaved();
     UpdateContributionBalance(amount, should_contribute);
@@ -124,7 +124,7 @@ void RewardsBrowserTestContribution::TipPublisher(
   // Wait for thank you banner to load
   ASSERT_TRUE(WaitForLoadStop(site_banner_contents));
 
-  if (type == rewards_browsertest_util::ContributionType::MonthlyTip) {
+  if (tip_action == rewards_browsertest_util::TipAction::SetMonthly) {
     WaitForRecurringTipToBeSaved();
     // Trigger contribution process
     rewards_service_->StartMonthlyContributionForTest();
@@ -143,7 +143,7 @@ void RewardsBrowserTestContribution::TipPublisher(
     if (!should_contribute) {
       UpdateContributionBalance(amount, should_contribute);
     }
-  } else if (type == rewards_browsertest_util::ContributionType::OneTimeTip &&
+  } else if (tip_action == rewards_browsertest_util::TipAction::OneTime &&
       should_contribute) {
     // Wait for reconciliation to complete
     WaitForMultipleTipReconcileCompleted(number_of_contributions);
@@ -168,7 +168,7 @@ void RewardsBrowserTestContribution::TipPublisher(
   }
 
   const bool is_monthly =
-      type == rewards_browsertest_util::ContributionType::MonthlyTip;
+      tip_action == rewards_browsertest_util::TipAction::SetMonthly;
 
   VerifyTip(amount, should_contribute, is_monthly);
 }
