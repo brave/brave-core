@@ -175,6 +175,11 @@ class CryptoDotCom extends React.PureComponent<Props, State> {
     await this.props.onSetAssetData([asset])
   }
 
+  onClickBuyTopDetail = () => {
+    window.open(links.buyTopDetail, '_blank', 'noopener')
+    this.props.onBuyCrypto()
+  }
+
   onClickBuyTop = () => {
     window.open(links.buyTop, '_blank', 'noopener')
     this.props.onBuyCrypto()
@@ -341,7 +346,7 @@ class CryptoDotCom extends React.PureComponent<Props, State> {
             </Text>
           </FlexItem>
           <FlexItem $pl={5}>
-            <ActionButton onClick={this.onClickBuyPair.bind(this, `${currency}_USDT`)} small={true} light={true}>
+            <ActionButton onClick={this.onClickBuyTopDetail} small={true} light={true}>
               <UpperCaseText>
                 {getLocale('cryptoDotComWidgetBuy')}
               </UpperCaseText>
@@ -411,7 +416,10 @@ class CryptoDotCom extends React.PureComponent<Props, State> {
   }
 
   renderTitle () {
+    const { selectedAsset } = this.state
     const { optInMarkets, showContent } = this.props
+    const shouldShowBackArrow = !selectedAsset && showContent && optInMarkets
+
     return (
       <Header showContent={showContent}>
         <StyledTitle>
@@ -421,7 +429,7 @@ class CryptoDotCom extends React.PureComponent<Props, State> {
           <StyledTitleText>
             {'Crypto.com'}
           </StyledTitleText>
-          {showContent && optInMarkets &&
+          {shouldShowBackArrow &&
             <BackArrow marketView={true}>
               <CaratLeftIcon
                 onClick={this.optInMarkets.bind(this, false)}
