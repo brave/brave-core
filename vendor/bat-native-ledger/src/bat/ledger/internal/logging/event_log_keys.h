@@ -19,6 +19,7 @@ const char kRecurringTipAdded[] = "recurring_tip_added";
 const char kRecurringTipRemoved[] = "recurring_tip_removed";
 const char kDatabaseMigrated[] = "database_migrated";
 const char kPromotionsClaimed[] = "promotion_claimed";
+const char kWalletRecovered[] = "wallet_recovered";
 
 }  // namespace log
 }  // namespace ledger
