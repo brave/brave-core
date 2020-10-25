@@ -132,6 +132,8 @@ using GetEventLogsCallback =
 using GetBraveWalletCallback =
     base::OnceCallback<void(ledger::type::BraveWalletPtr wallet)>;
 
+using GetWalletPassphraseCallback = base::Callback<void(const std::string&)>;
+
 class RewardsService : public KeyedService {
  public:
   RewardsService();
@@ -358,6 +360,8 @@ class RewardsService : public KeyedService {
       const std::string& value) = 0;
 
   virtual void GetBraveWallet(GetBraveWalletCallback callback) = 0;
+
+  virtual void GetWalletPassphrase(GetWalletPassphraseCallback callback) = 0;
 
  protected:
   base::ObserverList<RewardsServiceObserver> observers_;
