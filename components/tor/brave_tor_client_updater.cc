@@ -17,7 +17,9 @@
 #include "base/task/post_task.h"
 #include "base/task_runner.h"
 #include "base/task_runner_util.h"
+#include "brave/components/tor/pref_names.h"
 #include "brave/components/tor/tor_switches.h"
+#include "components/prefs/pref_service.h"
 #include "third_party/re2/src/re2/re2.h"
 
 using brave_component_updater::BraveComponent;
@@ -59,6 +61,10 @@ base::FilePath InitExecutablePath(const base::FilePath& install_dir) {
 #endif  // defined(OS_POSIX)
 
   return executable_path;
+}
+
+void DeleteDir(const base::FilePath& path) {
+  base::DeletePathRecursively(path);
 }
 
 }  // namespace
@@ -105,22 +111,22 @@ std::string BraveTorClientUpdater::g_tor_client_component_base64_public_key_(
 
 BraveTorClientUpdater::BraveTorClientUpdater(
     BraveComponent::Delegate* component_delegate,
-    std::unique_ptr<Delegate> delegate)
+    PrefService* local_state,
+    const base::FilePath& user_data_dir)
     : BraveComponent(component_delegate),
       task_runner_(base::CreateSequencedTaskRunner(
           {base::ThreadPool(), base::MayBlock()})),
       registered_(false),
-      delegate_(std::move(delegate)),
-      weak_ptr_factory_(this) {
-  DCHECK(delegate_);
-}
+      local_state_(local_state),
+      user_data_dir_(user_data_dir),
+      weak_ptr_factory_(this) {}
 
 BraveTorClientUpdater::~BraveTorClientUpdater() {}
 
 void BraveTorClientUpdater::Register() {
   const base::CommandLine& command_line =
       *base::CommandLine::ForCurrentProcess();
-  if (delegate_->IsTorDisabled() ||
+  if (IsTorDisabled() ||
       command_line.HasSwitch(tor::kDisableTorClientUpdaterExtension) ||
       registered_) {
     return;
@@ -139,7 +145,11 @@ void BraveTorClientUpdater::Unregister() {
 }
 
 void BraveTorClientUpdater::Cleanup() {
-  delegate_->Cleanup(kTorClientComponentId);
+  DCHECK(!user_data_dir_.empty());
+  base::FilePath tor_component_dir =
+      user_data_dir_.AppendASCII(kTorClientComponentId);
+  task_runner_->PostTask(FROM_HERE,
+                         base::BindOnce(&DeleteDir, tor_component_dir));
 }
 
 void BraveTorClientUpdater::SetExecutablePath(const base::FilePath& path) {
@@ -161,6 +171,12 @@ void BraveTorClientUpdater::OnComponentReady(
       base::BindOnce(&InitExecutablePath, install_dir),
       base::BindOnce(&BraveTorClientUpdater::SetExecutablePath,
                      weak_ptr_factory_.GetWeakPtr()));
+}
+
+bool BraveTorClientUpdater::IsTorDisabled() {
+  if (local_state_)
+    return local_state_->GetBoolean(tor::prefs::kTorDisabled);
+  return false;
 }
 
 void BraveTorClientUpdater::AddObserver(Observer* observer) {

@@ -18,6 +18,7 @@
 class BraveProfileManagerTest;
 class BraveProfileManagerExtensionTest;
 class BraveTorClientUpdaterTest;
+class PrefService;
 class SearchEngineProviderServiceTest;
 
 using brave_component_updater::BraveComponent;
@@ -47,15 +48,9 @@ class BraveTorClientUpdater : public BraveComponent {
     ~Observer() override = default;
   };
 
-  class Delegate {
-   public:
-    virtual ~Delegate() = default;
-    virtual void Cleanup(const char* component_id) = 0;
-    virtual bool IsTorDisabled() = 0;
-  };
-
   BraveTorClientUpdater(BraveComponent::Delegate* component_delegate,
-                        std::unique_ptr<Delegate> delegate);
+                        PrefService* local_state,
+                        const base::FilePath& user_data_dir);
   ~BraveTorClientUpdater() override;
 
   void Register();
@@ -73,6 +68,7 @@ class BraveTorClientUpdater : public BraveComponent {
   void OnComponentReady(const std::string& component_id,
       const base::FilePath& install_dir,
       const std::string& manifest) override;
+  bool IsTorDisabled();
 
  private:
   friend class ::BraveProfileManagerTest;
@@ -92,8 +88,8 @@ class BraveTorClientUpdater : public BraveComponent {
   bool registered_;
   base::FilePath executable_path_;
   base::ObserverList<Observer> observers_;
-
-  std::unique_ptr<Delegate> delegate_;
+  PrefService* local_state_;
+  base::FilePath user_data_dir_;
 
   base::WeakPtrFactory<BraveTorClientUpdater> weak_ptr_factory_;
 

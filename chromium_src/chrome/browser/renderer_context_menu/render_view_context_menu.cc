@@ -115,7 +115,9 @@ void BraveRenderViewContextMenu::AddSpellCheckServiceItem(
 void BraveRenderViewContextMenu::InitMenu() {
   RenderViewContextMenu_Chromium::InitMenu();
 
+#if BUILDFLAG(ENABLE_TOR) || !BUILDFLAG(ENABLE_BRAVE_TRANSLATE_GO)
   int index = -1;
+#endif
 #if BUILDFLAG(ENABLE_TOR)
   // Add Open Link with Tor
   if (!TorProfileServiceFactory::IsTorDisabled() &&
