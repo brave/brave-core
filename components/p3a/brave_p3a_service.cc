@@ -392,7 +392,7 @@ void BraveP3AService::OnHistogramChanged(const char* histogram_name,
     base::PostTask(FROM_HERE, {content::BrowserThread::UI},
                    base::BindOnce(&BraveP3AService::OnHistogramChangedOnUI,
                                   this,
-                                  base::StringPiece(histogram_name),
+                                  histogram_name,
                                   kSuspendedMetricValue,
                                   kSuspendedMetricBucket));
     return;
@@ -428,7 +428,7 @@ void BraveP3AService::OnHistogramChanged(const char* histogram_name,
                                 histogram_name, sample, bucket));
 }
 
-void BraveP3AService::OnHistogramChangedOnUI(base::StringPiece histogram_name,
+void BraveP3AService::OnHistogramChangedOnUI(const char* histogram_name,
                                              base::HistogramBase::Sample sample,
                                              size_t bucket) {
   VLOG(2) << "BraveP3AService::OnHistogramChanged: histogram_name = "
