@@ -38,6 +38,7 @@ BraveMainDelegate::BraveMainDelegate() : brave_sync_service_url_(kBraveSyncServi
   base::FilePath path;
   base::PathService::Get(base::DIR_MODULE, &path);
   base::mac::SetOverrideFrameworkBundlePath(path);
+  base::mac::SetOverrideOuterBundlePath(path);
 }
 
 BraveMainDelegate::~BraveMainDelegate() {}
