@@ -15,6 +15,7 @@
 #include "brave/build/android/jni_headers/BraveSyncDevices_jni.h"
 #include "brave/components/brave_sync/profile_sync_service_helper.h"
 #include "brave/components/sync/driver/brave_sync_profile_sync_service.h"
+#include "brave/components/sync_device_info/brave_device_info.h"
 
 #include "chrome/browser/profiles/profile_manager.h"
 #include "chrome/browser/sync/device_info_sync_service_factory.h"
@@ -73,7 +74,7 @@ base::Value BraveSyncDevicesAndroid::GetSyncDeviceList() {
 
   base::Value device_list(base::Value::Type::LIST);
 
-  for (const auto& device : tracker->GetAllDeviceInfo()) {
+  for (const auto& device : tracker->GetAllBraveDeviceInfo()) {
     auto device_value = base::Value::FromUniquePtrValue(device->ToValue());
     bool is_current_device = local_device_info
         ? local_device_info->guid() == device->guid()
@@ -81,7 +82,8 @@ base::Value BraveSyncDevicesAndroid::GetSyncDeviceList() {
     device_value.SetBoolKey("isCurrentDevice", is_current_device);
     // DeviceInfo::ToValue doesn't put guid
     device_value.SetStringKey("guid", device->guid());
-    device_value.SetBoolKey("supportsSelfDelete", !is_current_device);
+    device_value.SetBoolKey("supportsSelfDelete",
+                            device->is_self_delete_supported());
     device_list.Append(std::move(device_value));
   }
 

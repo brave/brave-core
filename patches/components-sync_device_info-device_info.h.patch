@@ -1,0 +1,13 @@
+diff --git a/components/sync_device_info/device_info.h b/components/sync_device_info/device_info.h
+index 47d3c7b014e842051db8458cad564ba35bf7621c..d6f7e47905f4fc834caf50b2f95d6b9ed879adef 100644
+--- a/components/sync_device_info/device_info.h
++++ b/components/sync_device_info/device_info.h
+@@ -75,7 +75,7 @@ class DeviceInfo {
+              bool send_tab_to_self_receiving_enabled,
+              const base::Optional<SharingInfo>& sharing_info,
+              const std::string& fcm_registration_token);
+-  ~DeviceInfo();
++  virtual ~DeviceInfo();
+ 
+   // Sync specific unique identifier for the device. Note if a device
+   // is wiped and sync is set up again this id WILL be different.
