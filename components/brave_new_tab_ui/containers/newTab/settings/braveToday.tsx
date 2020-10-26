@@ -4,6 +4,9 @@
 // you can obtain one at http://mozilla.org/MPL/2.0/.
 
 import * as React from 'react'
+import AutoSizer from "react-virtualized-auto-sizer";
+import { VariableSizeList } from "react-window";
+import { isPublisherContentAllowed } from '../../../../common/braveToday'
 
 // Components
 import {
@@ -14,23 +17,116 @@ import { Toggle } from '../../../components/toggle'
 
 interface Props {
   publishers?: BraveToday.Publishers
+  setPublisherPref: (publisherId: string, enabled: boolean) => any
+}
+
+export const DynamicListContext = React.createContext<
+  Partial<{ setSize: (index: number, size: number) => void }>
+>({});
+
+type ListItemProps = {
+  index: number
+  width: number
+  data: BraveToday.Publisher[]
+  style: React.CSSProperties
+  setPublisherPref: (publisherId: string, enabled: boolean) => any
+}
+
+// Component for each item. Measures height to let virtual
+// list know.
+function ListItem (props: ListItemProps) {
+  const { setSize } = React.useContext(DynamicListContext);
+  const rowRoot = React.useRef<null | HTMLDivElement>(null);
+
+  React.useEffect(() => {
+    if (rowRoot.current) {
+      setSize && setSize(props.index, rowRoot.current.getBoundingClientRect().height);
+    }
+  }, [props.index, setSize, props.width]);
+
+  const publisher = props.data[props.index]
+  if (!publisher) {
+    console.warn('Publisher was null at index', props.index, props.data, props)
+    return null
+  }
+  const isChecked = isPublisherContentAllowed(publisher)
+
+  return (
+    <div style={props.style}>
+      <SettingsRow innerRef={rowRoot} key={publisher.publisher_id}>
+        <SettingsText>{publisher.publisher_name}</SettingsText>
+        <Toggle
+          checked={isChecked}
+          onChange={() => props.setPublisherPref(publisher.publisher_id, !isChecked)}
+          size='large'
+        />
+      </SettingsRow>
+    </div>
+  )
 }
 
 export default function TodaySettings (props: Props) {
-  if (!props.publishers) {
-    return <h1>Loading...</h1>
+  const listRef = React.useRef<VariableSizeList | null>(null);
+  const sizeMap = React.useRef<{ [key: string]: number }>({});
+
+  const setSize = React.useCallback((index: number, size: number) => {
+    // Performance: Only update the sizeMap and reset cache if an actual value changed
+    if (sizeMap.current[index] !== size) {
+      sizeMap.current = { ...sizeMap.current, [index]: size };
+      if (listRef.current) {
+        // Clear cached data and rerender
+        listRef.current.resetAfterIndex(0);
+      }
+    }
+  }, []);
+
+  const getSize = React.useCallback((index) => {
+    return sizeMap.current[index] || 900;
+  }, []);
+
+  // Compute sorted array of publishers
+  const publishers = React.useMemo(function () {
+    if (props.publishers) {
+      const publishers = Object.values(props.publishers)
+      publishers.sort((a, b) => a.publisher_name.toLocaleLowerCase().localeCompare(b.publisher_name.toLocaleLowerCase()))
+      return publishers
+    }
+    return null
+  }, [props.publishers])
+
+  if (!publishers) {
+    return <div>Loading...</div>
   }
+
   return (
-    <div>
-      {Object.values(props.publishers).map(publisher => (
-        <SettingsRow>
-          <SettingsText>{publisher.publisher_name}</SettingsText>
-          <Toggle
-            checked={publisher.enabled || publisher.user_enabled === true}
-            size='large'
-          />
-        </SettingsRow>
-      ))}
-    </div>
+    <DynamicListContext.Provider
+      value={{ setSize }}
+    >
+      <AutoSizer>
+        {function ({width, height}) {
+          return (
+            <VariableSizeList
+              ref={listRef}
+              width={width}
+              height={height}
+              itemData={publishers}
+              itemCount={publishers.length}
+              itemSize={getSize}
+              overscanCount={38}
+            >
+              {function (itemProps) {
+                return (
+                  <ListItem
+                    {...itemProps}
+                    width={width}
+                    setPublisherPref={props.setPublisherPref}
+                  />
+                )
+              }}
+            </VariableSizeList>
+          )
+        }}
+      </AutoSizer>
+    </DynamicListContext.Provider>
   )
 }

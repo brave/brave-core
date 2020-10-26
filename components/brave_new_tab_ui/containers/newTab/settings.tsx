@@ -39,10 +39,10 @@ import MoreCardsSettings from './settings/moreCards'
 import BraveTodaySettings from './settings/braveToday'
 
 // Types
-import * as newTabActions from '../../actions/new_tab_actions'
+import { NewTabActions } from '../../constants/new_tab_types'
 
 export interface Props {
-  actions: typeof newTabActions
+  actions: NewTabActions
   textDirection: string
   showSettingsMenu: boolean
   onClickOutside: () => void
@@ -305,6 +305,7 @@ export default class Settings extends React.PureComponent<Props, State> {
                   ? (
                     <BraveTodaySettings
                       publishers={this.props.todayPublishers}
+                      setPublisherPref={this.props.actions.setPublisherPref}
                     />
                   ) : null
                 }

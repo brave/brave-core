@@ -27,7 +27,6 @@ handler.on(init.getType(), async (store, action) => {
       Background.send<Messages.GetFeedResponse>(MessageTypes.getFeed),
       Background.send<Messages.GetPublishersResponse>(MessageTypes.getPublishers)
     ])
-    console.log('got feed', { feed, publishers })
     store.dispatch(Actions.dataReceived({feed, publishers}))
   } catch (e) {
     console.error('error receiving feed', e)
@@ -45,5 +44,19 @@ handler.on<Actions.ReadFeedItemPayload>(Actions.readFeedItem.getType(), async (s
   window.location = payload.url
 })
 
+handler.on<Actions.SetPublisherPrefPayload>(Actions.setPublisherPref.getType(), async (store, dispatch, payload) => {
+  const { publisherId, enabled } = payload
+  const { publishers } = await Background.send<Messages.SetPublisherPrefResponse, Messages.SetPublisherPrefPayload>(MessageTypes.setPublisherPref, {
+    publisherId,
+    enabled
+  })
+  store.dispatch(Actions.dataReceived({publishers}))
+  dispatch(Actions.checkForUpdate())
+})
+
+handler.on(Actions.checkForUpdate.getType(), async function (store, dispatch) {
+  const isUpdateAvailable = await Background.send<Messages.IsFeedUpdateAvailableResponse>(MessageTypes.isFeedUpdateAvailable)
+  dispatch(Actions.isUpdateAvailable(isUpdateAvailable))
+})
 
 export default handler.middleware

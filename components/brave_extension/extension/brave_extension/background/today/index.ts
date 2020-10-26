@@ -6,6 +6,7 @@
 import * as Background from '../../../../../common/Background'
 import * as Feed from './feed'
 import * as Publishers from './publishers'
+import * as PublisherUserPrefs from './publisher-user-prefs'
 import { getUnpaddedAsDataUrl } from './privateCDN'
 
 // TODO: make this a shared (common) thing and do explicit types for payloads like
@@ -27,7 +28,7 @@ Background.setListener<void>(
 Background.setListener<Messages.GetFeedResponse>(
   MessageTypes.getFeed,
   async function (req, sender, sendResponse) {
-    console.log('asked to get feed')
+    // TODO: handle error
     const feed = await Feed.getOrFetchData()
     // Only wait once. If there was an error or no data then return nothing.
     // TODO: return error status
@@ -41,10 +42,9 @@ Background.setListener<Messages.GetFeedResponse>(
 Background.setListener<Messages.GetPublishersResponse>(
   MessageTypes.getPublishers,
   async function (req, sender, sendResponse) {
-    console.log('asked to get publishers')
-    const publishers = await Publishers.getOrFetchData()
     // TODO: handle error
-    console.log('sending', publishers)
+    const publishers = await Publishers.getOrFetchData()
+    // TODO(petemill): handle error
     sendResponse({ publishers })
   }
 )
@@ -52,7 +52,7 @@ Background.setListener<Messages.GetPublishersResponse>(
 Background.setListener<Messages.GetImageDataResponse, Messages.GetImageDataPayload>(
   MessageTypes.getImageData,
   async function (req, sender, sendResponse) {
-    console.log('asked for image')
+    // TODO: handle error
     const blob = await fetch(req.url).then(r => r.blob());
     // @ts-ignore (Blob.arrayBuffer does exist)
     const buffer = await blob.arrayBuffer()
@@ -60,6 +60,27 @@ Background.setListener<Messages.GetImageDataResponse, Messages.GetImageDataPaylo
     sendResponse({
       dataUrl
     })
+  }
+)
+
+Background.setListener<Messages.SetPublisherPrefResponse, Messages.SetPublisherPrefPayload>(
+  MessageTypes.setPublisherPref,
+  async function (req, sender, sendResponse) {
+    const publisherId = req.publisherId
+    const enabled: boolean | null = req.enabled
+    await PublisherUserPrefs.setPublisherPref(publisherId, enabled)
+    const publishers = await Publishers.update(true)
+    sendResponse({ publishers })
+  }
+)
+
+Background.setListener<Messages.IsFeedUpdateAvailableResponse, Messages.IsFeedUpdateAvailablePayload>(
+  MessageTypes.isFeedUpdateAvailable,
+  async function (req, sender, sendResponse) {
+    const requestHash = req.hash
+    const feed = await Feed.getOrFetchData()
+    const isUpdateAvailable = !!(feed && feed.hash !== requestHash)
+    sendResponse({ isUpdateAvailable })
   }
 )
 

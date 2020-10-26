@@ -3,6 +3,7 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // you can obtain one at http://mozilla.org/MPL/2.0/.
 import { formatDistanceToNow } from 'date-fns'
+import hashStrings from '../../../../../common/hashStrings'
 
 function shuffleArray (array: Array<any>) {
   for (let i = array.length - 1; i > 0; i--) {
@@ -40,9 +41,15 @@ export default async function getBraveTodayData (
   const deals: (BraveToday.Deal)[] = []
   let articles: (BraveToday.Article)[] = []
 
-  // Filter to only enabled sources and images
+  // Filter to only with image and enabled
+  // publishers (or publishers we yet know about).
   feedContent = feedContent
     .filter(f => isItemWithImage(f) && !!enabledPublishers[f.publisher_id])
+
+  // Get hash at this point since we have a flat list, and our history
+  // isn't changing it, but changes in publisher prefs will
+  const hash = hashStrings(feedContent.map(i => i.url))
+
   feedContent = await weightArticles(feedContent)
 
   for (let feedItem of feedContent) {
@@ -61,12 +68,12 @@ export default async function getBraveTodayData (
   }
 
   // Shuffle top 25 items
-  const topArticles = articles.splice(0, 25)
-  shuffleArray(topArticles)
-  articles = [
-    ...topArticles,
-    ...articles
-  ]
+  // const topArticles = articles.splice(0, 25)
+  // shuffleArray(topArticles)
+  // articles = [
+  //   ...topArticles,
+  //   ...articles
+  // ]
 
   // Get unique categories present
   const categoryCounts = new Map<string, number>()
@@ -122,6 +129,7 @@ export default async function getBraveTodayData (
 
   return {
     // featuredSponsor: firstSponsors.length ? firstSponsors[0] : undefined,
+    hash,
     featuredArticle: firstHeadlines.length ? firstHeadlines[0] : undefined,
     featuredDeals: firstDeals,
     pages
@@ -147,19 +155,6 @@ function generateNextPage (
   allDeals: BraveToday.Deal[],
   featuredCategory?: string,
   dealsCategory?: string): BraveToday.Page | null {
-  // .repeating([.headline(paired: false)], times: 2),
-  // .repeating([.headline(paired: true)], times: 2),
-  // .categoryGroup (first "Top News" then each category),
-  // .headline(paired: false),
-  // .deals,
-  // .headline(paired: false),
-  // .headline(paired: true),
-  // .brandedGroup(numbered: true),
-  // .group (3 articles),
-  // Random items in the last 48 hours:
-  //    .headline(paired: false),
-  //    .headline(paired: true),
-  //    .headline(paired: false),
 
   // Collect headlines
   const headlines = take(articles, 13)
@@ -184,7 +179,7 @@ function generateNextPage (
 
   const publisherInfo = generateArticleSourceGroup(articles)
 
-  const randomArticles = take(articles, 4, isArticleWithin48Hours)
+  const randomArticles = take(articles, 4, isArticleWithin48Hours, true)
 
   return {
     articles: headlines,

@@ -8,8 +8,8 @@ import { createAction } from 'redux-act'
 export const init = createAction<void>('init')
 
 type DataReceivedPayload = {
-  feed: BraveToday.Feed | undefined
-  publishers: BraveToday.Publishers | undefined
+  feed?: BraveToday.Feed
+  publishers?: BraveToday.Publishers
 }
 export const dataReceived = createAction<DataReceivedPayload>('dataReceived')
 
@@ -26,3 +26,16 @@ export const errorGettingDataFromBackground = createAction<BackgroundErrorPayloa
 /** User has requested to read an article */
 export type ReadFeedItemPayload = BraveToday.FeedItem
 export const readFeedItem = createAction<ReadFeedItemPayload>('readFeedItem')
+
+export type SetPublisherPrefPayload = {
+  publisherId: string
+  enabled: boolean | null
+}
+export const setPublisherPref = createAction<SetPublisherPrefPayload>('setPublisherPref', (publisherId: string, enabled: boolean | null) => ({publisherId, enabled}))
+
+export const checkForUpdate = createAction('checkForUpdate')
+
+export type IsUpdateAvailablePayload = {
+  isUpdateAvailable: boolean
+}
+export const isUpdateAvailable = createAction<IsUpdateAvailablePayload>('isUpdateAvailable')

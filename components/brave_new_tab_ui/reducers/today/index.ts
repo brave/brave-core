@@ -10,6 +10,7 @@ import * as Actions from '../../actions/today_actions'
 export type BraveTodayState = {
   // Are we in the middle of checking for new data
   isFetching: boolean | string
+  isUpdateAvailable: boolean
   // How many pages have been displayed so far for the current data
   currentPageIndex: number
   // Feed data
@@ -26,14 +27,15 @@ function storeInHistoryState (data: Object) {
 
 const defaultState: BraveTodayState = {
   isFetching: true,
-  currentPageIndex: 0,
+  isUpdateAvailable: false,
+  currentPageIndex: 0
 }
 // Get previously-clicked article from history state
 if (history.state && history.state.todayArticle) {
   defaultState.currentPageIndex = history.state.todayPageIndex as number || 0
   defaultState.articleScrollTo = history.state.todayArticle as BraveToday.FeedItem
   // Clear history state now that we have the info on app state
-  storeInHistoryState({todayArticle: null, todayPageIndex: null})
+  storeInHistoryState({ todayArticle: null, todayPageIndex: null })
 }
 
 // TODO(petemill): Make sure we don't keep scrolling to the scrolled-to article
@@ -51,25 +53,46 @@ reducer.on(init, (state, payload) => ({
 
 reducer.on(Actions.errorGettingDataFromBackground, (state, payload) => ({
   ...state,
-  isFetching: (payload && payload.error && payload.error.message) || 'Unknown error.',
+  isFetching: (payload && payload.error && payload.error.message) || 'Unknown error.'
 }))
 
 reducer.on(Actions.dataReceived, (state, payload) => {
-  return {
+  const newState = {
     ...state,
-    isFetching: false,
-    feed: payload.feed,
-    publishers: payload.publishers,
-    // Reset page index to ask for, even if we have current paged
-    // content since feed might be new content.
-    currentPageIndex: state.articleScrollTo ? state.currentPageIndex : 0
+    isFetching: false
   }
+  if (payload.feed) {
+    const isNewFeed = !state.feed || state.feed.hash !== payload.feed.hash
+    if (isNewFeed) {
+      newState.feed = payload.feed
+      newState.currentPageIndex = state.articleScrollTo ? state.currentPageIndex : 0
+      newState.isUpdateAvailable = false
+    }
+  }
+  if (payload.publishers) {
+    newState.publishers = payload.publishers
+  }
+  return newState
 })
 
 reducer.on(Actions.anotherPageNeeded, (state) => {
   // Add a new page of content to the state
   return {
     ...state,
-    currentPageIndex: state.currentPageIndex + 1,
+    currentPageIndex: state.currentPageIndex + 1
   }
 })
+
+reducer.on(Actions.setPublisherPref, (state, payload) => {
+  // TODO(petemill): Store change in pending, or simply store that we're
+  // waiting for the change.
+  return state
+})
+
+reducer.on(Actions.isUpdateAvailable, (state, payload) => {
+  return {
+    ...state,
+    isUpdateAvailable: payload.isUpdateAvailable
+  }
+})
+

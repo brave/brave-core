@@ -6,11 +6,14 @@
 const braveExtensionId = 'mnojpmjdmbbfmejpflffifhffcmidifd'
 
 export namespace MessageTypes {
+
   export enum Today {
     getFeed = 'getFeed',
     getPublishers = 'getPublishers',
     indicatingOpen = 'indicatingOpen',
     getImageData = 'getImageData',
+    setPublisherPref = 'setPublisherPref',
+    isFeedUpdateAvailable = 'isFeedUpdateAvailable'
   }
 }
 export type Payload = any
