@@ -211,7 +211,7 @@ void BraveAppearanceHandler::GetIsBraveTogetherSupported(
   bool is_supported = false;
 #else
   bool is_supported = ntp_widget_utils::IsRegionSupported(
-      profile_->GetPrefs(), brave_together::supported_regions, true);
+      profile_->GetPrefs(), brave_together::unsupported_regions, false);
 #endif
 
   ResolveJavascriptCallback(args->GetList()[0], base::Value(is_supported));
