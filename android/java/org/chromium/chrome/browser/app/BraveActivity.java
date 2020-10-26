@@ -81,6 +81,7 @@ import org.chromium.chrome.browser.widget.crypto.binance.BinanceWidgetManager;
 import org.chromium.components.bookmarks.BookmarkId;
 import org.chromium.components.bookmarks.BookmarkType;
 import org.chromium.components.embedder_support.util.UrlConstants;
+import org.chromium.components.embedder_support.util.UrlUtilities;
 import org.chromium.components.user_prefs.UserPrefs;
 import org.chromium.ui.widget.Toast;
 
@@ -329,7 +330,7 @@ public abstract class BraveActivity<C extends ChromeActivityComponent> extends C
             case RetentionNotificationUtil.BRAVE_STATS_TIME:
                 if (getActivityTab() != null
                     && getActivityTab().getUrlString() != null
-                    && !NewTabPage.isNTPUrl(getActivityTab().getUrlString())) {
+                    && !UrlUtilities.isNTPUrl(getActivityTab().getUrlString())) {
                     getTabCreator(false).launchUrl(UrlConstants.NTP_URL, TabLaunchType.FROM_CHROME_UI);
                 }
                 break;
@@ -346,7 +347,7 @@ public abstract class BraveActivity<C extends ChromeActivityComponent> extends C
         if (OnboardingPrefManager.getInstance().isBraveStatsEnabled()) {
             BraveStatsUtil.showBraveStats();
         } else {
-            if (!NewTabPage.isNTPUrl(getActivityTab().getUrlString())) {
+            if (!UrlUtilities.isNTPUrl(getActivityTab().getUrlString())) {
                 OnboardingPrefManager.getInstance().setFromNotification(true);
                 getTabCreator(false).launchUrl(UrlConstants.NTP_URL, TabLaunchType.FROM_CHROME_UI);
             } else {

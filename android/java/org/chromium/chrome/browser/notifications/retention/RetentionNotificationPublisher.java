@@ -17,19 +17,19 @@ import org.chromium.base.ApplicationStatus;
 import org.chromium.base.Log;
 import org.chromium.base.ThreadUtils;
 import org.chromium.base.task.AsyncTask;
-import org.chromium.chrome.browser.app.BraveActivity;
 import org.chromium.chrome.browser.BraveAdsNativeHelper;
 import org.chromium.chrome.browser.BraveFeatureList;
+import org.chromium.chrome.browser.app.BraveActivity;
 import org.chromium.chrome.browser.brave_stats.BraveStatsUtil;
 import org.chromium.chrome.browser.flags.ChromeFeatureList;
 import org.chromium.chrome.browser.notifications.BraveSetDefaultBrowserNotificationService;
-import org.chromium.chrome.browser.ntp.NewTabPage;
 import org.chromium.chrome.browser.onboarding.OnboardingPrefManager;
 import org.chromium.chrome.browser.preferences.BravePref;
-import org.chromium.components.user_prefs.UserPrefs;
 import org.chromium.chrome.browser.profiles.Profile;
 import org.chromium.chrome.browser.tab.TabLaunchType;
 import org.chromium.components.embedder_support.util.UrlConstants;
+import org.chromium.components.embedder_support.util.UrlUtilities;
+import org.chromium.components.user_prefs.UserPrefs;
 
 public class RetentionNotificationPublisher extends BroadcastReceiver {
     private static final String NOTIFICATION_CHANNEL_NAME = "brave";
@@ -58,7 +58,7 @@ public class RetentionNotificationPublisher extends BroadcastReceiver {
                 case RetentionNotificationUtil.BRAVE_STATS_TIME:
                     if (braveActivity.getActivityTab() != null 
                         && braveActivity.getActivityTab().getUrlString() != null
-                        && !NewTabPage.isNTPUrl(braveActivity.getActivityTab().getUrlString())) {
+                        && !UrlUtilities.isNTPUrl(braveActivity.getActivityTab().getUrlString())) {
                         braveActivity.getTabCreator(false).launchUrl(UrlConstants.NTP_URL, TabLaunchType.FROM_CHROME_UI);
                     }
                     break;
