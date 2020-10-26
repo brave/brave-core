@@ -50,6 +50,10 @@ public class BytecodeTest {
                 "org/chromium/chrome/browser/toolbar/top/TabSwitcherModeTTCoordinatorPhone"));
         Assert.assertTrue(
                 classExists("org/chromium/chrome/browser/toolbar/top/TabSwitcherModeTTPhone"));
+        Assert.assertTrue(classExists(
+                "org/chromium/chrome/browser/customtabs/features/toolbar/CustomTabToolbar"));
+        Assert.assertTrue(
+                classExists("org/chromium/chrome/browser/suggestions/tile/SuggestionsTileView"));
     }
 
     @Test
