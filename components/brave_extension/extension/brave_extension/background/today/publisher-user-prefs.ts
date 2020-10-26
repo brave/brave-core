@@ -30,7 +30,12 @@ function isValidStorageData(data: any) {
 
 function setPrefsToStorage (prefs: Prefs) {
   return new Promise(resolve => {
-      chrome.storage.sync.set({
+      // TODO(petemill): Use `chrome.storage.sync.` and
+      // have source preferences follow the user across
+      // brave instances. However, we would have to always
+      // read from storage and not cache in-memory. Or handle
+      // data-changed events.
+      chrome.storage.local.set({
       [STORAGE_KEY]: {
         storageSchemaVersion: STORAGE_SCHEMA_VERSION,
         prefs
@@ -41,7 +46,7 @@ function setPrefsToStorage (prefs: Prefs) {
 
 function getPrefsFromStorage (): Promise<Prefs> {
   return new Promise(resolve => {
-    chrome.storage.sync.get(STORAGE_KEY, (data) => {
+    chrome.storage.local.get(STORAGE_KEY, (data) => {
       let prefs = {}
       if (isValidStorageData(data)) {
         prefs = data[STORAGE_KEY].prefs
