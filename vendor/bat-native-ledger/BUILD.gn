@@ -365,6 +365,8 @@ source_set("ledger") {
     "src/bat/ledger/internal/endpoint/promotion/post_bat_loss/post_bat_loss.h",
     "src/bat/ledger/internal/endpoint/promotion/post_captcha/post_captcha.cc",
     "src/bat/ledger/internal/endpoint/promotion/post_captcha/post_captcha.h",
+    "src/bat/ledger/internal/endpoint/promotion/post_claim_brave/post_claim_brave.cc",
+    "src/bat/ledger/internal/endpoint/promotion/post_claim_brave/post_claim_brave.h",
     "src/bat/ledger/internal/endpoint/promotion/post_claim_uphold/post_claim_uphold.cc",
     "src/bat/ledger/internal/endpoint/promotion/post_claim_uphold/post_claim_uphold.h",
     "src/bat/ledger/internal/endpoint/promotion/post_clobbered_claims/post_clobbered_claims.cc",
