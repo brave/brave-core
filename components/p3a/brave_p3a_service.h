@@ -70,7 +70,7 @@ class BraveP3AService : public base::RefCountedThreadSafe<BraveP3AService>,
                           uint64_t name_hash,
                           base::HistogramBase::Sample sample);
 
-  void OnHistogramChangedOnUI(base::StringPiece histogram_name,
+  void OnHistogramChangedOnUI(const char* histogram_name,
                               base::HistogramBase::Sample sample,
                               size_t bucket);
 
