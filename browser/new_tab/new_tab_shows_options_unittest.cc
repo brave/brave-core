@@ -5,6 +5,7 @@
 
 #include "brave/browser/new_tab/new_tab_shows_options.h"
 #include "brave/common/pref_names.h"
+#include "brave/common/webui_url_constants.h"
 #include "chrome/common/pref_names.h"
 #include "chrome/test/base/testing_browser_process.h"
 #include "chrome/test/base/testing_profile.h"
@@ -70,7 +71,7 @@ TEST_F(BraveNewTabTest, BasicTest) {
   // Check NTP url is blank when option is BLANKPAGE.
   prefs->SetInteger(kNewTabPageShowsOptions,
                     brave::NewTabPageShowsOptions::BLANKPAGE);
-  EXPECT_EQ(GURL(url::kAboutBlankURL), brave::GetNewTabPageURL(profile));
+  EXPECT_EQ(GURL(kBraveBlankPageURL), brave::GetNewTabPageURL(profile));
   EXPECT_EQ(GURL(), brave::GetNewTabPageURL(otr_profile));
   EXPECT_FALSE(brave::ShouldUseNewTabURLForNewTab(profile));
 }
