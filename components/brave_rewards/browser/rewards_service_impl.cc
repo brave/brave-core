@@ -425,6 +425,7 @@ void RewardsServiceImpl::CheckPreferences() {
 void RewardsServiceImpl::StartLedger(StartProcessCallback callback) {
   if (Connected()) {
     BLOG(1, "Ledger process is already running");
+    std::move(callback).Run(ledger::type::Result::LEDGER_OK);
     return;
   }
 
@@ -3260,15 +3261,23 @@ void RewardsServiceImpl::OnCompleteReset(
     const bool success) {
   resetting_rewards_ = false;
 
+  StartProcess(
+      base::BindOnce(
+          &RewardsServiceImpl::OnCompleteResetProcess,
+          AsWeakPtr(),
+          std::move(callback)));
+}
+
+void RewardsServiceImpl::OnCompleteResetProcess(
+    SuccessCallback callback,
+    const ledger::type::Result result) {
+  const bool success = result == ledger::type::Result::LEDGER_OK;
+
   for (auto& observer : observers_) {
     observer.OnCompleteReset(success);
   }
 
-  std::move(callback).Run(true);
-
-  // now that we restarted everything we need to start process again
-  // as we are still on rewards page
-  StartProcess(base::DoNothing());
+  std::move(callback).Run(success);
 }
 
 void RewardsServiceImpl::WalletDisconnected(const std::string& wallet_type) {
