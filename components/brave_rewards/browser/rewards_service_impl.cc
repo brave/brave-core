@@ -3265,6 +3265,10 @@ void RewardsServiceImpl::OnCompleteReset(
   }
 
   std::move(callback).Run(true);
+
+  // now that we restarted everything we need to start process again
+  // as we are still on rewards page
+  StartProcess(base::DoNothing());
 }
 
 void RewardsServiceImpl::WalletDisconnected(const std::string& wallet_type) {
