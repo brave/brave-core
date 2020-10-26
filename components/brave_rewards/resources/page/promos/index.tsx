@@ -4,11 +4,12 @@
 
 import * as React from 'react'
 import tapBg from './assets/tap_bg.svg'
-import upholdBg from './assets/uphold_bg.png'
+import upholdCardBg from './assets/uphold_card_bg.png'
+import upholdEquitiesBg from './assets/uphold_equities_bg.svg'
 import { StyledInfo } from '../../ui/components/sidebarPromo/style'
 import { getLocale } from '../../../../common/locale'
 
-export type PromoType = 'uphold' | 'tap-network'
+export type PromoType = 'uphold-card' | 'tap-network' | 'uphold-equities'
 
 export interface Promo {
   title: string
@@ -25,9 +26,11 @@ export const getActivePromos = (rewardsData: Rewards.State) => {
   if (rewardsData) {
     let wallet = rewardsData.externalWallet
     if (wallet && wallet.status === 2 && wallet.address && wallet.address.length > 0) { // WalletStatus::VERIFIED
-      promos.unshift('uphold')
+      promos.unshift('uphold-card')
     }
   }
+
+  promos.unshift('uphold-equities')
 
   return promos
 }
@@ -37,8 +40,11 @@ const getLink = (type: PromoType) => {
     case 'tap-network': {
       return 'https://brave.tapnetwork.io'
     }
-    case 'uphold': {
+    case 'uphold-card': {
       return 'https://uphold.com/brave/upholdcard'
+    }
+    case 'uphold-equities': {
+      return 'https://uphold.com/en/buy-fractional-shares/brave'
     }
   }
 
@@ -60,9 +66,9 @@ export const getPromo = (type: PromoType, rewardsData: Rewards.State) => {
         title: getLocale('tapNetworkTitle'),
         disclaimer: getLocale('tapNetworkDisclaimer')
       }
-    case 'uphold':
+    case 'uphold-card':
       return {
-        imagePath: upholdBg,
+        imagePath: upholdCardBg,
         link: getLink(type),
         copy: (
           <StyledInfo>
@@ -71,6 +77,18 @@ export const getPromo = (type: PromoType, rewardsData: Rewards.State) => {
         ),
         supportedLocales: ['US'],
         title: getLocale('upholdPromoTitle')
+      }
+    case 'uphold-equities':
+      return {
+        imagePath: upholdEquitiesBg,
+        link: getLink(type),
+        copy: (
+          <StyledInfo>
+            {getLocale('upholdPromoEquitiesInfo')}
+          </StyledInfo>
+        ),
+        supportedLocales: ['US'],
+        title: getLocale('upholdPromoEquitiesTitle')
       }
     default:
       return null
