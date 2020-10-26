@@ -25,6 +25,8 @@ java_binary("java_bytecode_rewriter") {
     "//brave/build/android/bytecode/java/org/brave/bytecode/BraveSearchEngineAdapterClassAdapter.java",
     "//brave/build/android/bytecode/java/org/brave/bytecode/BraveTabSwitcherModeTTCoordinatorPhoneClassAdapter.java",
     "//brave/build/android/bytecode/java/org/brave/bytecode/BraveTabSwitcherModeTTPhoneClassAdapter.java",
+    "//brave/build/android/bytecode/java/org/brave/bytecode/BraveTileViewClassAdapter.java",
+    "//brave/build/android/bytecode/java/org/brave/bytecode/BraveToolbarLayoutClassAdapter.java",
     "//brave/build/android/bytecode/java/org/brave/bytecode/BraveToolbarManagerClassAdapter.java",
     "//brave/build/android/bytecode/java/org/brave/bytecode/BraveTopToolbarCoordinatorClassAdapter.java",
     "//brave/build/android/bytecode/java/org/brave/bytecode/ByteCodeProcessor.java",

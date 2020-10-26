@@ -26,6 +26,8 @@ public class BraveClassAdapter {
         chain = new BraveTopToolbarCoordinatorClassAdapter(chain);
         chain = new BraveTabSwitcherModeTTCoordinatorPhoneClassAdapter(chain);
         chain = new BraveTabSwitcherModeTTPhoneClassAdapter(chain);
+        chain = new BraveToolbarLayoutClassAdapter(chain);
+        chain = new BraveTileViewClassAdapter(chain);
         return chain;
     }
 }
