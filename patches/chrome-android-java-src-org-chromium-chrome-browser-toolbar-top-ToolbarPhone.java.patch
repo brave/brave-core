@@ -46,7 +46,7 @@ index ee9975389c4051eea7f184790068d7d379e67e16..62c3ef7b794f3ea81fc682fed38daf24
          } else {
              populateUrlClearFocusingAnimatorSet(animators);
          }
-+        populateUrlAnimatorSet(hasFocus, URL_FOCUS_TOOLBAR_BUTTONS_DURATION_MS, URL_CLEAR_FOCUS_TABSTACK_DELAY_MS, URL_FOCUS_TOOLBAR_BUTTONS_TRANSLATION_X_DP, animators);
++        populateUrlAnimatorSet(hasFocus, URL_FOCUS_TOOLBAR_BUTTONS_DURATION_MS, URL_CLEAR_FOCUS_TABSTACK_DELAY_MS, animators);
          mUrlFocusLayoutAnimator = new AnimatorSet();
          mUrlFocusLayoutAnimator.playTogether(animators);
  
