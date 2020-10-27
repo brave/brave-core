@@ -796,6 +796,9 @@ void CustomizeWebUIHTMLSource(const std::string &name,
 
         { "upholdPromoTitle", IDS_BRAVE_UI_UPHOLD_PROMO_TITLE },
         { "upholdPromoInfo", IDS_BRAVE_UI_UPHOLD_PROMO_INFO },
+
+        { "upholdPromoEquitiesTitle", IDS_BRAVE_UI_UPHOLD_PROMO_EQUITIES_TITLE },                // NOLINT
+        { "upholdPromoEquitiesInfo", IDS_BRAVE_UI_UPHOLD_PROMO_EQUITIES_INFO },
       }
     }, {
       std::string("adblock"), {
