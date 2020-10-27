@@ -23,8 +23,9 @@
 
 namespace syncer {
 
-BraveProfileSyncService::BraveProfileSyncService(InitParams init_params,
-                                                 Profile* profile)
+BraveProfileSyncService::BraveProfileSyncService(
+    InitParams init_params,
+    DeviceInfoSyncService* device_info_sync_service)
     : ProfileSyncService(std::move(init_params)),
       brave_sync_prefs_(sync_client_->GetPrefService()),
       weak_ptr_factory_(this) {
@@ -38,10 +39,6 @@ BraveProfileSyncService::BraveProfileSyncService(InitParams init_params,
     StopImpl(CLEAR_DATA);
     brave_sync_prefs_.SetSyncV1Migrated(true);
   }
-
-  syncer::DeviceInfoSyncService* device_info_sync_service =
-      DeviceInfoSyncServiceFactory::GetForProfile(profile);
-  DCHECK(device_info_sync_service);
 
   local_device_info_provider_ =
       device_info_sync_service->GetLocalDeviceInfoProvider();

@@ -23,11 +23,13 @@ namespace syncer {
 class BraveSyncAuthManager;
 class DeviceInfoTracker;
 class LocalDeviceInfoProvider;
+class DeviceInfoSyncService;
 
 class BraveProfileSyncService : public ProfileSyncService,
                                 public syncer::DeviceInfoTracker::Observer {
  public:
-  explicit BraveProfileSyncService(InitParams init_params, Profile* profile);
+  explicit BraveProfileSyncService(InitParams init_params,
+      DeviceInfoSyncService* device_info_sync_service);
   ~BraveProfileSyncService() override;
 
   // SyncService implementation
