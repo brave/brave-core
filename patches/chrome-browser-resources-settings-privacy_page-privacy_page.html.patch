@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/resources/settings/privacy_page/privacy_page.html b/chrome/browser/resources/settings/privacy_page/privacy_page.html
-index fa8c91d03d06e821c40a3620ff10467a62f95847..11e2efd21951132337d693e790ee01c87f37d046 100644
+index 24891b969e96a9d4116208e0d153d2ca7aac6082..73fddfa622f3e092120612a3fad33a6f213bb6b9 100644
 --- a/chrome/browser/resources/settings/privacy_page/privacy_page.html
 +++ b/chrome/browser/resources/settings/privacy_page/privacy_page.html
-@@ -11,6 +11,7 @@
+@@ -29,6 +29,7 @@
      <settings-animated-pages id="pages" section="privacy"
          focus-config="[[focusConfig_]]">
        <div route-path="default">
@@ -10,7 +10,7 @@ index fa8c91d03d06e821c40a3620ff10467a62f95847..11e2efd21951132337d693e790ee01c8
          <cr-link-row id="clearBrowsingData"
              class="hr" start-icon="cr:delete"
              label="$i18n{clearBrowsingData}"
-@@ -126,6 +127,7 @@
+@@ -144,6 +145,7 @@
            </template>
          </settings-subpage>
        </template>
@@ -18,7 +18,7 @@ index fa8c91d03d06e821c40a3620ff10467a62f95847..11e2efd21951132337d693e790ee01c8
        <template is="dom-if" route-path="/content/backgroundSync" no-search>
          <settings-subpage page-title="$i18n{siteSettingsBackgroundSync}"
              search-label="$i18n{siteSettingsAllSitesSearch}"
-@@ -167,6 +169,7 @@
+@@ -185,6 +187,7 @@
            </template>
          </settings-subpage>
        </template>
@@ -26,7 +26,7 @@ index fa8c91d03d06e821c40a3620ff10467a62f95847..11e2efd21951132337d693e790ee01c8
        <template is="dom-if" route-path="/content/camera" no-search>
          <settings-subpage page-title="$i18n{siteSettingsCategoryCamera}"
              search-label="$i18n{siteSettingsAllSitesSearch}"
-@@ -384,6 +387,7 @@
+@@ -402,6 +405,7 @@
              </category-setting-exceptions>
            </template>
            <template is="dom-if" if="[[!enableContentSettingsRedesign_]]">
@@ -34,7 +34,7 @@ index fa8c91d03d06e821c40a3620ff10467a62f95847..11e2efd21951132337d693e790ee01c8
              <category-default-setting
                  toggle-off-label="$i18n{siteSettingsBlocked}"
                  toggle-on-label="$i18n{siteSettingsAllowedRecommended}"
-@@ -395,6 +399,7 @@
+@@ -413,6 +417,7 @@
                  allow-header="$i18n{siteSettingsAllow}"
                  search-filter="[[searchFilter_]]">
              </category-setting-exceptions>
@@ -42,8 +42,8 @@ index fa8c91d03d06e821c40a3620ff10467a62f95847..11e2efd21951132337d693e790ee01c8
            </template>
          </settings-subpage>
        </template>
-@@ -563,6 +568,19 @@
-           </category-setting-exceptions>
+@@ -627,6 +632,19 @@
+           </template>
          </settings-subpage>
        </template>
 +      <template is="dom-if" route-path="/content/autoplay" no-search>
