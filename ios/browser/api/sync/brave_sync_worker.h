@@ -68,7 +68,6 @@ class BraveSyncWorker : public syncer::SyncServiceObserver {
   bool IsSyncEnabled();
   bool IsSyncFeatureActive();
   bool IsFirstSetupComplete();
-  bool RemoveDevice(const std::string& device_guid);
   bool ResetSync();
 
  private:
@@ -78,7 +77,6 @@ class BraveSyncWorker : public syncer::SyncServiceObserver {
   void OnStateChanged(syncer::SyncService* service) override;
   void OnSyncShutdown(syncer::SyncService* service) override;
 
-  void OnRemoteDeviceInfoDeleted();
   void OnLocalDeviceInfoDeleted();
 
   ChromeBrowserState* browser_state_;  // NOT OWNED
