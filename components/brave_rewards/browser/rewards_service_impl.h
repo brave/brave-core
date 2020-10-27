@@ -728,6 +728,10 @@ class RewardsServiceImpl : public RewardsService,
 
   void OnCompleteReset(SuccessCallback callback, const bool success);
 
+  void OnCompleteResetProcess(
+      SuccessCallback callback,
+      const ledger::type::Result result);
+
   bool DeleteLogTaskRunner();
 
   void OnDeleteLog(ledger::ResultCallback callback, const bool success);

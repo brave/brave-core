@@ -106,6 +106,13 @@ class SettingsPage extends React.Component<Props, State> {
         redirectModalDisplayed: 'show'
       })
     }
+
+    if (
+      prevProps.rewardsData.externalWallet &&
+      !this.props.rewardsData.externalWallet
+    ) {
+      this.actions.getExternalWallet('uphold')
+    }
   }
 
   stopRewards () {
