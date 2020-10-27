@@ -66,6 +66,7 @@ source_set("browser_tests") {
   testonly = true
   if (enable_tor) {
     sources = [
+      "brave_local_state_browsertest.cc",
       "brave_tor_client_updater_browsertest.cc",
       "onion_location_navigation_throttle_browsertest.cc",
     ]

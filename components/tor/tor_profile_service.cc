@@ -15,11 +15,9 @@
 
 namespace tor {
 
-TorProfileService::TorProfileService() {
-}
+TorProfileService::TorProfileService() = default;
 
-TorProfileService::~TorProfileService() {
-}
+TorProfileService::~TorProfileService() = default;
 
 // static
 void TorProfileService::RegisterLocalStatePrefs(PrefRegistrySimple* registry) {

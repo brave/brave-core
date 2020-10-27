@@ -711,15 +711,6 @@ if (!is_android) {
       ]
     }
 
-    if (enable_tor) {
-      sources += [
-        "//brave/browser/brave_local_state_browsertest.cc",
-      ]
-      deps += [
-        "//brave/browser/tor"
-      ]
-    }
-
     if (is_win || is_linux) {
       sources += [ "//brave/browser/renderer_context_menu/brave_spelling_options_submenu_observer_browsertest.cc" ]
     }

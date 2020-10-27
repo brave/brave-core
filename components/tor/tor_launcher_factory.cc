@@ -12,7 +12,7 @@
 #include "base/task/post_task.h"
 #include "brave/components/tor/service_sandbox_type.h"
 #include "brave/components/tor/tor_profile_service_impl.h"
-#include "brave/grit/brave_generated_resources.h"
+#include "components/grit/brave_components_strings.h"
 #include "content/public/browser/browser_task_traits.h"
 #include "content/public/browser/browser_thread.h"
 #include "content/public/browser/child_process_launcher_utils.h"
