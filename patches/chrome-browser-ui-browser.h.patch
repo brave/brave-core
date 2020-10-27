@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/ui/browser.h b/chrome/browser/ui/browser.h
-index c67b79ec647a2ddfd7bb5adc583a9ac8659c6fe5..30cafe4cc4f1fb9e1010c1ec61f096ecda3c6f74 100644
+index 79cde7e1b913e91a15405a0ae1cd7e97fa11971e..50d1442819b515f61c6d63c102057a0d8c0e2e1b 100644
 --- a/chrome/browser/ui/browser.h
 +++ b/chrome/browser/ui/browser.h
 @@ -677,6 +677,7 @@ class Browser : public TabStripModelObserver,

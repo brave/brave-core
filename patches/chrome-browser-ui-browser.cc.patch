@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/ui/browser.cc b/chrome/browser/ui/browser.cc
-index e64857aec3e4ed8d770d679b0392be1dfe402cf6..1ce96d2c327b4b318c9a05b5d6e91c285ec4b3a2 100644
+index 30a8f5eeaedb9bc186faabca645917bc53e7f041..eb4e21faa71cbc6e2e082d0b201d4485f1066048 100644
 --- a/chrome/browser/ui/browser.cc
 +++ b/chrome/browser/ui/browser.cc
 @@ -437,7 +437,7 @@ Browser::Browser(const CreateParams& params)

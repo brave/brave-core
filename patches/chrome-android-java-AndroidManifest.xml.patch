@@ -1,5 +1,5 @@
 diff --git a/chrome/android/java/AndroidManifest.xml b/chrome/android/java/AndroidManifest.xml
-index fe38655c4faf43668ccbcf4ee749952f76c47b67..4540d7515f08886798f5f6a68191531329318cfb 100644
+index a26e0b2fbac798088271de2313f94ff3106163c4..5d38c64397f1f09ac4e2fb886b6e0a90bcb3977a 100644
 --- a/chrome/android/java/AndroidManifest.xml
 +++ b/chrome/android/java/AndroidManifest.xml
 @@ -38,7 +38,9 @@ by a child template that "extends" this file.
@@ -55,15 +55,7 @@ index fe38655c4faf43668ccbcf4ee749952f76c47b67..4540d7515f08886798f5f6a681915313
          android:icon="@drawable/ic_launcher"
          android:roundIcon="@drawable/ic_launcher_round"
          android:label="{% block application_label %}@string/app_name{% endblock %}"
-@@ -211,6 +222,7 @@ by a child template that "extends" this file.
-         <!-- ARCore APK integration -->
-         <!-- This tag indicates that this application optionally uses ARCore. -->
-         <meta-data android:name="com.google.ar.core" android:value="optional" />
-+        <meta-data android:name="com.google.ar.core.min_apk_version" android:value="200501000"/><activity android:name="com.google.ar.core.InstallActivity" android:configChanges="keyboardHidden|orientation|screenSize" android:excludeFromRecents="true" android:exported="false" android:launchMode="singleTop" android:theme="@android:style/Theme.Material.Light.Dialog.Alert" />
-         {% endif %}
- 
-         <!-- Cast support -->
-@@ -1203,6 +1215,7 @@ by a child template that "extends" this file.
+@@ -1166,6 +1177,7 @@ by a child template that "extends" this file.
          </activity>
          {% endif %}
  
@@ -71,3 +63,11 @@ index fe38655c4faf43668ccbcf4ee749952f76c47b67..4540d7515f08886798f5f6a681915313
          {% block extra_application_definitions %}
          <!-- Media route controllers to use for remote playback (cast).
               This is here, rather than in code, since it varies between upstream and downstream,
+@@ -1258,6 +1270,7 @@ by a child template that "extends" this file.
+       <!-- ARCore APK integration -->
+       <!-- This tag indicates that this application optionally uses ARCore. -->
+       <meta-data android:name="com.google.ar.core" android:value="optional" />
++        <meta-data android:name="com.google.ar.core.min_apk_version" android:value="200501000"/><activity android:name="com.google.ar.core.InstallActivity" android:configChanges="keyboardHidden|orientation|screenSize" android:excludeFromRecents="true" android:exported="false" android:launchMode="singleTop" android:theme="@android:style/Theme.Material.Light.Dialog.Alert" />
+       {% endif %}
+ 
+       <!-- Cast support -->
