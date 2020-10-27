@@ -1,8 +1,8 @@
 diff --git a/third_party/blink/renderer/core/html/canvas/html_canvas_element.cc b/third_party/blink/renderer/core/html/canvas/html_canvas_element.cc
-index 7587a085a33071e59309b55a1164adb1364c2dde..59f677c1127971c4ffbf5cbe3410058ef4cd184d 100644
+index 62faacbbd84d77e3f125cc52a81de8041939da32..2dbd56e17ed3b9932b3db65cace6a0962de50bdc 100644
 --- a/third_party/blink/renderer/core/html/canvas/html_canvas_element.cc
 +++ b/third_party/blink/renderer/core/html/canvas/html_canvas_element.cc
-@@ -976,6 +976,7 @@ String HTMLCanvasElement::ToDataURLInternal(
+@@ -974,6 +974,7 @@ String HTMLCanvasElement::ToDataURLInternal(
  
    scoped_refptr<StaticBitmapImage> image_bitmap = Snapshot(source_buffer);
    if (image_bitmap) {

@@ -1,8 +1,8 @@
 diff --git a/chrome/android/java/src/org/chromium/chrome/browser/ui/RootUiCoordinator.java b/chrome/android/java/src/org/chromium/chrome/browser/ui/RootUiCoordinator.java
-index 91c0856c17069db32d7c1844ff4d74499c57f31b..243ab386ef8ec36ffe9aa66d251fce0b577d9ad1 100644
+index 1ab5863ebfa05415cf6d3abe4a31b8dae32f37c0..dc77efa6ba0215565d03b40435cca3e22ffd20f8 100644
 --- a/chrome/android/java/src/org/chromium/chrome/browser/ui/RootUiCoordinator.java
 +++ b/chrome/android/java/src/org/chromium/chrome/browser/ui/RootUiCoordinator.java
-@@ -559,7 +559,7 @@ public class RootUiCoordinator
+@@ -576,7 +576,7 @@ public class RootUiCoordinator
                      mActivity.getLifecycleDispatcher(), mActivity.getModalDialogManager(),
                      () -> mToolbarManager.setUrlBarFocus(false, OmniboxFocusReason.UNFOCUS));
              mButtonDataProviders = Arrays.asList(mIdentityDiscController, shareButtonController);

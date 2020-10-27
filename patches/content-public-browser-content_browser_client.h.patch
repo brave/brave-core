@@ -1,5 +1,5 @@
 diff --git a/content/public/browser/content_browser_client.h b/content/public/browser/content_browser_client.h
-index e222a0295dea1cc6f412d2d217a1850379ea6405..5317aa1f998726b0e4fe1e0ae5909a4f2f9b7dc1 100644
+index 3a620d63aecf17ef5e156d4b4472e9020fa22300..103eb5ad8da52b0e884b18aa64435071112b8b9f 100644
 --- a/content/public/browser/content_browser_client.h
 +++ b/content/public/browser/content_browser_client.h
 @@ -1764,6 +1764,7 @@ class CONTENT_EXPORT ContentBrowserClient {
