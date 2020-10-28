@@ -9,8 +9,18 @@ import * as Publishers from './publishers'
 import * as PublisherUserPrefs from './publisher-user-prefs'
 import { getUnpaddedAsDataUrl } from './privateCDN'
 
-// TODO: make this a shared (common) thing and do explicit types for payloads like
-// we do with redux action payloads.
+// Setup event handlers
+chrome.braveToday.onClearHistory.addListener(() => {
+  // Parsed and weighted feed items have somewhat history-related
+  // data since they have a `score` property which has a different
+  // value if the user has visited the article's URL host recently.
+  // So, clear the generated scores (and the entire generated feed)
+  // when the user clears history.
+  Feed.clearCache()
+  console.debug('Cleared Brave Today feed from cache due to clear history event.')
+})
+
+// Setup listeners for messages from WebUI
 
 import MessageTypes = Background.MessageTypes.Today
 import Messages = BraveToday.Messages
@@ -83,5 +93,13 @@ Background.setListener<Messages.IsFeedUpdateAvailableResponse, Messages.IsFeedUp
     sendResponse({ isUpdateAvailable })
   }
 )
+
+Background.setListener<Messages.ClearPrefsResponse, Messages.ClearPrefsPayload>(
+  MessageTypes.resetPrefsToDefault,
+  async function (req, sender, sendResponse) {
+    await PublisherUserPrefs.clearPrefs()
+    const publishers = await Publishers.update(true)
+    sendResponse({ publishers })
+})
 
 // TODO: schedule to update feed

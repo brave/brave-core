@@ -106,6 +106,7 @@ declare namespace NewTab {
     showGridSiteRemovedNotification?: boolean
     showBackgroundImage: boolean
     showStats: boolean
+    showToday: boolean
     showClock: boolean
     clockFormat: string
     showTopSites: boolean

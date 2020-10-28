@@ -16,6 +16,7 @@ let memoryTodayData: BraveToday.Feed | undefined
 
 let readLock: Promise<void> | null
 
+const STORAGE_KEY = 'today'
 const STORAGE_SCHEMA_VERSION = 1
 
 function isValidStorageData (data: {[key: string]: any}) {
@@ -28,20 +29,28 @@ function isValidStorageData (data: {[key: string]: any}) {
 
 function setStorageData (feed: BraveToday.Feed) {
   chrome.storage.local.set({
-    storageSchemaVersion: STORAGE_SCHEMA_VERSION,
-    feed
+    [STORAGE_KEY]: {
+      storageSchemaVersion: STORAGE_SCHEMA_VERSION,
+      feed
+    }
   })
 }
 
 function getStorageData () {
   return new Promise<void>(resolve => {
     // Load any data from memory, as long as it is the expected format.
-    chrome.storage.local.get('today', (data) => {
+    chrome.storage.local.get(STORAGE_KEY, (data) => {
       if (isValidStorageData(data)) {
         memoryTodayData = data.today.feed
       }
       resolve()
     })
+  })
+}
+
+function clearStorageData () {
+  return new Promise(resolve => {
+    chrome.storage.local.remove(STORAGE_KEY, resolve)
   })
 }
 
@@ -112,6 +121,15 @@ export async function update(force: boolean = false) {
   }
   await readLock
   return memoryTodayData
+}
+
+export async function clearCache() {
+  await getLocalDataLock
+  if (readLock) {
+    await readLock
+  }
+  await clearStorageData()
+  memoryTodayData = undefined
 }
 
 // When publishers (or publishers prefs) changes, update articles

@@ -78,6 +78,7 @@ storiesOf('New Tab/Containers', module)
         actions={Object.assign({}, newTabActions, stackWidgetActions, gridSitesActions, rewardsActions, binanceActions, geminiActions, bitcoinDotComActions, cryptoDotComActions, todayActions)}
         saveShowBackgroundImage={doNothing}
         saveShowStats={doNothing}
+        saveShowToday={doNothing}
         saveShowRewards={doNothing}
         saveShowBinance={doNothing}
         saveShowTogether={doNothing}

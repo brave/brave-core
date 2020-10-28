@@ -5,7 +5,10 @@
 
 #include "brave/browser/brave_profile_prefs.h"
 
+#include <string>
+
 #include "brave/browser/new_tab/new_tab_shows_options.h"
+
 #include "brave/browser/search/ntp_utils.h"
 #include "brave/browser/themes/brave_dark_mode_utils.h"
 #include "brave/browser/ui/omnibox/brave_omnibox_client_impl.h"
@@ -23,6 +26,8 @@
 #include "brave/components/moonpay/browser/buildflags/buildflags.h"
 #include "brave/components/crypto_dot_com/browser/buildflags/buildflags.h"
 #include "brave/components/ipfs/buildflags/buildflags.h"
+#include "brave/components/l10n/browser/locale_helper.h"
+#include "brave/components/l10n/common/locale_util.h"
 #include "brave/components/speedreader/buildflags.h"
 #include "brave/components/tor/buildflags/buildflags.h"
 #include "chrome/browser/net/prediction_options.h"
@@ -250,6 +255,15 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
   registry->RegisterBooleanPref(kNewTabPageShowClock, true);
   registry->RegisterStringPref(kNewTabPageClockFormat, "");
   registry->RegisterBooleanPref(kNewTabPageShowStats, true);
+
+  // Only default brave today to enabled for
+  // english-language on browser startup.
+  const std::string locale =
+      brave_l10n::LocaleHelper::GetInstance()->GetLocale();
+  const std::string language_code = brave_l10n::GetLanguageCode(locale);
+  const bool is_english_language = language_code == "en";
+  registry->RegisterBooleanPref(kNewTabPageShowToday, is_english_language);
+
   registry->RegisterBooleanPref(kNewTabPageShowRewards, true);
   registry->RegisterBooleanPref(kNewTabPageShowBinance, true);
   registry->RegisterBooleanPref(kNewTabPageShowTogether, false);
@@ -258,6 +272,9 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
   registry->RegisterIntegerPref(
       kNewTabPageShowsOptions,
       static_cast<int>(NewTabPageShowsOptions::kDashboard));
+
+  // Brave Today
+  registry->RegisterDictionaryPref(kBraveTodaySources);
 
   // Brave Wallet
 #if BUILDFLAG(BRAVE_WALLET_ENABLED)

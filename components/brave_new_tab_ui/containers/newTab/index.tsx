@@ -52,6 +52,7 @@ interface Props {
   actions: NewTabActions
   saveShowBackgroundImage: (value: boolean) => void
   saveShowStats: (value: boolean) => void
+  saveShowToday: (value: boolean) => any
   saveShowRewards: (value: boolean) => void
   saveShowTogether: (value: boolean) => void
   saveShowBinance: (value: boolean) => void
@@ -201,6 +202,12 @@ class NewTabPage extends React.Component<Props, State> {
   toggleShowStats = () => {
     this.props.saveShowStats(
       !this.props.newTabData.showStats
+    )
+  }
+
+  toggleShowToday = () => {
+    this.props.saveShowToday(
+      !this.props.newTabData.showToday
     )
   }
 
@@ -992,8 +999,6 @@ class NewTabPage extends React.Component<Props, State> {
     const isShowingBrandedWallpaper = newTabData.brandedWallpaperData ? true : false
     const showTopSites = !!this.props.gridSitesData.gridSites.length && newTabData.showTopSites
     const cryptoContent = this.renderCryptoContent()
-    // TODO: opt-in pref
-    const isShowingBraveToday = true
 
     return (
       <Page.App dataIsReady={newTabData.initialDataLoaded}>
@@ -1094,7 +1099,7 @@ class NewTabPage extends React.Component<Props, State> {
             </Page.FooterContent>
           </Page.Footer>
         </Page.Page>
-        { isShowingBraveToday &&
+        { newTabData.showToday &&
         <BraveToday
           onInteracting={this.onBraveTodayInteracting}
           feed={this.props.todayData.feed}
@@ -1111,9 +1116,11 @@ class NewTabPage extends React.Component<Props, State> {
           showSettingsMenu={showSettingsMenu}
           onClickOutside={this.closeSettings}
           onDisplayTodaySection={this.props.actions.ensureSettingsData}
+          onClearTodayPrefs={this.props.actions.resetTodayPrefsToDefault}
           toggleShowBackgroundImage={this.toggleShowBackgroundImage}
           toggleShowClock={this.toggleShowClock}
           toggleShowStats={this.toggleShowStats}
+          toggleShowToday={this.toggleShowToday}
           toggleShowTopSites={this.toggleShowTopSites}
           toggleCustomLinksEnabled={this.toggleCustomLinksEnabled}
           toggleBrandedWallpaperOptIn={this.toggleShowBrandedWallpaper}
@@ -1121,6 +1128,7 @@ class NewTabPage extends React.Component<Props, State> {
           showClock={newTabData.showClock}
           clockFormat={newTabData.clockFormat}
           showStats={newTabData.showStats}
+          showToday={newTabData.showToday}
           showTopSites={newTabData.showTopSites}
           customLinksEnabled={newTabData.customLinksEnabled}
           showRewards={newTabData.showRewards}

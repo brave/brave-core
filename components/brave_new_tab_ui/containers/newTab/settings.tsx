@@ -47,9 +47,11 @@ export interface Props {
   showSettingsMenu: boolean
   onClickOutside: () => void
   onDisplayTodaySection: () => any
+  onClearTodayPrefs: () => any
   toggleShowBackgroundImage: () => void
   toggleShowClock: () => void
   toggleShowStats: () => void
+  toggleShowToday: () => any
   toggleShowTopSites: () => void
   toggleCustomLinksEnabled: () => void
   toggleShowRewards: () => void
@@ -61,6 +63,7 @@ export interface Props {
   toggleShowBitcoinDotCom: () => void
   showBackgroundImage: boolean
   showStats: boolean
+  showToday: boolean
   showClock: boolean
   clockFormat: string
   showTopSites: boolean
@@ -309,6 +312,9 @@ export default class Settings extends React.PureComponent<Props, State> {
                       publishers={this.props.todayPublishers}
                       setPublisherPref={this.props.actions.setPublisherPref}
                       onDisplay={this.props.onDisplayTodaySection}
+                      onClearPrefs={this.props.onClearTodayPrefs}
+                      showToday={this.props.showToday}
+                      toggleShowToday={this.props.toggleShowToday}
                     />
                   ) : null
                 }

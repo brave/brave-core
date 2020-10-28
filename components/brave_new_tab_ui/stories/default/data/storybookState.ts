@@ -68,6 +68,7 @@ export const getNewTabData = (state: NewTab.State = defaultState): NewTab.State 
   ),
   showBackgroundImage: boolean('Show background image?', true),
   showStats: boolean('Show stats?', true),
+  showToday: boolean('Show today?', true),
   showClock: boolean('Show clock?', true),
   showTopSites: boolean('Show top sites?', true),
   showRewards: boolean('Show rewards?', true),

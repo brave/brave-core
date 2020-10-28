@@ -14,6 +14,7 @@ export const defaultState: NewTab.State = {
   featureFlagBraveNTPSponsoredImagesWallpaper: window.loadTimeData.getBoolean('featureFlagBraveNTPSponsoredImagesWallpaper'),
   showBackgroundImage: false,
   showStats: false,
+  showToday: false,
   showClock: false,
   clockFormat: '',
   showTopSites: false,

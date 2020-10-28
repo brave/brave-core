@@ -13,7 +13,8 @@ export namespace MessageTypes {
     indicatingOpen = 'indicatingOpen',
     getImageData = 'getImageData',
     setPublisherPref = 'setPublisherPref',
-    isFeedUpdateAvailable = 'isFeedUpdateAvailable'
+    isFeedUpdateAvailable = 'isFeedUpdateAvailable',
+    resetPrefsToDefault = 'resetPrefsToDefault'
   }
 }
 export type Payload = any
@@ -37,7 +38,7 @@ function isAllowedMessageSender (sender: chrome.runtime.MessageSender): boolean 
 }
 
 // Client-side scripts call this to send a message to the background
-export function send<U=void, T=void>(messageType: string, payload?: T): Promise<U> {
+export function send<U= void, T= void> (messageType: string, payload?: T): Promise<U> {
   // TODO: verify comms channel isn't closed prematurely first. If so, wait and try again.
   console.debug(`Sending data to brave extension for ${messageType}`, { messageType, payload })
   return new Promise(function (resolve) {
@@ -52,7 +53,7 @@ let isListening = false
 let messageHandlers: Map<MessageName, HandlerFunction<any, any>>
 
 // Background scripts call this to set up listeners
-export function setListener<U, T=void>(messageType: MessageName, handler: HandlerFunction<T, U>): void {
+export function setListener<U = {}, T= void> (messageType: MessageName, handler: HandlerFunction<T, U>): void {
   if (!messageHandlers) {
     messageHandlers = new Map()
   }

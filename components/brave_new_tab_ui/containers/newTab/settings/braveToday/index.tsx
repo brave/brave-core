@@ -6,19 +6,24 @@
 import * as React from 'react'
 import AutoSizer from "react-virtualized-auto-sizer";
 import { VariableSizeList } from "react-window";
-import { isPublisherContentAllowed } from '../../../../common/braveToday'
+import { isPublisherContentAllowed } from '../../../../../common/braveToday'
 
 // Components
+import { Button } from 'brave-ui'
 import {
   SettingsRow,
   SettingsText
-} from '../../../components/default'
-import { Toggle } from '../../../components/toggle'
+} from '../../../../components/default'
+import { Toggle } from '../../../../components/toggle'
+import * as Styled from './style'
 
 interface Props {
   publishers?: BraveToday.Publishers
   setPublisherPref: (publisherId: string, enabled: boolean) => any
   onDisplay: () => any
+  onClearPrefs: () => any
+  showToday: boolean
+  toggleShowToday: () => any
 }
 
 export const DynamicListContext = React.createContext<
@@ -66,7 +71,7 @@ function ListItem (props: ListItemProps) {
   )
 }
 
-export default function TodaySettings (props: Props) {
+function PublisherPrefs (props: Props) {
   const listRef = React.useRef<VariableSizeList | null>(null);
   const sizeMap = React.useRef<{ [key: string]: number }>({});
 
@@ -74,8 +79,10 @@ export default function TodaySettings (props: Props) {
   // if user has not interacted with Brave Today on this page
   // view.
   React.useEffect(() => {
-    props.onDisplay()
-  }, [props.onDisplay])
+    if (props.showToday) {
+      props.onDisplay()
+    }
+  }, [props.onDisplay, props.showToday])
 
   const setSize = React.useCallback((index: number, size: number) => {
     // Performance: Only update the sizeMap and reset cache if an actual value changed
@@ -136,5 +143,37 @@ export default function TodaySettings (props: Props) {
         }}
       </AutoSizer>
     </DynamicListContext.Provider>
+  )
+}
+
+export default function BraveTodayPrefs (props: Props) {
+
+  const confirmAction = React.useCallback(() => {
+    if (confirm('Reset all your Brave Today publisher choices to their default?')) {
+      props.onClearPrefs()
+    }
+  }, [props.onClearPrefs])
+
+  return (
+    <Styled.Section>
+      <Styled.StaticPrefs>
+        <SettingsRow>
+          <SettingsText>Show Brave Today?</SettingsText>
+          <Toggle
+            checked={props.showToday}
+            onChange={props.toggleShowToday}
+            size='large'
+          />
+        </SettingsRow>
+        <SettingsRow>
+          <Button type="subtle" level="tertiary" onClick={confirmAction} text="Reset Brave Today settings" />
+        </SettingsRow>
+      </Styled.StaticPrefs>
+      {props.showToday &&
+      <Styled.PublisherList>
+        <PublisherPrefs {...props} />
+      </Styled.PublisherList>
+      }
+    </Styled.Section>
   )
 }

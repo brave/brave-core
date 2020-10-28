@@ -66,4 +66,10 @@ handler.on(Actions.checkForUpdate.getType(), async function (store, dispatch) {
   dispatch(Actions.isUpdateAvailable(isUpdateAvailable))
 })
 
+handler.on(Actions.resetTodayPrefsToDefault.getType(), async function (store, dispatch) {
+  const { publishers } = await Background.send<Messages.ClearPrefsResponse>(MessageTypes.resetPrefsToDefault)
+  dispatch(Actions.dataReceived({publishers}))
+  dispatch(Actions.checkForUpdate())
+})
+
 export default handler.middleware

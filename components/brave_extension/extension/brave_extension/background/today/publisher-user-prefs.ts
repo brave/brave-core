@@ -5,8 +5,7 @@
 
 import Events from '../../../../../common/events'
 
-const STORAGE_KEY = 'todayPublisherUserPrefs'
-const STORAGE_SCHEMA_VERSION = 1
+const PREF_KEY = 'brave.today.sources'
 
 type Prefs = {
   [publisherId: string]: boolean
@@ -17,46 +16,35 @@ let cache: Prefs | undefined
 const publisherPrefsEvents = new Events()
 const eventNameChanged = 'publisher-prefs-changed'
 
-function isValidStorageData(data: any) {
-  // TODO(petemill): Since this is non-ephemeral data,
-  // we should convert if schema version is not expected.
-  return (
-    data &&
-    data[STORAGE_KEY] &&
-    data[STORAGE_KEY].storageSchemaVersion === STORAGE_SCHEMA_VERSION &&
-    data[STORAGE_KEY].prefs
-  )
-}
+chrome.settingsPrivate.onPrefsChanged.addListener((prefs) => {
+  const pref = prefs.find(p => p.key === PREF_KEY)
+  if (pref) {
+    console.debug('today sources pref changed', pref.value)
+    const prefValue = pref.value as Prefs
+    cache = prefValue
+    setImmediate(() => {
+      publisherPrefsEvents.dispatchEvent(eventNameChanged, cache)
+    })
+  }
+})
 
-function setPrefsToStorage (prefs: Prefs) {
+function setPrefsToStore (prefs: Prefs) {
   return new Promise(resolve => {
-      // TODO(petemill): Use `chrome.storage.sync.` and
-      // have source preferences follow the user across
-      // brave instances. However, we would have to always
-      // read from storage and not cache in-memory. Or handle
-      // data-changed events.
-      chrome.storage.local.set({
-      [STORAGE_KEY]: {
-        storageSchemaVersion: STORAGE_SCHEMA_VERSION,
-        prefs
-      }
-    }, resolve)
+    chrome.settingsPrivate.setPref(PREF_KEY, prefs, resolve)
   })
 }
 
-function getPrefsFromStorage (): Promise<Prefs> {
+function getPrefsFromStore (): Promise<Prefs> {
   return new Promise(resolve => {
-    chrome.storage.local.get(STORAGE_KEY, (data) => {
-      let prefs = {}
-      if (isValidStorageData(data)) {
-        prefs = data[STORAGE_KEY].prefs
+    chrome.settingsPrivate.getPref(PREF_KEY, (pref) => {
+      if (pref && pref.type === chrome.settingsPrivate.PrefType.DICTIONARY) {
+        resolve(pref.value as Prefs)
       }
-      resolve(prefs)
     })
   })
 }
 
-async function doWithLock<T>(todo: () => Promise<T>): Promise<T> {
+async function doWithLock<T> (todo: () => Promise<T>): Promise<T> {
   if (storageLock) {
     await storageLock
   }
@@ -75,7 +63,7 @@ async function doWithLock<T>(todo: () => Promise<T>): Promise<T> {
 
 export async function getPrefs (): Promise<Prefs> {
   return doWithLock(async function () {
-    const prefs = await getPrefsFromStorage()
+    const prefs = await getPrefsFromStore()
     cache = prefs
     return prefs
   })
@@ -83,22 +71,24 @@ export async function getPrefs (): Promise<Prefs> {
 
 export async function setPublisherPref (publisherId: string, enabled: boolean | null) {
   return doWithLock(async function () {
-    const prefs = await getPrefsFromStorage()
+    const prefs = await getPrefsFromStore()
     if (enabled === null) {
       delete prefs[publisherId]
     } else {
       prefs[publisherId] = enabled
     }
-    await setPrefsToStorage(prefs)
-    cache = prefs
-    setImmediate(() => {
-      publisherPrefsEvents.dispatchEvent(eventNameChanged, cache)
-    })
+    await setPrefsToStore(prefs)
     return prefs
   })
 }
 
+export async function clearPrefs () {
+  return doWithLock(async function () {
+    await setPrefsToStore({})
+  })
+}
+
 type changeListener = (prefs: Prefs) => any
-export function addPrefsChangedListener(listener: changeListener) {
+export function addPrefsChangedListener (listener: changeListener) {
   publisherPrefsEvents.addEventListener(eventNameChanged, listener)
 }
