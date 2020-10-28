@@ -310,7 +310,7 @@ export default class Settings extends React.PureComponent<Props, State> {
                   ? (
                     <BraveTodaySettings
                       publishers={this.props.todayPublishers}
-                      setPublisherPref={this.props.actions.setPublisherPref}
+                      setPublisherPref={this.props.actions.today.setPublisherPref}
                       onDisplay={this.props.onDisplayTodaySection}
                       onClearPrefs={this.props.onClearTodayPrefs}
                       showToday={this.props.showToday}

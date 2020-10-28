@@ -3,7 +3,7 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // you can obtain one at http://mozilla.org/MPL/2.0/.
 
-import { bindActionCreators } from 'redux'
+import { bindActionCreators, Dispatch } from 'redux'
 import * as newTabActions from '../actions/new_tab_actions'
 import * as gridSitesActions from '../actions/grid_sites_actions'
 import * as binanceActions from '../actions/binance_actions'
@@ -12,18 +12,27 @@ import * as geminiActions from '../actions/gemini_actions'
 import * as bitcoinDotComActions from '../actions/bitcoin_dot_com_actions'
 import * as cryptoDotComActions from '../actions/cryptoDotCom_actions'
 import * as stackWidgetActions from '../actions/stack_widget_actions'
-import store from '../store'
+import * as todayActions from '../actions/today_actions'
 import { NewTabActions } from '../constants/new_tab_types'
+import store from '../store'
 
 /**
- * Get actions from the C++ back-end down to front-end components
+ * Cache action creators. Deprecated. Use actions individually and dispatch provided
+ * by redux store.
  */
 let actions: NewTabActions
 export default function getActions () {
   if (actions) {
     return actions
   }
-  const allActions = Object.assign({}, newTabActions, stackWidgetActions, gridSitesActions, binanceActions, rewardsActions, geminiActions, bitcoinDotComActions, cryptoDotComActions)
-  actions = bindActionCreators(allActions, store.dispatch.bind(store))
+  actions = getActionsForDispatch(store.dispatch.bind(store))
   return actions
+}
+
+export function getActionsForDispatch (dispatch: Dispatch) {
+  const allActions = Object.assign({}, newTabActions, stackWidgetActions, gridSitesActions, binanceActions, rewardsActions, geminiActions, bitcoinDotComActions, cryptoDotComActions)
+  return {
+    ...bindActionCreators(allActions, dispatch),
+    today: bindActionCreators(todayActions, dispatch)
+  }
 }

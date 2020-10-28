@@ -428,7 +428,7 @@ class NewTabPage extends React.Component<Props, State> {
     this.setState({ itemsOpacity: isInteracting })
     if (isInteracting && !this.hasInitBraveToday) {
       this.hasInitBraveToday = true
-      this.props.actions.todayInit()
+      this.props.actions.today.interactionBegin()
     }
   }
 
@@ -1104,10 +1104,10 @@ class NewTabPage extends React.Component<Props, State> {
           onInteracting={this.onBraveTodayInteracting}
           feed={this.props.todayData.feed}
           articleToScrollTo={this.props.todayData.articleScrollTo}
-          onAnotherPageNeeded={this.props.actions.anotherPageNeeded}
+          onAnotherPageNeeded={this.props.actions.today.anotherPageNeeded}
           displayedPageCount={this.props.todayData.currentPageIndex}
           publishers={this.props.todayData.publishers}
-          onReadFeedItem={this.props.actions.readFeedItem}
+          onReadFeedItem={this.props.actions.today.readFeedItem}
         />
         }
         <Settings
@@ -1115,8 +1115,8 @@ class NewTabPage extends React.Component<Props, State> {
           textDirection={newTabData.textDirection}
           showSettingsMenu={showSettingsMenu}
           onClickOutside={this.closeSettings}
-          onDisplayTodaySection={this.props.actions.ensureSettingsData}
-          onClearTodayPrefs={this.props.actions.resetTodayPrefsToDefault}
+          onDisplayTodaySection={this.props.actions.today.ensureSettingsData}
+          onClearTodayPrefs={this.props.actions.today.resetTodayPrefsToDefault}
           toggleShowBackgroundImage={this.toggleShowBackgroundImage}
           toggleShowClock={this.toggleShowClock}
           toggleShowStats={this.toggleShowStats}

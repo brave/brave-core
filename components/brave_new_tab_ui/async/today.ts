@@ -19,7 +19,13 @@ import MessageTypes = Background.MessageTypes.Today
 
 const handler = new AsyncActionHandler()
 
-handler.on(Actions.todayInit.getType(), async (store, dispatch) => {
+handler.on(Actions.todayInit.getType(), async (store, dispatch, payload) => {
+  // Let backend know that a UI with today is open, so that it can
+  // pre-fetch the feed if it is not already in a cache.
+  Background.send(MessageTypes.indicatingOpen)
+})
+
+handler.on(Actions.interactionBegin.getType(), async (store, dispatch) => {
   try {
     const [{feed}, {publishers}] = await Promise.all([
       Background.send<Messages.GetFeedResponse>(MessageTypes.getFeed),

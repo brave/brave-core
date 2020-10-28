@@ -4,7 +4,6 @@
 // you can obtain one at http://mozilla.org/MPL/2.0/.
 
 import { createReducer } from 'redux-act'
-import { init } from '../../actions/new_tab_actions'
 import * as Actions from '../../actions/today_actions'
 
 export type BraveTodayState = {
@@ -46,7 +45,7 @@ const reducer = createReducer<BraveTodayState>({}, defaultState)
 
 export default reducer
 
-reducer.on(init, (state, payload) => ({
+reducer.on(Actions.interactionBegin, (state, payload) => ({
   ...state,
   isFetching: true
 }))

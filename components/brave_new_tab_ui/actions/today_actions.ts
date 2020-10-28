@@ -5,7 +5,9 @@
 
 import { createAction } from 'redux-act'
 
-export const todayInit = createAction<void>('todayInit')
+export const todayInit = createAction('todayInit')
+
+export const interactionBegin = createAction('interactionStart')
 
 export const ensureSettingsData = createAction('ensureSettingsData')
 

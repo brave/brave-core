@@ -3,6 +3,7 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 import * as React from 'react'
+import { Dispatch } from 'redux'
 import { Provider as ReduxProvider } from 'react-redux'
 import { storiesOf } from '@storybook/react'
 import { withKnobs, select } from '@storybook/addon-knobs/react'
@@ -12,19 +13,18 @@ import BraveCoreThemeProvider from '../../common/BraveCoreThemeProvider'
 
 // Components
 import NewTabPage from '../containers/newTab'
-import * as newTabActions from '../actions/new_tab_actions'
-import * as gridSitesActions from '../actions/grid_sites_actions'
-import * as rewardsActions from '../actions/rewards_actions'
-import * as binanceActions from '../actions/binance_actions'
-import * as geminiActions from '../actions/gemini_actions'
-import * as bitcoinDotComActions from '../actions/bitcoin_dot_com_actions'
-import * as cryptoDotComActions from '../actions/cryptoDotCom_actions'
-import * as stackWidgetActions from '../actions/stack_widget_actions'
-import * as todayActions from '../actions/today_actions'
+import { getActionsForDispatch } from '../api/getActions'
 
 import store from '../store'
 import { getNewTabData, getGridSitesData } from './default/data/storybookState'
 import getTodayState from './default/data/todayStorybookState'
+
+const doNothingDispatch: Dispatch = (action: any) => action
+
+function getActions () {
+  return getActionsForDispatch(doNothingDispatch)
+}
+
 // Uncomment to use actual images proxied from a CORS-breaker proxy
 // TODO(petemill): privateCDN should be in /common/
 // import { getUnpaddedAsDataUrl } from '../../brave_extension/extension/brave_extension/background/today/privateCDN'
@@ -75,7 +75,7 @@ storiesOf('New Tab/Containers', module)
         newTabData={newTabData}
         todayData={todayState}
         gridSitesData={gridSitesData}
-        actions={Object.assign({}, newTabActions, stackWidgetActions, gridSitesActions, rewardsActions, binanceActions, geminiActions, bitcoinDotComActions, cryptoDotComActions, todayActions)}
+        actions={getActions()}
         saveShowBackgroundImage={doNothing}
         saveShowStats={doNothing}
         saveShowToday={doNothing}
