@@ -6,7 +6,7 @@ import styled from 'styled-components'
 
 export const terms = styled.div`
   text-align: center;
-  padding-bottom: 7px;
+  padding: 0 10px 7px;
   font-size: 10px;
   line-height: 14px;
   color: var(--brave-palette-grey700);

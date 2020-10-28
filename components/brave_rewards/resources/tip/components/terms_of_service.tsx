@@ -10,27 +10,28 @@ import { NewTabLink } from './new_tab_link'
 
 import * as style from './terms_of_service.style'
 
-function getMessageWithLink (input: string, url: string) {
+function getMessageWithLink (input: string) {
   const parts = input.split(/\$\d/g)
-  if (parts.length < 2) {
+  if (parts.length < 4) {
     return input
   }
 
   return (
     <>
       {parts[0]}
-      <NewTabLink href={url}>{parts[1]}</NewTabLink>
-      {parts.slice(2).join()}
+      <NewTabLink href={'https://basicattentiontoken.org/user-terms-of-service'}>{parts[1]}</NewTabLink>
+      {parts[2]}
+      <NewTabLink href={'https://brave.com/privacy/#rewards'}>{parts[3]}</NewTabLink>
+      {parts.slice(4).join()}
     </>
   )
 }
 
 export function TermsOfService () {
   const { getString } = React.useContext(LocaleContext)
-  const url = 'https://basicattentiontoken.org/user-terms-of-service'
   return (
     <style.terms>
-      {getMessageWithLink(getString('termsOfService'), url)}
+      {getMessageWithLink(getString('termsOfService'))}
     </style.terms>
   )
 }

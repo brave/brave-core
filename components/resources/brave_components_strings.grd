@@ -493,7 +493,7 @@
       <message name="IDS_BRAVE_REWARDS_TIP_POST_HEADER_TWITTER" desc="">{{user}}’s tweet</message>
       <message name="IDS_BRAVE_REWARDS_TIP_SORRY_TO_SEE_YOU_GO" desc="">Sorry to see you go…</message>
       <message name="IDS_BRAVE_REWARDS_TIP_SUPPORT_THIS_CREATOR" desc="">Support this creator</message>
-      <message name="IDS_BRAVE_REWARDS_TIP_TERMS_OF_SERVICE" desc="">By proceeding, you agree to the <ph name="LINK_BEGIN">$1</ph>Terms of Service<ph name="LINK_END">$2</ph>.</message>
+      <message name="IDS_BRAVE_REWARDS_TIP_TERMS_OF_SERVICE" desc="">By proceeding, you agree to the <ph name="LINK_BEGIN">$1</ph>Terms of Service<ph name="LINK_END">$2</ph> and <ph name="LINK_BEGIN">$3</ph>Privacy Policy<ph name="LINK_END">$4</ph>.</message>
       <message name="IDS_BRAVE_REWARDS_TIP_THANKS_FOR_THE_SUPPORT" desc="">Thanks for the support!</message>
       <message name="IDS_BRAVE_REWARDS_TIP_TIP_HAS_BEEN_SET" desc="">Your one time tip has been sent.</message>
       <message name="IDS_BRAVE_REWARDS_TIP_TIP_POST_SUBTITLE" desc="">for their post</message>
