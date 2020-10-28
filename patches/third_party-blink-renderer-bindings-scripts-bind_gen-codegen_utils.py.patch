@@ -1,0 +1,28 @@
+diff --git a/third_party/blink/renderer/bindings/scripts/bind_gen/codegen_utils.py b/third_party/blink/renderer/bindings/scripts/bind_gen/codegen_utils.py
+index 7021f1a618c8a57893035c656f308d4d3231bbe4..8aad7a4030690d47b80e2d99ff964ea3e43b71f3 100644
+--- a/third_party/blink/renderer/bindings/scripts/bind_gen/codegen_utils.py
++++ b/third_party/blink/renderer/bindings/scripts/bind_gen/codegen_utils.py
+@@ -24,6 +24,23 @@ def make_copyright_header():
+ """)
+ 
+ 
++def make_const_string_definitions(accumulator):
++    assert isinstance(accumulator, CodeGenAccumulator)
++
++    class ConstStringDefinitions(object):
++        def __init__(self, accumulator):
++            self._accumulator = accumulator
++
++        def __str__(self):
++            return "\n".join([
++                "static const char* const {} = \"{}\";".format(name, value)
++                for (name, value) in sorted(self._accumulator.const_strings)
++            ])
++
++    return LiteralNode(ConstStringDefinitions(accumulator))
++
++
++
+ def make_forward_declarations(accumulator):
+     assert isinstance(accumulator, CodeGenAccumulator)
+ 

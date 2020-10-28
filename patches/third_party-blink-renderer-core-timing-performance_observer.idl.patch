@@ -1,0 +1,12 @@
+diff --git a/third_party/blink/renderer/core/timing/performance_observer.idl b/third_party/blink/renderer/core/timing/performance_observer.idl
+index 83fa192bda94ec45a9dc4ac34fc1e3dc4e49d04a..8e4d63286b9e53c1c1923ccd21f07650f8afae84 100644
+--- a/third_party/blink/renderer/core/timing/performance_observer.idl
++++ b/third_party/blink/renderer/core/timing/performance_observer.idl
+@@ -8,6 +8,7 @@ callback PerformanceObserverCallback = void (PerformanceObserverEntryList entrie
+ // https://w3c.github.io/performance-timeline/#the-performanceobserver-interface
+ [
+     ActiveScriptWrappable,
++    TrackInPageGraph,
+     Exposed=(Window,Worker)
+ ] interface PerformanceObserver {
+     [CallWith=ScriptState] constructor(PerformanceObserverCallback callback);

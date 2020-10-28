@@ -1,0 +1,13 @@
+diff --git a/third_party/blink/renderer/core/xmlhttprequest/xml_http_request_upload.idl b/third_party/blink/renderer/core/xmlhttprequest/xml_http_request_upload.idl
+index 325a6ffdba5c7115d6edb46fc111b9bd51cf6ffa..2150d0981690d51370d6a93b4b55f0da9f08b2a2 100644
+--- a/third_party/blink/renderer/core/xmlhttprequest/xml_http_request_upload.idl
++++ b/third_party/blink/renderer/core/xmlhttprequest/xml_http_request_upload.idl
+@@ -29,6 +29,7 @@
+ // https://xhr.spec.whatwg.org/#xmlhttprequestupload
+ 
+ [
+-    Exposed=(Window,DedicatedWorker,SharedWorker)
++    Exposed=(Window,DedicatedWorker,SharedWorker),
++    TrackInPageGraph
+ ] interface XMLHttpRequestUpload : XMLHttpRequestEventTarget {
+ };

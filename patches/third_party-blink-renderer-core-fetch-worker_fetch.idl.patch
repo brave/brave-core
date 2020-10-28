@@ -1,0 +1,11 @@
+diff --git a/third_party/blink/renderer/core/fetch/worker_fetch.idl b/third_party/blink/renderer/core/fetch/worker_fetch.idl
+index e6d276dbb3e108a4a1f45eba208fbd5beaf46b86..574cebb52dc786450034a125a7522e0d4c739323 100644
+--- a/third_party/blink/renderer/core/fetch/worker_fetch.idl
++++ b/third_party/blink/renderer/core/fetch/worker_fetch.idl
+@@ -7,5 +7,5 @@
+ [
+     ImplementedAs=GlobalFetch
+ ] partial interface WorkerGlobalScope {
+-    [CallWith=ScriptState, NewObject, RaisesException] Promise<Response> fetch(RequestInfo input, optional RequestInit init = {});
++    [CallWith=ScriptState, NewObject, RaisesException, TrackInPageGraph] Promise<Response> fetch(RequestInfo input, optional RequestInit init = {});
+ };

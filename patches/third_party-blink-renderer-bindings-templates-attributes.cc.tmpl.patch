@@ -1,0 +1,58 @@
+diff --git a/third_party/blink/renderer/bindings/templates/attributes.cc.tmpl b/third_party/blink/renderer/bindings/templates/attributes.cc.tmpl
+index 1db515ece09ee049978e73b9fab135c6da091de7..a34dfdee2737f31f4e2abe940e9a941aada0f9fb 100644
+--- a/third_party/blink/renderer/bindings/templates/attributes.cc.tmpl
++++ b/third_party/blink/renderer/bindings/templates/attributes.cc.tmpl
+@@ -266,6 +266,17 @@ const v8::FunctionCallbackInfo<v8::Value>& info
+   {% endif %}
+   {% endif %}
+ 
++  {% if attribute.track_in_page_graph_as %}
++  // #if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
++  {
++    ::brave_page_graph::PageGraph* page_graph = ::brave_page_graph::PageGraph::GetFromExecutionContext(*CurrentExecutionContext(info.GetIsolate()));
++    if (page_graph) {
++      page_graph->RegisterBindingEvent(kBinding_{{v8_class_or_partial}}_{{attribute.name}}, ::brave_page_graph::kBindingTypeAttribute, ::brave_page_graph::kBindingEventAttributeGet);
++    }
++  }
++  // #endif
++  {% endif %}
++
+   {% if world_suffix in attribute.activity_logging_world_list_for_getter %}
+   {% if attribute.is_static %}
+   ScriptState* script_state = ScriptState::ForCurrentRealm(info);
+@@ -308,6 +319,17 @@ void {{v8_class_or_partial}}::{{attribute.camel_case_name}}ConstructorGetterCall
+   {% endif %}
+   {% endif %}
+ 
++  {% if attribute.track_in_page_graph_as %}
++  // #if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
++  {
++    ::brave_page_graph::PageGraph* page_graph = ::brave_page_graph::PageGraph::GetFromExecutionContext(*CurrentExecutionContext(info.GetIsolate()));
++    if (page_graph) {
++      page_graph->RegisterBindingEvent(kBinding_{{v8_class_or_partial}}_{{attribute.name}}, ::brave_page_graph::kBindingTypeAttribute, ::brave_page_graph::kBindingEventAttributeGet);
++    }
++  }
++  // #endif
++  {% endif %}
++
+   {% if attribute.is_named_constructor %}
+   V8{{attribute.constructor_type}}::NamedConstructorAttributeGetter(property, info);
+   {% else %}
+@@ -517,6 +539,17 @@ void {{v8_class_or_partial}}::{{attribute.camel_case_name}}AttributeSetterCallba
+   UseCounter::Count(CurrentExecutionContext(info.GetIsolate()), WebFeature::k{{attribute.measure_as('AttributeSetter')}});
+   {% endif %}
+ 
++  {% if attribute.track_in_page_graph_as %}
++  // #if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
++  {
++    ::brave_page_graph::PageGraph* page_graph = ::brave_page_graph::PageGraph::GetFromExecutionContext(*CurrentExecutionContext(info.GetIsolate()));
++    if (page_graph) {
++      page_graph->RegisterBindingEvent(kBinding_{{v8_class_or_partial}}_{{attribute.name}}, ::brave_page_graph::kBindingTypeAttribute, ::brave_page_graph::kBindingEventAttributeSet);
++    }
++  }
++  // #endif
++  {% endif %}
++
+   {% if world_suffix in attribute.activity_logging_world_list_for_setter %}
+   {% if attribute.is_static %}
+   ScriptState* script_state = ScriptState::ForCurrentRealm(info);

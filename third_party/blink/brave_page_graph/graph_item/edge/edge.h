@@ -36,6 +36,8 @@ friend class PageGraph;
   bool IsEdge() const override;
 
   virtual bool IsEdgeAttribute() const;
+  virtual bool IsEdgeBinding() const;
+  virtual bool IsEdgeBindingEvent() const;
   virtual bool IsEdgeCrossDOM() const;
   virtual bool IsEdgeEventListener() const;
   virtual bool IsEdgeEventListenerAction() const;

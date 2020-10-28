@@ -1,0 +1,36 @@
+diff --git a/third_party/blink/renderer/bindings/scripts/bind_gen/codegen_accumulator.py b/third_party/blink/renderer/bindings/scripts/bind_gen/codegen_accumulator.py
+index f72e41a742163eb3e707b174caea0f06b81bd15e..8665a923eb79cb3290978ddcff27a4121f05a2ef 100644
+--- a/third_party/blink/renderer/bindings/scripts/bind_gen/codegen_accumulator.py
++++ b/third_party/blink/renderer/bindings/scripts/bind_gen/codegen_accumulator.py
+@@ -16,10 +16,12 @@ class CodeGenAccumulator(object):
+         self._class_decls = set()
+         # Forward declarations of C++ struct
+         self._struct_decls = set()
++        # Static constant strings
++        self._const_strings = set()
+ 
+     def total_size(self):
+         return (len(self.include_headers) + len(self.class_decls) + len(
+-            self.struct_decls))
++            self.struct_decls) + len(self.const_strings))
+ 
+     @property
+     def include_headers(self):
+@@ -62,3 +64,17 @@ class CodeGenAccumulator(object):
+     @staticmethod
+     def require_struct_decls(struct_names):
+         return lambda accumulator: accumulator.add_struct_decls(struct_names)
++
++    @property
++    def const_strings(self):
++        return self._const_strings
++
++    def add_const_string(self, const_string):
++        self._const_strings.add(const_string)
++
++    def add_const_strings(self, const_strings):
++        self._const_strings.update(const_strings)
++
++    @staticmethod
++    def require_const_strings(const_strings):
++        return lambda accumulator: accumulator.add_const_strings(const_strings)

@@ -42,6 +42,7 @@ class GraphItem;
 class Node;
 class NodeActor;
 class NodeAdFilter;
+class NodeBinding;
 class NodeDOMRoot;
 class NodeExtensions;
 class NodeFingerprintingFilter;
@@ -171,6 +172,9 @@ friend NodeHTMLElement;
   void RegisterJSBuiltInResponse(const JSBuiltIn built_in,
     const std::string& result);
 
+  void RegisterBindingEvent(const Binding binding,
+    const BindingType binding_type, const BindingEvent binding_event);
+
   // Methods for handling the registration of script units in the document,
   // and v8 script executing.
 
@@ -224,9 +228,17 @@ friend NodeHTMLElement;
   NodeHTMLText* GetHTMLTextNode(const blink::DOMNodeId node_id) const;
   NodeScript* GetScriptNode(const ScriptId script_id) const;
 
-  NodeActor* GetCurrentActingNode(int* out_script_position = nullptr) const;
+  NodeActor* GetCurrentActingNode(
+    ScriptPosition* out_script_position = nullptr) const;
   NodeActor* GetNodeActorForScriptId(const ScriptId script_id) const;
-  ScriptId GetExecutingScriptId(int* out_script_position = nullptr) const;
+  ScriptId GetExecutingScriptId(
+    ScriptPosition* out_script_position = nullptr) const;
+
+  template<typename Callback>
+  void GetAllActingNodes(Callback callback);
+
+  template<typename Callback>
+  void GetAllExecutingScripts(Callback callback);
 
   NodeResource* GetResourceNodeForUrl(const std::string& url);
 
@@ -234,6 +246,9 @@ friend NodeHTMLElement;
   NodeTrackerFilter* GetTrackerFilterNodeForHost(const std::string& host);
   NodeFingerprintingFilter* GetFingerprintingFilterNodeForRule(
     const FingerprintingRule& rule);
+
+  NodeBinding* GetBindingNode(const Binding binding,
+    const BindingType binding_type);
 
   void DoRegisterRequestStart(const InspectorId request_id,
     Node* const requesting_node, const std::string& local_url,
@@ -296,11 +311,15 @@ friend NodeHTMLElement;
   std::map<ScriptId, NodeScript* const> script_nodes_;
 
   // Index structure for looking up filter nodes.
-  // This map does not own the references.
+  // These maps do not own the references.
   std::map<std::string, NodeAdFilter* const> ad_filter_nodes_;
   std::map<std::string, NodeTrackerFilter* const> tracker_filter_nodes_;
   std::map<FingerprintingRule, NodeFingerprintingFilter* const>
     fingerprinting_filter_nodes_;
+
+  // Index structure for looking up binding nodes.
+  // This map does not own the references.
+  std::map<Binding, NodeBinding* const> binding_nodes_;
 
   // Data structure used for mapping HTML script elements (and other
   // sources of script in a document) to v8 script units.

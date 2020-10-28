@@ -1,0 +1,11 @@
+diff --git a/third_party/blink/renderer/core/fetch/window_fetch.idl b/third_party/blink/renderer/core/fetch/window_fetch.idl
+index 75b91796b71529c4c625fd1b0a3490c24d38b85b..d0b098e1f1293799ebcf17d48c90a29920220a7a 100644
+--- a/third_party/blink/renderer/core/fetch/window_fetch.idl
++++ b/third_party/blink/renderer/core/fetch/window_fetch.idl
+@@ -7,5 +7,5 @@
+ [
+     ImplementedAs=GlobalFetch
+ ] partial interface Window {
+-    [CallWith=ScriptState, NewObject, RaisesException] Promise<Response> fetch(RequestInfo input, optional RequestInit init = {});
++    [CallWith=ScriptState, NewObject, RaisesException, TrackInPageGraph] Promise<Response> fetch(RequestInfo input, optional RequestInit init = {});
+ };

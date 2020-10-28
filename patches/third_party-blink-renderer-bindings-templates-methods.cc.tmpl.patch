@@ -1,0 +1,58 @@
+diff --git a/third_party/blink/renderer/bindings/templates/methods.cc.tmpl b/third_party/blink/renderer/bindings/templates/methods.cc.tmpl
+index 0546286b2dbf5aad462208504e0c509d27b63fc6..489b133f66f0a59f3577229b177218b5c4bfbd45 100644
+--- a/third_party/blink/renderer/bindings/templates/methods.cc.tmpl
++++ b/third_party/blink/renderer/bindings/templates/methods.cc.tmpl
+@@ -359,6 +359,17 @@ static void {{overloads.camel_case_name}}Method{{world_suffix}}(const v8::Functi
+   {% if overloads.deprecate_all_as %}
+   Deprecation::CountDeprecation(CurrentExecutionContext(info.GetIsolate()), WebFeature::k{{overloads.deprecate_all_as}});
+   {% endif %}
++  {% if overloads.track_all_in_page_graph_as %}
++  // #if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
++  {
++    ::brave_page_graph::PageGraph* page_graph = ::brave_page_graph::PageGraph::GetFromExecutionContext(*CurrentExecutionContext(info.GetIsolate()));
++    if (page_graph) {
++      static const ::brave_page_graph::Binding kBinding_{{v8_class_or_partial}}_{{overloads.name}} = "{{overloads.track_all_in_page_graph_as}}";
++      page_graph->RegisterBindingEvent(kBinding_{{v8_class_or_partial}}_{{overloads.name}}, ::brave_page_graph::kBindingTypeMethod, ::brave_page_graph::kBindingEventMethodCall);
++    }
++  }
++  // #endif
++  {% endif %}
+ 
+   {# First resolve by length #}
+   {% if not fall_through_to_partial_overloads %}
+@@ -431,6 +442,17 @@ static void {{overloads.camel_case_name}}Method{{world_suffix}}(const v8::Functi
+ 
+ {% macro test_and_call_overloaded_method(test, method, overloads, world_suffix) %}
+ if ({{test}}) {
++  {% if method.track_in_page_graph_as and not overloads.track_all_in_page_graph_as %}
++  // #if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
++  {
++    ::brave_page_graph::PageGraph* page_graph = ::brave_page_graph::PageGraph::GetFromExecutionContext(*CurrentExecutionContext(info.GetIsolate()));
++    if (page_graph) {
++      static const ::brave_page_graph::Binding kBinding_{{v8_class_or_partial}}_{{method.name}} = "{{method.track_in_page_graph_as}}";
++      page_graph->RegisterBindingEvent(kBinding_{{v8_class_or_partial}}_{{method.name}}, ::brave_page_graph::kBindingTypeMethod, ::brave_page_graph::kBindingEventMethodCall);
++    }
++  }
++  // #endif
++  {% endif %}
+   {% if method.measure_as and not overloads.measure_all_as %}
+   ExecutionContext* execution_context_for_measurement = CurrentExecutionContext(info.GetIsolate());
+   UseCounter::Count(execution_context_for_measurement, WebFeature::k{{method.measure_as('Method')}});
+@@ -468,6 +490,17 @@ void {{v8_class_or_partial}}::{{method.camel_case_name}}MethodCallback{{world_su
+   {% if method.deprecate_as %}
+   Deprecation::CountDeprecation(CurrentExecutionContext(info.GetIsolate()), WebFeature::k{{method.deprecate_as}});
+   {% endif %}
++  {% if method.track_in_page_graph_as %}
++  // #if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
++  {
++    ::brave_page_graph::PageGraph* page_graph = ::brave_page_graph::PageGraph::GetFromExecutionContext(*CurrentExecutionContext(info.GetIsolate()));
++    if (page_graph) {
++      static const ::brave_page_graph::Binding kBinding_{{v8_class_or_partial}}_{{method.name}} = "{{method.track_in_page_graph_as}}";
++      page_graph->RegisterBindingEvent(kBinding_{{v8_class_or_partial}}_{{method.name}}, ::brave_page_graph::kBindingTypeMethod, ::brave_page_graph::kBindingEventMethodCall);
++    }
++  }
++  // #endif
++  {% endif %}
+   {% endif %}{# not method.overloads #}
+   {% if world_suffix in method.activity_logging_world_list %}
+   {% if method.is_static %}

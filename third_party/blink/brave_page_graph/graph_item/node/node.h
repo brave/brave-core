@@ -36,6 +36,8 @@ friend class PageGraph;
   bool IsNode() const override;
 
   virtual bool IsNodeActor() const;
+  virtual bool IsNodeBinding() const;
+  virtual bool IsNodeBindingEvent() const;
   virtual bool IsNodeExtensions() const;
   virtual bool IsNodeFilter() const;
   virtual bool IsNodeHTML() const;

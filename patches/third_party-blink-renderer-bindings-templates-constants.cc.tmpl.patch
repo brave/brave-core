@@ -1,0 +1,37 @@
+diff --git a/third_party/blink/renderer/bindings/templates/constants.cc.tmpl b/third_party/blink/renderer/bindings/templates/constants.cc.tmpl
+index 2ba625e541f0732d7f6912ee61e396dea152c7b7..46520a5d20703f0e23855451f471c7a05d280560 100644
+--- a/third_party/blink/renderer/bindings/templates/constants.cc.tmpl
++++ b/third_party/blink/renderer/bindings/templates/constants.cc.tmpl
+@@ -1,5 +1,3 @@
+-{% from 'methods.cc.tmpl' import runtime_timer_scope_disabled_by_default %}
+-
+ {##############################################################################}
+ {% macro constant_getter_callback(constant) %}
+ void {{v8_class_or_partial}}::{{constant.camel_case_name}}ConstantGetterCallback(v8::Local<v8::Name>, const v8::PropertyCallbackInfo<v8::Value>& info) {
+@@ -14,6 +12,17 @@ void {{v8_class_or_partial}}::{{constant.camel_case_name}}ConstantGetterCallback
+   Dactyloscoper::Record(execution_context_for_measurement, WebFeature::k{{constant.measure_as('ConstantGetter')}});
+   {% endif %}
+   {% endif %}
++  {% if constant.track_in_page_graph_as %}
++  // #if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
++  {
++    ::brave_page_graph::PageGraph* page_graph = ::brave_page_graph::PageGraph::GetFromExecutionContext(*CurrentExecutionContext(info.GetIsolate()));
++    if (page_graph) {
++      static const ::brave_page_graph::Binding kBinding_{{v8_class_or_partial}}_{{constant.name}} = "{{constant.track_in_page_graph_as}}";
++      page_graph->RegisterBindingEvent(kBinding_{{v8_class_or_partial}}_{{constant.name}}, ::brave_page_graph::kBindingTypeConstant, ::brave_page_graph::kBindingEventConstantGet);
++    }
++  }
++  // #endif
++  {% endif %}
+   {% if constant.idl_type in ('Double', 'Float') %}
+   V8SetReturnValue(info, {{constant.value}});
+   {% elif constant.idl_type == 'String' %}
+@@ -40,7 +49,7 @@ void {{v8_class_or_partial}}::{{constant.camel_case_name}}ConstantGetterCallback
+       kConstants, base::size(kConstants));
+ }
+ {% endif %}
+-{# Constants with [DeprecateAs] or [MeasureAs] #}
++{# Constants with [DeprecateAs], [MeasureAs], or [TrackInPageGraphAs] #}
+ {% for constant in constants | has_special_getter %}
+ V8DOMConfiguration::InstallConstantWithGetter(
+     isolate, interface_template, prototype_template,

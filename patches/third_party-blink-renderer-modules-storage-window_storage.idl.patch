@@ -1,8 +1,8 @@
 diff --git a/third_party/blink/renderer/modules/storage/window_storage.idl b/third_party/blink/renderer/modules/storage/window_storage.idl
-index 48e77ff09f6c968159a94415c2b0889e285c7a8c..73da65abccfa6c008d560b8746299d6597f86250 100644
+index 48e77ff09f6c968159a94415c2b0889e285c7a8c..3ab311778fccefac595b5f4e02247f5cd49fe469 100644
 --- a/third_party/blink/renderer/modules/storage/window_storage.idl
 +++ b/third_party/blink/renderer/modules/storage/window_storage.idl
-@@ -3,7 +3,7 @@
+@@ -3,10 +3,10 @@
  // found in the LICENSE file.
  
  [
@@ -10,4 +10,9 @@ index 48e77ff09f6c968159a94415c2b0889e285c7a8c..73da65abccfa6c008d560b8746299d65
 +    ImplementedAs=BraveDOMWindowStorage
  ] partial interface Window {
      // https://html.spec.whatwg.org/C/#the-sessionstorage-attribute
-     [LogActivity=GetterOnly, RaisesException=Getter] readonly attribute Storage sessionStorage;
+-    [LogActivity=GetterOnly, RaisesException=Getter] readonly attribute Storage sessionStorage;
++    [LogActivity=GetterOnly, RaisesException=Getter, TrackInPageGraph] readonly attribute Storage sessionStorage;
+     // https://html.spec.whatwg.org/C/#the-localstorage-attribute
+-    [LogActivity=GetterOnly, RaisesException=Getter] readonly attribute Storage localStorage;
++    [LogActivity=GetterOnly, RaisesException=Getter, TrackInPageGraph] readonly attribute Storage localStorage;
+ };

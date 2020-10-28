@@ -1,0 +1,11 @@
+diff --git a/third_party/blink/renderer/core/timing/window_performance.idl b/third_party/blink/renderer/core/timing/window_performance.idl
+index b55f5b406421ae028e2c73872f83a08f0b58f8f6..da85e406aeeae5801979dc20d244c49ddee66092 100644
+--- a/third_party/blink/renderer/core/timing/window_performance.idl
++++ b/third_party/blink/renderer/core/timing/window_performance.idl
+@@ -9,5 +9,5 @@
+ [
+     ImplementedAs=DOMWindowPerformance
+ ] partial interface Window {
+-    [Affects=Nothing, Replaceable] readonly attribute Performance performance;
++    [Affects=Nothing, Replaceable, TrackInPageGraph] readonly attribute Performance performance;
+ };

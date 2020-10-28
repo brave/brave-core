@@ -1,5 +1,5 @@
 diff --git a/src/execution/isolate.h b/src/execution/isolate.h
-index 037e6ea7f59d0b917dc766adab3a20a716d025ce..0e282e17af3d1090939a38607341b9ab5fbaac7e 100644
+index 037e6ea7f59d0b917dc766adab3a20a716d025ce..65062c8ab2bb0ab2081e487038737cb717188a6a 100644
 --- a/src/execution/isolate.h
 +++ b/src/execution/isolate.h
 @@ -36,6 +36,7 @@
@@ -10,12 +10,13 @@ index 037e6ea7f59d0b917dc766adab3a20a716d025ce..0e282e17af3d1090939a38607341b9ab
  #ifdef V8_INTL_SUPPORT
  #include "unicode/uversion.h"  // Define U_ICU_NAMESPACE.
  namespace U_ICU_NAMESPACE {
-@@ -1517,6 +1518,37 @@ class V8_EXPORT_PRIVATE Isolate final : private HiddenFactory {
+@@ -1517,6 +1518,38 @@ class V8_EXPORT_PRIVATE Isolate final : private HiddenFactory {
  
    bool RequiresCodeRange() const;
  
 +// #if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
 +  int GetExecutingScriptId(int* out_script_position = nullptr);
++  void GetAllExecutingScripts(std::function<void(int, int)> callback);
 +
 +  EvalScriptCompiledFunc GetEvalScriptCompiledFunc() const {
 +    return eval_script_compiled_func_;
@@ -48,7 +49,7 @@ index 037e6ea7f59d0b917dc766adab3a20a716d025ce..0e282e17af3d1090939a38607341b9ab
   private:
    explicit Isolate(std::unique_ptr<IsolateAllocator> isolate_allocator);
    ~Isolate();
-@@ -1856,6 +1888,12 @@ class V8_EXPORT_PRIVATE Isolate final : private HiddenFactory {
+@@ -1856,6 +1889,12 @@ class V8_EXPORT_PRIVATE Isolate final : private HiddenFactory {
    // in case of a crash.
    AddCrashKeyCallback add_crash_key_callback_ = nullptr;
  
