@@ -1,5 +1,5 @@
 diff --git a/src/codegen/compiler.cc b/src/codegen/compiler.cc
-index 595e59f55148c45b4f77e06fc9858acf23388b0c..856cc47b862a9e039f6c510eaa3e52d2c1a55e8c 100644
+index 595e59f55148c45b4f77e06fc9858acf23388b0c..e769ba7a3257809e9890933d01c871b82e12ee16 100644
 --- a/src/codegen/compiler.cc
 +++ b/src/codegen/compiler.cc
 @@ -51,6 +51,7 @@
@@ -69,7 +69,7 @@ index 595e59f55148c45b4f77e06fc9858acf23388b0c..856cc47b862a9e039f6c510eaa3e52d2
 +      if (maybe_script.IsScript()) {
 +        Script script = Script::cast(maybe_script);
 +        eval_script_compiled_func(*reinterpret_cast<v8::Isolate*>(isolate),
-+            parent_script_id, script.id());
++            parent_script_id, script.id(), v8::Utils::ToLocal(source));
 +      }
 +    }
 +  }

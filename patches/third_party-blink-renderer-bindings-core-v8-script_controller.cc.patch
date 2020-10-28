@@ -29,7 +29,7 @@ index aa5720bd81d5f714ce91484e0804220aa1d88e55..6f9a3f55f8a604dd6501f6e164753d4d
 +          if (script_location ==
 +              ScriptSourceLocationType::kEvalForScheduledAction) {
 +            page_graph->RegisterScriptCompilationFromEval(
-+                source.ParentScriptId(), script_id);
++                source.ParentScriptId(), script_id, source.Source().ToString());
 +          } else {
 +            ::brave_page_graph::ScriptType type;
 +            switch (script_location) {

@@ -192,7 +192,7 @@ friend NodeHTMLElement;
     const WTF::String& attr_name, const WTF::String& attr_value,
     const ScriptId script_id);
   void RegisterScriptCompilationFromEval(const ScriptId parent_script_id,
-      const ScriptId script_id);
+      const ScriptId script_id, const String& source);
 
   void RegisterModuleScriptForDescendant(const blink::KURL& parent_location,
     const blink::KURL& descendant_location);

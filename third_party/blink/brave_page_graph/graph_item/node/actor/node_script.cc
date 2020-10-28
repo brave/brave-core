@@ -26,10 +26,11 @@ using ::blink::DynamicTo;
 namespace brave_page_graph {
 
 NodeScript::NodeScript(PageGraph* const graph, const ScriptId script_id,
-    const ScriptType type, const std::string& url) :
+    const ScriptType type, const std::string& source, const std::string& url) :
       NodeActor(graph),
       script_id_(script_id),
       script_type_(type),
+      source_(source),
       url_(url) {}
 
 NodeScript::~NodeScript() {}
@@ -71,6 +72,8 @@ void NodeScript::AddGraphMLAttributes(xmlDocPtr doc,
       ->AddValueNode(doc, parent_node, script_id_);
   GraphMLAttrDefForType(kGraphMLAttrDefScriptType)
       ->AddValueNode(doc, parent_node, ScriptTypeToString(script_type_));
+  GraphMLAttrDefForType(kGraphMLAttrDefSource)
+      ->AddValueNode(doc, parent_node, source_);
   GraphMLAttrDefForType(kGraphMLAttrDefURL)
       ->AddValueNode(doc, parent_node, url_);
 }

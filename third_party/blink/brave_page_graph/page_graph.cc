@@ -37,6 +37,7 @@
 
 #include "third_party/blink/renderer/core/inspector/protocol/Protocol.h"
 
+#include "third_party/blink/renderer/platform/bindings/string_resource.h"
 #include "third_party/blink/renderer/platform/loader/fetch/resource.h"
 #include "third_party/blink/renderer/platform/weborigin/kurl.h"
 
@@ -221,10 +222,14 @@ PageGraph* PageGraph::GetFromExecutionContext(ExecutionContext& exec_context) {
 }
 
 static void OnEvalScriptCompiled(v8::Isolate& isolate,
-    const ScriptId parent_script_id, const ScriptId script_id) {
+    const ScriptId parent_script_id, const ScriptId script_id,
+    v8::Local<v8::String> source) {
   PageGraph* const page_graph = PageGraph::GetFromIsolate(isolate);
   if (page_graph) {
-    page_graph->RegisterScriptCompilationFromEval(parent_script_id, script_id);
+    const String local_source = blink::ToBlinkString<String>(source,
+        blink::kDoNotExternalize);
+    page_graph->RegisterScriptCompilationFromEval(parent_script_id, script_id,
+        local_source);
   }
 }
 
@@ -507,7 +512,6 @@ void PageGraph::RegisterEventListenerAdd(const blink::DOMNodeId node_id,
     const WTF::String& event_type, const EventListenerId listener_id,
     ScriptId listener_script_id) {
   string local_event_type(event_type.Utf8().data());
-  listener_script_id = script_tracker_.ResolveScriptId(listener_script_id);
 
   Log("RegisterEventListenerAdd) node id: " + to_string(node_id)
       + ", event_type: " + local_event_type
@@ -527,7 +531,6 @@ void PageGraph::RegisterEventListenerRemove(const blink::DOMNodeId node_id,
     const WTF::String& event_type, const EventListenerId listener_id,
     ScriptId listener_script_id) {
   string local_event_type(event_type.Utf8().data());
-  listener_script_id = script_tracker_.ResolveScriptId(listener_script_id);
 
   Log("RegisterEventListenerRemove) node id: " + to_string(node_id)
       + ", event_type: " + local_event_type
@@ -833,7 +836,8 @@ void PageGraph::RegisterScriptCompilation(
       code.Source().ToString().Impl()->GetHash());
     script_tracker_.SetScriptIdForCode(script_id, code);
 
-    NodeScript* const code_node = new NodeScript(this, script_id, type);
+    NodeScript* const code_node = new NodeScript(this, script_id, type,
+        string(code.Source().ToString().Utf8().data()));
     AddNode(code_node);
     script_nodes_.emplace(script_id, code_node);
 
@@ -871,7 +875,8 @@ void PageGraph::RegisterScriptCompilation(
 
   // Note that at the end of this method, the script node exists in the
   // graph, but isn't connected to anything.  That association
-  NodeScript* const code_node = new NodeScript(this, script_id, type);
+  NodeScript* const code_node = new NodeScript(this, script_id, type,
+      string(code.Source().ToString().Utf8().data()));
   AddNode(code_node);
   script_nodes_.emplace(script_id, code_node);
 
@@ -901,7 +906,7 @@ void PageGraph::RegisterScriptCompilationFromAttr(
   script_tracker_.AddScriptId(script_id, attr_value.Impl()->GetHash());
 
   NodeScript* const code_node = new NodeScript(this, script_id,
-      kScriptTypeClassic);
+      kScriptTypeClassic, string(attr_value.Utf8().data()));
   AddNode(code_node);
   script_nodes_.emplace(script_id, code_node);
 
@@ -910,17 +915,21 @@ void PageGraph::RegisterScriptCompilationFromAttr(
 }
 
 void PageGraph::RegisterScriptCompilationFromEval(ScriptId parent_script_id,
-    const ScriptId script_id) {
-  parent_script_id = script_tracker_.ResolveScriptId(parent_script_id);
-
-  if (parent_script_id == 0) {
-    return;
-  }
-
+    const ScriptId script_id, const String& source) {
   Log("RegisterScriptCompilationFromEval) script id: " + to_string(script_id)
       + ", parent script id: " + to_string(parent_script_id));
 
-  script_tracker_.AddScriptIdAlias(script_id, parent_script_id);
+  script_tracker_.AddScriptId(script_id, source.Impl()->GetHash());
+
+  NodeScript* const code_node = new NodeScript(this, script_id,
+      kScriptTypeEval, string(source.Utf8().data()));
+  AddNode(code_node);
+  script_nodes_.emplace(script_id, code_node);
+
+  if (parent_script_id != 0) {
+    NodeScript* const parent_node = GetScriptNode(parent_script_id);
+    AddEdge(new EdgeExecute(this, parent_node, code_node));
+  }
 }
 
 void PageGraph::RegisterModuleScriptForDescendant(const blink::KURL& parent_location,
@@ -1315,9 +1324,8 @@ NodeActor* PageGraph::GetNodeActorForScriptId(const ScriptId script_id) const {
 }
 
 ScriptId PageGraph::GetExecutingScriptId(int* out_script_position) const {
-  return script_tracker_.ResolveScriptId(
-      execution_context_.GetIsolate()->GetExecutingScriptId(
-          out_script_position));
+  return execution_context_.GetIsolate()->GetExecutingScriptId(
+      out_script_position);
 }
 
 NodeResource* PageGraph::GetResourceNodeForUrl(const std::string& url) {
