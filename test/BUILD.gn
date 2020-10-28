@@ -821,6 +821,7 @@ if (!is_android) {
     if (ipfs_enabled) {
       sources += [
         "//brave/browser/extensions/api/ipfs_apitest.cc",
+        "//brave/browser/ipfs/ipfs_policy_browsertest.cc",
         "//brave/browser/ipfs/ipfs_tab_helper_browsertest.cc",
       ]
       deps += [
