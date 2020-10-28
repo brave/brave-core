@@ -659,8 +659,11 @@
   <message name="IDS_OS_SETTINGS_SEARCH_ENGINE_LABEL" desc="Label in OS settings describing search engine behavior.">
     Preferred search engine
   </message>
-  <message name="IDS_OS_SETTINGS_SEARCH_ENGINE_TOOLTIP" desc="Tooltip in OS settings explaining that search engine is used in both the Brave browser and the Chrome OS app launcher.">
-    Used by Brave browser and <ph name="DEVICE_TYPE">$1<ex>Bravebook</ex></ph> Launcher
+  <message name="IDS_OS_SETTINGS_SEARCH_ENGINE_BUTTON_LABEL" desc="Label in OS settings for the button to configure search engine behavior.">
+    Configure
+  </message>
+  <message name="IDS_OS_SETTINGS_SEARCH_ENGINE_DESCRIPTION" desc="Description in the search engine dialog in OS settings explaining that search engine is used in both the Brave browser and the Chrome OS app launcher.">
+    Set your default search engine for Brave browser and <ph name="DEVICE_TYPE">$1<ex>Bravebook</ex></ph> Launcher
   </message>
   <message name="IDS_SETTINGS_SEARCH_GOOGLE_ASSISTANT" desc="Label for the Brave Assistant button.">
     Brave Assistant
@@ -1161,11 +1164,11 @@
   </message>
 
   <!-- Crostini -->
-  <message name="IDS_SETTINGS_CROSTINI_TITLE" desc="The title of Crostini section.">
-    Linux (Beta)
+  <message name="IDS_SETTINGS_CROSTINI_TITLE" desc="The title of Crostini section. It is meant to be used by software developers.">
+    Developers
   </message>
-  <message name="IDS_SETTINGS_CROSTINI_LABEL" desc="The text associated with the primary section setting.">
-    Linux
+  <message name="IDS_SETTINGS_CROSTINI_LABEL" desc="The text associated with the primary section setting. This contains settings for a Linux container running in a virtual machine for use by software developers.">
+    Linux development environment
   </message>
   <message name="IDS_SETTINGS_CROSTINI_SHARED_PATHS" desc="Label for managing shared folders in Crostini.">
     Manage shared folders
@@ -2064,6 +2067,12 @@
   </message>
   <message name="IDS_SETTINGS_INTERNET_NETWORK_AUTO_CONNECT_CELLULAR" desc="Settings &gt; Internet &gt; Mobile Data details: Label for the checkbox determining whether to automatically connect to the cellular network.">
     Automatically connect to cellular network
+  </message>
+  <message name="IDS_SETTINGS_INTERNET_NETWORK_MENU_REMOVE" desc="Settings &gt; Internet &gt; Network details &gt; Dot menu: Label for the button to remove an eSIM cellular network">
+    Remove profile
+  </message>
+  <message name="IDS_SETTINGS_INTERNET_NETWORK_MENU_RENAME" desc="Settings &gt; Internet &gt; Network details &gt; Dot menu: Label for the button to rename an eSIM cellular network">
+    Rename
   </message>
   <message name="IDS_SETTINGS_INTERNET_BUTTON_ACTIVATE" desc="Settings &gt; Internet &gt; Network details: The label for the button to activate a Cellular network.">
     Activate
