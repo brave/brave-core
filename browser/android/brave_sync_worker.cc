@@ -309,20 +309,14 @@ void BraveSyncWorker::OnStateChanged(syncer::SyncService* sync) {
     return;
   }
 
-  // Don't allow "encrypt all" if the SyncService doesn't allow it.
-  // The UI is hidden, but the user may have enabled it e.g. by fiddling with
-  // the web inspector.
-  if (!service->GetUserSettings()->IsEncryptEverythingAllowed()) {
-    configuration.encrypt_all = false;
+  if (service->GetUserSettings()->IsEncryptEverythingAllowed()) {
+    ProfileMetrics::LogProfileSyncInfo(ProfileMetrics::SYNC_ENCRYPT);
+  } else {
+    // Don't allow "encrypt all" if the SyncService doesn't allow it.
+    // The UI is hidden, but the user may have enabled it e.g. by fiddling with
+    // the web inspector.
     configuration.set_new_passphrase = false;
   }
-
-  // Note: Data encryption will not occur until configuration is complete
-  // (when the PSS receives its CONFIGURE_DONE notification from the sync
-  // engine), so the user still has a chance to cancel out of the operation
-  // if (for example) some kind of passphrase error is encountered.
-  if (configuration.encrypt_all)
-    service->GetUserSettings()->EnableEncryptEverything();
 
   bool passphrase_failed = false;
   if (!configuration.passphrase.empty()) {
@@ -359,8 +353,6 @@ void BraveSyncWorker::OnStateChanged(syncer::SyncService* sync) {
     VLOG(1) << __func__ << " setup passphrase failed";
   }
 
-  if (configuration.encrypt_all)
-    ProfileMetrics::LogProfileSyncInfo(ProfileMetrics::SYNC_ENCRYPT);
   if (!configuration.set_new_passphrase && !configuration.passphrase.empty())
     ProfileMetrics::LogProfileSyncInfo(ProfileMetrics::SYNC_PASSPHRASE);
 }
