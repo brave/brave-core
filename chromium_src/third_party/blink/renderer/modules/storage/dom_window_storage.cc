@@ -199,7 +199,7 @@ StorageArea* BraveDOMWindowStorage::ephemeralSessionStorage() {
       namespaces->session_storage()->GetCachedArea(window->GetSecurityOrigin());
 
   ephemeral_session_storage_ =
-      StorageArea::Create(window->GetFrame(), std::move(storage_area),
+      StorageArea::Create(window, std::move(storage_area),
                           StorageArea::StorageType::kSessionStorage);
   return ephemeral_session_storage_;
 }
@@ -242,7 +242,7 @@ StorageArea* BraveDOMWindowStorage::ephemeralLocalStorage() {
   // sessionStorage works. Due to this, when opening up a new ephemeral
   // localStorage area, we use the sessionStorage infrastructure.
   ephemeral_local_storage_ =
-      StorageArea::Create(window->GetFrame(), std::move(storage_area),
+      StorageArea::Create(window, std::move(storage_area),
                           StorageArea::StorageType::kSessionStorage);
   return ephemeral_local_storage_;
 }
