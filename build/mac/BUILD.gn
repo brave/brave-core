@@ -28,24 +28,6 @@ if (!skip_signing) {
   unsigned_pkg_path = "$root_out_dir/unsigned/$brave_pkg"
 }
 
-# Make Versions/Current original directory and Versions/xxx.xxx symlink to Current.
-# This is for delta update.
-action("reverse_framework_version_symlink") {
-  script="reverse_framework_version_symlink.py"
-
-  target_app_path = "$root_out_dir/$chrome_product_full_name.app"
-  chrome_framework_name = chrome_product_full_name + " Framework"
-
-  args = [
-    "--version-directory-path", rebase_path("$target_app_path/Contents/Frameworks/$chrome_framework_name.framework/Versions"),
-    "--version", "$chrome_version_full",
-  ]
-
-  outputs = [ "$target_app_path/Contents/Frameworks/$chrome_framework_name.framework/Versions/$chrome_version_full" ]
-
-  deps = [ "//chrome:chrome_app" ]
-}
-
 action("build_delta_installer") {
   script="build_delta_installer.py"
 
@@ -75,7 +57,6 @@ action("build_delta_installer") {
   ]
 
   deps = [
-    ":reverse_framework_version_symlink",
     "//brave/vendor/sparkle:build_sparkle_framework",
     "//chrome:chrome_app",
   ]
@@ -137,7 +118,6 @@ if (skip_signing) {
     ]
 
     deps = [
-      ":reverse_framework_version_symlink",
       "//chrome:chrome_app",
       "//chrome/installer/mac"
     ]
@@ -183,10 +163,7 @@ if (skip_signing) {
         getenv("SIGN_WIDEVINE_PASSPHRASE"),
       ]
 
-      deps = [
-        ":reverse_framework_version_symlink",
-        "//chrome:chrome_app",
-      ]
+      deps = [ "//chrome:chrome_app" ]
     }
   }
 } else {
@@ -195,7 +172,6 @@ if (skip_signing) {
     shell_script = "//brave/build/mac/sign_app.sh"
 
     deps = [
-      ":reverse_framework_version_symlink",
       "//chrome:chrome_app",
       "//chrome/installer/mac",
       ":copies",
