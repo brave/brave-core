@@ -172,7 +172,7 @@ void GraphMLAttr::AddValueNode(xmlDocPtr doc, xmlNodePtr parent_node,
   PG_LOG_ASSERT(type_ == kGraphMLAttrTypeString);
   xmlChar* encoded_content = xmlEncodeEntitiesReentrant(doc,
       BAD_CAST value.c_str());
-  xmlNodePtr new_node = xmlNewTextChild(parent_node, NULL,
+  xmlNodePtr new_node = xmlNewChild(parent_node, NULL,
       BAD_CAST "data", encoded_content);
   xmlSetProp(new_node, BAD_CAST "key", BAD_CAST GetGraphMLId().c_str());
   xmlFree(encoded_content);
