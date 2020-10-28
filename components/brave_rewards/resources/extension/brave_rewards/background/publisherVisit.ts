@@ -61,23 +61,31 @@ interface OnUpdatedTabRegistration {
   registered: boolean
 }
 
-// Maps webRequest.OnCompleted registrations by tab id
-const onCompletedWebRequestRegistrationsByTabId =
-  new Map<number, OnCompletedWebRequestRegistration>()
+// Maps webRequest.OnCompleted registrations by tabId:senderId
+const onCompletedWebRequestRegistrations =
+  new Map<string, OnCompletedWebRequestRegistration>()
 
-// Maps webRequest.OnSendHeaders registrations by tab id
-const onSendHeadersWebRequestRegistrationsByTabId =
-  new Map<number, OnSendHeadersWebRequestRegistration>()
+// Maps webRequest.OnSendHeaders registrations by tabId:senderId
+const onSendHeadersWebRequestRegistrations =
+  new Map<string, OnSendHeadersWebRequestRegistration>()
 
-// Maps tabs.OnUpdated registrations by tab id
-const onUpdatedTabRegistrationsByTabId =
-  new Map<number, OnUpdatedTabRegistration>()
+// Maps tabs.OnUpdated registrations by tabId:senderId
+const onUpdatedTabRegistrations =
+  new Map<string, OnUpdatedTabRegistration>()
 
-// Maps Greaselion ports by tab id
-const greaselionPortsByTabId = new Map<number, chrome.runtime.Port>()
+// Maps Greaselion ports by tabId:senderId
+const portsByTabIdSenderId = new Map<string, chrome.runtime.Port>()
 
 // Maps publisher keys by media key
 const publisherKeysByMediaKey = new Map<string, string>()
+
+const buildTabIdSenderIdKey = (tabId: number, senderId: string) => {
+  if (!tabId || !senderId) {
+    return ''
+  }
+
+  return `${tabId}:${senderId}`
+}
 
 const handleGreaselionError = (tabId: number, mediaType: string, data: GreaselionError) => {
   console.error(`Greaselion error: ${data.errorMessage}`)
@@ -110,20 +118,19 @@ const handleMediaDurationMetadata = (tabId: number, mediaType: string, data: Med
   chrome.braveRewards.updateMediaDuration(tabId, publisherKey, data.duration, data.firstVisit)
 }
 
-const handleRegisterOnCompletedWebRequest = (tabId: number, mediaType: string, data: RegisterOnCompletedWebRequest) => {
-  // If we already registered a handler for this tab, exit early
-  const handler = onCompletedWebRequestRegistrationsByTabId.get(tabId)
+const handleRegisterOnCompletedWebRequest = (registrationKey: string, mediaType: string, data: RegisterOnCompletedWebRequest) => {
+  const handler = onCompletedWebRequestRegistrations.get(registrationKey)
   if (handler && handler.registered) {
     return
   }
 
   // Mark this tab as registered
-  onCompletedWebRequestRegistrationsByTabId.set(tabId, { registered: true })
+  onCompletedWebRequestRegistrations.set(registrationKey, { registered: true })
 
   chrome.webRequest.onCompleted.addListener(
     // Listener
     function (details) {
-      const port = greaselionPortsByTabId.get(tabId)
+      const port = portsByTabIdSenderId.get(registrationKey)
       if (!port) {
         return
       }
@@ -145,20 +152,20 @@ const handleRegisterOnCompletedWebRequest = (tabId: number, mediaType: string, d
     })
 }
 
-const handleRegisterOnSendHeadersWebRequest = (tabId: number, mediaType: string, data: RegisterOnSendHeadersWebRequest) => {
+const handleRegisterOnSendHeadersWebRequest = (registrationKey: string, mediaType: string, data: RegisterOnSendHeadersWebRequest) => {
   // If we already registered a handler for this tab, exit early
-  const handler = onSendHeadersWebRequestRegistrationsByTabId.get(tabId)
+  const handler = onSendHeadersWebRequestRegistrations.get(registrationKey)
   if (handler && handler.registered) {
     return
   }
 
   // Mark this tab as registered
-  onSendHeadersWebRequestRegistrationsByTabId.set(tabId, { registered: true })
+  onSendHeadersWebRequestRegistrations.set(registrationKey, { registered: true })
 
   chrome.webRequest.onSendHeaders.addListener(
     // Listener
     function (details) {
-      const port = greaselionPortsByTabId.get(tabId)
+      const port = portsByTabIdSenderId.get(registrationKey)
       if (!port) {
         return
       }
@@ -179,20 +186,20 @@ const handleRegisterOnSendHeadersWebRequest = (tabId: number, mediaType: string,
   )
 }
 
-const handleRegisterOnUpdatedTab = (tabId: number, mediaType: string) => {
+const handleRegisterOnUpdatedTab = (registrationKey: string, mediaType: string) => {
   // If we already registered a handler for this tab, exit early
-  const handler = onUpdatedTabRegistrationsByTabId.get(tabId)
+  const handler = onUpdatedTabRegistrations.get(registrationKey)
   if (handler && handler.registered) {
     return
   }
 
   // Mark this tab as registered
-  onUpdatedTabRegistrationsByTabId.set(tabId, { registered: true })
+  onUpdatedTabRegistrations.set(registrationKey, { registered: true })
 
   chrome.tabs.onUpdated.addListener(
     // Listener
     function (tabId, changeInfo, tab) {
-      const port = greaselionPortsByTabId.get(tabId)
+      const port = portsByTabIdSenderId.get(registrationKey)
       if (!port) {
         return
       }
@@ -294,8 +301,14 @@ chrome.runtime.onConnectExternal.addListener((port: chrome.runtime.Port) => {
       return
     }
 
-    if (!greaselionPortsByTabId.get(tabId)) {
-      greaselionPortsByTabId.set(tabId, port)
+    const senderId = port.sender.id
+    if (!senderId) {
+      return
+    }
+
+    const key = buildTabIdSenderIdKey(tabId, senderId)
+    if (!portsByTabIdSenderId.get(key)) {
+      portsByTabIdSenderId.set(key, port)
     }
 
     chrome.greaselion.isGreaselionExtension(port.sender.id, (valid: boolean) => {
@@ -341,16 +354,16 @@ chrome.runtime.onConnectExternal.addListener((port: chrome.runtime.Port) => {
         }
         case 'RegisterOnCompletedWebRequest': {
           const data = msg.data as RegisterOnCompletedWebRequest
-          handleRegisterOnCompletedWebRequest(tabId, msg.mediaType, data)
+          handleRegisterOnCompletedWebRequest(key, msg.mediaType, data)
           break
         }
         case 'RegisterOnSendHeadersWebRequest': {
           const data = msg.data as RegisterOnSendHeadersWebRequest
-          handleRegisterOnSendHeadersWebRequest(tabId, msg.mediaType, data)
+          handleRegisterOnSendHeadersWebRequest(key, msg.mediaType, data)
           break
         }
         case 'RegisterOnUpdatedTab': {
-          handleRegisterOnUpdatedTab(tabId, msg.mediaType)
+          handleRegisterOnUpdatedTab(key, msg.mediaType)
           break
         }
         case 'SavePublisherVisit': {
@@ -371,8 +384,12 @@ chrome.runtime.onConnectExternal.addListener((port: chrome.runtime.Port) => {
     if (chrome.runtime.lastError) {
       console.error(`Greaselion port disconnected due to error: ${chrome.runtime.lastError}`)
     }
-    if (port.sender && port.sender.tab && port.sender.tab.id) {
-      greaselionPortsByTabId.delete(port.sender.tab.id)
+    if (port.sender && port.sender.id && port.sender.tab && port.sender.tab.id) {
+      const key = buildTabIdSenderIdKey(port.sender.tab.id, port.sender.id)
+      portsByTabIdSenderId.delete(key)
+      onCompletedWebRequestRegistrations.delete(key)
+      onSendHeadersWebRequestRegistrations.delete(key)
+      onUpdatedTabRegistrations.delete(key)
     }
   })
 })
