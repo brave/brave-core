@@ -74,6 +74,10 @@ class RewardsNotificationBrowserTest
     contribution_->Initialize(browser(), rewards_service_);
     rewards_notification_service_ = rewards_service_->GetNotificationService();
     rewards_notification_service_->AddObserver(this);
+
+    // Bypass onboarding UX by default
+    rewards_service_->SaveOnboardingResult(
+        brave_rewards::OnboardingResult::kDismissed);
   }
 
   void TearDown() override {

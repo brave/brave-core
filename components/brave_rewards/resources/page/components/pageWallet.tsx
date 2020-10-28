@@ -5,6 +5,7 @@
 import * as React from 'react'
 import { bindActionCreators, Dispatch } from 'redux'
 import { connect } from 'react-redux'
+import { RewardsOptInModal } from '../../shared/components/onboarding'
 // Components
 import {
   ModalActivity,
@@ -332,7 +333,7 @@ class PageWallet extends React.Component<Props, State> {
       return
     }
 
-    if (!ui.onBoardingDisplayed && externalWallet.status === 0) {
+    if (!ui.verifyOnboardingDisplayed && externalWallet.status === 0) {
       this.toggleVerifyModal()
       return
     }
@@ -349,7 +350,7 @@ class PageWallet extends React.Component<Props, State> {
     }
 
     if (hideVerify) {
-      this.actions.onOnBoardingDisplayed()
+      this.actions.onVerifyOnboardingDisplayed()
     }
 
     this.handleUpholdLink()
@@ -766,6 +767,22 @@ class PageWallet extends React.Component<Props, State> {
     return (!walletStatus || walletStatus === 'unverified') && balance && balance.total < 25
   }
 
+  getOnboardingModal () {
+    if (!this.props.rewardsData.showOnboarding) {
+      return null
+    }
+    const onAddFunds = () => this.onFundsAction('add')
+    const onEnable = () => this.actions.saveOnboardingResult('opted-in')
+    const onClose = () => this.actions.saveOnboardingResult('dismissed')
+    return (
+      <RewardsOptInModal
+        onAddFunds={onAddFunds}
+        onEnable={onEnable}
+        onClose={onClose}
+      />
+    )
+  }
+
   render () {
     const {
       balance,
@@ -857,6 +874,7 @@ class PageWallet extends React.Component<Props, State> {
             ? this.generateMonthlyReport()
             : null
         }
+        {this.getOnboardingModal()}
       </>
     )
   }

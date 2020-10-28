@@ -525,6 +525,7 @@
       <message name="IDS_BRAVE_REWARDS_TIP_NEXT_CONTRIBUTION_DATE" desc="">Next contribution date:</message>
       <message name="IDS_BRAVE_REWARDS_TIP_ONE_TIME_TIP" desc="">One Time Tip</message>
       <message name="IDS_BRAVE_REWARDS_TIP_ONE_TIME_TIP_AMOUNT" desc="">One time tip amount:</message>
+      <message name="IDS_BRAVE_REWARDS_TIP_OPT_IN_REQUIRED" desc="">Hold on, you can’t tip yet</message>
       <message name="IDS_BRAVE_REWARDS_TIP_POST_HEADER" desc="">{{user}}’s post</message>
       <message name="IDS_BRAVE_REWARDS_TIP_POST_HEADER_TWITTER" desc="">{{user}}’s tweet</message>
       <message name="IDS_BRAVE_REWARDS_TIP_SORRY_TO_SEE_YOU_GO" desc="">Sorry to see you go…</message>
@@ -534,6 +535,15 @@
       <message name="IDS_BRAVE_REWARDS_TIP_TIP_HAS_BEEN_SET" desc="">Your one time tip has been sent.</message>
       <message name="IDS_BRAVE_REWARDS_TIP_TIP_POST_SUBTITLE" desc="">for their post</message>
       <message name="IDS_BRAVE_REWARDS_TIP_TWEET_ABOUT_SUPPORT" desc="">Tweet about your support</message>
+
+      <!-- WebUI rewards onboarding resources -->
+      <message name="IDS_BRAVE_REWARDS_ONBOARDING_EARN_HEADER" desc="">Earn Tokens &amp; Give Back</message>
+      <message name="IDS_BRAVE_REWARDS_ONBOARDING_EARN_TEXT" desc="">Earn tokens by viewing privacy-respecting ads and support your favorite sites and content creators automatically.</message>
+      <message name="IDS_BRAVE_REWARDS_ONBOARDING_MAYBE_LATER" desc="">Maybe Later</message>
+      <message name="IDS_BRAVE_REWARDS_ONBOARDING_START_USING_REWARDS" desc="">Start using Brave Rewards</message>
+      <message name="IDS_BRAVE_REWARDS_ONBOARDING_TERMS" desc="">By proceeding, you agree to the <ph name="LINK_BEGIN">$1</ph>Terms of Service<ph name="LINK_END">$2</ph> and <ph name="LINK_BEGIN">$3</ph>Privacy Policy<ph name="LINK_END">$4</ph>.</message>
+      <message name="IDS_BRAVE_REWARDS_ONBOARDING_TIP_HEADER" desc="">Tip with Brave rewards</message>
+      <message name="IDS_BRAVE_REWARDS_ONBOARDING_TIP_TEXT" desc="">By using Brave rewards, you will start to gain BAT that you can use to tip creators.</message>
 
       <!-- WebUI brave ui resources -->
       <message name="IDS_BRAVE_UI_ABOUT" desc="">about</message>

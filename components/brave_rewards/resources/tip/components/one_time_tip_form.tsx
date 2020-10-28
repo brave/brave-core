@@ -14,7 +14,7 @@ import {
 } from '../lib/interfaces'
 
 import { HostContext } from '../lib/host_context'
-import { Locale, LocaleContext } from '../lib/locale_context'
+import { Locale, LocaleContext } from '../../shared/lib/locale_context'
 import { formatExchangeAmount, formatLocaleTemplate } from '../lib/formatting'
 
 import { FormSubmitButton } from './form_submit_button'
@@ -22,7 +22,7 @@ import { PaymentKindSwitch } from './payment_kind_switch'
 import { TipAmountSelector } from './tip_amount_selector'
 import { BatString } from './bat_string'
 import { TermsOfService } from './terms_of_service'
-import { NewTabLink } from './new_tab_link'
+import { NewTabLink } from '../../shared/components/new_tab_link'
 import { PaperAirplaneIcon } from './icons/paper_airplane_icon'
 
 import * as style from './one_time_tip_form.style'

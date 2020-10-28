@@ -241,6 +241,15 @@ export const rewardsPanelReducer: Reducer<RewardsExtension.State | undefined> = 
       state.enabledAC = payload.enabled
       break
     }
+    case types.ON_SHOULD_SHOW_ONBOARDING: {
+      state = { ...state, showOnboarding: payload.showOnboarding }
+      break
+    }
+    case types.SAVE_ONBOARDING_RESULT: {
+      state = { ...state, showOnboarding: false }
+      chrome.braveRewards.saveOnboardingResult(payload.result)
+      break
+    }
     case types.ON_PUBLISHER_LIST_NORMALIZED: {
       const list = payload.properties
       let publishers: Record<string, RewardsExtension.Publisher> = state.publishers

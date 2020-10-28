@@ -308,6 +308,10 @@ class RewardsServiceImpl : public RewardsService,
 
   void SetAutoContributeEnabled(bool enabled) override;
 
+  bool ShouldShowOnboarding() const override;
+
+  void SaveOnboardingResult(OnboardingResult result) override;
+
   void GetMonthlyReport(
       const uint32_t month,
       const uint32_t year,

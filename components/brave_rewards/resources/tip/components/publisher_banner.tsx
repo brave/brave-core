@@ -24,11 +24,11 @@ import {
 } from '../lib/interfaces'
 
 import { HostContext } from '../lib/host_context'
-import { Locale, LocaleContext } from '../lib/locale_context'
+import { Locale, LocaleContext } from '../../shared/lib/locale_context'
 import { formatLocaleTemplate } from '../lib/formatting'
 
 import { MediaCard } from './media_card'
-import { NewTabLink } from './new_tab_link'
+import { NewTabLink } from '../../shared/components/new_tab_link'
 import { UnverifiedIcon } from './icons/unverified_icon'
 import { VerifiedIcon } from './icons/verified_icon'
 

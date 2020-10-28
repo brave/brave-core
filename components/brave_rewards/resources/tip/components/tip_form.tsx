@@ -8,10 +8,11 @@ import { TwitterColorIcon, RedditColorIcon } from 'brave-ui/components/icons'
 
 import { TipKind, MediaMetaData } from '../lib/interfaces'
 import { HostContext } from '../lib/host_context'
-import { Locale, LocaleContext } from '../lib/locale_context'
+import { Locale, LocaleContext } from '../../shared/lib/locale_context'
 
 import { SliderSwitch, SliderSwitchOption } from './slider_switch'
 import { TipComplete } from './tip_complete'
+import { OptInForm } from './opt_in_form'
 import { OneTimeTipForm } from './one_time_tip_form'
 import { MonthlyTipForm } from './monthly_tip_form'
 
@@ -66,6 +67,8 @@ export function TipForm () {
     host.state.publisherInfo)
   const [rewardsParameters, setRewardsParameters] = React.useState(
     host.state.rewardsParameters)
+  const [showOnboarding, setShowOnboarding] = React.useState(
+    host.state.showOnboarding)
   const [currentMonthlyTip, setCurrentMonthlyTip] = React.useState(
     host.state.currentMonthlyTip || 0)
 
@@ -85,6 +88,7 @@ export function TipForm () {
       setRewardsParameters(state.rewardsParameters)
       setPublisherInfo(state.publisherInfo)
       setBalanceInfo(state.balanceInfo)
+      setShowOnboarding(state.showOnboarding)
       setCurrentMonthlyTip(state.currentMonthlyTip || 0)
     })
   }, [host])
@@ -95,6 +99,10 @@ export function TipForm () {
 
   if (tipProcessed) {
     return <TipComplete tipKind={tipKind} tipAmount={tipAmount} />
+  }
+
+  if (showOnboarding) {
+    return <OptInForm />
   }
 
   const { mediaMetaData } = host.getDialogArgs()

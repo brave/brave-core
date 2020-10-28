@@ -8,7 +8,7 @@ import { storiesOf } from '@storybook/react'
 import { App } from '../components/app'
 import { DialogArgs, Host, HostState, MediaMetaData } from '../lib/interfaces'
 import { HostContext } from '../lib/host_context'
-import { LocaleContext } from '../lib/locale_context'
+import { LocaleContext } from '../../shared/lib/locale_context'
 
 import { localeStrings } from './locale_strings'
 
@@ -97,6 +97,7 @@ function createHostState (): HostState {
     hostError: undefined,
     nextReconcileDate: new Date(Date.now() + 15 * 14 * 60 * 60 * 1000),
     onlyAnonWallet: false,
+    showOnboarding: false,
     tipProcessed: false,
     currentMonthlyTip: 0
   }
@@ -118,6 +119,9 @@ function createHost (): Host {
     },
     closeDialog () {
       console.log('closeDialog')
+    },
+    saveOnboardingResult (result) {
+      console.log('saveOnboardingResult', result)
     },
     processTip (amount, kind) {
       console.log('processTip', amount, kind)

@@ -28,7 +28,7 @@ export const defaultState: Rewards.State = {
     paymentIdCheck: true,
     walletRecoveryStatus: null,
     walletServerProblem: false,
-    onBoardingDisplayed: false,
+    verifyOnboardingDisplayed: false,
     promosDismissed: {}
   },
   autoContributeList: [],
@@ -76,7 +76,8 @@ export const defaultState: Rewards.State = {
   },
   initializing: true,
   paymentId: '',
-  recoveryKey: ''
+  recoveryKey: '',
+  showOnboarding: false
 }
 
 const cleanData = (state: Rewards.State) => {
@@ -86,6 +87,15 @@ const cleanData = (state: Rewards.State) => {
 
   if (!state.parameters) {
     state.parameters = defaultState.parameters
+  }
+
+  // Name change: onBoardingDisplayed -> verifyOnboardingDisplayed
+  if (state.ui.verifyOnboardingDisplayed === undefined) {
+    const { ui } = state as any
+    if (ui.onBoardingDisplayed) {
+      ui.verifyOnboardingDisplayed = true
+      ui.onBoardingDisplayed = undefined
+    }
   }
 
   state.ui.modalRedirect = 'hide'

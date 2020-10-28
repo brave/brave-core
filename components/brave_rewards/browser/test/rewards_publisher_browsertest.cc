@@ -58,6 +58,10 @@ class RewardsPublisherBrowserTest : public InProcessBrowserTest {
             &RewardsPublisherBrowserTest::GetTestResponse,
             base::Unretained(this)));
     rewards_service_->SetLedgerEnvForTesting();
+
+    // Bypass onboarding UX by default
+    rewards_service_->SaveOnboardingResult(
+        brave_rewards::OnboardingResult::kDismissed);
   }
 
   void TearDown() override {

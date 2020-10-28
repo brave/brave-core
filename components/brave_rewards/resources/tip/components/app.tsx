@@ -5,12 +5,12 @@
 import * as React from 'react'
 
 import { HostContext } from '../lib/host_context'
-import { injectThemeVariables } from '../lib/theme_loader'
+import { WithThemeVariables } from '../../shared/components/with_theme_variables'
 
 import { AppError } from './app_error'
 import { PublisherBanner } from './publisher_banner'
 import { TipForm } from './tip_form'
-import { CloseIcon } from './icons/close_icon'
+import { CloseIcon } from '../../shared/components/icons/close_icon'
 
 import * as style from './app.style'
 
@@ -24,15 +24,8 @@ export function App () {
     })
   })
 
-  function onMount (element: HTMLElement | null) {
-    if (!element) {
-      return
-    }
-    injectThemeVariables(element)
-  }
-
   return (
-    <div ref={onMount}>
+    <WithThemeVariables>
       <style.root>
         <style.banner>
           <PublisherBanner />
@@ -44,6 +37,6 @@ export function App () {
           {hostError ? <AppError hostError={hostError} /> : <TipForm />}
         </style.form>
       </style.root>
-    </div>
+    </WithThemeVariables>
   )
 }

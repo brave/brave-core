@@ -262,7 +262,7 @@ export const onExternalWallet = (result: number, wallet: Rewards.ExternalWallet)
   wallet
 })
 
-export const onOnBoardingDisplayed = () => action(types.ON_ON_BOARDING_DISPLAYED)
+export const onVerifyOnboardingDisplaed = () => action(types.ON_VERIFY_ONBOARDING_DISPLAYED)
 
 export const processRewardsPageUrl = (path: string, query: string) => action(types.PROCESS_REWARDS_PAGE_URL, {
   path,
@@ -337,4 +337,14 @@ export const getWalletPassphrase = () => action(types.GET_WALLET_PASSPHRASE)
 
 export const onWalletPassphrase = (passphrase: string) => action(types.ON_WALLET_PASSPHRASE, {
   passphrase
+})
+
+export const getOnboardingStatus = () => action(types.GET_ONBOARDING_STATUS)
+
+export const onOnboardingStatus = (showOnboarding: boolean) => action(types.ON_ONBOARDING_STATUS, {
+  showOnboarding
+})
+
+export const saveOnboardingResult = (result: 'opted-in' | 'dismissed') => action(types.SAVE_ONBOARDING_RESULT, {
+  result
 })

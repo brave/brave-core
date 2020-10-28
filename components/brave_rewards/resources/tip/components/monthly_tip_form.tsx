@@ -6,7 +6,7 @@ import * as React from 'react'
 
 import { PaymentKind, RewardsParameters, PublisherInfo } from '../lib/interfaces'
 import { HostContext } from '../lib/host_context'
-import { LocaleContext } from '../lib/locale_context'
+import { LocaleContext } from '../../shared/lib/locale_context'
 import { formatExchangeAmount } from '../lib/formatting'
 
 import { CurrentMonthlyForm } from './current_monthly_form'

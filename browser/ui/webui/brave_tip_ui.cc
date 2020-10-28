@@ -74,6 +74,8 @@ class TipMessageHandler : public WebUIMessageHandler,
   void DialogReady(const base::ListValue* args);
   void GetPublisherBanner(const base::ListValue* args);
   void GetRewardsParameters(const base::ListValue* args);
+  void GetOnboardingStatus(const base::ListValue* args);
+  void SaveOnboardingResult(const base::ListValue* args);
   void OnTip(const base::ListValue* args);
   void GetRecurringTips(const base::ListValue* args);
   void GetReconcileStamp(const base::ListValue* args);
@@ -131,6 +133,18 @@ void TipMessageHandler::RegisterMessages() {
       "getRewardsParameters",
       base::BindRepeating(
           &TipMessageHandler::GetRewardsParameters,
+          base::Unretained(this)));
+
+  web_ui()->RegisterMessageCallback(
+      "getOnboardingStatus",
+      base::BindRepeating(
+          &TipMessageHandler::GetOnboardingStatus,
+          base::Unretained(this)));
+
+  web_ui()->RegisterMessageCallback(
+      "saveOnboardingResult",
+      base::BindRepeating(
+          &TipMessageHandler::SaveOnboardingResult,
           base::Unretained(this)));
 
   web_ui()->RegisterMessageCallback(
@@ -267,6 +281,34 @@ void TipMessageHandler::GetRewardsParameters(const base::ListValue* args) {
   rewards_service_->GetRewardsParameters(base::Bind(
       &TipMessageHandler::GetRewardsParametersCallback,
       weak_factory_.GetWeakPtr()));
+}
+
+void TipMessageHandler::GetOnboardingStatus(const base::ListValue* args) {
+  if (!rewards_service_) {
+    return;
+  }
+  AllowJavascript();
+  base::Value data(base::Value::Type::DICTIONARY);
+  data.SetBoolKey("showOnboarding", rewards_service_->ShouldShowOnboarding());
+  FireWebUIListener("onboardingStatusUpdated", data);
+}
+
+void TipMessageHandler::SaveOnboardingResult(const base::ListValue* args) {
+  using brave_rewards::OnboardingResult;
+
+  CHECK_EQ(1U, args->GetSize());
+  if (!rewards_service_) {
+    return;
+  }
+
+  const std::string result_type = args->GetList()[0].GetString();
+  if (result_type == "opted-in") {
+    rewards_service_->SaveOnboardingResult(OnboardingResult::kOptedIn);
+  } else if (result_type == "dismissed") {
+    rewards_service_->SaveOnboardingResult(OnboardingResult::kDismissed);
+  } else {
+    NOTREACHED();
+  }
 }
 
 void TipMessageHandler::OnTip(const base::ListValue* args) {

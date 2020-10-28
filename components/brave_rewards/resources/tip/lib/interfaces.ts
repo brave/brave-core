@@ -51,6 +51,8 @@ export type TipKind = 'one-time' | 'monthly'
 
 export type PaymentKind = 'bat'
 
+export type OnboardingResult = 'opted-in' | 'dismissed'
+
 export enum PublisherStatus {
   NOT_VERIFIED = 0,
   CONNECTED = 1,
@@ -116,6 +118,7 @@ export interface HostState {
   nextReconcileDate?: Date
   currentMonthlyTip?: number
   onlyAnonWallet?: boolean
+  showOnboarding?: boolean
   tipProcessed?: boolean
   tipAmount?: number
 }
@@ -127,6 +130,7 @@ export interface Host {
   getString: (key: string) => string
   getDialogArgs: () => DialogArgs
   closeDialog: () => void
+  saveOnboardingResult: (result: OnboardingResult) => void
   processTip: (amount: number, kind: TipKind) => void
   shareTip: (target: ShareTarget) => void
   addListener: (callback: HostListener) => () => void

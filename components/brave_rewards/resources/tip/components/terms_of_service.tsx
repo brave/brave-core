@@ -4,9 +4,9 @@
 
 import * as React from 'react'
 
-import { LocaleContext } from '../lib/locale_context'
+import { LocaleContext } from '../../shared/lib/locale_context'
 
-import { NewTabLink } from './new_tab_link'
+import { NewTabLink } from '../../shared/components/new_tab_link'
 
 import * as style from './terms_of_service.style'
 

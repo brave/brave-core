@@ -1641,6 +1641,33 @@ void RewardsServiceImpl::SetAutoContributeEnabled(bool enabled) {
   }
 }
 
+bool RewardsServiceImpl::ShouldShowOnboarding() const {
+  PrefService* prefs = profile_->GetPrefs();
+  const base::Time onboard_time = prefs->GetTime(prefs::kOnboarded);
+
+  bool ads_enabled = false;
+  bool ads_supported = true;
+  auto* ads_service = brave_ads::AdsServiceFactory::GetForProfile(profile_);
+  if (ads_service) {
+    ads_enabled = ads_service->IsEnabled();
+    ads_supported = ads_service->IsSupportedLocale();
+  }
+
+  return onboard_time.is_null() && !ads_enabled && ads_supported;
+}
+
+void RewardsServiceImpl::SaveOnboardingResult(OnboardingResult result) {
+  PrefService* prefs = profile_->GetPrefs();
+  prefs->SetTime(prefs::kOnboarded, base::Time::Now());
+  if (result == OnboardingResult::kOptedIn) {
+    SetAutoContributeEnabled(true);
+    auto* ads_service = brave_ads::AdsServiceFactory::GetForProfile(profile_);
+    if (ads_service) {
+      ads_service->SetEnabled(true);
+    }
+  }
+}
+
 void RewardsServiceImpl::OnAdsEnabled(bool ads_enabled) {
   if (ads_enabled) {
     StartLedger(base::DoNothing());

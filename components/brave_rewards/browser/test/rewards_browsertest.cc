@@ -70,6 +70,10 @@ class RewardsBrowserTest : public InProcessBrowserTest {
     // Other
     contribution_->Initialize(browser(), rewards_service_);
     promotion_->Initialize(browser(), rewards_service_);
+
+    // Bypass onboarding UX by default
+    rewards_service_->SaveOnboardingResult(
+        brave_rewards::OnboardingResult::kDismissed);
   }
 
   void TearDown() override {

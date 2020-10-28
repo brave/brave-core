@@ -8,7 +8,7 @@ import { TwitterColorIcon } from 'brave-ui/components/icons'
 
 import { TipKind } from '../lib/interfaces'
 import { HostContext } from '../lib/host_context'
-import { LocaleContext } from '../lib/locale_context'
+import { LocaleContext } from '../../shared/lib/locale_context'
 import { formatTokenAmount } from '../lib/formatting'
 
 import { BatString } from './bat_string'

@@ -455,6 +455,26 @@ class BraveRewardsIsInitializedFunction : public ExtensionFunction {
   ResponseAction Run() override;
 };
 
+class BraveRewardsShouldShowOnboardingFunction : public ExtensionFunction {
+ public:
+  DECLARE_EXTENSION_FUNCTION("braveRewards.shouldShowOnboarding", UNKNOWN)
+
+ protected:
+  ~BraveRewardsShouldShowOnboardingFunction() override;
+
+  ResponseAction Run() override;
+};
+
+class BraveRewardsSaveOnboardingResultFunction : public ExtensionFunction {
+ public:
+  DECLARE_EXTENSION_FUNCTION("braveRewards.saveOnboardingResult", UNKNOWN)
+
+ protected:
+  ~BraveRewardsSaveOnboardingResultFunction() override;
+
+  ResponseAction Run() override;
+};
+
 }  // namespace api
 }  // namespace extensions
 
