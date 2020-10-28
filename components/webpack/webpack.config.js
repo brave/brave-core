@@ -22,6 +22,10 @@ module.exports = (env, argv) => ({
     // https://github.com/brave/brave-browser/issues/5587
     aliasFields: ['chromeapp']
   },
+  optimization: {
+    // Define NO_CONCATENATE for analyzing module size.
+    concatenateModules: !process.env.NO_CONCATENATE
+  },
   plugins: process.env.DEPFILE_SOURCE_NAME ? [
     new GenerateDepfilePlugin({
       depfilePath: process.env.DEPFILE_PATH,
