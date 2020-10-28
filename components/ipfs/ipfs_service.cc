@@ -89,6 +89,7 @@ IpfsService::IpfsService(content::BrowserContext* context,
           {base::ThreadPool(), base::MayBlock(),
            base::TaskPriority::BEST_EFFORT,
            base::TaskShutdownBehavior::BLOCK_SHUTDOWN})),
+      ipfs_p3a(this, context),
       weak_factory_(this) {
   DCHECK(!user_data_dir.empty());
   url_loader_factory_ =
@@ -107,7 +108,9 @@ IpfsService::IpfsService(content::BrowserContext* context,
   }
 }
 
-IpfsService::~IpfsService() = default;
+IpfsService::~IpfsService() {
+  ipfs_p3a.Stop();
+}
 
 // static
 bool IpfsService::IsIpfsEnabled(content::BrowserContext* context,
@@ -129,6 +132,7 @@ void IpfsService::RegisterPrefs(PrefRegistrySimple* registry) {
       static_cast<int>(ipfs::IPFSResolveMethodTypes::IPFS_ASK));
   registry->RegisterBooleanPref(kIPFSBinaryAvailable, false);
   registry->RegisterBooleanPref(kIPFSAutoFallbackToGateway, false);
+  registry->RegisterIntegerPref(kIPFSInfobarCount, 0);
 }
 
 base::FilePath IpfsService::GetIpfsExecutablePath() {
@@ -204,6 +208,8 @@ void IpfsService::OnIpfsLaunched(bool result, int64_t pid) {
   if (!launch_daemon_callback_.is_null()) {
     std::move(launch_daemon_callback_).Run(result && pid > 0);
   }
+
+  daemon_start_time_ = base::TimeTicks::Now();
 
   for (auto& observer : observers_) {
     observer.OnIpfsLaunched(result, pid);
@@ -411,6 +417,10 @@ IPFSResolveMethodTypes IpfsService::GetIPFSResolveMethodType() const {
   PrefService* prefs = user_prefs::UserPrefs::Get(context_);
   return static_cast<IPFSResolveMethodTypes>(
       prefs->GetInteger(kIPFSResolveMethod));
+}
+
+base::TimeTicks IpfsService::GetDaemonStartTime() const {
+  return daemon_start_time_;
 }
 
 }  // namespace ipfs

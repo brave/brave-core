@@ -17,6 +17,7 @@
 #include "brave/components/ipfs/addresses_config.h"
 #include "brave/components/ipfs/brave_ipfs_client_updater.h"
 #include "brave/components/ipfs/ipfs_constants.h"
+#include "brave/components/ipfs/ipfs_p3a.h"
 #include "brave/components/services/ipfs/public/mojom/ipfs_service.mojom.h"
 #include "components/keyed_service/core/keyed_service.h"
 #include "mojo/public/cpp/bindings/remote.h"
@@ -72,6 +73,7 @@ class IpfsService : public KeyedService,
   IPFSResolveMethodTypes GetIPFSResolveMethodType() const;
   base::FilePath GetDataPath() const;
   base::FilePath GetConfigFilePath() const;
+  base::TimeTicks GetDaemonStartTime() const;
 
   // KeyedService
   void Shutdown() override;
@@ -131,11 +133,13 @@ class IpfsService : public KeyedService,
   bool is_ipfs_launched_for_test_ = false;
   bool skip_get_connected_peers_callback_for_test_ = false;
   GURL server_endpoint_;
+  base::TimeTicks daemon_start_time_;
 
   base::FilePath user_data_dir_;
   BraveIpfsClientUpdater* ipfs_client_updater_;
 
   scoped_refptr<base::SequencedTaskRunner> file_task_runner_;
+  IpfsP3A ipfs_p3a;
   base::WeakPtrFactory<IpfsService> weak_factory_;
 
   DISALLOW_COPY_AND_ASSIGN(IpfsService);
