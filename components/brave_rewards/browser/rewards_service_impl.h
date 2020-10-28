@@ -551,10 +551,19 @@ class RewardsServiceImpl : public RewardsService,
       GetPublisherInfoCallback callback,
       const ledger::type::Result result,
       ledger::type::PublisherInfoPtr info);
+  void OnStartProcessForGetPublisherInfo(
+      const std::string& publisher_key,
+      GetPublisherInfoCallback callback,
+      const ledger::type::Result result);
   void OnPublisherPanelInfo(
       GetPublisherInfoCallback callback,
       const ledger::type::Result result,
       ledger::type::PublisherInfoPtr info);
+  void OnStartProcessForSavePublisherInfo(
+      const uint64_t window_id,
+      ledger::type::PublisherInfoPtr publisher_info,
+      SavePublisherInfoCallback callback,
+      const ledger::type::Result result);
   void OnSavePublisherInfo(
       SavePublisherInfoCallback callback,
       const ledger::type::Result result);

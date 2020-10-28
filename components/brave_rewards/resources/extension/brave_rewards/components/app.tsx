@@ -53,6 +53,31 @@ export class RewardsPanel extends React.Component<Props, State> {
     }
   }
 
+  getPublisherPanelInfoForCurrentTab () {
+    chrome.tabs.query({
+      active: true,
+      currentWindow: true
+    }, (tabs) => {
+      if (!tabs || !tabs.length) {
+        return
+      }
+
+      const tab = tabs[0]
+      if (!tab || !tab.id || !tab.url || tab.incognito || !tab.active) {
+        return
+      }
+
+      const braveExtensionId = 'mnojpmjdmbbfmejpflffifhffcmidifd'
+
+      chrome.runtime.sendMessage(
+        braveExtensionId,
+        {
+          type: 'GetPublisherPanelInfo',
+          tabId: tab.id
+        })
+    })
+  }
+
   startRewards = () => {
     this.getCurrentTab(this.onCurrentTab)
 
@@ -79,6 +104,8 @@ export class RewardsPanel extends React.Component<Props, State> {
     this.getCurrentTab(this.onCurrentTab)
 
     this.handleGrantNotification()
+
+    this.getPublisherPanelInfoForCurrentTab()
   }
 
   handleGrantNotification = () => {

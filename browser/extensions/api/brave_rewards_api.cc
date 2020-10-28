@@ -15,6 +15,7 @@
 #include "brave/browser/brave_rewards/rewards_service_factory.h"
 #include "brave/browser/brave_rewards/tip_dialog.h"
 #include "brave/browser/extensions/api/brave_action_api.h"
+#include "brave/browser/extensions/brave_component_loader.h"
 #include "brave/browser/profiles/profile_util.h"
 #include "brave/common/extensions/api/brave_rewards.h"
 #include "brave/components/brave_ads/browser/ads_service.h"
@@ -22,9 +23,11 @@
 #include "brave/components/brave_rewards/browser/rewards_service.h"
 #include "chrome/browser/extensions/api/tabs/tabs_constants.h"
 #include "chrome/browser/extensions/chrome_extension_function_details.h"
+#include "chrome/browser/extensions/extension_service.h"
 #include "chrome/browser/extensions/extension_tab_util.h"
 #include "chrome/browser/profiles/profile.h"
 #include "content/public/browser/web_contents.h"
+#include "extensions/browser/extension_system.h"
 #include "extensions/common/constants.h"
 
 using brave_ads::AdsService;
@@ -283,15 +286,47 @@ ExtensionFunction::ResponseAction BraveRewardsTipUserFunction::Run() {
     return RespondNow(Error("Rewards service is not initialized"));
   }
 
+  extensions::ExtensionService* extension_service =
+      extensions::ExtensionSystem::Get(profile)->extension_service();
+  if (!extension_service) {
+    return RespondNow(Error("Extension service is not initialized"));
+  }
+
   AddRef();
 
-  rewards_service->GetPublisherInfo(
-      params->publisher_key,
-      base::Bind(
-          &BraveRewardsTipUserFunction::OnTipUserGetPublisherInfo,
-          this));
+  extensions::ComponentLoader* component_loader =
+      extension_service->component_loader();
+  static_cast<extensions::BraveComponentLoader*>(component_loader)
+      ->AddRewardsExtension();
+
+  rewards_service->StartProcess(
+      base::BindOnce(
+          &BraveRewardsTipUserFunction::OnTipUserStartProcess,
+          this,
+          params->publisher_key));
 
   return RespondNow(NoArguments());
+}
+
+void BraveRewardsTipUserFunction::OnTipUserStartProcess(
+    const std::string& publisher_key,
+    ledger::type::Result result) {
+  if (result != ledger::type::Result::LEDGER_OK) {
+    Release();
+    return;
+  }
+
+  Profile* profile = Profile::FromBrowserContext(browser_context());
+  auto* rewards_service = RewardsServiceFactory::GetForProfile(profile);
+  if (!rewards_service) {
+    Release();
+    return;
+  }
+
+  rewards_service->GetPublisherInfo(
+      publisher_key,
+      base::Bind(&BraveRewardsTipUserFunction::OnTipUserGetPublisherInfo,
+                 this));
 }
 
 void BraveRewardsTipUserFunction::OnTipUserGetPublisherInfo(

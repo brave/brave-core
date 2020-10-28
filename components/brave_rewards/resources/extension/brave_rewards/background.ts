@@ -4,7 +4,6 @@
 
 import rewardsPanelActions from './background/actions/rewardsPanelActions'
 
-import './background/publisherVisit'
 import './background/store'
 import './background/events/rewardsEvents'
 import './background/events/tabEvents'
@@ -48,3 +47,15 @@ chrome.runtime.onStartup.addListener(function () {
     })
   })
 })
+
+chrome.runtime.onMessageExternal.addListener(
+  function (msg: any, sender: chrome.runtime.MessageSender, sendResponse: any) {
+    if (!msg) {
+      return
+    }
+    switch (msg.type) {
+      case 'OnPublisherData':
+        rewardsPanelActions.onPublisherData(msg.tabId, msg.info)
+        break
+    }
+  })

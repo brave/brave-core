@@ -2,9 +2,6 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-// Util
-import rewardsPanelActions from './actions/rewardsPanelActions'
-
 interface GreaselionError {
   errorMessage: string
 }
@@ -78,6 +75,11 @@ const portsByTabIdSenderId = new Map<string, chrome.runtime.Port>()
 
 // Maps publisher keys by media key
 const publisherKeysByMediaKey = new Map<string, string>()
+
+// Maps publisher keys by tabId
+const publisherKeysByTabId = new Map<number, string>()
+
+const braveRewardsExtensionId = 'jidkidbbcafjabdphckchenhfomhnfma'
 
 const buildTabIdSenderIdKey = (tabId: number, senderId: string) => {
   if (!tabId || !senderId) {
@@ -219,10 +221,29 @@ const getPublisherPanelInfo = (tabId: number, publisherKey: string) => {
   chrome.braveRewards.getPublisherPanelInfo(
     publisherKey, (result: RewardsExtension.Result, info?: RewardsExtension.Publisher) => {
       if (result === 0 && info) {
-        rewardsPanelActions.onPublisherData(tabId, info)
+        chrome.runtime.sendMessage(
+          braveRewardsExtensionId,
+          {
+            type: 'OnPublisherData',
+            tabId,
+            info
+          })
       }
       return
     })
+}
+
+const getPublisherPanelInfoByTabId = (tabId: number) => {
+  if (!tabId) {
+    return
+  }
+
+  const publisherKey = publisherKeysByTabId.get(tabId)
+  if (!publisherKey) {
+    return
+  }
+
+  getPublisherPanelInfo(tabId, publisherKey)
 }
 
 const savePublisherInfo = (tabId: number, mediaType: string, url: string, publisherKey: string, publisherName: string, favIconUrl: string) => {
@@ -246,6 +267,8 @@ const handleSavePublisherVisit = (tabId: number, mediaType: string, data: SavePu
     console.error('Invalid parameter')
     return
   }
+
+  publisherKeysByTabId.set(tabId, data.publisherKey)
 
   if (data.mediaKey && !publisherKeysByMediaKey.has(data.mediaKey)) {
     publisherKeysByMediaKey.set(data.mediaKey, data.publisherKey)
@@ -321,6 +344,11 @@ chrome.runtime.onConnectExternal.addListener((port: chrome.runtime.Port) => {
           handleGreaselionError(tabId, msg.mediaType, data)
           break
         }
+        case 'MediaDurationMetadata': {
+          const data = msg.data as MediaDurationMetadata
+          handleMediaDurationMetadata(tabId, msg.mediaType, data)
+          break
+        }
         case 'OnAPIRequest': {
           const data = msg.data as OnAPIRequest
           handleOnAPIRequest(
@@ -345,11 +373,6 @@ chrome.runtime.onConnectExternal.addListener((port: chrome.runtime.Port) => {
                 }
               })
             })
-          break
-        }
-        case 'MediaDurationMetadata': {
-          const data = msg.data as MediaDurationMetadata
-          handleMediaDurationMetadata(tabId, msg.mediaType, data)
           break
         }
         case 'RegisterOnCompletedWebRequest': {
@@ -385,6 +408,8 @@ chrome.runtime.onConnectExternal.addListener((port: chrome.runtime.Port) => {
       console.error(`Greaselion port disconnected due to error: ${chrome.runtime.lastError}`)
     }
     if (port.sender && port.sender.id && port.sender.tab && port.sender.tab.id) {
+      publisherKeysByTabId.delete(port.sender.tab.id)
+
       const key = buildTabIdSenderIdKey(port.sender.tab.id, port.sender.id)
       portsByTabIdSenderId.delete(key)
       onCompletedWebRequestRegistrations.delete(key)
@@ -393,3 +418,18 @@ chrome.runtime.onConnectExternal.addListener((port: chrome.runtime.Port) => {
     }
   })
 })
+
+chrome.runtime.onMessageExternal.addListener(
+  function (msg: any, sender: chrome.runtime.MessageSender, sendResponse: any) {
+    if (!msg) {
+      return
+    }
+    switch (msg.type) {
+      case 'GetPublisherPanelInfo':
+        getPublisherPanelInfoByTabId(msg.tabId)
+        break
+      case 'SupportsGreaselion':
+        sendResponse({ supported: true })
+        break
+    }
+  })
