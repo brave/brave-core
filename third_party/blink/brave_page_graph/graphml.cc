@@ -34,6 +34,12 @@ namespace {
     kGraphMLAttrForTypeEdge, "attr value");
   const GraphMLAttr* const before_node_attr = new GraphMLAttr(
     kGraphMLAttrForTypeEdge, "before", kGraphMLAttrTypeLong);
+  const GraphMLAttr* const binding_attr = new GraphMLAttr(
+    kGraphMLAttrForTypeNode, "binding");
+  const GraphMLAttr* const binding_event_attr = new GraphMLAttr(
+    kGraphMLAttrForTypeNode, "binding event");
+  const GraphMLAttr* const binding_type_attr = new GraphMLAttr(
+    kGraphMLAttrForTypeNode, "binding type");
   const GraphMLAttr* const block_type_attr = new GraphMLAttr(
     kGraphMLAttrForTypeEdge, "block type");
   const GraphMLAttr* const call_args_attr = new GraphMLAttr(
@@ -112,11 +118,12 @@ namespace {
     kGraphMLAttrForTypeEdge, "headers");
 
   const vector<const GraphMLAttr* const> _all_graphml_attrs = {
-    attr_name_attr, attr_value, before_node_attr, block_type_attr,
-    call_args_attr, edge_type_attr, event_listener_id_attr, frame_id_attr,
-    host_attr, incognito_attr, is_deleted_attr, is_style_attr, key_attr,
-    method_attr, node_id_attr, node_text_attr, node_type_attr,
-    page_graph_edge_id_attr, page_graph_node_id_attr, page_graph_edge_time_attr,
+    attr_name_attr, attr_value, before_node_attr, binding_attr,
+    binding_event_attr, binding_type_attr, block_type_attr, call_args_attr,
+    edge_type_attr, event_listener_id_attr, frame_id_attr, host_attr,
+    incognito_attr, is_deleted_attr, is_style_attr, key_attr, method_attr,
+    node_id_attr, node_text_attr, node_type_attr, page_graph_edge_id_attr,
+    page_graph_node_id_attr, page_graph_edge_time_attr,
     page_graph_node_time_attr, parent_node_attr, primary_pattern_attr,
     request_id_attr, request_type_attr, resource_type_attr, response_hash_attr,
     rule_attr, script_id_for_edge_attr, script_id_for_node_attr,
@@ -224,6 +231,12 @@ const GraphMLAttr* GraphMLAttrDefForType(const GraphMLAttrDef type) noexcept {
       return attr_name_attr;
     case kGraphMLAttrDefBeforeNodeId:
       return before_node_attr;
+    case kGraphMLAttrDefBinding:
+      return binding_attr;
+    case kGraphMLAttrDefBindingEvent:
+      return binding_event_attr;
+    case kGraphMLAttrDefBindingType:
+      return binding_type_attr;
     case kGraphMLAttrDefBlockType:
       return block_type_attr;
     case kGraphMLAttrDefCallArgs:

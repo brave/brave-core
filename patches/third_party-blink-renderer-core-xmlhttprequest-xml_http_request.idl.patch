@@ -1,0 +1,14 @@
+diff --git a/third_party/blink/renderer/core/xmlhttprequest/xml_http_request.idl b/third_party/blink/renderer/core/xmlhttprequest/xml_http_request.idl
+index a17a33b07939c0c83136b88ecaf5a2be7c95a3a3..f749c6737becabdedb9652436e2123d66367461d 100644
+--- a/third_party/blink/renderer/core/xmlhttprequest/xml_http_request.idl
++++ b/third_party/blink/renderer/core/xmlhttprequest/xml_http_request.idl
+@@ -39,7 +39,8 @@ enum XMLHttpRequestResponseType {
+ 
+ [
+     ActiveScriptWrappable,
+-    Exposed=(Window,DedicatedWorker,SharedWorker)
++    Exposed=(Window,DedicatedWorker,SharedWorker),
++    TrackInPageGraph
+ ] interface XMLHttpRequest : XMLHttpRequestEventTarget {
+     [CallWith=ScriptState] constructor();
+     // event handler

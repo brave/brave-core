@@ -46,6 +46,9 @@ typedef std::string GraphMLId;
 typedef enum {
   kGraphMLAttrDefAttrName = 0,
   kGraphMLAttrDefBeforeNodeId,
+  kGraphMLAttrDefBinding,
+  kGraphMLAttrDefBindingEvent,
+  kGraphMLAttrDefBindingType,
   kGraphMLAttrDefBlockType,
   kGraphMLAttrDefCallArgs,
   kGraphMLAttrDefEdgeType,
@@ -193,8 +196,8 @@ typedef enum {
   kJSBuiltInJSONParse,
   kJSBuiltInJSONStringify,
 } JSBuiltIn;
-JSBuiltIn JSBuiltInFromString(const std::string& built_in_name) noexcept;
-const std::string& JSBuiltInToSting(const JSBuiltIn built_in_name) noexcept;
+JSBuiltIn JSBuiltInFromString(const std::string& built_in_str) noexcept;
+const std::string& JSBuiltInToSting(const JSBuiltIn built_in) noexcept;
 
 typedef enum {
   kWebAPIDocumentReferrer = 0,
@@ -213,12 +216,28 @@ typedef enum {
   kWebAPILocationSearch,
   kWebAPIConsoleLog,
 } WebAPI;
-WebAPI WebAPIFromString(const std::string& built_in_name) noexcept;
-const std::string& WebAPIToString(const WebAPI built_in_name) noexcept;
+WebAPI WebAPIFromString(const std::string& web_api_str) noexcept;
+const std::string& WebAPIToString(const WebAPI web_api) noexcept;
+
+typedef const char* BindingType;
+extern const BindingType kBindingTypeAttribute;
+extern const BindingType kBindingTypeConstant;
+extern const BindingType kBindingTypeConstructor;
+extern const BindingType kBindingTypeMethod;
+
+typedef const char* BindingEvent;
+extern const BindingEvent kBindingEventAttributeGet;
+extern const BindingEvent kBindingEventAttributeSet;
+extern const BindingEvent kBindingEventConstantGet;
+extern const BindingEvent kBindingEventConstructorCall;
+extern const BindingEvent kBindingEventMethodCall;
+
+typedef const char* Binding;
 
 typedef unsigned SourceCodeHash;
 typedef unsigned UrlHash;
 typedef int ScriptId;
+typedef int ScriptPosition;
 typedef int EventListenerId;
 typedef uint64_t PageGraphId;
 typedef std::string MethodName;

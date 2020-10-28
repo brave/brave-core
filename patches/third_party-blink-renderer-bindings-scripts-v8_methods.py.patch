@@ -1,0 +1,13 @@
+diff --git a/third_party/blink/renderer/bindings/scripts/v8_methods.py b/third_party/blink/renderer/bindings/scripts/v8_methods.py
+index 22f9a93432c6653e4c43bc89e565e153aed53017..4e672d92cfdf980b6c27a2007bfa283da15e0459 100644
+--- a/third_party/blink/renderer/bindings/scripts/v8_methods.py
++++ b/third_party/blink/renderer/bindings/scripts/v8_methods.py
+@@ -313,6 +313,8 @@ def method_context(interface, method, component_info, is_visible=True):
+         side_effect_type,
+         'snake_case_name':
+         NameStyleConverter(name).to_snake_case(),
++        'track_in_page_graph_as':
++        v8_utilities.track_in_page_graph_as(method, interface),  # [TrackInPageGraphAs]
+         'use_output_parameter_for_result':
+         idl_type.use_output_parameter_for_result,
+         'use_local_result':

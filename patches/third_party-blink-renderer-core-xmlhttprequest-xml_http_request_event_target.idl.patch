@@ -1,0 +1,14 @@
+diff --git a/third_party/blink/renderer/core/xmlhttprequest/xml_http_request_event_target.idl b/third_party/blink/renderer/core/xmlhttprequest/xml_http_request_event_target.idl
+index 3a16c7737310523d19a8220bf54ac8b86a6c9398..4d24bdcc4de267cd448969050539151afa2a1a3f 100644
+--- a/third_party/blink/renderer/core/xmlhttprequest/xml_http_request_event_target.idl
++++ b/third_party/blink/renderer/core/xmlhttprequest/xml_http_request_event_target.idl
+@@ -27,7 +27,8 @@
+ // https://xhr.spec.whatwg.org/#xmlhttprequesteventtarget
+ 
+ [
+-    Exposed=(Window,DedicatedWorker,SharedWorker)
++    Exposed=(Window,DedicatedWorker,SharedWorker),
++    TrackInPageGraph
+ ] interface XMLHttpRequestEventTarget : EventTarget {
+     // event handlers
+     attribute EventHandler onloadstart;

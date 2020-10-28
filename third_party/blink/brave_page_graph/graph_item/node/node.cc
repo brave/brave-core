@@ -64,6 +64,14 @@ bool Node::IsNodeActor() const {
   return false;
 }
 
+bool Node::IsNodeBinding() const {
+  return false;
+}
+
+bool Node::IsNodeBindingEvent() const {
+  return false;
+}
+
 bool Node::IsNodeExtensions() const {
   return false;
 }

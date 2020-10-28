@@ -1,8 +1,16 @@
 diff --git a/include/v8.h b/include/v8.h
-index 9926b308b15cdaee4c76ad6d36adfb051ef9c480..2ecb104a6cd26f1dee2bbe4ee9c7379c8d879a8d 100644
+index 9926b308b15cdaee4c76ad6d36adfb051ef9c480..b119e54debaffb42b32e8d88fc7d6bc1cc8eb1aa 100644
 --- a/include/v8.h
 +++ b/include/v8.h
-@@ -28,6 +28,10 @@
+@@ -18,6 +18,7 @@
+ #include <stdint.h>
+ #include <stdio.h>
+ 
++#include <functional>
+ #include <memory>
+ #include <string>
+ #include <type_traits>
+@@ -28,6 +29,9 @@
  #include "v8-version.h"   // NOLINT(build/include_directory)
  #include "v8config.h"     // NOLINT(build/include_directory)
  
@@ -109,6 +117,7 @@ index 9926b308b15cdaee4c76ad6d36adfb051ef9c480..2ecb104a6cd26f1dee2bbe4ee9c7379c
  
 +// #if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
 +  int GetExecutingScriptId(int* out_script_position = nullptr);
++  void GetAllExecutingScripts(std::function<void(int, int)> callback);
 +
 +  void SetEvalScriptCompiledFunc(const EvalScriptCompiledFunc func);
 +  void SetBuiltInFuncCallFunc(const BuiltInFuncCallFunc func);

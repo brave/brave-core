@@ -1,0 +1,12 @@
+diff --git a/third_party/blink/renderer/core/timing/performance_timing.idl b/third_party/blink/renderer/core/timing/performance_timing.idl
+index ac2138bdb81c3f0063f48149a4b66cba5f693a1f..675a4ebb4751e9a6780f7d219c3322a928dacfe7 100644
+--- a/third_party/blink/renderer/core/timing/performance_timing.idl
++++ b/third_party/blink/renderer/core/timing/performance_timing.idl
+@@ -33,6 +33,7 @@
+ // Legacy support for NT1(https://www.w3.org/TR/navigation-timing/).
+ 
+ [
++    TrackInPageGraph,
+     Exposed=Window
+ ] interface PerformanceTiming {
+     readonly attribute unsigned long long navigationStart;

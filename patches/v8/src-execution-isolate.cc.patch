@@ -1,5 +1,5 @@
 diff --git a/src/execution/isolate.cc b/src/execution/isolate.cc
-index c9c6225eb8fd8b8278c707beb521bde910ab49d9..99b82f086e17cc89d1c616ee74262f41e596342f 100644
+index c9c6225eb8fd8b8278c707beb521bde910ab49d9..1dd8377dff2449071b9f25b333e2cac50a02cfeb 100644
 --- a/src/execution/isolate.cc
 +++ b/src/execution/isolate.cc
 @@ -93,6 +93,9 @@
@@ -12,7 +12,7 @@ index c9c6225eb8fd8b8278c707beb521bde910ab49d9..99b82f086e17cc89d1c616ee74262f41
  extern "C" const uint8_t* v8_Default_embedded_blob_;
  extern "C" uint32_t v8_Default_embedded_blob_size_;
  
-@@ -4403,6 +4406,51 @@ void Isolate::CollectSourcePositionsForAllBytecodeArrays() {
+@@ -4403,6 +4406,79 @@ void Isolate::CollectSourcePositionsForAllBytecodeArrays() {
    }
  }
  
@@ -45,6 +45,34 @@ index c9c6225eb8fd8b8278c707beb521bde910ab49d9..99b82f086e17cc89d1c616ee74262f41
 +  }
 +
 +  return 0;
++}
++
++void Isolate::GetAllExecutingScripts(std::function<void(int, int)> callback) {
++  JavaScriptFrameIterator it(this);
++  while (!it.done()) {
++    JavaScriptFrame* frame = it.frame();
++    Handle<JSFunction> function(frame->function(), this);
++
++    Object maybe_script = function->shared().script();
++    if (!maybe_script.IsScript()) {
++      it.Advance();
++      continue;
++    }
++
++    Script script = Script::cast(maybe_script);
++    int script_id = script.id();
++    if (script_id <= 0) {
++      it.Advance();
++      continue;
++    }
++
++    Handle<SharedFunctionInfo> shared(function->shared(), this);
++    SharedFunctionInfo::EnsureSourcePositionsAvailable(this, shared);
++    int script_position = frame->position();
++
++    callback(script_id, script_position);
++    it.Advance();
++  }
 +}
 +
 +void Isolate::ReportBuiltInCallAndResponse(const char* func_name,

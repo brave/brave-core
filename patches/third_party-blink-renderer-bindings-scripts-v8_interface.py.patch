@@ -1,0 +1,49 @@
+diff --git a/third_party/blink/renderer/bindings/scripts/v8_interface.py b/third_party/blink/renderer/bindings/scripts/v8_interface.py
+index 02f604dee9d6b58c4c9cfda82b00fee17b5192dc..2fda918ab57b848e6ae47ca8bd6086c7cd059298 100644
+--- a/third_party/blink/renderer/bindings/scripts/v8_interface.py
++++ b/third_party/blink/renderer/bindings/scripts/v8_interface.py
+@@ -80,6 +80,7 @@ def filter_has_constant_configuration(constants):
+     return [
+         constant for constant in constants
+         if not constant['measure_as'] and not constant['deprecate_as']
++        and not constant['track_in_page_graph_as']
+         and not constant['runtime_enabled_feature_name']
+         and not constant['origin_trial_feature_name']
+     ]
+@@ -88,7 +89,7 @@ def filter_has_constant_configuration(constants):
+ def filter_has_special_getter(constants):
+     return [
+         constant for constant in constants
+-        if constant['measure_as'] or constant['deprecate_as']
++        if constant['measure_as'] or constant['deprecate_as'] or constant['track_in_page_graph_as']
+     ]
+ 
+ 
+@@ -384,6 +385,9 @@ def interface_context(interface, interfaces, component_info):
+         runtime_enabled_feature_name(interface, runtime_features),
+         'snake_case_v8_class':
+         NameStyleConverter(v8_class_name).to_snake_case(),
++        # [TrackInPageGraphAs]
++        'track_in_page_graph_as':
++        v8_utilities.track_in_page_graph_as(interface, None),
+         'v8_class':
+         v8_class_name,
+         'v8_class_or_partial':
+@@ -1041,6 +1045,8 @@ def constant_context(constant, interface, component_info):
+         # [RuntimeEnabled] if not in origin trial
+         'runtime_enabled_feature_name':
+         runtime_enabled_feature_name(constant, runtime_features),
++        'track_in_page_graph_as':
++        v8_utilities.track_in_page_graph_as(constant, interface),  # [TrackInPageGraphAs]
+         'value':
+         constant.value,
+     }
+@@ -1209,6 +1215,8 @@ def overloads_context(interface, overloads):
+         # [SecureContext]
+         'secure_context_test_all':
+         common_value(overloads, 'secure_context_test'),
++        'track_all_in_page_graph_as':
++        common_value(overloads, 'track_in_page_graph_as'),  # [TrackInPageGraphAs]
+         'valid_arities': (
+             lengths
+             # Only need to report valid arities if there is a gap in the

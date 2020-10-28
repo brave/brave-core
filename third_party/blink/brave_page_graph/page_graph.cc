@@ -63,6 +63,9 @@
 #include "brave/third_party/blink/brave_page_graph/graph_item/edge/attribute/edge_attribute_set.h"
 #include "brave/third_party/blink/brave_page_graph/graph_item/edge/attribute/edge_attribute_delete.h"
 
+#include "brave/third_party/blink/brave_page_graph/graph_item/edge/binding/edge_binding.h"
+#include "brave/third_party/blink/brave_page_graph/graph_item/edge/binding/edge_binding_event.h"
+
 #include "brave/third_party/blink/brave_page_graph/graph_item/edge/event_listener/edge_event_listener_add.h"
 #include "brave/third_party/blink/brave_page_graph/graph_item/edge/event_listener/edge_event_listener_remove.h"
 
@@ -96,6 +99,9 @@
 #include "brave/third_party/blink/brave_page_graph/graph_item/node/actor/node_actor.h"
 #include "brave/third_party/blink/brave_page_graph/graph_item/node/actor/node_parser.h"
 #include "brave/third_party/blink/brave_page_graph/graph_item/node/actor/node_script.h"
+
+#include "brave/third_party/blink/brave_page_graph/graph_item/node/binding/node_binding.h"
+#include "brave/third_party/blink/brave_page_graph/graph_item/node/binding/node_binding_event.h"
 
 #include "brave/third_party/blink/brave_page_graph/graph_item/node/filter/node_ad_filter.h"
 #include "brave/third_party/blink/brave_page_graph/graph_item/node/filter/node_fingerprinting_filter.h"
@@ -1081,7 +1087,7 @@ void PageGraph::RegisterWebAPICall(const MethodName& method,
   Log("RegisterWebAPICall) method: " + method
       + ", arguments: " + buffer.str());
 
-  int script_position;
+  ScriptPosition script_position;
   NodeActor* const acting_node = GetCurrentActingNode(&script_position);
   if (!IsA<NodeScript>(acting_node)) {
     // Ignore internal usage.
@@ -1141,7 +1147,7 @@ void PageGraph::RegisterJSBuiltInCall(const JSBuiltIn built_in,
   Log("RegisterJSBuiltInCall) built in: " + JSBuiltInToSting(built_in)
       + ", arguments: " + buffer.str());
 
-  int script_position;
+  ScriptPosition script_position;
   NodeActor* const acting_node = GetCurrentActingNode(&script_position);
   if (!IsA<NodeScript>(acting_node)) {
     // Ignore internal usage.
@@ -1178,6 +1184,36 @@ void PageGraph::RegisterJSBuiltInResponse(const JSBuiltIn built_in,
 
   AddEdge(new EdgeJSResult(this, js_built_in_node,
     static_cast<NodeScript*>(caller_node), local_result));
+}
+
+void PageGraph::RegisterBindingEvent(const Binding binding,
+    const BindingType binding_type, const BindingEvent binding_event) {
+  Log("RegisterBindingEvent) binding: " + string(binding)
+    + ", event: " + string(binding_event));
+
+  NodeBinding* binding_node = nullptr;
+  NodeBindingEvent* binding_event_node = nullptr;
+
+  GetAllActingNodes(
+    [=] (NodeActor* const acting_node, const ScriptPosition script_position)
+        mutable {
+      NodeScript* const script_node = DynamicTo<NodeScript>(acting_node);
+      if (script_node) {
+        if (!binding_node) {
+          binding_node = GetBindingNode(binding, binding_type);
+        }
+
+        if (!binding_event_node) {
+          binding_event_node = new NodeBindingEvent(this, binding_event);
+          AddNode(binding_event_node);
+          AddEdge(new EdgeBinding(this, binding_event_node, binding_node));
+        }
+
+        AddEdge(new EdgeBindingEvent(this, script_node, binding_event_node,
+          script_position));
+      }
+    }
+  );
 }
 
 void PageGraph::GenerateReportForNode(const blink::DOMNodeId node_id,
@@ -1301,7 +1337,8 @@ milliseconds PageGraph::GetTimestamp() const {
   return start_;
 }
 
-NodeActor* PageGraph::GetCurrentActingNode(int* out_script_position) const {
+NodeActor* PageGraph::GetCurrentActingNode(
+    ScriptPosition* out_script_position) const {
   const ScriptId current_script_id = GetExecutingScriptId(out_script_position);
 
   static ScriptId last_reported_script_id = 0;
@@ -1314,6 +1351,16 @@ NodeActor* PageGraph::GetCurrentActingNode(int* out_script_position) const {
   return GetNodeActorForScriptId(current_script_id);
 }
 
+template<typename Callback>
+void PageGraph::GetAllActingNodes(Callback callback) {
+  GetAllExecutingScripts(
+    [=] (const ScriptId script_id, const ScriptPosition script_position)
+        mutable {
+      callback(GetNodeActorForScriptId(script_id), script_position);
+    }
+  );
+}
+
 NodeActor* PageGraph::GetNodeActorForScriptId(const ScriptId script_id) const {
   if (script_id == 0) {
     return parser_node_;
@@ -1323,9 +1370,15 @@ NodeActor* PageGraph::GetNodeActorForScriptId(const ScriptId script_id) const {
   return script_nodes_.at(script_id);
 }
 
-ScriptId PageGraph::GetExecutingScriptId(int* out_script_position) const {
+ScriptId PageGraph::GetExecutingScriptId(
+    ScriptPosition* out_script_position) const {
   return execution_context_.GetIsolate()->GetExecutingScriptId(
       out_script_position);
+}
+
+template<typename Callback>
+void PageGraph::GetAllExecutingScripts(Callback callback) {
+  execution_context_.GetIsolate()->GetAllExecutingScripts(callback);
 }
 
 NodeResource* PageGraph::GetResourceNodeForUrl(const std::string& url) {
@@ -1382,6 +1435,19 @@ NodeFingerprintingFilter* PageGraph::GetFingerprintingFilterNodeForRule(
   }
 
   return fingerprinting_filter_nodes_.at(rule);
+}
+
+NodeBinding* PageGraph::GetBindingNode(const Binding binding,
+    const BindingType binding_type) {
+  if (binding_nodes_.count(binding) == 0) {
+    NodeBinding* const binding_node =
+        new NodeBinding(this, binding, binding_type);
+    AddNode(binding_node);
+    binding_nodes_.emplace(binding, binding_node);
+    return binding_node;
+  }
+
+  return binding_nodes_.at(binding);
 }
 
 void PageGraph::PossiblyWriteRequestsIntoGraph(

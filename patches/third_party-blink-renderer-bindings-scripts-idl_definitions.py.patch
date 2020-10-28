@@ -1,0 +1,15 @@
+diff --git a/third_party/blink/renderer/bindings/scripts/idl_definitions.py b/third_party/blink/renderer/bindings/scripts/idl_definitions.py
+index 11f6846eef251b8d488a44cd9ca024e1901b30ae..ad8036807c5737b1cb5df35b11171faa73cb50c6 100644
+--- a/third_party/blink/renderer/bindings/scripts/idl_definitions.py
++++ b/third_party/blink/renderer/bindings/scripts/idl_definitions.py
+@@ -1067,6 +1067,10 @@ def convert_constructor_operations_extended_attributes(extended_attributes):
+             converted["MeasureAs"] = value
+         elif name == "Measure":
+             converted["Measure"] = None
++        elif name == "TrackInPageGraphAs":
++            converted["TrackInPageGraphAs"] = value
++        elif name == "TrackInPageGraph":
++            converted["TrackInPageGraph"] = None
+         else:
+             raise ValueError(
+                 '[{}] is not supported on constructor operations'.format(name))

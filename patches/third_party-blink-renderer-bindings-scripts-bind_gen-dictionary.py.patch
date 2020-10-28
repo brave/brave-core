@@ -1,0 +1,137 @@
+diff --git a/third_party/blink/renderer/bindings/scripts/bind_gen/dictionary.py b/third_party/blink/renderer/bindings/scripts/bind_gen/dictionary.py
+index baeeebbb697f76aa72afd002042cc6b3e7b7ffe6..cd96e85db99516c844ec3964595e7bbce95896aa 100644
+--- a/third_party/blink/renderer/bindings/scripts/bind_gen/dictionary.py
++++ b/third_party/blink/renderer/bindings/scripts/bind_gen/dictionary.py
+@@ -12,6 +12,7 @@ from .blink_v8_bridge import blink_type_info
+ from .blink_v8_bridge import make_default_value_expr
+ from .blink_v8_bridge import make_v8_to_blink_value
+ from .code_node import CodeNode
++from .code_node import EmptyNode
+ from .code_node import Likeliness
+ from .code_node import ListNode
+ from .code_node import SequenceNode
+@@ -32,6 +33,7 @@ from .codegen_utils import collect_include_headers_of_idl_types
+ from .codegen_utils import component_export
+ from .codegen_utils import component_export_header
+ from .codegen_utils import enclose_with_header_guard
++from .codegen_utils import make_const_string_definitions
+ from .codegen_utils import make_copyright_header
+ from .codegen_utils import make_forward_declarations
+ from .codegen_utils import make_header_include_directives
+@@ -772,13 +774,13 @@ def generate_dictionary(dictionary):
+         set_decls, set_defs = make_dict_member_set(member_context)
+         value_var_def, presense_var_def = make_dict_member_vars(member_context)
+         member_accessor_decls.extend([
+-            TextNode(""),
++            EmptyNode(),
+             get_decls,
+             has_decls,
+             set_decls,
+         ])
+         member_accessor_defs.extend([
+-            TextNode(""),
++            EmptyNode(),
+             get_defs,
+             has_defs,
+             set_defs,
+@@ -800,30 +802,32 @@ def generate_dictionary(dictionary):
+ 
+     header_node.extend([
+         make_copyright_header(),
+-        TextNode(""),
++        EmptyNode(),
+         enclose_with_header_guard(
+             ListNode([
+                 make_header_include_directives(header_node.accumulator),
+-                TextNode(""),
++                EmptyNode(),
+                 header_blink_ns,
+             ]), name_style.header_guard(header_path)),
+     ])
+     header_blink_ns.body.extend([
+         make_forward_declarations(header_node.accumulator),
+-        TextNode(""),
++        EmptyNode(),
++        make_const_string_definitions(header_node.accumulator),
++        EmptyNode(),
+     ])
+     source_node.extend([
+         make_copyright_header(),
+-        TextNode(""),
++        EmptyNode(),
+         TextNode("#include \"{}\"".format(header_path)),
+-        TextNode(""),
++        EmptyNode(),
+         make_header_include_directives(source_node.accumulator),
+-        TextNode(""),
++        EmptyNode(),
+         source_blink_ns,
+     ])
+     source_blink_ns.body.extend([
+-        make_forward_declarations(source_node.accumulator),
+-        TextNode(""),
++        make_const_string_definitions(source_node.accumulator),
++        EmptyNode(),
+     ])
+ 
+     # Assemble the parts.
+@@ -850,42 +854,42 @@ def generate_dictionary(dictionary):
+         create_decl,
+         constructor_decls,
+         destructor_decl,
+-        TextNode(""),
++        EmptyNode(),
+         trace_decl,
+-        TextNode(""),
++        EmptyNode(),
+         member_accessor_decls,
+     ])
+     class_def.protected_section.extend([
+         fill_with_members_decl,
+-        TextNode(""),
++        EmptyNode(),
+         fill_members_internal_decl,
+     ])
+     class_def.private_section.extend([
+         get_v8_member_names_decl,
+-        TextNode(""),
++        EmptyNode(),
+         fill_with_own_members_decl,
+-        TextNode(""),
++        EmptyNode(),
+         fill_members_decl,
+-        TextNode(""),
++        EmptyNode(),
+         member_value_var_defs,
+-        TextNode(""),
++        EmptyNode(),
+         member_presense_var_defs,
+     ])
+     source_blink_ns.body.extend([
+         constructor_defs,
+-        TextNode(""),
++        EmptyNode(),
+         get_v8_member_names_def,
+-        TextNode(""),
++        EmptyNode(),
+         create_def,
+-        TextNode(""),
++        EmptyNode(),
+         fill_with_members_def,
+-        TextNode(""),
++        EmptyNode(),
+         fill_with_own_members_def,
+-        TextNode(""),
++        EmptyNode(),
+         fill_members_def,
+-        TextNode(""),
++        EmptyNode(),
+         fill_members_internal_def,
+-        TextNode(""),
++        EmptyNode(),
+         member_accessor_defs,
+-        TextNode(""),
++        EmptyNode(),
+         trace_def,
+     ])
+ 

@@ -66,6 +66,14 @@ bool Edge::IsEdgeAttribute() const {
   return false;
 }
 
+bool Edge::IsEdgeBinding() const {
+  return false;
+}
+
+bool Edge::IsEdgeBindingEvent() const {
+  return false;
+}
+
 bool Edge::IsEdgeCrossDOM() const {
   return false;
 }

@@ -1,0 +1,11 @@
+diff --git a/third_party/blink/renderer/core/timing/worker_global_scope_performance.idl b/third_party/blink/renderer/core/timing/worker_global_scope_performance.idl
+index 3f4335d259076d0cb35ecffa77a128a56e8fc3f5..252a7512af06f22653817f1a3a3294dfcf92d3e1 100644
+--- a/third_party/blink/renderer/core/timing/worker_global_scope_performance.idl
++++ b/third_party/blink/renderer/core/timing/worker_global_scope_performance.idl
+@@ -35,5 +35,5 @@
+ [
+     ImplementedAs=WorkerGlobalScopePerformance
+ ] partial interface WorkerGlobalScope {
+-    [Replaceable] readonly attribute Performance performance;
++    [Replaceable, TrackInPageGraph] readonly attribute Performance performance;
+ };
