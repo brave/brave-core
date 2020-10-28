@@ -38,7 +38,6 @@
 #include "components/omnibox/common/omnibox_features.h"
 #include "components/password_manager/core/common/password_manager_features.h"
 #include "components/safe_browsing/core/features.h"
-#include "components/security_state/core/features.h"
 #include "components/sync/base/sync_base_switches.h"
 #include "components/translate/core/browser/translate_prefs.h"
 #include "components/version_info/channel.h"
@@ -207,39 +206,29 @@ bool BraveMainDelegate::BasicStartupComplete(int* exit_code) {
       blink::features::kMixedContentAutoupgrade.name,
       password_manager::features::kPasswordImport.name,
       net::features::kLegacyTLSEnforced.name,
-      // Remove URL bar mixed control and allow site specific override instead
-      features::kMixedContentSiteSetting.name,
-      // Warn about Mixed Content optionally blockable content
-      security_state::features::kPassiveMixedContentWarning.name,
       // Enable webui dark theme: @media (prefers-color-scheme: dark) is gated
-      // on
-      // this feature.
+      // on this feature.
       features::kWebUIDarkMode.name,
       blink::features::kPrefetchPrivacyChanges.name,
       blink::features::kReducedReferrerGranularity.name,
 #if defined(OS_WIN)
       features::kWinrtGeolocationImplementation.name,
 #endif
-      omnibox::kOmniboxContextMenuShowFullUrls.name,
   };
-
-  if (!base::CommandLine::ForCurrentProcess()->HasSwitch(
-          switches::kDisableDnsOverHttps)) {
-    enabled_features.insert(features::kDnsOverHttps.name);
-  }
 
   if (chrome::GetChannel() == version_info::Channel::CANARY) {
     enabled_features.insert(features::kGlobalPrivacyControl.name);
   }
 
   // Disabled features.
-  const std::unordered_set<const char*> disabled_features = {
+  std::unordered_set<const char*> disabled_features = {
     autofill::features::kAutofillEnableAccountWalletStorage.name,
     autofill::features::kAutofillServerCommunication.name,
     blink::features::kTextFragmentAnchor.name,
     features::kAllowPopupsDuringPageUnload.name,
     features::kNotificationTriggers.name,
     features::kPrivacySettingsRedesign.name,
+    features::kSignedExchangeSubresourcePrefetch.name,
     features::kSmsReceiver.name,
     features::kVideoPlaybackQuality.name,
     features::kTabHoverCards.name,
@@ -247,10 +236,23 @@ bool BraveMainDelegate::BasicStartupComplete(int* exit_code) {
     safe_browsing::kEnhancedProtection.name,
 #if defined(OS_ANDROID)
     feed::kInterestFeedContentSuggestions.name,
-    translate::kTranslateUI.name,
+    translate::kTranslate.name,
     offline_pages::kPrefetchingOfflinePagesFeature.name,
 #endif
   };
+
+#if defined(OS_WIN) || defined(OS_MAC) || defined(OS_ANDROID)
+  if (base::CommandLine::ForCurrentProcess()->HasSwitch(
+          switches::kDisableDnsOverHttps)) {
+    disabled_features.insert(features::kDnsOverHttps.name);
+  }
+#else
+  if (!base::CommandLine::ForCurrentProcess()->HasSwitch(
+          switches::kDisableDnsOverHttps)) {
+    enabled_features.insert(features::kDnsOverHttps.name);
+  }
+#endif
+
   command_line.AppendFeatures(enabled_features, disabled_features);
 
   bool ret = ChromeMainDelegate::BasicStartupComplete(exit_code);

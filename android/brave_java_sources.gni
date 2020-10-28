@@ -12,6 +12,7 @@ import("//brave/components/safetynet/java_sources.gni")
 import("//components/feed/features.gni")
 
 brave_java_sources = [
+  "../../brave/android/feed/core/java/src/org/chromium/chrome/browser/feed/BraveFeedSurfaceCoordinator.java",
   "../../brave/android/java/org/chromium/chrome/browser/BraveAppHooks.java",
   "../../brave/android/java/org/chromium/chrome/browser/BraveBadge.java",
   "../../brave/android/java/org/chromium/chrome/browser/BraveFeatureList.java",
@@ -143,17 +144,37 @@ brave_java_sources = [
   "../../brave/android/java/org/chromium/chrome/browser/signin/BraveSigninManager.java",
   "../../brave/android/java/org/chromium/chrome/browser/site_settings/DesktopModePreferences.java",
   "../../brave/android/java/org/chromium/chrome/browser/site_settings/PlayYTVideoInBrowserPreferences.java",
+  "../../brave/android/java/org/chromium/chrome/browser/suggestions/tile/BraveTileView.java",
   "../../brave/android/java/org/chromium/chrome/browser/sync/BraveAndroidSyncSettings.java",
   "../../brave/android/java/org/chromium/chrome/browser/sync/settings/BraveManageSyncSettings.java",
+  "../../brave/android/java/org/chromium/chrome/browser/tabbed_mode/BraveTabbedRootUiCoordinator.java",
   "../../brave/android/java/org/chromium/chrome/browser/tabmodel/BraveTabCreator.java",
   "../../brave/android/java/org/chromium/chrome/browser/toolbar/BraveHomeButton.java",
+  "../../brave/android/java/org/chromium/chrome/browser/toolbar/BraveToolbarManager.java",
   "../../brave/android/java/org/chromium/chrome/browser/toolbar/bottom/BookmarksButton.java",
-  "../../brave/android/java/org/chromium/chrome/browser/toolbar/bottom/BraveBottomToolbarConfiguration.java",
-  "../../brave/android/java/org/chromium/chrome/browser/toolbar/bottom/BraveBottomToolbarCoordinator.java",
-  "../../brave/android/java/org/chromium/chrome/browser/toolbar/bottom/BraveBottomToolbarVariationManager.java",
-  "../../brave/android/java/org/chromium/chrome/browser/toolbar/bottom/BraveBrowsingModeBottomToolbarCoordinator.java",
-  "../../brave/android/java/org/chromium/chrome/browser/toolbar/bottom/BraveSearchAccelerator.java",
+  "../../brave/android/java/org/chromium/chrome/browser/toolbar/bottom/BottomTabSwitcherActionMenuCoordinator.java",
+  "../../brave/android/java/org/chromium/chrome/browser/toolbar/bottom/BottomToolbarCoordinator.java",
+  "../../brave/android/java/org/chromium/chrome/browser/toolbar/bottom/BottomToolbarNewTabButton.java",
+  "../../brave/android/java/org/chromium/chrome/browser/toolbar/bottom/BottomToolbarVariationManager.java",
+  "../../brave/android/java/org/chromium/chrome/browser/toolbar/bottom/BottomToolbarConfiguration.java",
+  "../../brave/android/java/org/chromium/chrome/browser/toolbar/bottom/BraveBottomControlsCoordinator.java",
+  "../../brave/android/java/org/chromium/chrome/browser/toolbar/bottom/BraveBottomControlsMediator.java",
+  "../../brave/android/java/org/chromium/chrome/browser/toolbar/bottom/BrowsingModeBottomToolbarCoordinator.java",
+  "../../brave/android/java/org/chromium/chrome/browser/toolbar/bottom/BrowsingModeBottomToolbarLinearLayout.java",
+  "../../brave/android/java/org/chromium/chrome/browser/toolbar/bottom/BrowsingModeBottomToolbarMediator.java",
+  "../../brave/android/java/org/chromium/chrome/browser/toolbar/bottom/BrowsingModeBottomToolbarModel.java",
+  "../../brave/android/java/org/chromium/chrome/browser/toolbar/bottom/BrowsingModeBottomToolbarViewBinder.java",
+  "../../brave/android/java/org/chromium/chrome/browser/toolbar/bottom/SearchAccelerator.java",
+  "../../brave/android/java/org/chromium/chrome/browser/toolbar/bottom/ShareButton.java",
+  "../../brave/android/java/org/chromium/chrome/browser/toolbar/bottom/TabSwitcherBottomToolbarCoordinator.java",
+  "../../brave/android/java/org/chromium/chrome/browser/toolbar/bottom/TabSwitcherBottomToolbarMediator.java",
+  "../../brave/android/java/org/chromium/chrome/browser/toolbar/bottom/TabSwitcherBottomToolbarModel.java",
+  "../../brave/android/java/org/chromium/chrome/browser/toolbar/bottom/TabSwitcherBottomToolbarViewBinder.java",
+  "../../brave/android/java/org/chromium/chrome/browser/toolbar/menu_button/BraveMenuButtonCoordinator.java",
+  "../../brave/android/java/org/chromium/chrome/browser/toolbar/top/BraveTabSwitcherModeTTCoordinatorPhone.java",
+  "../../brave/android/java/org/chromium/chrome/browser/toolbar/top/BraveTabSwitcherModeTTPhone.java",
   "../../brave/android/java/org/chromium/chrome/browser/toolbar/top/BraveToolbarLayout.java",
+  "../../brave/android/java/org/chromium/chrome/browser/toolbar/top/BraveTopToolbarCoordinator.java",
   "../../brave/android/java/org/chromium/chrome/browser/ui/brave_tricks/checkbox_to_switch/CheckBoxPreference.java",
   "../../brave/android/java/org/chromium/chrome/browser/ui/messages/infobar/BraveSimpleConfirmInfoBarBuilder.java",
   "../../brave/android/java/org/chromium/chrome/browser/upgrade/BravePackageReplacedBroadcastReceiver.java",
@@ -181,7 +202,6 @@ brave_java_sources = [
   "../../brave/android/java/org/chromium/chrome/browser/widget/crypto/binance/ConvertAsset.java",
   "../../brave/android/java/org/chromium/chrome/browser/widget/crypto/binance/CryptoWidgetBottomSheetDialogFragment.java",
   "../../brave/android/java/org/chromium/chrome/browser/widget/crypto/binance/CryptoWidgetTabAdapter.java",
-  "../../brave/android/java/org/chromium/chrome/browser/widget/tile/BraveTileWithTextView.java",
 ]
 
 if (brave_rewards_enabled || enable_brave_referrals) {
@@ -190,10 +210,6 @@ if (brave_rewards_enabled || enable_brave_referrals) {
 
 if (brave_ads_enabled) {
   brave_java_sources += brave_ads_java_sources
-}
-
-if (enable_feed_in_chrome) {
-  brave_java_sources += [ "//brave/android/feed/core/java/src/org/chromium/chrome/browser/feed/BraveFeedSurfaceCoordinator.java" ]
 }
 
 if (enable_brave_sync) {
@@ -206,6 +222,8 @@ if (enable_brave_sync) {
 }
 
 brave_components_browser_ui_site_settings_android_java = [ "//brave/components/browser_ui/site_settings/android/java/src/org/chromium/components/browser_ui/site_settings/BraveSiteSettingsPreferencesBase.java" ]
+
+brave_browser_ui_android_appmenu_internal_sources = [ "//brave/browser/ui/android/appmenu/internal/java/src/org/chromium/chrome/browser/ui/appmenu/BraveAppMenu.java" ]
 
 brave_java_base_sources =
     [ "//brave/android/java/org/chromium/base/BraveCommandLineInitUtil.java" ]

@@ -91,14 +91,6 @@
 
             </LinearLayout>
 
-            <!-- Explore offline card -->
-            <ViewStub
-                android:id="@+id/explore_offline_card_stub"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout="@layout/new_tab_page_offline_card"
-                android:inflatedId="@+id/explore_offline_card" />
-
             <!-- Search box -->
             <include layout="@layout/fake_search_box_layout"/>
 
@@ -109,6 +101,15 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
                 android:visibility="gone"/>
+
+            <!-- Video tutorial IPH card -->
+            <ViewStub
+                android:id="@+id/video_iph_stub"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                android:layout="@layout/video_tutorial_iph_card"
+                android:inflatedId="@+id/video_iph_card"/>
 
             <!-- Middle spacer -->
             <View

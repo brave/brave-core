@@ -1,5 +1,5 @@
 diff --git a/components/permissions/permission_uma_util.cc b/components/permissions/permission_uma_util.cc
-index a5475f3b4433c4656606b4d747fc4e21a3a0f100..4254c39723f72b9b7031be976d0ff64f7a1c9c51 100644
+index 422f18b73152d1f55f0666225e047c25cc057172..6432c79fc443b2393fe711ab043fdddb760d1a7e 100644
 --- a/components/permissions/permission_uma_util.cc
 +++ b/components/permissions/permission_uma_util.cc
 @@ -50,7 +50,7 @@ namespace {
@@ -11,8 +11,8 @@ index a5475f3b4433c4656606b4d747fc4e21a3a0f100..4254c39723f72b9b7031be976d0ff64f
    switch (type) {
      case PermissionRequestType::MULTIPLE:
        return "AudioAndVideoCapture";
-@@ -565,6 +565,7 @@ void PermissionUmaUtil::RecordPermissionAction(
-       base::UmaHistogramEnumeration("Permissions.Action.FontAccess", action,
+@@ -589,6 +589,7 @@ void PermissionUmaUtil::RecordPermissionAction(
+       base::UmaHistogramEnumeration("Permissions.Action.IdleDetection", action,
                                      PermissionAction::NUM);
        break;
 +    BRAVE_PERMISSIONUMAUTIL_RECORDPERMISSIONACTION

@@ -1,7 +1,7 @@
 const path = require('path');
 
 module.exports = {
-  braveResolveId: function (params, source, origin, relativePath, joinPaths, combinePaths, chromeResourcesUrl, schemeRelativeResourcesUrl, nonGeneratedFiles) {
+  braveResolveId: function (params, source, origin, relativePath, joinPaths, combinePaths, chromeResourcesUrl, schemeRelativeResourcesUrl) {
     const {srcPath, genPath, excludes} = params;
     const resourcesSrcPath = joinPaths(srcPath, 'ui/webui/resources/');
     const resourcesGenPath = joinPaths(genPath, 'ui/webui/resources/');
@@ -31,10 +31,6 @@ module.exports = {
     const fullPath = chromeResourcesUrl + pathFromBraveResources;
     if (excludes.includes(fullPath)) {
       return {id: fullPath, external: true};
-    }
-    const filename = path.basename(source);
-    if (nonGeneratedFiles.includes(filename)) {
-      return joinPaths(resourcesSrcPath, pathFromBraveResources);
     }
     // JS compiled into gen directory
     if (pathFromBraveResources.endsWith('.js')) {

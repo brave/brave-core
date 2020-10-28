@@ -505,4 +505,9 @@
     No thanks
   </message>
 
+  <!-- Credit card offers and rewards related strings -->
+  <message name="IDS_AUTOFILL_OFFERS_CASHBACK" desc="Displays that a cashback offer will be rewarded if credit card is used on current page. Part of Autofill suggestions popup.">
+    Cashback linked
+  </message>
+
 </grit-part>

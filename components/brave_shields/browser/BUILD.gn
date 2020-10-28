@@ -30,7 +30,6 @@ source_set("browser") {
     "brave_shields_p3a.h",
     "brave_shields_util.cc",
     "brave_shields_util.h",
-    "brave_shields_web_contents_observer_android.cc",
     "brave_shields_web_contents_observer.cc",
     "brave_shields_web_contents_observer.h",
     "cookie_pref_service.cc",
@@ -41,6 +40,10 @@ source_set("browser") {
     "tracking_protection_service.cc",
     "tracking_protection_service.h",
   ]
+
+  if (is_android) {
+    sources += [ "brave_shields_web_contents_observer_android.cc" ]
+  }
 
   if (brave_stp_enabled) {
     sources += [

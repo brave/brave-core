@@ -1,8 +1,8 @@
 diff --git a/chrome/android/java/src/org/chromium/chrome/browser/ChromeTabbedActivity.java b/chrome/android/java/src/org/chromium/chrome/browser/ChromeTabbedActivity.java
-index a3deba245350c3ac9b22b05fba68f87775bb8f80..0df32632a25ec34490ce8459796607632361150a 100644
+index ee8091e415ce9ce78c5a8928fed6a928a081d12a..114cb4a40d9dd96670ab1f55a9c24e8eea754729 100644
 --- a/chrome/android/java/src/org/chromium/chrome/browser/ChromeTabbedActivity.java
 +++ b/chrome/android/java/src/org/chromium/chrome/browser/ChromeTabbedActivity.java
-@@ -182,7 +182,7 @@ import java.util.Locale;
+@@ -183,7 +183,7 @@ import java.util.Locale;
   * This is the main activity for ChromeMobile when not running in document mode.  All the tabs
   * are accessible via a chrome specific tab switching UI.
   */
@@ -20,7 +20,16 @@ index a3deba245350c3ac9b22b05fba68f87775bb8f80..0df32632a25ec34490ce845979660763
                              assert profile != null : "Unexpectedly null profile from TabModel.";
                              if (profile == null) return;
  
-@@ -1588,7 +1588,7 @@ public class ChromeTabbedActivity extends ChromeActivity<ChromeActivityComponent
+@@ -1438,7 +1438,7 @@ public class ChromeTabbedActivity extends ChromeActivity<ChromeActivityComponent
+ 
+     @Override
+     protected RootUiCoordinator createRootUiCoordinator() {
+-        return new TabbedRootUiCoordinator(this, this::onOmniboxFocusChanged,
++        return new org.chromium.chrome.browser.tabbed_mode.BraveTabbedRootUiCoordinator(this, this::onOmniboxFocusChanged,
+                 mIntentWithEffectSupplier, getShareDelegateSupplier(), getActivityTabProvider(),
+                 mEphemeralTabCoordinatorSupplier, mTabModelProfileSupplier, mBookmarkBridgeSupplier,
+                 getOverviewModeBehaviorSupplier(), this::getContextualSearchManager,
+@@ -1598,7 +1598,7 @@ public class ChromeTabbedActivity extends ChromeActivity<ChromeActivityComponent
  
      @Override
      public AppMenuPropertiesDelegate createAppMenuPropertiesDelegate() {
@@ -29,20 +38,20 @@ index a3deba245350c3ac9b22b05fba68f87775bb8f80..0df32632a25ec34490ce845979660763
                  getMultiWindowModeStateDispatcher(), getTabModelSelector(), getToolbarManager(),
                  getWindow().getDecorView(), this, mOverviewModeBehaviorSupplier,
                  mBookmarkBridgeSupplier);
-@@ -1612,10 +1612,10 @@ public class ChromeTabbedActivity extends ChromeActivity<ChromeActivityComponent
+@@ -1622,10 +1622,10 @@ public class ChromeTabbedActivity extends ChromeActivity<ChromeActivityComponent
                  }
              };
          }
 -        return Pair.create(new ChromeTabCreator(this, getWindowAndroid(), getStartupTabPreloader(),
 +        return Pair.create(new org.chromium.chrome.browser.tabmodel.BraveTabCreator(this, getWindowAndroid(), getStartupTabPreloader(),
                                     tabDelegateFactorySupplier, false, overviewNTPCreator,
-                                    AsyncTabParamsManager.getInstance()),
+                                    AsyncTabParamsManagerSingleton.getInstance()),
 -                new ChromeTabCreator(this, getWindowAndroid(), getStartupTabPreloader(),
 +                new org.chromium.chrome.browser.tabmodel.BraveTabCreator(this, getWindowAndroid(), getStartupTabPreloader(),
                          tabDelegateFactorySupplier, true, overviewNTPCreator,
-                         AsyncTabParamsManager.getInstance()));
+                         AsyncTabParamsManagerSingleton.getInstance()));
      }
-@@ -2006,7 +2006,7 @@ public class ChromeTabbedActivity extends ChromeActivity<ChromeActivityComponent
+@@ -2013,7 +2013,7 @@ public class ChromeTabbedActivity extends ChromeActivity<ChromeActivityComponent
          }
      }
  

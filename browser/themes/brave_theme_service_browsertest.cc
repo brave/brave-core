@@ -62,7 +62,7 @@ class BraveThemeServiceTestWithoutSystemTheme : public InProcessBrowserTest {
 IN_PROC_BROWSER_TEST_F(BraveThemeServiceTestWithoutSystemTheme,
                        BraveThemeChangeTest) {
   Profile* profile = browser()->profile();
-  Profile* profile_private = profile->GetOffTheRecordProfile();
+  Profile* profile_private = profile->GetPrimaryOTRProfile();
 
   const ui::ThemeProvider& tp =
       ThemeService::GetThemeProviderForProfile(profile);

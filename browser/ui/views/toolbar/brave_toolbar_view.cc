@@ -134,8 +134,8 @@ void BraveToolbarView::Init() {
                  base::Unretained(this)));
 
   bookmark_ = new BookmarkButton(this);
-  bookmark_->set_triggerable_event_flags(ui::EF_LEFT_MOUSE_BUTTON |
-                                         ui::EF_MIDDLE_MOUSE_BUTTON);
+  bookmark_->SetTriggerableEventFlags(ui::EF_LEFT_MOUSE_BUTTON |
+                                      ui::EF_MIDDLE_MOUSE_BUTTON);
   DCHECK(location_bar_);
   AddChildViewAt(bookmark_, GetIndexOf(location_bar_));
   bookmark_->UpdateImage();
@@ -144,8 +144,8 @@ void BraveToolbarView::Init() {
   // Speedreader.
   if (base::FeatureList::IsEnabled(speedreader::kSpeedreaderFeature)) {
     speedreader_ = new SpeedreaderButton(this, profile->GetPrefs());
-    speedreader_->set_triggerable_event_flags(ui::EF_LEFT_MOUSE_BUTTON |
-                                              ui::EF_MIDDLE_MOUSE_BUTTON);
+    speedreader_->SetTriggerableEventFlags(ui::EF_LEFT_MOUSE_BUTTON |
+                                           ui::EF_MIDDLE_MOUSE_BUTTON);
   }
 
   if (speedreader_) {

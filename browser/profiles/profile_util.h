@@ -66,7 +66,7 @@ content::BrowserContext* GetBrowserContextRedirectedInIncognitoOverride(
   if (brave::IsSessionProfile(context)) {                                      \
     auto* parent = brave::GetParentProfile(context);                           \
     context =                                                                  \
-        context->IsOffTheRecord() ? parent->GetOffTheRecordProfile() : parent; \
+        context->IsOffTheRecord() ? parent->GetPrimaryOTRProfile() : parent; \
   }
 
 #endif  // BRAVE_BROWSER_PROFILES_PROFILE_UTIL_H_
