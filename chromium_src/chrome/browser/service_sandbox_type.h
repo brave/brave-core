@@ -27,18 +27,6 @@ content::GetServiceSandboxType<brave::mojom::ProfileImport>() {
 #include "brave/components/ipfs/service_sandbox_type.h"
 #endif
 
-namespace tor {
-namespace mojom {
-class TorLauncher;
-}  // namespace mojom
-}  // namespace tor
-
-template <>
-inline sandbox::policy::SandboxType
-content::GetServiceSandboxType<tor::mojom::TorLauncher>() {
-  return sandbox::policy::SandboxType::kNoSandbox;
-}
-
 #if !defined(OS_ANDROID)  // Android will use default, which is kUtility.
 namespace bat_ledger {
 namespace mojom {

@@ -10,9 +10,9 @@
 #include "brave/browser/search_engines/guest_window_search_engine_provider_service.h"
 #include "brave/browser/search_engines/search_engine_provider_service_factory.h"
 #include "brave/browser/search_engines/search_engine_provider_util.h"
-#include "brave/browser/tor/buildflags.h"
 #include "brave/browser/ui/browser_commands.h"
 #include "brave/components/search_engines/brave_prepopulated_engines.h"
+#include "brave/components/tor/buildflags/buildflags.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/profiles/profile_window.h"
 #include "chrome/browser/search_engines/template_url_service_factory.h"
@@ -27,8 +27,8 @@
 #include "content/public/test/test_utils.h"
 
 #if BUILDFLAG(ENABLE_TOR)
-#include "brave/browser/extensions/brave_tor_client_updater.h"
-#include "brave/browser/tor/tor_launcher_factory.h"
+#include "brave/components/tor/brave_tor_client_updater.h"
+#include "brave/components/tor/tor_launcher_factory.h"
 #endif
 
 class SearchEngineProviderServiceTest : public InProcessBrowserTest {

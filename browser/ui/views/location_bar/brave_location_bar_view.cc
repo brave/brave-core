@@ -10,7 +10,6 @@
 #include "brave/browser/profiles/profile_util.h"
 #include "brave/browser/themes/brave_theme_service.h"
 #include "brave/browser/ui/views/brave_actions/brave_actions_container.h"
-#include "brave/browser/ui/views/location_bar/onion_location_view.h"
 #include "brave/browser/ui/views/toolbar/brave_toolbar_view.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/themes/theme_service_factory.h"
@@ -20,6 +19,10 @@
 #include "chrome/browser/ui/views/location_bar/location_bar_view.h"
 #include "components/version_info/channel.h"
 #include "ui/views/controls/highlight_path_generator.h"
+
+#if BUILDFLAG(ENABLE_TOR)
+#include "brave/browser/ui/views/location_bar/onion_location_view.h"
+#endif
 
 namespace {
 
@@ -49,11 +52,13 @@ void BraveLocationBarView::Init() {
         std::make_unique<
             BraveLocationBarViewFocusRingHighlightPathGenerator>());
   }
-  // brave action buttons
+#if BUILDFLAG(ENABLE_TOR)
   onion_location_view_ = new OnionLocationView(browser_->profile());
+  AddChildView(onion_location_view_);
+#endif
+  // brave action buttons
   brave_actions_ = new BraveActionsContainer(browser_, profile());
   brave_actions_->Init();
-  AddChildView(onion_location_view_);
   AddChildView(brave_actions_);
   // Call Update again to cause a Layout
   Update(nullptr);
@@ -69,8 +74,10 @@ void BraveLocationBarView::Update(content::WebContents* contents) {
   if (brave_actions_) {
     brave_actions_->Update();
   }
+#if BUILDFLAG(ENABLE_TOR)
   if (onion_location_view_)
     onion_location_view_->Update(contents);
+#endif
   LocationBarView::Update(contents);
 }
 
@@ -81,9 +88,11 @@ void BraveLocationBarView::OnChanged() {
         ShouldHidePageActionIcons() && !omnibox_view_->GetText().empty();
     brave_actions_->SetShouldHide(should_hide);
   }
+#if BUILDFLAG(ENABLE_TOR)
   if (onion_location_view_)
     onion_location_view_->Update(
         browser_->tab_strip_model()->GetActiveWebContents());
+#endif
 
   // OnChanged calls Layout
   LocationBarView::OnChanged();
@@ -91,8 +100,10 @@ void BraveLocationBarView::OnChanged() {
 
 std::vector<views::View*> BraveLocationBarView::GetTrailingViews() {
   std::vector<views::View*> views;
+#if BUILDFLAG(ENABLE_TOR)
   if (onion_location_view_)
     views.push_back(onion_location_view_);
+#endif
   if (brave_actions_)
     views.push_back(brave_actions_);
 
@@ -107,11 +118,13 @@ gfx::Size BraveLocationBarView::CalculatePreferredSize() const {
                               GetLayoutConstant(LOCATION_BAR_ELEMENT_PADDING);
     min_size.Enlarge(extra_width, 0);
   }
+#if BUILDFLAG(ENABLE_TOR)
   if (onion_location_view_ && onion_location_view_->GetVisible()) {
     const int extra_width = GetLayoutConstant(LOCATION_BAR_ELEMENT_PADDING) +
         onion_location_view_->GetMinimumSize().width();
     min_size.Enlarge(extra_width, 0);
   }
+#endif
   return min_size;
 }
 

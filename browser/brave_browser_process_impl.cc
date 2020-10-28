@@ -17,7 +17,6 @@
 #include "brave/browser/net/brave_system_request_handler.h"
 #include "brave/browser/profiles/brave_profile_manager.h"
 #include "brave/browser/themes/brave_dark_mode_utils.h"
-#include "brave/browser/tor/buildflags.h"
 #include "brave/browser/ui/brave_browser_command_controller.h"
 #include "brave/common/pref_names.h"
 #include "brave/components/brave_component_updater/browser/brave_on_demand_updater.h"
@@ -70,8 +69,8 @@
 #endif
 
 #if BUILDFLAG(ENABLE_TOR)
-#include "brave/browser/extensions/brave_tor_client_updater.h"
-#include "brave/common/tor/pref_names.h"
+#include "brave/components/tor/brave_tor_client_updater.h"
+#include "brave/components/tor/pref_names.h"
 #endif
 
 #if BUILDFLAG(IPFS_ENABLED)
@@ -309,13 +308,16 @@ void BraveBrowserProcessImpl::OnBraveDarkModeChanged() {
 }
 
 #if BUILDFLAG(ENABLE_TOR)
-extensions::BraveTorClientUpdater*
+tor::BraveTorClientUpdater*
 BraveBrowserProcessImpl::tor_client_updater() {
   if (tor_client_updater_)
     return tor_client_updater_.get();
 
-  tor_client_updater_ = extensions::BraveTorClientUpdaterFactory(
-      brave_component_updater_delegate());
+  base::FilePath user_data_dir;
+  base::PathService::Get(chrome::DIR_USER_DATA, &user_data_dir);
+
+  tor_client_updater_.reset(new tor::BraveTorClientUpdater(
+      brave_component_updater_delegate(), local_state(), user_data_dir));
   return tor_client_updater_.get();
 }
 

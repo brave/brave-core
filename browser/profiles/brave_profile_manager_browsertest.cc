@@ -9,12 +9,11 @@
 #include "base/strings/utf_string_conversions.h"
 #include "brave/browser/brave_browser_process_impl.h"
 #include "brave/browser/brave_rewards/rewards_service_factory.h"
-#include "brave/browser/extensions/brave_tor_client_updater.h"
 #include "brave/browser/profiles/profile_util.h"
-#include "brave/browser/tor/buildflags.h"
 #include "brave/common/brave_paths.h"
 #include "brave/components/brave_ads/browser/ads_service_factory.h"
 #include "brave/components/ipfs/buildflags/buildflags.h"
+#include "brave/components/tor/buildflags/buildflags.h"
 #include "chrome/browser/bookmarks/bookmark_model_factory.h"
 #include "chrome/browser/browser_process.h"
 #include "chrome/browser/chrome_notification_types.h"
@@ -38,7 +37,8 @@
 #include "content/public/test/test_utils.h"
 
 #if BUILDFLAG(ENABLE_TOR)
-#include "brave/browser/tor/tor_launcher_factory.h"
+#include "brave/components/tor/brave_tor_client_updater.h"
+#include "brave/components/tor/tor_launcher_factory.h"
 #endif
 
 #if BUILDFLAG(ENABLE_EXTENSIONS)

@@ -8,7 +8,8 @@
 
 #include <string>
 
-#include "brave/browser/tor/tor_launcher_service_observer.h"
+#include "brave/components/tor/buildflags/buildflags.h"
+#include "brave/components/tor/tor_launcher_service_observer.h"
 #include "components/prefs/pref_change_registrar.h"
 #include "content/public/browser/web_ui_message_handler.h"
 
@@ -16,9 +17,12 @@ class Profile;
 namespace content {
 class WebUIDataSource;
 }
+
+#if BUILDFLAG(ENABLE_TOR)
 namespace tor {
 class TorProfileService;
 }  // namespace tor
+#endif
 
 // Handles messages to and from the New Tab Page javascript
 class BraveNewTabMessageHandler : public content::WebUIMessageHandler,
@@ -58,7 +62,9 @@ class BraveNewTabMessageHandler : public content::WebUIMessageHandler,
   PrefChangeRegistrar pref_change_registrar_;
   // Weak pointer.
   Profile* profile_;
+#if BUILDFLAG(ENABLE_TOR)
   tor::TorProfileService* tor_profile_service_ = nullptr;
+#endif
 
   DISALLOW_COPY_AND_ASSIGN(BraveNewTabMessageHandler);
 };

@@ -6,9 +6,8 @@
 #include "brave/browser/ui/browser_commands.h"
 
 #include "brave/browser/profiles/profile_util.h"
-#include "brave/browser/tor/tor_profile_service.h"
-#include "brave/browser/tor/tor_profile_service_factory.h"
 #include "brave/components/speedreader/buildflags.h"
+#include "brave/components/tor/buildflags/buildflags.h"
 #include "chrome/browser/browser_process.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/profiles/profile_manager.h"
@@ -24,6 +23,11 @@
 #if BUILDFLAG(ENABLE_SPEEDREADER)
 #include "brave/browser/speedreader/speedreader_service_factory.h"
 #include "brave/components/speedreader/speedreader_service.h"
+#endif
+
+#if BUILDFLAG(ENABLE_TOR)
+#include "brave/browser/tor/tor_profile_service_factory.h"
+#include "brave/components/tor/tor_profile_service.h"
 #endif
 
 using content::WebContents;
@@ -43,16 +47,18 @@ void NewOffTheRecordWindowTor(Browser* browser) {
 }
 
 void NewTorConnectionForSite(Browser* browser) {
+#if BUILDFLAG(ENABLE_TOR)
   Profile* profile = browser->profile();
   DCHECK(profile);
   tor::TorProfileService* service =
-    TorProfileServiceFactory::GetForProfile(profile);
+    TorProfileServiceFactory::GetForContext(profile);
   DCHECK(service);
   WebContents* current_tab =
     browser->tab_strip_model()->GetActiveWebContents();
   if (!current_tab)
     return;
   service->SetNewTorCircuit(current_tab);
+#endif
 }
 
 void AddNewProfile() {

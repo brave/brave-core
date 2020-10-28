@@ -8,13 +8,17 @@
 
 #include <vector>
 
+#include "brave/components/tor/buildflags/buildflags.h"
 #include "chrome/browser/ui/views/location_bar/location_bar_view.h"
 
 class BraveActionsContainer;
 class BraveActionsContainerTest;
-class OnionLocationView;
 class RewardsBrowserTest;
 class SkPath;
+
+#if BUILDFLAG(ENABLE_TOR)
+class OnionLocationView;
+#endif
 
 // The purposes of this subclass are to:
 // - Add the BraveActionsContainer to the location bar
@@ -25,7 +29,9 @@ class BraveLocationBarView : public LocationBarView {
   void Update(content::WebContents* contents) override;
   void OnChanged() override;
   BraveActionsContainer* GetBraveActionsContainer() { return brave_actions_; }
+#if BUILDFLAG(ENABLE_TOR)
   OnionLocationView* GetOnionLocationView() { return onion_location_view_; }
+#endif
 
   // LocationBarView:
   std::vector<views::View*> GetTrailingViews() override;
@@ -44,7 +50,9 @@ class BraveLocationBarView : public LocationBarView {
   friend class ::BraveActionsContainerTest;
   friend class ::RewardsBrowserTest;
   BraveActionsContainer* brave_actions_ = nullptr;
+#if BUILDFLAG(ENABLE_TOR)
   OnionLocationView* onion_location_view_ = nullptr;
+#endif
 
   DISALLOW_COPY_AND_ASSIGN(BraveLocationBarView);
 };

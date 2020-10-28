@@ -16,11 +16,9 @@
 #include "base/task/post_task.h"
 #include "brave/browser/brave_browser_main_extra_parts.h"
 #include "brave/browser/brave_browser_process_impl.h"
-#include "brave/browser/extensions/brave_tor_client_updater.h"
 #include "brave/browser/net/brave_proxying_url_loader_factory.h"
 #include "brave/browser/net/brave_proxying_web_socket.h"
 #include "brave/browser/profiles/profile_util.h"
-#include "brave/browser/tor/buildflags.h"
 #include "brave/common/pref_names.h"
 #include "brave/common/webui_url_constants.h"
 #include "brave/components/binance/browser/buildflags/buildflags.h"
@@ -35,6 +33,7 @@
 #include "brave/components/ipfs/buildflags/buildflags.h"
 #include "brave/components/ipfs/features.h"
 #include "brave/components/speedreader/buildflags.h"
+#include "brave/components/tor/buildflags/buildflags.h"
 #include "brave/grit/brave_generated_resources.h"
 #include "chrome/browser/content_settings/host_content_settings_map_factory.h"
 #include "chrome/browser/profiles/profile.h"
@@ -85,8 +84,10 @@ using extensions::ChromeContentBrowserClientExtensionsPart;
 #endif
 
 #if BUILDFLAG(ENABLE_TOR)
-#include "brave/browser/tor/onion_location_navigation_throttle.h"
-#include "brave/browser/tor/tor_navigation_throttle.h"
+#include "brave/browser/tor/onion_location_navigation_throttle_delegate.h"
+#include "brave/browser/tor/tor_profile_service_factory.h"
+#include "brave/components/tor/onion_location_navigation_throttle.h"
+#include "brave/components/tor/tor_navigation_throttle.h"
 #endif
 
 #if BUILDFLAG(ENABLE_SPEEDREADER)
@@ -459,21 +460,32 @@ BraveContentBrowserClient::CreateThrottlesForNavigation(
       std::make_unique<extensions::BraveWebTorrentNavigationThrottle>(handle));
 #endif
 
+#if BUILDFLAG(ENABLE_TOR) ||BUILDFLAG(IPFS_ENABLED)
+  content::BrowserContext* context =
+      handle->GetWebContents()->GetBrowserContext();
+#endif
+
 #if BUILDFLAG(ENABLE_TOR)
   std::unique_ptr<content::NavigationThrottle> tor_navigation_throttle =
-    tor::TorNavigationThrottle::MaybeCreateThrottleFor(handle);
+    tor::TorNavigationThrottle::MaybeCreateThrottleFor(handle,
+        TorProfileServiceFactory::GetForContext(context),
+        brave::IsTorProfile(context));
   if (tor_navigation_throttle)
     throttles.push_back(std::move(tor_navigation_throttle));
+  std::unique_ptr<tor::OnionLocationNavigationThrottleDelegate>
+      onion_location_navigation_throttle_delegate =
+          std::make_unique<tor::OnionLocationNavigationThrottleDelegate>();
   std::unique_ptr<content::NavigationThrottle>
       onion_location_navigation_throttle =
-          tor::OnionLocationNavigationThrottle::MaybeCreateThrottleFor(handle);
+          tor::OnionLocationNavigationThrottle::MaybeCreateThrottleFor(
+              handle, TorProfileServiceFactory::IsTorDisabled(),
+              std::move(onion_location_navigation_throttle_delegate),
+              brave::IsTorProfile(context));
   if (onion_location_navigation_throttle)
     throttles.push_back(std::move(onion_location_navigation_throttle));
 #endif
 
 #if BUILDFLAG(IPFS_ENABLED)
-  content::BrowserContext* context =
-      handle->GetWebContents()->GetBrowserContext();
   std::unique_ptr<content::NavigationThrottle> ipfs_navigation_throttle =
     ipfs::IpfsNavigationThrottle::MaybeCreateThrottleFor(handle,
         ipfs::IpfsServiceFactory::GetForContext(context),

@@ -13,8 +13,6 @@
 #include "base/values.h"
 #include "brave/browser/profiles/profile_util.h"
 #include "brave/browser/search_engines/search_engine_provider_util.h"
-#include "brave/browser/tor/tor_profile_service.h"
-#include "brave/browser/tor/tor_profile_service_factory.h"
 #include "brave/browser/ui/webui/brave_new_tab_ui.h"
 #include "brave/browser/ntp_background_images/view_counter_service_factory.h"
 #include "brave/common/pref_names.h"
@@ -50,6 +48,11 @@ using ntp_background_images::ViewCounterServiceFactory;
 
 #if BUILDFLAG(CRYPTO_DOT_COM_ENABLED)
 #include "brave/components/crypto_dot_com/common/pref_names.h"
+#endif
+
+#if BUILDFLAG(ENABLE_TOR)
+#include "brave/browser/tor/tor_profile_service_factory.h"
+#include "brave/components/tor/tor_profile_service.h"
 #endif
 
 namespace {
@@ -179,14 +182,18 @@ BraveNewTabMessageHandler* BraveNewTabMessageHandler::Create(
 
 BraveNewTabMessageHandler::BraveNewTabMessageHandler(Profile* profile)
     : profile_(profile) {
+#if BUILDFLAG(ENABLE_TOR)
   if (brave::IsTorProfile(profile)) {
-    tor_profile_service_ = TorProfileServiceFactory::GetForProfile(profile);
+    tor_profile_service_ = TorProfileServiceFactory::GetForContext(profile);
   }
+#endif
 }
 
 BraveNewTabMessageHandler::~BraveNewTabMessageHandler() {
+#if BUILDFLAG(ENABLE_TOR)
   if (tor_profile_service_)
     tor_profile_service_->RemoveObserver(this);
+#endif
 }
 
 void BraveNewTabMessageHandler::RegisterMessages() {
@@ -318,14 +325,18 @@ void BraveNewTabMessageHandler::OnJavascriptAllowed() {
     base::Unretained(this)));
 #endif
 
+#if BUILDFLAG(ENABLE_TOR)
   if (tor_profile_service_)
     tor_profile_service_->AddObserver(this);
+#endif
 }
 
 void BraveNewTabMessageHandler::OnJavascriptDisallowed() {
   pref_change_registrar_.RemoveAll();
+#if BUILDFLAG(ENABLE_TOR)
   if (tor_profile_service_)
     tor_profile_service_->RemoveObserver(this);
+#endif
 }
 
 void BraveNewTabMessageHandler::HandleGetPreferences(
@@ -354,9 +365,13 @@ void BraveNewTabMessageHandler::HandleGetPrivateProperties(
 void BraveNewTabMessageHandler::HandleGetTorProperties(
         const base::ListValue* args) {
   AllowJavascript();
+#if BUILDFLAG(ENABLE_TOR)
   auto data = GetTorPropertiesDictionary(
       tor_profile_service_ ? tor_profile_service_->IsTorConnected() : false,
       "");
+#else
+  auto data = GetTorPropertiesDictionary(false, "");
+#endif
   ResolveJavascriptCallback(args->GetList()[0], data);
 }
 
