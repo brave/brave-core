@@ -18,6 +18,7 @@ import { Toggle } from '../../../components/toggle'
 interface Props {
   publishers?: BraveToday.Publishers
   setPublisherPref: (publisherId: string, enabled: boolean) => any
+  onDisplay: () => any
 }
 
 export const DynamicListContext = React.createContext<
@@ -68,6 +69,13 @@ function ListItem (props: ListItemProps) {
 export default function TodaySettings (props: Props) {
   const listRef = React.useRef<VariableSizeList | null>(null);
   const sizeMap = React.useRef<{ [key: string]: number }>({});
+
+  // Ensure publishers data is fetched, which won't happen
+  // if user has not interacted with Brave Today on this page
+  // view.
+  React.useEffect(() => {
+    props.onDisplay()
+  }, [props.onDisplay])
 
   const setSize = React.useCallback((index: number, size: number) => {
     // Performance: Only update the sizeMap and reset cache if an actual value changed

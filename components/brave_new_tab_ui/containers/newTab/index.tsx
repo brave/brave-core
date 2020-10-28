@@ -106,6 +106,7 @@ class NewTabPage extends React.Component<Props, State> {
     focusMoreCards: false,
     itemsOpacity: false
   }
+  hasInitBraveToday: boolean = false
   imageSource?: string = undefined
   timerIdForBrandedWallpaperNotification?: number = undefined
   onVisiblityTimerExpired = () => {
@@ -414,8 +415,14 @@ class NewTabPage extends React.Component<Props, State> {
     this.props.actions.setUserTLDAutoSet()
   }
 
-  setOpacityForItems = (opacity: boolean) => {
-    this.setState({ itemsOpacity: opacity })
+  onBraveTodayInteracting = (isInteracting: boolean) => {
+    // TODO(petemill): Detect percentage of scroll towards brave today
+    // and set opacity at that level, instead of a binary on/off.
+    this.setState({ itemsOpacity: isInteracting })
+    if (isInteracting && !this.hasInitBraveToday) {
+      this.hasInitBraveToday = true
+      this.props.actions.todayInit()
+    }
   }
 
   learnMoreRewards = () => {
@@ -985,6 +992,8 @@ class NewTabPage extends React.Component<Props, State> {
     const isShowingBrandedWallpaper = newTabData.brandedWallpaperData ? true : false
     const showTopSites = !!this.props.gridSitesData.gridSites.length && newTabData.showTopSites
     const cryptoContent = this.renderCryptoContent()
+    // TODO: opt-in pref
+    const isShowingBraveToday = true
 
     return (
       <Page.App dataIsReady={newTabData.initialDataLoaded}>
@@ -1085,9 +1094,9 @@ class NewTabPage extends React.Component<Props, State> {
             </Page.FooterContent>
           </Page.Footer>
         </Page.Page>
-        { this.props.todayData.feed &&
+        { isShowingBraveToday &&
         <BraveToday
-          setOpacityForItems={this.setOpacityForItems}
+          onInteracting={this.onBraveTodayInteracting}
           feed={this.props.todayData.feed}
           articleToScrollTo={this.props.todayData.articleScrollTo}
           onAnotherPageNeeded={this.props.actions.anotherPageNeeded}
@@ -1101,6 +1110,7 @@ class NewTabPage extends React.Component<Props, State> {
           textDirection={newTabData.textDirection}
           showSettingsMenu={showSettingsMenu}
           onClickOutside={this.closeSettings}
+          onDisplayTodaySection={this.props.actions.ensureSettingsData}
           toggleShowBackgroundImage={this.toggleShowBackgroundImage}
           toggleShowClock={this.toggleShowClock}
           toggleShowStats={this.toggleShowStats}

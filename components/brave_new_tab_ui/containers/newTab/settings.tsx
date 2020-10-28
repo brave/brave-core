@@ -31,12 +31,12 @@ import MoreCardsIcon from './settings/icons/moreCards.svg'
 import TodayIcon from './settings/icons/braveToday.svg'
 
 // Tabs
-import BackgroundImageSettings from './settings/backgroundImage'
-import BraveStatsSettings from './settings/braveStats'
-import TopSitesSettings from './settings/topSites'
-import ClockSettings from './settings/clock'
-import MoreCardsSettings from './settings/moreCards'
-import BraveTodaySettings from './settings/braveToday'
+const BackgroundImageSettings = React.lazy(() => import('./settings/backgroundImage'))
+const BraveStatsSettings = React.lazy(() => import('./settings/braveStats'))
+const TopSitesSettings = React.lazy(() => import('./settings/topSites'))
+const ClockSettings = React.lazy(() => import('./settings/clock'))
+const MoreCardsSettings = React.lazy(() => import('./settings/moreCards'))
+const BraveTodaySettings = React.lazy(() => import('./settings/braveToday'))
 
 // Types
 import { NewTabActions } from '../../constants/new_tab_types'
@@ -46,6 +46,7 @@ export interface Props {
   textDirection: string
   showSettingsMenu: boolean
   onClickOutside: () => void
+  onDisplayTodaySection: () => any
   toggleShowBackgroundImage: () => void
   toggleShowClock: () => void
   toggleShowStats: () => void
@@ -269,6 +270,7 @@ export default class Settings extends React.PureComponent<Props, State> {
                 }
               </SettingsSidebar>
               <SettingsFeatureBody id='content'>
+                <React.Suspense fallback={(<div>Loading...</div>)}>
                 {
                   activeTab === 0
                     ? (
@@ -306,6 +308,7 @@ export default class Settings extends React.PureComponent<Props, State> {
                     <BraveTodaySettings
                       publishers={this.props.todayPublishers}
                       setPublisherPref={this.props.actions.setPublisherPref}
+                      onDisplay={this.props.onDisplayTodaySection}
                     />
                   ) : null
                 }
@@ -344,6 +347,7 @@ export default class Settings extends React.PureComponent<Props, State> {
                       />
                     ) : null
                 }
+                </React.Suspense>
               </SettingsFeatureBody>
             </SettingsContent>
           </SettingsMenu>

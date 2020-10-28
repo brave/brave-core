@@ -22,7 +22,7 @@ export const Image = styled(StandardImage)`
 `
 
 export const Heading = styled(StandardHeading)`
-  margin 36px 0 24px;
+  margin: 36px 0 24px;
 `
 
 export const Text = styled(StandardText)``
