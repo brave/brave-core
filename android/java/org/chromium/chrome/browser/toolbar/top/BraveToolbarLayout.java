@@ -69,7 +69,10 @@ import org.chromium.chrome.browser.tabmodel.TabModelSelectorTabModelObserver;
 import org.chromium.chrome.browser.tabmodel.TabModelSelectorTabObserver;
 import org.chromium.chrome.browser.toolbar.HomeButton;
 import org.chromium.chrome.browser.toolbar.ToolbarColors;
+import org.chromium.chrome.browser.toolbar.ToolbarDataProvider;
+import org.chromium.chrome.browser.toolbar.ToolbarTabController;
 import org.chromium.chrome.browser.toolbar.bottom.BottomToolbarVariationManager;
+import org.chromium.chrome.browser.toolbar.menu_button.BraveMenuButtonCoordinator;
 import org.chromium.chrome.browser.toolbar.menu_button.MenuButtonCoordinator;
 import org.chromium.chrome.browser.toolbar.top.ToolbarLayout;
 import org.chromium.chrome.browser.util.PackageUtils;
@@ -805,4 +808,11 @@ public abstract class BraveToolbarLayout extends ToolbarLayout implements OnClic
   private boolean isMenuButtonOnBottom() {
       return mIsBottomToolbarVisible && BottomToolbarVariationManager.isMenuButtonOnBottom();
   }
+
+    @Override
+    protected void initialize(ToolbarDataProvider toolbarDataProvider,
+            ToolbarTabController tabController, MenuButtonCoordinator menuButtonCoordinator) {
+        super.initialize(toolbarDataProvider, tabController, menuButtonCoordinator);
+        BraveMenuButtonCoordinator.setMenuFromBottom(isMenuButtonOnBottom());
+    }
 }
