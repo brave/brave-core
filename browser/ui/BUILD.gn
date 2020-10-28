@@ -79,8 +79,6 @@ source_set("ui") {
       "toolbar/brave_app_menu_model.h",
       "webui/brave_new_tab_message_handler.cc",
       "webui/brave_new_tab_message_handler.h",
-      "webui/brave_blank_page_ui.cc",
-      "webui/brave_blank_page_ui.h",
       "webui/brave_new_tab_ui.cc",
       "webui/brave_new_tab_ui.h",
       "webui/brave_settings_ui.cc",

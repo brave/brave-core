@@ -36,7 +36,8 @@ GURL GetNewTabPageURL(Profile* profile) {
       return GURL();
     return GURL(prefs->GetString(prefs::kHomePage));
   } else if (option == brave::NewTabPageShowsOptions::BLANKPAGE) {
-    return GURL(kBraveBlankPageURL);
+    // NewTab route will handle for blank page.
+    return GURL();
   } else {
     DCHECK_EQ(brave::NewTabPageShowsOptions::DASHBOARD, option);
     return GURL();

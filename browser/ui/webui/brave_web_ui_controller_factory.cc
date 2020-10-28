@@ -24,7 +24,6 @@
 #include "url/gurl.h"
 
 #if !defined(OS_ANDROID)
-#include "brave/browser/ui/webui/brave_blank_page_ui.h"
 #include "brave/browser/ui/webui/brave_new_tab_ui.h"
 #include "brave/browser/ui/webui/brave_settings_ui.h"
 #include "brave/browser/ui/webui/brave_welcome_ui.h"
@@ -93,8 +92,6 @@ WebUIController* NewWebUI<BasicUI>(WebUI* web_ui, const GURL& url) {
     return new BraveSettingsUI(web_ui, url.host());
   } else if (host == chrome::kChromeUINewTabHost) {
     return new BraveNewTabUI(web_ui, url.host());
-  } else if (host == kBraveBlankPageHost) {
-    return new BraveBlankPageUI(web_ui, url.host());
 #endif  // !defined(OS_ANDROID)
   }
   return nullptr;
@@ -120,7 +117,6 @@ WebUIFactoryFunction GetWebUIFactoryFunction(WebUI* web_ui,
       url.host_piece() == kTipHost ||
 #endif
       url.host_piece() == kWelcomeHost ||
-      url.host_piece() == kBraveBlankPageHost ||
       url.host_piece() == chrome::kChromeUIWelcomeURL ||
       url.host_piece() == chrome::kChromeUINewTabHost ||
       url.host_piece() == chrome::kChromeUISettingsHost) {

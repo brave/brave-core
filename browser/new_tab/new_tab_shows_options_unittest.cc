@@ -68,10 +68,11 @@ TEST_F(BraveNewTabTest, BasicTest) {
   prefs->SetString(prefs::kHomePage, "chrome://newtab/");
   EXPECT_TRUE(brave::ShouldUseNewTabURLForNewTab(profile));
 
-  // Check NTP url is blank when option is BLANKPAGE.
+  // Check NTP url is used when option is BLANKPAGE.
+  // Blank page will go NTP route and BraveNewTabUI will handle it.
   prefs->SetInteger(kNewTabPageShowsOptions,
                     brave::NewTabPageShowsOptions::BLANKPAGE);
-  EXPECT_EQ(GURL(kBraveBlankPageURL), brave::GetNewTabPageURL(profile));
+  EXPECT_EQ(GURL(), brave::GetNewTabPageURL(profile));
   EXPECT_EQ(GURL(), brave::GetNewTabPageURL(otr_profile));
-  EXPECT_FALSE(brave::ShouldUseNewTabURLForNewTab(profile));
+  EXPECT_TRUE(brave::ShouldUseNewTabURLForNewTab(profile));
 }
