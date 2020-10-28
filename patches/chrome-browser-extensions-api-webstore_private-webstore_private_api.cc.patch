@@ -1,0 +1,13 @@
+diff --git a/chrome/browser/extensions/api/webstore_private/webstore_private_api.cc b/chrome/browser/extensions/api/webstore_private/webstore_private_api.cc
+index 99b1e505dc6e0ba2ff984639620570d709e10893..333d38e296901d7c650c1f16e04d46a78b645313 100644
+--- a/chrome/browser/extensions/api/webstore_private/webstore_private_api.cc
++++ b/chrome/browser/extensions/api/webstore_private/webstore_private_api.cc
+@@ -1069,7 +1069,7 @@ WebstorePrivateGetExtensionStatusFunction::Run() {
+   api::webstore_private::ExtensionInstallStatus api_status =
+       ConvertExtensionInstallStatusForAPI(status);
+   return RespondNow(
+-      OneArgument(GetExtensionStatus::Results::Create(api_status)));
++      ArgumentList(GetExtensionStatus::Results::Create(api_status)));
+ }
+ 
+ WebstorePrivateRequestExtensionFunction::
