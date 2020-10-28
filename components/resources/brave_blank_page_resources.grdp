@@ -1,5 +1,4 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <grit-part>
-    <include name="IDR_BRAVE_DARK_BLANK_PAGE_HTML" file="../brave_blank_page/resources/brave_dark_blank_page.html" type="BINDATA" />
     <include name="IDR_BRAVE_BLANK_PAGE_HTML" file="../brave_blank_page/resources/brave_blank_page.html" type="BINDATA" />
 </grit-part>
