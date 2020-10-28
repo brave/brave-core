@@ -19,6 +19,7 @@ export const QRBoxStyle = styled(CustomCard)`
   justify-content: space-between;
   align-items: center;
   width: 100%;
+  box-shadow: 0 0;
 `
 
 export const QRText = styled<{}, 'div'>('div')`
