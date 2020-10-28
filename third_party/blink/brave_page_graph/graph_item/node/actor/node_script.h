@@ -29,8 +29,9 @@ friend class PageGraph;
 
   ScriptId GetScriptId() const { return script_id_; }
   ScriptType GetScriptType() const { return script_type_; }
-  std::string GetURL() const { return url_; }
+  const std::string& GetSource() const { return source_; }
 
+  const std::string& GetURL() const { return url_; }
   void SetURL(const std::string url) { url_ = url; }
 
   ItemName GetItemName() const override;
@@ -43,13 +44,15 @@ friend class PageGraph;
 
  protected:
   NodeScript(PageGraph* const graph, const ScriptId script_id,
-    const ScriptType type, const std::string& url = "");
+    const ScriptType type, const std::string& source,
+    const std::string& url = "");
 
   void AddInEdge(const Edge* const in_edge) override;
 
  private:
   const ScriptId script_id_;
   const ScriptType script_type_;
+  const std::string source_;
   std::string url_;
 };
 

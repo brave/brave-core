@@ -124,6 +124,7 @@ std::string ResourceTypeToString(const blink::ResourceType type) noexcept;
 
 typedef enum {
   kScriptTypeClassic = 0,
+  kScriptTypeEval,
   kScriptTypeModule,
   kScriptTypeExtension,
   kExternalFile,

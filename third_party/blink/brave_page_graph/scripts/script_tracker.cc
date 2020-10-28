@@ -304,24 +304,6 @@ void ScriptTracker::AddScriptId(const ScriptId script_id,
   script_id_hashes_.emplace(script_id, hash);
 }
 
-void ScriptTracker::AddScriptIdAlias(const ScriptId script_id,
-                                     const ScriptId parent_script_id) {
-  if (script_id == parent_script_id) {
-    return;
-  }
-
-  PG_LOG_ASSERT(script_id_aliases_.count(script_id) == 0 ||
-      script_id_aliases_.at(script_id) == parent_script_id);
-  script_id_aliases_.emplace(script_id, parent_script_id);
-}
-
-ScriptId ScriptTracker::ResolveScriptId(const ScriptId script_id) const {
-  if (script_id_aliases_.count(script_id) == 1) {
-    return script_id_aliases_.at(script_id);
-  }
-  return script_id;
-}
-
 blink::KURL ScriptTracker::GetModuleScriptSourceUrl(
       const ScriptId script_id) const {
   const SourceCodeHash& source_hash = script_id_to_source_hash_.at(script_id);

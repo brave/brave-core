@@ -112,6 +112,8 @@ string ScriptTypeToString(const ScriptType type) noexcept {
   switch (type) {
     case kScriptTypeClassic:
       return "classic";
+    case kScriptTypeEval:
+      return "eval";
     case kScriptTypeModule:
       return "module";
     case kScriptTypeExtension:
