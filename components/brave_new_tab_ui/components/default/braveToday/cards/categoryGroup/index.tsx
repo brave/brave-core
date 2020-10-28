@@ -18,7 +18,7 @@ interface Props {
 
 type ListItemProps = {
   item: BraveToday.Article
-  publisher: BraveToday.Publisher
+  publisher?: BraveToday.Publisher
   onReadFeedItem: (item: BraveToday.FeedItem) => any
   shouldScrollIntoView: boolean
 }
@@ -32,7 +32,7 @@ function ListItem (props: ListItemProps) {
     <Card.ListItem>
       <a onClick={onClick} href={props.item.url} ref={cardRef}>
         <Card.Content>
-          <Card.Heading>{props.publisher.publisher_name}</Card.Heading>
+          <Card.Heading>{props.publisher && props.publisher.publisher_name}</Card.Heading>
           <Card.Heading>{props.item.title}</Card.Heading>
           <Card.Time>{props.item.relative_time}</Card.Time>
         </Card.Content>

@@ -20,7 +20,7 @@ interface Props {
 
 type ArticleProps = {
   item: BraveToday.Article
-  publisher: BraveToday.Publisher
+  publisher?: BraveToday.Publisher
   shouldScrollIntoView?: boolean
   onReadFeedItem: (item: BraveToday.FeedItem) => any
 }

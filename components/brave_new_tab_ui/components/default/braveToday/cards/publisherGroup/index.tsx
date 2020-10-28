@@ -48,10 +48,10 @@ export default function PublisherGroup (props: Props) {
   }
   return (
     <Card.OrderedList>
-      <PublisherMeta
+      {props.publisher && <PublisherMeta
         publisher={props.publisher}
         title={true}
-      />
+      />}
       <Card.List>
         {
           props.content.map((item, index) => {
