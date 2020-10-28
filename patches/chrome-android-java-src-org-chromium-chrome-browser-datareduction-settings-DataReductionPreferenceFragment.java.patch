@@ -1,5 +1,5 @@
 diff --git a/chrome/android/java/src/org/chromium/chrome/browser/datareduction/settings/DataReductionPreferenceFragment.java b/chrome/android/java/src/org/chromium/chrome/browser/datareduction/settings/DataReductionPreferenceFragment.java
-index 98b52351c1ac9044f579ef123cb543e015272450..ed75714069734e2b51bd9fb2513ccf1d18f05ea6 100644
+index b70672231cc7201475f8a955096b978945801af8..12ccdd194c5ed813e5f135e6b8908df03356481a 100644
 --- a/chrome/android/java/src/org/chromium/chrome/browser/datareduction/settings/DataReductionPreferenceFragment.java
 +++ b/chrome/android/java/src/org/chromium/chrome/browser/datareduction/settings/DataReductionPreferenceFragment.java
 @@ -37,7 +37,7 @@ import java.util.Locale;

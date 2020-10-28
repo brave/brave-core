@@ -47,7 +47,7 @@ void OpenBrowserWindowForTorProfile(ProfileManager::CreateCallback callback,
                                     Profile::CreateStatus status) {
   profiles::OpenBrowserWindowForProfile(
       callback, always_create, is_new_profile, unblock_extensions,
-      profile->GetOffTheRecordProfile(), status);
+      profile->GetPrimaryOTRProfile(), status);
 #if BUILDFLAG(ENABLE_TOR)
   tor::TorProfileService* service =
       TorProfileServiceFactory::GetForContext(profile);

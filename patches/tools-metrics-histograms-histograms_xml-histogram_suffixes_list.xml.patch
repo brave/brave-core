@@ -1,0 +1,12 @@
+diff --git a/tools/metrics/histograms/histograms_xml/histogram_suffixes_list.xml b/tools/metrics/histograms/histograms_xml/histogram_suffixes_list.xml
+index 3e9308869b0ad7c03ed975f776c2662c49cd9718..7344d9e933bc492a48474763e66ea3a83255b136 100644
+--- a/tools/metrics/histograms/histograms_xml/histogram_suffixes_list.xml
++++ b/tools/metrics/histograms/histograms_xml/histogram_suffixes_list.xml
+@@ -13725,6 +13725,7 @@ reviews. Googlers can read more about this at go/gwsq-gerrit.
+   <suffix name="ProtectedMedia" label="Protected media permission"/>
+   <suffix name="PushMessaging" label="Push messaging permission"/>
+   <suffix name="Quota" label="Quota permission"/>
++  <suffix name="Widevine" label="Widevine permission"/>
+   <suffix name="RegisterProtocolHandler"
+       label="registerProtocolHandler permission"/>
+   <suffix name="SecurityKeyAttestation" label="Security Key attestation"/>

@@ -21,6 +21,7 @@ config("external_config") {
 config("internal_config") {
   visibility = [
     ":*",
+    "//brave/components/brave_ads/browser:testutil",
     "//brave/components/brave_ads/test:*",
     "//brave/test:*",
   ]

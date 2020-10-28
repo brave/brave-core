@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/profiles/profile_impl.h b/chrome/browser/profiles/profile_impl.h
-index 8c51c7e3c9407dc2a98719886cf9132709341a30..cab5d78b599725242de23052f6c30854de054dc5 100644
+index 562decfb766d6a12123fb2b14246ac2e9ee62ed3..055b8f13134c69a8ae13926545983f3db526f38e 100644
 --- a/chrome/browser/profiles/profile_impl.h
 +++ b/chrome/browser/profiles/profile_impl.h
 @@ -171,6 +171,7 @@ class ProfileImpl : public Profile {
@@ -9,4 +9,4 @@ index 8c51c7e3c9407dc2a98719886cf9132709341a30..cab5d78b599725242de23052f6c30854
 +  BRAVE_PROFILE_IMPL_H_
  
    void SetCreationTimeForTesting(base::Time creation_time) override;
- 
+   void RecordMainFrameNavigation() override {}

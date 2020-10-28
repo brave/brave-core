@@ -19,8 +19,7 @@ void OnFileTypePoliciesRegistered() {
   component_updater::BraveOnDemandUpdate(kFileTypePoliciesComponentId);
 }
 
-void RegisterFileTypePoliciesComponent(ComponentUpdateService* cus,
-                                       const base::FilePath& user_data_dir) {
+void RegisterFileTypePoliciesComponent(ComponentUpdateService* cus) {
   auto installer = base::MakeRefCounted<ComponentInstaller>(
       std::make_unique<FileTypePoliciesComponentInstallerPolicy>());
   installer->Register(cus, base::Bind(&OnFileTypePoliciesRegistered));

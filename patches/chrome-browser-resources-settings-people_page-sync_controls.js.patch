@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/resources/settings/people_page/sync_controls.js b/chrome/browser/resources/settings/people_page/sync_controls.js
-index 0ff778824d81b54fd0fb6dbe3a597b9710f5894a..7901856c98937fddaba1a208fbf24a736d369350 100644
+index 8a60f0d3bceea5c142797a1db16bbdb75f26a175..12c8a63724d5e7f3490dede654fc2611bfa86889 100644
 --- a/chrome/browser/resources/settings/people_page/sync_controls.js
 +++ b/chrome/browser/resources/settings/people_page/sync_controls.js
-@@ -99,7 +99,7 @@ Polymer({
+@@ -88,7 +88,7 @@ Polymer({
          'sync-prefs-changed', this.handleSyncPrefsChanged_.bind(this));
  
      const router = settings.Router.getInstance();
@@ -11,7 +11,7 @@ index 0ff778824d81b54fd0fb6dbe3a597b9710f5894a..7901856c98937fddaba1a208fbf24a73
        this.browserProxy_.didNavigateToSyncPage();
      }
    },
-@@ -226,6 +226,7 @@ Polymer({
+@@ -215,6 +215,7 @@ Polymer({
     * @private
     */
    syncControlsHidden_() {

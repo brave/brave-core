@@ -1,20 +1,31 @@
 diff --git a/chrome/android/java/src/org/chromium/chrome/browser/toolbar/ToolbarManager.java b/chrome/android/java/src/org/chromium/chrome/browser/toolbar/ToolbarManager.java
-index 916975c74bca08631501549890fe329e77a5e742..27e74f1a2931a725c66e6cea43d366f92aa82494 100644
+index f47d98236abb257f3a87e44c216f15bec6928b3c..0b8d4f7d51be81e3258ff399e427c20b4718f9f9 100644
 --- a/chrome/android/java/src/org/chromium/chrome/browser/toolbar/ToolbarManager.java
 +++ b/chrome/android/java/src/org/chromium/chrome/browser/toolbar/ToolbarManager.java
-@@ -1262,6 +1262,7 @@ public class ToolbarManager implements UrlFocusChangeListener, ThemeColorObserve
-         boolean editingAllowed =
-                 currentTab == null || bridge == null || bridge.isEditBookmarksEnabled();
-         mToolbar.updateBookmarkButton(isBookmarked, editingAllowed);
-+        if (mBottomControlsCoordinator != null) {mBottomControlsCoordinator.updateBookmarkButton(isBookmarked, editingAllowed);}
-     }
+@@ -304,7 +304,7 @@ public class ToolbarManager implements UrlFocusChangeListener, ThemeColorObserve
+         ThemeColorProvider overviewModeThemeColorProvider = mAppThemeColorProvider;
+         ToolbarLayout toolbarLayout = mActivity.findViewById(R.id.toolbar);
  
-     private void updateReloadState(boolean tabCrashed) {
-@@ -1363,6 +1364,7 @@ public class ToolbarManager implements UrlFocusChangeListener, ThemeColorObserve
-         mToolbar.onBottomToolbarVisibilityChanged(visible);
-         mBottomToolbarVisibilitySupplier.set(visible);
-         mBottomControlsCoordinator.setBottomControlsVisible(visible);
-+        mMenuButtonCoordinator.setBottomMenu(isMenuFromBottom());
-     }
- 
-     /**
+-        mMenuButtonCoordinator = new MenuButtonCoordinator(appMenuCoordinatorSupplier,
++        mMenuButtonCoordinator = new org.chromium.chrome.browser.toolbar.menu_button.BraveMenuButtonCoordinator(appMenuCoordinatorSupplier,
+                 mControlsVisibilityDelegate, mActivity,
+                 (focus, type)
+                         -> setUrlBarFocus(focus, type),
+@@ -313,7 +313,7 @@ public class ToolbarManager implements UrlFocusChangeListener, ThemeColorObserve
+                 mActivity.isCustomTab() ? mCustomTabThemeColorProvider
+                                         : browsingModeThemeColorProvider,
+                 R.id.menu_button_wrapper);
+-        MenuButtonCoordinator startSurfaceMenuButtonCoordinator = new MenuButtonCoordinator(
++        MenuButtonCoordinator startSurfaceMenuButtonCoordinator = new org.chromium.chrome.browser.toolbar.menu_button.BraveMenuButtonCoordinator(
+                 appMenuCoordinatorSupplier, mControlsVisibilityDelegate, mActivity,
+                 (focus, type)
+                         -> setUrlBarFocus(focus, type),
+@@ -631,7 +631,7 @@ public class ToolbarManager implements UrlFocusChangeListener, ThemeColorObserve
+             ThemeColorProvider browsingModeThemeColorProvider,
+             MenuButtonCoordinator startSurfaceMenuButtonCoordinator, Invalidator invalidator,
+             IdentityDiscController identityDiscController) {
+-        TopToolbarCoordinator toolbar = new TopToolbarCoordinator(controlContainer, toolbarLayout,
++        TopToolbarCoordinator toolbar = new org.chromium.chrome.browser.toolbar.top.BraveTopToolbarCoordinator(controlContainer, toolbarLayout,
+                 mLocationBarModel, mToolbarTabController,
+                 new UserEducationHelper(mActivity, mHandler, TrackerFactory::getTrackerForProfile),
+                 buttonDataProviders, mOverviewModeBehaviorSupplier, browsingModeThemeColorProvider,

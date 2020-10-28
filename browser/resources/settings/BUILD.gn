@@ -53,7 +53,7 @@ if (optimize_webui) {
     script = "//chrome/browser/resources/unpack_pak.py"
 
     pak_file = "brave_settings_resources.pak"
-    out_folder = "$root_gen_dir/chrome/browser/resources/settings/settings_resources.unpak"
+    out_folder = "$root_gen_dir/chrome/browser/resources/settings/preprocessed"
 
     inputs = [
       "$target_gen_dir/brave_settings_resources.pak",

@@ -14,25 +14,26 @@ import android.content.res.Resources;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
 import android.util.AttributeSet;
+import android.util.Pair;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
-import android.widget.TextView;
 import android.widget.ImageView;
 import android.widget.PopupWindow;
-import android.util.Pair;
+import android.widget.TextView;
 
 import androidx.appcompat.app.AlertDialog;
 
 import org.chromium.base.ApiCompatibilityUtils;
 import org.chromium.base.ContextUtils;
-import org.chromium.base.MathUtils;
-import org.chromium.base.task.AsyncTask;
-import org.chromium.base.ThreadUtils;
 import org.chromium.base.Log;
+import org.chromium.base.MathUtils;
+import org.chromium.base.ThreadUtils;
+import org.chromium.base.task.AsyncTask;
 import org.chromium.chrome.R;
+import org.chromium.chrome.browser.BraveAdsNativeHelper;
 import org.chromium.chrome.browser.BraveFeatureList;
 import org.chromium.chrome.browser.BraveRelaunchUtils;
 import org.chromium.chrome.browser.BraveRewardsNativeWorker;
@@ -40,17 +41,24 @@ import org.chromium.chrome.browser.BraveRewardsObserver;
 import org.chromium.chrome.browser.BraveRewardsPanelPopup;
 import org.chromium.chrome.browser.app.BraveActivity;
 import org.chromium.chrome.browser.app.ChromeActivity;
+import org.chromium.chrome.browser.brave_stats.BraveStatsUtil;
 import org.chromium.chrome.browser.dialogs.BraveAdsSignupDialog;
 import org.chromium.chrome.browser.flags.ChromeFeatureList;
+import org.chromium.chrome.browser.local_database.BraveStatsTable;
+import org.chromium.chrome.browser.local_database.DatabaseHelper;
+import org.chromium.chrome.browser.local_database.SavedBandwidthTable;
+import org.chromium.chrome.browser.notifications.retention.RetentionNotificationUtil;
+import org.chromium.chrome.browser.ntp.BraveNewTabPageLayout;
 import org.chromium.chrome.browser.ntp.NewTabPage;
 import org.chromium.chrome.browser.onboarding.OnboardingPrefManager;
+import org.chromium.chrome.browser.onboarding.SearchActivity;
 import org.chromium.chrome.browser.preferences.BravePref;
 import org.chromium.chrome.browser.preferences.BravePrefServiceBridge;
-import org.chromium.components.user_prefs.UserPrefs;
 import org.chromium.chrome.browser.preferences.website.BraveShieldsContentSettings;
 import org.chromium.chrome.browser.preferences.website.BraveShieldsContentSettingsObserver;
 import org.chromium.chrome.browser.profiles.Profile;
 import org.chromium.chrome.browser.settings.AppearancePreferences;
+import org.chromium.chrome.browser.settings.BraveSearchEngineUtils;
 import org.chromium.chrome.browser.shields.BraveShieldsHandler;
 import org.chromium.chrome.browser.shields.BraveShieldsMenuObserver;
 import org.chromium.chrome.browser.tab.Tab;
@@ -61,29 +69,26 @@ import org.chromium.chrome.browser.tabmodel.TabModelSelectorTabModelObserver;
 import org.chromium.chrome.browser.tabmodel.TabModelSelectorTabObserver;
 import org.chromium.chrome.browser.toolbar.HomeButton;
 import org.chromium.chrome.browser.toolbar.ToolbarColors;
+import org.chromium.chrome.browser.toolbar.ToolbarDataProvider;
+import org.chromium.chrome.browser.toolbar.ToolbarTabController;
 import org.chromium.chrome.browser.toolbar.bottom.BottomToolbarVariationManager;
+import org.chromium.chrome.browser.toolbar.menu_button.BraveMenuButtonCoordinator;
+import org.chromium.chrome.browser.toolbar.menu_button.MenuButtonCoordinator;
 import org.chromium.chrome.browser.toolbar.top.ToolbarLayout;
 import org.chromium.chrome.browser.util.PackageUtils;
 import org.chromium.components.browser_ui.styles.ChromeColors;
-import org.chromium.content_public.browser.NavigationHandle;
 import org.chromium.components.embedder_support.util.UrlUtilities;
 import org.chromium.components.url_formatter.UrlFormatter;
+import org.chromium.components.user_prefs.UserPrefs;
+import org.chromium.content_public.browser.NavigationHandle;
 import org.chromium.ui.UiUtils;
 import org.chromium.ui.interpolators.BakedBezierInterpolator;
 import org.chromium.ui.widget.Toast;
-import org.chromium.chrome.browser.onboarding.SearchActivity;
-import org.chromium.chrome.browser.BraveAdsNativeHelper;
-import org.chromium.chrome.browser.local_database.DatabaseHelper;
-import org.chromium.chrome.browser.local_database.BraveStatsTable;
-import org.chromium.chrome.browser.local_database.SavedBandwidthTable;
-import org.chromium.chrome.browser.brave_stats.BraveStatsUtil;
-import org.chromium.chrome.browser.settings.BraveSearchEngineUtils;
-import org.chromium.chrome.browser.notifications.retention.RetentionNotificationUtil;
 
 import java.net.URL;
-import java.util.List;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 
 public abstract class BraveToolbarLayout extends ToolbarLayout implements OnClickListener,
   View.OnLongClickListener,
@@ -118,6 +123,8 @@ public abstract class BraveToolbarLayout extends ToolbarLayout implements OnClic
   private boolean mIsInitialNotificationPosted; // initial red circle notification
 
   private PopupWindow mShieldsTooltipPopupWindow;
+
+  private boolean mIsBottomToolbarVisible;
 
   public BraveToolbarLayout(Context context, AttributeSet attrs) {
     super(context, attrs);
@@ -236,14 +243,14 @@ public abstract class BraveToolbarLayout extends ToolbarLayout implements OnClic
     // shown and loading state is changed.
     updateBraveShieldsButtonState(null);
     if (this instanceof ToolbarPhone) {
-      if (super.getMenuButtonWrapper() != null && BottomToolbarVariationManager.isMenuButtonOnBottom()) {
-        super.getMenuButtonWrapper().setVisibility(View.GONE);
-      }
+        if (super.getMenuButtonCoordinator() != null && isMenuButtonOnBottom()) {
+            super.getMenuButtonCoordinator().setVisibility(false);
+        }
     }
   }
 
   @Override
-  void onNativeLibraryReady() {
+  protected void onNativeLibraryReady() {
     super.onNativeLibraryReady();
     mBraveShieldsContentSettings = BraveShieldsContentSettings.getInstance();
     mBraveShieldsContentSettings.addObserver(mBraveShieldsContentSettingsObserver);
@@ -769,11 +776,15 @@ public abstract class BraveToolbarLayout extends ToolbarLayout implements OnClic
     }
   }
 
-  @Override
   public void onBottomToolbarVisibilityChanged(boolean isVisible) {
-    if (this instanceof ToolbarPhone && super.getMenuButtonWrapper() != null) {
-      super.getMenuButtonWrapper().setVisibility(isVisible ? View.GONE : View.VISIBLE);
-    }
+      mIsBottomToolbarVisible = isVisible;
+      if (this instanceof ToolbarPhone && super.getMenuButtonCoordinator() != null) {
+          super.getMenuButtonCoordinator().setVisibility(!isVisible);
+          ToggleTabStackButton toggleTabStackButton = findViewById(R.id.tab_switcher_button);
+          if (toggleTabStackButton != null) {
+              toggleTabStackButton.setVisibility(isTabSwitcherOnBottom() ? GONE : VISIBLE);
+          }
+      }
   }
 
   private void updateShieldsLayoutBackground(boolean rounded) {
@@ -790,11 +801,18 @@ public abstract class BraveToolbarLayout extends ToolbarLayout implements OnClic
     updateModernLocationBarColor(mCurrentToolbarColor);
   }
 
-  @Override
-  View getMenuButtonWrapper() {
-    if (this instanceof ToolbarPhone && BottomToolbarVariationManager.isMenuButtonOnBottom()) {
-      return null;
-    }
-    return super.getMenuButtonWrapper();
+  private boolean isTabSwitcherOnBottom() {
+      return mIsBottomToolbarVisible && BottomToolbarVariationManager.isTabSwitcherOnBottom();
   }
+
+  private boolean isMenuButtonOnBottom() {
+      return mIsBottomToolbarVisible && BottomToolbarVariationManager.isMenuButtonOnBottom();
+  }
+
+    @Override
+    protected void initialize(ToolbarDataProvider toolbarDataProvider,
+            ToolbarTabController tabController, MenuButtonCoordinator menuButtonCoordinator) {
+        super.initialize(toolbarDataProvider, tabController, menuButtonCoordinator);
+        BraveMenuButtonCoordinator.setMenuFromBottom(isMenuButtonOnBottom());
+    }
 }

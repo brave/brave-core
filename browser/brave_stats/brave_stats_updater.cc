@@ -30,6 +30,7 @@
 #include "net/traffic_annotation/network_traffic_annotation.h"
 #include "services/network/public/cpp/resource_request.h"
 #include "services/network/public/cpp/simple_url_loader.h"
+#include "services/network/public/mojom/fetch_api.mojom-shared.h"
 
 #if BUILDFLAG(ENABLE_BRAVE_REFERRALS)
 #include "brave/components/brave_referrals/common/pref_names.h"
@@ -307,10 +308,10 @@ void BraveStatsUpdater::SendServerPing() {
 
   auto endpoint = BuildStatsEndpoint(kBraveUsageStandardPath);
   resource_request->url = GetUpdateURL(endpoint, *stats_updater_params);
-  resource_request->load_flags =
-      net::LOAD_DO_NOT_SEND_COOKIES | net::LOAD_DO_NOT_SAVE_COOKIES |
-      net::LOAD_BYPASS_CACHE | net::LOAD_DISABLE_CACHE |
-      net::LOAD_DO_NOT_SEND_AUTH_DATA;
+  resource_request->credentials_mode = network::mojom::CredentialsMode::kOmit;
+  resource_request->load_flags = net::LOAD_DO_NOT_SAVE_COOKIES |
+                                 net::LOAD_BYPASS_CACHE |
+                                 net::LOAD_DISABLE_CACHE;
   resource_request->headers.SetHeader("X-Brave-API-Key",
                                       brave_stats::GetAPIKey());
   network::mojom::URLLoaderFactory* loader_factory =
@@ -337,10 +338,10 @@ void BraveStatsUpdater::SendUserTriggeredPing() {
     DisableThresholdPing();
 
   resource_request->url = GURL(threshold_query);
-  resource_request->load_flags =
-      net::LOAD_DO_NOT_SEND_COOKIES | net::LOAD_DO_NOT_SAVE_COOKIES |
-      net::LOAD_BYPASS_CACHE | net::LOAD_DISABLE_CACHE |
-      net::LOAD_DO_NOT_SEND_AUTH_DATA;
+  resource_request->credentials_mode = network::mojom::CredentialsMode::kOmit;
+  resource_request->load_flags = net::LOAD_DO_NOT_SAVE_COOKIES |
+                                 net::LOAD_BYPASS_CACHE |
+                                 net::LOAD_DISABLE_CACHE;
   resource_request->headers.SetHeader("X-Brave-API-Key",
                                       brave_stats::GetAPIKey());
   network::mojom::URLLoaderFactory* loader_factory =

@@ -20,7 +20,7 @@
 #include "components/safe_browsing/core/features.h"
 #include "content/public/browser/render_view_host.h"
 #include "content/public/common/content_features.h"
-#include "content/public/common/web_preferences.h"
+#include "third_party/blink/public/common/web_preferences/web_preferences.h"
 #include "content/public/test/browser_test.h"
 #include "gpu/config/gpu_finch_features.h"
 #include "net/base/features.h"
@@ -47,7 +47,7 @@ IN_PROC_BROWSER_TEST_F(BraveMainDelegateBrowserTest, DisableHyperlinkAuditing) {
       base::CommandLine::ForCurrentProcess()->HasSwitch(switches::kNoPings));
   content::WebContents* contents =
       browser()->tab_strip_model()->GetActiveWebContents();
-  const content::WebPreferences prefs =
+  const blink::web_pref::WebPreferences prefs =
       contents->GetOrCreateWebPreferences();
   EXPECT_FALSE(prefs.hyperlink_auditing_enabled);
 }
@@ -68,6 +68,7 @@ IN_PROC_BROWSER_TEST_F(BraveMainDelegateBrowserTest, DisabledFeatures) {
       &features::kAllowPopupsDuringPageUnload,
       &features::kNotificationTriggers,
       &features::kPrivacySettingsRedesign,
+      &features::kSignedExchangeSubresourcePrefetch,
       &features::kSmsReceiver,
       &features::kVideoPlaybackQuality,
       &features::kTabHoverCards,
@@ -88,7 +89,6 @@ IN_PROC_BROWSER_TEST_F(BraveMainDelegateBrowserTest, EnabledFeatures) {
 #if defined(OS_WIN)
     &features::kWinrtGeolocationImplementation,
 #endif
-    &omnibox::kOmniboxContextMenuShowFullUrls,
     &net::features::kLegacyTLSEnforced,
   };
 
