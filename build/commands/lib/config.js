@@ -1618,16 +1618,15 @@ Config.prototype.buildArgs = function () {
     enable_hangout_services_extension: this.enable_hangout_services_extension,
     enable_cdm_host_verification: this.enableCDMHostVerification(),
     skip_signing: !this.shouldSign(),
-    chrome_pgo_phase: this.chromePgoPhase,
     sparkle_eddsa_public_key: this.sparkleEdDSAPublicKey,
     sparkle_eddsa_private_key: this.sparkleEdDSAPrivateKey,
+    chrome_pgo_phase: this.chromePgoPhase,
     // When enabled (see third_party/blink/renderer/config.gni), we end up with
     // multiple files giving compilation error similar to:
     // gen/third_party/blink/renderer/bindings/modules/v8/v8_shared_worker_global_scope.cc:4614:34:
     // error: no member named 'isReportingObserversEnabled' in 'blink::ContextFeatureSettings'
     // cs.chromium.org shows the same files not having any calls to isReportingObserversEnabled,
     // which makes me think that Chromium also disables it in their builds.
-    use_blink_v8_binding_new_idl_interface: false,
     ...this.extraGnArgs,
   }
 
@@ -1655,7 +1654,7 @@ Config.prototype.buildArgs = function () {
     args.tag_ap = this.tag_ap
   }
 
-  if (process.platform === 'win32' && this.build_delta_installer) {
+  if ((process.platform === 'win32' || process.platform === 'darwin') && this.build_delta_installer) {
     assert(this.last_chrome_installer, 'Need last_chrome_installer args for building delta installer')
     args.build_delta_installer = true
     args.last_chrome_installer = this.last_chrome_installer
