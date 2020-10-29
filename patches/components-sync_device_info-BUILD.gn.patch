@@ -1,8 +1,8 @@
 diff --git a/components/sync_device_info/BUILD.gn b/components/sync_device_info/BUILD.gn
-index 9938111a61d93f7cbf6e3f875621f5e15dc7cbf8..fbbc80fb0c7b3f1a235606e29bc1a6df42e45b82 100644
+index 940c3ee4bcbec8d4136ade4071f539a634d5ddec..e652682e72e01b7e4706b1a289b37b5fbd00be7d 100644
 --- a/components/sync_device_info/BUILD.gn
 +++ b/components/sync_device_info/BUILD.gn
-@@ -64,6 +64,7 @@ static_library("sync_device_info") {
+@@ -76,6 +76,7 @@ static_library("sync_device_info") {
      # Required by device_info_util_linux.cc on Chrome OS.
      deps += [ "//chromeos/constants" ]
    }
