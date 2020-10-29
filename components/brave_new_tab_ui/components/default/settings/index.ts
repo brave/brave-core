@@ -195,9 +195,10 @@ export const SettingsSidebarButton = styled<SettingsSidebarButtonProps, 'button'
 `
 
 export const SettingsFeatureBody = styled<{}, 'section'>('section')`
-  padding: 10px 0;
+  padding: 10px 16px;
   height: 360px;
   overflow-y: overlay;
+  overscroll-behavior: contain;
 `
 
 export const SettingsTitle = styled<{}, 'div'>('div')`
@@ -301,22 +302,18 @@ export const SettingsWrapper = styled<SettingsWrapperProps, 'div'>('div')`
 `
 
 export const SettingsWidget = styled<{}, 'div'>('div')`
-  float: left;
-  width: 48%;
-  margin-top: 20px;
+  width: calc(50% - var(--widget-gap));
+  margin-top: calc(20px - var(--widget-gap));
   padding: 0px 1px;
 `
 
-interface WidgetSettingsProps {
-  hasFeatured: boolean
-}
-
-export const StyledWidgetSettings = styled<WidgetSettingsProps, 'div'>('div')`
+export const StyledWidgetSettings = styled('div')`
+  --widget-gap: 17px;
   font-family: ${p => p.theme.fontFamily.heading};
-
-  ${SettingsWidget}:nth-child(${p => p.hasFeatured ? 'odd' : 'even'}) {
-    margin-left: 17px;
-  }
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  gap: var(--widget-gap);
 `
 
 export const FeaturedSettingsWidget = styled<{}, 'div'>('div')`
