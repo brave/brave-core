@@ -45,7 +45,7 @@ export interface Props {
   actions: NewTabActions
   textDirection: string
   showSettingsMenu: boolean
-  onClickOutside: () => void
+  onClose: () => void
   onDisplayTodaySection: () => any
   onClearTodayPrefs: () => any
   toggleShowBackgroundImage: () => void
@@ -79,24 +79,37 @@ export interface Props {
   geminiSupported: boolean
   showCryptoDotCom: boolean
   cryptoDotComSupported: boolean
-  focusMoreCards: boolean
   showBitcoinDotCom: boolean
   bitcoinDotComSupported: boolean
   todayPublishers?: BraveToday.Publishers
+  setActiveTab?: TabType
 }
 
-type ActiveTabType = 'BackgroundImage' | 'BraveStats' | 'TopSites' | 'BraveToday' | 'Clock' | 'MoreCards'
+export enum TabType {
+  BackgroundImage = 'backgroundImage',
+  BraveStats = 'braveStats',
+  TopSites = 'topSites',
+  BraveToday = 'braveToday',
+  Clock = 'clock',
+  MoreCards = 'moreCards'
+}
 
 interface State {
-  activeTab: number
+  activeTab: TabType
 }
+
+const allTabTypes = [...Object.values(TabType)]
+const allTabTypesWithoutBackground = [...allTabTypes]
+allTabTypesWithoutBackground.splice(allTabTypesWithoutBackground.indexOf(TabType.BackgroundImage), 1)
 
 export default class Settings extends React.PureComponent<Props, State> {
   settingsMenuRef: React.RefObject<any>
   constructor (props: Props) {
     super(props)
     this.settingsMenuRef = React.createRef()
-    this.state = { activeTab: props.allowSponsoredWallpaperUI ? 0 : 1 }
+    this.state = {
+      activeTab: this.getInitialTab()
+    }
   }
 
   handleClickOutside = (event: Event) => {
@@ -105,7 +118,7 @@ export default class Settings extends React.PureComponent<Props, State> {
       this.settingsMenuRef.current &&
       !this.settingsMenuRef.current.contains(event.target)
     ) {
-      this.props.onClickOutside()
+      this.props.onClose()
     }
   }
 
@@ -119,50 +132,75 @@ export default class Settings extends React.PureComponent<Props, State> {
   }
 
   componentDidUpdate (prevProps: Props) {
-    if (!prevProps.focusMoreCards && this.props.focusMoreCards) {
-      this.setState({ activeTab: 4 })
+    if (prevProps.setActiveTab !== this.props.setActiveTab && this.props.setActiveTab) {
+      this.setActiveTab(this.props.setActiveTab)
+    }
+    const isNewlyShown = (!prevProps.showSettingsMenu && this.props.showSettingsMenu)
+    if (isNewlyShown) {
+      this.setActiveTab(this.getInitialTab())
     }
   }
 
   onKeyPressSettings = (event: KeyboardEvent) => {
     if (event.key === 'Escape') {
-      this.props.onClickOutside()
+      this.props.onClose()
     }
+  }
+
+  getInitialTab () {
+    let tab = this.props.allowSponsoredWallpaperUI
+      ? TabType.BackgroundImage
+      : TabType.BraveStats
+    if (this.props.setActiveTab) {
+      if (this.getActiveTabTypes().includes(this.props.setActiveTab)) {
+        tab = this.props.setActiveTab
+      }
+    }
+    return tab
   }
 
   toggleShowBackgroundImage = () => {
     this.props.toggleShowBackgroundImage()
   }
 
-  setActiveTab (activeTab: number) {
+  setActiveTab (activeTab: TabType) {
     this.setState({ activeTab })
   }
 
-  get activeTabOptions (): ActiveTabType[] {
-    return [
-      'BackgroundImage', 'BraveStats', 'TopSites', 'BraveToday', 'Clock', 'MoreCards'
-    ]
+  getActiveTabTypes (): TabType[] {
+    // TODO(petemill): We're not allowing
+    // any background image changes when user is not
+    // in a sponsored image region, which is weird.
+    // Seems like this should actually only be for
+    // super referral users, where the bg image is
+    // mandatory. Maybe that's the only case
+    // allowSponsoredWallpaperUI is false?
+    if (!this.props.allowSponsoredWallpaperUI) {
+      return allTabTypesWithoutBackground
+    } else {
+      return allTabTypes
+    }
   }
 
-  getTabIcon (tab: number, isActiveTab: boolean) {
+  getTabIcon (tab: TabType, isActiveTab: boolean) {
     let srcUrl
     switch (tab) {
-      case 0:
+      case TabType.BackgroundImage:
         srcUrl = BackgroundImageIcon
         break
-      case 1:
+      case TabType.BraveStats:
         srcUrl = NraveStatsIcon
         break
-      case 2:
+      case TabType.TopSites:
         srcUrl = TopSitesIcon
         break
-      case 3:
+      case TabType.BraveToday:
         srcUrl = TodayIcon
         break
-      case 4:
+      case TabType.Clock:
         srcUrl = ClockIcon
         break
-      case 5:
+      case TabType.MoreCards:
         srcUrl = MoreCardsIcon
         break
       default:
@@ -172,19 +210,19 @@ export default class Settings extends React.PureComponent<Props, State> {
     return <SettingsSidebarSVGContent isActive={isActiveTab} src={srcUrl} />
   }
 
-  getTabKey = (tab: ActiveTabType) => {
+  getTabTitleKey = (tab: TabType) => {
     switch (tab) {
-      case 'BackgroundImage':
+      case TabType.BackgroundImage:
         return 'backgroundImageTitle'
-      case 'BraveStats':
+      case TabType.BraveStats:
         return 'statsTitle'
-      case 'TopSites':
+      case TabType.TopSites:
         return 'topSitesTitle'
-      case 'BraveToday':
+      case TabType.BraveToday:
         return 'braveTodayTitle'
-      case 'Clock':
+      case TabType.Clock:
         return 'clockTitle'
-      case 'MoreCards':
+      case TabType.MoreCards:
         return 'moreCards'
       default:
         return ''
@@ -211,7 +249,6 @@ export default class Settings extends React.PureComponent<Props, State> {
       showRewards,
       showTogether,
       brandedWallpaperOptIn,
-      allowSponsoredWallpaperUI,
       toggleShowBinance,
       showBinance,
       binanceSupported,
@@ -228,136 +265,138 @@ export default class Settings extends React.PureComponent<Props, State> {
     } = this.props
     const { activeTab } = this.state
 
-    return showSettingsMenu
-      ? (
-        <SettingsWrapper textDirection={textDirection}>
-          <SettingsMenu
-            innerRef={this.settingsMenuRef}
-            textDirection={textDirection}
-            title={getLocale('dashboardSettingsTitle')}
-          >
-            <SettingsTitle id='settingsTitle'>
-              <h1>{getLocale('dashboardSettingsTitle')}</h1>
-              <SettingsCloseIcon onClick={this.props.onClickOutside}>
-                <CloseStrokeIcon />
-              </SettingsCloseIcon>
-            </SettingsTitle>
-            <SettingsContent id='settingsBody'>
-              <SettingsSidebar id='sidebar'>
-                <SettingsSidebarActiveButtonSlider
-                  translateTo={allowSponsoredWallpaperUI ? activeTab : (activeTab - 1)}
-                />
-                {
-                  this.activeTabOptions.map((tabName, index) => {
-                    const name = this.getTabKey(tabName)
-                    if (index === 0 && !allowSponsoredWallpaperUI) {
-                      return <div key={`sidebar-button=${index}`} />
-                    }
-                    return (
-                      <SettingsSidebarButton
-                        tabIndex={0}
-                        key={`sidebar-button-${index}`}
-                        activeTab={activeTab === index}
-                        onClick={this.setActiveTab.bind(this, index)}
+    if (!showSettingsMenu) {
+      return null
+    }
+
+    const tabTypes = this.getActiveTabTypes()
+    return (
+      <SettingsWrapper textDirection={textDirection}>
+        <SettingsMenu
+          innerRef={this.settingsMenuRef}
+          textDirection={textDirection}
+          title={getLocale('dashboardSettingsTitle')}
+        >
+          <SettingsTitle id='settingsTitle'>
+            <h1>{getLocale('dashboardSettingsTitle')}</h1>
+            <SettingsCloseIcon onClick={this.props.onClose}>
+              <CloseStrokeIcon />
+            </SettingsCloseIcon>
+          </SettingsTitle>
+          <SettingsContent id='settingsBody'>
+            <SettingsSidebar id='sidebar'>
+              <SettingsSidebarActiveButtonSlider
+                translateTo={tabTypes.indexOf(activeTab)}
+              />
+              {
+                tabTypes.map((tabType, index) => {
+                  const titleKey = this.getTabTitleKey(tabType)
+                  const isActive = (activeTab === tabType)
+                  return (
+                    <SettingsSidebarButton
+                      tabIndex={0}
+                      key={`sidebar-button-${index}`}
+                      activeTab={isActive}
+                      onClick={this.setActiveTab.bind(this, tabType)}
+                    >
+                      {this.getTabIcon(tabType, isActive)}
+                      <SettingsSidebarButtonText
+                        isActive={isActive}
+                        data-text={getLocale(titleKey)}
                       >
-                        {this.getTabIcon(index, activeTab === index)}
-                        <SettingsSidebarButtonText
-                          isActive={activeTab === index}
-                          data-text={getLocale(name)}
-                        >
-                          {getLocale(name)}
-                        </SettingsSidebarButtonText>
-                      </SettingsSidebarButton>
-                    )
-                  })
-                }
-              </SettingsSidebar>
-              <SettingsFeatureBody id='content'>
-                <React.Suspense fallback={(<div>Loading...</div>)}>
-                {
-                  activeTab === 0
-                    ? (
-                    <BackgroundImageSettings
-                      toggleBrandedWallpaperOptIn={toggleBrandedWallpaperOptIn}
-                      toggleShowBackgroundImage={this.toggleShowBackgroundImage}
-                      brandedWallpaperOptIn={brandedWallpaperOptIn}
-                      showBackgroundImage={showBackgroundImage}
-                    />
-                  ) : null
-                }
-                {
-                  activeTab === 1
-                    ? (
-                      <BraveStatsSettings
-                        toggleShowStats={toggleShowStats}
-                        showStats={showStats}
-                      />
-                    ) : null
-                }
-                {
-                  activeTab === 2
-                    ? (
-                      <TopSitesSettings
-                        toggleShowTopSites={toggleShowTopSites}
-                        showTopSites={showTopSites}
-                        toggleCustomLinksEnabled={toggleCustomLinksEnabled}
-                        customLinksEnabled={customLinksEnabled}
-                      />
-                    ) : null
-                }
-                {
-                  activeTab === 3
+                        {getLocale(titleKey)}
+                      </SettingsSidebarButtonText>
+                    </SettingsSidebarButton>
+                  )
+                })
+              }
+            </SettingsSidebar>
+            <SettingsFeatureBody id='content'>
+              <React.Suspense fallback={(<div>Loading...</div>)}>
+              {
+                activeTab === TabType.BackgroundImage
                   ? (
-                    <BraveTodaySettings
-                      publishers={this.props.todayPublishers}
-                      setPublisherPref={this.props.actions.today.setPublisherPref}
-                      onDisplay={this.props.onDisplayTodaySection}
-                      onClearPrefs={this.props.onClearTodayPrefs}
-                      showToday={this.props.showToday}
-                      toggleShowToday={this.props.toggleShowToday}
+                  <BackgroundImageSettings
+                    toggleBrandedWallpaperOptIn={toggleBrandedWallpaperOptIn}
+                    toggleShowBackgroundImage={this.toggleShowBackgroundImage}
+                    brandedWallpaperOptIn={brandedWallpaperOptIn}
+                    showBackgroundImage={showBackgroundImage}
+                  />
+                ) : null
+              }
+              {
+                activeTab === TabType.BraveStats
+                  ? (
+                    <BraveStatsSettings
+                      toggleShowStats={toggleShowStats}
+                      showStats={showStats}
                     />
                   ) : null
-                }
-                {
-                  activeTab === 4
-                    ? (
-                      <ClockSettings
-                        actions={this.props.actions}
-                        toggleShowClock={toggleShowClock}
-                        showClock={showClock}
-                        clockFormat={clockFormat}
-                      />
-                    ) : null
-                }
-                {
-                  activeTab === 5
-                    ? (
-                      <MoreCardsSettings
-                        toggleShowBinance={toggleShowBinance}
-                        showBinance={showBinance}
-                        binanceSupported={binanceSupported}
-                        toggleShowTogether={toggleShowTogether}
-                        showTogether={showTogether}
-                        togetherSupported={togetherSupported}
-                        toggleShowRewards={toggleShowRewards}
-                        showRewards={showRewards}
-                        showGemini={showGemini}
-                        toggleShowGemini={toggleShowGemini}
-                        geminiSupported={geminiSupported}
-                        bitcoinDotComSupported={bitcoinDotComSupported}
-                        showBitcoinDotCom={showBitcoinDotCom}
-                        toggleShowBitcoinDotCom={toggleShowBitcoinDotCom}
-                        toggleShowCryptoDotCom={toggleShowCryptoDotCom}
-                        cryptoDotComSupported={cryptoDotComSupported}
-                        showCryptoDotCom={showCryptoDotCom}
-                      />
-                    ) : null
-                }
-                </React.Suspense>
-              </SettingsFeatureBody>
-            </SettingsContent>
-          </SettingsMenu>
-        </SettingsWrapper>
-    ) : null
+              }
+              {
+                activeTab === TabType.TopSites
+                  ? (
+                    <TopSitesSettings
+                      toggleShowTopSites={toggleShowTopSites}
+                      showTopSites={showTopSites}
+                      toggleCustomLinksEnabled={toggleCustomLinksEnabled}
+                      customLinksEnabled={customLinksEnabled}
+                    />
+                  ) : null
+              }
+              {
+                activeTab === TabType.BraveToday
+                ? (
+                  <BraveTodaySettings
+                    publishers={this.props.todayPublishers}
+                    setPublisherPref={this.props.actions.today.setPublisherPref}
+                    onDisplay={this.props.onDisplayTodaySection}
+                    onClearPrefs={this.props.onClearTodayPrefs}
+                    showToday={this.props.showToday}
+                    toggleShowToday={this.props.toggleShowToday}
+                  />
+                ) : null
+              }
+              {
+                activeTab === TabType.Clock
+                  ? (
+                    <ClockSettings
+                      actions={this.props.actions}
+                      toggleShowClock={toggleShowClock}
+                      showClock={showClock}
+                      clockFormat={clockFormat}
+                    />
+                  ) : null
+              }
+              {
+                activeTab === TabType.MoreCards
+                  ? (
+                    <MoreCardsSettings
+                      toggleShowBinance={toggleShowBinance}
+                      showBinance={showBinance}
+                      binanceSupported={binanceSupported}
+                      toggleShowTogether={toggleShowTogether}
+                      showTogether={showTogether}
+                      togetherSupported={togetherSupported}
+                      toggleShowRewards={toggleShowRewards}
+                      showRewards={showRewards}
+                      showGemini={showGemini}
+                      toggleShowGemini={toggleShowGemini}
+                      geminiSupported={geminiSupported}
+                      bitcoinDotComSupported={bitcoinDotComSupported}
+                      showBitcoinDotCom={showBitcoinDotCom}
+                      toggleShowBitcoinDotCom={toggleShowBitcoinDotCom}
+                      toggleShowCryptoDotCom={toggleShowCryptoDotCom}
+                      cryptoDotComSupported={cryptoDotComSupported}
+                      showCryptoDotCom={showCryptoDotCom}
+                    />
+                  ) : null
+              }
+              </React.Suspense>
+            </SettingsFeatureBody>
+          </SettingsContent>
+        </SettingsMenu>
+      </SettingsWrapper>
+    )
   }
 }

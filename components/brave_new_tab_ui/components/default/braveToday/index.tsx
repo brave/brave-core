@@ -20,11 +20,12 @@ type State = {
 export type Props = {
   feed?: BraveToday.Feed
   publishers?: BraveToday.Publishers
-  onInteracting: (interacting: boolean) => void
-  onReadFeedItem: (item: BraveToday.FeedItem) => any
-  onAnotherPageNeeded: () => any
   articleToScrollTo?: BraveToday.FeedItem
   displayedPageCount: number
+  onInteracting: (interacting: boolean) => any
+  onReadFeedItem: (item: BraveToday.FeedItem) => any
+  onAnotherPageNeeded: () => any
+  onCustomizeBraveToday: () => any
 }
 
 class BraveToday extends React.PureComponent<Props, State> {

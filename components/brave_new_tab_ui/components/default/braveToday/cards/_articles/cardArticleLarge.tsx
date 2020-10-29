@@ -25,12 +25,16 @@ type ArticleProps = {
   onReadFeedItem: (item: BraveToday.FeedItem) => any
 }
 
-function LargeArticle (props: ArticleProps) {
-  const {publisher, item} = props
+const LargeArticle = React.forwardRef<HTMLElement, ArticleProps>(function (props: ArticleProps, ref) {
+  const { publisher, item } = props
   const [cardRef] = useScrollIntoView(props.shouldScrollIntoView || false)
+  const onClick = React.useCallback(() => {
+    props.onReadFeedItem(props.item)
+  }, [props.onReadFeedItem, props.item])
+  // `ref as any` due to https://github.com/DefinitelyTyped/DefinitelyTyped/issues/28884
   return (
-    <Card.Large>
-      <a onClick={() => props.onReadFeedItem(item)} href={item.url} ref={cardRef}>
+    <Card.Large innerRef={ref as any}>
+      <a onClick={onClick} href={item.url} ref={cardRef}>
         <CardImage
           imageUrl={item.img}
         />
@@ -47,29 +51,39 @@ function LargeArticle (props: ArticleProps) {
       </a>
     </Card.Large>
   )
-}
+})
 
-export default function CardSingleArticleLarge (props: Props) {
+const CardSingleArticleLarge = React.forwardRef<HTMLElement, Props>(function (props, ref) {
   // no full content no render®
   if (props.content.length === 0) {
     return <></>
   }
 
-  return <>{props.content.map((item, index) => {
-    // If there is a missing item, return nothing
-    if (item === undefined) {
-      return <></>
-    }
+  return (
+    <>
+      {props.content.map((item, index) => {
+        // If there is a missing item, return nothing
+        if (item === undefined) {
+          return <></>
+        }
 
-    const shouldScrollIntoView = props.articleToScrollTo && (props.articleToScrollTo.url === item.url)
+        const shouldScrollIntoView = props.articleToScrollTo && (props.articleToScrollTo.url === item.url)
 
-    const publisher = props.publishers[item.publisher_id]
+        const publisher = props.publishers[item.publisher_id]
 
-    return <LargeArticle
-      key={`card-key-${index}`}
-      publisher={publisher} item={item}
-      shouldScrollIntoView={shouldScrollIntoView}
-      onReadFeedItem={props.onReadFeedItem}
-    />
-  })}</>
-}
+        return (
+          <LargeArticle
+            ref={ref}
+            key={`card-key-${index}`}
+            publisher={publisher}
+            item={item}
+            shouldScrollIntoView={shouldScrollIntoView}
+            onReadFeedItem={props.onReadFeedItem}
+          />
+        )
+      })}
+    </>
+  )
+})
+
+export default CardSingleArticleLarge
