@@ -20,6 +20,16 @@ namespace {
 
 std::unique_ptr<BraveDeviceInfo> BraveSpecificsToModel(
     const DeviceInfoSpecifics& specifics) {
+  ModelTypeSet data_types;
+  for (const int field_number :
+       specifics.invalidation_fields().interested_data_type_ids()) {
+    ModelType data_type = GetModelTypeFromSpecificsFieldNumber(field_number);
+    if (!IsRealDataType(data_type)) {
+      DLOG(WARNING) << "Unknown field number " << field_number;
+      continue;
+    }
+    data_types.Put(data_type);
+  }
   // The code is duplicated from SpecificsToModel by intent to avoid use of
   // extra patch
   return std::make_unique<BraveDeviceInfo>(
@@ -32,6 +42,7 @@ std::unique_ptr<BraveDeviceInfo> BraveSpecificsToModel(
       specifics.feature_fields().send_tab_to_self_receiving_enabled(),
       SpecificsToSharingInfo(specifics),
       specifics.invalidation_fields().instance_id_token(),
+      data_types,
       specifics.has_brave_fields() &&
           specifics.brave_fields().has_is_self_delete_supported() &&
           specifics.brave_fields().is_self_delete_supported());

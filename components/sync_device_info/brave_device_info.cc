@@ -21,6 +21,7 @@ BraveDeviceInfo::BraveDeviceInfo(
     bool send_tab_to_self_receiving_enabled,
     const base::Optional<DeviceInfo::SharingInfo>& sharing_info,
     const std::string& fcm_registration_token,
+    const ModelTypeSet& interested_data_types,
     bool is_self_delete_supported)
     : DeviceInfo(guid,
                  client_name,
@@ -34,7 +35,8 @@ BraveDeviceInfo::BraveDeviceInfo(
                  pulse_interval,
                  send_tab_to_self_receiving_enabled,
                  sharing_info,
-                 fcm_registration_token),
+                 fcm_registration_token,
+                 interested_data_types),
       is_self_delete_supported_(is_self_delete_supported) {}
 
 bool BraveDeviceInfo::is_self_delete_supported() const {

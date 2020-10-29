@@ -1,16 +1,16 @@
 diff --git a/components/sync_device_info/device_info_sync_bridge.cc b/components/sync_device_info/device_info_sync_bridge.cc
-index a62efcfd6346bbf8a4c532c4c20c43ce8564bbb3..5eb45952feb462abf091e34803b045a54a273340 100644
+index f6ca59ef445e064ce8a30584e3cca0b0cdabf261..4c95057434a80d5e73003115f55f20e487b09c08 100644
 --- a/components/sync_device_info/device_info_sync_bridge.cc
 +++ b/components/sync_device_info/device_info_sync_bridge.cc
-@@ -157,6 +157,7 @@ std::unique_ptr<DeviceInfoSpecifics> MakeLocalDeviceSpecifics(
-         info.fcm_registration_token());
+@@ -173,6 +173,7 @@ std::unique_ptr<DeviceInfoSpecifics> MakeLocalDeviceSpecifics(
+         GetSpecificsFieldNumberFromModelType(data_type));
    }
  
 +  BRAVE_MAKE_LOCAL_DEVICE_SPECIFICS
    return specifics;
  }
  
-@@ -284,7 +285,7 @@ base::Optional<ModelError> DeviceInfoSyncBridge::ApplySyncChanges(
+@@ -304,7 +305,7 @@ base::Optional<ModelError> DeviceInfoSyncBridge::ApplySyncChanges(
      // Each device is the authoritative source for itself, ignore any remote
      // changes that have a cache guid that is or was this local device.
      if (device_info_prefs_->IsRecentLocalCacheGuid(guid)) {

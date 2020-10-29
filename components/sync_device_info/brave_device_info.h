@@ -31,6 +31,7 @@ class BraveDeviceInfo : public DeviceInfo {
                   bool send_tab_to_self_receiving_enabled,
                   const base::Optional<DeviceInfo::SharingInfo>& sharing_info,
                   const std::string& fcm_registration_token,
+                  const ModelTypeSet& interested_data_types,
                   bool is_self_delete_supported);
   ~BraveDeviceInfo() override {}
 
