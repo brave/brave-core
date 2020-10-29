@@ -71,6 +71,17 @@ export const Heading = styled(StandardHeading)`
   }
 `
 
+export const Publisher = styled('div')`
+  max-width: 100%;
+  display: inline-block;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  font-family: ${p => p.theme.fontFamily.heading};
+  font-size: 14px;
+  color: white;
+  font-weight: 700;
+`
+
 export const Time = styled(StandardTime)``
 
 export const PublisherLogo = styled(StandardPublisherLogo)``
