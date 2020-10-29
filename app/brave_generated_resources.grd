@@ -580,7 +580,10 @@ By installing this extension, you are agreeing to the Google Widevine Terms of U
         “I have a Sync Code”.
       </message>
       <message name="IDS_BRAVE_SYNC_VIEW_CODE_DESCRIPTION_PARTIAL_3" desc="The Sync instructions for the `view sync code` modal partial phrase (3)">
-        Enter the sync chain code words shown below. Treat this code like a password. If someone gets ahold of it, they can read and modify your synced data.
+        Enter the sync chain code words shown below.
+      </message>
+      <message name="IDS_BRAVE_SYNC_CODE_WARNING" desc="The warning for the user to keep their sync code private and secure.">
+        Treat this code like a password. If someone gets ahold of it, they can read and modify your synced data.
       </message>
       <message name="IDS_BRAVE_SYNC_VIEW_CODE_QR_CODE_BUTTON" desc="The Sync description suggesting where to go with the current sync code">
         View QR Code
