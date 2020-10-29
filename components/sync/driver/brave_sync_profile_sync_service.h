@@ -10,18 +10,26 @@
 
 #include "base/callback.h"
 #include "base/memory/weak_ptr.h"
+#include "base/scoped_observer.h"
 #include "brave/components/brave_sync/brave_sync_prefs.h"
 #include "components/prefs/pref_change_registrar.h"
 #include "components/sync/driver/profile_sync_service.h"
+#include "components/sync_device_info/device_info_tracker.h"
+
+class Profile;
 
 namespace syncer {
 
 class BraveSyncAuthManager;
+class DeviceInfoTracker;
+class LocalDeviceInfoProvider;
 class DeviceInfoSyncService;
 
-class BraveProfileSyncService : public ProfileSyncService {
+class BraveProfileSyncService : public ProfileSyncService,
+                                public syncer::DeviceInfoTracker::Observer {
  public:
-  explicit BraveProfileSyncService(InitParams init_params);
+  explicit BraveProfileSyncService(InitParams init_params,
+      DeviceInfoSyncService* device_info_sync_service);
   ~BraveProfileSyncService() override;
 
   // SyncService implementation
@@ -30,17 +38,32 @@ class BraveProfileSyncService : public ProfileSyncService {
   std::string GetOrCreateSyncCode();
   bool SetSyncCode(const std::string& sync_code);
 
-  // This should only be called by helper function, brave_sync::ResetSync
+  // This should only be called by helper function, brave_sync::ResetSync, or by
+  // OnDeviceInfoChange internally
   void OnSelfDeviceInfoDeleted(base::OnceClosure cb);
+
+  // These functions are for disabling device_info_observer_ from firing
+  // when the device is doing own reset sync operation, to prevent early call
+  // of StopAndClear prior to device sends delete record
+  void SuspendDeviceObserverForOwnReset();
+  void ResumeDeviceObserver();
 
  private:
   BraveSyncAuthManager* GetBraveSyncAuthManager();
 
   void OnBraveSyncPrefsChanged(const std::string& path);
 
+  // syncer::DeviceInfoTracker::Observer:
+  void OnDeviceInfoChange() override;
+
   brave_sync::Prefs brave_sync_prefs_;
 
   PrefChangeRegistrar brave_sync_prefs_change_registrar_;
+
+  syncer::DeviceInfoTracker* device_info_tracker_;
+  syncer::LocalDeviceInfoProvider* local_device_info_provider_;
+  ScopedObserver<syncer::DeviceInfoTracker, syncer::DeviceInfoTracker::Observer>
+      device_info_observer_{this};
 
   base::WeakPtrFactory<BraveProfileSyncService> weak_ptr_factory_;
 

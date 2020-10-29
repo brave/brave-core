@@ -63,6 +63,13 @@
     justify-content: end;
   }
 
+  .delete-button
+  {
+    margin: 0;
+    width: 24px;
+    height: 24px;
+  }
+
   section
   {
     margin-top: 20px;
@@ -82,6 +89,7 @@
           <span class="device-name">$i18n{braveSyncDeviceListNameColumn}</span>
         </th>
         <th scope="col">$i18n{braveSyncDeviceListLastActiveColumn}</th>
+        <th scope="col">$i18n{braveSyncDeviceListRemoveColumn}</th>
       </tr>
     </thead>
     <tbody>
@@ -96,6 +104,15 @@
             </template>
           </th>
           <td>[[getDeviceDisplayDate(item)]]</td>
+          <td>
+            <template is="dom-if" if="[[item.supportsSelfDelete]]">
+              <cr-icon-button
+                class="delete-button"
+                iron-icon="brave_settings:close-circle"
+                on-click="onDeleteDevice_" arg="[[item.guid]]"
+                aria-label="Delete selected device" />
+            </template>
+          </td>
         </tr>
       </template>
     </tbody>

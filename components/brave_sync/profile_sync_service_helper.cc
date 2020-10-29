@@ -5,6 +5,7 @@
 
 #include "brave/components/brave_sync/profile_sync_service_helper.h"
 
+#include <string>
 #include <utility>
 
 #include "brave/components/sync/driver/brave_sync_profile_sync_service.h"
@@ -29,14 +30,31 @@ void ResetSync(syncer::BraveProfileSyncService* sync_service,
   const syncer::DeviceInfo* local_device_info =
       device_info_service->GetLocalDeviceInfoProvider()->GetLocalDeviceInfo();
 
+  sync_service->SuspendDeviceObserverForOwnReset();
+
   tracker->DeleteDeviceInfo(
       local_device_info->guid(),
       base::BindOnce(
           [](syncer::BraveProfileSyncService* sync_service,
              base::OnceClosure on_reset_done) {
             sync_service->OnSelfDeviceInfoDeleted(std::move(on_reset_done));
+            sync_service->ResumeDeviceObserver();
           },
           sync_service, std::move(on_reset_done)));
+}
+
+void DeleteDevice(syncer::BraveProfileSyncService* sync_service,
+                  syncer::DeviceInfoSyncService* device_info_service,
+                  const std::string& device_guid) {
+  if (sync_service->GetTransportState() !=
+      syncer::SyncService::TransportState::ACTIVE) {
+    return;
+  }
+  syncer::DeviceInfoTracker* tracker =
+      device_info_service->GetDeviceInfoTracker();
+  DCHECK(tracker);
+
+  tracker->DeleteDeviceInfo(device_guid, base::DoNothing());
 }
 
 }  // namespace brave_sync
