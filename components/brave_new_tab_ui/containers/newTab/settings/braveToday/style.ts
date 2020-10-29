@@ -7,6 +7,7 @@ import styled from 'brave-ui/theme'
 
 export const Section = styled('div')`
   height: 100%;
+  overscroll-behavior: contain;
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
@@ -19,4 +20,13 @@ export const StaticPrefs = styled('div')`
 
 export const PublisherList = styled('div')`
   flex: 1 1 0;
+  overscroll-behavior: contain;
+`
+export const PublisherListScrollViewStyle: React.CSSProperties = {
+  overscrollBehavior: 'contain'
+}
+
+export const SourcesCommandIcon = styled('div')`
+  width: 14px;
+  height: 14px;
 `

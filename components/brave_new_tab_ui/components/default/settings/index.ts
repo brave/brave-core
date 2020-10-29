@@ -241,6 +241,7 @@ export const SettingsCloseIcon = styled<{}, 'button'>('button')`
 
 interface SettingsRowProps {
   isChildSetting?: boolean
+  isInteractive?: boolean
 }
 
 export const SettingsRow = styled<SettingsRowProps, 'div'>('div')`
@@ -252,6 +253,9 @@ export const SettingsRow = styled<SettingsRowProps, 'div'>('div')`
   height: 28px;
   ${p => p.isChildSetting && css`
     padding-left: 36px;
+  `}
+  ${p => p.isInteractive && css`
+    cursor: pointer;
   `}
 
   /* TODO(petemill): Use specific Component for Content and Control sides */
@@ -270,6 +274,13 @@ export const SettingsText = styled<{}, 'span'>('span')`
   line-height: 24px;
   letter-spacing: 0.01em;
   font-family: ${p => p.theme.fontFamily.heading};
+`
+
+export const SettingsSectionTitle = styled('h3')`
+  margin: 0 0 8px 0;
+  font-weight: 800;
+  font-size: 13px;
+  line-height: 24px;
 `
 
 interface SettingsWrapperProps {
