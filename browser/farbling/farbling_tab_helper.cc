@@ -149,12 +149,18 @@ void FarblingTabHelper::UpdateUserAgent(
                             .c_str());
     ua = content::BuildUserAgentFromOSAndProduct(minimal_os_info,
                                                  GetMinimalProduct());
+// It breaks desktop mode on Android
+#if !defined(OS_ANDROID)
     navigation_handle->SetIsOverridingUserAgent(true);
+#endif
     web_contents->SetUserAgentOverride(
         blink::UserAgentOverride::UserAgentOnly(ua),
         false /* override_in_new_tabs */);
   } else {
+// It breaks desktop mode on Android
+#if !defined(OS_ANDROID)
     navigation_handle->SetIsOverridingUserAgent(false);
+#endif
   }
 }
 
