@@ -6,6 +6,7 @@
 import * as React from 'react'
 
 // Components
+import { CaratStrongDownIcon } from 'brave-ui/components/icons'
 import Stats from './stats'
 import TopSitesGrid from './gridSites'
 import FooterInfo from './footerInfo'
@@ -68,7 +69,6 @@ interface State {
   showSettingsMenu: boolean
   backgroundHasLoaded: boolean
   focusMoreCards: boolean
-  itemsOpacity: boolean
 }
 
 function GetBackgroundImageSrc (props: Props) {
@@ -105,7 +105,6 @@ class NewTabPage extends React.Component<Props, State> {
     showSettingsMenu: false,
     backgroundHasLoaded: false,
     focusMoreCards: false,
-    itemsOpacity: false
   }
   hasInitBraveToday: boolean = false
   imageSource?: string = undefined
@@ -149,6 +148,9 @@ class NewTabPage extends React.Component<Props, State> {
   }
 
   trackCachedImage () {
+    if (this.state.backgroundHasLoaded) {
+      this.setState({ backgroundHasLoaded: false })
+    }
     if (this.imageSource) {
       const imgCache = new Image()
       imgCache.src = this.imageSource
@@ -423,9 +425,6 @@ class NewTabPage extends React.Component<Props, State> {
   }
 
   onBraveTodayInteracting = (isInteracting: boolean) => {
-    // TODO(petemill): Detect percentage of scroll towards brave today
-    // and set opacity at that level, instead of a binary on/off.
-    this.setState({ itemsOpacity: isInteracting })
     if (isInteracting && !this.hasInitBraveToday) {
       this.hasInitBraveToday = true
       this.props.actions.today.interactionBegin()
@@ -989,7 +988,7 @@ class NewTabPage extends React.Component<Props, State> {
 
   render () {
     const { newTabData, gridSitesData, actions } = this.props
-    const { showSettingsMenu, focusMoreCards, itemsOpacity } = this.state
+    const { showSettingsMenu, focusMoreCards } = this.state
 
     if (!newTabData) {
       return null
@@ -1001,22 +1000,16 @@ class NewTabPage extends React.Component<Props, State> {
     const cryptoContent = this.renderCryptoContent()
 
     return (
-      <Page.App dataIsReady={newTabData.initialDataLoaded}>
-        <Page.PosterBackground
-          hasImage={hasImage}
-          imageHasLoaded={this.state.backgroundHasLoaded}
-        >
-          {hasImage &&
-            <img src={this.imageSource} />
-          }
-        </Page.PosterBackground>
-        {hasImage &&
-          <Page.Gradient
-            imageHasLoaded={this.state.backgroundHasLoaded}
-          />
-        }
+      <Page.App
+        dataIsReady={newTabData.initialDataLoaded}
+        hasImage={hasImage}
+        imageSrc={this.imageSource}
+        imageHasLoaded={this.state.backgroundHasLoaded}
+      >
         <Page.Page
-            itemsOpacity={itemsOpacity}
+            hasImage={hasImage}
+            imageSrc={this.imageSource}
+            imageHasLoaded={this.state.backgroundHasLoaded}
             showClock={newTabData.showClock}
             showStats={newTabData.showStats}
             showRewards={!!cryptoContent}
@@ -1098,6 +1091,14 @@ class NewTabPage extends React.Component<Props, State> {
             />
             </Page.FooterContent>
           </Page.Footer>
+          {newTabData.showToday &&
+          <Page.GridItemNavigationBraveToday>
+            <p>Scroll for Brave Today</p>
+            <div>
+              <CaratStrongDownIcon />
+            </div>
+          </Page.GridItemNavigationBraveToday>
+          }
         </Page.Page>
         { newTabData.showToday &&
         <BraveToday

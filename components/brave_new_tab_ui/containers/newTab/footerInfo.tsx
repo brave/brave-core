@@ -55,9 +55,6 @@ export default class FooterInfo extends React.PureComponent<Props, {}> {
             </PhotoName>
           </S.GridItemCredits>
         }
-        <S.GridItemNavigationBraveToday>
-            Scroll for Brave Today
-        </S.GridItemNavigationBraveToday>
         <S.GridItemNavigation>
           <Navigation>
             <IconButtonContainer textDirection={textDirection}>

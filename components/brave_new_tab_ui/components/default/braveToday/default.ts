@@ -16,13 +16,11 @@ const blurOut = keyframes`
 
 // The page core structure
 export const Section = styled('section')`
+  z-index: 5;
   box-sizing: border-box;
   -webkit-font-smoothing: antialiased;
   min-height: 100vh;
-  position: sticky;
-  top: 100vh;
-  z-index: 3;
-  padding: 100px 30px;
+  margin: 100px 30px;
   display: flex;
   align-items: center;
   flex-direction: column;
@@ -46,7 +44,7 @@ export const Block = styled('div')`
   border-radius: 8px;
   padding: 36px 48px;
   background: rgba(53, 53, 53, 0.47);
-  backdrop-filter: blur(23px);
+  backdrop-filter: blur(62px);
   /* Prevent images from overflowing border-radius */
   overflow-x: hidden;
   margin-bottom: 30px;

@@ -276,12 +276,12 @@ interface SettingsWrapperProps {
 }
 
 export const SettingsWrapper = styled<SettingsWrapperProps, 'div'>('div')`
-  position: absolute;
+  position: fixed;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
-  z-index: 3;
+  z-index: 5;
   display: flex;
   justify-content: center;
   align-items: center;

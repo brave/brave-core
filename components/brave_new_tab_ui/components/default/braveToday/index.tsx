@@ -39,14 +39,14 @@ class BraveToday extends React.PureComponent<Props, State> {
     const options = { root: null, rootMargin: '0px', threshold: 0.25 }
 
     this.braveTodayHitsViewportObserver = new
-      IntersectionObserver(this.handleBraveTodayHitsViewportObserver.bind(this), options)
+      IntersectionObserver(this.handleBraveTodayHitsViewportObserver, options)
 
     // Handle first card showing up so we can hide secondary UI
     this.braveTodayHitsViewportObserver.observe(this.scrollTriggerToFocusBraveToday)
   }
 
-  handleBraveTodayHitsViewportObserver (entities: IntersectionObserverEntry) {
-    const isIntersecting = entities[0].isIntersecting
+  handleBraveTodayHitsViewportObserver = (entries: IntersectionObserverEntry[]) => {
+    const isIntersecting = entries[0].isIntersecting
     this.props.onInteracting(isIntersecting)
     if (isIntersecting) {
       this.setState({ hasInteractionStarted: true })
