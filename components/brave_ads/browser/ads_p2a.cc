@@ -18,7 +18,7 @@
 namespace brave_ads {
 namespace {
 
-constexpr const char* kP2AQuestionList[] = {
+constexpr const char* kP2AQuestionNameList[] = {
     // Ad Opportunities
     "Brave.P2A.TotalAdOpportunities",
     "Brave.P2A.AdOpportunitiesPerSegment.architecture",
@@ -83,14 +83,14 @@ constexpr const char* kP2AQuestionList[] = {
     "Brave.P2A.AdImpressionsPerSegment.untargeted"
 };
 
-const uint16_t kBinIntervals[] =
-    { 0, 5, 10, 20, 50, 100, 250, 500 };
+const uint16_t kIntervalBuckets[] = {
+    0, 5, 10, 20, 50, 100, 250, 500 };
 
 }  // namespace
 
 void RegisterP2APrefs(
     PrefRegistrySimple* registry) {
-  for (const char* question_name : kP2AQuestionList) {
+  for (const char* question_name : kP2AQuestionNameList) {
       std::string pref_path(prefs::kP2AStoragePrefNamePrefix);
       pref_path.append(question_name);
       registry->RegisterListPref(pref_path);
@@ -112,21 +112,25 @@ void RecordInWeeklyStorageAndEmitP2AHistogramAnswer(
 
 void EmitP2AHistogramAnswer(
     const std::string& name,
-    int count_value) {
-  const uint16_t* it =
-      std::lower_bound(kBinIntervals, std::end(kBinIntervals), count_value);
-  const uint16_t answer = it - kBinIntervals;
+    uint16_t count_value) {
+  const uint16_t* iter = std::lower_bound(kIntervalBuckets,
+      std::end(kIntervalBuckets), count_value);
+  const uint16_t bucket = iter - kIntervalBuckets;
 
-  for (const char* question_name : kP2AQuestionList) {
-    if (name == question_name) {
-      base::UmaHistogramExactLinear(question_name, answer, 8);
+  for (const char* question_name : kP2AQuestionNameList) {
+    if (name != question_name) {
+      continue;
     }
+
+    base::UmaHistogramExactLinear(question_name, bucket,
+        base::size(kIntervalBuckets) + 1);
   }
 }
 
 void SuspendP2AHistograms() {
-  for (const char* question_name : kP2AQuestionList) {
-      base::UmaHistogramExactLinear(question_name, INT_MAX, 8);
+  for (const char* question_name : kP2AQuestionNameList) {
+    base::UmaHistogramExactLinear(question_name, INT_MAX,
+        base::size(kIntervalBuckets) + 1);
   }
 }
 
