@@ -164,6 +164,7 @@ brave_java_sources = [
   "../../brave/android/java/org/chromium/chrome/browser/toolbar/bottom/BottomToolbarVariationManager.java",
   "../../brave/android/java/org/chromium/chrome/browser/toolbar/bottom/BraveBottomControlsCoordinator.java",
   "../../brave/android/java/org/chromium/chrome/browser/toolbar/bottom/BraveBottomControlsMediator.java",
+  "../../brave/android/java/org/chromium/chrome/browser/toolbar/bottom/BraveScrollingBottomViewResourceFrameLayout.java",
   "../../brave/android/java/org/chromium/chrome/browser/toolbar/bottom/BrowsingModeBottomToolbarCoordinator.java",
   "../../brave/android/java/org/chromium/chrome/browser/toolbar/bottom/BrowsingModeBottomToolbarLinearLayout.java",
   "../../brave/android/java/org/chromium/chrome/browser/toolbar/bottom/BrowsingModeBottomToolbarMediator.java",
