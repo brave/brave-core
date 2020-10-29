@@ -29,10 +29,10 @@
 #include "net/dns/mock_host_resolver.h"
 
 using brave_shields::ControlType;
+using content::TitleWatcher;
 
 const char kUserAgentScript[] =
     "domAutomationController.send(navigator.userAgent);";
-const char kTitleScript[] = "domAutomationController.send(document.title);";
 
 class BraveNavigatorUserAgentFarblingBrowserTest : public InProcessBrowserTest {
  public:
@@ -113,6 +113,7 @@ class BraveNavigatorUserAgentFarblingBrowserTest : public InProcessBrowserTest {
 // Tests results of farbling user agent
 IN_PROC_BROWSER_TEST_F(BraveNavigatorUserAgentFarblingBrowserTest,
                        FarbleNavigatorUserAgent) {
+  base::string16 expected_title = base::ASCIIToUTF16("pass");
   std::string domain_b = "b.com";
   std::string domain_z = "z.com";
   GURL url_b = embedded_test_server()->GetURL(domain_b, "/simple.html");
@@ -161,12 +162,19 @@ IN_PROC_BROWSER_TEST_F(BraveNavigatorUserAgentFarblingBrowserTest,
   // (farbling level is still maximum)
   NavigateToURLUntilLoadStop(embedded_test_server()->GetURL(
       domain_b, "/navigator/ua-local-iframe.html"));
-  std::string local_iframe_ua = ExecScriptGetStr(kTitleScript, contents());
-  EXPECT_EQ(local_iframe_ua, "pass");
+  TitleWatcher watcher1(contents(), expected_title);
+  EXPECT_EQ(expected_title, watcher1.WaitAndGetTitle());
   NavigateToURLUntilLoadStop(embedded_test_server()->GetURL(
       domain_b, "/navigator/ua-remote-iframe.html"));
-  std::string remote_iframe_ua = ExecScriptGetStr(kTitleScript, contents());
-  EXPECT_EQ(remote_iframe_ua, "pass");
+  TitleWatcher watcher2(contents(), expected_title);
+  EXPECT_EQ(expected_title, watcher2.WaitAndGetTitle());
+
+  // test that workers also inherit the farbled user agent
+  // (farbling level is still maximum)
+  NavigateToURLUntilLoadStop(embedded_test_server()->GetURL(
+      domain_b, "/navigator/workers-useragent.html"));
+  TitleWatcher watcher3(contents(), expected_title);
+  EXPECT_EQ(expected_title, watcher3.WaitAndGetTitle());
 
   // Farbling level: off
   // verify that user agent is reset properly after having been farbled
