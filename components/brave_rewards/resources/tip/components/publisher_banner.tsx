@@ -167,15 +167,24 @@ function showUnverifiedNotice (
     case PublisherStatus.VERIFIED: return false
   }
 
+  if (!externalWalletInfo) {
+    return false
+  }
+
+  const status = externalWalletInfo.status
+  const connected = publisherInfo.status === PublisherStatus.CONNECTED
+
+  if (connected && (
+    status === ExternalWalletStatus.DISCONNECTED_NOT_VERIFIED ||
+    status === ExternalWalletStatus.DISCONNECTED_VERIFIED)) {
+    return false
+  }
+
   const hasNonUserFunds = Boolean(balanceInfo && (
-    balanceInfo.wallets['anonymous'] ||
-    balanceInfo.wallets['blinded']))
+    !balanceInfo.wallets['anonymous'] &&
+    !balanceInfo.wallets['blinded']))
 
-  const walletConnectedOrVerified = Boolean(externalWalletInfo && (
-    externalWalletInfo.status === ExternalWalletStatus.CONNECTED ||
-    externalWalletInfo.status === ExternalWalletStatus.VERIFIED))
-
-  return hasNonUserFunds && walletConnectedOrVerified
+  return connected && hasNonUserFunds
 }
 
 function getUnverifiedNotice (
