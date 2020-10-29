@@ -108,9 +108,7 @@ IpfsService::IpfsService(content::BrowserContext* context,
   }
 }
 
-IpfsService::~IpfsService() {
-  ipfs_p3a.Stop();
-}
+IpfsService::~IpfsService() = default;
 
 // static
 bool IpfsService::IsIpfsEnabled(content::BrowserContext* context,
@@ -208,8 +206,6 @@ void IpfsService::OnIpfsLaunched(bool result, int64_t pid) {
   if (!launch_daemon_callback_.is_null()) {
     std::move(launch_daemon_callback_).Run(result && pid > 0);
   }
-
-  daemon_start_time_ = base::TimeTicks::Now();
 
   for (auto& observer : observers_) {
     observer.OnIpfsLaunched(result, pid);
@@ -360,6 +356,10 @@ void IpfsService::ShutdownDaemon(ShutdownDaemonCallback callback) {
     Shutdown();
   }
 
+  for (auto& observer : observers_) {
+    observer.OnIpfsShutdown();
+  }
+
   std::move(callback).Run(true);
 }
 
@@ -417,10 +417,6 @@ IPFSResolveMethodTypes IpfsService::GetIPFSResolveMethodType() const {
   PrefService* prefs = user_prefs::UserPrefs::Get(context_);
   return static_cast<IPFSResolveMethodTypes>(
       prefs->GetInteger(kIPFSResolveMethod));
-}
-
-base::TimeTicks IpfsService::GetDaemonStartTime() const {
-  return daemon_start_time_;
 }
 
 }  // namespace ipfs

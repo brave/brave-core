@@ -15,7 +15,7 @@
 
 namespace ipfs {
 
-constexpr size_t kP3ATimerInterval = 5;
+constexpr size_t kP3ATimerInterval = 1;
 
 // IPFS companion installed?
 // i) No, ii) Yes
@@ -40,6 +40,19 @@ int GetIPFSDetectionPromptBucket(PrefService* prefs) {
   return bucket;
 }
 
+int GetDaemonUsageBucket(base::TimeDelta elapsed_time) {
+  if (elapsed_time <= base::TimeDelta::FromMinutes(5)) {
+    return 0;
+  }
+  if (elapsed_time <= base::TimeDelta::FromHours(1)) {
+    return 1;
+  }
+  if (elapsed_time <= base::TimeDelta::FromHours(24)) {
+    return 2;
+  }
+  return 3;
+}
+
 // How many lifetime times are IPFS detection prompts shown without installing
 // i) 0 times, ii) 1, iii) 2-5 times, iv) 5+ times or more?
 void RecordIPFSDetectionPromptCount(PrefService* prefs) {
@@ -57,18 +70,20 @@ void RecordIPFSGatewaySetting(PrefService* prefs) {
 }
 
 // How long did the daemon run?
-void RecordIPFSDaemonRunTime(ipfs::IpfsService* service) {
-  if (!service->GetDaemonStartTime().is_null()) {
-    UMA_HISTOGRAM_TIMES("Brave.IPFS.DaemonRunTime",
-                        base::TimeTicks::Now() - service->GetDaemonStartTime());
-  }
+// i) 0-5min, ii) 5-60min, iii) 1h-24h, iv) 24h+?
+void RecordIPFSDaemonRunTime(base::TimeDelta elapsed_time) {
+  UMA_HISTOGRAM_EXACT_LINEAR("Brave.IPFS.DaemonRunTime",
+                             GetDaemonUsageBucket(elapsed_time), 4);
 }
 
 IpfsP3A::IpfsP3A(IpfsService* service, content::BrowserContext* context)
     : service_(service), context_(context) {
   RecordInitialIPFSP3AState();
-  timer_.Start(FROM_HERE, base::TimeDelta::FromMinutes(kP3ATimerInterval),
-               base::Bind(&IpfsP3A::RecordDaemonUsage, base::Unretained(this)));
+  service->AddObserver(this);
+}
+
+IpfsP3A::~IpfsP3A() {
+  service_->RemoveObserver(this);
 }
 
 void IpfsP3A::RecordInitialIPFSP3AState() {
@@ -79,11 +94,32 @@ void IpfsP3A::RecordInitialIPFSP3AState() {
 }
 
 void IpfsP3A::RecordDaemonUsage() {
-  RecordIPFSDaemonRunTime(service_);
+  FlushTimeDelta();
+  RecordIPFSDaemonRunTime(elapsed_time_);
 }
 
-void IpfsP3A::Stop() {
+void IpfsP3A::OnIpfsLaunched(bool result, int64_t pid) {
+  if (timer_.IsRunning()) {
+    timer_.Stop();
+  }
+
+  daemon_start_time_ = base::TimeTicks::Now();
+  timer_.Start(FROM_HERE, base::TimeDelta::FromMinutes(kP3ATimerInterval),
+               base::Bind(&IpfsP3A::RecordDaemonUsage, base::Unretained(this)));
+}
+
+void IpfsP3A::OnIpfsShutdown() {
   timer_.Stop();
+  FlushTimeDelta();
+  daemon_start_time_ = base::TimeTicks();
+  RecordDaemonUsage();
+}
+
+void IpfsP3A::FlushTimeDelta() {
+  if (!daemon_start_time_.is_null()) {
+    elapsed_time_ += base::TimeTicks::Now() - daemon_start_time_;
+    daemon_start_time_ = base::TimeTicks::Now();
+  }
 }
 
 }  // namespace ipfs

@@ -73,7 +73,6 @@ class IpfsService : public KeyedService,
   IPFSResolveMethodTypes GetIPFSResolveMethodType() const;
   base::FilePath GetDataPath() const;
   base::FilePath GetConfigFilePath() const;
-  base::TimeTicks GetDaemonStartTime() const;
 
   // KeyedService
   void Shutdown() override;
@@ -133,7 +132,6 @@ class IpfsService : public KeyedService,
   bool is_ipfs_launched_for_test_ = false;
   bool skip_get_connected_peers_callback_for_test_ = false;
   GURL server_endpoint_;
-  base::TimeTicks daemon_start_time_;
 
   base::FilePath user_data_dir_;
   BraveIpfsClientUpdater* ipfs_client_updater_;

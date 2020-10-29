@@ -26,7 +26,7 @@ class IPFSP3ATest : public testing::Test {
   TestingPrefServiceSimple pref_service_;
 };
 
-TEST_F(IPFSP3ATest, TestVal1) {
+TEST_F(IPFSP3ATest, TestGetIPFSDetectionPromptBucket) {
   auto* prefs = GetPrefs();
   ASSERT_EQ(GetIPFSDetectionPromptBucket(prefs), 0);
   prefs->SetInteger(kIPFSInfobarCount, 1);
@@ -41,6 +41,17 @@ TEST_F(IPFSP3ATest, TestVal1) {
   ASSERT_EQ(GetIPFSDetectionPromptBucket(prefs), 3);
   prefs->SetInteger(kIPFSInfobarCount, 1337);
   ASSERT_EQ(GetIPFSDetectionPromptBucket(prefs), 3);
+}
+
+TEST_F(IPFSP3ATest, TestGetDaemonUsageBucket) {
+  ASSERT_EQ(GetDaemonUsageBucket(base::TimeDelta::FromMinutes(0)), 0);
+  ASSERT_EQ(GetDaemonUsageBucket(base::TimeDelta::FromMinutes(5)), 0);
+  ASSERT_EQ(GetDaemonUsageBucket(base::TimeDelta::FromMinutes(6)), 1);
+  ASSERT_EQ(GetDaemonUsageBucket(base::TimeDelta::FromMinutes(60)), 1);
+  ASSERT_EQ(GetDaemonUsageBucket(base::TimeDelta::FromMinutes(61)), 2);
+  ASSERT_EQ(GetDaemonUsageBucket(base::TimeDelta::FromHours(24)), 2);
+  ASSERT_EQ(GetDaemonUsageBucket(base::TimeDelta::FromHours(25)), 3);
+  ASSERT_EQ(GetDaemonUsageBucket(base::TimeDelta::FromDays(1337)), 3);
 }
 
 }  // namespace ipfs

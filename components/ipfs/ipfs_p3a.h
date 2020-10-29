@@ -7,6 +7,7 @@
 #define BRAVE_COMPONENTS_IPFS_IPFS_P3A_H_
 
 #include "base/timer/timer.h"
+#include "brave/components/ipfs/ipfs_service_observer.h"
 
 namespace content {
 class BrowserContext;
@@ -16,25 +17,35 @@ class PrefService;
 
 namespace ipfs {
 
+class BraveIpfsClientUpdater;
 class IpfsService;
 
 int GetIPFSDetectionPromptBucket(PrefService* prefs);
+int GetDaemonUsageBucket(base::TimeDelta elapsed_time);
 
 // Reports IPFS related P3A data.
 // Maintains a timer to report in the amount of up time.
-class IpfsP3A {
+class IpfsP3A : public IpfsServiceObserver {
  public:
-  explicit IpfsP3A(IpfsService* service, content::BrowserContext* contex);
-  ~IpfsP3A() = default;
+  IpfsP3A(IpfsService* service, content::BrowserContext* contex);
+  ~IpfsP3A() override;
+  IpfsP3A(const IpfsP3A&) = delete;
+  IpfsP3A& operator=(IpfsP3A&) = delete;
   void Stop();
+
+  // IpfsServiceObserver
+  void OnIpfsLaunched(bool result, int64_t pid) override;
+  void OnIpfsShutdown() override;
 
  private:
   void RecordDaemonUsage();
   void RecordInitialIPFSP3AState();
+  void FlushTimeDelta();
   base::RepeatingTimer timer_;
   IpfsService* service_;
+  base::TimeTicks daemon_start_time_;
+  base::TimeDelta elapsed_time_;
   content::BrowserContext* context_;
-  DISALLOW_COPY_AND_ASSIGN(IpfsP3A);
 };
 
 }  // namespace ipfs

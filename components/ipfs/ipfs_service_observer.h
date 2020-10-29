@@ -14,6 +14,7 @@ class IpfsServiceObserver : public base::CheckedObserver {
  public:
   ~IpfsServiceObserver() override {}
   virtual void OnIpfsLaunched(bool result, int64_t pid) {}
+  virtual void OnIpfsShutdown() {}
 };
 
 }  // namespace ipfs
