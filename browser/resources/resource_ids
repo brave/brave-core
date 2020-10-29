@@ -19,9 +19,9 @@
   "<(ROOT_GEN_DIR)/brave/web-ui-brave_welcome/brave_welcome.grd": {
     "includes": [33240],
   },
-  "brave/browser/resources/settings/settings_resources.grd": {
-    "structures": [34500],
-    "includes": [34900],
+  "<(SHARED_INTERMEDIATE_DIR)/brave/browser/resources/settings/brave_settings_resources.grd": {
+    "META": {"sizes": {"includes": [100],}},
+    "includes": [34500],
   },
   "brave/app/brave_generated_resources.grd": {
     "includes": [35000],
@@ -77,9 +77,9 @@
     "includes": [41000],
     "structures": [42000],
   },
-  "brave/browser/resources/extensions/extensions_resources.grd": {
-    "structures": [43000],
-    "includes": [43500],
+  "<(SHARED_INTERMEDIATE_DIR)/brave/browser/resources/extensions/brave_extensions_resources.grd": {
+    "META": {"sizes": {"includes": [50],}},
+    "includes": [43000],
   },
   # This file is generated during the build.
   "<(ROOT_GEN_DIR)/brave/web-ui-brave_wallet/brave_wallet.grd": {
