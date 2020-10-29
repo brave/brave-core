@@ -1621,12 +1621,6 @@ Config.prototype.buildArgs = function () {
     sparkle_eddsa_public_key: this.sparkleEdDSAPublicKey,
     sparkle_eddsa_private_key: this.sparkleEdDSAPrivateKey,
     chrome_pgo_phase: this.chromePgoPhase,
-    // When enabled (see third_party/blink/renderer/config.gni), we end up with
-    // multiple files giving compilation error similar to:
-    // gen/third_party/blink/renderer/bindings/modules/v8/v8_shared_worker_global_scope.cc:4614:34:
-    // error: no member named 'isReportingObserversEnabled' in 'blink::ContextFeatureSettings'
-    // cs.chromium.org shows the same files not having any calls to isReportingObserversEnabled,
-    // which makes me think that Chromium also disables it in their builds.
     ...this.extraGnArgs,
   }
 
