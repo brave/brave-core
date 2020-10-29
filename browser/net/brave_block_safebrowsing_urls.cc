@@ -20,6 +20,9 @@ bool IsSafeBrowsingReportingURL(const GURL& gurl) {
       URLPattern(
           URLPattern::SCHEME_HTTPS,
           "https://sb-ssl.google.com/safebrowsing/clientreport/download*"),
+      URLPattern(URLPattern::SCHEME_HTTPS,
+                 "https://safebrowsing.google.com/safebrowsing/clientreport/"
+                 "crx-list-info*"),
   });
   static const std::vector<URLPattern> reporting_patterns({
       URLPattern(URLPattern::SCHEME_HTTPS,
