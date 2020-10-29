@@ -17,7 +17,7 @@ namespace {
 
 #if !BUILDFLAG(OPTIMIZE_WEBUI)
 constexpr char kBraveGeneratedPath[] =
-    "@out_folder@/gen/brave/browser/resources/extensions/";
+    "@out_folder@/gen/brave/browser/resources/extensions/preprocessed";
 #endif
 
 // Called from the original extension_ui.cc's CreateMdExtensionsSource via a
