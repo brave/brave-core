@@ -18,6 +18,8 @@ type State = {
 }
 
 export type Props = {
+  isFetching: boolean
+  isUpdateAvailable: boolean
   feed?: BraveToday.Feed
   publishers?: BraveToday.Publishers
   articleToScrollTo?: BraveToday.FeedItem
@@ -26,6 +28,7 @@ export type Props = {
   onReadFeedItem: (item: BraveToday.FeedItem) => any
   onAnotherPageNeeded: () => any
   onCustomizeBraveToday: () => any
+  onRefresh: () => any
 }
 
 class BraveToday extends React.PureComponent<Props, State> {

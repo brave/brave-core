@@ -9,6 +9,11 @@ import CardDeals from './cards/cardDeals'
 import CardsGroup from './cardsGroup'
 import Customize from './options/customize'
 import { Props } from './'
+import Refresh from './options/refresh'
+
+function getFeedHashForCache (feed?: BraveToday.Feed) {
+  return feed ? feed.hash : ''
+}
 
 export default function BraveTodayContent (props: Props) {
   const { feed, publishers } = props
@@ -34,10 +39,12 @@ export default function BraveTodayContent (props: Props) {
   }, [previousYAxis])
 
   // Show the options buttons when we enter the viewport
-  const optionsTriggerRef = React.useCallback((element) => {
+  const optionsTriggerRef = React.useRef<HTMLElement>()
+  const onOptionsTriggerElement = React.useCallback((element) => {
     if (!element) {
       return
     }
+    optionsTriggerRef.current = element
     const observer = new IntersectionObserver((entries) => {
       const entry = entries[0]
       // Only concerned with whether we're below the
@@ -50,6 +57,22 @@ export default function BraveTodayContent (props: Props) {
     observer.observe(element)
   }, [setShowOptions])
 
+  // When the feed is refreshed, scroll to the top
+  const prevFeedHashRef = React.useRef(getFeedHashForCache(props.feed))
+  React.useEffect(() => {
+    const currentFeedHash = getFeedHashForCache(props.feed)
+    if (prevFeedHashRef.current && prevFeedHashRef.current !== currentFeedHash) {
+      // Feed hash changed, make sure we scroll to top
+      if (optionsTriggerRef.current) {
+        optionsTriggerRef.current.scrollIntoView({
+          behavior: 'smooth',
+          block: 'center'
+        })
+      }
+    }
+    prevFeedHashRef.current = currentFeedHash
+  })
+
   if (!feed) {
     return null
   }
@@ -61,14 +84,14 @@ export default function BraveTodayContent (props: Props) {
     <>
     {/* featured item */}
       <CardLarge
-        ref={optionsTriggerRef}
+        ref={onOptionsTriggerElement}
         content={[feed.featuredArticle]}
         publishers={publishers}
         articleToScrollTo={props.articleToScrollTo}
         onReadFeedItem={props.onReadFeedItem}
       />
       {/* deals */}
-      { feed.featuredDeals && <CardDeals content={feed.featuredDeals} /> }
+      {feed.featuredDeals && <CardDeals content={feed.featuredDeals} />}
       {
         /* Infinitely repeating collections of content. */
         Array(displayedPageCount).fill(undefined).map((_: undefined, index: number) => {
@@ -84,6 +107,7 @@ export default function BraveTodayContent (props: Props) {
         })
       }
       <Customize onCustomizeBraveToday={props.onCustomizeBraveToday} show={showOptions} />
+      <Refresh isFetching={props.isFetching} show={showOptions && (props.isUpdateAvailable || props.isFetching)} onClick={props.onRefresh} />
       <div ref={setScrollTriggerRef} />
     </>
   )

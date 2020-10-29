@@ -3,7 +3,7 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // you can obtain one at http://mozilla.org/MPL/2.0/.
 
-import { MiddlewareAPI, Dispatch, Middleware, AnyAction } from 'redux';
+import { MiddlewareAPI, Dispatch, Middleware, AnyAction } from 'redux'
 
 type Handlers = Map<string, Function>
 
@@ -25,8 +25,14 @@ type Handlers = Map<string, Function>
 export default class AsyncHandler {
   handlersByType: Handlers = new Map()
 
-  on<T>(actionType: string, doStuff: (store: MiddlewareAPI, dispatch: Dispatch, payload: T) => void) {
-    this.handlersByType.set(actionType, doStuff)
+  on<T> (actionType: string | string[], doStuff: (store: MiddlewareAPI, dispatch: Dispatch, payload: T) => void) {
+    if (Array.isArray(actionType)) {
+      for (const action of actionType) {
+        this.handlersByType.set(action, doStuff)
+      }
+    } else {
+      this.handlersByType.set(actionType, doStuff)
+    }
   }
 
   middleware: Middleware = (store: MiddlewareAPI) => (next: Dispatch<AnyAction>) => (action: AnyAction) => {
