@@ -12,7 +12,6 @@ declare_args() {
   base_sparkle_update_url = ""
   enable_sparkle = is_official_build && is_mac
 
-  brave_dsa_file = ""
   sparkle_eddsa_public_key = ""
   sparkle_eddsa_private_key = ""
 

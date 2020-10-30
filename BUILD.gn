@@ -510,7 +510,6 @@ if (is_mac) {
       "--brave_channel=" + brave_channel,
       "--brave_product_dir_name=" + brave_product_dir_name,
       "--brave_feed_url=" + brave_feed_url,
-      "--brave_dsa_file=" + brave_dsa_file,
       "--brave_version=" + brave_version,
       "--brave_eddsa_key=" + sparkle_eddsa_public_key,
     ]
