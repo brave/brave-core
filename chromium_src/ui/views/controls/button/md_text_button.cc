@@ -35,7 +35,7 @@ namespace views {
 MdTextButton::MdTextButton(ButtonListener* listener,
                            const base::string16& text,
                            int button_context)
-    : MdTextButtonBase(PressedCallback(listener, this), text, button_context) {}
+    : MdTextButton(PressedCallback(listener, this), text, button_context) {}
 
 MdTextButton::MdTextButton(PressedCallback callback,
                            const base::string16& text,
@@ -58,7 +58,7 @@ SkPath MdTextButton::GetHighlightPath() const {
 
 void MdTextButton::OnPaintBackground(gfx::Canvas* canvas) {
   // Set brave-style hover colors
-  LabelButton::OnPaintBackground(canvas);
+  MdTextButtonBase::OnPaintBackground(canvas);
   if (GetProminent() && (
         hover_animation().is_animating() || GetState() == STATE_HOVERED)) {
     constexpr SkColor normal_color = kBraveBrandColor;
