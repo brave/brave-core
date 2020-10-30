@@ -12,6 +12,7 @@ import android.view.View.OnLongClickListener;
 import org.chromium.base.Callback;
 import org.chromium.base.CallbackController;
 import org.chromium.base.supplier.ObservableSupplier;
+import org.chromium.base.supplier.OneShotCallback;
 import org.chromium.base.supplier.OneshotSupplier;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.ActivityTabProvider;
@@ -188,8 +189,9 @@ public class BrowsingModeBottomToolbarCoordinator {
      * @param incognitoStateProvider Notifies components when incognito state changes.
      */
     void initializeWithNative(OnClickListener newTabListener, OnClickListener tabSwitcherListener,
-            AppMenuButtonHelper menuButtonHelper, TabCountProvider tabCountProvider,
-            ThemeColorProvider themeColorProvider, IncognitoStateProvider incognitoStateProvider) {
+            ObservableSupplier<AppMenuButtonHelper> menuButtonHelperSupplier,
+            TabCountProvider tabCountProvider, ThemeColorProvider themeColorProvider,
+            IncognitoStateProvider incognitoStateProvider) {
         mThemeColorProvider = themeColorProvider;
         mMediator.setThemeColorProvider(themeColorProvider);
         if (BottomToolbarVariationManager.isNewTabButtonOnBottom()) {
@@ -216,8 +218,12 @@ public class BrowsingModeBottomToolbarCoordinator {
 
         mBookmarkButton.setThemeColorProvider(themeColorProvider);
 
-        mMenuButton.setAppMenuButtonHelper(menuButtonHelper);
         mThemeColorProvider.addTintObserver(mMenuButton);
+
+        new OneShotCallback<>(menuButtonHelperSupplier, (menuButtonHelper) -> {
+            assert menuButtonHelper != null;
+            mMenuButton.setAppMenuButtonHelper(menuButtonHelper);
+        });
     }
 
     private void setOverviewModeBehavior(OverviewModeBehavior overviewModeBehavior) {
