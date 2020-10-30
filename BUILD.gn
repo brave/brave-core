@@ -501,10 +501,6 @@ if (is_mac) {
     deps = [
       ":brave_app_plist"
     ]
-
-    if (enable_sparkle) {
-      deps += [ "//brave/vendor/sparkle:sparkle_resources_bundle_data" ]
-    }
   }
 
   brave_tweak_info_plist("brave_app_plist") {
