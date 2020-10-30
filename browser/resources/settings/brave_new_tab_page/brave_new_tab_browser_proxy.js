@@ -47,6 +47,16 @@ cr.define('settings', function() {
      * @return {!Promise<Boolean>}
      */
     isCryptoDotComSupported() {}
+
+    /**
+     * @return {!Promise<Array>}
+     */
+    getNewTabShowsOptionsList() {}
+
+    /**
+     * @return {!Promise<Boolean>}
+     */
+    shouldShowNewTabDashboardSettings() {}
   }
 
   /**
@@ -91,6 +101,16 @@ cr.define('settings', function() {
     /** @override */
     getIsCryptoDotComSupported() {
       return cr.sendWithPromise('getIsCryptoDotComSupported')
+    }
+
+    /** @override */
+    getNewTabShowsOptionsList() {
+      return cr.sendWithPromise('getNewTabShowsOptionsList')
+    }
+
+    /** @override */
+    shouldShowNewTabDashboardSettings() {
+      return cr.sendWithPromise('shouldShowNewTabDashboardSettings')
     }
   }
 

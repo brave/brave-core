@@ -123,6 +123,8 @@ const PrefsUtil::TypedPrefMap& BravePrefsUtil::GetAllowlistedKeys() {
       settings_api::PrefType::PREF_TYPE_BOOLEAN;
   (*s_brave_allowlist)[kNewTabPageShowGemini] =
       settings_api::PrefType::PREF_TYPE_BOOLEAN;
+  (*s_brave_allowlist)[kNewTabPageShowsOptions] =
+      settings_api::PrefType::PREF_TYPE_NUMBER;
 #if BUILDFLAG(MOONPAY_ENABLED)
   (*s_brave_allowlist)[kMoonpayNewTabPageShowBitcoinDotCom] =
       settings_api::PrefType::PREF_TYPE_BOOLEAN;

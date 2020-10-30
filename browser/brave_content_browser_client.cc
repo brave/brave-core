@@ -110,6 +110,10 @@ using extensions::ChromeContentBrowserClientExtensionsPart;
 #include "brave/components/brave_wallet/brave_wallet_service.h"
 #endif
 
+#if !defined(OS_ANDROID)
+#include "brave/browser/new_tab/new_tab_shows_navigation_throttle.h"
+#endif
+
 namespace {
 
 bool HandleURLReverseOverrideRewrite(GURL* url,
@@ -455,6 +459,13 @@ BraveContentBrowserClient::CreateThrottlesForNavigation(
     content::NavigationHandle* handle) {
   std::vector<std::unique_ptr<content::NavigationThrottle>> throttles =
       ChromeContentBrowserClient::CreateThrottlesForNavigation(handle);
+
+#if !defined(OS_ANDROID)
+  std::unique_ptr<content::NavigationThrottle> ntp_shows_navigation_throttle =
+      NewTabShowsNavigationThrottle::MaybeCreateThrottleFor(handle);
+  if (ntp_shows_navigation_throttle)
+    throttles.push_back(std::move(ntp_shows_navigation_throttle));
+#endif
 
 #if BUILDFLAG(ENABLE_BRAVE_WEBTORRENT)
   throttles.push_back(

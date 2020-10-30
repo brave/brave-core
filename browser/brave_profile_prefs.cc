@@ -5,6 +5,7 @@
 
 #include "brave/browser/brave_profile_prefs.h"
 
+#include "brave/browser/new_tab/new_tab_shows_options.h"
 #include "brave/browser/search/ntp_utils.h"
 #include "brave/browser/themes/brave_dark_mode_utils.h"
 #include "brave/browser/ui/omnibox/brave_omnibox_client_impl.h"
@@ -254,6 +255,8 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
   registry->RegisterBooleanPref(kNewTabPageShowTogether, false);
   registry->RegisterBooleanPref(kNewTabPageShowAddCard, true);
   registry->RegisterBooleanPref(kNewTabPageShowGemini, true);
+  registry->RegisterIntegerPref(kNewTabPageShowsOptions,
+                                NewTabPageShowsOptions::DASHBOARD);
 
   // Brave Wallet
 #if BUILDFLAG(BRAVE_WALLET_ENABLED)

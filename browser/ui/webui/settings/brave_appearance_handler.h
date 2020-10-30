@@ -40,6 +40,8 @@ class BraveAppearanceHandler : public settings::SettingsPageUIHandler {
   void GetShowTopSites(const base::ListValue* args);
   void TopSitesVisibleChanged(const std::string& pref_name);
   void GetIsCryptoDotComSupported(const base::ListValue* args);
+  void GetNewTabShowsOptionsList(const base::ListValue* args);
+  void ShouldShowNewTabDashboardSettings(const base::ListValue* args);
 
   Profile* profile_ = nullptr;
   PrefChangeRegistrar local_state_change_registrar_;

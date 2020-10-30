@@ -150,6 +150,7 @@ test("brave_unit_tests") {
     "//brave/browser/download:download",
     "//brave/browser/metrics/test:brave_metrics_unit_tests",
     "//brave/browser/net:net",
+    "//brave/browser/new_tab:unittest",
     "//brave/browser/safebrowsing",
     "//brave/browser/themes:themes",
     "//brave/browser/tor:unit_tests",

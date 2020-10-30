@@ -7,6 +7,7 @@
 
 #include "base/bind.h"
 #include "base/strings/string_number_conversions.h"
+#include "brave/browser/new_tab/new_tab_shows_options.h"
 #include "brave/browser/ntp_background_images/view_counter_service_factory.h"
 #include "brave/browser/themes/brave_dark_mode_utils.h"
 #include "brave/common/pref_names.h"
@@ -77,11 +78,24 @@ BraveAppearanceHandler::BraveAppearanceHandler() {
 
 BraveAppearanceHandler::~BraveAppearanceHandler() = default;
 
+// TODO(simonhong): Use separate handler for NTP settings.
 void BraveAppearanceHandler::RegisterMessages() {
   profile_ = Profile::FromWebUI(web_ui());
   profile_state_change_registrar_.Init(profile_->GetPrefs());
   profile_state_change_registrar_.Add(
       kNewTabPageSuperReferralThemesOption,
+      base::BindRepeating(&BraveAppearanceHandler::OnPreferenceChanged,
+      base::Unretained(this)));
+  profile_state_change_registrar_.Add(
+      kNewTabPageShowsOptions,
+      base::BindRepeating(&BraveAppearanceHandler::OnPreferenceChanged,
+      base::Unretained(this)));
+  profile_state_change_registrar_.Add(
+      prefs::kHomePageIsNewTabPage,
+      base::BindRepeating(&BraveAppearanceHandler::OnPreferenceChanged,
+      base::Unretained(this)));
+  profile_state_change_registrar_.Add(
+      prefs::kHomePage,
       base::BindRepeating(&BraveAppearanceHandler::OnPreferenceChanged,
       base::Unretained(this)));
   profile_state_change_registrar_.Add(
@@ -124,6 +138,15 @@ void BraveAppearanceHandler::RegisterMessages() {
       "getShowTopSites",
       base::BindRepeating(&BraveAppearanceHandler::GetShowTopSites,
                           base::Unretained(this)));
+  web_ui()->RegisterMessageCallback(
+      "getNewTabShowsOptionsList",
+      base::BindRepeating(&BraveAppearanceHandler::GetNewTabShowsOptionsList,
+                          base::Unretained(this)));
+  web_ui()->RegisterMessageCallback(
+      "shouldShowNewTabDashboardSettings",
+      base::BindRepeating(
+          &BraveAppearanceHandler::ShouldShowNewTabDashboardSettings,
+          base::Unretained(this)));
 #if BUILDFLAG(CRYPTO_DOT_COM_ENABLED)
   web_ui()->RegisterMessageCallback(
       "getIsCryptoDotComSupported",
@@ -253,10 +276,22 @@ void BraveAppearanceHandler::OnBraveDarkModeChanged() {
 }
 
 void BraveAppearanceHandler::OnPreferenceChanged(const std::string& pref_name) {
-  DCHECK_EQ(kNewTabPageSuperReferralThemesOption, pref_name);
   if (IsJavascriptAllowed()) {
-    FireWebUIListener("super-referral-active-state-changed",
-                      base::Value(IsSuperReferralActive(profile_)));
+    if (pref_name == kNewTabPageSuperReferralThemesOption) {
+      FireWebUIListener("super-referral-active-state-changed",
+                        base::Value(IsSuperReferralActive(profile_)));
+      return;
+    }
+
+    if (pref_name == kNewTabPageShowsOptions ||
+        pref_name == prefs::kHomePage ||
+        pref_name == prefs::kHomePageIsNewTabPage) {
+      const bool show_dashboard_settings =
+          brave::ShouldUseNewTabURLForNewTab(profile_);
+      FireWebUIListener("show-new-tab-dashboard-settings-changed",
+                        base::Value(show_dashboard_settings));
+      return;
+    }
   }
 }
 
@@ -290,4 +325,21 @@ void BraveAppearanceHandler::TopSitesVisibleChanged(
     FireWebUIListener("ntp-shortcut-visibility-changed",
         base::Value(top_sites_visible));
   }
+}
+
+void BraveAppearanceHandler::GetNewTabShowsOptionsList(
+    const base::ListValue* args) {
+  CHECK_EQ(args->GetSize(), 1U);
+  AllowJavascript();
+  ResolveJavascriptCallback(args->GetList()[0],
+                            brave::GetNewTabShowsOptionsList(profile_));
+}
+
+void BraveAppearanceHandler::ShouldShowNewTabDashboardSettings(
+    const base::ListValue* args) {
+  CHECK_EQ(args->GetSize(), 1U);
+  AllowJavascript();
+  bool show_dashboard_settings = brave::ShouldUseNewTabURLForNewTab(profile_);
+  ResolveJavascriptCallback(args->GetList()[0],
+                            base::Value(show_dashboard_settings));
 }
