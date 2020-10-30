@@ -599,7 +599,6 @@ if (!is_android) {
       "//brave/components/brave_shields/browser/tracking_protection_service_browsertest.cc",
       "//brave/components/content_settings/renderer/brave_content_settings_agent_impl_autoplay_browsertest.cc",
       "//brave/components/content_settings/renderer/brave_content_settings_agent_impl_browsertest.cc",
-      "//brave/components/content_settings/renderer/brave_content_settings_agent_impl_flash_browsertest.cc",
       "//brave/components/l10n/browser/locale_helper_mock.cc",
       "//brave/components/l10n/browser/locale_helper_mock.h",
       "//brave/third_party/blink/renderer/modules/brave/navigator_browsertest.cc",
@@ -850,14 +849,6 @@ if (!is_android) {
     ]
 
     public_deps = [ ":browser_tests_runner" ]
-
-    # enable_plugins should be used here
-    if (!is_android) {
-      data_deps = [
-        "//ppapi:power_saver_test_plugin",
-        "//ppapi:ppapi_tests",
-      ]
-    }
   }
 } else {  # if (!is_android) {
   group("brave_browser_tests") {
