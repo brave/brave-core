@@ -8,7 +8,7 @@ deps = {
   "vendor/boto": "https://github.com/boto/boto@f7574aa6cc2c819430c1f05e9a1a1a666ef8169b",
   "vendor/python-patch": "https://github.com/brave/python-patch@d8880110be6554686bc08261766538c2926d4e82",
   "vendor/omaha":  "https://github.com/brave/omaha.git@cd2499ce23b2f8c532e1c504adf41d3e946780d2",
-  "vendor/sparkle": "https://github.com/brave/Sparkle.git@0a0cad0cc27dbe51dcb4c2e1a48d5675c51ff945",
+  "vendor/sparkle": "https://github.com/brave/Sparkle.git@43fe90c8a7373b5fdd8672329839b744da533a01",
   "vendor/bat-native-rapidjson": "https://github.com/brave-intl/bat-native-rapidjson.git@86aafe2ef89835ae71c9ed7c2527e3bb3000930e",
   "vendor/bip39wally-core-native": "https://github.com/brave-intl/bip39wally-core-native.git@13bb40a215248cfbdd87d0a6b425c8397402e9e6",
   "vendor/bat-native-anonize": "https://github.com/brave-intl/bat-native-anonize.git@e3742ba3e8942eea9e4755d91532491871bd3116",
