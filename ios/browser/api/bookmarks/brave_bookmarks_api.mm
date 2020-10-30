@@ -103,8 +103,9 @@
 }
 
 - (UIImage *)icon {
+  // Returns a WEAK UIImage so we make a deep-copy.
   gfx::Image icon = model_->GetFavicon(node_);
-  return icon.IsEmpty() ? nullptr : icon.ToUIImage();
+  return icon.IsEmpty() ? nullptr : [icon.ToUIImage() copy];
 }
 
 - (BookmarksNodeType)type {
