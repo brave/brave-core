@@ -6,6 +6,8 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_ADS_BROWSER_ADS_P2A_H_
 #define BRAVE_COMPONENTS_BRAVE_ADS_BROWSER_ADS_P2A_H_
 
+#include <stdint.h>
+
 #include <string>
 #include <vector>
 
@@ -22,7 +24,7 @@ void RecordInWeeklyStorageAndEmitP2AHistogramAnswer(
 
 void EmitP2AHistogramAnswer(
     const std::string& name,
-    int count_value);
+    uint16_t count_value);
 
 void SuspendP2AHistograms();
 
