@@ -79,7 +79,7 @@ class BottomToolbarCoordinator implements View.OnLongClickListener {
             new ObservableSupplierImpl<>();
     private final Supplier<Boolean> mShowStartSurfaceCallable;
     private CallbackController mCallbackController = new CallbackController();
-    private AppMenuButtonHelper mMenuButtonHelper;
+    ObservableSupplier<AppMenuButtonHelper> mMenuButtonHelperSupplier;
     private BottomControlsMediator mBottomControlsMediator;
     private Runnable mOriginalHomeButtonRunnable;
     private final ScrollingBottomViewResourceFrameLayout mScrollingBottomView;
@@ -111,7 +111,7 @@ class BottomToolbarCoordinator implements View.OnLongClickListener {
             Supplier<Boolean> showStartSurfaceCallable, Runnable openHomepageAction,
             Callback<Integer> setUrlBarFocusAction,
             OneshotSupplier<OverviewModeBehavior> overviewModeBehaviorSupplier,
-            AppMenuButtonHelper menuButtonHelper,
+            ObservableSupplier<AppMenuButtonHelper> menuButtonHelperSupplier,
             BottomControlsMediator bottomControlsMediator) {
         View root = stub.inflate();
 
@@ -146,7 +146,7 @@ class BottomToolbarCoordinator implements View.OnLongClickListener {
         mShareDelegateSupplierCallback = this::onShareDelegateAvailable;
         mShareDelegateSupplier.addObserver(mShareDelegateSupplierCallback);
 
-        mMenuButtonHelper = menuButtonHelper;
+        mMenuButtonHelperSupplier = menuButtonHelperSupplier;
         mBottomControlsMediator = bottomControlsMediator;
         mOriginalHomeButtonRunnable = openHomepageAction;
         mScrollingBottomView = scrollingBottomView;
@@ -183,10 +183,11 @@ class BottomToolbarCoordinator implements View.OnLongClickListener {
         };
 
         mBrowsingModeCoordinator.initializeWithNative(newTabClickListener, tabSwitcherListener,
-                mMenuButtonHelper, tabCountProvider, mThemeColorProvider, incognitoStateProvider);
+                mMenuButtonHelperSupplier, tabCountProvider, mThemeColorProvider,
+                incognitoStateProvider);
         mTabSwitcherModeCoordinator = new TabSwitcherBottomToolbarCoordinator(mTabSwitcherModeStub,
                 topToolbarRoot, incognitoStateProvider, mThemeColorProvider, newTabClickListener,
-                closeTabsClickListener, mMenuButtonHelper, tabCountProvider);
+                closeTabsClickListener, mMenuButtonHelperSupplier, tabCountProvider);
 
         // Do not change bottom bar if StartSurface Single Pane is enabled and HomePage is not
         // customized.

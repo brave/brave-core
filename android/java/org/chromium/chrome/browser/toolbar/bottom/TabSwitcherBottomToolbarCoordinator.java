@@ -12,6 +12,8 @@ import android.view.ViewGroup;
 import android.view.ViewStub;
 
 import org.chromium.base.ApiCompatibilityUtils;
+import org.chromium.base.supplier.ObservableSupplier;
+import org.chromium.base.supplier.OneShotCallback;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.tabmodel.IncognitoStateProvider;
 import org.chromium.chrome.browser.toolbar.TabCountProvider;
@@ -57,7 +59,8 @@ public class TabSwitcherBottomToolbarCoordinator {
     TabSwitcherBottomToolbarCoordinator(ViewStub stub, ViewGroup topToolbarRoot,
             IncognitoStateProvider incognitoStateProvider, ThemeColorProvider themeColorProvider,
             OnClickListener newTabClickListener, OnClickListener closeTabsClickListener,
-            AppMenuButtonHelper menuButtonHelper, TabCountProvider tabCountProvider) {
+            ObservableSupplier<AppMenuButtonHelper> menuButtonHelperSupplier,
+            TabCountProvider tabCountProvider) {
         final ViewGroup root = (ViewGroup) stub.inflate();
 
         View toolbar = root.findViewById(R.id.bottom_toolbar_buttons);
@@ -81,9 +84,12 @@ public class TabSwitcherBottomToolbarCoordinator {
         mNewTabButton.setIncognitoStateProvider(incognitoStateProvider);
         mNewTabButton.setThemeColorProvider(themeColorProvider);
 
-        assert menuButtonHelper != null;
         mMenuButton = root.findViewById(R.id.menu_button_wrapper);
-        mMenuButton.setAppMenuButtonHelper(menuButtonHelper);
+
+        new OneShotCallback<>(menuButtonHelperSupplier, (menuButtonHelper) -> {
+            assert menuButtonHelper != null;
+            mMenuButton.setAppMenuButtonHelper(menuButtonHelper);
+        });
     }
 
     /**
