@@ -20,6 +20,7 @@ import org.chromium.chrome.browser.profiles.Profile;
 import org.chromium.chrome.browser.share.ShareDelegate;
 import org.chromium.chrome.browser.tabmodel.TabModelSelector;
 import org.chromium.chrome.browser.toolbar.bottom.BottomToolbarConfiguration;
+import org.chromium.chrome.features.start_surface.StartSurface;
 
 public class BraveTabbedRootUiCoordinator extends TabbedRootUiCoordinator {
     public BraveTabbedRootUiCoordinator(ChromeActivity activity,
@@ -32,11 +33,12 @@ public class BraveTabbedRootUiCoordinator extends TabbedRootUiCoordinator {
             ObservableSupplier<BookmarkBridge> bookmarkBridgeSupplier,
             OneshotSupplier<OverviewModeBehavior> overviewModeBehaviorSupplier,
             Supplier<ContextualSearchManager> contextualSearchManagerSupplier,
-            ObservableSupplier<TabModelSelector> tabModelSelectorSupplier) {
+            ObservableSupplier<TabModelSelector> tabModelSelectorSupplier,
+            OneshotSupplier<StartSurface> startSurfaceSupplier) {
         super(activity, onOmniboxFocusChangedListener, intentWithEffect, shareDelegateSupplier,
                 tabProvider, ephemeralTabCoordinatorSupplier, profileSupplier,
                 bookmarkBridgeSupplier, overviewModeBehaviorSupplier,
-                contextualSearchManagerSupplier, tabModelSelectorSupplier);
+                contextualSearchManagerSupplier, tabModelSelectorSupplier, startSurfaceSupplier);
     }
 
     @Override
