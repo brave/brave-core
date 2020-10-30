@@ -1,5 +1,5 @@
 diff --git a/chrome/android/java/src/org/chromium/chrome/browser/ChromeTabbedActivity.java b/chrome/android/java/src/org/chromium/chrome/browser/ChromeTabbedActivity.java
-index ee8091e415ce9ce78c5a8928fed6a928a081d12a..114cb4a40d9dd96670ab1f55a9c24e8eea754729 100644
+index 266a8fc9bf03d482799ef11b568b9ffb643edc19..1141e8f0fb13203d898f17fee996cb4b02ead17f 100644
 --- a/chrome/android/java/src/org/chromium/chrome/browser/ChromeTabbedActivity.java
 +++ b/chrome/android/java/src/org/chromium/chrome/browser/ChromeTabbedActivity.java
 @@ -183,7 +183,7 @@ import java.util.Locale;
@@ -11,7 +11,7 @@ index ee8091e415ce9ce78c5a8928fed6a928a081d12a..114cb4a40d9dd96670ab1f55a9c24e8e
          implements ChromeAccessibilityUtil.Observer {
      private static final String TAG = "ChromeTabbedActivity";
  
-@@ -996,7 +996,7 @@ public class ChromeTabbedActivity extends ChromeActivity<ChromeActivityComponent
+@@ -998,7 +998,7 @@ public class ChromeTabbedActivity extends ChromeActivity<ChromeActivityComponent
          if (ReengagementNotificationController.isEnabled()) {
              if (mCallbackController != null) {
                  new OneShotCallback<>(
@@ -20,7 +20,7 @@ index ee8091e415ce9ce78c5a8928fed6a928a081d12a..114cb4a40d9dd96670ab1f55a9c24e8e
                              assert profile != null : "Unexpectedly null profile from TabModel.";
                              if (profile == null) return;
  
-@@ -1438,7 +1438,7 @@ public class ChromeTabbedActivity extends ChromeActivity<ChromeActivityComponent
+@@ -1440,7 +1440,7 @@ public class ChromeTabbedActivity extends ChromeActivity<ChromeActivityComponent
  
      @Override
      protected RootUiCoordinator createRootUiCoordinator() {
@@ -29,7 +29,7 @@ index ee8091e415ce9ce78c5a8928fed6a928a081d12a..114cb4a40d9dd96670ab1f55a9c24e8e
                  mIntentWithEffectSupplier, getShareDelegateSupplier(), getActivityTabProvider(),
                  mEphemeralTabCoordinatorSupplier, mTabModelProfileSupplier, mBookmarkBridgeSupplier,
                  getOverviewModeBehaviorSupplier(), this::getContextualSearchManager,
-@@ -1598,7 +1598,7 @@ public class ChromeTabbedActivity extends ChromeActivity<ChromeActivityComponent
+@@ -1601,7 +1601,7 @@ public class ChromeTabbedActivity extends ChromeActivity<ChromeActivityComponent
  
      @Override
      public AppMenuPropertiesDelegate createAppMenuPropertiesDelegate() {
@@ -38,7 +38,7 @@ index ee8091e415ce9ce78c5a8928fed6a928a081d12a..114cb4a40d9dd96670ab1f55a9c24e8e
                  getMultiWindowModeStateDispatcher(), getTabModelSelector(), getToolbarManager(),
                  getWindow().getDecorView(), this, mOverviewModeBehaviorSupplier,
                  mBookmarkBridgeSupplier);
-@@ -1622,10 +1622,10 @@ public class ChromeTabbedActivity extends ChromeActivity<ChromeActivityComponent
+@@ -1625,10 +1625,10 @@ public class ChromeTabbedActivity extends ChromeActivity<ChromeActivityComponent
                  }
              };
          }
@@ -51,7 +51,7 @@ index ee8091e415ce9ce78c5a8928fed6a928a081d12a..114cb4a40d9dd96670ab1f55a9c24e8e
                          tabDelegateFactorySupplier, true, overviewNTPCreator,
                          AsyncTabParamsManagerSingleton.getInstance()));
      }
-@@ -2013,7 +2013,7 @@ public class ChromeTabbedActivity extends ChromeActivity<ChromeActivityComponent
+@@ -2018,7 +2018,7 @@ public class ChromeTabbedActivity extends ChromeActivity<ChromeActivityComponent
          }
      }
  
