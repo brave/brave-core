@@ -3355,6 +3355,10 @@ std::string RewardsServiceImpl::GetEncryptedStringState(
     return "";
   }
 
+  if (encrypted_value.empty()) {
+    return "";
+  }
+
   std::string value;
   if (!OSCrypt::DecryptString(encrypted_value, &value)) {
     BLOG(0, "Decrypting failed for " + name);
