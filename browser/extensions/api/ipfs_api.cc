@@ -24,6 +24,10 @@ ipfs::IpfsService* GetIpfsService(content::BrowserContext* context) {
   return ipfs::IpfsServiceFactory::GetInstance()->GetForContext(context);
 }
 
+bool IsIpfsEnabled(content::BrowserContext* context) {
+  return ipfs::IpfsServiceFactory::IsIpfsEnabled(context);
+}
+
 base::Value MakeSelectValue(const base::string16& name,
                             ipfs::IPFSResolveMethodTypes value) {
   base::Value item(base::Value::Type::DICTIONARY);
@@ -61,13 +65,13 @@ ExtensionFunction::ResponseAction IpfsGetResolveMethodListFunction::Run() {
 }
 
 ExtensionFunction::ResponseAction IpfsGetIPFSEnabledFunction::Run() {
-  bool enabled = base::FeatureList::IsEnabled(ipfs::features::kIpfsFeature);
+  bool enabled = IsIpfsEnabled(browser_context());
   return RespondNow(OneArgument(std::make_unique<base::Value>(enabled)));
 }
 
 ExtensionFunction::ResponseAction IpfsGetResolveMethodTypeFunction::Run() {
   std::string value = "invalid";
-  if (base::FeatureList::IsEnabled(ipfs::features::kIpfsFeature)) {
+  if (IsIpfsEnabled(browser_context())) {
     switch (GetIpfsService(browser_context())->GetIPFSResolveMethodType()) {
       case ipfs::IPFSResolveMethodTypes::IPFS_ASK:
         value = "ask";
@@ -87,7 +91,7 @@ ExtensionFunction::ResponseAction IpfsGetResolveMethodTypeFunction::Run() {
 }
 
 ExtensionFunction::ResponseAction IpfsLaunchFunction::Run() {
-  if (!base::FeatureList::IsEnabled(ipfs::features::kIpfsFeature)) {
+  if (!IsIpfsEnabled(browser_context())) {
     return RespondNow(Error("IPFS not enabled"));
   }
   GetIpfsService(browser_context())
@@ -100,7 +104,7 @@ void IpfsLaunchFunction::OnLaunch(bool launched) {
 }
 
 ExtensionFunction::ResponseAction IpfsShutdownFunction::Run() {
-  if (!base::FeatureList::IsEnabled(ipfs::features::kIpfsFeature)) {
+  if (!IsIpfsEnabled(browser_context())) {
     return RespondNow(Error("IPFS not enabled"));
   }
   GetIpfsService(browser_context())
@@ -113,7 +117,7 @@ void IpfsShutdownFunction::OnShutdown(bool shutdown) {
 }
 
 ExtensionFunction::ResponseAction IpfsGetConfigFunction::Run() {
-  if (!base::FeatureList::IsEnabled(ipfs::features::kIpfsFeature)) {
+  if (!IsIpfsEnabled(browser_context())) {
     return RespondNow(Error("IPFS not enabled"));
   }
   GetIpfsService(browser_context())
@@ -128,7 +132,7 @@ void IpfsGetConfigFunction::OnGetConfig(bool success,
 }
 
 ExtensionFunction::ResponseAction IpfsGetExecutableAvailableFunction::Run() {
-  if (!base::FeatureList::IsEnabled(ipfs::features::kIpfsFeature)) {
+  if (!IsIpfsEnabled(browser_context())) {
     return RespondNow(Error("IPFS not enabled"));
   }
   bool avail = GetIpfsService(browser_context())->IsIPFSExecutableAvailable();

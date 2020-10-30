@@ -19,7 +19,6 @@
 #include "brave/components/ipfs/ipfs_constants.h"
 #include "brave/components/ipfs/ipfs_json_parser.h"
 #include "brave/components/ipfs/ipfs_service_observer.h"
-#include "brave/components/ipfs/ipfs_switches.h"
 #include "brave/components/ipfs/pref_names.h"
 #include "brave/components/ipfs/service_sandbox_type.h"
 #include "components/grit/brave_components_strings.h"
@@ -96,10 +95,6 @@ IpfsService::IpfsService(content::BrowserContext* context,
       content::BrowserContext::GetDefaultStoragePartition(context)
           ->GetURLLoaderFactoryForBrowserProcess();
 
-  // TODO(jocelyn): Use /api/v0/repo/stat API to see if a remote daemon using
-  // Brave's path is running (brave-ipfs), which is leftover from browser
-  // crash, send a shutdown request if so.
-
   // Return early since g_brave_browser_process and ipfs_client_updater are not
   // available in unit tests.
   if (ipfs_client_updater_) {
@@ -111,19 +106,6 @@ IpfsService::IpfsService(content::BrowserContext* context,
 IpfsService::~IpfsService() = default;
 
 // static
-bool IpfsService::IsIpfsEnabled(content::BrowserContext* context,
-                                bool regular_profile) {
-  // IPFS is disabled for OTR profiles, Tor profiles, and guest sessions.
-  if (!regular_profile ||
-      !base::FeatureList::IsEnabled(features::kIpfsFeature) ||
-      base::CommandLine::ForCurrentProcess()->HasSwitch(
-          ipfs::kDisableIpfsClientUpdaterExtension))
-    return false;
-
-  return true;
-}
-
-// static
 void IpfsService::RegisterPrefs(PrefRegistrySimple* registry) {
   registry->RegisterIntegerPref(
       kIPFSResolveMethod,
@@ -131,6 +113,11 @@ void IpfsService::RegisterPrefs(PrefRegistrySimple* registry) {
   registry->RegisterBooleanPref(kIPFSBinaryAvailable, false);
   registry->RegisterBooleanPref(kIPFSAutoFallbackToGateway, false);
   registry->RegisterIntegerPref(kIPFSInfobarCount, 0);
+}
+
+// static
+void IpfsService::RegisterLocalStatePrefs(PrefRegistrySimple* registry) {
+  registry->RegisterBooleanPref(kIPFSEnabled, true);
 }
 
 base::FilePath IpfsService::GetIpfsExecutablePath() {

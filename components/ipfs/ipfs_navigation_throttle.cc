@@ -62,10 +62,8 @@ std::unique_ptr<IpfsNavigationThrottle>
 IpfsNavigationThrottle::MaybeCreateThrottleFor(
     content::NavigationHandle* navigation_handle,
     IpfsService* ipfs_service,
-    bool regular_profile,
     const std::string& locale) {
-  auto* context = navigation_handle->GetWebContents()->GetBrowserContext();
-  if (!IpfsService::IsIpfsEnabled(context, regular_profile))
+  if (!ipfs_service)
     return nullptr;
 
   return std::make_unique<IpfsNavigationThrottle>(navigation_handle,

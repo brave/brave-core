@@ -11,6 +11,7 @@
 #include "brave/browser/extensions/brave_extension_provider.h"
 #include "brave/common/pref_names.h"
 #include "brave/browser/tor/tor_profile_service_factory.h"
+#include "brave/components/ipfs/buildflags/buildflags.h"
 #include "brave/components/tor/buildflags/buildflags.h"
 #include "brave/components/tor/pref_names.h"
 #include "chrome/browser/extensions/external_policy_loader.h"
@@ -23,6 +24,11 @@
 
 #if BUILDFLAG(ENABLE_TOR)
 #include "brave/components/tor/brave_tor_client_updater.h"
+#endif
+
+#if BUILDFLAG(IPFS_ENABLED)
+#include "brave/browser/ipfs/ipfs_service_factory.h"
+#include "brave/components/ipfs/brave_ipfs_client_updater.h"
 #endif
 
 namespace extensions {
@@ -39,9 +45,7 @@ BraveExtensionManagement::BraveExtensionManagement(Profile* profile)
       tor::prefs::kTorDisabled,
       base::BindRepeating(&BraveExtensionManagement::OnTorDisabledChanged,
                           base::Unretained(this)));
-  // BrowserPolicyConnector enforce policy earlier than this constructor so we
-  // have to manully cleanup tor executable when tor is disabled by gpo
-  OnTorDisabledChanged();
+  Cleanup();
 }
 
 BraveExtensionManagement::~BraveExtensionManagement() {
@@ -67,6 +71,18 @@ void BraveExtensionManagement::OnTorDisabledChanged() {
 #if BUILDFLAG(ENABLE_TOR)
   if (TorProfileServiceFactory::IsTorDisabled())
     g_brave_browser_process->tor_client_updater()->Cleanup();
+#endif
+}
+
+void BraveExtensionManagement::Cleanup() {
+  // BrowserPolicyConnector enforce policy earlier than this constructor so we
+  // have to manully cleanup tor executable when tor is disabled by gpo
+  OnTorDisabledChanged();
+
+#if BUILDFLAG(IPFS_ENABLED)
+  // Remove ipfs executable if it is disabled by GPO.
+  if (ipfs::IpfsServiceFactory::IsIpfsDisabledByPolicy())
+    g_brave_browser_process->ipfs_client_updater()->Cleanup();
 #endif
 }
 

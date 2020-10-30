@@ -29,14 +29,15 @@ IPFSTabHelper::IPFSTabHelper(content::WebContents* web_contents)
 }
 
 // static
-void IPFSTabHelper::MaybeCreateForWebContents(
+bool IPFSTabHelper::MaybeCreateForWebContents(
     content::WebContents* web_contents) {
   if (!ipfs::IpfsServiceFactory::GetForContext(
           web_contents->GetBrowserContext())) {
-    return;
+    return false;
   }
 
   CreateForWebContents(web_contents);
+  return true;
 }
 
 void IPFSTabHelper::UpdateActiveState(content::NavigationHandle* handle) {

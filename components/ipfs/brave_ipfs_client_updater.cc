@@ -22,11 +22,13 @@ std::string BraveIpfsClientUpdater::g_ipfs_client_component_base64_public_key_(
     kIpfsClientComponentBase64PublicKey);
 
 BraveIpfsClientUpdater::BraveIpfsClientUpdater(
-    BraveComponent::Delegate* delegate)
+    BraveComponent::Delegate* delegate,
+    const base::FilePath& user_data_dir)
     : BraveComponent(delegate),
       task_runner_(base::CreateSequencedTaskRunner(
           {base::ThreadPool(), base::MayBlock()})),
       registered_(false),
+      user_data_dir_(user_data_dir),
       weak_ptr_factory_(this) {}
 
 BraveIpfsClientUpdater::~BraveIpfsClientUpdater() {}
@@ -78,6 +80,10 @@ base::FilePath InitExecutablePath(const base::FilePath& install_dir) {
   return executable_path;
 }
 
+void DeleteDir(const base::FilePath& path) {
+  base::DeletePathRecursively(path);
+}
+
 }  // namespace
 
 void BraveIpfsClientUpdater::SetExecutablePath(const base::FilePath& path) {
@@ -108,6 +114,14 @@ void BraveIpfsClientUpdater::RemoveObserver(Observer* observer) {
   observers_.RemoveObserver(observer);
 }
 
+void BraveIpfsClientUpdater::Cleanup() {
+  DCHECK(!user_data_dir_.empty());
+  base::FilePath ipfs_component_dir =
+      user_data_dir_.AppendASCII(kIpfsClientComponentId);
+  task_runner_->PostTask(FROM_HERE,
+                         base::BindOnce(&DeleteDir, ipfs_component_dir));
+}
+
 // static
 void BraveIpfsClientUpdater::SetComponentIdAndBase64PublicKeyForTest(
     const std::string& component_id,
@@ -120,8 +134,9 @@ void BraveIpfsClientUpdater::SetComponentIdAndBase64PublicKeyForTest(
 
 // The Brave Ipfs client extension factory.
 std::unique_ptr<BraveIpfsClientUpdater> BraveIpfsClientUpdaterFactory(
-    BraveComponent::Delegate* delegate) {
-  return std::make_unique<BraveIpfsClientUpdater>(delegate);
+    BraveComponent::Delegate* delegate,
+    const base::FilePath& user_data_dir) {
+  return std::make_unique<BraveIpfsClientUpdater>(delegate, user_data_dir);
 }
 
 }  // namespace ipfs

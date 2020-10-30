@@ -23,3 +23,6 @@ const char kIPFSAutoFallbackToGateway[] = "brave.ipfs.auto_fallback_to_gateway";
 
 // The number of times the infobar is shown to ask the user to install IPFS
 const char kIPFSInfobarCount[] = "brave.ipfs.infobar_count";
+
+// A local state pref used to enable/disable IPFS via admin policy.
+const char kIPFSEnabled[] = "brave.ipfs.enabled";

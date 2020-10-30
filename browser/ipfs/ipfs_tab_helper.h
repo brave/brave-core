@@ -31,7 +31,7 @@ class IPFSTabHelper : public content::WebContentsObserver,
 
   bool IsActiveForMainFrame() const { return active_; }
 
-  static void MaybeCreateForWebContents(content::WebContents* web_contents);
+  static bool MaybeCreateForWebContents(content::WebContents* web_contents);
 
  private:
   friend class content::WebContentsUserData<IPFSTabHelper>;
