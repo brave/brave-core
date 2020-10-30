@@ -115,7 +115,11 @@ FarblingTabHelper::FarblingTabHelper(content::WebContents* web_contents)
 
 void FarblingTabHelper::DidStartNavigation(
     content::NavigationHandle* navigation_handle) {
+// TODO(samartnik): it breaks desktop mode on Android.
+// We need to figure out whether we need this functionality on Android.
+#if !defined(OS_ANDROID)
   UpdateUserAgent(navigation_handle);
+#endif
 }
 
 void FarblingTabHelper::UpdateUserAgent(
@@ -149,18 +153,12 @@ void FarblingTabHelper::UpdateUserAgent(
                             .c_str());
     ua = content::BuildUserAgentFromOSAndProduct(minimal_os_info,
                                                  GetMinimalProduct());
-// It breaks desktop mode on Android
-#if !defined(OS_ANDROID)
     navigation_handle->SetIsOverridingUserAgent(true);
-#endif
     web_contents->SetUserAgentOverride(
         blink::UserAgentOverride::UserAgentOnly(ua),
         false /* override_in_new_tabs */);
   } else {
-// It breaks desktop mode on Android
-#if !defined(OS_ANDROID)
     navigation_handle->SetIsOverridingUserAgent(false);
-#endif
   }
 }
 
