@@ -239,19 +239,19 @@
 
 @interface BraveBookmarksAPI()
 {
-    bookmarks::BookmarkModel* bookmarkModel_;  // NOT OWNED
-    BookmarkUndoService* bookmarkUndoService_;  // NOT OWNED
+  bookmarks::BookmarkModel* bookmarkModel_;  // NOT OWNED
+  BookmarkUndoService* bookmarkUndoService_;  // NOT OWNED
 }
 @end
 
 @implementation BraveBookmarksAPI
 + (instancetype)sharedBookmarksAPI {
-	static BraveBookmarksAPI *instance = nil;
-	static dispatch_once_t onceToken;
-	dispatch_once(&onceToken, ^{
-		instance = [[BraveBookmarksAPI alloc] init];
-	});
-	return instance;
+  static BraveBookmarksAPI *instance = nil;
+  static dispatch_once_t onceToken;
+  dispatch_once(&onceToken, ^{
+    instance = [[BraveBookmarksAPI alloc] init];
+  });
+  return instance;
 }
 
 - (instancetype)init {
