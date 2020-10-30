@@ -235,6 +235,7 @@ bool BraveContentSettingsAgentImpl::AllowAutoplay(bool default_value) {
                                    frame, url::Origin(origin).GetURL());
     if (setting == CONTENT_SETTING_BLOCK) {
       VLOG(1) << "AllowAutoplay=false because rule=CONTENT_SETTING_BLOCK";
+      DidBlockContentType(ContentSettingsType::AUTOPLAY);
       return false;
     } else if (setting == CONTENT_SETTING_ASK) {
       VLOG(1) << "AllowAutoplay=ask because rule=CONTENT_SETTING_ASK";
@@ -267,12 +268,14 @@ bool BraveContentSettingsAgentImpl::AllowAutoplay(bool default_value) {
   }
 
   bool allow = ContentSettingsAgentImpl::AllowAutoplay(default_value);
-  if (allow)
+  if (allow) {
     VLOG(1) << "AllowAutoplay=true because "
                "ContentSettingsAgentImpl::AllowAutoplay says so";
-  else
+  } else {
+    DidBlockContentType(ContentSettingsType::AUTOPLAY);
     VLOG(1) << "AllowAutoplay=false because "
                "ContentSettingsAgentImpl::AllowAutoplay says so";
+  }
   return allow;
 }
 
