@@ -42,7 +42,7 @@ public class BraveBottomControlsCoordinator extends BottomControlsCoordinator {
     private ActivityTabProvider mTabProvider;
     private ThemeColorProvider mThemeColorProvider;
     private ObservableSupplier<ShareDelegate> mShareDelegateSupplier;
-    private AppMenuButtonHelper mMenuButtonHelper;
+    private ObservableSupplier<AppMenuButtonHelper> mMenuButtonHelperSupplier;
     private Supplier<Boolean> mShowStartSurfaceCallable;
     private Runnable mOpenHomepageAction;
     private Callback<Integer> mSetUrlBarFocusAction;
@@ -71,11 +71,7 @@ public class BraveBottomControlsCoordinator extends BottomControlsCoordinator {
         mOpenHomepageAction = openHomepageAction;
         mSetUrlBarFocusAction = setUrlBarFocusAction;
         mOverviewModeBehaviorSupplier = overviewModeBehaviorSupplier;
-        new OneShotCallback<>(menuButtonHelperSupplier, (menuButtonHelper) -> {
-            if (menuButtonHelper != null) {
-                mMenuButtonHelper = menuButtonHelper;
-            }
-        });
+        mMenuButtonHelperSupplier = menuButtonHelperSupplier;
     }
 
     public void setRootView(View root) {
@@ -98,7 +94,7 @@ public class BraveBottomControlsCoordinator extends BottomControlsCoordinator {
                     mRoot.findViewById(R.id.bottom_toolbar_stub), mTabProvider,
                     mTabSwitcherLongclickListener, mThemeColorProvider, mShareDelegateSupplier,
                     mShowStartSurfaceCallable, mOpenHomepageAction, mSetUrlBarFocusAction,
-                    mOverviewModeBehaviorSupplier, mMenuButtonHelper, mMediator);
+                    mOverviewModeBehaviorSupplier, mMenuButtonHelperSupplier, mMediator);
 
             mBottomToolbarCoordinator.initializeWithNative(tabSwitcherListener, newTabClickListener,
                     tabCountProvider, incognitoStateProvider, topToolbarRoot, closeAllTabsAction);
