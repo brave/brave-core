@@ -286,10 +286,9 @@ void BraveAppearanceHandler::OnPreferenceChanged(const std::string& pref_name) {
     if (pref_name == kNewTabPageShowsOptions ||
         pref_name == prefs::kHomePage ||
         pref_name == prefs::kHomePageIsNewTabPage) {
-      const bool show_dashboard_settings =
-          brave::ShouldUseNewTabURLForNewTab(profile_);
-      FireWebUIListener("show-new-tab-dashboard-settings-changed",
-                        base::Value(show_dashboard_settings));
+      FireWebUIListener(
+          "show-new-tab-dashboard-settings-changed",
+          base::Value(brave::ShouldNewTabShowDashboard(profile_)));
       return;
     }
   }
@@ -339,7 +338,7 @@ void BraveAppearanceHandler::ShouldShowNewTabDashboardSettings(
     const base::ListValue* args) {
   CHECK_EQ(args->GetSize(), 1U);
   AllowJavascript();
-  bool show_dashboard_settings = brave::ShouldUseNewTabURLForNewTab(profile_);
-  ResolveJavascriptCallback(args->GetList()[0],
-                            base::Value(show_dashboard_settings));
+  ResolveJavascriptCallback(
+      args->GetList()[0],
+      base::Value(brave::ShouldNewTabShowDashboard(profile_)));
 }

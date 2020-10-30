@@ -25,6 +25,7 @@ enum NewTabPageShowsOptions {
 GURL GetNewTabPageURL(Profile* profile);
 base::Value GetNewTabShowsOptionsList(Profile* profile);
 bool ShouldUseNewTabURLForNewTab(Profile* profile);
+bool ShouldNewTabShowDashboard(Profile* profile);
 
 }  // namespace brave
 

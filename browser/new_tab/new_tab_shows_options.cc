@@ -82,4 +82,13 @@ bool ShouldUseNewTabURLForNewTab(Profile* profile) {
          NewTabUI::IsNewTab(url);
 }
 
+bool ShouldNewTabShowDashboard(Profile* profile) {
+  auto* prefs = profile->GetPrefs();
+  if (prefs->GetInteger(kNewTabPageShowsOptions) ==
+      brave::NewTabPageShowsOptions::BLANKPAGE)
+    return false;
+
+  return ShouldUseNewTabURLForNewTab(profile);
+}
+
 }  // namespace brave
