@@ -18,6 +18,7 @@ extern const char kIPFSScheme[];
 extern const char kIPNSScheme[];
 extern const char kDefaultIPFSGateway[];
 extern const char kDefaultIPFSLocalGateway[];
+extern const char kIPFSLearnMoreURL[];
 
 enum class IPFSResolveMethodTypes {
   IPFS_ASK,
