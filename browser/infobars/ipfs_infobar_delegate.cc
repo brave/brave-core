@@ -24,9 +24,13 @@
 #include "ui/views/vector_icons.h"
 
 // static
-void IPFSInfoBarDelegate::Create(InfoBarService* infobar_service) {
+void IPFSInfoBarDelegate::Create(InfoBarService* infobar_service,
+                                 content::BrowserContext* browser_context) {
   infobar_service->AddInfoBar(infobar_service->CreateConfirmInfoBar(
       std::unique_ptr<ConfirmInfoBarDelegate>(new IPFSInfoBarDelegate())));
+  auto* prefs = user_prefs::UserPrefs::Get(browser_context);
+  auto infobar_count = prefs->GetInteger(kIPFSInfobarCount);
+  prefs->SetInteger(kIPFSInfobarCount, infobar_count + 1);
 }
 
 IPFSInfoBarDelegate::IPFSInfoBarDelegate() {}

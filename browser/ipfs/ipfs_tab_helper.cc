@@ -50,7 +50,8 @@ void IPFSTabHelper::UpdateActiveState(content::NavigationHandle* handle) {
     InfoBarService* infobar_service =
         InfoBarService::FromWebContents(web_contents());
     if (infobar_service) {
-      IPFSInfoBarDelegate::Create(infobar_service);
+      auto* browser_context = web_contents()->GetBrowserContext();
+      IPFSInfoBarDelegate::Create(infobar_service, browser_context);
     }
   }
 }

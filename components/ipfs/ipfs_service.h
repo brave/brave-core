@@ -17,6 +17,7 @@
 #include "brave/components/ipfs/addresses_config.h"
 #include "brave/components/ipfs/brave_ipfs_client_updater.h"
 #include "brave/components/ipfs/ipfs_constants.h"
+#include "brave/components/ipfs/ipfs_p3a.h"
 #include "brave/components/services/ipfs/public/mojom/ipfs_service.mojom.h"
 #include "components/keyed_service/core/keyed_service.h"
 #include "mojo/public/cpp/bindings/remote.h"
@@ -136,6 +137,7 @@ class IpfsService : public KeyedService,
   BraveIpfsClientUpdater* ipfs_client_updater_;
 
   scoped_refptr<base::SequencedTaskRunner> file_task_runner_;
+  IpfsP3A ipfs_p3a;
   base::WeakPtrFactory<IpfsService> weak_factory_;
 
   DISALLOW_COPY_AND_ASSIGN(IpfsService);

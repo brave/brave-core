@@ -89,6 +89,7 @@ IpfsService::IpfsService(content::BrowserContext* context,
           {base::ThreadPool(), base::MayBlock(),
            base::TaskPriority::BEST_EFFORT,
            base::TaskShutdownBehavior::BLOCK_SHUTDOWN})),
+      ipfs_p3a(this, context),
       weak_factory_(this) {
   DCHECK(!user_data_dir.empty());
   url_loader_factory_ =
@@ -129,6 +130,7 @@ void IpfsService::RegisterPrefs(PrefRegistrySimple* registry) {
       static_cast<int>(ipfs::IPFSResolveMethodTypes::IPFS_ASK));
   registry->RegisterBooleanPref(kIPFSBinaryAvailable, false);
   registry->RegisterBooleanPref(kIPFSAutoFallbackToGateway, false);
+  registry->RegisterIntegerPref(kIPFSInfobarCount, 0);
 }
 
 base::FilePath IpfsService::GetIpfsExecutablePath() {
@@ -352,6 +354,10 @@ void IpfsService::LaunchDaemon(LaunchDaemonCallback callback) {
 void IpfsService::ShutdownDaemon(ShutdownDaemonCallback callback) {
   if (IsDaemonLaunched()) {
     Shutdown();
+  }
+
+  for (auto& observer : observers_) {
+    observer.OnIpfsShutdown();
   }
 
   std::move(callback).Run(true);
