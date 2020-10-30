@@ -16,10 +16,10 @@ class Value;
 
 namespace brave {
 
-enum NewTabPageShowsOptions {
-  DASHBOARD,
-  HOMEPAGE,
-  BLANKPAGE
+enum class NewTabPageShowsOptions {
+  kDashboard,
+  kHomepage,
+  kBlankpage
 };
 
 GURL GetNewTabPageURL(Profile* profile);

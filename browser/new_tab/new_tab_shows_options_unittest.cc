@@ -41,8 +41,9 @@ TEST_F(BraveNewTabTest, BasicTest) {
   auto* prefs = profile->GetPrefs();
 
   // Check NTP url is empty for DASHBOARD.
-  prefs->SetInteger(kNewTabPageShowsOptions,
-                    brave::NewTabPageShowsOptions::DASHBOARD);
+  prefs->SetInteger(
+      kNewTabPageShowsOptions,
+      static_cast<int>(brave::NewTabPageShowsOptions::kDashboard));
   EXPECT_EQ(GURL(), brave::GetNewTabPageURL(profile));
   EXPECT_EQ(GURL(), brave::GetNewTabPageURL(otr_profile));
   EXPECT_TRUE(brave::ShouldUseNewTabURLForNewTab(profile));
@@ -50,8 +51,9 @@ TEST_F(BraveNewTabTest, BasicTest) {
 
   // Check NTP url is empty when option is HOMEPAGE and kHomePageIsNewTabPage
   // is true.
-  prefs->SetInteger(kNewTabPageShowsOptions,
-                    brave::NewTabPageShowsOptions::HOMEPAGE);
+  prefs->SetInteger(
+      kNewTabPageShowsOptions,
+      static_cast<int>(brave::NewTabPageShowsOptions::kHomepage));
   prefs->SetString(prefs::kHomePage, "https://www.brave.com/");
   prefs->SetBoolean(prefs::kHomePageIsNewTabPage, true);
   EXPECT_EQ(GURL(), brave::GetNewTabPageURL(profile));
@@ -74,8 +76,9 @@ TEST_F(BraveNewTabTest, BasicTest) {
 
   // Check NTP url is used when option is BLANKPAGE.
   // Blank page will go NTP route and BraveNewTabUI will handle it.
-  prefs->SetInteger(kNewTabPageShowsOptions,
-                    brave::NewTabPageShowsOptions::BLANKPAGE);
+  prefs->SetInteger(
+      kNewTabPageShowsOptions,
+      static_cast<int>(brave::NewTabPageShowsOptions::kBlankpage));
   EXPECT_EQ(GURL(), brave::GetNewTabPageURL(profile));
   EXPECT_EQ(GURL(), brave::GetNewTabPageURL(otr_profile));
   EXPECT_TRUE(brave::ShouldUseNewTabURLForNewTab(profile));

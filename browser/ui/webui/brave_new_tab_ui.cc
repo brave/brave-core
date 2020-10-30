@@ -28,7 +28,7 @@ BraveNewTabUI::BraveNewTabUI(content::WebUI* web_ui, const std::string& name)
 
   const bool show_blank_page_for_newtab =
       profile->GetPrefs()->GetInteger(kNewTabPageShowsOptions) ==
-          brave::NewTabPageShowsOptions::BLANKPAGE;
+          static_cast<int>(brave::NewTabPageShowsOptions::kBlankpage);
 
   if (show_blank_page_for_newtab) {
     content::WebUIDataSource* source =
