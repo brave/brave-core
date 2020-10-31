@@ -60,6 +60,8 @@ import org.chromium.chrome.browser.preferences.website.BraveShieldsContentSettin
 import org.chromium.chrome.browser.profiles.Profile;
 import org.chromium.chrome.browser.shields.BraveShieldsMenuObserver;
 import org.chromium.chrome.browser.shields.BraveShieldsUtils;
+import org.chromium.chrome.browser.brave_stats.BraveStatsUtil;
+import org.chromium.chrome.browser.onboarding.OnboardingPrefManager;
 import org.chromium.chrome.browser.tab.Tab;
 
 import java.util.Collections;
@@ -108,6 +110,7 @@ public class BraveShieldsHandler implements BraveRewardsHelper.LargeIconReadyCal
     private LinearLayout mAboutLayout;
     private LinearLayout mToggleLayout;
     private LinearLayout mThankYouLayout;
+    private LinearLayout mPrivacyReportLayout;
     private LinearLayout mReportBrokenSiteLayout;
     private TextView mSiteBlockCounterText;
     private TextView mShieldsDownText;
@@ -365,6 +368,7 @@ public class BraveShieldsHandler implements BraveRewardsHelper.LargeIconReadyCal
 
         mReportBrokenSiteLayout = mPopupView.findViewById(R.id.brave_shields_report_site_layout_id);
         mThankYouLayout = mPopupView.findViewById(R.id.brave_shields_thank_you_layout_id);
+        mPrivacyReportLayout = mPopupView.findViewById(R.id.brave_shields_privacy_report_layout_id);
 
         mBottomDivider = mToggleLayout.findViewById(R.id.bottom_divider);
         mToggleIcon = mToggleLayout.findViewById(R.id.toggle_favicon);
@@ -407,6 +411,24 @@ public class BraveShieldsHandler implements BraveRewardsHelper.LargeIconReadyCal
                 setToggleView(!mSecondaryLayout.isShown());
             }
         });
+
+        ImageView mPrivacyReportIcon = mPrivacyReportLayout.findViewById(R.id.toggle_favicon);
+        mPrivacyReportIcon.setImageResource(R.drawable.ic_arrow_forward);
+        mPrivacyReportIcon.setColorFilter(mContext.getResources().getColor(R.color.default_icon_color_tint_list));
+        TextView mViewPrivacyReportText = mPrivacyReportLayout.findViewById(R.id.toggle_text);
+        mViewPrivacyReportText.setText(R.string.view_full_privacy_report);
+        mPrivacyReportLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                BraveStatsUtil.showBraveStats();
+                hideBraveShieldsMenu();
+            }
+        });
+        if (OnboardingPrefManager.getInstance().isBraveStatsEnabled()) {
+            mPrivacyReportLayout.setVisibility(View.VISIBLE);
+        } else {
+            mPrivacyReportLayout.setVisibility(View.GONE);
+        }
 
         setUpSecondaryLayout();
 

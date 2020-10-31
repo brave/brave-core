@@ -1124,7 +1124,7 @@ until they verify, or until 90 days have passed.
         Allow all fingerprinting
       </message>
       <message name="IDS_ADS_AND_OTHER_THINGS_BLOCKED" desc="Text for shields option.">
-        Ads and other creepy\nthings blocked
+        Trackers, ads, and\nmore blocked
       </message>
       <message name="IDS_SHIELDS_ABOUT_TEXT" desc="About Text for shields option.">
         Sites often include cookies and scripts which try to identify you and your device. They want to work out who you are and follow you across the web-tracking what you do on every site.\n\nBrave blocks these things so that you can browse without being followed around.
@@ -1554,6 +1554,9 @@ until they verify, or until 90 days have passed.
       </message>
       <message name="IDS_AUTOMATICALLY_OPEN_WHEN_POSSIBLE_TITLE" desc="Title for preference that allows the user to open downloads automatically.">
         Automatically open when possible
+      </message>
+      <message name="IDS_VIEW_FULL_PRIVACY_REPORT" desc="Shields privacy report text">
+        View full Privacy Report
       </message>
     </messages>
   </release>

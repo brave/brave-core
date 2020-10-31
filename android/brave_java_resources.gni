@@ -645,6 +645,7 @@ brave_java_resources = [
   "java/res/drawable/enable_rewards_button.xml",
   "java/res/drawable/ic_add.xml",
   "java/res/drawable/ic_arrow_drop_down_white.xml",
+  "java/res/drawable/ic_arrow_forward.xml",
   "java/res/drawable/ic_back.xml",
   "java/res/drawable/ic_bat.xml",
   "java/res/drawable/ic_binance.xml",
