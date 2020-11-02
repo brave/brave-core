@@ -72,8 +72,11 @@ import Messages = BraveToday.Messages
 
 Background.setListener<void>(
   MessageTypes.indicatingOpen,
-  async function (payload, sender) {
-    // Start to fetch data if that hasn't happened yet
+  async function () {
+    // Start to fetch data if that hasn't happened yet,
+    // but don't use resources returning it when
+    // most NTP opens won't result in reading Brave Today
+    // content (or changing publisher settings).
     await Promise.all([
       Feed.getOrFetchData(),
       Publishers.getOrFetchData()
@@ -133,7 +136,7 @@ Background.setListener<Messages.IsFeedUpdateAvailableResponse, Messages.IsFeedUp
   MessageTypes.isFeedUpdateAvailable,
   async function (req, sender, sendResponse) {
     const requestHash = req.hash
-    const feed = await Feed.getOrFetchData()
+    const feed = await Feed.getOrFetchData(true)
     const isUpdateAvailable = !!(feed && feed.hash !== requestHash)
     sendResponse({ isUpdateAvailable })
   }

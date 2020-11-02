@@ -58,7 +58,7 @@ function clearStorageData () {
 // to fetch whilst we're waiting.
 const getLocalDataLock = getStorageData()
 
-function performUpdateFeed() {
+function performUpdateFeed () {
   // Sanity check
   if (readLock) {
     console.error('Asked to update feed but already waiting for another update!')
@@ -79,7 +79,7 @@ function performUpdateFeed() {
         }
         const enabledPublishers = {}
         for (const publisher of Object.values(publishers)) {
-          if (isPublisherContentAllowed(publisher)){
+          if (isPublisherContentAllowed(publisher)) {
             enabledPublishers[publisher.publisher_id] = publisher
           }
         }
@@ -100,15 +100,18 @@ function performUpdateFeed() {
   })
 }
 
-export async function getOrFetchData() {
+export async function getOrFetchData (waitForInProgressUpdate: boolean = false) {
   await getLocalDataLock
+  if (waitForInProgressUpdate && readLock) {
+    await readLock
+  }
   if (memoryTodayData) {
     return memoryTodayData
   }
-  return await update()
+  return update()
 }
 
-export async function update(force: boolean = false) {
+export async function update (force: boolean = false) {
   // Fetch but only once at a time, and wait.
   if (!readLock) {
     performUpdateFeed()
@@ -123,7 +126,7 @@ export async function update(force: boolean = false) {
   return memoryTodayData
 }
 
-export async function clearCache() {
+export async function clearCache () {
   await getLocalDataLock
   if (readLock) {
     await readLock
@@ -133,6 +136,6 @@ export async function clearCache() {
 }
 
 // When publishers (or publishers prefs) changes, update articles
-addPublishersChangedListener(function (publishers) {
-  update(true)
+addPublishersChangedListener(async function (publishers) {
+  await update(true)
 })
