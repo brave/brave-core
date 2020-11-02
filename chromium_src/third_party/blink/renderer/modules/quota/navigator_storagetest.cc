@@ -11,9 +11,9 @@
 #include "content/public/test/browser_test.h"
 #include "content/public/test/browser_test_utils.h"
 
-const char kBatteryTest[] = "/battery.html";
+const char kStorageEstimateTest[] = "/storage_estimate.html";
 
-class NavigatorGetBatteryDisabledTest : public InProcessBrowserTest {
+class NavigatorStorageEstimateQuotaTest : public InProcessBrowserTest {
  public:
   void SetUpOnMainThread() override {
     InProcessBrowserTest::SetUpOnMainThread();
@@ -27,18 +27,14 @@ class NavigatorGetBatteryDisabledTest : public InProcessBrowserTest {
   }
 };
 
-IN_PROC_BROWSER_TEST_F(NavigatorGetBatteryDisabledTest, IsDisabled) {
-  GURL url = embedded_test_server()->GetURL(kBatteryTest);
+IN_PROC_BROWSER_TEST_F(NavigatorStorageEstimateQuotaTest, Is2Gb) {
+  GURL url = embedded_test_server()->GetURL(kStorageEstimateTest);
   ui_test_utils::NavigateToURL(browser(), url);
   content::WebContents* contents =
       browser()->tab_strip_model()->GetActiveWebContents();
   ASSERT_TRUE(content::WaitForLoadStop(contents));
   EXPECT_EQ(url, contents->GetURL());
 
-  bool getBatteryBlocked;
-  ASSERT_TRUE(ExecuteScriptAndExtractBool(
-      contents,
-      "window.domAutomationController.send(getBatteryBlocked())",
-      &getBatteryBlocked));
-  EXPECT_TRUE(getBatteryBlocked);
+  EXPECT_EQ(true, content::EvalJs(contents->GetMainFrame(),
+                                  "getStorageEstimateIs2Gb()"));
 }
