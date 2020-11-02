@@ -226,6 +226,16 @@ export const SettingsCloseIcon = styled<{}, 'button'>('button')`
   height: 20px;
   cursor: pointer;
   background: inherit;
+
+  &:active {
+    outline: none;
+  }
+
+  &:focus {
+    outline-style: solid;
+    outline-color: ${p => p.theme.color.brandBrave};
+    outline-width: 1px;
+  }
 `
 
 interface SettingsRowProps {
