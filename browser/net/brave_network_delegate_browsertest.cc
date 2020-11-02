@@ -16,6 +16,7 @@
 #include "components/content_settings/core/browser/host_content_settings_map.h"
 #include "components/content_settings/core/common/pref_names.h"
 #include "components/network_session_configurator/common/network_switches.h"
+#include "components/content_settings/core/browser/cookie_settings.h"
 #include "components/prefs/pref_service.h"
 #include "content/public/browser/render_frame_host.h"
 #include "content/public/browser/web_contents.h"
@@ -307,8 +308,10 @@ IN_PROC_BROWSER_TEST_F(BraveNetworkDelegateBrowserTest,
   DefaultBlockAllCookies();
   DefaultBlockThirdPartyCookies();
 
-  EXPECT_TRUE(browser()->profile()->GetPrefs()->GetBoolean(
-      prefs::kBlockThirdPartyCookies));
+  EXPECT_EQ(static_cast<content_settings::CookieControlsMode>(
+      browser()->profile()->GetPrefs()->GetInteger(prefs::kCookieControlsMode)),
+      content_settings::CookieControlsMode::kBlockThirdParty);
+
   EXPECT_EQ(browser()->profile()->GetPrefs()->GetInteger(
                 "profile.default_content_setting_values.cookies"),
             ContentSetting::CONTENT_SETTING_ALLOW);
@@ -328,8 +331,9 @@ IN_PROC_BROWSER_TEST_F(BraveNetworkDelegateBrowserTest,
   DefaultBlockAllCookies();
   DefaultAllowAllCookies();
 
-  EXPECT_FALSE(browser()->profile()->GetPrefs()->GetBoolean(
-      prefs::kBlockThirdPartyCookies));
+  EXPECT_EQ(static_cast<content_settings::CookieControlsMode>(
+      browser()->profile()->GetPrefs()->GetInteger(prefs::kCookieControlsMode)),
+      content_settings::CookieControlsMode::kOff);
   EXPECT_EQ(browser()->profile()->GetPrefs()->GetInteger(
                 "profile.default_content_setting_values.cookies"),
             ContentSetting::CONTENT_SETTING_ALLOW);
@@ -346,8 +350,9 @@ IN_PROC_BROWSER_TEST_F(BraveNetworkDelegateBrowserTest,
   DefaultBlockThirdPartyCookies();
   DefaultAllowAllCookies();
 
-  EXPECT_FALSE(browser()->profile()->GetPrefs()->GetBoolean(
-      prefs::kBlockThirdPartyCookies));
+  EXPECT_EQ(static_cast<content_settings::CookieControlsMode>(
+      browser()->profile()->GetPrefs()->GetInteger(prefs::kCookieControlsMode)),
+      content_settings::CookieControlsMode::kOff);
   EXPECT_EQ(browser()->profile()->GetPrefs()->GetInteger(
                 "profile.default_content_setting_values.cookies"),
             ContentSetting::CONTENT_SETTING_ALLOW);
@@ -364,8 +369,9 @@ IN_PROC_BROWSER_TEST_F(BraveNetworkDelegateBrowserTest,
   DefaultBlockThirdPartyCookies();
   DefaultBlockAllCookies();
 
-  EXPECT_FALSE(browser()->profile()->GetPrefs()->GetBoolean(
-      prefs::kBlockThirdPartyCookies));
+  EXPECT_EQ(static_cast<content_settings::CookieControlsMode>(
+      browser()->profile()->GetPrefs()->GetInteger(prefs::kCookieControlsMode)),
+      content_settings::CookieControlsMode::kBlockThirdParty);
   EXPECT_EQ(browser()->profile()->GetPrefs()->GetInteger(
                 "profile.default_content_setting_values.cookies"),
             ContentSetting::CONTENT_SETTING_BLOCK);
@@ -382,8 +388,9 @@ IN_PROC_BROWSER_TEST_F(BraveNetworkDelegateBrowserTest,
   DefaultAllowAllCookies();
   DefaultBlockThirdPartyCookies();
 
-  EXPECT_TRUE(browser()->profile()->GetPrefs()->GetBoolean(
-      prefs::kBlockThirdPartyCookies));
+  EXPECT_EQ(static_cast<content_settings::CookieControlsMode>(
+      browser()->profile()->GetPrefs()->GetInteger(prefs::kCookieControlsMode)),
+      content_settings::CookieControlsMode::kBlockThirdParty);
   EXPECT_EQ(browser()->profile()->GetPrefs()->GetInteger(
                 "profile.default_content_setting_values.cookies"),
             ContentSetting::CONTENT_SETTING_ALLOW);
@@ -400,8 +407,9 @@ IN_PROC_BROWSER_TEST_F(BraveNetworkDelegateBrowserTest,
   DefaultAllowAllCookies();
   DefaultBlockAllCookies();
 
-  EXPECT_FALSE(browser()->profile()->GetPrefs()->GetBoolean(
-      prefs::kBlockThirdPartyCookies));
+  EXPECT_EQ(static_cast<content_settings::CookieControlsMode>(
+      browser()->profile()->GetPrefs()->GetInteger(prefs::kCookieControlsMode)),
+      content_settings::CookieControlsMode::kBlockThirdParty);
   EXPECT_EQ(browser()->profile()->GetPrefs()->GetInteger(
                 "profile.default_content_setting_values.cookies"),
             ContentSetting::CONTENT_SETTING_BLOCK);
