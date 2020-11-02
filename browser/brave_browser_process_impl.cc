@@ -330,6 +330,7 @@ void BraveBrowserProcessImpl::OnTorEnabledChanged() {
 }
 #endif
 
+if BUILDFLAG(BRAVE_P3A_ENABLED)
 brave::BraveP3AService* BraveBrowserProcessImpl::brave_p3a_service() {
   if (brave_p3a_service_) {
     return brave_p3a_service_.get();
@@ -338,6 +339,7 @@ brave::BraveP3AService* BraveBrowserProcessImpl::brave_p3a_service() {
   brave_p3a_service()->InitCallbacks();
   return brave_p3a_service_.get();
 }
+#endif
 
 #if BUILDFLAG(BUNDLE_WIDEVINE_CDM)
 BraveWidevineBundleManager*
