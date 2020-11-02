@@ -72,7 +72,7 @@ class PageWallet extends React.Component<Props, State> {
   }
 
   onModalBackupOpen = () => {
-    if (this.props.rewardsData.recoveryKey.length === 0) {
+    if (!this.props.rewardsData.recoveryKey || this.props.rewardsData.recoveryKey.length === 0) {
       this.actions.getWalletPassphrase()
     }
     this.actions.onModalBackupOpen()
