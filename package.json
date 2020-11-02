@@ -267,7 +267,7 @@
     "@types/storybook__react": "^4.0.2",
     "acorn": "^7.1.1",
     "babel-loader": "^8.1.0",
-    "brave-ui": "github:brave/brave-ui#36f3cd135399060641123136feb8253e53d68499",
+    "brave-ui": "github:brave/brave-ui#9727652a47f014c70cda71520bb7f847bd48a4f2",
     "chalk": "^2.4.2",
     "commander": "^2.9.0",
     "css-loader": "^2.1.1",
