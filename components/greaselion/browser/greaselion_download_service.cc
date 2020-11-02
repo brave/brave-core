@@ -48,6 +48,7 @@ const char kTwitterTips[] = "twitter-tips-enabled";
 const char kRedditTips[] = "reddit-tips-enabled";
 const char kGithubTips[] = "github-tips-enabled";
 const char kAutoContribution[] = "auto-contribution-enabled";
+const char kAds[] = "ads-enabled";
 const char kSupportsMinimumBraveVersion[] =
     "supports-minimum-brave-version";
 
@@ -81,9 +82,11 @@ void GreaselionRule::Parse(base::DictionaryValue* preconditions_value,
         preconditions_.reddit_tips_enabled = condition;
       } else if (kv.first == kGithubTips) {
         preconditions_.github_tips_enabled = condition;
-      }  else if (kv.first == kAutoContribution) {
+      } else if (kv.first == kAutoContribution) {
         preconditions_.auto_contribution_enabled = condition;
-      }  else if (kv.first == kSupportsMinimumBraveVersion) {
+      } else if (kv.first == kAds) {
+        preconditions_.ads_enabled = condition;
+      } else if (kv.first == kSupportsMinimumBraveVersion) {
         preconditions_.supports_minimum_brave_version = condition;
       } else {
         LOG(INFO) << "Greaselion encountered an unknown precondition: "
@@ -154,6 +157,9 @@ bool GreaselionRule::Matches(
     return false;
   if (!PreconditionFulfilled(preconditions_.supports_minimum_brave_version,
                           state[greaselion::SUPPORTS_MINIMUM_BRAVE_VERSION]))
+    return false;
+  if (!PreconditionFulfilled(preconditions_.ads_enabled,
+                             state[greaselion::ADS]))
     return false;
   // Validate against browser version.
   if (base::Version::IsValidWildcardString(minimum_brave_version_)) {

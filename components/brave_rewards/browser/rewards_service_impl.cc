@@ -1332,6 +1332,9 @@ void RewardsServiceImpl::EnableGreaseLion() {
       greaselion_service_->SetFeatureEnabled(
           greaselion::AUTO_CONTRIBUTION,
           profile_->GetPrefs()->GetBoolean(prefs::kAutoContributeEnabled));
+      greaselion_service_->SetFeatureEnabled(
+          greaselion::ADS,
+          profile_->GetPrefs()->GetBoolean(ads::prefs::kEnabled));
     }
   #endif
 }
@@ -1642,6 +1645,12 @@ void RewardsServiceImpl::OnAdsEnabled(bool ads_enabled) {
   if (ads_enabled) {
     StartLedger(base::DoNothing());
   }
+
+  #if BUILDFLAG(ENABLE_GREASELION)
+  greaselion_service_->SetFeatureEnabled(
+      greaselion::ADS,
+      profile_->GetPrefs()->GetBoolean(ads::prefs::kEnabled));
+  #endif
 
   for (auto& observer : observers_) {
     observer.OnAdsEnabled(this, ads_enabled);
