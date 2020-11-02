@@ -13,12 +13,19 @@ import background5 from '../assets/background_5.svg'
 export const loading = styled.div``
 
 export const root = styled.div`
+  height: 100%;
+  color: var(--brave-palette-white);
+  background-color: var(--brave-palette-neutral900);
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
+`
+
+export const background = styled.div`
   display: flex;
   justify-content: center;
   padding: 64px 12px 10px;
   height: 100%;
-  color: var(--brave-palette-white);
-  background-color: var(--brave-palette-neutral900);
   background-size: cover;
   background-repeat: no-repeat;
   background-position: center;
@@ -38,6 +45,14 @@ export const root = styled.div`
 
   &.background-style-5 {
     background-image: url('${background5}');
+  }
+
+  &.background-style-custom {
+    background-image: linear-gradient(
+      180deg,
+      rgba(0, 0, 0, 0) 0%,
+      rgba(0, 0, 0, 0.3) 42.84%,
+      rgba(0, 0, 0, 0.5) 100%)
   }
 `
 
