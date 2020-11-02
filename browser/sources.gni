@@ -24,4 +24,5 @@ brave_chrome_browser_deps += brave_browser_new_tab_deps
 
 brave_chrome_browser_public_deps = [
   "//brave/components/brave_sync:constants",
+  "//brave/components/variations:constants",
 ]
