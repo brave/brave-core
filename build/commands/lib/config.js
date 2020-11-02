@@ -318,6 +318,10 @@ Config.prototype.buildArgs = function () {
       args.symbol_level = 1
     }
 
+    // Feed is not used in Brave
+    args.enable_feed_v1 = false
+    args.enable_feed_v2 = false
+
     // TODO(fixme)
     args.enable_tor = false
 
