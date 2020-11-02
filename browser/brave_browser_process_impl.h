@@ -13,6 +13,7 @@
 #include "brave/components/brave_component_updater/browser/brave_component.h"
 #include "brave/components/brave_referrals/buildflags/buildflags.h"
 #include "brave/components/greaselion/browser/buildflags/buildflags.h"
+#include "brave/components/p3a/buildflags.h"
 #include "chrome/browser/browser_process_impl.h"
 #include "extensions/buildflags/buildflags.h"
 #include "third_party/widevine/cdm/buildflags.h"
@@ -20,7 +21,9 @@
 namespace brave {
 class BraveReferralsService;
 class BraveStatsUpdater;
+if BUILDFLAG(BRAVE_P3A_ENABLED)
 class BraveP3AService;
+#endif
 }  // namespace brave
 
 #if BUILDFLAG(BUNDLE_WIDEVINE_CDM)
@@ -91,7 +94,9 @@ class BraveBrowserProcessImpl : public BrowserProcessImpl {
 #if BUILDFLAG(ENABLE_TOR)
   extensions::BraveTorClientUpdater* tor_client_updater();
 #endif
+if BUILDFLAG(BRAVE_P3A_ENABLED)
   brave::BraveP3AService* brave_p3a_service();
+#endif
 #if BUILDFLAG(BUNDLE_WIDEVINE_CDM)
   BraveWidevineBundleManager* brave_widevine_bundle_manager();
 #endif
@@ -150,7 +155,9 @@ class BraveBrowserProcessImpl : public BrowserProcessImpl {
 #if BUILDFLAG(BUNDLE_WIDEVINE_CDM)
   std::unique_ptr<BraveWidevineBundleManager> brave_widevine_bundle_manager_;
 #endif
+if BUILDFLAG(BRAVE_P3A_ENABLED)
   scoped_refptr<brave::BraveP3AService> brave_p3a_service_;
+#endif
   std::unique_ptr<NTPSponsoredImagesService> ntp_sponsored_images_service_;
 
   SEQUENCE_CHECKER(sequence_checker_);
