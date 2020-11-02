@@ -34,6 +34,9 @@ constexpr char kAexp[] = "https://[*.]aexp-static.com/*";
 constexpr char kSony[] = "https://[*.]sony.com/*";
 constexpr char kGoogle[] = "https://[*.]google.com/*";
 constexpr char kGoogleusercontent[] = "https://[*.]googleusercontent.com/*";
+constexpr char kBitbucket[] = "https://[*.]bitbucket.org/*";
+constexpr char kAtlassiannet[] = "https://[*.]atlassian.net/*";
+constexpr char kAtlassiancom[] = "https://[*.]atlassian.com/*";
 
 bool BraveIsAllowedThirdParty(
     const GURL& url,
@@ -98,6 +101,22 @@ bool BraveIsAllowedThirdParty(
           {
             ContentSettingsPattern::FromString(kTwitch),
             ContentSettingsPattern::FromString(kDiscord)
+          },
+          {
+            ContentSettingsPattern::FromString(kBitbucket),
+            ContentSettingsPattern::FromString(kAtlassiancom)
+          },
+          {
+            ContentSettingsPattern::FromString(kAtlassiancom),
+            ContentSettingsPattern::FromString(kBitbucket)
+          },
+          {
+            ContentSettingsPattern::FromString(kAtlassiancom),
+            ContentSettingsPattern::FromString(kAtlassiannet)
+          },
+          {
+            ContentSettingsPattern::FromString(kAtlassiannet),
+            ContentSettingsPattern::FromString(kAtlassiancom)
           }
       });
 
