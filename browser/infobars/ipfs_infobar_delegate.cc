@@ -65,11 +65,11 @@ base::string16 IPFSInfoBarDelegate::GetButtonLabel(InfoBarButton button) const {
 }
 
 base::string16 IPFSInfoBarDelegate::GetLinkText() const {
-  return base::string16();
+  return l10n_util::GetStringUTF16(IDS_BRAVE_IPFS_LEARN_MORE);
 }
 
 GURL IPFSInfoBarDelegate::GetLinkURL() const {
-  return GURL();  // No learn more link for now.
+  return GURL(ipfs::kIPFSLearnMoreURL);
 }
 
 bool IPFSInfoBarDelegate::Accept() {

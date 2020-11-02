@@ -933,8 +933,11 @@ By installing this extension, you are agreeing to the Google Widevine Terms of U
       <message name="IDS_BRAVE_IPFS_SETTINGS" desc="Open IPFS settings">
         Settings
       </message>
-      <message name="IDS_BRAVE_IPFS_ENABLE_IPFS" desc="Instal or Enable IPFS">
+      <message name="IDS_BRAVE_IPFS_ENABLE_IPFS" desc="Install and Enable IPFS">
         Enable IPFS
+      </message>
+      <message name="IDS_BRAVE_IPFS_LEARN_MORE">
+        Learn more about privacy consequences
       </message>
       <!-- Brave Wayback Machine -->
       <message name="IDS_BRAVE_WAYBACK_MACHINE_INFOBAR_PAGE_MISSING_TEXT" desc="The label for sorry message when page is not available on infobar">
