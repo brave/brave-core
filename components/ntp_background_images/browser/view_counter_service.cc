@@ -282,14 +282,14 @@ std::string ViewCounterService::GetSuperReferralCode() const {
 
 void ViewCounterService::UpdateP3AValues() const {
   uint64_t new_tab_count = new_tab_count_state_->GetHighestValueInWeek();
-  constexpr int kNewTabCount[] = {0, 1, 4, 9, 21, 51, 101};
+  constexpr int kNewTabCount[] = {0, 3, 8, 20, 50, 100};
   const int* it_count =
       std::lower_bound(kNewTabCount, std::end(kNewTabCount), new_tab_count);
   int answer = it_count - kNewTabCount;
   UMA_HISTOGRAM_EXACT_LINEAR("Brave.NTP.NewTabsCreated", answer,
-      base::size(kNewTabCount) + 1);
+                             base::size(kNewTabCount) + 1);
 
-  constexpr double kSponsoredRatio[] = {0, 1.0, 10.0, 20.0, 30.0, 40.0, 50.0};
+  constexpr double kSponsoredRatio[] = {0, 10.0, 20.0, 30.0, 40.0, 50.0};
   uint64_t branded_new_tab_count =
       branded_new_tab_count_state_->GetHighestValueInWeek();
   if (branded_new_tab_count == 0 || new_tab_count == 0) {
@@ -301,7 +301,7 @@ void ViewCounterService::UpdateP3AValues() const {
     answer = it_ratio - kSponsoredRatio;
   }
   UMA_HISTOGRAM_EXACT_LINEAR("Brave.NTP.SponsoredNewTabsCreated", answer,
-      base::size(kSponsoredRatio) + 1);
+                             base::size(kSponsoredRatio) + 1);
 }
 
 }  // namespace ntp_background_images
