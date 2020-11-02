@@ -828,4 +828,8 @@ void LedgerImpl::LinkBraveWallet(
   wallet()->LinkBraveWallet(destination_payment_id, callback);
 }
 
+void LedgerImpl::GetTransferableAmount(GetTransferableAmountCallback callback) {
+  promotion()->GetTransferableAmount(callback);
+}
+
 }  // namespace ledger
