@@ -52,13 +52,3 @@ export const close = styled.div`
     color: var(--brave-palette-grey500);
   }
 `
-
-export const error = styled.div`
-  text-align: center;
-  margin-top: 45%;
-`
-
-export const errorDetails = styled.div`
-  margin-top: 10px;
-  font-size: 12px;
-`

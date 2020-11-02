@@ -484,7 +484,9 @@
       <message name="IDS_BRAVE_REWARDS_TIP_CONTRIBUTION_CANCELED" desc="">Your monthly contribution to this creator has been canceled.</message>
       <message name="IDS_BRAVE_REWARDS_TIP_CURRENTLY_SUPPORTING" desc="">You’re currently supporting this creator</message>
       <message name="IDS_BRAVE_REWARDS_TIP_CURRENT_MONTHLY_CONTRIBUTION" desc="">Current monthly contribution</message>
-      <message name="IDS_BRAVE_REWARDS_TIP_ERROR_HAS_OCCURRED" desc="">Oops - an error has occurred.</message>
+      <message name="IDS_BRAVE_REWARDS_TIP_ERROR_HAS_OCCURRED" desc="">A wild bug has appeared</message>
+      <message name="IDS_BRAVE_REWARDS_TIP_ERROR_SERVER_CONNECTION" desc="">Server connection error</message>
+      <message name="IDS_BRAVE_REWARDS_TIP_ERROR_TRY_AGAIN" desc="">Please close and reopen the tipping banner to try again.</message>
       <message name="IDS_BRAVE_REWARDS_TIP_MONTHLY_CONTRIBUTION_SET" desc="">Monthly contribution has been set.</message>
       <message name="IDS_BRAVE_REWARDS_TIP_NEXT_CONTRIBUTION_DATE" desc="">Next contribution date:</message>
       <message name="IDS_BRAVE_REWARDS_TIP_ONE_TIME_TIP" desc="">One Time Tip</message>
