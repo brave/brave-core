@@ -18,8 +18,7 @@ using std::placeholders::_3;
 namespace ledger {
 namespace promotion {
 
-PromotionTransfer::PromotionTransfer(LedgerImpl* ledger) :
-    ledger_(ledger) {
+PromotionTransfer::PromotionTransfer(LedgerImpl* ledger) : ledger_(ledger) {
   DCHECK(ledger_);
   credentials_ = credential::CredentialsFactory::Create(
       ledger_,
@@ -29,8 +28,19 @@ PromotionTransfer::PromotionTransfer(LedgerImpl* ledger) :
 
 PromotionTransfer::~PromotionTransfer() = default;
 
-void PromotionTransfer::Start(ledger::ResultCallback callback) {
-  auto tokens_callback = std::bind(&PromotionTransfer::GetEligibleTokens,
+void PromotionTransfer::GetAmount(
+    ledger::GetTransferableAmountCallback callback) {
+  GetEligibleTokens([callback](type::UnblindedTokenList list) {
+    double amount = 0.0;
+    for (auto& item : list) {
+      amount += item->value;
+    }
+    callback(amount);
+  });
+}
+
+void PromotionTransfer::GetEligibleTokens(GetEligibleTokensCallback callback) {
+  auto tokens_callback = std::bind(&PromotionTransfer::OnGetEligiblePromotions,
       this,
       _1,
       callback);
@@ -40,14 +50,9 @@ void PromotionTransfer::Start(ledger::ResultCallback callback) {
       tokens_callback);
 }
 
-void PromotionTransfer::GetEligibleTokens(
+void PromotionTransfer::OnGetEligiblePromotions(
     type::PromotionList promotions,
-    ledger::ResultCallback callback) {
-  auto tokens_callback = std::bind(&PromotionTransfer::OnGetEligibleTokens,
-      this,
-      _1,
-      callback);
-
+    GetEligibleTokensCallback callback) {
   std::vector<std::string> ids;
   for (auto& promotion : promotions) {
     if (!promotion) {
@@ -59,18 +64,21 @@ void PromotionTransfer::GetEligibleTokens(
 
   ledger_->database()->GetSpendableUnblindedTokensByTriggerIds(
       ids,
-      tokens_callback);
+      callback);
+}
+
+void PromotionTransfer::Start(ledger::ResultCallback callback) {
+  auto tokens_callback = std::bind(&PromotionTransfer::OnGetEligibleTokens,
+      this,
+      _1,
+      callback);
+
+  GetEligibleTokens(tokens_callback);
 }
 
 void PromotionTransfer::OnGetEligibleTokens(
     type::UnblindedTokenList list,
     ledger::ResultCallback callback) {
-  if (list.empty()) {
-    BLOG(1, "No eligible tokens");
-    callback(type::Result::LEDGER_OK);
-    return;
-  }
-
   std::vector<type::UnblindedToken> token_list;
   for (auto& item : list) {
     token_list.push_back(*item);
@@ -81,8 +89,7 @@ void PromotionTransfer::OnGetEligibleTokens(
   redeem.processor = type::ContributionProcessor::BRAVE_TOKENS;
   redeem.token_list = token_list;
 
-  const double transfer_amount =
-      token_list.size() * constant::kVotePrice;
+  const double transfer_amount = token_list.size() * constant::kVotePrice;
   credentials_->RedeemTokens(
       redeem,
       [this, transfer_amount, callback](const type::Result result) {
