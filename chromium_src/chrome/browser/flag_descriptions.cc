@@ -37,4 +37,7 @@ const char kBraveIpfsDescription[] =
 const char kBraveSuperReferralName[] = "Enable Brave Super Referral";
 const char kBraveSuperReferralDescription[] =
     "Use custom theme for Brave Super Referral";
+const char kBraveEphemeralStorageName[] = "Enable Ephemeral Storage";
+const char kBraveEphemeralStorageDescription[] =
+    "Use ephemeral storage for third-party frames";
 }  // namespace flag_descriptions
