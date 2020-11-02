@@ -12,12 +12,10 @@
 #include "brave/browser/ui/webui/basic_ui.h"
 #include "brave/browser/ui/webui/brave_new_tab_message_handler.h"
 #include "brave/browser/ui/webui/instant_service_message_handler.h"
-#include "brave/common/pref_names.h"
 #include "brave/common/webui_url_constants.h"
 #include "brave/components/brave_new_tab/resources/grit/brave_new_tab_generated_map.h"
 #include "chrome/browser/profiles/profile.h"
 #include "components/grit/brave_components_resources.h"
-#include "components/prefs/pref_service.h"
 #include "components/strings/grit/components_strings.h"
 #include "content/public/browser/web_ui_data_source.h"
 #include "ui/base/l10n/l10n_util.h"
@@ -26,11 +24,7 @@ BraveNewTabUI::BraveNewTabUI(content::WebUI* web_ui, const std::string& name)
     : WebUIController(web_ui) {
   Profile* profile = Profile::FromWebUI(web_ui);
 
-  const bool show_blank_page_for_newtab =
-      profile->GetPrefs()->GetInteger(kNewTabPageShowsOptions) ==
-          static_cast<int>(brave::NewTabPageShowsOptions::kBlankpage);
-
-  if (show_blank_page_for_newtab) {
+  if (brave::ShouldNewTabShowBlankpage(profile)) {
     content::WebUIDataSource* source =
         content::WebUIDataSource::Create(name);
     source->SetDefaultResource(IDR_BRAVE_BLANK_NEW_TAB_HTML);
