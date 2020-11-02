@@ -10,8 +10,10 @@
 
 #include "base/timer/timer.h"
 #include "brave/components/weekly_storage/weekly_storage.h"
+#if !defined(OS_ANDROID)
 #include "chrome/browser/resource_coordinator/usage_clock.h"
 #include "chrome/browser/ui/browser_list_observer.h"
+#endif  // !defined(OS_ANDROID)
 
 class PrefService;
 class PrefRegistrySimple;
@@ -31,7 +33,9 @@ class BraveUptimeTracker {
   void RecordUsage();
   void RecordP3A();
 
+#if !defined(OS_ANDROID)
   resource_coordinator::UsageClock usage_clock_;
+#endif  // !defined(OS_ANDROID)
   base::RepeatingTimer timer_;
   base::TimeDelta current_total_usage_;
   WeeklyStorage state_;
@@ -39,6 +43,10 @@ class BraveUptimeTracker {
   DISALLOW_COPY_AND_ASSIGN(BraveUptimeTracker);
 };
 
+// BraveWindowTracker is under !OS_ANDROID guard because
+// BrowserListObserver should only be only on desktop
+// Brave.Uptime.BrowserOpenMinutes doesn't work on Android
+#if !defined(OS_ANDROID)
 // Periodically records P3A stats (extracted from Local State) regarding the
 // time when incognito windows were used.
 // Used as a leaking singletone.
@@ -62,6 +70,7 @@ class BraveWindowTracker : public BrowserListObserver {
   PrefService* local_state_;
   DISALLOW_COPY_AND_ASSIGN(BraveWindowTracker);
 };
+#endif  // !defined(OS_ANDROID)
 
 }  // namespace brave
 
