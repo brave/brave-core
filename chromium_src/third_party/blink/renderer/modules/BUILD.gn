@@ -19,5 +19,6 @@ source_set("browser_tests") {
     "//chrome/browser/ui",
     "//chrome/test:test_support_ui",
     "//content/test:test_support",
+    "//third_party/blink/renderer/core/frame",
   ]
 }
