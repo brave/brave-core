@@ -8,6 +8,9 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
+    <org.chromium.chrome.browser.sync.settings.SyncErrorCardPreference
+        android:key="sync_error_card"
+        app:isPreferenceVisible="false"/>
     <!-- This category is only shown for advanced sync consent flow. -->
     <PreferenceCategory
         android:key="syncing_category"
@@ -32,8 +35,7 @@
     <org.chromium.chrome.browser.ui.brave_tricks.checkbox_to_switch.CheckBoxPreference
         android:key="sync_payments_integration"
         android:title="@string/sync_payments_integration"
-        android:persistent="false"
-        />
+        android:persistent="false"/>
 
     <org.chromium.chrome.browser.ui.brave_tricks.checkbox_to_switch.CheckBoxPreference
         android:key="sync_history"
@@ -54,6 +56,17 @@
         android:key="sync_settings"
         android:title="@string/sync_settings"
         android:persistent="false"/>
+
+    <org.chromium.components.browser_ui.settings.ChromeBasePreference
+        android:key="turn_off_sync"
+        android:title="@string/turn_off_sync"
+        android:icon="@drawable/ic_signout_40dp"
+        app:isPreferenceVisible="false"/>
+
+    <PreferenceCategory
+        android:key="advanced_category"
+        android:title="@string/prefs_section_advanced"
+        app:isPreferenceVisible="false"/>
 
     <org.chromium.components.browser_ui.settings.ChromeBasePreference
         android:key="google_activity_controls"
