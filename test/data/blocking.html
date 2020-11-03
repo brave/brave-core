@@ -16,66 +16,68 @@ let numImgBlocked = 0
 
 // Performs an XHR for the specified src
 function xhr(src) {
-  const xhr = new XMLHttpRequest();
-  xhr.open('GET', src, true);
-  xhr.onload = function(e) {
-    if (xhr.response.length !== 0) {
-      numXHRLoaded++
-    } else {
-      numXHRLoadedBlank++
+  return new Promise(resolve => {
+    const xhr = new XMLHttpRequest();
+    xhr.open('GET', src, true);
+    xhr.onload = function(e) {
+      if (xhr.response.length !== 0) {
+        numXHRLoaded++
+      } else {
+        numXHRLoadedBlank++
+      }
+      resolve(onLoad())
     }
-    onLoad()
-  }
-  xhr.onerror = function(e) {
-    numXHRBlocked++
-    onLoad()
-  }
-  xhr.send();
+    xhr.onerror = function(e) {
+      numXHRBlocked++
+      resolve(onLoad())
+    }
+    xhr.send();
+  });
 }
 
 // Performs an XHR for the specified src and reports successful,
 // only if the content matches expected_content.
 function xhr_expect_content(src, expected_content) {
-  const xhr = new XMLHttpRequest();
-  xhr.open('GET', src, true);
-  xhr.onload = function(e) {
-    if (xhr.response === expected_content) {
-      numXHRLoaded++
+  return new Promise(resolve => {
+    const xhr = new XMLHttpRequest();
+    xhr.open('GET', src, true);
+    xhr.onload = function(e) {
+      if (xhr.response === expected_content) {
+        numXHRLoaded++
+      }
+      resolve(onLoad())
     }
-    onLoad()
-  }
-  xhr.onerror = function(e) {
-    console.log(e)
-    numXHRBlocked++
-    onLoad()
-  }
-  xhr.send();
+    xhr.onerror = function(e) {
+      console.log(e)
+      numXHRBlocked++
+      resolve(onLoad())
+    }
+    xhr.send();
+  });
 }
 
 // Adds an image to the DOM with the specified src
 function addImage(src) {
-  const img = document.createElement('img')
-  img.src = src
-  img.className = 'adImage'
-  img.addEventListener('load', onLoad)
-  img.addEventListener('error', () => {
-    onLoad()
-  })
+  return new Promise(resolve => {
+    const img = document.createElement('img')
+    img.src = src
+    img.className = 'adImage'
 
-  img.addEventListener('load', () => {
-    if (img.complete &&
-        (img.naturalHeight !== 1 || img.naturalWidth !== 1)) {
-      numImgLoaded++
-    } else {
-      numImgLoadedBlank++
-    }
-    onLoad()
-  })
-  img.addEventListener('error', () => {
-    numImgBlocked++
-    onLoad()
-  })
-  document.body.appendChild(img)
+    img.addEventListener('load', () => {
+      if (img.complete &&
+          (img.naturalHeight !== 1 || img.naturalWidth !== 1)) {
+        numImgLoaded++
+      } else {
+        numImgLoadedBlank++
+      }
+      resolve(onLoad())
+    })
+    img.addEventListener('error', () => {
+      numImgBlocked++
+      resolve(onLoad())
+    })
+    document.body.appendChild(img)
+  });
 }
 
 // Sets the expectation for the number of images and XHR loaded and blocked
@@ -102,7 +104,7 @@ function onLoad() {
   // For debugging:
   // console.log('sending: ' + JSON.stringify({result, expectedImgLoaded, expectedImgLoadedBlank, expectedImgBlocked, numImgLoadedBlank, numImgBlocked,
   //   numXHRLoaded, expectedXHRLoaded, numXHRLoadedBlank, numXHRBlocked, expectedXHRLoadedBlank, expectedXHRBlocked}))
-  window.domAutomationController.send(result)
+  return result;
 }
 </script>
 </head>
