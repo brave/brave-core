@@ -7,7 +7,10 @@ package org.chromium.chrome.browser.settings;
 
 import android.content.Context;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.TextView;
 
+import org.chromium.chrome.R;
 import org.chromium.chrome.browser.search_engines.settings.SearchEngineAdapter;
 import org.chromium.components.search_engines.TemplateUrl;
 
@@ -35,5 +38,15 @@ public class BraveSearchEngineAdapter extends SearchEngineAdapter {
     public void start() {
         BraveSearchEngineUtils.updateActiveDSE(mIsPrivate);
         super.start();
+    }
+
+    @Override
+    public View getView(int position, View convertView, ViewGroup parent) {
+        View view = super.getView(position, convertView, parent);
+        TextView url = (TextView) view.findViewById(R.id.url);
+        if (url != null) {
+            url.setVisibility(View.GONE);
+        }
+        return view;
     }
 }
