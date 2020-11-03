@@ -22,6 +22,24 @@
 #include "content/public/test/browser_test.h"
 #include "content/public/test/browser_test_utils.h"
 #include "net/dns/mock_host_resolver.h"
+#include "net/test/embedded_test_server/http_request.h"
+#include "net/test/embedded_test_server/http_response.h"
+
+namespace {
+
+std::unique_ptr<net::test_server::HttpResponse> HandleRequest(
+    const net::test_server::HttpRequest& request) {
+  std::unique_ptr<net::test_server::BasicHttpResponse> http_response(
+      new net::test_server::BasicHttpResponse());
+  http_response->set_code(net::HTTP_OK);
+  http_response->set_content_type("text/html");
+  http_response->set_content("test");
+  http_response->AddCustomHeader(
+      "x-ipfs-path", "/ipfs/QmbWqxBEKC3P8tqsKc98xmWNzrzDtRLMiMPL8wBuTGsMnR");
+  return std::move(http_response);
+}
+
+}  // namespace
 
 class IPFSTabHelperTest : public InProcessBrowserTest,
                           public infobars::InfoBarManager::Observer {
@@ -49,7 +67,8 @@ class IPFSTabHelperTest : public InProcessBrowserTest,
     brave::RegisterPathProvider();
     base::FilePath test_data_dir;
     base::PathService::Get(brave::DIR_TEST_DATA, &test_data_dir);
-    embedded_test_server()->ServeFilesFromDirectory(test_data_dir);
+    embedded_test_server()->RegisterRequestHandler(
+        base::BindRepeating(&HandleRequest));
     ASSERT_TRUE(embedded_test_server()->Start());
   }
 
