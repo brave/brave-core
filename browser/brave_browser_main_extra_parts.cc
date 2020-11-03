@@ -7,7 +7,6 @@
 
 #include "base/metrics/histogram_macros.h"
 #include "brave/browser/brave_browser_process_impl.h"
-#include "brave/browser/ui/webui/new_tab_page/brave_new_tab_message_handler.h"
 #include "brave/components/brave_shields/browser/brave_shields_p3a.h"
 #include "brave/components/p3a/brave_p3a_service.h"
 #include "brave/components/p3a/buildflags.h"
@@ -19,6 +18,7 @@
 #if !defined(OS_ANDROID)
 #include "brave/browser/importer/brave_importer_p3a.h"
 #include "brave/browser/p3a/p3a_core_metrics.h"
+#include "brave/browser/ui/webui/new_tab_page/brave_new_tab_message_handler.h"
 #include "chrome/browser/first_run/first_run.h"
 #endif  // !defined(OS_ANDROID)
 
@@ -38,12 +38,13 @@ void RecordInitialP3AValues() {
   if (first_run::IsChromeFirstRun()) {
     RecordImporterP3A(importer::ImporterType::TYPE_UNKNOWN);
   }
+
+  BraveNewTabMessageHandler::RecordInitialP3AValues(
+      g_browser_process->local_state());
 #endif  // !defined(OS_ANDROID)
 
   brave_shields::MaybeRecordShieldsUsageP3A(brave_shields::kNeverClicked,
                                             g_browser_process->local_state());
-  BraveNewTabMessageHandler::RecordInitialP3AValues(
-      g_browser_process->local_state());
 
   // Record crash reporting status stats.
   const bool crash_reports_enabled = g_browser_process->local_state()->
