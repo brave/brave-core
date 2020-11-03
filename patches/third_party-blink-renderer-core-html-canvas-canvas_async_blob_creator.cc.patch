@@ -7,6 +7,6 @@ index 8d3771c4eee8735f1a54d45ce11280d3e74b5e38..5bb8dc301cbda688eb110b45ea85e8d5
    // necessary.
    image_ = image_->MakeUnaccelerated();
 +  BRAVE_CANVAS_ASYNC_BLOB_CREATOR
-
+ 
    sk_sp<SkImage> skia_image =
        image_->PaintImageForCurrentFrame().GetSwSkImage();

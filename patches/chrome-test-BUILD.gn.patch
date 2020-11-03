@@ -5,7 +5,7 @@ index c04f5f4dc2b21572a3c7e7d2ca6f85aca9f8c84b..5348c4bdea7920e401de147a2142957b
 @@ -846,6 +846,7 @@ if (!is_android) {
        "//v8",
      ]
-
+ 
 +    deps += [ "//brave/test:brave_browser_tests_deps", ]
      # Runtime dependencies
      data_deps = [
