@@ -17,8 +17,12 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
+import android.text.SpannableString;
+import android.text.TextUtils;
+import android.text.style.AbsoluteSizeSpan;
 
 import org.chromium.chrome.R;
+import org.chromium.base.Log;
 import org.chromium.chrome.browser.onboarding.OnboardingPrefManager;
 import org.chromium.chrome.browser.onboarding.SearchEngineEnum;
 import org.chromium.chrome.browser.settings.BraveSearchEngineUtils;
@@ -28,7 +32,10 @@ import org.chromium.components.search_engines.TemplateUrlService;
 
 import java.util.List;
 
+import static android.text.Spanned.SPAN_EXCLUSIVE_EXCLUSIVE;
+
 public class SearchEngineOnboardingFragment extends Fragment {
+    private String searchSpanText = "%s\n%s";
     private RadioGroup radioGroup;
 
     private Button btnSave;
@@ -67,20 +74,28 @@ public class SearchEngineOnboardingFragment extends Fragment {
                 SearchEngineEnum searchEngineEnum =
                     OnboardingPrefManager.searchEngineMap.get(templateUrl.getShortName());
 
+                String title = templateUrl.getShortName();
+                String desc = getActivity().getResources().getString(searchEngineEnum.getDesc());
+
+                SpannableString searchTextSpan = new SpannableString(String.format(searchSpanText, title, desc));
+                searchTextSpan.setSpan(new AbsoluteSizeSpan(16, true), 0, title.length(), SPAN_EXCLUSIVE_EXCLUSIVE);
+                searchTextSpan.setSpan(new android.text.style.StyleSpan(android.graphics.Typeface.BOLD), 0, title.length(), SPAN_EXCLUSIVE_EXCLUSIVE);
+                searchTextSpan.setSpan(new AbsoluteSizeSpan(12, true), title.length() + 1, searchTextSpan.length(), SPAN_EXCLUSIVE_EXCLUSIVE);
+
                 RadioButton rdBtn = new RadioButton(getActivity());
                 rdBtn.setId(searchEngineEnum.getId());
                 RadioGroup.LayoutParams params = new RadioGroup.LayoutParams(
-                    RadioGroup.LayoutParams.MATCH_PARENT, dpToPx(getActivity(), 56));
+                    RadioGroup.LayoutParams.MATCH_PARENT, dpToPx(getActivity(), 64));
+                params.setMargins(0, dpToPx(getActivity(), 6), 0, 0);
                 rdBtn.setLayoutParams(params);
-                rdBtn.setTextSize(18);
                 rdBtn.setButtonDrawable(null);
                 rdBtn.setPadding(dpToPx(getActivity(), 30), 0, 0, 0);
-                rdBtn.setTextColor(getResources().getColor(R.color.onboarding_text_color));
+                rdBtn.setTextColor(getActivity().getResources().getColor(R.color.onboarding_text_color));
                 rdBtn.setBackgroundDrawable(
-                    getResources().getDrawable(R.drawable.radiobutton_background));
-                rdBtn.setText(templateUrl.getShortName());
+                    getActivity().getResources().getDrawable(R.drawable.radiobutton_background));
+                rdBtn.setText(searchTextSpan);
                 rdBtn.setCompoundDrawablesWithIntrinsicBounds(
-                    getResources().getDrawable(searchEngineEnum.getIcon()), null, null, null);
+                    getActivity().getResources().getDrawable(searchEngineEnum.getIcon()), null, null, null);
                 rdBtn.setCompoundDrawablePadding(dpToPx(getActivity(), 16));
                 radioGroup.addView(rdBtn);
             }

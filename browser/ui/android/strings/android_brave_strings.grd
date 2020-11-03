@@ -1558,6 +1558,27 @@ until they verify, or until 90 days have passed.
       <message name="IDS_VIEW_FULL_PRIVACY_REPORT" desc="Shields privacy report text">
         View full Privacy Report
       </message>
+      <message name="IDS_GOOGLE_DESC" desc="Onboarding SE text">
+        Most popular
+      </message>
+      <message name="IDS_YAHOO_DESC" desc="Onboarding SE text">
+        Supports Brave
+      </message>
+      <message name="IDS_DDG_DESC" desc="Onboarding SE text">
+        Private and no tracking
+      </message>
+      <message name="IDS_QWANT_DESC" desc="Onboarding SE text">
+        Private and no tracking, EU-based
+      </message>
+      <message name="IDS_STARTPAGE_DESC" desc="Onboarding SE text">
+        Google results without trackers
+      </message>
+      <message name="IDS_BING_DESC" desc="Onboarding SE text">
+        Second most popular
+      </message>
+      <message name="IDS_ONBOARDING_SE_TEXT" desc="Onboarding SE title text">
+        Some search engines protect your privacy better than others when you search the web.
+      </message>
     </messages>
   </release>
 </grit>

@@ -687,6 +687,7 @@ brave_java_resources = [
   "java/res/drawable/progress_indeterminate_orange.xml",
   "java/res/drawable/publisher_favicon_background.xml",
   "java/res/drawable/radio_button_selected_bg.xml",
+  "java/res/drawable/radio_button_holo_bg.xml",
   "java/res/drawable/radiobutton_background.xml",
   "java/res/drawable/rate_feedback_background.xml",
   "java/res/drawable/rect_round_corners_12.xml",
