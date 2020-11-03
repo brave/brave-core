@@ -6,30 +6,26 @@
 #ifndef BRAVE_COMPONENTS_SYNC_DRIVER_BRAVE_SYNC_PROFILE_SYNC_SERVICE_H_
 #define BRAVE_COMPONENTS_SYNC_DRIVER_BRAVE_SYNC_PROFILE_SYNC_SERVICE_H_
 
+#include <memory>
 #include <string>
 
-#include "base/callback.h"
 #include "base/memory/weak_ptr.h"
-#include "base/scoped_observer.h"
 #include "brave/components/brave_sync/brave_sync_prefs.h"
 #include "components/prefs/pref_change_registrar.h"
 #include "components/sync/driver/profile_sync_service.h"
-#include "components/sync_device_info/device_info_tracker.h"
 
 class Profile;
 
 namespace syncer {
 
 class BraveSyncAuthManager;
-class DeviceInfoTracker;
-class LocalDeviceInfoProvider;
-class DeviceInfoSyncService;
+class ProfileSyncServiceDelegate;
 
-class BraveProfileSyncService : public ProfileSyncService,
-                                public syncer::DeviceInfoTracker::Observer {
+class BraveProfileSyncService : public ProfileSyncService {
  public:
-  explicit BraveProfileSyncService(InitParams init_params,
-      DeviceInfoSyncService* device_info_sync_service);
+  explicit BraveProfileSyncService(
+      InitParams init_params,
+      std::unique_ptr<ProfileSyncServiceDelegate> profile_service_delegate);
   ~BraveProfileSyncService() override;
 
   // SyncService implementation
@@ -53,17 +49,11 @@ class BraveProfileSyncService : public ProfileSyncService,
 
   void OnBraveSyncPrefsChanged(const std::string& path);
 
-  // syncer::DeviceInfoTracker::Observer:
-  void OnDeviceInfoChange() override;
-
   brave_sync::Prefs brave_sync_prefs_;
 
   PrefChangeRegistrar brave_sync_prefs_change_registrar_;
 
-  syncer::DeviceInfoTracker* device_info_tracker_;
-  syncer::LocalDeviceInfoProvider* local_device_info_provider_;
-  ScopedObserver<syncer::DeviceInfoTracker, syncer::DeviceInfoTracker::Observer>
-      device_info_observer_{this};
+  std::unique_ptr<ProfileSyncServiceDelegate> profile_service_delegate_;
 
   base::WeakPtrFactory<BraveProfileSyncService> weak_ptr_factory_;
 
