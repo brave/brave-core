@@ -197,10 +197,6 @@
     return base::SysUTF8ToNSString(json_string);
 }
 
-- (bool)removeDevice:(NSString *)deviceGuid {
-  return _worker->RemoveDevice(base::SysNSStringToUTF8(deviceGuid));
-}
-
 - (bool)resetSync {
   return _worker->ResetSync();
 }
