@@ -40,34 +40,21 @@ bool IPFSTabHelper::MaybeCreateForWebContents(
   return true;
 }
 
-void IPFSTabHelper::UpdateActiveState(content::NavigationHandle* handle) {
+void IPFSTabHelper::DidFinishNavigation(content::NavigationHandle* handle) {
   DCHECK(handle);
   DCHECK(handle->IsInMainFrame());
-  active_ = true;
+
   auto resolve_method = static_cast<ipfs::IPFSResolveMethodTypes>(
       pref_service_->GetInteger(kIPFSResolveMethod));
   if (resolve_method == ipfs::IPFSResolveMethodTypes::IPFS_ASK &&
-      IsIPFSURL(handle->GetURL())) {
+      handle->GetResponseHeaders() &&
+      handle->GetResponseHeaders()->HasHeader("x-ipfs-path")) {
     InfoBarService* infobar_service =
         InfoBarService::FromWebContents(web_contents());
     if (infobar_service) {
       auto* browser_context = web_contents()->GetBrowserContext();
       IPFSInfoBarDelegate::Create(infobar_service, browser_context);
     }
-  }
-}
-
-void IPFSTabHelper::DidStartNavigation(
-    content::NavigationHandle* navigation_handle) {
-  if (navigation_handle->IsInMainFrame()) {
-    UpdateActiveState(navigation_handle);
-  }
-}
-
-void IPFSTabHelper::DidRedirectNavigation(
-    content::NavigationHandle* navigation_handle) {
-  if (navigation_handle->IsInMainFrame()) {
-    UpdateActiveState(navigation_handle);
   }
 }
 
