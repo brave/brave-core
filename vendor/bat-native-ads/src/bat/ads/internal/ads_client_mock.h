@@ -10,7 +10,6 @@
 
 #include <stdint.h>
 
-#include <memory>
 #include <string>
 
 #include "testing/gmock/include/gmock/gmock.h"
@@ -31,7 +30,7 @@ class AdsClientMock : public AdsClient {
   MOCK_CONST_METHOD0(CanShowBackgroundNotifications, bool());
 
   MOCK_METHOD1(ShowNotification, void(
-      std::unique_ptr<AdNotificationInfo> info));
+      const AdNotificationInfo& ad_notification));
 
   MOCK_METHOD0(ShouldShowNotifications, bool());
 

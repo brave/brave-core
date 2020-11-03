@@ -195,8 +195,8 @@ bool GetNextUrlEndpointResponse(
     const std::string& url,
     const URLEndpoints& endpoints,
     URLEndpointResponse* url_endpoint_response) {
-  DCHECK(!url.empty());
-  DCHECK(!endpoints.empty());
+  DCHECK(!url.empty()) << "Empty URL";
+  DCHECK(!endpoints.empty()) << "Missing endpoints";
   DCHECK(url_endpoint_response);
 
   const std::string path = GURL(url).PathForRequest();
@@ -208,10 +208,9 @@ bool GetNextUrlEndpointResponse(
     return false;
   }
 
-  const std::string uuid = GetUuid(path);
-
   uint16_t url_endpoint_response_index = 0;
 
+  const std::string uuid = GetUuid(path);
   const auto url_endpoint_response_indexes_iter =
       g_url_endpoint_indexes.find(uuid);
 
@@ -220,9 +219,9 @@ bool GetNextUrlEndpointResponse(
     g_url_endpoint_indexes.insert({uuid, url_endpoint_response_index});
   } else {
     url_endpoint_response_index = url_endpoint_response_indexes_iter->second;
+
     if (url_endpoint_response_index == url_endpoint_responses.size()) {
-      // Fail due to missing url endpoint responses
-      NOTREACHED();
+      NOTREACHED() << "Missing MockUrlRequest endpoint response for " << url;
       return false;
     }
 
@@ -403,7 +402,7 @@ void MockDefaultPrefs(
   mock->SetUint64Pref(prefs::kAdsPerDay, 20);
   mock->SetUint64Pref(prefs::kAdsPerHour, 2);
   mock->SetBooleanPref(prefs::kEnabled, true);
-  mock->SetBooleanPref(prefs::kShouldAllowAdConversionTracking, true);
+  mock->SetBooleanPref(prefs::kShouldAllowConversionTracking, true);
   mock->SetBooleanPref(prefs::kShouldAllowAdsSubdivisionTargeting, false);
   mock->SetStringPref(prefs::kAdsSubdivisionTargetingCode, "AUTO");
   mock->SetStringPref(prefs::kAutoDetectedAdsSubdivisionTargetingCode, "");
@@ -448,7 +447,7 @@ void SetBuildChannel(
 
 void MockPlatformHelper(
     const std::unique_ptr<PlatformHelperMock>& mock,
-    PlatformType platform_type) {
+    const PlatformType platform_type) {
   bool is_mobile;
   std::string platform_name;
 
@@ -498,6 +497,20 @@ void MockPlatformHelper(
 
   ON_CALL(*mock, GetPlatform())
       .WillByDefault(Return(platform_type));
+}
+
+void MockIsNetworkConnectionAvailable(
+    const std::unique_ptr<AdsClientMock>& mock,
+    const bool is_available) {
+  ON_CALL(*mock, IsNetworkConnectionAvailable())
+      .WillByDefault(Return(is_available));
+}
+
+void MockShouldShowNotifications(
+    const std::unique_ptr<AdsClientMock>& mock,
+    const bool should_show) {
+  ON_CALL(*mock, ShouldShowNotifications())
+      .WillByDefault(Return(should_show));
 }
 
 void MockSave(

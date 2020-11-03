@@ -51,8 +51,7 @@ class BatAdsDismissedFrequencyCapTest : public ::testing::Test {
         locale_helper_mock_(std::make_unique<
             NiceMock<brave_l10n::LocaleHelperMock>>()),
         platform_helper_mock_(std::make_unique<
-            NiceMock<PlatformHelperMock>>()),
-        frequency_cap_(std::make_unique<DismissedFrequencyCap>(ads_.get())) {
+            NiceMock<PlatformHelperMock>>()) {
     // You can do set-up work for each test here
 
     brave_l10n::LocaleHelper::GetInstance()->set_for_testing(
@@ -105,10 +104,6 @@ class BatAdsDismissedFrequencyCapTest : public ::testing::Test {
 
   // Objects declared here can be used by all tests in the test case
 
-  Client* get_client() {
-    return ads_->get_client();
-  }
-
   base::test::TaskEnvironment task_environment_;
 
   base::ScopedTempDir temp_dir_;
@@ -117,7 +112,6 @@ class BatAdsDismissedFrequencyCapTest : public ::testing::Test {
   std::unique_ptr<AdsImpl> ads_;
   std::unique_ptr<brave_l10n::LocaleHelperMock> locale_helper_mock_;
   std::unique_ptr<PlatformHelperMock> platform_helper_mock_;
-  std::unique_ptr<DismissedFrequencyCap> frequency_cap_;
   std::unique_ptr<Database> database_;
 };
 
@@ -128,8 +122,12 @@ TEST_F(BatAdsDismissedFrequencyCapTest,
   ad.creative_instance_id = kCreativeInstanceId;
   ad.campaign_id = kCampaignIds.at(0);
 
+  const AdEventList ad_events;
+
+  DismissedFrequencyCap frequency_cap(ads_.get(), ad_events);
+
   // Act
-  const bool should_exclude = frequency_cap_->ShouldExclude(ad);
+  const bool should_exclude = frequency_cap.ShouldExclude(ad);
 
   // Assert
   EXPECT_FALSE(should_exclude);
@@ -147,18 +145,23 @@ TEST_F(BatAdsDismissedFrequencyCapTest,
     ConfirmationType::kDismissed,
   };
 
+  AdEventList ad_events;
+
   for (const auto& confirmation_type : confirmation_types) {
-    AdHistory ad_history = GenerateAdHistory(
-        AdContent::AdType::kAdNotification, ad, confirmation_type);
-    get_client()->AppendAdHistoryToAdsHistory(ad_history);
+    const AdEventInfo ad_event = GenerateAdEvent(AdType::kAdNotification, ad,
+        confirmation_type);
+
+    ad_events.push_back(ad_event);
 
     task_environment_.FastForwardBy(base::TimeDelta::FromMinutes(5));
   }
 
+  DismissedFrequencyCap frequency_cap(ads_.get(), ad_events);
+
   task_environment_.FastForwardBy(base::TimeDelta::FromHours(47));
 
   // Act
-  const bool should_exclude = frequency_cap_->ShouldExclude(ad);
+  const bool should_exclude = frequency_cap.ShouldExclude(ad);
 
   // Assert
   EXPECT_FALSE(should_exclude);
@@ -178,18 +181,23 @@ TEST_F(BatAdsDismissedFrequencyCapTest,
     ConfirmationType::kClicked
   };
 
+  AdEventList ad_events;
+
   for (const auto& confirmation_type : confirmation_types) {
-    AdHistory ad_history = GenerateAdHistory(
-        AdContent::AdType::kAdNotification, ad, confirmation_type);
-    get_client()->AppendAdHistoryToAdsHistory(ad_history);
+    const AdEventInfo ad_event = GenerateAdEvent(AdType::kAdNotification, ad,
+        confirmation_type);
+
+    ad_events.push_back(ad_event);
 
     task_environment_.FastForwardBy(base::TimeDelta::FromMinutes(5));
   }
 
+  DismissedFrequencyCap frequency_cap(ads_.get(), ad_events);
+
   task_environment_.FastForwardBy(base::TimeDelta::FromHours(47));
 
   // Act
-  const bool should_exclude = frequency_cap_->ShouldExclude(ad);
+  const bool should_exclude = frequency_cap.ShouldExclude(ad);
 
   // Assert
   EXPECT_FALSE(should_exclude);
@@ -209,18 +217,23 @@ TEST_F(BatAdsDismissedFrequencyCapTest,
     ConfirmationType::kClicked
   };
 
+  AdEventList ad_events;
+
   for (const auto& confirmation_type : confirmation_types) {
-    AdHistory ad_history = GenerateAdHistory(
-        AdContent::AdType::kAdNotification, ad, confirmation_type);
-    get_client()->AppendAdHistoryToAdsHistory(ad_history);
+    const AdEventInfo ad_event = GenerateAdEvent(AdType::kAdNotification, ad,
+        confirmation_type);
+
+    ad_events.push_back(ad_event);
 
     task_environment_.FastForwardBy(base::TimeDelta::FromMinutes(5));
   }
 
+  DismissedFrequencyCap frequency_cap(ads_.get(), ad_events);
+
   task_environment_.FastForwardBy(base::TimeDelta::FromHours(48));
 
   // Act
-  const bool should_exclude = frequency_cap_->ShouldExclude(ad);
+  const bool should_exclude = frequency_cap.ShouldExclude(ad);
 
   // Assert
   EXPECT_FALSE(should_exclude);
@@ -240,18 +253,23 @@ TEST_F(BatAdsDismissedFrequencyCapTest,
     ConfirmationType::kDismissed
   };
 
+  AdEventList ad_events;
+
   for (const auto& confirmation_type : confirmation_types) {
-    AdHistory ad_history = GenerateAdHistory(
-        AdContent::AdType::kAdNotification, ad, confirmation_type);
-    get_client()->AppendAdHistoryToAdsHistory(ad_history);
+    const AdEventInfo ad_event = GenerateAdEvent(AdType::kAdNotification, ad,
+        confirmation_type);
+
+    ad_events.push_back(ad_event);
 
     task_environment_.FastForwardBy(base::TimeDelta::FromMinutes(5));
   }
 
+  DismissedFrequencyCap frequency_cap(ads_.get(), ad_events);
+
   task_environment_.FastForwardBy(base::TimeDelta::FromHours(47));
 
   // Act
-  const bool should_exclude = frequency_cap_->ShouldExclude(ad);
+  const bool should_exclude = frequency_cap.ShouldExclude(ad);
 
   // Assert
   EXPECT_FALSE(should_exclude);
@@ -271,18 +289,23 @@ TEST_F(BatAdsDismissedFrequencyCapTest,
     ConfirmationType::kDismissed
   };
 
+  AdEventList ad_events;
+
   for (const auto& confirmation_type : confirmation_types) {
-    AdHistory ad_history = GenerateAdHistory(
-        AdContent::AdType::kAdNotification, ad, confirmation_type);
-    get_client()->AppendAdHistoryToAdsHistory(ad_history);
+    const AdEventInfo ad_event = GenerateAdEvent(AdType::kAdNotification, ad,
+        confirmation_type);
+
+    ad_events.push_back(ad_event);
 
     task_environment_.FastForwardBy(base::TimeDelta::FromMinutes(5));
   }
 
+  DismissedFrequencyCap frequency_cap(ads_.get(), ad_events);
+
   task_environment_.FastForwardBy(base::TimeDelta::FromHours(48));
 
   // Act
-  const bool should_exclude = frequency_cap_->ShouldExclude(ad);
+  const bool should_exclude = frequency_cap.ShouldExclude(ad);
 
   // Assert
   EXPECT_FALSE(should_exclude);
@@ -304,18 +327,23 @@ TEST_F(BatAdsDismissedFrequencyCapTest,
     ConfirmationType::kDismissed
   };
 
+  AdEventList ad_events;
+
   for (const auto& confirmation_type : confirmation_types) {
-    AdHistory ad_history = GenerateAdHistory(
-        AdContent::AdType::kAdNotification, ad, confirmation_type);
-    get_client()->AppendAdHistoryToAdsHistory(ad_history);
+    const AdEventInfo ad_event = GenerateAdEvent(AdType::kAdNotification, ad,
+        confirmation_type);
+
+    ad_events.push_back(ad_event);
 
     task_environment_.FastForwardBy(base::TimeDelta::FromMinutes(5));
   }
 
+  DismissedFrequencyCap frequency_cap(ads_.get(), ad_events);
+
   task_environment_.FastForwardBy(base::TimeDelta::FromHours(48));
 
   // Act
-  const bool should_exclude = frequency_cap_->ShouldExclude(ad);
+  const bool should_exclude = frequency_cap.ShouldExclude(ad);
 
   // Assert
   EXPECT_FALSE(should_exclude);
@@ -337,18 +365,23 @@ TEST_F(BatAdsDismissedFrequencyCapTest,
     ConfirmationType::kDismissed
   };
 
+  AdEventList ad_events;
+
   for (const auto& confirmation_type : confirmation_types) {
-    AdHistory ad_history = GenerateAdHistory(
-        AdContent::AdType::kAdNotification, ad, confirmation_type);
-    get_client()->AppendAdHistoryToAdsHistory(ad_history);
+    const AdEventInfo ad_event = GenerateAdEvent(AdType::kAdNotification, ad,
+        confirmation_type);
+
+    ad_events.push_back(ad_event);
 
     task_environment_.FastForwardBy(base::TimeDelta::FromMinutes(5));
   }
 
+  DismissedFrequencyCap frequency_cap(ads_.get(), ad_events);
+
   task_environment_.FastForwardBy(base::TimeDelta::FromHours(47));
 
   // Act
-  const bool should_exclude = frequency_cap_->ShouldExclude(ad);
+  const bool should_exclude = frequency_cap.ShouldExclude(ad);
 
   // Assert
   EXPECT_TRUE(should_exclude);
@@ -372,18 +405,23 @@ TEST_F(BatAdsDismissedFrequencyCapTest,
     ConfirmationType::kDismissed
   };
 
+  AdEventList ad_events;
+
   for (const auto& confirmation_type : confirmation_types) {
-    AdHistory ad_history = GenerateAdHistory(
-        AdContent::AdType::kAdNotification, ad_2, confirmation_type);
-    get_client()->AppendAdHistoryToAdsHistory(ad_history);
+    const AdEventInfo ad_event = GenerateAdEvent(AdType::kAdNotification, ad_2,
+        confirmation_type);
+
+    ad_events.push_back(ad_event);
 
     task_environment_.FastForwardBy(base::TimeDelta::FromMinutes(5));
   }
 
+  DismissedFrequencyCap frequency_cap(ads_.get(), ad_events);
+
   task_environment_.FastForwardBy(base::TimeDelta::FromHours(47));
 
   // Act
-  const bool should_exclude = frequency_cap_->ShouldExclude(ad_1);
+  const bool should_exclude = frequency_cap.ShouldExclude(ad_1);
 
   // Assert
   EXPECT_FALSE(should_exclude);
@@ -407,18 +445,23 @@ TEST_F(BatAdsDismissedFrequencyCapTest,
     ConfirmationType::kDismissed
   };
 
+  AdEventList ad_events;
+
   for (const auto& confirmation_type : confirmation_types) {
-    AdHistory ad_history = GenerateAdHistory(
-        AdContent::AdType::kAdNotification, ad_2, confirmation_type);
-    get_client()->AppendAdHistoryToAdsHistory(ad_history);
+    const AdEventInfo ad_event = GenerateAdEvent(AdType::kAdNotification, ad_2,
+        confirmation_type);
+
+    ad_events.push_back(ad_event);
 
     task_environment_.FastForwardBy(base::TimeDelta::FromMinutes(5));
   }
 
+  DismissedFrequencyCap frequency_cap(ads_.get(), ad_events);
+
   task_environment_.FastForwardBy(base::TimeDelta::FromHours(48));
 
   // Act
-  const bool should_exclude = frequency_cap_->ShouldExclude(ad_1);
+  const bool should_exclude = frequency_cap.ShouldExclude(ad_1);
 
   // Assert
   EXPECT_FALSE(should_exclude);

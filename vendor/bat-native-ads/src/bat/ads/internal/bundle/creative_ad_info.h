@@ -10,6 +10,7 @@
 
 #include <string>
 #include <vector>
+
 #include "bat/ads/internal/bundle/creative_daypart_info.h"
 
 namespace ads {

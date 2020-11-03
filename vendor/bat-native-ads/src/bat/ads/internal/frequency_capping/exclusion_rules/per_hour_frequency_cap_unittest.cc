@@ -45,8 +45,7 @@ class BatAdsPerHourFrequencyCapTest : public ::testing::Test {
         locale_helper_mock_(std::make_unique<
             NiceMock<brave_l10n::LocaleHelperMock>>()),
         platform_helper_mock_(std::make_unique<
-            NiceMock<PlatformHelperMock>>()),
-        frequency_cap_(std::make_unique<PerHourFrequencyCap>(ads_.get())) {
+            NiceMock<PlatformHelperMock>>()) {
     // You can do set-up work for each test here
 
     brave_l10n::LocaleHelper::GetInstance()->set_for_testing(
@@ -99,10 +98,6 @@ class BatAdsPerHourFrequencyCapTest : public ::testing::Test {
 
   // Objects declared here can be used by all tests in the test case
 
-  Client* get_client() {
-    return ads_->get_client();
-  }
-
   base::test::TaskEnvironment task_environment_;
 
   base::ScopedTempDir temp_dir_;
@@ -111,7 +106,6 @@ class BatAdsPerHourFrequencyCapTest : public ::testing::Test {
   std::unique_ptr<AdsImpl> ads_;
   std::unique_ptr<brave_l10n::LocaleHelperMock> locale_helper_mock_;
   std::unique_ptr<PlatformHelperMock> platform_helper_mock_;
-  std::unique_ptr<PerHourFrequencyCap> frequency_cap_;
   std::unique_ptr<Database> database_;
 };
 
@@ -121,8 +115,12 @@ TEST_F(BatAdsPerHourFrequencyCapTest,
   CreativeAdInfo ad;
   ad.creative_instance_id = kCreativeInstanceId;
 
+  const AdEventList ad_events;
+
+  PerHourFrequencyCap frequency_cap(ads_.get(), ad_events);
+
   // Act
-  const bool should_exclude = frequency_cap_->ShouldExclude(ad);
+  const bool should_exclude = frequency_cap.ShouldExclude(ad);
 
   // Assert
   EXPECT_FALSE(should_exclude);
@@ -134,14 +132,19 @@ TEST_F(BatAdsPerHourFrequencyCapTest,
   CreativeAdInfo ad;
   ad.creative_instance_id = kCreativeInstanceId;
 
-  const AdHistory ad_history = GenerateAdHistory(
-      AdContent::AdType::kAdNotification, ad, ConfirmationType::kViewed);
-  get_client()->AppendAdHistoryToAdsHistory(ad_history);
+  AdEventList ad_events;
+
+  const AdEventInfo ad_event = GenerateAdEvent(AdType::kAdNotification, ad,
+      ConfirmationType::kViewed);
+
+  ad_events.push_back(ad_event);
+
+  PerHourFrequencyCap frequency_cap(ads_.get(), ad_events);
 
   task_environment_.FastForwardBy(base::TimeDelta::FromHours(1));
 
   // Act
-  const bool should_exclude = frequency_cap_->ShouldExclude(ad);
+  const bool should_exclude = frequency_cap.ShouldExclude(ad);
 
   // Assert
   EXPECT_FALSE(should_exclude);
@@ -153,14 +156,19 @@ TEST_F(BatAdsPerHourFrequencyCapTest,
   CreativeAdInfo ad;
   ad.creative_instance_id = kCreativeInstanceId;
 
-  const AdHistory ad_history = GenerateAdHistory(
-      AdContent::AdType::kAdNotification, ad, ConfirmationType::kViewed);
-  get_client()->AppendAdHistoryToAdsHistory(ad_history);
+  AdEventList ad_events;
+
+  const AdEventInfo ad_event = GenerateAdEvent(AdType::kAdNotification, ad,
+      ConfirmationType::kViewed);
+
+  ad_events.push_back(ad_event);
+
+  PerHourFrequencyCap frequency_cap(ads_.get(), ad_events);
 
   task_environment_.FastForwardBy(base::TimeDelta::FromMinutes(59));
 
   // Act
-  const bool should_exclude = frequency_cap_->ShouldExclude(ad);
+  const bool should_exclude = frequency_cap.ShouldExclude(ad);
 
   // Assert
   EXPECT_TRUE(should_exclude);

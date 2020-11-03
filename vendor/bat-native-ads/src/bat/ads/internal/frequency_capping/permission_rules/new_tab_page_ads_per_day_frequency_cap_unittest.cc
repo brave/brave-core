@@ -45,9 +45,7 @@ class BatAdsNewTabPageAdsPerDayFrequencyCapTest : public ::testing::Test {
         locale_helper_mock_(std::make_unique<
             NiceMock<brave_l10n::LocaleHelperMock>>()),
         platform_helper_mock_(std::make_unique<
-            NiceMock<PlatformHelperMock>>()),
-        frequency_cap_(std::make_unique<
-            NewTabPageAdsPerDayFrequencyCap>(ads_.get())) {
+            NiceMock<PlatformHelperMock>>()) {
     // You can do set-up work for each test here
 
     brave_l10n::LocaleHelper::GetInstance()->set_for_testing(
@@ -100,10 +98,6 @@ class BatAdsNewTabPageAdsPerDayFrequencyCapTest : public ::testing::Test {
 
   // Objects declared here can be used by all tests in the test case
 
-  Client* get_client() {
-    return ads_->get_client();
-  }
-
   base::test::TaskEnvironment task_environment_;
 
   base::ScopedTempDir temp_dir_;
@@ -112,7 +106,6 @@ class BatAdsNewTabPageAdsPerDayFrequencyCapTest : public ::testing::Test {
   std::unique_ptr<AdsImpl> ads_;
   std::unique_ptr<brave_l10n::LocaleHelperMock> locale_helper_mock_;
   std::unique_ptr<PlatformHelperMock> platform_helper_mock_;
-  std::unique_ptr<NewTabPageAdsPerDayFrequencyCap> frequency_cap_;
   std::unique_ptr<Database> database_;
 };
 
@@ -121,8 +114,12 @@ TEST_F(BatAdsNewTabPageAdsPerDayFrequencyCapTest,
   // Arrange
   ads_->get_ads_client()->SetUint64Pref(prefs::kAdsPerDay, 2);
 
+  const AdEventList ad_events;
+
+  NewTabPageAdsPerDayFrequencyCap frequency_cap(ads_.get(), ad_events);
+
   // Act
-  const bool is_allowed = frequency_cap_->IsAllowed();
+  const bool is_allowed = frequency_cap.ShouldAllow();
 
   // Assert
   EXPECT_TRUE(is_allowed);
@@ -136,14 +133,19 @@ TEST_F(BatAdsNewTabPageAdsPerDayFrequencyCapTest,
   CreativeAdInfo ad;
   ad.creative_instance_id = kCreativeInstanceId;
 
-  const AdHistory ad_history = GenerateAdHistory(
-      AdContent::AdType::kNewTabPageAd, ad, ConfirmationType::kViewed);
+  AdEventList ad_events;
+
+  const AdEventInfo ad_event = GenerateAdEvent(AdType::kNewTabPageAd, ad,
+      ConfirmationType::kViewed);
+
   for (int i = 0; i < 19; i++) {
-    get_client()->AppendAdHistoryToAdsHistory(ad_history);
+    ad_events.push_back(ad_event);
   }
 
+  NewTabPageAdsPerDayFrequencyCap frequency_cap(ads_.get(), ad_events);
+
   // Act
-  const bool is_allowed = frequency_cap_->IsAllowed();
+  const bool is_allowed = frequency_cap.ShouldAllow();
 
   // Assert
   EXPECT_TRUE(is_allowed);
@@ -157,16 +159,21 @@ TEST_F(BatAdsNewTabPageAdsPerDayFrequencyCapTest,
   CreativeAdInfo ad;
   ad.creative_instance_id = kCreativeInstanceId;
 
-  const AdHistory ad_history = GenerateAdHistory(
-      AdContent::AdType::kNewTabPageAd, ad, ConfirmationType::kViewed);
+  AdEventList ad_events;
+
+  const AdEventInfo ad_event = GenerateAdEvent(AdType::kNewTabPageAd, ad,
+      ConfirmationType::kViewed);
+
   for (int i = 0; i < 20; i++) {
-    get_client()->AppendAdHistoryToAdsHistory(ad_history);
+    ad_events.push_back(ad_event);
   }
+
+  NewTabPageAdsPerDayFrequencyCap frequency_cap(ads_.get(), ad_events);
 
   task_environment_.FastForwardBy(base::TimeDelta::FromDays(1));
 
   // Act
-  const bool is_allowed = frequency_cap_->IsAllowed();
+  const bool is_allowed = frequency_cap.ShouldAllow();
 
   // Assert
   EXPECT_TRUE(is_allowed);
@@ -180,16 +187,21 @@ TEST_F(BatAdsNewTabPageAdsPerDayFrequencyCapTest,
   CreativeAdInfo ad;
   ad.creative_instance_id = kCreativeInstanceId;
 
-  const AdHistory ad_history = GenerateAdHistory(
-      AdContent::AdType::kNewTabPageAd, ad, ConfirmationType::kViewed);
+  AdEventList ad_events;
+
+  const AdEventInfo ad_event = GenerateAdEvent(AdType::kNewTabPageAd, ad,
+      ConfirmationType::kViewed);
+
   for (int i = 0; i < 20; i++) {
-    get_client()->AppendAdHistoryToAdsHistory(ad_history);
+    ad_events.push_back(ad_event);
   }
+
+  NewTabPageAdsPerDayFrequencyCap frequency_cap(ads_.get(), ad_events);
 
   task_environment_.FastForwardBy(base::TimeDelta::FromHours(23));
 
   // Act
-  const bool is_allowed = frequency_cap_->IsAllowed();
+  const bool is_allowed = frequency_cap.ShouldAllow();
 
   // Assert
   EXPECT_FALSE(is_allowed);

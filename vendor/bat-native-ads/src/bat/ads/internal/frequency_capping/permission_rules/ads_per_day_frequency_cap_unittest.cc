@@ -45,8 +45,7 @@ class BatAdsAdsPerDayFrequencyCapTest : public ::testing::Test {
         locale_helper_mock_(std::make_unique<
             NiceMock<brave_l10n::LocaleHelperMock>>()),
         platform_helper_mock_(std::make_unique<
-            NiceMock<PlatformHelperMock>>()),
-        frequency_cap_(std::make_unique<AdsPerDayFrequencyCap>(ads_.get())) {
+            NiceMock<PlatformHelperMock>>()) {
     // You can do set-up work for each test here
 
     brave_l10n::LocaleHelper::GetInstance()->set_for_testing(
@@ -99,10 +98,6 @@ class BatAdsAdsPerDayFrequencyCapTest : public ::testing::Test {
 
   // Objects declared here can be used by all tests in the test case
 
-  Client* get_client() {
-    return ads_->get_client();
-  }
-
   base::test::TaskEnvironment task_environment_;
 
   base::ScopedTempDir temp_dir_;
@@ -111,7 +106,6 @@ class BatAdsAdsPerDayFrequencyCapTest : public ::testing::Test {
   std::unique_ptr<AdsImpl> ads_;
   std::unique_ptr<brave_l10n::LocaleHelperMock> locale_helper_mock_;
   std::unique_ptr<PlatformHelperMock> platform_helper_mock_;
-  std::unique_ptr<AdsPerDayFrequencyCap> frequency_cap_;
   std::unique_ptr<Database> database_;
 };
 
@@ -120,8 +114,12 @@ TEST_F(BatAdsAdsPerDayFrequencyCapTest,
   // Arrange
   ads_->get_ads_client()->SetUint64Pref(prefs::kAdsPerDay, 2);
 
+  const AdEventList ad_events;
+
+  AdsPerDayFrequencyCap frequency_cap(ads_.get(), ad_events);
+
   // Act
-  const bool is_allowed = frequency_cap_->IsAllowed();
+  const bool is_allowed = frequency_cap.ShouldAllow();
 
   // Assert
   EXPECT_TRUE(is_allowed);
@@ -135,12 +133,17 @@ TEST_F(BatAdsAdsPerDayFrequencyCapTest,
   CreativeAdInfo ad;
   ad.creative_instance_id = kCreativeInstanceId;
 
-  const AdHistory ad_history = GenerateAdHistory(
-      AdContent::AdType::kAdNotification, ad, ConfirmationType::kViewed);
-  get_client()->AppendAdHistoryToAdsHistory(ad_history);
+  AdEventList ad_events;
+
+  const AdEventInfo ad_event = GenerateAdEvent(AdType::kAdNotification, ad,
+      ConfirmationType::kViewed);
+
+  ad_events.push_back(ad_event);
+
+  AdsPerDayFrequencyCap frequency_cap(ads_.get(), ad_events);
 
   // Act
-  const bool is_allowed = frequency_cap_->IsAllowed();
+  const bool is_allowed = frequency_cap.ShouldAllow();
 
   // Assert
   EXPECT_TRUE(is_allowed);
@@ -154,15 +157,20 @@ TEST_F(BatAdsAdsPerDayFrequencyCapTest,
   CreativeAdInfo ad;
   ad.creative_instance_id = kCreativeInstanceId;
 
-  const AdHistory ad_history = GenerateAdHistory(
-      AdContent::AdType::kAdNotification, ad, ConfirmationType::kViewed);
-  get_client()->AppendAdHistoryToAdsHistory(ad_history);
-  get_client()->AppendAdHistoryToAdsHistory(ad_history);
+  AdEventList ad_events;
+
+  const AdEventInfo ad_event = GenerateAdEvent(AdType::kAdNotification, ad,
+      ConfirmationType::kViewed);
+
+  ad_events.push_back(ad_event);
+  ad_events.push_back(ad_event);
+
+  AdsPerDayFrequencyCap frequency_cap(ads_.get(), ad_events);
 
   task_environment_.FastForwardBy(base::TimeDelta::FromDays(1));
 
   // Act
-  const bool is_allowed = frequency_cap_->IsAllowed();
+  const bool is_allowed = frequency_cap.ShouldAllow();
 
   // Assert
   EXPECT_TRUE(is_allowed);
@@ -176,15 +184,20 @@ TEST_F(BatAdsAdsPerDayFrequencyCapTest,
   CreativeAdInfo ad;
   ad.creative_instance_id = kCreativeInstanceId;
 
-  const AdHistory ad_history = GenerateAdHistory(
-      AdContent::AdType::kAdNotification, ad, ConfirmationType::kViewed);
-  get_client()->AppendAdHistoryToAdsHistory(ad_history);
-  get_client()->AppendAdHistoryToAdsHistory(ad_history);
+  AdEventList ad_events;
+
+  const AdEventInfo ad_event = GenerateAdEvent(AdType::kAdNotification, ad,
+      ConfirmationType::kViewed);
+
+  ad_events.push_back(ad_event);
+  ad_events.push_back(ad_event);
+
+  AdsPerDayFrequencyCap frequency_cap(ads_.get(), ad_events);
 
   task_environment_.FastForwardBy(base::TimeDelta::FromHours(23));
 
   // Act
-  const bool is_allowed = frequency_cap_->IsAllowed();
+  const bool is_allowed = frequency_cap.ShouldAllow();
 
   // Assert
   EXPECT_FALSE(is_allowed);

@@ -11,8 +11,8 @@
 #include <vector>
 
 #include "bat/ads/ads_client.h"
+#include "bat/ads/internal/ad_targeting/ad_targeting.h"
 #include "bat/ads/internal/bundle/creative_ad_notification_info.h"
-#include "bat/ads/internal/classification/page_classifier/page_classifier.h"
 #include "bat/ads/internal/database/database_table.h"
 #include "bat/ads/internal/database/tables/campaigns_database_table.h"
 #include "bat/ads/internal/database/tables/categories_database_table.h"
@@ -47,7 +47,7 @@ class CreativeAdNotifications : public Table {
       ResultCallback callback);
 
   void GetForCategories(
-      const classification::CategoryList& categories,
+      const CategoryList& categories,
       GetCreativeAdNotificationsCallback callback);
 
   void GetAll(
@@ -77,7 +77,7 @@ class CreativeAdNotifications : public Table {
 
   void OnGetForCategories(
       DBCommandResponsePtr response,
-      const classification::CategoryList& categories,
+      const CategoryList& categories,
       GetCreativeAdNotificationsCallback callback);
 
   void OnGetAll(

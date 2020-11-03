@@ -13,12 +13,13 @@
 
 #include "base/base64.h"
 #include "base/json/json_reader.h"
+#include "base/stl_util.h"
 #include "base/strings/string_number_conversions.h"
 #include "base/values.h"
 #include "tweetnacl.h"  // NOLINT
 #include "wrapper.hpp"
 #include "bat/ads/internal/confirmations/confirmation_info.h"
-#include "bat/ads/internal/server/redeem_unblinded_token/create_confirmation_util.h"
+#include "bat/ads/internal/tokens/redeem_unblinded_token/create_confirmation_util.h"
 
 namespace ads {
 namespace security {
@@ -30,14 +31,16 @@ using challenge_bypass_ristretto::VerificationSignature;
 namespace {
 
 const int kHKDFSeedLength = 32;
-const int kHKDFSaltLength = 64;
 
 const uint8_t kHKDFSalt[] = {
-  126, 244, 99, 158, 51, 68, 253, 80, 133, 183, 51, 180, 77,
-  62, 74, 252, 62, 106, 96, 125, 241, 110, 134, 87, 190, 208,
-  158, 84, 125, 69, 246, 207, 162, 247, 107, 172, 37, 34, 53,
-  246, 105, 20, 215, 5, 248, 154, 179, 191, 46, 17, 6, 72, 210,
-  91, 10, 169, 145, 248, 22, 147, 117, 24, 105, 12
+  126, 244,  99, 158,  51,  68, 253,  80,
+  133, 183,  51, 180,  77,  62,  74, 252,
+   62, 106,  96, 125, 241, 110, 134,  87,
+  190, 208, 158,  84, 125,  69, 246, 207,
+  162, 247, 107, 172,  37,  34,  53, 246,
+  105,  20, 215,   5, 248, 154, 179, 191,
+   46,  17,   6,  72, 210,  91,  10, 169,
+  145, 248,  22, 147, 117,  24, 105,  12
 };
 
 std::vector<uint8_t> GetHKDF(
@@ -54,8 +57,8 @@ std::vector<uint8_t> GetHKDF(
   const uint8_t info[] = { 0 };
 
   const int result = HKDF(&derived_key.front(), kHKDFSeedLength, EVP_sha512(),
-      &raw_secret.front(), raw_secret.size(), kHKDFSalt, kHKDFSaltLength, info,
-          sizeof(info) / sizeof(info[0]));
+      &raw_secret.front(), raw_secret.size(), kHKDFSalt, base::size(kHKDFSalt),
+          info, sizeof(info) / sizeof(info[0]));
 
   if (result == 0) {
     return {};

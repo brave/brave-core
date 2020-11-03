@@ -11,11 +11,11 @@
 #include <memory>
 #include <string>
 
-#include "bat/ads/ad_content.h"
+#include "bat/ads/ad_content_info.h"
 #include "bat/ads/ad_notification_info.h"
 #include "bat/ads/ads_client.h"
-#include "bat/ads/ads_history.h"
-#include "bat/ads/category_content.h"
+#include "bat/ads/ads_history_info.h"
+#include "bat/ads/category_content_info.h"
 #include "bat/ads/export.h"
 #include "bat/ads/mojom.h"
 #include "bat/ads/result.h"
@@ -147,7 +147,12 @@ class ADS_EXPORT Ads {
   // Should be called to report when the wallet has been updated
   virtual void OnWalletUpdated(
       const std::string& payment_id,
-      const std::string& recovery_seed_base64) = 0;
+      const std::string& seed) = 0;
+
+  // Should be called when user model has been updated in the
+  // |BraveUserModelInstaller| component
+  virtual void OnUserModelUpdated(
+      const std::string& id) = 0;
 
   // Should be called to get the notification specified by |uuid|. Returns
   // |true| and |info| if the notification exists; otherwise, should return
@@ -178,10 +183,10 @@ class ADS_EXPORT Ads {
   // ad grant is claimed
   virtual void ReconcileAdRewards() = 0;
 
-  // Should be called to get ads history. Returns |AdsHistory|
-  virtual AdsHistory GetAdsHistory(
-      const AdsHistory::FilterType filter_type,
-      const AdsHistory::SortType sort_type,
+  // Should be called to get ads history. Returns |AdsHistoryInfo|
+  virtual AdsHistoryInfo GetAdsHistory(
+      const AdsHistoryInfo::FilterType filter_type,
+      const AdsHistoryInfo::SortType sort_type,
       const uint64_t from_timestamp,
       const uint64_t to_timestamp) = 0;
 
@@ -193,31 +198,31 @@ class ADS_EXPORT Ads {
 
   // Should be called to indicate interest in the specified ad. This is a
   // toggle, so calling it again returns the setting to the neutral state
-  virtual AdContent::LikeAction ToggleAdThumbUp(
+  virtual AdContentInfo::LikeAction ToggleAdThumbUp(
       const std::string& creative_instance_id,
       const std::string& creative_set_id,
-      const AdContent::LikeAction& action) = 0;
+      const AdContentInfo::LikeAction& action) = 0;
 
   // Should be called to indicate a lack of interest in the specified ad. This
   // is a toggle, so calling it again returns the setting to the neutral state
-  virtual AdContent::LikeAction ToggleAdThumbDown(
+  virtual AdContentInfo::LikeAction ToggleAdThumbDown(
       const std::string& creative_instance_id,
       const std::string& creative_set_id,
-      const AdContent::LikeAction& action) = 0;
+      const AdContentInfo::LikeAction& action) = 0;
 
   // Should be called to opt-in to the specified ad category. This is a toggle,
   // so calling it again neutralizes the ad category. Returns |OptAction" with
   // the current status
-  virtual CategoryContent::OptAction ToggleAdOptInAction(
+  virtual CategoryContentInfo::OptAction ToggleAdOptInAction(
       const std::string& category,
-      const CategoryContent::OptAction& action) = 0;
+      const CategoryContentInfo::OptAction& action) = 0;
 
   // Should be called to opt-out of the specified ad category. This is a toggle,
   // so calling it again neutralizes the ad category. Returns |OptAction" with
   // the current status
-  virtual CategoryContent::OptAction ToggleAdOptOutAction(
+  virtual CategoryContentInfo::OptAction ToggleAdOptOutAction(
       const std::string& category,
-      const CategoryContent::OptAction& action) = 0;
+      const CategoryContentInfo::OptAction& action) = 0;
 
   // Should be called to save an ad for later viewing. This is a toggle, so
   // calling it again removes the ad from the saved list. Returns |true| if the
@@ -234,11 +239,6 @@ class ADS_EXPORT Ads {
       const std::string& creative_instance_id,
       const std::string& creative_set_id,
       const bool flagged) = 0;
-
-  // Should be called when user model has been updated in the
-  // |BraveUserModelInstaller| component
-  virtual void OnUserModelUpdated(
-      const std::string& id) = 0;
 
  private:
   // Not copyable, not assignable

@@ -7,10 +7,10 @@
 NS_ASSUME_NONNULL_BEGIN
 
 typedef NS_ENUM(NSInteger, BATAdsConfirmationType) {
-  BATAdsConfirmationTypeNone,       // = ads::ConfirmationType::kNone
-  BATAdsConfirmationTypeClick,      // = ads::ConfirmationType::kClicked
-  BATAdsConfirmationTypeDismiss,    // = ads::ConfirmationType::kDismissed
-  BATAdsConfirmationTypeView,       // = ads::ConfirmationType::kViewed
+  BATAdsConfirmationTypeUndefined,  // = ads::ConfirmationType::kUndefined
+  BATAdsConfirmationTypeClicked,    // = ads::ConfirmationType::kClicked
+  BATAdsConfirmationTypeDismissed,  // = ads::ConfirmationType::kDismissed
+  BATAdsConfirmationTypeViewed,     // = ads::ConfirmationType::kViewed
   BATAdsConfirmationTypeLanded,     // = ads::ConfirmationType::kLanded
   BATAdsConfirmationTypeFlagged,    // = ads::ConfirmationType::kFlagged
   BATAdsConfirmationTypeUpvoted,    // = ads::ConfirmationType::kUpvoted
@@ -28,7 +28,6 @@ NS_SWIFT_NAME(AdsNotification)
 @property (nonatomic, readonly, copy) NSString *title;
 @property (nonatomic, readonly, copy) NSString *body;
 @property (nonatomic, readonly, copy) NSString *targetURL;
-@property (nonatomic, readonly, copy) NSString *geoTarget;
 @end
 
 @interface BATAdNotification (MyFirstAd)

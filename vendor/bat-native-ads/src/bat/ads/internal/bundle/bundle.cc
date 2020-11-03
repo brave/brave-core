@@ -14,16 +14,16 @@
 #include "bat/ads/internal/ads_impl.h"
 #include "bat/ads/internal/bundle/bundle_state.h"
 #include "bat/ads/internal/catalog/catalog.h"
-#include "bat/ads/internal/database/tables/ad_conversions_database_table.h"
+#include "bat/ads/internal/catalog/catalog_creative_set_info.h"
 #include "bat/ads/internal/database/tables/campaigns_database_table.h"
 #include "bat/ads/internal/database/tables/categories_database_table.h"
+#include "bat/ads/internal/database/tables/conversions_database_table.h"
 #include "bat/ads/internal/database/tables/creative_ad_notifications_database_table.h"
 #include "bat/ads/internal/database/tables/creative_ads_database_table.h"
 #include "bat/ads/internal/database/tables/creative_new_tab_page_ads_database_table.h"
 #include "bat/ads/internal/database/tables/geo_targets_database_table.h"
 #include "bat/ads/internal/logging.h"
 #include "bat/ads/internal/platform/platform_helper.h"
-#include "bat/ads/internal/time_util.h"
 
 namespace ads {
 
@@ -62,8 +62,11 @@ bool Bundle::UpdateFromCatalog(
   DeleteGeoTargets();
 
   SaveCreativeAdNotifications(bundle_state->creative_ad_notifications);
+
   SaveCreativeNewTabPageAds(bundle_state->creative_new_tab_page_ads);
-  SaveAdConversions(bundle_state->ad_conversions);
+
+  PurgeExpiredConversions();
+  SaveConversions(bundle_state->conversions);
 
   return true;
 }
@@ -82,72 +85,156 @@ uint64_t Bundle::GetCatalogPing() const {
 
 void Bundle::DeleteCreativeAdNotifications() {
   database::table::CreativeAdNotifications database_table(ads_);
-  database_table.Delete(std::bind(&Bundle::OnCreativeAdNotificationsDeleted,
-      this, _1));
+  database_table.Delete([](
+      const Result result) {
+    if (result != SUCCESS) {
+      BLOG(0, "Failed to delete creative ad notifications state");
+      return;
+    }
+
+    BLOG(3, "Successfully deleted creative ad notifications state");
+  });
 }
 
 void Bundle::DeleteCreativeNewTabPageAds() {
   database::table::CreativeNewTabPageAds database_table(ads_);
-  database_table.Delete(std::bind(&Bundle::OnCreativeNewTabPageAdsDeleted,
-      this, _1));
+  database_table.Delete([](
+      const Result result) {
+    if (result != SUCCESS) {
+      BLOG(0, "Failed to delete creative new tab page ads state");
+      return;
+    }
+
+    BLOG(3, "Successfully deleted creative new tab page ads state");
+  });
 }
 
 void Bundle::DeleteCampaigns() {
   database::table::Campaigns database_table(ads_);
-  database_table.Delete(std::bind(&Bundle::OnCampaignsDeleted, this, _1));
+  database_table.Delete([](
+      const Result result) {
+    if (result != SUCCESS) {
+      BLOG(0, "Failed to delete campaigns state");
+      return;
+    }
+
+    BLOG(3, "Successfully deleted campaigns state");
+  });
 }
 
 void Bundle::DeleteCategories() {
   database::table::Categories database_table(ads_);
-  database_table.Delete(std::bind(&Bundle::OnCategoriesDeleted, this, _1));
+  database_table.Delete([](
+      const Result result) {
+    if (result != SUCCESS) {
+      BLOG(0, "Failed to delete categories state");
+      return;
+    }
+
+    BLOG(3, "Successfully deleted categories state");
+  });
 }
 
 void Bundle::DeleteCreativeAds() {
   database::table::CreativeAds database_table(ads_);
-  database_table.Delete(std::bind(&Bundle::OnCreativeAdsDeleted, this, _1));
+  database_table.Delete([](
+      const Result result) {
+    if (result != SUCCESS) {
+      BLOG(0, "Failed to delete creative ads state");
+      return;
+    }
+
+    BLOG(3, "Successfully deleted creative ads state");
+  });
 }
 
 void Bundle::DeleteDayparts() {
   database::table::Dayparts database_table(ads_);
-  database_table.Delete(std::bind(&Bundle::OnDaypartsDeleted, this, _1));
+  database_table.Delete([](
+      const Result result) {
+    if (result != SUCCESS) {
+      BLOG(0, "Failed to delete dayparts state");
+      return;
+    }
+
+    BLOG(3, "Successfully deleted dayparts state");
+  });
 }
 
 void Bundle::DeleteGeoTargets() {
   database::table::GeoTargets database_table(ads_);
-  database_table.Delete(std::bind(&Bundle::OnGeoTargetsDeleted, this, _1));
+  database_table.Delete([](
+      const Result result) {
+    if (result != SUCCESS) {
+      BLOG(0, "Failed to delete geo targets state");
+      return;
+    }
+
+    BLOG(3, "Successfully deleted geo targets state");
+  });
 }
 
 void Bundle::SaveCreativeAdNotifications(
     const CreativeAdNotificationList& creative_ad_notifications) {
   database::table::CreativeAdNotifications database_table(ads_);
 
-  database_table.Save(creative_ad_notifications,
-      std::bind(&Bundle::OnCreativeAdNotificationsSaved, this, _1));
+  database_table.Save(creative_ad_notifications, [](
+      const Result result) {
+    if (result != SUCCESS) {
+      BLOG(0, "Failed to save creative ad notifications state");
+      return;
+    }
+
+    BLOG(3, "Successfully saved creative ad notifications state");
+  });
 }
 
 void Bundle::SaveCreativeNewTabPageAds(
     const CreativeNewTabPageAdList& creative_new_tab_page_ads) {
   database::table::CreativeNewTabPageAds database_table(ads_);
 
-  database_table.Save(creative_new_tab_page_ads,
-      std::bind(&Bundle::OnCreativeNewTabPageAdsSaved, this, _1));
+  database_table.Save(creative_new_tab_page_ads, [](
+      const Result result) {
+    if (result != SUCCESS) {
+      BLOG(0, "Failed to save creative new tab page ads state");
+      return;
+    }
+
+    BLOG(3, "Successfully saved creative new tab page ads state");
+  });
 }
 
-void Bundle::SaveAdConversions(
-    const AdConversionList& ad_conversions) {
-  database::table::AdConversions database_table(ads_);
+void Bundle::PurgeExpiredConversions() {
+  database::table::Conversions database_table(ads_);
+  database_table.PurgeExpired([](
+      const Result result) {
+    if (result != SUCCESS) {
+      BLOG(0, "Failed to purge expired conversions");
+      return;
+    }
 
-  database_table.PurgeExpiredAdConversions(
-      std::bind(&Bundle::OnPurgedExpiredAdConversions, this, _1));
+    BLOG(3, "Successfully purged expired conversions");
+  });
+}
 
-  database_table.Save(ad_conversions,
-      std::bind(&Bundle::OnAdConversionsSaved, this, _1));
+void Bundle::SaveConversions(
+    const ConversionList& conversions) {
+  database::table::Conversions database_table(ads_);
+  database_table.Save(conversions, [](
+      const Result result) {
+    if (result != SUCCESS) {
+      BLOG(0, "Failed to save conversions state");
+      return;
+    }
+
+    BLOG(3, "Successfully saved conversions state");
+  });
 }
 
 bool Bundle::IsOlderThanOneDay() const {
   const base::Time now = base::Time::Now();
 
-  if (now > catalog_last_updated_ + base::TimeDelta::FromDays(1)) {
+  if (now >= catalog_last_updated_ + base::TimeDelta::FromDays(1)) {
     return true;
   }
 
@@ -172,7 +259,7 @@ std::unique_ptr<BundleState> Bundle::GenerateFromCatalog(
 
   CreativeAdNotificationList creative_ad_notifications;
   CreativeNewTabPageAdList creative_new_tab_page_ads;
-  AdConversionList ad_conversions;
+  ConversionList conversions;
 
   // Campaigns
   for (const auto& campaign : catalog.GetCampaigns()) {
@@ -248,8 +335,7 @@ std::unique_ptr<BundleState> Bundle::GenerateFromCatalog(
         info.advertiser_id = campaign.advertiser_id;
         info.priority = campaign.priority;
         info.ptr = campaign.ptr;
-        info.conversion =
-            creative_set.ad_conversions.size() != 0 ? true : false;
+        info.conversion = creative_set.conversions.size() != 0 ? true : false;
         info.per_day = creative_set.per_day;
         info.total_max = creative_set.total_max;
         info.dayparts = creative_dayparts;
@@ -331,8 +417,7 @@ std::unique_ptr<BundleState> Bundle::GenerateFromCatalog(
         info.advertiser_id = campaign.advertiser_id;
         info.priority = campaign.priority;
         info.ptr = campaign.ptr;
-        info.conversion =
-            creative_set.ad_conversions.size() != 0 ? true : false;
+        info.conversion = creative_set.conversions.size() != 0 ? true : false;
         info.per_day = creative_set.per_day;
         info.total_max = creative_set.total_max;
         info.dayparts = creative_dayparts;
@@ -376,10 +461,9 @@ std::unique_ptr<BundleState> Bundle::GenerateFromCatalog(
         continue;
       }
 
-      // Ad conversions
-      ad_conversions.insert(ad_conversions.end(),
-          creative_set.ad_conversions.begin(),
-              creative_set.ad_conversions.end());
+      // Conversions
+      conversions.insert(conversions.end(), creative_set.conversions.begin(),
+          creative_set.conversions.end());
     }
   }
 
@@ -390,7 +474,7 @@ std::unique_ptr<BundleState> Bundle::GenerateFromCatalog(
   state->catalog_last_updated = base::Time::Now();
   state->creative_ad_notifications = creative_ad_notifications;
   state->creative_new_tab_page_ads = creative_new_tab_page_ads;
-  state->ad_conversions = ad_conversions;
+  state->conversions = conversions;
 
   return state;
 }
@@ -412,116 +496,6 @@ bool Bundle::DoesOsSupportCreativeSet(
   }
 
   return false;
-}
-
-void Bundle::OnCreativeAdNotificationsDeleted(
-    const Result result) {
-  if (result != SUCCESS) {
-    BLOG(0, "Failed to delete creative ad notifications");
-    return;
-  }
-
-  BLOG(3, "Successfully deleted creative ad notifications");
-}
-
-void Bundle::OnCreativeNewTabPageAdsDeleted(
-    const Result result) {
-  if (result != SUCCESS) {
-    BLOG(0, "Failed to delete new tab page ads");
-    return;
-  }
-
-  BLOG(3, "Successfully deleted new tab page ads");
-}
-
-void Bundle::OnCampaignsDeleted(
-    const Result result) {
-  if (result != SUCCESS) {
-    BLOG(0, "Failed to delete campaigns");
-    return;
-  }
-
-  BLOG(3, "Successfully deleted campaigns");
-}
-
-void Bundle::OnCategoriesDeleted(
-    const Result result) {
-  if (result != SUCCESS) {
-    BLOG(0, "Failed to delete categories");
-    return;
-  }
-
-  BLOG(3, "Successfully deleted categories");
-}
-
-void Bundle::OnCreativeAdsDeleted(
-    const Result result) {
-  if (result != SUCCESS) {
-    BLOG(0, "Failed to delete creative ads");
-    return;
-  }
-
-  BLOG(3, "Successfully deleted creative ads");
-}
-
-void Bundle::OnDaypartsDeleted(
-    const Result result) {
-  if (result != SUCCESS) {
-    BLOG(0, "Failed to delete dayparts");
-    return;
-  }
-
-  BLOG(3, "Successfully deleted dayparts");
-}
-
-void Bundle::OnGeoTargetsDeleted(
-    const Result result) {
-  if (result != SUCCESS) {
-    BLOG(0, "Failed to delete geo targets");
-    return;
-  }
-
-  BLOG(3, "Successfully deleted geo targets");
-}
-
-void Bundle::OnCreativeAdNotificationsSaved(
-    const Result result) {
-  if (result != SUCCESS) {
-    BLOG(0, "Failed to save creative ad notifications state");
-    return;
-  }
-
-  BLOG(3, "Successfully saved creative ad notifications state");
-}
-
-void Bundle::OnCreativeNewTabPageAdsSaved(
-    const Result result) {
-  if (result != SUCCESS) {
-    BLOG(0, "Failed to save creative new tab page ads state");
-    return;
-  }
-
-  BLOG(3, "Successfully saved creative new tab page ads state");
-}
-
-void Bundle::OnPurgedExpiredAdConversions(
-    const Result result) {
-  if (result != SUCCESS) {
-    BLOG(0, "Failed to purge expired ad conversions");
-    return;
-  }
-
-  BLOG(3, "Successfully purged expired ad conversions");
-}
-
-void Bundle::OnAdConversionsSaved(
-    const Result result) {
-  if (result != SUCCESS) {
-    BLOG(0, "Failed to save ad conversions state");
-    return;
-  }
-
-  BLOG(3, "Successfully saved ad conversions state");
 }
 
 }  // namespace ads

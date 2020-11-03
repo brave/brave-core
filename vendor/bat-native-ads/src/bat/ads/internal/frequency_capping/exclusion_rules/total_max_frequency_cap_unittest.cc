@@ -49,8 +49,7 @@ class BatAdsTotalMaxFrequencyCapTest : public ::testing::Test {
         locale_helper_mock_(std::make_unique<
             NiceMock<brave_l10n::LocaleHelperMock>>()),
         platform_helper_mock_(std::make_unique<
-            NiceMock<PlatformHelperMock>>()),
-        frequency_cap_(std::make_unique<TotalMaxFrequencyCap>(ads_.get())) {
+            NiceMock<PlatformHelperMock>>()) {
     // You can do set-up work for each test here
 
     brave_l10n::LocaleHelper::GetInstance()->set_for_testing(
@@ -103,10 +102,6 @@ class BatAdsTotalMaxFrequencyCapTest : public ::testing::Test {
 
   // Objects declared here can be used by all tests in the test case
 
-  Client* get_client() {
-    return ads_->get_client();
-  }
-
   base::test::TaskEnvironment task_environment_;
 
   base::ScopedTempDir temp_dir_;
@@ -115,7 +110,6 @@ class BatAdsTotalMaxFrequencyCapTest : public ::testing::Test {
   std::unique_ptr<AdsImpl> ads_;
   std::unique_ptr<brave_l10n::LocaleHelperMock> locale_helper_mock_;
   std::unique_ptr<PlatformHelperMock> platform_helper_mock_;
-  std::unique_ptr<TotalMaxFrequencyCap> frequency_cap_;
   std::unique_ptr<Database> database_;
 };
 
@@ -126,8 +120,12 @@ TEST_F(BatAdsTotalMaxFrequencyCapTest,
   ad.creative_set_id = kCreativeSetIds.at(0);
   ad.total_max = 2;
 
+  const AdEventList ad_events;
+
+  TotalMaxFrequencyCap frequency_cap(ads_.get(), ad_events);
+
   // Act
-  const bool should_exclude = frequency_cap_->ShouldExclude(ad);
+  const bool should_exclude = frequency_cap.ShouldExclude(ad);
 
   // Assert
   EXPECT_FALSE(should_exclude);
@@ -140,10 +138,17 @@ TEST_F(BatAdsTotalMaxFrequencyCapTest,
   ad.creative_set_id = kCreativeSetIds.at(0);
   ad.total_max = 2;
 
-  get_client()->AppendCreativeSetIdToCreativeSetHistory(ad.creative_set_id);
+  AdEventList ad_events;
+
+  const AdEventInfo ad_event = GenerateAdEvent(AdType::kAdNotification, ad,
+      ConfirmationType::kViewed);
+
+  ad_events.push_back(ad_event);
+
+  TotalMaxFrequencyCap frequency_cap(ads_.get(), ad_events);
 
   // Act
-  const bool should_exclude = frequency_cap_->ShouldExclude(ad);
+  const bool should_exclude = frequency_cap.ShouldExclude(ad);
 
   // Assert
   EXPECT_FALSE(should_exclude);
@@ -152,15 +157,25 @@ TEST_F(BatAdsTotalMaxFrequencyCapTest,
 TEST_F(BatAdsTotalMaxFrequencyCapTest,
     AllowAdIfDoesNotExceedCapForNoMatchingCreatives) {
   // Arrange
-  CreativeAdInfo ad;
-  ad.creative_set_id = kCreativeSetIds.at(0);
-  ad.total_max = 2;
+  CreativeAdInfo ad_1;
+  ad_1.creative_set_id = kCreativeSetIds.at(0);
+  ad_1.total_max = 2;
 
-  get_client()->AppendCreativeSetIdToCreativeSetHistory(kCreativeSetIds.at(1));
-  get_client()->AppendCreativeSetIdToCreativeSetHistory(kCreativeSetIds.at(1));
+  CreativeAdInfo ad_2;
+  ad_2.creative_set_id = kCreativeSetIds.at(1);
+
+  AdEventList ad_events;
+
+  const AdEventInfo ad_event = GenerateAdEvent(AdType::kAdNotification, ad_2,
+      ConfirmationType::kViewed);
+
+  ad_events.push_back(ad_event);
+  ad_events.push_back(ad_event);
+
+  TotalMaxFrequencyCap frequency_cap(ads_.get(), ad_events);
 
   // Act
-  const bool should_exclude = frequency_cap_->ShouldExclude(ad);
+  const bool should_exclude = frequency_cap.ShouldExclude(ad_1);
 
   // Assert
   EXPECT_FALSE(should_exclude);
@@ -173,8 +188,12 @@ TEST_F(BatAdsTotalMaxFrequencyCapTest,
   ad.creative_set_id = kCreativeSetIds.at(0);
   ad.total_max = 0;
 
+  const AdEventList ad_events;
+
+  TotalMaxFrequencyCap frequency_cap(ads_.get(), ad_events);
+
   // Act
-  const bool should_exclude = frequency_cap_->ShouldExclude(ad);
+  const bool should_exclude = frequency_cap.ShouldExclude(ad);
 
   // Assert
   EXPECT_TRUE(should_exclude);
@@ -187,11 +206,18 @@ TEST_F(BatAdsTotalMaxFrequencyCapTest,
   ad.creative_set_id = kCreativeSetIds.at(0);
   ad.total_max = 2;
 
-  get_client()->AppendCreativeSetIdToCreativeSetHistory(ad.creative_set_id);
-  get_client()->AppendCreativeSetIdToCreativeSetHistory(ad.creative_set_id);
+  AdEventList ad_events;
+
+  const AdEventInfo ad_event = GenerateAdEvent(AdType::kAdNotification, ad,
+      ConfirmationType::kViewed);
+
+  ad_events.push_back(ad_event);
+  ad_events.push_back(ad_event);
+
+  TotalMaxFrequencyCap frequency_cap(ads_.get(), ad_events);
 
   // Act
-  const bool should_exclude = frequency_cap_->ShouldExclude(ad);
+  const bool should_exclude = frequency_cap.ShouldExclude(ad);
 
   // Assert
   EXPECT_TRUE(should_exclude);

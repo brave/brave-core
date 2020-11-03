@@ -9,12 +9,14 @@
 
 #include "base/strings/stringprintf.h"
 #include "bat/ads/internal/ads_impl.h"
-#include "bat/ads/internal/client/preferences/filtered_ad.h"
+#include "bat/ads/internal/bundle/creative_ad_info.h"
+#include "bat/ads/internal/client/client.h"
+#include "bat/ads/internal/client/preferences/filtered_ad_info.h"
 
 namespace ads {
 
 MarkedToNoLongerReceiveFrequencyCap::MarkedToNoLongerReceiveFrequencyCap(
-    const AdsImpl* const ads)
+    AdsImpl* ads)
     : ads_(ads) {
   DCHECK(ads_);
 }
@@ -39,14 +41,14 @@ std::string MarkedToNoLongerReceiveFrequencyCap::get_last_message() const {
 }
 
 bool MarkedToNoLongerReceiveFrequencyCap::DoesRespectCap(
-      const CreativeAdInfo& ad) {
-  const FilteredAdsList filtered_ads = ads_->get_client()->get_filtered_ads();
+    const CreativeAdInfo& ad) {
+  const FilteredAdList filtered_ads = ads_->get_client()->get_filtered_ads();
   if (filtered_ads.empty()) {
     return true;
   }
 
   const auto iter = std::find_if(filtered_ads.begin(), filtered_ads.end(),
-      [&ad](const FilteredAd& filtered_ad) {
+      [&ad](const FilteredAdInfo& filtered_ad) {
     return filtered_ad.creative_set_id == ad.creative_set_id;
   });
 

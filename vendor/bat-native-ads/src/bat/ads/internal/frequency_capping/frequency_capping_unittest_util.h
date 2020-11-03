@@ -6,20 +6,22 @@
 #ifndef BAT_ADS_INTERNAL_FREQUENCY_CAPPING_FREQUENCY_CAPPING_UNITTEST_UTIL_H_
 #define BAT_ADS_INTERNAL_FREQUENCY_CAPPING_FREQUENCY_CAPPING_UNITTEST_UTIL_H_
 
-#include <stdint.h>
-
-#include <memory>
-#include <string>
-
-#include "bat/ads/ad_history.h"
+#include "bat/ads/ad_info.h"
+#include "bat/ads/ad_type.h"
 #include "bat/ads/confirmation_type.h"
+#include "bat/ads/internal/ad_events/ad_event_info.h"
 #include "bat/ads/internal/bundle/creative_ad_info.h"
 
 namespace ads {
 
-AdHistory GenerateAdHistory(
-    const AdContent::AdType type,
+AdEventInfo GenerateAdEvent(
+    const AdType type,
     const CreativeAdInfo& ad,
+    const ConfirmationType& confirmation_type);
+
+AdEventInfo GenerateAdEvent(
+    const AdType type,
+    const AdInfo& ad,
     const ConfirmationType& confirmation_type);
 
 }  // namespace ads

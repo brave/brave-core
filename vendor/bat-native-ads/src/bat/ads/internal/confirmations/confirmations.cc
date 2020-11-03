@@ -5,12 +5,14 @@
 
 #include "bat/ads/internal/confirmations/confirmations.h"
 
+#include <stdint.h>
+
 #include <functional>
 
 #include "bat/ads/internal/ads_impl.h"
 #include "bat/ads/internal/logging.h"
-#include "bat/ads/internal/reports/reports.h"
-#include "bat/ads/internal/server/redeem_unblinded_token/redeem_unblinded_token.h"
+#include "bat/ads/internal/privacy/unblinded_tokens/unblinded_tokens.h"
+#include "bat/ads/internal/tokens/redeem_unblinded_token/redeem_unblinded_token.h"
 
 namespace ads {
 
@@ -114,8 +116,7 @@ void Confirmations::AppendTransaction(
     const ConfirmationType confirmation_type) {
   TransactionInfo transaction;
 
-  transaction.timestamp_in_seconds =
-      static_cast<uint64_t>(base::Time::Now().ToDoubleT());
+  transaction.timestamp = static_cast<int64_t>(base::Time::Now().ToDoubleT());
   transaction.estimated_redemption_value = estimated_redemption_value;
   transaction.confirmation_type = std::string(confirmation_type);
 

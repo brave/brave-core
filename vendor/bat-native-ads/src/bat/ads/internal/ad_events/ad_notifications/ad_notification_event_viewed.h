@@ -6,19 +6,21 @@
 #ifndef BAT_ADS_INTERNAL_AD_EVENTS_AD_NOTIFICATIONS_AD_NOTIFICATION_EVENT_VIEWED_H_  // NOLINT
 #define BAT_ADS_INTERNAL_AD_EVENTS_AD_NOTIFICATIONS_AD_NOTIFICATION_EVENT_VIEWED_H_  // NOLINT
 
-#include "bat/ads/ad_notification_info.h"
 #include "bat/ads/internal/ad_events/ad_event.h"
 
 namespace ads {
 
 class AdsImpl;
+struct AdNotificationInfo;
 
-class AdNotificationEventViewed : public AdEvent<AdNotificationInfo> {
+namespace ad_notifications {
+
+class AdEventViewed : public AdEvent<AdNotificationInfo> {
  public:
-  AdNotificationEventViewed(
+  AdEventViewed(
       AdsImpl* ads);
 
-  ~AdNotificationEventViewed() override;
+  ~AdEventViewed() override;
 
   void Trigger(
       const AdNotificationInfo& ad) override;
@@ -27,6 +29,7 @@ class AdNotificationEventViewed : public AdEvent<AdNotificationInfo> {
   AdsImpl* ads_;  // NOT OWNED
 };
 
+}  // namespace ad_notifications
 }  // namespace ads
 
 #endif  // BAT_ADS_INTERNAL_AD_EVENTS_AD_NOTIFICATIONS_AD_NOTIFICATION_EVENT_VIEWED_H_  // NOLINT

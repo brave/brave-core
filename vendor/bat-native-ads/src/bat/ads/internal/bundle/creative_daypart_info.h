@@ -16,8 +16,7 @@ namespace ads {
 struct CreativeDaypartInfo {
   std::string dow = "0123456";
   int start_minute = 0;
-  int end_minute =
-      (base::Time::kMinutesPerHour * base::Time::kHoursPerDay) - 1;
+  int end_minute = (base::Time::kMinutesPerHour * base::Time::kHoursPerDay) - 1;
 };
 
 using CreativeDaypartList = std::vector<CreativeDaypartInfo>;

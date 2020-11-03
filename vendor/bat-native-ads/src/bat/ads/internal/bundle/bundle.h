@@ -11,8 +11,9 @@
 #include <memory>
 #include <string>
 
-#include "bat/ads/internal/bundle/bundle_state.h"
-#include "bat/ads/internal/catalog/catalog_creative_set_info.h"
+#include "bat/ads/internal/bundle/creative_ad_notification_info.h"
+#include "bat/ads/internal/bundle/creative_new_tab_page_ad_info.h"
+#include "bat/ads/internal/conversions/conversion_info.h"
 #include "bat/ads/internal/time_util.h"
 #include "bat/ads/result.h"
 
@@ -20,6 +21,8 @@ namespace ads {
 
 class AdsImpl;
 class Catalog;
+struct BundleState;
+struct CatalogCreativeSetInfo;
 
 class Bundle {
  public:
@@ -49,8 +52,9 @@ class Bundle {
   void SaveCreativeNewTabPageAds(
       const CreativeNewTabPageAdList& creative_new_tab_page_ads);
 
-  void SaveAdConversions(
-      const AdConversionList& ad_conversions);
+  void PurgeExpiredConversions();
+  void SaveConversions(
+      const ConversionList& conversions);
 
   bool IsOlderThanOneDay() const;
 
@@ -81,9 +85,9 @@ class Bundle {
   void OnCreativeNewTabPageAdsSaved(
       const Result result);
 
-  void OnPurgedExpiredAdConversions(
+  void OnPurgedExpiredConversions(
       const Result result);
-  void OnAdConversionsSaved(
+  void OnConversionsSaved(
       const Result result);
 
   std::string catalog_id_;

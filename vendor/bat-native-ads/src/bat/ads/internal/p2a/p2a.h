@@ -6,12 +6,8 @@
 #ifndef BAT_ADS_INTERNAL_P2A_P2A_H_
 #define BAT_ADS_INTERNAL_P2A_P2A_H_
 
-#include <stdint.h>
-
 #include <string>
 #include <vector>
-
-#include "base/values.h"
 
 namespace ads {
 

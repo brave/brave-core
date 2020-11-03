@@ -5,12 +5,11 @@
 
 #include "bat/ads/internal/p2a/p2a.h"
 
-#include <stdint.h>
 #include <string>
 
 #include "base/json/json_writer.h"
+#include "base/values.h"
 #include "bat/ads/internal/ads_impl.h"
-#include "bat/ads/internal/classification/classification_util.h"
 
 namespace ads {
 
@@ -32,8 +31,7 @@ void P2A::RecordEvent(
 
   std::string json;
   base::JSONWriter::Write(list, &json);
-  ads_->get_ads_client()->RecordP2AEvent(
-      name, P2AEventType::kListType, json);
+  ads_->get_ads_client()->RecordP2AEvent(name, P2AEventType::kListType, json);
 }
 
 ///////////////////////////////////////////////////////////////////////////////

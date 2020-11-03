@@ -5,8 +5,7 @@
 
 #include "bat/ads/internal/database/tables/creative_new_tab_page_ads_database_table.h"
 
-#include <functional>
-#include <set>
+#include <algorithm>
 #include <utility>
 
 #include "base/strings/string_util.h"
@@ -17,7 +16,6 @@
 #include "bat/ads/internal/database/database_table_util.h"
 #include "bat/ads/internal/database/database_util.h"
 #include "bat/ads/internal/logging.h"
-#include "bat/ads/internal/time_util.h"
 
 namespace ads {
 namespace database {
@@ -172,7 +170,7 @@ void CreativeNewTabPageAds::GetForCreativeInstanceId(
 }
 
 void CreativeNewTabPageAds::GetForCategories(
-    const classification::CategoryList& categories,
+    const CategoryList& categories,
     GetCreativeNewTabPageAdsCallback callback) {
   if (categories.empty()) {
     callback(Result::SUCCESS, categories, {});
@@ -442,7 +440,7 @@ void CreativeNewTabPageAds::OnGetForCreativeInstanceId(
 
 void CreativeNewTabPageAds::OnGetForCategories(
     DBCommandResponsePtr response,
-    const classification::CategoryList& categories,
+    const CategoryList& categories,
     GetCreativeNewTabPageAdsCallback callback) {
   if (!response || response->status != DBCommandResponse::Status::RESPONSE_OK) {
     BLOG(0, "Failed to get creative new tab page ads");
@@ -456,7 +454,7 @@ void CreativeNewTabPageAds::OnGetForCategories(
     const CreativeNewTabPageAdInfo creative_new_tab_page_ad =
         GetFromRecord(record.get());
 
-    creative_new_tab_page_ads.emplace_back(creative_new_tab_page_ad);
+    creative_new_tab_page_ads.push_back(creative_new_tab_page_ad);
   }
 
   callback(Result::SUCCESS, categories, creative_new_tab_page_ads);
@@ -473,23 +471,22 @@ void CreativeNewTabPageAds::OnGetAll(
 
   CreativeNewTabPageAdList creative_new_tab_page_ads;
 
-  std::set<std::string> categories;
+  CategoryList categories;
 
   for (const auto& record : response->result->get_records()) {
     const CreativeNewTabPageAdInfo creative_new_tab_page_ad =
         GetFromRecord(record.get());
 
-    creative_new_tab_page_ads.emplace_back(creative_new_tab_page_ad);
+    creative_new_tab_page_ads.push_back(creative_new_tab_page_ad);
 
-    categories.insert(creative_new_tab_page_ad.category);
+    categories.push_back(creative_new_tab_page_ad.category);
   }
 
-  classification::CategoryList normalized_categories;
-  for (const auto& category : categories) {
-    normalized_categories.push_back(category);
-  }
+  std::sort(categories.begin(), categories.end());
+  const auto iter = std::unique(categories.begin(), categories.end());
+  categories.erase(iter, categories.end());
 
-  callback(Result::SUCCESS, normalized_categories, creative_new_tab_page_ads);
+  callback(Result::SUCCESS, categories, creative_new_tab_page_ads);
 }
 
 CreativeNewTabPageAdInfo CreativeNewTabPageAds::GetFromRecord(

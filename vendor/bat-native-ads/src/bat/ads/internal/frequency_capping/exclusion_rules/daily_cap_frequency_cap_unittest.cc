@@ -49,8 +49,7 @@ class BatAdsDailyCapFrequencyCapTest : public ::testing::Test {
         locale_helper_mock_(std::make_unique<
             NiceMock<brave_l10n::LocaleHelperMock>>()),
         platform_helper_mock_(std::make_unique<
-            NiceMock<PlatformHelperMock>>()),
-        frequency_cap_(std::make_unique<DailyCapFrequencyCap>(ads_.get())) {
+            NiceMock<PlatformHelperMock>>()) {
     // You can do set-up work for each test here
 
     brave_l10n::LocaleHelper::GetInstance()->set_for_testing(
@@ -103,10 +102,6 @@ class BatAdsDailyCapFrequencyCapTest : public ::testing::Test {
 
   // Objects declared here can be used by all tests in the test case
 
-  Client* get_client() {
-    return ads_->get_client();
-  }
-
   base::test::TaskEnvironment task_environment_;
 
   base::ScopedTempDir temp_dir_;
@@ -115,7 +110,6 @@ class BatAdsDailyCapFrequencyCapTest : public ::testing::Test {
   std::unique_ptr<AdsImpl> ads_;
   std::unique_ptr<brave_l10n::LocaleHelperMock> locale_helper_mock_;
   std::unique_ptr<PlatformHelperMock> platform_helper_mock_;
-  std::unique_ptr<DailyCapFrequencyCap> frequency_cap_;
   std::unique_ptr<Database> database_;
 };
 
@@ -126,8 +120,12 @@ TEST_F(BatAdsDailyCapFrequencyCapTest,
   ad.campaign_id = kCampaignIds.at(0);
   ad.daily_cap = 2;
 
+  const AdEventList ad_events;
+
+  DailyCapFrequencyCap frequency_cap(ads_.get(), ad_events);
+
   // Act
-  const bool should_exclude = frequency_cap_->ShouldExclude(ad);
+  const bool should_exclude = frequency_cap.ShouldExclude(ad);
 
   // Assert
   EXPECT_FALSE(should_exclude);
@@ -140,10 +138,17 @@ TEST_F(BatAdsDailyCapFrequencyCapTest,
   ad.campaign_id = kCampaignIds.at(0);
   ad.daily_cap = 2;
 
-  get_client()->AppendCampaignIdToCampaignHistory(ad.campaign_id);
+  AdEventList ad_events;
+
+  const AdEventInfo ad_event = GenerateAdEvent(AdType::kAdNotification, ad,
+      ConfirmationType::kViewed);
+
+  ad_events.push_back(ad_event);
+
+  DailyCapFrequencyCap frequency_cap(ads_.get(), ad_events);
 
   // Act
-  const bool should_exclude = frequency_cap_->ShouldExclude(ad);
+  const bool should_exclude = frequency_cap.ShouldExclude(ad);
 
   // Assert
   EXPECT_FALSE(should_exclude);
@@ -152,14 +157,24 @@ TEST_F(BatAdsDailyCapFrequencyCapTest,
 TEST_F(BatAdsDailyCapFrequencyCapTest,
     AllowAdIfDoesNotExceedCapForNoMatchingCampaigns) {
   // Arrange
-  CreativeAdInfo ad;
-  ad.campaign_id = kCampaignIds.at(0);
-  ad.daily_cap = 1;
+  CreativeAdInfo ad_1;
+  ad_1.campaign_id = kCampaignIds.at(0);
+  ad_1.daily_cap = 1;
 
-  get_client()->AppendCampaignIdToCampaignHistory(kCampaignIds.at(1));
+  CreativeAdInfo ad_2;
+  ad_2.campaign_id = kCampaignIds.at(1);
+
+  AdEventList ad_events;
+
+  const AdEventInfo ad_event = GenerateAdEvent(AdType::kAdNotification, ad_2,
+      ConfirmationType::kViewed);
+
+  ad_events.push_back(ad_event);
+
+  DailyCapFrequencyCap frequency_cap(ads_.get(), ad_events);
 
   // Act
-  const bool should_exclude = frequency_cap_->ShouldExclude(ad);
+  const bool should_exclude = frequency_cap.ShouldExclude(ad_1);
 
   // Assert
   EXPECT_FALSE(should_exclude);
@@ -172,12 +187,19 @@ TEST_F(BatAdsDailyCapFrequencyCapTest,
   ad.campaign_id = kCampaignIds.at(0);
   ad.daily_cap = 2;
 
-  get_client()->AppendCampaignIdToCampaignHistory(ad.campaign_id);
+  AdEventList ad_events;
+
+  const AdEventInfo ad_event = GenerateAdEvent(AdType::kAdNotification, ad,
+      ConfirmationType::kViewed);
+
+  ad_events.push_back(ad_event);
+
+  DailyCapFrequencyCap frequency_cap(ads_.get(), ad_events);
 
   task_environment_.FastForwardBy(base::TimeDelta::FromHours(23));
 
   // Act
-  const bool should_exclude = frequency_cap_->ShouldExclude(ad);
+  const bool should_exclude = frequency_cap.ShouldExclude(ad);
 
   // Assert
   EXPECT_FALSE(should_exclude);
@@ -190,12 +212,19 @@ TEST_F(BatAdsDailyCapFrequencyCapTest,
   ad.campaign_id = kCampaignIds.at(0);
   ad.daily_cap = 2;
 
-  get_client()->AppendCampaignIdToCampaignHistory(ad.campaign_id);
+  AdEventList ad_events;
+
+  const AdEventInfo ad_event = GenerateAdEvent(AdType::kAdNotification, ad,
+      ConfirmationType::kViewed);
+
+  ad_events.push_back(ad_event);
+
+  DailyCapFrequencyCap frequency_cap(ads_.get(), ad_events);
 
   task_environment_.FastForwardBy(base::TimeDelta::FromDays(1));
 
   // Act
-  const bool should_exclude = frequency_cap_->ShouldExclude(ad);
+  const bool should_exclude = frequency_cap.ShouldExclude(ad);
 
   // Assert
   EXPECT_FALSE(should_exclude);
@@ -208,11 +237,18 @@ TEST_F(BatAdsDailyCapFrequencyCapTest,
   ad.campaign_id = kCampaignIds.at(0);
   ad.daily_cap = 2;
 
-  get_client()->AppendCampaignIdToCampaignHistory(ad.campaign_id);
-  get_client()->AppendCampaignIdToCampaignHistory(ad.campaign_id);
+  AdEventList ad_events;
+
+  const AdEventInfo ad_event = GenerateAdEvent(AdType::kAdNotification, ad,
+      ConfirmationType::kViewed);
+
+  ad_events.push_back(ad_event);
+  ad_events.push_back(ad_event);
+
+  DailyCapFrequencyCap frequency_cap(ads_.get(), ad_events);
 
   // Act
-  const bool should_exclude = frequency_cap_->ShouldExclude(ad);
+  const bool should_exclude = frequency_cap.ShouldExclude(ad);
 
   // Assert
   EXPECT_TRUE(should_exclude);

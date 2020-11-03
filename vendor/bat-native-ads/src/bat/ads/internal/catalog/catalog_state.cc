@@ -128,14 +128,14 @@ Result CatalogState::FromJson(
       // Conversions
       const auto conversions = creative_set["conversions"].GetArray();
 
-      for (const auto& conversion : conversions) {
-        AdConversionInfo ad_conversion;
+      for (const auto& conversion_node : conversions) {
+        ConversionInfo conversion;
 
-        ad_conversion.creative_set_id = creative_set_info.creative_set_id;
-        ad_conversion.type = conversion["type"].GetString();
-        ad_conversion.url_pattern = conversion["urlPattern"].GetString();
-        ad_conversion.observation_window =
-            conversion["observationWindow"].GetUint();
+        conversion.creative_set_id = creative_set_info.creative_set_id;
+        conversion.type = conversion_node["type"].GetString();
+        conversion.url_pattern = conversion_node["urlPattern"].GetString();
+        conversion.observation_window =
+            conversion_node["observationWindow"].GetUint();
 
         base::Time end_at_timestamp;
         if (!base::Time::FromUTCString(campaign_info.end_at.c_str(),
@@ -144,11 +144,11 @@ Result CatalogState::FromJson(
         }
 
         base::Time expiry_timestamp = end_at_timestamp +
-            base::TimeDelta::FromDays(ad_conversion.observation_window);
-        ad_conversion.expiry_timestamp =
+            base::TimeDelta::FromDays(conversion.observation_window);
+        conversion.expiry_timestamp =
             static_cast<int64_t>(expiry_timestamp.ToDoubleT());
 
-        creative_set_info.ad_conversions.push_back(ad_conversion);
+        creative_set_info.conversions.push_back(conversion);
       }
 
       // Creatives

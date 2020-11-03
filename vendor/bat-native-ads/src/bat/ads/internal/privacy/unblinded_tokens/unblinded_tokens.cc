@@ -121,7 +121,7 @@ bool UnblindedTokens::RemoveToken(
     const UnblindedTokenInfo& unblinded_token) {
   auto iter = std::find_if(unblinded_tokens_.begin(), unblinded_tokens_.end(),
       [&unblinded_token](const UnblindedTokenInfo& value) {
-    return (unblinded_token == value);
+    return unblinded_token == value;
   });
 
   if (iter == unblinded_tokens_.end()) {
@@ -144,7 +144,7 @@ bool UnblindedTokens::TokenExists(
     const UnblindedTokenInfo& unblinded_token) {
   auto iter = std::find_if(unblinded_tokens_.begin(), unblinded_tokens_.end(),
       [&unblinded_token](const UnblindedTokenInfo& value) {
-    return (unblinded_token == value);
+    return unblinded_token == value;
   });
 
   if (iter == unblinded_tokens_.end()) {

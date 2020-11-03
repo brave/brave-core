@@ -16,13 +16,16 @@ namespace ads {
 class AdsImpl;
 struct NewTabPageAdInfo;
 
-class NewTabPageAdEventFactory {
+namespace new_tab_page_ads {
+
+class AdEventFactory {
  public:
   static std::unique_ptr<AdEvent<NewTabPageAdInfo>> Build(
       AdsImpl* ads,
       const NewTabPageAdEventType event_type);
 };
 
+}  // namespace new_tab_page_ads
 }  // namespace ads
 
 #endif  // BAT_ADS_INTERNAL_AD_EVENTS_NEW_TAB_PAGE_ADS_NEW_TAB_PAGE_AD_EVENT_FACTORY_H_  // NOLINT

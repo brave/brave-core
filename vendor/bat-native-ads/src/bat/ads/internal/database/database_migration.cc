@@ -11,9 +11,10 @@
 #include "bat/ads/internal/ads_impl.h"
 #include "bat/ads/internal/database/database_util.h"
 #include "bat/ads/internal/database/database_version.h"
-#include "bat/ads/internal/database/tables/ad_conversions_database_table.h"
+#include "bat/ads/internal/database/tables/ad_events_database_table.h"
 #include "bat/ads/internal/database/tables/campaigns_database_table.h"
 #include "bat/ads/internal/database/tables/categories_database_table.h"
+#include "bat/ads/internal/database/tables/conversions_database_table.h"
 #include "bat/ads/internal/database/tables/creative_ad_notifications_database_table.h"
 #include "bat/ads/internal/database/tables/creative_ads_database_table.h"
 #include "bat/ads/internal/database/tables/creative_new_tab_page_ads_database_table.h"
@@ -67,8 +68,11 @@ void Migration::ToVersion(
     const int to_version) {
   DCHECK(transaction);
 
-  table::AdConversions ad_conversions_database_table(ads_);
-  ad_conversions_database_table.Migrate(transaction, to_version);
+  table::Conversions conversions_database_table(ads_);
+  conversions_database_table.Migrate(transaction, to_version);
+
+  table::AdEvents ad_events_database_table(ads_);
+  ad_events_database_table.Migrate(transaction, to_version);
 
   table::Campaigns campaigns_database_table(ads_);
   campaigns_database_table.Migrate(transaction, to_version);

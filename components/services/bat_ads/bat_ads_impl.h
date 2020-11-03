@@ -90,7 +90,7 @@ class BatAdsImpl :
 
   void OnWalletUpdated(
       const std::string& payment_id,
-      const std::string& recovery_seed_base64) override;
+      const std::string& seed) override;
 
   void ReconcileAdRewards() override;
 

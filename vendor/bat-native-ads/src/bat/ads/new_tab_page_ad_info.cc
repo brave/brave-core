@@ -19,6 +19,19 @@ NewTabPageAdInfo::NewTabPageAdInfo(
 
 NewTabPageAdInfo::~NewTabPageAdInfo() = default;
 
+bool NewTabPageAdInfo::IsValid() const {
+  if (!AdInfo::IsValid()) {
+    return false;
+  }
+
+  if (company_name.empty() ||
+      alt.empty()) {
+    return false;
+  }
+
+  return true;
+}
+
 std::string NewTabPageAdInfo::ToJson() const {
   std::string json;
   SaveToJson(*this, &json);
@@ -33,6 +46,10 @@ Result NewTabPageAdInfo::FromJson(
   if (document.HasParseError()) {
     BLOG(1, helper::JSON::GetLastError(&document));
     return FAILED;
+  }
+
+  if (document.HasMember("type")) {
+    type = AdType(document["type"].GetString());
   }
 
   if (document.HasMember("uuid")) {
@@ -67,10 +84,6 @@ Result NewTabPageAdInfo::FromJson(
     target_url = document["target_url"].GetString();
   }
 
-  if (document.HasMember("geo_target")) {
-    geo_target = document["geo_target"].GetString();
-  }
-
   return SUCCESS;
 }
 
@@ -78,6 +91,10 @@ void SaveToJson(
     JsonWriter* writer,
     const NewTabPageAdInfo& info) {
   writer->StartObject();
+
+  writer->String("type");
+  const std::string type = std::string(info.type);
+  writer->String(type.c_str());
 
   writer->String("uuid");
   writer->String(info.uuid.c_str());
@@ -102,9 +119,6 @@ void SaveToJson(
 
   writer->String("target_url");
   writer->String(info.target_url.c_str());
-
-  writer->String("geo_target");
-  writer->String(info.geo_target.c_str());
 
   writer->EndObject();
 }
