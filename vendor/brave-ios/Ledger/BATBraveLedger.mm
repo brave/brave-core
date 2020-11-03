@@ -552,6 +552,13 @@ BATLedgerReadonlyBridge(BOOL, isWalletCreated, IsWalletCreated)
   });
 }
 
+- (void)transferrableAmount:(void (^)(double amount))completion
+{
+  ledger->GetTransferableAmount(^(double amount) {
+    completion(amount);
+  });
+}
+
 #pragma mark - User Wallets
 
 - (void)fetchUpholdWallet:(nullable void (^)(BATUpholdWallet * _Nullable wallet))completion

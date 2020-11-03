@@ -121,6 +121,9 @@ NS_SWIFT_NAME(BraveLedger)
                         completion:(void (^)(BATResult result))completion
     NS_SWIFT_NAME(linkBraveWallet(paymentId:completion:));
 
+/// Get the amount of BAT that is transferrable via wallet linking
+- (void)transferrableAmount:(void (^)(double amount))completion;
+
 #pragma mark - User Wallets
 
 /// The last updated external wallet if a user has hooked one up
