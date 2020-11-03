@@ -1,0 +1,13 @@
+diff --git a/chrome/android/java/src/org/chromium/chrome/browser/suggestions/tile/TileGridLayout.java b/chrome/android/java/src/org/chromium/chrome/browser/suggestions/tile/TileGridLayout.java
+index 71ee0a73800d7764d79ce01b6958d9baf54eae26..731fb502e2aa01de6b08b271a907405c9d96e58b 100644
+--- a/chrome/android/java/src/org/chromium/chrome/browser/suggestions/tile/TileGridLayout.java
++++ b/chrome/android/java/src/org/chromium/chrome/browser/suggestions/tile/TileGridLayout.java
+@@ -45,7 +45,7 @@ public class TileGridLayout extends FrameLayout {
+         TypedArray styledAttrs = context.obtainStyledAttributes(attrs, R.styleable.TileGridLayout);
+         mMinHorizontalSpacing = styledAttrs.getDimensionPixelOffset(
+                 R.styleable.TileGridLayout_minHorizontalSpacing,
+-                res.getDimensionPixelOffset(R.dimen.tile_grid_layout_min_horizontal_spacing));
++                res.getDimensionPixelOffset(R.dimen.zero_margin));
+         styledAttrs.recycle();
+         mMaxHorizontalSpacing = Integer.MAX_VALUE;
+         mMaxWidth = Integer.MAX_VALUE;
