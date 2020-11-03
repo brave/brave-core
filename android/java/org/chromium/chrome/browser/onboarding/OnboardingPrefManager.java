@@ -67,7 +67,7 @@ public class OnboardingPrefManager {
     private static final String DUCKDUCKGOLITE = "DuckDuckGo Lite";
     private static final String QWANT = "Qwant";
     private static final String BING = "Bing";
-    private static final String STARTPAGE = "StartPage";
+    private static final String STARTPAGE = "Startpage";
     private static final String YAHOO = "Yahoo";
 
     private OnboardingPrefManager() {
