@@ -295,7 +295,8 @@ void ViewCounterService::UpdateP3AValues() const {
   if (branded_new_tab_count == 0 || new_tab_count == 0) {
     answer = 0;
   } else {
-    double ratio = (branded_new_tab_count / (double)new_tab_count) * 100;
+    double ratio = (branded_new_tab_count /
+                    static_cast<double>(new_tab_count)) * 100;
     const double* it_ratio =
         std::lower_bound(kSponsoredRatio, std::end(kSponsoredRatio), ratio);
     answer = it_ratio - kSponsoredRatio;

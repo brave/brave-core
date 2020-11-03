@@ -22,7 +22,8 @@
 #include "chrome/browser/profiles/profile_manager.h"
 #include "components/prefs/pref_service.h"
 
-using namespace ntp_background_images::prefs;
+using ntp_background_images::prefs::kNewTabPageShowBackgroundImage;
+using ntp_background_images::prefs::kNewTabPageShowSponsoredImagesBackgroundImage; // NOLINT
 
 #if BUILDFLAG(ENABLE_TOR)
 #include "brave/browser/tor/tor_profile_service_factory.h"
