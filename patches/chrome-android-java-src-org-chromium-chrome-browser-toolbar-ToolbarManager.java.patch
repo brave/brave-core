@@ -1,8 +1,8 @@
 diff --git a/chrome/android/java/src/org/chromium/chrome/browser/toolbar/ToolbarManager.java b/chrome/android/java/src/org/chromium/chrome/browser/toolbar/ToolbarManager.java
-index cdeb6d2ebb3d550265e00ac74a3455da20c590a7..47df8bb6927003fb6fd5e66646360b22c7ca15de 100644
+index 05c711e5d18241087bb121d659291c9b0ce53c14..d353c9b3ccc6420b1f92105f6bb3a0cb4f5cafcc 100644
 --- a/chrome/android/java/src/org/chromium/chrome/browser/toolbar/ToolbarManager.java
 +++ b/chrome/android/java/src/org/chromium/chrome/browser/toolbar/ToolbarManager.java
-@@ -308,7 +308,7 @@ public class ToolbarManager implements UrlFocusChangeListener, ThemeColorObserve
+@@ -309,7 +309,7 @@ public class ToolbarManager implements UrlFocusChangeListener, ThemeColorObserve
          ThemeColorProvider overviewModeThemeColorProvider = mAppThemeColorProvider;
          ToolbarLayout toolbarLayout = mActivity.findViewById(R.id.toolbar);
  
@@ -11,7 +11,7 @@ index cdeb6d2ebb3d550265e00ac74a3455da20c590a7..47df8bb6927003fb6fd5e66646360b22
                  mControlsVisibilityDelegate, mActivity,
                  (focus, type)
                          -> setUrlBarFocus(focus, type),
-@@ -317,7 +317,7 @@ public class ToolbarManager implements UrlFocusChangeListener, ThemeColorObserve
+@@ -318,7 +318,7 @@ public class ToolbarManager implements UrlFocusChangeListener, ThemeColorObserve
                  mActivity.isCustomTab() ? mCustomTabThemeColorProvider
                                          : browsingModeThemeColorProvider,
                  R.id.menu_button_wrapper);
@@ -20,10 +20,10 @@ index cdeb6d2ebb3d550265e00ac74a3455da20c590a7..47df8bb6927003fb6fd5e66646360b22
                  appMenuCoordinatorSupplier, mControlsVisibilityDelegate, mActivity,
                  (focus, type)
                          -> setUrlBarFocus(focus, type),
-@@ -635,7 +635,7 @@ public class ToolbarManager implements UrlFocusChangeListener, ThemeColorObserve
-             ThemeColorProvider browsingModeThemeColorProvider,
+@@ -639,7 +639,7 @@ public class ToolbarManager implements UrlFocusChangeListener, ThemeColorObserve
              MenuButtonCoordinator startSurfaceMenuButtonCoordinator, Invalidator invalidator,
-             IdentityDiscController identityDiscController) {
+             IdentityDiscController identityDiscController,
+             OneshotSupplier<StartSurface> startSurfaceSupplier) {
 -        TopToolbarCoordinator toolbar = new TopToolbarCoordinator(controlContainer, toolbarLayout,
 +        TopToolbarCoordinator toolbar = new org.chromium.chrome.browser.toolbar.top.BraveTopToolbarCoordinator(controlContainer, toolbarLayout,
                  mLocationBarModel, mToolbarTabController,

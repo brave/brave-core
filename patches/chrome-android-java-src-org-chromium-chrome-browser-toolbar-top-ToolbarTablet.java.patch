@@ -1,8 +1,8 @@
 diff --git a/chrome/android/java/src/org/chromium/chrome/browser/toolbar/top/ToolbarTablet.java b/chrome/android/java/src/org/chromium/chrome/browser/toolbar/top/ToolbarTablet.java
-index 5391fe73ac8f0ae90ac427fe04a4b64a6a5324fe..571a80a03fb674e9055412d75d1b45c0261efa4d 100644
+index f22638537239c7ffc4608d12c2a4fa8ffbe20709..289d555ce51fe05c67709942b56de129bfbfc1d9 100644
 --- a/chrome/android/java/src/org/chromium/chrome/browser/toolbar/top/ToolbarTablet.java
 +++ b/chrome/android/java/src/org/chromium/chrome/browser/toolbar/top/ToolbarTablet.java
-@@ -59,7 +59,7 @@ import java.util.Collection;
+@@ -58,7 +58,7 @@ import java.util.Collection;
   * The Toolbar object for Tablet screens.
   */
  @SuppressLint("Instantiatable")
@@ -11,7 +11,7 @@ index 5391fe73ac8f0ae90ac427fe04a4b64a6a5324fe..571a80a03fb674e9055412d75d1b45c0
          implements OnClickListener, View.OnLongClickListener, TabCountObserver {
      // The number of toolbar buttons that can be hidden at small widths (reload, back, forward).
      public static final int HIDEABLE_BUTTON_COUNT = 3;
-@@ -326,10 +326,12 @@ public class ToolbarTablet extends ToolbarLayout
+@@ -327,10 +327,12 @@ public class ToolbarTablet extends ToolbarLayout
              DownloadUtils.downloadOfflinePage(getContext(), getToolbarDataProvider().getTab());
              RecordUserAction.record("MobileToolbarDownloadPage");
          }
@@ -24,8 +24,8 @@ index 5391fe73ac8f0ae90ac427fe04a4b64a6a5324fe..571a80a03fb674e9055412d75d1b45c0
          String description = null;
          Context context = getContext();
          Resources resources = context.getResources();
-@@ -394,6 +396,7 @@ public class ToolbarTablet extends ToolbarLayout
-         mLocationBar.getBackground().setColorFilter(textBoxColor, PorterDuff.Mode.SRC_IN);
+@@ -395,6 +397,7 @@ public class ToolbarTablet extends ToolbarLayout
+         mLocationBarTablet.getBackground().setColorFilter(textBoxColor, PorterDuff.Mode.SRC_IN);
  
          mLocationBar.updateVisualsForState();
 +        super.onThemeColorChanged(color, shouldAnimate);

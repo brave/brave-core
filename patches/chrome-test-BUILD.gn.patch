@@ -1,11 +1,11 @@
 diff --git a/chrome/test/BUILD.gn b/chrome/test/BUILD.gn
-index a1f8c47e8a9bc8e0558b97488fae2d333eda2243..24059d3974b9f5223165d9ddb68dd1cd8e2035e6 100644
+index 7be09ad230672177a857dede50ccaf53388d2547..f384fcfac8aba07c048d3e43ac3fd74a886fd014 100644
 --- a/chrome/test/BUILD.gn
 +++ b/chrome/test/BUILD.gn
-@@ -842,6 +842,7 @@ if (!is_android) {
+@@ -844,6 +844,7 @@ if (!is_android) {
        "//v8",
      ]
- 
+
 +    deps += [ "//brave/test:brave_browser_tests_deps", ]
      # Runtime dependencies
      data_deps = [

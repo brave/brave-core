@@ -1,8 +1,8 @@
 diff --git a/chrome/android/java/src/org/chromium/chrome/browser/ChromeTabbedActivity.java b/chrome/android/java/src/org/chromium/chrome/browser/ChromeTabbedActivity.java
-index 266a8fc9bf03d482799ef11b568b9ffb643edc19..1141e8f0fb13203d898f17fee996cb4b02ead17f 100644
+index 46ebcc92cf4334cd6414c47d1cb392bce6a1a543..ad1931ae94a273049c3abdad6bdda30b88fc1a68 100644
 --- a/chrome/android/java/src/org/chromium/chrome/browser/ChromeTabbedActivity.java
 +++ b/chrome/android/java/src/org/chromium/chrome/browser/ChromeTabbedActivity.java
-@@ -183,7 +183,7 @@ import java.util.Locale;
+@@ -184,7 +184,7 @@ import java.util.Locale;
   * This is the main activity for ChromeMobile when not running in document mode.  All the tabs
   * are accessible via a chrome specific tab switching UI.
   */
@@ -10,7 +10,7 @@ index 266a8fc9bf03d482799ef11b568b9ffb643edc19..1141e8f0fb13203d898f17fee996cb4b
 +public class ChromeTabbedActivity extends org.chromium.chrome.browser.app.BraveActivity<ChromeActivityComponent>
          implements ChromeAccessibilityUtil.Observer {
      private static final String TAG = "ChromeTabbedActivity";
- 
+
 @@ -998,7 +998,7 @@ public class ChromeTabbedActivity extends ChromeActivity<ChromeActivityComponent
          if (ReengagementNotificationController.isEnabled()) {
              if (mCallbackController != null) {
@@ -19,9 +19,9 @@ index 266a8fc9bf03d482799ef11b568b9ffb643edc19..1141e8f0fb13203d898f17fee996cb4b
 +                        mTabModelProfileSupplier, mCallbackController.makeCancelable((Profile profile) -> {
                              assert profile != null : "Unexpectedly null profile from TabModel.";
                              if (profile == null) return;
- 
-@@ -1440,7 +1440,7 @@ public class ChromeTabbedActivity extends ChromeActivity<ChromeActivityComponent
- 
+
+@@ -1446,7 +1446,7 @@ public class ChromeTabbedActivity extends ChromeActivity<ChromeActivityComponent
+
      @Override
      protected RootUiCoordinator createRootUiCoordinator() {
 -        return new TabbedRootUiCoordinator(this, this::onOmniboxFocusChanged,
@@ -29,16 +29,16 @@ index 266a8fc9bf03d482799ef11b568b9ffb643edc19..1141e8f0fb13203d898f17fee996cb4b
                  mIntentWithEffectSupplier, getShareDelegateSupplier(), getActivityTabProvider(),
                  mEphemeralTabCoordinatorSupplier, mTabModelProfileSupplier, mBookmarkBridgeSupplier,
                  getOverviewModeBehaviorSupplier(), this::getContextualSearchManager,
-@@ -1601,7 +1601,7 @@ public class ChromeTabbedActivity extends ChromeActivity<ChromeActivityComponent
- 
+@@ -1607,7 +1607,7 @@ public class ChromeTabbedActivity extends ChromeActivity<ChromeActivityComponent
+
      @Override
      public AppMenuPropertiesDelegate createAppMenuPropertiesDelegate() {
 -        return new TabbedAppMenuPropertiesDelegate(this, getActivityTabProvider(),
 +        return new org.chromium.chrome.browser.appmenu.BraveTabbedAppMenuPropertiesDelegate(this, getActivityTabProvider(),
                  getMultiWindowModeStateDispatcher(), getTabModelSelector(), getToolbarManager(),
                  getWindow().getDecorView(), this, mOverviewModeBehaviorSupplier,
-                 mBookmarkBridgeSupplier);
-@@ -1625,10 +1625,10 @@ public class ChromeTabbedActivity extends ChromeActivity<ChromeActivityComponent
+                 mBookmarkBridgeSupplier, getModalDialogManager());
+@@ -1631,10 +1631,10 @@ public class ChromeTabbedActivity extends ChromeActivity<ChromeActivityComponent
                  }
              };
          }
@@ -51,10 +51,10 @@ index 266a8fc9bf03d482799ef11b568b9ffb643edc19..1141e8f0fb13203d898f17fee996cb4b
                          tabDelegateFactorySupplier, true, overviewNTPCreator,
                          AsyncTabParamsManagerSingleton.getInstance()));
      }
-@@ -2018,7 +2018,7 @@ public class ChromeTabbedActivity extends ChromeActivity<ChromeActivityComponent
+@@ -2027,7 +2027,7 @@ public class ChromeTabbedActivity extends ChromeActivity<ChromeActivityComponent
          }
      }
- 
+
 -    private void hideOverview() {
 +    public void hideOverview() {
          assert (mOverviewModeController.overviewVisible());
