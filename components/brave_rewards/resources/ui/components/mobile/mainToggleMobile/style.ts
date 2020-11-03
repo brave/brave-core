@@ -9,7 +9,6 @@ export const StyledWrapper = styled<{}, 'div'>('div')`
   display: flex;
   width: 100%;
   background-color: #fff;
-  justify-content: space-between;
   align-items: center;
   position: fixed;
   top: 0;

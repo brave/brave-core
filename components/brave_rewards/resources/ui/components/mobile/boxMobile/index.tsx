@@ -152,36 +152,43 @@ export default class BoxMobile extends React.PureComponent<Props, State> {
     const isDetailView = checked && this.state.detailView
 
     return (
-      <Styled.ToggleHeader detailView={isDetailView}>
-        <Styled.Left>
-          {
-            isDetailView
-              ? <Styled.BackArrow onClick={this.setView.bind(this, 'index')}>
-                <ArrowLeftIcon />
-              </Styled.BackArrow>
-              : null
-          }
-          <Styled.Title
-            type={type}
-            detailView={isDetailView}
-          >
-            {title}
-          </Styled.Title>
-        </Styled.Left>
-        <Styled.Right>
-          {
-            toggle ?
-              <Styled.ToggleWrapper detailView={isDetailView}>
-                <Toggle
-                  size={'small'}
-                  onToggle={this.onToggle}
-                  checked={checked}
-                />
-              </Styled.ToggleWrapper>
-              : null
-          }
-        </Styled.Right>
-      </Styled.ToggleHeader>
+      <Styled.ToggleRow detailView={isDetailView}>
+        <Styled.ToggleHeader detailView={isDetailView}>
+          <Styled.Left>
+            {
+              isDetailView
+                ? <Styled.BackArrow onClick={this.setView.bind(this, 'index')}>
+                  <ArrowLeftIcon />
+                </Styled.BackArrow>
+                : null
+            }
+            <Styled.Title
+              type={type}
+              detailView={isDetailView}
+            >
+              {title}
+            </Styled.Title>
+          </Styled.Left>
+          <Styled.Right>
+            {
+              toggle ?
+                <Styled.ToggleWrapper detailView={isDetailView}>
+                  <Toggle
+                    size={'small'}
+                    onToggle={this.onToggle}
+                    checked={checked}
+                  />
+                </Styled.ToggleWrapper>
+                : null
+            }
+          </Styled.Right>
+        </Styled.ToggleHeader>
+        {
+          !checked && toggle ?
+            <Styled.TOS title={title} />
+            : null
+        }
+      </Styled.ToggleRow>
     )
   }
 
