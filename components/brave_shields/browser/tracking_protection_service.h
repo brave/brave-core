@@ -43,7 +43,8 @@ class TrackingProtectionService : public LocalDataFilesObserver {
   bool ShouldStartRequest(const GURL& spec,
                           blink::mojom::ResourceType resource_type,
                           const std::string& tab_host,
-                          bool* matching_exception_filter);
+                          bool* matching_exception_filter,
+                          bool* cancel_request_explicitly);
 
   // implementation of LocalDataFilesObserver
   void OnComponentReady(const std::string& component_id,

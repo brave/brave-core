@@ -77,10 +77,12 @@ bool AdBlockService::ShouldStartRequest(
     blink::mojom::ResourceType resource_type,
     const std::string& tab_host,
     bool* did_match_exception,
+    bool* cancel_request_explicitly,
     std::string* mock_data_url) {
 
   if (!AdBlockBaseService::ShouldStartRequest(
-          url, resource_type, tab_host, did_match_exception, mock_data_url)) {
+          url, resource_type, tab_host, did_match_exception,
+          cancel_request_explicitly, mock_data_url)) {
     return false;
   }
   if (did_match_exception && *did_match_exception) {
@@ -88,7 +90,8 @@ bool AdBlockService::ShouldStartRequest(
   }
 
   if (!regional_service_manager()->ShouldStartRequest(
-          url, resource_type, tab_host, did_match_exception, mock_data_url)) {
+          url, resource_type, tab_host, did_match_exception,
+          cancel_request_explicitly, mock_data_url)) {
     return false;
   }
   if (did_match_exception && *did_match_exception) {
@@ -96,7 +99,8 @@ bool AdBlockService::ShouldStartRequest(
   }
 
   if (!custom_filters_service()->ShouldStartRequest(
-        url, resource_type, tab_host, did_match_exception, mock_data_url)) {
+        url, resource_type, tab_host, did_match_exception,
+        cancel_request_explicitly, mock_data_url)) {
     return false;
   }
   if (did_match_exception && *did_match_exception) {
