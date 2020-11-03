@@ -42,7 +42,9 @@ bool IPFSTabHelper::MaybeCreateForWebContents(
 
 void IPFSTabHelper::DidFinishNavigation(content::NavigationHandle* handle) {
   DCHECK(handle);
-  DCHECK(handle->IsInMainFrame());
+  if (!handle->IsInMainFrame()) {
+    return;
+  }
 
   auto resolve_method = static_cast<ipfs::IPFSResolveMethodTypes>(
       pref_service_->GetInteger(kIPFSResolveMethod));
