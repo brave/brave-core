@@ -8,9 +8,9 @@ source_set("browser_tests") {
   defines = [ "HAS_OUT_OF_PROC_TEST_RUNNER" ]
 
   sources = [
-    "quota/navigator_storagetest.cc",
-    "battery/navigator_batterytest.cc",
-    "bluetooth/navigator_bluetoothtest.cc",
+    "quota/navigator_storage_browsertest.cc",
+    "battery/navigator_battery_browsertest.cc",
+    "bluetooth/navigator_bluetooth_browsertest.cc",
   ]
 
   deps = [
