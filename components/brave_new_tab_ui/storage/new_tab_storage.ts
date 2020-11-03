@@ -30,6 +30,7 @@ export const defaultState: NewTab.State = {
   showEmptyPage: false,
   togetherSupported: false,
   geminiSupported: false,
+  binanceSupported: false,
   bitcoinDotComSupported: false,
   cryptoDotComSupported: false,
   isIncognito: chrome.extension.inIncognitoContext,
@@ -71,7 +72,6 @@ export const defaultState: NewTab.State = {
     initialAmount: '',
     initialAsset: 'BTC',
     userTLDAutoSet: false,
-    binanceSupported: false,
     hideBalance: true,
     binanceClientUrl: '',
     userAuthed: false,
@@ -193,18 +193,18 @@ export const addNewStackWidget = (state: NewTab.State) => {
 // as a result of https://github.com/brave/brave-browser/issues/10067
 export const replaceStackWidgets = (state: NewTab.State) => {
   const {
-    binanceState,
     showBinance,
     showRewards,
     showTogether,
-    togetherSupported
+    togetherSupported,
+    binanceSupported
   } = state
   const displayLookup = {
     'rewards': {
       display: showRewards
     },
     'binance': {
-      display: binanceState.binanceSupported && showBinance
+      display: binanceSupported && showBinance
     },
     'together': {
       display: togetherSupported && showTogether
@@ -264,6 +264,7 @@ export const debouncedSave = debounce<NewTab.State>((data: NewTab.State) => {
   if (data) {
     const dataToSave = {
       togetherSupported: data.togetherSupported,
+      binanceSupported: data.binanceSupported,
       geminiSupported: data.geminiSupported,
       bitcoinDotComSupported: data.bitcoinDotComSupported,
       rewardsState: data.rewardsState,

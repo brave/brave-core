@@ -39,14 +39,6 @@ export const clockWidgetUpdated = (showClockWidget: boolean,
 export const setInitialData = (initialData: InitialData) =>
   action(types.NEW_TAB_SET_INITIAL_DATA, initialData)
 
-export const removeStackWidget = (widget: NewTab.StackWidget) => action(types.REMOVE_STACK_WIDGET, {
-  widget
-})
-
-export const setForegroundStackWidget = (widget: NewTab.StackWidget) => action(types.SET_FOREGROUND_STACK_WIDGET, {
-  widget
-})
-
 export const setMostVisitedSettings = (showTopSites: boolean, customLinksEnabled: boolean) =>
   action(types.SET_MOST_VISITED_SITES, { showTopSites, customLinksEnabled })
 

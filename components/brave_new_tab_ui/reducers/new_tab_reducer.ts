@@ -19,6 +19,9 @@ import * as preferencesAPI from '../api/preferences'
 import * as storage from '../storage/new_tab_storage'
 import { setMostVisitedSettings } from '../api/topSites'
 
+// Utils
+import { handleWidgetPrefsChange } from './stack_widget_reducer'
+
 let sideEffectState: NewTab.State = storage.load()
 
 type SideEffectFunction = (currentState: NewTab.State) => void
@@ -44,7 +47,8 @@ export const newTabReducer: Reducer<NewTab.State | undefined> = (state: NewTab.S
         togetherSupported: initialDataPayload.togetherSupported,
         geminiSupported: initialDataPayload.geminiSupported,
         bitcoinDotComSupported: initialDataPayload.bitcoinDotComSupported,
-        cryptoDotComSupported: initialDataPayload.cryptoDotComSupported
+        cryptoDotComSupported: initialDataPayload.cryptoDotComSupported,
+        binanceSupported: initialDataPayload.binanceSupported
       }
       if (state.brandedWallpaperData && !state.brandedWallpaperData.isSponsored) {
         // Update feature flag if this is super referral wallpaper.
@@ -145,41 +149,8 @@ export const newTabReducer: Reducer<NewTab.State | undefined> = (state: NewTab.S
       if (shouldChangeBackgroundImage) {
         newState.backgroundImage = backgroundAPI.randomBackgroundImage()
       }
-      state = newState
-      break
-
-    case types.REMOVE_STACK_WIDGET:
-      const widget: NewTab.StackWidget = payload.widget
-      let { removedStackWidgets, widgetStackOrder } = state
-
-      if (!widgetStackOrder.length) {
-        break
-      }
-
-      if (!removedStackWidgets.includes(widget)) {
-        removedStackWidgets.push(widget)
-      }
-
-      state = {
-        ...state,
-        removedStackWidgets
-      }
-      break
-
-    case types.SET_FOREGROUND_STACK_WIDGET:
-      const frontWidget: NewTab.StackWidget = payload.widget
-      let newWidgetStackOrder = state.widgetStackOrder
-
-      newWidgetStackOrder = newWidgetStackOrder.filter((widget: NewTab.StackWidget) => {
-        return widget !== frontWidget
-      })
-
-      newWidgetStackOrder.push(frontWidget)
-
-      state = {
-        ...state,
-        widgetStackOrder: newWidgetStackOrder
-      }
+      // Handle updated widget prefs
+      state = handleWidgetPrefsChange(newState, state)
       break
 
     case types.UPDATE_CLOCK_WIDGET: {

@@ -19,6 +19,7 @@ import * as rewardsActions from '../actions/rewards_actions'
 import * as geminiActions from '../actions/gemini_actions'
 import * as bitcoinDotComActions from '../actions/bitcoin_dot_com_actions'
 import * as cryptoDotComActions from '../actions/cryptoDotCom_actions'
+import * as stackWidgetActions from '../actions/stack_widget_actions'
 import * as PreferencesAPI from '../api/preferences'
 
 // Types
@@ -67,7 +68,7 @@ const mapStateToProps = (state: NewTab.ApplicationState) => ({
 })
 
 const mapDispatchToProps = (dispatch: Dispatch) => {
-  const allActions = Object.assign({}, newTabActions, gridSitesActions, binanceActions, rewardsActions, geminiActions, bitcoinDotComActions, cryptoDotComActions)
+  const allActions = Object.assign({}, newTabActions, stackWidgetActions, gridSitesActions, binanceActions, rewardsActions, geminiActions, bitcoinDotComActions, cryptoDotComActions)
   return {
     actions: bindActionCreators(allActions, dispatch)
   }

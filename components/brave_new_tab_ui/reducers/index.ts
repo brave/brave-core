@@ -14,6 +14,7 @@ import rewardsReducer from './rewards_reducer'
 import geminiReducer from './gemini_reducer'
 import bitcoinDotComReducer from './bitcoin_dot_com_reducer'
 import cryptoDotComReducer from './cryptoDotCom_reducer'
+import { stackWidgetReducer } from './stack_widget_reducer'
 
 export const newTabReducers = (state: NewTab.State | undefined, action: any) => {
   if (state === undefined) {
@@ -27,6 +28,7 @@ export const newTabReducers = (state: NewTab.State | undefined, action: any) => 
   state = geminiReducer(state, action)
   state = bitcoinDotComReducer(state, action)
   state = cryptoDotComReducer(state, action)
+  state = stackWidgetReducer(state, action)
 
   if (state !== startingState) {
     storage.debouncedSave(state)
