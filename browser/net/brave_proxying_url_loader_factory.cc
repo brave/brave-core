@@ -349,7 +349,8 @@ void BraveProxyingURLLoaderFactory::InProgressRequest::
   // TODO(iefremov): Shorten
   if (ctx_->blocked_by != brave::kNotBlocked) {
     if (!ctx_->ShouldMockRequest()) {
-      OnRequestError(network::URLLoaderCompletionStatus(net::ERR_ABORTED));
+      OnRequestError(
+          network::URLLoaderCompletionStatus(net::ERR_BLOCKED_BY_CLIENT));
       return;
     }
 

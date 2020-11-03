@@ -299,7 +299,7 @@ void BraveRequestHandler::RunNextCallback(
     if (ctx->blocked_by == brave::kAdBlocked) {
       if (!ctx->ShouldMockRequest()) {
         RunCallbackForRequestIdentifier(ctx->request_identifier,
-                                        net::ERR_ABORTED);
+                                        net::ERR_BLOCKED_BY_CLIENT);
         return;
       }
     }
