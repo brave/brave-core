@@ -261,7 +261,6 @@
     "@types/react-dom": "^16.0.7",
     "@types/react-redux": "6.0.4",
     "@types/react-sortable-hoc": "^0.7.1",
-    "@types/react-virtualized-auto-sizer": "^1.0.0",
     "@types/react-window": "^1.8.2",
     "@types/redux-logger": "^3.0.7",
     "@types/storybook__addon-centered": "^3.3.2",
@@ -292,7 +291,6 @@
     "react-beautiful-dnd": "^11.0.3",
     "react-dom": "^16.3.0",
     "react-redux": "^5.0.6",
-    "react-virtualized-auto-sizer": "^1.0.2",
     "redux": "^4.0.0",
     "sinon": "^7.2.4",
     "storybook-addon-styled-component-theme": "^1.1.1",
@@ -311,6 +309,7 @@
     "webpack-cli": "^3.3.11"
   },
   "dependencies": {
+    "@brave/react-virtualized-auto-sizer": "^1.0.4",
     "@types/jszip": "^3.1.6",
     "@types/parse-torrent": "^5.8.3",
     "@types/webtorrent": "^0.98.5",

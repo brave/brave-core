@@ -4,7 +4,7 @@
 // you can obtain one at http://mozilla.org/MPL/2.0/.
 
 import * as React from 'react'
-import AutoSizer from 'react-virtualized-auto-sizer'
+import AutoSizer from '@brave/react-virtualized-auto-sizer'
 import { VariableSizeList } from 'react-window'
 import { isPublisherContentAllowed } from '../../../../../common/braveToday'
 import {

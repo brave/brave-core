@@ -25,7 +25,8 @@ def check_dependency(module_name):
         return True
 
     third_party_dir = os.path.join(os.path.dirname(SOURCE_ROOT), 'brave', 'third_party')
-    readme_path = os.path.join(third_party_dir, 'npm_%s' % module_name, 'README.chromium')
+    module_dir_name = module_name.replace('/', '_')
+    readme_path = os.path.join(third_party_dir, 'npm_%s' % module_dir_name, 'README.chromium')
     if not os.path.isfile(readme_path):
         print('npm module %s needs licensing information in %s' % (module_name, readme_path))
         return False
