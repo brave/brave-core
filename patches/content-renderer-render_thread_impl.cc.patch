@@ -4,7 +4,7 @@ index 0998f754068ffeb31e8f9d95d6759831a66867ec..abece52ba1a349a3305226bf5557d8ba
 +++ b/content/renderer/render_thread_impl.cc
 @@ -1020,6 +1020,7 @@ void RenderThreadImpl::InitializeWebKit(mojo::BinderMap* binders) {
  }
-
+ 
  void RenderThreadImpl::RegisterSchemes() {
 +  REGISTER_BRAVE_SCHEMES_DISPLAY_ISOLATED_AND_NO_JS
    // chrome:

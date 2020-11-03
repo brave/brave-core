@@ -8,14 +8,14 @@ index 204d672550540ba9fd37c1c4c596431fa2b6cc61..0f27c24848e1aff2023b27c0191f037f
    ]
 +  deps += brave_chrome_app_java_resources_deps sources += brave_java_resources resource_overlay = true
  }
-
+ 
  if (enable_vr) {
 @@ -526,6 +527,7 @@ android_library("chrome_java") {
    ]
-
+ 
    deps += feed_deps
 +  deps += brave_chrome_java_deps
-
+ 
    srcjar_deps = [
      ":chrome_android_java_enums_srcjar",
 @@ -557,6 +559,7 @@ android_library("chrome_java") {
@@ -23,7 +23,7 @@ index 204d672550540ba9fd37c1c4c596431fa2b6cc61..0f27c24848e1aff2023b27c0191f037f
      "//net:effective_connection_type_java",
    ]
 +  srcjar_deps += brave_chrome_java_srcjar_deps
-
+ 
    # From java_sources.gni.
    sources = chrome_java_sources + [ app_hooks_impl ]
 @@ -684,6 +687,7 @@ group("jni_headers") {
@@ -32,7 +32,7 @@ index 204d672550540ba9fd37c1c4c596431fa2b6cc61..0f27c24848e1aff2023b27c0191f037f
    ]
 +  public_deps += ["//brave/build/android:jni_headers"]
  }
-
+ 
  action("chrome_android_java_google_api_keys_srcjar") {
 @@ -1790,6 +1794,7 @@ if (current_toolchain == default_toolchain) {
          ":${_variant}_locale_pak_assets",

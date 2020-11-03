@@ -4,10 +4,10 @@ index 44e4dfbe5341c50f564cc3ecb28ce72c8fa52b64..406413f86ecd82a77f7cdd53c49e7e47
 +++ b/chrome/android/java/src/org/chromium/chrome/browser/app/ChromeActivity.java
 @@ -331,7 +331,7 @@ public abstract class ChromeActivity<C extends ChromeActivityComponent>
      NightModeReparentingController mNightModeReparentingController;
-
+ 
      protected ChromeActivity() {
 -        mIntentHandler = new IntentHandler(this, createIntentHandlerDelegate());
 +        mIntentHandler = new org.chromium.chrome.browser.BraveIntentHandler(this, createIntentHandlerDelegate());
      }
-
+ 
      @Override

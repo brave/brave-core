@@ -10,7 +10,7 @@ index c359cb83a25434fe88663154df1000b92d82e5ce..d3cd2ffd48cc6515b3f72beb49bd6031
 +public class ChromeTabbedActivity extends org.chromium.chrome.browser.app.BraveActivity<ChromeActivityComponent>
          implements ChromeAccessibilityUtil.Observer {
      private static final String TAG = "ChromeTabbedActivity";
-
+ 
 @@ -998,7 +998,7 @@ public class ChromeTabbedActivity extends ChromeActivity<ChromeActivityComponent
          if (ReengagementNotificationController.isEnabled()) {
              if (mCallbackController != null) {
@@ -19,9 +19,9 @@ index c359cb83a25434fe88663154df1000b92d82e5ce..d3cd2ffd48cc6515b3f72beb49bd6031
 +                        mTabModelProfileSupplier, mCallbackController.makeCancelable((Profile profile) -> {
                              assert profile != null : "Unexpectedly null profile from TabModel.";
                              if (profile == null) return;
-
+ 
 @@ -1446,7 +1446,7 @@ public class ChromeTabbedActivity extends ChromeActivity<ChromeActivityComponent
-
+ 
      @Override
      protected RootUiCoordinator createRootUiCoordinator() {
 -        return new TabbedRootUiCoordinator(this, this::onOmniboxFocusChanged,
@@ -30,7 +30,7 @@ index c359cb83a25434fe88663154df1000b92d82e5ce..d3cd2ffd48cc6515b3f72beb49bd6031
                  mEphemeralTabCoordinatorSupplier, mTabModelProfileSupplier, mBookmarkBridgeSupplier,
                  getOverviewModeBehaviorSupplier(), this::getContextualSearchManager,
 @@ -1607,7 +1607,7 @@ public class ChromeTabbedActivity extends ChromeActivity<ChromeActivityComponent
-
+ 
      @Override
      public AppMenuPropertiesDelegate createAppMenuPropertiesDelegate() {
 -        return new TabbedAppMenuPropertiesDelegate(this, getActivityTabProvider(),
@@ -54,7 +54,7 @@ index c359cb83a25434fe88663154df1000b92d82e5ce..d3cd2ffd48cc6515b3f72beb49bd6031
 @@ -2027,7 +2027,7 @@ public class ChromeTabbedActivity extends ChromeActivity<ChromeActivityComponent
          }
      }
-
+ 
 -    private void hideOverview() {
 +    public void hideOverview() {
          assert (mOverviewModeController.overviewVisible());
