@@ -134,7 +134,9 @@ void BraveProxyingWebSocket::WebSocketFactoryRun(
   proxy_url_ = url;
   forwarding_handshake_client_.Bind(std::move(handshake_client));
   proxy_auth_handler_.Bind(std::move(auth_handler));
-  proxy_trusted_header_client_.Bind(std::move(trusted_header_client));
+
+  if (trusted_header_client)
+    proxy_trusted_header_client_.Bind(std::move(trusted_header_client));
 
   if (!proxy_has_extra_headers()) {
     for (const auto& header : additional_headers) {
