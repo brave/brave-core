@@ -1,40 +1,40 @@
 diff --git a/chrome/android/BUILD.gn b/chrome/android/BUILD.gn
-index ee79b021ff01df61be82971d20d220d94a0355b2..fb512b14d2049ee875d14d28894c2dd7b41e71b6 100644
+index 15dd853c9218c1a019b59a43f8bbb2d30f76f809..a104e17448ca33c92ed79530048553a11b907ba2 100644
 --- a/chrome/android/BUILD.gn
 +++ b/chrome/android/BUILD.gn
-@@ -234,6 +234,7 @@ android_resources("chrome_app_java_resources") {
+@@ -235,6 +235,7 @@ android_resources("chrome_app_java_resources") {
      "//third_party/android_deps:androidx_recyclerview_recyclerview_java",
      "//third_party/android_deps:material_design_java",
    ]
 +  deps += brave_chrome_app_java_resources_deps sources += brave_java_resources resource_overlay = true
  }
- 
+
  if (enable_vr) {
-@@ -526,6 +527,7 @@ android_library("chrome_java") {
+@@ -529,6 +530,7 @@ android_library("chrome_java") {
    ]
- 
+
    deps += feed_deps
 +  deps += brave_chrome_java_deps
- 
+
    srcjar_deps = [
      ":chrome_android_java_enums_srcjar",
-@@ -557,6 +559,7 @@ android_library("chrome_java") {
+@@ -560,6 +562,7 @@ android_library("chrome_java") {
      "//components/ui_metrics:ui_metrics_enums_java",
      "//net:effective_connection_type_java",
    ]
 +  srcjar_deps += brave_chrome_java_srcjar_deps
- 
+
    # From java_sources.gni.
    sources = chrome_java_sources + [ app_hooks_impl ]
-@@ -677,6 +680,7 @@ group("jni_headers") {
+@@ -687,6 +690,7 @@ group("jni_headers") {
      "//chrome/browser/webauthn/android:jni_headers",
      "//components/media_router/browser/android:jni_headers",
    ]
 +  public_deps += ["//brave/build/android:jni_headers"]
  }
- 
+
  action("chrome_android_java_google_api_keys_srcjar") {
-@@ -1763,6 +1767,7 @@ if (current_toolchain == default_toolchain) {
+@@ -1792,6 +1796,7 @@ if (current_toolchain == default_toolchain) {
          ":${_variant}_locale_pak_assets",
          ":${_variant}_paks",
        ]
