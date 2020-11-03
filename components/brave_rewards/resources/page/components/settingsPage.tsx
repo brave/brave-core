@@ -124,6 +124,7 @@ class SettingsPage extends React.Component<Props, State> {
       this.actions.getBalanceReport(new Date().getMonth() + 1, new Date().getFullYear())
       this.actions.getAdsData()
       this.actions.getPendingContributions()
+      this.actions.getCountryCode()
     } else {
       // normal load
       this.refreshActions()
