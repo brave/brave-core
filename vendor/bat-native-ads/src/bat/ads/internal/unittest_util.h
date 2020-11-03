@@ -6,6 +6,8 @@
 #ifndef BAT_ADS_INTERNAL_UNITTEST_UTIL_H_
 #define BAT_ADS_INTERNAL_UNITTEST_UTIL_H_
 
+#include <stdint.h>
+
 #include <map>
 #include <memory>
 #include <string>
@@ -96,7 +98,15 @@ void SetBuildChannel(
 
 void MockPlatformHelper(
     const std::unique_ptr<PlatformHelperMock>& mock,
-    PlatformType platform_type);
+    const PlatformType platform_type);
+
+void MockIsNetworkConnectionAvailable(
+    const std::unique_ptr<AdsClientMock>& mock,
+    const bool is_available);
+
+void MockShouldShowNotifications(
+    const std::unique_ptr<AdsClientMock>& mock,
+    const bool should_show);
 
 void MockSave(
     const std::unique_ptr<AdsClientMock>& mock);

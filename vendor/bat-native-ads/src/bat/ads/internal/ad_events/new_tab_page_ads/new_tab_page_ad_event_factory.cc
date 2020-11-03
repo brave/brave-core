@@ -7,24 +7,27 @@
 
 #include "bat/ads/internal/ad_events/new_tab_page_ads/new_tab_page_ad_event_clicked.h"
 #include "bat/ads/internal/ad_events/new_tab_page_ads/new_tab_page_ad_event_viewed.h"
+#include "bat/ads/internal/ads_impl.h"
 #include "bat/ads/new_tab_page_ad_info.h"
 
 namespace ads {
+namespace new_tab_page_ads {
 
-std::unique_ptr<AdEvent<NewTabPageAdInfo>> NewTabPageAdEventFactory::Build(
+std::unique_ptr<AdEvent<NewTabPageAdInfo>> AdEventFactory::Build(
     AdsImpl* ads,
     const NewTabPageAdEventType event_type) {
   DCHECK(ads);
 
   switch (event_type) {
     case NewTabPageAdEventType::kViewed: {
-      return std::make_unique<NewTabPageAdEventViewed>(ads);
+      return std::make_unique<AdEventViewed>(ads);
     }
 
     case NewTabPageAdEventType::kClicked: {
-      return std::make_unique<NewTabPageAdEventClicked>(ads);
+      return std::make_unique<AdEventClicked>(ads);
     }
   }
 }
 
+}  // namespace new_tab_page_ads
 }  // namespace ads

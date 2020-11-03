@@ -424,13 +424,13 @@ BATClassAdsBridge(BOOL, isDebug, setDebug, _is_debug)
   const uint64_t from_timestamp = 0;
   const uint64_t to_timestamp = std::numeric_limits<uint64_t>::max();
 
-  const auto history = ads->GetAdsHistory(ads::AdsHistory::FilterType::kNone,
-      ads::AdsHistory::SortType::kNone, from_timestamp, to_timestamp);
+  const auto history = ads->GetAdsHistory(ads::AdsHistoryInfo::FilterType::kNone,
+      ads::AdsHistoryInfo::SortType::kNone, from_timestamp, to_timestamp);
 
   const auto dates = [[NSMutableArray<NSDate *> alloc] init];
-  for (const auto& entry : history.entries) {
+  for (const auto& item : history.items) {
     const auto date = [NSDate dateWithTimeIntervalSince1970:
-        entry.timestamp_in_seconds];
+        item.timestamp_in_seconds];
     [dates addObject:date];
   }
 
@@ -533,7 +533,7 @@ BATClassAdsBridge(BOOL, isDebug, setDebug, _is_debug)
   if (![self isAdsServiceRunning]) { return; }
   ads->ToggleAdThumbUp(creativeInstanceId.UTF8String,
                        creativeSetID.UTF8String,
-                       ads::AdContent::LikeAction::kThumbsUp);
+                       ads::AdContentInfo::LikeAction::kThumbsUp);
 }
 
 - (void)toggleThumbsDownForAd:(NSString *)creativeInstanceId creativeSetID:(NSString *)creativeSetID
@@ -541,7 +541,7 @@ BATClassAdsBridge(BOOL, isDebug, setDebug, _is_debug)
   if (![self isAdsServiceRunning]) { return; }
   ads->ToggleAdThumbDown(creativeInstanceId.UTF8String,
                          creativeSetID.UTF8String,
-                         ads::AdContent::LikeAction::kThumbsDown);
+                         ads::AdContentInfo::LikeAction::kThumbsDown);
 }
 
 #pragma mark - Configuration
@@ -944,12 +944,9 @@ BATClassAdsBridge(BOOL, isDebug, setDebug, _is_debug)
   return [self.notificationsHandler shouldShowNotifications];
 }
 
-- (void)showNotification:(std::unique_ptr<ads::AdNotificationInfo>)info
+- (void)showNotification:(const ads::AdNotificationInfo &)info
 {
-  if (info.get() == nullptr) {
-    return;
-  }
-  const auto notification = [[BATAdNotification alloc] initWithNotificationInfo:*info];
+  const auto notification = [[BATAdNotification alloc] initWithNotificationInfo:info];
   [self.notificationsHandler showNotification:notification];
 }
 

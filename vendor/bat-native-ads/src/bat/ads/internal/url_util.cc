@@ -36,9 +36,19 @@ bool UrlHasScheme(
   return GURL(url).SchemeIsHTTPOrHTTPS();
 }
 
+std::string GetUrlHost(
+    const std::string& url) {
+  GURL gurl(url);
+  if (!gurl.is_valid()) {
+    return "";
+  }
+
+  return gurl.host();
+}
+
 bool SameSite(
-      const std::string& url1,
-      const std::string& url2) {
+    const std::string& url1,
+    const std::string& url2) {
   return net::registry_controlled_domains::SameDomainOrHost(GURL(url1),
       GURL(url2), net::registry_controlled_domains::INCLUDE_PRIVATE_REGISTRIES);
 }

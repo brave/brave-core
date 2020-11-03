@@ -5,8 +5,7 @@
 
 #include "bat/ads/internal/database/tables/creative_ad_notifications_database_table.h"
 
-#include <functional>
-#include <set>
+#include <algorithm>
 #include <utility>
 
 #include "base/strings/string_util.h"
@@ -90,7 +89,7 @@ void CreativeAdNotifications::Delete(
 }
 
 void CreativeAdNotifications::GetForCategories(
-    const classification::CategoryList& categories,
+    const CategoryList& categories,
     GetCreativeAdNotificationsCallback callback) {
   if (categories.empty()) {
     callback(Result::SUCCESS, categories, {});
@@ -346,7 +345,7 @@ std::string CreativeAdNotifications::BuildInsertOrUpdateQuery(
 
 void CreativeAdNotifications::OnGetForCategories(
     DBCommandResponsePtr response,
-    const classification::CategoryList& categories,
+    const CategoryList& categories,
     GetCreativeAdNotificationsCallback callback) {
   if (!response || response->status != DBCommandResponse::Status::RESPONSE_OK) {
     BLOG(0, "Failed to get creative ad notifications");
@@ -360,7 +359,7 @@ void CreativeAdNotifications::OnGetForCategories(
     const CreativeAdNotificationInfo creative_ad_notification =
         GetFromRecord(record.get());
 
-    creative_ad_notifications.emplace_back(creative_ad_notification);
+    creative_ad_notifications.push_back(creative_ad_notification);
   }
 
   callback(Result::SUCCESS, categories, creative_ad_notifications);
@@ -377,23 +376,22 @@ void CreativeAdNotifications::OnGetAll(
 
   CreativeAdNotificationList creative_ad_notifications;
 
-  std::set<std::string> categories;
+  CategoryList categories;
 
   for (const auto& record : response->result->get_records()) {
     const CreativeAdNotificationInfo creative_ad_notification =
         GetFromRecord(record.get());
 
-    creative_ad_notifications.emplace_back(creative_ad_notification);
+    creative_ad_notifications.push_back(creative_ad_notification);
 
-    categories.insert(creative_ad_notification.category);
+    categories.push_back(creative_ad_notification.category);
   }
 
-  classification::CategoryList normalized_categories;
-  for (const auto& category : categories) {
-    normalized_categories.push_back(category);
-  }
+  std::sort(categories.begin(), categories.end());
+  const auto iter = std::unique(categories.begin(), categories.end());
+  categories.erase(iter, categories.end());
 
-  callback(Result::SUCCESS, normalized_categories, creative_ad_notifications);
+  callback(Result::SUCCESS, categories, creative_ad_notifications);
 }
 
 CreativeAdNotificationInfo CreativeAdNotifications::GetFromRecord(

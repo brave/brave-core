@@ -9,18 +9,19 @@
 #include <memory>
 #include <string>
 
-#include "bat/ads/ad_info.h"
 #include "bat/ads/ads.h"
 #include "bat/ads/internal/catalog/catalog_issuers_info.h"
 #include "bat/ads/internal/confirmations/confirmations_state.h"
-#include "bat/ads/internal/privacy/unblinded_tokens/unblinded_token_info.h"
-#include "bat/ads/internal/privacy/unblinded_tokens/unblinded_tokens.h"
 #include "bat/ads/internal/timer.h"
 #include "bat/ads/result.h"
 
 namespace ads {
 
 class AdsImpl;
+
+namespace privacy {
+class UnblindedTokens;
+}  // namespace privacy
 
 class Confirmations {
  public:

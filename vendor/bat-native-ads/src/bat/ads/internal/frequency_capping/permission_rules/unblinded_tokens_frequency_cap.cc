@@ -5,30 +5,32 @@
 
 #include "bat/ads/internal/frequency_capping/permission_rules/unblinded_tokens_frequency_cap.h"
 
+#include "bat/ads/internal/account/wallet.h"
 #include "bat/ads/internal/ads_impl.h"
 #include "bat/ads/internal/confirmations/confirmations.h"
-#include "bat/ads/internal/server/refill_unblinded_tokens/refill_unblinded_tokens.h"
+#include "bat/ads/internal/privacy/unblinded_tokens/unblinded_tokens.h"
+#include "bat/ads/internal/tokens/refill_unblinded_tokens/refill_unblinded_tokens.h"
 
 namespace ads {
 
 namespace {
-const int kUnblindedTokenCountThreshold = 10;
+const int kUnblindedTokensMinimumThreshold = 10;
 }  // namespace
 
 UnblindedTokensFrequencyCap::UnblindedTokensFrequencyCap(
-    const AdsImpl* const ads)
+    AdsImpl* ads)
     : ads_(ads) {
   DCHECK(ads_);
 }
 
 UnblindedTokensFrequencyCap::~UnblindedTokensFrequencyCap() = default;
 
-bool UnblindedTokensFrequencyCap::IsAllowed() {
+bool UnblindedTokensFrequencyCap::ShouldAllow() {
   if (!DoesRespectCap()) {
+    const WalletInfo wallet = ads_->get_wallet()->Get();
+    ads_->get_refill_unblinded_tokens()->MaybeRefill(wallet);
+
     last_message_ = "You do not have enough unblinded tokens";
-
-    ads_->get_refill_unblinded_tokens()->MaybeRefill();
-
     return false;
   }
 
@@ -41,8 +43,7 @@ std::string UnblindedTokensFrequencyCap::get_last_message() const {
 
 bool UnblindedTokensFrequencyCap::DoesRespectCap() {
   const int count = ads_->get_confirmations()->get_unblinded_tokens()->Count();
-
-  if (count < kUnblindedTokenCountThreshold) {
+  if (count < kUnblindedTokensMinimumThreshold) {
     return false;
   }
 

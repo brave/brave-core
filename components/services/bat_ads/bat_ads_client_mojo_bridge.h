@@ -36,7 +36,7 @@ class BatAdsClientMojoBridge
   bool IsForeground() const override;
 
   void ShowNotification(
-      std::unique_ptr<ads::AdNotificationInfo> info) override;
+      const ads::AdNotificationInfo& ad_notification) override;
   bool ShouldShowNotifications() override;
   void CloseNotification(
       const std::string& uuid) override;

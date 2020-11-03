@@ -29,9 +29,9 @@
 #include "base/task_runner_util.h"
 #include "base/time/time.h"
 #include "base/i18n/time_formatting.h"
-#include "bat/ads/ad_history.h"
+#include "bat/ads/ad_history_info.h"
 #include "bat/ads/ads.h"
-#include "bat/ads/ads_history.h"
+#include "bat/ads/ads_history_info.h"
 #include "bat/ads/ad_notification_info.h"
 #include "bat/ads/mojom.h"
 #include "bat/ads/pref_names.h"
@@ -268,9 +268,9 @@ void AdsServiceImpl::SetEnabled(
   SetBooleanPref(ads::prefs::kEnabled, is_enabled);
 }
 
-void AdsServiceImpl::SetAllowAdConversionTracking(
+void AdsServiceImpl::SetAllowConversionTracking(
     const bool should_allow) {
-  SetBooleanPref(ads::prefs::kShouldAllowAdConversionTracking, should_allow);
+  SetBooleanPref(ads::prefs::kShouldAllowConversionTracking, should_allow);
 }
 
 void AdsServiceImpl::SetAdsPerHour(
@@ -1079,8 +1079,6 @@ void AdsServiceImpl::RegisterUserModelComponentsForLocale(
 void AdsServiceImpl::OnURLRequestStarted(
     const GURL& final_url,
     const network::mojom::URLResponseHead& response_head) {
-  VLOG(6) << "URL request started for " << final_url.PathForRequest();
-
   if (response_head.headers->response_code() == -1) {
     VLOG(6) << "Response headers are malformed!!";
     return;
@@ -1093,9 +1091,6 @@ void AdsServiceImpl::OnURLRequestComplete(
     const std::unique_ptr<std::string> response_body) {
   DCHECK(url_loaders_.find(url_loader) != url_loaders_.end());
   url_loaders_.erase(url_loader);
-
-  VLOG(6) << "URL request complete for "
-      << url_loader->GetFinalURL().PathForRequest();
 
   if (!connected()) {
     return;
@@ -1143,42 +1138,42 @@ bool AdsServiceImpl::CanShowBackgroundNotifications() const {
 void AdsServiceImpl::OnGetAdsHistory(
     OnGetAdsHistoryCallback callback,
     const std::string& json) {
-  ads::AdsHistory ads_history;
+  ads::AdsHistoryInfo ads_history;
   ads_history.FromJson(json);
 
   // Build the list structure required by the webUI
   int uuid = 0;
   base::ListValue list;
-  for (const auto& entry : ads_history.entries) {
+  for (const auto& item : ads_history.items) {
     base::DictionaryValue ad_content_dictionary;
     ad_content_dictionary.SetKey("creativeInstanceId",
-        base::Value(entry.ad_content.creative_instance_id));
+        base::Value(item.ad_content.creative_instance_id));
     ad_content_dictionary.SetKey("creativeSetId",
-        base::Value(entry.ad_content.creative_set_id));
+        base::Value(item.ad_content.creative_set_id));
     ad_content_dictionary.SetKey("brand",
-        base::Value(entry.ad_content.brand));
+        base::Value(item.ad_content.brand));
     ad_content_dictionary.SetKey("brandInfo",
-        base::Value(entry.ad_content.brand_info));
+        base::Value(item.ad_content.brand_info));
     ad_content_dictionary.SetKey("brandLogo",
-        base::Value(entry.ad_content.brand_logo));
+        base::Value(item.ad_content.brand_logo));
     ad_content_dictionary.SetKey("brandDisplayUrl",
-        base::Value(entry.ad_content.brand_display_url));
+        base::Value(item.ad_content.brand_display_url));
     ad_content_dictionary.SetKey("brandUrl",
-        base::Value(entry.ad_content.brand_url));
+        base::Value(item.ad_content.brand_url));
     ad_content_dictionary.SetKey("likeAction",
-        base::Value(static_cast<int>(entry.ad_content.like_action)));
+        base::Value(static_cast<int>(item.ad_content.like_action)));
     ad_content_dictionary.SetKey("adAction",
-        base::Value(std::string(entry.ad_content.ad_action)));
+        base::Value(std::string(item.ad_content.ad_action)));
     ad_content_dictionary.SetKey("savedAd",
-        base::Value(entry.ad_content.saved_ad));
+        base::Value(item.ad_content.saved_ad));
     ad_content_dictionary.SetKey("flaggedAd",
-        base::Value(entry.ad_content.flagged_ad));
+        base::Value(item.ad_content.flagged_ad));
 
     base::DictionaryValue category_content_dictionary;
     category_content_dictionary.SetKey("category",
-        base::Value(entry.category_content.category));
+        base::Value(item.category_content.category));
     category_content_dictionary.SetKey("optAction",
-        base::Value(static_cast<int>(entry.category_content.opt_action)));
+        base::Value(static_cast<int>(item.category_content.opt_action)));
 
     base::DictionaryValue ad_history_dictionary;
     ad_history_dictionary.SetPath("adContent",
@@ -1189,7 +1184,7 @@ void AdsServiceImpl::OnGetAdsHistory(
     base::DictionaryValue dictionary;
 
     dictionary.SetKey("uuid", base::Value(std::to_string(uuid++)));
-    auto time = base::Time::FromDoubleT(entry.timestamp_in_seconds);
+    auto time = base::Time::FromDoubleT(item.timestamp_in_seconds);
     auto js_time = time.ToJsTime();
     dictionary.SetKey("timestampInMilliseconds", base::Value(js_time));
 
@@ -1556,7 +1551,6 @@ void AdsServiceImpl::MigratePrefsVersion6To7() {
   SetEnabled(false);
 }
 
-
 void AdsServiceImpl::MigratePrefsVersion7To8() {
   const bool rewards_enabled = GetBooleanPref(brave_rewards::prefs::kEnabled);
   if (!rewards_enabled) {
@@ -1660,8 +1654,9 @@ void AdsServiceImpl::OnPrefsChanged(
       // Record "special value" to prevent sending this week's data to P2A
       // server. Matches INT_MAX - 1 for |kSuspendedMetricValue| in
       // |brave_p3a_service.cc|
-      brave_ads::SuspendP2AHistograms();
+      SuspendP2AHistograms();
       VLOG(1) << "P2A histograms suspended";
+
       Stop();
     }
 
@@ -1722,13 +1717,13 @@ std::string AdsServiceImpl::LoadDataResourceAndDecompressIfNeeded(
 }
 
 void AdsServiceImpl::ShowNotification(
-    const std::unique_ptr<ads::AdNotificationInfo> info) {
-  auto notification = CreateAdNotification(*info);
+    const ads::AdNotificationInfo& ad_notification) {
+  auto notification = CreateAdNotification(ad_notification);
 
   display_service_->Display(NotificationHandler::Type::BRAVE_ADS,
       *notification, /*metadata=*/nullptr);
 
-  StartNotificationTimeoutTimer(info->uuid);
+  StartNotificationTimeoutTimer(ad_notification.uuid);
 }
 
 void AdsServiceImpl::StartNotificationTimeoutTimer(
@@ -1870,8 +1865,8 @@ void AdsServiceImpl::RecordP2AEvent(
       }
 
       for (auto& item : *list) {
-        brave_ads::RecordInWeeklyStorageAndEmitP2AHistogramAnswer(
-          profile_->GetPrefs(), item.GetString());
+        RecordInWeeklyStorageAndEmitP2AHistogramAnswer(
+            profile_->GetPrefs(), item.GetString());
       }
       break;
     }

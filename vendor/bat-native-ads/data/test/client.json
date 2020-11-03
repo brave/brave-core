@@ -1,16 +1,4 @@
 {
-  "creativeSetHistory": {
-  },
-  "campaignHistory": {
-  },
-  "advertisersUUIDSeen": {
-  },
-  "pageScoreHistory": [
-  ],
-  "adsUUIDSeen": {
-  },
-  "adUUID": "795141f2-77e3-4391-933f-cde5a5192dba",
-  "nextCheckServeAd": 0,
   "adPreferences": {
     "filtered_ads": [
     ],
@@ -21,22 +9,16 @@
     "flagged_ads": [
     ]
   },
-  "available": true,
-  "adConversionHistory": {
-  },
-  "score": 0,
   "adsShownHistory": [
-  ],
-  "pageProbabilitiesHistory": [
   ],
   "adsUUIDSeen": {
   },
-  "creativeSetHistory": {
+  "advertisersUUIDSeen": {
   },
+  "pageProbabilitiesHistory": [
+  ],
   "purchaseIntentSignalHistory": {
   },
-  "adsShownHistory": [
-  ],
-  "score": 0,
+  "nextCheckServeAd": 0,
   "version_code": ""
 }

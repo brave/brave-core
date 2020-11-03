@@ -78,7 +78,7 @@ class AdsClientMojoBridge
       ads::UrlRequestPtr url_request,
       UrlRequestCallback callback) override;
   void ShowNotification(
-      const std::string& notification_info) override;
+      const std::string& json) override;
   void CloseNotification(
       const std::string& uuid) override;
   void RunDBTransaction(

@@ -5,26 +5,45 @@
 
 #include "bat/ads/internal/frequency_capping/frequency_capping_unittest_util.h"
 
+#include <stdint.h>
+
 #include "base/guid.h"
 #include "bat/ads/internal/time_util.h"
 
 namespace ads {
 
-AdHistory GenerateAdHistory(
-    const AdContent::AdType type,
+AdEventInfo GenerateAdEvent(
+    const AdType type,
     const CreativeAdInfo& ad,
     const ConfirmationType& confirmation_type) {
-  AdHistory history;
+  AdEventInfo ad_event;
 
-  history.ad_content.type = type;
-  history.ad_content.creative_instance_id = ad.creative_instance_id;
-  history.ad_content.creative_set_id = ad.creative_set_id;
-  history.ad_content.campaign_id = ad.campaign_id;
-  history.ad_content.ad_action = confirmation_type;
-  history.timestamp_in_seconds =
-      static_cast<uint64_t>(base::Time::Now().ToDoubleT());
+  ad_event.type = type;
+  ad_event.uuid = base::GenerateGUID();
+  ad_event.creative_instance_id = ad.creative_instance_id;
+  ad_event.creative_set_id = ad.creative_set_id;
+  ad_event.campaign_id = ad.campaign_id;
+  ad_event.timestamp = static_cast<int64_t>(base::Time::Now().ToDoubleT());
+  ad_event.confirmation_type = confirmation_type;
 
-  return history;
+  return ad_event;
+}
+
+AdEventInfo GenerateAdEvent(
+    const AdType type,
+    const AdInfo& ad,
+    const ConfirmationType& confirmation_type) {
+  AdEventInfo ad_event;
+
+  ad_event.type = type;
+  ad_event.uuid = ad.uuid;
+  ad_event.creative_instance_id = ad.creative_instance_id;
+  ad_event.creative_set_id = ad.creative_set_id;
+  ad_event.campaign_id = ad.campaign_id;
+  ad_event.timestamp = static_cast<int64_t>(base::Time::Now().ToDoubleT());
+  ad_event.confirmation_type = confirmation_type;
+
+  return ad_event;
 }
 
 }  // namespace ads

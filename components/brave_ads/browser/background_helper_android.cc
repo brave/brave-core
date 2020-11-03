@@ -53,5 +53,4 @@ BackgroundHelper* BackgroundHelper::GetInstance() {
   return BackgroundHelperAndroid::GetInstance();
 }
 
-
 }  // namespace brave_ads

@@ -8,17 +8,18 @@
 
 #include <string>
 
-#include "bat/ads/internal/bundle/creative_ad_info.h"
+#include "bat/ads/ad_info.h"
 #include "bat/ads/internal/frequency_capping/exclusion_rules/exclusion_rule.h"
 
 namespace ads {
 
 class AdsImpl;
+struct CreativeAdInfo;
 
-class SubdivisionTargetingFrequencyCap : public ExclusionRule {
+class SubdivisionTargetingFrequencyCap : public ExclusionRule<CreativeAdInfo> {
  public:
   SubdivisionTargetingFrequencyCap(
-      const AdsImpl* const ads);
+      AdsImpl* ads);
 
   ~SubdivisionTargetingFrequencyCap() override;
 
@@ -33,22 +34,12 @@ class SubdivisionTargetingFrequencyCap : public ExclusionRule {
   std::string get_last_message() const override;
 
  private:
-  const AdsImpl* const ads_;  // NOT OWNED
+  AdsImpl* ads_;  // NOT OWNED
 
   std::string last_message_;
 
   bool DoesRespectCap(
       const CreativeAdInfo& ad);
-
-  bool DoesAdSupportSubdivisionTargetingCode(
-      const CreativeAdInfo& ad,
-      const std::string& subdivision_targeting_code) const;
-
-  bool DoesAdTargetSubdivision(
-      const CreativeAdInfo& ad) const;
-
-  std::string GetCountryCode(
-      const std::string& subdivision_targeting_code) const;
 };
 
 }  // namespace ads

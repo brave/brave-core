@@ -13,12 +13,12 @@
 
 #include "bat/ads/ads_client.h"
 #include "bat/ads/internal/catalog/catalog_campaign_info.h"
-#include "bat/ads/internal/catalog/catalog_issuers_info.h"
-#include "bat/ads/internal/catalog/catalog_state.h"
 
 namespace ads {
 
 class AdsImpl;
+struct CatalogState;
+struct CatalogIssuersInfo;
 
 class Catalog {
  public:

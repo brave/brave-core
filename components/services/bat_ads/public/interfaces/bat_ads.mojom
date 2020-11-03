@@ -40,7 +40,7 @@ interface BatAdsClient {
   [Sync]
   GetUint64Pref(string path) => (uint64 value);
 
-  ShowNotification(string notification_info);
+  ShowNotification(string json);
   CloseNotification(string uuid);
   UrlRequest(ads.mojom.BraveAdsUrlRequest request) => (ads.mojom.BraveAdsUrlResponse response);
   Save(string name, string value) => (int32 result);
@@ -64,7 +64,7 @@ interface BatAds {
   Shutdown() => (int32 result);
   ChangeLocale(string locale);
   OnAdsSubdivisionTargetingCodeHasChanged();
-  OnPageLoaded(int32 tab_id, string original_url, string url, string html);
+  OnPageLoaded(int32 tab_id, string original_url, string url, string content);
   OnUnIdle();
   OnIdle();
   OnForeground();
@@ -77,7 +77,7 @@ interface BatAds {
   OnAdNotificationEvent(string uuid, ads.mojom.BraveAdsAdNotificationEventType event_type);
   OnNewTabPageAdEvent(string wallpaper_id, string creative_instance_id, ads.mojom.BraveAdsNewTabPageAdEventType event_type);
   RemoveAllHistory() => (int32 result);
-  OnWalletUpdated(string payment_id, string recovery_seed_base64);
+  OnWalletUpdated(string payment_id, string seed);
   ReconcileAdRewards();
   GetAdsHistory(uint64 from_timestamp, uint64 to_timestamp) => (string json);
   GetTransactionHistory() => (bool success, string json);

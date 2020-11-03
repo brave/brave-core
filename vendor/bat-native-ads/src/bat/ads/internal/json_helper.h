@@ -24,45 +24,45 @@
 
 namespace ads {
 
-struct AdContent;
-struct AdHistory;
+struct AdContentInfo;
+struct AdHistoryInfo;
 struct AdNotificationInfo;
-struct AdPreferences;
-struct AdsHistory;
-struct CategoryContent;
-struct ClientState;
+struct AdPreferencesInfo;
+struct AdsHistoryInfo;
+struct CategoryContentInfo;
+struct ClientInfo;
 struct NewTabPageAdInfo;
-struct PurchaseIntentSignalHistory;
+struct PurchaseIntentSignalHistoryInfo;
 
 using JsonWriter = rapidjson::Writer<rapidjson::StringBuffer>;
 
 void SaveToJson(
     JsonWriter* writer,
-    const AdContent& content);
+    const AdContentInfo& info);
 void SaveToJson(
     JsonWriter* writer,
-    const AdHistory& history);
+    const AdHistoryInfo& info);
 void SaveToJson(
     JsonWriter* writer,
     const AdNotificationInfo& info);
 void SaveToJson(
     JsonWriter* writer,
-    const AdPreferences& prefs);
+    const AdPreferencesInfo& info);
 void SaveToJson(
     JsonWriter* writer,
-    const AdsHistory& history);
+    const AdsHistoryInfo& info);
 void SaveToJson(
     JsonWriter* writer,
-    const CategoryContent& content);
+    const CategoryContentInfo& info);
 void SaveToJson(
     JsonWriter* writer,
-    const ClientState& state);
+    const ClientInfo& state);
 void SaveToJson(
     JsonWriter* writer,
     const NewTabPageAdInfo& info);
 void SaveToJson(
     JsonWriter* writer,
-    const PurchaseIntentSignalHistory& info);
+    const PurchaseIntentSignalHistoryInfo& info);
 
 template <typename T>
 void SaveToJson(

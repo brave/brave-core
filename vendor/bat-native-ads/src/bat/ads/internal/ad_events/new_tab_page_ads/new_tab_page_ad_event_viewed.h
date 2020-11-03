@@ -6,33 +6,38 @@
 #ifndef BAT_ADS_INTERNAL_AD_EVENTS_NEW_TAB_PAGE_ADS_NEW_TAB_PAGE_AD_EVENT_VIEWED_H_  // NOLINT
 #define BAT_ADS_INTERNAL_AD_EVENTS_NEW_TAB_PAGE_ADS_NEW_TAB_PAGE_AD_EVENT_VIEWED_H_  // NOLINT
 
-#include <memory>
-#include <vector>
-
 #include "bat/ads/internal/ad_events/ad_event.h"
-#include "bat/ads/new_tab_page_ad_info.h"
+#include "bat/ads/internal/ad_events/ad_event_info.h"
 
 namespace ads {
 
 class AdsImpl;
-class PermissionRule;
+struct NewTabPageAdInfo;
 
-class NewTabPageAdEventViewed : public AdEvent<NewTabPageAdInfo> {
+namespace new_tab_page_ads {
+
+class AdEventViewed : public AdEvent<NewTabPageAdInfo> {
  public:
-  NewTabPageAdEventViewed(
+  AdEventViewed(
       AdsImpl* ads);
 
-  ~NewTabPageAdEventViewed() override;
+  ~AdEventViewed() override;
 
   void Trigger(
       const NewTabPageAdInfo& ad) override;
 
  private:
-  AdsImpl* ads_;  // NOT OWNED
+  bool ShouldConfirmAd(
+      const NewTabPageAdInfo& ad,
+      const AdEventList& ad_events);
 
-  std::vector<std::unique_ptr<PermissionRule>> CreatePermissionRules() const;
+  void ConfirmAd(
+      const NewTabPageAdInfo& ad);
+
+  AdsImpl* ads_;  // NOT OWNED
 };
 
+}  // namespace new_tab_page_ads
 }  // namespace ads
 
 #endif  // BAT_ADS_INTERNAL_AD_EVENTS_NEW_TAB_PAGE_ADS_NEW_TAB_PAGE_AD_EVENT_VIEWED_H_  // NOLINT

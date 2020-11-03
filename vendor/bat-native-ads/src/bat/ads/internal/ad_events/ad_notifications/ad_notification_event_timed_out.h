@@ -6,19 +6,21 @@
 #ifndef BAT_ADS_INTERNAL_AD_EVENTS_AD_NOTIFICATIONS_AD_NOTIFICATION_EVENT_TIMED_OUT_H_  // NOLINT
 #define BAT_ADS_INTERNAL_AD_EVENTS_AD_NOTIFICATIONS_AD_NOTIFICATION_EVENT_TIMED_OUT_H_  // NOLINT
 
-#include "bat/ads/ad_notification_info.h"
 #include "bat/ads/internal/ad_events/ad_event.h"
 
 namespace ads {
 
 class AdsImpl;
+struct AdNotificationInfo;
 
-class AdNotificationEventTimedOut : public AdEvent<AdNotificationInfo> {
+namespace ad_notifications {
+
+class AdEventTimedOut : public ads::AdEvent<AdNotificationInfo> {
  public:
-  AdNotificationEventTimedOut(
+  AdEventTimedOut(
       AdsImpl* ads);
 
-  ~AdNotificationEventTimedOut() override;
+  ~AdEventTimedOut() override;
 
   void Trigger(
       const AdNotificationInfo& ad) override;
@@ -27,6 +29,7 @@ class AdNotificationEventTimedOut : public AdEvent<AdNotificationInfo> {
   AdsImpl* ads_;  // NOT OWNED
 };
 
+}  // namespace ad_notifications
 }  // namespace ads
 
 #endif  // BAT_ADS_INTERNAL_AD_EVENTS_AD_NOTIFICATIONS_AD_NOTIFICATION_EVENT_TIMED_OUT_H_  // NOLINT

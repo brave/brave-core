@@ -5,18 +5,35 @@
 
 #include "bat/ads/internal/frequency_capping/exclusion_rules/daypart_frequency_cap.h"
 
-#include <string>
-#include <vector>
-
 #include "base/strings/stringprintf.h"
-#include "base/strings/string_number_conversions.h"
 #include "bat/ads/internal/ads_impl.h"
+#include "bat/ads/internal/bundle/creative_ad_info.h"
 #include "bat/ads/internal/frequency_capping/frequency_capping_util.h"
 
 namespace ads {
 
+namespace {
+
+bool DoesMatchDayOfWeek(
+    const CreativeDaypartInfo& daypart,
+    const std::string& day_of_week) {
+  return daypart.dow.find(day_of_week) != std::string::npos;
+}
+
+bool DoesMatchTimeSlot(
+    const CreativeDaypartInfo& daypart,
+    const int minutes) {
+  if (minutes < daypart.start_minute || minutes > daypart.end_minute) {
+    return false;
+  }
+
+  return true;
+}
+
+}  // namespace
+
 DaypartFrequencyCap::DaypartFrequencyCap(
-    const AdsImpl* const ads)
+    AdsImpl* ads)
     : ads_(ads) {
   DCHECK(ads_);
 }
@@ -27,7 +44,7 @@ bool DaypartFrequencyCap::ShouldExclude(
     const CreativeAdInfo& ad) {
   if (!DoesRespectCap(ad)) {
     last_message_ = base::StringPrintf("creativeSetId %s excluded as not "
-        "within the scheduled timeslot", ad.creative_set_id.c_str());
+        "within a scheduled time slot", ad.creative_set_id.c_str());
 
     return true;
   }
@@ -41,60 +58,30 @@ std::string DaypartFrequencyCap::get_last_message() const {
 
 bool DaypartFrequencyCap::DoesRespectCap(
     const CreativeAdInfo& ad) const {
-  // If there's no day part specified, let it be displayed
   if (ad.dayparts.empty()) {
+    // Always respect cap if there are no dayparts specified
     return true;
   }
 
-  const std::string current_dow = DaypartFrequencyCap::GetCurrentDayOfWeek();
-  std::string days_of_week;
-  int current_minutes_from_start =
-    DaypartFrequencyCap::GetCurrentLocalMinutesFromStart();
-  int start_time;
-  int end_time;
+  const base::Time now = base::Time::Now();
+
+  const int local_minutes_for_today = ConvertTimeToLocalMinutesForToday(now);
+
+  const std::string local_day_of_week = GetLocalDayOfWeek(now);
 
   for (const CreativeDaypartInfo& daypart : ad.dayparts) {
-      days_of_week = daypart.dow;
-      start_time = daypart.start_minute;
-      end_time = daypart.end_minute;
+    if (!DoesMatchDayOfWeek(daypart, local_day_of_week)) {
+      continue;
+    }
 
-      if (DaypartFrequencyCap::HasDayOfWeekMatch(current_dow, days_of_week)
-          && DaypartFrequencyCap::HasTimeSlotMatch(
-              current_minutes_from_start,
-              start_time, end_time)) {
-          return true;
-      }
+    if (!DoesMatchTimeSlot(daypart, local_minutes_for_today)) {
+      continue;
+    }
+
+    return true;
   }
+
   return false;
-}
-
-bool DaypartFrequencyCap::HasDayOfWeekMatch(
-    const std::string& current_dow,
-    const std::string& days_of_week) const {
-  return days_of_week.find(current_dow) != std::string::npos;
-}
-
-bool DaypartFrequencyCap::HasTimeSlotMatch(
-    const int current_minutes_from_start,
-    const int start_time,
-    const int end_time) const {
-
-    return start_time <= current_minutes_from_start &&
-      current_minutes_from_start <= end_time;
-}
-
-std::string DaypartFrequencyCap::GetCurrentDayOfWeek() const {
-  const base::Time now = base::Time::Now();
-  base::Time::Exploded exploded;
-  now.LocalExplode(&exploded);
-  return base::NumberToString(exploded.day_of_week);
-}
-
-int DaypartFrequencyCap::GetCurrentLocalMinutesFromStart() const {
-  const base::Time now = base::Time::Now();
-  base::Time::Exploded exploded;
-  now.LocalExplode(&exploded);
-  return (base::Time::kMinutesPerHour * exploded.hour) + exploded.minute;
 }
 
 }  // namespace ads

@@ -20,6 +20,8 @@ struct ADS_EXPORT NewTabPageAdInfo : AdInfo {
       const NewTabPageAdInfo& info);
   ~NewTabPageAdInfo();
 
+  bool IsValid() const;
+
   std::string ToJson() const;
   Result FromJson(
       const std::string& json);

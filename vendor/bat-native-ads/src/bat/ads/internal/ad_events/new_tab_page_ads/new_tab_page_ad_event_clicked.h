@@ -7,18 +7,20 @@
 #define BAT_ADS_INTERNAL_AD_EVENTS_NEW_TAB_PAGE_ADS_NEW_TAB_PAGE_AD_EVENT_CLICKED_H_  // NOLINT
 
 #include "bat/ads/internal/ad_events/ad_event.h"
-#include "bat/ads/new_tab_page_ad_info.h"
 
 namespace ads {
 
 class AdsImpl;
+struct NewTabPageAdInfo;
 
-class NewTabPageAdEventClicked : public AdEvent<NewTabPageAdInfo> {
+namespace new_tab_page_ads {
+
+class AdEventClicked : public AdEvent<NewTabPageAdInfo> {
  public:
-  NewTabPageAdEventClicked(
+  AdEventClicked(
       AdsImpl* ads);
 
-  ~NewTabPageAdEventClicked() override;
+  ~AdEventClicked() override;
 
   void Trigger(
       const NewTabPageAdInfo& ad) override;
@@ -27,6 +29,7 @@ class NewTabPageAdEventClicked : public AdEvent<NewTabPageAdInfo> {
   AdsImpl* ads_;  // NOT OWNED
 };
 
+}  // namespace new_tab_page_ads
 }  // namespace ads
 
 #endif  // BAT_ADS_INTERNAL_AD_EVENTS_NEW_TAB_PAGE_ADS_NEW_TAB_PAGE_AD_EVENT_CLICKED_H_  // NOLINT

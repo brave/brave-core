@@ -16,13 +16,16 @@ namespace ads {
 class AdsImpl;
 struct AdNotificationInfo;
 
-class AdNotificationEventFactory {
+namespace ad_notifications {
+
+class AdEventFactory {
  public:
   static std::unique_ptr<AdEvent<AdNotificationInfo>> Build(
       AdsImpl* ads,
       const AdNotificationEventType event_type);
 };
 
+}  // namespace ad_notifications
 }  // namespace ads
 
 #endif  // BAT_ADS_INTERNAL_AD_EVENTS_AD_NOTIFICATIONS_AD_NOTIFICATION_EVENT_FACTORY_H_  // NOLINT

@@ -21,7 +21,7 @@
 #include "url/gurl.h"
 
 namespace ads {
-struct AdsHistory;
+struct AdsHistoryInfo;
 }
 
 namespace base {
@@ -68,7 +68,7 @@ class AdsService : public KeyedService {
   virtual void SetEnabled(
       const bool is_enabled) = 0;
 
-  virtual void SetAllowAdConversionTracking(
+  virtual void SetAllowConversionTracking(
       const bool should_allow) = 0;
 
   virtual uint64_t GetAdsPerHour() const = 0;
@@ -83,8 +83,7 @@ class AdsService : public KeyedService {
   virtual void SetAdsSubdivisionTargetingCode(
       const std::string& subdivision_targeting_code) = 0;
 
-  virtual std::string
-  GetAutoDetectedAdsSubdivisionTargetingCode() const = 0;
+  virtual std::string GetAutoDetectedAdsSubdivisionTargetingCode() const = 0;
   virtual void SetAutoDetectedAdsSubdivisionTargetingCode(
       const std::string& subdivision_targeting_code) = 0;
 
@@ -107,8 +106,12 @@ class AdsService : public KeyedService {
       const GURL& url,
       const bool is_active,
       const bool is_browser_active) = 0;
+
   virtual void OnTabClosed(
       const SessionID& tab_id) = 0;
+
+  virtual void OnUserModelUpdated(
+      const std::string& id) = 0;
 
   virtual void OnNewTabPageAdEvent(
       const std::string& wallpaper_id,
@@ -156,9 +159,6 @@ class AdsService : public KeyedService {
 
   virtual void ResetAllState(
       const bool should_shutdown) = 0;
-
-  virtual void OnUserModelUpdated(
-      const std::string& id) = 0;
 
   void AddObserver(
       AdsServiceObserver* observer);

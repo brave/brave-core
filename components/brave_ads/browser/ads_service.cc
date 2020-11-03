@@ -49,7 +49,7 @@ void AdsService::RegisterProfilePrefs(
       ads::prefs::kEnabled, false);
 
   registry->RegisterBooleanPref(
-      ads::prefs::kShouldAllowAdConversionTracking, true);
+      ads::prefs::kShouldAllowConversionTracking, true);
 
   registry->RegisterUint64Pref(
       ads::prefs::kAdsPerHour, 2);

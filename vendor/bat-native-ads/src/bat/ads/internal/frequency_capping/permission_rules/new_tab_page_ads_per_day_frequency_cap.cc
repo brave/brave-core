@@ -5,6 +5,10 @@
 
 #include "bat/ads/internal/frequency_capping/permission_rules/new_tab_page_ads_per_day_frequency_cap.h"
 
+#include <stdint.h>
+
+#include <deque>
+
 #include "bat/ads/internal/ads_impl.h"
 #include "bat/ads/internal/frequency_capping/frequency_capping_util.h"
 #include "bat/ads/internal/time_util.h"
@@ -12,24 +16,23 @@
 namespace ads {
 
 namespace {
-const int kNewTabPageAdsPerDayCap = 20;
+const uint64_t kNewTabPageAdsPerDayFrequencyCap = 20;
 }  // namespace
 
 NewTabPageAdsPerDayFrequencyCap::NewTabPageAdsPerDayFrequencyCap(
-    const AdsImpl* const ads)
-    : ads_(ads) {
+    AdsImpl* ads,
+    const AdEventList& ad_events)
+    : ads_(ads),
+      ad_events_(ad_events) {
   DCHECK(ads_);
 }
 
 NewTabPageAdsPerDayFrequencyCap::~NewTabPageAdsPerDayFrequencyCap() = default;
 
-bool NewTabPageAdsPerDayFrequencyCap::IsAllowed() {
-  const std::deque<AdHistory> history = ads_->get_client()->GetAdsHistory();
-  const std::deque<uint64_t> filtered_history = FilterHistory(history);
-
-  if (!DoesRespectCap(filtered_history)) {
+bool NewTabPageAdsPerDayFrequencyCap::ShouldAllow() {
+  const AdEventList filtered_ad_events = FilterAdEvents(ad_events_);
+  if (!DoesRespectCap(filtered_ad_events)) {
     last_message_ = "You have exceeded the allowed new tab page ads per day";
-
     return false;
   }
 
@@ -41,30 +44,30 @@ std::string NewTabPageAdsPerDayFrequencyCap::get_last_message() const {
 }
 
 bool NewTabPageAdsPerDayFrequencyCap::DoesRespectCap(
-    const std::deque<uint64_t>& history) {
+    const AdEventList& ad_events) {
+  const std::deque<uint64_t> history =
+      GetTimestampHistoryForAdEvents(ad_events);
+
   const uint64_t time_constraint = base::Time::kSecondsPerHour *
       base::Time::kHoursPerDay;
 
-  const uint64_t cap = kNewTabPageAdsPerDayCap;
-
-  return DoesHistoryRespectCapForRollingTimeConstraint(history,
-      time_constraint, cap);
+  return DoesHistoryRespectCapForRollingTimeConstraint(
+      history, time_constraint, kNewTabPageAdsPerDayFrequencyCap);
 }
 
-std::deque<uint64_t> NewTabPageAdsPerDayFrequencyCap::FilterHistory(
-    const std::deque<AdHistory>& history) const {
-  std::deque<uint64_t> filtered_history;
+AdEventList NewTabPageAdsPerDayFrequencyCap::FilterAdEvents(
+    const AdEventList& ad_events) const {
+  AdEventList filtered_ad_events = ad_events;
 
-  for (const auto& ad : history) {
-    if (ad.ad_content.type != AdContent::AdType::kNewTabPageAd ||
-        ad.ad_content.ad_action != ConfirmationType::kViewed) {
-      continue;
-    }
+  const auto iter = std::remove_if(filtered_ad_events.begin(),
+      filtered_ad_events.end(), [](const AdEventInfo& ad_event) {
+    return ad_event.type != AdType::kNewTabPageAd ||
+        ad_event.confirmation_type != ConfirmationType::kViewed;
+  });
 
-    filtered_history.push_back(ad.timestamp_in_seconds);
-  }
+  filtered_ad_events.erase(iter, filtered_ad_events.end());
 
-  return filtered_history;
+  return filtered_ad_events;
 }
 
 }  // namespace ads

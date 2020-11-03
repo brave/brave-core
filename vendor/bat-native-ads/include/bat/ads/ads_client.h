@@ -19,8 +19,11 @@
 namespace ads {
 
 using ResultCallback = std::function<void(const Result)>;
+
 using LoadCallback = std::function<void(const Result, const std::string&)>;
+
 using UrlRequestCallback = std::function<void(const UrlResponse&)>;
+
 using RunDBTransactionCallback = std::function<void(DBCommandResponsePtr)>;
 
 class ADS_EXPORT AdsClient {
@@ -40,7 +43,7 @@ class ADS_EXPORT AdsClient {
 
   // Should show a notification
   virtual void ShowNotification(
-      const std::unique_ptr<AdNotificationInfo> info) = 0;
+      const AdNotificationInfo& ad_notification) = 0;
 
   // Should return |true| if notifications can be displayed; otherwise should
   // return |false|

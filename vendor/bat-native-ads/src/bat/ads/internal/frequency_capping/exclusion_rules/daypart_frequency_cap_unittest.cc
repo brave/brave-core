@@ -108,7 +108,8 @@ class BatAdsDaypartFrequencyCapTest : public ::testing::Test {
   std::unique_ptr<Database> database_;
 };
 
-TEST_F(BatAdsDaypartFrequencyCapTest, AllowIfDaypartsIsEmpty) {
+TEST_F(BatAdsDaypartFrequencyCapTest,
+    AllowIfDaypartsIsEmpty) {
   // Arrange
   CreativeAdInfo ad;
   ad.creative_set_id = kCreativeSetId;
@@ -120,7 +121,8 @@ TEST_F(BatAdsDaypartFrequencyCapTest, AllowIfDaypartsIsEmpty) {
   EXPECT_FALSE(should_exclude);
 }
 
-TEST_F(BatAdsDaypartFrequencyCapTest, AllowIfRightDayAndHours) {
+TEST_F(BatAdsDaypartFrequencyCapTest,
+    AllowIfRightDayAndHours) {
   // Arrange
   CreativeAdInfo ad;
   ad.creative_set_id = kCreativeSetId;
@@ -143,7 +145,8 @@ TEST_F(BatAdsDaypartFrequencyCapTest, AllowIfRightDayAndHours) {
   EXPECT_FALSE(should_exclude);
 }
 
-TEST_F(BatAdsDaypartFrequencyCapTest, AllowForMultipleDays) {
+TEST_F(BatAdsDaypartFrequencyCapTest,
+    AllowForMultipleDays) {
   // Arrange
   CreativeAdInfo ad;
   ad.creative_set_id = kCreativeSetId;
@@ -165,7 +168,8 @@ TEST_F(BatAdsDaypartFrequencyCapTest, AllowForMultipleDays) {
   EXPECT_FALSE(should_exclude);
 }
 
-TEST_F(BatAdsDaypartFrequencyCapTest, AllowIfOneMatchExists) {
+TEST_F(BatAdsDaypartFrequencyCapTest,
+    AllowIfOneMatchExists) {
   // Arrange
   CreativeAdInfo ad;
   ad.creative_set_id = kCreativeSetId;
@@ -203,7 +207,8 @@ TEST_F(BatAdsDaypartFrequencyCapTest, AllowIfOneMatchExists) {
   EXPECT_FALSE(should_exclude);
 }
 
-TEST_F(BatAdsDaypartFrequencyCapTest, DisallowIfNoMatches) {
+TEST_F(BatAdsDaypartFrequencyCapTest,
+    DisallowIfNoMatches) {
   // Arrange
   CreativeAdInfo ad;
   ad.creative_set_id = kCreativeSetId;
@@ -241,8 +246,8 @@ TEST_F(BatAdsDaypartFrequencyCapTest, DisallowIfNoMatches) {
   EXPECT_TRUE(should_exclude);
 }
 
-
-TEST_F(BatAdsDaypartFrequencyCapTest, DisallowIfWrongDay) {
+TEST_F(BatAdsDaypartFrequencyCapTest,
+    DisallowIfWrongDay) {
   // Arrange
   CreativeAdInfo ad;
   ad.creative_set_id = kCreativeSetId;
@@ -269,7 +274,8 @@ TEST_F(BatAdsDaypartFrequencyCapTest, DisallowIfWrongDay) {
   EXPECT_TRUE(should_exclude);
 }
 
-TEST_F(BatAdsDaypartFrequencyCapTest, DisallowIfWrongHours) {
+TEST_F(BatAdsDaypartFrequencyCapTest,
+    DisallowIfWrongHours) {
   // Arrange
   CreativeAdInfo ad;
   ad.creative_set_id = kCreativeSetId;

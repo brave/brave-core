@@ -11,8 +11,8 @@
 #include <vector>
 
 #include "bat/ads/ads_client.h"
+#include "bat/ads/internal/ad_targeting/ad_targeting.h"
 #include "bat/ads/internal/bundle/creative_new_tab_page_ad_info.h"
-#include "bat/ads/internal/classification/page_classifier/page_classifier.h"
 #include "bat/ads/internal/database/database_table.h"
 #include "bat/ads/internal/database/tables/campaigns_database_table.h"
 #include "bat/ads/internal/database/tables/categories_database_table.h"
@@ -54,7 +54,7 @@ class CreativeNewTabPageAds : public Table {
       GetCreativeNewTabPageAdCallback callback);
 
   void GetForCategories(
-      const classification::CategoryList& categories,
+      const CategoryList& categories,
       GetCreativeNewTabPageAdsCallback callback);
 
   void GetAll(
@@ -89,7 +89,7 @@ class CreativeNewTabPageAds : public Table {
 
   void OnGetForCategories(
       DBCommandResponsePtr response,
-      const classification::CategoryList& categories,
+      const CategoryList& categories,
       GetCreativeNewTabPageAdsCallback callback);
 
   void OnGetAll(

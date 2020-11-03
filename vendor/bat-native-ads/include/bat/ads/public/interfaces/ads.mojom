@@ -15,6 +15,12 @@ struct BraveAdsBuildChannel {
   string name;
 };
 
+enum BraveAdsAdType {
+  kUndefined = 0,
+  kAdNotification,
+  kNewTabPageAd
+};
+
 enum BraveAdsAdNotificationEventType {
   kViewed = 0,
   kClicked,

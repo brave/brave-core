@@ -9,10 +9,10 @@
 #include <vector>
 
 #include "brave/components/services/bat_ads/bat_ads_client_mojo_bridge.h"
-#include "bat/ads/ad_content.h"
+#include "bat/ads/ad_content_info.h"
 #include "bat/ads/ads.h"
-#include "bat/ads/ads_history.h"
-#include "bat/ads/category_content.h"
+#include "bat/ads/ads_history_info.h"
+#include "bat/ads/category_content_info.h"
 #include "bat/ads/confirmation_type.h"
 #include "bat/ads/mojom.h"
 
@@ -23,14 +23,14 @@ namespace bat_ads {
 
 namespace {
 
-ads::AdContent::LikeAction ToAdsLikeAction(
+ads::AdContentInfo::LikeAction ToAdsLikeAction(
     const int action) {
-  return static_cast<ads::AdContent::LikeAction>(action);
+  return static_cast<ads::AdContentInfo::LikeAction>(action);
 }
 
-ads::CategoryContent::OptAction ToAdsOptAction(
+ads::CategoryContentInfo::OptAction ToAdsOptAction(
     const int action) {
-  return static_cast<ads::CategoryContent::OptAction>(action);
+  return static_cast<ads::CategoryContentInfo::OptAction>(action);
 }
 
 }  // namespace
@@ -151,8 +151,8 @@ void BatAdsImpl::RemoveAllHistory(
 
 void BatAdsImpl::OnWalletUpdated(
     const std::string& payment_id,
-    const std::string& recovery_seed_base64) {
-  ads_->OnWalletUpdated(payment_id, recovery_seed_base64);
+    const std::string& seed) {
+  ads_->OnWalletUpdated(payment_id, seed);
 }
 
 void BatAdsImpl::ReconcileAdRewards() {
@@ -163,9 +163,9 @@ void BatAdsImpl::GetAdsHistory(
     const uint64_t from_timestamp,
     const uint64_t to_timestamp,
     GetAdsHistoryCallback callback) {
-  ads::AdsHistory history = ads_->GetAdsHistory(
-      ads::AdsHistory::FilterType::kConfirmationType,
-          ads::AdsHistory::SortType::kDescendingOrder, from_timestamp,
+  ads::AdsHistoryInfo history = ads_->GetAdsHistory(
+      ads::AdsHistoryInfo::FilterType::kConfirmationType,
+          ads::AdsHistoryInfo::SortType::kDescendingOrder, from_timestamp,
               to_timestamp);
 
   std::move(callback).Run(history.ToJson());
@@ -185,7 +185,7 @@ void BatAdsImpl::ToggleAdThumbUp(
     const std::string& creative_set_id,
     const int action,
     ToggleAdThumbUpCallback callback) {
-  const ads::AdContent::LikeAction like_action = ads_->ToggleAdThumbUp(
+  const ads::AdContentInfo::LikeAction like_action = ads_->ToggleAdThumbUp(
       creative_instance_id, creative_set_id, ToAdsLikeAction(action));
   std::move(callback).Run(creative_instance_id, static_cast<int>(like_action));
 }
@@ -195,7 +195,7 @@ void BatAdsImpl::ToggleAdThumbDown(
     const std::string& creative_set_id,
     const int action,
     ToggleAdThumbDownCallback callback) {
-  const ads::AdContent::LikeAction like_action = ads_->ToggleAdThumbDown(
+  const ads::AdContentInfo::LikeAction like_action = ads_->ToggleAdThumbDown(
       creative_instance_id, creative_set_id, ToAdsLikeAction(action));
   std::move(callback).Run(creative_instance_id, static_cast<int>(like_action));
 }
@@ -204,7 +204,7 @@ void BatAdsImpl::ToggleAdOptInAction(
     const std::string& category,
     const int action,
     ToggleAdOptInActionCallback callback) {
-  const ads::CategoryContent::OptAction opt_action =
+  const ads::CategoryContentInfo::OptAction opt_action =
       ads_->ToggleAdOptInAction(category, ToAdsOptAction(action));
   std::move(callback).Run(category, static_cast<int>(opt_action));
 }
@@ -213,7 +213,7 @@ void BatAdsImpl::ToggleAdOptOutAction(
     const std::string& category,
     const int action,
     ToggleAdOptOutActionCallback callback) {
-  const ads::CategoryContent::OptAction opt_action =
+  const ads::CategoryContentInfo::OptAction opt_action =
       ads_->ToggleAdOptOutAction(category, ToAdsOptAction(action));
   std::move(callback).Run(category, static_cast<int>(opt_action));
 }

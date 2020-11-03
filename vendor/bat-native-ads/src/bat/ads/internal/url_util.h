@@ -19,6 +19,9 @@ bool UrlMatchesPattern(
 bool UrlHasScheme(
     const std::string& url);
 
+std::string GetUrlHost(
+    const std::string& url);
+
 bool SameSite(
     const std::string& url1,
     const std::string& url2);

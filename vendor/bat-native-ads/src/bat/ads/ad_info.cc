@@ -14,4 +14,17 @@ AdInfo::AdInfo(
 
 AdInfo::~AdInfo() = default;
 
+bool AdInfo::IsValid() const {
+  if (type == AdType::kUndefined ||
+      creative_instance_id.empty() ||
+      creative_set_id.empty() ||
+      campaign_id.empty() ||
+      category.empty() ||
+      target_url.empty()) {
+    return false;
+  }
+
+  return true;
+}
+
 }  // namespace ads

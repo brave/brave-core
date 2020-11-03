@@ -8,6 +8,7 @@
 
 #include <string>
 
+#include "bat/ads/ad_type.h"
 #include "bat/ads/export.h"
 
 namespace ads {
@@ -18,13 +19,15 @@ struct ADS_EXPORT AdInfo {
       const AdInfo& info);
   ~AdInfo();
 
+  bool IsValid() const;
+
+  AdType type = AdType::kUndefined;
   std::string uuid;
   std::string creative_instance_id;
   std::string creative_set_id;
   std::string campaign_id;
   std::string category;
   std::string target_url;
-  std::string geo_target;
 };
 
 }  // namespace ads

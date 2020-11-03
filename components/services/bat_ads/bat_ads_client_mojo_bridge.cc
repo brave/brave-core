@@ -63,12 +63,12 @@ bool BatAdsClientMojoBridge::IsForeground() const {
 }
 
 void BatAdsClientMojoBridge::ShowNotification(
-    std::unique_ptr<ads::AdNotificationInfo> info) {
+    const ads::AdNotificationInfo& ad_notification) {
   if (!connected()) {
     return;
   }
 
-  bat_ads_client_->ShowNotification(info->ToJson());
+  bat_ads_client_->ShowNotification(ad_notification.ToJson());
 }
 
 bool BatAdsClientMojoBridge::ShouldShowNotifications() {

@@ -24,7 +24,7 @@
 - (void)log:(const char *)file line:(const int)line verboseLevel:(const int)verbose_level message:(const std::string &) message;
 - (void)save:(const std::string &)name value:(const std::string &)value callback:(ads::ResultCallback)callback;
 - (void)setIdleThreshold:(const int)threshold;
-- (void)showNotification:(std::unique_ptr<ads::AdNotificationInfo>)info;
+- (void)showNotification:(const ads::AdNotificationInfo &)info;
 - (void)closeNotification:(const std::string&)id;
 - (void)UrlRequest:(ads::UrlRequestPtr)url_request callback:(ads::UrlRequestCallback)callback;
 - (bool)shouldAllowAdsSubdivisionTargeting;
