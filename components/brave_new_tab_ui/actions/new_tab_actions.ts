@@ -52,3 +52,5 @@ export const setMostVisitedSettings = (showTopSites: boolean, customLinksEnabled
 
 export const topSitesStateUpdated = (newShowTopSites: boolean, newCustomLinksEnabled: boolean) =>
   action(types.TOP_SITES_STATE_UPDATED, { newShowTopSites, newCustomLinksEnabled })
+
+export const customizeClicked = () => action(types.CUSTOMIZE_CLICKED, {})

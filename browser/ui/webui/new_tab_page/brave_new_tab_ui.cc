@@ -3,15 +3,16 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // you can obtain one at http://mozilla.org/MPL/2.0/.
 
-#include "brave/browser/ui/webui/brave_new_tab_ui.h"
+#include "brave/browser/ui/webui/new_tab_page/brave_new_tab_ui.h"
 
 #include <string>
 
 #include "brave/browser/profiles/profile_util.h"
 #include "base/memory/ptr_util.h"
 #include "brave/browser/ui/webui/basic_ui.h"
-#include "brave/browser/ui/webui/brave_new_tab_message_handler.h"
-#include "brave/browser/ui/webui/instant_service_message_handler.h"
+#include "brave/browser/ui/webui/new_tab_page/brave_new_tab_message_handler.h"
+#include "brave/browser/ui/webui/new_tab_page/instant_service_message_handler.h"
+#include "brave/common/pref_names.h"
 #include "brave/common/webui_url_constants.h"
 #include "brave/components/brave_new_tab/resources/grit/brave_new_tab_generated_map.h"
 #include "chrome/browser/profiles/profile.h"

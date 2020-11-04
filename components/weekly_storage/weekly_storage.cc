@@ -76,6 +76,26 @@ uint64_t WeeklyStorage::GetWeeklySum() const {
                          });
 }
 
+uint64_t WeeklyStorage::GetHighestValueInWeek() const {
+  // We record only value for last N days.
+  const base::Time n_days_ago =
+      clock_->Now() - base::TimeDelta::FromDays(kDaysInWeek);
+  std::list<DailyValue> last_weeks_daily_values(daily_values_.size());
+  auto copied_it =
+      std::copy_if(daily_values_.begin(), daily_values_.end(),
+                   last_weeks_daily_values.begin(),
+                   [n_days_ago](auto i) { return i.day > n_days_ago; });
+  last_weeks_daily_values.resize(
+      std::distance(last_weeks_daily_values.begin(), copied_it));
+
+  auto highest_it = std::max_element(last_weeks_daily_values.begin(),
+                                     last_weeks_daily_values.end(),
+                                     [](const auto& left, const auto& right) {
+                                       return left.value < right.value;
+                                     });
+  return highest_it->value;
+}
+
 bool WeeklyStorage::IsOneWeekPassed() const {
   // TODO(iefremov): This is not true 100% (if the browser was launched once
   // per week just after installation, for example).

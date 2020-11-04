@@ -15,6 +15,7 @@
 #include "brave/components/brave_shields/browser/ad_block_service.h"
 #include "brave/components/brave_shields/browser/brave_shields_p3a.h"
 #include "brave/components/ntp_background_images/browser/ntp_background_images_service.h"
+#include "brave/components/ntp_background_images/browser/view_counter_service.h"
 #include "brave/components/p3a/brave_p3a_service.h"
 #include "brave/components/p3a/buildflags.h"
 #include "chrome/browser/first_run/first_run.h"
@@ -33,6 +34,7 @@
 
 #if !defined(OS_ANDROID)
 #include "brave/browser/p3a/p3a_core_metrics.h"
+#include "brave/browser/ui/webui/new_tab_page/brave_new_tab_message_handler.h"
 #endif  // !defined(OS_ANDROID)
 
 #if BUILDFLAG(ENABLE_WIDEVINE)
@@ -46,6 +48,7 @@ void RegisterLocalStatePrefs(PrefRegistrySimple* registry) {
   brave_stats::RegisterLocalStatePrefs(registry);
   ntp_background_images::NTPBackgroundImagesService::RegisterLocalStatePrefs(
       registry);
+  ntp_background_images::ViewCounterService::RegisterLocalStatePrefs(registry);
 #if BUILDFLAG(ENABLE_BRAVE_REFERRALS)
   RegisterPrefsForBraveReferralsService(registry);
 #endif
@@ -68,6 +71,7 @@ void RegisterLocalStatePrefs(PrefRegistrySimple* registry) {
 
   brave_shields::RegisterShieldsP3APrefs(registry);
 #if !defined(OS_ANDROID)
+  BraveNewTabMessageHandler::RegisterLocalStatePrefs(registry);
   BraveWindowTracker::RegisterPrefs(registry);
   BraveUptimeTracker::RegisterPrefs(registry);
   dark_mode::RegisterBraveDarkModeLocalStatePrefs(registry);

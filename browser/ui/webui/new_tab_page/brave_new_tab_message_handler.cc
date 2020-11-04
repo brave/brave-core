@@ -3,36 +3,39 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // you can obtain one at http://mozilla.org/MPL/2.0/.
 
-#include "brave/browser/ui/webui/brave_new_tab_message_handler.h"
+#include "brave/browser/ui/webui/new_tab_page/brave_new_tab_message_handler.h"
 
 #include <memory>
 #include <utility>
 
 #include "base/guid.h"
 #include "base/json/json_writer.h"
+#include "base/metrics/histogram_macros.h"
 #include "base/values.h"
+#include "brave/browser/ntp_background_images/view_counter_service_factory.h"
 #include "brave/browser/profiles/profile_util.h"
 #include "brave/browser/search_engines/search_engine_provider_util.h"
 #include "brave/browser/tor/tor_profile_service.h"
 #include "brave/browser/tor/tor_profile_service_factory.h"
-#include "brave/browser/ui/webui/brave_new_tab_ui.h"
-#include "brave/browser/ntp_background_images/view_counter_service_factory.h"
+#include "brave/browser/ui/webui/new_tab_page/brave_new_tab_ui.h"
 #include "brave/common/pref_names.h"
 #include "brave/components/brave_ads/browser/ads_service.h"
 #include "brave/components/brave_ads/browser/ads_service_factory.h"
 #include "brave/components/brave_perf_predictor/browser/buildflags.h"
-#include "brave/components/moonpay/browser/buildflags/buildflags.h"
 #include "brave/components/crypto_dot_com/browser/buildflags/buildflags.h"
+#include "brave/components/moonpay/browser/buildflags/buildflags.h"
 #include "brave/components/ntp_background_images/browser/features.h"
 #include "brave/components/ntp_background_images/browser/url_constants.h"
 #include "brave/components/ntp_background_images/browser/view_counter_service.h"
 #include "brave/components/ntp_background_images/common/pref_names.h"
+#include "brave/components/p3a/brave_p3a_utils.h"
+#include "chrome/browser/browser_process.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/common/chrome_features.h"
-#include "content/public/browser/web_ui_data_source.h"
 #include "components/prefs/pref_change_registrar.h"
+#include "components/prefs/pref_registry_simple.h"
 #include "components/prefs/pref_service.h"
-
+#include "content/public/browser/web_ui_data_source.h"
 
 using ntp_background_images::features::kBraveNTPBrandedWallpaper;
 using ntp_background_images::prefs::kNewTabPageShowBackgroundImage;
@@ -143,9 +146,31 @@ base::DictionaryValue GetTorPropertiesDictionary(bool connected,
   return tor_data;
 }
 
+enum class NTPCustomizeUsage {
+  kNeverOpened,
+  kOpened,
+  kOpenedAndEdited,
+  kSize
+};
+
+const char kNTPCustomizeUsageStatus[] =
+    "brave.new_tab_page.customize_p3a_usage";
+
 }  // namespace
 
 // static
+void BraveNewTabMessageHandler::RegisterLocalStatePrefs(
+    PrefRegistrySimple* local_state) {
+  local_state->RegisterIntegerPref(kNTPCustomizeUsageStatus, -1);
+}
+
+void BraveNewTabMessageHandler::RecordInitialP3AValues(
+    PrefService* local_state) {
+  brave::RecordValueIfGreater<NTPCustomizeUsage>(
+      NTPCustomizeUsage::kNeverOpened, "Brave.NTP.CustomizeUsageStatus",
+      kNTPCustomizeUsageStatus, local_state);
+}
+
 BraveNewTabMessageHandler* BraveNewTabMessageHandler::Create(
       content::WebUIDataSource* source, Profile* profile) {
   //
@@ -197,50 +222,50 @@ void BraveNewTabMessageHandler::RegisterMessages() {
   // - Preferences
   // - PrivatePage properties
   web_ui()->RegisterMessageCallback(
-    "getNewTabPagePreferences",
-    base::BindRepeating(
-      &BraveNewTabMessageHandler::HandleGetPreferences,
-      base::Unretained(this)));
+      "getNewTabPagePreferences",
+      base::BindRepeating(&BraveNewTabMessageHandler::HandleGetPreferences,
+                          base::Unretained(this)));
   web_ui()->RegisterMessageCallback(
-    "getNewTabPageStats",
-    base::BindRepeating(
-      &BraveNewTabMessageHandler::HandleGetStats,
-      base::Unretained(this)));
+      "getNewTabPageStats",
+      base::BindRepeating(&BraveNewTabMessageHandler::HandleGetStats,
+                          base::Unretained(this)));
   web_ui()->RegisterMessageCallback(
-    "getNewTabPagePrivateProperties",
-    base::BindRepeating(
-      &BraveNewTabMessageHandler::HandleGetPrivateProperties,
-      base::Unretained(this)));
+      "getNewTabPagePrivateProperties",
+      base::BindRepeating(
+          &BraveNewTabMessageHandler::HandleGetPrivateProperties,
+          base::Unretained(this)));
   web_ui()->RegisterMessageCallback(
-    "getNewTabPageTorProperties",
-    base::BindRepeating(
-      &BraveNewTabMessageHandler::HandleGetTorProperties,
-      base::Unretained(this)));
+      "getNewTabPageTorProperties",
+      base::BindRepeating(&BraveNewTabMessageHandler::HandleGetTorProperties,
+                          base::Unretained(this)));
   web_ui()->RegisterMessageCallback(
-    "toggleAlternativePrivateSearchEngine",
-    base::BindRepeating(
-      &BraveNewTabMessageHandler::HandleToggleAlternativeSearchEngineProvider,
-      base::Unretained(this)));
+      "toggleAlternativePrivateSearchEngine",
+      base::BindRepeating(&BraveNewTabMessageHandler::
+                              HandleToggleAlternativeSearchEngineProvider,
+                          base::Unretained(this)));
   web_ui()->RegisterMessageCallback(
-    "saveNewTabPagePref",
-    base::BindRepeating(
-      &BraveNewTabMessageHandler::HandleSaveNewTabPagePref,
-      base::Unretained(this)));
+      "saveNewTabPagePref",
+      base::BindRepeating(&BraveNewTabMessageHandler::HandleSaveNewTabPagePref,
+                          base::Unretained(this)));
   web_ui()->RegisterMessageCallback(
-    "registerNewTabPageView",
-    base::BindRepeating(
-      &BraveNewTabMessageHandler::HandleRegisterNewTabPageView,
-      base::Unretained(this)));
+      "registerNewTabPageView",
+      base::BindRepeating(
+          &BraveNewTabMessageHandler::HandleRegisterNewTabPageView,
+          base::Unretained(this)));
   web_ui()->RegisterMessageCallback(
-    "brandedWallpaperLogoClicked",
-    base::BindRepeating(
-      &BraveNewTabMessageHandler::HandleBrandedWallpaperLogoClicked,
-      base::Unretained(this)));
+      "brandedWallpaperLogoClicked",
+      base::BindRepeating(
+          &BraveNewTabMessageHandler::HandleBrandedWallpaperLogoClicked,
+          base::Unretained(this)));
   web_ui()->RegisterMessageCallback(
-    "getBrandedWallpaperData",
-    base::BindRepeating(
-      &BraveNewTabMessageHandler::HandleGetBrandedWallpaperData,
-      base::Unretained(this)));
+      "getBrandedWallpaperData",
+      base::BindRepeating(
+          &BraveNewTabMessageHandler::HandleGetBrandedWallpaperData,
+          base::Unretained(this)));
+  web_ui()->RegisterMessageCallback(
+      "customizeClicked",
+      base::BindRepeating(&BraveNewTabMessageHandler::HandleCustomizeClicked,
+                          base::Unretained(this)));
 }
 
 void BraveNewTabMessageHandler::OnJavascriptAllowed() {
@@ -371,6 +396,9 @@ void BraveNewTabMessageHandler::HandleSaveNewTabPagePref(
     LOG(ERROR) << "Invalid input";
     return;
   }
+  brave::RecordValueIfGreater<NTPCustomizeUsage>(
+      NTPCustomizeUsage::kOpenedAndEdited, "Brave.NTP.CustomizeUsageStatus",
+      kNTPCustomizeUsageStatus, g_browser_process->local_state());
   PrefService* prefs = profile_->GetPrefs();
   // Collect args
   std::string settingsKeyInput = args->GetList()[0].GetString();
@@ -431,6 +459,12 @@ void BraveNewTabMessageHandler::HandleSaveNewTabPagePref(
     return;
   }
   prefs->SetBoolean(settingsKey, settingsValueBool);
+
+  // P3A can only be recorded after profile is updated
+  if (settingsKeyInput == "showBackgroundImage" ||
+      settingsKeyInput == "brandedWallpaperOptIn") {
+    brave::RecordSponsoredImagesEnabledP3A(profile_);
+  }
 }
 
 void BraveNewTabMessageHandler::HandleRegisterNewTabPageView(
@@ -485,6 +519,14 @@ void BraveNewTabMessageHandler::HandleGetBrandedWallpaperData(
   }
 
   ResolveJavascriptCallback(args->GetList()[0], std::move(data));
+}
+
+void BraveNewTabMessageHandler::HandleCustomizeClicked(
+    const base::ListValue* args) {
+  AllowJavascript();
+  brave::RecordValueIfGreater<NTPCustomizeUsage>(
+      NTPCustomizeUsage::kOpened, "Brave.NTP.CustomizeUsageStatus",
+      kNTPCustomizeUsageStatus, g_browser_process->local_state());
 }
 
 void BraveNewTabMessageHandler::OnPrivatePropertiesChanged() {

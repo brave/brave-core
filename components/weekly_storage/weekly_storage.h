@@ -37,6 +37,7 @@ class WeeklyStorage {
 
   void AddDelta(uint64_t delta);
   uint64_t GetWeeklySum() const;
+  uint64_t GetHighestValueInWeek() const;
   bool IsOneWeekPassed() const;
 
  private:

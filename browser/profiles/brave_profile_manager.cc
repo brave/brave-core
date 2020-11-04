@@ -178,6 +178,8 @@ void BraveProfileManager::AddProfileToStorage(Profile* profile) {
   ProfileManager::AddProfileToStorage(profile);
 }
 
+// Profile can be loaded sync or async; if sync, there is a matching block
+// in `browser/profiles/brave_profile_impl.cc` (constructor)
 void BraveProfileManager::OnProfileCreated(Profile* profile,
                                            bool success,
                                            bool is_new_profile) {
@@ -206,6 +208,8 @@ void BraveProfileManager::OnProfileCreated(Profile* profile,
     TorProfileServiceFactory::GetForProfile(profile);
   }
 #endif
+
+  brave::RecordInitialP3AValues(profile);
 }
 
 // This overridden method doesn't clear |kDefaultSearchProviderDataPrefName|.

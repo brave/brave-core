@@ -28,6 +28,7 @@ class BraveAppearanceHandler : public settings::SettingsPageUIHandler {
   void OnJavascriptDisallowed() override {}
 
   void OnBraveDarkModeChanged();
+  void OnBackgroundPreferenceChanged(const std::string& pref_name);
   void OnPreferenceChanged(const std::string& pref_name);
   void SetBraveThemeType(const base::ListValue* args);
   void GetBraveThemeType(const base::ListValue* args);
