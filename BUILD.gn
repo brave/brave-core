@@ -242,14 +242,13 @@ group("create_dist") {
       ]
     } else {
       deps += [
-        "build/mac:finalize_dmg_pkg"
+        "build/mac:finalize_dmg_pkg",
+        "build/mac:generate_eddsa_sig_for_dmg",
       ]
-    }
 
-    if (build_delta_installer) {
-      deps += [
-        "build/mac:build_delta_installer",
-      ]
+      if (build_delta_installer) {
+        deps += [ "build/mac:build_delta_installer" ]
+      }
     }
   }
   if (is_linux) {

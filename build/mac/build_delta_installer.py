@@ -21,14 +21,10 @@ def Main(argv):
       type='string', default=None, help='The path of old app bundle.')
   parser.add_option('--new-app', dest='new_app_path', action='store',
       type='string', default=None, help='The path of new app bundle.')
-  parser.add_option('--new-dmg', dest='new_dmg_path', action='store',
-      type='string', default=None, help='The path of new dmg.')
   parser.add_option('--patch-output', dest='patch_output_path', action='store',
       type='string', default=None, help='The path of generated delta file.')
   parser.add_option('--patch-eddsa-output', dest='patch_eddsa_output_path', action='store',
       type='string', default=None, help='The path of eddsa output of patch.')
-  parser.add_option('--dmg-eddsa-output', dest='dmg_eddsa_output_path', action='store',
-      type='string', default=None, help='The path of eddsa output of dmg.')
   (options, args) = parser.parse_args(argv)
 
   if len(args) > 0:
@@ -46,16 +42,6 @@ def Main(argv):
   # sign patch file
   file = open(options.patch_eddsa_output_path, 'w')
   command = [options.sign_update_path, '-s', options.sign_key, options.patch_output_path]
-  try:
-      subprocess.check_call(command, stdout=file)
-  except subprocess.CalledProcessError as e:
-      print(e.output)
-      raise e
-  file.close()
-
-  # sign dmg
-  file = open(options.dmg_eddsa_output_path, 'w')
-  command = [options.sign_update_path, '-s', options.sign_key, options.new_dmg_path]
   try:
       subprocess.check_call(command, stdout=file)
   except subprocess.CalledProcessError as e:
