@@ -49,6 +49,6 @@ public class BraveMenuButtonCoordinator extends MenuButtonCoordinator {
 
     public static boolean isMenuFromBottom() {
         SharedPreferences sharedPreferences = ContextUtils.getAppSharedPreferences();
-        return sharedPreferences.getBoolean(BRAVE_IS_MENU_FROM_BOTTOM, false);
+        return sharedPreferences.getBoolean(BRAVE_IS_MENU_FROM_BOTTOM, true);
     }
 }
