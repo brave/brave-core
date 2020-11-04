@@ -106,7 +106,8 @@ const Config = function () {
   this.mac_installer_signing_identifier = getNPMConfig(['mac_installer_signing_identifier']) || ''
   this.mac_signing_keychain = getNPMConfig(['mac_signing_keychain']) || 'login'
   this.mac_signing_output_prefix = 'signing'
-  this.sparkleEdDSAKey = getNPMConfig(['sparkle_eddsa_key']) || ''
+  this.sparkleEdDSAPublicKey = getNPMConfig(['sparkle_eddsa_public_key']) || ''
+  this.sparkleEdDSAPrivateKey = getNPMConfig(['sparkle_eddsa_private_key']) || ''
   this.notary_user = getNPMConfig(['notary_user']) || ''
   this.notary_password = getNPMConfig(['notary_password']) || ''
   this.channel = 'development'
@@ -223,7 +224,8 @@ Config.prototype.buildArgs = function () {
     enable_cdm_host_verification: this.enableCDMHostVerification(),
     skip_signing: !this.shouldSign(),
     chrome_pgo_phase: this.chromePgoPhase,
-    sparkle_eddsa_key: this.sparkleEdDSAKey,
+    sparkle_eddsa_public_key: this.sparkleEdDSAPublicKey,
+    sparkle_eddsa_private_key: this.sparkleEdDSAPrivateKey,
     ...this.extraGnArgs,
   }
 
