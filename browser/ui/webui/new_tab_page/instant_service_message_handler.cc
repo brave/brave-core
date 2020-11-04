@@ -3,7 +3,7 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // you can obtain one at http://mozilla.org/MPL/2.0/.
 
-#include "brave/browser/ui/webui/instant_service_message_handler.h"
+#include "brave/browser/ui/webui/new_tab_page/instant_service_message_handler.h"
 
 #include <string>
 #include <memory>
@@ -13,7 +13,7 @@
 #include "base/strings/utf_string_conversions.h"
 #include "brave/browser/ntp_background_images/view_counter_service_factory.h"
 #include "brave/browser/profiles/profile_util.h"
-#include "brave/browser/ui/webui/brave_new_tab_ui.h"
+#include "brave/browser/ui/webui/new_tab_page/brave_new_tab_ui.h"
 #include "brave/common/pref_names.h"
 #include "brave/components/ntp_background_images/browser/ntp_background_images_data.h"
 #include "brave/components/ntp_background_images/browser/view_counter_service.h"
@@ -22,6 +22,12 @@
 #include "chrome/browser/search/instant_service_factory.h"
 
 using ntp_background_images::ViewCounterServiceFactory;
+
+// NOTE: InstantService methods used here will eventually be moved to:
+// chrome/browser/ui/webui/new_tab_page/new_tab_page_handler.h
+//
+// For more info, see:
+// https://bugs.chromium.org/p/chromium/issues/detail?id=1084363
 
 namespace {
 

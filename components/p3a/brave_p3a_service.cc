@@ -69,6 +69,10 @@ constexpr const char* kCollectedHistograms[] = {
     "Brave.Core.TorEverUsed",
     "Brave.Core.WindowCount.2",
     "Brave.Importer.ImporterSource",
+    "Brave.NTP.CustomizeUsageStatus",
+    "Brave.NTP.NewTabsCreated",
+    "Brave.NTP.SponsoredImagesEnabled",
+    "Brave.NTP.SponsoredNewTabsCreated",
     "Brave.Omnibox.SearchCount",
     "Brave.P3A.SentAnswersCount",
     "Brave.Rewards.AdsState.2",
@@ -77,12 +81,13 @@ constexpr const char* kCollectedHistograms[] = {
     "Brave.Rewards.WalletBalance.2",
     "Brave.Savings.BandwidthSavingsMB",
     "Brave.Search.DefaultEngine.2",
-    "Brave.SpeedReader.ToggleCount",
-    "Brave.SpeedReader.Enabled",
     "Brave.Shields.UsageStatus",
+    "Brave.SpeedReader.Enabled",
+    "Brave.SpeedReader.ToggleCount",
     "Brave.Sync.Status",
     "Brave.Uptime.BrowserOpenMinutes",
     "Brave.Welcome.InteractionStatus",
+
     // P2A
     // Ad Opportunities
     "Brave.P2A.TotalAdOpportunities",

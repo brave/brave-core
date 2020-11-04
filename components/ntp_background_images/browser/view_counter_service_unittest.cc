@@ -61,11 +61,12 @@ class NTPBackgroundImagesViewCounterTest : public testing::Test {
     auto* local_registry = local_pref_.registry();
     brave::RegisterPrefsForBraveReferralsService(local_registry);
     NTPBackgroundImagesService::RegisterLocalStatePrefs(local_registry);
+    ViewCounterService::RegisterLocalStatePrefs(local_registry);
 
     service_ = std::make_unique<NTPBackgroundImagesService>(nullptr,
                                                             &local_pref_);
     view_counter_ = std::make_unique<ViewCounterService>(
-        service_.get(), nullptr, prefs(), true);
+        service_.get(), nullptr, prefs(), &local_pref_, true);
 
     // Set referral service is properly initialized sr component is set.
     local_pref_.SetBoolean(kReferralCheckedForPromoCodeFile, true);

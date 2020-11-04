@@ -25,9 +25,9 @@
 #include "url/gurl.h"
 
 #if !defined(OS_ANDROID)
-#include "brave/browser/ui/webui/brave_new_tab_ui.h"
 #include "brave/browser/ui/webui/brave_settings_ui.h"
 #include "brave/browser/ui/webui/brave_welcome_ui.h"
+#include "brave/browser/ui/webui/new_tab_page/brave_new_tab_ui.h"
 #endif
 
 #if BUILDFLAG(BRAVE_REWARDS_ENABLED)
