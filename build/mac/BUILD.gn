@@ -32,37 +32,57 @@ action("build_delta_installer") {
   script="build_delta_installer.py"
 
   target_app_path = target_sign_app_path
+  target_dmg_path = "$root_out_dir/$mac_signed_output_prefix/$brave_dmg"
   if (skip_signing) {
     target_app_path = "$root_out_dir/$chrome_product_full_name.app"
+    target_dmg_path = "$root_out_dir/unsigned_dmg/$brave_dmg"
   }
+  target_patch_path = "$root_out_dir/patch.delta"
+  target_patch_eddsa_path = "$root_out_dir/patch.delta.eddsa"
+  target_dmg_eddsa_path = "$root_out_dir/$brave_dmg.eddsa"
+  binary_delta_path = "$root_out_dir/BinaryDelta"
+  sign_update_path = "$root_out_dir/sign_update"
 
   args = [
-    "--binary-delta", rebase_path("$root_out_dir/BinaryDelta"),
-    "--sign-update", rebase_path("$root_out_dir/sign_update"),
+    "--binary-delta", rebase_path("$binary_delta_path"),
+    "--sign-update", rebase_path("$sign_update_path"),
     "--sign-key", "$sparkle_eddsa_private_key",
     "--old-app", rebase_path("$root_out_dir/$last_chrome_installer"),
     "--new-app", rebase_path("$target_app_path"),
-    "--output", rebase_path("$root_out_dir/patch.delta"),
+    "--new-dmg", rebase_path("$target_dmg_path"),
+    "--patch-output", rebase_path("$target_patch_path"),
+    "--patch-eddsa-output", rebase_path("$target_patch_eddsa_path"),
+    "--dmg-eddsa-output", rebase_path("$target_dmg_eddsa_path"),
   ]
 
   inputs = [
     script,
-    "$root_out_dir/$brave_exe",
-    "$root_out_dir/BinaryDelta",
-    "$root_out_dir/sign_update",
+    "$target_app_path",
+    "$target_dmg_path",
+    "$binary_delta_path",
+    "$sign_update_path",
   ]
 
   outputs = [
-    "$root_out_dir/patch.delta",
+    "$target_patch_path",
+    "$target_patch_eddsa_path",
+    "$target_dmg_eddsa_path",
   ]
 
   deps = [
     "//brave/vendor/sparkle:build_sparkle_framework",
-    "//chrome:chrome_app",
   ]
 
-  if (!skip_signing) {
-    deps += [ ":sign_app" ]
+  if (skip_signing) {
+    deps += [
+      ":unsigned_dmg",
+      "//chrome:chrome_app"
+    ]
+  } else {
+    deps += [
+      ":sign_dmg",
+      ":sign_app"
+    ]
   }
 }
 
