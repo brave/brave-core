@@ -45,7 +45,8 @@ class BraveUptimeTracker {
 
 // BraveWindowTracker is under !OS_ANDROID guard because
 // BrowserListObserver should only be only on desktop
-// Brave.Uptime.BrowserOpenMinutes doesn't work on Android
+// Brave.Uptime.BrowserOpenMinutes and Brave.Core.LastTimeIncognitoUsed
+// don't work on Android
 #if !defined(OS_ANDROID)
 // Periodically records P3A stats (extracted from Local State) regarding the
 // time when incognito windows were used.
