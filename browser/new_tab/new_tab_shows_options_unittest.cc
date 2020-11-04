@@ -83,4 +83,6 @@ TEST_F(BraveNewTabTest, BasicTest) {
   EXPECT_EQ(GURL(), brave::GetNewTabPageURL(otr_profile));
   EXPECT_TRUE(brave::ShouldUseNewTabURLForNewTab(profile));
   EXPECT_FALSE(brave::ShouldNewTabShowDashboard(profile));
+  EXPECT_TRUE(brave::ShouldNewTabShowBlankpage(profile));
+  EXPECT_FALSE(brave::ShouldNewTabShowBlankpage(otr_profile));
 }

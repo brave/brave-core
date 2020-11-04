@@ -99,4 +99,12 @@ bool ShouldNewTabShowDashboard(Profile* profile) {
   return ShouldUseNewTabURLForNewTab(profile);
 }
 
+bool ShouldNewTabShowBlankpage(Profile* profile) {
+  if (!brave::IsRegularProfile(profile))
+    return false;
+
+  return profile->GetPrefs()->GetInteger(kNewTabPageShowsOptions) ==
+      static_cast<int>(brave::NewTabPageShowsOptions::kBlankpage);
+}
+
 }  // namespace brave
