@@ -4,16 +4,9 @@
 
 import * as React from 'react'
 
-import { LocaleContext } from '../../lib/locale_context'
+import { LocaleContext, formatMessageParts } from '../../lib/locale_context'
 
 import { NewTabLink } from '../new_tab_link'
-
-function formatMessageParts<T> (
-  message: string,
-  fn: (...parts: string[]) => T
-) {
-  return fn(...message.split(/\$\d/g))
-}
 
 export function TermsOfService () {
   const { getString } = React.useContext(LocaleContext)

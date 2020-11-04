@@ -10,6 +10,7 @@ import { TipKind, MediaMetaData } from '../lib/interfaces'
 import { HostContext } from '../lib/host_context'
 import { Locale, LocaleContext } from '../../shared/lib/locale_context'
 
+import { RewardsTour } from '../../shared/components/onboarding'
 import { SliderSwitch, SliderSwitchOption } from './slider_switch'
 import { TipComplete } from './tip_complete'
 import { OptInForm } from './opt_in_form'
@@ -69,6 +70,7 @@ export function TipForm () {
     host.state.rewardsParameters)
   const [showOnboarding, setShowOnboarding] = React.useState(
     host.state.showOnboarding)
+  const [showTour, setShowTour] = React.useState(false)
   const [currentMonthlyTip, setCurrentMonthlyTip] = React.useState(
     host.state.currentMonthlyTip || 0)
 
@@ -101,8 +103,36 @@ export function TipForm () {
     return <TipComplete tipKind={tipKind} tipAmount={tipAmount} />
   }
 
+  if (showTour) {
+    const onTourDone = () => setShowTour(false)
+    return (
+      <style.tour>
+        <RewardsTour rewardsEnabled={!showOnboarding} onDone={onTourDone} />
+      </style.tour>
+    )
+  }
+
   if (showOnboarding) {
-    return <OptInForm />
+    const onTakeTour = () => {
+      setShowTour(true)
+    }
+
+    const onEnable = () => {
+      host.saveOnboardingResult('opted-in')
+      onTakeTour()
+    }
+
+    const onDismiss = () => {
+      host.saveOnboardingResult('dismissed')
+    }
+
+    return (
+      <OptInForm
+        onTakeTour={onTakeTour}
+        onEnable={onEnable}
+        onDismiss={onDismiss}
+      />
+    )
   }
 
   const { mediaMetaData } = host.getDialogArgs()

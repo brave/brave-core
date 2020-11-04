@@ -5,7 +5,9 @@
 import * as React from 'react'
 import styled from 'styled-components'
 
-const styles = {
+import { CloseIcon } from './icons/close_icon'
+
+const style = {
   root: styled.div`
     position: fixed;
     top: 0;
@@ -30,21 +32,52 @@ const styles = {
 
   bottomSpacer: styled.div`
     flex: 55 0 auto;
+  `,
+
+  close: styled.div`
+    color: var(--brave-palette-neutral600);
+    text-align: right;
+
+    button {
+      margin: 0;
+      padding: 2px;
+      background: none;
+      border: none;
+      cursor: pointer;
+    }
+
+    .icon {
+      display: block;
+      width: 14px;
+      height: auto;
+    }
   `
 }
 
-interface Props {
+interface ModalProps {
   children: React.ReactNode
 }
 
-export function Modal (props: Props) {
+export function Modal (props: ModalProps) {
   return (
-    <styles.root>
-      <styles.topSpacer />
-      <styles.content>
+    <style.root>
+      <style.topSpacer />
+      <style.content>
         {props.children}
-      </styles.content>
-      <styles.bottomSpacer />
-    </styles.root>
+      </style.content>
+      <style.bottomSpacer />
+    </style.root>
+  )
+}
+
+interface ModalCloseButtonProps {
+  onClick: () => void
+}
+
+export function ModalCloseButton (props: ModalCloseButtonProps) {
+  return (
+    <style.close>
+      <button onClick={props.onClick}><CloseIcon /></button>
+    </style.close>
   )
 }

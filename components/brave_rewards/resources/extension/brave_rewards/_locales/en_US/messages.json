@@ -639,8 +639,92 @@
     "message": "Start using Brave Rewards",
     "description": ""
   },
+  "onboardingTakeTour": {
+    "message": "Take a quick tour",
+    "description": ""
+  },
   "onboardingTerms": {
     "message": "By proceeding, you agree to the $$1Terms of Service$$2 and $$3Privacy Policy$$4.",
+    "description": ""
+  },
+  "onboardingTourBack": {
+    "message": "Go Back",
+    "description": ""
+  },
+  "onboardingTourBegin": {
+    "message": "Let’s take a quick tour",
+    "description": ""
+  },
+  "onboardingTourContinue": {
+    "message": "Continue",
+    "description": ""
+  },
+  "onboardingTourDone": {
+    "message": "Done",
+    "description": ""
+  },
+  "onboardingTourSkip": {
+    "message": "Skip",
+    "description": ""
+  },
+  "onboardingTourSkipForNow": {
+    "message": "Skip for now",
+    "description": ""
+  },
+  "onboardingPanelWelcomeHeader": {
+    "message": "Welcome to Brave Rewards!",
+    "description": ""
+  },
+  "onboardingPanelWelcomeText": {
+    "message": "Brave private ads rewards you with tokens to support content creators unlike traditional ads, all while keeping your personal information private.",
+    "description": ""
+  },
+  "onboardingPanelAdsHeader": {
+    "message": "Where do ads show up?",
+    "description": ""
+  },
+  "onboardingPanelAdsText": {
+    "message": "Brave private ads will appear as a normal notification. You control how often you see these ads in settings.",
+    "description": ""
+  },
+  "onboardingPanelScheduleHeader": {
+    "message": "When do you receive rewards",
+    "description": ""
+  },
+  "onboardingPanelScheduleText": {
+    "message": "Your earned tokens from Brave ads throughout the current month will arrive on the 5th of the next month.",
+    "description": ""
+  },
+  "onboardingPanelAcHeader": {
+    "message": "Support creators on autopilot",
+    "description": ""
+  },
+  "onboardingPanelAcText": {
+    "message": "Creators are automatically rewarded with the earned tokens based on your browsing/engagement levels that we measure as ‘Attention’.",
+    "description": ""
+  },
+  "onboardingPanelTippingHeader": {
+    "message": "Say thank you with tips",
+    "description": ""
+  },
+  "onboardingPanelTippingText": {
+    "message": "Tipping is a way to personally encourage and support content or creators that you love. Get tippin!",
+    "description": ""
+  },
+  "onboardingPanelRedeemHeader": {
+    "message": "What can you do with tokens?",
+    "description": ""
+  },
+  "onboardingPanelRedeemText": {
+    "message": "Tokens can be used beyond supporting creators. You can buy digital goods and giftcards with a cashback bonus.",
+    "description": ""
+  },
+  "onboardingPanelCompleteHeader": {
+    "message": "WOOOOHOOOOO!$$1You’re done.",
+    "description": ""
+  },
+  "onboardingPanelCompleteText": {
+    "message": "By using Brave Rewards, you are protecting your privacy and helping make the web a better place for everyone. And that’s awesome!",
     "description": ""
   }
 }

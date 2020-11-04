@@ -14,7 +14,7 @@ const getGradientRule = (gradient: string) => {
 }
 
 export const StyledWrapper = styled<StyleProps, 'div'>('div')`
-  min-height: 305px;
+  min-height: 315px;
   padding: ${p => p.compact ? '0px 7px 0px' : '0px'};
   background: ${p => p.compact ? getGradientRule('233, 235, 255') : 'inherit'};
 `

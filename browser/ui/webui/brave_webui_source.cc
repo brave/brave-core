@@ -5,6 +5,8 @@
 
 #include "brave/browser/ui/webui/brave_webui_source.h"
 
+// clang-format off
+
 #include <map>
 #include <vector>
 
@@ -614,13 +616,35 @@ void CustomizeWebUIHTMLSource(const std::string &name,
         { "off", IDS_BRAVE_UI_OFF },
         { "ok", IDS_BRAVE_UI_OK },
         { "on", IDS_BRAVE_UI_ON },
-        { "onboardingAddFunds", IDS_BRAVE_REWARDS_ONBOARDING_ADD_FUNDS },
+        { "onboardingBraveRewards", IDS_BRAVE_REWARDS_ONBOARDING_BRAVE_REWARDS },  // NOLINT
+        { "onboardingDetailLinks", IDS_BRAVE_REWARDS_ONBOARDING_DETAIL_LINKS },
         { "onboardingEarnHeader", IDS_BRAVE_REWARDS_ONBOARDING_EARN_HEADER },
         { "onboardingEarnText", IDS_BRAVE_REWARDS_ONBOARDING_EARN_TEXT },
+        { "onboardingPromoHeader", IDS_BRAVE_REWARDS_ONBOARDING_PROMO_HEADER },
+        { "onboardingPromoText", IDS_BRAVE_REWARDS_ONBOARDING_PROMO_TEXT },
         { "onboardingStartUsingRewards", IDS_BRAVE_REWARDS_ONBOARDING_START_USING_REWARDS },  // NOLINT
+        { "onboardingTakeTour", IDS_BRAVE_REWARDS_ONBOARDING_TAKE_TOUR },
         { "onboardingTerms", IDS_BRAVE_REWARDS_ONBOARDING_TERMS },
-        { "onboardingTipHeader", IDS_BRAVE_REWARDS_ONBOARDING_TIP_HEADER },
-        { "onboardingTipText", IDS_BRAVE_REWARDS_ONBOARDING_TIP_TEXT },
+        { "onboardingTourBack", IDS_BRAVE_REWARDS_ONBOARDING_TOUR_BACK },
+        { "onboardingTourBegin", IDS_BRAVE_REWARDS_ONBOARDING_TOUR_BEGIN },
+        { "onboardingTourContinue", IDS_BRAVE_REWARDS_ONBOARDING_TOUR_CONTINUE },  // NOLINT
+        { "onboardingTourDone", IDS_BRAVE_REWARDS_ONBOARDING_TOUR_DONE },
+        { "onboardingTourSkip", IDS_BRAVE_REWARDS_ONBOARDING_TOUR_SKIP },
+        { "onboardingTourSkipForNow", IDS_BRAVE_REWARDS_ONBOARDING_TOUR_SKIP_FOR_NOW },  // NOLINT
+        { "onboardingPanelWelcomeHeader", IDS_BRAVE_REWARDS_ONBOARDING_PANEL_WELCOME_HEADER },  // NOLINT
+        { "onboardingPanelWelcomeText", IDS_BRAVE_REWARDS_ONBOARDING_PANEL_WELCOME_TEXT },  // NOLINT
+        { "onboardingPanelAdsHeader", IDS_BRAVE_REWARDS_ONBOARDING_PANEL_ADS_HEADER },  // NOLINT
+        { "onboardingPanelAdsText", IDS_BRAVE_REWARDS_ONBOARDING_PANEL_ADS_TEXT },  // NOLINT
+        { "onboardingPanelScheduleHeader", IDS_BRAVE_REWARDS_ONBOARDING_PANEL_SCHEDULE_HEADER },  // NOLINT
+        { "onboardingPanelScheduleText", IDS_BRAVE_REWARDS_ONBOARDING_PANEL_SCHEDULE_TEXT },  // NOLINT
+        { "onboardingPanelAcHeader", IDS_BRAVE_REWARDS_ONBOARDING_PANEL_AC_HEADER },  // NOLINT
+        { "onboardingPanelAcText", IDS_BRAVE_REWARDS_ONBOARDING_PANEL_AC_TEXT },
+        { "onboardingPanelTippingHeader", IDS_BRAVE_REWARDS_ONBOARDING_PANEL_TIPPING_HEADER },  // NOLINT
+        { "onboardingPanelTippingText", IDS_BRAVE_REWARDS_ONBOARDING_PANEL_TIPPING_TEXT },  // NOLINT
+        { "onboardingPanelRedeemHeader", IDS_BRAVE_REWARDS_ONBOARDING_PANEL_REDEEM_HEADER },  // NOLINT
+        { "onboardingPanelRedeemText", IDS_BRAVE_REWARDS_ONBOARDING_PANEL_REDEEM_TEXT },  // NOLINT
+        { "onboardingPanelCompleteHeader", IDS_BRAVE_REWARDS_ONBOARDING_PANEL_COMPLETE_HEADER },  // NOLINT
+        { "onboardingPanelCompleteText", IDS_BRAVE_REWARDS_ONBOARDING_PANEL_COMPLETE_TEXT },  // NOLINT
         { "oneTime", IDS_BRAVE_UI_ONE_TIME },
         { "oneTimeDonation", IDS_BRAVE_UI_ONE_TIME_DONATION },
         { "openBalance", IDS_BRAVE_UI_OPEN_BALANCE },
@@ -852,9 +876,30 @@ void CustomizeWebUIHTMLSource(const std::string &name,
         { "on", IDS_BRAVE_UI_ON },
         { "onboardingMaybeLater", IDS_BRAVE_REWARDS_ONBOARDING_MAYBE_LATER },
         { "onboardingStartUsingRewards", IDS_BRAVE_REWARDS_ONBOARDING_START_USING_REWARDS },  // NOLINT
+        { "onboardingTakeTour", IDS_BRAVE_REWARDS_ONBOARDING_TAKE_TOUR },
         { "onboardingTerms", IDS_BRAVE_REWARDS_ONBOARDING_TERMS },
         { "onboardingTipHeader", IDS_BRAVE_REWARDS_ONBOARDING_TIP_HEADER },
         { "onboardingTipText", IDS_BRAVE_REWARDS_ONBOARDING_TIP_TEXT },
+        { "onboardingTourBack", IDS_BRAVE_REWARDS_ONBOARDING_TOUR_BACK },
+        { "onboardingTourBegin", IDS_BRAVE_REWARDS_ONBOARDING_TOUR_BEGIN },
+        { "onboardingTourContinue", IDS_BRAVE_REWARDS_ONBOARDING_TOUR_CONTINUE },  // NOLINT
+        { "onboardingTourDone", IDS_BRAVE_REWARDS_ONBOARDING_TOUR_DONE },
+        { "onboardingTourSkip", IDS_BRAVE_REWARDS_ONBOARDING_TOUR_SKIP },
+        { "onboardingTourSkipForNow", IDS_BRAVE_REWARDS_ONBOARDING_TOUR_SKIP_FOR_NOW },  // NOLINT
+        { "onboardingPanelWelcomeHeader", IDS_BRAVE_REWARDS_ONBOARDING_PANEL_WELCOME_HEADER },  // NOLINT
+        { "onboardingPanelWelcomeText", IDS_BRAVE_REWARDS_ONBOARDING_PANEL_WELCOME_TEXT },  // NOLINT
+        { "onboardingPanelAdsHeader", IDS_BRAVE_REWARDS_ONBOARDING_PANEL_ADS_HEADER },  // NOLINT
+        { "onboardingPanelAdsText", IDS_BRAVE_REWARDS_ONBOARDING_PANEL_ADS_TEXT },  // NOLINT
+        { "onboardingPanelScheduleHeader", IDS_BRAVE_REWARDS_ONBOARDING_PANEL_SCHEDULE_HEADER },  // NOLINT
+        { "onboardingPanelScheduleText", IDS_BRAVE_REWARDS_ONBOARDING_PANEL_SCHEDULE_TEXT },  // NOLINT
+        { "onboardingPanelAcHeader", IDS_BRAVE_REWARDS_ONBOARDING_PANEL_AC_HEADER },  // NOLINT
+        { "onboardingPanelAcText", IDS_BRAVE_REWARDS_ONBOARDING_PANEL_AC_TEXT },
+        { "onboardingPanelTippingHeader", IDS_BRAVE_REWARDS_ONBOARDING_PANEL_TIPPING_HEADER },  // NOLINT
+        { "onboardingPanelTippingText", IDS_BRAVE_REWARDS_ONBOARDING_PANEL_TIPPING_TEXT },  // NOLINT
+        { "onboardingPanelRedeemHeader", IDS_BRAVE_REWARDS_ONBOARDING_PANEL_REDEEM_HEADER },  // NOLINT
+        { "onboardingPanelRedeemText", IDS_BRAVE_REWARDS_ONBOARDING_PANEL_REDEEM_TEXT },  // NOLINT
+        { "onboardingPanelCompleteHeader", IDS_BRAVE_REWARDS_ONBOARDING_PANEL_COMPLETE_HEADER },  // NOLINT
+        { "onboardingPanelCompleteText", IDS_BRAVE_REWARDS_ONBOARDING_PANEL_COMPLETE_TEXT },  // NOLINT
         { "oneTimeTip", IDS_BRAVE_REWARDS_TIP_ONE_TIME_TIP },
         { "oneTimeTipAmount", IDS_BRAVE_REWARDS_TIP_ONE_TIME_TIP_AMOUNT },
         { "optInRequired", IDS_BRAVE_REWARDS_TIP_OPT_IN_REQUIRED },
