@@ -11,7 +11,7 @@ import { Provider } from '../../../ui/components/profile'
 import { NotificationType, WalletState } from '../../../ui/components/walletWrapper'
 import { RewardsNotificationType } from '../constants/rewards_panel_types'
 import { Type as AlertType } from '../../../ui/components/alert'
-import { RewardsOptInModal } from '../../../shared/components/onboarding'
+import { RewardsOptInModal, RewardsTourModal } from '../../../shared/components/onboarding'
 
 // Utils
 import * as rewardsPanelActions from '../actions/rewards_panel_actions'
@@ -26,6 +26,7 @@ interface Props extends RewardsExtension.ComponentProps {
 
 interface State {
   showSummary: boolean
+  showRewardsTour: boolean
   publisherKey: string | null
   refreshingPublisher: boolean
   publisherRefreshed: boolean
@@ -39,6 +40,7 @@ export class Panel extends React.Component<Props, State> {
     super(props)
     this.state = {
       showSummary: true,
+      showRewardsTour: false,
       publisherKey: null,
       refreshingPublisher: false,
       publisherRefreshed: false,
@@ -653,16 +655,49 @@ export class Panel extends React.Component<Props, State> {
   }
 
   showOnboarding () {
-    if (!this.props.rewardsPanelData.showOnboarding) {
+    const { showOnboarding } = this.props.rewardsPanelData
+
+    if (this.state.showRewardsTour) {
+      const onDone = () => {
+        this.setState({ showRewardsTour: false })
+      }
+
+      const onClose = () => {
+        onDone()
+        if (showOnboarding) {
+          this.actions.saveOnboardingResult('dismissed')
+        }
+      }
+
+      return (
+        <RewardsTourModal
+          rewardsEnabled={!showOnboarding}
+          onClose={onClose}
+          onDone={onDone}
+        />
+      )
+    }
+
+    if (!showOnboarding) {
       return null
     }
 
-    const onEnable = () => this.actions.saveOnboardingResult('opted-in')
-    const onClose = () => this.actions.saveOnboardingResult('dismissed')
+    const onTakeTour = () => {
+      this.setState({ showRewardsTour: true })
+    }
+
+    const onEnable = () => {
+      this.actions.saveOnboardingResult('opted-in')
+      onTakeTour()
+    }
+
+    const onClose = () => {
+      this.actions.saveOnboardingResult('dismissed')
+    }
 
     return (
       <RewardsOptInModal
-        onAddFunds={this.onAddFunds}
+        onTakeTour={onTakeTour}
         onEnable={onEnable}
         onClose={onClose}
       />
