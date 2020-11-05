@@ -30,6 +30,7 @@ public class BravePrivacySettings extends PrivacySettings {
     private static final String PREF_AD_BLOCK = "ad_block";
     private static final String PREF_FINGERPRINTING_PROTECTION = "fingerprinting_protection";
     private static final String PREF_CLOSE_TABS_ON_EXIT = "close_tabs_on_exit";
+    private static final String PREF_SEND_P3A = "send_p3a_analytics";
     private static final String PREF_SYNC_AND_SERVICES_LINK = "sync_and_services_link";
     private static final String PREF_SEARCH_SUGGESTIONS = "search_suggestions";
     private static final String PREF_AUTOCOMPLETE_TOP_SITES = "autocomplete_top_sites";
@@ -51,6 +52,7 @@ public class BravePrivacySettings extends PrivacySettings {
     private ChromeBaseCheckBoxPreference mAdBlockPref;
     private ChromeBaseCheckBoxPreference mFingerprintingProtectionPref;
     private ChromeBaseCheckBoxPreference mCloseTabsOnExitPref;
+    private ChromeBaseCheckBoxPreference mSendP3A;
     private PreferenceCategory mSocialBlockingCategory;
     private ChromeSwitchPreference mSocialBlockingGoogle;
     private ChromeSwitchPreference mSocialBlockingFacebook;
@@ -76,6 +78,10 @@ public class BravePrivacySettings extends PrivacySettings {
         mCloseTabsOnExitPref =
                 (ChromeBaseCheckBoxPreference) findPreference(PREF_CLOSE_TABS_ON_EXIT);
         mCloseTabsOnExitPref.setOnPreferenceChangeListener(this);
+
+        mSendP3A =
+                (ChromeBaseCheckBoxPreference) findPreference(PREF_SEND_P3A);
+        mSendP3A.setOnPreferenceChangeListener(this);
 
         mSearchSuggestions = (ChromeSwitchPreference) findPreference(PREF_SEARCH_SUGGESTIONS);
         mSearchSuggestions.setOnPreferenceChangeListener(this);
@@ -122,6 +128,8 @@ public class BravePrivacySettings extends PrivacySettings {
                     ContextUtils.getAppSharedPreferences().edit();
             sharedPreferencesEditor.putBoolean(PREF_CLOSE_TABS_ON_EXIT, (boolean) newValue);
             sharedPreferencesEditor.apply();
+        } else if (PREF_SEND_P3A.equals(key)) {
+            BravePrefServiceBridge.getInstance().setP3AEnabled((boolean) newValue);
         } else if (PREF_SEARCH_SUGGESTIONS.equals(key)) {
             mPrefServiceBridge.setBoolean(Pref.SEARCH_SUGGEST_ENABLED, (boolean) newValue);
         } else if (PREF_AUTOCOMPLETE_TOP_SITES.equals(key)) {
@@ -157,6 +165,8 @@ public class BravePrivacySettings extends PrivacySettings {
         mSearchSuggestions.setChecked(mPrefServiceBridge.getBoolean(Pref.SEARCH_SUGGEST_ENABLED));
         int order = findPreference(PREF_CLEAR_BROWSING_DATA).getOrder();
         mCloseTabsOnExitPref.setOrder(++order);
+        mSendP3A.setOrder(++order);
+        mSendP3A.setChecked(BravePrefServiceBridge.getInstance().getP3AEnabled());
         mHttpsePref.setOrder(++order);
         mAdBlockPref.setOrder(++order);
         mFingerprintingProtectionPref.setOrder(++order);
