@@ -70,6 +70,7 @@ public class BraveToolbarManager extends ToolbarManager {
     private LocationBarModel mLocationBarModel;
     private TopToolbarCoordinator mToolbar;
     private ObservableSupplier<BookmarkBridge> mBookmarkBridgeSupplier;
+    private ObservableSupplier<Boolean> mOmniboxFocusStateSupplier;
 
     private boolean mIsBottomToolbarVisible;
     private View mRootBottomView;
@@ -88,14 +89,16 @@ public class BraveToolbarManager extends ToolbarManager {
             OneshotSupplier<OverviewModeBehavior> overviewModeBehaviorSupplier,
             OneshotSupplier<AppMenuCoordinator> appMenuCoordinatorSupplier,
             boolean shouldShowUpdateBadge,
-            ObservableSupplier<TabModelSelector> tabModelSelectorSupplier) {
+            ObservableSupplier<TabModelSelector> tabModelSelectorSupplier,
+            ObservableSupplier<Boolean> omniboxFocusStateSupplier) {
         super(activity, controlsSizer, fullscreenManager, controlContainer, invalidator,
                 urlFocusChangedCallback, themeColorProvider, tabObscuringHandler,
                 shareDelegateSupplier, identityDiscController, buttonDataProviders, tabProvider,
                 scrimCoordinator, toolbarActionModeCallback, findToolbarManager, profileSupplier,
                 bookmarkBridgeSupplier, canAnimateNativeBrowserControls,
                 overviewModeBehaviorSupplier, appMenuCoordinatorSupplier, shouldShowUpdateBadge,
-                tabModelSelectorSupplier);
+                tabModelSelectorSupplier, omniboxFocusStateSupplier);
+        mOmniboxFocusStateSupplier = omniboxFocusStateSupplier;
     }
 
     @Override
@@ -111,7 +114,7 @@ public class BraveToolbarManager extends ToolbarManager {
                 mToolbarTabController::openHomepage,
                 (reason)
                         -> setUrlBarFocus(true, reason),
-                mOverviewModeBehaviorSupplier, mScrimCoordinator);
+                mOverviewModeBehaviorSupplier, mScrimCoordinator, mOmniboxFocusStateSupplier);
         ((BraveBottomControlsCoordinator) mBottomControlsCoordinator).setRootView(mRootBottomView);
         boolean isBottomToolbarVisible = BottomToolbarConfiguration.isBottomToolbarEnabled()
                 && mActivity.getResources().getConfiguration().orientation
