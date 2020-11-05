@@ -338,6 +338,8 @@ TEST_F(NTPBackgroundImagesServiceTest, BasicSuperReferralTest) {
 // Sponsored Images component will be run after promo code set to pref.
 TEST_F(NTPBackgroundImagesServiceTest, WithDefaultReferralCodeTest1) {
   Init();
+  TestObserver observer;
+  service_->AddObserver(&observer);
 
   // Initially, only SI is started and pref is monitored to get referral code.
   EXPECT_TRUE(service_->sponsored_images_component_started_);
@@ -347,9 +349,12 @@ TEST_F(NTPBackgroundImagesServiceTest, WithDefaultReferralCodeTest1) {
   EXPECT_FALSE(service_->super_referral_component_started_);
   EXPECT_FALSE(service_->marked_this_install_is_not_super_referral_forever_);
 
-  // If default code is set, SI component is started.
+  observer.on_super_referral_ended_ = false;
   pref_service_.SetString(kReferralPromoCode, "BRV001");
   EXPECT_TRUE(service_->marked_this_install_is_not_super_referral_forever_);
+  // We should notify OnSuperReferralEnded() if this is not NTP SR
+  // (default promo code).
+  EXPECT_TRUE(observer.on_super_referral_ended_);
 }
 
 // Test default referral code and not first run.
@@ -395,10 +400,10 @@ TEST_F(NTPBackgroundImagesServiceTest, WithNonSuperReferralCodeTest) {
   // complete. Only gives NTP SI data when browser confirms this is not NTP SR.
   EXPECT_EQ(nullptr, service_->GetBackgroundImagesData(false));
 
-  observer.on_updated_ = false;
+  observer.on_super_referral_ended_ = false;
   service_->OnGetMappingTableData(kTestMappingTable);
-  // We should notify OnUpdated if this is not NTP SR.
-  EXPECT_TRUE(observer.on_updated_);
+  // We should notify OnSuperReferralEnded() if this is not NTP SR.
+  EXPECT_TRUE(observer.on_super_referral_ended_);
 
   // If it's not super-referral, we mark this install is not a valid SR.
   EXPECT_TRUE(service_->marked_this_install_is_not_super_referral_forever_);
