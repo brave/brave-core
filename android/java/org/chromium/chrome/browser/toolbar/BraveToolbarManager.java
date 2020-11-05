@@ -98,6 +98,7 @@ public class BraveToolbarManager extends ToolbarManager {
                 bookmarkBridgeSupplier, canAnimateNativeBrowserControls,
                 overviewModeBehaviorSupplier, appMenuCoordinatorSupplier, shouldShowUpdateBadge,
                 tabModelSelectorSupplier, omniboxFocusStateSupplier);
+        mOmniboxFocusStateSupplier = omniboxFocusStateSupplier;
     }
 
     @Override
