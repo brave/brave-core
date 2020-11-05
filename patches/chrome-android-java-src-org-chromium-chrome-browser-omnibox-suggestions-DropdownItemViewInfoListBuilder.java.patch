@@ -1,5 +1,5 @@
 diff --git a/chrome/android/java/src/org/chromium/chrome/browser/omnibox/suggestions/DropdownItemViewInfoListBuilder.java b/chrome/android/java/src/org/chromium/chrome/browser/omnibox/suggestions/DropdownItemViewInfoListBuilder.java
-index f7a11f36d243e53bbf4e3b50b94134fe10306c9c..a8bd335e2c3afeb6ee2a4a055017d65f6cf3e66f 100644
+index 1c5fdf4a3d1102ce3978c74d04496ca27ac95df0..a784a0e4ed04244df59710426ebf712535bb5c06 100644
 --- a/chrome/android/java/src/org/chromium/chrome/browser/omnibox/suggestions/DropdownItemViewInfoListBuilder.java
 +++ b/chrome/android/java/src/org/chromium/chrome/browser/omnibox/suggestions/DropdownItemViewInfoListBuilder.java
 @@ -92,7 +92,7 @@ class DropdownItemViewInfoListBuilder {

@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/resources/local_discovery/local_discovery.html b/chrome/browser/resources/local_discovery/local_discovery.html
-index 9dc7d52545093a8a24d70393f9780f9591e4b834..72e97c6bbcd6870ddf6580d72c08b85321c4d297 100644
+index 54cdbff5e16b78d5ea9c7c75e82da869d3aae166..630f3bb90f0759d7fa909aef266cc74fcc6082e2 100644
 --- a/chrome/browser/resources/local_discovery/local_discovery.html
 +++ b/chrome/browser/resources/local_discovery/local_discovery.html
-@@ -29,6 +29,7 @@
+@@ -30,6 +30,7 @@
                $i18nRaw{registerPrinterInformationMessage}
              </div>
  
@@ -10,7 +10,7 @@ index 9dc7d52545093a8a24d70393f9780f9591e4b834..72e97c6bbcd6870ddf6580d72c08b853
              <div class="button-list">
                <div id="register-overlay-login-promo"
                     class="inline-login-promo"
-@@ -41,6 +42,7 @@
+@@ -42,6 +43,7 @@
                <button class="register-cancel">$i18n{cancel}</button>
                <button id="register-continue">$i18n{confirm}</button>
              </div>
@@ -18,7 +18,7 @@ index 9dc7d52545093a8a24d70393f9780f9591e4b834..72e97c6bbcd6870ddf6580d72c08b853
            </div>
          </div>
  
-@@ -84,6 +86,7 @@
+@@ -85,6 +87,7 @@
      <div class="controls" id="printers">
        <h2>$i18n{availableDevicesTitle}</h2>
  
@@ -26,7 +26,7 @@ index 9dc7d52545093a8a24d70393f9780f9591e4b834..72e97c6bbcd6870ddf6580d72c08b853
        <div id="register-login-promo" class="login-promo cloud-print-message"
             hidden>
          <span>$i18n{registerNeedLogin}</span>
-@@ -91,12 +94,14 @@
+@@ -92,12 +95,14 @@
            $i18n{cloudDevicesLogin}
          </a>
        </div>
@@ -41,7 +41,7 @@ index 9dc7d52545093a8a24d70393f9780f9591e4b834..72e97c6bbcd6870ddf6580d72c08b853
        <if expr="not chromeos">
          <section id="cloud-print-connector-section">
            <h2>$i18n{titleConnector}</h2>
-@@ -110,12 +115,14 @@
+@@ -111,12 +116,14 @@
          </section>
        </if>
      </div>
@@ -56,7 +56,7 @@ index 9dc7d52545093a8a24d70393f9780f9591e4b834..72e97c6bbcd6870ddf6580d72c08b853
      <div id="cloud-devices-login-promo" class="login-promo cloud-print-message"
           hidden>
        <span>$i18n{cloudDevicesNeedLogin}</span>
-@@ -123,6 +130,7 @@
+@@ -124,6 +131,7 @@
          $i18n{cloudDevicesLogin}
        </a>
      </div>
