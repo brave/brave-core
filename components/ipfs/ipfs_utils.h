@@ -10,7 +10,7 @@ class GURL;
 
 namespace ipfs {
 
-bool IsIPFSURL(const GURL& url);
+bool HasIPFSPath(const GURL& url);
 bool IsDefaultGatewayURL(const GURL& url);
 bool IsLocalGatewayURL(const GURL& url);
 bool IsIPFSScheme(const GURL& url);

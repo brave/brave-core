@@ -15,22 +15,23 @@
 
 namespace ipfs {
 
-bool IsIPFSURL(const GURL& gurl) {
-  static std::vector<URLPattern> updater_patterns(
+bool HasIPFSPath(const GURL& gurl) {
+  static std::vector<URLPattern> url_patterns(
       {URLPattern(URLPattern::SCHEME_ALL, "*://*/ipfs/*"),
        URLPattern(URLPattern::SCHEME_ALL, "*://*/ipns/*")});
   return std::any_of(
-      updater_patterns.begin(), updater_patterns.end(),
+      url_patterns.begin(), url_patterns.end(),
       [&gurl](URLPattern pattern) { return pattern.MatchesURL(gurl); });
 }
 
 bool IsDefaultGatewayURL(const GURL& url) {
-  return url.GetOrigin() == GURL(kDefaultIPFSGateway);
+  return url.GetOrigin() == GURL(kDefaultIPFSGateway) && HasIPFSPath(url);
 }
 
 bool IsLocalGatewayURL(const GURL& url) {
   return url.SchemeIsHTTPOrHTTPS() && net::IsLocalhost(url) &&
-         url.port_piece() == GURL(kDefaultIPFSLocalGateway).port_piece();
+         url.port_piece() == GURL(kDefaultIPFSLocalGateway).port_piece() &&
+         HasIPFSPath(url);
 }
 
 bool IsIPFSScheme(const GURL& url) {
@@ -38,7 +39,7 @@ bool IsIPFSScheme(const GURL& url) {
 }
 
 GURL ToPublicGatewayURL(const GURL& url) {
-  DCHECK(IsIPFSScheme(url) || IsIPFSURL(url));
+  DCHECK(IsIPFSScheme(url) || IsLocalGatewayURL(url));
   GURL new_url;
 
   // For ipfs/ipns schemes, use TranslateIPFSURI directly.

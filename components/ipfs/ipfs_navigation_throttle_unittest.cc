@@ -52,6 +52,17 @@ const GURL& GetIPNSURL() {
   return ipns_url;
 }
 
+const GURL& GetPublicGatewayURL() {
+  static const GURL public_gw_url(
+      "https://dweb.link/ipfs/QmbWqxBEKC3P8tqsKc98xmWNzrzDtRLMiMPL8wBuTGsMnR");
+  return public_gw_url;
+}
+
+const GURL& GetNonIPFSURL() {
+  static const GURL non_ipfs_url("http://github.com/ipfs/go-ipfs");
+  return non_ipfs_url;
+}
+
 }  // namespace
 
 namespace ipfs {
@@ -200,6 +211,23 @@ TEST_F(IpfsNavigationThrottleUnitTest, ProceedForAskNodeMode) {
       static_cast<int>(IPFSResolveMethodTypes::IPFS_DISABLED));
   EXPECT_EQ(NavigationThrottle::PROCEED, throttle->WillStartRequest().action())
       << GetIPFSURL();
+}
+
+TEST_F(IpfsNavigationThrottleUnitTest, ProceedForNonLocalGatewayURL) {
+  profile()->GetPrefs()->SetInteger(
+      kIPFSResolveMethod, static_cast<int>(IPFSResolveMethodTypes::IPFS_LOCAL));
+
+  content::MockNavigationHandle test_handle(web_contents());
+  test_handle.set_url(GetPublicGatewayURL());
+  auto throttle = IpfsNavigationThrottle::MaybeCreateThrottleFor(
+      &test_handle, ipfs_service(profile()), locale());
+  ASSERT_TRUE(throttle != nullptr);
+  EXPECT_EQ(NavigationThrottle::PROCEED, throttle->WillStartRequest().action())
+      << GetPublicGatewayURL();
+
+  test_handle.set_url(GetNonIPFSURL());
+  EXPECT_EQ(NavigationThrottle::PROCEED, throttle->WillStartRequest().action())
+      << GetNonIPFSURL();
 }
 
 TEST_F(IpfsNavigationThrottleUnitTest, Instantiation) {

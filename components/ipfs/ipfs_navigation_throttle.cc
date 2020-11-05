@@ -87,7 +87,7 @@ IpfsNavigationThrottle::~IpfsNavigationThrottle() = default;
 content::NavigationThrottle::ThrottleCheckResult
 IpfsNavigationThrottle::WillStartRequest() {
   GURL url = navigation_handle()->GetURL();
-  if (IsDefaultGatewayURL(url) || !IsIPFSURL(url)) {
+  if (!IsLocalGatewayURL(url)) {
     return content::NavigationThrottle::PROCEED;
   }
 
