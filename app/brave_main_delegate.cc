@@ -70,15 +70,6 @@ namespace {
 // switches::kSyncServiceURL manually
 const char kBraveSyncServiceStagingURL[] =
     "https://sync-v2.bravesoftware.com/v2";
-#if defined(OFFICIAL_BUILD)
-// production
-const char kBraveSyncServiceURL[] = "https://sync-v2.brave.com/v2";
-#else
-// For local server development "http://localhost:8295/v2 can also be overriden
-// by switches::kSyncServiceURL
-// dev
-const char kBraveSyncServiceURL[] = "https://sync-v2.brave.software/v2";
-#endif
 }  // namespace
 
 #if !defined(CHROME_MULTIPLE_DLL_BROWSER)
@@ -190,7 +181,7 @@ bool BraveMainDelegate::BasicStartupComplete(int* exit_code) {
                                    kBraveOriginTrialsPublicKey);
   }
 
-  std::string brave_sync_service_url = kBraveSyncServiceURL;
+  std::string brave_sync_service_url = BRAVE_SYNC_ENDPOINT;
 #if defined(OS_ANDROID)
   AdjustSyncServiceUrlForAndroid(&brave_sync_service_url);
 #endif  // defined(OS_ANDROID)
