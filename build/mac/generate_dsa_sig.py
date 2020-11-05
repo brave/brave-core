@@ -13,12 +13,12 @@ def Main(argv):
   parser = optparse.OptionParser('%prog [options]')
   parser.add_option('--sign-update', dest='sign_update_path', action='store',
       type='string', default=None, help='The path of sign_update binary')
-  parser.add_option('--sign-key', dest='sign_key', action='store',
+  parser.add_option('--sign-key-file', dest='sign_key_file', action='store',
       type='string', default=None, help='The private key to sign patch file')
   parser.add_option('--new-dmg', dest='new_dmg_path', action='store',
       type='string', default=None, help='The path of new dmg.')
-  parser.add_option('--dmg-eddsa-output', dest='dmg_eddsa_output_path', action='store',
-      type='string', default=None, help='The path of eddsa output of dmg.')
+  parser.add_option('--dmg-dsa-output', dest='dmg_dsa_output_path', action='store',
+      type='string', default=None, help='The path of dsa output of dmg.')
   (options, args) = parser.parse_args(argv)
 
   if len(args) > 0:
@@ -26,8 +26,8 @@ def Main(argv):
     return 1
 
   # sign eddsa dmg
-  file = open(options.dmg_eddsa_output_path, 'w')
-  command = [options.sign_update_path, '-s', options.sign_key, options.new_dmg_path]
+  file = open(options.dmg_dsa_output_path, 'w')
+  command = [options.sign_update_path, options.new_dmg_path, options.sign_key_file]
   try:
       subprocess.check_call(command, stdout=file)
   except subprocess.CalledProcessError as e:

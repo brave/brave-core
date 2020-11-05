@@ -250,6 +250,10 @@ group("create_dist") {
           deps += [ "build/mac:build_delta_installer" ]
         }
       }
+
+      if (sparkle_dsa_private_key_file != "") {
+        deps += [ "build/mac:generate_dsa_sig_for_dmg" ]
+      }
     }
   }
   if (is_linux) {

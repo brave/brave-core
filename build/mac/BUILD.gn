@@ -158,6 +158,36 @@ if (skip_signing) {
     ]
   }
 
+  action("generate_dsa_sig_for_dmg") {
+    script="generate_dsa_sig.py"
+
+    target_dmg_path = "$root_out_dir/$brave_dmg"
+    target_dmg_dsa_path = "$root_out_dir/$brave_dmg.dsa"
+    sign_update_path = "$root_out_dir/old_dsa_scripts/sign_update"
+
+    args = [
+      "--sign-update", rebase_path("$sign_update_path"),
+      "--sign-key-file", "$sparkle_dsa_private_key_file",
+      "--new-dmg", rebase_path("$target_dmg_path"),
+      "--dmg-dsa-output", rebase_path("$target_dmg_dsa_path"),
+    ]
+
+    inputs = [
+      script,
+      "$target_dmg_path",
+      "$sign_update_path",
+    ]
+
+    outputs = [
+      "$target_dmg_dsa_path",
+    ]
+
+    deps = [
+      "//brave/vendor/sparkle:copy_old_sign_update",
+      ":copy_dmg_pkg",
+    ]
+  }
+
   action("build_delta_installer") {
     script="build_delta_installer.py"
 
