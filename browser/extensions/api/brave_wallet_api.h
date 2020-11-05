@@ -99,12 +99,12 @@ class BraveWalletGetBraveKeyFunction : public ExtensionFunction {
   ResponseAction Run() override;
 };
 
-class BraveWalletResetWalletFunction : public ExtensionFunction {
+class BraveWalletResetFunction : public ExtensionFunction {
  public:
-  DECLARE_EXTENSION_FUNCTION("braveWallet.resetWallet", UNKNOWN)
+  DECLARE_EXTENSION_FUNCTION("braveWallet.reset", UNKNOWN)
 
  protected:
-  ~BraveWalletResetWalletFunction() override {}
+  ~BraveWalletResetFunction() override {}
   ResponseAction Run() override;
 };
 
