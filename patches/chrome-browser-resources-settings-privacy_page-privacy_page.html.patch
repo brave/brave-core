@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/resources/settings/privacy_page/privacy_page.html b/chrome/browser/resources/settings/privacy_page/privacy_page.html
-index 24891b969e96a9d4116208e0d153d2ca7aac6082..73fddfa622f3e092120612a3fad33a6f213bb6b9 100644
+index 3fec124468af55207ba36d15dd81c6ff81179c65..cc807af537103feb502a9864e56c8dce22ae0247 100644
 --- a/chrome/browser/resources/settings/privacy_page/privacy_page.html
 +++ b/chrome/browser/resources/settings/privacy_page/privacy_page.html
 @@ -29,6 +29,7 @@
@@ -42,10 +42,10 @@ index 24891b969e96a9d4116208e0d153d2ca7aac6082..73fddfa622f3e092120612a3fad33a6f
            </template>
          </settings-subpage>
        </template>
-@@ -627,6 +632,19 @@
-           </template>
-         </settings-subpage>
-       </template>
+@@ -706,6 +711,19 @@
+           </settings-subpage>
+        </template>
+      </template>
 +      <template is="dom-if" route-path="/content/autoplay" no-search>
 +        <settings-subpage page-title="$i18n{siteSettingsCategoryAutoplay}">
 +          <category-default-setting
@@ -59,6 +59,6 @@ index 24891b969e96a9d4116208e0d153d2ca7aac6082..73fddfa622f3e092120612a3fad33a6f
 +          </category-setting-exceptions>
 +        </settings-subpage>
 +      </template>
-       <template is="dom-if" route-path="/content/flash" no-search>
-         <settings-subpage page-title="$i18n{siteSettingsFlash}"
+      <template is="dom-if" route-path="/content/unsandboxedPlugins" no-search>
+         <settings-subpage page-title="$i18n{siteSettingsUnsandboxedPlugins}"
              search-label="$i18n{siteSettingsAllSitesSearch}"
