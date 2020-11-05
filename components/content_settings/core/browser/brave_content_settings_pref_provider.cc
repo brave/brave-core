@@ -29,6 +29,7 @@ namespace content_settings {
 
 namespace {
 
+constexpr char kGoogleHangoutsPattern[] = "https://hangouts.google.com/*";
 constexpr char kGoogleAuthPattern[] = "https://accounts.google.com/*";
 constexpr char kFirebasePattern[] = "https://[*.]firebaseapp.com/*";
 
@@ -119,6 +120,10 @@ BravePrefProvider::BravePrefProvider(PrefService* prefs,
   brave_pref_change_registrar_.Init(prefs_);
   brave_pref_change_registrar_.Add(
       kGoogleLoginControlType,
+      base::BindRepeating(&BravePrefProvider::OnCookiePrefsChanged,
+                          base::Unretained(this)));
+  brave_pref_change_registrar_.Add(
+      kHangoutsEnabled,
       base::BindRepeating(&BravePrefProvider::OnCookiePrefsChanged,
                           base::Unretained(this)));
 
@@ -307,14 +312,7 @@ std::unique_ptr<RuleIterator> BravePrefProvider::GetRuleIterator(
                                        incognito);
 }
 
-void BravePrefProvider::UpdateCookieRules(ContentSettingsType content_type,
-                                          bool incognito) {
-  auto& rules = cookie_rules_[incognito];
-  auto old_rules = std::move(brave_cookie_rules_[incognito]);
-
-  rules.clear();
-  brave_cookie_rules_[incognito].clear();
-
+void BravePrefProvider::AddGoogleExceptions(bool incognito) {
   // kGoogleLoginControlType preference adds an exception for
   // accounts.google.com to access cookies in 3p context to allow login using
   // google oauth. The exception is added before all overrides to allow google
@@ -326,6 +324,7 @@ void BravePrefProvider::UpdateCookieRules(ContentSettingsType content_type,
   // are tightly bound to google, and require google auth to work.
   // See: #5075, #9852, #10367
   if (prefs_->GetBoolean(kGoogleLoginControlType)) {
+    auto& rules = cookie_rules_[incognito];
     const auto google_auth_rule = Rule(
         ContentSettingsPattern::FromString(kGoogleAuthPattern),
         ContentSettingsPattern::Wildcard(),
@@ -344,6 +343,33 @@ void BravePrefProvider::UpdateCookieRules(ContentSettingsType content_type,
     rules.emplace_back(CloneRule(firebase_rule));
     brave_cookie_rules_[incognito].emplace_back(CloneRule(firebase_rule));
   }
+}
+
+void BravePrefProvider::AddHangoutsExceptions(bool incognito) {
+  if (prefs_->GetBoolean(kHangoutsEnabled)) {
+    auto& rules = cookie_rules_[incognito];
+    const auto hangouts_rule = Rule(
+        ContentSettingsPattern::Wildcard(),
+        ContentSettingsPattern::FromString(kGoogleHangoutsPattern),
+        base::Value::FromUniquePtrValue(
+                         ContentSettingToValue(CONTENT_SETTING_ALLOW)),
+                     base::Time(), SessionModel::Durable);
+    rules.emplace_back(CloneRule(hangouts_rule));
+    brave_cookie_rules_[incognito].emplace_back(CloneRule(hangouts_rule));
+  }
+}
+
+void BravePrefProvider::UpdateCookieRules(ContentSettingsType content_type,
+                                          bool incognito) {
+  auto& rules = cookie_rules_[incognito];
+  auto old_rules = std::move(brave_cookie_rules_[incognito]);
+
+  rules.clear();
+  brave_cookie_rules_[incognito].clear();
+
+  AddGoogleExceptions(incognito);
+  AddHangoutsExceptions(incognito);
+
   // non-pref based exceptions should go in the cookie_settings_base.cc
   // chromium_src override
 

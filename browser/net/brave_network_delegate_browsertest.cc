@@ -94,6 +94,10 @@ class BraveNetworkDelegateBrowserTest : public InProcessBrowserTest {
     google_oauth_cookie_url_ = https_server_.GetURL(
         "accounts.google.com", "/set-cookie?oauth=true;SameSite=None;Secure");
 
+    hangouts_url_ = https_server_.GetURL("hangouts.google.com", "/");
+    hangouts_url_with_cookie_iframe_ = https_server_.GetURL(
+        "hangouts.google.com", "/cookie_iframe.html");
+
     top_level_page_pattern_ =
         ContentSettingsPattern::FromString("https://a.com/*");
     first_party_pattern_ =
@@ -187,6 +191,11 @@ class BraveNetworkDelegateBrowserTest : public InProcessBrowserTest {
                                                  false);
   }
 
+  void BlockGoogleHangouts() {
+    browser()->profile()->GetPrefs()->SetBoolean(kHangoutsEnabled,
+                                                 false);
+  }
+
  protected:
   GURL url_;
   GURL nested_iframe_script_url_;
@@ -205,6 +214,8 @@ class BraveNetworkDelegateBrowserTest : public InProcessBrowserTest {
   GURL wp_top_url_;
   GURL wp_frame_url_;
   GURL a_frame_url_;
+  GURL hangouts_url_with_cookie_iframe_;
+  GURL hangouts_url_;
   net::test_server::EmbeddedTestServer https_server_;
 
  private:
@@ -661,4 +672,43 @@ IN_PROC_BROWSER_TEST_F(BraveNetworkDelegateBrowserTest,
 
   NavigateFrameTo(wordpress_frame_url_);
   ExpectCookiesOnHost(GURL("https://example.wordpress.com"), "frame=true");
+}
+
+IN_PROC_BROWSER_TEST_F(BraveNetworkDelegateBrowserTest,
+                       ThirdPartyCookiesAllowedForHangouts) {
+  NavigateToPageWithFrame(hangouts_url_with_cookie_iframe_);
+  ExpectCookiesOnHost(GURL("https://b.com"), "");
+
+  NavigateFrameTo(third_party_cookie_url_);
+  ExpectCookiesOnHost(GURL("https://b.com"), "name=bcom");
+}
+
+IN_PROC_BROWSER_TEST_F(BraveNetworkDelegateBrowserTest,
+                       ThirdPartyCookiesBlockedForHangouts) {
+  BlockGoogleHangouts();
+  NavigateToPageWithFrame(hangouts_url_with_cookie_iframe_);
+  ExpectCookiesOnHost(GURL("https://b.com"), "");
+
+  NavigateFrameTo(third_party_cookie_url_);
+  ExpectCookiesOnHost(GURL("https://b.com"), "");
+}
+
+IN_PROC_BROWSER_TEST_F(BraveNetworkDelegateBrowserTest,
+                       ThirdPartyCookiesAllowedForHangoutsWith3pSiteOverride) {
+  BlockThirdPartyCookies(hangouts_url_);
+  NavigateToPageWithFrame(hangouts_url_with_cookie_iframe_);
+  ExpectCookiesOnHost(GURL("https://b.com"), "");
+
+  NavigateFrameTo(third_party_cookie_url_);
+  ExpectCookiesOnHost(GURL("https://b.com"), "name=bcom");
+}
+
+IN_PROC_BROWSER_TEST_F(BraveNetworkDelegateBrowserTest,
+                       ThirdPartyCookiesAllowedForHangoutsWithAllBlocked) {
+  DefaultBlockThirdPartyCookies();
+  NavigateToPageWithFrame(hangouts_url_with_cookie_iframe_);
+  ExpectCookiesOnHost(GURL("https://b.com"), "");
+
+  NavigateFrameTo(third_party_cookie_url_);
+  ExpectCookiesOnHost(GURL("https://b.com"), "name=bcom");
 }
