@@ -35,7 +35,7 @@ declare_args() {
 
   skip_signing = false
 
-  # Used for generating delta installer on Win/macOS.
+  # Used for generating delta installer on macOS/Windows
   build_delta_installer = false
   last_chrome_installer = ""
 }
@@ -92,6 +92,7 @@ if (is_win) {
   brave_exe = "$chrome_product_full_name.app"
   brave_dmg = "$chrome_product_full_name.dmg"
   brave_pkg = "$chrome_product_full_name.pkg"
+  brave_delta = "$chrome_product_full_name.delta"
 
   brave_product_dir_name_suffix = ""
   if (is_official_build) {

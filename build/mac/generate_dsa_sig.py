@@ -15,18 +15,18 @@ def Main(argv):
       type='string', default=None, help='The path of sign_update binary')
   parser.add_option('--sign-key-file', dest='sign_key_file', action='store',
       type='string', default=None, help='The private key to sign patch file')
-  parser.add_option('--new-dmg', dest='new_dmg_path', action='store',
-      type='string', default=None, help='The path of new dmg.')
-  parser.add_option('--dmg-dsa-output', dest='dmg_dsa_output_path', action='store',
-      type='string', default=None, help='The path of dsa output of dmg.')
+  parser.add_option('--target', dest='target', action='store',
+      type='string', default=None, help='Target file path for signing.')
+  parser.add_option('--output', dest='output', action='store',
+      type='string', default=None, help='The path of dsa output.')
   (options, args) = parser.parse_args(argv)
 
   if len(args) > 0:
     print >> sys.stderr, parser.get_usage()
     return 1
 
-  # sign eddsa dmg
-  file = open(options.dmg_dsa_output_path, 'w')
+  # sign file with dsa
+  file = open(options.output, 'w')
   command = [options.sign_update_path, options.new_dmg_path, options.sign_key_file]
   try:
       subprocess.check_call(command, stdout=file)

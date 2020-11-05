@@ -129,23 +129,23 @@ if (skip_signing) {
   }
 } else {
   action("generate_dsa_sig_for_dmg") {
-    script="generate_dsa_sig.py"
+    script = "generate_dsa_sig.py"
 
+    sign_update_path = "$root_out_dir/old_dsa_scripts/sign_update"
     target_dmg_path = "$root_out_dir/$brave_dmg"
     target_dmg_dsa_path = "$root_out_dir/$brave_dmg.dsa"
-    sign_update_path = "$root_out_dir/old_dsa_scripts/sign_update"
 
     args = [
       "--sign-update", rebase_path("$sign_update_path"),
       "--sign-key-file", "$sparkle_dsa_private_key_file",
-      "--new-dmg", rebase_path("$target_dmg_path"),
-      "--dmg-dsa-output", rebase_path("$target_dmg_dsa_path"),
+      "--target", rebase_path("$target_dmg_path"),
+      "--output", rebase_path("$target_dmg_dsa_path"),
     ]
 
     inputs = [
       script,
-      "$target_dmg_path",
       "$sign_update_path",
+      "$target_dmg_path",
     ]
 
     outputs = [
@@ -159,11 +159,11 @@ if (skip_signing) {
   }
 
   action("generate_eddsa_sig_for_dmg") {
-    script="generate_eddsa_sig.py"
+    script = "generate_eddsa_sig.py"
 
+    sign_update_path = "$root_out_dir/sign_update"
     target_dmg_path = "$root_out_dir/$brave_dmg"
     target_dmg_eddsa_path = "$root_out_dir/$brave_dmg.eddsa"
-    sign_update_path = "$root_out_dir/sign_update"
 
     args = [
       "--sign-update", rebase_path("$sign_update_path"),
@@ -174,8 +174,8 @@ if (skip_signing) {
 
     inputs = [
       script,
-      "$target_dmg_path",
       "$sign_update_path",
+      "$target_dmg_path",
     ]
 
     outputs = [
@@ -189,11 +189,11 @@ if (skip_signing) {
   }
 
   action("generate_eddsa_sig_for_delta") {
-    script="generate_eddsa_sig.py"
+    script = "generate_eddsa_sig.py"
 
-    target_delta_path = "$root_out_dir/patch.delta"
-    target_delta_eddsa_path = "$root_out_dir/patch.delta.eddsa"
     sign_update_path = "$root_out_dir/sign_update"
+    target_delta_path = "$root_out_dir/$brave_delta"
+    target_delta_eddsa_path = "$root_out_dir/$brave_delta.eddsa"
 
     args = [
       "--sign-update", rebase_path("$sign_update_path"),
@@ -204,8 +204,8 @@ if (skip_signing) {
 
     inputs = [
       script,
-      "$target_delta_path",
       "$sign_update_path",
+      "$target_delta_path",
     ]
 
     outputs = [
@@ -219,28 +219,28 @@ if (skip_signing) {
   }
 
   action("build_delta_installer") {
-    script="build_delta_installer.py"
+    script = "build_delta_installer.py"
 
-    target_app_path = "$root_out_dir/$brave_dmg"
-    target_patch_path = "$root_out_dir/patch.delta"
     binary_delta_path = "$root_out_dir/BinaryDelta"
+    target_app_path = "$root_out_dir/$brave_dmg"
+    target_delta_path = "$root_out_dir/$brave_delta"
 
     args = [
       "--binary-delta", rebase_path("$binary_delta_path"),
       "--root-out-dir", rebase_path("$root_out_dir"),
       "--old-dmg", rebase_path("$root_out_dir/$last_chrome_installer"),
       "--new-dmg", rebase_path("$target_app_path"),
-      "--patch-output", rebase_path("$target_patch_path"),
+      "--delta-output", rebase_path("$target_delta_path"),
     ]
 
     inputs = [
       script,
-      "$target_app_path",
       "$binary_delta_path",
+      "$target_app_path",
     ]
 
     outputs = [
-      "$target_patch_path",
+      "$target_delta_path",
     ]
 
     deps = [

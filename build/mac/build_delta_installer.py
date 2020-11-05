@@ -42,7 +42,7 @@ def Main(argv):
       type='string', default=None, help='The path of old dmg.')
   parser.add_option('--new-dmg', dest='new_dmg_path', action='store',
       type='string', default=None, help='The path of new dmg.')
-  parser.add_option('--patch-output', dest='patch_output_path', action='store',
+  parser.add_option('--delta-output', dest='delta_output_path', action='store',
       type='string', default=None, help='The path of generated delta file.')
   (options, args) = parser.parse_args(argv)
 
@@ -58,9 +58,9 @@ def Main(argv):
   mount_dmg(options.new_dmg_path, new_dmg_mount_point)
   new_app_path = os.path.join(new_dmg_mount_point, os.path.splitext(os.path.basename(options.new_dmg_path))[0] + '.app')
 
-  # generate patch file
-  print('-> generate patch file with ' + old_app_path + ' and ' + new_app_path)
-  command = [options.binary_delta_path, 'create', old_app_path, new_app_path, options.patch_output_path]
+  # generate delta file
+  print('-> generate delta file from ' + old_app_path + ' and ' + new_app_path)
+  command = [options.binary_delta_path, 'create', old_app_path, new_app_path, options.delta_output_path]
   try:
       subprocess.check_call(command)
   except subprocess.CalledProcessError as e:

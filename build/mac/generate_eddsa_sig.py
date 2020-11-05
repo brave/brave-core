@@ -25,7 +25,7 @@ def Main(argv):
     print >> sys.stderr, parser.get_usage()
     return 1
 
-  # sign eddsa dmg
+  # sign file with eddsa
   file = open(options.output, 'w')
   command = [options.sign_update_path, '-s', options.sign_key, options.target]
   try:
