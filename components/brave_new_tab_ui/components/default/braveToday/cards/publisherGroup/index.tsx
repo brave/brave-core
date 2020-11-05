@@ -8,27 +8,27 @@ import * as React from 'react'
 // Feature-specific components
 import * as Card from './style'
 import useScrollIntoView from '../../useScrollIntoView'
+import useReadArticleClickHandler from '../../useReadArticleClickHandler'
+import { OnReadFeedItem } from '../../'
 import PublisherMeta from '../PublisherMeta'
 
 interface Props {
   content: BraveToday.Article[]
   publisher: BraveToday.Publisher
   articleToScrollTo?: BraveToday.FeedItem
-  onReadFeedItem: (item: BraveToday.FeedItem) => any
+  onReadFeedItem: OnReadFeedItem
 }
 
 type ListItemProps = {
   item: BraveToday.Article
   publisher: BraveToday.Publisher
-  onReadFeedItem: (item: BraveToday.FeedItem) => any
+  onReadFeedItem: OnReadFeedItem
   shouldScrollIntoView: boolean
 }
 
 function ListItem (props: ListItemProps) {
   const [cardRef] = useScrollIntoView(props.shouldScrollIntoView)
-  const onClick = React.useCallback(() => {
-    props.onReadFeedItem(props.item)
-  }, [props.onReadFeedItem, props.item])
+  const onClick = useReadArticleClickHandler(props.onReadFeedItem, props.item)
   return (
     <Card.ListItem>
       <a onClick={onClick} href={props.item.url} ref={cardRef}>

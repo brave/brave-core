@@ -27,8 +27,13 @@ type BackgroundErrorPayload = {
 }
 export const errorGettingDataFromBackground = createAction<BackgroundErrorPayload>('errorGettingDataFromBackground')
 
-/** User has requested to read an article */
-export type ReadFeedItemPayload = BraveToday.FeedItem
+/**
+ * User has requested to read an article
+ */
+export type ReadFeedItemPayload = {
+  item: BraveToday.FeedItem,
+  openInNewTab?: boolean
+}
 export const readFeedItem = createAction<ReadFeedItemPayload>('readFeedItem')
 
 export type SetPublisherPrefPayload = {

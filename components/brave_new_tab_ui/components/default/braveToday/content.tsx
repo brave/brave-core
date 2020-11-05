@@ -91,7 +91,13 @@ export default function BraveTodayContent (props: Props) {
         onReadFeedItem={props.onReadFeedItem}
       />
       {/* deals */}
-      {feed.featuredDeals && <CardDeals content={feed.featuredDeals} />}
+      {feed.featuredDeals &&
+      <CardDeals
+        content={feed.featuredDeals}
+        articleToScrollTo={props.articleToScrollTo}
+        onReadFeedItem={props.onReadFeedItem}
+      />
+      }
       {
         /* Infinitely repeating collections of content. */
         Array(displayedPageCount).fill(undefined).map((_: undefined, index: number) => {

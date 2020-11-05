@@ -53,11 +53,15 @@ handler.on(Actions.ensureSettingsData.getType(), async (store, dispatch) => {
 handler.on<Actions.ReadFeedItemPayload>(Actions.readFeedItem.getType(), async (store, dispatch, payload) => {
   const state = store.getState() as ApplicationState
   const todayPageIndex = state.today.currentPageIndex
-  // remember article so we can scroll to it on "back" navigation
-  storeInHistoryState({ todayArticle: payload, todayPageIndex })
-  // visit article url
-  // @ts-ignore
-  window.location = payload.url
+  if (!payload.openInNewTab) {
+    // remember article so we can scroll to it on "back" navigation
+    storeInHistoryState({ todayArticle: payload.item, todayPageIndex })
+    // visit article url
+    // @ts-ignore
+    window.location = payload.item.url
+  } else {
+    window.open(payload.item.url, '_blank')
+  }
 })
 
 handler.on<Actions.SetPublisherPrefPayload>(Actions.setPublisherPref.getType(), async (store, dispatch, payload) => {

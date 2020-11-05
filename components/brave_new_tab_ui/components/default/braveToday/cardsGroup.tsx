@@ -11,6 +11,7 @@ import CardSmall from './cards/_articles/cardArticleMedium'
 import CategoryGroup from './cards/categoryGroup'
 import PublisherGroup from './cards/publisherGroup'
 import CardDeals from './cards/cardDeals'
+import { OnReadFeedItem } from './'
 
 // Disabled rules because we have a function
 // which returns elements in a switch.
@@ -49,7 +50,7 @@ type Props = {
   content: BraveToday.Page
   publishers: BraveToday.Publishers
   articleToScrollTo?: BraveToday.FeedItem
-  onReadFeedItem: (item: BraveToday.FeedItem) => any
+  onReadFeedItem: OnReadFeedItem
 }
 
 type CardProps = Props & {
@@ -67,7 +68,7 @@ function Card (props: CardProps) {
               publishers={props.publishers}
               articleToScrollTo={props.articleToScrollTo}
               onReadFeedItem={props.onReadFeedItem}
-             />
+      />
     case CardType.HeadlinePaired:
       // TODO: handle content length < 2
       return <CardSmall
@@ -75,7 +76,7 @@ function Card (props: CardProps) {
               publishers={props.publishers}
               articleToScrollTo={props.articleToScrollTo}
               onReadFeedItem={props.onReadFeedItem}
-             />
+      />
     case CardType.CategoryGroup:
       if (!props.content.itemsByCategory) {
         return null
@@ -87,7 +88,7 @@ function Card (props: CardProps) {
         categoryName={categoryName}
         onReadFeedItem={props.onReadFeedItem}
         articleToScrollTo={props.articleToScrollTo}
-             />
+      />
     case CardType.PublisherGroup:
       if (!props.content.itemsByPublisher) {
         return null
@@ -99,9 +100,13 @@ function Card (props: CardProps) {
         publisher={publisher}
         articleToScrollTo={props.articleToScrollTo}
         onReadFeedItem={props.onReadFeedItem}
-             />
+      />
     case CardType.Deals:
-      return <CardDeals content={props.content.deals} />
+      return <CardDeals
+        content={props.content.deals}
+        onReadFeedItem={props.onReadFeedItem}
+        articleToScrollTo={props.articleToScrollTo}
+      />
   }
   console.error('Asked to render unknown card type', props.cardType)
   return null

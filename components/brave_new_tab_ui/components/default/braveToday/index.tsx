@@ -4,18 +4,16 @@
 // you can obtain one at http://mozilla.org/MPL/2.0/.
 
 import * as React from 'react'
-
-// Feature-specific components
 import * as BraveTodayElement from './default'
-
-// Feature Containers
 import CardIntro from './cards/cardIntro'
-
+import { ReadFeedItemPayload } from '../../../actions/today_actions'
 const Content = React.lazy(() => import('./content'))
 
 type State = {
   hasInteractionStarted: boolean
 }
+
+export type OnReadFeedItem = (args: ReadFeedItemPayload) => any
 
 export type Props = {
   isFetching: boolean
@@ -25,7 +23,7 @@ export type Props = {
   articleToScrollTo?: BraveToday.FeedItem
   displayedPageCount: number
   onInteracting: (interacting: boolean) => any
-  onReadFeedItem: (item: BraveToday.FeedItem) => any
+  onReadFeedItem: OnReadFeedItem
   onAnotherPageNeeded: () => any
   onCustomizeBraveToday: () => any
   onRefresh: () => any

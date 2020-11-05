@@ -8,18 +8,27 @@ import * as React from 'react'
 // Feature-specific components
 import * as Card from '../cardSizes'
 import CardImage from './CardImage'
+import useScrollIntoView from '../useScrollIntoView'
+import useReadArticleClickHandler from '../useReadArticleClickHandler'
+import { OnReadFeedItem } from '../'
 
 interface Props {
   content: BraveToday.Deal[]
+  articleToScrollTo?: BraveToday.FeedItem
+  onReadFeedItem: OnReadFeedItem
 }
 
 type ListItemProps = {
   item: BraveToday.Deal
+  onReadFeedItem: OnReadFeedItem
+  shouldScrollIntoView: boolean
 }
 
 function ListItem (props: ListItemProps) {
+  const [cardRef] = useScrollIntoView(props.shouldScrollIntoView)
+  const onClick = useReadArticleClickHandler(props.onReadFeedItem, props.item)
   return (
-    <Card.DealItem href={props.item.url}>
+    <Card.DealItem innerRef={cardRef} onClick={onClick} href={props.item.url}>
       <CardImage imageUrl={props.item.padded_img} />
       <Card.Text>{props.item.title}</Card.Text>
       <Card.Time>{props.item.description}</Card.Time>
@@ -39,9 +48,15 @@ export default function CardDeals (props: Props) {
       <Card.DealsList>
         {
           props.content.map((item, index) => {
+            const shouldScrollIntoView = (
+              !!props.articleToScrollTo &&
+              props.articleToScrollTo.url === item.url
+            )
             return <ListItem
-              item={item}
               key={index}
+              item={item}
+              shouldScrollIntoView={shouldScrollIntoView}
+              onReadFeedItem={props.onReadFeedItem}
             />
           })
         }

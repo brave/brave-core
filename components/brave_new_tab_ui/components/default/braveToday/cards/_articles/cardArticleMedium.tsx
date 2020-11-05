@@ -8,29 +8,28 @@ import CardImage from '../CardImage'
 import * as Card from '../../cardSizes'
 import PublisherMeta from '../PublisherMeta'
 import useScrollIntoView from '../../useScrollIntoView'
-
+import useReadArticleClickHandler from '../../useReadArticleClickHandler'
+import { OnReadFeedItem } from '../../'
 // TODO(petemill): Large and Medium article should be combined to 1 component.
 
 interface Props {
   content: (BraveToday.Article)[]
   publishers: BraveToday.Publishers
   articleToScrollTo?: BraveToday.FeedItem
-  onReadFeedItem: (item: BraveToday.FeedItem) => any
+  onReadFeedItem: OnReadFeedItem
 }
 
 type ArticleProps = {
   item: BraveToday.Article
   publisher?: BraveToday.Publisher
   shouldScrollIntoView?: boolean
-  onReadFeedItem: (item: BraveToday.FeedItem) => any
+  onReadFeedItem: OnReadFeedItem
 }
 
 function MediumArticle (props: ArticleProps) {
   const { publisher, item } = props
   const [cardRef] = useScrollIntoView(props.shouldScrollIntoView || false)
-  const onClick = React.useCallback(() => {
-    props.onReadFeedItem(props.item)
-  }, [props.onReadFeedItem, props.item])
+  const onClick = useReadArticleClickHandler(props.onReadFeedItem, item)
   return (
     <Card.Small>
       <a onClick={onClick} href={item.url} ref={cardRef}>
