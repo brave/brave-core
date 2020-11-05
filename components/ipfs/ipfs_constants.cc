@@ -16,7 +16,7 @@ const char kShutdownPath[] = "/api/v0/shutdown";
 const char kIPFSScheme[] = "ipfs";
 const char kIPNSScheme[] = "ipns";
 const char kDefaultIPFSGateway[] = "https://dweb.link";
-const char kDefaultIPFSLocalGateway[] = "http://127.0.0.1:48080";
+const char kDefaultIPFSLocalGateway[] = "http://localhost:48080";
 const char kIPFSLearnMoreURL[] =
     "https://support.brave.com/hc/en-us/articles/360051406452";
 

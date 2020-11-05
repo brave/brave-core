@@ -11,6 +11,7 @@ source_set("brave_ipfs_unit_tests") {
   testonly = true
   if (ipfs_enabled) {
     sources = [
+      "//brave/components/ipfs/ipfs_cookie_store_unittest.cc",
       "//brave/components/ipfs/ipfs_json_parser_unittest.cc",
       "//brave/components/ipfs/ipfs_navigation_throttle_unittest.cc",
       "//brave/components/ipfs/ipfs_p3a_unittest.cc",
@@ -29,6 +30,8 @@ source_set("brave_ipfs_unit_tests") {
       "//chrome/test:test_support",
       "//content/public/browser",
       "//content/test:test_support",
+      "//net",
+      "//net:test_support",
       "//testing/gtest",
       "//url",
     ]
