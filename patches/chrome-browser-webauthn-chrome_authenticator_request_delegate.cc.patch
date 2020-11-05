@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/webauthn/chrome_authenticator_request_delegate.cc b/chrome/browser/webauthn/chrome_authenticator_request_delegate.cc
-index 18f5dcc9f08ddbe3f15ab4444afa93f8fdd3cabe..181ce9be830c8187529c272c066c0f8219ede035 100644
+index 7c0695b30aded14fc71966248a1d8b0ba2a64257..1f97c40907e01d937219c66e6154c8d7032b74d7 100644
 --- a/chrome/browser/webauthn/chrome_authenticator_request_delegate.cc
 +++ b/chrome/browser/webauthn/chrome_authenticator_request_delegate.cc
-@@ -441,6 +441,7 @@ std::string TouchIdMetadataSecret(Profile* profile) {
+@@ -446,6 +446,7 @@ std::string TouchIdMetadataSecret(Profile* profile) {
  ChromeAuthenticatorRequestDelegate::TouchIdAuthenticatorConfig
  ChromeAuthenticatorRequestDelegate::TouchIdAuthenticatorConfigForProfile(
      Profile* profile) {

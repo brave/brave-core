@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/ui/android/appmenu/internal/java/src/org/chromium/chrome/browser/ui/appmenu/AppMenu.java b/chrome/browser/ui/android/appmenu/internal/java/src/org/chromium/chrome/browser/ui/appmenu/AppMenu.java
-index 989cb20c474658c2f90379eb52a22da50c70d549..79b272af2f8d02bc4d2d6eae77b1d84026a766fa 100644
+index 85660451f742d274d16b8354c18829108f3220d0..7986427e332ab60d75d986c3c0a0ea54128d2f7b 100644
 --- a/chrome/browser/ui/android/appmenu/internal/java/src/org/chromium/chrome/browser/ui/appmenu/AppMenu.java
 +++ b/chrome/browser/ui/android/appmenu/internal/java/src/org/chromium/chrome/browser/ui/appmenu/AppMenu.java
-@@ -209,6 +209,7 @@ class AppMenu implements OnItemClickListener, OnKeyListener, AppMenuClickHandler
+@@ -219,6 +219,7 @@ class AppMenu implements OnItemClickListener, OnKeyListener, AppMenuClickHandler
          mPopup.setBackgroundDrawable(ApiCompatibilityUtils.getDrawable(
                  context.getResources(), R.drawable.popup_bg_tinted));
          if (!isByPermanentButton) mPopup.setAnimationStyle(R.style.OverflowMenuAnim);
