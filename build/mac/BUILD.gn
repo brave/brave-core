@@ -131,7 +131,7 @@ if (skip_signing) {
   action("generate_eddsa_sig_for_dmg") {
     script="generate_eddsa_sig.py"
 
-    target_dmg_path = "$root_out_dir/$mac_signed_output_prefix/$brave_dmg"
+    target_dmg_path = "$root_out_dir/$brave_dmg"
     target_dmg_eddsa_path = "$root_out_dir/$brave_dmg.eddsa"
     sign_update_path = "$root_out_dir/sign_update"
 
@@ -154,14 +154,14 @@ if (skip_signing) {
 
     deps = [
       "//brave/vendor/sparkle:build_sparkle_framework",
-      ":sign_dmg",
+      ":copy_dmg_pkg",
     ]
   }
 
   action("build_delta_installer") {
     script="build_delta_installer.py"
 
-    target_app_path = target_sign_app_path
+    target_app_path = "$root_out_dir/$brave_dmg"
     target_patch_path = "$root_out_dir/patch.delta"
     target_patch_eddsa_path = "$root_out_dir/patch.delta.eddsa"
     binary_delta_path = "$root_out_dir/BinaryDelta"
@@ -171,8 +171,9 @@ if (skip_signing) {
       "--binary-delta", rebase_path("$binary_delta_path"),
       "--sign-update", rebase_path("$sign_update_path"),
       "--sign-key", "$sparkle_eddsa_private_key",
-      "--old-app", rebase_path("$root_out_dir/$last_chrome_installer"),
-      "--new-app", rebase_path("$target_app_path"),
+      "--root-out-dir", rebase_path("$root_out_dir"),
+      "--old-dmg", rebase_path("$root_out_dir/$last_chrome_installer"),
+      "--new-dmg", rebase_path("$target_app_path"),
       "--patch-output", rebase_path("$target_patch_path"),
       "--patch-eddsa-output", rebase_path("$target_patch_eddsa_path"),
     ]
@@ -191,7 +192,7 @@ if (skip_signing) {
 
     deps = [
       "//brave/vendor/sparkle:build_sparkle_framework",
-      ":sign_app",
+      ":copy_dmg_pkg",
     ]
   }
 
