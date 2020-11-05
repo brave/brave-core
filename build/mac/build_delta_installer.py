@@ -36,10 +36,6 @@ def Main(argv):
   parser = optparse.OptionParser('%prog [options]')
   parser.add_option('--binary-delta', dest='binary_delta_path', action='store',
       type='string', default=None, help='The path of BinaryDelta binary.')
-  parser.add_option('--sign-update', dest='sign_update_path', action='store',
-      type='string', default=None, help='The path of sign_update binary')
-  parser.add_option('--sign-key', dest='sign_key', action='store',
-      type='string', default=None, help='The private key to sign patch file')
   parser.add_option('--root-out-dir', dest='root_out_dir_path', action='store',
       type='string', default=None, help='The path of root output dir.')
   parser.add_option('--old-dmg', dest='old_dmg_path', action='store',
@@ -48,8 +44,6 @@ def Main(argv):
       type='string', default=None, help='The path of new dmg.')
   parser.add_option('--patch-output', dest='patch_output_path', action='store',
       type='string', default=None, help='The path of generated delta file.')
-  parser.add_option('--patch-eddsa-output', dest='patch_eddsa_output_path', action='store',
-      type='string', default=None, help='The path of eddsa output of patch.')
   (options, args) = parser.parse_args(argv)
 
   if len(args) > 0:
@@ -72,16 +66,6 @@ def Main(argv):
   except subprocess.CalledProcessError as e:
       print(e.output)
       raise e
-
-  # sign patch file
-  file = open(options.patch_eddsa_output_path, 'w')
-  command = [options.sign_update_path, '-s', options.sign_key, options.patch_output_path]
-  try:
-      subprocess.check_call(command, stdout=file)
-  except subprocess.CalledProcessError as e:
-      print(e.output)
-      raise e
-  file.close()
 
   unmount(old_dmg_mount_point)
   unmount(new_dmg_mount_point)

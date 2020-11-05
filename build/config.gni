@@ -13,8 +13,8 @@ declare_args() {
   enable_sparkle = is_official_build && is_mac
 
   sparkle_dsa_private_key_file = ""
-  sparkle_eddsa_public_key = ""
   sparkle_eddsa_private_key = ""
+  sparkle_eddsa_public_key = ""
 
   brave_product_name = ""
   brave_project_name = ""
