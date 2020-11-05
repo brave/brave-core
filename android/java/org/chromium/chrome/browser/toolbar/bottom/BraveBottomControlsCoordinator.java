@@ -57,11 +57,12 @@ public class BraveBottomControlsCoordinator extends BottomControlsCoordinator {
             Supplier<Boolean> showStartSurfaceCallable, Runnable openHomepageAction,
             Callback<Integer> setUrlBarFocusAction,
             OneshotSupplier<OverviewModeBehavior> overviewModeBehaviorSupplier,
-            ScrimCoordinator scrimCoordinator) {
+            ScrimCoordinator scrimCoordinator,
+            ObservableSupplier<Boolean> omniboxFocusStateSupplier) {
         super(controlsSizer, fullscreenManager, stub, tabProvider, themeColorProvider,
                 shareDelegateSupplier, menuButtonHelperSupplier, showStartSurfaceCallable,
                 openHomepageAction, setUrlBarFocusAction, overviewModeBehaviorSupplier,
-                scrimCoordinator);
+                scrimCoordinator, omniboxFocusStateSupplier);
 
         mTabSwitcherLongclickListener = tabSwitcherLongclickListener;
         mTabProvider = tabProvider;
