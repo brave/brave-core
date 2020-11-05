@@ -121,7 +121,7 @@
 
   <!-- Safety check -->
   <message name="IDS_SETTINGS_SAFETY_CHECK_PARENT_PRIMARY_LABEL_BEFORE" desc="This text describes what the safety check is. (It's an area of the Settings page where users can quickly check whether their safety-related settings are fully protecting them.)">
-    Brave can help keep you safe from unsafe websites, bad extensions, and more
+    Brave can help keep you safe from data breaches, bad extensions, and more
   </message>
   <message name="IDS_SETTINGS_SAFETY_CHECK_UPDATES_FAILED_OFFLINE" desc="This text describes that Brave cannot check for updates because there currently is no internet connection.">
     Brave can't check for updates. Try checking your internet connection.
