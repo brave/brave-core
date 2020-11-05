@@ -603,6 +603,7 @@ IN_PROC_BROWSER_TEST_F(
 IN_PROC_BROWSER_TEST_F(RewardsContributionBrowserTest, TipNonIntegralAmount) {
   rewards_browsertest_util::StartProcess(rewards_service_);
   rewards_browsertest_util::CreateWallet(rewards_service_);
+  context_helper_->LoadURL(rewards_browsertest_util::GetRewardsUrl());
   contribution_->AddBalance(promotion_->ClaimPromotionViaCode());
 
   rewards_service_->OnTip("duckduckgo.com", 2.5, false);
@@ -927,6 +928,7 @@ IN_PROC_BROWSER_TEST_F(
     PanelMonthlyTipAmount) {
   rewards_browsertest_util::StartProcess(rewards_service_);
   rewards_browsertest_util::CreateWallet(rewards_service_);
+  context_helper_->LoadURL(rewards_browsertest_util::GetRewardsUrl());
   contribution_->AddBalance(promotion_->ClaimPromotionViaCode());
 
   rewards_browsertest_util::NavigateToPublisherPage(
@@ -954,6 +956,7 @@ IN_PROC_BROWSER_TEST_F(
     PanelMonthlyTipActions) {
   rewards_browsertest_util::StartProcess(rewards_service_);
   rewards_browsertest_util::CreateWallet(rewards_service_);
+  context_helper_->LoadURL(rewards_browsertest_util::GetRewardsUrl());
   contribution_->AddBalance(promotion_->ClaimPromotionViaCode());
 
   rewards_browsertest_util::NavigateToPublisherPage(
