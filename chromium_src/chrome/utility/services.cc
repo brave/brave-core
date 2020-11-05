@@ -75,34 +75,29 @@ auto RunBatAdsService(
 #if defined(OS_ANDROID)
 #define BRAVE_PROFILE_IMPORTER
 #else
-#define BRAVE_PROFILE_IMPORTER \
-    RunBraveProfileImporter,
+#define BRAVE_PROFILE_IMPORTER services.Add(RunBraveProfileImporter);
 #endif
 
 #if BUILDFLAG(IPFS_ENABLED)
-#define BRAVE_IPFS_SERVICE \
-  RunIpfsService,
+#define BRAVE_IPFS_SERVICE services.Add(RunIpfsService);
 #else
 #define BRAVE_IPFS_SERVICE
 #endif
 
 #if BUILDFLAG(ENABLE_TOR)
-#define BRAVE_TOR_LAUNCHER \
-  RunTorLauncher,
+#define BRAVE_TOR_LAUNCHER services.Add(RunTorLauncher);
 #else
 #define BRAVE_TOR_LAUNCHER
 #endif
 
 #if BUILDFLAG(BRAVE_REWARDS_ENABLED)
-#define BRAVE_BAT_LEDGER_SERVICE \
-  RunBatLedgerService,
+#define BRAVE_BAT_LEDGER_SERVICE services.Add(RunBatLedgerService);
 #else
 #define BRAVE_BAT_LEDGER_SERVICE
 #endif
 
 #if BUILDFLAG(BRAVE_ADS_ENABLED)
-#define BRAVE_BAT_ADS_SERVICE \
-  RunBatAdsService,
+#define BRAVE_BAT_ADS_SERVICE services.Add(RunBatAdsService);
 #else
 #define BRAVE_BAT_ADS_SERVICE
 #endif
