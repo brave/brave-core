@@ -16,6 +16,8 @@
 #include "brave/components/brave_wallet/brave_wallet_constants.h"
 #include "brave/components/brave_wallet/brave_wallet_delegate.h"
 #include "brave/components/brave_wallet/pref_names.h"
+#include "chrome/browser/extensions/data_deleter.h"
+#include "chrome/browser/profiles/profile.h"
 #include "components/prefs/pref_change_registrar.h"
 #include "components/prefs/pref_service.h"
 #include "components/user_prefs/user_prefs.h"
@@ -166,8 +168,15 @@ void BraveWalletService::SaveToPrefs(PrefService* prefs,
 }
 
 void BraveWalletService::ResetCryptoWallets() {
+  Profile* profile = Profile::FromBrowserContext(context_);
+  auto* registry = extensions::ExtensionRegistry::Get(context_);
+
   extensions::ExtensionPrefs::Get(context_)->DeleteExtensionPrefs(
       ethereum_remote_client_extension_id);
+
+  auto* erc_extension = registry->enabled_extensions().GetByID(
+      ethereum_remote_client_extension_id);
+  extensions::DataDeleter::StartDeleting(profile, erc_extension);
 }
 
 // Generates a random 32 byte root seed and stores it in prefs

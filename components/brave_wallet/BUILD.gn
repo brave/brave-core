@@ -18,6 +18,7 @@ source_set("brave_wallet") {
 
   deps = [
     "//base",
+    "//chrome/browser",
     "//components/keyed_service/content",
     "//components/keyed_service/core",
     "//components/prefs",
