@@ -8,6 +8,8 @@ source_set("ipfs") {
     "features.h",
     "ipfs_constants.cc",
     "ipfs_constants.h",
+    "ipfs_gateway.cc",
+    "ipfs_gateway.h",
     "ipfs_interstitial_controller_client.cc",
     "ipfs_interstitial_controller_client.h",
     "ipfs_json_parser.cc",

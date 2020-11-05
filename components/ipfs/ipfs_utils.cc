@@ -8,6 +8,7 @@
 #include <vector>
 
 #include "brave/components/ipfs/ipfs_constants.h"
+#include "brave/components/ipfs/ipfs_gateway.h"
 #include "brave/components/ipfs/translate_ipfs_uri.h"
 #include "extensions/common/url_pattern.h"
 #include "net/base/url_util.h"
@@ -25,12 +26,12 @@ bool HasIPFSPath(const GURL& gurl) {
 }
 
 bool IsDefaultGatewayURL(const GURL& url) {
-  return url.GetOrigin() == GURL(kDefaultIPFSGateway) && HasIPFSPath(url);
+  return url.GetOrigin() == GetDefaultIPFSGateway() && HasIPFSPath(url);
 }
 
 bool IsLocalGatewayURL(const GURL& url) {
   return url.SchemeIsHTTPOrHTTPS() && net::IsLocalhost(url) &&
-         url.port_piece() == GURL(kDefaultIPFSLocalGateway).port_piece() &&
+         url.port_piece() == GetDefaultIPFSLocalGateway().port_piece() &&
          HasIPFSPath(url);
 }
 
@@ -51,7 +52,7 @@ GURL ToPublicGatewayURL(const GURL& url) {
   // public gateway URL.
   if (IsLocalGatewayURL(url)) {
     GURL::Replacements replacements;
-    GURL gateway_url = GURL(kDefaultIPFSGateway);
+    GURL gateway_url = GetDefaultIPFSGateway();
     replacements.ClearPort();
     replacements.SetSchemeStr(gateway_url.scheme_piece());
     replacements.SetHostStr(gateway_url.host_piece());
