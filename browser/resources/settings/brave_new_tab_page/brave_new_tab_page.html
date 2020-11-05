@@ -38,79 +38,8 @@
       <div class="settings-box">
         <div class="flex">
           <div class="normalize-margin">
-            <template is="dom-if" if="[[!isSuperReferralActive_]]">
-              <settings-toggle-button id="showBackgroundImageControlType"
-                  pref="{{prefs.brave.new_tab_page.show_background_image}}"
-                  label="$i18n{braveNewTabBackgroundImages}">
-              </settings-toggle-button>
-              <settings-toggle-button
-                  class="nested-section borderless"
-                  pref="{{prefs.brave.new_tab_page.show_branded_background_image}}"
-                  disabled="{{!prefs.brave.new_tab_page.show_background_image.value}}"
-                  label="$i18n{braveNewTabSponsoredImages}">
-              </settings-toggle-button>
-          </template>
           </div>
         </div>
-      </div>
-      <div class="flex">
-        <settings-toggle-button
-            class="cr-row"
-            pref="{{prefs.brave.new_tab_page.show_stats}}"
-            label="$i18n{braveNewTabStats}">
-        </settings-toggle-button>
-        <settings-toggle-button
-            class="cr-row"
-            pref=""
-            checked="[[showTopSites_]]"
-            label="$i18n{braveNewTabTopSites}"
-            on-settings-boolean-control-change="onShowTopSitesChange_">
-        </settings-toggle-button>
-        <settings-toggle-button
-            class="cr-row"
-            pref="{{prefs.brave.new_tab_page.show_clock}}"
-            label="$i18n{braveNewTabClock}">
-        </settings-toggle-button>
-        <settings-toggle-button
-            class="cr-row"
-            pref="{{prefs.brave.new_tab_page.show_rewards}}"
-            label="$i18n{braveNewTabBraveRewards}">
-        </settings-toggle-button>
-        <template is="dom-if" if="[[isBraveTogetherSupported_]]">
-          <settings-toggle-button
-              class="cr-row"
-              pref="{{prefs.brave.new_tab_page.show_together}}"
-              label="$i18n{braveNewTabTogether}">
-          </settings-toggle-button>
-        </template>
-        <template is="dom-if" if="[[isBinanceSupported_]]">
-          <settings-toggle-button
-              class="cr-row"
-              pref="{{prefs.brave.new_tab_page.show_binance}}"
-              label="$i18n{braveNewTabBinance}">
-          </settings-toggle-button>
-        </template>
-        <template is="dom-if" if="[[isGeminiSupported_]]">
-          <settings-toggle-button
-              class="cr-row"
-              pref="{{prefs.brave.new_tab_page.show_gemini}}"
-              label="$i18n{braveNewTabGemini}">
-          </settings-toggle-button>
-        </template>
-        <template is="dom-if" if="[[isBitcoinDotComSupported_]]">
-          <settings-toggle-button
-              class="cr-row"
-              pref="{{prefs.moonpay.new_tab_page.show_bitcoin_dot_com}}"
-              label="$i18n{braveNewTabBitcoinDotCom}">
-          </settings-toggle-button>
-        </template>
-        <template is="dom-if" if="[[isCryptoDotComSupported_]]">
-          <settings-toggle-button
-              class="cr-row"
-              pref="{{prefs.crypto_dot_com.new_tab_page.show_crypto_dot_com}}"
-              label="$i18n{braveNewTabCryptoDotCom}">
-          </settings-toggle-button>
-        </template>
       </div>
     </template>
   </template>

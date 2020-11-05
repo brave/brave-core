@@ -10,45 +10,6 @@ cr.define('settings', function() {
   /** @interface */
   /* #export */ class BraveNewTabBrowserProxy {
     /**
-     * @return {!Promise<Boolean>}
-     */
-    getIsSuperReferralActive() {}
-
-    /**
-     * @return {!Promise<Boolean>}
-     */
-    getIsBinanceSupported() {}
-
-    /**
-     * @return {!Promise<Boolean>}
-     */
-    getIsBraveTogetherSupported() {}
-
-    /**
-     * @return {!Promise<Boolean>}
-     */
-    getIsGeminiSupported() {}
-
-    /**
-     * @return {!Promise<Boolean>}
-     */
-    getIsBitcoinDotComSupported() {}
-
-    /**
-     * @return {!Promise<Boolean>}
-     */
-    getShowTopSites() {}
-
-    /**
-     */
-    toggleTopSitesVisible() {}
-
-    /**
-     * @return {!Promise<Boolean>}
-     */
-    isCryptoDotComSupported() {}
-
-    /**
      * @return {!Promise<Array>}
      */
     getNewTabShowsOptionsList() {}
@@ -63,46 +24,6 @@ cr.define('settings', function() {
    * @implements {settings.BraveNewTabBrowserProxy}
    */
   /* #export */ class BraveNewTabBrowserProxyImpl {
-    /** @override */
-    getIsSuperReferralActive() {
-      return cr.sendWithPromise('getIsSuperReferralActive');
-    }
-
-    /** @override */
-    getIsBinanceSupported() {
-      return cr.sendWithPromise('getIsBinanceSupported')
-    }
-
-    /** @override */
-    getIsBraveTogetherSupported() {
-      return cr.sendWithPromise('getIsBraveTogetherSupported')
-    }
-
-    /** @override */
-    getIsGeminiSupported() {
-      return cr.sendWithPromise('getIsGeminiSupported')
-    }
-
-    /** @override */
-    getIsBitcoinDotComSupported() {
-      return cr.sendWithPromise('getIsBitcoinDotComSupported')
-    }
-
-    /** @override */
-    getShowTopSites() {
-      return cr.sendWithPromise('getShowTopSites')
-    }
-
-    /** @override */
-    toggleTopSitesVisible() {
-      chrome.send('toggleTopSitesVisible', [])
-    }
-
-    /** @override */
-    getIsCryptoDotComSupported() {
-      return cr.sendWithPromise('getIsCryptoDotComSupported')
-    }
-
     /** @override */
     getNewTabShowsOptionsList() {
       return cr.sendWithPromise('getNewTabShowsOptionsList')

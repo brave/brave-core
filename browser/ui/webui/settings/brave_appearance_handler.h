@@ -32,15 +32,6 @@ class BraveAppearanceHandler : public settings::SettingsPageUIHandler {
   void OnPreferenceChanged(const std::string& pref_name);
   void SetBraveThemeType(const base::ListValue* args);
   void GetBraveThemeType(const base::ListValue* args);
-  void GetIsSuperReferralActive(const base::ListValue* args);
-  void GetIsBinanceSupported(const base::ListValue* args);
-  void GetIsBraveTogetherSupported(const base::ListValue* args);
-  void GetIsGeminiSupported(const base::ListValue* args);
-  void GetIsBitcoinDotComSupported(const base::ListValue* args);
-  void ToggleTopSitesVisible(const base::ListValue* args);
-  void GetShowTopSites(const base::ListValue* args);
-  void TopSitesVisibleChanged(const std::string& pref_name);
-  void GetIsCryptoDotComSupported(const base::ListValue* args);
   void GetNewTabShowsOptionsList(const base::ListValue* args);
   void ShouldShowNewTabDashboardSettings(const base::ListValue* args);
 
