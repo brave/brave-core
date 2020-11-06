@@ -27,6 +27,7 @@ import org.chromium.chrome.browser.fullscreen.FullscreenManager;
 import org.chromium.chrome.browser.layouts.LayoutStateProvider;
 import org.chromium.chrome.browser.share.ShareDelegate;
 import org.chromium.chrome.browser.tabmodel.IncognitoStateProvider;
+import org.chromium.chrome.browser.toolbar.HomeButton;
 import org.chromium.chrome.browser.toolbar.TabCountProvider;
 import org.chromium.chrome.browser.toolbar.ThemeColorProvider;
 import org.chromium.chrome.browser.ui.appmenu.AppMenuButtonHelper;
@@ -122,5 +123,9 @@ public class BraveBottomControlsCoordinator extends BottomControlsCoordinator {
         if (mBottomToolbarCoordinator != null) {
             mBottomToolbarCoordinator.updateBookmarkButton(isBookmarked, editingAllowed);
         }
+    }
+
+    public void updateHomeButtonState() {
+        mBottomToolbarCoordinator.updateHomeButtonState();
     }
 }

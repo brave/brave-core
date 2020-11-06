@@ -13,6 +13,8 @@ import android.view.View.OnLongClickListener;
 import android.view.ViewGroup;
 import android.view.ViewStub;
 
+import androidx.core.content.ContextCompat;
+
 import org.chromium.base.Callback;
 import org.chromium.base.CallbackController;
 import org.chromium.base.ContextUtils;
@@ -237,8 +239,6 @@ class BottomToolbarCoordinator implements View.OnLongClickListener {
                     }
                     if (BottomToolbarVariationManager.isHomeButtonOnBottom()) {
                         browsingModeCoordinator.getHomeButton().setVisibility(View.VISIBLE);
-                        browsingModeCoordinator.getHomeButton().updateButtonEnabledState(
-                                mTabProvider.get());
                     }
                     if (BottomToolbarVariationManager.isBookmarkButtonOnBottom()) {
                         browsingModeCoordinator.getBookmarkButton().setVisibility(View.VISIBLE);
@@ -270,11 +270,11 @@ class BottomToolbarCoordinator implements View.OnLongClickListener {
 
         mHomeButton = bottomToolbarBrowsing.findViewById(R.id.bottom_home_button);
         if (mHomeButton != null) {
+            updateHomeButtonState();
             mHomeButton.setOnLongClickListener(this);
 
             final OnClickListener homeButtonListener = v -> {
-                final boolean isHomepageEnabled = HomepageManager.isHomepageEnabled();
-                if (isHomepageEnabled) {
+                if (HomepageManager.isHomepageEnabled()) {
                     mOriginalHomeButtonRunnable.run();
                 } else {
                     newTabClickListener.onClick(v);
@@ -384,5 +384,17 @@ class BottomToolbarCoordinator implements View.OnLongClickListener {
         }
 
         return Toast.showAnchoredToast(mContext, v, description);
+    }
+
+    public void updateHomeButtonState() {
+        assert (mHomeButton != null);
+        if (!HomepageManager.isHomepageEnabled()) {
+            mHomeButton.setImageDrawable(
+                    ContextCompat.getDrawable(mContext, R.drawable.new_tab_icon));
+            mHomeButton.setEnabled(true);
+        } else {
+            mHomeButton.setImageDrawable(
+                    ContextCompat.getDrawable(mContext, R.drawable.btn_toolbar_home));
+        }
     }
 }

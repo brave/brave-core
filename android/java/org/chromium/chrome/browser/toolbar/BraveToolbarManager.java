@@ -28,6 +28,7 @@ import org.chromium.chrome.browser.compositor.Invalidator;
 import org.chromium.chrome.browser.compositor.layouts.LayoutManager;
 import org.chromium.chrome.browser.findinpage.FindToolbarManager;
 import org.chromium.chrome.browser.fullscreen.FullscreenManager;
+import org.chromium.chrome.browser.homepage.HomepageManager;
 import org.chromium.chrome.browser.identity_disc.IdentityDiscController;
 import org.chromium.chrome.browser.intent.IntentMetadata;
 import org.chromium.chrome.browser.layouts.LayoutStateProvider;
@@ -84,6 +85,7 @@ public class BraveToolbarManager extends ToolbarManager {
     private View mRootBottomView;
     private ObservableSupplier<Boolean> mOmniboxFocusStateSupplier;
     private OneshotSupplier<LayoutStateProvider> mLayoutStateProviderSupplier;
+    private HomepageManager.HomepageStateListener mBraveHomepageStateListener;
 
     public BraveToolbarManager(AppCompatActivity activity, BrowserControlsSizer controlsSizer,
             FullscreenManager fullscreenManager, ToolbarControlContainer controlContainer,
@@ -123,6 +125,12 @@ public class BraveToolbarManager extends ToolbarManager {
 
         mOmniboxFocusStateSupplier = omniboxFocusStateSupplier;
         mLayoutStateProviderSupplier = layoutStateProviderSupplier;
+
+        mBraveHomepageStateListener = () -> {
+            assert (mBottomControlsCoordinator instanceof BraveBottomControlsCoordinator);
+            ((BraveBottomControlsCoordinator) mBottomControlsCoordinator).updateHomeButtonState();
+        };
+        HomepageManager.getInstance().addListener(mBraveHomepageStateListener);
     }
 
     @Override
@@ -174,6 +182,13 @@ public class BraveToolbarManager extends ToolbarManager {
             return new View(mActivity);
         }
         return super.getMenuButtonView();
+    }
+
+    @Override
+    public void destroy() {
+        super.destroy();
+
+        HomepageManager.getInstance().removeListener(mBraveHomepageStateListener);
     }
 
     protected void onOrientationChange(int newOrientation) {

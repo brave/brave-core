@@ -108,7 +108,6 @@ public class BrowsingModeBottomToolbarCoordinator {
 
         mHomeButton = mToolbarRoot.findViewById(R.id.bottom_home_button);
         mHomeButton.setOnClickListener(homeButtonListener);
-        mHomeButton.setActivityTabProvider(mTabProvider);
 
         mNewTabButton = mToolbarRoot.findViewById(R.id.bottom_new_tab_button);
 
@@ -193,9 +192,6 @@ public class BrowsingModeBottomToolbarCoordinator {
             mNewTabButton.setThemeColorProvider(themeColorProvider);
             mNewTabButton.setIncognitoStateProvider(incognitoStateProvider);
         }
-        if (BottomToolbarVariationManager.isHomeButtonOnBottom()) {
-            mHomeButton.setThemeColorProvider(themeColorProvider);
-        }
 
         if (BottomToolbarVariationManager.isShareButtonOnBottom()) {
             mShareButton.setThemeColorProvider(themeColorProvider);
@@ -271,7 +267,6 @@ public class BrowsingModeBottomToolbarCoordinator {
             mShareButtonListenerSupplier.removeObserver(mShareButtonListenerSupplierCallback);
         }
         mMediator.destroy();
-        mHomeButton.destroy();
         mShareButton.destroy();
         mSearchAccelerator.destroy();
         mTabSwitcherButtonCoordinator.destroy();
