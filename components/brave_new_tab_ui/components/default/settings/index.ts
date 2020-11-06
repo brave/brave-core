@@ -117,7 +117,8 @@ export const SettingsSidebarButtonText = styled<{ isActive: boolean }, 'span'>('
   text-transform: capitalize;
 
   transition: opacity var(--sidebar-button-transition-timing) ease-in-out,
-              color var(--sidebar-button-transition-timing) ease-in-out;
+              color var(--sidebar-button-transition-timing) ease-in-out,
+              font-weight var(--sidebar-button-transition-timing) ease-in-out;
 
   &:hover {
     color: ${p => p.theme.color.brandBrave};
@@ -183,11 +184,16 @@ export const SettingsSidebarButton = styled<SettingsSidebarButtonProps, 'button'
     }
   }
 
-  &:active {
+  &:active,
+  &:focus {
     outline: none;
   }
 
-  &:focus {
+  &:active {
+    --active-opacity: 1;
+  }
+
+  &:focus-visible {
     outline-style: solid;
     outline-color: ${p => p.theme.color.brandBrave};
     outline-width: 1px;
@@ -227,15 +233,16 @@ export const SettingsCloseIcon = styled<{}, 'button'>('button')`
   height: 20px;
   cursor: pointer;
   background: inherit;
+  outline: none;
 
   &:active {
-    outline: none;
+    color: ${p => p.theme.color.brandBraveActive};
   }
 
-  &:focus {
+  &:focus-visible {
     outline-style: solid;
     outline-color: ${p => p.theme.color.brandBrave};
-    outline-width: 1px;
+    outline-width: 2px;
   }
 `
 
@@ -246,22 +253,34 @@ interface SettingsRowProps {
 
 export const SettingsRow = styled<SettingsRowProps, 'div'>('div')`
   box-sizing: border-box;
+  margin-bottom: 10px;
   display: grid;
   grid-template-columns: auto max-content;
   align-items: center;
   width: 100%;
   height: 28px;
+  font-weight: normal;
   ${p => p.isChildSetting && css`
     padding-left: 36px;
   `}
   ${p => p.isInteractive && css`
     cursor: pointer;
+    &:focus-visible {
+      outline: solid 1px ${p => p.theme.color.brandBrave};
+    }
+    &:hover {
+      color: ${p => p.theme.color.brandBraveInteracting}
+    }
+    &:active {
+      color: ${p => p.theme.color.brandBraveActive}
+    }
   `}
 
   /* TODO(petemill): Use specific Component for Content and Control sides */
-  :last-child
+  :last-child:not(:first-child)
   {
     justify-self: end;
+    margin-bottom: 0;
   }
 `
 
@@ -269,7 +288,6 @@ export const SettingsText = styled<{}, 'span'>('span')`
   display: flex;
   align-items: center;
   font-style: normal;
-  font-weight: normal;
   font-size: 13px;
   line-height: 24px;
   letter-spacing: 0.01em;
@@ -371,7 +389,7 @@ export const StyledWidgetToggle = styled<WidgetToggleProps, 'button'>('button')`
   cursor: pointer;
   background: ${p => p.isAdd ? '#FB542B' : isDarkTheme(p) ? '#5E6175' : '#212529'};
 
-  &:focus {
+  &:focus-visible {
     outline-style: solid;
     outline-color: ${p => p.theme.color.brandBrave};
     outline-width: 1px;

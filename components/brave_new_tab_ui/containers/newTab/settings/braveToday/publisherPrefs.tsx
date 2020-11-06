@@ -38,7 +38,9 @@ function ListItem (props: ListItemProps) {
 
   React.useEffect(() => {
     if (rowRoot.current) {
-      setSize && setSize(props.index, rowRoot.current.getBoundingClientRect().height)
+      const marginBottom = parseFloat(getComputedStyle(rowRoot.current).marginBottom || '0')
+
+      setSize && setSize(props.index, rowRoot.current.getBoundingClientRect().height + marginBottom)
     }
   }, [props.index, setSize, props.width])
 
@@ -59,7 +61,7 @@ function ListItem (props: ListItemProps) {
 
   return (
     <div style={props.style}>
-      <SettingsRow innerRef={rowRoot} key={publisher.publisher_id}>
+      <SettingsRow innerRef={rowRoot} key={publisher.publisher_id} onClick={onChange} isInteractive={true}>
         <SettingsText>{publisher.publisher_name}</SettingsText>
         <Toggle
           checked={isChecked}

@@ -379,6 +379,7 @@ export const IconButton = styled<IconButtonProps, 'button'>('button')`
   height: 24px;
   padding: 0;
   border: none;
+  outline: none;
   margin: ${p => p.isClickMenu ? '7' : '0 12'}px;
   cursor: pointer;
   color: #ffffff;
@@ -388,11 +389,19 @@ export const IconButton = styled<IconButtonProps, 'button'>('button')`
   &:hover {
     opacity: 0.95;
   }
+  &:focus-visible {
+    outline: 2px solid ${p => p.theme.color.brandBraveInteracting};
+  }
 `
 
 interface IconButtonSideTextProps {
   textDirection: string
 }
+
+// TODO(petemill): Customize button should get its own
+// element and not use IconButton so that the outer
+// element can be a <button> and we can use :focus-visible
+// and not :focus-within which cannot be combined with :focus-visble.
 
 export const IconButtonSideText = styled<IconButtonSideTextProps, 'label'>('label')`
   display: grid;

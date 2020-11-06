@@ -12,19 +12,25 @@ type Props = {
 }
 
 const Back = styled('button')`
-  margin-bottom: 14px;
   appearance: none;
-  cursor: pointer;
-  display: block;
-  background: none;
-  color: inherit;
-  border: none;
-  font-weight: 800;
+  margin-bottom: 14px;
   outline: none;
   border: none;
+  background: none;
   display: flex;
   flex-direction: row;
   gap: 10px;
+  cursor: pointer;
+  color: inherit;
+  font-weight: 800;
+
+  &:focus-visible {
+    outline: solid 1px ${p => p.theme.color.brandBrave};
+  }
+
+  &:active {
+    font-weight: 900;
+  }
 `
 
 const Icon = styled('div')`
