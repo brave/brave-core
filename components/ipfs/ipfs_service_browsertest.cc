@@ -3,16 +3,21 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
+#include "base/path_service.h"
 #include "base/run_loop.h"
 #include "base/strings/strcat.h"
 #include "base/test/scoped_feature_list.h"
 #include "brave/browser/ipfs/ipfs_service_factory.h"
+#include "brave/common/brave_paths.h"
 #include "brave/components/ipfs/features.h"
 #include "brave/components/ipfs/ipfs_constants.h"
+#include "brave/components/ipfs/ipfs_gateway.h"
 #include "brave/components/ipfs/ipfs_service.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser.h"
 #include "chrome/test/base/in_process_browser_test.h"
+#include "chrome/test/base/ui_test_utils.h"
+#include "components/network_session_configurator/common/network_switches.h"
 #include "content/public/test/browser_test.h"
 #include "net/dns/mock_host_resolver.h"
 #include "net/test/embedded_test_server/http_request.h"
@@ -33,7 +38,7 @@ class IpfsServiceBrowserTest : public InProcessBrowserTest {
         IpfsServiceFactory::GetInstance()->GetForContext(browser()->profile());
     ASSERT_TRUE(ipfs_service_);
     ipfs_service_->SetIpfsLaunchedForTest(true);
-
+    host_resolver()->AddRule("*", "127.0.0.1");
     InProcessBrowserTest::SetUpOnMainThread();
   }
 
@@ -45,6 +50,16 @@ class IpfsServiceBrowserTest : public InProcessBrowserTest {
     test_server_->RegisterRequestHandler(callback);
     ASSERT_TRUE(test_server_->Start());
     ipfs_service_->SetServerEndpointForTest(test_server_->base_url());
+  }
+
+  GURL GetURL(const std::string& path) {
+    return test_server_->GetURL("a.com", path);
+  }
+
+  void SetUpCommandLine(base::CommandLine* command_line) override {
+    // HTTPS server only serves a valid cert for localhost, so this is needed
+    // to load pages from other hosts without an error.
+    command_line->AppendSwitch(switches::kIgnoreCertificateErrors);
   }
 
   std::unique_ptr<net::test_server::HttpResponse> HandleGetConnectedPeers(
@@ -114,6 +129,25 @@ class IpfsServiceBrowserTest : public InProcessBrowserTest {
         std::make_unique<net::test_server::BasicHttpResponse>();
     http_response->set_content_type("text/html");
     http_response->set_code(net::HTTP_INTERNAL_SERVER_ERROR);
+    return http_response;
+  }
+
+  std::unique_ptr<net::test_server::HttpResponse> HandleEmbeddedSrvrRequest(
+      const net::test_server::HttpRequest& request) {
+    auto http_response =
+        std::make_unique<net::test_server::BasicHttpResponse>();
+    http_response->set_content_type("text/html");
+
+    std::string request_path = request.GetURL().path();
+    if (request_path == "/simple.html") {
+      http_response->set_content("fetch test");
+    } else if (request_path ==
+               "/ipfs/"
+               "bafybeiemxf5abjwjbikoz4mc3a3dla6ual3jsgpdr4cjr3oz3evfyavhwq") {
+      http_response->set_content("fetch test");
+    }
+    http_response->set_code(net::HTTP_OK);
+
     return http_response;
   }
 
@@ -230,6 +264,29 @@ IN_PROC_BROWSER_TEST_F(IpfsServiceBrowserTest, GetAddressesConfigServerError) {
       base::BindOnce(&IpfsServiceBrowserTest::OnGetAddressesConfigFail,
                      base::Unretained(this)));
   WaitForRequest();
+}
+
+IN_PROC_BROWSER_TEST_F(IpfsServiceBrowserTest, CanFetchIPFSResources) {
+  ResetTestServer(
+      base::BindRepeating(&IpfsServiceBrowserTest::HandleEmbeddedSrvrRequest,
+                          base::Unretained(this)));
+  SetIPFSDefaultGatewayForTest(GetURL("/"));
+  ui_test_utils::NavigateToURL(browser(), GetURL("/simple.html"));
+  bool as_expected = false;
+  content::WebContents* contents =
+      browser()->tab_strip_model()->GetActiveWebContents();
+  ASSERT_TRUE(ExecuteScriptAndExtractBool(
+      contents,
+      "fetch('ipfs://"
+      "bafybeiemxf5abjwjbikoz4mc3a3dla6ual3jsgpdr4cjr3oz3evfyavhwq')"
+      "  .then(response => { response.text()"
+      "      .then((response_text) => {"
+      "        const result = response_text == 'fetch test';"
+      "        window.domAutomationController.send(result);"
+      "      })})"
+      ".catch((x) => console.log('error: ' + x));",
+      &as_expected));
+  ASSERT_TRUE(as_expected);
 }
 
 }  // namespace ipfs

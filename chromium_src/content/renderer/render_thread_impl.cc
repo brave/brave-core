@@ -17,6 +17,12 @@
   WebString gemini_scheme(WebString::FromASCII(kGeminiScheme)); \
   WebSecurityPolicy::RegisterURLSchemeAsDisplayIsolated(gemini_scheme); \
   WebSecurityPolicy::RegisterURLSchemeAsNotAllowingJavascriptURLs( \
-      gemini_scheme);
+      gemini_scheme); \
+                      \
+  WebString ipfs_scheme(WebString::FromASCII("ipfs")); \
+  WebSecurityPolicy::RegisterURLSchemeAsSupportingFetchAPI(ipfs_scheme); \
+                    \
+  WebString ipns_scheme(WebString::FromASCII("ipns")); \
+  WebSecurityPolicy::RegisterURLSchemeAsSupportingFetchAPI(ipns_scheme);
 
 #include "../../../../content/renderer/render_thread_impl.cc"
