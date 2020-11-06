@@ -74,41 +74,50 @@
 }
 
 - (bool)isPermanentNode {
+  DCHECK(node_);
   return node_->is_permanent_node();
 }
 
 - (void)setTitle:(NSString *)title {
+  DCHECK(node_);
   model_->SetTitle(node_, base::SysNSStringToUTF16(title));
 }
 
 - (NSUInteger)nodeId {
+  DCHECK(node_);
   return node_->id();
 }
 
 - (NSString *)guid {
+  DCHECK(node_);
   return base::SysUTF8ToNSString(node_->guid());
 }
 
 - (NSURL *)url {
+  DCHECK(node_);
   return net::NSURLWithGURL(node_->url());
 }
 
 - (void)setUrl:(NSURL *)url {
+  DCHECK(node_);
   model_->SetURL(node_, net::GURLWithNSURL(url));
 }
 
 - (NSURL *)iconUrl {
+  DCHECK(node_);
   const GURL* url = node_->icon_url();
   return url ? net::NSURLWithGURL(*url) : nullptr;
 }
 
 - (UIImage *)icon {
+  DCHECK(node_);
   // Returns a WEAK UIImage so we make a deep-copy.
   gfx::Image icon = model_->GetFavicon(node_);
   return icon.IsEmpty() ? nullptr : [icon.ToUIImage() copy];
 }
 
 - (BookmarksNodeType)type {
+  DCHECK(node_);
   switch (node_->type()) {
     case bookmarks::BookmarkNode::URL: return BookmarksNodeTypeUrl;
     case bookmarks::BookmarkNode::FOLDER: return BookmarksNodeTypeFolder;
@@ -120,42 +129,56 @@
 }
 
 - (NSDate *)dateAdded {
+  DCHECK(node_);
   return [NSDate dateWithTimeIntervalSince1970:node_->date_added().ToDoubleT()];
 }
 
 - (void)setDateAdded:(NSDate *)date {
+  DCHECK(node_);
     model_->SetDateAdded(node_, base::Time::FromDoubleT([date timeIntervalSince1970]));
 }
 
 - (NSDate *)dateFolderModified {
+  DCHECK(node_);
   return [NSDate dateWithTimeIntervalSince1970:node_->date_folder_modified().ToDoubleT()];
 }
 
 - (void)setDateFolderModified:(NSDate *)date {
+  DCHECK(node_);
     model_->SetDateFolderModified(node_, base::Time::FromDoubleT([date timeIntervalSince1970]));
 }
 
 - (bool)isFolder {
+  DCHECK(node_);
   return node_->is_folder();
 }
 
 - (bool)isUrl {
+  DCHECK(node_);
   return node_->is_url();
 }
 
 - (bool)isFavIconLoaded {
+  DCHECK(node_);
   return node_->is_favicon_loaded();
 }
 
 - (bool)isFavIconLoading {
+  DCHECK(node_);
   return node_->is_favicon_loading();
 }
 
 - (bool)isVisible {
+  DCHECK(node_);
   return node_->IsVisible();
 }
 
+- (bool)isValid {
+  return node_ && model_;
+}
+
 - (bool)getMetaInfo:(NSString *)key value:(NSString **)value {
+  DCHECK(node_);
   std::string value_;
   bool result = node_->GetMetaInfo(base::SysNSStringToUTF8(key), &value_);
   if (value) {
@@ -165,22 +188,27 @@
 }
 
 - (void)setMetaInfo:(NSString *)key value:(NSString *)value {
+  DCHECK(node_);
   model_->SetNodeMetaInfo(node_, base::SysNSStringToUTF8(key), base::SysNSStringToUTF8(value));
 }
 
 - (void)deleteMetaInfo:(NSString *)key {
+  DCHECK(node_);
   return model_->DeleteNodeMetaInfo(node_, base::SysNSStringToUTF8(key));
 }
 
 - (NSString *)titleUrlNodeTitle {
+  DCHECK(node_);
   return base::SysUTF16ToNSString(node_->GetTitledUrlNodeTitle());
 }
 
 - (NSURL *)titleUrlNodeUrl {
+  DCHECK(node_);
   return net::NSURLWithGURL(node_->GetTitledUrlNodeUrl());
 }
 
 - (BookmarkNode *)parent {
+  DCHECK(node_);
   const bookmarks::BookmarkNode* parent_ = node_->parent();
   if (parent_) {
     return [[BookmarkNode alloc] initWithNode:parent_ model:model_];
@@ -189,6 +217,7 @@
 }
 
 - (NSArray<BookmarkNode *> *)children {
+  DCHECK(node_);
   NSMutableArray *result = [[NSMutableArray alloc] init];
   for (const auto& child : node_->children()) {
     const bookmarks::BookmarkNode* child_node = bookmarks::GetBookmarkNodeByID(model_, static_cast<int64_t>(child->id()));
@@ -198,6 +227,7 @@
 }
 
 - (BookmarkNode *)addChildFolderWithTitle:(NSString *)title {
+  DCHECK(node_);
   if ([self isFolder]) {
     const bookmarks::BookmarkNode* node = model_->AddFolder(node_, node_->children().size(), base::SysNSStringToUTF16(title));
     return [[BookmarkNode alloc] initWithNode:node model:model_];
@@ -206,6 +236,7 @@
 }
 
 - (BookmarkNode *)addChildBookmarkWithTitle:(NSString *)title url:(NSURL *)url {
+  DCHECK(node_);
   if ([self isFolder]) {
     const bookmarks::BookmarkNode* node = model_->AddURL(node_, node_->children().size(), base::SysNSStringToUTF16(title), net::GURLWithNSURL(url));
     return [[BookmarkNode alloc] initWithNode:node model:model_];
@@ -214,18 +245,21 @@
 }
 
 - (void)moveToParent:(BookmarkNode *)parent {
+  DCHECK(node_);
   if ([parent isFolder]) {
     model_->Move(node_, parent->node_, parent->node_->children().size());
   }
 }
 
 - (void)moveToParent:(BookmarkNode *)parent index:(NSUInteger)index {
+  DCHECK(node_);
   if ([parent isFolder]) {
     model_->Move(node_, parent->node_, index);
   }
 }
 
 - (void)remove {
+  DCHECK(node_);
   model_->Remove(node_);
   node_ = nil;
   model_ = nil;
