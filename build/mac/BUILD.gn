@@ -188,36 +188,6 @@ if (skip_signing) {
     ]
   }
 
-  action("generate_eddsa_sig_for_delta") {
-    script = "generate_eddsa_sig.py"
-
-    sign_update_path = "$root_out_dir/sign_update"
-    target_delta_path = "$root_out_dir/$brave_delta"
-    target_delta_eddsa_path = "$root_out_dir/$brave_delta.eddsa"
-
-    args = [
-      "--sign-update", rebase_path("$sign_update_path"),
-      "--sign-key", "$sparkle_eddsa_private_key",
-      "--target", rebase_path("$target_delta_path"),
-      "--output", rebase_path("$target_delta_eddsa_path"),
-    ]
-
-    inputs = [
-      script,
-      "$sign_update_path",
-      "$target_delta_path",
-    ]
-
-    outputs = [
-      "$target_delta_eddsa_path",
-    ]
-
-    deps = [
-      "//brave/vendor/sparkle:build_sparkle_framework",
-      ":build_delta_installer",
-    ]
-  }
-
   action("build_delta_installer") {
     script = "build_delta_installer.py"
 
@@ -246,6 +216,36 @@ if (skip_signing) {
     deps = [
       "//brave/vendor/sparkle:build_sparkle_framework",
       ":copy_dmg_pkg",
+    ]
+  }
+
+  action("generate_eddsa_sig_for_delta") {
+    script = "generate_eddsa_sig.py"
+
+    sign_update_path = "$root_out_dir/sign_update"
+    target_delta_path = "$root_out_dir/$brave_delta"
+    target_delta_eddsa_path = "$root_out_dir/$brave_delta.eddsa"
+
+    args = [
+      "--sign-update", rebase_path("$sign_update_path"),
+      "--sign-key", "$sparkle_eddsa_private_key",
+      "--target", rebase_path("$target_delta_path"),
+      "--output", rebase_path("$target_delta_eddsa_path"),
+    ]
+
+    inputs = [
+      script,
+      "$sign_update_path",
+      "$target_delta_path",
+    ]
+
+    outputs = [
+      "$target_delta_eddsa_path",
+    ]
+
+    deps = [
+      "//brave/vendor/sparkle:build_sparkle_framework",
+      ":build_delta_installer",
     ]
   }
 

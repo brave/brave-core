@@ -27,7 +27,7 @@ def Main(argv):
 
   # sign file with dsa
   file = open(options.output, 'w')
-  command = [options.sign_update_path, options.new_dmg_path, options.sign_key_file]
+  command = [options.sign_update_path, options.target, options.sign_key_file]
   try:
       subprocess.check_call(command, stdout=file)
   except subprocess.CalledProcessError as e:
