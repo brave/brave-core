@@ -52,7 +52,7 @@ String PluginReplacementName(std::mt19937_64* prng) {
 
 void FarblePlugins(DOMPluginArray* owner,
                    HeapVector<Member<DOMPlugin>>* dom_plugins) {
-  LocalFrame* frame = owner->GetFrame();
+  LocalFrame* frame = owner->DomWindow()->GetFrame();
   if (!frame || !frame->GetContentSettingsClient())
     return;
   switch (frame->GetContentSettingsClient()->GetBraveFarblingLevel()) {
