@@ -39,8 +39,7 @@ GeminiGetClientUrlFunction::Run() {
   auto* service = GetGeminiService(browser_context());
   const std::string client_url = service->GetOAuthClientUrl();
 
-  return RespondNow(OneArgument(
-      std::make_unique<base::Value>(client_url)));
+  return RespondNow(OneArgument(base::Value(client_url)));
 }
 
 ExtensionFunction::ResponseAction
@@ -58,7 +57,7 @@ GeminiGetAccessTokenFunction::Run() {
 }
 
 void GeminiGetAccessTokenFunction::OnCodeResult(bool success) {
-  Respond(OneArgument(std::make_unique<base::Value>(success)));
+  Respond(OneArgument(base::Value(success)));
 }
 
 ExtensionFunction::ResponseAction
@@ -76,7 +75,7 @@ GeminiRefreshAccessTokenFunction::Run() {
 }
 
 void GeminiRefreshAccessTokenFunction::OnRefreshResult(bool success) {
-  Respond(OneArgument(std::make_unique<base::Value>(success)));
+  Respond(OneArgument(base::Value(success)));
 }
 
 ExtensionFunction::ResponseAction
@@ -101,7 +100,7 @@ GeminiGetTickerPriceFunction::Run() {
 
 void GeminiGetTickerPriceFunction::OnPriceResult(
     const std::string& price) {
-  Respond(OneArgument(std::make_unique<base::Value>(price)));
+  Respond(OneArgument(base::Value(price)));
 }
 
 ExtensionFunction::ResponseAction
@@ -154,8 +153,7 @@ GeminiGetDepositInfoFunction::Run() {
 
 void GeminiGetDepositInfoFunction::OnGetDepositInfo(
     const std::string& deposit_address) {
-  Respond(OneArgument(
-      std::make_unique<base::Value>(deposit_address)));
+  Respond(OneArgument(base::Value(deposit_address)));
 }
 
 ExtensionFunction::ResponseAction
@@ -173,7 +171,7 @@ GeminiRevokeTokenFunction::Run() {
 }
 
 void GeminiRevokeTokenFunction::OnRevokeToken(bool success) {
-  Respond(OneArgument(std::make_unique<base::Value>(success)));
+  Respond(OneArgument(base::Value(success)));
 }
 
 ExtensionFunction::ResponseAction
@@ -232,7 +230,7 @@ GeminiExecuteOrderFunction::Run() {
 }
 
 void GeminiExecuteOrderFunction::OnOrderExecuted(bool success) {
-  Respond(OneArgument(std::make_unique<base::Value>(success)));
+  Respond(OneArgument(base::Value(success)));
 }
 
 ExtensionFunction::ResponseAction
@@ -240,8 +238,7 @@ GeminiIsSupportedFunction::Run() {
   Profile* profile = Profile::FromBrowserContext(browser_context());
   bool is_supported = ntp_widget_utils::IsRegionSupported(
       profile->GetPrefs(), ::gemini::supported_regions, true);
-  return RespondNow(OneArgument(
-      std::make_unique<base::Value>(is_supported)));
+  return RespondNow(OneArgument(base::Value(is_supported)));
 }
 
 }  // namespace api
