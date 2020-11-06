@@ -637,6 +637,26 @@ ExtensionFunction::ResponseAction BraveRewardsSaveAdsSettingFunction::Run() {
   return RespondNow(NoArguments());
 }
 
+BraveRewardsSetAutoContributeEnabledFunction::
+~BraveRewardsSetAutoContributeEnabledFunction() {
+}
+
+ExtensionFunction::ResponseAction
+BraveRewardsSetAutoContributeEnabledFunction::Run() {
+  std::unique_ptr<brave_rewards::SetAutoContributeEnabled::Params> params(
+      brave_rewards::SetAutoContributeEnabled::Params::Create(*args_));
+  Profile* profile = Profile::FromBrowserContext(browser_context());
+  RewardsService* rewards_service =
+      RewardsServiceFactory::GetForProfile(profile);
+
+  if (!rewards_service) {
+    return RespondNow(Error("Rewards service is not initialized"));
+  }
+
+  rewards_service->SetAutoContributeEnabled(params->enabled);
+  return RespondNow(NoArguments());
+}
+
 BraveRewardsGetACEnabledFunction::
 ~BraveRewardsGetACEnabledFunction() {
 }

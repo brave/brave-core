@@ -880,6 +880,17 @@
         ]
       },
       {
+        "name": "setAutoContributeEnabled",
+        "type": "function",
+        "description": "Updates ac enabled state",
+        "parameters": [
+          {
+            "name": "enabled",
+            "type": "boolean"
+          }
+        ]
+      },
+      {
         "name": "saveRecurringTip",
         "type": "function",
         "description": "Updates recurring tip amount for rewards panel",

@@ -30,7 +30,7 @@ export default class PaymentsBox extends React.PureComponent<Props, {}> {
         isPrevious={index <= currentScreen}
       >
         <WelcomeRewardsImage />
-        <Title>{getLocale('enableBraveRewards')}</Title>
+        <Title>{getLocale('braveRewardsTitle')}</Title>
         <Paragraph>{getLocale('setupBraveRewards')}</Paragraph>
         <PrimaryButton
           level='primary'

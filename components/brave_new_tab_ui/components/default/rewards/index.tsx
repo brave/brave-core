@@ -48,7 +48,7 @@ export interface RewardsProps {
   showContent: boolean
   stackPosition: number
   onShowContent: () => void
-  onEnableAds: () => void
+  onStartRewards: () => void
   onDismissNotification: (id: string) => void
   onDismissBrandedWallpaperNotification: (isUserAction: boolean) => void
   onDisableBrandedWallpaper: () => void
@@ -59,7 +59,7 @@ class Rewards extends React.PureComponent<RewardsProps, {}> {
     const {
       parameters,
       enabledAds,
-      onEnableAds,
+      onStartRewards,
       adsEstimatedEarnings,
       onlyAnonWallet,
       adsSupported
@@ -80,7 +80,7 @@ class Rewards extends React.PureComponent<RewardsProps, {}> {
               {getLocale('rewardsWidgetTurnOnText')}
             </TurnOnText>
             <TurnOnAdsButton
-              onClick={onEnableAds}
+              onClick={onStartRewards}
               type={'accent'}
               brand={'rewards'}
               text={getLocale('rewardsWidgetTurnOnAds')}
@@ -108,7 +108,7 @@ class Rewards extends React.PureComponent<RewardsProps, {}> {
         <AmountDescription>
           {
             showEnableAds
-            ? <StyledTOS title={getLocale('rewardsWidgetEarnAndGive')} />
+            ? <StyledTOS title={getLocale('rewardsWidgetStartUsing')} />
             : getLocale('rewardsWidgetEstimatedEarnings')
           }
         </AmountDescription>
@@ -175,7 +175,7 @@ class Rewards extends React.PureComponent<RewardsProps, {}> {
       promotions,
       onDismissNotification,
       enabledAds,
-      onEnableAds
+      onStartRewards
     } = this.props
 
     // TODO(petemill): If we want a true 'single' mode then
@@ -199,7 +199,7 @@ class Rewards extends React.PureComponent<RewardsProps, {}> {
         <BrandedWallpaperNotification
           isOrphan={singleOrphaned}
           onDismissNotification={this.dismissBrandedWallpapernotificationUserAction}
-          onEnableAds={enabledAds ? undefined : onEnableAds}
+          onStartRewards={enabledAds ? undefined : onStartRewards}
           brandedWallpaperData={this.props.brandedWallpaperData}
           onHideSponsoredImages={this.props.onDisableBrandedWallpaper}
           order={promotions ? promotions.length + 1 : 1}

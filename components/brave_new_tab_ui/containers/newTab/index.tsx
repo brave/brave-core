@@ -351,8 +351,9 @@ class NewTabPage extends React.Component<Props, State> {
     )
   }
 
-  enableAds = () => {
+  startRewards = () => {
     chrome.braveRewards.saveAdsSetting('adsEnabled', 'true')
+    chrome.braveRewards.setAutoContributeEnabled(true)
   }
 
   dismissBrandedWallpaperNotification = (isUserAction: boolean) => {
@@ -769,7 +770,7 @@ class NewTabPage extends React.Component<Props, State> {
         hideWidget={this.toggleShowRewards}
         showContent={showContent}
         onShowContent={this.setForegroundStackWidget.bind(this, 'rewards')}
-        onEnableAds={this.enableAds}
+        onStartRewards={this.startRewards}
         isShowingBrandedWallpaper={isShowingBrandedWallpaper}
         showBrandedWallpaperNotification={shouldShowBrandedWallpaperNotification}
         onDisableBrandedWallpaper={this.disableBrandedWallpaper}
