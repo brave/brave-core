@@ -42,6 +42,8 @@ class PromotionTransfer {
       type::UnblindedTokenList list,
       ledger::ResultCallback callback);
 
+  std::vector<type::PromotionType> GetEligiblePromotions();
+
   LedgerImpl* ledger_;  // NOT OWNED
   std::unique_ptr<credential::Credentials> credentials_;
 };
