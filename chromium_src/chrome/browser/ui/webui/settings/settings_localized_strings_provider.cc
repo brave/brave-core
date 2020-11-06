@@ -261,6 +261,8 @@ void BraveAddCommonStrings(content::WebUIDataSource* html_source,
     { "braveNewTab", IDS_SETTINGS_NEW_TAB },
     { "braveNewTabBraveRewards", IDS_SETTINGS_NEW_TAB_BRAVE_REWARDS },
     { "braveNewTabNewTabPageShows", IDS_SETTINGS_NEW_TAB_NEW_TAB_PAGE_SHOWS },
+    {"braveNewTabNewTabCustomizeWidgets",
+      IDS_SETTINGS_NEW_TAB_NEW_TAB_CUSTOMIZE_WIDGETS},
     // Misc (TODO: Organize this)
     {"onExitPageTitle",
       IDS_SETTINGS_BRAVE_ON_EXIT},

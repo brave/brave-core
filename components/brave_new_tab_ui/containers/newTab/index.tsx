@@ -122,6 +122,7 @@ class NewTabPage extends React.Component<Props, State> {
     if (GetShouldShowBrandedWallpaperNotification(this.props)) {
       this.trackBrandedWallpaperNotificationAutoDismiss()
     }
+    this.checkShouldOpenSettings()
   }
 
   componentDidUpdate (prevProps: Props) {
@@ -168,6 +169,18 @@ class NewTabPage extends React.Component<Props, State> {
     // Wait until page has been visible for an uninterupted Y seconds and then
     // dismiss the notification.
     this.visibilityTimer.startTracking()
+  }
+
+  checkShouldOpenSettings () {
+    const params = window.location.search
+    const urlParams = new URLSearchParams(params)
+    const openSettings = urlParams.get('openSettings')
+
+    if (openSettings) {
+      this.setState({ showSettingsMenu: true })
+      // Remove settings param so menu doesn't persist on reload
+      window.history.pushState(null, '', '/')
+    }
   }
 
   stopWaitingForBrandedWallpaperNotificationAutoDismiss () {

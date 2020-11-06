@@ -37,8 +37,10 @@
     <template is="dom-if" if="[[showNewTabDashboardSettings_]]">
       <div class="settings-box">
         <div class="flex">
-          <div class="normalize-margin">
-          </div>
+          <cr-link-row
+            label="$i18n{braveNewTabNewTabCustomizeWidgets}"
+            on-click="openNewTabPage_" external>
+          </cr-link-row>
         </div>
       </div>
     </template>

@@ -33,6 +33,8 @@
 
     /** @override */
     ready: function() {
+      this.openNewTabPage_ = this.openNewTabPage_.bind(this)
+
       this.browserProxy_.getNewTabShowsOptionsList().then(list => {
         this.newTabShowOptions_ = list;
       })
@@ -43,6 +45,10 @@
       this.addWebUIListener('show-new-tab-dashboard-settings-changed', (show) => {
         this.showNewTabDashboardSettings_ = show
       })
+    },
+
+    openNewTabPage_: function () {
+      window.open("chrome://newTab?openSettings=1", "_self");
     }
   });
 })();

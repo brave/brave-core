@@ -297,6 +297,9 @@ By installing this extension, you are agreeing to the Google Widevine Terms of U
       <message name="IDS_SETTINGS_NEW_TAB_NEW_TAB_PAGE_SHOWS_BLANKPAGE" desc="The label for blank page option">
         Blank page
       </message>
+      <message name="IDS_SETTINGS_NEW_TAB_NEW_TAB_CUSTOMIZE_WIDGETS" desc="The label for widget customization">
+        Customize the background image and widgets that appear on the new tab page
+      </message>
       <!-- Tor -->
       <message name="IDS_NEW_TOR_IDENTITY" desc="The text label of a menu item for requesting new Tor identity">
         New Tor Identity
