@@ -69,7 +69,7 @@ type::Result PostClaimBrave::CheckStatusCode(const int status_code) {
   }
 
   if (status_code == net::HTTP_CONFLICT) {
-    BLOG(0, "Not found");
+    BLOG(0, "Conflict");
     return type::Result::ALREADY_EXISTS;
   }
 
@@ -92,7 +92,7 @@ void PostClaimBrave::Request(
       this,
       _1,
       callback);
-  const std::string& payload = GeneratePayload(destination_payment_id);
+  const std::string payload = GeneratePayload(destination_payment_id);
 
   const auto wallet = ledger_->wallet()->GetWallet();
   if (!wallet) {
@@ -101,8 +101,11 @@ void PostClaimBrave::Request(
     return;
   }
 
+  const auto sign_url =  base::StringPrintf(
+      "post %s",
+      GetPath(wallet->payment_id).c_str());
   auto headers = util::BuildSignHeaders(
-      GetPath(wallet->payment_id),
+      sign_url,
       payload,
       wallet->payment_id,
       wallet->recovery_seed);

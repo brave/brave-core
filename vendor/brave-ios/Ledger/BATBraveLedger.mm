@@ -71,7 +71,9 @@ static NSString * const kTransferFeesPrefKey = @"transfer_fees";
 static const auto kOneDay = base::Time::kHoursPerDay * base::Time::kSecondsPerHour;
 
 /// Ledger Prefs, keys will be defined in `bat/ledger/option_keys.h`
-const std::map<std::string, bool> kBoolOptions = {};
+const std::map<std::string, bool> kBoolOptions = {
+    {ledger::option::kClaimUGP, true}
+};
 const std::map<std::string, int> kIntegerOptions = {};
 const std::map<std::string, double> kDoubleOptions = {};
 const std::map<std::string, std::string> kStringOptions = {};
