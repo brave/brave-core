@@ -24,8 +24,6 @@ type::PromotionType ConvertStringToPromotionType(const std::string& type);
 type::ReportType ConvertPromotionTypeToReportType(
     const type::PromotionType type);
 
-std::vector<type::PromotionType> GetEligiblePromotions();
-
 }  // namespace promotion
 }  // namespace ledger
 

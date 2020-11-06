@@ -5,11 +5,12 @@
 
 #include <utility>
 
+#include "bat/ledger/internal/constants.h"
 #include "bat/ledger/internal/ledger_impl.h"
 #include "bat/ledger/internal/logging/event_log_keys.h"
 #include "bat/ledger/internal/promotion/promotion_transfer.h"
 #include "bat/ledger/internal/promotion/promotion_util.h"
-#include "bat/ledger/internal/constants.h"
+#include "bat/ledger/option_keys.h"
 
 using std::placeholders::_1;
 using std::placeholders::_2;
@@ -100,6 +101,20 @@ void PromotionTransfer::OnGetEligibleTokens(
         }
         callback(result);
       });
+}
+
+std::vector<type::PromotionType> PromotionTransfer::GetEligiblePromotions() {
+  std::vector<type::PromotionType> promotions = {
+    type::PromotionType::ADS
+  };
+
+  const bool claim_ugp =
+      ledger_->ledger_client()->GetBooleanOption(option::kClaimUGP);
+  if (claim_ugp) {
+    promotions.push_back(type::PromotionType::UGP);
+  }
+
+  return promotions;
 }
 
 }  // namespace promotion

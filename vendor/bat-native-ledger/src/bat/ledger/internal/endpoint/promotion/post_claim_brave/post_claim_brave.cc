@@ -101,8 +101,11 @@ void PostClaimBrave::Request(
     return;
   }
 
+  const auto sign_url =  base::StringPrintf(
+      "post %s",
+      GetPath(wallet->payment_id).c_str());
   auto headers = util::BuildSignHeaders(
-      GetPath(wallet->payment_id),
+      sign_url,
       payload,
       wallet->payment_id,
       wallet->recovery_seed);
