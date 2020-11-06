@@ -10,21 +10,30 @@ import { URLS } from './privateCDN'
 
 type RemoteData = BraveToday.FeedItem[]
 
+type FeedInStorage = {
+  storageSchemaVersion: number,
+  feed: BraveToday.Feed
+}
+
 const feedUrl = URLS.braveTodayFeed
-
 let memoryTodayData: BraveToday.Feed | undefined
-
 let readLock: Promise<void> | null
-
 const STORAGE_KEY = 'today'
+const STORAGE_KEY_ETAG = 'todayEtag'
+const STORAGE_KEY_LAST_REMOTE_CHECK = 'todayLastRemoteUpdateCheck'
 const STORAGE_SCHEMA_VERSION = 1
+let isKnownRemoteUpdateAvailable = false
 
-function isValidStorageData (data: {[key: string]: any}) {
-  return (
-    data && data.today &&
-    data.today.storageSchemaVersion === STORAGE_SCHEMA_VERSION &&
-    data.today.feed
-  )
+function getFromStorage<T> (key: string) {
+  return new Promise<T | null>(resolve => {
+    chrome.storage.local.get(key, (data) => {
+      if (Object.keys(data).includes(key)) {
+        resolve(data[key] as T)
+      } else {
+        resolve(null)
+      }
+    })
+  })
 }
 
 function setStorageData (feed: BraveToday.Feed) {
@@ -36,16 +45,39 @@ function setStorageData (feed: BraveToday.Feed) {
   })
 }
 
-function getStorageData () {
-  return new Promise<void>(resolve => {
-    // Load any data from memory, as long as it is the expected format.
-    chrome.storage.local.get(STORAGE_KEY, (data) => {
-      if (isValidStorageData(data)) {
-        memoryTodayData = data.today.feed
-      }
-      resolve()
+function setStorageEtag (etag: string | null) {
+  if (!etag) {
+    chrome.storage.local.remove(STORAGE_KEY_ETAG)
+  } else {
+    chrome.storage.local.set({
+      [STORAGE_KEY_ETAG]: etag
     })
+  }
+}
+
+function getStorageEtag () {
+  return getFromStorage<string>(STORAGE_KEY_ETAG)
+}
+
+function setLastUpdateCheckTime (time: number) {
+  chrome.storage.local.set({
+    [STORAGE_KEY_LAST_REMOTE_CHECK]: time
   })
+}
+
+export async function getLastUpdateCheckTime () {
+  return getFromStorage<number>(STORAGE_KEY_LAST_REMOTE_CHECK)
+}
+
+async function getStorageData () {
+  const data = await getFromStorage<FeedInStorage>(STORAGE_KEY)
+  if (!data || !data.feed) {
+    return
+  }
+  if (data.storageSchemaVersion !== STORAGE_SCHEMA_VERSION) {
+    return
+  }
+  memoryTodayData = data.feed
 }
 
 function clearStorageData () {
@@ -68,12 +100,19 @@ function performUpdateFeed () {
   readLock = new Promise(async function (resolve, reject) {
     try {
       const [feedResponse, publishers] = await Promise.all([
+        // We don't use If-None-Match header because
+        // often have to fetch same data and compute feed
+        // with different publisher preferences.
         fetch(feedUrl),
         getOrFetchPublishers()
       ])
       if (feedResponse.ok) {
+        // Save the Etag so we can check for updates periodically.
+        const feedEtag = feedResponse.headers.get('Etag')
+        setStorageEtag(feedEtag)
+        setLastUpdateCheckTime(Date.now())
         const feedContents: RemoteData = await feedResponse.json()
-        console.debug('fetched feed', feedContents)
+        console.debug(`Successfully got new remote feed with etag ${feedEtag}.`, feedResponse.headers)
         if (!publishers) {
           throw new Error('no publishers to filter feed')
         }
@@ -84,6 +123,7 @@ function performUpdateFeed () {
           }
         }
         memoryTodayData = await feedToData(feedContents, enabledPublishers)
+        isKnownRemoteUpdateAvailable = false
         resolve()
         if (memoryTodayData) {
           setStorageData(memoryTodayData)
@@ -105,10 +145,37 @@ export async function getOrFetchData (waitForInProgressUpdate: boolean = false) 
   if (waitForInProgressUpdate && readLock) {
     await readLock
   }
-  if (memoryTodayData) {
+  if (memoryTodayData && !isKnownRemoteUpdateAvailable) {
     return memoryTodayData
   }
   return update()
+}
+
+export async function checkForRemoteUpdate () {
+  // wait for any in-progress fetch
+  if (isKnownRemoteUpdateAvailable) {
+    return true
+  }
+  if (readLock) {
+    await readLock
+  }
+  const existingEtag = await getStorageEtag()
+  if (!existingEtag) {
+    return true
+  }
+  const headResponse = await fetch(feedUrl, { method: 'HEAD' })
+  if (!headResponse.ok) {
+    console.warn(`Tried to fetch feed HEAD but got error ${headResponse.status}: "${headResponse.statusText}".`)
+    return false
+  }
+  const newEtag = headResponse.headers.get('Etag')
+  setLastUpdateCheckTime(Date.now())
+  console.debug(`Brave Today checked for new update. New Etag is "${newEtag}". Last Etag was "${existingEtag}".`)
+  if (newEtag && newEtag !== existingEtag) {
+    isKnownRemoteUpdateAvailable = true
+    return true
+  }
+  return false
 }
 
 export async function update (force: boolean = false) {

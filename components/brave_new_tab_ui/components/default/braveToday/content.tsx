@@ -15,6 +15,8 @@ function getFeedHashForCache (feed?: BraveToday.Feed) {
   return feed ? feed.hash : ''
 }
 
+let pageRequestPending = false
+
 export default function BraveTodayContent (props: Props) {
   const { feed, publishers } = props
 
@@ -26,14 +28,19 @@ export default function BraveTodayContent (props: Props) {
     if (!element) {
       return
     }
-    const options = { root: null, rootMargin: '0px', threshold: 1.0 }
     const endOfCurrentArticlesListObserver = new IntersectionObserver((entries) => {
-      const currentYAxisForPostsBottom = entries[0].boundingClientRect.top
-      if (previousYAxis.current > currentYAxisForPostsBottom) {
-        props.onAnotherPageNeeded()
+      console.debug('Brave Today content Intersection Observer triggered')
+      if (entries.some(entry => entry.intersectionRatio > 0)) {
+        console.debug('Brave Today content Intersection Observer determined need new page.')
+        if (!pageRequestPending) {
+          pageRequestPending = true
+          window.requestIdleCallback(() => {
+            pageRequestPending = false
+            props.onAnotherPageNeeded()
+          })
+        }
       }
-      previousYAxis.current = currentYAxisForPostsBottom
-    }, options)
+    })
     // Load up more posts (infinite scroll)
     endOfCurrentArticlesListObserver.observe(element)
   }, [previousYAxis])
@@ -46,12 +53,13 @@ export default function BraveTodayContent (props: Props) {
     }
     optionsTriggerRef.current = element
     const observer = new IntersectionObserver((entries) => {
-      const entry = entries[0]
-      // Only concerned with whether we're below the
-      // viewport threshold or not, not whether the target is out of viewport
-      // because it's above viewport.
-      const shouldShowOptions = entry.isIntersecting
-        || entry.boundingClientRect.top < 0
+      console.debug('Intersection Observer trigger show options', [...entries])
+      // Show if target article is inside or above viewport.
+      const shouldShowOptions = entries.some(
+        entry => entry.isIntersecting
+                  || entry.boundingClientRect.top < 0
+      )
+      console.debug('Intersection Observer trigger show options, changing', shouldShowOptions)
       setShowOptions(shouldShowOptions)
     })
     observer.observe(element)
@@ -72,6 +80,22 @@ export default function BraveTodayContent (props: Props) {
     }
     prevFeedHashRef.current = currentFeedHash
   })
+
+  // Check for changes often, (won't incur remote check,
+  // only local unless it's been awhile).
+  React.useEffect(() => {
+    const intervalMs = 2 * 60 * 1000
+    let timeoutHandle: number
+    setInterval(() => {
+      props.onCheckForUpdate()
+    }, intervalMs)
+    // Cancel the timer when we are unmounted
+    return () => {
+      if (timeoutHandle) {
+        clearInterval(timeoutHandle)
+      }
+    }
+  }, [])
 
   if (!feed) {
     return null
@@ -114,7 +138,15 @@ export default function BraveTodayContent (props: Props) {
       }
       <Customize onCustomizeBraveToday={props.onCustomizeBraveToday} show={showOptions} />
       <Refresh isFetching={props.isFetching} show={showOptions && (props.isUpdateAvailable || props.isFetching)} onClick={props.onRefresh} />
-      <div ref={setScrollTriggerRef} />
+      <div
+        ref={setScrollTriggerRef}
+        style={{
+          width: '1px',
+          height: '1px',
+          position: 'absolute',
+          bottom: '900px'
+        }}
+      />
     </>
   )
 }

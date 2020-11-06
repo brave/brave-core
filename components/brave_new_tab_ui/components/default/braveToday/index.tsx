@@ -27,6 +27,7 @@ export type Props = {
   onAnotherPageNeeded: () => any
   onCustomizeBraveToday: () => any
   onRefresh: () => any
+  onCheckForUpdate: () => any
 }
 
 class BraveToday extends React.PureComponent<Props, State> {
@@ -48,7 +49,7 @@ class BraveToday extends React.PureComponent<Props, State> {
   }
 
   handleBraveTodayHitsViewportObserver = (entries: IntersectionObserverEntry[]) => {
-    const isIntersecting = entries[0].isIntersecting
+    const isIntersecting = entries.some(entry => entry.isIntersecting)
     this.props.onInteracting(isIntersecting)
     if (isIntersecting) {
       this.setState({ hasInteractionStarted: true })

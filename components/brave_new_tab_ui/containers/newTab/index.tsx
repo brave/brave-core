@@ -1112,6 +1112,7 @@ class NewTabPage extends React.Component<Props, State> {
           // tslint:disable-next-line:jsx-no-lambda
           onCustomizeBraveToday={() => { this.openSettings(SettingsTabType.BraveToday) }}
           onReadFeedItem={this.props.actions.today.readFeedItem}
+          onCheckForUpdate={this.props.actions.today.checkForUpdate}
         />
         }
         <Settings

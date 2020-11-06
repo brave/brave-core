@@ -67,6 +67,8 @@ function performUpdate () {
   // Only run this once at a time, otherwise wait for the update
   readLock = new Promise(async function (resolve, reject) {
     try {
+      // TODO(petemill): Use If-None-Match so we don't re-download the exact
+      // same publisher list. Save Etag in storage.
       const feedResponse = await fetch(url)
       if (feedResponse.ok) {
         const feedContents: BraveToday.Publisher[] = await feedResponse.json()

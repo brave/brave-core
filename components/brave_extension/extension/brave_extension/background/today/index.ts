@@ -36,8 +36,8 @@ function ensureUpdateFrequency () {
   chrome.alarms.get(ALARM_KEY_FEED_UPDATE, (alarm) => {
     if (!alarm) {
       chrome.alarms.create(ALARM_KEY_FEED_UPDATE, {
-        delayInMinutes: 60,
-        periodInMinutes: 60
+        delayInMinutes: 60 * 3,
+        periodInMinutes: 60 * 3
       })
     }
   })
@@ -70,9 +70,24 @@ function stopUpdateFrequency () {
 import MessageTypes = Background.MessageTypes.Today
 import Messages = BraveToday.Messages
 
+async function fetchIsUpdateAvailableIfTime () {
+  // When the user is interacting with Brave Today, we check
+  // more frequently than our timer.
+  const lastUpdateTime = await Feed.getLastUpdateCheckTime()
+  const shouldCheck = !lastUpdateTime ||
+    (Date.now() - lastUpdateTime) >= (10 * 60 * 1000) // 10 minutes
+  if (shouldCheck) {
+    const hasUpdate = await Feed.checkForRemoteUpdate()
+    console.debug(`Brave Today checked for update because it's been used for 10 mins. Update ${hasUpdate ? 'was' : 'was NOT'} available.`)
+    return hasUpdate
+  }
+  return null
+}
+
 Background.setListener<void>(
   MessageTypes.indicatingOpen,
   async function () {
+    // This will only get called from a page that Brave Today is enabled on.
     // Start to fetch data if that hasn't happened yet,
     // but don't use resources returning it when
     // most NTP opens won't result in reading Brave Today
@@ -136,8 +151,14 @@ Background.setListener<Messages.IsFeedUpdateAvailableResponse, Messages.IsFeedUp
   MessageTypes.isFeedUpdateAvailable,
   async function (req, sender, sendResponse) {
     const requestHash = req.hash
+    // Check for update from local
     const feed = await Feed.getOrFetchData(true)
-    const isUpdateAvailable = !!(feed && feed.hash !== requestHash)
+    let isUpdateAvailable = !!(feed && feed.hash !== requestHash)
+    if (!isUpdateAvailable) {
+      // Maybe Check for update from remote
+      const isRemoteUpdateAvailble = await fetchIsUpdateAvailableIfTime()
+      isUpdateAvailable = isRemoteUpdateAvailble || false
+    }
     sendResponse({ isUpdateAvailable })
   }
 )
