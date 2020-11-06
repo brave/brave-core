@@ -300,3 +300,87 @@ IN_PROC_BROWSER_TEST_F(EphemeralStorageBrowserTest,
   EXPECT_EQ(nullptr, values_after.iframe_1.session_storage);
   EXPECT_EQ(nullptr, values_after.iframe_2.session_storage);
 }
+
+IN_PROC_BROWSER_TEST_F(EphemeralStorageBrowserTest,
+                       ReloadDoesNotClearEphemeralStorage) {
+  AllowAllCookies();
+
+  ui_test_utils::NavigateToURL(browser(), a_site_ephemeral_storage_url_);
+  auto* web_contents = browser()->tab_strip_model()->GetActiveWebContents();
+
+  SetValuesInFrames(web_contents, "a.com value", "from=a.com");
+
+  ValuesFromFrames values_before = GetValuesFromFrames(web_contents);
+  EXPECT_EQ("a.com value", values_before.main_frame.local_storage);
+  EXPECT_EQ("a.com value", values_before.iframe_1.local_storage);
+  EXPECT_EQ("a.com value", values_before.iframe_2.local_storage);
+
+  EXPECT_EQ("a.com value", values_before.main_frame.session_storage);
+  EXPECT_EQ("a.com value", values_before.iframe_1.session_storage);
+  EXPECT_EQ("a.com value", values_before.iframe_2.session_storage);
+
+  // Reload the page.
+  ui_test_utils::NavigateToURL(browser(), a_site_ephemeral_storage_url_);
+
+  ValuesFromFrames values_after = GetValuesFromFrames(web_contents);
+  EXPECT_EQ("a.com value", values_after.main_frame.local_storage);
+  EXPECT_EQ("a.com value", values_after.iframe_1.local_storage);
+  EXPECT_EQ("a.com value", values_after.iframe_2.local_storage);
+
+  EXPECT_EQ("a.com value", values_after.main_frame.session_storage);
+  EXPECT_EQ("a.com value", values_after.iframe_1.session_storage);
+  EXPECT_EQ("a.com value", values_after.iframe_2.session_storage);
+}
+
+IN_PROC_BROWSER_TEST_F(EphemeralStorageBrowserTest,
+                       EphemeralStorageDoesNotLeakBetweenProfiles) {
+  AllowAllCookies();
+
+  ui_test_utils::NavigateToURL(browser(), a_site_ephemeral_storage_url_);
+  auto* web_contents = browser()->tab_strip_model()->GetActiveWebContents();
+
+  SetValuesInFrames(web_contents, "a.com value", "from=a.com");
+
+  ValuesFromFrames values_before = GetValuesFromFrames(web_contents);
+  EXPECT_EQ("a.com value", values_before.main_frame.local_storage);
+  EXPECT_EQ("a.com value", values_before.iframe_1.local_storage);
+  EXPECT_EQ("a.com value", values_before.iframe_2.local_storage);
+
+  EXPECT_EQ("a.com value", values_before.main_frame.session_storage);
+  EXPECT_EQ("a.com value", values_before.iframe_1.session_storage);
+  EXPECT_EQ("a.com value", values_before.iframe_2.session_storage);
+
+  // A browser with the same profile should share all values with the
+  // first browser, including ephemeral storage values.
+  Browser* same_profile_browser = CreateBrowser(browser()->profile());
+  ui_test_utils::NavigateToURL(same_profile_browser,
+                               a_site_ephemeral_storage_url_);
+  auto* same_profile_web_contents =
+      browser()->tab_strip_model()->GetActiveWebContents();
+
+  ValuesFromFrames same_profile_values =
+      GetValuesFromFrames(same_profile_web_contents);
+  EXPECT_EQ("a.com value", same_profile_values.main_frame.local_storage);
+  EXPECT_EQ("a.com value", same_profile_values.iframe_1.local_storage);
+  EXPECT_EQ("a.com value", same_profile_values.iframe_2.local_storage);
+
+  EXPECT_EQ("a.com value", same_profile_values.main_frame.session_storage);
+  EXPECT_EQ("a.com value", same_profile_values.iframe_1.session_storage);
+  EXPECT_EQ("a.com value", same_profile_values.iframe_2.session_storage);
+
+  // A browser with a different profile shouldn't share any values with
+  // the first set of browsers.
+  Browser* private_browser = CreateIncognitoBrowser(nullptr);
+  ui_test_utils::NavigateToURL(private_browser, a_site_ephemeral_storage_url_);
+  auto* private_web_contents =
+      private_browser->tab_strip_model()->GetActiveWebContents();
+
+  ValuesFromFrames private_values = GetValuesFromFrames(private_web_contents);
+  EXPECT_EQ(nullptr, private_values.main_frame.local_storage);
+  EXPECT_EQ(nullptr, private_values.iframe_1.local_storage);
+  EXPECT_EQ(nullptr, private_values.iframe_2.local_storage);
+
+  EXPECT_EQ(nullptr, private_values.main_frame.session_storage);
+  EXPECT_EQ(nullptr, private_values.iframe_1.session_storage);
+  EXPECT_EQ(nullptr, private_values.iframe_2.session_storage);
+}
