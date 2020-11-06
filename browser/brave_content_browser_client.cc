@@ -130,9 +130,8 @@ bool HandleURLRewrite(GURL* url, content::BrowserContext* browser_context) {
 
 }  // namespace
 
-BraveContentBrowserClient::BraveContentBrowserClient(StartupData* startup_data)
-    : ChromeContentBrowserClient(startup_data),
-      session_token_(base::RandUint64()),
+BraveContentBrowserClient::BraveContentBrowserClient()
+    : session_token_(base::RandUint64()),
       incognito_session_token_(base::RandUint64()) {}
 
 BraveContentBrowserClient::~BraveContentBrowserClient() {}
