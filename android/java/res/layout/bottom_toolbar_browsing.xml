@@ -18,7 +18,7 @@
 
     <!-- <include layout="@layout/toolbar_space" /> -->
 
-    <org.chromium.chrome.browser.toolbar.BraveHomeButton
+    <org.chromium.chrome.browser.toolbar.HomeButton
         android:id="@+id/bottom_home_button"
         app:tint="@color/default_icon_color_tint_list"
         android:background="?attr/selectableItemBackgroundBorderless"
