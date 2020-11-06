@@ -6518,6 +6518,8 @@ parollar va boshqa sozlamalaringiz Brave hisobingizga sinxronlanadi.</translatio
 <translation id="996250603853062861">Xavfsiz aloqa o‘rnatilmoqda...</translation>
 <translation id="998747458861718449">Kodini ko‘rish</translation>
 <translation id="38046578254905003"><ph name="BEGIN_LINK"/>Brave internet-do‘konidan<ph name="END_LINK"/> kengaytma va mavzularni topish</translation>
+<translation id="6744651634043798597">{COUNT,plural, =0{Barchasini &amp;inkognito oynasida ochish}=1{&amp;Inkognito oynasida ochish}other{Barchasini (#) &amp;inkognito oynasida ochish}}</translation>
+<translation id="2633634757060186848">{COUNT,plural, =0{Barchasini &amp;inkognito oynasida ochish}=1{&amp;Inkognito oynasida ochish}other{Barchasini (#) &amp;inkognito oynasida ochish}}</translation>
 <translation id="658539216370629794">Havolani &amp;inkognito rejimi oynasida ochish</translation>
 <translation id="1432267168815937878">Havolani &amp;inkognito rejimida ochish</translation>
 <translation id="6516243500644829484">Yangi &amp;inkognito oynasi</translation>
@@ -6548,10 +6550,8 @@ parollar va boshqa sozlamalaringiz Brave hisobingizga sinxronlanadi.</translatio
 <translation id="3098826269712097986">Brave barmoq izlaringizni Inkognito rejimidan chiqilgandan keyin saqlaydi. Bu bilan keyingi safar ushbu saytga Touch ID orqali kirish mumkin.</translation>
 <translation id="5186185447130319458">Inkognito</translation>
 <translation id="2579188629646253712">Inkognito rejimidan chiqish</translation>
-<translation id="6744651634043798597">{COUNT,plural, =0{Barchasini &amp;inkognito oynasida ochish}=1{&amp;Inkognito oynasida ochish}other{Barchasini (#) &amp;inkognito oynasida ochish}}</translation>
 <translation id="2431625704210501303">&amp;Inkognito rejimida ochish</translation>
 <translation id="4620367155626060530">&amp;Xatcho‘plar panelini ko‘rsatish</translation>
-<translation id="2633634757060186848">{COUNT,plural, =0{Barchasini &amp;inkognito oynasida ochish}=1{&amp;Inkognito oynasida ochish}other{Barchasini (#) &amp;inkognito oynasida ochish}}</translation>
 <translation id="1985165269306590797">&amp;Inkognito rejimida ochish</translation>
 <translation id="4680518314108745448">&amp;Xatcho‘plar panelini ko‘rsatish</translation>
 <translation id="642436385689435488">Barchasini inkognito oynalarda ochish</translation>

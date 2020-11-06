@@ -1026,6 +1026,7 @@
 <translation id="996149300115483134">የምግብ ካርድ ምናሌ ተዘግቷል</translation>
 <translation id="4540437243849625078">ይህ ጣቢያ ማንነት ከማያሳውቅ ሁነታ ውጭ ላለ መተግበሪያ መረጃ ሊያጋራ ነው።</translation>
 <translation id="1227836882233136433">ማንነት ከማያሳውቅ ሁነታ ይውጣ?</translation>
+<translation id="21023559487771014">ወደ ማንነት የማያሳውቅ ሁነታ ይሂዱ</translation>
 <translation id="5186185447130319458">ማንነት የማያሳውቅ</translation>
 <translation id="9063160602596686558">የአጠቃቀም ስታስቲክስን እና የብልሽት ሪፖርቶችን በራስ-ሰር ወደ Brave Software ይልካል</translation>
 <translation id="1438581767753657407">ቀላል ሁነታ ሲበራ Brave ገጾች በበለጠ ፍጥነት እንዲጭኑ ለማድረግ የ Brave አገልጋዮችን ይጠቀማል። ቀላል ሁነታ በጣም ቀርፋፋ የሆኑ ገጾች መሠረታዊ ይዘትን ብቻ እንዲጭኑ አድርጎ ዳግም ይጽፋቸዋል። ቀላል ሁነታ በግል ትሮች ላይ አይተገበርም።</translation>
@@ -1035,7 +1036,11 @@
 <translation id="3110967157686007724">ማንነት የማያሳውቅ ትር</translation>
 <translation id="4526803704855831732">ማንነት የማያሳውቁ ትሮች</translation>
 <translation id="7465104139234185284">ሁሉንም ማንነት የማያሳውቁ ትሮችን ይዝጉ</translation>
-<translation id="21023559487771014">ወደ ማንነት የማያሳውቅ ሁነታ ይሂዱ</translation>
+<translation id="1455125811784733159">የግል ትር ይክፈቱ</translation>
+<translation id="807110510029471880">ለመግባት የግል ይጠቀሙ</translation>
+<translation id="7987056960390558517">በግል፣ የእርስዎ እንቅስቃሴዎች <ph name="BEGIN_BOLD1"/>ሊታይ የሚችለው <ph name="END_BOLD1"/>ለሚጎበኝዋቸው ድርጣቢያዎች፣ አሠሪዎ ወይም ትምህርት ቤትዎ እና የኢንተርኔት አገልግሎት ሰጪዎ ነው።
+
+ከግል ክፍለ ጊዜዎ ውስጥ ያለው መረጃ ሁሉንም ከ Brave የሚጠፉት <ph name="BEGIN_BOLD2"/>ሁሉንም የግል ትሮች ሲዘጉ ብቻ ነው<ph name="END_BOLD2"/>።</translation>
 <translation id="6336451774241870485">አዲስ የግል ትር</translation>
 <translation id="3234355010754616171">አዲስ የግል ትር</translation>
 <translation id="6610147964972079463">የግል ትሮችን ዝጋ</translation>

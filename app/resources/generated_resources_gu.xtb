@@ -6513,6 +6513,14 @@ USB ડિવાઇસ</translation>
 <translation id="996250603853062861">સુરક્ષિત કનેક્શન સ્થાપિત કરી રહ્યું છે...</translation>
 <translation id="998747458861718449">ત&amp;પાસ કરો</translation>
 <translation id="38046578254905003"><ph name="BEGIN_LINK">&lt;a target="_blank" rel="noopener noreferrer" href="https://chrome.google.com/webstore/category/extensions"&gt;</ph>Web Store<ph name="END_LINK">&lt;/a&gt;</ph>માં એક્સ્ટેન્શન અને થીમ શોધો</translation>
+<translation id="6744651634043798597">{COUNT, plural,
+          =0 {તમામને &amp;ખાનગી વિંડોમાં ખોલો}
+          =1 {&amp;ખાનગી વિંડોમાં ખોલો}
+          other {તમામને (#) &amp;ખાનગી વિંડોમાં ખોલો}}</translation>
+<translation id="2633634757060186848">{COUNT, plural,
+          =0 {તમામને &amp;ખાનગી વિંડોમાં ખોલો}
+          =1 {&amp;ખાનગી વિંડોમાં ખોલો}
+          other {તમામને (#) &amp;ખાનગી વિંડોમાં ખોલો}}</translation>
 <translation id="658539216370629794">લિંકને &amp;ખાનગી વિંડોમાં ખોલો</translation>
 <translation id="1432267168815937878">લિંકને &amp;ખાનગી વિંડોમાં ખોલો</translation>
 <translation id="6516243500644829484">નવી &amp;ખાનગી વિંડો</translation>
@@ -6543,16 +6551,8 @@ USB ડિવાઇસ</translation>
 <translation id="3098826269712097986">તમે ખાનગી મોડથી બહાર નીકળો તે પછી સાઇન-ઇન ડેટાને Brave માં સંગ્રહિત કરવામાં આવશે. આનાથી તમે પછી ફરીથી આ વેબસાઇટ સાથે ટચ ID નો ઉપયોગ કરશો.</translation>
 <translation id="5186185447130319458">ખાનગી</translation>
 <translation id="2579188629646253712">ખાનગીમાંથી બહાર નીકળો</translation>
-<translation id="6744651634043798597">{COUNT, plural,
-          =0 {તમામને &amp;ખાનગી વિંડોમાં ખોલો}
-          =1 {&amp;ખાનગી વિંડોમાં ખોલો}
-          other {તમામને (#) &amp;ખાનગી વિંડોમાં ખોલો}}</translation>
 <translation id="2431625704210501303">&amp;ખાનગી વિંડોમાં ખોલો</translation>
 <translation id="4620367155626060530">બુકમાર્ક્સ બાર &amp;બતાવો</translation>
-<translation id="2633634757060186848">{COUNT, plural,
-          =0 {તમામને &amp;ખાનગી વિંડોમાં ખોલો}
-          =1 {&amp;ખાનગી વિંડોમાં ખોલો}
-          other {તમામને (#) &amp;ખાનગી વિંડોમાં ખોલો}}</translation>
 <translation id="1985165269306590797">&amp;ખાનગી વિંડોમાં ખોલો</translation>
 <translation id="4680518314108745448">બુકમાર્ક્સ બાર &amp;બતાવો</translation>
 <translation id="642436385689435488">તમામને ખાનગી વિંડોમાં ખોલો</translation>

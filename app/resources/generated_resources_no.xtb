@@ -6515,6 +6515,14 @@ Jeg tror ikke det er nødvendig å blokkere dette nettstedet.</translation>
 <translation id="995782501881226248">YouTube</translation>
 <translation id="996250603853062861">Etablerer sikker tilkobling ...</translation>
 <translation id="998747458861718449">I&amp;nspiser</translation>
+<translation id="6744651634043798597">{ANTALL, flertall,
+          =0 {Åpne alle i &amp;privat vindu}
+          =1 {Åpne i &amp;privat vindu}
+          andre {Åpne alle (#) i &amp;privat vindu}}</translation>
+<translation id="2633634757060186848">{ANTALL, flertall,
+          =0 {Åpne alle i &amp;Privat vindu}
+          =1 {Åpne i &amp;Privat vindu}
+          andre {Åpne alle (#) i &amp;Privat vindu}}</translation>
 <translation id="658539216370629794">Åpne lenke i &amp;privat vindu</translation>
 <translation id="1432267168815937878">Åpne lenke i &amp;Privat vindu</translation>
 <translation id="6516243500644829484">Nytt &amp;privat vindu</translation>
@@ -6528,6 +6536,7 @@ Jeg tror ikke det er nødvendig å blokkere dette nettstedet.</translation>
 <translation id="9048137919253433011">Privat fane: <ph name="TAB_NAME"/></translation>
 <translation id="1799432502220762862">Privat underramme: <ph name="SUBFRAME_SITE"/></translation>
 <translation id="3193187622878830588">Inkognitoportal: <ph name="SUBFRAME_SITE"/></translation>
+<translation id="5097649414558628673">Verktøy: <ph name="PRINT_NAME"/></translation>
 <translation id="8808478386290700967">Nettmarked</translation>
 <translation id="8261378640211443080">Denne utvidelsen er ikke oppført i <ph name="IDS_EXTENSION_WEB_STORE_TITLE"/>, og kan ha blitt lagt uten at du har vært klar over det.</translation>
 <translation id="6827869674836193263"><ph name="WINDOW_TITLE"/> (Privat)</translation>
@@ -6545,19 +6554,21 @@ Jeg tror ikke det er nødvendig å blokkere dette nettstedet.</translation>
 <translation id="3098826269712097986">Innloggingsdata blir lagret i Brave etter at du avslutter privat modus. Dette gjør at du kan bruke berørings-ID på denne nettsiden senere.</translation>
 <translation id="5186185447130319458">Privat</translation>
 <translation id="2579188629646253712">Avslutt privat modus</translation>
-<translation id="6744651634043798597">{ANTALL, flertall,
+<translation id="1001131747196960052">Lukk privat</translation>
+<translation id="7475335772460644497">{COUNT, plural,
           =0 {Åpne alle i &amp;privat vindu}
           =1 {Åpne i &amp;privat vindu}
-          andre {Åpne alle (#) i &amp;privat vindu}}</translation>
+          other {Åpne alle ({COUNT}) i &amp;privat vindu}}</translation>
 <translation id="2431625704210501303">Åpne i &amp;privat vindu</translation>
 <translation id="4620367155626060530">&amp;Vis bokmerkerad</translation>
-<translation id="2633634757060186848">{ANTALL, flertall,
-          =0 {Åpne alle i &amp;Privat vindu}
-          =1 {Åpne i &amp;Privat vindu}
-          andre {Åpne alle (#) i &amp;Privat vindu}}</translation>
+<translation id="1448315815373449655">{COUNT, plural,
+          =0 {Åpne alle i &amp;privat vindu}
+          =1 {Åpne i &amp;privat vindu}
+          other {Åpne alle ({COUNT}) i &amp;privat vindu}}</translation>
 <translation id="1985165269306590797">Åpne i &amp;privat vindu</translation>
 <translation id="4680518314108745448">&amp;Vis bokmerkerad</translation>
 <translation id="642436385689435488">Åpne alle i privat vindu</translation>
+<translation id="5074021236879527611">Åpne alle (<ph name="URL_COUNT"/>) i privat vindu</translation>
 <translation id="5463021359602611602">Åpne i privat vindu</translation>
 <translation id="1850357845349976573">{0, flertall,
         =1 {Privat}
@@ -6607,6 +6618,8 @@ Jeg tror ikke det er nødvendig å blokkere dette nettstedet.</translation>
 <translation id="4854477725773269949">Tillat i privat modus</translation>
 <translation id="6436164536244065364">Se i Nettmarked</translation>
 <translation id="38046578254905003">Finn utvidelser og temaer på <ph name="BEGIN_LINK"/>Nettmarked<ph name="END_LINK"/></translation>
+<translation id="2402482691429508168">Profiler som har valgt å være synlige for deg når skjermen deres er ulåst</translation>
+<translation id="3910100573440336938">Del filer med profiler rundt deg</translation>
 <translation id="6336451774241870485">Ny privat fane</translation>
 <translation id="6610147964972079463">Lukk private faner</translation>
 <translation id="4933782374919065856">Har du spørsmål? Kontakt personen som administrer profilen din.</translation>

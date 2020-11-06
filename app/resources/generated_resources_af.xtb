@@ -6521,6 +6521,8 @@ Hou jou sleutellêer op 'n veilige plek. Jy gaan dit nodig hê om nuwe weergawes
 <translation id="996250603853062861">Vestig tans beveiligde verbinding …</translation>
 <translation id="998747458861718449">Ondersoek</translation>
 <translation id="38046578254905003">Kry uitbreidings en temas in die <ph name="BEGIN_LINK"/>Brave Webwinkel<ph name="END_LINK"/></translation>
+<translation id="6744651634043798597">{COUNT,plural, =0{Maak almal in &amp;incognito-venster oop}=1{Maak in &amp;incognito-venster oop}other{Maak almal (#) in &amp;incognito-venster oop}}</translation>
+<translation id="2633634757060186848">{COUNT,plural, =0{Maak almal in &amp;incognito-venster oop}=1{Maak in &amp;incognito-venster oop}other{Maak almal (#) in &amp;incognito-venster oop}}</translation>
 <translation id="658539216370629794">Maak skakel in incognito-venster oop</translation>
 <translation id="1432267168815937878">Maak skakel in incognito-venster oop</translation>
 <translation id="6516243500644829484">Nuwe incognito-venster</translation>
@@ -6551,10 +6553,8 @@ Hou jou sleutellêer op 'n veilige plek. Jy gaan dit nodig hê om nuwe weergawes
 <translation id="3098826269712097986">Aanmelddata sal in Brave geberg word nadat jy Incognitomodus verlaat het. Dit sal jou in staat stel om Aanraak-ID weer later met hierdie webwerf te gebruik.</translation>
 <translation id="5186185447130319458">Incognito</translation>
 <translation id="2579188629646253712">Verlaat Incognito</translation>
-<translation id="6744651634043798597">{COUNT,plural, =0{Maak almal in &amp;incognito-venster oop}=1{Maak in &amp;incognito-venster oop}other{Maak almal (#) in &amp;incognito-venster oop}}</translation>
 <translation id="2431625704210501303">Maak in incognitovenster oop</translation>
 <translation id="4620367155626060530">Wys boekmerkbalk</translation>
-<translation id="2633634757060186848">{COUNT,plural, =0{Maak almal in &amp;incognito-venster oop}=1{Maak in &amp;incognito-venster oop}other{Maak almal (#) in &amp;incognito-venster oop}}</translation>
 <translation id="1985165269306590797">Maak in incognitovenster oop</translation>
 <translation id="4680518314108745448">Wys boekmerkbalk</translation>
 <translation id="642436385689435488">Maak almal in incognitovenster oop</translation>

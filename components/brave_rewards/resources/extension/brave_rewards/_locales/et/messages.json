@@ -197,10 +197,6 @@
     "message": "Nüüd võid teenida reklaamide vaatamisega.",
     "description": "Message for ads launch notification"
   },
-  "braveAdsLaunchTitle": {
-    "message": "Brave’i reklaamid on lisandunud!",
-    "description": "Message used in notification to let users know Ads is available"
-  },
   "braveAdsTitle": {
     "message": "Brave'i reklaamid",
     "description": "Notification title when we display info about ads"
@@ -603,6 +599,10 @@
     "message": "Tühista",
     "description": "Text for cancel button"
   },
+  "changeAmount":  {
+    "message": "Muuda summat",
+    "description": "Button text for changing monthly contribution amount"
+  },
   "login":  {
     "message": "Sisselogimine",
     "description": "Text for login button"
@@ -612,7 +612,7 @@
     "description": "Text for login button"
   },
   "loginMessageText":  {
-    "message": "Upholdi konto loomiseks peab sul olema vähemalt 25 BATi. Proovi hiljem uuesti. <br/> Kui sul on juba kinnitatud Upholdi konto, jätka sisselogimisega.",
+    "message": "Upholdi konto loomiseks peab teil olema vähemalt 25 BATi. Proovige hiljem uuesti. \n Kui teil on juba kinnitatud Upholdi konto, jätkake sisselogimisega.",
     "description": "Text for login button"
   },
   "walletConnected":  {
@@ -622,5 +622,9 @@
   "walletPending":  {
     "message": "Ootel",
     "description": "Status button that tells user that he is currently pending"
+  },
+  "walletVerificationNote3":  {
+    "message": "Märkus. Kui annate volituse, näeb Uphold teie tehinguid. Näiteks näeb ta saajat ja preemiate summat.",
+    "description": "Displayed in login modal for uphold"
   }
 }

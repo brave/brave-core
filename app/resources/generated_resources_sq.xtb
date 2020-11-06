@@ -6516,6 +6516,14 @@ Mbaje skedarin e çelësit tënd në një vend të sigurt. Do të të duhet për
 <translation id="996250603853062861">Po vendos një lidhje të sigurt...</translation>
 <translation id="998747458861718449">I&amp;nspekto</translation>
 <translation id="38046578254905003">Gjej shtesa dhe tema në <ph name="BEGIN_LINK"/>Dyqanin e uebit të Brave<ph name="END_LINK"/></translation>
+<translation id="6744651634043798597">{COUNT, plural,
+          =0 {Hapi krejt në &amp;dritare private}
+          =1 {Hape në &amp;dritare private}
+          other {Hapi krejt (#) në &amp;dritare private}}</translation>
+<translation id="2633634757060186848">{COUNT, plural,
+          =0 {Hapi Krejt në &amp;Dritare Private}
+          =1 {Hape në &amp;Dritare Private}
+          other {Hapi Krejt (#) në &amp;Dritare Private}}</translation>
 <translation id="658539216370629794">Hape lidhjen në dritare &amp;private</translation>
 <translation id="1432267168815937878">Hape Lidhjen në Dritare &amp;Private</translation>
 <translation id="6516243500644829484">Dritare e re &amp;private</translation>
@@ -6546,16 +6554,8 @@ Mbaje skedarin e çelësit tënd në një vend të sigurt. Do të të duhet për
 <translation id="3098826269712097986">Të dhënat e identifikimit do të ruhen në Brave pasi të dalësh nga modaliteti "I fshehtë". Kjo do të të lejojë të përdorësh Touch ID me këtë sajt uebi përsëri më vonë.</translation>
 <translation id="5186185447130319458">I fshehtë</translation>
 <translation id="2579188629646253712">Dil nga modaliteti i fshehtë</translation>
-<translation id="6744651634043798597">{COUNT, plural,
-          =0 {Hapi krejt në &amp;dritare private}
-          =1 {Hape në &amp;dritare private}
-          other {Hapi krejt (#) në &amp;dritare private}}</translation>
 <translation id="2431625704210501303">Hape në &amp;dritare private</translation>
 <translation id="4620367155626060530">&amp;Shfaq faqerojtës</translation>
-<translation id="2633634757060186848">{COUNT, plural,
-          =0 {Hapi Krejt në &amp;Dritare Private}
-          =1 {Hape në &amp;Dritare Private}
-          other {Hapi Krejt (#) në &amp;Dritare Private}}</translation>
 <translation id="1985165269306590797">Hape në &amp;Dritare Private</translation>
 <translation id="4680518314108745448">&amp;Shfaq Faqerojtës</translation>
 <translation id="642436385689435488">Hapi krejt në dritare private</translation>

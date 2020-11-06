@@ -197,10 +197,6 @@
     "message": "Most már pontokat szerezhetsz reklámok megtekintésével.",
     "description": "Message for ads launch notification"
   },
-  "braveAdsLaunchTitle": {
-    "message": "A Brave Ads megérkezett!",
-    "description": "Message used in notification to let users know Ads is available"
-  },
   "braveAdsTitle": {
     "message": "Brave hirdetések",
     "description": "Notification title when we display info about ads"
@@ -603,6 +599,10 @@
     "message": "Elvetés",
     "description": "Text for cancel button"
   },
+  "changeAmount":  {
+    "message": "Összeg módosítása",
+    "description": "Button text for changing monthly contribution amount"
+  },
   "login":  {
     "message": "Bejelentkezés",
     "description": "Text for login button"
@@ -612,7 +612,7 @@
     "description": "Text for login button"
   },
   "loginMessageText":  {
-    "message": "Uphold fiók létrehozásához minimum 25 BAT-od kell legyen. Próbáld újra később. <br/>Ha már van egy ellenőrzött Uphold fiókod, folytasd a bejelentkezést.",
+    "message": "Uphold fiók készítéséhez legalább 25 BAT-od kell legyen. Próbáld újra később.\nFolytasd a belépést, ha már rendelkezel Uphold fiókkal.",
     "description": "Text for login button"
   },
   "walletConnected":  {
@@ -622,5 +622,9 @@
   "walletPending":  {
     "message": "Várakozó",
     "description": "Status button that tells user that he is currently pending"
+  },
+  "walletVerificationNote3":  {
+    "message": "Figyelem: Tranzakcióid az engedélyezés után láthatók lesznek az Uphold számára; például látni fogják a címzettet és a borravalóid mértékét.",
+    "description": "Displayed in login modal for uphold"
   }
 }

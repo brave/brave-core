@@ -1026,6 +1026,7 @@ Por exemplo, algúns sitios web poden responder a esta solicitude mostrándoche 
 <translation id="996149300115483134">Menú da tarxeta do feed pechado</translation>
 <translation id="4540437243849625078">Neste sitio estase a piques de compartir información cunha aplicación fóra do modo de incógnito.</translation>
 <translation id="1227836882233136433">Saír do modo de incógnito?</translation>
+<translation id="21023559487771014">Pasar ao modo de incógnito</translation>
 <translation id="5186185447130319458">Modo de incógnito</translation>
 <translation id="9063160602596686558">Envía estatísticas de uso e informes de erros automaticamente a Brave Software</translation>
 <translation id="1438581767753657407">Cando está activado o modo básico, Brave usa os servidores de Brave Software para facer que as páxinas carguen máis rápido. O modo básico reescribe as páxinas que se executan de forma moi lenta para que carguen só contido esencial. O modo básico non se aplica ás pestanas do modo de incógnito.</translation>
@@ -1035,7 +1036,11 @@ Por exemplo, algúns sitios web poden responder a esta solicitude mostrándoche 
 <translation id="3110967157686007724">Pestana do modo de incógnito</translation>
 <translation id="4526803704855831732">Pestanas de incógnito</translation>
 <translation id="7465104139234185284">Pecha todas as pestanas do modo de incógnito</translation>
-<translation id="21023559487771014">Pasar ao modo de incógnito</translation>
+<translation id="1455125811784733159">Abrir una pestana do modo incógnito</translation>
+<translation id="807110510029471880">Usa o modo incógnito para iniciar sesión</translation>
+<translation id="7987056960390558517">No modo incógnito, a túa actividade <ph name="BEGIN_BOLD1"/>podería seguir sendo visible <ph name="END_BOLD1"/>para os sitios web que visitas, a túa empresa ou centro educativo, e o teu fornecedor de servizos de Internet.
+
+Brave só borrará os datos da túa sesión privada cando <ph name="BEGIN_BOLD2"/>cerres todas as pestanas do modo incógnito<ph name="END_BOLD2"/>.</translation>
 <translation id="6336451774241870485">Pestana nova de incógnito</translation>
 <translation id="3234355010754616171">Pestana nova de incógnito</translation>
 <translation id="6610147964972079463">Pechar pestanas incógnito</translation>

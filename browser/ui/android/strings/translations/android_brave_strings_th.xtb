@@ -12,6 +12,11 @@
 <translation id="6754976710186182237">การสร้างลายนิ้วมือ</translation>
 <translation id="2313532038420432247">การอัพเกรด HTTPS</translation>
 <translation id="7461425058443653485">บล็อกสคริปต์</translation>
+<translation id="6052725679982758334">การบล็อกโซเชียลมีเดีย</translation>
+<translation id="7498695072878479744">อนุญาตให้ใช้ปุ่มเข้าสู่ระบบผ่าน Google บนเว็บไซต์ภายนอก</translation>
+<translation id="863171915776379000">อนุญาตให้เข้าสู่ระบบผ่าน Facebook และโพสต์แบบฝัง</translation>
+<translation id="5165042248369837294">อนุญาตให้ทวีตแบบฝังบน Twitter</translation>
+<translation id="958971637207126733">อนุญาตโพสต์แบบฝัง LinkedIn</translation>
 <translation id="3834924998750356151">การปิดกั้นตัวติดตาม</translation>
 <translation id="1713450908129883784">ตัวควบคุมแบบแยกรายการ</translation>
 <translation id="6302422639282249274">จัดการ Brave Rewards</translation>
@@ -47,8 +52,6 @@
 <translation id="2804710924397009224">ซ่อนไอคอน Brave Rewards</translation>
 <translation id="7358991116457217836">ซ่อนไอคอน Brave Rewards เมื่อไม่ได้เปิดใช้งาน Brave Rewards</translation>
 <translation id="8495235435594442882">เปิดใช้งานแถบเครื่องมือด้านล่าง</translation>
-<translation id="5916664084637901428">เปิด</translation>
-<translation id="5860033963881614850">Off</translation>
 <translation id="6587448235155023666">การเปลี่ยนแปลงของคุณจะมีผลในครั้งถัดไปที่คุณเปิดใช้งาน Brave อีกครั้ง</translation>
 <translation id="8701563696941209024">เปิดใช้งานใหม่เลย</translation>
 <translation id="834487290629916192">ภายหลัง</translation>
@@ -57,7 +60,6 @@
 <translation id="986879628471635371">การแก้ไขปัญหาการเตรียมความพร้อม</translation>
 <translation id="5808759341041733958">เลื่อกเอนจิ้นค้นหาเริ่มต้น</translation>
 <translation id="1331593888918588693">คุณสามารถเปลี่ยนการตั้งค่าในภายหลังได้เสมอในการตั้งค่าแอป</translation>
-<translation id="5317780077021120954">บันทึก</translation>
 <translation id="7053983685419859001">บล็อก</translation>
 <translation id="5806601733251372221">Brave Shields</translation>
 <translation id="2880356288762235261">โฆษณาและตัวติดตามที่บุกรุกความเป็นส่วนตัว เพื่อให้คุณสามารถท่องเว็บได้โดยไม่มีอะไรคอยตาม</translation>
@@ -76,8 +78,6 @@
 <translation id="2453860139492968684">เสร็จสิ้น</translation>
 <translation id="7983303953939627894">รับ &amp; ให้</translation>
 <translation id="48520986898237073">ไปยังกระเป๋าเงิน</translation>
-<translation id="2359808026110333948">ทำต่อไป</translation>
-<translation id="7658239707568436148">ยกเลิก</translation>
 <translation id="3570367516044491911">ตั้งเป็นเบราว์เซอร์เริ่มต้น</translation>
 <translation id="7493053924837150477">เลือก Brave Browser จากรายชื่อและแตะ "ทุกครั้ง"</translation>
 <translation id="3546439402724649282">Brave ถูกตั้งเป็นเบราว์เซอร์เริ่มต้นของคุณอยู่แล้ว</translation>
@@ -180,7 +180,7 @@
 <translation id="8038539967102225446">Brave Ads อยู่นี่!</translation>
 <translation id="8985635554450124959">ไม่สามารถตั้งค่าการซิงค์</translation>
 <translation id="222883304157347087">(อุปกรณ์นี้)</translation>
-<translation id="8193724030871339658">อุปกรณ์อื่นๆ ในลูกโซ่</translation>
+<translation id="4157741509680155021">อุปกรณ์บนห่วงโซ่การซิงก์</translation>
 <translation id="279635009973773843">กำลังโหลดอุปกรณ์...</translation>
 <translation id="6394333525003604181">ทำการรีเซ็ต...</translation>
 <translation id="2569646144216067185">จำนวนคำ: <ph name="WORD_COUNT"/></translation>
@@ -190,11 +190,11 @@
 <translation id="3149880132460839085">Brave Sync</translation>
 <translation id="3680755684186855422">Brave Sync ช่วยให้คุณซิงค์ข้อมูลบุ๊กมาร์กระหว่างเบราว์เซอร์ Brave บนอุปกรณ์ต่างๆ ของคุณได้อย่างเป็นส่วนตัว</translation>
 <translation id="3735228155296883311">เพียงสแกนโค้ดจากลูกโซ่การซิงค์ที่คุณสร้างขึ้นบนอุปกรณ์อื่น หรือเริ่มลูกโซ่การซิงค์ใหม่</translation>
-<translation id="4690880825349994619">ใช้อุปกรณ์ที่ซิงค์อยู่เปิดเมนูการตั้งค่า Brave และไปที่การตั้งค่าและการซิงค์ เลือก "เพิ่มอุปกรณ์" และสแกนคิวอาร์โค้ดที่แสดงขึ้นบนหน้าจอ</translation>
+<translation id="2614069607859982576">ใช้อุปกรณ์ที่ซิงค์แล้วที่มีอยู่ เปิดการตั้งค่า Brave แล้วไปที่ การตั้งค่า&gt; ซิงค์ เลือก "เพิ่มอุปกรณ์ใหม่" แล้วสแกนรหัส QR ที่แสดงอยู่บนหน้าจอ</translation>
 <translation id="5241263629636958324">คัดลอกไปที่คลิบบอร์ดแล้ว</translation>
 <translation id="5817918615728894473">จับคู่</translation>
-<translation id="3394474617110693560">หมวดหมู่</translation>
-<translation id="2004365171440701679">ลบอุปกรณ์นี้</translation>
+<translation id="7090325819305486658">การตั้งค่าข้อมูล</translation>
+<translation id="728334460283296316">นำอุปกรณ์ออก</translation>
 <translation id="1178128181015923849">คุณแน่ใจหรือไม่ว่าต้องการลบอุปกรณ์ "<ph name="DEVICE_NAME"/>"?</translation>
 <translation id="7745082336226088126">สแกนหรือใส่ซิงค์โค้ด</translation>
 <translation id="1602067095281698985">เริ่มกลุ่มการซิงค์ใหม่</translation>
@@ -213,9 +213,9 @@
 <translation id="8730621377337864115">เสร็จสิ้น</translation>
 <translation id="6174119914106813304">ซิงค์บนอุปกรณ์นี้</translation>
 <translation id="6776430845975754238">การเปลี่ยนแปลงการตั้งค่าจะมีผลกับข้อมูลที่อุปกรณ์นี้แชร์กับอุปกรณ์อื่นเท่านั้น</translation>
-<translation id="6450924769151530465">เพิ่มอุปกรณ์อื่น</translation>
+<translation id="1061533051865606843">เพิ่มอุปกรณ์ใหม่</translation>
 <translation id="7539985410310934287">ใส่ข้อความโค้ด</translation>
-<translation id="6270614677029463366">ใช้อุปกรณ์ที่ซิงค์อยู่เปิดเมนูการตั้งค่า Brave และไปที่เมนูการตั้งค่าและการซิงค์ เลือก "เพิ่มอุปกรณ์" จากนั้น "แสดงโค้ดเป็นตัวอักษรแทน"</translation>
+<translation id="2886391679017857869">ใช้อุปกรณ์ที่ซิงค์อยู่แล้ว เปิดการตั้งค่า Brave และไปที่การตั้งค่า &gt; ซิงค์ เลือก "เพิ่มอุปกรณ์ใหม่" จากนั้น"แสดงรหัสคำแทน"</translation>
 <translation id="8131740175452115882">ยืนยัน</translation>
 <translation id="4973653569293835178">ฉันจะใช้กล้องของตัวเอง...</translation>
 <translation id="326454632686131209">ซิงค์อุปกรณ์</translation>
@@ -240,7 +240,6 @@
 <translation id="844921671123185605">ทิปประจำเดือนถูกดำเนินการเรียบร้อยแล้ว</translation>
 <translation id="3124090095880236567">เปิดใช้งาน Ads</translation>
 <translation id="2975780980638932742">Brave Ads มาแล้ว!</translation>
-<translation id="7655723274266132226">คุณสามารถรับรายได้ผ่านการชมโฆษณาได้แล้วตอนนี้</translation>
 <translation id="7541582550122501404">เงินสนับสนุนที่รอดำเนินการ</translation>
 <translation id="8520059774736886747">ผู้สร้าง <ph name="PUBLISHER_NAME"/> เพิ่งได้รับการยืนยัน</translation>
 <translation id="7924320838799747606">ยอดคงเหลือของคุณ</translation>
@@ -258,8 +257,8 @@
 <translation id="8522669544471808198">แสดงรูปภาพพื้นหลัง</translation>
 <translation id="3870475560794762985">แสดงรูปภาพที่มีผู้สนับสนุน</translation>
 <translation id="8297488609722895137">ภาพถ่ายโดย <ph name="PHOTO_BY"/></translation>
-<translation id="1605521356929094020">เปิดใช้งาน Brave Ads</translation>
-<translation id="1873603368604736484">ด้วยการเปิด Rewards คุณได้ยอมรับ<ph name="TERMS_OF_SERVICE"/>.</translation>
+<translation id="7952665812649667034">ฉันพร้อมที่จะ Earn &amp; Give</translation>
+<translation id="5878330112719288629">ด้วยการแตะ Earn &amp; Give คุณได้ยอมรับ <ph name="TERMS_OF_SERVICE"/></translation>
 <translation id="3794079107601824147">รับรายได้เพื่อดูรูปภาพพื้นหลังนี้</translation>
 <translation id="7136586167396205364">ซ่อนรูปภาพที่มีผู้สนับสนุน</translation>
 <translation id="2927095357213611519">คุณสามารถสนับสนุนผู้สร้างเว็บได้ด้วยโทเคน\nรับโทเคนผ่านการชมโฆษณาที่เกี่ยวข้องกับความเป็นส่วนตัว</translation>
@@ -306,7 +305,7 @@
 <translation id="8851456134224363571">เยี่ยม! คุณช่วยให้คะแนนเราบน Play Store ได้ไหม?</translation>
 <translation id="8668962040900592974">แจ้งให้เราทราบว่าควรปรับปรุงอย่างไรบ้าง</translation>
 <translation id="4406937629441301400">รับโทเคนจากการชมภาพนี้และจ่ายต่อไปยังผู้สร้าง <ph name="LEARN_MORE"/></translation>
-<translation id="7894626572714595717">รับโทเคนจากการชมภาพนี้ เปิด Brave Ads เพื่อรับส่วนของคุณ</translation>
+<translation id="8693132237667961044">รับโทเคนจากการชมภาพนี้ เปิด Earn &amp; Give เพื่อรับส่วนของคุณ</translation>
 <translation id="6632345639591919543">คุณกำลังได้รับโทเคนจากการชมภาพนี้\n<ph name="LEARN_MORE"/></translation>
 <translation id="1465733111003593696">คุณกำลังได้รับโทเคนจากการชมภาพนี้</translation>
 <translation id="7877201489035217175">เรียนรู้เพิ่มเติมเกี่ยวกับภาพสปอนเซอร์</translation>
@@ -354,7 +353,6 @@
 <translation id="8903462729414407077">รับอัปเดตประจำสัปดาห์</translation>
 <translation id="8029219208182772618">รับข้อมูลเกี่ยวกับเว็บไซต์ที่คุณเยี่ยมชมเว็บไซต์ใดที่รุกล้ำความเป็นส่วนตัวมากที่สุด\n\nคุณเท่านั้นที่สามารถเห็นสถิติความเป็นส่วนตัวนี้ ไม่มีข้อมูลส่วนตัวหรือประวัติการค้นหาใดหลุดออกไปจากเบราว์เซอร์ Brave บนอุปกรณ์ของคุณได้</translation>
 <translation id="6170159749517116894">เปิดรายงานความเป็นส่วนตัว</translation>
-<translation id="6165508094623778733">ดูข้อมูลเพิ่มเติม</translation>
 <translation id="5966707198760109579">สัปดาห์</translation>
 <translation id="8987927404178983737">เดือน</translation>
 <translation id="4302754476737420523">3 เดือน</translation>
@@ -388,4 +386,46 @@
 <translation id="2718046830255553131">ล้างข้อมูลรายงานความเป็นส่วนตัวแล้ว</translation>
 <translation id="7559243474426790340">รีเฟรชสถานะ</translation>
 <translation id="8376263745431603066">เปิดใช้งาน "โหมดการคืน" (ทดลอง)</translation>
+<translation id="1383876407941801731">ค้นหา</translation>
+<translation id="1972589975368876259">แก้ไข Stack</translation>
+<translation id="2490330380242414851">นำวิตเจ็ตออก</translation>
+<translation id="8446884382197647889">เรียนรู้เพิ่มเติม</translation>
+<translation id="7384441892795736634">รีเฟรชข้อมูล</translation>
+<translation id="4804818685124855865">ยกเลิกการเชื่อมต่อ</translation>
+<translation id="4789438578712143420">≈ $<ph name="USD_BALANCE"/></translation>
+<translation id="1080611582879541635"><ph name="COIN_ADDRESS"/> ที่อยู่การฝาก</translation>
+<translation id="4836242416604533644"><ph name="COIN_MEMO"/> บันทึกฝากเงิน</translation>
+<translation id="5110244215256675209">ซื้อสกุลเงินดิจิทัล</translation>
+<translation id="2271556362602437160">.com</translation>
+<translation id="3727077517986954867">.us</translation>
+<translation id="3414885529641505869">ซื้อ <ph name="COIN_NAME"/></translation>
+<translation id="558614325644656740">พร้อมใช้งาน <ph name="COIN_BALANCE"/> <ph name="COIN_NAME"/></translation>
+<translation id="6755546361496900700">ดูตัวอย่างการแปลงหน่วย</translation>
+<translation id="2882813124794301799">Widget Stack</translation>
+<translation id="13296465911709339">ข้อความของคุณได้ถูกคัดลอกไปยังคลิปบอร์ดแล้ว</translation>
+<translation id="7144878232160441200">ลองใหม่</translation>
+<translation id="2977461003134694205">สถิติความเป็นส่วนตัว</translation>
+<translation id="4643117005422448078">ไซต์ยอดนิยม</translation>
+<translation id="6966052266404721769">Binance</translation>
+<translation id="1392658226187691544">บล็อกโฆษณา &amp; แอปติดตาม ประหยัดแบนด์วิดท์ และประหยัดเวลาโดยประมาณ</translation>
+<translation id="74417429503469271">เปิดเว็บไซต์ยอดนิยมที่คุณเข้าบ่อย</translation>
+<translation id="2956070106555335453">สรุป</translation>
+<translation id="1366855498335432549">ฝาก</translation>
+<translation id="1301340234286078471">แปลงหน่วย</translation>
+<translation id="223536150967420869">ซื้อ</translation>
+<translation id="1714829281959608206">เปิดการเชื่อมต่อ Binance เพื่อดูยอดคงเหลือในบัญชี Binance และซื้อขายสกุลเงินดิจิทัล</translation>
+<translation id="4584930231524505442">ฉันต้องการแปลงหน่วย...</translation>
+<translation id="5749014321384313843">ฉันต้องการจ่าย...</translation>
+<translation id="8688672835843460752">มีอยู่</translation>
+<translation id="2480674848181564169">ยอดเงินไม่เพียงพอต่อการแปลงสกุลเงิน</translation>
+<translation id="2215334405220411393">จำนวนขั้นต่ำในเพื่อแปลงค่าอยู่ที่ : <ph name="COIN_BALANCE"/> <ph name="COIN_NAME"/></translation>
+<translation id="6702658079816271889">ไม่สามารถเชื่อมต่อได้</translation>
+<translation id="7742417737698031726">ค่าธรรมเนียม</translation>
+<translation id="2122225204180056042">คุณจะได้รับ</translation>
+<translation id="6432284126416751397">ยืนยันการแปลงหน่วย</translation>
+<translation id="5137723827757859599">ยังไม่มีอะไรในเว็บไซต์ยอดนิยม</translation>
+<translation id="3891414008432200754">ราคา</translation>
+<translation id="3733576242118819803">ยืนยัน (<ph name="REMAINING_TIME"/>s)</translation>
+<translation id="1627064138060308910">การสนทนาล้มเหลว โปรดลองอีกครั้ง</translation>
+<translation id="1449790603979388000"><ph name="COUNT"/> <ph name="COUNT_TEXT"/></translation>
 </translationbundle>

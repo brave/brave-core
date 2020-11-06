@@ -6518,6 +6518,8 @@ Mantén o ficheiro de clave nun lugar seguro, xa que o precisarás para crear no
 <translation id="995782501881226248">YouTube</translation>
 <translation id="996250603853062861">Establecendo conexión segura...</translation>
 <translation id="998747458861718449">I&amp;nspeccionar</translation>
+<translation id="6744651634043798597">{COUNT,plural, =0{Abrir todos os marcadores nunha ventá do modo de &amp;incógnito}=1{Abrir nunha ventá do modo de &amp;incógnito}other{Abrir todos marcadores (#) nunha ventá do modo de &amp;incógnito}}</translation>
+<translation id="2633634757060186848">{COUNT,plural, =0{Abrir todos os marcadores nunha ventá do modo de &amp;incógnito}=1{Abrir nunha ventá do modo de &amp;incógnito}other{Abrir todos os marcadores (#) nunha ventá do modo de &amp;incógnito}}</translation>
 <translation id="658539216370629794">Abrir ligazón na ventá do modo de incó&amp;gnito</translation>
 <translation id="1432267168815937878">Abrir ligazón na ventá de incó&amp;gnito</translation>
 <translation id="6516243500644829484">Nova ventá do modo de &amp;incógnito</translation>
@@ -6531,6 +6533,7 @@ Mantén o ficheiro de clave nun lugar seguro, xa que o precisarás para crear no
 <translation id="9048137919253433011">Pestana de incógnito: <ph name="TAB_NAME"/></translation>
 <translation id="1799432502220762862">Submarco de incógnito: <ph name="SUBFRAME_SITE"/></translation>
 <translation id="3193187622878830588">Portal do modo de incógnito: <ph name="SUBFRAME_SITE"/></translation>
+<translation id="5097649414558628673">Ferramenta: <ph name="PRINT_NAME"/></translation>
 <translation id="8808478386290700967">Brave Web Store</translation>
 <translation id="8261378640211443080">Esta extensión non figura en <ph name="IDS_EXTENSION_WEB_STORE_TITLE"/> e é posible que se engadise sen o teu coñecemento.</translation>
 <translation id="6827869674836193263"><ph name="WINDOW_TITLE"/> (incógnito)</translation>
@@ -6548,13 +6551,21 @@ Mantén o ficheiro de clave nun lugar seguro, xa que o precisarás para crear no
 <translation id="3098826269712097986">Os datos de inicio de sesión almacenaranse en Brave cando saias do modo de incógnito. Desta forma poderás volver utilizar Touch ID con este sitio web máis tarde.</translation>
 <translation id="5186185447130319458">Modo de incógnito</translation>
 <translation id="2579188629646253712">Saír do modo de incógnito</translation>
-<translation id="6744651634043798597">{COUNT,plural, =0{Abrir todos os marcadores nunha ventá do modo de &amp;incógnito}=1{Abrir nunha ventá do modo de &amp;incógnito}other{Abrir todos marcadores (#) nunha ventá do modo de &amp;incógnito}}</translation>
+<translation id="1001131747196960052">Pechar o modo incógnito</translation>
+<translation id="7475335772460644497">{COUNT, plural,
+          =0 {Abrilos todos nunha xanela privada}
+          =1 {Abrir nunha xanela privada}
+          other {Abrilos todos ({COUNT}) nunha xanela privada}}</translation>
 <translation id="2431625704210501303">Abrir nunha ventá de &amp;incógnito</translation>
 <translation id="4620367155626060530">&amp;Mostrar a barra de marcadores</translation>
-<translation id="2633634757060186848">{COUNT,plural, =0{Abrir todos os marcadores nunha ventá do modo de &amp;incógnito}=1{Abrir nunha ventá do modo de &amp;incógnito}other{Abrir todos os marcadores (#) nunha ventá do modo de &amp;incógnito}}</translation>
+<translation id="1448315815373449655">{COUNT, plural,
+          =0 {Abrilos todos nunha xanela privada}
+          =1 {Abrir nunha xanela privada}
+          other {Abrilos todos ({COUNT}) nunha xanela privada}}</translation>
 <translation id="1985165269306590797">Abrir nunha ventá de &amp;incógnito</translation>
 <translation id="4680518314108745448">&amp;Mostrar a barra de marcadores</translation>
 <translation id="642436385689435488">Abre todos os marcadores nunha ventá do modo de incógnito</translation>
+<translation id="5074021236879527611">Abrir todo (<ph name="URL_COUNT"/>) nunha xanela privada</translation>
 <translation id="5463021359602611602">Abre o marcador nunha ventá do modo de incógnito</translation>
 <translation id="1850357845349976573">{0,plural, =1{Modo de incógnito}other{# ventás do modo de incógnito abertas}}</translation>
 <translation id="37784332082579802">{0,plural, =1{Incógnito}other{Incógnito (#)}}</translation>
@@ -6598,6 +6609,8 @@ Mantén o ficheiro de clave nun lugar seguro, xa que o precisarás para crear no
 <translation id="4854477725773269949">Permitir en modo de incógnito</translation>
 <translation id="6436164536244065364">Ver na tenda web</translation>
 <translation id="38046578254905003">Busca extensións e temas en <ph name="BEGIN_LINK"/>Brave Web Store<ph name="END_LINK"/></translation>
+<translation id="2402482691429508168">Perfís que decidiron ser visibles para ti cando as súas páxinas estean desbloqueadas</translation>
+<translation id="3910100573440336938">Comparte ficheiros con perfís próximos a ti</translation>
 <translation id="6336451774241870485">Pestana nova de incógnito</translation>
 <translation id="6610147964972079463">Pechar pestanas incógnito</translation>
 <translation id="4933782374919065856">Tes preguntas? Contacta coa persoa que supervisa o teu perfil.</translation>

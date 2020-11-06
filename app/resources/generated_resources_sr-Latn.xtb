@@ -6519,6 +6519,8 @@ Datoteka ključa: <ph name="KEY_FILE"/>
 <translation id="996250603853062861">Uspostavljanje bezbedne veze...</translation>
 <translation id="998747458861718449">P&amp;regledaj</translation>
 <translation id="38046578254905003">Pronađite dodatke i teme u <ph name="BEGIN_LINK"/>Brave veb-prodavnici<ph name="END_LINK"/></translation>
+<translation id="6744651634043798597">{COUNT,plural, =0{Otvori sve u &amp;prozoru Bez arhiviranja}=1{Otvori u &amp;prozoru Bez arhiviranja}one{Otvori sve (#) u &amp;prozoru Bez arhiviranja}few{Otvori sve (#) u &amp;prozoru Bez arhiviranja}other{Otvori sve (#) u &amp;prozoru Bez arhiviranja}}</translation>
+<translation id="2633634757060186848">{COUNT,plural, =0{Otvori sve u &amp;prozoru Bez arhiviranja}=1{Otvori u &amp;prozoru Bez arhiviranja}one{Otvori sve (#) u &amp;prozoru Bez arhiviranja}few{Otvori sve (#) u &amp;prozoru Bez arhiviranja}other{Otvori sve (#) u &amp;prozoru Bez arhiviranja}}</translation>
 <translation id="658539216370629794">Otvori link u prozoru bez arhiviranja</translation>
 <translation id="1432267168815937878">Otvori link u prozoru za pre&amp;gledanje bez arhiviranja</translation>
 <translation id="6516243500644829484">Novi &amp;prozor „Bez arhiviranja“</translation>
@@ -6549,10 +6551,8 @@ Datoteka ključa: <ph name="KEY_FILE"/>
 <translation id="3098826269712097986">Podaci o prijavljivanju se čuvaju u Brave-u kada izađete iz režima bez arhiviranja. To će vam omogućiti da kasnije ponovo koristite Touch ID sa ovim veb-sajtom.</translation>
 <translation id="5186185447130319458">Bez arhiviranja</translation>
 <translation id="2579188629646253712">Zatvori režim bez arhiviranja</translation>
-<translation id="6744651634043798597">{COUNT,plural, =0{Otvori sve u &amp;prozoru Bez arhiviranja}=1{Otvori u &amp;prozoru Bez arhiviranja}one{Otvori sve (#) u &amp;prozoru Bez arhiviranja}few{Otvori sve (#) u &amp;prozoru Bez arhiviranja}other{Otvori sve (#) u &amp;prozoru Bez arhiviranja}}</translation>
 <translation id="2431625704210501303">Otvori u &amp;prozoru bez arhiviranja</translation>
 <translation id="4620367155626060530">&amp;Prikaži traku sa obeleživačima</translation>
-<translation id="2633634757060186848">{COUNT,plural, =0{Otvori sve u &amp;prozoru Bez arhiviranja}=1{Otvori u &amp;prozoru Bez arhiviranja}one{Otvori sve (#) u &amp;prozoru Bez arhiviranja}few{Otvori sve (#) u &amp;prozoru Bez arhiviranja}other{Otvori sve (#) u &amp;prozoru Bez arhiviranja}}</translation>
 <translation id="1985165269306590797">Otvori u &amp;prozoru bez arhiviranja</translation>
 <translation id="4680518314108745448">&amp;Prikaži traku sa obeleživačima</translation>
 <translation id="642436385689435488">Otvori sve u prozoru bez arhiviranja</translation>

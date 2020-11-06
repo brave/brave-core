@@ -1026,6 +1026,7 @@ Bu ayarı değiştirmek için <ph name="BEGIN_LINK"/>senkronizasyonu sıfırlay�
 <translation id="996149300115483134">Akış kartı menüsü kapalı</translation>
 <translation id="4540437243849625078">Bu site, bilgileri kişisel mod dışındaki bir uygulama ile paylaşmak üzere.</translation>
 <translation id="1227836882233136433">Kişisel moddan çıkılsın mı?</translation>
+<translation id="21023559487771014">Gizli moda git</translation>
 <translation id="5186185447130319458">Gizli</translation>
 <translation id="9063160602596686558">Kullanım istatistiklerini ve kilitlenme raporlarını Brave Software'a otomatik olarak gönderir</translation>
 <translation id="1438581767753657407">Lite modu açık olduğunda Brave, sayfaların daha hızlı yüklenmesini sağlamak için Brave sunucularını kullanır. Lite modu, yalnızca gerekli içeriği yüklemek için çok yavaş sayfaları yeniden yazar. Lite modu, Gizli sekmelere uygulanmaz.</translation>
@@ -1035,7 +1036,11 @@ Bu ayarı değiştirmek için <ph name="BEGIN_LINK"/>senkronizasyonu sıfırlay�
 <translation id="3110967157686007724">Gizli sekme</translation>
 <translation id="4526803704855831732">Gizli Sekmeler</translation>
 <translation id="7465104139234185284">Tüm gizli sekmeleri kapat</translation>
-<translation id="21023559487771014">Gizli moda git</translation>
+<translation id="1455125811784733159">Özel bir sekme açın</translation>
+<translation id="807110510029471880">Oturum açmak için Özel'i kullan</translation>
+<translation id="7987056960390558517">Aktiviteniz Özel'de bile <ph name="BEGIN_BOLD1"/>ziyaret ettiğiniz web sitelerine, işvereninize ya da okulunuza ve internet hizmet sağlayıcınıza <ph name="END_BOLD1"/>görünür olabilir.
+
+Özel oturumunuzdaki veriler yalnızca <ph name="BEGIN_BOLD2"/>tüm Özel sekmeleri kapattığınızda<ph name="END_BOLD2"/> Brave'den silinecektir.</translation>
 <translation id="6336451774241870485">Yeni gizli sekme</translation>
 <translation id="3234355010754616171">Yeni gizli sekme</translation>
 <translation id="6610147964972079463">Gizli sekmeleri kapat</translation>

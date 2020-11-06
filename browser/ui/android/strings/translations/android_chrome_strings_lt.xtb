@@ -1026,6 +1026,7 @@ Pavyzdžiui, kai kurios svetainės gali atsakyti į šią užklausą rodydamos j
 <translation id="996149300115483134">Sklaidos kanalo kortelės meniu uždarytas</translation>
 <translation id="4540437243849625078">Ši svetainė rengiasi bendrinti informaciją programai už inkognito režimo ribų.</translation>
 <translation id="1227836882233136433">Išeiti iš inkognito režimo?</translation>
+<translation id="21023559487771014">Įjunkite inkognito režimą</translation>
 <translation id="5186185447130319458">Inkognito</translation>
 <translation id="9063160602596686558">Automatiškai siunčia naudojimo statistiką ir strigčių ataskaitas „Brave Software“</translation>
 <translation id="1438581767753657407">Kai įjungtas supaprastintasis režimas, „Brave“ naudoja „Brave“ serverius, kad puslapiai būtų įkeliami greičiau. Supaprastintuoju režimu labai lėtai veikiantys puslapiai perrašomi, kad būtų įkeliamas tik svarbiausias turinys. Supaprastintasis režimas netaikomas inkognito skirtukams.</translation>
@@ -1035,7 +1036,11 @@ Pavyzdžiui, kai kurios svetainės gali atsakyti į šią užklausą rodydamos j
 <translation id="3110967157686007724">Inkognito skirtukas</translation>
 <translation id="4526803704855831732">Inkognito skirtukai</translation>
 <translation id="7465104139234185284">Uždaryti visus inkognito skirtukus</translation>
-<translation id="21023559487771014">Įjunkite inkognito režimą</translation>
+<translation id="1455125811784733159">Atverti inkognito kortelėje</translation>
+<translation id="807110510029471880">Prisijungti inkognito režimu</translation>
+<translation id="7987056960390558517">Inkognito režimu jūsų veikla <ph name="BEGIN_BOLD1"/>vis tiek gali būti matoma <ph name="END_BOLD1"/>svetainėms, kuriose lankotės, jūsų darbdaviui ar mokymo įstaigai, taip pat jūsų interneto paslaugų teikėjui.
+
+Jūsų inkognito seansų duomenys iš „Brave“ bus išvalyti tik tada, kai <ph name="BEGIN_BOLD2"/>užversite visas inkognito korteles<ph name="END_BOLD2"/>.</translation>
 <translation id="6336451774241870485">Naujas inkognito skirtukas</translation>
 <translation id="3234355010754616171">Naujas inkognito skirtukas</translation>
 <translation id="6610147964972079463">Uždaryti inkognito skirtukus</translation>

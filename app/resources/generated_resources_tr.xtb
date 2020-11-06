@@ -6520,6 +6520,14 @@ Anahtar dosyanızı güvenli bir yerde saklayın. Uzantınızın yeni sürümler
 <translation id="995782501881226248">YouTube</translation>
 <translation id="996250603853062861">Güvenli bağlantı oluşturuluyor...</translation>
 <translation id="998747458861718449">İ&amp;ncele</translation>
+<translation id="6744651634043798597">{SAYIM, çoğul,
+         =0 {Tümünü &amp;Kişisel Pencerede Aç}
+         =1 {&amp;Kişisel Pencerede Aç}
+          diğer {Tümünü &amp;Kişisel Pencerde Aç (#)}}</translation>
+<translation id="2633634757060186848">{SAYIM, çoğul,
+         =0 {Tümünü &amp;Kişisel Pencerede Aç}
+         =1 {&amp;Kişisel Pencerede Aç}
+          diğer {Tümünü &amp;Kişisel Pencerde Aç (#)}}</translation>
 <translation id="658539216370629794">Linki &amp;kişisel bir pencerede aç</translation>
 <translation id="1432267168815937878">Linki &amp;Kişisel Pencerde Aç</translation>
 <translation id="6516243500644829484">Yeni &amp;kişisel pencere</translation>
@@ -6533,6 +6541,7 @@ Anahtar dosyanızı güvenli bir yerde saklayın. Uzantınızın yeni sürümler
 <translation id="9048137919253433011">Kişisel Sekme: <ph name="TAB_NAME"/></translation>
 <translation id="1799432502220762862">Kişisel Alt Çerçeve: <ph name="SUBFRAME_SITE"/></translation>
 <translation id="3193187622878830588">Gizli Portal: <ph name="SUBFRAME_SITE"/></translation>
+<translation id="5097649414558628673">Araç: <ph name="PRINT_NAME"/></translation>
 <translation id="8808478386290700967">İnternet Mağazası</translation>
 <translation id="8261378640211443080">Bu uzantı <ph name="IDS_EXTENSION_WEB_STORE_TITLE"/> altında listelenmiyor ve bilginiz dışında eklenmiş olabilir.</translation>
 <translation id="6827869674836193263"><ph name="WINDOW_TITLE"/> (Kişisel)</translation>
@@ -6550,19 +6559,21 @@ Anahtar dosyanızı güvenli bir yerde saklayın. Uzantınızın yeni sürümler
 <translation id="3098826269712097986">Giriş verileri, siz Kişisel moddan çıktıktan sonra, Brave'da saklanır. Bu, bu websiteyi daha sonra Touch ID kullanmanızı sağlar.</translation>
 <translation id="5186185447130319458">Kişisel</translation>
 <translation id="2579188629646253712">Kişiselden Çık</translation>
-<translation id="6744651634043798597">{SAYIM, çoğul,
-         =0 {Tümünü &amp;Kişisel Pencerede Aç}
-         =1 {&amp;Kişisel Pencerede Aç}
-          diğer {Tümünü &amp;Kişisel Pencerde Aç (#)}}</translation>
+<translation id="1001131747196960052">Özeli Kapat</translation>
+<translation id="7475335772460644497">{SAY, .çoğul,
+          =0 {Tümünü &amp; özel pencerede aç}
+          =1 {Özel pencerede &amp;aç}
+          diğer {Tümünü ({SAY}) özel pencerede &amp;aç}}</translation>
 <translation id="2431625704210501303">&amp;kişisel pencerede aç</translation>
 <translation id="4620367155626060530">Yer işaretleri ç&amp;ubuğunu göster</translation>
-<translation id="2633634757060186848">{SAYIM, çoğul,
-         =0 {Tümünü &amp;Kişisel Pencerede Aç}
-         =1 {&amp;Kişisel Pencerede Aç}
-          diğer {Tümünü &amp;Kişisel Pencerde Aç (#)}}</translation>
+<translation id="1448315815373449655">{SAY, .çoğul,
+          =0 {Tümünü &amp;Özel Pencerede aç}
+          =1 {Özel pencerede &amp;aç}
+          diğer {Tümünü ({SAY}) özel pencerede &amp;aç}}</translation>
 <translation id="1985165269306590797">&amp;Kişisel Pencerede Aç</translation>
 <translation id="4680518314108745448">Yer İşaretleri Ç&amp;ubuğunu Göster</translation>
 <translation id="642436385689435488">Tümünü kişisel pencerede aç</translation>
+<translation id="5074021236879527611">Tümünü (<ph name="URL_COUNT"/>) özel pencerede aç</translation>
 <translation id="5463021359602611602">Kişisel pencerede aç</translation>
 <translation id="1850357845349976573">{0, çoğul,
       =1 {Kişisel}
@@ -6612,6 +6623,8 @@ Anahtar dosyanızı güvenli bir yerde saklayın. Uzantınızın yeni sürümler
 <translation id="4854477725773269949">Kişiselde izin ver</translation>
 <translation id="6436164536244065364">Web Mağazasında Görüntüle</translation>
 <translation id="38046578254905003"><ph name="BEGIN_LINK"/>Web Store<ph name="END_LINK"/> içinde uzantılar ve temalar bulun</translation>
+<translation id="2402482691429508168">Ekranlarının kilidi açık olduğu sırada size görünür olmayı seçmiş profiller</translation>
+<translation id="3910100573440336938">Çevrenizdeki profillerle dosyalar paylaşın</translation>
 <translation id="6336451774241870485">Yeni kişisel sekme</translation>
 <translation id="6610147964972079463">Kişisel sekmeleri kapat</translation>
 <translation id="4933782374919065856">Sorularınız mı var? Profilinizi denetleyen kişiyle iletişime geçin.</translation>
