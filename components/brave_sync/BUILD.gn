@@ -5,7 +5,7 @@ import("//tools/grit/repack.gni")
 import("buildflags/buildflags.gni")
 
 declare_args() {
-  brave_sync_endpoint = "https://sync.brave.com"
+  brave_sync_endpoint = ""
 }
 
 config("brave_sync_config") {
@@ -95,4 +95,8 @@ group("brave_sync") {
     "buildflags",
     "//base",
   ]
+}
+
+group("constants") {
+  public_configs = [ ":brave_sync_config" ]
 }
