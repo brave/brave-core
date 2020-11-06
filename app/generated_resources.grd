@@ -4196,6 +4196,9 @@ are declared in tools/grit/grit_rule.gni.
           <message name="IDS_EXTENSIONS_UNPIN_FROM_TOOLBAR" desc="The text for the menu item to unpin an extension from the toolbar (sentence case).">
             Unpin
           </message>
+          <message name="IDS_EXTENSIONS_PINNED_BY_ADMIN" desc="The text indicating that an extension has been 'pinned' to the toolbar by the controlling administrator (sentence case).">
+            Pinned by your administrator
+          </message>
           <message name="IDS_MANAGE_EXTENSION" desc="The 'Manage extensions' text in the context menu for when right-clicking on extension icons (sentence case).">
             Manage extensions
           </message>
@@ -4245,6 +4248,9 @@ are declared in tools/grit/grit_rule.gni.
           </message>
           <message name="IDS_EXTENSIONS_UNPIN_FROM_TOOLBAR" desc="The text for the menu item to unpin an extension from the toolbar (title case).">
             Unpin
+          </message>
+          <message name="IDS_EXTENSIONS_PINNED_BY_ADMIN" desc="The text indicating that an extension has been 'pinned' to the toolbar by the controlling administrator (title case).">
+            Pinned by your Administrator
           </message>
           <message name="IDS_MANAGE_EXTENSION" desc="The 'Manage Extensions' text in the context menu for when right-clicking on extension icons (title case).">
             Manage Extensions
@@ -5491,7 +5497,7 @@ Keep your key file in a safe place. You will need it to create new versions of y
           Edit Bookmark
         </message>
         <message name="IDS_STAR_VIEW_MENU_MOVE_TO_READ_LATER" desc="The item label of the menu triggered from the star icon in the location bar for moving the current tab to read later.">
-          Read Later
+          Add to Reading List
         </message>
         <message name="IDS_STAR_VIEW_MENU_MARK_AS_READ" desc="The item label of the menu triggered from the star icon in the location bar for marking the current tab's read later entry as read.">
           Mark as Read
@@ -5505,7 +5511,7 @@ Keep your key file in a safe place. You will need it to create new versions of y
           Edit bookmark
         </message>
         <message name="IDS_STAR_VIEW_MENU_MOVE_TO_READ_LATER" desc="The item label of the menu triggered from the star icon in the location bar for moving the current tab to read later.">
-          Read later
+          Add to reading list
         </message>
         <message name="IDS_STAR_VIEW_MENU_MARK_AS_READ" desc="The item label of the menu triggered from the star icon in the location bar for marking the current tab's read later entry as read.">
           Mark as read
@@ -5606,7 +5612,7 @@ Keep your key file in a safe place. You will need it to create new versions of y
         Find
       </message>
       <message name="IDS_TOOLTIP_TAB_SEARCH" desc="The tooltip for the Tab Search bubble.">
-        Tab search
+        Search tabs
       </message>
 
       <!-- Strings for intent picker -->
@@ -5690,7 +5696,7 @@ Keep your key file in a safe place. You will need it to create new versions of y
         Reset to default zoom level
       </message>
       <message name="IDS_ACCNAME_TAB_SEARCH" desc="The accessible name for the Tab Search bubble.">
-        Tab search
+        Search tabs
       </message>
 
       <!-- Clipboard permission -->
@@ -5761,6 +5767,9 @@ Keep your key file in a safe place. You will need it to create new versions of y
       </message>
       <message name="IDS_REOPEN_TAB_PROMO" desc="Text shown on promotional UI appearing next to the app menu button">
         Reopen a tab if you accidentally closed it
+      </message>
+      <message name="IDS_DESKTOP_PWA_INSTALL_PROMO" desc="Text shown on promotional UI appearing next to the PWA install icon">
+        To get back to here quickly, install this app
       </message>
       <message name="IDS_REOPEN_TAB_PROMO_SCREENREADER" desc="Text announced encouraging users to reopen a tab with the given shortcut">
         <ph name="SHORTCUT">$1<ex>CTRL+SHIFT+T</ex></ph> can reopen accidentally closed tabs
@@ -6458,8 +6467,8 @@ Keep your key file in a safe place. You will need it to create new versions of y
         </message>
         <message name="IDS_TAB_CXMENU_READ_LATER" desc="The label of the tab context menu item for adding one or more tabs to Read later.">
           {NUM_TABS, plural,
-          =1 {Read tab later}
-          other {Read tabs later}}
+          =1 {Add tab to reading list}
+          other {Add tabs to reading list}}
         </message>
         <message name="IDS_TAB_CXMENU_ADD_TAB_TO_GROUP" desc="The label of the tab context menu submenu for adding one or more tabs to either a new group or an existing tab group. NOTE: If having no explicit # makes the phrasing awkward, feel free to add a # as necessary. [ICU Syntax]">
           {NUM_TABS, plural,
@@ -6530,8 +6539,8 @@ Keep your key file in a safe place. You will need it to create new versions of y
         </message>
         <message name="IDS_TAB_CXMENU_READ_LATER" desc="In Title Case: The label of the tab context menu item for adding one or more tabs to Read later.">
           {NUM_TABS, plural,
-          =1 {Read Tab Later}
-          other {Read Tabs Later}}
+          =1 {Add Tab to Reading List}
+          other {Add Tabs to Reading List}}
         </message>
         <message name="IDS_TAB_CXMENU_ADD_TAB_TO_GROUP" desc="In Title Case: The label of the tab context menu submenu for adding one or more tabs to either a new group or an existing tab group. NOTE: If having no explicit # makes the phrasing awkward, feel free to add a # as necessary. [ICU Syntax]">
           {NUM_TABS, plural,
@@ -6594,35 +6603,33 @@ Keep your key file in a safe place. You will need it to create new versions of y
       </if>
 
       <!-- Tab Search -->
-      <if expr="enable_tab_search">
-        <message name="IDS_TAB_SEARCH_SEARCH_TABS" desc="The label on the tab search search filed when user input is empty.">
-          Search Tabs
-        </message>
-        <message name="IDS_TAB_SEARCH_NO_RESULTS_FOUND" desc="Indicator when no tabs are found filtered by user search input.">
-          No Results Found
-        </message>
-        <message name="IDS_TAB_SEARCH_CLOSE_TAB" desc="Label of the close tab button in the tab list item.">
-          Close Tab
-        </message>
-        <message name="IDS_TAB_SEARCH_SUBMIT_FEEDBACK" desc="Label of the submit feedback button.">
-          Submit Feedback
-        </message>
-        <message name="IDS_TAB_SEARCH_A11Y_TAB_CLOSED" desc="A11y message after user clicks on the close tab button in the list item.">
-          Tab Closed
-        </message>
-        <message name="IDS_TAB_SEARCH_A11Y_FOUND_TAB" desc="Singular form of a11y message after user changes search field when search filed is empty.">
-          Found <ph name="NUM">$1<ex>1</ex></ph> Tab
-        </message>
-        <message name="IDS_TAB_SEARCH_A11Y_FOUND_TABS" desc="Plural form of a11y message after user changes search field when search filed is empty.">
-          Found <ph name="NUM">$1<ex>2</ex></ph> Tabs
-        </message>
-        <message name="IDS_TAB_SEARCH_A11Y_FOUND_TAB_FOR" desc="Singular form of a11y message after user changes search field when search filed is not empty.">
-          Found <ph name="NUM">$1<ex>1</ex></ph> Tab For '<ph name="SEARCH_TEXT">$2<ex>google</ex></ph>'
-        </message>
-        <message name="IDS_TAB_SEARCH_A11Y_FOUND_TABS_FOR" desc="Plural form of a11y message after user changes search field when search filed is not empty.">
-          Found <ph name="NUM">$1<ex>2</ex></ph> Tabs For '<ph name="SEARCH_TEXT">$2<ex>google</ex></ph>'
-        </message>
-      </if>
+      <message name="IDS_TAB_SEARCH_SEARCH_TABS" desc="The label on the tab search search filed when user input is empty.">
+        Search Tabs
+      </message>
+      <message name="IDS_TAB_SEARCH_NO_RESULTS_FOUND" desc="Indicator when no tabs are found filtered by user search input.">
+        No Results Found
+      </message>
+      <message name="IDS_TAB_SEARCH_CLOSE_TAB" desc="Label of the close tab button in the tab list item.">
+        Close Tab
+      </message>
+      <message name="IDS_TAB_SEARCH_SUBMIT_FEEDBACK" desc="Label of the submit feedback button.">
+        Submit Feedback
+      </message>
+      <message name="IDS_TAB_SEARCH_A11Y_TAB_CLOSED" desc="A11y message after user clicks on the close tab button in the list item.">
+        Tab Closed
+      </message>
+      <message name="IDS_TAB_SEARCH_A11Y_FOUND_TAB" desc="Singular form of a11y message after user changes search field when search filed is empty.">
+        Found <ph name="NUM">$1<ex>1</ex></ph> Tab
+      </message>
+      <message name="IDS_TAB_SEARCH_A11Y_FOUND_TABS" desc="Plural form of a11y message after user changes search field when search filed is empty.">
+        Found <ph name="NUM">$1<ex>2</ex></ph> Tabs
+      </message>
+      <message name="IDS_TAB_SEARCH_A11Y_FOUND_TAB_FOR" desc="Singular form of a11y message after user changes search field when search filed is not empty.">
+        Found <ph name="NUM">$1<ex>1</ex></ph> Tab For '<ph name="SEARCH_TEXT">$2<ex>google</ex></ph>'
+      </message>
+      <message name="IDS_TAB_SEARCH_A11Y_FOUND_TABS_FOR" desc="Plural form of a11y message after user changes search field when search filed is not empty.">
+        Found <ph name="NUM">$1<ex>2</ex></ph> Tabs For '<ph name="SEARCH_TEXT">$2<ex>google</ex></ph>'
+      </message>
 
       <!-- Strings for Window Titles in Menus -->
       <if expr="not use_titlecase">
@@ -8329,6 +8336,33 @@ Please help our engineers fix this problem. Tell us what happened right before y
       <message name="IDS_NOTIFICATION_REPLY_PLACEHOLDER" desc="Placeholder text shown in the text box before any text is entered when replying directly to a notification.">
         Send message
       </message>
+      <message name="IDS_NOTIFICATION_MUTED_MESSAGE" desc="Informative message describing that notification content is currently hidden while the screen is being shared. Shown as the body of a notification.">
+        Details are hidden while you share your screen
+      </message>
+      <if expr="not use_titlecase">
+        <message name="IDS_NOTIFICATION_MUTED_TITLE" desc="Title of a notification showing how many new notifications are currently hidden. The number is always greater than zero.">
+          {MUTED_NOTIFICATIONS_COUNT, plural,
+            =1 {New notification}
+            other {# new notifications}}
+        </message>
+        <message name="IDS_NOTIFICATION_MUTED_ACTION_SHOW" desc="Action button text to show the content of previously muted notifications.">
+          {MUTED_NOTIFICATIONS_COUNT, plural,
+            =1 {Show}
+            other {Show all}}
+        </message>
+      </if>
+      <if expr="use_titlecase">
+        <message name="IDS_NOTIFICATION_MUTED_TITLE" desc="In Title Case: Title of a notification showing how many new notifications are currently hidden. The number is always greater than zero.">
+          {MUTED_NOTIFICATIONS_COUNT, plural,
+            =1 {New Notification}
+            other {# New Notifications}}
+        </message>
+        <message name="IDS_NOTIFICATION_MUTED_ACTION_SHOW" desc="In Title Case: Action button text to show the content of previously muted notifications.">
+          {MUTED_NOTIFICATIONS_COUNT, plural,
+            =1 {Show}
+            other {Show All}}
+        </message>
+      </if>
       <if expr="is_android">
         <message name="IDS_NOTIFICATION_BUTTON_MANAGE" desc="Text of a button shown on notification permission requests, that opens the Brave notifications settings page. This allows users to edit notification settings when a site asks them to allow notifications.">
           Manage
