@@ -271,6 +271,6 @@ export const AlertContent = styled<{}, 'div'>('div')`
 
 export const TOS = styled(TOSAndPP as React.ComponentType<TOSProps>)`
   color: ${p => p.theme.palette.grey800};
-  padding: 10px 0 0 24px;
+  padding: 10px 24px 0;
   flex: 1;
 `
