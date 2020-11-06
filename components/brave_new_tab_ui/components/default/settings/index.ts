@@ -411,3 +411,31 @@ export const StyledButtonLabel = styled<{}, 'span'>('span')`
   overflow: hidden;
   white-space: nowrap;
 `
+
+export const ToggleCardsWrapper = styled<{}, 'div'>('div')`
+  padding: 15px 15px 5px 15px;
+  clear: both;
+  border-radius: 10px;
+  max-width: 97%;
+  background: ${p => isDarkTheme(p) ? '#3B3F4E' : '#F3F3FE'};
+  color: ${p => isDarkTheme(p) ? '#FFF' : 'rgb(59, 62, 79)'};
+`
+
+export const ToggleCardsText = styled<{}, 'div'>('div')`
+  text-align: left;
+  max-width: 325px;
+`
+
+export const ToggleCardsTitle = styled<{}, 'span'>('span')`
+  font-weight: bold;
+`
+
+export const ToggleCardsCopy = styled<{}, 'p'>('p')`
+  line-height: 18px;
+  font-weight: normal;
+`
+
+export const ToggleCardsSwitch = styled<{}, 'div'>('div')`
+  float: right;
+  margin: -65px -5px 0 0;
+`

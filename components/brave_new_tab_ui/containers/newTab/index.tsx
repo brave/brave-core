@@ -742,6 +742,15 @@ class NewTabPage extends React.Component<Props, State> {
     ].every((widget: boolean) => !widget)
   }
 
+  toggleAllCards = (show: boolean) => {
+    this.props.saveShowTogether(show)
+    this.props.saveShowRewards(show)
+    this.props.saveShowBinance(show)
+    this.props.saveShowGemini(show)
+    this.props.saveShowCryptoDotCom(show)
+    this.props.saveShowBitcoinDotCom(show)
+  }
+
   renderCryptoContent () {
     const { newTabData } = this.props
     const { widgetStackOrder, textDirection, showAddCard } = newTabData
@@ -1168,6 +1177,8 @@ class NewTabPage extends React.Component<Props, State> {
           showBitcoinDotCom={newTabData.showBitcoinDotCom}
           toggleShowBitcoinDotCom={this.toggleShowBitcoinDotCom}
           todayPublishers={this.props.todayData.publishers}
+          cardsHidden={this.allWidgetsHidden()}
+          toggleCards={this.toggleAllCards}
         />
       </Page.App>
     )

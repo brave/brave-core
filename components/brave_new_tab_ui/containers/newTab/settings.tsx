@@ -61,6 +61,7 @@ export interface Props {
   toggleShowCryptoDotCom: () => void
   toggleBrandedWallpaperOptIn: () => void
   toggleShowBitcoinDotCom: () => void
+  toggleCards: (show: boolean) => void
   showBackgroundImage: boolean
   showStats: boolean
   showToday: boolean
@@ -83,6 +84,7 @@ export interface Props {
   bitcoinDotComSupported: boolean
   todayPublishers?: BraveToday.Publishers
   setActiveTab?: TabType
+  cardsHidden: boolean
 }
 
 export enum TabType {
@@ -261,7 +263,9 @@ export default class Settings extends React.PureComponent<Props, State> {
       bitcoinDotComSupported,
       toggleShowCryptoDotCom,
       cryptoDotComSupported,
-      showCryptoDotCom
+      showCryptoDotCom,
+      toggleCards,
+      cardsHidden
     } = this.props
     const { activeTab } = this.state
 
@@ -373,6 +377,8 @@ export default class Settings extends React.PureComponent<Props, State> {
                 activeTab === TabType.MoreCards
                   ? (
                     <MoreCardsSettings
+                      toggleCards={toggleCards}
+                      cardsHidden={cardsHidden}
                       toggleShowBinance={toggleShowBinance}
                       showBinance={showBinance}
                       binanceSupported={binanceSupported}

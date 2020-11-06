@@ -48,10 +48,6 @@ void BraveAppearanceHandler::RegisterMessages() {
       prefs::kHomePage,
       base::BindRepeating(&BraveAppearanceHandler::OnPreferenceChanged,
       base::Unretained(this)));
-  profile_state_change_registrar_.Add(
-      prefs::kNtpShortcutsVisible,
-      base::BindRepeating(&BraveAppearanceHandler::TopSitesVisibleChanged,
-                          base::Unretained(this)));
   web_ui()->RegisterMessageCallback(
       "setBraveThemeType",
       base::BindRepeating(&BraveAppearanceHandler::SetBraveThemeType,

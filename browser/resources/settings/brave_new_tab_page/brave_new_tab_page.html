@@ -35,13 +35,11 @@
       </settings-dropdown-menu>
     </div>
     <template is="dom-if" if="[[showNewTabDashboardSettings_]]">
-      <div class="settings-box">
-        <div class="flex">
-          <cr-link-row
-            label="$i18n{braveNewTabNewTabCustomizeWidgets}"
-            on-click="openNewTabPage_" external>
-          </cr-link-row>
-        </div>
+      <div class="settings-row">
+        <cr-link-row
+          label="$i18n{braveNewTabNewTabCustomizeWidgets}"
+          on-click="openNewTabPage_" external>
+        </cr-link-row>
       </div>
     </template>
   </template>
