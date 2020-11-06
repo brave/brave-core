@@ -109,18 +109,17 @@ BinanceGetAccountBalancesFunction::Run() {
 void BinanceGetAccountBalancesFunction::OnGetAccountBalances(
     const BinanceAccountBalances& balances,
     bool success) {
-  std::unique_ptr<base::DictionaryValue> result(new base::DictionaryValue());
+  base::DictionaryValue result;
 
   for (const auto& balance : balances) {
     auto info = std::make_unique<base::DictionaryValue>();
     info->SetString("balance", balance.second[0]);
     info->SetString("btcValue", balance.second[1]);
     info->SetString("fiatValue", balance.second[2]);
-    result->SetDictionary(balance.first, std::move(info));
+    result.SetDictionary(balance.first, std::move(info));
   }
 
-  Respond(TwoArguments(std::move(result),
-                       std::make_unique<base::Value>(success)));
+  Respond(TwoArguments(std::move(result), base::Value(success)));
 }
 
 ExtensionFunction::ResponseAction
@@ -198,9 +197,7 @@ void BinanceGetDepositInfoFunction::OnGetDepositInfo(
     const std::string& deposit_address,
     const std::string& deposit_tag,
     bool success) {
-  Respond(TwoArguments(
-      std::make_unique<base::Value>(deposit_address),
-      std::make_unique<base::Value>(deposit_tag)));
+  Respond(TwoArguments(base::Value(deposit_address), base::Value(deposit_tag)));
 }
 
 ExtensionFunction::ResponseAction
@@ -228,9 +225,7 @@ BinanceConfirmConvertFunction::Run() {
 
 void BinanceConfirmConvertFunction::OnConfirmConvert(
     bool success, const std::string& message) {
-  Respond(TwoArguments(
-      std::make_unique<base::Value>(success),
-      std::make_unique<base::Value>(message)));
+  Respond(TwoArguments(base::Value(success), base::Value(message)));
 }
 
 ExtensionFunction::ResponseAction

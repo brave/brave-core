@@ -126,8 +126,7 @@ ExtensionFunction::ResponseAction IpfsGetConfigFunction::Run() {
 
 void IpfsGetConfigFunction::OnGetConfig(bool success,
                                         const std::string& value) {
-  Respond(TwoArguments(std::make_unique<base::Value>(success),
-                       std::make_unique<base::Value>(value)));
+  Respond(TwoArguments(base::Value(success), base::Value(value)));
 }
 
 ExtensionFunction::ResponseAction IpfsGetExecutableAvailableFunction::Run() {

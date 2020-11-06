@@ -121,15 +121,13 @@ GeminiGetAccountBalancesFunction::Run() {
 void GeminiGetAccountBalancesFunction::OnGetAccountBalances(
     const GeminiAccountBalances& balances,
     bool auth_invalid) {
-  auto result = std::make_unique<base::Value>(
-      base::Value::Type::DICTIONARY);
+  base::Value result(base::Value::Type::DICTIONARY);
 
   for (const auto& balance : balances) {
-    result->SetStringKey(balance.first, balance.second);
+    result.SetStringKey(balance.first, balance.second);
   }
 
-  Respond(TwoArguments(std::move(result),
-                       std::make_unique<base::Value>(auth_invalid)));
+  Respond(TwoArguments(std::move(result), base::Value(auth_invalid)));
 }
 
 ExtensionFunction::ResponseAction
@@ -198,14 +196,13 @@ void GeminiGetOrderQuoteFunction::OnOrderQuoteResult(
     const std::string& quote_id, const std::string& quantity,
     const std::string& fee, const std::string& price,
     const std::string& total_price, const std::string& error) {
-  auto quote = std::make_unique<base::Value>(base::Value::Type::DICTIONARY);
-  quote->SetStringKey("id", quote_id);
-  quote->SetStringKey("quantity", quantity);
-  quote->SetStringKey("fee", fee);
-  quote->SetStringKey("price", price);
-  quote->SetStringKey("totalPrice", total_price);
-  Respond(TwoArguments(
-    std::move(quote), std::make_unique<base::Value>(error)));
+  base::Value quote(base::Value::Type::DICTIONARY);
+  quote.SetStringKey("id", quote_id);
+  quote.SetStringKey("quantity", quantity);
+  quote.SetStringKey("fee", fee);
+  quote.SetStringKey("price", price);
+  quote.SetStringKey("totalPrice", total_price);
+  Respond(TwoArguments(std::move(quote), base::Value(error)));
 }
 
 ExtensionFunction::ResponseAction
