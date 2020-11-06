@@ -1,8 +1,16 @@
 diff --git a/chrome/browser/profiles/profile.cc b/chrome/browser/profiles/profile.cc
-index ca36c316828f3d5ab3fb511d73cb975a86286c5e..b435bcf5ad55a48a21aa545d82553deb55486087 100644
+index ca36c316828f3d5ab3fb511d73cb975a86286c5e..aa3be33fc6066369c22611dbf78c76f7beba7235 100644
 --- a/chrome/browser/profiles/profile.cc
 +++ b/chrome/browser/profiles/profile.cc
-@@ -266,7 +266,7 @@ const char Profile::kProfileKey[] = "__PROFILE__";
+@@ -127,6 +127,7 @@ bool Profile::OTRProfileID::AllowsBrowserWindows() const {
+   // Non-Primary OTR profiles are not supposed to create Browser windows.
+   // DevTools::BrowserContext is an exception to this ban.
+   return *this == PrimaryID() ||
++         BRAVE_ALLOWS_BROWSER_WINDOWS
+          base::StartsWith(profile_id_, kDevToolsOTRProfileIDPrefix,
+                           base::CompareCase::SENSITIVE);
+ }
+@@ -266,7 +267,7 @@ const char Profile::kProfileKey[] = "__PROFILE__";
  void Profile::RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
    registry->RegisterBooleanPref(
        prefs::kSearchSuggestEnabled,
@@ -11,3 +19,11 @@ index ca36c316828f3d5ab3fb511d73cb975a86286c5e..b435bcf5ad55a48a21aa545d82553deb
        user_prefs::PrefRegistrySyncable::SYNCABLE_PREF);
  #if defined(OS_ANDROID)
    registry->RegisterStringPref(
+@@ -371,6 +372,7 @@ bool Profile::IsRegularProfile() const {
+ }
+ 
+ bool Profile::IsIncognitoProfile() const {
++  BRAVE_IS_INCOGNITO_PROFILE
+   return IsPrimaryOTRProfile() && !IsGuestSession();
+ }
+ 

@@ -175,14 +175,14 @@ bool BraveBrowserCommandController::ExecuteBraveCommandWithDisposition(
       if (!brave::IsTorProfile(browser_->profile()))
         return BrowserCommandController::ExecuteCommandWithDisposition(
             id, disposition, time_stamp);
-      NewEmptyWindow(brave::GetParentProfile(browser_->profile()));
+      NewEmptyWindow(browser_->profile()->GetOriginalProfile());
       break;
     case IDC_NEW_INCOGNITO_WINDOW:
       // Use chromium's action for non-Tor profiles.
       if (!brave::IsTorProfile(browser_->profile()))
         return BrowserCommandController::ExecuteCommandWithDisposition(
             id, disposition, time_stamp);
-      NewIncognitoWindow(brave::GetParentProfile(browser_->profile()));
+      NewIncognitoWindow(browser_->profile()->GetOriginalProfile());
       break;
     case IDC_SHOW_BRAVE_REWARDS:
       brave::ShowBraveRewards(browser_);

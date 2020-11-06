@@ -26,8 +26,6 @@ bool IsSessionProfile(content::BrowserContext* context);
 
 bool IsSessionProfilePath(const base::FilePath& path);
 
-bool IsTorProfilePath(const base::FilePath& path);
-
 bool IsTorProfile(content::BrowserContext* context);
 
 Profile* GetParentProfile(content::BrowserContext* context);

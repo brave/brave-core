@@ -170,20 +170,14 @@ bool IsSessionProfilePath(const base::FilePath& path) {
          base::FilePath(FILE_PATH_LITERAL("session_profiles"));
 }
 
-bool IsTorProfilePath(const base::FilePath& path) {
-#if BUILDFLAG(ENABLE_TOR)
-  return IsSessionProfilePath(path) &&
-         path.BaseName() == base::FilePath(tor::kTorProfileDir);
-#else
-  return false;
-#endif
-}
-
 bool IsTorProfile(content::BrowserContext* context) {
 #if BUILDFLAG(ENABLE_TOR)
-  DCHECK(context);
-  return IsTorProfilePath(
-      Profile::FromBrowserContext(context)->GetOriginalProfile()->GetPath());
+  Profile* profile = reinterpret_cast<Profile*>(context);
+  if (profile->IsOffTheRecord() &&
+      profile->GetOTRProfileID() == Profile::OTRProfileID(tor::kTorProfileID)) {
+    return true;
+  }
+  return false;
 #else
   return false;
 #endif

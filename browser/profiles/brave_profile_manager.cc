@@ -90,21 +90,6 @@ BraveProfileManager::~BraveProfileManager() {
 }
 
 // static
-// TODO(bridiver) - this should take the last used profile dir as an argument
-base::FilePath BraveProfileManager::GetTorProfilePath() {
-  DCHECK_CURRENTLY_ON(BrowserThread::UI);
-
-  ProfileManager* profile_manager = g_browser_process->profile_manager();
-  base::FilePath parent_path =
-      profile_manager->GetLastUsedProfileDir(profile_manager->user_data_dir());
-
-  DCHECK(!brave::IsTorProfilePath(parent_path));
-
-  base::FilePath tor_path = parent_path.AppendASCII("session_profiles");
-  return tor_path.Append(tor::kTorProfileDir);
-}
-
-// static
 void BraveProfileManager::InitTorProfileUserPrefs(Profile* profile) {
   PrefService* pref_service = profile->GetPrefs();
   pref_service->SetInteger(prefs::kProfileAvatarIndex, 0);

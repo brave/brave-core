@@ -14,6 +14,7 @@
 #include "components/omnibox/browser/autocomplete_controller.h"
 
 #if BUILDFLAG(ENABLE_TOR)
+#include "brave/browser/tor/tor_profile_manager.h"
 #include "brave/browser/tor/tor_profile_service_factory.h"
 #endif
 
@@ -85,11 +86,12 @@ bool BraveRenderViewContextMenu::IsCommandIdEnabled(int id) const {
 void BraveRenderViewContextMenu::ExecuteCommand(int id, int event_flags) {
   switch (id) {
     case IDC_CONTENT_CONTEXT_OPENLINKTOR:
-      profiles::SwitchToTorProfile(
+      TorProfileManager::SwitchToTorProfile(
+          GetProfile(),
           base::Bind(
               OnProfileCreated, params_.link_url,
               content::Referrer(
-                GURL(), network::mojom::ReferrerPolicy::kStrictOrigin)));
+                  GURL(), network::mojom::ReferrerPolicy::kStrictOrigin)));
       break;
     default:
       RenderViewContextMenu_Chromium::ExecuteCommand(id, event_flags);

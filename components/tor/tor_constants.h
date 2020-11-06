@@ -14,6 +14,8 @@ namespace tor {
 
 extern const base::FilePath::CharType kTorProfileDir[];
 
+constexpr char kTorProfileID[] = "Tor::Profile";
+
 }  // namespace tor
 
 #endif  // BRAVE_COMPONENTS_TOR_TOR_CONSTANTS_H_
