@@ -5,19 +5,9 @@
 
 #include "chrome/browser/ui/webui/webui_util.h"
 
-#include "chrome/common/buildflags.h"
-
 #define SetupWebUIDataSource SetupWebUIDataSource_ChromiumImpl
-#if BUILDFLAG(OPTIMIZE_WEBUI)
-#define SetupBundledWebUIDataSource SetupBundledWebUIDataSource_ChromiumImpl
-#endif
-
 #include "../../../../../../chrome/browser/ui/webui/webui_util.cc"
-
 #undef SetupWebUIDataSource
-#if BUILDFLAG(OPTIMIZE_WEBUI)
-#undef SetupBundledWebUIDataSource
-#endif
 
 namespace webui {
 
@@ -36,17 +26,5 @@ void SetupWebUIDataSource(content::WebUIDataSource* source,
   source->OverrideContentSecurityPolicy(
       network::mojom::CSPDirectiveName::ScriptSrc, kBraveCSP);
 }
-
-#if BUILDFLAG(OPTIMIZE_WEBUI)
-void SetupBundledWebUIDataSource(content::WebUIDataSource* source,
-                                 base::StringPiece bundled_path,
-                                 int bundle,
-                                 int default_resource) {
-  SetupBundledWebUIDataSource_ChromiumImpl(source, bundled_path, bundle,
-                                           default_resource);
-  source->OverrideContentSecurityPolicy(
-      network::mojom::CSPDirectiveName::ScriptSrc, kBraveCSP);
-}
-#endif
 
 }  // namespace webui
