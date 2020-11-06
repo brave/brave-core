@@ -241,9 +241,22 @@ group("create_dist") {
         "build/mac:unsigned_dmg"
       ]
     } else {
-      deps += [
-        "build/mac:finalize_dmg_pkg"
-      ]
+      deps += [ "build/mac:finalize_dmg_pkg" ]
+
+      if (sparkle_dsa_private_key_file != "") {
+        deps += [ "build/mac:generate_dsa_sig_for_dmg" ]
+      }
+
+      if (sparkle_eddsa_private_key != "") {
+        deps += [ "build/mac:generate_eddsa_sig_for_dmg" ]
+      }
+
+      if (build_delta_installer && last_chrome_installer != "") {
+        deps += [ "build/mac:build_delta_installer" ]
+        if (sparkle_eddsa_private_key != "") {
+          deps += [ "build/mac:generate_eddsa_sig_for_delta" ]
+        }
+      }
     }
   }
   if (is_linux) {
@@ -495,10 +508,6 @@ if (is_mac) {
     deps = [
       ":brave_app_plist"
     ]
-
-    if (enable_sparkle) {
-      deps += [ "//brave/vendor/sparkle:sparkle_resources_bundle_data" ]
-    }
   }
 
   brave_tweak_info_plist("brave_app_plist") {
@@ -508,8 +517,8 @@ if (is_mac) {
       "--brave_channel=" + brave_channel,
       "--brave_product_dir_name=" + brave_product_dir_name,
       "--brave_feed_url=" + brave_feed_url,
-      "--brave_dsa_file=" + brave_dsa_file,
       "--brave_version=" + brave_version,
+      "--brave_eddsa_key=" + sparkle_eddsa_public_key,
     ]
 
     deps = [
@@ -519,6 +528,7 @@ if (is_mac) {
 
   brave_tweak_info_plist("brave_helper_plist") {
     info_plist = "$root_gen_dir/chrome/chrome_helper_plist_tweaked.plist"
+
     args = [
       "--brave_channel=" + brave_channel,
       "--brave_product_dir_name=" + brave_product_dir_name,
