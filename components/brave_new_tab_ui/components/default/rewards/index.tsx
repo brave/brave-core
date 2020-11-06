@@ -108,7 +108,7 @@ class Rewards extends React.PureComponent<RewardsProps, {}> {
         <AmountDescription>
           {
             showEnableAds
-            ? <StyledTOS title={getLocale('rewardsWidgetEarnAndGive')} />
+            ? <StyledTOS title={getLocale('rewardsWidgetStartUsing')} />
             : getLocale('rewardsWidgetEstimatedEarnings')
           }
         </AmountDescription>

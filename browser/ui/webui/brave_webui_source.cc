@@ -228,7 +228,7 @@ void CustomizeWebUIHTMLSource(const std::string &name,
         { "rewardsWidgetBrandedNotificationHideAction", IDS_REWARDS_WIDGET_BRANDED_NOTIFICATION_HIDE_ACTION }, // NOLINT
         { "addCardWidgetTitle", IDS_ADD_CARD_WIDGET_TITLE },
         { "tosAndPp", IDS_REWARDS_WIDGET_TOS_AND_PP},     // NOLINT
-        { "rewardsWidgetEarnAndGive", IDS_REWARDS_WIDGET_EARN_AND_GIVE},     // NOLINT
+        { "rewardsWidgetStartUsing", IDS_REWARDS_WIDGET_START_USING},     // NOLINT
         // Together Widget
         { "togetherWidgetTitle", IDS_TOGETHER_WIDGET_TITLE },
         { "togetherWidgetWelcomeTitle", IDS_TOGETHER_WIDGET_WELCOME_TITLE },
@@ -360,7 +360,7 @@ void CustomizeWebUIHTMLSource(const std::string &name,
         { "welcome", IDS_BRAVE_WELCOME_PAGE_MAIN_TITLE },
         { "whatIsBrave", IDS_BRAVE_WELCOME_PAGE_MAIN_DESC },
         { "letsGo", IDS_BRAVE_WELCOME_PAGE_MAIN_BUTTON },
-        { "enableBraveRewards", IDS_BRAVE_WELCOME_PAGE_REWARDS_TITLE },
+        { "braveRewardsTitle", IDS_BRAVE_WELCOME_PAGE_REWARDS_TITLE },
         { "setupBraveRewards", IDS_BRAVE_WELCOME_PAGE_REWARDS_DESC },
         { "enableRewards", IDS_BRAVE_WELCOME_PAGE_REWARDS_BUTTON },
         { "importFromAnotherBrowser", IDS_BRAVE_WELCOME_PAGE_IMPORT_TITLE },

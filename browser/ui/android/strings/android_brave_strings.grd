@@ -346,7 +346,7 @@ This file contains all "about" strings.  It is set to NOT be translated, in tran
         for seeing privacy-respecting ads.
       </message>
       <message name="IDS_TERMS_TEXT" desc="Text for terms of service page">
-        By tapping Earn &amp; Give, you agree to the
+        By tapping Start using Brave Rewards, you agree to the
       </message>
       <message name="IDS_TERMS_OF_SERVICE" desc="Text for terms of service">
         Terms of Service
@@ -373,7 +373,7 @@ This file contains all "about" strings.  It is set to NOT be translated, in tran
         Finish
       </message>
       <message name="IDS_EARN_AND_GIVE" desc="Button text for rewards onboarding.">
-        Earn &amp; Give
+        Start using Brave Rewards
       </message>
       <message name="IDS_CONTINUE_TO_WALLET" desc="Text for continue to wallet button">
         Continue to wallet
@@ -910,10 +910,10 @@ until they verify, or until 90 days have passed.
         Photo by <ph name="PHOTO_BY">%1$s</ph>
       </message>
       <message name="IDS_TURN_ON_EARN_AND_GIVE" desc="Text for turn on brave ads button">
-        I'm ready to Earn &amp; Give
+        Start using Brave Rewards
       </message>
       <message name="IDS_NTP_TOS_TEXT" desc="Text for term of service on NTP">
-        By tapping Earn &amp; Give, you agree to the <ph name="TERMS_OF_SERVICE">%1$s</ph>. 
+        By tapping Start using Brave Rewards, you agree to the <ph name="TERMS_OF_SERVICE">%1$s</ph>.
       </message>
       <message name="IDS_GET_PAID_TO_SEE_IMAGE" desc="Text description for NTP banner.">
         Get paid to see this background image.
@@ -1057,7 +1057,7 @@ until they verify, or until 90 days have passed.
         Earn tokens for viewing this image and pay it forward to creators. <ph name="LEARN_MORE">%1$s</ph>
       </message>
       <message name="IDS_EARN_TOKENS_FOR_VIEWING_TITLE" desc="Title for brave rewards banner.">
-        Earn tokens for viewing this image. Turn on Earn &amp; Give to claim your share.
+        Earn tokens for viewing this image. Tap Start using Brave Rewards to claim your share.
       </message>
       <message name="IDS_YOU_ARE_EARNING_TOKENS" desc="Title for brave rewards banner.">
         You're earning tokens for viewing this image.\n<ph name="LEARN_MORE">%1$s</ph>
