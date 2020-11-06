@@ -118,19 +118,17 @@ void BraveRewardsGetPublisherInfoFunction::OnGetPublisherInfo(
     return;
   }
 
-  auto dict = std::make_unique<base::Value>(base::Value::Type::DICTIONARY);
-  dict->SetStringKey("publisherKey", info->id);
-  dict->SetStringKey("name", info->name);
-  dict->SetIntKey("percentage", info->percent);
-  dict->SetIntKey("status", static_cast<int>(info->status));
-  dict->SetIntKey("excluded", static_cast<int>(info->excluded));
-  dict->SetStringKey("url", info->url);
-  dict->SetStringKey("provider", info->provider);
-  dict->SetStringKey("favIconUrl", info->favicon_url);
+  base::Value dict(base::Value::Type::DICTIONARY);
+  dict.SetStringKey("publisherKey", info->id);
+  dict.SetStringKey("name", info->name);
+  dict.SetIntKey("percentage", info->percent);
+  dict.SetIntKey("status", static_cast<int>(info->status));
+  dict.SetIntKey("excluded", static_cast<int>(info->excluded));
+  dict.SetStringKey("url", info->url);
+  dict.SetStringKey("provider", info->provider);
+  dict.SetStringKey("favIconUrl", info->favicon_url);
 
-  Respond(TwoArguments(
-      std::make_unique<base::Value>(static_cast<int>(result)),
-      std::move(dict)));
+  Respond(TwoArguments(base::Value(static_cast<int>(result)), std::move(dict)));
 }
 
 BraveRewardsGetPublisherPanelInfoFunction::
@@ -167,19 +165,17 @@ void BraveRewardsGetPublisherPanelInfoFunction::OnGetPublisherPanelInfo(
     return;
   }
 
-  auto dict = std::make_unique<base::Value>(base::Value::Type::DICTIONARY);
-  dict->SetStringKey("publisherKey", info->id);
-  dict->SetStringKey("name", info->name);
-  dict->SetIntKey("percentage", info->percent);
-  dict->SetIntKey("status", static_cast<int>(info->status));
-  dict->SetIntKey("excluded", static_cast<int>(info->excluded));
-  dict->SetStringKey("url", info->url);
-  dict->SetStringKey("provider", info->provider);
-  dict->SetStringKey("favIconUrl", info->favicon_url);
+  base::Value dict(base::Value::Type::DICTIONARY);
+  dict.SetStringKey("publisherKey", info->id);
+  dict.SetStringKey("name", info->name);
+  dict.SetIntKey("percentage", info->percent);
+  dict.SetIntKey("status", static_cast<int>(info->status));
+  dict.SetIntKey("excluded", static_cast<int>(info->excluded));
+  dict.SetStringKey("url", info->url);
+  dict.SetStringKey("provider", info->provider);
+  dict.SetStringKey("favIconUrl", info->favicon_url);
 
-  Respond(TwoArguments(
-      std::make_unique<base::Value>(static_cast<int>(result)),
-      std::move(dict)));
+  Respond(TwoArguments(base::Value(static_cast<int>(result)), std::move(dict)));
 }
 
 BraveRewardsSavePublisherInfoFunction::
@@ -607,23 +603,19 @@ void BraveRewardsAttestPromotionFunction::OnAttestPromotion(
     const std::string& promotion_id,
     const ledger::type::Result result,
     ledger::type::PromotionPtr promotion) {
-  auto data = std::make_unique<base::Value>(base::Value::Type::DICTIONARY);
-  data->SetStringKey("promotionId", promotion_id);
+  base::Value data(base::Value::Type::DICTIONARY);
+  data.SetStringKey("promotionId", promotion_id);
 
   if (!promotion) {
     Respond(
-        TwoArguments(
-            std::make_unique<base::Value>(static_cast<int>(result)),
-            std::move(data)));
+        TwoArguments(base::Value(static_cast<int>(result)), std::move(data)));
     return;
   }
 
-  data->SetIntKey("expiresAt", promotion->expires_at);
-  data->SetDoubleKey("amount", promotion->approximate_value);
-  data->SetIntKey("type", static_cast<int>(promotion->type));
-  Respond(TwoArguments(
-      std::make_unique<base::Value>(static_cast<int>(result)),
-      std::move(data)));
+  data.SetIntKey("expiresAt", promotion->expires_at);
+  data.SetDoubleKey("amount", promotion->approximate_value);
+  data.SetIntKey("type", static_cast<int>(promotion->type));
+  Respond(TwoArguments(base::Value(static_cast<int>(result)), std::move(data)));
 }
 
 BraveRewardsGetPendingContributionsTotalFunction::
@@ -878,9 +870,8 @@ ExtensionFunction::ResponseAction BraveRewardsRefreshPublisherFunction::Run() {
   RewardsService* rewards_service =
     RewardsServiceFactory::GetForProfile(profile);
   if (!rewards_service) {
-    return RespondNow(TwoArguments(
-        std::make_unique<base::Value>(false),
-        std::make_unique<base::Value>(std::string())));
+    return RespondNow(
+        TwoArguments(base::Value(false), base::Value(std::string())));
   }
   rewards_service->RefreshPublisher(
       params->publisher_key,
@@ -893,9 +884,8 @@ ExtensionFunction::ResponseAction BraveRewardsRefreshPublisherFunction::Run() {
 void BraveRewardsRefreshPublisherFunction::OnRefreshPublisher(
     const ledger::type::PublisherStatus status,
     const std::string& publisher_key) {
-  Respond(TwoArguments(
-      std::make_unique<base::Value>(static_cast<int>(status)),
-      std::make_unique<base::Value>(publisher_key)));
+  Respond(TwoArguments(base::Value(static_cast<int>(status)),
+                       base::Value(publisher_key)));
 }
 
 BraveRewardsGetAllNotificationsFunction::
@@ -1039,20 +1029,18 @@ void BraveRewardsGetExternalWalletFunction::OnGetUpholdWallet(
     return;
   }
 
-  auto data = std::make_unique<base::Value>(base::Value::Type::DICTIONARY);
-  data->SetStringKey("token", wallet->token);
-  data->SetStringKey("address", wallet->address);
-  data->SetIntKey("status", static_cast<int>(wallet->status));
-  data->SetStringKey("verifyUrl", wallet->verify_url);
-  data->SetStringKey("addUrl", wallet->add_url);
-  data->SetStringKey("withdrawUrl", wallet->withdraw_url);
-  data->SetStringKey("userName", wallet->user_name);
-  data->SetStringKey("accountUrl", wallet->account_url);
-  data->SetStringKey("loginUrl", wallet->login_url);
+  base::Value data(base::Value::Type::DICTIONARY);
+  data.SetStringKey("token", wallet->token);
+  data.SetStringKey("address", wallet->address);
+  data.SetIntKey("status", static_cast<int>(wallet->status));
+  data.SetStringKey("verifyUrl", wallet->verify_url);
+  data.SetStringKey("addUrl", wallet->add_url);
+  data.SetStringKey("withdrawUrl", wallet->withdraw_url);
+  data.SetStringKey("userName", wallet->user_name);
+  data.SetStringKey("accountUrl", wallet->account_url);
+  data.SetStringKey("loginUrl", wallet->login_url);
 
-  Respond(TwoArguments(
-        std::make_unique<base::Value>(static_cast<int>(result)),
-        std::move(data)));
+  Respond(TwoArguments(base::Value(static_cast<int>(result)), std::move(data)));
 }
 
 BraveRewardsDisconnectWalletFunction::
