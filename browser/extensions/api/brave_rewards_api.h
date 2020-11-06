@@ -228,6 +228,16 @@ class BraveRewardsSaveAdsSettingFunction : public ExtensionFunction {
   ResponseAction Run() override;
 };
 
+class BraveRewardsSetAutoContributeEnabledFunction : public ExtensionFunction {
+ public:
+  DECLARE_EXTENSION_FUNCTION("braveRewards.setAutoContributeEnabled", UNKNOWN)
+
+ protected:
+  ~BraveRewardsSetAutoContributeEnabledFunction() override;
+
+  ResponseAction Run() override;
+};
+
 class BraveRewardsGetACEnabledFunction : public ExtensionFunction {
  public:
   DECLARE_EXTENSION_FUNCTION("braveRewards.getACEnabled", UNKNOWN)

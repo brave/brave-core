@@ -23,7 +23,7 @@ interface NotificationProps {
   onDismissNotification: () => void
   brandedWallpaperData?: NewTab.BrandedWallpaper
   isOrphan?: boolean
-  onEnableAds?: () => void
+  onStartRewards?: () => void
   onHideSponsoredImages: () => void
   order: number
 }
@@ -68,7 +68,7 @@ export default class BrandedWallpaperRewardsNotification extends React.PureCompo
           {afterTag}
         </SubTitle>
         <TurnOnAdsButton
-          onClick={this.props.onEnableAds}
+          onClick={this.props.onStartRewards}
           type={'accent'}
           brand={'rewards'}
           text={getLocale('rewardsWidgetTurnOnAds')}
@@ -93,7 +93,7 @@ export default class BrandedWallpaperRewardsNotification extends React.PureCompo
         <CloseIcon onClick={this.props.onDismissNotification}>
           <CloseStrokeIcon />
         </CloseIcon>
-          { this.props.onEnableAds
+          { this.props.onStartRewards
               ? this.renderPreAdsOptInContent()
               : this.renderPostAdsOptInContent()
           }
