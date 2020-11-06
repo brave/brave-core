@@ -2,6 +2,12 @@ declare_args() {
   brave_chromium_build = true
 
   brave_services_key = ""
+
+  # Enables Widevine key system support. Enabled by default in Google Chrome,
+  # on Android and Fuchsia platforms.
+  # Can be optionally enabled in Chromium on non-Android platforms. Please see
+  # //src/third_party/widevine/LICENSE file for details.
+  enable_widevine = is_android || is_fuchsia
 }
 
 brave_service_key_defines = []
