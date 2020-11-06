@@ -236,20 +236,6 @@ export const GridItemNavigationBraveToday = styled<{}, 'div'>('div')`
   left: 50%;
   transform: translate(-50%, 0);
   margin: 0 auto;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 12px;
-  text-align: center;
-  font-size: 15px;
-  color: white;
-  > p {
-    margin: 0;
-  }
-  > div {
-    width: 16px;
-    height: 16px;
-  }
 `
 
 export const Footer = styled<{}, 'footer'>('footer')`

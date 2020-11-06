@@ -6,7 +6,6 @@
 import * as React from 'react'
 
 // Components
-import { CaratStrongDownIcon } from 'brave-ui/components/icons'
 import Stats from './stats'
 import TopSitesGrid from './gridSites'
 import FooterInfo from './footerInfo'
@@ -24,6 +23,7 @@ import {
 import * as Page from '../../components/default/page'
 import BrandedWallpaperLogo from '../../components/default/brandedWallpaper/logo'
 import { brandedWallpaperLogoClicked } from '../../api/brandedWallpaper'
+import BraveTodayHint from '../../components/default/braveToday/hint'
 import BraveToday from '../../components/default/braveToday'
 
 // Helpers
@@ -1091,10 +1091,7 @@ class NewTabPage extends React.Component<Props, State> {
           </Page.Footer>
           {newTabData.showToday &&
           <Page.GridItemNavigationBraveToday>
-            <p>Scroll for Brave Today</p>
-            <div>
-              <CaratStrongDownIcon />
-            </div>
+            <BraveTodayHint />
           </Page.GridItemNavigationBraveToday>
           }
         </Page.Page>
