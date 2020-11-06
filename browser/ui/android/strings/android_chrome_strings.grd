@@ -595,9 +595,6 @@ CHAR-LIMIT guidelines:
       <message name="IDS_PASSWORD_ENTRY_VIEWER_DELETE_STORED_PASSWORD" desc="Content description for the button that allows users to delete the stored password.">
         Delete stored password
       </message>
-      <message name="IDS_PASSWORD_ENTRY_VIEWER_EDIT_STORED_PASSWORD" desc="Content description for the button that allows users to edit the stored password.">
-        Edit stored password
-      </message>
       <message name="IDS_PASSWORD_ENTRY_VIEWER_USERNAME_COPIED_INTO_CLIPBOARD" desc="Text that announces to the user that the username of a saved account has been copied into clipboard.">
         Username copied
       </message>
@@ -612,6 +609,9 @@ CHAR-LIMIT guidelines:
       </message>
       <message name="IDS_PASSWORD_EXPORT_SET_LOCK_SCREEN" desc="Text prompting user to set device lock in order to be able to export passwords">
         Turn on screen lock in Settings to export your passwords from this device
+      </message>
+      <message name="IDS_PASSWORD_ENTRY_VIEW_SET_SCREEN_LOCK" desc="Text prompting the user to set up a screen lock on their device in order to be able to view passwords">
+        To view passwords, first set a screen lock on your device
       </message>
       <message name="IDS_PASSWORD_GENERATION_POPUP_CONTENT_DESCRIPTION" desc="The text announced by the screen reader when the password generation popup is shown.">
         Showing password generation popup
@@ -1875,6 +1875,12 @@ To change this setting, <ph name="BEGIN_LINK">&lt;resetlink&gt;</ph>reset sync<p
       <message name="IDS_ACCESSIBILITY_TAB_SWITCHER_UNDO_TAB_CLOSED" desc="Content description for the undo tab closed 'button.">
         Reopen closed tab
       </message>
+      <message name="IDS_ACCESSIBILITY_UNDO_CLOSED_TAB_ANNOUNCEMENT_MESSAGE" desc="Message spoken out loud for accessibility when a user decides to undo a closed tab.">
+        Restored <ph name="TAB_TITLE">%1$s<ex>YouTube</ex></ph>, tab
+      </message>
+      <message name="IDS_ACCESSIBILITY_UNDO_MULTIPLE_CLOSED_TABS_ANNOUNCEMENT_MESSAGE" desc="Message spoken out loud for accessibility when a user decides to undo multiple closed tabs at once.">
+        Restored <ph name="TAB_COUNT">%1$s<ex>3</ex></ph> tabs
+      </message>
       <message name="IDS_ACCESSIBILITY_TABSTRIP_TAB" desc="Content description for the tab title.">
         <ph name="TAB_TITLE">%1$s<ex>Welcome to Facebook</ex></ph>, tab
       </message>
@@ -2194,6 +2200,21 @@ To change this setting, <ph name="BEGIN_LINK">&lt;resetlink&gt;</ph>reset sync<p
       </message>
       <message name="IDS_IPH_PWA_INSTALL_AVAILABLE_TEXT" desc="The in-product-help message for PWAs that can be installed to the device.">
         Install this app
+      </message>
+      <message name="IDS_IPH_BUBBLE_ADD_TO_HOME_SCREEN" desc="The in-product-help message encouraging users to add a commonly visited webpage to the home screen.">
+        To get here quicker, add this page to your Home screen
+      </message>
+      <message name="IDS_IPH_BUBBLE_ADD_TO_HOME_SCREEN_ACCESSIBILITY" desc="The in-product-help message encouraging users to add a commonly visited webpage to the home screen. Used when a screen reader is turned. 'More options' should match TC ID 8110367050267853536.">
+        To get here quicker, add this page to your Home screen from the More options button
+      </message>
+      <message name="IDS_IPH_INFOBAR_ADD_TO_HOME_SCREEN_TITLE" desc="The title of in-product-help infobar encouraging users to add a commonly visited webpage to the home screen.">
+        Get to this site quicker
+      </message>
+      <message name="IDS_IPH_INFOBAR_ADD_TO_HOME_SCREEN_DESCRIPTION" desc="The description of in-product-help infobar encouraging users to add a commonly visited webpage to the home screen. Shown on phones.">
+        Add this site to your phone’s Home screen so you can get here more easily
+      </message>
+      <message name="IDS_IPH_INFOBAR_ADD_TO_HOME_SCREEN_DESCRIPTION_TABLET" desc="The description of in-product-help infobar encouraging users to add a commonly visited webpage to the home screen. Shown on tablets.">
+        Add this site to your tablet’s Home screen so you can get here more easily
       </message>
 
       <!-- Page info popup -->
@@ -2810,6 +2831,9 @@ Data from your Private session will only be cleared from Brave when you <ph name
       </message>
       <message name="IDS_VIDEO_TUTORIALS_IPH_TAP_VOICE_ICON_TO_START" desc="In-product help bubble text prompting user to start typing on the search box or tap on the microphone icon to start a voice search.">
         Type here or tap the voice icon to start
+      </message>
+      <message name="IDS_VIDEO_TUTORIALS_LOADING" desc="Text on the loading animation screen indicating that the video loading is currently in progress.">
+        Loading…
       </message>
 
       <!-- Toolbar button strings -->
