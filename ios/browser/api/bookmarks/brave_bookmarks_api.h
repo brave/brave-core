@@ -53,6 +53,7 @@ OBJC_EXPORT
 @property (nonatomic, readonly) bool isFavIconLoaded;
 @property (nonatomic, readonly) bool isFavIconLoading;
 @property (nonatomic, readonly) bool isVisible;
+@property (nonatomic, readonly) bool isValid;
 
 @property (nonatomic, readonly) NSString *titleUrlNodeTitle;
 @property (nonatomic, nullable, readonly) NSURL *titleUrlNodeUrl;
