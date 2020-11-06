@@ -14,7 +14,7 @@ type Props = {
 
 export default function PublisherMeta (props: Props) {
   const Component = props.title
-    ? Card.Heading
+    ? Card.PublisherHeading
     : styled.PublisherName
   return (
     <Component>

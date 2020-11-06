@@ -11,9 +11,6 @@ import BraveTodayLogo from '../braveTodayLogo.svg'
 import { getLocale } from '../../../../../common/locale'
 
 class HeaderBlock extends React.PureComponent<{}, {}> {
-  onClickHideWidget = () => {
-    return undefined
-  }
   render () {
     return (
       <Card.Intro>

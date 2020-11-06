@@ -92,7 +92,7 @@ export const Time = styled(Text.withComponent('time'))`
   font-family: ${p => p.theme.fontFamily.heading};
   font-size: 13px;
   margin-top: 4px;
-  color: rgba(255,255,255,0.6);
+  color: rgba(255,255,255,0.7);
 `
 
 export const PublisherLogo = styled<{}, 'img'>('img')`

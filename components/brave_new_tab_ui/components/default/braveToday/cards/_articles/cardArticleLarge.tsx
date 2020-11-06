@@ -55,7 +55,7 @@ const LargeArticle = React.forwardRef<HTMLElement, ArticleProps>(function (props
 const CardSingleArticleLarge = React.forwardRef<HTMLElement, Props>(function (props, ref) {
   // no full content no render®
   if (props.content.length === 0) {
-    return <></>
+    return null
   }
 
   return (

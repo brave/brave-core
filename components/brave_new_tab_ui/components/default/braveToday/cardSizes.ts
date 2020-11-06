@@ -27,12 +27,14 @@ export const Small = styled(Large)`
 `
 
 export const DealsCard = styled(StandardBlock)`
-
 `
 
 export const Content = styled<{}, 'div'>('div')`
   box-sizing: border-box;
   padding: 25px 35px;
+  ${Small} & {
+    padding: 20px 28px;
+  }
 `
 
 type ImageFrameProps = {
@@ -72,6 +74,7 @@ export const Image = styled(StandardImage)`
 `
 
 export const Heading = styled(StandardHeading)`
+  font-weight: 500;
   a {
     display: block;
     color: inherit;
@@ -79,10 +82,15 @@ export const Heading = styled(StandardHeading)`
   }
 `
 
+export const PublisherHeading = styled(StandardHeading)`
+  font-weight: 600;
+`
+
 export const Text = styled(StandardText)`
   font-family: ${p => p.theme.fontFamily.heading};
   font-size: 18px;
   line-height: 25px;
+  font-weight: 500;
 
   a {
     display: block;
@@ -104,12 +112,27 @@ export const ContainerForTwo = styled<{}, 'div'>('div')`
   grid-gap: 30px;
 `
 
+export const DealsCategory = styled('h3')`
+  margin: 0;
+  font: 700 18px ${p => p.theme.fontFamily.heading};
+  color: white;
+`
+
 export const DealsList = styled('div')`
+  margin-top: 24px;
   display: grid;
   grid-template-columns: 1fr 1fr 1fr;
   grid-gap: 30px;
 `
 
 export const DealItem = styled('a')`
-  display: block;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: stretch;
+  gap: 8px;
+`
+
+export const DealDescription = styled(Time)`
+  margin: 0;
 `

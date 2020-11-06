@@ -31,7 +31,7 @@ function ListItem (props: ListItemProps) {
     <Card.DealItem innerRef={cardRef} onClick={onClick} href={props.item.url}>
       <CardImage imageUrl={props.item.padded_img} />
       <Card.Text>{props.item.title}</Card.Text>
-      <Card.Time>{props.item.description}</Card.Time>
+      <Card.DealDescription>{props.item.description}</Card.DealDescription>
     </Card.DealItem>
   )
 }
@@ -44,7 +44,7 @@ export default function CardDeals (props: Props) {
 
   return (
     <Card.DealsCard>
-      <Card.Heading>{props.content[0].offers_category}</Card.Heading>
+      <Card.DealsCategory>{props.content[0].offers_category}</Card.DealsCategory>
       <Card.DealsList>
         {
           props.content.map((item, index) => {
