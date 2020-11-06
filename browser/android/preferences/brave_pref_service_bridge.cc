@@ -315,6 +315,23 @@ jboolean JNI_BravePrefServiceBridge_GetP3ANoticeAcknowledged(
   return g_browser_process->local_state()->GetBoolean(
       brave::kP3ANoticeAcknowledged);
 }
+
+#else
+
+void JNI_BravePrefServiceBridge_SetP3AEnabled(JNIEnv* env, jboolean value) {}
+
+jboolean JNI_BravePrefServiceBridge_GetP3AEnabled(JNIEnv* env) {
+  return false;
+}
+
+jboolean JNI_BravePrefServiceBridge_HasPathP3AEnabled(JNIEnv* env) {}
+
+void JNI_BravePrefServiceBridge_SetP3ANoticeAcknowledged(JNIEnv* env,
+    jboolean value) {}
+
+jboolean JNI_BravePrefServiceBridge_GetP3ANoticeAcknowledged(JNIEnv* env) {
+  return false;
+}
 #endif  // BUILDFLAG(BRAVE_P3A_ENABLED)
 
 }  // namespace android

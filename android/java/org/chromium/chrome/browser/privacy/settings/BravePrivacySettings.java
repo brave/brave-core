@@ -13,6 +13,7 @@ import androidx.preference.PreferenceCategory;
 
 import org.chromium.base.ContextUtils;
 import org.chromium.chrome.R;
+import org.chromium.chrome.browser.BraveConfig;
 import org.chromium.chrome.browser.preferences.BravePref;
 import org.chromium.chrome.browser.preferences.BravePrefServiceBridge;
 import org.chromium.chrome.browser.preferences.Pref;
@@ -165,8 +166,12 @@ public class BravePrivacySettings extends PrivacySettings {
         mSearchSuggestions.setChecked(mPrefServiceBridge.getBoolean(Pref.SEARCH_SUGGEST_ENABLED));
         int order = findPreference(PREF_CLEAR_BROWSING_DATA).getOrder();
         mCloseTabsOnExitPref.setOrder(++order);
-        mSendP3A.setOrder(++order);
-        mSendP3A.setChecked(BravePrefServiceBridge.getInstance().getP3AEnabled());
+        if (BraveConfig.P3A_ENABLED) {
+            mSendP3A.setOrder(++order);
+            mSendP3A.setChecked(BravePrefServiceBridge.getInstance().getP3AEnabled());
+        } else {
+            getPreferenceScreen().removePreference(mSendP3A);
+        }
         mHttpsePref.setOrder(++order);
         mAdBlockPref.setOrder(++order);
         mFingerprintingProtectionPref.setOrder(++order);
