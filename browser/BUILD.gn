@@ -1,5 +1,4 @@
 import("//brave/build/config.gni")
-import("//brave/components/binance/browser/buildflags/buildflags.gni")
 import("//brave/components/brave_ads/browser/buildflags/buildflags.gni")
 import(
     "//brave/components/brave_perf_predictor/browser/buildflags/buildflags.gni")
@@ -25,8 +24,6 @@ import("//third_party/protobuf/proto_library.gni")
 import("//third_party/widevine/cdm/widevine.gni")
 
 source_set("browser_process") {
-  # Remove when https://github.com/brave/brave-browser/issues/10657 is resolved
-  check_includes = false
   visibility = [
     "//chrome/browser/*",
     "//brave/browser/*",
@@ -39,54 +36,10 @@ source_set("browser_process") {
   ]
 
   sources = [
-    "autocomplete/brave_autocomplete_scheme_classifier.cc",
-    "autocomplete/brave_autocomplete_scheme_classifier.h",
-    "brave_browser_main_extra_parts.cc",
-    "brave_browser_main_extra_parts.h",
-    "brave_browser_main_parts.cc",
-    "brave_browser_main_parts.h",
-    "brave_browser_process_impl.cc",
-    "brave_browser_process_impl.h",
-    "brave_content_browser_client.cc",
-    "brave_content_browser_client.h",
-    "brave_local_state_prefs.cc",
-    "brave_local_state_prefs.h",
-    "brave_profile_prefs.cc",
-    "brave_profile_prefs.h",
-    "brave_shields/ad_block_pref_service_factory.cc",
-    "brave_shields/ad_block_pref_service_factory.h",
-    "brave_shields/cookie_pref_service_factory.cc",
-    "brave_shields/cookie_pref_service_factory.h",
-    "brave_tab_helpers.cc",
-    "brave_tab_helpers.h",
-    "browser_context_keyed_service_factories.cc",
-    "browser_context_keyed_service_factories.h",
     "component_updater/brave_component_installer.cc",
     "component_updater/brave_component_installer.h",
-    "component_updater/brave_component_updater_configurator.cc",
-    "component_updater/brave_component_updater_configurator.h",
-    "component_updater/brave_component_updater_delegate.cc",
-    "component_updater/brave_component_updater_delegate.h",
-    "geolocation/brave_geolocation_permission_context_delegate.cc",
-    "geolocation/brave_geolocation_permission_context_delegate.h",
     "metrics/metrics_reporting_util.cc",
     "metrics/metrics_reporting_util.h",
-    "search_engines/guest_window_search_engine_provider_service.cc",
-    "search_engines/guest_window_search_engine_provider_service.h",
-    "search_engines/private_window_search_engine_provider_service.cc",
-    "search_engines/private_window_search_engine_provider_service.h",
-    "search_engines/search_engine_provider_service.cc",
-    "search_engines/search_engine_provider_service.h",
-    "search_engines/search_engine_provider_service_factory.cc",
-    "search_engines/search_engine_provider_service_factory.h",
-    "search_engines/search_engine_provider_util.cc",
-    "search_engines/search_engine_provider_util.h",
-    "search_engines/search_engine_tracker.cc",
-    "search_engines/search_engine_tracker.h",
-    "search_engines/tor_window_search_engine_provider_service.cc",
-    "search_engines/tor_window_search_engine_provider_service.h",
-    "sync/brave_profile_sync_service_delegate.cc",
-    "sync/brave_profile_sync_service_delegate.h",
     "update_util.cc",
     "update_util.h",
   ]
@@ -112,6 +65,8 @@ source_set("browser_process") {
     "autoplay",
     "brave_stats:stats_updater",
     "browsing_data",
+    "brave_stats:stats_updater",
+    "browsing_data",
     "content_settings",
     "download",
     "ephemeral_storage",
@@ -124,18 +79,27 @@ source_set("browser_process") {
     "themes",
     "ui",
     "//base",
+    "//brave/browser/gcm_driver:gcm_driver",
     "//brave/browser/net",
     "//brave/browser/notifications",
     "//brave/browser/translate/buildflags",
+    "//brave/browser/ui/bookmark:bookmark",
+    "//brave/chromium_src:browser",
     "//brave/common",
     "//brave/common:pref_names",
+    "//brave/common:switches",
     "//brave/components/binance/browser/buildflags",
     "//brave/components/brave_component_updater/browser",
     "//brave/components/brave_drm",
     "//brave/components/brave_referrals/buildflags",
+    "//brave/components/brave_rewards/common:common",
     "//brave/components/brave_shields/browser",
     "//brave/components/brave_shields/common",
+    "//brave/components/brave_sync/buildflags:buildflags",
     "//brave/components/brave_sync",
+    "//brave/components/brave_sync:features",
+    "//brave/components/brave_sync:network_time_helper",
+    "//brave/components/brave_sync:prefs",
     "//brave/components/brave_together/browser",
     "//brave/components/brave_wallet/buildflags",
     "//brave/components/brave_wayback_machine:buildflags",
@@ -149,38 +113,50 @@ source_set("browser_process") {
     "//brave/components/moonpay/browser/buildflags",
     "//brave/components/ntp_background_images/browser",
     "//brave/components/ntp_tiles",
+    "//brave/components/p3a:buildflags",
     "//brave/components/p3a",
     "//brave/components/resources",
     "//brave/components/speedreader:buildflags",
     "//brave/components/tor/buildflags",
     "//brave/components/weekly_storage",
     "//brave/services/network/public/cpp",
+    "//chrome/browser/extensions:extensions",
+    "//chrome/browser/ui:ui",
     "//chrome/common",
+    "//components/account_id:account_id",
     "//components/autofill/core/common",
     "//components/browsing_data/core",
     "//components/component_updater",
     "//components/content_settings/browser",
     "//components/content_settings/core/browser",
     "//components/content_settings/core/common",
+    "//components/crx_file:crx_file",
+    "//components/feed/core/shared_prefs:feed_shared_prefs",
     "//components/embedder_support",
     "//components/gcm_driver:gcm_buildflags",
     "//components/gcm_driver:gcm_driver",
+    "//components/guest_view/browser:browser",
     "//components/keyed_service/content",
     "//components/metrics",
     "//components/password_manager/core/common",
     "//components/permissions",
     "//components/policy/core/browser",
     "//components/prefs",
+    "//components/pref_registry:pref_registry",
     "//components/safe_browsing/core/common:safe_browsing_prefs",
     "//components/search_engines",
     "//components/services/patch/content",
     "//components/services/unzip/content",
+    "//components/signin/public/base:base",
     "//components/sessions",
     "//components/sync_device_info",
     "//components/spellcheck/browser",
     "//components/unified_consent",
+    "//components/update_client:network_impl",
     "//components/update_client:patch_impl",
     "//components/update_client:unzip_impl",
+    "//components/update_client:update_client",
+    "//components/web_modal:web_modal",
     "//content/public/browser",
     "//content/public/common",
     "//extensions/buildflags",
@@ -189,6 +165,7 @@ source_set("browser_process") {
     "//third_party/blink/public/mojom:mojom_platform_headers",
     "//third_party/widevine/cdm:buildflags",
     "//ui/base",
+    "//ui/web_dialogs:web_dialogs",
   ]
 
   if (brave_wallet_enabled) {
@@ -207,99 +184,6 @@ source_set("browser_process") {
 
   if (enable_brave_sync) {
     deps += [ "//brave/components/brave_sync" ]
-  }
-
-  if (!is_android) {
-    sources += [
-      "p3a/p3a_core_metrics.cc",
-      "p3a/p3a_core_metrics.h",
-    ]
-
-    deps += [
-      "importer",
-      "infobars",
-      "//brave/app:brave_generated_resources_grit",
-    ]
-  } else {
-    deps += [ "android:android_browser_process" ]
-  }
-
-  if (binance_enabled) {
-    sources += [
-      "binance/binance_protocol_handler.cc",
-      "binance/binance_protocol_handler.h",
-      "binance/binance_service_factory.cc",
-      "binance/binance_service_factory.h",
-    ]
-
-    deps += [
-      "//brave/components/binance/browser",
-      "//components/country_codes",
-    ]
-
-    if (is_android) {
-      sources += [
-        "binance/android/binance_native_worker.cc",
-        "binance/android/binance_native_worker.h",
-      ]
-    }
-  }
-
-  if (gemini_enabled) {
-    sources += [
-      "gemini/gemini_protocol_handler.cc",
-      "gemini/gemini_protocol_handler.h",
-      "gemini/gemini_service_factory.cc",
-      "gemini/gemini_service_factory.h",
-    ]
-
-    deps += [
-      "//base",
-      "//brave/browser/profiles",
-      "//brave/common",
-      "//brave/components/gemini/browser",
-      "//components/country_codes",
-      "//components/keyed_service/content",
-      "//components/user_prefs",
-      "//content/public/browser",
-      "//ui/base",
-      "//url",
-    ]
-  }
-
-  if (crypto_dot_com_enabled) {
-    sources += [
-      "crypto_dot_com/crypto_dot_com_service_factory.cc",
-      "crypto_dot_com/crypto_dot_com_service_factory.h",
-    ]
-
-    deps += [
-      "//base",
-      "//brave/browser/profiles",
-      "//brave/components/crypto_dot_com/browser",
-      "//brave/components/crypto_dot_com/common",
-      "//components/keyed_service/content",
-    ]
-  }
-
-  if (ipfs_enabled) {
-    sources += [
-      "ipfs/content_browser_client_helper.cc",
-      "ipfs/content_browser_client_helper.h",
-      "ipfs/ipfs_service_factory.cc",
-      "ipfs/ipfs_service_factory.h",
-      "ipfs/ipfs_tab_helper.cc",
-      "ipfs/ipfs_tab_helper.h",
-    ]
-
-    deps += [
-      "//brave/browser/infobars",
-      "//brave/components/ipfs",
-      "//brave/components/services/ipfs/public/mojom",
-      "//components/user_prefs",
-      "//extensions/browser",
-      "//extensions/common",
-    ]
   }
 
   if (brave_together_enabled) {
@@ -348,31 +232,10 @@ source_set("browser_process") {
   }
 
   if (brave_rewards_enabled) {
-    sources += [
-      "brave_rewards/rewards_service_factory.cc",
-      "brave_rewards/rewards_service_factory.h",
-      "brave_rewards/rewards_tab_helper.cc",
-      "brave_rewards/rewards_tab_helper.h",
-    ]
-
-    if (enable_extensions) {
-      sources += [
-        "brave_rewards/extension_rewards_notification_service_observer.cc",
-        "brave_rewards/extension_rewards_notification_service_observer.h",
-        "brave_rewards/extension_rewards_service_observer.cc",
-        "brave_rewards/extension_rewards_service_observer.h",
-      ]
-    }
-
     if (is_android) {
       sources += [
         "brave_rewards/android/brave_rewards_native_worker.cc",
         "brave_rewards/android/brave_rewards_native_worker.h",
-      ]
-    } else {
-      sources += [
-        "brave_rewards/tip_dialog.cc",
-        "brave_rewards/tip_dialog.h",
       ]
     }
 
@@ -390,26 +253,8 @@ source_set("browser_process") {
     deps += [ "//brave/components/brave_wayback_machine" ]
   }
 
-  if (enable_widevine) {
-    sources += [
-      "brave_drm_tab_helper.cc",
-      "brave_drm_tab_helper.h",
-    ]
-    deps += [ "//brave/browser/widevine" ]
-  }
-
   if (enable_brave_perf_predictor) {
     deps += [ "//brave/components/brave_perf_predictor/browser" ]
-  }
-
-  if (enable_speedreader) {
-    sources += [
-      "//brave/browser/speedreader/speedreader_service_factory.cc",
-      "//brave/browser/speedreader/speedreader_service_factory.h",
-      "//brave/browser/speedreader/speedreader_tab_helper.cc",
-      "//brave/browser/speedreader/speedreader_tab_helper.h",
-    ]
-    deps += [ "//brave/components/speedreader" ]
   }
 
   if (is_win && is_official_build) {

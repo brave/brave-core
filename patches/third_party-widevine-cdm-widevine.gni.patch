@@ -1,8 +1,24 @@
 diff --git a/third_party/widevine/cdm/widevine.gni b/third_party/widevine/cdm/widevine.gni
-index 036d03e36a13b7947f0a3cc1dfdc81823b080645..ab3eaf80f7f711d901d76cfb445afcec73c5ed51 100644
+index 036d03e36a13b7947f0a3cc1dfdc81823b080645..e1da33dd35fcbcb70747aab9ec743606574a880c 100644
 --- a/third_party/widevine/cdm/widevine.gni
 +++ b/third_party/widevine/cdm/widevine.gni
-@@ -42,6 +42,8 @@ enable_widevine_cdm_component =
+@@ -4,14 +4,7 @@
+ 
+ import("//build/config/chrome_build.gni")
+ import("//media/media_options.gni")
+-
+-declare_args() {
+-  # Enables Widevine key system support. Enabled by default in Google Chrome,
+-  # on Android and Fuchsia platforms.
+-  # Can be optionally enabled in Chromium on non-Android platforms. Please see
+-  # //src/third_party/widevine/LICENSE file for details.
+-  enable_widevine = is_chrome_branded || is_android || is_fuchsia
+-}
++import("//brave/build/features.gni")
+ 
+ # Disable Widevine when running linux-chromeos.
+ if (is_chromeos && !is_chromeos_device) {
+@@ -42,6 +35,8 @@ enable_widevine_cdm_component =
  
  # Widevine CDM is bundled as part of Google Chrome builds.
  bundle_widevine_cdm = enable_library_widevine_cdm && is_chrome_branded
