@@ -219,7 +219,6 @@ bool BraveMainDelegate::BasicStartupComplete(int* exit_code) {
     autofill::features::kAutofillEnableAccountWalletStorage.name,
     autofill::features::kAutofillServerCommunication.name,
     blink::features::kTextFragmentAnchor.name,
-    features::kAllowPopupsDuringPageUnload.name,
     features::kIdleDetection.name,
     features::kNotificationTriggers.name,
     features::kPrivacySettingsRedesign.name,
