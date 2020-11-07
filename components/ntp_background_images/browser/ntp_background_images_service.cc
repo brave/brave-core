@@ -378,13 +378,6 @@ void NTPBackgroundImagesService::OnGetMappingTableData(
 
   DVLOG(2) << __func__ << ": This is non super referral.";
   MarkThisInstallIsNotSuperReferralForever();
-
-  // When we know this install is not SR, notify about si data is ready.
-  // If si data is not ready yet, noti will be fired when it's ready.
-  if (si_images_data_) {
-    for (auto& observer : observer_list_)
-      observer.OnUpdated(si_images_data_.get());
-  }
 }
 
 void NTPBackgroundImagesService::AddObserver(Observer* observer) {
@@ -470,19 +463,16 @@ void NTPBackgroundImagesService::OnGetComponentJsonData(
                                                       si_installed_dir_));
   }
 
-  bool sr_ended = false;
   if (is_super_referral && !sr_images_data_->IsValid()) {
     DVLOG(2) << __func__ << ": NTP SR campaign ends.";
-    sr_ended = true;
     UnRegisterSuperReferralComponent();
     MarkThisInstallIsNotSuperReferralForever();
+    return;
   }
 
   for (auto& observer : observer_list_) {
     observer.OnUpdated(is_super_referral ? sr_images_data_.get()
                                          : si_images_data_.get());
-    if (sr_ended)
-      observer.OnSuperReferralEnded();
   }
 }
 
@@ -493,6 +483,9 @@ void NTPBackgroundImagesService::MarkThisInstallIsNotSuperReferralForever() {
                          std::string());
   local_pref_->SetString(prefs::kNewTabPageCachedSuperReferralCode,
                          std::string());
+
+  for (auto& observer : observer_list_)
+    observer.OnSuperReferralEnded();
 }
 
 void NTPBackgroundImagesService::CacheTopSitesFaviconList() {
