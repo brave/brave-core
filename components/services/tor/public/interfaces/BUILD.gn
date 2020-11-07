@@ -18,6 +18,7 @@ mojom("interfaces") {
       traits_headers = [ "//brave/common/tor/tor_config_struct_traits.h" ]
       traits_sources = [ "//brave/common/tor/tor_config_struct_traits.cc" ]
       traits_public_deps = [
+        "//brave/common/tor",
         "//mojo/public/cpp/base",
         "//mojo/public/cpp/base:shared_typemap_traits",
       ]
