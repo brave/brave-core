@@ -6,6 +6,7 @@
 import * as React from 'react'
 import styled, { keyframes } from 'brave-ui/theme'
 import { CaratStrongDownIcon } from 'brave-ui/components/icons'
+import { getLocale } from '../../../../common/locale'
 
 const bounceAnimation = keyframes`
   50% {
@@ -39,7 +40,7 @@ const Graphic = styled('div')`
 export default function BraveTodayHint () {
   return (
     <Hint>
-      <p>Scroll for Brave Today</p>
+      <p>{getLocale('braveTodayScrollHint')}</p>
       <Graphic>
         <CaratStrongDownIcon />
       </Graphic>

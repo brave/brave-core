@@ -208,6 +208,40 @@
       <message name="IDS_BRAVE_NEW_TAB_CLOCK" desc="Clock title">clock</message>
       <message name="IDS_BRAVE_NEW_TAB_REWARDS" desc="Brave Rewards Title">Brave Rewards</message>
       <message name="IDS_BRAVE_NEW_TAB_BACKGROUND_IMAGE" desc="Background image title">Background Image</message>
+      <message name="IDS_BRAVE_NEW_TAB_SETTINGS_BACK" desc="Navigate back to the previous settings section">
+        Back
+      </message>
+
+      <message name="IDS_BRAVE_TODAY_TITLE" translateable="false" desc="Title for Brave Today news feed section">
+        Brave Today
+      </message>
+      <message name="IDS_BRAVE_TODAY_INTRO_TITLE" desc="Title for introduction to Brave Today news feed section">
+        Today's top stories in a completely private feed, just for you.
+      </message>
+      <message name="IDS_BRAVE_TODAY_INTRO_DESCRIPTION" desc="Description for introduction to Brave Today news feed section. Do not translate the title Brave Today.">
+        Brave Today matches your interests on your device so your personal information never leaves your browser. New content updated every hour.
+      </message>
+      <message name="IDS_BRAVE_TODAY_STATUS_FETCHING" desc="Indication that the content is being downloaded...">
+        Fetching…
+      </message>
+      <message name="IDS_BRAVE_TODAY_ACTION_REFRESH" desc="Button text to refresh the feed content">
+        Load new content
+      </message>
+      <message name="IDS_BRAVE_TODAY_SCROLL_HINT" desc="Indicator text that Brave Today content must be scrolled down to. Do not translate the title Brave Today.">
+        Scroll for Brave Today
+      </message>
+      <message name="IDS_BRAVE_TODAY_RESET_ACTION" desc="Button text to reset all Brave Today settings. Do not translate the title Brave Today.">
+        Reset Brave Today settings
+      </message>
+      <message name="IDS_BRAVE_TODAY_RESET_CONFIRM" desc="Confirmation dialog text to reset all Brave Today settings. Do not translate the title Brave Today.">
+        Reset all your Brave Today publisher choices to their default?
+      </message>
+      <message name="IDS_BRAVE_TODAY_CATEGORY_NAME_ALL" desc="Title for the category which shows all content sources">
+        All sources
+      </message>
+      <message name="IDS_BRAVE_TODAY_SOURCES_TITLE" desc="Title for the list of source publishers in Brave Today settings">
+        Sources
+      </message>
 
       <message name="IDS_BRAVE_NEW_TAB_STATS_TAB" desc="Brave Stats title">Brave Stats</message>
       <message name="IDS_BRAVE_NEW_TAB_CLOCK_TAB" desc="Clock title">Clock</message>

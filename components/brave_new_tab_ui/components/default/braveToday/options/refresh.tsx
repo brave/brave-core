@@ -6,6 +6,7 @@
 import * as React from 'react'
 import styled from 'brave-ui/theme'
 import { ArrowUpIcon, LoaderIcon } from 'brave-ui/components/icons'
+import { getLocale } from '../../../../../common/locale'
 
 type Props = {
   show: boolean
@@ -52,12 +53,18 @@ const Icon = styled('div')`
 `
 
 export default function Refresh (props: Props) {
+  const text = props.isFetching
+    ? getLocale('braveTodayStatusFetching')
+    : getLocale('braveTodayActionRefresh')
+  const graphic = props.isFetching
+    ? <LoaderIcon />
+    : <ArrowUpIcon />
   return (
     <RefreshButton {...props}>
       <Icon>
-        {props.isFetching ? <LoaderIcon /> : <ArrowUpIcon />}
+        {graphic}
       </Icon>
-      <span>{props.isFetching ? 'Fetching...' : 'Load new content'}</span>
+      <span>{text}</span>
     </RefreshButton>
   )
 }

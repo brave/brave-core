@@ -5,7 +5,7 @@
 
 import * as React from 'react'
 import { CaratRightIcon } from 'brave-ui/components/icons'
-import * as Styled from './style'
+import { getLocale } from '../../../../../common/locale'
 import {
   SettingsRow,
   SettingsText,
@@ -14,6 +14,7 @@ import {
 import NavigateBack from '../../../../components/default/settings/navigateBack'
 import { Props } from './'
 import PublisherPrefs from './publisherPrefs'
+import * as Styled from './style'
 
 type CategoryListProps = {
   categories: string[]
@@ -31,7 +32,7 @@ function CategoryList (props: CategoryListProps) {
   }, [props.categories, props.setCategory])
   return (
     <>
-      <SettingsSectionTitle>Sources</SettingsSectionTitle>
+      <SettingsSectionTitle>{getLocale('braveTodaySourcesTitle')}</SettingsSectionTitle>
       {props.categories.map(category => {
         return (
           <SettingsRow key={category} isInteractive={true} onClick={clickFunctions[category]}>
@@ -70,8 +71,7 @@ function Category (props: CategoryProps) {
   )
 }
 
-// TODO: l10n
-const categoryNameAll = 'All sources'
+const categoryNameAll = getLocale('braveTodayCategoryNameAll')
 
 type SourcesProps = Props & {
   category: string

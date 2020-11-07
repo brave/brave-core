@@ -5,6 +5,7 @@
 
 import * as React from 'react'
 import { Button } from 'brave-ui'
+import { getLocale } from '../../../../../common/locale'
 import {
   SettingsRow,
   SettingsText
@@ -35,7 +36,7 @@ export default function BraveTodayPrefs (props: Props) {
   const [category, setCategory] = React.useState<string>('')
 
   const confirmAction = React.useCallback(() => {
-    if (confirm('Reset all your Brave Today publisher choices to their default?')) {
+    if (confirm(getLocale('braveTodayResetConfirm'))) {
       props.onClearPrefs()
     }
   }, [props.onClearPrefs])
@@ -53,7 +54,7 @@ export default function BraveTodayPrefs (props: Props) {
         </SettingsRow>
         <SettingsRow>
           <div />
-          <Button type='warn' level='tertiary' onClick={confirmAction} text='Reset Brave Today settings' />
+          <Button type='warn' level='tertiary' onClick={confirmAction} text={getLocale('braveTodayResetAction')} />
         </SettingsRow>
       </>}
       {props.showToday &&

@@ -5,6 +5,7 @@
 
 import * as React from 'react'
 import styled from 'brave-ui/theme'
+import { getLocale } from '../../../../../common/locale'
 
 type Props = {
   show: boolean
@@ -45,6 +46,8 @@ const CustomizeButton = styled<Props, 'button'>('button')`
 
 export default function Customize (props: Props) {
   return (
-    <CustomizeButton onClick={props.onCustomizeBraveToday} {...props}>Customize</CustomizeButton>
+    <CustomizeButton onClick={props.onCustomizeBraveToday} {...props}>
+      {getLocale('customize')}
+    </CustomizeButton>
   )
 }
