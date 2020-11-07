@@ -1,20 +1,12 @@
 diff --git a/chrome/browser/BUILD.gn b/chrome/browser/BUILD.gn
-index 5777c231b6bb7640695c55a636b654202885b8ed..007b7015b22ed93bd430ad44dd00fae8282970d9 100644
+index 5777c231b6bb7640695c55a636b654202885b8ed..c322c644e4d2412fdeadb4d3c5ae179125ecf71b 100644
 --- a/chrome/browser/BUILD.gn
 +++ b/chrome/browser/BUILD.gn
-@@ -2282,6 +2282,7 @@ static_library("browser") {
-     "//ui/webui",
-     "//ui/webui/resources/cr_components/customize_themes:mojom",
-   ]
-+  deps += [ "//brave/browser:browser_process", ] public_deps += [ "//brave/browser:browser_process_public", ]
-   if (is_chromeos) {
-     deps += [
-       "//chrome/app/theme:chrome_unscaled_resources_grit",
-@@ -4025,6 +4026,7 @@ static_library("browser") {
-         sources += [ "first_run/first_run_internal_posix.cc" ]
-       }
-     }
-+    sources += brave_chrome_browser_sources deps += brave_chrome_browser_deps
+@@ -2360,6 +2360,7 @@ static_library("browser") {
+       "performance_monitor/metric_evaluator_helper_posix.h",
+     ]
    }
++  sources += brave_chrome_browser_sources deps += brave_chrome_browser_deps public_deps += brave_chrome_browser_public_deps
  
-   if (is_chromeos) {
+   if (is_android) {
+     sources += [

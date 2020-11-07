@@ -424,12 +424,6 @@ source_set("browser_process") {
   }
 }
 
-group("browser_process_public") {
-  public_deps = [
-    "//brave/components/brave_sync:constants",
-  ]
-}
-
 buildflag_header("sparkle_buildflags") {
   header = "sparkle_buildflags.h"
   flags = [ "ENABLE_SPARKLE=$enable_sparkle" ]
