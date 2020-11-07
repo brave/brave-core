@@ -98,7 +98,7 @@ BraveCosmeticResourcesTabHelper::~BraveCosmeticResourcesTabHelper() {
 void BraveCosmeticResourcesTabHelper::ProcessURL(
     content::WebContents* contents,
     content::RenderFrameHost* render_frame_host, const GURL& url) {
-  if (!ShouldDoCosmeticFiltering(contents, url)) {
+  if (!render_frame_host || !ShouldDoCosmeticFiltering(contents, url)) {
     return;
   }
   g_brave_browser_process->ad_block_service()->GetTaskRunner()->
