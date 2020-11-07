@@ -6,6 +6,7 @@
 import * as React from 'react'
 import * as BraveTodayElement from './default'
 import CardIntro from './cards/cardIntro'
+import CardLoading from './cards/cardLoading'
 import { ReadFeedItemPayload } from '../../../actions/today_actions'
 const Content = React.lazy(() => import('./content'))
 
@@ -71,7 +72,7 @@ class BraveToday extends React.PureComponent<Props, State> {
         <CardIntro />
 
         { shouldDisplayContent &&
-        <React.Suspense fallback={(<div>Loading...</div>)}>
+        <React.Suspense fallback={(<CardLoading />)}>
           <Content {...this.props} />
         </React.Suspense>
         }

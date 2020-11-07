@@ -102,13 +102,15 @@ Background.setListener<void>(
 Background.setListener<Messages.GetFeedResponse>(
   MessageTypes.getFeed,
   async function (req, sender, sendResponse) {
-    // TODO: handle error
-    const feed = await Feed.getOrFetchData()
-    // Only wait once. If there was an error or no data then return nothing.
-    // TODO(petemill): return error status
-    sendResponse({
-      feed
-    })
+    try {
+      const feed = await Feed.getOrFetchData()
+      // Only wait once. If there was an error or no data then return nothing.
+      sendResponse({
+        feed
+      })
+    } catch (e) {
+      sendResponse({ })
+    }
   }
 )
 

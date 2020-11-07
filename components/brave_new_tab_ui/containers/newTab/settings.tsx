@@ -312,7 +312,8 @@ export default class Settings extends React.PureComponent<Props, State> {
               }
             </SettingsSidebar>
             <SettingsFeatureBody id='content'>
-              <React.Suspense fallback={(<div>Loading...</div>)}>
+              {/* Empty loading fallback is ok here since we are loading from local disk. */}
+              <React.Suspense fallback={(<div/>)}>
               {
                 activeTab === TabType.BackgroundImage
                   ? (

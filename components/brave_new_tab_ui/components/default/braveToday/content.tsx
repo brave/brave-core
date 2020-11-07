@@ -4,6 +4,8 @@
 // you can obtain one at http://mozilla.org/MPL/2.0/.
 
 import * as React from 'react'
+import CardLoading from './cards/cardLoading'
+import CardError from './cards/cardError'
 import CardLarge from './cards/_articles/cardArticleLarge'
 import CardDeals from './cards/cardDeals'
 import CardsGroup from './cardsGroup'
@@ -97,12 +99,23 @@ export default function BraveTodayContent (props: Props) {
     }
   }, [])
 
-  if (!feed) {
+  const hasContent = feed && publishers
+  // Loading state
+  if (props.isFetching && !hasContent) {
+    return <CardLoading />
+  }
+
+  // Error state
+  if (!hasContent) {
+    return <CardError />
+  }
+
+  // satisfy typescript sanity, should not get here
+  if (!feed || !publishers) {
+    console.error('Brave Today: should have shown error or loading state, but ran in to an unintended code path.')
     return null
   }
-  if (!publishers) {
-    return null
-  }
+
   const displayedPageCount = Math.min(props.displayedPageCount, feed.pages.length)
   return (
     <>

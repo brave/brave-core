@@ -9,7 +9,7 @@ declare namespace BraveToday {
   namespace Messages {
     // getFeed
     export type GetFeedResponse = {
-      feed: Feed | undefined
+      feed?: Feed
     }
     // getPublishers
     export type GetPublishersResponse = {

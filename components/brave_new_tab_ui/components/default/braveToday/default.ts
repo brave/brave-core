@@ -48,7 +48,7 @@ export const Block = styled('div')`
   /* Prevent images from overflowing border-radius */
   overflow-x: hidden;
   margin-bottom: 30px;
-
+  color: white;
   a {
     text-decoration: none;
   }
