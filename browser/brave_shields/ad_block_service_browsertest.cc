@@ -522,7 +522,8 @@ IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, NewTabContinuesToBlock) {
 }
 
 // XHRs and ads in a cross-site iframe are blocked as well.
-IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, SubFrame) {
+// Enable when https://github.com/brave/brave-browser/issues/12351 is fixed
+IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, DISABLED_SubFrame) {
   SetDefaultComponentIdAndBase64PublicKeyForTest(
       kDefaultAdBlockComponentTestId,
       kDefaultAdBlockComponentTestBase64PublicKey);
