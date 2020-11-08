@@ -20,7 +20,7 @@ export const SettingsMenu = styled<Props, 'div'>('div')`
   background-color: ${p => p.theme.color.contextMenuBackground};
   color:  ${p => p.theme.color.contextMenuForeground};
   border-radius: 8px;
-  padding: 24px;
+  padding: 25px 20px;
   padding-bottom: 0px;
   box-shadow: 0px 4px 24px 0px rgba(0, 0, 0, 0.24);
   font-family: ${p => p.theme.fontFamily.body};
@@ -205,6 +205,7 @@ export const SettingsFeatureBody = styled<{}, 'section'>('section')`
   height: 360px;
   overflow-y: overlay;
   overscroll-behavior: contain;
+  padding: 10px 15px 10px 0;
 `
 
 export const SettingsTitle = styled<{}, 'div'>('div')`
@@ -387,6 +388,7 @@ export const StyledWidgetToggle = styled<WidgetToggleProps, 'button'>('button')`
   border: none;
   margin-top: 8px;
   cursor: pointer;
+  height: 41px;
   background: ${p => p.isAdd ? '#FB542B' : isDarkTheme(p) ? '#5E6175' : '#212529'};
 
   &:focus-visible {
