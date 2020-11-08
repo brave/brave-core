@@ -29,7 +29,7 @@ import { getLocale } from '../../../common/locale'
 
 interface Props {
   textDirection: string
-  onClickSettings: (event: React.MouseEvent<HTMLButtonElement>) => void
+  onClickSettings: () => any
   backgroundImageInfo: any
   showPhotoInfo: boolean
 }

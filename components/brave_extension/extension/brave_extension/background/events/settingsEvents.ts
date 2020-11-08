@@ -7,9 +7,10 @@ import { settingsKeyList } from '../../helpers/settingsUtils'
 import { SettingsKey } from '../../types/other/settingsTypes'
 
 chrome.settingsPrivate.onPrefsChanged.addListener(function (settings) {
-  const settingsKey = settings[0].key as SettingsKey
+  const setting = settings[0]
+  const settingsKey = setting.key as SettingsKey
   // only call the store update if the settings change is something we care about
-  if (settingsKeyList.includes(settingsKey)) {
-    settingsActions.settingsDidChange(settings[0])
+  if (settingsKeyList.includes(settingsKey) && setting.type === chrome.settingsPrivate.PrefType.BOOLEAN) {
+    settingsActions.settingsDidChange(setting)
   }
 })

@@ -15,6 +15,11 @@ import geminiReducer from './gemini_reducer'
 import bitcoinDotComReducer from './bitcoin_dot_com_reducer'
 import cryptoDotComReducer from './cryptoDotCom_reducer'
 import { stackWidgetReducer } from './stack_widget_reducer'
+import todayReducer, { BraveTodayState } from './today'
+
+export type ApplicationState = NewTab.ApplicationState & {
+  today: BraveTodayState
+}
 
 export const newTabReducers = (state: NewTab.State | undefined, action: any) => {
   if (state === undefined) {
@@ -37,9 +42,10 @@ export const newTabReducers = (state: NewTab.State | undefined, action: any) => 
   return state
 }
 
-export const mainNewTabReducer = combineReducers<NewTab.ApplicationState>({
+export const mainNewTabReducer = combineReducers<ApplicationState>({
   newTabData: newTabReducers,
-  gridSitesData: gridSitesReducer
+  gridSitesData: gridSitesReducer,
+  today: todayReducer
 })
 
 export const newTabReducer = newTabStateReducer

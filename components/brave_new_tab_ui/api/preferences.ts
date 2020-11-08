@@ -14,6 +14,7 @@ export type Preferences = {
   showBackgroundImage: boolean
   brandedWallpaperOptIn: boolean
   showStats: boolean
+  showToday: boolean
   showClock: boolean
   clockFormat: string
   showTopSites: boolean
@@ -46,6 +47,10 @@ export function saveClockFormat (value: string): void {
 
 export function saveShowStats (value: boolean): void {
   sendSavePref('showStats', value)
+}
+
+export function saveShowToday (value: boolean): void {
+  sendSavePref('showToday', value)
 }
 
 export function saveShowRewards (value: boolean): void {

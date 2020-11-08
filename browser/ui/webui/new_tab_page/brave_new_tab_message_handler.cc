@@ -103,6 +103,9 @@ base::DictionaryValue GetPreferencesDictionary(PrefService* prefs) {
       "showStats",
       prefs->GetBoolean(kNewTabPageShowStats));
   pref_data.SetBoolean(
+      "showToday",
+      prefs->GetBoolean(kNewTabPageShowToday));
+  pref_data.SetBoolean(
       "showRewards",
       prefs->GetBoolean(kNewTabPageShowRewards));
   pref_data.SetBoolean(
@@ -321,6 +324,9 @@ void BraveNewTabMessageHandler::OnJavascriptAllowed() {
   pref_change_registrar_.Add(kNewTabPageShowStats,
     base::Bind(&BraveNewTabMessageHandler::OnPreferencesChanged,
     base::Unretained(this)));
+  pref_change_registrar_.Add(kNewTabPageShowToday,
+    base::Bind(&BraveNewTabMessageHandler::OnPreferencesChanged,
+    base::Unretained(this)));
   pref_change_registrar_.Add(kNewTabPageShowRewards,
     base::Bind(&BraveNewTabMessageHandler::OnPreferencesChanged,
     base::Unretained(this)));
@@ -449,6 +455,8 @@ void BraveNewTabMessageHandler::HandleSaveNewTabPagePref(
     settingsKey = kNewTabPageShowClock;
   } else if (settingsKeyInput == "showStats") {
     settingsKey = kNewTabPageShowStats;
+  } else if (settingsKeyInput == "showToday") {
+    settingsKey = kNewTabPageShowToday;
   } else if (settingsKeyInput == "showRewards") {
     settingsKey = kNewTabPageShowRewards;
   } else if (settingsKeyInput == "isBrandedWallpaperNotificationDismissed") {

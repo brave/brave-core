@@ -30,8 +30,15 @@ content::WebUIDataSource* CreateBasicUIHTMLSource(
   // enforced on WebUI pages (see crrev.com/c/2234238 and crrev.com/c/2353547).
   // We should migrate those pages not to require using |innerHTML|, but for now
   // we just restore pre-Cromium 87 behaviour for pages that are not ready yet.
-  if (disable_trusted_types_csp)
+  if (disable_trusted_types_csp) {
     source->DisableTrustedTypesCSP();
+  } else {
+    // Allow a policy to be created so that we
+    // can allow trusted HTML and trusted lazy-load script sources.
+    source->OverrideContentSecurityPolicy(
+        network::mojom::CSPDirectiveName::TrustedTypes,
+        "default");
+  }
 
   source->UseStringsJs();
   source->SetDefaultResource(html_resource_id);

@@ -22,12 +22,16 @@ module.exports = (env, argv) => ({
     // https://github.com/brave/brave-browser/issues/5587
     aliasFields: ['chromeapp']
   },
-  plugins: [
+  optimization: {
+    // Define NO_CONCATENATE for analyzing module size.
+    concatenateModules: !process.env.NO_CONCATENATE
+  },
+  plugins: process.env.DEPFILE_SOURCE_NAME ? [
     new GenerateDepfilePlugin({
       depfilePath: process.env.DEPFILE_PATH,
       depfileSourceName: process.env.DEPFILE_SOURCE_NAME
     })
-  ],
+  ] : [],
   module: {
     rules: [
       {
@@ -36,7 +40,8 @@ module.exports = (env, argv) => ({
         exclude: /node_modules\/(?!brave-ui)/,
         options: {
           getCustomTransformers: path.join(__dirname, './webpack-ts-transformers.js'),
-          allowTsInNodeModules: true
+          allowTsInNodeModules: true,
+          configFile: 'tsconfig-webpack.json'
         }
       },
       {

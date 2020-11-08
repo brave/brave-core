@@ -23,6 +23,8 @@ import {
 import * as Page from '../../components/default/page'
 import BrandedWallpaperLogo from '../../components/default/brandedWallpaper/logo'
 import { brandedWallpaperLogoClicked } from '../../api/brandedWallpaper'
+import BraveTodayHint from '../../components/default/braveToday/hint'
+import BraveToday from '../../components/default/braveToday'
 
 // Helpers
 import VisibilityTimer from '../../helpers/visibilityTimer'
@@ -39,16 +41,19 @@ import { getLocale } from '../../../common/locale'
 import currencyData from '../../components/default/binance/data'
 import geminiData from '../../components/default/gemini/data'
 import { NewTabActions } from '../../constants/new_tab_types'
+import { BraveTodayState } from '../../reducers/today'
 
 // NTP features
-import Settings from './settings'
+import Settings, { TabType as SettingsTabType } from './settings'
 
 interface Props {
   newTabData: NewTab.State
   gridSitesData: NewTab.GridSitesState
+  todayData: BraveTodayState
   actions: NewTabActions
   saveShowBackgroundImage: (value: boolean) => void
   saveShowStats: (value: boolean) => void
+  saveShowToday: (value: boolean) => any
   saveShowRewards: (value: boolean) => void
   saveShowTogether: (value: boolean) => void
   saveShowBinance: (value: boolean) => void
@@ -63,7 +68,7 @@ interface State {
   onlyAnonWallet: boolean
   showSettingsMenu: boolean
   backgroundHasLoaded: boolean
-  focusMoreCards: boolean
+  activeSettingsTab: SettingsTabType | null
 }
 
 function GetBackgroundImageSrc (props: Props) {
@@ -95,12 +100,13 @@ function GetShouldShowBrandedWallpaperNotification (props: Props) {
 }
 
 class NewTabPage extends React.Component<Props, State> {
-  state = {
+  state: State = {
     onlyAnonWallet: false,
     showSettingsMenu: false,
     backgroundHasLoaded: false,
-    focusMoreCards: false
+    activeSettingsTab: null
   }
+  hasInitBraveToday: boolean = false
   imageSource?: string = undefined
   timerIdForBrandedWallpaperNotification?: number = undefined
   onVisiblityTimerExpired = () => {
@@ -142,6 +148,9 @@ class NewTabPage extends React.Component<Props, State> {
   }
 
   trackCachedImage () {
+    if (this.state.backgroundHasLoaded) {
+      this.setState({ backgroundHasLoaded: false })
+    }
     if (this.imageSource) {
       const imgCache = new Image()
       imgCache.src = this.imageSource
@@ -195,6 +204,12 @@ class NewTabPage extends React.Component<Props, State> {
   toggleShowStats = () => {
     this.props.saveShowStats(
       !this.props.newTabData.showStats
+    )
+  }
+
+  toggleShowToday = () => {
+    this.props.saveShowToday(
+      !this.props.newTabData.showToday
     )
   }
 
@@ -365,16 +380,17 @@ class NewTabPage extends React.Component<Props, State> {
   }
 
   closeSettings = () => {
-    this.setState({ showSettingsMenu: false })
+    this.setState({
+      showSettingsMenu: false,
+      activeSettingsTab: null
+    })
   }
 
-  toggleSettings = () => {
+  openSettings = (activeTab?: SettingsTabType) => {
     this.props.actions.customizeClicked()
-    if (this.state.showSettingsMenu) {
-      this.setState({ focusMoreCards: false })
-    }
     this.setState({
-      showSettingsMenu: !this.state.showSettingsMenu
+      showSettingsMenu: !this.state.showSettingsMenu,
+      activeSettingsTab: activeTab || null
     })
   }
 
@@ -382,11 +398,8 @@ class NewTabPage extends React.Component<Props, State> {
     brandedWallpaperLogoClicked(this.props.newTabData.brandedWallpaperData)
   }
 
-  toggleSettingsAddCard = () => {
-    this.setState({
-      showSettingsMenu: true,
-      focusMoreCards: true
-    })
+  openSettingsAddCard = () => {
+    this.openSettings(SettingsTabType.MoreCards)
   }
 
   setForegroundStackWidget = (widget: NewTab.StackWidget) => {
@@ -407,6 +420,13 @@ class NewTabPage extends React.Component<Props, State> {
 
   setUserTLDAutoSet = () => {
     this.props.actions.setUserTLDAutoSet()
+  }
+
+  onBraveTodayInteracting = (isInteracting: boolean) => {
+    if (isInteracting && !this.hasInitBraveToday) {
+      this.hasInitBraveToday = true
+      this.props.actions.today.interactionBegin()
+    }
   }
 
   learnMoreRewards = () => {
@@ -730,7 +750,7 @@ class NewTabPage extends React.Component<Props, State> {
             textDirection={textDirection}
             hideMenu={!allWidgetsHidden}
             hideWidget={this.disableAddCard}
-            onAddCard={this.toggleSettingsAddCard}
+            onAddCard={this.openSettingsAddCard}
             stackPosition={0}
           />
         }
@@ -966,7 +986,7 @@ class NewTabPage extends React.Component<Props, State> {
 
   render () {
     const { newTabData, gridSitesData, actions } = this.props
-    const { showSettingsMenu, focusMoreCards } = this.state
+    const { showSettingsMenu } = this.state
 
     if (!newTabData) {
       return null
@@ -978,21 +998,16 @@ class NewTabPage extends React.Component<Props, State> {
     const cryptoContent = this.renderCryptoContent()
 
     return (
-      <Page.App dataIsReady={newTabData.initialDataLoaded}>
-        <Page.PosterBackground
-          hasImage={hasImage}
-          imageHasLoaded={this.state.backgroundHasLoaded}
-        >
-          {hasImage &&
-            <img src={this.imageSource} />
-          }
-        </Page.PosterBackground>
-        {hasImage &&
-          <Page.Gradient
-            imageHasLoaded={this.state.backgroundHasLoaded}
-          />
-        }
+      <Page.App
+        dataIsReady={newTabData.initialDataLoaded}
+        hasImage={hasImage}
+        imageSrc={this.imageSource}
+        imageHasLoaded={this.state.backgroundHasLoaded}
+      >
         <Page.Page
+            hasImage={hasImage}
+            imageSrc={this.imageSource}
+            imageHasLoaded={this.state.backgroundHasLoaded}
             showClock={newTabData.showClock}
             showStats={newTabData.showStats}
             showRewards={!!cryptoContent}
@@ -1068,21 +1083,47 @@ class NewTabPage extends React.Component<Props, State> {
             </Page.GridItemBrandedLogo>}
             <FooterInfo
               textDirection={newTabData.textDirection}
-              onClickSettings={this.toggleSettings}
+              onClickSettings={this.openSettings}
               backgroundImageInfo={newTabData.backgroundImage}
               showPhotoInfo={!isShowingBrandedWallpaper && newTabData.showBackgroundImage}
             />
             </Page.FooterContent>
           </Page.Footer>
+          {newTabData.showToday &&
+          <Page.GridItemNavigationBraveToday>
+            <BraveTodayHint />
+          </Page.GridItemNavigationBraveToday>
+          }
         </Page.Page>
+        { newTabData.showToday &&
+        <BraveToday
+          feed={this.props.todayData.feed}
+          articleToScrollTo={this.props.todayData.articleScrollTo}
+          displayedPageCount={this.props.todayData.currentPageIndex}
+          publishers={this.props.todayData.publishers}
+          isFetching={this.props.todayData.isFetching === true}
+          isUpdateAvailable={this.props.todayData.isUpdateAvailable}
+          onRefresh={this.props.actions.today.refresh}
+          onAnotherPageNeeded={this.props.actions.today.anotherPageNeeded}
+          onInteracting={this.onBraveTodayInteracting}
+          // tslint:disable-next-line:jsx-no-lambda
+          onCustomizeBraveToday={() => { this.openSettings(SettingsTabType.BraveToday) }}
+          onReadFeedItem={this.props.actions.today.readFeedItem}
+          onCheckForUpdate={this.props.actions.today.checkForUpdate}
+        />
+        }
         <Settings
           actions={actions}
           textDirection={newTabData.textDirection}
           showSettingsMenu={showSettingsMenu}
-          onClickOutside={this.closeSettings}
+          onClose={this.closeSettings}
+          setActiveTab={this.state.activeSettingsTab || undefined}
+          onDisplayTodaySection={this.props.actions.today.ensureSettingsData}
+          onClearTodayPrefs={this.props.actions.today.resetTodayPrefsToDefault}
           toggleShowBackgroundImage={this.toggleShowBackgroundImage}
           toggleShowClock={this.toggleShowClock}
           toggleShowStats={this.toggleShowStats}
+          toggleShowToday={this.toggleShowToday}
           toggleShowTopSites={this.toggleShowTopSites}
           toggleCustomLinksEnabled={this.toggleCustomLinksEnabled}
           toggleBrandedWallpaperOptIn={this.toggleShowBrandedWallpaper}
@@ -1090,6 +1131,7 @@ class NewTabPage extends React.Component<Props, State> {
           showClock={newTabData.showClock}
           clockFormat={newTabData.clockFormat}
           showStats={newTabData.showStats}
+          showToday={newTabData.showToday}
           showTopSites={newTabData.showTopSites}
           customLinksEnabled={newTabData.customLinksEnabled}
           showRewards={newTabData.showRewards}
@@ -1108,10 +1150,10 @@ class NewTabPage extends React.Component<Props, State> {
           cryptoDotComSupported={newTabData.cryptoDotComSupported}
           toggleShowCryptoDotCom={this.toggleShowCryptoDotCom}
           showGemini={newTabData.showGemini}
-          focusMoreCards={focusMoreCards}
           bitcoinDotComSupported={newTabData.bitcoinDotComSupported}
           showBitcoinDotCom={newTabData.showBitcoinDotCom}
           toggleShowBitcoinDotCom={this.toggleShowBitcoinDotCom}
+          todayPublishers={this.props.todayData.publishers}
         />
       </Page.App>
     )

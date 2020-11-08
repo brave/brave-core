@@ -36,17 +36,22 @@ declare namespace chrome.settingsPrivate {
     type: PrefType.STRING,
     value: string
   }
+  type PrefDictValue = {
+    type: PrefType.DICTIONARY
+    value: Object
+  }
   // TODO(petemill): implement other types as needed
 
   type PrefObject = {
     key: string
-  } & (PrefBooleanValue)
+  } & (PrefBooleanValue | PrefDictValue | SettingsNumberValue | SettingsStringValue)
 
   type GetPrefCallback = (pref: PrefObject) => void
   function getPref (key: string, callback: GetPrefCallback): void
 
   type SetPrefCallback = (success: boolean) => void
   function setPref (key: string, value: any, pageId?: string | null, callback?: SetPrefCallback): void
+  function setPref (key: string, value: any, callback?: SetPrefCallback): void
 
   type GetAllPrefsCallback = (prefs: PrefObject[]) => void
   function getAllPrefs (callback: GetAllPrefsCallback): void
@@ -221,6 +226,12 @@ declare namespace chrome.rewardsNotifications {
 
 declare namespace chrome.greaselion {
   const isGreaselionExtension: (id: string, callback: (valid: boolean) => void) => {}
+}
+
+declare namespace chrome.braveToday {
+  const onClearHistory: {
+    addListener: (callback: () => any) => void
+  }
 }
 
 type BlockTypes = 'ads' | 'trackers' | 'httpUpgradableResources' | 'javascript' | 'fingerprinting'
