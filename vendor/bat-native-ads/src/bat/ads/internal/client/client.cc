@@ -12,6 +12,7 @@
 #include "bat/ads/ad_history_info.h"
 #include "bat/ads/category_content_info.h"
 #include "bat/ads/internal/ads_impl.h"
+#include "bat/ads/internal/features.h"
 #include "bat/ads/internal/logging.h"
 #include "bat/ads/internal/time_util.h"
 #include "bat/ads/internal/json_helper.h"
@@ -31,8 +32,6 @@ const char kClientFilename[] = "client.json";
 const uint64_t kMaximumEntriesInAdsShownHistory = 7 * ((20 * 3) + (20 * 2));
 
 const uint64_t kMaximumEntriesPerSegmentInPurchaseIntentSignalHistory = 100;
-
-const uint64_t kMaximumPageProbabilityHistoryEntries = 5;
 
 FilteredAdList::iterator FindFilteredAd(
     const std::string& creative_instance_id,
@@ -406,9 +405,9 @@ base::Time Client::GetNextAdServingInterval() {
 void Client::AppendPageProbabilitiesToHistory(
     const ad_targeting::contextual::PageProbabilitiesMap& page_probabilities) {
   client_->page_probabilities_history.push_front(page_probabilities);
-  if (client_->page_probabilities_history.size() >
-      kMaximumPageProbabilityHistoryEntries) {
-    client_->page_probabilities_history.pop_back();
+  const size_t maximum_entries = features::GetPageProbabilitiesHistorySize();
+  if (client_->page_probabilities_history.size() > maximum_entries) {
+    client_->page_probabilities_history.resize(maximum_entries);
   }
 
   Save();

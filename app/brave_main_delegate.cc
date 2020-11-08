@@ -41,6 +41,7 @@
 #include "components/safe_browsing/core/features.h"
 #include "components/sync/base/sync_base_switches.h"
 #include "components/translate/core/browser/translate_prefs.h"
+#include "components/variations/variations_switches.h"
 #include "components/version_info/channel.h"
 #include "content/public/common/content_features.h"
 #include "content/public/common/content_switches.h"
@@ -191,6 +192,11 @@ bool BraveMainDelegate::BasicStartupComplete(int* exit_code) {
                                  brave_sync_service_url.c_str());
 
   command_line.AppendSwitchASCII(switches::kLsoUrl, kDummyUrl);
+
+  // Brave variations
+  std::string kVariationsServerURL = BRAVE_VARIATIONS_SERVER_URL;
+  command_line.AppendSwitchASCII(variations::switches::kVariationsServerURL,
+      kVariationsServerURL.c_str());
 
   // Enabled features.
   std::unordered_set<const char*> enabled_features = {

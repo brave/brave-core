@@ -34,6 +34,7 @@
 #include "bat/ads/internal/confirmations/confirmations.h"
 #include "bat/ads/internal/conversions/conversions.h"
 #include "bat/ads/internal/database/database_initialize.h"
+#include "bat/ads/internal/features.h"
 #include "bat/ads/internal/logging.h"
 #include "bat/ads/internal/platform/platform_helper.h"
 #include "bat/ads/internal/privacy/unblinded_tokens/unblinded_tokens.h"
@@ -462,6 +463,8 @@ void AdsImpl::InitializeStep6(
     ad_notifications_->RemoveAllAfterReboot();
     ad_notifications_->RemoveAllAfterUpdate();
 #endif
+
+  features::LogPageProbabilitiesStudy();
 
   MaybeServeAdNotificationsAtRegularIntervals();
 

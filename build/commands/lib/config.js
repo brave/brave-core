@@ -132,6 +132,7 @@ const Config = function () {
   this.braveAndroidKeystoreName = getNPMConfig(['brave_android_keystore_name'])
   this.braveAndroidKeystorePassword = getNPMConfig(['brave_android_keystore_password'])
   this.braveAndroidKeyPassword = getNPMConfig(['brave_android_key_password'])
+  this.braveVariationsServerUrl = getNPMConfig(['brave_variations_server_url']) || ''
 }
 
 Config.prototype.isOfficialBuild = function () {
@@ -218,6 +219,7 @@ Config.prototype.buildArgs = function () {
     chrome_version_major: chrome_version_parts[0],
     brave_sync_endpoint: this.braveSyncEndpoint,
     safebrowsing_api_endpoint: this.safeBrowsingApiEndpoint,
+    brave_variations_server_url: this.braveVariationsServerUrl,
     updater_prod_endpoint: this.updaterProdEndpoint,
     updater_dev_endpoint: this.updaterDevEndpoint,
     webcompat_report_api_endpoint: this.webcompatReportApiEndpoint,

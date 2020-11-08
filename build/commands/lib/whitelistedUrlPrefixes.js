@@ -34,4 +34,5 @@ module.exports = [
   'https://sync-v2.brave.com/v2', // brave sync v2 production
   'https://sync-v2.bravesoftware.com/v2', // brave sync v2 staging
   'https://sync-v2.brave.software/v2', // brave sync v2 dev
+  'https://variations.brave.com/seed',
 ]

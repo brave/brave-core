@@ -320,6 +320,8 @@ source_set("ads") {
     "src/bat/ads/internal/eligible_ads/ad_notifications/filters/eligible_ads_priority_filter.cc",
     "src/bat/ads/internal/eligible_ads/ad_notifications/filters/eligible_ads_priority_filter.h",
     "src/bat/ads/internal/eligible_ads/eligible_ads_util.h",
+    "src/bat/ads/internal/features.cc",
+    "src/bat/ads/internal/features.h",
     "src/bat/ads/internal/frequency_capping/ad_notifications/ad_notifications_frequency_capping.cc",
     "src/bat/ads/internal/frequency_capping/ad_notifications/ad_notifications_frequency_capping.h",
     "src/bat/ads/internal/frequency_capping/exclusion_rules/conversion_frequency_cap.cc",
