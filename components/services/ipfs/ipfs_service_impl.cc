@@ -182,7 +182,9 @@ void IpfsServiceImpl::Launch(mojom::IpfsConfigPtr config,
       {"config", "Addresses.API", "/ip4/127.0.0.1/tcp/45001"},
       {"config", "Addresses.Gateway", "/ip4/127.0.0.1/tcp/48080"},
       {"config", "--json", "Addresses.Swarm",
-       "[\"/ip4/0.0.0.0/tcp/44001\", \"/ip6/::/tcp/44001\"]"}};
+       "[\"/ip4/0.0.0.0/tcp/44001\", \"/ip6/::/tcp/44001\"]"},
+      {"config", "Datastore.GCPeriod", "1h"},
+      {"config", "Datastore.StorageMax", "1GB"}};
 
   for (auto args : config_args) {
     if (!LaunchProcessAndExit(config->binary_path, args, options)) {
@@ -201,6 +203,8 @@ void IpfsServiceImpl::Launch(mojom::IpfsConfigPtr config,
   base::CommandLine args(config->binary_path);
   args.AppendArg("daemon");
   args.AppendArg("--migrate=true");
+  args.AppendArg("--enable-gc");
+  args.AppendArg("--routing=dhtclient");
   ipfs_process_ = base::LaunchProcess(args, options);
   bool result = ipfs_process_.IsValid();
 
