@@ -168,7 +168,6 @@ extension FeedItem.Source {
             id: UUID().uuidString,
             isDefault: true,
             category: "Top News",
-            logo: nil,
             name: "Test Source"
         )
     }
