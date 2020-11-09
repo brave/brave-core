@@ -51,7 +51,6 @@ class AdBlockRegionalServiceManager {
                           blink::mojom::ResourceType resource_type,
                           const std::string& tab_host,
                           bool* matching_exception_filter,
-                          bool* cancel_request_explicitly,
                           std::string* mock_data_url);
   void EnableTag(const std::string& tag, bool enabled);
   void AddResources(const std::string& resources);
