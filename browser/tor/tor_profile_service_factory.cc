@@ -8,7 +8,6 @@
 #include <memory>
 #include <set>
 
-#include "brave/browser/tor/tor_profile_service_impl.h"
 #include "brave/browser/tor/buildflags.h"
 #include "brave/common/tor/pref_names.h"
 #include "chrome/browser/profiles/incognito_helpers.h"
@@ -18,6 +17,7 @@
 
 #if BUILDFLAG(ENABLE_TOR)
 #include "brave/browser/profiles/profile_util.h"
+#include "brave/browser/tor/tor_profile_service_impl.h"
 #endif
 
 namespace {
