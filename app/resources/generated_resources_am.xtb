@@ -6521,6 +6521,14 @@ nil</translation>
 <translation id="995782501881226248">YouTube</translation>
 <translation id="996250603853062861">ደህንነቱ የተጠበቀ ግንኙነት በመመስረት ላይ...</translation>
 <translation id="998747458861718449">&amp;መርምር</translation>
+<translation id="6744651634043798597">{COUNT,plural,
+=0{ሁሉንም በ&amp;ማንነት የማያሳውቅ መስኮት ውስጥ ክፈት}
+=1{በ&amp;ማንነት የማያሳውቅ መስኮት ውስጥ ክፈት}
+ሌላ{ሁሉንም (#) በ&amp;ማንነት የማያሳውቅ መስኮት ውስጥ ክፈት}}</translation>
+<translation id="2633634757060186848">{COUNT,plural,
+=0{ሁሉንም በ&amp;ማንነት የማያሳውቅ መስኮት ውስጥ ክፈት}
+=1{በ&amp;ማንነት የማያሳውቅ መስኮት ውስጥ ክፈት}
+ሌላ{ሁሉንም (#) በ&amp;ማንነት የማያሳውቅ መስኮት ውስጥ ክፈት}}</translation>
 <translation id="658539216370629794">አገናኙን በ &amp; ማንነትን በማያሳውቅ መስኮት ውስጥ ክፈት</translation>
 <translation id="1432267168815937878">አገናኝን በ &amp; ማንነትን በማያሳውቅ መስኮት ውስጥ ክፈት</translation>
 <translation id="6516243500644829484">አዲስ &amp;ማንነትን የማያሳውቅ መስኮት</translation>
@@ -6534,6 +6542,7 @@ nil</translation>
 <translation id="9048137919253433011">እንግዳ ትር: <ph name="TAB_NAME"/></translation>
 <translation id="1799432502220762862">እንግዳ ንዑስ ክፈፍ: <ph name="SUBFRAME_SITE"/></translation>
 <translation id="3193187622878830588">ማንነት የማያሳውቁ ሁነታ፦ <ph name="SUBFRAME_SITE"/></translation>
+<translation id="5097649414558628673">መሳሪያ: <ph name="PRINT_NAME"/></translation>
 <translation id="8808478386290700967">የድር  መደብር</translation>
 <translation id="8261378640211443080">ይህ ቅጥያ በ<ph name="IDS_EXTENSION_WEB_STORE_TITLE"/> ውስጥ ያልተጠቀሰ ሲሆን እርስዎ ሳያውቁት የታከለ ሊሆን ይችላል።</translation>
 <translation id="6827869674836193263"><ph name="WINDOW_TITLE"/> (ማንነትን የማያሳውቅ)</translation>
@@ -6551,19 +6560,21 @@ nil</translation>
 <translation id="3098826269712097986">ማንነትን ከማያሳውቅ ሁነታ ከወጡ በኋላ፣ በ Brave ውስጥ በመለያ መግቢያ ውሂብ ይከማቻል። በኋላ ላይ እንደገና ከዚህ የድር ጣቢያ ጋር የንኪ መታወቂያን እንዲጠቀሙ ይህ ያስችልዎታል።</translation>
 <translation id="5186185447130319458">ማንነት የማያሳውቅ</translation>
 <translation id="2579188629646253712">ማንነትን ከማያሳውቅ ይውጡ</translation>
-<translation id="6744651634043798597">{COUNT,plural,
-=0{ሁሉንም በ&amp;ማንነት የማያሳውቅ መስኮት ውስጥ ክፈት}
-=1{በ&amp;ማንነት የማያሳውቅ መስኮት ውስጥ ክፈት}
-ሌላ{ሁሉንም (#) በ&amp;ማንነት የማያሳውቅ መስኮት ውስጥ ክፈት}}</translation>
+<translation id="1001131747196960052">የግል ይዝጉ</translation>
+<translation id="7475335772460644497">{COUNT, plural,
+          =0 {Open all in &amp;private window}
+          =1 {Open in &amp;private window}
+          ሌሎች {Open all ({COUNT}) in &amp;private window}}</translation>
 <translation id="2431625704210501303">&amp;ማንነትን በማያሳውቅ መስኮት ውስጥ ክፈት</translation>
 <translation id="4620367155626060530">&amp;የዕልባቶች አሞሌ አሳይ</translation>
-<translation id="2633634757060186848">{COUNT,plural,
-=0{ሁሉንም በ&amp;ማንነት የማያሳውቅ መስኮት ውስጥ ክፈት}
-=1{በ&amp;ማንነት የማያሳውቅ መስኮት ውስጥ ክፈት}
-ሌላ{ሁሉንም (#) በ&amp;ማንነት የማያሳውቅ መስኮት ውስጥ ክፈት}}</translation>
+<translation id="1448315815373449655">{COUNT, plural,
+          =0 {ሁሉንም በዚህ ይክፈቱ &amp;Private Window}
+          =1 {በዚህ &amp;Private Window}
+          ሌላ {Open All ({COUNT}) በዚህ ይክፈቱ &amp;Private Window}}</translation>
 <translation id="1985165269306590797">&amp;ማንነትን በማያሳውቅ መስኮት ውስጥ ክፈት</translation>
 <translation id="4680518314108745448">&amp;የዕልባቶች አሞሌን አሳይ</translation>
 <translation id="642436385689435488">ሁሉንም ማንነት በማያሳውቅ መስኮት ውስጥ ክፈት</translation>
+<translation id="5074021236879527611">ሁሉንም (<ph name="URL_COUNT"/>) በግል መስኮት ውስጥ ይክፈቱ</translation>
 <translation id="5463021359602611602">ማንነትን በማያሳውቅ መስኮት ክፈት</translation>
 <translation id="1850357845349976573">{0,plural,
 =1 {# ማንነትን የማያሳውቅ}
@@ -6613,6 +6624,8 @@ nil</translation>
 <translation id="4854477725773269949">ማንነትን በማያሳውቅ ውስጥ ይፍቀዱ</translation>
 <translation id="6436164536244065364">በድር  መደብር  ውስጥ ይመልከቱ</translation>
 <translation id="38046578254905003">ቅጥያዎችን እና ገጽታዎችን በ <ph name="BEGIN_LINK"/>Web Store<ph name="END_LINK"/> ውስጥ ያግኙ</translation>
+<translation id="2402482691429508168">ማያ ገጹ ሲከፈት ለእርስዎ እንዲታዩ የተመረጡ መገለጫዎች</translation>
+<translation id="3910100573440336938">ፋይሎችን በዙሪያዎ ካሉ መገለጫዎች ጋር ያጋሩ</translation>
 <translation id="6336451774241870485">አዲስ የግል ትር</translation>
 <translation id="6610147964972079463">የግል ትሮችን ዝጋ</translation>
 <translation id="4933782374919065856">ጥያቄዎች አለዎት? የእርስዎን መገለጫ የሚቆጣጠረውን ግለሰብ ያነጋግሩ።</translation>

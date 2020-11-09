@@ -1026,6 +1026,7 @@ De exemplu, unele site-uri pot răspunde la această solicitare afișând anunț
 <translation id="996149300115483134">Meniul cardului din feed este închis</translation>
 <translation id="4540437243849625078">Acest site este despre partajarea informațiilor cu o aplicație în afara modului privat.</translation>
 <translation id="1227836882233136433">Ieși din modul privat?</translation>
+<translation id="21023559487771014">Intră în modul privat</translation>
 <translation id="5186185447130319458">Privat</translation>
 <translation id="9063160602596686558">Trimite automat statistici de utilizare și rapoarte de blocare la Brave Software</translation>
 <translation id="1438581767753657407">Când este pornit modul Lite, Brave folosește serverele Brave pentru ca paginile să se încarce mai rapid. Modul Lite rescrie paginile foarte lente pentru a încărca doar conținutul esențial. Modul Lite nu se aplică paginilor private.</translation>
@@ -1035,7 +1036,11 @@ De exemplu, unele site-uri pot răspunde la această solicitare afișând anunț
 <translation id="3110967157686007724">Pagină privată</translation>
 <translation id="4526803704855831732">File private</translation>
 <translation id="7465104139234185284">Închide toate filele private</translation>
-<translation id="21023559487771014">Intră în modul privat</translation>
+<translation id="1455125811784733159">Deschideți o fereastră Privată</translation>
+<translation id="807110510029471880">Folosiți Privat pentru înregistrare</translation>
+<translation id="7987056960390558517">În modul Privat, activitatea dumneavoastră <ph name="BEGIN_BOLD1"/>poate fi vizibilă <ph name="END_BOLD1"/>pentru siteurile web pe care le vizitați, angajator sau școală și furnizorul de internet.
+
+Datele din sesiunea Privată vor fi șterse de pe Brave doar când <ph name="BEGIN_BOLD2"/>închideți toate paginile Private<ph name="END_BOLD2"/>.</translation>
 <translation id="6336451774241870485">Pagină privată nouă</translation>
 <translation id="3234355010754616171">Pagină nouă privată</translation>
 <translation id="6610147964972079463">Închideți paginile private</translation>

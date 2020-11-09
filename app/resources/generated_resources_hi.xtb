@@ -6518,6 +6518,14 @@
 <translation id="995782501881226248">YouTube</translation>
 <translation id="996250603853062861">सुरक्षित कनेक्शन स्थापित कर रहा है...</translation>
 <translation id="998747458861718449">नि&amp;रीक्षण करें</translation>
+<translation id="6744651634043798597">{COUNT, plural,
+          =0 {Open all in &amp;private window}
+          =1 {Open in &amp;private window}
+          other {Open all (#) in &amp;private window}}</translation>
+<translation id="2633634757060186848">{COUNT, plural,
+          =0 {Open All in &amp;Private Window}
+          =1 {Open in &amp;Private Window}
+          other {Open All (#) in &amp;Private Window}}</translation>
 <translation id="658539216370629794">प्राइवेट &amp;विंडो में लिंक खोलें</translation>
 <translation id="1432267168815937878">प्राइवेट &amp;विंडो में खोलें</translation>
 <translation id="6516243500644829484">नई प्राइवेट &amp;विंडो</translation>
@@ -6531,6 +6539,7 @@
 <translation id="9048137919253433011">प्राइवेट टैब: <ph name="TAB_NAME"/></translation>
 <translation id="1799432502220762862">प्राइवेट सबफ़्रेम: <ph name="SUBFRAME_SITE"/></translation>
 <translation id="3193187622878830588">गुप्त पोर्टल: <ph name="SUBFRAME_SITE"/></translation>
+<translation id="5097649414558628673">टूल: <ph name="PRINT_NAME"/></translation>
 <translation id="8808478386290700967">वेब स्टोर</translation>
 <translation id="8261378640211443080">यह एक्सटेंशन <ph name="IDS_EXTENSION_WEB_STORE_TITLE"/> में सूचीबद्ध नहीं है और यह आपकी जानकारी के बिना जोड़ा गया हो सकता है.</translation>
 <translation id="6827869674836193263"><ph name="WINDOW_TITLE"/> (प्राइवेट)</translation>
@@ -6548,19 +6557,21 @@
 <translation id="3098826269712097986">निजी मोड से बाहर निकलने के बाद साइन-इन डेटा बहादुर में संग्रहीत किया जाएगा। यह आपको बाद में फिर से इस वेबसाइट के साथ टच आईडी का उपयोग करने देगा।</translation>
 <translation id="5186185447130319458">प्राइवेट</translation>
 <translation id="2579188629646253712">प्राइवेट से बाहर निकलें</translation>
-<translation id="6744651634043798597">{COUNT, plural,
+<translation id="1001131747196960052">प्राइवेट बंद करें</translation>
+<translation id="7475335772460644497">{COUNT, plural,
           =0 {Open all in &amp;private window}
           =1 {Open in &amp;private window}
-          other {Open all (#) in &amp;private window}}</translation>
+           अन्य {Open all ({COUNT}) in &amp;private window}}</translation>
 <translation id="2431625704210501303">प्राइवेट &amp;विंडो में खोलें</translation>
 <translation id="4620367155626060530">बुकमार्क बार &amp;दिखाएं</translation>
-<translation id="2633634757060186848">{COUNT, plural,
+<translation id="1448315815373449655">{COUNT, plural,
           =0 {Open All in &amp;Private Window}
           =1 {Open in &amp;Private Window}
-          other {Open All (#) in &amp;Private Window}}</translation>
+          अन्य {Open All ({COUNT}) in &amp;Private Window}}</translation>
 <translation id="1985165269306590797">प्राइवेट &amp;विंडो में खोलें</translation>
 <translation id="4680518314108745448">बुकमार्क बार &amp;दिखाएं</translation>
 <translation id="642436385689435488">सभी प्राइवेट विंडो में खोलें</translation>
+<translation id="5074021236879527611">सभी को (<ph name="URL_COUNT"/>) निजी विंडो में खोलें</translation>
 <translation id="5463021359602611602">प्राइवेट विंडो में खोलें</translation>
 <translation id="1850357845349976573">{0, plural,
         =1 {Private}
@@ -6610,6 +6621,8 @@
 <translation id="4854477725773269949">प्राइवेट में अनुमति दें</translation>
 <translation id="6436164536244065364">वेब स्टोर में देखें</translation>
 <translation id="38046578254905003"><ph name="BEGIN_LINK"/>Web Store<ph name="END_LINK"/> में एक्सटेंशन और थीम पाएँ</translation>
+<translation id="2402482691429508168">जब उनकी स्क्रीन अनलॉक होती है, तो उन प्रोफ़ाइल को देखने के लिए चुना जाता है,</translation>
+<translation id="3910100573440336938">अपने आस-पास की प्रोफ़ाइल के साथ फ़ाइल शेयर करें</translation>
 <translation id="6336451774241870485">नया प्राइवेट टैब</translation>
 <translation id="6610147964972079463">प्राइवेट टैब बंद करें</translation>
 <translation id="4933782374919065856">प्रश्न पूछना चाहते हैं? तो उस व्यक्ति से संपर्क करें जो आपकी प्रोफ़ाइल की निगरानी करता है.</translation>

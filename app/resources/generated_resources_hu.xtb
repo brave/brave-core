@@ -6521,6 +6521,14 @@ A kulcsfájlt tartsa biztonságos helyen. Szüksége lesz rá ahhoz, hogy új ve
 <translation id="995782501881226248">YouTube</translation>
 <translation id="996250603853062861">Biztonságos kapcsolat létesítése...</translation>
 <translation id="998747458861718449">&amp;Vizsgálat</translation>
+<translation id="6744651634043798597">{SZÁM, többes,
+          =0 {Összes megnyitása &amp;privát ablakban}
+          =1 {megnyitása &amp;privát ablakban}
+          egyéb {Összes (#) megnyitása &amp;privát ablakban}}</translation>
+<translation id="2633634757060186848">{SZÁM, többes,
+          =0 {Összes megnyitása &amp;privát ablakban}
+          =1 {megnyitása &amp;privát ablakban}
+          más {Összes (#) megnyitása &amp;privát ablakban}}</translation>
 <translation id="658539216370629794">Hivatkozás megnyitása privát ablakban</translation>
 <translation id="1432267168815937878">Hivatkozás megnyitása &amp; privát ablakban</translation>
 <translation id="6516243500644829484">Új &amp;privát ablak</translation>
@@ -6534,6 +6542,7 @@ A kulcsfájlt tartsa biztonságos helyen. Szüksége lesz rá ahhoz, hogy új ve
 <translation id="9048137919253433011">Privát fül: <ph name="TAB_NAME"/></translation>
 <translation id="1799432502220762862">Privát Subframe: <ph name="SUBFRAME_SITE"/></translation>
 <translation id="3193187622878830588">Portál inkognitómódban: <ph name="SUBFRAME_SITE"/></translation>
+<translation id="5097649414558628673">Eszköz: <ph name="PRINT_NAME"/></translation>
 <translation id="8808478386290700967">Webáruház</translation>
 <translation id="8261378640211443080">A bővítmény nem a(z) <ph name="IDS_EXTENSION_WEB_STORE_TITLE"/> szolgáltatásból származik, és előfordulhat, hogy az Ön tudta nélkül lett telepítve.</translation>
 <translation id="6827869674836193263"><ph name="WINDOW_TITLE"/> (Privát)</translation>
@@ -6551,19 +6560,21 @@ A kulcsfájlt tartsa biztonságos helyen. Szüksége lesz rá ahhoz, hogy új ve
 <translation id="3098826269712097986">A belépési adatok a Brave-ben lesznek tárolva a privát módból való kilépés után. Így később újra használhatod a Touch ID-t ezzel a webhellyel.</translation>
 <translation id="5186185447130319458">Privát</translation>
 <translation id="2579188629646253712">Kilépés privátból</translation>
-<translation id="6744651634043798597">{SZÁM, többes,
-          =0 {Összes megnyitása &amp;privát ablakban}
-          =1 {megnyitása &amp;privát ablakban}
-          egyéb {Összes (#) megnyitása &amp;privát ablakban}}</translation>
+<translation id="1001131747196960052">Privát bezárása</translation>
+<translation id="7475335772460644497">{COUNT, plural,
+          =0 {Összes megnyitása privát ablakban}
+          =1 {Megnyitása privát ablakban}
+          other {({COUNT}) megnyitása privát ablakban}}</translation>
 <translation id="2431625704210501303">Megnyitás &amp; privát ablakban</translation>
 <translation id="4620367155626060530">&amp;Könyvjelzősáv megjelenítése</translation>
-<translation id="2633634757060186848">{SZÁM, többes,
+<translation id="1448315815373449655">{COUNT, plural,
           =0 {Összes megnyitása &amp;privát ablakban}
-          =1 {megnyitása &amp;privát ablakban}
-          más {Összes (#) megnyitása &amp;privát ablakban}}</translation>
+          =1 {Megnyitása &amp;privát ablakban}
+          other {({COUNT}) megnyitása &amp;privát ablakban}}</translation>
 <translation id="1985165269306590797">Megnyitás &amp;Privát ablakban</translation>
 <translation id="4680518314108745448">&amp;Könyvjelzősáv megjelenítése</translation>
 <translation id="642436385689435488">Összes megnyitása privát ablakban</translation>
+<translation id="5074021236879527611">Összes megnyitása (<ph name="URL_COUNT"/>) privát ablakban</translation>
 <translation id="5463021359602611602">Megnyitás privát ablakban</translation>
 <translation id="1850357845349976573">{0, több,
         =1 {Privát}
@@ -6613,6 +6624,8 @@ A kulcsfájlt tartsa biztonságos helyen. Szüksége lesz rá ahhoz, hogy új ve
 <translation id="4854477725773269949">Engedélyezés privátban</translation>
 <translation id="6436164536244065364">Megtekintés az Internetes áruházban</translation>
 <translation id="38046578254905003">Keressen bővítményeket és témákat az <ph name="BEGIN_LINK"/>Internetes áruházban<ph name="END_LINK"/></translation>
+<translation id="2402482691429508168">Profilok, amelyek láthatóvá tették magukat számodra, amikor képernyőjüket feloldották.</translation>
+<translation id="3910100573440336938">Ossz meg fájlokat profilokkal a környezetedben</translation>
 <translation id="6336451774241870485">Új privát fül</translation>
 <translation id="6610147964972079463">Privát ablakok bezárása</translation>
 <translation id="4933782374919065856">Kérdése van? Vegye fel a kapcsolatot a fiókját felügyelő személlyel.</translation>

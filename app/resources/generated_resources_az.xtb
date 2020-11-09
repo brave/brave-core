@@ -6508,6 +6508,8 @@ Bu saytın blok edilməsini düşünmürəm!</translation>
 <translation id="996250603853062861">Güvənli bağlantı qurulur...</translation>
 <translation id="998747458861718449">Yoxlayın</translation>
 <translation id="38046578254905003">Artırma və temalara <ph name="BEGIN_LINK"/>Brave Veb Mağazada<ph name="END_LINK"/> baxın</translation>
+<translation id="6744651634043798597">{COUNT,plural, =0{Hamısını &amp;gizli pəncərədə açın}=1{&amp;Gizli pəncərədə açın}other{Hamısını (#) &amp;gizli pəncərədə açın}}</translation>
+<translation id="2633634757060186848">{COUNT,plural, =0{Hamısını &amp;Gizli Pəncərədə Açın}=1{&amp;Gizli Pəncərədə Açın}other{Hamısını (#) &amp;Gizli Pəncərədə Açın}}</translation>
 <translation id="658539216370629794">Linki inkoqnito pəncərəsində açın</translation>
 <translation id="1432267168815937878">Linki gizli pəncərədə açın</translation>
 <translation id="6516243500644829484">Yeni inkoqnito pəncərə</translation>
@@ -6538,10 +6540,8 @@ Bu saytın blok edilməsini düşünmürəm!</translation>
 <translation id="3098826269712097986">Anonim rejimdən çıxdıqdan sonra giriş datası Brave'da saxlanılacaq. Bu, sonradan bu veb sayt üçün Touch ID istifadə etməyə imkan verəcək.</translation>
 <translation id="5186185447130319458">Gizli Rejim</translation>
 <translation id="2579188629646253712">Gizli Rejimdən Çıxın</translation>
-<translation id="6744651634043798597">{COUNT,plural, =0{Hamısını &amp;gizli pəncərədə açın}=1{&amp;Gizli pəncərədə açın}other{Hamısını (#) &amp;gizli pəncərədə açın}}</translation>
 <translation id="2431625704210501303">İnkoqnito pəncərəsində açın</translation>
 <translation id="4620367155626060530">Əlfəcin panelini göstərin</translation>
-<translation id="2633634757060186848">{COUNT,plural, =0{Hamısını &amp;Gizli Pəncərədə Açın}=1{&amp;Gizli Pəncərədə Açın}other{Hamısını (#) &amp;Gizli Pəncərədə Açın}}</translation>
 <translation id="1985165269306590797">Gizli Pəncərədə Açın</translation>
 <translation id="4680518314108745448">Əlfəcin panelini göstərin</translation>
 <translation id="642436385689435488">Hamısını gizli pəncərədə açın</translation>

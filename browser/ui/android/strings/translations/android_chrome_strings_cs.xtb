@@ -1026,6 +1026,7 @@ Některé weby mohou například na tento požadavek reagovat tak, že vám zobr
 <translation id="996149300115483134">Nabídka karty informačních kanálů je zavřená</translation>
 <translation id="4540437243849625078">Tento web se chystá sdílet informace s aplikací mimo soukromý režim.</translation>
 <translation id="1227836882233136433">Opustit soukromý režim?</translation>
+<translation id="21023559487771014">Přejít do soukromého režimu</translation>
 <translation id="5186185447130319458">Soukromé</translation>
 <translation id="9063160602596686558">Automaticky odesílá statistiky o využívání a zprávy o selhání do Googlu</translation>
 <translation id="1438581767753657407">Když je režim Lite zapnutý, Brave používá své servery k rychlejšímu načítání stránek. Režim Lite přepisuje velmi pomalé stránky a načítá pouze základní obsah. Režim Lite nelze použít na soukromé karty.</translation>
@@ -1035,7 +1036,11 @@ Některé weby mohou například na tento požadavek reagovat tak, že vám zobr
 <translation id="3110967157686007724">Soukromá karta</translation>
 <translation id="4526803704855831732">Soukromé karty</translation>
 <translation id="7465104139234185284">Zavřít všechny soukromé karty</translation>
-<translation id="21023559487771014">Přejít do soukromého režimu</translation>
+<translation id="1455125811784733159">Otevřít Soukromou kartu</translation>
+<translation id="807110510029471880">Použít pro přihlášení Soukromý režim</translation>
+<translation id="7987056960390558517">V Soukromém režimu <ph name="BEGIN_BOLD1"/>může být vaše aktivita stále viditelná <ph name="END_BOLD1"/>pro weby, které navštívíte, pro vašeho zaměstnavatele či školu nebo pro vašeho poskytovatele internetu.
+
+Data z vaší Soukromé relace budou z Brave odstraněna, až když <ph name="BEGIN_BOLD2"/>zavřete všechny Soukromé karty<ph name="END_BOLD2"/>.</translation>
 <translation id="6336451774241870485">Nová soukromá karta</translation>
 <translation id="3234355010754616171">Nová soukromá karta</translation>
 <translation id="6610147964972079463">Zavřít soukromé karty</translation>

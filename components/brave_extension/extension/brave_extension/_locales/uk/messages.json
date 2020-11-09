@@ -20,19 +20,19 @@
     "description": "Partial string for the phrase `shields is up *for this site*`"
   },
   "enabledMessage": {
-    "message": "Якщо сайт здається поламаним, спробуйте опустити щити",
+    "message": "Якщо сайт виглядає пошкодженим, спробуйте вимкнути щити",
     "description": "Message telling the user to disable shields if a site appears broken"
   },
   "disabledMessage": {
-    "message": "Ви знаходитесь на цьому сайті без захисту конфіденційності та безпеки Brave. Він погано працює із увімкненими Щитами?",
+    "message": "Ви переглядаєте цей сайт без захисту приватності та безпеки Brave. Він не працює належним чином з увімкненими щитами?",
     "description": "Message telling the user that shields are disabled, and prompting them towards reporting an issue if necessary"
   },
   "reportBrokenSite": {
-    "message": "Довідомити про зламаний сайт",
+    "message": "Звіт про пошкоджений сайт",
     "description": "Message for the button allowing users to report a broken site to Brave developers"
   },
   "itemsBlocked": {
-    "message": "Елементи заблоковані",
+    "message": "Елементів заблоковано",
     "description": "Message for the main blocked resources text when there is more than one ad/track/script blocked (plural)"
   },
   "itemBlocked": {
@@ -52,31 +52,31 @@
     "description": "Message for the main blocked resources text when there is at least one ad/track/script blocked and one connection upgrade (singular)"
   },
   "thirdPartyTrackersBlocked": {
-    "message": "Міжсайтове відстеження заблоковано.",
+    "message": "Стеження між сайтами заблоковано",
     "description": "Message for the scripts blocked row label"
   },
   "readOnlyAdsTrackersBlocking": {
-    "message": "Трекери та реклама заблоковані",
+    "message": "Стеження та реклама заблоковані",
     "description": "Message for the option in the ads and trackers blocking select field in read only view"
   },
   "aggressiveAdsTrackersBlocking": {
-    "message": "Трекери та реклама заблоковані (агресивні)",
+    "message": "Стеження та реклама заблоковані (агресивно)",
     "description": "Message for the option in the ads and trackers blocking select field to block ads and trackers with aggressive heuristics"
   },
   "standardAdsTrackersBlocking": {
-    "message": "Трекери та реклама заблоковані (стандартні)",
+    "message": "Стеження та реклама заблоковані (стандартно)",
     "description": "Message for the option in the ads and trackers blocking select field to block ads and trackers with standard heuristics"
   },
   "allowAdsTrackers": {
-    "message": "Дозволити усі трекери та рекламу",
+    "message": "Дозволити все стеження та рекламу",
     "description": "Message for the option in the ads and trackers blocking select field to allow all ads and trackers"
   },
   "connectionsUpgradedHTTPS": {
-    "message": "Підключення оновлені до HTTPS",
+    "message": "З'єднання оновлені до HTTPS",
     "description": "Message for the connections upgraded row label and for the main blocked resources text when there is more than one connection upgraded (plural) and no other ads/trackers blocked"
   },
   "connectionUpgradedHTTPS": {
-    "message": "Підключення оновлено до HTTPS",
+    "message": "З'єднання оновлено до HTTPS",
     "description": "Message for the main blocked resources text when there is one connection upgraded (singular) and no other ads/trackers blocked"
   },
   "scriptsBlocked": {
@@ -84,27 +84,27 @@
     "description": "Message for the scripts blocked row label"
   },
   "thirdPartyCookiesBlocked": {
-    "message": "Міжсайтові файли cookies заблоковано.",
+    "message": "Сторонні куки заблоковано",
     "description": "Message for the option in the cookies select field to block all 3rd party cookies"
   },
   "allCookiesBlocked": {
-    "message": "Кукіз блоковані",
+    "message": "Куки заблоковано",
     "description": "Message for the option in the cookies select field to block all cookies"
   },
   "allCookiesAllowed": {
-    "message": "Всі кукіз дозволені",
+    "message": "Всі куки дозволено",
     "description": "Message for the option in the cookies select field to allow all cookies"
   },
   "readOnlyFingerprinting": {
-    "message": "Зняття відбитків пальців заблоковане",
+    "message": "Цифрові відбитки заблоковано",
     "description": "Message for the option in the fingerprinting field in read only view"
   },
   "standardFingerprinting": {
-    "message": "Зняття цифрових відбитків заблоковане (стандартно)",
+    "message": "Цифрові відбитки заблоковано (стандартно)",
     "description": "Message for the option in the fingerprinting select field to block all 3rd party recognition attempts"
   },
   "strictFingerprinting": {
-    "message": "Зняття цифрових відбитків заблоковане (суворо, сайти можуть не працювати)",
+    "message": "Цифрові відбитки заблоковано (суворо, може пошкодити сайти)",
     "description": "Message for the option in the fingerprinting select field to block all fingerprinting attempts"
   },
   "allowAllFingerprinting": {
@@ -112,7 +112,7 @@
     "description": "Message for the option in the fingerprinting select field to allow all fingerprinting attempts"
   },
   "deviceRecognitionAttempts": {
-    "message": "Спроби зчитування відбитків пальців",
+    "message": "Спроби зчитування цифрового відбитка",
     "description": "Message for the fingerprinting attempts blocked panel"
   },
   "scriptsOnThisSite": {
@@ -120,7 +120,7 @@
     "description": "Message for the script resources blocked panel"
   },
   "blockedScripts": {
-    "message": "Блоковані скрипти",
+    "message": "Заблоковані скрипти",
     "description": "Message for the script resources blocked"
   },
   "allowedScripts": {
@@ -136,7 +136,7 @@
     "description": "Message for the resources blocked *allow all* option"
   },
   "block": {
-    "message": "Заблокувати",
+    "message": "Блокувати",
     "description": "Message for the resources blocked *block* option"
   },
   "allow": {
@@ -152,7 +152,7 @@
     "description": "Message for the resources blocked *allowed once* option"
   },
   "allowScriptsOnce": {
-    "message": "Дозволити скрипти на один раз",
+    "message": "Дозволити скрипти один раз",
     "description": "Message for the shortcut in the main interface to allow all scripts once"
   },
   "cancel": {
@@ -168,7 +168,7 @@
     "description": "Message for action in dynamic list of resources blocked to *apply once*"
   },
   "changeDefaults": {
-    "message": "Змітити налаштування глобальної оболонки за замовчуванням",
+    "message": "Змінити глобальні налаштування щитів",
     "description": "Message for the button action linking to the settings page"
   },
   "addBlockElement": {
@@ -192,23 +192,23 @@
     "description": "Message for the simple view option"
   },
   "shieldsExplanation": {
-    "message": "Сайти часто включають кукіз та скритпи, які намагаються ідентифікувати вас та ваш пристрій (часто вбудовані в рекламу). Вони хочуть зрозуміти хто ви є і потім слідувати за вами по всій мережі, відстежуючи, що ви робите на кожному сайті. Brave блокує ці речі, тож ви зможете переглядати сайти без того, щоб за вами стежили. ",
+    "message": "Сайти часто містять куки та скрипти, які намагаються ідентифікувати вас та ваш пристрій (часто вбудовані в рекламу). Вони хочуть сформувати ваш профіль і потім переслідувати вас в Інтернеті, стежачи за вашими діями на кожному сайті. Brave блокує такі елементи, щоб ви могли переглядати сайти без стеження.",
     "description": "Message in read-only view explaining what Brave Shields do"
   },
   "blockedResoucesExplanation": {
-    "message": "Міжсайтові відстежувачі та інші жахаючі штуки заблоковано",
+    "message": "Стеження між сайтами та інші шкідливі елементи заблоковано",
     "description": "Message for the main trackers count in Shields simple view"
   },
   "webCompatWarning": {
-    "message": "Зміна налаштувань Щита у цьому вигляді може вплинути на веб-сумісність на цьому сайті. ",
+    "message": "Зміна налаштувань Щита у цьому вигляді може вплинути на веб-сумісність на цьому сайті.",
     "description": "Message for web compat warning when switching from simple to advanced view"
   },
   "gotIt": {
-    "message": "Виконано",
+    "message": "Зрозуміло",
     "description": "Message for the button that confirms the advanced view"
   },
   "learnMore": {
-    "message": "Дізнатись більше",
+    "message": "Докладніше",
     "description": "Message inviting the user to learn more about Shields"
   }
 }

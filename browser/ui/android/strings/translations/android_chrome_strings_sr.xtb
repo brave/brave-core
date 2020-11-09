@@ -1026,6 +1026,7 @@ Brave налог можда има друге облике историје пр
 <translation id="996149300115483134">Мени картице фида је затворен</translation>
 <translation id="4540437243849625078">Ova lokacija će upravo da podeli informacije sa aplikacijom koja je izvan privatnog režima.</translation>
 <translation id="1227836882233136433">Napusti privatni režim?</translation>
+<translation id="21023559487771014">Idite u privatni režim</translation>
 <translation id="5186185447130319458">Privatno</translation>
 <translation id="9063160602596686558">Аутоматски шаље Brave Software-у статистику коришћења и извештаје о отказивању</translation>
 <translation id="1438581767753657407">Kada je Laki režim omogućen, Brave koristi Brave servere da bi učinio da se stranice brže učitavaju. Laki režim ponovo napiše svaku sporu stranicu da bi učitao osnovni sadržaj. Laki režim se ne odnosi na Privatne kartice.</translation>
@@ -1035,7 +1036,11 @@ Brave налог можда има друге облике историје пр
 <translation id="3110967157686007724">Privatna kartica</translation>
 <translation id="4526803704855831732">Privatne kartice</translation>
 <translation id="7465104139234185284">Zatvori sve privatne kartice</translation>
-<translation id="21023559487771014">Idite u privatni režim</translation>
+<translation id="1455125811784733159">Otvorite privatnu karticu</translation>
+<translation id="807110510029471880">Koristite režim Privatno da biste se prijavili</translation>
+<translation id="7987056960390558517">U privatnom režimu, Vaša aktivnost <ph name="BEGIN_BOLD1"/>bi mogla i dalje biti vidljiva <ph name="END_BOLD1"/>veb-lokacijama koje posećujete, Vašem poslodavcu ili školi i dobavljaču internet usluga.
+
+Podaci iz Vaše privatne sesije biće obrisani iz Brave-a jedino onda kada budete <ph name="BEGIN_BOLD2"/>zatvorili sve privatne kartice<ph name="END_BOLD2"/>.</translation>
 <translation id="6336451774241870485">Nova privatna kartica</translation>
 <translation id="3234355010754616171">Nova privatna kartica</translation>
 <translation id="6610147964972079463">Zatvori privatne katrice</translation>

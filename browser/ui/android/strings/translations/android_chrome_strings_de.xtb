@@ -1026,6 +1026,7 @@ Einige Websites schalten möglicherweise Werbeanzeigen, deren Auswahl nicht dara
 <translation id="996149300115483134">Feedkartenmenü ist geschlossen</translation>
 <translation id="4540437243849625078">Diese Website möchte Informationen an eine App außerhalb des Privatmodus weitergeben.</translation>
 <translation id="1227836882233136433">Privatmodus verlassen</translation>
+<translation id="21023559487771014">Privatmodus einschalten</translation>
 <translation id="5186185447130319458">Privat</translation>
 <translation id="9063160602596686558">Nutzungsstatistiken und Absturzberichte automatisch an Brave Software senden</translation>
 <translation id="1438581767753657407">Wenn der Lite-Modus aktiviert ist, verwendet Brave Brave-Server, die das Laden von Seiten beschleunigen. Im Lite-Modus werden sehr langsame Seiten neu geschrieben, um nur die wichtigsten Inhalte zu laden. Der Lite-Modus gilt nicht für private Registerkarten.</translation>
@@ -1035,7 +1036,11 @@ Einige Websites schalten möglicherweise Werbeanzeigen, deren Auswahl nicht dara
 <translation id="3110967157686007724">Private Registerkarte</translation>
 <translation id="4526803704855831732">Private Registerkarten</translation>
 <translation id="7465104139234185284">Alle privaten Registerkarten schließen</translation>
-<translation id="21023559487771014">Privatmodus einschalten</translation>
+<translation id="1455125811784733159">Ein privates Tab öffnen</translation>
+<translation id="807110510029471880">Für Registrierung Privat nutzen</translation>
+<translation id="7987056960390558517">In Private könnte Ihr Aktivität <ph name="BEGIN_BOLD1"/>weiterhin <ph name="END_BOLD1"/>für Webseiten, die Sie besuchen, Ihren Arbeitgeber oder die Schule und Ihren Internetprovider sichtbar sein.
+
+Daten aus Ihrer privaten Sitzung werden nur aus Ihrem Brave gelöscht, wenn Sie <ph name="BEGIN_BOLD2"/>alle privaten Tabs schließen<ph name="END_BOLD2"/>.</translation>
 <translation id="6336451774241870485">Neue private Registerkarte</translation>
 <translation id="3234355010754616171">Neuer privater Tab</translation>
 <translation id="6610147964972079463">Private Registerkarten schließen</translation>

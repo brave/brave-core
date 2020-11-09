@@ -6521,6 +6521,14 @@ Opbevar din nøglefil på et sikkert sted. Du skal bruge den til at oprette nye 
 <translation id="995782501881226248">YouTube</translation>
 <translation id="996250603853062861">Etablerer sikker forbindelse...</translation>
 <translation id="998747458861718449">U&amp;ndersøg</translation>
+<translation id="6744651634043798597">{COUNT, plural,
+          =0 {Open all in &amp;private window}
+          =1 {Open in &amp;private window}
+          other {Open all (#) in &amp;private window}}</translation>
+<translation id="2633634757060186848">{COUNT, plural,
+          =0 {Open All in &amp;Private Window}
+          =1 {Open in &amp;Private Window}
+          andre {Open All (#) in &amp;Private Window}}</translation>
 <translation id="658539216370629794">Åbn link i &amp;privat fane</translation>
 <translation id="1432267168815937878">Åbn link i &amp;Privat fane</translation>
 <translation id="6516243500644829484">Ny &amp;privat fane</translation>
@@ -6534,6 +6542,7 @@ Opbevar din nøglefil på et sikkert sted. Du skal bruge den til at oprette nye 
 <translation id="9048137919253433011">Privat fane: <ph name="TAB_NAME"/></translation>
 <translation id="1799432502220762862">Privat underfane: <ph name="SUBFRAME_SITE"/></translation>
 <translation id="3193187622878830588">Inkognitoportal: <ph name="SUBFRAME_SITE"/></translation>
+<translation id="5097649414558628673">Værktøj: <ph name="PRINT_NAME"/></translation>
 <translation id="8808478386290700967">Web-butik</translation>
 <translation id="8261378640211443080">Denne udvidelse er ikke anført i <ph name="IDS_EXTENSION_WEB_STORE_TITLE"/> og er muligvis blevet tilføjet, uden at du vidste det.</translation>
 <translation id="6827869674836193263"><ph name="WINDOW_TITLE"/> (Privat)</translation>
@@ -6551,19 +6560,21 @@ Opbevar din nøglefil på et sikkert sted. Du skal bruge den til at oprette nye 
 <translation id="3098826269712097986">Indlognings-data vil blive lagret i Brave, efter at du har forladt privat tilstand. Dette lader dig bruge Touch ID med denne hjemmeside senere.</translation>
 <translation id="5186185447130319458">Privat</translation>
 <translation id="2579188629646253712">Forlad privat</translation>
-<translation id="6744651634043798597">{COUNT, plural,
-          =0 {Open all in &amp;private window}
-          =1 {Open in &amp;private window}
-          other {Open all (#) in &amp;private window}}</translation>
+<translation id="1001131747196960052">Luk privat</translation>
+<translation id="7475335772460644497">{COUNT, plural,
+          =0 {Åbn alle i &amp;privat vindue}
+          =1 {Åbn i &amp;privat vindue}
+          other {Åbn alle ({COUNT}) i &amp;privat vindue}}</translation>
 <translation id="2431625704210501303">Åbn i &amp;privat fane</translation>
 <translation id="4620367155626060530">&amp;Vis bogmærkelinjen</translation>
-<translation id="2633634757060186848">{COUNT, plural,
-          =0 {Open All in &amp;Private Window}
-          =1 {Open in &amp;Private Window}
-          andre {Open All (#) in &amp;Private Window}}</translation>
+<translation id="1448315815373449655">{COUNT, plural,
+          =0 {Åbn alle i &amp;privat vindue}
+          =1 {Åbn i &amp;privat vindue}
+          other {Åbn alle ({COUNT}) i &amp;privat vindue}}</translation>
 <translation id="1985165269306590797">Åbn i &amp;Privat fane</translation>
 <translation id="4680518314108745448">&amp;Vis bogmærkelinjen</translation>
 <translation id="642436385689435488">Åbn alle i privat fane</translation>
+<translation id="5074021236879527611">Åbn alle (<ph name="URL_COUNT"/>) i privat vindue</translation>
 <translation id="5463021359602611602">Åbn i privat fane</translation>
 <translation id="1850357845349976573">{0, plural,
         =1 {Private}
@@ -6613,6 +6624,8 @@ Opbevar din nøglefil på et sikkert sted. Du skal bruge den til at oprette nye 
 <translation id="4854477725773269949">Tillad i privat</translation>
 <translation id="6436164536244065364">Vis i Webshop</translation>
 <translation id="38046578254905003">Find udvidelser og temaer i <ph name="BEGIN_LINK"/>Web Store<ph name="END_LINK"/></translation>
+<translation id="2402482691429508168">Profiler, der har valgt at være synlige for dig, når deres skærm er låst op</translation>
+<translation id="3910100573440336938">Del filer med profiler omkring dig</translation>
 <translation id="6336451774241870485">Ny privat fane</translation>
 <translation id="6610147964972079463">Luk private faner</translation>
 <translation id="4933782374919065856">Har du spørgsmål? Kontakt din profiladministrator.</translation>

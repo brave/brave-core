@@ -197,10 +197,6 @@
     "message": "現在您可以透過檢視廣告來賺錢了。",
     "description": "Message for ads launch notification"
   },
-  "braveAdsLaunchTitle": {
-    "message": "Brave 廣告抵達了！",
-    "description": "Message used in notification to let users know Ads is available"
-  },
   "braveAdsTitle": {
     "message": "Brave 廣告",
     "description": "Notification title when we display info about ads"
@@ -603,6 +599,10 @@
     "message": "取消",
     "description": "Text for cancel button"
   },
+  "changeAmount":  {
+    "message": "變更金額",
+    "description": "Button text for changing monthly contribution amount"
+  },
   "login":  {
     "message": "登入",
     "description": "Text for login button"
@@ -612,7 +612,7 @@
     "description": "Text for login button"
   },
   "loginMessageText":  {
-    "message": "您至少需有 25 BAT 才能建立 Uphold 帳戶。請稍後再試。<br/>如果您已有經驗證的 Uphold 帳戶，請繼續登入。",
+    "message": "您至少需有 25 BAT 才能建立 Uphold 帳戶。請稍後再試。\n如果您已有經驗證的 Uphold 帳戶，請繼續登入。",
     "description": "Text for login button"
   },
   "walletConnected":  {
@@ -622,5 +622,9 @@
   "walletPending":  {
     "message": "未定",
     "description": "Status button that tells user that he is currently pending"
+  },
+  "walletVerificationNote3":  {
+    "message": "注意：在您授權後，您的交易將對 Uphold 可見；舉例來說，他們可以看見您小費的收受人與金額。",
+    "description": "Displayed in login modal for uphold"
   }
 }

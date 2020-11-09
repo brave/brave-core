@@ -197,10 +197,6 @@
     "message": "U kunt nu verdienen door advertenties te bekijken.",
     "description": "Message for ads launch notification"
   },
-  "braveAdsLaunchTitle": {
-    "message": "Brave Ads is gearriveerd!",
-    "description": "Message used in notification to let users know Ads is available"
-  },
   "braveAdsTitle": {
     "message": "Brave Advertenties",
     "description": "Notification title when we display info about ads"
@@ -603,6 +599,10 @@
     "message": "Annuleren",
     "description": "Text for cancel button"
   },
+  "changeAmount":  {
+    "message": "Aantal veranderen",
+    "description": "Button text for changing monthly contribution amount"
+  },
   "login":  {
     "message": "Aanmelden",
     "description": "Text for login button"
@@ -612,7 +612,7 @@
     "description": "Text for login button"
   },
   "loginMessageText":  {
-    "message": "U moet minimaal 25 BAT hebben om een Uphold account aan te maken. Probeer het later opnieuw. <br/> Als u al een geverifieerde Uphold-account hebt, ga dan verder met inloggen.",
+    "message": "U moet minimaal 25 BAT hebben om een Uphold-account aan te maken. Probeer het alstublieft later nogmaals. Als u reeds een geverifieerd Uphold-account heeft, ga dan door naar het inloggen. ",
     "description": "Text for login button"
   },
   "walletConnected":  {
@@ -622,5 +622,9 @@
   "walletPending":  {
     "message": "In afwachting",
     "description": "Status button that tells user that he is currently pending"
+  },
+  "walletVerificationNote3":  {
+    "message": "Let op: Uw transacties zullen zichtbaar zijn voor Uphold zodra u toestemming geeft, ze zullen bijvoorbeeld de ontvanger en het bedrag van uw tips zien.",
+    "description": "Displayed in login modal for uphold"
   }
 }

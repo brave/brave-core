@@ -6521,6 +6521,14 @@ Rakto failą laikykite saugioje vietoje. Jo reikės, kai norėsite sukurti nauja
 <translation id="995782501881226248">YouTube</translation>
 <translation id="996250603853062861">Kuriamas saugus ryšys...</translation>
 <translation id="998747458861718449">A&amp;pžiūrėti</translation>
+<translation id="6744651634043798597">{COUNT, plural,
+          =0 {Atidaryti viską &amp;inkognito lange}
+          =1 {Atidaryti &amp;inkognito lange}
+          other {Atidaryti viską (#) &amp;inkognito lange}}</translation>
+<translation id="2633634757060186848">{COUNT, plural,
+          =0 {Atidaryti viską &amp;inkognito lange}
+          =1 {Atidaryti &amp;inkognito lange}
+          other {Atidaryti viską (#) &amp;inkognito lange}}</translation>
 <translation id="658539216370629794">Atidaryti nuorodą &amp;inkognito lange</translation>
 <translation id="1432267168815937878">Atidaryti nuorodą &amp;inkognito lange</translation>
 <translation id="6516243500644829484">Naujas &amp;inkognito langas</translation>
@@ -6534,6 +6542,7 @@ Rakto failą laikykite saugioje vietoje. Jo reikės, kai norėsite sukurti nauja
 <translation id="9048137919253433011">Inkognito skirtukas: <ph name="TAB_NAME"/></translation>
 <translation id="1799432502220762862">Inkognito antrinis kadras: <ph name="SUBFRAME_SITE"/></translation>
 <translation id="3193187622878830588">Portalas inkognito režimu: <ph name="SUBFRAME_SITE"/></translation>
+<translation id="5097649414558628673">Įrankis: <ph name="PRINT_NAME"/></translation>
 <translation id="8808478386290700967">Internetinė parduotuvė</translation>
 <translation id="8261378640211443080">Šio plėtinio nėra „<ph name="IDS_EXTENSION_WEB_STORE_TITLE"/>“ sąraše. Jis galėjo būti pridėtas be jūsų žinios.</translation>
 <translation id="6827869674836193263"><ph name="WINDOW_TITLE"/> (inkognito)</translation>
@@ -6551,19 +6560,21 @@ Rakto failą laikykite saugioje vietoje. Jo reikės, kai norėsite sukurti nauja
 <translation id="3098826269712097986">Kai išeisite iš inkognito režimo, prisijungimo duomenys bus laikomi „Brave“. Taip galėsite ir vėliau su šia svetaine naudoti „Touch ID“.</translation>
 <translation id="5186185447130319458">Inkognito</translation>
 <translation id="2579188629646253712">Išeiti iš inkognito</translation>
-<translation id="6744651634043798597">{COUNT, plural,
-          =0 {Atidaryti viską &amp;inkognito lange}
-          =1 {Atidaryti &amp;inkognito lange}
-          other {Atidaryti viską (#) &amp;inkognito lange}}</translation>
+<translation id="1001131747196960052">Užverti inkognito langus</translation>
+<translation id="7475335772460644497">{COUNT, plural,
+          =0 {Atverti viską &amp;inkognito lange}
+          =1 {Atverti viską &amp;inkognito lange}
+          other {Atverti visus ({COUNT}) &amp;inkognito lange}}</translation>
 <translation id="2431625704210501303">Atidaryti &amp;inkognito lange</translation>
 <translation id="4620367155626060530">&amp;Rodyti žymių juostą</translation>
-<translation id="2633634757060186848">{COUNT, plural,
-          =0 {Atidaryti viską &amp;inkognito lange}
-          =1 {Atidaryti &amp;inkognito lange}
-          other {Atidaryti viską (#) &amp;inkognito lange}}</translation>
+<translation id="1448315815373449655">{COUNT, plural,
+          =0 {Atverti viską &amp;inkognito lange}
+          =1 {Atverti &amp;inkognito lange}
+          other {Atverti visus ({COUNT}) &amp;inkognito lange}}</translation>
 <translation id="1985165269306590797">Atidaryti &amp;inkognito lange</translation>
 <translation id="4680518314108745448">&amp;Rodyti žymių juostą</translation>
 <translation id="642436385689435488">Atidaryti viską inkognito lange</translation>
+<translation id="5074021236879527611">Atverti viską (<ph name="URL_COUNT"/>) inkognito lange</translation>
 <translation id="5463021359602611602">Atidaryti inkognito lange</translation>
 <translation id="1850357845349976573">{0, plural,
         =1 {inkognito}
@@ -6613,6 +6624,8 @@ Rakto failą laikykite saugioje vietoje. Jo reikės, kai norėsite sukurti nauja
 <translation id="4854477725773269949">Leisti inkognito režimą</translation>
 <translation id="6436164536244065364">Žiūrėti internetinėje parduotuvėje</translation>
 <translation id="38046578254905003">Raskite plėtinių ir temų internetinėje parduotuvėje <ph name="BEGIN_LINK"/>Web Store<ph name="END_LINK"/></translation>
+<translation id="2402482691429508168">Profiliai, kurie pasirinko būti jums matomi tada, kai jų ekranas atblokuotas</translation>
+<translation id="3910100573440336938">Bendrinti failus šalia esantiems profiliams</translation>
 <translation id="6336451774241870485">Naujas inkognito skirtukas</translation>
 <translation id="6610147964972079463">Uždaryti inkognito skirtukus</translation>
 <translation id="4933782374919065856">Turite klausimų? Susisiekite su jūsų profilį prižiūrinčiu asmeniu.</translation>

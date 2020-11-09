@@ -1026,6 +1026,7 @@ Misalnya, beberapa situs web mungkin menanggapi permintaan ini dengan menayangka
 <translation id="996149300115483134">Menu kartu feed ditutup</translation>
 <translation id="4540437243849625078">Situs ini akan membagikan informasi kepada sebuah aplikasi di luar mode pribadi.</translation>
 <translation id="1227836882233136433">Keluar dari mode pribadi?</translation>
+<translation id="21023559487771014">Masuk modus Pribadi</translation>
 <translation id="5186185447130319458">Pribadi</translation>
 <translation id="9063160602596686558">Secara otomatis mengirimkan statistik penggunaan dan laporan kerusakan ke Brave Software</translation>
 <translation id="1438581767753657407">Saat mode Lite aktif, Brave menggunakan server Brave supaya halaman lebih cepat dimuat. Mode Lite menulis ulang halaman-halaman yang sangat lambat dan hanya memuat konten yang mendasar. Mode Lite tidak bisa digunakan di tab Privat.</translation>
@@ -1035,7 +1036,11 @@ Misalnya, beberapa situs web mungkin menanggapi permintaan ini dengan menayangka
 <translation id="3110967157686007724">Tab pribadi</translation>
 <translation id="4526803704855831732">Tab Pribadi</translation>
 <translation id="7465104139234185284">Tutup semua tab pribadi</translation>
-<translation id="21023559487771014">Masuk modus Pribadi</translation>
+<translation id="1455125811784733159">Buka tab Privat</translation>
+<translation id="807110510029471880">Gunakan Privat untuk masuk</translation>
+<translation id="7987056960390558517">Di Privat, aktivitas Anda <ph name="BEGIN_BOLD1"/>masih bisa terlihat <ph name="END_BOLD1"/>oleh situs web yang Anda kunjungi, perusahaan atau sekolah, dan penyedia layanan internet Anda.
+
+Data dari sesi Privat Anda hanya akan dikosongkan dari Brave bila Anda <ph name="BEGIN_BOLD2"/>menutup semua tab Privat<ph name="END_BOLD2"/>.</translation>
 <translation id="6336451774241870485">Tab privat baru</translation>
 <translation id="3234355010754616171">Tab pribadi baru</translation>
 <translation id="6610147964972079463">Tutup tab pribadi</translation>

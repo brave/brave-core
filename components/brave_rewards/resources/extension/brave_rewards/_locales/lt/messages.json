@@ -197,10 +197,6 @@
     "message": "Dabar galite užsidirbti už reklamos peržiūrą.",
     "description": "Message for ads launch notification"
   },
-  "braveAdsLaunchTitle": {
-    "message": "„Brave Ads“ jau čia!",
-    "description": "Message used in notification to let users know Ads is available"
-  },
   "braveAdsTitle": {
     "message": "„Brave“ reklamos",
     "description": "Notification title when we display info about ads"
@@ -603,6 +599,10 @@
     "message": "Atšaukti",
     "description": "Text for cancel button"
   },
+  "changeAmount":  {
+    "message": "Keisti sumą",
+    "description": "Button text for changing monthly contribution amount"
+  },
   "login":  {
     "message": "Prisijungimas",
     "description": "Text for login button"
@@ -612,7 +612,7 @@
     "description": "Text for login button"
   },
   "loginMessageText":  {
-    "message": "Jums reikia turėti mažiausiai 25 BAT, kad galėtumėte susikurti „Uphold“ paskyrą. Bandykite dar kartą vėliau. <br/>Jei jau turite patvirtintą „Uphold“ paskyrą, tęskite, kad prisijungtumėte.",
+    "message": "Jums reikia turėti mažiausiai 25 BAT, kad galėtumėte susikurti „Uphold“ paskyrą. Bandykite dar kartą vėliau.\nJei jau turite patvirtintą „Uphold“ paskyrą, tęskite, kad prisijungtumėte.",
     "description": "Text for login button"
   },
   "walletConnected":  {
@@ -622,5 +622,9 @@
   "walletPending":  {
     "message": "Laukiama",
     "description": "Status button that tells user that he is currently pending"
+  },
+  "walletVerificationNote3":  {
+    "message": "Pastaba. Jūsų operacijos „Uphold“  bus matomos tada, kai duosite leidimą; pavyzdžiui, bus matomas jūsų gavėjas ir arbatpinigių suma.",
+    "description": "Displayed in login modal for uphold"
   }
 }

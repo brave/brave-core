@@ -6522,6 +6522,14 @@ Datoteko s ključem shranite na varnem. Potrebovali jo boste za izdelavo novih r
 <translation id="995782501881226248">YouTube</translation>
 <translation id="996250603853062861">Vzpostavljanje varne povezave ...</translation>
 <translation id="998747458861718449">Preglej</translation>
+<translation id="6744651634043798597">{COUNT, plural,
+          =0 {Odpiranje vseh v &amp;oknu brez beleženja zgodovine}
+          =1 {Odpiranje v &amp;oknu brez beleženja zgodovine}
+          other {Odpiranje vseh (#) v &amp;oknu brez beleženja zgodovine}}</translation>
+<translation id="2633634757060186848">{COUNT, plural,
+          =0 {Odpiranje vseh v &amp;oknu brez beleženja zgodovine}
+          =1 {Odpiranje v &amp;oknu brez beleženja zgodovine}
+          other {Odpiranje vseh (#) v &amp;oknu brez beleženja zgodovine}}</translation>
 <translation id="658539216370629794">Odpri povezavo v oknu &amp;private</translation>
 <translation id="1432267168815937878">Odpri povezavo v oknu &amp;Private</translation>
 <translation id="6516243500644829484">Novo okno &amp;private</translation>
@@ -6535,6 +6543,7 @@ Datoteko s ključem shranite na varnem. Potrebovali jo boste za izdelavo novih r
 <translation id="9048137919253433011">Zasebni zavihek: <ph name="TAB_NAME"/></translation>
 <translation id="1799432502220762862">Zasebni podokvir: <ph name="SUBFRAME_SITE"/></translation>
 <translation id="3193187622878830588">Zasebni portal: <ph name="SUBFRAME_SITE"/></translation>
+<translation id="5097649414558628673">Tool: <ph name="PRINT_NAME"/></translation>
 <translation id="8808478386290700967">Spletna trgovina</translation>
 <translation id="8261378640211443080">Ta razširitev ni navedena v storitvi <ph name="IDS_EXTENSION_WEB_STORE_TITLE"/> in je bila morda dodana brez vaše vednosti.</translation>
 <translation id="6827869674836193263"><ph name="WINDOW_TITLE"/> (brez beleženja zgodovine)</translation>
@@ -6552,19 +6561,21 @@ Datoteko s ključem shranite na varnem. Potrebovali jo boste za izdelavo novih r
 <translation id="3098826269712097986">Podatki za prijavo bodo shranjeni v programu Brave, ko zapustite brez beleženja zgodovine. S tem boste pozneje znova uporabili funkcijo Touch ID s to spletno stranjo.</translation>
 <translation id="5186185447130319458">Način brez beleženja zgodovine</translation>
 <translation id="2579188629646253712">Izhod iz načina brez beleženja zgodovine</translation>
-<translation id="6744651634043798597">{COUNT, plural,
-          =0 {Odpiranje vseh v &amp;oknu brez beleženja zgodovine}
-          =1 {Odpiranje v &amp;oknu brez beleženja zgodovine}
-          other {Odpiranje vseh (#) v &amp;oknu brez beleženja zgodovine}}</translation>
+<translation id="1001131747196960052">Zapri Zasebno okno</translation>
+<translation id="7475335772460644497">{COUNT, plural,
+          =0 {Odpri vse v &amp;zasebnem oknu}
+          =1 {Odpri v &amp;zasebnem oknu}
+          drugo {Odpri vse ({COUNT}) v &amp;zasebnem oknu}}</translation>
 <translation id="2431625704210501303">Odpri v oknu &amp;brez beleženja zgodovine</translation>
 <translation id="4620367155626060530">&amp;Pokaži vrstico z zaznamki</translation>
-<translation id="2633634757060186848">{COUNT, plural,
-          =0 {Odpiranje vseh v &amp;oknu brez beleženja zgodovine}
-          =1 {Odpiranje v &amp;oknu brez beleženja zgodovine}
-          other {Odpiranje vseh (#) v &amp;oknu brez beleženja zgodovine}}</translation>
+<translation id="1448315815373449655">{COUNT, plural,
+          =0 {Oodpri vse v zasebnem oknu &amp;}
+          =1 {Odpri vse v zasebnem oknu &amp;}
+          drugo {Odpri vse ({COUNT}) v zasebnem oknu &amp;}}</translation>
 <translation id="1985165269306590797">Odpri v oknu &amp;brez beleženja zgodovine</translation>
 <translation id="4680518314108745448">&amp;Pokaži vrstico z zaznamki</translation>
 <translation id="642436385689435488">Odpri vse v oknu brez beleženja zgodovine</translation>
+<translation id="5074021236879527611">Odpri vse (<ph name="URL_COUNT"/>) v zasebnem oknu</translation>
 <translation id="5463021359602611602">Odpri v oknu brez beleženja zgodovine</translation>
 <translation id="1850357845349976573">{0, plural,
         =1 {Način brez beleženja zgodovine}
@@ -6614,6 +6625,8 @@ Datoteko s ključem shranite na varnem. Potrebovali jo boste za izdelavo novih r
 <translation id="4854477725773269949">Omogoči v načinu brez beleženja zgodovine</translation>
 <translation id="6436164536244065364">Ogled v spletni trgovini</translation>
 <translation id="38046578254905003">Poiščite razširitve in teme v <ph name="BEGIN_LINK"/>Web Store<ph name="END_LINK"/></translation>
+<translation id="2402482691429508168">Profili, ki so se odločili, da bodo vidni vam, ko bo njihov zaslon odklenjen</translation>
+<translation id="3910100573440336938">Pošljite datoteke drugim profilom</translation>
 <translation id="6336451774241870485">Novi zasebni zavihek</translation>
 <translation id="6610147964972079463">Zapri zasebne zavihke</translation>
 <translation id="4933782374919065856">Imate kakšno vprašanje? Obrnite se na osebo, ki nadzira vaš profil.</translation>

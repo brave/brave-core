@@ -6520,6 +6520,14 @@ Hoidke oma võtmefail kindlas kohas. Teil läheb seda oma laiendi uute versiooni
 <translation id="995782501881226248">YouTube</translation>
 <translation id="996250603853062861">Turvalise ühenduse loomine...</translation>
 <translation id="998747458861718449">I&amp;nspekteeri</translation>
+<translation id="6744651634043798597">{COUNT, plural,
+          =0 {Ava kõik &amp;privaatses aknas}
+          =1 {Ava &amp;privaatses aknas}
+          other {Ava kõik (#) &amp;privaatses aknas}}</translation>
+<translation id="2633634757060186848">{COUNT, plural,
+          =0 {Ava kõik &amp;privaatses aknas}
+          =1 {Ava &amp;privaatses aknas}
+          other {Ava kõik (#) &amp;privaatses aknas}}</translation>
 <translation id="658539216370629794">Ava link &amp;privaatses aknas</translation>
 <translation id="1432267168815937878">Ava link &amp;privaatses aknas</translation>
 <translation id="6516243500644829484">Uus &amp;privaatne aken</translation>
@@ -6533,6 +6541,7 @@ Hoidke oma võtmefail kindlas kohas. Teil läheb seda oma laiendi uute versiooni
 <translation id="9048137919253433011">Privaatne vaheleht: <ph name="TAB_NAME"/></translation>
 <translation id="1799432502220762862">Privaatne alamraam: <ph name="SUBFRAME_SITE"/></translation>
 <translation id="3193187622878830588">Inkognito portaal: <ph name="SUBFRAME_SITE"/></translation>
+<translation id="5097649414558628673">Tööriist: <ph name="PRINT_NAME"/></translation>
 <translation id="8808478386290700967">Veebipood</translation>
 <translation id="8261378640211443080">Seda laiendust ei leidu veebipoes <ph name="IDS_EXTENSION_WEB_STORE_TITLE"/> ja te ei pruugi selle lisamisest teadlik olla.</translation>
 <translation id="6827869674836193263"><ph name="WINDOW_TITLE"/> (privaatne)</translation>
@@ -6550,19 +6559,21 @@ Hoidke oma võtmefail kindlas kohas. Teil läheb seda oma laiendi uute versiooni
 <translation id="3098826269712097986">Kui väljute privaatsest režiimist, salvestatakse sisselogimisandmed Brave’i. See võimaldab teil puute-ID-d sellel veebisaidil hiljem uuesti kasutada.</translation>
 <translation id="5186185447130319458">Privaatne</translation>
 <translation id="2579188629646253712">Välju privaatsest</translation>
-<translation id="6744651634043798597">{COUNT, plural,
+<translation id="1001131747196960052">Sule privaatne</translation>
+<translation id="7475335772460644497">{COUNT, plural,
           =0 {Ava kõik &amp;privaatses aknas}
           =1 {Ava &amp;privaatses aknas}
-          other {Ava kõik (#) &amp;privaatses aknas}}</translation>
+          other {Ava kõik ({COUNT}) &amp;privaatses aknas}}</translation>
 <translation id="2431625704210501303">Ava &amp;privaatses aknas</translation>
 <translation id="4620367155626060530">&amp;Näita järjehoidjariba</translation>
-<translation id="2633634757060186848">{COUNT, plural,
+<translation id="1448315815373449655">{COUNT, plural,
           =0 {Ava kõik &amp;privaatses aknas}
           =1 {Ava &amp;privaatses aknas}
-          other {Ava kõik (#) &amp;privaatses aknas}}</translation>
+          other {Ava kõik ({COUNT}) &amp;privaatses aknas}}</translation>
 <translation id="1985165269306590797">Ava &amp;privaatses aknas</translation>
 <translation id="4680518314108745448">Kuva &amp;järjehoidjariba</translation>
 <translation id="642436385689435488">Ava kõik privaatses aknas</translation>
+<translation id="5074021236879527611">Ava kõik (<ph name="URL_COUNT"/>) privaatses aknas</translation>
 <translation id="5463021359602611602">Ava privaatses aknas</translation>
 <translation id="1850357845349976573">{0, plural,
         =1 {Private}
@@ -6612,6 +6623,8 @@ Hoidke oma võtmefail kindlas kohas. Teil läheb seda oma laiendi uute versiooni
 <translation id="4854477725773269949">Luba privaatses</translation>
 <translation id="6436164536244065364">Kuva veebipoes</translation>
 <translation id="38046578254905003">Otsi <ph name="BEGIN_LINK"/>veebipoest<ph name="END_LINK"/> laiendusi ja teemasid</translation>
+<translation id="2402482691429508168">Profiilid, mis on teie jaoks nähtavad, kui nende ekraan on lukust avatud</translation>
+<translation id="3910100573440336938">Jagage faile profiilidega teie ümber</translation>
 <translation id="6336451774241870485">Uus privaatne vaheleht</translation>
 <translation id="6610147964972079463">Sule privaatsed vahelehed</translation>
 <translation id="4933782374919065856">Kas teil on küsimusi? Võtke ühendust profiili operaatoriga.</translation>

@@ -197,10 +197,6 @@
     "message": "Teraz môžete zarobiť na prehliadaných reklamách.",
     "description": "Message for ads launch notification"
   },
-  "braveAdsLaunchTitle": {
-    "message": "Reklamy Brave sú už tu!",
-    "description": "Message used in notification to let users know Ads is available"
-  },
   "braveAdsTitle": {
     "message": "Reklamy Brave",
     "description": "Notification title when we display info about ads"
@@ -603,6 +599,10 @@
     "message": "Zrušiť",
     "description": "Text for cancel button"
   },
+  "changeAmount":  {
+    "message": "Zmeniť množstvo",
+    "description": "Button text for changing monthly contribution amount"
+  },
   "login":  {
     "message": "Prihlásiť sa",
     "description": "Text for login button"
@@ -612,7 +612,7 @@
     "description": "Text for login button"
   },
   "loginMessageText":  {
-    "message": "Na vytvorenie účtu Uphold potrebujete minimálne 25 tokenov BAT. <br/> Ak už máte overený účet Uphold, pokračujte v prihlásení.",
+    "message": "Potrebujete minimálne 25 BAT na vytvorenie účtu Uphold. Prosím, skúste to znova neskôr. Ak už máte overený účet Uphold, pokračujte prihlásením.",
     "description": "Text for login button"
   },
   "walletConnected":  {
@@ -622,5 +622,9 @@
   "walletPending":  {
     "message": "Prebieha",
     "description": "Status button that tells user that he is currently pending"
+  },
+  "walletVerificationNote3":  {
+    "message": "Poznámka: Po povolení budú vaše transakcie viditeľné pre Uphold. Uvidia napríklad príjemcu a množstvo vašich príspevkov.",
+    "description": "Displayed in login modal for uphold"
   }
 }

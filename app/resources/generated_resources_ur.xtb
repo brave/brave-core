@@ -6522,6 +6522,8 @@ myaccount.google.com/activitycontrols/search پر تبدیل کر سکتے ہي�
 <translation id="996250603853062861">محفوظ کنکشن تشکیل دیا جا رہا ہے…</translation>
 <translation id="998747458861718449">م&amp;عائنہ کریں</translation>
 <translation id="38046578254905003">‏<ph name="BEGIN_LINK"/>Brave ویب اسٹور<ph name="END_LINK"/> میں ایکسٹینشنز اور تھیمز تلاش کریں</translation>
+<translation id="6744651634043798597">{COUNT,plural, =0{سبھی کو &amp;پوشیدگی ونڈو میں کھولیں}=1{&amp;پوشیدگی ونڈو میں کھولیں}other{سبھی (#) کو &amp;پوشیدگی ونڈو میں کھولیں}}</translation>
+<translation id="2633634757060186848">{COUNT,plural, =0{سبھی کو &amp;پوشیدگی ونڈو میں کھولیں}=1{&amp;پوشیدگی ونڈو میں کھولیں}other{سبھی (#) کو &amp;پوشیدگی ونڈو میں کھولیں}}</translation>
 <translation id="658539216370629794">لنک پوشید&amp;گی ونڈو میں کھولیں</translation>
 <translation id="1432267168815937878">لنک پوشید&amp;گی ونڈو میں کھولیں</translation>
 <translation id="6516243500644829484">نئی &amp;پوشیدگی ونڈو</translation>
@@ -6552,10 +6554,8 @@ myaccount.google.com/activitycontrols/search پر تبدیل کر سکتے ہي�
 <translation id="3098826269712097986">‏آپ کے پوشیدگی وضع سے باہر نکلنے کے بعد، سائن ان ڈیٹا Brave میں اسٹور کیا جائے گا۔ اس سے آپ بعد میں اس ویب سائٹ کے ساتھ Touch ID دوبارہ استعمال کر پائیں گے۔</translation>
 <translation id="5186185447130319458">پوشیدگی</translation>
 <translation id="2579188629646253712">پوشیدگی وضع سے باہر نکلیں</translation>
-<translation id="6744651634043798597">{COUNT,plural, =0{سبھی کو &amp;پوشیدگی ونڈو میں کھولیں}=1{&amp;پوشیدگی ونڈو میں کھولیں}other{سبھی (#) کو &amp;پوشیدگی ونڈو میں کھولیں}}</translation>
 <translation id="2431625704210501303">&amp;پوشیدگی ونڈو میں کھولیں</translation>
 <translation id="4620367155626060530">بُک مارکس بار &amp;دکھائیں</translation>
-<translation id="2633634757060186848">{COUNT,plural, =0{سبھی کو &amp;پوشیدگی ونڈو میں کھولیں}=1{&amp;پوشیدگی ونڈو میں کھولیں}other{سبھی (#) کو &amp;پوشیدگی ونڈو میں کھولیں}}</translation>
 <translation id="1985165269306590797">&amp;پوشیدگی ونڈو میں کھولیں</translation>
 <translation id="4680518314108745448">بُک مارکس بار &amp;دکھائیں</translation>
 <translation id="642436385689435488">سبھی کو پوشیدگی ونڈو میں کھولیں</translation>

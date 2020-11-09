@@ -197,10 +197,6 @@
     "message": "Maaari ka nang kumita ngayon sa pamamagitan ng panonood ng mga ad.",
     "description": "Message for ads launch notification"
   },
-  "braveAdsLaunchTitle": {
-    "message": "Dumating na ang Brave Ads!",
-    "description": "Message used in notification to let users know Ads is available"
-  },
   "braveAdsTitle": {
     "message": "Brave Ads",
     "description": "Notification title when we display info about ads"
@@ -603,6 +599,10 @@
     "message": "I-cancel",
     "description": "Text for cancel button"
   },
+  "changeAmount":  {
+    "message": "Baguhin ang halaga",
+    "description": "Button text for changing monthly contribution amount"
+  },
   "login":  {
     "message": "Mag-login",
     "description": "Text for login button"
@@ -612,7 +612,7 @@
     "description": "Text for login button"
   },
   "loginMessageText":  {
-    "message": "Kailangang may minimum ka na 25 BAT para makagawa ng Uphold account. Pakisubukang muli sa ibang pagkakataon. <br/> Kung mayroon ka nang na-verify na Uphold account, magpatuloy sa pag-log in.",
+    "message": "Kailangang may minimum ka na 25 BAT para makagawa ng Uphold account. Pakisubukang muli sa ibang pagkakataon. \n Kung mayroon ka nang na-verify na Uphold account, magpatuloy sa pag-log in.",
     "description": "Text for login button"
   },
   "walletConnected":  {
@@ -622,5 +622,9 @@
   "walletPending":  {
     "message": "Nakabinbin",
     "description": "Status button that tells user that he is currently pending"
+  },
+  "walletVerificationNote3":  {
+    "message": "Tandaan: Makikita ang iyong mga transaksyon sa Uphold kapag nagbigay ka ng pahintulot; halimbawa, makikita nila ang recipient at halaga ng mga tip mo.",
+    "description": "Displayed in login modal for uphold"
   }
 }

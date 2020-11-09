@@ -197,10 +197,6 @@
     "message": "이제 광고 보기로 돈을 벌 수 있습니다",
     "description": "Message for ads launch notification"
   },
-  "braveAdsLaunchTitle": {
-    "message": "Brave 광고가 왔습니다!",
-    "description": "Message used in notification to let users know Ads is available"
-  },
   "braveAdsTitle": {
     "message": "Brave 광고",
     "description": "Notification title when we display info about ads"
@@ -603,6 +599,10 @@
     "message": "취소",
     "description": "Text for cancel button"
   },
+  "changeAmount":  {
+    "message": "금액 변경",
+    "description": "Button text for changing monthly contribution amount"
+  },
   "login":  {
     "message": "로그인",
     "description": "Text for login button"
@@ -612,7 +612,7 @@
     "description": "Text for login button"
   },
   "loginMessageText":  {
-    "message": "Uphold 계정을 만들려면 최소 25 BAT가 있어야 합니다. 나중에 다시 시도하십시오. <br/> 이미 확인된 Uphold 계정이 있는 경우 로그인을 계속하십시오.",
+    "message": "Uphold 계정을 만들려면 최소 25 BAT가 있어야 합니다. 나중에 다시 시도하세요. 인증된 Uphold 계정이 이미 있는 경우 계속해서 로그인하세요.",
     "description": "Text for login button"
   },
   "walletConnected":  {
@@ -622,5 +622,9 @@
   "walletPending":  {
     "message": "대기 중",
     "description": "Status button that tells user that he is currently pending"
+  },
+  "walletVerificationNote3":  {
+    "message": "참고: 사용자가 승인하면 거래 내용이 Uphold에 표시됩니다. 예를 들어, 수취인과 팁의 액수를 볼 수 있습니다.",
+    "description": "Displayed in login modal for uphold"
   }
 }

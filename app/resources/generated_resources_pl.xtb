@@ -6516,6 +6516,14 @@ Przechowuj plik klucza w bezpiecznym miejscu. Będzie on potrzebny do utworzenia
 <translation id="995782501881226248">YouTube</translation>
 <translation id="996250603853062861">Nawiązuję bezpieczne połączenie...</translation>
 <translation id="998747458861718449">&amp;Zbadaj</translation>
+<translation id="6744651634043798597">{COUNT, plural,
+          =0 {Otwórz wszystko w &amp;prywatnym oknie}
+          =1 {Otwórz w &amp;prywatnym oknie}
+          other {Otwórz wszystkie (#) w &amp;prywatnym oknie}}</translation>
+<translation id="2633634757060186848">{COUNT, plural,
+          =0 {Otwórz wszystko w &amp;prywatnym oknie}
+          =1 {Otwórz w &amp;prywatnym oknie}
+          other {Otwórz wszystkie (#) w &amp;prywatnym oknie}}</translation>
 <translation id="658539216370629794">Otwórz link w &amp;prywatnym oknie</translation>
 <translation id="1432267168815937878">Otwórz link w &amp;prywatnym oknie</translation>
 <translation id="6516243500644829484">Nowe &amp;okno prywatne</translation>
@@ -6529,6 +6537,7 @@ Przechowuj plik klucza w bezpiecznym miejscu. Będzie on potrzebny do utworzenia
 <translation id="9048137919253433011">Karta prywatna: <ph name="TAB_NAME"/></translation>
 <translation id="1799432502220762862">Prywatna ramka podrzędna: <ph name="SUBFRAME_SITE"/></translation>
 <translation id="3193187622878830588">Portal prywatny: <ph name="SUBFRAME_SITE"/></translation>
+<translation id="5097649414558628673">Narzędzie: <ph name="PRINT_NAME"/></translation>
 <translation id="8808478386290700967">Web Store</translation>
 <translation id="8261378640211443080">To rozszerzenie nie jest oferowane w <ph name="IDS_EXTENSION_WEB_STORE_TITLE"/> i mogło zostać dodane bez Twojej wiedzy.</translation>
 <translation id="6827869674836193263"><ph name="WINDOW_TITLE"/> (Prywatny)</translation>
@@ -6546,19 +6555,21 @@ Przechowuj plik klucza w bezpiecznym miejscu. Będzie on potrzebny do utworzenia
 <translation id="3098826269712097986">Po wyjściu z trybu prywatnego dane logowania będą przechowywane w Brave. Dzięki temu będzie można później ponownie używać Touch ID na tej stronie internetowej.</translation>
 <translation id="5186185447130319458">Prywatna</translation>
 <translation id="2579188629646253712">Wyjdź z prywatnego</translation>
-<translation id="6744651634043798597">{COUNT, plural,
-          =0 {Otwórz wszystko w &amp;prywatnym oknie}
+<translation id="1001131747196960052">Zamknij Prywatne</translation>
+<translation id="7475335772460644497">{COUNT, plural,
+          =0 {Otwórz wszystkie w &amp;prywatnym oknie}
           =1 {Otwórz w &amp;prywatnym oknie}
-          other {Otwórz wszystkie (#) w &amp;prywatnym oknie}}</translation>
+          other {Otwórz wszystko ({COUNT}) w &amp;prywatnym oknie}}</translation>
 <translation id="2431625704210501303">Otwórz w &amp;prywatnym oknie</translation>
 <translation id="4620367155626060530">&amp;Pokaż pasek zakładek</translation>
-<translation id="2633634757060186848">{COUNT, plural,
-          =0 {Otwórz wszystko w &amp;prywatnym oknie}
+<translation id="1448315815373449655">{COUNT, plural,
+          =0 {Otwórz wszystkie w &amp;prywatnym oknie}
           =1 {Otwórz w &amp;prywatnym oknie}
-          other {Otwórz wszystkie (#) w &amp;prywatnym oknie}}</translation>
+          other {Otwórz wszystko ({COUNT}) w &amp;prywatnym oknie}}</translation>
 <translation id="1985165269306590797">Otwórz w &amp;prywatnym oknie</translation>
 <translation id="4680518314108745448">&amp;Pokaż pasek zakładek</translation>
 <translation id="642436385689435488">Otwórz wszystko w prywatnym oknie</translation>
+<translation id="5074021236879527611">Otwórz wszystkie (<ph name="URL_COUNT"/>) w prywatnym oknie</translation>
 <translation id="5463021359602611602">Otwórz w prywatnym oknie</translation>
 <translation id="1850357845349976573">{0, plural,
         =1 {Prywatne}
@@ -6608,6 +6619,8 @@ Przechowuj plik klucza w bezpiecznym miejscu. Będzie on potrzebny do utworzenia
 <translation id="4854477725773269949">Zezwól w prywatnym</translation>
 <translation id="6436164536244065364">Zobacz w Web Store</translation>
 <translation id="38046578254905003">Znajdź rozszerzenia i motywy w <ph name="BEGIN_LINK"/>Web Store<ph name="END_LINK"/></translation>
+<translation id="2402482691429508168">Profile, które wybrały bycie widocznym dla Ciebie, kiedy ich ekran jest odblokowany</translation>
+<translation id="3910100573440336938">Udostępniaj pliki z profilami wokół Ciebie</translation>
 <translation id="6336451774241870485">Nowa karta prywatna</translation>
 <translation id="6610147964972079463">Zamknij prywatne karty</translation>
 <translation id="4933782374919065856">Masz pytania? Skontaktuj się z osobą, która nadzoruje Twój profil.</translation>

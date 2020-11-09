@@ -197,10 +197,6 @@
     "message": "Voit nyt ansaita mainoksia katsomalla.",
     "description": "Message for ads launch notification"
   },
-  "braveAdsLaunchTitle": {
-    "message": "Brave-mainokset ovat täällä!",
-    "description": "Message used in notification to let users know Ads is available"
-  },
   "braveAdsTitle": {
     "message": "Brave-mainokset",
     "description": "Notification title when we display info about ads"
@@ -603,6 +599,10 @@
     "message": "Peruuta",
     "description": "Text for cancel button"
   },
+  "changeAmount":  {
+    "message": "Muuta summa",
+    "description": "Button text for changing monthly contribution amount"
+  },
   "login":  {
     "message": "Kirjaudu",
     "description": "Text for login button"
@@ -612,7 +612,7 @@
     "description": "Text for login button"
   },
   "loginMessageText":  {
-    "message": "Uphold-tilin luomiseen tarvitaan vähintään 25 BATia. Kokeile myöhemmin uudelleen. <br/> Mikäli sinulla on jo todennettu Uphold-tili, voit jatkaa kirjautumalla.",
+    "message": "Tarvitset vähintään 25 BAT luodaksesi Uphold-tilin. Yritä myöhemmin uudelleen.\nJos olet jos vahvistanut Uphold-tilisi, jatka kirjautumiseen.",
     "description": "Text for login button"
   },
   "walletConnected":  {
@@ -622,5 +622,9 @@
   "walletPending":  {
     "message": "Odottaa",
     "description": "Status button that tells user that he is currently pending"
+  },
+  "walletVerificationNote3":  {
+    "message": "Huomio: siirtosi näkyvät Uphold-palvelulle, kun vahvistat. He näkevät esimerkiksi vastaanottajan ja tippiesi määrän.",
+    "description": "Displayed in login modal for uphold"
   }
 }

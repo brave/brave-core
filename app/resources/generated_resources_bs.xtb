@@ -6521,6 +6521,8 @@ Fajl ključa: <ph name="KEY_FILE"/>
 <translation id="996250603853062861">Uspostavljanje sigurne veze…</translation>
 <translation id="998747458861718449">P&amp;rovjeri</translation>
 <translation id="38046578254905003">Pronađite ekstenzije i teme u <ph name="BEGIN_LINK"/>Brave Web trgovini<ph name="END_LINK"/></translation>
+<translation id="6744651634043798597">{COUNT,plural, =0{Otvori sve u &amp;anonimnom prozoru}=1{Otvori u &amp;anonimnom prozoru}one{Otvori sve (#) u &amp;anonimnom prozoru}few{Otvori sve (#) u &amp;anonimnom prozoru}other{Otvori sve (#) u &amp;anonimnom prozoru}}</translation>
+<translation id="2633634757060186848">{COUNT,plural, =0{Otvori sve u &amp;anonimnom prozoru}=1{Otvori u &amp;anonimnom prozoru}one{Otvori sve (#) u &amp;anonimnom prozoru}few{Otvori sve (#) u &amp;anonimnom prozoru}other{Otvori sve (#) u &amp;anonimnom prozoru}}</translation>
 <translation id="658539216370629794">Otvori link u anonimnom prozoru</translation>
 <translation id="1432267168815937878">Otvori link u anonimnom prozoru</translation>
 <translation id="6516243500644829484">Novi &amp;anonimni prozor</translation>
@@ -6551,10 +6553,8 @@ Fajl ključa: <ph name="KEY_FILE"/>
 <translation id="3098826269712097986">Podaci za prijavu će se sačuvati u Braveu nakon što izađete iz anonimnog načina rada. Na taj način ćete moći kasnije koristiti Touch ID na ovoj web lokaciji.</translation>
 <translation id="5186185447130319458">Anonimno</translation>
 <translation id="2579188629646253712">Izađi iz anonimnog načina rada</translation>
-<translation id="6744651634043798597">{COUNT,plural, =0{Otvori sve u &amp;anonimnom prozoru}=1{Otvori u &amp;anonimnom prozoru}one{Otvori sve (#) u &amp;anonimnom prozoru}few{Otvori sve (#) u &amp;anonimnom prozoru}other{Otvori sve (#) u &amp;anonimnom prozoru}}</translation>
 <translation id="2431625704210501303">Otvaranje u &amp;anonimnom prozoru</translation>
 <translation id="4620367155626060530">&amp;Prikaži traku oznaka</translation>
-<translation id="2633634757060186848">{COUNT,plural, =0{Otvori sve u &amp;anonimnom prozoru}=1{Otvori u &amp;anonimnom prozoru}one{Otvori sve (#) u &amp;anonimnom prozoru}few{Otvori sve (#) u &amp;anonimnom prozoru}other{Otvori sve (#) u &amp;anonimnom prozoru}}</translation>
 <translation id="1985165269306590797">Otvori u &amp;anonimnom prozoru</translation>
 <translation id="4680518314108745448">&amp;Prikaži traku oznaka</translation>
 <translation id="642436385689435488">Otvori sve u anonimnom prozoru</translation>

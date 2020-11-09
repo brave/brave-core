@@ -6504,6 +6504,8 @@
 <translation id="996250603853062861">সুৰক্ষিত সংযোগ স্থাপন কৰি থকা হৈছে...</translation>
 <translation id="998747458861718449">প&amp;ৰীক্ষা কৰক</translation>
 <translation id="38046578254905003"><ph name="BEGIN_LINK"/>Brave Web Store<ph name="END_LINK"/>ত এক্সটেনশ্বন আৰু থীমসমূহ পাওক</translation>
+<translation id="6744651634043798597">{COUNT,plural, =0{সকলো &amp;ইনক’গনিট’ ৱিণ্ড’ত খোলক}=1{ই&amp;নক’গনিট’ ৱিণ্ড’ত খোলক}one{সকলো (#) &amp;ইনক’গনিট’ ৱিণ্ড’ত খোলক}other{সকলো (#) &amp;ইনক’গনিট’ ৱিণ্ড’ত খোলক}}</translation>
+<translation id="2633634757060186848">{COUNT,plural, =0{সকলো &amp;ইনক'গনিট' ৱিণ্ড'ত খোলক}=1{&amp;ইনক'গনিট' ৱিণ্ড'ত খোলক}one{সকলো (#) &amp;ইনক'গনিট' ৱিণ্ড'ত খোলক}other{সকলো (#) &amp;ইনক'গনিট' ৱিণ্ড'ত খোলক}}</translation>
 <translation id="658539216370629794">লিংকটো ইনক’&amp;গনিট’ ৱিণ্ড'ত খোলক</translation>
 <translation id="1432267168815937878">লিংকটো ইনক’&amp;গনিট’ ৱিণ্ড'ত খোলক</translation>
 <translation id="6516243500644829484">নতুন &amp;ইনক'গনিট' ৱিণ্ড'</translation>
@@ -6534,10 +6536,8 @@
 <translation id="3098826269712097986">আপুনি ইনক'গনিট' ম'ডৰ পৰা বাহিৰ ওলালে ছাইন ইনৰ লগত জড়িত ডেটা Braveত ষ্ট'ৰ কৰা হ'ব। এই কাৰ্যটোৱে আপোনাক এই ৱেবছাইটটোৰ সৈতে পাছত পুনৰ স্পৰ্শ আইডি ব্যৱহাৰ কৰিবলৈ দিব।</translation>
 <translation id="5186185447130319458">ইনক’গনিট’</translation>
 <translation id="2579188629646253712">ইনক’গনিট’ৰ পৰা বাহিৰ হওক</translation>
-<translation id="6744651634043798597">{COUNT,plural, =0{সকলো &amp;ইনক’গনিট’ ৱিণ্ড’ত খোলক}=1{ই&amp;নক’গনিট’ ৱিণ্ড’ত খোলক}one{সকলো (#) &amp;ইনক’গনিট’ ৱিণ্ড’ত খোলক}other{সকলো (#) &amp;ইনক’গনিট’ ৱিণ্ড’ত খোলক}}</translation>
 <translation id="2431625704210501303">&amp;ইনক’গনিট’ ৱিণ্ড’ত খোলক</translation>
 <translation id="4620367155626060530">বুকমার্ক বাৰ &amp;দেখুৱাওক</translation>
-<translation id="2633634757060186848">{COUNT,plural, =0{সকলো &amp;ইনক'গনিট' ৱিণ্ড'ত খোলক}=1{&amp;ইনক'গনিট' ৱিণ্ড'ত খোলক}one{সকলো (#) &amp;ইনক'গনিট' ৱিণ্ড'ত খোলক}other{সকলো (#) &amp;ইনক'গনিট' ৱিণ্ড'ত খোলক}}</translation>
 <translation id="1985165269306590797">&amp;ইনক'গনিট' ৱিণ্ড'ত খোলক</translation>
 <translation id="4680518314108745448">&amp;বুকমার্ক বাৰ দেখুৱাওক</translation>
 <translation id="642436385689435488">সকলো ইনক'গনিট' ৱিণ্ড'ত খোলক</translation>
