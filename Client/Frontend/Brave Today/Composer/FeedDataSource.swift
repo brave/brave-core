@@ -94,13 +94,10 @@ class FeedDataSource {
             components.scheme = "https"
             // TODO: At the moment these files are only available on the dev servers, eventually we will
             // change `brave.software` to `bravesoftware.com` or `brave.com` based on staging/prod
-            components.host = "\(name).brave.software"
+            components.host = "\(name).bravesoftware.com"
             components.path = "/\(path)"
             return components.url!
         }
-        
-        static let `default` = TodayBucket(name: "brave-today-cdn")
-        static let privateCDN = TodayBucket(name: "pcdn", path: "brave-today")
     }
     
     private struct TodayResource {
@@ -109,12 +106,12 @@ class FeedDataSource {
         var cacheLifetime: TimeInterval
         
         static let sources = TodayResource(
-            bucket: .default,
+            bucket: TodayBucket(name: "brave-today-cdn"),
             filename: "sources.json",
             cacheLifetime: 1.days
         )
         static let feed = TodayResource(
-            bucket: .privateCDN,
+            bucket: TodayBucket(name: "brave-today-cdn", path: "brave-today"),
             filename: "feed.json",
             cacheLifetime: 1.hours
         )
