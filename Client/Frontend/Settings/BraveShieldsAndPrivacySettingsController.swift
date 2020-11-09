@@ -122,14 +122,20 @@ class BraveShieldsAndPrivacySettingsController: TableViewController {
         return self.clearables.map { $0.checked }
     }()
     
-    private lazy var clearables: [(clearable: Clearable, checked: Bool)] = [
-        (HistoryClearable(), true),
-        (CacheClearable(), true),
-        (CookiesAndCacheClearable(), true),
-        (PasswordsClearable(profile: self.profile), true),
-        (DownloadsClearable(), true),
-        (BraveTodayClearable(feedDataSource: self.feedDataSource), true)
-    ]
+    private lazy var clearables: [(clearable: Clearable, checked: Bool)] = {
+        var alwaysVisible: [(clearable: Clearable, checked: Bool)] =
+            [(HistoryClearable(), true),
+             (CacheClearable(), true),
+             (CookiesAndCacheClearable(), true),
+             (PasswordsClearable(profile: self.profile), true),
+             (DownloadsClearable(), true)]
+        
+        #if !NO_BRAVE_TODAY
+        alwaysVisible.append((BraveTodayClearable(feedDataSource: self.feedDataSource), true))
+        #endif
+        
+        return alwaysVisible
+    }()
     
     private lazy var clearPrivateDataSection: Section = {
         return Section(
