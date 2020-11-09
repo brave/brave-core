@@ -825,6 +825,19 @@ until they verify, or until 90 days have passed.
       <message name="IDS_BRAVE_SYNC_V2_MIGRATE_INFOBAR_COMMAND" desc="Command text shown to users who used a previous version of Brave Sync and need to perform setup again for the new version.">
         Begin Setup
       </message>
+      <!-- P3A Android Infobar -->
+      <message name="IDS_BRAVE_CONFIRM_P3A_INFOBAR" desc="Text that shows on the info bar where user acknowledges the P3A message">
+        Brave uses completely private product analytics to estimate the overall usage of certain features
+      </message>
+      <message name="IDS_BRAVE_CONFIRM_P3A_INFOBAR_ACKNOWLEDGE" desc="OK button that shows on the info bar where user acknowledges the P3A message">
+        Got it
+      </message>
+      <message name="IDS_BRAVE_CONFIRM_P3A_INFOBAR_DISABLE" desc="Disable button that shows on the info bar where user acknowledges the P3A message">
+        Disable
+      </message>
+      <message name="IDS_BRAVE_CONFIRM_P3A_INFOBAR_LEARN_MORE" desc="Learn more link on coinfirm P3A Android infobar">
+        Learn More
+      </message>
       <message name="IDS_SYNC_DEVICE_FAILURE" desc="The message for the dialog where the user notified about sync setup failure.">
         Sync could not be setup
       </message>
@@ -1501,7 +1514,7 @@ until they verify, or until 90 days have passed.
         Lets Take A Quick Tour
       </message>
       <message name="IDS_BRAVE_REWARDS_WELCOME_LAYOUT_TEXT" desc="Brave rewards welcome layout text">
-        After you recieve your first ads payout you can come back and tip this creator! 
+        After you recieve your first ads payout you can come back and tip this creator!
       </message>
       <message name="IDS_QUICK_REFRESHER_TOUR" desc="Brave rewards welcome layout button text">
         Quick refresher tour

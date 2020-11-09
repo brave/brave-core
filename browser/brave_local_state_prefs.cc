@@ -76,13 +76,13 @@ void RegisterLocalStatePrefs(PrefRegistrySimple* registry) {
 #if BUILDFLAG(BRAVE_P3A_ENABLED)
   brave::BraveP3AService::RegisterPrefs(registry,
 #if !defined(OS_ANDROID)
-                                        first_run::IsChromeFirstRun()
+                                        first_run::IsChromeFirstRun());
 #else
                                         // BraveP3AService::RegisterPrefs
                                         // doesn't use this arg on Android
-                                        false
+                                        false);
 #endif  // !defined(OS_ANDROID)
-                                      );
+
 #endif  // BUILDFLAG(BRAVE_P3A_ENABLED)
 
   brave_shields::RegisterShieldsP3APrefs(registry);
