@@ -1,8 +1,8 @@
 diff --git a/chrome/android/java/AndroidManifest.xml b/chrome/android/java/AndroidManifest.xml
-index 4b942ff06700f6d8c6ccc1cb94878de7c7412d0d..e1d72e7237d4cf8cabf0974fbea0c55d0d9d5c0d 100644
+index 74dd5f9e6458f7e6b9a86d840d3a90fdded7f21b..9d2bf52a236e442891659482eb3c9a398f686cfe 100644
 --- a/chrome/android/java/AndroidManifest.xml
 +++ b/chrome/android/java/AndroidManifest.xml
-@@ -38,7 +38,9 @@ by a child template that "extends" this file.
+@@ -34,27 +34,35 @@ by a child template that "extends" this file.
      {% endif %}
      <uses-permission-sdk-23 android:name="android.permission.BLUETOOTH"/>
      <uses-permission-sdk-23 android:name="android.permission.BLUETOOTH_ADMIN"/>
@@ -11,8 +11,10 @@ index 4b942ff06700f6d8c6ccc1cb94878de7c7412d0d..e1d72e7237d4cf8cabf0974fbea0c55d
 +-->
      <uses-permission-sdk-23 android:name="android.permission.REORDER_TASKS"/>
      <uses-permission-sdk-23 android:name="android.permission.REQUEST_INSTALL_PACKAGES"/>
- 
-@@ -48,9 +50,13 @@ by a child template that "extends" this file.
+-
+     <uses-permission android:name="android.permission.CAMERA" />
+     <uses-permission android:name="android.permission.CHANGE_NETWORK_STATE" />
+     <uses-permission android:name="android.permission.DOWNLOAD_WITHOUT_NOTIFICATION" />
      {% if target_sdk_version|int > 27 or target_sdk_version == "Q" %}
          <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
      {% endif %}
@@ -25,8 +27,9 @@ index 4b942ff06700f6d8c6ccc1cb94878de7c7412d0d..e1d72e7237d4cf8cabf0974fbea0c55d
 +-->
      <uses-permission android:name="android.permission.MODIFY_AUDIO_SETTINGS"/>
      <uses-permission android:name="android.permission.NFC"/>
++    <uses-permission android:name="android.permission.QUERY_ALL_PACKAGES" />
      <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
-@@ -58,7 +64,9 @@ by a child template that "extends" this file.
+     <uses-permission android:name="android.permission.READ_SYNC_SETTINGS"/>
      <uses-permission android:name="android.permission.READ_SYNC_STATS"/>
      <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"/>
      <uses-permission android:name="android.permission.RECORD_AUDIO"/>
@@ -36,7 +39,7 @@ index 4b942ff06700f6d8c6ccc1cb94878de7c7412d0d..e1d72e7237d4cf8cabf0974fbea0c55d
      <uses-permission-sdk-23 android:name="android.permission.USE_BIOMETRIC"/>
      <uses-permission-sdk-23 android:name="android.permission.USE_FINGERPRINT"/>
      <uses-permission android:name="android.permission.VIBRATE"/>
-@@ -105,7 +113,9 @@ by a child template that "extends" this file.
+@@ -101,7 +109,9 @@ by a child template that "extends" this file.
      <uses-permission android:name="com.google.android.c2dm.permission.RECEIVE" />
      <uses-permission android:name="com.android.launcher.permission.INSTALL_SHORTCUT"/>
  
@@ -46,15 +49,15 @@ index 4b942ff06700f6d8c6ccc1cb94878de7c7412d0d..e1d72e7237d4cf8cabf0974fbea0c55d
  
      {% block extra_uses_permissions %}
      {% endblock %}
-@@ -158,6 +168,7 @@ by a child template that "extends" this file.
-           org.chromium.chrome.browser.ChromeApplication
-           {%- endif -%}
-           {% endblock %}"
+@@ -127,6 +137,7 @@ by a child template that "extends" this file.
+     <!-- Set android:largeHeap to "true" to allow more than the default
+          Java heap limit (32Mb on Nexus S, 48Mb on Xoom). -->
+     <application android:name="{% block application_name %}org.chromium.chrome.browser.ChromeApplication{% endblock %}"
 +        android:requestLegacyExternalStorage="true"
          android:icon="@drawable/ic_launcher"
          android:roundIcon="@drawable/ic_launcher_round"
          android:label="{% block application_label %}@string/app_name{% endblock %}"
-@@ -209,6 +220,7 @@ by a child template that "extends" this file.
+@@ -177,6 +188,7 @@ by a child template that "extends" this file.
          <!-- ARCore APK integration -->
          <!-- This tag indicates that this application optionally uses ARCore. -->
          <meta-data android:name="com.google.ar.core" android:value="optional" />
@@ -62,11 +65,11 @@ index 4b942ff06700f6d8c6ccc1cb94878de7c7412d0d..e1d72e7237d4cf8cabf0974fbea0c55d
          {% endif %}
  
          <!-- Cast support -->
-@@ -1171,6 +1183,7 @@ by a child template that "extends" this file.
+@@ -1177,6 +1189,7 @@ by a child template that "extends" this file.
          </activity>
          {% endif %}
  
 +        {% include "//brave/android/java/AndroidManifest.xml" %}
          {% block extra_application_definitions %}
+ 
          <!-- Media route controllers to use for remote playback (cast).
-              This is here, rather than in code, since it varies between upstream and downstream,
