@@ -11,7 +11,7 @@ private let log = Logger.browserLogger
 /// A helper structure for `DataController.perform()` method
 /// to decide whether a new or existing context should be used
 /// to perform a database write operation.
-enum WriteContext {
+public enum WriteContext {
     /// Requests DataController to create new background context for the task.
     case new(inMemory: Bool)
     /// Requests DataController to use an existing context.
@@ -150,8 +150,8 @@ public class DataController: NSObject {
     
     // MARK: - Data framework interface
     
-    static func perform(context: WriteContext = .new(inMemory: false), save: Bool = true,
-                        task: @escaping (NSManagedObjectContext) -> Void) {
+    public static func perform(context: WriteContext = .new(inMemory: false), save: Bool = true,
+                               task: @escaping (NSManagedObjectContext) -> Void) {
         
         switch context {
         case .existing(let existingContext):
@@ -180,6 +180,10 @@ public class DataController: NSObject {
                 }
             })
         }
+    }
+    
+    public static func performOnMainContext(save: Bool = true, task: @escaping (NSManagedObjectContext) -> Void) {
+        self.perform(context: .existing(self.viewContext), save: save, task: task)
     }
     
     // Context object also allows us access to all persistent container data if needed.

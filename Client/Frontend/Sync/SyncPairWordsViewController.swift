@@ -3,13 +3,14 @@
 import UIKit
 import Shared
 import BraveShared
+import BraveRewards
 import Data
 
 private let log = Logger.browserLogger
 
 class SyncPairWordsViewController: SyncViewController {
     
-    var syncHandler: (([Int]?) -> Void)?
+    var syncHandler: ((String) -> Void)?
     var scrollView: UIScrollView!
     var containerView: UIView!
     var codewordsView: SyncCodewordsView!
@@ -153,7 +154,7 @@ class SyncPairWordsViewController: SyncViewController {
         log.debug("check codes")
         
         func alert(title: String? = nil, message: String? = nil) {
-            if Sync.shared.isInSyncGroup {
+            if BraveSyncAPI.shared.isInSyncGroup {
                 // No alert
                 return
             }
@@ -167,7 +168,7 @@ class SyncPairWordsViewController: SyncViewController {
         let codes = self.codewordsView.codeWords()
 
         // Maybe temporary validation, sync server has issues without this validation
-        if codes.count < Sync.seedByteLength / 2 {
+        if codes.count < BraveSyncAPI.seedByteLength / 2 {
             alert(title: Strings.notEnoughWordsTitle, message: Strings.notEnoughWordsDescription)
             return
         }
@@ -181,14 +182,13 @@ class SyncPairWordsViewController: SyncViewController {
             alert()
         })
         
-        let result = SyncCrypto().bytes(fromPassphrase: codes)
-        switch result {
-        case .success(let bytes):
-            syncHandler?(bytes)
-        case .failure(let error):
-            alert(message: "\(error)")
+        if BraveSyncAPI.shared.isValidSyncCode(codes.joined(separator: " ")) {
+            syncHandler?(codes.joined(separator: " "))
+        } else {
+            alert(message: Strings.invalidSyncCodeDescription)
             disableNavigationPrevention()
         }
+
     }
 }
 

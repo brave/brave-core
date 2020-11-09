@@ -166,10 +166,6 @@ class HistoryViewController: SiteTableViewController, ToolbarUrlActionsProtocol 
     return sections.indices ~= section ? sections[section].numberOfObjects : 0
   }
   
-  func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
-    return true
-  }
-  
   func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
     if editingStyle == UITableViewCell.EditingStyle.delete {
       if let obj = self.frc?.object(at: indexPath) {

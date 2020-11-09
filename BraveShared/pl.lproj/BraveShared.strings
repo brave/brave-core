@@ -23,7 +23,7 @@
 "AdsAndTrackers" = "Reklamy i trackery";
 
 /* Shields Ads Stat */
-"AdsAndTrackersrBlocked" = "Reklamy i śledzenie\nzablokowane";
+"AdsAndTrackersrBlocked" = "Moduły śledzące i zablokowane reklamy";
 
 /* Shields Ads Stat */
 "AdsrBlocked" = "Reklamy\nzablokowane";
@@ -131,7 +131,7 @@
 "Block3rdPartyCookies" = "Blokuj pliki cookie stron trzecich";
 
 /* No comment provided by engineer. */
-"BlockAdsAndTracking" = "Blokuj reklamy i śledzenie";
+"BlockAdsAndTracking" = "Zablokuj moduły śledzące działające pomiędzy witrynami";
 
 /* No comment provided by engineer. */
 "BlockAdsAndTrackingDescription" = "Zapobiega wczytywaniu się reklam, wyskakujących okienek i trackerów";
@@ -183,6 +183,12 @@
 
 /* title for bookmarks panel */
 "Bookmarks" = "Zakładki";
+
+/* Action to export bookmarks to another device. */
+"bookmarksExportAction" = "Eksportuj zakładki";
+
+/* Action to import bookmarks from a file. */
+"bookmarksImportAction" = "Importuj zakładki";
 
 /* Title for bookmarks menu item */
 "BookmarksMenuItem" = "Zakładki";
@@ -359,7 +365,7 @@
 "DeleteLoginButtonTitle" = "Usuń";
 
 /* Sync device settings page title. */
-"Devices" = "Urządzenia w łańcuchu";
+"Devices" = "Urządzenia w łańcuchu synchronizacji";
 
 /* Current device model and iOS version copied to clipboard. */
 "DeviceTemplate" = "Urządzenie %1$@ (%2$@)";
@@ -487,11 +493,8 @@
 /* individual blocking statistic title */
 "FingerprintingMethods" = "Metody pobierania odcisków palców";
 
-/* blocking stat title */
-"FingerprintingnProtection" = "Ochrona przed\nfingerprintingiem";
-
 /* No comment provided by engineer. */
-"FingerprintingProtection" = "Blokuj pobieranie odcisków palców";
+"FingerprintingProtection" = "Blokuj odciski palca";
 
 /* No comment provided by engineer. */
 "FingerprintingProtectionDescription" = "Utrudnia stronom rozpoznawanie charakterystycznych cech Twojego urządzenia.";
@@ -530,7 +533,7 @@
 "Home" = "Strona domowa";
 
 /* No comment provided by engineer. */
-"HTTPSEverywhere" = "HTTPS w każdym miejscu";
+"HTTPSEverywhere" = "Ulepsz połączenia do HTTPS";
 
 /* No comment provided by engineer. */
 "HTTPSEverywhereDescription" = "Otwiera niektóre strony przy użyciu zabezpieczonego połączenia HTTPS zamiast zwykłego HTTP.";
@@ -543,6 +546,9 @@
 
 /* title for per-site shield toggles */
 "IndividualControls" = "Indywidualne sterowanie";
+
+/* Sync Alert */
+"InvalidSyncCodeDescription" = "Nieprawidłowy kod synchronizacji";
 
 /* History tableview section header */
 "LastMonth" = "W zeszłym miesiącu";
@@ -1039,8 +1045,23 @@
 /* Sync settings section title */
 "Sync" = "Synchronizacja";
 
-/* Add another device cell button. */
-"SyncAddAnotherDevice" = "Dodaj kolejne urządzenie";
+/* Message for popup when the bookmark migration fails */
+"sync.v2MigrationErrorMessage" = "Nie udało się migrować zakładek. Spróbuj ponownie później.";
+
+/* Title for popup when the bookmark migration fails */
+"sync.v2MigrationErrorTitle" = "Błąd";
+
+/* Message for popup to inform the user that bookmarks migration is required for sync */
+"sync.v2MigrationMessage" = "Aby użyć synchronizacji Brave Sync, należy migrować istniejące zakładki w celu użycia ich w nowym systemie. Ta operacja nie spowoduje usunięcia zakładek.";
+
+/* Button to perform bookmarks migration in order to support sync */
+"sync.v2MigrationOKButton" = "Migruj";
+
+/* Title for popup to inform the user that bookmarks migration is required for sync */
+"sync.v2MigrationTitle" = "Migracja wymagana";
+
+/* Add New Device cell button. */
+"SyncAddAnotherDevice" = "Dodaj nowe urządzenie";
 
 /* Add a Computer title */
 "SyncAddComputerTitle" = "Dodaj komputer";
@@ -1074,6 +1095,9 @@
 
 /* Sync you browser settings across devices. */
 "SyncDevices" = "Urządzenia i ustawienia";
+
+/* Folder name for where bookmarks are imported into when the root folder is not empty. */
+"SyncImportFolderName" = "Zaimportowane zakładki";
 
 /* Message for sync initialization error alert */
 "SyncInitErrorMessage" = "Agent synchronizacji działa obecnie w trybie offline lub jest niedostępny. Spróbuj ponownie później.";

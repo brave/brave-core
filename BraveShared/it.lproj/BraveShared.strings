@@ -23,7 +23,7 @@
 "AdsAndTrackers" = "Annunci e sistemi di tracciamento";
 
 /* Shields Ads Stat */
-"AdsAndTrackersrBlocked" = "Annunci e tracker\nbloccati";
+"AdsAndTrackersrBlocked" = "Tracker e annunci bloccati";
 
 /* Shields Ads Stat */
 "AdsrBlocked" = "Annunci \nbloccati";
@@ -131,7 +131,7 @@
 "Block3rdPartyCookies" = "Blocca cookie di terze parti";
 
 /* No comment provided by engineer. */
-"BlockAdsAndTracking" = "Blocca annunci e sistemi di tracciamento";
+"BlockAdsAndTracking" = "Blocca il tracciamento tra più siti";
 
 /* No comment provided by engineer. */
 "BlockAdsAndTrackingDescription" = "Impedisce il caricamento di annunci, popup e tracker";
@@ -183,6 +183,12 @@
 
 /* title for bookmarks panel */
 "Bookmarks" = "Segnalibri";
+
+/* Action to export bookmarks to another device. */
+"bookmarksExportAction" = "Esporta segnalibri";
+
+/* Action to import bookmarks from a file. */
+"bookmarksImportAction" = "Importa segnalibri";
 
 /* Title for bookmarks menu item */
 "BookmarksMenuItem" = "Segnalibri";
@@ -359,7 +365,7 @@
 "DeleteLoginButtonTitle" = "Elimina";
 
 /* Sync device settings page title. */
-"Devices" = "Dispositivi nella catena";
+"Devices" = "Dispositivi in sincronizzazione";
 
 /* Current device model and iOS version copied to clipboard. */
 "DeviceTemplate" = "Dispositivo %1$@ (%2$@)";
@@ -487,11 +493,8 @@
 /* individual blocking statistic title */
 "FingerprintingMethods" = "Metodi di fingerprinting";
 
-/* blocking stat title */
-"FingerprintingnProtection" = "Protezione\ndal fingerprinting";
-
 /* No comment provided by engineer. */
-"FingerprintingProtection" = "Blocca fingerprinting";
+"FingerprintingProtection" = "Blocca il fingerprinting";
 
 /* No comment provided by engineer. */
 "FingerprintingProtectionDescription" = "Rende più difficile per i siti riconoscere le caratteristiche distintive del tuo dispositivo.";
@@ -530,7 +533,7 @@
 "Home" = "Home";
 
 /* No comment provided by engineer. */
-"HTTPSEverywhere" = "HTTPS Everywhere";
+"HTTPSEverywhere" = "Aggiorna le connessioni a HTTPS";
 
 /* No comment provided by engineer. */
 "HTTPSEverywhereDescription" = "Apre alcuni siti utilizzando una connessione HTTPS sicura invece della normale connessione HTTP.";
@@ -543,6 +546,9 @@
 
 /* title for per-site shield toggles */
 "IndividualControls" = "Comandi individuali";
+
+/* Sync Alert */
+"InvalidSyncCodeDescription" = "Codice di sincronizzazione non valido";
 
 /* History tableview section header */
 "LastMonth" = "Ultimo mese";
@@ -1039,8 +1045,23 @@
 /* Sync settings section title */
 "Sync" = "Sincronizza";
 
-/* Add another device cell button. */
-"SyncAddAnotherDevice" = "Aggiungi un altro dispositivo";
+/* Message for popup when the bookmark migration fails */
+"sync.v2MigrationErrorMessage" = "Migrazione dei segnalibri non riuscita. Riprova in seguito.";
+
+/* Title for popup when the bookmark migration fails */
+"sync.v2MigrationErrorTitle" = "Errore";
+
+/* Message for popup to inform the user that bookmarks migration is required for sync */
+"sync.v2MigrationMessage" = "Per usare Brave Sync, è necessario effettuare la migrazione dei segnalibri esistenti al nuovo sistema. L’operazione non comporterà l’eliminazione dei segnalibri.";
+
+/* Button to perform bookmarks migration in order to support sync */
+"sync.v2MigrationOKButton" = "Esegui la migrazione";
+
+/* Title for popup to inform the user that bookmarks migration is required for sync */
+"sync.v2MigrationTitle" = "Migrazione necessaria";
+
+/* Add New Device cell button. */
+"SyncAddAnotherDevice" = "Aggiungi nuovo dispositivo";
 
 /* Add a Computer title */
 "SyncAddComputerTitle" = "Aggiungi un computer";
@@ -1074,6 +1095,9 @@
 
 /* Sync you browser settings across devices. */
 "SyncDevices" = "Dispositivi e impostazioni";
+
+/* Folder name for where bookmarks are imported into when the root folder is not empty. */
+"SyncImportFolderName" = "Segnalibri importati";
 
 /* Message for sync initialization error alert */
 "SyncInitErrorMessage" = "L’agente di sincronizzazione al momento è offline o non è raggiungibile. Riprova più tardi.";

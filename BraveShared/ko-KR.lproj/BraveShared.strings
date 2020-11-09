@@ -23,7 +23,7 @@
 "AdsAndTrackers" = "광고 및 개인정보 트래커";
 
 /* Shields Ads Stat */
-"AdsAndTrackersrBlocked" = "차단된 \n광고 및 트래커";
+"AdsAndTrackersrBlocked" = "차단된 트래커 및 광고";
 
 /* Shields Ads Stat */
 "AdsrBlocked" = "차단된 \n광고";
@@ -131,7 +131,7 @@
 "Block3rdPartyCookies" = "제3자 쿠키 차단";
 
 /* No comment provided by engineer. */
-"BlockAdsAndTracking" = "광고 및 개인정보 추적 차단";
+"BlockAdsAndTracking" = "크로스사이트 트래커 차단";
 
 /* No comment provided by engineer. */
 "BlockAdsAndTrackingDescription" = "광고, 팝업, 트래커가 로드되지 않도록 차단";
@@ -183,6 +183,12 @@
 
 /* title for bookmarks panel */
 "Bookmarks" = "북마크";
+
+/* Action to export bookmarks to another device. */
+"bookmarksExportAction" = "북마크 내보내기";
+
+/* Action to import bookmarks from a file. */
+"bookmarksImportAction" = "북마크 가져오기";
 
 /* Title for bookmarks menu item */
 "BookmarksMenuItem" = "북마크";
@@ -359,7 +365,7 @@
 "DeleteLoginButtonTitle" = "삭제";
 
 /* Sync device settings page title. */
-"Devices" = "체인에 있는 기기";
+"Devices" = "동기화 체인에 있는 기기";
 
 /* Current device model and iOS version copied to clipboard. */
 "DeviceTemplate" = "기기 %1$@(%2$@)";
@@ -487,9 +493,6 @@
 /* individual blocking statistic title */
 "FingerprintingMethods" = "디지털 지문 방식";
 
-/* blocking stat title */
-"FingerprintingnProtection" = "지문\n보호";
-
 /* No comment provided by engineer. */
 "FingerprintingProtection" = "지문 차단";
 
@@ -530,7 +533,7 @@
 "Home" = "홈";
 
 /* No comment provided by engineer. */
-"HTTPSEverywhere" = "HTTPS Everywhere";
+"HTTPSEverywhere" = "연결을 HTTPS로 업그레이드";
 
 /* No comment provided by engineer. */
 "HTTPSEverywhereDescription" = "일부 사이트를 평범한 HTTP가 아닌 보안 HTTPS 연결을 사용하여 엽니다.";
@@ -543,6 +546,9 @@
 
 /* title for per-site shield toggles */
 "IndividualControls" = "개별 제어";
+
+/* Sync Alert */
+"InvalidSyncCodeDescription" = "유효하지 않은 동기화 코드";
 
 /* History tableview section header */
 "LastMonth" = "지난달";
@@ -1039,8 +1045,23 @@
 /* Sync settings section title */
 "Sync" = "동기화";
 
-/* Add another device cell button. */
-"SyncAddAnotherDevice" = "다른 기기 추가";
+/* Message for popup when the bookmark migration fails */
+"sync.v2MigrationErrorMessage" = "북마크를 마이그레이션하지 못했습니다. 나중에 다시 시도하세요.";
+
+/* Title for popup when the bookmark migration fails */
+"sync.v2MigrationErrorTitle" = "오류";
+
+/* Message for popup to inform the user that bookmarks migration is required for sync */
+"sync.v2MigrationMessage" = "Brave Sync를 사용하려면 기존 북마크를 마이그레이션해야 새 시스템을 사용할 수 있습니다. 이 작업은 북마크를 삭제하지 않습니다.";
+
+/* Button to perform bookmarks migration in order to support sync */
+"sync.v2MigrationOKButton" = "마이그레이션";
+
+/* Title for popup to inform the user that bookmarks migration is required for sync */
+"sync.v2MigrationTitle" = "마이그레이션 필요";
+
+/* Add New Device cell button. */
+"SyncAddAnotherDevice" = "새 기기 추가";
 
 /* Add a Computer title */
 "SyncAddComputerTitle" = "컴퓨터 추가";
@@ -1074,6 +1095,9 @@
 
 /* Sync you browser settings across devices. */
 "SyncDevices" = "기기 및 설정";
+
+/* Folder name for where bookmarks are imported into when the root folder is not empty. */
+"SyncImportFolderName" = "가져온 북마크";
 
 /* Message for sync initialization error alert */
 "SyncInitErrorMessage" = "동기화 에이전트가 현재 오프라인 상태이거나 연결되지 않고 있습니다. 나중에 다시 시도하십시오.";

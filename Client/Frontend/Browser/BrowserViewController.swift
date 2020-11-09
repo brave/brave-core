@@ -651,8 +651,6 @@ class BrowserViewController: UIViewController {
         let dropInteraction = UIDropInteraction(delegate: self)
         view.addInteraction(dropInteraction)
         
-        deprecateSyncV1()
-        
         if AppConstants.buildChannel.isPublic && AppReview.shouldRequestReview() {
             // Request Review when the main-queue is free or on the next cycle.
             DispatchQueue.main.async {
@@ -666,29 +664,50 @@ class BrowserViewController: UIViewController {
         
         vpnProductInfo.load()
         BraveVPN.initialize()
+        
+        self.migrateToChromiumBookmarks { success in
+            if !success {
+                DispatchQueue.main.async {
+                    let alert = UIAlertController(title: Strings.Sync.v2MigrationErrorTitle,
+                                                  message: Strings.Sync.v2MigrationErrorMessage,
+                                                  preferredStyle: .alert)
+                    alert.addAction(UIAlertAction(title: Strings.OKString, style: .default, handler: nil))
+                    self.present(alert, animated: true)
+                }
+            }
+        }
     }
     
-    private func deprecateSyncV1() {
-        let sync = Sync.shared
-        
-        if sync.syncSeedArray == nil { return }
-        
-        sync.leaveSyncGroup()
-        
-        let alert = UIAlertController(title: "", message: Strings.Sync.syncV1DeprecationText,
-                                      preferredStyle: .alert)
-        alert.addAction(UIAlertAction(title: Strings.OKString, style: .default, handler: nil))
-        let learnMoreAction = UIAlertAction(title: Strings.learnMore, style: .default) { [weak self] _ in
-            guard let syncDeprecationUrl = URL(string: "https://brave.com/sync-v2-is-coming") else {
-                log.error("Failed to unwrap sync deprecation url")
-                return
+    private func migrateToChromiumBookmarks(_ completion: @escaping (_ success: Bool) -> Void) {
+        let showInterstitialPage = { (url: URL?) -> Bool in
+            guard let url = url else {
+                log.error("Cannot open bookmarks page in new tab")
+                return false
             }
             
-            self?.tabManager.addTabAndSelect(URLRequest(url: syncDeprecationUrl),
-                                            isPrivate: PrivateBrowsingManager.shared.isPrivateBrowsing)
+            return BookmarksInterstitialPageHandler.showBookmarksPage(tabManager: self.tabManager, url: url)
         }
-        alert.addAction(learnMoreAction)
-        present(alert, animated: true)
+        
+        Migration.braveCoreBookmarksMigrator?.migrate({ success in
+            Preferences.Chromium.syncV2BookmarksMigrationCount.value += 1
+            
+            if !success {
+                guard let url = BraveCoreMigrator.datedBookmarksURL else {
+                    completion(showInterstitialPage(BraveCoreMigrator.bookmarksURL))
+                    return
+                }
+                
+                Migration.braveCoreBookmarksMigrator?.exportBookmarks(to: url) { success in
+                    if success {
+                        completion(showInterstitialPage(url))
+                    } else {
+                        completion(showInterstitialPage(BraveCoreMigrator.bookmarksURL))
+                    }
+                }
+            } else {
+                completion(true)
+            }
+        })
     }
     
     fileprivate func setupTabs() {
@@ -2034,10 +2053,8 @@ extension BrowserViewController: TopToolbarDelegate {
     
     // TODO: This logic should be fully abstracted away and share logic from current MenuViewController
     // See: https://github.com/brave/brave-ios/issues/1452
-    func topToolbarDidTapBookmarkButton(_ topToolbar: TopToolbarView?, favorites: Bool) {
-        let mode: BookmarksViewController.Mode = favorites ? .favorites : .bookmarks(inFolder: nil)
-        
-        let vc = BookmarksViewController(mode: mode,
+    func topToolbarDidTapBookmarkButton(_ topToolbar: TopToolbarView) {
+        let vc = BookmarksViewController(folder: nil,
                                          isPrivateBrowsing: PrivateBrowsingManager.shared.isPrivateBrowsing)
         vc.toolbarUrlActionsDelegate = self
         

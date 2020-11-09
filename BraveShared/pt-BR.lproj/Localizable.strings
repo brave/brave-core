@@ -386,8 +386,23 @@
 /* No comment provided by engineer. */
 "SiteReportedTitle" = "Obrigado";
 
+/* Title of the bookmark import popup. */
+"sync.bookmarksImportPopupErrorTitle" = "Favoritos";
+
+/* Message of the popup if bookmark import fails. */
+"sync.bookmarksImportPopupFailureMessage" = "Houve uma falha na importação dos favoritos";
+
+/* Message of the popup if bookmark import succeeds. */
+"sync.bookmarksImportPopupSuccessMessage" = "A importação dos favoritos foi concluída";
+
 /* Text that informs a user about Brave Sync service deprecation. */
 "sync.syncV1DeprecationText" = "Uma nova versão do Brave Sync chegará em breve e afetará sua configuração. Prepare-se para o upgrade.";
+
+/* Bookmarks migration website page description */
+"sync.v2MigrationInterstitialPageDescription" = "Não foi possível migrar alguns dos seus favoritos. Você pode adicioná-los de volta manualmente.";
+
+/* Bookmarks migration website title */
+"sync.v2MigrationInterstitialTitle" = "Migração de favoritos";
 
 /* No comment provided by engineer. */
 "today.allSources" = "Todas as fontes";

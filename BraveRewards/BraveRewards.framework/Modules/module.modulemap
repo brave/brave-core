@@ -1,6 +1,0 @@
-framework module BraveRewards {
-  umbrella header "BraveRewards.h"
-
-  export *
-  module * { export * }
-}

@@ -12,12 +12,12 @@ enum BookmarkSaveLocation {
     /// Root level in bookmarks screen
     case rootLevel
     /// Custom folder in bookmarks screen
-    case folder(folder: Bookmark)
+    case folder(folder: Bookmarkv2)
     
     /// Returns a folder where a Bookmark will be saved to.
     /// This only applies to custom folders, root level and favorites
     /// are not folder per se, and nil is returned in this case.
-    var getFolder: Bookmark? {
+    var getFolder: Bookmarkv2? {
         switch self {
         case .folder(let folder): return folder
         default: return nil

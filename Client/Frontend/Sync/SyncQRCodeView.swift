@@ -1,21 +1,18 @@
 /* This Source Code Form is subject to the terms of the Mozilla Public License, v. 2.0. If a copy of the MPL was not distributed with this file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
+import BraveRewards
+
 class SyncQRCodeView: UIImageView {
     
     private let barcodeSize: CGFloat = 200.0
     
-    convenience init(data: String) {
+    convenience init(syncApi: BraveSyncAPI) {
         self.init(frame: CGRect.zero)
         
         contentMode = .scaleAspectFill
         
-        if let img = createQRFromString(data) {
-            let scaleX = barcodeSize / img.extent.size.width
-            let scaleY = barcodeSize / img.extent.size.height
-            
-            let resultQrImage = img.transformed(by: CGAffineTransform(scaleX: scaleX, y: scaleY))
-            let barcode = UIImage(ciImage: resultQrImage, scale: UIScreen.main.scale, orientation: UIImage.Orientation.down)
-            image = barcode
+        if let img = syncApi.getQRCodeImage(CGSize(width: barcodeSize, height: barcodeSize)) {
+            image = img
         }
     }
     

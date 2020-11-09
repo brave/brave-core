@@ -386,8 +386,23 @@
 /* No comment provided by engineer. */
 "SiteReportedTitle" = "감사합니다.";
 
+/* Title of the bookmark import popup. */
+"sync.bookmarksImportPopupErrorTitle" = "북마크";
+
+/* Message of the popup if bookmark import fails. */
+"sync.bookmarksImportPopupFailureMessage" = "북마크 가져오기 실패";
+
+/* Message of the popup if bookmark import succeeds. */
+"sync.bookmarksImportPopupSuccessMessage" = "북마크 가져오기 성공";
+
 /* Text that informs a user about Brave Sync service deprecation. */
 "sync.syncV1DeprecationText" = "새로운 Brave Sync가 출시되어 설정에 적용될 예정입니다. 곧 업그레이드됩니다.";
+
+/* Bookmarks migration website page description */
+"sync.v2MigrationInterstitialPageDescription" = "일부 북마크를 가져오지 못했습니다. 수동으로 추가할 수 있습니다.";
+
+/* Bookmarks migration website title */
+"sync.v2MigrationInterstitialTitle" = "북마크 마이그레이션";
 
 /* No comment provided by engineer. */
 "today.allSources" = "모든 출처";

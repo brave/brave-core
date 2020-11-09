@@ -23,7 +23,7 @@
 "AdsAndTrackers" = "Iklan dan Penjejak";
 
 /* Shields Ads Stat */
-"AdsAndTrackersrBlocked" = "Iklan dan Penjejak\nDisekat";
+"AdsAndTrackersrBlocked" = "Penjejak & iklan disekat";
 
 /* Shields Ads Stat */
 "AdsrBlocked" = "Iklan \nDisekat";
@@ -131,7 +131,7 @@
 "Block3rdPartyCookies" = "Sekat kuki pihak ke 3";
 
 /* No comment provided by engineer. */
-"BlockAdsAndTracking" = "Sekat Iklan & Penjejakan";
+"BlockAdsAndTracking" = "Sekat penjejak rentas tapak";
 
 /* No comment provided by engineer. */
 "BlockAdsAndTrackingDescription" = "Halang iklan, halaman timbul dan penjejak daripada dimuatkan";
@@ -183,6 +183,12 @@
 
 /* title for bookmarks panel */
 "Bookmarks" = "Penanda Buku";
+
+/* Action to export bookmarks to another device. */
+"bookmarksExportAction" = "Eksport Penanda Buku";
+
+/* Action to import bookmarks from a file. */
+"bookmarksImportAction" = "Import Penanda Buku";
 
 /* Title for bookmarks menu item */
 "BookmarksMenuItem" = "Penanda buku";
@@ -359,7 +365,7 @@
 "DeleteLoginButtonTitle" = "Padam";
 
 /* Sync device settings page title. */
-"Devices" = "Peranti pada rantai";
+"Devices" = "Peranti pada rantaian penyegerakan";
 
 /* Current device model and iOS version copied to clipboard. */
 "DeviceTemplate" = "Peranti %1$@ (%2$@)";
@@ -487,11 +493,8 @@
 /* individual blocking statistic title */
 "FingerprintingMethods" = "Kaedah Pencapjarian";
 
-/* blocking stat title */
-"FingerprintingnProtection" = "Pencapjarian\nPerlindungan";
-
 /* No comment provided by engineer. */
-"FingerprintingProtection" = "Sekat Pencapjarian";
+"FingerprintingProtection" = "Sekat pencapjarian";
 
 /* No comment provided by engineer. */
 "FingerprintingProtectionDescription" = "Menjadikannya lebih sukar untuk tapak mengecam ciri tersendiri peranti anda.";
@@ -530,7 +533,7 @@
 "Home" = "Halaman Utama";
 
 /* No comment provided by engineer. */
-"HTTPSEverywhere" = "HTTPS Di Mana Sahaja";
+"HTTPSEverywhere" = "Naik taraf sambungan ke HTTPS";
 
 /* No comment provided by engineer. */
 "HTTPSEverywhereDescription" = "Membuka sesetengah tapak menggunakan sambungan HTTPS yang selamat berbanding HTTP biasa.";
@@ -543,6 +546,9 @@
 
 /* title for per-site shield toggles */
 "IndividualControls" = "Kawalan Individu";
+
+/* Sync Alert */
+"InvalidSyncCodeDescription" = "Kod Segerak Tidak Sah";
 
 /* History tableview section header */
 "LastMonth" = "Bulan lepas";
@@ -1039,8 +1045,23 @@
 /* Sync settings section title */
 "Sync" = "Segerak";
 
-/* Add another device cell button. */
-"SyncAddAnotherDevice" = "Tambah satu peranti lagi";
+/* Message for popup when the bookmark migration fails */
+"sync.v2MigrationErrorMessage" = "Gagal memindahkan penanda buku. Sila cuba lagi kemudian.";
+
+/* Title for popup when the bookmark migration fails */
+"sync.v2MigrationErrorTitle" = "Ralat";
+
+/* Message for popup to inform the user that bookmarks migration is required for sync */
+"sync.v2MigrationMessage" = "Untuk menggunakan Brave Sync, penanda buku yang ada mesti dipindahkan untuk menggunakan sistem baharu. Operasi ini tidak akan memadam penanda buku anda.";
+
+/* Button to perform bookmarks migration in order to support sync */
+"sync.v2MigrationOKButton" = "Pindah";
+
+/* Title for popup to inform the user that bookmarks migration is required for sync */
+"sync.v2MigrationTitle" = "Pemindahan diperlukan";
+
+/* Add New Device cell button. */
+"SyncAddAnotherDevice" = "Tambah Peranti Baharu";
 
 /* Add a Computer title */
 "SyncAddComputerTitle" = "Tambah satu Komputer";
@@ -1074,6 +1095,9 @@
 
 /* Sync you browser settings across devices. */
 "SyncDevices" = "Peranti & Tetapan";
+
+/* Folder name for where bookmarks are imported into when the root folder is not empty. */
+"SyncImportFolderName" = "Penanda Buku Diimport";
 
 /* Message for sync initialization error alert */
 "SyncInitErrorMessage" = "Ejen Segerak kini berada di luar talian atau tidak dapat dihubungi. Sila cuba lagi kemudian.";

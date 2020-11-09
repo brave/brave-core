@@ -386,8 +386,23 @@
 /* No comment provided by engineer. */
 "SiteReportedTitle" = "Merci";
 
+/* Title of the bookmark import popup. */
+"sync.bookmarksImportPopupErrorTitle" = "Marque-pages";
+
+/* Message of the popup if bookmark import fails. */
+"sync.bookmarksImportPopupFailureMessage" = "L'importation des marque-pages a échoué";
+
+/* Message of the popup if bookmark import succeeds. */
+"sync.bookmarksImportPopupSuccessMessage" = "L'importation des marque-pages est réussie";
+
 /* Text that informs a user about Brave Sync service deprecation. */
 "sync.syncV1DeprecationText" = "Un nouveau service Brave Sync sera bientôt disponible, ce qui affectera votre configuration. Préparez-vous pour la mise à niveau.";
+
+/* Bookmarks migration website page description */
+"sync.v2MigrationInterstitialPageDescription" = "Certains de vos marque-pages n'ont pas pu migrer. Vous pouvez les ajouter manuellement.";
+
+/* Bookmarks migration website title */
+"sync.v2MigrationInterstitialTitle" = "Migration des marque-pages";
 
 /* No comment provided by engineer. */
 "today.allSources" = "Toutes les sources";

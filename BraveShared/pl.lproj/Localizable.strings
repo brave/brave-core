@@ -386,8 +386,23 @@
 /* No comment provided by engineer. */
 "SiteReportedTitle" = "Dziękujemy";
 
+/* Title of the bookmark import popup. */
+"sync.bookmarksImportPopupErrorTitle" = "Zakładki";
+
+/* Message of the popup if bookmark import fails. */
+"sync.bookmarksImportPopupFailureMessage" = "Importowanie zakładek nie powiodło się";
+
+/* Message of the popup if bookmark import succeeds. */
+"sync.bookmarksImportPopupSuccessMessage" = "Zakładki zostały zaimportowane pomyślnie";
+
 /* Text that informs a user about Brave Sync service deprecation. */
 "sync.syncV1DeprecationText" = "Nadchodzi nowe Brave Sync, które będzie miało wpływ na Twoją konfigurację. Przygotuj się na aktualizację.";
+
+/* Bookmarks migration website page description */
+"sync.v2MigrationInterstitialPageDescription" = "Nie udało się migrować niektórych zakładek. Możesz dodać je z powrotem ręcznie.";
+
+/* Bookmarks migration website title */
+"sync.v2MigrationInterstitialTitle" = "Migracja zakładek";
 
 /* No comment provided by engineer. */
 "today.allSources" = "Wszystkie źródła";

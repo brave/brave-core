@@ -3,6 +3,7 @@
 import UIKit
 import Shared
 import BraveShared
+import BraveRewards
 import Data
 
 enum DeviceType {
@@ -97,43 +98,26 @@ class SyncAddDeviceViewController: SyncViewController {
         containerView.layer.cornerRadius = 8
         containerView.layer.masksToBounds = true
 
-        guard let syncSeed = Sync.shared.syncSeedArray else {
+        if !BraveSyncAPI.shared.isInSyncGroup {
             showInitializationError()
             return
         }
         
-        let syncCrypto = SyncCrypto()
-
-        let qrSyncSeed = syncCrypto.joinBytes(fromCombinedBytes: syncSeed)
-        if qrSyncSeed.isEmpty {
-            showInitializationError()
-            return
+        qrCodeView = SyncQRCodeView(syncApi: BraveSyncAPI.shared)
+        containerView.addSubview(qrCodeView!)
+        qrCodeView?.snp.makeConstraints { make in
+            make.top.bottom.equalTo(0).inset(22)
+            make.centerX.equalTo(self.containerView)
+            make.size.equalTo(barcodeSize)
         }
         
-        let words = syncCrypto.passphrase(fromBytes: syncSeed)
-        
-        switch words {
-        case .success(let passphrase):
-            qrCodeView = SyncQRCodeView(data: qrSyncSeed)
-            containerView.addSubview(qrCodeView!)
-            qrCodeView?.snp.makeConstraints { make in
-                make.top.bottom.equalTo(0).inset(22)
-                make.centerX.equalTo(self.containerView)
-                make.size.equalTo(barcodeSize)
-            }
-            
-            self.codewordsView.text = passphrase.joined(separator: " ")
-        case .failure:
-            showInitializationError()
-            return
-        }
-        
+        self.codewordsView.text = BraveSyncAPI.shared.getSyncCode()
         self.setupVisuals()
     }
     
     private func showInitializationError() {
         present(SyncAlerts.initializationError, animated: true) {
-            Sync.shared.leaveSyncGroup()
+            BraveSyncAPI.shared.leaveSyncGroup()
         }
     }
     

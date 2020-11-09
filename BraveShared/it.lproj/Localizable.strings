@@ -386,8 +386,23 @@
 /* No comment provided by engineer. */
 "SiteReportedTitle" = "Grazie";
 
+/* Title of the bookmark import popup. */
+"sync.bookmarksImportPopupErrorTitle" = "Segnalibri";
+
+/* Message of the popup if bookmark import fails. */
+"sync.bookmarksImportPopupFailureMessage" = "Importazione dei segnalibri non riuscita";
+
+/* Message of the popup if bookmark import succeeds. */
+"sync.bookmarksImportPopupSuccessMessage" = "Segnalibri importati";
+
 /* Text that informs a user about Brave Sync service deprecation. */
 "sync.syncV1DeprecationText" = "È in arrivo una nuova versione di Brave Sync che apporterà delle modifiche alla tua configurazione. Preparati all’upgrade.";
+
+/* Bookmarks migration website page description */
+"sync.v2MigrationInterstitialPageDescription" = "Per alcuni segnalibri non è riuscita la migrazione. Puoi riaggiungerli manualmente.";
+
+/* Bookmarks migration website title */
+"sync.v2MigrationInterstitialTitle" = "Migrazione dei segnalibri";
 
 /* No comment provided by engineer. */
 "today.allSources" = "Tutte le fonti";
