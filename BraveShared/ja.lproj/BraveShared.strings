@@ -23,7 +23,7 @@
 "AdsAndTrackers" = "広告とトラッカー";
 
 /* Shields Ads Stat */
-"AdsAndTrackersrBlocked" = "ブロック済の\n広告・トラッカー";
+"AdsAndTrackersrBlocked" = "ブロック済みのトラッカー&広告数";
 
 /* Shields Ads Stat */
 "AdsrBlocked" = "ブロック済の\n広告";
@@ -131,7 +131,7 @@
 "Block3rdPartyCookies" = "サードパーティの Cookie をブロック";
 
 /* No comment provided by engineer. */
-"BlockAdsAndTracking" = "広告と追跡をブロック";
+"BlockAdsAndTracking" = "クロスサイトトラッカーをブロック";
 
 /* No comment provided by engineer. */
 "BlockAdsAndTrackingDescription" = "広告やポップアップ、トラッカーの読み込みをブロックする";
@@ -183,6 +183,12 @@
 
 /* title for bookmarks panel */
 "Bookmarks" = "ブックマーク";
+
+/* Action to export bookmarks to another device. */
+"bookmarksExportAction" = "ブックマークをエクスポート";
+
+/* Action to import bookmarks from a file. */
+"bookmarksImportAction" = "ブックマークをインポート";
 
 /* Title for bookmarks menu item */
 "BookmarksMenuItem" = "ブックマーク";
@@ -359,7 +365,7 @@
 "DeleteLoginButtonTitle" = "削除";
 
 /* Sync device settings page title. */
-"Devices" = "チェーンに接続されているデバイス";
+"Devices" = "同期チェーンに追加済のデバイス";
 
 /* Current device model and iOS version copied to clipboard. */
 "DeviceTemplate" = "デバイス %1$@ (%2$@)";
@@ -487,11 +493,8 @@
 /* individual blocking statistic title */
 "FingerprintingMethods" = "フィンガープリント";
 
-/* blocking stat title */
-"FingerprintingnProtection" = "フィンガープリント対策";
-
 /* No comment provided by engineer. */
-"FingerprintingProtection" = "フィンガープリントをブロック";
+"FingerprintingProtection" = "フィンガープリンティングをブロック";
 
 /* No comment provided by engineer. */
 "FingerprintingProtectionDescription" = "サイトがあなたのデバイスの特徴を識別しにくくします";
@@ -530,7 +533,7 @@
 "Home" = "ホーム";
 
 /* No comment provided by engineer. */
-"HTTPSEverywhere" = "HTTPS Everywhere";
+"HTTPSEverywhere" = "HTTPS接続にアップグレード";
 
 /* No comment provided by engineer. */
 "HTTPSEverywhereDescription" = "ウェブサイトをHTTPではなく、よりセキュアなHTTPSで接続する";
@@ -543,6 +546,9 @@
 
 /* title for per-site shield toggles */
 "IndividualControls" = "個別コントロール";
+
+/* Sync Alert */
+"InvalidSyncCodeDescription" = "無効な同期コード";
 
 /* History tableview section header */
 "LastMonth" = "先月";
@@ -1039,8 +1045,23 @@
 /* Sync settings section title */
 "Sync" = "Brave Sync";
 
-/* Add another device cell button. */
-"SyncAddAnotherDevice" = "別のデバイスを追加";
+/* Message for popup when the bookmark migration fails */
+"sync.v2MigrationErrorMessage" = "ブックマークの移行に失敗しました。再度お試しください。";
+
+/* Title for popup when the bookmark migration fails */
+"sync.v2MigrationErrorTitle" = "エラー";
+
+/* Message for popup to inform the user that bookmarks migration is required for sync */
+"sync.v2MigrationMessage" = "Brave Syncを使用するには、既存のブックマークを新しいシステムに移行する必要があります。この操作を実行してもブックマークは削除されません。";
+
+/* Button to perform bookmarks migration in order to support sync */
+"sync.v2MigrationOKButton" = "新形式に移行";
+
+/* Title for popup to inform the user that bookmarks migration is required for sync */
+"sync.v2MigrationTitle" = "新形式に移行する必要があります";
+
+/* Add New Device cell button. */
+"SyncAddAnotherDevice" = "デバイスを追加";
 
 /* Add a Computer title */
 "SyncAddComputerTitle" = "コンピュータを追加";
@@ -1074,6 +1095,9 @@
 
 /* Sync you browser settings across devices. */
 "SyncDevices" = "デバイスと設定";
+
+/* Folder name for where bookmarks are imported into when the root folder is not empty. */
+"SyncImportFolderName" = "インポートされたブックマーク";
 
 /* Message for sync initialization error alert */
 "SyncInitErrorMessage" = "Syncエージェントは現在オフラインか、見つかりませんでした。時間をおいてもう一度お試しください。";

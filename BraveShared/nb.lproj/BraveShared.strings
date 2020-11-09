@@ -23,7 +23,7 @@
 "AdsAndTrackers" = "Annonser og sporingsprogrammer";
 
 /* Shields Ads Stat */
-"AdsAndTrackersrBlocked" = "Annonser og sporer \nblokkert";
+"AdsAndTrackersrBlocked" = "Blokkerte sporere og annonser";
 
 /* Shields Ads Stat */
 "AdsrBlocked" = "Annonser \nblokkert";
@@ -131,7 +131,7 @@
 "Block3rdPartyCookies" = "Blokker tredjeparts informasjonskapsler";
 
 /* No comment provided by engineer. */
-"BlockAdsAndTracking" = "Blokker annonser og sporing";
+"BlockAdsAndTracking" = "Blokker sporere på tvers av nettsteder";
 
 /* No comment provided by engineer. */
 "BlockAdsAndTrackingDescription" = "Forhindrer annonser, sprettoppvinduer og sporere fra å lastes inn";
@@ -183,6 +183,12 @@
 
 /* title for bookmarks panel */
 "Bookmarks" = "Bokmerker";
+
+/* Action to export bookmarks to another device. */
+"bookmarksExportAction" = "Eksporter bokmerker";
+
+/* Action to import bookmarks from a file. */
+"bookmarksImportAction" = "Importer bokmerker";
 
 /* Title for bookmarks menu item */
 "BookmarksMenuItem" = "Bokmerker";
@@ -359,7 +365,7 @@
 "DeleteLoginButtonTitle" = "Slett";
 
 /* Sync device settings page title. */
-"Devices" = "Enheter på kjeden";
+"Devices" = "Enheter i synkroniseringskjede";
 
 /* Current device model and iOS version copied to clipboard. */
 "DeviceTemplate" = "Enhet %1$@ (%2$@)";
@@ -487,11 +493,8 @@
 /* individual blocking statistic title */
 "FingerprintingMethods" = "Fingeravtrykkmetoder";
 
-/* blocking stat title */
-"FingerprintingnProtection" = "Fingeravtrykk-\nbeskyttelse";
-
 /* No comment provided by engineer. */
-"FingerprintingProtection" = "Blokkerer fingeravtrykk";
+"FingerprintingProtection" = "Blokker fingerprinting";
 
 /* No comment provided by engineer. */
 "FingerprintingProtectionDescription" = "Gjør det vanskeligere for nettsteder å gjenkjenne enhetens særegne egenskaper.";
@@ -530,7 +533,7 @@
 "Home" = "Hjem";
 
 /* No comment provided by engineer. */
-"HTTPSEverywhere" = "HTTPS Everywhere";
+"HTTPSEverywhere" = "Oppgrader tilkoblinger til HTTPS";
 
 /* No comment provided by engineer. */
 "HTTPSEverywhereDescription" = "Åpner noen nettsteder med en sikker HTTPS-tilkobling i stedet for vanlig HTTP.";
@@ -543,6 +546,9 @@
 
 /* title for per-site shield toggles */
 "IndividualControls" = "Individuelle kontroller";
+
+/* Sync Alert */
+"InvalidSyncCodeDescription" = "Ugyldig synkroniseringskode";
 
 /* History tableview section header */
 "LastMonth" = "Siste måned";
@@ -1039,8 +1045,23 @@
 /* Sync settings section title */
 "Sync" = "Synk";
 
-/* Add another device cell button. */
-"SyncAddAnotherDevice" = "Legg til en ny enhet";
+/* Message for popup when the bookmark migration fails */
+"sync.v2MigrationErrorMessage" = "Kunne ikke flytte bokmerkene. Prøv igjen senere.";
+
+/* Title for popup when the bookmark migration fails */
+"sync.v2MigrationErrorTitle" = "Feil";
+
+/* Message for popup to inform the user that bookmarks migration is required for sync */
+"sync.v2MigrationMessage" = "For å kunne bruke Brave Sync, må dine eksisterende bokmerker overføres for å kunne benytte det nye systemet. Denne handlingen vil ikke slette bokmerkene dine.";
+
+/* Button to perform bookmarks migration in order to support sync */
+"sync.v2MigrationOKButton" = "Flytt";
+
+/* Title for popup to inform the user that bookmarks migration is required for sync */
+"sync.v2MigrationTitle" = "Flytting påkrevd";
+
+/* Add New Device cell button. */
+"SyncAddAnotherDevice" = "Legg til ny enhet";
 
 /* Add a Computer title */
 "SyncAddComputerTitle" = "Legg til en datamaskin";
@@ -1074,6 +1095,9 @@
 
 /* Sync you browser settings across devices. */
 "SyncDevices" = "Enheter og innstillinger";
+
+/* Folder name for where bookmarks are imported into when the root folder is not empty. */
+"SyncImportFolderName" = "Importerte bokmerker";
 
 /* Message for sync initialization error alert */
 "SyncInitErrorMessage" = "Sync-representanten er avlogget eller kan ikke nås. Prøv senere.";

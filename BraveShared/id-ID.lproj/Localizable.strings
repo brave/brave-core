@@ -386,8 +386,23 @@
 /* No comment provided by engineer. */
 "SiteReportedTitle" = "Terima Kasih";
 
+/* Title of the bookmark import popup. */
+"sync.bookmarksImportPopupErrorTitle" = "Markah buku";
+
+/* Message of the popup if bookmark import fails. */
+"sync.bookmarksImportPopupFailureMessage" = "Impor Markah Buku Gagal";
+
+/* Message of the popup if bookmark import succeeds. */
+"sync.bookmarksImportPopupSuccessMessage" = "Impor Markah Buku Berhasil";
+
 /* Text that informs a user about Brave Sync service deprecation. */
 "sync.syncV1DeprecationText" = "Brave Sync baru segera tiba dan akan mempengaruhi pengaturan Anda. Bersiaplah untuk peningkatan.";
+
+/* Bookmarks migration website page description */
+"sync.v2MigrationInterstitialPageDescription" = "Beberapa markah buku Anda gagal dimigrasikan. Anda dapat menambahkannya kembali secara manual.";
+
+/* Bookmarks migration website title */
+"sync.v2MigrationInterstitialTitle" = "Migrasi markah buku";
 
 /* No comment provided by engineer. */
 "today.allSources" = "Semua Sumber";

@@ -23,7 +23,7 @@
 "AdsAndTrackers" = "Annonser och spårare";
 
 /* Shields Ads Stat */
-"AdsAndTrackersrBlocked" = "Blockerade annonser \noch spårare";
+"AdsAndTrackersrBlocked" = "Spårare och annonser blockerade";
 
 /* Shields Ads Stat */
 "AdsrBlocked" = "Blockerade \nannonser";
@@ -131,7 +131,7 @@
 "Block3rdPartyCookies" = "Blockera cookies från 3:e part";
 
 /* No comment provided by engineer. */
-"BlockAdsAndTracking" = "Blockera annonser och spårning";
+"BlockAdsAndTracking" = "Blockera webbplatsspårare";
 
 /* No comment provided by engineer. */
 "BlockAdsAndTrackingDescription" = "Förhindrar att annonser, popups och spårare läses in";
@@ -183,6 +183,12 @@
 
 /* title for bookmarks panel */
 "Bookmarks" = "Bokmärken";
+
+/* Action to export bookmarks to another device. */
+"bookmarksExportAction" = "Exportera bokmärken";
+
+/* Action to import bookmarks from a file. */
+"bookmarksImportAction" = "Importera bokmärken";
 
 /* Title for bookmarks menu item */
 "BookmarksMenuItem" = "Bokmärken";
@@ -359,7 +365,7 @@
 "DeleteLoginButtonTitle" = "Radera";
 
 /* Sync device settings page title. */
-"Devices" = "Enheter i kedjan";
+"Devices" = "Enheter i synkroniseringskedja";
 
 /* Current device model and iOS version copied to clipboard. */
 "DeviceTemplate" = "Enhet %1$@ (%2$@)";
@@ -487,9 +493,6 @@
 /* individual blocking statistic title */
 "FingerprintingMethods" = "Fingeravtrycksmetoder";
 
-/* blocking stat title */
-"FingerprintingnProtection" = "Fingeratrycks\nskydd";
-
 /* No comment provided by engineer. */
 "FingerprintingProtection" = "Blockera fingeravtryck";
 
@@ -530,7 +533,7 @@
 "Home" = "Hem";
 
 /* No comment provided by engineer. */
-"HTTPSEverywhere" = "HTTPS Everywhere";
+"HTTPSEverywhere" = "Uppgradera anslutningar till HTTPS";
 
 /* No comment provided by engineer. */
 "HTTPSEverywhereDescription" = "Öppnar vissa webbplatser med hjälp av en säker HTTPS-anslutning i stället för vanligt HTTP.";
@@ -543,6 +546,9 @@
 
 /* title for per-site shield toggles */
 "IndividualControls" = "Inviduella kontroller";
+
+/* Sync Alert */
+"InvalidSyncCodeDescription" = "Ogiltig synkroniseringskod";
 
 /* History tableview section header */
 "LastMonth" = "Förra månaden";
@@ -1039,8 +1045,23 @@
 /* Sync settings section title */
 "Sync" = "Synkronisera";
 
-/* Add another device cell button. */
-"SyncAddAnotherDevice" = "Lägg till fler enheter";
+/* Message for popup when the bookmark migration fails */
+"sync.v2MigrationErrorMessage" = "Det gick inte att migrera bokmärken. Försök igen senare.";
+
+/* Title for popup when the bookmark migration fails */
+"sync.v2MigrationErrorTitle" = "Fel";
+
+/* Message for popup to inform the user that bookmarks migration is required for sync */
+"sync.v2MigrationMessage" = "För att använda Brave Sync måste dina befintliga bokmärken migreras för att använda det nya systemet. Den här operationen kommer inte att radera dina bokmärken.";
+
+/* Button to perform bookmarks migration in order to support sync */
+"sync.v2MigrationOKButton" = "Migrera";
+
+/* Title for popup to inform the user that bookmarks migration is required for sync */
+"sync.v2MigrationTitle" = "Migrering krävs";
+
+/* Add New Device cell button. */
+"SyncAddAnotherDevice" = "Lägg till ny enhet";
 
 /* Add a Computer title */
 "SyncAddComputerTitle" = "Lägg till en dator";
@@ -1074,6 +1095,9 @@
 
 /* Sync you browser settings across devices. */
 "SyncDevices" = "Enheter och inställningar";
+
+/* Folder name for where bookmarks are imported into when the root folder is not empty. */
+"SyncImportFolderName" = "Importerade bokmärken";
 
 /* Message for sync initialization error alert */
 "SyncInitErrorMessage" = "Sync Agent är för närvarande offline eller inte tillgängligt. Försök igen senare.";

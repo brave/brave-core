@@ -23,7 +23,7 @@
 "AdsAndTrackers" = "Реклама і трекери";
 
 /* Shields Ads Stat */
-"AdsAndTrackersrBlocked" = "Реклами й трекерів\nзаблоковано";
+"AdsAndTrackersrBlocked" = "Трекери й рекламу заблоковано";
 
 /* Shields Ads Stat */
 "AdsrBlocked" = "Реклами\nзаблоковано";
@@ -131,7 +131,7 @@
 "Block3rdPartyCookies" = "Блокування додаткових файлів cookie";
 
 /* No comment provided by engineer. */
-"BlockAdsAndTracking" = "Блокування реклами і трекерів";
+"BlockAdsAndTracking" = "Заблокувати міжсайтові трекери";
 
 /* No comment provided by engineer. */
 "BlockAdsAndTrackingDescription" = "Блокує завантаження реклами, спливаючих вікон і трекерів";
@@ -183,6 +183,12 @@
 
 /* title for bookmarks panel */
 "Bookmarks" = "Закладки";
+
+/* Action to export bookmarks to another device. */
+"bookmarksExportAction" = "Експортувати закладки";
+
+/* Action to import bookmarks from a file. */
+"bookmarksImportAction" = "Імпортувати закладки";
 
 /* Title for bookmarks menu item */
 "BookmarksMenuItem" = "Закладки";
@@ -359,7 +365,7 @@
 "DeleteLoginButtonTitle" = "Видалити";
 
 /* Sync device settings page title. */
-"Devices" = "Пристрої у ланцюжку";
+"Devices" = "Пристрої в ланцюжку синхронізації";
 
 /* Current device model and iOS version copied to clipboard. */
 "DeviceTemplate" = "Пристрій %1$@ (%2$@)";
@@ -487,11 +493,8 @@
 /* individual blocking statistic title */
 "FingerprintingMethods" = "Способи додавання відбитків пальців";
 
-/* blocking stat title */
-"FingerprintingnProtection" = "Захист за допомогою\nвідбитків пальців";
-
 /* No comment provided by engineer. */
-"FingerprintingProtection" = "Заблокувати відстеження вебсайтами";
+"FingerprintingProtection" = "Заблокувати функцію відбитків пальців";
 
 /* No comment provided by engineer. */
 "FingerprintingProtectionDescription" = "Вебсайтам буде складніше розпізнавати відмінні риси вашого пристрою.";
@@ -530,7 +533,7 @@
 "Home" = "Домашня сторінка";
 
 /* No comment provided by engineer. */
-"HTTPSEverywhere" = "HTTPS усюди";
+"HTTPSEverywhere" = "Оновити під’єднання до HTTPS";
 
 /* No comment provided by engineer. */
 "HTTPSEverywhereDescription" = "Відкриває деякі вебсайти за допомогою безпечного підключення HTTPS замість простого HTTP.";
@@ -543,6 +546,9 @@
 
 /* title for per-site shield toggles */
 "IndividualControls" = "Індивідуальні налаштування";
+
+/* Sync Alert */
+"InvalidSyncCodeDescription" = "Неправильний код синхронізації";
 
 /* History tableview section header */
 "LastMonth" = "Останній місяць";
@@ -1039,8 +1045,23 @@
 /* Sync settings section title */
 "Sync" = "Синхронізація";
 
-/* Add another device cell button. */
-"SyncAddAnotherDevice" = "Додати інший пристрій";
+/* Message for popup when the bookmark migration fails */
+"sync.v2MigrationErrorMessage" = "Помилка перенесення закладок. Спробуйте ще раз пізніше.";
+
+/* Title for popup when the bookmark migration fails */
+"sync.v2MigrationErrorTitle" = "Помилка";
+
+/* Message for popup to inform the user that bookmarks migration is required for sync */
+"sync.v2MigrationMessage" = "Щоб користуватися Brave Sync, перенесіть поточні закладки на нову систему. Ця дія не призведе до видалення ваших закладок.";
+
+/* Button to perform bookmarks migration in order to support sync */
+"sync.v2MigrationOKButton" = "Перенести";
+
+/* Title for popup to inform the user that bookmarks migration is required for sync */
+"sync.v2MigrationTitle" = "Потрібно перенести";
+
+/* Add New Device cell button. */
+"SyncAddAnotherDevice" = "Додати пристрій";
 
 /* Add a Computer title */
 "SyncAddComputerTitle" = "Додавання комп’ютера";
@@ -1074,6 +1095,9 @@
 
 /* Sync you browser settings across devices. */
 "SyncDevices" = "Пристрої та налаштування";
+
+/* Folder name for where bookmarks are imported into when the root folder is not empty. */
+"SyncImportFolderName" = "Імпортовані закладки";
 
 /* Message for sync initialization error alert */
 "SyncInitErrorMessage" = "Наразі агент синхронізації не підключений до мережі або недоступний. Спробуйте ще раз пізніше.";

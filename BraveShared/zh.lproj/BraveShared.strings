@@ -23,7 +23,7 @@
 "AdsAndTrackers" = "广告和跟踪器";
 
 /* Shields Ads Stat */
-"AdsAndTrackersrBlocked" = "广告和跟踪器被拦截";
+"AdsAndTrackersrBlocked" = "跟踪器和被屏蔽的广告";
 
 /* Shields Ads Stat */
 "AdsrBlocked" = "广告被拦截";
@@ -131,7 +131,7 @@
 "Block3rdPartyCookies" = "拦截第三方 cookies";
 
 /* No comment provided by engineer. */
-"BlockAdsAndTracking" = "拦截广告和追踪";
+"BlockAdsAndTracking" = "阻止跨站点跟踪器";
 
 /* No comment provided by engineer. */
 "BlockAdsAndTrackingDescription" = "阻止加载广告、弹出窗口和跟踪器";
@@ -183,6 +183,12 @@
 
 /* title for bookmarks panel */
 "Bookmarks" = "书签";
+
+/* Action to export bookmarks to another device. */
+"bookmarksExportAction" = "导出书签";
+
+/* Action to import bookmarks from a file. */
+"bookmarksImportAction" = "导入书签";
 
 /* Title for bookmarks menu item */
 "BookmarksMenuItem" = "书签";
@@ -359,7 +365,7 @@
 "DeleteLoginButtonTitle" = "删除";
 
 /* Sync device settings page title. */
-"Devices" = "设备链";
+"Devices" = "同步链上的设备";
 
 /* Current device model and iOS version copied to clipboard. */
 "DeviceTemplate" = "设备 %1$@ （%2$@）";
@@ -487,11 +493,8 @@
 /* individual blocking statistic title */
 "FingerprintingMethods" = "指纹识别方法";
 
-/* blocking stat title */
-"FingerprintingnProtection" = "指纹\n保护";
-
 /* No comment provided by engineer. */
-"FingerprintingProtection" = "屏蔽指纹功能";
+"FingerprintingProtection" = "屏蔽指纹识别功能";
 
 /* No comment provided by engineer. */
 "FingerprintingProtectionDescription" = "使站点更难识别设备的独特特征。";
@@ -530,7 +533,7 @@
 "Home" = "家庭";
 
 /* No comment provided by engineer. */
-"HTTPSEverywhere" = "HTTPS Everywhere";
+"HTTPSEverywhere" = "将连接升级到 HTTPS";
 
 /* No comment provided by engineer. */
 "HTTPSEverywhereDescription" = "使用安全的 HTTPS 连接（而不是纯 HTTP）打开某些站点。";
@@ -543,6 +546,9 @@
 
 /* title for per-site shield toggles */
 "IndividualControls" = "个人控制";
+
+/* Sync Alert */
+"InvalidSyncCodeDescription" = "同步代码无效";
 
 /* History tableview section header */
 "LastMonth" = "上个月";
@@ -1039,8 +1045,23 @@
 /* Sync settings section title */
 "Sync" = "同步";
 
-/* Add another device cell button. */
-"SyncAddAnotherDevice" = "添加另一台设备";
+/* Message for popup when the bookmark migration fails */
+"sync.v2MigrationErrorMessage" = "无法迁移书签。请稍后再试。";
+
+/* Title for popup when the bookmark migration fails */
+"sync.v2MigrationErrorTitle" = "错误";
+
+/* Message for popup to inform the user that bookmarks migration is required for sync */
+"sync.v2MigrationMessage" = "要使用 Brave Sync，必须先迁移现有的书签才能使用新系统。此操作不会删除您的书签。";
+
+/* Button to perform bookmarks migration in order to support sync */
+"sync.v2MigrationOKButton" = "迁移";
+
+/* Title for popup to inform the user that bookmarks migration is required for sync */
+"sync.v2MigrationTitle" = "需要迁移";
+
+/* Add New Device cell button. */
+"SyncAddAnotherDevice" = "添加新的设备";
 
 /* Add a Computer title */
 "SyncAddComputerTitle" = "添加计算机";
@@ -1074,6 +1095,9 @@
 
 /* Sync you browser settings across devices. */
 "SyncDevices" = "设备&设置";
+
+/* Folder name for where bookmarks are imported into when the root folder is not empty. */
+"SyncImportFolderName" = "导入的书签";
 
 /* Message for sync initialization error alert */
 "SyncInitErrorMessage" = "同步代理当前处于脱机状态或无法连接。请稍后再试。";

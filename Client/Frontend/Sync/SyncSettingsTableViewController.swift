@@ -5,20 +5,19 @@ import CoreData
 import Shared
 import Data
 import BraveShared
+import BraveRewards
 
 private let log = Logger.browserLogger
 
 class SyncSettingsTableViewController: UITableViewController {
-    private var frc: NSFetchedResultsController<Device>?
+    private var syncDeviceObserver: AnyObject?
+    private var devices = [BraveSyncDevice]()
     
     private enum Sections: Int { case deviceList, buttons }
     
     /// A different logic and UI is used depending on what device was selected to remove and if it is the only device
     /// left in the Sync Chain.
     enum DeviceRemovalType { case lastDeviceLeft, currentDevice, otherDevice }
-    
-    /// Handles dismissing parent view controller.
-    var dismissHandler: (() -> Void)?
     
     /// After synchronization is completed, user needs to tap on `Done` to go back.
     /// Standard navigation is disabled then.
@@ -30,14 +29,15 @@ class SyncSettingsTableViewController: UITableViewController {
         super.viewDidLoad()
         title = Strings.sync
         
-        frc = Device.frc()
-        frc?.delegate = self
-        
-        do {
-            try frc?.performFetch()
-        } catch {
-            log.error("frc fetch error: \(error)")
+        syncDeviceObserver = BraveSyncAPI.addDeviceStateObserver { [weak self] in
+            self?.updateDeviceList()
         }
+        
+        let codeWords = BraveSyncAPI.shared.getSyncCode()
+        BraveSyncAPI.shared.joinSyncGroup(codeWords: codeWords)
+        BraveSyncAPI.shared.syncEnabled = true
+        
+        self.updateDeviceList()
         
         let text = UITextView().then {
             $0.text = Strings.syncSettingsHeader
@@ -71,7 +71,7 @@ class SyncSettingsTableViewController: UITableViewController {
     // MARK: - Button actions.
     
     @objc func doneTapped() {
-        dismissHandler?()
+        navigationController?.popToRootViewController(animated: true)
     }
     
     private func addAnotherDeviceAction() {
@@ -90,7 +90,12 @@ class SyncSettingsTableViewController: UITableViewController {
         let alert = UIAlertController(title: Strings.syncRemoveThisDeviceQuestion, message: Strings.syncRemoveThisDeviceQuestionDesc, preferredStyle: .alert)
         alert.addAction(UIAlertAction(title: Strings.cancelButtonTitle, style: .cancel, handler: nil))
         alert.addAction(UIAlertAction(title: Strings.removeDevice, style: .destructive) { action in
-            Sync.shared.leaveSyncGroup()
+            if !DeviceInfo.hasConnectivity() {
+                self.present(SyncAlerts.noConnection, animated: true)
+                return
+            }
+            
+            BraveSyncAPI.shared.leaveSyncGroup()
             self.navigationController?.popToRootViewController(animated: true)
         })
         
@@ -107,8 +112,19 @@ class SyncSettingsTableViewController: UITableViewController {
             return
         }
         
-        guard let frc = frc, let deviceCount = frc.fetchedObjects?.count else { return }
-        let device = frc.object(at: indexPath)
+        let devices = self.devices
+        if devices.isEmpty {
+            return
+        }
+        
+        guard let device = devices[safe: indexPath.row] else {
+            return
+        }
+        
+        guard device.isCurrentDevice else {
+            //See: `BraveSyncDevice.remove()` for more info.
+            return
+        }
         
         let actionSheet = UIAlertController(title: device.name, message: nil, preferredStyle: .actionSheet)
         if UIDevice.current.userInterfaceIdiom == .pad {
@@ -126,7 +142,7 @@ class SyncSettingsTableViewController: UITableViewController {
             
             var alertType = DeviceRemovalType.otherDevice
             
-            if deviceCount == 1 {
+            if devices.count == 1 {
                 alertType = .lastDeviceLeft
             } else if device.isCurrentDevice {
                 alertType = .currentDevice
@@ -143,7 +159,7 @@ class SyncSettingsTableViewController: UITableViewController {
         present(actionSheet, animated: true)
     }
     
-    private func presentAlertPopup(for type: DeviceRemovalType, device: Device) {
+    private func presentAlertPopup(for type: DeviceRemovalType, device: BraveSyncDevice) {
         var title: String?
         var message: String?
         var removeButtonName: String?
@@ -173,7 +189,7 @@ class SyncSettingsTableViewController: UITableViewController {
         popup.addButton(title: popupButtonName, type: .destructive, fontSize: fontSize) {
             switch type {
             case .lastDeviceLeft, .currentDevice:
-                Sync.shared.leaveSyncGroup()
+                BraveSyncAPI.shared.leaveSyncGroup()
                 self.navigationController?.popToRootViewController(animated: true)
             case .otherDevice:
                 device.remove()
@@ -189,7 +205,7 @@ class SyncSettingsTableViewController: UITableViewController {
     }
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        let deviceCount = frc?.fetchedObjects?.count ?? 0
+        let deviceCount = devices.count
         let buttonsCount = 1
         
         return section == Sections.buttons.rawValue ? buttonsCount : deviceCount
@@ -203,14 +219,18 @@ class SyncSettingsTableViewController: UITableViewController {
     }
     
     private func configureCell(_ cell: UITableViewCell, atIndexPath indexPath: IndexPath) {
-        guard let frc = frc else {
-            log.error("FetchedResultsController is nil.")
+        if devices.isEmpty {
+            log.error("No sync devices to configure.")
             return
         }
         
         switch indexPath.section {
         case Sections.deviceList.rawValue:
-            let device = frc.object(at: indexPath)
+            guard let device = devices[safe: indexPath.row] else {
+                log.error("Invalid device to configure.")
+                return
+            }
+            
             guard let name = device.name else { break }
             let deviceName = device.isCurrentDevice ? "\(name) (\(Strings.syncThisDevice))" : name
             
@@ -248,37 +268,38 @@ class SyncSettingsTableViewController: UITableViewController {
     }
 }
 
-// MARK: - NSFetchedResultsControllerDelegate
-
-extension SyncSettingsTableViewController: NSFetchedResultsControllerDelegate {
-    func controllerWillChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
-        tableView.beginUpdates()
-    }
-    
-    func controllerDidChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
-        tableView.endUpdates()
-    }
-    
-    func controller(_ controller: NSFetchedResultsController<NSFetchRequestResult>, didChange anObject: Any,
-                    at indexPath: IndexPath?, for type: NSFetchedResultsChangeType, newIndexPath: IndexPath?) {
-        
-        switch type {
-        case .insert:
-            guard let newIndexPath = newIndexPath else { return }
-            tableView.insertRows(at: [newIndexPath], with: .fade)
-        case .delete:
-            guard let indexPath = indexPath else { return }
-            tableView.deleteRows(at: [indexPath], with: .fade)
-        case .update:
-            if let indexPath = indexPath, let cell = tableView.cellForRow(at: indexPath) {
-              configureCell(cell, atIndexPath: indexPath)
+extension SyncSettingsTableViewController {
+    private func updateDeviceList() {
+        if let json = BraveSyncAPI.shared.getDeviceListJSON(), let data = json.data(using: .utf8) {
+            do {
+                let devices = try JSONDecoder().decode([BraveSyncDevice].self, from: data)
+                self.devices = devices
+                self.tableView.reloadData()
+            } catch {
+                log.error(error)
             }
-            
-            if let newIndexPath = newIndexPath, let cell = tableView.cellForRow(at: newIndexPath) {
-              configureCell(cell, atIndexPath: newIndexPath)
-            }
-        default:
-            log.info("Operation type: \(type) is not handled.")
+        } else {
+            log.error("Something went wrong while retrieving Sync Devices..")
         }
+    }
+}
+
+private struct BraveSyncDevice: Codable {
+    let chromeVersion: String
+    let hasSharingInfo: Bool
+    let id: String
+    let guid: String
+    let isCurrentDevice: Bool
+    let lastUpdatedTimestamp: TimeInterval
+    let name: String?
+    let os: String
+    let sendTabToSelfReceivingEnabled: Bool
+    let type: String
+    
+    func remove() {
+        // Desktop and Android CANNOT delete devices from sync chain
+        // iOS will remove it from BraveCore and iOS side to match
+        // Once Desktop and Android catch up, we will add it back
+        //BraveSyncAPI.shared.removeDeviceFromSyncGroup(deviceGuid: self.guid)
     }
 }

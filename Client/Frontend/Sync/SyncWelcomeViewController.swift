@@ -4,6 +4,7 @@ import UIKit
 import Shared
 import Data
 import BraveShared
+import BraveRewards
 
 /// Sometimes during heavy operations we want to prevent user from navigating back, changing screen etc.
 protocol NavigationPrevention {
@@ -12,7 +13,43 @@ protocol NavigationPrevention {
 }
 
 class SyncWelcomeViewController: SyncViewController {
-    var dismissHandler: (() -> Void)?
+    private var overlayView: UIView?
+    
+    private var isLoading: Bool = false {
+        didSet {
+            overlayView?.removeFromSuperview()
+            
+            // Toggle 'restore' button.
+            navigationItem.rightBarButtonItem?.isEnabled = !isLoading
+            
+            // Prevent dismissing the modal by swipe when migration happens.
+            if #available(iOS 13.0, *) {
+                navigationController?.isModalInPresentation = isLoading == true
+            }
+            
+            if !isLoading { return }
+            
+            let overlay = UIView().then {
+                $0.backgroundColor = UIColor.black.withAlphaComponent(0.5)
+                let activityIndicator = UIActivityIndicatorView().then { indicator in
+                    indicator.startAnimating()
+                    indicator.autoresizingMask = [.flexibleWidth, .flexibleHeight]
+                }
+                
+                $0.addSubview(activityIndicator)
+            }
+            
+            view.addSubview(overlay)
+            overlay.snp.makeConstraints {
+                $0.edges.equalToSuperview()
+            }
+            
+            overlayView = overlay
+        }
+    }
+    
+    private var syncServiceObserver: AnyObject?
+    private var syncDeviceInfoObserver: AnyObject?
     
     lazy var mainStackView: UIStackView = {
         let stackView = UIStackView()
@@ -124,30 +161,28 @@ class SyncWelcomeViewController: SyncViewController {
         buttonsStackView.addArrangedSubview(newToSyncButton)
         buttonsStackView.addArrangedSubview(existingUserButton)
         mainStackView.addArrangedSubview(buttonsStackView)
-        
-        handleSyncSetupFailure()
     }
     
     /// Sync setup failure is handled here because it can happen from few places in children VCs(new chain, qr code, codewords)
     /// This makes all presented Sync View Controllers to dismiss, cleans up any sync setup and shows user a friendly message.
     private func handleSyncSetupFailure() {
-        let sync = Sync.shared
-        sync.syncSetupFailureCallback = { [weak self] in
-            self?.dismiss(animated: true)
-            sync.leaveSyncGroup()
-            
-            let bvc = (UIApplication.shared.delegate as? AppDelegate)?.browserViewController
-            
-            bvc?.present(SyncAlerts.initializationError, animated: true)
+        syncServiceObserver = BraveSyncAPI.addServiceStateObserver { [weak self] in
+            guard let self = self else { return }
+            if !BraveSyncAPI.shared.isInSyncGroup {
+                self.dismiss(animated: true)
+                let bvc = (UIApplication.shared.delegate as? AppDelegate)?.browserViewController
+                bvc?.present(SyncAlerts.initializationError, animated: true)
+            }
         }
     }
     
     @objc func newToSyncAction() {
+        handleSyncSetupFailure()
         let addDevice = SyncSelectDeviceTypeViewController()
         addDevice.syncInitHandler = { (title, type) in
-            weak var weakSelf = self
             func pushAddDeviceVC() {
-                guard Sync.shared.isInSyncGroup else {
+                self.syncServiceObserver = nil
+                guard BraveSyncAPI.shared.isInSyncGroup else {
                     addDevice.disableNavigationPrevention()
                     let alert = UIAlertController(title: Strings.syncUnsuccessful, message: Strings.syncUnableCreateGroup, preferredStyle: .alert)
                     alert.addAction(UIAlertAction(title: Strings.OKString, style: .default, handler: nil))
@@ -158,53 +193,50 @@ class SyncWelcomeViewController: SyncViewController {
                 let view = SyncAddDeviceViewController(title: title, type: type)
                 view.doneHandler = self.pushSettings
                 view.navigationItem.hidesBackButton = true
-                weakSelf?.navigationController?.pushViewController(view, animated: true)
+                self.navigationController?.pushViewController(view, animated: true)
             }
             
-            if Sync.shared.isInSyncGroup {
+            if BraveSyncAPI.shared.isInSyncGroup {
                 pushAddDeviceVC()
                 return
             }
 
             addDevice.enableNavigationPrevention()
-            self.addSyncReadyNotificationObserver { pushAddDeviceVC() }
+            self.syncDeviceInfoObserver = BraveSyncAPI.addDeviceStateObserver {
+                self.syncDeviceInfoObserver = nil
+                pushAddDeviceVC()
+            }
             
-            Sync.shared.initializeNewSyncGroup(deviceName: UIDevice.current.name)
+            BraveSyncAPI.shared.joinSyncGroup(codeWords: BraveSyncAPI.shared.getSyncCode())
+            BraveSyncAPI.shared.syncEnabled = true
         }
 
-        navigationController?.pushViewController(addDevice, animated: true)
+        self.navigationController?.pushViewController(addDevice, animated: true)
     }
     
     @objc func existingUserAction() {
+        handleSyncSetupFailure()
         let pairCamera = SyncPairCameraViewController()
         
-        pairCamera.syncHandler = { bytes in
+        pairCamera.syncHandler = { codeWords in
             pairCamera.enableNavigationPrevention()
-            Sync.shared.initializeSync(seed: bytes, deviceName: UIDevice.current.name)
-
-            self.addSyncReadyNotificationObserver {
+            
+            self.syncDeviceInfoObserver = BraveSyncAPI.addDeviceStateObserver {
+                self.syncServiceObserver = nil
+                self.syncDeviceInfoObserver = nil
                 pairCamera.disableNavigationPrevention()
                 self.pushSettings()
             }
+ 
+            BraveSyncAPI.shared.joinSyncGroup(codeWords: codeWords)
+            BraveSyncAPI.shared.syncEnabled = true
         }
         
-        navigationController?.pushViewController(pairCamera, animated: true)
-    }
-
-    private func addSyncReadyNotificationObserver(completion: @escaping () -> Void) {
-        NotificationCenter.default.addObserver(forName: Sync.Notifications.syncReady,
-                                               object: nil,
-                                               queue: .main,
-                                               using: { notification in
-                                                completion()
-                                                // This is a one-time notification, removing it immediately.
-                                                NotificationCenter.default.removeObserver(notification)
-        })
+        self.navigationController?.pushViewController(pairCamera, animated: true)
     }
     
     private func pushSettings() {
         let syncSettingsVC = SyncSettingsTableViewController(style: .grouped)
-        syncSettingsVC.dismissHandler = dismissHandler
         syncSettingsVC.disableBackButton = true
         navigationController?.pushViewController(syncSettingsVC, animated: true)
     }

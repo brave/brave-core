@@ -88,7 +88,7 @@ class FaviconFetcher {
     ///        For large icons, if no favicon is found, `siteURL` will be
     ///        downloaded and parsed for a favicon.
     ///     4. Monogram (letter + background color)
-    func load(_ completion: @escaping (URL, FaviconAttributes) -> Void) {
+    func load(_ cachedOnly: Bool = false, _ completion: @escaping (URL, FaviconAttributes) -> Void) {
         if let icon = customIcon {
             completion(url, icon)
             return
@@ -98,7 +98,7 @@ class FaviconFetcher {
             completion(url, icon)
             return
         }
-        fetchIcon { url, attributes in
+        fetchIcon(cachedOnly) { url, attributes in
             DispatchQueue.main.async {
                 completion(url, attributes)
             }
@@ -237,7 +237,7 @@ class FaviconFetcher {
         }
     }
     
-    private func fetchIcon(_ completion: @escaping (URL, FaviconAttributes) -> Void) {
+    private func fetchIcon(_ cachedOnly: Bool, _ completion: @escaping (URL, FaviconAttributes) -> Void) {
         // Fetch icon logic:
         // 1. Check if current domain has a favicon.
         var domainFavicon = domain.favicon
@@ -255,6 +255,17 @@ class FaviconFetcher {
             // Verify that the favicon we have on file is what we want to pull
             // If not, we will just default to monogram to avoid blurry images
             if faviconOnFileMatchesFetchKind(favicon) {
+                
+                // If loading from cache only is specified,
+                // Return monogram image if there is no cache.
+                if cachedOnly {
+                    let cache = WebImageCacheWithNoPrivacyProtectionManager.shared
+                    if !cache.isCached(url) && !cache.isPersisted(url) {
+                        completion(self.url, self.monogramFavicon)
+                        return
+                    }
+                }
+                
                 downloadIcon(url: url, addingToDatabase: false) { [weak self] image in
                     guard let self = self else { return }
                     if let image = image {
@@ -518,13 +529,17 @@ extension UIImageView {
     /// This method will only attempt to fetch a small favicon for a site.
     /// Do not use this method if you need to ensure that a large apple-touch
     /// icon is used.
+    ///
+    /// If cachedOnly is specified, this function will NOT attempt to download the favIcon!
+    ///
     func loadFavicon(for siteURL: URL,
                      domain: Domain? = nil,
                      fallbackMonogramCharacter: Character? = nil,
+                     cachedOnly: Bool = false,
                      completion: (() -> Void)? = nil) {
         clearMonogramFavicon()
         faviconFetcher = FaviconFetcher(siteURL: siteURL, kind: .favicon, domain: domain)
-        faviconFetcher?.load { [weak self] _, attributes in
+        faviconFetcher?.load(cachedOnly) { [weak self] _, attributes in
             guard let self = self else { return }
             if let image = attributes.image {
                 self.image = image

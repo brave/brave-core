@@ -217,6 +217,15 @@ class SettingsViewController: TableViewController {
                     viewController.profile = self.profile
                     self.navigationController?.pushViewController(viewController, animated: true)
                 }, image: #imageLiteral(resourceName: "settings-search").template, accessory: .disclosureIndicator, cellClass: MultilineValue1Cell.self),
+                Row(text: Strings.sync, selection: { [unowned self] in
+                    if BraveSyncAPI.shared.isInSyncGroup {
+                        self.navigationController?
+                            .pushViewController(SyncSettingsTableViewController(style: .grouped), animated: true)
+                    } else {
+                        self.navigationController?.pushViewController(SyncWelcomeViewController(), animated: true)
+                    }
+                    }, image: #imageLiteral(resourceName: "settings-sync").template, accessory: .disclosureIndicator,
+                       cellClass: MultilineValue1Cell.self)
             ]
         )
         

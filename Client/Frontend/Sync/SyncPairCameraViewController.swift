@@ -4,11 +4,12 @@ import UIKit
 import Shared
 import AVFoundation
 import BraveShared
+import BraveRewards
 import Data
 
 class SyncPairCameraViewController: SyncViewController {
     
-    var syncHandler: (([Int]?) -> Void)?
+    var syncHandler: ((String) -> Void)?
     var cameraView: SyncCameraView!
     var titleLabel: UILabel!
     var descriptionLabel: UILabel!
@@ -47,36 +48,35 @@ class SyncPairCameraViewController: SyncViewController {
                 return
             }
             
-            // TODO: Check data against sync api
-
             // TODO: Functional, but needs some cleanup
             struct Scanner { static var lock = false }
-            if let bytes = SyncCrypto().splitBytes(fromJoinedBytes: data) {
-                if Scanner.lock {
-                    // Have internal, so camera error does not show
-                    return
-                }
-                
-                Scanner.lock = true
-                self.cameraView.cameraOverlaySucess()
-                // Freezing the camera frame after QR has been scanned.
-                self.cameraView.captureSession?.stopRunning()
-                
-                // Vibrate.
-                AudioServicesPlayAlertSound(SystemSoundID(kSystemSoundID_Vibrate))  
+            
+            if Scanner.lock {
+                // Have internal, so camera error does not show
+                return
+            }
+            
+            Scanner.lock = true
+            self.cameraView.cameraOverlaySucess()
+            // Freezing the camera frame after QR has been scanned.
+            self.cameraView.captureSession?.stopRunning()
+            
+            // Vibrate.
+            AudioServicesPlayAlertSound(SystemSoundID(kSystemSoundID_Vibrate))
 
-                // Forced timeout
-                DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + Double(Int64(25.0) * Int64(NSEC_PER_SEC)) / Double(NSEC_PER_SEC), execute: {
-                    Scanner.lock = false
-                    self.cameraView.cameraOverlayError()
-                })
-                
-                // If multiple calls get in here due to race conditions it isn't a big deal
-                
-                self.syncHandler?(bytes)
-
-            } else {
+            // Forced timeout
+            DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + Double(Int64(25.0) * Int64(NSEC_PER_SEC)) / Double(NSEC_PER_SEC), execute: {
+                Scanner.lock = false
                 self.cameraView.cameraOverlayError()
+            })
+            
+            // If multiple calls get in here due to race conditions it isn't a big deal
+            
+            let codeWords = BraveSyncAPI.shared.syncCode(fromHexSeed: data)
+            if codeWords.isEmpty {
+                self.cameraView.cameraOverlayError()
+            } else {
+                self.syncHandler?(codeWords)
             }
         }
 

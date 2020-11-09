@@ -66,12 +66,12 @@ public final class Bookmark: NSManagedObject, WebsitePresentable, Syncable, CRUD
         addInternal(url: url, title: title, isFavorite: true, sendToSync: false)
     }
     
-    public class func addFolder(title: String, parentFolder: Bookmark? = nil) {
-        addInternal(url: nil, title: nil, customTitle: title, parentFolder: parentFolder, isFolder: true)
+    public class func addFolder(title: String, parentFolder: Bookmark? = nil, context: WriteContext = .new(inMemory: false)) {
+        addInternal(url: nil, title: nil, customTitle: title, parentFolder: parentFolder, isFolder: true, context: context)
     }
     
-    public class func add(url: URL, title: String?, parentFolder: Bookmark? = nil) {
-        addInternal(url: url, title: title, parentFolder: parentFolder)
+    public class func add(url: URL, title: String?, parentFolder: Bookmark? = nil, context: WriteContext = .new(inMemory: false)) {
+        addInternal(url: url, title: title, parentFolder: parentFolder, context: context)
     }
     
     // MARK: Read
@@ -139,8 +139,13 @@ public final class Bookmark: NSManagedObject, WebsitePresentable, Syncable, CRUD
         return getChildrenInternal(forFolderUUID: folder.syncUUID, includeFolders: includeFolders)
     }
     
-    public class func getTopLevelFolders() -> [Bookmark] {
-        return getFoldersInternal(bookmark: nil)
+    public class func getTopLevelFolders(_ context: NSManagedObjectContext? = nil) -> [Bookmark] {
+        return getFoldersInternal(bookmark: nil, context: context ?? DataController.viewContext)
+    }
+    
+    public class func getAllTopLevelBookmarks(_ context: NSManagedObjectContext? = nil) -> [Bookmark] {
+        let predicate = NSPredicate(format: "isFavorite == NO and parentFolder = nil")
+        return all(where: predicate, context: context ?? DataController.viewContext) ?? []
     }
     
     public class var hasFavorites: Bool {
@@ -150,6 +155,10 @@ public final class Bookmark: NSManagedObject, WebsitePresentable, Syncable, CRUD
     
     public class var allFavorites: [Bookmark] {
         return all(where: isFavoritePredicate) ?? []
+    }
+    
+    public class var allBookmarks: [Bookmark] {
+        return getAllBookmarks()
     }
     
     // MARK: Update
@@ -196,8 +205,8 @@ public final class Bookmark: NSManagedObject, WebsitePresentable, Syncable, CRUD
     
     // MARK: Delete
     
-    public func delete() {
-        deleteInternal()
+    public func delete(context: WriteContext? = nil) {
+        deleteInternal(context: context ?? .new(inMemory: false))
     }
     
     /// Removes a single Bookmark of a given URL.
@@ -502,10 +511,10 @@ extension Bookmark {
         return first(where: predicate, context: context)
     }
     
-    static func getAllBookmarks(context: NSManagedObjectContext = DataController.viewContext) -> [Bookmark] {
+    public static func getAllBookmarks(context: NSManagedObjectContext? = nil) -> [Bookmark] {
         let predicate = NSPredicate(format: "isFavorite == NO")
         
-        return all(where: predicate, context: context) ?? []
+        return all(where: predicate, context: context ?? DataController.viewContext) ?? []
     }
     
     /// Gets all nested bookmarks recursively.

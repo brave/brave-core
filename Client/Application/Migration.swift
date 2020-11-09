@@ -11,6 +11,8 @@ import Data
 private let log = Logger.browserLogger
 
 class Migration {
+    private(set) public static var braveCoreBookmarksMigrator: BraveCoreMigrator?
+    
     static func launchMigrations(keyPrefix: String) {
         Preferences.migratePreferences(keyPrefix: keyPrefix)
         
@@ -22,6 +24,11 @@ class Migration {
         if !Preferences.Migration.documentsDirectoryCleanupCompleted.value {
             documentsDirectoryCleanup()
             Preferences.Migration.documentsDirectoryCleanupCompleted.value = true
+        }
+        
+        //`.migrate` is called in `BrowserViewController.viewDidLoad()`
+        if !Preferences.Chromium.syncV2BookmarksMigrationCompleted.value {
+            braveCoreBookmarksMigrator = BraveCoreMigrator()
         }
     }
     

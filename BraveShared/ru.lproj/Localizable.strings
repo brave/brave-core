@@ -386,8 +386,23 @@
 /* No comment provided by engineer. */
 "SiteReportedTitle" = "Спасибо!";
 
+/* Title of the bookmark import popup. */
+"sync.bookmarksImportPopupErrorTitle" = "Закладки";
+
+/* Message of the popup if bookmark import fails. */
+"sync.bookmarksImportPopupFailureMessage" = "Не удалось импортировать закладки.";
+
+/* Message of the popup if bookmark import succeeds. */
+"sync.bookmarksImportPopupSuccessMessage" = "Закладки успешно импортированы.";
+
 /* Text that informs a user about Brave Sync service deprecation. */
 "sync.syncV1DeprecationText" = "Скоро станет доступна свежая версия функции Brave Sync. Это повлияет на ваши настройки. Подготовьтесь к обновлению.";
+
+/* Bookmarks migration website page description */
+"sync.v2MigrationInterstitialPageDescription" = "Некоторые закладки не удалось переместить. Вы можете добавить их вручную.";
+
+/* Bookmarks migration website title */
+"sync.v2MigrationInterstitialTitle" = "Перемещение закладок";
 
 /* No comment provided by engineer. */
 "today.allSources" = "Все источники";

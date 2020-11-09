@@ -37,6 +37,14 @@ extension Bookmark {
         }
     }
     
+    public class func syncChromiumMigration(_ callback: @escaping ([Bookmark], [Bookmark]) -> Void) {
+        DataController.perform { context in
+            let allBookmarks = getAllBookmarks(context: context)
+            let allFavorites = all(where: NSPredicate(format: "isFavorite == YES"), context: context) ?? []
+            callback(allBookmarks, allFavorites)
+        }
+    }
+    
     class func isSyncOrderValid(_ value: String) -> Bool {
         /// syncOrder must come in format x.x.x where x are numbers
         /// and it has 3 or more number components

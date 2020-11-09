@@ -386,8 +386,23 @@
 /* No comment provided by engineer. */
 "SiteReportedTitle" = "Takk skal du ha";
 
+/* Title of the bookmark import popup. */
+"sync.bookmarksImportPopupErrorTitle" = "Bokmerker";
+
+/* Message of the popup if bookmark import fails. */
+"sync.bookmarksImportPopupFailureMessage" = "Importering av bokmerker mislyktes";
+
+/* Message of the popup if bookmark import succeeds. */
+"sync.bookmarksImportPopupSuccessMessage" = "Bokmerkene er importert";
+
 /* Text that informs a user about Brave Sync service deprecation. */
 "sync.syncV1DeprecationText" = "En ny versjon av Brave Sync er på vei, og dette vil påvirke oppsettet ditt. Gjør deg klar for oppgraderingen.";
+
+/* Bookmarks migration website page description */
+"sync.v2MigrationInterstitialPageDescription" = "Noen av bokmerkene dine kunne ikke flyttes. Du kan legge dem til igjen manuelt.";
+
+/* Bookmarks migration website title */
+"sync.v2MigrationInterstitialTitle" = "Flytting av bokmerker";
 
 /* No comment provided by engineer. */
 "today.allSources" = "Alle kilder";

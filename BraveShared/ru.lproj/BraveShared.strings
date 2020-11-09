@@ -23,7 +23,7 @@
 "AdsAndTrackers" = "Реклама и трекеры";
 
 /* Shields Ads Stat */
-"AdsAndTrackersrBlocked" = "Реклам и трекеров\nзаблокировано";
+"AdsAndTrackersrBlocked" = "Трекеров и объявлений заблокировано";
 
 /* Shields Ads Stat */
 "AdsrBlocked" = "Реклам\nзаблокировано";
@@ -131,7 +131,7 @@
 "Block3rdPartyCookies" = "Блокировать сторонние файлы cookie";
 
 /* No comment provided by engineer. */
-"BlockAdsAndTracking" = "Блокировать рекламу и трекеры";
+"BlockAdsAndTracking" = "Блокировка межсайтовых трекеров";
 
 /* No comment provided by engineer. */
 "BlockAdsAndTrackingDescription" = "Блокирует загрузку рекламы, всплывающих окон и трекеров.";
@@ -183,6 +183,12 @@
 
 /* title for bookmarks panel */
 "Bookmarks" = "Закладки";
+
+/* Action to export bookmarks to another device. */
+"bookmarksExportAction" = "Экспортировать закладки";
+
+/* Action to import bookmarks from a file. */
+"bookmarksImportAction" = "Импортировать закладки";
 
 /* Title for bookmarks menu item */
 "BookmarksMenuItem" = "Закладки";
@@ -359,7 +365,7 @@
 "DeleteLoginButtonTitle" = "Удалить";
 
 /* Sync device settings page title. */
-"Devices" = "Устройства в цепочке";
+"Devices" = "Устройства в цепочке синхронизации";
 
 /* Current device model and iOS version copied to clipboard. */
 "DeviceTemplate" = "Устройство %1$@ (%2$@)";
@@ -487,9 +493,6 @@
 /* individual blocking statistic title */
 "FingerprintingMethods" = "Методы идентификации";
 
-/* blocking stat title */
-"FingerprintingnProtection" = "Защита от\nидентификации";
-
 /* No comment provided by engineer. */
 "FingerprintingProtection" = "Блокировка идентификации";
 
@@ -530,7 +533,7 @@
 "Home" = "Домашняя страница";
 
 /* No comment provided by engineer. */
-"HTTPSEverywhere" = "HTTPS Everywhere";
+"HTTPSEverywhere" = "Переведите подключения на HTTPS";
 
 /* No comment provided by engineer. */
 "HTTPSEverywhereDescription" = "Открывает некоторые сайты с помощью защищенного соединения HTTPS, а не обычного протокола HTTP.";
@@ -543,6 +546,9 @@
 
 /* title for per-site shield toggles */
 "IndividualControls" = "Индивидуальные настройки";
+
+/* Sync Alert */
+"InvalidSyncCodeDescription" = "Недействительный код синхронизации";
 
 /* History tableview section header */
 "LastMonth" = "За месяц";
@@ -1039,8 +1045,23 @@
 /* Sync settings section title */
 "Sync" = "Синхронизация";
 
-/* Add another device cell button. */
-"SyncAddAnotherDevice" = "Добавить другое устройство";
+/* Message for popup when the bookmark migration fails */
+"sync.v2MigrationErrorMessage" = "Не удалось переместить закладки. Повторите попытку позже.";
+
+/* Title for popup when the bookmark migration fails */
+"sync.v2MigrationErrorTitle" = "Ошибка";
+
+/* Message for popup to inform the user that bookmarks migration is required for sync */
+"sync.v2MigrationMessage" = "Чтобы воспользоваться новой системой Brave Sync, необходимо переместить имеющиеся закладки. При этом они не будут удалены.";
+
+/* Button to perform bookmarks migration in order to support sync */
+"sync.v2MigrationOKButton" = "Переместить";
+
+/* Title for popup to inform the user that bookmarks migration is required for sync */
+"sync.v2MigrationTitle" = "Требуется перемещение";
+
+/* Add New Device cell button. */
+"SyncAddAnotherDevice" = "Добавить устройство";
 
 /* Add a Computer title */
 "SyncAddComputerTitle" = "Добавьте компьютер";
@@ -1074,6 +1095,9 @@
 
 /* Sync you browser settings across devices. */
 "SyncDevices" = "Устройства и настройки";
+
+/* Folder name for where bookmarks are imported into when the root folder is not empty. */
+"SyncImportFolderName" = "Импортированные закладки";
 
 /* Message for sync initialization error alert */
 "SyncInitErrorMessage" = "Сервер синхронизации не подключен к сети или недоступен. Повторите попытку позже.";

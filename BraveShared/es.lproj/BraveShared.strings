@@ -23,7 +23,7 @@
 "AdsAndTrackers" = "Anuncios y rastreadores";
 
 /* Shields Ads Stat */
-"AdsAndTrackersrBlocked" = "Anuncios y rastreadores \nbloqueados";
+"AdsAndTrackersrBlocked" = "Rastreadores y anuncios bloqueados";
 
 /* Shields Ads Stat */
 "AdsrBlocked" = "Anuncios \nbloqueados";
@@ -131,7 +131,7 @@
 "Block3rdPartyCookies" = "Bloquear cookies de terceros";
 
 /* No comment provided by engineer. */
-"BlockAdsAndTracking" = "Bloquear anuncios y rastreadores";
+"BlockAdsAndTracking" = "Bloquear los rastreadores en los sitios";
 
 /* No comment provided by engineer. */
 "BlockAdsAndTrackingDescription" = "Impide que salten anuncios, ventanas emergentes y rastreadores";
@@ -183,6 +183,12 @@
 
 /* title for bookmarks panel */
 "Bookmarks" = "Marcadores";
+
+/* Action to export bookmarks to another device. */
+"bookmarksExportAction" = "Exportar marcadores";
+
+/* Action to import bookmarks from a file. */
+"bookmarksImportAction" = "Importar marcadores";
 
 /* Title for bookmarks menu item */
 "BookmarksMenuItem" = "Marcadores";
@@ -359,7 +365,7 @@
 "DeleteLoginButtonTitle" = "Eliminar";
 
 /* Sync device settings page title. */
-"Devices" = "Dispositivos de la cadena";
+"Devices" = "Dispositivos de la cadena de sincronización";
 
 /* Current device model and iOS version copied to clipboard. */
 "DeviceTemplate" = "Dispositivo %1$@ (%2$@)";
@@ -487,9 +493,6 @@
 /* individual blocking statistic title */
 "FingerprintingMethods" = "Métodos dactiloscópicos";
 
-/* blocking stat title */
-"FingerprintingnProtection" = "Protección\ndactiloscópica";
-
 /* No comment provided by engineer. */
 "FingerprintingProtection" = "Bloquear la identificación dactiloscópica";
 
@@ -530,7 +533,7 @@
 "Home" = "Inicio";
 
 /* No comment provided by engineer. */
-"HTTPSEverywhere" = "HTTPS Everywhere";
+"HTTPSEverywhere" = "Actualizar las conexiones a HTTPS";
 
 /* No comment provided by engineer. */
 "HTTPSEverywhereDescription" = "Abre algunos sitios usando una conexión HTTPS segura en vez de la HTTP estándar.";
@@ -543,6 +546,9 @@
 
 /* title for per-site shield toggles */
 "IndividualControls" = "Controles individuales";
+
+/* Sync Alert */
+"InvalidSyncCodeDescription" = "Código de sincronización no válido";
 
 /* History tableview section header */
 "LastMonth" = "El mes pasado";
@@ -1039,8 +1045,23 @@
 /* Sync settings section title */
 "Sync" = "Sincronización";
 
-/* Add another device cell button. */
-"SyncAddAnotherDevice" = "Añadir otro dispositivo";
+/* Message for popup when the bookmark migration fails */
+"sync.v2MigrationErrorMessage" = "Error al migrar los marcadores. Vuelve a intentarlo más tarde.";
+
+/* Title for popup when the bookmark migration fails */
+"sync.v2MigrationErrorTitle" = "Error";
+
+/* Message for popup to inform the user that bookmarks migration is required for sync */
+"sync.v2MigrationMessage" = "Para usar Brave Sync, tienes que migrar los marcadores actuales para poder acceder al nuevo sistema. Esta operación no eliminará los marcadores.";
+
+/* Button to perform bookmarks migration in order to support sync */
+"sync.v2MigrationOKButton" = "Migrar";
+
+/* Title for popup to inform the user that bookmarks migration is required for sync */
+"sync.v2MigrationTitle" = "Se requiere migración";
+
+/* Add New Device cell button. */
+"SyncAddAnotherDevice" = "Añadir un nuevo dispositivo";
 
 /* Add a Computer title */
 "SyncAddComputerTitle" = "Añadir un ordenador";
@@ -1074,6 +1095,9 @@
 
 /* Sync you browser settings across devices. */
 "SyncDevices" = "Dispositivos y ajustes";
+
+/* Folder name for where bookmarks are imported into when the root folder is not empty. */
+"SyncImportFolderName" = "Marcadores importados";
 
 /* Message for sync initialization error alert */
 "SyncInitErrorMessage" = "El agente de sincronización está desconectado u ocupado. Inténtalo de nuevo más tarde.";

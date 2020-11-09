@@ -51,9 +51,9 @@ class AddEditBookmarkTableViewController: UITableViewController {
         case .addFolder(let title):
             return FolderDetailsViewTableViewCell(title: title, viewHeight: UX.cellHeight)
         case .editBookmark(let bookmark), .editFavorite(let bookmark):
-            return BookmarkDetailsView(title: bookmark.displayTitle, url: bookmark.url)
+            return BookmarkDetailsView(title: bookmark.title, url: bookmark.url)
         case .editFolder(let folder):
-            return FolderDetailsViewTableViewCell(title: folder.displayTitle, viewHeight: UX.cellHeight)
+            return FolderDetailsViewTableViewCell(title: folder.title, viewHeight: UX.cellHeight)
         }
     }()
     
@@ -67,18 +67,19 @@ class AddEditBookmarkTableViewController: UITableViewController {
     }
     
     private let folderCellTag = 13
+    private static let defaultIndentationLevel = 0
     
     /// Returns a count of how many non-folder cells should be visible(depends on Mode state)
     private var specialButtonsCount: Int {
         switch mode {
-        case .addFolder(_), .editFolder(_): return 1
-        case .addBookmark(_, _), .editBookmark(_), .editFavorite(_): return 3
+        case .addFolder(_), .editFolder(_): return 0
+        case .addBookmark(_, _), .editBookmark(_), .editFavorite(_): return 2
         }
     }
     
     private var rootLevelFolderCell: IndentedImageTableViewCell {
         let cell = IndentedImageTableViewCell(image: #imageLiteral(resourceName: "menu_bookmarks")).then {
-            $0.folderName.text = Strings.bookmarkRootLevelCellTitle
+            $0.folderName.text = self.rootFolderName
             $0.tag = SpecialCell.rootLevel.rawValue
             if case .rootLevel = saveLocation, presentationMode == .folderHierarchy {
                 $0.accessoryType = .checkmark
@@ -112,21 +113,29 @@ class AddEditBookmarkTableViewController: UITableViewController {
     
     // MARK: - Init
     
-    private let frc: NSFetchedResultsController<Bookmark>
+    private var frc: BookmarksV2FetchResultsController
     private let mode: BookmarkEditMode
     
     private var presentationMode: DataSourcePresentationMode
     
     /// Currently selected save location.
     private var saveLocation: BookmarkSaveLocation
+    private var rootFolderName: String
+    private var rootFolderId: Int = 0 //MobileBookmarks Folder Id
     
     init(mode: BookmarkEditMode) {
         self.mode = mode
         
         saveLocation = mode.initialSaveLocation
         presentationMode = .currentSelection
-        frc = Bookmark.foldersFrc(excludedFolder: mode.folder)
+        frc = Bookmarkv2.foldersFrc(excludedFolder: mode.folder)
+        rootFolderName = Bookmarkv2.mobileNode()?.displayTitle ?? Strings.bookmarkRootLevelCellTitle
         
+        if let mobileFolderId = Bookmarkv2.mobileNode()?.objectID {
+            rootFolderId = mobileFolderId
+        } else {
+            log.error("Invalid MobileBookmarks Folder Id")
+        }
         super.init(style: .grouped)
     }
     
@@ -178,7 +187,7 @@ class AddEditBookmarkTableViewController: UITableViewController {
     // MARK: - Getting data
     
     /// Bookmark with a level of indentation
-    private typealias IndentedFolder = (folder: Bookmark, indentationLevel: Int)
+    private typealias IndentedFolder = (folder: Bookmarkv2, indentationLevel: Int)
     
     /// Main data source
     private var sortedFolders = [IndentedFolder]()
@@ -186,15 +195,15 @@ class AddEditBookmarkTableViewController: UITableViewController {
     /// Sorts folders by their older and nesting level.
     /// Indentation level starts with 0, but level 0 is designed for special folders
     /// (root level bookamrks, favorites).
-    private func sortFolders(parentID: NSManagedObjectID? = nil,
-                             indentationLevel: Int = 1) -> [IndentedFolder] {
+    private func sortFolders(parentID: Int? = nil,
+                             indentationLevel: Int = defaultIndentationLevel) -> [IndentedFolder] {
         guard let objects = frc.fetchedObjects else { return [] }
         
         let sortedObjects = objects.sorted(by: { $0.order < $1.order })
         
         var result = [IndentedFolder]()
         
-        sortedObjects.filter { $0.parentFolder?.objectID == parentID }.forEach {
+        sortedObjects.filter { $0.parent?.objectID == parentID }.forEach {
             result.append(($0, indentationLevel: indentationLevel))
             // Append children recursively
             result.append(contentsOf: sortFolders(parentID: $0.objectID,
@@ -242,20 +251,20 @@ class AddEditBookmarkTableViewController: UITableViewController {
             
             switch saveLocation {
             case .rootLevel:
-                Bookmark.add(url: url, title: title)
+                Bookmarkv2.add(url: url, title: title)
             case .favorites:
                 Bookmark.addFavorite(url: url, title: title)
             case .folder(let folder):
-                Bookmark.add(url: url, title: title, parentFolder: folder)
+                Bookmarkv2.add(url: url, title: title, parentFolder: folder)
             }
         case .addFolder(_):
             switch saveLocation {
             case .rootLevel:
-                Bookmark.addFolder(title: title)
+                Bookmarkv2.addFolder(title: title)
             case .favorites:
                 fatalError("Folders can't be saved to favorites")
             case .folder(let folder):
-                Bookmark.addFolder(title: title, parentFolder: folder)
+                Bookmarkv2.addFolder(title: title, parentFolder: folder)
             }
         case .editBookmark(let bookmark):
             guard let urlString = bookmarkDetailsView.urlTextField?.text,
@@ -303,7 +312,7 @@ class AddEditBookmarkTableViewController: UITableViewController {
                 favorite.update(customTitle: title, url: url.absoluteString)
             case .folder(let folder):
                 favorite.delete()
-                Bookmark.add(url: url, title: title, parentFolder: folder)
+                Bookmarkv2.add(url: url, title: title, parentFolder: folder)
             }
         }
         
@@ -402,9 +411,15 @@ class AddEditBookmarkTableViewController: UITableViewController {
             
             // Folders with children folders have a different icon
             let hasChildrenFolders = indentedFolder.folder.children?.contains(where: { $0.isFolder })
-            cell.customImage.image = hasChildrenFolders == true ? #imageLiteral(resourceName: "menu_folder_open") : #imageLiteral(resourceName: "menu_folder")
+            if indentedFolder.folder.parent == nil {
+                cell.customImage.image = #imageLiteral(resourceName: "menu_bookmarks")
+            } else {
+                cell.customImage.image = hasChildrenFolders == true ? #imageLiteral(resourceName: "menu_folder_open") : #imageLiteral(resourceName: "menu_folder")
+            }
             
             if let folder = saveLocation.getFolder, folder.objectID == indentedFolder.folder.objectID {
+                cell.accessoryType = .checkmark
+            } else if case .rootLevel = saveLocation, indentedFolder.folder.objectID == self.rootFolderId {
                 cell.accessoryType = .checkmark
             }
             
@@ -421,7 +436,7 @@ class AddEditBookmarkTableViewController: UITableViewController {
         switch cell {
         case .addFolder: return addNewFolderCell
         case .favorites: return favoritesCell
-        case .rootLevel: return rootLevelFolderCell
+        case .rootLevel: return nil
         }
     }
 }
@@ -437,8 +452,8 @@ extension AddEditBookmarkTableViewController: BookmarkDetailsViewDelegate {
 
 // MARK: - NSFetchedResultsControllerDelegate
 
-extension AddEditBookmarkTableViewController: NSFetchedResultsControllerDelegate {
-    func controller(_ controller: NSFetchedResultsController<NSFetchRequestResult>, didChange anObject: Any, at indexPath: IndexPath?, for type: NSFetchedResultsChangeType, newIndexPath: IndexPath?) {
+extension AddEditBookmarkTableViewController: BookmarksV2FetchResultsDelegate {
+    func controller(_ controller: BookmarksV2FetchResultsController, didChange anObject: Any, at indexPath: IndexPath?, for type: NSFetchedResultsChangeType, newIndexPath: IndexPath?) {
         
         // Possible performance bottleneck.
         // There is not easy way to get folder sorted by their parent/children hierarchy
@@ -450,5 +465,17 @@ extension AddEditBookmarkTableViewController: NSFetchedResultsControllerDelegate
         //
         // Watching for CoreData save notification could be an alternative to using a frc delegate.
         reloadData()
+    }
+    
+    func controllerWillChangeContent(_ controller: BookmarksV2FetchResultsController) {
+        
+    }
+    
+    func controllerDidChangeContent(_ controller: BookmarksV2FetchResultsController) {
+        
+    }
+    
+    func controllerDidReloadContents(_ controller: BookmarksV2FetchResultsController) {
+      reloadData()
     }
 }

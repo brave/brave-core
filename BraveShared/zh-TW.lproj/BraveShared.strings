@@ -23,7 +23,7 @@
 "AdsAndTrackers" = "廣告和追蹤器";
 
 /* Shields Ads Stat */
-"AdsAndTrackersrBlocked" = "已封鎖\n廣告和追蹤器";
+"AdsAndTrackersrBlocked" = "已封鎖追蹤器和廣告";
 
 /* Shields Ads Stat */
 "AdsrBlocked" = "已封鎖\n廣告";
@@ -131,7 +131,7 @@
 "Block3rdPartyCookies" = "封鎖第 3 方 Cookie";
 
 /* No comment provided by engineer. */
-"BlockAdsAndTracking" = "封鎖廣告和追蹤";
+"BlockAdsAndTracking" = "封鎖跨網站追蹤器";
 
 /* No comment provided by engineer. */
 "BlockAdsAndTrackingDescription" = "禁止載入廣告、彈出式視窗和追蹤器";
@@ -183,6 +183,12 @@
 
 /* title for bookmarks panel */
 "Bookmarks" = "書籤";
+
+/* Action to export bookmarks to another device. */
+"bookmarksExportAction" = "匯出書籤";
+
+/* Action to import bookmarks from a file. */
+"bookmarksImportAction" = "匯入書籤";
 
 /* Title for bookmarks menu item */
 "BookmarksMenuItem" = "書籤";
@@ -359,7 +365,7 @@
 "DeleteLoginButtonTitle" = "刪除";
 
 /* Sync device settings page title. */
-"Devices" = "鏈接一起的裝置";
+"Devices" = "同步鏈上的裝置";
 
 /* Current device model and iOS version copied to clipboard. */
 "DeviceTemplate" = "裝置 %1$@ (%2$@)";
@@ -487,9 +493,6 @@
 /* individual blocking statistic title */
 "FingerprintingMethods" = "指紋識別法";
 
-/* blocking stat title */
-"FingerprintingnProtection" = "指紋識別\n防護";
-
 /* No comment provided by engineer. */
 "FingerprintingProtection" = "封鎖指紋識別";
 
@@ -530,7 +533,7 @@
 "Home" = "主畫面";
 
 /* No comment provided by engineer. */
-"HTTPSEverywhere" = "HTTPS Everywhere";
+"HTTPSEverywhere" = "將連線升級為 HTTPS";
 
 /* No comment provided by engineer. */
 "HTTPSEverywhereDescription" = "使用安全的 HTTPS 連線開啟部分網站，取代普通的 HTTP。";
@@ -543,6 +546,9 @@
 
 /* title for per-site shield toggles */
 "IndividualControls" = "個別控制項";
+
+/* Sync Alert */
+"InvalidSyncCodeDescription" = "同步代碼無效";
 
 /* History tableview section header */
 "LastMonth" = "上個月";
@@ -1039,8 +1045,23 @@
 /* Sync settings section title */
 "Sync" = "同步";
 
-/* Add another device cell button. */
-"SyncAddAnotherDevice" = "新增其他裝置";
+/* Message for popup when the bookmark migration fails */
+"sync.v2MigrationErrorMessage" = "無法移轉書籤，請稍後再試。";
+
+/* Title for popup when the bookmark migration fails */
+"sync.v2MigrationErrorTitle" = "錯誤";
+
+/* Message for popup to inform the user that bookmarks migration is required for sync */
+"sync.v2MigrationMessage" = "若要使用 Brave Sync，您必須先移轉現有書籤，改用新系統。此作業不會刪除書籤。";
+
+/* Button to perform bookmarks migration in order to support sync */
+"sync.v2MigrationOKButton" = "移轉";
+
+/* Title for popup to inform the user that bookmarks migration is required for sync */
+"sync.v2MigrationTitle" = "請先移轉";
+
+/* Add New Device cell button. */
+"SyncAddAnotherDevice" = "新增裝置";
 
 /* Add a Computer title */
 "SyncAddComputerTitle" = "新增電腦";
@@ -1074,6 +1095,9 @@
 
 /* Sync you browser settings across devices. */
 "SyncDevices" = "裝置與設定";
+
+/* Folder name for where bookmarks are imported into when the root folder is not empty. */
+"SyncImportFolderName" = "已匯入的書籤";
 
 /* Message for sync initialization error alert */
 "SyncInitErrorMessage" = "同步代理程式目前處於離線狀態或無法存取。請稍後再試。";
