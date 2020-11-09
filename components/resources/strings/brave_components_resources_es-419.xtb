@@ -700,4 +700,38 @@
 <translation id="5337526542182802976">Pares compatibles</translation>
 <translation id="1164622162816276433">Volumen de 24 h</translation>
 <translation id="3155170474926428993">Selector de Tor</translation>
+<translation id="570208820610947248">Detectamos problemas en su billetera. Debe recuperar la copia de seguridad de su billetera para que se puedan procesar las transacciones.</translation>
+<translation id="7797604753681168055">Recuperar ahora</translation>
+<translation id="5771119664738037159">Las Recompensas Brave no están habilitadas. Habilítalas visitando</translation>
+<translation id="5441565662498481293">Estás enviando automáticamente una propina a:</translation>
+<translation id="7655723274266132226">Ahora mirar publicidades tiene su recompensa.</translation>
+<translation id="4405997465645469914">Al activar las Recompensas de Brave, indicas que has leído y aceptado las</translation>
+<translation id="3745024317593003526">Configurar contribución</translation>
+<translation id="1386745271554473158">Comparte esta buena noticia con los demás:</translation>
+<translation id="4114667046481794032">Monto de la contribución</translation>
+<translation id="7928243298881209869">Tu primera contribución mensual se enviará el:</translation>
+<translation id="7627481505582641588">Próxima contribución</translation>
+<translation id="2391095793008133394">Deja una propina a {{ user }} por su publicación:</translation>
+<translation id="7557413530932469222">Deja una propina a {{ user }} por su publicación</translation>
+<translation id="717513177896084801">Deja una propina a {{ user }}</translation>
+<translation id="121079855621707240">Puedes colaborar con este creador de contenido enviando una contribución mensual. De esa manera, podrás agradecerle por haber creado contenido excelente de forma continua. Los creadores verificados reciben el pago de sus contribuciones durante la primera semana de cada mes calendario.</translation>
+<translation id="1834493631938747505">Cuenta a los demás sobre tu propina.</translation>
+<translation id="8826007068782654809">Gracias</translation>
+<translation id="2305079019697905687">¡Propina enviada!</translation>
+<translation id="4626192591707117844">¡Se ha fijado la contribución mensual!</translation>
+<translation id="6665366815203065060">Has enviado una propina a:</translation>
+<translation id="1605521356929094020">Activar Brave Ads</translation>
+<translation id="3983104749597726322">Tuit</translation>
+<translation id="5636843789453098076">Deja una propina a @{{ user }} por su tuit:</translation>
+<translation id="4242384385082203046">Deja una propina a @{{ user }} por su tuit.</translation>
+<translation id="2549982302631665116">Hoy Brave te da la bienvenida a la nueva Internet; una en la que tu tiempo es valioso, tus datos personales se mantienen resguardados y donde realmente te pagan por tu atención.</translation>
+<translation id="5826706758731195747">Al activar Rewards, aceptas las <ph name="LINK_BEGIN"/>Condiciones de servicio<ph name="LINK_END"/>.</translation>
+<translation id="6778392839723468409">Gana tokens por ver anuncios que respetan la privacidad.</translation>
+<translation id="8315514906653279104">Activando…</translation>
+<translation id="7307847920988946894">Activar Brave Rewards</translation>
+<translation id="662631138774963814">¿Te sientes generoso?</translation>
+<translation id="3264975266761862670">¿Estás listo para comenzar a ganar?</translation>
+<translation id="2542495049135486284">Vuelve a probar Brave Rewards y paga a medida que ganas.</translation>
+<translation id="53513464591392992">Activa Brave Rewards y gana dinero por ver anuncios que respetan tu privacidad.</translation>
+<translation id="8463996294416161140">Activa <ph name="PRODUCT_NAME"/> para reclamar tu parte. También puedes optar por <ph name="LINK_BEGIN"/>ocultar las imágenes patrocinadas<ph name="LINK_END"/>.</translation>
 </translationbundle>

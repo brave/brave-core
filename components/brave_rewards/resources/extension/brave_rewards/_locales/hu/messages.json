@@ -197,6 +197,10 @@
     "message": "Most már pontokat szerezhetsz reklámok megtekintésével.",
     "description": "Message for ads launch notification"
   },
+  "braveAdsLaunchTitle": {
+    "message": "A Brave Ads megérkezett!",
+    "description": "Message used in notification to let users know Ads is available"
+  },
   "braveAdsTitle": {
     "message": "Brave hirdetések",
     "description": "Notification title when we display info about ads"

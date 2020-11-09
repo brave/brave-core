@@ -197,6 +197,10 @@
     "message": "Dabar galite užsidirbti už reklamos peržiūrą.",
     "description": "Message for ads launch notification"
   },
+  "braveAdsLaunchTitle": {
+    "message": "„Brave Ads“ jau čia!",
+    "description": "Message used in notification to let users know Ads is available"
+  },
   "braveAdsTitle": {
     "message": "„Brave“ reklamos",
     "description": "Notification title when we display info about ads"

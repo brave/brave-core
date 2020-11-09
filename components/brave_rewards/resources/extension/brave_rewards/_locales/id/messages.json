@@ -197,6 +197,10 @@
     "message": "Sekarang Anda bisa mendapatkan penghasilan dari melihat iklan.",
     "description": "Message for ads launch notification"
   },
+  "braveAdsLaunchTitle": {
+    "message": "Brave Ads telah tiba!",
+    "description": "Message used in notification to let users know Ads is available"
+  },
   "braveAdsTitle": {
     "message": "Brave Ads",
     "description": "Notification title when we display info about ads"

@@ -197,6 +197,10 @@
     "message": "يمكنك أن تربح الآن من خلال عرض الإعلانات.",
     "description": "Message for ads launch notification"
   },
+  "braveAdsLaunchTitle": {
+    "message": "لقد وصلت إعلانات Brave!",
+    "description": "Message used in notification to let users know Ads is available"
+  },
   "braveAdsTitle": {
     "message": " إعلانات Brave",
     "description": "Notification title when we display info about ads"

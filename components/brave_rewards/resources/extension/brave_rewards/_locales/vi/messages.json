@@ -197,6 +197,10 @@
     "message": "Giờ đây bạn có thể kiếm tiền bằng cách xem quảng cáo.",
     "description": "Message for ads launch notification"
   },
+  "braveAdsLaunchTitle": {
+    "message": "Brave Ads đã xuất hiện!",
+    "description": "Message used in notification to let users know Ads is available"
+  },
   "braveAdsTitle": {
     "message": "Quảng cáo Brave",
     "description": "Notification title when we display info about ads"

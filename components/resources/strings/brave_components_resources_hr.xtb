@@ -700,4 +700,38 @@
 <translation id="5337526542182802976">Podržani parovi</translation>
 <translation id="1164622162816276433">Volumen u 24 h</translation>
 <translation id="3155170474926428993">Pokretač funkcije Tor</translation>
+<translation id="570208820610947248">Otkrili smo da nešto nije u redu s vašim novčanikom. Morate oporaviti sigurnosnu kopiju svojeg novčanika da bi moglo doći do obrade bilo kakvih transakcija.</translation>
+<translation id="7797604753681168055">Oporavi odmah!</translation>
+<translation id="5771119664738037159">Nagrade Brave nisu omogućene. Omogućite ih posjećivanjem</translation>
+<translation id="5441565662498481293">Automatski šaljete napojnicu:</translation>
+<translation id="7655723274266132226">Sada možete zarađivati pregledavanjem oglasa.</translation>
+<translation id="4405997465645469914">Uključivanjem značajke nagrade Brave naznačujete da ste pročitali i prihvaćate</translation>
+<translation id="3745024317593003526">Postavi doprinos</translation>
+<translation id="1386745271554473158">Podijelite dobre vijesti:</translation>
+<translation id="4114667046481794032">Iznos doprinosa</translation>
+<translation id="7928243298881209869">Vaš se prvi mjesečni doprinos šalje dana:</translation>
+<translation id="7627481505582641588">Sljedeći doprinos</translation>
+<translation id="2391095793008133394">Nagradite korisnika {{ user }} za objavu:</translation>
+<translation id="7557413530932469222">Nagradite korisnika {{ user }} za objavu!</translation>
+<translation id="717513177896084801">Napojnica za korisnika {{ user }}</translation>
+<translation id="121079855621707240">Postavljanjem mjesečnog doprinosa možete podržati ovog stvaratelja sadržaja. Na ovaj se način zahvaljujete za odličan sadržaj koji se svakodnevno stvara. Potvrđenim se stvarateljima sadržaja isplaćuju doprinosi tijekom prvog tjedna svakog kalendarskog mjeseca.</translation>
+<translation id="1834493631938747505">Recite drugima o vašoj napojnici.</translation>
+<translation id="8826007068782654809">Hvala</translation>
+<translation id="2305079019697905687">Poslana napojnica!</translation>
+<translation id="4626192591707117844">Mjesečni je doprinos postavljen!</translation>
+<translation id="6665366815203065060">Upravo ste poslali napojnicu:</translation>
+<translation id="1605521356929094020">Uključi oglase Brave</translation>
+<translation id="3983104749597726322">Tweet</translation>
+<translation id="5636843789453098076">Daj napojnicu korisniku @{{ user }} za njegov tweet:</translation>
+<translation id="4242384385082203046">Daj napojnicu korisniku @{{ user }} za njegov tweet!</translation>
+<translation id="2549982302631665116">Društvo Brave vam danas predstavlja novi internet. Internet na kojem se cijeni vaše vrijeme, štiti privatnost vaših podataka te vam se zapravo plaća za pridanu pažnju.</translation>
+<translation id="5826706758731195747">Uključivanjem značajke Rewards slažete se s <ph name="LINK_BEGIN"/>Odredbama pružanja usluge<ph name="LINK_END"/>.</translation>
+<translation id="6778392839723468409">Zarađujte tokene za gledanje oglasa kojima se poštuje privatnost.</translation>
+<translation id="8315514906653279104">Uključivanje...</translation>
+<translation id="7307847920988946894">Uključi Nagrade</translation>
+<translation id="662631138774963814">Osjećate li se velikodušnim?</translation>
+<translation id="3264975266761862670">Spremni ste da počnete zarađivati?</translation>
+<translation id="2542495049135486284">Ponovno isprobajte Nagrade Brave i isplaćujte ih kako ih zarađujete!</translation>
+<translation id="53513464591392992">Uključite značajku Brave Rewards i zarađujte pregledavanjem oglasa kojima se poštuje privatnost.</translation>
+<translation id="8463996294416161140">Uključite <ph name="PRODUCT_NAME"/> za potraživanje svojeg udjela. Možete i <ph name="LINK_BEGIN"/>sakriti sponzorirane slike<ph name="LINK_END"/>.</translation>
 </translationbundle>

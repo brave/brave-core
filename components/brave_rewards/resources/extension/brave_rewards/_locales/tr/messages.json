@@ -197,6 +197,10 @@
     "message": "Şimdi reklam izleyerek kazanabilirsin.",
     "description": "Message for ads launch notification"
   },
+  "braveAdsLaunchTitle": {
+    "message": "Brave Reklamları geldi!",
+    "description": "Message used in notification to let users know Ads is available"
+  },
   "braveAdsTitle": {
     "message": "Brave Reklamları",
     "description": "Notification title when we display info about ads"

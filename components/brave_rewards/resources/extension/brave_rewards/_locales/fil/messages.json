@@ -197,6 +197,10 @@
     "message": "Maaari ka nang kumita ngayon sa pamamagitan ng panonood ng mga ad.",
     "description": "Message for ads launch notification"
   },
+  "braveAdsLaunchTitle": {
+    "message": "Dumating na ang Brave Ads!",
+    "description": "Message used in notification to let users know Ads is available"
+  },
   "braveAdsTitle": {
     "message": "Brave Ads",
     "description": "Notification title when we display info about ads"

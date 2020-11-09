@@ -197,6 +197,10 @@
     "message": "Тепер ви можете заробляти, переглядаючи рекламні оголошення.",
     "description": "Message for ads launch notification"
   },
+  "braveAdsLaunchTitle": {
+    "message": "Brave Ads уже тут!",
+    "description": "Message used in notification to let users know Ads is available"
+  },
   "braveAdsTitle": {
     "message": "Оголошення Brave",
     "description": "Notification title when we display info about ads"

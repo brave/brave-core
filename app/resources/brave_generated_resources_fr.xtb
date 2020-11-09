@@ -252,4 +252,15 @@ En installant cette extension, vous acceptez les conditions d'utilisation de Goo
 <translation id="8487693399751278191">Importer des signets maintenant...</translation>
 <translation id="2557899542277210112">Pour un accès rapide, placez vos signets ici sur la barre de signets.</translation>
 <translation id="2808630562319398131">Réinitialiser les données de Brave Rewards...</translation>
+<translation id="8760415064721320867">Navigation privée avec Tor</translation>
+<translation id="7635711399568194460">Masque le bouton Brave Rewards dans la barre d’emplacement lorsque Brave Rewards n’est pas activé.</translation>
+<translation id="1520361618554057102">Toujours afficher les signets sur la page « Nouvel onglet »</translation>
+<translation id="2467749191278759605">Personnalisez votre tableau de bord Brave</translation>
+<translation id="3155170474926428993">Lanceur Tor</translation>
+<translation id="519861640102428255">Apparence</translation>
+<translation id="8942080017911802454">Politique de gestion des adresses IP WebRTC</translation>
+<translation id="8502234992433094996">Utilisez les services Google pour les messages push</translation>
+<translation id="24067401253841795">Entrez les mots de code de la chaîne de synchronisation affichés ci-dessous. Considérez ce code comme un mot de passe. Si quelqu'un s'en empare, il pourra lire et modifier vos données synchronisées.</translation>
+<translation id="6696935187608454456">Conseils d'utilisation</translation>
+<translation id="5501596373144334003">Brave a besoin de l'accès complet au disque dur pour importer vos signets et votre historique de Safari.</translation>
 </translationbundle>

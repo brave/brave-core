@@ -700,4 +700,38 @@
 <translation id="5337526542182802976">Támogatott párok</translation>
 <translation id="1164622162816276433">24HR mennyiség</translation>
 <translation id="3155170474926428993">Tor indítóprogram</translation>
+<translation id="570208820610947248">Úgy tűnik valami baj van pénztárcájával. Mielőtt bármilyen további tranzakciót végrehajtana, szükség van pénztárcája biztonsági mentésének visszaállítására.</translation>
+<translation id="7797604753681168055">Visszaállítás most!</translation>
+<translation id="5771119664738037159">Brave Rewards nincs engedélyezve. Keresse fel az engedélyezéshez</translation>
+<translation id="5441565662498481293">Automatikusan borravalót küldesz ide:</translation>
+<translation id="7655723274266132226">Most már pontokat szerezhetsz reklámok megtekintésével.</translation>
+<translation id="4405997465645469914">A Brave Jutalmak bekapcsolásával jelzed, hogy elolvastad és elfogadtad ezt:</translation>
+<translation id="3745024317593003526">Hozzájárulás megadása</translation>
+<translation id="1386745271554473158">Ossza meg a jó hírt:</translation>
+<translation id="4114667046481794032">Hozzájárulás összege</translation>
+<translation id="7928243298881209869">Az első havi hozzájárulása ekkor lesz elküldve:</translation>
+<translation id="7627481505582641588">Következő hozzájárulás</translation>
+<translation id="2391095793008133394">Küldj borravalót {{ user }} felhasználónak a bejegyzéséért:</translation>
+<translation id="7557413530932469222">Küldj borravalót {{ user }} felhasználónak a bejegyzéséért:</translation>
+<translation id="717513177896084801">Borravaló neki: {{ user }}</translation>
+<translation id="121079855621707240">Ezt a tartalomkészítőt havi hozzájárulásokkal támogathatja. Ez egy módja a köszönetnek, amiért folyamatosan nagyszerű tartalmakat tölt fel. A hitelesített tartalomkészítők minden hónap első hetében fizetést kapnak a hozzájárulásokból.</translation>
+<translation id="1834493631938747505">Beszélj másoknak is a támogatásodról!</translation>
+<translation id="8826007068782654809">Köszönjük</translation>
+<translation id="2305079019697905687">Borravaló elküldve!</translation>
+<translation id="4626192591707117844">Havi hozzájárulás be lett állítva!</translation>
+<translation id="6665366815203065060">Borravalót küldött neki:</translation>
+<translation id="1605521356929094020">Brave Ads bekapcsolása</translation>
+<translation id="3983104749597726322">Tweet</translation>
+<translation id="5636843789453098076">Küldj jattot ennek a felhasználónak: @{{ user }} a tweetje miatt!</translation>
+<translation id="4242384385082203046">Küldj jattot ennek a felhasználónak: @{{ user }} a tweetje miatt!</translation>
+<translation id="2549982302631665116">A mai napon az új interneten köszönt a Brave. Azon, ahol az időd értékes, személyes adataidat biztonságban tartják, és figyelmedet megfizetik.</translation>
+<translation id="5826706758731195747">A Rewards bekapcsolásával, beleegyezik a <ph name="LINK_BEGIN"/>Szolgáltatási feltételekbe<ph name="LINK_END"/>.</translation>
+<translation id="6778392839723468409">Szerezzen zsetonokat adatvédelmet megőrző hirdetésekkel.</translation>
+<translation id="8315514906653279104">Bekapcsolás...</translation>
+<translation id="7307847920988946894">Rewards bekapcsolása</translation>
+<translation id="662631138774963814">Adakozó kedvében van?</translation>
+<translation id="3264975266761862670">Készen áll pénzt keresni?</translation>
+<translation id="2542495049135486284">Próbálja ki újra a Brave Rewardsot, és adja tovább, ahogy keres!</translation>
+<translation id="53513464591392992">Kapcsolja be a Brave Rewards-ot és keressen pénzt adatvédelmet tisztelő hirdetésekkel.</translation>
+<translation id="8463996294416161140">Kapcsolja be a <ph name="PRODUCT_NAME"/> funkciót, hogy megkapja a részesedését. Ha szeretné, <ph name="LINK_BEGIN"/>el is rejtheti a szponzorált képeket<ph name="LINK_END"/>.</translation>
 </translationbundle>

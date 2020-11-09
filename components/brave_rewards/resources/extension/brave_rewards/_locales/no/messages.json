@@ -197,6 +197,10 @@
     "message": "Nå kan du tjene på å se annonser.",
     "description": "Message for ads launch notification"
   },
+  "braveAdsLaunchTitle": {
+    "message": "Brave-annonser er her!",
+    "description": "Message used in notification to let users know Ads is available"
+  },
   "braveAdsTitle": {
     "message": "Brave-annonser",
     "description": "Notification title when we display info about ads"

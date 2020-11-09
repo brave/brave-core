@@ -362,12 +362,12 @@ pole...</translation>
 <translation id="7427567994475794038">Lülita sisse privaatsusaruanded, et näha, kui palju jälitajaid ja reklaame on blokeeritud viimase 3 tunni jooksul.</translation>
 <translation id="2053891538879944400">Salvestasid Brave'i brauseris <ph name="DATA"/> <ph name="DATA_TEXT"/> andmed.</translation>
 <translation id="8640064498452534195">Lülita sisse privaatsusaruanded, et näha, kui palju andmemahtu oled säästnud.</translation>
-<translation id="2252497442547961651">Brave'i brauser kasutab keskmiselt 40% vähem akut.&#128267;</translation>
+<translation id="2252497442547961651">Brave'i brauser kasutab keskmiselt 40% vähem akut.🔋</translation>
 <translation id="1945330434665345785">Blokeerisid eelmisel nädalal Brave'i brauseris <ph name="COUNT"/> jälitajat ja reklaami.</translation>
 <translation id="2883868922264431515">Teeni tokeneid privaatsust austavate reklaamide vaatamise eest ja toeta oma lemmikuid veebilehti.</translation>
-<translation id="5678925890616256956">Tubli! Oled Brave'i brauseris blokeerinud 250 jälitajat ja reklaami.&#128293;</translation>
-<translation id="9199047775708635708">Tubli! Oled Brave'i brauseris säästnud 10 MB andmemahtu.&#128267;</translation>
-<translation id="1880168210969863408">Tubli! Oled Brave'i brauseris säästnud 10 min laadimisaega.&#128168;&#128168;</translation>
+<translation id="5678925890616256956">Tubli! Oled Brave'i brauseris blokeerinud 250 jälitajat ja reklaami.🔥</translation>
+<translation id="9199047775708635708">Tubli! Oled Brave'i brauseris säästnud 10 MB andmemahtu.🔋</translation>
+<translation id="1880168210969863408">Tubli! Oled Brave'i brauseris säästnud 10 min laadimisaega.💨💨</translation>
 <translation id="7408493389591475748">Privaatsusaruannete vaatamiseks alusta sirvimist</translation>
 <translation id="9080777565335515917">Privaatseks ja turvaliseks sirvimiseks määra Brave vaikebrauseriks.</translation>
 <translation id="7801488941710395275">Võimaldab Brave'il kuvada sinu privaatsuse statistikat.</translation>
@@ -419,4 +419,20 @@ pole...</translation>
 <translation id="3733576242118819803">Kinnita (<ph name="REMAINING_TIME"/>s)</translation>
 <translation id="1627064138060308910">Teisendamine nurjus. Proovige uuesti.</translation>
 <translation id="1449790603979388000"><ph name="COUNT"/> <ph name="COUNT_TEXT"/></translation>
+<translation id="5916664084637901428">Sees</translation>
+<translation id="5860033963881614850">Väljas</translation>
+<translation id="5317780077021120954">Salvesta</translation>
+<translation id="2359808026110333948">Jätka</translation>
+<translation id="7658239707568436148">Tühista</translation>
+<translation id="8193724030871339658">MUUD AHELASSE KUULUVAD SEADMED</translation>
+<translation id="4690880825349994619">Ava olemasolevast ajakohastatud seadmest Brave’i seaded ja mine „Seaded &gt; Ajakohastamine“. Vali „Lisa seade“ ja skanni ekraanil näidatavat QR-koodi.</translation>
+<translation id="3394474617110693560">Kategooriad</translation>
+<translation id="2004365171440701679">Eemalda see seade</translation>
+<translation id="6450924769151530465">Lisa veel üks seade</translation>
+<translation id="6270614677029463366">Ava olemasolevast ajakohastatud seadmest Brave’i seaded ja mine „Seaded &gt; Ajakohastamine“. Vali „Lisa seade“, seejärel „Näita hoopis koodisõnu.</translation>
+<translation id="7655723274266132226">Nüüd võid teenida reklaamide vaatamisega.</translation>
+<translation id="1605521356929094020">Lülita sisse Brave'i reklaamid</translation>
+<translation id="1873603368604736484">Lülitades sisse funktsiooni „Teeni“, nõustud tingimustega <ph name="TERMS_OF_SERVICE"/>.</translation>
+<translation id="7894626572714595717">Teeni selle pildi vaatamiseks tokeneid. Lülita sisse Brave Ads, et nõuda oma osa.</translation>
+<translation id="6165508094623778733">Lisateave</translation>
 </translationbundle>

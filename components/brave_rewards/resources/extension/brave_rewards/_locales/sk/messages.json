@@ -197,6 +197,10 @@
     "message": "Teraz môžete zarobiť na prehliadaných reklamách.",
     "description": "Message for ads launch notification"
   },
+  "braveAdsLaunchTitle": {
+    "message": "Reklamy Brave sú už tu!",
+    "description": "Message used in notification to let users know Ads is available"
+  },
   "braveAdsTitle": {
     "message": "Reklamy Brave",
     "description": "Notification title when we display info about ads"

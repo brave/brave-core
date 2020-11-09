@@ -197,6 +197,10 @@
     "message": "Agora já pode ganhar ao ver anúncios.",
     "description": "Message for ads launch notification"
   },
+  "braveAdsLaunchTitle": {
+    "message": "Os Brave Ads chegaram!",
+    "description": "Message used in notification to let users know Ads is available"
+  },
   "braveAdsTitle": {
     "message": "Anúncios Brave",
     "description": "Notification title when we display info about ads"

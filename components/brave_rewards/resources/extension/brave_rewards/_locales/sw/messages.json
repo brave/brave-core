@@ -197,6 +197,10 @@
     "message": "Sasa unaweza kupata kipato kwa kutazama matangazo!",
     "description": "Message for ads launch notification"
   },
+  "braveAdsLaunchTitle": {
+    "message": "Matangazo ya Brave yamewasili!",
+    "description": "Message used in notification to let users know Ads is available"
+  },
   "braveAdsTitle": {
     "message": "Matangazo ya Brave",
     "description": "Notification title when we display info about ads"

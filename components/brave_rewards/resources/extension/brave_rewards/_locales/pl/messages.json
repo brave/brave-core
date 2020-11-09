@@ -197,6 +197,10 @@
     "message": "Możesz zarabiać oglądając reklamy.",
     "description": "Message for ads launch notification"
   },
+  "braveAdsLaunchTitle": {
+    "message": "Reklamy Brave są już dostępne!",
+    "description": "Message used in notification to let users know Ads is available"
+  },
   "braveAdsTitle": {
     "message": "Reklamy Brave",
     "description": "Notification title when we display info about ads"

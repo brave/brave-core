@@ -197,6 +197,10 @@
     "message": "আপনি ব্রেভ বিজ্ঞাপন থেকে টোকেন উপার্জন করতে পারেন|",
     "description": "Message for ads launch notification"
   },
+  "braveAdsLaunchTitle": {
+    "message": "এসে গেল Brave বিজ্ঞাপন!",
+    "description": "Message used in notification to let users know Ads is available"
+  },
   "braveAdsTitle": {
     "message": "Brave বিজ্ঞাপন",
     "description": "Notification title when we display info about ads"

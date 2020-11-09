@@ -197,6 +197,10 @@
     "message": "Τώρα μπορείτε να κερδίζετε βλέποντας διαφημίσεις.",
     "description": "Message for ads launch notification"
   },
+  "braveAdsLaunchTitle": {
+    "message": "Έφθασαν οι Διαφημίσεις Brave!",
+    "description": "Message used in notification to let users know Ads is available"
+  },
   "braveAdsTitle": {
     "message": "Διαφημίσεις Brave",
     "description": "Notification title when we display info about ads"

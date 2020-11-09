@@ -197,6 +197,10 @@
     "message": "รับรางวัลด้วยการชมโฆษณาได้แล้วตอนนี้",
     "description": "Message for ads launch notification"
   },
+  "braveAdsLaunchTitle": {
+    "message": "Brave Ads มาแล้ว!",
+    "description": "Message used in notification to let users know Ads is available"
+  },
   "braveAdsTitle": {
     "message": "เบรฟ แอดส์ (Brave Ads)",
     "description": "Notification title when we display info about ads"

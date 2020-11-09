@@ -197,6 +197,10 @@
     "message": "Сега може да печелите, като разглеждате реклами.",
     "description": "Message for ads launch notification"
   },
+  "braveAdsLaunchTitle": {
+    "message": "Brave рекламите са тук!",
+    "description": "Message used in notification to let users know Ads is available"
+  },
   "braveAdsTitle": {
     "message": "Реклами в Brave",
     "description": "Notification title when we display info about ads"

@@ -700,4 +700,38 @@
 <translation id="5337526542182802976">Podprti pari</translation>
 <translation id="1164622162816276433">24-urna količina</translation>
 <translation id="3155170474926428993">Zaganjalnik brskalnika Tor</translation>
+<translation id="570208820610947248">Zaznali smo težave z vašo denarnico. Pred nadaljnjo obdelavo transakcij morate obnoviti svojo varnostno kopijo denarnice.</translation>
+<translation id="7797604753681168055">Obnovite zdaj!</translation>
+<translation id="5771119664738037159">Storitev Brave Rewards ni omogočena. Omogočite jo tako, da obiščete</translation>
+<translation id="5441565662498481293">Samodejno pošiljate donacijo prejemniku:</translation>
+<translation id="7655723274266132226">Zdaj lahko zaslužite z ogledom oglasov.</translation>
+<translation id="4405997465645469914">Z vklopom nagrad Brave Rewards potrjujete, da ste prebrali in da se strinjate s/z</translation>
+<translation id="3745024317593003526">Nastavite prispevek</translation>
+<translation id="1386745271554473158">Delite dobro novico:</translation>
+<translation id="4114667046481794032">Znesek donacije</translation>
+<translation id="7928243298881209869">Vaša prvi mesečni prispevek bo poslan dne:</translation>
+<translation id="7627481505582641588">Naslednji prispevek</translation>
+<translation id="2391095793008133394">Donacija uporabniku {{ user }} za objavo:</translation>
+<translation id="7557413530932469222">Donacija uporabniku {{ user }} za objavo!</translation>
+<translation id="717513177896084801">Donacija uporabniku {{ user }}</translation>
+<translation id="121079855621707240">Tega ustvarjalca vsebine lahko podprete z mesečnim prispevkom. Tako se mu lahko zahvalite za odlično vsebino. Potrjeni ustvarjalci prejmejo plačilo za njihove donacije v prvem tednu posameznega koledarskega meseca.</translation>
+<translation id="1834493631938747505">Druge obvestite o svoji donaciji.</translation>
+<translation id="8826007068782654809">Hvala.</translation>
+<translation id="2305079019697905687">Nasvet poslan!</translation>
+<translation id="4626192591707117844">Mesečna donacija je bila nastavljena!</translation>
+<translation id="6665366815203065060">Pravkar ste poslali donacijo prejemniku:</translation>
+<translation id="1605521356929094020">Vklopite oglase Brave</translation>
+<translation id="3983104749597726322">Tvit</translation>
+<translation id="5636843789453098076">Donacija uporabniku @{{ user }} za tvit:</translation>
+<translation id="4242384385082203046">Donacija uporabniku @{{ user }} za tvit!</translation>
+<translation id="2549982302631665116">Brskalnik Brave vam izreka dobrodošlico v dobi novega interneta – takšnega, v katerem je vaš čas cenjen, vaši osebni podatki ostanejo zasebni, vi pa za pozornost, ki jo namenite oglasom, prejmete plačilo.</translation>
+<translation id="5826706758731195747">Z vklopom storitve Rewards se strinjate s <ph name="LINK_BEGIN"/>Pogoji poslovanja<ph name="LINK_END"/>.</translation>
+<translation id="6778392839723468409">Z ogledom oglasov, ki spoštujejo zasebnost, pridobi žetone.</translation>
+<translation id="8315514906653279104">Vklop...</translation>
+<translation id="7307847920988946894">Vklopi nagrade</translation>
+<translation id="662631138774963814">Se počutite radodarno?</translation>
+<translation id="3264975266761862670">Ste pripravljeni, da začnete služiti?</translation>
+<translation id="2542495049135486284">Poskusite znova nagrade Brave Rewards in jih plačajte, ko zaslužite!</translation>
+<translation id="53513464591392992">Poskusite znova nagrade Brave Rewards in prejmite plačilo za ogled oglasov, ki spoštujejo zasebnost.</translation>
+<translation id="8463996294416161140">Vklopite storitev <ph name="PRODUCT_NAME"/> da pridobite svoj delež. Izberete lahko tudi <ph name="LINK_BEGIN"/>skrij sponzorirane slike<ph name="LINK_END"/>.</translation>
 </translationbundle>

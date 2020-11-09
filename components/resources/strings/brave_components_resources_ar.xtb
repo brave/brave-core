@@ -700,4 +700,38 @@
 <translation id="5337526542182802976">الأزواج المدعومة</translation>
 <translation id="1164622162816276433">حجم المعاملات خلال 24 ساعة</translation>
 <translation id="3155170474926428993">مشغِّل تور</translation>
+<translation id="570208820610947248">اكتشفنا وجود خطأ في محفظتك، ولذلك يجب استرداد النسخة الاحتياطية منها قبل معالجة أي معاملات.</translation>
+<translation id="7797604753681168055">الاسترداد الآن</translation>
+<translation id="5771119664738037159">لم يتم تمكين Brave Rewards. قم بتمكينه بزيارة</translation>
+<translation id="5441565662498481293">إنك ترسل الإكراميات تلقائيًا إلى:</translation>
+<translation id="7655723274266132226">الآن يمكنك أن تربح من خلال عرض الإعلانات.</translation>
+<translation id="4405997465645469914">عن طريق تشغيل مكافآت Brave، فإنك تشير إلى أنك قد قرأت ووافقت على</translation>
+<translation id="3745024317593003526">تعيين المساهمة</translation>
+<translation id="1386745271554473158">انشر الأخبار السارة:</translation>
+<translation id="4114667046481794032">مقدار المساهمة</translation>
+<translation id="7928243298881209869">سيتم إرسال مساهمتك الشهرية الأولى في:</translation>
+<translation id="7627481505582641588">المساهمة التالية</translation>
+<translation id="2391095793008133394">قم بإرشاد {{ user }} بشأن منشورهم:</translation>
+<translation id="7557413530932469222">قم بإرشاد {{ user }} بشأن منشورهم!</translation>
+<translation id="717513177896084801">تلميح {{ user }}</translation>
+<translation id="121079855621707240">يمكنك دعم منشئ المحتوى هذا عن طريق تعيين اشتراك شهري. إنها ’s طريقة لشكرهم على تقديم محتوى رائع بشكل مستمر. يتقاضى منشئو المحتوى المعتمدون اشتراكاتهم خلال الأسبوع الأول من كل شهر.</translation>
+<translation id="1834493631938747505">أخبر الآخرين عن إكراميتك.</translation>
+<translation id="8826007068782654809">شكراً لك</translation>
+<translation id="2305079019697905687">تم إرسال الإكرامية!</translation>
+<translation id="4626192591707117844">تم تعيين المساهمة الشهرية!</translation>
+<translation id="6665366815203065060">تم إرسال إكراميتك للتو إلى:</translation>
+<translation id="1605521356929094020">قم بتشغيل Brave Ads</translation>
+<translation id="3983104749597726322">تغريد</translation>
+<translation id="5636843789453098076">أعط @{{user}} إكرامية على تغريدته!</translation>
+<translation id="4242384385082203046">أعط @{{user}} إكرامية على تغريدته!</translation>
+<translation id="2549982302631665116">اليوم، يرحب بك Brave في الإنترنت الجديد. بما أن وقتك ثمين، يتم الاحتفاظ ببياناتك الشخصية الخاصة، وتحصل على المال مقابل اهتمامك.</translation>
+<translation id="5826706758731195747">بتشغيلك لـ Rewards، فإنك توافق على <ph name="LINK_BEGIN"/>شروط الخدمة<ph name="LINK_END"/>.</translation>
+<translation id="6778392839723468409">اربح عملات رمزية من خلال عرض الإعلانات التي تحترم الخصوصية.</translation>
+<translation id="8315514906653279104">جاري التشغيل...</translation>
+<translation id="7307847920988946894">تشغيل المكافآت</translation>
+<translation id="662631138774963814">هل تشعر بالسخاء؟</translation>
+<translation id="3264975266761862670">هل أنت مستعد لبدء الكسب؟</translation>
+<translation id="2542495049135486284">جرب مكافآت Brave مرة أخرى ورد الصنيع أثناء كسبك!</translation>
+<translation id="53513464591392992">قم بتشغيل Brave Rewards واحصل على أموال لعرض إعلانات تحترم الخصوصية.</translation>
+<translation id="8463996294416161140">قم بتشغيل <ph name="PRODUCT_NAME"/> لتقاضي نصيبك. يمكنك كذلك اختيار <ph name="LINK_BEGIN"/>إخفاء صور الرعاة الدعائية<ph name="LINK_END"/>.</translation>
 </translationbundle>

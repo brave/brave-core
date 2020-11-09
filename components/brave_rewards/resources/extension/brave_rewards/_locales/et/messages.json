@@ -197,6 +197,10 @@
     "message": "Nüüd võid teenida reklaamide vaatamisega.",
     "description": "Message for ads launch notification"
   },
+  "braveAdsLaunchTitle": {
+    "message": "Brave’i reklaamid on lisandunud!",
+    "description": "Message used in notification to let users know Ads is available"
+  },
   "braveAdsTitle": {
     "message": "Brave'i reklaamid",
     "description": "Notification title when we display info about ads"

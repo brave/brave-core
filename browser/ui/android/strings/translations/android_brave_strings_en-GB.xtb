@@ -356,12 +356,12 @@ month ...</translation>
 <translation id="7427567994475794038">Turn on privacy reports to see how many trackers &amp; ads have been blocked in the past 3 hours.</translation>
 <translation id="2053891538879944400">You saved <ph name="DATA"/> <ph name="DATA_TEXT"/> data with Brave browser.</translation>
 <translation id="8640064498452534195">Turn on privacy reports to see how much data you've saved.</translation>
-<translation id="2252497442547961651">Brave browser uses 40% less battery on average.&#128267;</translation>
+<translation id="2252497442547961651">Brave browser uses 40% less battery on average.🔋</translation>
 <translation id="1945330434665345785">You blocked <ph name="COUNT"/> trackers &amp; ads with Brave browser last week.</translation>
 <translation id="2883868922264431515">Earn tokens by viewing privacy-respecting ads and support your favourite websites.</translation>
-<translation id="5678925890616256956">Nice! You've blocked 250 trackers &amp; ads with Brave browser.&#128293;</translation>
-<translation id="9199047775708635708">Nice! You've saved 10 MB with Brave browser.&#128267;</translation>
-<translation id="1880168210969863408">Nice! You've saved 10 mins of loading time with Brave browser.&#128168;&#128168;</translation>
+<translation id="5678925890616256956">Nice! You've blocked 250 trackers &amp; ads with Brave browser.🔥</translation>
+<translation id="9199047775708635708">Nice! You've saved 10 MB with Brave browser.🔋</translation>
+<translation id="1880168210969863408">Nice! You've saved 10 mins of loading time with Brave browser.💨💨</translation>
 <translation id="7408493389591475748">Start browsing to see privacy reporting</translation>
 <translation id="9080777565335515917">Set Brave as your default browser for private and secure browsing.</translation>
 <translation id="7801488941710395275">Allows Brave to show your privacy statistics</translation>
@@ -413,4 +413,20 @@ month ...</translation>
 <translation id="3733576242118819803">Confirm (<ph name="REMAINING_TIME"/>s)</translation>
 <translation id="1627064138060308910">Conversion Failed. Please try again.</translation>
 <translation id="1449790603979388000"><ph name="COUNT"/> <ph name="COUNT_TEXT"/></translation>
+<translation id="5916664084637901428">On</translation>
+<translation id="5860033963881614850">Off</translation>
+<translation id="5317780077021120954">Save</translation>
+<translation id="2359808026110333948">Continue</translation>
+<translation id="7658239707568436148">Cancel</translation>
+<translation id="8193724030871339658">OTHER DEVICES ON CHAIN</translation>
+<translation id="4690880825349994619">Using existing synced device, open Brave Settings and navigate to Settings &gt; Sync. Choose "Add Device" and scan the QR code displayed on the screen.</translation>
+<translation id="3394474617110693560">Categories</translation>
+<translation id="2004365171440701679">Remove this device</translation>
+<translation id="6450924769151530465">Add another device</translation>
+<translation id="6270614677029463366">Using existing synced device, open Brave Settings and navigate to Settings &gt; Sync. Choose "Add Device" then "Display code words instead".</translation>
+<translation id="7655723274266132226">Now you can earn by viewing ads.</translation>
+<translation id="1605521356929094020">Turn on Brave Ads</translation>
+<translation id="1873603368604736484">By turning on Rewards, you agree to the <ph name="TERMS_OF_SERVICE"/>.</translation>
+<translation id="7894626572714595717">Earn tokens for viewing this image. Turn on Brave Ads to claim your share.</translation>
+<translation id="6165508094623778733">Learn more</translation>
 </translationbundle>

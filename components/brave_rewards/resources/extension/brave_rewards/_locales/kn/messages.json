@@ -197,6 +197,10 @@
     "message": "ಈಗ ನೀವು ಜಾಹೀರಾತುಗಳನ್ನು ವೀಕ್ಷಿಸುವ ಮೂಲಕ ಗಳಿಸಬಹುದು.",
     "description": "Message for ads launch notification"
   },
+  "braveAdsLaunchTitle": {
+    "message": "Brave ಜಾಹೀರಾತುಗಳು ತಲುಪಿವೆ!",
+    "description": "Message used in notification to let users know Ads is available"
+  },
   "braveAdsTitle": {
     "message": "Brave ಜಾಹೀರಾತುಗಳು",
     "description": "Notification title when we display info about ads"

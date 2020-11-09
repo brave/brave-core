@@ -369,12 +369,12 @@ hónapban...</translation>
 <translation id="7427567994475794038">Kapcsold be az adatvédelmi jelentéseket, hogy lásd mennyi hirdetés és követő lett letiltva az elmúlt 3 órában.</translation>
 <translation id="2053891538879944400"><ph name="DATA"/> <ph name="DATA_TEXT"/> adatot spóroltál a Brave böngészővel.</translation>
 <translation id="8640064498452534195">Kapcsold be az adatvédelmi jelentéseket, hogy lásd mennyi adatot spóroltál.</translation>
-<translation id="2252497442547961651">A Brave böngésző átlagosan 40%-kal kevesebb akkumulátort használ.&#128267;</translation>
+<translation id="2252497442547961651">A Brave böngésző átlagosan 40%-kal kevesebb akkumulátort használ.🔋</translation>
 <translation id="1945330434665345785">Az elmúlt héten <ph name="COUNT"/> követőt és reklámot blokkoltál a Brave böngészővel.</translation>
 <translation id="2883868922264431515">Szerezz tokeneket magánéletet tiszteletben tartó reklámok nézésével, és támogasd kedvenc weboldalaidat.</translation>
-<translation id="5678925890616256956">Remek! Blokkolt 250 követőt &amp; hirdetést a Brave böngészővel.&#128293;</translation>
+<translation id="5678925890616256956">Remek! Blokkolt 250 követőt &amp; hirdetést a Brave böngészővel.🔥</translation>
 <translation id="9199047775708635708">Nagyszerű! Már 10MB-ot takarított meg a Brave böngészővel.</translation>
-<translation id="1880168210969863408">Nagyszerű! 10 perc töltési időt spórolt meg a Brave böngészővel.&#128168;&#128168;</translation>
+<translation id="1880168210969863408">Nagyszerű! 10 perc töltési időt spórolt meg a Brave böngészővel.💨💨</translation>
 <translation id="7408493389591475748">Az adatvédelmi jelentés megtekintéséhez kezdj el böngészni</translation>
 <translation id="9080777565335515917">Tedd a Brave-et alapértelmezett böngésződdé, hogy a böngészés privát és biztonságos legyen.</translation>
 <translation id="7801488941710395275">Engedélyezi, hogy a Brave megmutassa adatvédelmi statisztikáidat</translation>
@@ -426,4 +426,20 @@ hónapban...</translation>
 <translation id="3733576242118819803">Megerősítés: (<ph name="REMAINING_TIME"/>s)</translation>
 <translation id="1627064138060308910">Az átváltás nem sikerült. Próbáld újra.</translation>
 <translation id="1449790603979388000"><ph name="COUNT"/> <ph name="COUNT_TEXT"/></translation>
+<translation id="5916664084637901428">Be</translation>
+<translation id="5860033963881614850">Kikapcsolva</translation>
+<translation id="5317780077021120954">Mentés</translation>
+<translation id="2359808026110333948">Tovább</translation>
+<translation id="7658239707568436148">Mégse</translation>
+<translation id="8193724030871339658">MÁS KÉSZÜLÉKEK A LÁNCON</translation>
+<translation id="4690880825349994619">Meglévő, szinkronizált eszköz használatához nyisd meg a Brave Beállításokat, majd menj a Szinkronizálás beállításaira. Válaszd az "Eszköz hozzáadását" és szkenneld be a képernyőn látható QR kódot.</translation>
+<translation id="3394474617110693560">Kategóriák</translation>
+<translation id="2004365171440701679">A készülék eltávolítása</translation>
+<translation id="6450924769151530465">Másik készülék hozzáadása</translation>
+<translation id="6270614677029463366">Meglévő szinkronizált készülékkel nyissa meg a Brave beállításokat és navigáljon Beállítások  &gt; Szinkronizálás menübe. Válassza a „Készülék hozzáadása” majd a „Kódszavak mutatása” pontot.</translation>
+<translation id="7655723274266132226">Most már elkezdhet pénzt gyűjteni hirdetések megtekintésével.</translation>
+<translation id="1605521356929094020">Brave Ads bekapcsolása</translation>
+<translation id="1873603368604736484">A Rewards bekapcsolásával elfogadod the <ph name="TERMS_OF_SERVICE"/> kikötéseit.</translation>
+<translation id="7894626572714595717">Szerezz tokeneket a kép megnézésével. Kapcsold be a Brave Ads-et a részed igényléséhez.</translation>
+<translation id="6165508094623778733">Tudj meg többet</translation>
 </translationbundle>

@@ -700,4 +700,38 @@
 <translation id="5337526542182802976">Podporované páry</translation>
 <translation id="1164622162816276433">24 h objem</translation>
 <translation id="3155170474926428993">Spúšťač Tor</translation>
+<translation id="570208820610947248">Zistili sme problém s vašou peňaženkou. Pred spracovaním ľubovoľnej transakcie musíte obnoviť svoju záložnú peňaženku.</translation>
+<translation id="7797604753681168055">Obnoviť teraz!</translation>
+<translation id="5771119664738037159">Brave odmeny nie sú povolené. Zapnite ich svojou návštevou</translation>
+<translation id="5441565662498481293">Príspevok odosielate automaticky na:</translation>
+<translation id="7655723274266132226">Teraz môžete zarobiť na prehliadaných reklamách.</translation>
+<translation id="4405997465645469914">Zapnutím Brave Rewards prehlasujte, že ste si prečítali a súhlasíte s</translation>
+<translation id="3745024317593003526">Nastaviť príspevok</translation>
+<translation id="1386745271554473158">Podeľte sa o dobrú správu:</translation>
+<translation id="4114667046481794032">Výška daru</translation>
+<translation id="7928243298881209869">Váš prvý mesačný príspevok bude zaslaný dňa:</translation>
+<translation id="7627481505582641588">Nasledujúci príspevok</translation>
+<translation id="2391095793008133394">Prispejte  {{ user }} za príspevok!</translation>
+<translation id="7557413530932469222">Prispejte @{{ user }} za jeho príspevok!</translation>
+<translation id="717513177896084801">Dajte tip {{ user }}</translation>
+<translation id="121079855621707240">Tohoto tvorcu obsahu môžete podporiť tak, že nastavíte mesačný príspevok. Je to spôsob, ako poďakovať za to, že neustále vytvára skvelý obsah. Overení tvorcovia dostávajú za svoje príspevky zaplatené v prvom týždni každého kalendárneho mesiaca.</translation>
+<translation id="1834493631938747505">Povedzte ostatným o svojom príspevku.</translation>
+<translation id="8826007068782654809">Ďakujeme</translation>
+<translation id="2305079019697905687">Príspevok bol odoslaný!</translation>
+<translation id="4626192591707117844">Mesačný dar bol stanovený!</translation>
+<translation id="6665366815203065060">Práve ste poslali príspevok na:</translation>
+<translation id="1605521356929094020">Zapnúť reklamy Brave</translation>
+<translation id="3983104749597726322">Tweet</translation>
+<translation id="5636843789453098076">Dajte príspevok @{{ user }} za tweet:</translation>
+<translation id="4242384385082203046">Dajte príspevok @{{ user }} za tweet!</translation>
+<translation id="2549982302631665116">Dnes vás Brave víta na novom internete. Ide o taký internet, ktorý si cení váš čas, chráni vaše osobné údaje a pri ktorom dostávate zaplatené za svoju pozornosť.</translation>
+<translation id="5826706758731195747">Zapnutím Odmien vyjadrujete súhlas so <ph name="LINK_BEGIN"/>Zmluvnými podmienkami <ph name="LINK_END"/>.</translation>
+<translation id="6778392839723468409">Získajte tokeny sledovaním reklám, ktoré rešpektujú súkromie.</translation>
+<translation id="8315514906653279104">Zapína sa...</translation>
+<translation id="7307847920988946894">Zapnúť Odmeny</translation>
+<translation id="662631138774963814">Pocit štedrosti?</translation>
+<translation id="3264975266761862670">Ste pripravení začať zarábať?</translation>
+<translation id="2542495049135486284">Vyskúšajte znovu Odmeny Brave a ak si zarobíte, prispejte ďalej!</translation>
+<translation id="53513464591392992">Zapnite Odmeny Brave a dostanete zaplatené za zobrazovanie reklám rešpektujúcich súkromie.</translation>
+<translation id="8463996294416161140">Zapnite <ph name="PRODUCT_NAME"/>, ak si chcete uplatniť svoj podiel. Môžete tiež zvoliť <ph name="LINK_BEGIN"/>skrytie sponzorovaných obrázkov<ph name="LINK_END"/>.</translation>
 </translationbundle>

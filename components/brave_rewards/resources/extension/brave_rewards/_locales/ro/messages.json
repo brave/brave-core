@@ -197,6 +197,10 @@
     "message": "Acum puteți câștiga bani vizualizând reclame.",
     "description": "Message for ads launch notification"
   },
+  "braveAdsLaunchTitle": {
+    "message": "Brave Ads a sosit!",
+    "description": "Message used in notification to let users know Ads is available"
+  },
   "braveAdsTitle": {
     "message": "Reclame Brave",
     "description": "Notification title when we display info about ads"

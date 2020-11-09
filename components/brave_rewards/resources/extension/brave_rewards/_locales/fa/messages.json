@@ -197,6 +197,10 @@
     "message": "اکنون می‌توانید با مشاهده آگهی‌ها، دریافت کنید.",
     "description": "Message for ads launch notification"
   },
+  "braveAdsLaunchTitle": {
+    "message": "«آگهی‌های Brave» ارائه شد!",
+    "description": "Message used in notification to let users know Ads is available"
+  },
   "braveAdsTitle": {
     "message": "آگهی‌های Brave",
     "description": "Notification title when we display info about ads"

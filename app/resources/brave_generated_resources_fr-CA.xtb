@@ -252,4 +252,15 @@ En installant cette extension, vous acceptez les conditions d'utilisation de Goo
 <translation id="8487693399751278191">Importer des marque-pages maintenant...</translation>
 <translation id="2557899542277210112">Pour un accès rapide, placez vos marque-pages ici sur la barre de favoris.</translation>
 <translation id="2808630562319398131">Reconfigurer les données de récompenses de Brave...</translation>
+<translation id="8760415064721320867">Fenêtre privée avec Tor</translation>
+<translation id="7635711399568194460">Cache le bouton « Récompenses de Brave » dans la barre d'adresse lorsque les récompenses de Brave ne sont pas activées</translation>
+<translation id="1520361618554057102">Toujours afficher les signets sur la page Nouvel onglet</translation>
+<translation id="2467749191278759605">Personnalisez votre tableau de bord de Brave</translation>
+<translation id="3155170474926428993">Lanceur Tor</translation>
+<translation id="519861640102428255">Aspect et convivialité</translation>
+<translation id="8942080017911802454">Politique de gestion des adresses Web de WebRTC</translation>
+<translation id="8502234992433094996">Utiliser Google Services pour les messages Push</translation>
+<translation id="24067401253841795">Saisissez les mots de code de la chaîne de synchronisation indiqués ci-dessous. Traitez ce code comme un mot de passe. Si quelqu'un met la main dessus, il peut lire et modifier vos données synchronisées.</translation>
+<translation id="6696935187608454456">Conseils pratiques</translation>
+<translation id="5501596373144334003">Brave a besoin d'un accès complet au disque dur pour importer vos marque-pages et votre historique depuis Safari.</translation>
 </translationbundle>

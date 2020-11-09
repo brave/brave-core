@@ -700,4 +700,39 @@
 <translation id="5337526542182802976">Remiamos poros</translation>
 <translation id="1164622162816276433">24 val. apimtis</translation>
 <translation id="3155170474926428993">„Tor“ paleidimo priemonė</translation>
+<translation id="570208820610947248">Nustatėme, kad kažkas yra negerai su jūsų pinigine. Operacijų vykdymas bus įmanomas tik tada, kai atkursite savo piniginės atsarginę kopiją.</translation>
+<translation id="7797604753681168055">Atkurti dabar!</translation>
+<translation id="5771119664738037159">Funkcija „Brave Rewards“ neįjungta. Įjunkite ją adresu</translation>
+<translation id="5441565662498481293">Automatiškai siunčiamų arbatpinigių gavėjas:</translation>
+<translation id="7655723274266132226">Dabar galite užsidirbti už reklamos peržiūrą.</translation>
+<translation id="4405997465645469914">Įjungdami „Brave Rewards“ nurodote, kad susipažinote ir sutinkate su</translation>
+<translation id="3745024317593003526">Nustatyti indėlį</translation>
+<translation id="1386745271554473158">Pasidalykite geromis naujienomis:</translation>
+<translation id="4114667046481794032">Indėlio suma</translation>
+<translation id="7928243298881209869">Jūsų pirmasis mėnesinis indėlis bus išsiųstas:</translation>
+<translation id="7627481505582641588">Kitas indėlis</translation>
+<translation id="2391095793008133394">Sumokėti naudotojui {{ user }} arbatpinigių už įrašą:</translation>
+<translation id="7557413530932469222">Sumokėti naudotojui {{ user }} arbatpinigių už įrašą!</translation>
+<translation id="717513177896084801">Sumokėti naudotojui {{ user }} arbatpinigių</translation>
+<translation id="121079855621707240">Šio turinio kūrėją galite paremti nustatydami mėnesinį indėlį. Tai būdas reguliariai padėkoti jam už tai, kad kuria puikų turinį. Patvirtintiems turinio kūrėjams už gautus indėlius mokama kiekvieno kalendorinio mėnesio pirmąją savaitę.</translation>
+<translation id="1834493631938747505">Papasakokite apie savo arbatpinigius kitiems.</translation>
+<translation id="8826007068782654809">Dėkojame</translation>
+<translation id="2305079019697905687">Arbatpinigiai išsiųsti!</translation>
+<translation id="4626192591707117844">Mėnesinis indėlis nustatytas!</translation>
+<translation id="6665366815203065060">Gavėjas, kuriam ką tik nusiuntėte arbatpinigių:</translation>
+<translation id="1605521356929094020">Įjungti „Brave“ reklamas</translation>
+<translation id="3983104749597726322">„Tweet“ žinutė</translation>
+<translation id="5636843789453098076">Duokite @{{ user }} arbatpinigių už jo „trweet
+“ žinutę:</translation>
+<translation id="4242384385082203046">Duokite @{{ user }} arbatpinigių už jo „trweet“ žinutę!</translation>
+<translation id="2549982302631665116">Šiandien „Brave“ pristato jums naująjį internetą – tokį, kuriame vertinamas jūsų laikas, išlaikomas jūsų asmeninių duomenų privatumas, o jums iš tiesų mokama už jūsų dėmesį.</translation>
+<translation id="5826706758731195747">Įjungdami „Rewards“, sutinkate su <ph name="LINK_BEGIN"/>paslaugų teikimo sąlygomis<ph name="LINK_END"/>.</translation>
+<translation id="6778392839723468409">Gaukite žetonų už privatumo nepažeidžiančių reklamų peržiūrą.</translation>
+<translation id="8315514906653279104">Įjungiama...</translation>
+<translation id="7307847920988946894">Įjungti „Rewards“</translation>
+<translation id="662631138774963814">Jaučiatės dosnūs?</translation>
+<translation id="3264975266761862670">Pasirengę pradėti uždirbti?</translation>
+<translation id="2542495049135486284">Dar kartą išbandykite „Brave Rewards“ ir užsidirbę paremkite!</translation>
+<translation id="53513464591392992">Įjunkite „Brave Rewards“ ir gaukite užmokestį už privatumo nepažeidžiančių reklamų peržiūrą.</translation>
+<translation id="8463996294416161140">Įjunkite <ph name="PRODUCT_NAME"/> ir gaukite savo dalį. Be to, galite pasirinkti <ph name="LINK_BEGIN"/>slėpti remiamus vaizdus<ph name="LINK_END"/>.</translation>
 </translationbundle>

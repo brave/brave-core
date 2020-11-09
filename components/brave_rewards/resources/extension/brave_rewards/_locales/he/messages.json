@@ -197,6 +197,10 @@
     "message": "כעת באפשרותך להרוויח כסף מצפייה בפרסומות.",
     "description": "Message for ads launch notification"
   },
+  "braveAdsLaunchTitle": {
+    "message": "פרסומות earnings ",
+    "description": "Message used in notification to let users know Ads is available"
+  },
   "braveAdsTitle": {
     "message": "פרסומות Brave",
     "description": "Notification title when we display info about ads"
