@@ -93,9 +93,12 @@ struct BraveRequestInfo {
   BraveNetworkDelegateEventType event_type = kUnknownEventType;
   const base::ListValue* referral_headers_list = nullptr;
   BlockedBy blocked_by = kNotBlocked;
-  bool cancel_request_explicitly = false;
   std::string mock_data_url;
   bool ipfs_local = true;
+
+  bool ShouldMockRequest() const {
+    return !mock_data_url.empty();
+  }
 
   // Default to invalid type for resource_type, so delegate helpers
   // can properly detect that the info couldn't be obtained.
