@@ -34,8 +34,12 @@ tor::TorProfileService* TorProfileServiceFactory::GetForProfile(
 tor::TorProfileService* TorProfileServiceFactory::GetForProfile(
   Profile* profile,
   bool create) {
+#if BUILDFLAG(ENABLE_TOR)
   return static_cast<tor::TorProfileService*>(
       GetInstance()->GetServiceForBrowserContext(profile, create));
+#else
+  return nullptr;
+#endif
 }
 
 // static
