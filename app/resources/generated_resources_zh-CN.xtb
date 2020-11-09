@@ -6514,6 +6514,8 @@
 <translation id="995782501881226248">YouTube</translation>
 <translation id="996250603853062861">正在建立安全连接...</translation>
 <translation id="998747458861718449">检查(&amp;N)</translation>
+<translation id="6744651634043798597">{COUNT,plural, =0{在隐身窗口中打开全部网址(&amp;I)}=1{在隐身窗口中打开 1 个网址(&amp;I)}other{在隐身窗口中打开全部（# 个）网址(&amp;I)}}</translation>
+<translation id="2633634757060186848">{COUNT,plural, =0{在无痕式窗口中打开全部网址(&amp;I)}=1{在无痕式窗口中打开 1 个网址(&amp;I)}other{在无痕式窗口中打开全部（# 个）网址(&amp;I)}}</translation>
 <translation id="658539216370629794">在隐身窗口中打开链接(&amp;G)</translation>
 <translation id="1432267168815937878">在隐身窗口中打开链接(&amp;G)</translation>
 <translation id="6516243500644829484">打开新的无痕窗口(&amp;I)</translation>
@@ -6527,6 +6529,7 @@
 <translation id="9048137919253433011">隐身标签页：<ph name="TAB_NAME"/></translation>
 <translation id="1799432502220762862">隐身辅助框架：<ph name="SUBFRAME_SITE"/></translation>
 <translation id="3193187622878830588">无痕式门户网站：<ph name="SUBFRAME_SITE"/></translation>
+<translation id="5097649414558628673">工具：<ph name="PRINT_NAME"/></translation>
 <translation id="8808478386290700967">Brave 网上应用店</translation>
 <translation id="8261378640211443080">该扩展程序未列在 <ph name="IDS_EXTENSION_WEB_STORE_TITLE"/>中，并可能是在您不知情的情况下添加的。</translation>
 <translation id="6827869674836193263"><ph name="WINDOW_TITLE"/>（无痕）</translation>
@@ -6544,13 +6547,21 @@
 <translation id="3098826269712097986">在您退出无痕模式后，登录数据会存储在 Brave 中。这样，当您以后再次访问该网站时，就可以使用 Touch ID 登录了。</translation>
 <translation id="5186185447130319458">无痕</translation>
 <translation id="2579188629646253712">退出无痕模式</translation>
-<translation id="6744651634043798597">{COUNT,plural, =0{在隐身窗口中打开全部网址(&amp;I)}=1{在隐身窗口中打开 1 个网址(&amp;I)}other{在隐身窗口中打开全部（# 个）网址(&amp;I)}}</translation>
+<translation id="1001131747196960052">关闭私人窗口</translation>
+<translation id="7475335772460644497">{COUNT, plural,
+          =0 {Open all in &amp;private window}
+          =1 {Open in &amp;private window}
+          其他 {Open all ({COUNT}) in &amp;private window}}</translation>
 <translation id="2431625704210501303">在隐身窗口中打开(&amp;I)</translation>
 <translation id="4620367155626060530">显示书签栏(&amp;S)</translation>
-<translation id="2633634757060186848">{COUNT,plural, =0{在无痕式窗口中打开全部网址(&amp;I)}=1{在无痕式窗口中打开 1 个网址(&amp;I)}other{在无痕式窗口中打开全部（# 个）网址(&amp;I)}}</translation>
+<translation id="1448315815373449655">{COUNT, plural,
+          =0 {Open All in &amp;Private Window}
+          =1 {Open in &amp;Private Window}
+          其他 {Open All ({COUNT}) in &amp;Private Window}}</translation>
 <translation id="1985165269306590797">在隐身窗口中打开(&amp;I)</translation>
 <translation id="4680518314108745448">显示书签栏(&amp;S)</translation>
 <translation id="642436385689435488">在无痕式窗口中打开所有网址</translation>
+<translation id="5074021236879527611">在专用窗口中打开所有 (<ph name="URL_COUNT"/>)</translation>
 <translation id="5463021359602611602">在无痕式窗口中打开</translation>
 <translation id="1850357845349976573">{0,plural, =1{无痕模式}other{# 个已打开的无痕式窗口}}</translation>
 <translation id="37784332082579802">{0,plural, =1{无痕模式}other{无痕模式（已打开 # 个窗口）}}</translation>
@@ -6594,6 +6605,8 @@
 <translation id="4854477725773269949">在无痕模式下启用</translation>
 <translation id="6436164536244065364">在 Brave 网上应用店中查看详情</translation>
 <translation id="38046578254905003">在<ph name="BEGIN_LINK"/>Web Store<ph name="END_LINK"/>中查找扩展程序和主题背景</translation>
+<translation id="2402482691429508168">选择在屏幕解锁时对您可见的个人资料</translation>
+<translation id="3910100573440336938">与您周围的个人资料共享文件</translation>
 <translation id="6336451774241870485">打开新的无痕式标签页</translation>
 <translation id="6610147964972079463">关闭隐身标签页</translation>
 <translation id="4933782374919065856">有问题？请与负责监管您的个人资料的人员联系。</translation>

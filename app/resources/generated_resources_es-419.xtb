@@ -6517,6 +6517,8 @@ Mantén el archivo de clave en un lugar seguro. Debes crear las nuevas versiones
 <translation id="995782501881226248">YouTube</translation>
 <translation id="996250603853062861">Estableciendo una conexión segura...</translation>
 <translation id="998747458861718449">Inspeccionar</translation>
+<translation id="6744651634043798597">{COUNT,plural, =0{Abrir todo en una ventana de &amp;incógnito}=1{Abrir en una ventana de &amp;incógnito}other{Abrir todo (#) en una ventana de &amp;incógnito}}</translation>
+<translation id="2633634757060186848">{COUNT,plural, =0{Abrir todo en una ventana de &amp;incógnito}=1{Abrir en una ventana de &amp;incógnito}other{Abrir todo (#) en una ventana de &amp;incógnito}}</translation>
 <translation id="658539216370629794">Abrir el enlace en una ventana de navegación de incó&amp;gnito</translation>
 <translation id="1432267168815937878">Abrir el vínculo en una ventana de incó&amp;gnito</translation>
 <translation id="6516243500644829484">Nueva ventana de &amp;incógnito</translation>
@@ -6530,6 +6532,7 @@ Mantén el archivo de clave en un lugar seguro. Debes crear las nuevas versiones
 <translation id="9048137919253433011">Pestaña de incógnito: <ph name="TAB_NAME"/></translation>
 <translation id="1799432502220762862">Submarco incógnito: <ph name="SUBFRAME_SITE"/></translation>
 <translation id="3193187622878830588">Portal en modo incógnito: <ph name="SUBFRAME_SITE"/></translation>
+<translation id="5097649414558628673">Herramienta: <ph name="PRINT_NAME"/></translation>
 <translation id="8808478386290700967">Tienda virtual de Brave</translation>
 <translation id="8261378640211443080">Esta extensión no figura en <ph name="IDS_EXTENSION_WEB_STORE_TITLE"/> y es posible que se haya agregado sin tu conocimiento.</translation>
 <translation id="6827869674836193263"><ph name="WINDOW_TITLE"/> (Incógnito)</translation>
@@ -6547,13 +6550,21 @@ Mantén el archivo de clave en un lugar seguro. Debes crear las nuevas versiones
 <translation id="3098826269712097986">Los datos de acceso se almacenarán en Brave cuando salgas del modo de navegación incógnito. De esa manera, podrás usar Touch ID con este sitio web más adelante.</translation>
 <translation id="5186185447130319458">Incógnito</translation>
 <translation id="2579188629646253712">Salir del modo incógnito</translation>
-<translation id="6744651634043798597">{COUNT,plural, =0{Abrir todo en una ventana de &amp;incógnito}=1{Abrir en una ventana de &amp;incógnito}other{Abrir todo (#) en una ventana de &amp;incógnito}}</translation>
+<translation id="1001131747196960052">Cerrar ventana de incógnito</translation>
+<translation id="7475335772460644497">{COUNT,plural, 
+=0{Abrir todo en una ventana de &amp;incógnito}
+=1{Abrir en una ventana de &amp;incógnito}
+other{Abrir todo ({COUNT}) en una ventana de &amp;incógnito}}</translation>
 <translation id="2431625704210501303">Abrir en una ventana de &amp;incógnito</translation>
 <translation id="4620367155626060530">Mo&amp;strar la barra de favoritos</translation>
-<translation id="2633634757060186848">{COUNT,plural, =0{Abrir todo en una ventana de &amp;incógnito}=1{Abrir en una ventana de &amp;incógnito}other{Abrir todo (#) en una ventana de &amp;incógnito}}</translation>
+<translation id="1448315815373449655">{COUNT,plural, 
+=0{Abrir todo en una ventana de &amp;incógnito}
+=1{Abrir en una ventana de &amp;incógnito}
+other{Abrir todo ({COUNT}) en una ventana de &amp;incógnito}}</translation>
 <translation id="1985165269306590797">Abrir en una ventana de &amp;incógnito</translation>
 <translation id="4680518314108745448">Mo&amp;strar la barra de favoritos</translation>
 <translation id="642436385689435488">Abrir todo en una ventana de incógnito</translation>
+<translation id="5074021236879527611">Abrir todo (<ph name="URL_COUNT"/>) en una ventana de incógnito</translation>
 <translation id="5463021359602611602">Abrir en una ventana de incógnito</translation>
 <translation id="1850357845349976573">{0,plural, =1{Incógnito}other{# ventanas de incógnito abiertas}}</translation>
 <translation id="37784332082579802">{0,plural, =1{Incógnito}other{Incógnito (#)}}</translation>
@@ -6597,6 +6608,8 @@ Mantén el archivo de clave en un lugar seguro. Debes crear las nuevas versiones
 <translation id="4854477725773269949">Permitir modo incógnito</translation>
 <translation id="6436164536244065364">Ver en Brave Web Store</translation>
 <translation id="38046578254905003">Encuentra extensiones y temas en <ph name="BEGIN_LINK"/>Web Store<ph name="END_LINK"/></translation>
+<translation id="2402482691429508168">Perfiles que han elegido mantenerse visibles cuando la pantalla está desbloqueada</translation>
+<translation id="3910100573440336938">Compartir archivos con perfiles cercanos</translation>
 <translation id="6336451774241870485">Nueva pestaña de incógnito</translation>
 <translation id="6610147964972079463">Cerrar pest. de incógnito</translation>
 <translation id="4933782374919065856">¿Tienes preguntas? Comunícate con la persona que supervisa tu perfil.</translation>

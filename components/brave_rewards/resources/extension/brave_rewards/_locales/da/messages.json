@@ -197,10 +197,6 @@
     "message": "Nu kan du tjene ved at se reklamer.",
     "description": "Message for ads launch notification"
   },
-  "braveAdsLaunchTitle": {
-    "message": "Brave Ads er nu på markedet!",
-    "description": "Message used in notification to let users know Ads is available"
-  },
   "braveAdsTitle": {
     "message": "Brave-reklamer",
     "description": "Notification title when we display info about ads"
@@ -603,6 +599,10 @@
     "message": "Annuller",
     "description": "Text for cancel button"
   },
+  "changeAmount":  {
+    "message": "Ændr beløb",
+    "description": "Button text for changing monthly contribution amount"
+  },
   "login":  {
     "message": "Login",
     "description": "Text for login button"
@@ -612,7 +612,7 @@
     "description": "Text for login button"
   },
   "loginMessageText":  {
-    "message": "Du skal bruge minimum 25 BAT for at oprette en Uphold-wallet. Prøv venligst igen senere. <br/> Hvis du allerede har en bekræftet Uphold-konto, skal du logge ind.",
+    "message": "Du skal have mindst 25 BAT for at oprette en Uphold-konto. Prøv igen senere.\n  Hvis du allerede har en bekræftet Uphold-konto, skal du fortsætte for at logge ind.",
     "description": "Text for login button"
   },
   "walletConnected":  {
@@ -622,5 +622,9 @@
   "walletPending":  {
     "message": "Afventer ",
     "description": "Status button that tells user that he is currently pending"
+  },
+  "walletVerificationNote3":  {
+    "message": "Bemærk: Dine transaktioner vil være synlige for Uphold, når du har godkendt det. Eksempelvis vil de kunne se modtageren og beløbet på dine drikkepenge.",
+    "description": "Displayed in login modal for uphold"
   }
 }

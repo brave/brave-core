@@ -197,10 +197,6 @@
     "message": "Şimdi reklam izleyerek kazanabilirsin.",
     "description": "Message for ads launch notification"
   },
-  "braveAdsLaunchTitle": {
-    "message": "Brave Reklamları geldi!",
-    "description": "Message used in notification to let users know Ads is available"
-  },
   "braveAdsTitle": {
     "message": "Brave Reklamları",
     "description": "Notification title when we display info about ads"
@@ -603,6 +599,10 @@
     "message": "İptal et",
     "description": "Text for cancel button"
   },
+  "changeAmount":  {
+    "message": "Miktarı değiştirin",
+    "description": "Button text for changing monthly contribution amount"
+  },
   "login":  {
     "message": "Oturum Aç",
     "description": "Text for login button"
@@ -612,7 +612,7 @@
     "description": "Text for login button"
   },
   "loginMessageText":  {
-    "message": "Bir Uphold hesabı açabilmek için en az 25 BAT'ınızın olması gerekiyor. Lütfen daha sonra tekrar deneyin. <br/> Zaten onaylanmış bir Uphold hesabınız varsa, giriş yapın.",
+    "message": "Bir Uphold hesabı yaratmak için en az 25 BAT'ye sahip olmalısınız. Lütfen daha sonra tekrar deneyin. Eğer zaten doğrulanmış bir Uphold hesabına sahipseniz, oturum açmak için devam edin.",
     "description": "Text for login button"
   },
   "walletConnected":  {
@@ -622,5 +622,9 @@
   "walletPending":  {
     "message": "Beklemede",
     "description": "Status button that tells user that he is currently pending"
+  },
+  "walletVerificationNote3":  {
+    "message": "Not: Yetki verdiğinizde işlemleriniz Uphold'a görünür olacak; örneğin, alıcıyı ve bahşişlerinizin miktarını görebilecekler.",
+    "description": "Displayed in login modal for uphold"
   }
 }

@@ -6520,6 +6520,14 @@
 <translation id="995782501881226248">YouTube</translation>
 <translation id="996250603853062861">Установява се защитена връзка...</translation>
 <translation id="998747458861718449">И&amp;нспектиране</translation>
+<translation id="6744651634043798597">{COUNT, plural,
+          =0 {Отваряне на всички в поверителен прозорец}
+          =1 {Отваряне в поверителен прозорец}
+          other {Отваряне на всички (#) в поверителен прозорец}}</translation>
+<translation id="2633634757060186848">{COUNT, plural,
+          =0 {Отваряне на всички в поверителен прозорец}
+          =1 {Отваряне в поверителен прозорец}
+          other {Отваряне на всички (#) в поверителен прозорец}}</translation>
 <translation id="658539216370629794">Отваряне на връзката в поверителен прозорец</translation>
 <translation id="1432267168815937878">Отваряне на връзката в поверителен прозорец</translation>
 <translation id="6516243500644829484">Нов поверителен прозорец</translation>
@@ -6533,6 +6541,7 @@
 <translation id="9048137919253433011">Поверителен раздел: <ph name="TAB_NAME"/></translation>
 <translation id="1799432502220762862">Поверителна подрамка: <ph name="SUBFRAME_SITE"/></translation>
 <translation id="3193187622878830588">Портал в режим „инкогнито“: <ph name="SUBFRAME_SITE"/></translation>
+<translation id="5097649414558628673">Инструмент: <ph name="PRINT_NAME"/></translation>
 <translation id="8808478386290700967">Уеб магазин</translation>
 <translation id="8261378640211443080">Това разширение не е посочено в <ph name="IDS_EXTENSION_WEB_STORE_TITLE"/> и може да е било добавено без ваше знание.</translation>
 <translation id="6827869674836193263"><ph name="WINDOW_TITLE"/> (Поверителен)</translation>
@@ -6550,19 +6559,21 @@
 <translation id="3098826269712097986">Данните за вход ще се съхраняват в Brave, след като излезете от поверителния режим. Това ще ви позволи да използвате Touch ID с този уебсайт отново по-късно.</translation>
 <translation id="5186185447130319458">Поверителен</translation>
 <translation id="2579188629646253712">Изход от поверителния режим</translation>
-<translation id="6744651634043798597">{COUNT, plural,
-          =0 {Отваряне на всички в поверителен прозорец}
-          =1 {Отваряне в поверителен прозорец}
-          other {Отваряне на всички (#) в поверителен прозорец}}</translation>
+<translation id="1001131747196960052">Затваряне на частния</translation>
+<translation id="7475335772460644497">{COUNT, plural,
+          =0 {Open all in &amp;private window}
+          =1 {Open in &amp;private window}
+          other {Open all ({COUNT}) in &amp;private window}}</translation>
 <translation id="2431625704210501303">Отваряне в поверителен прозорец</translation>
 <translation id="4620367155626060530">&amp;Показване на лентата на отметките</translation>
-<translation id="2633634757060186848">{COUNT, plural,
-          =0 {Отваряне на всички в поверителен прозорец}
-          =1 {Отваряне в поверителен прозорец}
-          other {Отваряне на всички (#) в поверителен прозорец}}</translation>
+<translation id="1448315815373449655">{COUNT, plural,
+          =0 {Open All in &amp;Private Window}
+          =1 {Open in &amp;Private Window}
+          other {Open All ({COUNT}) in &amp;Private Window}}</translation>
 <translation id="1985165269306590797">Отваряне в поверителен прозорец</translation>
 <translation id="4680518314108745448">&amp;Показване на лентата на отметките</translation>
 <translation id="642436385689435488">Отваряне на всички в поверителен прозорец</translation>
+<translation id="5074021236879527611">Отворете всички (<ph name="URL_COUNT"/>) в частен прозорец</translation>
 <translation id="5463021359602611602">Отваряне в поверителен прозорец</translation>
 <translation id="1850357845349976573">{0, plural,
         =1 {Поверителен}
@@ -6612,6 +6623,8 @@
 <translation id="4854477725773269949">Разрешаване в поверителен режим</translation>
 <translation id="6436164536244065364">Преглед в уеб магазина</translation>
 <translation id="38046578254905003">Открийте разширения и теми в <ph name="BEGIN_LINK"/>Уеб магазина<ph name="END_LINK"/></translation>
+<translation id="2402482691429508168">Профили, които са избрали да бъдат видими за Вас, когато екранът им е отключен</translation>
+<translation id="3910100573440336938">Споделете файлове с профили около Вас</translation>
 <translation id="6336451774241870485">Нов поверителен раздел</translation>
 <translation id="6610147964972079463">Затваряне на поверителните раздели</translation>
 <translation id="4933782374919065856">При въпроси се свържете с лицето, което контролира потребителския ви профил.</translation>

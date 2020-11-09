@@ -1026,6 +1026,7 @@
 <translation id="996149300115483134">תפריט כרטיס הפיד סגור</translation>
 <translation id="4540437243849625078">אתר זה עומד לשתף מידע עם אפליקציה מחוץ למצב גלישה בסתר.</translation>
 <translation id="1227836882233136433">לצאת ממצב גלישה בסתר?</translation>
+<translation id="21023559487771014">מעבר למצב פרטי</translation>
 <translation id="5186185447130319458">פרטי</translation>
 <translation id="9063160602596686558">‏שליחת דוחות קריסה וסטטיסטיקת שימוש אל Brave Software באופן אוטומטי</translation>
 <translation id="1438581767753657407">כאשר מצב Lite מופעל, Brave משתמש בשרתים של Brave כדי לגרום לדפים להיטען מהר יותר. מצב Lite משכתב דפים איטיים מאוד כדי לטעון רק תוכן חיוני. מצב Lite אינו חל על כרטיסיות פרטיות.</translation>
@@ -1035,7 +1036,11 @@
 <translation id="3110967157686007724">כרטיסייה פרטית</translation>
 <translation id="4526803704855831732">כרטיסיות פרטיות</translation>
 <translation id="7465104139234185284">סגור את כל הכרטיסיות הפרטיות</translation>
-<translation id="21023559487771014">מעבר למצב פרטי</translation>
+<translation id="1455125811784733159">פתח לשונית Private</translation>
+<translation id="807110510029471880">השתמש ב-Private כדי להתחבר</translation>
+<translation id="7987056960390558517">ב-Private, פעילותכם <ph name="BEGIN_BOLD1"/>עדיין עשויה היות גלויה בפני <ph name="END_BOLD1"/> אתרים בהם אתם מבקרים, המעסיק או מוסד הלימודים שלכם, וספק האינטרנט שלכם.
+
+מידע מהפעלת Private שלכם יימחק מ-Brave רק כאשר <ph name="BEGIN_BOLD2"/>תסגרו את כל לשוניות Private <ph name="END_BOLD2"/>.</translation>
 <translation id="6336451774241870485">כרטיסייה פרטית חדשה</translation>
 <translation id="3234355010754616171">כרטיסייה פרטית חדשה</translation>
 <translation id="6610147964972079463">סגור כרטיסיות פרטיות</translation>

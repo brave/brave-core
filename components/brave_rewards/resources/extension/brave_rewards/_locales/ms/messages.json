@@ -197,10 +197,6 @@
     "message": "Kini anda boleh menjana pendapatan dengan melihat iklan.",
     "description": "Message for ads launch notification"
   },
-  "braveAdsLaunchTitle": {
-    "message": "Iklan Brave telah tiba!",
-    "description": "Message used in notification to let users know Ads is available"
-  },
   "braveAdsTitle": {
     "message": "Iklan Brave ",
     "description": "Notification title when we display info about ads"
@@ -603,6 +599,10 @@
     "message": "Batal",
     "description": "Text for cancel button"
   },
+  "changeAmount":  {
+    "message": "Tukar jumlah",
+    "description": "Button text for changing monthly contribution amount"
+  },
   "login":  {
     "message": "Log masuk",
     "description": "Text for login button"
@@ -612,7 +612,7 @@
     "description": "Text for login button"
   },
   "loginMessageText":  {
-    "message": "Anda perlu mempunyai minimum 25 BAT untuk mencipta sebuah akaun Uphold. Sila cuba lagi kemudian. <br/> Sekiranya anda sudah mempunyai sebuah akaun Uphold yang ditentusahkan, teruskan mengelog masuk.",
+    "message": "Anda perlu mempunyai minima 25 BAT untuk mencipta akaun Uphold. Sila cuba lagi kemudian. \nJika anda telah mempunyai akaun Uphold yang telah disahkan, terus ke log masuk. ",
     "description": "Text for login button"
   },
   "walletConnected":  {
@@ -622,5 +622,9 @@
   "walletPending":  {
     "message": "Menunggu",
     "description": "Status button that tells user that he is currently pending"
+  },
+  "walletVerificationNote3":  {
+    "message": "Nota: Transaksi anda akan tertera di Uphold sebaik sahaja anda beri keizinan; contohnya, mereka boleh melihat penerima dan jumlah tip anda.",
+    "description": "Displayed in login modal for uphold"
   }
 }

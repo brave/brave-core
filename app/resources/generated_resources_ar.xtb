@@ -6518,6 +6518,14 @@
 <translation id="995782501881226248">YouTube</translation>
 <translation id="996250603853062861">إنشاء اتصال آمن...</translation>
 <translation id="998747458861718449">ف&amp;حص</translation>
+<translation id="6744651634043798597">{COUNT, plural,
+          =0 {فتح الكل في &amp;نافذة خاصة}
+          =1 {فتح في &amp;نافذة خاصة}
+          other {فتح الكل (#) في &amp;نافذة خاصة}}</translation>
+<translation id="2633634757060186848">{COUNT, plural,
+          =0 {فتح الكل في &amp;نافذة خاصة}
+          =1 {فتح في &amp;نافذة خاصة}
+          other {فتح الكل (#) في &amp;نافذة خاصة}}</translation>
 <translation id="658539216370629794">فتح الرابط في &amp; نافذة خاصة</translation>
 <translation id="1432267168815937878">فتح الرابط في &amp; نافذة خاصة</translation>
 <translation id="6516243500644829484">نافذة خاصة &amp; جديدة</translation>
@@ -6531,6 +6539,7 @@
 <translation id="9048137919253433011">علامة تبويب خاصة: <ph name="TAB_NAME"/></translation>
 <translation id="1799432502220762862">إطار فرعي خاص: <ph name="SUBFRAME_SITE"/></translation>
 <translation id="3193187622878830588">بوابة التصفّح المتخفي: <ph name="SUBFRAME_SITE"/></translation>
+<translation id="5097649414558628673">أداة: <ph name="PRINT_NAME"/></translation>
 <translation id="8808478386290700967">متجر الويب</translation>
 <translation id="8261378640211443080">هذه الإضافة غير مدرجة في <ph name="IDS_EXTENSION_WEB_STORE_TITLE"/> وربما تمت إضافتها بدون علمك.</translation>
 <translation id="6827869674836193263"><ph name="WINDOW_TITLE"/> (خاص)</translation>
@@ -6548,19 +6557,21 @@
 <translation id="3098826269712097986">سيتم تخزين بيانات تسجيل الدخول في Brave بعد الخروج من الوضع الخاص. سيتيح لك ذلك استخدام معرّف اللمس مع هذا الموقع مرة أخرى لاحقاً.</translation>
 <translation id="5186185447130319458">خاص</translation>
 <translation id="2579188629646253712">الخروج من الوضع الخاص</translation>
-<translation id="6744651634043798597">{COUNT, plural,
+<translation id="1001131747196960052">إغلاق الخاص</translation>
+<translation id="7475335772460644497">{COUNT, plural,
           =0 {فتح الكل في &amp;نافذة خاصة}
           =1 {فتح في &amp;نافذة خاصة}
-          other {فتح الكل (#) في &amp;نافذة خاصة}}</translation>
+          other {فتح الكل ({COUNT}) في &amp;نافذة خاصة}}</translation>
 <translation id="2431625704210501303">فتح في &amp;نافذة جديدة</translation>
 <translation id="4620367155626060530">&amp;عرض شريط الإشارات</translation>
-<translation id="2633634757060186848">{COUNT, plural,
+<translation id="1448315815373449655">{COUNT, plural,
           =0 {فتح الكل في &amp;نافذة خاصة}
           =1 {فتح في &amp;نافذة خاصة}
-          other {فتح الكل (#) في &amp;نافذة خاصة}}</translation>
+          other {فتح الكل ({COUNT}) in &amp;نافذة خاصة}}</translation>
 <translation id="1985165269306590797">فتح في &amp;نافذة خاصة</translation>
 <translation id="4680518314108745448">&amp;عرض شريط الإشارات</translation>
 <translation id="642436385689435488">افتح الكل في نافذة خاصة</translation>
+<translation id="5074021236879527611">فتح كل الـ (<ph name="URL_COUNT"/>) في نافذة خاصة</translation>
 <translation id="5463021359602611602">فتح في نافذة خاصة</translation>
 <translation id="1850357845349976573">{0, plural,
         =1 {خاص}
@@ -6611,6 +6622,8 @@
 <translation id="4854477725773269949">السماح في الوضع الخاص</translation>
 <translation id="6436164536244065364">عرض في السوق الإلكتروني</translation>
 <translation id="38046578254905003">ابحث عن الملحقات والموضوعات في <ph name="BEGIN_LINK"/>متجر الويب<ph name="END_LINK"/>;</translation>
+<translation id="2402482691429508168">الملفات الشخصية التي اختارت أن تكون مرئية لك عندما تكون شاشتها مفتوحة</translation>
+<translation id="3910100573440336938">قم بمشاركة الملفات مع الملفات الشخصية من حولك</translation>
 <translation id="6336451774241870485">علامة تبويب خاصة جديدة</translation>
 <translation id="6610147964972079463">إغلاق علامات التبويب الخاصة</translation>
 <translation id="4933782374919065856">هل هناك أي أسئلة؟ اتصل بالشخص الذي يشرف على ملفك الشخصي.</translation>

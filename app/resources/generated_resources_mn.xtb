@@ -6509,6 +6509,8 @@
 <translation id="996250603853062861">Аюулгүй холболт хийж байна...</translation>
 <translation id="998747458861718449">Шалгах</translation>
 <translation id="38046578254905003"><ph name="BEGIN_LINK"/>Brave Вэб Дэлгүүрээс<ph name="END_LINK"/> өргөтгөл, загвар олох</translation>
+<translation id="6744651634043798597">{COUNT,plural, =0{Бүгдийг &amp;нууцлалтай цонхонд нээх}=1{&amp;Нууцлалтай цонхонд нээх}other{Бүх (#)-г &amp;нууцлалтай цонхонд нээх}}</translation>
+<translation id="2633634757060186848">{COUNT,plural, =0{Бүгдийг &amp;Нууцлалтай цонхонд нээх}=1{&amp;Нууцлалтай цонхонд нээх}other{Бүх (#)-г &amp;Нууцлалтай цонхонд нээх}}</translation>
 <translation id="658539216370629794">Incognito цонхонд холбоосыг нээх</translation>
 <translation id="1432267168815937878">Холбоосыг нууцлалтай цонхонд нээх</translation>
 <translation id="6516243500644829484">Шинэ incognito цонх</translation>
@@ -6539,10 +6541,8 @@
 <translation id="3098826269712097986">Таныг Нууцлалын горимоос гарсны дараа нэвтрэх өгөгдлийг Brave-д хадгална. Ингэснээр та энэ вэб сайтад дараагийн удаа зочлохдоо Хүрэх ID-г ашиглах боломжтой болно.</translation>
 <translation id="5186185447130319458">Нууцлал</translation>
 <translation id="2579188629646253712">Нууцлалын цонхыг хаах</translation>
-<translation id="6744651634043798597">{COUNT,plural, =0{Бүгдийг &amp;нууцлалтай цонхонд нээх}=1{&amp;Нууцлалтай цонхонд нээх}other{Бүх (#)-г &amp;нууцлалтай цонхонд нээх}}</translation>
 <translation id="2431625704210501303">Нууцлалтай цонхонд нээх</translation>
 <translation id="4620367155626060530">&amp; Хадгалагдсан хуудсуудыг харуулах</translation>
-<translation id="2633634757060186848">{COUNT,plural, =0{Бүгдийг &amp;Нууцлалтай цонхонд нээх}=1{&amp;Нууцлалтай цонхонд нээх}other{Бүх (#)-г &amp;Нууцлалтай цонхонд нээх}}</translation>
 <translation id="1985165269306590797">Нууцлагдсан цонхонд нээх &amp;</translation>
 <translation id="4680518314108745448">&amp;Хадгалагдсан хуудсуудын цонхыг харуулах</translation>
 <translation id="642436385689435488">Нууцлалтай цонхонд бүгдийг нээх</translation>

@@ -6521,6 +6521,14 @@ perubahan ini berlaku, anda mungkin tidak mahukannya.</translation>
 <translation id="995782501881226248">YouTube</translation>
 <translation id="996250603853062861">Mengukuhkan sambungan selamat...</translation>
 <translation id="998747458861718449">S&amp;emak</translation>
+<translation id="6744651634043798597">{COUNT, plural,
+          =0 {Buka semua di dalam &amp;tetingkap sulit}
+          =1 {Buka di dalam &amp;tetingkap sulit}
+          other {Buka semua (#) di dalam &amp;tetingkap sulit}}</translation>
+<translation id="2633634757060186848">{COUNT, plural,
+          =0 {Buka Semua di dalam &amp;Tetingkap Sulit}
+          =1 {Buka di dalam &amp;Tetingkap Sulit}
+          other {Buka Semua (#) di dalam &amp;Tetingkap Sulit}}</translation>
 <translation id="658539216370629794">Buka pautan di dalam &amp;tetingkap sulit</translation>
 <translation id="1432267168815937878">Buka Pautan di dalam &amp;Tetingkap Sulit</translation>
 <translation id="6516243500644829484">Tetingkap &amp;sulit baru</translation>
@@ -6534,6 +6542,7 @@ perubahan ini berlaku, anda mungkin tidak mahukannya.</translation>
 <translation id="9048137919253433011">Tab Sulit: <ph name="TAB_NAME"/></translation>
 <translation id="1799432502220762862">Subkerangka Sulit: <ph name="SUBFRAME_SITE"/></translation>
 <translation id="3193187622878830588">Portal Inkognito: <ph name="SUBFRAME_SITE"/></translation>
+<translation id="5097649414558628673">Alat: <ph name="PRINT_NAME"/></translation>
 <translation id="8808478386290700967">Gedung Web</translation>
 <translation id="8261378640211443080">Sambungan ini tidak disenaraikan dalam <ph name="IDS_EXTENSION_WEB_STORE_TITLE"/> dan mungkin telah ditambahkan tanpa pengetahuan anda.</translation>
 <translation id="6827869674836193263"><ph name="WINDOW_TITLE"/> (Sulit)</translation>
@@ -6551,19 +6560,21 @@ perubahan ini berlaku, anda mungkin tidak mahukannya.</translation>
 <translation id="3098826269712097986">Data daftar masuk akan disimpan di dalam Brave selepas anda keluar daripada mod Sulit. Ini akan membolehkan anda menggunakan ID Sentuh dengan laman web ini lagi nanti.</translation>
 <translation id="5186185447130319458">Sulit</translation>
 <translation id="2579188629646253712">Keluar Daripada Sulit</translation>
-<translation id="6744651634043798597">{COUNT, plural,
-          =0 {Buka semua di dalam &amp;tetingkap sulit}
-          =1 {Buka di dalam &amp;tetingkap sulit}
-          other {Buka semua (#) di dalam &amp;tetingkap sulit}}</translation>
+<translation id="1001131747196960052">Tutup Privasi</translation>
+<translation id="7475335772460644497">{COUNT, plural,
+          =0 {Open all in &amp;private window}
+          =1 {Open in &amp;private window}
+          other {Open all ({COUNT}) in &amp;private window}}</translation>
 <translation id="2431625704210501303">Buka di dalam &amp;tetingkap sulit</translation>
 <translation id="4620367155626060530">&amp;Tunjukkan bar penanda halaman</translation>
-<translation id="2633634757060186848">{COUNT, plural,
-          =0 {Buka Semua di dalam &amp;Tetingkap Sulit}
-          =1 {Buka di dalam &amp;Tetingkap Sulit}
-          other {Buka Semua (#) di dalam &amp;Tetingkap Sulit}}</translation>
+<translation id="1448315815373449655">{COUNT, plural,
+          =0 {Open All in &amp;Private Window}
+          =1 {Open in &amp;Private Window}
+          other {Open All ({COUNT}) in &amp;Private Window}}</translation>
 <translation id="1985165269306590797">Buka di dalam &amp;Tetingkap Sulit</translation>
 <translation id="4680518314108745448">&amp;Tunjukkan Bar Penanda Halaman</translation>
 <translation id="642436385689435488">Buka semua di dalam tetingkap sulit</translation>
+<translation id="5074021236879527611">Buka semua (<ph name="URL_COUNT"/>) dalam tetingkap privasi</translation>
 <translation id="5463021359602611602">Buka di dalam tetingkap sulit</translation>
 <translation id="1850357845349976573">{0, plural,
         =1 {Sulit}
@@ -6613,6 +6624,8 @@ perubahan ini berlaku, anda mungkin tidak mahukannya.</translation>
 <translation id="4854477725773269949">Benarkan dalam sulit</translation>
 <translation id="6436164536244065364">Lihat di Kedai Web</translation>
 <translation id="38046578254905003">Cari sambungan dan tema di <ph name="BEGIN_LINK"/>Gedung Web<ph name="END_LINK"/></translation>
+<translation id="2402482691429508168">Profail yang telah memilih untuk dilihat oleh anda apabila skrin mereka dibuka</translation>
+<translation id="3910100573440336938">Berkongsi fail dengan profail disekitar anda</translation>
 <translation id="6336451774241870485">Tab sulit baru</translation>
 <translation id="6610147964972079463">Tutup tab sulit</translation>
 <translation id="4933782374919065856">Ada soalan? Hubungi orang yang menyelia profil anda.</translation>

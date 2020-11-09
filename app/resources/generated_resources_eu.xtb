@@ -6520,6 +6520,8 @@ Gorde gakoen fitxategia leku seguru batean. Zure luzapenaren bertsio berriak sor
 <translation id="996250603853062861">Konexio segurua ezartzen…</translation>
 <translation id="998747458861718449">I&amp;kuskatu</translation>
 <translation id="38046578254905003">Aurkitu luzapenak eta gaiak <ph name="BEGIN_LINK"/>Brave Web Store<ph name="END_LINK"/> dendan</translation>
+<translation id="6744651634043798597">{COUNT,plural, =0{Ireki guztiak &amp;ezkutuko moduko leiho batean}=1{Ireki &amp;ezkutuko moduko leiho batean}other{Ireki guztiak (#) &amp;ezkutuko moduko leiho batean}}</translation>
+<translation id="2633634757060186848">{COUNT,plural, =0{Ireki guztiak &amp;ezkutuko moduko leiho batean}=1{Ireki &amp;ezkutuko moduko leiho batean}other{Ireki guztiak (#) &amp;ezkutuko moduko leiho batean}}</translation>
 <translation id="658539216370629794">Ireki esteka &amp;ezkutuko moduko leihoan</translation>
 <translation id="1432267168815937878">Ireki esteka &amp;ezkutuko moduko leihoan</translation>
 <translation id="6516243500644829484">&amp;Ezkutuko leiho berria</translation>
@@ -6550,10 +6552,8 @@ Gorde gakoen fitxategia leku seguru batean. Zure luzapenaren bertsio berriak sor
 <translation id="3098826269712097986">Ezkutuko modutik irteten zarenean, saio-hasierako datuak Brave-n gordeko dira. Horri esker, Touch ID erabili ahalko duzu webgune honetan berriro sartzen zarenean.</translation>
 <translation id="5186185447130319458">Ezkutuko modua</translation>
 <translation id="2579188629646253712">Irten ezkutuko modutik</translation>
-<translation id="6744651634043798597">{COUNT,plural, =0{Ireki guztiak &amp;ezkutuko moduko leiho batean}=1{Ireki &amp;ezkutuko moduko leiho batean}other{Ireki guztiak (#) &amp;ezkutuko moduko leiho batean}}</translation>
 <translation id="2431625704210501303">Ireki &amp;ezkutuko nabigazio-leihoan</translation>
 <translation id="4620367155626060530">&amp;Erakutsi laster-marken barra</translation>
-<translation id="2633634757060186848">{COUNT,plural, =0{Ireki guztiak &amp;ezkutuko moduko leiho batean}=1{Ireki &amp;ezkutuko moduko leiho batean}other{Ireki guztiak (#) &amp;ezkutuko moduko leiho batean}}</translation>
 <translation id="1985165269306590797">Ireki &amp;ezkutuko nabigazio-leihoan</translation>
 <translation id="4680518314108745448">&amp;Erakutsi laster-marken barra</translation>
 <translation id="642436385689435488">Ireki guztiak ezkutuko moduko leiho batean</translation>

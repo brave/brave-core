@@ -1026,6 +1026,7 @@ Por ejemplo, algunos sitios web pueden responder a la solicitud mostrándote anu
 <translation id="996149300115483134">El menú de la tarjeta del feed está cerrado</translation>
 <translation id="4540437243849625078">Este sitio está a punto de compartir información con una aplicación fuera del modo privado.</translation>
 <translation id="1227836882233136433">¿Salir del modo privado?</translation>
+<translation id="21023559487771014">Ir a modo privado</translation>
 <translation id="5186185447130319458">Privado</translation>
 <translation id="9063160602596686558">Envía automáticamente estadísticas de uso e informes sobre fallos a Brave</translation>
 <translation id="1438581767753657407">Cuando el modo de bajo consumo está activado, Brave utiliza sus servidores para que las páginas se carguen más rápido. El modo de bajo consumo reescribe páginas muy lentas para cargar únicamente el contenido esencial. El modo de bajo consumo no se aplica a las pestañas privadas.</translation>
@@ -1035,7 +1036,11 @@ Por ejemplo, algunos sitios web pueden responder a la solicitud mostrándote anu
 <translation id="3110967157686007724">Pestaña privada</translation>
 <translation id="4526803704855831732">Pestañas Privadas</translation>
 <translation id="7465104139234185284">Cerrar todas las pestañas privadas</translation>
-<translation id="21023559487771014">Ir a modo privado</translation>
+<translation id="1455125811784733159">Abrir una pestaña privada</translation>
+<translation id="807110510029471880">Utiliza el modo privado para iniciar sesión</translation>
+<translation id="7987056960390558517">En Privado, tu actividad <ph name="BEGIN_BOLD1"/>podría seguir siendo visible <ph name="END_BOLD1"/>para los sitios web que visitas, tu jefe o tu escuela y tu proveedor de servicios de Internet.
+
+Los datos de tu sesión privada solo se borrarán de Brave cuando <ph name="BEGIN_BOLD2"/>cierres todas las ventanas privadas<ph name="END_BOLD2"/>.</translation>
 <translation id="6336451774241870485">Nueva pestaña privada</translation>
 <translation id="3234355010754616171">Nueva pestaña privada</translation>
 <translation id="6610147964972079463">Cerrar pestañas privadas</translation>

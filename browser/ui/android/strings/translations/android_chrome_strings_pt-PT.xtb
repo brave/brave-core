@@ -1026,6 +1026,7 @@ Por exemplo, alguns Sites podem responder a este pedido ao mostrar-lhe anúncios
 <translation id="996149300115483134">O menu do cartão do feed está fechado.</translation>
 <translation id="4540437243849625078">Este site está prestes a partilhar informações com uma aplicação fora do modo de navegação anónima.</translation>
 <translation id="1227836882233136433">Sair da navegação anónima?</translation>
+<translation id="21023559487771014">Ir para modo privado</translation>
 <translation id="5186185447130319458">Privado</translation>
 <translation id="9063160602596686558">Envia automaticamente estatísticas de utilização e relatórios de falhas para a Brave Software.</translation>
 <translation id="1438581767753657407">Quando o «Modo Lite» está ativado, Brave utiliza os servidores Brave para um carregamento mais rápido das páginas. Este modo rescreve as páginas muito lentas para carregar apenas o conteúdo essencial. O modo Lite não é aplicável aos separadores «Privado»s.</translation>
@@ -1035,7 +1036,11 @@ Por exemplo, alguns Sites podem responder a este pedido ao mostrar-lhe anúncios
 <translation id="3110967157686007724">Aba Privada</translation>
 <translation id="4526803704855831732">Abas Privadas</translation>
 <translation id="7465104139234185284">Encerrar todas as abas privadas</translation>
-<translation id="21023559487771014">Ir para modo privado</translation>
+<translation id="1455125811784733159">Abrir um separador Privado</translation>
+<translation id="807110510029471880">Usar modo Privado para entrar</translation>
+<translation id="7987056960390558517">Em modo Privado, a sua atividade <ph name="BEGIN_BOLD1"/>poderá ainda estar visível <ph name="END_BOLD1"/> para websites que visitou, para o seu empregador ou escola, e para a sua operadora de internet.
+
+Os dados da sua sessão em modo Privado só serão apagados do Brave quando <ph name="BEGIN_BOLD2"/>fechar todos os separadores em modo Privado<ph name="END_BOLD2"/>.</translation>
 <translation id="6336451774241870485">Nova Tabela Privada</translation>
 <translation id="3234355010754616171">Nova Tabela Privada</translation>
 <translation id="6610147964972079463">Encerrar  abas pribadas</translation>

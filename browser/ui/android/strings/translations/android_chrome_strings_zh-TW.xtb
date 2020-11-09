@@ -1026,6 +1026,7 @@
 <translation id="996149300115483134">已關閉動態消息資訊卡選單</translation>
 <translation id="4540437243849625078">這個網站即將與外部應用程式分享資訊，分享時會自動退出無痕模式。</translation>
 <translation id="1227836882233136433">要退出無痕模式嗎？</translation>
+<translation id="21023559487771014">進入隱密模式</translation>
 <translation id="5186185447130319458">隱私</translation>
 <translation id="9063160602596686558">自動將使用統計資料和當機報告傳送給 Brave Software</translation>
 <translation id="1438581767753657407">啟用精簡模式後，Brave 會使用 Brave 伺服器來加快頁面載入速度。在精簡模式下，載入緩慢的頁面會被重寫，改為只載入基本內容。精簡模式不適用於隱私分頁。</translation>
@@ -1035,7 +1036,11 @@
 <translation id="3110967157686007724">隱私分頁</translation>
 <translation id="4526803704855831732">隱私分頁</translation>
 <translation id="7465104139234185284">關閉所有隱私分頁</translation>
-<translation id="21023559487771014">進入隱密模式</translation>
+<translation id="1455125811784733159">開啟一個 Private 索引標籤</translation>
+<translation id="807110510029471880">使用 Private 登入</translation>
+<translation id="7987056960390558517">在 Private 中，您造訪的網站、您的雇主或學校，和您的網際網路服務提供者<ph name="BEGIN_BOLD1"/>可能仍然能看見<ph name="END_BOLD1"/>您的活動。
+
+只有當您<ph name="BEGIN_BOLD2"/>關閉所有 Private 索引標籤<ph name="END_BOLD2"/>時，才會從 Brave 清除 Private 工作階段的資料。</translation>
 <translation id="6336451774241870485">新隱私分頁</translation>
 <translation id="3234355010754616171">新隱私分頁</translation>
 <translation id="6610147964972079463">關閉隱私分頁</translation>

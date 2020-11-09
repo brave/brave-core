@@ -197,10 +197,6 @@
     "message": "Сега може да печелите, като разглеждате реклами.",
     "description": "Message for ads launch notification"
   },
-  "braveAdsLaunchTitle": {
-    "message": "Brave рекламите са тук!",
-    "description": "Message used in notification to let users know Ads is available"
-  },
   "braveAdsTitle": {
     "message": "Реклами в Brave",
     "description": "Notification title when we display info about ads"
@@ -603,6 +599,10 @@
     "message": "Отказ",
     "description": "Text for cancel button"
   },
+  "changeAmount":  {
+    "message": "Промяна на сумата",
+    "description": "Button text for changing monthly contribution amount"
+  },
   "login":  {
     "message": "Вход",
     "description": "Text for login button"
@@ -612,7 +612,7 @@
     "description": "Text for login button"
   },
   "loginMessageText":  {
-    "message": "Трябва да имате минимум 25 BAT, за да създадете акаунт в Uphold. Моля, опитайте отново по-късно. <br/> Ако вече имате потвърден акаунт в Uphold, продължете с влизането.",
+    "message": "Трябва да имате минимум 25 BAT, за да създадете акаунт в Uphold. Моля, опитайте отново по-късно. Ако вече имате потвърден акаунт в Uphold, продължете, за да влезете.",
     "description": "Text for login button"
   },
   "walletConnected":  {
@@ -622,5 +622,9 @@
   "walletPending":  {
     "message": "Предстоящо",
     "description": "Status button that tells user that he is currently pending"
+  },
+  "walletVerificationNote3":  {
+    "message": "Забележка: Вашите транзакции ще бъдат видими за Uphold, след като предоставите одобрение; например, те ще могат да видят получателя и сумата на Вашите бакшиши.",
+    "description": "Displayed in login modal for uphold"
   }
 }

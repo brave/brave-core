@@ -6520,6 +6520,14 @@ Mislim da ta web-lokacija ne bi trebala biti blokirana!</translation>
 <translation id="995782501881226248">YouTube</translation>
 <translation id="996250603853062861">Uspostavljanje sigurne veze...</translation>
 <translation id="998747458861718449">P&amp;rovjeri</translation>
+<translation id="6744651634043798597">{COUNT, plural,
+          =0 {Otvori sve u &amp;privatnih prozora}
+          =1 {Otvori u &amp;privatom prozoru}
+          other {Otvori sve u (#) in &amp;privatna/ih prozora}}</translation>
+<translation id="2633634757060186848">{COUNT, plural,
+          =0 {Otvori sve u &amp;privatnih prozora}
+          =1 {Otvori u &amp;privatnom prozoru}
+          other {Otvori sve (#) u &amp;privatna/ih prozora}}</translation>
 <translation id="658539216370629794">Otvori poveznicu u &amp;privatnom prozoru</translation>
 <translation id="1432267168815937878">Otvori poveznicu u &amp;privatnom prozoru</translation>
 <translation id="6516243500644829484">Novi &amp;privatni prozor</translation>
@@ -6533,6 +6541,7 @@ Mislim da ta web-lokacija ne bi trebala biti blokirana!</translation>
 <translation id="9048137919253433011">Privatna kartica: <ph name="TAB_NAME"/></translation>
 <translation id="1799432502220762862">Privatni podokvir: <ph name="SUBFRAME_SITE"/></translation>
 <translation id="3193187622878830588">Privatni portal: <ph name="SUBFRAME_SITE"/></translation>
+<translation id="5097649414558628673">Alat: <ph name="PRINT_NAME"/></translation>
 <translation id="8808478386290700967">Mrežna trgovina</translation>
 <translation id="8261378640211443080">Ovo proširenje nije navedeno u <ph name="IDS_EXTENSION_WEB_STORE_TITLE"/> i možda je dodano bez vašeg znanja.</translation>
 <translation id="6827869674836193263"><ph name="WINDOW_TITLE"/> (Privatno)</translation>
@@ -6550,19 +6559,21 @@ Mislim da ta web-lokacija ne bi trebala biti blokirana!</translation>
 <translation id="3098826269712097986">Vjerodajnice za prijavu spremaju se u pregledniku Brave nakon što napustite privatni način. Tako vam se omogućava uporaba Touch ID-ja kasnije na ovom mrežnom mjestu.</translation>
 <translation id="5186185447130319458">Privatno</translation>
 <translation id="2579188629646253712">Izađi iz privatnog</translation>
-<translation id="6744651634043798597">{COUNT, plural,
-          =0 {Otvori sve u &amp;privatnih prozora}
-          =1 {Otvori u &amp;privatom prozoru}
-          other {Otvori sve u (#) in &amp;privatna/ih prozora}}</translation>
+<translation id="1001131747196960052">Zatvori privatnu karticu</translation>
+<translation id="7475335772460644497">{COUNT, plural,
+          =0 {Otvori sve u &amp;privatnom prozoru}
+          =1 {Otvori u &amp;privatnom prozoru}
+          drugo {Otvori sve ({COUNT}) u &amp;privatnom/ih prozoru/a}}</translation>
 <translation id="2431625704210501303">Otvori u &amp;privatnom prozoru</translation>
 <translation id="4620367155626060530">&amp;Prikaži traku oznake</translation>
-<translation id="2633634757060186848">{COUNT, plural,
-          =0 {Otvori sve u &amp;privatnih prozora}
+<translation id="1448315815373449655">{COUNT, plural,
+          =0 {Otvori sve u &amp;privatnom prozoru}
           =1 {Otvori u &amp;privatnom prozoru}
-          other {Otvori sve (#) u &amp;privatna/ih prozora}}</translation>
+          drugo {Otvori sve ({COUNT})) u &amp;privatnom/ih prozoru/a}}</translation>
 <translation id="1985165269306590797">Otvori u &amp;privatnom prozoru</translation>
 <translation id="4680518314108745448">&amp;Prikaz trake oznake</translation>
 <translation id="642436385689435488">Otvori sve u privatnom prozoru</translation>
+<translation id="5074021236879527611">Otvori sve (<ph name="URL_COUNT"/>) u privatnom prozoru</translation>
 <translation id="5463021359602611602">Otvori u privatnom prozoru</translation>
 <translation id="1850357845349976573">{0, plural,
         =1 {Privatan}
@@ -6612,6 +6623,8 @@ Mislim da ta web-lokacija ne bi trebala biti blokirana!</translation>
 <translation id="4854477725773269949">Dopusti u privatnom</translation>
 <translation id="6436164536244065364">Pogledaj u web-trgovini</translation>
 <translation id="38046578254905003">Pronađite proširenja i teme u <ph name="BEGIN_LINK"/>mrežnoj trgovini<ph name="END_LINK"/></translation>
+<translation id="2402482691429508168">Profili koji su odabrani da budu vidljivi vama kada je njihov zaslon otključan</translation>
+<translation id="3910100573440336938">Podijeli datoteke s profilima oko sebe</translation>
 <translation id="6336451774241870485">Nova privatna kartica</translation>
 <translation id="6610147964972079463">Zatvori privatne kartice</translation>
 <translation id="4933782374919065856">Imate li pitanja? Obratite se osobi koja nadzire vaš profil.</translation>

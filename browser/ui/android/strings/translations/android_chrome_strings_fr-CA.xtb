@@ -1026,6 +1026,7 @@ Par exemple, certains sites Web peuvent répondre à cette demande en diffusant 
 <translation id="996149300115483134">Le menu de la carte du flux est fermé</translation>
 <translation id="4540437243849625078">Ce site est sur le point de partager des renseignements avec une application à l'extérieur du mode de navigation privée.</translation>
 <translation id="1227836882233136433">Désactiver mode de nav. privée?</translation>
+<translation id="21023559487771014">Passez en mode privé</translation>
 <translation id="5186185447130319458">Navigation privée</translation>
 <translation id="9063160602596686558">Envoie automatiquement des statistiques d'utilisation et des rapports d'erreur à Brave Software</translation>
 <translation id="1438581767753657407">Quand le mode simplifié est activé, Brave Software Brave utilise les serveurs Brave Software pour que les pages se chargent plus rapidement. Le mode simplifié réécrit les pages très lentes pour en charger seulement le contenu essentiel. Le mode simplifié ne fonctionne pas sur les onglets de navigation privée.</translation>
@@ -1035,7 +1036,11 @@ Par exemple, certains sites Web peuvent répondre à cette demande en diffusant 
 <translation id="3110967157686007724">Onglet de navigation privée</translation>
 <translation id="4526803704855831732">Onglets nav. priv.</translation>
 <translation id="7465104139234185284">Fermer tous les onglets de navigation privée</translation>
-<translation id="21023559487771014">Passez en mode privé</translation>
+<translation id="1455125811784733159">Ouvrir un onglet privé</translation>
+<translation id="807110510029471880">Utilisez Privé pour vous connecter</translation>
+<translation id="7987056960390558517">En privé, votre activité <ph name="BEGIN_BOLD1"/>peut encore être visible <ph name="END_BOLD1"/>aux sites Web que vous visitez, à votre employeur ou votre école, et à votre fournisseur d'accès internet.
+
+Les données de votre session privée ne seront effacées de Brave que lorsque vous <ph name="BEGIN_BOLD2"/>fermez tous les onglets privés<ph name="END_BOLD2"/>.</translation>
 <translation id="6336451774241870485">Nouvel onglet de navigation privée</translation>
 <translation id="3234355010754616171">Nouvel onglet de navigation privée</translation>
 <translation id="6610147964972079463">Fermer les onglets de navigation privée</translation>

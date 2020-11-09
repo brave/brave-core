@@ -197,10 +197,6 @@
     "message": "Sasa unaweza kupata kipato kwa kutazama matangazo!",
     "description": "Message for ads launch notification"
   },
-  "braveAdsLaunchTitle": {
-    "message": "Matangazo ya Brave yamewasili!",
-    "description": "Message used in notification to let users know Ads is available"
-  },
   "braveAdsTitle": {
     "message": "Matangazo ya Brave",
     "description": "Notification title when we display info about ads"
@@ -603,6 +599,10 @@
     "message": "Ghairi",
     "description": "Text for cancel button"
   },
+  "changeAmount":  {
+    "message": "Badilisha kiasi",
+    "description": "Button text for changing monthly contribution amount"
+  },
   "login":  {
     "message": "Ingia",
     "description": "Text for login button"
@@ -612,7 +612,7 @@
     "description": "Text for login button"
   },
   "loginMessageText":  {
-    "message": "Unahitaji kuwa na 25 BAT ya chini zaidi ili ufungue akaunti ya Uphold. Tafadhali jaribu tena baadaye. <br/> Ikiwa tayari umethibitisha akaunti ya Uphold, endelea kuingia.",
+    "message": "Unahitaji 25 BAT za chini zaidi ili kufungua akaunti ya Uphold. Tafadhali jaribu tena baadaye. \n Ikiwa tayari umethibitishwa akaunti ya Uphold, ingia.",
     "description": "Text for login button"
   },
   "walletConnected":  {
@@ -622,5 +622,9 @@
   "walletPending":  {
     "message": "Inasubiri",
     "description": "Status button that tells user that he is currently pending"
+  },
+  "walletVerificationNote3":  {
+    "message": "Dokezo: Miamala yako itaonekana kwa Uphold mara unapoidhinisha; kwa mfano, wataweza kuona mpokeaji na kiasi cha vidokezo vyako.",
+    "description": "Displayed in login modal for uphold"
   }
 }

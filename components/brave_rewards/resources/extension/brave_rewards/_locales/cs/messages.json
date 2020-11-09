@@ -197,10 +197,6 @@
     "message": "Nyní si můžete vydělávat sledováním reklam.",
     "description": "Message for ads launch notification"
   },
-  "braveAdsLaunchTitle": {
-    "message": "Reklamy Brave jsou tu!",
-    "description": "Message used in notification to let users know Ads is available"
-  },
   "braveAdsTitle": {
     "message": "Reklamy Brave ",
     "description": "Notification title when we display info about ads"
@@ -300,11 +296,11 @@
     "description": "Button text for clearing the error."
   },
   "grantGeneralErrorText": {
-    "message": "Odměny Brave se setkaly s problémem. Zkuste to prosím později znovu.",
+    "message": "Odměny Brave se setkaly s problémem. Zkuste to, prosím, později znovu.",
     "description": "Error text when user is having problems claiming a grant."
   },
   "grantGeneralErrorTitle": {
-    "message": "Jejda, něco se pokazilo. Zkuste to prosím později.",
+    "message": "Jejda, něco se pokazilo. Zkuste to, prosím, později.",
     "description": "Error title when user is having problems claiming a grant."
   },
   "unVerifiedCheck": {
@@ -388,7 +384,7 @@
     "description": "Privacy Policy"
   },
   "serviceText": {
-    "message": "Kliknutím na 'Povolit Brave Rewards' potvrzujete, že jste si přečetli a souhlasili s",
+    "message": "Klepnutím na 'Povolit Brave Rewards' potvrzujete, že jste si přečetli a souhlasili s",
     "description": "Terms of service main text"
   },
   "termsOfService": {
@@ -408,7 +404,7 @@
     "description": "Title for monthly contributions processed notification"
   },
   "serviceTextPanelWelcome": {
-    "message": "Kliknutím na „Připojit se k Rewards“ prohlašujete, že jste si přečetli a souhlasíte s ",
+    "message": "Klepnutím na „Připojit se k Rewards“ prohlašujete, že jste si přečetli a souhlasíte s ",
     "description": "Terms of service panel opt-in text"
   },
   "bat": {
@@ -428,7 +424,7 @@
     "description": "Description text for ad grants in grant details"
   },
   "twitterTipsHoverText": {
-    "message": "Přispět na tento tweet ",
+    "message": "Přispět na tuto zprávu",
     "description": "Hover text for Twitter tips action"
   },
   "twitterTipsIconLabel": {
@@ -603,6 +599,10 @@
     "message": "Zrušit",
     "description": "Text for cancel button"
   },
+  "changeAmount":  {
+    "message": "Změnit částku",
+    "description": "Button text for changing monthly contribution amount"
+  },
   "login":  {
     "message": "Přihlásit",
     "description": "Text for login button"
@@ -612,7 +612,7 @@
     "description": "Text for login button"
   },
   "loginMessageText":  {
-    "message": "Pokud chcete vytvořit účet služby Uphold, musíte mít alespoň 25 BAT. Zkuste to prosím znovu později. <br/> Pokud již máte ověřený účet služby Uphold, pokračujte přihlášením.",
+    "message": "Abyste mohli vytvořit účet Uphold, musíte mít minimálně 25 BAT. Zkuste to prosím později.\nPokud již máte ověřený účet Uphold, pokračujte v přihlašování.",
     "description": "Text for login button"
   },
   "walletConnected":  {
@@ -622,5 +622,9 @@
   "walletPending":  {
     "message": "Probíhá",
     "description": "Status button that tells user that he is currently pending"
+  },
+  "walletVerificationNote3":  {
+    "message": "Poznámka: Jakmile provedete ověření, transakce budou pro Uphold viditelné; například uvidí příjemce a částky vašich příspěvků.",
+    "description": "Displayed in login modal for uphold"
   }
 }

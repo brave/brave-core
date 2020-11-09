@@ -6520,6 +6520,14 @@
 <translation id="995782501881226248">YouTube</translation>
 <translation id="996250603853062861">Встановлення безпечного з'єднання...</translation>
 <translation id="998747458861718449">Перевірити</translation>
+<translation id="6744651634043798597">{РАХУНОК, множина,
+          =0 {Відкрити все у &amp;приватному вікні}
+          =1 {Відкрити у &amp;приватному вікні}
+          інше {Відкрити все (#) у &amp;приватному вікні}}</translation>
+<translation id="2633634757060186848">{РАХУНОК, множина,
+          =0 {Відкрити все у &amp;Приватному вікні}
+          =1 {Відкрити у &amp;Приватному вікні}
+          інше {Відкрити все (#) у &amp;Приватному вікні }}</translation>
 <translation id="658539216370629794">Відкрити посилання у &amp;приватному вікні</translation>
 <translation id="1432267168815937878">Відкрити посилання у &amp;Приватному вікні</translation>
 <translation id="6516243500644829484">Нове &amp;приватне вікно</translation>
@@ -6533,6 +6541,7 @@
 <translation id="9048137919253433011">Приватна вкладка: <ph name="TAB_NAME"/></translation>
 <translation id="1799432502220762862">Приватна частина кадра: <ph name="SUBFRAME_SITE"/></translation>
 <translation id="3193187622878830588">Портал анонімного режиму: <ph name="SUBFRAME_SITE"/></translation>
+<translation id="5097649414558628673">Інструмент: <ph name="PRINT_NAME"/></translation>
 <translation id="8808478386290700967">Вебмагазин</translation>
 <translation id="8261378640211443080">Це розширення встановлено не із сайту <ph name="IDS_EXTENSION_WEB_STORE_TITLE"/>. Можливо, його було додано без вашого відома.</translation>
 <translation id="6827869674836193263"><ph name="WINDOW_TITLE"/> (Приватне)</translation>
@@ -6550,19 +6559,21 @@
 <translation id="3098826269712097986">Дані для входу будуть зберігатись у Brave після того, як ви вийдете з Приватного режиму. Це дозволить вам використовувати Touch ID на цьому сайті пізніше.</translation>
 <translation id="5186185447130319458">Приватне</translation>
 <translation id="2579188629646253712">Вийти з приватних</translation>
-<translation id="6744651634043798597">{РАХУНОК, множина,
+<translation id="1001131747196960052">Закрити приватне</translation>
+<translation id="7475335772460644497">{COUNT, plural,
           =0 {Відкрити все у &amp;приватному вікні}
           =1 {Відкрити у &amp;приватному вікні}
-          інше {Відкрити все (#) у &amp;приватному вікні}}</translation>
+          інше {Відкрити ({COUNT}) у &amp;приватному вікні}}</translation>
 <translation id="2431625704210501303">Відкрити у &amp;приватному вікні</translation>
 <translation id="4620367155626060530">&amp;Показати панель закладок</translation>
-<translation id="2633634757060186848">{РАХУНОК, множина,
+<translation id="1448315815373449655">{COUNT, plural,
           =0 {Відкрити все у &amp;Приватному вікні}
           =1 {Відкрити у &amp;Приватному вікні}
-          інше {Відкрити все (#) у &amp;Приватному вікні }}</translation>
+          інше {Відкрити Всі ({COUNT}) у  &amp;Приватному вікні}}</translation>
 <translation id="1985165269306590797">Відкрити у &amp;Приватному вікні</translation>
 <translation id="4680518314108745448">&amp;Показати панель закладок</translation>
 <translation id="642436385689435488">Відкрити все у приватному вікні</translation>
+<translation id="5074021236879527611">Відкрити все (<ph name="URL_COUNT"/>) у приватному вікні</translation>
 <translation id="5463021359602611602">Відкрити у приватному вікні</translation>
 <translation id="1850357845349976573">{0, множина,
         =1 {Приватне}
@@ -6612,6 +6623,8 @@
 <translation id="4854477725773269949">Дозволити в приватному</translation>
 <translation id="6436164536244065364">Переглянути у веб-магазині</translation>
 <translation id="38046578254905003">Знаходьте розширення та теми у <ph name="BEGIN_LINK"/>веб-магазині<ph name="END_LINK"/></translation>
+<translation id="2402482691429508168">Профілі, які вирішили бути видимими для вас, коли їхні екрани розблоковані</translation>
+<translation id="3910100573440336938">Поділитись файлами з профілями навколо вас</translation>
 <translation id="6336451774241870485">Нова приватна вкладка</translation>
 <translation id="6610147964972079463">Закрити приватні вкладки</translation>
 <translation id="4933782374919065856">Маєте запитання? Зв’яжіться з особою, яка контролює ваш профіль.</translation>

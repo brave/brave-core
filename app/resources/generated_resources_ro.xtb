@@ -6520,6 +6520,14 @@ Păstrează fișierul cu cheia într-un loc sigur. Acesta va fi necesar la crear
 <translation id="995782501881226248">YouTube</translation>
 <translation id="996250603853062861">Se stabilește conexiunea securizată...</translation>
 <translation id="998747458861718449">I&amp;nspectează</translation>
+<translation id="6744651634043798597">{COUNT, plural,
+          =0 {Open all in &amp;private window}
+          =1 {Open in &amp;private window}
+          other {Open all (#) in &amp;private window}}</translation>
+<translation id="2633634757060186848">{COUNT, plural,
+          =0 {Open All in &amp;Private Window}
+          =1 {Open in &amp;Private Window}
+          other {Open All (#) in &amp;Private Window}}</translation>
 <translation id="658539216370629794">Deschide link în fereastră &amp;privată</translation>
 <translation id="1432267168815937878">Deschide Link în Fereastră &amp;Privată</translation>
 <translation id="6516243500644829484">Fereastră &amp;privată nouă</translation>
@@ -6533,6 +6541,7 @@ Păstrează fișierul cu cheia într-un loc sigur. Acesta va fi necesar la crear
 <translation id="9048137919253433011">Tab Privat: <ph name="TAB_NAME"/></translation>
 <translation id="1799432502220762862">Subcadru privat: <ph name="SUBFRAME_SITE"/></translation>
 <translation id="3193187622878830588">Portal incognito: <ph name="SUBFRAME_SITE"/></translation>
+<translation id="5097649414558628673">Instrument: <ph name="PRINT_NAME"/></translation>
 <translation id="8808478386290700967">Magazin Web</translation>
 <translation id="8261378640211443080">Această extensie nu este inclusă în <ph name="IDS_EXTENSION_WEB_STORE_TITLE"/> și este posibil să fi fost adăugată fără știrea dvs.</translation>
 <translation id="6827869674836193263"><ph name="WINDOW_TITLE"/> (Privat)</translation>
@@ -6550,19 +6559,21 @@ Păstrează fișierul cu cheia într-un loc sigur. Acesta va fi necesar la crear
 <translation id="3098826269712097986">Datele de înregistrare vor fi stocate în Brave după ce ieși din modul Privat. Aceasta îți va permite să folosești ID Atingere cu acest site din nou mai târziu.</translation>
 <translation id="5186185447130319458">Privat</translation>
 <translation id="2579188629646253712">Ieși din Privat</translation>
-<translation id="6744651634043798597">{COUNT, plural,
-          =0 {Open all in &amp;private window}
-          =1 {Open in &amp;private window}
-          other {Open all (#) in &amp;private window}}</translation>
+<translation id="1001131747196960052">Închideți Privat</translation>
+<translation id="7475335772460644497">{COUNT, plural,
+          =0 {Deschide tot în &amp;fereastră privată}
+          =1 {Deschide în &amp;fereastră privată}
+          altul {Deschide tot ({COUNT}) în &amp;fereastră privată}}</translation>
 <translation id="2431625704210501303">Deschide în fereastră &amp;privată</translation>
 <translation id="4620367155626060530">&amp;Afișați bara de marcaje</translation>
-<translation id="2633634757060186848">{COUNT, plural,
-          =0 {Open All in &amp;Private Window}
-          =1 {Open in &amp;Private Window}
-          other {Open All (#) in &amp;Private Window}}</translation>
+<translation id="1448315815373449655">{COUNT, plural,
+          =0 {Deschide tot în &amp;Fereastră Privată}
+          =1 {Deschide în &amp;Fereastră Privată}
+          altul {Deschide Tot ({COUNT}) în &amp;Fereastră Privată}}</translation>
 <translation id="1985165269306590797">Deschide în Fereastră &amp;Privată</translation>
 <translation id="4680518314108745448">&amp;Afișați bara de marcaje</translation>
 <translation id="642436385689435488">Deschide to în fereastră privată</translation>
+<translation id="5074021236879527611">Deschide tot (<ph name="URL_COUNT"/>) în fereastră privată</translation>
 <translation id="5463021359602611602">Deschide în fereastră privată</translation>
 <translation id="1850357845349976573">{0, plural,
         =1 {Private}
@@ -6612,6 +6623,8 @@ Păstrează fișierul cu cheia într-un loc sigur. Acesta va fi necesar la crear
 <translation id="4854477725773269949">Permite în privat</translation>
 <translation id="6436164536244065364">Vizualizați în Magazinul web Brave</translation>
 <translation id="38046578254905003">Găsești extensii și teme în <ph name="BEGIN_LINK"/>Web Store<ph name="END_LINK"/></translation>
+<translation id="2402482691429508168">Profilurile care au optat să fie vizibile când ecranul lor este deblocat</translation>
+<translation id="3910100573440336938">Partajați fișiere cu profiluri din jur</translation>
 <translation id="6336451774241870485">Tab privat nou</translation>
 <translation id="6610147964972079463">Închide taburi private</translation>
 <translation id="4933782374919065856">Întrebări? Contactează persoana care îți monitorizează profilul.</translation>
