@@ -2032,10 +2032,11 @@ BraveRewardsPageUI::BraveRewardsPageUI(content::WebUI* web_ui,
               kBraveRewardsSettingsGeneratedSize,
 #endif
 #if defined(OS_ANDROID)
-              IDR_BRAVE_REWARDS_ANDROID_PAGE_HTML) {
+              IDR_BRAVE_REWARDS_ANDROID_PAGE_HTML,
 #else
-              IDR_BRAVE_REWARDS_PAGE_HTML) {
+              IDR_BRAVE_REWARDS_PAGE_HTML,
 #endif
+              /*disable_trusted_types_csp=*/true) {
   auto handler_owner = std::make_unique<RewardsDOMHandler>();
   RewardsDOMHandler * handler = handler_owner.get();
   web_ui->AddMessageHandler(std::move(handler_owner));

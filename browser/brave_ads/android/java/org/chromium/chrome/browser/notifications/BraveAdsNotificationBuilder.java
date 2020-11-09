@@ -18,6 +18,7 @@ import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
+import android.os.Process;
 import android.util.DisplayMetrics;
 import android.view.View;
 import android.widget.RemoteViews;
@@ -218,8 +219,9 @@ public class BraveAdsNotificationBuilder extends NotificationBuilderBase {
         Bitmap bitmap = Bitmap.createBitmap(colors, size, size, Bitmap.Config.ARGB_8888);
 
         Drawable inputDrawable = new BitmapDrawable(resources, bitmap);
-        Drawable outputDrawable = ApiCompatibilityUtils.getUserBadgedDrawableForDensity(
-                inputDrawable, null /* badgeLocation */, metrics.densityDpi);
+        Drawable outputDrawable =
+                mContext.getPackageManager().getUserBadgedDrawableForDensity(inputDrawable,
+                        Process.myUserHandle(), null /* badgeLocation */, metrics.densityDpi);
 
         // The input bitmap is immutable, so the output drawable will be a different instance from
         // the input drawable if the work profile badge was applied.

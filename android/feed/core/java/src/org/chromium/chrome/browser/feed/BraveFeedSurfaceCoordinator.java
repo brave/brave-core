@@ -15,7 +15,6 @@ import androidx.annotation.Nullable;
 import org.chromium.base.ApiCompatibilityUtils;
 import org.chromium.base.supplier.Supplier;
 import org.chromium.chrome.R;
-import org.chromium.chrome.browser.feed.action.FeedActionHandler;
 import org.chromium.chrome.browser.feed.library.api.host.action.ActionApi;
 import org.chromium.chrome.browser.feed.shared.FeedSurfaceDelegate;
 import org.chromium.chrome.browser.native_page.NativePageNavigationDelegate;
@@ -37,13 +36,13 @@ public class BraveFeedSurfaceCoordinator extends FeedSurfaceCoordinator {
     public BraveFeedSurfaceCoordinator(Activity activity, SnackbarManager snackbarManager,
             TabModelSelector tabModelSelector, Supplier<Tab> tabProvider,
             @Nullable SnapScrollHelper snapScrollHelper, @Nullable View ntpHeader,
-            @Nullable SectionHeaderView sectionHeaderView, FeedActionHandler.Options actionOptions,
+            @Nullable SectionHeaderView sectionHeaderView, FeedV1ActionOptions actionOptions,
             boolean showDarkBackground, FeedSurfaceDelegate delegate,
             @Nullable NativePageNavigationDelegate pageNavigationDelegate, Profile profile,
-            boolean isPlaceholderShown, BottomSheetController bottomSheetController) {
+            boolean isPlaceholderRequested, BottomSheetController bottomSheetController) {
         super(activity, snackbarManager, tabModelSelector, tabProvider, snapScrollHelper, ntpHeader,
                 sectionHeaderView, actionOptions, showDarkBackground, delegate,
-                pageNavigationDelegate, profile, isPlaceholderShown, bottomSheetController);
+                pageNavigationDelegate, profile, isPlaceholderRequested, bottomSheetController);
     }
 
     @Override

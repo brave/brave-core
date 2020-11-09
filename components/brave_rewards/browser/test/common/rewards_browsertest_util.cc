@@ -30,7 +30,7 @@ double IsRewardsEnabled(Browser* browser, const bool private_window) {
   DCHECK(browser);
   auto* profile = browser->profile();
   if (private_window) {
-    Profile* private_profile = profile->GetOffTheRecordProfile();
+    Profile* private_profile = profile->GetPrimaryOTRProfile();
     return private_profile->GetPrefs()->GetBoolean(
       brave_rewards::prefs::kEnabled);
   }

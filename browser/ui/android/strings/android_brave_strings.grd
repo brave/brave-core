@@ -298,12 +298,6 @@ This file contains all "about" strings.  It is set to NOT be translated, in tran
       <message name="IDS_BOTTOM_TOOLBAR_ENABLE" desc="Menu item for enabling the bottom toolbar.">
         Enable bottom toolbar
       </message>
-      <message name="IDS_TEXT_ON" desc="Text indicating that an option is turned on. [CHAR-LIMIT=20]">
-        On
-      </message>
-      <message name="IDS_TEXT_OFF" desc="Text indicating that an option is turned off. [CHAR-LIMIT=20]">
-        Off
-      </message>
       <message name="IDS_SETTINGS_REQUIRE_RELAUNCH_NOTICE" desc="Text for message asked about browser relaunch to apply new settings">
         Your changes will take effect the next time you relaunch Brave
       </message>
@@ -329,9 +323,6 @@ This file contains all "about" strings.  It is set to NOT be translated, in tran
       </message>
       <message name="IDS_SEARCH_ENGINE_TEXT" desc="Text for search engine page for onboarding">
         You can always change your preference later in app settings.
-      </message>
-      <message name="IDS_SAVE" desc="Text for save button">
-        Save
       </message>
       <message name="IDS_BLOCK" desc="Partial Text for brave shield page">
         Block
@@ -386,12 +377,6 @@ This file contains all "about" strings.  It is set to NOT be translated, in tran
       </message>
       <message name="IDS_CONTINUE_TO_WALLET" desc="Text for continue to wallet button">
         Continue to wallet
-      </message>
-      <message name="IDS_CONTINUE_BUTTON" desc="Generic label for a button to continue to the next screen. Used in multiple contexts. [CHAR-LIMIT=20]">
-        Continue
-      </message>
-      <message name="IDS_CANCEL" desc="Label for a cancel button. Used in multiple contexts. [CHAR-LIMIT=20]">
-        Cancel
       </message>
       <message name="IDS_MENU_SET_DEFAULT_BROWSER" desc="Title for set default browser menu item">
         Set as default browser
@@ -1218,9 +1203,6 @@ until they verify, or until 90 days have passed.
       <message name="IDS_TURN_ON_PRIVACY_STATS" desc="Button text for onboading bottomsheet.">
         Turn on privacy reports
       </message>
-      <message name="IDS_LEARN_MORE" desc="Button text for onboading bottomsheet.">
-        Learn more
-      </message>
       <message name="IDS_WEEK" desc="Tab title text">
         Week
       </message>
@@ -1322,6 +1304,9 @@ until they verify, or until 90 days have passed.
       </message>
       <message name="IDS_NIGHT_MODE_ENABLE" desc="Menu item for enabling dark mode for webcontent.">
         Enable "Night Mode" (Experimental)
+      </message>
+      <message name="IDS_ACCESSIBILITY_TOOLBAR_BTN_SEARCH_ACCELERATOR" desc="Content description for the search accelerator button">
+        Search
       </message>
       <message name="IDS_MENU_EDIT" desc="NTP widget menu item">
         Edit Stack

@@ -92,7 +92,6 @@ test("brave_unit_tests") {
     "//brave/browser/browsing_data/brave_browsing_data_remover_delegate_unittest.cc",
     "//brave/browser/browsing_data/counters/brave_site_settings_counter_unittest.cc",
     "//brave/browser/download/brave_download_item_model_unittest.cc",
-    "//brave/browser/metrics/metrics_reporting_util_unittest_linux.cc",
     "//brave/browser/net/brave_ad_block_tp_network_delegate_helper_unittest.cc",
     "//brave/browser/net/brave_block_safebrowsing_urls_unittest.cc",
     "//brave/browser/net/brave_common_static_redirect_network_delegate_helper_unittest.cc",
@@ -103,7 +102,6 @@ test("brave_unit_tests") {
     "//brave/browser/net/brave_system_request_handler_unittest.cc",
     "//brave/chromium_src/chrome/browser/history/history_utils_unittest.cc",
     "//brave/chromium_src/chrome/browser/lookalikes/lookalike_url_navigation_throttle_unittest.cc",
-    "//brave/chromium_src/chrome/browser/shell_integration_unittest_mac.cc",
     "//brave/chromium_src/chrome/browser/signin/account_consistency_disabled_unittest.cc",
     "//brave/chromium_src/components/autofill/core/browser/autofill_experiments_unittest.cc",
     "//brave/chromium_src/components/metrics/enabled_state_provider_unittest.cc",
@@ -144,6 +142,7 @@ test("brave_unit_tests") {
   deps = [
     ":test_support",
     "//brave/base:base_unittests",
+    "//brave/browser/metrics/test:brave_metrics_unit_tests",
     "//brave/browser/safebrowsing",
     "//brave/components/brave_ads/test:brave_ads_unit_tests",
     "//brave/components/brave_private_cdn",
@@ -234,6 +233,7 @@ test("brave_unit_tests") {
 
   if (is_mac) {
     sources += [
+      "//brave/chromium_src/chrome/browser/shell_integration_unittest_mac.cc",
       "//brave/chromium_src/chrome/common/chrome_constants_unittest_mac.cc",
     ]
   }
@@ -255,7 +255,7 @@ test("brave_unit_tests") {
     ]
     deps += [
       "//brave/components/crypto_dot_com/browser",
-    ]    
+    ]
   }
 
   if (is_linux) {
@@ -651,7 +651,7 @@ if (!is_android) {
     }
 
     if (crypto_dot_com_enabled) {
-      sources += [ "//brave/components/crypto_dot_com/browser/crypto_dot_com_service_browsertest.cc" ]    
+      sources += [ "//brave/components/crypto_dot_com/browser/crypto_dot_com_service_browsertest.cc" ]
     }
 
     if (brave_rewards_enabled) {

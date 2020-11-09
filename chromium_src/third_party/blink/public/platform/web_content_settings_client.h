@@ -8,7 +8,7 @@
 
 #include "brave/third_party/blink/renderer/brave_farbling_constants.h"
 
-#define AllowDatabase                                           \
+#define AllowStorageAccessSync                                           \
   AllowAutoplay(bool default_value) { return default_value; }   \
   virtual bool AllowFingerprinting(bool enabled_per_settings) { \
     return enabled_per_settings;                                \
@@ -16,11 +16,11 @@
   virtual BraveFarblingLevel GetBraveFarblingLevel() {          \
     return BraveFarblingLevel::OFF;                             \
   }                                                             \
-  virtual bool AllowDatabase
+  virtual bool AllowStorageAccessSync
 
 
 #include "../../../../../../third_party/blink/public/platform/web_content_settings_client.h"
 
-#undef AllowDatabase
+#undef AllowStorageAccessSync
 
 #endif  // BRAVE_CHROMIUM_SRC_THIRD_PARTY_BLINK_PUBLIC_PLATFORM_WEB_CONTENT_SETTINGS_CLIENT_H_

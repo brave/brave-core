@@ -246,6 +246,9 @@
     <message name="IDS_PAGE_INFO_TYPE_BACKGROUND_SYNC" desc="The label used for the background sync permission controls in the Page Info popup.">
       Background Sync
     </message>
+    <message name="IDS_PAGE_INFO_TYPE_IDLE_DETECTION" desc="The label used for the idle detection permission controlls in the Page Info popup.">
+      User presence
+    </message>
     <message name="IDS_PAGE_INFO_TYPE_IMAGES" desc="The label used for images permission controls in the Page Info popup.">
       Images
     </message>
@@ -316,7 +319,7 @@
       Window placement
     </message>
     <message name="IDS_PAGE_INFO_TYPE_FONT_ACCESS" desc="The label used for the Font Access permission controls in the Page Info popup.">
-      Local font access
+      Fonts
     </message>
     <message name="IDS_PAGE_INFO_TYPE_HID" desc="The label used for the HID permission controls in the Page Info popup.">
       HID devices
@@ -574,7 +577,7 @@
         Ignore
       </message>
     </if>
-    <message name="IDS_PAGE_INFO_ALLOWLIST_PASSWORD_REUSE_BUTTON" desc="The string used in the page info whitelist password reuse button.">
+    <message name="IDS_PAGE_INFO_ALLOWLIST_PASSWORD_REUSE_BUTTON" desc="The string used in the page info allowlist password reuse button.">
       Site is legitimate
     </message>
   </if>

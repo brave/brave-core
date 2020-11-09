@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/profiles/profile_window.h b/chrome/browser/profiles/profile_window.h
-index 6ba35ca6f4384892e87a132567fda82834d62b36..b17f08c9bbf4fc03ee328c34e7183037b484da13 100644
+index 2ee8d99e1804f91aedce6e3e9cfbf278ad53f963..e870befafe4c90c3caa4c8041b5b483d8336f706 100644
 --- a/chrome/browser/profiles/profile_window.h
 +++ b/chrome/browser/profiles/profile_window.h
 @@ -85,6 +85,7 @@ void SwitchToProfile(const base::FilePath& path,

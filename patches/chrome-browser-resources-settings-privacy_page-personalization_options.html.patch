@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/resources/settings/privacy_page/personalization_options.html b/chrome/browser/resources/settings/privacy_page/personalization_options.html
-index ee33af6a45df058d946b763560063708327d9077..57b0c2741c30028367a4e13b953a2fc0dc230a39 100644
+index 2b94f37bda8703e6876b770b9d75dafbc0b27954..b0e72bac8a55cf1d3b1c98bdb31b5d1d16df9453 100644
 --- a/chrome/browser/resources/settings/privacy_page/personalization_options.html
 +++ b/chrome/browser/resources/settings/privacy_page/personalization_options.html
 @@ -16,6 +16,7 @@
@@ -18,14 +18,15 @@ index ee33af6a45df058d946b763560063708327d9077..57b0c2741c30028367a4e13b953a2fc0
  <if expr="not chromeos">
      <settings-toggle-button id="signinAllowedToggle"
          class="hr"
-@@ -46,12 +48,14 @@
+@@ -46,6 +48,7 @@
          no-set-pref>
      </settings-toggle-button>
  </if><!-- not chromeos -->
 +</if>
-     <settings-toggle-button class="hr"
+     <settings-toggle-button id="searchSuggestToggle"
+         class="hr"
          hidden="[[!pageVisibility.searchPrediction]]"
-         pref="{{prefs.search.suggest_enabled}}"
+@@ -53,6 +56,7 @@
          label="$i18n{searchSuggestPref}"
          sub-label="$i18n{searchSuggestPrefDesc}">
      </settings-toggle-button>
@@ -33,7 +34,7 @@ index ee33af6a45df058d946b763560063708327d9077..57b0c2741c30028367a4e13b953a2fc0
  <if expr="_google_chrome">
  <if expr="chromeos">
      <settings-toggle-button class="hr"
-@@ -60,6 +64,8 @@
+@@ -61,6 +65,8 @@
          sub-label="$i18n{enablePersonalizationLoggingDesc}">
      </settings-toggle-button>
  </if><!-- chromeos -->
@@ -42,14 +43,14 @@ index ee33af6a45df058d946b763560063708327d9077..57b0c2741c30028367a4e13b953a2fc0
  <if expr="not chromeos">
      <settings-toggle-button id="metricsReportingControl"
          class="hr"
-@@ -75,13 +81,15 @@
+@@ -76,13 +82,15 @@
        </template>
      </settings-toggle-button>
  </if><!-- not chromeos -->
 -</if><!-- _google_chrome -->
 +</if><!-- _chromium -->
 +<if expr="_google_chrome">
-     <settings-toggle-button
+     <settings-toggle-button id="urlCollectionToggle"
          class="hr"
          pref="{{prefs.url_keyed_anonymized_data_collection.enabled}}"
          label="$i18n{urlKeyedAnonymizedDataCollection}"
@@ -59,7 +60,7 @@ index ee33af6a45df058d946b763560063708327d9077..57b0c2741c30028367a4e13b953a2fc0
  <if expr="_google_chrome">
      <settings-toggle-button id="spellCheckControl"
          class="hr"
-@@ -101,6 +109,7 @@
+@@ -102,6 +110,7 @@
        </settings-toggle-button>
      </template>
  
@@ -67,7 +68,7 @@ index ee33af6a45df058d946b763560063708327d9077..57b0c2741c30028367a4e13b953a2fc0
      <template is="dom-if" if="[[showSignoutDialog_]]" restamp>
        <settings-signout-dialog sync-status="[[syncStatus]]"
            on-close="onSignoutDialogClosed_">
-@@ -112,6 +121,7 @@
+@@ -113,6 +122,7 @@
        <div>$i18n{restartToApplyChanges}</div>
        <cr-button on-click="onRestartTap_">$i18n{restart}</cr-button>
      </cr-toast>

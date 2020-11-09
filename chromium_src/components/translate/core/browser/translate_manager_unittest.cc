@@ -26,7 +26,7 @@ TEST_F(TranslateManagerTest, CanManuallyTranslate_WithoutAPIKey) {
           .WillByDefault(Return(true));
   network_notifier_.SimulateOnline();
 
-  translate_manager_->GetLanguageState().LanguageDetermined("de", true);
+  translate_manager_->GetLanguageState()->LanguageDetermined("de", true);
   EXPECT_TRUE(translate_manager_->CanManuallyTranslate());
 
   ::google_apis::SetAPIKeyForTesting(api_key);
@@ -48,7 +48,7 @@ TEST_F(TranslateManagerTest, CanManuallyTranslate_WithAPIKey) {
           .WillByDefault(Return(true));
   network_notifier_.SimulateOnline();
 
-  translate_manager_->GetLanguageState().LanguageDetermined("de", true);
+  translate_manager_->GetLanguageState()->LanguageDetermined("de", true);
   EXPECT_TRUE(translate_manager_->CanManuallyTranslate());
 
   ::google_apis::SetAPIKeyForTesting(api_key);

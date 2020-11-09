@@ -35,8 +35,6 @@ class CookiePrefServiceTest : public InProcessBrowserTest {
   }
 
   void SetThirdPartyCookiePref(bool setting) {
-    profile()->GetPrefs()->SetBoolean(
-        prefs::kBlockThirdPartyCookies, setting);
     profile()->GetPrefs()->SetInteger(
         prefs::kCookieControlsMode,
         static_cast<int>(

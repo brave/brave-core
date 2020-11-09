@@ -114,6 +114,8 @@ const char kContentSettingsExceptionsLearnMoreURL[] =
 const char kCookiesSettingsHelpCenterURL[] =
     "https://support.brave.com/hc/en-us/articles/"
     "360018205431-How-do-I-change-site-permissions-";
+const char kCpuX86Sse2ObsoleteURL[] =
+    "https://support.brave.com/";
 
 const char kCrashReasonURL[] =
     "https://support.brave.com/hc/en-us/articles/"
@@ -178,6 +180,8 @@ const char kPageInfoHelpCenterURL[] =
 
 const char kPasswordCheckLearnMoreURL[] = "https://support.brave.com/";
 
+const char kPasswordGenerationLearnMoreURL[] = "https://support.brave.com/";
+
 const char kPasswordManagerLearnMoreURL[] =
     "https://support.brave.com/hc/en-us/articles/"
     "360018185951-How-do-I-use-the-built-in-password-manager-";
@@ -203,6 +207,8 @@ const char kSafeBrowsingHelpCenterURL[] =
     "https://support.brave.com/";
 
 const char kSafetyTipHelpCenterURL[] =
+    "https://support.brave.com/";
+const char kSeeMoreSecurityTipsURL[] =
     "https://support.brave.com/";
 
 const char kSettingsSearchHelpURL[] =
@@ -246,7 +252,7 @@ const char kEnhancedPlaybackNotificationLearnMoreURL[] =
 const char kChromeEnterpriseSignInLearnMoreURL[] =
     "https://support.brave.com/";
 
-const char kMac10_9_ObsoleteURL[] =
+const char kMac10_10_ObsoleteURL[] =
     "https://support.brave.com/hc/en-us/articles/"
     "360025390311-How-do-I-download-and-install-Brave-";
 #endif

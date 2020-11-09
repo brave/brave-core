@@ -105,7 +105,8 @@ void WelcomeDOMHandler::HandleRecordP3A(const base::ListValue* args) {
 
 BraveWelcomeUI::BraveWelcomeUI(content::WebUI* web_ui, const std::string& name)
     : BasicUI(web_ui, name, kBraveWelcomeGenerated,
-        kBraveWelcomeGeneratedSize, IDR_BRAVE_WELCOME_HTML) {
+        kBraveWelcomeGeneratedSize, IDR_BRAVE_WELCOME_HTML,
+        /*disable_trusted_types_csp=*/true) {
   web_ui->AddMessageHandler(std::make_unique<WelcomeDOMHandler>());
   web_ui->AddMessageHandler(
       std::make_unique<settings::BraveImportDataHandler>());

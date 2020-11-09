@@ -136,7 +136,7 @@ TEST_F(BraveProfileManagerTest, InitProfileUserPrefs) {
   ASSERT_TRUE(tor_profile);
   EXPECT_EQ(brave::GetParentProfile(tor_profile), profile);
 
-  tor_profile = tor_profile->GetOffTheRecordProfile();
+  tor_profile = tor_profile->GetPrimaryOTRProfile();
 
   // Check that the tor_profile name is non empty
   std::string profile_name =
@@ -246,7 +246,7 @@ TEST_F(BraveProfileManagerTest, ProxyConfigMonitorInTorProfile) {
   Profile* parent_profile = profile_manager->GetProfile(dest_path);
   base::FilePath tor_path = BraveProfileManager::GetTorProfilePath();
   Profile* profile =
-      profile_manager->GetProfile(tor_path)->GetOffTheRecordProfile();
+      profile_manager->GetProfile(tor_path)->GetPrimaryOTRProfile();
   ASSERT_TRUE(profile);
   EXPECT_EQ(brave::GetParentProfile(profile), parent_profile);
 

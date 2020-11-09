@@ -56,7 +56,7 @@ class BraveActionsContainer::EmptyExtensionsContainer
 
   extensions::ExtensionContextMenuModel::ButtonVisibility GetActionVisibility(
       const ToolbarActionViewController* action) const override {
-    return extensions::ExtensionContextMenuModel::VISIBLE;
+    return extensions::ExtensionContextMenuModel::PINNED;
   }
 
   void UndoPopOut() override {}

@@ -1,10 +1,10 @@
 diff --git a/chrome/browser/resources/settings/site_settings/site_details.html b/chrome/browser/resources/settings/site_settings/site_details.html
-index 144f7fdf9735423acec2922d1bffaf97e9ce0e0f..2f949206ea4f838b87d484f08c42e7683ce27feb 100644
+index 41e59a524e5a9a21fc1c4e2068f2988d3d7db9b8..e0c372f82dd4507a4988264ad4d4e12b1ea71b5c 100644
 --- a/chrome/browser/resources/settings/site_settings/site_details.html
 +++ b/chrome/browser/resources/settings/site_settings/site_details.html
-@@ -213,6 +213,11 @@
-           icon="cr:extension" id="unsandboxedPlugins"
-           label="$i18n{siteSettingsUnsandboxedPlugins}">
+@@ -193,6 +193,11 @@
+           category="[[ContentSettingsTypes.UNSANDBOXED_PLUGINS]]"
+           icon="cr:extension" label="$i18n{siteSettingsUnsandboxedPlugins}">
        </site-details-permission>
 +      <site-details-permission
 +          category="{{ContentSettingsTypes.AUTOPLAY}}"
@@ -13,4 +13,4 @@ index 144f7fdf9735423acec2922d1bffaf97e9ce0e0f..2f949206ea4f838b87d484f08c42e768
 +      </site-details-permission>
  <if expr="chromeos">
        <site-details-permission
-           category="{{ContentSettingsTypes.PROTECTED_CONTENT}}"
+           category="[[ContentSettingsTypes.PROTECTED_CONTENT]]"
