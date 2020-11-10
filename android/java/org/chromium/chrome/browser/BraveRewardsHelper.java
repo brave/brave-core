@@ -20,11 +20,13 @@ import android.text.Spanned;
 import android.util.DisplayMetrics;
 import android.view.TouchDelegate;
 import android.view.View;
+import android.content.SharedPreferences;
 
 import androidx.annotation.Nullable;
 
 import org.chromium.base.annotations.CalledByNative;
 import org.chromium.chrome.R;
+import org.chromium.base.ContextUtils;
 import org.chromium.chrome.browser.ChromeTabbedActivity;
 import org.chromium.chrome.browser.app.BraveActivity;
 import org.chromium.chrome.browser.profiles.Profile;
@@ -40,6 +42,8 @@ import java.util.Calendar;
 import java.util.Locale;
 
 public class BraveRewardsHelper implements LargeIconBridge.LargeIconCallback{
+    private static final String PREF_BRAVE_REWARDS_OPEN_COUNT = "brave_rewards_open_count";
+    private static final String PREF_SHOW_BRAVE_REWARDS_ONBOARDING = "show_brave_rewards_onboarding";
     private static final int FAVICON_CIRCLE_MEASUREMENTS = 70; // dp
     private static final int FAVICON_TEXT_SIZE = 50; // dp
     private static final int FAVICON_FETCH_INTERVAL = 1000; // In milliseconds
@@ -58,6 +62,25 @@ public class BraveRewardsHelper implements LargeIconBridge.LargeIconCallback{
     private static final float DP_PER_INCH_MDPI = 160f;
     private Tab mTab;
 
+    public static int getBraveRewardsOpenCount() {
+        return ContextUtils.getAppSharedPreferences().getInt(PREF_BRAVE_REWARDS_OPEN_COUNT, 0);
+    }
+
+    public static void updateBraveRewardsOpenCount() {
+        SharedPreferences.Editor sharedPreferencesEditor = ContextUtils.getAppSharedPreferences().edit();
+        sharedPreferencesEditor.putInt(PREF_BRAVE_REWARDS_OPEN_COUNT, getBraveRewardsOpenCount() + 1);
+        sharedPreferencesEditor.apply();
+    }
+
+    public static boolean shouldShowBraveRewardsOnboarding() {
+        return ContextUtils.getAppSharedPreferences().getBoolean(PREF_SHOW_BRAVE_REWARDS_ONBOARDING, false);
+    }
+
+    public static void setShowBraveRewardsOnboarding(boolean enabled) {
+        SharedPreferences.Editor sharedPreferencesEditor = ContextUtils.getAppSharedPreferences().edit();
+        sharedPreferencesEditor.putBoolean(PREF_SHOW_BRAVE_REWARDS_ONBOARDING, enabled);
+        sharedPreferencesEditor.apply();
+    }
 
     public interface LargeIconReadyCallback {
         void onLargeIconReady(Bitmap icon);
