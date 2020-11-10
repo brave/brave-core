@@ -1,0 +1,25 @@
+diff --git a/content/browser/browser_interface_binders.cc b/content/browser/browser_interface_binders.cc
+index ba25194ba4178c7caa396ce44779cf70f4d69998..99f4b92f036db3f845e76fd9f7b744ec9e183e5a 100644
+--- a/content/browser/browser_interface_binders.cc
++++ b/content/browser/browser_interface_binders.cc
+@@ -136,6 +136,7 @@
+ #endif
+ 
+ #if defined(OS_ANDROID)
++#include "brave/content/browser/mojom/cosmetic_filters_communication.mojom.h"
+ #include "content/browser/android/date_time_chooser_android.h"
+ #include "content/browser/android/text_suggestion_host_android.h"
+ #include "content/browser/renderer_host/render_widget_host_view_android.h"
+@@ -748,6 +749,12 @@ void PopulateFrameBinders(RenderFrameHostImpl* host, mojo::BinderMap* map) {
+   map->Add<blink::mojom::TextInputHost>(
+       base::BindRepeating(&BindTextInputHost));
+ #endif
++#if defined(OS_ANDROID)
++  // Register the handler for cosmetic filters responder.
++  map->Add<cf_comm::mojom::CosmeticFiltersCommunication>(base::BindRepeating(
++      &RenderFrameHostImpl::GetCosmeticFiltersResponder,
++          base::Unretained(host)));
++#endif
+ }
+ 
+ void PopulateBinderMapWithContext(

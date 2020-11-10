@@ -1,0 +1,16 @@
+diff --git a/content/public/browser/BUILD.gn b/content/public/browser/BUILD.gn
+index bd83dfa0a32658c5b45ca001bfd04cc051d8bc73..51dec27a53837f8006076448633a0d72fe3229ab 100644
+--- a/content/public/browser/BUILD.gn
++++ b/content/public/browser/BUILD.gn
+@@ -491,6 +491,11 @@ source_set("browser_sources") {
+     "//ui/shell_dialogs",
+     "//ui/surface",
+   ]
++  if (is_android) { deps += ["//brave/content/browser/mojom",]
++    sources += ["//brave/content/browser/cosmetic_filters_communication_impl.cc",
++    "//brave/content/browser/cosmetic_filters_communication_impl.h",
++    "//brave/content/browser/cosmetic_filters_observer.h",
++    "//brave/content/public/browser/brave_render_frame_host.cc"]}
+ 
+   allow_circular_includes_from = [
+     # This target is a pair with content/browser. They always go together and

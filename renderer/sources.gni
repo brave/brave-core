@@ -6,8 +6,18 @@
 brave_chrome_renderer_sources = [
   "//brave/renderer/brave_content_renderer_client.cc",
   "//brave/renderer/brave_content_renderer_client.h",
+  "//brave/components/cosmetic_filters/content/renderer/cosmetic_filters_js_render_frame_observer.cc",
+  "//brave/components/cosmetic_filters/content/renderer/cosmetic_filters_js_render_frame_observer.h",
+  "//brave/components/cosmetic_filters/content/renderer/cosmetic_filters_js_handler.cc",
+  "//brave/components/cosmetic_filters/content/renderer/cosmetic_filters_js_handler.h",
 ]
 brave_chrome_renderer_public_deps = [
+  "//base",
   "//brave/components/content_settings/renderer",
-  "//third_party/blink/public:blink"
+  "//content/public/renderer",
+  "//gin",
+  "//mojo/public/cpp/bindings",
+  "//third_party/blink/public:blink",
+  "//third_party/blink/public/common",
+  "//v8",
 ]

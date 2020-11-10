@@ -1,0 +1,27 @@
+import("//build/config/features.gni")
+
+source_set("renderer") {
+  visibility = [
+    "//brave/renderer/*",
+    "//brave:child_dependencies",
+    "//chrome/renderer/*",
+    "//components/content_settings/renderer/*",
+  ]
+
+  sources = [
+    "cosmetic_filters_js_render_frame_observer.cc",
+    "cosmetic_filters_js_render_frame_observer.h",
+    "cosmetic_filters_js_handler.cc",
+    "cosmetic_filters_js_handler.h",
+  ]
+
+  deps = [
+    "//base",
+    "//content/public/renderer",
+    "//gin",
+    "//mojo/public/cpp/bindings",
+    "//third_party/blink/public:blink",
+    "//third_party/blink/public/common",
+    "//v8",
+  ]
+}

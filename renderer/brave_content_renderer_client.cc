@@ -4,6 +4,11 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 #include "brave/renderer/brave_content_renderer_client.h"
+
+#if defined(OS_ANDROID)
+#include "brave/components/cosmetic_filters/content/renderer/cosmetic_filters_js_render_frame_observer.h"
+#include "chrome/common/chrome_isolated_world_ids.h"
+#endif
 #include "third_party/blink/public/platform/web_runtime_features.h"
 
 BraveContentRendererClient::BraveContentRendererClient()
@@ -17,3 +22,13 @@ SetRuntimeFeaturesDefaultsBeforeBlinkInitialization() {
   blink::WebRuntimeFeatures::EnableSharedArrayBuffer(false);
 }
 BraveContentRendererClient::~BraveContentRendererClient() = default;
+
+#if defined(OS_ANDROID)
+void BraveContentRendererClient::RenderFrameCreated(
+	content::RenderFrame* render_frame) {
+  ChromeContentRendererClient::RenderFrameCreated(render_frame);
+
+  new cosmetic_filters_worker::CosmeticFiltersJsRenderFrameObserver(
+      render_frame, ISOLATED_WORLD_ID_CHROME_INTERNAL);
+}
+#endif

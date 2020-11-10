@@ -3,9 +3,11 @@
  * License, v. 3.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#ifndef BRAVE_BROWSER_ANDROID_BRAVE_COSMETIC_RESOURCES_TAB_HELPER_H_
-#define BRAVE_BROWSER_ANDROID_BRAVE_COSMETIC_RESOURCES_TAB_HELPER_H_
+#ifndef BRAVE_BROWSER_BRAVE_COSMETIC_RESOURCES_TAB_HELPER_H_
+#define BRAVE_BROWSER_BRAVE_COSMETIC_RESOURCES_TAB_HELPER_H_
 
+#include <memory>
+#include <string>
 #include <vector>
 
 #include "base/memory/weak_ptr.h"
@@ -19,6 +21,8 @@ class BraveCosmeticResourcesTabHelper
       public content::WebContentsUserData<BraveCosmeticResourcesTabHelper>,
       public base::SupportsWeakPtr<BraveCosmeticResourcesTabHelper> {
  public:
+  static std::string* observing_script_;
+
   explicit BraveCosmeticResourcesTabHelper(content::WebContents* contents);
   ~BraveCosmeticResourcesTabHelper() override;
 
@@ -48,12 +52,12 @@ class BraveCosmeticResourcesTabHelper
 
   std::unique_ptr<base::ListValue> GetUrlCosmeticResourcesOnTaskRunner(
       const std::string& url);
-  void GetUrlCosmeticResourcesOnUI(content::RenderFrameHost* render_frame_host,
+  void GetUrlCosmeticResourcesOnUI(content::GlobalFrameRoutingId frame_id,
       const std::string& url, bool main_frame,
       std::unique_ptr<base::ListValue> resources);
   void CSSRulesRoutine(const std::string& url,
       base::DictionaryValue* resources_dict,
-      content::RenderFrameHost* render_frame_host);
+      content::GlobalFrameRoutingId frame_id);
 
   std::unique_ptr<base::ListValue> GetHiddenClassIdSelectorsOnTaskRunner(
       const std::vector<std::string>& classes,
@@ -68,4 +72,4 @@ class BraveCosmeticResourcesTabHelper
   DISALLOW_COPY_AND_ASSIGN(BraveCosmeticResourcesTabHelper);
 };
 
-#endif  // BRAVE_BROWSER_ANDROID_BRAVE_COSMETIC_RESOURCES_TAB_HELPER_H_
+#endif  // BRAVE_BROWSER_BRAVE_COSMETIC_RESOURCES_TAB_HELPER_H_
