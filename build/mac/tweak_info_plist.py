@@ -101,8 +101,9 @@ def Main(argv):
   if options.plist_output is not None:
     output_path = options.plist_output
 
-  if options.brave_channel:
-    plist['KSChannelID'] = options.brave_channel
+  # 'KSChannelID' is set at _modify_plists() of modification.py.
+  if 'KSChannelID' in plist:
+    del plist['KSChannelID']
 
   plist['CrProductDirName'] = options.brave_product_dir_name
 
