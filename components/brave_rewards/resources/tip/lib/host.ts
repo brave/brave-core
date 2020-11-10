@@ -2,6 +2,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
+import { OnboardingCompletedStore } from '../../shared/lib/onboarding_completed_store'
+
 import { createStateManager } from './state_manager'
 
 import {
@@ -58,6 +60,7 @@ function addWebUIListeners (listeners: Record<string, any>) {
 export function createHost (): Host {
   const stateManager = createStateManager<HostState>({})
   const dialogArgs = getDialogArgs()
+  const onboardingCompleted = new OnboardingCompletedStore()
 
   addWebUIListeners({
 
@@ -95,7 +98,7 @@ export function createHost (): Host {
 
     onboardingStatusUpdated (result: { showOnboarding: boolean }) {
       stateManager.update({
-        showOnboarding: result.showOnboarding
+        showOnboarding: result.showOnboarding && !onboardingCompleted.load()
       })
     },
 
@@ -193,6 +196,7 @@ export function createHost (): Host {
     saveOnboardingResult (result: OnboardingResult) {
       chrome.send('saveOnboardingResult', [result])
       stateManager.update({ showOnboarding: false })
+      onboardingCompleted.save()
     },
 
     processTip (amount: number, kind: TipKind) {
