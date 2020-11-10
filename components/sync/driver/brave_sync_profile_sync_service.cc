@@ -12,8 +12,6 @@
 #include "brave/components/brave_sync/crypto/crypto.h"
 #include "brave/components/sync/driver/brave_sync_auth_manager.h"
 #include "brave/components/sync/driver/profile_sync_service_delegate.h"
-#include "chrome/browser/profiles/profile_manager.h"
-#include "chrome/browser/sync/device_info_sync_service_factory.h"
 #include "components/prefs/pref_service.h"
 
 namespace syncer {
