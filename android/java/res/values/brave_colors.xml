@@ -123,4 +123,11 @@
     <color name="binance_widget_bg_color">#17171F</color>
     <color name="white_alpha_50">#80FFFFFF</color>
     <color name="binance_divider_color">#C0C0C0</color>
+
+    <color name="brave_rewards_modal_text_color">#495057</color>
+    <color name="brave_rewards_modal_theme_color">#4C54D2</color>
+    <color name="brave_rewards_tos_color">#868E96</color>
+    <color name="brave_rewards_opt_in_bg_color">#E7E9FE</color>
+    <color name="brave_rewards_opt_in_text_color">#474958</color>
+    
 </resources>
