@@ -25,4 +25,9 @@ export const Heading = styled(StandardHeading)`
   margin: 36px 0 24px;
 `
 
-export const Text = styled(StandardText)``
+export const Text = styled(StandardText)`
+  ${Intro} & {
+    font-weight: 500;
+    line-height: 20px;
+  }
+`

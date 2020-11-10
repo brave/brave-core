@@ -62,7 +62,6 @@ export const Title = styled(StandardHeading)`
 export const Heading = styled(StandardHeading)`
   font-size: 18px;
   line-height: 25px;
-  font-weight: normal;
 
   a {
     display: block;
@@ -79,7 +78,7 @@ export const Publisher = styled('div')`
   font-family: ${p => p.theme.fontFamily.heading};
   font-size: 14px;
   color: white;
-  font-weight: 700;
+  font-weight: 500;
 `
 
 export const Time = styled(StandardTime)``

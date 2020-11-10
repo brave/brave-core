@@ -14,9 +14,6 @@ import BraveCoreThemeProvider from '../../common/BraveCoreThemeProvider'
 // Components
 import NewTabPage from '../containers/newTab'
 import { getActionsForDispatch } from '../api/getActions'
-import Loading from '../components/loading'
-import BraveTodayLoadingCard from '../components/default/braveToday/cards/cardLoading'
-import BraveTodayErrorCard from '../components/default/braveToday/cards/cardError'
 import store from '../store'
 import { getNewTabData, getGridSitesData } from './default/data/storybookState'
 import getTodayState from './default/data/todayStorybookState'
@@ -99,37 +96,3 @@ storiesOf('New Tab/Containers', module)
       />
     )
   })
-
-storiesOf('New Tab', module)
-  .addDecorator(story => <ThemeProvider story={story()} />)
-  .add('Loading', () => (
-    <div
-      style={{ width: '500px', height: '500px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}
-    >
-      <Loading />
-    </div>
-  ))
-
-storiesOf('New Tab/Brave Today', module)
-  .addDecorator(story => <ThemeProvider story={story()} />)
-  .addDecorator(story => (
-    <div
-      style={{
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-        width: '100%',
-        minHeight: '100vh',
-        background: 'url(https://placekitten.com/2000/3000)',
-        backgroundSize: 'contain'
-      }}
-    >
-      {story()}
-    </div>
-  ))
-  .add('Loading', () => (
-    <BraveTodayLoadingCard />
-  ))
-  .add('Error', () => (
-    <BraveTodayErrorCard />
-  ))

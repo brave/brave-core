@@ -14,7 +14,8 @@ type Props = {
 
 const Back = styled('button')`
   appearance: none;
-  margin-bottom: 14px;
+  margin: 0 0 14px 0;
+  padding: 0;
   outline: none;
   border: none;
   background: none;
@@ -25,12 +26,15 @@ const Back = styled('button')`
   color: inherit;
   font-weight: 800;
 
+  &:focus,
+  &:hover {
+    color: ${p => p.theme.color.brandBraveInteracting}
+  }
+  &:active {
+    color: ${p => p.theme.color.brandBraveActive}
+  }
   &:focus-visible {
     outline: solid 1px ${p => p.theme.color.brandBrave};
-  }
-
-  &:active {
-    font-weight: 900;
   }
 `
 

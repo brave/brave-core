@@ -4,12 +4,11 @@
 // you can obtain one at http://mozilla.org/MPL/2.0/.
 
 import * as React from 'react'
-
 // Feature-specific components
 import * as Card from './style'
 import useScrollIntoView from '../../useScrollIntoView'
 import useReadArticleClickHandler from '../../useReadArticleClickHandler'
-import { OnReadFeedItem } from '../../'
+import { OnReadFeedItem, OnSetPublisherPref } from '../../'
 import PublisherMeta from '../PublisherMeta'
 
 interface Props {
@@ -17,12 +16,14 @@ interface Props {
   publisher: BraveToday.Publisher
   articleToScrollTo?: BraveToday.FeedItem
   onReadFeedItem: OnReadFeedItem
+  onSetPublisherPref: OnSetPublisherPref
 }
 
 type ListItemProps = {
   item: BraveToday.Article
   publisher: BraveToday.Publisher
   onReadFeedItem: OnReadFeedItem
+  onSetPublisherPref: OnSetPublisherPref
   shouldScrollIntoView: boolean
 }
 
@@ -48,10 +49,15 @@ export default function PublisherGroup (props: Props) {
   }
   return (
     <Card.OrderedList>
-      {props.publisher && <PublisherMeta
-        publisher={props.publisher}
-        title={true}
-      />}
+      {props.publisher &&
+        <Card.ListTitle>
+          <PublisherMeta
+            publisher={props.publisher}
+            title={true}
+            onSetPublisherPref={props.onSetPublisherPref}
+          />
+        </Card.ListTitle>
+      }
       <Card.List>
         {
           props.content.map((item, index) => {
@@ -65,6 +71,7 @@ export default function PublisherGroup (props: Props) {
               key={index}
               shouldScrollIntoView={shouldScrollTo}
               onReadFeedItem={props.onReadFeedItem}
+              onSetPublisherPref={props.onSetPublisherPref}
             />
           })
         }

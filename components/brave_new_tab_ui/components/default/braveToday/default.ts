@@ -45,8 +45,6 @@ export const Block = styled('div')`
   padding: 36px 48px;
   background: rgba(53, 53, 53, 0.47);
   backdrop-filter: blur(62px);
-  /* Prevent images from overflowing border-radius */
-  overflow-x: hidden;
   margin-bottom: 30px;
   color: white;
   a {
@@ -69,9 +67,9 @@ export const Image = styled('img')`
   display: block;
 `
 
-export const Text = styled<{}, 'p'>('p')`
+export const Text = styled<{}, 'div'>('div')`
   box-sizing: border-box;
-  font-family: ${p => p.theme.fontFamily.body};
+  font-family: ${p => p.theme.fontFamily.heading};
   font-weight: normal;
   font-size: 14px;
   line-height: 19px;
@@ -81,9 +79,9 @@ export const Text = styled<{}, 'p'>('p')`
 
 export const Heading = styled(Text.withComponent('h2'))`
   font-family: ${p => p.theme.fontFamily.heading};
-  font-weight: bold;
-  font-size: 28px;
-  line-height: 36px;
+  font-weight: 600;
+  font-size: 22px;
+  line-height: 32px;
 `
 
 export const Time = styled(Text.withComponent('time'))`
@@ -103,16 +101,4 @@ export const PublisherLogo = styled<{}, 'img'>('img')`
   background-color: rgba(188,188,188,0.2);
   margin-top: 12px;
   display: inline-block;
-`
-
-export const PublisherName = styled<{}, 'span'>('span')`
-  box-sizing: border-box;
-  margin-top: 12px;
-  max-width: 100%;
-  display: inline-block;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  font-size: 14px;
-  font-family: ${p => p.theme.fontFamily.heading};
-  color: #fff;
 `
