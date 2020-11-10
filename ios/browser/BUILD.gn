@@ -23,6 +23,7 @@ source_set("browser") {
     "api/sync",
     "metrics",
     "//base",
+    "//brave/browser/sync",
     "//brave/chromium_src/ios/chrome/browser/prefs",
     "//components/flags_ui",
     "//components/metrics_services_manager",
