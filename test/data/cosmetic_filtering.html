@@ -18,15 +18,30 @@ function addElementsDynamically() {
   }
 }
 
+let didWait = false;
+
 function checkSelector(selector, property, expected) {
-  setTimeout(() => {
+  const checkSelectorInner = () => {
     let elements = [].slice.call(document.querySelectorAll(selector));
     let result = elements.every(e => {
       let style = window.getComputedStyle(e);
       return style[property] === expected;
     })
-    window.domAutomationController.send(result)
-  }, 3000)
+    return result;
+  };
+
+  // The first selector check must occur after the page has had time to load,
+  // but subsequent checks can be done instantly.
+  if (didWait) {
+    return checkSelectorInner();
+  } else {
+    return new Promise(resolve => {
+      setTimeout(() => {
+        didWait = true;
+        resolve(checkSelectorInner())
+      }, 3000)
+    })
+  }
 }
 
 </script>
