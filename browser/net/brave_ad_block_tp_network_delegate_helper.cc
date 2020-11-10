@@ -31,21 +31,19 @@ void ShouldBlockAdOnTaskRunner(std::shared_ptr<BraveRequestInfo> ctx) {
   std::string tab_host = ctx->tab_origin.host();
   if (!g_brave_browser_process->ad_block_service()->ShouldStartRequest(
           ctx->request_url, ctx->resource_type, tab_host,
-          &did_match_exception, &ctx->cancel_request_explicitly,
+          &did_match_exception,
           &ctx->mock_data_url)) {
     ctx->blocked_by = kAdBlocked;
   } else if (!did_match_exception &&
              !g_brave_browser_process->ad_block_regional_service_manager()
                   ->ShouldStartRequest(ctx->request_url, ctx->resource_type,
                                        tab_host, &did_match_exception,
-                                       &ctx->cancel_request_explicitly,
                                        &ctx->mock_data_url)) {
     ctx->blocked_by = kAdBlocked;
   } else if (!did_match_exception &&
              !g_brave_browser_process->ad_block_custom_filters_service()
                   ->ShouldStartRequest(ctx->request_url, ctx->resource_type,
                                        tab_host, &did_match_exception,
-                                       &ctx->cancel_request_explicitly,
                                        &ctx->mock_data_url)) {
     ctx->blocked_by = kAdBlocked;
   }
