@@ -30,10 +30,8 @@ public class BraveP3AInformers {
         if (!BraveConfig.P3A_ENABLED) {
             return;
         }
-        // See brave/browser/infobars/brave_confirm_p3a_infobar_delegate.cc
-        if (!BravePrefServiceBridge.getInstance().getP3AEnabled()
-                || BravePrefServiceBridge.getInstance().getP3ANoticeAcknowledged()) {
-            BravePrefServiceBridge.getInstance().setP3ANoticeAcknowledged(true);
+
+        if (BravePrefServiceBridge.getInstance().getP3ANoticeAcknowledged()) {
             return;
         }
 
@@ -52,6 +50,7 @@ public class BraveP3AInformers {
                     @Override
                     public void onInfoBarDismissed() {
                         // Pressing cross
+                        BravePrefServiceBridge.getInstance().setP3AEnabled(true);
                         BravePrefServiceBridge.getInstance().setP3ANoticeAcknowledged(true);
                     }
 
@@ -59,11 +58,12 @@ public class BraveP3AInformers {
                     public boolean onInfoBarButtonClicked(boolean isPrimary) {
                         if (isPrimary) {
                             // Pressing `Got it`
-                            BravePrefServiceBridge.getInstance().setP3ANoticeAcknowledged(true);
+                            BravePrefServiceBridge.getInstance().setP3AEnabled(true);
                         } else {
                             // Pressing `Disable`
                             BravePrefServiceBridge.getInstance().setP3AEnabled(false);
                         }
+                        BravePrefServiceBridge.getInstance().setP3ANoticeAcknowledged(true);
 
                         return false;
                     }
