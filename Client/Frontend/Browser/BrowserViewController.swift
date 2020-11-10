@@ -179,6 +179,7 @@ class BrowserViewController: UIViewController {
           $0.isRelease = AppConstants.buildChannel == .release
         }
 
+        Self.migrateAdsConfirmations(for: configuration)
         rewards = BraveRewards(configuration: configuration)
         if !BraveRewards.isAvailable {
             // Disable rewards services in case previous user already enabled

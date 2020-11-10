@@ -134,6 +134,36 @@ extension BrowserViewController {
         Preferences.NewTabPage.atleastOneNTPNotificationWasShowed.value = false
     }
     
+    static func migrateAdsConfirmations(for configruation: BraveRewardsConfiguration) {
+        // To ensure after a user launches 1.21 that their ads confirmations, viewed count and
+        // estimated payout remain correct.
+        //
+        // This hack is unfortunately neccessary due to a missed migration path when moving
+        // confirmations from ledger to ads, we must extract `confirmations.json` out of ledger's
+        // state file and save it as a new file under the ads directory.
+        let base = URL(fileURLWithPath: configruation.stateStoragePath)
+        let ledgerStateContainer = base.appendingPathComponent("ledger/random_state.plist")
+        let adsConfirmations = base.appendingPathComponent("ads/confirmations.json")
+        let fm = FileManager.default
+        
+        if !fm.fileExists(atPath: ledgerStateContainer.path) ||
+            fm.fileExists(atPath: adsConfirmations.path) {
+            // Nothing to migrate or already migrated
+            return
+        }
+        
+        do {
+            let contents = NSDictionary(contentsOfFile: ledgerStateContainer.path)
+            guard let confirmations = contents?["confirmations.json"] as? String else {
+                log.debug("No confirmations found to migrate in ledger's state container")
+                return
+            }
+            try confirmations.write(toFile: adsConfirmations.path, atomically: true, encoding: .utf8)
+        } catch {
+            log.error("Failed to migrate confirmations.json to ads folder: \(error)")
+        }
+    }
+    
     // MARK: - SKUS
     
     func paymentRequested(_ request: PaymentRequest, _ completionHandler: @escaping (_ response: PaymentRequestResponse) -> Void) {
