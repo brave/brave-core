@@ -269,10 +269,10 @@ const rewardsReducer: Reducer<Rewards.State | undefined> = (state: Rewards.State
 
       break
     }
-    case types.ON_ON_BOARDING_DISPLAYED: {
+    case types.ON_VERIFY_ONBOARDING_DISPLAYED: {
       let ui = state.ui
 
-      ui.onBoardingDisplayed = true
+      ui.verifyOnboardingDisplayed = true
       state = {
         ...state,
         ui
@@ -432,6 +432,26 @@ const rewardsReducer: Reducer<Rewards.State | undefined> = (state: Rewards.State
     }
     case types.SET_FIRST_LOAD: {
       state.firstLoad = action.payload.firstLoad
+      break
+    }
+    case types.GET_ONBOARDING_STATUS: {
+      chrome.send('brave_rewards.getOnboardingStatus')
+      break
+    }
+    case types.ON_ONBOARDING_STATUS: {
+      state = {
+        ...state,
+        showOnboarding: action.payload.showOnboarding
+      }
+      break
+    }
+    case types.SAVE_ONBOARDING_RESULT: {
+      chrome.send('brave_rewards.saveOnboardingResult', [action.payload.result])
+      chrome.send('brave_rewards.getAutoContributeProperties')
+      state = {
+        ...state,
+        showOnboarding: false
+      }
       break
     }
   }

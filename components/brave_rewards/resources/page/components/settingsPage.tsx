@@ -141,6 +141,7 @@ class SettingsPage extends React.Component<Props, State> {
 
     this.actions.fetchPromotions()
     this.actions.getExternalWallet('uphold')
+    this.actions.getOnboardingStatus()
 
     if (window.location.pathname.length > 1) {
       const pathElements = window.location.pathname.split('/')

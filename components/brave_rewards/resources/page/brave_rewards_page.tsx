@@ -9,6 +9,9 @@ import { initLocale } from 'brave-ui'
 import { bindActionCreators } from 'redux'
 require('emptykit.css')
 
+import { LocaleContext } from '../shared/lib/locale_context'
+import { WithThemeVariables } from '../shared/components/with_theme_variables'
+
 // Components
 import App from './components/app'
 require('../../../../ui/webui/resources/fonts/muli.css')
@@ -30,10 +33,18 @@ window.cr.define('brave_rewards', function () {
       initLocale(window.loadTimeData.data_)
     }
 
+    const localeContext = {
+      getString: (key: string) => self.loadTimeData.getString(key)
+    }
+
     render(
       <Provider store={store}>
         <ThemeProvider theme={Theme}>
-          <App />
+          <LocaleContext.Provider value={localeContext}>
+            <WithThemeVariables>
+              <App />
+            </WithThemeVariables>
+          </LocaleContext.Provider>
         </ThemeProvider>
       </Provider>,
       document.getElementById('root'))
@@ -250,6 +261,10 @@ window.cr.define('brave_rewards', function () {
     getActions().onWalletPassphrase(passphrase)
   }
 
+  function onboardingStatus (result: { showOnboarding: boolean }) {
+    getActions().onOnboardingStatus(result.showOnboarding)
+  }
+
   return {
     initialize,
     rewardsParameters,
@@ -295,7 +310,8 @@ window.cr.define('brave_rewards', function () {
     initialized,
     completeReset,
     paymentId,
-    walletPassphrase
+    walletPassphrase,
+    onboardingStatus
   }
 })
 

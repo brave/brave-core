@@ -6,13 +6,13 @@ import styled from 'styled-components'
 
 export const terms = styled.div`
   text-align: center;
-  padding: 0 10px 7px;
-  font-size: 10px;
-  line-height: 14px;
-  color: var(--brave-palette-grey700);
+  padding: 0 30px 7px;
+  font-size: 11px;
+  line-height: 16px;
+  color: var(--brave-palette-neutral600);
 
   a {
     font-weight: 600;
-    color: inherit;
+    color: var(--brave-color-brandBat);
   }
 `

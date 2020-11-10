@@ -14,7 +14,8 @@ import {
   DialogArgs,
   EntryPoint,
   TipKind,
-  ShareTarget
+  ShareTarget,
+  OnboardingResult
 } from './interfaces'
 
 interface RecurringTipInfo {
@@ -77,6 +78,7 @@ export function createHost (): Host {
       chrome.send('getOnlyAnonWallet')
       chrome.send('getRecurringTips')
       chrome.send('getPublisherBanner', [publisherKey])
+      chrome.send('getOnboardingStatus')
     },
 
     externalWalletUpdated (externalWalletInfo: ExternalWalletInfo) {
@@ -89,6 +91,12 @@ export function createHost (): Host {
 
     rewardsParametersUpdated (rewardsParameters: RewardsParameters) {
       stateManager.update({ rewardsParameters })
+    },
+
+    onboardingStatusUpdated (result: { showOnboarding: boolean }) {
+      stateManager.update({
+        showOnboarding: result.showOnboarding
+      })
     },
 
     recurringTipsUpdated (tips?: RecurringTipInfo[]) {
@@ -180,6 +188,11 @@ export function createHost (): Host {
 
     closeDialog () {
       chrome.send('dialogClose')
+    },
+
+    saveOnboardingResult (result: OnboardingResult) {
+      chrome.send('saveOnboardingResult', [result])
+      stateManager.update({ showOnboarding: false })
     },
 
     processTip (amount: number, kind: TipKind) {

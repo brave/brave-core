@@ -5,7 +5,7 @@
 import * as React from 'react'
 
 import { HostContext } from '../lib/host_context'
-import { LocaleContext } from '../lib/locale_context'
+import { LocaleContext } from '../../shared/lib/locale_context'
 import { formatTokenAmount } from '../lib/formatting'
 
 import { FormSubmitButton } from './form_submit_button'

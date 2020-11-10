@@ -135,6 +135,11 @@ using StartProcessCallback =
 
 using GetWalletPassphraseCallback = base::Callback<void(const std::string&)>;
 
+enum class OnboardingResult {
+  kOptedIn,
+  kDismissed
+};
+
 class RewardsService : public KeyedService {
  public:
   RewardsService();
@@ -200,6 +205,8 @@ class RewardsService : public KeyedService {
   virtual void GetAutoContributeEnabled(
       GetAutoContributeEnabledCallback callback) = 0;
   virtual void SetAutoContributeEnabled(bool enabled) = 0;
+  virtual bool ShouldShowOnboarding() const = 0;
+  virtual void SaveOnboardingResult(OnboardingResult result) = 0;
   virtual void GetBalanceReport(
       const uint32_t month,
       const uint32_t year,

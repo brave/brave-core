@@ -80,6 +80,14 @@ export const onEnabledAC = (enabled: boolean) => action(types.ON_ENABLED_AC, {
   enabled
 })
 
+export const onShouldShowOnboarding = (showOnboarding: boolean) => action(types.ON_SHOULD_SHOW_ONBOARDING, {
+  showOnboarding
+})
+
+export const saveOnboardingResult = (result: 'opted-in' | 'dismissed') => action(types.SAVE_ONBOARDING_RESULT, {
+  result
+})
+
 export const onPublisherListNormalized = (properties: RewardsExtension.PublisherNormalized[]) =>
   action(types.ON_PUBLISHER_LIST_NORMALIZED, {
     properties

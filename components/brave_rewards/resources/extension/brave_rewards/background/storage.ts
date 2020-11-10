@@ -26,7 +26,8 @@ export const defaultState: RewardsExtension.State = {
     total: 0,
     wallets: {}
   },
-  initializing: true
+  initializing: true,
+  showOnboarding: false
 }
 
 export const load = (): RewardsExtension.State => {

@@ -62,6 +62,7 @@ declare namespace Rewards {
     recurringList: Publisher[]
     recurringLoad: boolean
     safetyNetFailed?: boolean
+    showOnboarding?: boolean
     tipsList: Publisher[]
     tipsLoad: boolean
     ui: {
@@ -74,7 +75,7 @@ declare namespace Rewards {
       }
       walletRecoveryStatus: number | null
       walletServerProblem: boolean
-      onBoardingDisplayed?: boolean
+      verifyOnboardingDisplayed?: boolean
       onlyAnonWallet?: boolean
     }
   }

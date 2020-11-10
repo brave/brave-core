@@ -11,6 +11,7 @@ import { Provider } from '../../../ui/components/profile'
 import { NotificationType, WalletState } from '../../../ui/components/walletWrapper'
 import { RewardsNotificationType } from '../constants/rewards_panel_types'
 import { Type as AlertType } from '../../../ui/components/alert'
+import { RewardsOptInModal } from '../../../shared/components/onboarding'
 
 // Utils
 import * as rewardsPanelActions from '../actions/rewards_panel_actions'
@@ -92,6 +93,10 @@ export class Panel extends React.Component<Props, State> {
   startRewards () {
     chrome.braveRewards.getACEnabled((enabled: boolean) => {
       this.props.actions.onEnabledAC(enabled)
+    })
+
+    chrome.braveRewards.shouldShowOnboarding((showOnboarding: boolean) => {
+      this.props.actions.onShouldShowOnboarding(showOnboarding)
     })
 
     this.actions.fetchPromotions()
@@ -647,6 +652,23 @@ export class Panel extends React.Component<Props, State> {
     return (!walletStatus || walletStatus === 'unverified') && balance && balance.total < 25
   }
 
+  showOnboarding () {
+    if (!this.props.rewardsPanelData.showOnboarding) {
+      return null
+    }
+
+    const onEnable = () => this.actions.saveOnboardingResult('opted-in')
+    const onClose = () => this.actions.saveOnboardingResult('dismissed')
+
+    return (
+      <RewardsOptInModal
+        onAddFunds={this.onAddFunds}
+        onEnable={onEnable}
+        onClose={onClose}
+      />
+    )
+  }
+
   render () {
     const { pendingContributionTotal, enabledAC, externalWallet, balance, parameters } = this.props.rewardsPanelData
     const publisher: RewardsExtension.Publisher | undefined = this.getPublisher()
@@ -744,6 +766,7 @@ export class Panel extends React.Component<Props, State> {
             {...this.getWalletSummary()}
           />
         </WalletSummarySlider>
+        {this.showOnboarding()}
       </WalletWrapper>
     )
   }

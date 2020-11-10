@@ -28,7 +28,7 @@ export const defaultState: Rewards.State = {
     paymentIdCheck: true,
     walletRecoveryStatus: null,
     walletServerProblem: false,
-    onBoardingDisplayed: false
+    verifyOnboardingDisplayed: false
   },
   autoContributeList: [],
   safetyNetFailed: false,

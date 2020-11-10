@@ -54,6 +54,10 @@ class RewardsFlagBrowserTest : public InProcessBrowserTest {
             &RewardsFlagBrowserTest::GetTestResponse,
             base::Unretained(this)));
     rewards_service_->SetLedgerEnvForTesting();
+
+    // Bypass onboarding UX by default
+    rewards_service_->SaveOnboardingResult(
+        brave_rewards::OnboardingResult::kDismissed);
   }
 
   void GetTestResponse(

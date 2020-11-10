@@ -199,6 +199,9 @@ class RewardsDOMHandler : public WebUIMessageHandler,
 
   void OnGetWalletPassphrase(const std::string& pass);
 
+  void GetOnboardingStatus(const base::ListValue* args);
+  void SaveOnboardingResult(const base::ListValue* args);
+
   // RewardsServiceObserver implementation
   void OnFetchPromotions(
       brave_rewards::RewardsService* rewards_service,
@@ -479,6 +482,12 @@ void RewardsDOMHandler::RegisterMessages() {
       base::Unretained(this)));
   web_ui()->RegisterMessageCallback("brave_rewards.getWalletPassphrase",
       base::BindRepeating(&RewardsDOMHandler::GetWalletPassphrase,
+      base::Unretained(this)));
+  web_ui()->RegisterMessageCallback("brave_rewards.getOnboardingStatus",
+      base::BindRepeating(&RewardsDOMHandler::GetOnboardingStatus,
+      base::Unretained(this)));
+  web_ui()->RegisterMessageCallback("brave_rewards.saveOnboardingResult",
+      base::BindRepeating(&RewardsDOMHandler::SaveOnboardingResult,
       base::Unretained(this)));
 }
 
@@ -1920,6 +1929,35 @@ void RewardsDOMHandler::OnGetWalletPassphrase(const std::string& passphrase) {
   web_ui()->CallJavascriptFunctionUnsafe(
       "brave_rewards.walletPassphrase",
       base::Value(passphrase));
+}
+
+void RewardsDOMHandler::GetOnboardingStatus(const base::ListValue* args) {
+  if (!rewards_service_ || !web_ui()->CanCallJavascript()) {
+    return;
+  }
+  base::Value data(base::Value::Type::DICTIONARY);
+  data.SetBoolKey("showOnboarding", rewards_service_->ShouldShowOnboarding());
+  web_ui()->CallJavascriptFunctionUnsafe(
+      "brave_rewards.onboardingStatus",
+      data);
+}
+
+void RewardsDOMHandler::SaveOnboardingResult(const base::ListValue* args) {
+  using brave_rewards::OnboardingResult;
+
+  CHECK_EQ(1U, args->GetSize());
+  if (!rewards_service_) {
+    return;
+  }
+
+  const std::string result_type = args->GetList()[0].GetString();
+  if (result_type == "opted-in") {
+    rewards_service_->SaveOnboardingResult(OnboardingResult::kOptedIn);
+  } else if (result_type == "dismissed") {
+    rewards_service_->SaveOnboardingResult(OnboardingResult::kDismissed);
+  } else {
+    NOTREACHED();
+  }
 }
 
 }  // namespace

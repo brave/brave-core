@@ -1182,6 +1182,34 @@
             ]
           }
         ]
+      },
+      {
+        "name": "shouldShowOnboarding",
+        "type": "function",
+        "description": "Gets a value indicating whether rewards onboarding should be shown to the user.",
+        "parameters": [
+          {
+            "type": "function",
+            "name": "callback",
+            "parameters": [
+              {
+                "name": "showOnboarding",
+                "type": "boolean"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "name": "saveOnboardingResult",
+        "type": "function",
+        "description": "Saves the rewards user onboarding result.",
+        "parameters": [
+          {
+            "type": "string",
+            "name": "result"
+          }
+        ]
       }
     ]
   }

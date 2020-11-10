@@ -5,7 +5,7 @@
 import * as React from 'react'
 
 import { HostError } from '../lib/interfaces'
-import { LocaleContext } from '../lib/locale_context'
+import { LocaleContext } from '../../shared/lib/locale_context'
 
 import * as style from './app_error.style'
 
