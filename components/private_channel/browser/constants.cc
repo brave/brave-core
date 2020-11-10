@@ -14,7 +14,7 @@ extern const char PRIVATE_CHANNEL_STAGING_SERVER[] =
 extern const char PRIVATE_CHANNEL_PRODUCTION_SERVER[] =
     "https://repsys.rewards.brave.com";
 extern const char PRIVATE_CHANNEL_DEVELOPMENT_SERVER[] =
-    "https://repsys.rewards.brave.software";
+    "http://0.0.0.0:80";
 
 extern const char PRIVATE_CHANNEL_API_VERSION[] = "/private-channel/v1";
 extern const char PRIVATE_CHANNEL_META_ENDPOINT[] = "/meta";

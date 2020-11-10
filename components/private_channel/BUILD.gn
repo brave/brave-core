@@ -1,13 +1,11 @@
-import("//brave/components/private_channel/buildflags.gni")
-import("//build/buildflag_header.gni")
+import("//brave/components/private_channel/buildflags/buildflags.gni")
 
-buildflag_header("buildflags") {
-  header = "buildflags.h"
-  flags = [ "PRIVATE_CHANNEL_ENABLED=$private_channel_enabled" ]
-}
+assert(private_channel_enabled)
 
 source_set("private_channel") {
-  public_deps = [ ":buildflags" ]
+  # Remove when https://github.com/brave/brave-browser/issues/10646 is resolved
+  check_includes = false
+  public_deps = [ "//brave/components/private_channel/buildflags" ]
 
   sources = [
     "browser/constants.cc",

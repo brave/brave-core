@@ -21,7 +21,6 @@
 #include "brave/components/safetynet/safetynet_check.h"
 #endif
 
-// #TODO Add buildgard
 #include "brave/components/private_channel/browser/private_channel.h"
 
 class PrefRegistrySimple;

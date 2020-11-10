@@ -1,4 +1,5 @@
 import("//brave/components/brave_referrals/buildflags/buildflags.gni")
+import("//brave/components/private_channel/buildflags/buildflags.gni")
 
 source_set("browser") {
   # Remove when https://github.com/brave/brave-browser/issues/10646 is resolved
@@ -16,8 +17,6 @@ source_set("browser") {
       "//brave/common",
       "//brave/components/brave_referrals/common",
       "//brave/components/brave_stats/browser",
-      "//brave/components/private_channel",
-      "//brave/components/private_channel/rust/ffi",
       "//brave/vendor/brave_base",
       "//chrome/common",
       "//components/prefs",
@@ -28,6 +27,13 @@ source_set("browser") {
 
     if (is_android) {
       deps += [ "//brave/components/safetynet:android" ]
+    }
+
+    if (private_channel_enabled) {
+      deps += [
+        "//brave/components/private_channel",
+        "//brave/components/private_channel/rust/ffi",
+      ]
     }
   }
 }

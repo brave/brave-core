@@ -23,7 +23,7 @@
 #include "brave/common/network_constants.h"
 #include "brave/common/pref_names.h"
 #include "brave/components/brave_referrals/common/pref_names.h"
-#include "brave/components/private_channel/browser/private_channel.h"
+#include "brave/components/private_channel/buildflags/buildflags.h"
 #include "brave_base/random.h"
 #include "chrome/browser/browser_process.h"
 #include "chrome/browser/first_run/first_run.h"
@@ -48,6 +48,10 @@
 #include "chrome/browser/android/service_tab_launcher.h"
 #else
 #include "chrome/browser/ui/browser.h"
+#endif
+
+#if BUILDFLAG(ENABLE_PRIVATE_CHANNEL)
+#include "brave/components/private_channel/browser/private_channel.h"
 #endif
 
 // Fetch headers from the referral server once a day.
@@ -204,10 +208,12 @@ bool BraveReferralsService::GetMatchingReferralHeaders(
 }
 
 void BraveReferralsService::OnFinalizationChecksTimerFired() {
+#if BUILDFLAG(ENABLE_PRIVATE_CHANNEL)
   base::PostTask(
       FROM_HERE, {content::BrowserThread::UI},
       base::BindOnce(&BraveReferralsService::PerformPrivateAttestation,
                      base::Unretained(this)));
+#endif
 
   PerformFinalizationChecks();
 }
@@ -408,7 +414,9 @@ void BraveReferralsService::GetFirstRunTimeDesktop() {
 void BraveReferralsService::PerformPrivateAttestation() {
   DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
 
+#if BUILDFLAG(ENABLE_PRIVATE_CHANNEL)
   private_channel_->PerformReferralAttestation(promo_code_);
+#endif
 }
 
 void BraveReferralsService::PerformFinalizationChecks() {
