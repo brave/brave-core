@@ -8,7 +8,6 @@
 #include <memory>
 #include <set>
 
-#include "brave/browser/tor/tor_profile_service_impl.h"
 #include "brave/browser/tor/buildflags.h"
 #include "brave/common/tor/pref_names.h"
 #include "chrome/browser/profiles/incognito_helpers.h"
@@ -18,6 +17,7 @@
 
 #if BUILDFLAG(ENABLE_TOR)
 #include "brave/browser/profiles/profile_util.h"
+#include "brave/browser/tor/tor_profile_service_impl.h"
 #endif
 
 namespace {
@@ -34,8 +34,12 @@ tor::TorProfileService* TorProfileServiceFactory::GetForProfile(
 tor::TorProfileService* TorProfileServiceFactory::GetForProfile(
   Profile* profile,
   bool create) {
+#if BUILDFLAG(ENABLE_TOR)
   return static_cast<tor::TorProfileService*>(
       GetInstance()->GetServiceForBrowserContext(profile, create));
+#else
+  return nullptr;
+#endif
 }
 
 // static

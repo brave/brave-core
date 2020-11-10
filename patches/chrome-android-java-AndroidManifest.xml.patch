@@ -1,5 +1,5 @@
 diff --git a/chrome/android/java/AndroidManifest.xml b/chrome/android/java/AndroidManifest.xml
-index 4b942ff06700f6d8c6ccc1cb94878de7c7412d0d..e1d72e7237d4cf8cabf0974fbea0c55d0d9d5c0d 100644
+index 4b942ff06700f6d8c6ccc1cb94878de7c7412d0d..23e10e5555a9990e5495c60a21a4a8b6055de769 100644
 --- a/chrome/android/java/AndroidManifest.xml
 +++ b/chrome/android/java/AndroidManifest.xml
 @@ -38,7 +38,9 @@ by a child template that "extends" this file.
@@ -12,7 +12,7 @@ index 4b942ff06700f6d8c6ccc1cb94878de7c7412d0d..e1d72e7237d4cf8cabf0974fbea0c55d
      <uses-permission-sdk-23 android:name="android.permission.REORDER_TASKS"/>
      <uses-permission-sdk-23 android:name="android.permission.REQUEST_INSTALL_PACKAGES"/>
  
-@@ -48,9 +50,13 @@ by a child template that "extends" this file.
+@@ -48,17 +50,24 @@ by a child template that "extends" this file.
      {% if target_sdk_version|int > 27 or target_sdk_version == "Q" %}
          <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
      {% endif %}
@@ -25,8 +25,9 @@ index 4b942ff06700f6d8c6ccc1cb94878de7c7412d0d..e1d72e7237d4cf8cabf0974fbea0c55d
 +-->
      <uses-permission android:name="android.permission.MODIFY_AUDIO_SETTINGS"/>
      <uses-permission android:name="android.permission.NFC"/>
++    <uses-permission android:name="android.permission.QUERY_ALL_PACKAGES" />
      <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
-@@ -58,7 +64,9 @@ by a child template that "extends" this file.
+     <uses-permission android:name="android.permission.READ_SYNC_SETTINGS"/>
      <uses-permission android:name="android.permission.READ_SYNC_STATS"/>
      <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"/>
      <uses-permission android:name="android.permission.RECORD_AUDIO"/>
@@ -36,7 +37,7 @@ index 4b942ff06700f6d8c6ccc1cb94878de7c7412d0d..e1d72e7237d4cf8cabf0974fbea0c55d
      <uses-permission-sdk-23 android:name="android.permission.USE_BIOMETRIC"/>
      <uses-permission-sdk-23 android:name="android.permission.USE_FINGERPRINT"/>
      <uses-permission android:name="android.permission.VIBRATE"/>
-@@ -105,7 +113,9 @@ by a child template that "extends" this file.
+@@ -105,7 +114,9 @@ by a child template that "extends" this file.
      <uses-permission android:name="com.google.android.c2dm.permission.RECEIVE" />
      <uses-permission android:name="com.android.launcher.permission.INSTALL_SHORTCUT"/>
  
@@ -46,7 +47,7 @@ index 4b942ff06700f6d8c6ccc1cb94878de7c7412d0d..e1d72e7237d4cf8cabf0974fbea0c55d
  
      {% block extra_uses_permissions %}
      {% endblock %}
-@@ -158,6 +168,7 @@ by a child template that "extends" this file.
+@@ -158,6 +169,7 @@ by a child template that "extends" this file.
            org.chromium.chrome.browser.ChromeApplication
            {%- endif -%}
            {% endblock %}"
@@ -54,7 +55,7 @@ index 4b942ff06700f6d8c6ccc1cb94878de7c7412d0d..e1d72e7237d4cf8cabf0974fbea0c55d
          android:icon="@drawable/ic_launcher"
          android:roundIcon="@drawable/ic_launcher_round"
          android:label="{% block application_label %}@string/app_name{% endblock %}"
-@@ -209,6 +220,7 @@ by a child template that "extends" this file.
+@@ -209,6 +221,7 @@ by a child template that "extends" this file.
          <!-- ARCore APK integration -->
          <!-- This tag indicates that this application optionally uses ARCore. -->
          <meta-data android:name="com.google.ar.core" android:value="optional" />
@@ -62,7 +63,7 @@ index 4b942ff06700f6d8c6ccc1cb94878de7c7412d0d..e1d72e7237d4cf8cabf0974fbea0c55d
          {% endif %}
  
          <!-- Cast support -->
-@@ -1171,6 +1183,7 @@ by a child template that "extends" this file.
+@@ -1171,6 +1184,7 @@ by a child template that "extends" this file.
          </activity>
          {% endif %}
  
