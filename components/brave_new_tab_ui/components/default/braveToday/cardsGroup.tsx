@@ -11,7 +11,7 @@ import CardSmall from './cards/_articles/cardArticleMedium'
 import CategoryGroup from './cards/categoryGroup'
 import PublisherGroup from './cards/publisherGroup'
 import CardDeals from './cards/cardDeals'
-import { OnReadFeedItem } from './'
+import { OnReadFeedItem, OnSetPublisherPref } from './'
 
 // Disabled rules because we have a function
 // which returns elements in a switch.
@@ -51,6 +51,7 @@ type Props = {
   publishers: BraveToday.Publishers
   articleToScrollTo?: BraveToday.FeedItem
   onReadFeedItem: OnReadFeedItem
+  onSetPublisherPref: OnSetPublisherPref
 }
 
 type CardProps = Props & {
@@ -68,6 +69,7 @@ function Card (props: CardProps) {
               publishers={props.publishers}
               articleToScrollTo={props.articleToScrollTo}
               onReadFeedItem={props.onReadFeedItem}
+              onSetPublisherPref={props.onSetPublisherPref}
       />
     case CardType.HeadlinePaired:
       // TODO: handle content length < 2
@@ -76,6 +78,7 @@ function Card (props: CardProps) {
               publishers={props.publishers}
               articleToScrollTo={props.articleToScrollTo}
               onReadFeedItem={props.onReadFeedItem}
+              onSetPublisherPref={props.onSetPublisherPref}
       />
     case CardType.CategoryGroup:
       if (!props.content.itemsByCategory) {
@@ -100,6 +103,7 @@ function Card (props: CardProps) {
         publisher={publisher}
         articleToScrollTo={props.articleToScrollTo}
         onReadFeedItem={props.onReadFeedItem}
+        onSetPublisherPref={props.onSetPublisherPref}
       />
     case CardType.Deals:
       return <CardDeals

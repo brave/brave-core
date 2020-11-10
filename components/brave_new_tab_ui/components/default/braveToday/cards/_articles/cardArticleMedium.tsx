@@ -9,7 +9,7 @@ import * as Card from '../../cardSizes'
 import PublisherMeta from '../PublisherMeta'
 import useScrollIntoView from '../../useScrollIntoView'
 import useReadArticleClickHandler from '../../useReadArticleClickHandler'
-import { OnReadFeedItem } from '../../'
+import { OnReadFeedItem, OnSetPublisherPref } from '../../'
 // TODO(petemill): Large and Medium article should be combined to 1 component.
 
 interface Props {
@@ -17,6 +17,7 @@ interface Props {
   publishers: BraveToday.Publishers
   articleToScrollTo?: BraveToday.FeedItem
   onReadFeedItem: OnReadFeedItem
+  onSetPublisherPref: OnSetPublisherPref
 }
 
 type ArticleProps = {
@@ -24,6 +25,7 @@ type ArticleProps = {
   publisher?: BraveToday.Publisher
   shouldScrollIntoView?: boolean
   onReadFeedItem: OnReadFeedItem
+  onSetPublisherPref: OnSetPublisherPref
 }
 
 function MediumArticle (props: ArticleProps) {
@@ -42,7 +44,12 @@ function MediumArticle (props: ArticleProps) {
           <Card.Time>{item.relative_time}</Card.Time>
           {
             publisher &&
-              <PublisherMeta publisher={publisher} />
+              <Card.Publisher>
+                <PublisherMeta
+                  publisher={publisher}
+                  onSetPublisherPref={props.onSetPublisherPref}
+                />
+              </Card.Publisher>
           }
           </Card.Text>
         </Card.Content>
@@ -71,6 +78,7 @@ export default function CardSingleArticleMedium (props: Props) {
               publisher={publisher}
               item={item}
               onReadFeedItem={props.onReadFeedItem}
+              onSetPublisherPref={props.onSetPublisherPref}
               shouldScrollIntoView={shouldScrollIntoView}
             />
           )

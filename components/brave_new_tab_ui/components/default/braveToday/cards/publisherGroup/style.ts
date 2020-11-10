@@ -13,6 +13,13 @@ import {
 
 export const OrderedList = styled(StandardBlock)``
 
+export const ListTitle = styled('div')`
+  font-family: ${p => p.theme.fontFamily.heading};
+  font-weight: 500;
+  font-size: 28px;
+  color: #fff;
+`
+
 export const List = styled('ol')`
   box-sizing: border-box;
   counter-reset: item;

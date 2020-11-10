@@ -10,7 +10,6 @@ import {
   Image as StandardImage,
   Text as StandardText,
   Time as StandardTime,
-  PublisherLogo as StandardPublisherLogo
 } from './default'
 
 export const Large = styled(StandardBlock.withComponent('article'))`
@@ -101,8 +100,12 @@ export const Text = styled(StandardText)`
 
 export const Time = styled(StandardTime)``
 
-export const PublisherLogo = styled(StandardPublisherLogo)`
-  margin: 36px 0 12px;
+export const Publisher = styled('div')`
+  box-sizing: border-box;
+  margin: 12px 0 0 0;
+  padding: 0;
+  font: 500 14px ${p => p.theme.fontFamily.heading};
+  color: #fff;
 `
 
 export const ContainerForTwo = styled<{}, 'div'>('div')`

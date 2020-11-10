@@ -478,7 +478,7 @@ export default function getTodayState (): BraveTodayState {
             ]
           },
           itemsByPublisher: {
-            name: `b660f244778a8b1d29181ab480611eb5ce64427ae536a83add1a524481128788`,
+            name: `5eece347713f329f156cd0204cf9b12629f1dc8f4ea3c1b67984cfbfd66cdca5`,
             items: [
               {
                 category: `Top News`,

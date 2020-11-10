@@ -125,6 +125,7 @@ export default function BraveTodayContent (props: Props) {
         content={[feed.featuredArticle]}
         publishers={publishers}
         articleToScrollTo={props.articleToScrollTo}
+        onSetPublisherPref={props.onSetPublisherPref}
         onReadFeedItem={props.onReadFeedItem}
       />
       {/* deals */}
@@ -145,6 +146,7 @@ export default function BraveTodayContent (props: Props) {
               publishers={publishers}
               articleToScrollTo={props.articleToScrollTo}
               onReadFeedItem={props.onReadFeedItem}
+              onSetPublisherPref={props.onSetPublisherPref}
             />
           )
         })
