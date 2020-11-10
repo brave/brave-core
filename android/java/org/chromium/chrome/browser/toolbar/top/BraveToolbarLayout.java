@@ -448,9 +448,10 @@ public abstract class BraveToolbarLayout extends ToolbarLayout implements OnClic
       if (null != mRewardsPopup) {
         return;
       }
+      hideRewardsOnboardingIcon();
+      OnboardingPrefManager.getInstance().setOnboardingShown(true);
       mRewardsPopup = new BraveRewardsPanelPopup(v);
       mRewardsPopup.showLikePopDownMenu();
-      hideRewardsOnboardingIcon();
       if (mBraveRewardsNotificationsCount.isShown()) {
         SharedPreferences sharedPref = ContextUtils.getAppSharedPreferences();
         SharedPreferences.Editor editor = sharedPref.edit();

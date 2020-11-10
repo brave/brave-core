@@ -452,6 +452,7 @@ public class BraveRewardsPanelPopup implements BraveRewardsObserver, BraveReward
         ViewGroup root = (ViewGroup) inflater.inflate(R.layout.brave_rewards_panel, null);
         initViews(root);
         setContentView(root);
+        showBraveRewardsWelcomeLayout(root);
         initViewActionEvents();
 
         //setting Recurrent Donations spinner
@@ -495,9 +496,8 @@ public class BraveRewardsPanelPopup implements BraveRewardsObserver, BraveReward
             }
         };
 
-        ForegroundColorSpan brOptInForegroundSpan = new ForegroundColorSpan(mActivity.getResources().getColor(R.color.brave_rewards_modal_theme_color));
         optInTextSS.setSpan(optInClickableSpan, quickTourIndex, quickTourIndex + mActivity.getResources().getString(R.string.quick_tour).length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-        optInTextSS.setSpan(brOptInForegroundSpan, quickTourIndex, quickTourIndex + mActivity.getResources().getString(R.string.quick_tour).length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+        optInTextSS.setSpan(new ForegroundColorSpan(mActivity.getResources().getColor(R.color.brave_rewards_modal_theme_color)), quickTourIndex, quickTourIndex + mActivity.getResources().getString(R.string.quick_tour).length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
         optInText.setMovementMethod(LinkMovementMethod.getInstance());
         optInText.setText(optInTextSS);
 
@@ -528,9 +528,8 @@ public class BraveRewardsPanelPopup implements BraveRewardsObserver, BraveReward
             }
         };
 
-        ForegroundColorSpan brForegroundSpan = new ForegroundColorSpan(mActivity.getResources().getColor(R.color.brave_rewards_modal_theme_color));
         tosTextSS.setSpan(tosClickableSpan, termsOfServiceIndex, termsOfServiceIndex + mActivity.getResources().getString(R.string.terms_of_service).length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-        tosTextSS.setSpan(brForegroundSpan, termsOfServiceIndex, termsOfServiceIndex + mActivity.getResources().getString(R.string.terms_of_service).length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+        tosTextSS.setSpan(new ForegroundColorSpan(mActivity.getResources().getColor(R.color.brave_rewards_modal_theme_color)), termsOfServiceIndex, termsOfServiceIndex + mActivity.getResources().getString(R.string.terms_of_service).length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
 
         ClickableSpan privacyProtectionClickableSpan = new ClickableSpan() {
             @Override
@@ -546,7 +545,7 @@ public class BraveRewardsPanelPopup implements BraveRewardsObserver, BraveReward
 
         int privacyPolicyIndex = tosText.indexOf(mActivity.getResources().getString(R.string.privacy_protection));
         tosTextSS.setSpan(privacyProtectionClickableSpan, privacyPolicyIndex, privacyPolicyIndex + mActivity.getResources().getString(R.string.privacy_protection).length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-        tosTextSS.setSpan(brForegroundSpan, privacyPolicyIndex, privacyPolicyIndex + mActivity.getResources().getString(R.string.privacy_protection).length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+        tosTextSS.setSpan(new ForegroundColorSpan(mActivity.getResources().getColor(R.color.brave_rewards_modal_theme_color)), privacyPolicyIndex, privacyPolicyIndex + mActivity.getResources().getString(R.string.privacy_protection).length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
 
         TextView tosAndPpText = braveRewardsOptInView.findViewById(R.id.tos_pp_text);
         tosAndPpText.setMovementMethod(LinkMovementMethod.getInstance());
@@ -583,9 +582,8 @@ public class BraveRewardsPanelPopup implements BraveRewardsObserver, BraveReward
             }
         };
 
-        ForegroundColorSpan brForegroundSpan = new ForegroundColorSpan(mActivity.getResources().getColor(R.color.brave_rewards_modal_theme_color));
         tosTextSS.setSpan(tosClickableSpan, termsOfServiceIndex, termsOfServiceIndex + mActivity.getResources().getString(R.string.terms_of_service).length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-        tosTextSS.setSpan(brForegroundSpan, termsOfServiceIndex, termsOfServiceIndex + mActivity.getResources().getString(R.string.terms_of_service).length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+        tosTextSS.setSpan(new ForegroundColorSpan(mActivity.getResources().getColor(R.color.brave_rewards_modal_theme_color)), termsOfServiceIndex, termsOfServiceIndex + mActivity.getResources().getString(R.string.terms_of_service).length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
 
         ClickableSpan privacyProtectionClickableSpan = new ClickableSpan() {
             @Override
@@ -601,7 +599,7 @@ public class BraveRewardsPanelPopup implements BraveRewardsObserver, BraveReward
 
         int privacyPolicyIndex = tosText.indexOf(mActivity.getResources().getString(R.string.privacy_protection));
         tosTextSS.setSpan(privacyProtectionClickableSpan, privacyPolicyIndex, privacyPolicyIndex + mActivity.getResources().getString(R.string.privacy_protection).length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-        tosTextSS.setSpan(brForegroundSpan, privacyPolicyIndex, privacyPolicyIndex + mActivity.getResources().getString(R.string.privacy_protection).length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+        tosTextSS.setSpan(new ForegroundColorSpan(mActivity.getResources().getColor(R.color.brave_rewards_modal_theme_color)), privacyPolicyIndex, privacyPolicyIndex + mActivity.getResources().getString(R.string.privacy_protection).length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
 
         TextView tosAndPpText = braveRewardsOnboardingModalView.findViewById(R.id.tos_pp_text);
         tosAndPpText.setMovementMethod(LinkMovementMethod.getInstance());
@@ -815,20 +813,20 @@ public class BraveRewardsPanelPopup implements BraveRewardsObserver, BraveReward
 
     public void showLikePopDownMenu() {
         this.showLikePopDownMenu(0, 0);
-        if (root!= null && PackageUtils.isFirstInstall(mActivity)) {
-            if (BraveRewardsHelper.shouldShowBraveRewardsOnboarding()) {
-                showBraveRewardsOnboarding(root);
-                BraveRewardsHelper.setShowBraveRewardsOnboarding(true);
-            } else if ((BraveRewardsHelper.getBraveRewardsOpenCount() == 0 || BraveRewardsHelper.getBraveRewardsOpenCount() == 1)
-                && !BraveAdsNativeHelper.nativeIsBraveAdsEnabled(Profile.getLastUsedRegularProfile())) {
-                showBraveRewardsOnboardingModal(root);
-                BraveRewardsHelper.updateBraveRewardsOpenCount();
-            } else if (BraveRewardsHelper.getBraveRewardsOpenCount() == 1 
-                && BraveAdsNativeHelper.nativeIsBraveAdsEnabled(Profile.getLastUsedRegularProfile())) {
-                showBraveRewardsWelcomeLayout(root);
-                BraveRewardsHelper.updateBraveRewardsOpenCount();
-            }
-        }
+        // if (root!= null && PackageUtils.isFirstInstall(mActivity)) {
+        //     if (BraveRewardsHelper.shouldShowBraveRewardsOnboarding()) {
+        //         showBraveRewardsOnboarding(root);
+        //         BraveRewardsHelper.setShowBraveRewardsOnboarding(true);
+        //     } else if ((BraveRewardsHelper.getBraveRewardsOpenCount() == 0 || BraveRewardsHelper.getBraveRewardsOpenCount() == 1)
+        //         && !BraveAdsNativeHelper.nativeIsBraveAdsEnabled(Profile.getLastUsedRegularProfile())) {
+        //         showBraveRewardsOnboardingModal(root);
+        //         BraveRewardsHelper.updateBraveRewardsOpenCount();
+        //     } else if (BraveRewardsHelper.getBraveRewardsOpenCount() == 1 
+        //         && BraveAdsNativeHelper.nativeIsBraveAdsEnabled(Profile.getLastUsedRegularProfile())) {
+        //         showBraveRewardsWelcomeLayout(root);
+        //         BraveRewardsHelper.updateBraveRewardsOpenCount();
+        //     }
+        // }
     }
 
     public void showLikePopDownMenu(int xOffset, int yOffset) {
