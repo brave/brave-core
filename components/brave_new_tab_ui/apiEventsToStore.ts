@@ -11,7 +11,7 @@ import * as privateTabDataAPI from './api/privateTabData'
 import * as torTabDataAPI from './api/torTabData'
 import { getInitialData, getRewardsInitialData, getRewardsPreInitialData } from './api/initialData'
 
-async function updatePreferences (prefData: preferencesAPI.Preferences) {
+async function updatePreferences (prefData: NewTab.Preferences) {
   getActions().preferencesUpdated(prefData)
 }
 
@@ -27,7 +27,7 @@ async function updateTorTabData (data: torTabDataAPI.TorTabData) {
   getActions().torTabDataUpdated(data)
 }
 
-function onRewardsToggled (prefData: preferencesAPI.Preferences): void {
+function onRewardsToggled (prefData: NewTab.Preferences): void {
   if (prefData.showRewards) {
     rewardsInitData()
   }
