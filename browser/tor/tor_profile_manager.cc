@@ -6,11 +6,22 @@
 #include "brave/browser/tor/tor_profile_manager.h"
 
 #include "brave/browser/tor/tor_profile_service_factory.h"
+#include "brave/browser/translate/buildflags/buildflags.h"
+#include "brave/common/pref_names.h"
+#include "brave/components/brave_webtorrent/browser/buildflags/buildflags.h"
 #include "brave/components/tor/tor_constants.h"
 #include "brave/components/tor/tor_profile_service.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/profiles/profile_window.h"
 #include "chrome/browser/ui/browser_list.h"
+#include "chrome/common/pref_names.h"
+#include "components/safe_browsing/core/common/safe_browsing_prefs.h"
+#include "components/prefs/pref_service.h"
+#include "third_party/blink/public/common/peerconnection/webrtc_ip_handling_policy.h"
+
+#if BUILDFLAG(ENABLE_BRAVE_TRANSLATE_EXTENSION)
+#include "components/translate/core/browser/translate_pref_names.h"
+#endif
 
 // static
 TorProfileManager& TorProfileManager::GetInstance() {
@@ -54,9 +65,15 @@ Profile* TorProfileManager::GetTorProfile(Profile* original_profile) {
       TorProfileServiceFactory::GetForContext(tor_profile);
   DCHECK(service);
   service->RegisterTorClientUpdater();
-  // TODO(darkdh): pref init and extension restriction
+
+  InitTorProfileUserPrefs(tor_profile);
+
   const std::string context_id = tor_profile->UniqueId();
-  tor_profiles_[context_id] = tor_profile;
+  auto it = tor_profiles_.find(context_id);
+  if (it == tor_profiles_.end()) {
+    tor_profile->AddObserver(this);
+    tor_profiles_[context_id] = tor_profile;
+  }
   return tor_profile;
 }
 
@@ -67,7 +84,23 @@ void TorProfileManager::OnBrowserRemoved(Browser* browser) {
 
 void TorProfileManager::OnProfileWillBeDestroyed(Profile* profile) {
   const std::string context_id = profile->UniqueId();
-  auto it = tor_profiles_.find(context_id);
-  if (it != tor_profiles_.end())
-    tor_profiles_.erase(context_id);
+  tor_profiles_.erase(context_id);
+  profile->RemoveObserver(this);
+}
+
+void TorProfileManager::InitTorProfileUserPrefs(Profile* profile) {
+  PrefService* pref_service = profile->GetPrefs();
+  pref_service->SetString(prefs::kWebRTCIPHandlingPolicy,
+                          blink::kWebRTCIPHandlingDisableNonProxiedUdp);
+  pref_service->SetBoolean(prefs::kSafeBrowsingEnabled, false);
+  // https://blog.torproject.org/bittorrent-over-tor-isnt-good-idea
+#if BUILDFLAG(ENABLE_BRAVE_WEBTORRENT)
+  pref_service->SetBoolean(kWebTorrentEnabled, false);
+#endif
+  // Disable the automatic translate bubble in Tor because we currently don't
+  // support extensions in Tor mode and users cannot disable this through
+  // settings page for Tor windows.
+#if BUILDFLAG(ENABLE_BRAVE_TRANSLATE_EXTENSION)
+  pref_service->SetBoolean(prefs::kOfferTranslateEnabled, false);
+#endif
 }

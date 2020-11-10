@@ -33,6 +33,8 @@ class TorProfileManager : public BrowserListObserver, public ProfileObserver {
   // ProfileObserver:
   void OnProfileWillBeDestroyed(Profile* profile) override;
 
+  void InitTorProfileUserPrefs(Profile* profile);
+
   // One regular profile can only have one tor profile
   base::flat_map<std::string, Profile*> tor_profiles_;
 

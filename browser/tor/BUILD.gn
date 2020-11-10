@@ -23,11 +23,15 @@ source_set("tor") {
 
     deps = [
       "//base",
+      "//brave/browser/translate/buildflags",
       "//brave/components/tor",
       "//brave/components/tor:pref_names",
       "//chrome/common",
       "//components/keyed_service/content",
+      "//components/safe_browsing/core/common:safe_browsing_prefs",
+      "//components/translate/core/browser",
       "//content/public/browser",
+      "//third_party/blink/public/common",
     ]
 
     # Below dep list are not directly used tor target.

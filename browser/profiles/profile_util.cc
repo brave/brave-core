@@ -15,7 +15,6 @@
 #include "base/no_destructor.h"
 #include "brave/components/ntp_background_images/common/pref_names.h"
 #include "brave/components/tor/buildflags/buildflags.h"
-#include "brave/components/tor/tor_constants.h"
 #include "chrome/browser/browser_process.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/profiles/profile_key.h"
@@ -172,12 +171,7 @@ bool IsSessionProfilePath(const base::FilePath& path) {
 
 bool IsTorProfile(content::BrowserContext* context) {
 #if BUILDFLAG(ENABLE_TOR)
-  Profile* profile = reinterpret_cast<Profile*>(context);
-  if (profile->IsOffTheRecord() &&
-      profile->GetOTRProfileID() == Profile::OTRProfileID(tor::kTorProfileID)) {
-    return true;
-  }
-  return false;
+  return context->IsTor();
 #else
   return false;
 #endif

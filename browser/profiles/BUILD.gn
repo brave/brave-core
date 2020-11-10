@@ -1,3 +1,4 @@
+import("//brave/components/tor/buildflags/buildflags.gni")
 import("//components/gcm_driver/config.gni")
 
 source_set("profiles") {
@@ -26,8 +27,6 @@ source_set("profiles") {
   deps = [
     "//base",
     "//brave/browser/gcm_driver",
-    "//brave/browser/tor",
-    "//brave/browser/translate/buildflags",
     "//brave/common:pref_names",
     "//brave/components/brave_ads/browser",
     "//brave/components/brave_rewards/browser",
@@ -38,9 +37,12 @@ source_set("profiles") {
     "//chrome/common",
     "//components/gcm_driver:gcm_buildflags",
     "//components/prefs",
-    "//components/safe_browsing/core/common:safe_browsing_prefs",
-    "//components/translate/core/browser",
-    "//third_party/blink/public/common",
     "//ui/base",
   ]
+
+  if (enable_tor) {
+    deps += [
+      "//brave/browser/tor",
+    ]
+  }
 }

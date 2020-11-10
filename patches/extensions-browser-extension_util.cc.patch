@@ -1,0 +1,12 @@
+diff --git a/extensions/browser/extension_util.cc b/extensions/browser/extension_util.cc
+index af63beaf829691d02a4139adb9eebb0ee941ccb9..a01b3c4c9f9b47a4641f84120e63364eb824f8c8 100644
+--- a/extensions/browser/extension_util.cc
++++ b/extensions/browser/extension_util.cc
+@@ -49,6 +49,7 @@ bool CanBeIncognitoEnabled(const Extension* extension) {
+ 
+ bool IsIncognitoEnabled(const std::string& extension_id,
+                         content::BrowserContext* context) {
++  BRAVE_IS_INCOGNITO_ENABLED
+   const Extension* extension =
+       ExtensionRegistry::Get(context)->GetExtensionById(
+           extension_id, ExtensionRegistry::ENABLED);
