@@ -77,6 +77,7 @@ export const getNewTabData = (state: NewTab.State = defaultState): NewTab.State 
   geminiSupported: boolean('Gemini Supported?', true),
   cryptoDotComSupported: boolean('Crypto.com supported?', true),
   showBinance: boolean('Show Binance?', true),
+  isBraveTodayIntroDismissed: boolean('Brave Today intro dismissed?', false),
   textDirection: select('Text direction', { ltr: 'ltr', rtl: 'rtl' } , 'ltr'),
   stats: {
     ...state.stats,

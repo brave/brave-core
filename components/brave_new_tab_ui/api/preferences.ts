@@ -72,6 +72,10 @@ export function saveShowCryptoDotCom (value: boolean): void {
   sendSavePref('showCryptoDotCom', value)
 }
 
+export function saveIsBraveTodayIntroDismissed (value: boolean): void {
+  sendSavePref('isBraveTodayIntroDismissed', value)
+}
+
 export function addChangeListener (listener: PreferencesUpdatedHandler): void {
   window.cr.addWebUIListener('preferences-changed', listener)
 }

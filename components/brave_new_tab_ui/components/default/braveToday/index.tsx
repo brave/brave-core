@@ -12,6 +12,7 @@ const Content = React.lazy(() => import('./content'))
 
 type State = {
   hasInteractionStarted: boolean
+  isIntroCardVisible: boolean
 }
 
 export type OnReadFeedItem = (args: ReadFeedItemPayload) => any
@@ -20,6 +21,7 @@ export type OnSetPublisherPref = (publisherId: string, enabled: boolean) => any
 export type Props = {
   isFetching: boolean
   isUpdateAvailable: boolean
+  isIntroDismissed: boolean
   feed?: BraveToday.Feed
   publishers?: BraveToday.Publishers
   articleToScrollTo?: BraveToday.FeedItem
@@ -31,14 +33,20 @@ export type Props = {
   onCustomizeBraveToday: () => any
   onRefresh: () => any
   onCheckForUpdate: () => any
+  onReadCardIntro: () => any
 }
 
 class BraveToday extends React.PureComponent<Props, State> {
   braveTodayHitsViewportObserver: IntersectionObserver
   scrollTriggerToFocusBraveToday: any // React.RefObject<any>
 
-  state = {
-    hasInteractionStarted: false
+  constructor (props: Props) {
+    super(props)
+    // Don't remove Intro Card until the page refreshes
+    this.state = {
+      hasInteractionStarted: false,
+      isIntroCardVisible: !props.isIntroDismissed
+    }
   }
 
   componentDidMount () {
@@ -70,9 +78,9 @@ class BraveToday extends React.PureComponent<Props, State> {
           ref={scrollTrigger => (this.scrollTriggerToFocusBraveToday = scrollTrigger)}
           style={{ position: 'sticky', top: '100px' }}
         />
-
-        <CardIntro />
-
+        { !this.props.isIntroDismissed &&
+        <CardIntro onRead={this.props.onReadCardIntro} />
+        }
         { shouldDisplayContent &&
         <React.Suspense fallback={(<CardLoading />)}>
           <Content {...this.props} />

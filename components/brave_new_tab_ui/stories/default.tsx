@@ -66,6 +66,10 @@ function StoreProvider ({ story }: any) {
   )
 }
 
+function dismissBraveTodayIntroCard () {
+  console.log('brave today intro card dismissed')
+}
+
 storiesOf('New Tab/Containers', module)
   .addDecorator(withKnobs)
   .addDecorator(story => <StoreProvider story={story()} />)
@@ -92,6 +96,7 @@ storiesOf('New Tab/Containers', module)
         saveShowBitcoinDotCom={doNothing}
         saveShowCryptoDotCom={doNothing}
         saveBrandedWallpaperOptIn={doNothing}
+        onReadBraveTodayIntroCard={dismissBraveTodayIntroCard}
       />
     )
   })

@@ -5,19 +5,38 @@
 
 import * as React from 'react'
 import { getLocale } from '../../../../../common/locale'
+import VisibilityTimer from '../../../../helpers/visibilityTimer'
 import * as Card from '../cardIntro'
-import BraveTodayLogo from '../braveTodayLogo.svg'
+import BraveTodayLogoUrl from '../braveTodayLogo.svg'
 
-class HeaderBlock extends React.PureComponent<{}, {}> {
-  render () {
-    return (
-      <Card.Intro>
-        <Card.Image src={BraveTodayLogo} />
-        <Card.Heading>{getLocale('braveTodayIntroTitle')}</Card.Heading>
-        <Card.Text>{getLocale('braveTodayIntroDescription')}</Card.Text>
-      </Card.Intro>
-    )
-  }
+const timeToHideMs = 4000
+
+type Props = {
+  onRead: () => void
 }
 
-export default HeaderBlock
+export default function IntroCard (props: Props) {
+  const introElementRef = React.useRef(null)
+
+  // Only mark as 'read' when it's been in the viewport for a
+  // specific amount of time, and the tab is active.
+  React.useEffect(() => {
+    const element = introElementRef.current
+    if (!element) {
+      return
+    }
+    const observer = new VisibilityTimer(props.onRead, timeToHideMs, element)
+    observer.startTracking()
+    return () => {
+      observer.stopTracking()
+    }
+  }, [introElementRef.current, props.onRead])
+
+  return (
+    <Card.Intro innerRef={introElementRef}>
+      <Card.Image src={BraveTodayLogoUrl} />
+      <Card.Heading>{getLocale('braveTodayIntroTitle')}</Card.Heading>
+      <Card.Text>{getLocale('braveTodayIntroDescription')}</Card.Text>
+    </Card.Intro>
+  )
+}
