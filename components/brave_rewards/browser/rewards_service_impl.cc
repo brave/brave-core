@@ -1642,9 +1642,6 @@ void RewardsServiceImpl::SetAutoContributeEnabled(bool enabled) {
 }
 
 bool RewardsServiceImpl::ShouldShowOnboarding() const {
-  PrefService* prefs = profile_->GetPrefs();
-  const base::Time onboard_time = prefs->GetTime(prefs::kOnboarded);
-
   bool ads_enabled = false;
   bool ads_supported = true;
   auto* ads_service = brave_ads::AdsServiceFactory::GetForProfile(profile_);
@@ -1652,8 +1649,7 @@ bool RewardsServiceImpl::ShouldShowOnboarding() const {
     ads_enabled = ads_service->IsEnabled();
     ads_supported = ads_service->IsSupportedLocale();
   }
-
-  return onboard_time.is_null() && !ads_enabled && ads_supported;
+  return !ledger_for_testing_ && !ads_enabled && ads_supported;
 }
 
 void RewardsServiceImpl::SaveOnboardingResult(OnboardingResult result) {
