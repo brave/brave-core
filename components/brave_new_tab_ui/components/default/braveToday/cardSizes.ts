@@ -9,18 +9,19 @@ import {
   Heading as StandardHeading,
   Image as StandardImage,
   Text as StandardText,
-  Time as StandardTime,
+  Time as StandardTime
 } from './default'
 
 export const Large = styled(StandardBlock.withComponent('article'))`
   padding: 0;
 `
 
-export const Medium = styled(Large)`
+export const Medium = styled(StandardBlock.withComponent('article'))`
   padding: 0;
 `
 
-export const Small = styled(Large)`
+export const Small = styled(StandardBlock.withComponent('article'))`
+  padding: 0;
   width: 100%;
   min-height: 310px;
 `
@@ -73,7 +74,7 @@ export const Image = styled(StandardImage)`
 `
 
 export const Heading = styled(StandardHeading)`
-  font-weight: 500;
+  font-weight: 600;
   a {
     display: block;
     color: inherit;
@@ -89,7 +90,7 @@ export const Text = styled(StandardText)`
   font-family: ${p => p.theme.fontFamily.heading};
   font-size: 18px;
   line-height: 25px;
-  font-weight: 500;
+  font-weight: 600;
 
   a {
     display: block;
@@ -98,11 +99,15 @@ export const Text = styled(StandardText)`
   }
 `
 
-export const Time = styled(StandardTime)``
+export const Time = styled(StandardTime)`
+  ${Large} & {
+    margin-top: 8px;
+  }
+`
 
 export const Publisher = styled('div')`
   box-sizing: border-box;
-  margin: 12px 0 0 0;
+  margin: 10px 0 0 0;
   padding: 0;
   font: 500 14px ${p => p.theme.fontFamily.heading};
   color: #fff;
@@ -117,7 +122,7 @@ export const ContainerForTwo = styled<{}, 'div'>('div')`
 
 export const DealsCategory = styled('h3')`
   margin: 0;
-  font: 700 18px ${p => p.theme.fontFamily.heading};
+  font: 600 18px ${p => p.theme.fontFamily.heading};
   color: white;
 `
 

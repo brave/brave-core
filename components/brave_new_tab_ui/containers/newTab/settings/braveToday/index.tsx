@@ -43,7 +43,7 @@ export default function BraveTodayPrefs (props: Props) {
 
   return (
     <Styled.Section>
-      {!category && <>
+      {!category && (
         <SettingsRow>
           <SettingsText>Show Brave Today</SettingsText>
           <Toggle
@@ -52,14 +52,15 @@ export default function BraveTodayPrefs (props: Props) {
             size='large'
           />
         </SettingsRow>
-        <SettingsRow>
-          <div />
-          <Button type='warn' level='tertiary' onClick={confirmAction} text={getLocale('braveTodayResetAction')} />
-        </SettingsRow>
-      </>}
+      )}
       {props.showToday &&
       <Sources category={category} setCategory={setCategory} {...props} />
       }
+      {!category && (
+      <SettingsRow>
+        <Button type='warn' level='tertiary' onClick={confirmAction} text={getLocale('braveTodayResetAction')} />
+      </SettingsRow>
+      )}
     </Styled.Section>
   )
 }

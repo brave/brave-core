@@ -230,8 +230,8 @@
       <message name="IDS_BRAVE_TODAY_SCROLL_HINT" desc="Indicator text that Brave Today content must be scrolled down to. Do not translate the title Brave Today.">
         Scroll for Brave Today
       </message>
-      <message name="IDS_BRAVE_TODAY_RESET_ACTION" desc="Button text to reset all Brave Today settings. Do not translate the title Brave Today.">
-        Reset Brave Today settings
+      <message name="IDS_BRAVE_TODAY_RESET_ACTION" desc="Button text to reset all Brave Today publisher options. Do not translate the title Brave Today.">
+        Reset Brave Today sources
       </message>
       <message name="IDS_BRAVE_TODAY_RESET_CONFIRM" desc="Confirmation dialog text to reset all Brave Today settings. Do not translate the title Brave Today.">
         Reset all your Brave Today publisher choices to their default?

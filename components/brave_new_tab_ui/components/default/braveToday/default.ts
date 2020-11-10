@@ -67,9 +67,9 @@ export const Image = styled('img')`
   display: block;
 `
 
-export const Text = styled<{}, 'p'>('p')`
+export const Text = styled<{}, 'div'>('div')`
   box-sizing: border-box;
-  font-family: ${p => p.theme.fontFamily.body};
+  font-family: ${p => p.theme.fontFamily.heading};
   font-weight: normal;
   font-size: 14px;
   line-height: 19px;
@@ -79,9 +79,9 @@ export const Text = styled<{}, 'p'>('p')`
 
 export const Heading = styled(Text.withComponent('h2'))`
   font-family: ${p => p.theme.fontFamily.heading};
-  font-weight: bold;
-  font-size: 28px;
-  line-height: 36px;
+  font-weight: 600;
+  font-size: 22px;
+  line-height: 32px;
 `
 
 export const Time = styled(Text.withComponent('time'))`
