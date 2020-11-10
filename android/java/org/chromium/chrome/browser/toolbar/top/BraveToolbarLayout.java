@@ -434,17 +434,23 @@ public abstract class BraveToolbarLayout extends ToolbarLayout implements OnClic
     if (mBraveShieldsButton == v && mBraveShieldsButton != null) {
       showShieldsMenu(mBraveShieldsButton);
     } else if (mBraveRewardsButton == v && mBraveRewardsButton != null) {
-      Context context = getContext();
-      if (checkForRewardsOnboarding()) {
-        OnboardingPrefManager.getInstance().showOnboarding(context);
-        hideRewardsOnboardingIcon();
-      } else {
-        if (null != mRewardsPopup) {
-          return;
-        }
-        mRewardsPopup = new BraveRewardsPanelPopup(v);
-        mRewardsPopup.showLikePopDownMenu();
+      // Context context = getContext();
+      // if (checkForRewardsOnboarding()) {
+      //   OnboardingPrefManager.getInstance().showOnboarding(context);
+      //   hideRewardsOnboardingIcon();
+      // } else {
+      //   if (null != mRewardsPopup) {
+      //     return;
+      //   }
+      //   mRewardsPopup = new BraveRewardsPanelPopup(v);
+      //   mRewardsPopup.showLikePopDownMenu();
+      // }
+      if (null != mRewardsPopup) {
+        return;
       }
+      mRewardsPopup = new BraveRewardsPanelPopup(v);
+      mRewardsPopup.showLikePopDownMenu();
+      hideRewardsOnboardingIcon();
       if (mBraveRewardsNotificationsCount.isShown()) {
         SharedPreferences sharedPref = ContextUtils.getAppSharedPreferences();
         SharedPreferences.Editor editor = sharedPref.edit();

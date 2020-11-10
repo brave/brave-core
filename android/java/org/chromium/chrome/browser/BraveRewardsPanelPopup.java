@@ -551,6 +551,15 @@ public class BraveRewardsPanelPopup implements BraveRewardsObserver, BraveReward
         TextView tosAndPpText = braveRewardsOptInView.findViewById(R.id.tos_pp_text);
         tosAndPpText.setMovementMethod(LinkMovementMethod.getInstance());
         tosAndPpText.setText(tosTextSS);
+
+        AppCompatImageView modalCloseButton = braveRewardsOptInView.findViewById(R.id.modal_close);
+        modalCloseButton.setOnClickListener((new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showBraveRewardsOptInLayout(root);
+                braveRewardsOptInView.setVisibility(View.GONE);
+            }
+        }));
     }
 
     private void showBraveRewardsOnboardingModal(View root) {
@@ -654,9 +663,11 @@ public class BraveRewardsPanelPopup implements BraveRewardsObserver, BraveReward
             public void onPageSelected(int position) {
                 if (braveRewardsOnboardingPagerAdapter != null 
                     && position == braveRewardsOnboardingPagerAdapter.getCount()-1) {
+                    btnNext.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0);
                     btnNext.setText(mActivity.getResources().getString(R.string.done));
                 } else {
                     btnNext.setText(mActivity.getResources().getString(R.string.next));
+                    btnNext.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.ic_chevron_right, 0);
                 }
             }
 
@@ -664,7 +675,7 @@ public class BraveRewardsPanelPopup implements BraveRewardsObserver, BraveReward
             public void onPageScrollStateChanged(int state) {}
         });
         braveRewardsOnboardingPagerAdapter = new BraveRewardsOnboardingPagerAdapter();
-        braveRewardsViewPager.setAdapter(new BraveRewardsOnboardingPagerAdapter());
+        braveRewardsViewPager.setAdapter(braveRewardsOnboardingPagerAdapter);
         TabLayout braveRewardsTabLayout = braveRewardsOnboardingView.findViewById(R.id.brave_rewards_tab_layout);
         braveRewardsTabLayout.setupWithViewPager(braveRewardsViewPager, true);
         AppCompatImageView modalCloseButton = braveRewardsOnboardingView.findViewById(R.id.modal_close);

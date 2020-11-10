@@ -170,12 +170,12 @@ public class NTPUtil {
         nonDistruptiveBannerLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                clickOnBottomBanner(chromeActivity, ntpType, nonDistruptiveBannerLayout, sponsoredTab, newTabPageListener);
-                // if (BraveActivity.getBraveActivity() != null) {
-                //     nonDistruptiveBannerLayout.setVisibility(View.GONE);
-                //     BraveRewardsHelper.setShowBraveRewardsOnboarding(true);
-                //     BraveActivity.getBraveActivity().openRewardsPanel();
-                // }
+                // clickOnBottomBanner(chromeActivity, ntpType, nonDistruptiveBannerLayout, sponsoredTab, newTabPageListener);
+                if (BraveActivity.getBraveActivity() != null) {
+                    nonDistruptiveBannerLayout.setVisibility(View.GONE);
+                    BraveRewardsHelper.setShowBraveRewardsOnboarding(true);
+                    BraveActivity.getBraveActivity().openRewardsPanel();
+                }
             }
         });
         nonDistruptiveBannerLayout.setVisibility(View.GONE);
