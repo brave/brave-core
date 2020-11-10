@@ -6520,6 +6520,14 @@ Spara nyckelfilen på ett säkert ställe. Den behövs om du ska skapa nya versi
 <translation id="995782501881226248">YouTube</translation>
 <translation id="996250603853062861">Upprättar en säker anslutning...</translation>
 <translation id="998747458861718449">I&amp;nspektera</translation>
+<translation id="6744651634043798597">{COUNT, plural,
+          =0 {Öppna alla i &amp;privat fönster}
+          =1 {Öppna i &amp;privat fönster}
+          other {Öppna alla (#) i &amp;privat fönster}}</translation>
+<translation id="2633634757060186848">{COUNT, plural,
+          =0 {Öppna alla i &amp;privat fönster}
+          =1 {Öppna i &amp;privat fönster}
+          other {Öppna alla (#) i &amp;privat fönster}}</translation>
 <translation id="658539216370629794">Öppna länk i &amp;privat fönster</translation>
 <translation id="1432267168815937878">Öppna länk i &amp;privat fönster</translation>
 <translation id="6516243500644829484">Nytt &amp;privat fönster</translation>
@@ -6533,6 +6541,7 @@ Spara nyckelfilen på ett säkert ställe. Den behövs om du ska skapa nya versi
 <translation id="9048137919253433011">Privat flik: <ph name="TAB_NAME"/></translation>
 <translation id="1799432502220762862">Privat underram: <ph name="SUBFRAME_SITE"/></translation>
 <translation id="3193187622878830588">Inkognitoportal: <ph name="SUBFRAME_SITE"/></translation>
+<translation id="5097649414558628673">Verktyg: <ph name="PRINT_NAME"/></translation>
 <translation id="8808478386290700967">Web Store</translation>
 <translation id="8261378640211443080">Det här tillägget finns inte i <ph name="IDS_EXTENSION_WEB_STORE_TITLE"/> och kan ha lagts till utan att du vet om det.</translation>
 <translation id="6827869674836193263"><ph name="WINDOW_TITLE"/> (Privat)</translation>
@@ -6550,19 +6559,21 @@ Spara nyckelfilen på ett säkert ställe. Den behövs om du ska skapa nya versi
 <translation id="3098826269712097986">Inloggningsdata kommer att lagras i Brave efter att du lämnar privat läge. Detta låter dig använda Touch ID på den här webbplatsen igen senare.</translation>
 <translation id="5186185447130319458">Privat</translation>
 <translation id="2579188629646253712">Avsluta privat</translation>
-<translation id="6744651634043798597">{COUNT, plural,
-          =0 {Öppna alla i &amp;privat fönster}
-          =1 {Öppna i &amp;privat fönster}
-          other {Öppna alla (#) i &amp;privat fönster}}</translation>
+<translation id="1001131747196960052">Stäng privat</translation>
+<translation id="7475335772460644497">{COUNT, plural,
+          =0 {Open all in &amp;private window}
+          =1 {Open in &amp;private window}
+          other {Open all ({COUNT}) in &amp;private window}}</translation>
 <translation id="2431625704210501303">Öppna i &amp;privat fönster</translation>
 <translation id="4620367155626060530">&amp;Visa bokmärkesfältet</translation>
-<translation id="2633634757060186848">{COUNT, plural,
-          =0 {Öppna alla i &amp;privat fönster}
-          =1 {Öppna i &amp;privat fönster}
-          other {Öppna alla (#) i &amp;privat fönster}}</translation>
+<translation id="1448315815373449655">{COUNT, plural,
+          =0 {Open All in &amp;Private Window}
+          =1 {Open in &amp;Private Window}
+          other {Open All ({COUNT}) in &amp;Private Window}}</translation>
 <translation id="1985165269306590797">Öppna i &amp;privat fönster</translation>
 <translation id="4680518314108745448">&amp;Visa bokmärkesfältet</translation>
 <translation id="642436385689435488">Öppna alla i privat fönster</translation>
+<translation id="5074021236879527611">Öppna alla (<ph name="URL_COUNT"/>) i ett privat fönster</translation>
 <translation id="5463021359602611602">Öppna i privat fönster</translation>
 <translation id="1850357845349976573">{0, plural,
         =1 {Privat}
@@ -6612,6 +6623,8 @@ Spara nyckelfilen på ett säkert ställe. Den behövs om du ska skapa nya versi
 <translation id="4854477725773269949">Tillåt i privat läge</translation>
 <translation id="6436164536244065364">Visa i Web Store</translation>
 <translation id="38046578254905003">Hitta tillägg och teman i <ph name="BEGIN_LINK"/>Web Store<ph name="END_LINK"/></translation>
+<translation id="2402482691429508168">Profiler som har valt att vara synliga för dig när skärmen är upplåst</translation>
+<translation id="3910100573440336938">Dela filer med profiler nära dig</translation>
 <translation id="6336451774241870485">Ny privat flik</translation>
 <translation id="6610147964972079463">Stäng privata flikar</translation>
 <translation id="4933782374919065856">Frågor? Kontakta den som kontrollerar profilen.</translation>

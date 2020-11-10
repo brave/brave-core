@@ -6519,6 +6519,8 @@
 <translation id="996250603853062861">正在建立安全連線…</translation>
 <translation id="998747458861718449">檢查(&amp;N)</translation>
 <translation id="38046578254905003">在「<ph name="BEGIN_LINK"/>Brave 網上應用程式商店<ph name="END_LINK"/>」中尋找擴充程式和主題背景</translation>
+<translation id="6744651634043798597">{COUNT,plural, =0{在無痕式視窗中開啟所有書籤(&amp;I)}=1{在無痕式視窗中開啟(&amp;I)}other{在無痕式視窗中開啟全部 # 個書籤(&amp;I)}}</translation>
+<translation id="2633634757060186848">{COUNT,plural, =0{在無痕式視窗中開啟所有書籤(&amp;I)}=1{在無痕式視窗中開啟(&amp;I)}other{在無痕式視窗中開啟全部 # 個書籤(&amp;I)}}</translation>
 <translation id="658539216370629794">在無痕式視窗中開啟連結(&amp;G)</translation>
 <translation id="1432267168815937878">在無痕式視窗中開啟連結(&amp;G)</translation>
 <translation id="6516243500644829484">新增無痕式視窗(&amp;I)</translation>
@@ -6549,10 +6551,8 @@
 <translation id="3098826269712097986">離開無痕模式後，登入資料會儲存在 Brave 中；這讓您日後在此網站上再次使用 Touch ID。</translation>
 <translation id="5186185447130319458">無痕模式</translation>
 <translation id="2579188629646253712">結束無痕模式</translation>
-<translation id="6744651634043798597">{COUNT,plural, =0{在無痕式視窗中開啟所有書籤(&amp;I)}=1{在無痕式視窗中開啟(&amp;I)}other{在無痕式視窗中開啟全部 # 個書籤(&amp;I)}}</translation>
 <translation id="2431625704210501303">在無痕式視窗中開啟(&amp;I)</translation>
 <translation id="4620367155626060530">顯示書籤列(&amp;S)</translation>
-<translation id="2633634757060186848">{COUNT,plural, =0{在無痕式視窗中開啟所有書籤(&amp;I)}=1{在無痕式視窗中開啟(&amp;I)}other{在無痕式視窗中開啟全部 # 個書籤(&amp;I)}}</translation>
 <translation id="1985165269306590797">在無痕式視窗中開啟(&amp;I)</translation>
 <translation id="4680518314108745448">顯示書籤列(&amp;S)</translation>
 <translation id="642436385689435488">在無痕式視窗中開啟所有書籤</translation>

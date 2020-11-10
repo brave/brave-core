@@ -13,6 +13,11 @@
 <translation id="2313532038420432247">HTTPSアップグレード</translation>
 <translation id="7461425058443653485">ブロック済み
 のスクリプト</translation>
+<translation id="6052725679982758334">ソーシャルメディアのブロック</translation>
+<translation id="7498695072878479744">第三者サイトのGoogleログインボタンを許可する</translation>
+<translation id="863171915776379000">Facebookのログインと埋め込み投稿を許可する</translation>
+<translation id="5165042248369837294">Twitterの埋め込みツイートを許可する</translation>
+<translation id="958971637207126733">LinkedInの埋め込みポストを許可する</translation>
 <translation id="3834924998750356151">ブロッキングモニター</translation>
 <translation id="1713450908129883784">個別設定</translation>
 <translation id="6302422639282249274">Brave Rewardsの管理</translation>
@@ -48,8 +53,6 @@
 <translation id="2804710924397009224">Brave Rewards アイコンを非表示にします</translation>
 <translation id="7358991116457217836">Brave Rewards が有効になっていない場合、「Brave Rewards」アイコンを非表示にします</translation>
 <translation id="8495235435594442882">下部のツールバーを有効にします</translation>
-<translation id="5916664084637901428">On</translation>
-<translation id="5860033963881614850">Off</translation>
 <translation id="6587448235155023666">変更は、次にBraveを再起動した際に有効になります</translation>
 <translation id="8701563696941209024">今すぐ再起動</translation>
 <translation id="834487290629916192">後で</translation>
@@ -58,7 +61,6 @@
 <translation id="986879628471635371">トラブルシューティングのチュートリアル</translation>
 <translation id="5808759341041733958">既定の検索エンジンを選択してください</translation>
 <translation id="1331593888918588693">アプリの設定で、後からいつでも設定を変更することができます。</translation>
-<translation id="5317780077021120954">保存</translation>
 <translation id="7053983685419859001">ブロック</translation>
 <translation id="5806601733251372221">Brave Shields</translation>
 <translation id="2880356288762235261">プライバシーを侵害する広告やトラッカーをブロックするため、ウェブで追跡されることなくブラウジングできます。</translation>
@@ -77,8 +79,6 @@
 <translation id="2453860139492968684">終了</translation>
 <translation id="7983303953939627894">獲得とチップ</translation>
 <translation id="48520986898237073">引き続きウォレットに進む</translation>
-<translation id="2359808026110333948">続行</translation>
-<translation id="7658239707568436148">キャンセル</translation>
 <translation id="3570367516044491911">デフォルトのブラウザに設定</translation>
 <translation id="7493053924837150477">リストからBraveブラウザを選択し、「常に」をタップします</translation>
 <translation id="3546439402724649282">Braveは、すでにデフォルトブラウザとして設定されています。</translation>
@@ -180,7 +180,7 @@
 <translation id="8038539967102225446">Brave広告はここにあります！</translation>
 <translation id="8985635554450124959">同期を設定できませんでした</translation>
 <translation id="222883304157347087">（このデバイス）</translation>
-<translation id="8193724030871339658">チェーン上の他のデバイス</translation>
+<translation id="4157741509680155021">同期チェーン上のデバイス</translation>
 <translation id="279635009973773843">デバイスを読み込んでいます…</translation>
 <translation id="6394333525003604181">同期チェーンから退出中です...</translation>
 <translation id="2569646144216067185">単語数：<ph name="WORD_COUNT"/></translation>
@@ -190,11 +190,11 @@
 <translation id="3149880132460839085">Brave Sync</translation>
 <translation id="3680755684186855422">Brave Syncを使うと、さまざまなデバイスの Brave ブラウザ間でブックマークのデータをブライベートに同期することができます。</translation>
 <translation id="3735228155296883311">別の端末で開始した同期チェーンに、コードをスキャンして簡単に追加することができます。あるいはこの端末で新しい同期チェーンを開始することもできます。</translation>
-<translation id="4690880825349994619">既存の同期済みデバイスで、設定を開き、Sync (同期の設定)に移動します。デバイスを追加を選択し、画面に表示されるQRコードをスキャンします。</translation>
+<translation id="2614069607859982576">既存の同期されたデバイスを使用してBrave Settingsを開き、設定と &gt; 同期に移動してください。「新しいデバイスを追加」を選択し、画面に表示されたQRコードをスキャンしてください。</translation>
 <translation id="5241263629636958324">クリップボードへコピーしました</translation>
 <translation id="5817918615728894473">ペア設定</translation>
-<translation id="3394474617110693560">カテゴリー</translation>
-<translation id="2004365171440701679">このデバイスを削除します</translation>
+<translation id="7090325819305486658">データ設定</translation>
+<translation id="728334460283296316">リモートデバイス</translation>
 <translation id="1178128181015923849">本当にこのデバイスを削除してもよろしいですか  '<ph name="DEVICE_NAME"/>'。</translation>
 <translation id="7745082336226088126">同期コードをスキャンまたは入力します</translation>
 <translation id="1602067095281698985">新しい同期チェーンを始める</translation>
@@ -213,9 +213,9 @@
 <translation id="8730621377337864115">完了</translation>
 <translation id="6174119914106813304">このデバイスで同期</translation>
 <translation id="6776430845975754238">設定を変更した場合、他のデバイスと共有しているデータにのみ影響します。</translation>
-<translation id="6450924769151530465">別のデバイスを追加します</translation>
+<translation id="1061533051865606843">新たなデバイスを追加</translation>
 <translation id="7539985410310934287">コードを入力します</translation>
-<translation id="6270614677029463366">すでに同期しているデバイスで、Braveの設定画面を開き、同期の設定を選択してください。「デバイスを追加」を選択し、「コードを表示」を選択してください。</translation>
+<translation id="2886391679017857869">既存の同期されたデバイスを使用してBrave Settingsを開き、設定と &gt; 同期に移動します。 「新しいデバイスの追加」、「代わりにコードワードを表示」の順に選択してください。</translation>
 <translation id="8131740175452115882">確認</translation>
 <translation id="4973653569293835178">カメラを使用...</translation>
 <translation id="326454632686131209">デバイスを同期</translation>
@@ -240,7 +240,6 @@
 <translation id="844921671123185605">毎月定期支払いチップが実行されました！</translation>
 <translation id="3124090095880236567">広告をオンにする</translation>
 <translation id="2975780980638932742">Brave広告が届きました！</translation>
-<translation id="7655723274266132226">広告を見ることによって報酬を獲得できるようになりました。</translation>
 <translation id="7541582550122501404">保留中の支援</translation>
 <translation id="8520059774736886747">クリエイター<ph name="PUBLISHER_NAME"/>が最近設定を完了しました</translation>
 <translation id="7924320838799747606">残高</translation>
@@ -258,8 +257,8 @@
 <translation id="8522669544471808198">背景画像を表示</translation>
 <translation id="3870475560794762985">スポンサー付き画像を表示</translation>
 <translation id="8297488609722895137">Photo by <ph name="PHOTO_BY"/></translation>
-<translation id="1605521356929094020">Brave広告をオンにする</translation>
-<translation id="1873603368604736484">Rewardsを有効にすると、 <ph name="TERMS_OF_SERVICE"/>.に同意したとみなされます。</translation>
+<translation id="7952665812649667034">稼いであげる準備ができています</translation>
+<translation id="5878330112719288629">稼ぐ &amp; あげるをタップすると、<ph name="TERMS_OF_SERVICE"/>に同意したことになります。</translation>
 <translation id="3794079107601824147">この背景画像を表示すると報酬が支払われます。</translation>
 <translation id="7136586167396205364">スポンサー付き画像を非表示にする</translation>
 <translation id="2927095357213611519">ポイントを使用してコンテンツクリエイターを応援できます。\nポイントはプライバシーを重視する広告を表示することで貯めることができます。</translation>
@@ -306,7 +305,7 @@
 <translation id="8851456134224363571">素晴らしい！Play Storeで評価を残していただけませんか？</translation>
 <translation id="8668962040900592974">どうしたらBraveがもっとよくなるか教えていただけますか。</translation>
 <translation id="4406937629441301400">この画像を表示するとトークンを受け取ることができ、クリエイターへの支払いに使うことができます。<ph name="LEARN_MORE"/></translation>
-<translation id="7894626572714595717">この画像を表示するにはトークンを獲得してください。分け前を獲得するにはBrave Adsをオンにしてください。</translation>
+<translation id="8693132237667961044">この画像を表示すると報酬が支払われます。Brave広告をオンにして報酬を受け取りましょう！</translation>
 <translation id="6632345639591919543">この画像を表示することでトークンを受け取ることができます。\n<ph name="LEARN_MORE"/></translation>
 <translation id="1465733111003593696">この画像を表示するためのトークンを獲得しています。</translation>
 <translation id="7877201489035217175">スポンサー画像の詳細について</translation>
@@ -354,7 +353,6 @@
 <translation id="8903462729414407077">毎週のアップデートを利用</translation>
 <translation id="8029219208182772618">どのプライバシーウェブサイトにアクセスしているが通知されます。\n\nこれらのプライバシー統計情報を閲覧できるのはあなただけです。個人データや閲覧履歴によって、Braveブラウザがデバイスに残ることはありません。</translation>
 <translation id="6170159749517116894">プライバシーレポートをONにする</translation>
-<translation id="6165508094623778733">詳細</translation>
 <translation id="5966707198760109579">週</translation>
 <translation id="8987927404178983737">月</translation>
 <translation id="4302754476737420523">3か月</translation>
@@ -373,12 +371,12 @@
 <translation id="7427567994475794038">プライバシーレポートをONにして、過去3時間にブロックされたトラッカー広告の数を確認しましょう。</translation>
 <translation id="2053891538879944400">Braveブラウザで <ph name="DATA"/> <ph name="DATA_TEXT"/> の通信量を節約しました。</translation>
 <translation id="8640064498452534195">プライバシーレポートをONにして、保存したデータ量を確認します。</translation>
-<translation id="2252497442547961651">Braveブラウザは他のブラウザと比べ、バッテリー使用量が平均40%少なくなっています。&#128267;</translation>
+<translation id="2252497442547961651">Braveブラウザは他のブラウザと比べ、バッテリー使用量が平均40%少なくなっています。🔋</translation>
 <translation id="1945330434665345785">先週、Braveブラウザで <ph name="COUNT"/>件のトラッカーと広告をブロックしました。</translation>
 <translation id="2883868922264431515">プライバシーを尊重する広告を表示してトークンを獲得し、お気に入りのウェブサイトをサポートしましょう。</translation>
-<translation id="5678925890616256956">いいですね！Braveブラウザを使って、250件のトラッカー&amp;広告をブロックしました。&#128293;</translation>
-<translation id="9199047775708635708">いいですね！Braveブラウザで10MBを節約しました。&#128267;</translation>
-<translation id="1880168210969863408">いいですね！Braveブラウザを使って、読み込み時間を10分節約しました。&#128168;&#128168;</translation>
+<translation id="5678925890616256956">いいですね！Braveブラウザを使って、250件のトラッカー&amp;広告をブロックしました。🔥</translation>
+<translation id="9199047775708635708">いいですね！Braveブラウザで10MBを節約しました。🔋</translation>
+<translation id="1880168210969863408">いいですね！Braveブラウザを使って、読み込み時間を10分節約しました。💨💨</translation>
 <translation id="7408493389591475748">ブラウジングを開始してプライバシーレポートを表示</translation>
 <translation id="9080777565335515917">プライベートで安全なブラウジングのため、Braveをデフォルトのブラウザとして設定します。</translation>
 <translation id="7801488941710395275">Braveが、プライバシー統計を表示できるようにする</translation>
@@ -388,4 +386,62 @@
 <translation id="2718046830255553131">プライバシーレポートのデータが消去されました。</translation>
 <translation id="7559243474426790340">ステータスを更新する</translation>
 <translation id="8376263745431603066">「ナイトモード」を有効にする（実験的）</translation>
+<translation id="1383876407941801731">検索</translation>
+<translation id="1972589975368876259">スタックを編集</translation>
+<translation id="2490330380242414851">ウィジェットを削除</translation>
+<translation id="8446884382197647889">詳しく知る</translation>
+<translation id="7384441892795736634">データを更新する</translation>
+<translation id="4804818685124855865">接続を切断する</translation>
+<translation id="4789438578712143420">≈ $<ph name="USD_BALANCE"/></translation>
+<translation id="1080611582879541635"><ph name="COIN_ADDRESS"/> デポジットアドレス</translation>
+<translation id="4836242416604533644"><ph name="COIN_MEMO"/> デポジットメモ</translation>
+<translation id="5110244215256675209">仮想通貨を購入</translation>
+<translation id="2271556362602437160">.com</translation>
+<translation id="3727077517986954867">.us</translation>
+<translation id="3414885529641505869">購入 <ph name="COIN_NAME"/></translation>
+<translation id="558614325644656740">利用可能な <ph name="COIN_BALANCE"/> <ph name="COIN_NAME"/></translation>
+<translation id="6755546361496900700">変換をプレビューする</translation>
+<translation id="2882813124794301799">ウィジェットのスタック</translation>
+<translation id="13296465911709339">テキストがクリップボードにコピーされました。</translation>
+<translation id="7144878232160441200">再試行</translation>
+<translation id="2977461003134694205">プライバシー統計</translation>
+<translation id="4643117005422448078">トップサイト</translation>
+<translation id="6966052266404721769">バイナンス</translation>
+<translation id="1392658226187691544">トラッカー &amp; 広告のブロック、帯域幅の節約、時間の節約の見積もり。</translation>
+<translation id="74417429503469271">頻繁にアクセスするトップサイトを開きます。</translation>
+<translation id="2956070106555335453">要約</translation>
+<translation id="1366855498335432549">預金</translation>
+<translation id="1301340234286078471">変換</translation>
+<translation id="223536150967420869">購入</translation>
+<translation id="1714829281959608206">Binanceアカウントの残高を表示し、仮想通貨を取引するには、Binance接続を有効にしてください。</translation>
+<translation id="4584930231524505442">...を変換したいです</translation>
+<translation id="5749014321384313843">…費やしたいです。</translation>
+<translation id="8688672835843460752">利用可能</translation>
+<translation id="2480674848181564169">両替のための十分な残高がありません</translation>
+<translation id="2215334405220411393">両替する最小額は : <ph name="COIN_BALANCE"/> <ph name="COIN_NAME"/></translation>
+<translation id="6702658079816271889">接続できません</translation>
+<translation id="7742417737698031726">料金</translation>
+<translation id="2122225204180056042">あなたが受け取るのは</translation>
+<translation id="6432284126416751397">変換を確認する</translation>
+<translation id="5137723827757859599">トップサイトにはまだ何もありません。</translation>
+<translation id="3891414008432200754">価格</translation>
+<translation id="3733576242118819803">確認 (<ph name="REMAINING_TIME"/>s)</translation>
+<translation id="1627064138060308910">両替に失敗しました。 もう一度やり直してください。</translation>
+<translation id="1449790603979388000"><ph name="COUNT"/> <ph name="COUNT_TEXT"/></translation>
+<translation id="5916664084637901428">On</translation>
+<translation id="5860033963881614850">Off</translation>
+<translation id="5317780077021120954">保存</translation>
+<translation id="2359808026110333948">続行</translation>
+<translation id="7658239707568436148">キャンセル</translation>
+<translation id="8193724030871339658">チェーン上の他のデバイス</translation>
+<translation id="4690880825349994619">既存の同期済みデバイスで、設定を開き、Sync (同期の設定)に移動します。デバイスを追加を選択し、画面に表示されるQRコードをスキャンします。</translation>
+<translation id="3394474617110693560">カテゴリー</translation>
+<translation id="2004365171440701679">このデバイスを削除します</translation>
+<translation id="6450924769151530465">別のデバイスを追加します</translation>
+<translation id="6270614677029463366">すでに同期しているデバイスで、Braveの設定画面を開き、同期の設定を選択してください。「デバイスを追加」を選択し、「コードを表示」を選択してください。</translation>
+<translation id="7655723274266132226">広告を見ることによって報酬を獲得できるようになりました。</translation>
+<translation id="1605521356929094020">Brave広告をオンにする</translation>
+<translation id="1873603368604736484">Rewardsを有効にすると、 <ph name="TERMS_OF_SERVICE"/>.に同意したとみなされます。</translation>
+<translation id="7894626572714595717">この画像を表示するにはトークンを獲得してください。分け前を獲得するにはBrave Adsをオンにしてください。</translation>
+<translation id="6165508094623778733">詳細</translation>
 </translationbundle>

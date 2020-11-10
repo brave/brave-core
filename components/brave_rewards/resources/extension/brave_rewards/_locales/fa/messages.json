@@ -603,6 +603,10 @@
     "message": "لغو",
     "description": "Text for cancel button"
   },
+  "changeAmount":  {
+    "message": "تغییر مقدار",
+    "description": "Button text for changing monthly contribution amount"
+  },
   "login":  {
     "message": "ورود به سیستم",
     "description": "Text for login button"
@@ -612,7 +616,7 @@
     "description": "Text for login button"
   },
   "loginMessageText":  {
-    "message": "برای ایجاد یک حساب Uphold، به حداقل 25 BAT نیاز دارید. لطفاً بعداً دوباره امتحان کنید. <br/>اگر یک حساب تأییدشده Uphold دارید، ورود به سیستم را ادامه دهید.",
+    "message": "برای ایجاد حساب Uphold، به حداقل 25 BAT نیاز دارید. لطفاً بعداً دوباره امتحان کنید. \nدر صورتی که ازقبل یک حساب تأییدشده Uphold دارید، ورود به سیستم را ادامه دهید.",
     "description": "Text for login button"
   },
   "walletConnected":  {
@@ -622,5 +626,9 @@
   "walletPending":  {
     "message": "معوق",
     "description": "Status button that tells user that he is currently pending"
+  },
+  "walletVerificationNote3":  {
+    "message": "توجه: تراکنش‌های شما به‌محض این‌که اجازه دهید برای Uphold قابل‌مشاهده خواهد بود؛ برای مثال، آن‌ها قادر به دیدن گیرنده و مقدار انعام‌های شما خواهند بود.",
+    "description": "Displayed in login modal for uphold"
   }
 }

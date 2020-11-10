@@ -603,6 +603,10 @@
     "message": "रद्द करना",
     "description": "Text for cancel button"
   },
+  "changeAmount":  {
+    "message": "राशि बदलें",
+    "description": "Button text for changing monthly contribution amount"
+  },
   "login":  {
     "message": "प्रवेश करें",
     "description": "Text for login button"
@@ -612,7 +616,7 @@
     "description": "Text for login button"
   },
   "loginMessageText":  {
-    "message": "Uphold खाता बनाने के लिए आपके पास न्यूनतम 25 BAT होना आवश्यक है। बाद में फिर कोशिश करें। <br/> यदि आपके पास पहले से सत्यापित Uphold खाता है, तो लॉग इन करना जारी रखें",
+    "message": "अपफोल्ड अकाउंट बनाने के लिए आपको न्यूनतम 25 BAT की ज़रूरत है। बाद में दोबारा कोशिश करें।\nयदि आपके पास वेरीफ़ाई अपफोल्ड अकाउंट पहले से है तो लॉग इन करना जारी रखें।",
     "description": "Text for login button"
   },
   "walletConnected":  {
@@ -622,5 +626,9 @@
   "walletPending":  {
     "message": "लंबित है",
     "description": "Status button that tells user that he is currently pending"
+  },
+  "walletVerificationNote3":  {
+    "message": "ध्यान दें: आपके द्वारा एकबार अधिकृत किए जाने पर अपहोल्ड के लिए आपका लेनदेन दिखाई देगा; उदाहरण के लिए, वे आपकी टिप्स की रसीद और राशि को देखने में सक्षम होंगे।",
+    "description": "Displayed in login modal for uphold"
   }
 }

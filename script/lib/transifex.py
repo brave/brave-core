@@ -26,7 +26,7 @@ transifex_handled_slugs = [
 ]
 # List of HTML tags that we allowed to be present inside the translated text.
 allowed_html_tags = [
-  'a', 'abbr', 'b', 'br', 'code', 'h4', 'learnmore', 'li', 'ol', 'p', 'span', 'strong', 'ul'
+  'a', 'abbr', 'b', 'b1', 'b2', 'br', 'code', 'h4', 'learnmore', 'li', 'ol', 'p', 'span', 'strong', 'ul'
 ]
 
 

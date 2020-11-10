@@ -12,6 +12,11 @@
 <translation id="6754976710186182237">Métodos de impressão digital</translation>
 <translation id="2313532038420432247">Atualizações HTTPS</translation>
 <translation id="7461425058443653485">Scripts bloqueados</translation>
+<translation id="6052725679982758334">Bloqueio de Redes Sociais</translation>
+<translation id="7498695072878479744">Permitir botões de login do Google em sites de terceiros</translation>
+<translation id="863171915776379000">Permitir logins e posts incorporados do Facebook</translation>
+<translation id="5165042248369837294">Permitir tweets incorporados do Twitter</translation>
+<translation id="958971637207126733">Permitir publicações integradas LinkedIn</translation>
 <translation id="3834924998750356151">Monitor de bloqueios</translation>
 <translation id="1713450908129883784">Controlos individuais</translation>
 <translation id="6302422639282249274">Gerir Recompensas Brave</translation>
@@ -47,8 +52,6 @@
 <translation id="2804710924397009224">Ocultar Ícone de Recompensas Brave</translation>
 <translation id="7358991116457217836">Oculta o ícone de «Recompenas Brave» quando esta opção não estiver ativada</translation>
 <translation id="8495235435594442882">Ativar a barra de ferramentas em baixo</translation>
-<translation id="5916664084637901428">Ativada</translation>
-<translation id="5860033963881614850">Desativada</translation>
 <translation id="6587448235155023666">As suas modificações terão efeito da próxima vez que reiniciar o Brave</translation>
 <translation id="8701563696941209024">Reiniciar agora</translation>
 <translation id="834487290629916192">Depois</translation>
@@ -57,7 +60,6 @@
 <translation id="986879628471635371">Integração de resolução de problemas</translation>
 <translation id="5808759341041733958">Escolher o motor de busca padrão</translation>
 <translation id="1331593888918588693">Posteriormente, pode sempre alterar as suas preferências nas configurações da aplicação.</translation>
-<translation id="5317780077021120954">Guardar</translation>
 <translation id="7053983685419859001">Bloquear</translation>
 <translation id="5806601733251372221">Proteções Brave</translation>
 <translation id="2880356288762235261">anúncios que invadem a privacidade e rastreadores para que possa navegar sem ser seguido na Internet.</translation>
@@ -76,8 +78,6 @@
 <translation id="2453860139492968684">Concluir</translation>
 <translation id="7983303953939627894">Ganhar &amp; Dar</translation>
 <translation id="48520986898237073">Continuar para a wallet (carteira)</translation>
-<translation id="2359808026110333948">Continuar</translation>
-<translation id="7658239707568436148">Cancelar</translation>
 <translation id="3570367516044491911">Definir como navegador predefinido</translation>
 <translation id="7493053924837150477">Selecione Brave Browser na lista e toque em "Sempre"</translation>
 <translation id="3546439402724649282">Brave já está definido como o seu navegador predefinido.</translation>
@@ -183,7 +183,7 @@ até que a verificação ocorra ou tenham decorrido 90 dias.</translation>
 <translation id="8038539967102225446">Chegaram os aAnúncios Brave!</translation>
 <translation id="8985635554450124959">Não foi possível configurar a sincronização</translation>
 <translation id="222883304157347087">(este dispositivo)</translation>
-<translation id="8193724030871339658">OUTROS DISPOSITIVOS NA CADEIA</translation>
+<translation id="4157741509680155021">DISPOSITIVOS NA CADEIA DE SINCRONIZAÇÃO</translation>
 <translation id="279635009973773843">A CARREGAR DISPOSITIVOS...</translation>
 <translation id="6394333525003604181">A SAIR DA CORRENTE DE SINCRONIZAÇÃO…</translation>
 <translation id="2569646144216067185">Contagem de palavras: <ph name="WORD_COUNT"/></translation>
@@ -193,11 +193,10 @@ até que a verificação ocorra ou tenham decorrido 90 dias.</translation>
 <translation id="3149880132460839085">Sincronização do Brave</translation>
 <translation id="3680755684186855422">A opção de «Sincronização» do Brave permite-lhe  sincronizar os dados dos marcadores de forma privada entre os «Navegadores Brave» em vários dispositivos.</translation>
 <translation id="3735228155296883311">Digitalize simplesmente o código da sua cadeia de sincronização que criou noutro dispositivo. Ou inicie uma nova cadeia de sincronização.</translation>
-<translation id="4690880825349994619">Utilizando um dispositivo sincronizado existente, abra as Definições Brave e navegue para Definições &gt; Sincronizar. Escolha "Adicionar Dispositivo" e digitalize o Código QR exibido no ecrã.</translation>
+<translation id="2614069607859982576">Usando um dispositivo sincronizado existente, abra as Definições do Brave e selecione Sincronização &gt; de Definições. Clique em "Adicionar Novo Dispositivo" e use o QR Code exibido no ecrã.</translation>
 <translation id="5241263629636958324">Copiado para a Área de transferência</translation>
 <translation id="5817918615728894473">Sincronizar</translation>
-<translation id="3394474617110693560">Categorias</translation>
-<translation id="2004365171440701679">Remover este dispositivo</translation>
+<translation id="728334460283296316">Remover dispositivo</translation>
 <translation id="1178128181015923849">Tem a certeza de que deseja eliminar o dispositivo '<ph name="DEVICE_NAME"/>'?</translation>
 <translation id="7745082336226088126">Digitalizar ou introduzir o código de sincronização</translation>
 <translation id="1602067095281698985">Criar uma nova cadeia de sincronização</translation>
@@ -216,9 +215,9 @@ até que a verificação ocorra ou tenham decorrido 90 dias.</translation>
 <translation id="8730621377337864115">Concluído</translation>
 <translation id="6174119914106813304">SINCRONIZAR NESTE DISPOSITIVO</translation>
 <translation id="6776430845975754238">Alterar as definições só irá afetar dados que este dispositivo partilha com outros.</translation>
-<translation id="6450924769151530465">Adicionar outro dispositivo</translation>
+<translation id="1061533051865606843">Adicionar Novo Dispositivo</translation>
 <translation id="7539985410310934287">Introduzir palavras de código</translation>
-<translation id="6270614677029463366">Utilizando um dispositivo sincronizado existente, abra as Definições Brave e navegue para Definições &gt; Sincronizar. Escolha "Adicionar Dispositivo" depois "Exibir palavras de código em vez disso".</translation>
+<translation id="2886391679017857869">Usando um dispositivo sincronizado existente, abra as Definições do Brave e selecione Sincronização &gt; de Definições. Clique em "Adicionar Novo Dispositivo" e, de seguida, em "Exibir texto de código".</translation>
 <translation id="8131740175452115882">Confirmar</translation>
 <translation id="4973653569293835178">Vou utilizar a minha câmara...</translation>
 <translation id="326454632686131209">Sincronizar dispositivo</translation>
@@ -243,7 +242,6 @@ até que a verificação ocorra ou tenham decorrido 90 dias.</translation>
 <translation id="844921671123185605">As suas gorjetas mensais foram processadas!</translation>
 <translation id="3124090095880236567">Ative os anúncios</translation>
 <translation id="2975780980638932742">Chegou o Brave Ads!</translation>
-<translation id="7655723274266132226">Agora já pode ganhar por ver anúncios.</translation>
 <translation id="7541582550122501404">Contribuição pendente</translation>
 <translation id="8520059774736886747">Criador <ph name="PUBLISHER_NAME"/> recentemente verificado</translation>
 <translation id="7924320838799747606">O seu saldo</translation>
@@ -261,8 +259,8 @@ até que a verificação ocorra ou tenham decorrido 90 dias.</translation>
 <translation id="8522669544471808198">Mostrar imagens de fundo</translation>
 <translation id="3870475560794762985">Mostrar imagens patrocinadas</translation>
 <translation id="8297488609722895137">Foto de <ph name="PHOTO_BY"/></translation>
-<translation id="1605521356929094020">Ativar o Brave Ads</translation>
-<translation id="1873603368604736484">Ao ativas as Recompensas, concorda com os <ph name="TERMS_OF_SERVICE"/>.</translation>
+<translation id="7952665812649667034">Estou pronto para Ganhar &amp; Dar</translation>
+<translation id="5878330112719288629">Ao clicar em Ganhar &amp; Darm concorda com os <ph name="TERMS_OF_SERVICE"/>.</translation>
 <translation id="3794079107601824147">Seja pago para ver esta imagem de fundo.</translation>
 <translation id="7136586167396205364">Ocultar imagens patrocinadas</translation>
 <translation id="2927095357213611519">Pode apoiar os criadores digitais com tokens.\nGanhe tokens a visualizar anúncios que respeitam a privacidade.</translation>
@@ -309,7 +307,7 @@ até que a verificação ocorra ou tenham decorrido 90 dias.</translation>
 <translation id="8851456134224363571">Excelente! Importar-se-ia de classificar-nos na Play Store?</translation>
 <translation id="8668962040900592974">Diga-nos como podemos melhorar</translation>
 <translation id="4406937629441301400">Ganhe pela visualização desta imagem e pague-a aos seus criadores. <ph name="LEARN_MORE"/></translation>
-<translation id="7894626572714595717">Ganhe tokens pela visualização desta imagem. Ative os Anúncios Brave para reivindicar a sua parte.</translation>
+<translation id="8693132237667961044">Ganhe tokens pela visualização desta imagem. Ativar Ganhar &amp; Dar para reinvidicar a sua parte.</translation>
 <translation id="6632345639591919543">Ganha tokens pela visualização desta imagem.\n<ph name="LEARN_MORE"/></translation>
 <translation id="1465733111003593696">Ganha tokens pela visualização desta imagem.</translation>
 <translation id="7877201489035217175">Saiba mais sobre imagens patrocinadas</translation>
@@ -357,7 +355,6 @@ até que a verificação ocorra ou tenham decorrido 90 dias.</translation>
 <translation id="8903462729414407077">Obtenha atualizações semanais</translation>
 <translation id="8029219208182772618">Saiba quais os sites por si visitados que menos respeitam a privacidade.\n\nEstas estatísticas de privacidade são visíveis apenas por si.  Nenhuns dados pessoais ou histórico de navegação permanecem no browser Brave do seu dispositivo.</translation>
 <translation id="6170159749517116894">Ativar relatórios de privacidade</translation>
-<translation id="6165508094623778733">Saiba mais</translation>
 <translation id="5966707198760109579">Semana</translation>
 <translation id="8987927404178983737">Mês</translation>
 <translation id="4302754476737420523">3 Meses</translation>
@@ -376,12 +373,12 @@ até que a verificação ocorra ou tenham decorrido 90 dias.</translation>
 <translation id="7427567994475794038">Ative os Relatórios de Privacidade para visualizar quantos rastreadores&amp; anúncios bloqueou nas últimas 3 horas.</translation>
 <translation id="2053891538879944400">Economizou <ph name="DATA"/> <ph name="DATA_TEXT"/> dados com o navegador Brave .</translation>
 <translation id="8640064498452534195">Ative os Relatórios de Privacidade para visualizar quantos dados guardou.</translation>
-<translation id="2252497442547961651">O browser Brave usa, em média, menos 40% de bateria.&#128267;</translation>
+<translation id="2252497442547961651">O browser Brave usa, em média, menos 40% de bateria.🔋</translation>
 <translation id="1945330434665345785">Bloqueou <ph name="COUNT"/> rastreadores &amp; anúncios com o browser Brave na última semana.</translation>
 <translation id="2883868922264431515">Ganhe tokens pela visualização de anúncios que respeitam a sua privacidade e apoie os seus sites favoritos.</translation>
-<translation id="5678925890616256956">Fantástico! Bloqueou 250 rastreadores &amp; anúncios com o browser Brave.&#128293;</translation>
-<translation id="9199047775708635708">Fantástico! Economizou 10 MB com o browser Brave.&#128267;</translation>
-<translation id="1880168210969863408">Fantástico! Economizou 10 minutos a carregar com o browser Brave.&#128168;&#128168;</translation>
+<translation id="5678925890616256956">Fantástico! Bloqueou 250 rastreadores &amp; anúncios com o browser Brave.🔥</translation>
+<translation id="9199047775708635708">Fantástico! Economizou 10 MB com o browser Brave.🔋</translation>
+<translation id="1880168210969863408">Fantástico! Economizou 10 minutos a carregar com o browser Brave.💨💨</translation>
 <translation id="7408493389591475748">Comece a navegar para visualizar os relatórios de privacidade</translation>
 <translation id="9080777565335515917">Defina Brave como o seu browser padrão para uma navegação privada e segura.</translation>
 <translation id="7801488941710395275">Permita à brave apresentar-lhe as suas estatísticas de privacidade</translation>
@@ -391,4 +388,62 @@ até que a verificação ocorra ou tenham decorrido 90 dias.</translation>
 <translation id="2718046830255553131">Os dados dos relatórios de privacidade foram apagados.</translation>
 <translation id="7559243474426790340">Atualizar Estado</translation>
 <translation id="8376263745431603066">Ativar "modo noturno" (experimental)</translation>
+<translation id="1383876407941801731">Pesquisar</translation>
+<translation id="1972589975368876259">Editar Alinhamento</translation>
+<translation id="2490330380242414851">Remover Widget</translation>
+<translation id="8446884382197647889">Obter mais informações</translation>
+<translation id="7384441892795736634">Atualizar Informações</translation>
+<translation id="4804818685124855865">Desligar</translation>
+<translation id="4789438578712143420">≈ $<ph name="USD_BALANCE"/></translation>
+<translation id="1080611582879541635"><ph name="COIN_ADDRESS"/> Endereço do Depósito</translation>
+<translation id="4836242416604533644"><ph name="COIN_MEMO"/> Registo de Depósitos</translation>
+<translation id="5110244215256675209">Comprar Crypto</translation>
+<translation id="2271556362602437160">.com</translation>
+<translation id="3727077517986954867">.us</translation>
+<translation id="3414885529641505869">Comprar <ph name="COIN_NAME"/></translation>
+<translation id="558614325644656740">Disponível <ph name="COIN_BALANCE"/> <ph name="COIN_NAME"/></translation>
+<translation id="6755546361496900700">Pré-visualizar Conversão</translation>
+<translation id="2882813124794301799">Alinhamento de Widgets</translation>
+<translation id="13296465911709339">O texto foi copiado para a área de transferência.</translation>
+<translation id="7144878232160441200">Tentar Novamente</translation>
+<translation id="2977461003134694205">Estatísticas de Privacidade</translation>
+<translation id="4643117005422448078">Principais Sítios</translation>
+<translation id="6966052266404721769">Binance</translation>
+<translation id="1392658226187691544">Estimativas de Rastreadores &amp; Anúncios Bloqueados, poupança de Largura de Banda e Tempo economizado.</translation>
+<translation id="74417429503469271">Abrir os sites principais que visita frequentemente.</translation>
+<translation id="2956070106555335453">Resumo</translation>
+<translation id="1366855498335432549">Depositar</translation>
+<translation id="1301340234286078471">Converter</translation>
+<translation id="223536150967420869">Comprar</translation>
+<translation id="1714829281959608206">Ative a ligação Binance para ver o saldo da conta Binance e negociar ''crypto''.</translation>
+<translation id="4584930231524505442">Desejo converter...</translation>
+<translation id="5749014321384313843">Desejo gastar...</translation>
+<translation id="8688672835843460752">Disponível</translation>
+<translation id="2480674848181564169">Sem saldo suficiente para conversão</translation>
+<translation id="2215334405220411393">O valor mínimo a ser convertido é : <ph name="COIN_BALANCE"/> <ph name="COIN_NAME"/></translation>
+<translation id="6702658079816271889">Impossível conectar</translation>
+<translation id="7742417737698031726">Taxa</translation>
+<translation id="2122225204180056042">Receberá</translation>
+<translation id="6432284126416751397">Confirmar Conversão</translation>
+<translation id="5137723827757859599">Ainda não tem nada nos sites principais.</translation>
+<translation id="3891414008432200754">Preço</translation>
+<translation id="3733576242118819803">Confirmar (<ph name="REMAINING_TIME"/>s)</translation>
+<translation id="1627064138060308910">Falha na conversão. Tente de novo, por favor.</translation>
+<translation id="1449790603979388000"><ph name="COUNT"/> <ph name="COUNT_TEXT"/></translation>
+<translation id="5916664084637901428">Ativada</translation>
+<translation id="5860033963881614850">Desativada</translation>
+<translation id="5317780077021120954">Guardar</translation>
+<translation id="2359808026110333948">Continuar</translation>
+<translation id="7658239707568436148">Cancelar</translation>
+<translation id="8193724030871339658">OUTROS DISPOSITIVOS NA CADEIA</translation>
+<translation id="4690880825349994619">Utilizando um dispositivo sincronizado existente, abra as Definições Brave e navegue para Definições &gt; Sincronizar. Escolha "Adicionar Dispositivo" e digitalize o Código QR exibido no ecrã.</translation>
+<translation id="3394474617110693560">Categorias</translation>
+<translation id="2004365171440701679">Remover este dispositivo</translation>
+<translation id="6450924769151530465">Adicionar outro dispositivo</translation>
+<translation id="6270614677029463366">Utilizando um dispositivo sincronizado existente, abra as Definições Brave e navegue para Definições &gt; Sincronizar. Escolha "Adicionar Dispositivo" depois "Exibir palavras de código em vez disso".</translation>
+<translation id="7655723274266132226">Agora já pode ganhar por ver anúncios.</translation>
+<translation id="1605521356929094020">Ativar o Brave Ads</translation>
+<translation id="1873603368604736484">Ao ativas as Recompensas, concorda com os <ph name="TERMS_OF_SERVICE"/>.</translation>
+<translation id="7894626572714595717">Ganhe tokens pela visualização desta imagem. Ative os Anúncios Brave para reivindicar a sua parte.</translation>
+<translation id="6165508094623778733">Saiba mais</translation>
 </translationbundle>

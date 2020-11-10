@@ -6518,6 +6518,8 @@
 <translation id="996250603853062861">დაცული კავშირის დამყარება…</translation>
 <translation id="998747458861718449">შ&amp;ემოწმება</translation>
 <translation id="38046578254905003">იპოვეთ გაფართოებები და თემები <ph name="BEGIN_LINK"/>Brave Web Store<ph name="END_LINK"/>-ში</translation>
+<translation id="6744651634043798597">{COUNT,plural, =0{ყველას &amp;ინკოგნიტო ფანჯარაში გახსნა}=1{&amp;ინკოგნიტო ფანჯარაში გახსნა}other{#-ვეს &amp;ინკოგნიტო ფანჯარაში გახსნა}}</translation>
+<translation id="2633634757060186848">{COUNT,plural, =0{ყველას &amp;ინკოგნიტო ფანჯარაში გახსნა}=1{&amp;ინკოგნიტო ფანჯარაში გახსნა}other{#-ვეს &amp;ინკოგნიტო ფანჯარაში გახსნა}}</translation>
 <translation id="658539216370629794">ბმულის გახსნა ინკო&amp;გნიტო ფანჯარაში</translation>
 <translation id="1432267168815937878">ბმულის გახსნა ინკო&amp;გნიტო ფანჯარაში</translation>
 <translation id="6516243500644829484">ახალი &amp;ინკოგნიტო ფანჯარა</translation>
@@ -6548,10 +6550,8 @@
 <translation id="3098826269712097986">ინკოგნიტო რეჟიმიდან გასვლის შემდეგ სისტემაში შესვლის მონაცემები შეინახება Brave-ში. ეს საშუალებას მოგცემთ, ამ ვებსაიტზე მოგვიანებით გამოიყენოთ Touch ID.</translation>
 <translation id="5186185447130319458">ინკოგნიტო</translation>
 <translation id="2579188629646253712">ინკოგნიტო რეჟიმიდან გასვლა</translation>
-<translation id="6744651634043798597">{COUNT,plural, =0{ყველას &amp;ინკოგნიტო ფანჯარაში გახსნა}=1{&amp;ინკოგნიტო ფანჯარაში გახსნა}other{#-ვეს &amp;ინკოგნიტო ფანჯარაში გახსნა}}</translation>
 <translation id="2431625704210501303">გახსნა &amp;ინკოგნიტო ფანჯარაში</translation>
 <translation id="4620367155626060530">სანიშნეების ზოლის ჩ&amp;ვენება</translation>
-<translation id="2633634757060186848">{COUNT,plural, =0{ყველას &amp;ინკოგნიტო ფანჯარაში გახსნა}=1{&amp;ინკოგნიტო ფანჯარაში გახსნა}other{#-ვეს &amp;ინკოგნიტო ფანჯარაში გახსნა}}</translation>
 <translation id="1985165269306590797">&amp;ინკოგნიტო ფანჯარაში გახსნა</translation>
 <translation id="4680518314108745448">სანიშნეების ზოლის ჩ&amp;ვენება</translation>
 <translation id="642436385689435488">ყველას გახსნა ინკოგნიტო ფანჯარაში</translation>

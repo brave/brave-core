@@ -6517,6 +6517,14 @@
 <translation id="995782501881226248">YouTube</translation>
 <translation id="996250603853062861">در حال برقراری اتصال ایمن...</translation>
 <translation id="998747458861718449">بازرسی</translation>
+<translation id="6744651634043798597">{COUNT, plural,
+=0 {باز کردن همه نشانی‌ها در پنجره &amp;خصوصی}
+=1 {باز کردن در پنجره &amp;خصوصی}
+other {باز کردن همه نشانی‌ها (#) در پنجره &amp;خصوصی}}</translation>
+<translation id="2633634757060186848">{COUNT, plural,
+=0 {باز کردن همه نشانی‌ها در پنجره &amp;خصوصی}
+=1 {باز کردن در پنجره &amp;خصوصی}
+other {باز کردن همه نشانی‌ها (#) در پنجره &amp;خصوصی}}</translation>
 <translation id="658539216370629794">باز کردن پیوند در پنجره &amp;خصوصی جدید</translation>
 <translation id="1432267168815937878">باز کردن پیوند در پنجره &amp;خصوصی جدید</translation>
 <translation id="6516243500644829484">پنجره &amp;خصوصی جدید</translation>
@@ -6530,6 +6538,7 @@
 <translation id="9048137919253433011">برگه خصوصی: <ph name="TAB_NAME"/></translation>
 <translation id="1799432502220762862">قاب فرعی خصوصی: <ph name="SUBFRAME_SITE"/></translation>
 <translation id="3193187622878830588">درگاه ناشناس: <ph name="SUBFRAME_SITE"/></translation>
+<translation id="5097649414558628673">ابزار: <ph name="PRINT_NAME"/></translation>
 <translation id="8808478386290700967">فروشگاه وب</translation>
 <translation id="8261378640211443080">این برنامه‌افزودنی در <ph name="IDS_EXTENSION_WEB_STORE_TITLE"/> فهرست نشده است و ممکن است بدون اطلاع شما اضافه شده باشد.</translation>
 <translation id="6827869674836193263"><ph name="WINDOW_TITLE"/> (خصوصی)</translation>
@@ -6547,19 +6556,21 @@
 <translation id="3098826269712097986">پس از خروج از حالت «خصوصی»، داده‌های ورود به سیستم در Brave ذخیره می‌شود. این قابلیت به شما امکان می‌دهد بعداً دوباره از «شناسه لمسی» در این وب‌سایت استفاده کنید.</translation>
 <translation id="5186185447130319458">خصوصی</translation>
 <translation id="2579188629646253712">خروج از حالت خصوصی</translation>
-<translation id="6744651634043798597">{COUNT, plural,
-=0 {باز کردن همه نشانی‌ها در پنجره &amp;خصوصی}
+<translation id="1001131747196960052">بستن خصوصی</translation>
+<translation id="7475335772460644497">{COUNT, plural,
+=0 {باز کردن کل نشانی‌ها در پنجره &amp;خصوصی}
 =1 {باز کردن در پنجره &amp;خصوصی}
-other {باز کردن همه نشانی‌ها (#) در پنجره &amp;خصوصی}}</translation>
+other {باز کردن کل ({COUNT}) نشانی در پنجره &amp;خصوصی}}</translation>
 <translation id="2431625704210501303">باز کردن در پنجره &amp;خصوصی</translation>
 <translation id="4620367155626060530">&amp;نمایش نوار نشانک‌ها</translation>
-<translation id="2633634757060186848">{COUNT, plural,
-=0 {باز کردن همه نشانی‌ها در پنجره &amp;خصوصی}
+<translation id="1448315815373449655">{COUNT, plural,
+=0 {باز کردن کل نشانی‌ها در پنجره &amp;خصوصی}
 =1 {باز کردن در پنجره &amp;خصوصی}
-other {باز کردن همه نشانی‌ها (#) در پنجره &amp;خصوصی}}</translation>
+other {باز کردن کل ({COUNT}) نشانی در پنجره &amp;خصوصی}}</translation>
 <translation id="1985165269306590797">باز کردن در پنجره &amp;خصوصی</translation>
 <translation id="4680518314108745448">&amp;نمایش نوار نشانک‌ها</translation>
 <translation id="642436385689435488">باز کردن همه نشانی‌ها در پنجره خصوصی</translation>
+<translation id="5074021236879527611">باز کردن همه  (<ph name="URL_COUNT"/>) در پنجره خصوصی</translation>
 <translation id="5463021359602611602">باز کردن در پنجره خصوصی</translation>
 <translation id="1850357845349976573">{0, plural,
 =1 {خصوصی}
@@ -6609,6 +6620,8 @@ other {# پنجره خصوصی باز}
 <translation id="4854477725773269949">در حالت خصوصی مجاز باشد</translation>
 <translation id="6436164536244065364">نمایش در فروشگاه وب</translation>
 <translation id="38046578254905003">افزونه‌ها و طرح‌های زمینه را در <ph name="BEGIN_LINK"/>فروشگاه وب<ph name="END_LINK"/> پیدا کنید</translation>
+<translation id="2402482691429508168">نمایه‌هایی که انتخاب شده‌اند تا هنگامی که قفل صفحه باز است برای شما قابل مشاهد باشند</translation>
+<translation id="3910100573440336938">هم‌رسانی پرونده‌ها با نمایه‌های اطراف شما</translation>
 <translation id="6336451774241870485">برگه خصوصی جدید</translation>
 <translation id="6610147964972079463">بستن برگه‌های خصوصی</translation>
 <translation id="4933782374919065856">سؤال دارید؟ با فردی که بر نمایه‌تان نظارت دارد تماس بگیرید.</translation>

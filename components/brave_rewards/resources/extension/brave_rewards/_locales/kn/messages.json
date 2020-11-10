@@ -603,6 +603,10 @@
     "message": "ರದ್ದುಗೊಳಿಸಿ",
     "description": "Text for cancel button"
   },
+  "changeAmount":  {
+    "message": "ಮೊತ್ತವನ್ನು ಬದಲಾಯಿಸಿ",
+    "description": "Button text for changing monthly contribution amount"
+  },
   "login":  {
     "message": "'ಲಾಗಿನ್",
     "description": "Text for login button"
@@ -612,7 +616,7 @@
     "description": "Text for login button"
   },
   "loginMessageText":  {
-    "message": "ಅಪ್‌ಹೋಲ್ಡ್ ಖಾತೆಯನ್ನು ರಚಿಸಲು ನೀವು ಕನಿಷ್ಠ 25 BAT ಹೊಂದಿರಬೇಕಾಗುತ್ತದೆ. ದಯವಿಟ್ಟು ನಂತರ ಮತ್ತೊಮ್ಮೆ ಪ್ರಯತ್ನಿಸಿ. <br/> ನೀವು ಈಗಾಗಲೇ ಪರಿಶೀಲಿಸಲ್ಪಟ್ಟ ಅಪ್‌ಹೋಲ್ಡ್ ಖಾತೆಯನ್ನು ಹೊಂದಿದ್ದರೆ, ಲಾಗಿನ್ ಮಾಡಲು ಮುಂದುವರಿಯಿರಿ.",
+    "message": "Uphold ಖಾತೆಯನ್ನು ರಚಿಸಲು ನೀವು ಕನಿಷ್ಠ 25 BAT ಹೊಂದಿರಬೇಕಾಗುತ್ತದೆ. ದಯವಿಟ್ಟು ನಂತರ ಮತ್ತೊಮ್ಮೆ ಪ್ರಯತ್ನಿಸಿ. \n ನೀವು ಈಗಾಗಲೇ ಪರಿಶೀಲಿಸಲ್ಪಟ್ಟ Uphold ಖಾತೆಯನ್ನು ಹೊಂದಿದ್ದರೆ, ಲಾಗಿನ್ ಮಾಡಲು ಮುಂದುವರಿಯಿರಿ.",
     "description": "Text for login button"
   },
   "walletConnected":  {
@@ -622,5 +626,9 @@
   "walletPending":  {
     "message": "ಬಾಕಿ ಉಳಿದಿರುವುದು",
     "description": "Status button that tells user that he is currently pending"
+  },
+  "walletVerificationNote3":  {
+    "message": "ಗಮನಿಸಿ: ಒಮ್ಮೆ ನೀವು ದೃಢೀಕರಿಸಿದಾಗ ನಿಮ್ಮ ವಹಿವಾಟು Uphold ಗೆ ಲಭ್ಯವಿರುತ್ತದೆ; ಉದಾಹರಣೆಗೆ, ಸ್ವೀಕೃತದಾರರನ್ನು ಮತ್ತು ನಿಮ್ಮ ಸಲಹೆಗಳ ಮೊತ್ತವನ್ನು ನೋಡಲು ಅವುಗಳಿಗೆ ಸಾಧ್ಯವಾಗುತ್ತದೆ.",
+    "description": "Displayed in login modal for uphold"
   }
 }

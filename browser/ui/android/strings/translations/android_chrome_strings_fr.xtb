@@ -1026,6 +1026,7 @@ Par exemple, certains sites Web peuvent répondre à cette demande en diffusant 
 <translation id="996149300115483134">Le menu de la carte de flux est fermé</translation>
 <translation id="4540437243849625078">Ce site est sur le point de partager des informations avec une application en dehors du mode privé.</translation>
 <translation id="1227836882233136433">Quitter le mode privé ?</translation>
+<translation id="21023559487771014">Passer en mode privé</translation>
 <translation id="5186185447130319458">Privé</translation>
 <translation id="9063160602596686558">Envoie automatiquement des statistiques d'utilisation et des rapports d'erreur à Brave Software</translation>
 <translation id="1438581767753657407">Lorsque le mode Lite est activé, Brave utilise des serveurs Brave pour accélérer le chargement des pages. Le mode Lite réécrit les pages très lentes pour ne charger que le contenu essentiel. Le mode Lite ne s'applique pas aux onglets privés.</translation>
@@ -1035,7 +1036,11 @@ Par exemple, certains sites Web peuvent répondre à cette demande en diffusant 
 <translation id="3110967157686007724">Onglet privé</translation>
 <translation id="4526803704855831732">Onglets privés</translation>
 <translation id="7465104139234185284">Fermer tous les onglets privés</translation>
-<translation id="21023559487771014">Passer en mode privé</translation>
+<translation id="1455125811784733159">Ouvrir un onglet privé</translation>
+<translation id="807110510029471880">Utilisez Privé pour vous connecter</translation>
+<translation id="7987056960390558517">En mode Privé, vos activités <ph name="BEGIN_BOLD1"/>sont susceptibles d'être encore visibles <ph name="END_BOLD1"/>par les sites web que vous consultez, votre employeur ou votre école, et votre fournisseur d'accès à Internet.
+
+Les données de votre session privée ne seront effacées de Brave que lorsque vous <ph name="BEGIN_BOLD2"/>fermerez tous les onglets Privé<ph name="END_BOLD2"/>.</translation>
 <translation id="6336451774241870485">Nouvel onglet privé</translation>
 <translation id="3234355010754616171">Nouvel onglet privé</translation>
 <translation id="6610147964972079463">Fermer les onglets privés</translation>

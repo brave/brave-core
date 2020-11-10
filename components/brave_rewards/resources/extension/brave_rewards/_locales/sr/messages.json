@@ -603,6 +603,10 @@
     "message": "Otkaži",
     "description": "Text for cancel button"
   },
+  "changeAmount":  {
+    "message": "Izmenite iznos",
+    "description": "Button text for changing monthly contribution amount"
+  },
   "login":  {
     "message": "Пријављивање",
     "description": "Text for login button"
@@ -612,7 +616,7 @@
     "description": "Text for login button"
   },
   "loginMessageText":  {
-    "message": "Morate imati najmanje 25 BAT-a da biste kreirali Uphold nalog. Pokušajte ponovo kasnije. <br/> Ako već imate verifikovani Uphold nalog, nastavite sa prijavljivanjem.",
+    "message": "Potrebno je da imate najmanje 25 BAT-a da biste kreirali nalog na Uphold-u. Pokušajte ponovo kasnije. \n Ako već imate verifikovani nalog na Uphold-u, nastavite da biste se prijavili.",
     "description": "Text for login button"
   },
   "walletConnected":  {
@@ -622,5 +626,9 @@
   "walletPending":  {
     "message": "U toku",
     "description": "Status button that tells user that he is currently pending"
+  },
+  "walletVerificationNote3":  {
+    "message": "Napomena: Vaše transakcije će biti vidljive Uphold-u čim date ovlašćenje; na primer, biće vidljiv primalac i iznos Vaše napojnice.",
+    "description": "Displayed in login modal for uphold"
   }
 }

@@ -603,6 +603,10 @@
     "message": "Anulează",
     "description": "Text for cancel button"
   },
+  "changeAmount":  {
+    "message": "Schimbă suma",
+    "description": "Button text for changing monthly contribution amount"
+  },
   "login":  {
     "message": "Conectați-vă",
     "description": "Text for login button"
@@ -612,7 +616,7 @@
     "description": "Text for login button"
   },
   "loginMessageText":  {
-    "message": "Trebuie să aveți cel puțin 25 BAT pentru a crea un cont Uphold. Încercați din nou mai târziu. <br/> Dacă aveți deja un cont Uphold confirmat, continuați conectarea.",
+    "message": "Trebuie să aveți minimum 25BAT pentru a crea un cont Uphold. Vă rugăm să încercați din nou mai târziu.\nDacă aveți deja un cont Uphold verificat, continuați cu conectarea.",
     "description": "Text for login button"
   },
   "walletConnected":  {
@@ -622,5 +626,9 @@
   "walletPending":  {
     "message": "În așteptare",
     "description": "Status button that tells user that he is currently pending"
+  },
+  "walletVerificationNote3":  {
+    "message": "Notă: Tranzacțiile dumneavoastră vor fi vizibile Uphold după autorizare; de exemplu, aceștia vor putea să vadă destinatarul și sumele plătite.",
+    "description": "Displayed in login modal for uphold"
   }
 }

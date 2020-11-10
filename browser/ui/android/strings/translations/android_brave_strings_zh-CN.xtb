@@ -2,16 +2,21 @@
 <!DOCTYPE translationbundle>
 <translationbundle lang="zh-CN">
 <translation id="7307834434086582547">启用/关闭 Brave 屏蔽</translation>
-<translation id="6303294677342628402">屏蔽</translation>
+<translation id="6303294677342628402">护罩</translation>
 <translation id="6132506775968708399">拦截第三方 cookies</translation>
 <translation id="7835726359440951858">拦截广告和追踪</translation>
-<translation id="3570081523466826008">升级为 HTTPS 连接</translation>
+<translation id="3570081523466826008">升级连接为 HTTPS</translation>
 <translation id="94154759592465111">拦截脚本</translation>
-<translation id="7458422973722236530">指纹识别保护</translation>
+<translation id="7458422973722236530">指纹保护</translation>
 <translation id="5709627087332022422">拦截跨站点跟踪器</translation>
 <translation id="6754976710186182237">指纹识别方法</translation>
 <translation id="2313532038420432247">HTTPS 升级</translation>
 <translation id="7461425058443653485">脚本已拦截</translation>
+<translation id="6052725679982758334">社交媒体屏蔽</translation>
+<translation id="7498695072878479744">第三方网站上的 Google 登录按钮可用</translation>
+<translation id="863171915776379000">Facebook 登录和嵌入式帖子可用</translation>
+<translation id="5165042248369837294">允许 Twitter 嵌入推文</translation>
+<translation id="958971637207126733">允许 LinkedIn 嵌入帖子</translation>
 <translation id="3834924998750356151">监控拦截内容</translation>
 <translation id="1713450908129883784">个别控制</translation>
 <translation id="6302422639282249274">管理 Brave 奖励</translation>
@@ -19,7 +24,7 @@
 <translation id="1468415711258933398">标准标签页</translation>
 <translation id="3377025655491224618">隐身标签页</translation>
 <translation id="9148058034647219655">退出</translation>
-<translation id="520895744850022668">HTTPS 随处可用</translation>
+<translation id="520895744850022668">HTTPS Everywhere</translation>
 <translation id="8710614491157212477">当可用时，使用 HTTPS 代替 HTTP 访问支持的网站</translation>
 <translation id="8387201461264842096">广告区块</translation>
 <translation id="1934885595886623674">防止广告加载</translation>
@@ -46,8 +51,6 @@
 <translation id="2804710924397009224">隐藏 Brave 奖励图标</translation>
 <translation id="7358991116457217836">未启用 Brave 奖励时隐藏 Brave 图标</translation>
 <translation id="8495235435594442882">启用底部工具栏</translation>
-<translation id="5916664084637901428">启用</translation>
-<translation id="5860033963881614850">关</translation>
 <translation id="6587448235155023666">您所做的更改将在您下次重新启动 Brave 时生效</translation>
 <translation id="8701563696941209024">立即重新启动</translation>
 <translation id="834487290629916192">后来</translation>
@@ -56,7 +59,6 @@
 <translation id="986879628471635371">对启动过程进行故障排除</translation>
 <translation id="5808759341041733958">请选择默认搜索引擎</translation>
 <translation id="1331593888918588693">您以后随时可以在应用设置中更改自己的偏好。</translation>
-<translation id="5317780077021120954">保存</translation>
 <translation id="7053983685419859001">拦截</translation>
 <translation id="5806601733251372221">Brave 屏蔽</translation>
 <translation id="2880356288762235261">侵犯隐私的广告和跟踪器，因此您无需被关注即可浏览。</translation>
@@ -71,8 +73,6 @@
 <translation id="2453860139492968684">完成</translation>
 <translation id="7983303953939627894">赚钱；花钱</translation>
 <translation id="48520986898237073">继续进入钱包</translation>
-<translation id="2359808026110333948">继续</translation>
-<translation id="7658239707568436148">取消</translation>
 <translation id="3570367516044491911">设置为默认浏览器</translation>
 <translation id="7493053924837150477">从列表中选择“Brave 浏览器”并轻击“始终”</translation>
 <translation id="3546439402724649282">Brave 已被设置为您的默认浏览器。</translation>
@@ -170,7 +170,6 @@
 <translation id="8038539967102225446">Brave 的广告在这里！</translation>
 <translation id="8985635554450124959">无法设置同步</translation>
 <translation id="222883304157347087">（此设备）</translation>
-<translation id="8193724030871339658">链上的其他设备</translation>
 <translation id="279635009973773843">加载设备...</translation>
 <translation id="6394333525003604181">脱离同步链...</translation>
 <translation id="2569646144216067185">字数：<ph name="WORD_COUNT"/></translation>
@@ -180,11 +179,9 @@
 <translation id="3149880132460839085">Brave 同步</translation>
 <translation id="3680755684186855422">Brave 同步使您能够在您的各种设备上的 Brave 浏览器之间私密同步书签数据。</translation>
 <translation id="3735228155296883311">只需扫描您在另一台设备上创建的同步链中的代码即可。或开始一个新的同步链。</translation>
-<translation id="4690880825349994619">在使用同步设备时，打开 Brave 设置并转到设备和同步。选择“添加设备”并扫描屏幕上显示的 QR 码。</translation>
 <translation id="5241263629636958324">已复制到剪贴板</translation>
 <translation id="5817918615728894473">配对</translation>
-<translation id="3394474617110693560">类别</translation>
-<translation id="2004365171440701679">移除此设备</translation>
+<translation id="7090325819305486658">资料偏好设定</translation>
 <translation id="1178128181015923849">确定要删除设备 '<ph name="DEVICE_NAME"/>'？</translation>
 <translation id="7745082336226088126">扫描或输入同步码</translation>
 <translation id="1602067095281698985">启动新的同步链</translation>
@@ -203,9 +200,8 @@
 <translation id="8730621377337864115">完成</translation>
 <translation id="6174119914106813304">在此设备上同步</translation>
 <translation id="6776430845975754238">更改设置只会影响此设备与他人共享的数据。</translation>
-<translation id="6450924769151530465">添加其他设备</translation>
+<translation id="1061533051865606843">添加新设备</translation>
 <translation id="7539985410310934287">输入码字</translation>
-<translation id="6270614677029463366">在使用同步设备时，打开 Brave 设置并转到设备和同步。选择“添加设备”，然后选择“改为显示码字”。</translation>
 <translation id="8131740175452115882">确认</translation>
 <translation id="4973653569293835178">我会用我的摄像头...</translation>
 <translation id="326454632686131209">同步设备</translation>
@@ -230,7 +226,6 @@
 <translation id="844921671123185605">您的每月打赏已处理！</translation>
 <translation id="3124090095880236567">开启广告</translation>
 <translation id="2975780980638932742">Brave Ads 来啦！</translation>
-<translation id="7655723274266132226">现在您可以通过看广告来赚钱。</translation>
 <translation id="7541582550122501404">待处理的捐款</translation>
 <translation id="8520059774736886747">创建者 <ph name="PUBLISHER_NAME"/> 最近通过验证</translation>
 <translation id="7924320838799747606">您的余额</translation>
@@ -248,8 +243,8 @@
 <translation id="8522669544471808198">显示背景图片</translation>
 <translation id="3870475560794762985">显示赞助图片</translation>
 <translation id="8297488609722895137">照片提供者：<ph name="PHOTO_BY"/></translation>
-<translation id="1605521356929094020">开启 Brave Ads</translation>
-<translation id="1873603368604736484">启用 Rewards 即表示您同意<ph name="TERMS_OF_SERVICE"/>.</translation>
+<translation id="7952665812649667034">我准备好了赚取和提供</translation>
+<translation id="5878330112719288629">启用 Rewards 即表示您同意<ph name="TERMS_OF_SERVICE"/>。</translation>
 <translation id="3794079107601824147">您查看此背景图片将获得报酬。</translation>
 <translation id="7136586167396205364">隐藏赞助图片</translation>
 <translation id="2927095357213611519">您可以使用代币来支持网站创建者。\n您可以通过观看尊重隐私的广告赚取代币。</translation>
@@ -296,7 +291,7 @@
 <translation id="8851456134224363571">太好了！您是否愿意在游戏商店给我们打分？</translation>
 <translation id="8668962040900592974">让我们知道如何改进</translation>
 <translation id="4406937629441301400">获取观看此图片的代币，并将其支付给创作者。<ph name="LEARN_MORE"/></translation>
-<translation id="7894626572714595717">因查看此图片而赚得了一些令牌。启用“Brave Ads”领取您的份额。</translation>
+<translation id="8693132237667961044">为观看此图片获取代币。打开“赚”和“给”来索取您的份额。</translation>
 <translation id="6632345639591919543">您在为观看这张图片赚取代币。\n<ph name="LEARN_MORE"/></translation>
 <translation id="1465733111003593696">您在为观看这张图片赚取代币。</translation>
 <translation id="7877201489035217175">了解有关赞助图片的更多信息</translation>
@@ -344,7 +339,6 @@
 <translation id="8903462729414407077">获取每周更新</translation>
 <translation id="8029219208182772618">被告知您访问的网站对隐私的侵犯最大。\n\n只有您可以看到这些隐私统计信息。没有任何个人数据或浏览历史记录会离开您设备上的 Brave 浏览器。</translation>
 <translation id="6170159749517116894">打开隐私报告</translation>
-<translation id="6165508094623778733">了解详情</translation>
 <translation id="5966707198760109579">周</translation>
 <translation id="8987927404178983737">月</translation>
 <translation id="4302754476737420523">3 个月</translation>
@@ -363,12 +357,12 @@
 <translation id="7427567994475794038">启用“隐私报告”查看一下在过去 3 小时内有多少跟踪器和广告被屏蔽了。</translation>
 <translation id="2053891538879944400">您用 Brave 浏览器节省了 <ph name="DATA"/> <ph name="DATA_TEXT"/> 的数据。</translation>
 <translation id="8640064498452534195">打开“隐私报告”看看您已节省了多少数据。</translation>
-<translation id="2252497442547961651">Brave 的浏览器平均节省 40% 的电池。&#128267;</translation>
+<translation id="2252497442547961651">Brave 的浏览器平均节省 40% 的电池。🔋</translation>
 <translation id="1945330434665345785">您上周用 Brave  屏蔽了 <ph name="COUNT"/> 个跟踪器和广告。</translation>
 <translation id="2883868922264431515">通过查看尊重隐私的广告来赚取令牌和支持您喜欢的网站。</translation>
-<translation id="5678925890616256956">太好了！您已经用 Brave 浏览器屏蔽了 250 个跟踪器和广告。&#128293;</translation>
-<translation id="9199047775708635708">太好了！您已经用 Brave 浏览器节省了 10MB 。&#128267;</translation>
-<translation id="1880168210969863408">太好了！您已经用 Brave 浏览器节省了 10 分钟的加载时间。&#128168;&#128168;</translation>
+<translation id="5678925890616256956">太好了！您已经用 Brave 浏览器屏蔽了 250 个跟踪器和广告。🔥</translation>
+<translation id="9199047775708635708">太好了！您已经用 Brave 浏览器节省了 10MB 。🔋</translation>
+<translation id="1880168210969863408">太好了！您已经用 Brave 浏览器节省了 10 分钟的加载时间。💨💨</translation>
 <translation id="7408493389591475748">开始浏览以查看隐私报告</translation>
 <translation id="9080777565335515917">将 Brave 设为您的默认浏览器，以进行安全的私人浏览。</translation>
 <translation id="7801488941710395275">允许 brave 显示您的隐私统计数据</translation>
@@ -378,4 +372,62 @@
 <translation id="2718046830255553131">隐私报告数据已清除。</translation>
 <translation id="7559243474426790340">刷新状态</translation>
 <translation id="8376263745431603066">启用“夜间模式”（实验性功能）</translation>
+<translation id="1383876407941801731">搜索</translation>
+<translation id="1972589975368876259">编辑堆栈</translation>
+<translation id="2490330380242414851">移除小部件</translation>
+<translation id="8446884382197647889">详细了解</translation>
+<translation id="7384441892795736634">刷新数据</translation>
+<translation id="4804818685124855865">断开连接</translation>
+<translation id="4789438578712143420">≈ $<ph name="USD_BALANCE"/></translation>
+<translation id="1080611582879541635"><ph name="COIN_ADDRESS"/> 存款地址</translation>
+<translation id="4836242416604533644"><ph name="COIN_MEMO"/> 存款单</translation>
+<translation id="5110244215256675209">购买 Crypto</translation>
+<translation id="2271556362602437160">.com</translation>
+<translation id="3727077517986954867">.us</translation>
+<translation id="3414885529641505869">购买 <ph name="COIN_NAME"/></translation>
+<translation id="558614325644656740">可用 <ph name="COIN_BALANCE"/> <ph name="COIN_NAME"/></translation>
+<translation id="6755546361496900700">预览兑换</translation>
+<translation id="2882813124794301799">小部件堆栈</translation>
+<translation id="13296465911709339">您的文本已复制到剪贴板。</translation>
+<translation id="7144878232160441200">重试</translation>
+<translation id="2977461003134694205">隐私统计数据</translation>
+<translation id="4643117005422448078">热门网站</translation>
+<translation id="6966052266404721769">Binance</translation>
+<translation id="1392658226187691544">追踪器和广告已被屏蔽，所节省带宽和所节省时间的估算值。</translation>
+<translation id="74417429503469271">打开您经常访问的热门网站。</translation>
+<translation id="2956070106555335453">摘要</translation>
+<translation id="1366855498335432549">存入</translation>
+<translation id="1301340234286078471">兑换</translation>
+<translation id="223536150967420869">购买</translation>
+<translation id="1714829281959608206">启用 Binance 连接以查看 Binance 帐户余额并交易加密货币。</translation>
+<translation id="4584930231524505442">我想兑换...</translation>
+<translation id="5749014321384313843">我想消费...</translation>
+<translation id="8688672835843460752">可用</translation>
+<translation id="2480674848181564169">余额不足，无法转换</translation>
+<translation id="2215334405220411393">最低转换金额为：<ph name="COIN_BALANCE"/> <ph name="COIN_NAME"/></translation>
+<translation id="6702658079816271889">无法连接</translation>
+<translation id="7742417737698031726">费用</translation>
+<translation id="2122225204180056042">你会收到</translation>
+<translation id="6432284126416751397">确认兑换</translation>
+<translation id="5137723827757859599">热门网站上还没有任何内容。</translation>
+<translation id="3891414008432200754">价格</translation>
+<translation id="3733576242118819803">确认 (<ph name="REMAINING_TIME"/>s)</translation>
+<translation id="1627064138060308910">转换失败。请重试。</translation>
+<translation id="1449790603979388000"><ph name="COUNT"/> <ph name="COUNT_TEXT"/></translation>
+<translation id="5916664084637901428">启用</translation>
+<translation id="5860033963881614850">关</translation>
+<translation id="5317780077021120954">保存</translation>
+<translation id="2359808026110333948">继续</translation>
+<translation id="7658239707568436148">取消</translation>
+<translation id="8193724030871339658">链上的其他设备</translation>
+<translation id="4690880825349994619">在使用同步设备时，打开 Brave 设置并转到设备和同步。选择“添加设备”并扫描屏幕上显示的 QR 码。</translation>
+<translation id="3394474617110693560">类别</translation>
+<translation id="2004365171440701679">移除此设备</translation>
+<translation id="6450924769151530465">添加其他设备</translation>
+<translation id="6270614677029463366">在使用同步设备时，打开 Brave 设置并转到设备和同步。选择“添加设备”，然后选择“改为显示码字”。</translation>
+<translation id="7655723274266132226">现在您可以通过看广告来赚钱。</translation>
+<translation id="1605521356929094020">开启 Brave Ads</translation>
+<translation id="1873603368604736484">启用 Rewards 即表示您同意<ph name="TERMS_OF_SERVICE"/>.</translation>
+<translation id="7894626572714595717">因查看此图片而赚得了一些令牌。启用“Brave Ads”领取您的份额。</translation>
+<translation id="6165508094623778733">了解详情</translation>
 </translationbundle>

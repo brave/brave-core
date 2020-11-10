@@ -6518,6 +6518,14 @@
 <translation id="995782501881226248">YouTube</translation>
 <translation id="996250603853062861">안전한 연결 설정 중...</translation>
 <translation id="998747458861718449">검사(&amp;N)</translation>
+<translation id="6744651634043798597">{COUNT, plural,
+          =0 {모두 &amp;시크릿 창에서 열기}
+          =1 {&amp;시크릿 창에서 열기}
+          other {(#) 모두 &amp;시크릿 창에서 열기}}</translation>
+<translation id="2633634757060186848">{COUNT, plural,
+          =0 {모두 &amp;시크릿 창에서 열기}
+          =1 {&amp;시크릿 창에서 열기}
+          other {(#) 모두 &amp;시크릿 창에서 열기}}</translation>
 <translation id="658539216370629794">링크를 &amp;시크릿 창에서 열기</translation>
 <translation id="1432267168815937878">링크를&amp;시크릿 창에서 열기</translation>
 <translation id="6516243500644829484">새 &amp;시크릿 창</translation>
@@ -6531,6 +6539,7 @@
 <translation id="9048137919253433011">시크릿 탭: <ph name="TAB_NAME"/></translation>
 <translation id="1799432502220762862">시크릿 서브프레임: <ph name="SUBFRAME_SITE"/></translation>
 <translation id="3193187622878830588">시크릿 모드 포털: <ph name="SUBFRAME_SITE"/></translation>
+<translation id="5097649414558628673">도구: <ph name="PRINT_NAME"/></translation>
 <translation id="8808478386290700967">온라인 스토어</translation>
 <translation id="8261378640211443080">이 확장 프로그램은 <ph name="IDS_EXTENSION_WEB_STORE_TITLE"/>에 표시되지 않으며 사용자 모르게 추가되었을 수 있습니다.</translation>
 <translation id="6827869674836193263"><ph name="WINDOW_TITLE"/> (시크릿)</translation>
@@ -6548,19 +6557,15 @@
 <translation id="3098826269712097986">가입 정보가 시크릿 모드를 종료하고 난 뒤에 Brave에 저장됩니다. 이렇게 하면 나중에 이 웹사이트에 방문하여 Touch ID를 사용할 수 있습니다.</translation>
 <translation id="5186185447130319458">시크릿 모드</translation>
 <translation id="2579188629646253712">시크릿 모드 종료하기</translation>
-<translation id="6744651634043798597">{COUNT, plural,
-          =0 {모두 &amp;시크릿 창에서 열기}
-          =1 {&amp;시크릿 창에서 열기}
-          other {(#) 모두 &amp;시크릿 창에서 열기}}</translation>
+<translation id="1001131747196960052">개인정보 보호 닫기</translation>
+<translation id="7475335772460644497">{COUNT, plural, =0 {Open all in &amp;private window} =1 {Open in &amp;private window} 기타{Open all ({COUNT}) in &amp;private window}}</translation>
 <translation id="2431625704210501303">&amp;시크릿 창에서 열기</translation>
 <translation id="4620367155626060530">북마크바 표시(&amp;S)</translation>
-<translation id="2633634757060186848">{COUNT, plural,
-          =0 {모두 &amp;시크릿 창에서 열기}
-          =1 {&amp;시크릿 창에서 열기}
-          other {(#) 모두 &amp;시크릿 창에서 열기}}</translation>
+<translation id="1448315815373449655">{COUNT, plural, =0 {Open All in &amp;Private Window} =1 {Open in &amp;Private Window} 기타  {Open All ({COUNT}) in &amp;Private Window}}</translation>
 <translation id="1985165269306590797">&amp; 시크릿 창에서 열기</translation>
 <translation id="4680518314108745448">북마크바 표시(&amp;S)</translation>
 <translation id="642436385689435488">모두 시크릿 창으로 열기</translation>
+<translation id="5074021236879527611">개인정보 보호 창에서 모두(<ph name="URL_COUNT"/>) 열기</translation>
 <translation id="5463021359602611602">시크릿 창에서 열기</translation>
 <translation id="1850357845349976573">{0, plural,
         =1 {시크릿}
@@ -6610,6 +6615,8 @@
 <translation id="4854477725773269949">시크릿 모드에서 허용하기</translation>
 <translation id="6436164536244065364">웹 스토어에서 보기</translation>
 <translation id="38046578254905003"><ph name="BEGIN_LINK"/>웹 스토어<ph name="END_LINK"/>에서 확장 프로그램 및 테마 찾기</translation>
+<translation id="2402482691429508168">화면이 잠금 해제될 때 사용자에게 표시되도록 선택한 프로필</translation>
+<translation id="3910100573440336938">사용자 주변의 프로필과 파일 공유</translation>
 <translation id="6336451774241870485">새 시크릿 창</translation>
 <translation id="6610147964972079463">시크릿 탭 닫기</translation>
 <translation id="4933782374919065856">질문이 있으신가요? 프로필 관리자에게 문의하세요.</translation>

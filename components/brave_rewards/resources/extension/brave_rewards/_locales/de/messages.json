@@ -603,6 +603,10 @@
     "message": "Abbrechen",
     "description": "Text for cancel button"
   },
+  "changeAmount":  {
+    "message": "Betrag ändern",
+    "description": "Button text for changing monthly contribution amount"
+  },
   "login":  {
     "message": "Anmeldung",
     "description": "Text for login button"
@@ -612,7 +616,7 @@
     "description": "Text for login button"
   },
   "loginMessageText":  {
-    "message": "Sie brauchen ein Minimum von 25 BAT, um eine Uphold Wallet zu erstellen. Bitte versuchen Sie es später erneut. <br/>Wenn Sie schon ein verifiziertes Uphold-Konto haben, fahren Sie mit dem Login fort.",
+    "message": "Sie müssen mindestens 25 BAT haben, um ein Uphold-Konto zu eröffnen. Bitte versuchen sie es später erneut. Falls Sie bereits ein verifiziertes Uphold-Konto haben, fahren Sie mit der Anmeldung fort.",
     "description": "Text for login button"
   },
   "walletConnected":  {
@@ -622,5 +626,9 @@
   "walletPending":  {
     "message": "Ausstehend",
     "description": "Status button that tells user that he is currently pending"
+  },
+  "walletVerificationNote3":  {
+    "message": "Bemerkung: Ihre Transaktionen werden auf Uphold sichtbar sein, sobald Sie es autorisiert haben; zum Beispiel wird es möglich sein, den Empfänger und die Menge Ihrer Trinkgelder zu sehen.",
+    "description": "Displayed in login modal for uphold"
   }
 }

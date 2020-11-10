@@ -6518,6 +6518,14 @@ Conserva il file di chiave in un luogo sicuro. Ti servirà per creare nuove vers
 <translation id="995782501881226248">YouTube</translation>
 <translation id="996250603853062861">Creazione di una connessione protetta in corso...</translation>
 <translation id="998747458861718449">I&amp;speziona</translation>
+<translation id="6744651634043798597">{COUNT, plural,
+          =0 {Apri tutto in una &amp;finestra privata}
+          =1 {Apri in una &amp;finestra privata}
+          other {Apri tutto (#) in una &amp;finestra privata}}</translation>
+<translation id="2633634757060186848">{COUNT, plural,
+          =0 {Apri tutto in una &amp;Finestra Privata}
+          =1 {Apri in una &amp;Finestra Privata}
+          other {Apri Tutto (#) in una &amp;Finestra Privata}}</translation>
 <translation id="658539216370629794">Apri link in una &amp;finestra privata</translation>
 <translation id="1432267168815937878">Apri link in una &amp;Finestra Privata</translation>
 <translation id="6516243500644829484">Nuova &amp;finestra privata</translation>
@@ -6531,6 +6539,7 @@ Conserva il file di chiave in un luogo sicuro. Ti servirà per creare nuove vers
 <translation id="9048137919253433011">Scheda Privata: <ph name="TAB_NAME"/></translation>
 <translation id="1799432502220762862">Subframe privato: <ph name="SUBFRAME_SITE"/></translation>
 <translation id="3193187622878830588">Portale in modalità di navigazione in incognito: <ph name="SUBFRAME_SITE"/></translation>
+<translation id="5097649414558628673">Strumento: <ph name="PRINT_NAME"/></translation>
 <translation id="8808478386290700967">Web Store</translation>
 <translation id="8261378640211443080">Questa estensione non è elencata nel <ph name="IDS_EXTENSION_WEB_STORE_TITLE"/> e potrebbe essere stata aggiunta a tua insaputa.</translation>
 <translation id="6827869674836193263"><ph name="WINDOW_TITLE"/> (Privato)</translation>
@@ -6548,19 +6557,21 @@ Conserva il file di chiave in un luogo sicuro. Ti servirà per creare nuove vers
 <translation id="3098826269712097986">I dati di accesso saranno memorizzati in Brave dopo che sarai uscito dalla modalità Privata. Questo ti consentirà di usare ancora Touch ID più tardi con questo sito.</translation>
 <translation id="5186185447130319458">Privato</translation>
 <translation id="2579188629646253712">Esci da Privato</translation>
-<translation id="6744651634043798597">{COUNT, plural,
-          =0 {Apri tutto in una &amp;finestra privata}
-          =1 {Apri in una &amp;finestra privata}
-          other {Apri tutto (#) in una &amp;finestra privata}}</translation>
+<translation id="1001131747196960052">Chiudi la finestra in incognito</translation>
+<translation id="7475335772460644497">{COUNT, plural,
+          =0 {Apri tutto in &amp;una finestra in Incognito}
+          =1 {Apri in &amp;una finestra in Incognito}
+          other {Apri tutti e  ({COUNT}) in &amp;una finestra in incognito}}</translation>
 <translation id="2431625704210501303">Apri in una &amp;finestra privata</translation>
 <translation id="4620367155626060530">&amp;Mostra barra dei Preferiti</translation>
-<translation id="2633634757060186848">{COUNT, plural,
-          =0 {Apri tutto in una &amp;Finestra Privata}
-          =1 {Apri in una &amp;Finestra Privata}
-          other {Apri Tutto (#) in una &amp;Finestra Privata}}</translation>
+<translation id="1448315815373449655">{COUNT, plural,
+          =0 {Open All in &amp;Private Window}
+          =1 {Open in &amp;Private Window}
+          other {Open All ({COUNT}) in &amp;Private Window}}</translation>
 <translation id="1985165269306590797">Apri in una &amp;Finestra Privata</translation>
 <translation id="4680518314108745448">&amp;Mostra barra dei Preferiti</translation>
 <translation id="642436385689435488">Apri tutto in una finestra privata</translation>
+<translation id="5074021236879527611">Apri tutto (<ph name="URL_COUNT"/>) in una finestra in Incognito</translation>
 <translation id="5463021359602611602">Apri in una finestra privata</translation>
 <translation id="1850357845349976573">{0, plural,
         =1 {Privato}
@@ -6610,6 +6621,8 @@ Conserva il file di chiave in un luogo sicuro. Ti servirà per creare nuove vers
 <translation id="4854477725773269949">Abilita in privato</translation>
 <translation id="6436164536244065364">Visualizza nel Web Store</translation>
 <translation id="38046578254905003">Trova estensioni e temi nel <ph name="BEGIN_LINK"/>Web Store<ph name="END_LINK"/></translation>
+<translation id="2402482691429508168">Profili che hanno scelto di essere a te visibili quando il loro schermo è sbloccato</translation>
+<translation id="3910100573440336938">Condividi i file con i profili intorno a te</translation>
 <translation id="6336451774241870485">Nuova scheda privata</translation>
 <translation id="6610147964972079463">Chiudi schede private</translation>
 <translation id="4933782374919065856">Domande? Contatta il supervisore del tuo profilo.</translation>

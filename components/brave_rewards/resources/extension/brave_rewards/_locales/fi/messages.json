@@ -603,6 +603,10 @@
     "message": "Peruuta",
     "description": "Text for cancel button"
   },
+  "changeAmount":  {
+    "message": "Muuta summa",
+    "description": "Button text for changing monthly contribution amount"
+  },
   "login":  {
     "message": "Kirjaudu",
     "description": "Text for login button"
@@ -612,7 +616,7 @@
     "description": "Text for login button"
   },
   "loginMessageText":  {
-    "message": "Uphold-tilin luomiseen tarvitaan vähintään 25 BATia. Kokeile myöhemmin uudelleen. <br/> Mikäli sinulla on jo todennettu Uphold-tili, voit jatkaa kirjautumalla.",
+    "message": "Tarvitset vähintään 25 BAT luodaksesi Uphold-tilin. Yritä myöhemmin uudelleen.\nJos olet jos vahvistanut Uphold-tilisi, jatka kirjautumiseen.",
     "description": "Text for login button"
   },
   "walletConnected":  {
@@ -622,5 +626,9 @@
   "walletPending":  {
     "message": "Odottaa",
     "description": "Status button that tells user that he is currently pending"
+  },
+  "walletVerificationNote3":  {
+    "message": "Huomio: siirtosi näkyvät Uphold-palvelulle, kun vahvistat. He näkevät esimerkiksi vastaanottajan ja tippiesi määrän.",
+    "description": "Displayed in login modal for uphold"
   }
 }

@@ -603,6 +603,10 @@
     "message": "Batal",
     "description": "Text for cancel button"
   },
+  "changeAmount":  {
+    "message": "Ubah jumlah",
+    "description": "Button text for changing monthly contribution amount"
+  },
   "login":  {
     "message": "Masuk",
     "description": "Text for login button"
@@ -612,7 +616,7 @@
     "description": "Text for login button"
   },
   "loginMessageText":  {
-    "message": "Anda perlu memiliki minimal 25 BAT untuk membuat akun Uphold. Silakan coba kembali nanti. <br/> Jika Anda sudah memiliki akun Uphold yang terverifikasi, lanjutkan ke masuk akun.",
+    "message": "Anda harus memiliki minimal 25 BAT untuk membuat akun Uphold. Silakan coba lagi nanti. \nJika Anda sudah memiliki akun Uphold yang diverifikasi, lanjutkan untuk login.",
     "description": "Text for login button"
   },
   "walletConnected":  {
@@ -622,5 +626,9 @@
   "walletPending":  {
     "message": "Tertunda",
     "description": "Status button that tells user that he is currently pending"
+  },
+  "walletVerificationNote3":  {
+    "message": "Catatan: Transaksi Anda akan terlihat untuk Dijalankan setelah Anda mengotorisasi; misalnya, mereka akan dapat melihat penerima dan jumlah tip Anda.",
+    "description": "Displayed in login modal for uphold"
   }
 }

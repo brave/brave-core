@@ -603,6 +603,10 @@
     "message": "ยกเลิก",
     "description": "Text for cancel button"
   },
+  "changeAmount":  {
+    "message": "เปลี่ยนจำนวน",
+    "description": "Button text for changing monthly contribution amount"
+  },
   "login":  {
     "message": "ลงชื่อเข้าใช้",
     "description": "Text for login button"
@@ -612,7 +616,7 @@
     "description": "Text for login button"
   },
   "loginMessageText":  {
-    "message": "คุณต้องมีอย่างน้อย 25 BAT เพื่อสร้างบัญชี Uphold โปรดลองใหม่ภายหลัง <br/> หากคุณมีบัญชี Uphold ที่ยืนยันตัวตนแล้ว ดำเนินการต่อที่หน้าล็อกอิน",
+    "message": "คุณจำเป็นต้องมีอย่างน้อย 25 BAT เพื่อสร้างบัญชี Uphold โปรดลองใหม่อีกครั้งภายหลัง\nหากคุณมีบัญชี Uphold ที่ได้รับการยืนยันตัวตนแล้ว ไปที่เข้าสู่ระบบต่อไป",
     "description": "Text for login button"
   },
   "walletConnected":  {
@@ -622,5 +626,9 @@
   "walletPending":  {
     "message": "รอดำเนินการ",
     "description": "Status button that tells user that he is currently pending"
+  },
+  "walletVerificationNote3":  {
+    "message": "หมายเหตุ: ธุรกรรมของคุณจะปรากฏต่อ Uphold เมื่อคุณอนุญาต ยกตัวอย่างเช่น พวกเขาจะสามารถเห็นผู้รับและจำนวนทิปของคุณได้",
+    "description": "Displayed in login modal for uphold"
   }
 }

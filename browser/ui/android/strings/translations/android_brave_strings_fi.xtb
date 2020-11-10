@@ -12,6 +12,11 @@
 <translation id="6754976710186182237">Sormenjälkimenetelmät</translation>
 <translation id="2313532038420432247">HTTPS -päivitykset</translation>
 <translation id="7461425058443653485">Komentosarjat estetty</translation>
+<translation id="6052725679982758334">Sosiaalisen median esto</translation>
+<translation id="7498695072878479744">Salli Googlen kirjautumispainikkeet kolmansien osapuolten sivustoille</translation>
+<translation id="863171915776379000">Salli Facebookin sisäänkirjautumiset ja upotetut julkaisut</translation>
+<translation id="5165042248369837294">Salli Twitterin upotetut tviitit</translation>
+<translation id="958971637207126733">Salli LinkedIn-upotuksen sisältävät julkaisut</translation>
 <translation id="3834924998750356151">Esto-ominaisuuksien valvonta</translation>
 <translation id="1713450908129883784">Erilliset ohjaimet</translation>
 <translation id="6302422639282249274">Hallitse Brave Rewards -ohjelmaa</translation>
@@ -47,8 +52,6 @@
 <translation id="2804710924397009224">Piilota Brave Rewards -kuvake</translation>
 <translation id="7358991116457217836">Piilottaa Brave Rewards -kuvakkeen, kun Brave Rewards ei ole käytössä</translation>
 <translation id="8495235435594442882">Ota alalaidan työkalupalkki käyttöön</translation>
-<translation id="5916664084637901428">Käytössä</translation>
-<translation id="5860033963881614850">Päältä</translation>
 <translation id="6587448235155023666">Muutokset tulevat voimaan, kun käynnistät Braven uudelleen seuraavan kerran</translation>
 <translation id="8701563696941209024">KÄYNNISTÄ UUDELLEEN NYT</translation>
 <translation id="834487290629916192">MYÖHEMMIN</translation>
@@ -57,7 +60,6 @@
 <translation id="986879628471635371">Perehdytysprosessin vianetsintä</translation>
 <translation id="5808759341041733958">Valitse oletusarvoinen hakukone</translation>
 <translation id="1331593888918588693">Voit aina vaihtaa mieltymyksiäsi sovelluksen asetuksissa.</translation>
-<translation id="5317780077021120954">Tallenna</translation>
 <translation id="7053983685419859001">Estä</translation>
 <translation id="5806601733251372221">Brave Shields</translation>
 <translation id="2880356288762235261">yksityisyyttäsi loukkaavat mainokset ja seurantaohjelmat, jotta voit selata verkkoa ilman, että sinua seurataan.</translation>
@@ -76,8 +78,6 @@
 <translation id="2453860139492968684">Valmis</translation>
 <translation id="7983303953939627894">Ansaitse &amp; lahjoita</translation>
 <translation id="48520986898237073">Jatka lompakkoon</translation>
-<translation id="2359808026110333948">Jatka</translation>
-<translation id="7658239707568436148">Peruuta</translation>
 <translation id="3570367516044491911">Aseta oletusselaimeksi</translation>
 <translation id="7493053924837150477">Valitse Brave-selain luettelosta ja napauta "Aina"-painiketta</translation>
 <translation id="3546439402724649282">Brave on jo asetettu oletusselaimeksi.</translation>
@@ -180,7 +180,7 @@ tapahtumia…</translation>
 <translation id="8038539967102225446">Brave-mainokset ovat täällä!</translation>
 <translation id="8985635554450124959">Synkronoinnin valmisteleminen epäonnistui</translation>
 <translation id="222883304157347087">(tämä laite)</translation>
-<translation id="8193724030871339658">MUUT KETJUSSA OLEVAT LAITTEET</translation>
+<translation id="4157741509680155021">LAITTEET SYNKRONOINTIKETJUSSA</translation>
 <translation id="279635009973773843">LAITTEITA LADATAAN…</translation>
 <translation id="6394333525003604181">POISTUTAAN SYNKRONOINTIKETJUSTA...</translation>
 <translation id="2569646144216067185">Sanamäärä: <ph name="WORD_COUNT"/></translation>
@@ -190,11 +190,11 @@ tapahtumia…</translation>
 <translation id="3149880132460839085">Brave-synkronointi</translation>
 <translation id="3680755684186855422">Brave-synkronosointi mahdollistaa kirjanmerkkien synkronointidatan yksityisesti Brave-selaintesi eri laitteiden välillä.</translation>
 <translation id="3735228155296883311">Skannaa koodi synkronointiketjustasi, jonka loit toisella laitteella. Voit myös aloittaa uuden synkronointiketjun.</translation>
-<translation id="4690880825349994619">Avaa aiemmin synkronoitua laitetta käyttäen Braven asetukset ja siirry kohtaan Asetukset &gt; Synkronoi. Valitse "Lisää laite" ja lue näytölle ilmestyvä QR-koodi.</translation>
+<translation id="2614069607859982576">Avaa Brave-asetukset käyttämällä olemassa olevaa synkronoitua laitetta ja siirry asetuksiin &gt; Valitse "Lisää uusi laite" ja skanna näytöllä näkyvä QR-koodi.</translation>
 <translation id="5241263629636958324">Kopioitu leikepöydälle</translation>
 <translation id="5817918615728894473">Muodosta laitepari</translation>
-<translation id="3394474617110693560">Kategoriat</translation>
-<translation id="2004365171440701679">Poista tämä laite</translation>
+<translation id="7090325819305486658">Data-asetukset</translation>
+<translation id="728334460283296316">Poista laite</translation>
 <translation id="1178128181015923849">Haluatko varmasti poistaa laitteen "<ph name="DEVICE_NAME"/>"?</translation>
 <translation id="7745082336226088126">Lue tai syötä synkronointikoodi</translation>
 <translation id="1602067095281698985">Aloita uusi synkronointiketju.</translation>
@@ -213,9 +213,9 @@ tapahtumia…</translation>
 <translation id="8730621377337864115">Valmis</translation>
 <translation id="6174119914106813304">SYNKRONOI TÄSSÄ LAITTEESSA</translation>
 <translation id="6776430845975754238">Asetusten muuttaminen vaikuttaa vain tietoihin, joita tämä laite jakaa muiden laitteiden kanssa.</translation>
-<translation id="6450924769151530465">Lisää toinen laite</translation>
+<translation id="1061533051865606843">Lisää uusi laite</translation>
 <translation id="7539985410310934287">Syötä koodisanat</translation>
-<translation id="6270614677029463366">Avaa aiemmin synkronoitua laitetta käyttäen Braven asetukset ja siirry kohtaan Asetukset &gt; Synkronoi. Valitse "Lisää laite" ja valitse sitten "Näytä koodisanat sen sijaan".</translation>
+<translation id="2886391679017857869">Avaa Brave-asetukset käyttämällä olemassa olevaa synkronoitua laitetta ja siirry asetuksiin &gt; Sync. Valitse "lisää uusi laite", sitten "näytä koodisanat".</translation>
 <translation id="8131740175452115882">Vahvista</translation>
 <translation id="4973653569293835178">Käytän kameraa…</translation>
 <translation id="326454632686131209">Synkronoi laite</translation>
@@ -240,7 +240,6 @@ tapahtumia…</translation>
 <translation id="844921671123185605">Kuukausittaiset tippisi on käsitelty!</translation>
 <translation id="3124090095880236567">Ota Ads käyttöön</translation>
 <translation id="2975780980638932742">Brave Ads on nyt täällä!</translation>
-<translation id="7655723274266132226">Voit nyt ansaita mainosten katselulla.</translation>
 <translation id="7541582550122501404">Odottaa avustusta</translation>
 <translation id="8520059774736886747">Tekijä <ph name="PUBLISHER_NAME"/> vahvistettu hiljattain</translation>
 <translation id="7924320838799747606">Oma saldosi</translation>
@@ -258,8 +257,8 @@ tapahtumia…</translation>
 <translation id="8522669544471808198">Näytä taustakuvat</translation>
 <translation id="3870475560794762985">Näytä sponsoroidut kuvat</translation>
 <translation id="8297488609722895137">Valokuvan ottanut <ph name="PHOTO_BY"/></translation>
-<translation id="1605521356929094020">Ota Brave Ads käyttöön</translation>
-<translation id="1873603368604736484">Ottamalla palkinnot käyttöön hyväksyt <ph name="TERMS_OF_SERVICE"/>.</translation>
+<translation id="7952665812649667034">Olen valmis ottamaan Earn &amp; Given käyttöön</translation>
+<translation id="5878330112719288629">Napauttamalla Earn &amp; Give -painiketta ilmaiset hyväksyväsi <ph name="TERMS_OF_SERVICE"/>.</translation>
 <translation id="3794079107601824147">Vastaanota maksu tämän taustakuvan näkemisestä.</translation>
 <translation id="7136586167396205364">Piilota sponsoroidut kuvat</translation>
 <translation id="2927095357213611519">Voit tukea verkkotekijöitä poleteilla.\nAnsaitse poletteja katsomalla yksityisyyttä kunnioittavia mainoksia.</translation>
@@ -306,7 +305,7 @@ tapahtumia…</translation>
 <translation id="8851456134224363571">Hienoa! Jättäisitkö meille arvosanan Play Storessa?</translation>
 <translation id="8668962040900592974">Kerro, kuinka voimme kehittää toimintaamme</translation>
 <translation id="4406937629441301400">Ansaitse käyttötunnuksia tämän kuvan katsomisesta ja lähetä ne kehittäjille. <ph name="LEARN_MORE"/></translation>
-<translation id="7894626572714595717">Ansaitse poletteja tämän kuvan katsomisesta. Kytke Brave Ads päälle tienestisi lunastamiseksi.</translation>
+<translation id="8693132237667961044">Ansaitse käyttötunnuksia tämän kuvan katsomalla. Aseta Earn &amp; Give päälle lunastaaksesi osuutesi.</translation>
 <translation id="6632345639591919543">Saat käyttötunnuksia tämän kuvan katsomisesta.\n<ph name="LEARN_MORE"/></translation>
 <translation id="1465733111003593696">Ansaitset käyttötunnuksia tämän sivun katsomisesta.</translation>
 <translation id="7877201489035217175">Lue lisää sponsoroiduista kuvista</translation>
@@ -354,7 +353,6 @@ tapahtumia…</translation>
 <translation id="8903462729414407077">Viikoittaiset päivitykset</translation>
 <translation id="8029219208182772618">Tiedosta mitkä vierailemistasi verkkosivustoista ovat yksityisyyden suhteen kaikkein tungettelevimpia.\n\nVain sinä näet nämä yksityisyystilastot. Henkilökohtaiset tietosi ja selaushistojasi eivät koskaan siirry minnekään laitteesi Brave-selaimesta.</translation>
 <translation id="6170159749517116894">Kytke yksityisyysraportit päälle</translation>
-<translation id="6165508094623778733">Lisätietoja</translation>
 <translation id="5966707198760109579">Viikko</translation>
 <translation id="8987927404178983737">Kuukausi</translation>
 <translation id="4302754476737420523">3 kuukautta</translation>
@@ -373,12 +371,12 @@ tapahtumia…</translation>
 <translation id="7427567994475794038">Kytke yksityisyysraportit päälle, niin näet miten monta seurainta &amp; mainosta on estetty viimeisen kolmen tunnin aikana.</translation>
 <translation id="2053891538879944400">Säästit Brave-selaimella <ph name="DATA"/> <ph name="DATA_TEXT"/> dataa.</translation>
 <translation id="8640064498452534195">Kytke yksityisyysraportit päälle, niin näet miten paljon dataa olet säästänyt.</translation>
-<translation id="2252497442547961651">Brave-selain käyttää keskimäärin 40 % vähemmän akkua.&#128267;</translation>
+<translation id="2252497442547961651">Brave-selain käyttää keskimäärin 40 % vähemmän akkua.🔋</translation>
 <translation id="1945330434665345785">Estit Brave-selaimella viime viikolla <ph name="COUNT"/> seurainta &amp; mainosta.</translation>
 <translation id="2883868922264431515">Tienaa poletteja katselemalla yksityisyyttä kunnioittavia mainoksia ja tue suosikkisivustojasi.</translation>
-<translation id="5678925890616256956">Siistiä! Olet estänyt Brave-selaimella 250 jäljittävää mainosta.&#128293;</translation>
-<translation id="9199047775708635708">Siistiä! Olet säästänyt 10 Megatavua Brave-selaimella.&#128267;</translation>
-<translation id="1880168210969863408">Siistiä! Olet säästänyt Brave-selaimella 10 minuuttia latausaikaa.&#128168;&#128168;</translation>
+<translation id="5678925890616256956">Siistiä! Olet estänyt Brave-selaimella 250 jäljittävää mainosta.🔥</translation>
+<translation id="9199047775708635708">Siistiä! Olet säästänyt 10 Megatavua Brave-selaimella.🔋</translation>
+<translation id="1880168210969863408">Siistiä! Olet säästänyt Brave-selaimella 10 minuuttia latausaikaa.💨💨</translation>
 <translation id="7408493389591475748">Aloita selailu yksityisyysraporttien näkemiseksi</translation>
 <translation id="9080777565335515917">Tee Bravesta oletusselaimesi ja nauti yksityisestä ja turvallisesta selaamisesta.</translation>
 <translation id="7801488941710395275">Sallii Braven näyttää yksityisyystilastosi</translation>
@@ -388,4 +386,62 @@ tapahtumia…</translation>
 <translation id="2718046830255553131">Yksityisyysraporttitiedot on nollattu.</translation>
 <translation id="7559243474426790340">Päivitä tila</translation>
 <translation id="8376263745431603066">Ota yötila käyttöön (kokeellinen)</translation>
+<translation id="1383876407941801731">Hae</translation>
+<translation id="1972589975368876259">Muokkaa pinoa</translation>
+<translation id="2490330380242414851">Poista pienoisohjelma</translation>
+<translation id="8446884382197647889">Lue lisää</translation>
+<translation id="7384441892795736634">Päivitä tiedot</translation>
+<translation id="4804818685124855865">Katkaise yhteys</translation>
+<translation id="4789438578712143420">≈ $<ph name="USD_BALANCE"/></translation>
+<translation id="1080611582879541635"><ph name="COIN_ADDRESS"/> Talletusosoite</translation>
+<translation id="4836242416604533644"><ph name="COIN_MEMO"/> Talletusmuistio</translation>
+<translation id="5110244215256675209">Osta kryptovaluuttaa</translation>
+<translation id="2271556362602437160">.com</translation>
+<translation id="3727077517986954867">.us</translation>
+<translation id="3414885529641505869">Osta <ph name="COIN_NAME"/></translation>
+<translation id="558614325644656740">Tarjolla <ph name="COIN_BALANCE"/> <ph name="COIN_NAME"/></translation>
+<translation id="6755546361496900700">Muuntamisen esikatselu</translation>
+<translation id="2882813124794301799">Pienoisohjelmapino</translation>
+<translation id="13296465911709339">Tekstisi on kopioitu leikepöydälle.</translation>
+<translation id="7144878232160441200">Yritä uudestaan</translation>
+<translation id="2977461003134694205">Yksityisyysstatistiikka</translation>
+<translation id="4643117005422448078">Kärkisivustot</translation>
+<translation id="6966052266404721769">Binance</translation>
+<translation id="1392658226187691544">Seurantalaitteet &amp; estettyjen mainosten, säästetyn kaistanleveyden ja säästetyn ajan arviot.</translation>
+<translation id="74417429503469271">Avaa suosituimmat sivut, joilla käyt usein.</translation>
+<translation id="2956070106555335453">Yhteenveto</translation>
+<translation id="1366855498335432549">Talleta</translation>
+<translation id="1301340234286078471">Muunna</translation>
+<translation id="223536150967420869">Osta</translation>
+<translation id="1714829281959608206">Ota Binance-yhteys käyttöön nähdäksesi Binance-tilin saldon ja vaihtaaksesi kryptovaluuttaa.</translation>
+<translation id="4584930231524505442">Haluan muuntaa...</translation>
+<translation id="5749014321384313843">Haluan käyttää...</translation>
+<translation id="8688672835843460752">Saatavilla</translation>
+<translation id="2480674848181564169">Ei tarpeeksi saldoa muunnokseen</translation>
+<translation id="2215334405220411393">Pienin muunnettava määrä on: <ph name="COIN_BALANCE"/> <ph name="COIN_NAME"/></translation>
+<translation id="6702658079816271889">Yhdistäminen ei onnistu</translation>
+<translation id="7742417737698031726">Maksu</translation>
+<translation id="2122225204180056042">Saat</translation>
+<translation id="6432284126416751397">Vahvista muuntaminen</translation>
+<translation id="5137723827757859599">Suosituimpia sivuja ei vielä ole.</translation>
+<translation id="3891414008432200754">Hinta</translation>
+<translation id="3733576242118819803">Vahvista (<ph name="REMAINING_TIME"/>s)</translation>
+<translation id="1627064138060308910">Muuntaminen epäonnistui. Yritä uudestaan.</translation>
+<translation id="1449790603979388000"><ph name="COUNT"/> <ph name="COUNT_TEXT"/></translation>
+<translation id="5916664084637901428">Käytössä</translation>
+<translation id="5860033963881614850">Päältä</translation>
+<translation id="5317780077021120954">Tallenna</translation>
+<translation id="2359808026110333948">Jatka</translation>
+<translation id="7658239707568436148">Peruuta</translation>
+<translation id="8193724030871339658">MUUT KETJUSSA OLEVAT LAITTEET</translation>
+<translation id="4690880825349994619">Avaa aiemmin synkronoitua laitetta käyttäen Braven asetukset ja siirry kohtaan Asetukset &gt; Synkronoi. Valitse "Lisää laite" ja lue näytölle ilmestyvä QR-koodi.</translation>
+<translation id="3394474617110693560">Kategoriat</translation>
+<translation id="2004365171440701679">Poista tämä laite</translation>
+<translation id="6450924769151530465">Lisää toinen laite</translation>
+<translation id="6270614677029463366">Avaa aiemmin synkronoitua laitetta käyttäen Braven asetukset ja siirry kohtaan Asetukset &gt; Synkronoi. Valitse "Lisää laite" ja valitse sitten "Näytä koodisanat sen sijaan".</translation>
+<translation id="7655723274266132226">Voit nyt ansaita mainosten katselulla.</translation>
+<translation id="1605521356929094020">Ota Brave Ads käyttöön</translation>
+<translation id="1873603368604736484">Ottamalla palkinnot käyttöön hyväksyt <ph name="TERMS_OF_SERVICE"/>.</translation>
+<translation id="7894626572714595717">Ansaitse poletteja tämän kuvan katsomisesta. Kytke Brave Ads päälle tienestisi lunastamiseksi.</translation>
+<translation id="6165508094623778733">Lisätietoja</translation>
 </translationbundle>

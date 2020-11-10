@@ -603,6 +603,10 @@
     "message": "ביטול",
     "description": "Text for cancel button"
   },
+  "changeAmount":  {
+    "message": "שנה סכום",
+    "description": "Button text for changing monthly contribution amount"
+  },
   "login":  {
     "message": "התחבר",
     "description": "Text for login button"
@@ -612,7 +616,7 @@
     "description": "Text for login button"
   },
   "loginMessageText":  {
-    "message": "נדרשים לכם מינימום של 25 BAT כדי ליצור חשבון Uphold. נא לנסות שוב מאוחר יותר. <br/> אם כבר יש לכם חשבון Uphold מאומת, המשיכו להתחברות.",
+    "message": "דרושים לכם מינימום של 25 BAT כדי ליצור חשבון Uphold. נא לנסות שוב מאוחר יותר.\n  אם כבר יש לכם חשבון Uphold מאומת, המשיכו להתחברות.",
     "description": "Text for login button"
   },
   "walletConnected":  {
@@ -622,5 +626,9 @@
   "walletPending":  {
     "message": "בהמתנה",
     "description": "Status button that tells user that he is currently pending"
+  },
+  "walletVerificationNote3":  {
+    "message": "תשומת לבכם: העסקאות שלכם יהיו גלויות בפני Uphold ברגע שתאשרו; למשל, הם יוכלו לראות את הנמען ואת סכום הטיפים שלכם.",
+    "description": "Displayed in login modal for uphold"
   }
 }

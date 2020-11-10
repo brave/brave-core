@@ -12,6 +12,11 @@
 <translation id="6754976710186182237">Metody rozpoznawania urządzenia</translation>
 <translation id="2313532038420432247">Aktualizacje HTTPS</translation>
 <translation id="7461425058443653485">Zablokowane skrypty</translation>
+<translation id="6052725679982758334">Zablokuj sieci społecznościowe</translation>
+<translation id="7498695072878479744">Zezwalaj na logowanie za pomocą konta Google na stronach trzecich</translation>
+<translation id="863171915776379000">Zezwalaj na logowanie za pomocą konta Facebook i osadzone posty</translation>
+<translation id="5165042248369837294">Zezwalaj na osadzone Tweety</translation>
+<translation id="958971637207126733">Zezwalaj na osadzone posty LinkedIn</translation>
 <translation id="3834924998750356151">Zablokowane elementy</translation>
 <translation id="1713450908129883784">Kontrolery indywidualne</translation>
 <translation id="6302422639282249274">Zarządzaj nagrodami Brave</translation>
@@ -27,8 +32,8 @@
 <translation id="7459000603787995422">Zamknij karty przy wyjściu</translation>
 <translation id="1680858055899097121">Nie utrzymuj kart między sesjami przeglądania</translation>
 <translation id="453601949003770390">Zablokowane skrypty śledzące i reklamy</translation>
-<translation id="347604927162577559">Dane\nOszczędzono</translation>
-<translation id="9008534313521214777">Szacunek oszczędzonego\nczasu</translation>
+<translation id="347604927162577559">Oszczędzone\ndane</translation>
+<translation id="9008534313521214777">Szacowany zaoszczędzony\nczas</translation>
 <translation id="6572660632052512096">Wersja na komputer</translation>
 <translation id="1340503115760585811">Włącz wersję na komputer dla nowych kart</translation>
 <translation id="7924540991929826186">Korzystaj z wersji mobilnej dla nowych kart (rekomendowane)</translation>
@@ -47,8 +52,6 @@
 <translation id="2804710924397009224">Ukryj przycisk nagród Brave</translation>
 <translation id="7358991116457217836">Ukryj ikonę nagród Brave, kiedy nie są włączone.</translation>
 <translation id="8495235435594442882">Włącz dolny pasek narzędzi</translation>
-<translation id="5916664084637901428">Włączone</translation>
-<translation id="5860033963881614850">Wyłączone</translation>
 <translation id="6587448235155023666">Zmiany zostaną zastosowane po ponownym uruchomieniu Brave</translation>
 <translation id="8701563696941209024">URUCHOM PONOWNIE</translation>
 <translation id="834487290629916192">PÓŹNIEJ</translation>
@@ -57,7 +60,6 @@
 <translation id="986879628471635371">Rozwiązywanie problemów z wdrożeniem</translation>
 <translation id="5808759341041733958">Wybierz domyślną wyszukiwarkę</translation>
 <translation id="1331593888918588693">Później możesz zawsze zmienić preferencje w ustawieniach aplikacji.</translation>
-<translation id="5317780077021120954">Zapisz</translation>
 <translation id="7053983685419859001">Zablokuj</translation>
 <translation id="5806601733251372221">Tracze Brave</translation>
 <translation id="2880356288762235261">reklamy naruszające prywatność i skrypty śledzące, więc możesz przeglądać bez obaw, że ktoś Cię śledzi w sieci.</translation>
@@ -76,8 +78,6 @@
 <translation id="2453860139492968684">Zakończ</translation>
 <translation id="7983303953939627894">Zyskaj i daj</translation>
 <translation id="48520986898237073">Przejdź do portfela</translation>
-<translation id="2359808026110333948">Kontynuuj</translation>
-<translation id="7658239707568436148">Anuluj</translation>
 <translation id="3570367516044491911">Ustaw jako domyślną przeglądarkę</translation>
 <translation id="7493053924837150477">Wybierz przeglądarkę Brave z listy i kliknij Zawsze</translation>
 <translation id="3546439402724649282">Brave jest już ustawiona jako Twoja domyślna przeglądarka.</translation>
@@ -183,7 +183,7 @@ przez kolejne 90 dni lub do momentu zarejestrowania się twórców.</translation
 <translation id="8038539967102225446">Oto reklamy Brave!</translation>
 <translation id="8985635554450124959">Nie można skonfigurować synchronizacji</translation>
 <translation id="222883304157347087">(to urządzenie)</translation>
-<translation id="8193724030871339658">INNE URZĄDZENIA W ŁAŃCUCHU</translation>
+<translation id="4157741509680155021">URZĄDZENIA W ŁAŃCUCHU SYNCHRONIZACJI</translation>
 <translation id="279635009973773843">WCZYTYWANIE URZĄDZEŃ...</translation>
 <translation id="6394333525003604181">OPUSZCZANIE ŁAŃCUCHA SYNCHRONIZACJI...</translation>
 <translation id="2569646144216067185">Liczba słów: <ph name="WORD_COUNT"/></translation>
@@ -193,11 +193,11 @@ przez kolejne 90 dni lub do momentu zarejestrowania się twórców.</translation
 <translation id="3149880132460839085">Synchronizacja Brave</translation>
 <translation id="3680755684186855422">Brave Sync umożliwia prywatną synchronizację danych zakładek między przeglądarkami Brave na różnych urządzeniach.</translation>
 <translation id="3735228155296883311">Po prostu zeskanuj kod z łańcucha synchronizacji utworzonego na Twoim innym urządzeniu. Albo rozpocznij nowy łańcuch synchronizacji.</translation>
-<translation id="4690880825349994619">Korzystając z istniejącego zsynchronizowanego urządzenia, otwórz ustawienia Brave i wejdź w Ustawienia &gt; Synchronizacja. Wybierz Dodaj urządzenie i zeskanuj kod QR wyświetlony na ekranie.</translation>
+<translation id="2614069607859982576">Używając istniejącego zsynchronizowanego urządzenia, otwórz Ustawienia i przejdź do sekcji Ustawienia i synchronizacja. Wybierz opcję Dodaj nowe urządzenie i zeskanuj kod QR wyświetlony na ekranie.</translation>
 <translation id="5241263629636958324">Skopiowane do schowka</translation>
 <translation id="5817918615728894473">Sparuj</translation>
-<translation id="3394474617110693560">Kategorie</translation>
-<translation id="2004365171440701679">Usuń to urządzenie</translation>
+<translation id="7090325819305486658">Preferencje co do daty</translation>
+<translation id="728334460283296316">Usuń urządzenie</translation>
 <translation id="1178128181015923849">Czy na pewno chcesz usunąć urządzenie „<ph name="DEVICE_NAME"/>”?</translation>
 <translation id="7745082336226088126">Zeskanuj lub wprowadź kod synchronizacji</translation>
 <translation id="1602067095281698985">Rozpocznij nowy łańcuch synchronizacji</translation>
@@ -216,9 +216,9 @@ przez kolejne 90 dni lub do momentu zarejestrowania się twórców.</translation
 <translation id="8730621377337864115">Gotowe</translation>
 <translation id="6174119914106813304">SYNCHRONIZUJ NA TYM URZĄDZENIU</translation>
 <translation id="6776430845975754238">Zmiana ustawień będzie miała wpływ tylko na dane, które to urządzenie udostępnia innym.</translation>
-<translation id="6450924769151530465">Dodaj inne urządzenie</translation>
+<translation id="1061533051865606843">Dodaj nowe urządzenie</translation>
 <translation id="7539985410310934287">Wprowadź słowa kodu</translation>
-<translation id="6270614677029463366">Korzystając z istniejącego zsynchronizowanego urządzenia, otwórz ustawienia Brave i wejdź w Ustawienia &gt; Synchronizacja. Wybierz Dodaj urządzenie, a następnie Zamiast tego wyświetl słowa kodu.</translation>
+<translation id="2886391679017857869">Używając istniejącego zsynchronizowanego urządzenia, otwórz Ustawienia i przejdź do sekcji Ustawienia i synchronizacja. Wybierz opcję Dodaj nowe urządzenie, a następnie opcję Wyświetl zamiast tego słowa kodu.</translation>
 <translation id="8131740175452115882">Potwierdź</translation>
 <translation id="4973653569293835178">Użyję mojego aparatu...</translation>
 <translation id="326454632686131209">Zsynchronizuj urządzenie</translation>
@@ -243,7 +243,6 @@ przez kolejne 90 dni lub do momentu zarejestrowania się twórców.</translation
 <translation id="844921671123185605">Twoje miesięczne datki zostały przekazane!</translation>
 <translation id="3124090095880236567">Włącz reklamy</translation>
 <translation id="2975780980638932742">Reklamy Brave są już dostępne!</translation>
-<translation id="7655723274266132226">Teraz możesz zarabiać, oglądając reklamy.</translation>
 <translation id="7541582550122501404">Datek oczekujący</translation>
 <translation id="8520059774736886747">Twórca <ph name="PUBLISHER_NAME"/> został niedawno zweryfikowany.</translation>
 <translation id="7924320838799747606">Twoje saldo</translation>
@@ -261,8 +260,8 @@ przez kolejne 90 dni lub do momentu zarejestrowania się twórców.</translation
 <translation id="8522669544471808198">Wyświetl obrazy w tle</translation>
 <translation id="3870475560794762985">Wyświetl obrazy sponsorowane</translation>
 <translation id="8297488609722895137">Zdjęcie autorstwa <ph name="PHOTO_BY"/></translation>
-<translation id="1605521356929094020">Włącz reklamy Brave</translation>
-<translation id="1873603368604736484">Włączając opcję Nagrody, zgadzasz się na <ph name="TERMS_OF_SERVICE"/>.</translation>
+<translation id="7952665812649667034">Mogę już Zarabiać i dawać</translation>
+<translation id="5878330112719288629">Stukając Zarabiaj i dawaj, akceptujesz <ph name="TERMS_OF_SERVICE"/>.</translation>
 <translation id="3794079107601824147">Pobierz zapłatę, aby wyświetlić obraz w tle.</translation>
 <translation id="7136586167396205364">Ukryj obrazy sponsorowane</translation>
 <translation id="2927095357213611519">Możesz wspierać twórców stron internetowych za pomocą tokenów.\nZdobywaj tokeny za oglądanie reklam szanujących Twoją prywatność.</translation>
@@ -309,7 +308,7 @@ przez kolejne 90 dni lub do momentu zarejestrowania się twórców.</translation
 <translation id="8851456134224363571">Świetnie! Czy możesz ocenić nas w Play Store?</translation>
 <translation id="8668962040900592974">Daj nam znać, co możemy poprawić</translation>
 <translation id="4406937629441301400">Zyskaj tokeny za obejrzenie tego obrazu i przekaż dalej twórcom. <ph name="LEARN_MORE"/></translation>
-<translation id="7894626572714595717">Zarabiaj tokeny za oglądanie tego obrazu. Włącz reklamy Brave, aby odebrać swój udział.</translation>
+<translation id="8693132237667961044">Zyskaj tokeny za obejrzenie tego obrazu. Włącz Zarabiaj i dawaj, aby odebrać swój udział.</translation>
 <translation id="6632345639591919543">Zyskujesz tokeny za oglądanie tego obrazu.\n<ph name="LEARN_MORE"/></translation>
 <translation id="1465733111003593696">Zyskujesz tokeny za oglądanie tego obrazu.</translation>
 <translation id="7877201489035217175">Dowiedz się więcej o sponsorowanych obrazach</translation>
@@ -357,7 +356,6 @@ przez kolejne 90 dni lub do momentu zarejestrowania się twórców.</translation
 <translation id="8903462729414407077">Otrzymuj co tydzień aktualne wiadomości</translation>
 <translation id="8029219208182772618">Otrzymuj informacje o tym, które z odwiedzanych przez Ciebie witryn internetowych najbardziej naruszają prywatność.\n\nTylko Ty widzisz te statystyki prywatności. Przeglądarka Brave nigdy nie pozostawia na Twoim urządzeniu danych osobowych ani historii przeglądania.</translation>
 <translation id="6170159749517116894">Włącz raporty o prywatności</translation>
-<translation id="6165508094623778733">Dowiedz się więcej</translation>
 <translation id="5966707198760109579">Tydzień</translation>
 <translation id="8987927404178983737">Miesiąc</translation>
 <translation id="4302754476737420523">3 miesiące</translation>
@@ -376,12 +374,12 @@ przez kolejne 90 dni lub do momentu zarejestrowania się twórców.</translation
 <translation id="7427567994475794038">Włącz raporty o prywatności, aby zobaczyć, ile narzędzi do monitorowania i reklam zablokowano w ciągu ostatnich trzech godzin.</translation>
 <translation id="2053891538879944400">Oszczędziłeś(-aś) <ph name="DATA"/> <ph name="DATA_TEXT"/> danych z użyciem przeglądarki Brave.</translation>
 <translation id="8640064498452534195">Włącz raporty o prywatności, aby zobaczyć, ile danych oszczędziłeś(-aś).</translation>
-<translation id="2252497442547961651">Przeglądarka Brave zużywa średnio o 40% mniej baterii.&#128267;</translation>
+<translation id="2252497442547961651">Przeglądarka Brave zużywa średnio o 40% mniej baterii.🔋</translation>
 <translation id="1945330434665345785">W ubiegłym tygodniu zablokowałeś(-aś) z pomocą przeglądarki Brave <ph name="COUNT"/> trackers &amp; reklam.</translation>
 <translation id="2883868922264431515">Zarabiaj tokeny, oglądając reklamy z poszanowaniem Twojej prywatności i wspieraj ulubione witryny internetowe.</translation>
-<translation id="5678925890616256956">Brawo! Dzięki przeglądarce Brave udało Ci się zablokować 250 modułów śledzących i reklam.&#128293;</translation>
-<translation id="9199047775708635708">Brawo! Dzięki przeglądarce Brave udało Ci się zaoszczędzić 10 MB.&#128267;</translation>
-<translation id="1880168210969863408">Brawo! Dzięki przeglądarce Brave udało Ci się zaoszczędzić 10 minut na ładowaniu stron.&#128168;&#128168;</translation>
+<translation id="5678925890616256956">Brawo! Dzięki przeglądarce Brave udało Ci się zablokować 250 modułów śledzących i reklam.🔥</translation>
+<translation id="9199047775708635708">Brawo! Dzięki przeglądarce Brave udało Ci się zaoszczędzić 10 MB.🔋</translation>
+<translation id="1880168210969863408">Brawo! Dzięki przeglądarce Brave udało Ci się zaoszczędzić 10 minut na ładowaniu stron.💨💨</translation>
 <translation id="7408493389591475748">Zacznij przeglądać, aby zobaczyć raporty o prywatności.</translation>
 <translation id="9080777565335515917">Ustaw przeglądarkę Brave jako swoją domyślną do prywatnego i bezpiecznego przeglądania.</translation>
 <translation id="7801488941710395275">Umożliwia przeglądarce Brave pokazywanie Twoich statystyk prywatności.</translation>
@@ -391,4 +389,62 @@ przez kolejne 90 dni lub do momentu zarejestrowania się twórców.</translation
 <translation id="2718046830255553131">Wyczyszczono dane o raportach o prywatności.</translation>
 <translation id="7559243474426790340">Odśwież status</translation>
 <translation id="8376263745431603066">Włącz „Tryb nocny” (funkcja eksperymentalna)</translation>
+<translation id="1383876407941801731">Szukaj</translation>
+<translation id="1972589975368876259">Edytuj stos</translation>
+<translation id="2490330380242414851">Usuń widget</translation>
+<translation id="8446884382197647889">Dowiedz się więcej</translation>
+<translation id="7384441892795736634">Odśwież dane</translation>
+<translation id="4804818685124855865">Rozłącz</translation>
+<translation id="4789438578712143420">≈ $<ph name="USD_BALANCE"/></translation>
+<translation id="1080611582879541635"><ph name="COIN_ADDRESS"/> Adres depozytu</translation>
+<translation id="4836242416604533644"><ph name="COIN_MEMO"/> Memo o depozycie</translation>
+<translation id="5110244215256675209">Kup kryptowaluty</translation>
+<translation id="2271556362602437160">.com</translation>
+<translation id="3727077517986954867">.us</translation>
+<translation id="3414885529641505869">Kup <ph name="COIN_NAME"/></translation>
+<translation id="558614325644656740">Dostępne <ph name="COIN_BALANCE"/> <ph name="COIN_NAME"/></translation>
+<translation id="6755546361496900700">Podgląd wymiany</translation>
+<translation id="2882813124794301799">Widżet – stos</translation>
+<translation id="13296465911709339">Twój tekst został skopiowany do schowka.</translation>
+<translation id="7144878232160441200">Ponów próbę</translation>
+<translation id="2977461003134694205">Statystyki prywatności</translation>
+<translation id="4643117005422448078">Popularne strony</translation>
+<translation id="6966052266404721769">Binance</translation>
+<translation id="1392658226187691544">Zablokowane narzędzia do monitorowania oraz reklamy, zapisana szerokość pasma, i zapisane szacunki czasowe.</translation>
+<translation id="74417429503469271">Otwórz topowe strony, które często odwiedzasz.</translation>
+<translation id="2956070106555335453">Podsumowanie</translation>
+<translation id="1366855498335432549">Wpłać</translation>
+<translation id="1301340234286078471">Wymień</translation>
+<translation id="223536150967420869">Kup</translation>
+<translation id="1714829281959608206">Aktywuj połączenie z Binance, aby wyświetlić saldo rachunku Binance i handlować kryptowalutami.</translation>
+<translation id="4584930231524505442">Chcę wymienić...</translation>
+<translation id="5749014321384313843">Chcę wydać...</translation>
+<translation id="8688672835843460752">Dostępne</translation>
+<translation id="2480674848181564169">Nie ma dość środków na saldzie, by dokonać konwersji</translation>
+<translation id="2215334405220411393">Minimalna kwota do konwersji to: <ph name="COIN_BALANCE"/> <ph name="COIN_NAME"/></translation>
+<translation id="6702658079816271889">Nie można się połączyć</translation>
+<translation id="7742417737698031726">Opłata</translation>
+<translation id="2122225204180056042">Otrzymasz</translation>
+<translation id="6432284126416751397">Potwierdź wymianę</translation>
+<translation id="5137723827757859599">Nie ma tu jeszcze nic na topowych stronach.</translation>
+<translation id="3891414008432200754">Cena</translation>
+<translation id="3733576242118819803">Potwierdź (<ph name="REMAINING_TIME"/>s)</translation>
+<translation id="1627064138060308910">Konwersja nie powiodła się. Spróbuj ponownie.</translation>
+<translation id="1449790603979388000"><ph name="COUNT"/> <ph name="COUNT_TEXT"/></translation>
+<translation id="5916664084637901428">Włączone</translation>
+<translation id="5860033963881614850">Wyłączone</translation>
+<translation id="5317780077021120954">Zapisz</translation>
+<translation id="2359808026110333948">Kontynuuj</translation>
+<translation id="7658239707568436148">Anuluj</translation>
+<translation id="8193724030871339658">INNE URZĄDZENIA W ŁAŃCUCHU</translation>
+<translation id="4690880825349994619">Korzystając z istniejącego zsynchronizowanego urządzenia, otwórz ustawienia Brave i wejdź w Ustawienia &gt; Synchronizacja. Wybierz Dodaj urządzenie i zeskanuj kod QR wyświetlony na ekranie.</translation>
+<translation id="3394474617110693560">Kategorie</translation>
+<translation id="2004365171440701679">Usuń to urządzenie</translation>
+<translation id="6450924769151530465">Dodaj inne urządzenie</translation>
+<translation id="6270614677029463366">Korzystając z istniejącego zsynchronizowanego urządzenia, otwórz ustawienia Brave i wejdź w Ustawienia &gt; Synchronizacja. Wybierz Dodaj urządzenie, a następnie Zamiast tego wyświetl słowa kodu.</translation>
+<translation id="7655723274266132226">Teraz możesz zarabiać, oglądając reklamy.</translation>
+<translation id="1605521356929094020">Włącz reklamy Brave</translation>
+<translation id="1873603368604736484">Włączając opcję Nagrody, zgadzasz się na <ph name="TERMS_OF_SERVICE"/>.</translation>
+<translation id="7894626572714595717">Zarabiaj tokeny za oglądanie tego obrazu. Włącz reklamy Brave, aby odebrać swój udział.</translation>
+<translation id="6165508094623778733">Dowiedz się więcej</translation>
 </translationbundle>

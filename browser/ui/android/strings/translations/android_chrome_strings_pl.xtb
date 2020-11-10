@@ -1026,6 +1026,7 @@ Na przykład niektóre strony mogą na nie zareagować, wyświetlając reklamy b
 <translation id="996149300115483134">Menu karty kanału jest zamknięte</translation>
 <translation id="4540437243849625078">Ta witryna chce udostępnić dane aplikacji poza trybem prywatnym.</translation>
 <translation id="1227836882233136433">Opuścić tryb prywatny?</translation>
+<translation id="21023559487771014">Przejdź do trybu prywatnego</translation>
 <translation id="5186185447130319458">Prywatny</translation>
 <translation id="9063160602596686558">Automatycznie przesyła do Brave Software statystyki użytkowania i raporty o awariach</translation>
 <translation id="1438581767753657407">Po włączeniu trybu Lite Brave korzysta z serwerów Brave, aby strony wczytywały się szybciej. Tryb Lite sprawia, że bardzo wolne strony wczytują tylko niezbędną zawartość. Tryb Lite nie ma zastosowania do kart prywatnych.</translation>
@@ -1035,7 +1036,11 @@ Na przykład niektóre strony mogą na nie zareagować, wyświetlając reklamy b
 <translation id="3110967157686007724">Karta prywatna</translation>
 <translation id="4526803704855831732">Karty prywatne</translation>
 <translation id="7465104139234185284">Zamknij wszystkie karty prywatne</translation>
-<translation id="21023559487771014">Przejdź do trybu prywatnego</translation>
+<translation id="1455125811784733159">Otwórz zakładkę Prywatne</translation>
+<translation id="807110510029471880">Użyj trybu prywatnego do zalogowania się</translation>
+<translation id="7987056960390558517">W prywatnym trybie Twoja aktywność <ph name="BEGIN_BOLD1"/>może wciąż być widoczna <ph name="END_BOLD1"/>dla odwiedzanych przez Ciebie witryn internetowych, Twojego pracodawcy lub szkoły oraz Twojego dostawcy usług internetowych.
+
+Dane z Twojej prywatnej sesji zostaną wyczyszczone z przeglądarki Brave dopiero wtedy, gdy <ph name="BEGIN_BOLD2"/>zamkniesz wszystkie prywatne zakładki<ph name="END_BOLD2"/>.</translation>
 <translation id="6336451774241870485">Nowa karta prywatna</translation>
 <translation id="3234355010754616171">Nowa karta prywatna</translation>
 <translation id="6610147964972079463">Zamknij karty prywatne</translation>

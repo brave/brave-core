@@ -603,6 +603,10 @@
     "message": "Hủy",
     "description": "Text for cancel button"
   },
+  "changeAmount":  {
+    "message": "Thay đổi số lượng",
+    "description": "Button text for changing monthly contribution amount"
+  },
   "login":  {
     "message": "Đăng nhập",
     "description": "Text for login button"
@@ -612,7 +616,7 @@
     "description": "Text for login button"
   },
   "loginMessageText":  {
-    "message": "Bạn cần có tối thiểu 25 BAT để tạo tài khoản Uphold. Vui lòng thử lại sau. <br/> Nếu bạn đã có tài khoản Uphold đã xác minh, hãy tiếp tục đăng nhập.",
+    "message": "Bạn cần có tối thiểu 25 BAT để tạo tài khoản Uphold. Xin vui lòng thử lại sau.\nNếu bạn đã có tài khoản Uphold được xác minh, hãy tiếp tục đăng nhập.",
     "description": "Text for login button"
   },
   "walletConnected":  {
@@ -622,5 +626,9 @@
   "walletPending":  {
     "message": "Đang chờ xử lý",
     "description": "Status button that tells user that he is currently pending"
+  },
+  "walletVerificationNote3":  {
+    "message": "Lưu ý: Các giao dịch của bạn sẽ hiển thị với Uphold khi bạn cho phép; chẳng hạn, họ sẽ có thể thấy người nhận và số tiền tip của bạn.",
+    "description": "Displayed in login modal for uphold"
   }
 }

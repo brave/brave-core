@@ -6518,6 +6518,14 @@ Súbor kľúča uložte na bezpečné miesto. Budete ho potrebovať na vytvoreni
 <translation id="995782501881226248">YouTube</translation>
 <translation id="996250603853062861">Prebieha nadväzovanie zabezpečeného spojenia...</translation>
 <translation id="998747458861718449">P&amp;reskúmať</translation>
+<translation id="6744651634043798597">{COUNT, plural,
+          =0 {Open all in &amp;private window}
+          =1 {Open in &amp;private window}
+          other {Open all (#) in &amp;private window}}</translation>
+<translation id="2633634757060186848">{COUNT, plural,
+          =0 {Open All in &amp;Private Window}
+          =1 {Open in &amp;Private Window}
+          other {Open All (#) in &amp;Private Window}}</translation>
 <translation id="658539216370629794">Otvoriť odkaz v &amp; súkromnom okne</translation>
 <translation id="1432267168815937878">Otvoriť odkaz v &amp; súkromnom okne</translation>
 <translation id="6516243500644829484">Nové &amp;súkromné okno</translation>
@@ -6531,6 +6539,7 @@ Súbor kľúča uložte na bezpečné miesto. Budete ho potrebovať na vytvoreni
 <translation id="9048137919253433011">Súkromná karta: <ph name="TAB_NAME"/></translation>
 <translation id="1799432502220762862">Súkromný pomocný rámec: <ph name="SUBFRAME_SITE"/></translation>
 <translation id="3193187622878830588">Anonymný portál: <ph name="SUBFRAME_SITE"/></translation>
+<translation id="5097649414558628673">Nástroj: <ph name="PRINT_NAME"/></translation>
 <translation id="8808478386290700967">Internetový obchod</translation>
 <translation id="8261378640211443080">Toto rozšírenie nedodáva <ph name="IDS_EXTENSION_WEB_STORE_TITLE"/> a mohlo byť pridané bez vášho vedomia.</translation>
 <translation id="6827869674836193263"><ph name="WINDOW_TITLE"/> (Súkromný)</translation>
@@ -6548,19 +6557,21 @@ Súbor kľúča uložte na bezpečné miesto. Budete ho potrebovať na vytvoreni
 <translation id="3098826269712097986">Po ukončení súkromného režimu sa prihlasovacie údaje uložia na Brave. Umožní vám to znova použiť Touch ID s touto webovou stránkou neskôr.</translation>
 <translation id="5186185447130319458">Súkromný</translation>
 <translation id="2579188629646253712">Ukončiť súkromné</translation>
-<translation id="6744651634043798597">{COUNT, plural,
-          =0 {Open all in &amp;private window}
-          =1 {Open in &amp;private window}
-          other {Open all (#) in &amp;private window}}</translation>
+<translation id="1001131747196960052">Zatvoriť súkromný režim</translation>
+<translation id="7475335772460644497">{COUNT, plural,
+          =0 {Otvoriť všetky v &amp;súkromnom okne}
+          =1 {Otvoriť v &amp;súkromnom okne}
+          iné {Otvoriť všetky ({COUNT}) v &amp;súkromnom okne}}</translation>
 <translation id="2431625704210501303">Otvoriť v &amp; súkromnom okne</translation>
 <translation id="4620367155626060530">&amp;Zobraziť panel so záložkami</translation>
-<translation id="2633634757060186848">{COUNT, plural,
-          =0 {Open All in &amp;Private Window}
-          =1 {Open in &amp;Private Window}
-          other {Open All (#) in &amp;Private Window}}</translation>
+<translation id="1448315815373449655">{COUNT, plural,
+          =0 {Otvoriť všetko v &amp;Súkromnom okne}
+          =1 {Otvoriť v  &amp;Súkromnom okne}
+          iné {Otvoriť všetko ({COUNT}) v &amp;Súkromnom okne}}</translation>
 <translation id="1985165269306590797">Otvoriť v &amp; Súkromnom okne</translation>
 <translation id="4680518314108745448">&amp;Zobraziť panel so záložkami</translation>
 <translation id="642436385689435488">Otvoriť všetko v súkromnom okne</translation>
+<translation id="5074021236879527611">Otvoriť všetko (<ph name="URL_COUNT"/>) v súkromnom okne</translation>
 <translation id="5463021359602611602">Otvoriť v súkromnom okne</translation>
 <translation id="1850357845349976573">{0, plural,
         =1 {Private}
@@ -6610,6 +6621,8 @@ Súbor kľúča uložte na bezpečné miesto. Budete ho potrebovať na vytvoreni
 <translation id="4854477725773269949">Povoliť v súkromí</translation>
 <translation id="6436164536244065364">Zobraziť v Internetovom obchode</translation>
 <translation id="38046578254905003">Rozšírenia a témy nájdete v <ph name="BEGIN_LINK"/>Web Store<ph name="END_LINK"/></translation>
+<translation id="2402482691429508168">Profily, ktoré si zvolili, že budú pre vás viditeľné, keď je ich obrazovka odomknutá</translation>
+<translation id="3910100573440336938">Zdieľajte súbory s profilmi okolo vás</translation>
 <translation id="6336451774241870485">Nová súkromná karta</translation>
 <translation id="6610147964972079463">Zatvoriť súkromné karty</translation>
 <translation id="4933782374919065856">Máte otázky? Obráťte sa na osobu, ktorá kontroluje váš profil.</translation>

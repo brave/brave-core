@@ -603,6 +603,10 @@
     "message": "Prekliči",
     "description": "Text for cancel button"
   },
+  "changeAmount":  {
+    "message": "Spremenite količino",
+    "description": "Button text for changing monthly contribution amount"
+  },
   "login":  {
     "message": "Prijava",
     "description": "Text for login button"
@@ -612,7 +616,7 @@
     "description": "Text for login button"
   },
   "loginMessageText":  {
-    "message": "Za račun Uphold potrebujete vsaj 25 BAT. Prosimo, poskusite znova kasneje. <br/>Če že imate potrjen uporabniški račun na Uphold, nadaljujte z vpisom.",
+    "message": "Za ustvarjanje računa Uphold morate imeti najmanj 25 BAT. Prosimo, poskusite kasneje. \n Če že imate preverjen račun Uphold, se še naprej prijavljajte.",
     "description": "Text for login button"
   },
   "walletConnected":  {
@@ -622,5 +626,9 @@
   "walletPending":  {
     "message": "Na čakanju",
     "description": "Status button that tells user that he is currently pending"
+  },
+  "walletVerificationNote3":  {
+    "message": "Opomba: Vaše transakcije bo podjetje Uphold videlo, ko to sami odobrite; na primer, lahko bodo videli prejemnika in količino vaših prispevkov.",
+    "description": "Displayed in login modal for uphold"
   }
 }

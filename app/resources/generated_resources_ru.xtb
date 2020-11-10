@@ -6517,6 +6517,14 @@
 <translation id="995782501881226248">YouTube</translation>
 <translation id="996250603853062861">Создание безопасного подключения...</translation>
 <translation id="998747458861718449">П&amp;росмотреть код</translation>
+<translation id="6744651634043798597">{COUNT, plural,
+=0 {Открыть все в &amp;приватном окне}
+=1 {Открыть в &amp;приватном окне}
+other {Открыть все (#) в &amp;приватном окне}}</translation>
+<translation id="2633634757060186848">{COUNT, plural,
+=0 {Открыть все в &amp;приватном окне}
+=1 {Открыть в &amp;приватном окне}
+other {Открыть все (#) в &amp;приватном окне}}</translation>
 <translation id="658539216370629794">Открыть ссылку в &amp;приватном окне</translation>
 <translation id="1432267168815937878">Открыть ссылку в &amp;приватном окне</translation>
 <translation id="6516243500644829484">Новое &amp;приватное окно</translation>
@@ -6530,6 +6538,7 @@
 <translation id="9048137919253433011">Приватная вкладка: <ph name="TAB_NAME"/></translation>
 <translation id="1799432502220762862">Приватный субфрейм: <ph name="SUBFRAME_SITE"/></translation>
 <translation id="3193187622878830588">Портал в режиме инкогнито: <ph name="SUBFRAME_SITE"/></translation>
+<translation id="5097649414558628673">Инструмент: <ph name="PRINT_NAME"/></translation>
 <translation id="8808478386290700967">Интернет-магазин</translation>
 <translation id="8261378640211443080"><ph name="IDS_EXTENSION_WEB_STORE_TITLE"/> не содержит сведений об этом расширении, то есть оно могло быть установлено без вашего ведома.</translation>
 <translation id="6827869674836193263"><ph name="WINDOW_TITLE"/> (Приватное)</translation>
@@ -6547,19 +6556,21 @@
 <translation id="3098826269712097986">Данные для входа будут сохранены в Brave после того, как вы выйдете из Приватного режима. Это позволит вам использовать Touch ID с этим сайтом позже.</translation>
 <translation id="5186185447130319458">Приватное</translation>
 <translation id="2579188629646253712">Выйти из Приватного режима</translation>
-<translation id="6744651634043798597">{COUNT, plural,
-=0 {Открыть все в &amp;приватном окне}
-=1 {Открыть в &amp;приватном окне}
-other {Открыть все (#) в &amp;приватном окне}}</translation>
+<translation id="1001131747196960052">Закрыть приватное</translation>
+<translation id="7475335772460644497">{COUNT, plural,
+          =0 {Открыть все в &amp;приватном окне}
+          =1 {Открыть в &amp;приватном окне}
+          other {Открыть все ({COUNT}) в &amp;приватном окне}}</translation>
 <translation id="2431625704210501303">Открыть в &amp;приватном окне</translation>
 <translation id="4620367155626060530">Показывать панель &amp;закладок</translation>
-<translation id="2633634757060186848">{COUNT, plural,
-=0 {Открыть все в &amp;приватном окне}
-=1 {Открыть в &amp;приватном окне}
-other {Открыть все (#) в &amp;приватном окне}}</translation>
+<translation id="1448315815373449655">{COUNT, plural,
+          =0 {Открыть все в &amp;приватном окне}
+          =1 {Открыть в &amp;приватном окне}
+          other {Открыть все ({COUNT}) в &amp;приватном окне}}</translation>
 <translation id="1985165269306590797">Открыть в &amp;приватном окне</translation>
 <translation id="4680518314108745448">Показывать панель &amp;закладок</translation>
 <translation id="642436385689435488">Открыть все в приватном окне</translation>
+<translation id="5074021236879527611">Открыть все (<ph name="URL_COUNT"/>) в приватном окне</translation>
 <translation id="5463021359602611602">Открыть в приватном окне</translation>
 <translation id="1850357845349976573">{0, plural,
 =1 {Приватное}
@@ -6610,6 +6621,8 @@ other {Приватное (#)}
 <translation id="6436164536244065364">Просмотреть в Интернет-магазине</translation>
 <translation id="38046578254905003">Вы можете найти темы и расширения в <ph name="BEGIN_LINK"/>
 Интернет-магазине<ph name="END_LINK"/></translation>
+<translation id="2402482691429508168">Профили, выбравшие быть видимыми для вас, когда их экраны разблокированы</translation>
+<translation id="3910100573440336938">Поделиться файлами с профилями поблизости</translation>
 <translation id="6336451774241870485">Новая приватная вкладка</translation>
 <translation id="6610147964972079463">Закрыть приватные вкладки</translation>
 <translation id="4933782374919065856">Есть вопросы? Обратитесь к человеку, который контролирует ваш профиль.</translation>

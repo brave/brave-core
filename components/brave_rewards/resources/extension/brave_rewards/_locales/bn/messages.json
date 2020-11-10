@@ -603,6 +603,10 @@
     "message": "বাতিল করুন",
     "description": "Text for cancel button"
   },
+  "changeAmount":  {
+    "message": "অর্থরাশি পরিবর্তন করুন",
+    "description": "Button text for changing monthly contribution amount"
+  },
   "login":  {
     "message": "লগ-ইন করুন",
     "description": "Text for login button"
@@ -612,7 +616,7 @@
     "description": "Text for login button"
   },
   "loginMessageText":  {
-    "message": "একটি আপহোল্ড অ্যাকাউন্ট তৈরি করতে আপনার অন্তত 25 BAT থাকতে হবে। অনুগ্রহ করে পরে আবার চেষ্টা করুন। <br/> আপনার ইতিমধ্যে একটি যাচাইকৃত আপহোল্ড অ্যাকাউন্ট থাকলে, লগইন করা অবিরত রাখুন।",
+    "message": "একটি Uphold অ্যাকাউন্ট তৈরি করতে আপনার অন্তত 25 BAT থাকতে হবে। অনুগ্রহ করে পরে আবার চেষ্টা করুন। \n আপনার ইতিমধ্যে একটি যাচাইকৃত Uphold অ্যাকাউন্ট থাকলে, লগইন করা অবিরত রাখুন।",
     "description": "Text for login button"
   },
   "walletConnected":  {
@@ -622,5 +626,9 @@
   "walletPending":  {
     "message": "বিচারাধীন রয়েছে",
     "description": "Status button that tells user that he is currently pending"
+  },
+  "walletVerificationNote3":  {
+    "message": "নোট: আপনি একবার অনুমোদন করলে আপনার লেনদেনগুলি Uphold এ দেখা যাবে; উদাহরণস্বরূপ, সেগুলি আপনার পরামর্শের প্রাপক এবং অর্থরাশি দেখতে পাবেন।",
+    "description": "Displayed in login modal for uphold"
   }
 }

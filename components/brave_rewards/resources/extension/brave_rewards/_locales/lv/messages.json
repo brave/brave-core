@@ -603,6 +603,10 @@
     "message": "Atcelt",
     "description": "Text for cancel button"
   },
+  "changeAmount":  {
+    "message": "Mainīt summu",
+    "description": "Button text for changing monthly contribution amount"
+  },
   "login":  {
     "message": "Pieteikties",
     "description": "Text for login button"
@@ -612,7 +616,7 @@
     "description": "Text for login button"
   },
   "loginMessageText":  {
-    "message": "Lai izveidotu Uphold kontu, jums vajag vismaz 25 BAT. Lūdzu, mēģiniet vēlreiz vēlāk. <br/> Ja jums jau ir verificēts Uphold konts, turpiniet pieteikties. ",
+    "message": "Lai izveidotu Uphold kontu, jums vajag vismaz 25 BAT. Lūdzu, mēģiniet vēlreiz vēlāk. \nJa jums jau ir verificēts Uphold konts, turpiniet pieteikties.",
     "description": "Text for login button"
   },
   "walletConnected":  {
@@ -622,5 +626,9 @@
   "walletPending":  {
     "message": "Gaida",
     "description": "Status button that tells user that he is currently pending"
+  },
+  "walletVerificationNote3":  {
+    "message": "Piezīme: jūsu darījumi būs redzami Uphold, kad autorizēsieties; piemēram, būs redzami jūsu dzeramnaudu saņēmēji un summas.",
+    "description": "Displayed in login modal for uphold"
   }
 }

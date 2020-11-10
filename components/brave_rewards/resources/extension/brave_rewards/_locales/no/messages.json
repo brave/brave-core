@@ -603,6 +603,10 @@
     "message": "Avbryt",
     "description": "Text for cancel button"
   },
+  "changeAmount":  {
+    "message": "Endre beløp",
+    "description": "Button text for changing monthly contribution amount"
+  },
   "login":  {
     "message": "Pålogging",
     "description": "Text for login button"
@@ -612,7 +616,7 @@
     "description": "Text for login button"
   },
   "loginMessageText":  {
-    "message": "Du må ha minst 25 BAT for å opprette en Uphold-konto. Vennligst prøv igjen senere. <br/> Dersom du allerede har en verifisert Uphold-konto: Fortsett til innloggingen.",
+    "message": "Du må ha minst 25 BAT for å opprette en Uphold-konto. Prøv på nytt senere.\nHvis du allerede har bekreftet Uphold-kontoen din, kan du logge på.",
     "description": "Text for login button"
   },
   "walletConnected":  {
@@ -622,5 +626,9 @@
   "walletPending":  {
     "message": "Påventende",
     "description": "Status button that tells user that he is currently pending"
+  },
+  "walletVerificationNote3":  {
+    "message": "Merk: Transaksjonene dine er synlige for Uphold når du autoriserer. De kan for eksempel se kvitteringen og tipsbeløpet ditt.",
+    "description": "Displayed in login modal for uphold"
   }
 }

@@ -6518,6 +6518,14 @@ Tallenna avaintiedosto suojattuun sijaintiin. Tarvitset sitä, jos haluat luoda 
 <translation id="995782501881226248">YouTube</translation>
 <translation id="996250603853062861">Muodostetaan suojattua yhteyttä...</translation>
 <translation id="998747458861718449">&amp;Tarkista</translation>
+<translation id="6744651634043798597">{LUKUMÄÄRÄ, monikko,
+          =0 {Avaa kaikki &amp;yksityisessä ikkunassa}
+          =1 {Avaa &amp;yksityisessä ikkunassa}
+          muu {Avaa kaikki (lukumäärä) &amp;yksityisessä ikkunassa}}</translation>
+<translation id="2633634757060186848">{LUKUMÄÄRÄ, monikko,
+          =0 {Avaa kaikki &amp;yksityisessä ikkunassa}
+          =1 {Avaa &amp;yksityisessä ikkunassa}
+          muu {Avaa kaikki (lukumäärä) &amp;yksityisessä ikkunassa}}</translation>
 <translation id="658539216370629794">Avaa linkki in &amp;yksityisessä ikkunassa</translation>
 <translation id="1432267168815937878">Avaa linkki &amp;yksityisessä ikkunassa</translation>
 <translation id="6516243500644829484">Uusi &amp;yksityinen ikkuna</translation>
@@ -6531,6 +6539,7 @@ Tallenna avaintiedosto suojattuun sijaintiin. Tarvitset sitä, jos haluat luoda 
 <translation id="9048137919253433011">Yksityinen välilehti: <ph name="TAB_NAME"/></translation>
 <translation id="1799432502220762862">Yksityinen alikehys: <ph name="SUBFRAME_SITE"/></translation>
 <translation id="3193187622878830588">Incognito-portaali: <ph name="SUBFRAME_SITE"/></translation>
+<translation id="5097649414558628673">Työkalu: <ph name="PRINT_NAME"/></translation>
 <translation id="8808478386290700967">Verkkokauppa</translation>
 <translation id="8261378640211443080">Tätä laajennusta ei löydy kohteesta <ph name="IDS_EXTENSION_WEB_STORE_TITLE"/>, ja se on voitu lisätä ilman lupaasi.</translation>
 <translation id="6827869674836193263"><ph name="WINDOW_TITLE"/> (Yksityinen)</translation>
@@ -6548,19 +6557,21 @@ Tallenna avaintiedosto suojattuun sijaintiin. Tarvitset sitä, jos haluat luoda 
 <translation id="3098826269712097986">Kirjautumistiedot tallennetaan Braveen sen jälkeen, kun poistut yksityisestä tilasta. Voit näin myöhemmin käyttää kosketustunnistautumista uudestaan tällä verkkosivustolla.</translation>
 <translation id="5186185447130319458">Yksityinen</translation>
 <translation id="2579188629646253712">Poistu yksityisestä tilasta</translation>
-<translation id="6744651634043798597">{LUKUMÄÄRÄ, monikko,
-          =0 {Avaa kaikki &amp;yksityisessä ikkunassa}
-          =1 {Avaa &amp;yksityisessä ikkunassa}
-          muu {Avaa kaikki (lukumäärä) &amp;yksityisessä ikkunassa}}</translation>
+<translation id="1001131747196960052">Sulje yksityinen</translation>
+<translation id="7475335772460644497">{COUNT, plural,
+          =0 {Open all in &amp;private window}
+          =1 {Open in &amp;private window}
+          other {Open all ({COUNT}) in &amp;private window}}</translation>
 <translation id="2431625704210501303">Avaa &amp;yksityisessä ikkunassa</translation>
 <translation id="4620367155626060530">Näytä kirjanmerkkipalkki</translation>
-<translation id="2633634757060186848">{LUKUMÄÄRÄ, monikko,
-          =0 {Avaa kaikki &amp;yksityisessä ikkunassa}
-          =1 {Avaa &amp;yksityisessä ikkunassa}
-          muu {Avaa kaikki (lukumäärä) &amp;yksityisessä ikkunassa}}</translation>
+<translation id="1448315815373449655">{COUNT, plural,
+          =0 {Open All in &amp;Private Window}
+          =1 {Open in &amp;Private Window}
+          other {Open All ({COUNT}) in &amp;Private Window}}</translation>
 <translation id="1985165269306590797">Avaa &amp;yksityisessä ikkunassa</translation>
 <translation id="4680518314108745448">Näytä kirjanmerkkipalkki</translation>
 <translation id="642436385689435488">Avaa kaikki yksityisessä ikkunassa</translation>
+<translation id="5074021236879527611">Avaa kaikki (<ph name="URL_COUNT"/>) yksityisessä ikkunassa</translation>
 <translation id="5463021359602611602">Avaa yksityisessä ikkunassa</translation>
 <translation id="1850357845349976573">{0, monikko,
         =1 {Yksityinen}
@@ -6610,6 +6621,8 @@ Tallenna avaintiedosto suojattuun sijaintiin. Tarvitset sitä, jos haluat luoda 
 <translation id="4854477725773269949">Salli yksityisessä tilassa</translation>
 <translation id="6436164536244065364">Näytä Web Storessa</translation>
 <translation id="38046578254905003">Löydä laajennuksia ja teemoja <ph name="BEGIN_LINK"/>Web Storesta<ph name="END_LINK"/></translation>
+<translation id="2402482691429508168">Profiilit, jotka on valittu näytettäväksi sinulle, kun heidän näyttönsä on avattu</translation>
+<translation id="3910100573440336938">Jaa tiedostoja ympärilläsi oleville profiileille</translation>
 <translation id="6336451774241870485">Uusi yksityinen välilehti</translation>
 <translation id="6610147964972079463">Sulje yksityiset välilehdet</translation>
 <translation id="4933782374919065856">Onko sinulla kysyttävää? Ota yhteyttä profiiliasi valvovaan henkilöön.</translation>

@@ -1916,7 +1916,7 @@ További részletek:
 <translation id="1426112902089905810">&lt;h4&gt;1. lépés: Jelentkezzen be  a portálra&lt;/h4&gt;
     &lt;p&gt;a kávézók és repterek wifi-hálózataiba be kell jelentkezni. A bejelentkezési oldal megtekintéséhez látogasson el egy oldalra, ami &lt;code&gt;http://&lt;/kódot használ&gt;.&lt;/p&gt;
     &lt;ol&gt;
-    &lt;li&gt;Keressen fel bármilyen &lt;code&gt;http:// kezdetű weboldalra&lt;/code&gt;, például &lt;a href="http://example.com" target="_blank"&gt;http://example.com&lt;/a&gt;.&lt;/li&gt;
+    &lt;li&gt;Keressen fel bármilyen &lt;code&gt;http:// kezdetű weboldalra&lt;/code&gt;, például &lt;a href="http://example.com" target="_blank" rel="noopener noreferrer"&gt;http://example.com&lt;/a&gt;.&lt;/li&gt;
     &lt;li&gt;A megnyíló bejelentkezési oldalon jelentkezzen be az internet használatára.&lt;/li&gt;
     &lt;/ol&gt;
     &lt;h4&gt;2. lépés: Nyissa meg az oldalt privát módban (csak számítógépen)&lt;/h4&gt;
