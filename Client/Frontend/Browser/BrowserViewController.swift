@@ -1759,6 +1759,53 @@ class BrowserViewController: UIViewController {
         duckDuckGoPopup = popup
         popup.showWithType(showType: .flyUp)
     }
+    
+    private func showBookmarkController() {
+        let bookmarkViewController = BookmarksViewController(
+            folder: nil,
+            isPrivateBrowsing: PrivateBrowsingManager.shared.isPrivateBrowsing)
+        
+        bookmarkViewController.toolbarUrlActionsDelegate = self
+        
+        presentSettingsNavigation(with: bookmarkViewController)
+    }
+    
+    func openAddBookmark() {
+        guard let selectedTab = tabManager.selectedTab,
+              let selectedUrl = selectedTab.url,
+              !(selectedUrl.isLocal || selectedUrl.isReaderModeURL) else {
+            return
+        }
+        
+        let bookmarkUrl = selectedUrl.decodeReaderModeURL ?? selectedUrl
+        
+        let mode = BookmarkEditMode.addBookmark(title: selectedTab.displayTitle, url: bookmarkUrl.absoluteString)
+        
+        let addBookMarkController = AddEditBookmarkTableViewController(mode: mode)
+        
+        presentSettingsNavigation(with: addBookMarkController, cancelEnabled: true)
+    }
+    
+    private func presentSettingsNavigation(with controller: UIViewController, cancelEnabled: Bool = false) {
+        let navigationController = SettingsNavigationController(rootViewController: controller)
+        navigationController.modalPresentationStyle = .formSheet
+        
+        let cancelBarbutton = UIBarButtonItem(
+            barButtonSystemItem: .cancel,
+            target: navigationController,
+            action: #selector(SettingsNavigationController.done))
+        
+        let doneBarbutton = UIBarButtonItem(
+            barButtonSystemItem: .done,
+            target: navigationController,
+            action: #selector(SettingsNavigationController.done))
+        
+        navigationController.navigationBar.topItem?.leftBarButtonItem = cancelEnabled ? cancelBarbutton : nil
+        
+        navigationController.navigationBar.topItem?.rightBarButtonItem = doneBarbutton
+        
+        present(navigationController, animated: true)
+    }
 }
 
 extension BrowserViewController: ClipboardBarDisplayHandlerDelegate {
@@ -2055,17 +2102,7 @@ extension BrowserViewController: TopToolbarDelegate {
     // TODO: This logic should be fully abstracted away and share logic from current MenuViewController
     // See: https://github.com/brave/brave-ios/issues/1452
     func topToolbarDidTapBookmarkButton(_ topToolbar: TopToolbarView) {
-        let vc = BookmarksViewController(folder: nil,
-                                         isPrivateBrowsing: PrivateBrowsingManager.shared.isPrivateBrowsing)
-        vc.toolbarUrlActionsDelegate = self
-        
-        let nav = SettingsNavigationController(rootViewController: vc)
-        nav.modalPresentationStyle = .formSheet
-        
-        let button = UIBarButtonItem(barButtonSystemItem: .done, target: nav, action: #selector(SettingsNavigationController.done))
-        nav.navigationBar.topItem?.rightBarButtonItem = button
-        
-        present(nav, animated: true)
+        showBookmarkController()
     }
     
     func topToolbarDidTapBraveRewardsButton(_ topToolbar: TopToolbarView) {
@@ -3428,6 +3465,12 @@ extension BrowserViewController: FindInPageBarDelegate, FindInPageHelperDelegate
 
     func findInPageHelper(_ findInPageHelper: FindInPageHelper, didUpdateTotalResults totalResults: Int) {
         findInPageBar?.totalResults = totalResults
+    }
+    
+    func findTextInPage(_ direction: TextSearchDirection) {
+        guard let seachText = findInPageBar?.text else { return }
+                
+        find(seachText, function: direction.rawValue)
     }
 }
 

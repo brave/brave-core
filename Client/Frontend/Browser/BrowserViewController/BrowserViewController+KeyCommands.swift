@@ -6,6 +6,11 @@ import Shared
 
 // Naming functions: use the suffix 'KeyCommand' for an additional level of namespacing (bug 1415830)
 extension BrowserViewController {
+    
+    enum TextSearchDirection: String {
+        case next = "findNext"
+        case previous = "findPrevious"
+    }
 
     @objc private func reloadTabKeyCommand() {
         if let tab = tabManager.selectedTab, favoritesController == nil {
@@ -84,6 +89,18 @@ extension BrowserViewController {
     @objc private func showTabTrayKeyCommand() {
         showTabTray()
     }
+    
+    @objc private func addBookmarkCommand() {
+        openAddBookmark()
+    }
+    
+    @objc private func findNextCommand() {
+        findTextInPage(.next)
+    }
+    
+    @objc private func findPreviousCommand() {
+        findTextInPage(.previous)
+    }
 
     @objc private func moveURLCompletionKeyCommand(sender: UIKeyCommand) {
         guard let searchController = self.searchController else {
@@ -94,16 +111,18 @@ extension BrowserViewController {
     }
 
     override var keyCommands: [UIKeyCommand]? {
-        let searchLocationCommands = [
+        let searchLocation = [
             UIKeyCommand(input: UIKeyCommand.inputDownArrow, modifierFlags: [], action: #selector(moveURLCompletionKeyCommand(sender:))),
             UIKeyCommand(input: UIKeyCommand.inputUpArrow, modifierFlags: [], action: #selector(moveURLCompletionKeyCommand(sender:))),
         ]
+        
         let overidesTextEditing = [
             UIKeyCommand(input: UIKeyCommand.inputRightArrow, modifierFlags: [.command, .shift], action: #selector(nextTabKeyCommand)),
             UIKeyCommand(input: UIKeyCommand.inputLeftArrow, modifierFlags: [.command, .shift], action: #selector(previousTabKeyCommand)),
             UIKeyCommand(input: UIKeyCommand.inputLeftArrow, modifierFlags: .command, action: #selector(goBackKeyCommand)),
             UIKeyCommand(input: UIKeyCommand.inputRightArrow, modifierFlags: .command, action: #selector(goForwardKeyCommand)),
         ]
+        
         let tabNavigation = [
             UIKeyCommand(input: "r", modifierFlags: .command, action: #selector(reloadTabKeyCommand), discoverabilityTitle: Strings.reloadPageTitle),
             UIKeyCommand(input: "[", modifierFlags: .command, action: #selector(goBackKeyCommand), discoverabilityTitle: Strings.backTitle),
@@ -124,14 +143,26 @@ extension BrowserViewController {
             UIKeyCommand(input: "\\", modifierFlags: [.command, .shift], action: #selector(showTabTrayKeyCommand)), // Safari on macOS
             UIKeyCommand(input: "\t", modifierFlags: [.command, .alternate], action: #selector(showTabTrayKeyCommand), discoverabilityTitle: Strings.showTabTrayFromTabKeyCodeTitle)
         ]
+        
+        let bookmarkEditing = [
+            UIKeyCommand(input: "d", modifierFlags: [.command], action: #selector(addBookmarkCommand))
+        ]
+        
+        let findText = [
+            UIKeyCommand(input: "g", modifierFlags: [.command], action: #selector(findNextCommand)),
+            UIKeyCommand(input: "g", modifierFlags: [.command, .shift], action: #selector(findPreviousCommand))
+        ]
 
         let isEditingText = tabManager.selectedTab?.isEditing ?? false
 
+        var keycommandList = tabNavigation + bookmarkEditing + findText
+        
         if topToolbar.inOverlayMode {
-            return tabNavigation + searchLocationCommands
+            keycommandList.append(contentsOf: searchLocation)
         } else if !isEditingText {
-            return tabNavigation + overidesTextEditing
+            keycommandList.append(contentsOf: overidesTextEditing)
         }
-        return tabNavigation
+        
+        return keycommandList
     }
 }
