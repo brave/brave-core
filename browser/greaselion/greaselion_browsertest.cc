@@ -296,15 +296,8 @@ IN_PROC_BROWSER_TEST_F(GreaselionServiceTest, ScriptInjectionRunAtDefault) {
   EXPECT_EQ(title, "PAGE_FIRST");
 }
 
-#if defined(OS_WIN)
-// Disabled in https://github.com/brave/brave-browser/issues/11433.
-#define MAYBE_ScriptInjectionWithPrecondition \
-    DISABLED_ScriptInjectionWithPrecondition
-#else
-#define MAYBE_ScriptInjectionWithPrecondition ScriptInjectionWithPrecondition
-#endif
 IN_PROC_BROWSER_TEST_F(GreaselionServiceTest,
-                       MAYBE_ScriptInjectionWithPrecondition) {
+                       PRE_ScriptInjectionWithPrecondition) {
   ASSERT_TRUE(InstallMockExtension());
 
   GURL url = embedded_test_server()->GetURL("pre1.example.com", "/simple.html");
@@ -325,9 +318,18 @@ IN_PROC_BROWSER_TEST_F(GreaselionServiceTest,
 
   StartRewards();
   rewards_service_->SetAutoContributeEnabled(true);
-  contents = browser()->tab_strip_model()->GetActiveWebContents();
-  contents->GetController().Reload(content::ReloadType::NORMAL, true);
-  EXPECT_TRUE(WaitForLoadStop(contents));
+}
+
+IN_PROC_BROWSER_TEST_F(GreaselionServiceTest, ScriptInjectionWithPrecondition) {
+  ASSERT_TRUE(InstallMockExtension());
+
+  GURL url = embedded_test_server()->GetURL("pre1.example.com", "/simple.html");
+  ui_test_utils::NavigateToURL(browser(), url);
+  content::WebContents* contents =
+      browser()->tab_strip_model()->GetActiveWebContents();
+  ASSERT_TRUE(content::WaitForLoadStop(contents));
+  EXPECT_EQ(url, contents->GetURL());
+  std::string title;
   ASSERT_TRUE(
       ExecuteScriptAndExtractString(contents,
                                     "window.domAutomationController.send("

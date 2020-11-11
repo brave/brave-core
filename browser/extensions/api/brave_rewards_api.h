@@ -102,6 +102,9 @@ class BraveRewardsTipUserFunction : public ExtensionFunction {
   ResponseAction Run() override;
 
  private:
+  void OnTipUserStartProcess(
+      const std::string& publisher_key,
+      ledger::type::Result result);
   void OnTipUserGetPublisherInfo(
       const ledger::type::Result result,
       ledger::type::PublisherInfoPtr info);

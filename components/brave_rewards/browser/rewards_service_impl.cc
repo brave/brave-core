@@ -400,8 +400,6 @@ void RewardsServiceImpl::OnPreferenceChanged(const std::string& key) {
     return;
   }
 
-  EnableGreaseLion();
-
   if (key == prefs::kAutoContributeEnabled) {
     if (profile_->GetPrefs()->GetBoolean(prefs::kAutoContributeEnabled)) {
       StartLedger(base::DoNothing());
@@ -1928,7 +1926,12 @@ void RewardsServiceImpl::GetPublisherInfo(
     const std::string& publisher_key,
     GetPublisherInfoCallback callback) {
   if (!Connected()) {
-    std::move(callback).Run(ledger::type::Result::LEDGER_ERROR, nullptr);
+    StartProcess(
+        base::BindOnce(
+            &RewardsServiceImpl::OnStartProcessForGetPublisherInfo,
+            AsWeakPtr(),
+            publisher_key,
+            std::move(callback)));
     return;
   }
 
@@ -1937,6 +1940,18 @@ void RewardsServiceImpl::GetPublisherInfo(
       base::BindOnce(&RewardsServiceImpl::OnPublisherInfo,
           AsWeakPtr(),
           std::move(callback)));
+}
+
+void RewardsServiceImpl::OnStartProcessForGetPublisherInfo(
+    const std::string& publisher_key,
+    GetPublisherInfoCallback callback,
+    const ledger::type::Result result) {
+  if (result != ledger::type::Result::LEDGER_OK) {
+    std::move(callback).Run(result, nullptr);
+    return;
+  }
+
+  GetPublisherInfo(publisher_key, std::move(callback));
 }
 
 void RewardsServiceImpl::OnPublisherInfo(
@@ -1973,7 +1988,13 @@ void RewardsServiceImpl::SavePublisherInfo(
     ledger::type::PublisherInfoPtr publisher_info,
     SavePublisherInfoCallback callback) {
   if (!Connected()) {
-    std::move(callback).Run(ledger::type::Result::LEDGER_ERROR);
+    StartProcess(
+        base::BindOnce(
+            &RewardsServiceImpl::OnStartProcessForSavePublisherInfo,
+            AsWeakPtr(),
+            window_id,
+            std::move(publisher_info),
+            std::move(callback)));
     return;
   }
 
@@ -1983,6 +2004,19 @@ void RewardsServiceImpl::SavePublisherInfo(
       base::BindOnce(&RewardsServiceImpl::OnSavePublisherInfo,
           AsWeakPtr(),
           std::move(callback)));
+}
+
+void RewardsServiceImpl::OnStartProcessForSavePublisherInfo(
+    const uint64_t window_id,
+    ledger::type::PublisherInfoPtr publisher_info,
+    SavePublisherInfoCallback callback,
+    const ledger::type::Result result) {
+  if (result != ledger::type::Result::LEDGER_OK) {
+    std::move(callback).Run(result);
+    return;
+  }
+
+  SavePublisherInfo(window_id, std::move(publisher_info), std::move(callback));
 }
 
 void RewardsServiceImpl::OnSavePublisherInfo(
