@@ -116,6 +116,14 @@ NS_SWIFT_NAME(BraveLedger)
 /// Returns reserved amount of pending contributions to publishers.
 - (void)pendingContributionsTotal:(void (^)(double amount))completion NS_SWIFT_NAME(pendingContributionsTotal(completion:));
 
+/// Links a desktop brave wallet given some payment ID
+- (void)linkBraveWalletToPaymentId:(NSString *)paymentId
+                        completion:(void (^)(BATResult result))completion
+    NS_SWIFT_NAME(linkBraveWallet(paymentId:completion:));
+
+/// Get the amount of BAT that is transferrable via wallet linking
+- (void)transferrableAmount:(void (^)(double amount))completion;
+
 #pragma mark - User Wallets
 
 /// The last updated external wallet if a user has hooked one up
