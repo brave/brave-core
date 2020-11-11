@@ -15,7 +15,7 @@ import org.chromium.chrome.browser.omnibox.suggestions.SuggestionHost;
 import org.chromium.chrome.browser.omnibox.suggestions.UrlBarDelegate;
 import org.chromium.chrome.browser.share.ShareDelegate;
 import org.chromium.chrome.browser.tab.Tab;
-import org.chromium.chrome.browser.ui.favicon.LargeIconBridge;
+import org.chromium.components.favicon.LargeIconBridge;
 
 public class BraveEditUrlSuggestionProcessor extends EditUrlSuggestionProcessor {
     private boolean mHasClearedOmniboxForFocus;
