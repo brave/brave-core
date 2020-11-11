@@ -16,6 +16,8 @@ import org.chromium.chrome.browser.bookmarks.BookmarkBridge;
 import org.chromium.chrome.browser.compositor.bottombar.ephemeraltab.EphemeralTabCoordinator;
 import org.chromium.chrome.browser.compositor.layouts.OverviewModeBehavior;
 import org.chromium.chrome.browser.contextualsearch.ContextualSearchManager;
+import org.chromium.chrome.browser.intent.IntentMetadata;
+import org.chromium.chrome.browser.layouts.LayoutStateProvider;
 import org.chromium.chrome.browser.profiles.Profile;
 import org.chromium.chrome.browser.share.ShareDelegate;
 import org.chromium.chrome.browser.tabmodel.TabModelSelector;
@@ -25,7 +27,7 @@ import org.chromium.chrome.features.start_surface.StartSurface;
 public class BraveTabbedRootUiCoordinator extends TabbedRootUiCoordinator {
     public BraveTabbedRootUiCoordinator(ChromeActivity activity,
             Callback<Boolean> onOmniboxFocusChangedListener,
-            ObservableSupplier<Boolean> intentWithEffect,
+            OneshotSupplier<IntentMetadata> intentMetadataOneshotSupplier,
             ObservableSupplier<ShareDelegate> shareDelegateSupplier,
             ActivityTabProvider tabProvider,
             ObservableSupplierImpl<EphemeralTabCoordinator> ephemeralTabCoordinatorSupplier,
@@ -34,11 +36,13 @@ public class BraveTabbedRootUiCoordinator extends TabbedRootUiCoordinator {
             OneshotSupplier<OverviewModeBehavior> overviewModeBehaviorSupplier,
             Supplier<ContextualSearchManager> contextualSearchManagerSupplier,
             ObservableSupplier<TabModelSelector> tabModelSelectorSupplier,
-            OneshotSupplier<StartSurface> startSurfaceSupplier) {
-        super(activity, onOmniboxFocusChangedListener, intentWithEffect, shareDelegateSupplier,
-                tabProvider, ephemeralTabCoordinatorSupplier, profileSupplier,
-                bookmarkBridgeSupplier, overviewModeBehaviorSupplier,
-                contextualSearchManagerSupplier, tabModelSelectorSupplier, startSurfaceSupplier);
+            OneshotSupplier<StartSurface> startSurfaceSupplier,
+            OneshotSupplier<LayoutStateProvider> layoutStateProviderOneshotSupplier) {
+        super(activity, onOmniboxFocusChangedListener, intentMetadataOneshotSupplier,
+                shareDelegateSupplier, tabProvider, ephemeralTabCoordinatorSupplier,
+                profileSupplier, bookmarkBridgeSupplier, overviewModeBehaviorSupplier,
+                contextualSearchManagerSupplier, tabModelSelectorSupplier, startSurfaceSupplier,
+                layoutStateProviderOneshotSupplier);
     }
 
     @Override

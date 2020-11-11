@@ -26,11 +26,10 @@ import org.chromium.chrome.R;
 import org.chromium.chrome.browser.ActivityTabProvider;
 import org.chromium.chrome.browser.app.BraveActivity;
 import org.chromium.chrome.browser.app.ChromeActivity;
-import org.chromium.chrome.browser.compositor.layouts.EmptyOverviewModeObserver;
-import org.chromium.chrome.browser.compositor.layouts.OverviewModeBehavior;
-import org.chromium.chrome.browser.compositor.layouts.OverviewModeBehavior.OverviewModeObserver;
 import org.chromium.chrome.browser.feature_engagement.TrackerFactory;
 import org.chromium.chrome.browser.homepage.HomepageManager;
+import org.chromium.chrome.browser.layouts.LayoutStateProvider;
+import org.chromium.chrome.browser.layouts.LayoutType;
 import org.chromium.chrome.browser.omnibox.OmniboxFocusReason;
 import org.chromium.chrome.browser.profiles.Profile;
 import org.chromium.chrome.browser.share.ShareDelegate;
@@ -66,9 +65,9 @@ class BottomToolbarCoordinator implements View.OnLongClickListener {
     /** A provider that notifies components when the theme color changes.*/
     private final ThemeColorProvider mThemeColorProvider;
 
-    /** The overview mode manager. */
-    protected OverviewModeBehavior mOverviewModeBehavior;
-    protected OverviewModeObserver mOverviewModeObserver;
+    private LayoutStateProvider.LayoutStateObserver mLayoutStateObserver;
+    private OneshotSupplier<LayoutStateProvider> mLayoutStateProviderSupplier;
+    private LayoutStateProvider mLayoutStateProvider;
 
     /** The activity tab provider. */
     private ActivityTabProvider mTabProvider;
@@ -110,13 +109,13 @@ class BottomToolbarCoordinator implements View.OnLongClickListener {
             ObservableSupplier<ShareDelegate> shareDelegateSupplier,
             Supplier<Boolean> showStartSurfaceCallable, Runnable openHomepageAction,
             Callback<Integer> setUrlBarFocusAction,
-            OneshotSupplier<OverviewModeBehavior> overviewModeBehaviorSupplier,
+            OneshotSupplier<LayoutStateProvider> layoutStateProviderSupplier,
             ObservableSupplier<AppMenuButtonHelper> menuButtonHelperSupplier,
             BottomControlsMediator bottomControlsMediator) {
         View root = stub.inflate();
 
-        overviewModeBehaviorSupplier.onAvailable(mCallbackController.makeCancelable(
-                (overviewModeBehavior) -> { setOverviewModeBehavior(overviewModeBehavior); }));
+        layoutStateProviderSupplier.onAvailable(
+                mCallbackController.makeCancelable(this::setLayoutStateProvider));
 
         mShowStartSurfaceCallable = showStartSurfaceCallable;
         final OnClickListener homeButtonListener = v -> {
@@ -124,10 +123,9 @@ class BottomToolbarCoordinator implements View.OnLongClickListener {
         };
 
         final OnClickListener searchAcceleratorListener = v -> {
-            RecordUserAction.record("MobileToolbarOmniboxAcceleratorTap");
-
             // Only switch to HomePage when overview is showing.
-            if (mOverviewModeBehavior != null && mOverviewModeBehavior.overviewVisible()
+            if (mLayoutStateProvider != null
+                    && mLayoutStateProvider.isLayoutVisible(LayoutType.TAB_SWITCHER)
                     && mShowStartSurfaceCallable != null) {
                 mShowStartSurfaceCallable.get();
             }
@@ -136,7 +134,7 @@ class BottomToolbarCoordinator implements View.OnLongClickListener {
 
         mBrowsingModeCoordinator = new BrowsingModeBottomToolbarCoordinator(root, tabProvider,
                 homeButtonListener, searchAcceleratorListener, mShareButtonListenerSupplier,
-                tabsSwitcherLongClickListner, overviewModeBehaviorSupplier);
+                tabsSwitcherLongClickListner);
 
         mTabSwitcherModeStub = root.findViewById(R.id.bottom_toolbar_tab_switcher_mode_stub);
 
@@ -194,9 +192,11 @@ class BottomToolbarCoordinator implements View.OnLongClickListener {
         // customized.
         if (!ReturnToChromeExperimentsUtil.shouldShowStartSurfaceAsTheHomePage()
                 && BottomToolbarVariationManager.shouldBottomToolbarBeVisibleInOverviewMode()) {
-            mOverviewModeObserver = new EmptyOverviewModeObserver() {
+            mLayoutStateObserver = new LayoutStateProvider.LayoutStateObserver() {
                 @Override
-                public void onOverviewModeStartedShowing(boolean showToolbar) {
+                public void onStartedShowing(@LayoutType int layoutType, boolean showToolbar) {
+                    if (layoutType != LayoutType.TAB_SWITCHER) return;
+
                     if (mBottomControlsMediator instanceof BraveBottomControlsMediator) {
                         ((BraveBottomControlsMediator) mBottomControlsMediator)
                                 .setCompositedViewVisibile(false);
@@ -223,8 +223,10 @@ class BottomToolbarCoordinator implements View.OnLongClickListener {
                 }
 
                 @Override
-                public void onOverviewModeStartedHiding(
-                        boolean showToolbar, boolean delayAnimation) {
+                public void onStartedHiding(
+                        @LayoutType int layoutType, boolean showToolbar, boolean delayAnimation) {
+                    if (layoutType != LayoutType.TAB_SWITCHER) return;
+
                     BrowsingModeBottomToolbarCoordinator browsingModeCoordinator =
                             (BrowsingModeBottomToolbarCoordinator) mBrowsingModeCoordinator;
                     browsingModeCoordinator.getSearchAccelerator().setVisibility(View.VISIBLE);
@@ -251,7 +253,9 @@ class BottomToolbarCoordinator implements View.OnLongClickListener {
                 }
 
                 @Override
-                public void onOverviewModeFinishedHiding() {
+                public void onFinishedHiding(@LayoutType int layoutType) {
+                    if (layoutType != LayoutType.TAB_SWITCHER) return;
+
                     if (mBottomControlsMediator instanceof BraveBottomControlsMediator) {
                         ((BraveBottomControlsMediator) mBottomControlsMediator)
                                 .setCompositedViewVisibile(true);
@@ -321,9 +325,9 @@ class BottomToolbarCoordinator implements View.OnLongClickListener {
             mTabSwitcherModeCoordinator.destroy();
             mTabSwitcherModeCoordinator = null;
         }
-        if (mOverviewModeBehavior != null) {
-            mOverviewModeBehavior.removeOverviewModeObserver(mOverviewModeObserver);
-            mOverviewModeBehavior = null;
+        if (mLayoutStateProvider != null) {
+            mLayoutStateProvider.removeObserver(mLayoutStateObserver);
+            mLayoutStateProvider = null;
         }
         mThemeColorProvider.destroy();
         mShareDelegateSupplier.removeObserver(mShareDelegateSupplierCallback);
@@ -342,13 +346,11 @@ class BottomToolbarCoordinator implements View.OnLongClickListener {
         mShareButtonListenerSupplier.set(shareButtonListener);
     }
 
-    private void setOverviewModeBehavior(OverviewModeBehavior overviewModeBehavior) {
-        assert overviewModeBehavior != null;
-        assert mOverviewModeBehavior
-                == null
-            : "TODO(https://crbug.com/1084528): the overview mode manager should set at most once.";
-        mOverviewModeBehavior = overviewModeBehavior;
-        mOverviewModeBehavior.addOverviewModeObserver(mOverviewModeObserver);
+    private void setLayoutStateProvider(LayoutStateProvider layoutStateProvider) {
+        assert mLayoutStateProvider == null : "the mLayoutStateProvider should set at most once.";
+
+        mLayoutStateProvider = layoutStateProvider;
+        mLayoutStateProvider.addObserver(mLayoutStateObserver);
     }
 
     public void updateBookmarkButton(boolean isBookmarked, boolean editingAllowed) {

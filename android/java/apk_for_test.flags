@@ -92,7 +92,6 @@
     *** mScrimCoordinator;
     *** mActivity;
     *** mShowStartSurfaceSupplier;
-    *** mOverviewModeBehaviorSupplier;
     *** mMenuButtonCoordinator;
     *** mToolbarTabController;
     *** mLocationBar;
