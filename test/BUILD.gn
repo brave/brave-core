@@ -588,7 +588,7 @@ if (!is_android) {
       # https://github.com/brave/brave-browser/issues/11906 is fixed
       sources += [
         "//brave/browser/brave_scheme_load_browsertest.cc",
-        "//brave/browser/ui/webui/brave_new_tab_ui_browsertest.cc",
+        "//brave/browser/ui/webui/new_tab_page/brave_new_tab_ui_browsertest.cc",
       ]
     }
     if (is_mac) {

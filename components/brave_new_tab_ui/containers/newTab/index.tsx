@@ -467,6 +467,7 @@ class NewTabPage extends React.Component<Props, State> {
   }
 
   toggleSettings = () => {
+    this.props.actions.customizeClicked()
     if (this.state.showSettingsMenu) {
       this.setState({ focusMoreCards: false })
     }
