@@ -521,6 +521,10 @@ if (is_mac) {
       "--brave_eddsa_key=" + sparkle_eddsa_public_key,
     ]
 
+    if (skip_signing) {
+      args += [ "--skip_signing" ]
+    }
+
     deps = [
       "//chrome:chrome_app_plist",
     ]
