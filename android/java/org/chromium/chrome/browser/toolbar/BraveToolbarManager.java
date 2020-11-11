@@ -71,7 +71,6 @@ public class BraveToolbarManager extends ToolbarManager {
     private AppThemeColorProvider mAppThemeColorProvider;
     private ObservableSupplier<ShareDelegate> mShareDelegateSupplier;
     private ScrimCoordinator mScrimCoordinator;
-    private ChromeActivity mActivity;
     private Supplier<Boolean> mShowStartSurfaceSupplier;
     private MenuButtonCoordinator mMenuButtonCoordinator;
     private ToolbarTabControllerImpl mToolbarTabController;
@@ -86,6 +85,7 @@ public class BraveToolbarManager extends ToolbarManager {
     private ObservableSupplier<Boolean> mOmniboxFocusStateSupplier;
     private OneshotSupplier<LayoutStateProvider> mLayoutStateProviderSupplier;
     private HomepageManager.HomepageStateListener mBraveHomepageStateListener;
+    private AppCompatActivity mActivity;
 
     public BraveToolbarManager(AppCompatActivity activity, BrowserControlsSizer controlsSizer,
             FullscreenManager fullscreenManager, ToolbarControlContainer controlContainer,
@@ -125,6 +125,7 @@ public class BraveToolbarManager extends ToolbarManager {
 
         mOmniboxFocusStateSupplier = omniboxFocusStateSupplier;
         mLayoutStateProviderSupplier = layoutStateProviderSupplier;
+        mActivity = activity;
 
         mBraveHomepageStateListener = () -> {
             assert (mBottomControlsCoordinator instanceof BraveBottomControlsCoordinator);
@@ -141,10 +142,11 @@ public class BraveToolbarManager extends ToolbarManager {
             return;
         }
         viewStub.setOnInflateListener((stub, inflated) -> { mRootBottomView = inflated; });
+        assert (mActivity instanceof ChromeActivity);
         mBottomControlsCoordinator =
                 new BraveBottomControlsCoordinator(mLayoutStateProviderSupplier,
                         BottomTabSwitcherActionMenuCoordinator.createOnLongClickListener(
-                                id -> mActivity.onOptionsItemSelected(id, null)),
+                                id -> ((ChromeActivity) mActivity).onOptionsItemSelected(id, null)),
                         mBrowserControlsSizer, mFullscreenManager,
                         mActivity.findViewById(R.id.bottom_controls_stub), mActivityTabProvider,
                         mAppThemeColorProvider, mShareDelegateSupplier,

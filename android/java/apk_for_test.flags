@@ -90,7 +90,6 @@
     *** mAppThemeColorProvider;
     *** mShareDelegateSupplier;
     *** mScrimCoordinator;
-    *** mActivity;
     *** mShowStartSurfaceSupplier;
     *** mMenuButtonCoordinator;
     *** mToolbarTabController;
