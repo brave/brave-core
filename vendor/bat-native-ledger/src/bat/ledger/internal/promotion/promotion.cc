@@ -772,5 +772,10 @@ void Promotion::OnLastCheckTimerElapsed() {
   Fetch([](type::Result, type::PromotionList) {});
 }
 
+void Promotion::GetTransferableAmount(
+    ledger::GetTransferableAmountCallback callback) {
+  transfer_->GetAmount(callback);
+}
+
 }  // namespace promotion
 }  // namespace ledger

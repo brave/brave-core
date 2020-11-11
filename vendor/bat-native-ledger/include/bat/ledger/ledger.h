@@ -100,6 +100,8 @@ using GetPublisherInfoCallback =
 
 using GetBraveWalletCallback = std::function<void(type::BraveWalletPtr)>;
 
+using GetTransferableAmountCallback = std::function<void(double)>;
+
 class LEDGER_EXPORT Ledger {
  public:
   static bool IsMediaLink(
@@ -394,6 +396,13 @@ class LEDGER_EXPORT Ledger {
   virtual void GetBraveWallet(GetBraveWalletCallback callback) = 0;
 
   virtual std::string GetWalletPassphrase() const = 0;
+
+  virtual void LinkBraveWallet(
+      const std::string& destination_payment_id,
+      ResultCallback callback) = 0;
+
+  virtual void GetTransferableAmount(
+      GetTransferableAmountCallback callback) = 0;
 };
 
 }  // namespace ledger

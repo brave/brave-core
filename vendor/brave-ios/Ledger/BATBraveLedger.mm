@@ -71,7 +71,9 @@ static NSString * const kTransferFeesPrefKey = @"transfer_fees";
 static const auto kOneDay = base::Time::kHoursPerDay * base::Time::kSecondsPerHour;
 
 /// Ledger Prefs, keys will be defined in `bat/ledger/option_keys.h`
-const std::map<std::string, bool> kBoolOptions = {};
+const std::map<std::string, bool> kBoolOptions = {
+    {ledger::option::kClaimUGP, true}
+};
 const std::map<std::string, int> kIntegerOptions = {};
 const std::map<std::string, double> kDoubleOptions = {};
 const std::map<std::string, std::string> kStringOptions = {};
@@ -542,6 +544,20 @@ BATLedgerReadonlyBridge(BOOL, isWalletCreated, IsWalletCreated)
 {
   ledger->GetPendingContributionsTotal(^(double total){
     completion(total);
+  });
+}
+
+- (void)linkBraveWalletToPaymentId:(NSString *)paymentId completion:(void (^)(BATResult result))completion
+{
+  ledger->LinkBraveWallet(paymentId.UTF8String, ^(ledger::type::Result result) {
+    completion(static_cast<BATResult>(result));
+  });
+}
+
+- (void)transferrableAmount:(void (^)(double amount))completion
+{
+  ledger->GetTransferableAmount(^(double amount) {
+    completion(amount);
   });
 }
 
