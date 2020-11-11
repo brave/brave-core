@@ -421,15 +421,20 @@ chrome.runtime.onConnectExternal.addListener((port: chrome.runtime.Port) => {
 
 chrome.runtime.onMessageExternal.addListener(
   function (msg: any, sender: chrome.runtime.MessageSender, sendResponse: any) {
-    if (!msg) {
+    if (!msg || !msg.type || !sender || !sender.id) {
       return
     }
-    switch (msg.type) {
-      case 'GetPublisherPanelInfo':
-        getPublisherPanelInfoByTabId(msg.tabId)
-        break
-      case 'SupportsGreaselion':
-        sendResponse({ supported: true })
-        break
-    }
+    chrome.greaselion.isGreaselionExtension(sender.id, (valid: boolean) => {
+      if (!valid && sender.id !== braveRewardsExtensionId) {
+        return
+      }
+      switch (msg.type) {
+        case 'GetPublisherPanelInfo':
+          getPublisherPanelInfoByTabId(msg.tabId)
+          break
+        case 'SupportsGreaselion':
+          sendResponse({ supported: true })
+          break
+      }
+    })
   })
