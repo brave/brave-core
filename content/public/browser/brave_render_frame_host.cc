@@ -9,7 +9,9 @@
 
 namespace content {
 
-RenderFrameHost::RenderFrameHost() {}
+RenderFrameHost::RenderFrameHost() {
+  cosmetic_filters_communication_impl_ = nullptr;
+}
 
 RenderFrameHost::~RenderFrameHost() {}
 

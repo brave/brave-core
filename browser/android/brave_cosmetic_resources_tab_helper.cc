@@ -237,8 +237,6 @@ void BraveCosmeticResourcesTabHelper::CSSRulesRoutine(
   base::ListValue* force_hide_selectors_list = nullptr;
   if (resources_dict->GetList("hide_selectors", &hide_selectors_list)) {
     if (enabled_1st_party_cf_filtering_) {
-      // TODO
-      // resources.force_hide_selectors.push(...resources.hide_selectors)
       force_hide_selectors_list = hide_selectors_list;
     } else {
       std::string cosmeticFilterConsiderNewSelectors_script =
@@ -363,9 +361,8 @@ void BraveCosmeticResourcesTabHelper::GetHiddenClassIdSelectorsOnUI(
     return;
   }
   if (enabled_1st_party_cf_filtering_) {
-    // TODO
-    // resources.force_hide_selectors.push(...resources.hide_selectors)
-    //force_hide_selectors_list = selectors;
+    // (sergz) We do the same in else section, we need to figure out do we
+    // need that if at all
   } else {
     std::string cosmeticFilterConsiderNewSelectors_script =
         "(function() {"
