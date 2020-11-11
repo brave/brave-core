@@ -193,11 +193,11 @@ bool BraveMainDelegate::BasicStartupComplete(int* exit_code) {
 
   command_line.AppendSwitchASCII(switches::kLsoUrl, kDummyUrl);
 
+#if defined(OFFICIAL_BUILD)
   // Brave variations
   std::string kVariationsServerURL = BRAVE_VARIATIONS_SERVER_URL;
   command_line.AppendSwitchASCII(variations::switches::kVariationsServerURL,
       kVariationsServerURL.c_str());
-#if defined(OFFICIAL_BUILD)
   CHECK(!kVariationsServerURL.empty());
 #endif
 
