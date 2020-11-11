@@ -497,8 +497,7 @@ IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, NewTabContinuesToBlock) {
 }
 
 // XHRs and ads in a cross-site iframe are blocked as well.
-// Enable when https://github.com/brave/brave-browser/issues/12351 is fixed
-IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, DISABLED_SubFrame) {
+IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, SubFrame) {
   SetDefaultComponentIdAndBase64PublicKeyForTest(
       kDefaultAdBlockComponentTestId,
       kDefaultAdBlockComponentTestBase64PublicKey);
@@ -517,10 +516,16 @@ IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, DISABLED_SubFrame) {
 
   // Check also an explicit request for a script since it is a common real-world
   // scenario.
-  ASSERT_TRUE(ExecuteScript(contents->GetAllFrames()[1],
-                            "var s = document.createElement('script');"
-                            "s.setAttribute('src', 'adbanner.js?2');"
-                            "document.head.appendChild(s);"));
+  ASSERT_EQ(true, EvalJs(contents->GetAllFrames()[1],
+                         R"(
+                           new Promise(function (resolve, reject) {
+                             var s = document.createElement('script');
+                             s.onload = reject;
+                             s.onerror = () => resolve(true);
+                             s.src = 'adbanner.js?2';
+                             document.head.appendChild(s);
+                           })
+                         )"));
   content::RunAllTasksUntilIdle();
   EXPECT_EQ(browser()->profile()->GetPrefs()->GetUint64(kAdsBlocked), 2ULL);
 }
