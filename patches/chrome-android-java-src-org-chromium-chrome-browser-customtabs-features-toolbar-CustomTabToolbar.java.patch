@@ -1,8 +1,8 @@
 diff --git a/chrome/android/java/src/org/chromium/chrome/browser/customtabs/features/toolbar/CustomTabToolbar.java b/chrome/android/java/src/org/chromium/chrome/browser/customtabs/features/toolbar/CustomTabToolbar.java
-index 52c86139804e02f2548cc3890e7848f08c52cfca..619d73a5dd9aac2e26a0cc9330dd17698a4ce155 100644
+index f6658462b1774dd77ad9374d519ae8dd22fddb7e..8b342753ca10f144961cf383654b9c35d8820c1a 100644
 --- a/chrome/android/java/src/org/chromium/chrome/browser/customtabs/features/toolbar/CustomTabToolbar.java
 +++ b/chrome/android/java/src/org/chromium/chrome/browser/customtabs/features/toolbar/CustomTabToolbar.java
-@@ -97,7 +97,7 @@ import java.util.regex.Pattern;
+@@ -85,7 +85,7 @@ import java.util.regex.Pattern;
  /**
   * The Toolbar layout to be used for a custom tab. This is used for both phone and tablet UIs.
   */
