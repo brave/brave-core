@@ -114,7 +114,6 @@ declare namespace NewTab {
     showRewards: boolean
     showTogether: boolean
     showBinance: boolean
-    showAddCard: boolean
     showGemini: boolean
     showBitcoinDotCom: boolean
     showCryptoDotCom: boolean,

@@ -243,7 +243,7 @@ void CustomizeWebUIHTMLSource(const std::string &name,
         { "rewardsWidgetBrandedNotificationTitle", IDS_REWARDS_WIDGET_BRANDED_NOTIFICATION_TITLE },      // NOLINT
         { "rewardsWidgetBrandedNotificationDescription", IDS_REWARDS_WIDGET_BRANDED_NOTIFICATION_DESCRIPTION }, // NOLINT
         { "rewardsWidgetBrandedNotificationHideAction", IDS_REWARDS_WIDGET_BRANDED_NOTIFICATION_HIDE_ACTION }, // NOLINT
-        { "addCardWidgetTitle", IDS_ADD_CARD_WIDGET_TITLE },
+        { "editCardsTitle", IDS_EDIT_CARDS_TITLE },
         { "tosAndPp", IDS_REWARDS_WIDGET_TOS_AND_PP},     // NOLINT
         { "rewardsWidgetStartUsing", IDS_REWARDS_WIDGET_START_USING},     // NOLINT
         // Together Widget

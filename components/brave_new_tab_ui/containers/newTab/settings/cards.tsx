@@ -29,8 +29,8 @@ import geminiBanner from './assets/gemini.png'
 import bitcoinDotComBanner from './assets/bitcoin-dot-com.png'
 import cryptoDotComBanner from './assets/crypto-dot-com.png'
 import HideIcon from './assets/hide-icon'
-import AddIcon from '../../../components/default/addCard/assets/add-icon'
 import { Toggle } from '../../../components/toggle'
+import AddIcon from './assets/add-icon'
 
 import { getLocale } from '../../../../common/locale'
 

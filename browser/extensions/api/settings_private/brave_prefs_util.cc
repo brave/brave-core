@@ -121,8 +121,6 @@ const PrefsUtil::TypedPrefMap& BravePrefsUtil::GetAllowlistedKeys() {
       settings_api::PrefType::PREF_TYPE_BOOLEAN;
   (*s_brave_allowlist)[kNewTabPageShowTogether] =
       settings_api::PrefType::PREF_TYPE_BOOLEAN;
-  (*s_brave_allowlist)[kNewTabPageShowAddCard] =
-      settings_api::PrefType::PREF_TYPE_BOOLEAN;
   (*s_brave_allowlist)[kNewTabPageShowGemini] =
       settings_api::PrefType::PREF_TYPE_BOOLEAN;
   (*s_brave_allowlist)[kNewTabPageShowsOptions] =

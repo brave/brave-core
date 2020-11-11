@@ -22,7 +22,6 @@ export const defaultState: NewTab.State = {
   showRewards: false,
   showTogether: false,
   showBinance: false,
-  showAddCard: false,
   showGemini: false,
   showBitcoinDotCom: false,
   showCryptoDotCom: false,
