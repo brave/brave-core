@@ -512,6 +512,10 @@ if (is_mac) {
       "--brave_version=" + brave_version,
     ]
 
+    if (skip_signing) {
+      args += [ "--skip_signing" ]
+    }
+
     deps = [
       "//chrome:chrome_app_plist",
     ]
