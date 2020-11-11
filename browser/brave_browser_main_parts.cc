@@ -52,7 +52,6 @@ void BraveBrowserMainParts::PostBrowserStart() {
   ChromeBrowserMainParts::PostBrowserStart();
 
 #if BUILDFLAG(ENABLE_TOR)
-  // TODO(darkdh): Delete tor session profile
   ProfileManager* profile_manager = g_browser_process->profile_manager();
   base::FilePath tor_legacy_path =
       profile_manager->user_data_dir().Append(tor::kTorProfileDir);
@@ -76,6 +75,17 @@ void BraveBrowserMainParts::PostBrowserStart() {
     profile_manager->MaybeScheduleProfileForDeletion(
         tor_legacy_path, base::DoNothing(),
         ProfileMetrics::DELETE_PROFILE_SETTINGS);
+  }
+  for (Profile* profile : profile_manager->GetLoadedProfiles()) {
+    const base::FilePath tor_legacy_session_path =
+        profile->GetPath()
+            .AppendASCII("session_profiles")
+            .Append(tor::kTorProfileDir);
+    if (base::PathExists(tor_legacy_session_path)) {
+      profile_manager->MaybeScheduleProfileForDeletion(
+          tor_legacy_session_path, base::DoNothing(),
+          ProfileMetrics::DELETE_PROFILE_SETTINGS);
+    }
   }
 #endif
 

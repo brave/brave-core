@@ -12,6 +12,7 @@
 
 namespace tor {
 
+// Deprecated
 extern const base::FilePath::CharType kTorProfileDir[];
 
 constexpr char kTorProfileID[] = "Tor::Profile";

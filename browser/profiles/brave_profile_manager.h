@@ -15,8 +15,12 @@ class BraveProfileManager : public ProfileManager {
   explicit BraveProfileManager(const base::FilePath& user_data_dir);
   ~BraveProfileManager() override;
 
+  std::string GetLastUsedProfileName() override;
   void SetNonPersonalProfilePrefs(Profile* profile) override;
   bool IsAllowedProfilePath(const base::FilePath& path) const override;
+  bool LoadProfileByPath(const base::FilePath& profile_path,
+                         bool incognito,
+                         ProfileLoadedCallback callback) override;
 
   void OnProfileCreated(Profile* profile,
                         bool success,

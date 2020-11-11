@@ -7,22 +7,20 @@
 #define BRAVE_CHROMIUM_SRC_CHROME_BROWSER_PROFILES_PROFILE_MANAGER_H_
 
 #define GetLastUsedProfileName virtual GetLastUsedProfileName
-#define InitProfileUserPrefs virtual InitProfileUserPrefs
 #define DoFinalInitForServices virtual DoFinalInitForServices
 #define SetNonPersonalProfilePrefs virtual SetNonPersonalProfilePrefs
 #define IsAllowedProfilePath virtual IsAllowedProfilePath
-#define AddProfileToStorage virtual AddProfileToStorage
+#define LoadProfileByPath virtual LoadProfileByPath
 #define BRAVE_PROFILE_MANAGER_H     \
  private:                           \
   friend class BraveProfileManager; \
                                     \
  public:
 #include "../../../../../chrome/browser/profiles/profile_manager.h"
-#undef AddProfileToStorage
+#undef LoadProfileByPath
 #undef IsAllowedProfilePath
 #undef SetNonPersonalProfilePrefs
 #undef DoFinalInitForServices
-#undef InitProfileUserPrefs
 #undef GetLastUsedProfileName
 
 #endif  // BRAVE_CHROMIUM_SRC_CHROME_BROWSER_PROFILES_PROFILE_MANAGER_H_

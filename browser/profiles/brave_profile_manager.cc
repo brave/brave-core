@@ -7,6 +7,7 @@
 
 #include <memory>
 #include <string>
+#include <utility>
 #include <vector>
 
 #include "base/metrics/histogram_macros.h"
@@ -19,6 +20,7 @@
 #include "brave/components/brave_shields/browser/brave_shields_util.h"
 #include "brave/components/brave_wallet/buildflags/buildflags.h"
 #include "brave/components/ipfs/buildflags/buildflags.h"
+#include "brave/components/tor/tor_constants.h"
 #include "brave/content/browser/webui/brave_shared_resources_data_source.h"
 #include "chrome/browser/browser_process.h"
 #include "chrome/browser/chrome_notification_types.h"
@@ -70,6 +72,19 @@ BraveProfileManager::~BraveProfileManager() {
   }
 }
 
+std::string BraveProfileManager::GetLastUsedProfileName() {
+  PrefService* local_state = g_browser_process->local_state();
+  DCHECK(local_state);
+  const std::string last_used_profile_name =
+      local_state->GetString(prefs::kProfileLastUsed);
+  // Keep this for legacy tor profile migration because tor profile might be
+  // last active profiel before upgrading
+  if (last_used_profile_name ==
+      base::FilePath(tor::kTorProfileDir).AsUTF8Unsafe())
+    return chrome::kInitialProfile;
+  return ProfileManager::GetLastUsedProfileName();
+}
+
 void BraveProfileManager::DoFinalInitForServices(Profile* profile,
                                                  bool go_off_the_record) {
   ProfileManager::DoFinalInitForServices(profile, go_off_the_record);
@@ -97,6 +112,22 @@ bool BraveProfileManager::IsAllowedProfilePath(
   // want to also be able to create profile in subfolders of user_data_dir.
   return ProfileManager::IsAllowedProfilePath(path) ||
          user_data_dir().IsParent(path.DirName());
+}
+
+bool BraveProfileManager::LoadProfileByPath(const base::FilePath& profile_path,
+                         bool incognito,
+                         ProfileLoadedCallback callback) {
+  // Prevent legacy tor session profile to be loaded so we won't hit
+  // DCHECK(!GetProfileAttributesWithPath(...)). Workaround for legacy tor guest
+  // profile won't work because when AddProfile to storage we will hit
+  // DCHECK(user_data_dir_ == profile_path.DirName()), legacy tor session
+  // profile was not under user_data_dir like legacy tor guest profile did.
+  if (profile_path.BaseName().value() == tor::kTorProfileDir) {
+    return false;
+  }
+
+  return ProfileManager::LoadProfileByPath(profile_path, incognito,
+                                           std::move(callback));
 }
 
 // Profile can be loaded sync or async; if sync, there is a matching block
