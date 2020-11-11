@@ -17,7 +17,9 @@
 #include "base/task_runner_util.h"
 #include "brave/components/ipfs/features.h"
 #include "brave/components/ipfs/ipfs_constants.h"
+#include "brave/components/ipfs/ipfs_gateway.h"
 #include "brave/components/ipfs/ipfs_json_parser.h"
+#include "brave/components/ipfs/ipfs_ports.h"
 #include "brave/components/ipfs/ipfs_service_observer.h"
 #include "brave/components/ipfs/pref_names.h"
 #include "brave/components/ipfs/service_sandbox_type.h"
@@ -79,11 +81,13 @@ namespace ipfs {
 
 IpfsService::IpfsService(content::BrowserContext* context,
                          ipfs::BraveIpfsClientUpdater* ipfs_client_updater,
-                         const base::FilePath& user_data_dir)
+                         const base::FilePath& user_data_dir,
+                         version_info::Channel channel)
     : context_(context),
-      server_endpoint_(GURL(kServerEndpoint)),
+      server_endpoint_(GetAPIServer(channel)),
       user_data_dir_(user_data_dir),
       ipfs_client_updater_(ipfs_client_updater),
+      channel_(channel),
       file_task_runner_(base::CreateSequencedTaskRunner(
           {base::ThreadPool(), base::MayBlock(),
            base::TaskPriority::BEST_EFFORT,
@@ -154,8 +158,9 @@ void IpfsService::LaunchIfNotRunning(const base::FilePath& executable_path) {
   ipfs_service_->SetCrashHandler(
       base::Bind(&IpfsService::OnIpfsDaemonCrashed, base::Unretained(this)));
 
-  auto config = mojom::IpfsConfig::New(executable_path, GetConfigFilePath(),
-                                       GetDataPath());
+  auto config = mojom::IpfsConfig::New(
+      executable_path, GetConfigFilePath(), GetDataPath(),
+      GetGatewayPort(channel_), GetAPIPort(channel_), GetSwarmPort(channel_));
 
   ipfs_service_->Launch(
       std::move(config),

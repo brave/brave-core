@@ -8,7 +8,6 @@
 
 namespace ipfs {
 
-extern const char kServerEndpoint[];
 extern const char kSwarmPeersPath[];
 extern const char kConfigPath[];
 extern const char kArgQueryParam[];

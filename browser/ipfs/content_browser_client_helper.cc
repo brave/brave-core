@@ -13,9 +13,11 @@
 #include "brave/browser/profiles/profile_util.h"
 #include "brave/common/url_constants.h"
 #include "brave/components/ipfs/ipfs_constants.h"
+#include "brave/components/ipfs/ipfs_gateway.h"
 #include "brave/components/ipfs/pref_names.h"
 #include "brave/components/ipfs/translate_ipfs_uri.h"
 #include "chrome/browser/external_protocol/external_protocol_handler.h"
+#include "chrome/common/channel_info.h"
 #include "components/prefs/pref_service.h"
 #include "components/user_prefs/user_prefs.h"
 #include "content/public/browser/browser_context.h"
@@ -47,7 +49,8 @@ bool ContentBrowserClientHelper::HandleIPFSURLRewrite(
       // We instead will translate the URL later in LoadOrLaunchIPFSURL.
       IsIPFSLocalGateway(browser_context) &&
       (url->SchemeIs(kIPFSScheme) || url->SchemeIs(kIPNSScheme))) {
-    return TranslateIPFSURI(*url, url, true);
+    return TranslateIPFSURI(*url, url,
+                            GetDefaultIPFSLocalGateway(chrome::GetChannel()));
   }
 
   return false;
@@ -67,9 +70,11 @@ bool ContentBrowserClientHelper::ShouldNavigateIPFSURI(
     content::BrowserContext* browser_context) {
   *new_url = url;
   bool is_ipfs_scheme = url.SchemeIs(kIPFSScheme) || url.SchemeIs(kIPNSScheme);
+  GURL gateway_url = IsIPFSLocalGateway(browser_context)
+                         ? GetDefaultIPFSLocalGateway(chrome::GetChannel())
+                         : GetDefaultIPFSGateway();
   return !IpfsServiceFactory::IsIpfsResolveMethodDisabled(browser_context) &&
-         (!is_ipfs_scheme ||
-          TranslateIPFSURI(url, new_url, IsIPFSLocalGateway(browser_context)));
+         (!is_ipfs_scheme || TranslateIPFSURI(url, new_url, gateway_url));
 }
 
 // static
@@ -110,7 +115,7 @@ void ContentBrowserClientHelper::HandleIPFSProtocol(
 
 // static
 bool ContentBrowserClientHelper::IsIPFSProtocol(const GURL& url) {
-  return TranslateIPFSURI(url, nullptr, false);
+  return TranslateIPFSURI(url, nullptr, GetDefaultIPFSGateway());
 }
 
 }  // namespace ipfs

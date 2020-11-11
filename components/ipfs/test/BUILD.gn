@@ -15,6 +15,7 @@ source_set("brave_ipfs_unit_tests") {
       "//brave/components/ipfs/ipfs_json_parser_unittest.cc",
       "//brave/components/ipfs/ipfs_navigation_throttle_unittest.cc",
       "//brave/components/ipfs/ipfs_p3a_unittest.cc",
+      "//brave/components/ipfs/ipfs_ports_unittest.cc",
       "//brave/components/ipfs/ipfs_utils_unittest.cc",
       "//brave/components/ipfs/translate_ipfs_uri_unittest.cc",
     ]
@@ -28,6 +29,7 @@ source_set("brave_ipfs_unit_tests") {
       "//brave/test:test_support",
       "//chrome:browser_dependencies",
       "//chrome/test:test_support",
+      "//components/version_info",
       "//content/public/browser",
       "//content/test:test_support",
       "//net",

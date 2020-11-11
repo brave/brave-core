@@ -97,7 +97,7 @@ struct BraveRequestInfo {
   const base::ListValue* referral_headers_list = nullptr;
   BlockedBy blocked_by = kNotBlocked;
   std::string mock_data_url;
-  bool ipfs_local = true;
+  GURL ipfs_gateway_url;
 
   bool ShouldMockRequest() const {
     return !mock_data_url.empty();

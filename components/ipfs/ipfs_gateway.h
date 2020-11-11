@@ -6,13 +6,15 @@
 #ifndef BRAVE_COMPONENTS_IPFS_IPFS_GATEWAY_H_
 #define BRAVE_COMPONENTS_IPFS_IPFS_GATEWAY_H_
 
+#include "components/version_info/channel.h"
 #include "url/gurl.h"
 
 namespace ipfs {
 
 void SetIPFSDefaultGatewayForTest(const GURL& url);
-GURL GetDefaultIPFSLocalGateway();
+GURL GetDefaultIPFSLocalGateway(version_info::Channel channel);
 GURL GetDefaultIPFSGateway();
+GURL GetAPIServer(version_info::Channel channel);
 
 }  // namespace ipfs
 

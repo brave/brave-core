@@ -10,6 +10,9 @@ struct IpfsConfig {
   mojo_base.mojom.FilePath binary_path;
   mojo_base.mojom.FilePath config_path;
   mojo_base.mojom.FilePath data_root_path;
+  string gateway_port;
+  string api_port;
+  string swarm_port;
 };
 
 interface IpfsService {
