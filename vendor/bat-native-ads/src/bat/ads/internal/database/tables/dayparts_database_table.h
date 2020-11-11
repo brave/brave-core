@@ -48,11 +48,11 @@ class Dayparts : public Table {
       DBCommand* command,
       const CreativeAdList& creative_ads);
 
-  void CreateTableV4(
+  void CreateTableV6(
       DBTransaction* transaction);
-  void CreateIndexV4(
+  void CreateIndexV6(
       DBTransaction* transaction);
-  void MigrateToV4(
+  void MigrateToV6(
       DBTransaction* transaction);
 
   AdsImpl* ads_;  // NOT OWNED
