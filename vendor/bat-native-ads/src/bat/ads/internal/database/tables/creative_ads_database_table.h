@@ -55,6 +55,13 @@ class CreativeAds : public Table {
   void MigrateToV3(
       DBTransaction* transaction);
 
+  void CreateTableV6(
+      DBTransaction* transaction);
+  void CreateIndexV6(
+      DBTransaction* transaction);
+  void MigrateToV6(
+      DBTransaction* transaction);
+
   AdsImpl* ads_;  // NOT OWNED
 };
 
