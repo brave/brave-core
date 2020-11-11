@@ -140,11 +140,11 @@ class IpfsServiceBrowserTest : public InProcessBrowserTest {
 
     std::string request_path = request.GetURL().path();
     if (request_path == "/simple.html") {
-      http_response->set_content("fetch test");
+      http_response->set_content("simple.html");
     } else if (request_path ==
                "/ipfs/"
                "bafybeiemxf5abjwjbikoz4mc3a3dla6ual3jsgpdr4cjr3oz3evfyavhwq") {
-      http_response->set_content("fetch test");
+      http_response->set_content("test content 1");
     }
     http_response->set_code(net::HTTP_OK);
 
@@ -281,12 +281,45 @@ IN_PROC_BROWSER_TEST_F(IpfsServiceBrowserTest, CanFetchIPFSResources) {
       "bafybeiemxf5abjwjbikoz4mc3a3dla6ual3jsgpdr4cjr3oz3evfyavhwq')"
       "  .then(response => { response.text()"
       "      .then((response_text) => {"
-      "        const result = response_text == 'fetch test';"
+      "        const result = response_text == 'test content 1';"
       "        window.domAutomationController.send(result);"
       "      })})"
       ".catch((x) => console.log('error: ' + x));",
       &as_expected));
   ASSERT_TRUE(as_expected);
+}
+
+IN_PROC_BROWSER_TEST_F(IpfsServiceBrowserTest, ExternalHandlerMainFrameOnly) {
+  ResetTestServer(
+      base::BindRepeating(&IpfsServiceBrowserTest::HandleEmbeddedSrvrRequest,
+                          base::Unretained(this)));
+  SetIPFSDefaultGatewayForTest(GetURL("/"));
+  ui_test_utils::NavigateToURL(browser(), GetURL("/simple.html"));
+  bool as_expected = false;
+  content::WebContents* contents =
+      browser()->tab_strip_model()->GetActiveWebContents();
+  ASSERT_TRUE(ExecuteScriptAndExtractBool(
+      contents,
+      // Add an iframe that loads an IPFS resource.
+      // If this is wrongly handled in Debug in an external handler for
+      // subresources it would throw DCHECK:
+      //   ui::PageTransitionIsMainFrame(params->transition).
+      // On Release builds, it would redirect the main frame to the IPFS
+      // resource.
+      "const iframe = document.createElement('iframe');"
+      "iframe.src ="
+      "  'ipfs://bafybeiemxf5abjwjbikoz4mc3a3dla6ual3jsgpdr4cjr3oz3evfyavhwq';"
+      "document.body.appendChild(iframe);"
+      "const timer = setInterval(function () {"
+      "  const iframeDoc = iframe.contentDocument || "
+      "      iframe.contentWindow.document;"
+      "  console.log('iframeDoc.readyState: ' + iframeDoc.readyState);"
+      "  const result = iframeDoc.readyState == 'complete';"
+      "  clearInterval(timer);"
+      "  window.domAutomationController.send(result);"
+      "}, 100);",
+      &as_expected));
+  ASSERT_EQ(contents->GetURL(), GetURL("/simple.html"));
 }
 
 }  // namespace ipfs

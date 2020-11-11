@@ -193,7 +193,7 @@ bool BraveContentBrowserClient::HandleExternalProtocol(
   }
 #endif
 #if BUILDFLAG(IPFS_ENABLED)
-  if (ipfs::ContentBrowserClientHelper::IsIPFSProtocol(url)) {
+  if (ipfs::ContentBrowserClientHelper::IsIPFSProtocol(url) && is_main_frame) {
     ipfs::ContentBrowserClientHelper::HandleIPFSProtocol(url,
         std::move(web_contents_getter),
         page_transition, has_user_gesture,
