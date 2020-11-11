@@ -145,6 +145,7 @@ public class BraveNewTabPageLayout extends NewTabPageLayout {
     private LinearLayout bianceDisconnectLayout;
     private LinearLayout binanceWidgetLayout;
     private ProgressBar binanceWidgetProgress;
+    private TextView mTopsiteErrorMessage;
 
     private BinanceNativeWorker mBinanceNativeWorker;
     private CountDownTimer countDownTimer;
@@ -214,7 +215,7 @@ public class BraveNewTabPageLayout extends NewTabPageLayout {
                 View mTopSitesLayout = inflater.inflate(R.layout.top_sites_layout, null);
                 FrameLayout mTopSitesGridLayout =
                         mTopSitesLayout.findViewById(R.id.top_sites_grid_layout);
-                TextView topsiteErrorMessage =
+                mTopsiteErrorMessage =
                         mTopSitesLayout.findViewById(R.id.widget_error_title);
 
                 if (shouldShowSuperReferral() && superReferralSitesLayout != null) {
@@ -231,7 +232,7 @@ public class BraveNewTabPageLayout extends NewTabPageLayout {
                     boolean showPlaceholder =
                             getTileGroup().hasReceivedData() && getTileGroup().isEmpty();
                     if (mSiteSectionView != null && !showPlaceholder) {
-                        topsiteErrorMessage.setVisibility(View.GONE);
+                        mTopsiteErrorMessage.setVisibility(View.GONE);
                         if (mSiteSectionView.getParent() != null) {
                             ((ViewGroup) mSiteSectionView.getParent()).removeView(mSiteSectionView);
                         }
@@ -242,7 +243,7 @@ public class BraveNewTabPageLayout extends NewTabPageLayout {
                         }
                         mTopSitesGridLayout.addView(mSiteSectionView);
                     } else {
-                        topsiteErrorMessage.setVisibility(View.VISIBLE);
+                        mTopsiteErrorMessage.setVisibility(View.VISIBLE);
                     }
                     ntpWidgetItem.setWidgetView(mTopSitesLayout);
                     ntpWidgetMap.put(ntpWidgetManager.getFavoritesWidget(), ntpWidgetItem);
@@ -873,4 +874,25 @@ public class BraveNewTabPageLayout extends NewTabPageLayout {
         ntpWidgetStackActivityIntent.putExtra(NTPWidgetStackActivity.FROM_SETTINGS, false);
         auxiliary.startActivityForResult(ntpWidgetStackActivityIntent, NTP_WIDGET_STACK_CODE);
     }
+
+    @Override
+    public void onTileCountChanged() {
+        if (mTopsiteErrorMessage == null) {
+            return;
+        }
+
+        if (getPlaceholder() != null
+                && ((ViewGroup)getPlaceholder().getParent()) != null) {
+            ((ViewGroup)getPlaceholder().getParent()).removeView(getPlaceholder());
+        }
+
+        boolean showPlaceholder =
+            getTileGroup().hasReceivedData() && getTileGroup().isEmpty();
+        if (!showPlaceholder) {
+            mTopsiteErrorMessage.setVisibility(View.GONE);
+        } else {
+            mTopsiteErrorMessage.setVisibility(View.VISIBLE);
+        }
+    }
+
 }
