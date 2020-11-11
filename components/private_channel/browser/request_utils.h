@@ -8,13 +8,13 @@
 
 #include <string>
 
-namespace request_utils {
+namespace private_channel {
 
 enum class EndpointType { META, FIRST_ROUND, SECOND_ROUND };
 
 std::string BuildUrl(const EndpointType endpoint,
                      const std::string api_version);
 
-}  // namespace request_utils
+}  // namespace private_channel
 
 #endif  // BRAVE_COMPONENTS_PRIVATE_CHANNEL_BROWSER_REQUEST_UTILS_H_

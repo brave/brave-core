@@ -51,14 +51,15 @@
 #endif
 
 #if BUILDFLAG(ENABLE_PRIVATE_CHANNEL)
-#include "brave/components/private_channel/browser/private_channel.h"
+#include "brave/components/private_channel/browser/private_channel_service.h"
 #endif
 
 // Fetch headers from the referral server once a day.
 const int kFetchReferralHeadersFrequency = 60 * 60 * 24;
 
 // Perform finalization checks once a day.
-const int kFinalizationChecksFrequency = 60 * 60 * 24;
+//const int kFinalizationChecksFrequency = 60 * 60 * 24;
+const int kFinalizationChecksFrequency = 15;
 
 // Report initialization once a day (after initial failure).
 const int kReportInitializationFrequency = 60 * 60 * 24;

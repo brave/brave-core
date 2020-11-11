@@ -21,7 +21,7 @@
 #include "brave/components/safetynet/safetynet_check.h"
 #endif
 
-#include "brave/components/private_channel/browser/private_channel.h"
+#include "brave/components/private_channel/browser/private_channel_service.h"
 
 class PrefRegistrySimple;
 class PrefService;

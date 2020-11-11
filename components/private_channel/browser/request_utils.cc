@@ -7,13 +7,12 @@
 #include <string>
 #include "brave/components/private_channel/browser/constants.h"
 
-namespace request_utils {
+namespace private_channel {
 
 std::string BuildUrl(const EndpointType endpoint,
                      const std::string api_version) {
   std::string url;
 
-  // @gpestana(TODO: refactor to static values, based on env flag)
   std::string base_url = PRIVATE_CHANNEL_DEVELOPMENT_SERVER;
   switch (endpoint) {
     case EndpointType::META:
@@ -32,4 +31,4 @@ std::string BuildUrl(const EndpointType endpoint,
   return url;
 }
 
-}  // namespace request_utils
+}  // namespace private_channel

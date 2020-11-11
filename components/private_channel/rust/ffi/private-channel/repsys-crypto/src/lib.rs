@@ -188,7 +188,7 @@ pub fn verify_partial_decryption_proofs(
     Ok(true)
 }
 
-/// Encrypts a vector of inputs. The input is encrytped using a threshold
+/// Encrypts a vector of inputs. The input is encrypted using a threshold
 /// generated among two peers (in our case, the client and the server)
 pub fn encrypt_input(
     shared_pks: &[PublicKey],

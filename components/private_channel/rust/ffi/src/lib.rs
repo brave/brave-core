@@ -192,7 +192,7 @@ pub unsafe extern "C" fn client_second_round(
     }
 }
 
-// By reconstructing the fileds of the structure in Rust and letting it out of scope,
+// By reconstructing the fields of the structure in Rust and letting it out of scope,
 // the Rust compiler will deallocate the memory contents
 #[no_mangle]
 pub unsafe extern "C" fn deallocate_first_round_result(result: ResultChallenge) {

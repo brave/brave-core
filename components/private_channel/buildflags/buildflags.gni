@@ -2,4 +2,5 @@ import("//build/config/features.gni")
 
 declare_args() {
   private_channel_enabled = is_mac || is_linux
+  brave_private_channel_server_url = ""
 }
