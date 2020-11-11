@@ -96,8 +96,7 @@ public class BrowsingModeBottomToolbarCoordinator {
     BrowsingModeBottomToolbarCoordinator(View root, ActivityTabProvider tabProvider,
             OnClickListener homeButtonListener, OnClickListener searchAcceleratorListener,
             ObservableSupplier<OnClickListener> shareButtonListenerSupplier,
-            OnLongClickListener tabSwitcherLongClickListener,
-            OneshotSupplier<OverviewModeBehavior> overviewModeBehaviorSupplier) {
+            OnLongClickListener tabSwitcherLongClickListener) {
         mModel = new BrowsingModeBottomToolbarModel();
         mToolbarRoot = root.findViewById(R.id.bottom_toolbar_browsing);
         mTabProvider = tabProvider;
@@ -142,11 +141,6 @@ public class BrowsingModeBottomToolbarCoordinator {
             mShareButton.setActivityTabProvider(mTabProvider);
             mShareButtonListenerSupplier.addObserver(mShareButtonListenerSupplierCallback);
         }
-
-        overviewModeBehaviorSupplier.onAvailable(
-                mCallbackController.makeCancelable((overviewModeBehavior) -> {
-                    setOverviewModeBehavior(overviewModeBehavior);
-                }));
 
         mBookmarkButton = mToolbarRoot.findViewById(R.id.bottom_bookmark_button);
         if (BottomToolbarVariationManager.isBookmarkButtonOnBottom()) {
@@ -226,17 +220,6 @@ public class BrowsingModeBottomToolbarCoordinator {
         });
     }
 
-    private void setOverviewModeBehavior(OverviewModeBehavior overviewModeBehavior) {
-        assert overviewModeBehavior != null;
-
-        // If StartSurface is HomePage, BrowsingModeBottomToolbar is shown in browsing mode and in
-        // overview mode. We need to pass the OverviewModeBehavior to the buttons so they are
-        // disabled based on the overview state.
-        if (ReturnToChromeExperimentsUtil.shouldShowStartSurfaceAsTheHomePage()) {
-            mShareButton.setOverviewModeBehavior(overviewModeBehavior);
-        }
-    }
-
     /**
      * @param enabled Whether to disable click events on the bottom toolbar. Setting true can also
      *                prevent from all click events on toolbar and all children views on toolbar.
@@ -305,7 +288,7 @@ public class BrowsingModeBottomToolbarCoordinator {
     }
 
     View getNewTabButtonParent() {
-        return (View)mNewTabButton.getParent();
+        return (View) mNewTabButton.getParent();
     }
 
     BookmarksButton getBookmarkButton() {
