@@ -3,10 +3,14 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at http://mozilla.org/MPL/2.0/.
 #
+
+import("//brave/components/brave_wallet/buildflags/buildflags.gni")
+
 brave_browser_wallet_sources = []
+
 brave_browser_wallet_deps = []
 
-if (!is_android) {
+if (brave_wallet_enabled) {
   brave_browser_wallet_sources += [
     "//brave/browser/brave_wallet/brave_wallet_service_factory.cc",
     "//brave/browser/brave_wallet/brave_wallet_service_factory.h",
