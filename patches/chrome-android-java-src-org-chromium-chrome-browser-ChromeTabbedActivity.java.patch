@@ -1,5 +1,5 @@
 diff --git a/chrome/android/java/src/org/chromium/chrome/browser/ChromeTabbedActivity.java b/chrome/android/java/src/org/chromium/chrome/browser/ChromeTabbedActivity.java
-index 827071978fd601856fd0bcbd5319e6bdb6e22f76..d9491b6dbda31783964aa45cf088597087abba5b 100644
+index 827071978fd601856fd0bcbd5319e6bdb6e22f76..97d64dc1c38d14a5cbffbf3b7531bfd3dfdc2357 100644
 --- a/chrome/android/java/src/org/chromium/chrome/browser/ChromeTabbedActivity.java
 +++ b/chrome/android/java/src/org/chromium/chrome/browser/ChromeTabbedActivity.java
 @@ -186,7 +186,7 @@ import java.util.Locale;
@@ -10,15 +10,6 @@ index 827071978fd601856fd0bcbd5319e6bdb6e22f76..d9491b6dbda31783964aa45cf0885970
 +public class ChromeTabbedActivity extends org.chromium.chrome.browser.app.BraveActivity<ChromeActivityComponent>
          implements ChromeAccessibilityUtil.Observer {
      private static final String TAG = "ChromeTabbedActivity";
- 
-@@ -1019,7 +1019,7 @@ public class ChromeTabbedActivity extends ChromeActivity<ChromeActivityComponent
-         if (ReengagementNotificationController.isEnabled()) {
-             if (mCallbackController != null) {
-                 new OneShotCallback<>(
--                        mTabModelProfileSupplier, mCallbackController.makeCancelable(profile -> {
-+                        mTabModelProfileSupplier, mCallbackController.makeCancelable((Profile profile) -> {
-                             assert profile != null : "Unexpectedly null profile from TabModel.";
-                             if (profile == null) return;
  
 @@ -1471,7 +1471,7 @@ public class ChromeTabbedActivity extends ChromeActivity<ChromeActivityComponent
  

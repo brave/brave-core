@@ -126,3 +126,7 @@
 -keep class org.chromium.chrome.browser.download.MimeUtils {
     *** canAutoOpenMimeType(...);
 }
+
+-keep class org.chromium.chrome.browser.app.ChromeActivity {
+    *** mTabModelProfileSupplier;
+}
