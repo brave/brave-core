@@ -4,10 +4,9 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 #include "brave/ios/browser/api/bookmarks/brave_bookmarks_api.h"
-#include "brave/ios/browser/api/bookmarks/brave_bookmarks_observer.h"
 
-// #include "base/strings/utf_string_conversions.h"
 #include "base/strings/sys_string_conversions.h"
+#include "brave/ios/browser/api/bookmarks/brave_bookmarks_observer.h"
 #include "components/bookmarks/browser/bookmark_model.h"
 #include "components/bookmarks/browser/bookmark_node.h"
 #include "components/bookmarks/browser/bookmark_utils.h"
@@ -24,8 +23,6 @@
 #include "ios/web/public/thread/web_thread.h"
 #import "net/base/mac/url_conversions.h"
 #include "url/gurl.h"
-
-// #include "ios/chrome/browser/pref_names.h"
 
 #if !defined(__has_feature) || !__has_feature(objc_arc)
 #error "This file requires ARC support."
