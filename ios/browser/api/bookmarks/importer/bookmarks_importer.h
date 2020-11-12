@@ -6,10 +6,10 @@
 #ifndef BRAVE_IOS_BROWSER_API_BOOKMARKS_IMPORTER_BOOKMARKS_IMPORTER_H_
 #define BRAVE_IOS_BROWSER_API_BOOKMARKS_IMPORTER_BOOKMARKS_IMPORTER_H_
 
-#include "brave/ios/browser/api/bookmarks/importer/imported_bookmark_entry.h"
-
 #include <vector>
+
 #include "base/strings/string16.h"
+#include "brave/ios/browser/api/bookmarks/importer/imported_bookmark_entry.h"
 
 class BookmarksImporter {
  public:
