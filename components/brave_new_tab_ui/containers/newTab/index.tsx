@@ -122,6 +122,7 @@ class NewTabPage extends React.Component<Props, State> {
     if (GetShouldShowBrandedWallpaperNotification(this.props)) {
       this.trackBrandedWallpaperNotificationAutoDismiss()
     }
+    this.checkShouldOpenSettings()
   }
 
   componentDidUpdate (prevProps: Props) {
@@ -168,6 +169,18 @@ class NewTabPage extends React.Component<Props, State> {
     // Wait until page has been visible for an uninterupted Y seconds and then
     // dismiss the notification.
     this.visibilityTimer.startTracking()
+  }
+
+  checkShouldOpenSettings () {
+    const params = window.location.search
+    const urlParams = new URLSearchParams(params)
+    const openSettings = urlParams.get('openSettings')
+
+    if (openSettings) {
+      this.setState({ showSettingsMenu: true })
+      // Remove settings param so menu doesn't persist on reload
+      window.history.pushState(null, '', '/')
+    }
   }
 
   stopWaitingForBrandedWallpaperNotificationAutoDismiss () {
@@ -399,7 +412,7 @@ class NewTabPage extends React.Component<Props, State> {
   }
 
   openSettingsAddCard = () => {
-    this.openSettings(SettingsTabType.MoreCards)
+    this.openSettings(SettingsTabType.Cards)
   }
 
   setForegroundStackWidget = (widget: NewTab.StackWidget) => {
@@ -727,6 +740,15 @@ class NewTabPage extends React.Component<Props, State> {
       showBitcoinDotCom && bitcoinDotComSupported,
       cryptoDotComSupported && showCryptoDotCom
     ].every((widget: boolean) => !widget)
+  }
+
+  toggleAllCards = (show: boolean) => {
+    this.props.saveShowTogether(show)
+    this.props.saveShowRewards(show)
+    this.props.saveShowBinance(show)
+    this.props.saveShowGemini(show)
+    this.props.saveShowCryptoDotCom(show)
+    this.props.saveShowBitcoinDotCom(show)
   }
 
   renderCryptoContent () {
@@ -1155,6 +1177,8 @@ class NewTabPage extends React.Component<Props, State> {
           showBitcoinDotCom={newTabData.showBitcoinDotCom}
           toggleShowBitcoinDotCom={this.toggleShowBitcoinDotCom}
           todayPublishers={this.props.todayData.publishers}
+          cardsHidden={this.allWidgetsHidden()}
+          toggleCards={this.toggleAllCards}
         />
       </Page.App>
     )

@@ -282,32 +282,8 @@ By installing this extension, you are agreeing to the Google Widevine Terms of U
       <message name="IDS_SETTINGS_NEW_TAB" desc="The text label for the New Tab settings page">
        New Tab Page
       </message>
-      <message name="IDS_SETTINGS_NEW_TAB_BACKGROUND_IMAGES" desc="The label for Background images show/hide feature toggle">
-        Background images
-      </message>
-      <message name="IDS_SETTINGS_NEW_TAB_SPONSORED_IMAGES" desc="The label for Sponsored images show/hide feature toggle">
-        Sponsored images
-      </message>
-      <message name="IDS_SETTINGS_NEW_TAB_STATS" desc="The label for Stats show/hide feature toggle">
-        Brave Stats
-      </message>
       <message name="IDS_SETTINGS_NEW_TAB_BRAVE_REWARDS" desc="The label for Brave Rewards show/hide feature toggle">
         Brave Rewards
-      </message>
-      <message name="IDS_SETTINGS_NEW_TAB_TOGETHER" desc="The label for Brave Together show/hide feature toggle">
-        Brave Together
-      </message>
-      <message name="IDS_SETTINGS_NEW_TAB_BINANCE" desc="The label for Binance show/hide feature toggle">
-        Binance
-      </message>
-      <message name="IDS_SETTINGS_NEW_TAB_GEMINI" desc="The label for Gemini show/hide feature toggle">
-        Gemini
-      </message>
-      <message name="IDS_SETTINGS_NEW_TAB_TOP_SITES" desc="The label for Top Sites show/hide feature toggle">
-        Top Sites
-      </message>
-      <message name="IDS_SETTINGS_NEW_TAB_CLOCK" desc="The label for Clock show/hide feature toggle">
-        Clock
       </message>
       <message name="IDS_SETTINGS_NEW_TAB_NEW_TAB_PAGE_SHOWS" desc="The label for New Tab Page shows customization">
         New tab page shows
@@ -320,6 +296,9 @@ By installing this extension, you are agreeing to the Google Widevine Terms of U
       </message>
       <message name="IDS_SETTINGS_NEW_TAB_NEW_TAB_PAGE_SHOWS_BLANKPAGE" desc="The label for blank page option">
         Blank page
+      </message>
+      <message name="IDS_SETTINGS_NEW_TAB_NEW_TAB_CUSTOMIZE_WIDGETS" desc="The label for widget customization">
+        Customize the background image and widgets that appear on the new tab page
       </message>
       <!-- Tor -->
       <message name="IDS_NEW_TOR_IDENTITY" desc="The text label of a menu item for requesting new Tor identity">

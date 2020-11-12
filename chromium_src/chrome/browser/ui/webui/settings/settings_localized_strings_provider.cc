@@ -10,8 +10,6 @@
 #include "base/strings/utf_string_conversions.h"
 #include "brave/browser/ui/webui/settings/brave_privacy_handler.h"
 #include "brave/browser/version_info.h"
-#include "brave/components/moonpay/browser/buildflags/buildflags.h"
-#include "brave/components/crypto_dot_com/browser/buildflags/buildflags.h"
 #include "chrome/browser/ui/webui/webui_util.h"
 #include "chrome/common/pref_names.h"
 #include "components/grit/brave_components_strings.h"
@@ -261,22 +259,10 @@ void BraveAddCommonStrings(content::WebUIDataSource* html_source,
       IDS_SETTINGS_HELP_TIPS_SHOW_BRAVE_WAYBACK_MACHINE_PROMPT},
     // New Tab Page
     { "braveNewTab", IDS_SETTINGS_NEW_TAB },
-    { "braveNewTabBackgroundImages", IDS_SETTINGS_NEW_TAB_BACKGROUND_IMAGES },
-    { "braveNewTabSponsoredImages", IDS_SETTINGS_NEW_TAB_SPONSORED_IMAGES },
-    { "braveNewTabStats", IDS_SETTINGS_NEW_TAB_STATS },
     { "braveNewTabBraveRewards", IDS_SETTINGS_NEW_TAB_BRAVE_REWARDS },
-    { "braveNewTabBinance", IDS_SETTINGS_NEW_TAB_BINANCE },
-    { "braveNewTabGemini", IDS_SETTINGS_NEW_TAB_GEMINI },
-#if BUILDFLAG(MOONPAY_ENABLED)
-    { "braveNewTabBitcoinDotCom", IDS_SETTINGS_NEW_TAB_BITCOIN_DOT_COM },
-#endif
-#if BUILDFLAG(CRYPTO_DOT_COM_ENABLED)
-    { "braveNewTabCryptoDotCom", IDS_SETTINGS_NEW_TAB_CRYPTO_DOT_COM },
-#endif
-    { "braveNewTabTogether", IDS_SETTINGS_NEW_TAB_TOGETHER },
-    { "braveNewTabTopSites", IDS_SETTINGS_NEW_TAB_TOP_SITES },
-    { "braveNewTabClock", IDS_SETTINGS_NEW_TAB_CLOCK },
     { "braveNewTabNewTabPageShows", IDS_SETTINGS_NEW_TAB_NEW_TAB_PAGE_SHOWS },
+    {"braveNewTabNewTabCustomizeWidgets",
+      IDS_SETTINGS_NEW_TAB_NEW_TAB_CUSTOMIZE_WIDGETS},
     // Misc (TODO: Organize this)
     {"onExitPageTitle",
       IDS_SETTINGS_BRAVE_ON_EXIT},

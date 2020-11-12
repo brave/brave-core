@@ -147,7 +147,7 @@ void CustomizeWebUIHTMLSource(const std::string &name,
         { "showRewards", IDS_BRAVE_NEW_TAB_SHOW_REWARDS },
         { "showBinance", IDS_BRAVE_NEW_TAB_SHOW_BINANCE },
         { "showTogether", IDS_BRAVE_NEW_TAB_SHOW_TOGETHER },
-        { "moreCards", IDS_BRAVE_NEW_TAB_SHOW_MORE_CARDS },
+        { "cards", IDS_BRAVE_NEW_TAB_SHOW_CARDS },
         { "brandedWallpaperOptIn", IDS_BRAVE_NEW_TAB_BRANDED_WALLPAPER_OPT_IN },
         { "topSitesTitle", IDS_BRAVE_NEW_TAB_TOP_SITES },
         { "statsTitle", IDS_BRAVE_NEW_TAB_STATS },
@@ -173,6 +173,8 @@ void CustomizeWebUIHTMLSource(const std::string &name,
         { "rewardsWidgetDesc", IDS_BRAVE_NEW_TAB_REWARDS_WIDGET_DESC },
         { "binanceWidgetDesc", IDS_BRAVE_NEW_TAB_BINANCE_WIDGET_DESC },
         { "geminiWidgetDesc", IDS_BRAVE_NEW_TAB_GEMINI_WIDGET_DESC },
+        { "cardsToggleTitle", IDS_BRAVE_NEW_TAB_CARDS_TITLE },
+        { "cardsToggleDesc", IDS_BRAVE_NEW_TAB_CARDS_DESC },
 #if BUILDFLAG(MOONPAY_ENABLED)
         { "bitcoinDotComWidgetDesc", IDS_BRAVE_NEW_TAB_BITCOIN_DOT_COM_WIDGET_DESC },            // NOLINT
 #endif

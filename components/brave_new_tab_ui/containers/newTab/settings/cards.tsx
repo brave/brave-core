@@ -15,7 +15,12 @@ import {
   SettingsWidget,
   StyledButtonIcon,
   StyledWidgetSettings,
-  StyledButtonLabel
+  StyledButtonLabel,
+  ToggleCardsWrapper,
+  ToggleCardsTitle,
+  ToggleCardsCopy,
+  ToggleCardsSwitch,
+  ToggleCardsText
 } from '../../../components/default'
 import togetherBanner from './assets/bravetogether.png'
 import binanceBanner from './assets/binance.png'
@@ -25,6 +30,7 @@ import bitcoinDotComBanner from './assets/bitcoin-dot-com.png'
 import cryptoDotComBanner from './assets/crypto-dot-com.png'
 import HideIcon from './assets/hide-icon'
 import AddIcon from '../../../components/default/addCard/assets/add-icon'
+import { Toggle } from '../../../components/toggle'
 
 import { getLocale } from '../../../../common/locale'
 
@@ -46,9 +52,11 @@ interface Props {
   toggleShowCryptoDotCom: () => void
   showCryptoDotCom: boolean
   cryptoDotComSupported: boolean
+  toggleCards: (show: boolean) => void
+  cardsHidden: boolean
 }
 
-class MoreCardsSettings extends React.PureComponent<Props, {}> {
+class CardsSettings extends React.PureComponent<Props, {}> {
 
   renderToggleButton = (on: boolean, toggleFunc: any, float: boolean = true) => {
     return (
@@ -93,7 +101,9 @@ class MoreCardsSettings extends React.PureComponent<Props, {}> {
       bitcoinDotComSupported,
       cryptoDotComSupported,
       toggleShowCryptoDotCom,
-      showCryptoDotCom
+      showCryptoDotCom,
+      toggleCards,
+      cardsHidden
     } = this.props
     return (
       <StyledWidgetSettings>
@@ -189,9 +199,28 @@ class MoreCardsSettings extends React.PureComponent<Props, {}> {
           </StyledSettingsInfo>
           {this.renderToggleButton(showRewards, toggleShowRewards, false)}
         </SettingsWidget>
+        <FeaturedSettingsWidget>
+          <ToggleCardsWrapper>
+            <ToggleCardsText>
+              <ToggleCardsTitle>
+                {getLocale('cardsToggleTitle')}
+              </ToggleCardsTitle>
+              <ToggleCardsCopy>
+                {getLocale('cardsToggleDesc')}
+              </ToggleCardsCopy>
+            </ToggleCardsText>
+            <ToggleCardsSwitch>
+              <Toggle
+                size={'large'}
+                onChange={toggleCards.bind(this, cardsHidden)}
+                checked={!cardsHidden}
+              />
+            </ToggleCardsSwitch>
+          </ToggleCardsWrapper>
+        </FeaturedSettingsWidget>
       </StyledWidgetSettings>
     )
   }
 }
 
-export default MoreCardsSettings
+export default CardsSettings
