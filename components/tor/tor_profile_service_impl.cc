@@ -251,7 +251,17 @@ void TorProfileServiceImpl::NotifyTorInitializing(
 
 std::unique_ptr<net::ProxyConfigService>
 TorProfileServiceImpl::CreateProxyConfigService() {
-  proxy_config_service_ = new net::ProxyConfigServiceTor();
+  // First tor profile will have empty proxy uri but it will receive update from
+  // NotifyTorNewProxyURI. And subsequent tor profile might not have
+  // NotifyTorNewProxyURI because it is called once when tor control is ready.
+  const std::string tor_proxy_uri = tor_launcher_factory_->GetTorProxyURI();
+  if (tor_proxy_uri.empty()) {
+    proxy_config_service_ =
+      new net::ProxyConfigServiceTor();
+  } else {
+    proxy_config_service_ =
+      new net::ProxyConfigServiceTor(tor_proxy_uri);
+  }
   return std::unique_ptr<net::ProxyConfigServiceTor>(proxy_config_service_);
 }
 

@@ -218,6 +218,7 @@ void TorLauncherFactory::GotSOCKSListeners(
   tor_proxy_uri.erase(
       std::remove(tor_proxy_uri.begin(), tor_proxy_uri.end(), '\"'),
       tor_proxy_uri.end());
+  tor_proxy_uri_ = tor_proxy_uri;
   for (auto& observer : observers_)
     observer.NotifyTorNewProxyURI(tor_proxy_uri);
 }
