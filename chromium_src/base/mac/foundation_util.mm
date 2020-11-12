@@ -41,25 +41,7 @@ const char* BaseBundleID() {
   }
 
 #if !defined(OFFICIAL_BUILD)
-  #if defined(OS_IOS)
-  return "com.brave.ios.BrowserBeta";
-  #else
   return "com.brave.Browser.development";
-  #endif
-#elif defined(OS_IOS)
-  switch (GetChannel()) {
-    case version_info::Channel::CANARY:
-      return "com.brave.ios.enterprise.Browser";
-    case version_info::Channel::DEV:
-      return "com.brave.ios.BrowserBeta";
-    case version_info::Channel::BETA:
-      return "com.brave.ios.beta";
-    case version_info::Channel::STABLE:
-      return "com.brave.ios.browser";
-    case version_info::Channel::UNKNOWN:
-    default:
-      return "com.brave.Browser";
-  }
 #else
   switch (chrome::GetChannel()) {
     case version_info::Channel::CANARY:
