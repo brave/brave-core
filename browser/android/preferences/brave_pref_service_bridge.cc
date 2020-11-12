@@ -166,13 +166,13 @@ jlong JNI_BravePrefServiceBridge_GetDataSaved(
   return 0;
 }
 
-jlong JNI_BravePrefServiceBridge_GetLastDataSaved(
+jlong JNI_BravePrefServiceBridge_GetInt64Pref(
     JNIEnv* env,
-    const base::android::JavaParamRef<jobject>& j_profile) {
+    const base::android::JavaParamRef<jobject>& j_profile,
+    const JavaParamRef<jstring>& j_preference) {
 #if BUILDFLAG(ENABLE_BRAVE_PERF_PREDICTOR)
   Profile* profile = ProfileAndroid::FromProfileAndroid(j_profile);
-  return profile->GetPrefs()->GetUint64(
-      brave_perf_predictor::prefs::kLastBandwidthSavedBytes);
+  return profile->GetPrefs()->GetUint64(base::android::ConvertJavaStringToUTF8(env, j_preference));
 #endif
   return 0;
 }

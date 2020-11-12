@@ -830,7 +830,7 @@ public abstract class BraveToolbarLayout extends ToolbarLayout implements OnClic
   public void onPreferenceChange() {
     if (!isIncognito()
             && OnboardingPrefManager.getInstance().isBraveStatsEnabled()) {
-        addSavedBandwidthToDb(BravePrefServiceBridge.getInstance().getLastDataSaved(Profile.getLastUsedRegularProfile()));
+        addSavedBandwidthToDb(BravePrefServiceBridge.getInstance().getInt64Pref(Profile.getLastUsedRegularProfile(), BravePreferenceKeys.BRAVE_LAST_BANDWIDTH_SAVED_BYTES));
     }
   }
 }
