@@ -335,6 +335,13 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
   brave_ads::RegisterP2APrefs(registry);
 #endif
 
+#if !defined(OS_ANDROID)
+  // Turn on most visited mode on NTP by default.
+  // We can turn customization mode on when we have add-shortcut feature.
+  registry->SetDefaultPrefValue(prefs::kNtpUseMostVisitedTiles,
+                                base::Value(true));
+#endif
+
   RegisterProfilePrefsForMigration(registry);
 }
 
