@@ -28,21 +28,18 @@
 #include "base/task/thread_pool.h"
 #include "base/time/time.h"
 #include "base/values.h"
-#include "ios/chrome/browser/bookmarks/bookmark_model_factory.h"
-#include "ios/chrome/browser/browser_state/chrome_browser_state.h"
-#include "ios/chrome/browser/browser_state/chrome_browser_state_manager.h"
-#include "ios/chrome/browser/favicon/favicon_service_factory.h"
-//#include "ios/chrome/browser/profiles/profile.h"
 #include "components/bookmarks/browser/bookmark_codec.h"
 #include "components/bookmarks/browser/bookmark_model.h"
 #include "components/favicon/core/favicon_service.h"
 #include "components/favicon_base/favicon_types.h"
 #include "components/keyed_service/core/service_access_type.h"
 #include "components/strings/grit/components_strings.h"
-//#include "content/public/browser/browser_thread.h"
+#include "ios/chrome/browser/bookmarks/bookmark_model_factory.h"
+#include "ios/chrome/browser/browser_state/chrome_browser_state.h"
+#include "ios/chrome/browser/browser_state/chrome_browser_state_manager.h"
+#include "ios/chrome/browser/favicon/favicon_service_factory.h"
 #include "net/base/escape.h"
 #include "ui/base/l10n/l10n_util.h"
-//#include "ui/gfx/favicon_size.h"
 
 using bookmarks::BookmarkCodec;
 using bookmarks::BookmarkNode;
@@ -256,9 +253,7 @@ class Writer : public base::RefCountedThreadSafe<Writer> {
   }
 
   // Increments the indent.
-  void IncrementIndent() {
-    indent_.resize(indent_.size() + kIndentSize, ' ');
-  }
+  void IncrementIndent() { indent_.resize(indent_.size() + kIndentSize, ' '); }
 
   // Decrements the indent.
   void DecrementIndent() {
@@ -312,9 +307,7 @@ class Writer : public base::RefCountedThreadSafe<Writer> {
   }
 
   // Indents the current line.
-  bool WriteIndent() {
-    return Write(indent_);
-  }
+  bool WriteIndent() { return Write(indent_); }
 
   // Converts a time string written to the JSON codec into a time_t string
   // (used by bookmarks.html) and writes it.
@@ -327,13 +320,13 @@ class Writer : public base::RefCountedThreadSafe<Writer> {
 
   // Writes the node and all its children, returning true on success.
   bool WriteNode(const base::DictionaryValue& value,
-                BookmarkNode::Type folder_type) {
+                 BookmarkNode::Type folder_type) {
     std::string title, date_added_string, type_string;
     if (!value.GetString(BookmarkCodec::kNameKey, &title) ||
         !value.GetString(BookmarkCodec::kDateAddedKey, &date_added_string) ||
         !value.GetString(BookmarkCodec::kTypeKey, &type_string) ||
         (type_string != BookmarkCodec::kTypeURL &&
-         type_string != BookmarkCodec::kTypeFolder))  {
+         type_string != BookmarkCodec::kTypeFolder)) {
       NOTREACHED();
       return false;
     }
@@ -357,18 +350,13 @@ class Writer : public base::RefCountedThreadSafe<Writer> {
         favicon_string = favicon_url.spec();
       }
 
-      if (!WriteIndent() ||
-          !Write(kBookmarkStart) ||
-          !Write(url_string, ATTRIBUTE_VALUE) ||
-          !Write(kAddDate) ||
+      if (!WriteIndent() || !Write(kBookmarkStart) ||
+          !Write(url_string, ATTRIBUTE_VALUE) || !Write(kAddDate) ||
           !WriteTime(date_added_string) ||
           (!favicon_string.empty() &&
-              (!Write(kIcon) ||
-               !Write(favicon_string, ATTRIBUTE_VALUE))) ||
-          !Write(kBookmarkAttributeEnd) ||
-          !Write(title, CONTENT) ||
-          !Write(kBookmarkEnd) ||
-          !Write(kNewline)) {
+           (!Write(kIcon) || !Write(favicon_string, ATTRIBUTE_VALUE))) ||
+          !Write(kBookmarkAttributeEnd) || !Write(title, CONTENT) ||
+          !Write(kBookmarkEnd) || !Write(kNewline)) {
         return false;
       }
       return true;
@@ -389,10 +377,8 @@ class Writer : public base::RefCountedThreadSafe<Writer> {
       // The other/mobile folder name are not written out. This gives the effect
       // of making the contents of the 'other folder' be a sibling to the
       // bookmark bar folder.
-      if (!WriteIndent() ||
-          !Write(kFolderStart) ||
-          !WriteTime(date_added_string) ||
-          !Write(kLastModified) ||
+      if (!WriteIndent() || !Write(kFolderStart) ||
+          !WriteTime(date_added_string) || !Write(kLastModified) ||
           !WriteTime(last_modified_date)) {
         return false;
       }
@@ -403,12 +389,8 @@ class Writer : public base::RefCountedThreadSafe<Writer> {
       } else if (!Write(kFolderAttributeEnd)) {
         return false;
       }
-      if (!Write(title, CONTENT) ||
-          !Write(kFolderEnd) ||
-          !Write(kNewline) ||
-          !WriteIndent() ||
-          !Write(kFolderChildren) ||
-          !Write(kNewline)) {
+      if (!Write(title, CONTENT) || !Write(kFolderEnd) || !Write(kNewline) ||
+          !WriteIndent() || !Write(kFolderChildren) || !Write(kNewline)) {
         return false;
       }
       IncrementIndent();
@@ -433,9 +415,7 @@ class Writer : public base::RefCountedThreadSafe<Writer> {
         folder_type != BookmarkNode::MOBILE) {
       // Close out the folder.
       DecrementIndent();
-      if (!WriteIndent() ||
-          !Write(kFolderChildrenEnd) ||
-          !Write(kNewline)) {
+      if (!WriteIndent() || !Write(kFolderChildrenEnd) || !Write(kNewline)) {
         return false;
       }
     }
@@ -467,16 +447,16 @@ class Writer : public base::RefCountedThreadSafe<Writer> {
 
 // A class that allows to export a set of bookmarks encoded as a `base::Value`
 class BookmarkWriter {
-public:
+ public:
   BookmarkWriter(std::unique_ptr<base::Value> bookmarks,
                  const base::FilePath& path,
                  BookmarksExportObserver* observer);
-  
+
   void ExportBookmarks();
-  
-private:
+
+ private:
   void ExecuteWriter();
-  
+
   std::unique_ptr<base::Value> bookmarks_;
   base::FilePath path_;
   BookmarksExportObserver* observer_;
@@ -489,9 +469,7 @@ BookmarkFaviconFetcher::BookmarkFaviconFetcher(
     ChromeBrowserState* browser_state,
     const base::FilePath& path,
     BookmarksExportObserver* observer)
-    : browser_state_(browser_state),
-      path_(path),
-      observer_(observer) {
+    : browser_state_(browser_state), path_(path), observer_(observer) {
   DCHECK(!browser_state->IsOffTheRecord());
   favicons_map_.reset(new URLFaviconMap());
 }
@@ -499,10 +477,10 @@ BookmarkFaviconFetcher::BookmarkFaviconFetcher(
 void BookmarkFaviconFetcher::ExportBookmarks() {
   ExtractUrls(ios::BookmarkModelFactory::GetForBrowserState(browser_state_)
                   ->bookmark_bar_node());
-  ExtractUrls(
-      ios::BookmarkModelFactory::GetForBrowserState(browser_state_)->other_node());
-  ExtractUrls(
-      ios::BookmarkModelFactory::GetForBrowserState(browser_state_)->mobile_node());
+  ExtractUrls(ios::BookmarkModelFactory::GetForBrowserState(browser_state_)
+                  ->other_node());
+  ExtractUrls(ios::BookmarkModelFactory::GetForBrowserState(browser_state_)
+                  ->mobile_node());
   if (!bookmark_urls_.empty())
     FetchNextFavicon();
   else
@@ -530,8 +508,9 @@ void BookmarkFaviconFetcher::ExecuteWriter() {
       base::BindOnce(
           &Writer::DoWrite,
           base::MakeRefCounted<Writer>(
-              codec.Encode(ios::BookmarkModelFactory::GetForBrowserState(browser_state_),
-                           /*sync_metadata_str=*/std::string()),
+              codec.Encode(
+                  ios::BookmarkModelFactory::GetForBrowserState(browser_state_),
+                  /*sync_metadata_str=*/std::string()),
               path_, favicons_map_.release(), observer_)));
   browser_state_->RemoveUserData(kBookmarkFaviconFetcherKey);
   // |this| is deleted!
@@ -571,8 +550,7 @@ void BookmarkFaviconFetcher::OnFaviconDataAvailable(
     bookmark_urls_.pop_front();
   }
   if (bitmap_result.is_valid() && !url.is_empty()) {
-    favicons_map_->insert(
-        make_pair(url.spec(), bitmap_result.bitmap_data));
+    favicons_map_->insert(make_pair(url.spec(), bitmap_result.bitmap_data));
   }
 
   if (FetchNextFavicon()) {
@@ -581,13 +559,10 @@ void BookmarkFaviconFetcher::OnFaviconDataAvailable(
   ExecuteWriter();
 }
 
-
 BookmarkWriter::BookmarkWriter(std::unique_ptr<base::Value> bookmarks,
                                const base::FilePath& path,
                                BookmarksExportObserver* observer)
-    : bookmarks_(std::move(bookmarks)),
-      path_(path),
-      observer_(observer) {
+    : bookmarks_(std::move(bookmarks)), path_(path), observer_(observer) {
   favicons_map_.reset(new BookmarkFaviconFetcher::URLFaviconMap());
 }
 
@@ -600,9 +575,8 @@ void BookmarkWriter::ExecuteWriter() {
       FROM_HERE, {base::MayBlock(), base::TaskPriority::BEST_EFFORT},
       base::BindOnce(
           &Writer::DoWrite,
-          base::MakeRefCounted<Writer>(
-              std::move(bookmarks_), path_,
-              favicons_map_.release(), observer_)));
+          base::MakeRefCounted<Writer>(std::move(bookmarks_), path_,
+                                       favicons_map_.release(), observer_)));
   delete this;
 }
 
@@ -625,11 +599,9 @@ void WriteBookmarks(ChromeBrowserState* browser_state,
 void WriteBookmarks(std::unique_ptr<base::Value> encoded_bookmarks,
                     const base::FilePath& path,
                     BookmarksExportObserver* observer) {
-  
-  //Deleted in |ios::BookmarkWriter::ExecuteWriter|
-  BookmarkWriter* fetcher = new BookmarkWriter(std::move(encoded_bookmarks),
-                                               path,
-                                               observer);
+  // Deleted in |ios::BookmarkWriter::ExecuteWriter|
+  BookmarkWriter* fetcher =
+      new BookmarkWriter(std::move(encoded_bookmarks), path, observer);
   fetcher->ExportBookmarks();
 }
 

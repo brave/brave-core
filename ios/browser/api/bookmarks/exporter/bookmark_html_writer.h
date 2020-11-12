@@ -13,7 +13,7 @@ class ChromeBrowserState;
 namespace base {
 class FilePath;
 class Value;
-}
+}  // namespace base
 
 // Observer for bookmark html output. Used only in tests.
 class BookmarksExportObserver {
