@@ -351,7 +351,7 @@ Config.prototype.buildArgs = function () {
   if (this.targetOS === 'ios') {
     args.target_os = 'ios'
     args.enable_dsyms = true
-    args.enable_stripping = args.enable_dsyms
+    args.enable_stripping = !this.isDebug()
     args.use_xcode_clang = this.isOfficialBuild()
     args.use_clang_coverage = false
     // Component builds are not supported for iOS:
