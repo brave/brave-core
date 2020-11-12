@@ -79,7 +79,8 @@ OBJC_EXPORT
 // NS_SWIFT_NAME(BraveBookmarksAPI)
 OBJC_EXPORT
 @interface BraveBookmarksAPI : NSObject
-@property(class, readonly, getter=sharedBookmarksAPI) BraveBookmarksAPI* shared;
+@property(class, readonly, getter = sharedBookmarksAPI)
+    BraveBookmarksAPI* shared;
 @property(nonatomic, nullable, readonly) BookmarkNode* rootNode;
 @property(nonatomic, nullable, readonly) BookmarkNode* otherNode;
 @property(nonatomic, nullable, readonly) BookmarkNode* mobileNode;
