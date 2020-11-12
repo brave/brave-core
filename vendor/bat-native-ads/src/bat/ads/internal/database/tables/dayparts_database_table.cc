@@ -72,8 +72,8 @@ void Dayparts::Migrate(
   DCHECK(transaction);
 
   switch (to_version) {
-    case 4: {
-      MigrateToV4(transaction);
+    case 6: {
+      MigrateToV6(transaction);
       break;
     }
 
@@ -123,7 +123,7 @@ std::string Dayparts::BuildInsertOrUpdateQuery(
       BuildBindingParameterPlaceholders(4, count).c_str());
 }
 
-void Dayparts::CreateTableV4(
+void Dayparts::CreateTableV6(
     DBTransaction* transaction) {
   DCHECK(transaction);
 
@@ -145,21 +145,21 @@ void Dayparts::CreateTableV4(
   transaction->commands.push_back(std::move(command));
 }
 
-void Dayparts::CreateIndexV4(
+void Dayparts::CreateIndexV6(
     DBTransaction* transaction) {
   DCHECK(transaction);
 
   util::CreateIndex(transaction, get_table_name(), "campaign_id");
 }
 
-void Dayparts::MigrateToV4(
+void Dayparts::MigrateToV6(
     DBTransaction* transaction) {
   DCHECK(transaction);
 
   util::Drop(transaction, get_table_name());
 
-  CreateTableV4(transaction);
-  CreateIndexV4(transaction);
+  CreateTableV6(transaction);
+  CreateIndexV6(transaction);
 }
 
 }  // namespace table
