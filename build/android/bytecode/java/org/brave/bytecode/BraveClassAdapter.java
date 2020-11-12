@@ -29,6 +29,7 @@ public class BraveClassAdapter {
         chain = new BraveToolbarLayoutClassAdapter(chain);
         chain = new BraveTileViewClassAdapter(chain);
         chain = new BraveMimeUtilsClassAdapter(chain);
+        chain = new BraveActivityClassAdapter(chain);
         return chain;
     }
 }
