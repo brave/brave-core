@@ -6,21 +6,20 @@
 #ifndef BRAVE_IOS_BROWSER_API_BOOKMARKS_EXPORTER_BOOKMARKS_ENCODER_H_
 #define BRAVE_IOS_BROWSER_API_BOOKMARKS_EXPORTER_BOOKMARKS_ENCODER_H_
 
-#include <vector>
 #include <memory>
+#include <vector>
 
 class ExportedRootBookmarkEntry;
 
 namespace base {
 class Value;
-} // namespace base
+}  // namespace base
 
 namespace ios {
 namespace bookmarks_encoder {
-std::unique_ptr<base::Value>
-    EncodeBookmarks(std::unique_ptr<ExportedRootBookmarkEntry> root_node);
-} // namespace bookmarks_encoder
-} // namespace ios
+std::unique_ptr<base::Value> EncodeBookmarks(
+    std::unique_ptr<ExportedRootBookmarkEntry> root_node);
+}  // namespace bookmarks_encoder
+}  // namespace ios
 
 #endif  // BRAVE_IOS_BROWSER_API_BOOKMARKS_EXPORTER_BOOKMARKS_ENCODER_H_
-

@@ -4,8 +4,6 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 #include "brave/ios/browser/api/bookmarks/exporter/bookmarks_encoder.h"
-#include "brave/ios/browser/api/bookmarks/exporter/exported_bookmark_entry.h"
-#include "components/bookmarks/browser/bookmark_codec.h"
 
 #include <stddef.h>
 #include <algorithm>
@@ -20,6 +18,8 @@
 #include "base/strings/string_number_conversions.h"
 #include "base/strings/string_util.h"
 #include "base/values.h"
+#include "brave/ios/browser/api/bookmarks/exporter/exported_bookmark_entry.h"
+#include "components/bookmarks/browser/bookmark_codec.h"
 #include "components/bookmarks/browser/bookmark_model.h"
 #include "components/strings/grit/components_strings.h"
 #include "ui/base/l10n/l10n_util.h"
@@ -34,19 +34,19 @@ namespace ios {
 static const int kCurrentVersion = 1;
 
 class BookmarkEncoder {
-public:
+ public:
   BookmarkEncoder();
   ~BookmarkEncoder();
-  
+
   std::unique_ptr<base::Value> Encode(
       const ExportedBookmarkEntry* bookmark_bar_node,
       const ExportedBookmarkEntry* other_folder_node,
       const ExportedBookmarkEntry* mobile_folder_node,
       const std::string& sync_metadata_str);
-  
-private:
+
+ private:
   std::unique_ptr<base::Value> EncodeNode(const ExportedBookmarkEntry* node);
-  
+
   // Updates the check-sum with the given string.
   void UpdateChecksum(const std::string& str);
   void UpdateChecksum(const base::string16& str);
@@ -66,10 +66,10 @@ private:
   // Initializes/Finalizes the checksum.
   void InitializeChecksum();
   void FinalizeChecksum();
-  
+
   // MD5 context used to compute MD5 hash of all bookmark data.
   base::MD5Context md5_context_;
-  
+
   // Checksums.
   std::string computed_checksum_;
   std::string stored_checksum_;
@@ -85,14 +85,13 @@ void BookmarkEncoder::UpdateChecksum(const std::string& str) {
 
 void BookmarkEncoder::UpdateChecksum(const base::string16& str) {
   base::MD5Update(&md5_context_,
-                  base::StringPiece(
-                      reinterpret_cast<const char*>(str.data()),
-                      str.length() * sizeof(str[0])));
+                  base::StringPiece(reinterpret_cast<const char*>(str.data()),
+                                    str.length() * sizeof(str[0])));
 }
 
 void BookmarkEncoder::UpdateChecksumWithUrlNode(const std::string& id,
-                               const base::string16& title,
-                               const std::string& url) {
+                                                const base::string16& title,
+                                                const std::string& url) {
   DCHECK(base::IsStringUTF8(url));
   UpdateChecksum(id);
   UpdateChecksum(title);
@@ -100,8 +99,9 @@ void BookmarkEncoder::UpdateChecksumWithUrlNode(const std::string& id,
   UpdateChecksum(url);
 }
 
-void BookmarkEncoder::UpdateChecksumWithFolderNode(const std::string& id,
-                                                 const base::string16& title) {
+void BookmarkEncoder::UpdateChecksumWithFolderNode(
+    const std::string& id,
+    const base::string16& title) {
   UpdateChecksum(id);
   UpdateChecksum(title);
   UpdateChecksum(bookmarks::BookmarkCodec::kTypeFolder);
@@ -117,7 +117,8 @@ void BookmarkEncoder::FinalizeChecksum() {
   computed_checksum_ = base::MD5DigestToBase16(digest);
 }
 
-std::unique_ptr<base::Value> BookmarkEncoder::EncodeNode(const ExportedBookmarkEntry* node) {
+std::unique_ptr<base::Value> BookmarkEncoder::EncodeNode(
+    const ExportedBookmarkEntry* node) {
   std::unique_ptr<base::DictionaryValue> value(new base::DictionaryValue());
   std::string id = base::NumberToString(node->id());
   value->SetString(bookmarks::BookmarkCodec::kIdKey, id);
@@ -128,12 +129,14 @@ std::unique_ptr<base::Value> BookmarkEncoder::EncodeNode(const ExportedBookmarkE
   value->SetString(bookmarks::BookmarkCodec::kDateAddedKey,
                    base::NumberToString(node->date_added().ToInternalValue()));
   if (node->is_url()) {
-    value->SetString(bookmarks::BookmarkCodec::kTypeKey, bookmarks::BookmarkCodec::kTypeURL);
+    value->SetString(bookmarks::BookmarkCodec::kTypeKey,
+                     bookmarks::BookmarkCodec::kTypeURL);
     std::string url = node->url().possibly_invalid_spec();
     value->SetString(bookmarks::BookmarkCodec::kURLKey, url);
     UpdateChecksumWithUrlNode(id, title, url);
   } else {
-    value->SetString(bookmarks::BookmarkCodec::kTypeKey, bookmarks::BookmarkCodec::kTypeFolder);
+    value->SetString(bookmarks::BookmarkCodec::kTypeKey,
+                     bookmarks::BookmarkCodec::kTypeFolder);
     value->SetString(
         bookmarks::BookmarkCodec::kDateModifiedKey,
         base::NumberToString(node->date_folder_modified().ToInternalValue()));
@@ -147,20 +150,24 @@ std::unique_ptr<base::Value> BookmarkEncoder::EncodeNode(const ExportedBookmarkE
   return std::move(value);
 }
 
-std::unique_ptr<base::Value> BookmarkEncoder::Encode(const ExportedBookmarkEntry* bookmark_bar_node,
-                                                     const ExportedBookmarkEntry* other_folder_node,
-                                                     const ExportedBookmarkEntry* mobile_folder_node,
-                                                     const std::string& sync_metadata_str) {
+std::unique_ptr<base::Value> BookmarkEncoder::Encode(
+    const ExportedBookmarkEntry* bookmark_bar_node,
+    const ExportedBookmarkEntry* other_folder_node,
+    const ExportedBookmarkEntry* mobile_folder_node,
+    const std::string& sync_metadata_str) {
   InitializeChecksum();
   auto roots = std::make_unique<base::DictionaryValue>();
-  roots->Set(bookmarks::BookmarkCodec::kRootFolderNameKey, EncodeNode(bookmark_bar_node));
-  roots->Set(bookmarks::BookmarkCodec::kOtherBookmarkFolderNameKey, EncodeNode(other_folder_node));
-  roots->Set(bookmarks::BookmarkCodec::kMobileBookmarkFolderNameKey, EncodeNode(mobile_folder_node));
-  
+  roots->Set(bookmarks::BookmarkCodec::kRootFolderNameKey,
+             EncodeNode(bookmark_bar_node));
+  roots->Set(bookmarks::BookmarkCodec::kOtherBookmarkFolderNameKey,
+             EncodeNode(other_folder_node));
+  roots->Set(bookmarks::BookmarkCodec::kMobileBookmarkFolderNameKey,
+             EncodeNode(mobile_folder_node));
+
   auto main = std::make_unique<base::DictionaryValue>();
   main->SetInteger(bookmarks::BookmarkCodec::kVersionKey, kCurrentVersion);
   FinalizeChecksum();
-  
+
   // We are going to store the computed checksum. So set stored checksum to be
   // the same as computed checksum.
   stored_checksum_ = computed_checksum_;
@@ -174,18 +181,17 @@ std::unique_ptr<base::Value> BookmarkEncoder::Encode(const ExportedBookmarkEntry
   }
   return std::move(main);
 }
-} // namespace ios
+}  // namespace ios
 
 namespace ios {
 namespace bookmarks_encoder {
-std::unique_ptr<base::Value>
-    EncodeBookmarks(std::unique_ptr<ExportedRootBookmarkEntry> root_node) {
-  
+std::unique_ptr<base::Value> EncodeBookmarks(
+    std::unique_ptr<ExportedRootBookmarkEntry> root_node) {
   auto encoder = std::make_unique<ios::BookmarkEncoder>();
   return encoder->Encode(root_node->bookmarks_bar_node(),
                          root_node->other_bookmarks_node(),
                          root_node->mobile_bookmarks_node(),
                          /*sync_metadata_str*/ std::string());
 }
-} // namespace bookmarks_encoder
-} // namespace ios
+}  // namespace bookmarks_encoder
+}  // namespace ios
