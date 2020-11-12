@@ -9,6 +9,7 @@
 #include "chrome/browser/profiles/incognito_helpers.h"
 #include "chrome/browser/profiles/profile.h"
 #include "components/keyed_service/content/browser_context_dependency_manager.h"
+#include "chrome/browser/dom_distiller/dom_distiller_service_factory.h"
 
 namespace speedreader {
 
@@ -26,7 +27,9 @@ SpeedreaderService* SpeedreaderServiceFactory::GetForProfile(Profile* profile) {
 SpeedreaderServiceFactory::SpeedreaderServiceFactory()
     : BrowserContextKeyedServiceFactory(
           "SpeedreaderService",
-          BrowserContextDependencyManager::GetInstance()) {}
+          BrowserContextDependencyManager::GetInstance()) {
+  DependsOn(dom_distiller::DomDistillerServiceFactory::GetInstance());
+}
 
 SpeedreaderServiceFactory::~SpeedreaderServiceFactory() {}
 

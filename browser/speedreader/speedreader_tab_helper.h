@@ -6,6 +6,7 @@
 #ifndef BRAVE_BROWSER_SPEEDREADER_SPEEDREADER_TAB_HELPER_H_
 #define BRAVE_BROWSER_SPEEDREADER_SPEEDREADER_TAB_HELPER_H_
 
+#include "components/dom_distiller/content/browser/distillable_page_utils.h"
 #include "content/public/browser/web_contents_observer.h"
 #include "content/public/browser/web_contents_user_data.h"
 
@@ -18,7 +19,8 @@ namespace speedreader {
 
 // Determines if speedreader should be active for a given top-level navigation.
 class SpeedreaderTabHelper
-    : public content::WebContentsObserver,
+    : public dom_distiller::DistillabilityObserver,
+      public content::WebContentsObserver,
       public content::WebContentsUserData<SpeedreaderTabHelper> {
  public:
   ~SpeedreaderTabHelper() override;
@@ -26,7 +28,8 @@ class SpeedreaderTabHelper
   SpeedreaderTabHelper(const SpeedreaderTabHelper&) = delete;
   SpeedreaderTabHelper& operator=(SpeedreaderTabHelper&) = delete;
 
-  bool IsActiveForMainFrame() const { return active_; }
+  bool IsActiveForMainFrame() const { return speedreader_active_; }
+  bool IsReaderEnabled() const;
 
  private:
   friend class content::WebContentsUserData<SpeedreaderTabHelper>;
@@ -35,12 +38,16 @@ class SpeedreaderTabHelper
   void UpdateActiveState(content::NavigationHandle* handle);
 
   // content::WebContentsObserver
+  void WebContentsDestroyed() override;
   void DidStartNavigation(
       content::NavigationHandle* navigation_handle) override;
   void DidRedirectNavigation(
       content::NavigationHandle* navigation_handle) override;
 
-  bool active_ = false;
+  // dom_distiller::DistillabilityObserver overrides:
+  void OnResult(const dom_distiller::DistillabilityResult& result) override;
+
+  bool speedreader_active_ = false;
 
   WEB_CONTENTS_USER_DATA_KEY_DECL();
 };

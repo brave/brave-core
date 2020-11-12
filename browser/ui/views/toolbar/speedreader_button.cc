@@ -75,7 +75,7 @@ void SpeedreaderButton::Update(content::WebContents* active_contents) {
     auto* tab_helper =
         speedreader::SpeedreaderTabHelper::FromWebContents(active_contents);
     if (tab_helper) {
-      const bool active = tab_helper->IsActiveForMainFrame();
+      const bool active = tab_helper->IsReaderEnabled();
       if (active_ != active) {
         active_ = active;
         UpdateImage();
