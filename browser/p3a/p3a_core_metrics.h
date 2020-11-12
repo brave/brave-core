@@ -6,14 +6,23 @@
 #ifndef BRAVE_BROWSER_P3A_P3A_CORE_METRICS_H_
 #define BRAVE_BROWSER_P3A_P3A_CORE_METRICS_H_
 
+// The classes below can be used on desktop only
+// because BrowserListObserver is available on desktop only
+// Brave.Uptime.BrowserOpenMinutes, Brave.Core.LastTimeIncognitoUsed and
+// Brave.Core.TorEverUsed don't work on Android
+
+#include "build/build_config.h"
+
+#if defined(OS_ANDROID)
+#error This file should only be included on desktop.
+#endif
+
 #include <list>
 
 #include "base/timer/timer.h"
 #include "brave/components/weekly_storage/weekly_storage.h"
-#if !defined(OS_ANDROID)
 #include "chrome/browser/resource_coordinator/usage_clock.h"
 #include "chrome/browser/ui/browser_list_observer.h"
-#endif  // !defined(OS_ANDROID)
 
 class PrefService;
 class PrefRegistrySimple;
@@ -33,9 +42,7 @@ class BraveUptimeTracker {
   void RecordUsage();
   void RecordP3A();
 
-#if !defined(OS_ANDROID)
   resource_coordinator::UsageClock usage_clock_;
-#endif  // !defined(OS_ANDROID)
   base::RepeatingTimer timer_;
   base::TimeDelta current_total_usage_;
   WeeklyStorage state_;

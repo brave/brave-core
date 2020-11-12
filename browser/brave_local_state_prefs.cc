@@ -36,10 +36,10 @@
 #include "brave/components/ipfs/ipfs_service.h"
 #endif
 
-#include "brave/browser/p3a/p3a_core_metrics.h"
 #include "brave/browser/ui/webui/new_tab_page/brave_new_tab_message_handler.h"
 
 #if !defined(OS_ANDROID)
+#include "brave/browser/p3a/p3a_core_metrics.h"
 #include "chrome/browser/first_run/first_run.h"
 #endif  // !defined(OS_ANDROID)
 
