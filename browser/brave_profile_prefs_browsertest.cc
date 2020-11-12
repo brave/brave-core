@@ -122,4 +122,6 @@ IN_PROC_BROWSER_TEST_F(BraveProfilePrefsBrowserTest,
       prefs::kCloudPrintProxyEnabled));
   EXPECT_FALSE(browser()->profile()->GetPrefs()->GetBoolean(
       prefs::kCloudPrintSubmitEnabled));
+  EXPECT_TRUE(browser()->profile()->GetPrefs()->GetBoolean(
+      prefs::kNtpUseMostVisitedTiles));
 }

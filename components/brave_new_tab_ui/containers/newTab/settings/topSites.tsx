@@ -28,6 +28,8 @@ class TopSitesSettings extends React.PureComponent<Props, {}> {
       toggleCustomLinksEnabled,
       customLinksEnabled
     } = this.props
+    // Enable when we're ready to use add shortcut feature to topsite.
+    const showCustomizedLink = false
     return (
       <div>
         <SettingsRow>
@@ -38,14 +40,17 @@ class TopSitesSettings extends React.PureComponent<Props, {}> {
             size='large'
           />
         </SettingsRow>
-        <SettingsRow>
-          <SettingsText>{getLocale('topSiteCustomLinksEnabled')}</SettingsText>
-          <Toggle
-            onChange={toggleCustomLinksEnabled}
-            checked={customLinksEnabled}
-            size='large'
-          />
-        </SettingsRow>
+        {
+          showCustomizedLink ?
+          (<SettingsRow>
+            <SettingsText>{getLocale('topSiteCustomLinksEnabled')}</SettingsText>
+            <Toggle
+              onChange={toggleCustomLinksEnabled}
+              checked={customLinksEnabled}
+              size='large'
+            />
+          </SettingsRow>) : null
+        }
       </div>
     )
   }
