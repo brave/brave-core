@@ -5,21 +5,23 @@
 
 #include "brave/ios/browser/api/bookmarks/importer/bookmarks_importer.h"
 
-#include "brave/ios/browser/api/bookmarks/importer/imported_bookmark_entry.h"
+#include <set>
+
+#include "base/base_paths.h"
 #include "base/bind.h"
 #include "base/bind_helpers.h"
 #include "base/files/file_path.h"
-#include "base/base_paths.h"
-#include "base/strings/utf_string_conversions.h"
-#include "base/strings/string_number_conversions.h"
 #include "base/path_service.h"
+#include "base/strings/string_number_conversions.h"
+#include "base/strings/utf_string_conversions.h"
+#include "brave/ios/browser/api/bookmarks/importer/imported_bookmark_entry.h"
 #include "components/bookmarks/browser/bookmark_model.h"
 #include "components/bookmarks/browser/bookmark_node.h"
 #include "components/bookmarks/browser/bookmark_utils.h"
-#include "components/prefs/pref_service.h"
-#include "components/user_prefs/user_prefs.h"
-#include "components/strings/grit/components_strings.h"
 #include "components/bookmarks/common/bookmark_pref_names.h"
+#include "components/prefs/pref_service.h"
+#include "components/strings/grit/components_strings.h"
+#include "components/user_prefs/user_prefs.h"
 #include "ios/chrome/browser/application_context.h"
 #include "ios/chrome/browser/bookmarks/bookmark_model_factory.h"
 #include "ios/chrome/browser/browser_state/chrome_browser_state.h"
@@ -62,16 +64,18 @@ base::string16 GenerateUniqueFolderName(BookmarkModel* model,
 
 // Shows the bookmarks toolbar.
 void ShowBookmarkBar(ChromeBrowserState* browser_state) {
-  browser_state->GetPrefs()->SetBoolean(bookmarks::prefs::kShowBookmarkBar, true);
+  browser_state->GetPrefs()->SetBoolean(bookmarks::prefs::kShowBookmarkBar,
+                                        true);
 }
 
 }  // namespace
 
-void BookmarksImporter::AddBookmarks(const base::string16& top_level_folder_name,
-                                     const std::vector<ImportedBookmarkEntry>& bookmarks) {
+void BookmarksImporter::AddBookmarks(
+    const base::string16& top_level_folder_name,
+    const std::vector<ImportedBookmarkEntry>& bookmarks) {
   if (bookmarks.empty())
     return;
-    
+
   ios::ChromeBrowserStateManager* browser_state_manager =
       GetApplicationContext()->GetChromeBrowserStateManager();
   ChromeBrowserState* browser_state =
@@ -125,7 +129,7 @@ void BookmarksImporter::AddBookmarks(const base::string16& top_level_folder_name
       // to the bar.  The first time we do so, create the folder.
       if (!top_level_folder) {
         base::string16 name =
-            GenerateUniqueFolderName(model,top_level_folder_name);
+            GenerateUniqueFolderName(model, top_level_folder_name);
         top_level_folder = model->AddFolder(
             bookmark_bar, bookmark_bar->children().size(), name);
       }

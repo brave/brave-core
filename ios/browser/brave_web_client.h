@@ -6,6 +6,7 @@
 #ifndef BRAVE_IOS_BROWSER_BRAVE_WEB_CLIENT_H_
 #define BRAVE_IOS_BROWSER_BRAVE_WEB_CLIENT_H_
 
+#include <memory>
 #include <string>
 
 #include "base/compiler_specific.h"

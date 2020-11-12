@@ -16,7 +16,7 @@ std::string GetMobileOSString(const std::string user_agent) {
   if (user_agent.find("IOS") != std::string::npos) {
     return "ios";
   }
-  
+
   if (user_agent.find("android") != std::string::npos) {
     return "android";
   }

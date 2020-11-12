@@ -12,7 +12,7 @@
 #include "base/strings/string16.h"
 
 class BookmarksImporter {
-public:
+ public:
   // top_level_folder_name is usually set to IDS_BOOKMARK_GROUP
   // Which is the name of the folder bookmarks will be imported into,
   // if the root folder is not empty.

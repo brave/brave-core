@@ -3,8 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#ifndef BRAVE_IOS_BROWSER_API_BOOKMARKS_IMPORTER_BOOKMARK_HTML_WRITER_H_
-#define BRAVE_IOS_BROWSER_API_BOOKMARKS_IMPORTER_BOOKMARK_HTML_WRITER_H_
+#ifndef BRAVE_IOS_BROWSER_API_BOOKMARKS_EXPORTER_BOOKMARK_HTML_WRITER_H_
+#define BRAVE_IOS_BROWSER_API_BOOKMARKS_EXPORTER_BOOKMARK_HTML_WRITER_H_
 
 #include <memory>
 
@@ -47,4 +47,4 @@ void WriteBookmarks(std::unique_ptr<base::Value>,
 
 }  // namespace bookmark_html_writer
 
-#endif  // BRAVE_IOS_BROWSER_API_BOOKMARKS_IMPORTER_BOOKMARK_HTML_WRITER_H_
+#endif  // BRAVE_IOS_BROWSER_API_BOOKMARKS_EXPORTER_BOOKMARK_HTML_WRITER_H_

@@ -9,6 +9,8 @@
 #import <Foundation/Foundation.h>
 #import <UIKit/UIKit.h>
 
+#include "base/compiler_specific.h"
+
 NS_ASSUME_NONNULL_BEGIN
 
 typedef NS_ENUM(NSUInteger, BookmarksNodeType) {
@@ -77,7 +79,6 @@ OBJC_EXPORT
 // NS_SWIFT_NAME(BraveBookmarksAPI)
 OBJC_EXPORT
 @interface BraveBookmarksAPI : NSObject
-
 @property(class, readonly, getter=sharedBookmarksAPI) BraveBookmarksAPI* shared;
 @property(nonatomic, nullable, readonly) BookmarkNode* rootNode;
 @property(nonatomic, nullable, readonly) BookmarkNode* otherNode;

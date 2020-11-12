@@ -6,15 +6,16 @@
 #ifndef BRAVE_IOS_BROWSER_API_SYNC_BRAVE_SYNC_WORKER_H_
 #define BRAVE_IOS_BROWSER_API_SYNC_BRAVE_SYNC_WORKER_H_
 
+#include <functional>
+#include <memory>
+#include <string>
+#include <vector>
+
 #include "base/scoped_observer.h"
 #include "components/sync/driver/sync_service.h"
 #include "components/sync/driver/sync_service_observer.h"
 #include "components/sync_device_info/device_info_sync_service.h"
 #include "components/sync_device_info/device_info_tracker.h"
-
-#include <functional>
-#include <string>
-#include <vector>
 
 class ChromeBrowserState;
 
@@ -41,9 +42,8 @@ class BraveSyncDeviceTracker : public syncer::DeviceInfoTracker::Observer {
 
 class BraveSyncServiceTracker : public syncer::SyncServiceObserver {
  public:
-  BraveSyncServiceTracker(
-      syncer::ProfileSyncService* profile_sync_service,
-      std::function<void()> on_state_changed_callback);
+  BraveSyncServiceTracker(syncer::ProfileSyncService* profile_sync_service,
+                          std::function<void()> on_state_changed_callback);
   ~BraveSyncServiceTracker() override;
 
  private:
@@ -57,7 +57,7 @@ class BraveSyncServiceTracker : public syncer::SyncServiceObserver {
 
 class BraveSyncWorker : public syncer::SyncServiceObserver {
  public:
-  BraveSyncWorker(ChromeBrowserState* browser_state_);
+  explicit BraveSyncWorker(ChromeBrowserState* browser_state_);
   ~BraveSyncWorker() override;
 
   bool SetSyncEnabled(bool enabled);
@@ -89,4 +89,4 @@ class BraveSyncWorker : public syncer::SyncServiceObserver {
   DISALLOW_COPY_AND_ASSIGN(BraveSyncWorker);
 };
 
-#endif /* BRAVE_IOS_BROWSER_API_SYNC_BRAVE_SYNC_WORKER_H_ */
+#endif  // BRAVE_IOS_BROWSER_API_SYNC_BRAVE_SYNC_WORKER_H_

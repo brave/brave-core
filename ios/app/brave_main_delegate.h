@@ -6,10 +6,10 @@
 #ifndef BRAVE_IOS_APP_BRAVE_MAIN_DELEGATE_H_
 #define BRAVE_IOS_APP_BRAVE_MAIN_DELEGATE_H_
 
+#include <string>
+
 #include "base/macros.h"
 #include "ios/chrome/app/startup/ios_chrome_main_delegate.h"
-
-#include <string>
 
 class BraveWebClient;
 
@@ -17,7 +17,7 @@ class BraveMainDelegate : public IOSChromeMainDelegate {
  public:
   BraveMainDelegate();
   ~BraveMainDelegate() override;
-  
+
   void SetSyncServiceURL(const std::string& url);
 
  protected:
