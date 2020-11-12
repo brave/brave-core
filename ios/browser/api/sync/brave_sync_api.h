@@ -12,36 +12,37 @@
 NS_ASSUME_NONNULL_BEGIN
 
 OBJC_EXPORT
-@interface BraveSyncDeviceObserver: NSObject
-- (instancetype)initWithCallback:(void(^)())onDeviceInfoChanged;
+@interface BraveSyncDeviceObserver : NSObject
+- (instancetype)initWithCallback:(void (^)())onDeviceInfoChanged;
 @end
 
 OBJC_EXPORT
-@interface BraveSyncServiceObserver: NSObject
-- (instancetype)initWithCallback:(void(^)())onSyncServiceStateChanged;
+@interface BraveSyncServiceObserver : NSObject
+- (instancetype)initWithCallback:(void (^)())onSyncServiceStateChanged;
 @end
 
 OBJC_EXPORT
 @interface BraveSyncAPI : NSObject
 
-@property(class, readonly, strong) BraveSyncAPI *sharedSyncAPI NS_SWIFT_NAME(shared);
+@property(class, readonly, strong)
+    BraveSyncAPI* sharedSyncAPI NS_SWIFT_NAME(shared);
 @property(nonatomic) bool syncEnabled;
 @property(nonatomic, readonly) bool isSyncFeatureActive;
 
 - (bool)resetSync;
 
-- (bool)isValidSyncCode:(NSString *)syncCode;
+- (bool)isValidSyncCode:(NSString*)syncCode;
 
-- (NSString *)getSyncCode;
+- (NSString*)getSyncCode;
 
 // returns false is sync is already configured or if the sync code is invalid
-- (bool)setSyncCode:(NSString *)syncCode;
+- (bool)setSyncCode:(NSString*)syncCode;
 
-- (NSString *)syncCodeFromHexSeed:(NSString *)hexSeed;
+- (NSString*)syncCodeFromHexSeed:(NSString*)hexSeed;
 
-- (nullable UIImage *)getQRCodeImage:(CGSize)size;
+- (nullable UIImage*)getQRCodeImage:(CGSize)size;
 
-- (nullable NSString *)getDeviceListJSON;
+- (nullable NSString*)getDeviceListJSON;
 @end
 
 NS_ASSUME_NONNULL_END
