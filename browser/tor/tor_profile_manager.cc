@@ -5,6 +5,8 @@
 
 #include "brave/browser/tor/tor_profile_manager.h"
 
+#include <algorithm>
+
 #include "brave/browser/tor/tor_profile_service_factory.h"
 #include "brave/browser/translate/buildflags/buildflags.h"
 #include "brave/common/pref_names.h"
@@ -22,6 +24,15 @@
 #if BUILDFLAG(ENABLE_BRAVE_TRANSLATE_EXTENSION)
 #include "components/translate/core/browser/translate_pref_names.h"
 #endif
+
+namespace {
+size_t GetTorBrowserCount() {
+  BrowserList* list = BrowserList::GetInstance();
+  return std::count_if(list->begin(), list->end(), [](Browser* browser) {
+    return browser->profile()->IsTor();
+  });
+}
+}  // namespace
 
 // static
 TorProfileManager& TorProfileManager::GetInstance() {
@@ -78,8 +89,14 @@ Profile* TorProfileManager::GetTorProfile(Profile* original_profile) {
 }
 
 void TorProfileManager::OnBrowserRemoved(Browser* browser) {
-  // TODO(darkdh): make KillTor logic here and travere windows through
-  // BrowserList
+  if (!browser || !browser->profile()->IsTor())
+    return;
+
+  if (!GetTorBrowserCount()) {
+    tor::TorProfileService* service =
+        TorProfileServiceFactory::GetForContext(browser->profile());
+    service->KillTor();
+  }
 }
 
 void TorProfileManager::OnProfileWillBeDestroyed(Profile* profile) {

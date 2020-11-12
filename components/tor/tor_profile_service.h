@@ -49,6 +49,7 @@ class TorProfileService : public KeyedService {
   virtual std::unique_ptr<net::ProxyConfigService>
       CreateProxyConfigService() = 0;
   virtual bool IsTorConnected() = 0;
+  virtual void KillTor() = 0;
   virtual void SetTorLaunchedForTest() {}
   void AddObserver(TorLauncherServiceObserver* observer);
   void RemoveObserver(TorLauncherServiceObserver* observer);

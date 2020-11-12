@@ -38,8 +38,6 @@ class TorProfileServiceFactory : public BrowserContextKeyedServiceFactory {
       content::BrowserContext* context) const override;
   content::BrowserContext* GetBrowserContextToUse(
       content::BrowserContext* context) const override;
-  void BrowserContextShutdown(content::BrowserContext* context) override;
-  void BrowserContextDestroyed(content::BrowserContext* context) override;
 
   DISALLOW_COPY_AND_ASSIGN(TorProfileServiceFactory);
 };
