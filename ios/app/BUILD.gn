@@ -41,5 +41,6 @@ source_set("app") {
 
   frameworks = [
     "Foundation.framework",
+    "UIKit.framework",
   ]
 }
