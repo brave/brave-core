@@ -23,9 +23,7 @@
 #include "components/sync_device_info/device_info_sync_service.h"
 #include "components/sync_device_info/device_info_tracker.h"
 #include "components/sync_device_info/local_device_info_provider.h"
-#include "ios/chrome/browser/application_context.h"
 #include "ios/chrome/browser/browser_state/chrome_browser_state.h"
-#include "ios/chrome/browser/browser_state/chrome_browser_state_manager.h"
 #include "ios/chrome/browser/sync/device_info_sync_service_factory.h"
 #include "ios/chrome/browser/sync/profile_sync_service_factory.h"
 #include "ios/chrome/browser/sync/sync_setup_service.h"
@@ -80,20 +78,11 @@ bool FillSyncConfigInfo(syncer::SyncService* service,
 }  // namespace
 
 BraveSyncDeviceTracker::BraveSyncDeviceTracker(
-    std::function<void()> onDeviceInfoChanged)
-    : onDeviceInfoChanged_(onDeviceInfoChanged) {
-  ios::ChromeBrowserStateManager* browserStateManager =
-      GetApplicationContext()->GetChromeBrowserStateManager();
-  ChromeBrowserState* chromeBrowserState =
-      browserStateManager->GetLastUsedBrowserState();
-
-  syncer::DeviceInfoTracker* tracker =
-      DeviceInfoSyncServiceFactory::GetForBrowserState(chromeBrowserState)
-          ->GetDeviceInfoTracker();
-  DCHECK(tracker);
-  if (tracker) {
-    device_info_tracker_observer_.Add(tracker);
-  }
+    syncer::DeviceInfoTracker* device_info_tracker,
+    std::function<void()> on_device_info_changed_callback)
+    : on_device_info_changed_callback_(on_device_info_changed_callback) {
+  DCHECK(device_info_tracker);
+  device_info_tracker_observer_.Add(device_info_tracker);
 }
 
 BraveSyncDeviceTracker::~BraveSyncDeviceTracker() {
@@ -101,26 +90,17 @@ BraveSyncDeviceTracker::~BraveSyncDeviceTracker() {
 }
 
 void BraveSyncDeviceTracker::OnDeviceInfoChange() {
-  if (onDeviceInfoChanged_) {
-    onDeviceInfoChanged_();
+  if (on_device_info_changed_callback_) {
+    on_device_info_changed_callback_();
   }
 }
 
 BraveSyncServiceTracker::BraveSyncServiceTracker(
-    std::function<void(syncer::SyncService* sync)> onStateChanged,
-    std::function<void(syncer::SyncService* sync)> onSyncShutdown)
-    : onStateChanged_(onStateChanged), onSyncShutdown_(onSyncShutdown) {
-  ios::ChromeBrowserStateManager* browserStateManager =
-      GetApplicationContext()->GetChromeBrowserStateManager();
-  ChromeBrowserState* chromeBrowserState =
-      browserStateManager->GetLastUsedBrowserState();
-
-  auto* sync_service =
-      ProfileSyncServiceFactory::GetForBrowserState(chromeBrowserState);
-  DCHECK(sync_service);
-  if (sync_service) {
-    sync_service_observer_.Add(sync_service);
-  }
+    syncer::ProfileSyncService* profile_sync_service,
+    std::function<void()> on_state_changed_callback)
+    : on_state_changed_callback_(on_state_changed_callback) {
+  DCHECK(profile_sync_service);
+  sync_service_observer_.Add(profile_sync_service);
 }
 
 BraveSyncServiceTracker::~BraveSyncServiceTracker() {
@@ -128,14 +108,8 @@ BraveSyncServiceTracker::~BraveSyncServiceTracker() {
 }
 
 void BraveSyncServiceTracker::OnStateChanged(syncer::SyncService* sync) {
-  if (onStateChanged_) {
-    onStateChanged_(sync);
-  }
-}
-
-void BraveSyncServiceTracker::OnSyncShutdown(syncer::SyncService* sync) {
-  if (onSyncShutdown_) {
-    onSyncShutdown_(sync);
+  if (on_state_changed_callback_) {
+    on_state_changed_callback_();
   }
 }
 

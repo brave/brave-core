@@ -21,17 +21,19 @@ class ChromeBrowserState;
 namespace syncer {
 class BraveProfileSyncService;
 class DeviceInfo;
+class ProfileSyncService;
 }  // namespace syncer
 
 class BraveSyncDeviceTracker : public syncer::DeviceInfoTracker::Observer {
  public:
-  BraveSyncDeviceTracker(std::function<void()> onDeviceInfoChanged);
+  BraveSyncDeviceTracker(syncer::DeviceInfoTracker* device_info_tracker,
+                         std::function<void()> on_device_info_changed_callback);
   virtual ~BraveSyncDeviceTracker();
 
  private:
   void OnDeviceInfoChange() override;
 
-  std::function<void()> onDeviceInfoChanged_;
+  std::function<void()> on_device_info_changed_callback_;
 
   ScopedObserver<syncer::DeviceInfoTracker, syncer::DeviceInfoTracker::Observer>
       device_info_tracker_observer_{this};
@@ -40,16 +42,14 @@ class BraveSyncDeviceTracker : public syncer::DeviceInfoTracker::Observer {
 class BraveSyncServiceTracker : public syncer::SyncServiceObserver {
  public:
   BraveSyncServiceTracker(
-      std::function<void(syncer::SyncService* sync)> onStateChanged,
-      std::function<void(syncer::SyncService* sync)> onSyncShutdown);
+      syncer::ProfileSyncService* profile_sync_service,
+      std::function<void()> on_state_changed_callback);
   ~BraveSyncServiceTracker() override;
 
  private:
   void OnStateChanged(syncer::SyncService* sync) override;
-  void OnSyncShutdown(syncer::SyncService* sync) override;
 
-  std::function<void(syncer::SyncService* sync)> onStateChanged_;
-  std::function<void(syncer::SyncService* sync)> onSyncShutdown_;
+  std::function<void()> on_state_changed_callback_;
 
   ScopedObserver<syncer::SyncService, syncer::SyncServiceObserver>
       sync_service_observer_{this};
