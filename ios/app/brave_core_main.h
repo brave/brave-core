@@ -12,11 +12,11 @@ OBJC_EXPORT
 
 - (instancetype)init;
 
-- (instancetype)initWithSyncServiceURL:(NSString *)syncServiceURL;
+- (instancetype)initWithSyncServiceURL:(NSString*)syncServiceURL;
 
 - (void)scheduleLowPriorityStartupTasks;
 
-- (void)setUserAgent:(NSString *)userAgent;
+- (void)setUserAgent:(NSString*)userAgent;
 
 @end
 
