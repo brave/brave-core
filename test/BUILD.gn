@@ -63,24 +63,6 @@ static_library("brave_test_support_unit") {
   }
 }
 
-source_set("test_support") {
-  testonly = true
-  if (!is_android) {
-    sources = [
-      "//brave/browser/profiles/brave_unittest_profile_manager.cc",
-      "//brave/browser/profiles/brave_unittest_profile_manager.h",
-    ]
-    deps = [
-      "//base",
-      "//brave/browser/profiles",
-      "//brave/test:brave_test_support_unit",
-      "//chrome/browser",
-      "//chrome/test:test_support",
-      "//components/sync_preferences",
-    ]
-  }
-}
-
 test("brave_unit_tests") {
   testonly = true
 
@@ -140,7 +122,6 @@ test("brave_unit_tests") {
   defines = brave_service_key_defines
 
   deps = [
-    ":test_support",
     "//brave/base:base_unittests",
     "//brave/app:command_ids",
     "//brave/app/theme:brave_theme_resources_grit",
@@ -428,21 +409,6 @@ test("brave_unit_tests") {
       "//brave/components/brave_sync:crypto",
       "//brave/components/brave_sync:network_time_helper",
       "//components/signin/public/identity_manager:test_support",
-    ]
-  }
-
-  if (enable_tor) {
-    sources += [
-      # TODO(darkdh): move these out and use buildflag guard once it contains non tor specifics
-      "//brave/browser/profiles/brave_profile_manager_unittest.cc",
-    ]
-
-    deps += [
-      "//brave/browser/profiles",
-      "//brave/browser/tor",
-      "//brave/components/brave_webtorrent/browser",
-      "//brave/components/tor",
-      "//third_party/blink/public/common",
     ]
   }
 

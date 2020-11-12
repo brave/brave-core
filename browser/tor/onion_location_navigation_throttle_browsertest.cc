@@ -77,6 +77,9 @@ class OnionLocationNavigationThrottleBrowserTest : public InProcessBrowserTest {
   std::unique_ptr<net::EmbeddedTestServer> test_server_;
 };
 
+// TODO(darkdh): We need modify proxy config in Tor window for test in order to
+// to access test_server so that we can test *_TorWindow version of test
+// cases
 IN_PROC_BROWSER_TEST_F(OnionLocationNavigationThrottleBrowserTest,
                        OnionLocationHeader) {
   GURL url1 = test_server()->GetURL("/onion");
@@ -114,28 +117,6 @@ IN_PROC_BROWSER_TEST_F(OnionLocationNavigationThrottleBrowserTest,
   content::WebContents* web_contents =
       browser_list->get(1)->tab_strip_model()->GetActiveWebContents();
   EXPECT_EQ(web_contents->GetURL(), GURL(kTestOnionURL));
-}
-
-IN_PROC_BROWSER_TEST_F(OnionLocationNavigationThrottleBrowserTest,
-                       OnionDomain_TorWindow) {
-  content::WindowedNotificationObserver tor_browser_creation_observer(
-      chrome::NOTIFICATION_BROWSER_OPENED,
-      content::NotificationService::AllSources());
-  brave::NewOffTheRecordWindowTor(browser());
-  tor_browser_creation_observer.Wait();
-
-  BrowserList* browser_list = BrowserList::GetInstance();
-  Browser* tor_browser = browser_list->get(1);
-  ASSERT_TRUE(brave::IsTorProfile(tor_browser->profile()));
-  EXPECT_EQ(2U, browser_list->size());
-
-  ui_test_utils::NavigateToURL(browser(), GURL("https://brave.com"));
-  ui_test_utils::NavigateToURL(browser(), GURL(kTestOnionURL));
-  EXPECT_EQ(2U, browser_list->size());
-  content::WebContents* web_contents =
-      tor_browser->tab_strip_model()->GetActiveWebContents();
-  EXPECT_EQ(web_contents->GetURL(), GURL(kTestOnionURL));
-  EXPECT_EQ(tor_browser->tab_strip_model()->count(), 2);
 }
 
 IN_PROC_BROWSER_TEST_F(OnionLocationNavigationThrottleBrowserTest,

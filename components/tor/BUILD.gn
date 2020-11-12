@@ -77,7 +77,6 @@ source_set("tor_unit_tests") {
     deps = [
       "//base/test:test_support",
       "//brave/components/tor",
-      "//brave/test:test_support",
       "//content/public/browser",
       "//content/test:test_support",
       "//testing/gtest",

@@ -12,8 +12,6 @@
 #include "base/test/bind_test_util.h"
 #include "base/test/scoped_feature_list.h"
 #include "brave/browser/ipfs/ipfs_service_factory.h"
-#include "brave/browser/profiles/brave_profile_manager.h"
-#include "brave/browser/profiles/brave_unittest_profile_manager.h"
 #include "brave/browser/profiles/profile_util.h"
 #include "brave/components/ipfs/features.h"
 #include "brave/components/ipfs/ipfs_constants.h"
@@ -22,9 +20,9 @@
 #include "brave/components/tor/buildflags/buildflags.h"
 #include "chrome/browser/prefs/browser_prefs.h"
 #include "chrome/test/base/chrome_render_view_host_test_harness.h"
-#include "chrome/test/base/scoped_testing_local_state.h"
 #include "chrome/test/base/testing_browser_process.h"
 #include "chrome/test/base/testing_profile.h"
+#include "chrome/test/base/testing_profile_manager.h"
 #include "content/public/browser/navigation_handle.h"
 #include "content/public/test/browser_task_environment.h"
 #include "content/public/test/mock_navigation_handle.h"
@@ -33,9 +31,15 @@
 #include "testing/gtest/include/gtest/gtest.h"
 #include "url/gurl.h"
 
+#if BUILDFLAG(ENABLE_TOR)
+#include "brave/browser/tor/tor_profile_manager.h"
+#endif
+
 using content::NavigationThrottle;
 
 namespace {
+
+constexpr char kTestProfileName[] = "TestProfile";
 
 const GURL& GetIPFSURL() {
   static const GURL ipfs_url(
@@ -69,21 +73,17 @@ namespace ipfs {
 
 class IpfsNavigationThrottleUnitTest : public testing::Test {
  public:
-  IpfsNavigationThrottleUnitTest()
-      : local_state_(TestingBrowserProcess::GetGlobal()) {}
+  IpfsNavigationThrottleUnitTest() = default;
   ~IpfsNavigationThrottleUnitTest() override = default;
 
   void SetUp() override {
     feature_list_.InitAndEnableFeature(ipfs::features::kIpfsFeature);
-    ASSERT_TRUE(temp_dir_.CreateUniqueTempDir());
+    TestingBrowserProcess* browser_process = TestingBrowserProcess::GetGlobal();
+    profile_manager_.reset(new TestingProfileManager(browser_process));
+    ASSERT_TRUE(profile_manager_->SetUp());
 
-    TestingBrowserProcess::GetGlobal()->SetProfileManager(
-        new BraveUnittestProfileManager(temp_dir_.GetPath()));
-    ProfileManager* profile_manager = g_browser_process->profile_manager();
-    ASSERT_TRUE(profile_manager);
+    profile_ = profile_manager_->CreateTestingProfile(kTestProfileName);
 
-    profile_ = profile_manager->GetProfile(
-        temp_dir_.GetPath().AppendASCII(TestingProfile::kTestUserProfileDir));
     web_contents_ =
         content::WebContentsTester::CreateTestWebContents(profile_, nullptr);
     locale_ = "en-US";
@@ -91,7 +91,8 @@ class IpfsNavigationThrottleUnitTest : public testing::Test {
 
   void TearDown() override {
     web_contents_.reset();
-    TestingBrowserProcess::GetGlobal()->SetProfileManager(nullptr);
+    profile_ = nullptr;
+    profile_manager_->DeleteTestingProfile(kTestProfileName);
   }
 
   content::WebContents* web_contents() { return web_contents_.get(); }
@@ -99,8 +100,6 @@ class IpfsNavigationThrottleUnitTest : public testing::Test {
   IpfsService* ipfs_service(content::BrowserContext* context) {
     return IpfsServiceFactory::GetForContext(context);
   }
-
-  base::ScopedTempDir* temp_dir() { return &temp_dir_; }
 
   // Helper that creates simple test guest profile.
   std::unique_ptr<TestingProfile> CreateGuestProfile() {
@@ -115,11 +114,10 @@ class IpfsNavigationThrottleUnitTest : public testing::Test {
 
  private:
   content::BrowserTaskEnvironment task_environment_;
-  base::ScopedTempDir temp_dir_;
-  ScopedTestingLocalState local_state_;
   content::RenderViewHostTestEnabler test_render_host_factories_;
   std::unique_ptr<content::WebContents> web_contents_;
   Profile* profile_;
+  std::unique_ptr<TestingProfileManager> profile_manager_;
   base::test::ScopedFeatureList feature_list_;
   std::string locale_;
 
@@ -257,29 +255,18 @@ TEST_F(IpfsNavigationThrottleUnitTest, Instantiation) {
 
 #if BUILDFLAG(ENABLE_TOR)
 TEST_F(IpfsNavigationThrottleUnitTest, NotInstantiatedInTor) {
-  ProfileManager* profile_manager = g_browser_process->profile_manager();
-  ASSERT_TRUE(profile_manager);
+  Profile* tor_profile =
+    TorProfileManager::GetInstance().GetTorProfile(profile());
+  ASSERT_TRUE(brave::IsTorProfile(tor_profile));
+  ASSERT_TRUE(tor_profile->IsOffTheRecord());
+  ASSERT_EQ(tor_profile->GetOriginalProfile(), profile());
 
-  Profile* tor_reg_profile =
-      profile_manager->GetProfile(BraveProfileManager::GetTorProfilePath());
-  ASSERT_EQ(brave::GetParentProfile(tor_reg_profile), profile());
-  ASSERT_TRUE(brave::IsTorProfile(tor_reg_profile));
-  ASSERT_FALSE(tor_reg_profile->IsOffTheRecord());
-
-  auto tor_reg_web_contents = content::WebContentsTester::CreateTestWebContents(
-      tor_reg_profile, nullptr);
-  content::MockNavigationHandle tor_reg_test_handle(tor_reg_web_contents.get());
-  auto throttle_in_tor_reg = IpfsNavigationThrottle::MaybeCreateThrottleFor(
-      &tor_reg_test_handle, ipfs_service(tor_reg_profile), locale());
-  EXPECT_EQ(throttle_in_tor_reg, nullptr);
-
-  auto tor_otr_web_contents = content::WebContentsTester::CreateTestWebContents(
-      tor_reg_profile->GetPrimaryOTRProfile(), nullptr);
-  content::MockNavigationHandle tor_otr_test_handle(tor_otr_web_contents.get());
-  auto throttle_in_tor_otr = IpfsNavigationThrottle::MaybeCreateThrottleFor(
-      &tor_otr_test_handle,
-      ipfs_service(tor_reg_profile->GetPrimaryOTRProfile()), locale());
-  EXPECT_EQ(throttle_in_tor_otr, nullptr);
+  auto tor_web_contents = content::WebContentsTester::CreateTestWebContents(
+      tor_profile, nullptr);
+  content::MockNavigationHandle tor_test_handle(tor_web_contents.get());
+  auto throttle_in_tor = IpfsNavigationThrottle::MaybeCreateThrottleFor(
+      &tor_test_handle, ipfs_service(tor_profile), locale());
+  EXPECT_EQ(throttle_in_tor, nullptr);
 }
 #endif
 

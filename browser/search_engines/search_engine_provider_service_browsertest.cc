@@ -27,20 +27,10 @@
 #include "content/public/test/test_utils.h"
 
 #if BUILDFLAG(ENABLE_TOR)
-#include "brave/components/tor/brave_tor_client_updater.h"
 #include "brave/components/tor/tor_launcher_factory.h"
 #endif
 
-class SearchEngineProviderServiceTest : public InProcessBrowserTest {
- public:
-  void SetUpOnMainThread() override {
-    InProcessBrowserTest::SetUpOnMainThread();
-#if BUILDFLAG(ENABLE_TOR)
-    g_brave_browser_process->tor_client_updater()->SetExecutablePath(
-        base::FilePath(FILE_PATH_LITERAL("test")));
-#endif
-  }
-};
+using SearchEngineProviderServiceTest = InProcessBrowserTest;
 
 TemplateURLData CreateTestSearchEngine() {
   TemplateURLData result;

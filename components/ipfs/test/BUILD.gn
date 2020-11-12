@@ -5,6 +5,7 @@
 
 import("//brave/build/config.gni")
 import("//brave/components/ipfs/buildflags/buildflags.gni")
+import("//brave/components/tor/buildflags/buildflags.gni")
 import("//testing/test.gni")
 
 source_set("brave_ipfs_unit_tests") {
@@ -26,7 +27,6 @@ source_set("brave_ipfs_unit_tests") {
       "//brave/browser/profiles",
       "//brave/components/ipfs",
       "//brave/components/tor/buildflags",
-      "//brave/test:test_support",
       "//chrome:browser_dependencies",
       "//chrome/test:test_support",
       "//components/version_info",
@@ -37,6 +37,9 @@ source_set("brave_ipfs_unit_tests") {
       "//testing/gtest",
       "//url",
     ]
+  if (enable_tor) {
+    deps += [ "//brave/browser/tor", ]
+  }
   }  # if (ipfs_enabled)
 }  # source_set("brave_ipfs_unit_tests")
 

@@ -5,17 +5,15 @@
 
 #include <utility>
 
-#include "base/files/scoped_temp_dir.h"
 #include "base/test/bind_test_util.h"
-#include "brave/browser/profiles/brave_profile_manager.h"
-#include "brave/browser/profiles/brave_unittest_profile_manager.h"
 #include "brave/browser/profiles/profile_util.h"
+#include "brave/browser/tor/tor_profile_manager.h"
 #include "brave/browser/tor/tor_profile_service_factory.h"
 #include "brave/components/tor/tor_navigation_throttle.h"
 #include "brave/components/tor/tor_profile_service.h"
-#include "chrome/test/base/scoped_testing_local_state.h"
 #include "chrome/test/base/testing_browser_process.h"
 #include "chrome/test/base/testing_profile.h"
+#include "chrome/test/base/testing_profile_manager.h"
 #include "content/public/browser/navigation_handle.h"
 #include "content/public/test/browser_task_environment.h"
 #include "content/public/test/mock_navigation_handle.h"
@@ -27,26 +25,23 @@
 using content::NavigationThrottle;
 
 namespace tor {
+namespace {
+constexpr char kTestProfileName[] = "TestProfile";
+}  // namespace
 
 class TorNavigationThrottleUnitTest : public testing::Test {
  public:
-  TorNavigationThrottleUnitTest()
-      : local_state_(TestingBrowserProcess::GetGlobal()) {}
+  TorNavigationThrottleUnitTest() = default;
   ~TorNavigationThrottleUnitTest() override = default;
 
   void SetUp() override {
-    // Create a new temporary directory, and store the path
-    ASSERT_TRUE(temp_dir_.CreateUniqueTempDir());
-    TestingBrowserProcess::GetGlobal()->SetProfileManager(
-        new BraveUnittestProfileManager(temp_dir_.GetPath()));
-    // Create profile.
-    ProfileManager* profile_manager = g_browser_process->profile_manager();
-    ASSERT_TRUE(profile_manager);
-    Profile* profile = profile_manager->GetProfile(
-        temp_dir_.GetPath().AppendASCII(TestingProfile::kTestUserProfileDir));
+    TestingBrowserProcess* browser_process = TestingBrowserProcess::GetGlobal();
+    profile_manager_.reset(new TestingProfileManager(browser_process));
+    ASSERT_TRUE(profile_manager_->SetUp());
+    Profile* profile = profile_manager_->CreateTestingProfile(kTestProfileName);
     Profile* tor_profile =
-        profile_manager->GetProfile(BraveProfileManager::GetTorProfilePath());
-    ASSERT_EQ(brave::GetParentProfile(tor_profile), profile);
+        TorProfileManager::GetInstance().GetTorProfile(profile);
+    ASSERT_EQ(tor_profile->GetOriginalProfile(), profile);
     web_contents_ =
         content::WebContentsTester::CreateTestWebContents(profile, nullptr);
     tor_web_contents_ =
@@ -58,7 +53,7 @@ class TorNavigationThrottleUnitTest : public testing::Test {
   void TearDown() override {
     tor_web_contents_.reset();
     web_contents_.reset();
-    TestingBrowserProcess::GetGlobal()->SetProfileManager(nullptr);
+    profile_manager_->DeleteTestingProfile(kTestProfileName);
   }
 
   content::WebContents* web_contents() { return web_contents_.get(); }
@@ -69,13 +64,11 @@ class TorNavigationThrottleUnitTest : public testing::Test {
 
  private:
   content::BrowserTaskEnvironment task_environment_;
-  // The path to temporary directory used to contain the test operations.
-  base::ScopedTempDir temp_dir_;
-  ScopedTestingLocalState local_state_;
   content::RenderViewHostTestEnabler test_render_host_factories_;
   std::unique_ptr<content::WebContents> web_contents_;
   std::unique_ptr<content::WebContents> tor_web_contents_;
   TorProfileService* tor_profile_service_;
+  std::unique_ptr<TestingProfileManager> profile_manager_;
   DISALLOW_COPY_AND_ASSIGN(TorNavigationThrottleUnitTest);
 };
 
