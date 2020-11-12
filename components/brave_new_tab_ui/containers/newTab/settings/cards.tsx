@@ -56,7 +56,7 @@ interface Props {
   cardsHidden: boolean
 }
 
-class MoreCardsSettings extends React.PureComponent<Props, {}> {
+class CardsSettings extends React.PureComponent<Props, {}> {
 
   renderToggleButton = (on: boolean, toggleFunc: any, float: boolean = true) => {
     return (
@@ -223,4 +223,4 @@ class MoreCardsSettings extends React.PureComponent<Props, {}> {
   }
 }
 
-export default MoreCardsSettings
+export default CardsSettings

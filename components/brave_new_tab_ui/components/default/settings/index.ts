@@ -416,7 +416,6 @@ export const ToggleCardsWrapper = styled<{}, 'div'>('div')`
   padding: 15px 15px 5px 15px;
   clear: both;
   border-radius: 10px;
-  max-width: 97%;
   background: ${p => isDarkTheme(p) ? '#3B3F4E' : '#F3F3FE'};
   color: ${p => isDarkTheme(p) ? '#FFF' : 'rgb(59, 62, 79)'};
 `
@@ -437,5 +436,5 @@ export const ToggleCardsCopy = styled<{}, 'p'>('p')`
 
 export const ToggleCardsSwitch = styled<{}, 'div'>('div')`
   float: right;
-  margin: -65px -5px 0 0;
+  margin: -65px -10px 0 0;
 `

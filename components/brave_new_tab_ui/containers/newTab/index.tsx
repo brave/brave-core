@@ -412,7 +412,7 @@ class NewTabPage extends React.Component<Props, State> {
   }
 
   openSettingsAddCard = () => {
-    this.openSettings(SettingsTabType.MoreCards)
+    this.openSettings(SettingsTabType.Cards)
   }
 
   setForegroundStackWidget = (widget: NewTab.StackWidget) => {

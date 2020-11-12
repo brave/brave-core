@@ -27,7 +27,7 @@ import BackgroundImageIcon from './settings/icons/backgroundImage.svg'
 import NraveStatsIcon from './settings/icons/braveStats.svg'
 import TopSitesIcon from './settings/icons/topSites.svg'
 import ClockIcon from './settings/icons/clock.svg'
-import MoreCardsIcon from './settings/icons/moreCards.svg'
+import CardsIcon from './settings/icons/cards.svg'
 import TodayIcon from './settings/icons/braveToday.svg'
 
 // Tabs
@@ -35,7 +35,7 @@ const BackgroundImageSettings = React.lazy(() => import('./settings/backgroundIm
 const BraveStatsSettings = React.lazy(() => import('./settings/braveStats'))
 const TopSitesSettings = React.lazy(() => import('./settings/topSites'))
 const ClockSettings = React.lazy(() => import('./settings/clock'))
-const MoreCardsSettings = React.lazy(() => import('./settings/moreCards'))
+const CardsSettings = React.lazy(() => import('./settings/cards'))
 const BraveTodaySettings = React.lazy(() => import('./settings/braveToday'))
 
 // Types
@@ -93,7 +93,7 @@ export enum TabType {
   TopSites = 'topSites',
   BraveToday = 'braveToday',
   Clock = 'clock',
-  MoreCards = 'moreCards'
+  Cards = 'cards'
 }
 
 interface State {
@@ -202,8 +202,8 @@ export default class Settings extends React.PureComponent<Props, State> {
       case TabType.Clock:
         srcUrl = ClockIcon
         break
-      case TabType.MoreCards:
-        srcUrl = MoreCardsIcon
+      case TabType.Cards:
+        srcUrl = CardsIcon
         break
       default:
         srcUrl = BackgroundImageIcon
@@ -224,8 +224,8 @@ export default class Settings extends React.PureComponent<Props, State> {
         return 'braveTodayTitle'
       case TabType.Clock:
         return 'clockTitle'
-      case TabType.MoreCards:
-        return 'moreCards'
+      case TabType.Cards:
+        return 'cards'
       default:
         return ''
     }
@@ -374,9 +374,9 @@ export default class Settings extends React.PureComponent<Props, State> {
                   ) : null
               }
               {
-                activeTab === TabType.MoreCards
+                activeTab === TabType.Cards
                   ? (
-                    <MoreCardsSettings
+                    <CardsSettings
                       toggleCards={toggleCards}
                       cardsHidden={cardsHidden}
                       toggleShowBinance={toggleShowBinance}
