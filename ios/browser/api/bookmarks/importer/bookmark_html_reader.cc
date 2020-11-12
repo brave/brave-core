@@ -179,7 +179,7 @@ void ImportBookmarksFile(
     if (is_bookmark && post_data.empty() &&
         CanImportURLAsSearchEngine(url, &search_engine_url) &&
             !shortcut.empty()) {
-      continue; // Do not Import search engines on iOS.. - Brandon T.
+      continue;  // Do not Import search engines on iOS.. - Brandon T.
     }
 
     if (is_bookmark)

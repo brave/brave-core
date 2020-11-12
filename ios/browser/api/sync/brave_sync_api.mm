@@ -36,36 +36,36 @@
 #error "This file requires ARC support."
 #endif
 
-@interface BraveSyncDeviceObserver () {
+@interface BraveSyncDeviceObserver : NSObject {
   std::unique_ptr<BraveSyncDeviceTracker> _device_observer;
 }
 @end
 
 @implementation BraveSyncDeviceObserver
 
-- (instancetype)initWithCallback:(void (^)())onDeviceInfoChanged {
+- (instancetype)initWithDeviceInfoTracker:(syncer::DeviceInfoTracker*)tracker
+                                 callback:(void (^)())onDeviceInfoChanged {
   if ((self = [super init])) {
     _device_observer =
-        std::make_unique<BraveSyncDeviceTracker>(onDeviceInfoChanged);
+        std::make_unique<BraveSyncDeviceTracker>(tracker, onDeviceInfoChanged);
   }
   return self;
 }
 @end
 
-@interface BraveSyncServiceObserver () {
-  std::unique_ptr<BraveSyncServiceTracker> _service_observer;
+@interface BraveSyncServiceObserver : NSObject {
+  std::unique_ptr<BraveSyncServiceTracker> _service_tracker;
 }
 @end
 
 @implementation BraveSyncServiceObserver
 
-- (instancetype)initWithCallback:(void (^)())onSyncServiceStateChanged {
+- (instancetype)
+    initWithProfileSyncService:(syncer::ProfileSyncService*)profileSyncService
+                      callback:(void (^)())onSyncServiceStateChanged {
   if ((self = [super init])) {
-    _service_observer = std::make_unique<BraveSyncServiceTracker>(
-        [onSyncServiceStateChanged](syncer::SyncService* sync) {
-          onSyncServiceStateChanged();
-        },
-        [](syncer::SyncService* sync) { fprintf(stderr, "Sync Shut Down\n"); });
+    _service_tracker = std::make_unique<BraveSyncServiceTracker>(
+        profileSyncService, onSyncServiceStateChanged);
   }
   return self;
 }
@@ -73,6 +73,7 @@
 
 @interface BraveSyncAPI () {
   std::unique_ptr<BraveSyncWorker> _worker;
+  ChromeBrowserState* _chromeBrowserState;
 }
 @end
 
@@ -91,15 +92,15 @@
   if ((self = [super init])) {
     ios::ChromeBrowserStateManager* browserStateManager =
         GetApplicationContext()->GetChromeBrowserStateManager();
-    ChromeBrowserState* chromeBrowserState =
-        browserStateManager->GetLastUsedBrowserState();
-    _worker.reset(new BraveSyncWorker(chromeBrowserState));
+    _chromeBrowserState = browserStateManager->GetLastUsedBrowserState();
+    _worker.reset(new BraveSyncWorker(_chromeBrowserState));
   }
   return self;
 }
 
 - (void)dealloc {
   _worker.reset();
+  _chromeBrowserState = NULL;
 }
 
 - (bool)syncEnabled {
@@ -197,5 +198,23 @@
 
 - (bool)resetSync {
   return _worker->ResetSync();
+}
+
+- (id)createSyncDeviceObserver:(void (^)())onDeviceInfoChanged {
+  auto* tracker =
+      DeviceInfoSyncServiceFactory::GetForBrowserState(_chromeBrowserState)
+          ->GetDeviceInfoTracker();
+  return [[BraveSyncDeviceObserver alloc]
+      initWithDeviceInfoTracker:tracker
+                       callback:onDeviceInfoChanged];
+}
+
+- (id)createSyncServiceObserver:(void (^)())onSyncServiceStateChanged {
+  auto* service =
+      ProfileSyncServiceFactory::GetAsProfileSyncServiceForBrowserState(
+          _chromeBrowserState);
+  return [[BraveSyncServiceObserver alloc]
+      initWithProfileSyncService:service
+                        callback:onSyncServiceStateChanged];
 }
 @end

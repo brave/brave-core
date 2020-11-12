@@ -9,17 +9,9 @@
 #import <Foundation/Foundation.h>
 #import <UIKit/UIKit.h>
 
+#include "base/compiler_specific.h"
+
 NS_ASSUME_NONNULL_BEGIN
-
-OBJC_EXPORT
-@interface BraveSyncDeviceObserver : NSObject
-- (instancetype)initWithCallback:(void (^)())onDeviceInfoChanged;
-@end
-
-OBJC_EXPORT
-@interface BraveSyncServiceObserver : NSObject
-- (instancetype)initWithCallback:(void (^)())onSyncServiceStateChanged;
-@end
 
 OBJC_EXPORT
 @interface BraveSyncAPI : NSObject
@@ -43,6 +35,9 @@ OBJC_EXPORT
 - (nullable UIImage*)getQRCodeImage:(CGSize)size;
 
 - (nullable NSString*)getDeviceListJSON;
+
+- (id)createSyncDeviceObserver:(void (^)())onDeviceInfoChanged;
+- (id)createSyncServiceObserver:(void (^)())onSyncServiceStateChanged;
 @end
 
 NS_ASSUME_NONNULL_END

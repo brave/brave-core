@@ -7,7 +7,8 @@
 
 #if defined(OS_IOS)
 #define SettingsAllowSigninCookies SettingsAllowSigninCookies_ChromiumImpl
-#define SettingsDeleteSigninCookiesOnExit SettingsDeleteSigninCookiesOnExit_ChromiumImpl
+#define SettingsDeleteSigninCookiesOnExit \
+  SettingsDeleteSigninCookiesOnExit_ChromiumImpl
 #endif
 
 #include "../../../../../../components/content_settings/core/browser/cookie_settings_utils.cc"

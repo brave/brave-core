@@ -18,32 +18,33 @@ typedef NS_ENUM(NSUInteger, BraveBookmarksImporterState) {
 };
 
 OBJC_EXPORT
-@interface BraveImportedBookmark: NSObject
-@property (nonatomic, readonly) bool inToolbar;
-@property (nonatomic, readonly) bool isFolder;
-@property (nullable, nonatomic, readonly, copy) NSURL *url;
-@property (nullable, nonatomic, readonly, copy) NSArray<NSString *> *path;
-@property (nonatomic, readonly, copy) NSString *title;
-@property (nonatomic, readonly, copy) NSDate *creationTime;
+@interface BraveImportedBookmark : NSObject
+@property(nonatomic, readonly) bool inToolbar;
+@property(nonatomic, readonly) bool isFolder;
+@property(nullable, nonatomic, readonly, copy) NSURL* url;
+@property(nullable, nonatomic, readonly, copy) NSArray<NSString*>* path;
+@property(nonatomic, readonly, copy) NSString* title;
+@property(nonatomic, readonly, copy) NSDate* creationTime;
 @end
 
 OBJC_EXPORT
-@interface BraveBookmarksImporter: NSObject
+@interface BraveBookmarksImporter : NSObject
 - (instancetype)init;
 
 - (void)cancel;
 
-- (void)importFromFile:(NSString *)filePath
-    topLevelFolderName:(NSString *)folderName
+- (void)importFromFile:(NSString*)filePath
+    topLevelFolderName:(NSString*)folderName
        automaticImport:(bool)automaticImport
-          withListener:(void(^)(BraveBookmarksImporterState, NSArray<BraveImportedBookmark *> * _Nullable))listener;
+          withListener:
+              (void (^)(BraveBookmarksImporterState,
+                        NSArray<BraveImportedBookmark*>* _Nullable))listener;
 
-- (void)importFromArray:(NSArray<BraveImportedBookmark *> *)bookmarks
-     topLevelFolderName:(NSString *)folderName
-           withListener:(void(^)(BraveBookmarksImporterState))listener;
+- (void)importFromArray:(NSArray<BraveImportedBookmark*>*)bookmarks
+     topLevelFolderName:(NSString*)folderName
+           withListener:(void (^)(BraveBookmarksImporterState))listener;
 @end
 
 NS_ASSUME_NONNULL_END
 
 #endif  // BRAVE_IOS_BROWSER_API_BOOKMARKS_IMPORTER_BRAVE_BOOKMARKS_IMPORTER_H_
-
