@@ -1,24 +1,28 @@
 #!/bin/bash
 
-# FIXME: THIS FILE IS OUTDATED AND MUST BE UPDATED TO REFLECT LATEST BRAVE_CORE/BRAVE_REWARDS CHANGES
-# BraveRewards has recently changed their location to node_modules/brave-core-ios
-
 set -e
 
 current_dir="`pwd`/`dirname $0`"
 framework_drop_point="$current_dir"
+node_modules_path="$current_dir/../node_modules/brave-core-ios"
 
 clean=0
+build_simulator=0
+build_device=0
 release_flag="Release"
 brave_browser_dir="${@: -1}"
 
+base_path=""
 sim_dir="out/ios_Release"
 device_dir="out/ios_Release_arm64"
 
 function usage() {
   echo "Usage: ./build_in_core.sh [--clean] [--debug] {\$home/brave/brave-browser}"
-  echo " --clean:         Cleans build directories before building"
-  echo " --debug:         Builds a debug instead of release framework. (Should not be pushed with the repo)"
+  echo " --clean:           Cleans build directories before building"
+  echo " --debug:           Builds a debug instead of release framework. (Should not be pushed with the repo)"
+  echo " --skip-update:     Skips cloning and rebasing"
+  echo " --build-simulator: Build only for simulator"
+  echo " --build-device:    Build only for device"
   exit 1
 }
 
@@ -36,6 +40,14 @@ case $i in
     ;;
     --clean)
     clean=1
+    shift
+    ;;
+    --build-simulator)
+    build_simulator=1
+    shift
+    ;;
+    --build-device)
+    build_device=1
     shift
     ;;
 esac
@@ -74,24 +86,49 @@ else
   [[ -d $device_dir/BraveRewards.framework ]] && rm -rf $device_dir/BraveRewards.framework
 fi
 
-npm run build -- $release_flag --target_os=ios
-npm run build -- $release_flag --target_os=ios --target_arch=arm64
+if { [ "$build_simulator" = 1 ] && [ "$build_device" = 1 ]; } || { [ "$build_simulator" = 0 ] && [ "$build_device" = 0 ]; } ; then
+  npm run build -- $release_flag --target_os=ios
+  npm run build -- $release_flag --target_os=ios --target_arch=arm64
+elif [ "$build_simulator" = 1 ]; then
+  npm run build -- $release_flag --target_os=ios
+elif [ "$build_device" = 1 ]; then
+  npm run build -- $release_flag --target_os=ios --target_arch=arm64
+fi
 
 # Copy the framework structure (from iphoneos build) to the universal folder
-rsync -a --delete "$device_dir/BraveRewards.framework" "$framework_drop_point/"
-if [ -d "$device_dir/BraveRewards.dSYM" ]; then
+if { [ "$build_simulator" = 1 ] && [ "$build_device" = 1 ]; } || { [ "$build_simulator" = 0 ] && [ "$build_device" = 0 ]; } || { [ "$build_simulator" = 0 ] && [ "$build_device" = 1 ]; } ; then
+  base_path="$device_dir"
+elif [ "$build_simulator" = 1 ]; then
+  base_path="$sim_dir"
+fi
+
+rsync -a --delete "$base_path/BraveRewards.framework" "$framework_drop_point/"
+rsync -a --delete "$base_path/MaterialComponents.framework" "$framework_drop_point/"
+
+if [ -d "$base_path/BraveRewards.dSYM" ]; then
   # Copy the dSYM if available
-  pushd $device_dir > /dev/null
+  pushd $base_path > /dev/null
   # zip up the dSYM since its too big to upload
   zip -FSr "BraveRewards.dSYM.zip" "BraveRewards.dSYM"
   popd > /dev/null
-  rsync -a --delete "$device_dir/BraveRewards.dSYM.zip" "$framework_drop_point/"
+  rsync -a --delete "$base_path/BraveRewards.dSYM.zip" "$framework_drop_point/"
 fi
 
 # Create universal binary file using lipo and place the combined executable in the copied framework directory
-lipo -create -output "$framework_drop_point/BraveRewards.framework/BraveRewards" "$sim_dir/BraveRewards.framework/BraveRewards" "$device_dir/BraveRewards.framework/BraveRewards"
+if { [ "$build_simulator" = 1 ] && [ "$build_device" = 1 ]; } || { [ "$build_simulator" = 0 ] && [ "$build_device" = 0 ]; } ; then
+  lipo -create -output "$framework_drop_point/BraveRewards.framework/BraveRewards" "$sim_dir/BraveRewards.framework/BraveRewards" "$device_dir/BraveRewards.framework/BraveRewards"
+  lipo -create -output "$framework_drop_point/MaterialComponents.framework/MaterialComponents" "$sim_dir/MaterialComponents.framework/MaterialComponents" "$device_dir/MaterialComponents.framework/MaterialComponents"
+fi
 
 echo "Created FAT framework: $framework_drop_point/BraveRewards.framework"
+
+echo "Moving Frameworks to node_modules"
+mkdir -p "$node_modules_path"
+rsync -a --delete "$framework_drop_point/BraveRewards.framework" "$node_modules_path/"
+rsync -a --delete "$framework_drop_point/MaterialComponents.framework" "$node_modules_path/"
+rsync -a --delete "$framework_drop_point/BraveRewards.dSYM.zip" "$node_modules_path/"
+rsync -a --delete "$framework_drop_point/copy_rewards_dsym.sh" "$node_modules_path/"
+echo "Moved Frameworks to node_modules"
 
 cd brave
 brave_core_build_hash=`git rev-parse HEAD`
@@ -109,7 +146,7 @@ brave-core: $brave_core_branch ($brave_core_build_hash)
 EOL
 
 # Check if any of the includes had changed.
-if `git diff --quiet "$framework_drop_point/BraveRewards.framework/Headers/"`; then
+if `git diff --quiet "$node_modules_path/BraveRewards.framework/Headers/"`; then
   echo "  → No updates to library includes were made"
 else
   echo "  → Changes found in library includes"
