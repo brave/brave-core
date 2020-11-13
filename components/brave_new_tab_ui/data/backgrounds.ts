@@ -4,83 +4,123 @@
 
 export const images: NewTab.Image[] = [
   {
-    'name': 'ntp-fall-2019-1',
-    'source': 'anders-jilden.webp',
-    'author': 'Anders Jildén',
-    'link': 'https://unsplash.com/@andersjilden?utm_source=unsplash&utm_medium=referral&utm_content=credit',
-    'originalUrl': 'https://unsplash.com/photos/uwbajDCODj4',
-    'license': 'https://unsplash.com/license'
+    'name': 'ntp-2020/2021-1',
+    'source': 'alex-plesovskich.avif',
+    'author': 'Alex Plesovskich',
+    'link': 'https://unsplash.com/@aples',
+    'originalUrl': 'Contributor sent the hi-res version through email',
+    'license': 'https://unsplash.com/photos/VPrTqd8B230'
   },
   {
-    'name': 'ntp-fall-2019-2',
-    'source': 'andreas-gucklhorn.webp',
-    'author': 'Andreas Gücklhorn',
-    'link': 'https://unsplash.com/@draufsicht?utm_source=unsplash&utm_medium=referral&utm_content=credit',
-    'originalUrl': 'https://unsplash.com/photos/mawU2PoJWfU',
-    'license': 'https://unsplash.com/license'
+    'name': 'ntp-2020/2021-2',
+    'source': 'andre-benz.avif',
+    'author': 'Andre Benz',
+    'link': 'https://unsplash.com/@trapnation',
+    'originalUrl': 'Contributor sent the hi-res version through email',
+    'license': 'https://unsplash.com/photos/axQXVkrUASg'
   },
   {
-    'name': 'ntp-fall-2019-3',
-    'source': 'andy-mai.webp',
-    'author': 'Andy Mai',
-    'link': 'https://unsplash.com/@veroz?utm_source=unsplash&utm_medium=referral&utm_content=credit',
-    'originalUrl': 'https://unsplash.com/photos/4knR_YzeUVc',
-    'license': 'https://unsplash.com/license'
-  },
-  {
-    'name': 'ntp-fall-2019-5',
-    'source': 'anton-repponen.webp',
-    'author': 'Anton Repponen',
-    'link': 'https://unsplash.com/@repponen?utm_source=unsplash&utm_medium=referral&utm_content=credit',
-    'originalUrl': 'https://unsplash.com/photos/sfgH9dXcMRw',
-    'license': 'https://unsplash.com/license'
-  },
-  {
-    'name': 'ntp-fall-2019-6',
-    'source': 'ben-karpinski.webp',
-    'author': 'Ben Karpinski',
-    'link': 'http://bklandscapes.com',
+    'name': 'ntp-2020/2021-3',
+    'source': 'corwin-prescott_beach.avif',
+    'author': 'Corwin Prescott',
+    'link': '',
     'originalUrl': 'Contributor sent the hi-res version through email',
     'license': 'used with permission'
   },
   {
-    'name': 'ntp-fall-2019-8',
-    'source': 'joe-gardner.webp',
-    'author': 'Joe Gardner',
-    'link': 'https://unsplash.com/@josephgardnerphotography?utm_source=unsplash&utm_medium=referral&utm_content=credit',
-    'originalUrl': 'https://unsplash.com/photos/4xv3lqnanYc',
-    'license': 'used with permission'
-  },
-  {
-    'name': 'ntp-fall-2019-10',
-    'source': 'matt-palmer.webp',
-    'author': 'Matt Palmer',
-    'link': 'https://unsplash.com/@mattpalmer?utm_source=unsplash&utm_medium=referral&utm_content=credit',
-    'originalUrl': 'https://unsplash.com/photos/veMnvjmfoxw',
-    'license': 'used with permission'
-  },
-  {
-    'name': 'ntp-fall-2019-12',
-    'source': 'svalbard-jerol-soibam.webp',
-    'author': 'Jerol Soibam',
-    'link': 'https://www.instagram.com/jerol_soibam',
+    'name': 'ntp-2020/2021-4',
+    'source': 'corwin-prescott_canyon.avif',
+    'author': 'Corwin Prescott',
+    'link': '',
     'originalUrl': 'Contributor sent the hi-res version through email',
     'license': 'used with permission'
   },
   {
-    'name': 'ntp-fall-2019-13',
-    'source': 'will-christiansen-glacier-peak.webp',
-    'author': 'Will Christiansen',
-    'link': 'https://www.theskyfolk.com',
+    'name': 'ntp-2020/2021-5',
+    'source': 'corwin-prescott_crestone.avif',
+    'author': 'Corwin Prescott',
+    'link': '',
     'originalUrl': 'Contributor sent the hi-res version through email',
     'license': 'used with permission'
   },
   {
-    'name': 'ntp-fall-2019-14',
-    'source': 'will-christiansen-ice.webp',
-    'author': 'Will Christiansen',
-    'link': 'https://www.theskyfolk.com',
+    'name': 'ntp-2020/2021-6',
+    'source': 'corwin-prescott_olympic.avif',
+    'author': 'Corwin Prescott',
+    'link': '',
     'originalUrl': 'Contributor sent the hi-res version through email',
     'license': 'used with permission'
+  },
+  {
+    'name': 'ntp-2020/2021-7',
+    'source': 'dylan-malval_alps.avif',
+    'author': 'Dylan Malval',
+    'link': 'https://www.instagram.com/vass_captures/',
+    'originalUrl': 'Contributor sent the hi-res version through email',
+    'license': 'used with permission'
+  },
+  {
+    'name': 'ntp-2020/2021-8',
+    'source': 'dylan-malval_sea.avif',
+    'author': 'Dylan Malval',
+    'link': 'https://www.instagram.com/vass_captures/',
+    'originalUrl': 'Contributor sent the hi-res version through email',
+    'license': 'used with permission'
+  },
+  {
+    'name': 'ntp-2020/2021-9',
+    'source': 'sora-sagano.avif',
+    'author': 'Sora Sogano',
+    'link': 'https://unsplash.com/@sorasagano',
+    'originalUrl': 'Contributor sent the hi-res version through email',
+    'license': 'https://unsplash.com/photos/UtJcj7_2zRs'
+  },
+  {
+    'name': 'ntp-2020/2021-10',
+    'source': 'spencer-moore_desert.avif',
+    'author': 'Spencer M. Moore',
+    'link': 'https://www.smoorevisuals.com/landscapes',
+    'originalUrl': 'Contributor sent the hi-res version through email',
+    'license': 'used with permission'
+  },
+  {
+    'name': 'ntp-2020/2021-11',
+    'source': 'spencer-moore_fern.avif',
+    'author': 'Spencer M. Moore',
+    'link': 'https://www.smoorevisuals.com/landscapes',
+    'originalUrl': 'Contributor sent the hi-res version through email',
+    'license': 'used with permission'
+  },
+  {
+    'name': 'ntp-2020/2021-12',
+    'source': 'spencer-moore_lake.avif',
+    'author': 'Spencer M. Moore',
+    'link': 'https://www.smoorevisuals.com/landscapes',
+    'originalUrl': 'Contributor sent the hi-res version through email',
+    'license': 'used with permission'
+  },
+  {
+    'name': 'ntp-2020/2021-13',
+    'source': 'spencer-moore_ocean.avif',
+    'author': 'Spencer M. Moore',
+    'link': 'https://www.smoorevisuals.com/landscapes',
+    'originalUrl': 'Contributor sent the hi-res version through email',
+    'license': 'used with permission'
+  },
+  {
+    'name': 'ntp-2020/2021-14',
+    'source': 'su-san-lee.avif',
+    'author': 'Su San Lee',
+    'link': 'https://unsplash.com/@blackodc',
+    'originalUrl': 'Contributor sent the hi-res version through email',
+    'license': 'https://unsplash.com/photos/E_eWwM29wfU'
+  },
+  {
+    'name': 'ntp-2020/2021-15',
+    'source': 'zane-lee.avif',
+    'author': 'Zane Lee',
+    'link': 'https://unsplash.com/@zane4004',
+    'originalUrl': 'Contributor sent the hi-res version through email',
+    'license': 'https://unsplash.com/photos/ZiDa9i7dY1E'
   }
 ]

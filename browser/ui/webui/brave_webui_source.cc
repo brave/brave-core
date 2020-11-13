@@ -67,16 +67,21 @@ void CustomizeWebUIHTMLSource(const std::string &name,
         { "6c337c63662ee0ba4e57f6f8156d69ce.svg", IDR_BRAVE_NEW_TAB_IMG2 },
         // New tab Backgrounds
 #if !defined(OS_ANDROID)
-        { "anders-jilden.webp", IDR_BRAVE_NEW_TAB_BACKGROUND1 },
-        { "andreas-gucklhorn.webp", IDR_BRAVE_NEW_TAB_BACKGROUND2 },
-        { "andy-mai.webp", IDR_BRAVE_NEW_TAB_BACKGROUND3 },
-        { "anton-repponen.webp", IDR_BRAVE_NEW_TAB_BACKGROUND5 },
-        { "ben-karpinski.webp", IDR_BRAVE_NEW_TAB_BACKGROUND6 },
-        { "joe-gardner.webp", IDR_BRAVE_NEW_TAB_BACKGROUND8 },
-        { "matt-palmer.webp", IDR_BRAVE_NEW_TAB_BACKGROUND10 },
-        { "svalbard-jerol-soibam.webp", IDR_BRAVE_NEW_TAB_BACKGROUND12 },
-        { "will-christiansen-glacier-peak.webp", IDR_BRAVE_NEW_TAB_BACKGROUND13 },            // NOLINT
-        { "will-christiansen-ice.webp", IDR_BRAVE_NEW_TAB_BACKGROUND14 },
+        { "alex-plesovskich.avif", IDR_BRAVE_NEW_TAB_BACKGROUND1 },
+        { "andre-benz.avif", IDR_BRAVE_NEW_TAB_BACKGROUND2 },
+        { "corwin-prescott_beach.avif", IDR_BRAVE_NEW_TAB_BACKGROUND3 },
+        { "corwin-prescott_canyon.avif", IDR_BRAVE_NEW_TAB_BACKGROUND4 },
+        { "corwin-prescott_crestone.avif", IDR_BRAVE_NEW_TAB_BACKGROUND5 },
+        { "corwin-prescott_olympic.avif", IDR_BRAVE_NEW_TAB_BACKGROUND6 },
+        { "dylan-malval_alps.avif", IDR_BRAVE_NEW_TAB_BACKGROUND7 },
+        { "dylan-malval_sea.avif", IDR_BRAVE_NEW_TAB_BACKGROUND8 },
+        { "sora-sagano.avif", IDR_BRAVE_NEW_TAB_BACKGROUND9 },
+        { "spencer-moore_desert.avif", IDR_BRAVE_NEW_TAB_BACKGROUND10 },
+        { "spencer-moore_fern.avif", IDR_BRAVE_NEW_TAB_BACKGROUND11 },
+        { "spencer-moore_lake.avif", IDR_BRAVE_NEW_TAB_BACKGROUND12 },
+        { "spencer-moore_ocean.avif", IDR_BRAVE_NEW_TAB_BACKGROUND13 },
+        { "su-san-lee.avif", IDR_BRAVE_NEW_TAB_BACKGROUND14 },
+        { "zane-lee.avif", IDR_BRAVE_NEW_TAB_BACKGROUND15 },
 #endif
         // private tab
         { "c168145d6bf1abf2c0322636366f7dbe.svg", IDR_BRAVE_PRIVATE_TAB_TOR_IMG },               // NOLINT
