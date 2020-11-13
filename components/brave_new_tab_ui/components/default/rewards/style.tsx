@@ -13,6 +13,7 @@ interface StyleProps {
   isLast?: boolean
   isActionPrompt?: boolean
   isInTab?: boolean
+  isNotification?: boolean
 }
 
 const Base = styled('div')`
@@ -43,9 +44,9 @@ export const Footer = styled<{}, 'div'>('div')`
   margin-top: 25px;
 `
 
-export const BatIcon = styled<{}, 'div'>('div')`
-  width: 27px;
-  height: 27px;
+export const BatIcon = styled<StyleProps, 'div'>('div')`
+  width: ${p => p.isNotification ? 20 : 27}px;
+  height: ${p => p.isNotification ? 20 : 27}px;
   margin-right: 8px;
 `
 
@@ -57,6 +58,11 @@ export const RewardsTitle = styled<StyleProps, 'div'>('div')`
   font-size: 18px;
   font-weight: 600;
   font-family: Poppins, sans-serif;
+`
+
+export const RewardsNotificationTitle = styled(RewardsTitle)`
+  font-size: 15px;
+  margin-bottom: 10px;
 `
 
 export const ServiceLink = styled<{}, 'a'>('a')`
@@ -71,7 +77,7 @@ export const LearnMoreText = styled<{}, 'div'>('div')`
 `
 
 export const Title = styled<{ isGrant?: boolean}, 'span'>('span')`
-  font-size: ${p => p.isGrant ? 16 : 14}px;
+  font-size: ${p => p.isGrant ? 16 : 13}px;
   display: block;
   font-family: ${p => p.theme.fontFamily.heading};
   line-height: 1.5;
@@ -84,6 +90,10 @@ export const SubTitle = styled<{}, 'span'>('span')`
   margin-top: 15px;
   max-width: 250px;
   line-height: 1.4;
+`
+
+export const SubAction = styled(SubTitle)`
+  margin: 15px 0;
 `
 
 export const SubTitleLink = styled<{}, 'a'>('a')`
@@ -158,6 +168,20 @@ export const TurnOnAdsButton = styled(Button as React.ComponentType<ButtonProps>
   display: inline-block;
 `
 
+export const StartRewardsButton = styled<{}, 'button'>('button')`
+  margin: 15px 0;
+  display: inline-block;
+  background: inherit;
+  border: 1px solid #fff;
+  width: 100%;
+  text-align: center;
+  border-radius: 20px;
+  font-weight: bold;
+  padding: 12px 0;
+  font-size: 13px;
+  cursor: pointer;
+`
+
 export const NotificationButton = styled(CoinsButton)`
   margin-top: 25px;
 `
@@ -167,7 +191,6 @@ export const AmountItem = styled<StyleProps, 'div'>('div')`
   margin-bottom: ${p => p.isLast ? -10 : 0}px;
   ${p => p.isActionPrompt && css`
     text-align: center;
-    border-bottom: solid 1px ${palette.grey800};
     padding-bottom: 16px;
   `}
 `
@@ -222,8 +245,9 @@ export const NotificationWrapper = styled(BaseNotificationWrapper)`
 export const OrphanedNotificationWrapper = styled(BaseNotificationWrapper)`
   position: absolute;
   bottom: 100%;
-  background: #339AF0;
+  background-color: #339AF0;
   color: #fff;
+  padding: 15px 20px;
 
   &:after {
     content: "";
@@ -238,17 +262,8 @@ export const OrphanedNotificationWrapper = styled(BaseNotificationWrapper)`
 `
 
 export const NotificationAction = styled<{}, 'a'>('a')`
-  margin-top: 20px;
-  max-width: 250px;
-  display: block;
-  cursor: pointer;
-  font-size: 14px;
-  color: ${palette.blurple300};
-  font-weight: 700;
-  text-decoration: none;
-  &:hover {
-    text-decoration: underline;
-  }
+  color: #fff;
+  text-decoration: underline;
 `
 
 export const CloseIcon = styled<{}, 'div'>('div')`
@@ -258,6 +273,16 @@ export const CloseIcon = styled<{}, 'div'>('div')`
   float: right;
   cursor: pointer;
   margin-top: 2px;
+`
+
+export const NotificationCloseIcon = styled<{}, 'div'>('div')`
+  color: #fff;
+  width: 15px;
+  height: 15px;
+  position: absolute;
+  cursor: pointer;
+  top: 18px;
+  right: 20px;
 `
 
 export const UnsupportedMessage = styled<{}, 'div'>('div')`
@@ -281,6 +306,15 @@ export const StyledTOS = styled(TOSAndPP as React.ComponentType<TOSProps>)`
   }
 `
 
-export const StyleCenter = styled<{}, 'div'>('div')`
-  text-align: center;
+export const NotificationContent = styled<{}, 'div'>('div')`
+  padding: 3px;
+  font-family: Poppins, sans-serif;
+  font-size: 13px;
+  font-weight: 600;
+`
+
+export const NotificationTOS = styled<{}, 'div'>('div')`
+  font-weight: 500;
+  font-size: 11px;
+  line-height: 17px;
 `

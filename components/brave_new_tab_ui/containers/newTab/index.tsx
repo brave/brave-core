@@ -655,6 +655,10 @@ class NewTabPage extends React.Component<Props, State> {
     this.props.actions.setGeminiAuthInvalid(false)
   }
 
+  enableAds = () => {
+    chrome.braveRewards.saveAdsSetting('adsEnabled', 'true')
+  }
+
   getCryptoContent () {
     const {
       widgetStackOrder,
@@ -995,6 +999,7 @@ class NewTabPage extends React.Component<Props, State> {
     const showTopSites = !!this.props.gridSitesData.gridSites.length && newTabData.showTopSites
     const cryptoContent = this.renderCryptoContent()
     const shouldShowBrandedWallpaperNotification = GetShouldShowBrandedWallpaperNotification(this.props)
+    const { enabledAds } = newTabData.rewardsState
 
     return (
       <Page.App
@@ -1076,6 +1081,8 @@ class NewTabPage extends React.Component<Props, State> {
                 paddingType={'default'}
                 textDirection={newTabData.textDirection}
                 onClickLogo={this.onClickLogo}
+                onEnableAds={this.enableAds}
+                enabledAds={enabledAds}
                 data={newTabData.brandedWallpaperData.logo}
                 showBrandedWallpaperNotification={shouldShowBrandedWallpaperNotification}
                 onDisableBrandedWallpaper={this.disableBrandedWallpaper}

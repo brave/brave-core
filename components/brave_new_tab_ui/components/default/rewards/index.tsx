@@ -121,6 +121,10 @@ class Rewards extends React.PureComponent<RewardsProps, {}> {
     const converted = convertBalance(amount, rate)
     const batFormatString = onlyAnonWallet ? getLocale('rewardsWidgetBap') : getLocale('rewardsWidgetBat')
 
+    if (amount === 0) {
+      return null
+    }
+
     return (
       <AmountItem isLast={true}>
         <div data-test-id={`widget-amount-total-tips`}>
@@ -216,7 +220,8 @@ class Rewards extends React.PureComponent<RewardsProps, {}> {
   render () {
     const {
       isNotification,
-      showContent
+      showContent,
+      totalContribution
     } = this.props
 
     if (!showContent) {
@@ -236,9 +241,11 @@ class Rewards extends React.PureComponent<RewardsProps, {}> {
         <WidgetLayer>
           {this.renderTitle()}
           {this.renderRewardsInfo()}
-          <Footer>
-            {this.renderLearnMore()}
-          </Footer>
+          {totalContribution > 0 &&
+            <Footer>
+              {this.renderLearnMore()}
+            </Footer>
+          }
         </WidgetLayer>
         {this.renderNotifications()}
       </WidgetWrapper>

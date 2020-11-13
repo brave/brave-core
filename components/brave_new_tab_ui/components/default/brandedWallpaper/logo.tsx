@@ -11,10 +11,12 @@ import { OpenNewIcon } from 'brave-ui/components/icons'
 import BrandedWallpaperNotification from '../rewards/brandedWallpaperNotification'
 
 interface Props {
+  enabledAds: boolean
   data: NewTab.BrandedWallpaperLogo
   showBrandedWallpaperNotification: boolean
   brandedWallpaperData?: NewTab.BrandedWallpaper
   onClickLogo: () => void
+  onEnableAds: () => void
   onDisableBrandedWallpaper: () => void
   onDismissBrandedWallpaperNotification: (isUserAction: boolean) => void
 }
@@ -27,6 +29,8 @@ class Logo extends React.PureComponent<Props, {}> {
 
   renderNotifications = () => {
     const {
+      enabledAds,
+      onEnableAds,
       brandedWallpaperData,
       onDisableBrandedWallpaper,
       showBrandedWallpaperNotification
@@ -38,9 +42,7 @@ class Logo extends React.PureComponent<Props, {}> {
 
     return (
       <BrandedWallpaperNotification
-        order={0}
-        isOrphan={true}
-        onStartRewards={undefined}
+        onStartRewards={enabledAds ? undefined : onEnableAds}
         brandedWallpaperData={brandedWallpaperData}
         onDismissNotification={this.dismissNotification}
         onHideSponsoredImages={onDisableBrandedWallpaper}
