@@ -38,6 +38,9 @@ class BinanceNativeWorker {
   void GetAccessToken(JNIEnv* env,
                       const base::android::JavaParamRef<jobject>& jcaller);
 
+  bool IsSupportedRegion(JNIEnv* env,
+                         const base::android::JavaParamRef<jobject>& jcaller)
+
   void OnGetAccessToken(bool success);
 
   void GetAccountBalances(JNIEnv* env,

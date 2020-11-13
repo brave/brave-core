@@ -113,6 +113,15 @@ void BinanceNativeWorker::GetAccessToken(
   }
 }
 
+bool BinanceNativeWorker::IsSupportedRegion(JNIEnv* env,
+    const base::android::JavaParamRef<jobject>& jcaller) {
+  if (!binance_service_) {
+    return false;
+  }
+
+  return binance_service_->IsSupportedRegion();
+}
+
 void BinanceNativeWorker::OnGetAccessToken(bool success) {
   JNIEnv* env = base::android::AttachCurrentThread();
   Java_BinanceNativeWorker_OnGetAccessToken(
