@@ -220,6 +220,21 @@ export const NotificationWrapper = styled(BaseNotificationWrapper)`
 `
 
 export const OrphanedNotificationWrapper = styled(BaseNotificationWrapper)`
+  position: absolute;
+  bottom: 100%;
+  background: #339AF0;
+  color: #fff;
+
+  &:after {
+    content: "";
+    position: absolute;
+    top: 100%;
+    left: 20px;
+    border-top: 20px solid black;
+    border-top-color: inherit;
+    border-left: 20px solid transparent;
+    border-right: 20px solid transparent;
+ }
 `
 
 export const NotificationAction = styled<{}, 'a'>('a')`
