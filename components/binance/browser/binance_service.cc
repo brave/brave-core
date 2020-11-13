@@ -21,7 +21,9 @@
 #include "base/token.h"
 #include "brave/common/pref_names.h"
 #include "brave/components/binance/browser/binance_json_parser.h"
+#include "brave/components/binance/browser/regions.h"
 #include "brave/components/ntp_widget_utils/browser/ntp_widget_utils_oauth.h"
+#include "brave/components/ntp_widget_utils/browser/ntp_widget_utils_region.h"
 #include "components/country_codes/country_codes.h"
 #include "components/os_crypt/os_crypt.h"
 #include "components/prefs/pref_service.h"
@@ -124,6 +126,13 @@ bool BinanceService::GetAccessToken(GetAccessTokenCallback callback) {
   auth_token_.clear();
   return OAuthRequest(
       base_url, "POST", url.query(), std::move(internal_callback), true, true);
+}
+
+bool BinanceService::IsSupportedRegion() {
+  PrefService* prefs = user_prefs::UserPrefs::Get(context_);
+  bool is_supported = ntp_widget_utils::IsRegionSupported(
+      prefs, ::binance::unsupported_regions, false);
+  return is_supported;
 }
 
 bool BinanceService::GetAccountBalances(GetAccountBalancesCallback callback) {
