@@ -50,6 +50,8 @@ void WaitForLedgerStop(brave_rewards::RewardsServiceImpl* rewards_service);
 
 void CreateWallet(brave_rewards::RewardsServiceImpl* rewards_service);
 
+void SetOnboardingBypassed(Browser* browser, bool bypassed = true);
+
 }  // namespace rewards_browsertest_util
 
 #endif  // BRAVE_COMPONENTS_BRAVE_REWARDS_BROWSER_TEST_COMMON_REWARDS_BROWSERTEST_UTIL_H_

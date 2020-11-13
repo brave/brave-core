@@ -2,10 +2,13 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
+import { OnboardingCompletedStore } from '../../../../shared/lib/onboarding_completed_store'
 import { types } from '../../constants/rewards_panel_types'
 import { Reducer } from 'redux'
 import { setBadgeText } from '../browserAction'
 import { isPublisherConnectedOrVerified } from '../../utils'
+
+const onboardingCompletedStore = new OnboardingCompletedStore()
 
 const getTabKey = (id: number) => {
   return `key_${id}`
@@ -242,12 +245,17 @@ export const rewardsPanelReducer: Reducer<RewardsExtension.State | undefined> = 
       break
     }
     case types.ON_SHOULD_SHOW_ONBOARDING: {
-      state = { ...state, showOnboarding: payload.showOnboarding }
+      const completed = onboardingCompletedStore.load()
+      state = {
+        ...state,
+        showOnboarding: payload.showOnboarding && !completed
+      }
       break
     }
     case types.SAVE_ONBOARDING_RESULT: {
       state = { ...state, showOnboarding: false }
       chrome.braveRewards.saveOnboardingResult(payload.result)
+      onboardingCompletedStore.save()
       break
     }
     case types.ON_PUBLISHER_LIST_NORMALIZED: {
