@@ -27,6 +27,8 @@ source_set("tor") {
     deps = [
       "//base",
       "//brave/browser/translate/buildflags",
+      "//brave/common:pref_names",
+      "//brave/components/brave_webtorrent/browser/buildflags",
       "//brave/components/tor",
       "//brave/components/tor:pref_names",
       "//chrome/common",
@@ -58,7 +60,6 @@ source_set("unit_tests") {
     deps = [
       "//base",
       "//base/test:test_support",
-      "//brave/browser/profiles",
       "//brave/browser/tor",
       "//brave/components/tor",
       "//chrome/test:test_support",
@@ -84,7 +85,6 @@ source_set("browser_tests") {
       "//base",
       "//brave/app:brave_generated_resources_grit",
       "//brave/browser:browser_process",
-      "//brave/browser/profiles",
       "//brave/browser/tor",
       "//brave/browser/ui",
       "//brave/common",

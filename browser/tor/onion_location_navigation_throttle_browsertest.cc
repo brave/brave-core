@@ -4,7 +4,6 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 #include "base/strings/utf_string_conversions.h"
-#include "brave/browser/profiles/profile_util.h"
 #include "brave/browser/tor/tor_profile_service_factory.h"
 #include "brave/browser/ui/browser_commands.h"
 #include "brave/browser/ui/views/location_bar/brave_location_bar_view.h"
@@ -105,7 +104,7 @@ IN_PROC_BROWSER_TEST_F(OnionLocationNavigationThrottleBrowserTest,
   BrowserList* browser_list = BrowserList::GetInstance();
   ui_test_utils::NavigateToURL(browser(), GURL("https://brave.com"));
   EXPECT_EQ(1U, browser_list->size());
-  ASSERT_FALSE(brave::IsTorProfile(browser_list->get(0)->profile()));
+  ASSERT_FALSE(browser_list->get(0)->profile()->IsTor());
 
   content::WindowedNotificationObserver tor_browser_creation_observer(
       chrome::NOTIFICATION_BROWSER_OPENED,
@@ -113,7 +112,7 @@ IN_PROC_BROWSER_TEST_F(OnionLocationNavigationThrottleBrowserTest,
   ui_test_utils::NavigateToURL(browser(), GURL(kTestOnionURL));
   tor_browser_creation_observer.Wait();
   EXPECT_EQ(2U, browser_list->size());
-  ASSERT_TRUE(brave::IsTorProfile(browser_list->get(1)->profile()));
+  ASSERT_TRUE(browser_list->get(1)->profile()->IsTor());
   content::WebContents* web_contents =
       browser_list->get(1)->tab_strip_model()->GetActiveWebContents();
   EXPECT_EQ(web_contents->GetURL(), GURL(kTestOnionURL));
@@ -142,7 +141,7 @@ IN_PROC_BROWSER_TEST_F(OnionLocationNavigationThrottleBrowserTest,
   BrowserList* browser_list = BrowserList::GetInstance();
   EXPECT_EQ(2U, browser_list->size());
   Browser* tor_browser = browser_list->get(1);
-  ASSERT_TRUE(brave::IsTorProfile(tor_browser->profile()));
+  ASSERT_TRUE(tor_browser->profile()->IsTor());
   web_contents = tor_browser->tab_strip_model()->GetActiveWebContents();
   EXPECT_EQ(web_contents->GetURL(), GURL(kTestOnionURL));
 

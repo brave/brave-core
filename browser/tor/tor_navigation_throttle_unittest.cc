@@ -6,7 +6,6 @@
 #include <utility>
 
 #include "base/test/bind_test_util.h"
-#include "brave/browser/profiles/profile_util.h"
 #include "brave/browser/tor/tor_profile_manager.h"
 #include "brave/browser/tor/tor_profile_service_factory.h"
 #include "brave/components/tor/tor_navigation_throttle.h"
@@ -78,14 +77,14 @@ TEST_F(TorNavigationThrottleUnitTest, Instantiation) {
   std::unique_ptr<TorNavigationThrottle> throttle =
       TorNavigationThrottle::MaybeCreateThrottleFor(
           &test_handle, tor_profile_service(),
-          brave::IsTorProfile(tor_web_contents()->GetBrowserContext()));
+          tor_web_contents()->GetBrowserContext()->IsTor());
   EXPECT_TRUE(throttle != nullptr);
 
   content::MockNavigationHandle test_handle2(web_contents());
   std::unique_ptr<TorNavigationThrottle> throttle2 =
       TorNavigationThrottle::MaybeCreateThrottleFor(
           &test_handle2, nullptr,
-          brave::IsTorProfile(web_contents()->GetBrowserContext()));
+          web_contents()->GetBrowserContext()->IsTor());
   EXPECT_TRUE(throttle2 == nullptr);
 }
 
@@ -95,7 +94,7 @@ TEST_F(TorNavigationThrottleUnitTest, WhitelistedScheme) {
   std::unique_ptr<TorNavigationThrottle> throttle =
       TorNavigationThrottle::MaybeCreateThrottleFor(
           &test_handle, tor_profile_service(),
-          brave::IsTorProfile(tor_web_contents()->GetBrowserContext()));
+          tor_web_contents()->GetBrowserContext()->IsTor());
   GURL url("http://www.example.com");
   test_handle.set_url(url);
   EXPECT_EQ(NavigationThrottle::PROCEED, throttle->WillStartRequest().action())
@@ -131,7 +130,7 @@ TEST_F(TorNavigationThrottleUnitTest, BlockedScheme) {
   std::unique_ptr<TorNavigationThrottle> throttle =
       TorNavigationThrottle::MaybeCreateThrottleFor(
           &test_handle, tor_profile_service(),
-          brave::IsTorProfile(tor_web_contents()->GetBrowserContext()));
+          tor_web_contents()->GetBrowserContext()->IsTor());
   GURL url("ftp://ftp.example.com");
   test_handle.set_url(url);
   EXPECT_EQ(NavigationThrottle::BLOCK_REQUEST,
@@ -156,7 +155,7 @@ TEST_F(TorNavigationThrottleUnitTest, DeferUntilTorProcessLaunched) {
   std::unique_ptr<TorNavigationThrottle> throttle =
       TorNavigationThrottle::MaybeCreateThrottleFor(
           &test_handle, tor_profile_service(),
-          brave::IsTorProfile(tor_web_contents()->GetBrowserContext()));
+          tor_web_contents()->GetBrowserContext()->IsTor());
   bool was_navigation_resumed = false;
   throttle->set_resume_callback_for_testing(
       base::BindLambdaForTesting([&]() { was_navigation_resumed = true; }));

@@ -6,7 +6,6 @@
 #include "base/path_service.h"
 #include "brave/browser/brave_browser_process_impl.h"
 #include "brave/browser/brave_rewards/rewards_service_factory.h"
-#include "brave/browser/profiles/profile_util.h"
 #include "brave/browser/tor/tor_profile_manager.h"
 #include "brave/common/brave_paths.h"
 #include "brave/components/brave_ads/browser/ads_service_factory.h"
@@ -101,7 +100,7 @@ IN_PROC_BROWSER_TEST_F(TorProfileManagerTest,
       parent_bookmark_model->AddURL(root, 0, title, url1);
 
   Profile* tor_profile = SwitchToTorProfile(parent_profile);
-  ASSERT_TRUE(brave::IsTorProfile(tor_profile));
+  ASSERT_TRUE(tor_profile->IsTor());
   EXPECT_TRUE(tor_profile->IsOffTheRecord());
   EXPECT_EQ(tor_profile->GetOriginalProfile(), parent_profile);
 
@@ -142,7 +141,7 @@ IN_PROC_BROWSER_TEST_F(TorProfileManagerTest,
 
   Profile* tor_profile = SwitchToTorProfile(parent_profile);
   EXPECT_EQ(tor_profile->GetOriginalProfile(), parent_profile);
-  ASSERT_TRUE(brave::IsTorProfile(tor_profile));
+  ASSERT_TRUE(tor_profile->IsTor());
   EXPECT_TRUE(tor_profile->IsOffTheRecord());
 
   EXPECT_EQ(brave_rewards::RewardsServiceFactory::GetForProfile(tor_profile),
@@ -166,7 +165,7 @@ IN_PROC_BROWSER_TEST_F(TorProfileManagerTest, SwitchToTorProfileInheritPrefs) {
   EXPECT_TRUE(parent_prefs->GetBoolean(bookmarks::prefs::kShowBookmarkBar));
 
   Profile* tor_profile = SwitchToTorProfile(parent_profile);
-  ASSERT_TRUE(brave::IsTorProfile(tor_profile));
+  ASSERT_TRUE(tor_profile->IsTor());
   EXPECT_TRUE(tor_profile->IsOffTheRecord());
   EXPECT_EQ(tor_profile->GetOriginalProfile(), parent_profile);
 
@@ -194,7 +193,7 @@ IN_PROC_BROWSER_TEST_F(TorProfileManagerTest,
                    CONTENT_SETTING_BLOCK);
 
   Profile* tor_profile = SwitchToTorProfile(parent_profile);
-  ASSERT_TRUE(brave::IsTorProfile(tor_profile));
+  ASSERT_TRUE(tor_profile->IsTor());
   EXPECT_TRUE(tor_profile->IsOffTheRecord());
   EXPECT_EQ(tor_profile->GetOriginalProfile(), parent_profile);
 
@@ -263,7 +262,7 @@ IN_PROC_BROWSER_TEST_F(TorProfileManagerExtensionTest,
   parent_extension_prefs->SetIsIncognitoEnabled(id, true);
 
   Profile* tor_profile = SwitchToTorProfile(parent_profile);
-  ASSERT_TRUE(brave::IsTorProfile(tor_profile));
+  ASSERT_TRUE(tor_profile->IsTor());
   EXPECT_TRUE(tor_profile->IsOffTheRecord());
   EXPECT_EQ(tor_profile->GetOriginalProfile(), parent_profile);
 
