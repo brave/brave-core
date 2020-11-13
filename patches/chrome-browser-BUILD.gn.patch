@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/BUILD.gn b/chrome/browser/BUILD.gn
-index 5777c231b6bb7640695c55a636b654202885b8ed..43ef10984534a8a3a9734999d72b8cdc1e2abd8e 100644
+index 62ddc2d8548bcac4d55bbc7283426c426fecf254..47c709f64e40f3db81ff9e12fab387005c6df4ce 100644
 --- a/chrome/browser/BUILD.gn
 +++ b/chrome/browser/BUILD.gn
 @@ -2281,6 +2281,7 @@ static_library("browser") {
@@ -10,7 +10,7 @@ index 5777c231b6bb7640695c55a636b654202885b8ed..43ef10984534a8a3a9734999d72b8cdc
    ]
    if (is_chromeos) {
      deps += [
-@@ -4025,6 +4026,7 @@ static_library("browser") {
+@@ -4026,6 +4027,7 @@ static_library("browser") {
          sources += [ "first_run/first_run_internal_posix.cc" ]
        }
      }
