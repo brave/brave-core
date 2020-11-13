@@ -1,5 +1,5 @@
 diff --git a/chrome/installer/mini_installer/BUILD.gn b/chrome/installer/mini_installer/BUILD.gn
-index 7c7af8c0d9487abcd82ecd9d2d5b1ab4b737148b..9c0b6010d98663007ffc0b4892e9ead2589bded5 100644
+index df39ea145cc6b05775db7fbfb680fce892b8941a..f44076c2b5948c034dd4ba871e07f41a6447fea9 100644
 --- a/chrome/installer/mini_installer/BUILD.gn
 +++ b/chrome/installer/mini_installer/BUILD.gn
 @@ -12,6 +12,7 @@ import("//third_party/icu/config.gni")
