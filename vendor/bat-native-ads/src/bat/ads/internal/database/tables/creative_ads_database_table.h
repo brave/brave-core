@@ -14,15 +14,12 @@
 
 namespace ads {
 
-class AdsImpl;
-
 namespace database {
 namespace table {
 
 class CreativeAds : public Table {
  public:
-  explicit CreativeAds(
-      AdsImpl* ads);
+  CreativeAds();
 
   ~CreativeAds() override;
 
@@ -61,8 +58,6 @@ class CreativeAds : public Table {
       DBTransaction* transaction);
   void MigrateToV6(
       DBTransaction* transaction);
-
-  AdsImpl* ads_;  // NOT OWNED
 };
 
 }  // namespace table

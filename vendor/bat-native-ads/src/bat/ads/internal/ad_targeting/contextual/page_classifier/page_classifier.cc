@@ -12,7 +12,7 @@
 #include "bat/ads/internal/ad_targeting/ad_targeting_util.h"
 #include "bat/ads/internal/ad_targeting/contextual/contextual_util.h"
 #include "bat/ads/internal/ad_targeting/contextual/page_classifier/page_classifier_user_models.h"
-#include "bat/ads/internal/ads_impl.h"
+#include "bat/ads/internal/ads_client_helper.h"
 #include "bat/ads/internal/client/client.h"
 #include "bat/ads/internal/logging.h"
 #include "bat/ads/internal/search_engine/search_providers.h"
@@ -22,18 +22,11 @@ namespace ads {
 namespace ad_targeting {
 namespace contextual {
 
-using std::placeholders::_1;
-using std::placeholders::_2;
-
 namespace {
 const int kTopWinningCategoryCount = 3;
 }  // namespace
 
-PageClassifier::PageClassifier(
-    AdsImpl* ads)
-    : ads_(ads) {
-  DCHECK(ads_);
-}
+PageClassifier::PageClassifier() = default;
 
 PageClassifier::~PageClassifier() = default;
 
@@ -53,15 +46,15 @@ void PageClassifier::LoadUserModelForLocale(
 
 void PageClassifier::LoadUserModelForId(
     const std::string& id) {
-  auto callback =
-      std::bind(&PageClassifier::OnLoadUserModelForId, this, id, _1, _2);
-  ads_->get_ads_client()->LoadUserModelForId(id, callback);
+  auto callback = std::bind(&PageClassifier::OnLoadUserModelForId, this, id,
+      std::placeholders::_1, std::placeholders::_2);
+  AdsClientHelper::Get()->LoadUserModelForId(id, callback);
 }
 
 std::string PageClassifier::MaybeClassifyPage(
     const std::string& url,
     const std::string& content) {
-  if (!UrlHasScheme(url)) {
+  if (!DoesUrlHaveSchemeHTTPOrHTTPS(url)) {
     BLOG(1, "Visited URL is not supported for page classification");
     return "";
   }
@@ -107,7 +100,7 @@ CategoryList PageClassifier::GetWinningCategories() const {
   }
 
   const PageProbabilitiesList page_probabilities =
-      ads_->get_client()->GetPageProbabilitiesHistory();
+      Client::Get()->GetPageProbabilitiesHistory();
   if (page_probabilities.empty()) {
     return winning_categories;
   }
@@ -183,7 +176,7 @@ std::string PageClassifier::ClassifyPage(
       GetPageClassification(page_probabilities);
 
   if (!page_classification.empty()) {
-    ads_->get_client()->AppendPageProbabilitiesToHistory(page_probabilities);
+    Client::Get()->AppendPageProbabilitiesToHistory(page_probabilities);
     CachePageProbabilities(url, page_probabilities);
   }
 
@@ -243,7 +236,7 @@ bool PageClassifier::ShouldFilterCategory(
       SplitCategory(category);
 
   const FilteredCategoryList filtered_categories =
-      ads_->get_client()->get_filtered_categories();
+      Client::Get()->get_filtered_categories();
 
   for (const auto& filtered_category : filtered_categories) {
     const std::vector<std::string> filtered_category_classifications =

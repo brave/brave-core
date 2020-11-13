@@ -10,23 +10,20 @@
 #include <vector>
 
 #include "wrapper.hpp"
-#include "bat/ads/ads_client.h"
-#include "bat/ads/internal/account/wallet_info.h"
+#include "bat/ads/internal/account/wallet/wallet_info.h"
 #include "bat/ads/internal/backoff_timer.h"
 #include "bat/ads/internal/tokens/refill_unblinded_tokens/refill_unblinded_tokens_delegate.h"
 #include "bat/ads/mojom.h"
+#include "bat/ads/result.h"
 
 namespace ads {
-
-class AdsImpl;
 
 using challenge_bypass_ristretto::Token;
 using challenge_bypass_ristretto::BlindedToken;
 
 class RefillUnblindedTokens {
  public:
-  RefillUnblindedTokens(
-      AdsImpl* ads);
+  RefillUnblindedTokens();
 
   ~RefillUnblindedTokens();
 
@@ -70,8 +67,6 @@ class RefillUnblindedTokens {
   void GenerateAndBlindTokens(const int count);
 
   bool is_processing_ = false;
-
-  AdsImpl* ads_;  // NOT OWNED
 
   RefillUnblindedTokensDelegate* delegate_ = nullptr;
 };

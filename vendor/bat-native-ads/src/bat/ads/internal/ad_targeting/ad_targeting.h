@@ -11,25 +11,39 @@
 
 namespace ads {
 
-class AdsImpl;
+namespace ad_targeting {
+
+namespace contextual {
+class PageClassifier;
+}  // namespace contextual
+
+namespace behavioral {
+class PurchaseIntentClassifier;
+}  // namespace behavioral
+
+}  // namespace ad_targeting
 
 using CategoryList = std::vector<std::string>;
 
 class AdTargeting {
  public:
   AdTargeting(
-      AdsImpl* ads);
+      ad_targeting::contextual::PageClassifier* page_classifier,
+      ad_targeting::behavioral::PurchaseIntentClassifier*
+          purchase_intent_classifier);
 
   ~AdTargeting();
 
-  CategoryList GetWinningCategories() const;
+  CategoryList GetCategories() const;
 
  private:
-  CategoryList GetPageClassificationWinningCategories() const;
+  CategoryList GetPageClassificationCategories() const;
 
-  CategoryList GetPurchaseIntentWinningCategories() const;
+  CategoryList GetPurchaseIntentCategories() const;
 
-  AdsImpl* ads_;  // NOT OWNED
+  ad_targeting::contextual::PageClassifier* page_classifier_;  // NOT OWNED
+  ad_targeting::behavioral::PurchaseIntentClassifier*
+      purchase_intent_classifier_;  // NOT OWNED
 };
 
 }  // namespace ads

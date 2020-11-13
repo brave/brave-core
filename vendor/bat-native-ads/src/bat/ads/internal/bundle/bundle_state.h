@@ -6,14 +6,9 @@
 #ifndef BAT_ADS_INTERNAL_BUNDLE_BUNDLE_STATE_H_
 #define BAT_ADS_INTERNAL_BUNDLE_BUNDLE_STATE_H_
 
-#include <stdint.h>
-
-#include <string>
-
 #include "bat/ads/internal/bundle/creative_ad_notification_info.h"
 #include "bat/ads/internal/bundle/creative_new_tab_page_ad_info.h"
 #include "bat/ads/internal/conversions/conversion_info.h"
-#include "bat/ads/internal/time_util.h"
 
 namespace ads {
 
@@ -23,10 +18,6 @@ struct BundleState {
       const BundleState& state);
   ~BundleState();
 
-  std::string catalog_id;
-  uint64_t catalog_version = 0;
-  uint64_t catalog_ping = 0;
-  base::Time catalog_last_updated;
   CreativeAdNotificationList creative_ad_notifications;
   CreativeNewTabPageAdList creative_new_tab_page_ads;
   ConversionList conversions;

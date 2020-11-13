@@ -6,7 +6,8 @@
 #ifndef BAT_ADS_INTERNAL_REDEEM_UNBLINDED_PAYMENT_TOKENS_H_
 #define BAT_ADS_INTERNAL_REDEEM_UNBLINDED_PAYMENT_TOKENS_H_
 
-#include "bat/ads/internal/account/wallet_info.h"
+#include "base/time/time.h"
+#include "bat/ads/internal/account/wallet/wallet_info.h"
 #include "bat/ads/internal/backoff_timer.h"
 #include "bat/ads/internal/timer.h"
 #include "bat/ads/internal/tokens/redeem_unblinded_payment_tokens/redeem_unblinded_payment_tokens_delegate.h"
@@ -15,12 +16,9 @@
 
 namespace ads {
 
-class AdsImpl;
-
 class RedeemUnblindedPaymentTokens {
  public:
-  RedeemUnblindedPaymentTokens(
-      AdsImpl* ads);
+  RedeemUnblindedPaymentTokens();
 
   ~RedeemUnblindedPaymentTokens();
 
@@ -52,8 +50,6 @@ class RedeemUnblindedPaymentTokens {
 
   base::TimeDelta CalculateTokenRedemptionDelay();
   base::Time CalculateNextTokenRedemptionDate();
-
-  AdsImpl* ads_;  // NOT OWNED
 
   RedeemUnblindedPaymentTokensDelegate* delegate_ = nullptr;
 };

@@ -105,8 +105,7 @@ DBRecordPtr CreateRecord(
 
 Database::Database(
     const base::FilePath& path)
-    : db_path_(path),
-      is_initialized_(false) {
+    : db_path_(path) {
   DETACH_FROM_SEQUENCE(sequence_checker_);
 
   db_.set_error_callback(base::BindRepeating(&Database::OnErrorCallback,
@@ -203,8 +202,7 @@ DBCommandResponse::Status Database::Initialize(
     }
 
     is_initialized_ = true;
-    memory_pressure_listener_.reset(new base::MemoryPressureListener(
-        FROM_HERE,
+    memory_pressure_listener_.reset(new base::MemoryPressureListener(FROM_HERE,
         base::Bind(&Database::OnMemoryPressure, base::Unretained(this))));
   } else {
     table_version = meta_table_.GetVersionNumber();

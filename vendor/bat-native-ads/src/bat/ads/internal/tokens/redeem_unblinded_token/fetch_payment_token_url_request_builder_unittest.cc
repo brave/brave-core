@@ -5,8 +5,6 @@
 
 #include "bat/ads/internal/tokens/redeem_unblinded_token/fetch_payment_token_url_request_builder.h"
 
-#include <string>
-
 #include "testing/gtest/include/gtest/gtest.h"
 
 // npm run test -- brave_unit_tests --filter=BatAds*

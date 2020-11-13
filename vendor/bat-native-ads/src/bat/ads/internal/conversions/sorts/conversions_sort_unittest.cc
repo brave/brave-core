@@ -5,6 +5,8 @@
 
 #include "bat/ads/internal/conversions/sorts/conversions_sort_factory.h"
 
+#include <memory>
+
 #include "testing/gtest/include/gtest/gtest.h"
 
 // npm run test -- brave_unit_tests --filter=BatAds*

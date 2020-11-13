@@ -65,6 +65,15 @@ void AdsService::RegisterProfilePrefs(
       ads::prefs::kAdsSubdivisionTargetingCode, "AUTO");
   registry->RegisterStringPref(
       ads::prefs::kAutoDetectedAdsSubdivisionTargetingCode, "");
+
+  registry->RegisterStringPref(
+      ads::prefs::kCatalogId, "");
+  registry->RegisterIntegerPref(
+      ads::prefs::kCatalogVersion, 0);
+  registry->RegisterInt64Pref(
+      ads::prefs::kCatalogPing, 0);
+  registry->RegisterInt64Pref(
+      ads::prefs::kCatalogLastUpdated, 0);
 }
 
 }  // namespace brave_ads

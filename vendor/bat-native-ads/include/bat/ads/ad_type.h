@@ -25,7 +25,7 @@ class AdType {
       const Value& value)
       : value_(value) {}
 
-  explicit AdType(
+  AdType(
       const std::string& value);
 
   Value value() const;

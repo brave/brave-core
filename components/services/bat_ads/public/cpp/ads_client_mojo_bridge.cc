@@ -256,7 +256,7 @@ void AdsClientMojoBridge::SetBooleanPref(
 void AdsClientMojoBridge::GetIntegerPref(
     const std::string& path,
     GetIntegerPrefCallback callback) {
-  std::move(callback).Run(ads_client_->GetBooleanPref(path));
+  std::move(callback).Run(ads_client_->GetIntegerPref(path));
 }
 
 void AdsClientMojoBridge::SetIntegerPref(

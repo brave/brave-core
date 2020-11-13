@@ -5,16 +5,12 @@
 
 #include "bat/ads/internal/frequency_capping/permission_rules/allow_notifications_frequency_cap.h"
 
-#include "bat/ads/internal/ads_impl.h"
+#include "bat/ads/internal/ads_client_helper.h"
 #include "bat/ads/internal/frequency_capping/frequency_capping_util.h"
 
 namespace ads {
 
-AllowNotificationsFrequencyCap::AllowNotificationsFrequencyCap(
-    AdsImpl* ads)
-    : ads_(ads) {
-  DCHECK(ads_);
-}
+AllowNotificationsFrequencyCap::AllowNotificationsFrequencyCap() = default;
 
 AllowNotificationsFrequencyCap::~AllowNotificationsFrequencyCap() = default;
 
@@ -32,7 +28,7 @@ std::string AllowNotificationsFrequencyCap::get_last_message() const {
 }
 
 bool AllowNotificationsFrequencyCap::DoesRespectCap() {
-  return ads_->get_ads_client()->ShouldShowNotifications();
+  return AdsClientHelper::Get()->ShouldShowNotifications();
 }
 
 }  // namespace ads

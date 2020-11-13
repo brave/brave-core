@@ -9,20 +9,17 @@
 
 #include <deque>
 
-#include "bat/ads/internal/ads_impl.h"
+#include "base/time/time.h"
+#include "bat/ads/internal/ads_client_helper.h"
 #include "bat/ads/internal/frequency_capping/frequency_capping_util.h"
-#include "bat/ads/internal/time_util.h"
-#include "bat/ads/pref_names.h"
 #include "bat/ads/internal/logging.h"
+#include "bat/ads/pref_names.h"
 
 namespace ads {
 
 AdsPerDayFrequencyCap::AdsPerDayFrequencyCap(
-    AdsImpl* ads,
     const AdEventList& ad_events)
-    : ads_(ads),
-      ad_events_(ad_events) {
-  DCHECK(ads_);
+    : ad_events_(ad_events) {
 }
 
 AdsPerDayFrequencyCap::~AdsPerDayFrequencyCap() = default;
@@ -50,7 +47,7 @@ bool AdsPerDayFrequencyCap::DoesRespectCap(
       base::Time::kHoursPerDay;
 
   const uint64_t cap =
-      ads_->get_ads_client()->GetUint64Pref(prefs::kAdsPerHour);
+      AdsClientHelper::Get()->GetUint64Pref(prefs::kAdsPerHour);
 
   return DoesHistoryRespectCapForRollingTimeConstraint(
       history, time_constraint, cap);

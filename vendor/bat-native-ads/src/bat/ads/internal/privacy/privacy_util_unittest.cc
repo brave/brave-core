@@ -5,8 +5,6 @@
 
 #include "bat/ads/internal/privacy/privacy_util.h"
 
-#include <vector>
-
 #include "testing/gtest/include/gtest/gtest.h"
 
 // npm run test -- brave_unit_tests --filter=BatAds*

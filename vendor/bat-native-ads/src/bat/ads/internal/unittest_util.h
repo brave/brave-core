@@ -15,11 +15,12 @@
 #include <vector>
 
 #include "base/files/file_path.h"
+#include "base/time/time.h"
+#include "brave/components/l10n/browser/locale_helper_mock.h"
 #include "testing/gtest/include/gtest/gtest.h"
 #include "bat/ads/ads.h"
 #include "bat/ads/database.h"
 #include "bat/ads/internal/platform/platform_helper_mock.h"
-#include "bat/ads/result.h"
 
 namespace ads {
 
@@ -74,16 +75,6 @@ using URLEndpointResponses = std::vector<URLEndpointResponse>;
 using URLEndpoints = std::map<std::string, URLEndpointResponses>;
 
 class AdsClientMock;
-class AdsImpl;
-
-template<class T>
-void Initialize(
-    const T& object) {
-  object->Initialize([](
-      const Result result) {
-    ASSERT_EQ(Result::SUCCESS, result);
-  });
-}
 
 base::FilePath GetTestPath();
 
@@ -96,6 +87,10 @@ void SetBuildChannel(
     const bool is_release,
     const std::string& name);
 
+void MockLocaleHelper(
+    const std::unique_ptr<brave_l10n::LocaleHelperMock>& mock,
+    const std::string& locale);
+
 void MockPlatformHelper(
     const std::unique_ptr<PlatformHelperMock>& mock,
     const PlatformType platform_type);
@@ -104,9 +99,19 @@ void MockIsNetworkConnectionAvailable(
     const std::unique_ptr<AdsClientMock>& mock,
     const bool is_available);
 
+void MockIsForeground(
+    const std::unique_ptr<AdsClientMock>& mock,
+    const bool is_foreground);
+
 void MockShouldShowNotifications(
     const std::unique_ptr<AdsClientMock>& mock,
     const bool should_show);
+
+void MockShowNotification(
+    const std::unique_ptr<AdsClientMock>& mock);
+
+void MockCloseNotification(
+    const std::unique_ptr<AdsClientMock>& mock);
 
 void MockSave(
     const std::unique_ptr<AdsClientMock>& mock);
@@ -131,7 +136,12 @@ void MockRunDBTransaction(
 void MockPrefs(
     const std::unique_ptr<AdsClientMock>& mock);
 
+base::Time TimeFromDateString(
+    const std::string& date);
+
 int64_t DistantPast();
+
+int64_t Now();
 
 int64_t DistantFuture();
 

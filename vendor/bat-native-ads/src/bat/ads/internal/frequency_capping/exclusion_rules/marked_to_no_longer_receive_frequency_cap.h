@@ -12,14 +12,12 @@
 
 namespace ads {
 
-class AdsImpl;
 struct CreativeAdInfo;
 
 class MarkedToNoLongerReceiveFrequencyCap
     : public ExclusionRule<CreativeAdInfo> {
  public:
-  MarkedToNoLongerReceiveFrequencyCap(
-      AdsImpl* ads);
+  MarkedToNoLongerReceiveFrequencyCap();
 
   ~MarkedToNoLongerReceiveFrequencyCap() override;
 
@@ -34,8 +32,6 @@ class MarkedToNoLongerReceiveFrequencyCap
   std::string get_last_message() const override;
 
  private:
-  AdsImpl* ads_;  // NOT OWNED
-
   std::string last_message_;
 
   bool DoesRespectCap(

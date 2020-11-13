@@ -22,8 +22,6 @@
 
 namespace ads {
 
-class AdsImpl;
-
 namespace ad_targeting {
 namespace behavioral {
 
@@ -31,15 +29,11 @@ using PurchaseIntentSegmentList = std::vector<std::string>;
 
 class PurchaseIntentClassifier {
  public:
-  explicit PurchaseIntentClassifier(
-      AdsImpl* ads);
+  PurchaseIntentClassifier();
 
   ~PurchaseIntentClassifier();
 
   bool IsInitialized();
-
-  bool Initialize(
-      const std::string& json);
 
   void LoadUserModelForLocale(
       const std::string& locale);
@@ -47,7 +41,8 @@ class PurchaseIntentClassifier {
       const std::string& id);
 
   PurchaseIntentSignalInfo MaybeExtractIntentSignal(
-      const std::string& url);
+      const std::string& url,
+      const std::string& last_url);
 
   CategoryList GetWinningCategories(
       const PurchaseIntentSignalSegmentHistoryMap& history,
@@ -88,7 +83,7 @@ class PurchaseIntentClassifier {
       const std::vector<std::string>& set_a,
       const std::vector<std::string>& set_b);
 
-  bool is_initialized_;
+  bool is_initialized_ = false;
   uint16_t version_ = 0;
   uint16_t signal_level_ = 0;
   uint16_t classification_threshold_ = 0;
@@ -96,8 +91,6 @@ class PurchaseIntentClassifier {
   std::vector<SiteInfo> sites_;
   std::vector<SegmentKeywordInfo> segment_keywords_;
   std::vector<FunnelKeywordInfo> funnel_keywords_;
-
-  AdsImpl* ads_;  // NOT OWNED
 };
 
 }  // namespace behavioral

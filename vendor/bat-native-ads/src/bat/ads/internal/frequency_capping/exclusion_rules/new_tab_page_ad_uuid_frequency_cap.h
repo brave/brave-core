@@ -13,13 +13,11 @@
 
 namespace ads {
 
-class AdsImpl;
 struct AdInfo;
 
 class NewTabPageAdUuidFrequencyCap : public ExclusionRule<AdInfo> {
  public:
   NewTabPageAdUuidFrequencyCap(
-      AdsImpl* ads,
       const AdEventList& ad_events);
 
   ~NewTabPageAdUuidFrequencyCap() override;
@@ -35,8 +33,6 @@ class NewTabPageAdUuidFrequencyCap : public ExclusionRule<AdInfo> {
   std::string get_last_message() const override;
 
  private:
-  AdsImpl* ads_;  // NOT OWNED
-
   AdEventList ad_events_;
 
   std::string last_message_;

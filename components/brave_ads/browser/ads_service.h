@@ -61,6 +61,11 @@ class AdsService : public KeyedService {
   AdsService(const AdsService&) = delete;
   AdsService& operator=(const AdsService&) = delete;
 
+  void AddObserver(
+      AdsServiceObserver* observer);
+  void RemoveObserver(
+      AdsServiceObserver* observer);
+
   virtual bool IsSupportedLocale() const = 0;
   virtual bool IsNewlySupportedLocale() = 0;
 
@@ -78,11 +83,9 @@ class AdsService : public KeyedService {
   virtual uint64_t GetAdsPerDay() const = 0;
 
   virtual bool ShouldAllowAdsSubdivisionTargeting() const = 0;
-
   virtual std::string GetAdsSubdivisionTargetingCode() const = 0;
   virtual void SetAdsSubdivisionTargetingCode(
       const std::string& subdivision_targeting_code) = 0;
-
   virtual std::string GetAutoDetectedAdsSubdivisionTargetingCode() const = 0;
   virtual void SetAutoDetectedAdsSubdivisionTargetingCode(
       const std::string& subdivision_targeting_code) = 0;
@@ -94,7 +97,7 @@ class AdsService : public KeyedService {
       const SessionID& tab_id,
       const GURL& original_url,
       const GURL& url,
-      const std::string& html) = 0;
+      const std::string& content) = 0;
 
   virtual void OnMediaStart(
       const SessionID& tab_id) = 0;
@@ -159,11 +162,6 @@ class AdsService : public KeyedService {
 
   virtual void ResetAllState(
       const bool should_shutdown) = 0;
-
-  void AddObserver(
-      AdsServiceObserver* observer);
-  void RemoveObserver(
-      AdsServiceObserver* observer);
 
   // static
   static void RegisterProfilePrefs(

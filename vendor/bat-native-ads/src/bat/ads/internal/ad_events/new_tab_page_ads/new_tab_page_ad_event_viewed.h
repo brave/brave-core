@@ -11,19 +11,17 @@
 
 namespace ads {
 
-class AdsImpl;
 struct NewTabPageAdInfo;
 
 namespace new_tab_page_ads {
 
 class AdEventViewed : public AdEvent<NewTabPageAdInfo> {
  public:
-  AdEventViewed(
-      AdsImpl* ads);
+  AdEventViewed();
 
   ~AdEventViewed() override;
 
-  void Trigger(
+  void FireEvent(
       const NewTabPageAdInfo& ad) override;
 
  private:
@@ -33,8 +31,6 @@ class AdEventViewed : public AdEvent<NewTabPageAdInfo> {
 
   void ConfirmAd(
       const NewTabPageAdInfo& ad);
-
-  AdsImpl* ads_;  // NOT OWNED
 };
 
 }  // namespace new_tab_page_ads

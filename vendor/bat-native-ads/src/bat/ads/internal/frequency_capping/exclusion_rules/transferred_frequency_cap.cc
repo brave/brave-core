@@ -10,11 +10,10 @@
 #include <deque>
 
 #include "base/strings/stringprintf.h"
-#include "bat/ads/internal/ads_impl.h"
+#include "base/time/time.h"
 #include "bat/ads/internal/bundle/creative_ad_info.h"
 #include "bat/ads/internal/frequency_capping/frequency_capping_util.h"
 #include "bat/ads/internal/logging.h"
-#include "bat/ads/internal/time_util.h"
 
 namespace ads {
 
@@ -23,11 +22,8 @@ const uint64_t kTransferredFrequencyCap = 1;
 }  // namespace
 
 TransferredFrequencyCap::TransferredFrequencyCap(
-    AdsImpl* ads,
     const AdEventList& ad_events)
-    : ads_(ads),
-      ad_events_(ad_events) {
-  DCHECK(ads_);
+    : ad_events_(ad_events) {
 }
 
 TransferredFrequencyCap::~TransferredFrequencyCap() = default;

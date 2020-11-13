@@ -10,6 +10,7 @@
 #include <vector>
 
 namespace ads {
+namespace p2a {
 
 std::vector<std::string> CreateAdOpportunityQuestionList(
     const std::vector<std::string>& segments);
@@ -17,6 +18,7 @@ std::vector<std::string> CreateAdOpportunityQuestionList(
 std::vector<std::string> CreateAdImpressionQuestionList(
     const std::string& segment);
 
+}  // namespace p2a
 }  // namespace ads
 
 #endif  // BAT_ADS_INTERNAL_P2A_P2A_UTIL_H_

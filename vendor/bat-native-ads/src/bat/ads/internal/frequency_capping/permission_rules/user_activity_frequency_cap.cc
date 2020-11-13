@@ -7,24 +7,40 @@
 
 #include <stdint.h>
 
-#include "bat/ads/internal/ads_impl.h"
+#include "base/time/time.h"
 #include "bat/ads/internal/frequency_capping/frequency_capping_util.h"
 #include "bat/ads/internal/platform/platform_helper.h"
-#include "bat/ads/internal/time_util.h"
+#include "bat/ads/internal/user_activity/user_activity.h"
 
 namespace ads {
 
-UserActivityFrequencyCap::UserActivityFrequencyCap(
-    AdsImpl* ads)
-    : ads_(ads) {
-  DCHECK(ads_);
+namespace {
+
+double GetPointsForEventType(
+  const UserActivityEventType event_type) {
+  switch (event_type) {
+    case UserActivityEventType::kOpenedNewOrFocusedOnExistingTab:
+    case UserActivityEventType::kClosedTab:
+    case UserActivityEventType::kPlayedMedia: {
+      return 1.0;
+    }
+
+    case UserActivityEventType::kBrowserWindowDidBecomeActive:
+    case UserActivityEventType::kBrowserWindowDidEnterBackground: {
+      return 0.5;
+    }
+  }
 }
+
+}  // namespace
+
+UserActivityFrequencyCap::UserActivityFrequencyCap() = default;
 
 UserActivityFrequencyCap::~UserActivityFrequencyCap() = default;
 
 bool UserActivityFrequencyCap::ShouldAllow() {
-  const UserActivityHistoryMap history =
-      ads_->get_user_activity()->get_history();
+  const UserActivityEventHistoryMap history =
+      UserActivity::Get()->get_history();
   if (!DoesRespectCap(history)) {
     return false;
   }
@@ -37,48 +53,32 @@ std::string UserActivityFrequencyCap::get_last_message() const {
 }
 
 bool UserActivityFrequencyCap::DoesRespectCap(
-    const UserActivityHistoryMap& history) {
+    const UserActivityEventHistoryMap& history) {
   if (PlatformHelper::GetInstance()->IsMobile()) {
     return true;
   }
 
-  const uint64_t time_constraint = base::Time::kSecondsPerHour;
+  const int64_t time_constraint = base::Time::kSecondsPerHour;
 
-  double total_score = 0.0;
+  double score = 0.0;
 
   for (const auto& item : history) {
-    const UserActivityHistory user_activity_history = item.second;
+    const UserActivityEventHistory user_activity_event_history = item.second;
 
-    const uint64_t occurrences = OccurrencesForRollingTimeConstraint(
-        user_activity_history, time_constraint);
+    const int occurrences = OccurrencesForRollingTimeConstraint(
+        user_activity_event_history, time_constraint);
 
     if (occurrences == 0) {
       continue;
     }
 
-    double score;
+    const UserActivityEventType event_type = item.first;
+    const double points = GetPointsForEventType(event_type);
 
-    const UserActivityType user_activity_type = item.first;
-
-    switch (user_activity_type) {
-      case UserActivityType::kOpenedNewOrFocusedOnExistingTab:
-      case UserActivityType::kClosedTab:
-      case UserActivityType::kStartedPlayingMedia: {
-        score = 1.0;
-        break;
-      }
-
-      case UserActivityType::kBrowserWindowDidBecomeActive:
-      case UserActivityType::kBrowserWindowDidEnterBackground: {
-        score = 0.5;
-        break;
-      }
-    }
-
-    total_score += score * occurrences;
+    score += points * occurrences;
   }
 
-  if (total_score < 2.0) {
+  if (score < 2.0) {
     return false;
   }
 

@@ -10,79 +10,75 @@
 #include <string>
 
 #include "bat/ads/ads.h"
-#include "bat/ads/internal/catalog/catalog_issuers_info.h"
-#include "bat/ads/internal/confirmations/confirmations_state.h"
+#include "bat/ads/internal/confirmations/confirmations_observer.h"
 #include "bat/ads/internal/timer.h"
+#include "bat/ads/internal/tokens/redeem_unblinded_token/redeem_unblinded_token_delegate.h"
 #include "bat/ads/result.h"
 
 namespace ads {
 
-class AdsImpl;
+class AdRewards;
+class ConfirmationsState;
+class RedeemUnblindedToken;
+struct CatalogIssuersInfo;
+struct UnblindedTokenInfo;
 
-namespace privacy {
-class UnblindedTokens;
-}  // namespace privacy
-
-class Confirmations {
+class Confirmations
+    : public RedeemUnblindedTokenDelegate {
  public:
-  Confirmations(
-      AdsImpl* ads);
+  Confirmations();
 
-  ~Confirmations();
+  ~Confirmations() override;
 
-  void Initialize(
-      InitializeCallback callback);
+  // TODO(https://github.com/brave/brave-browser/issues/12563): Decouple Brave
+  // Ads rewards state from confirmations
+  void set_ad_rewards(
+      AdRewards* ad_rewards);
 
-  CatalogIssuersInfo GetCatalogIssuers() const;
+  void AddObserver(
+      ConfirmationsObserver* observer);
+  void RemoveObserver(
+      ConfirmationsObserver* observer);
+
   void SetCatalogIssuers(
       const CatalogIssuersInfo& catalog_issuers);
 
-  base::Time get_next_token_redemption_date() const;
-  void set_next_token_redemption_date(
-      const base::Time& next_token_redemption_date);
-
   void ConfirmAd(
       const std::string& creative_instance_id,
-      const ConfirmationType confirmation_type);
+      const ConfirmationType& confirmation_type);
 
-  void RetryFailedConfirmationsAfterDelay();
-
-  TransactionList get_transactions() const;
-
-  void AppendTransaction(
-      const double estimated_redemption_value,
-      const ConfirmationType confirmation_type);
-
-  void AppendConfirmationToRetryQueue(
-      const ConfirmationInfo& confirmation);
-
-  privacy::UnblindedTokens* get_unblinded_tokens();
-
-  privacy::UnblindedTokens* get_unblinded_payment_tokens();
-
-  void Save();
+  void RetryAfterDelay();
 
  private:
-  bool is_initialized_ = false;
+  base::ObserverList<ConfirmationsObserver> observers_;
 
-  InitializeCallback callback_;
+  std::unique_ptr<ConfirmationsState> confirmations_state_;
+  std::unique_ptr<RedeemUnblindedToken> redeem_unblinded_token_;
 
-  Timer failed_confirmations_timer_;
-  void RetryFailedConfirmations();
-  void RemoveConfirmationFromRetryQueue(
+  Timer retry_timer_;
+  void CreateNewConfirmationAndAppendToRetryQueue(
+      const ConfirmationInfo& confirmation);
+  void AppendToRetryQueue(
+      const ConfirmationInfo& confirmation);
+  void RemoveFromRetryQueue(
+      const ConfirmationInfo& confirmation);
+  void Retry();
+
+  void NotifyConfirmAd(
+      const double estimated_redemption_value,
       const ConfirmationInfo& confirmation);
 
-  void OnSaved(
-      const Result result);
+  void NotifyConfirmAdFailed(
+      const ConfirmationInfo& confirmation);
 
-  void Load();
-  void OnLoaded(
-      const Result result,
-      const std::string& json);
+  // RedeemUnblindedTokenDelegate implementation
+  void OnDidRedeemUnblindedToken(
+      const ConfirmationInfo& confirmation,
+      const privacy::UnblindedTokenInfo& unblinded_payment_token) override;
 
-  AdsImpl* ads_;  // NOT OWNED
-
-  std::unique_ptr<ConfirmationsState> state_;
+  void OnFailedToRedeemUnblindedToken(
+      const ConfirmationInfo& confirmation,
+      const bool should_retry) override;
 };
 
 }  // namespace ads

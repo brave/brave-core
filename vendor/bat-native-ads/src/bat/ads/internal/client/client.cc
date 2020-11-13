@@ -12,17 +12,16 @@
 #include "bat/ads/ad_history_info.h"
 #include "bat/ads/category_content_info.h"
 #include "bat/ads/internal/ads_impl.h"
-#include "bat/ads/internal/features.h"
+#include "bat/ads/internal/ads_client_helper.h"
+#include "bat/ads/internal/features/features.h"
 #include "bat/ads/internal/logging.h"
-#include "bat/ads/internal/time_util.h"
 #include "bat/ads/internal/json_helper.h"
 
 namespace ads {
 
-using std::placeholders::_1;
-using std::placeholders::_2;
-
 namespace {
+
+Client* g_client = nullptr;
 
 const char kClientFilename[] = "client.json";
 
@@ -57,15 +56,27 @@ FilteredCategoryList::iterator FindFilteredCategory(
 
 }  // namespace
 
-Client::Client(
-    AdsImpl* ads)
-    : is_initialized_(false),
-      ads_(ads),
-      client_(new ClientInfo()) {
-  (void)ads_;
+Client::Client()
+    : client_(new ClientInfo()) {
+  DCHECK_EQ(g_client, nullptr);
+  g_client = this;
 }
 
-Client::~Client() = default;
+Client::~Client() {
+  DCHECK(g_client);
+  g_client = nullptr;
+}
+
+// static
+Client* Client::Get() {
+  DCHECK(g_client);
+  return g_client;
+}
+
+// static
+bool Client::HasInstance() {
+  return g_client;
+}
 
 FilteredAdList Client::get_filtered_ads() const {
   return client_->ad_preferences.filtered_ads;
@@ -447,8 +458,8 @@ void Client::Save() {
   BLOG(9, "Saving client state");
 
   auto json = client_->ToJson();
-  auto callback = std::bind(&Client::OnSaved, this, _1);
-  ads_->get_ads_client()->Save(kClientFilename, json, callback);
+  auto callback = std::bind(&Client::OnSaved, this, std::placeholders::_1);
+  AdsClientHelper::Get()->Save(kClientFilename, json, callback);
 }
 
 void Client::OnSaved(
@@ -465,8 +476,9 @@ void Client::OnSaved(
 void Client::Load() {
   BLOG(3, "Loading client state");
 
-  auto callback = std::bind(&Client::OnLoaded, this, _1, _2);
-  ads_->get_ads_client()->Load(kClientFilename, callback);
+  auto callback = std::bind(&Client::OnLoaded, this, std::placeholders::_1,
+      std::placeholders::_2);
+  AdsClientHelper::Get()->Load(kClientFilename, callback);
 }
 
 void Client::OnLoaded(

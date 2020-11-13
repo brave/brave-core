@@ -10,7 +10,7 @@
 #include <map>
 #include <string>
 
-#include "bat/ads/internal/ads_impl.h"
+#include "bat/ads/internal/ad_targeting/geographic/subdivision/subdivision_targeting.h"
 #include "bat/ads/internal/client/client.h"
 #include "bat/ads/internal/eligible_ads/eligible_ads_util.h"
 #include "bat/ads/internal/frequency_capping/ad_notifications/ad_notifications_frequency_capping.h"
@@ -29,9 +29,9 @@ bool ShouldCapLastDeliveredAd(
 }  // namespace
 
 EligibleAds::EligibleAds(
-    AdsImpl* ads)
-    : ads_(ads) {
-  DCHECK(ads_);
+    ad_targeting::geographic::SubdivisionTargeting* subdivision_targeting)
+    : subdivision_targeting_(subdivision_targeting) {
+  DCHECK(subdivision_targeting_);
 }
 
 EligibleAds::~EligibleAds() = default;
@@ -61,14 +61,14 @@ CreativeAdNotificationList
 EligibleAds::RemoveSeenAdvertisersAndRoundRobinIfNeeded(
     const CreativeAdNotificationList& ads) const {
   const std::map<std::string, uint64_t> seen_advertisers =
-      ads_->get_client()->GetSeenAdvertisers();
+      Client::Get()->GetSeenAdvertisers();
 
   CreativeAdNotificationList eligible_ads =
       FilterSeenAdvertisers(ads, seen_advertisers);
 
   if (eligible_ads.empty()) {
     BLOG(1, "All advertisers have been shown, so round robin");
-    ads_->get_client()->ResetSeenAdvertisers(ads);
+    Client::Get()->ResetSeenAdvertisers(ads);
     eligible_ads = ads;
   }
 
@@ -78,13 +78,13 @@ EligibleAds::RemoveSeenAdvertisersAndRoundRobinIfNeeded(
 CreativeAdNotificationList EligibleAds::RemoveSeenAdsAndRoundRobinIfNeeded(
     const CreativeAdNotificationList& ads) const {
   const std::map<std::string, uint64_t> seen_ads =
-      ads_->get_client()->GetSeenAdNotifications();
+      Client::Get()->GetSeenAdNotifications();
 
   CreativeAdNotificationList eligible_ads = FilterSeenAds(ads, seen_ads);
 
   if (eligible_ads.empty()) {
     BLOG(1, "All ads have been shown, so round robin");
-    ads_->get_client()->ResetSeenAdNotifications(ads);
+    Client::Get()->ResetSeenAdNotifications(ads);
     eligible_ads = ads;
   }
 
@@ -97,7 +97,7 @@ CreativeAdNotificationList EligibleAds::FrequencyCap(
     const AdEventList& ad_events) const {
   CreativeAdNotificationList eligible_ads = ads;
 
-  FrequencyCapping frequency_capping(ads_, ad_events);
+  FrequencyCapping frequency_capping(subdivision_targeting_, ad_events);
   const auto iter = std::remove_if(eligible_ads.begin(), eligible_ads.end(),
       [&frequency_capping, &last_delivered_ad](CreativeAdInfo& ad) {
     return frequency_capping.ShouldExcludeAd(ad) ||

@@ -11,18 +11,21 @@
 #include <string>
 
 #include "bat/ads/ad_info.h"
+#include "bat/ads/internal/ad_transfer/ad_transfer_observer.h"
 #include "bat/ads/internal/timer.h"
 
 namespace ads {
 
-class AdsImpl;
-
 class AdTransfer {
  public:
-  AdTransfer(
-      AdsImpl* ads);
+  AdTransfer();
 
   ~AdTransfer();
+
+  void AddObserver(
+      AdTransferObserver* observer);
+  void RemoveObserver(
+      AdTransferObserver* observer);
 
   void MaybeTransferAd(
       const int32_t tab_id,
@@ -35,6 +38,14 @@ class AdTransfer {
       const AdInfo& ad);
 
  private:
+  base::ObserverList<AdTransferObserver> observers_;
+
+  int32_t transferring_ad_tab_id_ = 0;
+
+  Timer timer_;
+
+  AdInfo last_clicked_ad_;
+
   void clear_last_clicked_ad();
 
   void TransferAd(
@@ -45,13 +56,11 @@ class AdTransfer {
       const int32_t tab_id,
       const std::string& url);
 
-  AdInfo last_clicked_ad_;
+  void NotifyAdTransfer(
+      const AdInfo& ad);
 
-  int32_t transferring_ad_tab_id_ = 0;
-
-  Timer timer_;
-
-  AdsImpl* ads_;  // NOT OWNED
+  void NotifyAdTransferFailed(
+      const AdInfo& ad);
 };
 
 }  // namespace ads

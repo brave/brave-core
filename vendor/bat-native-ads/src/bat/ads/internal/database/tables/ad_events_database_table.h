@@ -19,15 +19,12 @@ namespace ads {
 using GetAdEventsCallback = std::function<void(const Result,
     const AdEventList&)>;
 
-class AdsImpl;
-
 namespace database {
 namespace table {
 
 class AdEvents : public Table {
  public:
-  explicit AdEvents(
-      AdsImpl* ads);
+  AdEvents();
 
   ~AdEvents() override;
 
@@ -79,8 +76,6 @@ class AdEvents : public Table {
       DBTransaction* transaction);
   void MigrateToV5(
       DBTransaction* transaction);
-
-  AdsImpl* ads_;  // NOT OWNED
 };
 
 }  // namespace table

@@ -10,7 +10,6 @@
 
 namespace ads {
 
-class AdsImpl;
 struct AdInfo;
 
 namespace new_tab_page_ads {
@@ -18,7 +17,6 @@ namespace new_tab_page_ads {
 class FrequencyCapping {
  public:
   FrequencyCapping(
-      AdsImpl* ads,
       const AdEventList& ad_events);
 
   ~FrequencyCapping();
@@ -34,8 +32,6 @@ class FrequencyCapping {
       const AdInfo& ad);
 
  private:
-  AdsImpl* ads_;  // NOT OWNED
-
   AdEventList ad_events_;
 };
 

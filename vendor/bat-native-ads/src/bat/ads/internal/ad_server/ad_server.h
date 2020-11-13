@@ -6,42 +6,42 @@
 #ifndef BAT_ADS_INTERNAL_AD_SERVER_AD_SERVER_H_
 #define BAT_ADS_INTERNAL_AD_SERVER_AD_SERVER_H_
 
-#include <stdint.h>
-
-#include <string>
-
+#include "bat/ads/internal/ad_server/ad_server_observer.h"
 #include "bat/ads/internal/backoff_timer.h"
 #include "bat/ads/internal/timer.h"
 #include "bat/ads/mojom.h"
-#include "bat/ads/result.h"
 
 namespace ads {
 
-class AdsImpl;
+class Catalog;
+struct CatalogIssuersInfo;
 
 class AdServer {
  public:
-  AdServer(
-      AdsImpl* ads);
+  AdServer();
 
   ~AdServer();
 
+  void AddObserver(
+      AdServerObserver* observer);
+  void RemoveObserver(
+      AdServerObserver* observer);
+
   void MaybeFetch();
 
-  uint64_t LastUpdated() const;
-
  private:
+  base::ObserverList<AdServerObserver> observers_;
+
+  bool is_processing_ = false;
+
+  Timer timer_;
+
   void Fetch();
   void OnFetch(
       const UrlResponse& url_response);
 
-  bool Parse(
-      const std::string& json);
-
-  void OnSaved(
-      const Result result);
-
-  Timer timer_;
+  void SaveCatalog(
+      const Catalog& catalog);
 
   BackoffTimer retry_timer_;
   void Retry();
@@ -49,11 +49,9 @@ class AdServer {
 
   void FetchAfterDelay();
 
-  bool is_processing_ = false;
-
-  uint64_t last_updated_ = 0;
-
-  AdsImpl* ads_;  // NOT OWNED
+  void NotifyCatalogUpdated(
+      const CatalogIssuersInfo& catalog_issuers);
+  void NotifyCatalogFailed();
 };
 
 }  // namespace ads

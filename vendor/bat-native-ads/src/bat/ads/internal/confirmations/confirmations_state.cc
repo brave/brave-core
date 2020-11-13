@@ -13,27 +13,185 @@
 #include "base/json/json_writer.h"
 #include "base/strings/string_number_conversions.h"
 #include "wrapper.hpp"
-#include "bat/ads/internal/ad_rewards/ad_rewards.h"
-#include "bat/ads/internal/ads_impl.h"
+#include "bat/ads/internal/account/ad_rewards/ad_rewards.h"
+#include "bat/ads/internal/ads_client_helper.h"
 #include "bat/ads/internal/logging.h"
 #include "bat/ads/internal/privacy/unblinded_tokens/unblinded_tokens.h"
-#include "bat/ads/internal/time_util.h"
+#include "bat/ads/internal/legacy_migration/legacy_migration_util.h"
 
 namespace ads {
 
 using challenge_bypass_ristretto::PublicKey;
 using challenge_bypass_ristretto::UnblindedToken;
 
-ConfirmationsState::ConfirmationsState(
-    AdsImpl* ads)
-    : ads_(ads),
-      unblinded_tokens_(std::make_unique<privacy::UnblindedTokens>(ads_)),
-      unblinded_payment_tokens_(std::make_unique<
-          privacy::UnblindedTokens>(ads_)) {
-  DCHECK(ads_);
+namespace {
+
+ConfirmationsState* g_confirmations_state = nullptr;
+
+const char kConfirmationsFilename[] = "confirmations.json";
+
+}  // namespace
+
+ConfirmationsState::ConfirmationsState()
+    : unblinded_tokens_(std::make_unique<privacy::UnblindedTokens>()),
+      unblinded_payment_tokens_(std::make_unique<privacy::UnblindedTokens>()) {
+  DCHECK_EQ(g_confirmations_state, nullptr);
+  g_confirmations_state = this;
 }
 
-ConfirmationsState::~ConfirmationsState() = default;
+ConfirmationsState::~ConfirmationsState() {
+  DCHECK(g_confirmations_state);
+  g_confirmations_state = nullptr;
+}
+
+// static
+ConfirmationsState* ConfirmationsState::Get() {
+  DCHECK(g_confirmations_state);
+  return g_confirmations_state;
+}
+
+// static
+bool ConfirmationsState::HasInstance() {
+  return g_confirmations_state;
+}
+
+void ConfirmationsState::set_ad_rewards(
+    AdRewards* ad_rewards) {
+  DCHECK(ad_rewards);
+  ad_rewards_ = ad_rewards;
+}
+
+void ConfirmationsState::Initialize(
+    InitializeCallback callback) {
+  callback_ = callback;
+
+  Load();
+}
+
+void ConfirmationsState::Load() {
+  BLOG(3, "Loading confirmations state");
+
+  AdsClientHelper::Get()->Load(kConfirmationsFilename, [=](
+      const Result result,
+      const std::string& json) {
+    if (result != SUCCESS) {
+      BLOG(3, "Confirmations state does not exist, creating default state");
+
+      is_initialized_ = true;
+
+      Save();
+    } else {
+      if (!FromJson(json)) {
+        BLOG(0, "Failed to load confirmations state");
+
+        BLOG(3, "Failed to parse confirmations state: " << json);
+
+        callback_(FAILED);
+        return;
+      }
+
+      BLOG(3, "Successfully loaded confirmations state");
+
+      is_initialized_ = true;
+    }
+
+    callback_(SUCCESS);
+  });
+}
+
+void ConfirmationsState::Save() {
+  if (!is_initialized_) {
+    return;
+  }
+
+  BLOG(9, "Saving confirmations state");
+
+  const std::string json = ToJson();
+  AdsClientHelper::Get()->Save(kConfirmationsFilename, json, [](
+      const Result result) {
+    if (result != SUCCESS) {
+      BLOG(0, "Failed to save confirmations state");
+      return;
+    }
+
+    BLOG(9, "Successfully saved confirmations state");
+  });
+}
+
+CatalogIssuersInfo ConfirmationsState::get_catalog_issuers() const {
+  return catalog_issuers_;
+}
+
+void ConfirmationsState::set_catalog_issuers(
+    const CatalogIssuersInfo& catalog_issuers) {
+  DCHECK(is_initialized_);
+  catalog_issuers_ = catalog_issuers;
+}
+
+ConfirmationList ConfirmationsState::get_failed_confirmations() const {
+  DCHECK(is_initialized_);
+  return failed_confirmations_;
+}
+
+void ConfirmationsState::append_failed_confirmation(
+    const ConfirmationInfo& confirmation) {
+  DCHECK(is_initialized_);
+  failed_confirmations_.push_back(confirmation);
+}
+
+bool ConfirmationsState::remove_failed_confirmation(
+    const ConfirmationInfo& confirmation) {
+  DCHECK(is_initialized_);
+
+  const auto iter = std::find_if(failed_confirmations_.begin(),
+      failed_confirmations_.end(),
+          [&confirmation](const ConfirmationInfo& info) {
+    return (info.id == confirmation.id);
+  });
+
+  if (iter == failed_confirmations_.end()) {
+    return false;
+  }
+
+  failed_confirmations_.erase(iter);
+
+  return true;
+}
+
+TransactionList ConfirmationsState::get_transactions() const {
+  DCHECK(is_initialized_);
+  return transactions_;
+}
+
+void ConfirmationsState::add_transaction(
+    const TransactionInfo& transaction) {
+  DCHECK(is_initialized_);
+  transactions_.push_back(transaction);
+}
+
+base::Time ConfirmationsState::get_next_token_redemption_date() const {
+  DCHECK(is_initialized_);
+  return next_token_redemption_date_;
+}
+
+void ConfirmationsState::set_next_token_redemption_date(
+    const base::Time& next_token_redemption_date) {
+  DCHECK(is_initialized_);
+  next_token_redemption_date_ = next_token_redemption_date;
+}
+
+privacy::UnblindedTokens* ConfirmationsState::get_unblinded_tokens() const {
+  DCHECK(is_initialized_);
+  return unblinded_tokens_.get();
+}
+
+privacy::UnblindedTokens*
+ConfirmationsState::get_unblinded_payment_tokens() const {
+  DCHECK(is_initialized_);
+  return unblinded_payment_tokens_.get();
+}
+
+///////////////////////////////////////////////////////////////////////////////
 
 std::string ConfirmationsState::ToJson() {
   base::Value dictionary(base::Value::Type::DICTIONARY);
@@ -49,12 +207,13 @@ std::string ConfirmationsState::ToJson() {
           next_token_redemption_date_.ToDoubleT()))));
 
   // Confirmations
-  base::Value confirmations = GetConfirmationsAsDictionary(confirmations_);
+  base::Value failed_confirmations =
+      GetFailedConfirmationsAsDictionary(failed_confirmations_);
   dictionary.SetKey("confirmations",
-      base::Value(std::move(confirmations)));
+      base::Value(std::move(failed_confirmations)));
 
   // Ad rewards
-  base::Value ad_rewards = ads_->get_ad_rewards()->GetAsDictionary();
+  base::Value ad_rewards = ad_rewards_->GetAsDictionary();
   dictionary.SetKey("ads_rewards",
       base::Value(std::move(ad_rewards)));
 
@@ -101,8 +260,8 @@ bool ConfirmationsState::FromJson(
     BLOG(1, "Failed to parse next token redemption date");
   }
 
-  if (!ParseConfirmationsFromDictionary(dictionary)) {
-    BLOG(1, "Failed to parse confirmations");
+  if (!ParseFailedConfirmationsFromDictionary(dictionary)) {
+    BLOG(1, "Failed to parse failed confirmations");
   }
 
   if (!ParseAdRewardsFromDictionary(dictionary)) {
@@ -124,69 +283,6 @@ bool ConfirmationsState::FromJson(
   return true;
 }
 
-CatalogIssuersInfo ConfirmationsState::get_catalog_issuers() const {
-  return catalog_issuers_;
-}
-
-void ConfirmationsState::set_catalog_issuers(
-    const CatalogIssuersInfo& catalog_issuers) {
-  catalog_issuers_ = catalog_issuers;
-}
-
-ConfirmationList ConfirmationsState::get_confirmations() const {
-  return confirmations_;
-}
-
-void ConfirmationsState::append_confirmation(
-    const ConfirmationInfo& confirmation) {
-  confirmations_.push_back(confirmation);
-}
-
-bool ConfirmationsState::remove_confirmation(
-    const ConfirmationInfo& confirmation) {
-  const auto iter = std::find_if(confirmations_.begin(), confirmations_.end(),
-      [&confirmation](const ConfirmationInfo& info) {
-    return (info.id == confirmation.id);
-  });
-
-  if (iter == confirmations_.end()) {
-    return false;
-  }
-
-  confirmations_.erase(iter);
-
-  return true;
-}
-
-TransactionList ConfirmationsState::get_transactions() const {
-  return transactions_;
-}
-
-void ConfirmationsState::append_transaction(
-    const TransactionInfo& transaction) {
-  transactions_.push_back(transaction);
-}
-
-base::Time ConfirmationsState::get_next_token_redemption_date() const {
-  return next_token_redemption_date_;
-}
-
-void ConfirmationsState::set_next_token_redemption_date(
-    const base::Time& next_token_redemption_date) {
-  next_token_redemption_date_ = next_token_redemption_date;
-}
-
-privacy::UnblindedTokens* ConfirmationsState::get_unblinded_tokens() const {
-  return unblinded_tokens_.get();
-}
-
-privacy::UnblindedTokens*
-ConfirmationsState::get_unblinded_payment_tokens() const {
-  return unblinded_payment_tokens_.get();
-}
-
-///////////////////////////////////////////////////////////////////////////////
-
 bool ConfirmationsState::ParseCatalogIssuersFromDictionary(
     base::DictionaryValue* dictionary) {
   DCHECK(dictionary);
@@ -204,7 +300,7 @@ bool ConfirmationsState::ParseCatalogIssuersFromDictionary(
   return true;
 }
 
-base::Value ConfirmationsState::GetConfirmationsAsDictionary(
+base::Value ConfirmationsState::GetFailedConfirmationsAsDictionary(
     const ConfirmationList& confirmations) const {
   base::Value dictionary(base::Value::Type::DICTIONARY);
 
@@ -258,23 +354,23 @@ base::Value ConfirmationsState::GetConfirmationsAsDictionary(
   return dictionary;
 }
 
-bool ConfirmationsState::GetConfirmationsFromDictionary(
+bool ConfirmationsState::GetFailedConfirmationsFromDictionary(
     base::Value* dictionary,
     ConfirmationList* confirmations) {
   DCHECK(dictionary);
   DCHECK(confirmations);
 
   // Confirmations
-  const base::Value* confirmations_list =
+  const base::Value* failed_confirmations =
       dictionary->FindListKey("failed_confirmations");
-  if (!confirmations_list) {
-    BLOG(0, "Confirmations dictionary missing confirmations list");
+  if (!failed_confirmations) {
+    BLOG(0, "Failed confirmations dictionary missing failed confirmations");
     return false;
   }
 
-  ConfirmationList new_confirmations;
+  ConfirmationList new_failed_confirmations;
 
-  for (const auto& value : confirmations_list->GetList()) {
+  for (const auto& value : failed_confirmations->GetList()) {
     const base::DictionaryValue* confirmation_dictionary = nullptr;
     if (!value.GetAsDictionary(&confirmation_dictionary)) {
       BLOG(0, "Confirmation should be a dictionary");
@@ -387,26 +483,26 @@ bool ConfirmationsState::GetConfirmationsFromDictionary(
         confirmation_dictionary->FindBoolKey("created");
     confirmation.created = created.value_or(true);
 
-    new_confirmations.push_back(confirmation);
+    new_failed_confirmations.push_back(confirmation);
   }
 
-  *confirmations = new_confirmations;
+  *confirmations = new_failed_confirmations;
 
   return true;
 }
 
-bool ConfirmationsState::ParseConfirmationsFromDictionary(
+bool ConfirmationsState::ParseFailedConfirmationsFromDictionary(
     base::DictionaryValue* dictionary) {
   DCHECK(dictionary);
 
-  base::Value* confirmations_dictionary =
+  base::Value* failed_confirmations_dictionary =
       dictionary->FindDictKey("confirmations");
-  if (!confirmations_dictionary) {
+  if (!failed_confirmations_dictionary) {
     return false;
   }
 
-  if (!GetConfirmationsFromDictionary(confirmations_dictionary,
-      &confirmations_)) {
+  if (!GetFailedConfirmationsFromDictionary(failed_confirmations_dictionary,
+      &failed_confirmations_)) {
     return false;
   }
 
@@ -552,7 +648,7 @@ bool ConfirmationsState::ParseAdRewardsFromDictionary(
     return false;
   }
 
-  ads_->get_ad_rewards()->SetFromDictionary(ad_rewards_dictionary);
+  ad_rewards_->SetFromDictionary(ad_rewards_dictionary);
 
   return true;
 }

@@ -14,15 +14,12 @@
 
 namespace ads {
 
-class AdsImpl;
-
 namespace database {
 namespace table {
 
 class GeoTargets : public Table {
  public:
-  explicit GeoTargets(
-      AdsImpl* ads);
+  GeoTargets();
 
   ~GeoTargets() override;
 
@@ -61,8 +58,6 @@ class GeoTargets : public Table {
       DBTransaction* transaction);
   void MigrateToV3(
       DBTransaction* transaction);
-
-  AdsImpl* ads_;  // NOT OWNED
 };
 
 }  // namespace table

@@ -13,7 +13,6 @@
 
 namespace ads {
 
-class AdsImpl;
 struct NewTabPageAdInfo;
 
 namespace new_tab_page_ads {
@@ -21,7 +20,6 @@ namespace new_tab_page_ads {
 class AdEventFactory {
  public:
   static std::unique_ptr<AdEvent<NewTabPageAdInfo>> Build(
-      AdsImpl* ads,
       const NewTabPageAdEventType event_type);
 };
 

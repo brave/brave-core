@@ -14,15 +14,12 @@
 
 namespace ads {
 
-class AdsImpl;
-
 namespace database {
 namespace table {
 
 class Categories : public Table {
  public:
-  explicit Categories(
-      AdsImpl* ads);
+  Categories();
 
   ~Categories() override;
 
@@ -61,8 +58,6 @@ class Categories : public Table {
       DBTransaction* transaction);
   void MigrateToV3(
       DBTransaction* transaction);
-
-  AdsImpl* ads_;  // NOT OWNED
 };
 
 }  // namespace table

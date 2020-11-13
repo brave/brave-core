@@ -5,112 +5,28 @@
 
 #include "bat/ads/internal/privacy/unblinded_tokens/unblinded_tokens.h"
 
-#include <memory>
 #include <string>
 #include <vector>
 
-#include "base/test/task_environment.h"
-#include "base/files/scoped_temp_dir.h"
 #include "base/values.h"
-#include "brave/components/l10n/browser/locale_helper_mock.h"
-#include "testing/gmock/include/gmock/gmock.h"
-#include "testing/gtest/include/gtest/gtest.h"
-#include "wrapper.hpp"
-#include "bat/ads/internal/ads_client_mock.h"
-#include "bat/ads/internal/ads_impl.h"
-#include "bat/ads/internal/confirmations/confirmations.h"
-#include "bat/ads/internal/platform/platform_helper_mock.h"
 #include "bat/ads/internal/privacy/unblinded_tokens/unblinded_tokens_unittest_util.h"
+#include "bat/ads/internal/unittest_base.h"
 #include "bat/ads/internal/unittest_util.h"
-#include "bat/ads/pref_names.h"
 
 // npm run test -- brave_unit_tests --filter=BatAds*
-
-using ::testing::_;
-using ::testing::NiceMock;
-using ::testing::Return;
 
 namespace ads {
 namespace privacy {
 
-using challenge_bypass_ristretto::UnblindedToken;
-using challenge_bypass_ristretto::PublicKey;
-
-class BatAdsUnblindedTokensTest : public ::testing::Test {
+class BatAdsUnblindedTokensTest : public UnitTestBase {
  protected:
-  BatAdsUnblindedTokensTest()
-      : task_environment_(base::test::TaskEnvironment::TimeSource::MOCK_TIME),
-        ads_client_mock_(std::make_unique<NiceMock<AdsClientMock>>()),
-        ads_(std::make_unique<AdsImpl>(ads_client_mock_.get())),
-        locale_helper_mock_(std::make_unique<
-            NiceMock<brave_l10n::LocaleHelperMock>>()),
-        platform_helper_mock_(std::make_unique<
-            NiceMock<PlatformHelperMock>>()) {
-    // You can do set-up work for each test here
+  BatAdsUnblindedTokensTest() = default;
 
-    brave_l10n::LocaleHelper::GetInstance()->set_for_testing(
-        locale_helper_mock_.get());
-
-    PlatformHelper::GetInstance()->set_for_testing(platform_helper_mock_.get());
-  }
-
-  ~BatAdsUnblindedTokensTest() override {
-    // You can do clean-up work that doesn't throw exceptions here
-  }
-
-  // If the constructor and destructor are not enough for setting up and
-  // cleaning up each test, you can use the following methods
-
-  void SetUp() override {
-    // Code here will be called immediately after the constructor (right before
-    // each test)
-
-    ASSERT_TRUE(temp_dir_.CreateUniqueTempDir());
-    const base::FilePath path = temp_dir_.GetPath();
-
-    SetBuildChannel(false, "test");
-
-    ON_CALL(*locale_helper_mock_, GetLocale())
-        .WillByDefault(Return("en-US"));
-
-    MockPlatformHelper(platform_helper_mock_, PlatformType::kMacOS);
-
-    ads_->OnWalletUpdated("c387c2d8-a26d-4451-83e4-5c0c6fd942be",
-        "5BEKM1Y7xcRSg/1q8in/+Lki2weFZQB+UMYZlRw8ql8=");
-
-    MockLoad(ads_client_mock_);
-    MockLoadUserModelForId(ads_client_mock_);
-    MockLoadResourceForId(ads_client_mock_);
-    MockSave(ads_client_mock_);
-
-    MockPrefs(ads_client_mock_);
-
-    database_ = std::make_unique<Database>(path.AppendASCII("database.sqlite"));
-    MockRunDBTransaction(ads_client_mock_, database_);
-
-    Initialize(ads_);
-  }
-
-  void TearDown() override {
-    // Code here will be called immediately after each test (right before the
-    // destructor)
-  }
-
-  // Objects declared here can be used by all tests in the test case
+  ~BatAdsUnblindedTokensTest() override = default;
 
   UnblindedTokens* get_unblinded_tokens() {
-    return ads_->get_confirmations()->get_unblinded_tokens();
+    return ConfirmationsState::Get()->get_unblinded_tokens();
   }
-
-  base::test::TaskEnvironment task_environment_;
-
-  base::ScopedTempDir temp_dir_;
-
-  std::unique_ptr<AdsClientMock> ads_client_mock_;
-  std::unique_ptr<AdsImpl> ads_;
-  std::unique_ptr<brave_l10n::LocaleHelperMock> locale_helper_mock_;
-  std::unique_ptr<PlatformHelperMock> platform_helper_mock_;
-  std::unique_ptr<Database> database_;
 };
 
 TEST_F(BatAdsUnblindedTokensTest,
@@ -230,9 +146,6 @@ TEST_F(BatAdsUnblindedTokensTest,
 TEST_F(BatAdsUnblindedTokensTest,
     SetTokens) {
   // Arrange
-  EXPECT_CALL(*ads_client_mock_, Save(_, _, _))
-      .Times(1);
-
   const UnblindedTokenList unblinded_tokens = GetUnblindedTokens(10);
 
   // Act
@@ -248,9 +161,6 @@ TEST_F(BatAdsUnblindedTokensTest,
 TEST_F(BatAdsUnblindedTokensTest,
     SetTokensWithEmptyList) {
   // Arrange
-  EXPECT_CALL(*ads_client_mock_, Save(_, _, _))
-      .Times(1);
-
   const UnblindedTokenList unblinded_tokens = {};
 
   // Act
@@ -264,9 +174,6 @@ TEST_F(BatAdsUnblindedTokensTest,
 TEST_F(BatAdsUnblindedTokensTest,
     SetTokensFromList) {
   // Arrange
-  EXPECT_CALL(*ads_client_mock_, Save(_, _, _))
-      .Times(1);
-
   const base::Value list = GetUnblindedTokensAsList(5);
 
   // Act
@@ -306,9 +213,6 @@ TEST_F(BatAdsUnblindedTokensTest,
 TEST_F(BatAdsUnblindedTokensTest,
     SetTokensFromListWithEmptyList) {
   // Arrange
-  EXPECT_CALL(*ads_client_mock_, Save(_, _, _))
-      .Times(1);
-
   const base::Value list = GetUnblindedTokensAsList(0);
 
   // Act
@@ -326,9 +230,6 @@ TEST_F(BatAdsUnblindedTokensTest,
   get_unblinded_tokens()->SetTokens(unblinded_tokens);
 
   // Act
-  EXPECT_CALL(*ads_client_mock_, Save(_, _, _))
-      .Times(1);
-
   unblinded_tokens = GetRandomUnblindedTokens(5);
   get_unblinded_tokens()->AddTokens(unblinded_tokens);
 
@@ -349,9 +250,6 @@ TEST_F(BatAdsUnblindedTokensTest,
   get_unblinded_tokens()->SetTokens(unblinded_tokens);
 
   // Act
-  EXPECT_CALL(*ads_client_mock_, Save(_, _, _))
-      .Times(1);
-
   const UnblindedTokenList duplicate_unblinded_tokens = GetUnblindedTokens(1);
   get_unblinded_tokens()->AddTokens(duplicate_unblinded_tokens);
 
@@ -367,9 +265,6 @@ TEST_F(BatAdsUnblindedTokensTest,
   get_unblinded_tokens()->SetTokens(unblinded_tokens);
 
   // Act
-  EXPECT_CALL(*ads_client_mock_, Save(_, _, _))
-      .Times(1);
-
   const UnblindedTokenList random_unblinded_tokens =
       GetRandomUnblindedTokens(3);
   get_unblinded_tokens()->AddTokens(random_unblinded_tokens);
@@ -386,9 +281,6 @@ TEST_F(BatAdsUnblindedTokensTest,
   get_unblinded_tokens()->SetTokens(unblinded_tokens);
 
   // Act
-  EXPECT_CALL(*ads_client_mock_, Save(_, _, _))
-      .Times(1);
-
   const UnblindedTokenList empty_unblinded_tokens = {};
   get_unblinded_tokens()->AddTokens(empty_unblinded_tokens);
 
@@ -404,9 +296,6 @@ TEST_F(BatAdsUnblindedTokensTest,
   get_unblinded_tokens()->SetTokens(unblinded_tokens);
 
   // Act
-  EXPECT_CALL(*ads_client_mock_, Save(_, _, _))
-      .Times(1);
-
   const std::string unblinded_token_base64 =
       "hfrMEltWLuzbKQ02Qixh5C/DWiJbdOoaGaidKZ7Mv+cRq5fyxJqemE/MPlARPhl6"
       "NgXPHUeyaxzd6/Lk6YHlfXbBA023DYvGMHoKm15NP/nWnZ1V3iLkgOOHZuk80Z4K";
@@ -428,9 +317,6 @@ TEST_F(BatAdsUnblindedTokensTest,
   get_unblinded_tokens()->SetTokens(unblinded_tokens);
 
   // Act
-  EXPECT_CALL(*ads_client_mock_, Save(_, _, _))
-      .Times(1);
-
   std::string unblinded_token_base64 =
       "hfrMEltWLuzbKQ02Qixh5C/DWiJbdOoaGaidKZ7Mv+cRq5fyxJqemE/MPlARPhl6"
       "NgXPHUeyaxzd6/Lk6YHlfXbBA023DYvGMHoKm15NP/nWnZ1V3iLkgOOHZuk80Z4K";
@@ -451,9 +337,6 @@ TEST_F(BatAdsUnblindedTokensTest,
   get_unblinded_tokens()->SetTokens(unblinded_tokens);
 
   // Act
-  EXPECT_CALL(*ads_client_mock_, Save(_, _, _))
-      .Times(0);
-
   std::string unblinded_token_base64 =
       "DEADBEEFDEADBEEFDEADBEEFDEADBEEFDEADBEEFDEADBEEFDEADBEEFDEADBEEF"
       "DEADBEEFDEADBEEFDEADBEEFDEADBEEFDEADBEEFDEADBEEFDEADBEEFDEADBEEF";
@@ -474,9 +357,6 @@ TEST_F(BatAdsUnblindedTokensTest,
   get_unblinded_tokens()->SetTokens(unblinded_tokens);
 
   // Act
-  EXPECT_CALL(*ads_client_mock_, Save(_, _, _))
-      .Times(1);
-
   std::string unblinded_token_base64 =
       "hfrMEltWLuzbKQ02Qixh5C/DWiJbdOoaGaidKZ7Mv+cRq5fyxJqemE/MPlARPhl6"
       "NgXPHUeyaxzd6/Lk6YHlfXbBA023DYvGMHoKm15NP/nWnZ1V3iLkgOOHZuk80Z4K";
@@ -499,9 +379,6 @@ TEST_F(BatAdsUnblindedTokensTest,
   get_unblinded_tokens()->SetTokens(unblinded_tokens);
 
   // Act
-  EXPECT_CALL(*ads_client_mock_, Save(_, _, _))
-      .Times(1);
-
   get_unblinded_tokens()->RemoveAllTokens();
 
   // Assert
@@ -516,9 +393,6 @@ TEST_F(BatAdsUnblindedTokensTest,
   get_unblinded_tokens()->SetTokens(unblinded_tokens);
 
   // Act
-  EXPECT_CALL(*ads_client_mock_, Save(_, _, _))
-      .Times(1);
-
   get_unblinded_tokens()->RemoveAllTokens();
 
   // Assert

@@ -5,14 +5,12 @@
 
 #include "bat/ads/internal/p2a/p2a_util.h"
 
-#include <string>
-#include <vector>
-
 #include "testing/gtest/include/gtest/gtest.h"
 
 // npm run test -- brave_unit_tests --filter=BatAds*
 
 namespace ads {
+namespace p2a {
 
 TEST(BatAdsP2AUtilTest,
     CreateAdOpportunityQuestionList) {
@@ -90,4 +88,5 @@ TEST(BatAdsP2AUtilTest,
   EXPECT_EQ(expected_questions, questions);
 }
 
+}  // namespace p2a
 }  // namespace ads

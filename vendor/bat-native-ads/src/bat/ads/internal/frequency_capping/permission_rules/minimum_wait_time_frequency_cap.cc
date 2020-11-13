@@ -9,10 +9,10 @@
 
 #include <deque>
 
-#include "bat/ads/internal/ads_impl.h"
+#include "base/time/time.h"
+#include "bat/ads/internal/ads_client_helper.h"
 #include "bat/ads/internal/frequency_capping/frequency_capping_util.h"
 #include "bat/ads/internal/platform/platform_helper.h"
-#include "bat/ads/internal/time_util.h"
 #include "bat/ads/pref_names.h"
 
 namespace ads {
@@ -22,11 +22,8 @@ const uint64_t kMinimumWaitTimeFrequencyCap = 1;
 }  // namespace
 
 MinimumWaitTimeFrequencyCap::MinimumWaitTimeFrequencyCap(
-    AdsImpl* ads,
     const AdEventList& ad_events)
-    : ads_(ads),
-      ad_events_(ad_events) {
-  DCHECK(ads_);
+    : ad_events_(ad_events) {
 }
 
 MinimumWaitTimeFrequencyCap::~MinimumWaitTimeFrequencyCap() = default;
@@ -55,7 +52,7 @@ bool MinimumWaitTimeFrequencyCap::DoesRespectCap(
       GetTimestampHistoryForAdEvents(ad_events);
 
   const uint64_t ads_per_hour =
-      ads_->get_ads_client()->GetUint64Pref(prefs::kAdsPerHour);
+      AdsClientHelper::Get()->GetUint64Pref(prefs::kAdsPerHour);
 
   const uint64_t time_constraint = base::Time::kSecondsPerHour / ads_per_hour;
 

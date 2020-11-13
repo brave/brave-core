@@ -21,8 +21,7 @@ namespace geographic {
 
 class SubdivisionTargeting {
  public:
-  SubdivisionTargeting(
-      AdsImpl* ads);
+  SubdivisionTargeting();
 
   ~SubdivisionTargeting();
 
@@ -61,8 +60,6 @@ class SubdivisionTargeting {
   void Retry();
 
   void FetchAfterDelay();
-
-  AdsImpl* ads_;  // NOT OWNED
 };
 
 }  // namespace geographic

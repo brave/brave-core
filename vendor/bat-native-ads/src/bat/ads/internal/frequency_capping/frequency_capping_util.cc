@@ -5,7 +5,7 @@
 
 #include "bat/ads/internal/frequency_capping/frequency_capping_util.h"
 
-#include "bat/ads/internal/time_util.h"
+#include "base/time/time.h"
 
 namespace ads {
 
@@ -42,13 +42,13 @@ bool DoesHistoryRespectCapForRollingTimeConstraint(
   return true;
 }
 
-uint64_t OccurrencesForRollingTimeConstraint(
-    const std::deque<uint64_t> history,
-    const uint64_t time_constraint_in_seconds) {
-  uint64_t count = 0;
+int OccurrencesForRollingTimeConstraint(
+    const std::deque<int64_t> history,
+    const int64_t time_constraint_in_seconds) {
+  int count = 0;
 
-  const uint64_t now_in_seconds =
-      static_cast<uint64_t>(base::Time::Now().ToDoubleT());
+  const int64_t now_in_seconds =
+      static_cast<int64_t>(base::Time::Now().ToDoubleT());
 
   for (const auto& timestamp_in_seconds : history) {
     if (now_in_seconds - timestamp_in_seconds < time_constraint_in_seconds) {

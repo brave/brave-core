@@ -5,90 +5,25 @@
 
 #include "bat/ads/internal/database/tables/conversions_database_table.h"
 
-#include <stdint.h>
-
 #include <memory>
-#include <string>
-#include <vector>
 
-#include "base/files/file_path.h"
-#include "base/files/file_util.h"
-#include "base/files/scoped_temp_dir.h"
-#include "base/test/task_environment.h"
-#include "brave/components/l10n/browser/locale_helper_mock.h"
-#include "net/http/http_status_code.h"
-#include "testing/gmock/include/gmock/gmock.h"
-#include "testing/gtest/include/gtest/gtest.h"
-#include "bat/ads/internal/ads_client_mock.h"
-#include "bat/ads/internal/ads_impl.h"
 #include "bat/ads/internal/container_util.h"
-#include "bat/ads/internal/conversions/conversion_info.h"
-#include "bat/ads/internal/database/database_initialize.h"
-#include "bat/ads/internal/platform/platform_helper_mock.h"
+#include "bat/ads/internal/unittest_base.h"
 #include "bat/ads/internal/unittest_util.h"
-#include "bat/ads/pref_names.h"
 
 // npm run test -- brave_unit_tests --filter=BatAds*
 
-using ::testing::NiceMock;
-using ::testing::Return;
-
 namespace ads {
 
-class BatAdsConversionsDatabaseTableTest : public ::testing::Test {
+class BatAdsConversionsDatabaseTableTest : public UnitTestBase {
  protected:
   BatAdsConversionsDatabaseTableTest()
-      : task_environment_(base::test::TaskEnvironment::TimeSource::MOCK_TIME),
-        ads_client_mock_(std::make_unique<NiceMock<AdsClientMock>>()),
-        ads_(std::make_unique<AdsImpl>(ads_client_mock_.get())),
-        locale_helper_mock_(std::make_unique<
-            NiceMock<brave_l10n::LocaleHelperMock>>()),
-        platform_helper_mock_(std::make_unique<
-            NiceMock<PlatformHelperMock>>()),
-        database_table_(std::make_unique<
-            database::table::Conversions>(ads_.get())) {
-    // You can do set-up work for each test here
-
-    brave_l10n::LocaleHelper::GetInstance()->set_for_testing(
-        locale_helper_mock_.get());
-
-    PlatformHelper::GetInstance()->set_for_testing(platform_helper_mock_.get());
+      : database_table_(std::make_unique<database::table::Conversions>()) {
   }
 
-  ~BatAdsConversionsDatabaseTableTest() override {
-    // You can do clean-up work that doesn't throw exceptions here
-  }
+  ~BatAdsConversionsDatabaseTableTest() override = default;
 
-  // If the constructor and destructor are not enough for setting up and
-  // cleaning up each test, you can use the following methods
-
-  void SetUp() override {
-    // Code here will be called immediately after the constructor (right before
-    // each test)
-
-    ASSERT_TRUE(temp_dir_.CreateUniqueTempDir());
-    const base::FilePath path = temp_dir_.GetPath();
-
-    database_ = std::make_unique<Database>(path.AppendASCII("database.sqlite"));
-    MockRunDBTransaction(ads_client_mock_, database_);
-  }
-
-  void TearDown() override {
-    // Code here will be called immediately after each test (right before the
-    // destructor)
-  }
-
-  // Objects declared here can be used by all tests in the test case
-
-  void CreateOrOpenDatabase() {
-    database::Initialize initialize(ads_.get());
-    initialize.CreateOrOpen([](
-        const Result result) {
-      ASSERT_EQ(Result::SUCCESS, result);
-    });
-  }
-
-  void SaveDatabase(
+  void Save(
       const ConversionList conversions) {
     database_table_->Save(conversions, [](
         const Result result) {
@@ -110,27 +45,16 @@ class BatAdsConversionsDatabaseTableTest : public ::testing::Test {
     return static_cast<int64_t>(time.ToDoubleT());
   }
 
-  base::test::TaskEnvironment task_environment_;
-
-  base::ScopedTempDir temp_dir_;
-
-  std::unique_ptr<AdsClientMock> ads_client_mock_;
-  std::unique_ptr<AdsImpl> ads_;
-  std::unique_ptr<brave_l10n::LocaleHelperMock> locale_helper_mock_;
-  std::unique_ptr<PlatformHelperMock> platform_helper_mock_;
   std::unique_ptr<database::table::Conversions> database_table_;
-  std::unique_ptr<Database> database_;
 };
 
 TEST_F(BatAdsConversionsDatabaseTableTest,
     EmptySave) {
   // Arrange
-  CreateOrOpenDatabase();
-
   ConversionList conversions = {};
 
   // Act
-  SaveDatabase(conversions);
+  Save(conversions);
 
   // Assert
   const ConversionList expected_conversions = conversions;
@@ -146,8 +70,6 @@ TEST_F(BatAdsConversionsDatabaseTableTest,
 TEST_F(BatAdsConversionsDatabaseTableTest,
     SaveConversions) {
   // Arrange
-  CreateOrOpenDatabase();
-
   ConversionList conversions;
 
   ConversionInfo info_1;
@@ -167,7 +89,7 @@ TEST_F(BatAdsConversionsDatabaseTableTest,
   conversions.push_back(info_2);
 
   // Act
-  SaveDatabase(conversions);
+  Save(conversions);
 
   // Assert
   const ConversionList expected_conversions = conversions;
@@ -182,9 +104,7 @@ TEST_F(BatAdsConversionsDatabaseTableTest,
 
 TEST_F(BatAdsConversionsDatabaseTableTest,
     DoNotSaveDuplicateConversion) {
-  // Arrange
-  CreateOrOpenDatabase();
-
+  // Arrange;
   ConversionList conversions;
 
   ConversionInfo info;
@@ -195,10 +115,10 @@ TEST_F(BatAdsConversionsDatabaseTableTest,
   info.expiry_timestamp = CalculateExpiryTimestamp(info.observation_window);
   conversions.push_back(info);
 
-  SaveDatabase(conversions);
+  Save(conversions);
 
   // Act
-  SaveDatabase(conversions);
+  Save(conversions);
 
   // Assert
   const ConversionList expected_conversions = conversions;
@@ -214,8 +134,6 @@ TEST_F(BatAdsConversionsDatabaseTableTest,
 TEST_F(BatAdsConversionsDatabaseTableTest,
     PurgeExpiredConversions) {
   // Arrange
-  CreateOrOpenDatabase();
-
   ConversionList conversions;
 
   ConversionInfo info_1;
@@ -242,10 +160,10 @@ TEST_F(BatAdsConversionsDatabaseTableTest,
   info_3.expiry_timestamp = CalculateExpiryTimestamp(info_3.observation_window);
   conversions.push_back(info_3);
 
-  SaveDatabase(conversions);
+  Save(conversions);
 
   // Act
-  task_environment_.FastForwardBy(base::TimeDelta::FromDays(4));
+  FastForwardClockBy(base::TimeDelta::FromDays(4));
 
   PurgeExpired();
 
@@ -265,8 +183,6 @@ TEST_F(BatAdsConversionsDatabaseTableTest,
 TEST_F(BatAdsConversionsDatabaseTableTest,
     SaveConversionWithMatchingCreativeSetIdAndTypeAndUrlPattern) {
   // Arrange
-  CreateOrOpenDatabase();
-
   ConversionList conversions;
 
   ConversionInfo info_1;
@@ -277,7 +193,7 @@ TEST_F(BatAdsConversionsDatabaseTableTest,
   info_1.expiry_timestamp = CalculateExpiryTimestamp(info_1.observation_window);
   conversions.push_back(info_1);
 
-  SaveDatabase(conversions);
+  Save(conversions);
 
   // Act
   ConversionInfo info_2;  // Should supersede info_1
@@ -288,7 +204,7 @@ TEST_F(BatAdsConversionsDatabaseTableTest,
   info_2.expiry_timestamp = CalculateExpiryTimestamp(info_2.observation_window);
   conversions.push_back(info_2);
 
-  SaveDatabase(conversions);
+  Save(conversions);
 
   // Assert
   ConversionList expected_conversions;
@@ -299,51 +215,6 @@ TEST_F(BatAdsConversionsDatabaseTableTest,
       const ConversionList& conversions) {
     EXPECT_EQ(Result::SUCCESS, result);
     EXPECT_TRUE(CompareAsSets(expected_conversions, conversions));
-  });
-}
-
-TEST_F(BatAdsConversionsDatabaseTableTest,
-    GetConversionsFromCatalogEndpoint) {
-  // Arrange
-  SetBuildChannel(false, "test");
-
-  ON_CALL(*locale_helper_mock_, GetLocale())
-      .WillByDefault(Return("en-US"));
-
-  MockPlatformHelper(platform_helper_mock_, PlatformType::kMacOS);
-
-  ads_->OnWalletUpdated("c387c2d8-a26d-4451-83e4-5c0c6fd942be",
-      "5BEKM1Y7xcRSg/1q8in/+Lki2weFZQB+UMYZlRw8ql8=");
-
-  MockLoad(ads_client_mock_);
-  MockLoadUserModelForId(ads_client_mock_);
-  MockLoadResourceForId(ads_client_mock_);
-  MockSave(ads_client_mock_);
-
-  MockPrefs(ads_client_mock_);
-
-  const URLEndpoints endpoints = {
-    {
-      "/v5/catalog", {
-        {
-          net::HTTP_OK, "/catalog.json"
-        }
-      }
-    }
-  };
-
-  MockUrlRequest(ads_client_mock_, endpoints);
-
-  Initialize(ads_);
-
-  // Act
-
-  // Assert
-  database_table_->GetAll([](
-      const Result result,
-      const ConversionList& conversions) {
-    EXPECT_EQ(Result::SUCCESS, result);
-    EXPECT_EQ(2UL, conversions.size());
   });
 }
 

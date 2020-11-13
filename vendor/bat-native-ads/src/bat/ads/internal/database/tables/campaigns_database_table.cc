@@ -9,7 +9,7 @@
 
 #include "base/strings/string_util.h"
 #include "base/strings/stringprintf.h"
-#include "bat/ads/internal/ads_impl.h"
+#include "bat/ads/internal/ads_client_helper.h"
 #include "bat/ads/internal/database/database_statement_util.h"
 #include "bat/ads/internal/database/database_table_util.h"
 #include "bat/ads/internal/database/database_util.h"
@@ -19,17 +19,11 @@ namespace ads {
 namespace database {
 namespace table {
 
-using std::placeholders::_1;
-
 namespace {
 const char kTableName[] = "campaigns";
 }  // namespace
 
-Campaigns::Campaigns(
-    AdsImpl* ads)
-    : ads_(ads) {
-  DCHECK(ads_);
-}
+Campaigns::Campaigns() = default;
 
 Campaigns::~Campaigns() = default;
 
@@ -39,8 +33,8 @@ void Campaigns::Delete(
 
   util::Delete(transaction.get(), get_table_name());
 
-  ads_->get_ads_client()->RunDBTransaction(std::move(transaction),
-      std::bind(&OnResultCallback, _1, callback));
+  AdsClientHelper::Get()->RunDBTransaction(std::move(transaction),
+      std::bind(&OnResultCallback, std::placeholders::_1, callback));
 }
 
 void Campaigns::InsertOrUpdate(

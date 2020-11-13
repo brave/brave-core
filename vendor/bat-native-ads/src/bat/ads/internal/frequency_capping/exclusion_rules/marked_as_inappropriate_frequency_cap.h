@@ -12,13 +12,11 @@
 
 namespace ads {
 
-class AdsImpl;
 struct CreativeAdInfo;
 
 class MarkedAsInappropriateFrequencyCap : public ExclusionRule<CreativeAdInfo> {
  public:
-  MarkedAsInappropriateFrequencyCap(
-      AdsImpl* ads);
+  MarkedAsInappropriateFrequencyCap();
 
   ~MarkedAsInappropriateFrequencyCap() override;
 
@@ -33,8 +31,6 @@ class MarkedAsInappropriateFrequencyCap : public ExclusionRule<CreativeAdInfo> {
   std::string get_last_message() const override;
 
  private:
-  AdsImpl* ads_;  // NOT OWNED
-
   std::string last_message_;
 
   bool DoesRespectCap(

@@ -6,20 +6,19 @@
 #ifndef BAT_ADS_INTERNAL_CONFIRMATIONS_CCONFIRMATIONS_STATE_H_
 #define BAT_ADS_INTERNAL_CONFIRMATIONS_CCONFIRMATIONS_STATE_H_
 
-#include <stdint.h>
-
 #include <memory>
 #include <string>
 
+#include "base/time/time.h"
 #include "base/values.h"
+#include "bat/ads/ads.h"
 #include "bat/ads/internal/confirmations/confirmation_info.h"
 #include "bat/ads/internal/catalog/catalog_issuers_info.h"
-#include "bat/ads/internal/time_util.h"
 #include "bat/ads/transaction_info.h"
 
 namespace ads {
 
-class AdsImpl;
+class AdRewards;
 
 namespace privacy {
 class UnblindedTokens;
@@ -27,52 +26,68 @@ class UnblindedTokens;
 
 class ConfirmationsState {
  public:
-  ConfirmationsState(
-      AdsImpl* ads);
+  ConfirmationsState();
 
   ~ConfirmationsState();
 
-  std::string ToJson();
-  bool FromJson(
-      const std::string& json);
+  static ConfirmationsState* Get();
+
+  static bool HasInstance();
+
+  // TODO(https://github.com/brave/brave-browser/issues/12563): Decouple Brave
+  // Ads rewards state from confirmations
+  void set_ad_rewards(
+      AdRewards* ad_rewards);
+
+  void Initialize(
+      InitializeCallback callback);
+
+  void Load();
+  void Save();
 
   CatalogIssuersInfo get_catalog_issuers() const;
   void set_catalog_issuers(
       const CatalogIssuersInfo& catalog_issuers);
 
-  ConfirmationList get_confirmations() const;
-  void append_confirmation(
+  ConfirmationList get_failed_confirmations() const;
+  void append_failed_confirmation(
       const ConfirmationInfo& confirmation);
-  bool remove_confirmation(
+  bool remove_failed_confirmation(
       const ConfirmationInfo& confirmation);
 
   TransactionList get_transactions() const;
-  void append_transaction(
+  void add_transaction(
       const TransactionInfo& transaction);
 
   base::Time get_next_token_redemption_date() const;
   void set_next_token_redemption_date(
       const base::Time& next_token_redemption_date);
 
-
   privacy::UnblindedTokens* get_unblinded_tokens() const;
 
   privacy::UnblindedTokens* get_unblinded_payment_tokens() const;
 
  private:
-  AdsImpl* ads_;  // NOT OWNED
+  bool is_initialized_ = false;
+  InitializeCallback callback_;
+
+  AdRewards* ad_rewards_ = nullptr;  // NOT OWNED
+
+  std::string ToJson();
+  bool FromJson(
+      const std::string& json);
 
   CatalogIssuersInfo catalog_issuers_;
   bool ParseCatalogIssuersFromDictionary(
       base::DictionaryValue* dictionary);
 
-  ConfirmationList confirmations_;
-  base::Value GetConfirmationsAsDictionary(
+  ConfirmationList failed_confirmations_;
+  base::Value GetFailedConfirmationsAsDictionary(
       const ConfirmationList& confirmations) const;
-  bool GetConfirmationsFromDictionary(
+  bool GetFailedConfirmationsFromDictionary(
       base::Value* dictionary,
       ConfirmationList* confirmations);
-  bool ParseConfirmationsFromDictionary(
+  bool ParseFailedConfirmationsFromDictionary(
       base::DictionaryValue* dictionary);
 
   TransactionList transactions_;

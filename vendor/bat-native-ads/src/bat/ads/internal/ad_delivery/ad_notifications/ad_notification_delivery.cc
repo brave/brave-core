@@ -9,7 +9,7 @@
 
 #include "bat/ads/ad_notification_info.h"
 #include "bat/ads/internal/ads/ad_notifications/ad_notifications.h"
-#include "bat/ads/internal/ads_impl.h"
+#include "bat/ads/internal/ads_client_helper.h"
 #include "bat/ads/internal/client/client.h"
 #include "bat/ads/internal/logging.h"
 #include "bat/ads/internal/p2a/p2a.h"
@@ -18,11 +18,7 @@
 namespace ads {
 namespace ad_notifications {
 
-AdDelivery::AdDelivery(
-    AdsImpl* ads)
-    : ads_(ads) {
-  DCHECK(ads_);
-}
+AdDelivery::AdDelivery() = default;
 
 AdDelivery::~AdDelivery() = default;
 
@@ -32,7 +28,7 @@ bool AdDelivery::MaybeDeliverAd(
     return false;
   }
 
-  ads_->get_client()->UpdateSeenAdNotification(ad.creative_instance_id);
+  Client::Get()->UpdateSeenAdNotification(ad.creative_instance_id);
 
   RecordAdImpressionForCategory(ad.category);
 
@@ -45,16 +41,17 @@ bool AdDelivery::MaybeDeliverAd(
 
 void AdDelivery::ShowNotification(
     const AdNotificationInfo& ad) {
-  ads_->get_ad_notifications()->PushBack(ad);
+  AdNotifications::Get()->PushBack(ad);
+
+  AdsClientHelper::Get()->ShowNotification(ad);
 }
 
 void AdDelivery::RecordAdImpressionForCategory(
     const std::string& category) {
   const std::vector<std::string> question_list =
-      CreateAdImpressionQuestionList(category);
+      p2a::CreateAdImpressionQuestionList(category);
 
-  P2A p2a(ads_);
-  p2a.RecordEvent("ad_impression", question_list);
+  p2a::RecordEvent("ad_impression", question_list);
 }
 
 }  // namespace ad_notifications

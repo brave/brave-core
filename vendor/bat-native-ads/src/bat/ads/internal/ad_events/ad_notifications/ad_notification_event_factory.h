@@ -13,7 +13,6 @@
 
 namespace ads {
 
-class AdsImpl;
 struct AdNotificationInfo;
 
 namespace ad_notifications {
@@ -21,7 +20,6 @@ namespace ad_notifications {
 class AdEventFactory {
  public:
   static std::unique_ptr<AdEvent<AdNotificationInfo>> Build(
-      AdsImpl* ads,
       const AdNotificationEventType event_type);
 };
 

@@ -11,8 +11,8 @@
 #include <memory>
 
 #include "base/callback_forward.h"
+#include "base/time/time.h"
 #include "base/timer/timer.h"
-#include "bat/ads/internal/time_util.h"
 
 namespace ads {
 

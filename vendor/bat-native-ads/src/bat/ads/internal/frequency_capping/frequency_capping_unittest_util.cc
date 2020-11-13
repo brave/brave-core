@@ -8,7 +8,7 @@
 #include <stdint.h>
 
 #include "base/guid.h"
-#include "bat/ads/internal/time_util.h"
+#include "base/time/time.h"
 
 namespace ads {
 

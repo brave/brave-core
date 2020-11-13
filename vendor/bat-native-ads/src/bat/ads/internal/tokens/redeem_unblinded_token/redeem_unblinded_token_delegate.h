@@ -7,19 +7,21 @@
 #define BAT_ADS_INTERNAL_TOKENS_REDEEM_UNBLINDED_TOKEN_REDEEM_UNBLINDED_TOKEN_DELEGATE_H_  // NOLINT
 
 #include "bat/ads/internal/confirmations/confirmation_info.h"
+#include "bat/ads/internal/privacy/unblinded_tokens/unblinded_token_info.h"
 
 namespace ads {
 
 class RedeemUnblindedTokenDelegate {
  public:
-  RedeemUnblindedTokenDelegate() = default;
-
   virtual ~RedeemUnblindedTokenDelegate() = default;
 
   virtual void OnDidRedeemUnblindedToken(
-      const ConfirmationInfo& confirmation) = 0;
+      const ConfirmationInfo& confirmation,
+      const privacy::UnblindedTokenInfo& unblinded_payment_token) = 0;
+
   virtual void OnFailedToRedeemUnblindedToken(
-      const ConfirmationInfo& confirmation) = 0;
+      const ConfirmationInfo& confirmation,
+      const bool should_retry) = 0;
 };
 
 }  // namespace ads

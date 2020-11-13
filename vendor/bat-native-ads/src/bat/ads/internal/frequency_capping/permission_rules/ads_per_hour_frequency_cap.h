@@ -13,12 +13,9 @@
 
 namespace ads {
 
-class AdsImpl;
-
 class AdsPerHourFrequencyCap : public PermissionRule {
  public:
   AdsPerHourFrequencyCap(
-      AdsImpl* ads,
       const AdEventList& ad_events);
 
   ~AdsPerHourFrequencyCap() override;
@@ -31,8 +28,6 @@ class AdsPerHourFrequencyCap : public PermissionRule {
   std::string get_last_message() const override;
 
  private:
-  AdsImpl* ads_;  // NOT OWNED
-
   AdEventList ad_events_;
 
   std::string last_message_;

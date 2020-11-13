@@ -5,28 +5,20 @@
 
 #include "bat/ads/internal/logging.h"
 
-#include "bat/ads/ads_client.h"
+#include "bat/ads/internal/ads_client_helper.h"
 
 namespace ads {
-
-AdsClient* g_ads_client = nullptr;  // NOT OWNED
-
-void set_ads_client_for_logging(
-    AdsClient* ads_client) {
-  DCHECK(ads_client);
-  g_ads_client = ads_client;
-}
 
 void Log(
     const char* file,
     const int line,
     const int verbose_level,
     const std::string& message) {
-  if (!g_ads_client) {
+  if (!AdsClientHelper::HasInstance()) {
     return;
   }
 
-  g_ads_client->Log(file, line, verbose_level, message);
+  AdsClientHelper::Get()->Log(file, line, verbose_level, message);
 }
 
 }  // namespace ads

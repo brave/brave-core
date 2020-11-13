@@ -5,12 +5,6 @@
 
 #include "bat/ads/internal/security/security_util.h"
 
-#include <stdint.h>
-
-#include <map>
-#include <string>
-#include <vector>
-
 #include "base/base64.h"
 #include "testing/gtest/include/gtest/gtest.h"
 

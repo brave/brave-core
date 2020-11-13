@@ -5,8 +5,8 @@
 
 #include "bat/ads/internal/client/client_info.h"
 
+#include "base/time/time.h"
 #include "bat/ads/internal/logging.h"
-#include "bat/ads/internal/time_util.h"
 #include "bat/ads/internal/json_helper.h"
 
 namespace ads {

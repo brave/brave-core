@@ -8,18 +8,14 @@
 #include <algorithm>
 
 #include "base/strings/stringprintf.h"
-#include "bat/ads/internal/ads_impl.h"
-#include "bat/ads/internal/bundle/creative_ad_info.h"
 #include "bat/ads/internal/client/client.h"
+#include "bat/ads/internal/bundle/creative_ad_info.h"
 #include "bat/ads/internal/client/preferences/filtered_ad_info.h"
 
 namespace ads {
 
-MarkedToNoLongerReceiveFrequencyCap::MarkedToNoLongerReceiveFrequencyCap(
-    AdsImpl* ads)
-    : ads_(ads) {
-  DCHECK(ads_);
-}
+MarkedToNoLongerReceiveFrequencyCap::
+MarkedToNoLongerReceiveFrequencyCap() = default;
 
 MarkedToNoLongerReceiveFrequencyCap::
 ~MarkedToNoLongerReceiveFrequencyCap() = default;
@@ -42,7 +38,7 @@ std::string MarkedToNoLongerReceiveFrequencyCap::get_last_message() const {
 
 bool MarkedToNoLongerReceiveFrequencyCap::DoesRespectCap(
     const CreativeAdInfo& ad) {
-  const FilteredAdList filtered_ads = ads_->get_client()->get_filtered_ads();
+  const FilteredAdList filtered_ads = Client::Get()->get_filtered_ads();
   if (filtered_ads.empty()) {
     return true;
   }

@@ -6,7 +6,6 @@
 #include "bat/ads/internal/frequency_capping/new_tab_page_ads/new_tab_page_ads_frequency_capping.h"
 
 #include "bat/ads/ad_info.h"
-#include "bat/ads/internal/ads_impl.h"
 #include "bat/ads/internal/frequency_capping/exclusion_rules/exclusion_rule_util.h"
 #include "bat/ads/internal/frequency_capping/exclusion_rules/new_tab_page_ad_uuid_frequency_cap.h"
 #include "bat/ads/internal/frequency_capping/permission_rules/new_tab_page_ads_per_day_frequency_cap.h"
@@ -18,22 +17,19 @@ namespace ads {
 namespace new_tab_page_ads {
 
 FrequencyCapping::FrequencyCapping(
-    AdsImpl* ads,
     const AdEventList& ad_events)
-    : ads_(ads),
-      ad_events_(ad_events) {
-  DCHECK(ads_);
+    : ad_events_(ad_events) {
 }
 
 FrequencyCapping::~FrequencyCapping() = default;
 
 bool FrequencyCapping::IsAdAllowed() {
-  NewTabPageAdsPerDayFrequencyCap ads_per_day_frequency_cap(ads_, ad_events_);
+  NewTabPageAdsPerDayFrequencyCap ads_per_day_frequency_cap(ad_events_);
   if (!ShouldAllow(&ads_per_day_frequency_cap)) {
     return false;
   }
 
-  NewTabPageAdsPerHourFrequencyCap ads_per_hour_frequency_cap(ads_, ad_events_);
+  NewTabPageAdsPerHourFrequencyCap ads_per_hour_frequency_cap(ad_events_);
   if (!ShouldAllow(&ads_per_hour_frequency_cap)) {
     return false;
   }
@@ -43,7 +39,7 @@ bool FrequencyCapping::IsAdAllowed() {
 
 bool FrequencyCapping::ShouldExcludeAd(
     const AdInfo& ad) {
-  NewTabPageAdUuidFrequencyCap frequency_cap(ads_, ad_events_);
+  NewTabPageAdUuidFrequencyCap frequency_cap(ad_events_);
   return ShouldExclude(ad, &frequency_cap);
 }
 

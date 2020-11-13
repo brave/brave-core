@@ -19,8 +19,6 @@
 
 namespace ads {
 
-class AdsImpl;
-
 namespace ad_targeting {
 namespace contextual {
 
@@ -36,8 +34,7 @@ const char kUntargeted[] = "untargeted";
 
 class PageClassifier {
  public:
-  PageClassifier(
-     AdsImpl* ads);
+  PageClassifier();
 
   ~PageClassifier();
 
@@ -55,8 +52,6 @@ class PageClassifier {
   const PageProbabilitiesCacheMap& get_page_probabilities_cache() const;
 
  private:
-  AdsImpl* ads_;  // NOT OWNED
-
   PageProbabilitiesCacheMap page_probabilities_cache_;
 
   bool IsInitialized() const;

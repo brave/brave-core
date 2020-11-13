@@ -10,7 +10,7 @@
 #include <vector>
 
 #include "base/values.h"
-#include "bat/ads/internal/account/wallet_info.h"
+#include "bat/ads/internal/account/wallet/wallet_info.h"
 #include "bat/ads/internal/privacy/unblinded_tokens/unblinded_token_info.h"
 #include "bat/ads/internal/server/url_request_builder.h"
 

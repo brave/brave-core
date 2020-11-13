@@ -5,35 +5,26 @@
 
 #include "bat/ads/internal/p2a/p2a.h"
 
-#include <string>
-
 #include "base/json/json_writer.h"
 #include "base/values.h"
-#include "bat/ads/internal/ads_impl.h"
+#include "bat/ads/internal/ads_client_helper.h"
 
 namespace ads {
+namespace p2a {
 
-P2A::P2A(
-    AdsImpl* ads)
-    : ads_(ads) {
-  DCHECK(ads_);
-}
-
-P2A::~P2A() = default;
-
-void P2A::RecordEvent(
+void RecordEvent(
     const std::string& name,
-    const std::vector<std::string>& value) {
+    const std::vector<std::string>& items) {
   base::Value list(base::Value::Type::LIST);
-  for (const auto& item : value) {
+  for (const auto& item : items) {
     list.Append(item);
   }
 
   std::string json;
   base::JSONWriter::Write(list, &json);
-  ads_->get_ads_client()->RecordP2AEvent(name, P2AEventType::kListType, json);
+
+  AdsClientHelper::Get()->RecordP2AEvent(name, P2AEventType::kListType, json);
 }
 
-///////////////////////////////////////////////////////////////////////////////
-
+}  // namespace p2a
 }  // namespace ads

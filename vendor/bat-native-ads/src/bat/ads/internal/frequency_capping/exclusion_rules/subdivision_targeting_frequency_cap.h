@@ -13,13 +13,18 @@
 
 namespace ads {
 
-class AdsImpl;
 struct CreativeAdInfo;
+
+namespace ad_targeting {
+namespace geographic {
+class SubdivisionTargeting;
+}  // namespace geographic
+}  // namespace ad_targeting
 
 class SubdivisionTargetingFrequencyCap : public ExclusionRule<CreativeAdInfo> {
  public:
   SubdivisionTargetingFrequencyCap(
-      AdsImpl* ads);
+      ad_targeting::geographic::SubdivisionTargeting* subdivision_targeting);
 
   ~SubdivisionTargetingFrequencyCap() override;
 
@@ -34,7 +39,8 @@ class SubdivisionTargetingFrequencyCap : public ExclusionRule<CreativeAdInfo> {
   std::string get_last_message() const override;
 
  private:
-  AdsImpl* ads_;  // NOT OWNED
+  ad_targeting::geographic::SubdivisionTargeting*
+      subdivision_targeting_;  // NOT OWNED
 
   std::string last_message_;
 

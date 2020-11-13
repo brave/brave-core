@@ -5,105 +5,40 @@
 
 #include "bat/ads/internal/conversions/conversions.h"
 
-#include <stdint.h>
-
-#include <deque>
-#include <map>
 #include <memory>
-#include <string>
-#include <utility>
 
-#include "base/files/file_path.h"
-#include "base/files/file_util.h"
-#include "base/files/scoped_temp_dir.h"
 #include "base/strings/stringprintf.h"
-#include "base/test/task_environment.h"
-#include "brave/components/l10n/browser/locale_helper_mock.h"
-#include "testing/gmock/include/gmock/gmock.h"
-#include "testing/gtest/include/gtest/gtest.h"
 #include "bat/ads/internal/ad_events/ad_events.h"
-#include "bat/ads/internal/ads_client_mock.h"
-#include "bat/ads/internal/ads_impl.h"
-#include "bat/ads/internal/client/client.h"
 #include "bat/ads/internal/database/tables/ad_events_database_table.h"
 #include "bat/ads/internal/database/tables/conversions_database_table.h"
-#include "bat/ads/internal/platform/platform_helper_mock.h"
-#include "bat/ads/internal/time_util.h"
+#include "bat/ads/internal/unittest_base.h"
 #include "bat/ads/internal/unittest_util.h"
 #include "bat/ads/pref_names.h"
 
 // npm run test -- brave_unit_tests --filter=BatAds*
 
-using ::testing::NiceMock;
-using ::testing::Return;
-
 namespace ads {
 
-class BatAdsConversionsTest : public ::testing::Test {
+class BatAdsConversionsTest : public UnitTestBase {
  protected:
   BatAdsConversionsTest()
-      : task_environment_(base::test::TaskEnvironment::TimeSource::MOCK_TIME),
-        ads_client_mock_(std::make_unique<NiceMock<AdsClientMock>>()),
-        ads_(std::make_unique<AdsImpl>(ads_client_mock_.get())),
-        locale_helper_mock_(std::make_unique<
-            NiceMock<brave_l10n::LocaleHelperMock>>()),
-        platform_helper_mock_(std::make_unique<
-            NiceMock<PlatformHelperMock>>()),
-        conversions_database_table_(std::make_unique<
-            database::table::Conversions>(ads_.get())),
+      : conversions_(std::make_unique<Conversions>()),
         ad_events_database_table_(std::make_unique<
-            database::table::AdEvents>(ads_.get())) {
-    // You can do set-up work for each test here
-
-    brave_l10n::LocaleHelper::GetInstance()->set_for_testing(
-        locale_helper_mock_.get());
-
-    PlatformHelper::GetInstance()->set_for_testing(platform_helper_mock_.get());
+            database::table::AdEvents>()),
+        conversions_database_table_(std::make_unique<
+            database::table::Conversions>()) {
   }
 
-  ~BatAdsConversionsTest() override {
-    // You can do clean-up work that doesn't throw exceptions here
-  }
-
-  // If the constructor and destructor are not enough for setting up and
-  // cleaning up each test, you can use the following methods
+  ~BatAdsConversionsTest() override = default;
 
   void SetUp() override {
-    // Code here will be called immediately after the constructor (right before
-    // each test)
+    UnitTestBase::SetUp();
 
-    ASSERT_TRUE(temp_dir_.CreateUniqueTempDir());
-    const base::FilePath path = temp_dir_.GetPath();
-
-    SetBuildChannel(false, "test");
-
-    ON_CALL(*locale_helper_mock_, GetLocale())
-        .WillByDefault(Return("en-US"));
-
-    MockPlatformHelper(platform_helper_mock_, PlatformType::kMacOS);
-
-    ads_->OnWalletUpdated("c387c2d8-a26d-4451-83e4-5c0c6fd942be",
-        "5BEKM1Y7xcRSg/1q8in/+Lki2weFZQB+UMYZlRw8ql8=");
-
-    MockLoad(ads_client_mock_);
-    MockLoadUserModelForId(ads_client_mock_);
-    MockLoadResourceForId(ads_client_mock_);
-    MockSave(ads_client_mock_);
-
-    MockPrefs(ads_client_mock_);
-
-    database_ = std::make_unique<Database>(path.AppendASCII("database.sqlite"));
-    MockRunDBTransaction(ads_client_mock_, database_);
-
-    Initialize(ads_);
+    conversions_->Initialize([](
+        const Result result) {
+      ASSERT_EQ(Result::SUCCESS, result);
+    });
   }
-
-  void TearDown() override {
-    // Code here will be called immediately after each test (right before the
-    // destructor)
-  }
-
-  // Objects declared here can be used by all tests in the test case
 
   void SaveConversions(
       const ConversionList& conversions) {
@@ -117,43 +52,35 @@ class BatAdsConversionsTest : public ::testing::Test {
       const int observation_window) {
     base::Time time = base::Time::Now();
     time += base::TimeDelta::FromDays(observation_window);
+
     return static_cast<int64_t>(time.ToDoubleT());
   }
 
-  void TriggerAdEvent(
+  void FireAdEvent(
       const std::string& creative_set_id,
       const ConfirmationType confirmation_type) {
     AdEventInfo ad_event;
     ad_event.creative_instance_id = "7a3b6d9f-d0b7-4da6-8988-8d5b8938c94f";
     ad_event.creative_set_id = creative_set_id;
-    ad_event.timestamp = base::Time::Now().ToDoubleT();
+    ad_event.timestamp = Now();
     ad_event.confirmation_type = confirmation_type;
 
-    AdEvents ad_events(ads_.get());
-    ad_events.Log(ad_event,
+    LogAdEvent(ad_event,
         [](const Result result) {
       ASSERT_EQ(Result::SUCCESS, result);
     });
   }
 
-  base::test::TaskEnvironment task_environment_;
-
-  base::ScopedTempDir temp_dir_;
-
-  std::unique_ptr<AdsClientMock> ads_client_mock_;
-  std::unique_ptr<AdsImpl> ads_;
-  std::unique_ptr<brave_l10n::LocaleHelperMock> locale_helper_mock_;
-  std::unique_ptr<PlatformHelperMock> platform_helper_mock_;
-  std::unique_ptr<database::table::Conversions> conversions_database_table_;
+  std::unique_ptr<Conversions> conversions_;
   std::unique_ptr<database::table::AdEvents> ad_events_database_table_;
-  std::unique_ptr<Database> database_;
+  std::unique_ptr<database::table::Conversions> conversions_database_table_;
 };
 
 TEST_F(BatAdsConversionsTest,
     ShouldNotAllowConversionTracking) {
   // Arrange
   ads_client_mock_->SetBooleanPref(
-      ads::prefs::kShouldAllowConversionTracking, false);
+      prefs::kShouldAllowConversionTracking, false);
 
   ConversionList conversions;
 
@@ -169,7 +96,7 @@ TEST_F(BatAdsConversionsTest,
   SaveConversions(conversions);
 
   // Act
-  ads_->get_conversions()->MaybeConvert("https://www.foobar.com/signup");
+  conversions_->MaybeConvert("https://www.foobar.com/signup");
 
   // Assert
   const std::string condition = base::StringPrintf(
@@ -201,10 +128,10 @@ TEST_F(BatAdsConversionsTest,
 
   SaveConversions(conversions);
 
-  TriggerAdEvent(conversion.creative_set_id, ConfirmationType::kViewed);
+  FireAdEvent(conversion.creative_set_id, ConfirmationType::kViewed);
 
   // Act
-  ads_->get_conversions()->MaybeConvert("https://www.foo.com/bar");
+  conversions_->MaybeConvert("https://www.foo.com/bar");
 
   // Assert
   const std::string condition = base::StringPrintf(
@@ -239,11 +166,11 @@ TEST_F(BatAdsConversionsTest,
 
   SaveConversions(conversions);
 
-  TriggerAdEvent(conversion.creative_set_id, ConfirmationType::kViewed);
-  TriggerAdEvent(conversion.creative_set_id, ConfirmationType::kClicked);
+  FireAdEvent(conversion.creative_set_id, ConfirmationType::kViewed);
+  FireAdEvent(conversion.creative_set_id, ConfirmationType::kClicked);
 
   // Act
-  ads_->get_conversions()->MaybeConvert("https://www.foo.com/bar/baz");
+  conversions_->MaybeConvert("https://www.foo.com/bar/baz");
 
   // Assert
   const std::string condition = base::StringPrintf(
@@ -287,15 +214,15 @@ TEST_F(BatAdsConversionsTest,
 
   SaveConversions(conversions);
 
-  TriggerAdEvent(conversion_1.creative_set_id, ConfirmationType::kViewed);
+  FireAdEvent(conversion_1.creative_set_id, ConfirmationType::kViewed);
 
-  TriggerAdEvent(conversion_2.creative_set_id, ConfirmationType::kViewed);
-  TriggerAdEvent(conversion_2.creative_set_id, ConfirmationType::kClicked);
+  FireAdEvent(conversion_2.creative_set_id, ConfirmationType::kViewed);
+  FireAdEvent(conversion_2.creative_set_id, ConfirmationType::kClicked);
 
   // Act
-  ads_->get_conversions()->MaybeConvert("https://www.foo.com/qux");
+  conversions_->MaybeConvert("https://www.foo.com/qux");
 
-  ads_->get_conversions()->MaybeConvert("https://www.foo.com/bar/baz");
+  conversions_->MaybeConvert("https://www.foo.com/bar/baz");
 
   // Assert
   const std::string condition = base::StringPrintf(
@@ -337,11 +264,11 @@ TEST_F(BatAdsConversionsTest,
 
   SaveConversions(conversions);
 
-  TriggerAdEvent(conversion.creative_set_id, ConfirmationType::kViewed);
-  TriggerAdEvent(conversion.creative_set_id, ConfirmationType::kDismissed);
+  FireAdEvent(conversion.creative_set_id, ConfirmationType::kViewed);
+  FireAdEvent(conversion.creative_set_id, ConfirmationType::kDismissed);
 
   // Act
-  ads_->get_conversions()->MaybeConvert("https://www.foo.com/quxbarbaz");
+  conversions_->MaybeConvert("https://www.foo.com/quxbarbaz");
 
   // Assert
   const std::string condition = base::StringPrintf(
@@ -376,14 +303,14 @@ TEST_F(BatAdsConversionsTest,
 
   SaveConversions(conversions);
 
-  TriggerAdEvent(conversion.creative_set_id, ConfirmationType::kDismissed);
-  TriggerAdEvent(conversion.creative_set_id, ConfirmationType::kTransferred);
-  TriggerAdEvent(conversion.creative_set_id, ConfirmationType::kFlagged);
-  TriggerAdEvent(conversion.creative_set_id, ConfirmationType::kUpvoted);
-  TriggerAdEvent(conversion.creative_set_id, ConfirmationType::kDownvoted);
+  FireAdEvent(conversion.creative_set_id, ConfirmationType::kDismissed);
+  FireAdEvent(conversion.creative_set_id, ConfirmationType::kTransferred);
+  FireAdEvent(conversion.creative_set_id, ConfirmationType::kFlagged);
+  FireAdEvent(conversion.creative_set_id, ConfirmationType::kUpvoted);
+  FireAdEvent(conversion.creative_set_id, ConfirmationType::kDownvoted);
 
   // Act
-  ads_->get_conversions()->MaybeConvert("https://www.foo.com/bar");
+  conversions_->MaybeConvert("https://www.foo.com/bar");
 
   // Assert
   const std::string condition = base::StringPrintf(
@@ -404,10 +331,10 @@ TEST_F(BatAdsConversionsTest,
   // Arrange
   const std::string creative_set_id = "3519f52c-46a4-4c48-9c2b-c264c0067f04";
 
-  TriggerAdEvent(creative_set_id, ConfirmationType::kViewed);
+  FireAdEvent(creative_set_id, ConfirmationType::kViewed);
 
   // Act
-  ads_->get_conversions()->MaybeConvert("https://www.foo.com/bar");
+  conversions_->MaybeConvert("https://www.foo.com/bar");
 
   // Assert
   const std::string condition = "creative_set_id = 'foobar' AND "
@@ -438,12 +365,12 @@ TEST_F(BatAdsConversionsTest,
 
   SaveConversions(conversions);
 
-  TriggerAdEvent(conversion.creative_set_id, ConfirmationType::kViewed);
+  FireAdEvent(conversion.creative_set_id, ConfirmationType::kViewed);
 
-  ads_->get_conversions()->MaybeConvert("https://www.foo.com/bar");
+  conversions_->MaybeConvert("https://www.foo.com/bar");
 
   // Act
-  ads_->get_conversions()->MaybeConvert("https://www.foo.com/bar");
+  conversions_->MaybeConvert("https://www.foo.com/bar");
 
   // Assert
   const std::string condition = base::StringPrintf(
@@ -478,10 +405,10 @@ TEST_F(BatAdsConversionsTest,
 
   SaveConversions(conversions);
 
-  TriggerAdEvent(conversion.creative_set_id, ConfirmationType::kViewed);
+  FireAdEvent(conversion.creative_set_id, ConfirmationType::kViewed);
 
   // Act
-  ads_->get_conversions()->MaybeConvert("https://www.foo.com/qux");
+  conversions_->MaybeConvert("https://www.foo.com/qux");
 
   // Assert
   const std::string condition = base::StringPrintf(
@@ -513,13 +440,13 @@ TEST_F(BatAdsConversionsTest,
 
   SaveConversions(conversions);
 
-  TriggerAdEvent(conversion.creative_set_id, ConfirmationType::kViewed);
+  FireAdEvent(conversion.creative_set_id, ConfirmationType::kViewed);
 
   task_environment_.FastForwardBy(base::TimeDelta::FromDays(3) -
       base::TimeDelta::FromMinutes(1));
 
   // Act
-  ads_->get_conversions()->MaybeConvert("https://foo.bar.com/qux");
+  conversions_->MaybeConvert("https://foo.bar.com/qux");
 
   // Assert
   const std::string condition = base::StringPrintf(
@@ -554,12 +481,12 @@ TEST_F(BatAdsConversionsTest,
 
   SaveConversions(conversions);
 
-  TriggerAdEvent(conversion.creative_set_id, ConfirmationType::kViewed);
+  FireAdEvent(conversion.creative_set_id, ConfirmationType::kViewed);
 
   task_environment_.FastForwardBy(base::TimeDelta::FromDays(3));
 
   // Act
-  ads_->get_conversions()->MaybeConvert("https://www.foo.com/bar/qux");
+  conversions_->MaybeConvert("https://www.foo.com/bar/qux");
 
   // Assert
   const std::string condition = base::StringPrintf(

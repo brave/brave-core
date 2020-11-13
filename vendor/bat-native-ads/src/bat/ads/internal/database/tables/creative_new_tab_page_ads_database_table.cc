@@ -10,18 +10,18 @@
 
 #include "base/strings/string_util.h"
 #include "base/strings/stringprintf.h"
-#include "bat/ads/internal/ads_impl.h"
+#include "base/time/time.h"
+#include "bat/ads/internal/ads_client_helper.h"
 #include "bat/ads/internal/container_util.h"
 #include "bat/ads/internal/database/database_statement_util.h"
 #include "bat/ads/internal/database/database_table_util.h"
 #include "bat/ads/internal/database/database_util.h"
 #include "bat/ads/internal/logging.h"
+#include "bat/ads/internal/time_formatting_util.h"
 
 namespace ads {
 namespace database {
 namespace table {
-
-using std::placeholders::_1;
 
 namespace {
 
@@ -31,16 +31,13 @@ const int kDefaultBatchSize = 50;
 
 }  // namespace
 
-CreativeNewTabPageAds::CreativeNewTabPageAds(
-    AdsImpl* ads)
+CreativeNewTabPageAds::CreativeNewTabPageAds()
     : batch_size_(kDefaultBatchSize),
-      ads_(ads),
-      campaigns_database_table_(std::make_unique<Campaigns>(ads_)),
-      categories_database_table_(std::make_unique<Categories>(ads_)),
-      creative_ads_database_table_(std::make_unique<CreativeAds>(ads_)),
-      dayparts_database_table_(std::make_unique<Dayparts>(ads_)),
-      geo_targets_database_table_(std::make_unique<GeoTargets>(ads_)) {
-  DCHECK(ads_);
+      campaigns_database_table_(std::make_unique<Campaigns>()),
+      categories_database_table_(std::make_unique<Categories>()),
+      creative_ads_database_table_(std::make_unique<CreativeAds>()),
+      dayparts_database_table_(std::make_unique<Dayparts>()),
+      geo_targets_database_table_(std::make_unique<GeoTargets>()) {
 }
 
 CreativeNewTabPageAds::~CreativeNewTabPageAds() = default;
@@ -73,8 +70,8 @@ void CreativeNewTabPageAds::Save(
         transaction.get(), creative_ads);
   }
 
-  ads_->get_ads_client()->RunDBTransaction(std::move(transaction),
-      std::bind(&OnResultCallback, _1, callback));
+  AdsClientHelper::Get()->RunDBTransaction(std::move(transaction),
+      std::bind(&OnResultCallback, std::placeholders::_1, callback));
 }
 
 void CreativeNewTabPageAds::Delete(
@@ -83,8 +80,8 @@ void CreativeNewTabPageAds::Delete(
 
   util::Delete(transaction.get(), get_table_name());
 
-  ads_->get_ads_client()->RunDBTransaction(std::move(transaction),
-      std::bind(&OnResultCallback, _1, callback));
+  AdsClientHelper::Get()->RunDBTransaction(std::move(transaction),
+      std::bind(&OnResultCallback, std::placeholders::_1, callback));
 }
 
 void CreativeNewTabPageAds::GetForCreativeInstanceId(
@@ -164,9 +161,9 @@ void CreativeNewTabPageAds::GetForCreativeInstanceId(
   DBTransactionPtr transaction = DBTransaction::New();
   transaction->commands.push_back(std::move(command));
 
-  ads_->get_ads_client()->RunDBTransaction(std::move(transaction),
-      std::bind(&CreativeNewTabPageAds::OnGetForCreativeInstanceId, this, _1,
-          creative_instance_id, callback));
+  AdsClientHelper::Get()->RunDBTransaction(std::move(transaction),
+      std::bind(&CreativeNewTabPageAds::OnGetForCreativeInstanceId, this,
+          std::placeholders::_1, creative_instance_id, callback));
 }
 
 void CreativeNewTabPageAds::GetForCategories(
@@ -214,7 +211,7 @@ void CreativeNewTabPageAds::GetForCategories(
           "AND %s BETWEEN cam.start_at_timestamp AND cam.end_at_timestamp",
       get_table_name().c_str(),
       BuildBindingParameterPlaceholder(categories.size()).c_str(),
-      NowAsString().c_str());
+      TimeAsTimestampString(base::Time::Now()).c_str());
 
   DBCommandPtr command = DBCommand::New();
   command->type = DBCommand::Type::READ;
@@ -252,9 +249,9 @@ void CreativeNewTabPageAds::GetForCategories(
   DBTransactionPtr transaction = DBTransaction::New();
   transaction->commands.push_back(std::move(command));
 
-  ads_->get_ads_client()->RunDBTransaction(std::move(transaction),
-      std::bind(&CreativeNewTabPageAds::OnGetForCategories, this, _1,
-          categories, callback));
+  AdsClientHelper::Get()->RunDBTransaction(std::move(transaction),
+      std::bind(&CreativeNewTabPageAds::OnGetForCategories, this,
+          std::placeholders::_1, categories, callback));
 }
 
 void CreativeNewTabPageAds::GetAll(
@@ -294,7 +291,7 @@ void CreativeNewTabPageAds::GetAll(
               "ON dp.campaign_id = can.campaign_id "
       "WHERE %s BETWEEN cam.start_at_timestamp AND cam.end_at_timestamp",
       get_table_name().c_str(),
-      NowAsString().c_str());
+      TimeAsTimestampString(base::Time::Now()).c_str());
 
   DBCommandPtr command = DBCommand::New();
   command->type = DBCommand::Type::READ;
@@ -326,8 +323,9 @@ void CreativeNewTabPageAds::GetAll(
   DBTransactionPtr transaction = DBTransaction::New();
   transaction->commands.push_back(std::move(command));
 
-  ads_->get_ads_client()->RunDBTransaction(std::move(transaction),
-      std::bind(&CreativeNewTabPageAds::OnGetAll, this, _1, callback));
+  AdsClientHelper::Get()->RunDBTransaction(std::move(transaction),
+      std::bind(&CreativeNewTabPageAds::OnGetAll, this, std::placeholders::_1,
+          callback));
 }
 
 void CreativeNewTabPageAds::set_batch_size(

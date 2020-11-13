@@ -12,12 +12,9 @@
 
 namespace ads {
 
-class AdsImpl;
-
 class CatalogFrequencyCap : public PermissionRule {
  public:
-  CatalogFrequencyCap(
-      AdsImpl* ads);
+  CatalogFrequencyCap();
 
   ~CatalogFrequencyCap() override;
 
@@ -29,8 +26,6 @@ class CatalogFrequencyCap : public PermissionRule {
   std::string get_last_message() const override;
 
  private:
-  AdsImpl* ads_;  // NOT OWNED
-
   std::string last_message_;
 
   bool DoesRespectCap();

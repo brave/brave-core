@@ -7,26 +7,21 @@
 
 #include "bat/ads/ad_notification_info.h"
 #include "bat/ads/internal/ads/ad_notifications/ad_notifications.h"
-#include "bat/ads/internal/ads_impl.h"
 #include "bat/ads/internal/logging.h"
 
 namespace ads {
 namespace ad_notifications {
 
-AdEventTimedOut::AdEventTimedOut(
-    AdsImpl* ads)
-    : ads_(ads) {
-  DCHECK(ads_);
-}
+AdEventTimedOut::AdEventTimedOut() = default;
 
 AdEventTimedOut::~AdEventTimedOut() = default;
 
-void AdEventTimedOut::Trigger(
+void AdEventTimedOut::FireEvent(
     const AdNotificationInfo& ad) {
   BLOG(3, "Timed out ad notification with uuid " << ad.uuid
       << " and creative instance id " << ad.creative_instance_id);
 
-  ads_->get_ad_notifications()->Remove(ad.uuid, /* should dismiss */ false);
+  AdNotifications::Get()->Remove(ad.uuid, /* should dismiss */ false);
 }
 
 }  // namespace ad_notifications

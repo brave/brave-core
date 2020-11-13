@@ -7,14 +7,14 @@
 
 #include <utility>
 
+#include "base/time/time.h"
 #include "bat/ads/ad_history_info.h"
+#include "bat/ads/ad_info.h"
 #include "bat/ads/ad_notification_info.h"
 #include "bat/ads/ads_client.h"
 #include "bat/ads/confirmation_type.h"
-#include "bat/ads/internal/account/statement.h"
-#include "bat/ads/internal/account/wallet.h"
+#include "bat/ads/internal/account/account.h"
 #include "bat/ads/internal/ad_events/ad_events.h"
-#include "bat/ads/internal/ad_rewards/ad_rewards.h"
 #include "bat/ads/internal/ad_server/ad_server.h"
 #include "bat/ads/internal/ad_serving/ad_notifications/ad_notification_serving.h"
 #include "bat/ads/internal/ad_targeting/ad_targeting.h"
@@ -27,28 +27,28 @@
 #include "bat/ads/internal/ads/ad_notifications/ad_notification.h"
 #include "bat/ads/internal/ads/ad_notifications/ad_notifications.h"
 #include "bat/ads/internal/ads/new_tab_page_ads/new_tab_page_ad.h"
+#include "bat/ads/internal/ads_client_helper.h"
 #include "bat/ads/internal/ads_history/ads_history.h"
-#include "bat/ads/internal/bundle/bundle.h"
+#include "bat/ads/internal/catalog/catalog_issuers_info.h"
+#include "bat/ads/internal/catalog/catalog_util.h"
 #include "bat/ads/internal/client/client.h"
 #include "bat/ads/internal/confirmations/confirmation_info.h"
 #include "bat/ads/internal/confirmations/confirmations.h"
+#include "bat/ads/internal/confirmations/confirmations_state.h"
 #include "bat/ads/internal/conversions/conversions.h"
 #include "bat/ads/internal/database/database_initialize.h"
-#include "bat/ads/internal/features.h"
+#include "bat/ads/internal/features/features.h"
 #include "bat/ads/internal/logging.h"
 #include "bat/ads/internal/platform/platform_helper.h"
 #include "bat/ads/internal/privacy/unblinded_tokens/unblinded_tokens.h"
-#include "bat/ads/internal/tabs/tabs.h"
-#include "bat/ads/internal/time_util.h"
-#include "bat/ads/internal/tokens/redeem_unblinded_payment_tokens/redeem_unblinded_payment_tokens.h"
-#include "bat/ads/internal/tokens/redeem_unblinded_token/redeem_unblinded_token.h"
-#include "bat/ads/internal/tokens/refill_unblinded_tokens/refill_unblinded_tokens.h"
+#include "bat/ads/internal/tab_manager/tab_info.h"
+#include "bat/ads/internal/tab_manager/tab_manager.h"
 #include "bat/ads/internal/user_activity/user_activity.h"
+#include "bat/ads/new_tab_page_ad_info.h"
 #include "bat/ads/pref_names.h"
+#include "bat/ads/statement_info.h"
 
 namespace ads {
-
-using std::placeholders::_1;
 
 namespace {
 const int kIdleThresholdInSeconds = 15;
@@ -56,54 +56,54 @@ const int kIdleThresholdInSeconds = 15;
 
 AdsImpl::AdsImpl(
     AdsClient* ads_client)
-    : ads_client_(ads_client),
-      ads_history_(std::make_unique<AdsHistory>(this)),
-      ad_notification_(std::make_unique<AdNotification>(this)),
-      ad_notifications_(std::make_unique<AdNotifications>(this)),
-      ad_rewards_(std::make_unique<AdRewards>(this)),
-      ad_server_(std::make_unique<AdServer>(this)),
-      ad_notification_serving_(std::make_unique<
-          ad_notifications::AdServing>(this)),
-      ad_targeting_(std::make_unique<AdTargeting>(this)),
-      ad_transfer_(std::make_unique<AdTransfer>(this)),
-      bundle_(std::make_unique<Bundle>(this)),
-      client_(std::make_unique<Client>(this)),
-      confirmations_(std::make_unique<Confirmations>(this)),
-      conversions_(std::make_unique<Conversions>(this)),
-      database_(std::make_unique<database::Initialize>(this)),
-      new_tab_page_ad_(std::make_unique<NewTabPageAd>(this)),
-      purchase_intent_classifier_(std::make_unique<
-          ad_targeting::behavioral::PurchaseIntentClassifier>(this)),
+    : ads_client_helper_(std::make_unique<AdsClientHelper>(ads_client)),
       page_classifier_(std::make_unique<
-          ad_targeting::contextual::PageClassifier>(this)),
+          ad_targeting::contextual::PageClassifier>()),
+      purchase_intent_classifier_(std::make_unique<
+          ad_targeting::behavioral::PurchaseIntentClassifier>()),
       subdivision_targeting_(std::make_unique<
-          ad_targeting::geographic::SubdivisionTargeting>(this)),
-      redeem_unblinded_payment_tokens_(std::make_unique<
-          RedeemUnblindedPaymentTokens>(this)),
-      redeem_unblinded_token_(std::make_unique<RedeemUnblindedToken>(this)),
-      refill_unblinded_tokens_(std::make_unique<RefillUnblindedTokens>(this)),
-      tabs_(std::make_unique<Tabs>(this)),
-      user_activity_(std::make_unique<UserActivity>()),
-      wallet_(std::make_unique<Wallet>(this)) {
-  set_ads_client_for_logging(ads_client_);
-
-  redeem_unblinded_token_->set_delegate(this);
-  redeem_unblinded_payment_tokens_->set_delegate(this);
-  refill_unblinded_tokens_->set_delegate(this);
+          ad_targeting::geographic::SubdivisionTargeting>()),
+      confirmations_(std::make_unique<Confirmations>()),
+      account_(std::make_unique<Account>(confirmations_.get())),
+      ad_notification_(std::make_unique<AdNotification>()),
+      ad_targeting_(std::make_unique<AdTargeting>(page_classifier_.get(),
+          purchase_intent_classifier_.get())),
+      ad_notification_serving_(std::make_unique<
+          ad_notifications::AdServing>(ad_targeting_.get(),
+              subdivision_targeting_.get())),
+      ad_notifications_(std::make_unique<AdNotifications>()),
+      ad_server_(std::make_unique<AdServer>()),
+      ad_transfer_(std::make_unique<AdTransfer>()),
+      client_(std::make_unique<Client>()),
+      conversions_(std::make_unique<Conversions>()),
+      database_(std::make_unique<database::Initialize>()),
+      new_tab_page_ad_(std::make_unique<NewTabPageAd>()),
+      tab_manager_(std::make_unique<TabManager>()),
+      user_activity_(std::make_unique<UserActivity>()) {
+  account_->AddObserver(this);
+  ad_notification_->AddObserver(this);
+  ad_server_->AddObserver(this);
+  ad_transfer_->AddObserver(this);
+  conversions_->AddObserver(this);
+  new_tab_page_ad_->AddObserver(this);
 }
 
-AdsImpl::~AdsImpl() = default;
+AdsImpl::~AdsImpl() {
+  account_->RemoveObserver(this);
+  ad_notification_->RemoveObserver(this);
+  ad_server_->RemoveObserver(this);
+  ad_transfer_->RemoveObserver(this);
+  conversions_->RemoveObserver(this);
+  new_tab_page_ad_->RemoveObserver(this);
+}
 
 bool AdsImpl::IsInitialized() {
-  if (!is_initialized_ || !ads_client_->GetBooleanPref(prefs::kEnabled)) {
+  if (!is_initialized_ ||
+      !AdsClientHelper::Get()->GetBooleanPref(prefs::kEnabled)) {
     return false;
   }
 
   return true;
-}
-
-bool AdsImpl::IsForeground() const {
-  return is_foreground_;
 }
 
 void AdsImpl::Initialize(
@@ -116,8 +116,8 @@ void AdsImpl::Initialize(
     return;
   }
 
-  const auto initialize_step_2_callback =
-      std::bind(&AdsImpl::InitializeStep2, this, _1, std::move(callback));
+  const auto initialize_step_2_callback = std::bind(&AdsImpl::InitializeStep2,
+      this, std::placeholders::_1, std::move(callback));
   database_->CreateOrOpen(initialize_step_2_callback);
 }
 
@@ -162,7 +162,16 @@ void AdsImpl::OnPageLoaded(
 
   conversions_->MaybeConvert(url);
 
-  purchase_intent_classifier_->MaybeExtractIntentSignal(url);
+  const base::Optional<TabInfo> last_visible_tab =
+      TabManager::Get()->GetLastVisible();
+
+  std::string last_visible_tab_url;
+  if (last_visible_tab) {
+    last_visible_tab_url = last_visible_tab->url;
+  }
+
+  purchase_intent_classifier_->MaybeExtractIntentSignal(url,
+      last_visible_tab_url);
 
   page_classifier_->MaybeClassifyPage(url, content);
 }
@@ -178,39 +187,33 @@ void AdsImpl::OnUnIdle() {
 
   BLOG(1, "Browser state changed to unidle");
 
+  MaybeUpdateCatalog();
+
   MaybeServeAdNotification();
 }
 
 void AdsImpl::OnForeground() {
-  is_foreground_ = true;
+  TabManager::Get()->OnForegrounded();
 
-  BLOG(1, "Browser window did become active");
-
-  user_activity_->RecordActivityForType(
-      UserActivityType::kBrowserWindowDidBecomeActive);
+  MaybeUpdateCatalog();
 
   MaybeServeAdNotificationsAtRegularIntervals();
 }
 
 void AdsImpl::OnBackground() {
-  is_foreground_ = false;
-
-  BLOG(1, "Browser window did enter background");
-
-  user_activity_->RecordActivityForType(
-      UserActivityType::kBrowserWindowDidEnterBackground);
+  TabManager::Get()->OnBackgrounded();
 
   MaybeServeAdNotificationsAtRegularIntervals();
 }
 
 void AdsImpl::OnMediaPlaying(
     const int32_t tab_id) {
-  tabs_->OnMediaPlaying(tab_id);
+  TabManager::Get()->OnMediaPlaying(tab_id);
 }
 
 void AdsImpl::OnMediaStopped(
     const int32_t tab_id) {
-  tabs_->OnMediaStopped(tab_id);
+  TabManager::Get()->OnMediaStopped(tab_id);
 }
 
 void AdsImpl::OnTabUpdated(
@@ -220,23 +223,25 @@ void AdsImpl::OnTabUpdated(
     const bool is_browser_active,
     const bool is_incognito) {
   const bool is_visible = is_active && is_browser_active;
-  tabs_->OnUpdated(tab_id, url, is_visible, is_incognito);
+  TabManager::Get()->OnUpdated(tab_id, url, is_visible, is_incognito);
 }
 
 void AdsImpl::OnTabClosed(
     const int32_t tab_id) {
-  tabs_->OnClosed(tab_id);
+  TabManager::Get()->OnClosed(tab_id);
+
+  ad_transfer_->Cancel(tab_id);
 }
 
 void AdsImpl::OnWalletUpdated(
     const std::string& id,
     const std::string& seed) {
-  if (!wallet_->Set(id, seed)) {
-    BLOG(0, "Failed to update wallet");
+  if (!account_->SetWallet(id, seed)) {
+    BLOG(0, "Failed to set wallet");
     return;
   }
 
-  BLOG(1, "Successfully updated wallet");
+  BLOG(1, "Successfully set wallet");
 }
 
 void AdsImpl::OnUserModelUpdated(
@@ -261,19 +266,19 @@ bool AdsImpl::GetAdNotification(
 void AdsImpl::OnAdNotificationEvent(
     const std::string& uuid,
     const AdNotificationEventType event_type) {
-  ad_notification_->Trigger(uuid, event_type);
+  ad_notification_->FireEvent(uuid, event_type);
 }
 
 void AdsImpl::OnNewTabPageAdEvent(
     const std::string& wallpaper_id,
     const std::string& creative_instance_id,
     const NewTabPageAdEventType event_type) {
-  new_tab_page_ad_->Trigger(wallpaper_id, creative_instance_id, event_type);
+  new_tab_page_ad_->FireEvent(wallpaper_id, creative_instance_id, event_type);
 }
 
 void AdsImpl::RemoveAllHistory(
     RemoveAllHistoryCallback callback) {
-  client_->RemoveAllHistory();
+  Client::Get()->RemoveAllHistory();
 
   callback(SUCCESS);
 }
@@ -283,8 +288,7 @@ void AdsImpl::ReconcileAdRewards() {
     return;
   }
 
-  const WalletInfo wallet = wallet_->Get();
-  ad_rewards_->MaybeReconcile(wallet);
+  account_->Reconcile();
 }
 
 AdsHistoryInfo AdsImpl::GetAdsHistory(
@@ -292,8 +296,7 @@ AdsHistoryInfo AdsImpl::GetAdsHistory(
     const AdsHistoryInfo::SortType sort_type,
     const uint64_t from_timestamp,
     const uint64_t to_timestamp) {
-  return ads_history_->Get(filter_type, sort_type,
-      from_timestamp, to_timestamp);
+  return history::Get(filter_type, sort_type, from_timestamp, to_timestamp);
 }
 
 void AdsImpl::GetTransactionHistory(
@@ -308,8 +311,7 @@ void AdsImpl::GetTransactionHistory(
   const int64_t to_timestamp =
       static_cast<int64_t>(base::Time::Now().ToDoubleT());
 
-  Statement statement(this);
-  statement_of_account = statement.Get(0, to_timestamp);
+  statement_of_account = account_->GetStatement(0, to_timestamp);
 
   callback(/* success */ true, statement_of_account);
 }
@@ -318,8 +320,8 @@ AdContentInfo::LikeAction AdsImpl::ToggleAdThumbUp(
     const std::string& creative_instance_id,
     const std::string& creative_set_id,
     const AdContentInfo::LikeAction& action) {
-  auto like_action =
-      client_->ToggleAdThumbUp(creative_instance_id, creative_set_id, action);
+  auto like_action = Client::Get()->ToggleAdThumbUp(creative_instance_id,
+      creative_set_id, action);
   if (like_action == AdContentInfo::LikeAction::kThumbsUp) {
     confirmations_->ConfirmAd(creative_instance_id, ConfirmationType::kUpvoted);
   }
@@ -331,8 +333,8 @@ AdContentInfo::LikeAction AdsImpl::ToggleAdThumbDown(
     const std::string& creative_instance_id,
     const std::string& creative_set_id,
     const AdContentInfo::LikeAction& action) {
-  auto like_action =
-      client_->ToggleAdThumbDown(creative_instance_id, creative_set_id, action);
+  auto like_action = Client::Get()->ToggleAdThumbDown(creative_instance_id,
+      creative_set_id, action);
   if (like_action == AdContentInfo::LikeAction::kThumbsDown) {
     confirmations_->ConfirmAd(creative_instance_id,
         ConfirmationType::kDownvoted);
@@ -344,28 +346,29 @@ AdContentInfo::LikeAction AdsImpl::ToggleAdThumbDown(
 CategoryContentInfo::OptAction AdsImpl::ToggleAdOptInAction(
     const std::string& category,
     const CategoryContentInfo::OptAction& action) {
-  return client_->ToggleAdOptInAction(category, action);
+  return Client::Get()->ToggleAdOptInAction(category, action);
 }
 
 CategoryContentInfo::OptAction AdsImpl::ToggleAdOptOutAction(
     const std::string& category,
     const CategoryContentInfo::OptAction& action) {
-  return client_->ToggleAdOptOutAction(category, action);
+  return Client::Get()->ToggleAdOptOutAction(category, action);
 }
 
 bool AdsImpl::ToggleSaveAd(
     const std::string& creative_instance_id,
     const std::string& creative_set_id,
     const bool saved) {
-  return client_->ToggleSaveAd(creative_instance_id, creative_set_id, saved);
+  return Client::Get()->ToggleSaveAd(creative_instance_id,
+      creative_set_id, saved);
 }
 
 bool AdsImpl::ToggleFlagAd(
     const std::string& creative_instance_id,
     const std::string& creative_set_id,
     const bool flagged) {
-  auto flag_ad =
-      client_->ToggleFlagAd(creative_instance_id, creative_set_id, flagged);
+  auto flag_ad = Client::Get()->ToggleFlagAd(creative_instance_id,
+      creative_set_id, flagged);
   if (flag_ad) {
     confirmations_->ConfirmAd(creative_instance_id, ConfirmationType::kFlagged);
   }
@@ -384,9 +387,9 @@ void AdsImpl::InitializeStep2(
     return;
   }
 
-  const auto initialize_step_3_callback =
-      std::bind(&AdsImpl::InitializeStep3, this, _1, std::move(callback));
-  client_->Initialize(initialize_step_3_callback);
+  const auto initialize_step_3_callback = std::bind(&AdsImpl::InitializeStep3,
+      this, std::placeholders::_1, std::move(callback));
+  Client::Get()->Initialize(initialize_step_3_callback);
 }
 
 void AdsImpl::InitializeStep3(
@@ -397,9 +400,9 @@ void AdsImpl::InitializeStep3(
     return;
   }
 
-  const auto initialize_step_4_callback =
-      std::bind(&AdsImpl::InitializeStep4, this, _1, std::move(callback));
-  confirmations_->Initialize(initialize_step_4_callback);
+  const auto initialize_step_4_callback = std::bind(&AdsImpl::InitializeStep4,
+      this, std::placeholders::_1, std::move(callback));
+  ConfirmationsState::Get()->Initialize(initialize_step_4_callback);
 }
 
 void AdsImpl::InitializeStep4(
@@ -410,8 +413,8 @@ void AdsImpl::InitializeStep4(
     return;
   }
 
-  const auto initialize_step_5_callback =
-      std::bind(&AdsImpl::InitializeStep5, this, _1, std::move(callback));
+  const auto initialize_step_5_callback = std::bind(&AdsImpl::InitializeStep5,
+      this, std::placeholders::_1, std::move(callback));
   ad_notifications_->Initialize(initialize_step_5_callback);
 }
 
@@ -423,8 +426,8 @@ void AdsImpl::InitializeStep5(
     return;
   }
 
-  const auto initialize_step_6_callback =
-      std::bind(&AdsImpl::InitializeStep6, this, _1, std::move(callback));
+  const auto initialize_step_6_callback = std::bind(&AdsImpl::InitializeStep6,
+      this, std::placeholders::_1, std::move(callback));
   conversions_->Initialize(initialize_step_6_callback);
 }
 
@@ -440,22 +443,10 @@ void AdsImpl::InitializeStep6(
 
   BLOG(1, "Successfully initialized ads");
 
-  is_foreground_ = ads_client_->IsForeground();
-
-  ads_client_->SetIntegerPref(prefs::kIdleThreshold, kIdleThresholdInSeconds);
+  AdsClientHelper::Get()->SetIntegerPref(prefs::kIdleThreshold,
+      kIdleThresholdInSeconds);
 
   callback(SUCCESS);
-
-  ReconcileAdRewards();
-
-  subdivision_targeting_->MaybeFetchForCurrentLocale();
-
-  const WalletInfo wallet = wallet_->Get();
-  redeem_unblinded_payment_tokens_->MaybeRedeemAfterDelay(wallet);
-
-  PurgeExpiredAdEvents();
-
-  conversions_->StartTimerIfReady();
 
 #if defined(OS_ANDROID)
     // Ad notifications do not sustain a reboot or update, so we should remove
@@ -464,16 +455,26 @@ void AdsImpl::InitializeStep6(
     ad_notifications_->RemoveAllAfterUpdate();
 #endif
 
+  CleanupAdEvents();
+
+  account_->Reconcile();
+  account_->ProcessUnclearedTransactions();
+
+  confirmations_->RetryAfterDelay();
+
+  subdivision_targeting_->MaybeFetchForCurrentLocale();
+
+  conversions_->StartTimerIfReady();
+
+  ad_server_->MaybeFetch();
+
   features::LogPageProbabilitiesStudy();
 
   MaybeServeAdNotificationsAtRegularIntervals();
-
-  ad_server_->MaybeFetch();
 }
 
-void AdsImpl::PurgeExpiredAdEvents() {
-  AdEvents ad_events(this);
-  ad_events.PurgeExpired([](
+void AdsImpl::CleanupAdEvents() {
+  PurgeExpiredAdEvents([](
       const Result result) {
     if (result != Result::SUCCESS) {
       BLOG(1, "Failed to purge expired ad events");
@@ -482,6 +483,14 @@ void AdsImpl::PurgeExpiredAdEvents() {
 
     BLOG(6, "Successfully purged expired ad events");
   });
+}
+
+void AdsImpl::MaybeUpdateCatalog() {
+  if (!HasCatalogExpired()) {
+    return;
+  }
+
+  ad_server_->MaybeFetch();
 }
 
 void AdsImpl::MaybeServeAdNotification() {
@@ -497,53 +506,72 @@ void AdsImpl::MaybeServeAdNotificationsAtRegularIntervals() {
     return;
   }
 
-  if (is_foreground_ || ads_client_->CanShowBackgroundNotifications()) {
+  if (TabManager::Get()->IsForegrounded() ||
+      AdsClientHelper::Get()->CanShowBackgroundNotifications()) {
     ad_notification_serving_->ServeAtRegularIntervals();
   } else {
     ad_notification_serving_->StopServing();
   }
 }
 
-void AdsImpl::OnDidRedeemUnblindedToken(
-    const ConfirmationInfo& confirmation) {
-  BLOG(1, "Successfully redeemed unblinded token with confirmation id "
-      << confirmation.id << ", creative instance id "
-          << confirmation.creative_instance_id << " and "
-              << std::string(confirmation.type));
+void AdsImpl::OnAdRewardsChanged() {
+  AdsClientHelper::Get()->OnAdRewardsChanged();
 }
 
-void AdsImpl::OnFailedToRedeemUnblindedToken(
-    const ConfirmationInfo& confirmation) {
-  BLOG(1, "Failed to redeem unblinded token with confirmation id "
-      << confirmation.id << ", creative instance id "
-          <<  confirmation.creative_instance_id << " and "
-              << std::string(confirmation.type));
+void AdsImpl::OnTransactionsChanged() {
+  AdsClientHelper::Get()->OnAdRewardsChanged();
 }
 
-void AdsImpl::OnDidRedeemUnblindedPaymentTokens() {
-  BLOG(1, "Successfully redeemed unblinded payment tokens");
-
-  ReconcileAdRewards();
+void AdsImpl::OnAdNotificationViewed(
+    const AdNotificationInfo& ad) {
+  confirmations_->ConfirmAd(ad.creative_instance_id, ConfirmationType::kViewed);
 }
 
-void AdsImpl::OnFailedToRedeemUnblindedPaymentTokens() {
-  BLOG(1, "Failed to redeem unblinded payment tokens");
+void AdsImpl::OnAdNotificationClicked(
+    const AdNotificationInfo& ad) {
+  ad_transfer_->set_last_clicked_ad(ad);
+
+  confirmations_->ConfirmAd(ad.creative_instance_id,
+      ConfirmationType::kClicked);
 }
 
-void AdsImpl::OnDidRetryRedeemingUnblindedPaymentTokens() {
-  BLOG(1, "Retry redeeming unblinded payment tokens");
+void AdsImpl::OnAdNotificationDismissed(
+    const AdNotificationInfo& ad) {
+  confirmations_->ConfirmAd(ad.creative_instance_id,
+      ConfirmationType::kDismissed);
 }
 
-void AdsImpl::OnDidRefillUnblindedTokens() {
-  BLOG(1, "Successfully refilled unblinded tokens");
+void AdsImpl::OnCatalogUpdated(
+    const CatalogIssuersInfo& catalog_issuers) {
+  confirmations_->SetCatalogIssuers(catalog_issuers);
+
+  account_->TopUpUnblindedTokens();
 }
 
-void AdsImpl::OnFailedToRefillUnblindedTokens() {
-  BLOG(1, "Failed to refill unblinded tokens");
+void AdsImpl::OnAdTransfer(
+    const AdInfo& ad) {
+  confirmations_->ConfirmAd(ad.creative_instance_id,
+      ConfirmationType::kTransferred);
 }
 
-void AdsImpl::OnDidRetryRefillingUnblindedTokens() {
-  BLOG(1, "Retry refilling unblinded tokens");
+void AdsImpl::OnConversion(
+    const std::string& creative_instance_id) {
+  confirmations_->ConfirmAd(creative_instance_id,
+      ConfirmationType::kConversion);
+}
+
+void AdsImpl::OnNewTabPageAdViewed(
+    const NewTabPageAdInfo& ad) {
+  confirmations_->ConfirmAd(ad.creative_instance_id,
+      ConfirmationType::kViewed);
+}
+
+void AdsImpl::OnNewTabPageAdClicked(
+    const NewTabPageAdInfo& ad) {
+  ad_transfer_->set_last_clicked_ad(ad);
+
+  confirmations_->ConfirmAd(ad.creative_instance_id,
+      ConfirmationType::kClicked);
 }
 
 }  // namespace ads

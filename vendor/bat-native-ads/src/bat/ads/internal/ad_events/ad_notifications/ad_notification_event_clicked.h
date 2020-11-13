@@ -10,23 +10,18 @@
 
 namespace ads {
 
-class AdsImpl;
 struct AdNotificationInfo;
 
 namespace ad_notifications {
 
 class AdEventClicked : public AdEvent<AdNotificationInfo> {
  public:
-  AdEventClicked(
-      AdsImpl* ads);
+  AdEventClicked();
 
   ~AdEventClicked() override;
 
-  void Trigger(
+  void FireEvent(
       const AdNotificationInfo& ad) override;
-
- private:
-  AdsImpl* ads_;  // NOT OWNED
 };
 
 }  // namespace ad_notifications

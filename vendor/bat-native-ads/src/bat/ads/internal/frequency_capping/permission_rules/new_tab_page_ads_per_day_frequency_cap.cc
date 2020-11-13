@@ -9,9 +9,8 @@
 
 #include <deque>
 
-#include "bat/ads/internal/ads_impl.h"
+#include "base/time/time.h"
 #include "bat/ads/internal/frequency_capping/frequency_capping_util.h"
-#include "bat/ads/internal/time_util.h"
 
 namespace ads {
 
@@ -20,11 +19,8 @@ const uint64_t kNewTabPageAdsPerDayFrequencyCap = 20;
 }  // namespace
 
 NewTabPageAdsPerDayFrequencyCap::NewTabPageAdsPerDayFrequencyCap(
-    AdsImpl* ads,
     const AdEventList& ad_events)
-    : ads_(ads),
-      ad_events_(ad_events) {
-  DCHECK(ads_);
+    : ad_events_(ad_events) {
 }
 
 NewTabPageAdsPerDayFrequencyCap::~NewTabPageAdsPerDayFrequencyCap() = default;

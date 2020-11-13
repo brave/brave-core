@@ -9,7 +9,6 @@
 
 #include "base/strings/stringprintf.h"
 #include "bat/ads/ad_info.h"
-#include "bat/ads/internal/ads_impl.h"
 #include "bat/ads/internal/logging.h"
 
 namespace ads {
@@ -19,11 +18,8 @@ const uint64_t kNewTabPageAdUuidFrequencyCap = 1;
 }  // namespace
 
 NewTabPageAdUuidFrequencyCap::NewTabPageAdUuidFrequencyCap(
-    AdsImpl* ads,
     const AdEventList& ad_events)
-    : ads_(ads),
-      ad_events_(ad_events) {
-  DCHECK(ads_);
+    : ad_events_(ad_events) {
 }
 
 NewTabPageAdUuidFrequencyCap::~NewTabPageAdUuidFrequencyCap() = default;

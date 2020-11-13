@@ -11,54 +11,35 @@
 #include <utility>
 
 #include "base/json/json_reader.h"
+#include "base/time/time.h"
 #include "brave/components/l10n/common/locale_util.h"
 #include "net/base/registry_controlled_domains/registry_controlled_domain.h"
 #include "url/gurl.h"
 #include "bat/ads/internal/ad_targeting/behavioral/purchase_intent_classifier/purchase_intent_classifier_user_models.h"
 #include "bat/ads/internal/ad_targeting/behavioral/purchase_intent_classifier/purchase_intent_classifier_util.h"
+#include "bat/ads/internal/ads_client_helper.h"
 #include "bat/ads/internal/ads_impl.h"
 #include "bat/ads/internal/client/client.h"
 #include "bat/ads/internal/logging.h"
-#include "bat/ads/internal/tabs/tab_info.h"
-#include "bat/ads/internal/tabs/tabs.h"
-#include "bat/ads/internal/time_util.h"
 #include "bat/ads/internal/url_util.h"
 
 namespace ads {
 namespace ad_targeting {
 namespace behavioral {
 
+namespace {
+
 const uint16_t kExpectedPurchaseIntentModelVersion = 1;
 const uint16_t kPurchaseIntentDefaultSignalWeight = 1;
 const uint16_t kPurchaseIntentWordCountLimit = 1000;
 
-using std::placeholders::_1;
-using std::placeholders::_2;
+}  // namespace
 
-PurchaseIntentClassifier::PurchaseIntentClassifier(
-    AdsImpl* ads)
-    : ads_(ads) {
-  DCHECK(ads_);
-}
+PurchaseIntentClassifier::PurchaseIntentClassifier() = default;
 
 PurchaseIntentClassifier::~PurchaseIntentClassifier() = default;
 
 bool PurchaseIntentClassifier::IsInitialized() {
-  return is_initialized_;
-}
-
-bool PurchaseIntentClassifier::Initialize(
-    const std::string& json) {
-  is_initialized_ = FromJson(json);
-
-  if (is_initialized_) {
-    BLOG(1, "Parsed purchase intent user model version " << version_
-        << " with a signal level of " << signal_level_ << ", classification "
-            "threshold of " << classification_threshold_ << " and a signal "
-                "decay time window of " << signal_decay_time_window_in_seconds_
-                    << " seconds");
-  }
-
   return is_initialized_;
 }
 
@@ -79,22 +60,22 @@ void PurchaseIntentClassifier::LoadUserModelForLocale(
 void PurchaseIntentClassifier::LoadUserModelForId(
     const std::string& id) {
   auto callback = std::bind(&PurchaseIntentClassifier::OnLoadUserModelForId,
-      this, id, _1, _2);
+      this, id, std::placeholders::_1, std::placeholders::_2);
 
-  ads_->get_ads_client()->LoadUserModelForId(id, callback);
+  AdsClientHelper::Get()->LoadUserModelForId(id, callback);
 }
 
 PurchaseIntentSignalInfo PurchaseIntentClassifier::MaybeExtractIntentSignal(
-    const std::string& url) {
+    const std::string& url,
+    const std::string& last_url) {
   PurchaseIntentSignalInfo purchase_intent_signal;
 
-  if (!UrlHasScheme(url)) {
+  if (!DoesUrlHaveSchemeHTTPOrHTTPS(url)) {
     BLOG(1, "Visited URL is not supported for extracting purchase intent");
     return purchase_intent_signal;
   }
 
-  const TabInfo last_visible_tab = ads_->get_tabs()->GetLastVisible();
-  if (SameSite(url, last_visible_tab.url)) {
+  if (SameDomainOrHost(url, last_url)) {
     return purchase_intent_signal;
   }
 
@@ -327,6 +308,12 @@ bool PurchaseIntentClassifier::FromJson(
     }
   }
 
+  BLOG(1, "Parsed purchase intent user model version " << version_
+      << " with a signal level of " << signal_level_ << ", classification "
+          "threshold of " << classification_threshold_ << " and a signal "
+              "decay time window of " << signal_decay_time_window_in_seconds_
+                  << " seconds");
+
   return true;
 }
 
@@ -342,11 +329,13 @@ void PurchaseIntentClassifier::OnLoadUserModelForId(
 
   BLOG(1, "Successfully loaded " << id << " purchase intent user model");
 
-  if (!Initialize(json)) {
+  if (!FromJson(json)) {
     BLOG(1, "Failed to initialize " << id << " purchase intent user model");
     is_initialized_ = false;
     return;
   }
+
+  is_initialized_ = true;
 
   BLOG(1, "Successfully initialized " << id << " purchase intent user model");
 }
@@ -390,7 +379,7 @@ void PurchaseIntentClassifier::AppendIntentSignalToHistory(
     PurchaseIntentSignalHistoryInfo history;
     history.timestamp_in_seconds = purchase_intent_signal.timestamp_in_seconds;
     history.weight = purchase_intent_signal.weight;
-    ads_->get_client()->AppendToPurchaseIntentSignalHistoryForSegment(
+    Client::Get()->AppendToPurchaseIntentSignalHistoryForSegment(
         segment, history);
   }
 }
@@ -450,10 +439,10 @@ PurchaseIntentSegmentList PurchaseIntentClassifier::GetSegments(
   for (const auto& keyword : segment_keywords_) {
     auto list_keyword_set = TransformIntoSetOfWords(keyword.keywords);
 
-    // Intended behaviour relies on early return from list traversal and
-    // implicitely on the ordering of |segment_keywords_| to ensure
-    // specific segments are matched over general segments, e.g. "audi a6"
-    // segments should be returned over "audi" segments if possible.
+    // Intended behavior relies on early return from list traversal and
+    // implicitely on the ordering of |segment_keywords_| to ensure specific
+    // segments are matched over general segments, e.g. "audi a6" segments
+    // should be returned over "audi" segments if possible
     if (IsSubset(search_query_keyword_set, list_keyword_set)) {
       segment_list = keyword.segments;
       return segment_list;

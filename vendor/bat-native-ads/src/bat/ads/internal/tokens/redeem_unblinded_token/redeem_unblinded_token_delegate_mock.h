@@ -8,6 +8,7 @@
 
 #include "testing/gmock/include/gmock/gmock.h"
 #include "bat/ads/internal/tokens/redeem_unblinded_token/redeem_unblinded_token_delegate.h"
+#include "bat/ads/internal/privacy/unblinded_tokens/unblinded_token_info.h"
 
 namespace ads {
 
@@ -23,10 +24,12 @@ class RedeemUnblindedTokenDelegateMock : public RedeemUnblindedTokenDelegate {
       const RedeemUnblindedTokenDelegateMock&) = delete;
 
   MOCK_METHOD(void, OnDidRedeemUnblindedToken, (
-      const ConfirmationInfo& confirmation));
+      const ConfirmationInfo& confirmation,
+      const privacy::UnblindedTokenInfo& unblinded_payment_token));
 
   MOCK_METHOD(void, OnFailedToRedeemUnblindedToken, (
-      const ConfirmationInfo& confirmation));
+      const ConfirmationInfo& confirmation,
+      const bool should_retry));
 };
 
 }  // namespace ads

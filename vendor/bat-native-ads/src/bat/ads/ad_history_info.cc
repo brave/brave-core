@@ -5,8 +5,8 @@
 
 #include "bat/ads/ad_history_info.h"
 
+#include "bat/ads/internal/legacy_migration/legacy_migration_util.h"
 #include "bat/ads/internal/logging.h"
-#include "bat/ads/internal/time_util.h"
 #include "bat/ads/internal/json_helper.h"
 
 namespace ads {
@@ -47,9 +47,8 @@ Result AdHistoryInfo::FromJson(
   }
 
   if (document.HasMember("timestamp_in_seconds")) {
-    auto migrated_timestamp_in_seconds =
-        MigrateTimestampToDoubleT(document["timestamp_in_seconds"].GetUint64());
-    timestamp_in_seconds = migrated_timestamp_in_seconds;
+    timestamp_in_seconds = MigrateTimestampToDoubleT(
+        document["timestamp_in_seconds"].GetUint64());
   }
 
   if (document.HasMember("ad_content")) {

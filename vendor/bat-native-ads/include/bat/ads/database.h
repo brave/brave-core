@@ -23,7 +23,7 @@ namespace ads {
 
 class ADS_EXPORT Database {
  public:
-  explicit Database(
+  Database(
       const base::FilePath& path);
 
   ~Database();
@@ -65,7 +65,7 @@ class ADS_EXPORT Database {
   base::FilePath db_path_;
   sql::Database db_;
   sql::MetaTable meta_table_;
-  bool is_initialized_;
+  bool is_initialized_ = false;
 
   std::unique_ptr<base::MemoryPressureListener> memory_pressure_listener_;
 

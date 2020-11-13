@@ -9,32 +9,21 @@
 #include "bat/ads/confirmation_type.h"
 #include "bat/ads/internal/ad_events/ad_events.h"
 #include "bat/ads/internal/ads_history/ads_history.h"
-#include "bat/ads/internal/ads_impl.h"
-#include "bat/ads/internal/confirmations/confirmations.h"
 #include "bat/ads/internal/logging.h"
 
 namespace ads {
 namespace ad_notifications {
 
-namespace {
-const ConfirmationType kConfirmationType = ConfirmationType::kViewed;
-}  // namespace
-
-AdEventViewed::AdEventViewed(
-    AdsImpl* ads)
-    : ads_(ads) {
-  DCHECK(ads_);
-}
+AdEventViewed::AdEventViewed() = default;
 
 AdEventViewed::~AdEventViewed() = default;
 
-void AdEventViewed::Trigger(
+void AdEventViewed::FireEvent(
     const AdNotificationInfo& ad) {
   BLOG(3, "Viewed ad notification with uuid " << ad.uuid
       << " and creative instance id " << ad.creative_instance_id);
 
-  AdEvents ad_events(ads_);
-  ad_events.Log(ad, kConfirmationType, [](
+  LogAdEvent(ad, ConfirmationType::kViewed, [](
       const Result result) {
     if (result != Result::SUCCESS) {
       BLOG(1, "Failed to log ad notification viewed event");
@@ -44,10 +33,7 @@ void AdEventViewed::Trigger(
     BLOG(6, "Successfully logged ad notification viewed event");
   });
 
-  ads_->get_ads_history()->AddAdNotification(ad, kConfirmationType);
-
-  ads_->get_confirmations()->ConfirmAd(ad.creative_instance_id,
-      kConfirmationType);
+  history::AddAdNotification(ad, ConfirmationType::kViewed);
 }
 
 }  // namespace ad_notifications

@@ -9,8 +9,7 @@
 
 #include "bat/ads/confirmation_type.h"
 #include "bat/ads/internal/ad_events/ad_events.h"
-#include "bat/ads/internal/ads_impl.h"
-#include "bat/ads/internal/confirmations/confirmations.h"
+#include "bat/ads/internal/ads_history/ads_history.h"
 #include "bat/ads/internal/database/tables/ad_events_database_table.h"
 #include "bat/ads/internal/frequency_capping/new_tab_page_ads/new_tab_page_ads_frequency_capping.h"
 #include "bat/ads/internal/logging.h"
@@ -19,21 +18,13 @@
 namespace ads {
 namespace new_tab_page_ads {
 
-namespace {
-const ConfirmationType kConfirmationType = ConfirmationType::kViewed;
-}  // namespace
-
-AdEventViewed::AdEventViewed(
-    AdsImpl* ads)
-    : ads_(ads) {
-  DCHECK(ads_);
-}
+AdEventViewed::AdEventViewed() = default;
 
 AdEventViewed::~AdEventViewed() = default;
 
-void AdEventViewed::Trigger(
+void AdEventViewed::FireEvent(
     const NewTabPageAdInfo& ad) {
-  database::table::AdEvents database_table(ads_);
+  database::table::AdEvents database_table;
   database_table.GetAll([=](
       const Result result,
       const AdEventList& ad_events) {
@@ -56,7 +47,7 @@ void AdEventViewed::Trigger(
 bool AdEventViewed::ShouldConfirmAd(
     const NewTabPageAdInfo& ad,
     const AdEventList& ad_events) {
-  FrequencyCapping frequency_capping(ads_, ad_events);
+  FrequencyCapping frequency_capping(ad_events);
 
   if (!frequency_capping.IsAdAllowed()) {
     return false;
@@ -74,8 +65,7 @@ void AdEventViewed::ConfirmAd(
   BLOG(3, "Viewed new tab page ad with uuid " << ad.uuid
       << " and creative instance id " << ad.creative_instance_id);
 
-  AdEvents ad_events(ads_);
-  ad_events.Log(ad, kConfirmationType, [](
+  LogAdEvent(ad, ConfirmationType::kViewed, [](
       const Result result) {
     if (result != Result::SUCCESS) {
       BLOG(1, "Failed to log new tab page ad viewed event");
@@ -85,8 +75,7 @@ void AdEventViewed::ConfirmAd(
     BLOG(6, "Successfully logged new tab page ad viewed event");
   });
 
-  ads_->get_confirmations()->ConfirmAd(ad.creative_instance_id,
-      kConfirmationType);
+  history::AddNewTabPageAd(ad, ConfirmationType::kViewed);
 }
 
 }  // namespace new_tab_page_ads

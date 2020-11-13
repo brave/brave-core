@@ -22,9 +22,9 @@ bool DoesHistoryRespectCapForRollingTimeConstraint(
     const uint64_t time_constraint_in_seconds,
     const uint64_t cap);
 
-uint64_t OccurrencesForRollingTimeConstraint(
-    const std::deque<uint64_t> history,
-    const uint64_t time_constraint_in_seconds);
+int OccurrencesForRollingTimeConstraint(
+    const std::deque<int64_t> history,
+    const int64_t time_constraint_in_seconds);
 
 }  // namespace ads
 

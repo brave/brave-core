@@ -10,15 +10,20 @@
 
 namespace ads {
 
-class AdsImpl;
 struct CreativeAdInfo;
+
+namespace ad_targeting {
+namespace geographic {
+class SubdivisionTargeting;
+}  // namespace geographic
+}  // namespace ad_targeting
 
 namespace ad_notifications {
 
 class FrequencyCapping {
  public:
   FrequencyCapping(
-      AdsImpl* ads,
+      ad_targeting::geographic::SubdivisionTargeting* subdivision_targeting,
       const AdEventList& ad_events);
 
   ~FrequencyCapping();
@@ -34,7 +39,7 @@ class FrequencyCapping {
       const CreativeAdInfo& ad);
 
  private:
-  AdsImpl* ads_;  // NOT OWNED
+  ad_targeting::geographic::SubdivisionTargeting* subdivision_targeting_;
 
   AdEventList ad_events_;
 };

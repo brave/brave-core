@@ -13,13 +13,11 @@
 
 namespace ads {
 
-class AdsImpl;
 struct CreativeAdInfo;
 
 class TransferredFrequencyCap : public ExclusionRule<CreativeAdInfo> {
  public:
   TransferredFrequencyCap(
-      AdsImpl* ads,
       const AdEventList& ad_events);
 
   ~TransferredFrequencyCap() override;
@@ -33,8 +31,6 @@ class TransferredFrequencyCap : public ExclusionRule<CreativeAdInfo> {
   std::string get_last_message() const override;
 
  private:
-  AdsImpl* ads_;  // NOT OWNED
-
   AdEventList ad_events_;
 
   std::string last_message_;

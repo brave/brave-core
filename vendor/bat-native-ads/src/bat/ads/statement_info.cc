@@ -38,6 +38,11 @@ std::string StatementInfo::ToJson() const {
   base::Value transactions_list = GetTransactionsAsList();
   dictionary.SetKey("transactions", base::Value(std::move(transactions_list)));
 
+  // Uncleared transactions
+  base::Value uncleared_transactions_list = GetUnclearedTransactionsAsList();
+  dictionary.SetKey("uncleared_transactions",
+      base::Value(std::move(uncleared_transactions_list)));
+
   // Write to JSON
   std::string json;
   base::JSONWriter::Write(dictionary, &json);
@@ -67,6 +72,8 @@ bool StatementInfo::FromJson(
       GetAdNotificationsReceivedThisMonthFromDictionary(dictionary);
 
   transactions = GetTransactionsFromDictionary(dictionary);
+
+  uncleared_transactions = GetUnclearedTransactionsFromDictionary(dictionary);
 
   return true;
 }
@@ -135,6 +142,46 @@ TransactionList StatementInfo::GetTransactionsFromDictionary(
 
   base::Value* transactions_list =
       dictionary->FindListKey("transactions");
+  if (!transactions_list) {
+    return {};
+  }
+
+  TransactionList transactions;
+
+  for (auto& value : transactions_list->GetList()) {
+    base::DictionaryValue* transaction_dictionary = nullptr;
+    if (!value.GetAsDictionary(&transaction_dictionary)) {
+      continue;
+    }
+
+    TransactionInfo transaction;
+    transaction.FromDictionary(transaction_dictionary);
+
+    transactions.push_back(transaction);
+  }
+
+  return transactions;
+}
+
+base::Value StatementInfo::GetUnclearedTransactionsAsList() const {
+  base::Value list(base::Value::Type::LIST);
+
+  for (const auto& transaction : uncleared_transactions) {
+    base::Value dictionary(base::Value::Type::DICTIONARY);
+    transaction.ToDictionary(&dictionary);
+
+    list.Append(std::move(dictionary));
+  }
+
+  return list;
+}
+
+TransactionList StatementInfo::GetUnclearedTransactionsFromDictionary(
+    base::DictionaryValue* dictionary) const {
+  DCHECK(dictionary);
+
+  base::Value* transactions_list =
+      dictionary->FindListKey("uncleared_transactions");
   if (!transactions_list) {
     return {};
   }
