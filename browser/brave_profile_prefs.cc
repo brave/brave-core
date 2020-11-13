@@ -267,7 +267,6 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
   registry->RegisterBooleanPref(kNewTabPageShowRewards, true);
   registry->RegisterBooleanPref(kNewTabPageShowBinance, true);
   registry->RegisterBooleanPref(kNewTabPageShowTogether, false);
-  registry->RegisterBooleanPref(kNewTabPageShowAddCard, true);
   registry->RegisterBooleanPref(kNewTabPageShowGemini, true);
   registry->RegisterIntegerPref(
       kNewTabPageShowsOptions,

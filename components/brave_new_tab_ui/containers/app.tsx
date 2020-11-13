@@ -50,7 +50,6 @@ class DefaultPage extends React.Component<Props, {}> {
           saveShowRewards={PreferencesAPI.saveShowRewards}
           saveShowTogether={PreferencesAPI.saveShowTogether}
           saveShowBinance={PreferencesAPI.saveShowBinance}
-          saveShowAddCard={PreferencesAPI.saveShowAddCard}
           saveShowGemini={PreferencesAPI.saveShowGemini}
           saveShowBitcoinDotCom={PreferencesAPI.saveShowBitcoinDotCom}
           saveShowCryptoDotCom={PreferencesAPI.saveShowCryptoDotCom}

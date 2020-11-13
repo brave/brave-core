@@ -907,7 +907,7 @@
       >
         Hide sponsored images
       </message>
-      <message name="IDS_ADD_CARD_WIDGET_TITLE" desc="">Add Card</message>
+      <message name="IDS_EDIT_CARDS_TITLE" desc="">Edit Cards</message>
       <message name="IDS_REWARDS_WIDGET_TOS_AND_PP" desc="">By clicking {{title}}, you agree to the <ph name="BEGIN_LINK1">$1</ph>Terms of Service<ph name="END_LINK1">$2</ph> and <ph name="BEGIN_LINK2">$3</ph>Privacy Policy<ph name="END_LINK2">$4</ph>.</message>
       <message name="IDS_REWARDS_WIDGET_START_USING" desc="">Start using Brave Rewards</message>
       <message name="IDS_TOGETHER_WIDGET_TITLE" desc="">Brave Together</message>

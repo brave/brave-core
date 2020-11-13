@@ -15,10 +15,10 @@ import {
   RewardsWidget as Rewards,
   TogetherWidget as Together,
   BinanceWidget as Binance,
-  AddCardWidget as AddCard,
   GeminiWidget as Gemini,
   BitcoinDotComWidget as BitcoinDotCom,
-  CryptoDotComWidget as CryptoDotCom
+  CryptoDotComWidget as CryptoDotCom,
+  EditCards
 } from '../../components/default'
 import * as Page from '../../components/default/page'
 import BrandedWallpaperLogo from '../../components/default/brandedWallpaper/logo'
@@ -57,7 +57,6 @@ interface Props {
   saveShowRewards: (value: boolean) => void
   saveShowTogether: (value: boolean) => void
   saveShowBinance: (value: boolean) => void
-  saveShowAddCard: (value: boolean) => void
   saveShowGemini: (value: boolean) => void
   saveShowBitcoinDotCom: (value: boolean) => void
   saveShowCryptoDotCom: (value: boolean) => void
@@ -257,10 +256,6 @@ class NewTabPage extends React.Component<Props, State> {
     }
   }
 
-  disableAddCard = () => {
-    this.props.saveShowAddCard(false)
-  }
-
   toggleShowGemini = () => {
     const { showGemini } = this.props.newTabData
 
@@ -411,7 +406,7 @@ class NewTabPage extends React.Component<Props, State> {
     brandedWallpaperLogoClicked(this.props.newTabData.brandedWallpaperData)
   }
 
-  openSettingsAddCard = () => {
+  openSettingsEditCards = () => {
     this.openSettings(SettingsTabType.Cards)
   }
 
@@ -710,7 +705,7 @@ class NewTabPage extends React.Component<Props, State> {
           const isForeground = i === widgetList.length - 1
           return (
             <div key={`widget-${widget}`}>
-              {lookup[widget].render(isForeground, (i + 1))}
+              {lookup[widget].render(isForeground, i)}
             </div>
           )
         })}
@@ -753,9 +748,8 @@ class NewTabPage extends React.Component<Props, State> {
 
   renderCryptoContent () {
     const { newTabData } = this.props
-    const { widgetStackOrder, textDirection, showAddCard } = newTabData
+    const { widgetStackOrder } = newTabData
     const allWidgetsHidden = this.allWidgetsHidden()
-    const shouldShowAddCard = allWidgetsHidden ? showAddCard : true
 
     if (!widgetStackOrder.length) {
       return null
@@ -763,20 +757,10 @@ class NewTabPage extends React.Component<Props, State> {
 
     return (
       <Page.GridItemWidgetStack>
-        {shouldShowAddCard &&
-          <AddCard
-            isCrypto={true}
-            paddingType={'none'}
-            menuPosition={'left'}
-            widgetTitle={getLocale('addCardWidgetTitle')}
-            textDirection={textDirection}
-            hideMenu={!allWidgetsHidden}
-            hideWidget={this.disableAddCard}
-            onAddCard={this.openSettingsAddCard}
-            stackPosition={0}
-          />
-        }
         {this.getCryptoContent()}
+        {!allWidgetsHidden &&
+          <EditCards onEditCards={this.openSettingsEditCards} />
+        }
       </Page.GridItemWidgetStack>
     )
   }
@@ -1036,7 +1020,6 @@ class NewTabPage extends React.Component<Props, State> {
             showTogether={newTabData.showTogether && newTabData.togetherSupported}
             showBinance={newTabData.showBinance}
             showTopSites={showTopSites}
-            showAddCard={newTabData.showAddCard}
             showBrandedWallpaper={isShowingBrandedWallpaper}
         >
           {newTabData.showStats &&

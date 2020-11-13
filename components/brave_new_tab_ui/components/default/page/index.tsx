@@ -33,7 +33,6 @@ type PageProps = {
   showBinance: boolean
   showTogether: boolean
   showTopSites: boolean
-  showAddCard: boolean
   showBrandedWallpaper: boolean
 } & HasImageProps
 
