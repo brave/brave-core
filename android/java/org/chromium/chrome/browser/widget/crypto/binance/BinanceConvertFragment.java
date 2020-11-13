@@ -5,6 +5,7 @@
 
 package org.chromium.chrome.browser.widget.crypto.binance;
 
+import android.app.Activity;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.text.TextUtils;
@@ -29,6 +30,7 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import android.view.inputmethod.InputMethodManager;
 
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 
@@ -147,6 +149,8 @@ public class BinanceConvertFragment extends Fragment {
         convertButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                ((InputMethodManager) getActivity().getSystemService(Activity.INPUT_METHOD_SERVICE))
+      .toggleSoftInput(InputMethodManager.SHOW_IMPLICIT, 0);
                 double convertAmount = !TextUtils.isEmpty(amountEditText.getText().toString())
                         ? Double.valueOf(amountEditText.getText().toString())
                         : 0.0;
