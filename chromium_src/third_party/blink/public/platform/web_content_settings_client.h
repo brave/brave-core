@@ -8,14 +8,17 @@
 
 #include "brave/third_party/blink/renderer/brave_farbling_constants.h"
 
-#define AllowStorageAccessSync                                           \
-  AllowAutoplay(bool default_value) { return default_value; }   \
-  virtual bool AllowFingerprinting(bool enabled_per_settings) { \
-    return enabled_per_settings;                                \
-  }                                                             \
-  virtual BraveFarblingLevel GetBraveFarblingLevel() {          \
-    return BraveFarblingLevel::OFF;                             \
-  }                                                             \
+#define AllowStorageAccessSync                                     \
+  AllowAutoplay(bool default_value) { return default_value; }      \
+  virtual bool AllowFingerprinting(bool enabled_per_settings) {    \
+    return enabled_per_settings;                                   \
+  }                                                                \
+  virtual BraveFarblingLevel GetBraveFarblingLevel() {             \
+    return BraveFarblingLevel::OFF;                                \
+  }                                                                \
+  virtual bool AllowEphemeralStorageAccessSync(StorageType type) { \
+    return false;                                                  \
+  }                                                                \
   virtual bool AllowStorageAccessSync
 
 

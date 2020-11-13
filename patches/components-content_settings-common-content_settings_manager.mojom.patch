@@ -1,0 +1,22 @@
+diff --git a/components/content_settings/common/content_settings_manager.mojom b/components/content_settings/common/content_settings_manager.mojom
+index 45b62cf62ec7a1d9245b3341becc01495f0ef0cf..45e4f059708e16f4f8a2395419a795b7076250ec 100644
+--- a/components/content_settings/common/content_settings_manager.mojom
++++ b/components/content_settings/common/content_settings_manager.mojom
+@@ -39,6 +39,17 @@ interface ContentSettingsManager {
+       url.mojom.Url site_for_cookies,
+       url.mojom.Origin top_frame_origin) => (bool allowed);
+ 
++  // Check whether storage access request is granted by ephemeral dom storage.
++  // More concretely, this interface returns true, if this is a third-party
++  // request, third-party cookies is disable and ephemeral storage is enabled.
++  // Otherwise, it returns false. 
++  [Sync]
++  IsEphemeralStorageAccessAllowed(
++      url.mojom.Origin origin,
++      url.mojom.Url site_for_cookies,
++      url.mojom.Origin top_frame_origin,
++      StorageType storage_type) => (bool allowed);
++
+   // Tells the browser that content in the current page was blocked due to the
+   // user's content settings.
+   OnContentBlocked(int32 render_frame_id, ContentSettingsType type);

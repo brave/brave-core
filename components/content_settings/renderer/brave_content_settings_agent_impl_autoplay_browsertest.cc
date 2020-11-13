@@ -40,6 +40,13 @@ class MockContentSettingsManagerImpl : public mojom::ContentSettingsManager {
                           const url::Origin& top_frame_origin,
                           base::OnceCallback<void(bool)> callback) override {}
 
+  void IsEphemeralStorageAccessAllowed(
+      const url::Origin& origin,
+      const GURL& site_for_cookies,
+      const url::Origin& top_frame_origin,
+      const StorageType storage_type,
+      base::OnceCallback<void(bool)> callback) override {}
+
   void OnContentBlocked(int32_t render_frame_id,
                         ContentSettingsType type) override {
     ++log_->on_content_blocked_count;

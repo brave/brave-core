@@ -45,6 +45,8 @@ class BraveContentSettingsAgentImpl : public ContentSettingsAgentImpl {
 
   BraveFarblingLevel GetBraveFarblingLevel() override;
 
+  bool AllowEphemeralStorageAccessSync(StorageType type) override;
+
  private:
   FRIEND_TEST_ALL_PREFIXES(BraveContentSettingsAgentImplAutoplayBrowserTest,
                            AutoplayBlockedByDefault);

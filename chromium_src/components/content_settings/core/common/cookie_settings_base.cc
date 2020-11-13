@@ -143,6 +143,8 @@ bool BraveIsAllowedThirdParty(
   return false;
 }
 
+bool IsThirdPartyRequest(const GURL& url, const GURL& site_for_cookies);
+
 }  // namespace
 
 bool CookieSettingsBase::IsCookieAccessAllowed(
@@ -169,6 +171,11 @@ bool CookieSettingsBase::IsCookieAccessAllowed(
     return true;
 
   return IsChromiumCookieAccessAllowed(url, site_for_cookies, top_frame_origin);
+}
+
+bool CookieSettingsBase::isThirdParty(const GURL& url,
+                                      const GURL& site_for_cookies) {
+  return IsThirdPartyRequest(url, site_for_cookies);
 }
 
 }  // namespace content_settings

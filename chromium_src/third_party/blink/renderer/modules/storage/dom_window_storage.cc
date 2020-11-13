@@ -6,6 +6,7 @@
 #include "../../../../../../../third_party/blink/renderer/modules/storage/dom_window_storage.cc"
 #include "third_party/blink/public/common/dom_storage/session_storage_namespace_id.h"
 #include "third_party/blink/public/common/features.h"
+#include "third_party/blink/public/platform/web_content_settings_client.h"
 #include "third_party/blink/public/web/web_view_client.h"
 #include "third_party/blink/renderer/core/execution_context/execution_context.h"
 #include "third_party/blink/renderer/core/exported/web_view_impl.h"
@@ -181,6 +182,13 @@ StorageArea* BraveDOMWindowStorage::sessionStorage(
   if (!storage)
     return nullptr;
 
+  if (window->GetFrame() && window->GetFrame()->GetContentSettingsClient()) {
+    auto* settings_client = window->GetFrame()->GetContentSettingsClient();
+    if (!settings_client->AllowEphemeralStorageAccessSync(
+            WebContentSettingsClient::StorageType::kSessionStorage))
+      return storage;
+  }
+
   return ephemeralSessionStorage();
 }
 
@@ -221,6 +229,12 @@ StorageArea* BraveDOMWindowStorage::localStorage(
   if (!storage)
     return nullptr;
 
+  if (window->GetFrame() && window->GetFrame()->GetContentSettingsClient()) {
+    auto* settings_client = window->GetFrame()->GetContentSettingsClient();
+    if (!settings_client->AllowEphemeralStorageAccessSync(
+            WebContentSettingsClient::StorageType::kSessionStorage))
+      return storage;
+  }
   return ephemeralLocalStorage();
 }
 

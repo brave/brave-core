@@ -279,4 +279,16 @@ bool BraveContentSettingsAgentImpl::AllowAutoplay(bool default_value) {
   return allow;
 }
 
+bool BraveContentSettingsAgentImpl::AllowEphemeralStorageAccessSync(
+    StorageType type) {
+  auto* frame = render_frame()->GetWebFrame();
+  bool result = false;
+  GetContentSettingsManager().IsEphemeralStorageAccessAllowed(
+      frame->GetSecurityOrigin(),
+      frame->GetDocument().SiteForCookies().RepresentativeUrl(),
+      frame->GetDocument().TopFrameOrigin(), ConvertToMojoStorageType(type),
+      &result);
+  return result;
+}
+
 }  // namespace content_settings
