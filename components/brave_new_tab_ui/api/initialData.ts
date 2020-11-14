@@ -72,9 +72,7 @@ export async function getInitialData (): Promise<InitialData> {
         })
       }),
       new Promise((resolve) => {
-        chrome.moonpay.isBitcoinDotComSupported((supported: boolean) => {
-          resolve(supported)
-        })
+        resolve(false)
       }),
       new Promise((resolve) => {
         chrome.cryptoDotCom.isSupported((supported: boolean) => {
