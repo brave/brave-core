@@ -62,6 +62,10 @@ OBJC_EXPORT
 
 @property(nonatomic, nullable, readonly) BookmarkNode* parent;
 @property(nonatomic, readonly) NSArray<BookmarkNode*>* children;
+@property (nonatomic, readonly) NSArray<BookmarkNode*>* nestedChildFolders;
+@property (nonatomic, readonly) NSUInteger childCount;
+
+- (nullable BookmarkNode*)childAtIndex:(NSUInteger)index;
 
 - (void)setTitle:(NSString*)title;
 - (bool)getMetaInfo:(NSString*)key value:(NSString* _Nonnull* _Nullable)value;
@@ -74,6 +78,7 @@ OBJC_EXPORT
 
 - (void)moveToParent:(nonnull BookmarkNode*)parent;
 - (void)moveToParent:(nonnull BookmarkNode*)parent index:(NSUInteger)index;
+- (NSInteger)indexOfChild:(nonnull BookmarkNode*)child;
 @end
 
 // NS_SWIFT_NAME(BraveBookmarksAPI)

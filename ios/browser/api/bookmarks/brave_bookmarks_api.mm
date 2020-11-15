@@ -110,9 +110,8 @@
 
 - (UIImage*)icon {
   DCHECK(node_);
-  // Returns a WEAK UIImage so we make a deep-copy.
   gfx::Image icon = model_->GetFavicon(node_);
-  return icon.IsEmpty() ? nullptr : [icon.ToUIImage() copy];
+  return icon.IsEmpty() ? nullptr : icon.ToUIImage();
 }
 
 - (BookmarksNodeType)type {
@@ -228,12 +227,48 @@
   DCHECK(node_);
   NSMutableArray* result = [[NSMutableArray alloc] init];
   for (const auto& child : node_->children()) {
-    const bookmarks::BookmarkNode* child_node = bookmarks::GetBookmarkNodeByID(
-        model_, static_cast<int64_t>(child->id()));
-    [result addObject:[[BookmarkNode alloc] initWithNode:child_node
+    [result addObject:[[BookmarkNode alloc] initWithNode:child.get()
                                                    model:model_]];
   }
   return result;
+}
+
+- (NSArray<BookmarkNode*>*)nestedChildFolders {
+  DCHECK(node_);
+  auto find_folders_recursively = [](const bookmarks::BookmarkNode* node)
+                                    -> std::vector<const bookmarks::BookmarkNode*> {
+    auto find_impl = [](auto* node, auto& nodes, auto& find_ref) mutable -> void {
+      for (const auto& child : node->children()) {
+        if (child->is_folder()) {
+          find_ref(child.get(), nodes, find_ref);
+          nodes.push_back(child.get());
+        }
+      }
+    };
+    std::vector<const bookmarks::BookmarkNode*> nodes;
+    find_impl(node, nodes, find_impl);
+    return nodes;
+  };
+  
+  NSMutableArray* result = [[NSMutableArray alloc] init];
+  for (const bookmarks::BookmarkNode* child : find_folders_recursively(node_)) {
+    [result addObject: [[BookmarkNode alloc] initWithNode:child model:model_]];
+  }
+  return result;
+}
+
+- (NSUInteger)childCount {
+  DCHECK(node_);
+  return node_->GetTotalNodeCount() - 1;
+}
+
+- (BookmarkNode*)childAtIndex:(NSUInteger)index {
+  DCHECK(node_);
+  const auto& children = node_->children();
+  if (static_cast<std::size_t>(index) < children.size()) {
+    return [[BookmarkNode alloc] initWithNode:children[index].get() model:model_];;
+  }
+  return nil;
 }
 
 - (BookmarkNode*)addChildFolderWithTitle:(NSString*)title {
@@ -269,6 +304,11 @@
   if ([parent isFolder]) {
     model_->Move(node_, parent->node_, index);
   }
+}
+
+- (NSInteger)indexOfChild:(BookmarkNode*)child {
+  DCHECK(node_);
+  return node_->GetIndexOf(child->node_);
 }
 
 - (void)remove {
