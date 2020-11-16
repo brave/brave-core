@@ -120,4 +120,12 @@ void CreateWallet(brave_rewards::RewardsServiceImpl* rewards_service) {
   ASSERT_TRUE(success);
 }
 
+void SetOnboardingBypassed(Browser* browser, bool bypassed) {
+  DCHECK(browser);
+  // Rewards onboarding will be skipped if the legacy "enabled" pref
+  // is set to true.
+  PrefService* prefs = browser->profile()->GetPrefs();
+  prefs->SetBoolean(brave_rewards::prefs::kEnabled, bypassed);
+}
+
 }  // namespace rewards_browsertest_util
