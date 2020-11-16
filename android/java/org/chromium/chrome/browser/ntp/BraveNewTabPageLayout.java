@@ -148,6 +148,7 @@ public class BraveNewTabPageLayout extends NewTabPageLayout {
     private TextView mTopsiteErrorMessage;
 
     private BinanceNativeWorker mBinanceNativeWorker;
+    private CryptoWidgetBottomSheetDialogFragment cryptoWidgetBottomSheetDialogFragment;
     private CountDownTimer countDownTimer;
     private List<NTPWidgetItem> widgetList = new ArrayList<NTPWidgetItem>();
     public static final int NTP_WIDGET_STACK_CODE = 3333;
@@ -261,8 +262,7 @@ public class BraveNewTabPageLayout extends NewTabPageLayout {
                     public void onClick(View view) {
                         if (BinanceWidgetManager.getInstance().isUserAuthenticatedForBinance()) {
                             cancelTimer();
-                            CryptoWidgetBottomSheetDialogFragment
-                                    cryptoWidgetBottomSheetDialogFragment =
+                            cryptoWidgetBottomSheetDialogFragment =
                                             new CryptoWidgetBottomSheetDialogFragment();
                             cryptoWidgetBottomSheetDialogFragment.show(
                                     ((BraveActivity) mActivity).getSupportFragmentManager(),
@@ -796,6 +796,9 @@ public class BraveNewTabPageLayout extends NewTabPageLayout {
         public void OnGetAccountBalances(String jsonBalances, boolean isSuccess) {
             if (!isSuccess) {
                 BinanceWidgetManager.getInstance().setUserAuthenticationForBinance(isSuccess);
+                if (cryptoWidgetBottomSheetDialogFragment != null) {
+                    cryptoWidgetBottomSheetDialogFragment.dismiss();
+                }
             }
             try {
                 BinanceWidgetManager.binanceAccountBalance =
@@ -828,6 +831,9 @@ public class BraveNewTabPageLayout extends NewTabPageLayout {
         @Override
         public void OnRevokeToken(boolean isSuccess) {
             BinanceWidgetManager.getInstance().setUserAuthenticationForBinance(!isSuccess);
+            if (cryptoWidgetBottomSheetDialogFragment != null) {
+                cryptoWidgetBottomSheetDialogFragment.dismiss();
+            }
             // Reset binance widget to connect page
             showWidgets();
         };
