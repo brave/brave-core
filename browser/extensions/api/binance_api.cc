@@ -17,8 +17,6 @@
 #include "brave/common/pref_names.h"
 #include "brave/browser/binance/binance_service_factory.h"
 #include "brave/components/binance/browser/binance_service.h"
-#include "brave/components/binance/browser/regions.h"
-#include "brave/components/ntp_widget_utils/browser/ntp_widget_utils_region.h"
 #include "chrome/browser/extensions/api/tabs/tabs_constants.h"
 #include "chrome/browser/extensions/extension_tab_util.h"
 #include "chrome/browser/infobars/infobar_service.h"
@@ -171,9 +169,8 @@ BinanceIsSupportedRegionFunction::Run() {
     return RespondNow(Error("Not available in Tor/incognito/guest profile"));
   }
 
-  Profile* profile = Profile::FromBrowserContext(browser_context());
-  bool is_supported = ntp_widget_utils::IsRegionSupported(
-      profile->GetPrefs(), ::binance::unsupported_regions, false);
+  auto* service = GetBinanceService(browser_context());
+  bool is_supported = service->IsSupportedRegion();
 
   return RespondNow(OneArgument(
       std::make_unique<base::Value>(is_supported)));

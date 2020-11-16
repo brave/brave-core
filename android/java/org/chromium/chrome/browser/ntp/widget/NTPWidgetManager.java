@@ -13,6 +13,7 @@ import android.content.SharedPreferences;
 import org.chromium.base.ContextUtils;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.ntp.widget.NTPWidgetItem;
+import org.chromium.chrome.browser.widget.crypto.binance.BinanceNativeWorker;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -95,7 +96,8 @@ public class NTPWidgetManager {
         if (getFavoritesWidget() != -1) {
             usedWidgetMap.put(getFavoritesWidget(), PREF_FAVORITES);
         }
-        if (getBinanceWidget() != -1) {
+        if (getBinanceWidget() != -1
+            && BinanceNativeWorker.getInstance().IsSupportedRegion()) {
             usedWidgetMap.put(getBinanceWidget(), PREF_BINANCE);
         }
         return new ArrayList<String>(usedWidgetMap.values());
@@ -109,7 +111,8 @@ public class NTPWidgetManager {
         if (getFavoritesWidget() == -1) {
             availableWidgets.add(PREF_FAVORITES);
         }
-        if (getBinanceWidget() == -1) {
+        if (getBinanceWidget() == -1
+            && BinanceNativeWorker.getInstance().IsSupportedRegion()) {
             availableWidgets.add(PREF_BINANCE);
         }
         return availableWidgets;
