@@ -63,10 +63,7 @@ base::string16 CryptoWalletsInfoBarDelegate::GetMessageText() const {
 }
 
 int CryptoWalletsInfoBarDelegate::GetButtons() const {
-  if (subtype_ == InfobarSubType::LOAD_CRYPTO_WALLETS) {
-    return BUTTON_OK | BUTTON_CANCEL;
-  }
-  return BUTTON_OK;
+  return BUTTON_OK | BUTTON_CANCEL;
 }
 
 base::string16 CryptoWalletsInfoBarDelegate::GetButtonLabel(
@@ -77,6 +74,10 @@ base::string16 CryptoWalletsInfoBarDelegate::GetButtonLabel(
     }
     return l10n_util::GetStringUTF16(
         IDS_BRAVE_CRYPTO_WALLETS_START_AND_RELOAD);
+  }
+
+  if (button == BUTTON_CANCEL) {
+    return l10n_util::GetStringUTF16(IDS_BRAVE_CRYPTO_WALLETS_DONT_ASK);
   }
 
   return l10n_util::GetStringUTF16(
@@ -124,6 +125,13 @@ bool CryptoWalletsInfoBarDelegate::Cancel() {
   content::WebContents* web_contents =
     InfoBarService::WebContentsFromInfoBar(infobar());
   if (web_contents) {
+    if (subtype_ == InfobarSubType::GENERIC_SETUP) {
+      auto* browser_context = web_contents->GetBrowserContext();
+      user_prefs::UserPrefs::Get(browser_context)->
+          SetInteger(kBraveWalletWeb3Provider,
+              static_cast<int>(BraveWalletWeb3ProviderTypes::NONE));
+      return true;
+    }
     Browser* browser = chrome::FindBrowserWithWebContents(web_contents);
     brave::ShowExtensionSettings(browser);
   }
