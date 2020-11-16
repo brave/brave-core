@@ -41,6 +41,20 @@ class BraveLocationBarViewFocusRingHighlightPathGenerator
   DISALLOW_COPY_AND_ASSIGN(BraveLocationBarViewFocusRingHighlightPathGenerator);
 };
 
+base::Optional<SkColor> GetFocusRingColor(Profile* profile) {
+  constexpr SkColor kPrivateFocusRingColor = SkColorSetRGB(0xC6, 0xB3, 0xFF);
+  constexpr SkColor kTorPrivateFocusRingColor = SkColorSetRGB(0xCF, 0xAB, 0xE2);
+  if (brave::IsRegularProfile(profile) || profile->IsGuestSession()) {
+    // Don't update color.
+    return base::nullopt;
+  }
+  if (brave::IsTorProfile(profile))
+    return kTorPrivateFocusRingColor;
+
+  // Private window.
+  return kPrivateFocusRingColor;
+}
+
 }  // namespace
 
 void BraveLocationBarView::Init() {
@@ -51,6 +65,8 @@ void BraveLocationBarView::Init() {
     focus_ring_->SetPathGenerator(
         std::make_unique<
             BraveLocationBarViewFocusRingHighlightPathGenerator>());
+    if (const auto color = GetFocusRingColor(profile()))
+      focus_ring_->SetColor(color.value());
   }
 #if BUILDFLAG(ENABLE_TOR)
   onion_location_view_ = new OnionLocationView(browser_->profile());
