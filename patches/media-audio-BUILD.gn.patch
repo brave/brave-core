@@ -1,0 +1,13 @@
+diff --git a/media/audio/BUILD.gn b/media/audio/BUILD.gn
+index 5e4dc90597d093d1763b09f4c46f385f0c120ca9..1778f0d951268d88de3d841d9331b22b1a04cec2 100644
+--- a/media/audio/BUILD.gn
++++ b/media/audio/BUILD.gn
+@@ -294,6 +294,8 @@ source_set("audio") {
+ 
+     deps += [ "//build:branding_buildflags" ]
+ 
++    configs += [ "//brave/build/linux:linux_channel_names" ]
++
+     if (link_pulseaudio) {
+       configs += [ ":libpulse" ]
+     } else {
