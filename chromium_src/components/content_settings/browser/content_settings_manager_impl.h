@@ -13,7 +13,7 @@
       base::OnceCallback<void(bool)> callback) override;                   \
                                                                            \
  private:                                                                  \
-  void CheckEphemeralStorageAccess(                                        \
+  void ShouldUseEphemeralStorage(                                          \
       const GURL& url, const GURL& site_for_cookies,                       \
       const StorageType storage_type, bool& allowed) const;
 

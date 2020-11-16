@@ -8,7 +8,7 @@
 
 #define BRAVE_COOKIE_SETTINGS_BASE_H                                      \
  public:                                                                  \
-  static bool isThirdParty(const GURL& url,                               \
+  static bool IsThirdParty(const GURL& url,                               \
                            const GURL& site_for_cookies);                 \
  private:                                                                 \
   bool IsChromiumCookieAccessAllowed(const GURL& url,                     \

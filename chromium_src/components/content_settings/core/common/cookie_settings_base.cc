@@ -123,7 +123,7 @@ bool BraveIsAllowedThirdParty(
   GURL first_party_url = site_for_cookies;
 
   if (!first_party_url.is_valid() && top_frame_origin)
-      first_party_url = top_frame_origin->GetURL();
+    first_party_url = top_frame_origin->GetURL();
 
   if (net::registry_controlled_domains::GetDomainAndRegistry(
           url,
@@ -173,7 +173,7 @@ bool CookieSettingsBase::IsCookieAccessAllowed(
   return IsChromiumCookieAccessAllowed(url, site_for_cookies, top_frame_origin);
 }
 
-bool CookieSettingsBase::isThirdParty(const GURL& url,
+bool CookieSettingsBase::IsThirdParty(const GURL& url,
                                       const GURL& site_for_cookies) {
   return IsThirdPartyRequest(url, site_for_cookies);
 }
