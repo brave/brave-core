@@ -75,6 +75,7 @@ source_set("ui") {
       "content_settings/brave_content_setting_image_models.h",
       "omnibox/brave_omnibox_client_impl.cc",
       "omnibox/brave_omnibox_client_impl.h",
+      "toolbar/brave_recent_tabs_sub_menu_model.h",
       "toolbar/brave_app_menu_model.cc",
       "toolbar/brave_app_menu_model.h",
       "webui/brave_settings_ui.cc",
