@@ -19,6 +19,7 @@ constexpr const char* kBravezationHistograms[] = {
     "DefaultBrowser.State",
     "Extensions.LoadExtension",
     "Tabs.TabCount",
+    "Tabs.TabCountPerLoad",
     "Tabs.WindowCount",
 };
 
@@ -70,7 +71,8 @@ void DoHistogramBravezation(const char* histogram_name,
     return;
   }
 
-  if (strcmp("Tabs.TabCount", histogram_name) == 0) {
+  if (strcmp("Tabs.TabCount", histogram_name) == 0 ||
+      strcmp("Tabs.TabCountPerLoad", histogram_name) == 0) {
     int answer = 0;
     if (0 <= sample && sample <= 1) {
       answer = 0;

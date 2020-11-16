@@ -19,7 +19,6 @@
 #include "brave/components/p3a/brave_p3a_service.h"
 #include "brave/components/p3a/buildflags.h"
 #include "brave/components/tor/buildflags/buildflags.h"
-#include "chrome/browser/first_run/first_run.h"
 #include "chrome/common/pref_names.h"
 #include "components/metrics/metrics_pref_names.h"
 #include "components/prefs/pref_registry_simple.h"
@@ -37,9 +36,11 @@
 #include "brave/components/ipfs/ipfs_service.h"
 #endif
 
+#include "brave/browser/ui/webui/new_tab_page/brave_new_tab_message_handler.h"
+
 #if !defined(OS_ANDROID)
 #include "brave/browser/p3a/p3a_core_metrics.h"
-#include "brave/browser/ui/webui/new_tab_page/brave_new_tab_message_handler.h"
+#include "chrome/browser/first_run/first_run.h"
 #endif  // !defined(OS_ANDROID)
 
 #if BUILDFLAG(ENABLE_WIDEVINE)
@@ -74,7 +75,14 @@ void RegisterLocalStatePrefs(PrefRegistrySimple* registry) {
 
 #if BUILDFLAG(BRAVE_P3A_ENABLED)
   brave::BraveP3AService::RegisterPrefs(registry,
+#if !defined(OS_ANDROID)
                                         first_run::IsChromeFirstRun());
+#else
+                                        // BraveP3AService::RegisterPrefs
+                                        // doesn't use this arg on Android
+                                        false);
+#endif  // !defined(OS_ANDROID)
+
 #endif  // BUILDFLAG(BRAVE_P3A_ENABLED)
 
   brave_shields::RegisterShieldsP3APrefs(registry);
