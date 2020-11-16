@@ -5,6 +5,7 @@
 
 #include "brave/ios/browser/api/bookmarks/brave_bookmarks_api.h"
 
+#include "base/compiler_specific.h"
 #include "base/strings/sys_string_conversions.h"
 #include "brave/ios/browser/api/bookmarks/brave_bookmarks_observer.h"
 #include "components/bookmarks/browser/bookmark_model.h"

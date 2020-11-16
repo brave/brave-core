@@ -8,8 +8,6 @@
 
 #import <Foundation/Foundation.h>
 
-#include "base/compiler_specific.h"
-
 NS_ASSUME_NONNULL_BEGIN
 
 OBJC_EXPORT

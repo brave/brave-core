@@ -7,6 +7,7 @@
 
 #import <UIKit/UIKit.h>
 
+#include "base/compiler_specific.h"
 #include "base/strings/sys_string_conversions.h"
 #include "brave/ios/app/brave_main_delegate.h"
 #import "brave/ios/browser/brave_web_client.h"
