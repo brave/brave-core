@@ -10,11 +10,12 @@
 
 class BraveAvatarToolbarButton : public AvatarToolbarButton {
  public:
-  using AvatarToolbarButton::AvatarToolbarButton;
+  explicit BraveAvatarToolbarButton(Browser* browser);
 
   // ToolbarButton:
   void SetHighlight(const base::string16& highlight_text,
                     base::Optional<SkColor> highlight_color) override;
+  void UpdateColorsAndInsets() override;
 
  private:
   // AvatarToolbarButton:

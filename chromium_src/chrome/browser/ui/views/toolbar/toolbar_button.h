@@ -7,7 +7,9 @@
 #define BRAVE_CHROMIUM_SRC_CHROME_BROWSER_UI_VIEWS_TOOLBAR_TOOLBAR_BUTTON_H_
 
 #define SetHighlight virtual SetHighlight
+#define UpdateColorsAndInsets virtual UpdateColorsAndInsets
 #include "../../../../../../../chrome/browser/ui/views/toolbar/toolbar_button.h"
 #undef SetHighlight
+#undef UpdateColorsAndInsets
 
 #endif  // BRAVE_CHROMIUM_SRC_CHROME_BROWSER_UI_VIEWS_TOOLBAR_TOOLBAR_BUTTON_H_

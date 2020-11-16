@@ -313,6 +313,12 @@ By installing this extension, you are agreeing to the Google Widevine Terms of U
       <message name="IDS_TOR_PROFILE_NAME" desc="The name given to the Tor browsing profile. Displayed in the avatar menu bubble and button UI.">
         Tor
       </message>
+      <message name="IDS_TOR_AVATAR_BUTTON_LABEL" desc="The text label of tor avatar button.">
+        Private with Tor
+      </message>
+      <message name="IDS_TOR_AVATAR_BUTTON_TOOLTIP_TEXT" desc="The tooltip text of tor avatar button.">
+        This is private window with tor
+      </message>
       <message name="IDS_PROFILES_OPEN_TOR_PROFILE_BUTTON" desc="Button in the avatar menu bubble view to open a Tor window.">
         Open Tor Window
       </message>
