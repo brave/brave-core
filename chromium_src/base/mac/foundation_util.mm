@@ -40,7 +40,7 @@ const char* BaseBundleID() {
     return base_bundle_id;
   }
 
-#if !defined(OFFICIAL_BUILD)
+#if !defined(OFFICIAL_BUILD) || defined(OS_IOS)
   return "com.brave.Browser.development";
 #else
   switch (chrome::GetChannel()) {
