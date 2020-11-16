@@ -12,7 +12,9 @@ declare_args() {
   base_sparkle_update_url = ""
   enable_sparkle = is_official_build && is_mac
 
-  brave_dsa_file = "dsa_pub.pem"
+  sparkle_dsa_private_key_file = ""
+  sparkle_eddsa_private_key = ""
+  sparkle_eddsa_public_key = ""
 
   brave_product_name = ""
   brave_project_name = ""
@@ -33,7 +35,7 @@ declare_args() {
 
   skip_signing = false
 
-  # Used for generating delta installer on Win.
+  # Used for generating delta installer on macOS/Windows
   build_delta_installer = false
   last_chrome_installer = ""
 }
@@ -90,6 +92,7 @@ if (is_win) {
   brave_exe = "$chrome_product_full_name.app"
   brave_dmg = "$chrome_product_full_name.dmg"
   brave_pkg = "$chrome_product_full_name.pkg"
+  brave_delta = "$chrome_product_full_name.delta"
 
   brave_product_dir_name_suffix = ""
   if (is_official_build) {

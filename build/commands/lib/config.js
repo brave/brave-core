@@ -106,6 +106,9 @@ const Config = function () {
   this.mac_installer_signing_identifier = getNPMConfig(['mac_installer_signing_identifier']) || ''
   this.mac_signing_keychain = getNPMConfig(['mac_signing_keychain']) || 'login'
   this.mac_signing_output_prefix = 'signing'
+  this.sparkleDSAPrivateKeyFile = getNPMConfig(['sparkle_dsa_private_key_file']) || ''
+  this.sparkleEdDSAPrivateKey = getNPMConfig(['sparkle_eddsa_private_key']) || ''
+  this.sparkleEdDSAPublicKey = getNPMConfig(['sparkle_eddsa_public_key']) || ''
   this.notary_user = getNPMConfig(['notary_user']) || ''
   this.notary_password = getNPMConfig(['notary_password']) || ''
   this.channel = 'development'
@@ -222,6 +225,9 @@ Config.prototype.buildArgs = function () {
     enable_cdm_host_verification: this.enableCDMHostVerification(),
     skip_signing: !this.shouldSign(),
     chrome_pgo_phase: this.chromePgoPhase,
+    sparkle_dsa_private_key_file: this.sparkleDSAPrivateKeyFile,
+    sparkle_eddsa_private_key: this.sparkleEdDSAPrivateKey,
+    sparkle_eddsa_public_key: this.sparkleEdDSAPublicKey,
     ...this.extraGnArgs,
   }
 
@@ -249,7 +255,7 @@ Config.prototype.buildArgs = function () {
     args.tag_ap = this.tag_ap
   }
 
-  if (process.platform === 'win32' && this.build_delta_installer) {
+  if ((process.platform === 'win32' || process.platform === 'darwin') && this.build_delta_installer) {
     assert(this.last_chrome_installer, 'Need last_chrome_installer args for building delta installer')
     args.build_delta_installer = true
     args.last_chrome_installer = this.last_chrome_installer
