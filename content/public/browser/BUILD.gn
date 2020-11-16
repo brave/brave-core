@@ -1,16 +1,20 @@
 source_set("browser") {
+  sources = [
+    "//brave/content/public/browser/brave_render_frame_host.cc",
+  ]
+  deps = [
+    "//base",
+    "//skia",
+  ]
   if (is_android) {
-    sources = [
+    sources += [
       "//brave/content/browser/cosmetic_filters_communication_impl.cc",
       "//brave/content/browser/cosmetic_filters_communication_impl.h",
       "//brave/content/browser/cosmetic_filters_observer.h",
-      "//brave/content/public/browser/brave_render_frame_host.cc"
     ]
 
-    deps = [
-      "//base",
+    deps += [
       "//brave/content/browser/mojom",
-      "//skia",
     ]
   }
 }
