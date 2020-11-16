@@ -8,10 +8,10 @@
 
 #include <stdint.h>
 
-#include <map>
 #include <memory>
 #include <string>
 
+#include "base/containers/flat_map.h"
 #include "base/gtest_prod_util.h"
 #include "bat/ledger/internal/legacy/media/helper.h"
 #include "bat/ledger/ledger.h"
@@ -29,14 +29,14 @@ class GitHub {
   static std::string GetLinkType(const std::string& url);
 
   void SaveMediaInfo(
-      const std::map<std::string, std::string>& data,
+      const base::flat_map<std::string, std::string>& data,
       ledger::PublisherInfoCallback callback);
 
   void ProcessActivityFromUrl(uint64_t window_id,
                               const ledger::type::VisitData& visit_data);
 
   void ProcessMedia(
-      const std::map<std::string, std::string> parts,
+      const base::flat_map<std::string, std::string> parts,
       const ledger::type::VisitData& visit_data);
 
   ~GitHub();

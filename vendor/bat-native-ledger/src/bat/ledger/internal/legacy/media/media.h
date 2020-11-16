@@ -7,9 +7,9 @@
 #define BRAVELEDGER_BAT_GET_MEDIA_H_
 
 #include <string>
-#include <map>
 #include <memory>
 
+#include "base/containers/flat_map.h"
 #include "bat/ledger/internal/legacy/media/github.h"
 #include "bat/ledger/internal/legacy/media/reddit.h"
 #include "bat/ledger/internal/legacy/media/twitch.h"
@@ -33,7 +33,7 @@ class Media {
                                  const std::string& first_party_url,
                                  const std::string& referrer);
 
-  void ProcessMedia(const std::map<std::string, std::string>& parts,
+  void ProcessMedia(const base::flat_map<std::string, std::string>& parts,
                     const std::string& type,
                     ledger::type::VisitDataPtr visit_data);
 
@@ -43,12 +43,12 @@ class Media {
                                const std::string& publisher_blob);
 
   void SaveMediaInfo(const std::string& type,
-                     const std::map<std::string, std::string>& data,
+                     const base::flat_map<std::string, std::string>& data,
                      ledger::PublisherInfoCallback callback);
 
   static std::string GetShareURL(
       const std::string& type,
-      const std::map<std::string, std::string>& args);
+      const base::flat_map<std::string, std::string>& args);
 
  private:
   void OnMediaActivityError(ledger::type::VisitDataPtr visit_data,

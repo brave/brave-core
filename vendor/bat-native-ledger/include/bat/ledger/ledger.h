@@ -8,11 +8,11 @@
 
 #include <stdint.h>
 
-#include <map>
 #include <memory>
 #include <string>
 #include <vector>
 
+#include "base/containers/flat_map.h"
 #include "bat/ledger/export.h"
 #include "bat/ledger/mojom_structs.h"
 #include "bat/ledger/ledger_client.h"
@@ -41,7 +41,7 @@ using UpholdWalletCallback =
     std::function<void(type::Result, type::UpholdWalletPtr)>;
 
 using ExternalWalletAuthorizationCallback =
-    std::function<void(type::Result, std::map<std::string, std::string>)>;
+    std::function<void(type::Result, base::flat_map<std::string, std::string>)>;
 
 using FetchPromotionCallback =
     std::function<void(type::Result, type::PromotionList)>;
@@ -146,7 +146,7 @@ class LEDGER_EXPORT Ledger {
   virtual void OnXHRLoad(
       uint32_t tab_id,
       const std::string& url,
-      const std::map<std::string, std::string>& parts,
+      const base::flat_map<std::string, std::string>& parts,
       const std::string& first_party_url,
       const std::string& referrer,
       type::VisitDataPtr visit_data) = 0;
@@ -291,7 +291,7 @@ class LEDGER_EXPORT Ledger {
 
   virtual void SaveMediaInfo(
       const std::string& type,
-      const std::map<std::string, std::string>& data,
+      const base::flat_map<std::string, std::string>& data,
       PublisherInfoCallback callback) = 0;
 
   virtual void UpdateMediaDuration(
@@ -321,7 +321,7 @@ class LEDGER_EXPORT Ledger {
       const type::InlineTipsPlatforms platform) = 0;
 
   virtual std::string GetShareURL(
-      const std::map<std::string, std::string>& args) = 0;
+      const base::flat_map<std::string, std::string>& args) = 0;
 
   virtual void GetPendingContributions(
       PendingContributionInfoListCallback callback) = 0;
@@ -341,7 +341,7 @@ class LEDGER_EXPORT Ledger {
 
   virtual void ExternalWalletAuthorization(
       const std::string& wallet_type,
-      const std::map<std::string, std::string>& args,
+      const base::flat_map<std::string, std::string>& args,
       ExternalWalletAuthorizationCallback callback) = 0;
 
   virtual void DisconnectWallet(

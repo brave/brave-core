@@ -56,7 +56,6 @@ ios_framework_bundle("brave_rewards_ios_framework") {
   configs -= [ "//build/config/gcc:symbol_visibility_hidden" ]
 
   deps = [
-    "//brave/base:base",
     "//brave/vendor/bat-native-ledger",
     "//brave/vendor/bat-native-ads",
     "//net:net",

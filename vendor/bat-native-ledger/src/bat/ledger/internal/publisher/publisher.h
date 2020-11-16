@@ -7,10 +7,10 @@
 #define BRAVELEDGER_PUBLISHER_PUBLISHER_H_
 
 #include <string>
-#include <map>
 #include <memory>
 #include <vector>
 
+#include "base/containers/flat_map.h"
 #include "base/gtest_prod_util.h"
 #include "bat/ledger/ledger.h"
 
@@ -114,7 +114,7 @@ class Publisher {
       ledger::ResultCallback callback);
 
   static std::string GetShareURL(
-      const std::map<std::string, std::string>& args);
+      const base::flat_map<std::string, std::string>& args);
 
  private:
   void OnGetPublisherInfoForUpdateMediaDuration(

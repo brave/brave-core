@@ -6,11 +6,11 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_REWARDS_BROWSER_REWARDS_SERVICE_H_
 #define BRAVE_COMPONENTS_BRAVE_REWARDS_BROWSER_REWARDS_SERVICE_H_
 
-#include <map>
 #include <memory>
 #include <string>
 #include <vector>
 
+#include "base/containers/flat_map.h"
 #include "base/callback_forward.h"
 #include "base/macros.h"
 #include "base/observer_list.h"
@@ -85,7 +85,7 @@ using ProcessRewardsPageUrlCallback = base::OnceCallback<void(
     const ledger::type::Result result,
     const std::string&,
     const std::string&,
-    const std::map<std::string, std::string>&)>;
+    const base::flat_map<std::string, std::string>&)>;
 using CreateWalletCallback =
     base::OnceCallback<void(const ledger::type::Result)>;
 using ClaimPromotionCallback = base::OnceCallback<void(
@@ -277,7 +277,7 @@ class RewardsService : public KeyedService {
 
   virtual void SaveInlineMediaInfo(
       const std::string& media_type,
-      const std::map<std::string, std::string>& args,
+      const base::flat_map<std::string, std::string>& args,
       SaveMediaInfoCallback callback) = 0;
 
   virtual void UpdateMediaDuration(
@@ -308,7 +308,7 @@ class RewardsService : public KeyedService {
       GetInlineTippingPlatformEnabledCallback callback) = 0;
 
   virtual void GetShareURL(
-      const std::map<std::string, std::string>& args,
+      const base::flat_map<std::string, std::string>& args,
       GetShareURLCallback callback) = 0;
 
   virtual void FetchBalance(FetchBalanceCallback callback) = 0;

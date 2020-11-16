@@ -10,6 +10,7 @@
 #include <vector>
 #include <utility>
 
+#include "base/containers/flat_map.h"
 #include "base/time/time.h"
 #include "base/android/jni_android.h"
 #include "base/android/jni_string.h"
@@ -697,7 +698,7 @@ void BraveRewardsNativeWorker::OnProcessRewardsPageUrl(
     const ledger::type::Result result,
     const std::string& wallet_type,
     const std::string& action,
-    const std::map<std::string, std::string>& args) {
+    const base::flat_map<std::string, std::string>& args) {
   std::string json_args = StdStrStrMapToJsonString(args);
   JNIEnv* env = base::android::AttachCurrentThread();
   Java_BraveRewardsNativeWorker_OnProcessRewardsPageUrl(env,
@@ -709,7 +710,7 @@ void BraveRewardsNativeWorker::OnProcessRewardsPageUrl(
 }
 
 std::string BraveRewardsNativeWorker::StdStrStrMapToJsonString(
-    const std::map<std::string, std::string>& args) {
+    const base::flat_map<std::string, std::string>& args) {
     std::string json_args;
     base::Value dict(base::Value::Type::DICTIONARY);
     for (const auto & item : args) {

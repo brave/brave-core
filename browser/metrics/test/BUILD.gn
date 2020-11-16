@@ -15,7 +15,6 @@ source_set("brave_metrics_unit_tests") {
 
     deps = [
       "//base/test:test_support",
-      "//brave/base:base",
       "//brave/browser:browser_process",
       "//brave/test:brave_browser_tests",
       "//chrome/browser:browser",

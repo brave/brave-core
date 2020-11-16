@@ -8,10 +8,10 @@
 
 #include <stdint.h>
 
-#include <map>
 #include <memory>
 #include <string>
 
+#include "base/containers/flat_map.h"
 #include "base/gtest_prod_util.h"
 #include "bat/ledger/internal/legacy/media/helper.h"
 #include "bat/ledger/ledger.h"
@@ -28,7 +28,7 @@ class Vimeo {
 
   ~Vimeo();
 
-  void ProcessMedia(const std::map<std::string, std::string>& parts);
+  void ProcessMedia(const base::flat_map<std::string, std::string>& parts);
 
   static std::string GetLinkType(const std::string& url);
 
@@ -128,7 +128,7 @@ class Vimeo {
     const std::string& publisher_favicon = "");
 
   ledger::LedgerImpl* ledger_;  // NOT OWNED
-  std::map<std::string, ledger::type::MediaEventInfo> events;
+  base::flat_map<std::string, ledger::type::MediaEventInfo> events;
 
   // For testing purposes
   friend class VimeoTest;

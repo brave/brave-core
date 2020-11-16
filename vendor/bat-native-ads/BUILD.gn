@@ -515,7 +515,6 @@ source_set("ads") {
 
   deps = [
     "//base",
-    "//brave/base",
     "//brave/components/challenge_bypass_ristretto",
     "//brave/components/l10n/browser",
     "//brave/components/l10n/common",

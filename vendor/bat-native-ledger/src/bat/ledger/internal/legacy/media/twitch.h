@@ -6,11 +6,11 @@
 #ifndef BRAVELEDGER_MEDIA_TWITCH_H_
 #define BRAVELEDGER_MEDIA_TWITCH_H_
 
-#include <map>
 #include <memory>
 #include <string>
 #include <utility>
 
+#include "base/containers/flat_map.h"
 #include "base/gtest_prod_util.h"
 #include "bat/ledger/internal/legacy/media/helper.h"
 #include "bat/ledger/ledger.h"
@@ -30,7 +30,7 @@ class Twitch {
   void OnMediaActivityError(const ledger::type::VisitData& visit_data,
                             uint64_t window_id);
 
-  void ProcessMedia(const std::map<std::string, std::string>& parts,
+  void ProcessMedia(const base::flat_map<std::string, std::string>& parts,
                     const ledger::type::VisitData& visit_data);
 
   void ProcessActivityFromUrl(uint64_t window_id,
@@ -43,7 +43,7 @@ class Twitch {
 
  private:
   static std::pair<std::string, std::string> GetMediaIdFromParts(
-      const std::map<std::string, std::string>& parts);
+      const base::flat_map<std::string, std::string>& parts);
 
   static std::string GetMediaURL(const std::string& mediaId);
 
@@ -123,7 +123,7 @@ class Twitch {
                          const std::string& publisher_key = "");
 
   ledger::LedgerImpl* ledger_;  // NOT OWNED
-  std::map<std::string, ledger::type::MediaEventInfo> twitch_events;
+  base::flat_map<std::string, ledger::type::MediaEventInfo> twitch_events;
 
   // For testing purposes
   friend class MediaTwitchTest;

@@ -268,8 +268,9 @@ std::string Twitter::GetPublisherName(const std::string& response) {
   return title;
 }
 
-void Twitter::SaveMediaInfo(const std::map<std::string, std::string>& data,
-                                 ledger::PublisherInfoCallback callback) {
+void Twitter::SaveMediaInfo(
+    const base::flat_map<std::string, std::string>& data,
+    ledger::PublisherInfoCallback callback) {
   auto user_id = data.find("user_id");
   auto screen_name = data.find("screen_name");
   if (user_id == data.end() || screen_name == data.end()) {
@@ -300,7 +301,7 @@ void Twitter::SaveMediaInfo(const std::map<std::string, std::string>& data,
 
 // static
 std::string Twitter::GetShareURL(
-    const std::map<std::string, std::string>& args) {
+    const base::flat_map<std::string, std::string>& args) {
   auto comment = args.find("comment");
   auto name = args.find("name");
   auto tweet_id = args.find("tweet_id");

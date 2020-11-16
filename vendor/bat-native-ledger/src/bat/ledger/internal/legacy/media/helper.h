@@ -7,23 +7,26 @@
 #define BRAVELEDGER_MEDIA_HELPER_H_
 
 #include <functional>
-#include <map>
 #include <string>
 #include <vector>
+
+#include "base/containers/flat_map.h"
 
 namespace braveledger_media {
 
 std::string GetMediaKey(const std::string& mediaId, const std::string& type);
 
-void GetTwitchParts(const std::string& query,
-                    std::vector<std::map<std::string, std::string>>* parts);
+void GetTwitchParts(
+    const std::string& query,
+    std::vector<base::flat_map<std::string, std::string>>* parts);
 
 std::string ExtractData(const std::string& data,
                         const std::string& match_after,
                         const std::string& match_until);
 
-void GetVimeoParts(const std::string& query,
-                   std::vector<std::map<std::string, std::string>>* parts);
+void GetVimeoParts(
+    const std::string& query,
+    std::vector<base::flat_map<std::string, std::string>>* parts);
 
 }  // namespace braveledger_media
 

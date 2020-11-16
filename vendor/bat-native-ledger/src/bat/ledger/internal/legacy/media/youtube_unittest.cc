@@ -3,9 +3,9 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#include <map>
 #include <utility>
 
+#include "base/containers/flat_map.h"
 #include "bat/ledger/internal/constants.h"
 #include "bat/ledger/internal/legacy/media/youtube.h"
 #include "bat/ledger/internal/legacy/static_values.h"
@@ -387,7 +387,7 @@ TEST(MediaYouTubeTest, GetLinkType) {
 }
 
 TEST(MediaYouTubeTest, GetMediaIdFromParts) {
-  std::map<std::string, std::string> parts;
+  base::flat_map<std::string, std::string> parts;
 
   std::string docid("FsC15IBOpxw");
   parts.insert(std::pair<std::string, std::string>("docid", docid));
@@ -421,7 +421,7 @@ TEST(MediaYouTubeTest, GetMediaIdFromParts) {
 }
 
 TEST(MediaYouTubeTest, GetMediaDurationFromParts) {
-  std::map<std::string, std::string> parts;
+  base::flat_map<std::string, std::string> parts;
 
   // straight play
   std::string start_times("0,0.672,3.784");

@@ -13,6 +13,7 @@
 #include <utility>
 #include <vector>
 
+#include "base/containers/flat_map.h"
 #include "base/containers/flat_set.h"
 #include "base/files/file.h"
 #include "base/files/file_path.h"
@@ -81,12 +82,12 @@ using GetTestResponseCallback =
                         int32_t method,
                         int* response_status_code,
                         std::string* response,
-                        std::map<std::string, std::string>* headers)>;
+                        base::flat_map<std::string, std::string>* headers)>;
 
 using ExternalWalletAuthorizationCallback =
     base::OnceCallback<void(
         const ledger::type::Result,
-        const std::map<std::string, std::string>&)>;
+        const base::flat_map<std::string, std::string>&)>;
 
 using StopLedgerCallback = base::OnceCallback<void(ledger::type::Result)>;
 
@@ -230,7 +231,7 @@ class RewardsServiceImpl : public RewardsService,
 
   void SaveInlineMediaInfo(
       const std::string& media_type,
-      const std::map<std::string, std::string>& args,
+      const base::flat_map<std::string, std::string>& args,
       SaveMediaInfoCallback callback) override;
 
   void UpdateMediaDuration(
@@ -261,7 +262,7 @@ class RewardsServiceImpl : public RewardsService,
       GetInlineTippingPlatformEnabledCallback callback) override;
 
   void GetShareURL(
-      const std::map<std::string, std::string>& args,
+      const base::flat_map<std::string, std::string>& args,
       GetShareURLCallback callback) override;
 
   void GetPendingContributions(
@@ -292,7 +293,7 @@ class RewardsServiceImpl : public RewardsService,
 
   void ExternalWalletAuthorization(
       const std::string& wallet_type,
-      const std::map<std::string, std::string>& args,
+      const base::flat_map<std::string, std::string>& args,
       ExternalWalletAuthorizationCallback callback);
 
   void ProcessRewardsPageUrl(
@@ -479,7 +480,7 @@ class RewardsServiceImpl : public RewardsService,
     const std::string& action,
     ProcessRewardsPageUrlCallback callback,
     const ledger::type::Result result,
-    const std::map<std::string, std::string>& args);
+    const base::flat_map<std::string, std::string>& args);
 
   void OnDisconnectWallet(
     const std::string& wallet_type,

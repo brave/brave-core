@@ -3,10 +3,10 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#include <map>
 #include <string>
 #include <vector>
 
+#include "base/containers/flat_map.h"
 #include "bat/ledger/internal/legacy/media/helper.h"
 #include "bat/ledger/ledger.h"
 #include "testing/gtest/include/gtest/gtest.h"
@@ -33,7 +33,7 @@ TEST(MediaHelperTest, GetMediaKey) {
 }
 
 TEST(MediaHelperTest, GetTwitchParts) {
-  std::vector<std::map<std::string, std::string>> twitch_parts;
+  std::vector<base::flat_map<std::string, std::string>> twitch_parts;
 
   // string is empty
   braveledger_media::GetTwitchParts("", &twitch_parts);
@@ -101,7 +101,7 @@ TEST(MediaHelperTest, GetTwitchParts) {
       "lLCJwbGF5ZXIiOiJzaXRlIiwiZW5jcnlwdGVkIjpmYWxzZSwidGltZSI6MTU1NTMxNjQ0NS4"
       "0Mzd9fV0=";
 
-  const std::vector<std::map<std::string, std::string>> result =
+  const std::vector<base::flat_map<std::string, std::string>> result =
       {{
         {"channel", "dakotaz"},
         {"event", "minute-watched"},

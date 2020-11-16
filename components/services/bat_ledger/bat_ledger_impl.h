@@ -8,12 +8,12 @@
 
 #include <stdint.h>
 
-#include <map>
 #include <memory>
 #include <string>
 #include <utility>
 #include <vector>
 
+#include "base/containers/flat_map.h"
 #include "base/memory/weak_ptr.h"
 #include "bat/ledger/ledger.h"
 #include "brave/components/services/bat_ledger/public/interfaces/bat_ledger.mojom.h"
@@ -396,7 +396,7 @@ class BatLedgerImpl :
   static void OnExternalWalletAuthorization(
     CallbackHolder<ExternalWalletAuthorizationCallback>* holder,
     ledger::type::Result result,
-    const std::map<std::string, std::string>& args);
+    const base::flat_map<std::string, std::string>& args);
 
   static void OnDisconnectWallet(
     CallbackHolder<DisconnectWalletCallback>* holder,
