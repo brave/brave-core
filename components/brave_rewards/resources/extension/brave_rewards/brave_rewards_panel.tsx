@@ -14,26 +14,37 @@ require('emptykit.css')
 require('../../../../../ui/webui/resources/fonts/muli.css')
 require('../../../../../ui/webui/resources/fonts/poppins.css')
 
+import { LocaleContext } from '../../shared/lib/locale_context'
+import { WithThemeVariables } from '../../shared/components/with_theme_variables'
+
 // Components
 import App from './components/app'
 
 // Utils
-import { getUIMessages } from './background/api/locale_api'
+import { getMessage, getUIMessages } from './background/api/locale_api'
 
 const store: Store<RewardsExtension.State> = new Store({
   portName: 'REWARDSPANEL'
 })
+
+const localeContext = {
+  getString: (key: string) => getMessage(key)
+}
 
 initLocale(getUIMessages())
 
 store.ready().then(
   () => {
     render(
-      <Provider store={store}>
-        <ThemeProvider theme={Theme}>
-          <App />
-        </ThemeProvider>
-      </Provider>,
+      <LocaleContext.Provider value={localeContext}>
+        <Provider store={store}>
+          <ThemeProvider theme={Theme}>
+            <WithThemeVariables>
+              <App />
+            </WithThemeVariables>
+          </ThemeProvider>
+        </Provider>
+      </LocaleContext.Provider>,
       document.getElementById('root'))
   })
   .catch(() => {

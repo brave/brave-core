@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/notifications/notification_platform_bridge_android.h b/chrome/browser/notifications/notification_platform_bridge_android.h
-index d6fc39db68ca00a816401b9f3bfeb38043eaee1c..0585d6e1cdfcad122a6689dd54a2d5ce9f197ba9 100644
+index 7ff354723b9d14c43b9dd7dd2679f36ab8e66f79..ffb5f27cbc4f7d5f826e4717c9a6d6914abb1949 100644
 --- a/chrome/browser/notifications/notification_platform_bridge_android.h
 +++ b/chrome/browser/notifications/notification_platform_bridge_android.h
-@@ -85,6 +85,7 @@ class NotificationPlatformBridgeAndroid : public NotificationPlatformBridge {
+@@ -88,6 +88,7 @@ class NotificationPlatformBridgeAndroid : public NotificationPlatformBridge {
    static void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry);
  
   private:

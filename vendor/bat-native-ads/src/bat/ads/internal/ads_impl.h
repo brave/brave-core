@@ -9,46 +9,64 @@
 #include <stdint.h>
 
 #include <memory>
-#include <set>
 #include <string>
-#include <vector>
 
 #include "bat/ads/ads.h"
-#include "bat/ads/internal/bundle/creative_ad_notification_info.h"
-#include "bat/ads/internal/classification/page_classifier/page_classifier.h"
-#include "bat/ads/internal/classification/purchase_intent_classifier/purchase_intent_classifier.h"
-#include "bat/ads/internal/client/client.h"
-#include "bat/ads/internal/confirmations/confirmation_info.h"
-#include "bat/ads/internal/database/tables/creative_ad_notifications_database_table.h"
-#include "bat/ads/internal/server/redeem_unblinded_payment_tokens/redeem_unblinded_payment_tokens_delegate.h"
-#include "bat/ads/internal/server/redeem_unblinded_token/redeem_unblinded_token_delegate.h"
-#include "bat/ads/internal/server/refill_unblinded_tokens/refill_unblinded_tokens_delegate.h"
-#include "bat/ads/internal/timer.h"
-#include "bat/ads/internal/user_activity/user_activity.h"
-#include "bat/ads/internal/wallet/wallet_info.h"
+#include "bat/ads/internal/tokens/redeem_unblinded_payment_tokens/redeem_unblinded_payment_tokens_delegate.h"
+#include "bat/ads/internal/tokens/redeem_unblinded_token/redeem_unblinded_token_delegate.h"
+#include "bat/ads/internal/tokens/refill_unblinded_tokens/refill_unblinded_tokens_delegate.h"
 #include "bat/ads/mojom.h"
 
 namespace ads {
 
-class AdConversions;
-class AdNotifications;
-class AdRewards;
-class Bundle;
-class Confirmations;
-class ConfirmationType;
-class ExclusionRule;
-class GetCatalog;
-class PermissionRule;
-class RedeemUnblindedPaymentTokens;
-class RedeemUnblindedToken;
-class RefillUnblindedTokens;
+namespace ad_notifications {
+class AdServing;
+}  // namesapce ad_notifications
+
+namespace ad_targeting {
+
+namespace contextual {
+class PageClassifier;
+}  // namespace contextual
+
+namespace behavioral {
+class PurchaseIntentClassifier;
+}  // namespace behavioral
+
+namespace geographic {
 class SubdivisionTargeting;
-struct AdNotificationInfo;
-struct AdsHistory;
+}  // namespace geographic
+
+}  // namespace ad_targeting
 
 namespace database {
 class Initialize;
 }  // namespace database
+
+class AdNotification;
+class AdNotificationServing;
+class AdNotifications;
+class AdRewards;
+class AdServer;
+class AdsHistory;
+class AdTargeting;
+class AdTransfer;
+class Bundle;
+class Client;
+class ConfirmationType;
+class Confirmations;
+class Conversions;
+class NewTabPageAd;
+class RedeemUnblindedPaymentTokens;
+class RedeemUnblindedToken;
+class RefillUnblindedTokens;
+class Tabs;
+class UserActivity;
+class Wallet;
+
+struct AdNotificationInfo;
+struct AdsHistoryInfo;
+struct ConfirmationInfo;
 
 class AdsImpl
     : public Ads,
@@ -64,8 +82,8 @@ class AdsImpl
   AdsImpl(const AdsImpl&) = delete;
   AdsImpl& operator=(const AdsImpl&) = delete;
 
-  AdConversions* get_ad_conversions() const {
-    return ad_conversions_.get();
+  AdsClient* get_ads_client() const {
+    return ads_client_;
   }
 
   AdNotifications* get_ad_notifications() const {
@@ -76,21 +94,24 @@ class AdsImpl
     return ad_rewards_.get();
   }
 
-  AdsClient* get_ads_client() const {
-    return ads_client_;
+  AdServer* get_ad_server() const {
+    return ad_server_.get();
+  }
+
+  AdTargeting* get_ad_targeting() const {
+    return ad_targeting_.get();
+  }
+
+  AdTransfer* get_ad_transfer() const {
+    return ad_transfer_.get();
+  }
+
+  AdsHistory* get_ads_history() const {
+    return ads_history_.get();
   }
 
   Bundle* get_bundle() const {
     return bundle_.get();
-  }
-
-  classification::PageClassifier* get_page_classifier() const {
-    return page_classifier_.get();
-  }
-
-  classification::PurchaseIntentClassifier*
-  get_purchase_intent_classifier() const {
-    return purchase_intent_classifier_.get();
   }
 
   Client* get_client() const {
@@ -101,8 +122,17 @@ class AdsImpl
     return confirmations_.get();
   }
 
-  GetCatalog* get_get_catalog() const {
-    return get_catalog_.get();
+  Conversions* get_conversions() const {
+    return conversions_.get();
+  }
+
+  ad_targeting::contextual::PageClassifier* get_page_classifier() const {
+    return page_classifier_.get();
+  }
+
+  ad_targeting::behavioral::PurchaseIntentClassifier*
+  get_purchase_intent_classifier() const {
+    return purchase_intent_classifier_.get();
   }
 
   RedeemUnblindedPaymentTokens* get_redeem_unblinded_payment_tokens() const {
@@ -117,16 +147,123 @@ class AdsImpl
     return refill_unblinded_tokens_.get();
   }
 
-  SubdivisionTargeting* get_subdivision_targeting() const {
+  ad_targeting::geographic::SubdivisionTargeting*
+  get_subdivision_targeting() const {
     return subdivision_targeting_.get();
+  }
+
+  Tabs* get_tabs() const {
+    return tabs_.get();
   }
 
   UserActivity* get_user_activity() const {
     return user_activity_.get();
   }
 
+  Wallet* get_wallet() const {
+    return wallet_.get();
+  }
+
+  bool IsInitialized();
+
+  bool IsForeground() const;
+
+  // Ads implementation
   void Initialize(
       InitializeCallback callback) override;
+
+  void Shutdown(
+      ShutdownCallback callback) override;
+
+  void ChangeLocale(
+      const std::string& locale) override;
+
+  void OnAdsSubdivisionTargetingCodeHasChanged() override;
+
+  void OnPageLoaded(
+      const int32_t tab_id,
+      const std::string& original_url,
+      const std::string& url,
+      const std::string& content) override;
+
+  void OnIdle() override;
+  void OnUnIdle() override;
+
+  void OnForeground() override;
+  void OnBackground() override;
+
+  void OnMediaPlaying(
+      const int32_t tab_id) override;
+  void OnMediaStopped(
+      const int32_t tab_id) override;
+
+  void OnTabUpdated(
+      const int32_t tab_id,
+      const std::string& url,
+      const bool is_active,
+      const bool is_browser_active,
+      const bool is_incognito) override;
+
+  void OnTabClosed(
+      const int32_t tab_id) override;
+
+  void OnWalletUpdated(
+      const std::string& payment_id,
+      const std::string& private_key) override;
+
+  void OnUserModelUpdated(
+      const std::string& id) override;
+
+  bool GetAdNotification(
+      const std::string& uuid,
+      AdNotificationInfo* info) override;
+  void OnAdNotificationEvent(
+      const std::string& uuid,
+      const AdNotificationEventType event_type) override;
+
+  void OnNewTabPageAdEvent(
+      const std::string& wallpaper_id,
+      const std::string& creative_instance_id,
+      const NewTabPageAdEventType event_type) override;
+
+  void RemoveAllHistory(
+      RemoveAllHistoryCallback callback) override;
+
+  void ReconcileAdRewards() override;
+
+  AdsHistoryInfo GetAdsHistory(
+      const AdsHistoryInfo::FilterType filter_type,
+      const AdsHistoryInfo::SortType sort_type,
+      const uint64_t from_timestamp,
+      const uint64_t to_timestamp) override;
+
+  void GetTransactionHistory(
+      GetTransactionHistoryCallback callback) override;
+
+  AdContentInfo::LikeAction ToggleAdThumbUp(
+      const std::string& creative_instance_id,
+      const std::string& creative_set_id,
+      const AdContentInfo::LikeAction& action) override;
+  AdContentInfo::LikeAction ToggleAdThumbDown(
+      const std::string& creative_instance_id,
+      const std::string& creative_set_id,
+      const AdContentInfo::LikeAction& action) override;
+  CategoryContentInfo::OptAction ToggleAdOptInAction(
+      const std::string& category,
+      const CategoryContentInfo::OptAction& action) override;
+  CategoryContentInfo::OptAction ToggleAdOptOutAction(
+      const std::string& category,
+      const CategoryContentInfo::OptAction& action) override;
+  bool ToggleSaveAd(
+      const std::string& creative_instance_id,
+      const std::string& creative_set_id,
+      const bool saved) override;
+  bool ToggleFlagAd(
+      const std::string& creative_instance_id,
+      const std::string& creative_set_id,
+      const bool flagged) override;
+
+ private:
   void InitializeStep2(
       const Result result,
       InitializeCallback callback);
@@ -142,227 +279,45 @@ class AdsImpl
   void InitializeStep6(
       const Result result,
       InitializeCallback callback);
-  bool IsInitialized();
 
-  void Shutdown(
-      ShutdownCallback callback) override;
+  void PurgeExpiredAdEvents();
 
-  uint64_t GetAdsPerHourPref() const;
-  uint64_t GetAdsPerDayPref() const;
+  void MaybeServeAdNotification();
 
-  bool is_foreground_ = false;
-  void OnForeground() override;
-  void OnBackground() override;
-  bool IsForeground() const;
+  void MaybeServeAdNotificationsAtRegularIntervals();
 
-  void OnIdle() override;
-  void OnUnIdle() override;
-
-  std::set<int32_t> media_playing_;
-  void OnMediaPlaying(
-      const int32_t tab_id) override;
-  void OnMediaStopped(
-      const int32_t tab_id) override;
-  bool IsMediaPlaying() const;
-
-  bool GetAdNotification(
-      const std::string& uuid,
-      AdNotificationInfo* info) override;
-  void OnAdNotificationEvent(
-      const std::string& uuid,
-      const AdNotificationEventType event_type) override;
-
-  bool ShouldNotDisturb() const;
-
-  int32_t get_active_tab_id() const;
-  std::string get_active_tab_url() const;
-  std::string get_previous_tab_url() const;
-
-  void OnTabUpdated(
-      const int32_t tab_id,
-      const std::string& url,
-      const bool is_active,
-      const bool is_browser_active,
-      const bool is_incognito) override;
-  void OnTabClosed(
-      const int32_t tab_id) override;
-
-  void OnWalletUpdated(
-      const std::string& payment_id,
-      const std::string& private_key) override;
-
-  void RemoveAllHistory(
-      RemoveAllHistoryCallback callback) override;
-
-  AdsHistory GetAdsHistory(
-      const AdsHistory::FilterType filter_type,
-      const AdsHistory::SortType sort_type,
-      const uint64_t from_timestamp,
-      const uint64_t to_timestamp) override;
-
-  AdContent::LikeAction ToggleAdThumbUp(
-      const std::string& creative_instance_id,
-      const std::string& creative_set_id,
-      const AdContent::LikeAction& action) override;
-  AdContent::LikeAction ToggleAdThumbDown(
-      const std::string& creative_instance_id,
-      const std::string& creative_set_id,
-      const AdContent::LikeAction& action) override;
-  CategoryContent::OptAction ToggleAdOptInAction(
-      const std::string& category,
-      const CategoryContent::OptAction& action) override;
-  CategoryContent::OptAction ToggleAdOptOutAction(
-      const std::string& category,
-      const CategoryContent::OptAction& action) override;
-  bool ToggleSaveAd(
-      const std::string& creative_instance_id,
-      const std::string& creative_set_id,
-      const bool saved) override;
-  bool ToggleFlagAd(
-      const std::string& creative_instance_id,
-      const std::string& creative_set_id,
-      const bool flagged) override;
-
-  void ChangeLocale(
-      const std::string& locale) override;
-
-  void OnUserModelUpdated(
-      const std::string& id) override;
-
-  void OnAdsSubdivisionTargetingCodeHasChanged() override;
-
-  void OnPageLoaded(
-      const int32_t tab_id,
-      const std::string& original_url,
-      const std::string& url,
-      const std::string& content) override;
-
-  void MaybeSustainAdNotification(
-      const int32_t tab_id,
-      const std::string& url);
-
-  classification::PurchaseIntentWinningCategoryList
-      GetPurchaseIntentWinningCategories();
-
-  void MaybeServeAdNotification(
-      const bool should_serve);
-  void ServeAdNotificationIfReady();
-  void ServeAdNotificationFromCategories(
-      const classification::CategoryList& categories);
-  void OnServeAdNotificationFromCategories(
-      const Result result,
-      const classification::CategoryList& categories,
-      const CreativeAdNotificationList& ads);
-  void ServeAdNotificationFromParentCategories(
-      const classification::CategoryList& categories);
-  void OnServeAdNotificationFromParentCategories(
-      const Result result,
-      const classification::CategoryList& categories,
-      const CreativeAdNotificationList& ads);
-  void ServeUntargetedAdNotification();
-  void OnServeUntargetedAdNotification(
-      const Result result,
-      const classification::CategoryList& categories,
-      const CreativeAdNotificationList& ads);
-  classification::CategoryList GetCategoriesToServeAd();
-  void ServeAdNotificationWithPacing(
-      const CreativeAdNotificationList& ads);
-  void SuccessfullyServedAd();
-  void FailedToServeAdNotification(
-      const std::string& reason);
-
-  CreativeAdNotificationList GetEligibleAds(
-      const CreativeAdNotificationList& ads);
-  CreativeAdNotificationList GetUnseenAdsAndRoundRobinIfNeeded(
-      const CreativeAdNotificationList& ads) const;
-  CreativeAdNotificationList GetUnseenAds(
-      const CreativeAdNotificationList& ads) const;
-  CreativeAdNotificationList GetAdsForUnseenAdvertisers(
-      const CreativeAdNotificationList& ads) const;
-
-  bool IsAdNotificationValid(
-      const CreativeAdNotificationInfo& info);
-  bool ShowAdNotification(
-      const CreativeAdNotificationInfo& info);
-  bool IsAllowedToServeAdNotifications();
-
-  Timer deliver_ad_notification_timer_;
-  void MaybeStartDeliveringAdNotifications();
-  void StartDeliveringAdNotifications();
-  void StartDeliveringAdNotificationsAfterSeconds(
-      const uint64_t seconds);
-  void DeliverAdNotification();
-
-  #if defined(OS_ANDROID)
-  void RemoveAllAdNotificationsAfterReboot();
-  void RemoveAllAdNotificationsAfterUpdate();
-  #endif
-
-  const AdNotificationInfo& get_last_shown_ad_notification() const;
-  void set_last_shown_ad_notification(
-      const AdNotificationInfo& info);
-
-  void AppendAdNotificationToHistory(
-      const AdNotificationInfo& info,
-      const ConfirmationType& confirmation_type);
-
-  // Ad rewards
-  void ReconcileAdRewards() override;
-
-  // Transaction history
-  void GetTransactionHistory(
-      GetTransactionHistoryCallback callback) override;
-  TransactionList GetTransactions(
-      const uint64_t from_timestamp_in_seconds,
-      const uint64_t to_timestamp_in_seconds);
-  TransactionList GetUnredeemedTransactions();
-
-  // Wallet
-  WalletInfo get_wallet() const;
-
- private:
   bool is_initialized_ = false;
 
-  int32_t active_tab_id_ = 0;
-  std::string active_tab_url_;
-  std::string previous_tab_url_;
-
-  AdNotificationInfo last_shown_ad_notification_;
-  CreativeAdNotificationInfo last_shown_creative_ad_notification_;
-  Timer sustain_ad_notification_interaction_timer_;
-  std::set<int32_t> sustained_ad_notifications_;
-  std::set<int32_t> sustaining_ad_notifications_;
-  void MaybeStartSustainingAdNotificationInteraction(
-      const int32_t tab_id,
-      const std::string& url);
-  void SustainAdNotificationInteractionIfNeeded(
-      const int32_t tab_id,
-      const std::string& url);
-
-  std::vector<std::unique_ptr<PermissionRule>> CreatePermissionRules() const;
-  std::vector<std::unique_ptr<ExclusionRule>> CreateExclusionRules() const;
-
-  WalletInfo wallet_;
+  bool is_foreground_ = false;
 
   AdsClient* ads_client_;  // NOT OWNED
 
-  std::unique_ptr<AdConversions> ad_conversions_;
+  std::unique_ptr<AdsHistory> ads_history_;
+  std::unique_ptr<AdNotification> ad_notification_;
   std::unique_ptr<AdNotifications> ad_notifications_;
   std::unique_ptr<AdRewards> ad_rewards_;
+  std::unique_ptr<AdServer> ad_server_;
+  std::unique_ptr<ad_notifications::AdServing> ad_notification_serving_;
+  std::unique_ptr<AdTargeting> ad_targeting_;
+  std::unique_ptr<AdTransfer> ad_transfer_;
   std::unique_ptr<Bundle> bundle_;
   std::unique_ptr<Client> client_;
   std::unique_ptr<Confirmations> confirmations_;
+  std::unique_ptr<Conversions> conversions_;
   std::unique_ptr<database::Initialize> database_;
-  std::unique_ptr<GetCatalog> get_catalog_;
-  std::unique_ptr<classification::PageClassifier> page_classifier_;
-  std::unique_ptr<classification::PurchaseIntentClassifier>
+  std::unique_ptr<NewTabPageAd> new_tab_page_ad_;
+  std::unique_ptr<ad_targeting::behavioral::PurchaseIntentClassifier>
       purchase_intent_classifier_;
+  std::unique_ptr<ad_targeting::contextual::PageClassifier> page_classifier_;
+  std::unique_ptr<ad_targeting::geographic::SubdivisionTargeting>
+      subdivision_targeting_;
   std::unique_ptr<RedeemUnblindedPaymentTokens>
       redeem_unblinded_payment_tokens_;
   std::unique_ptr<RedeemUnblindedToken> redeem_unblinded_token_;
   std::unique_ptr<RefillUnblindedTokens> refill_unblinded_tokens_;
-  std::unique_ptr<SubdivisionTargeting> subdivision_targeting_;
+  std::unique_ptr<Tabs> tabs_;
   std::unique_ptr<UserActivity> user_activity_;
+  std::unique_ptr<Wallet> wallet_;
 
   // RedeemUnblindedTokenDelegate implementation
   void OnDidRedeemUnblindedToken(

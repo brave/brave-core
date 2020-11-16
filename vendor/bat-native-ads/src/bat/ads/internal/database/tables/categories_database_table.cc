@@ -10,7 +10,6 @@
 #include "base/strings/string_util.h"
 #include "base/strings/stringprintf.h"
 #include "bat/ads/internal/ads_impl.h"
-#include "bat/ads/internal/bundle/creative_ad_notification_info.h"
 #include "bat/ads/internal/database/database_statement_util.h"
 #include "bat/ads/internal/database/database_table_util.h"
 #include "bat/ads/internal/database/database_util.h"
@@ -19,6 +18,8 @@
 namespace ads {
 namespace database {
 namespace table {
+
+using std::placeholders::_1;
 
 namespace {
 const char kTableName[] = "categories";
@@ -34,19 +35,28 @@ Categories::~Categories() = default;
 
 void Categories::InsertOrUpdate(
     DBTransaction* transaction,
-    const CreativeAdNotificationList& creative_ad_notifications) {
+    const CreativeAdList& creative_ads) {
   DCHECK(transaction);
 
-  if (creative_ad_notifications.empty()) {
+  if (creative_ads.empty()) {
     return;
   }
 
   DBCommandPtr command = DBCommand::New();
   command->type = DBCommand::Type::RUN;
-  command->command = BuildInsertOrUpdateQuery(command.get(),
-      creative_ad_notifications);
+  command->command = BuildInsertOrUpdateQuery(command.get(), creative_ads);
 
   transaction->commands.push_back(std::move(command));
+}
+
+void Categories::Delete(
+    ResultCallback callback) {
+  DBTransactionPtr transaction = DBTransaction::New();
+
+  util::Delete(transaction.get(), get_table_name());
+
+  ads_->get_ads_client()->RunDBTransaction(std::move(transaction),
+      std::bind(&OnResultCallback, _1, callback));
 }
 
 std::string Categories::get_table_name() const {
@@ -64,6 +74,11 @@ void Categories::Migrate(
       break;
     }
 
+    case 3: {
+      MigrateToV3(transaction);
+      break;
+    }
+
     default: {
       break;
     }
@@ -74,16 +89,15 @@ void Categories::Migrate(
 
 int Categories::BindParameters(
     DBCommand* command,
-    const CreativeAdNotificationList& creative_ad_notifications) {
+    const CreativeAdList& creative_ads) {
   DCHECK(command);
 
   int count = 0;
 
   int index = 0;
-  for (const auto& creative_ad_notification : creative_ad_notifications) {
-    BindString(command, index++, creative_ad_notification.creative_instance_id);
-    BindString(command, index++,
-        base::ToLowerASCII(creative_ad_notification.category));
+  for (const auto& creative_ad : creative_ads) {
+    BindString(command, index++, creative_ad.creative_set_id);
+    BindString(command, index++, base::ToLowerASCII(creative_ad.category));
 
     count++;
   }
@@ -93,12 +107,12 @@ int Categories::BindParameters(
 
 std::string Categories::BuildInsertOrUpdateQuery(
     DBCommand* command,
-    const CreativeAdNotificationList& creative_ad_notifications) {
-  const int count = BindParameters(command, creative_ad_notifications);
+    const CreativeAdList& creative_ads) {
+  const int count = BindParameters(command, creative_ads);
 
   return base::StringPrintf(
       "INSERT OR REPLACE INTO %s "
-          "(creative_instance_id, "
+          "(creative_set_id, "
           "category) VALUES %s",
       get_table_name().c_str(),
       BuildBindingParameterPlaceholders(2, count).c_str());
@@ -130,17 +144,53 @@ void Categories::CreateIndexV1(
     DBTransaction* transaction) {
   DCHECK(transaction);
 
-  CreateIndex(transaction, get_table_name(), "category");
+  util::CreateIndex(transaction, get_table_name(), "category");
 }
 
 void Categories::MigrateToV1(
     DBTransaction* transaction) {
   DCHECK(transaction);
 
-  Drop(transaction, get_table_name());
+  util::Drop(transaction, get_table_name());
 
   CreateTableV1(transaction);
   CreateIndexV1(transaction);
+}
+
+void Categories::CreateTableV3(
+    DBTransaction* transaction) {
+  DCHECK(transaction);
+
+  const std::string query = base::StringPrintf(
+      "CREATE TABLE %s "
+          "(creative_set_id TEXT NOT NULL, "
+          "category TEXT NOT NULL, "
+          "PRIMARY KEY (creative_set_id, category), "
+          "UNIQUE(creative_set_id, category) ON CONFLICT REPLACE)",
+      get_table_name().c_str());
+
+  DBCommandPtr command = DBCommand::New();
+  command->type = DBCommand::Type::EXECUTE;
+  command->command = query;
+
+  transaction->commands.push_back(std::move(command));
+}
+
+void Categories::CreateIndexV3(
+    DBTransaction* transaction) {
+  DCHECK(transaction);
+
+  util::CreateIndex(transaction, get_table_name(), "creative_set_id");
+}
+
+void Categories::MigrateToV3(
+    DBTransaction* transaction) {
+  DCHECK(transaction);
+
+  util::Drop(transaction, get_table_name());
+
+  CreateTableV3(transaction);
+  CreateIndexV3(transaction);
 }
 
 }  // namespace table

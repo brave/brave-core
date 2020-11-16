@@ -8,7 +8,7 @@
 
 #include "../../../../chrome/browser/service_sandbox_type.h"
 
-#include "brave/components/ipfs/browser/buildflags/buildflags.h"
+#include "brave/components/ipfs/buildflags/buildflags.h"
 
 // brave::mojom::ProfileImport
 namespace brave {
@@ -24,20 +24,8 @@ content::GetServiceSandboxType<brave::mojom::ProfileImport>() {
 }
 
 #if BUILDFLAG(IPFS_ENABLED)
-#include "brave/components/ipfs/browser/service_sandbox_type.h"
+#include "brave/components/ipfs/service_sandbox_type.h"
 #endif
-
-namespace tor {
-namespace mojom {
-class TorLauncher;
-}  // namespace mojom
-}  // namespace tor
-
-template <>
-inline sandbox::policy::SandboxType
-content::GetServiceSandboxType<tor::mojom::TorLauncher>() {
-  return sandbox::policy::SandboxType::kNoSandbox;
-}
 
 #if !defined(OS_ANDROID)  // Android will use default, which is kUtility.
 namespace bat_ledger {

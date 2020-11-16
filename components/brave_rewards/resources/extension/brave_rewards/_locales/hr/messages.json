@@ -197,10 +197,6 @@
     "message": "Sada možete zarađivati pregledavanjem oglasa.",
     "description": "Message for ads launch notification"
   },
-  "braveAdsLaunchTitle": {
-    "message": "Stigli su Brave Ads!",
-    "description": "Message used in notification to let users know Ads is available"
-  },
   "braveAdsTitle": {
     "message": "Brave Ads",
     "description": "Notification title when we display info about ads"
@@ -603,6 +599,10 @@
     "message": "Odustani",
     "description": "Text for cancel button"
   },
+  "changeAmount":  {
+    "message": "Promijeni iznos",
+    "description": "Button text for changing monthly contribution amount"
+  },
   "login":  {
     "message": "Prijava",
     "description": "Text for login button"
@@ -612,7 +612,7 @@
     "description": "Text for login button"
   },
   "loginMessageText":  {
-    "message": "Treba vam najmanje 25 BATA za stvaranje računa za uslugu Uphold. Pokušajte ponovno kasnije. <br/> Ako ste već provjerili račun za uslugu Uphold, nastavite do prijave.",
+    "message": "Treba vam najmanje 25 BATA za stvaranje računa za uslugu Uphold. Pokušajte ponovno kasnije. Ako već imate provjereni račun za uslugu Uphold, nastavite do prijave.",
     "description": "Text for login button"
   },
   "walletConnected":  {
@@ -622,5 +622,9 @@
   "walletPending":  {
     "message": "Na čekanju",
     "description": "Status button that tells user that he is currently pending"
+  },
+  "walletVerificationNote3":  {
+    "message": "Napomena: Vaše će transakcije biti vidljive usluzi Uphold nakon autorizacije; na primjer, bit će vidljiv primatelj i iznos vaših napojnica.",
+    "description": "Displayed in login modal for uphold"
   }
 }

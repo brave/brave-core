@@ -7,6 +7,7 @@
 
 #include "brave/browser/profiles/profile_util.h"
 #include "chrome/browser/ui/browser_commands.h"
+
 #define ReloadBypassingCache ReloadBypassingCache_ChromiumImpl
 #include "../../../../../chrome/browser/ui/browser_commands.cc"  // NOLINT
 #undef ReloadBypassingCache

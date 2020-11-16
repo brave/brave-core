@@ -1,8 +1,8 @@
 diff --git a/chrome/installer/mac/BUILD.gn b/chrome/installer/mac/BUILD.gn
-index 108dd95d86750ead5ec49ec16835e0330b9575fa..268e82d54f7ad7e5eb3e56f4961f537f03f5308c 100644
+index b3fc448575b68fbde67a57040896f88fb77cf54c..a6fc9619035d7c848667130f6a36b89d9387a5ae 100644
 --- a/chrome/installer/mac/BUILD.gn
 +++ b/chrome/installer/mac/BUILD.gn
-@@ -13,7 +13,7 @@ group("mac") {
+@@ -17,7 +17,7 @@ group("mac") {
    public_deps = [ ":copies" ]
  }
  

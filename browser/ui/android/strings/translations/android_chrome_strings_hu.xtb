@@ -1026,6 +1026,7 @@ Egyes webhelyek például válaszolhatnak rá úgy, hogy olyan hirdetéseket jel
 <translation id="996149300115483134">A hírcsatornakártya menüje be van csukva</translation>
 <translation id="4540437243849625078">Ez a webhely információkat akar megosztani egy alkalmazással a privát módon kívül.</translation>
 <translation id="1227836882233136433">Kilépsz a privát módból?</translation>
+<translation id="21023559487771014">Lépjen privát módba</translation>
 <translation id="5186185447130319458">Privát</translation>
 <translation id="9063160602596686558">Automatikusan elküldi a használati statisztikákat és hibajelentéseket a Brave Software-nak</translation>
 <translation id="1438581767753657407">Lite módban a Brave saját szervereit használja, hogy az oldalak betöltése gyorsabb legyen. A Lite mód átírja a nagyon lassú oldalakat, hogy csak a lényeges tartalmakat töltse be. A Lite mód nem vonatkozik privát fülekre.</translation>
@@ -1035,7 +1036,11 @@ Egyes webhelyek például válaszolhatnak rá úgy, hogy olyan hirdetéseket jel
 <translation id="3110967157686007724">Privát fül</translation>
 <translation id="4526803704855831732">Privát fülek</translation>
 <translation id="7465104139234185284">Összes privát ablak bezárása</translation>
-<translation id="21023559487771014">Lépjen privát módba</translation>
+<translation id="1455125811784733159">Privát ablak megnyitása</translation>
+<translation id="807110510029471880">Használj privátot a bejelentkezéshez</translation>
+<translation id="7987056960390558517">Privátban <ph name="BEGIN_BOLD1"/>tevékenységed továbbra is látható lehet <ph name="END_BOLD1"/>a felkeresett weboldalak, alkalmazód vagy iskolád és az internetszolgáltatód számára.
+
+A privát munkamenet adatai csak akkor törlődnek a Brave-ről, amikor <ph name="BEGIN_BOLD2"/>bezársz minden privát ablakot<ph name="END_BOLD2"/>.</translation>
 <translation id="6336451774241870485">Új privát fül</translation>
 <translation id="3234355010754616171">Új privát fül</translation>
 <translation id="6610147964972079463">Privát fülek bezárása</translation>

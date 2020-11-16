@@ -6520,6 +6520,14 @@ Simpan file kunci Anda di tempat yang aman. Anda akan membutuhkannya untuk membu
 <translation id="995782501881226248">YouTube</translation>
 <translation id="996250603853062861">Membuat koneksi aman...</translation>
 <translation id="998747458861718449">I&amp;nspeksi</translation>
+<translation id="6744651634043798597">{COUNT, plural,
+          =0 {Buka semua di &amp;jendela pribadi}
+          =1 {Buka di &amp;jendela pribadi}
+          other {Buka semua (#) di &amp;jendela pribadi}}</translation>
+<translation id="2633634757060186848">{COUNT, plural,
+          =0 {Buka Semua di &amp;Jendela Pribadi}
+          =1 {Buka di &amp;Jendela Pribadi}
+          other {Buka Semua (#) di &amp;Jendela Pribadi}}</translation>
 <translation id="658539216370629794">Buka tautan di &amp;jendela pribadi</translation>
 <translation id="1432267168815937878">Buka Tautan di &amp;Jendela Pribadi</translation>
 <translation id="6516243500644829484">Jendela &amp;pribadi baru</translation>
@@ -6533,6 +6541,7 @@ Simpan file kunci Anda di tempat yang aman. Anda akan membutuhkannya untuk membu
 <translation id="9048137919253433011">Tab Pribadi: <ph name="TAB_NAME"/></translation>
 <translation id="1799432502220762862">Subframe Pribadi: <ph name="SUBFRAME_SITE"/></translation>
 <translation id="3193187622878830588">Portal Samaran: <ph name="SUBFRAME_SITE"/></translation>
+<translation id="5097649414558628673">Alat: <ph name="PRINT_NAME"/></translation>
 <translation id="8808478386290700967">Toko Web</translation>
 <translation id="8261378640211443080">Ekstensi ini tidak tercantum dalam <ph name="IDS_EXTENSION_WEB_STORE_TITLE"/> dan mungkin telah ditambahkan tanpa sepengetahuan Anda.</translation>
 <translation id="6827869674836193263"><ph name="WINDOW_TITLE"/> (Pribadi)</translation>
@@ -6550,19 +6559,21 @@ Simpan file kunci Anda di tempat yang aman. Anda akan membutuhkannya untuk membu
 <translation id="3098826269712097986">Data sign-in akan disimpan di Brave setelah Anda keluar dari mode Pribadi. Ini akan memungkinkan Anda untuk menggunakan Touch ID dengan situs web ini lagi nanti.</translation>
 <translation id="5186185447130319458">Pribadi</translation>
 <translation id="2579188629646253712">Keluar dari Mode Pribadi</translation>
-<translation id="6744651634043798597">{COUNT, plural,
-          =0 {Buka semua di &amp;jendela pribadi}
-          =1 {Buka di &amp;jendela pribadi}
-          other {Buka semua (#) di &amp;jendela pribadi}}</translation>
+<translation id="1001131747196960052">Tutup Privat</translation>
+<translation id="7475335772460644497">{COUNT, plural,
+          =0 {Buka semua di &amp;jendela privat}
+          =1 {Buka di &amp;jendela privat}
+          lainnya {Buka semua ({COUNT}) di &amp;jendela privat}}</translation>
 <translation id="2431625704210501303">Buka di &amp;jendela pribadi</translation>
 <translation id="4620367155626060530">&amp;Tampilkan bilah bookmark</translation>
-<translation id="2633634757060186848">{COUNT, plural,
-          =0 {Buka Semua di &amp;Jendela Pribadi}
-          =1 {Buka di &amp;Jendela Pribadi}
-          other {Buka Semua (#) di &amp;Jendela Pribadi}}</translation>
+<translation id="1448315815373449655">{COUNT, plural,
+          =0 {Buka semua di &amp;Jendela Privat}
+          =1 {Buka di &amp;Jendela Privat}
+          lainnya {Buka Semua ({COUNT}) di &amp;Jendela Privat}}</translation>
 <translation id="1985165269306590797">Buka di &amp;Jendela Pribadi</translation>
 <translation id="4680518314108745448">&amp;Tampilkan Bilah Bookmark</translation>
 <translation id="642436385689435488">Buka semua di jendela pribadi</translation>
+<translation id="5074021236879527611">Buka semua (<ph name="URL_COUNT"/>) di jendela privat</translation>
 <translation id="5463021359602611602">Buka di jendela pribadi</translation>
 <translation id="1850357845349976573">{0, plural,
         =1 {Pribadi}
@@ -6612,6 +6623,8 @@ Simpan file kunci Anda di tempat yang aman. Anda akan membutuhkannya untuk membu
 <translation id="4854477725773269949">Izinkan di mode pribadi</translation>
 <translation id="6436164536244065364">Lihat di Toko Web</translation>
 <translation id="38046578254905003">Temukan ekstensi dan tema di <ph name="BEGIN_LINK"/>Toko Web<ph name="END_LINK"/></translation>
+<translation id="2402482691429508168">Profil yang telah memilih agar dapat terlihat oleh Anda bila layar mereka terbuka</translation>
+<translation id="3910100573440336938">Bagikan file dengan profil di sekitar Anda</translation>
 <translation id="6336451774241870485">Tab pribadi baru</translation>
 <translation id="6610147964972079463">Tutup tab pribadi</translation>
 <translation id="4933782374919065856">Ada pertanyaan? Hubungi orang yang memantau profil Anda.</translation>

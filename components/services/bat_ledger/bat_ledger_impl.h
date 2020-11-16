@@ -94,7 +94,6 @@ class BatLedgerImpl :
       const std::string& pass_phrase,
       RecoverWalletCallback callback) override;
 
-  void SetRewardsMainEnabled(bool enabled) override;
   void SetPublisherMinVisitTime(int duration_in_seconds) override;
   void SetPublisherMinVisits(int visits) override;
   void SetPublisherAllowNonVerified(bool allow) override;
@@ -104,8 +103,6 @@ class BatLedgerImpl :
 
   void GetBalanceReport(ledger::type::ActivityMonth month, int32_t year,
       GetBalanceReportCallback callback) override;
-
-  void IsWalletCreated(IsWalletCreatedCallback callback) override;
 
   void GetPublisherActivityFromUrl(
       uint64_t window_id,
@@ -126,8 +123,6 @@ class BatLedgerImpl :
       const std::string& publisher_key,
       RemoveRecurringTipCallback callback) override;
   void GetCreationStamp(GetCreationStampCallback callback) override;
-  void GetRewardsMainEnabled(
-      GetRewardsMainEnabledCallback callback) override;
   void HasSufficientBalanceToReconcile(
       HasSufficientBalanceToReconcileCallback callback) override;
 
@@ -247,6 +242,10 @@ class BatLedgerImpl :
   void Shutdown(ShutdownCallback callback) override;
 
   void GetEventLogs(GetEventLogsCallback callback) override;
+
+  void GetBraveWallet(GetBraveWalletCallback callback) override;
+
+  void GetWalletPassphrase(GetWalletPassphraseCallback callback) override;
 
  private:
   // workaround to pass base::OnceCallback into std::bind
@@ -447,6 +446,10 @@ class BatLedgerImpl :
   static void OnGetEventLogs(
       CallbackHolder<GetEventLogsCallback>* holder,
       ledger::type::EventLogs logs);
+
+  static void OnGetBraveWallet(
+      CallbackHolder<GetBraveWalletCallback>* holder,
+      ledger::type::BraveWalletPtr wallet);
 
   std::unique_ptr<BatLedgerClientMojoBridge> bat_ledger_client_mojo_bridge_;
   std::unique_ptr<ledger::Ledger> ledger_;

@@ -1026,6 +1026,7 @@ Näiteks võivad mõned veebisaidid taotlusele reageerida nii, et näitavad teil
 <translation id="996149300115483134">Voo kaardimenüü on suletud</translation>
 <translation id="4540437243849625078">See veebisait soovib teavet jagada väljaspool privaatset režiimi oleva rakendusega.</translation>
 <translation id="1227836882233136433">Lahkud privaatsest režiimist?</translation>
+<translation id="21023559487771014">Vali privaatrežiim</translation>
 <translation id="5186185447130319458">Privaatne</translation>
 <translation id="9063160602596686558">Brave Software'ile saadetakse automaatselt kasutusstatistikat ja krahhiaruandeid</translation>
 <translation id="1438581767753657407">Brave kiirendab lihtsustatud režiimis oma serveritega lehtede laadimist. Lihtsustatud režiim laeb väga aeglaste lehtede puhul vaid tähtsat sisu. Lihtsustatud režiimi ei saa kasutada privaatsetel vahelehtedel.</translation>
@@ -1035,7 +1036,11 @@ Näiteks võivad mõned veebisaidid taotlusele reageerida nii, et näitavad teil
 <translation id="3110967157686007724">Privaatne vaheleht</translation>
 <translation id="4526803704855831732">Privaatsed vahelehed</translation>
 <translation id="7465104139234185284">Sule kõik privaatsed vahelehed</translation>
-<translation id="21023559487771014">Vali privaatrežiim</translation>
+<translation id="1455125811784733159">Ava privaatne vaheleht</translation>
+<translation id="807110510029471880">Kasuta sisselogimiseks privaatset vahelehte</translation>
+<translation id="7987056960390558517">Privaatsel vahelehel võib teie tegevus <ph name="BEGIN_BOLD1"/>siiski nähtav olla <ph name="END_BOLD1"/>teie külastatavatele veebisaitidele, teie tööandjale või koolile ja teie Interneti-teenuse pakkujale.
+
+Teie privaatse seansi andmed kustutatakse Brave’ist ainult siis, kui <ph name="BEGIN_BOLD2"/>sulgete kõik privaatsed vahelehed<ph name="END_BOLD2"/>.</translation>
 <translation id="6336451774241870485">Uus privaatne vaheleht</translation>
 <translation id="3234355010754616171">Uus privaatne vaheleht</translation>
 <translation id="6610147964972079463">Sule privaatsed vahelehed</translation>

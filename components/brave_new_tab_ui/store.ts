@@ -6,10 +6,11 @@
 // Redux API
 import { createStore, applyMiddleware } from 'redux'
 
-// Thunk for async actions
-import thunk from 'redux-thunk'
-
 // Feature core reducer
 import { mainNewTabReducer } from './reducers'
+import todayAsyncHandler from './async/today'
 
-export default createStore(mainNewTabReducer, applyMiddleware(thunk))
+export default createStore(
+  mainNewTabReducer,
+  applyMiddleware(todayAsyncHandler)
+)

@@ -71,7 +71,9 @@ static NSString * const kTransferFeesPrefKey = @"transfer_fees";
 static const auto kOneDay = base::Time::kHoursPerDay * base::Time::kSecondsPerHour;
 
 /// Ledger Prefs, keys will be defined in `bat/ledger/option_keys.h`
-const std::map<std::string, bool> kBoolOptions = {};
+const std::map<std::string, bool> kBoolOptions = {
+    {ledger::option::kClaimUGP, true}
+};
 const std::map<std::string, int> kIntegerOptions = {};
 const std::map<std::string, double> kDoubleOptions = {};
 const std::map<std::string, std::string> kStringOptions = {};
@@ -190,11 +192,9 @@ typedef NS_ENUM(NSInteger, BATLedgerDatabaseMigrationType) {
     [NSNotificationCenter.defaultCenter addObserver:self selector:@selector(applicationDidBecomeActive) name:UIApplicationDidBecomeActiveNotification object:nil];
     [NSNotificationCenter.defaultCenter addObserver:self selector:@selector(applicationDidBackground) name:UIApplicationDidEnterBackgroundNotification object:nil];
 
-    if (self.walletCreated) {
-      [self getRewardsParameters:nil];
-      [self fetchBalance:nil];
-      [self fetchUpholdWallet:nil];
-    }
+    [self getRewardsParameters:nil];
+    [self fetchBalance:nil];
+    [self fetchUpholdWallet:nil];
 
     [self readNotificationsFromDisk];
   }
@@ -227,10 +227,8 @@ typedef NS_ENUM(NSInteger, BATLedgerDatabaseMigrationType) {
     if (self.initialized) {
       self.prefs[kMigrationSucceeded] = @(YES);
       [self savePrefs];
-      
-      if (self.isEnabled) {
-        [self.ads initializeIfAdsEnabled];
-      }
+
+      [self.ads initializeIfAdsEnabled];
     } else {
       BLOG(0, @"Ledger Initialization Failed with error: %d", result);
       if (result == ledger::type::Result::DATABASE_INIT_FAILED) {
@@ -364,9 +362,9 @@ typedef NS_ENUM(NSInteger, BATLedgerDatabaseMigrationType) {
 - (void)savePrefs
 {
   NSDictionary *prefs = [self.prefs copy];
-  NSString *path = [self prefsPath];
+  NSString *path = [[self prefsPath] copy];
   dispatch_async(self.fileWriteThread, ^{
-    [prefs writeToFile:path atomically:YES];
+    [prefs writeToURL:[NSURL fileURLWithPath:path isDirectory:NO] error:nil];
   });
 }
 
@@ -400,8 +398,6 @@ BATClassLedgerBridge(BOOL, useShortRetries, setUseShortRetries, short_retries)
 }
 
 #pragma mark - Wallet
-
-BATLedgerReadonlyBridge(BOOL, isWalletCreated, IsWalletCreated)
 
 - (void)createWallet:(void (^)(NSError * _Nullable))completion
 {
@@ -440,17 +436,23 @@ BATLedgerReadonlyBridge(BOOL, isWalletCreated, IsWalletCreated)
       }
       
       for (BATBraveLedgerObserver *observer in [strongSelf.observers copy]) {
-        if (observer.rewardsEnabledStateUpdated) {
-          observer.rewardsEnabledStateUpdated(strongSelf.isEnabled);
-        }
-      }
-      
-      for (BATBraveLedgerObserver *observer in [strongSelf.observers copy]) {
         if (observer.walletInitalized) {
           observer.walletInitalized(static_cast<BATResult>(result));
         }
       }
     });
+  });
+}
+
+- (void)currentWalletInfo:(void (^)(BATBraveWallet *_Nullable wallet))completion
+{
+  ledger->GetBraveWallet(^(ledger::type::BraveWalletPtr wallet){
+    if (wallet.get() == nullptr) {
+      completion(nil);
+      return;
+    }
+    const auto bridgedWallet = [[BATBraveWallet alloc] initWithBraveWallet:*wallet];
+    completion(bridgedWallet);
   });
 }
 
@@ -530,6 +532,20 @@ BATLedgerReadonlyBridge(BOOL, isWalletCreated, IsWalletCreated)
 {
   ledger->GetPendingContributionsTotal(^(double total){
     completion(total);
+  });
+}
+
+- (void)linkBraveWalletToPaymentId:(NSString *)paymentId completion:(void (^)(BATResult result))completion
+{
+  ledger->LinkBraveWallet(paymentId.UTF8String, ^(ledger::type::Result result) {
+    completion(static_cast<BATResult>(result));
+  });
+}
+
+- (void)transferrableAmount:(void (^)(double amount))completion
+{
+  ledger->GetTransferableAmount(^(double amount) {
+    completion(amount);
   });
 }
 
@@ -891,8 +907,9 @@ BATLedgerReadonlyBridge(BOOL, isWalletCreated, IsWalletCreated)
   }
   const auto jsonString = [[NSString alloc] initWithData:jsonData encoding:NSUTF8StringEncoding];
   ledger->ClaimPromotion(promotionId.UTF8String, jsonString.UTF8String, ^(const ledger::type::Result result, const std::string& nonce) {
+    const auto bridgedNonce = [NSString stringWithUTF8String:nonce.c_str()];
     dispatch_async(dispatch_get_main_queue(), ^{
-      completion(static_cast<BATResult>(result), [NSString stringWithUTF8String:nonce.c_str()]);
+      completion(static_cast<BATResult>(result), bridgedNonce);
     });
   });
 }
@@ -900,7 +917,14 @@ BATLedgerReadonlyBridge(BOOL, isWalletCreated, IsWalletCreated)
 - (void)attestPromotion:(NSString *)promotionId solution:(BATPromotionSolution *)solution completion:(void (^)(BATResult result, BATPromotion * _Nullable promotion))completion
 {
   ledger->AttestPromotion(std::string(promotionId.UTF8String), solution.JSONPayload.UTF8String, ^(const ledger::type::Result result, ledger::type::PromotionPtr promotion) {
-    if (promotion.get() == nullptr) return;
+    if (promotion.get() == nullptr) {
+      if (completion) {
+        dispatch_async(dispatch_get_main_queue(), ^{
+          completion(static_cast<BATResult>(result), nil);
+        });
+      }
+      return;
+    }
     
     const auto bridgedPromotion = [[BATPromotion alloc] initWithPromotion:*promotion];
     if (result == ledger::type::Result::LEDGER_OK) {
@@ -1159,24 +1183,6 @@ BATLedgerReadonlyBridge(BOOL, isWalletCreated, IsWalletCreated)
 
 #pragma mark - Preferences
 
-BATLedgerReadonlyBridge(BOOL, isEnabled, GetRewardsMainEnabled)
-
-- (void)setEnabled:(BOOL)enabled
-{
-  ledger->SetRewardsMainEnabled(enabled);
-  if (enabled) {
-    [self.ads initializeIfAdsEnabled];
-  } else {
-    [self.ads shutdown];
-  }
-
-  for (BATBraveLedgerObserver *observer in [self.observers copy]) {
-    if (observer.rewardsEnabledStateUpdated) {
-      observer.rewardsEnabledStateUpdated(enabled);
-    }
-  }
-}
-
 BATLedgerBridge(int,
                 minimumVisitDuration, setMinimumVisitDuration,
                 GetPublisherMinVisitTime, SetPublisherMinVisitTime)
@@ -1399,10 +1405,6 @@ BATLedgerBridge(BOOL,
 
 - (void)startNotificationTimers
 {
-  if (!self.isEnabled) {
-    return;
-  }
-
   dispatch_async(dispatch_get_main_queue(), ^{
     // Startup timer, begins after 30-second delay.
     self.notificationStartupTimer =
@@ -1582,9 +1584,7 @@ BATLedgerBridge(BOOL,
     return;
   }
 
-  dispatch_async(self.fileWriteThread, ^{
-    [data writeToFile:path atomically:YES];
-  });
+  [data writeToURL:[NSURL fileURLWithPath:path isDirectory:NO] options:NSDataWritingAtomic error:nil];
 }
 
 #pragma mark - State
@@ -1630,7 +1630,7 @@ BATLedgerBridge(BOOL,
   NSDictionary *state = [self.state copy];
   NSString *path = [self.randomStatePath copy];
   dispatch_async(self.fileWriteThread, ^{
-    [state writeToFile:path atomically:YES];
+    [state writeToURL:[NSURL fileURLWithPath:path isDirectory:NO] error:nil];
   });
 }
 
@@ -1643,7 +1643,7 @@ BATLedgerBridge(BOOL,
   NSDictionary *state = [self.state copy];
   NSString *path = [self.randomStatePath copy];
   dispatch_async(self.fileWriteThread, ^{
-    [state writeToFile:path atomically:YES];
+    [state writeToURL:[NSURL fileURLWithPath:path isDirectory:NO] error:nil];
   });
 }
 
@@ -1696,11 +1696,13 @@ BATLedgerBridge(BOOL,
 
 - (void)fetchFavIcon:(const std::string &)url faviconKey:(const std::string &)favicon_key callback:(ledger::client::FetchIconCallback)callback
 {
-  if (!self.faviconFetcher) {
-    callback(NO, std::string());
+  const auto pageURL = [NSURL URLWithString:[NSString stringWithUTF8String:url.c_str()]];
+  if (!self.faviconFetcher || !pageURL) {
+    dispatch_async(dispatch_get_main_queue(), ^{
+      callback(NO, std::string());
+    });
     return;
   }
-  const auto pageURL = [NSURL URLWithString:[NSString stringWithUTF8String:url.c_str()]];
   self.faviconFetcher(pageURL, ^(NSURL * _Nullable faviconURL) {
     dispatch_async(dispatch_get_main_queue(), ^{
       callback(faviconURL != nil,
@@ -1860,7 +1862,7 @@ BATLedgerBridge(BOOL,
 
 - (void)deleteLog:(ledger::ResultCallback)callback
 {
-  // TODO implement
+  callback(ledger::type::Result::LEDGER_OK);
 }
 
 - (bool)setEncryptedStringState:(const std::string&)key value:(const std::string&)value

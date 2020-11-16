@@ -23,8 +23,8 @@ declare_args() {
 if (!skip_signing) {
   target_sign_app_path = "$root_out_dir/$mac_signing_output_prefix/" + string_replace("$chrome_product_full_name", " ", "") + "-$chrome_version_full/$brave_exe"
   packaging_dir = "$root_out_dir/" + string_replace("$chrome_product_full_name Packaging", " ", "_")
-  unsigned_pkg_path = "$root_out_dir/unsigned/$brave_pkg"
   keychain_db = getenv("HOME") + "/Library/Keychains/${mac_signing_keychain}.keychain-db"
+  unsigned_pkg_path = "$root_out_dir/unsigned/$brave_pkg"
 }
 
 group("brave") {
@@ -36,7 +36,7 @@ group("brave") {
 
   exe_path = "$app_path/Contents/MacOS/$chrome_product_full_name"
 
-  write_file("$root_out_dir/brave_helper", [ string_replace(rebase_path(exe_path), " ", "\\ ") + " \$@" ])
+  write_file("$root_out_dir/brave_helper", [ string_replace(rebase_path(exe_path), " ", "\\ ") ])
 }
 
 ds_store_file_name = "DS_Store"
@@ -128,6 +128,127 @@ if (skip_signing) {
     }
   }
 } else {
+  action("generate_dsa_sig_for_dmg") {
+    script = "generate_dsa_sig.py"
+
+    sign_update_path = "$root_out_dir/old_dsa_scripts/sign_update"
+    target_dmg_path = "$root_out_dir/$brave_dmg"
+    output_dmg_dsa_path = "$root_out_dir/$brave_dmg.dsa"
+
+    args = [
+      "--sign-update", rebase_path("$sign_update_path"),
+      "--sign-key-file", "$sparkle_dsa_private_key_file",
+      "--target", rebase_path("$target_dmg_path"),
+      "--output", rebase_path("$output_dmg_dsa_path"),
+    ]
+
+    inputs = [
+      script,
+      "$sign_update_path",
+      "$target_dmg_path",
+    ]
+
+    outputs = [
+      "$output_dmg_dsa_path",
+    ]
+
+    deps = [
+      "//brave/vendor/sparkle:copy_old_sign_update",
+      ":copy_dmg_pkg",
+    ]
+  }
+
+  action("generate_eddsa_sig_for_dmg") {
+    script = "generate_eddsa_sig.py"
+
+    sign_update_path = "$root_out_dir/sign_update"
+    target_dmg_path = "$root_out_dir/$brave_dmg"
+    output_dmg_eddsa_path = "$root_out_dir/$brave_dmg.eddsa"
+
+    args = [
+      "--sign-update", rebase_path("$sign_update_path"),
+      "--sign-key", "$sparkle_eddsa_private_key",
+      "--target", rebase_path("$target_dmg_path"),
+      "--output", rebase_path("$output_dmg_eddsa_path"),
+    ]
+
+    inputs = [
+      script,
+      "$sign_update_path",
+      "$target_dmg_path",
+    ]
+
+    outputs = [
+      "$output_dmg_eddsa_path",
+    ]
+
+    deps = [
+      "//brave/vendor/sparkle:build_sparkle_framework",
+      ":copy_dmg_pkg",
+    ]
+  }
+
+  action("build_delta_installer") {
+    script = "build_delta_installer.py"
+
+    binary_delta_path = "$root_out_dir/BinaryDelta"
+    target_dmg_path = "$root_out_dir/$brave_dmg"
+    output_delta_path = "$root_out_dir/$brave_delta"
+
+    args = [
+      "--binary-delta", rebase_path("$binary_delta_path"),
+      "--root-out-dir", rebase_path("$root_out_dir"),
+      "--old-dmg", rebase_path("$root_out_dir/$last_chrome_installer"),
+      "--new-dmg", rebase_path("$target_dmg_path"),
+      "--delta-output", rebase_path("$output_delta_path"),
+    ]
+
+    inputs = [
+      script,
+      "$binary_delta_path",
+      "$target_dmg_path",
+    ]
+
+    outputs = [
+      "$output_delta_path",
+    ]
+
+    deps = [
+      "//brave/vendor/sparkle:build_sparkle_framework",
+      ":copy_dmg_pkg",
+    ]
+  }
+
+  action("generate_eddsa_sig_for_delta") {
+    script = "generate_eddsa_sig.py"
+
+    sign_update_path = "$root_out_dir/sign_update"
+    target_delta_path = "$root_out_dir/$brave_delta"
+    output_delta_eddsa_path = "$root_out_dir/$brave_delta.eddsa"
+
+    args = [
+      "--sign-update", rebase_path("$sign_update_path"),
+      "--sign-key", "$sparkle_eddsa_private_key",
+      "--target", rebase_path("$target_delta_path"),
+      "--output", rebase_path("$output_delta_eddsa_path"),
+    ]
+
+    inputs = [
+      script,
+      "$sign_update_path",
+      "$target_delta_path",
+    ]
+
+    outputs = [
+      "$output_delta_eddsa_path",
+    ]
+
+    deps = [
+      "//brave/vendor/sparkle:build_sparkle_framework",
+      ":build_delta_installer",
+    ]
+  }
+
   action("sign_app") {
     script = "//build/gn_run_binary.py"
     shell_script = "//brave/build/mac/sign_app.sh"

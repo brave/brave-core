@@ -1,20 +1,12 @@
 diff --git a/chrome/browser/BUILD.gn b/chrome/browser/BUILD.gn
-index 98ae3acaf7cf5fbfae0e4c2e0ddb8a087e6d6e23..fd339ae93d51f85cb850035d6bc0fc896ae05cdc 100644
+index 62ddc2d8548bcac4d55bbc7283426c426fecf254..c450d8e6e0a761a38d5d1c132885034559a1ed31 100644
 --- a/chrome/browser/BUILD.gn
 +++ b/chrome/browser/BUILD.gn
-@@ -2194,6 +2194,7 @@ static_library("browser") {
-     "//ui/strings",
-     "//ui/surface",
-     "//ui/web_dialogs",
-+    "//brave/browser:browser_process",
-   ]
- 
-   if (build_with_tflite_lib) {
-@@ -3878,6 +3879,7 @@ static_library("browser") {
-         "task_manager/sampling/shared_sampler_posix.cc",
-       ]
-     }
-+    sources += brave_chrome_browser_sources deps += brave_chrome_browser_deps
+@@ -2360,6 +2360,7 @@ static_library("browser") {
+       "performance_monitor/metric_evaluator_helper_posix.h",
+     ]
    }
++  sources += brave_chrome_browser_sources deps += brave_chrome_browser_deps public_deps += brave_chrome_browser_public_deps
  
-   if (is_chromeos) {
+   if (is_android) {
+     sources += [

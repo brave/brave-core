@@ -20,6 +20,7 @@
 #include "base/strings/utf_string_conversions.h"
 #include "base/task/post_task.h"
 #include "base/task_runner_util.h"
+#include "base/version.h"
 #include "brave/components/brave_component_updater/browser/dat_file_util.h"
 #include "brave/components/brave_component_updater/browser/local_data_files_service.h"
 #include "brave/components/greaselion/browser/switches.h"
@@ -38,12 +39,18 @@ const char kURLs[] = "urls";
 const char kScripts[] = "scripts";
 const char kRunAt[] = "run_at";
 const char kMessages[] = "messages";
+// Note(petemill): "brave" instead of "browser" version in order
+// to preserve some sense of cross-browser targetting of the scripts.
+const char kMinimumBraveVersion[] = "minimum_brave_version";
 // precondition keys
 const char kRewards[] = "rewards-enabled";
 const char kTwitterTips[] = "twitter-tips-enabled";
 const char kRedditTips[] = "reddit-tips-enabled";
 const char kGithubTips[] = "github-tips-enabled";
 const char kAutoContribution[] = "auto-contribution-enabled";
+const char kAds[] = "ads-enabled";
+const char kSupportsMinimumBraveVersion[] =
+    "supports-minimum-brave-version";
 
 GreaselionPreconditionValue GreaselionRule::ParsePrecondition(
     const base::Value& value) {
@@ -61,6 +68,7 @@ void GreaselionRule::Parse(base::DictionaryValue* preconditions_value,
                            base::ListValue* urls_value,
                            base::ListValue* scripts_value,
                            const std::string& run_at_value,
+                           const std::string& minimum_brave_version_value,
                            const base::FilePath& messages_value,
                            const base::FilePath& resource_dir) {
   if (preconditions_value) {
@@ -74,8 +82,12 @@ void GreaselionRule::Parse(base::DictionaryValue* preconditions_value,
         preconditions_.reddit_tips_enabled = condition;
       } else if (kv.first == kGithubTips) {
         preconditions_.github_tips_enabled = condition;
-      }  else if (kv.first == kAutoContribution) {
+      } else if (kv.first == kAutoContribution) {
         preconditions_.auto_contribution_enabled = condition;
+      } else if (kv.first == kAds) {
+        preconditions_.ads_enabled = condition;
+      } else if (kv.first == kSupportsMinimumBraveVersion) {
+        preconditions_.supports_minimum_brave_version = condition;
       } else {
         LOG(INFO) << "Greaselion encountered an unknown precondition: "
             << kv.first;
@@ -104,6 +116,7 @@ void GreaselionRule::Parse(base::DictionaryValue* preconditions_value,
     }
   }
   run_at_ = run_at_value;
+  minimum_brave_version_ = minimum_brave_version_value;
   if (!messages_value.empty()) {
     messages_ = resource_dir.Append(messages_value);
   }
@@ -124,7 +137,9 @@ bool GreaselionRule::PreconditionFulfilled(
   }
 }
 
-bool GreaselionRule::Matches(GreaselionFeatures state) const {
+bool GreaselionRule::Matches(
+    GreaselionFeatures state, const base::Version& browser_version) const {
+  // Validate against preconditions.
   if (!PreconditionFulfilled(preconditions_.rewards_enabled,
                              state[greaselion::REWARDS]))
     return false;
@@ -140,6 +155,21 @@ bool GreaselionRule::Matches(GreaselionFeatures state) const {
   if (!PreconditionFulfilled(preconditions_.auto_contribution_enabled,
                              state[greaselion::AUTO_CONTRIBUTION]))
     return false;
+  if (!PreconditionFulfilled(preconditions_.supports_minimum_brave_version,
+                          state[greaselion::SUPPORTS_MINIMUM_BRAVE_VERSION]))
+    return false;
+  if (!PreconditionFulfilled(preconditions_.ads_enabled,
+                             state[greaselion::ADS]))
+    return false;
+  // Validate against browser version.
+  if (base::Version::IsValidWildcardString(minimum_brave_version_)) {
+    bool rule_version_is_higher_than_browser =
+        (browser_version.CompareToWildcardString(minimum_brave_version_) < 0);
+    if (rule_version_is_higher_than_browser) {
+      return false;
+    }
+  }
+  // Rule matches current state.
   return true;
 }
 
@@ -217,6 +247,10 @@ void GreaselionDownloadService::OnDATFileDataReady(std::string contents) {
     rule_dict->GetList(kScripts, &scripts_value);
     const std::string* run_at_ptr = rule_it.FindStringPath(kRunAt);
     const std::string run_at_value = run_at_ptr ? *run_at_ptr : "";
+    const std::string* minimum_brave_version_ptr = rule_it.FindStringPath(
+        kMinimumBraveVersion);
+    const std::string minimum_brave_version_value =
+        minimum_brave_version_ptr ? *minimum_brave_version_ptr : "";
     const std::string* messages = rule_it.FindStringPath(kMessages);
     base::FilePath messages_path;
     if (messages) {
@@ -225,8 +259,8 @@ void GreaselionDownloadService::OnDATFileDataReady(std::string contents) {
 
     std::unique_ptr<GreaselionRule> rule = std::make_unique<GreaselionRule>(
         base::StringPrintf(kRuleNameFormat, rules_.size()));
-    rule->Parse(preconditions_value, urls_value, scripts_value,
-        run_at_value, messages_path, resource_dir_);
+    rule->Parse(preconditions_value, urls_value, scripts_value, run_at_value,
+        minimum_brave_version_value, messages_path, resource_dir_);
     rules_.push_back(std::move(rule));
   }
   for (Observer& observer : observers_)

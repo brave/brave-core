@@ -15,6 +15,7 @@
 namespace ads {
 namespace database {
 namespace table {
+namespace util {
 
 void Drop(
     DBTransaction* transaction,
@@ -56,6 +57,7 @@ void CreateIndex(
     const std::string& table_name,
     const std::string& key);
 
+}  // namespace util
 }  // namespace table
 }  // namespace database
 }  // namespace ads

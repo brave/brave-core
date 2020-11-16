@@ -43,7 +43,8 @@ enum class WindowUsageStats {
 };
 
 const char* GetPrefNameForProfile(Profile* profile) {
-  if (profile->IsIncognitoProfile()) {
+  if (profile->IsIncognitoProfile() &&
+      !brave::IsTorProfile(profile)) {
     return kLastTimeIncognitoUsed;
   }
   return nullptr;

@@ -10,7 +10,7 @@
 
 #include "base/files/file_path.h"
 #include "brave/components/brave_rewards/browser/buildflags/buildflags.h"
-#include "brave/components/brave_wallet/browser/buildflags/buildflags.h"
+#include "brave/components/brave_wallet/buildflags/buildflags.h"
 #include "chrome/browser/extensions/component_loader.h"
 #include "components/prefs/pref_change_registrar.h"
 
@@ -61,7 +61,7 @@ class BraveComponentLoader : public ComponentLoader {
 #endif  // BUILDFLAG(ENABLE_HANGOUT_SERVICES_EXTENSION)
 
 #if BUILDFLAG(BRAVE_REWARDS_ENABLED)
-  void HandleRewardsEnabledStatus();
+  void CheckRewardsStatus();
 #endif
 
   Profile* profile_;

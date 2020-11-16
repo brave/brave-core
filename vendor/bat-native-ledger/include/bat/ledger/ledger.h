@@ -98,6 +98,10 @@ using PublisherInfoCallback =
 using GetPublisherInfoCallback =
     std::function<void(const type::Result, type::PublisherInfoPtr)>;
 
+using GetBraveWalletCallback = std::function<void(type::BraveWalletPtr)>;
+
+using GetTransferableAmountCallback = std::function<void(double)>;
+
 class LEDGER_EXPORT Ledger {
  public:
   static bool IsMediaLink(
@@ -118,7 +122,6 @@ class LEDGER_EXPORT Ledger {
       const bool execute_create_script,
       ResultCallback) = 0;
 
-  // returns false if wallet initialization is already in progress
   virtual void CreateWallet(ResultCallback callback) = 0;
 
   virtual void OneTimeTip(
@@ -165,8 +168,6 @@ class LEDGER_EXPORT Ledger {
 
   virtual void GetExcludedList(PublisherInfoListCallback callback) = 0;
 
-  virtual void SetRewardsMainEnabled(bool enabled) = 0;
-
   virtual void SetPublisherMinVisitTime(int duration_in_seconds) = 0;
 
   virtual void SetPublisherMinVisits(int visits) = 0;
@@ -180,8 +181,6 @@ class LEDGER_EXPORT Ledger {
   virtual void SetAutoContributeEnabled(bool enabled) = 0;
 
   virtual uint64_t GetReconcileStamp() = 0;
-
-  virtual bool GetRewardsMainEnabled() = 0;
 
   virtual int GetPublisherMinVisitTime() = 0;  // In milliseconds
 
@@ -254,8 +253,6 @@ class LEDGER_EXPORT Ledger {
       ResultCallback callback) = 0;
 
   virtual void RestorePublishers(ResultCallback callback) = 0;
-
-  virtual bool IsWalletCreated() = 0;
 
   virtual void GetPublisherActivityFromUrl(
       uint64_t windowId,
@@ -387,6 +384,17 @@ class LEDGER_EXPORT Ledger {
   virtual void Shutdown(ResultCallback callback) = 0;
 
   virtual void GetEventLogs(GetEventLogsCallback callback) = 0;
+
+  virtual void GetBraveWallet(GetBraveWalletCallback callback) = 0;
+
+  virtual std::string GetWalletPassphrase() const = 0;
+
+  virtual void LinkBraveWallet(
+      const std::string& destination_payment_id,
+      ResultCallback callback) = 0;
+
+  virtual void GetTransferableAmount(
+      GetTransferableAmountCallback callback) = 0;
 };
 
 }  // namespace ledger

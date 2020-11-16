@@ -9,42 +9,12 @@ import { getCurrentBalanceReport } from '../utils'
 // Constant
 import { types } from '../constants/rewards_types'
 
-const createWallet = (state: Rewards.State) => {
-  state.walletCreated = true
-  state.enabledMain = true
-  state.enabledAds = true
-  state.enabledContribute = true
-  state.createdTimestamp = new Date().getTime()
-
-  chrome.send('brave_rewards.getReconcileStamp')
-
-  return state
-}
-
 const walletReducer: Reducer<Rewards.State | undefined> = (state: Rewards.State, action) => {
   if (!state) {
     return
   }
 
   switch (action.type) {
-    case types.CREATE_WALLET:
-      state = { ...state }
-      state.walletCreateFailed = false
-      state.walletCreated = false
-      state.initializing = true
-      chrome.send('brave_rewards.createWalletRequested')
-      break
-    case types.WALLET_CREATED:
-      state = { ...state }
-      state = createWallet(state)
-      state.initializing = false
-      chrome.send('brave_rewards.saveAdsSetting', ['adsEnabled', 'true'])
-      break
-    case types.WALLET_CREATE_FAILED:
-      state = { ...state }
-      state.initializing = false
-      state.walletCreateFailed = true
-      break
     case types.GET_REWARDS_PARAMETERS:
       chrome.send('brave_rewards.getRewardsParameters')
       break
@@ -82,10 +52,11 @@ const walletReducer: Reducer<Rewards.State | undefined> = (state: Rewards.State,
       if (result === 0) {
         chrome.send('brave_rewards.fetchPromotions')
         chrome.send('brave_rewards.fetchBalance')
+        chrome.send('brave_rewards.getPaymentId')
         getCurrentBalanceReport()
         ui.modalBackup = false
-        ui.walletCorrupted = false
         ui.emptyWallet = false
+        state.recoveryKey = ''
       }
 
       state = {
@@ -104,19 +75,6 @@ const walletReducer: Reducer<Rewards.State | undefined> = (state: Rewards.State,
     case types.ON_BALANCE_REPORT: {
       state = { ...state }
       state.balanceReport = action.payload.report
-      break
-    }
-    case types.CHECK_WALLET_EXISTENCE: {
-      chrome.send('brave_rewards.checkWalletExistence')
-      break
-    }
-    case types.ON_WALLET_EXISTS: {
-      if (!action.payload.exists || state.walletCreated) {
-        break
-      }
-      state = { ...state }
-      state = createWallet(state)
-      state.firstLoad = false
       break
     }
     case types.GET_CONTRIBUTION_AMOUNT: {
@@ -143,6 +101,9 @@ const walletReducer: Reducer<Rewards.State | undefined> = (state: Rewards.State,
         .reduce((accumulator: number, item: Rewards.PendingContribution) => {
           return accumulator + item.amount
         }, 0)
+      if (total > 0) {
+        state.firstLoad = false
+      }
       state.pendingContributionTotal = total
       break
     }
@@ -234,6 +195,24 @@ const walletReducer: Reducer<Rewards.State | undefined> = (state: Rewards.State,
     case types.ON_MONTHLY_REPORT_IDS: {
       state = { ...state }
       state.monthlyReportIds = action.payload
+      break
+    }
+    case types.GET_WALLET_PASSPHRASE:	{
+      chrome.send('brave_rewards.getWalletPassphrase')
+      break
+    }
+    case types.ON_WALLET_PASSPHRASE: {
+      const value = action.payload.passphrase
+      if (value && value.length > 0) {
+        state = { ...state }
+        let ui = state.ui
+        state.recoveryKey = value
+
+        state = {
+          ...state,
+          ui
+        }
+      }
       break
     }
   }

@@ -10,8 +10,9 @@
 
 #include <string>
 
-#include "bat/ads/internal/ad_conversions/ad_conversion_info.h"
 #include "bat/ads/internal/bundle/creative_ad_notification_info.h"
+#include "bat/ads/internal/bundle/creative_new_tab_page_ad_info.h"
+#include "bat/ads/internal/conversions/conversion_info.h"
 #include "bat/ads/internal/time_util.h"
 
 namespace ads {
@@ -27,7 +28,8 @@ struct BundleState {
   uint64_t catalog_ping = 0;
   base::Time catalog_last_updated;
   CreativeAdNotificationList creative_ad_notifications;
-  AdConversionList ad_conversions;
+  CreativeNewTabPageAdList creative_new_tab_page_ads;
+  ConversionList conversions;
 };
 
 }  // namespace ads

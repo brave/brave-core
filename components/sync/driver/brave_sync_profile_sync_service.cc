@@ -11,13 +11,17 @@
 #include "base/logging.h"
 #include "brave/components/brave_sync/crypto/crypto.h"
 #include "brave/components/sync/driver/brave_sync_auth_manager.h"
+#include "brave/components/sync/driver/profile_sync_service_delegate.h"
 #include "components/prefs/pref_service.h"
 
 namespace syncer {
 
-BraveProfileSyncService::BraveProfileSyncService(InitParams init_params)
+BraveProfileSyncService::BraveProfileSyncService(
+    InitParams init_params,
+    std::unique_ptr<ProfileSyncServiceDelegate> profile_service_delegate)
     : ProfileSyncService(std::move(init_params)),
       brave_sync_prefs_(sync_client_->GetPrefService()),
+      profile_service_delegate_(std::move(profile_service_delegate)),
       weak_ptr_factory_(this) {
   brave_sync_prefs_change_registrar_.Init(sync_client_->GetPrefService());
   brave_sync_prefs_change_registrar_.Add(
@@ -86,6 +90,14 @@ void BraveProfileSyncService::OnBraveSyncPrefsChanged(const std::string& path) {
       GetBraveSyncAuthManager()->ResetKeys();
     }
   }
+}
+
+void BraveProfileSyncService::SuspendDeviceObserverForOwnReset() {
+  profile_service_delegate_->SuspendDeviceObserverForOwnReset();
+}
+
+void BraveProfileSyncService::ResumeDeviceObserver() {
+  profile_service_delegate_->ResumeDeviceObserver();
 }
 
 }  // namespace syncer

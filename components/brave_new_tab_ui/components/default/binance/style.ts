@@ -89,7 +89,7 @@ export const FiatInputWrapper = styled<{}, 'div'>('div')`
 
 export const FiatDropdown = styled<StyleProps, 'div'>('div')`
   float: right;
-  width: 30%;
+  width: ${p => p.isFiat ? 25 : 35}%;
   padding: 7px 5px 0px 7px;
   cursor: ${p => p.disabled ? 'auto' : 'pointer'};
 `
@@ -102,7 +102,7 @@ export const CaratDropdown = styled<StyleProps, 'div'>('div')`
   visibility: ${p => p.hide ? 'hidden' : 'visible'};
 `
 
-export const InputField = styled<{}, 'input'>('input')`
+export const InputField = styled<StyleProps, 'input'>('input')`
   display: inline-block;
   min-width: 215px;
   height: 30px;
@@ -124,7 +124,7 @@ export const FiatInputField = styled(InputField)`
   border-top: none;
   border-left: none;
   border-right: 1px solid rgb(70, 70, 70);
-  width: 70%;
+  width: ${p => p.isFiat ? 75 : 65}%;
   min-width: unset;
   border-left: none;
   padding-left: 10px;
@@ -153,16 +153,14 @@ export const AssetItems = styled<StyleProps, 'div'>('div')`
   overflow-y: scroll;
   position: absolute;
   min-width: 244px;
-  padding: 0px 8px;
-  max-height: 75px;
   border: 1px solid rgb(70, 70, 70);
   border-top: none;
-  height: ${p => p.isFiat ? 100 : 55}px;
+  height: 95px;
   left: ${p => p.isFiat ? '20px' : 'auto'};
 `
 
 export const AssetItem = styled<StyleProps, 'div'>('div')`
-  padding: 3px 0px;
+  padding: 5px 0 5px 5px;
   font-weight: bold;
   cursor: pointer;
   border-bottom: ${p => !p.isLast ? '1px solid rgb(70, 70, 70)' : ''};
@@ -198,7 +196,7 @@ export const ActionButton = styled<{}, 'button'>('button')`
   width: 100%;
   background: #D9B227;
   border: 0;
-  padding: 10px 60px;
+  padding: 10px 55px;
   cursor: pointer;
   color: #000;
   margin-top: 20px;
@@ -642,6 +640,8 @@ export const BlurIcon = styled<{}, 'div'>('div')`
   color: rgb(70, 70, 70);
 `
 
-export const DropdownIcon = styled<StyleProps, 'span'>('span')`
+export const DropdownIcon = styled<StyleProps, 'div'>('div')`
+  width: 12px;
   margin-right: 10px;
+  display: inline-block;
 `

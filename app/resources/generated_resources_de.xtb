@@ -6515,6 +6515,14 @@ Speichern Sie Ihre Schlüsseldatei an einem sicheren Ort. Sie benötigen die Dat
 <translation id="995782501881226248">YouTube</translation>
 <translation id="996250603853062861">Sichere Verbindung wird hergestellt...</translation>
 <translation id="998747458861718449">Untersuchen</translation>
+<translation id="6744651634043798597">{COUNT, plural,
+          =0 {Alle in Privatfenster öffnen}
+          =1 {In Privatfenster öffnen}
+          other {Alle (#) in Privatfenster öffnen}}</translation>
+<translation id="2633634757060186848">{COUNT, plural,
+          =0 {Alle in Privatfenster öffnen}
+          =1 {In Privatfenster öffnen}
+          other {Alle (#) in Privatfenster öffnen}}</translation>
 <translation id="658539216370629794">Verknüpfung in Privatfenster öffnen</translation>
 <translation id="1432267168815937878">Verknüpfung in privatem Fenster öffnen</translation>
 <translation id="6516243500644829484">Neues &amp;privates Fenster</translation>
@@ -6528,6 +6536,7 @@ Speichern Sie Ihre Schlüsseldatei an einem sicheren Ort. Sie benötigen die Dat
 <translation id="9048137919253433011">Privater Reiter: <ph name="TAB_NAME"/></translation>
 <translation id="1799432502220762862">Privater Subframe: <ph name="SUBFRAME_SITE"/></translation>
 <translation id="3193187622878830588">Inkognitoportal: <ph name="SUBFRAME_SITE"/></translation>
+<translation id="5097649414558628673">Tool: <ph name="PRINT_NAME"/></translation>
 <translation id="8808478386290700967">Webshop</translation>
 <translation id="8261378640211443080">Diese Erweiterung ist nicht im <ph name="IDS_EXTENSION_WEB_STORE_TITLE"/> aufgeführt und wurde möglicherweise ohne Ihr Wissen hinzugefügt.</translation>
 <translation id="6827869674836193263"><ph name="WINDOW_TITLE"/> (Privat)</translation>
@@ -6545,19 +6554,21 @@ Speichern Sie Ihre Schlüsseldatei an einem sicheren Ort. Sie benötigen die Dat
 <translation id="3098826269712097986">Die Anmeldedaten werden nach Verlassen des Privatmodus in Brave gespeichert. So können Sie auf dieser Website später wieder Touch ID nutzen.</translation>
 <translation id="5186185447130319458">Privat</translation>
 <translation id="2579188629646253712">Privatmodus verlassen</translation>
-<translation id="6744651634043798597">{COUNT, plural,
-          =0 {Alle in Privatfenster öffnen}
-          =1 {In Privatfenster öffnen}
-          other {Alle (#) in Privatfenster öffnen}}</translation>
+<translation id="1001131747196960052">Privat schließen</translation>
+<translation id="7475335772460644497">{COUNT, plural,
+          =0 {Open all in &amp;private window}
+          =1 {Open in &amp;private window}
+          andere {Open all ({COUNT}) in &amp;private window}}</translation>
 <translation id="2431625704210501303">In Privatfenster öffnen</translation>
 <translation id="4620367155626060530">&amp;Lesezeichenleiste anzeigen</translation>
-<translation id="2633634757060186848">{COUNT, plural,
-          =0 {Alle in Privatfenster öffnen}
-          =1 {In Privatfenster öffnen}
-          other {Alle (#) in Privatfenster öffnen}}</translation>
+<translation id="1448315815373449655">{COUNT, plural,
+          =0 {Open All in &amp;Private Window}
+          =1 {Open in &amp;Private Window}
+          andere {Open All ({COUNT}) in &amp;Private Window}}</translation>
 <translation id="1985165269306590797">In Privatfenster öffnen</translation>
 <translation id="4680518314108745448">&amp;Lesezeichenleiste anzeigen</translation>
 <translation id="642436385689435488">Alle in Privatfenster öffnen</translation>
+<translation id="5074021236879527611">Alle (<ph name="URL_COUNT"/>) in privatem Fenster öffnen</translation>
 <translation id="5463021359602611602">In Privatfenster öffnen</translation>
 <translation id="1850357845349976573">{0, plural,
         =1 {Privat}
@@ -6607,6 +6618,8 @@ Speichern Sie Ihre Schlüsseldatei an einem sicheren Ort. Sie benötigen die Dat
 <translation id="4854477725773269949">In Privatmodus zulassen</translation>
 <translation id="6436164536244065364">Im Web Store ansehen</translation>
 <translation id="38046578254905003">Finden Sie Erweiterungen und Themen im <ph name="BEGIN_LINK"/>Web Store<ph name="END_LINK"/></translation>
+<translation id="2402482691429508168">Profile, die sich dazu entschlossen haben, für Sie sichtbar zu sein, wenn deren Bildschirm freigeschaltet ist.</translation>
+<translation id="3910100573440336938">Teilen Sie Dateien mit anderen Profilen</translation>
 <translation id="6336451774241870485">Neuer Privatreiter</translation>
 <translation id="6610147964972079463">Private Reiter schließen</translation>
 <translation id="4933782374919065856">Fragen? Wenden Sie sich an die Person, die Ihr Profil überwacht.</translation>

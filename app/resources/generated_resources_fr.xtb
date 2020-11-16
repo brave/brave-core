@@ -6521,6 +6521,14 @@ Conservez votre fichier de clé en lieu sûr. Vous en aurez besoin lors de la cr
 <translation id="995782501881226248">YouTube</translation>
 <translation id="996250603853062861">Établissement de la connexion sécurisée...</translation>
 <translation id="998747458861718449">I&amp;nspecter</translation>
+<translation id="6744651634043798597">{COUNT, plural, 
+          =0 {Tout ouvrir dans une fenêtre de navigation &amp;privée}
+          =1 {Ouvrir dans une fenêtre de navigation &amp;privée}
+         other {Tout ouvrir (#) dans une fenêtre de navigation &amp;privée}}</translation>
+<translation id="2633634757060186848">{COUNT, plural,
+          =0 {Open All in &amp;Private Window}
+          =1 {Open in &amp;Private Window}
+          other {Open All (#) in &amp;Private Window}}</translation>
 <translation id="658539216370629794">Ouvrir le lien dans une &amp;fenêtre privée</translation>
 <translation id="1432267168815937878">Ouvrir le lien dans une &amp;fenêtre privée</translation>
 <translation id="6516243500644829484">Nouvelle &amp;fenêtre privée</translation>
@@ -6534,6 +6542,7 @@ Conservez votre fichier de clé en lieu sûr. Vous en aurez besoin lors de la cr
 <translation id="9048137919253433011">Onglet Privé : <ph name="TAB_NAME"/></translation>
 <translation id="1799432502220762862">Sous-trame privée : <ph name="SUBFRAME_SITE"/></translation>
 <translation id="3193187622878830588">Portail de navigation privée : <ph name="SUBFRAME_SITE"/></translation>
+<translation id="5097649414558628673">Outil : <ph name="PRINT_NAME"/></translation>
 <translation id="8808478386290700967">Web Store</translation>
 <translation id="8261378640211443080">Cette extension n'est pas répertoriée sur le <ph name="IDS_EXTENSION_WEB_STORE_TITLE"/> et a pu être ajoutée à votre insu.</translation>
 <translation id="6827869674836193263"><ph name="WINDOW_TITLE"/> (Navigation privée)</translation>
@@ -6551,19 +6560,21 @@ Conservez votre fichier de clé en lieu sûr. Vous en aurez besoin lors de la cr
 <translation id="3098826269712097986">Les données de connexion seront stockées dans Brave après avoir quitté le mode privé. Cela vous permettra d'utiliser Touch ID avec ce site ultérieurement.</translation>
 <translation id="5186185447130319458">Privé</translation>
 <translation id="2579188629646253712">Quitter le mode privé</translation>
-<translation id="6744651634043798597">{COUNT, plural, 
-          =0 {Tout ouvrir dans une fenêtre de navigation &amp;privée}
-          =1 {Ouvrir dans une fenêtre de navigation &amp;privée}
-         other {Tout ouvrir (#) dans une fenêtre de navigation &amp;privée}}</translation>
+<translation id="1001131747196960052">Fermer onglet privé</translation>
+<translation id="7475335772460644497">{COUNT, plural,
+          =0 {Ouvrir tout dans une &amp;fenêtre privée}
+          =1 {Ouvrir dans une &amp;fenêtre privée}
+          other {Ouvrir tout ({COUNT}) dans une &amp;fenêtre privée}}</translation>
 <translation id="2431625704210501303">Ouvrir dans une &amp;fenêtre privée</translation>
 <translation id="4620367155626060530">&amp;Afficher la barre de favoris</translation>
-<translation id="2633634757060186848">{COUNT, plural,
-          =0 {Open All in &amp;Private Window}
-          =1 {Open in &amp;Private Window}
-          other {Open All (#) in &amp;Private Window}}</translation>
+<translation id="1448315815373449655">{COUNT, plural,
+          =0 {Ouvrir tout dans une &amp;fenêtre privée}
+          =1 {Ouvrir dans une &amp;fenêtre privée}
+          other {Ouvrir tout ({COUNT}) dans une &amp;fenêtre privée}}</translation>
 <translation id="1985165269306590797">Ouvrir dans une &amp;fenêtre privée</translation>
 <translation id="4680518314108745448">&amp;Afficher la barre de favoris</translation>
 <translation id="642436385689435488">Tout ouvrir dans une fenêtre privée</translation>
+<translation id="5074021236879527611">Ouvrir tout (<ph name="URL_COUNT"/>) dans une fenêtre privée</translation>
 <translation id="5463021359602611602">Ouvrir dans une fenêtre privée</translation>
 <translation id="1850357845349976573">{0, plural,
         =1 {Private}
@@ -6613,6 +6624,8 @@ Conservez votre fichier de clé en lieu sûr. Vous en aurez besoin lors de la cr
 <translation id="4854477725773269949">Autoriser en privé</translation>
 <translation id="6436164536244065364">Afficher dans le Web Store</translation>
 <translation id="38046578254905003">Trouvez des extensions et des thèmes sur le <ph name="BEGIN_LINK"/>Web Store<ph name="END_LINK"/></translation>
+<translation id="2402482691429508168">Profils qui ont choisi d'être visibles à vous lorsque leur écran est déverrouillé</translation>
+<translation id="3910100573440336938">Partagez des fichiers avec d'autres profils</translation>
 <translation id="6336451774241870485">Nouvel onglet privé</translation>
 <translation id="6610147964972079463">Fermer les onglets privés</translation>
 <translation id="4933782374919065856">Des questions ? Contactez la personne qui supervise votre profil.</translation>

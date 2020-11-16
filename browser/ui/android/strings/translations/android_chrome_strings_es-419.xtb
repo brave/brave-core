@@ -1026,6 +1026,7 @@ Por ejemplo, algunos sitios web pueden responder a la solicitud mediante anuncio
 <translation id="996149300115483134">Se cerró el menú de la tarjeta de feed</translation>
 <translation id="4540437243849625078">Este sitio está a punto de compartir información con una app fuera del modo de navegación incógnito.</translation>
 <translation id="1227836882233136433">¿Deseas salir del modo de navegación incógnito?</translation>
+<translation id="21023559487771014">Ir al modo incógnito</translation>
 <translation id="5186185447130319458">Incógnito</translation>
 <translation id="9063160602596686558">Envía automáticamente informes de fallos y estadísticas de uso a Brave Software</translation>
 <translation id="1438581767753657407">Cuando el modo Lite está activado, Brave usa los servidores de Brave para cargar las páginas con mayor rapidez. El modo Lite reescribe páginas muy lentas para cargar solo el contenido esencial. El modo Lite no funciona en pestañas de incógnito.</translation>
@@ -1035,7 +1036,11 @@ Por ejemplo, algunos sitios web pueden responder a la solicitud mediante anuncio
 <translation id="3110967157686007724">Pestaña de incógnito</translation>
 <translation id="4526803704855831732">Pestañas de incógnito</translation>
 <translation id="7465104139234185284">Cerrar todas las pestañas de incógnito</translation>
-<translation id="21023559487771014">Ir al modo incógnito</translation>
+<translation id="1455125811784733159">Abrir en una pestaña de incógnito</translation>
+<translation id="807110510029471880">Usar modo incógnito para iniciar sesión en</translation>
+<translation id="7987056960390558517">En el modo incógnito, es posible que los sitios web que visitas, tu empleador o institución educativa, y tu proveedor de servicios de internet <ph name="BEGIN_BOLD1"/>aún puedan ver <ph name="END_BOLD1"/>tu actividad.
+
+Los datos de tu sesión privada solo se borrarán de Brave cuando <ph name="BEGIN_BOLD2"/>cierres todas las pestañas de incógnito<ph name="END_BOLD2"/>.</translation>
 <translation id="6336451774241870485">Nueva pestaña de incógnito</translation>
 <translation id="3234355010754616171">Nueva pestaña de incógnito</translation>
 <translation id="6610147964972079463">Cerrar pestañas de incógnito</translation>

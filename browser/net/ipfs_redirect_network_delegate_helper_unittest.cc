@@ -35,8 +35,8 @@ TEST(IPFSRedirectNetworkDelegateHelperTest, TranslateIPFSURIIPFSSchemeLocal) {
                                                      brave_request_info);
   EXPECT_EQ(rc, net::OK);
   EXPECT_EQ(brave_request_info->new_url_spec,
-      "http://127.0.0.1:8080/ipfs/"
-      "QmfM2r8seH2GiRaC4esTjeraXEachRt8ZsSeGaWTPLyMoG");
+            "http://localhost:48080/ipfs/"
+            "QmfM2r8seH2GiRaC4esTjeraXEachRt8ZsSeGaWTPLyMoG");
 }
 
 TEST(IPFSRedirectNetworkDelegateHelperTest, TranslateIPFSURIIPFSScheme) {
@@ -46,7 +46,8 @@ TEST(IPFSRedirectNetworkDelegateHelperTest, TranslateIPFSURIIPFSScheme) {
   int rc = ipfs::OnBeforeURLRequest_IPFSRedirectWork(brave::ResponseCallback(),
                                                      brave_request_info);
   EXPECT_EQ(rc, net::OK);
-  EXPECT_EQ(brave_request_info->new_url_spec,
+  EXPECT_EQ(
+      brave_request_info->new_url_spec,
       "https://dweb.link/ipfs/QmfM2r8seH2GiRaC4esTjeraXEachRt8ZsSeGaWTPLyMoG");
 }
 
@@ -58,8 +59,8 @@ TEST(IPFSRedirectNetworkDelegateHelperTest, TranslateIPFSURIIPNSSchemeLocal) {
                                                      brave_request_info);
   EXPECT_EQ(rc, net::OK);
   EXPECT_EQ(brave_request_info->new_url_spec,
-      "http://127.0.0.1:8080/ipns/"
-      "QmSrPmbaUKA3ZodhzPWZnpFgcPMFWF4QsxXbkWfEptTBJd");
+            "http://localhost:48080/ipns/"
+            "QmSrPmbaUKA3ZodhzPWZnpFgcPMFWF4QsxXbkWfEptTBJd");
 }
 
 TEST(IPFSRedirectNetworkDelegateHelperTest, TranslateIPFSURIIPNSScheme) {
@@ -69,7 +70,8 @@ TEST(IPFSRedirectNetworkDelegateHelperTest, TranslateIPFSURIIPNSScheme) {
   int rc = ipfs::OnBeforeURLRequest_IPFSRedirectWork(brave::ResponseCallback(),
                                                      brave_request_info);
   EXPECT_EQ(rc, net::OK);
-  EXPECT_EQ(brave_request_info->new_url_spec,
+  EXPECT_EQ(
+      brave_request_info->new_url_spec,
       "https://dweb.link/ipns/QmSrPmbaUKA3ZodhzPWZnpFgcPMFWF4QsxXbkWfEptTBJd");
 }
 

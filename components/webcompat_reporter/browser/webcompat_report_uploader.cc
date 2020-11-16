@@ -12,10 +12,13 @@
 #include "base/environment.h"
 #include "base/json/json_writer.h"
 #include "brave/components/brave_referrals/browser/brave_referrals_service.h"
+#include "brave/components/brave_stats/browser/brave_stats_updater_util.h"
 #include "content/public/browser/browser_task_traits.h"
 #include "net/base/load_flags.h"
+#include "net/base/privacy_mode.h"
 #include "services/network/public/cpp/shared_url_loader_factory.h"
 #include "services/network/public/cpp/simple_url_loader.h"
+#include "services/network/public/mojom/fetch_api.mojom-shared.h"
 #include "url/gurl.h"
 
 namespace brave {
@@ -27,7 +30,7 @@ WebcompatReportUploader::WebcompatReportUploader(
 WebcompatReportUploader::~WebcompatReportUploader() {}
 
 void WebcompatReportUploader::SubmitReport(std::string report_domain) {
-  std::string api_key = brave::GetAPIKey();
+  std::string api_key = brave_stats::GetAPIKey();
 
   GURL upload_url(WEBCOMPAT_REPORT_ENDPOINT);
 
@@ -50,9 +53,9 @@ void WebcompatReportUploader::CreateAndStartURLLoader(
   auto resource_request = std::make_unique<network::ResourceRequest>();
   resource_request->url = GURL(upload_url);
   resource_request->method = "POST";
+  resource_request->credentials_mode = network::mojom::CredentialsMode::kOmit;
   resource_request->load_flags =
-      net::LOAD_DO_NOT_SEND_COOKIES | net::LOAD_BYPASS_CACHE |
-      net::LOAD_DISABLE_CACHE | net::LOAD_DO_NOT_SEND_AUTH_DATA;
+      net::LOAD_BYPASS_CACHE | net::LOAD_DISABLE_CACHE;
 
   net::NetworkTrafficAnnotationTag traffic_annotation =
       net::DefineNetworkTrafficAnnotation("background_performance_tracer", R"(

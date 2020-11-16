@@ -50,6 +50,10 @@ bool Timer::IsRunning() const {
   return timer_->IsRunning();
 }
 
+void Timer::FireNow() {
+  return timer_->FireNow();
+}
+
 void Timer::Stop() {
   if (!IsRunning()) {
     return;

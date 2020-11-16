@@ -16,6 +16,7 @@
 #include "bat/ledger/internal/state/state_migration_v5.h"
 #include "bat/ledger/internal/state/state_migration_v6.h"
 #include "bat/ledger/internal/state/state_migration_v7.h"
+#include "bat/ledger/internal/state/state_migration_v8.h"
 #include "bat/ledger/ledger.h"
 
 namespace ledger {
@@ -33,6 +34,8 @@ class StateMigration {
   void Migrate(ledger::ResultCallback callback);
 
  private:
+  void FreshInstall(ledger::ResultCallback callback);
+
   void OnMigration(
       type::Result result,
       const int version,
@@ -45,6 +48,7 @@ class StateMigration {
   std::unique_ptr<StateMigrationV5> v5_;
   std::unique_ptr<StateMigrationV6> v6_;
   std::unique_ptr<StateMigrationV7> v7_;
+  std::unique_ptr<StateMigrationV8> v8_;
   LedgerImpl* ledger_;  // NOT OWNED
 };
 

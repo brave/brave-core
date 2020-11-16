@@ -9,12 +9,12 @@
 #include <utility>
 
 #include "base/task/post_task.h"
+#include "brave/browser/ipfs/ipfs_service_factory.h"
 #include "brave/browser/profiles/profile_util.h"
 #include "brave/common/url_constants.h"
-#include "brave/components/ipfs/browser/ipfs_service.h"
-#include "brave/components/ipfs/browser/translate_ipfs_uri.h"
-#include "brave/components/ipfs/common/ipfs_constants.h"
-#include "brave/components/ipfs/common/pref_names.h"
+#include "brave/components/ipfs/ipfs_constants.h"
+#include "brave/components/ipfs/pref_names.h"
+#include "brave/components/ipfs/translate_ipfs_uri.h"
 #include "chrome/browser/external_protocol/external_protocol_handler.h"
 #include "components/prefs/pref_service.h"
 #include "components/user_prefs/user_prefs.h"
@@ -26,15 +26,6 @@
 #include "url/gurl.h"
 
 namespace {
-
-bool IsIPFSDisabled(content::BrowserContext* browser_context) {
-  auto* prefs = user_prefs::UserPrefs::Get(browser_context);
-  auto resolve_method = static_cast<ipfs::IPFSResolveMethodTypes>(
-      prefs->GetInteger(kIPFSResolveMethod));
-  return resolve_method == ipfs::IPFSResolveMethodTypes::IPFS_DISABLED ||
-         !ipfs::IpfsService::IsIpfsEnabled(
-             browser_context, brave::IsRegularProfile(browser_context));
-}
 
 bool IsIPFSLocalGateway(content::BrowserContext* browser_context) {
   auto* prefs = user_prefs::UserPrefs::Get(browser_context);
@@ -51,7 +42,7 @@ namespace ipfs {
 bool ContentBrowserClientHelper::HandleIPFSURLRewrite(
     GURL* url,
     content::BrowserContext* browser_context) {
-  if (!IsIPFSDisabled(browser_context) &&
+  if (!IpfsServiceFactory::IsIpfsResolveMethodDisabled(browser_context) &&
       // When it's not the local gateway we don't want to show a ipfs:// URL.
       // We instead will translate the URL later in LoadOrLaunchIPFSURL.
       IsIPFSLocalGateway(browser_context) &&
@@ -76,7 +67,7 @@ bool ContentBrowserClientHelper::ShouldNavigateIPFSURI(
     content::BrowserContext* browser_context) {
   *new_url = url;
   bool is_ipfs_scheme = url.SchemeIs(kIPFSScheme) || url.SchemeIs(kIPNSScheme);
-  return !IsIPFSDisabled(browser_context) &&
+  return !IpfsServiceFactory::IsIpfsResolveMethodDisabled(browser_context) &&
          (!is_ipfs_scheme ||
           TranslateIPFSURI(url, new_url, IsIPFSLocalGateway(browser_context)));
 }

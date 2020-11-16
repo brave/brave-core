@@ -11,7 +11,7 @@
 namespace ads {
 
 namespace {
-const uint64_t kMaximumUserActivityEntries = 100;
+const size_t kMaximumUserActivityEntries = 100;
 }
 
 UserActivity::UserActivity() = default;
@@ -26,7 +26,6 @@ void UserActivity::RecordActivityForType(
 
   const uint64_t timestamp =
       static_cast<uint64_t>(base::Time::Now().ToDoubleT());
-
   history_.at(type).push_front(timestamp);
 
   if (history_.at(type).size() > kMaximumUserActivityEntries) {

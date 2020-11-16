@@ -120,7 +120,7 @@ TEST_F(BatAdsUnblindedTokensFrequencyCapTest,
   get_unblinded_tokens()->SetTokens(unblinded_tokens);
 
   // Act
-  const bool is_allowed = frequency_cap_->IsAllowed();
+  const bool is_allowed = frequency_cap_->ShouldAllow();
 
   // Assert
   EXPECT_TRUE(is_allowed);
@@ -131,7 +131,7 @@ TEST_F(BatAdsUnblindedTokensFrequencyCapTest,
   // Arrange
 
   // Act
-  const bool is_allowed = frequency_cap_->IsAllowed();
+  const bool is_allowed = frequency_cap_->ShouldAllow();
 
   // Assert
   EXPECT_FALSE(is_allowed);
@@ -146,7 +146,7 @@ TEST_F(BatAdsUnblindedTokensFrequencyCapTest,
   get_unblinded_tokens()->SetTokens(unblinded_tokens);
 
   // Act
-  const bool is_allowed = frequency_cap_->IsAllowed();
+  const bool is_allowed = frequency_cap_->ShouldAllow();
 
   // Assert
   EXPECT_FALSE(is_allowed);

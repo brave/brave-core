@@ -29,9 +29,6 @@ class BravePrivacyHandler : public settings::SettingsPageUIHandler {
   void OnJavascriptAllowed() override {}
   void OnJavascriptDisallowed() override {}
 
-  void SetWebRTCPolicy(const base::ListValue* args);
-  void GetWebRTCPolicy(const base::ListValue* args);
-
 #if BUILDFLAG(BRAVE_P3A_ENABLED)
   void SetP3AEnabled(const base::ListValue* args);
   void GetP3AEnabled(const base::ListValue* args);

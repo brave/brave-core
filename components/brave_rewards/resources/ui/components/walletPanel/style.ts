@@ -5,6 +5,8 @@
 import styled from 'styled-components'
 import palette from 'brave-ui/theme/colors'
 
+import { CaratStrongDownIcon } from 'brave-ui/components/icons'
+
 interface StyleProps {
   size?: string
   toggleTips?: boolean
@@ -79,7 +81,7 @@ export const StyledGrid = styled<{}, 'div'>('div')`
 `
 
 export const StyledColumn = styled<StyleProps, 'div'>('div')`
-  flex: ${p => p.size} 0 0;
+  flex: ${p => p.size} 0 auto;
 `
 
 export const StyleToggleTips = styled<StyleProps, 'div'>('div')`
@@ -108,24 +110,80 @@ export const StyledNoticeLink = styled<StyleProps, 'a'>('a')`
   display: inline-block;
 `
 
-export const StyledSelect = styled<StyleProps, 'select'>('select')`
-  width: 100%;
-  background: inherit;
-  height: 34px;
+export const StyledMonthlyWrapper = styled<StyleProps, 'div'>('div')`
+  overflow-y: visible;
+  font-family: ${p => p.theme.fontFamily.heading};
   font-size: 14px;
-  border: none;
-  text-align: right;
-  color: ${palette.blurple500};
-  font-family: Poppins, sans-serif;
-  max-height: 20px;
+  color: ${p => p.theme.color.black};
+  line-height: 21px;
+  height: 27px;
+`
 
-  &:focus {
-    outline: 0;
+export const StyledMonthlyBorder = styled<StyleProps, 'div'>('div')`
+  border: solid 1px rgba(76, 84, 210, 0.55);
+  border-radius: 12px;
+  background: ${palette.white};
+  position: relative;
+  z-index: 1;
+
+  &.expanded {
+    box-shadow: 1px 1px 6px 0px rgba(0, 0, 0, .1);
+    padding-top: 4px;
   }
 `
 
-export const StyledOptionShown = styled<{}, 'option'>('option')`
-  display: none;
+export const StyledMonthlyAmount = styled<StyleProps, 'div'>('div')`
+  button {
+    background: none;
+    border: none;
+    width: 100%;
+    text-align: left;
+    padding: 2px 26px 1px 12px;
+    outline-style: none;
+  }
+
+  button:focus-visible {
+    outline-style: auto;
+  }
+`
+
+export const StyledMonthlyDownIcon = styled(CaratStrongDownIcon)`
+  color: ${palette.black};
+  width: 10px;
+  height: 10px;
+  vertical-align: middle;
+  position: absolute;
+  top: 8px;
+  right: 7px;
+`
+
+export const StyledMonthlyActions = styled<StyleProps, 'div'>('div')`
+  position: relative;
+  margin-top: 5px;
+  margin-bottom: 3px;
+  padding-top: 2px;
+
+  &:before {
+    content: ' ';
+    display: block;
+    height: 0;
+    top: -3px;
+    left: 12px;
+    right: 12px;
+    position: absolute;
+    border-top: solid 1px #DBDFE3;
+  }
+
+  a {
+    display: block;
+    padding: 3px 12px;
+    color: inherit;
+    text-decoration: none;
+  }
+
+  a:hover {
+    color: ${palette.blurple500};
+  }
 `
 
 export const StyledSetButtonContainer = styled<{}, 'div'>('div')`

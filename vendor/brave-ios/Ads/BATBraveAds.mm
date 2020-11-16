@@ -22,6 +22,7 @@
 
 #import "base/strings/sys_string_conversions.h"
 #import "brave/base/containers/utils.h"
+#import "base/base64.h"
 
 #import "RewardsLogging.h"
 
@@ -143,7 +144,14 @@ static NSString * const kUserModelMetadataPrefKey = @"BATUserModelMetadata";
 
 + (BOOL)isCurrentLocaleSupported
 {
-  return [self isSupportedLocale:[[NSLocale preferredLanguages] firstObject]];
+  return [self isSupportedLocale:[self currentLocaleCode]];
+}
+
++ (NSString *)currentLocaleCode
+{
+  const auto locale = NSLocale.currentLocale;
+  return [NSString stringWithFormat:@"%@_%@",
+          locale.languageCode, locale.countryCode];
 }
 
 BATClassAdsBridge(BOOL, isDebug, setDebug, _is_debug)
@@ -185,13 +193,23 @@ BATClassAdsBridge(BOOL, isDebug, setDebug, _is_debug)
 
     adsClient = new NativeAdsClient(self);
     ads = ads::Ads::CreateInstance(adsClient);
-    ads->Initialize(^(bool) {
-      [self periodicallyCheckForUserModelUpdates];
-
-      NSString *localeIdentifier = [[NSLocale preferredLanguages] firstObject];
-      NSLocale *locale = [NSLocale localeWithLocaleIdentifier:localeIdentifier];
-      [self registerUserModels:locale];
-    });
+    
+    if (!self.ledger) { return; }
+    [self.ledger currentWalletInfo:^(BATBraveWallet * _Nullable wallet) {
+      if (!wallet || wallet.recoverySeed.count == 0) {
+        BLOG(0, @"Failed to obtain wallet information to initialize ads");
+        return;
+      }
+      std::vector<uint8_t> seed;
+      for (NSNumber *number in wallet.recoverySeed) {
+        seed.push_back(static_cast<uint8_t>(number.unsignedCharValue));
+      }
+      ads->OnWalletUpdated(wallet.paymentId.UTF8String, base::Base64Encode(seed));
+      ads->Initialize(^(bool) {
+        [self periodicallyCheckForUserModelUpdates];
+        [self registerUserModels];
+      });
+    }];
   }
 }
 
@@ -318,8 +336,10 @@ BATClassAdsBridge(BOOL, isDebug, setDebug, _is_debug)
 
 - (void)savePrefs
 {
+  NSDictionary *prefs = [self.prefs copy];
+  NSString *path = [[self prefsPath] copy];
   dispatch_async(self.prefsWriteThread, ^{
-    [self.prefs writeToFile:[self prefsPath] atomically:YES];
+    [prefs writeToURL:[NSURL fileURLWithPath:path isDirectory:NO] error:nil];
   });
 }
 
@@ -404,13 +424,13 @@ BATClassAdsBridge(BOOL, isDebug, setDebug, _is_debug)
   const uint64_t from_timestamp = 0;
   const uint64_t to_timestamp = std::numeric_limits<uint64_t>::max();
 
-  const auto history = ads->GetAdsHistory(ads::AdsHistory::FilterType::kNone,
-      ads::AdsHistory::SortType::kNone, from_timestamp, to_timestamp);
+  const auto history = ads->GetAdsHistory(ads::AdsHistoryInfo::FilterType::kNone,
+      ads::AdsHistoryInfo::SortType::kNone, from_timestamp, to_timestamp);
 
   const auto dates = [[NSMutableArray<NSDate *> alloc] init];
-  for (const auto& entry : history.entries) {
+  for (const auto& item : history.items) {
     const auto date = [NSDate dateWithTimeIntervalSince1970:
-        entry.timestamp_in_seconds];
+        item.timestamp_in_seconds];
     [dates addObject:date];
   }
 
@@ -468,11 +488,19 @@ BATClassAdsBridge(BOOL, isDebug, setDebug, _is_debug)
   ads->OnTabClosed((int32_t)tabId);
 }
 
-- (void)reportAdNotificationEvent:(NSString *)notificationUuid eventType:(BATAdNotificationEventType)eventType
+- (void)reportAdNotificationEvent:(NSString *)uuid eventType:(BATAdNotificationEventType)eventType
 {
   if (![self isAdsServiceRunning]) { return; }
-  ads->OnAdNotificationEvent(notificationUuid.UTF8String,
+  ads->OnAdNotificationEvent(uuid.UTF8String,
                              static_cast<ads::AdNotificationEventType>(eventType));
+}
+
+- (void)reportNewTabPageAdEvent:(NSString *)wallpaperId creativeInstanceId:(NSString *)creativeInstanceId eventType:(BATNewTabPageAdEventType)eventType
+{
+  if (![self isAdsServiceRunning]) { return; }
+  ads->OnNewTabPageAdEvent(wallpaperId.UTF8String,
+                           creativeInstanceId.UTF8String,
+                           static_cast<ads::NewTabPageAdEventType>(eventType));
 }
 
 - (void)reconcileAdRewards
@@ -483,6 +511,7 @@ BATClassAdsBridge(BOOL, isDebug, setDebug, _is_debug)
 
 - (void)detailsForCurrentCycle:(void (^)(NSInteger adsReceived, double estimatedEarnings, NSDate *nextPaymentDate))completion
 {
+  if (![self isAdsServiceRunning]) { return; }
   ads->GetTransactionHistory(^(bool success, ads::StatementInfo list) {
     if (!success) {
       completion(0, 0, nil);
@@ -504,7 +533,7 @@ BATClassAdsBridge(BOOL, isDebug, setDebug, _is_debug)
   if (![self isAdsServiceRunning]) { return; }
   ads->ToggleAdThumbUp(creativeInstanceId.UTF8String,
                        creativeSetID.UTF8String,
-                       ads::AdContent::LikeAction::kThumbsUp);
+                       ads::AdContentInfo::LikeAction::kThumbsUp);
 }
 
 - (void)toggleThumbsDownForAd:(NSString *)creativeInstanceId creativeSetID:(NSString *)creativeSetID
@@ -512,7 +541,7 @@ BATClassAdsBridge(BOOL, isDebug, setDebug, _is_debug)
   if (![self isAdsServiceRunning]) { return; }
   ads->ToggleAdThumbDown(creativeInstanceId.UTF8String,
                          creativeSetID.UTF8String,
-                         ads::AdContent::LikeAction::kThumbsDown);
+                         ads::AdContentInfo::LikeAction::kThumbsDown);
 }
 
 #pragma mark - Configuration
@@ -589,6 +618,10 @@ BATClassAdsBridge(BOOL, isDebug, setDebug, _is_debug)
 
 - (BOOL)registerUserModelsForLanguageCode:(NSString *)languageCode
 {
+  if (!languageCode) {
+    return NO;
+  }
+  
   NSString *isoLanguageCode = [@"iso_639_1_" stringByAppendingString:[languageCode lowercaseString]];
 
   NSArray *languageCodeUserModelIds = [self.userModelPaths allKeysForObject:isoLanguageCode];
@@ -608,6 +641,10 @@ BATClassAdsBridge(BOOL, isDebug, setDebug, _is_debug)
 
 - (BOOL)registerUserModelsForCountryCode:(NSString *)countryCode
 {
+  if (!countryCode) {
+    return NO;
+  }
+  
   NSString *isoCountryCode = [@"iso_3166_1_" stringByAppendingString:[countryCode lowercaseString]];
 
   NSArray *countryCodeUserModelIds = [self.userModelPaths allKeysForObject:isoCountryCode];
@@ -625,14 +662,16 @@ BATClassAdsBridge(BOOL, isDebug, setDebug, _is_debug)
   return YES;
 }
 
-- (void)registerUserModels:(NSLocale *)locale
+- (void)registerUserModels
 {
-  if (![self registerUserModelsForLanguageCode:locale.languageCode]) {
-    BLOG(1, @"%@ not supported for user model installer", locale.languageCode);
+  const auto currentLocale = [NSLocale currentLocale];
+  
+  if (![self registerUserModelsForLanguageCode:currentLocale.languageCode]) {
+    BLOG(1, @"%@ not supported for user model installer", currentLocale.languageCode);
   }
 
-  if (![self registerUserModelsForCountryCode:locale.countryCode]) {
-    BLOG(1, @"%@ not supported for user model installer", locale.countryCode);
+  if (![self registerUserModelsForCountryCode:currentLocale.countryCode]) {
+    BLOG(1, @"%@ not supported for user model installer", currentLocale.countryCode);
   }
 }
 
@@ -905,12 +944,9 @@ BATClassAdsBridge(BOOL, isDebug, setDebug, _is_debug)
   return [self.notificationsHandler shouldShowNotifications];
 }
 
-- (void)showNotification:(std::unique_ptr<ads::AdNotificationInfo>)info
+- (void)showNotification:(const ads::AdNotificationInfo &)info
 {
-  if (info.get() == nullptr) {
-    return;
-  }
-  const auto notification = [[BATAdNotification alloc] initWithNotificationInfo:*info];
+  const auto notification = [[BATAdNotification alloc] initWithNotificationInfo:info];
   [self.notificationsHandler showNotification:notification];
 }
 
@@ -1504,6 +1540,11 @@ BATClassAdsBridge(BOOL, isDebug, setDebug, _is_debug)
   });
 
   return  _paths;
+}
+
+- (void)recordP2AEvent:(const std::string&)name type:(const ads::P2AEventType)type value:(const std::string&)value
+{
+  // Not needed on iOS
 }
 
 @end

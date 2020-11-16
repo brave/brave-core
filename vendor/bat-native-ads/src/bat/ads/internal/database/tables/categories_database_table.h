@@ -8,7 +8,8 @@
 
 #include <string>
 
-#include "bat/ads/internal/bundle/creative_ad_notification_info.h"
+#include "bat/ads/ads_client.h"
+#include "bat/ads/internal/bundle/creative_ad_info.h"
 #include "bat/ads/internal/database/database_table.h"
 
 namespace ads {
@@ -27,7 +28,10 @@ class Categories : public Table {
 
   void InsertOrUpdate(
       DBTransaction* transaction,
-      const CreativeAdNotificationList& creative_ad_notifications);
+      const CreativeAdList& creative_ads);
+
+  void Delete(
+      ResultCallback callback);
 
   std::string get_table_name() const override;
 
@@ -38,17 +42,24 @@ class Categories : public Table {
  private:
   int BindParameters(
       DBCommand* command,
-      const CreativeAdNotificationList& creative_ad_notifications);
+      const CreativeAdList& creative_ads);
 
   std::string BuildInsertOrUpdateQuery(
       DBCommand* command,
-      const CreativeAdNotificationList& creative_ad_notifications);
+      const CreativeAdList& creative_ads);
 
   void CreateTableV1(
       DBTransaction* transaction);
   void CreateIndexV1(
       DBTransaction* transaction);
   void MigrateToV1(
+      DBTransaction* transaction);
+
+  void CreateTableV3(
+      DBTransaction* transaction);
+  void CreateIndexV3(
+      DBTransaction* transaction);
+  void MigrateToV3(
       DBTransaction* transaction);
 
   AdsImpl* ads_;  // NOT OWNED

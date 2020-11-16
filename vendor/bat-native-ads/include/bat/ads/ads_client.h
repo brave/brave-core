@@ -19,8 +19,11 @@
 namespace ads {
 
 using ResultCallback = std::function<void(const Result)>;
+
 using LoadCallback = std::function<void(const Result, const std::string&)>;
+
 using UrlRequestCallback = std::function<void(const UrlResponse&)>;
+
 using RunDBTransactionCallback = std::function<void(DBCommandResponsePtr)>;
 
 class ADS_EXPORT AdsClient {
@@ -40,7 +43,7 @@ class ADS_EXPORT AdsClient {
 
   // Should show a notification
   virtual void ShowNotification(
-      const std::unique_ptr<AdNotificationInfo> info) = 0;
+      const AdNotificationInfo& ad_notification) = 0;
 
   // Should return |true| if notifications can be displayed; otherwise should
   // return |false|
@@ -71,6 +74,12 @@ class ADS_EXPORT AdsClient {
   // should be set to |FAILED|. |value| should contain the user model
   virtual void LoadUserModelForId(
       const std::string& name, LoadCallback callback) = 0;
+
+  // Should record a P2A event of the given type
+  virtual void RecordP2AEvent(
+      const std::string& name,
+      const ads::P2AEventType type,
+      const std::string& value) = 0;
 
   // Should load a value from persistent storage. The callback takes 2 arguments
   // — |Result| should be set to |SUCCESS| if successful; otherwise, should be

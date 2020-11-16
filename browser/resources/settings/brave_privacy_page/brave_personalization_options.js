@@ -40,10 +40,6 @@ Polymer({
 
   /** @override */
   ready: function() {
-    this.onWebRTCPolicyChange_ = this.onWebRTCPolicyChange_.bind(this)
-    this.browserProxy_.getWebRTCPolicy().then(policy => {
-      this.webRTCPolicy_ = policy;
-    });
     // Used for first time initialization of checked state.
     // Can't use `prefs` property of `settings-toggle-button`
     // because p3a enabled is a local state setting.
@@ -53,20 +49,6 @@ Polymer({
     this.addWebUIListener('p3a-enabled-changed', (enabled) => {
       this.p3aEnabled_ = enabled
     })
-  },
-
-  /**
-   * @param {string} policy1
-   * @param {string} policy2
-   * @return {boolean}
-   * @private
-   */
-  webRTCPolicyEqual_: function(policy1, policy2) {
-    return policy1 === policy2;
-  },
-
-  onWebRTCPolicyChange_: function() {
-    this.browserProxy_.setWebRTCPolicy(this.$.webRTCPolicy.value);
   },
 
   onP3AEnabledChange_: function() {

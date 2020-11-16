@@ -34,7 +34,6 @@ export const TileActionsContainer = styled<{}, 'nav'>('nav')`
   position: absolute;
   z-index: 2;
   top: 0;
-  left: 0;
   right: 0;
   text-align: center;
   display: flex;

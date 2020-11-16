@@ -6520,6 +6520,14 @@ Giữ tệp khóa của bạn ở nơi an toàn. Bạn sẽ cần tệp khóa đ
 <translation id="995782501881226248">YouTube</translation>
 <translation id="996250603853062861">Thiết lập kết nối an toàn...</translation>
 <translation id="998747458861718449">K&amp;iểm tra</translation>
+<translation id="6744651634043798597">{COUNT, plural,
+          =0 {Mở tất cả trong &amp;cửa sổ riêng tư}
+          =1 {Mở trong &amp;cửa sổ riêng tư}
+          other {Mở tất cả (#) trong &amp;cửa sổ riêng tư}}</translation>
+<translation id="2633634757060186848">{COUNT, plural,
+          =0 {Mở Tất cả trong &amp;Cửa sổ Riêng tư}
+          =1 {Mở trong &amp;Cửa sổ Riêng tư}
+          other {Mở Tất cả (#) trong &amp;Cửa sổ Riêng tư}}</translation>
 <translation id="658539216370629794">Mở liên kết trong &amp;cửa sổ riêng tư</translation>
 <translation id="1432267168815937878">Mở liên kết trong &amp;Cửa sổ Riêng tư</translation>
 <translation id="6516243500644829484">Cửa sổ &amp;riêng tư mới</translation>
@@ -6533,6 +6541,7 @@ Giữ tệp khóa của bạn ở nơi an toàn. Bạn sẽ cần tệp khóa đ
 <translation id="9048137919253433011">Thẻ Riêng tư: <ph name="TAB_NAME"/></translation>
 <translation id="1799432502220762862">Khung phụ Riêng tư: <ph name="SUBFRAME_SITE"/></translation>
 <translation id="3193187622878830588">Cổng thông tin ẩn danh: <ph name="SUBFRAME_SITE"/></translation>
+<translation id="5097649414558628673">Công cụ: <ph name="PRINT_NAME"/></translation>
 <translation id="8808478386290700967">Web Store</translation>
 <translation id="8261378640211443080">Tiện ích này không được liệt kê trong <ph name="IDS_EXTENSION_WEB_STORE_TITLE"/> và có thể đã được thêm mà bạn không biết.</translation>
 <translation id="6827869674836193263"><ph name="WINDOW_TITLE"/> (Riêng tư)</translation>
@@ -6550,19 +6559,21 @@ Giữ tệp khóa của bạn ở nơi an toàn. Bạn sẽ cần tệp khóa đ
 <translation id="3098826269712097986">Dữ liệu đăng nhập sẽ được lưu trong Brave sau khi bạn thoát khỏi chế độ Riêng tư. Điều này cho phép bạn sử dụng ID Cảm ứng với trang web này một lần nữa sau này.</translation>
 <translation id="5186185447130319458">Riêng tư</translation>
 <translation id="2579188629646253712">Thoát khỏi chế độ Riêng tư</translation>
-<translation id="6744651634043798597">{COUNT, plural,
+<translation id="1001131747196960052">Đóng phiên Riêng tư</translation>
+<translation id="7475335772460644497">{COUNT, plural,
           =0 {Mở tất cả trong &amp;cửa sổ riêng tư}
           =1 {Mở trong &amp;cửa sổ riêng tư}
-          other {Mở tất cả (#) trong &amp;cửa sổ riêng tư}}</translation>
+          other {Mở tất cả ({COUNT}) trong &amp;cửa sổ riêng tư}}</translation>
 <translation id="2431625704210501303">Mở trong &amp;cửa sổ riêng tư</translation>
 <translation id="4620367155626060530">&amp;Hiển thị thanh dấu trang</translation>
-<translation id="2633634757060186848">{COUNT, plural,
+<translation id="1448315815373449655">{COUNT, plural,
           =0 {Mở Tất cả trong &amp;Cửa sổ Riêng tư}
           =1 {Mở trong &amp;Cửa sổ Riêng tư}
-          other {Mở Tất cả (#) trong &amp;Cửa sổ Riêng tư}}</translation>
+          other {Mở Tất cả ({COUNT}) trong &amp;Cửa sổ Riêng tư}}</translation>
 <translation id="1985165269306590797">Mở trong &amp;Cửa sổ riêng tư</translation>
 <translation id="4680518314108745448">&amp;Hiển thị thanh dấu trang</translation>
 <translation id="642436385689435488">Mở tất cả trong cửa sổ riêng tư</translation>
+<translation id="5074021236879527611">Mở tất cả (<ph name="URL_COUNT"/>) trong cửa sổ riêng tư</translation>
 <translation id="5463021359602611602">Mở trong cửa sổ riêng tư</translation>
 <translation id="1850357845349976573">{0, plural,
         =1 {riêng tư}
@@ -6612,6 +6623,8 @@ Giữ tệp khóa của bạn ở nơi an toàn. Bạn sẽ cần tệp khóa đ
 <translation id="4854477725773269949">Cho phép trong chế độ riêng tư</translation>
 <translation id="6436164536244065364">Xem trong Cửa hàng trực tuyến</translation>
 <translation id="38046578254905003">Tìm các tiện ích mở rộng và chủ đề trong <ph name="BEGIN_LINK"/>Web Store<ph name="END_LINK"/></translation>
+<translation id="2402482691429508168">Hồ sơ những người đã chọn hiển thị với bạn khi màn hình của họ được mở khóa</translation>
+<translation id="3910100573440336938">Chia sẻ tập tin với các hồ sơ xung quanh bạn</translation>
 <translation id="6336451774241870485">Thẻ riêng tư mới</translation>
 <translation id="6610147964972079463">Đóng các thẻ riêng tư</translation>
 <translation id="4933782374919065856">Bạn có câu hỏi? Hãy liên hệ với người giám sát hồ sơ của bạn.</translation>

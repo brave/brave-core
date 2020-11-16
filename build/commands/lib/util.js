@@ -334,19 +334,25 @@ const util = {
 
       const androidIconSource = path.join(braveAppDir, 'theme', 'brave', 'android', androidIconSet)
       const androidIconDest = path.join(config.srcDir, 'chrome', 'android', 'java', 'res_chromium')
+      const androidIconBaseSource = path.join(braveAppDir, 'theme', 'brave', 'android', androidIconSet + '_base')
+      const androidIconBaseDest = path.join(config.srcDir, 'chrome', 'android', 'java', 'res_chromium_base')
       const androidResSource = path.join(config.braveCoreDir, 'android', 'java', 'res')
       const androidResDest = path.join(config.srcDir, 'chrome', 'android', 'java', 'res')
       const androidResTemplateSource = path.join(config.braveCoreDir, 'android', 'java', 'res_template')
       const androidResTemplateDest = path.join(config.srcDir, 'chrome', 'android', 'java', 'res_template')
       const androidContentPublicResSource = path.join(config.braveCoreDir, 'content', 'public', 'android', 'java', 'res')
       const androidContentPublicResDest = path.join(config.srcDir, 'content', 'public', 'android', 'java', 'res')
+      const androidTouchtoFillResSource = path.join(config.braveCoreDir, 'browser', 'touch_to_fill', 'android', 'internal', 'java', 'res')
+      const androidTouchtoFillResDest = path.join(config.srcDir, 'chrome', 'browser', 'touch_to_fill', 'android', 'internal', 'java', 'res')
 
       // Mapping for copying Brave's Android resource into chromium folder.
       const copyAndroidResourceMapping = {
         [androidIconSource]: [androidIconDest],
+        [androidIconBaseSource]: [androidIconBaseDest],
         [androidResSource]: [androidResDest],
         [androidResTemplateSource]: [androidResTemplateDest],
-        [androidContentPublicResSource]: [androidContentPublicResDest]
+        [androidContentPublicResSource]: [androidContentPublicResDest],
+        [androidTouchtoFillResSource]: [androidTouchtoFillResDest]
       }
 
       console.log('copy Android app icons and app resources')

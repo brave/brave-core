@@ -1,0 +1,12 @@
+diff --git a/third_party/blink/renderer/core/frame/navigator_device_memory.idl b/third_party/blink/renderer/core/frame/navigator_device_memory.idl
+index f016ac69fa7cb93dc078f0d49aa92ff8bfef1c0b..8204a381031d17eb2fdac11591859f7c221fffd2 100644
+--- a/third_party/blink/renderer/core/frame/navigator_device_memory.idl
++++ b/third_party/blink/renderer/core/frame/navigator_device_memory.idl
+@@ -5,6 +5,6 @@
+ // https://github.com/w3c/device-memory#the-web-exposed-api
+ 
+ interface mixin NavigatorDeviceMemory {
+-    [HighEntropy=Direct,MeasureAs=NavigatorDeviceMemory,SecureContext]
++    [CallWith=ScriptState,HighEntropy=Direct,MeasureAs=NavigatorDeviceMemory,SecureContext]
+     readonly attribute float deviceMemory;
+ };

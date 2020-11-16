@@ -11,7 +11,6 @@ source_set("tor") {
 
   deps = [
     "//base",
-    "//brave/common/tor",
     "//mojo/public/cpp/bindings",
     "public/interfaces",
   ]

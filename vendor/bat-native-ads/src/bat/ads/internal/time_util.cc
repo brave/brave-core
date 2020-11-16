@@ -79,4 +79,24 @@ std::string NowAsString() {
   return base::NumberToString(timestamp);
 }
 
+std::string GetLocalDayOfWeek(
+    const base::Time& time) {
+  base::Time::Exploded exploded;
+
+  time.LocalExplode(&exploded);
+  DCHECK(exploded.HasValidValues());
+
+  return base::NumberToString(exploded.day_of_week);
+}
+
+int ConvertTimeToLocalMinutesForToday(
+    const base::Time& time) {
+  base::Time::Exploded exploded;
+
+  time.LocalExplode(&exploded);
+  DCHECK(exploded.HasValidValues());
+
+  return (exploded.hour * base::Time::kMinutesPerHour) + exploded.minute;
+}
+
 }  // namespace ads

@@ -7,7 +7,6 @@ import * as preferencesAPI from './preferences'
 import * as statsAPI from './stats'
 import * as privateTabDataAPI from './privateTabData'
 import * as torTabDataAPI from './torTabData'
-import * as topSitesAPI from './topSites'
 import * as brandedWallpaper from './brandedWallpaper'
 
 export type InitialData = {
@@ -15,18 +14,17 @@ export type InitialData = {
   stats: statsAPI.Stats
   privateTabData: privateTabDataAPI.PrivateTabData
   torTabData: torTabDataAPI.TorTabData
-  topSites: chrome.topSites.MostVisitedURL[]
-  defaultSuperReferralTopSites: undefined | NewTab.DefaultSuperReferralTopSite[]
   brandedWallpaperData: undefined | NewTab.BrandedWallpaper
   togetherSupported: boolean
   geminiSupported: boolean
+  binanceSupported: boolean
   bitcoinDotComSupported: boolean
+  cryptoDotComSupported: boolean
 }
 
 export type PreInitialRewardsData = {
   enabledAds: boolean
   adsSupported: boolean
-  enabledMain: boolean
 }
 
 export type InitialRewardsData = {
@@ -47,23 +45,22 @@ export async function getInitialData (): Promise<InitialData> {
       stats,
       privateTabData,
       torTabData,
-      topSites,
-      defaultSuperReferralTopSites,
       brandedWallpaperData,
       togetherSupported,
       geminiSupported,
-      bitcoinDotComSupported
+      bitcoinDotComSupported,
+      cryptoDotComSupported,
+      binanceSupported
     ] = await Promise.all([
       preferencesAPI.getPreferences(),
       statsAPI.getStats(),
       privateTabDataAPI.getPrivateTabData(),
       torTabDataAPI.getTorTabData(),
-      topSitesAPI.getTopSites(),
-      !isIncognito ? brandedWallpaper.getDefaultSuperReferralTopSites() : Promise.resolve(undefined),
       !isIncognito ? brandedWallpaper.getBrandedWallpaper() : Promise.resolve(undefined),
       new Promise((resolve) => {
         if (!('braveTogether' in chrome)) {
           resolve(false)
+          return
         }
 
         chrome.braveTogether.isSupported((supported: boolean) => {
@@ -76,7 +73,15 @@ export async function getInitialData (): Promise<InitialData> {
         })
       }),
       new Promise((resolve) => {
-        chrome.moonpay.isBitcoinDotComSupported((supported: boolean) => {
+        resolve(false)
+      }),
+      new Promise((resolve) => {
+        chrome.cryptoDotCom.isSupported((supported: boolean) => {
+          resolve(supported)
+        })
+      }),
+      new Promise((resolve) => {
+        chrome.binance.isSupportedRegion((supported: boolean) => {
           resolve(supported)
         })
       })
@@ -87,12 +92,12 @@ export async function getInitialData (): Promise<InitialData> {
       stats,
       privateTabData,
       torTabData,
-      topSites,
-      defaultSuperReferralTopSites,
       brandedWallpaperData,
       togetherSupported,
       geminiSupported,
-      bitcoinDotComSupported
+      bitcoinDotComSupported,
+      cryptoDotComSupported,
+      binanceSupported
     } as InitialData
   } catch (e) {
     console.error(e)
@@ -100,49 +105,22 @@ export async function getInitialData (): Promise<InitialData> {
   }
 }
 
-export async function getBinanceBlackList (): Promise<any> {
-  try {
-    const [
-      onlyAnonWallet,
-      isSupportedRegion
-    ] = await Promise.all([
-      new Promise(resolve => chrome.braveRewards.onlyAnonWallet((onlyAnonWallet: boolean) => {
-        resolve(!!onlyAnonWallet)
-      })),
-      new Promise(resolve => chrome.binance.isSupportedRegion((supported: boolean) => {
-        resolve(!!supported)
-      }))
-    ])
-    return {
-      isSupportedRegion,
-      onlyAnonWallet
-    }
-  } catch (err) {
-    throw Error(err)
-  }
-}
-
 export async function getRewardsPreInitialData (): Promise<PreInitialRewardsData> {
   try {
     const [
       enabledAds,
-      adsSupported,
-      enabledMain
+      adsSupported
     ] = await Promise.all([
       new Promise(resolve => chrome.braveRewards.getAdsEnabled((enabledAds: boolean) => {
         resolve(enabledAds)
       })),
       new Promise(resolve => chrome.braveRewards.getAdsSupported((adsSupported: boolean) => {
         resolve(adsSupported)
-      })),
-      new Promise(resolve => chrome.braveRewards.getRewardsMainEnabled((enabledMain: boolean) => {
-        resolve(enabledMain)
       }))
     ])
     return {
       enabledAds,
-      adsSupported,
-      enabledMain
+      adsSupported
     } as PreInitialRewardsData
   } catch (err) {
     throw Error(err)

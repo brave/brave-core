@@ -9,13 +9,10 @@ const keyName = 'rewards-data'
 
 export const defaultState: Rewards.State = {
   createdTimestamp: null,
-  enabledMain: false,
   enabledAds: true,
   enabledAdsMigrated: false,
   enabledContribute: true,
   firstLoad: null,
-  walletCreated: false,
-  walletCreateFailed: false,
   contributionMinTime: 8,
   contributionMinVisits: 1,
   contributionMonthly: 10,
@@ -29,10 +26,9 @@ export const defaultState: Rewards.State = {
     modalBackup: false,
     modalRedirect: 'hide',
     paymentIdCheck: true,
-    walletCorrupted: false,
     walletRecoveryStatus: null,
     walletServerProblem: false,
-    onBoardingDisplayed: false
+    verifyOnboardingDisplayed: false
   },
   autoContributeList: [],
   safetyNetFailed: false,
@@ -78,7 +74,9 @@ export const defaultState: Rewards.State = {
     autoContributeChoices: [],
     rate: 0
   },
-  initializing: true
+  initializing: true,
+  paymentId: '',
+  recoveryKey: ''
 }
 
 const cleanData = (state: Rewards.State) => {

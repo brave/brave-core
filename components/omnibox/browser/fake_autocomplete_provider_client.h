@@ -6,8 +6,6 @@
 #ifndef BRAVE_COMPONENTS_OMNIBOX_BROWSER_FAKE_AUTOCOMPLETE_PROVIDER_CLIENT_H_
 #define BRAVE_COMPONENTS_OMNIBOX_BROWSER_FAKE_AUTOCOMPLETE_PROVIDER_CLIENT_H_
 
-#include "brave/components/omnibox/browser/suggested_sites_provider.h"
-
 #include "components/omnibox/browser/mock_autocomplete_provider_client.h"
 #include "components/prefs/testing_pref_service.h"
 

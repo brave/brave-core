@@ -6,12 +6,12 @@
 #include <memory>
 
 #include "brave/browser/profiles/profile_util.h"
-#include "brave/browser/tor/buildflags.h"
+#include "brave/components/tor/buildflags/buildflags.h"
 
 #if BUILDFLAG(ENABLE_TOR)
 #include "net/proxy_resolution/proxy_config_service.h"
-#include "brave/browser/tor/tor_profile_service.h"
 #include "brave/browser/tor/tor_profile_service_factory.h"
+#include "brave/components/tor/tor_profile_service.h"
 #endif
 
 namespace {
@@ -19,7 +19,7 @@ namespace {
 #if BUILDFLAG(ENABLE_TOR)
 std::unique_ptr<net::ProxyConfigService> CreateProxyConfigServiceTor(
     Profile* profile) {
-  auto* tor_service = TorProfileServiceFactory::GetForProfile(profile);
+  auto* tor_service = TorProfileServiceFactory::GetForContext(profile);
   DCHECK(tor_service);
   return tor_service->CreateProxyConfigService();
 }

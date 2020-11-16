@@ -31,6 +31,12 @@ uint64_t MigrateTimestampToDoubleT(
 
 std::string NowAsString();
 
+std::string GetLocalDayOfWeek(
+    const base::Time& time);
+
+int ConvertTimeToLocalMinutesForToday(
+    const base::Time& time);
+
 }  // namespace ads
 
 #endif  // BAT_ADS_INTERNAL_TIME_UTIL_H_

@@ -15,6 +15,8 @@ declare namespace NewTab {
   export interface BrandedWallpaper {
     isSponsored: boolean
     wallpaperImageUrl: string
+    creativeInstanceId: string
+    wallpaperId: string
     logo: BrandedWallpaperLogo
   }
   export interface ApplicationState {
@@ -41,21 +43,6 @@ declare namespace NewTab {
     defaultSRTopSite: boolean | undefined
   }
 
-  // This is preserved for migration reasons.
-  // Do not tyoe new code using this interface.
-  export interface LegacySite {
-    index: number
-    url: string
-    title: string
-    favicon: string
-    letter: string
-    thumb: string
-    themeColor: string
-    computedThemeColor: string
-    pinned: boolean
-    bookmarked?: Bookmark
-  }
-
   export interface Stats {
     adsBlockedStat: number
     javascriptBlockedStat: number
@@ -72,18 +59,12 @@ declare namespace NewTab {
     url: string
   }
 
-  export type StackWidget = 'rewards' | 'binance' | 'together' | 'gemini' | 'bitcoinDotCom' | ''
-
-  export interface LegacyState {
-    pinnedTopSites: Site[]
-    ignoredTopSites: Site[]
-  }
+  export type StackWidget = 'rewards' | 'binance' | 'together' | 'gemini' | 'bitcoinDotCom' | 'cryptoDotCom' | ''
 
   export interface GridSitesState {
     removedSites: Site[]
     gridSites: Site[]
     shouldShowSiteRemovedNotification: boolean
-    legacy: LegacyState
   }
 
   export interface PageState {
@@ -97,7 +78,9 @@ declare namespace NewTab {
   export interface PersistentState {
     togetherSupported: boolean
     geminiSupported: boolean
+    binanceSupported: boolean
     bitcoinDotComSupported: boolean
+    cryptoDotComSupported: boolean
     showEmptyPage: boolean
     rewardsState: RewardsWidgetState
     currentStackWidget: StackWidget
@@ -105,6 +88,7 @@ declare namespace NewTab {
     widgetStackOrder: StackWidget[]
     binanceState: BinanceWidgetState
     geminiState: GeminiWidgetState
+    cryptoDotComState: CryptoDotComWidgetState
   }
 
   export interface EphemeralState {
@@ -122,15 +106,17 @@ declare namespace NewTab {
     showGridSiteRemovedNotification?: boolean
     showBackgroundImage: boolean
     showStats: boolean
+    showToday: boolean
     showClock: boolean
     clockFormat: string
     showTopSites: boolean
+    customLinksEnabled: boolean
     showRewards: boolean
     showTogether: boolean
     showBinance: boolean
-    showAddCard: boolean
     showGemini: boolean
     showBitcoinDotCom: boolean
+    showCryptoDotCom: boolean,
     brandedWallpaperOptIn: boolean
     isBrandedWallpaperNotificationDismissed: boolean
     stats: Stats,
@@ -143,15 +129,10 @@ declare namespace NewTab {
     balance: RewardsBalance
     dismissedNotifications: string[]
     enabledAds: boolean
-    enabledMain: boolean
     promotions: Promotion[]
     parameters: RewardsParameters
     onlyAnonWallet: boolean
     totalContribution: number
-    walletCreated: boolean
-    walletCreating: boolean
-    walletCreateFailed: boolean
-    walletCorrupted: boolean
   }
 
   export interface BinanceWidgetState {
@@ -160,7 +141,6 @@ declare namespace NewTab {
     initialAmount: string
     initialAsset: string
     userTLDAutoSet: boolean
-    binanceSupported: boolean
     accountBalances: Record<string, string>
     authInProgress: boolean
     assetBTCValues: Record<string, string>
@@ -195,6 +175,16 @@ declare namespace NewTab {
     accountBalances: Record<string, string>
     disconnectInProgress: boolean
     authInvalid: boolean
+  }
+
+  export interface CryptoDotComWidgetState {
+    optInTotal: boolean
+    optInBTCPrice: boolean
+    optInMarkets: boolean
+    tickerPrices: Record<string, any>
+    losersGainers: Record<string, any>
+    supportedPairs: Record<string, any>
+    charts: Record<string, any>
   }
 
   export type BinanceTLD = 'us' | 'com'

@@ -11,8 +11,9 @@
 #include <memory>
 #include <string>
 
-#include "bat/ads/internal/bundle/bundle_state.h"
-#include "bat/ads/internal/catalog/catalog_creative_set_info.h"
+#include "bat/ads/internal/bundle/creative_ad_notification_info.h"
+#include "bat/ads/internal/bundle/creative_new_tab_page_ad_info.h"
+#include "bat/ads/internal/conversions/conversion_info.h"
 #include "bat/ads/internal/time_util.h"
 #include "bat/ads/result.h"
 
@@ -20,6 +21,8 @@ namespace ads {
 
 class AdsImpl;
 class Catalog;
+struct BundleState;
+struct CatalogCreativeSetInfo;
 
 class Bundle {
  public:
@@ -35,6 +38,24 @@ class Bundle {
   uint64_t GetCatalogVersion() const;
   uint64_t GetCatalogPing() const;
 
+  void DeleteCreativeAdNotifications();
+  void DeleteCreativeNewTabPageAds();
+  void DeleteCampaigns();
+  void DeleteCategories();
+  void DeleteCreativeAds();
+  void DeleteDayparts();
+  void DeleteGeoTargets();
+
+  void SaveCreativeAdNotifications(
+      const CreativeAdNotificationList& creative_ad_notifications);
+
+  void SaveCreativeNewTabPageAds(
+      const CreativeNewTabPageAdList& creative_new_tab_page_ads);
+
+  void PurgeExpiredConversions();
+  void SaveConversions(
+      const ConversionList& conversions);
+
   bool IsOlderThanOneDay() const;
 
   bool Exists() const;
@@ -45,11 +66,28 @@ class Bundle {
   bool DoesOsSupportCreativeSet(
       const CatalogCreativeSetInfo& creative_set);
 
+  void OnCreativeAdNotificationsDeleted(
+      const Result result);
+  void OnCreativeNewTabPageAdsDeleted(
+      const Result result);
+  void OnCampaignsDeleted(
+      const Result result);
+  void OnCategoriesDeleted(
+      const Result result);
+  void OnCreativeAdsDeleted(
+      const Result result);
+  void OnDaypartsDeleted(
+      const Result result);
+  void OnGeoTargetsDeleted(
+      const Result result);
   void OnCreativeAdNotificationsSaved(
       const Result result);
-  void OnPurgedExpiredAdConversions(
+  void OnCreativeNewTabPageAdsSaved(
       const Result result);
-  void OnAdConversionsSaved(
+
+  void OnPurgedExpiredConversions(
+      const Result result);
+  void OnConversionsSaved(
       const Result result);
 
   std::string catalog_id_;

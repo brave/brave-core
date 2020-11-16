@@ -8,6 +8,7 @@
 #include <limits>
 #include <utility>
 
+#include "base/base64.h"
 #include "base/bind.h"
 #include "base/command_line.h"
 #include "base/containers/flat_map.h"
@@ -28,9 +29,9 @@
 #include "base/task_runner_util.h"
 #include "base/time/time.h"
 #include "base/i18n/time_formatting.h"
-#include "bat/ads/ad_history.h"
+#include "bat/ads/ad_history_info.h"
 #include "bat/ads/ads.h"
-#include "bat/ads/ads_history.h"
+#include "bat/ads/ads_history_info.h"
 #include "bat/ads/ad_notification_info.h"
 #include "bat/ads/mojom.h"
 #include "bat/ads/pref_names.h"
@@ -95,9 +96,6 @@ using brave_rewards::RewardsNotificationService;
 namespace brave_ads {
 
 namespace {
-
-const char kRewardsNotificationAdsOnboarding[] =
-    "rewards_notification_ads_onboarding";
 
 const unsigned int kRetriesCountOnNetworkChange = 1;
 
@@ -210,7 +208,6 @@ net::NetworkTrafficAnnotationTag GetNetworkTrafficAnnotationTag() {
 
 AdsServiceImpl::AdsServiceImpl(Profile* profile) :
     profile_(profile),
-    is_initialized_(false),
     file_task_runner_(base::CreateSequencedTaskRunner(
           {base::ThreadPool(), base::MayBlock(),
            base::TaskPriority::BEST_EFFORT,
@@ -228,10 +225,7 @@ AdsServiceImpl::AdsServiceImpl(Profile* profile) :
   MaybeInitialize();
 }
 
-AdsServiceImpl::~AdsServiceImpl() {
-  file_task_runner_->DeleteSoon(FROM_HERE, database_.release());
-  g_brave_browser_process->user_model_file_service()->RemoveObserver(this);
-}
+AdsServiceImpl::~AdsServiceImpl() = default;
 
 void AdsServiceImpl::OnUserModelUpdated(
     const std::string& id) {
@@ -272,12 +266,11 @@ bool AdsServiceImpl::IsNewlySupportedLocale() {
 void AdsServiceImpl::SetEnabled(
     const bool is_enabled) {
   SetBooleanPref(ads::prefs::kEnabled, is_enabled);
-  rewards_service_->OnAdsEnabled(is_enabled);
 }
 
-void AdsServiceImpl::SetAllowAdConversionTracking(
+void AdsServiceImpl::SetAllowConversionTracking(
     const bool should_allow) {
-  SetBooleanPref(ads::prefs::kShouldAllowAdConversionTracking, should_allow);
+  SetBooleanPref(ads::prefs::kShouldAllowConversionTracking, should_allow);
 }
 
 void AdsServiceImpl::SetAdsPerHour(
@@ -379,39 +372,19 @@ void AdsServiceImpl::OnWalletUpdated() {
     return;
   }
 
-  const std::string json = rewards_service_->GetEncryptedStringState(
-      "wallets.brave");
+  rewards_service_->GetBraveWallet(
+      base::BindOnce(&AdsServiceImpl::OnGetBraveWallet, AsWeakPtr()));
+}
 
-  if (json.empty()) {
+void AdsServiceImpl::OnGetBraveWallet(ledger::type::BraveWalletPtr wallet) {
+  if (!wallet) {
+    VLOG(0) << "Failed to get wallet";
     return;
   }
 
-  base::Optional<base::Value> value = base::JSONReader::Read(json);
-  if (!value || !value->is_dict()) {
-    VLOG(0) << "Failed to parse wallet";
-    return;
-  }
-
-  base::DictionaryValue* dictionary = nullptr;
-  if (!value->GetAsDictionary(&dictionary)) {
-    VLOG(0) << "Failed to parse wallet";
-    return;
-  }
-
-  const std::string* payment_id = dictionary->FindStringKey("payment_id");
-  if (!payment_id) {
-    VLOG(0) << "Wallet missing payment_id";
-    return;
-  }
-
-  const std::string* recovery_seed_base64 =
-      dictionary->FindStringKey("recovery_seed");
-  if (!recovery_seed_base64) {
-    VLOG(0) << "Wallet missing recovery_seed";
-    return;
-  }
-
-  bat_ads_->OnWalletUpdated(*payment_id, *recovery_seed_base64);
+  bat_ads_->OnWalletUpdated(
+      wallet->payment_id,
+      base::Base64Encode(wallet->recovery_seed));
 }
 
 void AdsServiceImpl::ReconcileAdRewards() {
@@ -530,12 +503,7 @@ void AdsServiceImpl::ToggleFlagAd(
 }
 
 bool AdsServiceImpl::IsEnabled() const {
-  auto is_enabled = GetBooleanPref(ads::prefs::kEnabled);
-
-  auto is_rewards_enabled =
-      GetBooleanPref(brave_rewards::prefs::kEnabled);
-
-  return is_enabled && is_rewards_enabled;
+  return GetBooleanPref(ads::prefs::kEnabled);
 }
 
 uint64_t AdsServiceImpl::GetAdsPerHour() const {
@@ -564,7 +532,11 @@ GetAutoDetectedAdsSubdivisionTargetingCode() const {
 ///////////////////////////////////////////////////////////////////////////////
 
 void AdsServiceImpl::Shutdown() {
+  is_initialized_ = false;
+
   BackgroundHelper::GetInstance()->RemoveObserver(this);
+
+  g_brave_browser_process->user_model_file_service()->RemoveObserver(this);
 
   for (auto* const url_loader : url_loaders_) {
     delete url_loader;
@@ -577,7 +549,9 @@ void AdsServiceImpl::Shutdown() {
   bat_ads_client_receiver_.reset();
   bat_ads_service_.reset();
 
-  is_initialized_ = false;
+  const bool success =
+      file_task_runner_->DeleteSoon(FROM_HERE, database_.release());
+  VLOG_IF(1, !success) << "Failed to release database";
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -591,8 +565,20 @@ bool MigrateConfirmationsStateOnFileTaskRunner(
       rewards_service_base_path.AppendASCII("confirmations.json");
 
   if (base::PathExists(legacy_confirmations_state_path)) {
+    const base::FilePath ads_service_base_path =
+        path.AppendASCII("ads_service");
+
+    if (!base::DirectoryExists(ads_service_base_path)) {
+      if (!base::CreateDirectory(ads_service_base_path)) {
+        VLOG(0) << "Failed to create " << ads_service_base_path.value();
+        return false;
+      }
+
+      VLOG(1) << "Created " << ads_service_base_path.value();
+    }
+
     base::FilePath confirmations_state_path =
-        path.AppendASCII("ads_service").AppendASCII("confirmations.json");
+        ads_service_base_path.AppendASCII("confirmations.json");
 
     VLOG(1) << "Migrating " << legacy_confirmations_state_path.value()
         << " to " << confirmations_state_path.value();
@@ -642,21 +628,11 @@ void AdsServiceImpl::Initialize() {
   profile_pref_change_registrar_.Add(ads::prefs::kEnabled,
       base::Bind(&AdsServiceImpl::OnPrefsChanged, base::Unretained(this)));
 
-  profile_pref_change_registrar_.Add(brave_rewards::prefs::kEnabled,
-      base::Bind(&AdsServiceImpl::OnPrefsChanged, base::Unretained(this)));
-
   profile_pref_change_registrar_.Add(ads::prefs::kIdleThreshold,
       base::Bind(&AdsServiceImpl::OnPrefsChanged, base::Unretained(this)));
 
   profile_pref_change_registrar_.Add(brave_rewards::prefs::kWalletBrave,
       base::Bind(&AdsServiceImpl::OnPrefsChanged, base::Unretained(this)));
-
-#if !defined(OS_ANDROID)
-  // TODO(tmancey): Refactor on-boarding to be platform agnostic
-  MaybeShowOnboarding();
-#endif
-
-  g_brave_browser_process->user_model_file_service()->AddObserver(this);
 
   MaybeStart(false);
 }
@@ -694,10 +670,6 @@ void AdsServiceImpl::ShutdownBatAds() {
   }
 
   VLOG(1) << "Shutting down ads";
-
-  const bool success = file_task_runner_->DeleteSoon(FROM_HERE,
-      database_.release());
-  VLOG_IF(1, !success) << "Failed to release database";
 
   bat_ads_->Shutdown(base::BindOnce(&AdsServiceImpl::OnShutdownBatAds,
       AsWeakPtr()));
@@ -799,10 +771,6 @@ void AdsServiceImpl::ResetAllState(
 
   VLOG(1) << "Shutting down and resetting ads state";
 
-  const bool success = file_task_runner_->DeleteSoon(FROM_HERE,
-      database_.release());
-  VLOG_IF(1, !success) << "Failed to release database";
-
   bat_ads_->Shutdown(base::BindOnce(&AdsServiceImpl::OnShutdownAndResetBatAds,
       AsWeakPtr()));
 }
@@ -848,15 +816,17 @@ void AdsServiceImpl::OnEnsureBaseDirectoryExists(
     return;
   }
 
+  g_brave_browser_process->user_model_file_service()->AddObserver(this);
+
   BackgroundHelper::GetInstance()->AddObserver(this);
+
+  database_ = std::make_unique<ads::Database>(
+      base_path_.AppendASCII("database.sqlite"));
 
   bat_ads_service_->Create(
       bat_ads_client_receiver_.BindNewEndpointAndPassRemote(),
       bat_ads_.BindNewEndpointAndPassReceiver(),
       base::BindOnce(&AdsServiceImpl::OnCreate, AsWeakPtr()));
-
-  database_ = std::make_unique<ads::Database>(
-      base_path_.AppendASCII("database.sqlite"));
 
   OnWalletUpdated();
 
@@ -1023,6 +993,17 @@ void AdsServiceImpl::OnViewAdNotification(
       ads::AdNotificationEventType::kClicked);
 }
 
+void AdsServiceImpl::OnNewTabPageAdEvent(
+    const std::string& wallpaper_id,
+    const std::string& creative_instance_id,
+    const ads::NewTabPageAdEventType event_type) {
+  if (!connected()) {
+    return;
+  }
+
+  bat_ads_->OnNewTabPageAdEvent(wallpaper_id, creative_instance_id, event_type);
+}
+
 void AdsServiceImpl::RetryViewingAdNotification(
     const std::string& uuid) {
   VLOG(1) << "Retry viewing ad notification with uuid " << uuid;
@@ -1098,8 +1079,6 @@ void AdsServiceImpl::RegisterUserModelComponentsForLocale(
 void AdsServiceImpl::OnURLRequestStarted(
     const GURL& final_url,
     const network::mojom::URLResponseHead& response_head) {
-  VLOG(6) << "URL request started for " << final_url.PathForRequest();
-
   if (response_head.headers->response_code() == -1) {
     VLOG(6) << "Response headers are malformed!!";
     return;
@@ -1112,9 +1091,6 @@ void AdsServiceImpl::OnURLRequestComplete(
     const std::unique_ptr<std::string> response_body) {
   DCHECK(url_loaders_.find(url_loader) != url_loaders_.end());
   url_loaders_.erase(url_loader);
-
-  VLOG(6) << "URL request complete for "
-      << url_loader->GetFinalURL().PathForRequest();
 
   if (!connected()) {
     return;
@@ -1162,48 +1138,44 @@ bool AdsServiceImpl::CanShowBackgroundNotifications() const {
 void AdsServiceImpl::OnGetAdsHistory(
     OnGetAdsHistoryCallback callback,
     const std::string& json) {
-  ads::AdsHistory ads_history;
+  ads::AdsHistoryInfo ads_history;
   ads_history.FromJson(json);
 
   // Build the list structure required by the webUI
   int uuid = 0;
   base::ListValue list;
-  for (const auto& entry : ads_history.entries) {
+  for (const auto& item : ads_history.items) {
     base::DictionaryValue ad_content_dictionary;
     ad_content_dictionary.SetKey("creativeInstanceId",
-        base::Value(entry.ad_content.creative_instance_id));
+        base::Value(item.ad_content.creative_instance_id));
     ad_content_dictionary.SetKey("creativeSetId",
-        base::Value(entry.ad_content.creative_set_id));
-    ad_content_dictionary.SetKey("campaignId",
-        base::Value(entry.ad_content.campaign_id));
+        base::Value(item.ad_content.creative_set_id));
     ad_content_dictionary.SetKey("brand",
-        base::Value(entry.ad_content.brand));
+        base::Value(item.ad_content.brand));
     ad_content_dictionary.SetKey("brandInfo",
-        base::Value(entry.ad_content.brand_info));
+        base::Value(item.ad_content.brand_info));
     ad_content_dictionary.SetKey("brandLogo",
-        base::Value(entry.ad_content.brand_logo));
+        base::Value(item.ad_content.brand_logo));
     ad_content_dictionary.SetKey("brandDisplayUrl",
-        base::Value(entry.ad_content.brand_display_url));
+        base::Value(item.ad_content.brand_display_url));
     ad_content_dictionary.SetKey("brandUrl",
-        base::Value(entry.ad_content.brand_url));
+        base::Value(item.ad_content.brand_url));
     ad_content_dictionary.SetKey("likeAction",
-        base::Value(static_cast<int>(entry.ad_content.like_action)));
+        base::Value(static_cast<int>(item.ad_content.like_action)));
     ad_content_dictionary.SetKey("adAction",
-        base::Value(std::string(entry.ad_content.ad_action)));
+        base::Value(std::string(item.ad_content.ad_action)));
     ad_content_dictionary.SetKey("savedAd",
-        base::Value(entry.ad_content.saved_ad));
+        base::Value(item.ad_content.saved_ad));
     ad_content_dictionary.SetKey("flaggedAd",
-        base::Value(entry.ad_content.flagged_ad));
+        base::Value(item.ad_content.flagged_ad));
 
     base::DictionaryValue category_content_dictionary;
     category_content_dictionary.SetKey("category",
-        base::Value(entry.category_content.category));
+        base::Value(item.category_content.category));
     category_content_dictionary.SetKey("optAction",
-        base::Value(static_cast<int>(entry.category_content.opt_action)));
+        base::Value(static_cast<int>(item.category_content.opt_action)));
 
     base::DictionaryValue ad_history_dictionary;
-    ad_history_dictionary.SetKey("uuid", base::Value(entry.uuid));
-    ad_history_dictionary.SetKey("parentUuid", base::Value(entry.parent_uuid));
     ad_history_dictionary.SetPath("adContent",
         std::move(ad_content_dictionary));
     ad_history_dictionary.SetPath("categoryContent",
@@ -1212,7 +1184,7 @@ void AdsServiceImpl::OnGetAdsHistory(
     base::DictionaryValue dictionary;
 
     dictionary.SetKey("uuid", base::Value(std::to_string(uuid++)));
-    auto time = base::Time::FromDoubleT(entry.timestamp_in_seconds);
+    auto time = base::Time::FromDoubleT(item.timestamp_in_seconds);
     auto js_time = time.ToJsTime();
     dictionary.SetKey("timestampInMilliseconds", base::Value(js_time));
 
@@ -1374,7 +1346,8 @@ bool AdsServiceImpl::MigratePrefs(
     {{3, 4}, &AdsServiceImpl::MigratePrefsVersion3To4},
     {{4, 5}, &AdsServiceImpl::MigratePrefsVersion4To5},
     {{5, 6}, &AdsServiceImpl::MigratePrefsVersion5To6},
-    {{6, 7}, &AdsServiceImpl::MigratePrefsVersion6To7}
+    {{6, 7}, &AdsServiceImpl::MigratePrefsVersion6To7},
+    {{7, 8}, &AdsServiceImpl::MigratePrefsVersion7To8}
   };
 
   // Cycle through migration paths, i.e. if upgrading from version 2 to 5 we
@@ -1444,15 +1417,6 @@ void AdsServiceImpl::MigratePrefsVersion2To3() {
   };
 
   DisableAdsForUnsupportedCountryCodes(country_code, legacy_country_codes);
-
-  // On-board users for newly supported country_codes
-  const std::vector<std::string> new_country_codes = {
-    "AU",  // Australia
-    "NZ",  // New Zealand
-    "IE"   // Ireland
-  };
-
-  MayBeShowOnboardingForSupportedCountryCode(country_code, new_country_codes);
 }
 
 void AdsServiceImpl::MigratePrefsVersion3To4() {
@@ -1473,34 +1437,6 @@ void AdsServiceImpl::MigratePrefsVersion3To4() {
   };
 
   DisableAdsForUnsupportedCountryCodes(country_code, legacy_country_codes);
-
-  // On-board users for newly supported country codes
-  const std::vector<std::string> new_country_codes = {
-    "AR",  // Argentina
-    "AT",  // Austria
-    "BR",  // Brazil
-    "CH",  // Switzerland
-    "CL",  // Chile
-    "CO",  // Colombia
-    "DK",  // Denmark
-    "EC",  // Ecuador
-    "IL",  // Israel
-    "IN",  // India
-    "IT",  // Italy
-    "JP",  // Japan
-    "KR",  // Korea
-    "MX",  // Mexico
-    "NL",  // Netherlands
-    "PE",  // Peru
-    "PH",  // Philippines
-    "PL",  // Poland
-    "SE",  // Sweden
-    "SG",  // Singapore
-    "VE",  // Venezuela
-    "ZA"   // South Africa
-  };
-
-  MayBeShowOnboardingForSupportedCountryCode(country_code, new_country_codes);
 }
 
 void AdsServiceImpl::MigratePrefsVersion4To5() {
@@ -1543,13 +1479,6 @@ void AdsServiceImpl::MigratePrefsVersion4To5() {
   };
 
   DisableAdsForUnsupportedCountryCodes(country_code, legacy_country_codes);
-
-  // On-board users for newly supported country codes
-  const std::vector<std::string> new_country_codes = {
-    "KY"   // Cayman Islands
-  };
-
-  MayBeShowOnboardingForSupportedCountryCode(country_code, new_country_codes);
 }
 
 void AdsServiceImpl::MigratePrefsVersion5To6() {
@@ -1620,9 +1549,13 @@ void AdsServiceImpl::MigratePrefsVersion6To7() {
   }
 
   SetEnabled(false);
+}
 
-  SetBooleanPref(prefs::kShouldShowOnboarding, true);
-  SetUint64Pref(prefs::kOnboardingTimestamp, 0);
+void AdsServiceImpl::MigratePrefsVersion7To8() {
+  const bool rewards_enabled = GetBooleanPref(brave_rewards::prefs::kEnabled);
+  if (!rewards_enabled) {
+    SetEnabled(false);
+  }
 }
 
 int AdsServiceImpl::GetPrefsVersion() const {
@@ -1669,22 +1602,6 @@ void AdsServiceImpl::DisableAdsForUnsupportedCountryCodes(
   SetEnabled(false);
 }
 
-void AdsServiceImpl::MayBeShowOnboardingForSupportedCountryCode(
-    const std::string& country_code,
-    const std::vector<std::string>& supported_country_codes) {
-  if (IsEnabled()) {
-    return;
-  }
-
-  if (std::find(supported_country_codes.begin(), supported_country_codes.end(),
-      country_code) == supported_country_codes.end()) {
-    return;
-  }
-
-  SetBooleanPref(prefs::kShouldShowOnboarding, true);
-  SetUint64Pref(prefs::kOnboardingTimestamp, 0);
-}
-
 uint64_t AdsServiceImpl::MigrateTimestampToDoubleT(
     const uint64_t timestamp_in_seconds) const {
   if (timestamp_in_seconds < 10000000000) {
@@ -1701,104 +1618,6 @@ uint64_t AdsServiceImpl::MigrateTimestampToDoubleT(
 
   auto date = now + base::TimeDelta::FromSeconds(delta);
   return static_cast<uint64_t>(date.ToDoubleT());
-}
-
-void AdsServiceImpl::MaybeShowOnboarding() {
-  if (!ShouldShowOnboarding()) {
-    MaybeStartRemoveOnboardingTimer();
-    return;
-  }
-
-  ShowOnboarding();
-}
-
-bool AdsServiceImpl::ShouldShowOnboarding() {
-  auto is_ads_enabled = GetBooleanPref(ads::prefs::kEnabled);
-
-  auto is_rewards_enabled =
-      GetBooleanPref(brave_rewards::prefs::kEnabled);
-
-  auto should_show = GetBooleanPref(prefs::kShouldShowOnboarding);
-
-  return IsNewlySupportedLocale() && !is_ads_enabled && is_rewards_enabled
-      && should_show;
-}
-
-void AdsServiceImpl::ShowOnboarding() {
-  auto type = RewardsNotificationService::REWARDS_NOTIFICATION_ADS_ONBOARDING;
-  RewardsNotificationService::RewardsNotificationArgs args;
-  auto* id = kRewardsNotificationAdsOnboarding;
-
-  auto* notification_service = rewards_service_->GetNotificationService();
-  notification_service->AddNotification(type, args, id);
-
-  SetBooleanPref(prefs::kShouldShowOnboarding, false);
-
-  auto now = static_cast<uint64_t>(base::Time::Now().ToDoubleT());
-  SetUint64Pref(prefs::kOnboardingTimestamp, now);
-
-  StartRemoveOnboardingTimer();
-}
-
-void AdsServiceImpl::RemoveOnboarding() {
-  if (!ShouldRemoveOnboarding()) {
-    return;
-  }
-
-  onboarding_timer_.Stop();
-
-  auto* notification_service = rewards_service_->GetNotificationService();
-  notification_service->DeleteNotification(kRewardsNotificationAdsOnboarding);
-
-  VLOG(1) << "Removed onboarding";
-}
-
-void AdsServiceImpl::MaybeStartRemoveOnboardingTimer() {
-  if (!ShouldRemoveOnboarding()) {
-    return;
-  }
-
-  StartRemoveOnboardingTimer();
-}
-
-bool AdsServiceImpl::ShouldRemoveOnboarding() const {
-  auto* notification_service = rewards_service_->GetNotificationService();
-  return notification_service->Exists(kRewardsNotificationAdsOnboarding);
-}
-
-void AdsServiceImpl::StartRemoveOnboardingTimer() {
-  if (onboarding_timer_.IsRunning()) {
-    return;
-  }
-
-  auto now_in_seconds = static_cast<uint64_t>(base::Time::Now().ToDoubleT());
-
-  auto timestamp_in_seconds =
-      MigrateTimestampToDoubleT(GetUint64Pref(prefs::kOnboardingTimestamp));
-
-  if (IsDebug()) {
-    timestamp_in_seconds += 5 * base::Time::kSecondsPerMinute;
-  } else {
-    timestamp_in_seconds += base::Time::kMicrosecondsPerWeek /
-        base::Time::kMicrosecondsPerSecond;
-  }
-
-  uint64_t timer_offset_in_seconds;
-  if (now_in_seconds >= timestamp_in_seconds) {
-    timer_offset_in_seconds = 1 * base::Time::kSecondsPerMinute;
-  } else {
-    timer_offset_in_seconds = timestamp_in_seconds - now_in_seconds;
-  }
-
-  onboarding_timer_.Start(FROM_HERE,
-      base::TimeDelta::FromSeconds(timer_offset_in_seconds),
-          base::BindOnce(&AdsServiceImpl::RemoveOnboarding, AsWeakPtr()));
-
-  const std::string friendly_date_and_time =
-      base::UTF16ToUTF8(base::TimeFormatFriendlyDateAndTime(
-          base::Time::FromDoubleT(now_in_seconds + timer_offset_in_seconds)));
-
-  VLOG(1) << "Started timer to remove onboarding " << friendly_date_and_time;
 }
 
 void AdsServiceImpl::MaybeShowMyFirstAdNotification() {
@@ -1825,23 +1644,19 @@ bool AdsServiceImpl::PrefExists(
 
 void AdsServiceImpl::OnPrefsChanged(
     const std::string& pref) {
-  if (pref == ads::prefs::kEnabled ||
-      pref == brave_rewards::prefs::kEnabled) {
-    if (IsEnabled()) {
-#if !defined(OS_ANDROID)
-      if (first_run::IsChromeFirstRun()) {
-        SetBooleanPref(prefs::kShouldShowOnboarding, false);
-      } else {
-        RemoveOnboarding();
-      }
-#endif
+  if (pref == ads::prefs::kEnabled) {
+    rewards_service_->OnAdsEnabled(IsEnabled());
 
-      MaybeStart(false);
+    if (IsEnabled()) {
+      rewards_service_->CreateWallet(
+          base::BindOnce(&AdsServiceImpl::OnWalletCreated, AsWeakPtr()));
     } else {
       // Record "special value" to prevent sending this week's data to P2A
       // server. Matches INT_MAX - 1 for |kSuspendedMetricValue| in
       // |brave_p3a_service.cc|
-      brave_ads::EmitConfirmationsCountMetric(INT_MAX);
+      SuspendP2AHistograms();
+      VLOG(1) << "P2A histograms suspended";
+
       Stop();
     }
 
@@ -1852,6 +1667,16 @@ void AdsServiceImpl::OnPrefsChanged(
   } else if (pref == brave_rewards::prefs::kWalletBrave) {
     OnWalletUpdated();
   }
+}
+
+void AdsServiceImpl::OnWalletCreated(const ledger::type::Result result) {
+  if (result != ledger::type::Result::WALLET_CREATED) {
+    VLOG(0) << "Failed to create a wallet";
+    SetEnabled(false);
+    return;
+  }
+
+  MaybeStart(false);
 }
 
 bool AdsServiceImpl::connected() {
@@ -1892,13 +1717,13 @@ std::string AdsServiceImpl::LoadDataResourceAndDecompressIfNeeded(
 }
 
 void AdsServiceImpl::ShowNotification(
-    const std::unique_ptr<ads::AdNotificationInfo> info) {
-  auto notification = CreateAdNotification(*info);
+    const ads::AdNotificationInfo& ad_notification) {
+  auto notification = CreateAdNotification(ad_notification);
 
   display_service_->Display(NotificationHandler::Type::BRAVE_ADS,
       *notification, /*metadata=*/nullptr);
 
-  StartNotificationTimeoutTimer(info->uuid);
+  StartNotificationTimeoutTimer(ad_notification.uuid);
 }
 
 void AdsServiceImpl::StartNotificationTimeoutTimer(
@@ -2021,6 +1846,31 @@ void AdsServiceImpl::LoadUserModelForId(
       base::BindOnce(&LoadOnFileTaskRunner, path.value()),
       base::BindOnce(&AdsServiceImpl::OnLoaded, AsWeakPtr(),
           std::move(callback)));
+}
+
+void AdsServiceImpl::RecordP2AEvent(
+    const std::string& name,
+    const ads::P2AEventType type,
+    const std::string& value) {
+  switch (type) {
+    case ads::P2AEventType::kListType: {
+      base::Optional<base::Value> maybe_list = base::JSONReader::Read(value);
+      if (!maybe_list || !maybe_list->is_list()) {
+        break;
+      }
+
+      base::ListValue* list = nullptr;
+      if (!maybe_list->GetAsList(&list)) {
+        break;
+      }
+
+      for (auto& item : *list) {
+        RecordInWeeklyStorageAndEmitP2AHistogramAnswer(
+            profile_->GetPrefs(), item.GetString());
+      }
+      break;
+    }
+  }
 }
 
 void AdsServiceImpl::Load(

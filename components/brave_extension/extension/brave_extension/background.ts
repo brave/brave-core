@@ -3,6 +3,10 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 import * as bluebird from 'bluebird'
+
+import './background/greaselion'
+import './background/today'
+
 global.Promise = bluebird
 
 function promisifier (method: any) {

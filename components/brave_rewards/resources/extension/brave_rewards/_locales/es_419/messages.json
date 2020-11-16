@@ -197,10 +197,6 @@
     "message": "Ahora mirar publicidades tiene su recompensa.",
     "description": "Message for ads launch notification"
   },
-  "braveAdsLaunchTitle": {
-    "message": "Los anuncios de Brave ya están aquí",
-    "description": "Message used in notification to let users know Ads is available"
-  },
   "braveAdsTitle": {
     "message": "Publicidades de Brave",
     "description": "Notification title when we display info about ads"
@@ -603,6 +599,10 @@
     "message": "Cancelar",
     "description": "Text for cancel button"
   },
+  "changeAmount":  {
+    "message": "Cambiar importe",
+    "description": "Button text for changing monthly contribution amount"
+  },
   "login":  {
     "message": "Acceder",
     "description": "Text for login button"
@@ -612,7 +612,7 @@
     "description": "Text for login button"
   },
   "loginMessageText":  {
-    "message": "Debes tener 25 BAT como mínimo para crear una cuenta de Uphold. Vuelve a intentarlo más tarde. <br/> Si ya tienes una cuenta de Uphold verificada, inicia sesión.",
+    "message": "Debes tener 25 BAT como mínimo para crear una cuenta de Uphold. Vuelve a intentarlo más tarde. \nSi ya tienes una cuenta de Uphold verificada, inicia sesión.",
     "description": "Text for login button"
   },
   "walletConnected":  {
@@ -622,5 +622,9 @@
   "walletPending":  {
     "message": "Pendiente",
     "description": "Status button that tells user that he is currently pending"
+  },
+  "walletVerificationNote3":  {
+    "message": "Nota: Uphold tendrá visibilidad de tus transacciones cuando des tu autorización. Por ejemplo, podrá ver el destinatario y el importe de tus propinas.",
+    "description": "Displayed in login modal for uphold"
   }
 }

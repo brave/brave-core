@@ -7,10 +7,10 @@
 
 #include "base/command_line.h"
 #include "brave/browser/browsing_data/brave_clear_browsing_data.h"
-#include "brave/browser/tor/buildflags.h"
 #include "brave/common/pref_names.h"
 #include "brave/components/brave_sync/buildflags/buildflags.h"
 #include "brave/components/brave_sync/features.h"
+#include "brave/components/tor/buildflags/buildflags.h"
 #include "chrome/common/chrome_features.h"
 #include "components/prefs/pref_service.h"
 #include "components/sync/driver/sync_driver_switches.h"
@@ -20,7 +20,7 @@
 #if BUILDFLAG(ENABLE_TOR)
 #include <string>
 #include "base/files/file_util.h"
-#include "brave/common/tor/tor_constants.h"
+#include "brave/components/tor/tor_constants.h"
 #include "chrome/browser/browser_process_impl.h"
 #include "chrome/browser/profiles/profile_attributes_storage.h"
 #include "chrome/browser/profiles/profile_manager.h"

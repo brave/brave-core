@@ -13,10 +13,10 @@
 #include "brave/browser/profiles/brave_profile_manager.h"
 #include "brave/browser/profiles/brave_unittest_profile_manager.h"
 #include "brave/browser/profiles/profile_util.h"
-#include "brave/browser/tor/buildflags.h"
-#include "brave/components/ipfs/browser/features.h"
-#include "brave/components/ipfs/common/ipfs_constants.h"
-#include "brave/components/ipfs/common/pref_names.h"
+#include "brave/components/ipfs/features.h"
+#include "brave/components/ipfs/ipfs_constants.h"
+#include "brave/components/ipfs/pref_names.h"
+#include "brave/components/tor/buildflags/buildflags.h"
 #include "chrome/browser/prefs/browser_prefs.h"
 #include "chrome/test/base/chrome_render_view_host_test_harness.h"
 #include "chrome/test/base/scoped_testing_local_state.h"
@@ -49,7 +49,7 @@ const GURL& GetIPFSGatewayURL() {
 
 const GURL& GetIPFSLocalURL() {
   static const GURL ipfs_url(
-      "http://127.0.0.1:8080/ipfs/"
+      "http://localhost:48080/ipfs/"
       "bafybeiemxf5abjwjbikoz4mc3a3dla6ual3jsgpdr4cjr3oz3evfyavhwq/wiki/"
       "Vincent_van_Gogh.html");  // NOLINT
   return ipfs_url;

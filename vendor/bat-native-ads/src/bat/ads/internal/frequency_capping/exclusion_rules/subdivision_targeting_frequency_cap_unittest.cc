@@ -182,6 +182,25 @@ TEST_F(BatAdsSubdivisionTargetingFrequencyCapTest,
 }
 
 TEST_F(BatAdsSubdivisionTargetingFrequencyCapTest,
+    DoNotAllowAdIfSubdivisionTargetingIsSupportedAndNotInitialized) {
+  // Arrange
+  ads_client_mock_->SetStringPref(
+      prefs::kAutoDetectedAdsSubdivisionTargetingCode, "");
+
+  ads_client_mock_->SetStringPref(prefs::kAdsSubdivisionTargetingCode, "AUTO");
+
+  CreativeAdInfo ad;
+  ad.creative_set_id = kCreativeSetId;
+  ad.geo_targets = { "US-FL" };
+
+  // Act
+  const bool should_exclude = frequency_cap_->ShouldExclude(ad);
+
+  // Assert
+  EXPECT_TRUE(should_exclude);
+}
+
+TEST_F(BatAdsSubdivisionTargetingFrequencyCapTest,
     DoNotAllowAdIfSubdivisionTargetingIsSupportedForUnsupportedGeoTarget) {
   // Arrange
   ads_client_mock_->SetStringPref(prefs::kAdsSubdivisionTargetingCode, "US-FL");

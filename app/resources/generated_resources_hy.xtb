@@ -6522,6 +6522,8 @@
 <translation id="996250603853062861">Ապահով կապակցում…</translation>
 <translation id="998747458861718449">Ստուգել</translation>
 <translation id="38046578254905003">Գտեք ընդլայնումներ և թեմաներ <ph name="BEGIN_LINK"/>Brave Web Store<ph name="END_LINK"/>-ում</translation>
+<translation id="6744651634043798597">{COUNT,plural, =0{Բացել բոլորը &amp;ինկոգնիտո պատուհանում}=1{Բացել &amp;ինկոգնիտո պատուհանում}one{Open all (#) in &amp;incognito window}other{Բացել բոլորը (#) &amp;ինկոգնիտո պատուհանում}}</translation>
+<translation id="2633634757060186848">{COUNT,plural, =0{Բացել բոլորը &amp;ինկոգնիտո պատուհանում}=1{Բացել &amp;ինկոգնիտո պատուհանում}one{Open All (#) in &amp;Incognito Window}other{Բացել բոլորը (#) &amp;ինկոգնիտո պատուհանում}}</translation>
 <translation id="658539216370629794">Բացել հղումը ինկ&amp;ոգնիտո պատուհանով</translation>
 <translation id="1432267168815937878">Բացել հղումը ինկոգ&amp;նիտո պատուհանով</translation>
 <translation id="6516243500644829484">Նոր &amp;ինկոգնիտո պատուհան</translation>
@@ -6552,10 +6554,8 @@
 <translation id="3098826269712097986">Մուտքի տվյալները կպահվեն Brave-ում, երբ դուք դուրս գաք ինկոգնիտո ռեժիմից։ Սա նշատակում է, որ դուք նորից կարող եք օգտագործել Touch ID-ն հաջորդ անգամ այս կայքն այցելելիս։</translation>
 <translation id="5186185447130319458">Ինկոգնիտո</translation>
 <translation id="2579188629646253712">Դուրս գալ ինկոգնիտո ռեժիմից</translation>
-<translation id="6744651634043798597">{COUNT,plural, =0{Բացել բոլորը &amp;ինկոգնիտո պատուհանում}=1{Բացել &amp;ինկոգնիտո պատուհանում}one{Open all (#) in &amp;incognito window}other{Բացել բոլորը (#) &amp;ինկոգնիտո պատուհանում}}</translation>
 <translation id="2431625704210501303">Բացել &amp;ինկոգնիտո պատուհանում</translation>
 <translation id="4620367155626060530">&amp;Ցուցադրել էջանիշների գոտին</translation>
-<translation id="2633634757060186848">{COUNT,plural, =0{Բացել բոլորը &amp;ինկոգնիտո պատուհանում}=1{Բացել &amp;ինկոգնիտո պատուհանում}one{Open All (#) in &amp;Incognito Window}other{Բացել բոլորը (#) &amp;ինկոգնիտո պատուհանում}}</translation>
 <translation id="1985165269306590797">Բացել &amp;ինկոգնիտո պատուհանում</translation>
 <translation id="4680518314108745448">&amp;Ցուցադրել էջանիշների գոտին</translation>
 <translation id="642436385689435488">Բացել բոլորը ինկոգնիտո պատուհանում</translation>

@@ -630,9 +630,8 @@ IN_PROC_BROWSER_TEST_F(BraveContentSettingsAgentImplBrowserTest,
   EXPECT_EQ(GetLastReferrer(cross_site_url()), "");
 }
 
-// TODO(iefremov): https://github.com/brave/brave-browser/issues/7933
 IN_PROC_BROWSER_TEST_F(BraveContentSettingsAgentImplBrowserTest,
-                       DISABLED_BlockReferrerByDefaultRedirects) {
+                       BlockReferrerByDefaultRedirects) {
   ContentSettingsForOneType settings;
   content_settings()->GetSettingsForOneType(
       ContentSettingsType::PLUGINS, brave_shields::kReferrers, &settings);
@@ -650,20 +649,20 @@ IN_PROC_BROWSER_TEST_F(BraveContentSettingsAgentImplBrowserTest,
       ExecScriptGetStr(create_image_script(redirect_to_cross_site_image_url()),
                        contents()),
       redirect_to_cross_site_image_url().spec());
-  EXPECT_EQ(GetLastReferrer(cross_site_image_url()),
-            cross_site_url().GetOrigin().spec());
+  EXPECT_EQ(GetLastReferrer(cross_site_image_url()), url().GetOrigin().spec());
 
-  // Cross-site iframe navigations get their referrer spoofed.
+  // Cross-site iframe navigations should follow the default referrer policy.
   NavigateCrossSiteRedirectIframe();
   EXPECT_EQ(ExecScriptGetStr(kReferrerScript, child_frame()),
-            cross_site_url().GetOrigin().spec());
-  EXPECT_EQ(GetLastReferrer(redirect_to_cross_site_url()),
-            cross_site_url().GetOrigin().spec());
+            url().GetOrigin().spec());
+  EXPECT_EQ(GetLastReferrer(cross_site_url()), url().GetOrigin().spec());
 
   // Cross-site navigations get no referrer.
   RedirectToPageWithLink(redirect_to_cross_site_url(), cross_site_url());
   EXPECT_EQ(ExecScriptGetStr(kReferrerScript, contents()), "");
-  EXPECT_EQ(GetLastReferrer(redirect_to_cross_site_url()), "");
+  EXPECT_EQ(GetLastReferrer(cross_site_url()), "");
+  EXPECT_EQ(GetLastReferrer(redirect_to_cross_site_url()),
+            link_url().spec());
 }
 
 IN_PROC_BROWSER_TEST_F(BraveContentSettingsAgentImplBrowserTest,
@@ -732,9 +731,8 @@ IN_PROC_BROWSER_TEST_F(BraveContentSettingsAgentImplBrowserTest,
   EXPECT_EQ(GetLastReferrer(cross_site_url()), "");
 }
 
-// TODO(iefremov): https://github.com/brave/brave-browser/issues/7933
 IN_PROC_BROWSER_TEST_F(BraveContentSettingsAgentImplBrowserTest,
-                       DISABLED_BlockReferrerRedirects) {
+                       BlockReferrerRedirects) {
   BlockReferrers();
 
   // The initial navigation doesn't have a referrer.
@@ -748,20 +746,21 @@ IN_PROC_BROWSER_TEST_F(BraveContentSettingsAgentImplBrowserTest,
       ExecScriptGetStr(create_image_script(redirect_to_cross_site_image_url()),
                        contents()),
       redirect_to_cross_site_image_url().spec());
-  EXPECT_EQ(GetLastReferrer(cross_site_image_url()),
-            cross_site_url().GetOrigin().spec());
+  EXPECT_EQ(GetLastReferrer(cross_site_image_url()), url().GetOrigin().spec());
 
   // Cross-site iframe navigations should follow the default referrer policy.
   NavigateCrossSiteRedirectIframe();
   EXPECT_EQ(ExecScriptGetStr(kReferrerScript, child_frame()),
-            cross_site_url().GetOrigin().spec());
-  EXPECT_EQ(GetLastReferrer(redirect_to_cross_site_url()),
-            cross_site_url().GetOrigin().spec());
+            url().GetOrigin().spec());
+  EXPECT_EQ(GetLastReferrer(cross_site_url()), url().GetOrigin().spec());
 
   // Cross-site navigations get no referrer.
   RedirectToPageWithLink(redirect_to_cross_site_url(), cross_site_url());
   EXPECT_EQ(ExecScriptGetStr(kReferrerScript, contents()), "");
-  EXPECT_EQ(GetLastReferrer(redirect_to_cross_site_url()), "");
+  EXPECT_EQ(GetLastReferrer(cross_site_url()), "");
+  // Intermidiate same-origin navigation gets full referrer.
+  EXPECT_EQ(GetLastReferrer(redirect_to_cross_site_url()),
+            link_url().spec());
 }
 
 IN_PROC_BROWSER_TEST_F(BraveContentSettingsAgentImplBrowserTest,
@@ -835,6 +834,12 @@ IN_PROC_BROWSER_TEST_F(BraveContentSettingsAgentImplBrowserTest,
   EXPECT_EQ(GetLastReferrer(same_origin_url()), link.GetOrigin().spec());
 
   NavigateDirectlyToPageWithLink(cross_site_url(), "strict-origin");
+  EXPECT_EQ(ExecScriptGetStr(kReferrerScript, contents()),
+            link.GetOrigin().spec());
+  EXPECT_EQ(GetLastReferrer(cross_site_url()), link.GetOrigin().spec());
+
+  // Check cross-site navigations with redirect.
+  RedirectToPageWithLink(redirect_to_cross_site_url(), cross_site_url());
   EXPECT_EQ(ExecScriptGetStr(kReferrerScript, contents()),
             link.GetOrigin().spec());
   EXPECT_EQ(GetLastReferrer(cross_site_url()), link.GetOrigin().spec());

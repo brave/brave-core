@@ -12,20 +12,19 @@
 #include "base/metrics/histogram_macros.h"
 #include "brave/browser/brave_rewards/rewards_service_factory.h"
 #include "brave/browser/profiles/profile_util.h"
-#include "brave/browser/tor/buildflags.h"
-#include "brave/browser/tor/tor_profile_service.h"
-#include "brave/browser/tor/tor_profile_service_factory.h"
 #include "brave/browser/translate/buildflags/buildflags.h"
 #include "brave/common/pref_names.h"
-#include "brave/common/tor/pref_names.h"
-#include "brave/common/tor/tor_constants.h"
 #include "brave/components/brave_ads/browser/ads_service_factory.h"
 #include "brave/components/brave_shields/browser/ad_block_regional_service.h"
 #include "brave/components/brave_shields/browser/ad_block_service.h"
 #include "brave/components/brave_shields/browser/brave_shields_util.h"
-#include "brave/components/brave_wallet/browser/buildflags/buildflags.h"
+#include "brave/components/brave_wallet/buildflags/buildflags.h"
 #include "brave/components/brave_webtorrent/browser/buildflags/buildflags.h"
-#include "brave/components/ipfs/browser/buildflags/buildflags.h"
+#include "brave/components/ipfs/buildflags/buildflags.h"
+#include "brave/components/tor/buildflags/buildflags.h"
+#include "brave/components/tor/pref_names.h"
+#include "brave/components/tor/tor_constants.h"
+#include "brave/components/tor/tor_profile_service.h"
 #include "brave/content/browser/webui/brave_shared_resources_data_source.h"
 #include "chrome/browser/browser_process.h"
 #include "chrome/browser/chrome_notification_types.h"
@@ -64,6 +63,10 @@
 
 #if BUILDFLAG(IPFS_ENABLED)
 #include "brave/browser/ipfs/ipfs_service_factory.h"
+#endif
+
+#if BUILDFLAG(ENABLE_TOR)
+#include "brave/browser/tor/tor_profile_service_factory.h"
 #endif
 
 using content::BrowserThread;
@@ -178,6 +181,8 @@ void BraveProfileManager::AddProfileToStorage(Profile* profile) {
   ProfileManager::AddProfileToStorage(profile);
 }
 
+// Profile can be loaded sync or async; if sync, there is a matching block
+// in `browser/profiles/brave_profile_impl.cc` (constructor)
 void BraveProfileManager::OnProfileCreated(Profile* profile,
                                            bool success,
                                            bool is_new_profile) {
@@ -203,9 +208,11 @@ void BraveProfileManager::OnProfileCreated(Profile* profile,
 
     // We need to wait until OnProfileCreated to
     // ensure that the request context is available.
-    TorProfileServiceFactory::GetForProfile(profile);
+    TorProfileServiceFactory::GetForContext(profile);
   }
 #endif
+
+  brave::RecordInitialP3AValues(profile);
 }
 
 // This overridden method doesn't clear |kDefaultSearchProviderDataPrefName|.

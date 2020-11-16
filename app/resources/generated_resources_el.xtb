@@ -6519,6 +6519,14 @@
 <translation id="995782501881226248">YouTube</translation>
 <translation id="996250603853062861">Δημιουργία ασφαλούς σύνδεσης...</translation>
 <translation id="998747458861718449">Έ&amp;λεγχος</translation>
+<translation id="6744651634043798597">{COUNT, plural,
+          =0 {Ανοίξτε όλα σε &amp;ιδιωτικό παράθυρο}
+          =1 {Ανοίξτε σε &amp;ιδιωτικό παράθυρο}
+          other {Ανοίξτε όλα τα (#) σε &amp;ιδιωτικό παράθυρο}}</translation>
+<translation id="2633634757060186848">{COUNT, plural,
+          =0 {Ανοίξτε Όλα σε &amp;Ιδιωτικό Παράθυρο}
+          =1 {Ανοίξτε σε &amp;Ιδιωτικό Παράθυρο}
+          other {Ανοίξτε Όλα τα (#) σε &amp;Ιδιωτικό Παράθυρο}}</translation>
 <translation id="658539216370629794">Ανοίξτε τον σύνδεσμο σε &amp;ιδιωτικό παράθυρο</translation>
 <translation id="1432267168815937878">Ανοίξτε τον Σύνδεσμο σε &amp;Ιδιωτικό Παράθυρο</translation>
 <translation id="6516243500644829484">Νέο &amp;ιδιωτικό παράθυρο</translation>
@@ -6532,6 +6540,7 @@
 <translation id="9048137919253433011">Ιδιωτική Καρτέλα: <ph name="TAB_NAME"/></translation>
 <translation id="1799432502220762862">Ιδιωτικό Υποπλαίσιο: <ph name="SUBFRAME_SITE"/></translation>
 <translation id="3193187622878830588">Πύλη ανώνυμης περιήγησης: <ph name="SUBFRAME_SITE"/></translation>
+<translation id="5097649414558628673">Εργαλείο: <ph name="PRINT_NAME"/></translation>
 <translation id="8808478386290700967">Διαδικτυακό Κατάστημα</translation>
 <translation id="8261378640211443080">Αυτή η επέκταση δεν αναφέρεται στο <ph name="IDS_EXTENSION_WEB_STORE_TITLE"/> και ενδέχεται να έχει προστεθεί εν αγνοία σας.</translation>
 <translation id="6827869674836193263"><ph name="WINDOW_TITLE"/> (Ιδιωτικό)</translation>
@@ -6549,19 +6558,21 @@
 <translation id="3098826269712097986">Τα στοιχεία σύνδεσης θα αποθηκευτούν στο Brave μετά την έξοδο από την Ιδιωτική λειτουργία. Αυτό θα σας επιτρέψει να χρησιμοποιήσετε ξανά το Touch ID με αυτόν τον ιστότοπο αργότερα.</translation>
 <translation id="5186185447130319458">Ιδιωτικό</translation>
 <translation id="2579188629646253712">Έξοδος από Ιδιωτικό</translation>
-<translation id="6744651634043798597">{COUNT, plural,
-          =0 {Ανοίξτε όλα σε &amp;ιδιωτικό παράθυρο}
-          =1 {Ανοίξτε σε &amp;ιδιωτικό παράθυρο}
-          other {Ανοίξτε όλα τα (#) σε &amp;ιδιωτικό παράθυρο}}</translation>
+<translation id="1001131747196960052">Κλείσιμο Ιδιωτικού</translation>
+<translation id="7475335772460644497">{COUNT, plural,
+          =0 {Open all in &amp;private window}
+          =1 {Open in &amp;private window}
+          other {Open all ({COUNT}) in &amp;private window}}</translation>
 <translation id="2431625704210501303">Ανοίξτε σε &amp;ιδιωτικό παράθυρο</translation>
 <translation id="4620367155626060530">&amp;Εμφάνιση γραμμής σελιδοδεικτών</translation>
-<translation id="2633634757060186848">{COUNT, plural,
-          =0 {Ανοίξτε Όλα σε &amp;Ιδιωτικό Παράθυρο}
-          =1 {Ανοίξτε σε &amp;Ιδιωτικό Παράθυρο}
-          other {Ανοίξτε Όλα τα (#) σε &amp;Ιδιωτικό Παράθυρο}}</translation>
+<translation id="1448315815373449655">{COUNT, plural,
+          =0 {Open All in &amp;Private Window}
+          =1 {Open in &amp;Private Window}
+          other {Open All ({COUNT}) in &amp;Private Window}}</translation>
 <translation id="1985165269306590797">Ανοίξτε σε &amp;Ιδιωτικό Παράθυρο</translation>
 <translation id="4680518314108745448">&amp;Εμφάνιση γραμμής σελιδοδεικτών</translation>
 <translation id="642436385689435488">Ανοίξτε τα όλα σε ιδιωτικό παράθυρο</translation>
+<translation id="5074021236879527611">Άνοιγμα όλων (<ph name="URL_COUNT"/>) σε ιδιωτικό παράθυρο</translation>
 <translation id="5463021359602611602">Ανοίξτε σε ιδιωτικό παράθυρο</translation>
 <translation id="1850357845349976573">{0, plural,
         =1 {Private}
@@ -6611,6 +6622,8 @@
 <translation id="4854477725773269949">Επιτρέψτε σε ιδιωτικό</translation>
 <translation id="6436164536244065364">Προβολή στο Web Store</translation>
 <translation id="38046578254905003">Βρείτε επεκτάσεις και θέματα στο <ph name="BEGIN_LINK"/>Web Store<ph name="END_LINK"/></translation>
+<translation id="2402482691429508168">Προφίλ που έχουν επιλέξει να είναι ορατά σε εσάς όταν η οθόνη τους είναι ξεκλείδωτη</translation>
+<translation id="3910100573440336938">Μοιραστείτε αρχεία με προφίλ γύρω σας</translation>
 <translation id="6336451774241870485">Νέα ιδιωτική καρτέλα</translation>
 <translation id="6610147964972079463">Κλείστε ιδιωτικές καρτέλες</translation>
 <translation id="4933782374919065856">Έχετε ερωτήσεις; Επικοινωνήστε με το άτομο που επιβλέπει το προφίλ σας.</translation>

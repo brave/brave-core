@@ -61,6 +61,12 @@ class AdsClientMojoBridge
   void LoadUserModelForId(
       const std::string& id,
       LoadCallback callback) override;
+
+  void RecordP2AEvent(
+      const std::string& name,
+      const ads::P2AEventType type,
+      const std::string& out_value) override;
+
   void Load(
       const std::string& name,
       LoadCallback callback) override;
@@ -72,7 +78,7 @@ class AdsClientMojoBridge
       ads::UrlRequestPtr url_request,
       UrlRequestCallback callback) override;
   void ShowNotification(
-      const std::string& notification_info) override;
+      const std::string& json) override;
   void CloseNotification(
       const std::string& uuid) override;
   void RunDBTransaction(

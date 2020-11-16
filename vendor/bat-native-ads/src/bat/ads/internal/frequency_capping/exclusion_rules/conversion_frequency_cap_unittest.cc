@@ -49,8 +49,7 @@ class BatAdsConversionFrequencyCapTest : public ::testing::Test {
         locale_helper_mock_(std::make_unique<
             NiceMock<brave_l10n::LocaleHelperMock>>()),
         platform_helper_mock_(std::make_unique<
-            NiceMock<PlatformHelperMock>>()),
-        frequency_cap_(std::make_unique<ConversionFrequencyCap>(ads_.get())) {
+            NiceMock<PlatformHelperMock>>()) {
     // You can do set-up work for each test here
 
     brave_l10n::LocaleHelper::GetInstance()->set_for_testing(
@@ -103,10 +102,6 @@ class BatAdsConversionFrequencyCapTest : public ::testing::Test {
 
   // Objects declared here can be used by all tests in the test case
 
-  Client* get_client() {
-    return ads_->get_client();
-  }
-
   base::test::TaskEnvironment task_environment_;
 
   base::ScopedTempDir temp_dir_;
@@ -115,36 +110,46 @@ class BatAdsConversionFrequencyCapTest : public ::testing::Test {
   std::unique_ptr<AdsImpl> ads_;
   std::unique_ptr<brave_l10n::LocaleHelperMock> locale_helper_mock_;
   std::unique_ptr<PlatformHelperMock> platform_helper_mock_;
-  std::unique_ptr<ConversionFrequencyCap> frequency_cap_;
   std::unique_ptr<Database> database_;
 };
 
 TEST_F(BatAdsConversionFrequencyCapTest,
-    AllowAdIfThereIsNoAdConversionHistory) {
+    AllowAdIfThereIsNoConversionHistory) {
   // Arrange
   CreativeAdInfo ad;
   ad.creative_set_id = "654f10df-fbc4-4a92-8d43-2edf73734a60";
 
+  const AdEventList ad_events;
+
+  ConversionFrequencyCap frequency_cap(ads_.get(), ad_events);
+
   // Act
-  const bool should_exclude = frequency_cap_->ShouldExclude(ad);
+  const bool should_exclude = frequency_cap.ShouldExclude(ad);
 
   // Assert
   EXPECT_FALSE(should_exclude);
 }
 
 TEST_F(BatAdsConversionFrequencyCapTest,
-    DoNotAllowAdIfShouldNotAllowAdConversionTrackingAndHasAConversion) {
+    DoNotAllowAdIfShouldNotAllowConversionTrackingAndHasAConversion) {
   // Arrange
   ads_client_mock_->SetBooleanPref(
-      prefs::kShouldAllowAdConversionTracking, false);
+      prefs::kShouldAllowConversionTracking, false);
 
   CreativeAdInfo ad;
   ad.creative_set_id = kCreativeSetIds.at(0);
 
-  get_client()->AppendCreativeSetIdToAdConversionHistory(ad.creative_set_id);
+  AdEventList ad_events;
+
+  const AdEventInfo ad_event = GenerateAdEvent(AdType::kAdNotification, ad,
+      ConfirmationType::kConversion);
+
+  ad_events.push_back(ad_event);
+
+  ConversionFrequencyCap frequency_cap(ads_.get(), ad_events);
 
   // Act
-  const bool should_exclude = frequency_cap_->ShouldExclude(ad);
+  const bool should_exclude = frequency_cap.ShouldExclude(ad);
 
   // Assert
   EXPECT_TRUE(should_exclude);
@@ -156,10 +161,17 @@ TEST_F(BatAdsConversionFrequencyCapTest,
   CreativeAdInfo ad;
   ad.creative_set_id = kCreativeSetIds.at(0);
 
-  get_client()->AppendCreativeSetIdToAdConversionHistory(ad.creative_set_id);
+  AdEventList ad_events;
+
+  const AdEventInfo ad_event = GenerateAdEvent(AdType::kAdNotification, ad,
+      ConfirmationType::kConversion);
+
+  ad_events.push_back(ad_event);
+
+  ConversionFrequencyCap frequency_cap(ads_.get(), ad_events);
 
   // Act
-  const bool should_exclude = frequency_cap_->ShouldExclude(ad);
+  const bool should_exclude = frequency_cap.ShouldExclude(ad);
 
   // Assert
   EXPECT_TRUE(should_exclude);
@@ -168,13 +180,23 @@ TEST_F(BatAdsConversionFrequencyCapTest,
 TEST_F(BatAdsConversionFrequencyCapTest,
     AllowAdIfNotAlreadyConverted) {
   // Arrange
-  CreativeAdInfo ad;
-  ad.creative_set_id = kCreativeSetIds.at(0);
+  CreativeAdInfo ad_1;
+  ad_1.creative_set_id = kCreativeSetIds.at(0);
 
-  get_client()->AppendCreativeSetIdToCreativeSetHistory(kCreativeSetIds.at(1));
+  CreativeAdInfo ad_2;
+  ad_2.creative_set_id = kCreativeSetIds.at(1);
+
+  AdEventList ad_events;
+
+  const AdEventInfo ad_event = GenerateAdEvent(AdType::kAdNotification, ad_2,
+      ConfirmationType::kConversion);
+
+  ad_events.push_back(ad_event);
+
+  ConversionFrequencyCap frequency_cap(ads_.get(), ad_events);
 
   // Act
-  const bool should_exclude = frequency_cap_->ShouldExclude(ad);
+  const bool should_exclude = frequency_cap.ShouldExclude(ad_1);
 
   // Assert
   EXPECT_FALSE(should_exclude);

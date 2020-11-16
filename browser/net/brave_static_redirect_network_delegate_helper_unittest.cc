@@ -11,7 +11,6 @@
 #include "base/strings/string_util.h"
 #include "brave/browser/net/url_context.h"
 #include "brave/browser/translate/buildflags/buildflags.h"
-#include "brave/common/network_constants.h"
 #include "brave/common/translate_network_constants.h"
 #include "components/component_updater/component_updater_url_constants.h"
 #include "net/base/net_errors.h"
@@ -269,10 +268,6 @@ TEST(BraveStaticRedirectNetworkDelegateHelperTest,
   EXPECT_EQ(rc, net::OK);
 }
 
-// TODO(@fmarier): Re-enable download protection once we have
-// truncated the list of metadata that it sends to the server
-// (brave/brave-browser#6267).
-#if 0
 TEST(BraveStaticRedirectNetworkDelegateHelperTest,
      ModifySafeBrowsingFileCheckURL) {
   const GURL url(
@@ -288,7 +283,6 @@ TEST(BraveStaticRedirectNetworkDelegateHelperTest,
   EXPECT_EQ(request_info->new_url_spec, expected_url);
   EXPECT_EQ(rc, net::OK);
 }
-#endif  // 0
 
 #if BUILDFLAG(ENABLE_BRAVE_TRANSLATE_GO)
 TEST(BraveStaticRedirectNetworkDelegateHelperTest, RedirectTranslate) {

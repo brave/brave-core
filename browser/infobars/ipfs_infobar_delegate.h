@@ -15,13 +15,15 @@ class InfoBarService;
 class PrefService;
 
 namespace content {
+class BrowserContext;
 class WebContents;
-}
+}  // namespace content
 
 // An infobar that is run with a string, buttons, and a "Learn More" link.
 class IPFSInfoBarDelegate : public ConfirmInfoBarDelegate {
  public:
-  static void Create(InfoBarService* infobar_service);
+  static void Create(InfoBarService* infobar_service,
+                     content::BrowserContext* context);
 
  private:
   IPFSInfoBarDelegate();

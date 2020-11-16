@@ -1,16 +1,16 @@
 diff --git a/third_party/blink/renderer/modules/webgl/webgl2_rendering_context_base.cc b/third_party/blink/renderer/modules/webgl/webgl2_rendering_context_base.cc
-index 2d8068bf9f28ed7c5e33e7dee7003963aca89a0e..5d7d75d6ff5085f21fe40f79411e82fa01570617 100644
+index 9d96ae4f9c6f646685acddfdf44cb410f18a9b7a..64251ff0b4bffe36dcc6ca70214d5c5d30532a69 100644
 --- a/third_party/blink/renderer/modules/webgl/webgl2_rendering_context_base.cc
 +++ b/third_party/blink/renderer/modules/webgl/webgl2_rendering_context_base.cc
-@@ -5062,6 +5062,7 @@ ScriptValue WebGL2RenderingContextBase::getParameter(ScriptState* script_state,
+@@ -5081,6 +5081,7 @@ ScriptValue WebGL2RenderingContextBase::getParameter(ScriptState* script_state,
                                                       GLenum pname) {
    if (isContextLost())
      return ScriptValue::CreateNull(script_state->GetIsolate());
-+  BRAVE_WEBGL2_RENDERING_CONTEXT_BASE
++  BRAVE_WEBGL2_RENDERING_CONTEXT_BASE_GETPARAMETER
    switch (pname) {
      case GL_SHADING_LANGUAGE_VERSION: {
        return WebGLAny(
-@@ -5603,6 +5604,7 @@ ScriptValue WebGL2RenderingContextBase::getFramebufferAttachmentParameter(
+@@ -5622,6 +5623,7 @@ ScriptValue WebGL2RenderingContextBase::getFramebufferAttachmentParameter(
    if (isContextLost() || !ValidateGetFramebufferAttachmentParameterFunc(
                               kFunctionName, target, attachment))
      return ScriptValue::CreateNull(script_state->GetIsolate());
@@ -18,7 +18,7 @@ index 2d8068bf9f28ed7c5e33e7dee7003963aca89a0e..5d7d75d6ff5085f21fe40f79411e82fa
  
    WebGLFramebuffer* framebuffer_binding = GetFramebufferBinding(target);
    DCHECK(!framebuffer_binding || framebuffer_binding->Object());
-@@ -5815,6 +5817,7 @@ ScriptValue WebGL2RenderingContextBase::getTexParameter(
+@@ -5834,6 +5836,7 @@ ScriptValue WebGL2RenderingContextBase::getTexParameter(
      GLenum pname) {
    if (isContextLost() || !ValidateTextureBinding("getTexParameter", target))
      return ScriptValue::CreateNull(script_state->GetIsolate());

@@ -8,6 +8,7 @@ interface StyleProps {
   isFiat?: boolean
   contentShowing?: boolean
   dropdownShowing?: boolean
+  error?: boolean
 }
 
 export const WidgetWrapper = styled<StyleProps, 'div'>('div')`
@@ -16,7 +17,7 @@ export const WidgetWrapper = styled<StyleProps, 'div'>('div')`
   position: relative;
   font-family: ${p => p.theme.fontFamily.body};
   overflow: hidden;
-  min-width: 284px;
+  min-height: 300px;
   background: #fff;
 `
 
@@ -139,12 +140,24 @@ export const AmountInput = styled<StyleProps, 'input'>('input')`
   border-right: none;
   border-top-right-radius: 0px;
   border-bottom-right-radius: 0px;
-  width: 75%;
+  width: 72%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 
   ${(p) => p.dropdownShowing
     ? css`
       border-bottom-left-radius: 0px;
     ` : ''
+  }
+
+  ${(p) => p.error && `
+    border: 1px solid #ff0000;
+    border-right: none;
+
+    &:focus {
+      outline: none;
+    }`
   }
 `
 
@@ -161,7 +174,7 @@ export const FiatDropdown = styled<StyleProps, 'div'>('div')`
   display: inline-block;
   height: 40px;
   vertical-align: bottom;
-  width: 25%;
+  width: 28%;
   padding-top: 10px;
   cursor: pointer;
   border-top-left-radius: 0px;
@@ -172,6 +185,11 @@ export const FiatDropdown = styled<StyleProps, 'div'>('div')`
       border-bottom: none;
       border-bottom-right-radius: 0px;
     ` : ''
+  }
+
+  ${(p) => p.error && `
+    border: 1px solid #ff0000;
+    border-left: 1px solid lightgray;`
   }
 `
 
@@ -211,10 +229,10 @@ export const FiatName = styled<{}, 'span'>('span')`
 `
 
 export const FooterWrapper = styled<{}, 'div'>('div')`
-  margin-top: 15px;
+  margin-top: 23px;
 `
 
-export const BuyButton = styled<{}, 'button'>('button')`
+export const BuyButton = styled<StyleProps, 'button'>('button')`
   width: 100%;
   border-radius: 15px;
   border: none;
@@ -224,6 +242,10 @@ export const BuyButton = styled<{}, 'button'>('button')`
   font-weight: bold;
   font-size: 13px;
   cursor: pointer;
+
+  &:disabled {
+    pointer-events: none;
+  }
 `
 
 export const FooterInfo = styled<{}, 'div'>('div')`
@@ -243,4 +265,15 @@ export const Link = styled<{}, 'span'>('span')`
   color: #00C985;
   text-decoration: underline;
   cursor: pointer;
+`
+
+export const AmountErrorWrapper = styled<{}, 'div'>('div')`
+  padding: 5px 2px;
+  text-align: center;
+  margin-bottom: -23px;
+`
+
+export const AmountErrorLabel = styled<{}, 'span'>('span')`
+  font-weight: bold;
+  color: #ff0000;
 `

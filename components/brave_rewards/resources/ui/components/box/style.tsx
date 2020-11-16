@@ -6,6 +6,7 @@ import * as React from 'react'
 import styled from 'brave-ui/theme'
 import { Type } from './index'
 import Card, { CardProps } from 'brave-ui/components/layout/card'
+import TOSAndPP, { Props as TOSProps } from '../TOSAndPP'
 
 interface StyleProps {
   open?: boolean
@@ -120,4 +121,11 @@ export const StyledSettingsText = styled<{}, 'div'>('div')`
   color: ${p => p.theme.color.text};
   display: flex;
   align-items: center;
+`
+
+export const StyledTOS = styled(TOSAndPP as React.ComponentType<TOSProps>)`
+  color: ${p => p.theme.palette.grey800};
+  margin: 20px -32px 0;
+  padding: 0 0 15px 32px;
+  border-bottom: 1px solid rgba(184, 185, 196, 0.4);
 `

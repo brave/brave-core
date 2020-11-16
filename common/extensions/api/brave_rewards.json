@@ -11,22 +11,6 @@
     },
     "events": [
       {
-        "name": "walletCreated",
-        "type": "function",
-        "description": "Fired when wallet is created",
-        "parameters": []
-      },
-      {
-        "name": "walletCreationFailed",
-        "type": "function",
-        "description": "Fired when wallet creation failed",
-        "parameters": [{
-            "name": "result",
-            "type": "integer"
-          }
-        ]
-      },
-      {
         "name": "initialized",
         "type": "function",
         "description": "Fired when wallet is initialized",
@@ -169,17 +153,6 @@
         "parameters": [
           {
             "name": "enabled",
-            "type": "boolean"
-          }
-        ]
-      },
-      {
-        "name": "onEnabledMain",
-        "type": "function",
-        "description": "",
-        "parameters": [
-          {
-            "name": "enabledMain",
             "type": "boolean"
           }
         ]
@@ -362,12 +335,6 @@
             "optional": true
           }
         ]
-      },
-      {
-        "name": "createWallet",
-        "type": "function",
-        "description": "Creates new wallet",
-        "parameters": []
       },
       {
         "name": "updateMediaDuration",
@@ -559,8 +526,8 @@
             "type": "string"
           },
           {
-            "name": "monthly",
-            "type": "boolean"
+            "name": "entryPoint",
+            "type": "string"
           }
         ]
       },
@@ -590,6 +557,10 @@
             "type": "string"
           },
           {
+            "name": "publisherScreenName",
+            "type": "string"
+          },
+          {
             "name": "favIconUrl",
             "type": "string"
           },
@@ -604,64 +575,6 @@
           {
             "name": "postText",
             "type": "string"
-          }
-        ]
-      },
-      {
-        "name": "tipRedditUser",
-        "type": "function",
-        "description": "Allow the user to perform a donation to a Reddit user",
-        "parameters": [
-          {
-            "name": "tabID",
-            "type": "integer"
-          },
-          {
-            "name": "mediaMetaData",
-            "type": "object",
-            "properties": {
-              "mediaType": {
-                "type": "string",
-                "description": "description used in UI to identify the media type"
-              },
-              "userName": {
-                "type": "string",
-                "description": "User name of the Reddit post/comment author"
-              },
-              "postText": {
-                "type": "string",
-                "description": "Textual contents of comment/post"
-              },
-              "postRelDate": {
-                "type": "string",
-                "description": "Date of post relative to current date"
-              }
-            }
-          }
-        ]
-      },
-      {
-        "name": "tipGitHubUser",
-        "type": "function",
-        "description": "Allow the user to perform a donation to a GitHub user",
-        "parameters": [
-          {
-            "name": "tabID",
-            "type": "integer"
-          },
-          {
-            "name": "mediaMetaData",
-            "type": "object",
-            "properties": {
-              "mediaType": {
-                "type": "string",
-                "description": "description used in UI to identify the media type"
-              },
-              "userName": {
-                "type": "string",
-                "description": "Username of the GitHub author"
-              }
-            }
           }
         ]
       },
@@ -935,40 +848,6 @@
         ]
       },
       {
-        "name": "getRewardsMainEnabled",
-        "type": "function",
-        "description": "Gets whether rewards has been enabled explicitly",
-        "parameters": [
-          {
-            "type": "function",
-            "name": "callback",
-            "parameters": [
-              {
-                "name": "enabled",
-                "type": "boolean"
-              }
-            ]
-          }
-        ]
-      },
-      {
-        "name": "getWalletExists",
-        "type": "function",
-        "description": "Gets whether a Rewards wallet already exists",
-        "parameters": [
-          {
-            "type": "function",
-            "name": "callback",
-            "parameters": [
-              {
-                "name": "exists",
-                "type": "boolean"
-              }
-            ]
-          }
-        ]
-      },
-      {
         "name": "getACEnabled",
         "type": "function",
         "description": "Gets whether auto contribute is enabled",
@@ -1001,17 +880,13 @@
         ]
       },
       {
-        "name": "saveSetting",
+        "name": "setAutoContributeEnabled",
         "type": "function",
-        "description": "Updates settings related to rewards service",
+        "description": "Updates ac enabled state",
         "parameters": [
           {
-            "name": "key",
-            "type": "string"
-          },
-          {
-            "name": "value",
-            "type": "string"
+            "name": "enabled",
+            "type": "boolean"
           }
         ]
       },
@@ -1305,6 +1180,34 @@
                 "type": "boolean"
               }
             ]
+          }
+        ]
+      },
+      {
+        "name": "shouldShowOnboarding",
+        "type": "function",
+        "description": "Gets a value indicating whether rewards onboarding should be shown to the user.",
+        "parameters": [
+          {
+            "type": "function",
+            "name": "callback",
+            "parameters": [
+              {
+                "name": "showOnboarding",
+                "type": "boolean"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "name": "saveOnboardingResult",
+        "type": "function",
+        "description": "Saves the rewards user onboarding result.",
+        "parameters": [
+          {
+            "type": "string",
+            "name": "result"
           }
         ]
       }

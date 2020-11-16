@@ -6520,6 +6520,8 @@ Geymdu lykilskrána á öruggum stað. Þú þarft hana til að búa til nýjar 
 <translation id="996250603853062861">Kemur á öruggri tengingu...</translation>
 <translation id="998747458861718449">S&amp;koða</translation>
 <translation id="38046578254905003">Þú finnur viðbætur og þemu í <ph name="BEGIN_LINK"/>vefverslun Brave<ph name="END_LINK"/></translation>
+<translation id="6744651634043798597">{COUNT,plural, =0{Opna allt í &amp;huliðsglugga}=1{Opna í &amp;huliðsglugga}one{Opna allt (#) í &amp;huliðsglugga}other{Opna allt (#) í &amp;huliðsglugga}}</translation>
+<translation id="2633634757060186848">{COUNT,plural, =0{Opna allt í &amp;huliðsglugga}=1{Opna í &amp;huliðsglugga}one{Opna allt (#) í &amp;huliðsglugga}other{Opna allt (#) í &amp;huliðsglugga}}</translation>
 <translation id="658539216370629794">Opna ten&amp;gil í huliðsglugga</translation>
 <translation id="1432267168815937878">Opna ten&amp;gil í huliðsglugga</translation>
 <translation id="6516243500644829484">Nýr hul&amp;iðsgluggi</translation>
@@ -6550,10 +6552,8 @@ Geymdu lykilskrána á öruggum stað. Þú þarft hana til að búa til nýjar 
 <translation id="3098826269712097986">Innskráningarupplýsingar verða geymdar í Brave þegar þú hefur lokað huliðsstillingunni. Það gerir þér kleift að nota snertiauðkenni aftur á þessu vefsvæði.</translation>
 <translation id="5186185447130319458">Fara huldu höfðu</translation>
 <translation id="2579188629646253712">Fara úr huliðsstillingu</translation>
-<translation id="6744651634043798597">{COUNT,plural, =0{Opna allt í &amp;huliðsglugga}=1{Opna í &amp;huliðsglugga}one{Opna allt (#) í &amp;huliðsglugga}other{Opna allt (#) í &amp;huliðsglugga}}</translation>
 <translation id="2431625704210501303">Opna í hul&amp;iðsglugga</translation>
 <translation id="4620367155626060530">&amp;Sýna bókamerkjastiku</translation>
-<translation id="2633634757060186848">{COUNT,plural, =0{Opna allt í &amp;huliðsglugga}=1{Opna í &amp;huliðsglugga}one{Opna allt (#) í &amp;huliðsglugga}other{Opna allt (#) í &amp;huliðsglugga}}</translation>
 <translation id="1985165269306590797">Opna í hul&amp;iðsglugga</translation>
 <translation id="4680518314108745448">&amp;Sýna bókamerkjastiku</translation>
 <translation id="642436385689435488">Opna allt í huliðsglugga</translation>

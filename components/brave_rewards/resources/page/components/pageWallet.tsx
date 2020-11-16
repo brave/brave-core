@@ -5,6 +5,7 @@
 import * as React from 'react'
 import { bindActionCreators, Dispatch } from 'redux'
 import { connect } from 'react-redux'
+import { RewardsOptInModal } from '../../shared/components/onboarding'
 // Components
 import {
   ModalActivity,
@@ -20,10 +21,9 @@ import { AlertWallet, WalletState } from '../../ui/components/walletWrapper'
 import { Provider } from '../../ui/components/profile'
 import { DetailRow as PendingDetailRow, PendingType } from '../../ui/components/tablePending'
 // Utils
-import { getLocale, getLocaleTags } from '../../../../common/locale'
+import { getLocale, getLocaleWithTag } from '../../../../common/locale'
 import * as rewardsActions from '../actions/rewards_actions'
 import * as utils from '../utils'
-import WalletOff from '../../ui/components/walletOff'
 import { ExtendedActivityRow, SummaryItem, SummaryType } from '../../ui/components/modalActivity'
 import { DetailRow as TransactionRow } from '../../ui/components/tableTransactions'
 
@@ -73,6 +73,9 @@ class PageWallet extends React.Component<Props, State> {
   }
 
   onModalBackupOpen = () => {
+    if (!this.props.rewardsData.recoveryKey || this.props.rewardsData.recoveryKey.length === 0) {
+      this.actions.getWalletPassphrase()
+    }
     this.actions.onModalBackupOpen()
   }
 
@@ -222,8 +225,7 @@ class PageWallet extends React.Component<Props, State> {
   walletAlerts = (): AlertWallet | null => {
     const {
       walletRecoveryStatus,
-      walletServerProblem,
-      walletCorrupted
+      walletServerProblem
     } = this.props.rewardsData.ui
 
     if (walletServerProblem) {
@@ -240,19 +242,6 @@ class PageWallet extends React.Component<Props, State> {
         onAlertClose: () => {
           this.actions.onClearAlert('walletRecoveryStatus')
         }
-      }
-    }
-
-    if (walletCorrupted) {
-      return {
-        node: (
-          <>
-            <b>{getLocale('uhOh')}</b> {getLocale('walletCorrupted')} <a href={'#'} style={{ 'color': '#838391' }} onClick={this.onModalBackupOpen}>
-               {getLocale('walletCorruptedNow')}
-             </a>
-          </>
-        ),
-        type: 'error'
       }
     }
 
@@ -344,7 +333,7 @@ class PageWallet extends React.Component<Props, State> {
       return
     }
 
-    if (!ui.onBoardingDisplayed && externalWallet.status === 0) {
+    if (!ui.verifyOnboardingDisplayed && externalWallet.status === 0) {
       this.toggleVerifyModal()
       return
     }
@@ -361,7 +350,7 @@ class PageWallet extends React.Component<Props, State> {
     }
 
     if (hideVerify) {
-      this.actions.onOnBoardingDisplayed()
+      this.actions.onVerifyOnboardingDisplayed()
     }
 
     this.handleUpholdLink()
@@ -752,7 +741,7 @@ class PageWallet extends React.Component<Props, State> {
 
     // ledger::type::Result::CORRUPTED_DATA
     if (walletRecoveryStatus === 17) {
-      const tags = getLocaleTags('walletRecoveryOutdated')
+      const tags = getLocaleWithTag('walletRecoveryOutdated')
       return (
         <span>
           {tags.beforeTag}
@@ -778,12 +767,28 @@ class PageWallet extends React.Component<Props, State> {
     return (!walletStatus || walletStatus === 'unverified') && balance && balance.total < 25
   }
 
+  getOnboardingModal () {
+    if (!this.props.rewardsData.showOnboarding) {
+      return null
+    }
+    const onAddFunds = () => this.onFundsAction('add')
+    const onEnable = () => this.actions.saveOnboardingResult('opted-in')
+    const onClose = () => this.actions.saveOnboardingResult('dismissed')
+    return (
+      <RewardsOptInModal
+        onAddFunds={onAddFunds}
+        onEnable={onEnable}
+        onClose={onClose}
+      />
+    )
+  }
+
   render () {
     const {
-      enabledMain,
       balance,
       ui,
-      pendingContributionTotal
+      pendingContributionTotal,
+      recoveryKey
     } = this.props.rewardsData
     const { total } = balance
     const { emptyWallet, modalBackup, onlyAnonWallet } = ui
@@ -816,24 +821,22 @@ class PageWallet extends React.Component<Props, State> {
           showLoginMessage={this.showLoginMessage()}
         >
           {
-            enabledMain
-            ? emptyWallet && pendingTotal === 0
-              ? <WalletEmpty onlyAnonWallet={onlyAnonWallet} />
-              : <WalletSummary
-                reservedAmount={pendingTotal}
-                onlyAnonWallet={onlyAnonWallet}
-                reservedMoreLink={'https://brave.com/faq/#unclaimed-funds'}
-                onActivity={this.onModalActivityToggle}
-                {...this.getWalletSummary()}
-              />
-            : <WalletOff/>
+            emptyWallet && pendingTotal === 0
+            ? <WalletEmpty onlyAnonWallet={onlyAnonWallet} />
+            : <WalletSummary
+              reservedAmount={pendingTotal}
+              onlyAnonWallet={onlyAnonWallet}
+              reservedMoreLink={'https://brave.com/faq/#unclaimed-funds'}
+              onActivity={this.onModalActivityToggle}
+              {...this.getWalletSummary()}
+            />
           }
         </WalletWrapper>
         {
           modalBackup
             ? <ModalBackupRestore
               activeTabId={this.state.activeTabId}
-              backupKey={''}
+              backupKey={recoveryKey}
               showBackupNotice={this.showBackupNotice()}
               onTabChange={this.onModalBackupTabChange}
               onClose={this.onModalBackupClose}
@@ -871,6 +874,7 @@ class PageWallet extends React.Component<Props, State> {
             ? this.generateMonthlyReport()
             : null
         }
+        {this.getOnboardingModal()}
       </>
     )
   }

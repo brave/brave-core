@@ -6520,6 +6520,8 @@ Gcina ifayela lakho elingukhiye endaweni evikelekile. Uzolidinga ukuze udale izi
 <translation id="996250603853062861">Isungula ukuxhumeka okuvikelekile...</translation>
 <translation id="998747458861718449">H&amp;lola</translation>
 <translation id="38046578254905003">Thola izandiso namatimu <ph name="BEGIN_LINK"/>Esitolo sewebhu se-Brave<ph name="END_LINK"/></translation>
+<translation id="6744651634043798597">{COUNT,plural, =0{Vula konke kuwindi le-&amp;incognito}=1{Vula kuwindi le-&amp;incognito}one{Vula konke (#) kuwindi le-&amp;incognito}other{Vula konke (#) kuwindi le-&amp;incognito}}</translation>
+<translation id="2633634757060186848">{COUNT,plural, =0{Vula konke kuwindi le-&amp;Incognito}=1{Vula kuwindi le-&amp;Incognito}one{Vula konke (#) kuwindi le-&amp;Incognito}other{Vula konke (#) kuwindi le-&amp;Incognito}}</translation>
 <translation id="658539216370629794">Vula isixhumanisi kuwindi le-incognito</translation>
 <translation id="1432267168815937878">Vula isixhumanisi kuwindi le-Inco&amp;gnito</translation>
 <translation id="6516243500644829484">Iwindi le-incognito elisha</translation>
@@ -6550,10 +6552,8 @@ Gcina ifayela lakho elingukhiye endaweni evikelekile. Uzolidinga ukuze udale izi
 <translation id="3098826269712097986">Idatha yokungena ngemvume izolondolozwa ku-Brave ngemuva kokuphuma kumodi ye-Incognito. Lokhu kuzokuvumela ukuthi usebenzise i-Touch ID ngale webhusayithi emuva kwesikhathi.</translation>
 <translation id="5186185447130319458">I-Incognito</translation>
 <translation id="2579188629646253712">Phuma ku-Incognito</translation>
-<translation id="6744651634043798597">{COUNT,plural, =0{Vula konke kuwindi le-&amp;incognito}=1{Vula kuwindi le-&amp;incognito}one{Vula konke (#) kuwindi le-&amp;incognito}other{Vula konke (#) kuwindi le-&amp;incognito}}</translation>
 <translation id="2431625704210501303">Vula &amp;Iwindi le-incognito</translation>
 <translation id="4620367155626060530">&amp;Bonisa ibha yamabhukhimakhi</translation>
-<translation id="2633634757060186848">{COUNT,plural, =0{Vula konke kuwindi le-&amp;Incognito}=1{Vula kuwindi le-&amp;Incognito}one{Vula konke (#) kuwindi le-&amp;Incognito}other{Vula konke (#) kuwindi le-&amp;Incognito}}</translation>
 <translation id="1985165269306590797">Vula ku-&amp;Incognito Window</translation>
 <translation id="4680518314108745448">&amp;Bonisa ibha yamabhukhimakhi</translation>
 <translation id="642436385689435488">Vula konke kuwindi le-incognito</translation>

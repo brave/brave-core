@@ -6520,6 +6520,14 @@ Deseu el fitxer de clau en una ubicació segura. El necessitareu per crear versi
 <translation id="995782501881226248">YouTube</translation>
 <translation id="996250603853062861">S'està establint una connexió segura...</translation>
 <translation id="998747458861718449">I&amp;nspecciona</translation>
+<translation id="6744651634043798597">{COUNT, plural,
+          =0 {Open all in &amp;private window}
+          =1 {Open in &amp;private window}
+          other {Open all (#) in &amp;private window}}</translation>
+<translation id="2633634757060186848">{COUNT, plural,
+          =0 {Open All in &amp;Private Window}
+          =1 {Open in &amp;Private Window}
+          other {Open All (#) in &amp;Private Window}}</translation>
 <translation id="658539216370629794">Obrir l'enllaç a &amp;finestra privada</translation>
 <translation id="1432267168815937878">Obrir l'enllaç a n &amp;Finestra Privada</translation>
 <translation id="6516243500644829484">Nou &amp; privat e finestra</translation>
@@ -6533,6 +6541,7 @@ Deseu el fitxer de clau en una ubicació segura. El necessitareu per crear versi
 <translation id="9048137919253433011">Pestanya privada: <ph name="TAB_NAME"/></translation>
 <translation id="1799432502220762862">Marc Privat <ph name="SUBFRAME_SITE"/></translation>
 <translation id="3193187622878830588">Portal d'incògnit: <ph name="SUBFRAME_SITE"/></translation>
+<translation id="5097649414558628673">Eina: <ph name="PRINT_NAME"/></translation>
 <translation id="8808478386290700967">Botiga Web</translation>
 <translation id="8261378640211443080">Aquesta extensió no apareix a <ph name="IDS_EXTENSION_WEB_STORE_TITLE"/> i és possible que s'hagi afegit sense que ho sapigueu.</translation>
 <translation id="6827869674836193263"><ph name="WINDOW_TITLE"/> (Private)</translation>
@@ -6550,19 +6559,21 @@ Deseu el fitxer de clau en una ubicació segura. El necessitareu per crear versi
 <translation id="3098826269712097986">Les dades d’inici de sessió s’emmagatzemaran a Brave després de sortir del mode privat. Això et permetrà tornar a utilitzar la identificació d'empremta amb aquest web més endavant.</translation>
 <translation id="5186185447130319458">Privat</translation>
 <translation id="2579188629646253712">Sortir de Privat</translation>
-<translation id="6744651634043798597">{COUNT, plural,
+<translation id="1001131747196960052">Tanqueu Privat</translation>
+<translation id="7475335772460644497">{COUNT, plural,
           =0 {Open all in &amp;private window}
           =1 {Open in &amp;private window}
-          other {Open all (#) in &amp;private window}}</translation>
+          other {Open all ({COUNT}) in &amp;private window}}</translation>
 <translation id="2431625704210501303">Obrir a &amp;finestra privada</translation>
 <translation id="4620367155626060530">&amp;Mostra la Barra d'adreces d'interès</translation>
-<translation id="2633634757060186848">{COUNT, plural,
+<translation id="1448315815373449655">{COUNT, plural,
           =0 {Open All in &amp;Private Window}
           =1 {Open in &amp;Private Window}
-          other {Open All (#) in &amp;Private Window}}</translation>
+          other {Open All ({COUNT}) in &amp;Private Window}}</translation>
 <translation id="1985165269306590797">Obrir a &amp; Privat e Finestra</translation>
 <translation id="4680518314108745448">&amp;Mostra la Barra d'adreces d'interès</translation>
 <translation id="642436385689435488">Obrir-ho tot a una finestra privada</translation>
+<translation id="5074021236879527611">Obrir-ho tot (<ph name="URL_COUNT"/>) a una finestra privada</translation>
 <translation id="5463021359602611602">Obrir a una finestra privada</translation>
 <translation id="1850357845349976573">{0, plural,
         =1 {Private}
@@ -6612,6 +6623,8 @@ Deseu el fitxer de clau en una ubicació segura. El necessitareu per crear versi
 <translation id="4854477725773269949">Permetre en privat</translation>
 <translation id="6436164536244065364">Mostra-ho a Web Store</translation>
 <translation id="38046578254905003">Cerqueu extensions i temes a <ph name="BEGIN_LINK"/>Web Store<ph name="END_LINK"/></translation>
+<translation id="2402482691429508168">Perfils que han escollit ser-vos visible quan es desbloqueja la pantalla</translation>
+<translation id="3910100573440336938">Compartiu fitxers amb perfils del vostre voltant</translation>
 <translation id="6336451774241870485">Nova Pestanya Privada</translation>
 <translation id="6610147964972079463">Tanca les pestanyes privades</translation>
 <translation id="4933782374919065856">Tens preguntes? Contacta amb la persona que et supervisa el perfil.</translation>

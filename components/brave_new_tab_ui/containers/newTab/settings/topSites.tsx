@@ -16,11 +16,20 @@ import { getLocale } from '../../../../common/locale'
 interface Props {
   toggleShowTopSites: () => void
   showTopSites: boolean
+  toggleCustomLinksEnabled: () => void
+  customLinksEnabled: boolean
 }
 
 class TopSitesSettings extends React.PureComponent<Props, {}> {
   render () {
-    const { toggleShowTopSites, showTopSites } = this.props
+    const {
+      toggleShowTopSites,
+      showTopSites,
+      toggleCustomLinksEnabled,
+      customLinksEnabled
+    } = this.props
+    // Enable when we're ready to use add shortcut feature to topsite.
+    const showCustomizedLink = false
     return (
       <div>
         <SettingsRow>
@@ -31,6 +40,17 @@ class TopSitesSettings extends React.PureComponent<Props, {}> {
             size='large'
           />
         </SettingsRow>
+        {
+          showCustomizedLink ?
+          (<SettingsRow>
+            <SettingsText>{getLocale('topSiteCustomLinksEnabled')}</SettingsText>
+            <Toggle
+              onChange={toggleCustomLinksEnabled}
+              checked={customLinksEnabled}
+              size='large'
+            />
+          </SettingsRow>) : null
+        }
       </div>
     )
   }

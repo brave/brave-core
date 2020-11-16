@@ -6520,6 +6520,14 @@
 <translation id="995782501881226248">YouTube</translation>
 <translation id="996250603853062861">ಸುರಕ್ಷಿತ ಸಂಪರ್ಕವನ್ನು ಸ್ಥಾಪಿಸಲಾಗುತ್ತಿದೆ...</translation>
 <translation id="998747458861718449">ಪ&amp;ರಿಶೀಲಿಸಿ</translation>
+<translation id="6744651634043798597">{COUNT, plural,
+          =0 {ಎಲ್ಲವನ್ನು &amp;ಖಾಸಗಿ ವಿಂಡೋದಲ್ಲಿ ತೆರೆಯಿರಿ}
+          =1 {&amp;ಖಾಸಗಿ ವಿಂಡೋದಲ್ಲಿ ತೆರೆಯಿರಿ}
+          ಇತರೆ {ಎಲ್ಲವನ್ನು (#) &amp;ಖಾಸಗಿ ವಿಂಡೋದಲ್ಲಿ ತೆರೆಯಿರಿ}}</translation>
+<translation id="2633634757060186848">{COUNT, plural,
+=0 {ಎಲ್ಲವನ್ನು &amp;ಖಾಸಗಿ ವಿಂಡೋದಲ್ಲಿ ತೆರೆಯಿರಿ}
+=1 {&amp;ಖಾಸಗಿ ವಿಂಡೋದಲ್ಲಿ ತೆರೆಯಿರಿ}
+ಇತರೆ {ಎಲ್ಲವನ್ನು (#) &amp;ಖಾಸಗಿ ವಿಂಡೋದಲ್ಲಿ ತೆರೆಯಿರಿ}}</translation>
 <translation id="658539216370629794">&amp;ಖಾಸಗಿ ವಿಂಡೋದಲ್ಲಿ ಲಿಂಕ್ ತೆರೆಯಿರಿ</translation>
 <translation id="1432267168815937878">&amp;ಖಾಸಗಿ ವಿಂಡೋದಲ್ಲಿ ಲಿಂಕ್ ತೆರೆಯಿರಿ</translation>
 <translation id="6516243500644829484">ಹೊಸ &amp;ಖಾಸಗಿ ವಿಂಡೋ</translation>
@@ -6533,6 +6541,7 @@
 <translation id="9048137919253433011">ಖಾಸಗಿ ಟ್ಯಾಬ್: <ph name="TAB_NAME"/></translation>
 <translation id="1799432502220762862">ಖಾಸಗಿ ಉಪಫ್ರೇಮ್: <ph name="SUBFRAME_SITE"/></translation>
 <translation id="3193187622878830588">ಅಜ್ಞಾತ ಪೋರ್ಟಲ್: <ph name="SUBFRAME_SITE"/></translation>
+<translation id="5097649414558628673">ಪರಿಕರ: <ph name="PRINT_NAME"/></translation>
 <translation id="8808478386290700967">ವೆಬ್ ಸ್ಟೋರ್</translation>
 <translation id="8261378640211443080">ಈ ವಿಸ್ತರಣೆಯನ್ನು <ph name="IDS_EXTENSION_WEB_STORE_TITLE"/> ನಲ್ಲಿ ಪಟ್ಟಿ ಮಾಡಲಾಗಿಲ್ಲ ಮತ್ತು ಇದು ನಿಮಗೆ ಅರಿವಿಲ್ಲದಂತೆ ಸೇರಿಸಿರಬಹುದು.</translation>
 <translation id="6827869674836193263"><ph name="WINDOW_TITLE"/> (ಖಾಸಗಿ)</translation>
@@ -6550,19 +6559,21 @@
 <translation id="3098826269712097986">ನೀವು ಖಾಸಗಿ ಮೋಡ್‌ನಿಂದ ನಿರ್ಗಮಿಸಿದ ನಂತರ ಸೈನ್-ಇನ್ ಡೇಟಾವನ್ನು Brave ನಲ್ಲಿ ಸಂಗ್ರಹಿಸಲಾಗುತ್ತದೆ. ಇದು ನಿಮಗೆ ಈ ವೆಬ್‌ಸೈಟ್ ಜೊತೆಗೆ ನಂತರದಲ್ಲಿ ಮತ್ತೊಮ್ಮೆ ಸ್ಪರ್ಶ ID ಬಳಸಲು ವಕಾಶ ನೀಡುತ್ತದೆ.</translation>
 <translation id="5186185447130319458">ಖಾಸಗಿ</translation>
 <translation id="2579188629646253712">ಖಾಸಗಿ ವಿಂಡೋದಿಂದ ನಿರ್ಗಮಿಸಿ</translation>
-<translation id="6744651634043798597">{COUNT, plural,
+<translation id="1001131747196960052">ಖಾಸಗಿ ಮುಚ್ಚಿ</translation>
+<translation id="7475335772460644497">{COUNT, plural,
           =0 {ಎಲ್ಲವನ್ನು &amp;ಖಾಸಗಿ ವಿಂಡೋದಲ್ಲಿ ತೆರೆಯಿರಿ}
           =1 {&amp;ಖಾಸಗಿ ವಿಂಡೋದಲ್ಲಿ ತೆರೆಯಿರಿ}
-          ಇತರೆ {ಎಲ್ಲವನ್ನು (#) &amp;ಖಾಸಗಿ ವಿಂಡೋದಲ್ಲಿ ತೆರೆಯಿರಿ}}</translation>
+          other {ಎಲ್ಲಾ ({COUNT}) ಅನ್ನು &amp;ಖಾಸಗಿ ವಿಂಡೋದಲ್ಲಿ ತೆರೆಯಿರಿ}}</translation>
 <translation id="2431625704210501303">&amp;ಖಾಸಗಿ ವಿಂಡೋದಲ್ಲಿ ತೆರೆಯಿರಿ</translation>
 <translation id="4620367155626060530">ಬುಕ್‌ಮಾರ್ಕ್‌ಗಳ ಪಟ್ಟಿಯನ್ನು &amp;ತೋರಿಸಿ</translation>
-<translation id="2633634757060186848">{COUNT, plural,
-=0 {ಎಲ್ಲವನ್ನು &amp;ಖಾಸಗಿ ವಿಂಡೋದಲ್ಲಿ ತೆರೆಯಿರಿ}
-=1 {&amp;ಖಾಸಗಿ ವಿಂಡೋದಲ್ಲಿ ತೆರೆಯಿರಿ}
-ಇತರೆ {ಎಲ್ಲವನ್ನು (#) &amp;ಖಾಸಗಿ ವಿಂಡೋದಲ್ಲಿ ತೆರೆಯಿರಿ}}</translation>
+<translation id="1448315815373449655">{COUNT, plural,
+          =0 {ಎಲ್ಲವನ್ನು &amp;ಖಾಸಗಿ ವಿಂಡೋದಲ್ಲಿ ತೆರೆಯಿರಿ}
+          =1 {&amp;ಖಾಸಗಿ ವಿಂಡೋದಲ್ಲಿ ತೆರೆಯಿರಿ}
+          other {ಎಲ್ಲಾ ({COUNT}) ಅನ್ನು &amp;ಖಾಸಗಿ ವಿಂಡೋದಲ್ಲಿ ತೆರೆಯಿರಿ}}</translation>
 <translation id="1985165269306590797">&amp;ಖಾಸಗಿ ವಿಂಡೋದಲ್ಲಿ ತೆರೆಯಿರಿ</translation>
 <translation id="4680518314108745448">&amp;ಬುಕ್‌ಮಾರ್ಕ್‌ಗಳ ಪಟ್ಟಿಯನ್ನು ತೋರಿಸಿ</translation>
 <translation id="642436385689435488">ಎಲ್ಲವನ್ನು ಖಾಸಗಿ ವಿಂಡೋದಲ್ಲಿ ತೆರೆಯಿರಿ</translation>
+<translation id="5074021236879527611">ಖಾಸಗಿ ವಿಂಡೋದಲ್ಲಿ ಎಲ್ಲಾ (<ph name="URL_COUNT"/>) ತೆರೆಯಿರಿ</translation>
 <translation id="5463021359602611602">ಖಾಸಗಿ ವಿಂಡೋದಲ್ಲಿ ತೆರೆಯಿರಿ</translation>
 <translation id="1850357845349976573">{0, plural,
         =1 {ಖಾಸಗಿ}
@@ -6612,6 +6623,8 @@
 <translation id="4854477725773269949">ಖಾಸಗಿಯಲ್ಲಿ ಅನುಮತಿಸಿ</translation>
 <translation id="6436164536244065364">ವೆಬ್ ಅಂಗಡಿಯಲ್ಲಿ ವೀಕ್ಷಿಸಿ</translation>
 <translation id="38046578254905003"><ph name="BEGIN_LINK"/>Web Store<ph name="END_LINK"/> ನಲ್ಲಿ ವಿಸ್ತರಣೆಗಳು ಮತ್ತು ಥೀಮ್‌ಗಳನ್ನು ಹುಡುಕಿ</translation>
+<translation id="2402482691429508168">ಅವರ ಸ್ಕ್ರೀನ್ ಅನ್‌ಲಾಕ್ ಆಗಿರುವಾಗ ನಿಮಗೆ ಗೋಚರಿಸುವುದಕ್ಕಾಗಿ ಆರಿಸಿಕೊಂಡಿರುವ ಪ್ರೊಫೈಲ್‌ಗಳು</translation>
+<translation id="3910100573440336938">ನಿಮ್ಮ ಸುತ್ತಲಿನ ಪ್ರೊಫೈಲ್‌ಗಳೊಂದಿಗೆ ಫೈಲ್‌ಗಳನ್ನು ಹಂಚಿಕೊಳ್ಳಿ</translation>
 <translation id="6336451774241870485">ಹೊಸ ಖಾಸಗಿ ಟ್ಯಾಬ್</translation>
 <translation id="6610147964972079463">ಖಾಸಗಿ ಟ್ಯಾಬ್‌ಗಳನ್ನು ಮುಚ್ಚಿ</translation>
 <translation id="4933782374919065856">ಪ್ರಶ್ನೆಗಳಿವೆಯೇ? ನಿಮ್ಮ ಪ್ರೊಫೈಲ್‌ ಮೇಲ್ವಿಚಾರಣೆ ಮಾಡುವ ವ್ಯಕ್ತಿಯನ್ನು ಸಂಪರ್ಕಸಿ.</translation>

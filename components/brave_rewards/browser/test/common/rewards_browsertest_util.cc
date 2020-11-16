@@ -26,19 +26,6 @@ void GetTestDataDir(base::FilePath* test_data_dir) {
   ASSERT_TRUE(base::PathExists(*test_data_dir));
 }
 
-double IsRewardsEnabled(Browser* browser, const bool private_window) {
-  DCHECK(browser);
-  auto* profile = browser->profile();
-  if (private_window) {
-    Profile* private_profile = profile->GetOffTheRecordProfile();
-    return private_profile->GetPrefs()->GetBoolean(
-      brave_rewards::prefs::kEnabled);
-  }
-
-  return profile->GetPrefs()->GetBoolean(
-      brave_rewards::prefs::kEnabled);
-}
-
 GURL GetRewardsUrl() {
   GURL url("brave://rewards");
   return url;
@@ -54,22 +41,19 @@ GURL GetNewTabUrl() {
   return url;
 }
 
-void EnableRewardsViaCode(
-    Browser* browser,
-    brave_rewards::RewardsServiceImpl* rewards_service) {
-  DCHECK(browser);
+void StartProcess(brave_rewards::RewardsServiceImpl* rewards_service) {
+  DCHECK(rewards_service);
   base::RunLoop run_loop;
-  bool wallet_created = false;
-  rewards_service->CreateWallet(
+  bool success = false;
+  rewards_service->StartProcess(
       base::BindLambdaForTesting([&](const ledger::type::Result result) {
-        wallet_created = result == ledger::type::Result::WALLET_CREATED;
+        success = result == ledger::type::Result::LEDGER_OK;
         run_loop.Quit();
       }));
 
   run_loop.Run();
 
-  ASSERT_TRUE(wallet_created);
-  ASSERT_TRUE(IsRewardsEnabled(browser));
+  ASSERT_TRUE(success);
 }
 
 GURL GetUrl(
@@ -119,6 +103,29 @@ void WaitForLedgerStop(brave_rewards::RewardsServiceImpl* rewards_service) {
         run_loop.Quit();
       }));
   run_loop.Run();
+}
+
+void CreateWallet(brave_rewards::RewardsServiceImpl* rewards_service) {
+  DCHECK(rewards_service);
+  base::RunLoop run_loop;
+  bool success = false;
+  rewards_service->CreateWallet(
+      base::BindLambdaForTesting([&](const ledger::type::Result result) {
+        success = result == ledger::type::Result::WALLET_CREATED;
+        run_loop.Quit();
+      }));
+
+  run_loop.Run();
+
+  ASSERT_TRUE(success);
+}
+
+void SetOnboardingBypassed(Browser* browser, bool bypassed) {
+  DCHECK(browser);
+  // Rewards onboarding will be skipped if the legacy "enabled" pref
+  // is set to true.
+  PrefService* prefs = browser->profile()->GetPrefs();
+  prefs->SetBoolean(brave_rewards::prefs::kEnabled, bypassed);
 }
 
 }  // namespace rewards_browsertest_util

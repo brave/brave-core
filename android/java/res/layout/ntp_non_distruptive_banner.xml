@@ -54,7 +54,7 @@
             android:layout_gravity="center_horizontal"
             android:gravity="center_vertical"
             android:background="@drawable/blue_rounded_button"
-            android:text="@string/turn_on_brave_ads"
+            android:text="@string/turn_on_earn_and_give"
             android:textAllCaps="false"
             android:textSize="16sp"
             android:paddingStart="16dp"

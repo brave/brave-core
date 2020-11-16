@@ -1,7 +1,7 @@
-import("//brave/browser/tor/buildflags/buildflags.gni")
 import("//brave/components/brave_ads/browser/buildflags/buildflags.gni")
 import("//brave/components/brave_rewards/browser/buildflags/buildflags.gni")
-import("//brave/components/ipfs/browser/buildflags/buildflags.gni")
+import("//brave/components/ipfs/buildflags/buildflags.gni")
+import("//brave/components/tor/buildflags/buildflags.gni")
 import("//build/config/features.gni")
 import("//build/config/ui.gni")
 
@@ -40,19 +40,6 @@ source_set("utility") {
       "//components/os_crypt",
       "//components/password_manager/core/browser",
       "//components/webdata/common",
-    ]
-  }
-
-  if (is_mac) {
-    sources += [
-      "importer/brave_safari_importer.mm",
-      "importer/brave_safari_importer.h",
-    ]
-
-    deps += [
-      "//base",
-      "//sql",
-      "//url",
     ]
   }
 

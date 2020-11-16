@@ -43,7 +43,7 @@ import {
   LoginMessageText
 } from './style'
 import { getLocale } from 'brave-ui/helpers'
-import { getLocaleTags } from '../../../../../common/locale'
+import { getLocaleWithTag } from '../../../../../common/locale'
 import { GrantCaptcha, GrantComplete, GrantError, GrantWrapper, WalletPopup } from '../'
 import Alert, { Type as AlertType } from '../alert'
 import Button, { Props as ButtonProps } from 'brave-ui/components/buttonsIndicators/button'
@@ -92,7 +92,6 @@ export interface ActionWallet {
 
 export type NotificationType =
   'ads' |
-  'ads-launch' |
   'backupWallet' |
   'contribute' |
   'grant' |
@@ -272,10 +271,6 @@ export default class WalletWrapper extends React.PureComponent<Props, State> {
         buttonText = getLocale('claim')
         buttonAction = this.onNotificationClick
         break
-      case 'ads-launch':
-        buttonText = getLocale('turnOnAds')
-        buttonAction = this.onNotificationClick
-        break
       case 'backupWallet':
         buttonText = getLocale('backupNow')
         buttonAction = this.onNotificationClick
@@ -295,6 +290,7 @@ export default class WalletWrapper extends React.PureComponent<Props, State> {
 
     return (
       <StyledButton
+        id={'panel-notifications'}
         size={'small'}
         type={'accent'}
         level={'primary'}
@@ -455,7 +451,6 @@ export default class WalletWrapper extends React.PureComponent<Props, State> {
 
     switch (notification.type) {
       case 'ads':
-      case 'ads-launch':
       case 'backupWallet':
       case 'insufficientFunds':
       case 'verifyWallet':
@@ -489,9 +484,6 @@ export default class WalletWrapper extends React.PureComponent<Props, State> {
     switch (notification.type) {
       case 'ads':
         typeText = getLocale('braveAdsTitle')
-        break
-      case 'ads-launch':
-        typeText = getLocale('braveAdsLaunchTitle')
         break
       case 'backupWallet':
         typeText = getLocale('backupWalletTitle')
@@ -610,8 +602,8 @@ export default class WalletWrapper extends React.PureComponent<Props, State> {
     const loginText = getLocale('loginMessageText').split('$1')
     const loginText1 = loginText[0]
     const loginText2 = loginText[1]
-    const rewardsText1 = getLocaleTags('rewardsPanelText1')
-    const rewardsText2 = getLocaleTags('rewardsPanelText2')
+    const rewardsText1 = getLocaleWithTag('rewardsPanelText1')
+    const rewardsText2 = getLocaleWithTag('rewardsPanelText2')
 
     return (
       <>
@@ -685,6 +677,8 @@ export default class WalletWrapper extends React.PureComponent<Props, State> {
                       <br />
                       {loginText2}
                     </p>
+                    <br/>
+                    {getLocale('walletVerificationNote3')}
                   </LoginMessageText>
                   <LoginMessageButtons>
                     <Button

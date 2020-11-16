@@ -197,10 +197,6 @@
     "message": "Ara pots guanyar per mirar anuncis.",
     "description": "Message for ads launch notification"
   },
-  "braveAdsLaunchTitle": {
-    "message": "Ha arribat Anuncis de Brave!",
-    "description": "Message used in notification to let users know Ads is available"
-  },
   "braveAdsTitle": {
     "message": "Anuncis de Brave",
     "description": "Notification title when we display info about ads"
@@ -603,6 +599,10 @@
     "message": "Cancel·lar",
     "description": "Text for cancel button"
   },
+  "changeAmount":  {
+    "message": "Canvieu la quantitat",
+    "description": "Button text for changing monthly contribution amount"
+  },
   "login":  {
     "message": "Inicia la sessió",
     "description": "Text for login button"
@@ -612,7 +612,7 @@
     "description": "Text for login button"
   },
   "loginMessageText":  {
-    "message": "Necessiteu tindre un mínim de 25 BAT per crear un compte de Uphold. Si us plau, torneu-ho a provar més tard. <br/> Si ja té un compte Uphold verificat, continuï iniciant la sessió.",
+    "message": "Necessiteu tenir com a mínim 25 BAT per a crear un compte Uphold. Si us plau torneu-ho a provar més tard. Si ja teniu un compte Uphold verificat, continueu a iniciar sessió.  ",
     "description": "Text for login button"
   },
   "walletConnected":  {
@@ -622,5 +622,9 @@
   "walletPending":  {
     "message": "Pendent",
     "description": "Status button that tells user that he is currently pending"
+  },
+  "walletVerificationNote3":  {
+    "message": "Nota: Les vostres transaccions estaran visibles per a Uphold un cop ho autoritzeu; per exemple, podran veure el destinatari i la quantitat de les vostres propines.  ",
+    "description": "Displayed in login modal for uphold"
   }
 }

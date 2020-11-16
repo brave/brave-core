@@ -32,6 +32,7 @@
 #include "net/base/url_util.h"
 #include "services/network/public/cpp/shared_url_loader_factory.h"
 #include "services/network/public/cpp/simple_url_loader.h"
+#include "services/network/public/mojom/fetch_api.mojom-shared.h"
 
 namespace {
 
@@ -172,7 +173,7 @@ bool BinanceService::OAuthRequest(const GURL &url,
                         net::LOAD_DISABLE_CACHE;
 
   if (!send_save_cookies) {
-    request->load_flags |= net::LOAD_DO_NOT_SEND_COOKIES;
+    request->credentials_mode = network::mojom::CredentialsMode::kOmit;
     request->load_flags |= net::LOAD_DO_NOT_SAVE_COOKIES;
   }
 

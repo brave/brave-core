@@ -14,6 +14,10 @@
 #include "chrome/browser/sync/profile_sync_service_android.h"
 #include "components/sync_device_info/device_info_tracker.h"
 
+namespace syncer {
+class BraveProfileSyncService;
+}
+
 namespace chrome {
 namespace android {
 
@@ -30,11 +34,17 @@ class BraveSyncDevicesAndroid : public syncer::DeviceInfoTracker::Observer {
       JNIEnv* env,
       const base::android::JavaParamRef<jobject>& jcaller);
 
+  void DeleteDevice(JNIEnv* env,
+                    const base::android::JavaParamRef<jobject>& jcaller,
+                    const base::android::JavaParamRef<jstring>& device_guid);
+
  private:
   // syncer::DeviceInfoTracker::Observer
   void OnDeviceInfoChange() override;
 
   base::Value GetSyncDeviceList();
+
+  syncer::BraveProfileSyncService* GetSyncService() const;
 
   ScopedObserver<syncer::DeviceInfoTracker, syncer::DeviceInfoTracker::Observer>
       device_info_tracker_observer_{this};

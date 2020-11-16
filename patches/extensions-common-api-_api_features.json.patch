@@ -1,0 +1,12 @@
+diff --git a/extensions/common/api/_api_features.json b/extensions/common/api/_api_features.json
+index 1c0e38a4d9d8014064764ac1f60db1c0f0b31456..5ba3e436a45fe3cc61fe4762308c8e059d1821a6 100644
+--- a/extensions/common/api/_api_features.json
++++ b/extensions/common/api/_api_features.json
+@@ -530,6 +530,7 @@
+     "contexts": ["webui"],
+     "matches": [
+       "chrome://password-change/*"
++      ,"chrome://newtab/*"
+     ]
+   }],
+   "runtime.sendNativeMessage": {

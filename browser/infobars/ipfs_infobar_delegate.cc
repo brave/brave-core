@@ -10,9 +10,9 @@
 
 #include "brave/browser/brave_browser_process_impl.h"
 #include "brave/browser/ui/brave_pages.h"
-#include "brave/components/ipfs/browser/brave_ipfs_client_updater.h"
-#include "brave/components/ipfs/common/ipfs_constants.h"
-#include "brave/components/ipfs/common/pref_names.h"
+#include "brave/components/ipfs/brave_ipfs_client_updater.h"
+#include "brave/components/ipfs/ipfs_constants.h"
+#include "brave/components/ipfs/pref_names.h"
 #include "brave/grit/brave_generated_resources.h"
 #include "chrome/browser/infobars/infobar_service.h"
 #include "chrome/browser/ui/browser_finder.h"
@@ -24,10 +24,13 @@
 #include "ui/views/vector_icons.h"
 
 // static
-void IPFSInfoBarDelegate::Create(InfoBarService* infobar_service) {
+void IPFSInfoBarDelegate::Create(InfoBarService* infobar_service,
+                                 content::BrowserContext* browser_context) {
   infobar_service->AddInfoBar(infobar_service->CreateConfirmInfoBar(
-      std::unique_ptr<ConfirmInfoBarDelegate>(
-          new IPFSInfoBarDelegate())));
+      std::unique_ptr<ConfirmInfoBarDelegate>(new IPFSInfoBarDelegate())));
+  auto* prefs = user_prefs::UserPrefs::Get(browser_context);
+  auto infobar_count = prefs->GetInteger(kIPFSInfobarCount);
+  prefs->SetInteger(kIPFSInfobarCount, infobar_count + 1);
 }
 
 IPFSInfoBarDelegate::IPFSInfoBarDelegate() {}
@@ -43,8 +46,7 @@ const gfx::VectorIcon& IPFSInfoBarDelegate::GetVectorIcon() const {
   return views::kInfoIcon;
 }
 
-void IPFSInfoBarDelegate::InfoBarDismissed() {
-}
+void IPFSInfoBarDelegate::InfoBarDismissed() {}
 
 base::string16 IPFSInfoBarDelegate::GetMessageText() const {
   return l10n_util::GetStringUTF16(IDS_BRAVE_IPFS_INSTALL);
@@ -54,8 +56,7 @@ int IPFSInfoBarDelegate::GetButtons() const {
   return BUTTON_OK | BUTTON_CANCEL;
 }
 
-base::string16 IPFSInfoBarDelegate::GetButtonLabel(
-    InfoBarButton button) const {
+base::string16 IPFSInfoBarDelegate::GetButtonLabel(InfoBarButton button) const {
   if (button == BUTTON_CANCEL) {
     return l10n_util::GetStringUTF16(IDS_BRAVE_IPFS_SETTINGS);
   }
@@ -64,27 +65,27 @@ base::string16 IPFSInfoBarDelegate::GetButtonLabel(
 }
 
 base::string16 IPFSInfoBarDelegate::GetLinkText() const {
-  return base::string16();
+  return l10n_util::GetStringUTF16(IDS_BRAVE_IPFS_LEARN_MORE);
 }
 
 GURL IPFSInfoBarDelegate::GetLinkURL() const {
-  return GURL();  // No learn more link for now.
+  return GURL(ipfs::kIPFSLearnMoreURL);
 }
 
 bool IPFSInfoBarDelegate::Accept() {
   content::WebContents* web_contents =
-    InfoBarService::WebContentsFromInfoBar(infobar());
+      InfoBarService::WebContentsFromInfoBar(infobar());
   auto* browser_context = web_contents->GetBrowserContext();
-  user_prefs::UserPrefs::Get(browser_context)->
-      SetInteger(kIPFSResolveMethod,
-          static_cast<int>(ipfs::IPFSResolveMethodTypes::IPFS_LOCAL));
+  user_prefs::UserPrefs::Get(browser_context)
+      ->SetInteger(kIPFSResolveMethod,
+                   static_cast<int>(ipfs::IPFSResolveMethodTypes::IPFS_LOCAL));
   g_brave_browser_process->ipfs_client_updater()->Register();
   return true;
 }
 
 bool IPFSInfoBarDelegate::Cancel() {
   content::WebContents* web_contents =
-    InfoBarService::WebContentsFromInfoBar(infobar());
+      InfoBarService::WebContentsFromInfoBar(infobar());
   if (web_contents) {
     Browser* browser = chrome::FindBrowserWithWebContents(web_contents);
     brave::ShowExtensionSettings(browser);

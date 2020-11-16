@@ -6519,6 +6519,14 @@ Glabājiet atslēgas failu drošā vietā. Tas būs vajadzīgs, lai izveidotu ja
 <translation id="995782501881226248">YouTube</translation>
 <translation id="996250603853062861">Notiek droša savienojuma izveidošana...</translation>
 <translation id="998747458861718449">Pārbaudīt</translation>
+<translation id="6744651634043798597">{COUNT, plural,
+          =0 {Atvērt visas &amp;inkognito režīma logā}
+          =1 {Atvērt &amp;inkognito režīma logā}
+          other {Atvērt visas (#) &amp;inkognito režīma logā}}</translation>
+<translation id="2633634757060186848">{COUNT, plural,
+          =0 {Atvērt visas &amp;inkognito režīma logā}
+          =1 {Atvērt visas &amp;inkognito režīma logā}
+          other {Atvērt visas (#) &amp;inkognito režīma logā}}</translation>
 <translation id="658539216370629794">Atvērt saiti &amp;inkognito režīma logā</translation>
 <translation id="1432267168815937878">Atvērt saiti &amp;inkognito režīma logā</translation>
 <translation id="6516243500644829484">Jauns &amp;inkognito režīma logs</translation>
@@ -6532,6 +6540,7 @@ Glabājiet atslēgas failu drošā vietā. Tas būs vajadzīgs, lai izveidotu ja
 <translation id="9048137919253433011">Inkognito cilne: <ph name="TAB_NAME"/></translation>
 <translation id="1799432502220762862">Inkognito apakšrāmis: <ph name="SUBFRAME_SITE"/></translation>
 <translation id="3193187622878830588">Inkognito režīma portāls: <ph name="SUBFRAME_SITE"/></translation>
+<translation id="5097649414558628673">Rīks: <ph name="PRINT_NAME"/></translation>
 <translation id="8808478386290700967">Interneta veikals</translation>
 <translation id="8261378640211443080">Šis paplašinājums nav norādīts vietnē <ph name="IDS_EXTENSION_WEB_STORE_TITLE"/> un, iespējams, tika pievienots, jums nezinot.</translation>
 <translation id="6827869674836193263"><ph name="WINDOW_TITLE"/> (Inkognito režīms)</translation>
@@ -6549,19 +6558,21 @@ Glabājiet atslēgas failu drošā vietā. Tas būs vajadzīgs, lai izveidotu ja
 <translation id="3098826269712097986">Pierakstīšanās dati tiks glabāti pārlūkprogrammā Brave, kad iziesiet no inkognito režīma. Tādējādi varēsiet vēlāk atkārtoti izmantot Touch ID ar šo vietni.</translation>
 <translation id="5186185447130319458">Inkognito</translation>
 <translation id="2579188629646253712">Iziet no inkognito režīma</translation>
-<translation id="6744651634043798597">{COUNT, plural,
+<translation id="1001131747196960052">Aizvērt inkognito</translation>
+<translation id="7475335772460644497">{COUNT, plural,
           =0 {Atvērt visas &amp;inkognito režīma logā}
           =1 {Atvērt &amp;inkognito režīma logā}
-          other {Atvērt visas (#) &amp;inkognito režīma logā}}</translation>
+          other {Atvērt visas ({COUNT}) &amp;inkognito režīma logā}}</translation>
 <translation id="2431625704210501303">Atvērt &amp;inkognito režīma logā</translation>
 <translation id="4620367155626060530">&amp;Rādīt grāmatzīmju joslu</translation>
-<translation id="2633634757060186848">{COUNT, plural,
+<translation id="1448315815373449655">{COUNT, plural,
           =0 {Atvērt visas &amp;inkognito režīma logā}
-          =1 {Atvērt visas &amp;inkognito režīma logā}
-          other {Atvērt visas (#) &amp;inkognito režīma logā}}</translation>
+          =1 {Atvērt &amp;inkognito režīma logā}
+          other {Atvērt visas ({COUNT}) &amp;inkognito režīma logā}}</translation>
 <translation id="1985165269306590797">Atvērt &amp;inkognito režīma logā</translation>
 <translation id="4680518314108745448">&amp;Rādīt grāmatzīmju joslu</translation>
 <translation id="642436385689435488">Atvērt visu inkognito režīma logā</translation>
+<translation id="5074021236879527611">Atvērt visas (<ph name="URL_COUNT"/>) inkognito režīma logā</translation>
 <translation id="5463021359602611602">Atvērt inkognito režīma logā</translation>
 <translation id="1850357845349976573">{0, plural,
         =1 {Inkognito režīms}
@@ -6611,6 +6622,8 @@ Glabājiet atslēgas failu drošā vietā. Tas būs vajadzīgs, lai izveidotu ja
 <translation id="4854477725773269949">Atļaut inkognito režīmā</translation>
 <translation id="6436164536244065364">Skatiet interneta veikalā</translation>
 <translation id="38046578254905003">Atrodiet paplašinājumus un motīvus <ph name="BEGIN_LINK"/>Web Store<ph name="END_LINK"/></translation>
+<translation id="2402482691429508168">Profili, kuri ir izvēlējušies jums būt redzami, kad viņu ekrāns tiks atbloķēts</translation>
+<translation id="3910100573440336938">Failu kopīgošana ar apkārt esošajiem profiliem</translation>
 <translation id="6336451774241870485">Jauna inkognito režīma cilne</translation>
 <translation id="6610147964972079463">Aizvērt inkognito režīma cilnes</translation>
 <translation id="4933782374919065856">Vai radušies jautājumi? Sazinieties ar personu, kas uzrauga jūsu profilu.</translation>

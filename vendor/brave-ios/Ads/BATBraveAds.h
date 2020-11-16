@@ -13,6 +13,11 @@ typedef NS_ENUM(NSInteger, BATAdNotificationEventType) {
   BATAdNotificationEventTypeTimedOut      // = ads::AdNotificationEventType::kTimedOut
 } NS_SWIFT_NAME(AdNotificationEventType);
 
+typedef NS_ENUM(NSInteger, BATNewTabPageAdEventType) {
+  BATNewTabPageAdEventTypeViewed,       // = ads::AdNotificationEventType::kViewed
+  BATNewTabPageAdEventTypeClicked       // = ads::AdNotificationEventType::kClicked
+} NS_SWIFT_NAME(NewTabPageAdEventType);
+
 NS_ASSUME_NONNULL_BEGIN
 
 @class BATAdNotification, BATBraveAds, BATBraveLedger;
@@ -127,9 +132,14 @@ NS_SWIFT_NAME(BraveAds)
 /// Report that a tab with a given id was closed by the user
 - (void)reportTabClosedWithTabId:(NSInteger)tabId NS_SWIFT_NAME(reportTabClosed(tabId:));
 
-/// Report that a notification event type was triggered for a given id
-- (void)reportAdNotificationEvent:(NSString *)notificationUuid
+/// Report that an ad notification event type was triggered for a given id
+- (void)reportAdNotificationEvent:(NSString *)uuid
                         eventType:(BATAdNotificationEventType)eventType;
+
+/// Report that a new tab page ad event type was triggered for a given id
+- (void)reportNewTabPageAdEvent:(NSString *)wallpaperId
+             creativeInstanceId:(NSString *)creativeInstanceId
+                      eventType:(BATNewTabPageAdEventType)eventType;
 
 /// Reconcile ad rewards with server
 - (void)reconcileAdRewards;

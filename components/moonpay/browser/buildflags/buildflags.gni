@@ -1,5 +1,5 @@
 import("//build/config/features.gni")
 
 declare_args() {
-  moonpay_enabled = is_mac || is_linux || is_win
+  moonpay_enabled = false
 }

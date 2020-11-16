@@ -6,7 +6,10 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_ADS_BROWSER_ADS_P2A_H_
 #define BRAVE_COMPONENTS_BRAVE_ADS_BROWSER_ADS_P2A_H_
 
+#include <stdint.h>
+
 #include <string>
+#include <vector>
 
 class PrefService;
 class PrefRegistrySimple;
@@ -15,11 +18,15 @@ namespace brave_ads {
 
 void RegisterP2APrefs(PrefRegistrySimple* prefs);
 
-void RecordEventInWeeklyStorage(
+void RecordInWeeklyStorageAndEmitP2AHistogramAnswer(
     PrefService* prefs,
-    const std::string& pref_name);
+    const std::string& name);
 
-void EmitConfirmationsCountMetric(int answer);
+void EmitP2AHistogramAnswer(
+    const std::string& name,
+    uint16_t count_value);
+
+void SuspendP2AHistograms();
 
 }  // namespace brave_ads
 

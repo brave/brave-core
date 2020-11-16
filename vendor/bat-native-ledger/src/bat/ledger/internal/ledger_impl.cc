@@ -137,10 +137,6 @@ void LedgerImpl::LoadURL(
 }
 
 void LedgerImpl::StartServices() {
-  if (!IsWalletCreated()) {
-    return;
-  }
-
   publisher()->SetPublisherServerListTimer();
   contribution()->SetReconcileTimer();
   promotion()->Refresh(false);
@@ -222,14 +218,7 @@ void LedgerImpl::OnStateInitialized(
 }
 
 void LedgerImpl::CreateWallet(ledger::ResultCallback callback) {
-  wallet()->CreateWalletIfNecessary([this, callback](
-      const type::Result result) {
-    if (result == type::Result::WALLET_CREATED) {
-      StartServices();
-    }
-
-    callback(result);
-  });
+  wallet()->CreateWalletIfNecessary(callback);
 }
 
 void LedgerImpl::OneTimeTip(
@@ -278,8 +267,7 @@ void LedgerImpl::OnShow(uint32_t tab_id, const uint64_t& current_time) {
 }
 
 void LedgerImpl::OnHide(uint32_t tab_id, const uint64_t& current_time) {
-  if (!state()->GetRewardsMainEnabled() ||
-      !state()->GetAutoContributeEnabled()) {
+  if (!state()->GetAutoContributeEnabled()) {
     return;
   }
 
@@ -398,11 +386,6 @@ void LedgerImpl::GetExcludedList(ledger::PublisherInfoListCallback callback) {
   database()->GetExcludedList(callback);
 }
 
-void LedgerImpl::SetRewardsMainEnabled(bool enabled) {
-  state()->SetRewardsMainEnabled(enabled);
-  publisher()->SetPublisherServerListTimer();
-}
-
 void LedgerImpl::SetPublisherMinVisitTime(int duration) {
   state()->SetPublisherMinVisitTime(duration);
 }
@@ -429,10 +412,6 @@ void LedgerImpl::SetAutoContributeEnabled(bool enabled) {
 
 uint64_t LedgerImpl::GetReconcileStamp() {
   return state()->GetReconcileStamp();
-}
-
-bool LedgerImpl::GetRewardsMainEnabled() {
-  return state()->GetRewardsMainEnabled();
 }
 
 int LedgerImpl::GetPublisherMinVisitTime() {
@@ -530,11 +509,6 @@ void LedgerImpl::SetPublisherExclude(
 
 void LedgerImpl::RestorePublishers(ledger::ResultCallback callback) {
   database()->RestorePublishers(callback);
-}
-
-bool LedgerImpl::IsWalletCreated() {
-  const auto stamp = state()->GetCreationStamp();
-  return stamp != 0u;
 }
 
 void LedgerImpl::GetPublisherActivityFromUrl(
@@ -833,6 +807,29 @@ void LedgerImpl::GetEventLogs(ledger::GetEventLogsCallback callback) {
 
 bool LedgerImpl::IsShuttingDown() const {
   return shutting_down_;
+}
+
+void LedgerImpl::GetBraveWallet(GetBraveWalletCallback callback) {
+  callback(wallet()->GetWallet());
+}
+
+std::string LedgerImpl::GetWalletPassphrase() const {
+  const auto brave_wallet = wallet()->GetWallet();
+  if (!brave_wallet) {
+    return "";
+  }
+
+  return wallet()->GetWalletPassphrase(brave_wallet->Clone());
+}
+
+void LedgerImpl::LinkBraveWallet(
+    const std::string& destination_payment_id,
+    ResultCallback callback) {
+  wallet()->LinkBraveWallet(destination_payment_id, callback);
+}
+
+void LedgerImpl::GetTransferableAmount(GetTransferableAmountCallback callback) {
+  promotion()->GetTransferableAmount(callback);
 }
 
 }  // namespace ledger

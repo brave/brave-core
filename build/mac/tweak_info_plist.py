@@ -72,13 +72,14 @@ def Main(argv):
       help='Product directory name')
   parser.add_option('--brave_feed_url', dest='brave_feed_url', action='store',
       type='string', default=None, help='Target url for update feed')
-  parser.add_option('--brave_dsa_file', dest='brave_dsa_file', action='store',
-      type='string', default=None, help='Public DSA file for update')
+  parser.add_option('--brave_eddsa_key', dest='brave_eddsa_key', action='store',
+      type='string', default=None, help='Public EdDSA key for update')
   parser.add_option('--brave_version', dest='brave_version', action='store',
       type='string', default=None, help='brave version string')
   parser.add_option('--format', choices=('binary1', 'xml1', 'json'),
       default='xml1', help='Format to use when writing property list '
           '(default: %(default)s)')
+  parser.add_option('--skip_signing', dest='skip_signing', action='store_true')
   (options, args) = parser.parse_args(argv)
 
   if len(args) > 0:
@@ -101,16 +102,19 @@ def Main(argv):
   if options.plist_output is not None:
     output_path = options.plist_output
 
-  if options.brave_channel:
+  if options.skip_signing:
     plist['KSChannelID'] = options.brave_channel
+  elif 'KSChannelID' in plist:
+    # 'KSChannelID' is set at _modify_plists() of modification.py.
+    del plist['KSChannelID']
 
   plist['CrProductDirName'] = options.brave_product_dir_name
 
   if options.brave_feed_url:
     plist['SUFeedURL'] = options.brave_feed_url
 
-  if options.brave_dsa_file:
-    plist['SUPublicDSAKeyFile'] = options.brave_dsa_file
+  if options.brave_eddsa_key:
+    plist['SUPublicEDKey'] = options.brave_eddsa_key
 
   _OverrideVersionKey(plist, options.brave_version)
 

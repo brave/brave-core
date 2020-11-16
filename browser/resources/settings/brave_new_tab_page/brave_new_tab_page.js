@@ -21,44 +21,34 @@
     ],
 
     properties: {
-      isSuperReferralActive_: Boolean,
-      isBinanceSupported_: Boolean,
-      isBraveTogetherSupported_: Boolean,
-      isGeminiSupported_: Boolean,
-      isBitcoinDotComSupported_: Boolean,
+      newTabShowOptions_: Array,
+      shouldNewTabShowDashboardSettings_: Boolean,
     },
 
     /** @override */
     created: function() {
       this.browserProxy_ = settings.BraveNewTabBrowserProxyImpl.getInstance();
-      this.isSuperReferralActive_ = false;
-      this.isBinanceSupported_ = false;
-      this.isBraveTogetherSupported_ = false;
-      this.isGeminiSupported_ = false;
-      this.isBitcoinDotComSupported_ = false;
+      this.showNewTabDashboardSettings_ = false;
     },
 
     /** @override */
     ready: function() {
-      this.browserProxy_.getIsSuperReferralActive().then(isSuperReferralActive => {
-        this.isSuperReferralActive_ = isSuperReferralActive;
+      this.openNewTabPage_ = this.openNewTabPage_.bind(this)
+
+      this.browserProxy_.getNewTabShowsOptionsList().then(list => {
+        this.newTabShowOptions_ = list;
       })
-      this.browserProxy_.getIsBinanceSupported().then(isBinanceSupported => {
-        this.isBinanceSupported_ = isBinanceSupported;
-      })
-      this.browserProxy_.getIsBraveTogetherSupported().then(isBraveTogetherSupported => {
-        this.isBraveTogetherSupported_ = isBraveTogetherSupported;
-      })
-      this.browserProxy_.getIsGeminiSupported().then(isGeminiSupported => {
-        this.isGeminiSupported_ = isGeminiSupported;
-      })
-      this.browserProxy_.getIsBitcoinDotComSupported().then(isBitcoinDotComSupported => {
-        this.isBitcoinDotComSupported_ = isBitcoinDotComSupported;
+      this.browserProxy_.shouldShowNewTabDashboardSettings().then(showNewTabDashboardSettings => {
+        this.showNewTabDashboardSettings_ = showNewTabDashboardSettings;
       })
 
-      this.addWebUIListener('super-referral-active-state-changed', (isSuperReferralActive) => {
-        this.isSuperReferralActive_ = isSuperReferralActive;
+      this.addWebUIListener('show-new-tab-dashboard-settings-changed', (show) => {
+        this.showNewTabDashboardSettings_ = show
       })
+    },
+
+    openNewTabPage_: function () {
+      window.open("chrome://newTab?openSettings=1", "_self");
     }
   });
 })();

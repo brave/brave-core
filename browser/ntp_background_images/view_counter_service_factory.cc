@@ -56,8 +56,8 @@ KeyedService* ViewCounterServiceFactory::BuildServiceInstanceFor(
           g_brave_browser_process->ntp_background_images_service()) {
     Profile* profile = Profile::FromBrowserContext(browser_context);
     bool is_supported_locale = false;
-    if (auto* ads_service =
-            brave_ads::AdsServiceFactory::GetForProfile(profile)) {
+    auto* ads_service = brave_ads::AdsServiceFactory::GetForProfile(profile);
+    if (ads_service) {
       is_supported_locale = ads_service->IsSupportedLocale();
     }
     content::URLDataSource::Add(
@@ -65,7 +65,9 @@ KeyedService* ViewCounterServiceFactory::BuildServiceInstanceFor(
         std::make_unique<NTPBackgroundImagesSource>(service));
 
     return new ViewCounterService(service,
+                                  ads_service,
                                   profile->GetPrefs(),
+                                  g_brave_browser_process->local_state(),
                                   is_supported_locale);
   }
 

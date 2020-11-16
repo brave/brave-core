@@ -1026,6 +1026,7 @@
 <translation id="996149300115483134">피드 카드 메뉴가 닫힘</translation>
 <translation id="4540437243849625078">이 사이트가 시크릿 모드 외부의 앱과 정보를 공유하려고 합니다.</translation>
 <translation id="1227836882233136433">시크릿 모드를 끝내시겠습니까?</translation>
+<translation id="21023559487771014">비공개 모드 시작</translation>
 <translation id="5186185447130319458">비공개</translation>
 <translation id="9063160602596686558">사용 통계 및 비정상 종료 보고서를 Brave Software로 자동 전송</translation>
 <translation id="1438581767753657407">Lite 모드가 켜지면 Brave는 Brave 서버를 이용해 페이지를 더욱 빠르게 로드합니다. Lite 모드는 느린 페이지를 다시 작성해 필수적인 콘텐츠만을 로드합니다. Lite 모드는 비공개 탭에 적용되지 않습니다.</translation>
@@ -1035,7 +1036,11 @@
 <translation id="3110967157686007724">비공개 탭</translation>
 <translation id="4526803704855831732">비공개 탭</translation>
 <translation id="7465104139234185284">모든 비공개 탭 닫기</translation>
-<translation id="21023559487771014">비공개 모드 시작</translation>
+<translation id="1455125811784733159">개인정보 보호 탭 열기</translation>
+<translation id="807110510029471880">개인정보 보호를 사용하여 로그인</translation>
+<translation id="7987056960390558517">개인정보 보호에서 사용자의 활동은 방문하는 웹사이트, 사용자의 고용주나 학교, 그리고 사용자의 인터넷 서비스 제공자에게 <ph name="BEGIN_BOLD1"/>여전히 보일 수 있습니다<ph name="END_BOLD1"/>.
+
+개인정보 보호 세션의 데이터는 사용자가 <ph name="BEGIN_BOLD2"/>모든 개인정보 보호 탭을 닫을 때<ph name="END_BOLD2"/>에만 Brave에서 지워집니다.</translation>
 <translation id="6336451774241870485">새 비공개 탭</translation>
 <translation id="3234355010754616171">새 비공개 탭</translation>
 <translation id="6610147964972079463">비공개 탭 닫기</translation>

@@ -56,37 +56,12 @@ std::string GetMappingTableData(const base::FilePath& installed_dir) {
   return contents;
 }
 
-void CacheSuperReferralData(const std::string& data_json,
-                            const base::FilePath& installed_dir,
-                            const base::FilePath& super_referral_cache_dir) {
-  NTPBackgroundImagesData data(data_json,
-                               super_referral_cache_dir);
-
-  base::CreateDirectory(super_referral_cache_dir);
-  // Cache logo image
-  base::CopyFile(installed_dir.Append(data.logo_image_file.BaseName()),
-                 data.logo_image_file);
-  // Cache topsite favicon images
-  for (const auto& top_site : data.top_sites) {
-    base::CopyFile(installed_dir.Append(top_site.image_file.BaseName()),
-                   top_site.image_file);
-  }
-  // Cache background images
-  for (const auto& background : data.backgrounds) {
-    base::CopyFile(installed_dir.Append(background.image_file.BaseName()),
-                   background.image_file);
-  }
-}
-
 // If registered component is for sponsored images wallpaper, it has photo.json
 // in |installed_dir|. Otherwise, it has data.json for super referral.
 // This methods cache super referral's favicon data because that favicon images
 // could be used after campaign ends.
 // And return manifest json string.
-std::string HandleComponentData(
-    const base::FilePath& installed_dir,
-    const base::FilePath& super_referral_cache_dir,
-    bool is_super_referral) {
+std::string HandleComponentData(const base::FilePath& installed_dir) {
   base::FilePath json_path = installed_dir.AppendASCII(kNTPManifestFile);
   std::string contents;
 
@@ -102,9 +77,6 @@ std::string HandleComponentData(
     return contents;
   }
 
-  if (is_super_referral)
-    CacheSuperReferralData(contents, installed_dir, super_referral_cache_dir);
-
   return contents;
 }
 
@@ -119,28 +91,21 @@ void NTPBackgroundImagesService::RegisterLocalStatePrefs(
       prefs::kNewTabPageCachedSuperReferralComponentData, std::string());
   registry->RegisterStringPref(
       prefs::kNewTabPageCachedSuperReferralCode, std::string());
-  registry->RegisterListPref(
-      prefs::kNewTabPageCachedSuperReferralFaviconList);
   registry->RegisterBooleanPref(
       prefs::kNewTabPageGetInitialSRComponentInProgress, false);
 }
 
 NTPBackgroundImagesService::NTPBackgroundImagesService(
     component_updater::ComponentUpdateService* cus,
-    PrefService* local_pref,
-    const base::FilePath& user_data_dir)
+    PrefService* local_pref)
     : component_update_service_(cus),
       local_pref_(local_pref),
-      super_referral_cache_dir_(
-          user_data_dir.AppendASCII("SuperReferralCache")),
       weak_factory_(this) {
 }
 
 NTPBackgroundImagesService::~NTPBackgroundImagesService() = default;
 
 void NTPBackgroundImagesService::Init() {
-  RestoreCachedTopSitesFaviconList();
-
   // Flag override for testing or demo purposes
   base::FilePath forced_local_path(
       base::CommandLine::ForCurrentProcess()->GetSwitchValueNative(
@@ -221,8 +186,7 @@ void NTPBackgroundImagesService::CheckSuperReferralComponent() {
     if (!cached_data.empty()) {
       DVLOG(2) << __func__ << ": Initialized SR Data from cache.";
       sr_images_data_.reset(
-          new NTPBackgroundImagesData(cached_data,
-                                      super_referral_cache_dir_));
+          new NTPBackgroundImagesData(cached_data, si_installed_dir_));
     }
     return;
   }
@@ -326,14 +290,14 @@ void NTPBackgroundImagesService::RegisterSuperReferralComponent() {
   std::string theme_name;
   if (initial_sr_component_info_.is_dict()) {
     public_key = *initial_sr_component_info_.FindStringKey(kPublicKey);
-    id = *initial_sr_component_info_.FindStringKey(kComponentID);
-    theme_name = *initial_sr_component_info_.FindStringKey(kThemeName);
+    id = *initial_sr_component_info_.FindStringKey(kComponentIDKey);
+    theme_name = *initial_sr_component_info_.FindStringKey(kThemeNameKey);
   } else {
     const auto* value = local_pref_->Get(
         prefs::kNewTabPageCachedSuperReferralComponentInfo);
     public_key = *value->FindStringKey(kPublicKey);
-    id = *value->FindStringKey(kComponentID);
-    theme_name = *value->FindStringKey(kThemeName);
+    id = *value->FindStringKey(kComponentIDKey);
+    theme_name = *value->FindStringKey(kThemeNameKey);
   }
 
   RegisterNTPBackgroundImagesComponent(
@@ -470,8 +434,7 @@ void NTPBackgroundImagesService::OnComponentReady(
 
   base::PostTaskAndReplyWithResult(
       FROM_HERE, {base::ThreadPool(), base::MayBlock()},
-      base::BindOnce(&HandleComponentData, installed_dir,
-                     super_referral_cache_dir_, is_super_referral),
+      base::BindOnce(&HandleComponentData, installed_dir),
       base::BindOnce(&NTPBackgroundImagesService::OnGetComponentJsonData,
                      weak_factory_.GetWeakPtr(),
                      is_super_referral));
@@ -485,22 +448,14 @@ void NTPBackgroundImagesService::OnGetComponentJsonData(
           prefs::kNewTabPageGetInitialSRComponentInProgress,
           false);
     sr_images_data_.reset(
-        new NTPBackgroundImagesData(json_string,
-                                    super_referral_cache_dir_));
+        new NTPBackgroundImagesData(json_string, sr_installed_dir_));
     // |initial_sr_component_info_| has proper data only for initial component
     // downloading. After that, it's empty. In test, it's also empty.
     if (initial_sr_component_info_.is_dict()) {
       local_pref_->Set(prefs::kNewTabPageCachedSuperReferralComponentInfo,
                        initial_sr_component_info_);
     }
-    if (local_pref_->FindPreference(
-            prefs::kNewTabPageCachedSuperReferralFaviconList)->
-                IsDefaultValue() &&
-        sr_images_data_->IsValid()) {
-      // This is done only once because super referral will have same top sites
-      // list forever.
-      CacheTopSitesFaviconList();
-    }
+    CacheTopSitesFaviconList();
     local_pref_->SetString(prefs::kNewTabPageCachedSuperReferralComponentData,
                            json_string);
   } else {
@@ -508,19 +463,16 @@ void NTPBackgroundImagesService::OnGetComponentJsonData(
                                                       si_installed_dir_));
   }
 
-  bool sr_ended = false;
   if (is_super_referral && !sr_images_data_->IsValid()) {
     DVLOG(2) << __func__ << ": NTP SR campaign ends.";
-    sr_ended = true;
     UnRegisterSuperReferralComponent();
     MarkThisInstallIsNotSuperReferralForever();
+    return;
   }
 
   for (auto& observer : observer_list_) {
     observer.OnUpdated(is_super_referral ? sr_images_data_.get()
                                          : si_images_data_.get());
-    if (sr_ended)
-      observer.OnSuperReferralEnded();
   }
 }
 
@@ -531,36 +483,23 @@ void NTPBackgroundImagesService::MarkThisInstallIsNotSuperReferralForever() {
                          std::string());
   local_pref_->SetString(prefs::kNewTabPageCachedSuperReferralCode,
                          std::string());
+
+  for (auto& observer : observer_list_)
+    observer.OnSuperReferralEnded();
 }
 
 void NTPBackgroundImagesService::CacheTopSitesFaviconList() {
-  DCHECK(sr_images_data_->IsValid());
-  DCHECK(local_pref_->FindPreference(
-            prefs::kNewTabPageCachedSuperReferralFaviconList)->
-                IsDefaultValue());
+  if (!sr_images_data_->IsValid())
+    return;
+
   base::Value list(base::Value::Type::LIST);
 
   for (const auto& top_site : sr_images_data_->top_sites) {
-    const std::string file_path = super_referral_cache_dir_.Append(
+    const std::string file_path = sr_installed_dir_.Append(
         top_site.image_file.BaseName()).AsUTF8Unsafe();
     list.Append(file_path);
-    cached_top_site_favicon_list_.push_back(file_path);
+    top_site_favicon_list_.push_back(file_path);
   }
-
-  local_pref_->Set(prefs::kNewTabPageCachedSuperReferralFaviconList, list);
-}
-
-void NTPBackgroundImagesService::RestoreCachedTopSitesFaviconList() {
-  if (local_pref_->FindPreference(
-            prefs::kNewTabPageCachedSuperReferralFaviconList)->
-                IsDefaultValue()) {
-    return;
-  }
-
-  const auto* value = local_pref_->Get(
-      prefs::kNewTabPageCachedSuperReferralFaviconList);
-  for (const auto& file : value->GetList())
-      cached_top_site_favicon_list_.push_back(file.GetString());
 }
 
 bool NTPBackgroundImagesService::IsValidSuperReferralComponentInfo(
@@ -570,17 +509,17 @@ bool NTPBackgroundImagesService::IsValidSuperReferralComponentInfo(
 
   if (!component_info.FindStringKey(kPublicKey))
     return false;
-  if (!component_info.FindStringKey(kComponentID))
+  if (!component_info.FindStringKey(kComponentIDKey))
     return false;
-  if (!component_info.FindStringKey(kThemeName))
+  if (!component_info.FindStringKey(kThemeNameKey))
     return false;
 
   return true;
 }
 
 std::vector<std::string>
-NTPBackgroundImagesService::GetCachedTopSitesFaviconList() const {
-  return cached_top_site_favicon_list_;
+NTPBackgroundImagesService::GetTopSitesFaviconList() const {
+  return top_site_favicon_list_;
 }
 
 void NTPBackgroundImagesService::UnRegisterSuperReferralComponent() {
@@ -590,7 +529,7 @@ void NTPBackgroundImagesService::UnRegisterSuperReferralComponent() {
   const auto* value = local_pref_->Get(
       prefs::kNewTabPageCachedSuperReferralComponentInfo);
   DCHECK(value);
-  const std::string sr_component_id = *value->FindStringKey(kComponentID);
+  const std::string sr_component_id = *value->FindStringKey(kComponentIDKey);
   DVLOG(2) << __func__ << ": Unregister NTP SR component";
   component_update_service_->UnregisterComponent(sr_component_id);
 }
@@ -613,7 +552,7 @@ std::string NTPBackgroundImagesService::GetSuperReferralThemeName() const {
       prefs::kNewTabPageCachedSuperReferralComponentInfo);
   if (base::FeatureList::IsEnabled(features::kBraveNTPSuperReferralWallpaper) &&
       IsValidSuperReferralComponentInfo(*value)) {
-    theme_name = *value->FindStringKey(kThemeName);
+    theme_name = *value->FindStringKey(kThemeNameKey);
   }
 
   return theme_name;

@@ -105,6 +105,12 @@
                                 menu-options="[[ipfsResolveMethod_]]">
         </settings-dropdown-menu>
       </div>
+      <settings-toggle-button id="ipfsAutoGatewayFallbackEnabled"
+          class="cr-row"
+          pref="{{prefs.brave.ipfs.auto_fallback_to_gateway}}"
+          label=$i18n{ipfsAutoFallbackToGatewayLabel}
+          sub-label=$i18n{ipfsAutoFallbackToGatewayDesc}>
+      </settings-toggle-button>
     </template>
     <settings-toggle-button id="ipfsCompanionEnabled"
         class="cr-row"
@@ -129,6 +135,13 @@
         sub-label="$i18n{torEnabledDesc}"
         disabled="[[disableTorOption_]]"
         on-settings-boolean-control-change="onTorEnabledChange_">
+    </settings-toggle-button>
+    <settings-toggle-button
+        pref="{{prefs.tor.auto_onion_location}}"
+        class="cr-row"
+        label="$i18n{autoOnionLocationLabel}"
+        sub-label="$i18n{autoOnionLocationDesc}"
+        disabled="[[!torEnabled_]]">
     </settings-toggle-button>
     </if>
     <settings-toggle-button id="webTorrentEnabled"

@@ -6520,6 +6520,14 @@ Bewaar je sleutelbestand op een veilige plaats. Je hebt het bestand nodig om nie
 <translation id="995782501881226248">YouTube</translation>
 <translation id="996250603853062861">Beveiligde verbinding tot stand brengen...</translation>
 <translation id="998747458861718449">I&amp;nspecteren</translation>
+<translation id="6744651634043798597">{COUNT, plural,
+          =0 {Open alle in &amp;privéscherm}
+          =1 {Open in &amp;privéscherm}
+          other {Open alle (#) in &amp;privéscherm}}</translation>
+<translation id="2633634757060186848">{COUNT, plural,
+          =0 {Open alle in &amp;privéscherm}
+          =1 {Open in &amp;privéscherm}
+          other {Open alle (#) in &amp;privéscherm}}</translation>
 <translation id="658539216370629794">Open link in &amp;privéscherm</translation>
 <translation id="1432267168815937878">Open link in &amp;privéscherm</translation>
 <translation id="6516243500644829484">Nieuw &amp;privéscherm</translation>
@@ -6533,6 +6541,7 @@ Bewaar je sleutelbestand op een veilige plaats. Je hebt het bestand nodig om nie
 <translation id="9048137919253433011">Privétabblad: <ph name="TAB_NAME"/></translation>
 <translation id="1799432502220762862">Privé-hulpframe: <ph name="SUBFRAME_SITE"/></translation>
 <translation id="3193187622878830588">Incognitoportal: <ph name="SUBFRAME_SITE"/></translation>
+<translation id="5097649414558628673">Tool: <ph name="PRINT_NAME"/></translation>
 <translation id="8808478386290700967">Webwinkel</translation>
 <translation id="8261378640211443080">Deze extensie wordt niet vermeld in de <ph name="IDS_EXTENSION_WEB_STORE_TITLE"/> en is mogelijk zonder je medeweten toegevoegd.</translation>
 <translation id="6827869674836193263"><ph name="WINDOW_TITLE"/> (Privé)</translation>
@@ -6550,19 +6559,21 @@ Bewaar je sleutelbestand op een veilige plaats. Je hebt het bestand nodig om nie
 <translation id="3098826269712097986">Inloggegevens worden na het afsluiten van de privémodus opgeslagen in Brave. Hierdoor kunt u Touch ID later nogmaals op deze website gebruiken.</translation>
 <translation id="5186185447130319458">Privé</translation>
 <translation id="2579188629646253712">Sluit Privé af</translation>
-<translation id="6744651634043798597">{COUNT, plural,
-          =0 {Open alle in &amp;privéscherm}
-          =1 {Open in &amp;privéscherm}
-          other {Open alle (#) in &amp;privéscherm}}</translation>
+<translation id="1001131747196960052">Privé sluiten</translation>
+<translation id="7475335772460644497">{AANTAL, meervoud,
+          =0 {Open allen in &amp;privévenster}
+          =1 {Open in &amp;privévenster}
+          other {Open allen ({AANTAL}) in &amp;privévenster}}</translation>
 <translation id="2431625704210501303">Open in &amp;privéscherm</translation>
 <translation id="4620367155626060530">&amp;Bladwijzerbalk weergeven</translation>
-<translation id="2633634757060186848">{COUNT, plural,
-          =0 {Open alle in &amp;privéscherm}
-          =1 {Open in &amp;privéscherm}
-          other {Open alle (#) in &amp;privéscherm}}</translation>
+<translation id="1448315815373449655">{AANTAL, meervoud,
+          =0 {Open Alen in &amp;Privéscherm}
+          =1 {Open in &amp;Privéscherm}
+          other {Open Allen ({AANTAL}) in &amp;Privéscherm}}</translation>
 <translation id="1985165269306590797">Open in &amp;privéscherm</translation>
 <translation id="4680518314108745448">&amp;Bladwijzerbalk weergeven</translation>
 <translation id="642436385689435488">Open alle in privéscherm</translation>
+<translation id="5074021236879527611">Open alle (<ph name="URL_COUNT"/>) in privéscherm</translation>
 <translation id="5463021359602611602">Openen in privéscherm</translation>
 <translation id="1850357845349976573">{0, plural,
         =1 {Privé}
@@ -6612,6 +6623,8 @@ Bewaar je sleutelbestand op een veilige plaats. Je hebt het bestand nodig om nie
 <translation id="4854477725773269949">Toestaan in privé</translation>
 <translation id="6436164536244065364">Bekijken in Web Store</translation>
 <translation id="38046578254905003">Zoek extensies en thema's in de <ph name="BEGIN_LINK"/>Web Store<ph name="END_LINK"/></translation>
+<translation id="2402482691429508168">Profielen die zijn gekozen om zichtbaar te zijn voor jou wanneer hun scherm niet op slot staat</translation>
+<translation id="3910100573440336938">Deel bestanden met profielen rondom u</translation>
 <translation id="6336451774241870485">Nieuw privétabblad</translation>
 <translation id="6610147964972079463">Sluit privétabbladen af</translation>
 <translation id="4933782374919065856">Vragen? Neem contact op met de persoon die je profiel beheert.</translation>

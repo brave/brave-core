@@ -11,12 +11,13 @@
 #include "brave/components/brave_component_updater/browser/features.h"
 #include "brave/components/brave_shields/common/features.h"
 #include "brave/components/brave_sync/buildflags/buildflags.h"
-#include "brave/components/ipfs/browser/buildflags/buildflags.h"
+#include "brave/components/ipfs/buildflags/buildflags.h"
 #include "brave/components/ntp_background_images/browser/features.h"
 #include "brave/components/speedreader/buildflags.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/profiles/profile_manager.h"
 #include "components/prefs/pref_service.h"
+#include "third_party/blink/public/common/features.h"
 
 using brave_shields::features::kBraveAdblockCosmeticFiltering;
 using ntp_background_images::features::kBraveNTPBrandedWallpaper;
@@ -49,7 +50,7 @@ using ntp_background_images::features::kBraveNTPSuperReferralWallpaper;
 #endif
 
 #if BUILDFLAG(IPFS_ENABLED)
-#include "brave/components/ipfs/browser/features.h"
+#include "brave/components/ipfs/features.h"
 
 #define BRAVE_IPFS_FEATURE_ENTRIES                                         \
     {"brave-ipfs",                                                         \
@@ -84,7 +85,11 @@ using ntp_background_images::features::kBraveNTPSuperReferralWallpaper;
      flag_descriptions::kBraveSuperReferralName,                           \
      flag_descriptions::kBraveSuperReferralDescription,                    \
      flags_ui::kOsMac | flags_ui::kOsWin | flags_ui::kOsAndroid,           \
-     FEATURE_VALUE_TYPE(kBraveNTPSuperReferralWallpaper)},
+     FEATURE_VALUE_TYPE(kBraveNTPSuperReferralWallpaper)},                 \
+    {"brave-ephemeral-storage",                                            \
+     flag_descriptions::kBraveEphemeralStorageName,                        \
+     flag_descriptions::kBraveEphemeralStorageDescription, kOsAll,         \
+     FEATURE_VALUE_TYPE(blink::features::kBraveEphemeralStorage)},
 
 #define SetFeatureEntryEnabled SetFeatureEntryEnabled_ChromiumImpl
 #include "../../../../chrome/browser/about_flags.cc"  // NOLINT

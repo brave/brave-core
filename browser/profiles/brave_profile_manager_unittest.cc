@@ -14,10 +14,10 @@
 #include "brave/browser/profiles/brave_unittest_profile_manager.h"
 #include "brave/browser/profiles/profile_util.h"
 #include "brave/browser/tor/tor_profile_service_factory.h"
-#include "brave/browser/tor/tor_profile_service_impl.h"
 #include "brave/browser/translate/buildflags/buildflags.h"
-#include "brave/common/tor/tor_constants.h"
 #include "brave/components/brave_webtorrent/browser/webtorrent_util.h"
+#include "brave/components/tor/tor_constants.h"
+#include "brave/components/tor/tor_profile_service_impl.h"
 #include "chrome/browser/net/proxy_config_monitor.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/profiles/profile_avatar_icon_util.h"
@@ -136,7 +136,7 @@ TEST_F(BraveProfileManagerTest, InitProfileUserPrefs) {
   ASSERT_TRUE(tor_profile);
   EXPECT_EQ(brave::GetParentProfile(tor_profile), profile);
 
-  tor_profile = tor_profile->GetOffTheRecordProfile();
+  tor_profile = tor_profile->GetPrimaryOTRProfile();
 
   // Check that the tor_profile name is non empty
   std::string profile_name =
@@ -246,7 +246,7 @@ TEST_F(BraveProfileManagerTest, ProxyConfigMonitorInTorProfile) {
   Profile* parent_profile = profile_manager->GetProfile(dest_path);
   base::FilePath tor_path = BraveProfileManager::GetTorProfilePath();
   Profile* profile =
-      profile_manager->GetProfile(tor_path)->GetOffTheRecordProfile();
+      profile_manager->GetProfile(tor_path)->GetPrimaryOTRProfile();
   ASSERT_TRUE(profile);
   EXPECT_EQ(brave::GetParentProfile(profile), parent_profile);
 
@@ -257,7 +257,7 @@ TEST_F(BraveProfileManagerTest, ProxyConfigMonitorInTorProfile) {
   EXPECT_TRUE(config.value().proxy_rules().empty());
 
   // Emulate get socks info from tor control
-  auto* tor_profile_service = TorProfileServiceFactory::GetForProfile(profile);
+  auto* tor_profile_service = TorProfileServiceFactory::GetForContext(profile);
   static_cast<tor::TorProfileServiceImpl*>(tor_profile_service)
     ->NotifyTorNewProxyURI("socks5://127.0.0.1:5566");
 

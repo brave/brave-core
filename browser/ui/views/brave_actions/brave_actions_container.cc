@@ -11,6 +11,7 @@
 
 #include "base/command_line.h"
 #include "base/one_shot_event.h"
+#include "brave/browser/brave_rewards/rewards_service_factory.h"
 #include "brave/browser/extensions/brave_component_loader.h"
 #include "brave/browser/ui/brave_actions/brave_action_view_controller.h"
 #include "brave/browser/ui/views/brave_actions/brave_action_view.h"
@@ -25,8 +26,8 @@
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/extensions/extensions_container.h"
 #include "chrome/browser/ui/layout_constants.h"
-#include "chrome/browser/ui/toolbar/toolbar_actions_bar_bubble_delegate.h"
 #include "chrome/browser/ui/toolbar/toolbar_action_view_controller.h"
+#include "chrome/browser/ui/toolbar/toolbar_actions_bar_bubble_delegate.h"
 #include "chrome/browser/ui/views/toolbar/toolbar_action_view.h"
 #include "components/prefs/pref_service.h"
 #include "extensions/browser/extension_action_manager.h"
@@ -56,7 +57,7 @@ class BraveActionsContainer::EmptyExtensionsContainer
 
   extensions::ExtensionContextMenuModel::ButtonVisibility GetActionVisibility(
       const ToolbarActionViewController* action) const override {
-    return extensions::ExtensionContextMenuModel::VISIBLE;
+    return extensions::ExtensionContextMenuModel::PINNED;
   }
 
   void UndoPopOut() override {}
@@ -113,6 +114,8 @@ BraveActionsContainer::BraveActionsContainer(Browser* browser, Profile* profile)
       extension_action_observer_(this),
       brave_action_observer_(this),
       empty_extensions_container_(new EmptyExtensionsContainer),
+      rewards_service_(
+          brave_rewards::RewardsServiceFactory::GetForProfile(profile)),
       weak_ptr_factory_(this) {
   // Handle when the extension system is ready
   extension_system_->ready().Post(
@@ -138,14 +141,14 @@ void BraveActionsContainer::Init() {
   RoundedSeparator* brave_button_separator_ = new RoundedSeparator();
   // TODO(petemill): theme color
   brave_button_separator_->SetColor(SkColorSetRGB(0xb2, 0xb5, 0xb7));
-  constexpr int kSeparatorRightMargin = 2;
+  constexpr int kSeparatorMargin = 3;
   constexpr int kSeparatorWidth = 1;
   brave_button_separator_->SetPreferredSize(gfx::Size(
-                                    kSeparatorWidth + kSeparatorRightMargin,
+                                    kSeparatorWidth + kSeparatorMargin*2,
                                     GetLayoutConstant(LOCATION_BAR_ICON_SIZE)));
-  // separator right margin
+  // separator left & right margin
   brave_button_separator_->SetBorder(
-      views::CreateEmptyBorder(0, 0, 0, kSeparatorRightMargin));
+      views::CreateEmptyBorder(0, kSeparatorMargin, 0, kSeparatorMargin));
   // Just in case the extensions load before this function does (not likely!)
   // make sure separator is at index 0
   AddChildViewAt(brave_button_separator_, 0);
@@ -154,11 +157,6 @@ void BraveActionsContainer::Init() {
   actions_[brave_rewards_extension_id].position_ = ACTION_ANY_POSITION;
 
   // React to Brave Rewards preferences changes.
-  brave_rewards_enabled_.Init(
-      brave_rewards::prefs::kEnabled,
-      browser_->profile()->GetPrefs(),
-      base::Bind(&BraveActionsContainer::OnBraveRewardsPreferencesChanged,
-                 base::Unretained(this)));
   hide_brave_rewards_button_.Init(
       brave_rewards::prefs::kHideButton,
       browser_->profile()->GetPrefs(),
@@ -184,9 +182,9 @@ bool BraveActionsContainer::ShouldAddBraveRewardsAction() const {
   if (command_line.HasSwitch(switches::kDisableBraveRewardsExtension)) {
     return false;
   }
+
   const PrefService* prefs = browser_->profile()->GetPrefs();
-  return prefs->GetBoolean(brave_rewards::prefs::kEnabled) ||
-         !prefs->GetBoolean(brave_rewards::prefs::kHideButton);
+  return !prefs->GetBoolean(brave_rewards::prefs::kHideButton);
 }
 
 void BraveActionsContainer::AddAction(const extensions::Extension* extension) {
@@ -377,6 +375,10 @@ void BraveActionsContainer::OnRewardsStubButtonClicked() {
     extensions::ComponentLoader* loader = service->component_loader();
           static_cast<extensions::BraveComponentLoader*>(loader)->
               AddRewardsExtension();
+
+    if (rewards_service_) {
+      rewards_service_->StartProcess(base::DoNothing());
+    }
   }
 }
 // end BraveRewardsActionStubView::Delegate members

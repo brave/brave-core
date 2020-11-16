@@ -4,24 +4,33 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 #include "base/stl_util.h"
-#include "brave/browser/tor/buildflags.h"
 #include "brave/common/pref_names.h"
-#include "brave/common/tor/pref_names.h"
+#include "brave/components/ipfs/buildflags/buildflags.h"
+#include "brave/components/ipfs/pref_names.h"
+#include "brave/components/tor/buildflags/buildflags.h"
+#include "brave/components/tor/pref_names.h"
 #include "chrome/browser/policy/configuration_policy_handler_list_factory.h"
 #include "components/policy/core/browser/configuration_policy_handler.h"
 #include "components/policy/policy_constants.h"
 
 namespace {
 
-// Wrap whole array definition in TOR to avoid unused varilable build error.
-// It can happen if platform doesn't support tor.
-#if BUILDFLAG(ENABLE_TOR)
+// Wrap whole array definition in build flags to avoid unused variable build
+// error. It can happen if the platform doesn't support any of these features.
+#if BUILDFLAG(ENABLE_TOR) || BUILDFLAG(IPFS_ENABLED)
 const policy::PolicyToPreferenceMapEntry kBraveSimplePolicyMap[] = {
+#if BUILDFLAG(ENABLE_TOR)
   { policy::key::kTorDisabled,
     tor::prefs::kTorDisabled,
     base::Value::Type::BOOLEAN },
-};
 #endif
+#if BUILDFLAG(IPFS_ENABLED)
+  { policy::key::kIPFSEnabled,
+    kIPFSEnabled,
+    base::Value::Type::BOOLEAN },
+#endif
+};
+#endif  // BUILDFLAG(ENABLE_TOR) || BUILDFLAG(IPFS_ENABLED)
 
 }  // namespace
 
@@ -38,7 +47,7 @@ std::unique_ptr<ConfigurationPolicyHandlerList> BuildHandlerList(
 
   // TODO(simonhong): Remove this guard when array size is not empty w/o tor.
   // base::size failed to instantiate with zero-size array.
-#if BUILDFLAG(ENABLE_TOR)
+#if BUILDFLAG(ENABLE_TOR) || BUILDFLAG(IPFS_ENABLED)
   for (size_t i = 0; i < base::size(kBraveSimplePolicyMap); ++i) {
     handlers->AddHandler(std::make_unique<SimplePolicyHandler>(
         kBraveSimplePolicyMap[i].policy_name,

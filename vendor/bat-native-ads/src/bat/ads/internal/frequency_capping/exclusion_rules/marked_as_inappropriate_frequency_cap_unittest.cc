@@ -17,6 +17,7 @@
 #include "bat/ads/internal/ads_client_mock.h"
 #include "bat/ads/internal/ads_impl.h"
 #include "bat/ads/internal/bundle/creative_ad_info.h"
+#include "bat/ads/internal/client/client.h"
 #include "bat/ads/internal/frequency_capping/frequency_capping_unittest_util.h"
 #include "bat/ads/internal/platform/platform_helper_mock.h"
 #include "bat/ads/internal/time_util.h"
@@ -100,10 +101,6 @@ class BatAdsMarkedAsInappropriateFrequencyCapTest : public ::testing::Test {
 
   // Objects declared here can be used by all tests in the test case
 
-  Client* get_client() {
-    return ads_->get_client();
-  }
-
   base::test::TaskEnvironment task_environment_;
 
   base::ScopedTempDir temp_dir_;
@@ -133,14 +130,12 @@ TEST_F(BatAdsMarkedAsInappropriateFrequencyCapTest,
     DoNotAllowAdIfMarkedAsInappropriate) {
   // Arrange
   ads_client_mock_->SetBooleanPref(
-      prefs::kShouldAllowAdConversionTracking, false);
+      prefs::kShouldAllowConversionTracking, false);
 
   CreativeAdInfo ad;
   ad.creative_set_id = kCreativeSetId;
 
-  get_client()->AppendCreativeSetIdToCreativeSetHistory(ad.creative_set_id);
-
-  get_client()->ToggleFlagAd(ad.creative_instance_id,
+  ads_->get_client()->ToggleFlagAd(ad.creative_instance_id,
       ad.creative_set_id, false);
 
   // Act

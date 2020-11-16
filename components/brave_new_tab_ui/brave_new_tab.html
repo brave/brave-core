@@ -18,8 +18,14 @@
 <script src="/brave_new_tab.bundle.js"></script>
 <style>
   #root { height: 100%; }
+  body {
+    --default-bg-color: white;
+    background-color: var(--default-bg-color)
+  }
   @media (prefers-color-scheme: dark) {
-    body { background-color: #333639; }
+    body {
+      --default-bg-color: #333639;
+    }
   }
 </style>
 </head>

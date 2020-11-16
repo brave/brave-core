@@ -6,21 +6,21 @@
 #ifndef BAT_ADS_INTERNAL_FREQUENCY_CAPPING_EXCLUSION_RULES_DISMISSED_CAP_FREQUENCY_CAP_H_  // NOLINT
 #define BAT_ADS_INTERNAL_FREQUENCY_CAPPING_EXCLUSION_RULES_DISMISSED_CAP_FREQUENCY_CAP_H_  // NOLINT
 
-#include <deque>
 #include <string>
 
-#include "bat/ads/ad_history.h"
-#include "bat/ads/internal/bundle/creative_ad_info.h"
+#include "bat/ads/internal/ad_events/ad_event_info.h"
 #include "bat/ads/internal/frequency_capping/exclusion_rules/exclusion_rule.h"
 
 namespace ads {
 
 class AdsImpl;
+struct CreativeAdInfo;
 
-class DismissedFrequencyCap : public ExclusionRule {
+class DismissedFrequencyCap : public ExclusionRule<CreativeAdInfo> {
  public:
   DismissedFrequencyCap(
-      const AdsImpl* const ads);
+      AdsImpl* ads,
+      const AdEventList& ad_events);
 
   ~DismissedFrequencyCap() override;
 
@@ -33,17 +33,18 @@ class DismissedFrequencyCap : public ExclusionRule {
   std::string get_last_message() const override;
 
  private:
-  const AdsImpl* const ads_;  // NOT OWNED
+  AdsImpl* ads_;  // NOT OWNED
+
+  AdEventList ad_events_;
 
   std::string last_message_;
 
   bool DoesRespectCap(
-      const std::deque<AdHistory>& history,
-      const CreativeAdInfo& ad);
+      const AdEventList& ad_events);
 
-  std::deque<AdHistory> FilterHistory(
-      const std::deque<AdHistory>& history,
-      const std::string& campaign_id);
+  AdEventList FilterAdEvents(
+      const AdEventList& ad_events,
+      const CreativeAdInfo& ad) const;
 };
 
 }  // namespace ads

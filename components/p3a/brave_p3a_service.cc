@@ -20,7 +20,7 @@
 #include "base/strings/string_number_conversions.h"
 #include "base/task/post_task.h"
 #include "base/trace_event/trace_event.h"
-#include "brave/browser/brave_stats_updater_util.h"
+#include "brave/components/brave_stats/browser/brave_stats_updater_util.h"
 #include "brave/browser/version_info.h"
 #include "brave/common/brave_channel_info.h"
 #include "brave/common/pref_names.h"
@@ -69,6 +69,10 @@ constexpr const char* kCollectedHistograms[] = {
     "Brave.Core.TorEverUsed",
     "Brave.Core.WindowCount.2",
     "Brave.Importer.ImporterSource",
+    "Brave.NTP.CustomizeUsageStatus",
+    "Brave.NTP.NewTabsCreated",
+    "Brave.NTP.SponsoredImagesEnabled",
+    "Brave.NTP.SponsoredNewTabsCreated",
     "Brave.Omnibox.SearchCount",
     "Brave.P3A.SentAnswersCount",
     "Brave.Rewards.AdsState.2",
@@ -77,15 +81,76 @@ constexpr const char* kCollectedHistograms[] = {
     "Brave.Rewards.WalletBalance.2",
     "Brave.Savings.BandwidthSavingsMB",
     "Brave.Search.DefaultEngine.2",
-    "Brave.SpeedReader.ToggleCount",
-    "Brave.SpeedReader.Enabled",
     "Brave.Shields.UsageStatus",
+    "Brave.SpeedReader.Enabled",
+    "Brave.SpeedReader.ToggleCount",
     "Brave.Sync.Status",
     "Brave.Uptime.BrowserOpenMinutes",
     "Brave.Welcome.InteractionStatus",
 
     // P2A
-    "Brave.P2A.ViewConfirmationCount",
+    // Ad Opportunities
+    "Brave.P2A.TotalAdOpportunities",
+    "Brave.P2A.AdOpportunitiesPerSegment.architecture",
+    "Brave.P2A.AdOpportunitiesPerSegment.artsentertainment",
+    "Brave.P2A.AdOpportunitiesPerSegment.automotive",
+    "Brave.P2A.AdOpportunitiesPerSegment.business",
+    "Brave.P2A.AdOpportunitiesPerSegment.careers",
+    "Brave.P2A.AdOpportunitiesPerSegment.cellphones",
+    "Brave.P2A.AdOpportunitiesPerSegment.crypto",
+    "Brave.P2A.AdOpportunitiesPerSegment.education",
+    "Brave.P2A.AdOpportunitiesPerSegment.familyparenting",
+    "Brave.P2A.AdOpportunitiesPerSegment.fashion",
+    "Brave.P2A.AdOpportunitiesPerSegment.folklore",
+    "Brave.P2A.AdOpportunitiesPerSegment.fooddrink",
+    "Brave.P2A.AdOpportunitiesPerSegment.gaming",
+    "Brave.P2A.AdOpportunitiesPerSegment.healthfitness",
+    "Brave.P2A.AdOpportunitiesPerSegment.history",
+    "Brave.P2A.AdOpportunitiesPerSegment.hobbiesinterests",
+    "Brave.P2A.AdOpportunitiesPerSegment.home",
+    "Brave.P2A.AdOpportunitiesPerSegment.law",
+    "Brave.P2A.AdOpportunitiesPerSegment.military",
+    "Brave.P2A.AdOpportunitiesPerSegment.other",
+    "Brave.P2A.AdOpportunitiesPerSegment.personalfinance",
+    "Brave.P2A.AdOpportunitiesPerSegment.pets",
+    "Brave.P2A.AdOpportunitiesPerSegment.realestate",
+    "Brave.P2A.AdOpportunitiesPerSegment.science",
+    "Brave.P2A.AdOpportunitiesPerSegment.sports",
+    "Brave.P2A.AdOpportunitiesPerSegment.technologycomputing",
+    "Brave.P2A.AdOpportunitiesPerSegment.travel",
+    "Brave.P2A.AdOpportunitiesPerSegment.weather",
+    "Brave.P2A.AdOpportunitiesPerSegment.untargeted",
+    // Ad Impressions
+    "Brave.P2A.TotalAdImpressions",
+    "Brave.P2A.AdImpressionsPerSegment.architecture",
+    "Brave.P2A.AdImpressionsPerSegment.artsentertainment",
+    "Brave.P2A.AdImpressionsPerSegment.automotive",
+    "Brave.P2A.AdImpressionsPerSegment.business",
+    "Brave.P2A.AdImpressionsPerSegment.careers",
+    "Brave.P2A.AdImpressionsPerSegment.cellphones",
+    "Brave.P2A.AdImpressionsPerSegment.crypto",
+    "Brave.P2A.AdImpressionsPerSegment.education",
+    "Brave.P2A.AdImpressionsPerSegment.familyparenting",
+    "Brave.P2A.AdImpressionsPerSegment.fashion",
+    "Brave.P2A.AdImpressionsPerSegment.folklore",
+    "Brave.P2A.AdImpressionsPerSegment.fooddrink",
+    "Brave.P2A.AdImpressionsPerSegment.gaming",
+    "Brave.P2A.AdImpressionsPerSegment.healthfitness",
+    "Brave.P2A.AdImpressionsPerSegment.history",
+    "Brave.P2A.AdImpressionsPerSegment.hobbiesinterests",
+    "Brave.P2A.AdImpressionsPerSegment.home",
+    "Brave.P2A.AdImpressionsPerSegment.law",
+    "Brave.P2A.AdImpressionsPerSegment.military",
+    "Brave.P2A.AdImpressionsPerSegment.other",
+    "Brave.P2A.AdImpressionsPerSegment.personalfinance",
+    "Brave.P2A.AdImpressionsPerSegment.pets",
+    "Brave.P2A.AdImpressionsPerSegment.realestate",
+    "Brave.P2A.AdImpressionsPerSegment.science",
+    "Brave.P2A.AdImpressionsPerSegment.sports",
+    "Brave.P2A.AdImpressionsPerSegment.technologycomputing",
+    "Brave.P2A.AdImpressionsPerSegment.travel",
+    "Brave.P2A.AdImpressionsPerSegment.weather",
+    "Brave.P2A.AdImpressionsPerSegment.untargeted"
 };
 
 bool IsSuspendedMetric(base::StringPiece metric_name,
@@ -139,8 +204,7 @@ void BraveP3AService::InitCallbacks() {
   for (const char* histogram_name : kCollectedHistograms) {
     base::StatisticsRecorder::SetCallback(
         histogram_name,
-        base::BindRepeating(&BraveP3AService::OnHistogramChanged, this,
-                            histogram_name));
+        base::BindRepeating(&BraveP3AService::OnHistogramChanged, this));
   }
 }
 
@@ -268,20 +332,20 @@ void BraveP3AService::MaybeOverrideSettingsFromCommandLine() {
 }
 
 void BraveP3AService::InitPyxisMeta() {
-  pyxis_meta_.platform = brave::GetPlatformIdentifier();
+  pyxis_meta_.platform = brave_stats::GetPlatformIdentifier();
   pyxis_meta_.channel = brave::GetChannelName();
   pyxis_meta_.version =
       version_info::GetBraveVersionWithoutChromiumMajorVersion();
 
   const std::string woi = local_state_->GetString(kWeekOfInstallation);
   if (!woi.empty()) {
-    pyxis_meta_.date_of_install = GetYMDAsDate(woi);
+    pyxis_meta_.date_of_install = brave_stats::GetYMDAsDate(woi);
   } else {
     pyxis_meta_.date_of_install = base::Time::Now();
   }
-  pyxis_meta_.woi = GetIsoWeekNumber(pyxis_meta_.date_of_install);
+  pyxis_meta_.woi = brave_stats::GetIsoWeekNumber(pyxis_meta_.date_of_install);
   pyxis_meta_.date_of_survey = base::Time::Now();
-  pyxis_meta_.wos = GetIsoWeekNumber(pyxis_meta_.date_of_survey);
+  pyxis_meta_.wos = brave_stats::GetIsoWeekNumber(pyxis_meta_.date_of_survey);
 
   pyxis_meta_.country_code =
       base::ToUpperASCII(base::CountryCodeForCurrentTimezone());
@@ -320,7 +384,8 @@ void BraveP3AService::StartScheduledUpload() {
   }
 }
 
-void BraveP3AService::OnHistogramChanged(base::StringPiece histogram_name,
+void BraveP3AService::OnHistogramChanged(const char* histogram_name,
+                                         uint64_t name_hash,
                                          base::HistogramBase::Sample sample) {
   std::unique_ptr<base::HistogramSamples> samples =
       base::StatisticsRecorder::FindHistogram(histogram_name)->SnapshotDelta();
@@ -368,7 +433,7 @@ void BraveP3AService::OnHistogramChanged(base::StringPiece histogram_name,
                                 histogram_name, sample, bucket));
 }
 
-void BraveP3AService::OnHistogramChangedOnUI(base::StringPiece histogram_name,
+void BraveP3AService::OnHistogramChangedOnUI(const char* histogram_name,
                                              base::HistogramBase::Sample sample,
                                              size_t bucket) {
   VLOG(2) << "BraveP3AService::OnHistogramChanged: histogram_name = "

@@ -292,10 +292,6 @@ void BatLedgerImpl::RecoverWallet(
       _1));
 }
 
-void BatLedgerImpl::SetRewardsMainEnabled(bool enabled) {
-  ledger_->SetRewardsMainEnabled(enabled);
-}
-
 void BatLedgerImpl::SetPublisherMinVisitTime(int duration_in_seconds) {
   ledger_->SetPublisherMinVisitTime(duration_in_seconds);
 }
@@ -340,10 +336,6 @@ void BatLedgerImpl::GetBalanceReport(
       month,
       year,
       std::bind(BatLedgerImpl::OnGetBalanceReport, holder, _1, _2));
-}
-
-void BatLedgerImpl::IsWalletCreated(IsWalletCreatedCallback callback) {
-  std::move(callback).Run(ledger_->IsWalletCreated());
 }
 
 void BatLedgerImpl::GetPublisherActivityFromUrl(
@@ -423,11 +415,6 @@ void BatLedgerImpl::RemoveRecurringTip(
 
 void BatLedgerImpl::GetCreationStamp(GetCreationStampCallback callback) {
   std::move(callback).Run(ledger_->GetCreationStamp());
-}
-
-void BatLedgerImpl::GetRewardsMainEnabled(
-    GetRewardsMainEnabledCallback callback) {
-  std::move(callback).Run(ledger_->GetRewardsMainEnabled());
 }
 
 void BatLedgerImpl::OnHasSufficientBalanceToReconcile(
@@ -1118,7 +1105,6 @@ void BatLedgerImpl::Shutdown(ShutdownCallback callback) {
           _1));
 }
 
-
 // static
 void BatLedgerImpl::OnGetEventLogs(
     CallbackHolder<GetEventLogsCallback>* holder,
@@ -1139,6 +1125,32 @@ void BatLedgerImpl::GetEventLogs(GetEventLogsCallback callback) {
       std::bind(BatLedgerImpl::OnGetEventLogs,
           holder,
           _1));
+}
+
+// static
+void BatLedgerImpl::OnGetBraveWallet(
+    CallbackHolder<GetBraveWalletCallback>* holder,
+    ledger::type::BraveWalletPtr wallet) {
+  DCHECK(holder);
+  if (holder->is_valid()) {
+    std::move(holder->get()).Run(std::move(wallet));
+  }
+
+  delete holder;
+}
+
+void BatLedgerImpl::GetBraveWallet(GetBraveWalletCallback callback) {
+  auto* holder = new CallbackHolder<GetBraveWalletCallback>(
+      AsWeakPtr(), std::move(callback));
+
+  ledger_->GetBraveWallet(
+      std::bind(BatLedgerImpl::OnGetBraveWallet,
+          holder,
+          _1));
+}
+
+void BatLedgerImpl::GetWalletPassphrase(GetWalletPassphraseCallback callback) {
+  std::move(callback).Run(ledger_->GetWalletPassphrase());
 }
 
 }  // namespace bat_ledger

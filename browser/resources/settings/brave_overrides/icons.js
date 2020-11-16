@@ -21,3 +21,6 @@ OverrideIronIcons('cr', 'brave_settings', {
   ['file-download']: 'download',
   print: 'printing'
 })
+OverrideIronIcons('settings20', 'brave_settings20', {
+  incognito: 'private-mode'
+})

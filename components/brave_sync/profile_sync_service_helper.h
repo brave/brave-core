@@ -6,6 +6,8 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_SYNC_PROFILE_SYNC_SERVICE_HELPER_H_
 #define BRAVE_COMPONENTS_BRAVE_SYNC_PROFILE_SYNC_SERVICE_HELPER_H_
 
+#include <string>
+
 #include "base/callback.h"
 
 namespace syncer {
@@ -20,6 +22,10 @@ namespace brave_sync {
 void ResetSync(syncer::BraveProfileSyncService* sync_service,
                syncer::DeviceInfoSyncService* device_info_service,
                base::OnceClosure on_reset_done);
+
+void DeleteDevice(syncer::BraveProfileSyncService* sync_service,
+                  syncer::DeviceInfoSyncService* device_info_service,
+                  const std::string& device_guid);
 
 }  // namespace brave_sync
 

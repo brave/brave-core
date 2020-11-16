@@ -26,7 +26,7 @@ class TorLauncherImpl : public tor::mojom::TorLauncher {
 
   // tor::mojom::TorLauncher
   void Shutdown() override;
-  void Launch(const TorConfig& config,
+  void Launch(mojom::TorConfigPtr config,
               LaunchCallback callback) override;
   void SetCrashHandler(SetCrashHandlerCallback callback) override;
  private:

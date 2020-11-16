@@ -2,20 +2,17 @@
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // you can obtain one at http://mozilla.org/MPL/2.0/.
-
 import * as React from 'react'
 import styled, { css } from 'brave-ui/theme'
 import palette from 'brave-ui/theme/colors'
 import confettiImageUrl from './confetti.png'
+import Button, { Props as ButtonProps } from 'brave-ui/components/buttonsIndicators/button'
+import TOSAndPP, { Props as TOSProps } from '../../../../brave_rewards/resources/ui/components/TOSAndPP'
 
 interface StyleProps {
   isLast?: boolean
   isActionPrompt?: boolean
   isInTab?: boolean
-}
-
-interface WidgetProps {
-  isEnabled: boolean
 }
 
 const Base = styled('div')`
@@ -25,13 +22,13 @@ const Base = styled('div')`
   width: 284px;
 `
 
-export const WidgetWrapper = styled(Base)<WidgetProps>`
+export const WidgetWrapper = styled(Base)`
   position: relative;
   /* Show a 1x1 grid with all items overlapping.
       This makes sure that our layered notifications increase the height of the
       whole widget. Absolute positioning would not accomplish that. */
   display: grid;
-  background: ${p => p.isEnabled ? palette.neutral900 : 'linear-gradient(140deg, #392DD1 0%, #8E2995 100%)'};
+  background: ${palette.neutral900};
   border-radius: 6px;
 `
 
@@ -62,13 +59,6 @@ export const RewardsTitle = styled<StyleProps, 'div'>('div')`
   font-family: Poppins, sans-serif;
 `
 
-export const ServiceText = styled<{}, 'span'>('span')`
-  color: #fff;
-  font-size: 12px;
-  letter-spacing: 0;
-  line-height: 1.5;
-`
-
 export const ServiceLink = styled<{}, 'a'>('a')`
   color: ${p => p.theme.color.brandBrave};
   font-weight: 600;
@@ -80,30 +70,12 @@ export const LearnMoreText = styled<{}, 'div'>('div')`
   margin-top: 34px;
 `
 
-export const PreOptInInfo = styled<{}, 'div'>('div')`
-  margin-top: 14px;
-`
-
 export const Title = styled<{ isGrant?: boolean}, 'span'>('span')`
   font-size: ${p => p.isGrant ? 16 : 14}px;
   display: block;
   font-family: ${p => p.theme.fontFamily.heading};
   line-height: 1.5;
   font-weight: 500;
-`
-
-export const LearnMoreTextButton = styled('a')`
-  display: block;
-  margin-top: 16px;
-  font-size: 14px;
-  line-height: 1.5;
-  font-weight: 600;
-  font-family: ${p => p.theme.fontFamily.body};
-  color: white;
-  text-decoration: none;
-  :hover {
-    text-decoration: underline;
-  }
 `
 
 export const SubTitle = styled<{}, 'span'>('span')`
@@ -121,11 +93,6 @@ export const SubTitleLink = styled<{}, 'a'>('a')`
   &:hover {
     text-decoration: underline;
   }
-`
-
-export const PreOptInAction = styled<{}, 'div'>('div')`
-  margin-top: 30px;
-  text-align: center;
 `
 
 export const TurnOnButton = styled<{}, 'button'>('button')`
@@ -186,8 +153,9 @@ const CoinsButton: React.FunctionComponent<CoinsButtonProps> = ({ onClick, class
   )
 }
 
-export const TurnOnAdsButton = styled(CoinsButton)`
-  margin-bottom: 8px;
+export const TurnOnAdsButton = styled(Button as React.ComponentType<ButtonProps>)`
+  margin: 15px 0;
+  display: inline-block;
 `
 
 export const NotificationButton = styled(CoinsButton)`
@@ -260,7 +228,7 @@ export const NotificationAction = styled<{}, 'a'>('a')`
   display: block;
   cursor: pointer;
   font-size: 14px;
-  color: ${p => palette.blurple300};
+  color: ${palette.blurple300};
   font-weight: 700;
   text-decoration: none;
   &:hover {
@@ -282,4 +250,22 @@ export const UnsupportedMessage = styled<{}, 'div'>('div')`
   font-size: 14px;
   max-width: 235px;
   margin-top: 8px;
+`
+
+export const TurnOnText = styled<{}, 'div'>('div')`
+  font-size: 14px;
+  color: ${palette.grey300};
+  margin-top: 8px;
+`
+
+export const StyledTOS = styled(TOSAndPP as React.ComponentType<TOSProps>)`
+  font-size: 12px;
+
+  a {
+    color: ${p => p.theme.color.brandBrave};
+  }
+`
+
+export const StyleCenter = styled<{}, 'div'>('div')`
+  text-align: center;
 `

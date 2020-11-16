@@ -12,7 +12,6 @@
 #include "brave/browser/extensions/brave_base_local_data_files_browsertest.h"
 #include "brave/common/brave_paths.h"
 #include "brave/common/pref_names.h"
-#include "brave/components/brave_component_updater/browser/local_data_files_service.h"
 #include "chrome/browser/content_settings/host_content_settings_map_factory.h"
 #include "chrome/browser/extensions/extension_browsertest.h"
 #include "chrome/browser/media/media_browsertest.h"
@@ -23,7 +22,6 @@
 #include "components/content_settings/core/browser/host_content_settings_map.h"
 #include "components/content_settings/core/common/content_settings.h"
 #include "components/content_settings/core/common/content_settings_types.h"
-#include "components/permissions/permission_request.h"
 #include "components/permissions/test/mock_permission_prompt_factory.h"
 #include "components/prefs/pref_service.h"
 #include "content/public/browser/render_frame_host.h"
@@ -59,22 +57,14 @@ class AutoplayPermissionContextBrowserTest : public InProcessBrowserTest {
 
     ASSERT_TRUE(embedded_test_server()->Start());
 
-    autoplay_method_url_ =
-        embedded_test_server()->GetURL("a.com", "/autoplay_by_method.html");
-    autoplay_attr_url_ =
-        embedded_test_server()->GetURL("a.com", "/autoplay_by_attr.html");
-    autoplay_method_muted_url_ = embedded_test_server()->GetURL(
-        "a.com", "/autoplay_by_method_muted.html");
-    autoplay_attr_muted_url_ =
-        embedded_test_server()->GetURL("a.com", "/autoplay_by_attr_muted.html");
     file_autoplay_method_url_ = GURL("file://" + test_data_dir.AsUTF8Unsafe() +
                                      "/autoplay_by_method.html");
     file_autoplay_attr_url_ = GURL("file://" + test_data_dir.AsUTF8Unsafe() +
                                    "/autoplay_by_attr.html");
 
-    GURL pattern_url = embedded_test_server()->GetURL("a.com", "/index.html");
+    index_url_ = embedded_test_server()->GetURL("a.com", "/index.html");
     top_level_page_pattern_ =
-        ContentSettingsPattern::FromString(pattern_url.spec());
+        ContentSettingsPattern::FromString(index_url_.spec());
   }
 
   void TearDown() override {
@@ -82,10 +72,7 @@ class AutoplayPermissionContextBrowserTest : public InProcessBrowserTest {
     content_client_.reset();
   }
 
-  const GURL& autoplay_method_url() { return autoplay_method_url_; }
-  const GURL& autoplay_attr_url() { return autoplay_attr_url_; }
-  const GURL& autoplay_method_muted_url() { return autoplay_method_muted_url_; }
-  const GURL& autoplay_attr_muted_url() { return autoplay_attr_muted_url_; }
+  const GURL& index_url() { return index_url_; }
   const GURL& file_autoplay_method_url() { return file_autoplay_method_url_; }
   const GURL& file_autoplay_attr_url() { return file_autoplay_attr_url_; }
 
@@ -124,20 +111,49 @@ class AutoplayPermissionContextBrowserTest : public InProcessBrowserTest {
     return WaitForLoadStop(contents());
   }
 
-  void WaitForPlaying(const GURL& url) {
+  void GotoAutoplayByAttr(bool muted) {
+    bool clicked;
+    if (muted)
+    ASSERT_TRUE(ExecuteScriptAndExtractBool(
+        contents(),
+        "window.domAutomationController.send(clickAutoplayByAttrMuted())",
+        &clicked));
+    else
+    ASSERT_TRUE(ExecuteScriptAndExtractBool(
+        contents(),
+        "window.domAutomationController.send(clickAutoplayByAttr())",
+        &clicked));
+    ASSERT_TRUE(WaitForLoadStop(contents()));
+    WaitForCanPlay();
+    ASSERT_TRUE(clicked);
+  }
+
+  void GotoAutoplayByMethod(bool muted) {
+    bool clicked;
+    if (muted)
+    ASSERT_TRUE(ExecuteScriptAndExtractBool(
+        contents(),
+        "window.domAutomationController.send(clickAutoplayByMethodMuted())",
+        &clicked));
+    else
+    ASSERT_TRUE(ExecuteScriptAndExtractBool(
+        contents(),
+        "window.domAutomationController.send(clickAutoplayByMethod())",
+        &clicked));
+    ASSERT_TRUE(WaitForLoadStop(contents()));
+    WaitForCanPlay();
+    ASSERT_TRUE(clicked);
+  }
+
+  void WaitForCanPlay() {
     std::string msg_from_renderer;
     ASSERT_TRUE(ExecuteScriptAndExtractString(
-        contents(), "notifyWhenPlaying();", &msg_from_renderer))
-        << url.spec();
-    ASSERT_EQ("PLAYING", msg_from_renderer)
-        << url.spec() + " says: " + msg_from_renderer;
+        contents(), "notifyWhenCanPlay();", &msg_from_renderer));
+    ASSERT_EQ("CANPLAY", msg_from_renderer);
   }
 
  private:
-  GURL autoplay_method_url_;
-  GURL autoplay_attr_url_;
-  GURL autoplay_method_muted_url_;
-  GURL autoplay_attr_muted_url_;
+  GURL index_url_;
   GURL file_autoplay_method_url_;
   GURL file_autoplay_attr_url_;
   ContentSettingsPattern top_level_page_pattern_;
@@ -153,7 +169,8 @@ IN_PROC_BROWSER_TEST_F(AutoplayPermissionContextBrowserTest, AskAutoplay) {
   permissions::PermissionRequestManager* manager =
       permissions::PermissionRequestManager::FromWebContents(contents());
 
-  NavigateToURLUntilLoadStop(autoplay_method_url());
+  NavigateToURLUntilLoadStop(index_url());
+  GotoAutoplayByMethod(false);
   // should prompt
   EXPECT_TRUE(manager->IsRequestInProgress());
   EXPECT_TRUE(
@@ -170,7 +187,8 @@ IN_PROC_BROWSER_TEST_F(AutoplayPermissionContextBrowserTest,
   permissions::PermissionRequestManager* manager =
       permissions::PermissionRequestManager::FromWebContents(contents());
 
-  NavigateToURLUntilLoadStop(autoplay_method_muted_url());
+  NavigateToURLUntilLoadStop(index_url());
+  GotoAutoplayByMethod(true);
   // should prompt
   EXPECT_TRUE(manager->IsRequestInProgress());
   EXPECT_TRUE(
@@ -188,7 +206,8 @@ IN_PROC_BROWSER_TEST_F(AutoplayPermissionContextBrowserTest, AllowAutoplay) {
 
   EXPECT_EQ(0, popup_prompt_factory->TotalRequestCount());
 
-  NavigateToURLUntilLoadStop(autoplay_method_url());
+  NavigateToURLUntilLoadStop(index_url());
+  GotoAutoplayByMethod(false);
   // should not prompt
   EXPECT_FALSE(popup_prompt_factory->is_visible());
   EXPECT_FALSE(popup_prompt_factory->RequestTypeSeen(
@@ -196,13 +215,12 @@ IN_PROC_BROWSER_TEST_F(AutoplayPermissionContextBrowserTest, AllowAutoplay) {
   EXPECT_EQ(0, popup_prompt_factory->TotalRequestCount());
   EXPECT_TRUE(
       ExecuteScriptAndExtractString(contents(), kVideoPlayingDetect, &result));
-  // should fail to play because a user gesture is required and we're not
-  // simulating one when calling the play() method
-  EXPECT_NE(result, kVideoPlaying);
+  EXPECT_EQ(result, kVideoPlaying);
 
   result.clear();
 
-  NavigateToURLUntilLoadStop(autoplay_attr_url());
+  NavigateToURLUntilLoadStop(index_url());
+  GotoAutoplayByAttr(false);
   // should not prompt
   EXPECT_FALSE(popup_prompt_factory->is_visible());
   EXPECT_FALSE(popup_prompt_factory->RequestTypeSeen(
@@ -210,9 +228,7 @@ IN_PROC_BROWSER_TEST_F(AutoplayPermissionContextBrowserTest, AllowAutoplay) {
   EXPECT_EQ(0, popup_prompt_factory->TotalRequestCount());
   EXPECT_TRUE(
       ExecuteScriptAndExtractString(contents(), kVideoPlayingDetect, &result));
-  // should fail to play because a user gesture is required, so autoplay
-  // attribute will be ignored
-  EXPECT_NE(result, kVideoPlaying);
+  EXPECT_EQ(result, kVideoPlaying);
 }
 
 // If content setting = BLOCK, ignore play() method call and do not show
@@ -228,7 +244,8 @@ IN_PROC_BROWSER_TEST_F(AutoplayPermissionContextBrowserTest,
 
   EXPECT_EQ(0, popup_prompt_factory->TotalRequestCount());
 
-  NavigateToURLUntilLoadStop(autoplay_method_url());
+  NavigateToURLUntilLoadStop(index_url());
+  GotoAutoplayByMethod(false);
   // should not prompt
   EXPECT_FALSE(popup_prompt_factory->is_visible());
   EXPECT_FALSE(popup_prompt_factory->RequestTypeSeen(
@@ -251,7 +268,8 @@ IN_PROC_BROWSER_TEST_F(AutoplayPermissionContextBrowserTest,
   auto popup_prompt_factory =
       std::make_unique<permissions::MockPermissionPromptFactory>(manager);
 
-  NavigateToURLUntilLoadStop(autoplay_attr_url());
+  ASSERT_TRUE(NavigateToURLUntilLoadStop(index_url()));
+  GotoAutoplayByAttr(false);
   // should not prompt
   EXPECT_FALSE(popup_prompt_factory->is_visible());
   EXPECT_FALSE(popup_prompt_factory->RequestTypeSeen(
@@ -276,7 +294,8 @@ IN_PROC_BROWSER_TEST_F(AutoplayPermissionContextBrowserTest,
 
   EXPECT_EQ(0, popup_prompt_factory->TotalRequestCount());
 
-  NavigateToURLUntilLoadStop(autoplay_method_url());
+  NavigateToURLUntilLoadStop(index_url());
+  GotoAutoplayByMethod(true);
   // should not prompt
   EXPECT_FALSE(popup_prompt_factory->is_visible());
   EXPECT_FALSE(popup_prompt_factory->RequestTypeSeen(
@@ -301,7 +320,8 @@ IN_PROC_BROWSER_TEST_F(AutoplayPermissionContextBrowserTest,
 
   EXPECT_EQ(0, popup_prompt_factory->TotalRequestCount());
 
-  NavigateToURLUntilLoadStop(autoplay_attr_url());
+  ASSERT_TRUE(NavigateToURLUntilLoadStop(index_url()));
+  GotoAutoplayByAttr(false);
   // should not prompt
   EXPECT_FALSE(popup_prompt_factory->is_visible());
   EXPECT_FALSE(popup_prompt_factory->RequestTypeSeen(
@@ -338,13 +358,13 @@ IN_PROC_BROWSER_TEST_F(AutoplayNoUserGestureRequiredBrowserTest,
 
   EXPECT_EQ(0, popup_prompt_factory->TotalRequestCount());
 
-  NavigateToURLUntilLoadStop(autoplay_method_url());
+  ASSERT_TRUE(NavigateToURLUntilLoadStop(index_url()));
+  GotoAutoplayByMethod(false);
   // should not prompt
   EXPECT_FALSE(popup_prompt_factory->is_visible());
   EXPECT_FALSE(popup_prompt_factory->RequestTypeSeen(
       permissions::PermissionRequestType::PERMISSION_AUTOPLAY));
   EXPECT_EQ(0, popup_prompt_factory->TotalRequestCount());
-  WaitForPlaying(autoplay_method_url());
   EXPECT_TRUE(
       ExecuteScriptAndExtractString(contents(), kVideoPlayingDetect, &result));
   // should play
@@ -352,13 +372,13 @@ IN_PROC_BROWSER_TEST_F(AutoplayNoUserGestureRequiredBrowserTest,
 
   result.clear();
 
-  NavigateToURLUntilLoadStop(autoplay_attr_url());
+  ASSERT_TRUE(NavigateToURLUntilLoadStop(index_url()));
+  GotoAutoplayByAttr(false);
   // should not prompt
   EXPECT_FALSE(popup_prompt_factory->is_visible());
   EXPECT_FALSE(popup_prompt_factory->RequestTypeSeen(
       permissions::PermissionRequestType::PERMISSION_AUTOPLAY));
   EXPECT_EQ(0, popup_prompt_factory->TotalRequestCount());
-  WaitForPlaying(autoplay_attr_url());
   EXPECT_TRUE(
       ExecuteScriptAndExtractString(contents(), kVideoPlayingDetect, &result));
   // should play
@@ -376,6 +396,7 @@ IN_PROC_BROWSER_TEST_F(AutoplayNoUserGestureRequiredBrowserTest, FileAutoplay) {
   EXPECT_EQ(0, popup_prompt_factory->TotalRequestCount());
 
   NavigateToURLUntilLoadStop(file_autoplay_method_url());
+  WaitForCanPlay();
   // should not prompt
   EXPECT_FALSE(popup_prompt_factory->is_visible());
   EXPECT_FALSE(popup_prompt_factory->RequestTypeSeen(
@@ -389,6 +410,7 @@ IN_PROC_BROWSER_TEST_F(AutoplayNoUserGestureRequiredBrowserTest, FileAutoplay) {
   result.clear();
 
   NavigateToURLUntilLoadStop(file_autoplay_attr_url());
+  WaitForCanPlay();
   // should not prompt
   EXPECT_FALSE(popup_prompt_factory->is_visible());
   EXPECT_FALSE(popup_prompt_factory->RequestTypeSeen(

@@ -191,10 +191,16 @@
         Ask when a site wants to install Widevine on your computer.
       </message>
       <message name="IDS_SETTINGS_ENABLE_TOR_TITLE" desc="Text fragment for enabling tor component">
-        Private Window with Tor
+        Private window with Tor
       </message>
       <message name="IDS_SETTINGS_ENABLE_TOR_DESC" desc="Text fragment for enabling tor component">
         Tor hides your IP address from the sites you visit.
+      </message>
+      <message name="IDS_SETTINGS_AUTO_ONION_LOCATION_TITLE" desc="Text fragment for onion site component">
+        Automatically redirect .onion sites
+      </message>
+      <message name="IDS_SETTINGS_AUTO_ONION_LOCATION_DESC" desc="Text fragment for onion site component">
+        Brave will open onion service of the website in Tor window when available
       </message>
       <if expr="is_linux">
         <message name="IDS_WIDEVINE_PERMISSION_REQUEST_TEXT_FRAGMENT_INSTALL" desc="Text fragment for Widevine permission request. 'Widevine' is the name of a plugin and should not be translated.">
@@ -246,11 +252,11 @@ By installing this extension, you are agreeing to the Google Widevine Terms of U
       <message name="IDS_SETTINGS_HIDE_BRAVE_REWARDS_BUTTON_LABEL" desc="The label for settings switch controlling the visibility of Brave Rewards button">
         Hide Brave Rewards button
       </message>
-      <message name="IDS_SETTINGS_HIDE_BRAVE_REWARDS_BUTTON_DESC" desc="The description for settings switch controlling the visibility of Brave Rewards button">
-        Hides the Brave Rewards button in the location bar when Brave Rewards is not enabled
-      </message>
       <message name="IDS_SETTINGS_ALWAYS_SHOW_BOOKMARK_BAR_ON_NTP" desc="The label for settings switch controlling the visibility of bookmarks bar on NTP">
-        Always show bookmarks on New Tab page
+        Always show bookmarks on new tab page
+      </message>
+      <message name="IDS_SETTINGS_BRAVE_MRU_CYCLING_LABEL" desc="The label to activate MRU cycling with Ctrl-tab">
+        Cycle through the most recently used tabs with Ctrl-Tab
       </message>
       <message name="IDS_SETTINGS_APPEARANCE_SETTINGS_SHOW_AUTOCOMPLETE_IN_ADDRESS_BAR" desc="The label for settings switch controlling the showing of autocomplete in address bar">
         Show autocomplete in address bar
@@ -276,35 +282,23 @@ By installing this extension, you are agreeing to the Google Widevine Terms of U
       <message name="IDS_SETTINGS_NEW_TAB" desc="The text label for the New Tab settings page">
        New Tab Page
       </message>
-      <message name="IDS_SETTINGS_NEW_TAB_CUSTOMIZE_BRAVE_DASHBOARD" desc="The description label for Dashboard Customization">
-        Customize your Brave Dashboard
-      </message>
-      <message name="IDS_SETTINGS_NEW_TAB_BACKGROUND_IMAGES" desc="The label for Background images show/hide feature toggle">
-        Background images
-      </message>
-      <message name="IDS_SETTINGS_NEW_TAB_SPONSORED_IMAGES" desc="The label for Sponsored images show/hide feature toggle">
-        Sponsored images
-      </message>
-      <message name="IDS_SETTINGS_NEW_TAB_STATS" desc="The label for Stats show/hide feature toggle">
-        Brave Stats
-      </message>
       <message name="IDS_SETTINGS_NEW_TAB_BRAVE_REWARDS" desc="The label for Brave Rewards show/hide feature toggle">
         Brave Rewards
       </message>
-      <message name="IDS_SETTINGS_NEW_TAB_TOGETHER" desc="The label for Brave Together show/hide feature toggle">
-        Brave Together
+      <message name="IDS_SETTINGS_NEW_TAB_NEW_TAB_PAGE_SHOWS" desc="The label for New Tab Page shows customization">
+        New tab page shows
       </message>
-      <message name="IDS_SETTINGS_NEW_TAB_BINANCE" desc="The label for Binance show/hide feature toggle">
-        Binance
+      <message name="IDS_SETTINGS_NEW_TAB_NEW_TAB_PAGE_SHOWS_DASHBOARD" desc="The label for dashboard option">
+        Dashboard
       </message>
-      <message name="IDS_SETTINGS_NEW_TAB_GEMINI" desc="The label for Gemini show/hide feature toggle">
-        Gemini
+      <message name="IDS_SETTINGS_NEW_TAB_NEW_TAB_PAGE_SHOWS_HOMEPAGE" desc="The label for homepage option">
+        Homepage
       </message>
-      <message name="IDS_SETTINGS_NEW_TAB_TOP_SITES" desc="The label for Top Sites show/hide feature toggle">
-        Top Sites
+      <message name="IDS_SETTINGS_NEW_TAB_NEW_TAB_PAGE_SHOWS_BLANKPAGE" desc="The label for blank page option">
+        Blank page
       </message>
-      <message name="IDS_SETTINGS_NEW_TAB_CLOCK" desc="The label for Clock show/hide feature toggle">
-        Clock
+      <message name="IDS_SETTINGS_NEW_TAB_NEW_TAB_CUSTOMIZE_WIDGETS" desc="The label for widget customization">
+        Customize the background image and widgets that appear on the new tab page
       </message>
       <!-- Tor -->
       <message name="IDS_NEW_TOR_IDENTITY" desc="The text label of a menu item for requesting new Tor identity">
@@ -321,6 +315,12 @@ By installing this extension, you are agreeing to the Google Widevine Terms of U
       </message>
       <message name="IDS_PROFILES_OPEN_TOR_PROFILE_BUTTON" desc="Button in the avatar menu bubble view to open a Tor window.">
         Open Tor Window
+      </message>
+      <message name="IDS_LOCATION_BAR_OPEN_IN_TOR" desc="Button in location bar to open onion available site in tor window.">
+        Open in Tor
+      </message>
+      <message name="IDS_LOCATION_BAR_ONION_AVAILABLE" desc="Button in location bar to indicate onion available site to open a new tab in tor window.">
+        Onion Available
       </message>
       <if expr="use_titlecase">
         <message name="IDS_NEW_OFFTHERECORD_WINDOW_TOR" desc="Title case: The text label of a menu item to open a new off-the-record window with Tor.">
@@ -346,9 +346,6 @@ By installing this extension, you are agreeing to the Google Widevine Terms of U
       </if>
       <message name="IDS_PROFILES_TOR_PROFILE_NAME" desc="Name of the Tor profile.">
         Tor
-      </message>
-      <message name="IDS_UTILITY_PROCESS_TOR_LAUNCHER_NAME" desc="The utility process which launch Tor">
-        Tor Launcher
       </message>
       <message name="IDS_SERVICE_BAT_ADS" desc="The bat ads utility process">
         Bat Ads Service
@@ -406,7 +403,7 @@ By installing this extension, you are agreeing to the Google Widevine Terms of U
         Block scripts
       </message>
       <message name="IDS_SETTINGS_BRAVE_SHIELDS_LOOK_AND_FEEL_TITLE" desc="The title the settings section with interface options such as showing the resources blocked badge">
-        Look &amp; Feel
+        Look &amp; feel
       </message>
       <message name="IDS_SETTINGS_BRAVE_SHIELDS_SHOW_STATS_BLOCKED_BADGE_LABEL" desc="Default Brave show stats blocked badge control setting label">
         Show the number of blocked items on the Shields icon
@@ -452,7 +449,7 @@ By installing this extension, you are agreeing to the Google Widevine Terms of U
       </message>
       <!-- WebRTC Policy Setting -->
       <message name="IDS_SETTINGS_WEBRTC_POLICY_LABEL" desc="WebRTC policy setting label">
-        WebRTC IP Handling Policy
+        WebRTC IP handling policy
       </message>
       <message name="IDS_SETTINGS_WEBRTC_POLICY_SUB_LABEL" desc="WebRTC policy setting sub-label">
         Learn more
@@ -471,7 +468,7 @@ By installing this extension, you are agreeing to the Google Widevine Terms of U
       </message>
       <!-- Push Messaging -->
       <message name="IDS_SETTINGS_PUSH_MESSAGING" desc="Select value">
-        Use Google Services for Push Messaging
+        Use Google services for push messaging
       </message>
       <!-- Brave Sync Settings -->
       <message name="IDS_SETTINGS_BRAVE_SYNC_TITLE" desc="The title for Brave Sync in settings">
@@ -512,6 +509,9 @@ By installing this extension, you are agreeing to the Google Widevine Terms of U
       </message>
       <message name="IDS_SETTINGS_BRAVE_SYNC_DEVICE_LIST_LAST_ACTIVE_COLUMN" desc="Brave Sync device list table column title for last active date">
         Last Active
+      </message>
+      <message name="IDS_SETTINGS_BRAVE_SYNC_DEVICE_LIST_REMOVE_COLUMN" desc="Brave Sync device list table column title for remove other device buttons">
+        Remove
       </message>
       <message name="IDS_BRAVE_SYNC_SETUP_TITLE" desc="The Brave Sync title.">
         Sync Setup
@@ -568,7 +568,10 @@ By installing this extension, you are agreeing to the Google Widevine Terms of U
         “I have a Sync Code”.
       </message>
       <message name="IDS_BRAVE_SYNC_VIEW_CODE_DESCRIPTION_PARTIAL_3" desc="The Sync instructions for the `view sync code` modal partial phrase (3)">
-        Enter the sync chain code words shown below. Treat this code like a password. If someone gets ahold of it, they can read and modify your synced data.
+        Enter the sync chain code words shown below.
+      </message>
+      <message name="IDS_BRAVE_SYNC_CODE_WARNING" desc="The warning for the user to keep their sync code private and secure.">
+        Treat this code like a password. If someone gets ahold of it, they can read and modify your synced data.
       </message>
       <message name="IDS_BRAVE_SYNC_VIEW_CODE_QR_CODE_BUTTON" desc="The Sync description suggesting where to go with the current sync code">
         View QR Code
@@ -597,6 +600,9 @@ By installing this extension, you are agreeing to the Google Widevine Terms of U
       <message name="IDS_BRAVE_SYNC_RESET_CONFIRMATION" desc="Confirmation message prompt to make sure the user is ok with leaving sync">
         If you reset Sync, you will have to re-enter a sync code from another device in order to sync with it. Are you sure you want to proceed?
       </message>
+      <message name="IDS_BRAVE_SYNC_DELETE_DEVICE_CONFIRMATION" desc="Confirmation message prompt to make sure the user is ok to delete other device from the chain">
+        Are you sure you want to delete selected device from sync chain?
+      </message>
       <!-- Sync Infobar -->
       <message name="IDS_BRAVE_SYNC_V2_MIGRATE_INFOBAR_MESSAGE" desc="Message text shown to users who used a previous version of Brave Sync and need to perform setup again for the new version.">
         Brave Sync has been upgraded and requires setup
@@ -604,9 +610,9 @@ By installing this extension, you are agreeing to the Google Widevine Terms of U
       <message name="IDS_BRAVE_SYNC_V2_MIGRATE_INFOBAR_COMMAND" desc="Command text shown to users who used a previous version of Brave Sync and need to perform setup again for the new version.">
         Begin Setup
       </message>
-      <!-- Help Tips Page -->
-      <message name="IDS_SETTINGS_HELP_TIPS" desc="Title for an item in the 'Help Tips' section of Brave Settings">
-        Help Tips
+      <!-- Help tips Page -->
+      <message name="IDS_SETTINGS_HELP_TIPS" desc="Title for an item in the 'Help tips' section of Brave Settings">
+        Help tips
       </message>
       <message name="IDS_SETTINGS_HELP_TIPS_SHOW_BRAVE_WAYBACK_MACHINE_PROMPT" desc="The label describing the 'wayback machine' toggle option">
         Show Wayback Machine prompt on 404 pages
@@ -681,6 +687,12 @@ By installing this extension, you are agreeing to the Google Widevine Terms of U
       </message>
       <message name="IDS_IPFS_RESOLVE_OPTION_DISABLED" desc="Select control value for which IPFS resolve method to use">
         Disabled
+      </message>
+      <message name="IDS_SETTINGS_IPFS_AUTO_FALLBACK_TO_GATEWAY_LABEL" desc="The text label for IPFS public gateway fallback switch">
+        IPFS public gateway fallback
+      </message>
+      <message name="IDS_SETTINGS_IPFS_AUTO_FALLBACK_TO_GATEWAY_DESC" desc="The description for the switch of automatically fallback to IPFS public gateway">
+        Automatically fallback to IPFS public gateway when the local node cannot be accessed.
       </message>
      <message name="IDS_SETTINGS_HANGOUTS_ENABLED_DESC" desc="The description for Hangouts switch in settings">
         Uses Hangouts component to enable screen sharing and other features in the browser.
@@ -900,8 +912,11 @@ By installing this extension, you are agreeing to the Google Widevine Terms of U
       <message name="IDS_BRAVE_IPFS_SETTINGS" desc="Open IPFS settings">
         Settings
       </message>
-      <message name="IDS_BRAVE_IPFS_ENABLE_IPFS" desc="Instal or Enable IPFS">
+      <message name="IDS_BRAVE_IPFS_ENABLE_IPFS" desc="Install and Enable IPFS">
         Enable IPFS
+      </message>
+      <message name="IDS_BRAVE_IPFS_LEARN_MORE">
+        Learn more about privacy consequences
       </message>
       <!-- Brave Wayback Machine -->
       <message name="IDS_BRAVE_WAYBACK_MACHINE_INFOBAR_PAGE_MISSING_TEXT" desc="The label for sorry message when page is not available on infobar">
@@ -938,7 +953,7 @@ By installing this extension, you are agreeing to the Google Widevine Terms of U
         Full Disk Access required
       </message>
       <message name="IDS_FULL_DISK_ACCESS_CONFIRM_DIALOG_MESSAGE" desc="The label for full disk access dialog message">
-        Brave needs Full Disk Access to import your Bookmarks and History from Safari.
+        Brave needs Full Disk Access to import your Bookmarks from Safari.
       </message>
       <message name="IDS_FULL_DISK_ACCESS_CONFIRM_DIALOG_LINK_TEXT" desc="The label for full disk access dialog link text">
         Learn how to grant Full Disk Access from your System Preferences.

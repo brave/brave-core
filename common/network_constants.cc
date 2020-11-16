@@ -8,6 +8,9 @@
 const char kBraveProxyPattern[] = "https://*.brave.com/*";
 const char kBraveSoftwareProxyPattern[] = "https://*.bravesoftware.com/*";
 
+const char kBraveUsageStandardPath[] = "/1/usage/brave-core";
+const char kBraveUsageThresholdPath[] = "/1/usage/brave-core-threshold";
+
 const char kBraveReferralsServer[] = "laptop-updates.brave.com";
 const char kBraveReferralsHeadersPath[] = "/promo/custom-headers";
 const char kBraveReferralsInitPath[] = "/promo/initialize/nonua";
@@ -30,7 +33,8 @@ const char kJSDataURLPrefix[] = "data:application/javascript;base64,";
 const char kGeoLocationsPattern[] =
     "https://www.googleapis.com/geolocation/v1/geolocate?key=*";
 const char kSafeBrowsingPrefix[] = "https://safebrowsing.googleapis.com/";
-const char kSafeBrowsingFileCheckPrefix[] = "https://sb-ssl.google.com/";
+const char kSafeBrowsingFileCheckPrefix[] =
+    "https://sb-ssl.google.com/safebrowsing/clientreport/download";
 const char kCRLSetPrefix1[] =
     "*://dl.google.com/release2/chrome_component/*crl-set*";
 const char kCRLSetPrefix2[] =

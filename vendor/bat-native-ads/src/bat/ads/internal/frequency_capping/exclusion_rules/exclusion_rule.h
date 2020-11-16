@@ -8,16 +8,15 @@
 
 #include <string>
 
-#include "bat/ads/internal/bundle/creative_ad_info.h"
-
 namespace ads {
 
+template <class T>
 class ExclusionRule {
  public:
   virtual ~ExclusionRule() = default;
 
   virtual bool ShouldExclude(
-      const CreativeAdInfo& ad) = 0;
+      const T&) = 0;
 
   virtual std::string get_last_message() const = 0;
 };

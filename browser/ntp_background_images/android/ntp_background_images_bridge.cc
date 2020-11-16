@@ -16,12 +16,15 @@
 #include "base/bind.h"
 #include "base/files/file_path.h"
 #include "base/files/file_util.h"
+#include "base/guid.h"
 #include "base/task/post_task.h"
 #include "brave/browser/brave_browser_process_impl.h"
 #include "brave/browser/ntp_background_images/view_counter_service_factory.h"
 #include "brave/build/android/jni_headers/NTPBackgroundImagesBridge_jni.h"
 #include "brave/components/brave_referrals/browser/brave_referrals_service.h"
+#include "brave/components/brave_stats/browser/brave_stats_updater_util.h"
 #include "brave/components/ntp_background_images/browser/ntp_background_images_data.h"
+#include "brave/components/ntp_background_images/browser/url_constants.h"
 #include "brave/components/ntp_background_images/browser/view_counter_service.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/profiles/profile_android.h"
@@ -108,6 +111,21 @@ void NTPBackgroundImagesBridge::RegisterPageView(
     view_counter_service_->RegisterPageView();
 }
 
+void NTPBackgroundImagesBridge::WallpaperLogoClicked(
+    JNIEnv* env,
+    const base::android::JavaParamRef<jobject>& obj,
+    const base::android::JavaParamRef<jstring>& jcreativeInstanceId,
+    const base::android::JavaParamRef<jstring>& jdestinationUrl,
+    const base::android::JavaParamRef<jstring>& jwallpaperId) {
+  DCHECK_CURRENTLY_ON(BrowserThread::UI);
+  if (view_counter_service_) {
+    view_counter_service_->BrandedWallpaperLogoClicked(
+        base::android::ConvertJavaStringToUTF8(env, jcreativeInstanceId),
+        base::android::ConvertJavaStringToUTF8(env, jdestinationUrl),
+        base::android::ConvertJavaStringToUTF8(env, jwallpaperId));
+  }
+}
+
 base::android::ScopedJavaLocalRef<jobject>
 NTPBackgroundImagesBridge::CreateWallpaper() {
   JNIEnv* env = AttachCurrentThread();
@@ -118,29 +136,41 @@ NTPBackgroundImagesBridge::CreateWallpaper() {
   if (data.is_none())
     return base::android::ScopedJavaLocalRef<jobject>();
 
-  // TODO(bridiver) - need to either expose these constants or change this
-  // to a struct instead of base::Value
-  auto* image_path = data.FindStringPath("wallpaperImagePath");
-  auto* logo_image_path = data.FindStringPath("logo.imagePath");
+  const std::string wallpaper_id = base::GenerateGUID();
+  view_counter_service_->BrandedWallpaperWillBeDisplayed(wallpaper_id);
+
+  auto* image_path =
+      data.FindStringKey(ntp_background_images::kWallpaperImagePathKey);
+  auto* logo_image_path =
+      data.FindStringPath(ntp_background_images::kLogoImagePath);
   if (!image_path || !logo_image_path)
     return base::android::ScopedJavaLocalRef<jobject>();
 
-  auto focal_point_x = data.FindIntPath("wallpaperFocalPointX");
-  auto focal_point_y = data.FindIntPath("wallpaperFocalPointY");
-  auto* logo_destination_url = data.FindStringPath("logo.destinationUrl");
-  auto* theme_name = data.FindStringPath("themeName");
-  auto is_sponsored = data.FindBoolPath("isSponsored");
+  auto focal_point_x = data.FindIntKey(
+      ntp_background_images::kWallpaperFocalPointXKey).value_or(0);
+  auto focal_point_y = data.FindIntKey(
+      ntp_background_images::kWallpaperFocalPointYKey).value_or(0);
+  auto* logo_destination_url = data.FindStringPath(
+      ntp_background_images::kLogoDestinationURLPath);
+  auto* theme_name = data.FindStringKey(ntp_background_images::kThemeNameKey);
+  auto is_sponsored = data.FindBoolKey(
+      ntp_background_images::kIsSponsoredKey).value_or(false);
+  auto* creative_instance_id =
+      data.FindStringKey(ntp_background_images::kCreativeInstanceIDKey);
 
   return Java_NTPBackgroundImagesBridge_createWallpaper(
       env,
       ConvertUTF8ToJavaString(env, *image_path),
-      focal_point_x ? *focal_point_x : 0,
-      focal_point_y ? *focal_point_y : 0,
+      focal_point_x,
+      focal_point_y,
       ConvertUTF8ToJavaString(env, *logo_image_path),
       ConvertUTF8ToJavaString(env, logo_destination_url ? *logo_destination_url
                                                         : ""),
       ConvertUTF8ToJavaString(env, *theme_name),
-      is_sponsored ? *is_sponsored : 0);
+      is_sponsored,
+      ConvertUTF8ToJavaString(env, creative_instance_id ? *creative_instance_id
+                                                        : ""),
+      ConvertUTF8ToJavaString(env, wallpaper_id));
 }
 
 void NTPBackgroundImagesBridge::GetTopSites(
@@ -190,7 +220,7 @@ base::android::ScopedJavaLocalRef<jstring>
 NTPBackgroundImagesBridge::GetReferralApiKey(
   JNIEnv* env, const JavaParamRef<jobject>& obj) {
   return ConvertUTF8ToJavaString(env,
-      brave::GetAPIKey());
+      brave_stats::GetAPIKey());
 }
 
 base::android::ScopedJavaLocalRef<jobject>

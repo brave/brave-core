@@ -149,8 +149,6 @@ class LedgerImpl : public ledger::Ledger {
 
   void GetExcludedList(ledger::PublisherInfoListCallback callback) override;
 
-  void SetRewardsMainEnabled(bool enabled) override;
-
   void SetPublisherMinVisitTime(int duration_in_seconds) override;
 
   void SetPublisherMinVisits(int visits) override;
@@ -164,8 +162,6 @@ class LedgerImpl : public ledger::Ledger {
   void SetAutoContributeEnabled(bool enabled) override;
 
   uint64_t GetReconcileStamp() override;
-
-  bool GetRewardsMainEnabled() override;
 
   int GetPublisherMinVisitTime() override;
 
@@ -215,8 +211,6 @@ class LedgerImpl : public ledger::Ledger {
       ledger::ResultCallback callback) override;
 
   void RestorePublishers(ledger::ResultCallback callback) override;
-
-  bool IsWalletCreated() override;
 
   void GetPublisherActivityFromUrl(
       uint64_t windowId,
@@ -350,6 +344,16 @@ class LedgerImpl : public ledger::Ledger {
   void Shutdown(ledger::ResultCallback callback) override;
 
   void GetEventLogs(ledger::GetEventLogsCallback callback) override;
+
+  void GetBraveWallet(GetBraveWalletCallback callback) override;
+
+  std::string GetWalletPassphrase() const override;
+
+  void LinkBraveWallet(
+      const std::string& destination_payment_id,
+      ResultCallback callback) override;
+
+  void GetTransferableAmount(GetTransferableAmountCallback callback) override;
 
   // end ledger.h
 

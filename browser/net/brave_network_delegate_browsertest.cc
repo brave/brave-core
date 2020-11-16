@@ -13,6 +13,7 @@
 #include "chrome/browser/ui/browser.h"
 #include "chrome/test/base/in_process_browser_test.h"
 #include "chrome/test/base/ui_test_utils.h"
+#include "components/content_settings/core/browser/cookie_settings.h"
 #include "components/content_settings/core/browser/host_content_settings_map.h"
 #include "components/content_settings/core/common/pref_names.h"
 #include "components/network_session_configurator/common/network_switches.h"
@@ -70,8 +71,7 @@ class BraveNetworkDelegateBrowserTest : public InProcessBrowserTest {
     top_level_page_url_ = https_server_.GetURL("a.com", "/");
     https_top_level_page_url_ = https_server_.GetURL("a.com", "/");
 
-    cookie_iframe_url_ =
-        https_server_.GetURL("a.com", "/cookie_iframe.html");
+    cookie_iframe_url_ = https_server_.GetURL("a.com", "/cookie_iframe.html");
     https_cookie_iframe_url_ =
         https_server_.GetURL("a.com", "/cookie_iframe.html");
 
@@ -83,8 +83,8 @@ class BraveNetworkDelegateBrowserTest : public InProcessBrowserTest {
         "subdomain.a.com",
         "/set-cookie?name=subdomainacom;SameSite=None;Secure");
 
-    domain_registry_url_ = https_server_.GetURL("mobile.twitter.com",
-                                                        "/cookie_iframe.html");
+    domain_registry_url_ =
+        https_server_.GetURL("mobile.twitter.com", "/cookie_iframe.html");
     iframe_domain_registry_url_ =
         https_server_.GetURL("blah.twitter.com",
                              "/set-cookie?name=blahtwittercom;domain=twitter."
@@ -98,16 +98,20 @@ class BraveNetworkDelegateBrowserTest : public InProcessBrowserTest {
     first_party_pattern_ =
         ContentSettingsPattern::FromString("https://firstParty/*");
 
-    wordpress_top_url_ = https_server_
-        .GetURL("example.wordpress.com", "/cookie_iframe.html");
+    wordpress_top_url_ =
+        https_server_.GetURL("example.wordpress.com", "/cookie_iframe.html");
     wordpress_frame_url_ = https_server_.GetURL(
         "example.wordpress.com", "/set-cookie?frame=true;SameSite=None;Secure");
-    wp_top_url_ = https_server_
-        .GetURL("example.wp.com", "/cookie_iframe.html");
+    wp_top_url_ = https_server_.GetURL("example.wp.com", "/cookie_iframe.html");
     wp_frame_url_ = https_server_.GetURL(
         "example.wp.com", "/set-cookie?frame=true;SameSite=None;Secure");
     a_frame_url_ = https_server_.GetURL(
         "a.com", "/set-cookie?frame=true;SameSite=None;Secure");
+
+    ipfs_cid1_url_ =
+        https_server_.GetURL("cid1.ipfs.localhost", "/ipfs_cookie_iframe.html");
+    ipfs_cid2_frame_url_ = https_server_.GetURL(
+        "cid2.ipfs.localhost", "/set-cookie?frame=true;SameSite=None;Secure");
   }
 
   HostContentSettingsMap* content_settings() {
@@ -122,57 +126,46 @@ class BraveNetworkDelegateBrowserTest : public InProcessBrowserTest {
   }
 
   void DefaultBlockAllCookies() {
-    brave_shields::SetCookieControlType(content_settings(),
-                                        brave_shields::ControlType::BLOCK,
-                                        GURL());
+    brave_shields::SetCookieControlType(
+        content_settings(), brave_shields::ControlType::BLOCK, GURL());
   }
 
   void DefaultBlockThirdPartyCookies() {
     brave_shields::SetCookieControlType(
-        content_settings(),
-        brave_shields::ControlType::BLOCK_THIRD_PARTY,
+        content_settings(), brave_shields::ControlType::BLOCK_THIRD_PARTY,
         GURL());
   }
 
   void DefaultAllowAllCookies() {
-    brave_shields::SetCookieControlType(content_settings(),
-                                        brave_shields::ControlType::ALLOW,
-                                        GURL());
+    brave_shields::SetCookieControlType(
+        content_settings(), brave_shields::ControlType::ALLOW, GURL());
   }
 
   void AllowCookies(const GURL url) {
     brave_shields::SetCookieControlType(content_settings(),
-                                        brave_shields::ControlType::ALLOW,
-                                        url);
+                                        brave_shields::ControlType::ALLOW, url);
   }
 
   void BlockThirdPartyCookies(const GURL url) {
     brave_shields::SetCookieControlType(
-        content_settings(),
-        brave_shields::ControlType::BLOCK_THIRD_PARTY,
-        url);
+        content_settings(), brave_shields::ControlType::BLOCK_THIRD_PARTY, url);
   }
 
   void BlockCookies(const GURL url) {
     brave_shields::SetCookieControlType(content_settings(),
-                                        brave_shields::ControlType::BLOCK,
-                                        url);
+                                        brave_shields::ControlType::BLOCK, url);
   }
 
   void ShieldsDown(const GURL url) {
-    brave_shields::SetBraveShieldsEnabled(content_settings(),
-                                          false,
-                                          url);
+    brave_shields::SetBraveShieldsEnabled(content_settings(), false, url);
   }
 
   void NavigateToPageWithFrame(const GURL url) {
     ui_test_utils::NavigateToURL(browser(), url);
   }
 
-  void ExpectCookiesOnHost(const GURL url,
-                           const std::string& expected) {
-    EXPECT_EQ(expected, content::GetCookies(browser()->profile(),
-                                            url));
+  void ExpectCookiesOnHost(const GURL url, const std::string& expected) {
+    EXPECT_EQ(expected, content::GetCookies(browser()->profile(), url));
   }
 
   void NavigateFrameTo(const GURL url, const std::string& id = "test") {
@@ -204,6 +197,8 @@ class BraveNetworkDelegateBrowserTest : public InProcessBrowserTest {
   GURL wp_top_url_;
   GURL wp_frame_url_;
   GURL a_frame_url_;
+  GURL ipfs_cid1_url_;
+  GURL ipfs_cid2_frame_url_;
   net::test_server::EmbeddedTestServer https_server_;
 
  private:
@@ -289,26 +284,27 @@ IN_PROC_BROWSER_TEST_F(BraveNetworkDelegateBrowserTest,
 
   auto* web_contents = browser()->tab_strip_model()->GetActiveWebContents();
 
-  NavigateFrameTo(
-      https_server_.GetURL("b.com", "/iframe_cookie.html"),
-      "nested_iframe");
+  NavigateFrameTo(https_server_.GetURL("b.com", "/iframe_cookie.html"),
+                  "nested_iframe");
 
   content::RenderFrameHost* child_frame =
       content::ChildFrameAt(web_contents->GetMainFrame(), 0);
   NavigateRenderFrameToURL(child_frame, "iframe_cookie",
-      subdomain_first_party_cookie_url_);
+                           subdomain_first_party_cookie_url_);
 
   ExpectCookiesOnHost(subdomain_first_party_cookie_url_, "name=subdomainacom");
 }
-
 
 IN_PROC_BROWSER_TEST_F(BraveNetworkDelegateBrowserTest,
                        PrefToggleBlockAllToBlockThirdParty) {
   DefaultBlockAllCookies();
   DefaultBlockThirdPartyCookies();
 
-  EXPECT_TRUE(browser()->profile()->GetPrefs()->GetBoolean(
-      prefs::kBlockThirdPartyCookies));
+  EXPECT_EQ(static_cast<content_settings::CookieControlsMode>(
+                browser()->profile()->GetPrefs()->GetInteger(
+                    prefs::kCookieControlsMode)),
+            content_settings::CookieControlsMode::kBlockThirdParty);
+
   EXPECT_EQ(browser()->profile()->GetPrefs()->GetInteger(
                 "profile.default_content_setting_values.cookies"),
             ContentSetting::CONTENT_SETTING_ALLOW);
@@ -328,8 +324,10 @@ IN_PROC_BROWSER_TEST_F(BraveNetworkDelegateBrowserTest,
   DefaultBlockAllCookies();
   DefaultAllowAllCookies();
 
-  EXPECT_FALSE(browser()->profile()->GetPrefs()->GetBoolean(
-      prefs::kBlockThirdPartyCookies));
+  EXPECT_EQ(static_cast<content_settings::CookieControlsMode>(
+                browser()->profile()->GetPrefs()->GetInteger(
+                    prefs::kCookieControlsMode)),
+            content_settings::CookieControlsMode::kOff);
   EXPECT_EQ(browser()->profile()->GetPrefs()->GetInteger(
                 "profile.default_content_setting_values.cookies"),
             ContentSetting::CONTENT_SETTING_ALLOW);
@@ -346,8 +344,10 @@ IN_PROC_BROWSER_TEST_F(BraveNetworkDelegateBrowserTest,
   DefaultBlockThirdPartyCookies();
   DefaultAllowAllCookies();
 
-  EXPECT_FALSE(browser()->profile()->GetPrefs()->GetBoolean(
-      prefs::kBlockThirdPartyCookies));
+  EXPECT_EQ(static_cast<content_settings::CookieControlsMode>(
+                browser()->profile()->GetPrefs()->GetInteger(
+                    prefs::kCookieControlsMode)),
+            content_settings::CookieControlsMode::kOff);
   EXPECT_EQ(browser()->profile()->GetPrefs()->GetInteger(
                 "profile.default_content_setting_values.cookies"),
             ContentSetting::CONTENT_SETTING_ALLOW);
@@ -364,8 +364,10 @@ IN_PROC_BROWSER_TEST_F(BraveNetworkDelegateBrowserTest,
   DefaultBlockThirdPartyCookies();
   DefaultBlockAllCookies();
 
-  EXPECT_FALSE(browser()->profile()->GetPrefs()->GetBoolean(
-      prefs::kBlockThirdPartyCookies));
+  EXPECT_EQ(static_cast<content_settings::CookieControlsMode>(
+                browser()->profile()->GetPrefs()->GetInteger(
+                    prefs::kCookieControlsMode)),
+            content_settings::CookieControlsMode::kBlockThirdParty);
   EXPECT_EQ(browser()->profile()->GetPrefs()->GetInteger(
                 "profile.default_content_setting_values.cookies"),
             ContentSetting::CONTENT_SETTING_BLOCK);
@@ -382,8 +384,10 @@ IN_PROC_BROWSER_TEST_F(BraveNetworkDelegateBrowserTest,
   DefaultAllowAllCookies();
   DefaultBlockThirdPartyCookies();
 
-  EXPECT_TRUE(browser()->profile()->GetPrefs()->GetBoolean(
-      prefs::kBlockThirdPartyCookies));
+  EXPECT_EQ(static_cast<content_settings::CookieControlsMode>(
+                browser()->profile()->GetPrefs()->GetInteger(
+                    prefs::kCookieControlsMode)),
+            content_settings::CookieControlsMode::kBlockThirdParty);
   EXPECT_EQ(browser()->profile()->GetPrefs()->GetInteger(
                 "profile.default_content_setting_values.cookies"),
             ContentSetting::CONTENT_SETTING_ALLOW);
@@ -400,8 +404,10 @@ IN_PROC_BROWSER_TEST_F(BraveNetworkDelegateBrowserTest,
   DefaultAllowAllCookies();
   DefaultBlockAllCookies();
 
-  EXPECT_FALSE(browser()->profile()->GetPrefs()->GetBoolean(
-      prefs::kBlockThirdPartyCookies));
+  EXPECT_EQ(static_cast<content_settings::CookieControlsMode>(
+                browser()->profile()->GetPrefs()->GetInteger(
+                    prefs::kCookieControlsMode)),
+            content_settings::CookieControlsMode::kBlockThirdParty);
   EXPECT_EQ(browser()->profile()->GetPrefs()->GetInteger(
                 "profile.default_content_setting_values.cookies"),
             ContentSetting::CONTENT_SETTING_BLOCK);
@@ -653,4 +659,24 @@ IN_PROC_BROWSER_TEST_F(BraveNetworkDelegateBrowserTest,
 
   NavigateFrameTo(wordpress_frame_url_);
   ExpectCookiesOnHost(GURL("https://example.wordpress.com"), "frame=true");
+}
+
+IN_PROC_BROWSER_TEST_F(BraveNetworkDelegateBrowserTest,
+                       BlockThirdPartyCookiesIPFSLocalhost) {
+  DefaultBlockThirdPartyCookies();
+
+  NavigateToPageWithFrame(ipfs_cid1_url_);
+  NavigateFrameTo(ipfs_cid2_frame_url_);
+  ExpectCookiesOnHost(ipfs_cid1_url_, "name=Good");
+  ExpectCookiesOnHost(ipfs_cid2_frame_url_, "");
+}
+
+IN_PROC_BROWSER_TEST_F(BraveNetworkDelegateBrowserTest,
+                       AllowAllCookiesIPFSLocalhost) {
+  DefaultAllowAllCookies();
+
+  NavigateToPageWithFrame(ipfs_cid1_url_);
+  NavigateFrameTo(ipfs_cid2_frame_url_);
+  ExpectCookiesOnHost(ipfs_cid1_url_, "name=Good");
+  ExpectCookiesOnHost(ipfs_cid2_frame_url_, "frame=true");
 }

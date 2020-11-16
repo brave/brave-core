@@ -5,11 +5,13 @@
 
 #include "components/content_settings/core/common/cookie_settings_base.h"
 
+#include "base/feature_list.h"
 #include "base/no_destructor.h"
 #include "base/optional.h"
-#include "net/base/registry_controlled_domains/registry_controlled_domain.h"
 #include "components/content_settings/core/common/content_settings.h"
 #include "components/content_settings/core/common/content_settings_pattern.h"
+#include "components/content_settings/core/common/features.h"
+#include "net/base/registry_controlled_domains/registry_controlled_domain.h"
 #include "url/gurl.h"
 #include "url/origin.h"
 
@@ -34,6 +36,10 @@ constexpr char kGoogle[] = "https://[*.]google.com/*";
 constexpr char kGoogleusercontent[] = "https://[*.]googleusercontent.com/*";
 constexpr char kOrigin[] = "https://[*.]origin.com/*";
 constexpr char kEA[] = "https://[*.]ea.com/*";
+constexpr char kBitbucket[] = "https://[*.]bitbucket.org/*";
+constexpr char kAtlassiannet[] = "https://[*.]atlassian.net/*";
+constexpr char kAtlassiancom[] = "https://[*.]atlassian.com/*";
+
 
 bool BraveIsAllowedThirdParty(
     const GURL& url,
@@ -102,6 +108,22 @@ bool BraveIsAllowedThirdParty(
           {
             ContentSettingsPattern::FromString(kEA),
             ContentSettingsPattern::FromString(kOrigin)
+          },
+          {
+            ContentSettingsPattern::FromString(kBitbucket),
+            ContentSettingsPattern::FromString(kAtlassiancom)
+          },
+          {
+            ContentSettingsPattern::FromString(kAtlassiancom),
+            ContentSettingsPattern::FromString(kBitbucket)
+          },
+          {
+            ContentSettingsPattern::FromString(kAtlassiancom),
+            ContentSettingsPattern::FromString(kAtlassiannet)
+          },
+          {
+            ContentSettingsPattern::FromString(kAtlassiannet),
+            ContentSettingsPattern::FromString(kAtlassiancom)
           }
       });
 

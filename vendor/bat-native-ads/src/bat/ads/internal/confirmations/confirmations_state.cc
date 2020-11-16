@@ -5,15 +5,18 @@
 
 #include "bat/ads/internal/confirmations/confirmations_state.h"
 
+#include <stdint.h>
+
 #include <utility>
 
 #include "base/json/json_reader.h"
 #include "base/json/json_writer.h"
 #include "base/strings/string_number_conversions.h"
 #include "wrapper.hpp"
+#include "bat/ads/internal/ad_rewards/ad_rewards.h"
 #include "bat/ads/internal/ads_impl.h"
-#include "bat/ads/internal/server/ad_rewards/ad_rewards.h"
 #include "bat/ads/internal/logging.h"
+#include "bat/ads/internal/privacy/unblinded_tokens/unblinded_tokens.h"
 #include "bat/ads/internal/time_util.h"
 
 namespace ads {
@@ -242,7 +245,7 @@ base::Value ConfirmationsState::GetConfirmationsAsDictionary(
         base::Value(confirmation.credential));
 
     confirmation_dictionary.SetKey("timestamp_in_seconds",
-        base::Value(std::to_string(confirmation.timestamp_in_seconds)));
+        base::Value(std::to_string(confirmation.timestamp)));
 
     confirmation_dictionary.SetKey("created",
         base::Value(confirmation.created));
@@ -369,15 +372,14 @@ bool ConfirmationsState::GetConfirmationsFromDictionary(
     confirmation.credential = *credential;
 
     // Timestamp
-    const std::string* timestamp_in_seconds =
+    const std::string* timestamp =
         confirmation_dictionary->FindStringKey("timestamp_in_seconds");
-    if (timestamp_in_seconds) {
-      uint64_t timestamp_in_seconds_as_uint64;
-      if (!base::StringToUint64(*timestamp_in_seconds,
-          &timestamp_in_seconds_as_uint64)) {
+    if (timestamp) {
+      int64_t timestamp_as_int64;
+      if (!base::StringToInt64(*timestamp, &timestamp_as_int64)) {
         continue;
       }
-      confirmation.timestamp_in_seconds = timestamp_in_seconds_as_uint64;
+      confirmation.timestamp = timestamp_as_int64;
     }
 
     // Created
@@ -420,7 +422,7 @@ base::Value ConfirmationsState::GetTransactionsAsDictionary(
     base::Value transaction_dictionary(base::Value::Type::DICTIONARY);
 
     transaction_dictionary.SetKey("timestamp_in_seconds",
-        base::Value(std::to_string(transaction.timestamp_in_seconds)));
+        base::Value(std::to_string(transaction.timestamp)));
 
     transaction_dictionary.SetKey("estimated_redemption_value",
         base::Value(transaction.estimated_redemption_value));
@@ -462,21 +464,19 @@ bool ConfirmationsState::GetTransactionsFromDictionary(
     TransactionInfo transaction;
 
     // Timestamp
-    const std::string* timestamp_in_seconds =
+    const std::string* timestamp =
         transaction_dictionary->FindStringKey("timestamp_in_seconds");
-    if (timestamp_in_seconds) {
-      uint64_t timestamp_in_seconds_as_uint64;
-      if (!base::StringToUint64(*timestamp_in_seconds,
-          &timestamp_in_seconds_as_uint64)) {
+    if (timestamp) {
+      int64_t timestamp_as_int64;
+      if (!base::StringToInt64(*timestamp, &timestamp_as_int64)) {
         continue;
       }
 
-      transaction.timestamp_in_seconds =
-          MigrateTimestampToDoubleT(timestamp_in_seconds_as_uint64);
+      transaction.timestamp = MigrateTimestampToDoubleT(timestamp_as_int64);
     } else {
       // timestamp missing, fallback to default
-      transaction.timestamp_in_seconds =
-          static_cast<uint64_t>(base::Time::Now().ToDoubleT());
+      transaction.timestamp =
+          static_cast<int64_t>(base::Time::Now().ToDoubleT());
     }
 
     // Estimated redemption value

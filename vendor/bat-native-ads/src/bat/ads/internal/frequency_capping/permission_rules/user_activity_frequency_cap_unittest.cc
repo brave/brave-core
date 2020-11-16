@@ -119,7 +119,7 @@ TEST_F(BatAdsUserActivityFrequencyCapTest,
   task_environment_.FastForwardBy(base::TimeDelta::FromMinutes(59));
 
   // Act
-  const bool is_allowed = frequency_cap_->IsAllowed();
+  const bool is_allowed = frequency_cap_->ShouldAllow();
 
   // Assert
   EXPECT_TRUE(is_allowed);
@@ -136,7 +136,7 @@ TEST_F(BatAdsUserActivityFrequencyCapTest,
   task_environment_.FastForwardBy(base::TimeDelta::FromMinutes(59));
 
   // Act
-  const bool is_allowed = frequency_cap_->IsAllowed();
+  const bool is_allowed = frequency_cap_->ShouldAllow();
 
   // Assert
   EXPECT_TRUE(is_allowed);
@@ -155,12 +155,11 @@ TEST_F(BatAdsUserActivityFrequencyCapTest,
   task_environment_.FastForwardBy(base::TimeDelta::FromMinutes(59));
 
   // Act
-  const bool is_allowed = frequency_cap_->IsAllowed();
+  const bool is_allowed = frequency_cap_->ShouldAllow();
 
   // Assert
   EXPECT_TRUE(is_allowed);
 }
-
 
 TEST_F(BatAdsUserActivityFrequencyCapTest,
     AllowAdIfActivityWasReportedForMoreThanTwoOfTheSameType) {
@@ -175,7 +174,7 @@ TEST_F(BatAdsUserActivityFrequencyCapTest,
   task_environment_.FastForwardBy(base::TimeDelta::FromMinutes(59));
 
   // Act
-  const bool is_allowed = frequency_cap_->IsAllowed();
+  const bool is_allowed = frequency_cap_->ShouldAllow();
 
   // Assert
   EXPECT_TRUE(is_allowed);
@@ -194,7 +193,7 @@ TEST_F(BatAdsUserActivityFrequencyCapTest,
   task_environment_.FastForwardBy(base::TimeDelta::FromMinutes(59));
 
   // Act
-  const bool is_allowed = frequency_cap_->IsAllowed();
+  const bool is_allowed = frequency_cap_->ShouldAllow();
 
   // Assert
   EXPECT_TRUE(is_allowed);
@@ -209,7 +208,7 @@ TEST_F(BatAdsUserActivityFrequencyCapTest,
   task_environment_.FastForwardBy(base::TimeDelta::FromMinutes(59));
 
   // Act
-  const bool is_allowed = frequency_cap_->IsAllowed();
+  const bool is_allowed = frequency_cap_->ShouldAllow();
 
   // Assert
   EXPECT_FALSE(is_allowed);
@@ -220,7 +219,7 @@ TEST_F(BatAdsUserActivityFrequencyCapTest,
   // Arrange
 
   // Act
-  const bool is_allowed = frequency_cap_->IsAllowed();
+  const bool is_allowed = frequency_cap_->ShouldAllow();
 
   // Assert
   EXPECT_FALSE(is_allowed);
@@ -237,7 +236,7 @@ TEST_F(BatAdsUserActivityFrequencyCapTest,
   task_environment_.FastForwardBy(base::TimeDelta::FromHours(1));
 
   // Act
-  const bool is_allowed = frequency_cap_->IsAllowed();
+  const bool is_allowed = frequency_cap_->ShouldAllow();
 
   // Assert
   EXPECT_FALSE(is_allowed);

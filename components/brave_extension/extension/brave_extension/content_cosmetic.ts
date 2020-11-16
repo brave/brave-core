@@ -38,7 +38,7 @@ let cosmeticObserver: MutationObserver | undefined = undefined
 const allSelectorsToRules = new Map<string, number>()
 const cosmeticStyleSheet = new CSSStyleSheet()
 
-function injectScriptlet (text: string) {
+const injectScriptlet = (text: string) => {
   let script
   try {
     script = document.createElement('script')
@@ -62,7 +62,7 @@ function injectScriptlet (text: string) {
  * @param onIdle function to run when the thread is less busy
  * @param timeout max time to wait. at or after this time the function will be run regardless of thread noise
  */
-function idleize (onIdle: Function, timeout: number) {
+const idleize = (onIdle: Function, timeout: number) => {
   let idleId: number | undefined = undefined
   return function WillRunOnIdle () {
     if (idleId !== undefined) {
@@ -75,7 +75,7 @@ function idleize (onIdle: Function, timeout: number) {
   }
 }
 
-function isRelativeUrl (url: string): boolean {
+const isRelativeUrl = (url: string): boolean => {
   return (
     !url.startsWith('//') &&
     !url.startsWith('http://') &&
@@ -83,25 +83,25 @@ function isRelativeUrl (url: string): boolean {
   )
 }
 
-function isElement (node: Node): boolean {
+const isElement = (node: Node): boolean => {
   return (node.nodeType === 1)
 }
 
-function asElement (node: Node): Element | null {
+const asElement = (node: Node): Element | null => {
   return isElement(node) ? node as Element : null
 }
 
-function isHTMLElement (node: Node): boolean {
+const isHTMLElement = (node: Node): boolean => {
   return ('innerText' in node)
 }
 
-function asHTMLElement (node: Node): HTMLElement | null {
+const asHTMLElement = (node: Node): HTMLElement | null => {
   return isHTMLElement(node) ? node as HTMLElement : null
 }
 
-const fetchNewClassIdRules = function () {
+const fetchNewClassIdRules = () => {
   if ((!notYetQueriedClasses || notYetQueriedClasses.length === 0) &&
-      (!notYetQueriedIds || notYetQueriedIds.length === 0)) {
+    (!notYetQueriedIds || notYetQueriedIds.length === 0)) {
     return
   }
   chrome.runtime.sendMessage({
@@ -113,7 +113,7 @@ const fetchNewClassIdRules = function () {
   notYetQueriedIds = []
 }
 
-const handleMutations: MutationCallback = function (mutations: MutationRecord[]) {
+const handleMutations: MutationCallback = (mutations: MutationRecord[]) => {
   for (const aMutation of mutations) {
     if (aMutation.type === 'attributes') {
       // Since we're filtering for attribute modifications, we can be certain
@@ -190,12 +190,12 @@ const isFirstPartyUrl = (url: string): boolean => {
 
   if (parsedTargetDomain.type === ParseResultType.Listed) {
     const isSameEtldP1 = (_parsedCurrentDomain.icann.topLevelDomains === parsedTargetDomain.icann.topLevelDomains &&
-                          _parsedCurrentDomain.icann.domain === parsedTargetDomain.icann.domain)
+      _parsedCurrentDomain.icann.domain === parsedTargetDomain.icann.domain)
     return isSameEtldP1
   }
 
   const looksLikePrivateOrigin =
-      [ParseResultType.NotListed, ParseResultType.Ip, ParseResultType.Reserved].includes(parsedTargetDomain.type)
+    [ParseResultType.NotListed, ParseResultType.Ip, ParseResultType.Reserved].includes(parsedTargetDomain.type)
   if (looksLikePrivateOrigin) {
     return _parsedCurrentDomain.hostname === parsedTargetDomain.hostname
   }
@@ -203,7 +203,7 @@ const isFirstPartyUrl = (url: string): boolean => {
   return false
 }
 
-const isAdText = (text: string): boolean => {
+const isTextAd = (text: string): boolean => {
   const trimmedText = text.trim()
   if (trimmedText.length < minAdTextChars) {
     return false
@@ -258,8 +258,8 @@ const isSubTreeFirstParty = (elm: Element, possibleQueryResult?: IsFirstPartyQue
     if (elm.hasAttribute('id')) {
       const elmId = elm.getAttribute('id') as string
       if (elmId.startsWith('google_ads_iframe_') ||
-          elmId.startsWith('div-gpt-ad') ||
-          elmId.startsWith('adfox_')) {
+        elmId.startsWith('div-gpt-ad') ||
+        elmId.startsWith('adfox_')) {
         queryResult.foundKnownThirdPartyAd = true
         return false
       }
@@ -278,7 +278,7 @@ const isSubTreeFirstParty = (elm: Element, possibleQueryResult?: IsFirstPartyQue
     if (elm.hasAttribute('style')) {
       const elmStyle = elm.getAttribute('style') as string
       if (elmStyle.includes('url(') ||
-          elmStyle.includes('//')) {
+        elmStyle.includes('//')) {
         queryResult.foundThirdPartyResource = true
       }
     }
@@ -318,10 +318,23 @@ const isSubTreeFirstParty = (elm: Element, possibleQueryResult?: IsFirstPartyQue
   if (queryResult.foundThirdPartyResource) {
     return false
   }
+
   const htmlElement = asHTMLElement(elm)
-  if (!htmlElement || isAdText(htmlElement.innerText) === false) {
+  // Check for several things here:
+  // 1. If its not an HTML node (i.e. its a text node), then its definitely
+  //    not the root of first party ad (we'd have caught that it was a text
+  //    add when checking the text node's parent).
+  // 2. If it's a script node, then similarly, its definitely not the root
+  //    of a first party ad on the page.
+  // 3. Last, check the text content on the page.  If the node contains a
+  //    non-trivial amount of text in it, then we _should_ treat it as a
+  //    possible 1p ad.
+  if (!htmlElement ||
+    htmlElement.tagName.toLowerCase() === 'script' ||
+    isTextAd(htmlElement.innerText) === false) {
     return false
   }
+
   return true
 }
 
@@ -331,16 +344,16 @@ const unhideSelectors = (selectors: Set<string>) => {
   }
   // Find selectors we have a rule index for
   const rulesToRemove = Array.from(selectors)
-    .map(selector =>
-      allSelectorsToRules.get(selector)
-    )
+    .map(selector => allSelectorsToRules.get(selector))
     .filter(i => i !== undefined)
     .sort()
     .reverse()
   // Delete the rules
   let lastIdx: number = allSelectorsToRules.size - 1
   for (const ruleIdx of rulesToRemove) {
-    cosmeticStyleSheet.deleteRule(ruleIdx)
+    // Safe to asset ruleIdx is a number because we've already filtered out
+    // any `undefined` instances with the filter call above.
+    cosmeticStyleSheet.deleteRule(ruleIdx as number)
   }
   // Re-sync the indexes
   // TODO: Sync is hard, just re-build by iterating through the StyleSheet rules.

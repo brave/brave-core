@@ -9,6 +9,7 @@ import static org.chromium.chrome.browser.settings.MainSettings.PREF_UI_THEME;
 
 import android.content.SharedPreferences;
 import android.os.Bundle;
+
 import androidx.preference.Preference;
 
 import org.chromium.base.ContextUtils;
@@ -20,10 +21,10 @@ import org.chromium.chrome.browser.BraveRewardsObserver;
 import org.chromium.chrome.browser.flags.ChromeFeatureList;
 import org.chromium.chrome.browser.night_mode.NightModeUtils;
 import org.chromium.chrome.browser.preferences.BravePreferenceKeys;
+import org.chromium.chrome.browser.settings.BravePreferenceFragment;
 import org.chromium.chrome.browser.toolbar.bottom.BottomToolbarConfiguration;
 import org.chromium.components.browser_ui.settings.ChromeSwitchPreference;
 import org.chromium.components.browser_ui.settings.SettingsUtils;
-import org.chromium.chrome.browser.settings.BravePreferenceFragment;
 import org.chromium.ui.base.DeviceFormFactor;
 
 public class AppearancePreferences extends BravePreferenceFragment
@@ -99,7 +100,6 @@ public class AppearancePreferences extends BravePreferenceFragment
         if (mBraveRewardsNativeWorker != null) {
             mBraveRewardsNativeWorker.AddObserver(this);
         }
-        mBraveRewardsNativeWorker.GetRewardsMainEnabled();
         super.onStart();
     }
 
@@ -136,58 +136,4 @@ public class AppearancePreferences extends BravePreferenceFragment
 
         return true;
     }
-
-    @Override
-    public void OnWalletInitialized(int error_code) {}
-
-    @Override
-    public void OnPublisherInfo(int tabId) {}
-
-    @Override
-    public void OnGetCurrentBalanceReport(double[] report) {}
-
-    @Override
-    public void OnNotificationAdded(String id, int type, long timestamp, String[] args) {}
-
-    @Override
-    public void OnNotificationsCount(int count) {}
-
-    @Override
-    public void OnGetLatestNotification(String id, int type, long timestamp, String[] args) {}
-
-    @Override
-    public void OnNotificationDeleted(String id) {}
-
-    @Override
-    public void OnIsWalletCreated(boolean created) {}
-
-    @Override
-    public void OnGetPendingContributionsTotal(double amount) {}
-
-    @Override
-    public void OnGetRewardsMainEnabled(boolean enabled) {
-        ChromeSwitchPreference hideBraveRewardsIconPref =
-                (ChromeSwitchPreference) findPreference(PREF_HIDE_BRAVE_REWARDS_ICON);
-        if (hideBraveRewardsIconPref == null) return;
-
-        hideBraveRewardsIconPref.setEnabled(!enabled);
-        if (enabled) {
-            hideBraveRewardsIconPref.setChecked(false);
-        }
-    }
-
-    @Override
-    public void OnGetAutoContributeProperties() {}
-
-    @Override
-    public void OnGetReconcileStamp(long timestamp) {}
-
-    @Override
-    public void OnRecurringDonationUpdated() {}
-
-    @Override
-    public void OnResetTheWholeState(boolean success) {}
-
-    @Override
-    public void OnRewardsMainEnabled(boolean enabled) {}
 }

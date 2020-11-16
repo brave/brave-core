@@ -64,6 +64,10 @@ class RewardsStateBrowserTest : public InProcessBrowserTest {
             &RewardsStateBrowserTest::GetTestResponse,
             base::Unretained(this)));
     rewards_service_->SetLedgerEnvForTesting();
+
+    // Bypass onboarding UX by default
+    rewards_service_->SaveOnboardingResult(
+        brave_rewards::OnboardingResult::kDismissed);
   }
 
   void GetTestResponse(
@@ -172,7 +176,7 @@ class RewardsStateBrowserTest : public InProcessBrowserTest {
 
 IN_PROC_BROWSER_TEST_F(RewardsStateBrowserTest, State_1) {
   profile_->GetPrefs()->SetInteger("brave.rewards.version", -1);
-  rewards_browsertest_util::EnableRewardsViaCode(browser(), rewards_service_);
+  rewards_browsertest_util::StartProcess(rewards_service_);
   EXPECT_EQ(
       profile_->GetPrefs()->GetInteger("brave.rewards.ac.min_visit_time"),
       5);
@@ -221,7 +225,7 @@ IN_PROC_BROWSER_TEST_F(RewardsStateBrowserTest, State_1) {
 
 IN_PROC_BROWSER_TEST_F(RewardsStateBrowserTest, State_2) {
   profile_->GetPrefs()->SetInteger("brave.rewards.version", -1);
-  rewards_browsertest_util::EnableRewardsViaCode(browser(), rewards_service_);
+  rewards_browsertest_util::StartProcess(rewards_service_);
   const std::string wallet = R"({"payment_id":"eea767c4-cd27-4411-afd4-78a9c6b54dbc","recovery_seed":"PgFfhazUJuf8dX+8ckTjrtK1KMLyrfXmKJFDiS1Ad3I="})";  // NOLINT
   EXPECT_EQ(
       rewards_service_->GetEncryptedStringState("wallets.brave"),
@@ -236,9 +240,6 @@ IN_PROC_BROWSER_TEST_F(RewardsStateBrowserTest, State_2) {
       profile_->GetPrefs()->GetDouble("brave.rewards.ac.amount"),
       20.0);
   EXPECT_EQ(
-      profile_->GetPrefs()->GetBoolean("brave.rewards.enabled"),
-      true);
-  EXPECT_EQ(
       profile_->GetPrefs()->GetBoolean("brave.rewards.ac.enabled"),
       true);
   EXPECT_EQ(
@@ -249,6 +250,46 @@ IN_PROC_BROWSER_TEST_F(RewardsStateBrowserTest, State_2) {
       false);
   EXPECT_EQ(
       profile_->GetPrefs()->GetBoolean("brave.rewards.inline_tip.github"),
+      false);
+}
+
+IN_PROC_BROWSER_TEST_F(RewardsStateBrowserTest, V8RewardsEnabledACEnabled) {
+  profile_->GetPrefs()->SetInteger("brave.rewards.version", -1);
+  profile_->GetPrefs()->SetBoolean("brave.rewards.enabled", true);
+  profile_->GetPrefs()->SetBoolean("brave.rewards.ac.enabled", true);
+  rewards_browsertest_util::StartProcess(rewards_service_);
+  EXPECT_EQ(
+      profile_->GetPrefs()->GetBoolean("brave.rewards.ac.enabled"),
+      true);
+}
+
+IN_PROC_BROWSER_TEST_F(RewardsStateBrowserTest, V8RewardsEnabledACDisabled) {
+  profile_->GetPrefs()->SetInteger("brave.rewards.version", -1);
+  profile_->GetPrefs()->SetBoolean("brave.rewards.enabled", true);
+  profile_->GetPrefs()->SetBoolean("brave.rewards.ac.enabled", false);
+  rewards_browsertest_util::StartProcess(rewards_service_);
+  EXPECT_EQ(
+      profile_->GetPrefs()->GetBoolean("brave.rewards.ac.enabled"),
+      false);
+}
+
+IN_PROC_BROWSER_TEST_F(RewardsStateBrowserTest, V8RewardsDisabledACEnabled) {
+  profile_->GetPrefs()->SetInteger("brave.rewards.version", -1);
+  profile_->GetPrefs()->SetBoolean("brave.rewards.enabled", false);
+  profile_->GetPrefs()->SetBoolean("brave.rewards.ac.enabled", true);
+  rewards_browsertest_util::StartProcess(rewards_service_);
+  EXPECT_EQ(
+      profile_->GetPrefs()->GetBoolean("brave.rewards.ac.enabled"),
+      false);
+}
+
+IN_PROC_BROWSER_TEST_F(RewardsStateBrowserTest, V8RewardsDisabledACDisabled) {
+  profile_->GetPrefs()->SetInteger("brave.rewards.version", -1);
+  profile_->GetPrefs()->SetBoolean("brave.rewards.enabled", false);
+  profile_->GetPrefs()->SetBoolean("brave.rewards.ac.enabled", false);
+  rewards_browsertest_util::StartProcess(rewards_service_);
+  EXPECT_EQ(
+      profile_->GetPrefs()->GetBoolean("brave.rewards.ac.enabled"),
       false);
 }
 

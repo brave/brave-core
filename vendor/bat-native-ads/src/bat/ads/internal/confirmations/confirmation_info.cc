@@ -26,7 +26,7 @@ bool ConfirmationInfo::operator==(
       blinded_payment_token.encode_base64() ==
           rhs.blinded_payment_token.encode_base64() &&
       credential == rhs.credential &&
-      timestamp_in_seconds == rhs.timestamp_in_seconds &&
+      timestamp == rhs.timestamp &&
       created == rhs.created;
 }
 
@@ -37,7 +37,7 @@ bool ConfirmationInfo::operator!=(
 
 bool ConfirmationInfo::IsValid() const {
   if (id.empty() ||
-      type == ConfirmationType::kNone ||
+      type == ConfirmationType::kUndefined ||
       creative_instance_id.empty()) {
     return false;
   }

@@ -15,6 +15,7 @@
 #include "brave/browser/brave_rewards/rewards_service_factory.h"
 #include "brave/browser/brave_rewards/tip_dialog.h"
 #include "brave/browser/extensions/api/brave_action_api.h"
+#include "brave/browser/extensions/brave_component_loader.h"
 #include "brave/browser/profiles/profile_util.h"
 #include "brave/common/extensions/api/brave_rewards.h"
 #include "brave/components/brave_ads/browser/ads_service.h"
@@ -22,9 +23,11 @@
 #include "brave/components/brave_rewards/browser/rewards_service.h"
 #include "chrome/browser/extensions/api/tabs/tabs_constants.h"
 #include "chrome/browser/extensions/chrome_extension_function_details.h"
+#include "chrome/browser/extensions/extension_service.h"
 #include "chrome/browser/extensions/extension_tab_util.h"
 #include "chrome/browser/profiles/profile.h"
 #include "content/public/browser/web_contents.h"
+#include "extensions/browser/extension_system.h"
 #include "extensions/common/constants.h"
 
 using brave_ads::AdsService;
@@ -34,29 +37,6 @@ using brave_rewards::RewardsServiceFactory;
 
 namespace extensions {
 namespace api {
-
-BraveRewardsCreateWalletFunction::BraveRewardsCreateWalletFunction()
-    : weak_factory_(this) {
-}
-
-BraveRewardsCreateWalletFunction::~BraveRewardsCreateWalletFunction() {
-}
-
-void BraveRewardsCreateWalletFunction::OnCreateWallet(
-    const ledger::type::Result result) {
-}
-
-ExtensionFunction::ResponseAction BraveRewardsCreateWalletFunction::Run() {
-  Profile* profile = Profile::FromBrowserContext(browser_context());
-  auto* rewards_service = RewardsServiceFactory::GetForProfile(profile);
-  if (rewards_service) {
-    rewards_service->CreateWallet(
-        base::Bind(
-            &BraveRewardsCreateWalletFunction::OnCreateWallet,
-            weak_factory_.GetWeakPtr()));
-  }
-  return RespondNow(NoArguments());
-}
 
 BraveRewardsOpenBrowserActionUIFunction::
 ~BraveRewardsOpenBrowserActionUIFunction() {
@@ -274,7 +254,7 @@ ExtensionFunction::ResponseAction BraveRewardsTipSiteFunction::Run() {
 
   auto params_dict = std::make_unique<base::DictionaryValue>();
   params_dict->SetString("publisherKey", params->publisher_key);
-  params_dict->SetBoolean("monthly", params->monthly);
+  params_dict->SetString("entryPoint", params->entry_point);
   params_dict->SetString(
       "url", contents ? contents->GetLastCommittedURL().spec() : std::string());
   ::brave_rewards::OpenTipDialog(contents, std::move(params_dict));
@@ -306,15 +286,47 @@ ExtensionFunction::ResponseAction BraveRewardsTipUserFunction::Run() {
     return RespondNow(Error("Rewards service is not initialized"));
   }
 
+  extensions::ExtensionService* extension_service =
+      extensions::ExtensionSystem::Get(profile)->extension_service();
+  if (!extension_service) {
+    return RespondNow(Error("Extension service is not initialized"));
+  }
+
   AddRef();
 
-  rewards_service->GetPublisherInfo(
-      params->publisher_key,
-      base::Bind(
-          &BraveRewardsTipUserFunction::OnTipUserGetPublisherInfo,
-          this));
+  extensions::ComponentLoader* component_loader =
+      extension_service->component_loader();
+  static_cast<extensions::BraveComponentLoader*>(component_loader)
+      ->AddRewardsExtension();
+
+  rewards_service->StartProcess(
+      base::BindOnce(
+          &BraveRewardsTipUserFunction::OnTipUserStartProcess,
+          this,
+          params->publisher_key));
 
   return RespondNow(NoArguments());
+}
+
+void BraveRewardsTipUserFunction::OnTipUserStartProcess(
+    const std::string& publisher_key,
+    ledger::type::Result result) {
+  if (result != ledger::type::Result::LEDGER_OK) {
+    Release();
+    return;
+  }
+
+  Profile* profile = Profile::FromBrowserContext(browser_context());
+  auto* rewards_service = RewardsServiceFactory::GetForProfile(profile);
+  if (!rewards_service) {
+    Release();
+    return;
+  }
+
+  rewards_service->GetPublisherInfo(
+      publisher_key,
+      base::Bind(&BraveRewardsTipUserFunction::OnTipUserGetPublisherInfo,
+                 this));
 }
 
 void BraveRewardsTipUserFunction::OnTipUserGetPublisherInfo(
@@ -394,6 +406,9 @@ void BraveRewardsTipUserFunction::ShowTipDialog() {
   media_meta_data_dict.SetStringKey("mediaType", params->media_type);
   media_meta_data_dict.SetStringKey("publisherKey", params->publisher_key);
   media_meta_data_dict.SetStringKey("publisherName", params->publisher_name);
+  media_meta_data_dict.SetStringKey(
+      "publisherScreenName",
+      params->publisher_screen_name);
   media_meta_data_dict.SetStringKey("postId", params->post_id);
   media_meta_data_dict.SetStringKey("postTimestamp", params->post_timestamp);
   media_meta_data_dict.SetStringKey("postText", params->post_text);
@@ -404,175 +419,6 @@ void BraveRewardsTipUserFunction::ShowTipDialog() {
   params_dict->SetPath("mediaMetaData", std::move(media_meta_data_dict));
 
   ::brave_rewards::OpenTipDialog(contents, std::move(params_dict));
-}
-
-BraveRewardsTipRedditUserFunction::BraveRewardsTipRedditUserFunction()
-    : weak_factory_(this) {
-}
-
-BraveRewardsTipRedditUserFunction::~BraveRewardsTipRedditUserFunction() {
-}
-
-ExtensionFunction::ResponseAction BraveRewardsTipRedditUserFunction::Run() {
-  std::unique_ptr<brave_rewards::TipRedditUser::Params> params(
-      brave_rewards::TipRedditUser::Params::Create(*args_));
-  EXTENSION_FUNCTION_VALIDATE(params.get());
-
-  if (!brave::IsRegularProfile(browser_context())) {
-    return RespondNow(
-        Error("Cannot tip Reddit user in a private context"));
-  }
-
-  Profile* profile = Profile::FromBrowserContext(browser_context());
-  RewardsService* rewards_service = RewardsServiceFactory::GetForProfile(
-      profile);
-
-  if (rewards_service) {
-    AddRef();
-    std::map<std::string, std::string> args;
-    args["user_name"] = params->media_meta_data.user_name;
-    args["post_text"] = params->media_meta_data.post_text;
-    args["post_rel_date"] = params->media_meta_data.post_rel_date;
-    rewards_service->SaveInlineMediaInfo(
-        params->media_meta_data.media_type,
-        args,
-        base::Bind(
-            &BraveRewardsTipRedditUserFunction::OnRedditPublisherInfoSaved,
-            weak_factory_.GetWeakPtr()));
-  }
-
-  return RespondNow(NoArguments());
-}
-
-void BraveRewardsTipRedditUserFunction::OnRedditPublisherInfoSaved(
-    ledger::type::PublisherInfoPtr publisher) {
-  std::unique_ptr<brave_rewards::TipRedditUser::Params> params(
-      brave_rewards::TipRedditUser::Params::Create(*args_));
-
-  if (!publisher) {
-    Release();
-    return;
-  }
-
-  content::WebContents* contents = nullptr;
-  if (!ExtensionTabUtil::GetTabById(
-        params->tab_id,
-        Profile::FromBrowserContext(browser_context()),
-        false,
-        nullptr,
-        nullptr,
-        &contents,
-        nullptr)) {
-    Release();
-    return;
-  }
-
-  std::unique_ptr<base::DictionaryValue> params_dict =
-      std::make_unique<base::DictionaryValue>();
-  params_dict->SetStringKey("publisherKey", publisher->id);
-  params_dict->SetStringKey("url", publisher->url);
-
-  base::Value media_meta_data_dict(base::Value::Type::DICTIONARY);
-  media_meta_data_dict.SetStringKey("name", publisher->name);
-  media_meta_data_dict.SetStringKey(
-      "userName", params->media_meta_data.user_name);
-  media_meta_data_dict.SetStringKey(
-      "postText", params->media_meta_data.post_text);
-  media_meta_data_dict.SetStringKey(
-      "postRelDate", params->media_meta_data.post_rel_date);
-  media_meta_data_dict.SetStringKey(
-      "mediaType", params->media_meta_data.media_type);
-  params_dict->SetPath(
-      "mediaMetaData", std::move(media_meta_data_dict));
-
-  ::brave_rewards::OpenTipDialog(
-      contents, std::move(params_dict));
-
-  Release();
-}
-
-BraveRewardsTipGitHubUserFunction::BraveRewardsTipGitHubUserFunction()
-    : weak_factory_(this) {
-}
-
-BraveRewardsTipGitHubUserFunction::~BraveRewardsTipGitHubUserFunction() {
-}
-
-ExtensionFunction::ResponseAction
-BraveRewardsTipGitHubUserFunction::Run() {
-  std::unique_ptr<brave_rewards::TipGitHubUser::Params> params(
-      brave_rewards::TipGitHubUser::Params::Create(*args_));
-  EXTENSION_FUNCTION_VALIDATE(params.get());
-
-  // Sanity check: don't allow tips in private / tor contexts,
-  // although the command should not have been enabled in the first place.
-  if (!brave::IsRegularProfile(browser_context())) {
-    return RespondNow(
-        Error("Cannot tip Twitter user in a private context"));
-  }
-
-  Profile* profile = Profile::FromBrowserContext(browser_context());
-  auto* rewards_service = RewardsServiceFactory::GetForProfile(profile);
-  if (rewards_service) {
-    AddRef();
-    std::map<std::string, std::string> args;
-    args["user_name"] = params->media_meta_data.user_name;
-    if (args["user_name"].empty()) {
-      LOG(ERROR) << "Cannot tip user without username";
-    } else {
-      rewards_service->SaveInlineMediaInfo(
-          params->media_meta_data.media_type,
-          args,
-          base::Bind(&BraveRewardsTipGitHubUserFunction::
-                     OnGitHubPublisherInfoSaved,
-                     weak_factory_.GetWeakPtr()));
-    }
-  }
-  return RespondNow(NoArguments());
-}
-
-
-void BraveRewardsTipGitHubUserFunction::OnGitHubPublisherInfoSaved(
-    ledger::type::PublisherInfoPtr publisher) {
-  std::unique_ptr<brave_rewards::TipGitHubUser::Params> params(
-      brave_rewards::TipGitHubUser::Params::Create(*args_));
-
-  if (!publisher) {
-    // TODO(nejczdovc): what should we do in this case?
-    Release();
-    return;
-  }
-
-  // Get web contents for this tab
-  content::WebContents* contents = nullptr;
-  if (!ExtensionTabUtil::GetTabById(
-        params->tab_id,
-        Profile::FromBrowserContext(browser_context()),
-        false,
-        nullptr,
-        nullptr,
-        &contents,
-        nullptr)) {
-    Release();
-    return;
-  }
-
-  auto params_dict = std::make_unique<base::DictionaryValue>();
-  params_dict->SetString("publisherKey", publisher->id);
-  params_dict->SetString("url", publisher->url);
-
-  base::Value media_meta_data_dict(base::Value::Type::DICTIONARY);
-  media_meta_data_dict.SetStringKey("mediaType",
-                                  params->media_meta_data.media_type);
-  media_meta_data_dict.SetStringKey("name", publisher->name);
-  media_meta_data_dict.SetStringKey("userName",
-                                  params->media_meta_data.user_name);
-  params_dict->SetPath("mediaMetaData",
-                       std::move(media_meta_data_dict));
-
-  ::brave_rewards::OpenTipDialog(contents, std::move(params_dict));
-
-  Release();
 }
 
 BraveRewardsGetPublisherDataFunction::~BraveRewardsGetPublisherDataFunction() {
@@ -729,7 +575,6 @@ void BraveRewardsClaimPromotionFunction::OnClaimPromotion(
     const std::string& captcha_image,
     const std::string& hint,
     const std::string& captcha_id) {
-
   auto data = std::make_unique<base::Value>(base::Value::Type::DICTIONARY);
   data->SetIntKey("result", static_cast<int>(result));
   data->SetStringKey("promotionId", promotion_id);
@@ -809,31 +654,6 @@ void BraveRewardsGetPendingContributionsTotalFunction::OnGetPendingTotal(
   Respond(OneArgument(std::make_unique<base::Value>(amount)));
 }
 
-BraveRewardsGetRewardsMainEnabledFunction::
-~BraveRewardsGetRewardsMainEnabledFunction() {
-}
-
-ExtensionFunction::ResponseAction
-BraveRewardsGetRewardsMainEnabledFunction::Run() {
-  Profile* profile = Profile::FromBrowserContext(browser_context());
-  RewardsService* rewards_service =
-    RewardsServiceFactory::GetForProfile(profile);
-
-  if (!rewards_service) {
-    return RespondNow(Error("Rewards service is not initialized"));
-  }
-
-  rewards_service->GetRewardsMainEnabled(base::Bind(
-        &BraveRewardsGetRewardsMainEnabledFunction::OnGetRewardsMainEnabled,
-        this));
-  return RespondLater();
-}
-
-void BraveRewardsGetRewardsMainEnabledFunction::OnGetRewardsMainEnabled(
-    bool enabled) {
-  Respond(OneArgument(std::make_unique<base::Value>(enabled)));
-}
-
 BraveRewardsSaveAdsSettingFunction::~BraveRewardsSaveAdsSettingFunction() {
 }
 
@@ -849,6 +669,26 @@ ExtensionFunction::ResponseAction BraveRewardsSaveAdsSettingFunction::Run() {
       ads_service_->SetEnabled(is_enabled);
     }
   }
+  return RespondNow(NoArguments());
+}
+
+BraveRewardsSetAutoContributeEnabledFunction::
+~BraveRewardsSetAutoContributeEnabledFunction() {
+}
+
+ExtensionFunction::ResponseAction
+BraveRewardsSetAutoContributeEnabledFunction::Run() {
+  std::unique_ptr<brave_rewards::SetAutoContributeEnabled::Params> params(
+      brave_rewards::SetAutoContributeEnabled::Params::Create(*args_));
+  Profile* profile = Profile::FromBrowserContext(browser_context());
+  RewardsService* rewards_service =
+      RewardsServiceFactory::GetForProfile(profile);
+
+  if (!rewards_service) {
+    return RespondNow(Error("Rewards service is not initialized"));
+  }
+
+  rewards_service->SetAutoContributeEnabled(params->enabled);
   return RespondNow(NoArguments());
 }
 
@@ -874,27 +714,6 @@ BraveRewardsGetACEnabledFunction::Run() {
 
 void BraveRewardsGetACEnabledFunction::OnGetACEnabled(bool enabled) {
   Respond(OneArgument(std::make_unique<base::Value>(enabled)));
-}
-
-BraveRewardsSaveSettingFunction::~BraveRewardsSaveSettingFunction() {
-}
-
-ExtensionFunction::ResponseAction BraveRewardsSaveSettingFunction::Run() {
-  std::unique_ptr<brave_rewards::SaveSetting::Params> params(
-      brave_rewards::SaveSetting::Params::Create(*args_));
-
-  Profile* profile = Profile::FromBrowserContext(browser_context());
-  RewardsService* rewards_service =
-    RewardsServiceFactory::GetForProfile(profile);
-
-  if (rewards_service) {
-    if (params->key == "enabledMain") {
-      rewards_service->SetRewardsMainEnabled(
-          std::stoi(params->value.c_str()));
-    }
-  }
-
-  return RespondNow(NoArguments());
 }
 
 BraveRewardsSaveRecurringTipFunction::
@@ -1321,31 +1140,6 @@ void BraveRewardsGetAdsEstimatedEarningsFunction::OnAdsEstimatedEarnings(
       std::make_unique<base::Value>(estimated_pending_rewards)));
 }
 
-BraveRewardsGetWalletExistsFunction::
-~BraveRewardsGetWalletExistsFunction() {
-}
-
-ExtensionFunction::ResponseAction
-BraveRewardsGetWalletExistsFunction::Run() {
-  Profile* profile = Profile::FromBrowserContext(browser_context());
-  RewardsService* rewards_service =
-    RewardsServiceFactory::GetForProfile(profile);
-
-  if (!rewards_service) {
-    return RespondNow(Error("Rewards service is not initialized"));
-  }
-
-  rewards_service->IsWalletCreated(base::Bind(
-        &BraveRewardsGetWalletExistsFunction::OnGetWalletExists,
-        this));
-  return RespondLater();
-}
-
-void BraveRewardsGetWalletExistsFunction::OnGetWalletExists(
-    const bool exists) {
-  Respond(OneArgument(std::make_unique<base::Value>(exists)));
-}
-
 BraveRewardsGetAdsSupportedFunction::
 ~BraveRewardsGetAdsSupportedFunction() {
 }
@@ -1405,6 +1199,50 @@ BraveRewardsIsInitializedFunction::Run() {
   const bool initialized = rewards_service->IsInitialized();
   return RespondNow(
       OneArgument(std::make_unique<base::Value>(initialized)));
+}
+
+BraveRewardsShouldShowOnboardingFunction::
+~BraveRewardsShouldShowOnboardingFunction() = default;
+
+ExtensionFunction::ResponseAction
+BraveRewardsShouldShowOnboardingFunction::Run() {
+  Profile* profile = Profile::FromBrowserContext(browser_context());
+  auto* rewards_service = RewardsServiceFactory::GetForProfile(profile);
+  if (!rewards_service) {
+    return RespondNow(Error("Rewards service is not initialized"));
+  }
+
+  const bool should_show = rewards_service->ShouldShowOnboarding();
+  return RespondNow(
+      OneArgument(std::make_unique<base::Value>(should_show)));
+}
+
+BraveRewardsSaveOnboardingResultFunction::
+~BraveRewardsSaveOnboardingResultFunction() = default;
+
+ExtensionFunction::ResponseAction
+BraveRewardsSaveOnboardingResultFunction::Run() {
+  using ::brave_rewards::OnboardingResult;
+
+  std::unique_ptr<brave_rewards::SaveOnboardingResult::Params> params(
+      brave_rewards::SaveOnboardingResult::Params::Create(*args_));
+  EXTENSION_FUNCTION_VALIDATE(params.get());
+
+  Profile* profile = Profile::FromBrowserContext(browser_context());
+  auto* rewards_service = RewardsServiceFactory::GetForProfile(profile);
+  if (!rewards_service) {
+    return RespondNow(Error("Rewards service is not initialized"));
+  }
+
+  if (params->result == "opted-in") {
+    rewards_service->SaveOnboardingResult(OnboardingResult::kOptedIn);
+  } else if (params->result == "dismissed") {
+    rewards_service->SaveOnboardingResult(OnboardingResult::kDismissed);
+  } else {
+    NOTREACHED();
+  }
+
+  return RespondNow(NoArguments());
 }
 
 }  // namespace api
