@@ -6,6 +6,7 @@
 #ifndef BRAVE_CONTENT_BROWSER_COSMETIC_FILTERS_OBSERVER_H_
 #define BRAVE_CONTENT_BROWSER_COSMETIC_FILTERS_OBSERVER_H_
 
+#include <string>
 #include <vector>
 
 namespace content {
@@ -14,10 +15,10 @@ class RenderFrameHost;
 
 class CosmeticFiltersObserver {
  public:
-   CosmeticFiltersObserver() {}
-   ~CosmeticFiltersObserver() {}
+  CosmeticFiltersObserver() {}
+  ~CosmeticFiltersObserver() {}
 
-   virtual void HiddenClassIdSelectors(RenderFrameHost* render_frame_host,
+  virtual void HiddenClassIdSelectors(RenderFrameHost* render_frame_host,
       const std::vector<std::string>& classes,
       const std::vector<std::string>& ids) {}
 };

@@ -6,6 +6,8 @@
 #ifndef BRAVE_COMPONENTS_COSMETIC_FILTERS_CONTENT_RENDERER_COSMETIC_FILTERS_JS_RENDER_FRAME_OBSERVER_H_
 #define BRAVE_COMPONENTS_COSMETIC_FILTERS_CONTENT_RENDERER_COSMETIC_FILTERS_JS_RENDER_FRAME_OBSERVER_H_
 
+#include <memory>
+
 #include "base/memory/weak_ptr.h"
 #include "brave/components/cosmetic_filters/content/renderer/cosmetic_filters_js_handler.h"
 #include "content/public/renderer/render_frame.h"
@@ -16,7 +18,8 @@ namespace cosmetic_filters_worker {
 
 // CosmeticFiltersJsRenderFrame observer waits for a page to be loaded and then
 // adds the Javascript worker object.
-class CosmeticFiltersJsRenderFrameObserver : public content::RenderFrameObserver {
+class CosmeticFiltersJsRenderFrameObserver :
+    public content::RenderFrameObserver {
  public:
   CosmeticFiltersJsRenderFrameObserver(content::RenderFrame* render_frame,
       const int32_t isolated_world_id);

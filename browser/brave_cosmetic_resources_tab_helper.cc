@@ -3,7 +3,7 @@
  * License, v. 3.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#include "brave/browser/android/brave_cosmetic_resources_tab_helper.h"
+#include "brave/browser/brave_cosmetic_resources_tab_helper.h"
 
 #include <memory>
 #include <string>
@@ -40,7 +40,8 @@ const char k_observing_script[] =
       "(!notYetQueriedIds || notYetQueriedIds.length === 0)) {"
     "return;"
   "};"
-  "cf_worker.hiddenClassIdSelectors(JSON.stringify({classes: notYetQueriedClasses, ids: notYetQueriedIds}));"
+  "cf_worker.hiddenClassIdSelectors("
+     "JSON.stringify({classes: notYetQueriedClasses, ids: notYetQueriedIds}));"
   "/*chrome.runtime.sendMessage({"
     "type: 'hiddenClassIdSelectors',"
     "classes: notYetQueriedClasses || [],"
@@ -208,7 +209,6 @@ void BraveCosmeticResourcesTabHelper::GetUrlCosmeticResourcesOnUI(
     // Working on css rules
     if (!main_frame)
       return;
-
     CSSRulesRoutine(url, resources_dict, frame_id);
   }
 }

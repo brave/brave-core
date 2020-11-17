@@ -66,31 +66,31 @@ BraveShieldsUrlCosmeticResourcesFunction::Run() {
 
 std::unique_ptr<base::ListValue> BraveShieldsUrlCosmeticResourcesFunction::
     GetUrlCosmeticResourcesOnTaskRunner(const std::string& url) {
-  base::Optional<base::Value> resources = g_brave_browser_process->
-      ad_block_service()->UrlCosmeticResources(url);
+  // base::Optional<base::Value> resources = g_brave_browser_process->
+  //     ad_block_service()->UrlCosmeticResources(url);
 
-  if (!resources || !resources->is_dict()) {
-    return std::unique_ptr<base::ListValue>();
-  }
+  // if (!resources || !resources->is_dict()) {
+  //   return std::unique_ptr<base::ListValue>();
+  // }
 
-  base::Optional<base::Value> regional_resources = g_brave_browser_process->
-      ad_block_regional_service_manager()->UrlCosmeticResources(url);
+  // base::Optional<base::Value> regional_resources = g_brave_browser_process->
+  //     ad_block_regional_service_manager()->UrlCosmeticResources(url);
 
-  if (regional_resources && regional_resources->is_dict()) {
-    ::brave_shields::MergeResourcesInto(
-        std::move(*regional_resources), &*resources, /*force_hide=*/false);
-  }
+  // if (regional_resources && regional_resources->is_dict()) {
+  //   ::brave_shields::MergeResourcesInto(
+  //       std::move(*regional_resources), &*resources, /*force_hide=*/false);
+  // }
 
-  base::Optional<base::Value> custom_resources = g_brave_browser_process->
-      ad_block_custom_filters_service()->UrlCosmeticResources(url);
+  // base::Optional<base::Value> custom_resources = g_brave_browser_process->
+  //     ad_block_custom_filters_service()->UrlCosmeticResources(url);
 
-  if (custom_resources && custom_resources->is_dict()) {
-    ::brave_shields::MergeResourcesInto(
-        std::move(*custom_resources), &*resources, /*force_hide=*/true);
-  }
+  // if (custom_resources && custom_resources->is_dict()) {
+  //   ::brave_shields::MergeResourcesInto(
+  //       std::move(*custom_resources), &*resources, /*force_hide=*/true);
+  // }
 
   auto result_list = std::make_unique<base::ListValue>();
-  result_list->Append(std::move(*resources));
+  // result_list->Append(std::move(*resources));
   return result_list;
 }
 
@@ -126,36 +126,36 @@ std::unique_ptr<base::ListValue> BraveShieldsHiddenClassIdSelectorsFunction::
         const std::vector<std::string>& classes,
         const std::vector<std::string>& ids,
         const std::vector<std::string>& exceptions) {
-  base::Optional<base::Value> hide_selectors = g_brave_browser_process->
-      ad_block_service()->HiddenClassIdSelectors(classes, ids, exceptions);
+  // base::Optional<base::Value> hide_selectors = g_brave_browser_process->
+  //     ad_block_service()->HiddenClassIdSelectors(classes, ids, exceptions);
 
-  base::Optional<base::Value> regional_selectors = g_brave_browser_process->
-      ad_block_regional_service_manager()->
-          HiddenClassIdSelectors(classes, ids, exceptions);
+  // base::Optional<base::Value> regional_selectors = g_brave_browser_process->
+  //     ad_block_regional_service_manager()->
+  //         HiddenClassIdSelectors(classes, ids, exceptions);
 
-  base::Optional<base::Value> custom_selectors = g_brave_browser_process->
-      ad_block_custom_filters_service()->
-          HiddenClassIdSelectors(classes, ids, exceptions);
+  // base::Optional<base::Value> custom_selectors = g_brave_browser_process->
+  //     ad_block_custom_filters_service()->
+  //         HiddenClassIdSelectors(classes, ids, exceptions);
 
-  if (hide_selectors && hide_selectors->is_list()) {
-    if (regional_selectors && regional_selectors->is_list()) {
-      for (auto i = regional_selectors->GetList().begin();
-              i < regional_selectors->GetList().end();
-              i++) {
-        hide_selectors->Append(std::move(*i));
-      }
-    }
-  } else {
-    hide_selectors = std::move(regional_selectors);
-  }
+  // if (hide_selectors && hide_selectors->is_list()) {
+  //   if (regional_selectors && regional_selectors->is_list()) {
+  //     for (auto i = regional_selectors->GetList().begin();
+  //             i < regional_selectors->GetList().end();
+  //             i++) {
+  //       hide_selectors->Append(std::move(*i));
+  //     }
+  //   }
+  // } else {
+  //   hide_selectors = std::move(regional_selectors);
+  // }
 
   auto result_list = std::make_unique<base::ListValue>();
-  if (hide_selectors && hide_selectors->is_list()) {
-    result_list->Append(std::move(*hide_selectors));
-  }
-  if (custom_selectors && custom_selectors->is_list()) {
-    result_list->Append(std::move(*custom_selectors));
-  }
+  // if (hide_selectors && hide_selectors->is_list()) {
+  //   result_list->Append(std::move(*hide_selectors));
+  // }
+  // if (custom_selectors && custom_selectors->is_list()) {
+  //   result_list->Append(std::move(*custom_selectors));
+  // }
 
   return result_list;
 }

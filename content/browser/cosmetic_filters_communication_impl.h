@@ -3,8 +3,8 @@
  * License, v. 3.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#ifndef BRAVE_CONTENT_BROWSER_COSMETIC_COMMUNICATION_IMPL_H_
-#define BRAVE_CONTENT_BROWSER_COSMETIC_COMMUNICATION_IMPL_H_
+#ifndef BRAVE_CONTENT_BROWSER_COSMETIC_FILTERS_COMMUNICATION_IMPL_H_
+#define BRAVE_CONTENT_BROWSER_COSMETIC_FILTERS_COMMUNICATION_IMPL_H_
 
 #include <string>
 #include <vector>
@@ -20,26 +20,26 @@ class RenderFrameHost;
 class CosmeticFiltersObserver;
 
 class CosmeticFiltersCommunicationImpl final
-	: public cf_comm::mojom::CosmeticFiltersCommunication {
+  : public cf_comm::mojom::CosmeticFiltersCommunication {
  public:
   static void CreateInstance(content::RenderFrameHost* render_frame_host,
       CosmeticFiltersObserver* cosmetic_filters_observer);
 
   CosmeticFiltersCommunicationImpl(
-   	   content::RenderFrameHost* render_frame_host,
-       CosmeticFiltersObserver* cosmetic_filters_observer);
+      content::RenderFrameHost* render_frame_host,
+      CosmeticFiltersObserver* cosmetic_filters_observer);
   ~CosmeticFiltersCommunicationImpl() override;
 
-   // cf_comm::mojom::CosmeticFiltersCommunication
-   void HiddenClassIdSelectors(const std::string& input) override;
+  // cf_comm::mojom::CosmeticFiltersCommunication
+  void HiddenClassIdSelectors(const std::string& input) override;
 
-   void SetObserver(CosmeticFiltersObserver* cosmetic_filters_observer);
+  void SetObserver(CosmeticFiltersObserver* cosmetic_filters_observer);
 
  private:
-   content::RenderFrameHost* render_frame_host_;
-   CosmeticFiltersObserver* cosmetic_filters_observer_;
+  content::RenderFrameHost* render_frame_host_;
+  CosmeticFiltersObserver* cosmetic_filters_observer_;
 };
 
 }  // namespace content
 
-#endif  // BRAVE_CONTENT_BROWSER_COSMETIC_COMMUNICATION_IMPL_H_
+#endif  // BRAVE_CONTENT_BROWSER_COSMETIC_FILTERS_COMMUNICATION_IMPL_H_

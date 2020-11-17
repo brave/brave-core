@@ -71,7 +71,7 @@ void CosmeticFiltersJSHandler::EnsureConnected() {
   if (!cs_communicator_) {
     render_frame_->GetBrowserInterfaceBroker()->GetInterface(
         cs_communicator_.BindNewPipeAndPassReceiver());
-  }  
+  }
 }
 
 v8::Local<v8::Object> GetOrCreateWorkerObject(

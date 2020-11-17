@@ -43,15 +43,15 @@ void CosmeticFiltersCommunicationImpl::SetObserver(
 }
 
 void CosmeticFiltersCommunicationImpl::HiddenClassIdSelectors(
-	  const std::string& input) {
+    const std::string& input) {
   base::Optional<base::Value> input_value = base::JSONReader::Read(input);
   if (!input_value || !input_value->is_dict()) {
-  	// Nothing to work with
-  	return;
+    // Nothing to work with
+    return;
   }
   base::DictionaryValue* input_dict;
   if (!input_value->GetAsDictionary(&input_dict)) {
-  	return;
+    return;
   }
   std::vector<std::string> classes;
   base::ListValue* classes_list;

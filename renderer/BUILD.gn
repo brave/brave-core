@@ -12,10 +12,8 @@ source_set("renderer") {
    "//chrome/renderer",
   ]
 
-  if (is_android) {
-    deps = [
-      "//chrome/common",
-      "//brave/components/cosmetic_filters/content/renderer",
-    ]
-  }
+  deps = [
+    "//chrome/common",
+    "//brave/components/cosmetic_filters/content/renderer",
+  ]
 }

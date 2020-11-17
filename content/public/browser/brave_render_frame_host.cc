@@ -5,16 +5,12 @@
 
 #include "content/public/browser/render_frame_host.h"
 
-#if defined(OS_ANDROID)
 #include "brave/content/browser/cosmetic_filters_communication_impl.h"
-#endif
 
 namespace content {
 
 RenderFrameHost::RenderFrameHost() {
-#if defined(OS_ANDROID)
   cosmetic_filters_communication_impl_ = nullptr;
-#endif
 }
 
 RenderFrameHost::~RenderFrameHost() {}
