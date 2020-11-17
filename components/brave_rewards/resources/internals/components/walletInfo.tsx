@@ -30,7 +30,7 @@ const getInfo = (state: RewardsInternals.State) => {
         {getLocale('walletPaymentId')} {state.info.walletPaymentId || ''}
       </div>
       <div>
-        {getLocale('bootStamp')}: {formatDate(state.info.bootStamp * 1000)}
+        {getLocale('bootStamp')} {formatDate(state.info.bootStamp * 1000)}
       </div>
     </>)
 }
