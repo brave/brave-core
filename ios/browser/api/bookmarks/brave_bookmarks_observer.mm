@@ -18,7 +18,7 @@
 #error "This file requires ARC support."
 #endif
 
-@interface BookmarkNode (Private)
+@interface IOSBookmarkNode (Private)
 - (instancetype)initWithNode:(const bookmarks::BookmarkNode*)node
                        model:(bookmarks::BookmarkModel*)model;
 @end
@@ -100,12 +100,12 @@ void BookmarkModelListener::BookmarkNodeMoved(
     const bookmarks::BookmarkNode* node =
         new_parent->children()[new_index].get();
 
-    BookmarkNode* ios_node = [[BookmarkNode alloc] initWithNode:node
-                                                          model:model];
-    BookmarkNode* ios_old_parent = [[BookmarkNode alloc] initWithNode:old_parent
+    IOSBookmarkNode* ios_node = [[IOSBookmarkNode alloc] initWithNode:node
                                                                 model:model];
-    BookmarkNode* ios_new_parent = [[BookmarkNode alloc] initWithNode:new_parent
-                                                                model:model];
+    IOSBookmarkNode* ios_old_parent = [[IOSBookmarkNode alloc] initWithNode:old_parent
+                                                                      model:model];
+    IOSBookmarkNode* ios_new_parent = [[IOSBookmarkNode alloc] initWithNode:new_parent
+                                                                      model:model];
 
     [observer_ bookmarkNode:ios_node
             movedFromParent:ios_old_parent
@@ -118,8 +118,8 @@ void BookmarkModelListener::BookmarkNodeAdded(
     const bookmarks::BookmarkNode* parent,
     size_t index) {
   if ([observer_ respondsToSelector:@selector(bookmarkNodeChildrenChanged:)]) {
-    BookmarkNode* ios_parent = [[BookmarkNode alloc] initWithNode:parent
-                                                            model:model];
+    IOSBookmarkNode* ios_parent = [[IOSBookmarkNode alloc] initWithNode:parent
+                                                                  model:model];
     [observer_ bookmarkNodeChildrenChanged:ios_parent];
   }
 }
@@ -130,9 +130,9 @@ void BookmarkModelListener::BookmarkNodeRemoved(
     size_t old_index,
     const bookmarks::BookmarkNode* node,
     const std::set<GURL>& removed_urls) {
-  BookmarkNode* ios_node = [[BookmarkNode alloc] initWithNode:node model:model];
-  BookmarkNode* ios_parent = [[BookmarkNode alloc] initWithNode:parent
-                                                          model:model];
+  IOSBookmarkNode* ios_node = [[IOSBookmarkNode alloc] initWithNode:node model:model];
+  IOSBookmarkNode* ios_parent = [[IOSBookmarkNode alloc] initWithNode:parent
+                                                                model:model];
 
   if ([observer_ respondsToSelector:@selector(bookmarkNodeDeleted:
                                                        fromFolder:)]) {
@@ -148,8 +148,8 @@ void BookmarkModelListener::BookmarkNodeChanged(
     bookmarks::BookmarkModel* model,
     const bookmarks::BookmarkNode* node) {
   if ([observer_ respondsToSelector:@selector(bookmarkNodeChanged:)]) {
-    BookmarkNode* ios_node = [[BookmarkNode alloc] initWithNode:node
-                                                          model:model];
+    IOSBookmarkNode* ios_node = [[IOSBookmarkNode alloc] initWithNode:node
+                                                                model:model];
     [observer_ bookmarkNodeChanged:ios_node];
   }
 }
@@ -158,8 +158,8 @@ void BookmarkModelListener::BookmarkNodeFaviconChanged(
     bookmarks::BookmarkModel* model,
     const bookmarks::BookmarkNode* node) {
   if ([observer_ respondsToSelector:@selector(bookmarkNodeFaviconChanged:)]) {
-    BookmarkNode* ios_node = [[BookmarkNode alloc] initWithNode:node
-                                                          model:model];
+    IOSBookmarkNode* ios_node = [[IOSBookmarkNode alloc] initWithNode:node
+                                                                model:model];
     [observer_ bookmarkNodeFaviconChanged:ios_node];
   }
 }
@@ -168,8 +168,8 @@ void BookmarkModelListener::BookmarkNodeChildrenReordered(
     bookmarks::BookmarkModel* model,
     const bookmarks::BookmarkNode* node) {
   if ([observer_ respondsToSelector:@selector(bookmarkNodeChildrenChanged:)]) {
-    BookmarkNode* ios_node = [[BookmarkNode alloc] initWithNode:node
-                                                          model:model];
+    IOSBookmarkNode* ios_node = [[IOSBookmarkNode alloc] initWithNode:node
+                                                                model:model];
     [observer_ bookmarkNodeChildrenChanged:ios_node];
   }
 }
