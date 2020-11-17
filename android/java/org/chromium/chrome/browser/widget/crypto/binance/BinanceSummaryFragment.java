@@ -41,6 +41,9 @@ public class BinanceSummaryFragment extends Fragment {
     private BinanceNativeWorker mBinanceNativeWorker;
     private LinearLayout summaryLayout;
     private ProgressBar binanceCoinsProgress;
+    private TextView binanceBalanceText;
+    private TextView binanceBtcText;
+    private TextView binanceUSDBalanceText;
 
     private static final String ZERO_BALANCE = "0.000000";
     private static final String ZERO_USD_BALANCE = "0.00";
@@ -72,37 +75,40 @@ public class BinanceSummaryFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        TextView binanceBalanceText = view.findViewById(R.id.binance_balance_text);
-        TextView binanceBtcText = view.findViewById(R.id.binance_btc_text);
-        TextView binanceUSDBalanceText = view.findViewById(R.id.binance_usd_balance_text);
+        mBinanceNativeWorker.getAccountBalances();
+        binanceBalanceText = view.findViewById(R.id.binance_balance_text);
+        binanceBtcText = view.findViewById(R.id.binance_btc_text);
+        binanceUSDBalanceText = view.findViewById(R.id.binance_usd_balance_text);
 
         binanceCoinsProgress = view.findViewById(R.id.binance_coins_progress);
 
-        if (BinanceWidgetManager.binanceAccountBalance != null) {
-            binanceBalanceText.setText(String.format(Locale.getDefault(), "%.6f",
-                    BinanceWidgetManager.binanceAccountBalance.getTotalBTC()));
-            binanceBtcText.setText(BTC);
-            binanceUSDBalanceText.setText(
-                    String.format(getActivity().getResources().getString(R.string.usd_balance),
-                            String.format(Locale.getDefault(), "%.2f",
-                                    BinanceWidgetManager.binanceAccountBalance.getTotalUSD())));
-        }
         summaryLayout = view.findViewById(R.id.summary_layout);
         binanceCoinsProgress.setVisibility(View.VISIBLE);
         summaryLayout.setVisibility(View.GONE);
-        mBinanceNativeWorker.getCoinNetworks();
     }
 
     private BinanceObserver mBinanaceObserver = new BinanceObserver() {
         @Override
-        public void OnGetAccessToken(boolean isSuccess){};
-
-        @Override
-        public void OnGetAccountBalances(String jsonBalances, boolean isSuccess){};
-
-        @Override
-        public void OnGetConvertQuote(
-                String quoteId, String quotePrice, String totalFee, String totalAmount){};
+        public void OnGetAccountBalances(String jsonBalances, boolean isSuccess) {
+            if (!isSuccess) {
+                BinanceWidgetManager.getInstance().setUserAuthenticationForBinance(isSuccess);
+            } else {
+                try {
+                    BinanceWidgetManager.binanceAccountBalance =
+                            new BinanceAccountBalance(jsonBalances);
+                    binanceBalanceText.setText(String.format(Locale.getDefault(), "%.6f",
+                        BinanceWidgetManager.binanceAccountBalance.getTotalBTC()));
+                    binanceBtcText.setText(BTC);
+                    binanceUSDBalanceText.setText(
+                            String.format(getActivity().getResources().getString(R.string.usd_balance),
+                                    String.format(Locale.getDefault(), "%.2f",
+                                            BinanceWidgetManager.binanceAccountBalance.getTotalUSD())));
+                } catch (JSONException e) {
+                    Log.e("NTP", e.getMessage());
+                }
+                mBinanceNativeWorker.getCoinNetworks();
+            }
+        };
 
         @Override
         public void OnGetCoinNetworks(String jsonNetworks) {
@@ -165,18 +171,5 @@ public class BinanceSummaryFragment extends Fragment {
                 Log.e("NTP", e.getMessage());
             }
         };
-
-        @Override
-        public void OnGetDepositInfo(
-                String depositAddress, String depositeTag, boolean isSuccess){};
-
-        @Override
-        public void OnConfirmConvert(boolean isSuccess, String message){};
-
-        @Override
-        public void OnGetConvertAssets(String jsonAssets){};
-
-        @Override
-        public void OnRevokeToken(boolean isSuccess){};
     };
 }

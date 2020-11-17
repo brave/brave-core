@@ -62,6 +62,42 @@
     </LinearLayout>
 
     <LinearLayout
+        android:id="@+id/success_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="gone"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/success_message_text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:layout_marginStart="32dp"
+            android:layout_marginEnd="32dp"
+            android:gravity="center_horizontal"
+            android:textColor="@android:color/white"
+            android:textStyle="bold"
+            android:textSize="16sp"
+            android:layout_marginBottom="4dp"/>
+
+        <Button
+            android:id="@+id/btn_continue"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:paddingStart="16dp"
+            android:paddingEnd="16dp"
+            android:gravity="center"
+            android:layout_gravity="center"
+            android:background="@drawable/rounded_filled_binance"
+            android:textColor="@android:color/black"
+            android:textSize="16sp"
+            android:text="@string/continue_button" />
+
+    </LinearLayout>
+
+    <LinearLayout
         android:id="@+id/confirm_convert_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
