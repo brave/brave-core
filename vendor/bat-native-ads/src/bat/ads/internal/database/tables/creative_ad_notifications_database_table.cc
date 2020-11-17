@@ -120,7 +120,7 @@ void CreativeAdNotifications::GetForCategories(
           "INNER JOIN categories AS c "
               "ON c.creative_set_id = can.creative_set_id "
           "INNER JOIN creative_ads AS ca "
-              "ON ca.creative_set_id = can.creative_set_id "
+              "ON ca.creative_instance_id = can.creative_instance_id "
           "INNER JOIN geo_targets AS gt "
               "ON gt.campaign_id = can.campaign_id "
       "WHERE c.category IN %s "
@@ -194,7 +194,7 @@ void CreativeAdNotifications::GetAll(
           "INNER JOIN categories AS c "
               "ON c.creative_set_id = can.creative_set_id "
           "INNER JOIN creative_ads AS ca "
-              "ON ca.creative_set_id = can.creative_set_id "
+              "ON ca.creative_instance_id = can.creative_instance_id "
           "INNER JOIN geo_targets AS gt "
               "ON gt.campaign_id = can.campaign_id "
       "WHERE %s BETWEEN cam.start_at_timestamp AND cam.end_at_timestamp",
