@@ -18,7 +18,6 @@
 #include "base/feature_list.h"
 #include "base/files/file_path.h"
 #include "base/files/file_util.h"
-#include "base/files/scoped_temp_dir.h"
 #include "base/json/json_file_value_serializer.h"
 #include "base/one_shot_event.h"
 #include "base/sequenced_task_runner.h"
@@ -48,18 +47,19 @@ using extensions::Manifest;
 
 namespace {
 
-// Wraps a Greaselion rule in a component. The component is stored as an
-// unpacked extension in the system temp dir. Returns a valid extension that the
-// caller should take ownership of, or nullptr.
+// Wraps a Greaselion rule in a component. The component is stored as
+// an unpacked extension in the user data dir. Returns a valid
+// extension that the caller should take ownership of, or nullptr.
 //
 // NOTE: This function does file IO and should not be called on the UI thread.
 // NOTE: The caller takes ownership of the directory at extension->path() on the
 // returned object.
 scoped_refptr<Extension> ConvertGreaselionRuleToExtensionOnTaskRunner(
     greaselion::GreaselionRule* rule,
-    const base::FilePath& extensions_dir) {
+    const base::FilePath& install_dir,
+    std::vector<base::ScopedTempDir>* extension_dirs) {
   base::FilePath install_temp_dir =
-      extensions::file_util::GetInstallTempDir(extensions_dir);
+      extensions::file_util::GetInstallTempDir(install_dir);
   if (install_temp_dir.empty()) {
     LOG(ERROR) << "Could not get path to profile temp directory";
     return nullptr;
@@ -175,7 +175,12 @@ scoped_refptr<Extension> ConvertGreaselionRuleToExtensionOnTaskRunner(
     return nullptr;
   }
 
-  temp_dir.Take();  // The caller takes ownership of the directory.
+  // Take ownership of this temporary directory so it's deleted when
+  // the service exits
+  if (extension_dirs) {
+    extension_dirs->push_back(std::move(temp_dir));
+  }
+
   return extension;
 }
 }  // namespace
@@ -274,7 +279,7 @@ void GreaselionServiceImpl::CreateAndInstallExtensions() {
       base::PostTaskAndReplyWithResult(
           task_runner_.get(), FROM_HERE,
           base::BindOnce(&ConvertGreaselionRuleToExtensionOnTaskRunner,
-                         rule.get(), install_directory_),
+                         rule.get(), install_directory_, &extension_dirs_),
           base::BindOnce(&GreaselionServiceImpl::PostConvert,
                          weak_factory_.GetWeakPtr()));
     }
