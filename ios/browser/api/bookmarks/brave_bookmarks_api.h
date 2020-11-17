@@ -69,8 +69,8 @@ OBJC_EXPORT
 
 @property(nonatomic, nullable, readonly) IOSBookmarkNode* parent;
 @property(nonatomic, readonly) NSArray<IOSBookmarkNode*>* children;
-@property (nonatomic, readonly) NSArray<BookmarkFolder*>* nestedChildFolders;
-@property (nonatomic, readonly) NSUInteger childCount;
+@property(nonatomic, readonly) NSArray<BookmarkFolder*>* nestedChildFolders;
+@property(nonatomic, readonly) NSUInteger childCount;
 
 - (nullable IOSBookmarkNode*)childAtIndex:(NSUInteger)index;
 
