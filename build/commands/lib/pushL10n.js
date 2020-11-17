@@ -1,7 +1,7 @@
 const path = require('path')
 const config = require('../lib/config')
 const util = require('../lib/util')
-const {braveTopLevelPaths, ethereumRemoteClientPaths} = require('./l10nUtil')
+const {braveTopLevelPaths, ethereumRemoteClientPaths, getGreaselionScriptPaths} = require('./l10nUtil')
 
 const pushL10n = (options) => {
   const runOptions = { cwd: config.srcDir }
@@ -10,6 +10,11 @@ const pushL10n = (options) => {
   if (options.extension) {
     if (options.extension === 'ethereum-remote-client') {
       ethereumRemoteClientPaths.forEach((sourceStringPath) => {
+        util.run('python', ['script/push-l10n.py', '--source_string_path', sourceStringPath], cmdOptions)
+      })
+      return
+    } else if (options.extension === 'greaselion') {
+      getGreaselionScriptPaths().forEach((sourceStringPath) => {
         util.run('python', ['script/push-l10n.py', '--source_string_path', sourceStringPath], cmdOptions)
       })
       return

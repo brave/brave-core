@@ -156,6 +156,31 @@ module.exports.ethereumRemoteClientPaths = [
   '../../../ethereum-remote-client/brave/app/_locales/en/messages.json'
 ]
 
+// Helper function to retrieve Greaselion script paths relative to the
+// Brave paths.
+module.exports.getGreaselionScriptPaths = function () {
+  const jsonContent = fs.readFileSync('../../../brave-site-specific-scripts/Greaselion.json', 'utf8')
+  if (!jsonContent) {
+    console.error('Missing Greaselion.json')
+    return []
+  }
+
+  const jsonObject = JSON.parse(jsonContent)
+  if (!jsonObject) {
+    console.error('Malformed Greaselion.json')
+    return []
+  }
+
+  let paths = []
+  jsonObject.forEach((item) => {
+    if (item.messages) {
+      paths.push(`../../../brave-site-specific-scripts/${item.messages}/en_US/messages.json`)
+    }
+  })
+
+  return paths
+}
+
 // Helper functions that's, for a given pair of chromium to brave GRD mapping
 // from the supplied map, determines which GRDP parts are no longer present in
 // the chromium GRD file.
