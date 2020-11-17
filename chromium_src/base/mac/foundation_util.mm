@@ -29,6 +29,7 @@
 #include "ios/chrome/common/channel_info.h"
 #else
 #include "chrome/common/channel_info.h"
+using chrome::GetChannel;
 #endif
 #endif
 
@@ -40,10 +41,10 @@ const char* BaseBundleID() {
     return base_bundle_id;
   }
 
-#if !defined(OFFICIAL_BUILD) || defined(OS_IOS)
+#if !defined(OFFICIAL_BUILD)
   return "com.brave.Browser.development";
 #else
-  switch (chrome::GetChannel()) {
+  switch (GetChannel()) {
     case version_info::Channel::CANARY:
       return "com.brave.Browser.nightly";
     case version_info::Channel::DEV:
