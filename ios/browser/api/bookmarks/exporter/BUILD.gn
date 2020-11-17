@@ -23,12 +23,17 @@ source_set("exporter") {
   deps = [
     "//base",
     "//components/bookmarks/browser",
-    "//components/favicon_base",
     "//components/favicon/core",
+    "//components/favicon_base",
+    "//components/keyed_service/core:core",
+    "//components/strings:components_strings_grit",
     "//ios/chrome/browser",
+    "//ios/chrome/browser/bookmarks:bookmarks",
     "//ios/chrome/browser/browser_state",
+    "//ios/chrome/browser/favicon:favicon",
     "//ios/web/public/thread",
     "//net",
+    "//ui/base:base",
     "//url",
   ]
 

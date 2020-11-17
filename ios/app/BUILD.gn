@@ -25,6 +25,7 @@ source_set("app") {
     "//components/sync/base",
     "//ios/chrome/app:app_internal",
     "//ios/chrome/app/startup:startup_basic",
+    "//ios/chrome/app/startup:startup",
     "//ios/chrome/app:tests_fake_hook",
     "//ios/chrome/browser",
     "//ios/chrome/browser/browser_state",

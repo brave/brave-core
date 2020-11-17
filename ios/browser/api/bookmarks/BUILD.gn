@@ -19,10 +19,13 @@ source_set("bookmarks") {
   deps = [
     "//base",
     "//components/bookmarks/browser",
+    "//components/prefs:prefs",
     "//components/undo",
+    "//components/user_prefs:user_prefs",
     "//ios/chrome/browser",
     "//ios/chrome/browser/bookmarks",
     "//ios/chrome/browser/browser_state",
+    "//ios/chrome/browser/ui/bookmarks:bookmarks",
     "//ios/chrome/browser/undo",
     "//ios/web/public/thread",
     "//net",

@@ -24,12 +24,19 @@ source_set("importer") {
 
   deps = [
     "//base",
+    "//components/bookmarks/browser:browser",
+    "//components/bookmarks/common:common",
     "//components/favicon_base",
-    "//ios/chrome/browser/bookmarks",
+    "//components/prefs:prefs",
+    "//components/search_engines:search_engines",
+    "//components/strings:components_strings_grit",
+    "//components/user_prefs:user_prefs",
     "//ios/chrome/browser/bookmarks",
     "//ios/chrome/browser/browser_state",
+    "//ios/chrome/browser:browser",
     "//ios/web/public/thread",
     "//net",
+    "//ui/base:base",
     "//url",
   ]
 
