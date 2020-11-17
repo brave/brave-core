@@ -6,13 +6,14 @@ Resolves
 - [ ] There is a [ticket](https://github.com/brave/brave-browser/issues) for my issue.
 - [ ] Used Github [auto-closing keywords](https://help.github.com/articles/closing-issues-via-commit-messages/) in the commit message.
 - [ ] Wrote a good [PR/commit description](https://google.github.io/eng-practices/review/developer/cl-descriptions.html)
-- [ ] Added appropriate labels (`QA/Yes` or `QA/No`; `release-notes/include` or `release-notes/exclude`) to the associated issue
+- [ ] Added appropriate labels (`QA/Yes` or `QA/No`; `release-notes/include` or `release-notes/exclude`; `OS/...`) to the associated issue
 - [ ] Checked the PR locally: `npm run test -- brave_browser_tests`, `npm run test -- brave_unit_tests`, `npm run lint`, `npm run gn_check`, `npm run tslint`
 - [ ] Ran `git rebase master` (if needed).
 - [ ] Requested a security/privacy review as needed.
 
 ## Reviewer Checklist:
 
+- [ ] New files have MPL-2.0 license header.
 - [ ] Adequate test coverage exists to prevent regressions
 - [ ] Major classes, functions and non-trivial code blocks are well-commented
 - [ ] Changes in component dependencies are properly reflected in `gn`
