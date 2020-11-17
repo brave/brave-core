@@ -1131,28 +1131,29 @@ class BrowserViewController: UIViewController {
     }
 
     fileprivate func showSearchController() {
-        if searchController != nil {
-            return
-        }
+        if searchController != nil { return }
 
         let tabType = TabType.of(tabManager.selectedTab)
         searchController = SearchViewController(forTabType: tabType)
-        searchController!.searchEngines = profile.searchEngines
-        searchController!.searchDelegate = self
-        searchController!.profile = self.profile
+        
+        guard let searchController = searchController else { return }
+
+        searchController.searchEngines = profile.searchEngines
+        searchController.searchDelegate = self
+        searchController.profile = self.profile
 
         searchLoader = SearchLoader(profile: profile, topToolbar: topToolbar)
-        searchLoader?.addListener(searchController!)
+        searchLoader?.addListener(searchController)
 
-        addChild(searchController!)
-        view.addSubview(searchController!.view)
-        searchController!.view.snp.makeConstraints { make in
+        addChild(searchController)
+        view.addSubview(searchController.view)
+        searchController.view.snp.makeConstraints { make in
             make.top.equalTo(self.topToolbar.snp.bottom)
             make.left.right.bottom.equalTo(self.view)
             return
         }
         
-        searchController!.didMove(toParent: self)
+        searchController.didMove(toParent: self)
     }
     
     func updateTabsBarVisibility() {
