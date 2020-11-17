@@ -27,7 +27,6 @@ constexpr char kStatusClientBootstrap[] = "BOOTSTRAP";
 constexpr char kStatusClientBootstrapProgress[] = "PROGRESS=";
 constexpr char kStatusClientCircuitEstablished[] = "CIRCUIT_ESTABLISHED";
 constexpr char kStatusClientCircuitNotEstablished[] = "CIRCUIT_NOT_ESTABLISHED";
-bool g_prevent_tor_launch_for_tests = false;
 }  // namespace
 
 // static
@@ -42,13 +41,6 @@ TorLauncherFactory::TorLauncherFactory()
       control_(tor::TorControl::Create(this)),
       weak_ptr_factory_(this) {
   DCHECK_CURRENTLY_ON(BrowserThread::UI);
-  if (g_prevent_tor_launch_for_tests) {
-    tor_pid_ = 1234;
-    VLOG(1) << "Skipping the tor process launch in tests.";
-    return;
-  }
-
-  Init();
 }
 
 void TorLauncherFactory::Init() {
@@ -70,10 +62,6 @@ TorLauncherFactory::~TorLauncherFactory() {}
 
 void TorLauncherFactory::LaunchTorProcess(const tor::mojom::TorConfig& config) {
   DCHECK_CURRENTLY_ON(BrowserThread::UI);
-  if (g_prevent_tor_launch_for_tests) {
-    VLOG(1) << "Skipping the tor process launch in tests.";
-    return;
-  }
 
   if (is_starting_) {
     LOG(WARNING) << "tor process is already starting";
@@ -127,6 +115,19 @@ void TorLauncherFactory::KillTorProcess() {
   tor_pid_ = -1;
   is_connected_ = false;
 }
+
+int64_t TorLauncherFactory::GetTorPid() const {
+  return tor_pid_;
+}
+
+bool TorLauncherFactory::IsTorConnected() const {
+  return is_connected_;
+}
+
+std::string TorLauncherFactory::GetTorProxyURI() const {
+  return tor_proxy_uri_;
+}
+
 
 void TorLauncherFactory::AddObserver(tor::TorProfileServiceImpl* service) {
   observers_.AddObserver(service);
@@ -304,12 +305,4 @@ void TorLauncherFactory::OnTorRawEnd(const std::string& status,
                                      const std::string& line) {
   DCHECK_CURRENTLY_ON(BrowserThread::UI);
   VLOG(3) << "TOR CONTROL: end " << status << " " << line;
-}
-
-ScopedTorLaunchPreventerForTest::ScopedTorLaunchPreventerForTest() {
-  g_prevent_tor_launch_for_tests = true;
-}
-
-ScopedTorLaunchPreventerForTest::~ScopedTorLaunchPreventerForTest() {
-  g_prevent_tor_launch_for_tests = false;
 }

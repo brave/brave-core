@@ -8,6 +8,7 @@
 #include "base/test/bind_test_util.h"
 #include "brave/browser/tor/tor_profile_manager.h"
 #include "brave/browser/tor/tor_profile_service_factory.h"
+#include "brave/components/tor/mock_tor_launcher_factory.h"
 #include "brave/components/tor/tor_navigation_throttle.h"
 #include "brave/components/tor/tor_profile_service.h"
 #include "chrome/test/base/testing_browser_process.h"
@@ -46,6 +47,7 @@ class TorNavigationThrottleUnitTest : public testing::Test {
     tor_web_contents_ =
         content::WebContentsTester::CreateTestWebContents(tor_profile, nullptr);
     tor_profile_service_ = TorProfileServiceFactory::GetForContext(tor_profile);
+    tor_profile_service_->SetTorLauncherFactoryForTest(GetTorLauncherFactory());
     ASSERT_EQ(TorProfileServiceFactory::GetForContext(profile), nullptr);
   }
 
@@ -60,6 +62,10 @@ class TorNavigationThrottleUnitTest : public testing::Test {
   content::WebContents* tor_web_contents() { return tor_web_contents_.get(); }
 
   TorProfileService* tor_profile_service() { return tor_profile_service_; }
+
+  MockTorLauncherFactory* GetTorLauncherFactory() {
+    return &MockTorLauncherFactory::GetInstance();
+  }
 
  private:
   content::BrowserTaskEnvironment task_environment_;
@@ -83,13 +89,14 @@ TEST_F(TorNavigationThrottleUnitTest, Instantiation) {
   content::MockNavigationHandle test_handle2(web_contents());
   std::unique_ptr<TorNavigationThrottle> throttle2 =
       TorNavigationThrottle::MaybeCreateThrottleFor(
-          &test_handle2, nullptr,
-          web_contents()->GetBrowserContext()->IsTor());
+          &test_handle2, nullptr, web_contents()->GetBrowserContext()->IsTor());
   EXPECT_TRUE(throttle2 == nullptr);
 }
 
 TEST_F(TorNavigationThrottleUnitTest, WhitelistedScheme) {
-  tor_profile_service()->SetTorLaunchedForTest();
+  testing::Mock::AllowLeak(GetTorLauncherFactory());
+  EXPECT_CALL(*GetTorLauncherFactory(), IsTorConnected)
+      .WillRepeatedly(testing::Return(true));
   content::MockNavigationHandle test_handle(tor_web_contents());
   std::unique_ptr<TorNavigationThrottle> throttle =
       TorNavigationThrottle::MaybeCreateThrottleFor(
@@ -125,7 +132,9 @@ TEST_F(TorNavigationThrottleUnitTest, WhitelistedScheme) {
 // Every schemes other than whitelisted scheme, no matter it is internal or
 // external scheme
 TEST_F(TorNavigationThrottleUnitTest, BlockedScheme) {
-  tor_profile_service()->SetTorLaunchedForTest();
+  testing::Mock::AllowLeak(GetTorLauncherFactory());
+  EXPECT_CALL(*GetTorLauncherFactory(), IsTorConnected)
+      .WillRepeatedly(testing::Return(true));
   content::MockNavigationHandle test_handle(tor_web_contents());
   std::unique_ptr<TorNavigationThrottle> throttle =
       TorNavigationThrottle::MaybeCreateThrottleFor(
@@ -151,6 +160,9 @@ TEST_F(TorNavigationThrottleUnitTest, BlockedScheme) {
 }
 
 TEST_F(TorNavigationThrottleUnitTest, DeferUntilTorProcessLaunched) {
+  testing::Mock::AllowLeak(GetTorLauncherFactory());
+  EXPECT_CALL(*GetTorLauncherFactory(), IsTorConnected)
+      .WillRepeatedly(testing::Return(false));
   content::MockNavigationHandle test_handle(tor_web_contents());
   std::unique_ptr<TorNavigationThrottle> throttle =
       TorNavigationThrottle::MaybeCreateThrottleFor(
@@ -169,7 +181,8 @@ TEST_F(TorNavigationThrottleUnitTest, DeferUntilTorProcessLaunched) {
       << url2;
   throttle->OnTorCircuitEstablished(true);
   EXPECT_TRUE(was_navigation_resumed);
-  tor_profile_service()->SetTorLaunchedForTest();
+  EXPECT_CALL(*GetTorLauncherFactory(), IsTorConnected)
+      .WillRepeatedly(testing::Return(true));
   EXPECT_EQ(NavigationThrottle::PROCEED, throttle->WillStartRequest().action())
       << url;
 }

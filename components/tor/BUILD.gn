@@ -83,3 +83,17 @@ source_set("tor_unit_tests") {
     ]
   }
 }
+
+source_set("test_support") {
+  testonly = true
+  sources = [
+    "mock_tor_launcher_factory.cc",
+    "mock_tor_launcher_factory.h",
+  ]
+
+  deps = [
+    ":tor",
+    "//base",
+    "//testing/gmock",
+  ]
+}

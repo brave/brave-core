@@ -45,7 +45,7 @@ class TorProfileServiceImpl : public TorProfileService,
   std::unique_ptr<net::ProxyConfigService> CreateProxyConfigService() override;
   bool IsTorConnected() override;
   void KillTor() override;
-  void SetTorLaunchedForTest() override;
+  void SetTorLauncherFactoryForTest(TorLauncherFactory* factory) override;
 
 
   // For internal observer
@@ -66,7 +66,6 @@ class TorProfileServiceImpl : public TorProfileService,
   // BraveTorClientUpdater::Observer
   void OnExecutableReady(const base::FilePath& path) override;
 
-  bool is_tor_launched_for_test_ = false;
   content::BrowserContext* context_ = nullptr;
   BraveTorClientUpdater* tor_client_updater_ = nullptr;
   base::FilePath user_data_dir_;

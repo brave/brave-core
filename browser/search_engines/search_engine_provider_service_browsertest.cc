@@ -26,10 +26,6 @@
 #include "content/public/test/browser_test.h"
 #include "content/public/test/test_utils.h"
 
-#if BUILDFLAG(ENABLE_TOR)
-#include "brave/components/tor/tor_launcher_factory.h"
-#endif
-
 using SearchEngineProviderServiceTest = InProcessBrowserTest;
 
 TemplateURLData CreateTestSearchEngine() {
@@ -140,8 +136,6 @@ IN_PROC_BROWSER_TEST_F(SearchEngineProviderServiceTest,
 // Checks the default search engine of the tor profile.
 IN_PROC_BROWSER_TEST_F(SearchEngineProviderServiceTest,
                        PRE_CheckDefaultTorProfileSearchProviderTest) {
-  ScopedTorLaunchPreventerForTest prevent_tor_process;
-
   brave::NewOffTheRecordWindowTor(browser());
   content::RunAllTasksUntilIdle();
 
@@ -170,8 +164,6 @@ IN_PROC_BROWSER_TEST_F(SearchEngineProviderServiceTest,
 // sessions.
 IN_PROC_BROWSER_TEST_F(SearchEngineProviderServiceTest,
                        CheckDefaultTorProfileSearchProviderTest) {
-  ScopedTorLaunchPreventerForTest prevent_tor_process;
-
   brave::NewOffTheRecordWindowTor(browser());
   content::RunAllTasksUntilIdle();
 

@@ -29,6 +29,7 @@ namespace user_prefs {
 class PrefRegistrySyncable;
 }
 
+class TorLauncherFactory;
 class PrefRegistrySimple;
 
 namespace tor {
@@ -50,7 +51,7 @@ class TorProfileService : public KeyedService {
       CreateProxyConfigService() = 0;
   virtual bool IsTorConnected() = 0;
   virtual void KillTor() = 0;
-  virtual void SetTorLaunchedForTest() {}
+  virtual void SetTorLauncherFactoryForTest(TorLauncherFactory* factory) {}
   void AddObserver(TorLauncherServiceObserver* observer);
   void RemoveObserver(TorLauncherServiceObserver* observer);
 

@@ -22,16 +22,18 @@ namespace tor {
 class TorProfileServiceImpl;
 }
 
+class MockTorLauncherFactory;
+
 class TorLauncherFactory : public tor::TorControl::Delegate {
  public:
   static TorLauncherFactory* GetInstance();
 
-  void Init();
-  void LaunchTorProcess(const tor::mojom::TorConfig& config);
-  void KillTorProcess();
-  int64_t GetTorPid() const { return tor_pid_; }
-  bool IsTorConnected() const { return is_connected_; }
-  std::string GetTorProxyURI() const { return tor_proxy_uri_; }
+  virtual void Init();
+  virtual void LaunchTorProcess(const tor::mojom::TorConfig& config);
+  virtual void KillTorProcess();
+  virtual int64_t GetTorPid() const;
+  virtual bool IsTorConnected() const;
+  virtual std::string GetTorProxyURI() const;
 
   void AddObserver(tor::TorProfileServiceImpl* serice);
   void RemoveObserver(tor::TorProfileServiceImpl* service);
@@ -51,9 +53,10 @@ class TorLauncherFactory : public tor::TorControl::Delegate {
 
  private:
   friend struct base::DefaultSingletonTraits<TorLauncherFactory>;
+  friend class MockTorLauncherFactory;
 
   TorLauncherFactory();
-  ~TorLauncherFactory() final;
+  ~TorLauncherFactory() override;
 
   void OnTorControlCheckComplete();
 
@@ -86,13 +89,6 @@ class TorLauncherFactory : public tor::TorControl::Delegate {
   base::WeakPtrFactory<TorLauncherFactory> weak_ptr_factory_;
 
   DISALLOW_COPY_AND_ASSIGN(TorLauncherFactory);
-};
-
-// Use this in tests to avoid the actual launch of the Tor process.
-class ScopedTorLaunchPreventerForTest {
- public:
-  ScopedTorLaunchPreventerForTest();
-  ~ScopedTorLaunchPreventerForTest();
 };
 
 #endif  // BRAVE_COMPONENTS_TOR_TOR_LAUNCHER_FACTORY_H_

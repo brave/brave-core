@@ -7,11 +7,13 @@
 #include "brave/browser/brave_browser_process_impl.h"
 #include "brave/browser/brave_rewards/rewards_service_factory.h"
 #include "brave/browser/tor/tor_profile_manager.h"
+#include "brave/browser/tor/tor_profile_service_factory.h"
 #include "brave/common/brave_paths.h"
 #include "brave/components/brave_ads/browser/ads_service_factory.h"
 #include "brave/components/ipfs/buildflags/buildflags.h"
+#include "brave/components/tor/mock_tor_launcher_factory.h"
 #include "brave/components/tor/tor_constants.h"
-#include "brave/components/tor/tor_launcher_factory.h"
+#include "brave/components/tor/tor_profile_service.h"
 #include "chrome/browser/bookmarks/bookmark_model_factory.h"
 #include "chrome/browser/browser_process.h"
 #include "chrome/browser/content_settings/host_content_settings_map_factory.h"
@@ -43,16 +45,23 @@ namespace {
 // An observer that returns back to test code after a new profile is
 // initialized.
 void OnUnblockOnProfileCreation(base::RunLoop* run_loop,
+                                TorLauncherFactory* factory,
                                 Profile* profile,
                                 Profile::CreateStatus status) {
-  if (status == Profile::CREATE_STATUS_INITIALIZED)
+  if (status == Profile::CREATE_STATUS_INITIALIZED) {
+    tor::TorProfileService* service =
+        TorProfileServiceFactory::GetForContext(profile);
+    service->SetTorLauncherFactoryForTest(factory);
     run_loop->Quit();
+  }
 }
 
-Profile* SwitchToTorProfile(Profile* parent_profile) {
+Profile* SwitchToTorProfile(Profile* parent_profile,
+                            TorLauncherFactory* factory) {
   base::RunLoop run_loop;
   TorProfileManager::SwitchToTorProfile(
-      parent_profile, base::Bind(&OnUnblockOnProfileCreation, &run_loop));
+      parent_profile,
+      base::Bind(&OnUnblockOnProfileCreation, &run_loop, factory));
   run_loop.Run();
 
   BrowserList* browser_list = BrowserList::GetInstance();
@@ -79,11 +88,14 @@ class TorProfileManagerTest : public InProcessBrowserTest {
     return content_settings->GetContentSetting(
         primary_url, GURL(), ContentSettingsType::JAVASCRIPT, "");
   }
+
+  MockTorLauncherFactory* GetTorLauncherFactory() {
+    return &MockTorLauncherFactory::GetInstance();
+  }
 };
 
 IN_PROC_BROWSER_TEST_F(TorProfileManagerTest,
                        SwitchToTorProfileShareBookmarks) {
-  ScopedTorLaunchPreventerForTest prevent_tor_process;
   ProfileManager* profile_manager = g_browser_process->profile_manager();
   ASSERT_TRUE(profile_manager);
   Profile* parent_profile = ProfileManager::GetActiveUserProfile();
@@ -99,7 +111,8 @@ IN_PROC_BROWSER_TEST_F(TorProfileManagerTest,
   const bookmarks::BookmarkNode* new_node1 =
       parent_bookmark_model->AddURL(root, 0, title, url1);
 
-  Profile* tor_profile = SwitchToTorProfile(parent_profile);
+  Profile* tor_profile =
+      SwitchToTorProfile(parent_profile, GetTorLauncherFactory());
   ASSERT_TRUE(tor_profile->IsTor());
   EXPECT_TRUE(tor_profile->IsOffTheRecord());
   EXPECT_EQ(tor_profile->GetOriginalProfile(), parent_profile);
@@ -133,13 +146,12 @@ IN_PROC_BROWSER_TEST_F(TorProfileManagerTest,
 
 IN_PROC_BROWSER_TEST_F(TorProfileManagerTest,
                        SwitchToTorProfileExcludeServices) {
-  ScopedTorLaunchPreventerForTest prevent_tor_process;
-
   ProfileManager* profile_manager = g_browser_process->profile_manager();
   ASSERT_TRUE(profile_manager);
   Profile* parent_profile = ProfileManager::GetActiveUserProfile();
 
-  Profile* tor_profile = SwitchToTorProfile(parent_profile);
+  Profile* tor_profile =
+      SwitchToTorProfile(parent_profile, GetTorLauncherFactory());
   EXPECT_EQ(tor_profile->GetOriginalProfile(), parent_profile);
   ASSERT_TRUE(tor_profile->IsTor());
   EXPECT_TRUE(tor_profile->IsOffTheRecord());
@@ -153,8 +165,6 @@ IN_PROC_BROWSER_TEST_F(TorProfileManagerTest,
 }
 
 IN_PROC_BROWSER_TEST_F(TorProfileManagerTest, SwitchToTorProfileInheritPrefs) {
-  ScopedTorLaunchPreventerForTest prevent_tor_process;
-
   ProfileManager* profile_manager = g_browser_process->profile_manager();
   ASSERT_TRUE(profile_manager);
   Profile* parent_profile = ProfileManager::GetActiveUserProfile();
@@ -164,7 +174,8 @@ IN_PROC_BROWSER_TEST_F(TorProfileManagerTest, SwitchToTorProfileInheritPrefs) {
   parent_prefs->SetBoolean(bookmarks::prefs::kShowBookmarkBar, true);
   EXPECT_TRUE(parent_prefs->GetBoolean(bookmarks::prefs::kShowBookmarkBar));
 
-  Profile* tor_profile = SwitchToTorProfile(parent_profile);
+  Profile* tor_profile =
+      SwitchToTorProfile(parent_profile, GetTorLauncherFactory());
   ASSERT_TRUE(tor_profile->IsTor());
   EXPECT_TRUE(tor_profile->IsOffTheRecord());
   EXPECT_EQ(tor_profile->GetOriginalProfile(), parent_profile);
@@ -181,7 +192,6 @@ IN_PROC_BROWSER_TEST_F(TorProfileManagerTest, SwitchToTorProfileInheritPrefs) {
 IN_PROC_BROWSER_TEST_F(TorProfileManagerTest,
                        SwitchToTorProfileInheritContentSettings) {
   const GURL brave_url("https://www.brave.com");
-  ScopedTorLaunchPreventerForTest prevent_tor_process;
   ProfileManager* profile_manager = g_browser_process->profile_manager();
   ASSERT_TRUE(profile_manager);
 
@@ -192,7 +202,8 @@ IN_PROC_BROWSER_TEST_F(TorProfileManagerTest,
   SetScriptSetting(parent_content_settings, ContentSettingsPattern::Wildcard(),
                    CONTENT_SETTING_BLOCK);
 
-  Profile* tor_profile = SwitchToTorProfile(parent_profile);
+  Profile* tor_profile =
+      SwitchToTorProfile(parent_profile, GetTorLauncherFactory());
   ASSERT_TRUE(tor_profile->IsTor());
   EXPECT_TRUE(tor_profile->IsOffTheRecord());
   EXPECT_EQ(tor_profile->GetOriginalProfile(), parent_profile);
@@ -221,6 +232,22 @@ IN_PROC_BROWSER_TEST_F(TorProfileManagerTest,
   EXPECT_EQ(setting, CONTENT_SETTING_BLOCK);
 }
 
+IN_PROC_BROWSER_TEST_F(TorProfileManagerTest, CloseLastTorWindow) {
+  ProfileManager* profile_manager = g_browser_process->profile_manager();
+  ASSERT_TRUE(profile_manager);
+
+  Profile* parent_profile = ProfileManager::GetActiveUserProfile();
+  Profile* tor_profile =
+      SwitchToTorProfile(parent_profile, GetTorLauncherFactory());
+  ASSERT_TRUE(tor_profile->IsTor());
+  EXPECT_TRUE(tor_profile->IsOffTheRecord());
+  EXPECT_EQ(tor_profile->GetOriginalProfile(), parent_profile);
+
+  testing::Mock::AllowLeak(GetTorLauncherFactory());
+  EXPECT_CALL(*GetTorLauncherFactory(), KillTorProcess).Times(1);
+  TorProfileManager::CloseTorProfileWindows(tor_profile);
+}
+
 #if BUILDFLAG(ENABLE_EXTENSIONS)
 class TorProfileManagerExtensionTest : public extensions::ExtensionBrowserTest {
  public:
@@ -243,11 +270,14 @@ class TorProfileManagerExtensionTest : public extensions::ExtensionBrowserTest {
     NOTREACHED();
     return NULL;
   }
+
+  TorLauncherFactory* GetTorLauncherFactory() {
+    return &MockTorLauncherFactory::GetInstance();
+  }
 };
 
 IN_PROC_BROWSER_TEST_F(TorProfileManagerExtensionTest,
                        SwitchToTorProfileDisableExtensions) {
-  ScopedTorLaunchPreventerForTest prevent_tor_process;
   ProfileManager* profile_manager = g_browser_process->profile_manager();
   ASSERT_TRUE(profile_manager);
   Profile* parent_profile = ProfileManager::GetActiveUserProfile();
@@ -261,7 +291,8 @@ IN_PROC_BROWSER_TEST_F(TorProfileManagerExtensionTest,
       extensions::ExtensionPrefs::Get(parent_profile);
   parent_extension_prefs->SetIsIncognitoEnabled(id, true);
 
-  Profile* tor_profile = SwitchToTorProfile(parent_profile);
+  Profile* tor_profile =
+      SwitchToTorProfile(parent_profile, GetTorLauncherFactory());
   ASSERT_TRUE(tor_profile->IsTor());
   EXPECT_TRUE(tor_profile->IsOffTheRecord());
   EXPECT_EQ(tor_profile->GetOriginalProfile(), parent_profile);
