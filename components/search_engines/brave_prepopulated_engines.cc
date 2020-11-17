@@ -207,8 +207,8 @@ const PrepopulatedEngine brave_yandex =
     "2353835"
 #endif
     "&text={searchTerms}",
-    "https://suggest.yandex.com/suggest-ff.cgi?"
-    "part={searchTerms}&uil=en&v=3&sn=5&srv=brave_desktop",
+    "https://suggest.yandex.ru/suggest-ff.cgi?"
+    "part={searchTerms}&v=3&sn=5&srv=brave_desktop",
     PREPOPULATED_ENGINE_ID_YANDEX);
 
 #define kBraveYahooName L"Yahoo"
