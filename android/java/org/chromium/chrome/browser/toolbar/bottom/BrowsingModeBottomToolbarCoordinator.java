@@ -26,7 +26,7 @@ import org.chromium.chrome.browser.tab.TabImpl;
 import org.chromium.chrome.browser.tab.TabUtils;
 import org.chromium.chrome.browser.tabmodel.IncognitoStateProvider;
 import org.chromium.chrome.browser.tasks.ReturnToChromeExperimentsUtil;
-import org.chromium.chrome.browser.toolbar.HomeButton;
+import org.chromium.chrome.browser.toolbar.BraveHomeButton;
 import org.chromium.chrome.browser.toolbar.TabCountProvider;
 import org.chromium.chrome.browser.toolbar.TabSwitcherButtonCoordinator;
 import org.chromium.chrome.browser.toolbar.TabSwitcherButtonView;
@@ -47,7 +47,7 @@ public class BrowsingModeBottomToolbarCoordinator {
     private final BrowsingModeBottomToolbarMediator mMediator;
 
     /** The home button that lives in the bottom toolbar. */
-    private final HomeButton mHomeButton;
+    private final BraveHomeButton mBraveHomeButton;
 
     /** The share button that lives in the bottom toolbar. */
     private final ShareButton mShareButton;
@@ -106,8 +106,8 @@ public class BrowsingModeBottomToolbarCoordinator {
 
         mMediator = new BrowsingModeBottomToolbarMediator(mModel);
 
-        mHomeButton = mToolbarRoot.findViewById(R.id.bottom_home_button);
-        mHomeButton.setOnClickListener(homeButtonListener);
+        mBraveHomeButton = mToolbarRoot.findViewById(R.id.bottom_home_button);
+        mBraveHomeButton.setOnClickListener(homeButtonListener);
 
         mNewTabButton = mToolbarRoot.findViewById(R.id.bottom_new_tab_button);
 
@@ -125,7 +125,7 @@ public class BrowsingModeBottomToolbarCoordinator {
             mNewTabButton.setVisibility(View.VISIBLE);
         }
         if (BottomToolbarVariationManager.isHomeButtonOnBottom()) {
-            mHomeButton.setVisibility(View.VISIBLE);
+            mBraveHomeButton.setVisibility(View.VISIBLE);
         }
 
         if (BottomToolbarVariationManager.isTabSwitcherOnBottom()) {
@@ -197,6 +197,10 @@ public class BrowsingModeBottomToolbarCoordinator {
             mShareButton.setThemeColorProvider(themeColorProvider);
         }
 
+        if (BottomToolbarVariationManager.isHomeButtonOnBottom()) {
+            mBraveHomeButton.setThemeColorProvider(themeColorProvider);
+        }
+
         mSearchAccelerator.setThemeColorProvider(themeColorProvider);
         mSearchAccelerator.setIncognitoStateProvider(incognitoStateProvider);
 
@@ -255,8 +259,8 @@ public class BrowsingModeBottomToolbarCoordinator {
     /**
      * @return The browsing mode bottom toolbar's home button.
      */
-    HomeButton getHomeButton() {
-        return mHomeButton;
+    BraveHomeButton getHomeButton() {
+        return mBraveHomeButton;
     }
 
     /**
@@ -267,6 +271,7 @@ public class BrowsingModeBottomToolbarCoordinator {
             mShareButtonListenerSupplier.removeObserver(mShareButtonListenerSupplierCallback);
         }
         mMediator.destroy();
+        mBraveHomeButton.destroy();
         mShareButton.destroy();
         mSearchAccelerator.destroy();
         mTabSwitcherButtonCoordinator.destroy();
