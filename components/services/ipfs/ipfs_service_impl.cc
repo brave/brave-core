@@ -179,10 +179,12 @@ void IpfsServiceImpl::Launch(mojom::IpfsConfigPtr config,
 
   std::initializer_list<std::initializer_list<std::string>> config_args = {
       {"shutdown"},  // Cleanup left-over daemon process.
-      {"config", "Addresses.API", "/ip4/127.0.0.1/tcp/45001"},
-      {"config", "Addresses.Gateway", "/ip4/127.0.0.1/tcp/48080"},
+      {"config", "Addresses.API", "/ip4/127.0.0.1/tcp/" + config->api_port},
+      {"config", "Addresses.Gateway",
+       "/ip4/127.0.0.1/tcp/" + config->gateway_port},
       {"config", "--json", "Addresses.Swarm",
-       "[\"/ip4/0.0.0.0/tcp/44001\", \"/ip6/::/tcp/44001\"]"},
+       "[\"/ip4/0.0.0.0/tcp/" + config->swarm_port + "\", \"/ip6/::/tcp/" +
+           config->swarm_port + "\"]"},
       {"config", "Datastore.GCPeriod", "1h"},
       {"config", "Datastore.StorageMax", "1GB"}};
 

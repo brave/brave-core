@@ -7,7 +7,6 @@
 
 namespace ipfs {
 
-const char kServerEndpoint[] = "http://localhost:45001";
 const char kSwarmPeersPath[] = "/api/v0/swarm/peers";
 const char kConfigPath[] = "/api/v0/config";
 const char kArgQueryParam[] = "arg";
@@ -16,7 +15,7 @@ const char kShutdownPath[] = "/api/v0/shutdown";
 const char kIPFSScheme[] = "ipfs";
 const char kIPNSScheme[] = "ipns";
 const char kDefaultIPFSGateway[] = "https://dweb.link";
-const char kDefaultIPFSLocalGateway[] = "http://localhost:48080";
+const char kDefaultIPFSLocalGateway[] = "http://localhost";
 const char kIPFSLearnMoreURL[] =
     "https://support.brave.com/hc/en-us/articles/360051406452";
 

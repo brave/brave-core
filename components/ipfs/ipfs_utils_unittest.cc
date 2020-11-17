@@ -66,12 +66,6 @@ TEST_F(IpfsUtilsUnitTest, IsLocalGatewayURL) {
             "Vincent_van_Gogh.html"),
        GURL("ipfs://bafybeiemxf5abjwjbikoz4mc3a3dla6ual3jsgpdr4cjr3oz3evfyavhwq"
             "/wiki/Vincent_van_Gogh.html"),
-       GURL("http://127.0.0.1/ipfs/"
-            "bafybeiemxf5abjwjbikoz4mc3a3dla6ual3jsgpdr4cjr3oz3evfyavhwq/wiki/"
-            "Vincent_van_Gogh.html"),
-       GURL("http://127.0.0.1:5566/ipfs/"
-            "bafybeiemxf5abjwjbikoz4mc3a3dla6ual3jsgpdr4cjr3oz3evfyavhwq/wiki/"
-            "Vincent_van_Gogh.html"),
        GURL("http://github.com/ipfs/go-ipfs")});
 
   for (auto url : local_gateway_urls) {

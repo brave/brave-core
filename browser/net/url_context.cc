@@ -21,6 +21,8 @@
 #if BUILDFLAG(IPFS_ENABLED)
 #include "brave/components/ipfs/pref_names.h"
 #include "brave/components/ipfs/ipfs_constants.h"
+#include "brave/components/ipfs/ipfs_gateway.h"
+#include "chrome/common/channel_info.h"
 #include "components/prefs/testing_pref_service.h"
 #include "components/user_prefs/user_prefs.h"
 #endif
@@ -137,9 +139,12 @@ std::shared_ptr<brave::BraveRequestInfo> BraveRequestInfo::MakeCTX(
 
 #if BUILDFLAG(IPFS_ENABLED)
   auto* prefs = user_prefs::UserPrefs::Get(browser_context);
-  ctx->ipfs_local = static_cast<ipfs::IPFSResolveMethodTypes>(
+  bool local = static_cast<ipfs::IPFSResolveMethodTypes>(
       prefs->GetInteger(kIPFSResolveMethod)) ==
           ipfs::IPFSResolveMethodTypes::IPFS_LOCAL;
+  ctx->ipfs_gateway_url = local ?
+      ipfs::GetDefaultIPFSLocalGateway(chrome::GetChannel()) :
+      ipfs::GetDefaultIPFSGateway();
 #endif
 
   // TODO(fmarier): remove this once the hacky code in

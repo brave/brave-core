@@ -20,6 +20,7 @@
 #include "brave/components/ipfs/ipfs_p3a.h"
 #include "brave/components/services/ipfs/public/mojom/ipfs_service.mojom.h"
 #include "components/keyed_service/core/keyed_service.h"
+#include "components/version_info/channel.h"
 #include "mojo/public/cpp/bindings/remote.h"
 #include "url/gurl.h"
 
@@ -47,9 +48,10 @@ class IpfsServiceObserver;
 class IpfsService : public KeyedService,
                     public BraveIpfsClientUpdater::Observer {
  public:
-  explicit IpfsService(content::BrowserContext* context,
-                       ipfs::BraveIpfsClientUpdater* ipfs_client_updater,
-                       const base::FilePath& user_data_dir);
+  IpfsService(content::BrowserContext* context,
+              ipfs::BraveIpfsClientUpdater* ipfs_client_updater,
+              const base::FilePath& user_data_dir,
+              version_info::Channel channel);
   ~IpfsService() override;
 
   using GetConnectedPeersCallback =
@@ -133,6 +135,7 @@ class IpfsService : public KeyedService,
 
   base::FilePath user_data_dir_;
   BraveIpfsClientUpdater* ipfs_client_updater_;
+  version_info::Channel channel_;
 
   scoped_refptr<base::SequencedTaskRunner> file_task_runner_;
   IpfsP3A ipfs_p3a;

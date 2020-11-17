@@ -15,9 +15,11 @@
 #include "brave/browser/profiles/profile_util.h"
 #include "brave/components/ipfs/features.h"
 #include "brave/components/ipfs/ipfs_constants.h"
+#include "brave/components/ipfs/ipfs_gateway.h"
 #include "brave/components/ipfs/pref_names.h"
 #include "brave/components/tor/buildflags/buildflags.h"
 #include "chrome/browser/prefs/browser_prefs.h"
+#include "chrome/common/channel_info.h"
 #include "chrome/test/base/chrome_render_view_host_test_harness.h"
 #include "chrome/test/base/scoped_testing_local_state.h"
 #include "chrome/test/base/testing_browser_process.h"
@@ -49,8 +51,8 @@ const GURL& GetIPFSGatewayURL() {
 
 const GURL& GetIPFSLocalURL() {
   static const GURL ipfs_url(
-      "http://localhost:48080/ipfs/"
-      "bafybeiemxf5abjwjbikoz4mc3a3dla6ual3jsgpdr4cjr3oz3evfyavhwq/wiki/"
+      ipfs::GetDefaultIPFSLocalGateway(chrome::GetChannel()).spec() +
+      "ipfs/bafybeiemxf5abjwjbikoz4mc3a3dla6ual3jsgpdr4cjr3oz3evfyavhwq/wiki/"
       "Vincent_van_Gogh.html");  // NOLINT
   return ipfs_url;
 }

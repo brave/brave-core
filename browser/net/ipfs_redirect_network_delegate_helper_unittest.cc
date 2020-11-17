@@ -18,6 +18,14 @@
 
 namespace {
 
+GURL GetLocalGateway() {
+  return GURL("http://localhost:48080");
+}
+
+GURL GetPublicGateway() {
+  return GURL("https://dweb.link");
+}
+
 TEST(IPFSRedirectNetworkDelegateHelperTest, TranslateIPFSURIHTTPScheme) {
   GURL url("http://a.com/ipfs/QmfM2r8seH2GiRaC4esTjeraXEachRt8ZsSeGaWTPLyMoG");
   auto brave_request_info = std::make_shared<brave::BraveRequestInfo>(url);
@@ -30,7 +38,7 @@ TEST(IPFSRedirectNetworkDelegateHelperTest, TranslateIPFSURIHTTPScheme) {
 TEST(IPFSRedirectNetworkDelegateHelperTest, TranslateIPFSURIIPFSSchemeLocal) {
   GURL url("ipfs://QmfM2r8seH2GiRaC4esTjeraXEachRt8ZsSeGaWTPLyMoG");
   auto brave_request_info = std::make_shared<brave::BraveRequestInfo>(url);
-  brave_request_info->ipfs_local = true;
+  brave_request_info->ipfs_gateway_url = GetLocalGateway();
   int rc = ipfs::OnBeforeURLRequest_IPFSRedirectWork(brave::ResponseCallback(),
                                                      brave_request_info);
   EXPECT_EQ(rc, net::OK);
@@ -42,7 +50,7 @@ TEST(IPFSRedirectNetworkDelegateHelperTest, TranslateIPFSURIIPFSSchemeLocal) {
 TEST(IPFSRedirectNetworkDelegateHelperTest, TranslateIPFSURIIPFSScheme) {
   GURL url("ipfs://QmfM2r8seH2GiRaC4esTjeraXEachRt8ZsSeGaWTPLyMoG");
   auto brave_request_info = std::make_shared<brave::BraveRequestInfo>(url);
-  brave_request_info->ipfs_local = false;
+  brave_request_info->ipfs_gateway_url = GetPublicGateway();
   int rc = ipfs::OnBeforeURLRequest_IPFSRedirectWork(brave::ResponseCallback(),
                                                      brave_request_info);
   EXPECT_EQ(rc, net::OK);
@@ -54,7 +62,7 @@ TEST(IPFSRedirectNetworkDelegateHelperTest, TranslateIPFSURIIPFSScheme) {
 TEST(IPFSRedirectNetworkDelegateHelperTest, TranslateIPFSURIIPNSSchemeLocal) {
   GURL url("ipns://QmSrPmbaUKA3ZodhzPWZnpFgcPMFWF4QsxXbkWfEptTBJd");
   auto brave_request_info = std::make_shared<brave::BraveRequestInfo>(url);
-  brave_request_info->ipfs_local = true;
+  brave_request_info->ipfs_gateway_url = GetLocalGateway();
   int rc = ipfs::OnBeforeURLRequest_IPFSRedirectWork(brave::ResponseCallback(),
                                                      brave_request_info);
   EXPECT_EQ(rc, net::OK);
@@ -66,7 +74,7 @@ TEST(IPFSRedirectNetworkDelegateHelperTest, TranslateIPFSURIIPNSSchemeLocal) {
 TEST(IPFSRedirectNetworkDelegateHelperTest, TranslateIPFSURIIPNSScheme) {
   GURL url("ipns://QmSrPmbaUKA3ZodhzPWZnpFgcPMFWF4QsxXbkWfEptTBJd");
   auto brave_request_info = std::make_shared<brave::BraveRequestInfo>(url);
-  brave_request_info->ipfs_local = false;
+  brave_request_info->ipfs_gateway_url = GetPublicGateway();
   int rc = ipfs::OnBeforeURLRequest_IPFSRedirectWork(brave::ResponseCallback(),
                                                      brave_request_info);
   EXPECT_EQ(rc, net::OK);

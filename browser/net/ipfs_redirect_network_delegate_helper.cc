@@ -14,7 +14,8 @@ int OnBeforeURLRequest_IPFSRedirectWork(
     const brave::ResponseCallback& next_callback,
     std::shared_ptr<brave::BraveRequestInfo> ctx) {
   GURL new_url;
-  if (ipfs::TranslateIPFSURI(ctx->request_url, &new_url, ctx->ipfs_local)) {
+  if (ipfs::TranslateIPFSURI(ctx->request_url, &new_url,
+                             ctx->ipfs_gateway_url)) {
     ctx->new_url_spec = new_url.spec();
   }
   return net::OK;

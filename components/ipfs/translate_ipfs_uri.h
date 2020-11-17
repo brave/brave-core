@@ -10,7 +10,7 @@
 
 namespace ipfs {
 
-bool TranslateIPFSURI(const GURL& url, GURL* new_url, bool local);
+bool TranslateIPFSURI(const GURL& url, GURL* new_url, const GURL& gateway_url);
 
 }  // namespace ipfs
 

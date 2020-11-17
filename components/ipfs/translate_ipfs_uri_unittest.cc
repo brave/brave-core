@@ -23,20 +23,33 @@
 #include "testing/gtest/include/gtest/gtest.h"
 #include "url/gurl.h"
 
-using IPFSBraveContentBrowserClientTest = testing::Test;
-
 namespace ipfs {
+
+class IPFSBraveContentBrowserClientTest : public testing::Test {
+ protected:
+  void SetUp() override {
+    public_gateway_ = GURL(kDefaultIPFSGateway);
+    local_gateway_ = GURL("http://localhost:48080");
+  }
+
+  const GURL& local_gateway() { return local_gateway_; }
+  const GURL& public_gateway() { return public_gateway_; }
+
+ private:
+  GURL local_gateway_;
+  GURL public_gateway_;
+};
 
 TEST_F(IPFSBraveContentBrowserClientTest, TranslateIPFSURINotIPFSScheme) {
   GURL url("http://a.com/ipfs/QmfM2r8seH2GiRaC4esTjeraXEachRt8ZsSeGaWTPLyMoG");
   GURL new_url;
-  ASSERT_FALSE(ipfs::TranslateIPFSURI(url, &new_url, false));
+  ASSERT_FALSE(ipfs::TranslateIPFSURI(url, &new_url, public_gateway()));
 }
 
 TEST_F(IPFSBraveContentBrowserClientTest, TranslateIPFSURIIPFSScheme) {
   GURL url("ipfs://QmfM2r8seH2GiRaC4esTjeraXEachRt8ZsSeGaWTPLyMoG");
   GURL new_url;
-  ASSERT_TRUE(ipfs::TranslateIPFSURI(url, &new_url, false));
+  ASSERT_TRUE(ipfs::TranslateIPFSURI(url, &new_url, public_gateway()));
   EXPECT_EQ(new_url, GURL("https://dweb.link/ipfs/"
                           "QmfM2r8seH2GiRaC4esTjeraXEachRt8ZsSeGaWTPLyMoG"));
 }
@@ -44,7 +57,7 @@ TEST_F(IPFSBraveContentBrowserClientTest, TranslateIPFSURIIPFSScheme) {
 TEST_F(IPFSBraveContentBrowserClientTest, TranslateIPFSURIIPNSScheme) {
   GURL url("ipns://QmSrPmbaUKA3ZodhzPWZnpFgcPMFWF4QsxXbkWfEptTBJd");
   GURL new_url;
-  ASSERT_TRUE(ipfs::TranslateIPFSURI(url, &new_url, false));
+  ASSERT_TRUE(ipfs::TranslateIPFSURI(url, &new_url, public_gateway()));
   EXPECT_EQ(new_url, GURL("https://dweb.link/ipns/"
                           "QmSrPmbaUKA3ZodhzPWZnpFgcPMFWF4QsxXbkWfEptTBJd"));
 }
@@ -52,7 +65,7 @@ TEST_F(IPFSBraveContentBrowserClientTest, TranslateIPFSURIIPNSScheme) {
 TEST_F(IPFSBraveContentBrowserClientTest, TranslateIPFSURIIPFSSchemeLocal) {
   GURL url("ipfs://QmfM2r8seH2GiRaC4esTjeraXEachRt8ZsSeGaWTPLyMoG");
   GURL new_url;
-  ASSERT_TRUE(ipfs::TranslateIPFSURI(url, &new_url, true));
+  ASSERT_TRUE(ipfs::TranslateIPFSURI(url, &new_url, local_gateway()));
   EXPECT_EQ(new_url, GURL("http://localhost:48080/ipfs/"
                           "QmfM2r8seH2GiRaC4esTjeraXEachRt8ZsSeGaWTPLyMoG"));
 }
@@ -60,7 +73,7 @@ TEST_F(IPFSBraveContentBrowserClientTest, TranslateIPFSURIIPFSSchemeLocal) {
 TEST_F(IPFSBraveContentBrowserClientTest, TranslateIPFSURIIPNSSchemeLocal) {
   GURL url("ipns://QmSrPmbaUKA3ZodhzPWZnpFgcPMFWF4QsxXbkWfEptTBJd");
   GURL new_url;
-  ASSERT_TRUE(ipfs::TranslateIPFSURI(url, &new_url, true));
+  ASSERT_TRUE(ipfs::TranslateIPFSURI(url, &new_url, local_gateway()));
   EXPECT_EQ(new_url, GURL("http://localhost:48080/ipns/"
                           "QmSrPmbaUKA3ZodhzPWZnpFgcPMFWF4QsxXbkWfEptTBJd"));
 }
@@ -70,7 +83,7 @@ TEST_F(IPFSBraveContentBrowserClientTest, TranslateIPFSURIIPFSSchemeWithPath) {
       "ipfs://bafybeiemxf5abjwjbikoz4mc3a3dla6ual3jsgpdr4cjr3oz3evfyavhwq"
       "/wiki/Vincent_van_Gogh.html");
   GURL new_url;
-  ASSERT_TRUE(ipfs::TranslateIPFSURI(url, &new_url, false));
+  ASSERT_TRUE(ipfs::TranslateIPFSURI(url, &new_url, public_gateway()));
   EXPECT_EQ(new_url,
             GURL("https://dweb.link/ipfs/"
                  "bafybeiemxf5abjwjbikoz4mc3a3dla6ual3jsgpdr4cjr3oz3evfyavhwq"

@@ -30,9 +30,7 @@ bool IsDefaultGatewayURL(const GURL& url) {
 }
 
 bool IsLocalGatewayURL(const GURL& url) {
-  return url.SchemeIsHTTPOrHTTPS() && net::IsLocalhost(url) &&
-         url.port_piece() == GetDefaultIPFSLocalGateway().port_piece() &&
-         HasIPFSPath(url);
+  return url.SchemeIsHTTPOrHTTPS() && net::IsLocalhost(url) && HasIPFSPath(url);
 }
 
 bool IsIPFSScheme(const GURL& url) {
@@ -44,7 +42,8 @@ GURL ToPublicGatewayURL(const GURL& url) {
   GURL new_url;
 
   // For ipfs/ipns schemes, use TranslateIPFSURI directly.
-  if (IsIPFSScheme(url) && TranslateIPFSURI(url, &new_url, false)) {
+  if (IsIPFSScheme(url) &&
+      TranslateIPFSURI(url, &new_url, GetDefaultIPFSGateway())) {
     return new_url;
   }
 
