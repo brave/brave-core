@@ -185,8 +185,15 @@ class SearchViewController: SiteTableViewController, KeyboardHelperDelegate, Loa
     }
     
     // If the user only has a single quick search engine, it is also their default one.
-    // In that case, we count it as if there are no quick suggestions to show.
+    // In that case, we count it as if there are no quick suggestions to show
+    // Unless Default Search Engine is different than Quick Search Engine
     private var hasQuickSearchEngines: Bool {
+        let isDefaultEngineQuickEngine = searchEngines.defaultEngine().engineID == quickSearchEngines.first?.engineID
+        
+        if quickSearchEngines.count == 1 {
+            return !isDefaultEngineQuickEngine
+        }
+
         return quickSearchEngines.count > 1
     }
     
