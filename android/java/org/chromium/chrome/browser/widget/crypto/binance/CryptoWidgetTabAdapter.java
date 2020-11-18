@@ -17,6 +17,7 @@ import androidx.fragment.app.FragmentStatePagerAdapter;
 
 import org.chromium.base.ContextUtils;
 import org.chromium.chrome.R;
+import org.chromium.chrome.browser.widget.crypto.binance.CryptoWidgetBottomSheetDialogFragment;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -24,6 +25,7 @@ import java.util.List;
 
 public class CryptoWidgetTabAdapter extends FragmentStatePagerAdapter {
     Context mContext = ContextUtils.getApplicationContext();
+    private CryptoWidgetBottomSheetDialogFragment.BinanceBottomSheetListener mBinanceBottomSheetListener;
     List<String> titles = Arrays.asList(mContext.getResources().getString(R.string.summary),
             mContext.getResources().getString(R.string.deposit),
             mContext.getResources().getString(R.string.convert),
@@ -31,6 +33,10 @@ public class CryptoWidgetTabAdapter extends FragmentStatePagerAdapter {
 
     public CryptoWidgetTabAdapter(@NonNull FragmentManager fm, int behavior) {
         super(fm, behavior);
+    }
+
+    public void setBinanceBottomSheetListener(CryptoWidgetBottomSheetDialogFragment.BinanceBottomSheetListener binanceBottomSheetListener) {
+        mBinanceBottomSheetListener = binanceBottomSheetListener;
     }
 
     @NonNull
@@ -43,6 +49,7 @@ public class CryptoWidgetTabAdapter extends FragmentStatePagerAdapter {
             fragment = new BinanceDepositFragment();
         } else if (position == 2) {
             fragment = new BinanceConvertFragment();
+            ((BinanceConvertFragment)fragment).setBinanceBottomSheetListener(mBinanceBottomSheetListener);
         } else if (position == 3) {
             fragment = new BinanceBuyFragment();
         }
@@ -51,7 +58,7 @@ public class CryptoWidgetTabAdapter extends FragmentStatePagerAdapter {
 
     @Override
     public int getCount() {
-        return 4;
+        return titles.size();
     }
 
     @Nullable
