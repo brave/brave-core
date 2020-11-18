@@ -159,16 +159,4 @@ IN_PROC_BROWSER_TEST_F(IpfsDisabledPolicyTest, HandleIPFSURLRewrite) {
   EXPECT_FALSE(ipfs::HandleIPFSURLRewrite(&url, browser_context()));
 }
 
-IN_PROC_BROWSER_TEST_F(IpfsEnabledPolicyTest, ShouldNavigateIPFSURI) {
-  GURL new_url;
-  EXPECT_TRUE(
-      ipfs::ShouldNavigateIPFSURI(ipfs_url(), &new_url, browser_context()));
-}
-
-IN_PROC_BROWSER_TEST_F(IpfsDisabledPolicyTest, ShouldNavigateIPFSURI) {
-  GURL new_url;
-  EXPECT_FALSE(
-      ipfs::ShouldNavigateIPFSURI(ipfs_url(), &new_url, browser_context()));
-}
-
 }  // namespace policy

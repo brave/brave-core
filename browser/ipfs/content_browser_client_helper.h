@@ -25,10 +25,6 @@ class Origin;
 
 namespace ipfs {
 
-bool ShouldNavigateIPFSURI(const GURL& url,
-    GURL* new_url,
-    content::BrowserContext* browser_context);
-
 bool HandleIPFSURLReverseRewrite(
     GURL* url,
     content::BrowserContext* browser_context);
@@ -42,15 +38,6 @@ void LoadOrLaunchIPFSURL(
 
 bool HandleIPFSURLRewrite(GURL* url,
     content::BrowserContext* browser_context);
-
-void HandleIPFSProtocol(
-    const GURL& url,
-    content::WebContents::OnceGetter web_contents_getter,
-    ui::PageTransition page_transition,
-    bool has_user_gesture,
-    const base::Optional<url::Origin>& initiating_origin);
-
-bool IsIPFSProtocol(const GURL& url);
 
 }  // namespace ipfs
 

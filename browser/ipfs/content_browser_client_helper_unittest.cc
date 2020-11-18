@@ -39,44 +39,9 @@ const GURL& GetIPFSURI() {
   return ipfs_url;
 }
 
-const GURL& GetIPFSGatewayURL() {
-  static const GURL ipfs_url(
-      "https://dweb.link/ipfs/"
-      "bafybeiemxf5abjwjbikoz4mc3a3dla6ual3jsgpdr4cjr3oz3evfyavhwq/wiki/"
-      "Vincent_van_Gogh.html");  // NOLINT
-  return ipfs_url;
-}
-
-const GURL& GetIPFSLocalURL() {
-  static const GURL ipfs_url(
-      ipfs::GetDefaultIPFSLocalGateway(chrome::GetChannel()).spec() +
-      "ipfs/bafybeiemxf5abjwjbikoz4mc3a3dla6ual3jsgpdr4cjr3oz3evfyavhwq/wiki/"
-      "Vincent_van_Gogh.html");  // NOLINT
-  return ipfs_url;
-}
-
 const GURL& GetIPNSURI() {
   static const GURL ipns_url(
       "ipns://tr.wikipedia-on-ipfs.org/wiki/Anasayfa.html");  // NOLINT
-  return ipns_url;
-}
-
-const GURL& GetIPNSGatewayURL() {
-  static const GURL ipns_url(
-      "https://dweb.link/ipns/tr.wikipedia-on-ipfs.org/wiki/Anasayfa.html");  // NOLINT
-  return ipns_url;
-}
-
-const GURL& GetIPFSLocalhostURL() {
-  static const GURL ipfs_url(
-      "http://bafybeiemxf5abjwjbikoz4mc3a3dla6ual3jsgpdr4cjr3oz3evfyavhwq."
-      "ipfs.localhost/wiki/Vincent_van_Gogh.html");
-  return ipfs_url;
-}
-
-const GURL& GetIPNSLocalhostURL() {
-  static const GURL ipns_url(
-      "http://tr.wikipedia-on-ipfs.org.ipns.localhost/wiki/Anasayfa.html");
   return ipns_url;
 }
 
@@ -171,74 +136,6 @@ TEST_F(ContentBrowserClientHelperUnitTest, HandleIPNSURLRewriteLocal) {
       kIPFSResolveMethod, static_cast<int>(IPFSResolveMethodTypes::IPFS_LOCAL));
   GURL ipns_uri(GetIPNSURI());
   ASSERT_TRUE(HandleIPFSURLRewrite(&ipns_uri, browser_context()));
-}
-
-TEST_F(ContentBrowserClientHelperUnitTest, ShouldNavigateIPFSURIDisabled) {
-  profile()->GetPrefs()->SetInteger(
-      kIPFSResolveMethod,
-      static_cast<int>(IPFSResolveMethodTypes::IPFS_DISABLED));
-  GURL new_url;
-  ASSERT_FALSE(
-      ShouldNavigateIPFSURI(GetIPFSURI(), &new_url, browser_context()));
-}
-
-TEST_F(ContentBrowserClientHelperUnitTest,
-       ShouldNavigateIPFSURIGatewayIPFSURI) {
-  profile()->GetPrefs()->SetInteger(
-      kIPFSResolveMethod,
-      static_cast<int>(IPFSResolveMethodTypes::IPFS_GATEWAY));
-  GURL new_url;
-  ASSERT_TRUE(ShouldNavigateIPFSURI(GetIPFSURI(), &new_url, browser_context()));
-  ASSERT_EQ(new_url, GetIPFSGatewayURL());
-}
-
-TEST_F(ContentBrowserClientHelperUnitTest,
-       ShouldNavigateIPFSURIGatewayIPFSHTTPURI) {
-  profile()->GetPrefs()->SetInteger(
-      kIPFSResolveMethod,
-      static_cast<int>(IPFSResolveMethodTypes::IPFS_GATEWAY));
-  GURL new_url;
-  ASSERT_TRUE(
-      ShouldNavigateIPFSURI(GetIPFSGatewayURL(), &new_url, browser_context()));
-  ASSERT_EQ(new_url, GetIPFSGatewayURL());
-}
-
-TEST_F(ContentBrowserClientHelperUnitTest, ShouldNavigateIPFSURILocalIPFSURI) {
-  profile()->GetPrefs()->SetInteger(
-      kIPFSResolveMethod, static_cast<int>(IPFSResolveMethodTypes::IPFS_LOCAL));
-  GURL new_url;
-  ASSERT_TRUE(ShouldNavigateIPFSURI(GetIPFSURI(), &new_url, browser_context()));
-  ASSERT_EQ(new_url, GetIPFSLocalURL());
-}
-
-TEST_F(ContentBrowserClientHelperUnitTest,
-       ShouldNavigateIPFSURILocalIPFSHTTPURI) {
-  profile()->GetPrefs()->SetInteger(
-      kIPFSResolveMethod, static_cast<int>(IPFSResolveMethodTypes::IPFS_LOCAL));
-  GURL new_url;
-  ASSERT_TRUE(
-      ShouldNavigateIPFSURI(GetIPFSLocalURL(), &new_url, browser_context()));
-  ASSERT_EQ(new_url, GetIPFSLocalURL());
-}
-
-TEST_F(ContentBrowserClientHelperUnitTest,
-       ShouldNavigateIPFSURIGatewayIPNSURI) {
-  profile()->GetPrefs()->SetInteger(
-      kIPFSResolveMethod,
-      static_cast<int>(IPFSResolveMethodTypes::IPFS_GATEWAY));
-  GURL new_url;
-  ASSERT_TRUE(ShouldNavigateIPFSURI(GetIPNSURI(), &new_url, browser_context()));
-  ASSERT_EQ(new_url, GetIPNSGatewayURL());
-}
-
-TEST_F(ContentBrowserClientHelperUnitTest, HandleIPFSURLReverseRewrite) {
-  GURL url = GetIPFSLocalhostURL();
-  ASSERT_TRUE(HandleIPFSURLReverseRewrite(&url, browser_context()));
-  ASSERT_EQ(url, GetIPFSURI());
-
-  url = GetIPNSLocalhostURL();
-  ASSERT_TRUE(HandleIPFSURLReverseRewrite(&url, browser_context()));
-  ASSERT_EQ(url, GetIPNSURI());
 }
 
 }  // namespace ipfs

@@ -56,7 +56,7 @@ bool HandleIPFSURLRewrite(
 
   if (!IpfsServiceFactory::IsIpfsResolveMethodDisabled(browser_context) &&
       // When it's not the local gateway we don't want to show a ipfs:// URL.
-      // We instead will translate the URL later in LoadOrLaunchIPFSURL.
+      // We instead will translate the URL later.
       IsIPFSLocalGateway(browser_context) &&
       (url->SchemeIs(kIPFSScheme) || url->SchemeIs(kIPNSScheme))) {
     return TranslateIPFSURI(*url, url,
@@ -91,57 +91,6 @@ bool HandleIPFSURLReverseRewrite(
   *url = url->ReplaceComponents(host_replacements);
   *url = url->ReplaceComponents(scheme_replacements);
   return true;
-}
-
-bool ShouldNavigateIPFSURI(
-    const GURL& url,
-    GURL* new_url,
-    content::BrowserContext* browser_context) {
-  *new_url = url;
-  bool is_ipfs_scheme = url.SchemeIs(kIPFSScheme) || url.SchemeIs(kIPNSScheme);
-  GURL gateway_url = IsIPFSLocalGateway(browser_context)
-                         ? GetDefaultIPFSLocalGateway(chrome::GetChannel())
-                         : GetDefaultIPFSGateway();
-  return !IpfsServiceFactory::IsIpfsResolveMethodDisabled(browser_context) &&
-         (!is_ipfs_scheme || TranslateIPFSURI(url, new_url, gateway_url));
-}
-
-void LoadOrLaunchIPFSURL(
-    const GURL& url,
-    content::WebContents::OnceGetter web_contents_getter,
-    ui::PageTransition page_transition,
-    bool has_user_gesture,
-    const base::Optional<url::Origin>& initiating_origin) {
-  content::WebContents* web_contents = std::move(web_contents_getter).Run();
-  if (!web_contents)
-    return;
-  GURL new_url(url);
-  if (ShouldNavigateIPFSURI(url, &new_url, web_contents->GetBrowserContext())) {
-    web_contents->GetController().LoadURL(new_url, content::Referrer(),
-                                          page_transition, std::string());
-  } else {
-    ExternalProtocolHandler::LaunchUrl(
-        new_url, web_contents->GetRenderViewHost()->GetProcess()->GetID(),
-        web_contents->GetRenderViewHost()->GetRoutingID(), page_transition,
-        has_user_gesture, initiating_origin);
-  }
-}
-
-void HandleIPFSProtocol(
-    const GURL& url,
-    content::WebContents::OnceGetter web_contents_getter,
-    ui::PageTransition page_transition,
-    bool has_user_gesture,
-    const base::Optional<url::Origin>& initiating_origin) {
-  DCHECK(url.SchemeIs(kIPFSScheme) || url.SchemeIs(kIPNSScheme));
-  base::PostTask(
-      FROM_HERE, {content::BrowserThread::UI},
-      base::BindOnce(&LoadOrLaunchIPFSURL, url, std::move(web_contents_getter),
-                     page_transition, has_user_gesture, initiating_origin));
-}
-
-bool IsIPFSProtocol(const GURL& url) {
-  return TranslateIPFSURI(url, nullptr, GetDefaultIPFSGateway());
 }
 
 }  // namespace ipfs

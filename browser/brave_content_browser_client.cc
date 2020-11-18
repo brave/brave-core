@@ -191,15 +191,6 @@ bool BraveContentBrowserClient::HandleExternalProtocol(
     return true;
   }
 #endif
-#if BUILDFLAG(IPFS_ENABLED)
-  if (ipfs::IsIPFSProtocol(url) && is_main_frame) {
-    ipfs::HandleIPFSProtocol(url,
-        std::move(web_contents_getter),
-        page_transition, has_user_gesture,
-        initiating_origin);
-    return true;
-  }
-#endif
 
 #if BUILDFLAG(BRAVE_REWARDS_ENABLED)
   if (brave_rewards::IsRewardsProtocol(url)) {
