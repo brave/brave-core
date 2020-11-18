@@ -151,26 +151,24 @@ IN_PROC_BROWSER_TEST_F(IpfsDisabledPolicyTest, TabHelper) {
 
 IN_PROC_BROWSER_TEST_F(IpfsEnabledPolicyTest, HandleIPFSURLRewrite) {
   GURL url(ipfs_url());
-  EXPECT_TRUE(ipfs::ContentBrowserClientHelper::HandleIPFSURLRewrite(
-      &url, browser_context()));
+  EXPECT_TRUE(ipfs::HandleIPFSURLRewrite(&url, browser_context()));
 }
 
 IN_PROC_BROWSER_TEST_F(IpfsDisabledPolicyTest, HandleIPFSURLRewrite) {
   GURL url(ipfs_url());
-  EXPECT_FALSE(ipfs::ContentBrowserClientHelper::HandleIPFSURLRewrite(
-      &url, browser_context()));
+  EXPECT_FALSE(ipfs::HandleIPFSURLRewrite(&url, browser_context()));
 }
 
 IN_PROC_BROWSER_TEST_F(IpfsEnabledPolicyTest, ShouldNavigateIPFSURI) {
   GURL new_url;
-  EXPECT_TRUE(ipfs::ContentBrowserClientHelper::ShouldNavigateIPFSURI(
-      ipfs_url(), &new_url, browser_context()));
+  EXPECT_TRUE(
+      ipfs::ShouldNavigateIPFSURI(ipfs_url(), &new_url, browser_context()));
 }
 
 IN_PROC_BROWSER_TEST_F(IpfsDisabledPolicyTest, ShouldNavigateIPFSURI) {
   GURL new_url;
-  EXPECT_FALSE(ipfs::ContentBrowserClientHelper::ShouldNavigateIPFSURI(
-      ipfs_url(), &new_url, browser_context()));
+  EXPECT_FALSE(
+      ipfs::ShouldNavigateIPFSURI(ipfs_url(), &new_url, browser_context()));
 }
 
 }  // namespace policy

@@ -8,6 +8,7 @@
 #include <string>
 #include <utility>
 
+#include "base/strings/string_util.h"
 #include "base/task/post_task.h"
 #include "brave/browser/ipfs/ipfs_service_factory.h"
 #include "brave/browser/profiles/profile_util.h"
@@ -29,6 +30,9 @@
 
 namespace {
 
+constexpr char kIpfsLocalhost[] = ".ipfs.localhost";
+constexpr char kIpnsLocalhost[] = ".ipns.localhost";
+
 bool IsIPFSLocalGateway(content::BrowserContext* browser_context) {
   auto* prefs = user_prefs::UserPrefs::Get(browser_context);
   auto resolve_method = static_cast<ipfs::IPFSResolveMethodTypes>(
@@ -40,10 +44,16 @@ bool IsIPFSLocalGateway(content::BrowserContext* browser_context) {
 
 namespace ipfs {
 
-// static
-bool ContentBrowserClientHelper::HandleIPFSURLRewrite(
+bool HandleIPFSURLRewrite(
     GURL* url,
     content::BrowserContext* browser_context) {
+  // This is needed for triggering ReverseRewrite later.
+  if (url->SchemeIs("http") &&
+      (base::EndsWith(url->host_piece(), kIpfsLocalhost) ||
+       base::EndsWith(url->host_piece(), kIpnsLocalhost))) {
+    return true;
+  }
+
   if (!IpfsServiceFactory::IsIpfsResolveMethodDisabled(browser_context) &&
       // When it's not the local gateway we don't want to show a ipfs:// URL.
       // We instead will translate the URL later in LoadOrLaunchIPFSURL.
@@ -56,15 +66,34 @@ bool ContentBrowserClientHelper::HandleIPFSURLRewrite(
   return false;
 }
 
-// static
-bool ContentBrowserClientHelper::HandleIPFSURLReverseRewrite(
+bool HandleIPFSURLReverseRewrite(
     GURL* url,
     content::BrowserContext* browser_context) {
-  return false;
+
+  std::size_t ipfs_pos = url->host_piece().find(kIpfsLocalhost);
+  std::size_t ipns_pos = url->host_piece().find(kIpnsLocalhost);
+
+  if (ipfs_pos == std::string::npos && ipns_pos == std::string::npos)
+    return false;
+
+  GURL::Replacements scheme_replacements;
+  GURL::Replacements host_replacements;
+  if (ipfs_pos != std::string::npos) {
+    scheme_replacements.SetSchemeStr(kIPFSScheme);
+    host_replacements.SetHostStr(url->host_piece().substr(0, ipfs_pos));
+    host_replacements.ClearPort();
+  } else {  // ipns
+    scheme_replacements.SetSchemeStr(kIPNSScheme);
+    host_replacements.SetHostStr(url->host_piece().substr(0, ipns_pos));
+    host_replacements.ClearPort();
+  }
+
+  *url = url->ReplaceComponents(host_replacements);
+  *url = url->ReplaceComponents(scheme_replacements);
+  return true;
 }
 
-// static
-bool ContentBrowserClientHelper::ShouldNavigateIPFSURI(
+bool ShouldNavigateIPFSURI(
     const GURL& url,
     GURL* new_url,
     content::BrowserContext* browser_context) {
@@ -77,8 +106,7 @@ bool ContentBrowserClientHelper::ShouldNavigateIPFSURI(
          (!is_ipfs_scheme || TranslateIPFSURI(url, new_url, gateway_url));
 }
 
-// static
-void ContentBrowserClientHelper::LoadOrLaunchIPFSURL(
+void LoadOrLaunchIPFSURL(
     const GURL& url,
     content::WebContents::OnceGetter web_contents_getter,
     ui::PageTransition page_transition,
@@ -99,8 +127,7 @@ void ContentBrowserClientHelper::LoadOrLaunchIPFSURL(
   }
 }
 
-// static
-void ContentBrowserClientHelper::HandleIPFSProtocol(
+void HandleIPFSProtocol(
     const GURL& url,
     content::WebContents::OnceGetter web_contents_getter,
     ui::PageTransition page_transition,
@@ -113,8 +140,7 @@ void ContentBrowserClientHelper::HandleIPFSProtocol(
                      page_transition, has_user_gesture, initiating_origin));
 }
 
-// static
-bool ContentBrowserClientHelper::IsIPFSProtocol(const GURL& url) {
+bool IsIPFSProtocol(const GURL& url) {
   return TranslateIPFSURI(url, nullptr, GetDefaultIPFSGateway());
 }
 

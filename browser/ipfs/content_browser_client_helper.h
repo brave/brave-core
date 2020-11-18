@@ -25,35 +25,32 @@ class Origin;
 
 namespace ipfs {
 
-class ContentBrowserClientHelper {
- public:
-  static bool ShouldNavigateIPFSURI(const GURL& url,
-                                    GURL* new_url,
-                                    content::BrowserContext* browser_context);
+bool ShouldNavigateIPFSURI(const GURL& url,
+    GURL* new_url,
+    content::BrowserContext* browser_context);
 
-  static bool HandleIPFSURLReverseRewrite(
-      GURL* url,
-      content::BrowserContext* browser_context);
+bool HandleIPFSURLReverseRewrite(
+    GURL* url,
+    content::BrowserContext* browser_context);
 
-  static void LoadOrLaunchIPFSURL(
-      const GURL& url,
-      content::WebContents::OnceGetter web_contents_getter,
-      ui::PageTransition page_transition,
-      bool has_user_gesture,
-      const base::Optional<url::Origin>& initiating_origin);
+void LoadOrLaunchIPFSURL(
+    const GURL& url,
+    content::WebContents::OnceGetter web_contents_getter,
+    ui::PageTransition page_transition,
+    bool has_user_gesture,
+    const base::Optional<url::Origin>& initiating_origin);
 
-  static bool HandleIPFSURLRewrite(GURL* url,
-                                   content::BrowserContext* browser_context);
+bool HandleIPFSURLRewrite(GURL* url,
+    content::BrowserContext* browser_context);
 
-  static void HandleIPFSProtocol(
-      const GURL& url,
-      content::WebContents::OnceGetter web_contents_getter,
-      ui::PageTransition page_transition,
-      bool has_user_gesture,
-      const base::Optional<url::Origin>& initiating_origin);
+void HandleIPFSProtocol(
+    const GURL& url,
+    content::WebContents::OnceGetter web_contents_getter,
+    ui::PageTransition page_transition,
+    bool has_user_gesture,
+    const base::Optional<url::Origin>& initiating_origin);
 
-  static bool IsIPFSProtocol(const GURL& url);
-};
+bool IsIPFSProtocol(const GURL& url);
 
 }  // namespace ipfs
 

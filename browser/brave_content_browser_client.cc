@@ -159,8 +159,8 @@ void BraveContentBrowserClient::BrowserURLHandlerCreated(
 #endif
 #if BUILDFLAG(IPFS_ENABLED)
   handler->AddHandlerPair(
-      &ipfs::ContentBrowserClientHelper::HandleIPFSURLRewrite,
-      &ipfs::ContentBrowserClientHelper::HandleIPFSURLReverseRewrite);
+      &ipfs::HandleIPFSURLRewrite,
+      &ipfs::HandleIPFSURLReverseRewrite);
 #endif
   handler->AddHandlerPair(&HandleURLRewrite, &HandleURLReverseOverrideRewrite);
   ChromeContentBrowserClient::BrowserURLHandlerCreated(handler);
@@ -193,8 +193,8 @@ bool BraveContentBrowserClient::HandleExternalProtocol(
   }
 #endif
 #if BUILDFLAG(IPFS_ENABLED)
-  if (ipfs::ContentBrowserClientHelper::IsIPFSProtocol(url) && is_main_frame) {
-    ipfs::ContentBrowserClientHelper::HandleIPFSProtocol(url,
+  if (ipfs::IsIPFSProtocol(url) && is_main_frame) {
+    ipfs::HandleIPFSProtocol(url,
         std::move(web_contents_getter),
         page_transition, has_user_gesture,
         initiating_origin);
