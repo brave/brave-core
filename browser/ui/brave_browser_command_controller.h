@@ -52,6 +52,6 @@ class BraveBrowserCommandController : public chrome::BrowserCommandController {
   DISALLOW_COPY_AND_ASSIGN(BraveBrowserCommandController);
 };
 
-}   // namespace chrome
+}  // namespace chrome
 
 #endif  // BRAVE_BROWSER_UI_BRAVE_BROWSER_COMMAND_CONTROLLER_H_

@@ -42,6 +42,9 @@ declare global {
     brave_adblock: {
       initialize: () => void
     }
+    playlist: {
+      initialize: () => void
+    }
     brave_new_tab: {
       initialize: () => void
       statsUpdated: () => void
@@ -75,6 +78,7 @@ declare global {
     }
     alreadyInserted: boolean
     web3: any
+    youtubedown_urls: any
     content_cosmetic: {
       cosmeticStyleSheet: CSSStyleSheet
       allSelectorsToRules: Map<string, number>

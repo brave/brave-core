@@ -1,0 +1,49 @@
+import("//brave/build/config.gni")
+
+source_set("playlist") {
+  sources = [
+    "features.cc",
+    "features.h",
+    "playlist_constants.h",
+    "playlist_data_source.cc",
+    "playlist_data_source.h",
+    "playlist_download_request_manager.cc",
+    "playlist_download_request_manager.h",
+    "playlist_media_file_download_manager.cc",
+    "playlist_media_file_download_manager.h",
+    "playlist_media_file_downloader.cc",
+    "playlist_media_file_downloader.h",
+    "playlist_service.cc",
+    "playlist_service.h",
+    "playlist_service_helper.cc",
+    "playlist_service_helper.h",
+    "playlist_service_observer.h",
+    "playlist_thumbnail_downloader.cc",
+    "playlist_thumbnail_downloader.h",
+    "playlist_types.cc",
+    "playlist_types.h",
+    "playlist_youtubedown_component_installer.cc",
+    "playlist_youtubedown_component_installer.h",
+    "playlist_youtubedown_component_manager.cc",
+    "playlist_youtubedown_component_manager.h",
+    "pref_names.h",
+  ]
+
+  deps = [
+    "//base",
+    "//brave/components/brave_component_updater/browser",
+    "//components/component_updater",
+    "//components/keyed_service/core",
+    "//components/prefs",
+    "//components/user_prefs",
+    "//content/public/browser",
+    "//content/public/common",
+    "//crypto",
+    "//services/network/public/cpp",
+    "//services/preferences/public/cpp",
+    "//third_party/re2",
+    "//url",
+  ]
+
+  public_deps = [ "buildflags" ]
+}

@@ -28,6 +28,7 @@
 #include "brave/components/ipfs/buildflags/buildflags.h"
 #include "brave/components/l10n/browser/locale_helper.h"
 #include "brave/components/l10n/common/locale_util.h"
+#include "brave/components/playlist/buildflags/buildflags.h"
 #include "brave/components/search_engines/brave_prepopulated_engines.h"
 #include "brave/components/sidebar/buildflags/buildflags.h"
 #include "brave/components/speedreader/buildflags.h"
@@ -93,6 +94,10 @@
 
 #if BUILDFLAG(ENABLE_TOR)
 #include "brave/components/tor/tor_profile_service.h"
+#endif
+
+#if BUILDFLAG(ENABLE_PLAYLIST)
+#include "brave/components/playlist/pref_names.h"
 #endif
 
 #if defined(OS_ANDROID)
@@ -371,6 +376,10 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
   registry->SetDefaultPrefValue(prefs::kNtpUseMostVisitedTiles,
                                 base::Value(true));
   RegisterDefaultBraveBrowserPromptPrefs(registry);
+#endif
+
+#if BUILDFLAG(ENABLE_PLAYLIST)
+  registry->RegisterDictionaryPref(playlist::kPlaylistItems);
 #endif
 
   RegisterProfilePrefsForMigration(registry);

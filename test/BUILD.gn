@@ -631,6 +631,7 @@ if (!is_android) {
       "//brave/browser/browsing_data:browser_tests",
       "//brave/browser/farbling:browser_tests",
       "//brave/browser/permissions:browser_tests",
+      "//brave/browser/playlist/test:browser_tests",
       "//brave/browser/tor:browser_tests",
       "//brave/browser/ui/sidebar:browser_tests",
       "//brave/browser/ui/tabs/test:browser_tests",

@@ -326,6 +326,25 @@ declare namespace chrome.test {
   const sendMessage: (message: string) => {}
 }
 
+declare namespace chrome.bravePlaylist {
+  type PlaylistType = { id: string, playlistName: string, titles: string[], thumbnailPath: string, videoMediaFilePath: string, audioMediaFilePath: string, partialReady: boolean }
+  type PlaylistsChangeType = 'added' | 'deleted' | 'all_deleted' | 'aborted' | 'thumbnail_ready' | 'thumbnail_failed' | 'play_ready' | 'play_ready_partial'
+
+  const onPlaylistItemStatusChanged: {
+    addListener: (callback: (changeType: PlaylistChangeType, id: string) => void) => void
+  }
+  const onDownloadRequested: {
+    addListener: (callback: (url: string) => void) => void
+  }
+  const getAllPlaylistItems: (callback: (playlist: PlaylistType[]) => void) => void
+  const getPlaylistItem: (id: string, callback: (playlist: PlaylistType) => void) => void
+  const recoverPlaylistItem: (id: string) => void
+  const deleteAllPlaylistItems: (callback: (deleted: boolean) => void) => void
+  const deletePlaylistItem: (id: string) => void
+  const requestDownload: (url: string) => void
+  const playItem: (id: string) => void
+}
+
 declare namespace chrome.braveTheme {
   type ThemeType = 'Light' | 'Dark' | 'System'
   type ThemeList = Array<{name: ThemeType, index: number}>

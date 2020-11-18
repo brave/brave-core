@@ -23,6 +23,13 @@ bool IsFlagExpired(const flags_ui::FlagsStorage* storage,
     return true;
   }
 
+  // Enable playlist feature only for nightly/development.
+  if (base::LowerCaseEqualsASCII("playlist", internal_name) &&
+      (channel == version_info::Channel::STABLE ||
+       channel == version_info::Channel::BETA)) {
+    return true;
+  }
+
   return IsFlagExpired_ChromiumImpl(storage, internal_name);
 }
 

@@ -1,0 +1,191 @@
+/* Copyright (c) 2019 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this file,
+ * You can obtain one at http://mozilla.org/MPL/2.0/. */
+
+[
+  {
+    "namespace": "bravePlaylist",
+    "description": "Use the <code>chrome.bravePlaylist</code> API to get/set playlist",
+    "compiler_options": {
+      "implemented_in": "brave/browser/extensions/api/playlist/playlist_api.h"
+    },
+    "events": [
+      {
+        "name": "onPlaylistItemStatusChanged",
+        "type": "function",
+        "description": "Fired when a playlist item status is changed",
+        "parameters": [
+          {
+            "name": "changeType",
+            "type": "string",
+            "description": "Playlist item change status(add, deleted, aborted, thumbnail_ready, thumbnail_failed, play_ready)"
+          },
+          {
+            "name": "id",
+            "type": "string",
+            "description": "playlist item id of added or deleted playlist"
+          }
+        ]
+      }
+    ],
+    "types": [
+      {
+        "id": "PlaylistItemInfo",
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "id for each playlist"
+          },
+          "playlistName": {
+            "type": "string",
+            "description": "Name for playlist"
+          },
+          "thumbnailPath": {
+            "type": "string",
+            "description": "thumbnail path for playlist. if this is empty, thumbnail is not fetched yet."
+          },
+          "videoMediaFilePath": {
+            "type": "string",
+            "description": "video media file path for playlist. if this is empty, unified media file is not ready from local media files."
+          },
+          "audioMediaFilePath": {
+            "type": "string",
+            "description": "audio media file path for playlist. may be empty if video is already muxed."
+          },
+          "ready": {
+            "type": "boolean",
+            "description": "true if this item is ready play"
+          },
+          "titles": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "description": "Title for each song on this list in media file order"
+            }
+          }
+        }
+      }
+    ],
+    "functions": [
+      {
+        "name": "getAllPlaylistItems",
+        "type": "function",
+        "description": "Get all playlist items",
+        "parameters": [
+          {
+            "name": "callback",
+            "type": "function",
+            "description": "Function called when all playlist items are fetched",
+            "parameters": [
+              {
+                "type": "array",
+                "name": "playlistItems",
+                "items": {
+                  "$ref": "PlaylistItemInfo",
+                  "description": "The list of playlist item"
+                }
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "name": "getPlaylistItem",
+        "type": "function",
+        "description": "Get specific playlist item",
+        "parameters": [
+          {
+            "name": "id",
+            "type": "string",
+            "description": "id for fetching a playlist item"
+          },
+          {
+            "name": "callback",
+            "type": "function",
+            "parameters": [
+              {
+                "name": "playlistItem",
+                "$ref": "PlaylistItemInfo"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "name": "recoverPlaylistItem",
+        "type": "function",
+        "description": "Try to recover incomplete playlist item that failed to fetch thumbnail or generate media file",
+        "parameters": [
+          {
+            "name": "id",
+            "type": "string",
+            "description": "id for recovering an already added playlist item"
+          }
+        ]
+      },
+      {
+        "name": "deletePlaylistItem",
+        "type": "function",
+        "description": "Delete specific playlist item and free all its data",
+        "parameters": [
+          {
+            "name": "id",
+            "type": "string",
+            "description": "id for deleting playlist item"
+          },
+          {
+            "type": "function",
+            "name": "callback",
+            "optional": true,
+            "description": "If an error occurs, runtime.lastError is set to the error message."
+          }
+        ]
+      },
+      {
+        "name": "deleteAllPlaylistItems",
+        "type": "function",
+        "description": "Delete all playlist items",
+        "parameters": [
+          {
+            "type": "function",
+            "name": "callback",
+            "parameters": [
+              {
+                "name": "deleted",
+                "type": "boolean",
+                "description": "Whether delete all is completed or not"
+              }
+            ],
+            "description": "If an error occurs, runtime.lastError is set to the error message."
+          }
+        ]
+      },
+      {
+        "name": "requestDownload",
+        "type": "function",
+        "description": "requests the playlists backend to download a URL and use information within the URL to create a playlist",
+        "parameters": [
+          {
+            "name": "url",
+            "type": "string",
+            "description": "URL to download"
+          }
+        ]
+      },
+      {
+        "name": "playItem",
+        "type": "function",
+        "description": "displays platform-specific UI to play the given playlist",
+        "parameters": [
+          {
+            "name": "id",
+            "type": "string",
+            "description": "id of playlist to play"
+          }
+        ]
+      }
+    ]
+  }
+]

@@ -54,6 +54,7 @@ source_set("extensions") {
     ":resources",
     "//base",
     "//brave/app:brave_generated_resources_grit",
+    "//brave/browser/extensions/api/playlist",
     "//brave/browser/profiles",
     "//brave/browser/webcompat_reporter",
     "//brave/common",
@@ -136,6 +137,7 @@ source_set("extensions") {
       "//brave/vendor/bat-native-ledger:headers",
     ]
   }
+
   if (enable_brave_webtorrent) {
     deps += [ "//brave/components/brave_webtorrent/browser" ]
     sources += [

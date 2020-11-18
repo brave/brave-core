@@ -1,0 +1,17 @@
+import("//brave/components/common/typescript.gni")
+
+transpile_web_ui("playlist_ui") {
+  entry_points = [
+    ["playlist", rebase_path("playlist.tsx")]
+  ]
+
+  resource_name = "playlist"
+}
+
+pack_web_resources("generated_resources") {
+  resource_name = "playlist"
+  output_dir = "$root_gen_dir/brave/components/playlist/resources"
+  deps = [
+    ":playlist_ui"
+  ]
+}

@@ -5,6 +5,7 @@ import("//brave/components/brave_wallet/common/buildflags/buildflags.gni")
 import("//brave/components/crypto_dot_com/browser/buildflags/buildflags.gni")
 import("//brave/components/decentralized_dns/buildflags/buildflags.gni")
 import("//brave/components/ipfs/buildflags/buildflags.gni")
+import("//brave/components/playlist/buildflags/buildflags.gni")
 import("//brave/components/sidebar/buildflags/buildflags.gni")
 import("//brave/components/speedreader/buildflags.gni")
 import("//brave/components/tor/buildflags/buildflags.gni")
@@ -40,6 +41,7 @@ grit("static_resources") {
 
   defines = [
     "enable_brave_perf_predictor=$enable_brave_perf_predictor",
+    "enable_playlist=$enable_playlist",
     "enable_speedreader=$enable_speedreader",
     "ipfs_enabled=$ipfs_enabled",
     "crypto_dot_com_enabled=$crypto_dot_com_enabled",
@@ -92,6 +94,15 @@ repack("resources") {
   if (brave_wallet_enabled && !is_android) {
     deps += [ "//brave/components/brave_wallet_ui:generated_resources" ]
     sources += [ "$root_gen_dir/brave/components/brave_wallet/resources/brave_wallet_generated.pak" ]
+  }
+
+  if (enable_playlist) {
+    deps += [
+      "//brave/components/playlist/resources:generated_resources",
+    ]
+    sources += [
+      "$root_gen_dir/brave/components/playlist/resources/playlist_generated.pak",
+    ]
   }
 
   output = "$root_gen_dir/components/brave_components_resources.pak"

@@ -1,0 +1,26 @@
+import("//brave/components/playlist/buildflags/buildflags.gni")
+
+source_set("playlist") {
+  sources = []
+  deps = []
+
+  if (enable_playlist) {
+    sources += [
+      "playlist_api.cc",
+      "playlist_api.h",
+      "playlist_event_router_factory.cc",
+      "playlist_event_router_factory.h",
+    ]
+
+    deps += [
+      "//base",
+      "//brave/browser/playlist",
+      "//brave/common/extensions/api",
+      "//brave/components/playlist",
+      "//components/keyed_service/content",
+      "//components/keyed_service/core",
+      "//extensions/browser",
+    ]
+  }
+
+}

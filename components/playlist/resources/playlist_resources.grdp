@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<grit-part>
+  <if expr="enable_playlist">
+     <include name="IDR_PLAYLIST_HTML" file="../playlist/resources/playlist.html" type="BINDATA" />
+  </if>
+</grit-part>

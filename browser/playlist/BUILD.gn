@@ -1,0 +1,31 @@
+# Copyright (c) 2020 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at http://mozilla.org/MPL/2.0/. */
+
+source_set("playlist") {
+  # Set due to //chrome/browser and //chrome/browser/ui circular dependencies.
+  check_includes = false
+
+  sources = [
+    "playlist_service_factory.cc",
+    "playlist_service_factory.h",
+  ]
+
+  deps = [
+    "//base",
+    "//brave/components/playlist",
+    "//chrome/common",
+    "//components/keyed_service/content",
+    "//content/public/browser",
+  ]
+
+  if (!is_android) {
+    sources += [
+      "desktop_playlist_player.cc",
+      "desktop_playlist_player.h",
+    ]
+
+    deps += [ "//net" ]
+  }
+}

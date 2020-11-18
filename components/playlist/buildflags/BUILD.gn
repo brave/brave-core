@@ -1,0 +1,9 @@
+import("//build/buildflag_header.gni")
+import("//brave/components/playlist/buildflags/buildflags.gni")
+
+buildflag_header("buildflags") {
+  header = "buildflags.h"
+  flags = [
+    "ENABLE_PLAYLIST=$enable_playlist",
+  ]
+}
