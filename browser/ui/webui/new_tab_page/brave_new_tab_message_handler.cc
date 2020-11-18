@@ -61,9 +61,7 @@ using ntp_background_images::ViewCounterServiceFactory;
 namespace {
 
 bool IsPrivateNewTab(Profile* profile) {
-  return profile->IsTor() ||
-         profile->IsIncognitoProfile() ||
-         profile->IsGuestSession();
+  return profile->IsIncognitoProfile() || profile->IsGuestSession();
 }
 
 base::DictionaryValue GetStatsDictionary(PrefService* prefs) {

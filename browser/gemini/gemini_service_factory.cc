@@ -17,8 +17,7 @@ GeminiServiceFactory* GeminiServiceFactory::GetInstance() {
 
 // static
 GeminiService* GeminiServiceFactory::GetForProfile(Profile* profile) {
-  if (profile->IsTor() ||
-      profile->IsIncognitoProfile() ||
+  if (profile->IsIncognitoProfile() ||
       profile->IsGuestSession()) {
     return nullptr;
   }

@@ -94,8 +94,7 @@ bool HasMultipleUserProfiles() {
 }
 
 bool IsAvatarButtonHideable(Profile* profile) {
-  return !profile->IsTor() && !profile->IsIncognitoProfile() &&
-         !profile->IsGuestSession();
+  return !profile->IsIncognitoProfile() && !profile->IsGuestSession();
 }
 
 }  // namespace

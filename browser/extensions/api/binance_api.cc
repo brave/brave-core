@@ -33,9 +33,7 @@ BinanceService* GetBinanceService(content::BrowserContext* context) {
 
 bool IsBinanceAPIAvailable(content::BrowserContext* context) {
   Profile* profile = Profile::FromBrowserContext(context);
-  return !profile->IsTor() &&
-    !profile->IsIncognitoProfile() &&
-    !profile->IsGuestSession();
+  return !profile->IsIncognitoProfile() && !profile->IsGuestSession();
 }
 
 }  // namespace
