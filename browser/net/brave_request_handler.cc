@@ -296,7 +296,8 @@ void BraveRequestHandler::RunNextCallback(
         IsRequestIdentifierValid(ctx->request_identifier)) {
       *ctx->new_url = GURL(ctx->new_url_spec);
     }
-    if (ctx->blocked_by == brave::kAdBlocked) {
+    if (ctx->blocked_by == brave::kAdBlocked ||
+        ctx->blocked_by == brave::kOtherBlocked) {
       if (!ctx->ShouldMockRequest()) {
         RunCallbackForRequestIdentifier(ctx->request_identifier,
                                         net::ERR_BLOCKED_BY_CLIENT);
