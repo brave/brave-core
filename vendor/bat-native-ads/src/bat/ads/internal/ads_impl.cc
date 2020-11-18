@@ -464,7 +464,7 @@ void AdsImpl::InitializeStep6(
     ad_notifications_->RemoveAllAfterUpdate();
 #endif
 
-  features::LogPageProbabilitiesStudy();
+  features::Log();
 
   MaybeServeAdNotificationsAtRegularIntervals();
 

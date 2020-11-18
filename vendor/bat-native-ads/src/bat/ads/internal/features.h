@@ -13,17 +13,20 @@
 namespace ads {
 namespace features {
 
-extern const base::Feature kContextualAdsControl;
-
-bool IsPageProbabilitiesStudyActive();
-
-std::string GetPageProbabilitiesStudy();
-
-std::string GetPageProbabilitiesFieldTrialGroup();
+// TODO(Moritz Haller): Explain feature
+extern const base::Feature kPageClassifier;
 
 int GetPageProbabilitiesHistorySize();
 
-void LogPageProbabilitiesStudy();
+bool IsPageClassifierEnabled();
+
+bool HasActiveStudy();
+
+std::string GetStudy();
+
+std::string GetGroup();
+
+void Log();
 
 }  // namespace features
 }  // namespace ads
