@@ -11,6 +11,9 @@
 
 #include "brave/browser/net/url_context.h"
 #include "brave/common/translate_network_constants.h"
+#include "brave/components/ipfs/ipfs_gateway.h"
+#include "brave/components/ipfs/ipfs_utils.h"
+#include "chrome/common/channel_info.h"
 #include "chrome/test/base/chrome_render_view_host_test_harness.h"
 #include "net/traffic_annotation/network_traffic_annotation_test_helper.h"
 #include "net/url_request/url_request_test_util.h"
@@ -26,6 +29,9 @@ GURL GetPublicGateway() {
   return GURL("https://dweb.link");
 }
 
+const char initiator_cid[] =
+    "bafybeiemxf5abjwjbikoz4mc3a3dla6ual3jsgpdr4cjr3oz3evfyavhwq";
+
 TEST(IPFSRedirectNetworkDelegateHelperTest, TranslateIPFSURIHTTPScheme) {
   GURL url("http://a.com/ipfs/QmfM2r8seH2GiRaC4esTjeraXEachRt8ZsSeGaWTPLyMoG");
   auto brave_request_info = std::make_shared<brave::BraveRequestInfo>(url);
@@ -39,6 +45,9 @@ TEST(IPFSRedirectNetworkDelegateHelperTest, TranslateIPFSURIIPFSSchemeLocal) {
   GURL url("ipfs://QmfM2r8seH2GiRaC4esTjeraXEachRt8ZsSeGaWTPLyMoG");
   auto brave_request_info = std::make_shared<brave::BraveRequestInfo>(url);
   brave_request_info->ipfs_gateway_url = GetLocalGateway();
+  brave_request_info->initiator_url = ipfs::GetIPFSGatewayURL(
+      initiator_cid, "",
+      ipfs::GetDefaultIPFSLocalGateway(chrome::GetChannel()));
   int rc = ipfs::OnBeforeURLRequest_IPFSRedirectWork(brave::ResponseCallback(),
                                                      brave_request_info);
   EXPECT_EQ(rc, net::OK);
@@ -51,6 +60,8 @@ TEST(IPFSRedirectNetworkDelegateHelperTest, TranslateIPFSURIIPFSScheme) {
   GURL url("ipfs://QmfM2r8seH2GiRaC4esTjeraXEachRt8ZsSeGaWTPLyMoG");
   auto brave_request_info = std::make_shared<brave::BraveRequestInfo>(url);
   brave_request_info->ipfs_gateway_url = GetPublicGateway();
+  brave_request_info->initiator_url =
+      ipfs::GetIPFSGatewayURL(initiator_cid, "", ipfs::GetDefaultIPFSGateway());
   int rc = ipfs::OnBeforeURLRequest_IPFSRedirectWork(brave::ResponseCallback(),
                                                      brave_request_info);
   EXPECT_EQ(rc, net::OK);
@@ -63,6 +74,9 @@ TEST(IPFSRedirectNetworkDelegateHelperTest, TranslateIPFSURIIPNSSchemeLocal) {
   GURL url("ipns://QmSrPmbaUKA3ZodhzPWZnpFgcPMFWF4QsxXbkWfEptTBJd");
   auto brave_request_info = std::make_shared<brave::BraveRequestInfo>(url);
   brave_request_info->ipfs_gateway_url = GetLocalGateway();
+  brave_request_info->initiator_url = ipfs::GetIPFSGatewayURL(
+      initiator_cid, "",
+      ipfs::GetDefaultIPFSLocalGateway(chrome::GetChannel()));
   int rc = ipfs::OnBeforeURLRequest_IPFSRedirectWork(brave::ResponseCallback(),
                                                      brave_request_info);
   EXPECT_EQ(rc, net::OK);
@@ -75,6 +89,8 @@ TEST(IPFSRedirectNetworkDelegateHelperTest, TranslateIPFSURIIPNSScheme) {
   GURL url("ipns://QmSrPmbaUKA3ZodhzPWZnpFgcPMFWF4QsxXbkWfEptTBJd");
   auto brave_request_info = std::make_shared<brave::BraveRequestInfo>(url);
   brave_request_info->ipfs_gateway_url = GetPublicGateway();
+  brave_request_info->initiator_url =
+      ipfs::GetIPFSGatewayURL(initiator_cid, "", ipfs::GetDefaultIPFSGateway());
   int rc = ipfs::OnBeforeURLRequest_IPFSRedirectWork(brave::ResponseCallback(),
                                                      brave_request_info);
   EXPECT_EQ(rc, net::OK);

@@ -3,6 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
+#include "base/base64.h"
 #include "base/path_service.h"
 #include "base/run_loop.h"
 #include "base/strings/strcat.h"
@@ -13,6 +14,7 @@
 #include "brave/components/ipfs/ipfs_constants.h"
 #include "brave/components/ipfs/ipfs_gateway.h"
 #include "brave/components/ipfs/ipfs_service.h"
+#include "brave/components/ipfs/ipfs_utils.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser.h"
 #include "chrome/test/base/in_process_browser_test.h"
@@ -52,8 +54,8 @@ class IpfsServiceBrowserTest : public InProcessBrowserTest {
     ipfs_service_->SetServerEndpointForTest(test_server_->base_url());
   }
 
-  GURL GetURL(const std::string& path) {
-    return test_server_->GetURL("a.com", path);
+  GURL GetURL(const std::string& host, const std::string& path) {
+    return test_server_->GetURL(host, path);
   }
 
   void SetUpCommandLine(base::CommandLine* command_line) override {
@@ -138,15 +140,59 @@ class IpfsServiceBrowserTest : public InProcessBrowserTest {
         std::make_unique<net::test_server::BasicHttpResponse>();
     http_response->set_content_type("text/html");
 
+    // IPFS gateways set this
+    http_response->AddCustomHeader("access-control-allow-origin", "*");
+
     std::string request_path = request.GetURL().path();
-    if (request_path == "/simple.html") {
+    http_response->set_code(net::HTTP_NOT_FOUND);
+    if (request_path == "/simple_content") {
+      http_response->set_content("simple content");
+      http_response->set_code(net::HTTP_OK);
+    } else if (request_path == "/simple_content_2") {
+      http_response->set_content("simple content 2");
+      http_response->set_code(net::HTTP_OK);
+    } else if (request_path == "/simple.html") {
       http_response->set_content("simple.html");
+      http_response->set_code(net::HTTP_OK);
+    } else if (request_path == "/iframe.html") {
+      http_response->set_content(
+          "<iframe "
+          "src='ipfs://Qmc2JTQo4iXf24g98otZmGFQq176eQ2Cdbb88qA5ToMEvC/2'>"
+          "</iframe>");
+      http_response->set_code(net::HTTP_OK);
+    } else if (request_path ==
+               "/ipfs/"
+               "Qmc2JTQo4iXf24g98otZmGFQq176eQ2Cdbb88qA5ToMEvC") {
+      http_response->set_code(net::HTTP_TEMPORARY_REDIRECT);
+      GURL new_location(ipfs::GetIPFSGatewayURL(
+          "Qmc2JTQo4iXf24g98otZmGFQq176eQ2Cdbb88qA5ToMEvC", "simple_content",
+          GetDefaultIPFSGateway()));
+      http_response->AddCustomHeader("Location", new_location.spec());
+    } else if (request_path ==
+               "/ipfs/"
+               "Qmc2JTQo4iXf24g98otZmGFQq176eQ2Cdbb88qA5ToMEvC/2") {
+      http_response->set_code(net::HTTP_TEMPORARY_REDIRECT);
+      GURL new_location(ipfs::GetIPFSGatewayURL(
+          "Qmc2JTQo4iXf24g98otZmGFQq176eQ2Cdbb88qA5ToMEvC", "simple_content_2",
+          GetDefaultIPFSGateway()));
+      http_response->AddCustomHeader("Location", new_location.spec());
     } else if (request_path ==
                "/ipfs/"
                "bafybeiemxf5abjwjbikoz4mc3a3dla6ual3jsgpdr4cjr3oz3evfyavhwq") {
       http_response->set_content("test content 1");
+      http_response->set_code(net::HTTP_OK);
+    } else if (request_path ==
+               "/ipfs/"
+               "dbafybeiemxf5abjwjbikoz4mc3a3dla6ual3jsgpdr4cjr3oz3evfyavhwq") {
+      http_response->set_content_type("image/png");
+      std::string image;
+      std::string base64_image =
+          "iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVQYV2NIbbj6HwAF"
+          "w"
+          "gK6ho3LlwAAAABJRU5ErkJggg==";
+      base::Base64Decode(base64_image, &image);
+      http_response->set_content(image);
     }
-    http_response->set_code(net::HTTP_OK);
 
     return http_response;
   }
@@ -266,22 +312,46 @@ IN_PROC_BROWSER_TEST_F(IpfsServiceBrowserTest, GetAddressesConfigServerError) {
   WaitForRequest();
 }
 
-IN_PROC_BROWSER_TEST_F(IpfsServiceBrowserTest, CanFetchIPFSResources) {
+// Make sure an ipfs:// window.fetch does not work within the http:// scheme
+IN_PROC_BROWSER_TEST_F(IpfsServiceBrowserTest,
+                       CannotFetchIPFSResourcesFromHTTP) {
   ResetTestServer(
       base::BindRepeating(&IpfsServiceBrowserTest::HandleEmbeddedSrvrRequest,
                           base::Unretained(this)));
-  SetIPFSDefaultGatewayForTest(GetURL("/"));
-  ui_test_utils::NavigateToURL(browser(), GetURL("/simple.html"));
+  SetIPFSDefaultGatewayForTest(GetURL("a.com", "/"));
+  ui_test_utils::NavigateToURL(browser(), GetURL("b.com", "/simple.html"));
   bool as_expected = false;
   content::WebContents* contents =
       browser()->tab_strip_model()->GetActiveWebContents();
   ASSERT_TRUE(ExecuteScriptAndExtractBool(
       contents,
       "fetch('ipfs://"
-      "bafybeiemxf5abjwjbikoz4mc3a3dla6ual3jsgpdr4cjr3oz3evfyavhwq')"
+      "Qmc2JTQo4iXf24g98otZmGFQq176eQ2Cdbb88qA5ToMEvC/2')"
+      "  .catch((e) => {"
+      "        window.domAutomationController.send(true);"
+      "  });",
+      &as_expected));
+  ASSERT_TRUE(as_expected);
+}
+
+// Make sure an window.fetch works within the ipfs:// scheme
+IN_PROC_BROWSER_TEST_F(IpfsServiceBrowserTest, CanFetchIPFSResourcesFromIPFS) {
+  ResetTestServer(
+      base::BindRepeating(&IpfsServiceBrowserTest::HandleEmbeddedSrvrRequest,
+                          base::Unretained(this)));
+  SetIPFSDefaultGatewayForTest(GetURL("dweb.link", "/"));
+  GURL url("ipfs://Qmc2JTQo4iXf24g98otZmGFQq176eQ2Cdbb88qA5ToMEvC");
+  ui_test_utils::NavigateToURL(browser(), url);
+  bool as_expected = false;
+  content::WebContents* contents =
+      browser()->tab_strip_model()->GetActiveWebContents();
+  ASSERT_TRUE(ExecuteScriptAndExtractBool(
+      contents,
+      "fetch('ipfs://"
+      "Qmc2JTQo4iXf24g98otZmGFQq176eQ2Cdbb88qA5ToMEvC/2')"
       "  .then(response => { response.text()"
       "      .then((response_text) => {"
-      "        const result = response_text == 'test content 1';"
+      "        const result = response_text == 'simple content 2';"
       "        window.domAutomationController.send(result);"
       "      })})"
       ".catch((x) => console.log('error: ' + x));",
@@ -289,37 +359,116 @@ IN_PROC_BROWSER_TEST_F(IpfsServiceBrowserTest, CanFetchIPFSResources) {
   ASSERT_TRUE(as_expected);
 }
 
-IN_PROC_BROWSER_TEST_F(IpfsServiceBrowserTest, ExternalHandlerMainFrameOnly) {
+// Make sure an <iframe src="ipfs://..."> cannot load within http:// scheme
+IN_PROC_BROWSER_TEST_F(IpfsServiceBrowserTest, CannotLoadIframeFromHTTP) {
   ResetTestServer(
       base::BindRepeating(&IpfsServiceBrowserTest::HandleEmbeddedSrvrRequest,
                           base::Unretained(this)));
-  SetIPFSDefaultGatewayForTest(GetURL("/"));
-  ui_test_utils::NavigateToURL(browser(), GetURL("/simple.html"));
-  bool as_expected = false;
+  SetIPFSDefaultGatewayForTest(GetURL("b.com", "/"));
+  ui_test_utils::NavigateToURL(browser(), GetURL("b.com", "/iframe.html"));
   content::WebContents* contents =
       browser()->tab_strip_model()->GetActiveWebContents();
-  ASSERT_TRUE(ExecuteScriptAndExtractBool(
+
+  std::string location;
+  ASSERT_TRUE(ExecuteScriptAndExtractString(
+      ChildFrameAt(contents->GetMainFrame(), 0),
+      "const timer = setInterval(function () {"
+      "  if (document.readyState == 'complete') {"
+      "    clearInterval(timer);"
+      "    window.domAutomationController.send(window.location.href);"
+      "  }"
+      "}, 100);",
+      &location));
+
+  ASSERT_EQ(location, "chrome-error://chromewebdata/");
+}
+
+// Make sure an <iframe src="ipfs://..."> can load within another ipfs:// scheme
+IN_PROC_BROWSER_TEST_F(IpfsServiceBrowserTest, CanLoadIFrameFromIPFS) {
+  ResetTestServer(
+      base::BindRepeating(&IpfsServiceBrowserTest::HandleEmbeddedSrvrRequest,
+                          base::Unretained(this)));
+  SetIPFSDefaultGatewayForTest(GetURL("b.com", "/"));
+  ui_test_utils::NavigateToURL(
+      browser(), GURL("ipfs://Qmc2JTQo4iXf24g98otZmGFQq176eQ2Cdbb88qA5ToMEvC"));
+  std::string location;
+  content::WebContents* contents =
+      browser()->tab_strip_model()->GetActiveWebContents();
+  ASSERT_TRUE(ExecuteScriptAndExtractString(
       contents,
-      // Add an iframe that loads an IPFS resource.
-      // If this is wrongly handled in Debug in an external handler for
-      // subresources it would throw DCHECK:
-      //   ui::PageTransitionIsMainFrame(params->transition).
-      // On Release builds, it would redirect the main frame to the IPFS
-      // resource.
       "const iframe = document.createElement('iframe');"
       "iframe.src ="
-      "  'ipfs://bafybeiemxf5abjwjbikoz4mc3a3dla6ual3jsgpdr4cjr3oz3evfyavhwq';"
+      "  'ipfs://Qmc2JTQo4iXf24g98otZmGFQq176eQ2Cdbb88qA5ToMEvC/2';"
       "document.body.appendChild(iframe);"
       "const timer = setInterval(function () {"
       "  const iframeDoc = iframe.contentDocument || "
       "      iframe.contentWindow.document;"
-      "  console.log('iframeDoc.readyState: ' + iframeDoc.readyState);"
-      "  const result = iframeDoc.readyState == 'complete';"
-      "  clearInterval(timer);"
-      "  window.domAutomationController.send(result);"
+      "  if (iframeDoc.readyState == 'complete') {"
+      "    clearInterval(timer);"
+      "    window.domAutomationController.send(window.location.href);"
+      "  }"
       "}, 100);",
-      &as_expected));
-  ASSERT_EQ(contents->GetURL(), GetURL("/simple.html"));
+      &location));
+  // Make sure main frame URL didn't change
+  ASSERT_EQ(
+      contents->GetURL(),
+      ipfs::GetIPFSGatewayURL("Qmc2JTQo4iXf24g98otZmGFQq176eQ2Cdbb88qA5ToMEvC",
+                              "simple_content", GetDefaultIPFSGateway()));
+  ASSERT_EQ(
+      ChildFrameAt(contents->GetMainFrame(), 0)->GetLastCommittedURL(),
+      ipfs::GetIPFSGatewayURL("Qmc2JTQo4iXf24g98otZmGFQq176eQ2Cdbb88qA5ToMEvC",
+                              "simple_content_2", GetDefaultIPFSGateway()));
+}
+
+// Make sure an <img src="ipfs://..."> can load within another ipfs:// scheme
+IN_PROC_BROWSER_TEST_F(IpfsServiceBrowserTest, CanLoadIPFSImageFromIPFS) {
+  ResetTestServer(
+      base::BindRepeating(&IpfsServiceBrowserTest::HandleEmbeddedSrvrRequest,
+                          base::Unretained(this)));
+  SetIPFSDefaultGatewayForTest(GetURL("b.com", "/"));
+  ui_test_utils::NavigateToURL(
+      browser(), GURL("ipfs://Qmc2JTQo4iXf24g98otZmGFQq176eQ2Cdbb88qA5ToMEvC"));
+  bool loaded;
+  content::WebContents* contents =
+      browser()->tab_strip_model()->GetActiveWebContents();
+  ASSERT_TRUE(ExecuteScriptAndExtractBool(
+      contents,
+      "let img = document.createElement('img');"
+      "img.src ="
+      "  'ipfs://dbafybeiemxf5abjwjbikoz4mc3a3dla6ual3jsgpdr4cjr3oz3evfyavhwq';"
+      "img.onload = function () {"
+      "  window.domAutomationController.send(true);"
+      "};"
+      "img.onerror = function() {"
+      "  window.domAutomationController.send(true);"
+      "};",
+      &loaded));
+  ASSERT_TRUE(loaded);
+}
+
+// Make sure an <img src="ipfs://..."> cannot load within the http scheme
+IN_PROC_BROWSER_TEST_F(IpfsServiceBrowserTest, CannotLoadIPFSImageFromHTTP) {
+  ResetTestServer(
+      base::BindRepeating(&IpfsServiceBrowserTest::HandleEmbeddedSrvrRequest,
+                          base::Unretained(this)));
+  SetIPFSDefaultGatewayForTest(GetURL("b.com", "/"));
+  ui_test_utils::NavigateToURL(browser(), GetURL("b.com", "/simple.html"));
+  bool loaded;
+  content::WebContents* contents =
+      browser()->tab_strip_model()->GetActiveWebContents();
+  ASSERT_TRUE(ExecuteScriptAndExtractBool(
+      contents,
+      "let img = document.createElement('img');"
+      "img.src ="
+      "  'ipfs://dbafybeiemxf5abjwjbikoz4mc3a3dla6ual3jsgpdr4cjr3oz3evfyavhwq';"
+      "img.onload = function () {"
+      "  window.domAutomationController.send(true);"
+      "};"
+      "img.onerror = function() {"
+      "  window.domAutomationController.send(true);"
+      "};",
+      &loaded));
+  ASSERT_TRUE(loaded);
 }
 
 }  // namespace ipfs

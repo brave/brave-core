@@ -7,6 +7,8 @@
 
 #include <vector>
 
+#include "brave/components/ipfs/ipfs_gateway.h"
+#include "chrome/common/channel_info.h"
 #include "testing/gtest/include/gtest/gtest.h"
 #include "url/gurl.h"
 
@@ -30,6 +32,9 @@ TEST_F(IpfsUtilsUnitTest, IsDefaultGatewayURL) {
       {GURL("https://dweb.link/ipfs/"
             "bafybeiemxf5abjwjbikoz4mc3a3dla6ual3jsgpdr4cjr3oz3evfyavhwq/wiki/"
             "Vincent_van_Gogh.html"),
+       GURL("https://"
+            "bafybeiemxf5abjwjbikoz4mc3a3dla6ual3jsgpdr4cjr3oz3evfyavhwq."
+            "ipfs.dweb.link/wiki/Vincent_van_Gogh.html"),
        GURL("https://dweb.link/ipns/tr.wikipedia-on-ipfs.org/wiki/"
             "Anasayfa.html")});
 
@@ -56,6 +61,9 @@ TEST_F(IpfsUtilsUnitTest, IsLocalGatewayURL) {
       {GURL("http://localhost:48080/ipfs/"
             "bafybeiemxf5abjwjbikoz4mc3a3dla6ual3jsgpdr4cjr3oz3evfyavhwq/wiki/"
             "Vincent_van_Gogh.html"),
+       GURL(
+           "http://bafybeiemxf5abjwjbikoz4mc3a3dla6ual3jsgpdr4cjr3oz3evfyavhwq."
+           "ipfs.localhost:48080//wiki/Vincent_van_Gogh.html"),
        GURL("http://127.0.0.1:48080/ipfs/"
             "bafybeiemxf5abjwjbikoz4mc3a3dla6ual3jsgpdr4cjr3oz3evfyavhwq/wiki/"
             "Vincent_van_Gogh.html")});
@@ -97,4 +105,36 @@ TEST_F(IpfsUtilsUnitTest, ToPublicGatewayURL) {
     GURL new_url = ipfs::ToPublicGatewayURL(url);
     EXPECT_EQ(new_url, expected_new_url) << url;
   }
+}
+
+TEST_F(IpfsUtilsUnitTest, GetIPFSGatewayURL) {
+  EXPECT_EQ(
+      ipfs::GetIPFSGatewayURL(
+          "bafybeiemxf5abjwjbikoz4mc3a3dla6ual3jsgpdr4cjr3oz3evfyavhwq", "",
+          ipfs::GetDefaultIPFSGateway()),
+      GURL(
+          "https://bafybeiemxf5abjwjbikoz4mc3a3dla6ual3jsgpdr4cjr3oz3evfyavhwq."
+          "ipfs.dweb.link"));
+  EXPECT_EQ(
+      ipfs::GetIPFSGatewayURL(
+          "bafybeiemxf5abjwjbikoz4mc3a3dla6ual3jsgpdr4cjr3oz3evfyavhwq", "",
+          ipfs::GetDefaultIPFSGateway()),
+      GURL(
+          "https://bafybeiemxf5abjwjbikoz4mc3a3dla6ual3jsgpdr4cjr3oz3evfyavhwq."
+          "ipfs.dweb.link"));
+}
+
+TEST_F(IpfsUtilsUnitTest, GetIPFSGatewayURLLocal) {
+  EXPECT_EQ(
+      ipfs::GetIPFSGatewayURL(
+          "bafybeiemxf5abjwjbikoz4mc3a3dla6ual3jsgpdr4cjr3oz3evfyavhwq", "",
+          ipfs::GetDefaultIPFSLocalGateway(chrome::GetChannel())),
+      GURL("http://bafybeiemxf5abjwjbikoz4mc3a3dla6ual3jsgpdr4cjr3oz3evfyavhwq."
+           "ipfs.localhost:48080"));
+  EXPECT_EQ(
+      ipfs::GetIPFSGatewayURL(
+          "bafybeiemxf5abjwjbikoz4mc3a3dla6ual3jsgpdr4cjr3oz3evfyavhwq", "",
+          ipfs::GetDefaultIPFSLocalGateway(chrome::GetChannel())),
+      GURL("http://bafybeiemxf5abjwjbikoz4mc3a3dla6ual3jsgpdr4cjr3oz3evfyavhwq."
+           "ipfs.localhost:48080"));
 }
