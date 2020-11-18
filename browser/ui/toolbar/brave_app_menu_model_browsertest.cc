@@ -8,7 +8,6 @@
 #include <algorithm>
 #include <vector>
 
-#include "brave/browser/profiles/profile_util.h"
 #include "brave/browser/ui/brave_browser_command_controller.h"
 #include "brave/browser/ui/browser_commands.h"
 #include "brave/components/brave_rewards/browser/buildflags/buildflags.h"
@@ -205,7 +204,7 @@ IN_PROC_BROWSER_TEST_F(BraveAppMenuBrowserTest, MenuOrderTest) {
   tor_browser_creation_observer.Wait();
   Browser* tor_browser = nullptr;
   for (Browser* browser : *browser_list) {
-    if (brave::IsTorProfile(browser->profile())) {
+    if (browser->profile()->IsTor()) {
       tor_browser = browser;
       break;
     }

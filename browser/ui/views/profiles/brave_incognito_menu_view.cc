@@ -9,7 +9,6 @@
 #include <utility>
 
 #include "brave/browser/brave_browser_process_impl.h"
-#include "brave/browser/profiles/profile_util.h"
 #include "brave/components/tor/buildflags/buildflags.h"
 #include "brave/grit/brave_generated_resources.h"
 #include "chrome/app/vector_icons/vector_icons.h"
@@ -35,20 +34,20 @@ bool ShouldShowTorProfileButton(Profile* profile) {
   DCHECK(profile);
 #if BUILDFLAG(ENABLE_TOR)
   return !TorProfileServiceFactory::IsTorDisabled() &&
-         !brave::IsTorProfile(profile);
+         !profile->IsTor();
 #else
   return false;
 #endif
 }
 
 int GetProfileMenuTitleId(Profile* profile) {
-  return brave::IsTorProfile(profile) ? IDS_TOR_PROFILE_NAME
-                                      : IDS_INCOGNITO_PROFILE_MENU_TITLE;
+  return profile->IsTor() ? IDS_TOR_PROFILE_NAME
+                          : IDS_INCOGNITO_PROFILE_MENU_TITLE;
 }
 
 int GetProfileMenuCloseButtonTextId(Profile* profile) {
-  return brave::IsTorProfile(profile) ? IDS_PROFILES_EXIT_TOR
-                                      : IDS_INCOGNITO_PROFILE_MENU_CLOSE_BUTTON;
+  return profile->IsTor() ? IDS_PROFILES_EXIT_TOR
+                          : IDS_INCOGNITO_PROFILE_MENU_CLOSE_BUTTON;
 }
 
 }  // namespace
@@ -97,13 +96,13 @@ void BraveIncognitoMenuView::OnTorProfileButtonClicked() {
 }
 
 base::string16 BraveIncognitoMenuView::GetAccessibleWindowTitle() const {
-  return brave::IsTorProfile(browser()->profile())
+  return browser()->profile()->IsTor()
              ? l10n_util::GetStringUTF16(IDS_TOR_PROFILE_NAME)
              : IncognitoMenuView::GetAccessibleWindowTitle();
 }
 
 void BraveIncognitoMenuView::OnExitButtonClicked() {
-  if (brave::IsTorProfile(browser()->profile())) {
+  if (browser()->profile()->IsTor()) {
     RecordClick(ActionableItem::kExitProfileButton);
     TorProfileManager::CloseTorProfileWindows(browser()->profile());
   } else {

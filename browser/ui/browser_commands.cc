@@ -5,7 +5,6 @@
 
 #include "brave/browser/ui/browser_commands.h"
 
-#include "brave/browser/profiles/profile_util.h"
 #include "brave/components/speedreader/buildflags.h"
 #include "brave/components/tor/buildflags/buildflags.h"
 #include "chrome/browser/browser_process.h"
@@ -39,7 +38,7 @@ namespace {
 namespace brave {
 
 void NewOffTheRecordWindowTor(Browser* browser) {
-  if (brave::IsTorProfile(browser->profile())) {
+  if (browser->profile()->IsTor()) {
     chrome::OpenEmptyWindow(browser->profile());
     return;
   }

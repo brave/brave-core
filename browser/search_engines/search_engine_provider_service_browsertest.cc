@@ -140,7 +140,7 @@ IN_PROC_BROWSER_TEST_F(SearchEngineProviderServiceTest,
   content::RunAllTasksUntilIdle();
 
   Profile* tor_profile = BrowserList::GetInstance()->GetLastActive()->profile();
-  EXPECT_TRUE(brave::IsTorProfile(tor_profile));
+  EXPECT_TRUE(tor_profile->IsTor());
 
   auto* service = TemplateURLServiceFactory::GetForProfile(tor_profile);
 
@@ -168,7 +168,7 @@ IN_PROC_BROWSER_TEST_F(SearchEngineProviderServiceTest,
   content::RunAllTasksUntilIdle();
 
   Profile* tor_profile = BrowserList::GetInstance()->GetLastActive()->profile();
-  EXPECT_TRUE(brave::IsTorProfile(tor_profile));
+  EXPECT_TRUE(tor_profile->IsTor());
 
   int default_provider_id =
       brave::IsRegionForQwant(tor_profile)

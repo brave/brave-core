@@ -10,7 +10,6 @@
 
 #include "base/strings/utf_string_conversions.h"
 #include "brave/app/vector_icons/vector_icons.h"
-#include "brave/browser/profiles/profile_util.h"
 #include "brave/browser/tor/tor_profile_manager.h"
 #include "brave/components/tor/onion_location_tab_helper.h"
 #include "brave/grit/brave_generated_resources.h"
@@ -83,7 +82,7 @@ class OnionLocationButtonView : public views::LabelButton,
       : LabelButton(this,
                     l10n_util::GetStringUTF16(IDS_LOCATION_BAR_OPEN_IN_TOR)),
         profile_(profile) {
-    if (brave::IsTorProfile(profile))
+    if (profile->IsTor())
       SetText(l10n_util::GetStringUTF16(IDS_LOCATION_BAR_ONION_AVAILABLE));
     // Render vector icon
     const gfx::ImageSkia image =

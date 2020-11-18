@@ -20,7 +20,7 @@ BraveBrowserFrame::BraveBrowserFrame(BrowserView* browser_view)
 // normal windows theme change.
 const ui::NativeTheme* BraveBrowserFrame::GetNativeTheme() const {
   if ((view_->browser()->profile()->IsIncognitoProfile() ||
-       brave::IsTorProfile(view_->browser()->profile()) ||
+       view_->browser()->profile()->IsTor() ||
        brave::IsGuestProfile(view_->browser()->profile())) &&
       ThemeServiceFactory::GetForProfile(view_->browser()->profile())
           ->UsingDefaultTheme()) {

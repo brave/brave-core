@@ -24,7 +24,7 @@ namespace {
 KeyedService* InitializeSearchEngineProviderServiceIfNeeded(Profile* profile) {
   // Regardless of qwant region, tor profile needs controller to store
   // previously set search engine provider.
-  if (brave::IsTorProfile(profile) && profile->IsOffTheRecord()) {
+  if (profile->IsTor() && profile->IsOffTheRecord()) {
     return new TorWindowSearchEngineProviderService(profile);
   }
 

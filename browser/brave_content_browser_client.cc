@@ -17,7 +17,6 @@
 #include "brave/browser/brave_browser_process_impl.h"
 #include "brave/browser/net/brave_proxying_url_loader_factory.h"
 #include "brave/browser/net/brave_proxying_web_socket.h"
-#include "brave/browser/profiles/profile_util.h"
 #include "brave/common/pref_names.h"
 #include "brave/common/webui_url_constants.h"
 #include "brave/components/binance/browser/buildflags/buildflags.h"
@@ -476,7 +475,7 @@ BraveContentBrowserClient::CreateThrottlesForNavigation(
   std::unique_ptr<content::NavigationThrottle> tor_navigation_throttle =
     tor::TorNavigationThrottle::MaybeCreateThrottleFor(handle,
         TorProfileServiceFactory::GetForContext(context),
-        brave::IsTorProfile(context));
+        context->IsTor());
   if (tor_navigation_throttle)
     throttles.push_back(std::move(tor_navigation_throttle));
   std::unique_ptr<tor::OnionLocationNavigationThrottleDelegate>
@@ -487,7 +486,7 @@ BraveContentBrowserClient::CreateThrottlesForNavigation(
           tor::OnionLocationNavigationThrottle::MaybeCreateThrottleFor(
               handle, TorProfileServiceFactory::IsTorDisabled(),
               std::move(onion_location_navigation_throttle_delegate),
-              brave::IsTorProfile(context));
+              context->IsTor());
   if (onion_location_navigation_throttle)
     throttles.push_back(std::move(onion_location_navigation_throttle));
 #endif

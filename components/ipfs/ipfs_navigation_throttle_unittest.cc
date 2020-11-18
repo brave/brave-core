@@ -12,7 +12,6 @@
 #include "base/test/bind_test_util.h"
 #include "base/test/scoped_feature_list.h"
 #include "brave/browser/ipfs/ipfs_service_factory.h"
-#include "brave/browser/profiles/profile_util.h"
 #include "brave/components/ipfs/features.h"
 #include "brave/components/ipfs/ipfs_constants.h"
 #include "brave/components/ipfs/ipfs_service.h"
@@ -257,7 +256,7 @@ TEST_F(IpfsNavigationThrottleUnitTest, Instantiation) {
 TEST_F(IpfsNavigationThrottleUnitTest, NotInstantiatedInTor) {
   Profile* tor_profile =
     TorProfileManager::GetInstance().GetTorProfile(profile());
-  ASSERT_TRUE(brave::IsTorProfile(tor_profile));
+  ASSERT_TRUE(tor_profile->IsTor());
   ASSERT_TRUE(tor_profile->IsOffTheRecord());
   ASSERT_EQ(tor_profile->GetOriginalProfile(), profile());
 

@@ -169,14 +169,6 @@ bool IsSessionProfilePath(const base::FilePath& path) {
          base::FilePath(FILE_PATH_LITERAL("session_profiles"));
 }
 
-bool IsTorProfile(content::BrowserContext* context) {
-#if BUILDFLAG(ENABLE_TOR)
-  return context->IsTor();
-#else
-  return false;
-#endif
-}
-
 Profile* GetParentProfile(content::BrowserContext* context) {
   DCHECK(context);
   return ParentProfileData::FromProfile(context)->profile();
@@ -204,7 +196,7 @@ bool IsTorDisabledForProfile(Profile* profile) {
 
 bool IsRegularProfile(content::BrowserContext* context) {
   auto* profile = Profile::FromBrowserContext(context);
-  return !IsTorProfile(context) &&
+  return !context->IsTor() &&
          !profile->IsGuestSession() &&
          profile->IsRegularProfile();
 }

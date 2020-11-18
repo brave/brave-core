@@ -143,7 +143,7 @@ void BraveBrowserCommandController::UpdateCommandForWebcompatReporter() {
 void BraveBrowserCommandController::UpdateCommandForTor() {
   // Enable new tor connection only for tor profile.
   UpdateCommandEnabled(IDC_NEW_TOR_CONNECTION_FOR_SITE,
-                       brave::IsTorProfile(browser_->profile()));
+                       browser_->profile()->IsTor());
   UpdateCommandEnabled(IDC_NEW_OFFTHERECORD_WINDOW_TOR,
                        !brave::IsTorDisabledForProfile(browser_->profile()));
 }
@@ -172,14 +172,14 @@ bool BraveBrowserCommandController::ExecuteBraveCommandWithDisposition(
   switch (id) {
     case IDC_NEW_WINDOW:
       // Use chromium's action for non-Tor profiles.
-      if (!brave::IsTorProfile(browser_->profile()))
+      if (!browser_->profile()->IsTor())
         return BrowserCommandController::ExecuteCommandWithDisposition(
             id, disposition, time_stamp);
       NewEmptyWindow(browser_->profile()->GetOriginalProfile());
       break;
     case IDC_NEW_INCOGNITO_WINDOW:
       // Use chromium's action for non-Tor profiles.
-      if (!brave::IsTorProfile(browser_->profile()))
+      if (!browser_->profile()->IsTor())
         return BrowserCommandController::ExecuteCommandWithDisposition(
             id, disposition, time_stamp);
       NewIncognitoWindow(browser_->profile()->GetOriginalProfile());

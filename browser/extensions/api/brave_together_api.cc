@@ -9,7 +9,6 @@
 #include <memory>
 
 #include "base/environment.h"
-#include "brave/browser/profiles/profile_util.h"
 #include "brave/components/brave_together/browser/regions.h"
 #include "brave/components/ntp_widget_utils/browser/ntp_widget_utils_region.h"
 #include "chrome/browser/profiles/profile.h"
@@ -21,7 +20,7 @@ ExtensionFunction::ResponseAction
 BraveTogetherIsSupportedFunction::Run() {
   Profile* profile = Profile::FromBrowserContext(browser_context());
 
-  if (brave::IsTorProfile(profile)) {
+  if (profile->IsTor()) {
     return RespondNow(Error("Not available in Tor profile"));
   }
 

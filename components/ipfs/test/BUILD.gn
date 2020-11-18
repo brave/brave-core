@@ -24,7 +24,6 @@ source_set("brave_ipfs_unit_tests") {
     deps = [
       "//base/test:test_support",
       "//brave/browser:browser_process",
-      "//brave/browser/profiles",
       "//brave/components/ipfs",
       "//brave/components/tor/buildflags",
       "//chrome:browser_dependencies",

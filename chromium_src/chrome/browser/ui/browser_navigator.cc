@@ -5,6 +5,7 @@
 
 #include "brave/browser/profiles/profile_util.h"
 #include "brave/common/webui_url_constants.h"
+#include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/browser_finder.h"
 #include "chrome/browser/ui/browser_navigator_params.h"
@@ -14,7 +15,7 @@
 namespace {
 
 bool HandleURLInParent(NavigateParams* params, Profile* profile) {
-  if (brave::IsTorProfile(profile) &&
+  if (profile->IsTor() &&
       !params->browser->profile()->IsOffTheRecord()) {
     return true;
   }

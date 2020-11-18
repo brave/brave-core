@@ -61,7 +61,7 @@ using ntp_background_images::ViewCounterServiceFactory;
 namespace {
 
 bool IsPrivateNewTab(Profile* profile) {
-  return brave::IsTorProfile(profile) ||
+  return profile->IsTor() ||
          profile->IsIncognitoProfile() ||
          profile->IsGuestSession();
 }
@@ -198,7 +198,7 @@ BraveNewTabMessageHandler* BraveNewTabMessageHandler::Create(
   // Private Tab info
   if (IsPrivateNewTab(profile)) {
     source->AddBoolean(
-      "isTor", brave::IsTorProfile(profile));
+      "isTor", profile->IsTor());
     source->AddBoolean(
       "isQwant", brave::IsRegionForQwant(profile));
   }
@@ -208,7 +208,7 @@ BraveNewTabMessageHandler* BraveNewTabMessageHandler::Create(
 BraveNewTabMessageHandler::BraveNewTabMessageHandler(Profile* profile)
     : profile_(profile) {
 #if BUILDFLAG(ENABLE_TOR)
-  if (brave::IsTorProfile(profile)) {
+  if (profile->IsTor()) {
     tor_profile_service_ = TorProfileServiceFactory::GetForContext(profile);
   }
 #endif
