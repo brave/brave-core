@@ -57,6 +57,10 @@ generate_grd("build_grd") {
   grd_prefix = "brave_settings"
   out_grd = "$target_gen_dir/${grd_prefix}_resources.grd"
   input_files = [
+    "brave_sync_page/device_computer.svg",
+    "brave_sync_page/device_mobile.svg",
+    "brave_sync_page/qr_scanning.svg",
+    "brave_sync_page/start_icon.svg",
     "images/cookies_banner.svg",
     "images/cookies_banner_dark.svg",
     "images/permissions_banner.svg",
