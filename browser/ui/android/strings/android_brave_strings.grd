@@ -1434,6 +1434,9 @@ until they verify, or until 90 days have passed.
       <message name="IDS_CONVERT_STAT_TEXT" desc="Convert stat text">
         <ph name="COUNT">%1$s</ph> <ph name="COUNT_TEXT">%2$s</ph>
       </message>
+      <message name="IDS_CONVERT_SUCCESS" desc="Binance convert success text">
+        You converted <ph name="FROM_VALUE">%1$s</ph> <ph name="FROM_CURRENCY">%2$s</ph> to <ph name="TO_VALUE">%3$s</ph> <ph name="TO_CURRENCY">%4$s</ph>!
+      </message>
     </messages>
   </release>
 </grit>
