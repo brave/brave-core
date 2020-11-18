@@ -52,6 +52,8 @@ String PluginReplacementName(std::mt19937_64* prng) {
 
 void FarblePlugins(DOMPluginArray* owner,
                    HeapVector<Member<DOMPlugin>>* dom_plugins) {
+  if (!owner->DomWindow())
+    return;
   LocalFrame* frame = owner->DomWindow()->GetFrame();
   if (!frame || !frame->GetContentSettingsClient())
     return;
