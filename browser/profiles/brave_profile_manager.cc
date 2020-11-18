@@ -78,7 +78,7 @@ std::string BraveProfileManager::GetLastUsedProfileName() {
   const std::string last_used_profile_name =
       local_state->GetString(prefs::kProfileLastUsed);
   // Keep this for legacy tor profile migration because tor profile might be
-  // last active profiel before upgrading
+  // last active profile before upgrading
   if (last_used_profile_name ==
       base::FilePath(tor::kTorProfileDir).AsUTF8Unsafe())
     return chrome::kInitialProfile;

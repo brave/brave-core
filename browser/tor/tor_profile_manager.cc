@@ -17,8 +17,8 @@
 #include "chrome/browser/profiles/profile_window.h"
 #include "chrome/browser/ui/browser_list.h"
 #include "chrome/common/pref_names.h"
-#include "components/safe_browsing/core/common/safe_browsing_prefs.h"
 #include "components/prefs/pref_service.h"
+#include "components/safe_browsing/core/common/safe_browsing_prefs.h"
 #include "third_party/blink/public/common/peerconnection/webrtc_ip_handling_policy.h"
 
 #if BUILDFLAG(ENABLE_BRAVE_TRANSLATE_EXTENSION)
@@ -46,6 +46,12 @@ void TorProfileManager::SwitchToTorProfile(
     ProfileManager::CreateCallback callback) {
   Profile* tor_profile =
       TorProfileManager::GetInstance().GetTorProfile(original_profile);
+  tor::TorProfileService* service =
+      TorProfileServiceFactory::GetForContext(tor_profile);
+  DCHECK(service);
+  // TorLauncherFactory relies on OnExecutableReady to launch tor process so we
+  // need to make sure tor binary is there every time
+  service->RegisterTorClientUpdater();
   profiles::OpenBrowserWindowForProfile(callback, false, false, false,
                                         tor_profile,
                                         Profile::CREATE_STATUS_INITIALIZED);
@@ -53,11 +59,10 @@ void TorProfileManager::SwitchToTorProfile(
 
 // static
 void TorProfileManager::CloseTorProfileWindows(Profile* tor_profile) {
-  if (tor_profile) {
-    BrowserList::CloseAllBrowsersWithIncognitoProfile(
-        tor_profile, base::DoNothing(), base::DoNothing(),
-        true /* skip_beforeunload */);
-  }
+  DCHECK(tor_profile);
+  BrowserList::CloseAllBrowsersWithIncognitoProfile(
+      tor_profile, base::DoNothing(), base::DoNothing(),
+      true /* skip_beforeunload */);
 }
 
 TorProfileManager::TorProfileManager() {
@@ -72,19 +77,16 @@ Profile* TorProfileManager::GetTorProfile(Profile* original_profile) {
   Profile* tor_profile = original_profile->GetOffTheRecordProfile(
       Profile::OTRProfileID(tor::kTorProfileID));
 
-  tor::TorProfileService* service =
-      TorProfileServiceFactory::GetForContext(tor_profile);
-  DCHECK(service);
-  service->RegisterTorClientUpdater();
+  const std::string context_id = tor_profile->UniqueId();
+  auto it = tor_profiles_.find(context_id);
+  if (it != tor_profiles_.end())
+    return it->second;
 
   InitTorProfileUserPrefs(tor_profile);
 
-  const std::string context_id = tor_profile->UniqueId();
-  auto it = tor_profiles_.find(context_id);
-  if (it == tor_profiles_.end()) {
-    tor_profile->AddObserver(this);
-    tor_profiles_[context_id] = tor_profile;
-  }
+  tor_profile->AddObserver(this);
+  tor_profiles_[context_id] = tor_profile;
+
   return tor_profile;
 }
 

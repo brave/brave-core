@@ -3,10 +3,11 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-// Disable extensions for tor OTR profile
-#define BRAVE_IS_INCOGNITO_ENABLED \
-  if (context->IsTor()) {          \
-    return false;                  \
+// Disable non-component extensions for tor OTR profile
+#define BRAVE_IS_INCOGNITO_ENABLED                             \
+  if (context->IsTor() &&                                      \
+      !Manifest::IsComponentLocation(extension->location())) { \
+    return false;                                              \
   }
 #include "../../../../extensions/browser/extension_util.cc"
 #undef BRAVE_IS_INCOGNITO_ENABLED

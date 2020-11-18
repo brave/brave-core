@@ -55,18 +55,29 @@ source_set("tor") {
 source_set("unit_tests") {
   testonly = true
   if (enable_tor) {
-    sources = [ "tor_navigation_throttle_unittest.cc" ]
+    sources = [
+      "tor_navigation_throttle_unittest.cc",
+      "tor_profile_manager_unittest.cc",
+    ]
 
     deps = [
       "//base",
+      "//brave/browser/translate/buildflags",
+      "//brave/common:pref_names",
+      "//brave/components/brave_webtorrent/browser/buildflags",
       "//base/test:test_support",
       "//brave/browser/tor",
       "//brave/components/tor",
       "//brave/components/tor:test_support",
+      "//chrome/common",
+      "//components/keyed_service/content",
       "//chrome/test:test_support",
+      "//components/safe_browsing/core/common:safe_browsing_prefs",
+      "//components/translate/core/browser",
       "//content/public/browser",
       "//content/test:test_support",
       "//testing/gtest",
+      "//third_party/blink/public/common",
       "//url",
     ]
   }
