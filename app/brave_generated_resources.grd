@@ -308,10 +308,16 @@ By installing this extension, you are agreeing to the Google Widevine Terms of U
         New Tor Connection For This Site
       </message>
       <message name="IDS_PROFILES_EXIT_TOR" desc="Button in the avatar menu bubble view for exiting the active Tor session.">
-        Exit Tor
+        Exit Private Window with Tor
+      </message>
+      <message name="IDS_PROFILES_EXIT_PRIVATE" desc="Button in the avatar menu bubble view for closing private window.">
+        Exit Private Window
       </message>
       <message name="IDS_TOR_PROFILE_NAME" desc="The name given to the Tor browsing profile. Displayed in the avatar menu bubble and button UI.">
-        Tor
+        Private Window with Tor
+      </message>
+      <message name="IDS_PRIVATE_PROFILE_NAME" desc="The name given to the private profile. Displayed in the avatar menu bubble and button UI.">
+        Private Window
       </message>
       <message name="IDS_TOR_AVATAR_BUTTON_LABEL" desc="The text label of tor avatar button.">
         Private with Tor
@@ -320,7 +326,7 @@ By installing this extension, you are agreeing to the Google Widevine Terms of U
         This is private window with tor
       </message>
       <message name="IDS_PROFILES_OPEN_TOR_PROFILE_BUTTON" desc="Button in the avatar menu bubble view to open a Tor window.">
-        Open Tor Window
+        Open Private Window with Tor
       </message>
       <message name="IDS_LOCATION_BAR_OPEN_IN_TOR" desc="Button in location bar to open onion available site in tor window.">
         Open in Tor

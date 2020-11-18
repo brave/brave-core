@@ -41,13 +41,17 @@ bool ShouldShowTorProfileButton(Profile* profile) {
 }
 
 int GetProfileMenuTitleId(Profile* profile) {
-  return profile->IsTor() ? IDS_TOR_PROFILE_NAME
-                          : IDS_INCOGNITO_PROFILE_MENU_TITLE;
+  return profile->IsTor() ? IDS_TOR_PROFILE_NAME : IDS_PRIVATE_PROFILE_NAME;
 }
 
 int GetProfileMenuCloseButtonTextId(Profile* profile) {
-  return profile->IsTor() ? IDS_PROFILES_EXIT_TOR
-                          : IDS_INCOGNITO_PROFILE_MENU_CLOSE_BUTTON;
+  return profile->IsTor() ? IDS_PROFILES_EXIT_TOR : IDS_PROFILES_EXIT_PRIVATE;
+}
+
+int GetWindowCount(Profile* profile) {
+  return brave::IsTorProfile(profile)
+             ? 0
+             : BrowserList::GetOffTheRecordBrowsersActiveForProfile(profile);
 }
 
 }  // namespace
