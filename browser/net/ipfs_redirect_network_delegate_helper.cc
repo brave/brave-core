@@ -5,6 +5,8 @@
 
 #include "brave/browser/net/ipfs_redirect_network_delegate_helper.h"
 
+#include "brave/components/ipfs/ipfs_gateway.h"
+#include "brave/components/ipfs/ipfs_utils.h"
 #include "brave/components/ipfs/translate_ipfs_uri.h"
 #include "net/base/net_errors.h"
 
@@ -16,7 +18,21 @@ int OnBeforeURLRequest_IPFSRedirectWork(
   GURL new_url;
   if (ipfs::TranslateIPFSURI(ctx->request_url, &new_url,
                              ctx->ipfs_gateway_url)) {
-    ctx->new_url_spec = new_url.spec();
+    // We only allow translating ipfs:// and ipns:// URIs if the initiator_url
+    // is from the same Brave ipfs/ipns gateway.
+    // For the local case, we don't want a normal site to be able to populate
+    // a user's IPFS local cache with content they didn't know about.
+    // In which case that user would also be able to serve that content.
+    // If the user is not using a local node, we want the experience to be
+    // the same as the local case.
+    if (ctx->resource_type == blink::mojom::ResourceType::kMainFrame ||
+        (IsLocalGatewayURL(new_url) && IsLocalGatewayURL(ctx->initiator_url)) ||
+        (IsDefaultGatewayURL(new_url) &&
+         IsDefaultGatewayURL(ctx->initiator_url))) {
+      ctx->new_url_spec = new_url.spec();
+    } else {
+      ctx->blocked_by = brave::kOtherBlocked;
+    }
   }
   return net::OK;
 }

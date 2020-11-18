@@ -6,6 +6,8 @@
 #ifndef BRAVE_COMPONENTS_IPFS_IPFS_UTILS_H_
 #define BRAVE_COMPONENTS_IPFS_IPFS_UTILS_H_
 
+#include <string>
+
 class GURL;
 
 namespace ipfs {
@@ -15,6 +17,12 @@ bool IsDefaultGatewayURL(const GURL& url);
 bool IsLocalGatewayURL(const GURL& url);
 bool IsIPFSScheme(const GURL& url);
 GURL ToPublicGatewayURL(const GURL& url);
+GURL GetIPFSGatewayURL(const std::string& cid,
+                       const std::string& path,
+                       const GURL& base_gateway_url);
+GURL GetIPNSGatewayURL(const std::string& cid,
+                       const std::string& path,
+                       const GURL& base_gateway_url);
 
 }  // namespace ipfs
 
