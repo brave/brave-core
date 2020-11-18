@@ -61,19 +61,14 @@ std::string CreateConfirmationRequestDTO(
     }
   }
 
-  if (!features::IsPageProbabilitiesStudyActive()) {
-    dto.SetKey("experiment", base::Value(base::Value::Type::DICTIONARY));
-  } else {
-    std::string study = features::GetPageProbabilitiesStudy();
-    std::string group = features::GetPageProbabilitiesFieldTrialGroup();
-    std::string history_size =
-        base::NumberToString(features::GetPageProbabilitiesHistorySize());
+  base::Value list(base::Value::Type::LIST);
+  if (features::HasActiveStudy()) {
     base::Value dictionary(base::Value::Type::DICTIONARY);
-    dictionary.SetKey("name", base::Value(study));
-    dictionary.SetKey("group", base::Value(group));
-    dictionary.SetKey("value", base::Value(history_size));
-    dto.SetKey("experiment", std::move(dictionary));
+    dictionary.SetKey("name", base::Value(features::GetStudy()));
+    dictionary.SetKey("group", base::Value(features::GetGroup()));
+    list.Append(std::move(dictionary));
   }
+  dto.SetKey("studies", base::Value(std::move(list)));
 
   const std::string platform = PlatformHelper::GetInstance()->GetPlatformName();
   dto.SetKey("platform", base::Value(platform));

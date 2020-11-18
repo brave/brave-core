@@ -13,17 +13,31 @@
 namespace ads {
 namespace features {
 
-extern const base::Feature kContextualAdsControl;
+enum ClassificationType {
+  kPage,
+  kBandit,
+  kPurchaseIntent
+};
 
-bool IsPageProbabilitiesStudyActive();
+// TODO(Moritz Haller): Explain feature
+extern const base::Feature kPageClassifier;
 
-std::string GetPageProbabilitiesStudy();
-
-std::string GetPageProbabilitiesFieldTrialGroup();
+bool IsPageClassifierEnabled();
 
 int GetPageProbabilitiesHistorySize();
 
-void LogPageProbabilitiesStudy();
+// TODO(Moritz Haller): Explain feature
+extern const base::Feature kBanditClassifier;
+
+bool IsBanditClassifierEnabled();
+
+bool HasActiveStudy();
+
+std::string GetStudy();
+
+std::string GetGroup();
+
+void Log();
 
 }  // namespace features
 }  // namespace ads

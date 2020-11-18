@@ -27,6 +27,8 @@ class AdTargeting {
  private:
   CategoryList GetPageClassificationWinningCategories() const;
 
+  CategoryList GetBanditClassificationWinningCategories() const;
+
   CategoryList GetPurchaseIntentWinningCategories() const;
 
   AdsImpl* ads_;  // NOT OWNED

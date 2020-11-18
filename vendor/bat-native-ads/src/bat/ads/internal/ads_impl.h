@@ -31,6 +31,7 @@ class PageClassifier;
 
 namespace behavioral {
 class PurchaseIntentClassifier;
+class BanditClassifier;
 }  // namespace behavioral
 
 namespace geographic {
@@ -108,6 +109,11 @@ class AdsImpl
 
   AdsHistory* get_ads_history() const {
     return ads_history_.get();
+  }
+
+  ad_targeting::behavioral::BanditClassifier*
+  get_bandit_classifier() const {
+    return bandit_classifier_.get();
   }
 
   Bundle* get_bundle() const {
@@ -300,6 +306,8 @@ class AdsImpl
   std::unique_ptr<ad_notifications::AdServing> ad_notification_serving_;
   std::unique_ptr<AdTargeting> ad_targeting_;
   std::unique_ptr<AdTransfer> ad_transfer_;
+  std::unique_ptr<ad_targeting::behavioral::BanditClassifier>
+      bandit_classifier_;
   std::unique_ptr<Bundle> bundle_;
   std::unique_ptr<Client> client_;
   std::unique_ptr<Confirmations> confirmations_;

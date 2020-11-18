@@ -18,6 +18,7 @@
 #include "bat/ads/internal/ad_server/ad_server.h"
 #include "bat/ads/internal/ad_serving/ad_notifications/ad_notification_serving.h"
 #include "bat/ads/internal/ad_targeting/ad_targeting.h"
+#include "bat/ads/internal/ad_targeting/behavioral/bandit_classifier/bandit_classifier.h"
 #include "bat/ads/internal/ad_targeting/behavioral/purchase_intent_classifier/purchase_intent_classifier.h"
 #include "bat/ads/internal/ad_targeting/behavioral/purchase_intent_classifier/purchase_intent_classifier_user_models.h"
 #include "bat/ads/internal/ad_targeting/contextual/page_classifier/page_classifier.h"
@@ -66,6 +67,8 @@ AdsImpl::AdsImpl(
           ad_notifications::AdServing>(this)),
       ad_targeting_(std::make_unique<AdTargeting>(this)),
       ad_transfer_(std::make_unique<AdTransfer>(this)),
+      bandit_classifier_(std::make_unique<
+          ad_targeting::behavioral::BanditClassifier>(this)),
       bundle_(std::make_unique<Bundle>(this)),
       client_(std::make_unique<Client>(this)),
       confirmations_(std::make_unique<Confirmations>(this)),
@@ -165,6 +168,9 @@ void AdsImpl::OnPageLoaded(
   purchase_intent_classifier_->MaybeExtractIntentSignal(url);
 
   page_classifier_->MaybeClassifyPage(url, content);
+
+  // TODO(Moritz Haller): Remove
+  bandit_classifier_->GetWinningCategories();
 }
 
 void AdsImpl::OnIdle() {
@@ -262,6 +268,16 @@ void AdsImpl::OnAdNotificationEvent(
     const std::string& uuid,
     const AdNotificationEventType event_type) {
   ad_notification_->Trigger(uuid, event_type);
+
+  // TODO(Moritz Haller): Handle via observer on ad events
+  // TODO(Moritz Haller): also - need ad segment info
+  if (event_type == AdNotificationEventType::kViewed) {
+    bandit_classifier_->RegisterAction(ad);
+  }
+
+  if (event_type == AdNotificationEventType::kClicked) {
+    bandit_classifier_->RegisterFeedback(ad);
+  }
 }
 
 void AdsImpl::OnNewTabPageAdEvent(
@@ -464,7 +480,7 @@ void AdsImpl::InitializeStep6(
     ad_notifications_->RemoveAllAfterUpdate();
 #endif
 
-  features::LogPageProbabilitiesStudy();
+  features::Log();
 
   MaybeServeAdNotificationsAtRegularIntervals();
 

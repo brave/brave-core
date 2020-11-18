@@ -161,6 +161,8 @@ source_set("ads") {
     "src/bat/ads/internal/ad_targeting/ad_targeting.h",
     "src/bat/ads/internal/ad_targeting/ad_targeting_util.cc",
     "src/bat/ads/internal/ad_targeting/ad_targeting_util.h",
+    "src/bat/ads/internal/ad_targeting/behavioral/bandit_classifier/bandit_classifier.cc",
+    "src/bat/ads/internal/ad_targeting/behavioral/bandit_classifier/bandit_classifier.h",
     "src/bat/ads/internal/ad_targeting/behavioral/purchase_intent_classifier/funnel_keyword_info.cc",
     "src/bat/ads/internal/ad_targeting/behavioral/purchase_intent_classifier/funnel_keyword_info.h",
     "src/bat/ads/internal/ad_targeting/behavioral/purchase_intent_classifier/purchase_intent_classifier.cc",
