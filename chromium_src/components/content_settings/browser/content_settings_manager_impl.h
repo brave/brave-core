@@ -15,7 +15,7 @@
  private:                                                                  \
   void ShouldUseEphemeralStorage(                                          \
       const GURL& url, const GURL& site_for_cookies,                       \
-      const StorageType storage_type, bool& allowed) const;
+      const StorageType storage_type, bool* allowed) const;
 
 #include "../../../../../components/content_settings/browser/content_settings_manager_impl.h"
 #undef BRAVE_CONTENT_SETTINGS_MANAGER_IMPL_H_
