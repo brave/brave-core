@@ -84,7 +84,7 @@ public class BinanceDepositFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         LinearLayout depositMainLayout = view.findViewById(R.id.binance_deposit_main_layout);
         TextView noConnectionText = view.findViewById(R.id.no_connection_text);
-        if (InternetConnection.checkConnection(getActivity())) {
+        if (InternetConnection.isNetworkAvailable(getActivity())) {
             noConnectionText.setVisibility(View.GONE);
             depositMainLayout.setVisibility(View.VISIBLE);
             depositCoinListLayout = view.findViewById(R.id.deposit_layout);

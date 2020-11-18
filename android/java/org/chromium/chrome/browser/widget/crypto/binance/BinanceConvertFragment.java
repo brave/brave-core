@@ -126,7 +126,7 @@ public class BinanceConvertFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         FrameLayout convertMainLayout = view.findViewById(R.id.binance_convert_main_layout);
         TextView noConnectionText = view.findViewById(R.id.no_connection_text);
-        if (InternetConnection.checkConnection(getActivity())) {
+        if (InternetConnection.isNetworkAvailable(getActivity())) {
             noConnectionText.setVisibility(View.GONE);
             convertMainLayout.setVisibility(View.VISIBLE);
             amountEditText = view.findViewById(R.id.amount_edittext);
@@ -181,7 +181,7 @@ public class BinanceConvertFragment extends Fragment {
                     InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(
                             Activity.INPUT_METHOD_SERVICE);
                     imm.hideSoftInputFromWindow(amountEditText.getWindowToken(), 0);
-                    if (InternetConnection.checkConnection(getActivity())) {
+                    if (InternetConnection.isNetworkAvailable(getActivity())) {
                         convertAmount = !TextUtils.isEmpty(amountEditText.getText().toString())
                                 ? Double.valueOf(amountEditText.getText().toString())
                                 : 0.0;
