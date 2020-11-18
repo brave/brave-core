@@ -27,6 +27,7 @@ const SkColor kLightOmniboxText = SkColorSetRGB(0x42, 0x42, 0x42);
 // Location bar colors
 const SkColor kPrivateLocationBarBgBase = SkColorSetRGB(0x0B, 0x07, 0x24);
 const SkColor kDarkLocationBarBgBase = SkColorSetRGB(0x18, 0x1A, 0x21);
+const SkColor kDarkLocationBarHoverBg = SkColorSetRGB(0x23, 0x25, 0x2F);
 
 SkColor GetLocationBarBackground(bool dark, bool priv, bool hover) {
   if (priv) {
@@ -36,8 +37,7 @@ SkColor GetLocationBarBackground(bool dark, bool priv, bool hover) {
   }
 
   if (dark) {
-    return hover ? SkColorSetRGB(0x44, 0x44, 0x44)
-                 : kDarkLocationBarBgBase;
+    return hover ? kDarkLocationBarHoverBg : kDarkLocationBarBgBase;
   }
 
   return hover ? color_utils::AlphaBlend(SK_ColorWHITE,
