@@ -95,7 +95,7 @@ public class BinanceBuyFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         LinearLayout buyMainLayout = view.findViewById(R.id.binance_buy_main_layout);
         TextView noConnectionText = view.findViewById(R.id.no_connection_text);
-        if (InternetConnection.checkConnection(getActivity())) {
+        if (InternetConnection.isNetworkAvailable(getActivity())) {
             noConnectionText.setVisibility(View.GONE);
             buyMainLayout.setVisibility(View.VISIBLE);
             RadioGroup buyRadioGroup = view.findViewById(R.id.buy_radio_group);

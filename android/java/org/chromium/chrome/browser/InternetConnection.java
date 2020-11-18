@@ -9,23 +9,41 @@ package org.chromium.chrome.browser;
 
 import android.content.Context;
 import android.net.ConnectivityManager;
+import android.net.Network;
+import android.net.NetworkCapabilities;
 import android.net.NetworkInfo;
+import android.os.Build;
 
 public class InternetConnection {
-    public static boolean checkConnection(Context context) {
-        final ConnectivityManager connMgr = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+    private static boolean checkConnectionForOldApi(Context context) {
+        final ConnectivityManager connectivityManager =
+                (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
 
-        if (connMgr != null) {
-            NetworkInfo activeNetworkInfo = connMgr.getActiveNetworkInfo();
+        if (connectivityManager != null) {
+            NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
 
-            if (activeNetworkInfo != null) { // connected to the internet
-                // connected to the mobile provider's data plan
+            if (activeNetworkInfo != null) {
                 if (activeNetworkInfo.getType() == ConnectivityManager.TYPE_WIFI) {
-                    // connected to wifi
                     return true;
                 } else return activeNetworkInfo.getType() == ConnectivityManager.TYPE_MOBILE;
             }
         }
         return false;
+    }
+
+    public static Boolean isNetworkAvailable(Context context) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+            ConnectivityManager connectivityManager =
+                    (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+            Network nw = connectivityManager.getActiveNetwork();
+            if (nw == null) return false;
+            NetworkCapabilities actNw = connectivityManager.getNetworkCapabilities(nw);
+            return actNw != null
+                    && (actNw.hasTransport(NetworkCapabilities.TRANSPORT_WIFI)
+                            || actNw.hasTransport(NetworkCapabilities.TRANSPORT_CELLULAR)
+                            || actNw.hasTransport(NetworkCapabilities.TRANSPORT_ETHERNET));
+        } else {
+            return checkConnectionForOldApi(context);
+        }
     }
 }
