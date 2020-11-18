@@ -79,7 +79,7 @@ public class BinanceSummaryFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         LinearLayout binanceSummaryLayout = view.findViewById(R.id.binance_summary_layout);
         TextView noConnectionText = view.findViewById(R.id.no_connection_text);
-        if (InternetConnection.checkConnection(getActivity())) {
+        if (InternetConnection.isNetworkAvailable(getActivity())) {
             binanceSummaryLayout.setVisibility(View.VISIBLE);
             noConnectionText.setVisibility(View.GONE);
             mBinanceNativeWorker.getAccountBalances();

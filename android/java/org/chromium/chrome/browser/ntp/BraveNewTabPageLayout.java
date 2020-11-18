@@ -263,7 +263,7 @@ public class BraveNewTabPageLayout extends NewTabPageLayout {
                 binanceWidgetView.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        if (InternetConnection.checkConnection(mActivity)) {
+                        if (InternetConnection.isNetworkAvailable(mActivity)) {
                             if (BinanceWidgetManager.getInstance()
                                             .isUserAuthenticatedForBinance()) {
                                 cancelTimer();
@@ -818,7 +818,7 @@ public class BraveNewTabPageLayout extends NewTabPageLayout {
 
         @Override
         public void OnGetAccountBalances(String jsonBalances, boolean isSuccess) {
-            if (InternetConnection.checkConnection(mActivity)) {
+            if (InternetConnection.isNetworkAvailable(mActivity)) {
                 if (!isSuccess) {
                     BinanceWidgetManager.getInstance().setUserAuthenticationForBinance(isSuccess);
                     if (cryptoWidgetBottomSheetDialogFragment != null) {
