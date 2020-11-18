@@ -150,31 +150,51 @@ module.exports.allBravePaths = module.exports.braveNonGeneratedPaths.concat(modu
 // This is because only 1 xtb is created per grd per locale even if it has multiple grdp files.
 module.exports.braveTopLevelPaths = module.exports.allBravePaths.filter((x) => ['grd', 'json'].includes(x.split('.').pop()))
 
-// ethereum-remote-client path relative to the Brave paths
-module.exports.ethereumRemoteClientPaths = [
-  '../../../ethereum-remote-client/app/_locales/en/messages.json',
-  '../../../ethereum-remote-client/brave/app/_locales/en/messages.json'
-]
+// Helper function to retrieve ethereum-remote-client paths relative
+// to the Brave paths
+module.exports.getEthereumRemoteClientPaths = function (extensionPath) {
+  let basePath = extensionPath
+  if (!basePath) {
+    basePath = '../../../ethereum-remote-client'
+  }
+
+  return [
+    `${basePath}/app/_locales/en/messages.json`,
+    `${basePath}/brave/app/_locales/en/messages.json`
+  ]
+}
 
 // Helper function to retrieve Greaselion script paths relative to the
 // Brave paths.
-module.exports.getGreaselionScriptPaths = function () {
-  const jsonContent = fs.readFileSync('../../../brave-site-specific-scripts/Greaselion.json', 'utf8')
+//
+// Greaselion.json consists of an array of Greaselion rules,
+// specifying scripts to inject into given sites based on certain
+// preconditions. If the rule contains a "messages" key, then the
+// script contains user-visible strings that require translation. This
+// helper function gathers those messages.json files for transmission
+// to Transifex.
+module.exports.getGreaselionScriptPaths = function (extensionPath) {
+  let basePath = extensionPath
+  if (!basePath) {
+    basePath = '../../../brave-site-specific-scripts'
+  }
+
+  const jsonContent = fs.readFileSync(`${basePath}/Greaselion.json`, 'utf8')
   if (!jsonContent) {
     console.error('Missing Greaselion.json')
     return []
   }
 
-  const jsonObject = JSON.parse(jsonContent)
-  if (!jsonObject) {
+  const greaselionRules = JSON.parse(jsonContent)
+  if (!greaselionRules) {
     console.error('Malformed Greaselion.json')
     return []
   }
 
   let paths = []
-  jsonObject.forEach((item) => {
-    if (item.messages) {
-      paths.push(`../../../brave-site-specific-scripts/${item.messages}/en_US/messages.json`)
+  greaselionRules.forEach((rule) => {
+    if (rule.messages) {
+      paths.push(`${basePath}/${rule.messages}/en_US/messages.json`)
     }
   })
 

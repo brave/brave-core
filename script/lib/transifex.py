@@ -30,11 +30,13 @@ allowed_html_tags = [
   'a', 'abbr', 'b', 'b1', 'b2', 'br', 'code', 'h4', 'learnmore', 'li', 'ol', 'p', 'span', 'strong', 'ul'
 ]
 
+
 def transifex_name_from_greaselion_script_name(script_name):
     match = re.search('brave-site-specific-scripts/scripts/(.*)/_locales/en_US/messages.json$', script_name)
     if match:
         return 'greaselion_' + match.group(1).replace('-', '_').replace('/', '_')
     return ''
+
 
 def transifex_name_from_filename(source_file_path, filename):
     ext = os.path.splitext(source_file_path)[1]
