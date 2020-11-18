@@ -21,6 +21,7 @@ source_set("bookmarks") {
     "//components/bookmarks/browser",
     "//components/prefs:prefs",
     "//components/undo",
+    "//components/user_prefs:user_prefs",
     "//ios/chrome/browser",
     "//ios/chrome/browser/bookmarks",
     "//ios/chrome/browser/browser_state",

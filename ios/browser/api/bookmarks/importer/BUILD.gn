@@ -29,6 +29,7 @@ source_set("importer") {
     "//components/favicon_base",
     "//components/prefs:prefs",
     "//components/search_engines:search_engines",
+    "//components/strings:components_strings_grit",
     "//components/user_prefs:user_prefs",
     "//ios/chrome/browser/bookmarks",
     "//ios/chrome/browser/browser_state",
