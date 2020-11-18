@@ -9,10 +9,11 @@
 #include <string>
 
 #include "base/memory/singleton.h"
+#include "base/path_service.h"
 #include "brave/browser/brave_browser_process_impl.h"
 #include "brave/components/greaselion/browser/greaselion_service.h"
 #include "brave/components/greaselion/browser/greaselion_service_impl.h"
-#include "chrome/browser/extensions/extension_service.h"
+#include "chrome/common/chrome_paths.h"
 #include "components/keyed_service/content/browser_context_dependency_manager.h"
 #include "components/keyed_service/core/keyed_service.h"
 #include "extensions/browser/extension_file_task_runner.h"
@@ -51,15 +52,11 @@ KeyedService* GreaselionServiceFactory::BuildServiceInstanceFor(
   extensions::ExtensionSystem* extension_system =
       extensions::ExtensionSystem::Get(context);
   extension_system->InitForRegularProfile(true /* extensions_enabled */);
-  extensions::ExtensionService* extension_service =
-      extension_system->extension_service();
   extensions::ExtensionRegistry* extension_registry =
       extensions::ExtensionRegistry::Get(context);
   base::FilePath install_directory;
-  // Extension service may be null even after calling InitForRegularProfile if
-  // we are being created within a unit test.
-  if (extension_service)
-    install_directory = extension_service->install_directory();
+  base::PathService::Get(chrome::DIR_USER_DATA, &install_directory);
+  install_directory = install_directory.AppendASCII("Greaselion");
   scoped_refptr<base::SequencedTaskRunner> task_runner =
       extensions::GetExtensionFileTaskRunner();
   greaselion::GreaselionDownloadService* download_service = nullptr;
