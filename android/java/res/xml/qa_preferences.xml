@@ -40,6 +40,10 @@
         android:summaryOff="@string/text_off"
         android:defaultValue="false" />
 
+    <Preference
+        android:key="qa_command_line"
+        android:title="Command Line String"/>
+
     <org.chromium.components.browser_ui.settings.ChromeBasePreference
         android:key="qa_import_rewards_db"
         android:title="Import Rewards Database"/>
