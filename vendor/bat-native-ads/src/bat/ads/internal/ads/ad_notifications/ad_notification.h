@@ -8,25 +8,48 @@
 
 #include <string>
 
+#include "bat/ads/internal/ads/ad_notifications/ad_notification_observer.h"
 #include "bat/ads/mojom.h"
 
 namespace ads {
 
-class AdsImpl;
+struct AdNotificationInfo;
 
-class AdNotification {
+class AdNotification
+    : public AdNotificationObserver {
  public:
-  AdNotification(
-      AdsImpl* ads);
+  AdNotification();
 
-  ~AdNotification();
+  ~AdNotification() override;
 
-  void Trigger(
+  void AddObserver(
+      AdNotificationObserver* observer);
+  void RemoveObserver(
+      AdNotificationObserver* observer);
+
+  void FireEvent(
       const std::string& uuid,
       const AdNotificationEventType event_type);
 
  private:
-  AdsImpl* ads_;  // NOT OWNED
+  base::ObserverList<AdNotificationObserver> observers_;
+
+  void NotifyAdNotificationEvent(
+      const AdNotificationInfo& ad,
+      const AdNotificationEventType event_type);
+
+  void NotifyAdNotificationViewed(
+      const AdNotificationInfo& ad);
+  void NotifyAdNotificationClicked(
+      const AdNotificationInfo& ad);
+  void NotifyAdNotificationDismissed(
+      const AdNotificationInfo& ad);
+  void NotifyAdNotificationTimedOut(
+      const AdNotificationInfo& ad);
+
+  void NotifyAdNotificationEventFailed(
+      const std::string& uuid,
+      const AdNotificationEventType event_type);
 };
 
 }  // namespace ads

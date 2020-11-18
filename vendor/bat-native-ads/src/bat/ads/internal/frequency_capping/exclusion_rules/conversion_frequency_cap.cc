@@ -8,10 +8,9 @@
 #include <stdint.h>
 
 #include "base/strings/stringprintf.h"
-#include "bat/ads/internal/ads_impl.h"
+#include "bat/ads/internal/ads_client_helper.h"
 #include "bat/ads/internal/bundle/creative_ad_info.h"
-#include "bat/ads/internal/conversions/conversions.h"
-#include "bat/ads/internal/logging.h"
+#include "bat/ads/pref_names.h"
 
 namespace ads {
 
@@ -20,11 +19,8 @@ const uint64_t kConversionFrequencyCap = 1;
 }  // namespace
 
 ConversionFrequencyCap::ConversionFrequencyCap(
-    AdsImpl* ads,
     const AdEventList& ad_events)
-    : ads_(ads),
-      ad_events_(ad_events) {
-  DCHECK(ads_);
+    : ad_events_(ad_events) {
 }
 
 ConversionFrequencyCap::~ConversionFrequencyCap() = default;
@@ -56,7 +52,8 @@ std::string ConversionFrequencyCap::get_last_message() const {
 
 bool ConversionFrequencyCap::ShouldAllow(
     const CreativeAdInfo& ad) {
-  if (ad.conversion && !ads_->get_conversions()->ShouldAllow()) {
+  if (ad.conversion && !AdsClientHelper::Get()->GetBooleanPref(
+      prefs::kShouldAllowConversionTracking)) {
     return false;
   }
 

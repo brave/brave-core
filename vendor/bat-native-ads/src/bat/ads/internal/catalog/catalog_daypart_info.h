@@ -9,7 +9,7 @@
 #include <string>
 #include <vector>
 
-#include "bat/ads/internal/time_util.h"
+#include "base/time/time.h"
 
 namespace ads {
 

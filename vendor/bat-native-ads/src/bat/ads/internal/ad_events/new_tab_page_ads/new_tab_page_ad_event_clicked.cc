@@ -17,27 +17,16 @@
 namespace ads {
 namespace new_tab_page_ads {
 
-namespace {
-const ConfirmationType kConfirmationType = ConfirmationType::kClicked;
-}  // namespace
-
-AdEventClicked::AdEventClicked(
-    AdsImpl* ads)
-    : ads_(ads) {
-  DCHECK(ads_);
-}
+AdEventClicked::AdEventClicked() = default;
 
 AdEventClicked::~AdEventClicked() = default;
 
-void AdEventClicked::Trigger(
+void AdEventClicked::FireEvent(
     const NewTabPageAdInfo& ad) {
   BLOG(3, "Clicked new tab page ad with uuid " << ad.uuid
       << " and creative instance id " << ad.creative_instance_id);
 
-  ads_->get_ad_transfer()->set_last_clicked_ad(ad);
-
-  AdEvents ad_events(ads_);
-  ad_events.Log(ad, kConfirmationType, [](
+  LogAdEvent(ad, ConfirmationType::kClicked, [](
       const Result result) {
     if (result != Result::SUCCESS) {
       BLOG(1, "Failed to log new tab page ad clicked event");
@@ -47,10 +36,7 @@ void AdEventClicked::Trigger(
     BLOG(6, "Successfully logged new tab page ad clicked event");
   });
 
-  ads_->get_ads_history()->AddNewTabPageAd(ad, kConfirmationType);
-
-  ads_->get_confirmations()->ConfirmAd(ad.creative_instance_id,
-      kConfirmationType);
+  history::AddNewTabPageAd(ad, ConfirmationType::kClicked);
 }
 
 }  // namespace new_tab_page_ads

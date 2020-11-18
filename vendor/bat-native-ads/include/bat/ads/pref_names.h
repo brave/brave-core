@@ -23,6 +23,11 @@ extern const char kShouldAllowAdsSubdivisionTargeting[];
 extern const char kAdsSubdivisionTargetingCode[];
 extern const char kAutoDetectedAdsSubdivisionTargetingCode[];
 
+extern const char kCatalogId[];
+extern const char kCatalogVersion[];
+extern const char kCatalogPing[];
+extern const char kCatalogLastUpdated[];
+
 }  // namespace prefs
 
 }  // namespace ads

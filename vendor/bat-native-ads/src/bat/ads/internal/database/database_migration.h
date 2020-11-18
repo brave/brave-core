@@ -11,15 +11,13 @@
 
 namespace ads {
 
-class AdsImpl;
 class DatabaseUtil;
 
 namespace database {
 
 class Migration {
  public:
-  explicit Migration(
-      AdsImpl* ads);
+  Migration();
 
   ~Migration();
 
@@ -31,8 +29,6 @@ class Migration {
   void ToVersion(
       DBTransaction* transaction,
       const int to_version);
-
-  AdsImpl* ads_;  // NOT OWNED
 };
 
 }  // namespace database

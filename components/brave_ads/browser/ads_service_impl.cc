@@ -1296,7 +1296,7 @@ void AdsServiceImpl::MigratePrefs() {
     VLOG(1) << "Migrating ads preferences from pre Brave Ads build";
 
     // Force migration of preferences from version 1 if
-    // |is_upgrading_from_pre_brave_ads_build_| is set to |true| to fix
+    // |is_upgrading_from_pre_brave_ads_build_| is set to true to fix
     // "https://github.com/brave/brave-browser/issues/5434"
     SetIntegerPref(prefs::kVersion, 1);
   } else {
@@ -1564,14 +1564,14 @@ int AdsServiceImpl::GetPrefsVersion() const {
 
 bool AdsServiceImpl::IsUpgradingFromPreBraveAdsBuild() {
   // Brave ads was hidden in 0.62.x however due to a bug |prefs::kEnabled| was
-  // set to |true| causing "https://github.com/brave/brave-browser/issues/5434"
+  // set to true causing "https://github.com/brave/brave-browser/issues/5434"
 
   // |prefs::kIdleThreshold| was not serialized in 0.62.x
 
   // |prefs::kVersion| was introduced in 0.63.x
 
   // We can detect if we are upgrading from a pre Brave ads build by checking
-  // |prefs::kEnabled| is set to |true|, |prefs::kIdleThreshold| does not exist,
+  // |prefs::kEnabled| is set to true, |prefs::kIdleThreshold| does not exist,
   // |prefs::kVersion| does not exist and it is not the first time the browser
   // has run for this user
 #if !defined(OS_ANDROID)

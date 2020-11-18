@@ -12,16 +12,21 @@
 #include <string>
 
 #include "bat/ads/ads.h"
-#include "bat/ads/internal/tokens/redeem_unblinded_payment_tokens/redeem_unblinded_payment_tokens_delegate.h"
-#include "bat/ads/internal/tokens/redeem_unblinded_token/redeem_unblinded_token_delegate.h"
-#include "bat/ads/internal/tokens/refill_unblinded_tokens/refill_unblinded_tokens_delegate.h"
+#include "bat/ads/internal/account/account_observer.h"
+#include "bat/ads/internal/ad_server/ad_server_observer.h"
+#include "bat/ads/internal/ad_transfer/ad_transfer_observer.h"
+#include "bat/ads/internal/ads/ad_notifications/ad_notification_observer.h"
+#include "bat/ads/internal/ads/new_tab_page_ads/new_tab_page_ad_observer.h"
+#include "bat/ads/internal/confirmations/confirmations_observer.h"
+#include "bat/ads/internal/conversions/conversions_observer.h"
 #include "bat/ads/mojom.h"
+#include "bat/ads/result.h"
 
 namespace ads {
 
 namespace ad_notifications {
 class AdServing;
-}  // namesapce ad_notifications
+}  // namespace ad_notifications
 
 namespace ad_targeting {
 
@@ -43,38 +48,38 @@ namespace database {
 class Initialize;
 }  // namespace database
 
+class Account;
 class AdNotification;
 class AdNotificationServing;
 class AdNotifications;
-class AdRewards;
+class AdsClientHelper;
 class AdServer;
-class AdsHistory;
 class AdTargeting;
 class AdTransfer;
-class Bundle;
 class Client;
-class ConfirmationType;
 class Confirmations;
+class ConfirmationsState;
 class Conversions;
 class NewTabPageAd;
-class RedeemUnblindedPaymentTokens;
-class RedeemUnblindedToken;
-class RefillUnblindedTokens;
-class Tabs;
+class TabManager;
 class UserActivity;
-class Wallet;
-
+struct AdInfo;
 struct AdNotificationInfo;
 struct AdsHistoryInfo;
+struct CatalogIssuersInfo;
 struct ConfirmationInfo;
+struct NewTabPageAdInfo;
 
 class AdsImpl
     : public Ads,
-      public RedeemUnblindedPaymentTokensDelegate,
-      public RedeemUnblindedTokenDelegate,
-      public RefillUnblindedTokensDelegate {
+      public AccountObserver,
+      public AdNotificationObserver,
+      public AdServerObserver,
+      public AdTransferObserver,
+      public ConversionsObserver,
+      public NewTabPageAdObserver {
  public:
-  explicit AdsImpl(
+  AdsImpl(
       AdsClient* ads_client);
 
   ~AdsImpl() override;
@@ -82,91 +87,7 @@ class AdsImpl
   AdsImpl(const AdsImpl&) = delete;
   AdsImpl& operator=(const AdsImpl&) = delete;
 
-  AdsClient* get_ads_client() const {
-    return ads_client_;
-  }
-
-  AdNotifications* get_ad_notifications() const {
-    return ad_notifications_.get();
-  }
-
-  AdRewards* get_ad_rewards() const {
-    return ad_rewards_.get();
-  }
-
-  AdServer* get_ad_server() const {
-    return ad_server_.get();
-  }
-
-  AdTargeting* get_ad_targeting() const {
-    return ad_targeting_.get();
-  }
-
-  AdTransfer* get_ad_transfer() const {
-    return ad_transfer_.get();
-  }
-
-  AdsHistory* get_ads_history() const {
-    return ads_history_.get();
-  }
-
-  Bundle* get_bundle() const {
-    return bundle_.get();
-  }
-
-  Client* get_client() const {
-    return client_.get();
-  }
-
-  Confirmations* get_confirmations() const {
-    return confirmations_.get();
-  }
-
-  Conversions* get_conversions() const {
-    return conversions_.get();
-  }
-
-  ad_targeting::contextual::PageClassifier* get_page_classifier() const {
-    return page_classifier_.get();
-  }
-
-  ad_targeting::behavioral::PurchaseIntentClassifier*
-  get_purchase_intent_classifier() const {
-    return purchase_intent_classifier_.get();
-  }
-
-  RedeemUnblindedPaymentTokens* get_redeem_unblinded_payment_tokens() const {
-    return redeem_unblinded_payment_tokens_.get();
-  }
-
-  RedeemUnblindedToken* get_redeem_unblinded_token() const {
-    return redeem_unblinded_token_.get();
-  }
-
-  RefillUnblindedTokens* get_refill_unblinded_tokens() const {
-    return refill_unblinded_tokens_.get();
-  }
-
-  ad_targeting::geographic::SubdivisionTargeting*
-  get_subdivision_targeting() const {
-    return subdivision_targeting_.get();
-  }
-
-  Tabs* get_tabs() const {
-    return tabs_.get();
-  }
-
-  UserActivity* get_user_activity() const {
-    return user_activity_.get();
-  }
-
-  Wallet* get_wallet() const {
-    return wallet_.get();
-  }
-
   bool IsInitialized();
-
-  bool IsForeground() const;
 
   // Ads implementation
   void Initialize(
@@ -208,15 +129,15 @@ class AdsImpl
       const int32_t tab_id) override;
 
   void OnWalletUpdated(
-      const std::string& payment_id,
-      const std::string& private_key) override;
+      const std::string& id,
+      const std::string& seed) override;
 
   void OnUserModelUpdated(
       const std::string& id) override;
 
   bool GetAdNotification(
       const std::string& uuid,
-      AdNotificationInfo* info) override;
+      AdNotificationInfo* ad_notification) override;
   void OnAdNotificationEvent(
       const std::string& uuid,
       const AdNotificationEventType event_type) override;
@@ -264,6 +185,29 @@ class AdsImpl
       const bool flagged) override;
 
  private:
+  bool is_initialized_ = false;
+
+  std::unique_ptr<AdsClientHelper> ads_client_helper_;
+  std::unique_ptr<ad_targeting::contextual::PageClassifier> page_classifier_;
+  std::unique_ptr<ad_targeting::behavioral::PurchaseIntentClassifier>
+      purchase_intent_classifier_;
+  std::unique_ptr<ad_targeting::geographic::SubdivisionTargeting>
+      subdivision_targeting_;
+  std::unique_ptr<Confirmations> confirmations_;
+  std::unique_ptr<Account> account_;
+  std::unique_ptr<AdNotification> ad_notification_;
+  std::unique_ptr<AdTargeting> ad_targeting_;
+  std::unique_ptr<ad_notifications::AdServing> ad_notification_serving_;
+  std::unique_ptr<AdNotifications> ad_notifications_;
+  std::unique_ptr<AdServer> ad_server_;
+  std::unique_ptr<AdTransfer> ad_transfer_;
+  std::unique_ptr<Client> client_;
+  std::unique_ptr<Conversions> conversions_;
+  std::unique_ptr<database::Initialize> database_;
+  std::unique_ptr<NewTabPageAd> new_tab_page_ad_;
+  std::unique_ptr<TabManager> tab_manager_;
+  std::unique_ptr<UserActivity> user_activity_;
+
   void InitializeStep2(
       const Result result,
       InitializeCallback callback);
@@ -280,60 +224,42 @@ class AdsImpl
       const Result result,
       InitializeCallback callback);
 
-  void PurgeExpiredAdEvents();
+  void CleanupAdEvents();
+
+  void MaybeUpdateCatalog();
 
   void MaybeServeAdNotification();
-
   void MaybeServeAdNotificationsAtRegularIntervals();
 
-  bool is_initialized_ = false;
+  // AccountObserver implementation
+  void OnAdRewardsChanged() override;
+  void OnTransactionsChanged() override;
 
-  bool is_foreground_ = false;
+  // AdNotificationObserver implementation
+  void OnAdNotificationViewed(
+      const AdNotificationInfo& ad) override;
+  void OnAdNotificationClicked(
+      const AdNotificationInfo& ad) override;
+  void OnAdNotificationDismissed(
+      const AdNotificationInfo& ad) override;
 
-  AdsClient* ads_client_;  // NOT OWNED
+  // AdServerObserver implementation
+  void OnCatalogUpdated(
+      const CatalogIssuersInfo& catalog_issuers) override;
 
-  std::unique_ptr<AdsHistory> ads_history_;
-  std::unique_ptr<AdNotification> ad_notification_;
-  std::unique_ptr<AdNotifications> ad_notifications_;
-  std::unique_ptr<AdRewards> ad_rewards_;
-  std::unique_ptr<AdServer> ad_server_;
-  std::unique_ptr<ad_notifications::AdServing> ad_notification_serving_;
-  std::unique_ptr<AdTargeting> ad_targeting_;
-  std::unique_ptr<AdTransfer> ad_transfer_;
-  std::unique_ptr<Bundle> bundle_;
-  std::unique_ptr<Client> client_;
-  std::unique_ptr<Confirmations> confirmations_;
-  std::unique_ptr<Conversions> conversions_;
-  std::unique_ptr<database::Initialize> database_;
-  std::unique_ptr<NewTabPageAd> new_tab_page_ad_;
-  std::unique_ptr<ad_targeting::behavioral::PurchaseIntentClassifier>
-      purchase_intent_classifier_;
-  std::unique_ptr<ad_targeting::contextual::PageClassifier> page_classifier_;
-  std::unique_ptr<ad_targeting::geographic::SubdivisionTargeting>
-      subdivision_targeting_;
-  std::unique_ptr<RedeemUnblindedPaymentTokens>
-      redeem_unblinded_payment_tokens_;
-  std::unique_ptr<RedeemUnblindedToken> redeem_unblinded_token_;
-  std::unique_ptr<RefillUnblindedTokens> refill_unblinded_tokens_;
-  std::unique_ptr<Tabs> tabs_;
-  std::unique_ptr<UserActivity> user_activity_;
-  std::unique_ptr<Wallet> wallet_;
+  // AdTransferObserver implementation
+  void OnAdTransfer(
+      const AdInfo& ad) override;
 
-  // RedeemUnblindedTokenDelegate implementation
-  void OnDidRedeemUnblindedToken(
-      const ConfirmationInfo& confirmation) override;
-  void OnFailedToRedeemUnblindedToken(
-      const ConfirmationInfo& confirmation) override;
+  // ConversionsObserver implementation
+  void OnConversion(
+      const std::string& creative_instance_id) override;
 
-  // RedeemUnblindedPaymentTokensDelegate implementation
-  void OnDidRedeemUnblindedPaymentTokens() override;
-  void OnFailedToRedeemUnblindedPaymentTokens() override;
-  void OnDidRetryRedeemingUnblindedPaymentTokens() override;
-
-  // RefillUnblindedTokensDelegate implementation
-  void OnDidRefillUnblindedTokens() override;
-  void OnFailedToRefillUnblindedTokens() override;
-  void OnDidRetryRefillingUnblindedTokens() override;
+  // NewTabPageAdObserver implementation
+  void OnNewTabPageAdViewed(
+      const NewTabPageAdInfo& ad) override;
+  void OnNewTabPageAdClicked(
+      const NewTabPageAdInfo& ad) override;
 };
 
 }  // namespace ads

@@ -10,15 +10,13 @@
 
 namespace ads {
 
-class AdsImpl;
 struct AdNotificationInfo;
 
 namespace ad_notifications {
 
 class AdDelivery {
  public:
-  AdDelivery(
-      AdsImpl* ads);
+  AdDelivery();
 
   ~AdDelivery();
 
@@ -31,8 +29,6 @@ class AdDelivery {
 
   void RecordAdImpressionForCategory(
       const std::string& category);
-
-  AdsImpl* ads_;  // NOT OWNED
 };
 
 }  // namespace ad_notifications

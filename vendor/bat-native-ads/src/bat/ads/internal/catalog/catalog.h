@@ -11,19 +11,16 @@
 #include <memory>
 #include <string>
 
-#include "bat/ads/ads_client.h"
 #include "bat/ads/internal/catalog/catalog_campaign_info.h"
 
 namespace ads {
 
-class AdsImpl;
 struct CatalogState;
 struct CatalogIssuersInfo;
 
 class Catalog {
  public:
-  explicit Catalog(
-      AdsImpl* ads);
+  Catalog();
 
   ~Catalog();
 
@@ -31,26 +28,16 @@ class Catalog {
       const std::string& json);
 
   bool HasChanged(
-      const std::string& current_catalog_id);
+      const std::string& catalog_id) const;
 
   std::string GetId() const;
-  uint64_t GetVersion() const;
-  uint64_t GetPing() const;
+  int GetVersion() const;
+  int64_t GetPing() const;
   CatalogCampaignList GetCampaigns() const;
   CatalogIssuersInfo GetIssuers() const;
 
-  void Save(
-      const std::string& json,
-      ResultCallback callback);
-
-  const std::string& get_last_message() const;
-
  private:
-  AdsImpl* ads_;  // NOT OWNED
-
   std::unique_ptr<CatalogState> catalog_state_;
-
-  std::string last_message_;
 };
 
 }  // namespace ads

@@ -9,19 +9,16 @@
 #include <string>
 
 #include "bat/ads/internal/ad_events/ad_event_info.h"
-#include "bat/ads/internal/ads_impl.h"
 #include "bat/ads/internal/bundle/creative_ad_info.h"
 #include "bat/ads/internal/frequency_capping/exclusion_rules/exclusion_rule.h"
 
 namespace ads {
 
-class AdsImpl;
 struct CreativeAdInfo;
 
 class PerDayFrequencyCap : public ExclusionRule<CreativeAdInfo> {
  public:
   PerDayFrequencyCap(
-      AdsImpl* ads,
       const AdEventList& ad_events);
 
   ~PerDayFrequencyCap() override;
@@ -35,8 +32,6 @@ class PerDayFrequencyCap : public ExclusionRule<CreativeAdInfo> {
   std::string get_last_message() const override;
 
  private:
-  AdsImpl* ads_;  // NOT OWNED
-
   AdEventList ad_events_;
 
   std::string last_message_;

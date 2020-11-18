@@ -10,15 +10,11 @@
 #include "bat/ads/internal/privacy/unblinded_tokens/unblinded_token_info.h"
 
 namespace ads {
-
-class AdsImpl;
-
 namespace privacy {
 
 class UnblindedTokens {
  public:
-  explicit UnblindedTokens(
-      AdsImpl* ads);
+  UnblindedTokens();
 
   ~UnblindedTokens();
 
@@ -47,8 +43,6 @@ class UnblindedTokens {
 
  private:
   UnblindedTokenList unblinded_tokens_;
-
-  AdsImpl* ads_;  // NOT OWNED
 };
 
 }  // namespace privacy

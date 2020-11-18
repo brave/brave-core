@@ -67,6 +67,8 @@ class AdsServiceImpl : public AdsService,
                        public brave_user_model::Observer,
                        public base::SupportsWeakPtr<AdsServiceImpl> {
  public:
+  void OnWalletUpdated();
+
   // AdsService implementation
   explicit AdsServiceImpl(Profile* profile);
   ~AdsServiceImpl() override;
@@ -81,6 +83,9 @@ class AdsServiceImpl : public AdsService,
   void SetEnabled(
       const bool is_enabled) override;
 
+  void SetAllowConversionTracking(
+      const bool should_allow) override;
+
   uint64_t GetAdsPerHour() const override;
   void SetAdsPerHour(
       const uint64_t ads_per_hour) override;
@@ -91,20 +96,10 @@ class AdsServiceImpl : public AdsService,
   std::string GetAdsSubdivisionTargetingCode() const override;
   void SetAdsSubdivisionTargetingCode(
       const std::string& subdivision_targeting_code) override;
-  std::string
-  GetAutoDetectedAdsSubdivisionTargetingCode() const override;
+  std::string GetAutoDetectedAdsSubdivisionTargetingCode() const override;
   void SetAutoDetectedAdsSubdivisionTargetingCode(
       const std::string& subdivision_targeting_code) override;
 
-  void OnNewTabPageAdEvent(
-      const std::string& wallpaper_id,
-      const std::string& creative_instance_id,
-      const ads::NewTabPageAdEventType event_type) override;
-
-  void SetAllowConversionTracking(
-      const bool should_allow) override;
-
-  // AdsClient implementation
   void ChangeLocale(
       const std::string& locale) override;
 
@@ -112,7 +107,7 @@ class AdsServiceImpl : public AdsService,
       const SessionID& tab_id,
       const GURL& original_url,
       const GURL& url,
-      const std::string& html) override;
+      const std::string& content) override;
 
   void OnMediaStart(
       const SessionID& tab_id) override;
@@ -124,12 +119,17 @@ class AdsServiceImpl : public AdsService,
       const GURL& url,
       const bool is_active,
       const bool is_browser_active) override;
+
   void OnTabClosed(
       const SessionID& tab_id) override;
 
-  void OnWalletUpdated();
+  void OnUserModelUpdated(
+      const std::string& id) override;
 
-  void OnGetBraveWallet(ledger::type::BraveWalletPtr wallet);
+  void OnNewTabPageAdEvent(
+      const std::string& wallpaper_id,
+      const std::string& creative_instance_id,
+      const ads::NewTabPageAdEventType event_type) override;
 
   void ReconcileAdRewards() override;
 
@@ -173,15 +173,10 @@ class AdsServiceImpl : public AdsService,
   void ResetAllState(
       const bool should_shutdown) override;
 
-  // BraveUserModelInstaller::Observer implementation
-  void OnUserModelUpdated(
-      const std::string& id) override;
-
   // KeyedService implementation
   void Shutdown() override;
 
  private:
-  // AdsService implementation
   friend class AdsNotificationHandler;
 
   void MaybeInitialize();
@@ -266,6 +261,9 @@ class AdsServiceImpl : public AdsService,
       network::SimpleURLLoader* loader,
       ads::UrlRequestCallback callback,
       const std::unique_ptr<std::string> response_body);
+
+  void OnGetBraveWallet(
+      ledger::type::BraveWalletPtr wallet);
 
   void OnGetAdsHistory(
       OnGetAdsHistoryCallback callback,
@@ -354,6 +352,11 @@ class AdsServiceImpl : public AdsService,
   std::string LoadDataResourceAndDecompressIfNeeded(
       const int id) const;
 
+  void StartNotificationTimeoutTimer(
+      const std::string& uuid);
+  bool StopNotificationTimeoutTimer(
+      const std::string& uuid);
+
   bool connected();
 
   // AdsClient implementation
@@ -361,17 +364,15 @@ class AdsServiceImpl : public AdsService,
 
   bool IsForeground() const override;
 
-  void ShowNotification(
-      const ads::AdNotificationInfo& ad_notification) override;
   bool ShouldShowNotifications() override;
-  void StartNotificationTimeoutTimer(
-      const std::string& uuid);
-  bool StopNotificationTimeoutTimer(
-      const std::string& uuid);
-  void CloseNotification(
-      const std::string& uuid) override;
 
   bool CanShowBackgroundNotifications() const override;
+
+  void ShowNotification(
+      const ads::AdNotificationInfo& ad_notification) override;
+
+  void CloseNotification(
+      const std::string& uuid) override;
 
   void UrlRequest(
       ads::UrlRequestPtr url_request,
@@ -381,17 +382,13 @@ class AdsServiceImpl : public AdsService,
       const std::string& name,
       const std::string& value,
       ads::ResultCallback callback) override;
-  void LoadUserModelForId(
-      const std::string& id,
-      ads::LoadCallback callback) override;
-
-  void RecordP2AEvent(
-      const std::string& name,
-      const ads::P2AEventType type,
-      const std::string& value) override;
 
   void Load(
       const std::string& name,
+      ads::LoadCallback callback) override;
+
+  void LoadUserModelForId(
+      const std::string& id,
       ads::LoadCallback callback) override;
 
   std::string LoadResourceForId(
@@ -402,6 +399,11 @@ class AdsServiceImpl : public AdsService,
       ads::RunDBTransactionCallback callback) override;
 
   void OnAdRewardsChanged() override;
+
+  void RecordP2AEvent(
+      const std::string& name,
+      const ads::P2AEventType type,
+      const std::string& value) override;
 
   void DiagnosticLog(
       const std::string& file,

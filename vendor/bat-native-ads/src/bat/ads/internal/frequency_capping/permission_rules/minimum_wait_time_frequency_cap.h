@@ -13,12 +13,9 @@
 
 namespace ads {
 
-class AdsImpl;
-
 class MinimumWaitTimeFrequencyCap : public PermissionRule {
  public:
   MinimumWaitTimeFrequencyCap(
-      AdsImpl* ads,
       const AdEventList& ad_events);
 
   ~MinimumWaitTimeFrequencyCap() override;
@@ -32,8 +29,6 @@ class MinimumWaitTimeFrequencyCap : public PermissionRule {
   std::string get_last_message() const override;
 
  private:
-  AdsImpl* ads_;  // NOT OWNED
-
   AdEventList ad_events_;
 
   std::string last_message_;

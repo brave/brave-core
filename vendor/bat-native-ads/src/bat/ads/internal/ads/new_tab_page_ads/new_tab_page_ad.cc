@@ -35,15 +35,21 @@ NewTabPageAdInfo CreateNewTabPageAd(
 
 }  // namespace
 
-NewTabPageAd::NewTabPageAd(
-    AdsImpl* ads)
-    : ads_(ads) {
-  DCHECK(ads_);
-}
+NewTabPageAd::NewTabPageAd() = default;
 
 NewTabPageAd::~NewTabPageAd() = default;
 
-void NewTabPageAd::Trigger(
+void NewTabPageAd::AddObserver(
+    NewTabPageAdObserver* observer) {
+  observers_.AddObserver(observer);
+}
+
+void NewTabPageAd::RemoveObserver(
+    NewTabPageAdObserver* observer) {
+  observers_.RemoveObserver(observer);
+}
+
+void NewTabPageAd::FireEvent(
     const std::string& wallpaper_id,
     const std::string& creative_instance_id,
     const NewTabPageAdEventType event_type) {
@@ -55,26 +61,70 @@ void NewTabPageAd::Trigger(
     return;
   }
 
-  database::table::CreativeNewTabPageAds database_table(ads_);
+  database::table::CreativeNewTabPageAds database_table;
   database_table.GetForCreativeInstanceId(creative_instance_id, [=](
       const Result result,
       const std::string& creative_instance_id,
       const CreativeNewTabPageAdInfo& creative_new_tab_page_ad) {
     if (result != SUCCESS) {
-      BLOG(1, "Failed to trigger new tab page ad event for wallpaper id "
-          << wallpaper_id << " and creative instance id "
-              << creative_instance_id);
+      BLOG(1, "Failed to trigger new tab page ad event for wallpaper id");
+
+      NotifyNewTabPageAdEventFailed(wallpaper_id,
+          creative_instance_id, event_type);
 
       return;
     }
 
-    const NewTabPageAdInfo new_tab_page_ad =
+    const NewTabPageAdInfo ad =
         CreateNewTabPageAd(wallpaper_id, creative_new_tab_page_ad);
 
-    const auto ad_event =
-        new_tab_page_ads::AdEventFactory::Build(ads_, event_type);
-    ad_event->Trigger(new_tab_page_ad);
+    const auto ad_event = new_tab_page_ads::AdEventFactory::Build(event_type);
+    ad_event->FireEvent(ad);
+
+    NotifyNewTabPageAdEvent(ad, event_type);
   });
+}
+
+///////////////////////////////////////////////////////////////////////////////
+
+void NewTabPageAd::NotifyNewTabPageAdEvent(
+    const NewTabPageAdInfo& ad,
+    const NewTabPageAdEventType event_type) {
+  switch (event_type) {
+    case NewTabPageAdEventType::kViewed: {
+      NotifyNewTabPageAdViewed(ad);
+      break;
+    }
+
+    case NewTabPageAdEventType::kClicked: {
+      NotifyNewTabPageAdClicked(ad);
+      break;
+    }
+  }
+}
+
+void NewTabPageAd::NotifyNewTabPageAdViewed(
+    const NewTabPageAdInfo& ad) {
+  for (NewTabPageAdObserver& observer : observers_) {
+    observer.OnNewTabPageAdViewed(ad);
+  }
+}
+
+void NewTabPageAd::NotifyNewTabPageAdClicked(
+    const NewTabPageAdInfo& ad) {
+  for (NewTabPageAdObserver& observer : observers_) {
+    observer.OnNewTabPageAdClicked(ad);
+  }
+}
+
+void NewTabPageAd::NotifyNewTabPageAdEventFailed(
+    const std::string& wallpaper_id,
+    const std::string& creative_instance_id,
+    const NewTabPageAdEventType event_type) {
+  for (NewTabPageAdObserver& observer : observers_) {
+    observer.OnNewTabPageAdEventFailed(wallpaper_id,
+        creative_instance_id, event_type);
+  }
 }
 
 }  // namespace ads

@@ -19,15 +19,12 @@ namespace ads {
 using GetConversionsCallback = std::function<void(const Result,
     const ConversionList&)>;
 
-class AdsImpl;
-
 namespace database {
 namespace table {
 
 class Conversions : public Table {
  public:
-  explicit Conversions(
-      AdsImpl* ads);
+  Conversions();
 
   ~Conversions() override;
 
@@ -73,8 +70,6 @@ class Conversions : public Table {
       DBTransaction* transaction);
   void MigrateToV1(
       DBTransaction* transaction);
-
-  AdsImpl* ads_;  // NOT OWNED
 };
 
 }  // namespace table

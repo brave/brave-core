@@ -30,15 +30,12 @@ using GetCreativeNewTabPageAdCallback = std::function<void(const Result,
 using GetCreativeNewTabPageAdsCallback = std::function<void(const Result,
     const std::vector<std::string>&, const CreativeNewTabPageAdList&)>;
 
-class AdsImpl;
-
 namespace database {
 namespace table {
 
 class CreativeNewTabPageAds : public Table {
  public:
-  explicit CreativeNewTabPageAds(
-      AdsImpl* ads);
+  CreativeNewTabPageAds();
 
   ~CreativeNewTabPageAds() override;
 
@@ -105,8 +102,6 @@ class CreativeNewTabPageAds : public Table {
       DBTransaction* transaction);
 
   int batch_size_;
-
-  AdsImpl* ads_;  // NOT OWNED
 
   std::unique_ptr<Campaigns> campaigns_database_table_;
   std::unique_ptr<Categories> categories_database_table_;

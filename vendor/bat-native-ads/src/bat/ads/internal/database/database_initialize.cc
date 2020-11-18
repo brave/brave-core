@@ -8,7 +8,7 @@
 #include <functional>
 #include <utility>
 
-#include "bat/ads/internal/ads_impl.h"
+#include "bat/ads/internal/ads_client_helper.h"
 #include "bat/ads/internal/database/database_migration.h"
 #include "bat/ads/internal/database/database_version.h"
 #include "bat/ads/internal/logging.h"
@@ -16,13 +16,7 @@
 namespace ads {
 namespace database {
 
-using std::placeholders::_1;
-
-Initialize::Initialize(
-    AdsImpl* ads)
-    : ads_(ads) {
-  DCHECK(ads_);
-}
+Initialize::Initialize() = default;
 
 Initialize::~Initialize() = default;
 
@@ -37,8 +31,9 @@ void Initialize::CreateOrOpen(
 
   transaction->commands.push_back(std::move(command));
 
-  ads_->get_ads_client()->RunDBTransaction(std::move(transaction),
-      std::bind(&Initialize::OnCreateOrOpen, this, _1, callback));
+  AdsClientHelper::Get()->RunDBTransaction(std::move(transaction),
+      std::bind(&Initialize::OnCreateOrOpen, this, std::placeholders::_1,
+          callback));
 }
 
 std::string Initialize::get_last_message() const {
@@ -67,7 +62,7 @@ void Initialize::OnCreateOrOpen(
 
   const int version = response->result->get_value()->get_int_value();
 
-  Migration migration(ads_);
+  Migration migration;
   migration.FromVersion(version, callback);
 }
 

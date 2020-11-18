@@ -12,35 +12,23 @@
 
 namespace ads {
 
-class AdsImpl;
+using AdEventCallback = std::function<void(const Result)>;
+
 class ConfirmationType;
-struct AdInfo;
 struct AdEventInfo;
+struct AdInfo;
 
-using AdEventsCallback = std::function<void(const Result)>;
+void LogAdEvent(
+    const AdInfo& ad,
+    const ConfirmationType& confirmation_type,
+    AdEventCallback callback);
 
-class AdEvents {
- public:
-  AdEvents(
-      AdsImpl* ads);
+void LogAdEvent(
+    const AdEventInfo& ad_event,
+    AdEventCallback callback);
 
-  ~AdEvents();
-
-  void Log(
-      const AdInfo& ad,
-      const ConfirmationType& confirmation_type,
-      AdEventsCallback callback);
-
-  void Log(
-      const AdEventInfo& ad_event,
-      AdEventsCallback callback);
-
-  void PurgeExpired(
-      AdEventsCallback callback);
-
- private:
-  AdsImpl* ads_;  // NOT OWNED
-};
+void PurgeExpiredAdEvents(
+    AdEventCallback callback);
 
 }  // namespace ads
 

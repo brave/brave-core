@@ -10,31 +10,27 @@
 #include "bat/ads/internal/ad_events/ad_notifications/ad_notification_event_dismissed.h"
 #include "bat/ads/internal/ad_events/ad_notifications/ad_notification_event_timed_out.h"
 #include "bat/ads/internal/ad_events/ad_notifications/ad_notification_event_viewed.h"
-#include "bat/ads/internal/ads_impl.h"
 
 namespace ads {
 namespace ad_notifications {
 
 std::unique_ptr<AdEvent<AdNotificationInfo>> AdEventFactory::Build(
-    AdsImpl* ads,
     const AdNotificationEventType event_type) {
-  DCHECK(ads);
-
   switch (event_type) {
     case AdNotificationEventType::kViewed: {
-      return std::make_unique<AdEventViewed>(ads);
+      return std::make_unique<AdEventViewed>();
     }
 
     case AdNotificationEventType::kClicked: {
-      return std::make_unique<AdEventClicked>(ads);
+      return std::make_unique<AdEventClicked>();
     }
 
     case AdNotificationEventType::kDismissed: {
-      return std::make_unique<AdEventDismissed>(ads);
+      return std::make_unique<AdEventDismissed>();
     }
 
     case AdNotificationEventType::kTimedOut: {
-      return std::make_unique<AdEventTimedOut>(ads);
+      return std::make_unique<AdEventTimedOut>();
     }
   }
 }

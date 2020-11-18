@@ -33,7 +33,7 @@ class ConfirmationType {
       const Value& value)
       : value_(value) {}
 
-  explicit ConfirmationType(
+  ConfirmationType(
       const std::string& value);
 
   Value value() const;

@@ -6,95 +6,28 @@
 #include "bat/ads/internal/eligible_ads/ad_notifications/eligible_ad_notifications.h"
 
 #include <memory>
-#include <vector>
 
-#include "base/files/file_path.h"
-#include "base/files/file_util.h"
-#include "base/files/scoped_temp_dir.h"
 #include "base/strings/string_number_conversions.h"
-#include "base/test/task_environment.h"
-#include "brave/components/l10n/browser/locale_helper_mock.h"
-#include "testing/gmock/include/gmock/gmock.h"
-#include "testing/gtest/include/gtest/gtest.h"
-#include "bat/ads/internal/ads_client_mock.h"
-#include "bat/ads/internal/ads_impl.h"
-#include "bat/ads/internal/client/client.h"
+#include "bat/ads/internal/ad_targeting/geographic/subdivision/subdivision_targeting.h"
 #include "bat/ads/internal/container_util.h"
-#include "bat/ads/internal/platform/platform_helper_mock.h"
-#include "bat/ads/internal/time_util.h"
+#include "bat/ads/internal/unittest_base.h"
 #include "bat/ads/internal/unittest_util.h"
-#include "bat/ads/pref_names.h"
 
 // npm run test -- brave_unit_tests --filter=BatAds*
-
-using ::testing::NiceMock;
-using ::testing::Return;
 
 namespace ads {
 namespace ad_notifications {
 
-class BatAdsEligibleAdNotificationsTest : public ::testing::Test {
+class BatAdsEligibleAdNotificationsTest : public UnitTestBase {
  protected:
   BatAdsEligibleAdNotificationsTest()
-      : task_environment_(base::test::TaskEnvironment::TimeSource::MOCK_TIME),
-        ads_client_mock_(std::make_unique<NiceMock<AdsClientMock>>()),
-        ads_(std::make_unique<AdsImpl>(ads_client_mock_.get())),
-        eligible_ads_(std::make_unique<EligibleAds>(ads_.get())),
-        locale_helper_mock_(std::make_unique<
-            NiceMock<brave_l10n::LocaleHelperMock>>()),
-        platform_helper_mock_(std::make_unique<
-            NiceMock<PlatformHelperMock>>()) {
-    // You can do set-up work for each test here
-
-    brave_l10n::LocaleHelper::GetInstance()->set_for_testing(
-        locale_helper_mock_.get());
-
-    PlatformHelper::GetInstance()->set_for_testing(platform_helper_mock_.get());
+      : subdivision_targeting_(std::make_unique<
+            ad_targeting::geographic::SubdivisionTargeting>()),
+        eligible_ads_(std::make_unique<EligibleAds>(
+            subdivision_targeting_.get())) {
   }
 
-  ~BatAdsEligibleAdNotificationsTest() override {
-    // You can do clean-up work that doesn't throw exceptions here
-  }
-
-  // If the constructor and destructor are not enough for setting up and
-  // cleaning up each test, you can use the following methods
-
-  void SetUp() override {
-    // Code here will be called immediately after the constructor (right before
-    // each test)
-
-    ASSERT_TRUE(temp_dir_.CreateUniqueTempDir());
-    const base::FilePath path = temp_dir_.GetPath();
-
-    SetBuildChannel(false, "test");
-
-    ON_CALL(*locale_helper_mock_, GetLocale())
-        .WillByDefault(Return("en-US"));
-
-    MockPlatformHelper(platform_helper_mock_, PlatformType::kMacOS);
-
-    ads_->OnWalletUpdated("c387c2d8-a26d-4451-83e4-5c0c6fd942be",
-        "5BEKM1Y7xcRSg/1q8in/+Lki2weFZQB+UMYZlRw8ql8=");
-
-    MockLoad(ads_client_mock_);
-    MockLoadUserModelForId(ads_client_mock_);
-    MockLoadResourceForId(ads_client_mock_);
-    MockSave(ads_client_mock_);
-
-    MockPrefs(ads_client_mock_);
-
-    database_ = std::make_unique<Database>(path.AppendASCII("database.sqlite"));
-    MockRunDBTransaction(ads_client_mock_, database_);
-
-    Initialize(ads_);
-  }
-
-  void TearDown() override {
-    // Code here will be called immediately after each test (right before the
-    // destructor)
-  }
-
-  // Objects declared here can be used by all tests in the test case
+  ~BatAdsEligibleAdNotificationsTest() override = default;
 
   CreativeAdNotificationList GetAds(
       const int count) {
@@ -119,17 +52,9 @@ class BatAdsEligibleAdNotificationsTest : public ::testing::Test {
 
     return ads;
   }
-
-  base::test::TaskEnvironment task_environment_;
-
-  base::ScopedTempDir temp_dir_;
-
-  std::unique_ptr<AdsClientMock> ads_client_mock_;
-  std::unique_ptr<AdsImpl> ads_;
+  std::unique_ptr<ad_targeting::geographic::SubdivisionTargeting>
+      subdivision_targeting_;
   std::unique_ptr<EligibleAds> eligible_ads_;
-  std::unique_ptr<brave_l10n::LocaleHelperMock> locale_helper_mock_;
-  std::unique_ptr<PlatformHelperMock> platform_helper_mock_;
-  std::unique_ptr<Database> database_;
 };
 
 TEST_F(BatAdsEligibleAdNotificationsTest,
@@ -155,11 +80,11 @@ TEST_F(BatAdsEligibleAdNotificationsTest,
 
   const CreativeAdInfo last_delivered_ad;
 
-  ads_->get_client()->UpdateSeenAdNotification("1");
-  ads_->get_client()->UpdateSeenAdNotification("2");
-  ads_->get_client()->UpdateSeenAdNotification("3");
-  ads_->get_client()->UpdateSeenAdNotification("4");
-  ads_->get_client()->UpdateSeenAdNotification("5");
+  Client::Get()->UpdateSeenAdNotification("1");
+  Client::Get()->UpdateSeenAdNotification("2");
+  Client::Get()->UpdateSeenAdNotification("3");
+  Client::Get()->UpdateSeenAdNotification("4");
+  Client::Get()->UpdateSeenAdNotification("5");
 
   // Act
   const CreativeAdNotificationList eligible_ads =
@@ -184,10 +109,10 @@ TEST_F(BatAdsEligibleAdNotificationsTest,
 
   const CreativeAdInfo last_delivered_ad;
 
-  ads_->get_client()->UpdateSeenAdNotification("1");
-  ads_->get_client()->UpdateSeenAdNotification("2");
-  ads_->get_client()->UpdateSeenAdNotification("4");
-  ads_->get_client()->UpdateSeenAdNotification("5");
+  Client::Get()->UpdateSeenAdNotification("1");
+  Client::Get()->UpdateSeenAdNotification("2");
+  Client::Get()->UpdateSeenAdNotification("4");
+  Client::Get()->UpdateSeenAdNotification("5");
 
   // Act
   const CreativeAdNotificationList eligible_ads =
@@ -217,12 +142,12 @@ TEST_F(BatAdsEligibleAdNotificationsTest,
 
   const CreativeAdInfo last_delivered_ad;
 
-  ads_->get_client()->UpdateSeenAdNotification("1");
-  ads_->get_client()->UpdateSeenAdNotification("2");
-  ads_->get_client()->UpdateSeenAdNotification("3");
-  ads_->get_client()->UpdateSeenAdNotification("4");
-  ads_->get_client()->UpdateSeenAdNotification("5");
-  ads_->get_client()->UpdateSeenAdNotification("6");
+  Client::Get()->UpdateSeenAdNotification("1");
+  Client::Get()->UpdateSeenAdNotification("2");
+  Client::Get()->UpdateSeenAdNotification("3");
+  Client::Get()->UpdateSeenAdNotification("4");
+  Client::Get()->UpdateSeenAdNotification("5");
+  Client::Get()->UpdateSeenAdNotification("6");
 
   // Act
   const CreativeAdNotificationList eligible_ads =
@@ -240,8 +165,8 @@ TEST_F(BatAdsEligibleAdNotificationsTest,
 
   const CreativeAdInfo last_delivered_ad;
 
-  ads_->get_client()->UpdateSeenAdvertiser("1");
-  ads_->get_client()->UpdateSeenAdvertiser("2");
+  Client::Get()->UpdateSeenAdvertiser("1");
+  Client::Get()->UpdateSeenAdvertiser("2");
 
   // Act
   const CreativeAdNotificationList eligible_ads =
@@ -271,7 +196,7 @@ TEST_F(BatAdsEligibleAdNotificationsTest,
 
   const CreativeAdInfo last_delivered_ad;
 
-  ads_->get_client()->UpdateSeenAdvertiser("1");
+  Client::Get()->UpdateSeenAdvertiser("1");
 
   // Act
   const CreativeAdNotificationList eligible_ads =
@@ -311,9 +236,9 @@ TEST_F(BatAdsEligibleAdNotificationsTest,
 
   const CreativeAdInfo last_delivered_ad;
 
-  ads_->get_client()->UpdateSeenAdvertiser("1");
-  ads_->get_client()->UpdateSeenAdvertiser("2");
-  ads_->get_client()->UpdateSeenAdvertiser("3");
+  Client::Get()->UpdateSeenAdvertiser("1");
+  Client::Get()->UpdateSeenAdvertiser("2");
+  Client::Get()->UpdateSeenAdvertiser("3");
 
   // Act
   const CreativeAdNotificationList eligible_ads =
@@ -331,15 +256,15 @@ TEST_F(BatAdsEligibleAdNotificationsTest,
 
   const CreativeAdInfo last_delivered_ad;
 
-  ads_->get_client()->UpdateSeenAdNotification("1");
-  ads_->get_client()->UpdateSeenAdNotification("2");
-  ads_->get_client()->UpdateSeenAdvertiser("1");
-  ads_->get_client()->UpdateSeenAdNotification("3");
-  ads_->get_client()->UpdateSeenAdNotification("4");
-  ads_->get_client()->UpdateSeenAdvertiser("2");
-  ads_->get_client()->UpdateSeenAdNotification("5");
-  ads_->get_client()->UpdateSeenAdNotification("6");
-  ads_->get_client()->UpdateSeenAdvertiser("3");
+  Client::Get()->UpdateSeenAdNotification("1");
+  Client::Get()->UpdateSeenAdNotification("2");
+  Client::Get()->UpdateSeenAdvertiser("1");
+  Client::Get()->UpdateSeenAdNotification("3");
+  Client::Get()->UpdateSeenAdNotification("4");
+  Client::Get()->UpdateSeenAdvertiser("2");
+  Client::Get()->UpdateSeenAdNotification("5");
+  Client::Get()->UpdateSeenAdNotification("6");
+  Client::Get()->UpdateSeenAdvertiser("3");
 
   // Act
   const CreativeAdNotificationList eligible_ads =

@@ -7,6 +7,7 @@
 #define BAT_ADS_INTERNAL_AD_SERVING_AD_NOTIFICATION_SERVING_H_
 
 #include "base/gtest_prod_util.h"
+#include "base/time/time.h"
 #include "bat/ads/internal/ad_events/ad_event_info.h"
 #include "bat/ads/internal/ad_targeting/ad_targeting.h"
 #include "bat/ads/internal/bundle/creative_ad_notification_info.h"
@@ -15,8 +16,13 @@
 
 namespace ads {
 
-class AdsImpl;
 struct AdNotificationInfo;
+
+namespace ad_targeting {
+namespace geographic {
+class SubdivisionTargeting;
+}  // namespace geographic
+}  // namespace ad_targeting
 
 namespace ad_notifications {
 
@@ -26,7 +32,8 @@ using MaybeServeAdForCategoriesCallback =
 class AdServing {
  public:
   AdServing(
-      AdsImpl* ads);
+      AdTargeting* ad_targeting,
+      ad_targeting::geographic::SubdivisionTargeting* subdivision_targeting);
 
   ~AdServing();
 
@@ -97,7 +104,10 @@ class AdServing {
 
   CreativeAdInfo last_delivered_creative_ad_;
 
-  AdsImpl* ads_;  // NOT OWNED
+  AdTargeting* ad_targeting_;  // NOT OWNED
+
+  ad_targeting::geographic::SubdivisionTargeting*
+      subdivision_targeting_;  // NOT OWNED
 };
 
 }  // namespace ad_notifications

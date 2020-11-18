@@ -7,27 +7,18 @@
 
 #include <stdint.h>
 
+#include "base/time/time.h"
 #include "bat/ads/ad_info.h"
 #include "bat/ads/confirmation_type.h"
 #include "bat/ads/internal/ad_events/ad_event_info.h"
 #include "bat/ads/internal/database/tables/ad_events_database_table.h"
-#include "bat/ads/internal/logging.h"
-#include "bat/ads/internal/time_util.h"
 
 namespace ads {
 
-AdEvents::AdEvents(
-    AdsImpl* ads)
-    : ads_(ads) {
-  DCHECK(ads_);
-}
-
-AdEvents::~AdEvents() = default;
-
-void AdEvents::Log(
+void LogAdEvent(
     const AdInfo& ad,
     const ConfirmationType& confirmation_type,
-    AdEventsCallback callback) {
+    AdEventCallback callback) {
   AdEventInfo ad_event;
   ad_event.type = ad.type;
   ad_event.uuid = ad.uuid;
@@ -37,22 +28,22 @@ void AdEvents::Log(
   ad_event.timestamp = static_cast<int64_t>(base::Time::Now().ToDoubleT());
   ad_event.confirmation_type = confirmation_type;
 
-  Log(ad_event, callback);
+  LogAdEvent(ad_event, callback);
 }
 
-void AdEvents::Log(
+void LogAdEvent(
     const AdEventInfo& ad_event,
-    AdEventsCallback callback) {
-  database::table::AdEvents database_table(ads_);
+    AdEventCallback callback) {
+  database::table::AdEvents database_table;
   database_table.LogEvent(ad_event, [callback](
       const Result result) {
     callback(result);
   });
 }
 
-void AdEvents::PurgeExpired(
-    AdEventsCallback callback) {
-  database::table::AdEvents database_table(ads_);
+void PurgeExpiredAdEvents(
+    AdEventCallback callback) {
+  database::table::AdEvents database_table;
   database_table.PurgeExpired([callback](
       const Result result) {
     callback(result);

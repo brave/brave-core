@@ -5,63 +5,20 @@
 
 #include "bat/ads/internal/tokens/redeem_unblinded_token/create_confirmation_url_request_builder.h"
 
-#include <memory>
-#include <string>
-#include <vector>
-
-#include "base/strings/stringprintf.h"
-#include "brave/components/l10n/browser/locale_helper_mock.h"
-#include "testing/gmock/include/gmock/gmock.h"
-#include "testing/gtest/include/gtest/gtest.h"
-#include "bat/ads/internal/platform/platform_helper_mock.h"
+#include "bat/ads/internal/unittest_base.h"
 #include "bat/ads/internal/unittest_util.h"
 
 // npm run test -- brave_unit_tests --filter=BatAds*
 
-using ::testing::NiceMock;
 using ::testing::Return;
 
 namespace ads {
 
-class BatAdsCreateConfirmationUrlRequestBuilderTest : public ::testing::Test {
+class BatAdsCreateConfirmationUrlRequestBuilderTest : public UnitTestBase {
  protected:
-  BatAdsCreateConfirmationUrlRequestBuilderTest()
-      : locale_helper_mock_(std::make_unique<
-            NiceMock<brave_l10n::LocaleHelperMock>>()),
-        platform_helper_mock_(std::make_unique<
-            NiceMock<PlatformHelperMock>>()) {
-    // You can do set-up work for each test here
+  BatAdsCreateConfirmationUrlRequestBuilderTest() = default;
 
-    brave_l10n::LocaleHelper::GetInstance()->set_for_testing(
-        locale_helper_mock_.get());
-
-    PlatformHelper::GetInstance()->set_for_testing(platform_helper_mock_.get());
-  }
-
-  ~BatAdsCreateConfirmationUrlRequestBuilderTest() override {
-    // You can do clean-up work that doesn't throw exceptions here
-  }
-
-  // If the constructor and destructor are not enough for setting up and
-  // cleaning up each test, you can use the following methods
-
-  void SetUp() override {
-    // Code here will be called immediately after the constructor (right before
-    // each test)
-
-    ON_CALL(*locale_helper_mock_, GetLocale())
-        .WillByDefault(Return("en-US"));
-
-    ON_CALL(*platform_helper_mock_, GetPlatformName())
-        .WillByDefault(Return("test"));
-  }
-
-  void TearDown() override {
-    // Code here will be called immediately after each test (right before the
-    // destructor)
-  }
-
-  // Objects declared here can be used by all tests in the test case
+  ~BatAdsCreateConfirmationUrlRequestBuilderTest() override = default;
 
   ConfirmationInfo GetConfirmationForType(
        const ConfirmationType type) {
@@ -89,9 +46,6 @@ class BatAdsCreateConfirmationUrlRequestBuilderTest : public ::testing::Test {
 
     return confirmation;
   }
-
-  std::unique_ptr<brave_l10n::LocaleHelperMock> locale_helper_mock_;
-  std::unique_ptr<PlatformHelperMock> platform_helper_mock_;
 };
 
 TEST_F(BatAdsCreateConfirmationUrlRequestBuilderTest,
@@ -102,8 +56,7 @@ TEST_F(BatAdsCreateConfirmationUrlRequestBuilderTest,
 
   SetBuildChannel(true, "release");
 
-  ON_CALL(*locale_helper_mock_, GetLocale())
-      .WillByDefault(Return("en-US"));
+  MockLocaleHelper(locale_helper_mock_, "en-US");
 
   CreateConfirmationUrlRequestBuilder url_request_builder(confirmation);
 
@@ -116,7 +69,7 @@ TEST_F(BatAdsCreateConfirmationUrlRequestBuilderTest,
   expected_url_request->headers = {
     "accept: application/json"
   };
-  expected_url_request->content = R"({"blindedPaymentToken":"PI3lFqpGVFKz4TH5yEwXI3R/QntmTpUgeBaK+STiBx8=","buildChannel":"release","countryCode":"US","creativeInstanceId":"546fe7b0-5047-4f28-a11c-81f14edcf0f6","experiment":{},"payload":{},"platform":"test","type":"view"})";
+  expected_url_request->content = R"({"blindedPaymentToken":"PI3lFqpGVFKz4TH5yEwXI3R/QntmTpUgeBaK+STiBx8=","buildChannel":"release","countryCode":"US","creativeInstanceId":"546fe7b0-5047-4f28-a11c-81f14edcf0f6","experiment":{},"payload":{},"platform":"windows","type":"view"})";
   expected_url_request->content_type = "application/json";
   expected_url_request->method = UrlRequestMethod::POST;
 
@@ -131,8 +84,7 @@ TEST_F(BatAdsCreateConfirmationUrlRequestBuilderTest,
 
   SetBuildChannel(true, "release");
 
-  ON_CALL(*locale_helper_mock_, GetLocale())
-      .WillByDefault(Return("en-AS"));
+  MockLocaleHelper(locale_helper_mock_, "en-AS");
 
   CreateConfirmationUrlRequestBuilder url_request_builder(confirmation);
 
@@ -145,7 +97,7 @@ TEST_F(BatAdsCreateConfirmationUrlRequestBuilderTest,
   expected_url_request->headers = {
     "accept: application/json"
   };
-  expected_url_request->content = R"({"blindedPaymentToken":"PI3lFqpGVFKz4TH5yEwXI3R/QntmTpUgeBaK+STiBx8=","buildChannel":"release","countryCode":"??","creativeInstanceId":"546fe7b0-5047-4f28-a11c-81f14edcf0f6","experiment":{},"payload":{},"platform":"test","type":"view"})";
+  expected_url_request->content = R"({"blindedPaymentToken":"PI3lFqpGVFKz4TH5yEwXI3R/QntmTpUgeBaK+STiBx8=","buildChannel":"release","countryCode":"??","creativeInstanceId":"546fe7b0-5047-4f28-a11c-81f14edcf0f6","experiment":{},"payload":{},"platform":"windows","type":"view"})";
   expected_url_request->content_type = "application/json";
   expected_url_request->method = UrlRequestMethod::POST;
 
@@ -160,8 +112,7 @@ TEST_F(BatAdsCreateConfirmationUrlRequestBuilderTest,
 
   SetBuildChannel(true, "release");
 
-  ON_CALL(*locale_helper_mock_, GetLocale())
-      .WillByDefault(Return("en-KY"));
+  MockLocaleHelper(locale_helper_mock_, "en-KY");
 
   CreateConfirmationUrlRequestBuilder url_request_builder(confirmation);
 
@@ -174,7 +125,7 @@ TEST_F(BatAdsCreateConfirmationUrlRequestBuilderTest,
   expected_url_request->headers = {
     "accept: application/json"
   };
-  expected_url_request->content = R"({"blindedPaymentToken":"PI3lFqpGVFKz4TH5yEwXI3R/QntmTpUgeBaK+STiBx8=","buildChannel":"release","creativeInstanceId":"546fe7b0-5047-4f28-a11c-81f14edcf0f6","experiment":{},"payload":{},"platform":"test","type":"view"})";
+  expected_url_request->content = R"({"blindedPaymentToken":"PI3lFqpGVFKz4TH5yEwXI3R/QntmTpUgeBaK+STiBx8=","buildChannel":"release","creativeInstanceId":"546fe7b0-5047-4f28-a11c-81f14edcf0f6","experiment":{},"payload":{},"platform":"windows","type":"view"})";
   expected_url_request->content_type = "application/json";
   expected_url_request->method = UrlRequestMethod::POST;
 
@@ -189,8 +140,7 @@ TEST_F(BatAdsCreateConfirmationUrlRequestBuilderTest,
 
   SetBuildChannel(false, "beta");
 
-  ON_CALL(*locale_helper_mock_, GetLocale())
-      .WillByDefault(Return("en-US"));
+  MockLocaleHelper(locale_helper_mock_, "en-US");
 
   CreateConfirmationUrlRequestBuilder url_request_builder(confirmation);
 
@@ -203,7 +153,7 @@ TEST_F(BatAdsCreateConfirmationUrlRequestBuilderTest,
   expected_url_request->headers = {
     "accept: application/json"
   };
-  expected_url_request->content = R"({"blindedPaymentToken":"PI3lFqpGVFKz4TH5yEwXI3R/QntmTpUgeBaK+STiBx8=","buildChannel":"beta","creativeInstanceId":"546fe7b0-5047-4f28-a11c-81f14edcf0f6","experiment":{},"payload":{},"platform":"test","type":"view"})";
+  expected_url_request->content = R"({"blindedPaymentToken":"PI3lFqpGVFKz4TH5yEwXI3R/QntmTpUgeBaK+STiBx8=","buildChannel":"beta","creativeInstanceId":"546fe7b0-5047-4f28-a11c-81f14edcf0f6","experiment":{},"payload":{},"platform":"windows","type":"view"})";
   expected_url_request->content_type = "application/json";
   expected_url_request->method = UrlRequestMethod::POST;
 
@@ -218,8 +168,7 @@ TEST_F(BatAdsCreateConfirmationUrlRequestBuilderTest,
 
   SetBuildChannel(false, "beta");
 
-  ON_CALL(*locale_helper_mock_, GetLocale())
-      .WillByDefault(Return("en-AS"));
+  MockLocaleHelper(locale_helper_mock_, "en-AS");
 
   CreateConfirmationUrlRequestBuilder url_request_builder(confirmation);
 
@@ -232,7 +181,7 @@ TEST_F(BatAdsCreateConfirmationUrlRequestBuilderTest,
   expected_url_request->headers = {
     "accept: application/json"
   };
-  expected_url_request->content = R"({"blindedPaymentToken":"PI3lFqpGVFKz4TH5yEwXI3R/QntmTpUgeBaK+STiBx8=","buildChannel":"beta","creativeInstanceId":"546fe7b0-5047-4f28-a11c-81f14edcf0f6","experiment":{},"payload":{},"platform":"test","type":"view"})";
+  expected_url_request->content = R"({"blindedPaymentToken":"PI3lFqpGVFKz4TH5yEwXI3R/QntmTpUgeBaK+STiBx8=","buildChannel":"beta","creativeInstanceId":"546fe7b0-5047-4f28-a11c-81f14edcf0f6","experiment":{},"payload":{},"platform":"windows","type":"view"})";
   expected_url_request->content_type = "application/json";
   expected_url_request->method = UrlRequestMethod::POST;
 
@@ -247,8 +196,7 @@ TEST_F(BatAdsCreateConfirmationUrlRequestBuilderTest,
 
   SetBuildChannel(false, "beta");
 
-  ON_CALL(*locale_helper_mock_, GetLocale())
-      .WillByDefault(Return("en-KY"));
+  MockLocaleHelper(locale_helper_mock_, "en-KY");
 
   CreateConfirmationUrlRequestBuilder url_request_builder(confirmation);
 
@@ -261,7 +209,7 @@ TEST_F(BatAdsCreateConfirmationUrlRequestBuilderTest,
   expected_url_request->headers = {
     "accept: application/json"
   };
-  expected_url_request->content = R"({"blindedPaymentToken":"PI3lFqpGVFKz4TH5yEwXI3R/QntmTpUgeBaK+STiBx8=","buildChannel":"beta","creativeInstanceId":"546fe7b0-5047-4f28-a11c-81f14edcf0f6","experiment":{},"payload":{},"platform":"test","type":"view"})";
+  expected_url_request->content = R"({"blindedPaymentToken":"PI3lFqpGVFKz4TH5yEwXI3R/QntmTpUgeBaK+STiBx8=","buildChannel":"beta","creativeInstanceId":"546fe7b0-5047-4f28-a11c-81f14edcf0f6","experiment":{},"payload":{},"platform":"windows","type":"view"})";
   expected_url_request->content_type = "application/json";
   expected_url_request->method = UrlRequestMethod::POST;
 

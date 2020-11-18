@@ -6,9 +6,10 @@
 #include "bat/ads/internal/frequency_capping/exclusion_rules/daypart_frequency_cap.h"
 
 #include "base/strings/stringprintf.h"
-#include "bat/ads/internal/ads_impl.h"
+#include "base/time/time.h"
 #include "bat/ads/internal/bundle/creative_ad_info.h"
 #include "bat/ads/internal/frequency_capping/frequency_capping_util.h"
+#include "bat/ads/internal/time_util.h"
 
 namespace ads {
 
@@ -32,11 +33,7 @@ bool DoesMatchTimeSlot(
 
 }  // namespace
 
-DaypartFrequencyCap::DaypartFrequencyCap(
-    AdsImpl* ads)
-    : ads_(ads) {
-  DCHECK(ads_);
-}
+DaypartFrequencyCap::DaypartFrequencyCap() = default;
 
 DaypartFrequencyCap::~DaypartFrequencyCap() = default;
 
@@ -65,9 +62,9 @@ bool DaypartFrequencyCap::DoesRespectCap(
 
   const base::Time now = base::Time::Now();
 
-  const int local_minutes_for_today = ConvertTimeToLocalMinutesForToday(now);
+  const int local_minutes_for_today = ConvertHoursAndMinutesToMinutes(now);
 
-  const std::string local_day_of_week = GetLocalDayOfWeek(now);
+  const std::string local_day_of_week = GetLocalWeekDay(now);
 
   for (const CreativeDaypartInfo& daypart : ad.dayparts) {
     if (!DoesMatchDayOfWeek(daypart, local_day_of_week)) {

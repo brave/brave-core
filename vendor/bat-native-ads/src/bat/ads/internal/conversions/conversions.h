@@ -12,20 +12,24 @@
 #include "base/values.h"
 #include "bat/ads/ads.h"
 #include "bat/ads/internal/ad_events/ad_event_info.h"
+#include "bat/ads/internal/confirmations/confirmations.h"
 #include "bat/ads/internal/conversions/conversion_info.h"
 #include "bat/ads/internal/conversions/conversion_queue_item_info.h"
+#include "bat/ads/internal/conversions/conversions_observer.h"
 #include "bat/ads/internal/timer.h"
 
 namespace ads {
 
-class AdsImpl;
-
 class Conversions {
  public:
-  Conversions(
-      AdsImpl* ads);
+  Conversions();
 
   ~Conversions();
+
+  void AddObserver(
+      ConversionsObserver* observer);
+  void RemoveObserver(
+      ConversionsObserver* observer);
 
   void Initialize(
       InitializeCallback callback);
@@ -38,8 +42,10 @@ class Conversions {
   void StartTimerIfReady();
 
  private:
-  bool is_initialized_;
+  bool is_initialized_ = false;
   InitializeCallback callback_;
+
+  base::ObserverList<ConversionsObserver> observers_;
 
   ConversionQueueItemList queue_;
 
@@ -88,7 +94,11 @@ class Conversions {
       const base::DictionaryValue* dictionary,
       ConversionQueueItemInfo* info) const;
 
-  AdsImpl* ads_;  // NOT OWNED
+  void NotifyConversion(
+      const std::string& creative_instance_id);
+
+  void NotifyConversionFailed(
+      const std::string& creative_instance_id);
 };
 
 }  // namespace ads

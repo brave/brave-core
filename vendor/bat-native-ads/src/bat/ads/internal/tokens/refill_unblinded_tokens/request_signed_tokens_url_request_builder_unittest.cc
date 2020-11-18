@@ -5,9 +5,6 @@
 
 #include "bat/ads/internal/tokens/refill_unblinded_tokens/request_signed_tokens_url_request_builder.h"
 
-#include <string>
-#include <vector>
-
 #include "testing/gtest/include/gtest/gtest.h"
 #include "bat/ads/internal/privacy/privacy_util.h"
 

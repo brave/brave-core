@@ -5,10 +5,10 @@
 
 #include "bat/ads/internal/frequency_capping/permission_rules/do_not_disturb_frequency_cap.h"
 
-#include "bat/ads/internal/ads_impl.h"
+#include "base/time/time.h"
 #include "bat/ads/internal/frequency_capping/frequency_capping_util.h"
 #include "bat/ads/internal/platform/platform_helper.h"
-#include "bat/ads/internal/time_util.h"
+#include "bat/ads/internal/tab_manager/tab_manager.h"
 
 namespace ads {
 
@@ -19,11 +19,7 @@ const int kDoNotDisturbToHour = 6;     // 6am
 
 }  // namespace
 
-DoNotDisturbFrequencyCap::DoNotDisturbFrequencyCap(
-    AdsImpl* ads)
-    : ads_(ads) {
-  DCHECK(ads_);
-}
+DoNotDisturbFrequencyCap::DoNotDisturbFrequencyCap() = default;
 
 DoNotDisturbFrequencyCap::~DoNotDisturbFrequencyCap() = default;
 
@@ -45,7 +41,7 @@ bool DoNotDisturbFrequencyCap::DoesRespectCap() {
     return true;
   }
 
-  if (ads_->IsForeground()) {
+  if (TabManager::Get()->IsForegrounded()) {
     return true;
   }
 

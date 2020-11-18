@@ -13,7 +13,7 @@ class AdEvent {
  public:
   virtual ~AdEvent() = default;
 
-  virtual void Trigger(
+  virtual void FireEvent(
       const T&) = 0;
 };
 

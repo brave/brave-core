@@ -16,6 +16,8 @@
 #include "bat/ads/internal/ad_delivery/ad_notifications/ad_notification_delivery.h"
 #include "bat/ads/internal/ad_pacing/ad_notifications/ad_notification_pacing.h"
 #include "bat/ads/internal/ad_targeting/ad_targeting_util.h"
+#include "bat/ads/internal/ad_targeting/geographic/subdivision/subdivision_targeting.h"
+#include "bat/ads/internal/ads_client_helper.h"
 #include "bat/ads/internal/ads_impl.h"
 #include "bat/ads/internal/client/client.h"
 #include "bat/ads/internal/database/tables/ad_events_database_table.h"
@@ -26,15 +28,19 @@
 #include "bat/ads/internal/p2a/p2a.h"
 #include "bat/ads/internal/p2a/p2a_util.h"
 #include "bat/ads/internal/platform/platform_helper.h"
+#include "bat/ads/internal/time_formatting_util.h"
 #include "bat/ads/pref_names.h"
 
 namespace ads {
 namespace ad_notifications {
 
 AdServing::AdServing(
-    AdsImpl* ads)
-    : ads_(ads) {
-  DCHECK(ads_);
+    AdTargeting* ad_targeting,
+    ad_targeting::geographic::SubdivisionTargeting* subdivision_targeting)
+    : ad_targeting_(ad_targeting),
+      subdivision_targeting_(subdivision_targeting) {
+  DCHECK(ad_targeting_);
+  DCHECK(subdivision_targeting_);
 }
 
 AdServing::~AdServing() = default;
@@ -46,17 +52,17 @@ void AdServing::ServeAtRegularIntervals() {
 
   base::TimeDelta delay;
 
-  if (ads_->get_client()->GetNextAdServingInterval().is_null()) {
+  if (Client::Get()->GetNextAdServingInterval().is_null()) {
     delay = base::TimeDelta::FromMinutes(2);
     const base::Time next_interval = base::Time::Now() + delay;
 
-    ads_->get_client()->SetNextAdServingInterval(next_interval);
+    Client::Get()->SetNextAdServingInterval(next_interval);
   } else {
     if (NextIntervalHasElapsed()) {
       delay = base::TimeDelta::FromMinutes(1);
     } else {
       const base::Time next_interval =
-          ads_->get_client()->GetNextAdServingInterval();
+          Client::Get()->GetNextAdServingInterval();
 
       delay = next_interval - base::Time::Now();
     }
@@ -72,9 +78,7 @@ void AdServing::StopServing() {
 }
 
 void AdServing::MaybeServe() {
-  const CategoryList categories =
-      ads_->get_ad_targeting()->GetWinningCategories();
-
+  const CategoryList categories = ad_targeting_->GetCategories();
   MaybeServeAdForCategories(categories, [&](
       const Result result,
       const AdNotificationInfo& ad) {
@@ -104,7 +108,7 @@ bool AdServing::NextIntervalHasElapsed() {
   const base::Time now = base::Time::Now();
 
   const base::Time next_interval =
-      ads_->get_client()->GetNextAdServingInterval();
+      Client::Get()->GetNextAdServingInterval();
 
   if (now < next_interval) {
     return false;
@@ -122,7 +126,7 @@ base::Time AdServing::MaybeServeAfter(
 void AdServing::MaybeServeAdForCategories(
     const CategoryList& categories,
     MaybeServeAdForCategoriesCallback callback) {
-  database::table::AdEvents database_table(ads_);
+  database::table::AdEvents database_table;
   database_table.GetAll([=](
       const Result result,
       const AdEventList& ad_events) {
@@ -132,7 +136,7 @@ void AdServing::MaybeServeAdForCategories(
       return;
     }
 
-    FrequencyCapping frequency_capping(ads_, ad_events);
+    FrequencyCapping frequency_capping(subdivision_targeting_, ad_events);
 
     if (!frequency_capping.IsAdAllowed()) {
       BLOG(1, "Ad notification not served: Not allowed");
@@ -161,12 +165,12 @@ void AdServing::MaybeServeAdForParentChildCategories(
     BLOG(1, "  " << category);
   }
 
-  database::table::CreativeAdNotifications database_table(ads_);
+  database::table::CreativeAdNotifications database_table;
   database_table.GetForCategories(categories, [=](
       const Result result,
       const CategoryList& categories,
       const CreativeAdNotificationList& ads) {
-    EligibleAds eligible_ad_notifications(ads_);
+    EligibleAds eligible_ad_notifications(subdivision_targeting_);
 
     const CreativeAdNotificationList eligible_ads =
         eligible_ad_notifications.Get(ads,
@@ -194,12 +198,12 @@ void AdServing::MaybeServeAdForParentCategories(
     BLOG(1, "  " << parent_category);
   }
 
-  database::table::CreativeAdNotifications database_table(ads_);
+  database::table::CreativeAdNotifications database_table;
   database_table.GetForCategories(parent_categories, [=](
       const Result result,
       const CategoryList& categories,
       const CreativeAdNotificationList& ads) {
-    EligibleAds eligible_ad_notifications(ads_);
+    EligibleAds eligible_ad_notifications(subdivision_targeting_);
 
     const CreativeAdNotificationList eligible_ads =
         eligible_ad_notifications.Get(ads,
@@ -224,12 +228,12 @@ void AdServing::MaybeServeAdForUntargeted(
     ad_targeting::contextual::kUntargeted
   };
 
-  database::table::CreativeAdNotifications database_table(ads_);
+  database::table::CreativeAdNotifications database_table;
   database_table.GetForCategories(categories, [=](
       const Result result,
       const CategoryList& categories,
       const CreativeAdNotificationList& ads) {
-    EligibleAds eligible_ad_notifications(ads_);
+    EligibleAds eligible_ad_notifications(subdivision_targeting_);
 
     const CreativeAdNotificationList eligible_ads =
         eligible_ad_notifications.Get(ads,
@@ -289,7 +293,7 @@ void AdServing::MaybeDeliverAd(
   ad_notification.body = ad.body;
   ad_notification.target_url = ad.target_url;
 
-  AdDelivery ad_delivery(ads_);
+  AdDelivery ad_delivery;
   if (!ad_delivery.MaybeDeliverAd(ad_notification)) {
     BLOG(1, "Ad notification not delivered");
     callback(Result::FAILED, ad_notification);
@@ -298,7 +302,7 @@ void AdServing::MaybeDeliverAd(
 
   last_delivered_creative_ad_ = ad;
 
-  ads_->get_client()->UpdateSeenAdvertiser(ad.advertiser_id);
+  Client::Get()->UpdateSeenAdvertiser(ad.advertiser_id);
 
   callback(Result::SUCCESS, ad_notification);
 }
@@ -311,7 +315,7 @@ void AdServing::FailedToDeliverAd() {
   const base::TimeDelta delay = base::TimeDelta::FromMinutes(2);
 
   const base::Time next_interval = base::Time::Now() + delay;
-  ads_->get_client()->SetNextAdServingInterval(next_interval);
+  Client::Get()->SetNextAdServingInterval(next_interval);
 
   MaybeServeAfter(delay);
 }
@@ -322,13 +326,13 @@ void AdServing::DeliveredAd() {
   }
 
   const int64_t seconds = base::Time::kSecondsPerHour /
-      ads_->get_ads_client()->GetUint64Pref(prefs::kAdsPerHour);
+      AdsClientHelper::Get()->GetUint64Pref(prefs::kAdsPerHour);
 
   const base::TimeDelta delay = base::TimeDelta::FromSeconds(seconds);
 
   const base::Time next_interval = base::Time::Now() + delay;
 
-  ads_->get_client()->SetNextAdServingInterval(next_interval);
+  Client::Get()->SetNextAdServingInterval(next_interval);
 
   MaybeServeAfter(delay);
 }
@@ -336,10 +340,9 @@ void AdServing::DeliveredAd() {
 void AdServing::RecordAdOpportunityForCategories(
     const CategoryList& categories) {
   const std::vector<std::string> question_list =
-      CreateAdOpportunityQuestionList(categories);
+      p2a::CreateAdOpportunityQuestionList(categories);
 
-  P2A p2a(ads_);
-  p2a.RecordEvent("ad_opportunity", question_list);
+  p2a::RecordEvent("ad_opportunity", question_list);
 }
 
 }  // namespace ad_notifications

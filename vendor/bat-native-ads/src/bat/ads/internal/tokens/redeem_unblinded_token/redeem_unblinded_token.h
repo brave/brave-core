@@ -10,15 +10,11 @@
 
 #include "bat/ads/internal/tokens/redeem_unblinded_token/redeem_unblinded_token_delegate.h"
 #include "bat/ads/mojom.h"
-#include "bat/ads/result.h"
 
 namespace ads {
 
-class AdsImpl;
 class ConfirmationType;
-struct AdInfo;
 struct ConfirmationInfo;
-struct TokenInfo;
 
 namespace privacy {
 struct UnblindedTokenInfo;
@@ -26,8 +22,7 @@ struct UnblindedTokenInfo;
 
 class RedeemUnblindedToken {
  public:
-  RedeemUnblindedToken(
-      AdsImpl* ads);
+  RedeemUnblindedToken();
 
   ~RedeemUnblindedToken();
 
@@ -36,7 +31,9 @@ class RedeemUnblindedToken {
 
   void Redeem(
       const std::string& creative_instance_id,
-      const ConfirmationType confirmation_type);
+      const ConfirmationType& confirmation_type,
+      const privacy::UnblindedTokenInfo& unblinded_token);
+
   void Redeem(
       const ConfirmationInfo& confirmation);
 
@@ -53,22 +50,13 @@ class RedeemUnblindedToken {
       const UrlResponse& url_response,
       const ConfirmationInfo& confirmation);
 
-  void OnRedeem(
-      const Result result,
+  void OnDidRedeemUnblindedToken(
+      const ConfirmationInfo& confirmation,
+      const privacy::UnblindedTokenInfo& unblinded_payment_token);
+
+  void OnFailedToRedeemUnblindedToken(
       const ConfirmationInfo& confirmation,
       const bool should_retry);
-
-  void CreateAndAppendNewConfirmationToRetryQueue(
-      const ConfirmationInfo& confirmation);
-  void AppendConfirmationToRetryQueue(
-      const ConfirmationInfo& confirmation);
-
-  ConfirmationInfo CreateConfirmationInfo(
-      const std::string& creative_instance_id,
-      const ConfirmationType confirmation_type,
-      const privacy::UnblindedTokenInfo& unblinded_token);
-
-  AdsImpl* ads_;  // NOT OWNED
 
   RedeemUnblindedTokenDelegate* delegate_ = nullptr;
 };

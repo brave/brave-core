@@ -10,7 +10,7 @@
 #include <vector>
 
 #include "wrapper.hpp"
-#include "bat/ads/internal/account/wallet_info.h"
+#include "bat/ads/internal/account/wallet/wallet_info.h"
 #include "bat/ads/internal/server/url_request_builder.h"
 #include "bat/ads/mojom.h"
 

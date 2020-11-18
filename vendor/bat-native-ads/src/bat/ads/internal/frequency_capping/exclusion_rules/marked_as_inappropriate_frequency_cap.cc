@@ -6,18 +6,14 @@
 #include "bat/ads/internal/frequency_capping/exclusion_rules/marked_as_inappropriate_frequency_cap.h"
 
 #include "base/strings/stringprintf.h"
-#include "bat/ads/internal/ads_impl.h"
-#include "bat/ads/internal/bundle/creative_ad_info.h"
 #include "bat/ads/internal/client/client.h"
+#include "bat/ads/internal/bundle/creative_ad_info.h"
 #include "bat/ads/internal/client/preferences/flagged_ad_info.h"
 
 namespace ads {
 
-MarkedAsInappropriateFrequencyCap::MarkedAsInappropriateFrequencyCap(
-    AdsImpl* ads)
-    : ads_(ads) {
-  DCHECK(ads_);
-}
+MarkedAsInappropriateFrequencyCap::
+MarkedAsInappropriateFrequencyCap() = default;
 
 MarkedAsInappropriateFrequencyCap::
 ~MarkedAsInappropriateFrequencyCap() = default;
@@ -40,7 +36,7 @@ std::string MarkedAsInappropriateFrequencyCap::get_last_message() const {
 
 bool MarkedAsInappropriateFrequencyCap::DoesRespectCap(
     const CreativeAdInfo& ad) {
-  const FlaggedAdList flagged_ads = ads_->get_client()->get_flagged_ads();
+  const FlaggedAdList flagged_ads = Client::Get()->get_flagged_ads();
   if (flagged_ads.empty()) {
     return true;
   }

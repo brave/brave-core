@@ -5,18 +5,13 @@
 
 #include "bat/ads/internal/frequency_capping/permission_rules/media_frequency_cap.h"
 
-#include "bat/ads/internal/ads_impl.h"
 #include "bat/ads/internal/frequency_capping/frequency_capping_util.h"
-#include "bat/ads/internal/tabs/tab_info.h"
-#include "bat/ads/internal/tabs/tabs.h"
+#include "bat/ads/internal/tab_manager/tab_info.h"
+#include "bat/ads/internal/tab_manager/tab_manager.h"
 
 namespace ads {
 
-MediaFrequencyCap::MediaFrequencyCap(
-    AdsImpl* ads)
-    : ads_(ads) {
-  DCHECK(ads_);
-}
+MediaFrequencyCap::MediaFrequencyCap() = default;
 
 MediaFrequencyCap::~MediaFrequencyCap() = default;
 
@@ -34,8 +29,12 @@ std::string MediaFrequencyCap::get_last_message() const {
 }
 
 bool MediaFrequencyCap::DoesRespectCap() {
-  const TabInfo tab = ads_->get_tabs()->GetVisible();
-  return !ads_->get_tabs()->IsPlayingMedia(tab.id);
+  const base::Optional<TabInfo> tab = TabManager::Get()->GetVisible();
+  if (!tab) {
+    return true;
+  }
+
+  return !TabManager::Get()->IsPlayingMedia(tab->id);
 }
 
 }  // namespace ads

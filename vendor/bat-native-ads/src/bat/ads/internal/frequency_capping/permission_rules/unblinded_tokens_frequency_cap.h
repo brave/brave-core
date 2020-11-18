@@ -12,12 +12,9 @@
 
 namespace ads {
 
-class AdsImpl;
-
 class UnblindedTokensFrequencyCap : public PermissionRule  {
  public:
-  UnblindedTokensFrequencyCap(
-      AdsImpl* ads);
+  UnblindedTokensFrequencyCap();
 
   ~UnblindedTokensFrequencyCap() override;
 
@@ -31,8 +28,6 @@ class UnblindedTokensFrequencyCap : public PermissionRule  {
   std::string get_last_message() const override;
 
  private:
-  AdsImpl* ads_;  // NOT OWNED
-
   std::string last_message_;
 
   bool DoesRespectCap();

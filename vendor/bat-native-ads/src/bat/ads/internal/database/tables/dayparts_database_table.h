@@ -14,15 +14,12 @@
 
 namespace ads {
 
-class AdsImpl;
-
 namespace database {
 namespace table {
 
 class Dayparts : public Table {
  public:
-  explicit Dayparts(
-      AdsImpl* ads);
+  Dayparts();
 
   ~Dayparts() override;
 
@@ -54,8 +51,6 @@ class Dayparts : public Table {
       DBTransaction* transaction);
   void MigrateToV6(
       DBTransaction* transaction);
-
-  AdsImpl* ads_;  // NOT OWNED
 };
 
 }  // namespace table

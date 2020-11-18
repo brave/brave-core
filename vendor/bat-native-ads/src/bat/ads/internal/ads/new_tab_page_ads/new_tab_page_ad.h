@@ -8,26 +8,46 @@
 
 #include <string>
 
+#include "bat/ads/internal/ads/new_tab_page_ads/new_tab_page_ad_observer.h"
 #include "bat/ads/mojom.h"
 
 namespace ads {
 
-class AdsImpl;
+struct NewTabPageAdInfo;
 
-class NewTabPageAd {
+class NewTabPageAd
+    : public NewTabPageAdObserver {
  public:
-  NewTabPageAd(
-      AdsImpl* ads);
+  NewTabPageAd();
 
-  ~NewTabPageAd();
+  ~NewTabPageAd() override;
 
-  void Trigger(
+  void AddObserver(
+      NewTabPageAdObserver* observer);
+  void RemoveObserver(
+      NewTabPageAdObserver* observer);
+
+  void FireEvent(
     const std::string& wallpaper_id,
     const std::string& creative_instance_id,
     const NewTabPageAdEventType event_type);
 
  private:
-  AdsImpl* ads_;  // NOT OWNED
+  base::ObserverList<NewTabPageAdObserver> observers_;
+
+  void NotifyNewTabPageAdEvent(
+      const NewTabPageAdInfo& ad,
+      const NewTabPageAdEventType event_type);
+
+  void NotifyNewTabPageAdViewed(
+      const NewTabPageAdInfo& ad);
+  void NotifyNewTabPageAdClicked(
+      const NewTabPageAdInfo& ad);
+
+  void NotifyNewTabPageAdEventFailed(
+      const std::string& wallpaper_id,
+      const std::string& creative_instance_id,
+      const NewTabPageAdEventType event_type);
 };
 
 }  // namespace ads

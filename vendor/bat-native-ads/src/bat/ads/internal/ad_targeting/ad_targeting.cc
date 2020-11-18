@@ -5,10 +5,9 @@
 
 #include "bat/ads/internal/ad_targeting/ad_targeting.h"
 
-#include "bat/ads/internal/client/client.h"
 #include "bat/ads/internal/ad_targeting/behavioral/purchase_intent_classifier/purchase_intent_classifier.h"
 #include "bat/ads/internal/ad_targeting/contextual/page_classifier/page_classifier.h"
-#include "bat/ads/internal/ads_impl.h"
+#include "bat/ads/internal/client/client.h"
 #include "bat/ads/internal/logging.h"
 
 namespace ads {
@@ -18,41 +17,43 @@ const uint16_t kMaximumPurchaseIntentSegments = 3;
 }  // namespace
 
 AdTargeting::AdTargeting(
-    AdsImpl* ads)
-    : ads_(ads) {
-  DCHECK(ads_);
+    ad_targeting::contextual::PageClassifier* page_classifier,
+    ad_targeting::behavioral::PurchaseIntentClassifier*
+        purchase_intent_classifier)
+    : page_classifier_(page_classifier),
+      purchase_intent_classifier_(purchase_intent_classifier) {
+  DCHECK(page_classifier_);
+  DCHECK(purchase_intent_classifier_);
 }
 
 AdTargeting::~AdTargeting() = default;
 
-CategoryList AdTargeting::GetWinningCategories() const {
-  const CategoryList page_classification_winning_categories =
-      GetPageClassificationWinningCategories();
+CategoryList AdTargeting::GetCategories() const {
+  const CategoryList page_classification_categories =
+      GetPageClassificationCategories();
 
-  const CategoryList purchase_intent_winning_categories =
-      GetPurchaseIntentWinningCategories();
+  const CategoryList purchase_intent_categories = GetPurchaseIntentCategories();
 
-  CategoryList winning_categories = page_classification_winning_categories;
+  CategoryList categories = page_classification_categories;
 
-  winning_categories.insert(winning_categories.end(),
-      purchase_intent_winning_categories.begin(),
-          purchase_intent_winning_categories.end());
+  categories.insert(categories.end(), purchase_intent_categories.begin(),
+      purchase_intent_categories.end());
 
-  return winning_categories;
+  return categories;
 }
 
 ///////////////////////////////////////////////////////////////////////////////
 
-CategoryList AdTargeting::GetPageClassificationWinningCategories() const {
-  return ads_->get_page_classifier()->GetWinningCategories();
+CategoryList AdTargeting::GetPageClassificationCategories() const {
+  return page_classifier_->GetWinningCategories();
 }
 
-CategoryList AdTargeting::GetPurchaseIntentWinningCategories() const {
+CategoryList AdTargeting::GetPurchaseIntentCategories() const {
   const PurchaseIntentSignalSegmentHistoryMap purchase_intent_signal_history =
-      ads_->get_client()->GetPurchaseIntentSignalHistory();
+      Client::Get()->GetPurchaseIntentSignalHistory();
 
   const CategoryList categories =
-      ads_->get_purchase_intent_classifier()->GetWinningCategories(
+      purchase_intent_classifier_->GetWinningCategories(
           purchase_intent_signal_history, kMaximumPurchaseIntentSegments);
 
   return categories;

@@ -5,29 +5,20 @@
 
 #include "bat/ads/internal/frequency_capping/permission_rules/catalog_frequency_cap.h"
 
-#include "bat/ads/internal/ad_server/ad_server.h"
-#include "bat/ads/internal/ads_impl.h"
-#include "bat/ads/internal/bundle/bundle.h"
+#include "bat/ads/internal/ads_client_helper.h"
 #include "bat/ads/internal/catalog/catalog_issuers_info.h"
-#include "bat/ads/internal/confirmations/confirmations.h"
+#include "bat/ads/internal/catalog/catalog_util.h"
+#include "bat/ads/internal/confirmations/confirmations_state.h"
 #include "bat/ads/internal/frequency_capping/frequency_capping_util.h"
 
 namespace ads {
 
-CatalogFrequencyCap::CatalogFrequencyCap(
-    AdsImpl* ads)
-    : ads_(ads) {
-  DCHECK(ads_);
-}
+CatalogFrequencyCap::CatalogFrequencyCap() = default;
 
 CatalogFrequencyCap::~CatalogFrequencyCap() = default;
 
 bool CatalogFrequencyCap::ShouldAllow() {
-  if (!DoesRespectCap()) {
-    return false;
-  }
-
-  return true;
+  return DoesRespectCap();
 }
 
 std::string CatalogFrequencyCap::get_last_message() const {
@@ -35,21 +26,20 @@ std::string CatalogFrequencyCap::get_last_message() const {
 }
 
 bool CatalogFrequencyCap::DoesRespectCap() {
+  if (!DoesCatalogExist()) {
+    last_message_ = "Catalog does not exist";
+    return false;
+  }
+
+  if (HasCatalogExpired()) {
+    last_message_ = "Catalog has expired";
+    return false;
+  }
+
   const CatalogIssuersInfo catalog_issuers =
-      ads_->get_confirmations()->GetCatalogIssuers();
+      ConfirmationsState::Get()->get_catalog_issuers();
   if (!catalog_issuers.IsValid()) {
-    last_message_ = "Catalog issuers not initialized";
-    return false;
-  }
-
-  if (!ads_->get_bundle()->Exists()) {
-    last_message_ = "Bundle does not exist";
-    return false;
-  }
-
-  if (ads_->get_bundle()->IsOlderThanOneDay()) {
-    last_message_ = "Bundle is out of date";
-    ads_->get_ad_server()->MaybeFetch();
+    last_message_ = "Invalid catalog issuers";
     return false;
   }
 

@@ -12,36 +12,27 @@
 
 namespace ads {
 
-class AdsImpl;
 class ConfirmationType;
 struct AdNotificationInfo;
 struct NewTabPageAdInfo;
 
-class AdsHistory {
- public:
-  AdsHistory(
-      AdsImpl* ads);
+namespace history {
 
-  ~AdsHistory();
+AdsHistoryInfo Get(
+    const AdsHistoryInfo::FilterType filter_type,
+    const AdsHistoryInfo::SortType sort_type,
+    const uint64_t from_timestamp,
+    const uint64_t to_timestamp);
 
-  AdsHistoryInfo Get(
-      const AdsHistoryInfo::FilterType filter_type,
-      const AdsHistoryInfo::SortType sort_type,
-      const uint64_t from_timestamp,
-      const uint64_t to_timestamp) const;
+void AddAdNotification(
+    const AdNotificationInfo& ad,
+    const ConfirmationType& confirmation_type);
 
-  void AddAdNotification(
-      const AdNotificationInfo& ad,
-      const ConfirmationType& confirmation_type);
+void AddNewTabPageAd(
+    const NewTabPageAdInfo& ad,
+    const ConfirmationType& confirmation_type);
 
-  void AddNewTabPageAd(
-      const NewTabPageAdInfo& ad,
-      const ConfirmationType& confirmation_type);
-
- private:
-  AdsImpl* ads_;  // NOT OWNED
-};
-
+}  // namespace history
 }  // namespace ads
 
 #endif  // BAT_ADS_INTERNAL_ADS_HISTORY_ADS_HISTORY_H_

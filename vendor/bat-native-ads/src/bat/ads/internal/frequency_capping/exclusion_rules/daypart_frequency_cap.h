@@ -8,19 +8,16 @@
 
 #include <string>
 
-#include "bat/ads/internal/ads_impl.h"
 #include "bat/ads/internal/bundle/creative_ad_info.h"
 #include "bat/ads/internal/frequency_capping/exclusion_rules/exclusion_rule.h"
 
 namespace ads {
 
-class AdsImpl;
 struct CreativeAdInfo;
 
 class DaypartFrequencyCap : public ExclusionRule<CreativeAdInfo> {
  public:
-  DaypartFrequencyCap(
-      AdsImpl* ads);
+  DaypartFrequencyCap();
 
   ~DaypartFrequencyCap() override;
 
@@ -35,8 +32,6 @@ class DaypartFrequencyCap : public ExclusionRule<CreativeAdInfo> {
   std::string get_last_message() const override;
 
  private:
-  AdsImpl* ads_;  // NOT OWNED
-
   std::string last_message_;
 
   bool DoesRespectCap(

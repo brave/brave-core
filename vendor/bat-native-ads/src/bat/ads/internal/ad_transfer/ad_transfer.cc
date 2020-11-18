@@ -5,29 +5,35 @@
 
 #include "bat/ads/internal/ad_transfer/ad_transfer.h"
 
-#include <stdint.h>
-
+#include "base/time/time.h"
+#include "bat/ads/confirmation_type.h"
 #include "bat/ads/internal/ad_events/ad_events.h"
-#include "bat/ads/internal/ads_impl.h"
-#include "bat/ads/internal/confirmations/confirmations.h"
 #include "bat/ads/internal/logging.h"
-#include "bat/ads/internal/tabs/tabs.h"
+#include "bat/ads/internal/tab_manager/tab_info.h"
+#include "bat/ads/internal/tab_manager/tab_manager.h"
+#include "bat/ads/internal/time_formatting_util.h"
 #include "bat/ads/internal/url_util.h"
 #include "bat/ads/result.h"
 
 namespace ads {
 
 namespace {
-const uint64_t kTransferAdAfterSeconds = 10;
+const int64_t kTransferAdAfterSeconds = 10;
 }  // namespace
 
-AdTransfer::AdTransfer(
-    AdsImpl* ads)
-    : ads_(ads) {
-  DCHECK(ads_);
-}
+AdTransfer::AdTransfer() = default;
 
 AdTransfer::~AdTransfer() = default;
+
+void AdTransfer::AddObserver(
+    AdTransferObserver* observer) {
+  observers_.AddObserver(observer);
+}
+
+void AdTransfer::RemoveObserver(
+    AdTransferObserver* observer) {
+  observers_.RemoveObserver(observer);
+}
 
 void AdTransfer::MaybeTransferAd(
     const int32_t tab_id,
@@ -36,12 +42,12 @@ void AdTransfer::MaybeTransferAd(
     return;
   }
 
-  if (!UrlHasScheme(url)) {
+  if (!DoesUrlHaveSchemeHTTPOrHTTPS(url)) {
     BLOG(1, "Visited URL is not supported for ad transfer");
     return;
   }
 
-  if (!SameSite(url, last_clicked_ad_.target_url)) {
+  if (!SameDomainOrHost(url, last_clicked_ad_.target_url)) {
     BLOG(1, "Visited URL does not match the last clicked ad");
     return;
   }
@@ -104,21 +110,34 @@ void AdTransfer::TransferAd(
 void AdTransfer::OnTransferAd(
     const int32_t tab_id,
     const std::string& url) {
-  const AdInfo transferred_ad = last_clicked_ad_;
+  const AdInfo ad = last_clicked_ad_;
 
   clear_last_clicked_ad();
 
   transferring_ad_tab_id_ = 0;
 
-  if (!ads_->get_tabs()->IsVisible(tab_id)) {
+  if (!TabManager::Get()->IsVisible(tab_id)) {
     BLOG(1, "Failed to transfer ad for " << url);
+    NotifyAdTransferFailed(ad);
+    return;
+  }
+
+  const base::Optional<TabInfo> tab = TabManager::Get()->GetForId(tab_id);
+  if (!tab) {
+    BLOG(1, "Failed to transfer ad for " << url);
+    NotifyAdTransferFailed(ad);
+    return;
+  }
+
+  if (!SameDomainOrHost(tab->url, url)) {
+    BLOG(1, "Failed to transfer ad for " << url);
+    NotifyAdTransferFailed(ad);
     return;
   }
 
   BLOG(1, "Transferred ad for " << url);
 
-  AdEvents ad_events(ads_);
-  ad_events.Log(transferred_ad, ConfirmationType::kTransferred,
+  LogAdEvent(ad, ConfirmationType::kTransferred,
       [](const Result result) {
     if (result != Result::SUCCESS) {
       BLOG(1, "Failed to log transferred ad event");
@@ -128,8 +147,21 @@ void AdTransfer::OnTransferAd(
     BLOG(6, "Successfully logged transferred ad event");
   });
 
-  ads_->get_confirmations()->ConfirmAd(transferred_ad.creative_instance_id,
-      ConfirmationType::kTransferred);
+  NotifyAdTransfer(ad);
+}
+
+void AdTransfer::NotifyAdTransfer(
+    const AdInfo& ad) {
+  for (AdTransferObserver& observer : observers_) {
+    observer.OnAdTransfer(ad);
+  }
+}
+
+void AdTransfer::NotifyAdTransferFailed(
+    const AdInfo& ad) {
+  for (AdTransferObserver& observer : observers_) {
+    observer.OnAdTransferFailed(ad);
+  }
 }
 
 }  // namespace ads

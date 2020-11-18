@@ -9,28 +9,22 @@
 #include <utility>
 
 #include "base/strings/stringprintf.h"
-#include "bat/ads/internal/ads_impl.h"
+#include "base/time/time.h"
+#include "bat/ads/internal/ads_client_helper.h"
 #include "bat/ads/internal/database/database_statement_util.h"
 #include "bat/ads/internal/database/database_table_util.h"
 #include "bat/ads/internal/database/database_util.h"
 #include "bat/ads/internal/logging.h"
-#include "bat/ads/internal/time_util.h"
 
 namespace ads {
 namespace database {
 namespace table {
 
-using std::placeholders::_1;
-
 namespace {
 const char kTableName[] = "ad_events";
 }  // namespace
 
-AdEvents::AdEvents(
-    AdsImpl* ads)
-    : ads_(ads) {
-  DCHECK(ads_);
-}
+AdEvents::AdEvents() = default;
 
 AdEvents::~AdEvents() = default;
 
@@ -43,8 +37,8 @@ void AdEvents::LogEvent(
     ad_event
   });
 
-  ads_->get_ads_client()->RunDBTransaction(std::move(transaction),
-      std::bind(&OnResultCallback, _1, callback));
+  AdsClientHelper::Get()->RunDBTransaction(std::move(transaction),
+      std::bind(&OnResultCallback, std::placeholders::_1, callback));
 }
 
 void AdEvents::GetIf(
@@ -105,8 +99,8 @@ void AdEvents::PurgeExpired(
 
   transaction->commands.push_back(std::move(command));
 
-  ads_->get_ads_client()->RunDBTransaction(std::move(transaction),
-      std::bind(&OnResultCallback, _1, callback));
+  AdsClientHelper::Get()->RunDBTransaction(std::move(transaction),
+      std::bind(&OnResultCallback, std::placeholders::_1, callback));
 }
 
 std::string AdEvents::get_table_name() const {
@@ -152,8 +146,9 @@ void AdEvents::RunTransaction(
   DBTransactionPtr transaction = DBTransaction::New();
   transaction->commands.push_back(std::move(command));
 
-  ads_->get_ads_client()->RunDBTransaction(std::move(transaction),
-      std::bind(&AdEvents::OnGetAdEvents, this, _1, callback));
+  AdsClientHelper::Get()->RunDBTransaction(std::move(transaction),
+      std::bind(&AdEvents::OnGetAdEvents, this, std::placeholders::_1,
+          callback));
 }
 
 void AdEvents::InsertOrUpdate(

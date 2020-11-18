@@ -9,7 +9,7 @@
 
 #include "base/strings/string_util.h"
 #include "base/strings/stringprintf.h"
-#include "bat/ads/internal/ads_impl.h"
+#include "bat/ads/internal/ads_client_helper.h"
 #include "bat/ads/internal/bundle/creative_ad_info.h"
 #include "bat/ads/internal/database/database_statement_util.h"
 #include "bat/ads/internal/database/database_table_util.h"
@@ -21,17 +21,11 @@ namespace ads {
 namespace database {
 namespace table {
 
-using std::placeholders::_1;
-
 namespace {
 const char kTableName[] = "dayparts";
 }  // namespace
 
-Dayparts::Dayparts(
-    AdsImpl* ads)
-    : ads_(ads) {
-  DCHECK(ads_);
-}
+Dayparts::Dayparts() = default;
 
 Dayparts::~Dayparts() = default;
 
@@ -58,8 +52,8 @@ void Dayparts::Delete(
 
   util::Delete(transaction.get(), get_table_name());
 
-  ads_->get_ads_client()->RunDBTransaction(std::move(transaction),
-      std::bind(&OnResultCallback, _1, callback));
+  AdsClientHelper::Get()->RunDBTransaction(std::move(transaction),
+      std::bind(&OnResultCallback, std::placeholders::_1, callback));
 }
 
 std::string Dayparts::get_table_name() const {

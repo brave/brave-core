@@ -30,6 +30,7 @@ struct ADS_EXPORT StatementInfo {
   uint64_t next_payment_date_in_seconds = 0;
   uint64_t ad_notifications_received_this_month = 0;
   TransactionList transactions;
+  TransactionList uncleared_transactions;
 
  private:
   double GetEstimatedPendingRewardsFromDictionary(
@@ -43,6 +44,10 @@ struct ADS_EXPORT StatementInfo {
 
   base::Value GetTransactionsAsList() const;
   TransactionList GetTransactionsFromDictionary(
+      base::DictionaryValue* dictionary) const;
+
+  base::Value GetUnclearedTransactionsAsList() const;
+  TransactionList GetUnclearedTransactionsFromDictionary(
       base::DictionaryValue* dictionary) const;
 };
 

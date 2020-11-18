@@ -10,24 +10,13 @@
 #include <vector>
 
 namespace ads {
+namespace p2a {
 
-class AdsImpl;
+void RecordEvent(
+    const std::string& name,
+    const std::vector<std::string>& value);
 
-class P2A {
- public:
-  P2A(
-      AdsImpl* ads);
-
-  ~P2A();
-
-  void RecordEvent(
-      const std::string& name,
-      const std::vector<std::string>& value);
-
- private:
-  AdsImpl* ads_;  // NOT OWNED
-};
-
+}  // namespace p2a
 }  // namespace ads
 
 #endif  // BAT_ADS_INTERNAL_P2A_P2A_H_

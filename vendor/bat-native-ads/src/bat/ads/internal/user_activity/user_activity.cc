@@ -5,38 +5,56 @@
 
 #include "bat/ads/internal/user_activity/user_activity.h"
 
-#include "bat/ads/internal/logging.h"
-#include "bat/ads/internal/time_util.h"
+#include "base/time/time.h"
 
 namespace ads {
 
 namespace {
-const size_t kMaximumUserActivityEntries = 100;
+
+UserActivity* g_user_activity = nullptr;
+
+const size_t kMaximumUserActivityEventHistoryEntries = 100;
+
+}  // namespace
+
+UserActivity::UserActivity() {
+  DCHECK_EQ(g_user_activity, nullptr);
+  g_user_activity = this;
 }
 
-UserActivity::UserActivity() = default;
+UserActivity::~UserActivity() {
+  DCHECK(g_user_activity);
+  g_user_activity = nullptr;
+}
 
-UserActivity::~UserActivity() = default;
+// static
+UserActivity* UserActivity::Get() {
+  DCHECK(g_user_activity);
+  return g_user_activity;
+}
 
-void UserActivity::RecordActivityForType(
-    const UserActivityType type) {
-  if (history_.find(type) == history_.end()) {
-    history_.insert({type, {}});
+// static
+bool UserActivity::HasInstance() {
+  return g_user_activity;
+}
+
+void UserActivity::RecordEvent(
+    const UserActivityEventType event_type) {
+  if (history_.find(event_type) == history_.end()) {
+    history_.insert({event_type, {}});
   }
 
-  const uint64_t timestamp =
-      static_cast<uint64_t>(base::Time::Now().ToDoubleT());
-  history_.at(type).push_front(timestamp);
+  const int64_t timestamp = static_cast<int64_t>(base::Time::Now().ToDoubleT());
+  history_.at(event_type).push_front(timestamp);
 
-  if (history_.at(type).size() > kMaximumUserActivityEntries) {
-    history_.at(type).pop_back();
+  if (history_.at(event_type).size() >
+      kMaximumUserActivityEventHistoryEntries) {
+    history_.at(event_type).pop_back();
   }
 }
 
-const UserActivityHistoryMap& UserActivity::get_history() const {
+const UserActivityEventHistoryMap& UserActivity::get_history() const {
   return history_;
 }
-
-///////////////////////////////////////////////////////////////////////////////
 
 }  // namespace ads

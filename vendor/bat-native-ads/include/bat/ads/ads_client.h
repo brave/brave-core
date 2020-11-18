@@ -30,77 +30,77 @@ class ADS_EXPORT AdsClient {
  public:
   virtual ~AdsClient() = default;
 
-  // Should return |true| if there is an available network connection;
-  // otherwise, should return |false|
+  // Return true if there is an available network connection otherwise return
+  // false
   virtual bool IsNetworkConnectionAvailable() const = 0;
 
-  // Should return |true| if the browser is active in the foreground; otherwise,
-  // should return |false|
+  // Return true if the browser is active in the foreground otherwise return
+  // false
   virtual bool IsForeground() const = 0;
 
-  // Should return true if background notifications are allowed
+  // Return true if notifications should be displayed otherwise return false
+  virtual bool ShouldShowNotifications() = 0;
+
+  // Return true if notifications can be displayed while the browser is inactive
+  // otherwise return false
   virtual bool CanShowBackgroundNotifications() const = 0;
 
-  // Should show a notification
+  // Show notification
   virtual void ShowNotification(
       const AdNotificationInfo& ad_notification) = 0;
 
-  // Should return |true| if notifications can be displayed; otherwise should
-  // return |false|
-  virtual bool ShouldShowNotifications() = 0;
-
-  // Should close a notification
+  // Close notification
   virtual void CloseNotification(
       const std::string& uuid) = 0;
 
-  // Should fetch and return data. Loading should be performed asynchronously,
-  // so that the app remains responsive and should handle incoming data or
-  // errors as they arrive. The callback takes 1 argument — |URLResponse| should
-  // contain the url, status code, HTTP body and HTTP headers
+  // Fetch and return data. Loading should be performed asynchronously, so that
+  // the app remains responsive and should handle incoming data or errors as
+  // they arrive. The callback takes 1 argument — |URLResponse| should contain
+  // the url, status code, HTTP body and HTTP headers
   virtual void UrlRequest(
       UrlRequestPtr url_request,
       UrlRequestCallback callback) = 0;
 
-  // Should save a value to persistent storage. The callback takes one argument
-  // — |Result| should be set to |SUCCESS| if successful; otherwise, should be
-  // set to |FAILED|
+  // Save a value to persistent storage. The callback takes one argument —
+  // |Result| should be set to |SUCCESS| if successful otherwise should be set
+  // to |FAILED|
   virtual void Save(
       const std::string& name,
       const std::string& value,
       ResultCallback callback) = 0;
 
-  // Should load user model for id from persistent storage. The callback takes 2
-  // arguments — |Result| should be set to |SUCCESS| if successful; otherwise,
+  // Load a value from persistent storage. The callback takes 2 arguments —
+  // |Result| should be set to |SUCCESS| if successful otherwise should be set
+  // to |FAILED|. |value| should contain the persisted value
+  virtual void Load(
+      const std::string& name, LoadCallback callback) = 0;
+
+  // Load user model for id from persistent storage. The callback takes 2
+  // arguments — |Result| should be set to |SUCCESS| if successful otherwise
   // should be set to |FAILED|. |value| should contain the user model
   virtual void LoadUserModelForId(
       const std::string& name, LoadCallback callback) = 0;
 
-  // Should record a P2A event of the given type
-  virtual void RecordP2AEvent(
-      const std::string& name,
-      const ads::P2AEventType type,
-      const std::string& value) = 0;
-
-  // Should load a value from persistent storage. The callback takes 2 arguments
-  // — |Result| should be set to |SUCCESS| if successful; otherwise, should be
-  // set to |FAILED|. |value| should contain the persisted value
-  virtual void Load(
-      const std::string& name, LoadCallback callback) = 0;
-
-  // Should load a resource from persistent storage
+  // Should return the resource for given |id|
   virtual std::string LoadResourceForId(
       const std::string& id) = 0;
 
-  // Should run a database transaction. The callback takes one argument -
+  // Run database transaction. The callback takes one argument -
   // |DBCommandResponsePtr|
   virtual void RunDBTransaction(
       DBTransactionPtr transaction,
       RunDBTransactionCallback callback) = 0;
 
-  // Should be called when ad rewards has changed
+  // Should be called when ad rewards have changed, i.e. to refresh the UI
   virtual void OnAdRewardsChanged() = 0;
 
-  // Verbose level logging
+  // Record P2A event
+  virtual void RecordP2AEvent(
+      const std::string& name,
+      const ads::P2AEventType type,
+      const std::string& value) = 0;
+
+  // Log diagnostic information
   virtual void Log(
       const char* file,
       const int line,

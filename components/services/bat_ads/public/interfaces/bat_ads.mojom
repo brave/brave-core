@@ -24,9 +24,9 @@ interface BatAdsClient {
   [Sync]
   ShouldShowNotifications() => (bool should_show);
   [Sync]
-  LoadResourceForId(string id) => (string value);
-  [Sync]
   CanShowBackgroundNotifications() => (bool can_show);
+  [Sync]
+  LoadResourceForId(string id) => (string value);
   [Sync]
   GetBooleanPref(string path) => (bool value);
   [Sync]
@@ -44,11 +44,11 @@ interface BatAdsClient {
   CloseNotification(string uuid);
   UrlRequest(ads.mojom.BraveAdsUrlRequest request) => (ads.mojom.BraveAdsUrlResponse response);
   Save(string name, string value) => (int32 result);
-  LoadUserModelForId(string id) => (int32 result, string value);
-  RecordP2AEvent(string name, ads.mojom.BraveAdsP2AEventType type, string value);
   Load(string name) => (int32 result, string value);
+  LoadUserModelForId(string id) => (int32 result, string value);
   RunDBTransaction(ads_database.mojom.DBTransaction transaction) => (ads_database.mojom.DBCommandResponse response);
   OnAdRewardsChanged();
+  RecordP2AEvent(string name, ads.mojom.BraveAdsP2AEventType type, string value);
   Log(string file, int32 line, int32 verbose_level, string message);
   SetBooleanPref(string path, bool value);
   SetIntegerPref(string path, int32 value);

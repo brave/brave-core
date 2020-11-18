@@ -51,7 +51,7 @@ class BatAdsImpl :
       const int32_t tab_id,
       const std::string& original_url,
       const std::string& url,
-      const std::string& html) override;
+      const std::string& content) override;
 
   void OnUnIdle() override;
   void OnIdle() override;

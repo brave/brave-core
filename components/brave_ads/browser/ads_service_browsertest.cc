@@ -56,20 +56,20 @@ struct BraveAdsUpgradePathParamInfo {
   // at "src/brave/test/data/rewards-data/migration"
   std::string preferences;
 
-  // |supported_locale| should be set to |true| if the locale should be set to a
-  // supported locale; otherwise, should be set to |false|
+  // |supported_locale| should be set to true if the locale should be set to a
+  // supported locale; otherwise, should be set to false
   bool supported_locale;
 
-  // |newly_supported_locale| should be set to |true| if the locale should be
-  // set to a newly supported locale; otherwise, should be set to |false|
+  // |newly_supported_locale| should be set to true if the locale should be set
+  // to a newly supported locale; otherwise, should be set to false
   bool newly_supported_locale;
 
-  // |rewards_enabled| should be set to |true| if Brave rewards should be
-  // enabled after upgrade; otherwise, should be set to |false|
+  // |rewards_enabled| should be set to true if Brave rewards should be enabled
+  // after upgrade; otherwise, should be set to false
   bool rewards_enabled;
 
-  // |ads_enabled| should be set to |true| if Brave ads should be enabled after
-  // upgrade; otherwise, should be set to |false|
+  // |ads_enabled| should be set to true if Brave ads should be enabled after
+  // upgrade; otherwise, should be set to false
   bool ads_enabled;
 };
 

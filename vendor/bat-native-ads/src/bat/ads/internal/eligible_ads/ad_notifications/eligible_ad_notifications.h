@@ -11,14 +11,18 @@
 
 namespace ads {
 
-class AdsImpl;
+namespace ad_targeting {
+namespace geographic {
+class SubdivisionTargeting;
+}  // namespace geographic
+}  // namespace ad_targeting
 
 namespace ad_notifications {
 
 class EligibleAds {
  public:
   EligibleAds(
-      AdsImpl* ads);
+      ad_targeting::geographic::SubdivisionTargeting* subdivision_targeting);
 
   ~EligibleAds();
 
@@ -28,8 +32,10 @@ class EligibleAds {
       const AdEventList& ad_events);
 
  private:
+  ad_targeting::geographic::SubdivisionTargeting* subdivision_targeting_;
+
   CreativeAdNotificationList RemoveSeenAdvertisersAndRoundRobinIfNeeded(
-    const CreativeAdNotificationList& ads) const;
+      const CreativeAdNotificationList& ads) const;
 
   CreativeAdNotificationList RemoveSeenAdsAndRoundRobinIfNeeded(
       const CreativeAdNotificationList& ads) const;
@@ -38,8 +44,6 @@ class EligibleAds {
       const CreativeAdNotificationList& ads,
       const CreativeAdInfo& last_delivered_ad,
       const AdEventList& ad_events) const;
-
-  AdsImpl* ads_;  // NOT OWNED
 };
 
 }  // namespace ad_notifications

@@ -16,22 +16,24 @@
 
 namespace ads {
 
-class AdsImpl;
 struct AdNotificationInfo;
 
 class AdNotifications {
  public:
-  AdNotifications(
-      AdsImpl* ads);
+  AdNotifications();
 
   ~AdNotifications();
+
+  static AdNotifications* Get();
+
+  static bool HasInstance();
 
   void Initialize(
       InitializeCallback callback);
 
   bool Get(
       const std::string& uuid,
-      AdNotificationInfo* info) const;
+      AdNotificationInfo* ad_notification) const;
 
   void PushBack(
       const AdNotificationInfo& info);
@@ -55,7 +57,7 @@ class AdNotifications {
 #endif
 
  private:
-  bool is_initialized_;
+  bool is_initialized_ = false;
 
   InitializeCallback callback_;
 
@@ -66,7 +68,7 @@ class AdNotifications {
 
   bool GetNotificationFromDictionary(
       base::DictionaryValue* dictionary,
-      AdNotificationInfo* info) const;
+      AdNotificationInfo* ad_notification) const;
 
   bool GetUuidFromDictionary(
       base::DictionaryValue* dictionary,
@@ -117,8 +119,6 @@ class AdNotifications {
 
   std::string ToJson();
   base::Value GetAsList();
-
-  AdsImpl* ads_;  // NOT OWNED
 };
 
 }  // namespace ads

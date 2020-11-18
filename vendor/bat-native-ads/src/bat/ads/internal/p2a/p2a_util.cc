@@ -8,6 +8,7 @@
 #include "bat/ads/internal/ad_targeting/ad_targeting_util.h"
 
 namespace ads {
+namespace p2a {
 
 namespace {
 const char kOpportunityQuestionPrefix[] =
@@ -58,4 +59,5 @@ std::vector<std::string> CreateAdImpressionQuestionList(
   return questions;
 }
 
+}  // namespace p2a
 }  // namespace ads

@@ -27,15 +27,12 @@ namespace ads {
 using GetCreativeAdNotificationsCallback = std::function<void(const Result,
     const std::vector<std::string>&, const CreativeAdNotificationList&)>;
 
-class AdsImpl;
-
 namespace database {
 namespace table {
 
 class CreativeAdNotifications : public Table {
  public:
-  explicit CreativeAdNotifications(
-      AdsImpl* ads);
+  CreativeAdNotifications();
 
   ~CreativeAdNotifications() override;
 
@@ -101,8 +98,6 @@ class CreativeAdNotifications : public Table {
       DBTransaction* transaction);
 
   int batch_size_;
-
-  AdsImpl* ads_;  // NOT OWNED
 
   std::unique_ptr<Campaigns> campaigns_database_table_;
   std::unique_ptr<Categories> categories_database_table_;

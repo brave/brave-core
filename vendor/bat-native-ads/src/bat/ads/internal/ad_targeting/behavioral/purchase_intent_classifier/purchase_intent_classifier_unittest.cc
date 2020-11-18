@@ -5,16 +5,8 @@
 
 #include "bat/ads/internal/ad_targeting/behavioral/purchase_intent_classifier/purchase_intent_classifier.h"
 
-#include <stdint.h>
-
-#include <memory>
-#include <string>
-#include <vector>
-
-#include "testing/gtest/include/gtest/gtest.h"
-#include "bat/ads/internal/ads_client_mock.h"
-#include "bat/ads/internal/ads_impl.h"
-#include "bat/ads/internal/time_util.h"
+#include "bat/ads/internal/unittest_base.h"
+#include "bat/ads/internal/unittest_util.h"
 
 // npm run test -- brave_unit_tests --filter=BatAds*
 
@@ -22,92 +14,33 @@ namespace ads {
 namespace ad_targeting {
 namespace behavioral {
 
-class BatAdsPurchaseIntentClassifierTest : public ::testing::Test {
+class BatAdsPurchaseIntentClassifierTest : public UnitTestBase {
  protected:
-  BatAdsPurchaseIntentClassifierTest() :
-      ads_client_mock_(std::make_unique<AdsClientMock>()),
-      ads_(std::make_unique<AdsImpl>(ads_client_mock_.get())),
-      purchase_intent_classifier_(std::make_unique<
-          PurchaseIntentClassifier>(ads_.get())) {
-    // You can do set-up work for each test here
-  }
+  BatAdsPurchaseIntentClassifierTest() = default;
 
-  ~BatAdsPurchaseIntentClassifierTest() override {
-    // You can do clean-up work that doesn't throw exceptions here
-  }
-
-  // If the constructor and destructor are not enough for setting up and
-  // cleaning up each test, you can use the following methods
-
-  void SetUp() override {
-    // Code here will be called immediately after the constructor (right before
-    // each test)
-
-    const char json[] = R"(
-        {
-          "locale": "gb",
-          "version": 1,
-          "timestamp": "2020-05-15 00:00:00",
-          "parameters": {
-            "signal_level": 1,
-            "classification_threshold": 10,
-            "signal_decay_time_window_in_seconds": 100
-          },
-          "segments": [
-            "segment 1", "segment 2", "segment 3"
-          ],
-          "segment_keywords": {
-            "segment keyword 1": [0],
-            "segment keyword 2": [0, 1]
-          },
-          "funnel_keywords": {
-            "funnel keyword 1": 2,
-            "funnel keyword 2": 3
-          },
-          "funnel_sites": [
-            {
-              "sites": [
-                "https://brave.com", "https://crave.com"
-              ],
-              "segments": [1, 2]
-            },
-            {
-              "sites": [
-                "https://frexample.org", "https://example.org"
-              ],
-              "segments": [0]
-            }
-          ]
-        })";
-
-    purchase_intent_classifier_->Initialize(json);
-  }
-
-  void TearDown() override {
-    // Code here will be called immediately after each test (right before the
-    // destructor)
-  }
-
-  // Objects declared here can be used by all tests in the test case
-
-  std::unique_ptr<AdsClientMock> ads_client_mock_;
-  std::unique_ptr<AdsImpl> ads_;
-  std::unique_ptr<PurchaseIntentClassifier> purchase_intent_classifier_;
+  ~BatAdsPurchaseIntentClassifierTest() override = default;
 };
 
 TEST_F(BatAdsPurchaseIntentClassifierTest,
     InitializeClassifier) {
-  EXPECT_TRUE(purchase_intent_classifier_->IsInitialized());
+  PurchaseIntentClassifier purchase_intent_classifier;
+  purchase_intent_classifier.LoadUserModelForLocale("en-US");
+
+  EXPECT_TRUE(purchase_intent_classifier.IsInitialized());
 }
 
 TEST_F(BatAdsPurchaseIntentClassifierTest,
     ExtractSignalAndMatchFunnelSite) {
   // Arrange
+  PurchaseIntentClassifier purchase_intent_classifier;
+  purchase_intent_classifier.LoadUserModelForLocale("en-US");
+
   const std::string url = "https://www.brave.com/test?foo=bar";
+  const std::string last_url = "https://www.foobar.com";
 
   // Act
   const PurchaseIntentSignalInfo info =
-      purchase_intent_classifier_->MaybeExtractIntentSignal(url);
+      purchase_intent_classifier.MaybeExtractIntentSignal(url, last_url);
 
   // Assert
   const PurchaseIntentSegmentList expected_segments({
@@ -122,11 +55,15 @@ TEST_F(BatAdsPurchaseIntentClassifierTest,
 TEST_F(BatAdsPurchaseIntentClassifierTest,
     ExtractSignalAndMatchSegmentKeyword) {
   // Arrange
+  PurchaseIntentClassifier purchase_intent_classifier;
+  purchase_intent_classifier.LoadUserModelForLocale("en-US");
+
   const std::string url = "https://duckduckgo.com/?q=segment+keyword+1&foo=bar";
+  const std::string last_url = "https://www.foobar.com";
 
   // Act
   const PurchaseIntentSignalInfo info =
-      purchase_intent_classifier_->MaybeExtractIntentSignal(url);
+      purchase_intent_classifier.MaybeExtractIntentSignal(url, last_url);
 
   // Assert
   const PurchaseIntentSegmentList expected_segments({
@@ -140,11 +77,15 @@ TEST_F(BatAdsPurchaseIntentClassifierTest,
 TEST_F(BatAdsPurchaseIntentClassifierTest,
     ExtractSignalAndMatchFunnelKeyword) {
   // Arrange
+  PurchaseIntentClassifier purchase_intent_classifier;
+  purchase_intent_classifier.LoadUserModelForLocale("en-US");
+
   const std::string url = "https://duckduckgo.com/?q=segment+funnel+keyword+2";
+  const std::string last_url = "https://www.foobar.com";
 
   // Act
   const PurchaseIntentSignalInfo info =
-      purchase_intent_classifier_->MaybeExtractIntentSignal(url);
+      purchase_intent_classifier.MaybeExtractIntentSignal(url, last_url);
 
   // Assert
   const PurchaseIntentSegmentList expected_segments({
