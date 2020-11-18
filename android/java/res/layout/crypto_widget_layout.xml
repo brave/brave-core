@@ -63,7 +63,7 @@
             android:layout_marginStart="24dp"
             android:layout_marginEnd="24dp"
             android:layout_marginTop="16dp"
-            android:layout_marginBottom="24dp"
+            android:layout_marginBottom="16dp"
             android:gravity="center_vertical"
             android:visibility="gone"
             android:orientation="horizontal">
@@ -73,7 +73,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:text="@string/binance_disconnect_text"
-                android:textSize="14sp"
+                android:textSize="12sp"
                 android:textColor="@android:color/white"
                 android:layout_marginEnd="8dp" />
 
