@@ -1438,7 +1438,7 @@ until they verify, or until 90 days have passed.
         You converted <ph name="FROM_VALUE">%1$s</ph> <ph name="FROM_CURRENCY">%2$s</ph> to <ph name="TO_VALUE">%3$s</ph> <ph name="TO_CURRENCY">%4$s</ph>!
       </message>
       <message name="IDS_PLEASE_CHECK_THE_CONNECTION" desc="Connection error string">
-        Please check the connection
+        Please check your network connection.
       </message>
     </messages>
   </release>
