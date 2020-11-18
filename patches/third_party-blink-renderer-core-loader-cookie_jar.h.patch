@@ -1,0 +1,12 @@
+diff --git a/third_party/blink/renderer/core/loader/cookie_jar.h b/third_party/blink/renderer/core/loader/cookie_jar.h
+index 99729ec8ac3059752a9345bf04e085e787b4d795..5a6d0b0c1d7973db731bbc55e14cdde850d453e7 100644
+--- a/third_party/blink/renderer/core/loader/cookie_jar.h
++++ b/third_party/blink/renderer/core/loader/cookie_jar.h
+@@ -23,6 +23,7 @@ class CookieJar : public GarbageCollected<CookieJar> {
+   void SetCookie(const String& value);
+   String Cookies();
+   bool CookiesEnabled();
++  BRAVE_COOKIE_JAR_H
+ 
+  private:
+   void RequestRestrictedCookieManagerIfNeeded();
