@@ -150,64 +150,8 @@ export class RewardsPanel extends React.Component<Props, State> {
       if (!tabs || !tabs.length) {
         return
       }
-      const pollTwitchPage = (tab: chrome.tabs.Tab, tabId: number) => {
-        // use an interval here to monitor when the DOM has finished
-        // generating. clear after the data is present.
-        // Check every second no more than 'limit' times
-        // clear the interval if panel closes
-
-        const markupMatch = 'channel-header'
-        let itr = 0
-        const limit = 5
-        let interval = setInterval(poll, 1000)
-        function poll () {
-          chrome.tabs.executeScript(tabId, {
-            code: 'document.body.outerHTML'
-          }, function (result: string[]) {
-            if (result[0].includes(markupMatch)) {
-              clearInterval(interval)
-              const rewardsPanelActions = require('../background/actions/rewardsPanelActions').default
-              rewardsPanelActions.onTabRetrieved(tab, false, result[0])
-            } else {
-              chrome.storage.local.get(['rewards_panel_open'], function (result) {
-                if (result['rewards_panel_open'] === 'false') {
-                  // panel was closed. give up
-                  clearInterval(interval)
-                }
-              })
-              itr++
-              if (itr === limit) {
-                // give up
-                clearInterval(interval)
-
-                getTabData(tabId)
-              }
-            }
-          })
-        }
-        poll()
-      }
-
-      const pollData = (tab: chrome.tabs.Tab, tabId: number, url: URL) => {
-        if (url && url.href.startsWith('https://www.twitch.tv/')) {
-          chrome.storage.local.get(['rewards_panel_open'], function (result) {
-            if (result['rewards_panel_open'] === 'true') {
-              pollTwitchPage(tab, tabId)
-            }
-          })
-        } else {
-          getTabData(tabId)
-        }
-      }
       let tab = tabs[0]
-      if (tab.url && tab.id) {
-        let url = new URL(tab.url)
-        if (url && url.host.endsWith('.twitch.tv')) {
-          pollData(tab, tab.id, url)
-        } else {
-          getTabData(tab.id)
-        }
-      } else if (tab.id) {
+      if (tab.id) {
         getTabData(tab.id)
       }
     })

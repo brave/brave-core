@@ -22,8 +22,8 @@ bool HandledByGreaselion(const std::string media_type) {
   return false;
 #else
   return media_type == "github" || media_type == "reddit" ||
-         media_type == "twitter" || media_type == "vimeo" ||
-         media_type == "youtube";
+         media_type == "twitch" || media_type == "twitter" ||
+         media_type == "vimeo" || media_type == "youtube";
 #endif
 }
 
