@@ -35,8 +35,8 @@ import org.json.JSONException;
 
 import org.chromium.base.Log;
 import org.chromium.chrome.R;
+import org.chromium.chrome.browser.InternetConnection;
 import org.chromium.chrome.browser.QRCodeShareDialogFragment;
-import org.chromium.chrome.browser.widget.crypto.binance.BinanceAccountBalance;
 import org.chromium.chrome.browser.widget.crypto.binance.BinanceCoinNetworks;
 import org.chromium.chrome.browser.widget.crypto.binance.BinanceNativeWorker;
 import org.chromium.chrome.browser.widget.crypto.binance.BinanceObserver;
@@ -82,26 +82,35 @@ public class BinanceDepositFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        depositCoinListLayout = view.findViewById(R.id.deposit_layout);
-        binanceCoinsProgress = view.findViewById(R.id.binance_coins_progress);
-        searchEditText = view.findViewById(R.id.binance_coin_search);
-        searchEditText.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {}
+        LinearLayout depositMainLayout = view.findViewById(R.id.binance_deposit_main_layout);
+        TextView noConnectionText = view.findViewById(R.id.no_connection_text);
+        if (InternetConnection.checkConnection(getActivity())) {
+            noConnectionText.setVisibility(View.GONE);
+            depositMainLayout.setVisibility(View.VISIBLE);
+            depositCoinListLayout = view.findViewById(R.id.deposit_layout);
+            binanceCoinsProgress = view.findViewById(R.id.binance_coins_progress);
+            searchEditText = view.findViewById(R.id.binance_coin_search);
+            searchEditText.addTextChangedListener(new TextWatcher() {
+                @Override
+                public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {}
 
-            @Override
-            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                if (networksJson != null && !TextUtils.isEmpty(networksJson)) {
-                    showCoinList(networksJson, charSequence.toString().toLowerCase());
+                @Override
+                public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                    if (networksJson != null && !TextUtils.isEmpty(networksJson)) {
+                        showCoinList(networksJson, charSequence.toString().toLowerCase());
+                    }
                 }
-            }
 
-            @Override
-            public void afterTextChanged(Editable editable) {}
-        });
-        depositCoinListLayout.setVisibility(View.GONE);
-        binanceCoinsProgress.setVisibility(View.VISIBLE);
-        mBinanceNativeWorker.getCoinNetworks();
+                @Override
+                public void afterTextChanged(Editable editable) {}
+            });
+            depositCoinListLayout.setVisibility(View.GONE);
+            binanceCoinsProgress.setVisibility(View.VISIBLE);
+            mBinanceNativeWorker.getCoinNetworks();
+        } else {
+            noConnectionText.setVisibility(View.VISIBLE);
+            depositMainLayout.setVisibility(View.GONE);
+        }
     }
 
     private void showCoinList(String networks, String filterQuery) {
