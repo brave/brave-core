@@ -40,7 +40,6 @@ brave_java_sources = [
   "../../brave/android/java/org/chromium/chrome/browser/appmenu/BraveTabbedAppMenuPropertiesDelegate.java",
   "../../brave/android/java/org/chromium/chrome/browser/brave_stats/BraveStatsBottomSheetDialogFragment.java",
   "../../brave/android/java/org/chromium/chrome/browser/brave_stats/BraveStatsUtil.java",
-  "../../brave/android/java/org/chromium/chrome/browser/custom_layout/HeightWrappingViewPager.java",
   "../../brave/android/java/org/chromium/chrome/browser/custom_layout/NonSwipeableViewPager.java",
   "../../brave/android/java/org/chromium/chrome/browser/custom_layout/VerticalViewPager.java",
   "../../brave/android/java/org/chromium/chrome/browser/document/BraveLauncherActivity.java",
