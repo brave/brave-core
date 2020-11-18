@@ -3,12 +3,13 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 import * as webNavigationTypes from '../../constants/webNavigationTypes'
+import { isHttpOrHttps } from '../../helpers/urlUtils'
 import { Actions } from '../../types/actions/index'
 
 export default function dappDetectionReducer (state = {}, action: Actions) {
   switch (action.type) {
     case webNavigationTypes.ON_COMMITTED: {
-      if (chrome.braveWallet && action.isMainFrame) {
+      if (chrome.braveWallet && action.isMainFrame && isHttpOrHttps(action.url)) {
         chrome.braveWallet.shouldCheckForDapps((dappDetection) => {
           if (!dappDetection) {
             return
@@ -18,6 +19,10 @@ export default function dappDetectionReducer (state = {}, action: Actions) {
             allFrames: false,
             runAt: 'document_start',
             frameId: 0
+          }, () => {
+            if (chrome.runtime.lastError) {
+              console.warn('Dapp detection inject via execute script received an error:', chrome.runtime.lastError)
+            }
           })
         })
       }
