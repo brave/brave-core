@@ -7,6 +7,7 @@ package org.chromium.chrome.browser.widget.crypto.binance;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.util.Pair;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -28,6 +29,7 @@ import org.json.JSONException;
 
 import org.chromium.base.Log;
 import org.chromium.chrome.R;
+import org.chromium.chrome.browser.InternetConnection;
 import org.chromium.chrome.browser.widget.crypto.binance.BinanceAccountBalance;
 import org.chromium.chrome.browser.widget.crypto.binance.BinanceCoinNetworks;
 import org.chromium.chrome.browser.widget.crypto.binance.BinanceNativeWorker;
@@ -75,37 +77,48 @@ public class BinanceSummaryFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        mBinanceNativeWorker.getAccountBalances();
-        binanceBalanceText = view.findViewById(R.id.binance_balance_text);
-        binanceBtcText = view.findViewById(R.id.binance_btc_text);
-        binanceUSDBalanceText = view.findViewById(R.id.binance_usd_balance_text);
+        LinearLayout binanceSummaryLayout = view.findViewById(R.id.binance_summary_layout);
+        TextView noConnectionText = view.findViewById(R.id.no_connection_text);
+        if (InternetConnection.isNetworkAvailable(getActivity())) {
+            binanceSummaryLayout.setVisibility(View.VISIBLE);
+            noConnectionText.setVisibility(View.GONE);
+            mBinanceNativeWorker.getAccountBalances();
+            binanceBalanceText = view.findViewById(R.id.binance_balance_text);
+            binanceBtcText = view.findViewById(R.id.binance_btc_text);
+            binanceUSDBalanceText = view.findViewById(R.id.binance_usd_balance_text);
 
-        binanceCoinsProgress = view.findViewById(R.id.binance_coins_progress);
+            binanceCoinsProgress = view.findViewById(R.id.binance_coins_progress);
 
-        summaryLayout = view.findViewById(R.id.summary_layout);
-        binanceCoinsProgress.setVisibility(View.VISIBLE);
-        summaryLayout.setVisibility(View.GONE);
+            summaryLayout = view.findViewById(R.id.summary_layout);
+            binanceCoinsProgress.setVisibility(View.VISIBLE);
+            summaryLayout.setVisibility(View.GONE);
+        } else {
+            noConnectionText.setVisibility(View.VISIBLE);
+            binanceSummaryLayout.setVisibility(View.GONE);
+        }
     }
 
     private BinanceObserver mBinanaceObserver = new BinanceObserver() {
         @Override
         public void OnGetAccountBalances(String jsonBalances, boolean isSuccess) {
-            if (!isSuccess) {
-                BinanceWidgetManager.getInstance().setUserAuthenticationForBinance(isSuccess);
-            } else {
+            if (isSuccess) {
+                if (jsonBalances != null && !TextUtils.isEmpty(jsonBalances)) {
+                    BinanceWidgetManager.getInstance().setBinanceAccountBalance(jsonBalances);
+                }
                 try {
                     BinanceWidgetManager.binanceAccountBalance =
                             new BinanceAccountBalance(jsonBalances);
                     binanceBalanceText.setText(String.format(Locale.getDefault(), "%.6f",
-                        BinanceWidgetManager.binanceAccountBalance.getTotalBTC()));
+                            BinanceWidgetManager.binanceAccountBalance.getTotalBTC()));
                     binanceBtcText.setText(BTC);
-                    binanceUSDBalanceText.setText(
-                            String.format(getActivity().getResources().getString(R.string.usd_balance),
-                                    String.format(Locale.getDefault(), "%.2f",
-                                            BinanceWidgetManager.binanceAccountBalance.getTotalUSD())));
+                    binanceUSDBalanceText.setText(String.format(
+                            getActivity().getResources().getString(R.string.usd_balance),
+                            String.format(Locale.getDefault(), "%.2f",
+                                    BinanceWidgetManager.binanceAccountBalance.getTotalUSD())));
                 } catch (JSONException e) {
                     Log.e("NTP", e.getMessage());
                 }
+
                 mBinanceNativeWorker.getCoinNetworks();
             }
         };
