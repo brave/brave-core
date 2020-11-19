@@ -46,6 +46,7 @@ extension FeedItem {
         static let article = FeedContentType(rawValue: "article")
         static let deals = FeedContentType(rawValue: "product")
         static let sponsor = FeedContentType(rawValue: "brave_offers")
+        static let partner = FeedContentType(rawValue: "brave_partner")
     }
 
     struct Content: Equatable, Decodable {
