@@ -15,6 +15,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Spinner;
@@ -34,6 +35,7 @@ import org.json.JSONException;
 
 import org.chromium.base.Log;
 import org.chromium.chrome.R;
+import org.chromium.chrome.browser.InternetConnection;
 import org.chromium.chrome.browser.util.TabUtils;
 import org.chromium.chrome.browser.widget.crypto.binance.BinanceAccountBalance;
 import org.chromium.chrome.browser.widget.crypto.binance.BinanceCoinNetworks;
@@ -91,76 +93,84 @@ public class BinanceBuyFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        LinearLayout buyMainLayout = view.findViewById(R.id.binance_buy_main_layout);
+        TextView noConnectionText = view.findViewById(R.id.no_connection_text);
+        if (InternetConnection.isNetworkAvailable(getActivity())) {
+            noConnectionText.setVisibility(View.GONE);
+            buyMainLayout.setVisibility(View.VISIBLE);
+            RadioGroup buyRadioGroup = view.findViewById(R.id.buy_radio_group);
+            RadioButton usRadioButton = view.findViewById(R.id.us_radio);
+            usRadioButton.setText(US);
+            RadioButton comRadioButton = view.findViewById(R.id.com_radio);
+            comRadioButton.setText(COM);
+            EditText amountEditText = view.findViewById(R.id.amount_edittext);
 
-        RadioGroup buyRadioGroup = view.findViewById(R.id.buy_radio_group);
-        RadioButton usRadioButton = view.findViewById(R.id.us_radio);
-        usRadioButton.setText(US);
-        RadioButton comRadioButton = view.findViewById(R.id.com_radio);
-        comRadioButton.setText(COM);
-        EditText amountEditText = view.findViewById(R.id.amount_edittext);
-
-        buyButton = view.findViewById(R.id.btn_buy);
-        buyButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                String buyUrl = "";
-                if (buyRadioGroup.getCheckedRadioButtonId() == R.id.com_radio) {
-                    buyUrl = String.format(BinanceWidgetManager.BINANCE_COM, selectedFiat,
-                            selectedCrypto, amountEditText.getText());
-                } else if (buyRadioGroup.getCheckedRadioButtonId() == R.id.us_radio) {
-                    buyUrl = String.format(BinanceWidgetManager.BINANCE_US, selectedCrypto,
-                            amountEditText.getText());
+            buyButton = view.findViewById(R.id.btn_buy);
+            buyButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    String buyUrl = "";
+                    if (buyRadioGroup.getCheckedRadioButtonId() == R.id.com_radio) {
+                        buyUrl = String.format(BinanceWidgetManager.BINANCE_COM, selectedFiat,
+                                selectedCrypto, amountEditText.getText());
+                    } else if (buyRadioGroup.getCheckedRadioButtonId() == R.id.us_radio) {
+                        buyUrl = String.format(BinanceWidgetManager.BINANCE_US, selectedCrypto,
+                                amountEditText.getText());
+                    }
+                    if (!TextUtils.isEmpty(buyUrl)) {
+                        TabUtils.openUrlInSameTab(buyUrl);
+                    }
+                    dismissBinanceBottomSheet();
                 }
-                if (!TextUtils.isEmpty(buyUrl)) {
-                    TabUtils.openUrlInSameTab(buyUrl);
+            });
+
+            fiatSpinner = (Spinner) view.findViewById(R.id.fiat_spinner);
+            fiatSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                @Override
+                public void onItemSelected(
+                        AdapterView<?> parentView, View selectedItemView, int position, long id) {
+                    selectedFiat = fiatList.get(position);
                 }
-                dismissBinanceBottomSheet();
-            }
-        });
 
-        fiatSpinner = (Spinner) view.findViewById(R.id.fiat_spinner);
-        fiatSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(
-                    AdapterView<?> parentView, View selectedItemView, int position, long id) {
-                selectedFiat = fiatList.get(position);
-            }
+                @Override
+                public void onNothingSelected(AdapterView<?> parentView) {}
+            });
+            setFiatSpinner(BinanceWidgetManager.fiatList);
 
-            @Override
-            public void onNothingSelected(AdapterView<?> parentView) {}
-        });
-        setFiatSpinner(BinanceWidgetManager.fiatList);
-
-        cryptoSpinner = (Spinner) view.findViewById(R.id.crypto_spinner);
-        cryptoSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(
-                    AdapterView<?> parentView, View selectedItemView, int position, long id) {
-                selectedCrypto = cryptoList.get(position);
-                if (buyButton != null) {
-                    buyButton.setText(String.format(
-                            getActivity().getResources().getString(R.string.buy_crypto_button_text),
-                            selectedCrypto));
+            cryptoSpinner = (Spinner) view.findViewById(R.id.crypto_spinner);
+            cryptoSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                @Override
+                public void onItemSelected(
+                        AdapterView<?> parentView, View selectedItemView, int position, long id) {
+                    selectedCrypto = cryptoList.get(position);
+                    if (buyButton != null) {
+                        buyButton.setText(String.format(getActivity().getResources().getString(
+                                                                R.string.buy_crypto_button_text),
+                                selectedCrypto));
+                    }
                 }
-            }
 
-            @Override
-            public void onNothingSelected(AdapterView<?> parentView) {}
-        });
+                @Override
+                public void onNothingSelected(AdapterView<?> parentView) {}
+            });
 
-        buyRadioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(RadioGroup group, int checkedId) {
-                if (R.id.com_radio == checkedId) {
-                    setFiatSpinner(BinanceWidgetManager.fiatList);
-                } else {
-                    setFiatSpinner(new ArrayList<String>(
-                            Arrays.asList(BinanceWidgetManager.fiatList.get(0))));
+            buyRadioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+                @Override
+                public void onCheckedChanged(RadioGroup group, int checkedId) {
+                    if (R.id.com_radio == checkedId) {
+                        setFiatSpinner(BinanceWidgetManager.fiatList);
+                    } else {
+                        setFiatSpinner(new ArrayList<String>(
+                                Arrays.asList(BinanceWidgetManager.fiatList.get(0))));
+                    }
                 }
-            }
-        });
+            });
 
-        mBinanceNativeWorker.getCoinNetworks();
+            mBinanceNativeWorker.getCoinNetworks();
+        } else {
+            noConnectionText.setVisibility(View.VISIBLE);
+            buyMainLayout.setVisibility(View.GONE);
+        }
     }
 
     private void setFiatSpinner(List<String> fiatSpinnerList) {

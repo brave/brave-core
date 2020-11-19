@@ -13,10 +13,12 @@ import android.util.Pair;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.RadioGroup;
@@ -30,7 +32,6 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-import android.view.inputmethod.InputMethodManager;
 
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 
@@ -38,6 +39,7 @@ import org.json.JSONException;
 
 import org.chromium.base.Log;
 import org.chromium.chrome.R;
+import org.chromium.chrome.browser.InternetConnection;
 import org.chromium.chrome.browser.util.TabUtils;
 import org.chromium.chrome.browser.widget.crypto.binance.BinanceAccountBalance;
 import org.chromium.chrome.browser.widget.crypto.binance.BinanceCoinNetworks;
@@ -122,114 +124,131 @@ public class BinanceConvertFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        amountEditText = view.findViewById(R.id.amount_edittext);
-        binanceConvertTitle = view.findViewById(R.id.binance_convert_title);
+        FrameLayout convertMainLayout = view.findViewById(R.id.binance_convert_main_layout);
+        TextView noConnectionText = view.findViewById(R.id.no_connection_text);
+        if (InternetConnection.isNetworkAvailable(getActivity())) {
+            noConnectionText.setVisibility(View.GONE);
+            convertMainLayout.setVisibility(View.VISIBLE);
+            amountEditText = view.findViewById(R.id.amount_edittext);
+            binanceConvertTitle = view.findViewById(R.id.binance_convert_title);
+            convertLayout = view.findViewById(R.id.convert_layout);
+            convertLayout.setVisibility(View.GONE);
+            binanceWidgetProgress = view.findViewById(R.id.binance_widget_progress);
+            errorLayout = view.findViewById(R.id.error_layout);
+            TextView errorText = view.findViewById(R.id.error_message_text);
 
-        convertLayout = view.findViewById(R.id.convert_layout);
-        convertLayout.setVisibility(View.GONE);
-        binanceWidgetProgress = view.findViewById(R.id.binance_widget_progress);
-        errorLayout = view.findViewById(R.id.error_layout);
-        TextView errorText = view.findViewById(R.id.error_message_text);
-
-        Button retryButton = view.findViewById(R.id.btn_retry);
-        retryButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                convertLayout.setVisibility(View.VISIBLE);
-                errorLayout.setVisibility(View.GONE);
-            }
-        });
-
-        successLayout = view.findViewById(R.id.success_layout);
-        successText = view.findViewById(R.id.success_message_text);
-        Button continueButton = view.findViewById(R.id.btn_continue);
-        continueButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                amountEditText.getText().clear();
-                mBinanceBottomSheetListener.onContinue();
-            }
-        });
-
-        confirmLayout = view.findViewById(R.id.confirm_convert_layout);
-        convertCurrencyText = view.findViewById(R.id.convert_currency_text);
-        convertFeeText = view.findViewById(R.id.convert_fee_text);
-        convertBalanceText = view.findViewById(R.id.convert_balance_text);
-        confirmButton = view.findViewById(R.id.btn_confirm);
-
-        Button cancelButton = view.findViewById(R.id.btn_cancel);
-        cancelButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                cancelTimer();
-                amountEditText.getText().clear();
-                convertLayout.setVisibility(View.VISIBLE);
-                confirmLayout.setVisibility(View.GONE);
-            }
-        });
-
-        convertButton = view.findViewById(R.id.btn_convert);
-        convertButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                InputMethodManager imm = (InputMethodManager)getActivity().getSystemService(Activity.INPUT_METHOD_SERVICE);
-                imm.hideSoftInputFromWindow(amountEditText.getWindowToken(), 0);
-                convertAmount = !TextUtils.isEmpty(amountEditText.getText().toString())
-                        ? Double.valueOf(amountEditText.getText().toString())
-                        : 0.0;
-                double availableBalance =
-                        BinanceWidgetManager.binanceAccountBalance.getCurrencyValue(selectedCrypto1)
-                                != null
-                        ? Double.valueOf(BinanceWidgetManager.binanceAccountBalance
-                                                 .getCurrencyValue(selectedCrypto1)
-                                                 .first)
-                        : 0.0;
-                if (availableBalance < convertAmount) {
-                    convertLayout.setVisibility(View.GONE);
-                    errorLayout.setVisibility(View.VISIBLE);
-                    errorText.setText(
-                            getActivity().getResources().getString(R.string.not_enough_balance));
-                } else if (Double.valueOf(selectedCrypto2.getMinAmount()) > convertAmount) {
-                    convertLayout.setVisibility(View.GONE);
-                    errorLayout.setVisibility(View.VISIBLE);
-                    errorText.setText(String.format(getActivity().getResources().getString(
-                                                            R.string.minimum_amount_to_convert),
-                            selectedCrypto2.getMinAmount(), selectedCrypto1));
-                } else {
-                    mBinanceNativeWorker.getConvertQuote(selectedCrypto1,
-                            selectedCrypto2.getAsset(), String.valueOf(convertAmount));
+            Button retryButton = view.findViewById(R.id.btn_retry);
+            retryButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    convertLayout.setVisibility(View.VISIBLE);
+                    errorLayout.setVisibility(View.GONE);
                 }
-            }
-        });
+            });
 
-        cryptoSpinner1 = (Spinner) view.findViewById(R.id.crypto_spinner_1);
-        cryptoSpinner1.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(
-                    AdapterView<?> parentView, View selectedItemView, int position, long id) {
-                selectedCrypto1 = cryptoList1.get(position);
-                setCryptoSpinner(selectedCrypto1);
-                setTitle();
-            }
+            successLayout = view.findViewById(R.id.success_layout);
+            successText = view.findViewById(R.id.success_message_text);
+            Button continueButton = view.findViewById(R.id.btn_continue);
+            continueButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    amountEditText.getText().clear();
+                    mBinanceBottomSheetListener.onContinue();
+                }
+            });
 
-            @Override
-            public void onNothingSelected(AdapterView<?> parentView) {}
-        });
+            confirmLayout = view.findViewById(R.id.confirm_convert_layout);
+            convertCurrencyText = view.findViewById(R.id.convert_currency_text);
+            convertFeeText = view.findViewById(R.id.convert_fee_text);
+            convertBalanceText = view.findViewById(R.id.convert_balance_text);
+            confirmButton = view.findViewById(R.id.btn_confirm);
 
-        cryptoSpinner2 = (Spinner) view.findViewById(R.id.crypto_spinner_2);
-        cryptoSpinner2.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(
-                    AdapterView<?> parentView, View selectedItemView, int position, long id) {
-                selectedCrypto2 = cryptoList2.get(position);
-            }
+            Button cancelButton = view.findViewById(R.id.btn_cancel);
+            cancelButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    cancelTimer();
+                    amountEditText.getText().clear();
+                    convertLayout.setVisibility(View.VISIBLE);
+                    confirmLayout.setVisibility(View.GONE);
+                }
+            });
 
-            @Override
-            public void onNothingSelected(AdapterView<?> parentView) {}
-        });
+            convertButton = view.findViewById(R.id.btn_convert);
+            convertButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(
+                            Activity.INPUT_METHOD_SERVICE);
+                    imm.hideSoftInputFromWindow(amountEditText.getWindowToken(), 0);
+                    if (InternetConnection.isNetworkAvailable(getActivity())) {
+                        convertAmount = !TextUtils.isEmpty(amountEditText.getText().toString())
+                                ? Double.valueOf(amountEditText.getText().toString())
+                                : 0.0;
+                        double availableBalance =
+                                BinanceWidgetManager.binanceAccountBalance.getCurrencyValue(
+                                        selectedCrypto1)
+                                        != null
+                                ? Double.valueOf(BinanceWidgetManager.binanceAccountBalance
+                                                         .getCurrencyValue(selectedCrypto1)
+                                                         .first)
+                                : 0.0;
+                        if (availableBalance < convertAmount) {
+                            convertLayout.setVisibility(View.GONE);
+                            errorLayout.setVisibility(View.VISIBLE);
+                            errorText.setText(getActivity().getResources().getString(
+                                    R.string.not_enough_balance));
+                        } else if (Double.valueOf(selectedCrypto2.getMinAmount()) > convertAmount) {
+                            convertLayout.setVisibility(View.GONE);
+                            errorLayout.setVisibility(View.VISIBLE);
+                            errorText.setText(
+                                    String.format(getActivity().getResources().getString(
+                                                          R.string.minimum_amount_to_convert),
+                                            selectedCrypto2.getMinAmount(), selectedCrypto1));
+                        } else {
+                            mBinanceNativeWorker.getConvertQuote(selectedCrypto1,
+                                    selectedCrypto2.getAsset(), String.valueOf(convertAmount));
+                        }
+                    } else {
+                        Toast.makeText(getActivity(), R.string.please_check_the_connection,
+                                     Toast.LENGTH_SHORT)
+                                .show();
+                    }
+                }
+            });
 
-        mBinanceNativeWorker.getConvertAssets();
-        binanceWidgetProgress.setVisibility(View.VISIBLE);
+            cryptoSpinner1 = (Spinner) view.findViewById(R.id.crypto_spinner_1);
+            cryptoSpinner1.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                @Override
+                public void onItemSelected(
+                        AdapterView<?> parentView, View selectedItemView, int position, long id) {
+                    selectedCrypto1 = cryptoList1.get(position);
+                    setCryptoSpinner(selectedCrypto1);
+                    setTitle();
+                }
+
+                @Override
+                public void onNothingSelected(AdapterView<?> parentView) {}
+            });
+
+            cryptoSpinner2 = (Spinner) view.findViewById(R.id.crypto_spinner_2);
+            cryptoSpinner2.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                @Override
+                public void onItemSelected(
+                        AdapterView<?> parentView, View selectedItemView, int position, long id) {
+                    selectedCrypto2 = cryptoList2.get(position);
+                }
+
+                @Override
+                public void onNothingSelected(AdapterView<?> parentView) {}
+            });
+
+            mBinanceNativeWorker.getConvertAssets();
+            binanceWidgetProgress.setVisibility(View.VISIBLE);
+        } else {
+            noConnectionText.setVisibility(View.VISIBLE);
+            convertMainLayout.setVisibility(View.GONE);
+        }
     }
 
     private void dismissBinanceBottomSheet() {
@@ -282,10 +301,12 @@ public class BinanceConvertFragment extends Fragment {
 
         @Override
         public void OnConfirmConvert(boolean isSuccess, String message) {
+            confirmLayout.setVisibility(View.GONE);
             if (!isSuccess) {
-                Toast.makeText(getActivity(), R.string.conversion_failed, Toast.LENGTH_LONG).show();
+                convertLayout.setVisibility(View.VISIBLE);
+                Toast.makeText(getActivity(), R.string.conversion_failed, Toast.LENGTH_SHORT)
+                        .show();
             } else {
-                confirmLayout.setVisibility(View.GONE);
                 successLayout.setVisibility(View.VISIBLE);
                 if (successText != null) successText.setText(String.format(getActivity().getResources().getString(R.string.convert_success), convertAmount, selectedCrypto1,
                             convertedAmount, selectedCrypto2.getAsset()));

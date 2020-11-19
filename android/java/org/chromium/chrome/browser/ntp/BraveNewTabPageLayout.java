@@ -21,6 +21,7 @@ import android.os.CountDownTimer;
 import android.text.Html;
 import android.text.Spannable;
 import android.text.SpannableStringBuilder;
+import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.util.Pair;
 import android.view.ContextMenu;
@@ -57,6 +58,7 @@ import org.chromium.base.task.AsyncTask;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.BraveRewardsHelper;
 import org.chromium.chrome.browser.ChromeTabbedActivity;
+import org.chromium.chrome.browser.InternetConnection;
 import org.chromium.chrome.browser.QRCodeShareDialogFragment;
 import org.chromium.chrome.browser.app.BraveActivity;
 import org.chromium.chrome.browser.brave_stats.BraveStatsUtil;
@@ -107,6 +109,7 @@ import org.chromium.chrome.browser.widget.crypto.binance.BinanceWidgetManager;
 import org.chromium.chrome.browser.widget.crypto.binance.CryptoWidgetBottomSheetDialogFragment;
 import org.chromium.components.browser_ui.widget.displaystyle.UiConfig;
 import org.chromium.components.user_prefs.UserPrefs;
+import org.chromium.ui.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -260,17 +263,26 @@ public class BraveNewTabPageLayout extends NewTabPageLayout {
                 binanceWidgetView.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        if (BinanceWidgetManager.getInstance().isUserAuthenticatedForBinance()) {
-                            cancelTimer();
-                            cryptoWidgetBottomSheetDialogFragment =
-                                            new CryptoWidgetBottomSheetDialogFragment();
-                            cryptoWidgetBottomSheetDialogFragment.show(
-                                    ((BraveActivity) mActivity).getSupportFragmentManager(),
-                                    CryptoWidgetBottomSheetDialogFragment.TAG_FRAGMENT);
+                        if (InternetConnection.isNetworkAvailable(mActivity)) {
+                            if (BinanceWidgetManager.getInstance()
+                                            .isUserAuthenticatedForBinance()) {
+                                cancelTimer();
+                                cryptoWidgetBottomSheetDialogFragment =
+                                        new CryptoWidgetBottomSheetDialogFragment();
+                                cryptoWidgetBottomSheetDialogFragment.show(
+                                        ((BraveActivity) mActivity).getSupportFragmentManager(),
+                                        CryptoWidgetBottomSheetDialogFragment.TAG_FRAGMENT);
+                            } else {
+                                TabUtils.openUrlInSameTab(mBinanceNativeWorker.getOAuthClientUrl());
+                                bianceDisconnectLayout.setVisibility(View.GONE);
+                                binanceWidgetProgress.setVisibility(View.VISIBLE);
+                            }
                         } else {
-                            TabUtils.openUrlInSameTab(mBinanceNativeWorker.getOAuthClientUrl());
-                            bianceDisconnectLayout.setVisibility(View.GONE);
-                            binanceWidgetProgress.setVisibility(View.VISIBLE);
+                            Toast.makeText(mActivity,
+                                         mActivity.getResources().getString(
+                                                 R.string.please_check_the_connection),
+                                         Toast.LENGTH_SHORT)
+                                    .show();
                         }
                     }
                 });
@@ -756,6 +768,11 @@ public class BraveNewTabPageLayout extends NewTabPageLayout {
                 public void onMenuRemove(int position, boolean isBinanceWidget) {
                     if (isBinanceWidget) {
                         mBinanceNativeWorker.revokeToken();
+                        BinanceWidgetManager.getInstance().setBinanceAccountBalance("");
+                        BinanceWidgetManager.getInstance().setUserAuthenticationForBinance(false);
+                        if (cryptoWidgetBottomSheetDialogFragment != null) {
+                            cryptoWidgetBottomSheetDialogFragment.dismiss();
+                        }
                     }
                     showWidgets();
                 }
@@ -773,6 +790,13 @@ public class BraveNewTabPageLayout extends NewTabPageLayout {
                 @Override
                 public void onMenuDisconnect() {
                     mBinanceNativeWorker.revokeToken();
+                    BinanceWidgetManager.getInstance().setBinanceAccountBalance("");
+                    BinanceWidgetManager.getInstance().setUserAuthenticationForBinance(false);
+                    if (cryptoWidgetBottomSheetDialogFragment != null) {
+                        cryptoWidgetBottomSheetDialogFragment.dismiss();
+                    }
+                    // Reset binance widget to connect page
+                    showWidgets();
                 }
             };
 
@@ -794,45 +818,23 @@ public class BraveNewTabPageLayout extends NewTabPageLayout {
 
         @Override
         public void OnGetAccountBalances(String jsonBalances, boolean isSuccess) {
-            if (!isSuccess) {
-                BinanceWidgetManager.getInstance().setUserAuthenticationForBinance(isSuccess);
-                if (cryptoWidgetBottomSheetDialogFragment != null) {
-                    cryptoWidgetBottomSheetDialogFragment.dismiss();
+            if (InternetConnection.isNetworkAvailable(mActivity)) {
+                if (!isSuccess) {
+                    BinanceWidgetManager.getInstance().setUserAuthenticationForBinance(isSuccess);
+                    if (cryptoWidgetBottomSheetDialogFragment != null) {
+                        cryptoWidgetBottomSheetDialogFragment.dismiss();
+                    }
+                } else {
+                    if (jsonBalances != null && !TextUtils.isEmpty(jsonBalances)) {
+                        BinanceWidgetManager.getInstance().setBinanceAccountBalance(jsonBalances);
+                    }
+                    try {
+                        BinanceWidgetManager.binanceAccountBalance = new BinanceAccountBalance(
+                                BinanceWidgetManager.getInstance().getBinanceAccountBalance());
+                    } catch (JSONException e) {
+                        Log.e("NTP", e.getMessage());
+                    }
                 }
-            }
-            try {
-                BinanceWidgetManager.binanceAccountBalance =
-                        new BinanceAccountBalance(jsonBalances);
-            } catch (JSONException e) {
-                Log.e("NTP", e.getMessage());
-            }
-            // Reset binance widget to connect page
-            showWidgets();
-        };
-
-        @Override
-        public void OnGetConvertQuote(
-                String quoteId, String quotePrice, String totalFee, String totalAmount){
-
-        };
-
-        @Override
-        public void OnGetCoinNetworks(String jsonNetworks){};
-
-        @Override
-        public void OnGetDepositInfo(String depositAddress, String depositTag, boolean isSuccess){};
-
-        @Override
-        public void OnConfirmConvert(boolean isSuccess, String message){};
-
-        @Override
-        public void OnGetConvertAssets(String jsonAssets){};
-
-        @Override
-        public void OnRevokeToken(boolean isSuccess) {
-            BinanceWidgetManager.getInstance().setUserAuthenticationForBinance(!isSuccess);
-            if (cryptoWidgetBottomSheetDialogFragment != null) {
-                cryptoWidgetBottomSheetDialogFragment.dismiss();
             }
             // Reset binance widget to connect page
             showWidgets();
@@ -900,5 +902,4 @@ public class BraveNewTabPageLayout extends NewTabPageLayout {
             mTopsiteErrorMessage.setVisibility(View.VISIBLE);
         }
     }
-
 }
