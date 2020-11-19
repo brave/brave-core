@@ -62,9 +62,22 @@ const GURL& GetIPNSURI() {
 }
 
 const GURL& GetIPNSGatewayURL() {
-  static const GURL ipfs_url(
+  static const GURL ipns_url(
       "https://dweb.link/ipns/tr.wikipedia-on-ipfs.org/wiki/Anasayfa.html");  // NOLINT
+  return ipns_url;
+}
+
+const GURL& GetIPFSLocalhostURL() {
+  static const GURL ipfs_url(
+      "http://bafybeiemxf5abjwjbikoz4mc3a3dla6ual3jsgpdr4cjr3oz3evfyavhwq."
+      "ipfs.localhost/wiki/Vincent_van_Gogh.html");
   return ipfs_url;
+}
+
+const GURL& GetIPNSLocalhostURL() {
+  static const GURL ipns_url(
+      "http://tr.wikipedia-on-ipfs.org.ipns.localhost/wiki/Anasayfa.html");
+  return ipns_url;
 }
 
 }  // namespace
@@ -128,16 +141,14 @@ TEST_F(ContentBrowserClientHelperUnitTest, HandleIPFSURLRewriteDisabled) {
       kIPFSResolveMethod,
       static_cast<int>(IPFSResolveMethodTypes::IPFS_DISABLED));
   GURL ipfs_uri(GetIPFSURI());
-  ASSERT_FALSE(ContentBrowserClientHelper::HandleIPFSURLRewrite(
-      &ipfs_uri, browser_context()));
+  ASSERT_FALSE(HandleIPFSURLRewrite(&ipfs_uri, browser_context()));
 }
 
 TEST_F(ContentBrowserClientHelperUnitTest, HandleIPFSURLRewriteAsk) {
   profile()->GetPrefs()->SetInteger(
       kIPFSResolveMethod, static_cast<int>(IPFSResolveMethodTypes::IPFS_ASK));
   GURL ipfs_uri(GetIPFSURI());
-  ASSERT_FALSE(ContentBrowserClientHelper::HandleIPFSURLRewrite(
-      &ipfs_uri, browser_context()));
+  ASSERT_FALSE(HandleIPFSURLRewrite(&ipfs_uri, browser_context()));
 }
 
 TEST_F(ContentBrowserClientHelperUnitTest, HandleIPFSURLRewriteGateway) {
@@ -145,24 +156,21 @@ TEST_F(ContentBrowserClientHelperUnitTest, HandleIPFSURLRewriteGateway) {
       kIPFSResolveMethod,
       static_cast<int>(IPFSResolveMethodTypes::IPFS_GATEWAY));
   GURL ipfs_uri(GetIPFSURI());
-  ASSERT_FALSE(ContentBrowserClientHelper::HandleIPFSURLRewrite(
-      &ipfs_uri, browser_context()));
+  ASSERT_FALSE(HandleIPFSURLRewrite(&ipfs_uri, browser_context()));
 }
 
 TEST_F(ContentBrowserClientHelperUnitTest, HandleIPFSURLRewriteLocal) {
   profile()->GetPrefs()->SetInteger(
       kIPFSResolveMethod, static_cast<int>(IPFSResolveMethodTypes::IPFS_LOCAL));
   GURL ipfs_uri(GetIPFSURI());
-  ASSERT_TRUE(ContentBrowserClientHelper::HandleIPFSURLRewrite(
-      &ipfs_uri, browser_context()));
+  ASSERT_TRUE(HandleIPFSURLRewrite(&ipfs_uri, browser_context()));
 }
 
 TEST_F(ContentBrowserClientHelperUnitTest, HandleIPNSURLRewriteLocal) {
   profile()->GetPrefs()->SetInteger(
       kIPFSResolveMethod, static_cast<int>(IPFSResolveMethodTypes::IPFS_LOCAL));
   GURL ipns_uri(GetIPNSURI());
-  ASSERT_TRUE(ContentBrowserClientHelper::HandleIPFSURLRewrite(
-      &ipns_uri, browser_context()));
+  ASSERT_TRUE(HandleIPFSURLRewrite(&ipns_uri, browser_context()));
 }
 
 TEST_F(ContentBrowserClientHelperUnitTest, ShouldNavigateIPFSURIDisabled) {
@@ -170,8 +178,8 @@ TEST_F(ContentBrowserClientHelperUnitTest, ShouldNavigateIPFSURIDisabled) {
       kIPFSResolveMethod,
       static_cast<int>(IPFSResolveMethodTypes::IPFS_DISABLED));
   GURL new_url;
-  ASSERT_FALSE(ContentBrowserClientHelper::ShouldNavigateIPFSURI(
-      GetIPFSURI(), &new_url, browser_context()));
+  ASSERT_FALSE(
+      ShouldNavigateIPFSURI(GetIPFSURI(), &new_url, browser_context()));
 }
 
 TEST_F(ContentBrowserClientHelperUnitTest,
@@ -180,8 +188,7 @@ TEST_F(ContentBrowserClientHelperUnitTest,
       kIPFSResolveMethod,
       static_cast<int>(IPFSResolveMethodTypes::IPFS_GATEWAY));
   GURL new_url;
-  ASSERT_TRUE(ContentBrowserClientHelper::ShouldNavigateIPFSURI(
-      GetIPFSURI(), &new_url, browser_context()));
+  ASSERT_TRUE(ShouldNavigateIPFSURI(GetIPFSURI(), &new_url, browser_context()));
   ASSERT_EQ(new_url, GetIPFSGatewayURL());
 }
 
@@ -191,8 +198,8 @@ TEST_F(ContentBrowserClientHelperUnitTest,
       kIPFSResolveMethod,
       static_cast<int>(IPFSResolveMethodTypes::IPFS_GATEWAY));
   GURL new_url;
-  ASSERT_TRUE(ContentBrowserClientHelper::ShouldNavigateIPFSURI(
-      GetIPFSGatewayURL(), &new_url, browser_context()));
+  ASSERT_TRUE(
+      ShouldNavigateIPFSURI(GetIPFSGatewayURL(), &new_url, browser_context()));
   ASSERT_EQ(new_url, GetIPFSGatewayURL());
 }
 
@@ -200,8 +207,7 @@ TEST_F(ContentBrowserClientHelperUnitTest, ShouldNavigateIPFSURILocalIPFSURI) {
   profile()->GetPrefs()->SetInteger(
       kIPFSResolveMethod, static_cast<int>(IPFSResolveMethodTypes::IPFS_LOCAL));
   GURL new_url;
-  ASSERT_TRUE(ContentBrowserClientHelper::ShouldNavigateIPFSURI(
-      GetIPFSURI(), &new_url, browser_context()));
+  ASSERT_TRUE(ShouldNavigateIPFSURI(GetIPFSURI(), &new_url, browser_context()));
   ASSERT_EQ(new_url, GetIPFSLocalURL());
 }
 
@@ -210,8 +216,8 @@ TEST_F(ContentBrowserClientHelperUnitTest,
   profile()->GetPrefs()->SetInteger(
       kIPFSResolveMethod, static_cast<int>(IPFSResolveMethodTypes::IPFS_LOCAL));
   GURL new_url;
-  ASSERT_TRUE(ContentBrowserClientHelper::ShouldNavigateIPFSURI(
-      GetIPFSLocalURL(), &new_url, browser_context()));
+  ASSERT_TRUE(
+      ShouldNavigateIPFSURI(GetIPFSLocalURL(), &new_url, browser_context()));
   ASSERT_EQ(new_url, GetIPFSLocalURL());
 }
 
@@ -221,9 +227,18 @@ TEST_F(ContentBrowserClientHelperUnitTest,
       kIPFSResolveMethod,
       static_cast<int>(IPFSResolveMethodTypes::IPFS_GATEWAY));
   GURL new_url;
-  ASSERT_TRUE(ContentBrowserClientHelper::ShouldNavigateIPFSURI(
-      GetIPNSURI(), &new_url, browser_context()));
+  ASSERT_TRUE(ShouldNavigateIPFSURI(GetIPNSURI(), &new_url, browser_context()));
   ASSERT_EQ(new_url, GetIPNSGatewayURL());
+}
+
+TEST_F(ContentBrowserClientHelperUnitTest, HandleIPFSURLReverseRewrite) {
+  GURL url = GetIPFSLocalhostURL();
+  ASSERT_TRUE(HandleIPFSURLReverseRewrite(&url, browser_context()));
+  ASSERT_EQ(url, GetIPFSURI());
+
+  url = GetIPNSLocalhostURL();
+  ASSERT_TRUE(HandleIPFSURLReverseRewrite(&url, browser_context()));
+  ASSERT_EQ(url, GetIPNSURI());
 }
 
 }  // namespace ipfs
