@@ -13,6 +13,7 @@
 #include "base/memory/ptr_util.h"
 #include "base/metrics/histogram_macros.h"
 #include "base/no_destructor.h"
+#include "brave/common/brave_constants.h"
 #include "brave/components/ntp_background_images/common/pref_names.h"
 #include "brave/components/tor/buildflags/buildflags.h"
 #include "chrome/browser/browser_process.h"
@@ -165,8 +166,7 @@ bool IsSessionProfile(content::BrowserContext* context) {
 }
 
 bool IsSessionProfilePath(const base::FilePath& path) {
-  return path.DirName().BaseName() ==
-         base::FilePath(FILE_PATH_LITERAL("session_profiles"));
+  return path.DirName().BaseName() == base::FilePath(kSessionProfileDir);
 }
 
 Profile* GetParentProfile(content::BrowserContext* context) {

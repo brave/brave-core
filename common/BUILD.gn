@@ -55,6 +55,8 @@ source_set("common") {
   sources = [
     "brave_channel_info.cc",
     "brave_channel_info.h",
+    "brave_constants.cc",
+    "brave_constants.h",
     "brave_features.cc",
     "brave_features.h",
     "brave_paths.cc",
