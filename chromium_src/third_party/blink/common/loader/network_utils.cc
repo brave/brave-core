@@ -4,13 +4,6 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 #include "third_party/blink/public/common/loader/network_utils.h"
-#include "base/feature_list.h"
-#include "build/build_config.h"
-#include "net/net_buildflags.h"
-#include "services/network/public/cpp/is_potentially_trustworthy.h"
-#include "third_party/blink/public/common/features.h"
-#include "url/gurl.h"
-#include "url/url_constants.h"
 
 #define IsURLHandledByNetworkService IsURLHandledByNetworkService_ChromiumImpl
 #include "../../../../../../third_party/blink/common/loader/network_utils.cc"
