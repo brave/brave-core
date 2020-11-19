@@ -51,50 +51,11 @@ class InitialSearchEnginesTests: XCTestCase {
         }
     }
     
-    func testYandexLocales() throws {
+    func testYandexRegions() throws {
         
-        for language in ["ru", "kk", "tr"] {
-            for region in InitialSearchEngines.yandexDefaultRegions {
-                let localeSE = SE(locale: Locale(identifier: "\(language)_\(region)"))
-                let engines = localeSE.engines.map { $0.id }
-                
-                XCTAssertEqual(engines, [.yandex,
-                                         .google,
-                                         .bing,
-                                         .duckduckgo,
-                                         .qwant,
-                                         .startpage])
-                
-                XCTAssertEqual(localeSE.defaultSearchEngine, .yandex)
-                
-                // Check for language specific search engines
-                if language == "ru" {
-                    XCTAssertNotNil(localeSE.engines.first(where: { $0.customId == "yandex-ru" }))
-                }
-                
-                if language == "tr" {
-                    XCTAssertNotNil(localeSE.engines.first(where: { $0.customId == "yandex-tr" }))
-                }
-                
-                if language == "kk" {
-                    XCTAssertNil(localeSE.engines.first(where: { $0.id == .yandex })?.customId)
-                }
-            }
-            
-            // non matching region
-            for region in ["XX", "PL"] {
-                let localeSE = SE(locale: Locale(identifier: "\(language)_\(region)"))
-                let engines = localeSE.engines.map { $0.id }
-                
-                XCTAssertEqual(engines, [.google,
-                                         .bing,
-                                         .duckduckgo,
-                                         .qwant,
-                                         .startpage,
-                                         .yandex])
-                
-                XCTAssertEqual(localeSE.defaultSearchEngine, .google)
-            }
+        for region in InitialSearchEngines.yandexDefaultRegions {
+            let localeSE = SE(locale: Locale(identifier: "ru_\(region)"))
+            XCTAssertEqual(localeSE.defaultSearchEngine, .yandex)
         }
     }
     
@@ -188,5 +149,20 @@ class InitialSearchEnginesTests: XCTestCase {
         
         XCTAssertEqual(unknownLocaleSE.defaultSearchEngine, .google)
         XCTAssertNil(unknownLocaleSE.priorityEngine)
+    }
+    
+    func testRuRu() throws {
+        let russianLocale = SE(locale: Locale(identifier: "ru_RU"))
+        let engines = russianLocale.engines.map { $0.id }
+        
+        XCTAssertEqual(engines, [.yandex,
+                                 .google,
+                                 .bing,
+                                 .duckduckgo,
+                                 .qwant,
+                                 .startpage])
+        
+        XCTAssertEqual(russianLocale.defaultSearchEngine, .yandex)
+        XCTAssertNil(russianLocale.priorityEngine)
     }
 }
