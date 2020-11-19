@@ -1,12 +1,12 @@
 diff --git a/chrome/browser/resources/settings/site_settings/category_default_setting.js b/chrome/browser/resources/settings/site_settings/category_default_setting.js
-index 1f4e519bd6162c2a25e8fe5f97387797b4555d61..3c6fde5d024fd000bca05ecf466aba0e3047950b 100644
+index 1f4e519bd6162c2a25e8fe5f97387797b4555d61..e81f38992b403e2326231c4d7658a10cde3b3022 100644
 --- a/chrome/browser/resources/settings/site_settings/category_default_setting.js
 +++ b/chrome/browser/resources/settings/site_settings/category_default_setting.js
-@@ -171,6 +171,7 @@ Polymer({
-             this.categoryEnabled ? ContentSetting.ALLOW : ContentSetting.BLOCK);
-         break;
-       case ContentSettingsTypes.AUTOMATIC_DOWNLOADS:
+@@ -165,6 +165,7 @@ Polymer({
+       case ContentSettingsTypes.PAYMENT_HANDLER:
+       case ContentSettingsTypes.POPUPS:
+       case ContentSettingsTypes.PROTOCOL_HANDLERS:
 +      case ContentSettingsTypes.AUTOPLAY:
-       case ContentSettingsTypes.CAMERA:
-       case ContentSettingsTypes.CLIPBOARD:
-       case ContentSettingsTypes.FONT_ACCESS:
+         // "Allowed" vs "Blocked".
+         this.browserProxy.setDefaultValueForContentType(
+             this.category,
