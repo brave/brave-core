@@ -10,7 +10,7 @@ namespace rewards_browsertest_util {
 
 static const char kWaitForElementToAppearScript[] = R"(
     const waitForElementToAppear = (selector) => {
-      const TIMEOUT_SECONDS = 5;
+      const TIMEOUT_SECONDS = 10;
 
       return new Promise((resolve, reject) => {
         let element = document.querySelector(selector);
