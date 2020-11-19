@@ -23,6 +23,7 @@ import java.util.TreeMap;
 
 public class BinanceWidgetManager {
     public static final String PREF_BINANCE_USER_AUTHENTICATION = "binance_user_authentication";
+    public static final String PREF_BINANCE_ACCOUNT_BALANCE = "binance_account_balance";
 
     public static final String BINANCE_US =
             "https://www.binance.us/en/buy-sell-crypto?crypto=%1$s&amount=%2$s&ref=35089877&utm_source=brave";
@@ -118,6 +119,16 @@ public class BinanceWidgetManager {
     public void setUserAuthenticationForBinance(boolean isAuthenticated) {
         SharedPreferences.Editor sharedPreferencesEditor = mSharedPreferences.edit();
         sharedPreferencesEditor.putBoolean(PREF_BINANCE_USER_AUTHENTICATION, isAuthenticated);
+        sharedPreferencesEditor.apply();
+    }
+
+    public String getBinanceAccountBalance() {
+        return mSharedPreferences.getString(PREF_BINANCE_ACCOUNT_BALANCE, "");
+    }
+
+    public void setBinanceAccountBalance(String accountBalance) {
+        SharedPreferences.Editor sharedPreferencesEditor = mSharedPreferences.edit();
+        sharedPreferencesEditor.putString(PREF_BINANCE_ACCOUNT_BALANCE, accountBalance);
         sharedPreferencesEditor.apply();
     }
 }
