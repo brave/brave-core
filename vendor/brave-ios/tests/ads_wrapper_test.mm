@@ -7,6 +7,7 @@
 
 #import <XCTest/XCTest.h>
 #import "BATBraveRewards.h"
+#import <BraveRewards/brave_core_main.h>
 
 @interface _MockNotificationHandler : NSObject <BATBraveAdsNotificationHandler>
 @property (nonatomic, copy, nullable) void (^showNotification)(BATAdNotification *);
@@ -34,6 +35,7 @@
 
 @interface AdsWrapperTest : XCTestCase
 @property (nonatomic) BATBraveAds *ads;
+@property (nonatomic) BraveCoreMain *braveCoreMain;
 @end
 
 @implementation AdsWrapperTest
@@ -45,6 +47,9 @@
 
 - (void)setUp
 {
+  self.braveCoreMain = [[BraveCoreMain alloc] init];
+  [self.braveCoreMain scheduleLowPriorityStartupTasks];
+  
   [BATBraveAds setDebug:YES];
   const auto path = [self stateStoragePath];
   [[NSFileManager defaultManager] removeItemAtPath:path error:nil];

@@ -21,6 +21,7 @@ typedef NS_ENUM(NSInteger, BATRewardsNotificationKind) {
   BATRewardsNotificationKindGeneralLedger // Comes from ledger
 } NS_SWIFT_NAME(RewardsNotification.Kind);
 
+OBJC_EXPORT
 NS_SWIFT_NAME(RewardsNotification)
 @interface BATRewardsNotification : NSObject <NSSecureCoding>
 

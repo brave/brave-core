@@ -6,11 +6,13 @@ ios_xctest_test("brave_rewards_ios_tests") {
   check_includes = false
   deps = [
     "//brave/vendor/brave-ios:brave_rewards_ios_framework+link",
-    "//brave/vendor/bat-native-ledger"
+    "//brave/vendor/bat-native-ledger",
+    "//ios/third_party/material_components_ios:material_components_ios+link",
   ]
 
   bundle_deps = [
     "//brave/vendor/brave-ios:brave_rewards_ios_framework+bundle",
+    "//ios/third_party/material_components_ios:material_components_ios+bundle",
   ]
 
   configs += [ "//brave/vendor/brave-ios:internal_config" ]

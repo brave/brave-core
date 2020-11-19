@@ -20,3 +20,15 @@ FOUNDATION_EXPORT const unsigned char BraveRewardsVersionString[];
 #import <BraveRewards/ledger.mojom.objc.h>
 #import <BraveRewards/BATRewardsNotification.h>
 #import <BraveRewards/BATPromotionSolution.h>
+
+// brave-core
+#import <BraveRewards/brave_core_main.h>
+
+// Sync
+#import <BraveRewards/brave_sync_api.h>
+
+// Bookmarks
+#import <BraveRewards/brave_bookmarks_api.h>
+#import <BraveRewards/brave_bookmarks_observer.h>
+#import <BraveRewards/brave_bookmarks_importer.h>
+#import <BraveRewards/brave_bookmarks_exporter.h>

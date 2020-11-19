@@ -42,7 +42,7 @@ var packageConfig = function(key){
 
 const getNPMConfig = (key) => {
   if (!NpmConfig) {
-    const list = run(npmCommand, ['config', 'list', '--json'], {cwd: rootDir})
+    const list = run(npmCommand, ['config', 'list', '--json', '--userconfig=' + path.join(rootDir, '.npmrc')])
     NpmConfig = JSON.parse(list.stdout.toString())
   }
 
@@ -326,7 +326,7 @@ Config.prototype.buildArgs = function () {
   if (this.targetOS === 'ios') {
     args.target_os = 'ios'
     args.enable_dsyms = true
-    args.enable_stripping = args.enable_dsyms
+    args.enable_stripping = !this.isDebug()
     args.use_xcode_clang = this.isOfficialBuild()
     args.use_clang_coverage = false
     // Component builds are not supported for iOS:
@@ -339,6 +339,12 @@ Config.prototype.buildArgs = function () {
     // Can be removed when approprioate DCHECK's have been fixed:
     // https://github.com/brave/brave-browser/issues/10334
     args.dcheck_always_on = this.isDebug()
+
+    args.ios_enable_content_widget_extension = false
+    args.ios_enable_search_widget_extension = false
+    args.ios_enable_share_extension = false
+    args.ios_enable_credential_provider_extension = false
+    args.use_allocator_shim = false
 
     delete args.safebrowsing_api_endpoint
     delete args.updater_prod_endpoint
@@ -358,7 +364,6 @@ Config.prototype.buildArgs = function () {
     delete args.binance_client_id
     delete args.gemini_client_id
     delete args.gemini_client_secret
-    delete args.brave_services_key
     delete args.webcompat_report_api_endpoint
   }
 
