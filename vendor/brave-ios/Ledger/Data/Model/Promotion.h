@@ -13,6 +13,7 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
+OBJC_EXPORT
 @interface Promotion : NSManagedObject
 
 + (NSFetchRequest<Promotion *> *)fetchRequest;

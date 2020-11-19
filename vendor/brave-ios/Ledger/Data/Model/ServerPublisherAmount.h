@@ -8,6 +8,7 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
+OBJC_EXPORT
 @interface ServerPublisherAmount : NSManagedObject
 
 + (NSFetchRequest<ServerPublisherAmount *> *)fetchRequest;
