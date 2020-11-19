@@ -41,7 +41,7 @@ class InitialSearchEngines {
     
     static let ddgDefaultRegions = ["DE", "AU", "NZ", "IE"]
     static let qwantDefaultRegions = ["FR"]
-    static let yandexDefaultRegions = ["BY", "KZ", "RU", "TR"]
+    static let yandexDefaultRegions = ["AM", "AZ", "BY", "KG", "KZ", "MD", "RU", "TJ", "TM", "TZ"]
     static let yahooEligibleRegions =
         ["GB", "US", "AR", "AT", "AU", "BR", "CA", "CH", "CL", "CO", "DE", "DK", "ES", "FI", "FR", "HK",
          "ID", "IE", "IN", "IT", "MX", "MY", "NL", "NO", "NZ", "PE", "PH", "SE", "SG", "TH", "TW", "VE", "VN"]
@@ -99,35 +99,10 @@ class InitialSearchEngines {
     // MARK: - Locale overrides
     
     private func languageOverrides() {
-        guard let language = locale.languageCode, let region = locale.regionCode else { return }
+        guard let language = locale.languageCode else { return }
         if language == "ja" {
             replaceOrInsert(engineId: .yahoo, customId: "yahoo-jp")
         }
-        
-        if language == "ru" {
-            replaceOrInsert(engineId: .yandex, customId: "yandex-ru")
-            
-            if Self.yandexDefaultRegions.contains(region) {
-                defaultSearchEngine = .yandex
-            }
-        }
-        
-        if language == "kk" {
-            engines.append(.init(id: .yandex))
-            
-            if Self.yandexDefaultRegions.contains(region) {
-                defaultSearchEngine = .yandex
-            }
-        }
-        
-        if language == "tr" {
-            replaceOrInsert(engineId: .yandex, customId: "yandex-tr")
-            
-            if Self.yandexDefaultRegions.contains(region) {
-                defaultSearchEngine = .yandex
-            }
-        }
-        
     }
     
     private func regionOverrides() {
@@ -139,6 +114,10 @@ class InitialSearchEngines {
         
         if Self.qwantDefaultRegions.contains(region) {
             defaultSearchEngine = .qwant
+        }
+        
+        if Self.yandexDefaultRegions.contains(region) {
+            defaultSearchEngine = .yandex
         }
     }
     
