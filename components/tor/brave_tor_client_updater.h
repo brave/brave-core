@@ -15,11 +15,8 @@
 #include "base/sequenced_task_runner.h"
 #include "brave/components/brave_component_updater/browser/brave_component.h"
 
-class BraveProfileManagerTest;
-class BraveProfileManagerExtensionTest;
 class BraveTorClientUpdaterTest;
 class PrefService;
-class SearchEngineProviderServiceTest;
 
 using brave_component_updater::BraveComponent;
 
@@ -71,10 +68,7 @@ class BraveTorClientUpdater : public BraveComponent {
   bool IsTorDisabled();
 
  private:
-  friend class ::BraveProfileManagerTest;
-  friend class ::BraveProfileManagerExtensionTest;
   friend class ::BraveTorClientUpdaterTest;
-  friend class ::SearchEngineProviderServiceTest;
 
   static std::string g_tor_client_component_name_;
   static std::string g_tor_client_component_id_;

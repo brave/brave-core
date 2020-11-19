@@ -5,7 +5,7 @@
 
 #include "brave/browser/ui/browser_commands.h"
 
-#include "brave/browser/profiles/profile_util.h"
+#include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser_commands.h"
 
 #define ReloadBypassingCache ReloadBypassingCache_ChromiumImpl
@@ -18,7 +18,7 @@ void ReloadBypassingCache(Browser* browser, WindowOpenDisposition disposition) {
   Profile* profile = browser->profile();
   DCHECK(profile);
   // NewTorConnectionForSite will do hard reload after obtaining new identity
-  if (brave::IsTorProfile(profile))
+  if (profile->IsTor())
     brave::NewTorConnectionForSite(browser);
   else
     ReloadBypassingCache_ChromiumImpl(browser, disposition);

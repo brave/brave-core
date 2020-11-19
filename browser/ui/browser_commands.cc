@@ -5,7 +5,6 @@
 
 #include "brave/browser/ui/browser_commands.h"
 
-#include "brave/browser/profiles/profile_util.h"
 #include "brave/components/speedreader/buildflags.h"
 #include "brave/components/tor/buildflags/buildflags.h"
 #include "chrome/browser/browser_process.h"
@@ -26,6 +25,7 @@
 #endif
 
 #if BUILDFLAG(ENABLE_TOR)
+#include "brave/browser/tor/tor_profile_manager.h"
 #include "brave/browser/tor/tor_profile_service_factory.h"
 #include "brave/components/tor/tor_profile_service.h"
 #endif
@@ -38,12 +38,13 @@ namespace {
 namespace brave {
 
 void NewOffTheRecordWindowTor(Browser* browser) {
-  if (brave::IsTorProfile(browser->profile())) {
-    chrome::NewEmptyWindow(browser->profile());
+  if (browser->profile()->IsTor()) {
+    chrome::OpenEmptyWindow(browser->profile());
     return;
   }
 
-  profiles::SwitchToTorProfile(ProfileManager::CreateCallback());
+  TorProfileManager::SwitchToTorProfile(browser->profile(),
+                                        ProfileManager::CreateCallback());
 }
 
 void NewTorConnectionForSite(Browser* browser) {

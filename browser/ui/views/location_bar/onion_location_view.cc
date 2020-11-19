@@ -10,7 +10,7 @@
 
 #include "base/strings/utf_string_conversions.h"
 #include "brave/app/vector_icons/vector_icons.h"
-#include "brave/browser/profiles/profile_util.h"
+#include "brave/browser/tor/tor_profile_manager.h"
 #include "brave/components/tor/onion_location_tab_helper.h"
 #include "brave/grit/brave_generated_resources.h"
 #include "chrome/browser/profiles/profile_window.h"
@@ -52,7 +52,7 @@ void OnTorProfileCreated(GURL onion_location,
   if (!browser)
     return;
   content::OpenURLParams open_tor(onion_location, content::Referrer(),
-                                  WindowOpenDisposition::OFF_THE_RECORD,
+                                  WindowOpenDisposition::NEW_FOREGROUND_TAB,
                                   ui::PAGE_TRANSITION_TYPED, false);
   browser->OpenURL(open_tor);
 }
@@ -80,8 +80,9 @@ class OnionLocationButtonView : public views::LabelButton,
  public:
   explicit OnionLocationButtonView(Profile* profile)
       : LabelButton(this,
-                    l10n_util::GetStringUTF16(IDS_LOCATION_BAR_OPEN_IN_TOR)) {
-    if (brave::IsTorProfile(profile))
+                    l10n_util::GetStringUTF16(IDS_LOCATION_BAR_OPEN_IN_TOR)),
+        profile_(profile) {
+    if (profile->IsTor())
       SetText(l10n_util::GetStringUTF16(IDS_LOCATION_BAR_ONION_AVAILABLE));
     // Render vector icon
     const gfx::ImageSkia image =
@@ -107,7 +108,8 @@ class OnionLocationButtonView : public views::LabelButton,
 
   // views::ButtonListener
   void ButtonPressed(Button* sender, const ui::Event& event) override {
-    profiles::SwitchToTorProfile(
+    TorProfileManager::SwitchToTorProfile(
+        profile_,
         base::BindRepeating(&OnTorProfileCreated, GURL(onion_location_)));
   }
 
@@ -126,6 +128,7 @@ class OnionLocationButtonView : public views::LabelButton,
   }
 
   GURL onion_location_;
+  Profile* profile_;
 
   OnionLocationButtonView(const OnionLocationButtonView&) = delete;
   OnionLocationButtonView& operator=(const OnionLocationButtonView&) = delete;

@@ -23,7 +23,7 @@ const ThemeHelper& GetBraveThemeHelper(Profile* profile) {
 #endif
   // Because the helper is created as a NoDestructor static, we need separate
   // instances for regular vs tor/guest profiles.
-  if (brave::IsTorProfile(profile) || brave::IsGuestProfile(profile)) {
+  if (profile->IsTor() || brave::IsGuestProfile(profile)) {
     static base::NoDestructor<std::unique_ptr<ThemeHelper>> dark_theme_helper(
         std::make_unique<BraveThemeHelper>());
     (static_cast<BraveThemeHelper*>(dark_theme_helper.get()->get()))

@@ -7,8 +7,8 @@
 
 #include <utility>
 
+#include "brave/browser/tor/tor_profile_manager.h"
 #include "chrome/browser/profiles/profile.h"
-#include "chrome/browser/profiles/profile_window.h"
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/browser_finder.h"
 #include "content/public/browser/web_contents.h"
@@ -26,7 +26,7 @@ void OnTorProfileCreated(GURL onion_location,
   if (!browser)
     return;
   content::OpenURLParams open_tor(onion_location, content::Referrer(),
-                                  WindowOpenDisposition::OFF_THE_RECORD,
+                                  WindowOpenDisposition::NEW_FOREGROUND_TAB,
                                   ui::PAGE_TRANSITION_TYPED, false);
   browser->OpenURL(open_tor);
 }
@@ -42,12 +42,12 @@ OnionLocationNavigationThrottleDelegate::
 void OnionLocationNavigationThrottleDelegate::OpenInTorWindow(
     content::WebContents* web_contents,
     GURL onion_location) {
-  profiles::SwitchToTorProfile(
+  Profile* profile =
+      Profile::FromBrowserContext(web_contents->GetBrowserContext());
+  TorProfileManager::SwitchToTorProfile(profile,
       base::BindRepeating(&OnTorProfileCreated, std::move(onion_location)));
 
   // We do not close last tab of the window
-  Profile* profile =
-      Profile::FromBrowserContext(web_contents->GetBrowserContext());
   Browser* browser = chrome::FindBrowserWithProfile(profile);
   if (browser && browser->tab_strip_model()->count() > 1)
     web_contents->ClosePage();

@@ -7,6 +7,7 @@
 
 #include "base/command_line.h"
 #include "brave/browser/browsing_data/brave_clear_browsing_data.h"
+#include "brave/common/brave_constants.h"
 #include "brave/common/pref_names.h"
 #include "brave/components/brave_sync/buildflags/buildflags.h"
 #include "brave/components/brave_sync/features.h"
@@ -75,6 +76,17 @@ void BraveBrowserMainParts::PostBrowserStart() {
     profile_manager->MaybeScheduleProfileForDeletion(
         tor_legacy_path, base::DoNothing(),
         ProfileMetrics::DELETE_PROFILE_SETTINGS);
+  }
+  for (Profile* profile : profile_manager->GetLoadedProfiles()) {
+    const base::FilePath tor_legacy_session_path =
+        profile->GetPath()
+            .Append(brave::kSessionProfileDir)
+            .Append(tor::kTorProfileDir);
+    if (base::PathExists(tor_legacy_session_path)) {
+      profile_manager->MaybeScheduleProfileForDeletion(
+          tor_legacy_session_path, base::DoNothing(),
+          ProfileMetrics::DELETE_PROFILE_SETTINGS);
+    }
   }
 #endif
 

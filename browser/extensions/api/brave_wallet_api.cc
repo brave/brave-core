@@ -12,7 +12,6 @@
 #include "base/values.h"
 #include "brave/browser/extensions/brave_wallet_util.h"
 #include "brave/browser/infobars/crypto_wallets_infobar_delegate.h"
-#include "brave/browser/profiles/profile_util.h"
 #include "brave/common/extensions/api/brave_wallet.h"
 #include "brave/components/brave_wallet/brave_wallet_constants.h"
 #include "brave/components/brave_wallet/pref_names.h"
@@ -57,9 +56,8 @@ BraveWalletPromptToEnableWalletFunction::Run() {
       brave_wallet::PromptToEnableWallet::Params::Create(*args_));
   EXTENSION_FUNCTION_VALIDATE(params.get());
 
-  Profile* profile = Profile::FromBrowserContext(browser_context());
-  if (brave::IsTorProfile(profile)) {
-    return RespondNow(Error("Not available in Tor profile"));
+  if (browser_context()->IsTor()) {
+    return RespondNow(Error("Not available in Tor context"));
   }
 
   // Get web contents for this tab
@@ -94,9 +92,8 @@ BraveWalletPromptToEnableWalletFunction::Run() {
 
 ExtensionFunction::ResponseAction
 BraveWalletReadyFunction::Run() {
-  Profile* profile = Profile::FromBrowserContext(browser_context());
-  if (brave::IsTorProfile(profile)) {
-    return RespondNow(Error("Not available in Tor profile"));
+  if (browser_context()->IsTor()) {
+    return RespondNow(Error("Not available in Tor context"));
   }
 
   auto* service = GetBraveWalletService(browser_context());
@@ -143,7 +140,7 @@ BraveWalletShouldPromptForSetupFunction::Run() {
 ExtensionFunction::ResponseAction
 BraveWalletShouldCheckForDappsFunction::Run() {
   Profile* profile = Profile::FromBrowserContext(browser_context());
-  if (brave::IsTorProfile(profile)) {
+  if (browser_context()->IsTor()) {
     return RespondNow(OneArgument(
         std::make_unique<base::Value>(false)));
   }

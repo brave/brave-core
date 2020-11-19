@@ -120,18 +120,21 @@ TorProfileServiceImpl::TorProfileServiceImpl(
     : context_(context),
       tor_client_updater_(tor_client_updater),
       user_data_dir_(user_data_dir),
-      tor_launcher_factory_(nullptr),
+      tor_launcher_factory_(TorLauncherFactory::GetInstance()),
       weak_ptr_factory_(this) {
+  if (tor_launcher_factory_) {
+    tor_launcher_factory_->AddObserver(this);
+  }
+
   if (tor_client_updater_) {
     tor_client_updater_->AddObserver(this);
-    tor_launcher_factory_ = TorLauncherFactory::GetInstance();
-    tor_launcher_factory_->AddObserver(this);
   }
 }
 
 TorProfileServiceImpl::~TorProfileServiceImpl() {
-  if (tor_launcher_factory_)
+  if (tor_launcher_factory_) {
     tor_launcher_factory_->RemoveObserver(this);
+  }
 
   if (tor_client_updater_) {
     tor_client_updater_->RemoveObserver(this);
@@ -251,20 +254,31 @@ void TorProfileServiceImpl::NotifyTorInitializing(
 
 std::unique_ptr<net::ProxyConfigService>
 TorProfileServiceImpl::CreateProxyConfigService() {
-  proxy_config_service_ = new net::ProxyConfigServiceTor();
+  // First tor profile will have empty proxy uri but it will receive update from
+  // NotifyTorNewProxyURI. And subsequent tor profile might not have
+  // NotifyTorNewProxyURI because it is called once when tor control is ready.
+  const std::string tor_proxy_uri = tor_launcher_factory_->GetTorProxyURI();
+  if (tor_proxy_uri.empty()) {
+    proxy_config_service_ =
+      new net::ProxyConfigServiceTor();
+  } else {
+    proxy_config_service_ =
+      new net::ProxyConfigServiceTor(tor_proxy_uri);
+  }
   return std::unique_ptr<net::ProxyConfigServiceTor>(proxy_config_service_);
 }
 
 bool TorProfileServiceImpl::IsTorConnected() {
-  if (is_tor_launched_for_test_)
-    return true;
   if (!tor_launcher_factory_)
     return false;
   return tor_launcher_factory_->IsTorConnected();
 }
 
-void TorProfileServiceImpl::SetTorLaunchedForTest() {
-  is_tor_launched_for_test_ = true;
+void TorProfileServiceImpl::SetTorLauncherFactoryForTest(
+    TorLauncherFactory* factory) {
+  if (!factory)
+    return;
+  tor_launcher_factory_ = factory;
 }
 
 }  // namespace tor

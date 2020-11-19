@@ -77,10 +77,23 @@ source_set("tor_unit_tests") {
     deps = [
       "//base/test:test_support",
       "//brave/components/tor",
-      "//brave/test:test_support",
       "//content/public/browser",
       "//content/test:test_support",
       "//testing/gtest",
     ]
   }
+}
+
+source_set("test_support") {
+  testonly = true
+  sources = [
+    "mock_tor_launcher_factory.cc",
+    "mock_tor_launcher_factory.h",
+  ]
+
+  deps = [
+    ":tor",
+    "//base",
+    "//testing/gmock",
+  ]
 }

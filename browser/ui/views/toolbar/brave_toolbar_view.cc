@@ -11,7 +11,6 @@
 
 #include "base/bind.h"
 #include "base/feature_list.h"
-#include "brave/browser/profiles/profile_util.h"
 #include "brave/browser/ui/views/toolbar/bookmark_button.h"
 #include "brave/browser/ui/views/toolbar/speedreader_button.h"
 #include "brave/common/pref_names.h"
@@ -95,8 +94,7 @@ bool HasMultipleUserProfiles() {
 }
 
 bool IsAvatarButtonHideable(Profile* profile) {
-  return !brave::IsTorProfile(profile) && !profile->IsIncognitoProfile() &&
-         !profile->IsGuestSession();
+  return !profile->IsIncognitoProfile() && !profile->IsGuestSession();
 }
 
 }  // namespace

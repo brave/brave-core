@@ -255,7 +255,6 @@ source_set("browser_process") {
 
     deps += [
       "//base",
-      "//brave/browser/profiles",
       "//brave/common",
       "//brave/components/gemini/browser",
       "//components/country_codes",

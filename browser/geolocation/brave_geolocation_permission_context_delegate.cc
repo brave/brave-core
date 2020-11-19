@@ -7,7 +7,6 @@
 
 #include <utility>
 
-#include "brave/browser/profiles/profile_util.h"
 #include "chrome/browser/profiles/profile.h"
 #include "components/content_settings/core/common/content_settings.h"
 #include "components/permissions/permission_request_id.h"
@@ -30,7 +29,7 @@ bool BraveGeolocationPermissionContextDelegate::DecidePermission(
     bool user_gesture,
     permissions::BrowserPermissionCallback* callback,
     permissions::GeolocationPermissionContext* context) {
-  if (brave::IsTorProfile(profile_)) {
+  if (profile_->IsTor()) {
     std::move(*callback).Run(ContentSetting::CONTENT_SETTING_BLOCK);
     return true;
   }

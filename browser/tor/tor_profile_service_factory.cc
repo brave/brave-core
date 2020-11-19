@@ -6,21 +6,15 @@
 #include "brave/browser/tor/tor_profile_service_factory.h"
 
 #include <memory>
-#include <set>
 
 #include "base/path_service.h"
 #include "brave/browser/brave_browser_process_impl.h"
-#include "brave/browser/profiles/profile_util.h"
 #include "brave/components/tor/pref_names.h"
 #include "brave/components/tor/tor_profile_service_impl.h"
 #include "chrome/common/chrome_paths.h"
 #include "components/keyed_service/content/browser_context_dependency_manager.h"
 #include "components/prefs/pref_service.h"
 #include "content/public/browser/browser_context.h"
-
-namespace {
-std::set<content::BrowserContext*> g_context_set;
-}
 
 // static
 tor::TorProfileService* TorProfileServiceFactory::GetForContext(
@@ -59,16 +53,12 @@ bool TorProfileServiceFactory::IsTorDisabled() {
 TorProfileServiceFactory::TorProfileServiceFactory()
     : BrowserContextKeyedServiceFactory(
           "TorProfileService",
-          BrowserContextDependencyManager::GetInstance()) {
-  g_context_set.clear();
-}
+          BrowserContextDependencyManager::GetInstance()) {}
 
 TorProfileServiceFactory::~TorProfileServiceFactory() {}
 
 KeyedService* TorProfileServiceFactory::BuildServiceInstanceFor(
     content::BrowserContext* context) const {
-  if (!brave::IsTorProfile(context))
-    return nullptr;
   base::FilePath user_data_dir;
   base::PathService::Get(chrome::DIR_USER_DATA, &user_data_dir);
   DCHECK(!user_data_dir.empty());
@@ -80,38 +70,13 @@ KeyedService* TorProfileServiceFactory::BuildServiceInstanceFor(
               : nullptr,
           user_data_dir));
 
-  // We only care about Tor incognito profiles for deciding whether to KillTor.
-  if (context->IsOffTheRecord()) {
-    g_context_set.emplace(context);
-  }
-
   return tor_profile_service.release();
 }
 
 content::BrowserContext* TorProfileServiceFactory::GetBrowserContextToUse(
     content::BrowserContext* context) const {
-  // Not shared with our dummy regular Tor profile because we want to trigger
-  // LaunchTor when a new Tor window is created.
+  // Only grant service for tor context
+  if (!context->IsTor())
+    return nullptr;
   return context;
-}
-
-void TorProfileServiceFactory::BrowserContextShutdown(
-    content::BrowserContext* context) {
-  // KillTor when the last Tor incognito profile is shutting down.
-  if (g_context_set.size() == 1) {
-    auto* service = static_cast<tor::TorProfileServiceImpl*>(
-        TorProfileServiceFactory::GetForContext(context, false));
-    if (service) {
-      service->KillTor();
-    } else {
-      DCHECK(!brave::IsTorProfile(context));
-    }
-  }
-  BrowserContextKeyedServiceFactory::BrowserContextShutdown(context);
-}
-
-void TorProfileServiceFactory::BrowserContextDestroyed(
-    content::BrowserContext* context) {
-  g_context_set.erase(context);
-  BrowserContextKeyedServiceFactory::BrowserContextDestroyed(context);
 }

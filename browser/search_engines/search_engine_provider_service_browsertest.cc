@@ -26,21 +26,7 @@
 #include "content/public/test/browser_test.h"
 #include "content/public/test/test_utils.h"
 
-#if BUILDFLAG(ENABLE_TOR)
-#include "brave/components/tor/brave_tor_client_updater.h"
-#include "brave/components/tor/tor_launcher_factory.h"
-#endif
-
-class SearchEngineProviderServiceTest : public InProcessBrowserTest {
- public:
-  void SetUpOnMainThread() override {
-    InProcessBrowserTest::SetUpOnMainThread();
-#if BUILDFLAG(ENABLE_TOR)
-    g_brave_browser_process->tor_client_updater()->SetExecutablePath(
-        base::FilePath(FILE_PATH_LITERAL("test")));
-#endif
-  }
-};
+using SearchEngineProviderServiceTest = InProcessBrowserTest;
 
 TemplateURLData CreateTestSearchEngine() {
   TemplateURLData result;
@@ -150,13 +136,11 @@ IN_PROC_BROWSER_TEST_F(SearchEngineProviderServiceTest,
 // Checks the default search engine of the tor profile.
 IN_PROC_BROWSER_TEST_F(SearchEngineProviderServiceTest,
                        PRE_CheckDefaultTorProfileSearchProviderTest) {
-  ScopedTorLaunchPreventerForTest prevent_tor_process;
-
   brave::NewOffTheRecordWindowTor(browser());
   content::RunAllTasksUntilIdle();
 
   Profile* tor_profile = BrowserList::GetInstance()->GetLastActive()->profile();
-  EXPECT_TRUE(brave::IsTorProfile(tor_profile));
+  EXPECT_TRUE(tor_profile->IsTor());
 
   auto* service = TemplateURLServiceFactory::GetForProfile(tor_profile);
 
@@ -180,13 +164,11 @@ IN_PROC_BROWSER_TEST_F(SearchEngineProviderServiceTest,
 // sessions.
 IN_PROC_BROWSER_TEST_F(SearchEngineProviderServiceTest,
                        CheckDefaultTorProfileSearchProviderTest) {
-  ScopedTorLaunchPreventerForTest prevent_tor_process;
-
   brave::NewOffTheRecordWindowTor(browser());
   content::RunAllTasksUntilIdle();
 
   Profile* tor_profile = BrowserList::GetInstance()->GetLastActive()->profile();
-  EXPECT_TRUE(brave::IsTorProfile(tor_profile));
+  EXPECT_TRUE(tor_profile->IsTor());
 
   int default_provider_id =
       brave::IsRegionForQwant(tor_profile)

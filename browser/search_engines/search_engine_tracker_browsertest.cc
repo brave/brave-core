@@ -16,10 +16,6 @@
 #include "components/search_engines/template_url_prepopulate_data.h"
 #include "content/public/test/browser_test.h"
 
-#if BUILDFLAG(ENABLE_TOR)
-#include "brave/components/tor/tor_launcher_factory.h"
-#endif
-
 class SearchEngineProviderP3ATest : public InProcessBrowserTest {
  public:
   SearchEngineProviderP3ATest() {
@@ -52,7 +48,6 @@ IN_PROC_BROWSER_TEST_F(SearchEngineProviderP3ATest,
   // Check that incognito or TOR profiles do not emit the metric.
   CreateIncognitoBrowser();
 #if BUILDFLAG(ENABLE_TOR)
-  ScopedTorLaunchPreventerForTest prevent_tor_process;
   brave::NewOffTheRecordWindowTor(browser());
 #endif
 
