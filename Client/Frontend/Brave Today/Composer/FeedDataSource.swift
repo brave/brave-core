@@ -441,6 +441,7 @@ class FeedDataSource {
             })?.enabled ?? item.source.isDefault
         }
         var sponsors = feedsFromEnabledSources.filter { $0.content.contentType == .sponsor }
+        var partners = feedsFromEnabledSources.filter { $0.content.contentType == .partner }
         var deals = feedsFromEnabledSources.filter { $0.content.contentType == .deals }
         var articles = feedsFromEnabledSources.filter { $0.content.contentType == .article }
         
@@ -460,6 +461,7 @@ class FeedDataSource {
             .repeating([
                 .repeating([.headline(paired: false)], times: 2),
                 .repeating([.headline(paired: true)], times: 2),
+                .partner,
                 .fillUsing(
                     CategoryFillStrategy(
                         categories: Set(articles.map(\.source.category)),
@@ -495,6 +497,13 @@ class FeedDataSource {
                 return fillStrategy.next(3, from: &deals).map {
                     let title = $0.first?.content.offersCategory
                     return [.deals($0, title: title ?? Strings.BraveToday.deals)]
+                }
+            case .partner:
+                let imageExists = { (item: FeedItem) -> Bool in
+                    item.content.imageURL != nil
+                }
+                return fillStrategy.next(from: &partners, where: imageExists).map {
+                    [.headline($0)]
                 }
             case .headline(let paired):
                 if articles.isEmpty { return nil }
@@ -581,6 +590,8 @@ extension FeedDataSource {
     private enum FeedSequenceElement {
         /// Display a sponsored image with the content type of `product`
         case sponsor
+        /// Display a headline from a list of partnered items
+        case partner
         /// Displays a horizontal list of deals with the content type of `brave_offers`
         case deals
         /// Displays an `article` type item in a headline card. Can also be displayed as two (smaller) paired
