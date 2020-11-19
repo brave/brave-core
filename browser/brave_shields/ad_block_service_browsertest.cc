@@ -3,6 +3,11 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
+#include "brave/browser/brave_shields/ad_block_service_browsertest.h"
+
+#include <string>
+#include <vector>
+
 #include "base/base64.h"
 #include "base/path_service.h"
 #include "base/task/post_task.h"
@@ -31,10 +36,6 @@
 #include "extensions/test/extension_test_message_listener.h"
 #include "net/dns/mock_host_resolver.h"
 
-using brave_shields::features::kBraveAdblockCosmeticFiltering;
-using content::BrowserThread;
-using extensions::ExtensionBrowserTest;
-
 const char kAdBlockTestPage[] = "/blocking.html";
 
 const char kAdBlockEasyListFranceUUID[] =
@@ -47,7 +48,7 @@ const char kRegionalAdBlockComponentTestId[] =
 const char kTrackingProtectionComponentTestId[] =
     "eclbkhjphkhalklhipiicaldjbnhdfkc";
 
-const char kDefaultAdBlockComponentTestBase64PublicKey[] =
+const char kDefaultAdBlockComponentTest64PublicKey[] =
     "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAtV7Vr69kkvSvu2lhcMDh"
     "j4Jm3FKU1zpUkALaum5719/cccVvGpMKKFyy4WYXsmAfcIONmGO4ThK/q6jkgC5v"
     "8HrkjPOf7HHebKEnsJJucz/Z1t6dq0CE+UA2IWfbGfFM4nJ8AKIv2gqiw2d4ydAs"
@@ -55,7 +56,7 @@ const char kDefaultAdBlockComponentTestBase64PublicKey[] =
     "Qdk+dZ9r8NRQnpjChQzwhMAkxyrdjT1N7NcfTufiYQTOyiFvxPAC9D7vAzkpGgxU"
     "Ikylk7cYRxqkRGS/AayvfipJ/HOkoBd0yKu1MRk4YcKGd/EahDAhUtd9t4+v33Qv"
     "uwIDAQAB";
-const char kRegionalAdBlockComponentTestBase64PublicKey[] =
+const char kRegionalAdBlockComponentTest64PublicKey[] =
     "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAoKYkdDM8vWZXBbDJXTP6"
     "1m9yLuH9iL/TvqAqu1zOd91VJu4bpcCMZjfGPC1g+O+pZrCaFVv5NJeZxGqT6DUB"
     "RZUdXPkGGUC1ebS4LLJbggNQb152LFk8maR0/ItvMOW8eTcV8VFKHk4UrVhPTggf"
@@ -63,7 +64,7 @@ const char kRegionalAdBlockComponentTestBase64PublicKey[] =
     "G8XBq/Y8FbBt+u+7skWQy3lVyRwFjeFu6cXVF4tcc06PNx5yLsbHQtSv8R+h1bWw"
     "ieMF3JB9CZPr+qDKIap+RZUfsraV47QebRi/JA17nbDMlXOmK7mILfFU7Jhjx04F"
     "LwIDAQAB";
-const char kTrackingProtectionComponentTestBase64PublicKey[] =
+const char kTrackingProtectionComponentTest64PublicKey[] =
     "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAsleoSxQ3DN+6xym2P1uX"
     "mN6ArIWd9Oru5CSjS0SRE5upM2EnAl/C20TP8JdIlPi/3tk/SN6Y92K3xIhAby5F"
     "0rbPDSTXEWGy72tv2qb/WySGwDdvYQu9/J5sEDneVcMrSHcC0VWgcZR0eof4BfOy"
@@ -72,197 +73,185 @@ const char kTrackingProtectionComponentTestBase64PublicKey[] =
     "WhIYw/5zv1NyIsfUiG8wIs5+OwS419z7dlMKsg1FuB2aQcDyjoXx1habFfHQfQwL"
     "qwIDAQAB";
 
-class AdBlockServiceTest : public ExtensionBrowserTest {
- public:
-  AdBlockServiceTest() {}
+using brave_shields::features::kBraveAdblockCosmeticFiltering;
+using content::BrowserThread;
 
-  void SetUpOnMainThread() override {
-    ExtensionBrowserTest::SetUpOnMainThread();
-    host_resolver()->AddRule("*", "127.0.0.1");
+void AdBlockServiceTest::SetUpOnMainThread() {
+  ExtensionBrowserTest::SetUpOnMainThread();
+  host_resolver()->AddRule("*", "127.0.0.1");
+}
+
+void AdBlockServiceTest::SetUp() {
+  InitEmbeddedTestServer();
+  ExtensionBrowserTest::SetUp();
+}
+
+void AdBlockServiceTest::PreRunTestOnMainThread() {
+  ExtensionBrowserTest::PreRunTestOnMainThread();
+  WaitForAdBlockServiceThreads();
+  ASSERT_TRUE(g_brave_browser_process->ad_block_service()->IsInitialized());
+}
+
+HostContentSettingsMap* AdBlockServiceTest::content_settings() {
+  return HostContentSettingsMapFactory::GetForProfile(browser()->profile());
+}
+
+void AdBlockServiceTest::UpdateAdBlockInstanceWithRules(
+    const std::string& rules,
+    const std::string& resources) {
+  g_brave_browser_process->ad_block_service()->ResetForTest(rules, resources);
+}
+
+void AdBlockServiceTest::AssertTagExists(const std::string& tag,
+                                         bool expected_exists) const {
+  bool exists_default =
+      g_brave_browser_process->ad_block_service()->TagExists(tag);
+  ASSERT_EQ(exists_default, expected_exists);
+
+  for (const auto& regional_service :
+       g_brave_browser_process->ad_block_regional_service_manager()
+           ->regional_services_) {
+    bool exists_regional = regional_service.second->TagExists(tag);
+    ASSERT_EQ(exists_regional, expected_exists);
   }
+}
 
-  void SetUp() override {
-    InitEmbeddedTestServer();
-    ExtensionBrowserTest::SetUp();
-  }
+void AdBlockServiceTest::InitEmbeddedTestServer() {
+  brave::RegisterPathProvider();
+  base::FilePath test_data_dir;
+  base::PathService::Get(brave::DIR_TEST_DATA, &test_data_dir);
+  embedded_test_server()->ServeFilesFromDirectory(test_data_dir);
+  content::SetupCrossSiteRedirector(embedded_test_server());
+  ASSERT_TRUE(embedded_test_server()->Start());
+}
 
-  void PreRunTestOnMainThread() override {
-    ExtensionBrowserTest::PreRunTestOnMainThread();
-    WaitForAdBlockServiceThreads();
-    ASSERT_TRUE(g_brave_browser_process->ad_block_service()->IsInitialized());
-  }
+void AdBlockServiceTest::GetTestDataDir(base::FilePath* test_data_dir) {
+  base::ScopedAllowBlockingForTesting allow_blocking;
+  base::PathService::Get(brave::DIR_TEST_DATA, test_data_dir);
+}
 
-  HostContentSettingsMap* content_settings() {
-    return HostContentSettingsMapFactory::GetForProfile(browser()->profile());
-  }
+void AdBlockServiceTest::InitTrackingProtectionService() {
+  brave_component_updater::LocalDataFilesService::
+      SetComponentIdAndBase64PublicKeyForTest(
+          kTrackingProtectionComponentTestId,
+          kTrackingProtectionComponentTest64PublicKey);
+}
 
-  void UpdateAdBlockInstanceWithRules(const std::string& rules,
-                                      const std::string& resources = "") {
-    g_brave_browser_process->ad_block_service()->ResetForTest(rules, resources);
-  }
+bool AdBlockServiceTest::InstallDefaultAdBlockExtension(
+    const std::string& extension_dir,
+    int expected_change) {
+  brave_shields::AdBlockService::SetComponentIdAndBase64PublicKeyForTest(
+      kDefaultAdBlockComponentTestId, kDefaultAdBlockComponentTest64PublicKey);
+  base::FilePath test_data_dir;
+  GetTestDataDir(&test_data_dir);
+  const extensions::Extension* ad_block_extension = InstallExtension(
+      test_data_dir.AppendASCII("adblock-data").AppendASCII(extension_dir),
+      expected_change);
+  if (!ad_block_extension)
+    return false;
 
-  void AssertTagExists(const std::string& tag, bool expected_exists) const {
-    bool exists_default =
-        g_brave_browser_process->ad_block_service()->TagExists(tag);
-    ASSERT_EQ(exists_default, expected_exists);
+  g_brave_browser_process->ad_block_service()->OnComponentReady(
+      ad_block_extension->id(), ad_block_extension->path(), "");
+  WaitForAdBlockServiceThreads();
 
-    for (const auto& regional_service :
-         g_brave_browser_process->ad_block_regional_service_manager()
-             ->regional_services_) {
-      bool exists_regional = regional_service.second->TagExists(tag);
-      ASSERT_EQ(exists_regional, expected_exists);
-    }
-  }
+  return true;
+}
 
-  void InitEmbeddedTestServer() {
-    brave::RegisterPathProvider();
-    base::FilePath test_data_dir;
-    base::PathService::Get(brave::DIR_TEST_DATA, &test_data_dir);
-    embedded_test_server()->ServeFilesFromDirectory(test_data_dir);
-    content::SetupCrossSiteRedirector(embedded_test_server());
-    ASSERT_TRUE(embedded_test_server()->Start());
-  }
-
-  void GetTestDataDir(base::FilePath* test_data_dir) {
-    base::ScopedAllowBlockingForTesting allow_blocking;
-    base::PathService::Get(brave::DIR_TEST_DATA, test_data_dir);
-  }
-
-  void SetDefaultComponentIdAndBase64PublicKeyForTest(
-      const std::string& component_id,
-      const std::string& component_base64_public_key) {
-    brave_shields::AdBlockService::SetComponentIdAndBase64PublicKeyForTest(
-        component_id, component_base64_public_key);
-  }
-
-  void InitTrackingProtectionService() {
-    brave_component_updater::LocalDataFilesService::
-        SetComponentIdAndBase64PublicKeyForTest(
-            kTrackingProtectionComponentTestId,
-            kTrackingProtectionComponentTestBase64PublicKey);
-  }
-
-  void SetRegionalComponentIdAndBase64PublicKeyForTest(
-      const std::string& component_id,
-      const std::string& component_base64_public_key) {
-    brave_shields::AdBlockRegionalService::
-        SetComponentIdAndBase64PublicKeyForTest(component_id,
-                                                component_base64_public_key);
-  }
-
-  bool InstallDefaultAdBlockExtension(
-      const std::string& extension_dir = "adblock-default",
-      int expected_change = 1) {
-    base::FilePath test_data_dir;
-    GetTestDataDir(&test_data_dir);
-    const extensions::Extension* ad_block_extension = InstallExtension(
-        test_data_dir.AppendASCII("adblock-data").AppendASCII(extension_dir),
-        expected_change);
-    if (!ad_block_extension)
-      return false;
-
-    g_brave_browser_process->ad_block_service()->OnComponentReady(
-        ad_block_extension->id(), ad_block_extension->path(), "");
-    WaitForAdBlockServiceThreads();
-
-    return true;
-  }
-
-  bool InstallRegionalAdBlockExtension(const std::string& uuid) {
-    base::FilePath test_data_dir;
-    GetTestDataDir(&test_data_dir);
-    const std::vector<adblock::FilterList> regional_catalog = {
+bool AdBlockServiceTest::InstallRegionalAdBlockExtension(
+    const std::string& uuid) {
+  brave_shields::AdBlockRegionalService::
+      SetComponentIdAndBase64PublicKeyForTest(
+          kRegionalAdBlockComponentTestId,
+          kRegionalAdBlockComponentTest64PublicKey);
+  base::FilePath test_data_dir;
+  GetTestDataDir(&test_data_dir);
+  const std::vector<adblock::FilterList> regional_catalog = {
       adblock::FilterList(
-        uuid,
-        "https://easylist-downloads.adblockplus.org/liste_fr.txt",
-        "EasyList Liste FR",
-        { "fr" },
-        "https://forums.lanik.us/viewforum.php?f=91",
-        "emaecjinaegfkoklcdafkiocjhoeilao",
-        "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAsbqIWuMS7r2OPXCsIPbbLG1H/"
-        "d3NM9uzCMscw7R9ZV3TwhygvMOpZrNp4Y4hImy2H+HE0OniCqzuOAaq7+SHXcdHwItvLK"
-        "tnRmeWgdqxgEdzJ8rZMWnfi+dODTbA4QvxI6itU5of8trDFbLzFqgnEOBk8ZxtjM/M5v3"
-        "UeYh+EYHSEyHnDSJKbKevlXC931xlbdca0q0Ps3Ln6w/pJFByGbOh212mD/PvwS6jIH3L"
-        "YjrMVUMefKC/ywn/AAdnwM5mGirm1NflQCJQOpTjIhbRIXBlACfV/hwI1lqfKbFnyr4aP"
-        "Odg3JcOZZVoyi+ko3rKG3vH9JPWEy24Ys9A3SYpTwIDAQAB",
-        "Removes advertisements from French websites"
-      )
-    };
-    g_brave_browser_process->ad_block_regional_service_manager()->
-        SetRegionalCatalog(regional_catalog);
-    const extensions::Extension* ad_block_extension =
-        InstallExtension(test_data_dir.AppendASCII("adblock-data")
-                             .AppendASCII("adblock-regional")
-                             .AppendASCII(uuid),
-                         1);
-    if (!ad_block_extension)
-      return false;
+          uuid, "https://easylist-downloads.adblockplus.org/liste_fr.txt",
+          "EasyList Liste FR", {"fr"},
+          "https://forums.lanik.us/viewforum.php?f=91",
+          "emaecjinaegfkoklcdafkiocjhoeilao",
+          "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAsbqIWuMS7r2OPXCsIPbbLG1H"
+          "/"
+          "d3NM9uzCMscw7R9ZV3TwhygvMOpZrNp4Y4hImy2H+HE0OniCqzuOAaq7+"
+          "SHXcdHwItvLK"
+          "tnRmeWgdqxgEdzJ8rZMWnfi+dODTbA4QvxI6itU5of8trDFbLzFqgnEOBk8ZxtjM/"
+          "M5v3"
+          "UeYh+EYHSEyHnDSJKbKevlXC931xlbdca0q0Ps3Ln6w/pJFByGbOh212mD/"
+          "PvwS6jIH3L"
+          "YjrMVUMefKC/ywn/AAdnwM5mGirm1NflQCJQOpTjIhbRIXBlACfV/"
+          "hwI1lqfKbFnyr4aP"
+          "Odg3JcOZZVoyi+ko3rKG3vH9JPWEy24Ys9A3SYpTwIDAQAB",
+          "Removes advertisements from French websites")};
+  g_brave_browser_process->ad_block_regional_service_manager()
+      ->SetRegionalCatalog(regional_catalog);
+  const extensions::Extension* ad_block_extension =
+      InstallExtension(test_data_dir.AppendASCII("adblock-data")
+                           .AppendASCII("adblock-regional")
+                           .AppendASCII(uuid),
+                       1);
+  if (!ad_block_extension)
+    return false;
 
-    g_brave_browser_process->ad_block_regional_service_manager()
-        ->EnableFilterList(uuid, true);
-    EXPECT_EQ(g_brave_browser_process->ad_block_regional_service_manager()
-                  ->regional_services_.size(),
-              1ULL);
+  g_brave_browser_process->ad_block_regional_service_manager()
+      ->EnableFilterList(uuid, true);
+  EXPECT_EQ(g_brave_browser_process->ad_block_regional_service_manager()
+                ->regional_services_.size(),
+            1ULL);
 
-    auto regional_service =
-        g_brave_browser_process->ad_block_regional_service_manager()
-            ->regional_services_.find(uuid);
-    regional_service->second->OnComponentReady(ad_block_extension->id(),
-                                               ad_block_extension->path(), "");
-    WaitForAdBlockServiceThreads();
+  auto regional_service =
+      g_brave_browser_process->ad_block_regional_service_manager()
+          ->regional_services_.find(uuid);
+  regional_service->second->OnComponentReady(ad_block_extension->id(),
+                                             ad_block_extension->path(), "");
+  WaitForAdBlockServiceThreads();
 
-    return true;
-  }
+  return true;
+}
 
-  bool InstallTrackingProtectionExtension() {
-    base::FilePath test_data_dir;
-    GetTestDataDir(&test_data_dir);
-    const extensions::Extension* tracking_protection_extension =
-        InstallExtension(test_data_dir.AppendASCII("tracking-protection-data"),
-                         1);
-    if (!tracking_protection_extension)
-      return false;
+bool AdBlockServiceTest::InstallTrackingProtectionExtension() {
+  base::FilePath test_data_dir;
+  GetTestDataDir(&test_data_dir);
+  const extensions::Extension* tracking_protection_extension = InstallExtension(
+      test_data_dir.AppendASCII("tracking-protection-data"), 1);
+  if (!tracking_protection_extension)
+    return false;
 
-    g_brave_browser_process->tracking_protection_service()->OnComponentReady(
-        tracking_protection_extension->id(),
-        tracking_protection_extension->path(), "");
-    WaitForAdBlockServiceThreads();
+  g_brave_browser_process->tracking_protection_service()->OnComponentReady(
+      tracking_protection_extension->id(),
+      tracking_protection_extension->path(), "");
+  WaitForAdBlockServiceThreads();
 
-    return true;
-  }
+  return true;
+}
 
-  bool StartAdBlockRegionalServices() {
-    g_brave_browser_process->ad_block_regional_service_manager()->Start();
-    if (!g_brave_browser_process->ad_block_regional_service_manager()
-             ->IsInitialized())
-      return false;
-    return true;
-  }
+bool AdBlockServiceTest::StartAdBlockRegionalServices() {
+  g_brave_browser_process->ad_block_regional_service_manager()->Start();
+  if (!g_brave_browser_process->ad_block_regional_service_manager()
+           ->IsInitialized())
+    return false;
+  return true;
+}
 
-  void WaitForAdBlockServiceThreads() {
-    scoped_refptr<base::ThreadTestHelper> tr_helper(new base::ThreadTestHelper(
-        g_brave_browser_process->local_data_files_service()->GetTaskRunner()));
-    ASSERT_TRUE(tr_helper->Run());
-    scoped_refptr<base::ThreadTestHelper> io_helper(new base::ThreadTestHelper(
-        base::CreateSingleThreadTaskRunner({BrowserThread::IO}).get()));
-    ASSERT_TRUE(io_helper->Run());
-  }
+void AdBlockServiceTest::WaitForAdBlockServiceThreads() {
+  scoped_refptr<base::ThreadTestHelper> tr_helper(new base::ThreadTestHelper(
+      g_brave_browser_process->local_data_files_service()->GetTaskRunner()));
+  ASSERT_TRUE(tr_helper->Run());
+  scoped_refptr<base::ThreadTestHelper> io_helper(new base::ThreadTestHelper(
+      base::CreateSingleThreadTaskRunner({BrowserThread::IO}).get()));
+  ASSERT_TRUE(io_helper->Run());
+}
 
-  void WaitForBraveExtensionShieldsDataReady() {
-    // Sometimes, the page can start loading before the Shields panel has
-    // received information about the window and tab it's loaded in.
-    ExtensionTestMessageListener extension_listener(
-        "brave-extension-shields-data-ready",
-        false);
-    ASSERT_TRUE(extension_listener.WaitUntilSatisfied());
-  }
-};
+void AdBlockServiceTest::WaitForBraveExtensionShieldsDataReady() {
+  // Sometimes, the page can start loading before the Shields panel has
+  // received information about the window and tab it's loaded in.
+  ExtensionTestMessageListener extension_listener(
+      "brave-extension-shields-data-ready", false);
+  ASSERT_TRUE(extension_listener.WaitUntilSatisfied());
+}
 
 // Load a page with an ad image, and make sure it is blocked.
 IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, AdsGetBlockedByDefaultBlocker) {
-  SetDefaultComponentIdAndBase64PublicKeyForTest(
-      kDefaultAdBlockComponentTestId,
-      kDefaultAdBlockComponentTestBase64PublicKey);
   ASSERT_TRUE(InstallDefaultAdBlockExtension());
   EXPECT_EQ(browser()->profile()->GetPrefs()->GetUint64(kAdsBlocked), 0ULL);
 
@@ -357,9 +346,6 @@ IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, CustomBlockDefaultException) {
 // blocked.
 IN_PROC_BROWSER_TEST_F(AdBlockServiceTest,
                        NotAdsDoNotGetBlockedByDefaultBlocker) {
-  SetDefaultComponentIdAndBase64PublicKeyForTest(
-      kDefaultAdBlockComponentTestId,
-      kDefaultAdBlockComponentTestBase64PublicKey);
   ASSERT_TRUE(InstallDefaultAdBlockExtension());
   EXPECT_EQ(browser()->profile()->GetPrefs()->GetUint64(kAdsBlocked), 0ULL);
 
@@ -382,9 +368,6 @@ IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, AdsGetBlockedByRegionalBlocker) {
 
   EXPECT_EQ(browser()->profile()->GetPrefs()->GetUint64(kAdsBlocked), 0ULL);
 
-  SetRegionalComponentIdAndBase64PublicKeyForTest(
-      kRegionalAdBlockComponentTestId,
-      kRegionalAdBlockComponentTestBase64PublicKey);
   ASSERT_TRUE(InstallRegionalAdBlockExtension(kAdBlockEasyListFranceUUID));
   ASSERT_TRUE(StartAdBlockRegionalServices());
 
@@ -408,9 +391,6 @@ IN_PROC_BROWSER_TEST_F(AdBlockServiceTest,
 
   EXPECT_EQ(browser()->profile()->GetPrefs()->GetUint64(kAdsBlocked), 0ULL);
 
-  SetRegionalComponentIdAndBase64PublicKeyForTest(
-      kRegionalAdBlockComponentTestId,
-      kRegionalAdBlockComponentTestBase64PublicKey);
   ASSERT_TRUE(InstallRegionalAdBlockExtension(kAdBlockEasyListFranceUUID));
   ASSERT_TRUE(StartAdBlockRegionalServices());
 
@@ -429,10 +409,6 @@ IN_PROC_BROWSER_TEST_F(AdBlockServiceTest,
 // is blocked.
 IN_PROC_BROWSER_TEST_F(AdBlockServiceTest,
                        AdsGetBlockedAfterDataFileVersionUpgrade) {
-  SetDefaultComponentIdAndBase64PublicKeyForTest(
-      kDefaultAdBlockComponentTestId,
-      kDefaultAdBlockComponentTestBase64PublicKey);
-
   // Install AdBlock extension with a version 3 format data file and
   // expect a new install
   ASSERT_TRUE(InstallDefaultAdBlockExtension("adblock-v3", 1));
@@ -457,9 +433,6 @@ IN_PROC_BROWSER_TEST_F(AdBlockServiceTest,
 // Load a page with several of the same adblocked xhr requests, it should only
 // count 1.
 IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, TwoSameAdsGetCountedAsOne) {
-  SetDefaultComponentIdAndBase64PublicKeyForTest(
-      kDefaultAdBlockComponentTestId,
-      kDefaultAdBlockComponentTestBase64PublicKey);
   ASSERT_TRUE(InstallDefaultAdBlockExtension());
   EXPECT_EQ(browser()->profile()->GetPrefs()->GetUint64(kAdsBlocked), 0ULL);
 
@@ -482,9 +455,6 @@ IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, TwoSameAdsGetCountedAsOne) {
 
 // Load a page with different adblocked xhr requests, it should count each.
 IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, TwoDiffAdsGetCountedAsTwo) {
-  SetDefaultComponentIdAndBase64PublicKeyForTest(
-      kDefaultAdBlockComponentTestId,
-      kDefaultAdBlockComponentTestBase64PublicKey);
   ASSERT_TRUE(InstallDefaultAdBlockExtension());
   EXPECT_EQ(browser()->profile()->GetPrefs()->GetUint64(kAdsBlocked), 0ULL);
 
@@ -507,9 +477,6 @@ IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, TwoDiffAdsGetCountedAsTwo) {
 
 // New tab continues to count blocking the same resource
 IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, NewTabContinuesToBlock) {
-  SetDefaultComponentIdAndBase64PublicKeyForTest(
-      kDefaultAdBlockComponentTestId,
-      kDefaultAdBlockComponentTestBase64PublicKey);
   ASSERT_TRUE(InstallDefaultAdBlockExtension());
   EXPECT_EQ(browser()->profile()->GetPrefs()->GetUint64(kAdsBlocked), 0ULL);
 
@@ -536,9 +503,6 @@ IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, NewTabContinuesToBlock) {
 
 // XHRs and ads in a cross-site iframe are blocked as well.
 IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, SubFrame) {
-  SetDefaultComponentIdAndBase64PublicKeyForTest(
-      kDefaultAdBlockComponentTestId,
-      kDefaultAdBlockComponentTestBase64PublicKey);
   ASSERT_TRUE(InstallDefaultAdBlockExtension());
   EXPECT_EQ(browser()->profile()->GetPrefs()->GetUint64(kAdsBlocked), 0ULL);
 
@@ -597,9 +561,6 @@ IN_PROC_BROWSER_TEST_F(AdBlockServiceTest,
 
   EXPECT_EQ(browser()->profile()->GetPrefs()->GetUint64(kAdsBlocked), 0ULL);
 
-  SetRegionalComponentIdAndBase64PublicKeyForTest(
-      kRegionalAdBlockComponentTestId,
-      kRegionalAdBlockComponentTestBase64PublicKey);
   ASSERT_TRUE(InstallRegionalAdBlockExtension(kAdBlockEasyListFranceUUID));
   ASSERT_TRUE(StartAdBlockRegionalServices());
 
@@ -624,10 +585,10 @@ IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, AdBlockThirdPartyWorksByETLDP1) {
   ui_test_utils::NavigateToURL(browser(), tab_url);
   content::WebContents* contents =
       browser()->tab_strip_model()->GetActiveWebContents();
-  ASSERT_EQ(true, EvalJs(contents,
-                         base::StringPrintf("setExpectations(1, 0, 0, 0);"
-                                            "addImage('%s')",
-                                            resource_url.spec().c_str())));
+  ASSERT_EQ(true,
+            EvalJs(contents, base::StringPrintf("setExpectations(1, 0, 0, 0);"
+                                                "addImage('%s')",
+                                                resource_url.spec().c_str())));
   EXPECT_EQ(browser()->profile()->GetPrefs()->GetUint64(kAdsBlocked), 0ULL);
 }
 
@@ -641,10 +602,10 @@ IN_PROC_BROWSER_TEST_F(AdBlockServiceTest,
   ui_test_utils::NavigateToURL(browser(), tab_url);
   content::WebContents* contents =
       browser()->tab_strip_model()->GetActiveWebContents();
-  ASSERT_EQ(true, EvalJs(contents,
-                         base::StringPrintf("setExpectations(0, 1, 0, 0);"
-                                            "addImage('%s')",
-                                            resource_url.spec().c_str())));
+  ASSERT_EQ(true,
+            EvalJs(contents, base::StringPrintf("setExpectations(0, 1, 0, 0);"
+                                                "addImage('%s')",
+                                                resource_url.spec().c_str())));
   EXPECT_EQ(browser()->profile()->GetPrefs()->GetUint64(kAdsBlocked), 1ULL);
 }
 
@@ -658,10 +619,10 @@ IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, BlockNYP) {
   ui_test_utils::NavigateToURL(browser(), tab_url);
   content::WebContents* contents =
       browser()->tab_strip_model()->GetActiveWebContents();
-  ASSERT_EQ(true, EvalJs(contents,
-                         base::StringPrintf("setExpectations(0, 1, 0, 0);"
-                                            "addImage('%s')",
-                                            resource_url.spec().c_str())));
+  ASSERT_EQ(true,
+            EvalJs(contents, base::StringPrintf("setExpectations(0, 1, 0, 0);"
+                                                "addImage('%s')",
+                                                resource_url.spec().c_str())));
   EXPECT_EQ(browser()->profile()->GetPrefs()->GetUint64(kAdsBlocked), 1ULL);
 }
 
@@ -705,10 +666,10 @@ IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, SocialButttonAdBlockTagTest) {
   ui_test_utils::NavigateToURL(browser(), tab_url);
   content::WebContents* contents =
       browser()->tab_strip_model()->GetActiveWebContents();
-  ASSERT_EQ(true, EvalJs(contents,
-                         base::StringPrintf("setExpectations(0, 1, 0, 0);"
-                                            "addImage('%s')",
-                                            resource_url.spec().c_str())));
+  ASSERT_EQ(true,
+            EvalJs(contents, base::StringPrintf("setExpectations(0, 1, 0, 0);"
+                                                "addImage('%s')",
+                                                resource_url.spec().c_str())));
   EXPECT_EQ(browser()->profile()->GetPrefs()->GetUint64(kAdsBlocked), 1ULL);
 }
 
@@ -725,10 +686,10 @@ IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, SocialButttonAdBlockDiffTagTest) {
   ui_test_utils::NavigateToURL(browser(), tab_url);
   content::WebContents* contents =
       browser()->tab_strip_model()->GetActiveWebContents();
-  ASSERT_EQ(true, EvalJs(contents,
-                         base::StringPrintf("setExpectations(1, 0, 0, 0);"
-                                            "addImage('%s')",
-                                            resource_url.spec().c_str())));
+  ASSERT_EQ(true,
+            EvalJs(contents, base::StringPrintf("setExpectations(1, 0, 0, 0);"
+                                                "addImage('%s')",
+                                                resource_url.spec().c_str())));
   EXPECT_EQ(browser()->profile()->GetPrefs()->GetUint64(kAdsBlocked), 0ULL);
 }
 
@@ -791,9 +752,8 @@ IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, TagPrefsControlTags) {
 
 // Load a page with a script which uses a redirect data URL.
 IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, RedirectRulesAreRespected) {
-  UpdateAdBlockInstanceWithRules(
-      "js_mock_me.js$redirect=noopjs",
-      R"(
+  UpdateAdBlockInstanceWithRules("js_mock_me.js$redirect=noopjs",
+                                 R"(
       [
         {
           "name": "noop.js",
@@ -1035,8 +995,8 @@ IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, CosmeticFilteringGenerichide) {
 
   WaitForBraveExtensionShieldsDataReady();
 
-  GURL tab_url = embedded_test_server()->GetURL("b.com",
-                                                "/cosmetic_filtering.html");
+  GURL tab_url =
+      embedded_test_server()->GetURL("b.com", "/cosmetic_filtering.html");
   ui_test_utils::NavigateToURL(browser(), tab_url);
 
   content::WebContents* contents =
@@ -1053,14 +1013,13 @@ IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, CosmeticFilteringGenerichide) {
 }
 
 // Test custom style rules
-IN_PROC_BROWSER_TEST_F(AdBlockServiceTest,
-                       CosmeticFilteringCustomStyle) {
+IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, CosmeticFilteringCustomStyle) {
   UpdateAdBlockInstanceWithRules("b.com##.ad:style(padding-bottom: 10px)");
 
   WaitForBraveExtensionShieldsDataReady();
 
-  GURL tab_url = embedded_test_server()->GetURL("b.com",
-                                                "/cosmetic_filtering.html");
+  GURL tab_url =
+      embedded_test_server()->GetURL("b.com", "/cosmetic_filtering.html");
   ui_test_utils::NavigateToURL(browser(), tab_url);
 
   content::WebContents* contents =
@@ -1089,8 +1048,8 @@ IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, CosmeticFilteringUnhide) {
 
   WaitForBraveExtensionShieldsDataReady();
 
-  GURL tab_url = embedded_test_server()->GetURL("b.com",
-                                                "/cosmetic_filtering.html");
+  GURL tab_url =
+      embedded_test_server()->GetURL("b.com", "/cosmetic_filtering.html");
   ui_test_utils::NavigateToURL(browser(), tab_url);
 
   content::WebContents* contents =
@@ -1122,8 +1081,7 @@ IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, CosmeticFilteringUnhide) {
 }
 
 // Test scriptlet injection that modifies window attributes
-IN_PROC_BROWSER_TEST_F(AdBlockServiceTest,
-                       CosmeticFilteringWindowScriptlet) {
+IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, CosmeticFilteringWindowScriptlet) {
   /* "content" below corresponds to the following scriptlet:
    * ```
    * (function() {
@@ -1134,19 +1092,21 @@ IN_PROC_BROWSER_TEST_F(AdBlockServiceTest,
    * })();
    * ```
    */
-  UpdateAdBlockInstanceWithRules("b.com##+js(hjt)", "[{"
-          "\"name\": \"hijacktest\","
-          "\"aliases\": [\"hjt\"],"
-          "\"kind\": {\"mime\": \"application/javascript\"},"
-          "\"content\": \"KGZ1bmN0aW9uKCkgewogIGNvbnN0IHNlbmQgPSB3aW5kb3cuZ2V0"
-          "Q29tcHV0ZWRTdHlsZTsKICB3aW5kb3cuZ2V0Q29tcHV0ZWRTdHlsZSA9IGZ1bmN0aW9"
-          "uKHNlbGVjdG9yKSB7CiAgICByZXR1cm4geyAnY29sb3InOiAnSW1wb3NzaWJsZSB2YW"
-          "x1ZScgfTsKICB9Cn0pKCk7Cg==\"}]");
+  UpdateAdBlockInstanceWithRules(
+      "b.com##+js(hjt)",
+      "[{"
+      "\"name\": \"hijacktest\","
+      "\"aliases\": [\"hjt\"],"
+      "\"kind\": {\"mime\": \"application/javascript\"},"
+      "\"content\": \"KGZ1bmN0aW9uKCkgewogIGNvbnN0IHNlbmQgPSB3aW5kb3cuZ2V0"
+      "Q29tcHV0ZWRTdHlsZTsKICB3aW5kb3cuZ2V0Q29tcHV0ZWRTdHlsZSA9IGZ1bmN0aW9"
+      "uKHNlbGVjdG9yKSB7CiAgICByZXR1cm4geyAnY29sb3InOiAnSW1wb3NzaWJsZSB2YW"
+      "x1ZScgfTsKICB9Cn0pKCk7Cg==\"}]");
 
   WaitForBraveExtensionShieldsDataReady();
 
-  GURL tab_url = embedded_test_server()->GetURL("b.com",
-                                                "/cosmetic_filtering.html");
+  GURL tab_url =
+      embedded_test_server()->GetURL("b.com", "/cosmetic_filtering.html");
   ui_test_utils::NavigateToURL(browser(), tab_url);
 
   content::WebContents* contents =
@@ -1166,23 +1126,26 @@ IN_PROC_BROWSER_TEST_F(AdBlockServiceTest,
 }
 
 // Test scriptlet injection that modifies window attributes
-IN_PROC_BROWSER_TEST_F(AdBlockServiceTest,
-                       CosmeticFilteringIframeScriptlet) {
-  std::string scriptlet = "(function() {"
+IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, CosmeticFilteringIframeScriptlet) {
+  std::string scriptlet =
+      "(function() {"
       "  window.JSON.parse = function() { return {} }"
       "})();";
   std::string scriptlet_base64;
   base::Base64Encode(scriptlet, &scriptlet_base64);
-  UpdateAdBlockInstanceWithRules("b.com##+js(hjt)", "[{"
-          "\"name\": \"hijacktest\","
-          "\"aliases\": [\"hjt\"],"
-          "\"kind\": {\"mime\": \"application/javascript\"},"
-          "\"content\": \"" + scriptlet_base64 + "\"}]");
+  UpdateAdBlockInstanceWithRules(
+      "b.com##+js(hjt)",
+      "[{"
+      "\"name\": \"hijacktest\","
+      "\"aliases\": [\"hjt\"],"
+      "\"kind\": {\"mime\": \"application/javascript\"},"
+      "\"content\": \"" +
+          scriptlet_base64 + "\"}]");
 
   WaitForBraveExtensionShieldsDataReady();
 
-  GURL tab_url = embedded_test_server()->GetURL("b.com",
-                                                "/iframe_messenger.html");
+  GURL tab_url =
+      embedded_test_server()->GetURL("b.com", "/iframe_messenger.html");
   ui_test_utils::NavigateToURL(browser(), tab_url);
 
   content::WebContents* contents =
