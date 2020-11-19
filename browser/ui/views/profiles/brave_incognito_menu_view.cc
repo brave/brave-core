@@ -48,12 +48,6 @@ int GetProfileMenuCloseButtonTextId(Profile* profile) {
   return profile->IsTor() ? IDS_PROFILES_EXIT_TOR : IDS_PROFILES_EXIT_PRIVATE;
 }
 
-int GetWindowCount(Profile* profile) {
-  return brave::IsTorProfile(profile)
-             ? 0
-             : BrowserList::GetOffTheRecordBrowsersActiveForProfile(profile);
-}
-
 }  // namespace
 
 void BraveIncognitoMenuView::BuildMenu() {

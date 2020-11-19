@@ -41,7 +41,7 @@ SkColor GetLocationBarBackground(bool dark, bool priv, bool hover) {
   }
 
   return hover ? color_utils::AlphaBlend(SK_ColorWHITE,
-                                          SkColorSetRGB(0xf3, 0xf3, 0xf3), 0.7f)
+                                         SkColorSetRGB(0xf3, 0xf3, 0xf3), 0.7f)
                : SK_ColorWHITE;
 }
 

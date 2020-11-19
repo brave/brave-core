@@ -48,7 +48,7 @@ base::Optional<SkColor> GetFocusRingColor(Profile* profile) {
     // Don't update color.
     return base::nullopt;
   }
-  if (brave::IsTorProfile(profile))
+  if (profile->IsTor())
     return kTorPrivateFocusRingColor;
 
   // Private window.

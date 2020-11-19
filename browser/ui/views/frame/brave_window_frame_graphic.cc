@@ -5,15 +5,15 @@
 
 #include "brave/browser/ui/views/frame/brave_window_frame_graphic.h"
 
-#include "base/logging.h"
-#include "brave/browser/profiles/profile_util.h"
 #include "brave/grit/brave_theme_resources.h"
+#include "content/public/browser/browser_context.h"
 #include "ui/base/resource/resource_bundle.h"
 #include "ui/gfx/canvas.h"
 #include "ui/gfx/geometry/rect.h"
 
-BraveWindowFrameGraphic::BraveWindowFrameGraphic(Profile* profile)
-    : is_tor_window_(brave::IsTorProfile(profile)) {}
+BraveWindowFrameGraphic::BraveWindowFrameGraphic(
+    content::BrowserContext* context)
+    : is_tor_window_(context->IsTor()) {}
 
 BraveWindowFrameGraphic::~BraveWindowFrameGraphic() = default;
 

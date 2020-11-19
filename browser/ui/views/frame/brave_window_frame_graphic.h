@@ -11,11 +11,13 @@ class Canvas;
 class Rect;
 }  // namespace gfx
 
-class Profile;
+namespace content {
+class BrowserContext;
+}  // namespace content
 
 class BraveWindowFrameGraphic {
  public:
-  explicit BraveWindowFrameGraphic(Profile* profile);
+  explicit BraveWindowFrameGraphic(content::BrowserContext* context);
   virtual ~BraveWindowFrameGraphic();
 
   BraveWindowFrameGraphic(const BraveWindowFrameGraphic&) = delete;
