@@ -1,16 +1,13 @@
 import("//brave/components/private_channel/buildflags/buildflags.gni")
-
-assert(private_channel_enabled)
-
-group("constants") {
-  public_configs = [ ":brave_private_channel_config" ]
-}
+import("//build/config/features.gni")
 
 config("brave_private_channel_config") {
   defines = [
     "BRAVE_PRIVATE_CHANNEL_SERVER_URL=\"$brave_private_channel_server_url\""
   ]
 }
+
+assert(private_channel_enabled)
 
 source_set("private_channel") {
   # Remove when https://github.com/brave/brave-browser/issues/10646 is resolved
@@ -35,6 +32,8 @@ source_set("private_channel") {
     "//services/network/public/mojom",
     "//url",
   ]
-
 }
 
+group("constants") {
+  public_configs = [ ":brave_private_channel_config" ]
+}

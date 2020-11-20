@@ -9,6 +9,7 @@
 #include "brave/components/private_channel/browser/constants.h"
 #include "brave/components/private_channel/browser/private_channel_ffi.h"
 #include "brave/components/private_channel/browser/request_utils.h"
+#include "brave/components/private_channel/buildflags/buildflags.h"
 
 #include "base/logging.h"
 #include "base/task/post_task.h"
@@ -22,7 +23,7 @@
 
 namespace private_channel {
 
-const char kBravePrivateChannelServerUrl = BRAVE_PRIVATE_CHANNEL_SERVER_URL;
+const char kBravePrivateChannelServerUrl[] = BRAVE_PRIVATE_CHANNEL_SERVER_URL;
 
 PrivateChannel::PrivateChannel()
     : task_runner_(base::CreateSequencedTaskRunner(
@@ -51,10 +52,9 @@ void PrivateChannel::FetchMetadataPrivateChannelServer() {
       GURL(BuildUrl(EndpointType::META, PRIVATE_CHANNEL_API_VERSION));
   resource_request->headers.SetHeader("Content-Type",
                                       "application/x-www-form-urlencoded");
-  resource_request->load_flags =
-      net::LOAD_DO_NOT_SEND_COOKIES | net::LOAD_DO_NOT_SAVE_COOKIES |
-      net::LOAD_BYPASS_CACHE | net::LOAD_DISABLE_CACHE |
-      net::LOAD_DO_NOT_SEND_AUTH_DATA;
+  resource_request->load_flags = net::LOAD_DO_NOT_SAVE_COOKIES |
+                                 net::LOAD_BYPASS_CACHE |
+                                 net::LOAD_DISABLE_CACHE;
 
   network::mojom::URLLoaderFactory* loader_factory =
       g_browser_process->system_network_context_manager()
@@ -138,10 +138,9 @@ void PrivateChannel::FirstRoundProtocol(ChallengeArtifacts request_artefacts) {
       GURL(BuildUrl(EndpointType::FIRST_ROUND, PRIVATE_CHANNEL_API_VERSION));
   std::string content_type = "application/x-www-form-urlencoded";
   resource_request->headers.SetHeader("Content-Type", content_type);
-  resource_request->load_flags =
-      net::LOAD_DO_NOT_SEND_COOKIES | net::LOAD_DO_NOT_SAVE_COOKIES |
-      net::LOAD_BYPASS_CACHE | net::LOAD_DISABLE_CACHE |
-      net::LOAD_DO_NOT_SEND_AUTH_DATA;
+  resource_request->load_flags = net::LOAD_DO_NOT_SAVE_COOKIES |
+                                 net::LOAD_BYPASS_CACHE |
+                                 net::LOAD_DISABLE_CACHE;
 
   network::mojom::URLLoaderFactory* loader_factory =
       g_browser_process->system_network_context_manager()
@@ -235,10 +234,9 @@ void PrivateChannel::SecondRoundProtocol(
       GURL(BuildUrl(EndpointType::SECOND_ROUND, PRIVATE_CHANNEL_API_VERSION));
   std::string content_type = "application/x-www-form-urlencoded";
   resource_request->headers.SetHeader("Content-Type", content_type);
-  resource_request->load_flags =
-      net::LOAD_DO_NOT_SEND_COOKIES | net::LOAD_DO_NOT_SAVE_COOKIES |
-      net::LOAD_BYPASS_CACHE | net::LOAD_DISABLE_CACHE |
-      net::LOAD_DO_NOT_SEND_AUTH_DATA;
+  resource_request->load_flags = net::LOAD_DO_NOT_SAVE_COOKIES |
+                                 net::LOAD_BYPASS_CACHE |
+                                 net::LOAD_DISABLE_CACHE;
 
   network::mojom::URLLoaderFactory* loader_factory =
       g_browser_process->system_network_context_manager()
