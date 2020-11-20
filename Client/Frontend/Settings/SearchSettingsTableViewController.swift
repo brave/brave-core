@@ -57,10 +57,10 @@ class SearchSettingsTableViewController: UITableViewController {
             switch indexPath.item {
             case ItemDefaultEngine:
                 engine = model.defaultEngine(forType: .standard)
-                cell = configureSearchEngineCell(type: .standard, engineName: engine.shortName)
+                cell = configureSearchEngineCell(type: .standard, engineName: engine.displayName)
             case ItemDefaultPrivateEngine:
                 engine = model.defaultEngine(forType: .privateMode)
-                cell = configureSearchEngineCell(type: .privateMode, engineName: engine.shortName)
+                cell = configureSearchEngineCell(type: .privateMode, engineName: engine.displayName)
             case ItemDefaultSuggestions:
                 cell = UITableViewCell(style: .default, reuseIdentifier: nil)
                 cell.textLabel?.text = Strings.searchSettingSuggestionCellTitle
@@ -88,7 +88,7 @@ class SearchSettingsTableViewController: UITableViewController {
             toggle.isOn = model.isEngineEnabled(engine)
             
             cell.editingAccessoryView = toggle
-            cell.textLabel?.text = engine.shortName
+            cell.textLabel?.text = engine.displayName
             cell.textLabel?.adjustsFontSizeToFitWidth = true
             cell.textLabel?.minimumScaleFactor = 0.5
             cell.imageView?.image = engine.image.createScaled(IconSize)

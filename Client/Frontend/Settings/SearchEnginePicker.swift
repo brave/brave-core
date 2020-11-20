@@ -41,7 +41,7 @@ class SearchEnginePicker: UITableViewController {
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let engine = engines[indexPath.item]
         let cell = UITableViewCell(style: .default, reuseIdentifier: nil)
-        cell.textLabel?.text = engine.shortName
+        cell.textLabel?.text = engine.displayName
         cell.imageView?.image = engine.image.createScaled(CGSize(width: OpenSearchEngine.preferredIconSize,
                                                                  height: OpenSearchEngine.preferredIconSize))
         if engine.shortName == selectedSearchEngineName {
