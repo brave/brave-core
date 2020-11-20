@@ -88,6 +88,12 @@ constexpr const char* kCollectedHistograms[] = {
     "Brave.Uptime.BrowserOpenMinutes",
     "Brave.Welcome.InteractionStatus",
 
+    // IPFS
+    "Brave.IPFS.IPFSCompanionInstalled",
+    "Brave.IPFS.DetectionPromptCount",
+    "Brave.IPFS.GatewaySetting",
+    "Brave.IPFS.DaemonRunTime",
+
     // P2A
     // Ad Opportunities
     "Brave.P2A.TotalAdOpportunities",
