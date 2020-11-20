@@ -196,7 +196,7 @@ class CryptoDotCom extends React.PureComponent<Props, State> {
   }
 
   formattedNum = (price: number) => {
-    return new Intl.NumberFormat('en-IN', {
+    return new Intl.NumberFormat('en-US', {
       style: 'currency',
       currency: 'USD',
       currencyDisplay: 'narrowSymbol'
