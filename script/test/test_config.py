@@ -25,6 +25,9 @@ class TestConfig(unittest.TestCase):
     def test_output_dir_darwin_x64(self):
         self.assertEquals(config.output_dir('darwin', 'x64').endswith('Release'), True)
 
+    def test_output_dir_darwin_x64(self):
+        self.assertEquals(config.output_dir('darwin', 'arm64').endswith('Release_arm64'), True)
+
     def test_output_dir_linux_x64(self):
         self.assertEquals(config.output_dir('linux', 'x64').endswith('Release'), True)
 

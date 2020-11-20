@@ -260,7 +260,7 @@ if (skip_signing) {
     ]
 
     if (is_official_build) {
-      if (brave_channel == "") {
+      if (is_release_channel) {
         provisioning_profile = "//brave/build/mac/release.provisionprofile"
       } else {
         provisioning_profile = "//brave/build/mac/${brave_channel}.provisionprofile"
@@ -421,7 +421,7 @@ if (skip_signing) {
   action("notarize_dmg_pkg") {
     if (is_official_build) {
       development_arg = ""
-      if (brave_channel == "") {
+      if (is_release_channel) {
         provisioning_profile = "//brave/build/mac/release.provisionprofile"
       } else {
         provisioning_profile = "//brave/build/mac/${brave_channel}.provisionprofile"
