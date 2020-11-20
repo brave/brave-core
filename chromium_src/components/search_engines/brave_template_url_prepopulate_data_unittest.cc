@@ -65,8 +65,8 @@ class BraveTemplateURLPrepopulateDataTest : public testing::Test {
     // Calling brave::RegisterProfilePrefs() causes some problems though
     auto* registry = prefs_.registry();
     registry->RegisterIntegerPref(
-      kBraveDefaultSearchVersion,
-      TemplateURLPrepopulateData::kBraveCurrentDataVersion);
+        kBraveDefaultSearchVersion,
+        TemplateURLPrepopulateData::kBraveCurrentDataVersion);
   }
 
   void CheckForCountry(char digit1, char digit2, const std::string& expected) {
@@ -113,12 +113,8 @@ TEST_F(BraveTemplateURLPrepopulateDataTest, OverriddenEngines) {
 // Verifies that the set of prepopulate data for each locale
 // doesn't contain entries with duplicate ids.
 TEST_F(BraveTemplateURLPrepopulateDataTest, UniqueIDs) {
-  const int kCountryIds[] = {
-    'D' << 8 | 'E',
-    'F' << 8 | 'R',
-    'U' << 8 | 'S',
-    -1
-  };
+  const int kCountryIds[] = {'D' << 8 | 'E', 'F' << 8 | 'R', 'U' << 8 | 'S',
+                             -1};
 
   for (size_t i = 0; i < base::size(kCountryIds); ++i) {
     prefs_.SetInteger(kCountryIDAtInstall, kCountryIds[i]);
@@ -178,8 +174,7 @@ TEST_F(BraveTemplateURLPrepopulateDataTest,
   CheckForCountry('N', 'Z', "DuckDuckGo");
 }
 
-TEST_F(BraveTemplateURLPrepopulateDataTest,
-       DefaultSearchProvidersForIreland) {
+TEST_F(BraveTemplateURLPrepopulateDataTest, DefaultSearchProvidersForIreland) {
   CheckForCountry('I', 'E', "DuckDuckGo");
 }
 

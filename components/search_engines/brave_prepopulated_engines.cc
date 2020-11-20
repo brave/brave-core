@@ -197,19 +197,19 @@ const PrepopulatedEngine startpage = {
 };
 
 const PrepopulatedEngine brave_yandex =
-  ModifyEngineParams(yandex_com,
-    L"Yandex",
-    NULL,
-    "https://yandex.ru/search/?clid="
+    ModifyEngineParams(yandex_com,
+                       L"Yandex",
+                       NULL,
+                       "https://yandex.ru/search/?clid="
 #if defined(OS_ANDROID)
-    "2423859"
+                       "2423859"
 #else
-    "2353835"
+                       "2353835"
 #endif
-    "&text={searchTerms}",
-    "https://suggest.yandex.ru/suggest-ff.cgi?"
-    "part={searchTerms}&v=3&sn=5&srv=brave_desktop",
-    PREPOPULATED_ENGINE_ID_YANDEX);
+                       "&text={searchTerms}",
+                       "https://suggest.yandex.ru/suggest-ff.cgi?"
+                       "part={searchTerms}&v=3&sn=5&srv=brave_desktop",
+                       PREPOPULATED_ENGINE_ID_YANDEX);
 
 #define kBraveYahooName L"Yahoo"
 #define kBraveYahooKeyword L":y"
