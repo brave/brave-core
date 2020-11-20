@@ -23,8 +23,9 @@ public class BottomToolbarConfiguration {
     private static final int SMALL_SCREEN_HEIGHT = 640;
 
     public static boolean isBottomToolbarEnabled() {
-        if (DeviceFormFactor.isNonMultiDisplayContextOnTablet(
-                    ContextUtils.getApplicationContext())) {
+        if (DeviceFormFactor.isNonMultiDisplayContextOnTablet(ContextUtils.getApplicationContext())
+                || TabUiFeatureUtilities.isTabGroupsAndroidEnabled()
+                || TabUiFeatureUtilities.isConditionalTabStripEnabled()) {
             return false;
         }
         SharedPreferences sharedPreferences = ContextUtils.getAppSharedPreferences();
