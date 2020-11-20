@@ -33,8 +33,7 @@ class NotificationHeaderView;
 // returned by the Create() factory method below.
 class AdNotificationViewMD
     : public NotificationView,
-      public views::InkDropObserver,
-      public views::ButtonListener {
+      public views::InkDropObserver {
  public:
   explicit AdNotificationViewMD(const Notification& notification);
   ~AdNotificationViewMD() override;
@@ -59,7 +58,6 @@ class AdNotificationViewMD
   std::unique_ptr<views::InkDropMask> CreateInkDropMask() const override;
   SkColor GetInkDropBaseColor() const override;
   void UpdateWithNotification(const Notification& notification) override;
-  void ButtonPressed(views::Button* sender, const ui::Event& event) override;
   void UpdateCornerRadius(int top_radius, int bottom_radius) override;
   NotificationControlButtonsView* GetControlButtonsView() const override;
 

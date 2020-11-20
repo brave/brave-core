@@ -17,8 +17,7 @@ class Profile;
 // A button to take the place of an extension that will be loaded in the future.
 // Call SetImage with the BraveActionIconWithBadgeImageSource
 // Call highlight etc from ToolbarActionView
-class BraveRewardsActionStubView : public views::LabelButton,
-                                   public views::ButtonListener {
+class BraveRewardsActionStubView : public views::LabelButton {
  public:
   class Delegate {
    public:
@@ -31,9 +30,6 @@ class BraveRewardsActionStubView : public views::LabelButton,
   explicit BraveRewardsActionStubView(Profile* profile, Delegate* delegate);
   ~BraveRewardsActionStubView() override;
 
-  // views::ButtonListener
-  void ButtonPressed(Button* sender, const ui::Event& event) override;
-
   // views::LabelButton:
   std::unique_ptr<views::LabelButtonBorder> CreateDefaultBorder()
       const override;
@@ -45,6 +41,7 @@ class BraveRewardsActionStubView : public views::LabelButton,
 
  private:
   gfx::Size CalculatePreferredSize() const override;
+  void ButtonPressed();
 
   StringPrefMember badge_text_pref_;
   Profile* profile_;

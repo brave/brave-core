@@ -24,7 +24,7 @@ namespace brave_ads {
 // area (<http://crbug.com/168856>).
 class PaddedButton : public views::ImageButton {
  public:
-  explicit PaddedButton(views::ButtonListener* listener);
+  explicit PaddedButton(PressedCallback callback);
   ~PaddedButton() override = default;
 
   std::unique_ptr<views::InkDrop> CreateInkDrop() override;

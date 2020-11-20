@@ -21,7 +21,7 @@ namespace brave_ads {
 
 class NotificationHeaderView : public views::Button {
  public:
-  explicit NotificationHeaderView(views::ButtonListener* listener);
+  explicit NotificationHeaderView(PressedCallback callback = PressedCallback());
   ~NotificationHeaderView() override;
   void SetAdIcon(const gfx::ImageSkia& img);
   void SetAdName(const base::string16& name);
