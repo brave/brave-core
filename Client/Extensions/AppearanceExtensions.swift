@@ -43,6 +43,7 @@ extension Theme {
         UITableViewCell.appearance().backgroundColor = tableSecondaryColor
         
         UIImageView.appearance(whenContainedInInstancesOf: [SettingsViewController.self]).tintColor = colors.tints.home
+        UIImageView.appearance(whenContainedInInstancesOf: [BraveRewardsSettingsViewController.self]).tintColor = colors.tints.home
 
         UIView.appearance(whenContainedInInstancesOf: [UITableViewHeaderFooterView.self]).appearanceBackgroundColor = tablePrimaryColor
         

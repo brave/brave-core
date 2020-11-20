@@ -140,7 +140,9 @@ class BrowserViewController: UIViewController {
     let safeBrowsing: SafeBrowsing?
     
     let rewards: BraveRewards
+    let legacyWallet: BraveLedger?
     let rewardsObserver: LedgerObserver
+    private var promotionFetchTimer: Timer?
     private var notificationsHandler: AdsNotificationHandler?
     private(set) var publisher: PublisherInfo?
     
@@ -178,14 +180,37 @@ class BrowserViewController: UIViewController {
           $0.name = AppConstants.buildChannel.rawValue
           $0.isRelease = AppConstants.buildChannel == .release
         }
-
         Self.migrateAdsConfirmations(for: configuration)
+        legacyWallet = Self.legacyWallet(for: configuration)
+        if let wallet = legacyWallet {
+            // Legacy ledger is disabled by default
+            wallet.isEnabled = false
+            wallet.isAutoContributeEnabled = false
+            // Ensure we remove any pending contributions or recurring tips from the legacy wallet
+            wallet.removeAllPendingContributions { _ in }
+            wallet.listRecurringTips { publishers in
+                publishers.forEach {
+                    wallet.removeRecurringTip(publisherId: $0.id)
+                }
+            }
+        }
         rewards = BraveRewards(configuration: configuration)
         if !BraveRewards.isAvailable {
             // Disable rewards services in case previous user already enabled
             // rewards in previous build
             rewards.ledger.isEnabled = false
             rewards.ads.isEnabled = false
+        } else {
+            if rewards.isEnabled && !Preferences.Rewards.rewardsToggledOnce.value {
+                Preferences.Rewards.rewardsToggledOnce.value = true
+            }
+            // Update defaults
+            rewards.ads.adsPerDay = 2
+            rewards.ledger.minimumVisitDuration = 8
+            rewards.ledger.minimumNumberOfVisits = 1
+            rewards.ledger.allowUnverifiedPublishers = false
+            rewards.ledger.allowVideoContributions = true
+            rewards.ledger.contributionAmount = Double.greatestFiniteMagnitude
         }
         rewardsObserver = LedgerObserver(ledger: rewards.ledger)
         deviceCheckClient = DeviceCheckClient(environment: configuration.environment)
@@ -194,6 +219,56 @@ class BrowserViewController: UIViewController {
         didInit()
         
         rewards.delegate = self
+        
+        if rewards.ledger.isEnabled && !rewards.ledger.isWalletCreated {
+            rewards.createWalletIfNeeded()
+        }
+    }
+    
+    static func legacyWallet(for config: BraveRewardsConfiguration) -> BraveLedger? {
+        let fm = FileManager.default
+        let stateStorage = URL(fileURLWithPath: config.stateStoragePath)
+        let legacyLedger = stateStorage.appendingPathComponent("legacy_ledger")
+
+        // Check if we've already migrated the users wallet to the `legacy_rewards` folder
+        if fm.fileExists(atPath: legacyLedger.path) {
+            BraveLedger.environment = config.environment
+            return BraveLedger(stateStoragePath: legacyLedger.path)
+        }
+        
+        // We've already performed an attempt at migration, if there wasn't a legacy folder, then
+        // we have no legacy wallet.
+        if Preferences.Rewards.migratedLegacyWallet.value {
+            return nil
+        }
+        
+        // Ledger exists in the state storage under `ledger` folder, if that folder doesn't exist
+        // then the user hasn't actually launched the app before and doesn't need to migrate
+        let ledgerFolder = stateStorage.appendingPathComponent("ledger")
+        if !fm.fileExists(atPath: ledgerFolder.path) {
+            // No wallet, therefore no legacy folder needed
+            Preferences.Rewards.migratedLegacyWallet.value = true
+            return nil
+        }
+        
+        do {
+            // Copy the current `ledger` directory into the new legacy state storage path
+            try fm.copyItem(at: ledgerFolder, to: legacyLedger)
+            // Remove the old Rewards DB so that it starts fresh
+            try fm.removeItem(atPath: ledgerFolder.appendingPathComponent("Rewards.db").path)
+            // And remove the sqlite journal file if it exists
+            let journalPath = ledgerFolder.appendingPathComponent("Rewards.db-journal").path
+            if fm.fileExists(atPath: journalPath) {
+                try fm.removeItem(atPath: journalPath)
+            }
+            
+            Preferences.Rewards.migratedLegacyWallet.value = true
+            BraveLedger.environment = config.environment
+            return BraveLedger(stateStoragePath: legacyLedger.path)
+        } catch {
+            log.error("Failed to migrate legacy wallet into a new folder: \(error)")
+            return nil
+        }
     }
 
     required init?(coder aDecoder: NSCoder) {
@@ -235,6 +310,8 @@ class BrowserViewController: UIViewController {
             tab.newTabPageViewController = nil
         }
     }
+    
+    private var rewardsEnabledObserveration: NSKeyValueObservation?
 
     fileprivate func didInit() {
         screenshotHelper = ScreenshotHelper(controller: self)
@@ -250,18 +327,25 @@ class BrowserViewController: UIViewController {
         Preferences.Shields.allShields.forEach { $0.observe(from: self) }
         Preferences.Privacy.blockAllCookies.observe(from: self)
         Preferences.Rewards.hideRewardsIcon.observe(from: self)
+        Preferences.Rewards.rewardsToggledOnce.observe(from: self)
+        rewardsEnabledObserveration = rewards.observe(\.isEnabled, options: [.new]) { [weak self] _, _ in
+            self?.updateRewardsButtonState()
+        }
         Preferences.NewTabPage.selectedCustomTheme.observe(from: self)
         // Lists need to be compiled before attempting tab restoration
         contentBlockListDeferred = ContentBlockerHelper.compileBundledLists()
         
         setupRewardsObservers()
-        
-        if !Preferences.Rewards.checkedPreviousCycleForAdsViewing.value {
-            Preferences.Rewards.checkedPreviousCycleForAdsViewing.value = true
-            if rewards.ads.hasViewedAdsInPreviousCycle() {
-                MonthlyAdsGrantReminder.schedule(for: .previous)
+        promotionFetchTimer = Timer.scheduledTimer(
+            withTimeInterval: 1.hours,
+            repeats: true,
+            block: { [weak self] _ in
+                guard let self = self else { return }
+                if self.rewards.isEnabled {
+                    self.rewards.ledger.fetchPromotions(nil)
+                }
             }
-        }
+        )
         
         Preferences.NewTabPage.attemptToShowClaimRewardsNotification.value = true
         
@@ -348,50 +432,19 @@ class BrowserViewController: UIViewController {
         rewardsObserver.walletInitalized = { [weak self] result in
             guard let self = self, let client = self.deviceCheckClient else { return }
             if result == .walletCreated {
-                self.rewards.ledger.setupDeviceCheckEnrollment(client) { }
-                
-                if self.notificationsHandler?.shouldShowNotifications() == true {
-                    self.displayMyFirstAdIfAvailable()
-                }
+                self.rewards.ledger.setupDeviceCheckEnrollment(client) { }                
+                self.updateRewardsButtonState()
             }
+        }
+        rewardsObserver.promotionsAdded = { [weak self] promotions in
+            self?.claimPendingPromotions()
         }
         rewardsObserver.fetchedPanelPublisher = { [weak self] publisher, tabId in
             guard let self = self, self.isViewLoaded, let tab = self.tabManager.selectedTab, tab.rewardsId == tabId else { return }
             self.publisher = publisher
-            self.updateRewardsButtonState()
-        }
-        rewardsObserver.notificationAdded = { [weak self] _ in
-            guard let self = self, self.isViewLoaded else { return }
-            self.updateRewardsButtonState()
-        }
-        rewardsObserver.notificationsRemoved = { [weak self] _ in
-            guard let self = self, self.isViewLoaded else { return }
-            self.updateRewardsButtonState()
-        }
-        rewardsObserver.rewardsEnabledStateUpdated = { [weak self] _ in
-            self?.updateRewardsButtonState()
         }
     }
     
-    // Display first ad when the user gets back to this controller if they havent seen one before
-    func displayMyFirstAdIfAvailable() {
-        if !rewards.ledger.isEnabled || !rewards.ads.isEnabled { return }
-        if Preferences.Rewards.myFirstAdShown.value { return }
-        // Check if ads are eligible
-        if BraveAds.isCurrentLocaleSupported() {
-            DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
-                if Preferences.Rewards.myFirstAdShown.value { return }
-                Preferences.Rewards.myFirstAdShown.value = true
-                 AdsViewController.displayFirstAd(on: self) { [weak self] action, url in
-                    if action == .opened {
-                        let request = URLRequest(url: url)
-                        self?.tabManager.addTabAndSelect(request, isPrivate: PrivateBrowsingManager.shared.isPrivateBrowsing)
-                    }
-                }
-            }
-        }
-    }
-
     override var preferredStatusBarStyle: UIStatusBarStyle {
         let isDark = Theme.of(tabManager.selectedTab).isDark
         if isDark {
@@ -859,14 +912,93 @@ class BrowserViewController: UIViewController {
     }
     
     func presentOnboardingIntro() {
+        // 1. Existing user.
+        // 2. User already completed onboarding.
+        if Preferences.General.basicOnboardingCompleted.value == OnboardingState.completed.rawValue {
+            // The user doesn't have ads in their region and they've completed rewards.
+            if !BraveAds.isCurrentLocaleSupported()
+                &&
+                Preferences.General.basicOnboardingProgress.value == OnboardingProgress.rewards.rawValue {
+                return
+            }
+        }
+        
+        // The user either skipped or didn't complete onboarding.
+        let isRewardsEnabled = rewards.ledger.isEnabled
+        let currentProgress = OnboardingProgress(rawValue: Preferences.General.basicOnboardingProgress.value) ?? .none
+        
+        // 1. Existing user.
+        // 2. The user skipped onboarding before.
+        // 3. 60 days have passed since they last saw onboarding.
+        if Preferences.General.basicOnboardingCompleted.value == OnboardingState.skipped.rawValue {
+
+            guard let daysUntilNextPrompt = Preferences.General.basicOnboardingNextOnboardingPrompt.value else {
+                return
+            }
+            
+            // 60 days has passed since the user last saw the onboarding.. it's time to show the onboarding again..
+            if daysUntilNextPrompt <= Date() && !isRewardsEnabled {
+                guard let onboarding = OnboardingNavigationController(
+                    profile: profile,
+                    onboardingType: .existingUserRewardsOff(currentProgress),
+                    rewards: rewards,
+                    theme: Theme.of(tabManager.selectedTab)
+                    ) else { return }
+                
+                onboarding.onboardingDelegate = self
+                present(onboarding, animated: true)
+                
+                Preferences.General.basicOnboardingNextOnboardingPrompt.value = Date(timeIntervalSinceNow: BrowserViewController.onboardingDaysInterval)
+            }
+            
+            return
+        }
+        
+        // 1. Rewards are on/off (existing user)
+        // 2. User hasn't seen the rewards part of the onboarding yet.
+        if (Preferences.General.basicOnboardingCompleted.value == OnboardingState.completed.rawValue)
+            &&
+            (Preferences.General.basicOnboardingProgress.value == OnboardingProgress.searchEngine.rawValue) {
+            
+            guard !isRewardsEnabled, let onboarding = OnboardingNavigationController(
+                profile: profile,
+                onboardingType: .existingUserRewardsOff(currentProgress),
+                rewards: rewards,
+                theme: Theme.of(tabManager.selectedTab)
+                ) else { return }
+            
+            onboarding.onboardingDelegate = self
+            present(onboarding, animated: true)
+            return
+        }
+        
+        // 1. Rewards are on/off (existing user)
+        // 2. User hasn't seen the rewards part of the onboarding yet because their version of the app is insanely OLD and somehow the progress value doesn't exist.
+        if (Preferences.General.basicOnboardingCompleted.value == OnboardingState.completed.rawValue)
+            &&
+            (Preferences.General.basicOnboardingProgress.value == OnboardingProgress.none.rawValue) {
+            
+            guard !isRewardsEnabled, let onboarding = OnboardingNavigationController(
+                profile: profile,
+                onboardingType: .existingUserRewardsOff(currentProgress),
+                rewards: rewards,
+                theme: Theme.of(tabManager.selectedTab)
+                ) else { return }
+            
+            onboarding.onboardingDelegate = self
+            present(onboarding, animated: true)
+            return
+        }
+        
         // 1. User is brand new
         // 2. User hasn't completed onboarding
         // 3. We don't care how much progress they made. Onboarding is only complete when ALL of it is complete.
-        if Preferences.General.basicOnboardingCompleted.value == OnboardingState.unseen.rawValue {
+        if Preferences.General.basicOnboardingCompleted.value != OnboardingState.completed.rawValue {
             // The user has never completed the onboarding..
             
             guard let onboarding = OnboardingNavigationController(
                 profile: profile,
+                onboardingType: .newUser(currentProgress),
                 rewards: rewards,
                 theme: Theme.of(tabManager.selectedTab)
                 ) else { return }
@@ -1859,12 +1991,6 @@ extension BrowserViewController: SettingsDelegate {
             }
         })
     }
-    
-    func settingsOpenRewardsSettings(_ settingsViewController: SettingsViewController) {
-        settingsViewController.dismiss(animated: true, completion: {
-            self.showBraveRewardsPanel(initialPage: .settings)
-        })
-    }
 }
 
 extension BrowserViewController: PresentingModalViewControllerDelegate {
@@ -2118,6 +2244,10 @@ extension BrowserViewController: TopToolbarDelegate {
     
     func topToolbarDidTapBraveRewardsButton(_ topToolbar: TopToolbarView) {
         showBraveRewardsPanel()
+    }
+    
+    func topToolbarDidLongPressBraveRewardsButton(_ topToolbar: TopToolbarView) {
+        showRewardsDebugSettings()
     }
     
     func topToolbarDidTapMenuButton(_ topToolbar: TopToolbarView) {
@@ -3487,7 +3617,8 @@ extension BrowserViewController: PreferencesObserver {
             } else {
                 tabManager.reloadSelectedTab()
             }
-        case Preferences.Rewards.hideRewardsIcon.key:
+        case Preferences.Rewards.hideRewardsIcon.key,
+             Preferences.Rewards.rewardsToggledOnce.key:
             updateRewardsButtonState()
         case Preferences.NewTabPage.selectedCustomTheme.key:
             Preferences.NTP.ntpCheckDate.value = nil
@@ -3516,7 +3647,26 @@ extension BrowserViewController {
 extension BrowserViewController: OnboardingControllerDelegate {
     func onboardingCompleted(_ onboardingController: OnboardingNavigationController) {
         Preferences.General.basicOnboardingCompleted.value = OnboardingState.completed.rawValue
-        Preferences.General.basicOnboardingProgress.value = OnboardingProgress.searchEngine.rawValue
+        Preferences.General.basicOnboardingNextOnboardingPrompt.value = nil
+        
+        if BraveRewards.isAvailable {
+            switch onboardingController.onboardingType {
+            case .newUser:
+                Preferences.General.basicOnboardingProgress.value = OnboardingProgress.rewards.rawValue                
+            default:
+                break
+            }
+        } else {
+            switch onboardingController.onboardingType {
+            case .newUser:
+                Preferences.General.basicOnboardingProgress.value = OnboardingProgress.searchEngine.rawValue
+            case .existingUserRewardsOff:
+                break
+            default:
+                break
+            }
+        }
+        
         // Present private browsing prompt if necessary when onboarding has been completed
         onboardingController.dismiss(animated: true) {
             self.presentDuckDuckGoCalloutIfNeeded()
@@ -3525,6 +3675,7 @@ extension BrowserViewController: OnboardingControllerDelegate {
     
     func onboardingSkipped(_ onboardingController: OnboardingNavigationController) {
         Preferences.General.basicOnboardingCompleted.value = OnboardingState.skipped.rawValue
+        Preferences.General.basicOnboardingNextOnboardingPrompt.value = Date(timeIntervalSinceNow: BrowserViewController.onboardingDaysInterval)
         
         // Present private browsing prompt if necessary when onboarding has been skipped
         onboardingController.dismiss(animated: true) {

@@ -7,17 +7,19 @@ import Static
 import Shared
 import BraveShared
 import BraveRewards
-import BraveRewardsUI
+import BraveUI
 import DeviceCheck
 
 class BraveRewardsSettingsViewController: TableViewController {
     
     let rewards: BraveRewards
+    let legacyWallet: BraveLedger?
+    var walletTransferLearnMoreTapped: (() -> Void)?
     
-    var tappedShowRewardsSettings: (() -> Void)?
-    
-    init(_ rewards: BraveRewards) {
+    init(_ rewards: BraveRewards, legacyWallet: BraveLedger?) {
         self.rewards = rewards
+        self.legacyWallet = legacyWallet
+        
         if #available(iOS 13.0, *) {
             super.init(style: .insetGrouped)
         } else {
@@ -35,26 +37,46 @@ class BraveRewardsSettingsViewController: TableViewController {
         
         title = Strings.braveRewardsTitle
         
-        var hideIconRow = Row.boolRow(title: Strings.hideRewardsIcon, option: Preferences.Rewards.hideRewardsIcon)
-        hideIconRow.detailText = Strings.hideRewardsIconSubtitle
-        hideIconRow.cellClass = MultilineSubtitleCell.self
-        
         dataSource.sections = [
-            Section(rows: [
-                hideIconRow
-            ])
+            .init(
+                rows: [
+                    Row(text: Strings.Rewards.settingsToggleTitle,
+                        detailText: Strings.Rewards.settingsToggleMessage,
+                        accessory: .switchToggle(value: rewards.isEnabled, { [unowned self] isOn in
+                            self.rewards.isEnabled = isOn
+                        }),
+                        cellClass: MultilineSubtitleCell.self)
+                ],
+                footer: .title(Strings.Rewards.settingsFooterMessage)
+            )
         ]
+        
+        if let legacyWallet = legacyWallet {
+            legacyWallet.transferrableAmount({ [weak self] total in
+                guard let self = self, total > 0 else { return }
+                self.dataSource.sections.insert(.init(
+                    header: .title(Strings.Rewards.walletTransferTitle),
+                    rows: [
+                        Row(text: Strings.Rewards.legacyWalletTransfer, selection: { [unowned self] in
+                            guard let legacyWallet = self.legacyWallet else { return }
+                            let controller = WalletTransferViewController(legacyWallet: legacyWallet)
+                            controller.learnMoreHandler = { [weak self] in
+                                self?.walletTransferLearnMoreTapped?()
+                            }
+                            let container = UINavigationController(rootViewController: controller)
+                            container.modalPresentationStyle = .formSheet
+                            self.present(container, animated: true)
+                        }, image: UIImage(imageLiteralResourceName: "rewards-qr-code").template)
+                    ]
+                ), at: 1)
+            })
+        }
         
         if rewards.ledger.isWalletCreated {
             dataSource.sections += [
                 Section(rows: [
-                    Row(text: Strings.openBraveRewardsSettings, selection: { [unowned self] in
-                        self.tappedShowRewardsSettings?()
-                    }, cellClass: ButtonCell.self)
-                ]),
-                Section(rows: [
                     Row(text: Strings.RewardsInternals.title, selection: {
-                        let controller = RewardsInternalsViewController(rewards: self.rewards)
+                        let controller = RewardsInternalsViewController(ledger: self.rewards.ledger)
                         self.navigationController?.pushViewController(controller, animated: true)
                     }, accessory: .disclosureIndicator)
                 ])

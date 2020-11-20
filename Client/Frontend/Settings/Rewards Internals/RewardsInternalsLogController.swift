@@ -59,10 +59,10 @@ class RewardsInternalsLogController: UITableViewController {
         $0.adjustsFontSizeToFitWidth = true
     }
     
-    private let rewards: BraveRewards
+    private let ledger: BraveLedger
     
-    init(rewards: BraveRewards) {
-        self.rewards = rewards
+    init(ledger: BraveLedger) {
+        self.ledger = ledger
         super.init(style: .plain)
     }
     
@@ -123,7 +123,7 @@ class RewardsInternalsLogController: UITableViewController {
     }
     
     @objc private func tappedShare() {
-        let controller = RewardsInternalsShareController(rewards: self.rewards, initiallySelectedSharables: [.logs])
+        let controller = RewardsInternalsShareController(ledger: self.ledger, initiallySelectedSharables: [.logs])
         let container = UINavigationController(rootViewController: controller)
         present(container, animated: true)
     }

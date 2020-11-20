@@ -58,10 +58,6 @@ extension PopoverController {
         /// The view where you will place the content controller's view
         let contentView = UIView().then {
             $0.backgroundColor = PopoverUX.backgroundColor
-            $0.layer.shadowColor = PopoverUX.shadowColor.cgColor
-            $0.layer.shadowOffset = PopoverUX.shadowOffset
-            $0.layer.shadowRadius = PopoverUX.shadowRadius
-            $0.layer.shadowOpacity = PopoverUX.shadowOpacity
         }
         
         private let popoverMaskView = MaskView()
@@ -124,7 +120,6 @@ extension PopoverController {
                 }
             }
             shadowView.frame = popoverMaskView.bodyView.frame
-            shadowView.layer.shadowPath = UIBezierPath(roundedRect: shadowView.bounds, cornerRadius: PopoverUX.cornerRadius).cgPath
         }
     }
     

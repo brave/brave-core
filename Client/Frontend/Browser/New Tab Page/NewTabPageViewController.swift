@@ -251,7 +251,7 @@ class NewTabPageViewController: UIViewController, Themeable {
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         
-//        presentNotification()
+        presentNotification()
     }
     
     override func viewSafeAreaInsetsDidChange() {
@@ -431,16 +431,6 @@ class NewTabPageViewController: UIViewController, Themeable {
             }
             
             vc = notificationVC
-        case .claimRewards:
-            if !Preferences.NewTabPage.attemptToShowClaimRewardsNotification.value { return }
-            
-            let claimRewardsVC = ClaimRewardsNTPNotificationViewController(rewards: rewards)
-            claimRewardsVC.closeHandler = { [weak self] in
-                Preferences.NewTabPage.attemptToShowClaimRewardsNotification.value = false
-                self?.notificationController = nil
-            }
-            
-            vc = claimRewardsVC
         }
         
         guard let viewController = vc else { return }

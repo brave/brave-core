@@ -5,17 +5,11 @@
 import UIKit
 import Shared
 import BraveShared
-import BraveRewardsUI
 import BraveUI
 
 extension NTPLearnMoreViewController {
-    enum NTPButtonType {
-        case rewards, ads
-    }
-
     struct NTPNotificationLearnMoreViewConfig {
         let headerText: String
-        let buttonType: NTPButtonType?
         let tosText: Bool
         let learnMoreButtonText: String
         var headerBodySpacing: CGFloat?
@@ -78,43 +72,11 @@ extension NTPLearnMoreViewController {
             $0.adjustsFontSizeToFitWidth = true
         }
         
-        private lazy var body = detailLinkLabel(with: Strings.NTP.learnMoreAboutBrandedImages).then {
-            $0.setContentCompressionResistancePriority(.required, for: .vertical)
-        }
-        
         private let tosString = Strings.termsOfService.withNonBreakingSpace
         
         private lazy var tos = detailLinkLabel(with:
             String(format: Strings.NTP.turnRewardsTos, tosString)).then {
                 $0.setURLInfo([tosString: "tos"])
-        }
-        
-        private lazy var primaryButton = RoundInterfaceButton(type: .system).then {
-            
-            var title = ""
-            
-            switch config.buttonType {
-            case .ads:
-                title = Strings.NTP.turnOnBraveAds
-            case .rewards:
-                title = Strings.NTP.turnOnBraveRewards
-            case .none:
-                assertionFailure("Unknown button type state")
-            }
-            
-            $0.setTitle(title, for: .normal)
-            $0.titleLabel?.font = UIFont.systemFont(ofSize: 16, weight: .semibold)
-            $0.appearanceTextColor = .white
-            $0.backgroundColor = Colors.blurple500
-            $0.setContentCompressionResistancePriority(.defaultHigh, for: .vertical)
-            $0.contentEdgeInsets = UIEdgeInsets(top: 12, left: 25, bottom: 12, right: 25)
-            $0.tintColor = .white
-            $0.addTarget(self, action: #selector(primaryButtonAction), for: .touchUpInside)
-            
-            if config.buttonType == .ads {
-                $0.setImage(#imageLiteral(resourceName: "turn_rewards_on_money_icon"), for: .normal)
-                $0.imageEdgeInsets = UIEdgeInsets(top: 0, left: -10, bottom: 0, right: 0)
-            }
         }
         
         private lazy var buttonsStackView = UIStackView().then { stackView in
@@ -156,12 +118,6 @@ extension NTPLearnMoreViewController {
             
             views.append(header)
             
-            if config.buttonType != nil {
-                views.append(primaryButton)
-            }
-            
-            views.append(body)
-            
             if config.tosText {
                 views.append(tos)
                 
@@ -190,13 +146,6 @@ extension NTPLearnMoreViewController {
         }
         
         // MARK: - Actions
-        
-        @objc func primaryButtonAction() {
-            guard let buttonType = config.buttonType else {
-                return
-            }
-            delegate?.buttonTapped(type: buttonType)
-        }
         
         @objc func learnMoreButtonAction() {
             delegate?.learnMoreTapped()

@@ -62,6 +62,9 @@ extension Preferences {
         /// If user kills the app before completing onboarding, it should be treated as unfinished.
         static let basicOnboardingCompleted = Option<Int>(key: "general.basic-onboarding-completed",
                                                           default: OnboardingState.undetermined.rawValue)
+        /// The time until the next on-boarding shows
+        static let basicOnboardingNextOnboardingPrompt = Option<Date?>(key: "general.basic-onboarding-days",
+                                                                      default: nil)
         
         /// The progress the user has made with onboarding
         static let basicOnboardingProgress = Option<Int>(key: "general.basic-onboarding-progress", default: OnboardingProgress.none.rawValue)

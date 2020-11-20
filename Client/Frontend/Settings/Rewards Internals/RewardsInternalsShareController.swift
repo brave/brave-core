@@ -35,16 +35,20 @@ private class RewardsInternalsSharableCell: UITableViewCell, TableViewReusable, 
 class RewardsInternalsShareController: UITableViewController {
     private(set) var initiallySelectedSharables: [Int]
     
-    private let rewards: BraveRewards
+    private let ledger: BraveLedger
+    private let sharables: [RewardsInternalsSharable]
     
-    init(rewards: BraveRewards, initiallySelectedSharables sharables: [RewardsInternalsSharable]) {
-        self.rewards = rewards
-        self.initiallySelectedSharables = sharables
+    init(ledger: BraveLedger,
+         initiallySelectedSharables: [RewardsInternalsSharable],
+         sharables: [RewardsInternalsSharable] = RewardsInternalsSharable.all) {
+        self.ledger = ledger
+        self.sharables = sharables
+        self.initiallySelectedSharables = initiallySelectedSharables
             .compactMap { sharable in
-                RewardsInternalsSharable.all.firstIndex(where: { $0.id == sharable.id })
+                initiallySelectedSharables.firstIndex(where: { $0.id == sharable.id })
         }
         // Ensure basic info is always selected
-        if !sharables.contains(.basic), let indexOfBasic = RewardsInternalsSharable.all.firstIndex(of: .basic) {
+        if !initiallySelectedSharables.contains(.basic), let indexOfBasic = sharables.firstIndex(of: .basic) {
             self.initiallySelectedSharables.insert(indexOfBasic, at: 0)
         }
         
@@ -133,7 +137,7 @@ class RewardsInternalsShareController: UITableViewController {
     private func share(_ senderIndexPath: IndexPath) {
         // create temp folder, zip, share
         guard let selectedIndexPaths = tableView.indexPathsForSelectedRows else { return }
-        let sharables = selectedIndexPaths.map { RewardsInternalsSharable.all[$0.row] }
+        let sharables = selectedIndexPaths.map { self.sharables[$0.row] }
         
         let dateFormatter = DateFormatter().then {
             $0.dateStyle = .long
@@ -142,7 +146,7 @@ class RewardsInternalsShareController: UITableViewController {
             $0.dateStyle = .long
             $0.timeStyle = .long
         }
-        let builder = RewardsInternalsSharableBuilder(rewards: self.rewards, dateFormatter: dateFormatter, dateAndTimeFormatter: dateAndTimeFormatter)
+        let builder = RewardsInternalsSharableBuilder(ledger: self.ledger, dateFormatter: dateFormatter, dateAndTimeFormatter: dateAndTimeFormatter)
         do {
             if FileManager.default.fileExists(atPath: dropDirectory.path) {
                 try FileManager.default.removeItem(at: dropDirectory)
@@ -197,14 +201,14 @@ class RewardsInternalsShareController: UITableViewController {
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         if section == 0 {
-            return RewardsInternalsSharable.all.count
+            return sharables.count
         }
         return 1 // Share button
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         if indexPath.section == 0 {
-            let sharable = RewardsInternalsSharable.all[indexPath.row]
+            let sharable = sharables[indexPath.row]
             let cell = tableView.dequeueReusableCell(for: indexPath) as RewardsInternalsSharableCell
             cell.textLabel?.text = sharable.title
             cell.detailTextLabel?.text = sharable.description

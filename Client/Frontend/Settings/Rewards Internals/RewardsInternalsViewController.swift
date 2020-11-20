@@ -27,17 +27,17 @@ private class WarningCell: MultilineSubtitleCell {
 /// A place where all rewards debugging information will live.
 class RewardsInternalsViewController: TableViewController {
     
-    private let rewards: BraveRewards
+    private let ledger: BraveLedger
     private var internalsInfo: RewardsInternalsInfo?
     
-    init(rewards: BraveRewards) {
-        self.rewards = rewards
+    init(ledger: BraveLedger) {
+        self.ledger = ledger
         if #available(iOS 13.0, *) {
             super.init(style: .insetGrouped)
         } else {
             super.init(style: .grouped)
         }
-        rewards.ledger.rewardsInternalInfo { info in
+        ledger.rewardsInternalInfo { info in
             self.internalsInfo = info
         }
     }
@@ -57,17 +57,12 @@ class RewardsInternalsViewController: TableViewController {
         let dateFormatter = DateFormatter().then {
             $0.dateStyle = .short
         }
-        let batFormatter = NumberFormatter().then {
-            $0.minimumIntegerDigits = 1
-            $0.minimumFractionDigits = 1
-            $0.maximumFractionDigits = 3
-        }
         
         navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .action, target: self, action: #selector(tappedShare)).then {
             $0.accessibilityLabel = Strings.RewardsInternals.shareInternalsTitle
         }
         
-        var sections: [Static.Section] = [
+        let sections: [Static.Section] = [
             .init(
                 rows: [
                     Row(text: Strings.RewardsInternals.sharingWarningTitle, detailText: Strings.RewardsInternals.sharingWarningMessage, cellClass: WarningCell.self)
@@ -90,48 +85,11 @@ class RewardsInternalsViewController: TableViewController {
             )
         ]
         
-        if let balance = rewards.ledger.balance {
-            let keyMaps = [
-                "anonymous": Strings.RewardsInternals.anonymous,
-                "blinded": "Rewards \(Strings.BAT)"
-            ]
-            let walletRows = balance.wallets.lazy.filter({ $0.key != "uphold" }).map { (key, value) -> Row in
-                Row(text: keyMaps[key] ?? key, detailText: "\(batFormatter.string(from: value) ?? "0.0") \(Strings.BAT)")
-            }
-            sections.append(
-                .init(
-                    header: .title(Strings.RewardsInternals.balanceInfoHeader),
-                    rows: [
-                        Row(text: Strings.RewardsInternals.totalBalance, detailText: "\(batFormatter.string(from: NSNumber(value: balance.total)) ?? "0.0") \(Strings.BAT)")
-                    ] + walletRows
-                )
-            )
-        }
-        
-        sections.append(
-            .init(
-                rows: [
-//                    Row(text: Strings.RewardsInternals.logsTitle, selection: { [unowned self] in
-//                        let controller = RewardsInternalsLogController(rewards: self.rewards)
-//                        self.navigationController?.pushViewController(controller, animated: true)
-//                    }, accessory: .disclosureIndicator),
-                    Row(text: Strings.RewardsInternals.promotionsTitle, selection: { [unowned self] in
-                        let controller = RewardsInternalsPromotionListController(rewards: self.rewards)
-                        self.navigationController?.pushViewController(controller, animated: true)
-                    }, accessory: .disclosureIndicator),
-                    Row(text: Strings.RewardsInternals.contributionsTitle, selection: { [unowned self] in
-                        let controller = RewardsInternalsContributionListController(rewards: self.rewards)
-                        self.navigationController?.pushViewController(controller, animated: true)
-                    }, accessory: .disclosureIndicator)
-                ]
-            )
-        )
-        
         dataSource.sections = sections
     }
     
     @objc private func tappedShare() {
-        let controller = RewardsInternalsShareController(rewards: self.rewards, initiallySelectedSharables: RewardsInternalsSharable.default)
+        let controller = RewardsInternalsShareController(ledger: self.ledger, initiallySelectedSharables: RewardsInternalsSharable.default)
         let container = UINavigationController(rootViewController: controller)
         present(container, animated: true)
     }
@@ -143,7 +101,7 @@ struct RewardsInternalsBasicInfoGenerator: RewardsInternalsFileGenerator {
     func generateFiles(at path: String, using builder: RewardsInternalsSharableBuilder, completion: @escaping (Error?) -> Void) {
         // Only 1 file to make here
         var internals: RewardsInternalsInfo?
-        builder.rewards.ledger.rewardsInternalInfo { info in
+        builder.ledger.rewardsInternalInfo { info in
             internals = info
         }
         guard let info = internals else {
@@ -162,8 +120,7 @@ struct RewardsInternalsBasicInfoGenerator: RewardsInternalsFileGenerator {
                 "DeviceCheck Enrollment State": DeviceCheckClient.isDeviceEnrolled() ? "Enrolled" : "Not enrolled",
                 "OS": "\(UIDevice.current.systemName) \(UIDevice.current.systemVersion)",
                 "Model": UIDevice.current.model,
-            ],
-            "Balance Info": builder.rewards.ledger.balance?.wallets ?? ""
+            ]
         ]
         
         do {

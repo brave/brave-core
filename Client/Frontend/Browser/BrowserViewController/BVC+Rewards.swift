@@ -32,33 +32,52 @@ extension BrowserViewController {
             self.topToolbar.locationView.rewardsButton.isHidden = true
             return
         }
-        let isRewardsEnabled = rewards.ledger.isEnabled
-        self.topToolbar.locationView.rewardsButton.isHidden = (!isRewardsEnabled && Preferences.Rewards.hideRewardsIcon.value) || PrivateBrowsingManager.shared.isPrivateBrowsing
-        let isVerifiedBadgeVisible = self.publisher?.status == .verified || self.publisher?.status == .connected
-        let isLocal = self.tabManager.selectedTab?.url?.isLocal == true
-        self.topToolbar.locationView.rewardsButton.isVerified = isRewardsEnabled && !isLocal && isVerifiedBadgeVisible
-        self.topToolbar.locationView.rewardsButton.notificationCount = self.rewards.ledger.notifications.count
-        self.topToolbar.locationView.rewardsButton.forceShowBadge = !Preferences.Rewards.panelOpened.value
+        self.topToolbar.locationView.rewardsButton.isHidden = Preferences.Rewards.hideRewardsIcon.value || PrivateBrowsingManager.shared.isPrivateBrowsing
+        self.topToolbar.locationView.rewardsButton.iconState = Preferences.Rewards.rewardsToggledOnce.value ?
+            (rewards.isEnabled || rewards.isCreatingWallet ? .enabled : .disabled) : .initial
     }
 
-    func showBraveRewardsPanel(initialPage: RewardsPanelController.InitialPage = .default) {
-        Preferences.Rewards.panelOpened.value = true
+    func showRewardsDebugSettings() {
+        if AppConstants.buildChannel.isPublic { return }
+        
+        let settings = RewardsDebugSettingsViewController(rewards: rewards, legacyWallet: legacyWallet)
+        let container = UINavigationController(rootViewController: settings)
+        present(container, animated: true)
+    }
+    
+    func showBraveRewardsPanel() {
         updateRewardsButtonState()
         
         UIDevice.current.forcePortraitIfIphone(for: UIApplication.shared)
         
-        guard let tab = tabManager.selectedTab, let url = tab.webView?.url else { return }
-        let braveRewardsPanel = RewardsPanelController(
-            rewards,
-            tabId: UInt64(tab.rewardsId),
-            url: url,
-            faviconURL: url,
-            delegate: self,
-            dataSource: self,
-            initialPage: initialPage
-        )
+        guard let tab = tabManager.selectedTab else { return }
         
-        let popover = PopoverController(contentController: braveRewardsPanel, contentSizeBehavior: .preferredContentSize)
+        let braveRewardsPanel = BraveRewardsViewController(
+            tab: tab,
+            rewards: rewards,
+            legacyWallet: legacyWallet
+        )
+        braveRewardsPanel.actionHandler = { [weak self, unowned braveRewardsPanel] action in
+            switch action {
+            case .rewardsTransferTapped:
+                guard let legacyWallet = self?.legacyWallet else { return }
+                braveRewardsPanel.dismiss(animated: true) {
+                    let controller = WalletTransferViewController(legacyWallet: legacyWallet)
+                    controller.learnMoreHandler = { [weak self, unowned controller] in
+                        controller.dismiss(animated: true) {
+                            self?.loadNewTabWithURL(BraveUX.braveRewardsLearnMoreURL)
+                        }
+                    }
+                    let container = UINavigationController(rootViewController: controller)
+                    container.modalPresentationStyle = .formSheet
+                    self?.present(container, animated: true)
+                }
+            case .unverifiedPublisherLearnMoreTapped:
+                self?.loadNewTabWithURL(BraveUX.braveRewardsUnverifiedPublisherLearnMoreURL)
+            }
+        }
+        
+        let popover = PopoverController(contentController: braveRewardsPanel, contentSizeBehavior: .autoLayout)
         popover.addsConvenientDismissalMargins = false
         popover.present(from: topToolbar.locationView.rewardsButton, on: self)
         popover.popoverDidDismiss = { [weak self] _ in
@@ -67,12 +86,21 @@ extension BrowserViewController {
                 // Show the tab currently visible
                 self.rewards.ledger.selectedTabId = tabId
             }
-            self.displayMyFirstAdIfAvailable()
         }
         // Hide the current tab
         rewards.ledger.selectedTabId = 0
         // Fetch new promotions
         rewards.ledger.fetchPromotions(nil)
+    }
+    
+    func claimPendingPromotions() {
+        rewards.ledger.pendingPromotions.forEach { promo in
+            if promo.status == .active {
+                self.rewards.ledger.claimPromotion(promo) { success in
+                    log.info("[BraveRewards] Auto-Claim Promotion - \(success) for \(promo.approximateValue)")
+                }
+            }
+        }
     }
     
     func authorizeUpholdWallet(from tab: Tab, queryItems items: [String: String]) {
