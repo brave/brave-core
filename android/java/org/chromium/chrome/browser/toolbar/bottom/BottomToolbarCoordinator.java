@@ -127,7 +127,8 @@ class BottomToolbarCoordinator implements View.OnLongClickListener {
             RecordUserAction.record("MobileToolbarOmniboxAcceleratorTap");
 
             // Only switch to HomePage when overview is showing.
-            if (mOverviewModeBehavior != null && mOverviewModeBehavior.overviewVisible()) {
+            if (mOverviewModeBehavior != null && mOverviewModeBehavior.overviewVisible()
+                    && mShowStartSurfaceCallable != null) {
                 mShowStartSurfaceCallable.get();
             }
             setUrlBarFocusAction.onResult(LocationBar.OmniboxFocusReason.ACCELERATOR_TAP);
