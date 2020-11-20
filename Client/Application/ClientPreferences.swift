@@ -158,6 +158,7 @@ extension Preferences {
         static let syncV2BookmarksMigrationCompleted = Option<Bool>(key: "chromium.migration.bookmarks", default: false)
         static let syncV2BookmarksMigrationCount = Option<Int>(key: "chromium.migration.bookmarks.count", default: 0)
         static let syncEnabled = Option<Bool>(key: "chromium.sync.enabled", default: false)
+        static let lastBookmarksFolderNodeId = Option<Int?>(key: "chromium.last.bookmark.folder.node.id", default: nil)
     }
     
     final class Debug {

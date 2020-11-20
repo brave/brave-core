@@ -666,16 +666,23 @@ class BrowserViewController: UIViewController {
         vpnProductInfo.load()
         BraveVPN.initialize()
         
-        self.migrateToChromiumBookmarks { success in
-            if !success {
-                DispatchQueue.main.async {
-                    let alert = UIAlertController(title: Strings.Sync.v2MigrationErrorTitle,
-                                                  message: Strings.Sync.v2MigrationErrorMessage,
-                                                  preferredStyle: .alert)
-                    alert.addAction(UIAlertAction(title: Strings.OKString, style: .default, handler: nil))
-                    self.present(alert, animated: true)
+        //We stop ever attempting migration after 3 times.
+        if Preferences.Chromium.syncV2BookmarksMigrationCount.value < 3 {
+            self.migrateToChromiumBookmarks { success in
+                if !success {
+                    DispatchQueue.main.async {
+                        let alert = UIAlertController(title: Strings.Sync.v2MigrationErrorTitle,
+                                                      message: Strings.Sync.v2MigrationErrorMessage,
+                                                      preferredStyle: .alert)
+                        alert.addAction(UIAlertAction(title: Strings.OKString, style: .default, handler: nil))
+                        self.present(alert, animated: true)
+                    }
                 }
             }
+        } else {
+            //After 3 tries, we mark Migration as successful.
+            //There is nothing more we can do for the user other than to let them export/import bookmarks.
+            Preferences.Chromium.syncV2BookmarksMigrationCompleted.value = true
         }
     }
     
@@ -1766,7 +1773,7 @@ class BrowserViewController: UIViewController {
     
     private func showBookmarkController() {
         let bookmarkViewController = BookmarksViewController(
-            folder: nil,
+            folder: Bookmarkv2.lastVisitedFolder(),
             isPrivateBrowsing: PrivateBrowsingManager.shared.isPrivateBrowsing)
         
         bookmarkViewController.toolbarUrlActionsDelegate = self

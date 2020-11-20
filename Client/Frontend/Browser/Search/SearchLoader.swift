@@ -63,7 +63,9 @@ class _SearchLoader<UnusedA, UnusedB>: Loader<[Site], SearchViewController> {
                 }
                 
                 // First, see if the query matches any URLs from the user's search history.
-                self.load(result)
+                let bookmarks = Set<Site>(Bookmarkv2.byFrequency(query: self.query).map { Site(url: $0.url ?? "", title: $0.title ?? "", bookmarked: true) })
+                
+                self.load(Array(Set(result + bookmarks)))
                 
                 // If the new search string is not longer than the previous
                 // we don't need to find an autocomplete suggestion.

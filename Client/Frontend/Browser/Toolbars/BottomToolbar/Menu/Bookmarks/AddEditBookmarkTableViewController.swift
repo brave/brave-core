@@ -195,22 +195,14 @@ class AddEditBookmarkTableViewController: UITableViewController {
     /// Sorts folders by their older and nesting level.
     /// Indentation level starts with 0, but level 0 is designed for special folders
     /// (root level bookamrks, favorites).
-    private func sortFolders(parentID: Int? = nil,
-                             indentationLevel: Int = defaultIndentationLevel) -> [IndentedFolder] {
+    private func sortFolders() -> [IndentedFolder] {
         guard let objects = frc.fetchedObjects else { return [] }
-        
-        let sortedObjects = objects.sorted(by: { $0.order < $1.order })
-        
-        var result = [IndentedFolder]()
-        
-        sortedObjects.filter { $0.parent?.objectID == parentID }.forEach {
-            result.append(($0, indentationLevel: indentationLevel))
-            // Append children recursively
-            result.append(contentsOf: sortFolders(parentID: $0.objectID,
-                                                  indentationLevel: indentationLevel + 1))
-        }
-     
-        return result
+        return objects.map({
+            if let folder = $0 as? BraveBookmarkFolder {
+                return IndentedFolder(folder, folder.indentationLevel)
+            }
+            return IndentedFolder($0, AddEditBookmarkTableViewController.defaultIndentationLevel)
+        })
     }
     
     private func reloadData() {

@@ -7,7 +7,7 @@ import Storage
 import CoreData
 import Shared
 
-protocol WebsitePresentable {
+public protocol WebsitePresentable {
     var title: String? { get }
     var url: String? { get }
 }

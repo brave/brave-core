@@ -71,13 +71,12 @@ extension BraveSyncAPI {
 
 extension BraveSyncAPI {
     private class BraveSyncServiceListener: NSObject {
-        private var observer: BraveSyncServiceObserver?
+        private var observer: Any?
         private var onRemoved: (BraveSyncServiceListener) -> Void
-
         fileprivate init(_ onSyncServiceStateChanged: @escaping () -> Void,
                          onRemoved: @escaping (BraveSyncServiceListener) -> Void) {
             self.onRemoved = onRemoved
-            self.observer = BraveSyncServiceObserver(callback: onSyncServiceStateChanged)
+            self.observer = BraveSyncAPI.shared.createSyncServiceObserver(onSyncServiceStateChanged)
             super.init()
         }
         
@@ -91,13 +90,12 @@ extension BraveSyncAPI {
     }
     
     private class BraveSyncDeviceListener: NSObject {
-        private var observer: BraveSyncDeviceObserver?
+        private var observer: Any?
         private var onRemoved: (BraveSyncDeviceListener) -> Void
-        
         fileprivate init(_ onDeviceInfoChanged: @escaping () -> Void,
                          onRemoved: @escaping (BraveSyncDeviceListener) -> Void) {
             self.onRemoved = onRemoved
-            self.observer = BraveSyncDeviceObserver(callback: onDeviceInfoChanged)
+            self.observer = BraveSyncAPI.shared.createSyncDeviceObserver(onDeviceInfoChanged)
             super.init()
         }
         

@@ -10,6 +10,7 @@ class BookmarkModelStateObserver: NSObject, BookmarkModelObserver {
     private let listener: (StateChange) -> Void
     
     enum StateChange {
+        case modelLoaded
         case nodeChanged(BookmarkNode)
         case favIconChanged(BookmarkNode)
         case childrenChanged(BookmarkNode)
@@ -20,6 +21,10 @@ class BookmarkModelStateObserver: NSObject, BookmarkModelObserver {
     
     init(_ listener: @escaping (StateChange) -> Void) {
         self.listener = listener
+    }
+    
+    func bookmarkModelLoaded() {
+        self.listener(.modelLoaded)
     }
     
     func bookmarkNodeChanged(_ bookmarkNode: BookmarkNode) {

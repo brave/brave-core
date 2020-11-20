@@ -82,7 +82,7 @@ extension BrowserViewController {
                 switch result {
                 case .ledgerOk:
                     // Fetch the wallet
-                    self.rewards.ledger.fetchExternalWallet(forType: .uphold) { _ in
+                    self.rewards.ledger.fetchUpholdWallet { _ in
                         if let redirectURL = redirectURL {
                             // Requires verification
                             let request = URLRequest(url: redirectURL)
