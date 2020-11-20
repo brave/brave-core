@@ -6,7 +6,7 @@
 #include "ui/base/webui/web_ui_util.h"
 
 #include "brave/ui/webui/resources/grit/brave_webui_resources.h"
-#include "ui/resources/grit/webui_resources.h"
+#include "ui/resources/grit/webui_generated_resources.h"
 
 // Replace text_defaults.css with brave's text_defaults.css
 // which is defined in brave_webui_resources.grd.
