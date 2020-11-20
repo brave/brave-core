@@ -104,6 +104,10 @@ public class BraveToolbarManager extends ToolbarManager {
     @Override
     public void enableBottomControls() {
         ViewStub viewStub = mActivity.findViewById(R.id.bottom_controls_stub);
+        if (!BottomToolbarConfiguration.isBottomToolbarEnabled() || viewStub == null) {
+            super.enableBottomControls();
+            return;
+        }
         viewStub.setOnInflateListener((stub, inflated) -> { mRootBottomView = inflated; });
         mBottomControlsCoordinator = new BraveBottomControlsCoordinator(
                 BottomTabSwitcherActionMenuCoordinator.createOnLongClickListener(
