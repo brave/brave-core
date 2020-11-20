@@ -329,7 +329,7 @@ class WalletViewController: UIViewController, RewardsSummaryProtocol {
       attentionView.valueLabel.text = "\(publisher.percent)%"
       
       self.state.ledger.listRecurringTips { [weak self] in
-        guard let self = self, let recurringTip = $0.first(where: { $0.id == publisher.id && $0.rewardsCategory == .recurringTip }) else { return }
+        guard let self = self, let recurringTip = $0.first(where: { $0.id == publisher.id }) else { return }
         
         self.recurringTipAmount = recurringTip.weight
         self.publisherSummaryView.monthlyTipView.batValueView.amountLabel.text = "\(Int(recurringTip.weight))"
@@ -398,7 +398,7 @@ class WalletViewController: UIViewController, RewardsSummaryProtocol {
   }
   
   @objc private func tappedAddFunds() {
-    guard let wallet = state.ledger.externalWallets[.uphold], let url = URL(string: wallet.addUrl) else { return }
+    guard let wallet = state.ledger.upholdWallet, let url = URL(string: wallet.addUrl) else { return }
     state.delegate?.loadNewTabWithURL(url)
   }
   
@@ -513,7 +513,7 @@ class WalletViewController: UIViewController, RewardsSummaryProtocol {
   @objc private func tappedConnectWalletButton() {
     let verifyOnboarding = VerifyUserWalletViewController {
       self.dismiss(animated: true, completion: {
-        guard let wallet = self.state.ledger.externalWallets[.uphold],
+        guard let wallet = self.state.ledger.upholdWallet,
             let percentEncoded = wallet.verifyUrl.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed),
             let upholdURL = URL(string: percentEncoded) else { return }
           self.state.delegate?.loadNewTabWithURL(upholdURL)
@@ -523,7 +523,7 @@ class WalletViewController: UIViewController, RewardsSummaryProtocol {
   }
   
   private func showUserWalletDetails() {
-    guard let wallet = state.ledger.externalWallets[.uphold] else { return }
+    guard let wallet = state.ledger.upholdWallet else { return }
     let details = UserWalletDetailsViewController(state: state, wallet: wallet) {
       self.state.ledger.disconnectWallet(ofType: .uphold) { result in
         if result == .ledgerOk {
@@ -542,7 +542,7 @@ class WalletViewController: UIViewController, RewardsSummaryProtocol {
   
   @objc private func tappedDisconnectWalletButton() {
     dismiss(animated: true, completion: {
-      guard let wallet = self.state.ledger.externalWallets[.uphold],
+      guard let wallet = self.state.ledger.upholdWallet,
         let percentEncoded = wallet.verifyUrl.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed),
         let upholdURL = URL(string: percentEncoded) else { return }
       self.state.delegate?.loadNewTabWithURL(upholdURL)

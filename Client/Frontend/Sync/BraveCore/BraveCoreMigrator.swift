@@ -36,7 +36,7 @@ class BraveCoreMigrator {
         #if TEST_MIGRATION
         var didFinishTest = false
         //Add fake bookmarks to CoreData
-        self.testMigration { [weak self] in
+        self.testMassiveMigration { [weak self] in
             guard let self = self else {
                 didFinishTest = true
                 return
@@ -53,9 +53,9 @@ class BraveCoreMigrator {
             if self.bookmarksAPI.isLoaded {
                 BraveSyncAPI.shared.leaveSyncGroup()
                 self.bookmarksAPI.removeAll()
-                self.migrate() { _ in
+                //self.migrate() { _ in
                     didFinishTest = true
-                }
+                //}
             } else {
                 self.observer = self.bookmarksAPI.add(BookmarksModelLoadedObserver({ [weak self] in
                     guard let self = self else { return }
@@ -64,9 +64,9 @@ class BraveCoreMigrator {
 
                     BraveSyncAPI.shared.leaveSyncGroup()
                     self.bookmarksAPI.removeAll()
-                    self.migrate() { _ in
+                    //self.migrate() { _ in
                         didFinishTest = true
-                    }
+                    //}
                 }))
             }
         }
@@ -304,6 +304,46 @@ extension BraveCoreMigrator {
             //TEST -> DEPTH -> REDDIT
             let depth = Bookmark.getAllBookmarks(context: context).first(where: { $0.isFolder && $0.parentFolder?.customTitle == "TEST" && $0.customTitle == "DEPTH" })
             Bookmark.add(url: URL(string: "https://reddit.com/")!, title: "Reddit", parentFolder: depth, context: .existing(context))
+            
+            DispatchQueue.main.async {
+                completion()
+            }
+        }
+    }
+    
+    private func testMassiveMigration(_ completion: @escaping () -> Void) {
+        //CODE FOR TESTING MIGRATION!
+        //DELETES ALL EXISTING CORE-DATA BOOKMARKS, CREATES A BUNCH OF FAKE BOOKMARKS..
+        Preferences.Chromium.syncV2BookmarksMigrationCompleted.value = false
+
+        DataController.perform { context in
+            //Delete all existing bookmarks
+            Bookmark.getAllTopLevelBookmarks(context).forEach({
+                $0.delete(context: .existing(context))
+            })
+            
+            //TEST FOLDER
+            Bookmark.addFolder(title: "TEST", context: .existing(context))
+
+            //TEST -> Brave
+            let test = Bookmark.getTopLevelFolders(context).first(where: { $0.customTitle == "TEST" })
+            
+            //TEST -> DEPTH Folder
+            Bookmark.addFolder(title: "DEPTH", parentFolder: test, context: .existing(context))
+            
+            let depth = Bookmark.getAllBookmarks(context: context).first(where: { $0.isFolder && $0.parentFolder?.customTitle == "TEST" && $0.customTitle == "DEPTH" })
+
+            for _ in 0..<400 {
+                //TOP LEVEL
+                Bookmark.add(url: URL(string: "https://amazon.ca/")!, title: "Amazon", context: .existing(context))
+                Bookmark.add(url: URL(string: "https://google.ca/")!, title: "Google", context: .existing(context))
+
+                //TEST ->
+                Bookmark.add(url: URL(string: "https://brave.com/")!, title: "Brave", parentFolder: test, context: .existing(context))
+
+                //TEST -> DEPTH ->
+                Bookmark.add(url: URL(string: "https://reddit.com/")!, title: "Reddit", parentFolder: depth, context: .existing(context))
+            }
             
             DispatchQueue.main.async {
                 completion()

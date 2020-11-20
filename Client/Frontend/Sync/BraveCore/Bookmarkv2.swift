@@ -6,6 +6,7 @@
 import Foundation
 import Data
 import BraveRewards
+import BraveShared
 import CoreData
 import Shared
 
@@ -13,7 +14,7 @@ private let log = Logger.browserLogger
 
 // A Lightweight wrapper around BraveCore bookmarks
 // with the same layout/interface as `Bookmark (from CoreData)`
-class Bookmarkv2 {
+class Bookmarkv2: WebsitePresentable {
     private let bookmarkNode: BookmarkNode
     private var observer: BookmarkModelListener?
     private static let bookmarksAPI = BraveBookmarksAPI()
@@ -86,18 +87,97 @@ class Bookmarkv2 {
     
     public var order: Int16 {
         let defaultOrder = 0 //taken from CoreData
-        
-        guard let children = bookmarkNode.parent?.children else {
+
+        //MUST Use childCount instead of children.count! for performance
+        guard let count = bookmarkNode.parent?.childCount, count > 0 else {
             return Int16(defaultOrder)
         }
-        
-        return Int16(children.firstIndex(where: { $0.guid == self.bookmarkNode.guid }) ?? defaultOrder)
+
+        //Do NOT change this to self.parent.children.indexOf(where: { self.id == $0.id })
+        //Swift's performance on `Array` is abominable!
+        //Therefore we call a native function `index(ofChild:)` to return the index.
+        return Int16(self.parent?.bookmarkNode.index(ofChild: self.bookmarkNode) ?? defaultOrder)
     }
     
     public func delete() {
         if self.canBeDeleted {
             Bookmarkv2.bookmarksAPI.removeBookmark(bookmarkNode)
         }
+    }
+    
+    // Returns the last visited folder
+    // If no folder was visited, returns the mobile bookmarks folder
+    // If the root folder was visited, returns nil
+    public static func lastVisitedFolder() -> Bookmarkv2? {
+        guard let nodeId = Preferences.Chromium.lastBookmarksFolderNodeId.value else {
+            // Default folder is the mobile node..
+            if let mobileNode = bookmarksAPI.mobileNode {
+                return Bookmarkv2(mobileNode)
+            }
+            return nil
+        }
+        
+        // Display root folder instead of mobile node..
+        if nodeId == -1 {
+            return nil
+        }
+        
+        // Display last visited folder..
+        if let folderNode = Bookmarkv2.bookmarksAPI.getNodeById(nodeId),
+           folderNode.isVisible {
+            return Bookmarkv2(folderNode)
+        }
+        
+        // Default folder is the mobile node..
+        if let mobileNode = bookmarksAPI.mobileNode {
+            return Bookmarkv2(mobileNode)
+        }
+        return nil
+    }
+    
+    public static func lastFolderPath() -> [Bookmarkv2] {
+        if let nodeId = Preferences.Chromium.lastBookmarksFolderNodeId.value,
+           var folderNode = Bookmarkv2.bookmarksAPI.getNodeById(nodeId),
+           folderNode.isVisible {
+            
+            // We don't ever display the root node
+            // It is the mother of all nodes
+            let rootNodeGuid = bookmarksAPI.rootNode?.guid
+            
+            var nodes = [BookmarkNode]()
+            nodes.append(folderNode)
+            
+            while true {
+                if let parent = folderNode.parent, parent.isVisible, parent.guid != rootNodeGuid {
+                    nodes.append(parent)
+                    folderNode = parent
+                    continue
+                }
+                break
+            }
+            return nodes.map({ Bookmarkv2($0) }).reversed()
+        }
+        
+        // Default folder is the mobile node..
+        if let mobileNode = bookmarksAPI.mobileNode {
+            return [Bookmarkv2(mobileNode)]
+        }
+        
+        return []
+    }
+}
+
+class BraveBookmarkFolder: Bookmarkv2 {
+    public let indentationLevel: Int
+    
+    private override init(_ bookmarkNode: BookmarkNode) {
+        self.indentationLevel = 0
+        super.init(bookmarkNode)
+    }
+    
+    public init(_ bookmarkFolder: BookmarkFolder) {
+        self.indentationLevel = bookmarkFolder.indentationLevel
+        super.init(bookmarkFolder.bookmarkNode)
     }
 }
 
@@ -142,6 +222,15 @@ extension Bookmarkv2 {
     public static func getChildren(forFolder folder: Bookmarkv2, includeFolders: Bool) -> [Bookmarkv2]? {
         let result = folder.bookmarkNode.children.map({ Bookmarkv2($0) })
         return includeFolders ? result : result.filter({ $0.isFolder == false })
+    }
+    
+    public static func byFrequency(query: String? = nil) -> [WebsitePresentable] {
+        //Invalid query.. BraveCore doesn't store bookmarks based on last visited.
+        //Any last visited bookmarks would show up in `History` anyway.
+        //BraveCore automatically sorts them by date as well.
+        guard let query = query, !query.isEmpty else { return [] }
+        return Bookmarkv2.bookmarksAPI.search(withQuery: query, maxCount: 200)
+            .compactMap({ return !$0.isFolder ? Bookmarkv2($0) : nil })
     }
     
     public func update(customTitle: String?, url: String?) {
@@ -212,5 +301,25 @@ extension Bookmarkv2 {
     
     public func removeFavIconObserver() {
         observer = nil
+    }
+    
+    public static func waitForBookmarkModelLoaded(_ completion: @escaping () -> Void) {
+        if bookmarksAPI.isLoaded {
+            DispatchQueue.main.async {
+                completion()
+            }
+        } else {
+            var observer: BookmarkModelListener?
+            observer = Bookmarkv2.bookmarksAPI.add(BookmarkModelStateObserver({
+                if case .modelLoaded = $0 {
+                    observer?.destroy()
+                    observer = nil
+                    
+                    DispatchQueue.main.async {
+                        completion()
+                    }
+                }
+            }))
+        }
     }
 }

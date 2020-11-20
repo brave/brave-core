@@ -9,11 +9,11 @@ import BraveUI
 final class UserWalletDetailsViewController: UIViewController {
  
   private let state: RewardsState
-  private let wallet: ExternalWallet
+  private let wallet: UpholdWallet
   
   private var disconnectedWalletHandler: () -> Void
   
-  init(state: RewardsState, wallet: ExternalWallet, disconnectedWalletHandler: @escaping () -> Void) {
+  init(state: RewardsState, wallet: UpholdWallet, disconnectedWalletHandler: @escaping () -> Void) {
     self.state = state
     self.wallet = wallet
     self.disconnectedWalletHandler = disconnectedWalletHandler
