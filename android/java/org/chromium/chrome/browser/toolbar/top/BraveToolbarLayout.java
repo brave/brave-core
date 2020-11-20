@@ -11,6 +11,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Resources;
+import android.graphics.Canvas;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
 import android.util.AttributeSet;
@@ -39,9 +40,8 @@ import org.chromium.chrome.browser.BraveRelaunchUtils;
 import org.chromium.chrome.browser.BraveRewardsNativeWorker;
 import org.chromium.chrome.browser.BraveRewardsObserver;
 import org.chromium.chrome.browser.BraveRewardsPanelPopup;
-import org.chromium.chrome.browser.app.BraveActivity;
-import org.chromium.chrome.browser.app.ChromeActivity;
 import org.chromium.chrome.browser.brave_stats.BraveStatsUtil;
+import org.chromium.chrome.browser.customtabs.features.toolbar.CustomTabToolbar;
 import org.chromium.chrome.browser.dialogs.BraveAdsSignupDialog;
 import org.chromium.chrome.browser.flags.ChromeFeatureList;
 import org.chromium.chrome.browser.local_database.BraveStatsTable;
@@ -244,8 +244,8 @@ public abstract class BraveToolbarLayout extends ToolbarLayout implements OnClic
     // shown and loading state is changed.
     updateBraveShieldsButtonState(null);
     if (this instanceof ToolbarPhone) {
-        if (super.getMenuButtonCoordinator() != null && isMenuButtonOnBottom()) {
-            super.getMenuButtonCoordinator().setVisibility(false);
+        if (getMenuButtonCoordinator() != null && isMenuButtonOnBottom()) {
+            getMenuButtonCoordinator().setVisibility(false);
         }
     }
   }
@@ -884,8 +884,8 @@ public abstract class BraveToolbarLayout extends ToolbarLayout implements OnClic
 
   public void onBottomToolbarVisibilityChanged(boolean isVisible) {
       mIsBottomToolbarVisible = isVisible;
-      if (this instanceof ToolbarPhone && super.getMenuButtonCoordinator() != null) {
-          super.getMenuButtonCoordinator().setVisibility(!isVisible);
+      if (this instanceof ToolbarPhone && getMenuButtonCoordinator() != null) {
+          getMenuButtonCoordinator().setVisibility(!isVisible);
           ToggleTabStackButton toggleTabStackButton = findViewById(R.id.tab_switcher_button);
           if (toggleTabStackButton != null) {
               toggleTabStackButton.setVisibility(isTabSwitcherOnBottom() ? GONE : VISIBLE);
@@ -919,6 +919,18 @@ public abstract class BraveToolbarLayout extends ToolbarLayout implements OnClic
     protected void initialize(ToolbarDataProvider toolbarDataProvider,
             ToolbarTabController tabController, MenuButtonCoordinator menuButtonCoordinator) {
         super.initialize(toolbarDataProvider, tabController, menuButtonCoordinator);
+        updateMenuButtonState();
+    }
+
+    public void updateMenuButtonState() {
         BraveMenuButtonCoordinator.setMenuFromBottom(isMenuButtonOnBottom());
+    }
+
+    @Override
+    protected void onDraw(Canvas canvas) {
+        if (this instanceof CustomTabToolbar || this instanceof ToolbarPhone) {
+            updateMenuButtonState();
+        }
+        super.onDraw(canvas);
     }
 }
