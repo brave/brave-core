@@ -63,7 +63,7 @@ class BraveCosmeticResourcesTabHelper
       const std::vector<std::string>& classes,
       const std::vector<std::string>& ids);
   void GetHiddenClassIdSelectorsOnUI(
-      content::RenderFrameHost* render_frame_host,
+      content::GlobalFrameRoutingId frame_id,
       std::unique_ptr<base::ListValue> selectors);
 
   std::vector<std::string> exceptions_;

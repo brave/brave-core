@@ -59,6 +59,7 @@ template("brave_extra_paks") {
     output = "${invoker.output_dir}/brave_resources.pak"
     sources = [
       "$root_gen_dir/components/brave_components_resources.pak",
+      "$root_gen_dir/brave/components/cosmetic_filters/resources/cosmetic_filters_resources.pak",
       "$root_gen_dir/brave/ui/webui/resources/brave_webui_resources.pak",
     ]
 
@@ -72,6 +73,7 @@ template("brave_extra_paks") {
 
     deps = [
       "//brave/components/resources",
+      "//brave/components/cosmetic_filters/resources",
       "//brave/ui/webui/resources",
     ]
 

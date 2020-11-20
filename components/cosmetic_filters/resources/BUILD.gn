@@ -1,0 +1,12 @@
+import("//tools/grit/repack.gni")
+
+repack("resources") {
+  output = "$root_gen_dir/brave/components/cosmetic_filters/resources/cosmetic_filters_resources.pak"
+  sources = [
+    "$root_gen_dir/components/cosmetic_filters/resources/cosmetic_filters_resources.pak",
+  ]
+
+  deps = [
+    "data:resources_cf",
+  ]
+}

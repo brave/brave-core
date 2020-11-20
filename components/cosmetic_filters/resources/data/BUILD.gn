@@ -1,0 +1,15 @@
+import("//tools/grit/grit_rule.gni")
+import("//tools/grit/repack.gni")
+
+grit("resources_cf") {
+  source = "cosmetic_filters_resources.grd"
+
+  outputs = [
+    "grit/cosmetic_filters_resources.h",
+    "cosmetic_filters_resources.pak",
+  ]
+
+  resource_ids = "//brave/browser/resources/resource_ids"
+
+  output_dir = "$root_gen_dir/components/cosmetic_filters/resources"
+}

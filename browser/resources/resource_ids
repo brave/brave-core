@@ -100,4 +100,7 @@
   "<(ROOT_GEN_DIR)/brave/web-ui-ipfs/ipfs.grd": {
     "includes": [45500],
   },
+  "brave/components/cosmetic_filters/resources/data/cosmetic_filters_resources.grd": {
+    "includes": [46000]
+  },
 }

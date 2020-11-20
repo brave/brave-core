@@ -23,114 +23,18 @@
 #include "content/public/browser/global_routing_id.h"
 #include "content/public/browser/navigation_handle.h"
 #include "content/public/renderer/render_frame.h"
+#include "components/cosmetic_filters/resources/grit/cosmetic_filters_resources.h"
+#include "ui/base/resource/resource_bundle.h"
 
+// Doing that to prevent lint error:
+// Static/global string variables are not permitted
+// You can create an object dynamically and never delete it by using a
+// Function-local static pointer or reference
+// (e.g., static const auto& impl = *new T(args...);).
+std::string* BraveCosmeticResourcesTabHelper::observing_script_ =
+    new std::string("");
 
 namespace {
-const char k_observing_script[] =
-    "(function() {"
-      "const queriedIds = new Set();"
-      "const queriedClasses = new Set();"
-      "var notYetQueriedClasses;"
-      "var notYetQueriedIds;"
-      "var cosmeticObserver;"
-      "if (window.cosmeticStyleSheet === undefined) {"
-        "window.cosmeticStyleSheet = new CSSStyleSheet();}"
-      "const fetchNewClassIdRules = function () {"
-  "if ((!notYetQueriedClasses || notYetQueriedClasses.length === 0) &&"
-      "(!notYetQueriedIds || notYetQueriedIds.length === 0)) {"
-    "return;"
-  "};"
-  "cf_worker.hiddenClassIdSelectors("
-     "JSON.stringify({classes: notYetQueriedClasses, ids: notYetQueriedIds}));"
-  "/*chrome.runtime.sendMessage({"
-    "type: 'hiddenClassIdSelectors',"
-    "classes: notYetQueriedClasses || [],"
-    "ids: notYetQueriedIds || []"
-  "})*/"
-  "notYetQueriedClasses = [];"
-  "notYetQueriedIds = [];"
-"};"
-
-"function isElement (node) {"
-  "return (node.nodeType === 1);"
-"};"
-
-"function asElement (node) {"
-  "return isElement(node) ? node : null;"
-"};"
-
-"const handleMutations = MutationCallback = function (mutations) {"
-  "for (const aMutation of mutations) {"
-    "if (aMutation.type === 'attributes') {"
-      "const changedElm = aMutation.target;"
-      "switch (aMutation.attributeName) {"
-        "case 'class':"
-          "for (const aClassName of changedElm.classList.values()) {"
-            "if (queriedClasses.has(aClassName) === false) {"
-              "notYetQueriedClasses.push(aClassName);"
-              "queriedClasses.add(aClassName);"
-            "};"
-          "};"
-          "break;"
-        "case 'id':"
-          "const mutatedId = changedElm.id;"
-          "if (queriedIds.has(mutatedId) === false) {"
-            "notYetQueriedIds.push(mutatedId);"
-            "queriedIds.add(mutatedId);"
-          "};"
-          "break;"
-      "};"
-    "} else if (aMutation.addedNodes.length > 0) {"
-      "for (const node of aMutation.addedNodes) {"
-        "const element = asElement(node);"
-        "if (!element) {"
-          "continue;"
-        "};"
-        "const id = element.id;"
-        "if (id && !queriedIds.has(id)) {"
-          "notYetQueriedIds.push(id);"
-          "queriedIds.add(id);"
-        "};"
-        "const classList = element.classList;"
-        "if (classList) {"
-          "for (const className of classList.values()) {"
-            "if (className && !queriedClasses.has(className)) {"
-              "notYetQueriedClasses.push(className);"
-              "queriedClasses.add(className);"
-            "};"
-          "};"
-        "};"
-      "};"
-    "};"
-  "};"
-  "fetchNewClassIdRules();"
-"};"
-
-    "const startObserving = () => {"
-    "    const elmWithClassOrId = document.querySelectorAll('[class],[id]');"
-  " for (const elm of elmWithClassOrId) {"
-    " for (const aClassName of elm.classList.values()) {"
-      " queriedClasses.add(aClassName);"
-      " /*console.log('!!!aClassName == ' + aClassName);*/"
-    "}"
-    " const elmId = elm.getAttribute('id');"
-    " if (elmId) {"
-      " queriedIds.add(elmId);"
-    " }"
-  "};"
-  "notYetQueriedClasses = Array.from(queriedClasses);"
-  "notYetQueriedIds = Array.from(queriedIds);"
-  "fetchNewClassIdRules();"
-  "cosmeticObserver = new MutationObserver(handleMutations);"
-  "let observerConfig = {"
-    "subtree: true,"
-    "childList: true,"
-    "attributeFilter: ['id', 'class']"
-  "};"
-  "cosmeticObserver.observe(document.documentElement, observerConfig);"
-  "};"
-  "startObserving();"
-    "})();";
 
 bool ShouldDoCosmeticFiltering(content::WebContents* contents,
     const GURL& url) {
@@ -139,6 +43,20 @@ bool ShouldDoCosmeticFiltering(content::WebContents* contents,
 
   return ::brave_shields::ShouldDoCosmeticFiltering(map, url);
 }
+
+std::string LoadDataResource(const int& id) {
+  std::string data_resource;
+
+  auto& resource_bundle = ui::ResourceBundle::GetSharedInstance();
+  if (resource_bundle.IsGzipped(id)) {
+    data_resource = resource_bundle.LoadDataResourceString(id);
+  } else {
+    data_resource = resource_bundle.GetRawDataResource(id).as_string();
+  }
+
+  return data_resource;
+}
+
 }  // namespace
 
 
@@ -146,6 +64,10 @@ BraveCosmeticResourcesTabHelper::BraveCosmeticResourcesTabHelper(
     content::WebContents* contents)
     : WebContentsObserver(contents),
     enabled_1st_party_cf_filtering_(false) {
+  if (BraveCosmeticResourcesTabHelper::observing_script_->empty()) {
+    *BraveCosmeticResourcesTabHelper::observing_script_ =
+        LoadDataResource(IDR_COSMETIC_FILTERS_SCRIPT);
+  }
 }
 
 BraveCosmeticResourcesTabHelper::~BraveCosmeticResourcesTabHelper() {
@@ -355,7 +277,7 @@ std::unique_ptr<base::ListValue>
 }
 
 void BraveCosmeticResourcesTabHelper::GetHiddenClassIdSelectorsOnUI(
-    content::RenderFrameHost* render_frame_host,
+    content::GlobalFrameRoutingId frame_id,
     std::unique_ptr<base::ListValue> selectors) {
   if (!selectors) {
     return;
@@ -391,7 +313,10 @@ void BraveCosmeticResourcesTabHelper::GetHiddenClassIdSelectorsOnUI(
               "document.adoptedStyleSheets = [window.cosmeticStyleSheet];"
           "};";
       cosmeticFilterConsiderNewSelectors_script += "})();";
-      render_frame_host->ExecuteJavaScriptInIsolatedWorld(
+      auto* frame_host = content::RenderFrameHost::FromID(frame_id);
+      if (!frame_host)
+        return;
+      frame_host->ExecuteJavaScriptInIsolatedWorld(
           base::UTF8ToUTF16(cosmeticFilterConsiderNewSelectors_script),
           base::NullCallback(), ISOLATED_WORLD_ID_CHROME_INTERNAL);
     }
@@ -422,7 +347,7 @@ void BraveCosmeticResourcesTabHelper::ProcessURL(
   // Non-scriptlet cosmetic filters are only applied on the top-level frame
   if (web_contents()->GetMainFrame()) {
     web_contents()->GetMainFrame()->ExecuteJavaScriptInIsolatedWorld(
-        base::UTF8ToUTF16(k_observing_script),
+        base::UTF8ToUTF16(*BraveCosmeticResourcesTabHelper::observing_script_),
         base::NullCallback(), ISOLATED_WORLD_ID_CHROME_INTERNAL);
   }
 }
@@ -462,7 +387,9 @@ void BraveCosmeticResourcesTabHelper::HiddenClassIdSelectors(
             classes, ids),
           base::BindOnce(&BraveCosmeticResourcesTabHelper::
             GetHiddenClassIdSelectorsOnUI, base::Unretained(this),
-            render_frame_host));
+            content::GlobalFrameRoutingId(
+                  render_frame_host->GetProcess()->GetID(),
+                  render_frame_host->GetRoutingID())));
 }
 
 WEB_CONTENTS_USER_DATA_KEY_IMPL(BraveCosmeticResourcesTabHelper)
