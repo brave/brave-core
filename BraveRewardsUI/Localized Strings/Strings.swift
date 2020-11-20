@@ -11,6 +11,10 @@ internal struct Strings {
   }
 }
 
+public var RewardsOnProviderText: String {
+    Strings.onProviderText
+}
+
 internal extension Strings {
   static var walletBalanceType: String {
     if Preferences.Rewards.isUsingBAP.value == true {

@@ -97,8 +97,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UIViewControllerRestorati
     @discardableResult fileprivate func startApplication(_ application: UIApplication, withLaunchOptions launchOptions: [AnyHashable: Any]?) -> Bool {
         log.info("startApplication begin")
         
-        UNUserNotificationCenter.current().delegate = self
-        
         // Set the Firefox UA for browsing.
         setUserAgent()
 
@@ -610,21 +608,5 @@ extension AppDelegate: MFMailComposeViewControllerDelegate {
         // Dismiss the view controller and start the app up
         controller.dismiss(animated: true, completion: nil)
         startApplication(application!, withLaunchOptions: self.launchOptions)
-    }
-}
-
-extension AppDelegate: UNUserNotificationCenterDelegate {
-    func userNotificationCenter(_ center: UNUserNotificationCenter, didReceive response: UNNotificationResponse, withCompletionHandler completionHandler: @escaping () -> Void) {
-        if MonthlyAdsGrantReminder.isMonthlyAdsReminderNotification(response.notification) {
-            // Open the rewards panel, showing the user their grant
-            if UIApplication.shared.applicationState != .active {
-                DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
-                    // Give the UI a chance to be put together first
-                    self.browserViewController.showBraveRewardsPanel()
-                }
-            } else {
-                browserViewController.showBraveRewardsPanel()
-            }
-        }
     }
 }

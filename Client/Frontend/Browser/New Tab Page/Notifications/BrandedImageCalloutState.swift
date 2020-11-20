@@ -7,36 +7,25 @@ import Shared
 import BraveShared
 
 enum BrandedImageCalloutState {
-    
-    /// Encourage user to enable Brave Rewards to get paid for watching branded images.
-    case getPaidTurnRewardsOn
-    /// Encourage user to enable Brave Ads to get paid for watching branded images.
-    case getPaidTurnAdsOn
-    /// Info that user can get paid for watching images after turning Brave Ads on.
-    case youCanGetPaidTurnAdsOn
-    /// User is eligible for payout for background images
-    case gettingPaidAlready
+    /// User is supporting content creators
+    case brandedImageSupport
     /// Don't show any callout
     case dontShow
     
     static func getState(rewardsEnabled: Bool, adsEnabled: Bool, adsAvailableInRegion: Bool,
                          isSponsoredImage: Bool) -> BrandedImageCalloutState {
-                
+        if rewardsEnabled && adsEnabled && isSponsoredImage {
+            return brandedImageSupport
+        }
         // If any of remaining callouts were shown once, we skip showing any other state.
         let wasCalloutShowed = Preferences.NewTabPage.brandedImageShowed.value
         
         if wasCalloutShowed { return .dontShow }
         
-        if !rewardsEnabled && isSponsoredImage { return .getPaidTurnRewardsOn }
-        
         if rewardsEnabled {
             if !adsAvailableInRegion { return .dontShow }
             
-            if adsEnabled && isSponsoredImage { return .gettingPaidAlready }
-            
-            if !adsEnabled && isSponsoredImage { return .getPaidTurnAdsOn }
-            
-            if !adsEnabled && !isSponsoredImage { return .youCanGetPaidTurnAdsOn }
+            if adsEnabled && isSponsoredImage { return .brandedImageSupport }
         }
         
         return .dontShow
@@ -45,8 +34,8 @@ enum BrandedImageCalloutState {
     /// Not all initial views have a followup view, this computed property tracks it.
     var hasDetailViewController: Bool {
         switch self {
-        case .getPaidTurnRewardsOn, .getPaidTurnAdsOn, .gettingPaidAlready: return true
-        case .dontShow, .youCanGetPaidTurnAdsOn: return false
+        case .brandedImageSupport: return true
+        case .dontShow: return false
         }
     }
 }

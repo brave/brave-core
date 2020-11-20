@@ -6,6 +6,8 @@ public struct BraveUX {
     public static let bravePrivacyURL = URL(string: "https://brave.com/privacy/")!
     public static let braveTodayPrivacyURL = URL(string: "https://brave.com/privacy/#brave-today")!
     public static let braveOffersURL = URL(string: "https://offers.brave.com/")!
+    public static let braveRewardsLearnMoreURL = URL(string: "https://brave.com/rewards-ios/")!
+    public static let braveRewardsUnverifiedPublisherLearnMoreURL = URL(string: "https://brave.com/faq-rewards/#unclaimed-funds")!
     public static let braveTermsOfUseURL = URL(string: "https://www.brave.com/terms_of_use")!
     public static let prefKeyOptInDialogWasSeen = "OptInDialogWasSeen"
     public static let prefKeyUserAllowsTelemetry = "userallowstelemetry"
@@ -142,5 +144,7 @@ public struct BraveUX {
     
     public static let faviconBorderColor = UIColor(white: 0, alpha: 0.2)
     public static let faviconBorderWidth = 1.0 / UIScreen.main.scale
+    
+    public static let popoverDarkBackground = UIColor(rgb: 0x17171f)
 }
 

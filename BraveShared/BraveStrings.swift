@@ -634,7 +634,7 @@ extension Strings {
     public static let OBSaveButton = NSLocalizedString("OBSaveButton", bundle: Bundle.braveShared, value: "Save", comment: "Save button to save current selection")
     public static let OBFinishButton = NSLocalizedString("OBFinishButton", bundle: Bundle.braveShared, value: "Start browsing", comment: "Button to finish onboarding and start using the app.")
     public static let OBJoinButton = NSLocalizedString("OBJoinButton", bundle: Bundle.braveShared, value: "Join", comment: "Button to join Brave Rewards.")
-    public static let OBTurnOnButton = NSLocalizedString("OBTurnOnButton", bundle: Bundle.braveShared, value: "Turn On", comment: "Button to show Brave Rewards.")
+    public static let OBTurnOnButton = NSLocalizedString("OBTurnOnButton", bundle: Bundle.braveShared, value: "Start", comment: "Button to show Brave Rewards.")
     public static let OBShowMeButton = NSLocalizedString("OBShowMeButton", bundle: Bundle.braveShared, value: "Show Me", comment: "Button to show the Brave Rewards Ads.")
     public static let OBDidntSeeAdButton = NSLocalizedString("OBDidntSeeAdButton", bundle: Bundle.braveShared, value: "I didn't see an ad", comment: "Button to show information on how to enable ads")
     public static let OBSearchEngineTitle = NSLocalizedString("OBSearchEngineTitle", bundle: Bundle.braveShared, value: "Welcome to Brave Browser", comment: "Title for search engine onboarding screen")
@@ -646,10 +646,9 @@ extension Strings {
     public static let OBAdsOptInMessage = NSLocalizedString("OBAdsOptInMessage", bundle: Bundle.braveShared, value: "Earn tokens and reward creators for great content while you browse.", comment: "Message when opting into brave Ads when region becomes available")
     public static let OBAdsOptInMessageJapan = NSLocalizedString("OBAdsOptInMessageJapan", bundle: Bundle.braveShared, value: "Earn points and reward creators for great content while you browse.", comment: "Message when opting into brave Ads when region becomes available")
     public static let OBRewardsDetailInAdRegion = NSLocalizedString("OBRewardsDetailInAdRegion", bundle: Bundle.braveShared, value: "Earn tokens and reward creators for great content while you browse.", comment: "Detail text for rewards onboarding screen")
-    public static let OBRewardsDetailInAdRegionJapan = NSLocalizedString("OBRewardsDetailInAdRegionJapan", bundle: Bundle.braveShared, value: "Earn points and reward creators for great content while you browse.", comment: "Detail text for rewards onboarding screen")
-    public static let OBRewardsDetailOutsideAdRegion = NSLocalizedString("OBRewardsDetailOutsideAdRegion", bundle: Bundle.braveShared, value: "Support your favorite websites and creators based on your attention.", comment: "Detail text for rewards onboarding screen")
-    public static let OBRewardsAgreementTitle = NSLocalizedString("OBRewardsAgreementTitle", bundle: Bundle.braveShared, value: "Brave Rewards", comment: "Title for rewards agreement onboarding screen")
-    public static let OBRewardsAgreementDetail = NSLocalizedString("OBRewardsAgreementDetail", bundle: Bundle.braveShared, value: "By turning on Rewards, you agree to the", comment: "Detail text for rewards agreement onboarding screen")
+    public static let OBRewardsDetail = NSLocalizedString("OBRewardsDetail", bundle: Bundle.braveShared, value: "Start supporting creators with private and anonymized ads while you browse?", comment: "Detail text for rewards onboarding screen")
+    public static let OBRewardsAgreementTitle = NSLocalizedString("OBRewardsAgreementTitle", bundle: Bundle.braveShared, value: "Brave Rewards supports creators", comment: "Title for rewards agreement onboarding screen")
+    public static let OBRewardsAgreementDetail = NSLocalizedString("OBRewardsAgreementDetail", bundle: Bundle.braveShared, value: "By tapping Start, you agree to the", comment: "Detail text for rewards agreement onboarding screen")
     public static let OBRewardsAgreementDetailLink = NSLocalizedString("OBRewardsAgreementDetailLink", bundle: Bundle.braveShared, value: "Terms of Service", comment: "Detail text for rewards agreement onboarding screen")
     public static let OBAdsTitle = NSLocalizedString("OBAdsTitle", bundle: Bundle.braveShared, value: "Brave will show your first ad in", comment: "Title for ads onboarding screen")
     public static let OBCompleteTitle = NSLocalizedString("OBCompleteTitle", bundle: Bundle.braveShared, value: "Now you're ready to go.", comment: "Title for when the user completes onboarding")
@@ -688,65 +687,23 @@ extension Strings {
 // MARK: - New tab page
 extension Strings {
     public struct NTP {
-        public static let getPaidToSeeThisImage =
-            NSLocalizedString("ntp.getPaidToSeeThisImage",
-                tableName: "BraveShared",
-                bundle: .braveShared,
-                value: "Earn tokens for viewing this image.",
-                comment: "")
-        public static let supportWebCreatorsWithTokens =
-            NSLocalizedString("ntp.supportWebCreatorsWithTokens",
-                tableName: "BraveShared",
-                bundle: .braveShared,
-                value: "Earn tokens and reward creators for great content while you browse.",
-                comment: "")
-        public static let youArePaidToSeeThisImage =
-            NSLocalizedString("ntp.youArePaidToSeeThisImage",
-                tableName: "BraveShared",
-                bundle: .braveShared,
-                value: "You're earning tokens for viewing this image.",
-                comment: "")
-        public static let turnOnBraveAds =
-            NSLocalizedString("ntp.turnOnBraveAds",
-                tableName: "BraveShared",
-                bundle: .braveShared,
-                value: "Turn on Brave Ads",
-                comment: "")
-        public static let turnOnBraveRewards =
-            NSLocalizedString("ntp.turnOnBraveRewards",
-                tableName: "BraveShared",
-                bundle: .braveShared,
-                value: "Turn on Brave Rewards",
-                comment: "")
-        public static let getPaidForThisImageTurnRewards =
-            NSLocalizedString("ntp.getPaidForThisImageTurnRewards",
-                tableName: "BraveShared",
-                bundle: .braveShared,
-                value: "Earn tokens for viewing this image. Turn on Brave Rewards and start supporting creators.",
-                comment: "")
-        public static let getPaidForThisImageTurnAds =
-            NSLocalizedString("ntp.getPaidForThisImageTurnAds",
-                tableName: "BraveShared",
-                bundle: .braveShared,
-                value: "Earn tokens for viewing this image. Turn on Brave Ads and start supporting creators.",
-                comment: "")
         public static let turnRewardsTos =
             NSLocalizedString("ntp.turnRewardsTos",
-                tableName: "BraveShared",
-                bundle: .braveShared,
-                value: "By turning on Rewards, you agree to the %@.",
-                comment: "The placeholder says 'Terms of Service'. So full sentence goes like: 'By turning Rewards, you agree to the Terms of Service'.")
+                              tableName: "BraveShared",
+                              bundle: .braveShared,
+                              value: "By turning on Rewards, you agree to the %@.",
+                              comment: "The placeholder says 'Terms of Service'. So full sentence goes like: 'By turning Rewards, you agree to the Terms of Service'.")
+        public static let sponsoredImageDescription =
+            NSLocalizedString("ntp.sponsoredImageDescription",
+                              tableName: "BraveShared",
+                              bundle: .braveShared,
+                              value: "You’re supporting content creators and publishers by viewing this sponsored image.",
+                              comment: "")
         public static let hideSponsoredImages =
             NSLocalizedString("ntp.hideSponsoredImages",
                 tableName: "BraveShared",
                 bundle: .braveShared,
                 value: "Hide sponsored images",
-                comment: "")
-        public static let learnMoreAboutBrandedImages =
-            NSLocalizedString("ntp.learnMoreAboutBrandedImages",
-                tableName: "BraveShared",
-                bundle: .braveShared,
-                value: "When you view a sponsored image, you earn tokens that can be used to support creators. With Brave Ads, you're always in control of the ads you see.",
                 comment: "")
         public static let goodJob =
             NSLocalizedString("ntp.goodJob",
@@ -1609,4 +1566,124 @@ extension Strings {
     public static let sharingWarningTitle = NSLocalizedString("RewardsInternalsSharingWarningTitle", bundle: Bundle.braveShared, value: "Warning", comment: "")
     public static let sharingWarningMessage = NSLocalizedString("RewardsInternalsSharingWarningMessage", bundle: Bundle.braveShared, value: "Data on this page may be sensitive. Treat them as you would your wallet private keys. Be careful who you share them with.", comment: "")
   }
+}
+
+// MARK: - Rewards
+extension Strings {
+    public struct Rewards {
+        public static let enabledBody = NSLocalizedString(
+            "rewards.enabledBody",
+            bundle: .braveShared,
+            value: "You are helping support content creators",
+            comment: "Displayed when Brave Rewards is enabled"
+        )
+        public static let disabledBody = NSLocalizedString(
+            "rewards.disabledBody",
+            bundle: .braveShared,
+            value: "Turn on to help support content creators",
+            comment: "Displayed when Brave Rewards is disabled"
+        )
+        public static let supportingPublisher = NSLocalizedString(
+            "rewards.supportingPublisher",
+            bundle: .braveShared,
+            value: "You are helping support content creators like this one.",
+            comment: "Displayed under verified publishers"
+        )
+        public static let unverifiedPublisher = NSLocalizedString(
+            "rewards.unverifiedPublisher",
+            bundle: .braveShared,
+            value: "This creator has not verified and will not be included in creator support",
+            comment: "Displayed under unverified publishers"
+        )
+        public static let enabledStatusBody = NSLocalizedString(
+            "rewards.enabledStatusBody",
+            bundle: .braveShared,
+            value: "Thank you for helping support content creators as you browse!",
+            comment: "Displayed in the status container when rewards is enabled but you're not currently supporting any publishers (0 AC count)"
+        )
+        public static let disabledStatusBody = NSLocalizedString(
+            "rewards.disabledStatusBody",
+            bundle: .braveShared,
+            value: "Using Brave Rewards helps support content creators as you browse.",
+            comment: "Displayed in the status container when rewards is disabled"
+        )
+        public static let totalSupportedCount = NSLocalizedString(
+            "rewards.totalSupportedCount",
+            bundle: .braveShared,
+            value: "Number of content creators you are helping support this month.",
+            comment: "Displayed next to a number representing the total number of publishers supported"
+        )
+        public static let walletTransferTitle = NSLocalizedString(
+            "rewards.walletTransferTitle",
+            bundle: .braveShared,
+            value: "Wallet Transfer",
+            comment: "Title of the legacy wallet transfer screen"
+        )
+        public static let walletTransferFailureAlertTitle = NSLocalizedString(
+            "rewards.walletTransferFailureAlertTitle",
+            bundle: .braveShared,
+            value: "Try Again",
+            comment: "Title on the alert presented if wallet transfer fails"
+        )
+        public static let walletTransferFailureAlertMessage = NSLocalizedString(
+            "rewards.walletTransferFailureAlertMessage",
+            bundle: .braveShared,
+            value: "Brave couldn’t connect, something broke, or we somehow goofed.",
+            comment: "Message on the alert presented if wallet transfer fails"
+        )
+        public static let walletTransferStepsTitle = NSLocalizedString(
+            "rewards.walletTransferStepsTitle",
+            bundle: .braveShared,
+            value: "Scan One-Time Transfer Code",
+            comment: "Title above the steps to use wallet transfer"
+        )
+        public static let walletTransferStepsBody = NSLocalizedString(
+            "rewards.walletTransferStepsBody",
+            bundle: .braveShared,
+            value: "Your Brave Rewards token balance can be transfered to an existing Brave Rewards desktop wallet, one time.\n\n1. Open Brave Browser on your desktop\n2. Navigate to brave://rewards\n3. Click “QR Code”\n4. Scan QR Code with your device",
+            comment: "Describes the steps for using wallet transfer"
+        )
+        public static let walletTransferCompleteTitle = NSLocalizedString(
+            "rewards.walletTransferCompleteTitle",
+            bundle: .braveShared,
+            value: "Balance trasfer has initiated",
+            comment: "Title shown above the confirmation message after completing a wallet transfer successfully"
+        )
+        public static let walletTransferCompleteBody = NSLocalizedString(
+            "rewards.walletTransferStepsBody",
+            bundle: .braveShared,
+            value: "Your transfer has initiated. Any existing BAT balance may take several minutes to appear in your desktop Brave Rewards wallet. Check your Rewards summary on Desktop for details when transfer has completed.\n\nYou may close this window and continue using Brave as your transfer is in progress.",
+            comment: "A confirmation message shown to the user after completing a wallet transfer successfully"
+        )
+        public static let legacyWalletTransfer = NSLocalizedString(
+            "rewards.legacyWalletTransfer",
+            bundle: .braveShared,
+            value: "Legacy Wallet Transfer",
+            comment: ""
+        )
+        public static let legacyWalletTransferSubtitle = NSLocalizedString(
+            "rewards.legacyWalletTransferSubtitle",
+            bundle: .braveShared,
+            value: "One-time transfer-out existing tokens",
+            comment: ""
+        )
+        public static let settingsToggleTitle = NSLocalizedString(
+            "rewards.settingsToggleTitle",
+            bundle: .braveShared,
+            value: "Enable Brave Rewards",
+            comment: ""
+        )
+        public static let settingsToggleMessage = NSLocalizedString(
+            "rewards.settingsToggleMessage",
+            bundle: .braveShared,
+            value: "Support content creators and publishers automatically by enabling Brave Private Ads. Brave Private Ads are privacy-respecting ads that give back to content creators.",
+            comment: ""
+        )
+        public static let settingsFooterMessage = NSLocalizedString(
+            "rewards.settingsFooterMessage",
+            bundle: .braveShared,
+            value: "Brave Rewards payouts are temporarily unavailable on this device. Transfer your existing wallet funds to a desktop wallet to keep your tokens.",
+            comment: ""
+        )
+    }
 }

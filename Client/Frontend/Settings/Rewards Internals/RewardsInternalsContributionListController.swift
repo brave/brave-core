@@ -7,7 +7,6 @@ import Foundation
 import BraveRewards
 import Static
 import Shared
-import BraveRewardsUI
 
 extension RewardsType {
     fileprivate var displayText: String {
@@ -69,11 +68,11 @@ extension ContributionProcessor {
 }
 
 class RewardsInternalsContributionListController: TableViewController {
-    private let rewards: BraveRewards
+    private let ledger: BraveLedger
     private var contributions: [ContributionInfo] = []
     
-    init(rewards: BraveRewards) {
-        self.rewards = rewards
+    init(ledger: BraveLedger) {
+        self.ledger = ledger
         super.init(style: .grouped)
     }
     
@@ -89,7 +88,7 @@ class RewardsInternalsContributionListController: TableViewController {
             $0.accessibilityLabel = Strings.RewardsInternals.shareInternalsTitle
         }
         
-        rewards.ledger.allContributions { contributions in
+        ledger.allContributions { contributions in
             self.contributions = contributions
             self.reloadData()
         }
@@ -129,7 +128,7 @@ class RewardsInternalsContributionListController: TableViewController {
     }
     
     @objc private func tappedShare() {
-        let controller = RewardsInternalsShareController(rewards: self.rewards, initiallySelectedSharables: [.contributions])
+        let controller = RewardsInternalsShareController(ledger: self.ledger, initiallySelectedSharables: [.contributions])
         let container = UINavigationController(rootViewController: controller)
         present(container, animated: true)
     }
@@ -139,7 +138,7 @@ class RewardsInternalsContributionListController: TableViewController {
 /// including through auto-contribute, tips, etc.
 struct RewardsInternalsContributionsGenerator: RewardsInternalsFileGenerator {
     func generateFiles(at path: String, using builder: RewardsInternalsSharableBuilder, completion: @escaping (Error?) -> Void) {
-        let ledger = builder.rewards.ledger
+        let ledger = builder.ledger
         ledger.allContributions { contributions in
             let conts = contributions.map { cont -> [String: Any] in
                 return [

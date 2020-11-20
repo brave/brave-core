@@ -12,8 +12,6 @@ class NewTabPageNotifications {
     enum NotificationType {
         /// Notification to inform the user about branded images program.
         case brandedImages(state: BrandedImageCalloutState)
-        /// Informs the user that there is a grant that can be claimed.
-        case claimRewards
     }
     
     private let rewards: BraveRewards
@@ -25,12 +23,6 @@ class NewTabPageNotifications {
     func notificationToShow(isShowingBackgroundImage: Bool,
                             isShowingSponseredImage: Bool) -> NotificationType? {
         let isRewardsEnabled = rewards.ledger.isEnabled
-        
-        if Preferences.NewTabPage.attemptToShowClaimRewardsNotification.value
-            && isRewardsEnabled
-            && rewards.ledger.pendingPromotions.contains(where: { $0.type == .ads }) {
-            return .claimRewards
-        }
         
         if !isShowingBackgroundImage {
             return nil

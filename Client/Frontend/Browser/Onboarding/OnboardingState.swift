@@ -23,4 +23,6 @@ enum OnboardingProgress: Int {
     case privacyConsent
     /// The user has completed the search engine onboarding.
     case searchEngine
+    /// The user has completed the rewards onboarding.
+    case rewards
 }

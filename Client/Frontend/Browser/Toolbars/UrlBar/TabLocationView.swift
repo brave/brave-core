@@ -20,6 +20,7 @@ protocol TabLocationViewDelegate {
     func tabLocationViewDidTapStop(_ tabLocationView: TabLocationView)
     func tabLocationViewDidTapShieldsButton(_ urlBar: TabLocationView)
     func tabLocationViewDidTapRewardsButton(_ urlBar: TabLocationView)
+    func tabLocationViewDidLongPressRewardsButton(_ urlBar: TabLocationView)
     
     /// - returns: whether the long-press was handled by the delegate; i.e. return `false` when the conditions for even starting handling long-press were not satisfied
     @discardableResult func tabLocationViewDidLongPressReaderMode(_ tabLocationView: TabLocationView) -> Bool
@@ -189,6 +190,8 @@ class TabLocationView: UIView {
     lazy var rewardsButton: RewardsButton = {
         let button = RewardsButton()
         button.addTarget(self, action: #selector(didClickBraveRewardsButton), for: .touchUpInside)
+        let longPressGestureRewardsButton = UILongPressGestureRecognizer(target: self, action: #selector(didLongPressRewardsButton(_:)))
+        button.addGestureRecognizer(longPressGestureRewardsButton)
         return button
     }()
     
@@ -312,6 +315,12 @@ class TabLocationView: UIView {
     
     @objc func didClickBraveRewardsButton() {
         delegate?.tabLocationViewDidTapRewardsButton(self)
+    }
+    
+    @objc func didLongPressRewardsButton(_ gesture: UILongPressGestureRecognizer) {
+        if gesture.state == .began {
+            delegate?.tabLocationViewDidLongPressRewardsButton(self)
+        }
     }
 
     fileprivate func updateTextWithURL() {

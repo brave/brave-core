@@ -48,7 +48,6 @@ protocol SettingsDelegate: class {
     func settingsOpenURLInNewTab(_ url: URL)
     func settingsOpenURLs(_ urls: [URL])
     func settingsDidFinish(_ settingsViewController: SettingsViewController)
-    func settingsOpenRewardsSettings(_ settingsViewController: SettingsViewController)
 }
 
 class SettingsViewController: TableViewController {
@@ -57,13 +56,15 @@ class SettingsViewController: TableViewController {
     private let profile: Profile
     private let tabManager: TabManager
     private let rewards: BraveRewards?
+    private let legacyWallet: BraveLedger?
     private let feedDataSource: FeedDataSource
     
-    init(profile: Profile, tabManager: TabManager, feedDataSource: FeedDataSource, rewards: BraveRewards? = nil) {
+    init(profile: Profile, tabManager: TabManager, feedDataSource: FeedDataSource, rewards: BraveRewards? = nil, legacyWallet: BraveLedger? = nil) {
         self.profile = profile
         self.tabManager = tabManager
         self.feedDataSource = feedDataSource
         self.rewards = rewards
+        self.legacyWallet = legacyWallet
         
         if #available(iOS 13.0, *) {
             super.init(style: .insetGrouped)
@@ -102,7 +103,7 @@ class SettingsViewController: TableViewController {
     
     private func displayRewardsDebugMenu() {
         guard let rewards = rewards else { return }
-        let settings = QASettingsViewController(rewards: rewards)
+        let settings = RewardsDebugSettingsViewController(rewards: rewards, legacyWallet: legacyWallet)
         navigationController?.pushViewController(settings, animated: true)
     }
     
@@ -181,9 +182,14 @@ class SettingsViewController: TableViewController {
         if BraveRewards.isAvailable, let rewards = rewards {
             section.rows += [
                 Row(text: Strings.braveRewardsTitle, selection: { [unowned self] in
-                    let rewardsVC = BraveRewardsSettingsViewController(rewards)
-                    rewardsVC.tappedShowRewardsSettings = { [unowned self] in
-                        self.settingsDelegate?.settingsOpenRewardsSettings(self)
+                    let rewardsVC = BraveRewardsSettingsViewController(rewards, legacyWallet: self.legacyWallet)
+                    rewardsVC.walletTransferLearnMoreTapped = { [weak self] in
+                        guard let self = self else { return }
+                        self.dismiss(animated: true) {
+                            self.presentingViewController?.dismiss(animated: true) {
+                                self.settingsDelegate?.settingsOpenURLInNewTab(BraveUX.braveRewardsLearnMoreURL)
+                            }
+                        }
                     }
                     self.navigationController?.pushViewController(rewardsVC, animated: true)
                 }, image: #imageLiteral(resourceName: "settings-brave-rewards"), accessory: .disclosureIndicator),
@@ -304,11 +310,14 @@ class SettingsViewController: TableViewController {
             display.rows.append(row)
         }
         
-        display.rows.append(
+        display.rows.append(contentsOf: [
             .boolRow(title: Strings.showBookmarkButtonInTopToolbar,
                      option: Preferences.General.showBookmarkToolbarShortcut,
-                     image: #imageLiteral(resourceName: "settings-bookmarks-shortcut").template)
-        )
+                     image: #imageLiteral(resourceName: "settings-bookmarks-shortcut").template),
+            .boolRow(title: Strings.hideRewardsIcon,
+                     option: Preferences.Rewards.hideRewardsIcon,
+                     image: #imageLiteral(resourceName: "settings-rewards-icon").template)
+        ])
         
         return display
     }()

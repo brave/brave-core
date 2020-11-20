@@ -5,7 +5,7 @@
 import Foundation
 import BraveRewards
 
-protocol ProviderDisplayString {
+public protocol ProviderDisplayString {
   var provider: String { get }
   /// A properly capitalized string to use when displaying the provider.
   ///
@@ -14,7 +14,7 @@ protocol ProviderDisplayString {
 }
 
 extension ProviderDisplayString {
-  var providerDisplayString: String {
+  public var providerDisplayString: String {
     let providers = [
       "github": "GitHub",
       "reddit": "Reddit",

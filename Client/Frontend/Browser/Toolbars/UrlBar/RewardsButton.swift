@@ -8,31 +8,22 @@ import BraveShared
 
 class RewardsButton: UIButton {
     
-    var isVerified = false {
-        didSet { updateView() }
+    enum IconState {
+        case initial
+        case enabled
+        case disabled
     }
     
-    var notificationCount = 0 {
-        didSet { updateView() }
+    var iconState: IconState = .initial {
+        didSet {
+            updateView()
+        }
     }
     
-    var forceShowBadge = false {
-        didSet { updateView() }
-    }
-    
-    private let notificationsBadgeView = UIView().then {
-        $0.isUserInteractionEnabled = false
-        $0.backgroundColor = BraveUX.braveOrange
-        $0.frame = CGRect(x: 19, y: 5, width: 12, height: 12)
-        $0.layer.cornerRadius = 6
-    }
-    
-    private var checkmarkView = UIImageView().then {
-        let checkmark = #imageLiteral(resourceName: "brave_rewards_verified_badge")
-        $0.image = checkmark
-        $0.frame = CGRect(x: 19, y: 4, width: checkmark.size.width, height: checkmark.size.height)
+    private let lookAtMeBadge = UIImageView(image: #imageLiteral(resourceName: "rewards-look-at-me")).then {
         $0.isHidden = true
         $0.isUserInteractionEnabled = false
+        $0.frame = CGRect(x: 17, y: 7, width: 16, height: 16)
     }
     
     override init(frame: CGRect) {
@@ -44,21 +35,22 @@ class RewardsButton: UIButton {
         accessibilityLabel = Strings.rewardsPanel
         accessibilityIdentifier = "urlBar-rewardsButton"
         
-        addSubview(checkmarkView)
-        addSubview(notificationsBadgeView)
+        addSubview(lookAtMeBadge)
+        
         updateView()
     }
     
     private func updateView() {
-        checkmarkView.isHidden = true
-        notificationsBadgeView.isHidden = true
-        
-        setImage(#imageLiteral(resourceName: "brave_rewards_button_enabled"), for: .normal)
-        
-        if notificationCount > 0 || forceShowBadge {
-            notificationsBadgeView.isHidden = false
-        } else if isVerified {
-            checkmarkView.isHidden = false
+        switch iconState {
+        case .initial:
+            setImage(#imageLiteral(resourceName: "brave_rewards_button_enabled"), for: .normal)
+            lookAtMeBadge.isHidden = false
+        case .enabled:
+            setImage(#imageLiteral(resourceName: "brave_rewards_button_enabled"), for: .normal)
+            lookAtMeBadge.isHidden = true
+        case .disabled:
+            setImage(#imageLiteral(resourceName: "brave_rewards_button_disabled"), for: .normal)
+            lookAtMeBadge.isHidden = true
         }
     }
     

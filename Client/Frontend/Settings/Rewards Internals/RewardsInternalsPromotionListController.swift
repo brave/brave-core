@@ -34,10 +34,10 @@ extension PromotionType {
 }
 
 class RewardsInternalsPromotionListController: TableViewController {
-    private let rewards: BraveRewards
+    private let ledger: BraveLedger
     
-    init(rewards: BraveRewards) {
-        self.rewards = rewards
+    init(ledger: BraveLedger) {
+        self.ledger = ledger
         super.init(style: .grouped)
     }
     
@@ -53,7 +53,7 @@ class RewardsInternalsPromotionListController: TableViewController {
             $0.accessibilityLabel = Strings.RewardsInternals.shareInternalsTitle
         }
         
-        rewards.ledger.updatePendingAndFinishedPromotions {
+        ledger.updatePendingAndFinishedPromotions {
             self.reloadData()
         }
     }
@@ -69,7 +69,7 @@ class RewardsInternalsPromotionListController: TableViewController {
             $0.maximumFractionDigits = 3
         }
         
-        let promotions = (rewards.ledger.pendingPromotions + rewards.ledger.finishedPromotions).sorted(by: { $0.claimedAt < $1.claimedAt })
+        let promotions = (ledger.pendingPromotions + ledger.finishedPromotions).sorted(by: { $0.claimedAt < $1.claimedAt })
         dataSource.sections = promotions.map { promo in
             var rows = [
                 Row(text: Strings.RewardsInternals.status, detailText: promo.status.displayText),
@@ -94,7 +94,7 @@ class RewardsInternalsPromotionListController: TableViewController {
     }
     
     @objc private func tappedShare() {
-        let controller = RewardsInternalsShareController(rewards: self.rewards, initiallySelectedSharables: [.promotions])
+        let controller = RewardsInternalsShareController(ledger: self.ledger, initiallySelectedSharables: [.promotions])
         let container = UINavigationController(rootViewController: controller)
         present(container, animated: true)
     }
@@ -104,7 +104,7 @@ class RewardsInternalsPromotionListController: TableViewController {
 /// or has pending to claim
 struct RewardsInternalsPromotionsGenerator: RewardsInternalsFileGenerator {
     func generateFiles(at path: String, using builder: RewardsInternalsSharableBuilder, completion: @escaping (Error?) -> Void) {
-        let ledger = builder.rewards.ledger
+        let ledger = builder.ledger
         ledger.updatePendingAndFinishedPromotions {
             let promotions = ledger.finishedPromotions + ledger.pendingPromotions
             let promos = promotions.map { promo -> [String: Any] in

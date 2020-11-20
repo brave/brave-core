@@ -113,6 +113,9 @@ public class PopoverController: UIViewController {
         fatalError()
     }
     
+    private var autoLayoutTopConstraint: NSLayoutConstraint?
+    private var autoLayoutBottomConstraint: NSLayoutConstraint?
+    
     override public func viewDidLoad() {
         super.viewDidLoad()
         
@@ -143,7 +146,11 @@ public class PopoverController: UIViewController {
         switch contentSizeBehavior {
         case .autoLayout:
             contentController.view.snp.makeConstraints { make in
-                make.edges.equalTo(self.containerView.contentView)
+                autoLayoutTopConstraint = make.top.equalTo(self.containerView.contentView)
+                    .constraint.layoutConstraints.first
+                autoLayoutBottomConstraint = make.bottom.equalTo(self.containerView.contentView)
+                    .constraint.layoutConstraints.first
+                make.leading.trailing.equalTo(self.containerView.contentView)
             }
         case .preferredContentSize:
             containerViewHeightConstraint = containerView.heightAnchor.constraint(equalToConstant: contentController.preferredContentSize.height + PopoverUX.arrowSize.height)
@@ -166,7 +173,7 @@ public class PopoverController: UIViewController {
     }
     
     override public var preferredStatusBarStyle: UIStatusBarStyle {
-        return .lightContent
+        return .default
     }
     
     override public func viewDidLayoutSubviews() {
@@ -187,8 +194,18 @@ public class PopoverController: UIViewController {
             contentController.view.frame = rect
             
         case .autoLayout:
-            // Layout handled through constraints
-            break
+            if contentController.extendEdgeIntoArrow {
+                autoLayoutTopConstraint?.constant = 0
+                autoLayoutBottomConstraint?.constant = 0
+            } else {
+                if containerView.arrowDirection == .up {
+                    autoLayoutBottomConstraint?.constant = 0
+                    autoLayoutTopConstraint?.constant = PopoverUX.arrowSize.height
+                } else {
+                    autoLayoutTopConstraint?.constant = 0
+                    autoLayoutBottomConstraint?.constant = PopoverUX.arrowSize.height
+                }
+            }
         }
     }
     

@@ -6,7 +6,6 @@ import Foundation
 import Shared
 import BraveShared
 import Lottie
-import BraveRewardsUI
 import BraveRewards
 
 extension OnboardingShieldsViewController {

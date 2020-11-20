@@ -41,10 +41,50 @@ class OnboardingNavigationController: UINavigationController {
     
     weak var onboardingDelegate: OnboardingControllerDelegate?
     
+    enum OnboardingType {
+        case newUser(OnboardingProgress)
+        case existingUserRewardsOff(OnboardingProgress)
+        
+        /// Returns a list of onboarding screens for given type.
+        /// Screens should be sorted in order of which they are presented to the user.
+        fileprivate var screens: [Screens] {
+            if BraveRewards.isAvailable {
+                switch self {
+                case .newUser(let progress):
+                    //The user already made it to rewards and agreed so they should only see ads countdown
+                    if progress == .rewards {
+                        return [.rewardsAgreement]
+                    }
+                    
+                    var newUserScreens: [Screens] = [.searchEnginePicker, .shieldsInfo, .rewardsAgreement]
+                    
+                    // FIXME: Update to iOS14 clipboard api once ready (#2838)
+                    if Preferences.URP.referralCode.value == nil && UIPasteboard.general.hasStrings {
+                        newUserScreens.insert(.privacyConsent, at: 0)
+                    }
+                    
+                    return newUserScreens
+                case .existingUserRewardsOff(let progress):
+                    //The user already made it to rewards and agreed so they should only see ads countdown
+                    if progress == .rewards {
+                        return []
+                    }
+                    return [.rewardsAgreement]
+                }
+            } else {
+                switch self {
+                case .newUser: return [.searchEnginePicker, .shieldsInfo]
+                case .existingUserRewardsOff: return []
+                }
+            }
+        }
+    }
+    
     fileprivate enum Screens {
         case privacyConsent
         case searchEnginePicker
         case shieldsInfo
+        case rewardsAgreement
         
         /// Returns new ViewController associated with the screen type
         func viewController(with profile: Profile, rewards: BraveRewards?, theme: Theme) -> OnboardingViewController {
@@ -54,6 +94,8 @@ class OnboardingNavigationController: UINavigationController {
                 return OnboardingSearchEnginesViewController(profile: profile, rewards: rewards, theme: theme)
             case .shieldsInfo:
                 return OnboardingShieldsViewController(profile: profile, rewards: rewards, theme: theme)
+            case .rewardsAgreement:
+                return OnboardingRewardsAgreementViewController(profile: profile, rewards: rewards, theme: theme)
             }
         }
         
@@ -62,23 +104,19 @@ class OnboardingNavigationController: UINavigationController {
             case .privacyConsent: return OnboardingPrivacyConsentViewController.self
             case .searchEnginePicker: return OnboardingSearchEnginesViewController.self
             case .shieldsInfo: return OnboardingShieldsViewController.self
+            case .rewardsAgreement: return OnboardingRewardsAgreementViewController.self
             }
         }
     }
     
-    private static var screens: [Screens] = {
-        var introScreens: [Screens] = [.searchEnginePicker, .shieldsInfo]
-        if Preferences.URP.referralCode.value == nil && UIPasteboard.general.hasStrings {
-            introScreens.insert(.privacyConsent, at: 0)
-        }
-        return introScreens
-    }()
+    private(set) var onboardingType: OnboardingType?
     
-    convenience init?(profile: Profile, rewards: BraveRewards?, theme: Theme) {
-        guard let firstViewController = Self.screens.first?.viewController(with: profile, rewards: rewards, theme: theme) else {
-            return nil
-        }
+    convenience init?(profile: Profile, onboardingType: OnboardingType, rewards: BraveRewards?, theme: Theme) {
+        guard let firstScreen = onboardingType.screens.first else { return nil }
+        
+        let firstViewController = firstScreen.viewController(with: profile, rewards: rewards, theme: theme)
         self.init(rootViewController: firstViewController)
+        self.onboardingType = onboardingType
         firstViewController.delegate = self
         
         isNavigationBarHidden = true
@@ -106,10 +144,11 @@ class OnboardingNavigationController: UINavigationController {
 extension OnboardingNavigationController: Onboardable {
     
     func presentNextScreen(current: OnboardingViewController) {
-        let index = Self.screens.firstIndex { $0.type == type(of: current) }
+        guard let allScreens = onboardingType?.screens else { return }
+        let index = allScreens.firstIndex { $0.type == type(of: current) }
         
         guard let nextIndex = index?.advanced(by: 1),
-            let nextScreen = Self.screens[safe: nextIndex]?.viewController(with: current.profile, rewards: current.rewards, theme: current.theme) else {
+            let nextScreen = allScreens[safe: nextIndex]?.viewController(with: current.profile, rewards: current.rewards, theme: current.theme) else {
                 log.info("Last screen reached, onboarding is complete")
                 onboardingDelegate?.onboardingCompleted(self)
                 return
@@ -121,7 +160,8 @@ extension OnboardingNavigationController: Onboardable {
     }
     
     func presentPreviousScreen(current: OnboardingViewController) {
-        let index = Self.screens.firstIndex { $0.type == type(of: current) }
+        guard let allScreens = onboardingType?.screens else { return }
+        let index = allScreens.firstIndex { $0.type == type(of: current) }
         
         guard let previousIndex = index?.advanced(by: -1), let previousScreen = viewControllers[previousIndex] as? OnboardingViewController else {
                 log.info("First screen reached")

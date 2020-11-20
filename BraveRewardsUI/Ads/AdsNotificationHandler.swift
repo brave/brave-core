@@ -60,7 +60,6 @@ public class AdsNotificationHandler: BraveAdsNotificationHandler {
     }
     
     self.ads.reportAdNotificationEvent(notification.uuid, eventType: .viewed)
-    MonthlyAdsGrantReminder.schedule()
     
     adsViewController.display(ad: notification, handler: { [weak self] (notification, action) in
       guard let self = self else { return }

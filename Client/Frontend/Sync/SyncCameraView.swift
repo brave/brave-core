@@ -139,6 +139,14 @@ class SyncCameraView: UIView, AVCaptureMetadataOutputObjectsDelegate {
         })
     }
     
+    func startRunning() {
+        captureSession?.startRunning()
+    }
+    
+    func stopRunning() {
+        captureSession?.stopRunning()
+    }
+    
     func metadataOutput(_ output: AVCaptureMetadataOutput, didOutput metadataObjects: [AVMetadataObject], from connection: AVCaptureConnection) {
         
         if metadataObjects.isEmpty { return }

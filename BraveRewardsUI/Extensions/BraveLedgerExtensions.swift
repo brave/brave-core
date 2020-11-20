@@ -151,7 +151,12 @@ extension BraveLedger {
       self.minimumVisitDuration = 8
       self.minimumNumberOfVisits = 1
       self.allowVideoContributions = true
-      self.allowUnverifiedPublishers = true
+      self.allowUnverifiedPublishers = false
+      self.contributionAmount = Double.greatestFiniteMagnitude
+      
+      if let ads = self.ads, BraveAds.isCurrentLocaleSupported() {
+        ads.isEnabled = true
+      }
       
       let group = DispatchGroup()
       var success = true
@@ -259,9 +264,6 @@ extension BraveLedger {
             
             self.attestPromotion(promotion.id, solution: solution) { result, promotion in
               if result == .ledgerOk {
-                if promotion?.type == .ads {
-                  MonthlyAdsGrantReminder.cancelCurrentMonth()
-                }
                 self.updatePendingAndFinishedPromotions {
                   completion(true)
                 }

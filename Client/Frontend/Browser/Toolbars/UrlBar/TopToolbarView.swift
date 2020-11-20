@@ -40,6 +40,7 @@ protocol TopToolbarDelegate: class {
     func topToolbarDidTapBookmarkButton(_ topToolbar: TopToolbarView)
     func topToolbarDidTapBraveShieldsButton(_ topToolbar: TopToolbarView)
     func topToolbarDidTapBraveRewardsButton(_ topToolbar: TopToolbarView)
+    func topToolbarDidLongPressBraveRewardsButton(_ topToolbar: TopToolbarView)
     func topToolbarDidTapMenuButton(_ topToolbar: TopToolbarView)
     
     func topToolbarDidLongPressReloadButton(_ urlBar: TopToolbarView, from button: UIButton)
@@ -507,6 +508,10 @@ extension TopToolbarView: TabLocationViewDelegate {
     
     func tabLocationViewDidTapRewardsButton(_ urlBar: TabLocationView) {
         delegate?.topToolbarDidTapBraveRewardsButton(self)
+    }
+    
+    func tabLocationViewDidLongPressRewardsButton(_ urlBar: TabLocationView) {
+        delegate?.topToolbarDidLongPressBraveRewardsButton(self)
     }
     
     func tabLocationViewDidLongPressReaderMode(_ tabLocationView: TabLocationView) -> Bool {

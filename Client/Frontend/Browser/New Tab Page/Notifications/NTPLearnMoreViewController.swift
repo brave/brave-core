@@ -5,12 +5,10 @@
 import UIKit
 import Shared
 import BraveShared
-import BraveRewardsUI
 import BraveRewards
 import SafariServices
 
 protocol NTPLearnMoreViewDelegate: AnyObject {
-    func buttonTapped(type: NTPLearnMoreViewController.NTPButtonType)
     func learnMoreTapped()
     func hideSponsoredImagesTapped()
     func tosTapped()
@@ -57,27 +55,13 @@ class NTPLearnMoreViewController: BottomSheetViewController {
         var config: NTPNotificationLearnMoreViewConfig?
         
         switch state {
-        case .getPaidTurnRewardsOn:
+        case .brandedImageSupport:
             config = NTPNotificationLearnMoreViewConfig(
-                headerText: Strings.NTP.getPaidForThisImageTurnRewards,
-                buttonType: .rewards,
-                tosText: true,
-                learnMoreButtonText: Strings.NTP.learnMoreAboutRewards)
-        case .getPaidTurnAdsOn:
-            config = NTPNotificationLearnMoreViewConfig(
-                headerText: Strings.NTP.getPaidForThisImageTurnAds,
-                buttonType: .ads,
-                tosText: false,
-                learnMoreButtonText: Strings.NTP.learnMoreAboutSI)
-            
-        case .gettingPaidAlready:
-            config = NTPNotificationLearnMoreViewConfig(
-                headerText: Strings.NTP.youArePaidToSeeThisImage,
-                buttonType: nil,
+                headerText: Strings.NTP.sponsoredImageDescription,
                 tosText: false,
                 learnMoreButtonText: Strings.NTP.learnMoreAboutSI,
                 headerBodySpacing: 8)
-        case .dontShow, .youCanGetPaidTurnAdsOn:
+        case .dontShow:
             assertionFailure()
             return nil
         }
@@ -90,34 +74,12 @@ class NTPLearnMoreViewController: BottomSheetViewController {
 
 // MARK: - NTPLearnMoreDelegate
 extension NTPLearnMoreViewController: NTPLearnMoreViewDelegate {
-    func buttonTapped(type: NTPButtonType) {
-        switch type {
-        case .rewards:
-            if rewards.ledger.isWalletCreated {
-                rewards.ledger.isEnabled = true
-            } else {
-                rewards.ledger.createWalletAndFetchDetails { _ in }
-            }
-        case .ads:
-            rewards.ads.isEnabled = true
-        }
-        
-        self.close()
-    }
-    
     func learnMoreTapped() {
         guard let url = URL(string: learnMoreAboutBraveRewardsUrl) else { return }
         
-        // When a view with 'Turn on Rewards/Ads' button is shown, tapping on 'learn more'
-        // opens the website modally and doesn't close the NTP view.
-        // This is so the user can go back and enable Rewards/Ads after reading the learn more url.
-        if state == .getPaidTurnAdsOn || state == .getPaidTurnRewardsOn {
-            self.showSFSafariViewController(url: url)
-        } else {
-            // Normal case, open link in current tab and close the modal.
-            linkHandler?(url)
-            self.close()
-        }
+        // Normal case, open link in current tab and close the modal.
+        linkHandler?(url)
+        self.close()
     }
     
     func hideSponsoredImagesTapped() {
