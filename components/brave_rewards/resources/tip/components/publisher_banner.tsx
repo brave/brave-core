@@ -311,7 +311,7 @@ function getBackgroundClass (publisherInfo: PublisherInfo) {
     publisherInfo.publisherKey + '-' +
     Math.floor(Date.now() / 1000 / 60 / 60 / 24))
 
-  return `background-style-${String(hash % 4 + 1)}`
+  return `background-style-${String(hash % 5 + 1)}`
 }
 
 export function PublisherBanner () {
