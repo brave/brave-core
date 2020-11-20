@@ -180,11 +180,13 @@ declare namespace NewTab {
     authInvalid: boolean
   }
 
+  type CryptoDotComFetchStatus = 'completed' | 'refreshing' | 'pending'
+  
   export interface CryptoDotComWidgetState {
     optInTotal: boolean
     optInBTCPrice: boolean
     optInMarkets: boolean
-    fetchStatus: string | null
+    fetchStatus: CryptoDotComFetchStatus | null
     tickerPrices: Record<string, any>
     losersGainers: Record<string, any>
     supportedPairs: Record<string, any>
