@@ -819,9 +819,8 @@ are declared in tools/grit/grit_rule.gni.
         </if>
 
       <if expr="enable_service_discovery">
-        <if expr="not chromeos">
-          </if>
         </if>
+
       <if expr="chromeos">
         </if>
 
