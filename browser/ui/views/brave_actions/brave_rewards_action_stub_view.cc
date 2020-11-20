@@ -52,9 +52,13 @@ class BraveRewardsActionStubViewHighlightPathGenerator
 
 }  // namespace
 
-BraveRewardsActionStubView::BraveRewardsActionStubView(Profile* profile,
+BraveRewardsActionStubView::BraveRewardsActionStubView(
+    Profile* profile,
     BraveRewardsActionStubView::Delegate* delegate)
-    : LabelButton(this, base::string16()),
+    : LabelButton(
+          base::BindRepeating(&BraveRewardsActionStubView::ButtonPressed,
+                              base::Unretained(this)),
+          base::string16()),
       profile_(profile),
       delegate_(delegate) {
   SetInkDropMode(InkDropMode::ON);
@@ -115,8 +119,7 @@ SkPath BraveRewardsActionStubView::GetHighlightPath() const {
   return path;
 }
 
-void BraveRewardsActionStubView::ButtonPressed(
-    Button* sender, const ui::Event& event) {
+void BraveRewardsActionStubView::ButtonPressed() {
   // We only show the default badge text once, so once the button
   // is clicked then change it back. We consider pressing the button
   // as an action to 'dismiss' the badge notification.

@@ -30,8 +30,7 @@ class PaddedImage;
 class PaddedButton;
 
 class NotificationControlButtonsView
-    : public views::View,
-      public views::ButtonListener {
+    : public views::View {
  public:
   // String to be returned by GetClassName() method.
   static const char kViewClassName[];
@@ -56,9 +55,6 @@ class NotificationControlButtonsView
 
   // views::View
   const char* GetClassName() const override;
-
-  // views::ButtonListener
-  void ButtonPressed(views::Button* sender, const ui::Event& event) override;
 
  private:
   NotificationView* message_view_;

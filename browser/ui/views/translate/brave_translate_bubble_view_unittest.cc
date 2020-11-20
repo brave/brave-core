@@ -7,6 +7,7 @@
 #include "brave/browser/ui/views/translate/brave_translate_bubble_view.h"
 #include "chrome/test/views/chrome_views_test_base.h"
 #include "ui/events/keycodes/dom/dom_code.h"
+#include "ui/views/controls/button/button.h"
 #include "ui/views/controls/button/label_button.h"
 
 namespace {
@@ -197,7 +198,7 @@ class BraveTranslateBubbleViewTest : public ChromeViewsTestBase {
   }
 
   void PressButton(TranslateBubbleView::ButtonID id) {
-    views::LabelButton button(nullptr, base::ASCIIToUTF16("dummy"));
+    views::LabelButton button(views::Button::PressedCallback(), base::ASCIIToUTF16("dummy"));
     button.SetID(id);
 
     bubble_->ButtonPressed(id);
