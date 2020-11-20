@@ -112,6 +112,10 @@ public class BravePrefServiceBridge {
         return BravePrefServiceBridgeJni.get().getDataSaved(profile);
     }
 
+    public long getInt64Pref(Profile profile, String pref) {
+        return BravePrefServiceBridgeJni.get().getInt64Pref(profile, pref);
+    }
+
     /**
      * @param whether SafetyNet check failed.
      */
@@ -214,6 +218,7 @@ public class BravePrefServiceBridge {
         long getTrackersBlockedCount(Profile profile);
         long getAdsBlockedCount(Profile profile);
         long getDataSaved(Profile profile);
+        long getInt64Pref(Profile profile, String pref);
 
         // Used to pass total stat from upgrading old tabs based browser
         // to a new core based

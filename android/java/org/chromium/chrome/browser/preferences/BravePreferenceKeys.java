@@ -16,4 +16,5 @@
     	"org.chromium.chrome.browser.upgrade.NotificationUpdateTimeStampPreferences_New";
     public static final String BRAVE_MILLISECONDS_NAME =
     	"org.chromium.chrome.browser.upgrade.Milliseconds_New";
+    public static final String BRAVE_LAST_BANDWIDTH_SAVED_BYTES = "brave.stats.last_bandwidth_saved_bytes";
  }

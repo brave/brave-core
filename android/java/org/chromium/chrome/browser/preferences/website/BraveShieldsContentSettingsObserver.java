@@ -10,6 +10,5 @@ package org.chromium.chrome.browser.preferences.website;
  */
 public interface BraveShieldsContentSettingsObserver {
     public void blockEvent(int tabId, String block_type, String subresource);
-    public void savedBandwidth(long savings);
 }
 

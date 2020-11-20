@@ -12,6 +12,7 @@ namespace prefs {
 
 extern const char kBandwidthSavedBytes[];
 extern const char kBandwidthSavedDailyBytes[];
+extern const char kLastBandwidthSavedBytes[];
 
 }  // namespace prefs
 

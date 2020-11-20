@@ -23,9 +23,6 @@ class BraveShieldsContentSettings {
   void DispatchBlockedEventToJava(int tab_id,
                                   const std::string& block_type,
                                   const std::string& subresource);
-  void DispatchSavedBandwidthToJava(uint64_t savings);
-
-  static void DispatchSavedBandwidth(uint64_t savings);
 
   static void DispatchBlockedEvent(int tab_id,
                                    const std::string& block_type,

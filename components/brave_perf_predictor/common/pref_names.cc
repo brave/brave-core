@@ -12,6 +12,7 @@ namespace prefs {
 const char kBandwidthSavedBytes[] = "brave.stats.bandwidth_saved_bytes";
 const char kBandwidthSavedDailyBytes[] =
     "brave.stats.daily_saving_predictions_bytes";
+const char kLastBandwidthSavedBytes[] = "brave.stats.last_bandwidth_saved_bytes";
 
 }  // namespace prefs
 
