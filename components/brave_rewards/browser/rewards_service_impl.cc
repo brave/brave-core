@@ -16,7 +16,6 @@
 #include "base/base64.h"
 #include "base/bind.h"
 #include "base/command_line.h"
-#include "base/containers/flat_map.h"
 #include "base/files/file_util.h"
 #include "base/files/important_file_writer.h"
 #include "base/i18n/time_formatting.h"
@@ -36,7 +35,6 @@
 #include "bat/ads/pref_names.h"
 #include "bat/ledger/global_constants.h"
 #include "bat/ledger/ledger_database.h"
-#include "brave/base/containers/utils.h"
 #include "brave/browser/brave_rewards/rewards_service_factory.h"
 #include "brave/browser/ui/webui/brave_rewards_source.h"
 #include "brave/components/brave_ads/browser/ads_service.h"
@@ -743,7 +741,7 @@ void RewardsServiceImpl::OnXHRLoad(SessionID tab_id,
     return;
   }
 
-  std::map<std::string, std::string> parts;
+  base::flat_map<std::string, std::string> parts;
 
   for (net::QueryIterator it(url); !it.IsAtEnd(); it.Advance()) {
     parts[it.GetKey()] = it.GetUnescapedValue();
@@ -755,7 +753,7 @@ void RewardsServiceImpl::OnXHRLoad(SessionID tab_id,
 
   bat_ledger_->OnXHRLoad(tab_id.id(),
                          url.spec(),
-                         base::MapToFlatMap(parts),
+                         parts,
                          first_party_url.spec(),
                          referrer.spec(),
                          std::move(data));
@@ -951,7 +949,7 @@ void RewardsServiceImpl::LoadURL(
 
   if (test_response_callback_) {
     std::string test_response;
-    std::map<std::string, std::string> test_headers;
+    base::flat_map<std::string, std::string> test_headers;
     int response_status_code = net::HTTP_OK;
     test_response_callback_.Run(
         request->url,
@@ -964,7 +962,7 @@ void RewardsServiceImpl::LoadURL(
     response.url = request->url;
     response.status_code = response_status_code;
     response.body = test_response;
-    response.headers = base::MapToFlatMap(test_headers);
+    response.headers = test_headers;
     callback(response);
     return;
   }
@@ -1042,7 +1040,6 @@ void RewardsServiceImpl::OnURLLoaderComplete(
   const auto url = loader->GetFinalURL();
   response.url = url.spec();
 
-  std::map<std::string, std::string> headers;
   if (loader->ResponseInfo()) {
     scoped_refptr<net::HttpResponseHeaders> headersList =
         loader->ResponseInfo()->headers;
@@ -1891,7 +1888,7 @@ void RewardsServiceImpl::OnMediaInlineInfoSaved(
 
 void RewardsServiceImpl::SaveInlineMediaInfo(
     const std::string& media_type,
-    const std::map<std::string, std::string>& args,
+    const base::flat_map<std::string, std::string>& args,
     SaveMediaInfoCallback callback) {
   if (!Connected()) {
     return;
@@ -1899,7 +1896,7 @@ void RewardsServiceImpl::SaveInlineMediaInfo(
 
   bat_ledger_->SaveMediaInfo(
       media_type,
-      base::MapToFlatMap(args),
+      args,
       base::BindOnce(&RewardsServiceImpl::OnMediaInlineInfoSaved,
                     AsWeakPtr(),
                     std::move(callback)));
@@ -2712,14 +2709,14 @@ void RewardsServiceImpl::OnInlineTipSetting(
 }
 
 void RewardsServiceImpl::GetShareURL(
-      const std::map<std::string, std::string>& args,
+      const base::flat_map<std::string, std::string>& args,
       GetShareURLCallback callback) {
   if (!Connected()) {
     return;
   }
 
   bat_ledger_->GetShareURL(
-      base::MapToFlatMap(args),
+      args,
       base::BindOnce(&RewardsServiceImpl::OnShareURL,
           AsWeakPtr(),
           std::move(callback)));
@@ -2893,12 +2890,12 @@ void RewardsServiceImpl::OnExternalWalletAuthorization(
     ExternalWalletAuthorizationCallback callback,
     const ledger::type::Result result,
     const base::flat_map<std::string, std::string>& args) {
-  std::move(callback).Run(result, base::FlatMapToMap(args));
+  std::move(callback).Run(result, args);
 }
 
 void RewardsServiceImpl::ExternalWalletAuthorization(
       const std::string& wallet_type,
-      const std::map<std::string, std::string>& args,
+      const base::flat_map<std::string, std::string>& args,
       ExternalWalletAuthorizationCallback callback) {
   if (!Connected()) {
     return;
@@ -2906,7 +2903,7 @@ void RewardsServiceImpl::ExternalWalletAuthorization(
 
   bat_ledger_->ExternalWalletAuthorization(
       wallet_type,
-      base::MapToFlatMap(args),
+      args,
       base::BindOnce(&RewardsServiceImpl::OnExternalWalletAuthorization,
                      AsWeakPtr(),
                      wallet_type,
@@ -2918,7 +2915,7 @@ void RewardsServiceImpl::OnProcessExternalWalletAuthorization(
     const std::string& action,
     ProcessRewardsPageUrlCallback callback,
     const ledger::type::Result result,
-    const std::map<std::string, std::string>& args) {
+    const base::flat_map<std::string, std::string>& args) {
   std::move(callback).Run(result, wallet_type, action, args);
 }
 
@@ -2940,7 +2937,7 @@ void RewardsServiceImpl::ProcessRewardsPageUrl(
   const std::string action = path_items.at(1);
   const std::string wallet_type = path_items.at(0);
 
-  std::map<std::string, std::string> query_map;
+  base::flat_map<std::string, std::string> query_map;
 
   const auto url = GURL("brave:/" + path + query);
   for (net::QueryIterator it(url); !it.IsAtEnd(); it.Advance()) {

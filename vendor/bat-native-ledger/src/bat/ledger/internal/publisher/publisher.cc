@@ -938,7 +938,7 @@ void Publisher::OnGetPublisherBannerForSavePublisherInfo(
 
 // static
 std::string Publisher::GetShareURL(
-    const std::map<std::string, std::string>& args) {
+    const base::flat_map<std::string, std::string>& args) {
   auto comment = args.find("comment");
   auto name = args.find("name");
   auto tweet_id = args.find("tweet_id");

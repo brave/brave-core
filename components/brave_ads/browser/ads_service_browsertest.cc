@@ -8,6 +8,7 @@
 #include <string>
 #include <vector>
 
+#include "base/containers/flat_map.h"
 #include "base/path_service.h"
 #include "base/run_loop.h"
 #include "base/strings/string_split.h"
@@ -168,7 +169,7 @@ class BraveAdsBrowserTest
       int32_t method,
       int* response_status_code,
       std::string* response,
-      std::map<std::string, std::string>* headers) {
+      base::flat_map<std::string, std::string>* headers) {
     if (url.find("/v3/wallet/brave") != std::string::npos) {
       *response = wallet_;
       *response_status_code = net::HTTP_CREATED;

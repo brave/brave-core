@@ -7,12 +7,13 @@
 #define BRAVE_BROWSER_BRAVE_REWARDS_ANDROID_BRAVE_REWARDS_NATIVE_WORKER_H_
 
 #include <jni.h>
-#include <memory>
 #include <map>
+#include <memory>
 #include <string>
 #include <vector>
 
 #include "base/android/jni_weak_ref.h"
+#include "base/containers/flat_map.h"
 #include "base/memory/weak_ptr.h"
 #include "bat/ledger/mojom_structs.h"
 #include "brave/components/brave_rewards/browser/rewards_service_observer.h"
@@ -231,7 +232,7 @@ class BraveRewardsNativeWorker : public brave_rewards::RewardsServiceObserver,
         const ledger::type::Result result,
         const std::string& wallet_type,
         const std::string& action,
-        const std::map<std::string, std::string>& args);
+        const base::flat_map<std::string, std::string>& args);
 
     void OnRecoverWallet(
         brave_rewards::RewardsService* rewards_service,
@@ -247,7 +248,7 @@ class BraveRewardsNativeWorker : public brave_rewards::RewardsServiceObserver,
 
  private:
     std::string StdStrStrMapToJsonString(
-        const std::map<std::string, std::string>& args);
+        const base::flat_map<std::string, std::string>& args);
 
     void OnBalance(
         const ledger::type::Result result,

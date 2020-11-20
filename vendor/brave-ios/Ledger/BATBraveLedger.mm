@@ -24,7 +24,7 @@
 #import "BATLedgerDatabase.h"
 #import "DataController.h"
 
-#import "brave/base/containers/utils.h"
+#import "base/containers/flat_map.h"
 #import "base/time/time.h"
 #import "url/gurl.h"
 #import "net/base/registry_controlled_domains/registry_controlled_domain.h"
@@ -146,7 +146,7 @@ typedef NS_ENUM(NSInteger, BATLedgerDatabaseMigrationType) {
     self.mFinishedPromotions = [[NSMutableArray alloc] init];
     self.observers = [NSHashTable weakObjectsHashTable];
     rewardsDatabase = nullptr;
-    
+
     self.prefs = [[NSMutableDictionary alloc] initWithContentsOfFile:[self prefsPath]];
     if (!self.prefs) {
       self.prefs = [[NSMutableDictionary alloc] init];
@@ -159,22 +159,22 @@ typedef NS_ENUM(NSInteger, BATLedgerDatabaseMigrationType) {
       self.prefs[kMigrationSucceeded] = @(NO);
       [self savePrefs];
     }
-    
+
     const auto pathToICUDTL = [[NSBundle bundleForClass:[BATBraveLedger class]] pathForResource:@"icudtl" ofType:@"dat"];
     base::ios::OverridePathOfEmbeddedICU(pathToICUDTL.UTF8String);
     if (!base::i18n::InitializeICU()) {
       BLOG(0, @"Failed to initialize ICU data");
     }
-    
+
     const auto args = [NSProcessInfo processInfo].arguments;
     const char *argv[args.count];
     for (NSInteger i = 0; i < args.count; i++) {
       argv[i] = args[i].UTF8String;
     }
     base::CommandLine::Init(args.count, argv);
-    
+
     self.databaseQueue = dispatch_queue_create("com.rewards.db-transactions", DISPATCH_QUEUE_SERIAL);
-    
+
     const auto* dbPath = [self rewardsDatabasePath].UTF8String;
     rewardsDatabase = ledger::LedgerDatabase::CreateInstance(base::FilePath(dbPath));
 
@@ -187,7 +187,7 @@ typedef NS_ENUM(NSInteger, BATLedgerDatabaseMigrationType) {
       [BATLedgerDatabase deleteCoreDataServerPublisherList:nil];
     }
     [self initializeLedgerService:needsMigration];
-    
+
     // Add notifications for standard app foreground/background
     [NSNotificationCenter.defaultCenter addObserver:self selector:@selector(applicationDidBecomeActive) name:UIApplicationDidBecomeActiveNotification object:nil];
     [NSNotificationCenter.defaultCenter addObserver:self selector:@selector(applicationDidBackground) name:UIApplicationDidEnterBackgroundNotification object:nil];
@@ -217,7 +217,7 @@ typedef NS_ENUM(NSInteger, BATLedgerDatabaseMigrationType) {
     return;
   }
   self.initializing = YES;
-  
+
   BLOG(3, @"DB: Migrate from CoreData? %@", (executeMigrateScript ? @"YES" : @"NO"));
   ledger->Initialize(executeMigrateScript, ^(ledger::type::Result result){
     self.initialized = (result == ledger::type::Result::LEDGER_OK ||
@@ -287,10 +287,10 @@ typedef NS_ENUM(NSInteger, BATLedgerDatabaseMigrationType) {
   command->command = "SELECT name FROM sqlite_master WHERE type = 'table' AND name = 'publisher_info';";
   command->record_bindings = { ledger::type::DBCommand::RecordBindingType::STRING_TYPE };
   transaction->commands.push_back(command->Clone());
-  
+
   auto response = ledger::type::DBCommandResponse::New();
   rewardsDatabase->RunTransaction(std::move(transaction), response.get());
-  
+
   // Failed to even run the check, tables probably don't exist,
   // restart from scratch
   if (response->status != ledger::type::DBCommandResponse::Status::RESPONSE_OK) {
@@ -298,7 +298,7 @@ typedef NS_ENUM(NSInteger, BATLedgerDatabaseMigrationType) {
     BLOG(3, @"DB: Failed to run transaction with status: %d", response->status);
     return YES;
   }
-  
+
   const auto record = std::move(response->result->get_records());
   // sqlite_master table exists, but the publisher_info table doesn't exist?
   // Restart from scratch
@@ -307,12 +307,12 @@ typedef NS_ENUM(NSInteger, BATLedgerDatabaseMigrationType) {
     BLOG(3, @"DB: Migrate because we couldnt find tables in sqlite_master");
     return YES;
   }
-  
+
   // Tables exist so migration has happened already, but somehow the flag wasn't
   // saved.
   self.prefs[kMigrationSucceeded] = @(YES);
   [self savePrefs];
-  
+
   return NO;
 }
 
@@ -429,12 +429,12 @@ BATClassLedgerBridge(BOOL, useShortRetries, setUseShortRetries, short_retries)
     strongSelf.ads.enabled = [BATBraveAds isCurrentLocaleSupported];
     [strongSelf startNotificationTimers];
     strongSelf.initializingWallet = NO;
-    
+
     dispatch_async(dispatch_get_main_queue(), ^{
       if (completion) {
         completion(error);
       }
-      
+
       for (BATBraveLedgerObserver *observer in [strongSelf.observers copy]) {
         if (observer.walletInitalized) {
           observer.walletInitalized(static_cast<BATResult>(result));
@@ -576,7 +576,7 @@ BATClassLedgerBridge(BOOL, useShortRetries, setUseShortRetries, short_retries)
     if (completion) {
       completion(static_cast<BATResult>(result));
     }
-    
+
     for (BATBraveLedgerObserver *observer in self.observers) {
       if (observer.externalWalletDisconnected) {
         observer.externalWalletDisconnected(walletType);
@@ -591,7 +591,7 @@ BATClassLedgerBridge(BOOL, useShortRetries, setUseShortRetries, short_retries)
 {
   ledger->ExternalWalletAuthorization(walletType.UTF8String,
                                       MapFromNSDictionary(queryItems),
-                                      ^(ledger::type::Result result, std::map<std::string, std::string> args) {
+                                      ^(ledger::type::Result result, base::flat_map<std::string, std::string> args) {
     const auto it = args.find("redirect_url");
     std::string redirect;
     if (it != args.end()) {
@@ -599,7 +599,7 @@ BATClassLedgerBridge(BOOL, useShortRetries, setUseShortRetries, short_retries)
     }
     NSURL *url = redirect.empty() ? nil : [NSURL URLWithString:[NSString stringWithUTF8String:redirect.c_str()]];
     completion(static_cast<BATResult>(result), url);
-    
+
     if (result == ledger::type::Result::LEDGER_OK) {
       for (BATBraveLedgerObserver *observer in self.observers) {
         if (observer.externalWalletAuthorized) {
@@ -657,7 +657,7 @@ BATClassLedgerBridge(BOOL, useShortRetries, setUseShortRetries, short_retries)
   if (!URL.absoluteString) {
     return;
   }
-  
+
   GURL parsedUrl(base::SysNSStringToUTF8(URL.absoluteString));
 
   if (!parsedUrl.is_valid()) {
@@ -676,7 +676,7 @@ BATClassLedgerBridge(BOOL, useShortRetries, setUseShortRetries, short_retries)
   visitData->domain = visitData->name = baseDomain;
   visitData->path = parsedUrl.PathForRequest();
   visitData->url = origin.spec();
-  
+
   if (faviconURL.absoluteString) {
     visitData->favicon_url = base::SysNSStringToUTF8(faviconURL.absoluteString);
   }
@@ -862,7 +862,7 @@ BATClassLedgerBridge(BOOL, useShortRetries, setUseShortRetries, short_retries)
         [self.mPendingPromotions addObject:promotion];
         bool isUGP = promotion.type == BATPromotionTypeUgp;
         auto notificationKind = isUGP ? BATRewardsNotificationKindGrant : BATRewardsNotificationKindGrantAds;
-        
+
         [self addNotificationOfKind:notificationKind
                            userInfo:nil
                      notificationID:[self notificationIDForPromo:promotion.cppObjPtr]
@@ -925,13 +925,13 @@ BATClassLedgerBridge(BOOL, useShortRetries, setUseShortRetries, short_retries)
       }
       return;
     }
-    
+
     const auto bridgedPromotion = [[BATPromotion alloc] initWithPromotion:*promotion];
     if (result == ledger::type::Result::LEDGER_OK) {
       [self fetchBalance:nil];
       [self clearNotificationWithID:[self notificationIDForPromo:std::move(promotion)]];
     }
-    
+
     dispatch_async(dispatch_get_main_queue(), ^{
       if (completion) {
         completion(static_cast<BATResult>(result), bridgedPromotion);
@@ -1069,7 +1069,7 @@ BATClassLedgerBridge(BOOL, useShortRetries, setUseShortRetries, short_retries)
 - (void)setSelectedTabId:(UInt32)selectedTabId
 {
   if (!self.initialized) { return; }
-  
+
   if (_selectedTabId != selectedTabId) {
     ledger->OnHide(_selectedTabId, [[NSDate date] timeIntervalSince1970]);
   }
@@ -1082,7 +1082,7 @@ BATClassLedgerBridge(BOOL, useShortRetries, setUseShortRetries, short_retries)
 - (void)applicationDidBecomeActive
 {
   if (!self.initialized) { return; }
-  
+
   ledger->OnForeground(self.selectedTabId, [[NSDate date] timeIntervalSince1970]);
 
   // Check if the last notification check was more than a day ago
@@ -1094,40 +1094,40 @@ BATClassLedgerBridge(BOOL, useShortRetries, setUseShortRetries, short_retries)
 - (void)applicationDidBackground
 {
   if (!self.initialized) { return; }
-  
+
   ledger->OnBackground(self.selectedTabId, [[NSDate date] timeIntervalSince1970]);
 }
 
 - (void)reportLoadedPageWithURL:(NSURL *)url tabId:(UInt32)tabId
 {
   if (!self.initialized) { return; }
-  
+
   GURL parsedUrl(url.absoluteString.UTF8String);
   auto origin = parsedUrl.GetOrigin();
   const std::string baseDomain =
   GetDomainAndRegistry(origin.host(), net::registry_controlled_domains::INCLUDE_PRIVATE_REGISTRIES);
-  
+
   if (baseDomain == "") {
     return;
   }
-  
+
   const std::string publisher_url = origin.scheme() + "://" + baseDomain + "/";
-  
+
   ledger::type::VisitDataPtr data = ledger::type::VisitData::New();
   data->tld = data->name = baseDomain;
   data->domain = origin.host();
   data->path = parsedUrl.path();
   data->tab_id = tabId;
   data->url = publisher_url;
-  
+
   ledger->OnLoad(std::move(data), [[NSDate date] timeIntervalSince1970]);
 }
 
 - (void)reportXHRLoad:(NSURL *)url tabId:(UInt32)tabId firstPartyURL:(NSURL *)firstPartyURL referrerURL:(NSURL *)referrerURL
 {
   if (!self.initialized) { return; }
-  
-  std::map<std::string, std::string> partsMap;
+
+  base::flat_map<std::string, std::string> partsMap;
   const auto urlComponents = [[NSURLComponents alloc] initWithURL:url resolvingAgainstBaseURL:NO];
   for (NSURLQueryItem *item in urlComponents.queryItems) {
     std::string value = item.value != nil ? item.value.UTF8String : "";
@@ -1152,18 +1152,18 @@ BATClassLedgerBridge(BOOL, useShortRetries, setUseShortRetries, short_retries)
 - (void)reportPostData:(NSData *)postData url:(NSURL *)url tabId:(UInt32)tabId firstPartyURL:(NSURL *)firstPartyURL referrerURL:(NSURL *)referrerURL
 {
   if (!self.initialized) { return; }
-  
+
   GURL parsedUrl(url.absoluteString.UTF8String);
   if (!parsedUrl.is_valid()) {
     return;
   }
-  
+
   const auto postDataString = [[[NSString alloc] initWithData:postData encoding:NSUTF8StringEncoding] stringByRemovingPercentEncoding];
-  
+
   auto visit = ledger::type::VisitData::New();
   visit->path = parsedUrl.spec();
   visit->tab_id = tabId;
-  
+
   std::string ref = referrerURL != nil ? referrerURL.absoluteString.UTF8String : "";
   std::string fpu = firstPartyURL != nil ? firstPartyURL.absoluteString.UTF8String : "";
 
@@ -1177,7 +1177,7 @@ BATClassLedgerBridge(BOOL, useShortRetries, setUseShortRetries, short_retries)
 - (void)reportTabNavigationOrClosedWithTabId:(UInt32)tabId
 {
   if (!self.initialized) { return; }
-  
+
   ledger->OnUnload(tabId, [[NSDate date] timeIntervalSince1970]);
 }
 
@@ -1304,60 +1304,60 @@ BATLedgerBridge(BOOL,
 - (bool)getBooleanOption:(const std::string&)name
 {
   DCHECK(!name.empty());
-  
+
   const auto it = kBoolOptions.find(name);
   DCHECK(it != kBoolOptions.end());
-  
+
   return kBoolOptions.at(name);
 }
 
 - (int)getIntegerOption:(const std::string&)name
 {
   DCHECK(!name.empty());
-  
+
   const auto it = kIntegerOptions.find(name);
   DCHECK(it != kIntegerOptions.end());
-  
+
   return kIntegerOptions.at(name);
 }
 
 - (double)getDoubleOption:(const std::string&)name
 {
   DCHECK(!name.empty());
-  
+
   const auto it = kDoubleOptions.find(name);
   DCHECK(it != kDoubleOptions.end());
-  
+
   return kDoubleOptions.at(name);
 }
 
 - (std::string)getStringOption:(const std::string&)name
 {
   DCHECK(!name.empty());
-  
+
   const auto it = kStringOptions.find(name);
   DCHECK(it != kStringOptions.end());
-  
+
   return kStringOptions.at(name);
 }
 
 - (int64_t)getInt64Option:(const std::string&)name
 {
   DCHECK(!name.empty());
-  
+
   const auto it = kInt64Options.find(name);
   DCHECK(it != kInt64Options.end());
-  
+
   return kInt64Options.at(name);
 }
 
 - (uint64_t)getUint64Option:(const std::string&)name
 {
   DCHECK(!name.empty());
-  
+
   const auto it = kUInt64Options.find(name);
   DCHECK(it != kUInt64Options.end());
-  
+
   return kUInt64Options.at(name);
 }
 
@@ -1382,7 +1382,7 @@ BATLedgerBridge(BOOL,
 {
   [self.mNotifications removeObject:notification];
   [self writeNotificationsToDisk];
-  
+
   for (BATBraveLedgerObserver *observer in [self.observers copy]) {
     if (observer.notificationsRemoved) {
       observer.notificationsRemoved(@[notification]);
@@ -1395,7 +1395,7 @@ BATLedgerBridge(BOOL,
   NSArray *notifications = [self.mNotifications copy];
   [self.mNotifications removeAllObjects];
   [self writeNotificationsToDisk];
-  
+
   for (BATBraveLedgerObserver *observer in [self.observers copy]) {
     if (observer.notificationsRemoved) {
       observer.notificationsRemoved(notifications);
@@ -1536,7 +1536,7 @@ BATLedgerBridge(BOOL,
       observer.notificationAdded(notification);
     }
   }
-  
+
   [NSNotificationCenter.defaultCenter postNotificationName:BATBraveLedgerNotificationAdded object:nil];
 
   [self writeNotificationsToDisk];
@@ -1673,13 +1673,13 @@ BATLedgerBridge(BOOL,
 
   const auto copiedURL = [NSString stringWithUTF8String:request->url.c_str()];
 
-  return [self.commonOps loadURLRequest:request->url headers:request->headers content:request->content content_type:request->content_type method:methodMap[request->method] callback:^(const std::string& errorDescription, int statusCode, const std::string &response, const std::map<std::string, std::string> &headers) {
+  return [self.commonOps loadURLRequest:request->url headers:request->headers content:request->content content_type:request->content_type method:methodMap[request->method] callback:^(const std::string& errorDescription, int statusCode, const std::string &response, const base::flat_map<std::string, std::string> &headers) {
     ledger::type::UrlResponse url_response;
     url_response.url = copiedURL.UTF8String;
     url_response.error = errorDescription;
     url_response.status_code = statusCode;
     url_response.body = response;
-    url_response.headers = base::MapToFlatMap(headers);
+    url_response.headers = headers;
 
     callback(url_response);
   }];
@@ -1868,16 +1868,16 @@ BATLedgerBridge(BOOL,
 - (bool)setEncryptedStringState:(const std::string&)key value:(const std::string&)value
 {
   const auto bridgedKey = [NSString stringWithUTF8String:key.c_str()];
-  
+
   std::string encrypted_value;
   if (!OSCrypt::EncryptString(value, &encrypted_value)) {
     BLOG(0, @"Couldn't encrypt value for %@", bridgedKey);
     return false;
   }
-  
+
   std::string encoded_value;
   base::Base64Encode(encrypted_value, &encoded_value);
-  
+
   self.prefs[bridgedKey] = [NSString stringWithUTF8String:encoded_value.c_str()];
   [self savePrefs];
   return true;
@@ -1890,20 +1890,20 @@ BATLedgerBridge(BOOL,
   if (!savedValue || ![savedValue isKindOfClass:NSString.class]) {
     return "";
   }
-  
+
   std::string encoded_value = savedValue.UTF8String;
   std::string encrypted_value;
   if (!base::Base64Decode(encoded_value, &encrypted_value)) {
     BLOG(0, @"base64 decode failed for %@", bridgedKey);
     return "";
   }
-  
+
   std::string value;
   if (!OSCrypt::DecryptString(encrypted_value, &value)) {
     BLOG(0, @"Decrypting failed for %@", bridgedKey);
     return "";
   }
-  
+
   return value;
 }
 

@@ -6,6 +6,7 @@
 #include <memory>
 #include <string>
 
+#include "base/containers/flat_map.h"
 #include "base/test/bind_test_util.h"
 #include "bat/ledger/internal/uphold/uphold_util.h"
 #include "brave/browser/brave_rewards/rewards_service_factory.h"
@@ -89,7 +90,7 @@ class RewardsBrowserTest : public InProcessBrowserTest {
       int32_t method,
       int* response_status_code,
       std::string* response,
-      std::map<std::string, std::string>* headers) {
+      base::flat_map<std::string, std::string>* headers) {
     response_->SetExternalBalance(contribution_->GetExternalBalance());
     response_->Get(
         url,

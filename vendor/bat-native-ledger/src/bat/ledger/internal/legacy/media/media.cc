@@ -71,7 +71,7 @@ std::string Media::GetLinkType(
 }
 
 void Media::ProcessMedia(
-    const std::map<std::string, std::string>& parts,
+    const base::flat_map<std::string, std::string>& parts,
     const std::string& type,
     ledger::type::VisitDataPtr visit_data) {
   if (parts.empty() || !visit_data) {
@@ -172,8 +172,8 @@ void Media::OnMediaActivityError(ledger::type::VisitDataPtr visit_data,
 }
 
 void Media::SaveMediaInfo(const std::string& type,
-                                const std::map<std::string, std::string>& data,
-                                ledger::PublisherInfoCallback callback) {
+                          const base::flat_map<std::string, std::string>& data,
+                          ledger::PublisherInfoCallback callback) {
   if (type == REDDIT_MEDIA_TYPE) {
     media_reddit_->SaveMediaInfo(data, callback);
     return;

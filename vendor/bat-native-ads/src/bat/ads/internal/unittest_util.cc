@@ -11,6 +11,7 @@
 #include <vector>
 
 #include "base/base_paths.h"
+#include "base/containers/flat_map.h"
 #include "base/files/file_util.h"
 #include "base/path_service.h"
 #include "base/strings/string16.h"
@@ -21,7 +22,6 @@
 #include "base/strings/utf_string_conversions.h"
 #include "base/time/time.h"
 #include "bat/ads/internal/logging.h"
-#include "brave/base/containers/utils.h"
 #include "net/base/registry_controlled_domains/registry_controlled_domain.h"
 #include "net/http/http_status_code.h"
 #include "testing/gmock/include/gmock/gmock.h"
@@ -238,9 +238,9 @@ bool GetNextUrlEndpointResponse(
   return true;
 }
 
-std::map<std::string, std::string> UrlRequestHeadersToMap(
+base::flat_map<std::string, std::string> UrlRequestHeadersToMap(
     const std::vector<std::string>& headers) {
-  std::map<std::string, std::string> normalized_headers;
+  base::flat_map<std::string, std::string> normalized_headers;
 
   for (const auto& header : headers) {
     const std::vector<std::string> components = base::SplitString(header,
@@ -653,7 +653,7 @@ void MockUrlRequest(
 
         std::string body;
 
-        const std::map<std::string, std::string> headers_as_map =
+        const base::flat_map<std::string, std::string> headers_as_map =
             UrlRequestHeadersToMap(url_request->headers);
 
         URLEndpointResponse url_endpoint_response;
@@ -680,7 +680,7 @@ void MockUrlRequest(
         url_response.url = url_request->url;
         url_response.status_code = status_code;
         url_response.body = body;
-        url_response.headers = base::MapToFlatMap(headers_as_map);
+        url_response.headers = headers_as_map;
         callback(url_response);
       }));
 }

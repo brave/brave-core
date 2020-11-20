@@ -6,10 +6,10 @@
 #ifndef BRAVELEDGER_UPHOLD_UPHOLD_AUTHORIZATION_H_
 #define BRAVELEDGER_UPHOLD_UPHOLD_AUTHORIZATION_H_
 
-#include <map>
 #include <memory>
 #include <string>
 
+#include "base/containers/flat_map.h"
 #include "bat/ledger/internal/endpoint/uphold/uphold_server.h"
 #include "bat/ledger/internal/uphold/uphold_user.h"
 #include "bat/ledger/ledger.h"
@@ -26,7 +26,7 @@ class UpholdAuthorization {
   ~UpholdAuthorization();
 
   void Authorize(
-      const std::map<std::string, std::string>& args,
+      const base::flat_map<std::string, std::string>& args,
       ledger::ExternalWalletAuthorizationCallback callback);
 
  private:

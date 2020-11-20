@@ -13,6 +13,7 @@
 #include <string>
 #include <vector>
 
+#include "base/containers/flat_map.h"
 #include "base/memory/scoped_refptr.h"
 #include "bat/ledger/internal/api/api.h"
 #include "bat/ledger/internal/contribution/contribution.h"
@@ -126,7 +127,7 @@ class LedgerImpl : public ledger::Ledger {
   void OnXHRLoad(
       uint32_t tab_id,
       const std::string& url,
-      const std::map<std::string, std::string>& parts,
+      const base::flat_map<std::string, std::string>& parts,
       const std::string& first_party_url,
       const std::string& referrer,
       type::VisitDataPtr visit_data) override;
@@ -249,7 +250,7 @@ class LedgerImpl : public ledger::Ledger {
 
   void SaveMediaInfo(
       const std::string& type,
-      const std::map<std::string, std::string>& data,
+      const base::flat_map<std::string, std::string>& data,
       ledger::PublisherInfoCallback callback) override;
 
   void UpdateMediaDuration(
@@ -279,7 +280,7 @@ class LedgerImpl : public ledger::Ledger {
       const type::InlineTipsPlatforms platform) override;
 
   std::string GetShareURL(
-      const std::map<std::string, std::string>& args) override;
+      const base::flat_map<std::string, std::string>& args) override;
 
   void GetPendingContributions(
       ledger::PendingContributionInfoListCallback callback) override;
@@ -300,7 +301,7 @@ class LedgerImpl : public ledger::Ledger {
 
   void ExternalWalletAuthorization(
       const std::string& wallet_type,
-      const std::map<std::string, std::string>& args,
+      const base::flat_map<std::string, std::string>& args,
       ledger::ExternalWalletAuthorizationCallback callback) override;
 
   void DisconnectWallet(

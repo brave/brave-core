@@ -11,7 +11,6 @@
 #include <vector>
 
 #include "base/logging.h"
-#include "brave/base/containers/utils.h"
 
 namespace bat_ledger {
 

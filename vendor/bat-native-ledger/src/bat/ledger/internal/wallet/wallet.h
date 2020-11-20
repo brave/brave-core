@@ -8,10 +8,10 @@
 
 #include <stdint.h>
 
-#include <map>
 #include <memory>
 #include <string>
 
+#include "base/containers/flat_map.h"
 #include "bat/ledger/internal/endpoint/promotion/promotion_server.h"
 #include "bat/ledger/internal/wallet/wallet_balance.h"
 #include "bat/ledger/internal/wallet/wallet_claim.h"
@@ -41,7 +41,7 @@ class Wallet {
 
   void ExternalWalletAuthorization(
       const std::string& wallet_type,
-      const std::map<std::string, std::string>& args,
+      const base::flat_map<std::string, std::string>& args,
       ledger::ExternalWalletAuthorizationCallback callback);
 
   void DisconnectWallet(
@@ -65,7 +65,7 @@ class Wallet {
  private:
   void AuthorizeWallet(
       const std::string& wallet_type,
-      const std::map<std::string, std::string>& args,
+      const base::flat_map<std::string, std::string>& args,
       ledger::ExternalWalletAuthorizationCallback callback);
 
   LedgerImpl* ledger_;  // NOT OWNED

@@ -20,8 +20,8 @@
 #import <Network/Network.h>
 #import <UIKit/UIKit.h>
 
+#import "base/containers/flat_map.h"
 #import "base/strings/sys_string_conversions.h"
-#import "brave/base/containers/utils.h"
 #import "base/base64.h"
 
 #import "RewardsLogging.h"
@@ -187,13 +187,13 @@ BATClassAdsBridge(BOOL, isDebug, setDebug, _is_debug)
 {
   if (![self isAdsServiceRunning] && self.enabled) {
     self.databaseQueue = dispatch_queue_create("com.rewards.ads.db-transactions", DISPATCH_QUEUE_SERIAL);
-    
+
     const auto* dbPath = [self adsDatabasePath].UTF8String;
     adsDatabase = new ads::Database(base::FilePath(dbPath));
 
     adsClient = new NativeAdsClient(self);
     ads = ads::Ads::CreateInstance(adsClient);
-    
+
     if (!self.ledger) { return; }
     [self.ledger currentWalletInfo:^(BATBraveWallet * _Nullable wallet) {
       if (!wallet || wallet.recoverySeed.count == 0) {
@@ -592,12 +592,12 @@ BATClassAdsBridge(BOOL, isDebug, setDebug, _is_debug)
 
   const auto copiedURL = [NSString stringWithUTF8String:url_request->url.c_str()];
 
-  return [self.commonOps loadURLRequest:url_request->url headers:url_request->headers content:url_request->content content_type:url_request->content_type method:methodMap[url_request->method] callback:^(const std::string& errorDescription, int statusCode, const std::string &response, const std::map<std::string, std::string> &headers) {
+  return [self.commonOps loadURLRequest:url_request->url headers:url_request->headers content:url_request->content content_type:url_request->content_type method:methodMap[url_request->method] callback:^(const std::string& errorDescription, int statusCode, const std::string &response, const base::flat_map<std::string, std::string> &headers) {
     ads::UrlResponse url_response;
     url_response.url = copiedURL.UTF8String;
     url_response.status_code = statusCode;
     url_response.body = response;
-    url_response.headers = base::MapToFlatMap(headers);
+    url_response.headers = headers;
 
     callback(url_response);
   }];
@@ -621,7 +621,7 @@ BATClassAdsBridge(BOOL, isDebug, setDebug, _is_debug)
   if (!languageCode) {
     return NO;
   }
-  
+
   NSString *isoLanguageCode = [@"iso_639_1_" stringByAppendingString:[languageCode lowercaseString]];
 
   NSArray *languageCodeUserModelIds = [self.userModelPaths allKeysForObject:isoLanguageCode];
@@ -644,7 +644,7 @@ BATClassAdsBridge(BOOL, isDebug, setDebug, _is_debug)
   if (!countryCode) {
     return NO;
   }
-  
+
   NSString *isoCountryCode = [@"iso_3166_1_" stringByAppendingString:[countryCode lowercaseString]];
 
   NSArray *countryCodeUserModelIds = [self.userModelPaths allKeysForObject:isoCountryCode];
@@ -665,7 +665,7 @@ BATClassAdsBridge(BOOL, isDebug, setDebug, _is_debug)
 - (void)registerUserModels
 {
   const auto currentLocale = [NSLocale currentLocale];
-  
+
   if (![self registerUserModelsForLanguageCode:currentLocale.languageCode]) {
     BLOG(1, @"%@ not supported for user model installer", currentLocale.languageCode);
   }
@@ -736,7 +736,7 @@ BATClassAdsBridge(BOOL, isDebug, setDebug, _is_debug)
   baseUrl = [baseUrl stringByAppendingPathComponent:userModelPath];
 
   NSString *manifestUrl = [baseUrl stringByAppendingPathComponent:@"models.json"];
-  return [self.commonOps loadURLRequest:manifestUrl.UTF8String headers:{} content:"" content_type:"" method:"GET" callback:^(const std::string& errorDescription, int statusCode, const std::string &response, const std::map<std::string, std::string> &headers) {
+  return [self.commonOps loadURLRequest:manifestUrl.UTF8String headers:{} content:"" content_type:"" method:"GET" callback:^(const std::string& errorDescription, int statusCode, const std::string &response, const base::flat_map<std::string, std::string> &headers) {
     const auto strongSelf = weakSelf;
     if (!strongSelf) { return; }
 
@@ -796,7 +796,7 @@ BATClassAdsBridge(BOOL, isDebug, setDebug, _is_debug)
 
       BLOG(1, @"Downloading %@ user model version %@", modelId, version);
 
-      return [strongSelf.commonOps loadURLRequest:modelUrl.UTF8String headers:{} content:"" content_type:"" method:"GET" callback:^(const std::string& errorDescription, int statusCode, const std::string &response, const std::map<std::string, std::string> &headers) {
+      return [strongSelf.commonOps loadURLRequest:modelUrl.UTF8String headers:{} content:"" content_type:"" method:"GET" callback:^(const std::string& errorDescription, int statusCode, const std::string &response, const base::flat_map<std::string, std::string> &headers) {
         const auto strongSelf = weakSelf;
         if (!strongSelf) { return; }
 

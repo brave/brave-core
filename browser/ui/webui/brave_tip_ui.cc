@@ -5,12 +5,12 @@
 
 #include "brave/browser/ui/webui/brave_tip_ui.h"
 
-#include <map>
 #include <memory>
 #include <string>
 #include <utility>
 #include <vector>
 
+#include "base/containers/flat_map.h"
 #include "base/memory/weak_ptr.h"
 #include "base/strings/string_number_conversions.h"
 #include "base/strings/utf_string_conversions.h"
@@ -354,7 +354,7 @@ void TipMessageHandler::TweetTip(const base::ListValue* args) {
   const std::string hashtag = l10n_util::GetStringUTF8(
       IDS_BRAVE_REWARDS_LOCAL_COMPLIMENT_TWEET_HASHTAG);
 
-  std::map<std::string, std::string> share_url_args;
+  base::flat_map<std::string, std::string> share_url_args;
   share_url_args["comment"] = comment;
   share_url_args["hashtag"] = hashtag;
   share_url_args["name"] = name.substr(1);

@@ -5,6 +5,7 @@
 
 #include <map>
 
+#include "base/containers/flat_map.h"
 #include "base/files/scoped_temp_dir.h"
 #include "brave/components/brave_ads/browser/ads_service.h"
 #include "brave/components/brave_ads/browser/ads_service_factory.h"
@@ -134,7 +135,7 @@ class MockRewardsService : public RewardsService {
   const brave_rewards::RewardsNotificationService::RewardsNotificationsMap&());
   MOCK_METHOD3(SaveInlineMediaInfo,
              void(const std::string&,
-                  const std::map<std::string, std::string>&,
+                  const base::flat_map<std::string, std::string>&,
                   brave_rewards::SaveMediaInfoCallback));
   MOCK_METHOD4(UpdateMediaDuration, void(
       const uint64_t,
@@ -157,7 +158,7 @@ class MockRewardsService : public RewardsService {
              void(const std::string& key,
                   brave_rewards::GetInlineTippingPlatformEnabledCallback));
   MOCK_METHOD2(GetShareURL,
-             void(const std::map<std::string, std::string>& args,
+             void(const base::flat_map<std::string, std::string>& args,
                   brave_rewards::GetShareURLCallback callback));
   MOCK_METHOD1(GetPendingContributions,
       void(brave_rewards::GetPendingContributionsCallback));
