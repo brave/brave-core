@@ -5,7 +5,7 @@
 
 #include "brave/components/tor/tor_control.h"
 
-#include "base/bind_helpers.h"
+#include "base/callback_helpers.h"
 #include "base/files/file.h"
 #include "base/files/file_path_watcher.h"
 #include "base/sequenced_task_runner.h"
