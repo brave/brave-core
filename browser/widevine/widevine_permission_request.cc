@@ -38,7 +38,7 @@ GURL WidevinePermissionRequest::GetOrigin() const {
   return web_contents_->GetVisibleURL();
 }
 
-void WidevinePermissionRequest::PermissionGranted() {
+void WidevinePermissionRequest::PermissionGranted(bool is_one_time) {
 #if defined(OS_LINUX)
   // Prevent relaunch during the browser test.
   // This will cause abnormal termination during the test.
