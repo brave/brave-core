@@ -116,7 +116,7 @@ extension OnboardingSearchEnginesViewController: UITableViewDataSource {
             return cell
         }
         
-        cell.searchEngineName = searchEngine.shortName
+        cell.searchEngineName = searchEngine.displayName
         cell.searchEngineImage = searchEngine.image
         cell.selectedBackgroundColor = dark ? UIColor(rgb: 0x495057) : UIColor(rgb: 0xF0F2FF)
         cell.textLabel?.textColor = dark ? UIColor.lightText : UIColor.darkText

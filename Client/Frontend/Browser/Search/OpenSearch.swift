@@ -21,6 +21,23 @@ class OpenSearchEngine: NSObject, NSSecureCoding {
     static let defaultSearchClientName = "brave"
     
     let shortName: String
+    
+    // Backwards compatibility workaround, see #3056.
+    // We use `shortName` to store persist what engines are set as default, order etc.
+    // This means there's no easy way to change display text for the search engine without
+    // saved engines breaking.
+    // This updates the engines name in the UI, without changing it at the xml level.
+    // In the future we might refactor it.
+    var displayName: String {
+        switch shortName.lowercased() {
+        case "startpage":
+            return "Startpage"
+        case "Яндекс".lowercased():
+            return "Yandex"
+        default:
+            return shortName
+        }
+    }
     let engineID: String?
     let image: UIImage
     let isCustomEngine: Bool
