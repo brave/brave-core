@@ -56,7 +56,9 @@ public class RetentionNotificationPublisher extends BroadcastReceiver {
                 case RetentionNotificationUtil.BRAVE_STATS_ADS_TRACKERS:
                 case RetentionNotificationUtil.BRAVE_STATS_DATA:
                 case RetentionNotificationUtil.BRAVE_STATS_TIME:
-                    if (!NewTabPage.isNTPUrl(braveActivity.getActivityTab().getUrlString())) {
+                    if (braveActivity.getActivityTab() != null 
+                        && braveActivity.getActivityTab().getUrlString() != null
+                        && !NewTabPage.isNTPUrl(braveActivity.getActivityTab().getUrlString())) {
                         braveActivity.getTabCreator(false).launchUrl(UrlConstants.NTP_URL, TabLaunchType.FROM_CHROME_UI);
                     }
                     break;

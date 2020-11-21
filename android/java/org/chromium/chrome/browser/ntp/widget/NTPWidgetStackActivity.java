@@ -159,7 +159,9 @@ public class NTPWidgetStackActivity extends AppCompatActivity {
             }
         }
         if (isFromSettings) {
-            BraveActivity.getBraveActivity().getActivityTab().reloadIgnoringCache();
+            if (BraveActivity.getBraveActivity() != null && BraveActivity.getBraveActivity().getActivityTab() != null) {
+                BraveActivity.getBraveActivity().getActivityTab().reloadIgnoringCache();
+            }
         } else {
             Intent intent = new Intent();
             setResult(BraveNewTabPageLayout.NTP_WIDGET_STACK_CODE, intent);
