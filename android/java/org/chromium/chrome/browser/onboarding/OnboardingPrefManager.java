@@ -7,6 +7,8 @@
 
 package org.chromium.chrome.browser.onboarding;
 
+import android.app.Activity;
+import androidx.appcompat.app.AppCompatActivity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -208,7 +210,7 @@ public class OnboardingPrefManager {
 
     public void onboardingNotification(Context context) {
         if (!isOnboardingNotificationShown()) {
-            BraveOnboardingNotification.showOnboardingNotification(context);
+            BraveOnboardingNotification.showOnboardingNotification((Activity) context);
             setOnboardingNotificationShown(true);
         }
     }

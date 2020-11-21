@@ -1,0 +1,17 @@
+include_rules = [
+  "+components/url_formatter",
+  "+skia/ext",
+  "+third_party/skia",
+  "+ui/accessibility",
+  "+ui/aura",
+  "+ui/base",
+  "+ui/compositor",
+  "+ui/display",
+  "+ui/events",
+  "+ui/gfx",
+  "+ui/native_theme",
+  "+ui/resources/grit/ui_resources.h",
+  "+ui/strings/grit/ui_strings.h",
+  "+ui/test",
+  "+ui/views",
+]

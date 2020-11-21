@@ -31,10 +31,6 @@ bool NotificationHelperLinux::ShowMyFirstAdNotification() {
   return false;
 }
 
-bool NotificationHelperLinux::CanShowBackgroundNotifications() const {
-  return true;
-}
-
 NotificationHelperLinux* NotificationHelperLinux::GetInstanceImpl() {
   return base::Singleton<NotificationHelperLinux>::get();
 }

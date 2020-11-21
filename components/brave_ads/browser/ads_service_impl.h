@@ -366,8 +366,6 @@ class AdsServiceImpl : public AdsService,
 
   bool ShouldShowNotifications() override;
 
-  bool CanShowBackgroundNotifications() const override;
-
   void ShowNotification(
       const ads::AdNotificationInfo& ad_notification) override;
 
