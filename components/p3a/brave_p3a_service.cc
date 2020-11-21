@@ -80,7 +80,7 @@ constexpr const char* kCollectedHistograms[] = {
     "Brave.Rewards.TipsState.2",
     "Brave.Rewards.WalletBalance.2",
     "Brave.Savings.BandwidthSavingsMB",
-    "Brave.Search.DefaultEngine.2",
+    "Brave.Search.DefaultEngine.3",
     "Brave.Shields.UsageStatus",
     "Brave.SpeedReader.Enabled",
     "Brave.SpeedReader.ToggleCount",
