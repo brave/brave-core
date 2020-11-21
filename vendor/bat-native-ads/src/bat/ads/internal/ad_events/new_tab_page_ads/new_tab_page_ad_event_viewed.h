@@ -7,7 +7,6 @@
 #define BAT_ADS_INTERNAL_AD_EVENTS_NEW_TAB_PAGE_ADS_NEW_TAB_PAGE_AD_EVENT_VIEWED_H_  // NOLINT
 
 #include "bat/ads/internal/ad_events/ad_event.h"
-#include "bat/ads/internal/ad_events/ad_event_info.h"
 
 namespace ads {
 
@@ -23,14 +22,6 @@ class AdEventViewed : public AdEvent<NewTabPageAdInfo> {
 
   void FireEvent(
       const NewTabPageAdInfo& ad) override;
-
- private:
-  bool ShouldConfirmAd(
-      const NewTabPageAdInfo& ad,
-      const AdEventList& ad_events);
-
-  void ConfirmAd(
-      const NewTabPageAdInfo& ad);
 };
 
 }  // namespace new_tab_page_ads

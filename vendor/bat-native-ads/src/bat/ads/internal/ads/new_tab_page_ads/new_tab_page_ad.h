@@ -8,6 +8,7 @@
 
 #include <string>
 
+#include "bat/ads/internal/ad_events/ad_event_info.h"
 #include "bat/ads/internal/ads/new_tab_page_ads/new_tab_page_ad_observer.h"
 #include "bat/ads/mojom.h"
 
@@ -34,6 +35,16 @@ class NewTabPageAd
 
  private:
   base::ObserverList<NewTabPageAdObserver> observers_;
+
+  bool ShouldFireEvent(
+      const NewTabPageAdInfo& ad,
+      const AdEventList& ad_events);
+
+  void FireEvent(
+      const NewTabPageAdInfo& ad,
+      const std::string& wallpaper_id,
+      const std::string& creative_instance_id,
+      const NewTabPageAdEventType event_type);
 
   void NotifyNewTabPageAdEvent(
       const NewTabPageAdInfo& ad,
