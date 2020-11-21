@@ -59,6 +59,12 @@ void RecordSponsoredImagesEnabledP3A(Profile* profile);
 // browser/brave_browser_main_extra_parts.cc
 void RecordInitialP3AValues(Profile* profile);
 
+// Used for capturing the value of kBraveCurrentDataVersion so that the
+// default search engine for that version can be determined. New profiles
+// will get locked into newer versions when created. Existing profiles
+// missing this value are backfilled to the first version introduced.
+void SetDefaultSearchVersion(Profile* profile, bool is_new_profile);
+
 }  // namespace brave
 
 namespace chrome {

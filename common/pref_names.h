@@ -87,4 +87,6 @@ extern const char kSafetynetCheckFailed[];
 extern const char kSafetynetStatus[];
 #endif
 
+extern const char kBraveDefaultSearchVersion[];
+
 #endif  // BRAVE_COMMON_PREF_NAMES_H_

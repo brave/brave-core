@@ -39,6 +39,7 @@ source_set("profiles") {
     "//components/gcm_driver:gcm_buildflags",
     "//components/prefs",
     "//components/safe_browsing/core/common:safe_browsing_prefs",
+    "//components/search_engines",
     "//components/translate/core/browser",
     "//third_party/blink/public/common",
     "//ui/base",

@@ -132,6 +132,8 @@ void BraveProfileManager::InitProfileUserPrefs(Profile* profile) {
     InitTorProfileUserPrefs(profile);
   } else {
     ProfileManager::InitProfileUserPrefs(profile);
+    brave::RecordInitialP3AValues(profile);
+    brave::SetDefaultSearchVersion(profile, profile->IsNewProfile());
   }
 }
 
@@ -211,8 +213,6 @@ void BraveProfileManager::OnProfileCreated(Profile* profile,
     TorProfileServiceFactory::GetForContext(profile);
   }
 #endif
-
-  brave::RecordInitialP3AValues(profile);
 }
 
 // This overridden method doesn't clear |kDefaultSearchProviderDataPrefName|.
