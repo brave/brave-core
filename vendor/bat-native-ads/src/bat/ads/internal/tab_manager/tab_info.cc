@@ -14,4 +14,16 @@ TabInfo::TabInfo(
 
 TabInfo::~TabInfo() = default;
 
+bool TabInfo::operator==(
+    const TabInfo& rhs) const {
+  return id == rhs.id &&
+      url == rhs.url &&
+      is_playing_media == rhs.is_playing_media;
+}
+
+bool TabInfo::operator!=(
+    const TabInfo& rhs) const {
+  return !(*this == rhs);
+}
+
 }  // namespace ads
