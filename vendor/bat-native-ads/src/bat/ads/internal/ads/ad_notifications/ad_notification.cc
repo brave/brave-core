@@ -33,7 +33,7 @@ void AdNotification::FireEvent(
 
   AdNotificationInfo ad;
   if (!AdNotifications::Get()->Get(uuid, &ad)) {
-    BLOG(1, "Failed to trigger ad notification event for uuid " << uuid);
+    BLOG(1, "Failed to fire ad notification event for uuid " << uuid);
 
     NotifyAdNotificationEventFailed(uuid, event_type);
 

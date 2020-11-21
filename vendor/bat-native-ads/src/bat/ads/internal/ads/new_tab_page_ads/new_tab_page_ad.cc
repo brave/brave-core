@@ -7,7 +7,9 @@
 
 #include "bat/ads/internal/ad_events/new_tab_page_ads/new_tab_page_ad_event_factory.h"
 #include "bat/ads/internal/bundle/creative_new_tab_page_ad_info.h"
+#include "bat/ads/internal/database/tables/ad_events_database_table.h"
 #include "bat/ads/internal/database/tables/creative_new_tab_page_ads_database_table.h"
+#include "bat/ads/internal/frequency_capping/new_tab_page_ads/new_tab_page_ads_frequency_capping.h"
 #include "bat/ads/internal/logging.h"
 #include "bat/ads/new_tab_page_ad_info.h"
 
@@ -54,9 +56,12 @@ void NewTabPageAd::FireEvent(
     const std::string& creative_instance_id,
     const NewTabPageAdEventType event_type) {
   if (wallpaper_id.empty() || creative_instance_id.empty()) {
-    BLOG(1, "Failed to trigger new tab page ad event for wallpaper id "
+    BLOG(1, "Failed to fire new tab page ad event for wallpaper id "
         << wallpaper_id << " and creative instance id "
             << creative_instance_id);
+
+    NotifyNewTabPageAdEventFailed(wallpaper_id,
+        creative_instance_id, event_type);
 
     return;
   }
@@ -67,7 +72,7 @@ void NewTabPageAd::FireEvent(
       const std::string& creative_instance_id,
       const CreativeNewTabPageAdInfo& creative_new_tab_page_ad) {
     if (result != SUCCESS) {
-      BLOG(1, "Failed to trigger new tab page ad event for wallpaper id");
+      BLOG(1, "Failed to fire new tab page ad event for wallpaper id");
 
       NotifyNewTabPageAdEventFailed(wallpaper_id,
           creative_instance_id, event_type);
@@ -78,14 +83,62 @@ void NewTabPageAd::FireEvent(
     const NewTabPageAdInfo ad =
         CreateNewTabPageAd(wallpaper_id, creative_new_tab_page_ad);
 
+    FireEvent(ad, wallpaper_id, creative_instance_id, event_type);
+  });
+}
+
+///////////////////////////////////////////////////////////////////////////////
+
+bool NewTabPageAd::ShouldFireEvent(
+    const NewTabPageAdInfo& ad,
+    const AdEventList& ad_events) {
+  new_tab_page_ads::FrequencyCapping frequency_capping(ad_events);
+
+  if (!frequency_capping.IsAdAllowed()) {
+    return false;
+  }
+
+  if (frequency_capping.ShouldExcludeAd(ad)) {
+    return false;
+  }
+
+  return true;
+}
+
+void NewTabPageAd::FireEvent(
+    const NewTabPageAdInfo& ad,
+    const std::string& wallpaper_id,
+    const std::string& creative_instance_id,
+    const NewTabPageAdEventType event_type) {
+  database::table::AdEvents database_table;
+  database_table.GetAll([=](
+      const Result result,
+      const AdEventList& ad_events) {
+    if (result != Result::SUCCESS) {
+      BLOG(1, "New tab page ad: Failed to get ad events");
+
+      NotifyNewTabPageAdEventFailed(wallpaper_id,
+          creative_instance_id, event_type);
+
+      return;
+    }
+
+    if (event_type == NewTabPageAdEventType::kViewed &&
+        !ShouldFireEvent(ad, ad_events)) {
+      BLOG(1, "New tab page ad: Not allowed");
+
+      NotifyNewTabPageAdEventFailed(wallpaper_id,
+          creative_instance_id, event_type);
+
+      return;
+    }
+
     const auto ad_event = new_tab_page_ads::AdEventFactory::Build(event_type);
     ad_event->FireEvent(ad);
 
     NotifyNewTabPageAdEvent(ad, event_type);
   });
 }
-
-///////////////////////////////////////////////////////////////////////////////
 
 void NewTabPageAd::NotifyNewTabPageAdEvent(
     const NewTabPageAdInfo& ad,

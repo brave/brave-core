@@ -199,7 +199,8 @@ void Confirmations::OnDidRedeemUnblindedToken(
       {unblinded_payment_token});
   ConfirmationsState::Get()->Save();
 
-  const CatalogIssuersInfo catalog_issuers;
+  const CatalogIssuersInfo catalog_issuers =
+      ConfirmationsState::Get()->get_catalog_issuers();
 
   const base::Optional<double> estimated_redemption_value =
       catalog_issuers.GetEstimatedRedemptionValue(
