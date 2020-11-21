@@ -85,6 +85,7 @@ source_set("brave_ads_unit_tests") {
       "//brave/vendor/bat-native-ads/src/bat/ads/internal/unittest_util.cc",
       "//brave/vendor/bat-native-ads/src/bat/ads/internal/unittest_util.h",
       "//brave/vendor/bat-native-ads/src/bat/ads/internal/url_util_unittest.cc",
+      "//brave/vendor/bat-native-ads/src/bat/ads/internal/user_activity/user_activity_unittest.cc",
     ]
 
     if (!is_android) {
