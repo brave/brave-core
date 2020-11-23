@@ -33,7 +33,7 @@ std::string GetPlatformIdentifier() {
   if (base::SysInfo::CPUModelName().find("Intel") != std::string::npos)
     return "osx-bc";
   else
-    return "osx-arm64-bc";
+    return "osxarm64-bc";
 #elif defined(OS_ANDROID)
   return "android-bc";
 #elif defined(OS_LINUX)
