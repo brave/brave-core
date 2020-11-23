@@ -6556,15 +6556,15 @@ Speichern Sie Ihre Schlüsseldatei an einem sicheren Ort. Sie benötigen die Dat
 <translation id="2579188629646253712">Privatmodus verlassen</translation>
 <translation id="1001131747196960052">Privat schließen</translation>
 <translation id="7475335772460644497">{COUNT, plural,
-          =0 {Open all in &amp;private window}
-          =1 {Open in &amp;private window}
-          andere {Open all ({COUNT}) in &amp;private window}}</translation>
+          =0 {Alle in &amp;Privatfenster öffnen}
+          =1 {In &amp;Privatfenster öffnen}
+          other {Alle ({COUNT}) in &amp;Privatfenster öffnen}}</translation>
 <translation id="2431625704210501303">In Privatfenster öffnen</translation>
 <translation id="4620367155626060530">&amp;Lesezeichenleiste anzeigen</translation>
 <translation id="1448315815373449655">{COUNT, plural,
-          =0 {Open All in &amp;Private Window}
-          =1 {Open in &amp;Private Window}
-          andere {Open All ({COUNT}) in &amp;Private Window}}</translation>
+          =0 {Alle in &amp;Privatfenster öffnen}
+          =1 {In &amp;Privatfenster öffnen}
+          other {Alle ({COUNT}) in &amp;Privatfenster öffnen}}</translation>
 <translation id="1985165269306590797">In Privatfenster öffnen</translation>
 <translation id="4680518314108745448">&amp;Lesezeichenleiste anzeigen</translation>
 <translation id="642436385689435488">Alle in Privatfenster öffnen</translation>
