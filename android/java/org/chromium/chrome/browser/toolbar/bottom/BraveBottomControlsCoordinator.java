@@ -22,7 +22,7 @@ import org.chromium.base.supplier.Supplier;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.ActivityTabProvider;
 import org.chromium.chrome.browser.browser_controls.BrowserControlsSizer;
-import org.chromium.chrome.browser.compositor.layouts.LayoutManager;
+import org.chromium.chrome.browser.compositor.layouts.LayoutManagerImpl;
 import org.chromium.chrome.browser.fullscreen.FullscreenManager;
 import org.chromium.chrome.browser.layouts.LayoutStateProvider;
 import org.chromium.chrome.browser.share.ShareDelegate;
@@ -83,7 +83,7 @@ public class BraveBottomControlsCoordinator extends BottomControlsCoordinator {
 
     @Override
     public void initializeWithNative(Activity activity, ResourceManager resourceManager,
-            LayoutManager layoutManager, OnClickListener tabSwitcherListener,
+            LayoutManagerImpl layoutManager, OnClickListener tabSwitcherListener,
             OnClickListener newTabClickListener, WindowAndroid windowAndroid,
             TabCountProvider tabCountProvider, IncognitoStateProvider incognitoStateProvider,
             ViewGroup topToolbarRoot, Runnable closeAllTabsAction) {
