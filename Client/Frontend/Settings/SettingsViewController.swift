@@ -12,7 +12,6 @@ import SwiftyJSON
 import Data
 import WebKit
 import BraveRewards
-import BraveRewardsUI
 
 extension TabBarVisibility: RepresentableOptionType {
     public var displayString: String {

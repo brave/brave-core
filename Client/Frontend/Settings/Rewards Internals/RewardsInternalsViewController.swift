@@ -7,7 +7,6 @@ import UIKit
 import BraveRewards
 import Static
 import DeviceCheck
-import BraveRewardsUI
 import Shared
 
 private class WarningCell: MultilineSubtitleCell {

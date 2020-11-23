@@ -7,6 +7,16 @@ import BraveRewards
 import BraveShared
 
 extension BraveRewards {
+    
+    /// Whether or not Brave Rewards is available/can be enabled
+    public static var isAvailable: Bool {
+        #if DEBUG
+        return true
+        #else
+        return DCDevice.current.isSupported
+        #endif
+    }
+    
     /// Whether or not rewards is enabled
     @objc public var isEnabled: Bool {
         get {

@@ -256,7 +256,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UIViewControllerRestorati
         authenticator = AppAuthenticator(protectedWindow: window!, promptImmediately: true, isPasscodeEntryCancellable: false)
 
         if Preferences.Rewards.isUsingBAP.value == nil {
-            Preferences.Rewards.isUsingBAP.value = Locale.current.isJapan
+            Preferences.Rewards.isUsingBAP.value = Locale.current.regionCode == "JP"
         }
         
         // Now roll logs.

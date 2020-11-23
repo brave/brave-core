@@ -4,7 +4,6 @@
 
 import Foundation
 import BraveRewards
-import BraveRewardsUI
 import Data
 import Shared
 import BraveShared
@@ -65,7 +64,7 @@ extension BrowserViewController {
                     let controller = WalletTransferViewController(legacyWallet: legacyWallet)
                     controller.learnMoreHandler = { [weak self, unowned controller] in
                         controller.dismiss(animated: true) {
-                            self?.loadNewTabWithURL(BraveUX.braveRewardsLearnMoreURL)
+                            self?.loadNewTabWithRewardsURL(BraveUX.braveRewardsLearnMoreURL)
                         }
                     }
                     let container = UINavigationController(rootViewController: controller)
@@ -73,7 +72,7 @@ extension BrowserViewController {
                     self?.present(container, animated: true)
                 }
             case .unverifiedPublisherLearnMoreTapped:
-                self?.loadNewTabWithURL(BraveUX.braveRewardsUnverifiedPublisherLearnMoreURL)
+                self?.loadNewTabWithRewardsURL(BraveUX.braveRewardsUnverifiedPublisherLearnMoreURL)
             }
         }
         
@@ -192,50 +191,7 @@ extension BrowserViewController {
         }
     }
     
-    // MARK: - SKUS
-    
-    func paymentRequested(_ request: PaymentRequest, _ completionHandler: @escaping (_ response: PaymentRequestResponse) -> Void) {
-        UIDevice.current.forcePortraitIfIphone(for: UIApplication.shared)
-        
-        if !rewards.ledger.isEnabled {
-            let enableRewards = SKUEnableRewardsViewController(
-                rewards: rewards,
-                termsURLTapped: { [weak self] in
-                    if let url = URL(string: DisclaimerLinks.termsOfUseURL) {
-                        self?.loadNewTabWithURL(url)
-                    }
-                }
-            )
-            present(enableRewards, animated: true)
-            completionHandler(.cancelled)
-            return
-        }
-        
-        guard let publisher = publisher else { return }
-        let controller = SKUPurchaseViewController(
-            rewards: self.rewards,
-            publisher: publisher,
-            request: request,
-            responseHandler: completionHandler,
-            openBraveTermsOfSale: { [weak self] in
-                if let url = URL(string: DisclaimerLinks.termsOfSaleURL) {
-                    self?.loadNewTabWithURL(url)
-                }
-            }
-        )
-        present(controller, animated: true)
-        
-    }
-}
-
-extension BrowserViewController: RewardsUIDelegate {
-    func presentBraveRewardsController(_ controller: UIViewController) {
-        self.presentedViewController?.dismiss(animated: true) {
-            self.present(controller, animated: true)
-        }
-    }
-    
-    func loadNewTabWithURL(_ url: URL) {
+    private func loadNewTabWithRewardsURL(_ url: URL) {
         self.presentedViewController?.dismiss(animated: true)
         
         if let tab = tabManager.getTabForURL(url) {
@@ -284,39 +240,6 @@ extension Tab {
     
     func reportPageNaviagtion(to rewards: BraveRewards) {
         rewards.reportTabNavigation(tabId: self.rewardsId)
-    }
-}
-
-extension BrowserViewController: RewardsDataSource {
-    func displayString(for url: URL) -> String? {
-        return url.host
-    }
-    
-    func retrieveFavicon(for pageURL: URL, on imageView: UIImageView) {
-        imageView.loadFavicon(for: pageURL)
-    }
-    
-    func pageHTML(for tabId: UInt64, completionHandler: @escaping (String?) -> Void) {
-        guard let tab = tabManager.tabsForCurrentMode.first(where: { $0.rewardsId == tabId }),
-            let webView = tab.webView else {
-                completionHandler(nil)
-                return
-        }
-        
-        let getHtmlToStringJSCall = "document.documentElement.outerHTML.toString()"
-        
-        DispatchQueue.main.async {
-            webView.evaluateJavaScript(getHtmlToStringJSCall, completionHandler: { html, error in
-                if let htmlString = html as? String {
-                    completionHandler(htmlString)
-                } else {
-                    if let error = error {
-                        log.error("Failed to get page HTML with JavaScript: \(error)")
-                    }
-                    completionHandler(nil)
-                }
-            })
-        }
     }
 }
 
