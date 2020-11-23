@@ -196,6 +196,7 @@ program
   .option('--target_os <target_os>', 'target OS')
   .option('--target_arch <target_arch>', 'target architecture')
   .option('--run_disabled_tests', 'run disabled tests')
+  .option('--manual_android_test_device', 'indicates that Android test device is run manually')
   .arguments('[build_config]')
   .action(test)
 
