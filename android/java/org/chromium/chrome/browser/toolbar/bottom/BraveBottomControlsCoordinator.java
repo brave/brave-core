@@ -44,7 +44,6 @@ public class BraveBottomControlsCoordinator extends BottomControlsCoordinator {
     private ThemeColorProvider mThemeColorProvider;
     private ObservableSupplier<ShareDelegate> mShareDelegateSupplier;
     private ObservableSupplier<AppMenuButtonHelper> mMenuButtonHelperSupplier;
-    private Supplier<Boolean> mShowStartSurfaceCallable;
     private Runnable mOpenHomepageAction;
     private Callback<Integer> mSetUrlBarFocusAction;
     private OneshotSupplier<LayoutStateProvider> mLayoutStateProviderSupplier;
@@ -52,24 +51,22 @@ public class BraveBottomControlsCoordinator extends BottomControlsCoordinator {
 
     public BraveBottomControlsCoordinator(
             OneshotSupplier<LayoutStateProvider> layoutStateProviderSupplier,
-            OnLongClickListener tabSwitcherLongclickListener, BrowserControlsSizer controlsSizer,
-            FullscreenManager fullscreenManager, ViewStub stub, ActivityTabProvider tabProvider,
+            OnLongClickListener tabSwitcherLongclickListener, ActivityTabProvider tabProvider,
+            BrowserControlsSizer controlsSizer, FullscreenManager fullscreenManager, ViewStub stub,
             ThemeColorProvider themeColorProvider,
             ObservableSupplier<ShareDelegate> shareDelegateSupplier,
             ObservableSupplier<AppMenuButtonHelper> menuButtonHelperSupplier,
-            Supplier<Boolean> showStartSurfaceCallable, Runnable openHomepageAction,
-            Callback<Integer> setUrlBarFocusAction, ScrimCoordinator scrimCoordinator,
+            Runnable openHomepageAction, Callback<Integer> setUrlBarFocusAction,
+            ScrimCoordinator scrimCoordinator,
             ObservableSupplier<Boolean> omniboxFocusStateSupplier) {
-        super(controlsSizer, fullscreenManager, stub, tabProvider, themeColorProvider,
-                shareDelegateSupplier, menuButtonHelperSupplier, showStartSurfaceCallable,
-                openHomepageAction, setUrlBarFocusAction, scrimCoordinator,
-                omniboxFocusStateSupplier);
+        super(controlsSizer, fullscreenManager, stub, themeColorProvider, shareDelegateSupplier,
+                menuButtonHelperSupplier, openHomepageAction, setUrlBarFocusAction,
+                scrimCoordinator, omniboxFocusStateSupplier);
 
         mTabSwitcherLongclickListener = tabSwitcherLongclickListener;
         mTabProvider = tabProvider;
         mThemeColorProvider = themeColorProvider;
         mShareDelegateSupplier = shareDelegateSupplier;
-        mShowStartSurfaceCallable = showStartSurfaceCallable;
         mOpenHomepageAction = openHomepageAction;
         mSetUrlBarFocusAction = setUrlBarFocusAction;
         mLayoutStateProviderSupplier = layoutStateProviderSupplier;
@@ -95,8 +92,8 @@ public class BraveBottomControlsCoordinator extends BottomControlsCoordinator {
             mBottomToolbarCoordinator = new BottomToolbarCoordinator(mRoot,
                     mRoot.findViewById(R.id.bottom_toolbar_stub), mTabProvider,
                     mTabSwitcherLongclickListener, mThemeColorProvider, mShareDelegateSupplier,
-                    mShowStartSurfaceCallable, mOpenHomepageAction, mSetUrlBarFocusAction,
-                    mLayoutStateProviderSupplier, mMenuButtonHelperSupplier, mMediator);
+                    mOpenHomepageAction, mSetUrlBarFocusAction, mLayoutStateProviderSupplier,
+                    mMenuButtonHelperSupplier, mMediator);
 
             mBottomToolbarCoordinator.initializeWithNative(tabSwitcherListener, newTabClickListener,
                     tabCountProvider, incognitoStateProvider, topToolbarRoot, closeAllTabsAction);

@@ -506,9 +506,8 @@ public abstract class BraveActivity<C extends ChromeActivityComponent> extends C
                 View layout = inflater.inflate(R.layout.brave_set_default_browser_dialog,
                                                (ViewGroup) findViewById(R.id.brave_set_default_browser_toast_container));
 
-                Toast toast = new Toast(context);
+                Toast toast = new Toast(context, layout);
                 toast.setDuration(Toast.LENGTH_LONG);
-                toast.setView(layout);
                 toast.setGravity(Gravity.TOP, 0, 40);
                 toast.show();
                 Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(BRAVE_BLOG_URL));
