@@ -26,6 +26,7 @@ uint64_t MigrateTimestampToDoubleT(
   const uint64_t delta = timestamp_in_seconds - now_in_seconds;
 
   const base::Time time = now + base::TimeDelta::FromSeconds(delta);
+
   return static_cast<uint64_t>(time.ToDoubleT());
 }
 
