@@ -29,7 +29,6 @@ import { formatLocaleTemplate } from '../lib/formatting'
 
 import { MediaCard } from './media_card'
 import { NewTabLink } from '../../shared/components/new_tab_link'
-import { UnverifiedIcon } from './icons/unverified_icon'
 import { VerifiedIcon } from './icons/verified_icon'
 
 import * as style from './publisher_banner.style'
@@ -152,7 +151,7 @@ function getTitle (
 
 function getVerifiedIcon (publisherInfo: PublisherInfo) {
   if (publisherInfo.status === PublisherStatus.NOT_VERIFIED) {
-    return <UnverifiedIcon />
+    return null
   }
   return <VerifiedIcon />
 }

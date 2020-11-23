@@ -73,16 +73,11 @@ export const logo = styled.div`
 
 export const verifiedIcon = styled.div`
   position: absolute;
-  top: 3px;
-  left: -12px;
-  color: var(--brave-palette-grey500);
-
-  &.verified {
-    color: var(--brave-color-brandBatInteracting);
-  }
+  top: 8px;
+  left: -9px;
 
   .icon {
-    width: 32px;
+    width: 24px;
   }
 `
 
