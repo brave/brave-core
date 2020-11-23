@@ -1618,8 +1618,11 @@ class BrowserViewController: UIViewController {
         self.tabTrayController = tabTrayController
     }
 
-    func switchToTabForURLOrOpen(_ url: URL, isPrivate: Bool = false, isPrivileged: Bool) {
-        popToBVC()
+    func switchToTabForURLOrOpen(_ url: URL, isPrivate: Bool = false, isPrivileged: Bool, isExternal: Bool = false) {
+        if !isExternal {
+            popToBVC()
+        }
+        
         if let tab = tabManager.getTabForURL(url) {
             tabManager.selectTab(tab)
         } else {
@@ -1663,11 +1666,12 @@ class BrowserViewController: UIViewController {
         }
     }
 
-    fileprivate func popToBVC() {
+    func popToBVC() {
         guard let currentViewController = navigationController?.topViewController else {
-                return
+            return
         }
         currentViewController.dismiss(animated: true, completion: nil)
+        
         if currentViewController != self {
             _ = self.navigationController?.popViewController(animated: true)
         } else if topToolbar.inOverlayMode {
