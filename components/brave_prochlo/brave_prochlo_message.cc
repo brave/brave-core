@@ -203,7 +203,7 @@ void GenerateP3AMessage(uint64_t metric_hash,
 
   // Init the message.
   p3a_message->set_metric_id(metric_hash);
-  p3a_message->set_p3a_info(data, kProchlomationLength);
+  p3a_message->set_p3a_info(data, kProchlomationDataLength);
 }
 
 void MaybeStripRefcodeAndCountry(prochlo::MessageMetainfo* meta) {
