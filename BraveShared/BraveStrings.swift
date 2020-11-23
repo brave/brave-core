@@ -1685,5 +1685,16 @@ extension Strings {
             value: "Brave Rewards payouts are temporarily unavailable on this device. Transfer your existing wallet funds to a desktop wallet to keep your tokens.",
             comment: ""
         )
+        public static let onProviderText = NSLocalizedString("OnProviderText", bundle: .braveShared, value: "on %@", comment: "This is a suffix statement. example: SomeChannel on Twitter")
+    }
+}
+
+// MARK: - Ads
+extension Strings {
+    public struct Ads {
+        public static let myFirstAdTitle = NSLocalizedString("MyFirstAdTitle", bundle: .braveShared, value: "This is your first Brave ad", comment: "")
+        public static let myFirstAdBody = NSLocalizedString("MyFirstAdBody", bundle: .braveShared, value: "Tap here to learn more.", comment: "")
+        public static let open = NSLocalizedString("BraveRewardsOpen", bundle: .braveShared, value: "Open", comment: "")
+        public static let adNotificationTitle = NSLocalizedString("BraveRewardsAdNotificationTitle", bundle: .braveShared, value: "Brave Rewards", comment: "")
     }
 }

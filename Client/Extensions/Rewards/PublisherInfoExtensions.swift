@@ -5,7 +5,32 @@
 
 import Foundation
 import BraveRewards
-import BraveRewardsUI
+import Shared
+
+public protocol ProviderDisplayString {
+    var provider: String { get }
+    /// A properly capitalized string to use when displaying the provider.
+    ///
+    /// Example: `youtube` becomes `YouTube`, `github` becomes `GitHub`, etc.
+    var providerDisplayString: String { get }
+}
+
+extension ProviderDisplayString {
+    public var providerDisplayString: String {
+        let providers = [
+            "github": "GitHub",
+            "reddit": "Reddit",
+            "twitter": "Twitter",
+            "twitch": "Twitch",
+            "vimeo": "Vimeo",
+            "youtube": "YouTube"
+        ]
+        return providers[provider.lowercased()] ?? provider
+    }
+}
+
+extension PublisherInfo: ProviderDisplayString {}
+extension PendingContributionInfo: ProviderDisplayString {}
 
 extension PublisherInfo {
     /// The display name to show when showing Publisher names (example: "X on GitHub", "Y on
@@ -14,7 +39,7 @@ extension PublisherInfo {
         if provider.isEmpty || name.isEmpty {
             return id
         }
-        return "\(name) \(String(format: RewardsOnProviderText, providerDisplayString))"
+        return "\(name) \(String(format: Strings.Rewards.onProviderText, providerDisplayString))"
     }
     
     /// The attributed display name to show when showing Publisher names where the publishers name
@@ -24,7 +49,7 @@ extension PublisherInfo {
             return NSAttributedString(string: id, attributes: [.font: UIFont.systemFont(ofSize: fontSize)])
         }
         let string = NSMutableAttributedString(
-            string: "\(name) \(String(format: RewardsOnProviderText, providerDisplayString))",
+            string: "\(name) \(String(format: Strings.Rewards.onProviderText, providerDisplayString))",
             attributes: [.font: UIFont.systemFont(ofSize: fontSize)]
         )
         let range = NSRange(name.startIndex..<name.endIndex, in: name)

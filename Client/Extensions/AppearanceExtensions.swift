@@ -4,7 +4,6 @@
 
 import Foundation
 import BraveShared
-import BraveRewardsUI
 
 extension Theme {
     func applyAppearanceProperties() {
@@ -89,16 +88,5 @@ extension Theme {
             // Using tint color of iOS 13 UISwitch to match better with our light theme
             UISwitch.appearance().tintColor = #colorLiteral(red: 0.8392156863, green: 0.8392156863, blue: 0.8431372549, alpha: 1)
         }
-        
-        // Brave Rewards
-        
-        // on iOS 12 global UILabel appearance takes over `barTint` and other properties for some reason.
-        // Adding a more specific proxy resolves it.
-        if #available(iOS 13, *) { } else {
-            UILabel.appearance(whenContainedInInstancesOf: [UINavigationBar.self, RewardsPanelController.self]).appearanceTextColor = .black
-        }
-        
-        // This solves bunch of small theming problems like disclosure indicators color, cell highlight color..
-        UIView.appearance(whenContainedInInstancesOf: [RewardsPanelController.self]).appearanceOverrideUserInterfaceStyle = .light
     }
 }

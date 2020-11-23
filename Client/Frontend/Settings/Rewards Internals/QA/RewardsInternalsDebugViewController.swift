@@ -8,7 +8,6 @@ import Static
 import BraveShared
 import Shared
 import BraveRewards
-import BraveRewardsUI
 
 /// A place where all rewards debugging information will live.
 class RewardsInternalsDebugViewController: TableViewController {

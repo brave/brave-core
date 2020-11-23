@@ -73,13 +73,6 @@
         "identifier" : "2FCAE2231ABB51F800877008",
         "name" : "StorageTests"
       }
-    },
-    {
-      "target" : {
-        "containerPath" : "container:Client.xcodeproj",
-        "identifier" : "271DEC20234CC75F009DAC37",
-        "name" : "BraveRewardsUITests"
-      }
     }
   ],
   "version" : 1
