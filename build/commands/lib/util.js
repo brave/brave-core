@@ -552,7 +552,7 @@ const util = {
 
   lint: (options = {}) => {
     if (!options.base) {
-      options.base = 'origin/master';
+      options.base = 'origin/master'
     }
     let cmd_options = config.defaultOptions
     cmd_options.cwd = config.braveCoreDir
@@ -561,6 +561,14 @@ const util = {
         '--project_root=' + config.srcDir,
         '--base_branch=' + options.base], cmd_options)
   },
+
+  format: (options = {}) => {
+    let cmd_options = config.defaultOptions
+    cmd_options.cwd = config.braveCoreDir
+    cmd_options = mergeWithDefault(cmd_options)
+    util.run('vpython', [path.join(config.braveCoreDir, 'build', 'commands', 'scripts', 'format.py')], cmd_options)
+  },
+
 
   shouldUpdateChromium: (chromiumRef = config.getProjectRef('chrome')) => {
     const headSHA = util.runGit(config.srcDir, ['rev-parse', 'HEAD'], true)
