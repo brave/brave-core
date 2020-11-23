@@ -15,9 +15,6 @@
 
 namespace {
 bool kWidevineOptedInTestValue = true;
-#if BUILDFLAG(BUNDLE_WIDEVINE_CDM)
-char kWidevineInstalledVersionTestValue[] = "1.2.3.4";
-#endif
 }  // namespace
 
 using WidevinePrefsMigrationTest = InProcessBrowserTest;
@@ -35,11 +32,6 @@ IN_PROC_BROWSER_TEST_F(WidevinePrefsMigrationTest, PrefMigrationTest) {
   // Set profile prefs explicitly for migration test.
   browser()->profile()->GetPrefs()->SetBoolean(kWidevineOptedIn,
                                                kWidevineOptedInTestValue);
-#if BUILDFLAG(BUNDLE_WIDEVINE_CDM)
-  browser()->profile()->GetPrefs()->SetString(
-      kWidevineInstalledVersion,
-      kWidevineInstalledVersionTestValue);
-#endif
 
   // Migrate and check it's done properly with previous profile prefs value.
   MigrateWidevinePrefs(browser()->profile());
@@ -47,11 +39,4 @@ IN_PROC_BROWSER_TEST_F(WidevinePrefsMigrationTest, PrefMigrationTest) {
       FindPreference(kWidevineOptedIn)->IsDefaultValue());
   EXPECT_EQ(kWidevineOptedInTestValue,
             g_browser_process->local_state()->GetBoolean(kWidevineOptedIn));
-#if BUILDFLAG(BUNDLE_WIDEVINE_CDM)
-  EXPECT_FALSE(g_browser_process->local_state()->
-      FindPreference(kWidevineInstalledVersion)->IsDefaultValue());
-  EXPECT_EQ(
-      kWidevineInstalledVersionTestValue,
-      g_browser_process->local_state()->GetString(kWidevineInstalledVersion));
-#endif
 }

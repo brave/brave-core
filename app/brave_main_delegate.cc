@@ -47,12 +47,7 @@
 #include "services/device/public/cpp/device_features.h"
 #include "services/network/public/cpp/features.h"
 #include "third_party/blink/public/common/features.h"
-#include "third_party/widevine/cdm/buildflags.h"
 #include "ui/base/ui_base_features.h"
-
-#if BUILDFLAG(BUNDLE_WIDEVINE_CDM)
-#include "brave/common/brave_paths.h"
-#endif
 
 #if BUILDFLAG(BRAVE_ADS_ENABLED)
 #include "components/dom_distiller/core/dom_distiller_switches.h"
@@ -259,13 +254,6 @@ bool BraveMainDelegate::BasicStartupComplete(int* exit_code) {
   command_line.AppendFeatures(enabled_features, disabled_features);
 
   bool ret = ChromeMainDelegate::BasicStartupComplete(exit_code);
-
-#if BUILDFLAG(BUNDLE_WIDEVINE_CDM)
-  // Override chrome::DIR_BUNDLED_WIDEVINE_CDM path because we install it in
-  // user data dir. Must call after ChromeMainDelegate::BasicStartupComplete()
-  // to use chrome paths.
-  brave::OverridePath();
-#endif
 
   return ret;
 }

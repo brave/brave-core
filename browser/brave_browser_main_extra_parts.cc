@@ -13,7 +13,6 @@
 #include "components/metrics/metrics_pref_names.h"
 #include "components/prefs/pref_service.h"
 #include "services/network/public/cpp/shared_url_loader_factory.h"
-#include "third_party/widevine/cdm/buildflags.h"
 
 #if !defined(OS_ANDROID)
 #include "brave/browser/importer/brave_importer_p3a.h"
@@ -21,10 +20,6 @@
 #include "brave/browser/ui/webui/new_tab_page/brave_new_tab_message_handler.h"
 #include "chrome/browser/first_run/first_run.h"
 #endif  // !defined(OS_ANDROID)
-
-#if BUILDFLAG(BUNDLE_WIDEVINE_CDM)
-#include "brave/browser/widevine/brave_widevine_bundle_manager.h"
-#endif
 
 namespace {
 
@@ -66,14 +61,6 @@ void BraveBrowserMainExtraParts::PostBrowserStart() {
 }
 
 void BraveBrowserMainExtraParts::PreMainMessageLoopRun() {
-#if BUILDFLAG(BUNDLE_WIDEVINE_CDM)
-  // Want to check as early as possible because |StartupCheck()| has some
-  // fixup handling for abnormal status and run it on UI thread.
-  // However, BraveBrowserProcessImpl that the owner of bundle manager is
-  // created before browser thread creation.
-  // So, call it after browser threads are created.
-  g_brave_browser_process->brave_widevine_bundle_manager()->StartupCheck();
-#endif
   // Disabled on mobile platforms, see for instance issues/6176
 #if BUILDFLAG(BRAVE_P3A_ENABLED)
   // TODO(iefremov): Maybe find a better place for this initialization.

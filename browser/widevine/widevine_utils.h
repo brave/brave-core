@@ -8,8 +8,6 @@
 
 #include <string>
 
-#include "third_party/widevine/cdm/buildflags.h"
-
 namespace content {
 class WebContents;
 }  // namespace content
@@ -21,20 +19,12 @@ class PrefRegistrySyncable;
 class PrefRegistrySimple;
 class Profile;
 
-#if BUILDFLAG(BUNDLE_WIDEVINE_CDM)
-void InstallBundleOrRestartBrowser();
-void SetWidevineInstalledVersion(const std::string& version);
-std::string GetWidevineInstalledVersion();
-#endif
-
-#if BUILDFLAG(ENABLE_WIDEVINE_CDM_COMPONENT)
 void EnableWidevineCdmComponent(content::WebContents* web_contents);
-#endif
-
 void RegisterWidevineProfilePrefsForMigration(
     user_prefs::PrefRegistrySyncable* registry);
-int GetWidevinePermissionRequestTextFrangmentResourceId();
-void RequestWidevinePermission(content::WebContents* web_contents);
+int GetWidevinePermissionRequestTextFrangmentResourceId(bool for_restart);
+void RequestWidevinePermission(content::WebContents* web_contents,
+                               bool for_restart);
 void RegisterWidevineLocalstatePrefs(PrefRegistrySimple* registry);
 void DontAskWidevineInstall(content::WebContents* web_contents, bool dont_ask);
 bool IsWidevineOptedIn();

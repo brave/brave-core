@@ -6,6 +6,7 @@
 #ifndef BRAVE_BROWSER_WIDEVINE_WIDEVINE_PERMISSION_REQUEST_H_
 #define BRAVE_BROWSER_WIDEVINE_WIDEVINE_PERMISSION_REQUEST_H_
 
+#include "base/gtest_prod_util.h"
 #include "components/permissions/permission_request.h"
 
 #include "url/gurl.h"
@@ -16,7 +17,8 @@ class WebContents;
 
 class WidevinePermissionRequest : public permissions::PermissionRequest {
  public:
-  explicit WidevinePermissionRequest(content::WebContents* web_contents);
+  explicit WidevinePermissionRequest(content::WebContents* web_contents,
+                                     bool for_restart);
   ~WidevinePermissionRequest() override;
 
   base::string16 GetExplanatoryMessageText() const;
@@ -25,6 +27,10 @@ class WidevinePermissionRequest : public permissions::PermissionRequest {
   }
 
  private:
+  FRIEND_TEST_ALL_PREFIXES(WidevinePermissionRequestBrowserTest,
+                           TriggerTwoPermissionTest);
+  static bool is_test_;
+
   // PermissionRequest overrides:
   permissions::PermissionRequest::IconId GetIconId() const override;
   base::string16 GetMessageTextFragment() const override;
@@ -40,6 +46,12 @@ class WidevinePermissionRequest : public permissions::PermissionRequest {
   content::WebContents* web_contents_;
 
   bool dont_ask_widevine_install_ = false;
+
+  // Only can be true on linux.
+  // On linux, browser will use another permission request buble after finishing
+  // installation to ask user about restarting because installed widevine can
+  // only be used after re-launch.
+  bool for_restart_ = false;
 
   DISALLOW_COPY_AND_ASSIGN(WidevinePermissionRequest);
 };
