@@ -18,6 +18,11 @@ struct TabInfo {
       const TabInfo& info);
   ~TabInfo();
 
+  bool operator==(
+      const TabInfo& rhs) const;
+  bool operator!=(
+      const TabInfo& rhs) const;
+
   int32_t id = 0;
   std::string url;
   bool is_playing_media = false;
