@@ -13,8 +13,6 @@
 
 namespace ads {
 
-class AdsImpl;
-
 namespace database {
 
 class Initialize {

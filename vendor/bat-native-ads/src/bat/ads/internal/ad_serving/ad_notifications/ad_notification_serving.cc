@@ -18,7 +18,6 @@
 #include "bat/ads/internal/ad_targeting/ad_targeting_util.h"
 #include "bat/ads/internal/ad_targeting/geographic/subdivision/subdivision_targeting.h"
 #include "bat/ads/internal/ads_client_helper.h"
-#include "bat/ads/internal/ads_impl.h"
 #include "bat/ads/internal/client/client.h"
 #include "bat/ads/internal/database/tables/ad_events_database_table.h"
 #include "bat/ads/internal/database/tables/creative_ad_notifications_database_table.h"

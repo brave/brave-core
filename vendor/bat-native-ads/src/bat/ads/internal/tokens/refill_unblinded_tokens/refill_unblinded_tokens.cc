@@ -14,7 +14,6 @@
 #include "base/time/time.h"
 #include "net/http/http_status_code.h"
 #include "bat/ads/internal/ads_client_helper.h"
-#include "bat/ads/internal/ads_impl.h"
 #include "bat/ads/internal/confirmations/confirmations_state.h"
 #include "bat/ads/internal/logging.h"
 #include "bat/ads/internal/privacy/privacy_util.h"

@@ -16,8 +16,6 @@
 
 namespace ads {
 
-class AdsImpl;
-
 class Payments {
  public:
   Payments();
