@@ -83,7 +83,8 @@
 }
 
 -keep class org.chromium.chrome.browser.toolbar.ToolbarManager {
-    *** mBottomControlsCoordinator;
+    *** mBottomControlsCoordinatorSupplier;
+    *** mCallbackController;
     *** mBrowserControlsSizer;
     *** mFullscreenManager;
     *** mActivityTabProvider;
