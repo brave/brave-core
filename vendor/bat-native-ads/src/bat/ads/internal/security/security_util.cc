@@ -19,6 +19,8 @@
 #include "tweetnacl.h"  // NOLINT
 #include "wrapper.hpp"
 #include "bat/ads/internal/confirmations/confirmation_info.h"
+#include "bat/ads/internal/logging.h"
+#include "bat/ads/internal/privacy/challenge_bypass_ristretto_util.h"
 #include "bat/ads/internal/tokens/redeem_unblinded_token/create_confirmation_util.h"
 
 namespace ads {
@@ -189,11 +191,19 @@ bool Verify(
 
   VerificationSignature verification_signature =
       VerificationSignature::decode_base64(*signature);
+  if (privacy::ExceptionOccurred()) {
+    NOTREACHED();
+    return false;
+  }
 
   const std::string payload = CreateConfirmationRequestDTO(confirmation);
 
   UnblindedToken unblinded_token = confirmation.unblinded_token.value;
   VerificationKey verification_key = unblinded_token.derive_verification_key();
+  if (privacy::ExceptionOccurred()) {
+    NOTREACHED();
+    return false;
+  }
 
   return verification_key.verify(verification_signature, payload);
 }

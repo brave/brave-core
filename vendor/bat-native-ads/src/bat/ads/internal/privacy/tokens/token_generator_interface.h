@@ -3,8 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#ifndef BAT_ADS_INTERNAL_PRIVACY_PRIVACY_UTIL_H_
-#define BAT_ADS_INTERNAL_PRIVACY_PRIVACY_UTIL_H_
+#ifndef BAT_ADS_INTERNAL_PRIVACY_TOKENS_TOKEN_GENERATOR_INTERFACE_H_
+#define BAT_ADS_INTERNAL_PRIVACY_TOKENS_TOKEN_GENERATOR_INTERFACE_H_
 
 #include <vector>
 
@@ -14,12 +14,16 @@ namespace ads {
 namespace privacy {
 
 using challenge_bypass_ristretto::Token;
-using challenge_bypass_ristretto::BlindedToken;
 
-std::vector<BlindedToken> BlindTokens(
-    const std::vector<Token>& tokens);
+class TokenGeneratorInterface {
+ public:
+  virtual ~TokenGeneratorInterface() = default;
+
+  virtual std::vector<Token> Generate(
+      const int count) const = 0;
+};
 
 }  // namespace privacy
 }  // namespace ads
 
-#endif  // BAT_ADS_INTERNAL_PRIVACY_PRIVACY_UTIL_H_
+#endif  // BAT_ADS_INTERNAL_PRIVACY_TOKENS_TOKEN_GENERATOR_INTERFACE_H_

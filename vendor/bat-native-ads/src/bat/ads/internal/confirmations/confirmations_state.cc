@@ -16,6 +16,7 @@
 #include "bat/ads/internal/account/ad_rewards/ad_rewards.h"
 #include "bat/ads/internal/ads_client_helper.h"
 #include "bat/ads/internal/logging.h"
+#include "bat/ads/internal/privacy/challenge_bypass_ristretto_util.h"
 #include "bat/ads/internal/privacy/unblinded_tokens/unblinded_tokens.h"
 #include "bat/ads/internal/legacy_migration/legacy_migration_util.h"
 
@@ -427,6 +428,11 @@ bool ConfirmationsState::GetFailedConfirmationsFromDictionary(
     }
     confirmation.unblinded_token.value =
         UnblindedToken::decode_base64(*unblinded_token_base64);
+    if (privacy::ExceptionOccurred()) {
+      BLOG(0, "Invalid unblinded token");
+      NOTREACHED();
+      continue;
+    }
 
     const std::string* public_key_base64 =
         token_info_dictionary->FindStringKey("public_key");
@@ -437,6 +443,11 @@ bool ConfirmationsState::GetFailedConfirmationsFromDictionary(
     }
     confirmation.unblinded_token.public_key =
         PublicKey::decode_base64(*public_key_base64);
+    if (privacy::ExceptionOccurred()) {
+      BLOG(0, "Invalid public key");
+      NOTREACHED();
+      continue;
+    }
 
     // Payment token
     const std::string* payment_token_base64 =

@@ -11,6 +11,7 @@
 #include "base/strings/stringprintf.h"
 #include "wrapper.hpp"
 #include "bat/ads/internal/logging.h"
+#include "bat/ads/internal/privacy/challenge_bypass_ristretto_util.h"
 #include "bat/ads/internal/server/ads_server_util.h"
 
 namespace ads {
@@ -120,12 +121,31 @@ base::Value RedeemUnblindedPaymentTokensUrlRequestBuilder::CreateCredential(
   VerificationKey verification_key =
       unblinded_token.value.derive_verification_key();
   VerificationSignature verification_signature = verification_key.sign(payload);
+  if (privacy::ExceptionOccurred()) {
+    NOTREACHED();
+    return credential;
+  }
+
   const std::string verification_signature_base64 =
       verification_signature.encode_base64();
-  credential.SetKey("signature", base::Value(verification_signature_base64));
+  if (privacy::ExceptionOccurred()) {
+    NOTREACHED();
+    return credential;
+  }
 
   TokenPreimage token_preimage = unblinded_token.value.preimage();
+  if (privacy::ExceptionOccurred()) {
+    NOTREACHED();
+    return credential;
+  }
+
   const std::string token_preimage_base64 = token_preimage.encode_base64();
+  if (privacy::ExceptionOccurred()) {
+    NOTREACHED();
+    return credential;
+  }
+
+  credential.SetKey("signature", base::Value(verification_signature_base64));
   credential.SetKey("t", base::Value(token_preimage_base64));
 
   return credential;

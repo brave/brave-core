@@ -19,6 +19,8 @@
 #include "bat/ads/internal/ads/new_tab_page_ads/new_tab_page_ad_observer.h"
 #include "bat/ads/internal/confirmations/confirmations_observer.h"
 #include "bat/ads/internal/conversions/conversions_observer.h"
+#include "bat/ads/internal/privacy/tokens/token_generator.h"
+#include "bat/ads/internal/privacy/tokens/token_generator_interface.h"
 #include "bat/ads/mojom.h"
 #include "bat/ads/result.h"
 
@@ -86,6 +88,9 @@ class AdsImpl
 
   AdsImpl(const AdsImpl&) = delete;
   AdsImpl& operator=(const AdsImpl&) = delete;
+
+  void set_for_testing(
+      privacy::TokenGeneratorInterface* token_generator);
 
   bool IsInitialized();
 
@@ -188,16 +193,17 @@ class AdsImpl
   bool is_initialized_ = false;
 
   std::unique_ptr<AdsClientHelper> ads_client_helper_;
+  std::unique_ptr<privacy::TokenGenerator> token_generator_;
+  std::unique_ptr<Confirmations> confirmations_;
+  std::unique_ptr<Account> account_;
   std::unique_ptr<ad_targeting::contextual::PageClassifier> page_classifier_;
   std::unique_ptr<ad_targeting::behavioral::PurchaseIntentClassifier>
       purchase_intent_classifier_;
   std::unique_ptr<ad_targeting::geographic::SubdivisionTargeting>
       subdivision_targeting_;
-  std::unique_ptr<Confirmations> confirmations_;
-  std::unique_ptr<Account> account_;
-  std::unique_ptr<AdNotification> ad_notification_;
   std::unique_ptr<AdTargeting> ad_targeting_;
   std::unique_ptr<ad_notifications::AdServing> ad_notification_serving_;
+  std::unique_ptr<AdNotification> ad_notification_;
   std::unique_ptr<AdNotifications> ad_notifications_;
   std::unique_ptr<AdServer> ad_server_;
   std::unique_ptr<AdTransfer> ad_transfer_;
@@ -207,6 +213,9 @@ class AdsImpl
   std::unique_ptr<NewTabPageAd> new_tab_page_ad_;
   std::unique_ptr<TabManager> tab_manager_;
   std::unique_ptr<UserActivity> user_activity_;
+
+  void set(
+      privacy::TokenGeneratorInterface* token_generator);
 
   void InitializeStep2(
       const Result result,

@@ -6,24 +6,20 @@
 #include "bat/ads/internal/tokens/redeem_unblinded_token/create_confirmation_util.h"
 
 #include <utility>
-#include <vector>
 
 #include "base/base64url.h"
-#include "base/guid.h"
 #include "base/json/json_writer.h"
 #include "base/strings/string_number_conversions.h"
-#include "base/time/time.h"
 #include "base/values.h"
 #include "brave/components/l10n/browser/locale_helper.h"
 #include "brave/components/l10n/common/locale_util.h"
 #include "wrapper.hpp"
 #include "bat/ads/ads.h"
-#include "bat/ads/confirmation_type.h"
 #include "bat/ads/internal/confirmations/confirmation_info.h"
 #include "bat/ads/internal/features/features.h"
 #include "bat/ads/internal/locale/country_code_util.h"
 #include "bat/ads/internal/platform/platform_helper.h"
-#include "bat/ads/internal/privacy/privacy_util.h"
+#include "bat/ads/internal/privacy/challenge_bypass_ristretto_util.h"
 #include "bat/ads/internal/privacy/unblinded_tokens/unblinded_token_info.h"
 
 namespace ads {
@@ -31,34 +27,6 @@ namespace ads {
 using challenge_bypass_ristretto::VerificationKey;
 using challenge_bypass_ristretto::VerificationSignature;
 using challenge_bypass_ristretto::TokenPreimage;
-
-ConfirmationInfo CreateConfirmationInfo(
-    const std::string& creative_instance_id,
-    const ConfirmationType& confirmation_type,
-    const privacy::UnblindedTokenInfo& unblinded_token) {
-  DCHECK(!creative_instance_id.empty());
-
-  ConfirmationInfo confirmation;
-
-  confirmation.id = base::GenerateGUID();
-  confirmation.creative_instance_id = creative_instance_id;
-  confirmation.type = confirmation_type;
-  confirmation.unblinded_token = unblinded_token;
-
-  const std::vector<Token> tokens = privacy::GenerateTokens(1);
-  confirmation.payment_token = tokens.front();
-
-  const std::vector<BlindedToken> blinded_tokens = privacy::BlindTokens(tokens);
-  const BlindedToken blinded_token = blinded_tokens.front();
-  confirmation.blinded_payment_token = blinded_token;
-
-  const std::string payload = CreateConfirmationRequestDTO(confirmation);
-  confirmation.credential = CreateCredential(unblinded_token, payload);
-
-  confirmation.timestamp = static_cast<int64_t>(base::Time::Now().ToDoubleT());
-
-  return confirmation;
-}
 
 std::string CreateConfirmationRequestDTO(
     const ConfirmationInfo& confirmation) {
@@ -122,19 +90,42 @@ std::string CreateCredential(
     const std::string& payload) {
   DCHECK(!payload.empty());
 
+  VerificationKey verification_key =
+      unblinded_token.value.derive_verification_key();
+  if (privacy::ExceptionOccurred()) {
+    NOTREACHED();
+    return "";
+  }
+
+  VerificationSignature verification_signature = verification_key.sign(payload);
+  if (privacy::ExceptionOccurred()) {
+    NOTREACHED();
+    return "";
+  }
+
+  const std::string verification_signature_base64 =
+      verification_signature.encode_base64();
+  if (privacy::ExceptionOccurred()) {
+    NOTREACHED();
+    return "";
+  }
+
+  TokenPreimage token_preimage = unblinded_token.value.preimage();
+  if (privacy::ExceptionOccurred()) {
+    NOTREACHED();
+    return "";
+  }
+
+  const std::string token_preimage_base64 = token_preimage.encode_base64();
+  if (privacy::ExceptionOccurred()) {
+    NOTREACHED();
+    return "";
+  }
+
   base::Value dictionary(base::Value::Type::DICTIONARY);
 
   dictionary.SetKey("payload", base::Value(payload));
-
-  VerificationKey verification_key =
-      unblinded_token.value.derive_verification_key();
-  VerificationSignature verification_signature = verification_key.sign(payload);
-  const std::string verification_signature_base64 =
-      verification_signature.encode_base64();
   dictionary.SetKey("signature", base::Value(verification_signature_base64));
-
-  TokenPreimage token_preimage = unblinded_token.value.preimage();
-  const std::string token_preimage_base64 = token_preimage.encode_base64();
   dictionary.SetKey("t", base::Value(token_preimage_base64));
 
   std::string json;

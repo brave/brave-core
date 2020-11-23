@@ -14,6 +14,7 @@
 #include "bat/ads/internal/account/account_observer.h"
 #include "bat/ads/internal/account/ad_rewards/ad_rewards_delegate.h"
 #include "bat/ads/internal/confirmations/confirmations_observer.h"
+#include "bat/ads/internal/privacy/tokens/token_generator_interface.h"
 #include "bat/ads/internal/tokens/redeem_unblinded_payment_tokens/redeem_unblinded_payment_tokens_delegate.h"
 #include "bat/ads/transaction_info.h"
 
@@ -34,7 +35,8 @@ class Account
       public RedeemUnblindedPaymentTokensDelegate {
  public:
   Account(
-      Confirmations* confirmations);
+      Confirmations* confirmations,
+      privacy::TokenGeneratorInterface* token_generator);
 
   ~Account() override;
 
@@ -63,6 +65,7 @@ class Account
   base::ObserverList<AccountObserver> observers_;
 
   Confirmations* confirmations_;  // NOT OWNED
+  privacy::TokenGeneratorInterface* token_generator_;  // NOT_OWNED
 
   std::unique_ptr<Wallet> wallet_;
   std::unique_ptr<AdRewards> ad_rewards_;

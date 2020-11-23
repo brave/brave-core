@@ -60,6 +60,7 @@ bool IsNewlySupportedLocale(
 // static
 Ads* Ads::CreateInstance(
     AdsClient* ads_client) {
+  DCHECK(ads_client);
   return new AdsImpl(ads_client);
 }
 

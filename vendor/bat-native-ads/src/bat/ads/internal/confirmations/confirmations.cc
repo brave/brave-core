@@ -8,11 +8,16 @@
 #include <stdint.h>
 
 #include <functional>
+#include <vector>
 
+#include "base/guid.h"
 #include "base/time/time.h"
+#include "bat/ads/confirmation_type.h"
 #include "bat/ads/internal/catalog/catalog_issuers_info.h"
 #include "bat/ads/internal/confirmations/confirmations_state.h"
 #include "bat/ads/internal/logging.h"
+#include "bat/ads/internal/privacy/privacy_util.h"
+#include "bat/ads/internal/privacy/tokens/token_generator_interface.h"
 #include "bat/ads/internal/privacy/unblinded_tokens/unblinded_tokens.h"
 #include "bat/ads/internal/time_formatting_util.h"
 #include "bat/ads/internal/tokens/redeem_unblinded_token/create_confirmation_util.h"
@@ -24,9 +29,12 @@ namespace {
 const int64_t kRetryAfterSeconds = 5 * base::Time::kSecondsPerMinute;
 }  // namespace
 
-Confirmations::Confirmations()
-    : confirmations_state_(std::make_unique<ConfirmationsState>()),
+Confirmations::Confirmations(
+    privacy::TokenGeneratorInterface* token_generator)
+    : token_generator_(token_generator),
+      confirmations_state_(std::make_unique<ConfirmationsState>()),
       redeem_unblinded_token_(std::make_unique<RedeemUnblindedToken>()) {
+  DCHECK(token_generator_);
   redeem_unblinded_token_->set_delegate(this);
 }
 
@@ -36,16 +44,19 @@ Confirmations::~Confirmations() {
 
 void Confirmations::set_ad_rewards(
     AdRewards* ad_rewards) {
+  DCHECK(ad_rewards);
   ConfirmationsState::Get()->set_ad_rewards(ad_rewards);
 }
 
 void Confirmations::AddObserver(
     ConfirmationsObserver* observer) {
+  DCHECK(observer);
   observers_.AddObserver(observer);
 }
 
 void Confirmations::RemoveObserver(
     ConfirmationsObserver* observer) {
+  DCHECK(observer);
   observers_.RemoveObserver(observer);
 }
 
@@ -85,21 +96,15 @@ void Confirmations::ConfirmAd(
   if (ConfirmationsState::Get()->get_unblinded_tokens()->IsEmpty()) {
     BLOG(1, "There are no unblinded tokens");
 
-    BLOG(3, "Failed to confirm ad with creative instance id "
-        << creative_instance_id);
+    BLOG(3, "Failed to confirm " << std::string(confirmation_type)
+        << " ad with creative instance id " << creative_instance_id);
 
     return;
   }
 
-  const privacy::UnblindedTokenInfo unblinded_token
-      = ConfirmationsState::Get()->get_unblinded_tokens()->GetToken();
-
-  ConfirmationsState::Get()->get_unblinded_tokens()->RemoveToken(
-      unblinded_token);
-  ConfirmationsState::Get()->Save();
-
-  redeem_unblinded_token_->Redeem(creative_instance_id,
-      confirmation_type, unblinded_token);
+  const ConfirmationInfo confirmation =
+      CreateConfirmation(creative_instance_id, confirmation_type);
+  redeem_unblinded_token_->Redeem(confirmation);
 }
 
 void Confirmations::RetryAfterDelay() {
@@ -116,6 +121,41 @@ void Confirmations::RetryAfterDelay() {
 
 ///////////////////////////////////////////////////////////////////////////////
 
+ConfirmationInfo Confirmations::CreateConfirmation(
+    const std::string& creative_instance_id,
+    const ConfirmationType& confirmation_type) const {
+  DCHECK(!creative_instance_id.empty());
+  DCHECK(confirmation_type != ConfirmationType::kUndefined);
+
+  ConfirmationInfo confirmation;
+
+  confirmation.id = base::GenerateGUID();
+  confirmation.creative_instance_id = creative_instance_id;
+  confirmation.type = confirmation_type;
+
+  const privacy::UnblindedTokenInfo unblinded_token
+      = ConfirmationsState::Get()->get_unblinded_tokens()->GetToken();
+  confirmation.unblinded_token = unblinded_token;
+
+  const std::vector<Token> tokens = token_generator_->Generate(1);
+  confirmation.payment_token = tokens.front();
+
+  const std::vector<BlindedToken> blinded_tokens = privacy::BlindTokens(tokens);
+  const BlindedToken blinded_token = blinded_tokens.front();
+  confirmation.blinded_payment_token = blinded_token;
+
+  const std::string payload = CreateConfirmationRequestDTO(confirmation);
+  confirmation.credential = CreateCredential(unblinded_token, payload);
+
+  confirmation.timestamp = static_cast<int64_t>(base::Time::Now().ToDoubleT());
+
+  ConfirmationsState::Get()->get_unblinded_tokens()->RemoveToken(
+      unblinded_token);
+  ConfirmationsState::Get()->Save();
+
+  return confirmation;
+}
+
 void Confirmations::CreateNewConfirmationAndAppendToRetryQueue(
     const ConfirmationInfo& confirmation) {
   if (ConfirmationsState::Get()->get_unblinded_tokens()->IsEmpty()) {
@@ -123,16 +163,8 @@ void Confirmations::CreateNewConfirmationAndAppendToRetryQueue(
     return;
   }
 
-  const privacy::UnblindedTokenInfo unblinded_token =
-      ConfirmationsState::Get()->get_unblinded_tokens()->GetToken();
-
-  ConfirmationsState::Get()->get_unblinded_tokens()->RemoveToken(
-      unblinded_token);
-  ConfirmationsState::Get()->Save();
-
-  const ConfirmationInfo new_confirmation = CreateConfirmationInfo(
-      confirmation.creative_instance_id, confirmation.type, unblinded_token);
-
+  const ConfirmationInfo new_confirmation =
+      CreateConfirmation(confirmation.creative_instance_id, confirmation.type);
   AppendToRetryQueue(new_confirmation);
 }
 

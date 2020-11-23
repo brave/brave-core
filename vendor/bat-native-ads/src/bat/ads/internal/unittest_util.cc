@@ -170,6 +170,8 @@ void ReplaceTagsForText(
 
 void ParseAndReplaceTagsForText(
     std::string* text) {
+  DCHECK(text);
+
   const std::vector<std::string> tags = ParseTagsForText(text);
   ReplaceTagsForText(text, tags);
 }
@@ -221,18 +223,19 @@ bool GetNextUrlEndpointResponse(
     // uuid does not exist so insert a new index set to 0 for the endpoint
     g_url_endpoint_indexes.insert({uuid, url_endpoint_response_index});
   } else {
-    url_endpoint_response_index = url_endpoint_response_indexes_iter->second;
-
-    if (url_endpoint_response_index == url_endpoint_responses.size()) {
+    if (url_endpoint_response_indexes_iter->second ==
+        url_endpoint_responses.size() - 1) {
       NOTREACHED() << "Missing MockUrlRequest endpoint response for " << url;
       return false;
     }
 
-    // uuid exists so increment endpoint index
     url_endpoint_response_indexes_iter->second++;
 
     url_endpoint_response_index = url_endpoint_response_indexes_iter->second;
   }
+
+  DCHECK_GE(url_endpoint_response_index, 0);
+  DCHECK_LT(url_endpoint_response_index, url_endpoint_responses.size());
 
   *url_endpoint_response =
       url_endpoint_responses.at(url_endpoint_response_index);

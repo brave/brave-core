@@ -72,6 +72,10 @@ class UnitTestBase : public testing::Test {
   void AdvanceClock(
       const base::TimeDelta& time_delta);
 
+  // Returns the delay until the next pending task of the main thread's
+  // TaskRunner if there is one, otherwise it returns TimeDelta::Max()
+  base::TimeDelta NextPendingTaskDelay() const;
+
  private:
   bool setup_called_ = false;
   bool teardown_called_ = false;

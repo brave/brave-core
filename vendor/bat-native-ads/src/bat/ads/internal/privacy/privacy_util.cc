@@ -10,20 +10,6 @@
 namespace ads {
 namespace privacy {
 
-std::vector<Token> GenerateTokens(
-    const int count) {
-  DCHECK_GT(count, 0);
-
-  std::vector<Token> tokens;
-
-  for (int i = 0; i < count; i++) {
-    const Token token = Token::random();
-    tokens.push_back(token);
-  }
-
-  return tokens;
-}
-
 std::vector<BlindedToken> BlindTokens(
     const std::vector<Token>& tokens) {
   DCHECK(!tokens.empty());

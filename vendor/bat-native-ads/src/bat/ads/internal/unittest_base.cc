@@ -90,6 +90,10 @@ void UnitTestBase::AdvanceClock(
   task_environment_.AdvanceClock(time_delta);
 }
 
+base::TimeDelta UnitTestBase::NextPendingTaskDelay() const {
+  return task_environment_.NextMainThreadPendingTaskDelay();
+}
+
 ///////////////////////////////////////////////////////////////////////////////
 
 void UnitTestBase::Initialize() {
