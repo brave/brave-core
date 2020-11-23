@@ -79,7 +79,8 @@ enum NavigationPath: Equatable {
     
     private static func handleURL(url: URL?, isPrivate: Bool, with bvc: BrowserViewController) {
         if let newURL = url {
-            bvc.switchToTabForURLOrOpen(newURL, isPrivate: isPrivate, isPrivileged: false)
+            bvc.switchToTabForURLOrOpen(newURL, isPrivate: isPrivate, isPrivileged: false, isExternal: true)
+            bvc.popToBVC()
         } else {
             bvc.openBlankNewTab(attemptLocationFieldFocus: true, isPrivate: isPrivate)
         }
