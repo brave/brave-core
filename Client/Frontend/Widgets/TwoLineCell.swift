@@ -113,6 +113,32 @@ class SiteTableViewCell: TwoLineTableViewCell {
     }
 }
 
+class BookmarkTableViewCell: TwoLineTableViewCell {
+    /// Holds url domain for bookmarks or folder name for folders.
+    /// This property is used to see if the cell's image should be reused.
+    var domainOrFolderName: String?
+
+    override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
+        super.init(style: .subtitle, reuseIdentifier: reuseIdentifier)
+        guard let textLabel = textLabel, let detailTextLabel = detailTextLabel,
+              let imageView = imageView else { return }
+        
+        twoLineHelper.setUpViews(contentView,
+                                 textLabel: textLabel,
+                                 detailTextLabel: detailTextLabel,
+                                 imageView: imageView)
+    }
+
+    override func layoutSubviews() {
+        super.layoutSubviews()
+        twoLineHelper.layoutSubviews(accessoryWidth: self.contentView.frame.origin.x)
+    }
+
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+}
+
 class TwoLineHeaderFooterView: UITableViewHeaderFooterView {
     fileprivate let twoLineHelper = TwoLineCellHelper()
 

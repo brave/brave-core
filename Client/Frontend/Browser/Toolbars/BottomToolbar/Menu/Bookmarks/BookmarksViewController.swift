@@ -79,6 +79,8 @@ class BookmarksViewController: SiteTableViewController, ToolbarUrlActionsProtoco
         super.viewDidLoad()
 
         tableView.allowsSelectionDuringEditing = true
+        tableView.register(BookmarkTableViewCell.self,
+                           forCellReuseIdentifier: String(describing: BookmarkTableViewCell.self))
 
         setUpToolbar()
         updateEditBookmarksButtonStatus()
@@ -268,16 +270,23 @@ class BookmarksViewController: SiteTableViewController, ToolbarUrlActionsProtoco
     return true
   }
   
-  fileprivate func configureCell(_ cell: UITableViewCell, atIndexPath indexPath: IndexPath) {
-    
+  fileprivate func configureCell(_ cell: BookmarkTableViewCell, atIndexPath indexPath: IndexPath) {
     // Make sure Bookmark at index path exists,
     // `frc.object(at:)` crashes otherwise, doesn't fail safely with nil
     if let objectsCount = bookmarksFRC?.fetchedObjectsCount, indexPath.row >= objectsCount {
-        fatalError("Bookmarks FRC index out of bounds")
+        assertionFailure("Bookmarks FRC index out of bounds")
+        return
     }
     
     guard let item = bookmarksFRC?.object(at: indexPath) else { return }
     cell.tag = item.objectID
+    
+    // See if the cell holds the same bookmark. If yes, we do not have to recreate its image view
+    // This makes scrolling through bookmarks better if there's many bookmarks with the same url
+    let domainOrFolderName = item.isFolder ? item.displayTitle : (item.domain?.url ?? item.url)
+    let shouldReuse = domainOrFolderName != cell.domainOrFolderName
+    
+    cell.domainOrFolderName = domainOrFolderName
     
     func configCell(image: UIImage? = nil, icon: FaviconMO? = nil) {
       if !tableView.isEditing {
@@ -286,6 +295,11 @@ class BookmarksViewController: SiteTableViewController, ToolbarUrlActionsProtoco
         cell.addGestureRecognizer(lp)
       }
       
+        if !shouldReuse {
+            return
+        }
+        
+        cell.imageView?.cancelFaviconLoad()
       cell.backgroundColor = .clear
       cell.imageView?.contentMode = .scaleAspectFit
       cell.imageView?.image = FaviconFetcher.defaultFaviconImage
@@ -457,7 +471,12 @@ class BookmarksViewController: SiteTableViewController, ToolbarUrlActionsProtoco
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = super.tableView(tableView, cellForRowAt: indexPath)
+        guard let cell = tableView
+                .dequeueReusableCell(withIdentifier: String(describing: BookmarkTableViewCell.self), for: indexPath) as? BookmarkTableViewCell else {
+            assertionFailure()
+            return UITableViewCell()
+        }
+
         configureCell(cell, atIndexPath: indexPath)
         return cell
     }
@@ -532,7 +551,10 @@ extension BookmarksViewController: BookmarksV2FetchResultsDelegate {
             // When Bookmark is moved to another folder, it can be interpreted as update action
             // (since the object is not deleted but updated to have a different parent Bookmark)
             // Make sure we are not out of bounds here.
-            if let path = path, let cell = self.tableView.cellForRow(at: path),
+            if let path = path,
+               let cell = self.tableView
+                .dequeueReusableCell(withIdentifier: String(describing: BookmarkTableViewCell.self),
+                                     for: path) as? BookmarkTableViewCell,
                 let fetchedObjectsCount = self.bookmarksFRC?.fetchedObjectsCount, path.row < fetchedObjectsCount {
                     self.configureCell(cell, atIndexPath: path)
             }
