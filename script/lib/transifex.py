@@ -9,6 +9,7 @@ import HTMLParser
 import io
 import json
 import os
+import re
 import requests
 import tempfile
 import lxml.etree
@@ -30,12 +31,21 @@ allowed_html_tags = [
 ]
 
 
+def transifex_name_from_greaselion_script_name(script_name):
+    match = re.search('brave-site-specific-scripts/scripts/(.*)/_locales/en_US/messages.json$', script_name)
+    if match:
+        return 'greaselion_' + match.group(1).replace('-', '_').replace('/', '_')
+    return ''
+
+
 def transifex_name_from_filename(source_file_path, filename):
     ext = os.path.splitext(source_file_path)[1]
     if 'brave_components_strings' in source_file_path:
         return 'brave_components_resources'
     elif ext == '.grd':
         return filename
+    elif 'brave-site-specific-scripts/scripts/' in source_file_path:
+        return transifex_name_from_greaselion_script_name(source_file_path)
     elif 'brave_extension' in source_file_path:
         return 'brave_extension'
     elif 'brave_rewards' in source_file_path:
@@ -893,7 +903,7 @@ def get_chromium_grd_src_with_fallback(grd_file_path, brave_source_root):
 
 def should_use_transifex(source_string_path, filename):
     slug = transifex_name_from_filename(source_string_path, filename)
-    return slug in transifex_handled_slugs
+    return slug in transifex_handled_slugs or slug.startswith('greaselion_')
 
 
 def pull_xtb_without_transifex(grd_file_path, brave_source_root):
