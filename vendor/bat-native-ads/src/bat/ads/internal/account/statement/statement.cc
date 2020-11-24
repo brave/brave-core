@@ -5,6 +5,7 @@
 
 #include "bat/ads/internal/account/statement/statement.h"
 
+#include "base/time/time.h"
 #include "bat/ads/internal/account/ad_rewards/ad_rewards.h"
 #include "bat/ads/internal/account/transactions/transactions.h"
 #include "bat/ads/statement_info.h"
@@ -21,7 +22,7 @@ Statement::~Statement() = default;
 
 StatementInfo Statement::Get(
     const int64_t from_timestamp,
-    const int64_t to_timestamp) {
+    const int64_t to_timestamp) const {
   DCHECK(to_timestamp >= from_timestamp);
 
   StatementInfo statement;
@@ -29,11 +30,13 @@ StatementInfo Statement::Get(
   statement.estimated_pending_rewards =
       ad_rewards_->GetEstimatedPendingRewards();
 
-  statement.next_payment_date_in_seconds =
-      ad_rewards_->GetNextPaymentDateInSeconds();
+  statement.next_payment_date = ad_rewards_->GetNextPaymentDate();
 
-  statement.ad_notifications_received_this_month =
-      ad_rewards_->GetAdNotificationsReceivedThisMonth();
+  statement.ads_received_this_month = ad_rewards_->GetAdsReceivedThisMonth();
+
+  statement.earnings_this_month = GetEarningsForThisMonth();
+
+  statement.earnings_last_month = GetEarningsForLastMonth();
 
   statement.transactions =
       transactions::GetCleared(from_timestamp, to_timestamp);
@@ -41,6 +44,28 @@ StatementInfo Statement::Get(
   statement.uncleared_transactions = transactions::GetUncleared();
 
   return statement;
+}
+
+double Statement::GetEarningsForThisMonth() const {
+  return ad_rewards_->GetEarningsForThisMonth();
+}
+
+double Statement::GetEarningsForLastMonth() const {
+  const base::Time now = base::Time::Now();
+  base::Time::Exploded exploded;
+  now.UTCExplode(&exploded);
+
+  exploded.month--;
+  if (exploded.month < 1) {
+    exploded.month = 12;
+    exploded.year--;
+  }
+
+  base::Time last_month;
+  const bool success = base::Time::FromUTCExploded(exploded, &last_month);
+  DCHECK(success);
+
+  return ad_rewards_->GetEarningsForMonth(last_month);
 }
 
 }  // namespace ads

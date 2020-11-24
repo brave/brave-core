@@ -181,7 +181,7 @@ class AdsBox extends React.Component<Props, {}> {
     let adsIsSupported = false
     let estimatedPendingRewards = 0
     let nextPaymentDate = ''
-    let adNotificationsReceivedThisMonth = 0
+    let adsReceivedThisMonth = 0
     const {
       adsData,
       safetyNetFailed,
@@ -195,7 +195,7 @@ class AdsBox extends React.Component<Props, {}> {
       adsIsSupported = adsData.adsIsSupported
       estimatedPendingRewards = adsData.adsEstimatedPendingRewards || 0
       nextPaymentDate = adsData.adsNextPaymentDate
-      adNotificationsReceivedThisMonth = adsData.adsAdNotificationsReceivedThisMonth || 0
+      adsReceivedThisMonth = adsData.adsReceivedThisMonth || 0
     }
 
     // disabled / alert state
@@ -252,7 +252,7 @@ class AdsBox extends React.Component<Props, {}> {
           <StyledListContent>
             <Tokens
               onlyAnonWallet={onlyAnonWallet}
-              value={adNotificationsReceivedThisMonth.toString()}
+              value={adsReceivedThisMonth.toString()}
               hideText={true}
             />
           </StyledListContent>

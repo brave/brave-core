@@ -6,6 +6,7 @@
 #include "bat/ads/transaction_info.h"
 
 #include "base/strings/string_number_conversions.h"
+#include "bat/ads/internal/number_util.h"
 
 namespace ads {
 
@@ -15,6 +16,19 @@ TransactionInfo::TransactionInfo(
     const TransactionInfo& info) = default;
 
 TransactionInfo::~TransactionInfo() = default;
+
+bool TransactionInfo::operator==(
+    const TransactionInfo& rhs) const {
+  return timestamp == rhs.timestamp &&
+      DoubleEquals(estimated_redemption_value,
+          rhs.estimated_redemption_value) &&
+      confirmation_type == rhs.confirmation_type;
+}
+
+bool TransactionInfo::operator!=(
+    const TransactionInfo& rhs) const {
+  return !(*this == rhs);
+}
 
 void TransactionInfo::ToDictionary(
     base::Value* dictionary) const {

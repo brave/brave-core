@@ -34,7 +34,7 @@ class Payments {
       const base::Time& time,
       const base::Time& token_redemption_date) const;
 
-  uint64_t GetTransactionCountForMonth(
+  PaymentInfo GetForThisMonth(
       const base::Time& time) const;
 
  private:

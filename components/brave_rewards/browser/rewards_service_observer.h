@@ -60,7 +60,7 @@ class RewardsServiceObserver : public base::CheckedObserver {
       RewardsService* rewards_service,
       ledger::type::PublisherInfoList list) {}
 
-  virtual void OnTransactionHistoryChanged(
+  virtual void OnStatementChanged(
       brave_rewards::RewardsService* rewards_service) {}
 
   virtual void OnRecurringTipSaved(

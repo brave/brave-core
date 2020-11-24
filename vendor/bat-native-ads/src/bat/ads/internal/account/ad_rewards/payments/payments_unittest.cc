@@ -771,11 +771,10 @@ TEST_F(BatAdsPaymentsTest,
   const base::Time time = TimeFromDateString("6 June 2019");
 
   // Act
-  const uint64_t transaction_count =
-      payments_->GetTransactionCountForMonth(time);
+  const PaymentInfo payment = payments_->GetForThisMonth(time);
 
   // Assert
-  EXPECT_EQ(10UL, transaction_count);
+  EXPECT_EQ(10UL, payment.transaction_count);
 }
 
 TEST_F(BatAdsPaymentsTest,
@@ -801,11 +800,10 @@ TEST_F(BatAdsPaymentsTest,
   const base::Time time = TimeFromDateString("6 June 2019");
 
   // Act
-  const uint64_t transaction_count =
-      payments_->GetTransactionCountForMonth(time);
+  const PaymentInfo payment = payments_->GetForThisMonth(time);
 
   // Assert
-  EXPECT_EQ(10UL, transaction_count);
+  EXPECT_EQ(10UL, payment.transaction_count);
 }
 
 TEST_F(BatAdsPaymentsTest,
@@ -831,11 +829,10 @@ TEST_F(BatAdsPaymentsTest,
   const base::Time time = TimeFromDateString("6 June 2019");
 
   // Act
-  const uint64_t transaction_count =
-      payments_->GetTransactionCountForMonth(time);
+  const PaymentInfo payment = payments_->GetForThisMonth(time);
 
   // Assert
-  EXPECT_EQ(10UL, transaction_count);
+  EXPECT_EQ(10UL, payment.transaction_count);
 }
 
 TEST_F(BatAdsPaymentsTest,
@@ -856,11 +853,10 @@ TEST_F(BatAdsPaymentsTest,
   const base::Time time = TimeFromDateString("6 July 2019");
 
   // Act
-  const uint64_t transaction_count =
-      payments_->GetTransactionCountForMonth(time);
+  const PaymentInfo payment = payments_->GetForThisMonth(time);
 
   // Assert
-  EXPECT_EQ(0UL, transaction_count);
+  EXPECT_EQ(0UL, payment.transaction_count);
 }
 
 TEST_F(BatAdsPaymentsTest,
@@ -881,11 +877,10 @@ TEST_F(BatAdsPaymentsTest,
   const base::Time time = TimeFromDateString("6 July 2019");
 
   // Act
-  const uint64_t transaction_count =
-      payments_->GetTransactionCountForMonth(time);
+  const PaymentInfo payment = payments_->GetForThisMonth(time);
 
   // Assert
-  EXPECT_EQ(0UL, transaction_count);
+  EXPECT_EQ(0UL, payment.transaction_count);
 }
 
 }  // namespace ads

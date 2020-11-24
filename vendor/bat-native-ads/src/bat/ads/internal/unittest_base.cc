@@ -79,6 +79,13 @@ void UnitTestBase::AdvanceClockToMidnightUTC() {
 }
 
 void UnitTestBase::AdvanceClock(
+     const base::Time& time) {
+  const base::TimeDelta time_delta = time - base::Time::Now();
+
+  return AdvanceClock(time_delta);
+}
+
+void UnitTestBase::AdvanceClock(
     const base::TimeDelta& time_delta) {
   task_environment_.AdvanceClock(time_delta);
 }

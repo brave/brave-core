@@ -376,14 +376,14 @@ void AdsServiceImpl::OnWalletUpdated() {
       base::BindOnce(&AdsServiceImpl::OnGetBraveWallet, AsWeakPtr()));
 }
 
-void AdsServiceImpl::OnGetBraveWallet(ledger::type::BraveWalletPtr wallet) {
+void AdsServiceImpl::OnGetBraveWallet(
+    ledger::type::BraveWalletPtr wallet) {
   if (!wallet) {
     VLOG(0) << "Failed to get wallet";
     return;
   }
 
-  bat_ads_->OnWalletUpdated(
-      wallet->payment_id,
+  bat_ads_->OnWalletUpdated(wallet->payment_id,
       base::Base64Encode(wallet->recovery_seed));
 }
 
@@ -408,15 +408,15 @@ void AdsServiceImpl::GetAdsHistory(
           std::move(callback)));
 }
 
-void AdsServiceImpl::GetTransactionHistory(
-    GetTransactionHistoryCallback callback) {
+void AdsServiceImpl::GetStatement(
+    GetStatementCallback callback) {
   if (!connected()) {
-    std::move(callback).Run(/* success */ false, 0.0, 0, 0);
+    std::move(callback).Run(/* success */ false, 0.0, 0, 0, 0.0, 0.0);
     return;
   }
 
-  bat_ads_->GetTransactionHistory(
-      base::BindOnce(&AdsServiceImpl::OnGetTransactionHistory,
+  bat_ads_->GetStatement(
+      base::BindOnce(&AdsServiceImpl::OnGetStatement,
           AsWeakPtr(), std::move(callback)));
 }
 
@@ -1192,12 +1192,12 @@ void AdsServiceImpl::OnGetAdsHistory(
   std::move(callback).Run(list);
 }
 
-void AdsServiceImpl::OnGetTransactionHistory(
-    GetTransactionHistoryCallback callback,
+void AdsServiceImpl::OnGetStatement(
+    GetStatementCallback callback,
     const bool success,
     const std::string& json) {
   if (!success) {
-    std::move(callback).Run(success, 0.0, 0, 0);
+    std::move(callback).Run(success, 0.0, 0, 0, 0.0, 0.0);
     return;
   }
 
@@ -1205,8 +1205,8 @@ void AdsServiceImpl::OnGetTransactionHistory(
   statement.FromJson(json);
 
   std::move(callback).Run(success, statement.estimated_pending_rewards,
-      statement.next_payment_date_in_seconds,
-          statement.ad_notifications_received_this_month);
+      statement.next_payment_date, statement.ads_received_this_month,
+          statement.earnings_this_month, statement.earnings_last_month);
 }
 
 void AdsServiceImpl::OnRemoveAllHistory(
@@ -1663,7 +1663,8 @@ void AdsServiceImpl::OnPrefsChanged(
   }
 }
 
-void AdsServiceImpl::OnWalletCreated(const ledger::type::Result result) {
+void AdsServiceImpl::OnWalletCreated(
+    const ledger::type::Result result) {
   if (result != ledger::type::Result::WALLET_CREATED) {
     VLOG(0) << "Failed to create a wallet";
     SetEnabled(false);

@@ -412,6 +412,8 @@ source_set("ads") {
     "src/bat/ads/internal/logging.h",
     "src/bat/ads/internal/logging_util.cc",
     "src/bat/ads/internal/logging_util.h",
+    "src/bat/ads/internal/number_util.cc",
+    "src/bat/ads/internal/number_util.h",
     "src/bat/ads/internal/p2a/p2a.cc",
     "src/bat/ads/internal/p2a/p2a.h",
     "src/bat/ads/internal/p2a/p2a_util.cc",

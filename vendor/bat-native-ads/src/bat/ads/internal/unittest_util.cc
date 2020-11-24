@@ -230,6 +230,8 @@ bool GetNextUrlEndpointResponse(
 
     // uuid exists so increment endpoint index
     url_endpoint_response_indexes_iter->second++;
+
+    url_endpoint_response_index = url_endpoint_response_indexes_iter->second;
   }
 
   *url_endpoint_response =

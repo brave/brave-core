@@ -512,17 +512,17 @@ BATClassAdsBridge(BOOL, isDebug, setDebug, _is_debug)
 - (void)detailsForCurrentCycle:(void (^)(NSInteger adsReceived, double estimatedEarnings, NSDate *nextPaymentDate))completion
 {
   if (![self isAdsServiceRunning]) { return; }
-  ads->GetTransactionHistory(^(bool success, ads::StatementInfo list) {
+  ads->GetStatement(^(bool success, ads::StatementInfo list) {
     if (!success) {
       completion(0, 0, nil);
       return;
     }
 
     NSDate *nextPaymentDate = nil;
-    if (list.next_payment_date_in_seconds > 0) {
-      nextPaymentDate = [NSDate dateWithTimeIntervalSince1970:list.next_payment_date_in_seconds];
+    if (list.next_payment_date > 0) {
+      nextPaymentDate = [NSDate dateWithTimeIntervalSince1970:list.next_payment_date];
     }
-    completion(list.ad_notifications_received_this_month,
+    completion(list.ads_received_this_month,
                list.estimated_pending_rewards,
                nextPaymentDate);
   });

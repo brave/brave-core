@@ -10,6 +10,7 @@
 
 #include <memory>
 
+#include "base/time/time.h"
 #include "base/values.h"
 #include "bat/ads/internal/account/wallet/wallet_info.h"
 #include "bat/ads/internal/account/ad_rewards/ad_rewards_delegate.h"
@@ -35,8 +36,18 @@ class AdRewards {
       const WalletInfo& wallet);
 
   double GetEstimatedPendingRewards() const;
-  uint64_t GetNextPaymentDateInSeconds() const;
-  uint64_t GetAdNotificationsReceivedThisMonth() const;
+
+  uint64_t GetNextPaymentDate() const;
+
+  uint64_t GetAdsReceivedThisMonth() const;
+  uint64_t GetAdsReceivedForMonth(
+      const base::Time& time) const;
+
+  double GetEarningsForThisMonth() const;
+  double GetEarningsForMonth(
+      const base::Time& time) const;
+
+  double GetUnclearedEarningsForThisMonth() const;
 
   void SetUnreconciledTransactions(
       const TransactionList& unreconciled_transactions);

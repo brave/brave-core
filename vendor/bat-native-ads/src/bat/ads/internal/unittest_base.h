@@ -68,6 +68,8 @@ class UnitTestBase : public testing::Test {
   // Unlike |FastForwardBy| AdvanceClock does not run tasks
   void AdvanceClockToMidnightUTC();
   void AdvanceClock(
+       const base::Time& time);
+  void AdvanceClock(
       const base::TimeDelta& time_delta);
 
  private:

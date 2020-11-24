@@ -27,47 +27,22 @@ namespace {
 
 const int64_t kRetryAfterSeconds = 1 * base::Time::kSecondsPerMinute;
 
-double CalculateEstimatedPendingRewardsForTransactions(
-    const TransactionList& transactions) {
+double CalculateEarningsForTransactions(
+    const TransactionList& transactions,
+    const int64_t from_timestamp,
+    const int64_t to_timestamp) {
   double estimated_pending_rewards = 0.0;
 
   for (const auto& transaction : transactions) {
+    if (transaction.timestamp < from_timestamp ||
+        transaction.timestamp > to_timestamp) {
+      continue;
+    }
+
     estimated_pending_rewards += transaction.estimated_redemption_value;
   }
 
   return estimated_pending_rewards;
-}
-
-uint64_t CalculateAdNotificationsReceivedThisMonthForTransactions(
-    const TransactionList& transactions) {
-  uint64_t ad_notifications_received_this_month = 0;
-
-  auto now = base::Time::Now();
-  base::Time::Exploded now_exploded;
-  now.UTCExplode(&now_exploded);
-
-  for (const auto& transaction : transactions) {
-    if (transaction.timestamp == 0) {
-      // Workaround for Windows crash when passing 0 to UTCExplode
-      continue;
-    }
-
-    auto transaction_timestamp =
-        base::Time::FromDoubleT(transaction.timestamp);
-
-    base::Time::Exploded transaction_timestamp_exploded;
-    transaction_timestamp.UTCExplode(&transaction_timestamp_exploded);
-
-    if (transaction_timestamp_exploded.year == now_exploded.year &&
-        transaction_timestamp_exploded.month == now_exploded.month &&
-        transaction.estimated_redemption_value > 0.0 &&
-        ConfirmationType(transaction.confirmation_type) ==
-            ConfirmationType::kViewed) {
-      ad_notifications_received_this_month++;
-    }
-  }
-
-  return ad_notifications_received_this_month;
 }
 
 }  // namespace
@@ -105,9 +80,11 @@ double AdRewards::GetEstimatedPendingRewards() const {
 
   estimated_pending_rewards -= ad_grants_->GetBalance();
 
+  const int64_t to_timestamp =
+      static_cast<int64_t>(base::Time::Now().ToDoubleT());
   const TransactionList uncleared_transactions = transactions::GetUncleared();
   const double uncleared_estimated_pending_rewards =
-      CalculateEstimatedPendingRewardsForTransactions(uncleared_transactions);
+      CalculateEarningsForTransactions(uncleared_transactions, 0, to_timestamp);
   estimated_pending_rewards += uncleared_estimated_pending_rewards;
 
   estimated_pending_rewards += unreconciled_estimated_pending_rewards_;
@@ -119,7 +96,7 @@ double AdRewards::GetEstimatedPendingRewards() const {
   return estimated_pending_rewards;
 }
 
-uint64_t AdRewards::GetNextPaymentDateInSeconds() const {
+uint64_t AdRewards::GetNextPaymentDate() const {
   const base::Time now = base::Time::Now();
 
   const base::Time next_token_redemption_date =
@@ -131,17 +108,62 @@ uint64_t AdRewards::GetNextPaymentDateInSeconds() const {
   return static_cast<uint64_t>(next_payment_date.ToDoubleT());
 }
 
-uint64_t AdRewards::GetAdNotificationsReceivedThisMonth() const {
-  const TransactionList transactions =
-      ConfirmationsState::Get()->get_transactions();
-  return CalculateAdNotificationsReceivedThisMonthForTransactions(transactions);
+uint64_t AdRewards::GetAdsReceivedThisMonth() const {
+  const base::Time now = base::Time::Now();
+  return GetAdsReceivedForMonth(now);
+}
+
+uint64_t AdRewards::GetAdsReceivedForMonth(
+    const base::Time& time) const {
+  const PaymentInfo payment = payments_->GetForThisMonth(time);
+  return payment.transaction_count;
+}
+
+double AdRewards::GetEarningsForThisMonth() const {
+  const base::Time now = base::Time::Now();
+  double earnings_for_this_month = GetEarningsForMonth(now);
+  earnings_for_this_month += GetUnclearedEarningsForThisMonth();
+  return earnings_for_this_month;
+}
+
+double AdRewards::GetEarningsForMonth(
+    const base::Time& time) const {
+  const PaymentInfo payment = payments_->GetForThisMonth(time);
+  return payment.balance;
+}
+
+double AdRewards::GetUnclearedEarningsForThisMonth() const {
+  const base::Time now = base::Time::Now();
+  base::Time::Exploded exploded;
+  now.UTCExplode(&exploded);
+
+  exploded.day_of_month = 1;
+  exploded.hour = 0;
+  exploded.minute = 0;
+  exploded.second = 0;
+
+  base::Time from_time;
+  const bool success = base::Time::FromUTCExploded(exploded, &from_time);
+  DCHECK(success);
+
+  const int64_t from_timestamp = static_cast<int64_t>(from_time.ToDoubleT());
+
+  const int64_t to_timestamp =
+      static_cast<int64_t>(base::Time::Now().ToDoubleT());
+
+  const TransactionList uncleared_transactions = transactions::GetUncleared();
+
+  return CalculateEarningsForTransactions(uncleared_transactions,
+      from_timestamp, to_timestamp);
 }
 
 void AdRewards::SetUnreconciledTransactions(
     const TransactionList& unreconciled_transactions) {
-  unreconciled_estimated_pending_rewards_ =
-      CalculateEstimatedPendingRewardsForTransactions(
-          unreconciled_transactions);
+  const int64_t to_timestamp =
+      static_cast<int64_t>(base::Time::Now().ToDoubleT());
+
+  unreconciled_estimated_pending_rewards_ = CalculateEarningsForTransactions(
+      unreconciled_transactions, 0, to_timestamp);
 
   ConfirmationsState::Get()->Save();
 }
@@ -289,11 +311,9 @@ void AdRewards::OnDidReconcileAdRewards() {
   unreconciled_estimated_pending_rewards_ = 0.0;
   ConfirmationsState::Get()->Save();
 
-  if (!delegate_) {
-    return;
+  if (delegate_) {
+    delegate_->OnDidReconcileAdRewards();
   }
-
-  delegate_->OnDidReconcileAdRewards();
 }
 
 void AdRewards::OnFailedToReconcileAdRewards() {
@@ -311,6 +331,10 @@ void AdRewards::OnFailedToReconcileAdRewards() {
 }
 
 void AdRewards::Retry() {
+  if (delegate_) {
+    delegate_->OnWillRetryToReconcileAdRewards();
+  }
+
   const base::Time time = retry_timer_.StartWithPrivacy(
       base::TimeDelta::FromSeconds(kRetryAfterSeconds),
           base::BindOnce(&AdRewards::OnRetry, base::Unretained(this)));
@@ -320,6 +344,10 @@ void AdRewards::Retry() {
 
 void AdRewards::OnRetry() {
   BLOG(1, "Retry reconciling ad rewards");
+
+  if (delegate_) {
+    delegate_->OnDidRetryToReconcileAdRewards();
+  }
 
   Reconcile();
 }

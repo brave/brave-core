@@ -376,7 +376,7 @@ class AdsBox extends React.Component<Props, State> {
     let adsIsSupported = false
     let estimatedPendingRewards = 0
     let nextPaymentDate = ''
-    let adNotificationsReceivedThisMonth = 0
+    let adsReceivedThisMonth = 0
 
     const {
       adsData,
@@ -394,7 +394,7 @@ class AdsBox extends React.Component<Props, State> {
       adsIsSupported = adsData.adsIsSupported
       estimatedPendingRewards = adsData.adsEstimatedPendingRewards || 0
       nextPaymentDate = adsData.adsNextPaymentDate
-      adNotificationsReceivedThisMonth = adsData.adsAdNotificationsReceivedThisMonth || 0
+      adsReceivedThisMonth = adsData.adsReceivedThisMonth || 0
     }
 
     const enabled = adsEnabled && adsIsSupported
@@ -436,7 +436,7 @@ class AdsBox extends React.Component<Props, State> {
           </List>
           <List title={getLocale('adsNotificationsReceived')}>
             <Tokens
-              value={adNotificationsReceivedThisMonth.toString()}
+              value={adsReceivedThisMonth.toString()}
               hideText={true}
             />
           </List>

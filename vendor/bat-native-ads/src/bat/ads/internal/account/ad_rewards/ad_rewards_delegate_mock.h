@@ -23,6 +23,10 @@ class AdRewardsDelegateMock : public AdRewardsDelegate {
   MOCK_METHOD(void, OnDidReconcileAdRewards, ());
 
   MOCK_METHOD(void, OnFailedToReconcileAdRewards, ());
+
+  MOCK_METHOD(void, OnWillRetryToReconcileAdRewards, ());
+
+  MOCK_METHOD(void, OnDidRetryToReconcileAdRewards, ());
 };
 
 }  // namespace ads

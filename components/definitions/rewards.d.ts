@@ -230,7 +230,7 @@ declare namespace Rewards {
     adsIsSupported: boolean
     adsEstimatedPendingRewards: number
     adsNextPaymentDate: string
-    adsAdNotificationsReceivedThisMonth: number
+    adsReceivedThisMonth: number
   }
 
   export enum RewardsType {
