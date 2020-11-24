@@ -27,7 +27,7 @@ UrlRequestPtr GetCatalogUrlRequestBuilder::Build() {
 ///////////////////////////////////////////////////////////////////////////////
 
 std::string GetCatalogUrlRequestBuilder::BuildUrl() const {
-  return base::StringPrintf("%s/v5/catalog", server::GetDomain().c_str());
+  return base::StringPrintf("%s/v5/catalog", server::GetHost().c_str());
 }
 
 }  // namespace ads

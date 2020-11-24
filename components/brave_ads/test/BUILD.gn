@@ -73,6 +73,8 @@ source_set("brave_ads_unit_tests") {
       "//brave/vendor/bat-native-ads/src/bat/ads/internal/privacy/unblinded_tokens/unblinded_tokens_unittest_util.cc",
       "//brave/vendor/bat-native-ads/src/bat/ads/internal/privacy/unblinded_tokens/unblinded_tokens_unittest_util.h",
       "//brave/vendor/bat-native-ads/src/bat/ads/internal/security/security_util_unittest.cc",
+      "//brave/vendor/bat-native-ads/src/bat/ads/internal/server/ads_server_util_unittest.cc",
+      "//brave/vendor/bat-native-ads/src/bat/ads/internal/server/rewards_server_util_unittest.cc",
       "//brave/vendor/bat-native-ads/src/bat/ads/internal/tab_manager/tab_manager_unittest.cc",
       "//brave/vendor/bat-native-ads/src/bat/ads/internal/tokens/redeem_unblinded_payment_tokens/redeem_unblinded_payment_tokens_url_request_builder_unittest.cc",
       "//brave/vendor/bat-native-ads/src/bat/ads/internal/tokens/redeem_unblinded_token/create_confirmation_url_request_builder_unittest.cc",

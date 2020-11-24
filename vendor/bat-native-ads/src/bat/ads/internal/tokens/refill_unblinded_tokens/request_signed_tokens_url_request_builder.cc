@@ -48,7 +48,7 @@ UrlRequestPtr RequestSignedTokensUrlRequestBuilder::Build() {
 
 std::string RequestSignedTokensUrlRequestBuilder::BuildUrl() const {
   return base::StringPrintf("%s/v1/confirmation/token/%s",
-      server::GetDomain().c_str(), wallet_.id.c_str());
+      server::GetHost().c_str(), wallet_.id.c_str());
 }
 
 std::vector<std::string> RequestSignedTokensUrlRequestBuilder::BuildHeaders(

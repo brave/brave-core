@@ -33,7 +33,7 @@ UrlRequestPtr AdGrantsUrlRequestBuilder::Build() {
 
 std::string AdGrantsUrlRequestBuilder::BuildUrl() const {
   return base::StringPrintf("%s/v1/promotions/ads/grants/summary?paymentId=%s",
-      rewards::server::GetDomain().c_str(), wallet_.id.c_str());
+      rewards::server::GetHost().c_str(), wallet_.id.c_str());
 }
 
 }  // namespace ads

@@ -36,7 +36,7 @@ UrlRequestPtr GetSignedTokensUrlRequestBuilder::Build() {
 
 std::string GetSignedTokensUrlRequestBuilder::BuildUrl() const {
   return base::StringPrintf("%s/v1/confirmation/token/%s?nonce=%s",
-      server::GetDomain().c_str(), wallet_.id.c_str(), nonce_.c_str());
+      server::GetHost().c_str(), wallet_.id.c_str(), nonce_.c_str());
 }
 
 }  // namespace ads

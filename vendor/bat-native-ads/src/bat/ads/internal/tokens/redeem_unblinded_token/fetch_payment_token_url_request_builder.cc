@@ -35,7 +35,7 @@ UrlRequestPtr FetchPaymentTokenUrlRequestBuilder::Build() {
 
 std::string FetchPaymentTokenUrlRequestBuilder::BuildUrl() const {
   return base::StringPrintf("%s/v1/confirmation/%s/paymentToken",
-      server::GetDomain().c_str(), confirmation_.id.c_str());
+      server::GetHost().c_str(), confirmation_.id.c_str());
 }
 
 }  // namespace ads
