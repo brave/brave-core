@@ -142,11 +142,6 @@ class BookmarksViewController: SiteTableViewController, ToolbarUrlActionsProtoco
     private func updateLastVisitedFolder(_ folder: Bookmarkv2?) {
         Preferences.Chromium.lastBookmarksFolderNodeId.value = folder?.objectID ?? -1
     }
-    
-    override func navigationShouldPopOnBackButton() -> Bool {
-        updateLastVisitedFolder(currentFolder?.parent)
-        return true
-    }
   
   override func reloadData() {
     
@@ -666,18 +661,5 @@ extension BookmarksViewController {
             guard let importExportButton = self.importExportButton else { return }
             vc.presentOptionsMenu(from: importExportButton, animated: true)
         }
-    }
-}
-
-private extension UIViewController {
-    @objc
-    func navigationShouldPopOnBackButton() -> Bool {
-        return true
-    }
-}
-
-extension UINavigationController: UINavigationBarDelegate {
-    public func navigationBar(_ navigationBar: UINavigationBar, shouldPop item: UINavigationItem) -> Bool {
-        return self.topViewController?.navigationShouldPopOnBackButton() ?? true
     }
 }
