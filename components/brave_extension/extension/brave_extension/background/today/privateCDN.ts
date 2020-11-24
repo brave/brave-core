@@ -8,6 +8,19 @@ export const URLS = {
   braveTodayPublishers: 'https://brave-today-cdn.bravesoftware.com/sources.json'
 }
 
+export async function fetchResource (url: string) {
+  const response = await fetch(url, {
+    // TODO(petemill): strip user-agent when this is possible
+    // https://crbug.com/571722
+    // TODO(petemill): Move this to c++ or a custom c++ privateCDNFetch
+    // API so that we can strip 'dnt' header too.
+    headers: new Headers({
+      'Accept-Language': '*'
+    })
+  })
+  return response
+}
+
 export async function getUnpaddedAsDataUrl (buffer: ArrayBuffer, mimeType = 'image/jpg') {
   const data = new DataView(buffer)
   const contentLength = data.getUint32(

@@ -36,6 +36,8 @@ export type ReadFeedItemPayload = {
 }
 export const readFeedItem = createAction<ReadFeedItemPayload>('readFeedItem')
 
+export const feedItemViewedCountChanged = createAction<number>('feedItemViewedCountChanged')
+
 export type SetPublisherPrefPayload = {
   publisherId: string
   enabled: boolean | null

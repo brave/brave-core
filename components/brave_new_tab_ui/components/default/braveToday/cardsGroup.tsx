@@ -11,7 +11,7 @@ import CardSmall from './cards/_articles/cardArticleMedium'
 import CategoryGroup from './cards/categoryGroup'
 import PublisherGroup from './cards/publisherGroup'
 import CardDeals from './cards/cardDeals'
-import { OnReadFeedItem, OnSetPublisherPref } from './'
+import { attributeNameCardCount, OnReadFeedItem, OnSetPublisherPref } from './'
 
 // Disabled rules because we have a function
 // which returns elements in a switch.
@@ -46,12 +46,16 @@ const RandomContentOrder = [
   CardType.Headline
 ]
 
+export const groupItemCount = PageContentOrder.length + RandomContentOrder.length
+
 type Props = {
   content: BraveToday.Page
   publishers: BraveToday.Publishers
   articleToScrollTo?: BraveToday.FeedItem
+  itemStartingDisplayIndex: number
   onReadFeedItem: OnReadFeedItem
   onSetPublisherPref: OnSetPublisherPref
+  onPeriodicCardViews: (element: HTMLElement | null) => void
 }
 
 type CardProps = Props & {
@@ -124,14 +128,28 @@ export default function CardsGroups (props: Props) {
     { order: PageContentOrder, items: headlines },
     { order: RandomContentOrder, items: randomHeadlines }
   ]
+  let displayIndex = props.itemStartingDisplayIndex
   return <>{groups.flatMap((group, groupIndex) => group.order.map(
-    (cardType, orderIndex) => (
-      <Card
-          key={`${groupIndex}-${orderIndex}`}
-          {...props}
-          cardType={cardType}
-          headlines={group.items}
-        />
-    )
+    (cardType, orderIndex) => {
+      displayIndex++
+      // All buckets are divisible by 4, so we send a ping when we are in
+      // the next bucket. This is to avoid too many redux action firing
+      // on scroll.
+      const shouldTriggerViewCountUpdate = (displayIndex % 4 === 1)
+      return (
+        <React.Fragment
+          key={displayIndex}
+        >
+          <Card
+            {...props}
+            cardType={cardType}
+            headlines={group.items}
+          />
+          {shouldTriggerViewCountUpdate &&
+            <div {...{ [attributeNameCardCount]: displayIndex }} ref={props.onPeriodicCardViews} />
+          }
+        </React.Fragment>
+      )
+    }
   ))}</>
 }

@@ -6,6 +6,8 @@ export default function getTodayState (): BraveTodayState {
     isFetching: boolean('Today is fetching?', false),
     isUpdateAvailable: boolean('Is Today update available?', false),
     currentPageIndex: 10,
+    cardsViewed: 0,
+    cardsVisited: 0,
     publishers: {
       ['5eece347713f329f156cd0204cf9b12629f1dc8f4ea3c1b67984cfbfd66cdca5']: {
         publisher_id: `5eece347713f329f156cd0204cf9b12629f1dc8f4ea3c1b67984cfbfd66cdca5`,
@@ -18,6 +20,55 @@ export default function getTodayState (): BraveTodayState {
         publisher_id: `4eece347713f329f156cd0204cf9b12629f1dc8f4ea3c1b67984cfbfd66cdca5`,
         publisher_name: `Test Publisher 2`,
         category: `Top News`,
+        enabled: false,
+        user_enabled: null
+      },
+      ['a5eece347713f329f156cd0204cf9b12629f1dc8f4ea3c1b67984cfbfd66cdca5']: {
+        publisher_id: `5eece347713f329f156cd0204cf9b12629f1dc8f4ea3c1b67984cfbfd66cdca5`,
+        publisher_name: `Test Publisher 3`,
+        category: `Tech 2`,
+        enabled: false,
+        user_enabled: true
+      },
+      ['b4eece347713f329f156cd0204cf9b12629f1dc8f4ea3c1b67984cfbfd66cdca5']: {
+        publisher_id: `4eece347713f329f156cd0204cf9b12629f1dc8f4ea3c1b67984cfbfd66cdca5`,
+        publisher_name: `Test Publisher 4`,
+        category: `Top News 1`,
+        enabled: false,
+        user_enabled: null
+      },
+      ['c5eece347713f329f156cd0204cf9b12629f1dc8f4ea3c1b67984cfbfd66cdca5']: {
+        publisher_id: `5eece347713f329f156cd0204cf9b12629f1dc8f4ea3c1b67984cfbfd66cdca5`,
+        publisher_name: `Test Publisher 5 has A very very very very very very very very very very very very very very very very very very very very long publisher name`,
+        category: `Tech 2`,
+        enabled: false,
+        user_enabled: true
+      },
+      ['d4eece347713f329f156cd0204cf9b12629f1dc8f4ea3c1b67984cfbfd66cdca5']: {
+        publisher_id: `4eece347713f329f156cd0204cf9b12629f1dc8f4ea3c1b67984cfbfd66cdca5`,
+        publisher_name: `Test Publisher 6`,
+        category: `Top News 2`,
+        enabled: false,
+        user_enabled: null
+      },
+      ['eb4eece347713f329f156cd0204cf9b12629f1dc8f4ea3c1b67984cfbfd66cdca5']: {
+        publisher_id: `4eece347713f329f156cd0204cf9b12629f1dc8f4ea3c1b67984cfbfd66cdca5`,
+        publisher_name: `Test Publisher 7`,
+        category: `Top News 3`,
+        enabled: false,
+        user_enabled: null
+      },
+      ['fc5eece347713f329f156cd0204cf9b12629f1dc8f4ea3c1b67984cfbfd66cdca5']: {
+        publisher_id: `5eece347713f329f156cd0204cf9b12629f1dc8f4ea3c1b67984cfbfd66cdca5`,
+        publisher_name: `Test Publisher 8`,
+        category: `Tech 3`,
+        enabled: false,
+        user_enabled: true
+      },
+      ['gd4eece347713f329f156cd0204cf9b12629f1dc8f4ea3c1b67984cfbfd66cdca5']: {
+        publisher_id: `4eece347713f329f156cd0204cf9b12629f1dc8f4ea3c1b67984cfbfd66cdca5`,
+        publisher_name: `Test Publisher 9`,
+        category: `Top News 4`,
         enabled: false,
         user_enabled: null
       }

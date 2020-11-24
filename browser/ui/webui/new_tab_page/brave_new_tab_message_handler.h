@@ -57,6 +57,11 @@ class BraveNewTabMessageHandler : public content::WebUIMessageHandler,
   void HandleBrandedWallpaperLogoClicked(const base::ListValue* args);
   void HandleGetBrandedWallpaperData(const base::ListValue* args);
   void HandleCustomizeClicked(const base::ListValue* args);
+  // TODO(petemill): Today should get it's own message handler
+  // or service.
+  void HandleTodayInteractionBegin(const base::ListValue* args);
+  void HandleTodayOnCardVisits(const base::ListValue* args);
+  void HandleTodayOnCardViews(const base::ListValue* args);
 
   void OnStatsChanged();
   void OnPreferencesChanged();

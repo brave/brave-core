@@ -6,7 +6,7 @@
 import { isPublisherContentAllowed } from '../../../../../common/braveToday'
 import { getOrFetchData as getOrFetchPublishers, addPublishersChangedListener } from './publishers'
 import feedToData from './feedToData'
-import { URLS } from './privateCDN'
+import { fetchResource, URLS } from './privateCDN'
 
 type RemoteData = BraveToday.FeedItem[]
 
@@ -103,7 +103,7 @@ function performUpdateFeed () {
         // We don't use If-None-Match header because
         // often have to fetch same data and compute feed
         // with different publisher preferences.
-        fetch(feedUrl),
+        fetchResource(feedUrl),
         getOrFetchPublishers()
       ])
       if (feedResponse.ok) {
