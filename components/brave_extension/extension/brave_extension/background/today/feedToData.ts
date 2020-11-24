@@ -5,6 +5,8 @@
 import { formatDistanceToNow } from 'date-fns'
 import hashStrings from '../../../../../common/hashStrings'
 
+const MS_IN_DAY = 24 * 60 * 60 * 1000
+
 function shuffleArray (array: Array<any>) {
   for (let i = array.length - 1; i > 0; i--) {
     const j = Math.floor(Math.random() * (i + 1));
@@ -240,10 +242,13 @@ function domainFromUrlString (urlString: string): string {
 }
 
 async function weightArticles (articles: BraveToday.FeedItem[]): Promise<BraveToday.FeedItem[]> {
-  // hosts from latest max-200 history items
+  // hosts from latest 2 weeks max-2000 history items
   const historyItems: chrome.history.HistoryItem[] = chrome.history
     ? await new Promise(
-        resolve => chrome.history.search({ text: '', maxResults: 200 }, resolve)
+        resolve => chrome.history.search({
+          text: '',
+          startTime: Date.now() - (14 * MS_IN_DAY)
+        }, resolve)
       )
     : []
   const historyHosts: string[] = historyItems.map(h => h.url).filter(i => i).map((u: string) => domainFromUrlString(u))
