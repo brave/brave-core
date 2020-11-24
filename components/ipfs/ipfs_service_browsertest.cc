@@ -320,18 +320,17 @@ IN_PROC_BROWSER_TEST_F(IpfsServiceBrowserTest,
                           base::Unretained(this)));
   SetIPFSDefaultGatewayForTest(GetURL("a.com", "/"));
   ui_test_utils::NavigateToURL(browser(), GetURL("b.com", "/simple.html"));
-  bool as_expected = false;
   content::WebContents* contents =
       browser()->tab_strip_model()->GetActiveWebContents();
-  ASSERT_TRUE(ExecuteScriptAndExtractBool(
-      contents,
-      "fetch('ipfs://"
-      "Qmc2JTQo4iXf24g98otZmGFQq176eQ2Cdbb88qA5ToMEvC/2')"
-      "  .catch((e) => {"
-      "        window.domAutomationController.send(true);"
-      "  });",
-      &as_expected));
-  ASSERT_TRUE(as_expected);
+  auto error_caught =
+      EvalJsWithManualReply(contents,
+                            "fetch('ipfs://"
+                            "Qmc2JTQo4iXf24g98otZmGFQq176eQ2Cdbb88qA5ToMEvC/2')"
+                            "  .catch((e) => {"
+                            "        window.domAutomationController.send(true);"
+                            "  });");
+  ASSERT_TRUE(error_caught.error.empty());
+  EXPECT_EQ(base::Value(true), error_caught.value);
 }
 
 // Make sure an window.fetch works within the ipfs:// scheme
@@ -342,10 +341,9 @@ IN_PROC_BROWSER_TEST_F(IpfsServiceBrowserTest, CanFetchIPFSResourcesFromIPFS) {
   SetIPFSDefaultGatewayForTest(GetURL("dweb.link", "/"));
   GURL url("ipfs://Qmc2JTQo4iXf24g98otZmGFQq176eQ2Cdbb88qA5ToMEvC");
   ui_test_utils::NavigateToURL(browser(), url);
-  bool as_expected = false;
   content::WebContents* contents =
       browser()->tab_strip_model()->GetActiveWebContents();
-  ASSERT_TRUE(ExecuteScriptAndExtractBool(
+  auto got_fetch = EvalJsWithManualReply(
       contents,
       "fetch('ipfs://"
       "Qmc2JTQo4iXf24g98otZmGFQq176eQ2Cdbb88qA5ToMEvC/2')"
@@ -354,9 +352,9 @@ IN_PROC_BROWSER_TEST_F(IpfsServiceBrowserTest, CanFetchIPFSResourcesFromIPFS) {
       "        const result = response_text == 'simple content 2';"
       "        window.domAutomationController.send(result);"
       "      })})"
-      ".catch((x) => console.log('error: ' + x));",
-      &as_expected));
-  ASSERT_TRUE(as_expected);
+      ".catch((x) => console.log('error: ' + x));");
+  ASSERT_TRUE(got_fetch.error.empty());
+  EXPECT_EQ(base::Value(true), got_fetch.value);
 }
 
 // Make sure an <iframe src="ipfs://..."> cannot load within http:// scheme
@@ -369,18 +367,18 @@ IN_PROC_BROWSER_TEST_F(IpfsServiceBrowserTest, CannotLoadIframeFromHTTP) {
   content::WebContents* contents =
       browser()->tab_strip_model()->GetActiveWebContents();
 
-  std::string location;
-  ASSERT_TRUE(ExecuteScriptAndExtractString(
-      ChildFrameAt(contents->GetMainFrame(), 0),
+  auto* child_frame = ChildFrameAt(contents->GetMainFrame(), 0);
+  auto location = EvalJsWithManualReply(
+      child_frame,
       "const timer = setInterval(function () {"
       "  if (document.readyState == 'complete') {"
       "    clearInterval(timer);"
       "    window.domAutomationController.send(window.location.href);"
       "  }"
-      "}, 100);",
-      &location));
+      "}, 100);");
 
-  ASSERT_EQ(location, "chrome-error://chromewebdata/");
+  ASSERT_TRUE(location.error.empty());
+  EXPECT_EQ(base::Value("chrome-error://chromewebdata/"), location.value);
 }
 
 // Make sure an <iframe src="ipfs://..."> can load within another ipfs:// scheme
@@ -391,10 +389,9 @@ IN_PROC_BROWSER_TEST_F(IpfsServiceBrowserTest, CanLoadIFrameFromIPFS) {
   SetIPFSDefaultGatewayForTest(GetURL("b.com", "/"));
   ui_test_utils::NavigateToURL(
       browser(), GURL("ipfs://Qmc2JTQo4iXf24g98otZmGFQq176eQ2Cdbb88qA5ToMEvC"));
-  std::string location;
   content::WebContents* contents =
       browser()->tab_strip_model()->GetActiveWebContents();
-  ASSERT_TRUE(ExecuteScriptAndExtractString(
+  auto result = EvalJsWithManualReply(
       contents,
       "const iframe = document.createElement('iframe');"
       "iframe.src ="
@@ -407,14 +404,14 @@ IN_PROC_BROWSER_TEST_F(IpfsServiceBrowserTest, CanLoadIFrameFromIPFS) {
       "    clearInterval(timer);"
       "    window.domAutomationController.send(window.location.href);"
       "  }"
-      "}, 100);",
-      &location));
+      "}, 100);");
+  ASSERT_TRUE(result.error.empty());
   // Make sure main frame URL didn't change
-  ASSERT_EQ(
+  EXPECT_EQ(
       contents->GetURL(),
       ipfs::GetIPFSGatewayURL("Qmc2JTQo4iXf24g98otZmGFQq176eQ2Cdbb88qA5ToMEvC",
                               "simple_content", GetDefaultIPFSGateway()));
-  ASSERT_EQ(
+  EXPECT_EQ(
       ChildFrameAt(contents->GetMainFrame(), 0)->GetLastCommittedURL(),
       ipfs::GetIPFSGatewayURL("Qmc2JTQo4iXf24g98otZmGFQq176eQ2Cdbb88qA5ToMEvC",
                               "simple_content_2", GetDefaultIPFSGateway()));
@@ -428,10 +425,9 @@ IN_PROC_BROWSER_TEST_F(IpfsServiceBrowserTest, CanLoadIPFSImageFromIPFS) {
   SetIPFSDefaultGatewayForTest(GetURL("b.com", "/"));
   ui_test_utils::NavigateToURL(
       browser(), GURL("ipfs://Qmc2JTQo4iXf24g98otZmGFQq176eQ2Cdbb88qA5ToMEvC"));
-  bool loaded;
   content::WebContents* contents =
       browser()->tab_strip_model()->GetActiveWebContents();
-  ASSERT_TRUE(ExecuteScriptAndExtractBool(
+  auto loaded = EvalJsWithManualReply(
       contents,
       "let img = document.createElement('img');"
       "img.src ="
@@ -441,9 +437,9 @@ IN_PROC_BROWSER_TEST_F(IpfsServiceBrowserTest, CanLoadIPFSImageFromIPFS) {
       "};"
       "img.onerror = function() {"
       "  window.domAutomationController.send(true);"
-      "};",
-      &loaded));
-  ASSERT_TRUE(loaded);
+      "};");
+  ASSERT_TRUE(loaded.error.empty());
+  EXPECT_EQ(base::Value(true), loaded.value);
 }
 
 // Make sure an <img src="ipfs://..."> cannot load within the http scheme
@@ -453,10 +449,9 @@ IN_PROC_BROWSER_TEST_F(IpfsServiceBrowserTest, CannotLoadIPFSImageFromHTTP) {
                           base::Unretained(this)));
   SetIPFSDefaultGatewayForTest(GetURL("b.com", "/"));
   ui_test_utils::NavigateToURL(browser(), GetURL("b.com", "/simple.html"));
-  bool loaded;
   content::WebContents* contents =
       browser()->tab_strip_model()->GetActiveWebContents();
-  ASSERT_TRUE(ExecuteScriptAndExtractBool(
+  auto loaded = EvalJsWithManualReply(
       contents,
       "let img = document.createElement('img');"
       "img.src ="
@@ -466,9 +461,9 @@ IN_PROC_BROWSER_TEST_F(IpfsServiceBrowserTest, CannotLoadIPFSImageFromHTTP) {
       "};"
       "img.onerror = function() {"
       "  window.domAutomationController.send(true);"
-      "};",
-      &loaded));
-  ASSERT_TRUE(loaded);
+      "};");
+  ASSERT_TRUE(loaded.error.empty());
+  EXPECT_EQ(base::Value(true), loaded.value);
 }
 
 }  // namespace ipfs
