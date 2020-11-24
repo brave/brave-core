@@ -15,7 +15,7 @@
 #include "base/strings/string_split.h"
 #include "base/strings/stringprintf.h"
 #include "base/memory/weak_ptr.h"
-#include "base/test/bind_test_util.h"
+#include "base/test/bind.h"
 #include "bat/ledger/ledger.h"
 #include "brave/common/brave_paths.h"
 #include "brave/browser/brave_rewards/rewards_service_factory.h"

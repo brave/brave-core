@@ -5,7 +5,7 @@
 
 #include <string>
 
-#include "base/test/bind_test_util.h"
+#include "base/test/bind.h"
 #include "brave/browser/extensions/api/brave_action_api.h"
 #include "brave/browser/ui/views/brave_actions/brave_actions_container.h"
 #include "brave/browser/ui/views/location_bar/brave_location_bar_view.h"

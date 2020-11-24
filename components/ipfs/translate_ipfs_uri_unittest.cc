@@ -8,7 +8,7 @@
 #include <memory>
 #include <vector>
 
-#include "base/test/bind_test_util.h"
+#include "base/test/bind.h"
 #include "brave/browser/ipfs/ipfs_service_factory.h"
 #include "brave/components/ipfs/ipfs_constants.h"
 #include "brave/components/ipfs/ipfs_service.h"
