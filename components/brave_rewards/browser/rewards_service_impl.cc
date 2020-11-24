@@ -1640,8 +1640,7 @@ void RewardsServiceImpl::SetAutoContributeEnabled(bool enabled) {
 }
 
 bool RewardsServiceImpl::ShouldShowOnboarding() const {
-  PrefService* prefs = profile_->GetPrefs();
-  const base::Time onboard_time = prefs->GetTime(prefs::kOnboarded);
+  const bool legacy_enabled = profile_->GetPrefs()->GetBoolean(prefs::kEnabled);
 
   bool ads_enabled = false;
   bool ads_supported = true;
@@ -1651,7 +1650,7 @@ bool RewardsServiceImpl::ShouldShowOnboarding() const {
     ads_supported = ads_service->IsSupportedLocale();
   }
 
-  return onboard_time.is_null() && !ads_enabled && ads_supported;
+  return !legacy_enabled && !ads_enabled && ads_supported;
 }
 
 void RewardsServiceImpl::SaveOnboardingResult(OnboardingResult result) {

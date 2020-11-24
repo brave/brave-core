@@ -4,9 +4,13 @@
 
 import { Reducer } from 'redux'
 
+import { OnboardingCompletedStore } from '../../shared/lib/onboarding_completed_store'
+
 // Constant
 import { types } from '../constants/rewards_types'
 import { defaultState } from '../storage'
+
+const onboardingCompletedStore = new OnboardingCompletedStore()
 
 const rewardsReducer: Reducer<Rewards.State | undefined> = (state: Rewards.State, action) => {
   if (!state) {
@@ -439,15 +443,17 @@ const rewardsReducer: Reducer<Rewards.State | undefined> = (state: Rewards.State
       break
     }
     case types.ON_ONBOARDING_STATUS: {
+      const completed = onboardingCompletedStore.load()
       state = {
         ...state,
-        showOnboarding: action.payload.showOnboarding
+        showOnboarding: action.payload.showOnboarding && !completed
       }
       break
     }
     case types.SAVE_ONBOARDING_RESULT: {
       chrome.send('brave_rewards.saveOnboardingResult', [action.payload.result])
       chrome.send('brave_rewards.getAutoContributeProperties')
+      onboardingCompletedStore.save()
       state = {
         ...state,
         showOnboarding: false
