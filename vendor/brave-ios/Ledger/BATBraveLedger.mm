@@ -12,6 +12,7 @@
 
 #import "BATBraveLedger.h"
 #import "BATBraveAds.h"
+#import "BATBraveAds+Private.h"
 #import "BATCommonOperations.h"
 #import "NSURL+Extensions.h"
 
@@ -1218,23 +1219,9 @@ BATLedgerReadonlyBridge(BOOL, isWalletCreated, IsWalletCreated)
 
 #pragma mark - Preferences
 
-BATLedgerReadonlyBridge(BOOL, isEnabled, GetRewardsMainEnabled)
-
-- (void)setEnabled:(BOOL)enabled
-{
-  ledger->SetRewardsMainEnabled(enabled);
-  if (enabled) {
-    [self.ads initializeIfAdsEnabled];
-  } else {
-    [self.ads shutdown];
-  }
-
-  for (BATBraveLedgerObserver *observer in [self.observers copy]) {
-    if (observer.rewardsEnabledStateUpdated) {
-      observer.rewardsEnabledStateUpdated(enabled);
-    }
-  }
-}
+BATLedgerBridge(BOOL,
+                isEnabled, setEnabled,
+                GetRewardsMainEnabled, SetRewardsMainEnabled)
 
 BATLedgerBridge(int,
                 minimumVisitDuration, setMinimumVisitDuration,
