@@ -48,12 +48,17 @@ void RedeemUnblindedPaymentTokens::set_delegate(
 
 void RedeemUnblindedPaymentTokens::MaybeRedeemAfterDelay(
     const WalletInfo& wallet) {
-  if (is_processing_ || retry_timer_.IsRunning()) {
+  if (is_processing_ || timer_.IsRunning() || retry_timer_.IsRunning()) {
     return;
   }
 
   if (!wallet.IsValid()) {
     BLOG(0, "Failed to redeem unblinded payment tokens due to invalid wallet");
+
+    if (delegate_) {
+      delegate_->OnFailedToRedeemUnblindedPaymentTokens();
+    }
+
     return;
   }
 
@@ -77,6 +82,7 @@ void RedeemUnblindedPaymentTokens::Redeem() {
 
   if (ConfirmationsState::Get()->get_unblinded_payment_tokens()->IsEmpty()) {
     BLOG(1, "No unblinded payment tokens to redeem");
+
     ScheduleNextTokenRedemption();
     return;
   }
@@ -106,28 +112,17 @@ void RedeemUnblindedPaymentTokens::OnRedeem(
   BLOG(6, UrlResponseToString(url_response));
   BLOG(7, UrlResponseHeadersToString(url_response));
 
-  is_processing_ = false;
-
   if (url_response.status_code != net::HTTP_OK) {
     BLOG(1, "Failed to redeem unblinded payment tokens");
-    OnRedeemUnblindedPaymentTokens(FAILED);
+    OnFailedToRedeemUnblindedPaymentTokens();
     return;
   }
 
-  OnRedeemUnblindedPaymentTokens(SUCCESS);
+  OnDidRedeemUnblindedPaymentTokens();
 }
 
-void RedeemUnblindedPaymentTokens::OnRedeemUnblindedPaymentTokens(
-    const Result result) {
-  if (result != SUCCESS) {
-    if (delegate_) {
-      delegate_->OnFailedToRedeemUnblindedPaymentTokens();
-    }
-
-    Retry();
-
-    return;
-  }
+void RedeemUnblindedPaymentTokens::OnDidRedeemUnblindedPaymentTokens() {
+  is_processing_ = false;
 
   retry_timer_.Stop();
 
@@ -138,6 +133,14 @@ void RedeemUnblindedPaymentTokens::OnRedeemUnblindedPaymentTokens(
   ScheduleNextTokenRedemption();
 }
 
+void RedeemUnblindedPaymentTokens::OnFailedToRedeemUnblindedPaymentTokens() {
+  if (delegate_) {
+    delegate_->OnFailedToRedeemUnblindedPaymentTokens();
+  }
+
+  Retry();
+}
+
 void RedeemUnblindedPaymentTokens::ScheduleNextTokenRedemption() {
   const base::Time next_token_redemption_date =
       CalculateNextTokenRedemptionDate();
@@ -146,10 +149,19 @@ void RedeemUnblindedPaymentTokens::ScheduleNextTokenRedemption() {
       next_token_redemption_date);
   ConfirmationsState::Get()->Save();
 
+  if (delegate_) {
+    delegate_->OnDidScheduleNextUnblindedPaymentTokensRedemption(
+        next_token_redemption_date);
+  }
+
   MaybeRedeemAfterDelay(wallet_);
 }
 
 void RedeemUnblindedPaymentTokens::Retry() {
+  if (delegate_) {
+    delegate_->OnWillRetryRedeemingUnblindedPaymentTokens();
+  }
+
   const base::Time time = retry_timer_.StartWithPrivacy(
       base::TimeDelta::FromSeconds(kRetryAfterSeconds),
           base::BindOnce(&RedeemUnblindedPaymentTokens::OnRetry,
@@ -163,6 +175,8 @@ void RedeemUnblindedPaymentTokens::OnRetry() {
   if (delegate_) {
     delegate_->OnDidRetryRedeemingUnblindedPaymentTokens();
   }
+
+  is_processing_ = false;
 
   Redeem();
 }

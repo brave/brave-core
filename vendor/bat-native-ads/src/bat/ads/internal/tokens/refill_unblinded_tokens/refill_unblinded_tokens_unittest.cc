@@ -19,6 +19,7 @@
 // npm run test -- brave_unit_tests --filter=BatAds*
 
 using ::testing::_;
+using ::testing::InSequence;
 using ::testing::NiceMock;
 using ::testing::Return;
 
@@ -435,8 +436,7 @@ TEST_F(BatAdsRefillUnblindedTokensTest,
   ConfirmationsState::Get()->set_catalog_issuers(catalog_issuers);
 
   // Act
-  EXPECT_CALL(*refill_unblinded_tokens_delegate_mock_,
-      OnDidRefillUnblindedTokens()).Times(1);
+  InSequence seq;
 
   EXPECT_CALL(*refill_unblinded_tokens_delegate_mock_,
       OnFailedToRefillUnblindedTokens()).Times(1);
@@ -446,6 +446,9 @@ TEST_F(BatAdsRefillUnblindedTokensTest,
 
   EXPECT_CALL(*refill_unblinded_tokens_delegate_mock_,
       OnDidRetryRefillingUnblindedTokens()).Times(1);
+
+  EXPECT_CALL(*refill_unblinded_tokens_delegate_mock_,
+      OnDidRefillUnblindedTokens()).Times(1);
 
   const WalletInfo wallet = GetWallet();
   refill_unblinded_tokens_->MaybeRefill(wallet);
@@ -601,8 +604,7 @@ TEST_F(BatAdsRefillUnblindedTokensTest,
   ConfirmationsState::Get()->set_catalog_issuers(catalog_issuers);
 
   // Act
-  EXPECT_CALL(*refill_unblinded_tokens_delegate_mock_,
-      OnDidRefillUnblindedTokens()).Times(1);
+  InSequence seq;
 
   EXPECT_CALL(*refill_unblinded_tokens_delegate_mock_,
       OnFailedToRefillUnblindedTokens()).Times(1);
@@ -612,6 +614,9 @@ TEST_F(BatAdsRefillUnblindedTokensTest,
 
   EXPECT_CALL(*refill_unblinded_tokens_delegate_mock_,
       OnDidRetryRefillingUnblindedTokens()).Times(1);
+
+  EXPECT_CALL(*refill_unblinded_tokens_delegate_mock_,
+      OnDidRefillUnblindedTokens()).Times(1);
 
   const WalletInfo wallet = GetWallet();
   refill_unblinded_tokens_->MaybeRefill(wallet);

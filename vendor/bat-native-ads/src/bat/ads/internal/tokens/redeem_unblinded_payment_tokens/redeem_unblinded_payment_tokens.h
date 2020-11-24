@@ -12,7 +12,6 @@
 #include "bat/ads/internal/timer.h"
 #include "bat/ads/internal/tokens/redeem_unblinded_payment_tokens/redeem_unblinded_payment_tokens_delegate.h"
 #include "bat/ads/mojom.h"
-#include "bat/ads/result.h"
 
 namespace ads {
 
@@ -37,8 +36,9 @@ class RedeemUnblindedPaymentTokens {
   void OnRedeem(
       const UrlResponse& url_response);
 
-  void OnRedeemUnblindedPaymentTokens(
-      const Result result);
+  void OnDidRedeemUnblindedPaymentTokens();
+
+  void OnFailedToRedeemUnblindedPaymentTokens();
 
   void ScheduleNextTokenRedemption();
 
