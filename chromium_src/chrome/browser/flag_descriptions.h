@@ -17,8 +17,6 @@ extern const char kBraveNTPBrandedWallpaperDemoName[];
 extern const char kBraveNTPBrandedWallpaperDemoDescription[];
 extern const char kBraveAdblockCosmeticFilteringName[];
 extern const char kBraveAdblockCosmeticFilteringDescription[];
-extern const char kGlobalPrivacyControlName[];
-extern const char kGlobalPrivacyControlDescription[];
 extern const char kBraveSpeedreaderName[];
 extern const char kBraveSpeedreaderDescription[];
 extern const char kBraveSyncName[];

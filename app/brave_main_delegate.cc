@@ -17,14 +17,12 @@
 #include "brave/app/brave_command_line_helper.h"
 #include "brave/browser/brave_content_browser_client.h"
 #include "brave/common/brave_switches.h"
-#include "brave/common/brave_features.h"
 #include "brave/common/resource_bundle_helper.h"
 #include "brave/components/brave_ads/browser/buildflags/buildflags.h"
 #include "brave/renderer/brave_content_renderer_client.h"
 #include "brave/utility/brave_content_utility_client.h"
 #include "build/build_config.h"
 #include "chrome/browser/ui/ui_features.h"
-#include "chrome/common/channel_info.h"
 #include "chrome/common/chrome_features.h"
 #include "chrome/common/chrome_paths.h"
 #include "chrome/common/chrome_paths_internal.h"
@@ -42,7 +40,6 @@
 #include "components/sync/base/sync_base_switches.h"
 #include "components/translate/core/browser/translate_prefs.h"
 #include "components/variations/variations_switches.h"
-#include "components/version_info/channel.h"
 #include "content/public/common/content_features.h"
 #include "content/public/common/content_switches.h"
 #include "google_apis/gaia/gaia_switches.h"
@@ -216,10 +213,6 @@ bool BraveMainDelegate::BasicStartupComplete(int* exit_code) {
       features::kWinrtGeolocationImplementation.name,
 #endif
   };
-
-  if (chrome::GetChannel() == version_info::Channel::CANARY) {
-    enabled_features.insert(features::kGlobalPrivacyControl.name);
-  }
 
   // Disabled features.
   std::unordered_set<const char*> disabled_features = {
