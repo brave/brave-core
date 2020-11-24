@@ -80,10 +80,11 @@ const test = (suite, buildConfig = config.defaultBuildConfig, options) => {
         braveArgs.splice(braveArgs.indexOf('--gtest_output=xml:' + options.output, 1))
         braveArgs.push(`--gtest_output=xml:${testSuite}.xml`)
       }
-      assert(
-          config.targetArch === 'x86' ||
-              options.manual_android_test_device,
-          'Only x86 build can be run automatically. For other builds please run test device manually and specify manual_android_test_device flag.')
+      if (config.targetOS === 'android') {
+        assert(
+            config.targetArch === 'x86' || options.manual_android_test_device,
+            'Only x86 build can be run automatically. For other builds please run test device manually and specify manual_android_test_device flag.')
+      }
       if (config.targetOS === 'android' && !options.manual_android_test_device) {
         // Specify emulator to run tests on
         braveArgs.push(`--avd-config tools/android/avd/proto/generic_android28.textpb`)
