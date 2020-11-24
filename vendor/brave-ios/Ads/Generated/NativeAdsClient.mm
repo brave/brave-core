@@ -23,10 +23,6 @@ bool NativeAdsClient::IsForeground() const {
   return [bridge_ isForeground];
 }
 
-bool NativeAdsClient::CanShowBackgroundNotifications() const {
-    return [bridge_ canShowBackgroundNotifications];
-}
-
 void NativeAdsClient::ShowNotification(const ads::AdNotificationInfo & info) {
   [bridge_ showNotification:info];
 }

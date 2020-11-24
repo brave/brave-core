@@ -506,8 +506,7 @@ void AdsImpl::MaybeServeAdNotificationsAtRegularIntervals() {
     return;
   }
 
-  if (TabManager::Get()->IsForegrounded() ||
-      AdsClientHelper::Get()->CanShowBackgroundNotifications()) {
+  if (TabManager::Get()->IsForegrounded()) {
     ad_notification_serving_->ServeAtRegularIntervals();
   } else {
     ad_notification_serving_->StopServing();

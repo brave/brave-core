@@ -36,6 +36,17 @@ AdsService* AdsServiceFactory::GetForProfile(
 }
 
 // static
+AdsServiceImpl* AdsServiceFactory::GetImplForProfile(
+    Profile* profile) {
+  if (!brave::IsRegularProfile(profile)) {
+    return nullptr;
+  }
+
+  return static_cast<AdsServiceImpl*>(
+      GetInstance()->GetServiceForBrowserContext(profile, true));
+}
+
+// static
 AdsServiceFactory* AdsServiceFactory::GetInstance() {
   return base::Singleton<AdsServiceFactory>::get();
 }

@@ -82,7 +82,6 @@ class BraveBrowserProcessImpl : public BrowserProcessImpl {
   // BrowserProcess implementation.
 
   ProfileManager* profile_manager() override;
-  NotificationPlatformBridge* notification_platform_bridge() override;
 
   void StartBraveServices();
   brave_shields::AdBlockService* ad_block_service();
@@ -124,7 +123,6 @@ class BraveBrowserProcessImpl : public BrowserProcessImpl {
   void Init() override;
 
   void CreateProfileManager();
-  void CreateNotificationPlatformBridge();
 
 #if BUILDFLAG(ENABLE_TOR)
   void OnTorEnabledChanged();

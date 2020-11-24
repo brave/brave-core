@@ -50,8 +50,6 @@ class NotificationHelperWin
   bool ShouldShowNotifications() override;
 
   bool ShowMyFirstAdNotification() override;
-
-  bool CanShowBackgroundNotifications() const override;
 };
 
 }  // namespace brave_ads
