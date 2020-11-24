@@ -17,6 +17,7 @@ source_set("browser") {
 
   deps = [
     "//base",
+    "//content",
     "//content/public/browser",
     "//brave/ui/webui/resources",
     "//ui/base",

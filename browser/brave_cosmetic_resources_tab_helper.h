@@ -33,9 +33,6 @@ class BraveCosmeticResourcesTabHelper
       content::RenderFrameHost* render_frame_host,
       const content::GlobalRequestID& request_id,
       const blink::mojom::ResourceLoadInfo& resource_load_info) override;
-  bool OnMessageReceived(const IPC::Message& message,
-      content::RenderFrameHost* render_frame_host) override;
-  bool OnMessageReceived(const IPC::Message& message) override;
   //
 
   // content::CosmeticFiltersObserver overrides:
@@ -50,8 +47,6 @@ class BraveCosmeticResourcesTabHelper
   void ProcessURL(content::RenderFrameHost* render_frame_host, const GURL& url,
       const bool& main_frame);
 
-  std::unique_ptr<base::ListValue> GetUrlCosmeticResourcesOnTaskRunner(
-      const std::string& url);
   void GetUrlCosmeticResourcesOnUI(content::GlobalFrameRoutingId frame_id,
       const std::string& url, bool main_frame,
       std::unique_ptr<base::ListValue> resources);
@@ -59,9 +54,6 @@ class BraveCosmeticResourcesTabHelper
       base::DictionaryValue* resources_dict,
       content::GlobalFrameRoutingId frame_id);
 
-  std::unique_ptr<base::ListValue> GetHiddenClassIdSelectorsOnTaskRunner(
-      const std::vector<std::string>& classes,
-      const std::vector<std::string>& ids);
   void GetHiddenClassIdSelectorsOnUI(
       content::GlobalFrameRoutingId frame_id,
       std::unique_ptr<base::ListValue> selectors);

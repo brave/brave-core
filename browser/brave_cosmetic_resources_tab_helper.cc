@@ -57,25 +57,8 @@ std::string LoadDataResource(const int& id) {
   return data_resource;
 }
 
-}  // namespace
-
-
-BraveCosmeticResourcesTabHelper::BraveCosmeticResourcesTabHelper(
-    content::WebContents* contents)
-    : WebContentsObserver(contents),
-    enabled_1st_party_cf_filtering_(false) {
-  if (BraveCosmeticResourcesTabHelper::observing_script_->empty()) {
-    *BraveCosmeticResourcesTabHelper::observing_script_ =
-        LoadDataResource(IDR_COSMETIC_FILTERS_SCRIPT);
-  }
-}
-
-BraveCosmeticResourcesTabHelper::~BraveCosmeticResourcesTabHelper() {
-}
-
-std::unique_ptr<base::ListValue>
-    BraveCosmeticResourcesTabHelper::GetUrlCosmeticResourcesOnTaskRunner(
-        const std::string& url) {
+std::unique_ptr<base::ListValue> GetUrlCosmeticResourcesOnTaskRunner(
+    const std::string& url) {
   auto result_list = std::make_unique<base::ListValue>();
 
   base::Optional<base::Value> resources = g_brave_browser_process->
@@ -104,6 +87,59 @@ std::unique_ptr<base::ListValue>
   result_list->Append(std::move(*resources));
 
   return result_list;
+}
+
+std::unique_ptr<base::ListValue> GetHiddenClassIdSelectorsOnTaskRunner(
+    const std::vector<std::string>& classes,
+    const std::vector<std::string>& ids,
+    const std::vector<std::string>& exceptions) {
+  base::Optional<base::Value> hide_selectors = g_brave_browser_process->
+      ad_block_service()->HiddenClassIdSelectors(classes, ids, exceptions);
+
+  base::Optional<base::Value> regional_selectors = g_brave_browser_process->
+      ad_block_regional_service_manager()->
+          HiddenClassIdSelectors(classes, ids, exceptions);
+
+  base::Optional<base::Value> custom_selectors = g_brave_browser_process->
+      ad_block_custom_filters_service()->
+          HiddenClassIdSelectors(classes, ids, exceptions);
+
+  if (hide_selectors && hide_selectors->is_list()) {
+    if (regional_selectors && regional_selectors->is_list()) {
+      for (auto i = regional_selectors->GetList().begin();
+          i < regional_selectors->GetList().end(); i++) {
+        hide_selectors->Append(std::move(*i));
+      }
+    }
+  } else {
+    hide_selectors = std::move(regional_selectors);
+  }
+
+  auto result_list = std::make_unique<base::ListValue>();
+  if (hide_selectors && hide_selectors->is_list()) {
+    result_list->Append(std::move(*hide_selectors));
+  }
+  if (custom_selectors && custom_selectors->is_list()) {
+    result_list->Append(std::move(*custom_selectors));
+  }
+
+  return result_list;
+}
+
+}  // namespace
+
+
+BraveCosmeticResourcesTabHelper::BraveCosmeticResourcesTabHelper(
+    content::WebContents* contents)
+    : WebContentsObserver(contents),
+    enabled_1st_party_cf_filtering_(false) {
+  if (BraveCosmeticResourcesTabHelper::observing_script_->empty()) {
+    *BraveCosmeticResourcesTabHelper::observing_script_ =
+        LoadDataResource(IDR_COSMETIC_FILTERS_SCRIPT);
+  }
+}
+
+BraveCosmeticResourcesTabHelper::~BraveCosmeticResourcesTabHelper() {
 }
 
 void BraveCosmeticResourcesTabHelper::GetUrlCosmeticResourcesOnUI(
@@ -239,43 +275,6 @@ void BraveCosmeticResourcesTabHelper::CSSRulesRoutine(
   //
 }
 
-std::unique_ptr<base::ListValue>
-    BraveCosmeticResourcesTabHelper::GetHiddenClassIdSelectorsOnTaskRunner(
-        const std::vector<std::string>& classes,
-        const std::vector<std::string>& ids) {
-  base::Optional<base::Value> hide_selectors = g_brave_browser_process->
-      ad_block_service()->HiddenClassIdSelectors(classes, ids, exceptions_);
-
-  base::Optional<base::Value> regional_selectors = g_brave_browser_process->
-      ad_block_regional_service_manager()->
-          HiddenClassIdSelectors(classes, ids, exceptions_);
-
-  base::Optional<base::Value> custom_selectors = g_brave_browser_process->
-      ad_block_custom_filters_service()->
-          HiddenClassIdSelectors(classes, ids, exceptions_);
-
-  if (hide_selectors && hide_selectors->is_list()) {
-    if (regional_selectors && regional_selectors->is_list()) {
-      for (auto i = regional_selectors->GetList().begin();
-          i < regional_selectors->GetList().end(); i++) {
-        hide_selectors->Append(std::move(*i));
-      }
-    }
-  } else {
-    hide_selectors = std::move(regional_selectors);
-  }
-
-  auto result_list = std::make_unique<base::ListValue>();
-  if (hide_selectors && hide_selectors->is_list()) {
-    result_list->Append(std::move(*hide_selectors));
-  }
-  if (custom_selectors && custom_selectors->is_list()) {
-    result_list->Append(std::move(*custom_selectors));
-  }
-
-  return result_list;
-}
-
 void BraveCosmeticResourcesTabHelper::GetHiddenClassIdSelectorsOnUI(
     content::GlobalFrameRoutingId frame_id,
     std::unique_ptr<base::ListValue> selectors) {
@@ -333,11 +332,10 @@ void BraveCosmeticResourcesTabHelper::ProcessURL(
   }
   g_brave_browser_process->ad_block_service()->GetTaskRunner()->
       PostTaskAndReplyWithResult(FROM_HERE,
-          base::BindOnce(&BraveCosmeticResourcesTabHelper::
-            GetUrlCosmeticResourcesOnTaskRunner, base::Unretained(this),
+          base::BindOnce(GetUrlCosmeticResourcesOnTaskRunner,
             url.spec()),
           base::BindOnce(&BraveCosmeticResourcesTabHelper::
-            GetUrlCosmeticResourcesOnUI, base::Unretained(this),
+            GetUrlCosmeticResourcesOnUI, AsWeakPtr(),
             content::GlobalFrameRoutingId(
                   render_frame_host->GetProcess()->GetID(),
                   render_frame_host->GetRoutingID()),
@@ -365,29 +363,17 @@ void BraveCosmeticResourcesTabHelper::ResourceLoadComplete(
   ProcessURL(render_frame_host, resource_load_info.final_url, false);
 }
 
-bool BraveCosmeticResourcesTabHelper::OnMessageReceived(
-    const IPC::Message& message,
-    content::RenderFrameHost* render_frame_host) {
-  return false;
-}
-
-bool BraveCosmeticResourcesTabHelper::OnMessageReceived(
-    const IPC::Message& message) {
-  return false;
-}
-
 void BraveCosmeticResourcesTabHelper::HiddenClassIdSelectors(
     content::RenderFrameHost* render_frame_host,
     const std::vector<std::string>& classes,
     const std::vector<std::string>& ids) {
   g_brave_browser_process->ad_block_service()->GetTaskRunner()->
       PostTaskAndReplyWithResult(FROM_HERE,
+          base::BindOnce(&GetHiddenClassIdSelectorsOnTaskRunner, classes, ids,
+              exceptions_),
           base::BindOnce(&BraveCosmeticResourcesTabHelper::
-            GetHiddenClassIdSelectorsOnTaskRunner, base::Unretained(this),
-            classes, ids),
-          base::BindOnce(&BraveCosmeticResourcesTabHelper::
-            GetHiddenClassIdSelectorsOnUI, base::Unretained(this),
-            content::GlobalFrameRoutingId(
+              GetHiddenClassIdSelectorsOnUI, AsWeakPtr(),
+              content::GlobalFrameRoutingId(
                   render_frame_host->GetProcess()->GetID(),
                   render_frame_host->GetRoutingID())));
 }
