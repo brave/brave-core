@@ -18,7 +18,6 @@
 #include "bat/ads/internal/ad_targeting/behavioral/purchase_intent_classifier/purchase_intent_classifier_user_models.h"
 #include "bat/ads/internal/ad_targeting/behavioral/purchase_intent_classifier/purchase_intent_classifier_util.h"
 #include "bat/ads/internal/ads_client_helper.h"
-#include "bat/ads/internal/ads_impl.h"
 #include "bat/ads/internal/client/client.h"
 #include "bat/ads/internal/logging.h"
 #include "bat/ads/internal/url_util.h"

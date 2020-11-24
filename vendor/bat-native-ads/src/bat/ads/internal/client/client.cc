@@ -11,7 +11,6 @@
 #include "bat/ads/ad_content_info.h"
 #include "bat/ads/ad_history_info.h"
 #include "bat/ads/category_content_info.h"
-#include "bat/ads/internal/ads_impl.h"
 #include "bat/ads/internal/ads_client_helper.h"
 #include "bat/ads/internal/features/features.h"
 #include "bat/ads/internal/logging.h"

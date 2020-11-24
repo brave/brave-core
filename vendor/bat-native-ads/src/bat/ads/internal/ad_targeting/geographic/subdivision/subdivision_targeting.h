@@ -14,8 +14,6 @@
 
 namespace ads {
 
-class AdsImpl;
-
 namespace ad_targeting {
 namespace geographic {
 

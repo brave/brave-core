@@ -14,7 +14,6 @@
 #include "bat/ads/internal/ads_history/filters/ads_history_date_range_filter.h"
 #include "bat/ads/internal/ads_history/filters/ads_history_filter_factory.h"
 #include "bat/ads/internal/ads_history/sorts/ads_history_sort_factory.h"
-#include "bat/ads/internal/ads_impl.h"
 #include "bat/ads/internal/client/client.h"
 #include "bat/ads/internal/logging.h"
 #include "bat/ads/internal/url_util.h"
