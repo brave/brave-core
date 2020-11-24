@@ -926,6 +926,9 @@ By installing this extension, you are agreeing to the Google Widevine Terms of U
       <message name="IDS_BRAVE_CRYPTO_WALLETS_SETTINGS" desc="Open Crypto Wallets settings">
         Settings
       </message>
+      <message name="IDS_BRAVE_CRYPTO_WALLETS_DONT_ASK" desc="Sets provider to none">
+        Don't ask again
+      </message>
       <!-- IPFS -->
       <message name="IDS_BRAVE_IPFS_INSTALL" desc="Install IPFS daemon infobar text">
         Would you like to enable IPFS local daemon support in Brave?
