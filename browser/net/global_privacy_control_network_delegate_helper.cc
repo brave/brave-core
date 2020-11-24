@@ -19,9 +19,7 @@ int OnBeforeStartTransaction_GlobalPrivacyControlWork(
     net::HttpRequestHeaders* headers,
     const ResponseCallback& next_callback,
     std::shared_ptr<BraveRequestInfo> ctx) {
-  if (base::FeatureList::IsEnabled(features::kGlobalPrivacyControl)) {
-    headers->SetHeader(kSecGpcHeader, "1");
-  }
+  headers->SetHeader(kSecGpcHeader, "1");
   return net::OK;
 }
 
