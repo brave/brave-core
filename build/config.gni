@@ -26,8 +26,8 @@ declare_args() {
   chrome_version_string = ""
   chrome_version_major = ""
   build_omaha = false
-  tag_ap =""
-  target_apk_base=""
+  tag_ap = ""
+  target_apk_base = ""
   brave_android_keystore_path = "."
   brave_android_keystore_name = ""
   brave_android_keystore_password = ""
@@ -39,15 +39,6 @@ declare_args() {
   build_delta_installer = false
   last_chrome_installer = ""
 }
-
-if (base_sparkle_update_url == "") {
-  base_sparkle_update_url = "https://updates.bravesoftware.com/sparkle/Brave-Browser"
-}
-_update_channel = brave_channel
-if (_update_channel == "") {
-  _update_channel = "stable"
-}
-brave_feed_url = "$base_sparkle_update_url/$_update_channel/appcast.xml"
 
 brave_version = "$brave_version_major.$brave_version_minor.$brave_version_build"
 
@@ -109,6 +100,18 @@ if (is_win) {
     brave_product_dir_name_suffix = "-Development"
   }
   brave_product_dir_name = "BraveSoftware/Brave-Browser$brave_product_dir_name_suffix"
+
+  if (base_sparkle_update_url == "") {
+    base_sparkle_update_url = "https://updates.bravesoftware.com/sparkle/Brave-Browser"
+  }
+  _update_channel = brave_channel
+  if (_update_channel == "") {
+    _update_channel = "stable"
+  }
+  if (target_cpu == "arm64") {
+    _update_channel += "-arm64"
+  }
+  brave_feed_url = "$base_sparkle_update_url/$_update_channel/appcast.xml"
 }
 
 brave_platform = "darwin"

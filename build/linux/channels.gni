@@ -10,7 +10,7 @@ linux_channel_beta = "beta"
 linux_channel_dev = "unstable"
 
 # Our channel name and upstream linux channel name is different.
-if (brave_channel == "") {
+if (is_release_channel) {
   linux_channel = linux_channel_stable
 } else if (brave_channel == "beta") {
   linux_channel = linux_channel_beta
