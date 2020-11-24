@@ -15,6 +15,9 @@ private let log = Logger.browserLogger
 
 /// Handles obtaining favicons for URLs from local files, database or internet
 class FaviconFetcher {
+    private static let queue = DispatchQueue(label: "faviconfetcher-queue",
+                                             qos: .userInitiated, attributes: .concurrent)
+    
     /// The size requirement for the favicon
     enum Kind {
         /// Load favicons marked as `apple-touch-icon`.
@@ -70,13 +73,17 @@ class FaviconFetcher {
     deinit {
         dataTasks.forEach { $0.cancel() }
         imageOps.forEach { $0.cancel() }
+        cancelLoadTask()
     }
     
-    private func faviconOnFileMatchesFetchKind(_ favicon: FaviconMO?) -> Bool {
-        guard let favicon = favicon else { return false }
-        return favicon.type == Int16(kind.iconType.rawValue) ||
-            IconType(rawValue: Int(favicon.type))?.isPreferredTo(kind.iconType) == true
+    private func faviconOnFileMatchesFetchKind(_ faviconType: Int16?) -> Bool {
+        guard let faviconType = faviconType else { return false }
+        return faviconType == Int16(kind.iconType.rawValue) ||
+            IconType(rawValue: Int(faviconType))?.isPreferredTo(kind.iconType) == true
     }
+    
+    // fileprivate to use it in the UIImageExtension
+    fileprivate var loadTaskCancellable: DispatchWorkItem?
     
     /// Begin the search for a favicon for the site. `completion` will always
     /// be called on the main thread.
@@ -89,20 +96,40 @@ class FaviconFetcher {
     ///        downloaded and parsed for a favicon.
     ///     4. Monogram (letter + background color)
     func load(_ cachedOnly: Bool = false, _ completion: @escaping (URL, FaviconAttributes) -> Void) {
-        if let icon = customIcon {
-            completion(url, icon)
-            return
-        }
-        let matchesFetchKind = faviconOnFileMatchesFetchKind(domain.favicon)
-        if let icon = bundledIcon, domain.favicon == nil || !matchesFetchKind {
-            completion(url, icon)
-            return
-        }
-        fetchIcon(cachedOnly) { url, attributes in
-            DispatchQueue.main.async {
-                completion(url, attributes)
+        // Getting CoreData's properties before entering background thread to avoid threading conflicts.
+        let faviconType = domain.favicon?.type
+        let favicon = domain.favicon
+        
+        loadTaskCancellable = DispatchWorkItem { [weak self] in
+            guard let self = self else { return }
+            if let icon = self.customIcon {
+                DispatchQueue.main.async {
+                    completion(self.url, icon)
+                }
+                return
+            }
+            let matchesFetchKind = self.faviconOnFileMatchesFetchKind(faviconType)
+            if let icon = self.bundledIcon, faviconType == nil || !matchesFetchKind {
+                DispatchQueue.main.async {
+                    completion(self.url, icon)
+                }
+                return
+            }
+            self.fetchIcon(favicon: favicon, cachedOnly: cachedOnly) { url, attributes in
+                DispatchQueue.main.async {
+                    completion(url, attributes)
+                }
             }
         }
+        
+        if let task = loadTaskCancellable {
+            FaviconFetcher.queue.async(execute: task)
+        }
+    }
+    
+    func cancelLoadTask() {
+        loadTaskCancellable?.cancel()
+        loadTaskCancellable = nil
     }
     
     // MARK: - Custom Icons
@@ -237,10 +264,10 @@ class FaviconFetcher {
         }
     }
     
-    private func fetchIcon(_ cachedOnly: Bool, _ completion: @escaping (URL, FaviconAttributes) -> Void) {
+    private func fetchIcon(favicon: FaviconMO?, cachedOnly: Bool, _ completion: @escaping (URL, FaviconAttributes) -> Void) {
         // Fetch icon logic:
         // 1. Check if current domain has a favicon.
-        var domainFavicon = domain.favicon
+        var domainFavicon = favicon
         
         // 2. Private mode uses their own in-memory only favicons.
         // If no in-memory favicon is found we look if there's any persisted one(from normal browsing mode)
@@ -254,7 +281,7 @@ class FaviconFetcher {
         if let favicon = domainFavicon, let urlString = favicon.url, let url = URL(string: urlString) {
             // Verify that the favicon we have on file is what we want to pull
             // If not, we will just default to monogram to avoid blurry images
-            if faviconOnFileMatchesFetchKind(favicon) {
+            if faviconOnFileMatchesFetchKind(favicon.type) {
                 
                 // If loading from cache only is specified,
                 // Return monogram image if there is no cache.
@@ -515,11 +542,9 @@ extension UIImageView {
     /// Removes any monogram labels that may have been added to the image in the
     /// past
     func clearMonogramFavicon() {
-        if let label = monogramLabel, label.superview != nil {
-            monogramLabel?.removeFromSuperview()
-            monogramLabel = nil
-            backgroundColor = nil
-        }
+        monogramLabel?.removeFromSuperview()
+        monogramLabel = nil
+        backgroundColor = nil
     }
     
     /// Load the favicon from a site URL directly into a `UIImageView`. If no
@@ -540,7 +565,13 @@ extension UIImageView {
         clearMonogramFavicon()
         faviconFetcher = FaviconFetcher(siteURL: siteURL, kind: .favicon, domain: domain)
         faviconFetcher?.load(cachedOnly) { [weak self] _, attributes in
-            guard let self = self else { return }
+            guard let self = self,
+                  let cancellable = self.faviconFetcher?.loadTaskCancellable,
+                  !cancellable.isCancelled  else {
+                completion?()
+                return
+            }
+            
             if let image = attributes.image {
                 self.image = image
             } else {
@@ -567,5 +598,10 @@ extension UIImageView {
             self.contentMode = attributes.contentMode
             completion?()
         }
+    }
+    
+    /// Cancel any pending favicon load task. This is to prevent race condition UI glitches with reusable table/collection view cells.
+    func cancelFaviconLoad() {
+        faviconFetcher?.cancelLoadTask()
     }
 }
