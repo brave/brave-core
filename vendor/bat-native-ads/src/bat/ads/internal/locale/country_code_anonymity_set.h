@@ -3,15 +3,15 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#ifndef BAT_ADS_INTERNAL_LOCALE_LARGE_ANONYMITY_COUNTRY_CODES_H_
-#define BAT_ADS_INTERNAL_LOCALE_LARGE_ANONYMITY_COUNTRY_CODES_H_
+#ifndef BAT_ADS_INTERNAL_LOCALE_COUNTRY_CODE_ANONYMITY_SET_H_
+#define BAT_ADS_INTERNAL_LOCALE_COUNTRY_CODE_ANONYMITY_SET_H_
 
 #include <set>
 #include <string>
 
 namespace ads {
 
-const std::set<std::string> kLargeAnonymityCountryCodes = {
+const std::set<std::string> kCountryCodeAnonymitySet = {
   "US",  // United States of America
   "CA",  // Canada
   "GB",  // United Kingdom (Great Britain and Northern Ireland)
@@ -146,4 +146,4 @@ const std::set<std::string> kLargeAnonymityCountryCodes = {
 
 }  // namespace ads
 
-#endif  // BAT_ADS_INTERNAL_LOCALE_LARGE_ANONYMITY_COUNTRY_CODES_H_
+#endif  // BAT_ADS_INTERNAL_LOCALE_COUNTRY_CODE_ANONYMITY_SET_H_

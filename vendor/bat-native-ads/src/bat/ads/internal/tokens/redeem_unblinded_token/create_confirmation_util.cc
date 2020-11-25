@@ -84,11 +84,11 @@ std::string CreateConfirmationRequestDTO(
     const std::string locale =
         brave_l10n::LocaleHelper::GetInstance()->GetLocale();
 
-    if (locale::HasLargeAnonymity(locale)) {
+    if (locale::IsMemberOfAnonymitySet(locale)) {
       const std::string country_code = brave_l10n::GetCountryCode(locale);
       dto.SetKey("countryCode", base::Value(country_code));
     } else {
-      if (locale::IsAnonymous(locale)) {
+      if (locale::ShouldClassifyAsOther(locale)) {
         dto.SetKey("countryCode", base::Value("??"));
       }
     }

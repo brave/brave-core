@@ -11,10 +11,10 @@
 namespace ads {
 namespace locale {
 
-bool HasLargeAnonymity(
+bool IsMemberOfAnonymitySet(
     const std::string& locale);
 
-bool IsAnonymous(
+bool ShouldClassifyAsOther(
     const std::string& locale);
 
 }  // namespace locale

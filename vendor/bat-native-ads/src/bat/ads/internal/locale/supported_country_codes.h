@@ -19,7 +19,7 @@ const SupportedCountryCodesMap kSupportedCountryCodes = {
   // Append newly supported country codes with a new schema version and update
   // |kSupportedCountryCodesSchemaVersionNumber| to match the new version
 
-  // |kLargeAnonymityCountryCodes| and |kAnonymousCountryCodes| in
+  // |kCountryCodeAnonymitySet| and |kOtherCountryCodes| in
   // |bat-native-ads/src/bat/ads/internal/locale/country_codes.h| must be
   // updated to reflect newly supported regions
 

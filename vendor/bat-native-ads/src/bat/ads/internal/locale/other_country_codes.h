@@ -3,15 +3,15 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#ifndef BAT_ADS_INTERNAL_LOCALE_ANONYMOUS_COUNTRY_CODES_H_
-#define BAT_ADS_INTERNAL_LOCALE_ANONYMOUS_COUNTRY_CODES_H_
+#ifndef BAT_ADS_INTERNAL_LOCALE_OTHER_COUNTRY_CODES_H_
+#define BAT_ADS_INTERNAL_LOCALE_OTHER_COUNTRY_CODES_H_
 
 #include <set>
 #include <string>
 
 namespace ads {
 
-const std::set<std::string> kAnonymousCountryCodes = {
+const std::set<std::string> kOtherCountryCodes = {
   "AS",  // American Samoa
   "AI",  // Anguilla
   "AQ",  // Antarctica
@@ -72,4 +72,4 @@ const std::set<std::string> kAnonymousCountryCodes = {
 
 }  // namespace ads
 
-#endif  // BAT_ADS_INTERNAL_LOCALE_ANONYMOUS_COUNTRY_CODES_H_
+#endif  // BAT_ADS_INTERNAL_LOCALE_OTHER_COUNTRY_CODES_H_
