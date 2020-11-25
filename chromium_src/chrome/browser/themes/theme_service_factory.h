@@ -6,10 +6,11 @@
 #ifndef BRAVE_CHROMIUM_SRC_CHROME_BROWSER_THEMES_THEME_SERVICE_FACTORY_H_
 #define BRAVE_CHROMIUM_SRC_CHROME_BROWSER_THEMES_THEME_SERVICE_FACTORY_H_
 
-// Below files are included in advance to prevent overriding GetBrowserContextToUse.
+// Below files are included in advance to prevent overriding
+// GetBrowserContextToUse.
 #include "components/keyed_service/content/browser_context_keyed_service_factory.h"
 
-#define GetBrowserContextToUse GetBrowserContextToUse_ChromiumImpl(content::BrowserContext* context) const; content::BrowserContext* GetBrowserContextToUse
+#define GetBrowserContextToUse GetBrowserContextToUse_ChromiumImpl(content::BrowserContext* context) const; content::BrowserContext* GetBrowserContextToUse  // NOLINT
 
 #include "../../../../../chrome/browser/themes/theme_service_factory.h"
 

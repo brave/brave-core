@@ -4,7 +4,8 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 #include "brave/browser/themes/brave_theme_service.h"
-// Below files are included in advance to prevent overriding GetBrowserContextToUse.
+// Below files are included in advance to prevent overriding
+// GetBrowserContextToUse.
 #include "chrome/browser/extensions/extension_system_factory.h"
 #include "chrome/browser/themes/theme_service_factory.h"
 #include "extensions/browser/extension_prefs_factory.h"
