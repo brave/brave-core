@@ -334,6 +334,16 @@ export const Link = styled<{}, 'a'>('a')`
   }
 `
 
+export const Label = styled<{}, 'span'>('span')`
+  text-decoration: none;
+  transition: color 0.15s ease, filter 0.15s ease;
+  color: rgba(255, 255, 255, 0.8);
+
+  &:hover {
+    color: rgba(255, 255, 255, 1);
+  }
+`
+
 export const PhotoName = styled<{}, 'div'>('div')`
   align-self: flex-end;
   -webkit-font-smoothing: antialiased;

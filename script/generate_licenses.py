@@ -153,7 +153,8 @@ def generate_backgrounds_license(preamble, backgrounds):
 
         filename = validated_data_field(background, 'source')
         author_name = validated_data_field(background, 'author')
-        author_link = validated_data_field(background, 'link')
+        # Don't validate link. it can be empty.
+        author_link = background['link']
         original_url = validated_data_field(background, 'originalUrl')
         license_text = validated_data_field(background, 'license')
         if license_text != 'used with permission' and license_text[0:8] != 'https://' \
@@ -162,8 +163,12 @@ def generate_backgrounds_license(preamble, backgrounds):
                   % background['name'])
             sys.exit(1)
 
-        notices += 'File: %s\nAuthor: %s (%s)\nURL: %s\nLicense: %s\n' \
-                   % (filename, author_name, author_link, original_url, license_text)
+        if author_link != '':
+            notices += 'File: %s\nAuthor: %s (%s)\nURL: %s\nLicense: %s\n' \
+                       % (filename, author_name, author_link, original_url, license_text)
+        else:
+            notices += 'File: %s\nAuthor: %s\nURL: %s\nLicense: %s\n' \
+                       % (filename, author_name, original_url, license_text)
 
     return '%s\n\n%s' % (preamble, notices)
 
