@@ -2,16 +2,12 @@
 <head>
 <script>
 let expectedImgLoaded = 0
-let expectedImgLoadedBlank = 0
 let expectedImgBlocked = 0
 let expectedXHRLoaded = 0
-let expectedXHRLoadedBlank = 0
 let expectedXHRBlocked = 0
 let numXHRLoaded = 0
-let numXHRLoadedBlank = 0
 let numXHRBlocked = 0
 let numImgLoaded = 0
-let numImgLoadedBlank = 0
 let numImgBlocked = 0
 
 // Performs an XHR for the specified src
@@ -20,11 +16,7 @@ function xhr(src) {
     const xhr = new XMLHttpRequest();
     xhr.open('GET', src, true);
     xhr.onload = function(e) {
-      if (xhr.response.length !== 0) {
-        numXHRLoaded++
-      } else {
-        numXHRLoadedBlank++
-      }
+      numXHRLoaded++
       resolve(onLoad())
     }
     xhr.onerror = function(e) {
@@ -64,12 +56,7 @@ function addImage(src) {
     img.className = 'adImage'
 
     img.addEventListener('load', () => {
-      if (img.complete &&
-          (img.naturalHeight !== 1 || img.naturalWidth !== 1)) {
-        numImgLoaded++
-      } else {
-        numImgLoadedBlank++
-      }
+      numImgLoaded++
       resolve(onLoad())
     })
     img.addEventListener('error', () => {
@@ -81,29 +68,25 @@ function addImage(src) {
 }
 
 // Sets the expectation for the number of images and XHR loaded and blocked
-function setExpectations(numImgLoaded, numImgLoadedBlank, numImgBlocked, numXHRLoaded, numXHRLoadedBlank, numXHRBlocked) {
+function setExpectations(numImgLoaded, numImgBlocked, numXHRLoaded, numXHRBlocked) {
   expectedImgLoaded = numImgLoaded
-  expectedImgLoadedBlank = numImgLoadedBlank
   expectedImgBlocked = numImgBlocked
   expectedXHRLoaded = numXHRLoaded
-  expectedXHRLoadedBlank = numXHRLoadedBlank
   expectedXHRBlocked = numXHRBlocked
 }
 
 function onLoad() {
-  if (numImgLoaded + numImgLoadedBlank + numImgBlocked !== expectedImgLoaded + expectedImgBlocked + expectedImgLoadedBlank ||
-      numXHRLoaded + numXHRLoadedBlank + numXHRBlocked !== expectedXHRLoaded + expectedXHRLoadedBlank + expectedXHRBlocked) {
+  if (numImgLoaded + numImgBlocked !== expectedImgLoaded + expectedImgBlocked ||
+      numXHRLoaded + numXHRBlocked !== expectedXHRLoaded + expectedXHRBlocked) {
     return;
   }
   const result = numImgLoaded == expectedImgLoaded &&
-      expectedImgLoadedBlank == numImgLoadedBlank &&
       expectedImgBlocked == numImgBlocked &&
       numXHRLoaded === expectedXHRLoaded &&
-      numXHRLoadedBlank === expectedXHRLoadedBlank &&
       numXHRBlocked === expectedXHRBlocked
   // For debugging:
-  // console.log('sending: ' + JSON.stringify({result, expectedImgLoaded, expectedImgLoadedBlank, expectedImgBlocked, numImgLoadedBlank, numImgBlocked,
-  //   numXHRLoaded, expectedXHRLoaded, numXHRLoadedBlank, numXHRBlocked, expectedXHRLoadedBlank, expectedXHRBlocked}))
+  // console.log('sending: ' + JSON.stringify({result, expectedImgLoaded, expectedImgBlocked, numImgBlocked,
+  //   numXHRLoaded, expectedXHRLoaded, numXHRBlocked, expectedXHRBlocked}))
   return result;
 }
 </script>
