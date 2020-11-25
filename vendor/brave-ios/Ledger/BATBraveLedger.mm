@@ -112,7 +112,7 @@ ledger::type::DBCommandResponsePtr RunDBTransactionOnTaskRunner(
   return response;
 }
 
-}
+}  // namespace
 
 @interface BATBraveLedger () <NativeLedgerClientBridge> {
   NativeLedgerClient *ledgerClient;
