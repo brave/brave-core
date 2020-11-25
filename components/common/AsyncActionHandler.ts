@@ -5,7 +5,8 @@
 
 import { MiddlewareAPI, Dispatch, Middleware, AnyAction } from 'redux'
 
-type Handlers = Map<string, Function>
+type Handler<T> = (store: MiddlewareAPI, payload: T) => void
+type Handlers = Map<string, Handler<unknown>[]>
 
 /**
  * Quick n easy redux middleware generator for async actions.
@@ -25,21 +26,32 @@ type Handlers = Map<string, Function>
 export default class AsyncHandler {
   handlersByType: Handlers = new Map()
 
-  on<T> (actionType: string | string[], doStuff: (store: MiddlewareAPI, payload: T) => void) {
+  setHandlerForAction<T> (actionType: string, doStuff: Handler<T>) {
+    let handlers = this.handlersByType.get(actionType)
+    if (!handlers) {
+      handlers = []
+      this.handlersByType.set(actionType, handlers)
+    }
+    handlers.push(doStuff)
+  }
+
+  on<T> (actionType: string | string[], doStuff: Handler<T>) {
     if (Array.isArray(actionType)) {
       for (const action of actionType) {
-        this.handlersByType.set(action, doStuff)
+        this.setHandlerForAction(action, doStuff)
       }
     } else {
-      this.handlersByType.set(actionType, doStuff)
+      this.setHandlerForAction(actionType, doStuff)
     }
   }
 
   middleware: Middleware = (store: MiddlewareAPI) => (next: Dispatch<AnyAction>) => (action: AnyAction) => {
     const result = next(action)
-    const doStuff = this.handlersByType.get(action.type)
-    if (doStuff) {
-      doStuff(store, action.payload)
+    const handlers = this.handlersByType.get(action.type)
+    if (handlers) {
+      for (const handler of handlers) {
+        handler(store, action.payload)
+      }
     }
     return result
   }
