@@ -183,6 +183,9 @@ BraveSessionCache::PerturbPixelsInternal(
   // per pixel
   std::unique_ptr<blink::ImageDataBuffer> data_buffer =
       blink::ImageDataBuffer::Create(image_bitmap);
+  if (!data_buffer) {
+    return image_bitmap;
+  }
   uint8_t* pixels = const_cast<uint8_t*>(data_buffer->Pixels());
   // This needs to be type size_t because we pass it to base::StringPiece
   // later for content hashing. This is safe because the maximum canvas
