@@ -15,6 +15,7 @@ void BookmarkModelLoadedObserver::BookmarkModelLoaded(
   //TODO: FIX
   //ProfileSyncServiceFactory::GetForBrowserState(browser_state_);
   (void)browser_state_; //TODO: REMOVE
+    fprintf(stderr, "MODEL: %p\n", model);
   model->RemoveObserver(this);
   delete this;
 }

@@ -26,10 +26,13 @@ source_set("browser_state") {
     "browser_state_otr_helper.h",
     "bookmark_model_loaded_observer.cc",
     "bookmark_model_loaded_observer.h",
+    "browser_state_keyed_service_factories.h",
+    "browser_state_keyed_service_factories.mm",
   ]
 
   deps = [
     ":chromium_sources",
+    "//brave/ios/browser/prefs",
     "//base",
     "//components/keyed_service/ios",
     "//components/prefs",

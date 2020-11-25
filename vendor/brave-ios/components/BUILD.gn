@@ -23,6 +23,8 @@ source_set("components") {
   sources = [
     "Bookmarks.mm",
     "Bookmarks.h",
+    "BraveCoreShared.mm",
+    "BraveCoreShared.h",
   ]
 
   deps = [

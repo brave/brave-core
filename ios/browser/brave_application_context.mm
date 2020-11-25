@@ -1,4 +1,5 @@
 #import "brave/ios/browser/brave_application_context.h"
+#include "brave/ios/browser/prefs/browser_prefs.h"
 #include "brave/vendor/brave-ios/components/browser_state/chrome_browser_state.h"
 
 #include <algorithm>
@@ -17,11 +18,35 @@
 #include "base/task/thread_pool.h"
 #include "base/time/default_clock.h"
 #include "base/time/default_tick_clock.h"
+
+#include "components/autofill/core/common/autofill_prefs.h"
+#include "components/browsing_data/core/pref_names.h"
+#include "components/feed/core/shared_prefs/pref_names.h"
+#include "components/flags_ui/pref_service_flags_storage.h"
+#include "components/history/core/common/pref_names.h"
+#include "components/language/core/browser/language_prefs.h"
+#include "components/language/core/browser/pref_names.h"
+#include "components/metrics/metrics_pref_names.h"
+#include "components/payments/core/payment_prefs.h"
+#include "components/pref_registry/pref_registry_syncable.h"
+#include "components/prefs/pref_service.h"
+#include "components/proxy_config/pref_proxy_config_tracker_impl.h"
+#include "components/safe_browsing/core/common/safe_browsing_prefs.h"
+#include "components/sessions/core/session_id_generator.h"
+#include "components/signin/public/base/signin_pref_names.h"
+#include "components/sync/base/sync_prefs.h"
+#include "components/sync_device_info/device_info_prefs.h"
+#include "components/sync_sessions/session_sync_prefs.h"
+#include "components/translate/core/browser/translate_pref_names.h"
+#include "components/translate/core/browser/translate_prefs.h"
+
 #include "components/history/core/browser/history_service.h"
 #include "components/keyed_service/core/service_access_type.h"
 #include "components/prefs/pref_registry_simple.h"
-#include "components/prefs/pref_service.h"
-#include "components/sessions/core/session_id_generator.h"
+#include "components/update_client/update_client.h"
+#include "components/variations/service/variations_service.h"
+#include "components/web_resource/web_resource_pref_names.h"
+
 #include "ios/chrome/browser/application_context.h"
 #include "ios/chrome/browser/browser_state/chrome_browser_state_manager_impl.h"
 #include "ios/chrome/browser/chrome_paths.h"
@@ -30,6 +55,7 @@
 #include "ios/chrome/browser/pref_names.h"
 #include "ios/chrome/browser/prefs/browser_prefs.h"
 #include "ios/chrome/browser/prefs/ios_chrome_pref_service_factory.h"
+#include "ios/chrome/browser/browser_state/browser_state_info_cache.h"
 #include "ios/chrome/common/channel_info.h"
 #include "ios/web/public/thread/web_task_traits.h"
 #include "ios/web/public/thread/web_thread.h"
@@ -54,27 +80,6 @@ void BindNetworkChangeManagerReceiver(
   network_change_manager->AddReceiver(std::move(receiver));
 }
 }  // namespace
-
-namespace brave {
-void RegisterLocalStatePrefs(PrefRegistrySimple* registry) {
-    //BrowserStateInfoCache::RegisterPrefs(registry);
-    sessions::SessionIdGenerator::RegisterPrefs(registry);
-    
-    // Preferences related to the browser state manager.
-    registry->RegisterStringPref(prefs::kBrowserStateLastUsed, std::string());
-    registry->RegisterIntegerPref(prefs::kBrowserStatesNumCreated, 1);
-    registry->RegisterListPref(prefs::kBrowserStatesLastActive);
-    
-    registry->RegisterBooleanPref(prefs::kBrowsingDataMigrationHasBeenPossible,
-                                  false);
-
-    // Preferences related to the application context.
-    const char kApplicationLocale[] = "intl.app_locale";
-    registry->RegisterStringPref(kApplicationLocale, //language::prefs::kApplicationLocale
-                                 std::string());
-    registry->RegisterBooleanPref(prefs::kLastSessionExitedCleanly, true);
-}
-}
 
 BraveApplicationContext::BraveApplicationContext(
     base::SequencedTaskRunner* local_state_task_runner,
@@ -307,7 +312,7 @@ void BraveApplicationContext::CreateLocalState() {
   scoped_refptr<PrefRegistrySimple> pref_registry(new PrefRegistrySimple);
 
   // Register local state preferences.
-  brave::RegisterLocalStatePrefs(pref_registry.get());
+  RegisterLocalStatePrefs(pref_registry.get());
 
   policy::BrowserPolicyConnector* browser_policy_connector = nullptr;
   policy::PolicyService* policy_service = nullptr;

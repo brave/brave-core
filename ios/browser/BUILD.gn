@@ -20,16 +20,19 @@ source_set("browser") {
     "pref_names.cc",
     "application_context.h",
     "application_context.cc",
+    "chrome_paths.h",
+    "chrome_paths.mm",
   ]
 
   deps = [
     "net",
+    "prefs",
     "//base",
     "//brave/vendor/brave-ios/components/bookmarks",
     "//brave/vendor/brave-ios/components/bookmark_sync_service",
+    "//brave/vendor/brave-ios/components/browser_state",
     "//components/content_settings/core/common",
     "//components/prefs",
-    "//components/sessions",
     "//ios/web/public",
     "//ios/web/public/init",
     "//ios/components/io_thread",

@@ -1,0 +1,74 @@
+# Copyright (c) 2020 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at http://mozilla.org/MPL/2.0/.
+
+import("//build/config/ios/rules.gni")
+import("//ios/build/config.gni")
+
+
+source_set("prefs") {
+  sources = [
+    "browser_prefs.h",
+    "browser_prefs.mm",
+  ]
+
+  deps = [
+    ":chromium_sources",
+    "//brave/ios/browser/first_run",
+    "//base",
+    "//components/prefs",
+    "//components/pref_registry",
+    #"//components/content_settings/core/common",
+    #"//components/content_settings/core/browser",
+    "//third_party/metrics_proto",
+  ]
+
+  configs += [ "//build/config/compiler:enable_arc" ]
+}
+
+source_set("chromium_sources") {
+  sources = [
+    "//ios/chrome/browser/browser_state/browser_state_info_cache.h",
+    "//ios/chrome/browser/browser_state/browser_state_info_cache.cc",
+  ]
+
+  deps = [
+    "//base",
+    "//components/content_settings/core/common",
+    "//components/content_settings/core/browser",
+    "//components/policy/core/browser",
+    "//components/prefs/ios",
+    "//components/proxy_config",
+    "//components/sync_preferences",
+    #"//ios/chrome/browser",
+    "//ios/chrome/browser/policy:feature_flags",
+
+    "//components/browsing_data/core",
+    "//components/handoff",
+    "//components/history/core/common",
+    "//components/invalidation/impl:impl",
+    "//components/language/core/browser",
+    "//components/metrics",
+    "//components/policy/core/browser",
+    "//components/policy/core/common",
+    "//components/pref_registry",
+    "//components/prefs",
+    "//components/proxy_config",
+    #"//components/rappor",
+    #"//components/safe_browser/core/common:safe_browsing_prefs",
+    "//components/sessions",
+    "//components/sync",
+    "//components/sync_sessions",
+    "//components/sync/base",
+    "//components/translate/core/browser",
+    "//components/translate/core/common",
+    "//components/ukm/ios:features",
+    "//components/update_client",
+    "//components/variations/service",
+    "//components/web_resource",
+    #"//ios/chrome/browser/first_run:first_run",
+    #"//ios/chrome/browser/memory",
+    #"//ios/chrome/browser/ui/bookmarks",
+  ]
+}
