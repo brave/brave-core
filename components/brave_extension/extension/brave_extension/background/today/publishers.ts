@@ -4,7 +4,7 @@
 // you can obtain one at http://mozilla.org/MPL/2.0/.
 
 import Events from '../../../../../common/events'
-import { URLS } from './privateCDN'
+import { fetchResource, URLS } from './privateCDN'
 import { getPrefs as getPublisherPrefs, addPrefsChangedListener } from './publisher-user-prefs'
 
 let memoryData: BraveToday.Publishers | undefined
@@ -69,7 +69,7 @@ function performUpdate () {
     try {
       // TODO(petemill): Use If-None-Match so we don't re-download the exact
       // same publisher list. Save Etag in storage.
-      const feedResponse = await fetch(url)
+      const feedResponse = await fetchResource(url)
       if (feedResponse.ok) {
         const feedContents: BraveToday.Publisher[] = await feedResponse.json()
         console.debug('fetched today publishers', feedContents)
@@ -121,5 +121,7 @@ export function addPublishersChangedListener (listener: changeListener) {
 
 // When publisher pref changes, update prefs data as we depend on it
 addPrefsChangedListener(async function (prefs) {
+  // TODO(petemill): only re-parse, don't re-fetch (as no indication that remote data
+  // has changed).
   await update(true)
 })
