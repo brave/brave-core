@@ -275,6 +275,9 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
   // Brave Today
   registry->RegisterDictionaryPref(kBraveTodaySources);
   registry->RegisterBooleanPref(kBraveTodayIntroDismissed, false);
+  registry->RegisterListPref(kBraveTodayWeeklySessionCount);
+  registry->RegisterListPref(kBraveTodayWeeklyCardViewsCount);
+  registry->RegisterListPref(kBraveTodayWeeklyCardVisitsCount);
 
   // Brave Wallet
 #if BUILDFLAG(BRAVE_WALLET_ENABLED)

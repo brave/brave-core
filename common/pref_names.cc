@@ -70,6 +70,12 @@ const char kNewTabPageShowTogether[] = "brave.new_tab_page.show_together";
 const char kNewTabPageShowsOptions[] = "brave.new_tab_page.shows_options";
 const char kBraveTodaySources[] = "brave.today.sources";
 const char kBraveTodayIntroDismissed[] = "brave.today.intro_dismissed";
+const char kBraveTodayWeeklySessionCount[] =
+    "brave.today.p3a_weekly_session_count";
+const char kBraveTodayWeeklyCardViewsCount[] =
+    "brave.today.p3a_weekly_card_views_count";
+const char kBraveTodayWeeklyCardVisitsCount[] =
+    "brave.today.p3a_weekly_card_visits_count";
 const char kBraveEnabledMediaRouter[] = "brave.enable_media_router";
 const char kBinanceAccessToken[] = "brave.binance.access_token";
 const char kBinanceRefreshToken[] = "brave.binance.refresh_token";

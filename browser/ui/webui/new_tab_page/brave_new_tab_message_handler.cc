@@ -27,6 +27,7 @@
 #include "brave/components/ntp_background_images/browser/view_counter_service.h"
 #include "brave/components/ntp_background_images/common/pref_names.h"
 #include "brave/components/p3a/brave_p3a_utils.h"
+#include "brave/components/weekly_storage/weekly_storage.h"
 #include "chrome/browser/browser_process.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/common/chrome_features.h"
@@ -149,6 +150,9 @@ base::DictionaryValue GetTorPropertiesDictionary(bool connected,
   tor_data.SetString("torInitProgress", progress);
   return tor_data;
 }
+
+// TODO(petemill): Move p3a to own NTP component so it can
+// be used by other platforms.
 
 enum class NTPCustomizeUsage {
   kNeverOpened,
@@ -273,6 +277,19 @@ void BraveNewTabMessageHandler::RegisterMessages() {
   web_ui()->RegisterMessageCallback(
       "customizeClicked",
       base::BindRepeating(&BraveNewTabMessageHandler::HandleCustomizeClicked,
+                          base::Unretained(this)));
+  web_ui()->RegisterMessageCallback(
+      "todayInteractionBegin",
+      base::BindRepeating(
+          &BraveNewTabMessageHandler::HandleTodayInteractionBegin,
+          base::Unretained(this)));
+  web_ui()->RegisterMessageCallback(
+      "todayOnCardVisits",
+      base::BindRepeating(&BraveNewTabMessageHandler::HandleTodayOnCardVisits,
+                          base::Unretained(this)));
+  web_ui()->RegisterMessageCallback(
+      "todayOnCardViews",
+      base::BindRepeating(&BraveNewTabMessageHandler::HandleTodayOnCardViews,
                           base::Unretained(this)));
 }
 
@@ -545,6 +562,70 @@ void BraveNewTabMessageHandler::HandleCustomizeClicked(
   brave::RecordValueIfGreater<NTPCustomizeUsage>(
       NTPCustomizeUsage::kOpened, "Brave.NTP.CustomizeUsageStatus",
       kNTPCustomizeUsageStatus, g_browser_process->local_state());
+}
+
+void BraveNewTabMessageHandler::HandleTodayInteractionBegin(
+    const base::ListValue* args) {
+  AllowJavascript();
+  // Track if user has ever scrolled to Brave Today.
+  UMA_HISTOGRAM_EXACT_LINEAR("Brave.Today.HasEverInteracted", 1, 1);
+  // Track how many times in the past week
+  // user has scrolled to Brave Today.
+  WeeklyStorage session_count_storage(
+      profile_->GetPrefs(), kBraveTodayWeeklySessionCount);
+  session_count_storage.AddDelta(1);
+  uint64_t total_session_count = session_count_storage.GetWeeklySum();
+  constexpr int kSessionCountBuckets[] = {0, 1, 3, 7, 12, 18, 25, 1000};
+  const int* it_count =
+      std::lower_bound(kSessionCountBuckets, std::end(kSessionCountBuckets),
+                      total_session_count);
+  int answer = it_count - kSessionCountBuckets;
+  UMA_HISTOGRAM_EXACT_LINEAR("Brave.Today.WeeklySessionCount", answer,
+                             base::size(kSessionCountBuckets) + 1);
+}
+
+void BraveNewTabMessageHandler::HandleTodayOnCardVisits(
+    const base::ListValue* args) {
+  // Argument should be how many cards visited in this session.
+  // We need the front-end to give us this since this class
+  // will be destroyed and re-created when the user navigates "back",
+  // but the front-end will have access to history state in order to
+  // keep a count for the session.
+  int cards_visited_total = args->GetList()[0].GetInt();
+  // Track how many Brave Today cards have been viewed per session
+  // (each NTP / NTP Message Handler is treated as 1 session).
+  WeeklyStorage storage(
+      profile_->GetPrefs(), kBraveTodayWeeklyCardVisitsCount);
+  storage.ReplaceTodaysValueIfGreater(cards_visited_total);
+  // Send the session with the highest count of cards viewed.
+  uint64_t total = storage.GetHighestValueInWeek();
+  constexpr int kBuckets[] = {0, 1, 3, 6, 10, 15, 100};
+  const int* it_count =
+      std::lower_bound(kBuckets, std::end(kBuckets),
+                      total);
+  int answer = it_count - kBuckets;
+  UMA_HISTOGRAM_EXACT_LINEAR("Brave.Today.WeeklyCardVisitsCount", answer,
+                             base::size(kBuckets) + 1);
+}
+
+void BraveNewTabMessageHandler::HandleTodayOnCardViews(
+    const base::ListValue* args) {
+  // Argument should be how many cards viewed in this session.
+  int cards_viewed_total = args->GetList()[0].GetInt();
+  // Track how many Brave Today cards have been viewed per session
+  // (each NTP / NTP Message Handler is treated as 1 session).
+  WeeklyStorage storage(
+      profile_->GetPrefs(), kBraveTodayWeeklyCardViewsCount);
+  storage.ReplaceTodaysValueIfGreater(cards_viewed_total);
+  // Send the session with the highest count of cards viewed.
+  uint64_t total = storage.GetHighestValueInWeek();
+  constexpr int kBuckets[] = {0, 1, 4, 12, 20, 40, 80, 1000};
+  const int* it_count =
+      std::lower_bound(kBuckets, std::end(kBuckets),
+                      total);
+  int answer = it_count - kBuckets;
+  UMA_HISTOGRAM_EXACT_LINEAR("Brave.Today.WeeklyCardViewsCount", answer,
+                             base::size(kBuckets) + 1);
 }
 
 void BraveNewTabMessageHandler::OnPrivatePropertiesChanged() {

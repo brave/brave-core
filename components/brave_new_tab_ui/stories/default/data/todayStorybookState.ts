@@ -6,6 +6,8 @@ export default function getTodayState (): BraveTodayState {
     isFetching: boolean('Today is fetching?', false),
     isUpdateAvailable: boolean('Is Today update available?', false),
     currentPageIndex: 10,
+    cardsViewed: 0,
+    cardsVisited: 0,
     publishers: {
       ['5eece347713f329f156cd0204cf9b12629f1dc8f4ea3c1b67984cfbfd66cdca5']: {
         publisher_id: `5eece347713f329f156cd0204cf9b12629f1dc8f4ea3c1b67984cfbfd66cdca5`,

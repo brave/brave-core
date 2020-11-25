@@ -47,7 +47,7 @@ void WeeklyStorage::AddDelta(uint64_t delta) {
 
 void WeeklyStorage::ReplaceTodaysValueIfGreater(uint64_t value) {
   FilterToWeek();
-  DailyValue today = daily_values_.front();
+  DailyValue& today = daily_values_.front();
   if (today.value < value) {
     today.value = value;
   }
