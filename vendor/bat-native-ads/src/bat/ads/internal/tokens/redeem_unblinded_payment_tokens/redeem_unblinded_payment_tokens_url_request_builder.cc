@@ -50,7 +50,7 @@ UrlRequestPtr RedeemUnblindedPaymentTokensUrlRequestBuilder::Build() {
 
 std::string RedeemUnblindedPaymentTokensUrlRequestBuilder::BuildUrl() const {
   return base::StringPrintf("%s/v1/confirmation/payment/%s",
-      server::GetDomain().c_str(), wallet_.id.c_str());
+      server::GetHost().c_str(), wallet_.id.c_str());
 }
 
 std::vector<std::string>

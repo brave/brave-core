@@ -19,7 +19,7 @@ const char kDevelopmentDomain[] = "https://grant.rewards.brave.software";
 
 }  // namespace
 
-std::string GetDomain() {
+std::string GetHost() {
   switch (_environment) {
     case Environment::PRODUCTION: {
       return kProductionDomain;

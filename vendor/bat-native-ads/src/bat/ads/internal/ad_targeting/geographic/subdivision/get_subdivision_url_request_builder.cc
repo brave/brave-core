@@ -29,7 +29,7 @@ UrlRequestPtr GetSubdivisionUrlRequestBuilder::Build() {
 ///////////////////////////////////////////////////////////////////////////////
 
 std::string GetSubdivisionUrlRequestBuilder::BuildUrl() const {
-  return base::StringPrintf("%s/v5/getstate", server::GetDomain().c_str());
+  return base::StringPrintf("%s/v5/getstate", server::GetHost().c_str());
 }
 
 }  // namespace geographic

@@ -12,7 +12,7 @@ namespace ads {
 namespace rewards {
 namespace server {
 
-std::string GetDomain();
+std::string GetHost();
 
 }  // namespace server
 }  // namespace rewards

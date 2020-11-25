@@ -12,24 +12,24 @@ namespace server {
 
 namespace {
 
-const char kProductionDomain[] = "https://ads-serve.brave.com";
-const char kStagingDomain[] = "https://ads-serve.bravesoftware.com";
-const char kDevelopmentDomain[] = "https://ads-serve.brave.software";
+const char kProductionHost[] = "https://ads-serve.brave.com";
+const char kStagingHost[] = "https://ads-serve.bravesoftware.com";
+const char kDevelopmentHost[] = "https://ads-serve.brave.software";
 
 }  // namespace
 
-std::string GetDomain() {
+std::string GetHost() {
   switch (_environment) {
     case Environment::PRODUCTION: {
-      return kProductionDomain;
+      return kProductionHost;
     }
 
     case Environment::STAGING: {
-      return kStagingDomain;
+      return kStagingHost;
     }
 
     case Environment::DEVELOPMENT: {
-      return kDevelopmentDomain;
+      return kDevelopmentHost;
     }
   }
 }
