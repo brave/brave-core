@@ -1,0 +1,12 @@
+diff --git a/ios/chrome/browser/prefs/browser_prefs.mm b/ios/chrome/browser/prefs/browser_prefs.mm
+index 76e3e498be22a91de7a01ca24efdd583c6197260..556de5e907718ce1d695d60af19585377af40c5b 100644
+--- a/ios/chrome/browser/prefs/browser_prefs.mm
++++ b/ios/chrome/browser/prefs/browser_prefs.mm
+@@ -219,6 +219,7 @@ void RegisterBrowserStatePrefs(user_prefs::PrefRegistrySyncable* registry) {
+   registry->RegisterListPref(kInvalidatorSavedInvalidations);
+   registry->RegisterStringPref(kInvalidatorInvalidationState, std::string());
+   registry->RegisterStringPref(kInvalidatorClientId, std::string());
++  BRAVE_REGISTER_BROWSER_STATE_PREFS
+ }
+ 
+ // This method should be periodically pruned of year+ old migrations.

@@ -7,25 +7,31 @@ import("//build/config/ios/rules.gni")
 import("//ios/build/config.gni")
 
 source_set("browser") {
+  configs += [ "//build/config/compiler:enable_arc" ]
+
   sources = [
     "brave_web_client.h",
     "brave_web_client.mm",
     "brave_web_main_parts.h",
     "brave_web_main_parts.mm",
-    "//ios/chrome/browser/pref_names.cc",
-    "//ios/chrome/browser/pref_names.h",
   ]
 
   deps = [
+    "api/bookmarks",
+    "api/sync",
+    "metrics",
     "//base",
-    "//brave/ios/browser/browser_state",
-    "//brave/ios/browser/browser_state:browser_state_impl",
-    "//components/content_settings/core/common",
+    "//brave/chromium_src/ios/chrome/browser/prefs",
+    "//components/flags_ui",
+    "//components/metrics_services_manager",
+    "//components/variations/service",
+    "//ios/chrome/browser",
     "//ios/chrome/browser:chrome_paths",
+    "//ios/chrome/browser/browser_state",
+    "//ios/chrome/browser/flags",
     "//ios/web/public",
     "//ios/web/public/init",
+    "//ios/web/public/thread",
     "//ui/base",
   ]
-
-  configs += [ "//build/config/compiler:enable_arc" ]
 }

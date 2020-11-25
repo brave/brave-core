@@ -1,3 +1,0 @@
-brave_sync_public_headers = [
-  "//brave/vendor/brave-ios/components/brave_sync/brave_sync_worker.h"
-]

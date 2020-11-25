@@ -1,4 +1,4 @@
-/* Copyright (c) 2019 The Brave Authors. All rights reserved.
+/* Copyright (c) 2020 The Brave Authors. All rights reserved.
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
@@ -19,6 +19,8 @@ class BraveWebClient : public web::WebClient {
   BraveWebClient();
   ~BraveWebClient() override;
 
+  void SetUserAgent(const std::string& user_agent);
+
   // WebClient implementation.
   std::unique_ptr<web::WebMainParts> CreateWebMainParts() override;
   std::string GetUserAgent(web::UserAgentType type) const override;
@@ -29,6 +31,7 @@ class BraveWebClient : public web::WebClient {
 
  private:
   BraveWebMainParts* web_main_parts_;
+  std::string user_agent_;
 
   DISALLOW_COPY_AND_ASSIGN(BraveWebClient);
 };

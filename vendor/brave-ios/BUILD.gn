@@ -4,8 +4,7 @@
 # file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
 import("//build/config/ios/rules.gni")
-import("components/headers.gni")
-import("components/brave_sync/headers.gni")
+import("//brave/ios/app/headers.gni")
 
 config("internal_config") {
   visibility = [
@@ -58,6 +57,8 @@ ios_framework_bundle("brave_rewards_ios_framework") {
   configs -= [ "//build/config/gcc:symbol_visibility_hidden" ]
 
   deps = [
+    "//brave/base:base",
+    "//brave/ios/app",
     "//brave/vendor/bat-native-ledger",
     "//brave/vendor/bat-native-ads",
     "//net:net",
@@ -155,8 +156,7 @@ ios_framework_bundle("brave_rewards_ios_framework") {
     "$target_gen_dir/ads.mojom.objc.h",
   ]
 
-  public_headers += brave_components_public_headers
-  public_headers += brave_sync_public_headers
+  public_headers += brave_core_public_headers
 
   frameworks = [
     "Foundation.framework",
@@ -168,7 +168,7 @@ ios_framework_bundle("brave_rewards_ios_framework") {
     "CoreImage.framework"
   ]
 
-  bundle_deps = [ "//ios/chrome/app/resources" ]
+  # bundle_deps = [ "//ios/chrome/app/resources" ]
 }
 
 bundle_data("resources") {

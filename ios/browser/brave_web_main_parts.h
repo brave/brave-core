@@ -9,9 +9,15 @@
 #include <memory>
 
 #include "base/macros.h"
+#include "ios/chrome/browser/ios_chrome_field_trials.h"
 #include "ios/web/public/init/web_main_parts.h"
 
-class ChromeBrowserState;
+class ApplicationContextImpl;
+class PrefService;
+
+namespace base {
+class FieldTrialList;
+}
 
 class BraveWebMainParts : public web::WebMainParts {
  public:
@@ -20,11 +26,23 @@ class BraveWebMainParts : public web::WebMainParts {
 
  private:
   // web::WebMainParts implementation.
+  void PreEarlyInitialization() override;
   void PreMainMessageLoopStart() override;
   void PreCreateThreads() override;
   void PreMainMessageLoopRun() override;
+  void PostMainMessageLoopRun() override;
+  void PostDestroyThreads() override;
+  void SetupFieldTrials();
 
-  ChromeBrowserState* browser_state_;
+  std::unique_ptr<ApplicationContextImpl> application_context_;
+
+  // Statistical testing infrastructure for the entire browser. NULL until
+  // SetUpMetricsAndFieldTrials is called.
+  std::unique_ptr<base::FieldTrialList> field_trial_list_;
+
+  PrefService* local_state_;
+
+  IOSChromeFieldTrials ios_field_trials_;
 
   DISALLOW_COPY_AND_ASSIGN(BraveWebMainParts);
 };

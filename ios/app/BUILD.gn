@@ -7,19 +7,41 @@ import("//build/config/ios/rules.gni")
 import("//ios/build/config.gni")
 
 source_set("app") {
+  configs += [ "//build/config/compiler:enable_arc" ]
+  configs -= [ "//build/config/gcc:symbol_visibility_hidden" ]
+
   sources = [
+    "brave_core_main.h",
+    "brave_core_main.mm",
     "brave_main_delegate.h",
     "brave_main_delegate.mm",
-    "//ios/chrome/app/startup/provider_registration.h",
-    "//ios/chrome/app/startup/provider_registration.mm",
   ]
 
   deps = [
     "//base",
-    "//ios/chrome/app/startup:startup_basic",
-    "//ios/public/provider/chrome/browser",
+    "//brave/common:pref_names",
     "//brave/ios/browser",
+    "//components/browser_sync",
+    "//components/sync/driver",
+    "//components/sync/base",
+    "//ios/chrome/app:app_internal",
+    "//ios/chrome/app/startup:startup_basic",
+    "//ios/chrome/app:tests_fake_hook",
+    "//ios/chrome/browser",
+    "//ios/chrome/browser/browser_state",
+    "//ios/chrome/browser/providers:provider_factory",
+    "//ios/chrome/common",
+    "//ios/public/provider/chrome/browser",
+    "//ios/web/public/init",
+    "//testing/gtest:ios_coverage_utils",
   ]
 
-  configs += [ "//build/config/compiler:enable_arc" ]
+  deps += [
+    "//ios/third_party/material_components_ios:material_components_ios+bundle",
+    "//ios/third_party/material_components_ios:material_components_ios+link",
+  ]
+
+  libs = [
+    "Foundation.framework",
+  ]
 }

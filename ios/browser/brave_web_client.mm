@@ -1,4 +1,4 @@
-/* Copyright (c) 2019 The Brave Authors. All rights reserved.
+/* Copyright (c) 2020 The Brave Authors. All rights reserved.
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
@@ -26,9 +26,12 @@ std::unique_ptr<web::WebMainParts> BraveWebClient::CreateWebMainParts() {
   return web_main_parts;
 }
 
+void BraveWebClient::SetUserAgent(const std::string& user_agent) {
+  user_agent_ = user_agent;
+}
+
 std::string BraveWebClient::GetUserAgent(web::UserAgentType type) const {
-  // TODO(bridiver) - get this from the main brave ios app
-  return "";
+  return user_agent_;
 }
 
 base::StringPiece BraveWebClient::GetDataResource(
