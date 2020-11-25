@@ -52,10 +52,6 @@ extension BraveLedger {
             self.allowUnverifiedPublishers = false
             self.contributionAmount = Double.greatestFiniteMagnitude
             
-            if let ads = self.ads, BraveAds.isCurrentLocaleSupported() {
-                ads.isEnabled = true
-            }
-            
             let group = DispatchGroup()
             var success = true
             group.enter()

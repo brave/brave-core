@@ -20,7 +20,7 @@ extension BraveRewards {
     /// Whether or not rewards is enabled
     @objc public var isEnabled: Bool {
         get {
-            ledger.isWalletCreated && ledger.isEnabled && ads.isEnabled
+            ledger.isWalletCreated && ledger.isEnabled && isAdsEnabled
         }
         set {
             willChangeValue(for: \.isEnabled)
@@ -29,7 +29,7 @@ extension BraveRewards {
                 guard let self = self else { return }
                 self.ledger.isEnabled = newValue
                 self.ledger.isAutoContributeEnabled = newValue
-                self.ads.isEnabled = newValue
+                self.isAdsEnabled = newValue
                 self.didChangeValue(for: \.isEnabled)
             }
         }

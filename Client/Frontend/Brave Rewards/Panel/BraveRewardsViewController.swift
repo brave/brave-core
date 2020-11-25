@@ -156,6 +156,10 @@ class BraveRewardsViewController: UIViewController, Themeable, PopoverContentCom
     
     private var isCreatingWallet: Bool = false
     @objc private func rewardsToggleValueChanged() {
+        rewardsView.rewardsToggle.isUserInteractionEnabled = false
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1) { [weak self] in
+            self?.rewardsView.rewardsToggle.isUserInteractionEnabled = true
+        }
         let isOn = rewardsView.rewardsToggle.isOn
         rewards.isEnabled = isOn
         rewardsView.subtitleLabel.text = isOn ? Strings.Rewards.enabledBody : Strings.Rewards.disabledBody

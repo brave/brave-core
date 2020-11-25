@@ -198,7 +198,7 @@ class BrowserViewController: UIViewController {
             // Disable rewards services in case previous user already enabled
             // rewards in previous build
             rewards.ledger.isEnabled = false
-            rewards.ads.isEnabled = false
+            rewards.isAdsEnabled = false
         } else {
             if rewards.isEnabled && !Preferences.Rewards.rewardsToggledOnce.value {
                 Preferences.Rewards.rewardsToggledOnce.value = true
@@ -328,7 +328,9 @@ class BrowserViewController: UIViewController {
         Preferences.Rewards.hideRewardsIcon.observe(from: self)
         Preferences.Rewards.rewardsToggledOnce.observe(from: self)
         rewardsEnabledObserveration = rewards.observe(\.isEnabled, options: [.new]) { [weak self] _, _ in
-            self?.updateRewardsButtonState()
+            guard let self = self else { return }
+            self.updateRewardsButtonState()
+            self.setupAdsNotificationHandler()
         }
         Preferences.NewTabPage.selectedCustomTheme.observe(from: self)
         // Lists need to be compiled before attempting tab restoration
@@ -348,30 +350,6 @@ class BrowserViewController: UIViewController {
         
         Preferences.NewTabPage.attemptToShowClaimRewardsNotification.value = true
         
-        notificationsHandler = AdsNotificationHandler(ads: rewards.ads, presentingController: self)
-        notificationsHandler?.canShowNotifications = { [weak self] in
-            guard let self = self else { return false }
-            return !PrivateBrowsingManager.shared.isPrivateBrowsing &&
-                !self.topToolbar.inOverlayMode
-        }
-        notificationsHandler?.actionOccured = { [weak self] notification, action in
-            guard let self = self else { return }
-            if action == .opened {
-                var url = URL(string: notification.targetURL)
-                if url == nil, let percentEncodedURLString =
-                    notification.targetURL.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) {
-                    // Try to percent-encode the string and try that
-                    url = URL(string: percentEncodedURLString)
-                }
-                guard let targetURL = url else {
-                    assertionFailure("Invalid target URL for creative instance id: \(notification.creativeInstanceID)")
-                    return
-                }
-                let request = URLRequest(url: targetURL)
-                self.tabManager.addTabAndSelect(request, isPrivate: PrivateBrowsingManager.shared.isPrivateBrowsing)
-            }
-        }
-        
         backgroundDataSource.initializeFavorites = { sites in
             DispatchQueue.main.async {
                 defer { Preferences.NewTabPage.preloadedFavoritiesInitialized.value = true }
@@ -389,6 +367,7 @@ class BrowserViewController: UIViewController {
             }
         }
         
+        setupAdsNotificationHandler()
         backgroundDataSource.replaceFavoritesIfNeeded = { sites in
             if Preferences.NewTabPage.initialFavoritesHaveBeenReplaced.value { return }
             
@@ -425,6 +404,32 @@ class BrowserViewController: UIViewController {
     }
     
     let deviceCheckClient: DeviceCheckClient?
+    
+    private func setupAdsNotificationHandler() {
+        notificationsHandler = AdsNotificationHandler(ads: rewards.ads, presentingController: self)
+        notificationsHandler?.canShowNotifications = { [weak self] in
+            guard let self = self else { return false }
+            return !PrivateBrowsingManager.shared.isPrivateBrowsing &&
+                !self.topToolbar.inOverlayMode
+        }
+        notificationsHandler?.actionOccured = { [weak self] notification, action in
+            guard let self = self else { return }
+            if action == .opened {
+                var url = URL(string: notification.targetURL)
+                if url == nil, let percentEncodedURLString =
+                    notification.targetURL.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) {
+                    // Try to percent-encode the string and try that
+                    url = URL(string: percentEncodedURLString)
+                }
+                guard let targetURL = url else {
+                    assertionFailure("Invalid target URL for creative instance id: \(notification.creativeInstanceID)")
+                    return
+                }
+                let request = URLRequest(url: targetURL)
+                self.tabManager.addTabAndSelect(request, isPrivate: PrivateBrowsingManager.shared.isPrivateBrowsing)
+            }
+        }
+    }
     
     private func setupRewardsObservers() {
         rewards.ledger.add(rewardsObserver)
