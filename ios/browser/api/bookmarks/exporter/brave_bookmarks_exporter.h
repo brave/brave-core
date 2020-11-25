@@ -19,30 +19,7 @@ typedef NS_ENUM(NSUInteger, BraveBookmarksExporterState) {
   BraveBookmarksExporterStateErrorWritingNodes
 };
 
-OBJC_EXPORT
-@interface BraveExportedBookmark : NSObject
-@property(nonatomic, readonly, copy) NSString* title;
-@property(nonatomic, readonly) int64_t id;
-@property(nonatomic, readonly, copy) NSString* guid;
-@property(nullable, nonatomic, readonly, copy) NSURL* url;
-@property(nonatomic, readonly, copy) NSDate* dateAdded;
-@property(nonatomic, readonly, copy) NSDate* dateModified;
-@property(nonatomic, readonly) bool isFolder;
-
-@property(nullable, nonatomic, readonly, copy)
-    NSArray<BraveExportedBookmark*>* children;
-
-- (instancetype)init NS_UNAVAILABLE;
-
-- (instancetype)initWithTitle:(NSString*)title
-                           id:(int64_t)id
-                         guid:(NSString*)guid
-                          url:(NSURL* _Nullable)url
-                    dateAdded:(NSDate*)dateAdded
-                 dateModified:(NSDate*)dateModified
-                     children:
-                         (NSArray<BraveExportedBookmark*>* _Nullable)children;
-@end
+@class IOSBookmarkNode;
 
 OBJC_EXPORT
 @interface BraveBookmarksExporter : NSObject
@@ -52,7 +29,7 @@ OBJC_EXPORT
         withListener:(void (^)(BraveBookmarksExporterState))listener;
 
 - (void)exportToFile:(NSString*)filePath
-           bookmarks:(NSArray<BraveExportedBookmark*>*)bookmarks
+           bookmarks:(NSArray<IOSBookmarkNode*>*)bookmarks
         withListener:(void (^)(BraveBookmarksExporterState))listener;
 @end
 

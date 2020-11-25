@@ -86,6 +86,15 @@ OBJC_EXPORT
 - (void)moveToParent:(nonnull IOSBookmarkNode*)parent;
 - (void)moveToParent:(nonnull IOSBookmarkNode*)parent index:(NSUInteger)index;
 - (NSInteger)indexOfChild:(nonnull IOSBookmarkNode*)child;
+
+- (instancetype)initWithTitle:(NSString*)title
+                           id:(int64_t)id
+                         guid:(NSString* _Nullable)guid
+                          url:(NSURL* _Nullable)url
+                    dateAdded:(NSDate* _Nullable)dateAdded
+                 dateModified:(NSDate* _Nullable)dateModified
+                     children:
+                         (NSArray<IOSBookmarkNode*>* _Nullable)children;
 @end
 
 NS_SWIFT_NAME(BraveBookmarksAPI)

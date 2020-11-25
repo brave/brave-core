@@ -7,6 +7,7 @@
 
 #include "base/compiler_specific.h"
 #include "base/containers/adapters.h"
+#include "base/guid.h"
 #include "base/strings/sys_string_conversions.h"
 #include "brave/ios/browser/api/bookmarks/brave_bookmarks_observer.h"
 #include "components/bookmarks/browser/bookmark_model.h"
@@ -31,6 +32,7 @@
 #error "This file requires ARC support."
 #endif
 
+// Used from the iOS/Swift side only..
 @implementation BookmarkFolder
 - (instancetype)initWithNode:(IOSBookmarkNode*)node
                        indentationLevel:(NSInteger)indentationLevel {
@@ -43,8 +45,9 @@
 @end
 
 @interface IOSBookmarkNode () {
-  const bookmarks::BookmarkNode* node_;  // UNOWNED
+  const bookmarks::BookmarkNode* node_;
   bookmarks::BookmarkModel* model_;      // UNOWNED
+  bool owned_;
 }
 @end
 
@@ -55,11 +58,66 @@
   if ((self = [super init])) {
     self->node_ = node;
     self->model_ = model;
+    self->owned_ = false;
+  }
+  return self;
+}
+
+- (instancetype)initWithTitle:(NSString*)title
+                           id:(int64_t)id
+                         guid:(NSString*)guid
+                          url:(NSURL*)url
+                    dateAdded:(NSDate*)dateAdded
+                 dateModified:(NSDate*)dateModified
+                     children:
+                         (NSArray<IOSBookmarkNode*>*)children {
+  if ((self = [super init])) {
+    //Only in a NEWER version of Chromium, they have `base::GUID`
+    std::string guid_; //base::GUID guid_ = base::GUID();
+    int64_t id_ = static_cast<int64_t>(id);
+    
+    if ([guid length] > 0) {
+      DCHECK(base::IsValidGUID(base::SysNSStringToUTF16(guid)));
+      guid_ = [guid UTF8String];
+    } else {
+      guid_ = base::GenerateGUID();
+    }
+    
+    GURL gurl_ = net::GURLWithNSURL(url);
+    bookmarks::BookmarkNode* node = new bookmarks::BookmarkNode(id_, guid_, gurl_);
+    node->SetTitle(base::SysNSStringToUTF16(title));
+    
+    if (dateAdded) {
+      node->set_date_added(base::Time::FromDoubleT([dateAdded timeIntervalSince1970]));
+    }
+    
+    if (dateModified) {
+      node->set_date_folder_modified(base::Time::FromDoubleT([dateModified timeIntervalSince1970]));
+    }
+    
+    for (IOSBookmarkNode* child : children) {
+      DCHECK(child->owned_); //Bookmark must be owned and non-const. IE: Allocated from iOS/Swift.
+      child->owned_ = false;
+      child->node_ =
+              node->Add(std::unique_ptr<bookmarks::BookmarkNode>(const_cast<bookmarks::BookmarkNode*>(child->node_)));
+    }
+    
+    self->node_ = node;
+    self->model_ = nil;
+    self->owned_ = true;
   }
   return self;
 }
 
 - (void)dealloc {
+  if (self->owned_) {
+    // All Objective-C++ class pointers are reference counted.
+    // No need for copy or move constructor & assignment operators.
+    // They're automatic RAII.. So we can safely delete an owned raw pointer here.
+    delete self->node_;
+    self->node_ = nullptr;
+    self->owned_ = false;
+  }
   self->node_ = nullptr;
   self->model_ = nullptr;
 }
@@ -93,6 +151,7 @@
 
 - (void)setTitle:(NSString*)title {
   DCHECK(node_);
+  DCHECK(model_);
   model_->SetTitle(node_, base::SysNSStringToUTF16(title));
 }
 
@@ -113,6 +172,7 @@
 
 - (void)setUrl:(NSURL*)url {
   DCHECK(node_);
+  DCHECK(model_);
   model_->SetURL(node_, net::GURLWithNSURL(url));
 }
 
@@ -124,6 +184,7 @@
 
 - (UIImage*)icon {
   DCHECK(node_);
+  DCHECK(model_);
   gfx::Image icon = model_->GetFavicon(node_);
   return icon.IsEmpty() ? nullptr : icon.ToUIImage();
 }
@@ -152,6 +213,7 @@
 
 - (void)setDateAdded:(NSDate*)date {
   DCHECK(node_);
+  DCHECK(model_);
   model_->SetDateAdded(node_,
                        base::Time::FromDoubleT([date timeIntervalSince1970]));
 }
@@ -164,6 +226,7 @@
 
 - (void)setDateFolderModified:(NSDate*)date {
   DCHECK(node_);
+  DCHECK(model_);
   model_->SetDateFolderModified(
       node_, base::Time::FromDoubleT([date timeIntervalSince1970]));
 }
@@ -209,12 +272,14 @@
 
 - (void)setMetaInfo:(NSString*)key value:(NSString*)value {
   DCHECK(node_);
+  DCHECK(model_);
   model_->SetNodeMetaInfo(node_, base::SysNSStringToUTF8(key),
                           base::SysNSStringToUTF8(value));
 }
 
 - (void)deleteMetaInfo:(NSString*)key {
   DCHECK(node_);
+  DCHECK(model_);
   return model_->DeleteNodeMetaInfo(node_, base::SysNSStringToUTF8(key));
 }
 
@@ -302,6 +367,7 @@
 
 - (IOSBookmarkNode*)addChildFolderWithTitle:(NSString*)title {
   DCHECK(node_);
+  DCHECK(model_);
   if ([self isFolder]) {
     const bookmarks::BookmarkNode* node = model_->AddFolder(
         node_, node_->children().size(), base::SysNSStringToUTF16(title));
@@ -312,6 +378,7 @@
 
 - (IOSBookmarkNode*)addChildBookmarkWithTitle:(NSString*)title url:(NSURL*)url {
   DCHECK(node_);
+  DCHECK(model_);
   if ([self isFolder]) {
     const bookmarks::BookmarkNode* node = model_->AddURL(
         node_, node_->children().size(), base::SysNSStringToUTF16(title),
@@ -323,6 +390,7 @@
 
 - (void)moveToParent:(IOSBookmarkNode*)parent {
   DCHECK(node_);
+  DCHECK(model_);
   if ([parent isFolder]) {
     model_->Move(node_, parent->node_, parent->node_->children().size());
   }
@@ -330,6 +398,7 @@
 
 - (void)moveToParent:(IOSBookmarkNode*)parent index:(NSUInteger)index {
   DCHECK(node_);
+  DCHECK(model_);
   if ([parent isFolder]) {
     model_->Move(node_, parent->node_, index);
   }
@@ -342,6 +411,7 @@
 
 - (void)remove {
   DCHECK(node_);
+  DCHECK(model_);
   model_->Remove(node_);
   node_ = nil;
   model_ = nil;
@@ -349,6 +419,14 @@
 
 - (const bookmarks::BookmarkNode*)getNode {
   return self->node_;
+}
+
+- (void)setNativeParent:(bookmarks::BookmarkNode*)parent {
+  DCHECK(self->owned_);
+  self->owned_ = false;
+  self->node_ = parent->Add(
+                    std::unique_ptr<bookmarks::BookmarkNode>(
+                                      const_cast<bookmarks::BookmarkNode*>(self->node_)));
 }
 
 @end

@@ -9,7 +9,9 @@
 #include <memory>
 #include <vector>
 
-class ExportedRootBookmarkEntry;
+namespace bookmarks {
+class BookmarkNode;
+} // namespace bookmarks
 
 namespace base {
 class Value;
@@ -17,8 +19,10 @@ class Value;
 
 namespace ios {
 namespace bookmarks_encoder {
-std::unique_ptr<base::Value> EncodeBookmarks(
-    std::unique_ptr<ExportedRootBookmarkEntry> root_node);
+std::unique_ptr<base::Value> Encode(
+      const bookmarks::BookmarkNode* bookmark_bar_node,
+      const bookmarks::BookmarkNode* other_folder_node,
+      const bookmarks::BookmarkNode* mobile_folder_node);
 }  // namespace bookmarks_encoder
 }  // namespace ios
 
