@@ -12,7 +12,6 @@
 #include "brave/components/ipfs/buildflags/buildflags.h"
 #include "base/strings/utf_string_conversions.h"
 #include "brave/common/url_constants.h"
-#include "brave/components/moonpay/browser/buildflags/buildflags.h"
 #include "components/grit/brave_components_resources.h"
 #include "components/grit/brave_components_strings.h"
 #include "components/grit/components_resources.h"
@@ -173,9 +172,6 @@ void CustomizeWebUIHTMLSource(const std::string &name,
         { "geminiWidgetDesc", IDS_BRAVE_NEW_TAB_GEMINI_WIDGET_DESC },
         { "cardsToggleTitle", IDS_BRAVE_NEW_TAB_CARDS_TITLE },
         { "cardsToggleDesc", IDS_BRAVE_NEW_TAB_CARDS_DESC },
-#if BUILDFLAG(MOONPAY_ENABLED)
-        { "bitcoinDotComWidgetDesc", IDS_BRAVE_NEW_TAB_BITCOIN_DOT_COM_WIDGET_DESC },            // NOLINT
-#endif
 #if BUILDFLAG(CRYPTO_DOT_COM_ENABLED)
         { "cryptoDotComWidgetDesc", IDS_BRAVE_NEW_TAB_CRYPTO_DOT_COM_WIDGET_DESC },              // NOLINT
 #endif
@@ -337,16 +333,6 @@ void CustomizeWebUIHTMLSource(const std::string &name,
         { "geminiWidgetUnitPrice", IDS_GEMINI_WIDGET_UNIT_PRICE },
         { "geminiWidgetTotalPrice", IDS_GEMINI_WIDGET_TOTAL_PRICE },
         { "geminiWidgetTotalAmount", IDS_GEMINI_WIDGET_TOTAL_AMOUNT },
-#if BUILDFLAG(MOONPAY_ENABLED)
-        // Bitcoin.com widget
-        { "bitcoinDotComWidgetCurrency", IDS_BITCOIN_DOT_COM_CURRENCY },
-        { "bitcoinDotComWidgetAmount", IDS_BITCOIN_DOT_COM_AMOUNT },
-        { "bitcoinDotComWidgetEnterAmount", IDS_BITCOIN_DOT_COM_ENTER_AMOUNT },
-        { "bitcoinDotComWidgetFooterCopyOne", IDS_BITCOIN_DOT_COM_FOOTER_COPY_ONE },      // NOLINT
-        { "bitcoinDotComWidgetFooterCopyTwo", IDS_BITCOIN_DOT_COM_FOOTER_COPY_TWO },      // NOLINT
-        { "bitcoinDotComWidgetBuy", IDS_BINANCE_WIDGET_BUY },
-        { "bitcoinDotComAmountError", IDS_BITCOIN_DOT_COM_AMOUNT_ERROR },
-#endif
 #if BUILDFLAG(CRYPTO_DOT_COM_ENABLED)
         { "cryptoDotComWidgetShowPrice", IDS_CRYPTO_DOT_COM_WIDGET_SHOW_PRICE },
         { "cryptoDotComWidgetBuy", IDS_BINANCE_WIDGET_BUY },

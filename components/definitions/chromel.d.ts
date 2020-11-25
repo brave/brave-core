@@ -199,13 +199,6 @@ declare namespace chrome.braveTogether {
   const isSupported: (callback: (supported: boolean) => void) => {}
 }
 
-declare namespace chrome.moonpay {
-  const isBitcoinDotComSupported: (callback: (supported: boolean) => void) => {}
-  const onBuyBitcoinDotComCrypto: () => void
-  const onInteractionBitcoinDotCom: () => void
-  const getBitcoinDotComInteractions: (callback: (interactions: Record<string, string>) => void) => {}
-}
-
 declare namespace chrome.rewardsNotifications {
   const addNotification: (type: number, args: string[], id: string) => {}
   const deleteNotification: (id: string) => {}

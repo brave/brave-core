@@ -229,7 +229,6 @@ source_set("ui") {
     "//brave/components/l10n/browser",
     "//brave/components/l10n/common",
     "//brave/components/crypto_dot_com/browser/buildflags:buildflags",
-    "//brave/components/moonpay/browser/buildflags:buildflags",
     "//brave/components/ntp_background_images/browser",
     "//brave/components/ntp_background_images/common",
     "//brave/components/ntp_widget_utils/browser",

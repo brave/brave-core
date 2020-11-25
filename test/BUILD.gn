@@ -16,7 +16,6 @@ import("//brave/components/brave_webtorrent/browser/buildflags/buildflags.gni")
 import("//brave/components/gemini/browser/buildflags/buildflags.gni")
 import("//brave/components/greaselion/browser/buildflags/buildflags.gni")
 import("//brave/components/ipfs/buildflags/buildflags.gni")
-import("//brave/components/moonpay/browser/buildflags/buildflags.gni")
 import("//brave/components/speedreader/buildflags.gni")
 import("//brave/components/tor/buildflags/buildflags.gni")
 import("//brave/test/testing.gni")
@@ -705,11 +704,6 @@ if (!is_android) {
       deps += [
         "//brave/components/gemini/browser",
       ]
-    }
-
-    if (moonpay_enabled) {
-      sources += [ "//brave/browser/extensions/api/moonpay_api_browsertest.cc" ]
-      deps += [ "//brave/components/moonpay/common" ]
     }
 
     if (crypto_dot_com_enabled) {

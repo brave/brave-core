@@ -27,7 +27,6 @@
 #include "brave/components/ipfs/buildflags/buildflags.h"
 #include "brave/components/l10n/browser/locale_helper.h"
 #include "brave/components/l10n/common/locale_util.h"
-#include "brave/components/moonpay/browser/buildflags/buildflags.h"
 #include "brave/components/search_engines/brave_prepopulated_engines.h"
 #include "brave/components/speedreader/buildflags.h"
 #include "brave/components/tor/buildflags/buildflags.h"
@@ -70,11 +69,6 @@
 
 #if BUILDFLAG(GEMINI_ENABLED)
 #include "brave/components/gemini/browser/pref_names.h"
-#endif
-
-#if BUILDFLAG(MOONPAY_ENABLED)
-#include "brave/components/moonpay/browser/moonpay_pref_utils.h"
-#include "brave/components/moonpay/common/pref_names.h"
 #endif
 
 #if BUILDFLAG(ENABLE_BRAVE_PERF_PREDICTOR)
@@ -322,10 +316,6 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
 
 #if BUILDFLAG(ENABLE_SPEEDREADER)
   speedreader::SpeedreaderService::RegisterPrefs(registry);
-#endif
-
-#if BUILDFLAG(MOONPAY_ENABLED)
-  moonpay::MoonpayPrefUtils::RegisterPrefs(registry);
 #endif
 
 #if BUILDFLAG(CRYPTO_DOT_COM_ENABLED)

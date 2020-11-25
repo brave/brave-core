@@ -18,7 +18,6 @@ export type InitialData = {
   togetherSupported: boolean
   geminiSupported: boolean
   binanceSupported: boolean
-  bitcoinDotComSupported: boolean
   cryptoDotComSupported: boolean
 }
 
@@ -48,7 +47,6 @@ export async function getInitialData (): Promise<InitialData> {
       brandedWallpaperData,
       togetherSupported,
       geminiSupported,
-      bitcoinDotComSupported,
       cryptoDotComSupported,
       binanceSupported
     ] = await Promise.all([
@@ -95,7 +93,6 @@ export async function getInitialData (): Promise<InitialData> {
       brandedWallpaperData,
       togetherSupported,
       geminiSupported,
-      bitcoinDotComSupported,
       cryptoDotComSupported,
       binanceSupported
     } as InitialData

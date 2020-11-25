@@ -7,7 +7,6 @@ import("//brave/components/brave_wayback_machine/buildflags/buildflags.gni")
 import("//brave/components/brave_webtorrent/browser/buildflags/buildflags.gni")
 import("//brave/components/brave_together/buildflags/buildflags.gni")
 import("//brave/components/ipfs/buildflags/buildflags.gni")
-import("//brave/components/moonpay/browser/buildflags/buildflags.gni")
 import("//brave/components/tor/buildflags/buildflags.gni")
 import("//build/config/features.gni")
 import("//components/gcm_driver/config.gni")
@@ -83,19 +82,6 @@ source_set("extensions") {
     "//ui/base",
     "//url",
   ]
-
-  if (moonpay_enabled) {
-    sources += [
-      "api/moonpay_api.cc",
-      "api/moonpay_api.h",
-    ]
-
-    deps += [
-      "//brave/components/moonpay/browser/",
-      "//brave/components/moonpay/common/",
-      "//brave/components/ntp_widget_utils/browser",
-    ]
-  }
 
   if (brave_wallet_enabled) {
     sources += [
