@@ -258,7 +258,6 @@ export const SettingsRow = styled<SettingsRowProps, 'div'>('div')`
   grid-template-columns: auto max-content;
   align-items: center;
   width: 100%;
-  height: 28px;
   font-weight: normal;
   ${p => p.isChildSetting && css`
     padding-left: 36px;
