@@ -57,10 +57,13 @@ content::WebContents* GetWebContents(int render_process_id,
 void ShouldBlockAdOnTaskRunner(std::shared_ptr<BraveRequestInfo> ctx,
                                base::Optional<std::string> canonical_name) {
   bool did_match_exception = false;
-  std::string tab_host = ctx->tab_origin.host();
+  if (!ctx->initiator_url.is_valid()) {
+    return;
+  }
+  std::string source_host = ctx->initiator_url.host();
   if (!g_brave_browser_process->ad_block_service()->ShouldStartRequest(
-          ctx->request_url, ctx->resource_type, tab_host, &did_match_exception,
-          &ctx->mock_data_url)) {
+          ctx->request_url, ctx->resource_type, source_host,
+          &did_match_exception, &ctx->mock_data_url)) {
     ctx->blocked_by = kAdBlocked;
   } else if (!did_match_exception && canonical_name.has_value() &&
              ctx->request_url.host() != *canonical_name &&
@@ -72,8 +75,8 @@ void ShouldBlockAdOnTaskRunner(std::shared_ptr<BraveRequestInfo> ctx,
     const GURL canonical_url = ctx->request_url.ReplaceComponents(replacements);
 
     if (!g_brave_browser_process->ad_block_service()->ShouldStartRequest(
-            canonical_url, ctx->resource_type, tab_host, &did_match_exception,
-            &ctx->mock_data_url)) {
+            canonical_url, ctx->resource_type, source_host,
+            &did_match_exception, &ctx->mock_data_url)) {
       ctx->blocked_by = kAdBlocked;
     }
   }
