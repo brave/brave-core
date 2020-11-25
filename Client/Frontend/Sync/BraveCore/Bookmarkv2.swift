@@ -258,7 +258,9 @@ extension Bookmarkv2 {
     
     public class func reorderBookmarks(frc: BookmarksV2FetchResultsController?, sourceIndexPath: IndexPath,
                                        destinationIndexPath: IndexPath) {
-        if let node = frc?.object(at: sourceIndexPath)?.bookmarkNode,
+        guard let frc = frc else { return }
+        
+        if let node = frc.object(at: sourceIndexPath)?.bookmarkNode,
            let parent = node.parent ?? bookmarksAPI.mobileNode {
             
             //Moving to the very last index.. same as appending..
@@ -267,6 +269,12 @@ extension Bookmarkv2 {
             } else {
                 node.move(toParent: parent, index: UInt(destinationIndexPath.row))
             }
+            
+            //Notify the delegate that items did move..
+            //This is already done automatically in `Bookmarkv2Fetcher` listener.
+            //However, the Brave-Core delegate is being called before the move is actually complete OR too quickly
+            //So to fix it, we reload here AFTER the move is done so the UI can update accordingly.
+            frc.delegate?.controllerDidReloadContents(frc)
         }
     }
 }
