@@ -39,9 +39,13 @@ void EnableWidevineCdmComponent(content::WebContents* web_contents) {
 }
 
 int GetWidevinePermissionRequestTextFrangmentResourceId(bool for_restart) {
+#if defined(OS_LINUX)
   return for_restart
       ? IDS_WIDEVINE_PERMISSION_REQUEST_TEXT_FRAGMENT_RESTART_BROWSER
-      : IDS_WIDEVINE_PERMISSION_REQUEST_TEXT_FRAGMENT;
+      : IDS_WIDEVINE_PERMISSION_REQUEST_TEXT_FRAGMENT_INSTALL;
+#else
+  return IDS_WIDEVINE_PERMISSION_REQUEST_TEXT_FRAGMENT;
+#endif
 }
 
 void RequestWidevinePermission(content::WebContents* web_contents,
