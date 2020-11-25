@@ -40,24 +40,17 @@ WeeklyStorage::WeeklyStorage(PrefService* prefs,
 WeeklyStorage::~WeeklyStorage() = default;
 
 void WeeklyStorage::AddDelta(uint64_t delta) {
-  base::Time now_midnight = clock_->Now().LocalMidnight();
-  base::Time last_saved_midnight;
+  FilterToWeek();
+  daily_values_.front().value += delta;
+  Save();
+}
 
-  if (!daily_values_.empty()) {
-    last_saved_midnight = daily_values_.front().day;
+void WeeklyStorage::ReplaceTodaysValueIfGreater(uint64_t value) {
+  FilterToWeek();
+  DailyValue today = daily_values_.front();
+  if (today.value < value) {
+    today.value = value;
   }
-
-  if (now_midnight - last_saved_midnight > base::TimeDelta()) {
-    // Day changed. Since we consider only small incoming intervals, lets just
-    // save it with a new timestamp.
-    daily_values_.push_front({now_midnight, delta});
-    if (daily_values_.size() > kDaysInWeek) {
-      daily_values_.pop_back();
-    }
-  } else {
-    daily_values_.front().value += delta;
-  }
-
   Save();
 }
 
@@ -100,6 +93,24 @@ bool WeeklyStorage::IsOneWeekPassed() const {
   // TODO(iefremov): This is not true 100% (if the browser was launched once
   // per week just after installation, for example).
   return daily_values_.size() == kDaysInWeek;
+}
+
+void WeeklyStorage::FilterToWeek() {
+  base::Time now_midnight = clock_->Now().LocalMidnight();
+  base::Time last_saved_midnight;
+
+  if (!daily_values_.empty()) {
+    last_saved_midnight = daily_values_.front().day;
+  }
+
+  if (now_midnight - last_saved_midnight > base::TimeDelta()) {
+    // Day changed. Since we consider only small incoming intervals, lets just
+    // save it with a new timestamp.
+    daily_values_.push_front({now_midnight, 0});
+    if (daily_values_.size() > kDaysInWeek) {
+      daily_values_.pop_back();
+    }
+  }
 }
 
 void WeeklyStorage::Load() {
