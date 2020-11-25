@@ -171,13 +171,12 @@ void BatAdsImpl::GetAdsHistory(
   std::move(callback).Run(history.ToJson());
 }
 
-void BatAdsImpl::GetTransactionHistory(
-    GetTransactionHistoryCallback callback) {
-  auto* holder = new CallbackHolder<GetTransactionHistoryCallback>(
+void BatAdsImpl::GetStatement(
+    GetStatementCallback callback) {
+  auto* holder = new CallbackHolder<GetStatementCallback>(
       AsWeakPtr(), std::move(callback));
 
-  ads_->GetTransactionHistory(std::bind(BatAdsImpl::OnGetTransactionHistory,
-      holder, _1, _2));
+  ads_->GetStatement(std::bind(BatAdsImpl::OnGetStatement, holder, _1, _2));
 }
 
 void BatAdsImpl::ToggleAdThumbUp(
@@ -275,8 +274,8 @@ void BatAdsImpl::OnRemoveAllHistory(
   delete holder;
 }
 
-void BatAdsImpl::OnGetTransactionHistory(
-    CallbackHolder<GetTransactionHistoryCallback>* holder,
+void BatAdsImpl::OnGetStatement(
+    CallbackHolder<GetStatementCallback>* holder,
     const bool success,
     const ads::StatementInfo& statement) {
   if (holder->is_valid()) {

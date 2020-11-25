@@ -211,14 +211,14 @@ export const onPendingContributions = (list: Rewards.PendingContribution[]) =>
     list
   })
 
-export const onTransactionHistory = (data: {adsEstimatedPendingRewards: number, adsNextPaymentDate: string, adsNotificationsReceivedThisMonth: number}) =>
-  action(types.ON_TRANSACTION_HISTORY, {
+export const onStatement = (data: {adsEstimatedPendingRewards: number, adsNextPaymentDate: string, adsReceivedThisMonth: number}) =>
+  action(types.ON_STATEMENT, {
     data
   })
 
-export const getTransactionHistory = () => action(types.GET_TRANSACTION_HISTORY)
+export const getStatement = () => action(types.GET_STATEMENT)
 
-export const onTransactionHistoryChanged = () => action(types.ON_TRANSACTION_HISTORY_CHANGED)
+export const onStatementChanged = () => action(types.ON_STATEMENT_CHANGED)
 
 export const onRecurringTipSaved = (success: boolean) => action(types.ON_RECURRING_TIP_SAVED, {
   success

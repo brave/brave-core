@@ -213,9 +213,11 @@ std::string ConfirmationsState::ToJson() {
       base::Value(std::move(failed_confirmations)));
 
   // Ad rewards
-  base::Value ad_rewards = ad_rewards_->GetAsDictionary();
-  dictionary.SetKey("ads_rewards",
-      base::Value(std::move(ad_rewards)));
+  if (ad_rewards_) {
+    base::Value ad_rewards = ad_rewards_->GetAsDictionary();
+    dictionary.SetKey("ads_rewards",
+        base::Value(std::move(ad_rewards)));
+  }
 
   // Transaction history
   base::Value transactions = GetTransactionsAsDictionary(transactions_);
@@ -642,6 +644,10 @@ bool ConfirmationsState::ParseNextTokenRedemptionDateFromDictionary(
 bool ConfirmationsState::ParseAdRewardsFromDictionary(
     base::DictionaryValue* dictionary) {
   DCHECK(dictionary);
+
+  if (!ad_rewards_) {
+    return false;
+  }
 
   base::Value* ad_rewards_dictionary = dictionary->FindDictKey("ads_rewards");
   if (!ad_rewards_dictionary) {

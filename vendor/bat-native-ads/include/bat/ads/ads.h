@@ -28,7 +28,7 @@ using ShutdownCallback = std::function<void(const Result)>;
 
 using RemoveAllHistoryCallback = std::function<void(const Result)>;
 
-using GetTransactionHistoryCallback =
+using GetStatementCallback =
     std::function<void(const bool, const StatementInfo&)>;
 
 // |_environment| indicates that URL requests should use production, staging or
@@ -180,11 +180,12 @@ class ADS_EXPORT Ads {
       const uint64_t from_timestamp,
       const uint64_t to_timestamp) = 0;
 
-  // Should be called to get transaction history. The callback takes one
-  // argument — |StatementInfo| which contains a list of |TransactionInfo|
-  // transactions and associated earned ad rewards
-  virtual void GetTransactionHistory(
-      GetTransactionHistoryCallback callback) = 0;
+  // Should be called to get the statement of accounts. The callback takes one
+  // argument — |StatementInfo| which contains estimated pending rewards, next
+  // payment date, ads received this month, pending rewards, cleared
+  // transactions and uncleared transactions
+  virtual void GetStatement(
+      GetStatementCallback callback) = 0;
 
   // Should be called to indicate interest in the specified ad. This is a
   // toggle, so calling it again returns the setting to the neutral state

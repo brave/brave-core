@@ -50,8 +50,9 @@ using OnToggleSaveAdCallback =
 using OnToggleFlagAdCallback =
     base::OnceCallback<void(const std::string&, bool)>;
 
-using GetTransactionHistoryCallback = base::OnceCallback<void(
-    const bool, const double, const uint64_t, const uint64_t)>;
+using GetStatementCallback = base::OnceCallback<void(
+    const bool, const double, const uint64_t, const uint64_t,
+        const double, const double)>;
 
 class AdsService : public KeyedService {
  public:
@@ -128,8 +129,8 @@ class AdsService : public KeyedService {
       const uint64_t to_timestamp,
       OnGetAdsHistoryCallback callback) = 0;
 
-  virtual void GetTransactionHistory(
-      GetTransactionHistoryCallback callback) = 0;
+  virtual void GetStatement(
+      GetStatementCallback callback) = 0;
 
   virtual void ToggleAdThumbUp(
       const std::string& creative_instance_id,

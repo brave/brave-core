@@ -61,7 +61,7 @@ class SettingsPage extends React.Component<Props, State> {
     this.actions.getContributeList()
     this.actions.getPendingContributions()
     this.actions.getReconcileStamp()
-    this.actions.getTransactionHistory()
+    this.actions.getStatement()
     this.actions.getAdsData()
     this.actions.getExcludedSites()
   }
@@ -100,7 +100,7 @@ class SettingsPage extends React.Component<Props, State> {
       !prevProps.rewardsData.adsData.adsEnabled &&
       this.props.rewardsData.adsData.adsEnabled
     ) {
-      this.actions.getTransactionHistory()
+      this.actions.getStatement()
     }
   }
 

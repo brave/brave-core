@@ -299,8 +299,8 @@ AdsHistoryInfo AdsImpl::GetAdsHistory(
   return history::Get(filter_type, sort_type, from_timestamp, to_timestamp);
 }
 
-void AdsImpl::GetTransactionHistory(
-    GetTransactionHistoryCallback callback) {
+void AdsImpl::GetStatement(
+    GetStatementCallback callback) {
   StatementInfo statement_of_account;
 
   if (!IsInitialized()) {

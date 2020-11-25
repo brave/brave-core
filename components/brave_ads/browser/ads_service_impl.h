@@ -138,8 +138,8 @@ class AdsServiceImpl : public AdsService,
       const uint64_t to_timestamp,
       OnGetAdsHistoryCallback callback) override;
 
-  void GetTransactionHistory(
-      GetTransactionHistoryCallback callback) override;
+  void GetStatement(
+      GetStatementCallback callback) override;
 
   void ToggleAdThumbUp(
       const std::string& creative_instance_id,
@@ -269,8 +269,8 @@ class AdsServiceImpl : public AdsService,
       OnGetAdsHistoryCallback callback,
       const std::string& json);
 
-  void OnGetTransactionHistory(
-      GetTransactionHistoryCallback callback,
+  void OnGetStatement(
+      GetStatementCallback callback,
       const bool success,
       const std::string& json);
 

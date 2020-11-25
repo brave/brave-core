@@ -6,6 +6,8 @@
 #ifndef BAT_ADS_INTERNAL_ACCOUNT_ACCOUNT_H_
 #define BAT_ADS_INTERNAL_ACCOUNT_ACCOUNT_H_
 
+#include <stdint.h>
+
 #include <memory>
 #include <string>
 
@@ -21,6 +23,7 @@ class AdRewards;
 class Confirmations;
 class RedeemUnblindedPaymentTokens;
 class RefillUnblindedTokens;
+class Statement;
 class Wallet;
 struct StatementInfo;
 struct WalletInfo;
@@ -63,6 +66,7 @@ class Account
 
   std::unique_ptr<Wallet> wallet_;
   std::unique_ptr<AdRewards> ad_rewards_;
+  std::unique_ptr<Statement> statement_;
   std::unique_ptr<RedeemUnblindedPaymentTokens>
       redeem_unblinded_payment_tokens_;
   std::unique_ptr<RefillUnblindedTokens> refill_unblinded_tokens_;

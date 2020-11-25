@@ -15,6 +15,9 @@ class AdRewardsDelegate {
   virtual void OnDidReconcileAdRewards() = 0;
 
   virtual void OnFailedToReconcileAdRewards() {}
+
+  virtual void OnWillRetryToReconcileAdRewards() {}
+  virtual void OnDidRetryToReconcileAdRewards() {}
 };
 
 }  // namespace ads

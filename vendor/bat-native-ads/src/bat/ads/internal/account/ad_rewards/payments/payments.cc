@@ -179,17 +179,18 @@ base::Time Payments::CalculateNextPaymentDate(
   next_payment_date_exploded.millisecond = 999;
 
   base::Time next_payment_date;
-  bool success = base::Time::FromUTCExploded(next_payment_date_exploded,
+  const bool success = base::Time::FromUTCExploded(next_payment_date_exploded,
       &next_payment_date);
   DCHECK(success);
 
   return next_payment_date;
 }
 
-uint64_t Payments::GetTransactionCountForMonth(const base::Time& time) const {
+PaymentInfo Payments::GetForThisMonth(
+    const base::Time& time) const {
   const std::string month = GetTransactionMonth(time);
   const PaymentInfo payment = GetPaymentForTransactionMonth(month);
-  return payment.transaction_count;
+  return payment;
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -315,7 +316,8 @@ PaymentInfo Payments::GetPaymentForTransactionMonth(
   return PaymentInfo();
 }
 
-std::string Payments::GetTransactionMonth(const base::Time& time) const {
+std::string Payments::GetTransactionMonth(
+    const base::Time& time) const {
   base::Time::Exploded time_exploded;
   time.UTCExplode(&time_exploded);
 

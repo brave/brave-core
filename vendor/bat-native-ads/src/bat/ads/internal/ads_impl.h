@@ -158,8 +158,8 @@ class AdsImpl
       const uint64_t from_timestamp,
       const uint64_t to_timestamp) override;
 
-  void GetTransactionHistory(
-      GetTransactionHistoryCallback callback) override;
+  void GetStatement(
+      GetStatementCallback callback) override;
 
   AdContentInfo::LikeAction ToggleAdThumbUp(
       const std::string& creative_instance_id,

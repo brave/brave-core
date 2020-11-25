@@ -22,9 +22,12 @@ class Statement {
 
   StatementInfo Get(
       const int64_t from_timestamp,
-      const int64_t to_timestamp);
+      const int64_t to_timestamp) const;
 
  private:
+  double GetEarningsForThisMonth() const;
+  double GetEarningsForLastMonth() const;
+
   AdRewards* ad_rewards_;  // NOT OWNED
 };
 

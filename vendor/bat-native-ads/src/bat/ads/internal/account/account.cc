@@ -24,6 +24,7 @@ Account::Account(
     : confirmations_(confirmations),
       wallet_(std::make_unique<Wallet>()),
       ad_rewards_(std::make_unique<AdRewards>()),
+      statement_(std::make_unique<Statement>(ad_rewards_.get())),
       redeem_unblinded_payment_tokens_(std::make_unique<
           RedeemUnblindedPaymentTokens>()),
       refill_unblinded_tokens_(std::make_unique<RefillUnblindedTokens>()) {
@@ -85,22 +86,7 @@ StatementInfo Account::GetStatement(
     const int64_t from_timestamp,
     const int64_t to_timestamp) const {
   DCHECK(to_timestamp >= from_timestamp);
-
-  StatementInfo statement;
-
-  statement.estimated_pending_rewards =
-      ad_rewards_->GetEstimatedPendingRewards();
-
-  statement.next_payment_date_in_seconds =
-      ad_rewards_->GetNextPaymentDateInSeconds();
-
-  statement.ad_notifications_received_this_month =
-      ad_rewards_->GetAdNotificationsReceivedThisMonth();
-
-  statement.transactions =
-      transactions::GetCleared(from_timestamp, to_timestamp);
-
-  return statement;
+  return statement_->Get(from_timestamp, to_timestamp);
 }
 
 void Account::Reconcile() {

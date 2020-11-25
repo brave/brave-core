@@ -125,14 +125,16 @@ class RewardsDOMHandler : public WebUIMessageHandler,
       ledger::type::AutoContributePropertiesPtr properties);
   void GetPendingContributionsTotal(const base::ListValue* args);
   void OnGetPendingContributionsTotal(double amount);
-  void GetTransactionHistory(const base::ListValue* args);
+  void GetStatement(const base::ListValue* args);
   void GetExcludedSites(const base::ListValue* args);
 
-  void OnGetTransactionHistory(
+  void OnGetStatement(
       const bool success,
       const double estimated_pending_rewards,
-      const uint64_t next_payment_date_in_seconds,
-      const uint64_t ad_notifications_received_this_month);
+      const uint64_t next_payment_date,
+      const uint64_t ads_received_this_month,
+      const double earnings_this_month,
+      const double earnings_last_month);
 
   void OnGetRecurringTips(ledger::type::PublisherInfoList list);
 
@@ -233,7 +235,7 @@ class RewardsDOMHandler : public WebUIMessageHandler,
       brave_rewards::RewardsService* rewards_service,
       ledger::type::PublisherInfoList list) override;
 
-  void OnTransactionHistoryChanged(
+  void OnStatementChanged(
       brave_rewards::RewardsService* rewards_service) override;
 
   void OnRecurringTipSaved(
@@ -426,8 +428,8 @@ void RewardsDOMHandler::RegisterMessages() {
       base::BindRepeating(&RewardsDOMHandler::GetPendingContributionsTotal,
       base::Unretained(this)));
   web_ui()->RegisterMessageCallback(
-      "brave_rewards.getTransactionHistory",
-      base::BindRepeating(&RewardsDOMHandler::GetTransactionHistory,
+      "brave_rewards.getStatement",
+      base::BindRepeating(&RewardsDOMHandler::GetStatement,
       base::Unretained(this)));
   web_ui()->RegisterMessageCallback(
       "brave_rewards.setInlineTippingPlatformEnabled",
@@ -1365,18 +1367,20 @@ void RewardsDOMHandler::OnPublisherListNormalized(
   OnPublisherList(std::move(list));
 }
 
-void RewardsDOMHandler::GetTransactionHistory(
+void RewardsDOMHandler::GetStatement(
     const base::ListValue* args) {
-  ads_service_->GetTransactionHistory(base::Bind(
-      &RewardsDOMHandler::OnGetTransactionHistory,
+  ads_service_->GetStatement(base::Bind(
+      &RewardsDOMHandler::OnGetStatement,
       weak_factory_.GetWeakPtr()));
 }
 
-void RewardsDOMHandler::OnGetTransactionHistory(
+void RewardsDOMHandler::OnGetStatement(
     const bool success,
     const double estimated_pending_rewards,
-    const uint64_t next_payment_date_in_seconds,
-    const uint64_t ad_notifications_received_this_month) {
+    const uint64_t next_payment_date,
+    const uint64_t ads_received_this_month,
+    const double earnings_this_month,
+    const double earnings_last_month) {
   if (!success) {
     return;
   }
@@ -1390,33 +1394,31 @@ void RewardsDOMHandler::OnGetTransactionHistory(
   history.SetDouble("adsEstimatedPendingRewards",
       estimated_pending_rewards);
 
-  if (next_payment_date_in_seconds == 0) {
+  if (next_payment_date == 0) {
     history.SetString("adsNextPaymentDate", "");
   } else {
-    base::Time next_payment_date =
-        base::Time::FromDoubleT(next_payment_date_in_seconds);
+    base::Time time = base::Time::FromDoubleT(next_payment_date);
     history.SetString("adsNextPaymentDate",
-        base::TimeFormatWithPattern(next_payment_date, "MMMd"));
+        base::TimeFormatWithPattern(time, "MMMd"));
   }
 
-  history.SetInteger("adsAdNotificationsReceivedThisMonth",
-      ad_notifications_received_this_month);
+  history.SetInteger("adsReceivedThisMonth", ads_received_this_month);
 
   web_ui()->CallJavascriptFunctionUnsafe(
-      "brave_rewards.transactionHistory", history);
+      "brave_rewards.statement", history);
 }
 
-void RewardsDOMHandler::OnTransactionHistoryChanged(
+void RewardsDOMHandler::OnStatementChanged(
     brave_rewards::RewardsService* rewards_service) {
   if (web_ui()->CanCallJavascript()) {
     web_ui()->CallJavascriptFunctionUnsafe(
-        "brave_rewards.transactionHistoryChanged");
+        "brave_rewards.statementChanged");
   }
 }
 
 void RewardsDOMHandler::OnAdRewardsChanged() {
-  ads_service_->GetTransactionHistory(base::Bind(
-      &RewardsDOMHandler::OnGetTransactionHistory,
+  ads_service_->GetStatement(base::Bind(
+      &RewardsDOMHandler::OnGetStatement,
       weak_factory_.GetWeakPtr()));
 }
 
