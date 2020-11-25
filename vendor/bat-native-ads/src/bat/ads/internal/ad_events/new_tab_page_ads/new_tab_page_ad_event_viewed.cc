@@ -9,6 +9,7 @@
 
 #include "bat/ads/confirmation_type.h"
 #include "bat/ads/internal/ad_events/ad_events.h"
+#include "bat/ads/internal/ads_history/ads_history.h"
 #include "bat/ads/internal/ads_impl.h"
 #include "bat/ads/internal/confirmations/confirmations.h"
 #include "bat/ads/internal/database/tables/ad_events_database_table.h"
@@ -34,9 +35,11 @@ AdEventViewed::~AdEventViewed() = default;
 void AdEventViewed::Trigger(
     const NewTabPageAdInfo& ad) {
   database::table::AdEvents database_table(ads_);
+  AdsImpl* ads_copy = ads_;
   database_table.GetAll([=](
       const Result result,
       const AdEventList& ad_events) {
+    ads_ = ads_copy;
     if (result != Result::SUCCESS) {
       BLOG(1, "New tab page ad: Failed to get ad events");
       return;
@@ -84,6 +87,8 @@ void AdEventViewed::ConfirmAd(
 
     BLOG(6, "Successfully logged new tab page ad viewed event");
   });
+
+  ads_->get_ads_history()->AddNewTabPageAd(ad, kConfirmationType);
 
   ads_->get_confirmations()->ConfirmAd(ad.creative_instance_id,
       kConfirmationType);
