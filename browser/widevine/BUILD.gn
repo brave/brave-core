@@ -1,7 +1,5 @@
 import("//third_party/widevine/cdm/widevine.gni")
 
-assert(enable_widevine)
-
 source_set("widevine") {
   # Remove when https://github.com/brave/brave-browser/issues/10644 is resolved
   check_includes = false
@@ -28,4 +26,47 @@ source_set("widevine") {
     "widevine_utils.cc",
     "widevine_utils.h",
   ]
+}
+
+source_set("unittest") {
+  testonly = true
+  if (enable_widevine && !is_android) {
+    sources = [ "widevine_cdm_component_installer_unittest.cc" ]
+    deps = [
+      "//testing/gtest",
+      "//third_party/widevine/cdm:buildflags",
+    ]
+  }
+}
+
+source_set("browser_tests") {
+  testonly = true
+  defines = [ "HAS_OUT_OF_PROC_TEST_RUNNER" ]
+
+  if (enable_widevine) {
+    sources = [
+      "widevine_permission_request_browsertest.cc",
+      "widevine_prefs_migration_browsertest.cc",
+    ]
+
+    deps = [
+      ":widevine",
+      "//base",
+      "//brave/browser",
+      "//brave/browser:browser_process",
+      "//brave/common",
+      "//brave/common:pref_names",
+      "//chrome/browser",
+      "//chrome/browser/ui",
+      "//chrome/common",
+      "//chrome/test:test_support_ui",
+      "//components/prefs",
+      "//content/public/browser",
+      "//content/test:test_support",
+      "//testing/gtest",
+      "//third_party/widevine/cdm:buildflags",
+      "//ui/views",
+      "//url",
+    ]
+  }
 }
