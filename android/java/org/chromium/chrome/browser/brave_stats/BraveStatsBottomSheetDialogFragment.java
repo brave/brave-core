@@ -226,7 +226,7 @@ public class BraveStatsBottomSheetDialogFragment extends BottomSheetDialogFragme
                 Pair<String, String> adsTrackersPair =
                     BraveStatsUtil.getBraveStatsStringFormNumberPair(adsTrackersCount, false);
                 adsTrackersCountText.setText(
-                    String.format(getResources().getString(R.string.ntp_stat_text),
+                    String.format(mContext.getResources().getString(R.string.ntp_stat_text),
                                   adsTrackersPair.first, adsTrackersPair.second));
 
                 Pair<String, String> dataSavedPair =
@@ -253,7 +253,7 @@ public class BraveStatsBottomSheetDialogFragment extends BottomSheetDialogFragme
                 Pair<String, String> timeSavedPair =
                         BraveStatsUtil.getBraveStatsStringFromTime(timeSavedCount / 1000);
                 timeSavedCountText.setText(
-                        String.format(getResources().getString(R.string.ntp_stat_text),
+                        String.format(mContext.getResources().getString(R.string.ntp_stat_text),
                                 timeSavedPair.first, timeSavedPair.second));
                 timeSavedText.setText(mContext.getResources().getString(R.string.time_saved_text));
 
@@ -331,10 +331,10 @@ public class BraveStatsBottomSheetDialogFragment extends BottomSheetDialogFragme
 
                         mTrackerCountText.setText(String.valueOf(statPair.second));
                         mTrackerCountText.setTextColor(
-                            getResources().getColor(R.color.brave_stats_text_color));
+                            mContext.getResources().getColor(R.color.brave_stats_text_color));
                         mSiteText.setText(statPair.first);
                         mSiteText.setTextColor(
-                            getResources().getColor(R.color.brave_stats_text_color));
+                            mContext.getResources().getColor(R.color.brave_stats_text_color));
 
                         rootView.addView(layout);
                     }

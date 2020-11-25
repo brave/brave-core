@@ -307,7 +307,9 @@ public abstract class BraveActivity<C extends ChromeActivityComponent> extends C
             case RetentionNotificationUtil.BRAVE_STATS_ADS_TRACKERS:
             case RetentionNotificationUtil.BRAVE_STATS_DATA:
             case RetentionNotificationUtil.BRAVE_STATS_TIME:
-                if (!NewTabPage.isNTPUrl(getActivityTab().getUrlString())) {
+                if (getActivityTab() != null
+                    && getActivityTab().getUrlString() != null
+                    && !NewTabPage.isNTPUrl(getActivityTab().getUrlString())) {
                     getTabCreator(false).launchUrl(UrlConstants.NTP_URL, TabLaunchType.FROM_CHROME_UI);
                 }
                 break;
