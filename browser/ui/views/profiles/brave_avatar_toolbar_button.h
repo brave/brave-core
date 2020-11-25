@@ -10,16 +10,20 @@
 
 class BraveAvatarToolbarButton : public AvatarToolbarButton {
  public:
-  using AvatarToolbarButton::AvatarToolbarButton;
+  explicit BraveAvatarToolbarButton(Browser* browser);
 
   // ToolbarButton:
   void SetHighlight(const base::string16& highlight_text,
                     base::Optional<SkColor> highlight_color) override;
+  void UpdateColorsAndInsets() override;
 
  private:
+  // AvatarToolbarButton:
   ui::ImageModel GetAvatarIcon(
       ButtonState state,
       const gfx::Image& profile_identity_image) const override;
+  base::string16 GetAvatarTooltipText() const override;
+
   DISALLOW_COPY_AND_ASSIGN(BraveAvatarToolbarButton);
 };
 

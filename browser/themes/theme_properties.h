@@ -31,6 +31,7 @@ bool IsBraveThemeProperties(int id);
 }  // namespace BraveThemeProperties
 
 base::Optional<SkColor> MaybeGetDefaultColorForBraveUi(
-    int id, bool incognito, dark_mode::BraveDarkModeType dark_mode);
+    int id, bool incognito,
+    bool is_tor, dark_mode::BraveDarkModeType dark_mode);
 
 #endif  // BRAVE_BROWSER_THEMES_THEME_PROPERTIES_H_

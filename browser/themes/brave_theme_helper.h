@@ -19,7 +19,8 @@ class BraveThemeHelper : public ThemeHelper {
   BraveThemeHelper(const BraveThemeHelper&) = delete;
   BraveThemeHelper& operator=(const BraveThemeHelper&) = delete;
 
-  void SetTorOrGuest();
+  void set_is_tor() { is_tor_ = true; }
+  void set_is_guest() { is_guest_ = true; }
 
  protected:
   // ThemeHelper overrides:
@@ -35,7 +36,8 @@ class BraveThemeHelper : public ThemeHelper {
       bool* has_custom_color) const override;
 
  private:
-  bool is_tor_or_guest_ = false;
+  bool is_tor_ = false;
+  bool is_guest_ = false;
 };
 
 #endif  // BRAVE_BROWSER_THEMES_BRAVE_THEME_HELPER_H_

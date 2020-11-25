@@ -25,20 +25,24 @@ const SkColor kDarkOmniboxText = SkColorSetRGB(0xff, 0xff, 0xff);
 const SkColor kLightOmniboxText = SkColorSetRGB(0x42, 0x42, 0x42);
 
 // Location bar colors
-const SkColor kPrivateLocationBarBgBase = SkColorSetRGB(0x1b, 0x0e, 0x2c);
+const SkColor kPrivateLocationBarBgBase = SkColorSetRGB(0x0B, 0x07, 0x24);
+const SkColor kDarkLocationBarBgBase = SkColorSetRGB(0x18, 0x1A, 0x21);
+const SkColor kDarkLocationBarHoverBg = SkColorSetRGB(0x23, 0x25, 0x2F);
 
 SkColor GetLocationBarBackground(bool dark, bool priv, bool hover) {
   if (priv) {
-    return color_utils::HSLShift(kPrivateLocationBarBgBase,
-                                 {-1, -1, hover ? 0.54 : 0.52});
+    return hover ? color_utils::HSLShift(kPrivateLocationBarBgBase,
+                                         {-1, -1, 0.54})
+                 : kPrivateLocationBarBgBase;
   }
 
-  return dark ? (hover ? SkColorSetRGB(0x44, 0x44, 0x44)
-                       : SkColorSetRGB(0x22, 0x22, 0x22))
-              : (hover ? color_utils::AlphaBlend(
-                             SK_ColorWHITE,
-                             SkColorSetRGB(0xf3, 0xf3, 0xf3), 0.7f)
-                       : SK_ColorWHITE);
+  if (dark) {
+    return hover ? kDarkLocationBarHoverBg : kDarkLocationBarBgBase;
+  }
+
+  return hover ? color_utils::AlphaBlend(SK_ColorWHITE,
+                                         SkColorSetRGB(0xf3, 0xf3, 0xf3), 0.7f)
+               : SK_ColorWHITE;
 }
 
 // Omnibox result bg colors
@@ -55,11 +59,13 @@ SkColor GetOmniboxResultBackground(int id, bool dark, bool priv) {
 
   SkColor color;
   if (priv) {
-    color = color_utils::HSLShift(kPrivateLocationBarBgBase,
-                                  {-1, -1, high_contrast ? 0.45 : 0.56});
+    color = high_contrast ? color_utils::HSLShift(kPrivateLocationBarBgBase,
+                                                  {-1, -1, 0.45})
+                          : kPrivateLocationBarBgBase;
+  } else if (dark) {
+    color = high_contrast ? gfx::kGoogleGrey900 : kDarkLocationBarBgBase;
   } else {
-    color = dark ? (high_contrast ? gfx::kGoogleGrey900 : gfx::kGoogleGrey800)
-                 : SK_ColorWHITE;
+    color = SK_ColorWHITE;
   }
   return color_utils::BlendTowardMaxContrast(
       color,
@@ -76,10 +82,6 @@ bool IsUsingSystemTheme(const CustomThemeSupplier* theme_supplier) {
 }  // namespace
 
 BraveThemeHelper::~BraveThemeHelper() = default;
-
-void BraveThemeHelper::SetTorOrGuest() {
-  is_tor_or_guest_ = true;
-}
 
 SkColor BraveThemeHelper::GetDefaultColor(
     int id,
@@ -98,13 +100,13 @@ SkColor BraveThemeHelper::GetDefaultColor(
     return ThemeHelper::GetDefaultColor(id, incognito, theme_supplier);
 
   // Brave Tor profiles are always 'incognito' (for now)
-  if (!incognito && is_tor_or_guest_) {
+  if (!incognito && (is_tor_ || is_guest_)) {
     incognito = true;
   }
   const dark_mode::BraveDarkModeType type =
       dark_mode::GetActiveBraveDarkModeType();
   const base::Optional<SkColor> braveColor =
-      MaybeGetDefaultColorForBraveUi(id, incognito, type);
+      MaybeGetDefaultColorForBraveUi(id, incognito, is_tor_, type);
   if (braveColor) {
     return braveColor.value();
   }
@@ -136,7 +138,7 @@ base::Optional<SkColor> BraveThemeHelper::GetOmniboxColor(
 
   const bool dark = dark_mode::GetActiveBraveDarkModeType() ==
                     dark_mode::BraveDarkModeType::BRAVE_DARK_MODE_TYPE_DARK;
-  incognito = incognito || is_tor_or_guest_;
+  incognito = incognito || is_tor_ || is_guest_;
   // TODO(petemill): Get colors from color-pallete and theme constants
   switch (id) {
     case ThemeProperties::COLOR_OMNIBOX_BACKGROUND: {

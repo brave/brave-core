@@ -15,7 +15,6 @@ aggregate_vector_icons2("brave_vector_icons") {
     "speedreader.icon",
     "speedreader_on_active.icon",
     "speedreader_on_inactive.icon",
-    "tor_profile.icon",
   ]
 }
 

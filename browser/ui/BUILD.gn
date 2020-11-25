@@ -128,6 +128,10 @@ source_set("ui") {
       "views/download/brave_download_item_view.h",
       "views/frame/brave_browser_view.cc",
       "views/frame/brave_browser_view.h",
+      "views/frame/brave_opaque_browser_frame_view.cc",
+      "views/frame/brave_opaque_browser_frame_view.h",
+      "views/frame/brave_window_frame_graphic.cc",
+      "views/frame/brave_window_frame_graphic.h",
       "views/reader_mode/brave_reader_mode_icon_view.cc",
       "views/reader_mode/brave_reader_mode_icon_view.h",
       "views/rounded_separator.cc",
@@ -155,6 +159,20 @@ source_set("ui") {
         "views/translate/brave_translate_bubble_view.h",
         "views/translate/brave_translate_icon_view.cc",
         "views/translate/brave_translate_icon_view.h",
+      ]
+    }
+
+    if (is_win) {
+      sources += [
+        "views/frame/brave_glass_browser_frame_view.cc",
+        "views/frame/brave_glass_browser_frame_view.h",
+      ]
+    }
+
+    if (is_mac) {
+      sources += [
+        "views/frame/brave_browser_non_client_frame_view_mac.mm",
+        "views/frame/brave_browser_non_client_frame_view_mac.h",
       ]
     }
   }
