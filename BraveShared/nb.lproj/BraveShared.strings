@@ -646,23 +646,11 @@
 /* Placeholder example: 'You earned 42 BAT by browsing with Brave.' */
 "ntp.earningsReport" = "Du tjente %@ ved å surfe med Brave.";
 
-/* No comment provided by engineer. */
-"ntp.getPaidForThisImageTurnAds" = "Tjen tokener ved å vise dette bildet. Slå på Brave-annonser og begynn å støtte skaperne.";
-
-/* No comment provided by engineer. */
-"ntp.getPaidForThisImageTurnRewards" = "Tjen tokener for å vise dette bildet. Slå på Brave Rewards og begynn å støtte skaperne.";
-
-/* No comment provided by engineer. */
-"ntp.getPaidToSeeThisImage" = "Tjen opp tokens for å se dette bildet.";
-
 /* The context is to praise the user that they did a good job, to keep it up. It is used in full sentence like: 'Way to go! You earned 40 BAT last month.' */
 "ntp.goodJob" = "Bra jobba!";
 
 /* No comment provided by engineer. */
 "ntp.hideSponsoredImages" = "Skjul sponsede bilder";
-
-/* No comment provided by engineer. */
-"ntp.learnMoreAboutBrandedImages" = "Når du viser et sponset bilde, tjener du tokener som kan brukes til å støtte skaperne. Med Brave-annonser har du alltid kontroll over annonsene du ser.";
 
 /* No comment provided by engineer. */
 "ntp.learnMoreAboutRewards" = "Lær mer om Brave Rewards";
@@ -692,19 +680,10 @@
 "ntp.showMoreFavorites" = "Vis mer";
 
 /* No comment provided by engineer. */
-"ntp.supportWebCreatorsWithTokens" = "Tjen tokener og belønn skaperne for supert innhold mens du surfer.";
-
-/* No comment provided by engineer. */
-"ntp.turnOnBraveAds" = "Slå på Brave-annonser";
-
-/* No comment provided by engineer. */
-"ntp.turnOnBraveRewards" = "Slå på Brave Rewards";
+"ntp.sponsoredImageDescription" = "Du støtter innholdsskapere og utgivere ved å se dette sponsede bildet.";
 
 /* The placeholder says 'Terms of Service'. So full sentence goes like: 'By turning Rewards, you agree to the Terms of Service'. */
 "ntp.turnRewardsTos" = "Ved å slå på Rewards, godtar du %@.";
-
-/* No comment provided by engineer. */
-"ntp.youArePaidToSeeThisImage" = "Du tjener tokens for å se dette bildet.";
 
 /* Context menu item for opening all folder bookmarks */
 "OpenAllBookmarks" = "Åpne alle (%i)";

@@ -1,5 +1,4 @@
-/* The body of the screen explaining Brave Shields
-   The title of the screen explaining Brave Shields */
+/* The title of the screen explaining Brave Shields */
 "AboutBraveShields" = "О щитах Brave";
 
 /* No comment provided by engineer. */
@@ -90,22 +89,19 @@
 "OBPrivacyConsentYesButton" = "Разрешить однократную проверку буфера обмена";
 
 /* Detail text for rewards agreement onboarding screen */
-"OBRewardsAgreementDetail" = "Включая Rewards, вы принимаете";
+"OBRewardsAgreementDetail" = "Нажимая «Начать», вы принимаете";
 
 /* Detail text for rewards agreement onboarding screen */
 "OBRewardsAgreementDetailLink" = "Условия использования";
 
 /* Title for rewards agreement onboarding screen */
-"OBRewardsAgreementTitle" = "Brave Rewards";
+"OBRewardsAgreementTitle" = "Brave Rewards поддерживает создателей контента";
+
+/* Detail text for rewards onboarding screen */
+"OBRewardsDetail" = "Хотите поддерживать создателей контента, просматривая в Интернете объявления, которые не будут нарушать конфиденциальность ваших данных?";
 
 /* Detail text for rewards onboarding screen */
 "OBRewardsDetailInAdRegion" = "Зарабатывайте баллы и вознаграждайте авторов контента, пользуясь браузером.";
-
-/* Detail text for rewards onboarding screen */
-"OBRewardsDetailInAdRegionJapan" = "Зарабатывайте баллы и вознаграждайте авторов контента, пользуясь браузером.";
-
-/* Detail text for rewards onboarding screen */
-"OBRewardsDetailOutsideAdRegion" = "Поддерживайте свои любимые сайты и создателей, уделяя им внимание.";
 
 /* Title for rewards onboarding screen */
 "OBRewardsTitle" = "Brave Rewards";
@@ -129,7 +125,7 @@
 "OBShowMeButton" = "Показать";
 
 /* Button to show Brave Rewards. */
-"OBTurnOnButton" = "Включить";
+"OBTurnOnButton" = "Начать";
 
 /* Continue button to navigate to next onboarding screen. */
 "OnboardingContinueButton" = "Далее";
@@ -160,6 +156,61 @@
 
 /* Name of folder where restored favorites are retrieved */
 "RestoredFavoritesFolderName" = "Восстановленное избранное";
+
+/* Displayed when Brave Rewards is disabled */
+"rewards.disabledBody" = "Включите, если хотите поддерживать создателей контента";
+
+/* Displayed in the status container when rewards is disabled */
+"rewards.disabledStatusBody" = "Используя Brave Rewards, вы помогаете поддерживать создателей контента.";
+
+/* Displayed when Brave Rewards is enabled */
+"rewards.enabledBody" = "Вы помогаете поддерживать создателей контента";
+
+/* Displayed in the status container when rewards is enabled but you're not currently supporting any publishers (0 AC count) */
+"rewards.enabledStatusBody" = "Просматривая сайты, вы помогаете поддерживать создателей контента. Спасибо!";
+
+/* No comment provided by engineer. */
+"rewards.legacyWalletTransfer" = "Перенос устаревшего кошелька";
+
+/* No comment provided by engineer. */
+"rewards.legacyWalletTransferSubtitle" = "Однократный перенос имеющихся баллов";
+
+/* No comment provided by engineer. */
+"rewards.settingsFooterMessage" = "Баллы Brave Rewards временно недоступны на этом устройстве. Чтобы не потерять их, перенесите средства из мобильного кошелька в кошелек на компьютере.";
+
+/* No comment provided by engineer. */
+"rewards.settingsToggleMessage" = "Включив Brave Private Ads, вы будете автоматически поддерживать издателей и создателей контента. Brave Private Ads — это реклама, которая не нарушает конфиденциальность ваших данных.";
+
+/* No comment provided by engineer. */
+"rewards.settingsToggleTitle" = "Включить Brave Rewards";
+
+/* Displayed under verified publishers */
+"rewards.supportingPublisher" = "Вы помогаете поддерживать создателей контента, таких как этот издатель.";
+
+/* Displayed next to a number representing the total number of publishers supported */
+"rewards.totalSupportedCount" = "Количество создателей контента, которых вы поддерживаете в этом месяце.";
+
+/* Displayed under unverified publishers */
+"rewards.unverifiedPublisher" = "Этот создатель контента не прошел проверку, поэтому поддержка для него недоступна.";
+
+/* Title shown above the confirmation message after completing a wallet transfer successfully */
+"rewards.walletTransferCompleteTitle" = "Баланс перенесен";
+
+/* Message on the alert presented if wallet transfer fails */
+"rewards.walletTransferFailureAlertMessage" = "Не удалось подключиться к Brave, или произошла другая ошибка.";
+
+/* Title on the alert presented if wallet transfer fails */
+"rewards.walletTransferFailureAlertTitle" = "Попробуйте снова";
+
+/* A confirmation message shown to the user after completing a wallet transfer successfully
+   Describes the steps for using wallet transfer */
+"rewards.walletTransferStepsBody" = "Вы можете один раз перенести баллы Brave Rewards в кошелек Brave Rewards на компьютере.\n\n1. Откройте браузер Brave на компьютере.\n2. Перейдите по адресу brave://rewards.\n3. Нажмите «QR-код».\n4. Отсканируйте QR-код с помощью своего устройства.";
+
+/* Title above the steps to use wallet transfer */
+"rewards.walletTransferStepsTitle" = "Отсканируйте код однократного переноса";
+
+/* Title of the legacy wallet transfer screen */
+"rewards.walletTransferTitle" = "Перенос кошелька";
 
 /* No comment provided by engineer. */
 "RewardsInternalsAmount" = "Сумма";

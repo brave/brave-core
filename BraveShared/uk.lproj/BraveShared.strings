@@ -646,23 +646,11 @@
 /* Placeholder example: 'You earned 42 BAT by browsing with Brave.' */
 "ntp.earningsReport" = "Ви заробили %@ під час використання Brave.";
 
-/* No comment provided by engineer. */
-"ntp.getPaidForThisImageTurnAds" = "Заробляйте токени за перегляд цього зображення. Увімкніть Brave Ads і почніть підтримувати авторів.";
-
-/* No comment provided by engineer. */
-"ntp.getPaidForThisImageTurnRewards" = "Заробляйте токени за перегляд цього зображення. Увімкніть Brave Rewards і почніть підтримувати авторів.";
-
-/* No comment provided by engineer. */
-"ntp.getPaidToSeeThisImage" = "Заробляйте токени за перегляд цього зображення.";
-
 /* The context is to praise the user that they did a good job, to keep it up. It is used in full sentence like: 'Way to go! You earned 40 BAT last month.' */
 "ntp.goodJob" = "Так тримати!";
 
 /* No comment provided by engineer. */
 "ntp.hideSponsoredImages" = "Приховати рекламні зображення";
-
-/* No comment provided by engineer. */
-"ntp.learnMoreAboutBrandedImages" = "За перегляд рекламного зображення ви отримаєте токени, за допомогою яких можна підтримати авторів. Brave Ads дає змогу керувати рекламою, яку ви переглядатимете.";
 
 /* No comment provided by engineer. */
 "ntp.learnMoreAboutRewards" = "Докладніше про Brave Rewards";
@@ -692,19 +680,10 @@
 "ntp.showMoreFavorites" = "Показати інші";
 
 /* No comment provided by engineer. */
-"ntp.supportWebCreatorsWithTokens" = "Заробляйте токени під час перегляду вебсайтів і винагороджуйте авторів за чудовий уміст.";
-
-/* No comment provided by engineer. */
-"ntp.turnOnBraveAds" = "Увімкнути Brave Ads";
-
-/* No comment provided by engineer. */
-"ntp.turnOnBraveRewards" = "Увімкнути Brave Rewards";
+"ntp.sponsoredImageDescription" = "Ви підтримуєте авторів умісту та видавців, переглядаючи це рекламне зображення.";
 
 /* The placeholder says 'Terms of Service'. So full sentence goes like: 'By turning Rewards, you agree to the Terms of Service'. */
 "ntp.turnRewardsTos" = "Увімкнувши Rewards, ви приймаєте умови документа %@.";
-
-/* No comment provided by engineer. */
-"ntp.youArePaidToSeeThisImage" = "Ви заробляєте токени за перегляд цього зображення.";
 
 /* Context menu item for opening all folder bookmarks */
 "OpenAllBookmarks" = "Відкрити всі (%i)";

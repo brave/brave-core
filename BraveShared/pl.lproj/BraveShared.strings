@@ -646,23 +646,11 @@
 /* Placeholder example: 'You earned 42 BAT by browsing with Brave.' */
 "ntp.earningsReport" = "Udało Ci się zarobić %@, przeglądając z Brave.";
 
-/* No comment provided by engineer. */
-"ntp.getPaidForThisImageTurnAds" = "Zarabiaj tokeny, wyświetlając ten obraz. Włącz Brave Ads i zacznij wspierać twórców.";
-
-/* No comment provided by engineer. */
-"ntp.getPaidForThisImageTurnRewards" = "Zarabiaj tokeny, wyświetlając ten obraz. Włącz Brave Rewards i zacznij wspierać twórców.";
-
-/* No comment provided by engineer. */
-"ntp.getPaidToSeeThisImage" = "Zarabiaj tokeny, wyświetlając ten obraz.";
-
 /* The context is to praise the user that they did a good job, to keep it up. It is used in full sentence like: 'Way to go! You earned 40 BAT last month.' */
 "ntp.goodJob" = "Świetnie!";
 
 /* No comment provided by engineer. */
 "ntp.hideSponsoredImages" = "Ukryj sponsorowane obrazy";
-
-/* No comment provided by engineer. */
-"ntp.learnMoreAboutBrandedImages" = "Za wyświetlenie sponsorowanego obrazu otrzymasz tokeny, które można wykorzystać do wspierania twórców. Dzięki Brave Ads będziesz mieć zawsze kontrolę nad reklamami, które oglądasz.";
 
 /* No comment provided by engineer. */
 "ntp.learnMoreAboutRewards" = "Dowiedz się więcej o Brave Rewards";
@@ -692,19 +680,10 @@
 "ntp.showMoreFavorites" = "Pokaż więcej";
 
 /* No comment provided by engineer. */
-"ntp.supportWebCreatorsWithTokens" = "Zarabiaj tokeny i, przeglądając, nagradzaj twórców za tworzenie świetnych treści.";
-
-/* No comment provided by engineer. */
-"ntp.turnOnBraveAds" = "Włącz Brave Ads";
-
-/* No comment provided by engineer. */
-"ntp.turnOnBraveRewards" = "Włącz Brave Rewards";
+"ntp.sponsoredImageDescription" = "Wspierasz twórców i wydawców treści, wyświetlając ten sponsorowany obraz.";
 
 /* The placeholder says 'Terms of Service'. So full sentence goes like: 'By turning Rewards, you agree to the Terms of Service'. */
 "ntp.turnRewardsTos" = "Włączając nagrody, akceptujesz %@.";
-
-/* No comment provided by engineer. */
-"ntp.youArePaidToSeeThisImage" = "Zarabiasz tokeny, wyświetlając ten obraz.";
 
 /* Context menu item for opening all folder bookmarks */
 "OpenAllBookmarks" = "Otwórz wszystko (%i)";

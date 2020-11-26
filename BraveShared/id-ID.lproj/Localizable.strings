@@ -1,5 +1,4 @@
-/* The body of the screen explaining Brave Shields
-   The title of the screen explaining Brave Shields */
+/* The title of the screen explaining Brave Shields */
 "AboutBraveShields" = "Tentang Perisai Brave";
 
 /* No comment provided by engineer. */
@@ -90,22 +89,19 @@
 "OBPrivacyConsentYesButton" = "Izinkan pemeriksaan clipboard satu kali";
 
 /* Detail text for rewards agreement onboarding screen */
-"OBRewardsAgreementDetail" = "Dengan mengaktifkan Brave Rewards, berarti Anda setuju dengan";
+"OBRewardsAgreementDetail" = "Dengan mengetuk Mulai, Anda menyetujui";
 
 /* Detail text for rewards agreement onboarding screen */
 "OBRewardsAgreementDetailLink" = "Persyaratan Layanan";
 
 /* Title for rewards agreement onboarding screen */
-"OBRewardsAgreementTitle" = "Brave Rewards";
+"OBRewardsAgreementTitle" = "Brave Rewards mendukung para kreator";
+
+/* Detail text for rewards onboarding screen */
+"OBRewardsDetail" = "Mulailah mendukung kreator dengan iklan privat dan anonim selagi Anda meramban?";
 
 /* Detail text for rewards onboarding screen */
 "OBRewardsDetailInAdRegion" = "Dapatkan token dan beri reward pada pembuat konten atas konten hebat selagi Anda menjelajahi";
-
-/* Detail text for rewards onboarding screen */
-"OBRewardsDetailInAdRegionJapan" = "Dapatkan poin dan beri reward pada pembuat konten atas konten hebat selagi Anda menjelajahi";
-
-/* Detail text for rewards onboarding screen */
-"OBRewardsDetailOutsideAdRegion" = "Dukung situs web dan pembuat konten favorit Anda berdasarkan atensi Anda.";
 
 /* Title for rewards onboarding screen */
 "OBRewardsTitle" = "Brave Rewards";
@@ -129,7 +125,7 @@
 "OBShowMeButton" = "Tampilkan Kepada Saya";
 
 /* Button to show Brave Rewards. */
-"OBTurnOnButton" = "Aktifkan";
+"OBTurnOnButton" = "Mulai";
 
 /* Continue button to navigate to next onboarding screen. */
 "OnboardingContinueButton" = "Lanjutkan";
@@ -160,6 +156,61 @@
 
 /* Name of folder where restored favorites are retrieved */
 "RestoredFavoritesFolderName" = "Pilihan Favorit Dikembalikan";
+
+/* Displayed when Brave Rewards is disabled */
+"rewards.disabledBody" = "Aktifkan untuk membantu mendukung para kreator konten";
+
+/* Displayed in the status container when rewards is disabled */
+"rewards.disabledStatusBody" = "Menggunakan Brave Rewards akan membantu mendukung kreator konten sembari Anda meramban.";
+
+/* Displayed when Brave Rewards is enabled */
+"rewards.enabledBody" = "Anda membantu mendukung para kreator konten";
+
+/* Displayed in the status container when rewards is enabled but you're not currently supporting any publishers (0 AC count) */
+"rewards.enabledStatusBody" = "Terima kasih karena telah membantu mendukung kreator konten sembari Anda meramban!";
+
+/* No comment provided by engineer. */
+"rewards.legacyWalletTransfer" = "Transfer Dompet Lama";
+
+/* No comment provided by engineer. */
+"rewards.legacyWalletTransferSubtitle" = "Token transfer sekali yang sudah ada";
+
+/* No comment provided by engineer. */
+"rewards.settingsFooterMessage" = "Pembayaran Brave Rewards sedang tidak tersedia di perangkat ini. Transfer dana dompet Anda yang ada ke dompet desktop untuk tetap menyimpan token Anda.";
+
+/* No comment provided by engineer. */
+"rewards.settingsToggleMessage" = "Dukung para kreator dan penerbit konten secara otomatis dengan mengaktifkan Brave Private Ads. Brave Private Ads adalah iklan yang menjaga privasi dan yang memberi imbalan kepada kreator konten. ";
+
+/* No comment provided by engineer. */
+"rewards.settingsToggleTitle" = "Aktifkan Brave Rewards";
+
+/* Displayed under verified publishers */
+"rewards.supportingPublisher" = "Anda membantu mendukung para kreator konten seperti yang satu ini.";
+
+/* Displayed next to a number representing the total number of publishers supported */
+"rewards.totalSupportedCount" = "Jumlah kreator konten yang Anda bantu dukung bulan ini.";
+
+/* Displayed under unverified publishers */
+"rewards.unverifiedPublisher" = "Kreator ini belum diverifikasi dan tidak akan disertakan dalam dukungan kreator.";
+
+/* Title shown above the confirmation message after completing a wallet transfer successfully */
+"rewards.walletTransferCompleteTitle" = "Transfer saldo telah dimulai";
+
+/* Message on the alert presented if wallet transfer fails */
+"rewards.walletTransferFailureAlertMessage" = "Brave tidak mendapatkan koneksi, ada yang salah atau rusak.";
+
+/* Title on the alert presented if wallet transfer fails */
+"rewards.walletTransferFailureAlertTitle" = "Coba Lagi";
+
+/* A confirmation message shown to the user after completing a wallet transfer successfully
+   Describes the steps for using wallet transfer */
+"rewards.walletTransferStepsBody" = "Saldo token Brave Rewards Anda dapat ditransfer to dompet desktop Brave Rewards yang ada, satu demi satu.\n\n1. Buka Peramban Brave pada desktop Anda\n2. Navigasi ke brave://rewards\n3. Klik \"Kode QR\"'\n4. Pindai Kode QR dengan perangkat Anda";
+
+/* Title above the steps to use wallet transfer */
+"rewards.walletTransferStepsTitle" = "Pindai Kode Sekali Transfer";
+
+/* Title of the legacy wallet transfer screen */
+"rewards.walletTransferTitle" = "Transfer Dompet";
 
 /* No comment provided by engineer. */
 "RewardsInternalsAmount" = "Jumlah";
