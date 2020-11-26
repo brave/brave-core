@@ -522,35 +522,7 @@ class NewTabPageViewController: UIViewController, Themeable {
     ) {
         guard let braveTodaySection = layout.braveTodaySection else { return }
         
-        switch (oldValue, newValue) {
-        case (.loading, .loading):
-            // Nothing to do
-            break
-        case (.failure(let error1 as NSError),
-              .failure(let error2 as NSError)) where error1 == error2:
-            // Nothing to do
-            break
-        case (.loading(.failure(let error1 as NSError)),
-              .failure(let error2 as NSError)) where error1 == error2:
-            if let cell = collectionView.cellForItem(at: IndexPath(item: 0, section: braveTodaySection)) as? FeedCardCell<BraveTodayErrorView> {
-                cell.content.refreshButton.isLoading = false
-            }
-        case (_, .loading):
-            if collectionView.contentOffset.y == collectionView.contentInset.top ||
-                collectionView.numberOfItems(inSection: braveTodaySection) == 0 {
-                feedOverlayView.loaderView.isHidden = false
-                feedOverlayView.loaderView.start()
-                
-                if let section = layout.braveTodaySection {
-                    let numberOfItems = collectionView.numberOfItems(inSection: section)
-                    if numberOfItems > 0 {
-                        collectionView.deleteItems(
-                            at: (0..<numberOfItems).map({ IndexPath(item: $0, section: section) })
-                        )
-                    }
-                }
-            }
-        case (.loading, _):
+        func _completeLoading() {
             UIView.animate(withDuration: 0.2, animations: {
                 self.feedOverlayView.loaderView.alpha = 0.0
             }, completion: { _ in
@@ -573,6 +545,40 @@ class NewTabPageViewController: UIViewController, Themeable {
             } else {
                 collectionView.reloadSections(IndexSet(integer: braveTodaySection))
             }
+        }
+        
+        switch (oldValue, newValue) {
+        case (.loading, .loading):
+            // Nothing to do
+            break
+        case (.failure(let error1 as NSError),
+              .failure(let error2 as NSError)) where error1 == error2:
+            // Nothing to do
+            break
+        case (.loading(.failure(let error1 as NSError)),
+              .failure(let error2 as NSError)) where error1 == error2:
+            if let cell = collectionView.cellForItem(at: IndexPath(item: 0, section: braveTodaySection)) as? FeedCardCell<BraveTodayErrorView> {
+                cell.content.refreshButton.isLoading = false
+            } else {
+                _completeLoading()
+            }
+        case (_, .loading):
+            if collectionView.contentOffset.y == collectionView.contentInset.top ||
+                collectionView.numberOfItems(inSection: braveTodaySection) == 0 {
+                feedOverlayView.loaderView.isHidden = false
+                feedOverlayView.loaderView.start()
+                
+                if let section = layout.braveTodaySection {
+                    let numberOfItems = collectionView.numberOfItems(inSection: section)
+                    if numberOfItems > 0 {
+                        collectionView.deleteItems(
+                            at: (0..<numberOfItems).map({ IndexPath(item: $0, section: section) })
+                        )
+                    }
+                }
+            }
+        case (.loading, _):
+            _completeLoading()
         default:
             collectionView.reloadSections(IndexSet(integer: braveTodaySection))
         }
@@ -585,6 +591,10 @@ class NewTabPageViewController: UIViewController, Themeable {
             // Reload contents if the user is not currently scrolled into the feed
             loadFeedContents()
         } else {
+            if case .failure = feedDataSource.state {
+                // Refresh button already exists on the users failure card
+                return
+            }
             // Possibly show the "new content available" button
             if feedDataSource.shouldLoadContent {
                 feedOverlayView.showNewContentAvailableButton()
