@@ -262,7 +262,7 @@ export const onExternalWallet = (result: number, wallet: Rewards.ExternalWallet)
   wallet
 })
 
-export const onVerifyOnboardingDisplaed = () => action(types.ON_VERIFY_ONBOARDING_DISPLAYED)
+export const onVerifyOnboardingDisplayed = () => action(types.ON_VERIFY_ONBOARDING_DISPLAYED)
 
 export const processRewardsPageUrl = (path: string, query: string) => action(types.PROCESS_REWARDS_PAGE_URL, {
   path,
