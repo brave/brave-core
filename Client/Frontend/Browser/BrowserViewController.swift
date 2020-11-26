@@ -2491,10 +2491,6 @@ extension BrowserViewController: TabDelegate {
         
         tab.addContentScript(RewardsReporting(rewards: rewards, tab: tab), name: RewardsReporting.name())
         tab.addContentScript(AdsMediaReporting(rewards: rewards, tab: tab), name: AdsMediaReporting.name())
-        
-        #if !NO_SKUS
-        tab.addContentScript(PaymentRequestExtension(rewards: rewards, tab: tab, paymentRequested: self.paymentRequested), name: PaymentRequestExtension.name())
-        #endif
     }
 
     func tab(_ tab: Tab, willDeleteWebView webView: WKWebView) {
