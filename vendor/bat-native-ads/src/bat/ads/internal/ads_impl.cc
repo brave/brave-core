@@ -40,6 +40,7 @@
 #include "bat/ads/internal/features/features.h"
 #include "bat/ads/internal/logging.h"
 #include "bat/ads/internal/platform/platform_helper.h"
+#include "bat/ads/internal/privacy/tokens/token_generator.h"
 #include "bat/ads/internal/privacy/unblinded_tokens/unblinded_tokens.h"
 #include "bat/ads/internal/tab_manager/tab_info.h"
 #include "bat/ads/internal/tab_manager/tab_manager.h"
@@ -57,35 +58,8 @@ const int kIdleThresholdInSeconds = 15;
 AdsImpl::AdsImpl(
     AdsClient* ads_client)
     : ads_client_helper_(std::make_unique<AdsClientHelper>(ads_client)),
-      page_classifier_(std::make_unique<
-          ad_targeting::contextual::PageClassifier>()),
-      purchase_intent_classifier_(std::make_unique<
-          ad_targeting::behavioral::PurchaseIntentClassifier>()),
-      subdivision_targeting_(std::make_unique<
-          ad_targeting::geographic::SubdivisionTargeting>()),
-      confirmations_(std::make_unique<Confirmations>()),
-      account_(std::make_unique<Account>(confirmations_.get())),
-      ad_notification_(std::make_unique<AdNotification>()),
-      ad_targeting_(std::make_unique<AdTargeting>(page_classifier_.get(),
-          purchase_intent_classifier_.get())),
-      ad_notification_serving_(std::make_unique<
-          ad_notifications::AdServing>(ad_targeting_.get(),
-              subdivision_targeting_.get())),
-      ad_notifications_(std::make_unique<AdNotifications>()),
-      ad_server_(std::make_unique<AdServer>()),
-      ad_transfer_(std::make_unique<AdTransfer>()),
-      client_(std::make_unique<Client>()),
-      conversions_(std::make_unique<Conversions>()),
-      database_(std::make_unique<database::Initialize>()),
-      new_tab_page_ad_(std::make_unique<NewTabPageAd>()),
-      tab_manager_(std::make_unique<TabManager>()),
-      user_activity_(std::make_unique<UserActivity>()) {
-  account_->AddObserver(this);
-  ad_notification_->AddObserver(this);
-  ad_server_->AddObserver(this);
-  ad_transfer_->AddObserver(this);
-  conversions_->AddObserver(this);
-  new_tab_page_ad_->AddObserver(this);
+      token_generator_(std::make_unique<privacy::TokenGenerator>()) {
+  set(token_generator_.get());
 }
 
 AdsImpl::~AdsImpl() {
@@ -95,6 +69,15 @@ AdsImpl::~AdsImpl() {
   ad_transfer_->RemoveObserver(this);
   conversions_->RemoveObserver(this);
   new_tab_page_ad_->RemoveObserver(this);
+}
+
+void AdsImpl::set_for_testing(
+    privacy::TokenGeneratorInterface* token_generator) {
+  DCHECK(token_generator);
+
+  token_generator_.release();
+
+  set(token_generator);
 }
 
 bool AdsImpl::IsInitialized() {
@@ -260,6 +243,7 @@ void AdsImpl::OnUserModelUpdated(
 bool AdsImpl::GetAdNotification(
     const std::string& uuid,
     AdNotificationInfo* notification) {
+  DCHECK(notification);
   return ad_notifications_->Get(uuid, notification);
 }
 
@@ -377,6 +361,52 @@ bool AdsImpl::ToggleFlagAd(
 }
 
 ///////////////////////////////////////////////////////////////////////////////
+
+void AdsImpl::set(
+    privacy::TokenGeneratorInterface* token_generator) {
+  DCHECK(token_generator);
+
+  confirmations_ = std::make_unique<Confirmations>(token_generator_.get());
+
+  account_ = std::make_unique<Account>(confirmations_.get(),
+      token_generator_.get());
+  account_->AddObserver(this);
+
+  page_classifier_ =
+      std::make_unique<ad_targeting::contextual::PageClassifier>();
+  purchase_intent_classifier_ =
+      std::make_unique<ad_targeting::behavioral::PurchaseIntentClassifier>();
+  subdivision_targeting_ =
+      std::make_unique<ad_targeting::geographic::SubdivisionTargeting>();
+  ad_targeting_ = std::make_unique<AdTargeting>(page_classifier_.get(),
+      purchase_intent_classifier_.get());
+
+  ad_notification_serving_ = std::make_unique<ad_notifications::AdServing>(
+      ad_targeting_.get(), subdivision_targeting_.get());
+  ad_notification_ = std::make_unique<AdNotification>();
+  ad_notification_->AddObserver(this);
+  ad_notifications_ = std::make_unique<AdNotifications>();
+
+  ad_server_ = std::make_unique<AdServer>();
+  ad_server_->AddObserver(this);
+
+  ad_transfer_ = std::make_unique<AdTransfer>();
+  ad_transfer_->AddObserver(this);
+
+  client_ = std::make_unique<Client>();
+
+  conversions_ = std::make_unique<Conversions>();
+  conversions_->AddObserver(this);
+
+  database_ = std::make_unique<database::Initialize>();
+
+  new_tab_page_ad_ = std::make_unique<NewTabPageAd>();
+  new_tab_page_ad_->AddObserver(this);
+
+  tab_manager_ = std::make_unique<TabManager>();
+
+  user_activity_ = std::make_unique<UserActivity>();
+}
 
 void AdsImpl::InitializeStep2(
     const Result result,

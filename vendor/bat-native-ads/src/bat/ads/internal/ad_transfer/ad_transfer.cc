@@ -27,11 +27,13 @@ AdTransfer::~AdTransfer() = default;
 
 void AdTransfer::AddObserver(
     AdTransferObserver* observer) {
+  DCHECK(observer);
   observers_.AddObserver(observer);
 }
 
 void AdTransfer::RemoveObserver(
     AdTransferObserver* observer) {
+  DCHECK(observer);
   observers_.RemoveObserver(observer);
 }
 

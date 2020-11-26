@@ -10,13 +10,19 @@ namespace ads {
 
 class RefillUnblindedTokensDelegate {
  public:
-  RefillUnblindedTokensDelegate() = default;
-
   virtual ~RefillUnblindedTokensDelegate() = default;
 
-  virtual void OnDidRefillUnblindedTokens() = 0;
-  virtual void OnFailedToRefillUnblindedTokens() = 0;
-  virtual void OnDidRetryRefillingUnblindedTokens() = 0;
+  // Invoked to tell the delegate unblinded tokens were refilled
+  virtual void OnDidRefillUnblindedTokens() {}
+
+  // Invoked to tell the delegate unblinded tokens failed to refill
+  virtual void OnFailedToRefillUnblindedTokens() {}
+
+  // Invoked to tell the delegate that we will retry refilling unblinded tokens
+  virtual void OnWillRetryRefillingUnblindedTokens() {}
+
+  // Invoked to tell the delegate that we did retry refilling unblinded tokens
+  virtual void OnDidRetryRefillingUnblindedTokens() {}
 };
 
 }  // namespace ads

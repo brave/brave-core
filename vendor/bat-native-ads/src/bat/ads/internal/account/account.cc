@@ -13,6 +13,7 @@
 #include "bat/ads/internal/confirmations/confirmations_state.h"
 #include "bat/ads/internal/confirmations/confirmations.h"
 #include "bat/ads/internal/logging.h"
+#include "bat/ads/internal/privacy/tokens/token_generator_interface.h"
 #include "bat/ads/internal/privacy/unblinded_tokens/unblinded_tokens.h"
 #include "bat/ads/internal/tokens/redeem_unblinded_payment_tokens/redeem_unblinded_payment_tokens.h"
 #include "bat/ads/internal/tokens/refill_unblinded_tokens/refill_unblinded_tokens.h"
@@ -20,15 +21,19 @@
 namespace ads {
 
 Account::Account(
-    Confirmations* confirmations)
+    Confirmations* confirmations,
+    privacy::TokenGeneratorInterface* token_generator)
     : confirmations_(confirmations),
+      token_generator_(token_generator),
       wallet_(std::make_unique<Wallet>()),
       ad_rewards_(std::make_unique<AdRewards>()),
       statement_(std::make_unique<Statement>(ad_rewards_.get())),
       redeem_unblinded_payment_tokens_(std::make_unique<
           RedeemUnblindedPaymentTokens>()),
-      refill_unblinded_tokens_(std::make_unique<RefillUnblindedTokens>()) {
+      refill_unblinded_tokens_(std::make_unique<
+          RefillUnblindedTokens>(token_generator)) {
   DCHECK(confirmations_);
+  DCHECK(token_generator_);
 
   confirmations_->AddObserver(this);
 
@@ -48,11 +53,13 @@ Account::~Account() {
 
 void Account::AddObserver(
     AccountObserver* observer) {
+  DCHECK(observer);
   observers_.AddObserver(observer);
 }
 
 void Account::RemoveObserver(
     AccountObserver* observer) {
+  DCHECK(observer);
   observers_.RemoveObserver(observer);
 }
 

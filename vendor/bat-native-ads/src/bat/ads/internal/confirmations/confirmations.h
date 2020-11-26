@@ -11,6 +11,7 @@
 
 #include "bat/ads/ads.h"
 #include "bat/ads/internal/confirmations/confirmations_observer.h"
+#include "bat/ads/internal/privacy/tokens/token_generator_interface.h"
 #include "bat/ads/internal/timer.h"
 #include "bat/ads/internal/tokens/redeem_unblinded_token/redeem_unblinded_token_delegate.h"
 #include "bat/ads/result.h"
@@ -26,7 +27,8 @@ struct UnblindedTokenInfo;
 class Confirmations
     : public RedeemUnblindedTokenDelegate {
  public:
-  Confirmations();
+  Confirmations(
+      privacy::TokenGeneratorInterface* token_generator);
 
   ~Confirmations() override;
 
@@ -52,8 +54,14 @@ class Confirmations
  private:
   base::ObserverList<ConfirmationsObserver> observers_;
 
+  privacy::TokenGeneratorInterface* token_generator_;  // NOT OWNED
+
   std::unique_ptr<ConfirmationsState> confirmations_state_;
   std::unique_ptr<RedeemUnblindedToken> redeem_unblinded_token_;
+
+  ConfirmationInfo CreateConfirmation(
+      const std::string& creative_instance_id,
+      const ConfirmationType& confirmation_type) const;
 
   Timer retry_timer_;
   void CreateNewConfirmationAndAppendToRetryQueue(

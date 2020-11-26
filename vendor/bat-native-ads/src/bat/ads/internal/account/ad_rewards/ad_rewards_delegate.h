@@ -12,11 +12,16 @@ class AdRewardsDelegate {
  public:
   virtual ~AdRewardsDelegate() = default;
 
-  virtual void OnDidReconcileAdRewards() = 0;
+  // Invoked to tell the delegate ad rewards were reconciled
+  virtual void OnDidReconcileAdRewards() {}
 
+  // Invoked to tell the delegate ad rewards reconciliation failed
   virtual void OnFailedToReconcileAdRewards() {}
 
+  // Invoked to tell the delegate that we will retry to reconcile ad rewards
   virtual void OnWillRetryToReconcileAdRewards() {}
+
+  // Invoked to tell the delegate that we did retry to reconcile ad rewards
   virtual void OnDidRetryToReconcileAdRewards() {}
 };
 

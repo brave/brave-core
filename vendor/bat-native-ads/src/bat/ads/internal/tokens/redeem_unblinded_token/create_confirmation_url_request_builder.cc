@@ -12,7 +12,6 @@
 #include "base/values.h"
 #include "brave/components/l10n/browser/locale_helper.h"
 #include "brave/components/l10n/common/locale_util.h"
-#include "wrapper.hpp"
 #include "bat/ads/internal/locale/country_code_util.h"
 #include "bat/ads/internal/logging.h"
 #include "bat/ads/internal/platform/platform_helper.h"
@@ -21,10 +20,6 @@
 #include "bat/ads/internal/tokens/redeem_unblinded_token/create_confirmation_util.h"
 
 namespace ads {
-
-using challenge_bypass_ristretto::VerificationKey;
-using challenge_bypass_ristretto::VerificationSignature;
-using challenge_bypass_ristretto::TokenPreimage;
 
 CreateConfirmationUrlRequestBuilder::CreateConfirmationUrlRequestBuilder(
     const ConfirmationInfo& confirmation)

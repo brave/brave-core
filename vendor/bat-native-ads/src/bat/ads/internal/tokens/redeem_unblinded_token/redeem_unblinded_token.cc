@@ -19,6 +19,7 @@
 #include "bat/ads/internal/confirmations/confirmation_info.h"
 #include "bat/ads/internal/confirmations/confirmations.h"
 #include "bat/ads/internal/logging.h"
+#include "bat/ads/internal/privacy/challenge_bypass_ristretto_util.h"
 #include "bat/ads/internal/privacy/unblinded_tokens/unblinded_token_info.h"
 #include "bat/ads/internal/security/security_util.h"
 #include "bat/ads/internal/tokens/redeem_unblinded_token/create_confirmation_url_request_builder.h"
@@ -41,18 +42,6 @@ RedeemUnblindedToken::~RedeemUnblindedToken() = default;
 void RedeemUnblindedToken::set_delegate(
     RedeemUnblindedTokenDelegate* delegate) {
   delegate_ = delegate;
-}
-
-void RedeemUnblindedToken::Redeem(
-    const std::string& creative_instance_id,
-    const ConfirmationType& confirmation_type,
-    const privacy::UnblindedTokenInfo& unblinded_token) {
-  BLOG(1, "Redeem unblinded token");
-
-  const ConfirmationInfo confirmation = CreateConfirmationInfo(
-      creative_instance_id, confirmation_type, unblinded_token);
-
-  CreateConfirmation(confirmation);
 }
 
 void RedeemUnblindedToken::Redeem(
@@ -203,6 +192,12 @@ void RedeemUnblindedToken::OnFetchPaymentToken(
     return;
   }
   PublicKey public_key = PublicKey::decode_base64(*public_key_base64);
+  if (privacy::ExceptionOccurred()) {
+    BLOG(0, "Invalid public key");
+    NOTREACHED();
+    OnFailedToRedeemUnblindedToken(confirmation, /* should_retry */ true);
+    return;
+  }
 
   // Get batch dleq proof
   const std::string* batch_dleq_proof_base64 =
@@ -214,6 +209,12 @@ void RedeemUnblindedToken::OnFetchPaymentToken(
   }
   BatchDLEQProof batch_dleq_proof =
       BatchDLEQProof::decode_base64(*batch_dleq_proof_base64);
+  if (privacy::ExceptionOccurred()) {
+    BLOG(0, "Invalid batch DLEQ proof");
+    NOTREACHED();
+    OnFailedToRedeemUnblindedToken(confirmation, /* should_retry */ true);
+    return;
+  }
 
   // Get signed tokens
   const base::Value* signed_tokens_list =
@@ -235,6 +236,11 @@ void RedeemUnblindedToken::OnFetchPaymentToken(
     DCHECK(value.is_string());
     const std::string signed_token_base64 = value.GetString();
     SignedToken signed_token = SignedToken::decode_base64(signed_token_base64);
+    if (privacy::ExceptionOccurred()) {
+      BLOG(0, "Invalid signed token");
+      NOTREACHED();
+      continue;
+    }
 
     signed_tokens.push_back(signed_token);
   }
@@ -251,8 +257,7 @@ void RedeemUnblindedToken::OnFetchPaymentToken(
   const std::vector<UnblindedToken> batch_dleq_proof_unblinded_tokens =
       batch_dleq_proof.verify_and_unblind(tokens, blinded_tokens,
           signed_tokens, public_key);
-
-  if (batch_dleq_proof_unblinded_tokens.size() != 1) {
+  if (privacy::ExceptionOccurred()) {
     BLOG(1, "Failed to verify and unblind tokens");
     BLOG(1, "  Batch proof: " << *batch_dleq_proof_base64);
     BLOG(1, "  Public key: " << *public_key_base64);

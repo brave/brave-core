@@ -307,6 +307,7 @@ DBCommandResponse::Status Database::Migrate(
 void Database::OnErrorCallback(
     const int error,
     sql::Statement* statement) {
+  DCHECK(statement);
   BLOG(1, "Database error: " << db_.GetDiagnosticInfo(error, statement));
 }
 

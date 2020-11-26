@@ -67,11 +67,13 @@ Conversions::~Conversions() = default;
 
 void Conversions::AddObserver(
     ConversionsObserver* observer) {
+  DCHECK(observer);
   observers_.AddObserver(observer);
 }
 
 void Conversions::RemoveObserver(
     ConversionsObserver* observer) {
+  DCHECK(observer);
   observers_.RemoveObserver(observer);
 }
 

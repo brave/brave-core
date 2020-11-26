@@ -10,17 +10,11 @@
 
 namespace ads {
 
-class ConfirmationType;
 struct ConfirmationInfo;
 
 namespace privacy {
 struct UnblindedTokenInfo;
 }  // privacy
-
-ConfirmationInfo CreateConfirmationInfo(
-    const std::string& creative_instance_id,
-    const ConfirmationType& confirmation_type,
-    const privacy::UnblindedTokenInfo& unblinded_token);
 
 std::string CreateConfirmationRequestDTO(
     const ConfirmationInfo& confirmation);

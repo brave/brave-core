@@ -12,6 +12,7 @@
 #include "wrapper.hpp"
 #include "bat/ads/internal/account/wallet/wallet_info.h"
 #include "bat/ads/internal/backoff_timer.h"
+#include "bat/ads/internal/privacy/tokens/token_generator_interface.h"
 #include "bat/ads/internal/tokens/refill_unblinded_tokens/refill_unblinded_tokens_delegate.h"
 #include "bat/ads/mojom.h"
 #include "bat/ads/result.h"
@@ -23,7 +24,8 @@ using challenge_bypass_ristretto::BlindedToken;
 
 class RefillUnblindedTokens {
  public:
-  RefillUnblindedTokens();
+  RefillUnblindedTokens(
+      privacy::TokenGeneratorInterface* token_generator);
 
   ~RefillUnblindedTokens();
 
@@ -53,20 +55,22 @@ class RefillUnblindedTokens {
   void OnGetSignedTokens(
       const UrlResponse& url_response);
 
-  void OnRefill(
-      const Result result,
-      const bool should_retry = true);
+  void OnDidRefillUnblindedTokens();
+
+  void OnFailedToRefillUnblindedTokens(
+      const bool should_retry);
 
   BackoffTimer retry_timer_;
   void Retry();
   void OnRetry();
 
   bool ShouldRefillUnblindedTokens() const;
+
   int CalculateAmountOfTokensToRefill() const;
 
-  void GenerateAndBlindTokens(const int count);
-
   bool is_processing_ = false;
+
+  privacy::TokenGeneratorInterface* token_generator_;  // NOT OWNED
 
   RefillUnblindedTokensDelegate* delegate_ = nullptr;
 };

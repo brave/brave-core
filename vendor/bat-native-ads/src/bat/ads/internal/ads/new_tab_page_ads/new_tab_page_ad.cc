@@ -43,11 +43,13 @@ NewTabPageAd::~NewTabPageAd() = default;
 
 void NewTabPageAd::AddObserver(
     NewTabPageAdObserver* observer) {
+  DCHECK(observer);
   observers_.AddObserver(observer);
 }
 
 void NewTabPageAd::RemoveObserver(
     NewTabPageAdObserver* observer) {
+  DCHECK(observer);
   observers_.RemoveObserver(observer);
 }
 

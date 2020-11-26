@@ -38,11 +38,13 @@ AdServer::~AdServer() = default;
 
 void AdServer::AddObserver(
     AdServerObserver* observer) {
+  DCHECK(observer);
   observers_.AddObserver(observer);
 }
 
 void AdServer::RemoveObserver(
     AdServerObserver* observer) {
+  DCHECK(observer);
   observers_.RemoveObserver(observer);
 }
 

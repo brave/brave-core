@@ -18,11 +18,13 @@ AdNotification::~AdNotification() = default;
 
 void AdNotification::AddObserver(
     AdNotificationObserver* observer) {
+  DCHECK(observer);
   observers_.AddObserver(observer);
 }
 
 void AdNotification::RemoveObserver(
     AdNotificationObserver* observer) {
+  DCHECK(observer);
   observers_.RemoveObserver(observer);
 }
 
