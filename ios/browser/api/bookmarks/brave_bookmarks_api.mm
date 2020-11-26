@@ -340,6 +340,11 @@
   return node_->GetIndexOf(child->node_);
 }
 
+- (bool)hasAncestor:(IOSBookmarkNode*)child {
+  DCHECK(node_);
+  return node_->HasAncestor(child->node_);
+}
+
 - (void)remove {
   DCHECK(node_);
   model_->Remove(node_);
