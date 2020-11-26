@@ -452,7 +452,6 @@ public class BraveRewardsPanelPopup implements BraveRewardsObserver, BraveReward
         ViewGroup root = (ViewGroup) inflater.inflate(R.layout.brave_rewards_panel, null);
         initViews(root);
         setContentView(root);
-        showBraveRewardsWelcomeLayout(root);
         initViewActionEvents();
 
         //setting Recurrent Donations spinner
@@ -813,20 +812,20 @@ public class BraveRewardsPanelPopup implements BraveRewardsObserver, BraveReward
 
     public void showLikePopDownMenu() {
         this.showLikePopDownMenu(0, 0);
-        // if (root!= null && PackageUtils.isFirstInstall(mActivity)) {
-        //     if (BraveRewardsHelper.shouldShowBraveRewardsOnboarding()) {
-        //         showBraveRewardsOnboarding(root);
-        //         BraveRewardsHelper.setShowBraveRewardsOnboarding(true);
-        //     } else if ((BraveRewardsHelper.getBraveRewardsOpenCount() == 0 || BraveRewardsHelper.getBraveRewardsOpenCount() == 1)
-        //         && !BraveAdsNativeHelper.nativeIsBraveAdsEnabled(Profile.getLastUsedRegularProfile())) {
-        //         showBraveRewardsOnboardingModal(root);
-        //         BraveRewardsHelper.updateBraveRewardsOpenCount();
-        //     } else if (BraveRewardsHelper.getBraveRewardsOpenCount() == 1 
-        //         && BraveAdsNativeHelper.nativeIsBraveAdsEnabled(Profile.getLastUsedRegularProfile())) {
-        //         showBraveRewardsWelcomeLayout(root);
-        //         BraveRewardsHelper.updateBraveRewardsOpenCount();
-        //     }
-        // }
+        if (root!= null && PackageUtils.isFirstInstall(mActivity)) {
+            if (BraveRewardsHelper.shouldShowBraveRewardsOnboarding()) {
+                showBraveRewardsOnboarding(root);
+                BraveRewardsHelper.setShowBraveRewardsOnboarding(true);
+            } else if ((BraveRewardsHelper.getBraveRewardsOpenCount() == 0 || BraveRewardsHelper.getBraveRewardsOpenCount() == 1)
+                && !BraveAdsNativeHelper.nativeIsBraveAdsEnabled(Profile.getLastUsedRegularProfile())) {
+                showBraveRewardsOnboardingModal(root);
+                BraveRewardsHelper.updateBraveRewardsOpenCount();
+            } else if (BraveRewardsHelper.getBraveRewardsOpenCount() == 1 
+                && BraveAdsNativeHelper.nativeIsBraveAdsEnabled(Profile.getLastUsedRegularProfile())) {
+                showBraveRewardsWelcomeLayout(root);
+                BraveRewardsHelper.updateBraveRewardsOpenCount();
+            }
+        }
     }
 
     public void showLikePopDownMenu(int xOffset, int yOffset) {
