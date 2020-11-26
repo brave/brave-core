@@ -33,6 +33,8 @@ def get_url(platform):
         filename = "rust_deps_win_" + RUST_DEPS_PACKAGE_VERSION + ".zip"
     elif platform == 'darwin':
         filename = "rust_deps_mac_" + RUST_DEPS_PACKAGE_VERSION + ".gz"
+    elif platform == 'ios':
+        filename = "rust_deps_ios_" + RUST_DEPS_PACKAGE_VERSION + ".gz"
     elif platform.startswith('linux'):
         filename = "rust_deps_linux_" + RUST_DEPS_PACKAGE_VERSION + ".gz"
     else:
@@ -160,9 +162,13 @@ def cargo_install(tool):
 
 
 def main():
-    download_and_unpack_rust_deps(sys.platform)
-
     args = parse_args()
+
+    if args.platform == 'ios':
+        download_and_unpack_rust_deps('ios')
+    else:
+        download_and_unpack_rust_deps(sys.platform)
+
     if args.platform == 'android':
         make_standalone_toolchain_for_android()
 
