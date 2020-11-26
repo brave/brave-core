@@ -6,9 +6,15 @@
 package org.chromium.chrome.browser.brave_stats;
 
 import android.util.Pair;
+import android.view.View;
+import android.widget.TextView;
 
+import org.chromium.chrome.R;
 import org.chromium.chrome.browser.app.BraveActivity;
 import org.chromium.chrome.browser.brave_stats.BraveStatsBottomSheetDialogFragment;
+import org.chromium.chrome.browser.preferences.BravePref;
+import org.chromium.chrome.browser.preferences.BravePrefServiceBridge;
+import org.chromium.chrome.browser.profiles.Profile;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -85,5 +91,41 @@ public class BraveStatsUtil {
         SimpleDateFormat s = new SimpleDateFormat(dateFormat);
         cal.add(Calendar.DAY_OF_YEAR, days);
         return s.format(new Date(cal.getTimeInMillis()));
+    }
+
+    public static void updateBraveStatsLayout(View view) {
+        Profile mProfile = Profile.getLastUsedRegularProfile();
+        TextView mAdsBlockedCountTextView =
+                (TextView) view.findViewById(R.id.brave_stats_text_ads_count);
+        TextView mDataSavedValueTextView =
+                (TextView) view.findViewById(R.id.brave_stats_data_saved_value);
+        TextView mEstTimeSavedCountTextView =
+                (TextView) view.findViewById(R.id.brave_stats_text_time_count);
+        TextView mAdsBlockedCountTextTextView =
+                (TextView) view.findViewById(R.id.brave_stats_text_ads_count_text);
+        TextView mDataSavedValueTextTextView =
+                (TextView) view.findViewById(R.id.brave_stats_data_saved_value_text);
+        TextView mEstTimeSavedCountTextTextView =
+                (TextView) view.findViewById(R.id.brave_stats_text_time_count_text);
+
+        long trackersBlockedCount =
+                BravePrefServiceBridge.getInstance().getTrackersBlockedCount(mProfile);
+        long adsBlockedCount = BravePrefServiceBridge.getInstance().getAdsBlockedCount(mProfile);
+        long dataSaved = BravePrefServiceBridge.getInstance().getDataSaved(mProfile);
+        long estimatedMillisecondsSaved =
+                (trackersBlockedCount + adsBlockedCount) * MILLISECONDS_PER_ITEM;
+
+        Pair<String, String> adsTrackersPair =
+                getBraveStatsStringFormNumberPair(adsBlockedCount, false);
+        Pair<String, String> dataSavedPair = getBraveStatsStringFormNumberPair(dataSaved, true);
+        Pair<String, String> timeSavedPair =
+                getBraveStatsStringFromTime(estimatedMillisecondsSaved / 1000);
+
+        mAdsBlockedCountTextView.setText(adsTrackersPair.first);
+        mDataSavedValueTextView.setText(dataSavedPair.first);
+        mEstTimeSavedCountTextView.setText(timeSavedPair.first);
+        mAdsBlockedCountTextTextView.setText(adsTrackersPair.second);
+        mDataSavedValueTextTextView.setText(dataSavedPair.second);
+        mEstTimeSavedCountTextTextView.setText(timeSavedPair.second);
     }
 }
