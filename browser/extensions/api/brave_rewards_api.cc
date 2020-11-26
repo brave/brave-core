@@ -661,14 +661,20 @@ ExtensionFunction::ResponseAction BraveRewardsSaveAdsSettingFunction::Run() {
   std::unique_ptr<brave_rewards::SaveAdsSetting::Params> params(
       brave_rewards::SaveAdsSetting::Params::Create(*args_));
   Profile* profile = Profile::FromBrowserContext(browser_context());
+  RewardsService* rewards_service =
+      RewardsServiceFactory::GetForProfile(profile);
   AdsService* ads_service_ = AdsServiceFactory::GetForProfile(profile);
-  if (ads_service_) {
-    if (params->key == "adsEnabled") {
-      const auto is_enabled =
-          params->value == "true" && ads_service_->IsSupportedLocale();
-      ads_service_->SetEnabled(is_enabled);
-    }
+
+  if (!rewards_service || !ads_service_) {
+    return RespondNow(Error("Service is not initialized"));
   }
+
+  if (params->key == "adsEnabled") {
+    const auto is_enabled =
+        params->value == "true" && ads_service_->IsSupportedLocale();
+    rewards_service->SetAdsEnabled(is_enabled);
+  }
+
   return RespondNow(NoArguments());
 }
 
