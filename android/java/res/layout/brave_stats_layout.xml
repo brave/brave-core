@@ -13,6 +13,7 @@
     android:orientation="vertical">
 
     <LinearLayout
+        android:id="@+id/brave_stats_title_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:paddingStart="16dp"
