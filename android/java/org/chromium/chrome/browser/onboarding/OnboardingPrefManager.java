@@ -71,6 +71,7 @@ public class OnboardingPrefManager {
     private static final String BING = "Bing";
     private static final String STARTPAGE = "Startpage";
     private static final String YAHOO = "Yahoo";
+    private static final String YANDEX = "Yandex";
 
     private OnboardingPrefManager() {
         mSharedPreferences = ContextUtils.getAppSharedPreferences();
@@ -252,6 +253,7 @@ public class OnboardingPrefManager {
             put(QWANT, SearchEngineEnum.QWANT);
             put(BING, SearchEngineEnum.BING);
             put(STARTPAGE, SearchEngineEnum.STARTPAGE);
+            put(YANDEX, SearchEngineEnum.YANDEX);
         }
     };
 
