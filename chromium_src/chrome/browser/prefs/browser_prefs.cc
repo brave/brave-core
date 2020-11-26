@@ -17,8 +17,11 @@
 #endif
 
 #define MigrateObsoleteProfilePrefs MigrateObsoleteProfilePrefs_ChromiumImpl
+#define MigrateObsoleteLocalStatePrefs \
+    MigrateObsoleteLocalStatePrefs_ChromiumImpl
 #include "../../../../../chrome/browser/prefs/browser_prefs.cc"
 #undef MigrateObsoleteProfilePrefs
+#undef MigrateObsoleteLocalStatePrefs
 
 #if !BUILDFLAG(USE_GCM_FROM_PLATFORM)
 #include "brave/browser/gcm_driver/brave_gcm_utils.h"
@@ -47,5 +50,15 @@ void MigrateObsoleteProfilePrefs(Profile* profile) {
   // Added 9/2020
 #if !defined(OS_ANDROID)
   new_tab_page::MigrateNewTabPagePrefs(profile);
+#endif
+}
+
+// This method should be periodically pruned of year+ old migrations.
+void MigrateObsoleteLocalStatePrefs(PrefService* local_state) {
+  MigrateObsoleteLocalStatePrefs_ChromiumImpl(local_state);
+
+#if BUILDFLAG(ENABLE_WIDEVINE)
+  // Added 11/2020.
+  MigrateObsoleteWidevineLocalStatePrefs(local_state);
 #endif
 }

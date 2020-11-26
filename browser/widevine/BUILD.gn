@@ -16,6 +16,7 @@ source_set("widevine") {
     "//content/public/browser",
     "//content/public/common",
     "//third_party/widevine/cdm:buildflags",
+    "//third_party/widevine/cdm:headers",
     "//ui/base",
     "//url",
   ]

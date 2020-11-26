@@ -17,6 +17,7 @@ class PrefRegistrySyncable;
 }
 
 class PrefRegistrySimple;
+class PrefService;
 class Profile;
 
 void EnableWidevineCdmComponent(content::WebContents* web_contents);
@@ -26,9 +27,11 @@ int GetWidevinePermissionRequestTextFrangmentResourceId(bool for_restart);
 void RequestWidevinePermission(content::WebContents* web_contents,
                                bool for_restart);
 void RegisterWidevineLocalstatePrefs(PrefRegistrySimple* registry);
+void RegisterWidevineLocalstatePrefsForMigration(PrefRegistrySimple* registry);
 void DontAskWidevineInstall(content::WebContents* web_contents, bool dont_ask);
 bool IsWidevineOptedIn();
 void SetWidevineOptedIn(bool opted_in);
 void MigrateWidevinePrefs(Profile* profile);
+void MigrateObsoleteWidevineLocalStatePrefs(PrefService* local_state);
 
 #endif  // BRAVE_BROWSER_WIDEVINE_WIDEVINE_UTILS_H_
