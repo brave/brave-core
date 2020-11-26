@@ -646,23 +646,11 @@
 /* Placeholder example: 'You earned 42 BAT by browsing with Brave.' */
 "ntp.earningsReport" = "Braveをブラウジングで%@ BATポイント獲得しました";
 
-/* No comment provided by engineer. */
-"ntp.getPaidForThisImageTurnAds" = "この背景画像を表示することで報酬を受け取ることができます。早速Brave Adsをオンにして報酬を受け取りましょう！";
-
-/* No comment provided by engineer. */
-"ntp.getPaidForThisImageTurnRewards" = "この背景画像を表示することで報酬を受け取ることができます。早速Brave Adsをオンにして報酬を受け取りましょう！";
-
-/* No comment provided by engineer. */
-"ntp.getPaidToSeeThisImage" = "この背景画像を表示することで報酬を受け取ることができます。";
-
 /* The context is to praise the user that they did a good job, to keep it up. It is used in full sentence like: 'Way to go! You earned 40 BAT last month.' */
 "ntp.goodJob" = "おめでとうございます！";
 
 /* No comment provided by engineer. */
 "ntp.hideSponsoredImages" = "スポンサードイメージを非表示にする";
-
-/* No comment provided by engineer. */
-"ntp.learnMoreAboutBrandedImages" = "スポンサーイメージを表示するたびに、広告費用の70％を報酬として受け取ることができます。Brave Adsでは表示する広告をコントロールすることができます。";
 
 /* No comment provided by engineer. */
 "ntp.learnMoreAboutRewards" = "Brave Rewardsについて詳しく知る";
@@ -692,19 +680,10 @@
 "ntp.showMoreFavorites" = "もっと見る";
 
 /* No comment provided by engineer. */
-"ntp.supportWebCreatorsWithTokens" = "ブラウジング中にBATポイントを獲得し、同時にコンテンツクリエイターに還元することができます";
-
-/* No comment provided by engineer. */
-"ntp.turnOnBraveAds" = "Brave Adsを有効にする";
-
-/* No comment provided by engineer. */
-"ntp.turnOnBraveRewards" = "Brave Rewardsを有効にする";
+"ntp.sponsoredImageDescription" = "スポンサード画像を表示することで、間接的にコンテンツ制作者やパブリッシャーを支援することできます。";
 
 /* The placeholder says 'Terms of Service'. So full sentence goes like: 'By turning Rewards, you agree to the Terms of Service'. */
 "ntp.turnRewardsTos" = "Rewardsを有効にすると、以下に同意したものとみなされます: %@";
-
-/* No comment provided by engineer. */
-"ntp.youArePaidToSeeThisImage" = "この背景画像を表示することで報酬を受け取ることができます。";
 
 /* Context menu item for opening all folder bookmarks */
 "OpenAllBookmarks" = "すべて開く (%i)";

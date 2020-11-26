@@ -646,23 +646,11 @@
 /* Placeholder example: 'You earned 42 BAT by browsing with Brave.' */
 "ntp.earningsReport" = "Vous avez gagné %@ en naviguant avec Brave.";
 
-/* No comment provided by engineer. */
-"ntp.getPaidForThisImageTurnAds" = "Gagnez des jetons en visionnant cette image. Activez Brave Ads pour soutenir les créateurs de contenu.";
-
-/* No comment provided by engineer. */
-"ntp.getPaidForThisImageTurnRewards" = "Gagnez des jetons en visionnant cette image. Activez Brave Rewards pour soutenir les créateurs de contenu.";
-
-/* No comment provided by engineer. */
-"ntp.getPaidToSeeThisImage" = "Gagnez des jetons en visionnant cette image.";
-
 /* The context is to praise the user that they did a good job, to keep it up. It is used in full sentence like: 'Way to go! You earned 40 BAT last month.' */
 "ntp.goodJob" = "Bravo !";
 
 /* No comment provided by engineer. */
 "ntp.hideSponsoredImages" = "Masquer les images sponsorisées";
-
-/* No comment provided by engineer. */
-"ntp.learnMoreAboutBrandedImages" = "Lorsque vous visionnez une image sponsorisée, vous gagnez des jetons qui peuvent être utilisés pour soutenir les créateurs de contenu. Avec Brave Ads, vous avez toujours le contrôle des publicités que vous voyez.";
 
 /* No comment provided by engineer. */
 "ntp.learnMoreAboutRewards" = "En savoir plus sur Brave Rewards";
@@ -692,19 +680,10 @@
 "ntp.showMoreFavorites" = "Afficher plus";
 
 /* No comment provided by engineer. */
-"ntp.supportWebCreatorsWithTokens" = "Gagnez des jetons et récompensez les créateurs de contenu de qualité tout en naviguant.";
-
-/* No comment provided by engineer. */
-"ntp.turnOnBraveAds" = "Activer Brave Ads";
-
-/* No comment provided by engineer. */
-"ntp.turnOnBraveRewards" = "Activer Brave Rewards";
+"ntp.sponsoredImageDescription" = "En visualisant cette image sponsorisée, vous soutenez les créateurs de contenu et les diffuseurs.";
 
 /* The placeholder says 'Terms of Service'. So full sentence goes like: 'By turning Rewards, you agree to the Terms of Service'. */
 "ntp.turnRewardsTos" = "En activant Rewards, vous acceptez les %@.";
-
-/* No comment provided by engineer. */
-"ntp.youArePaidToSeeThisImage" = "Vous gagnez des jetons en visionnant cette image.";
 
 /* Context menu item for opening all folder bookmarks */
 "OpenAllBookmarks" = "Tout ouvrir (%i)";

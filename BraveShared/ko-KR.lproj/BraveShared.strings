@@ -646,23 +646,11 @@
 /* Placeholder example: 'You earned 42 BAT by browsing with Brave.' */
 "ntp.earningsReport" = "Brave로 브라우징하여 %@를 얻었습니다.";
 
-/* No comment provided by engineer. */
-"ntp.getPaidForThisImageTurnAds" = "이 이미지를 보고 토큰을 획득하세요. Brave Ads를 켜고 제작자를 후원해주세요.";
-
-/* No comment provided by engineer. */
-"ntp.getPaidForThisImageTurnRewards" = "이 이미지를 보고 토큰을 획득하세요. Brave Rewards를 켜고 제작자를 후원해주세요.";
-
-/* No comment provided by engineer. */
-"ntp.getPaidToSeeThisImage" = "이 이미지를 보고 토큰을 획득하세요.";
-
 /* The context is to praise the user that they did a good job, to keep it up. It is used in full sentence like: 'Way to go! You earned 40 BAT last month.' */
 "ntp.goodJob" = "축하합니다!";
 
 /* No comment provided by engineer. */
 "ntp.hideSponsoredImages" = "스폰서 이미지 숨기기";
-
-/* No comment provided by engineer. */
-"ntp.learnMoreAboutBrandedImages" = "스폰서 이미지를 볼 때 토큰을 얻어 제작자를 후원하는 데 사용할 수 있습니다. 언제든지 Brave Ads를 사용하여 표시되는 광고를 마음대로 관리할 수 있습니다.";
 
 /* No comment provided by engineer. */
 "ntp.learnMoreAboutRewards" = "Brave Rewards 자세히 알아보기";
@@ -692,19 +680,10 @@
 "ntp.showMoreFavorites" = "더보기";
 
 /* No comment provided by engineer. */
-"ntp.supportWebCreatorsWithTokens" = "브라우징하면서 토큰을 얻어 좋은 콘텐츠를 만들어준 제작자에게 보답하세요.";
-
-/* No comment provided by engineer. */
-"ntp.turnOnBraveAds" = "Brave Ads 켜기";
-
-/* No comment provided by engineer. */
-"ntp.turnOnBraveRewards" = "Brave Rewards 켜기";
+"ntp.sponsoredImageDescription" = "이 스폰서 이미지를 봄으로써 콘텐츠 제작자와 게시자를 지원하고 계십니다.";
 
 /* The placeholder says 'Terms of Service'. So full sentence goes like: 'By turning Rewards, you agree to the Terms of Service'. */
 "ntp.turnRewardsTos" = "Rewards를 켜면 %@에 동의하는 것으로 간주됩니다.";
-
-/* No comment provided by engineer. */
-"ntp.youArePaidToSeeThisImage" = "이 이미지를 보고 토큰을 획득하고 계십니다.";
 
 /* Context menu item for opening all folder bookmarks */
 "OpenAllBookmarks" = "모두 열기(%i)";

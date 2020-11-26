@@ -646,23 +646,11 @@
 /* Placeholder example: 'You earned 42 BAT by browsing with Brave.' */
 "ntp.earningsReport" = "Você ganhou %@ navegando com o Brave.";
 
-/* No comment provided by engineer. */
-"ntp.getPaidForThisImageTurnAds" = "Receba tokens para visualizar esta imagem. Ative o Brave Ads e comece a apoiar criadores.";
-
-/* No comment provided by engineer. */
-"ntp.getPaidForThisImageTurnRewards" = "Receba tokens para visualizar esta imagem. Ative o Brave Rewards e comece a apoiar criadores.";
-
-/* No comment provided by engineer. */
-"ntp.getPaidToSeeThisImage" = "Receba tokens para visualizar esta imagem.";
-
 /* The context is to praise the user that they did a good job, to keep it up. It is used in full sentence like: 'Way to go! You earned 40 BAT last month.' */
 "ntp.goodJob" = "Muito bem!";
 
 /* No comment provided by engineer. */
 "ntp.hideSponsoredImages" = "Ocultar imagens patrocinadas";
-
-/* No comment provided by engineer. */
-"ntp.learnMoreAboutBrandedImages" = "Ao visualizar uma imagem patrocinada, você ganha tokens que podem ser usados para apoiar criadores. Com o Brave Ads, você controla os anúncios que visualiza.";
 
 /* No comment provided by engineer. */
 "ntp.learnMoreAboutRewards" = "Saiba mais sobre o Brave Rewards";
@@ -692,19 +680,10 @@
 "ntp.showMoreFavorites" = "Mostrar mais";
 
 /* No comment provided by engineer. */
-"ntp.supportWebCreatorsWithTokens" = "Ganhe tokens enquanto navega e doe-os a criadores pelo conteúdo de qualidade que eles produzem.";
-
-/* No comment provided by engineer. */
-"ntp.turnOnBraveAds" = "Ativar o Brave Ads";
-
-/* No comment provided by engineer. */
-"ntp.turnOnBraveRewards" = "Ativar Brave Rewards";
+"ntp.sponsoredImageDescription" = "Ao visualizar esta imagem patrocinada, você está apoiando criadores de conteúdo e editores.";
 
 /* The placeholder says 'Terms of Service'. So full sentence goes like: 'By turning Rewards, you agree to the Terms of Service'. */
 "ntp.turnRewardsTos" = "Ao ativar o Rewards, você concorda com os %@.";
-
-/* No comment provided by engineer. */
-"ntp.youArePaidToSeeThisImage" = "Você está recebendo tokens para visualizar esta imagem.";
 
 /* Context menu item for opening all folder bookmarks */
 "OpenAllBookmarks" = "Abrir tudo (%i)";

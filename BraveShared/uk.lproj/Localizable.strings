@@ -1,5 +1,4 @@
-/* The body of the screen explaining Brave Shields
-   The title of the screen explaining Brave Shields */
+/* The title of the screen explaining Brave Shields */
 "AboutBraveShields" = "Про щити Brave";
 
 /* No comment provided by engineer. */
@@ -90,22 +89,19 @@
 "OBPrivacyConsentYesButton" = "Дозволити одноразову перевірку буфера обміну";
 
 /* Detail text for rewards agreement onboarding screen */
-"OBRewardsAgreementDetail" = "Увімкнувши Rewards, ви приймаєте";
+"OBRewardsAgreementDetail" = "Торкнувшись пункту «Почати», ви погоджуєтеся";
 
 /* Detail text for rewards agreement onboarding screen */
 "OBRewardsAgreementDetailLink" = "Умови обслуговування";
 
 /* Title for rewards agreement onboarding screen */
-"OBRewardsAgreementTitle" = "Brave Rewards";
+"OBRewardsAgreementTitle" = "Підтримка авторів у Brave Rewards";
+
+/* Detail text for rewards onboarding screen */
+"OBRewardsDetail" = "Увімкнути перегляд приватної та персоналізованої реклами під час користування Інтернетом, щоб підтримати авторів?";
 
 /* Detail text for rewards onboarding screen */
 "OBRewardsDetailInAdRegion" = "Заробляйте токени під час перегляду вебсайтів і винагороджуйте авторів за чудовий уміст.";
-
-/* Detail text for rewards onboarding screen */
-"OBRewardsDetailInAdRegionJapan" = "Заробляйте бали під час перегляду вебсайтів і винагороджуйте авторів за чудовий уміст.";
-
-/* Detail text for rewards onboarding screen */
-"OBRewardsDetailOutsideAdRegion" = "Підтримуйте улюблені веб-сайти та авторів, приділяючи їм увагу.";
 
 /* Title for rewards onboarding screen */
 "OBRewardsTitle" = "Brave Rewards";
@@ -129,7 +125,7 @@
 "OBShowMeButton" = "Показати";
 
 /* Button to show Brave Rewards. */
-"OBTurnOnButton" = "Ввімкнути";
+"OBTurnOnButton" = "Почати";
 
 /* Continue button to navigate to next onboarding screen. */
 "OnboardingContinueButton" = "Продовжити";
@@ -160,6 +156,61 @@
 
 /* Name of folder where restored favorites are retrieved */
 "RestoredFavoritesFolderName" = "Відновлений список вибраного";
+
+/* Displayed when Brave Rewards is disabled */
+"rewards.disabledBody" = "Увімкніть підтримку авторів умісту";
+
+/* Displayed in the status container when rewards is disabled */
+"rewards.disabledStatusBody" = "Brave Rewards дає змогу підтримувати авторів умісту, переглядаючи сторінки в Інтернеті.";
+
+/* Displayed when Brave Rewards is enabled */
+"rewards.enabledBody" = "Ви підтримуєте авторів умісту";
+
+/* Displayed in the status container when rewards is enabled but you're not currently supporting any publishers (0 AC count) */
+"rewards.enabledStatusBody" = "Дякуємо, що підтримуєте авторів умісту, переглядаючи сторінки в Інтернеті!";
+
+/* No comment provided by engineer. */
+"rewards.legacyWalletTransfer" = "Переказ коштів із застарілого гаманця";
+
+/* No comment provided by engineer. */
+"rewards.legacyWalletTransferSubtitle" = "Одноразовий переказ наявних токенів";
+
+/* No comment provided by engineer. */
+"rewards.settingsFooterMessage" = "Виплати у Brave Rewards тимчасово недоступні на цьому пристрої. Перекажіть кошти з наявного гаманця на гаманець на настільному комп’ютері, щоб зберегти свої токени.";
+
+/* No comment provided by engineer. */
+"rewards.settingsToggleMessage" = "Увімкніть Brave Private Ads, щоб автоматично підтримувати авторів умісту та видавців. Brave Private Ads — це конфіденційний засіб перегляду реклами з можливістю підтримки авторів умісту.";
+
+/* No comment provided by engineer. */
+"rewards.settingsToggleTitle" = "Увімкнути Brave Rewards";
+
+/* Displayed under verified publishers */
+"rewards.supportingPublisher" = "Ви підтримуєте авторів умісту подібних до цього.";
+
+/* Displayed next to a number representing the total number of publishers supported */
+"rewards.totalSupportedCount" = "Кількість авторів умісту, яких ви підтримали цього місяця.";
+
+/* Displayed under unverified publishers */
+"rewards.unverifiedPublisher" = "Цей автор не підтвердив особу і його не буде додано до програми підтримки авторів";
+
+/* Title shown above the confirmation message after completing a wallet transfer successfully */
+"rewards.walletTransferCompleteTitle" = "Переказ коштів розпочато";
+
+/* Message on the alert presented if wallet transfer fails */
+"rewards.walletTransferFailureAlertMessage" = "Не вдалося встановити підключення в Brave або сталася помилка.";
+
+/* Title on the alert presented if wallet transfer fails */
+"rewards.walletTransferFailureAlertTitle" = "Спробуйте ще раз";
+
+/* A confirmation message shown to the user after completing a wallet transfer successfully
+   Describes the steps for using wallet transfer */
+"rewards.walletTransferStepsBody" = "Токени з Brave Rewards можна один раз перевести в наявний гаманець Brave Rewards на настільному комп’ютері.\n\n1. Відкрийте браузер Brave на настільному комп’ютері.\n2. Перейдіть за адресою «brave://rewards».\n3. Натисніть на пункт «QR-код».\n4. Відскануйте QR-код за допомогою пристрою.";
+
+/* Title above the steps to use wallet transfer */
+"rewards.walletTransferStepsTitle" = "Сканування одноразового коду переказу";
+
+/* Title of the legacy wallet transfer screen */
+"rewards.walletTransferTitle" = "Переказ коштів із гаманця";
 
 /* No comment provided by engineer. */
 "RewardsInternalsAmount" = "Сума";

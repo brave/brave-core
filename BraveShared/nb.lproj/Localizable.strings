@@ -1,5 +1,4 @@
-/* The body of the screen explaining Brave Shields
-   The title of the screen explaining Brave Shields */
+/* The title of the screen explaining Brave Shields */
 "AboutBraveShields" = "Om Brave-skjold";
 
 /* No comment provided by engineer. */
@@ -90,22 +89,19 @@
 "OBPrivacyConsentYesButton" = "Tillat engangskontroll av utklippstavle";
 
 /* Detail text for rewards agreement onboarding screen */
-"OBRewardsAgreementDetail" = "Ved å slå på Rewards, godtar du";
+"OBRewardsAgreementDetail" = "Ved å trykke på Start godtar du";
 
 /* Detail text for rewards agreement onboarding screen */
 "OBRewardsAgreementDetailLink" = "Vilkår for bruk";
 
 /* Title for rewards agreement onboarding screen */
-"OBRewardsAgreementTitle" = "Brave Rewards";
+"OBRewardsAgreementTitle" = "Brave Rewards støtter innholdsskapere";
+
+/* Detail text for rewards onboarding screen */
+"OBRewardsDetail" = "Begynn å støtte skapere med private og anonymiserte annonser mens du er på nettet?";
 
 /* Detail text for rewards onboarding screen */
 "OBRewardsDetailInAdRegion" = "Tjen tokener og belønn skaperne for supert innhold mens du surfer.";
-
-/* Detail text for rewards onboarding screen */
-"OBRewardsDetailInAdRegionJapan" = "Tjen poeng og belønn skaperne for supert innhold mens du surfer.";
-
-/* Detail text for rewards onboarding screen */
-"OBRewardsDetailOutsideAdRegion" = "Støtt dine favorittnettsteder og -skapere basert på din oppmerksomhet.";
 
 /* Title for rewards onboarding screen */
 "OBRewardsTitle" = "Brave Rewards";
@@ -129,7 +125,7 @@
 "OBShowMeButton" = "Vis meg";
 
 /* Button to show Brave Rewards. */
-"OBTurnOnButton" = "Slå på";
+"OBTurnOnButton" = "Start";
 
 /* Continue button to navigate to next onboarding screen. */
 "OnboardingContinueButton" = "Fortsett";
@@ -160,6 +156,61 @@
 
 /* Name of folder where restored favorites are retrieved */
 "RestoredFavoritesFolderName" = "Gjenopprettede favoritter";
+
+/* Displayed when Brave Rewards is disabled */
+"rewards.disabledBody" = "Skru på for å støtte innholdsskapere";
+
+/* Displayed in the status container when rewards is disabled */
+"rewards.disabledStatusBody" = "Ved å bruke Brave Rewards støtter du innholdsskapere mens du er på nettet.";
+
+/* Displayed when Brave Rewards is enabled */
+"rewards.enabledBody" = "Du bidrar til å støtte innholdsskapere";
+
+/* Displayed in the status container when rewards is enabled but you're not currently supporting any publishers (0 AC count) */
+"rewards.enabledStatusBody" = "Takk for at du støtter innholdsskapere mens du er på nettet!";
+
+/* No comment provided by engineer. */
+"rewards.legacyWalletTransfer" = "Overføring fra Legacy-lommebok";
+
+/* No comment provided by engineer. */
+"rewards.legacyWalletTransferSubtitle" = "Engangsoverføring ut for eksisterende tokener";
+
+/* No comment provided by engineer. */
+"rewards.settingsFooterMessage" = "Brave Rewards-utbetalinger er midlertidig utilgjengelige på denne enheten. Overfør midler fra din eksisterende lommebok til en stasjonær lommebok for å beholde tokener.";
+
+/* No comment provided by engineer. */
+"rewards.settingsToggleMessage" = "Støtt innholdsskapere og utgivere automatisk ved å aktivere Brave Private Ads. Brave Private Ads er annonser som respekterer personvern og som gir tilbake til innholdsskapere.";
+
+/* No comment provided by engineer. */
+"rewards.settingsToggleTitle" = "Aktiver Brave Rewards";
+
+/* Displayed under verified publishers */
+"rewards.supportingPublisher" = "Du støtter innholdsskapere som denne.";
+
+/* Displayed next to a number representing the total number of publishers supported */
+"rewards.totalSupportedCount" = "Antall innholdsskapere du støtter denne måneden.";
+
+/* Displayed under unverified publishers */
+"rewards.unverifiedPublisher" = "Denne skaperen har ikke blitt verifisert og vil ikke bli inkludert i skaperstøtten";
+
+/* Title shown above the confirmation message after completing a wallet transfer successfully */
+"rewards.walletTransferCompleteTitle" = "Saldooverføring startet";
+
+/* Message on the alert presented if wallet transfer fails */
+"rewards.walletTransferFailureAlertMessage" = "Brave fikk ikke tilgang, noe gikk i stykker, eller vi dummet oss ut.";
+
+/* Title on the alert presented if wallet transfer fails */
+"rewards.walletTransferFailureAlertTitle" = "Prøv igjen";
+
+/* A confirmation message shown to the user after completing a wallet transfer successfully
+   Describes the steps for using wallet transfer */
+"rewards.walletTransferStepsBody" = "Brave Rewards-saldoen din kan overføres til en eksisterende stasjonær Brave Rewards-lommebok, én gang.\n\n1. Åpne Brave Browser på skrivebordet\n2. Gå til brave://rewards\n3. Klikk på “QR-kode”\n4. Skann QR-kode med enheten din";
+
+/* Title above the steps to use wallet transfer */
+"rewards.walletTransferStepsTitle" = "Skann engangskode for overføring";
+
+/* Title of the legacy wallet transfer screen */
+"rewards.walletTransferTitle" = "Overføring fra lommebok";
 
 /* No comment provided by engineer. */
 "RewardsInternalsAmount" = "Mengde";

@@ -1,5 +1,4 @@
-/* The body of the screen explaining Brave Shields
-   The title of the screen explaining Brave Shields */
+/* The title of the screen explaining Brave Shields */
 "AboutBraveShields" = "Über Brave Shields";
 
 /* No comment provided by engineer. */
@@ -90,22 +89,19 @@
 "OBPrivacyConsentYesButton" = "Einmalige Überprüfung der Zwischenablage zulassen";
 
 /* Detail text for rewards agreement onboarding screen */
-"OBRewardsAgreementDetail" = "Mit der Aktivierung von Rewards erklären Sie sich einverstanden mit den";
+"OBRewardsAgreementDetail" = "Indem Sie auf „Unterstützen“ tippen, akzeptieren Sie die";
 
 /* Detail text for rewards agreement onboarding screen */
 "OBRewardsAgreementDetailLink" = "Allgemeinen Geschäftsbedingungen";
 
 /* Title for rewards agreement onboarding screen */
-"OBRewardsAgreementTitle" = "Brave Rewards";
+"OBRewardsAgreementTitle" = "Brave Rewards unterstützt Content-Ersteller";
+
+/* Detail text for rewards onboarding screen */
+"OBRewardsDetail" = "Wollen Sie Content-Ersteller unterstützen, indem Sie sich beim Browsen private und anonymisierte Anzeigen anzeigen lassen?";
 
 /* Detail text for rewards onboarding screen */
 "OBRewardsDetailInAdRegion" = "Verdienen Sie Token und belohnen Sie die Ersteller für großartige Inhalte, während Sie surfen.";
-
-/* Detail text for rewards onboarding screen */
-"OBRewardsDetailInAdRegionJapan" = "Sammeln Sie Punkte und belohnen Sie die Ersteller für großartige Inhalte, während Sie surfen";
-
-/* Detail text for rewards onboarding screen */
-"OBRewardsDetailOutsideAdRegion" = "Unterstützen Sie Ihre Lieblings-Websites und -Ersteller basierend auf Ihrer Aufmerksamkeit.";
 
 /* Title for rewards onboarding screen */
 "OBRewardsTitle" = "Brave Rewards";
@@ -129,7 +125,7 @@
 "OBShowMeButton" = "Zeige mir";
 
 /* Button to show Brave Rewards. */
-"OBTurnOnButton" = "Einschalten";
+"OBTurnOnButton" = "Unterstützen";
 
 /* Continue button to navigate to next onboarding screen. */
 "OnboardingContinueButton" = "Weiter";
@@ -160,6 +156,61 @@
 
 /* Name of folder where restored favorites are retrieved */
 "RestoredFavoritesFolderName" = "Wiederhergestellte Favoriten";
+
+/* Displayed when Brave Rewards is disabled */
+"rewards.disabledBody" = "Aktiveren Sie diese Funktion, um Content-Ersteller zu unterstützen.";
+
+/* Displayed in the status container when rewards is disabled */
+"rewards.disabledStatusBody" = "Indem du Brave Rewards beim surfen benutzt, unterstützt du Webseiten-Betreiber ganz nebenbei.";
+
+/* Displayed when Brave Rewards is enabled */
+"rewards.enabledBody" = "Sie unterstützen Content-Ersteller.";
+
+/* Displayed in the status container when rewards is enabled but you're not currently supporting any publishers (0 AC count) */
+"rewards.enabledStatusBody" = "Danke, dass Sie Webseiten-Betreiber unterstützen indem Sie Brave Rewards beim surfen benützen!";
+
+/* No comment provided by engineer. */
+"rewards.legacyWalletTransfer" = "Transfer der alten Wallet";
+
+/* No comment provided by engineer. */
+"rewards.legacyWalletTransferSubtitle" = "Einmaliger ausgehenden Transfer für bestehende Tokens";
+
+/* No comment provided by engineer. */
+"rewards.settingsFooterMessage" = "Brave-Rewards-Auszahlungen sind auf diesem Gerät vorübergehend nicht verfügbar. Transferieren Sie Ihr bestehendes Wallet-Guthaben in eine Desktop-Wallet, um Ihre Tokens zu behalten.";
+
+/* No comment provided by engineer. */
+"rewards.settingsToggleMessage" = "Unterstützen Sie Content-Ersteller und Publisher automatisch, indem Sie Brave Private Ads aktivieren. Dabei handelt es sich um Anzeigen, die Ihre Privatsphäre respektieren und Content-Ersteller respektieren.";
+
+/* No comment provided by engineer. */
+"rewards.settingsToggleTitle" = "Brave Rewards aktivieren";
+
+/* Displayed under verified publishers */
+"rewards.supportingPublisher" = "Sie unterstützen Content-Ersteller wie diesen.";
+
+/* Displayed next to a number representing the total number of publishers supported */
+"rewards.totalSupportedCount" = "Die Anzahl der Content-Ersteller, die Sie diesen Monat unterstützen.";
+
+/* Displayed under unverified publishers */
+"rewards.unverifiedPublisher" = "Dieser Ersteller wurde nicht verifiziert und kann deshalb nicht unterstützt werden.";
+
+/* Title shown above the confirmation message after completing a wallet transfer successfully */
+"rewards.walletTransferCompleteTitle" = "Guthabentransfer eingeleitet";
+
+/* Message on the alert presented if wallet transfer fails */
+"rewards.walletTransferFailureAlertMessage" = "Brave konnte keine Verbindung herstellen, es ist ein Fehler aufgetreten oder wir haben etwas falsch gemacht.";
+
+/* Title on the alert presented if wallet transfer fails */
+"rewards.walletTransferFailureAlertTitle" = "Erneut versuchen";
+
+/* A confirmation message shown to the user after completing a wallet transfer successfully
+   Describes the steps for using wallet transfer */
+"rewards.walletTransferStepsBody" = "Ihr Guthaben an Brave-Rewards-Token kann einmalig in eine bestehende Brave-Rewards-Desktop-Wallet transferiert werden.\n\n1. Öffnen Sie den Brave Browser auf Ihrem Desktop-PC\n2. Gehen Sie zu brave://rewards\n3. Klicken Sie auf „QR-Code“\n4. Scannen Sie den QR-Code mit Ihrem Mobilgerät";
+
+/* Title above the steps to use wallet transfer */
+"rewards.walletTransferStepsTitle" = "Einmaligen Transfercode scannen";
+
+/* Title of the legacy wallet transfer screen */
+"rewards.walletTransferTitle" = "Wallet-Transfer";
 
 /* No comment provided by engineer. */
 "RewardsInternalsAmount" = "Anzahl";
@@ -408,7 +459,7 @@
 "today.allSources" = "Alle Quellen";
 
 /* The name of the feature */
-"today.braveToday" = "Brave Heute";
+"today.braveToday" = "Brave Today";
 
 /* No comment provided by engineer. */
 "today.contentAvailableButtonTitle" = "Neue Inhalte verfügbar";
@@ -420,7 +471,7 @@
 "today.disableAll" = "Alle deaktivieren";
 
 /* '%@' will turn into the name of a publisher (verbatim), for example: Brave Blog */
-"today.disabledAlertBody" = "Brave Heute wird keine Inhalte von %@ mehr anzeigen.";
+"today.disabledAlertBody" = "Brave Today wird keine Inhalte von %@ mehr anzeigen.";
 
 /* No comment provided by engineer. */
 "today.disabledAlertTitle" = "Deaktiviert";
@@ -441,19 +492,19 @@
 "today.enablePublisherContent" = "Inhalte von %@ aktivieren";
 
 /* No comment provided by engineer. */
-"today.errorGeneralBody" = "Es gibt Probleme mit Brave Heute. Bitte versuchen Sie es erneut.";
+"today.errorGeneralBody" = "Es gibt Probleme mit Brave Today. Bitte versuchen Sie es erneut.";
 
 /* No comment provided by engineer. */
 "today.errorGeneralTitle" = "Hoppla …";
 
 /* No comment provided by engineer. */
-"today.introCardBody" = "Brave Heute gleicht Ihre Interessen mit Ihrem Gerät ab, damit Ihre personenbezogenen Daten niemals den Browser verlassen. Inhalte werden den ganzen Tag lang aktualisiert.";
+"today.introCardBody" = "Brave Today gleicht Ihre Interessen mit Ihrem Gerät ab, damit Ihre personenbezogenen Daten niemals den Browser verlassen. Inhalte werden den ganzen Tag lang aktualisiert.";
 
 /* No comment provided by engineer. */
 "today.introCardTitle" = "Nur für Sie: Die Top-Meldungen von heute in einem völlig privaten Feed.";
 
 /* No comment provided by engineer. */
-"today.isEnabledToggleLabel" = "Brave Heute anzeigen";
+"today.isEnabledToggleLabel" = "Brave Today anzeigen";
 
 /* No comment provided by engineer. */
 "today.learnMoreTitle" = "Mehr über Ihre Daten erfahren";

@@ -1,5 +1,4 @@
-/* The body of the screen explaining Brave Shields
-   The title of the screen explaining Brave Shields */
+/* The title of the screen explaining Brave Shields */
 "AboutBraveShields" = "Brave Shields 정보";
 
 /* No comment provided by engineer. */
@@ -90,22 +89,19 @@
 "OBPrivacyConsentYesButton" = "일회성 클립보드 확인 허용";
 
 /* Detail text for rewards agreement onboarding screen */
-"OBRewardsAgreementDetail" = "Rewards를 켜면 다음에 동의하는 것으로 간주됩니다.";
+"OBRewardsAgreementDetail" = "시작을 탭하면 다음에 동의하는 것으로 간주됩니다.";
 
 /* Detail text for rewards agreement onboarding screen */
 "OBRewardsAgreementDetailLink" = "서비스 약관";
 
 /* Title for rewards agreement onboarding screen */
-"OBRewardsAgreementTitle" = "Brave Rewards";
+"OBRewardsAgreementTitle" = "Brave Rewards, 제작자를 지원하는 방법";
+
+/* Detail text for rewards onboarding screen */
+"OBRewardsDetail" = "브라우징할 때 비공개 익명 광고를 보는 방법으로 제작자를 지원해보시겠어요?";
 
 /* Detail text for rewards onboarding screen */
 "OBRewardsDetailInAdRegion" = "브라우징하면서 토큰을 얻어 좋은 콘텐츠를 만들어준 제작자에게 보답하세요.";
-
-/* Detail text for rewards onboarding screen */
-"OBRewardsDetailInAdRegionJapan" = "브라우징하면서 포인트를 얻어 좋은 콘텐츠를 만들어준 제작자에게 보답하세요.";
-
-/* Detail text for rewards onboarding screen */
-"OBRewardsDetailOutsideAdRegion" = "관심도를 기반으로 좋아하는 웹사이트와 제작자를 후원하세요.";
 
 /* Title for rewards onboarding screen */
 "OBRewardsTitle" = "Brave Rewards";
@@ -129,7 +125,7 @@
 "OBShowMeButton" = "표시";
 
 /* Button to show Brave Rewards. */
-"OBTurnOnButton" = "켜기";
+"OBTurnOnButton" = "시작";
 
 /* Continue button to navigate to next onboarding screen. */
 "OnboardingContinueButton" = "계속";
@@ -160,6 +156,61 @@
 
 /* Name of folder where restored favorites are retrieved */
 "RestoredFavoritesFolderName" = "복원된 즐겨찾기";
+
+/* Displayed when Brave Rewards is disabled */
+"rewards.disabledBody" = "콘텐츠 제작자를 지원하려면 켜세요.";
+
+/* Displayed in the status container when rewards is disabled */
+"rewards.disabledStatusBody" = "Brave Rewards를 사용하면 브라우징하면서 콘텐츠 제작자를 지원할 수 있습니다.";
+
+/* Displayed when Brave Rewards is enabled */
+"rewards.enabledBody" = "콘텐츠 제작자를 지원하고 계십니다.";
+
+/* Displayed in the status container when rewards is enabled but you're not currently supporting any publishers (0 AC count) */
+"rewards.enabledStatusBody" = "브라우징하면서 콘텐츠 제작자를 지원해 주셔서 감사합니다!";
+
+/* No comment provided by engineer. */
+"rewards.legacyWalletTransfer" = "레거시 월렛 이전";
+
+/* No comment provided by engineer. */
+"rewards.legacyWalletTransferSubtitle" = "기존 토큰 일회성 이전";
+
+/* No comment provided by engineer. */
+"rewards.settingsFooterMessage" = "Brave Rewards 결제를 일시적으로 이 기기에서 이용할 수 없습니다. 기존 월렛 잔액을 데스크톱 월렛으로 이전하여 토큰을 안전하게 보호하세요.";
+
+/* No comment provided by engineer. */
+"rewards.settingsToggleMessage" = "Brave Private Ads를 활성화하면 자동으로 콘텐츠 제작자와 게시자를 지원하게 됩니다. Brave Private Ads는 개인정보를 존중하는 광고로 콘텐츠 제작자에게 보상을 줍니다.";
+
+/* No comment provided by engineer. */
+"rewards.settingsToggleTitle" = "Brave Rewards 활성화";
+
+/* Displayed under verified publishers */
+"rewards.supportingPublisher" = "이 제작자와 같은 콘텐츠 제작자를 지원하고 계십니다.";
+
+/* Displayed next to a number representing the total number of publishers supported */
+"rewards.totalSupportedCount" = "이번 달 여러 콘텐츠 제작자를 지원하고 계십니다.";
+
+/* Displayed under unverified publishers */
+"rewards.unverifiedPublisher" = "확인되지 않은 제작자이기 때문에 제작자 지원에 포함되지 않습니다.";
+
+/* Title shown above the confirmation message after completing a wallet transfer successfully */
+"rewards.walletTransferCompleteTitle" = "잔액 이전이 시작되었습니다.";
+
+/* Message on the alert presented if wallet transfer fails */
+"rewards.walletTransferFailureAlertMessage" = "Brave가 연결할 수 없습니다. 문제가 생겼거나 오류가 발생한 것 같습니다.";
+
+/* Title on the alert presented if wallet transfer fails */
+"rewards.walletTransferFailureAlertTitle" = "다시 시도";
+
+/* A confirmation message shown to the user after completing a wallet transfer successfully
+   Describes the steps for using wallet transfer */
+"rewards.walletTransferStepsBody" = "Brave Rewards 토큰 잔액을 기존 Brave Rewards 데스크톱 월렛으로 단 한 번 이전할 수 있습니다.\n\n1. 데스크톱에서 Brave 브라우저를 엽니다.\n2. brave://rewards 페이지로 이동합니다.\n3. “QR Code”를 클릭합니다.\n4. 기기로 QR 코드를 스캔합니다.";
+
+/* Title above the steps to use wallet transfer */
+"rewards.walletTransferStepsTitle" = "일회성 이전 코드 스캔";
+
+/* Title of the legacy wallet transfer screen */
+"rewards.walletTransferTitle" = "월렛 이전";
 
 /* No comment provided by engineer. */
 "RewardsInternalsAmount" = "금액";

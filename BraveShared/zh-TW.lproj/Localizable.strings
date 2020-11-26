@@ -1,5 +1,4 @@
-/* The body of the screen explaining Brave Shields
-   The title of the screen explaining Brave Shields */
+/* The title of the screen explaining Brave Shields */
 "AboutBraveShields" = "關於 Brave Shields";
 
 /* No comment provided by engineer. */
@@ -90,22 +89,19 @@
 "OBPrivacyConsentYesButton" = "允許查看一次剪貼簿";
 
 /* Detail text for rewards agreement onboarding screen */
-"OBRewardsAgreementDetail" = "啟用「獎勵」代表您同意";
+"OBRewardsAgreementDetail" = "點選「開始」即代表您同意";
 
 /* Detail text for rewards agreement onboarding screen */
 "OBRewardsAgreementDetailLink" = "服務條款";
 
 /* Title for rewards agreement onboarding screen */
-"OBRewardsAgreementTitle" = "Brave Rewards";
+"OBRewardsAgreementTitle" = "Brave Rewards 全力支持創作者";
+
+/* Detail text for rewards onboarding screen */
+"OBRewardsDetail" = "想開始在瀏覽時透過私人匿名廣告支持創作者嗎？";
 
 /* Detail text for rewards onboarding screen */
 "OBRewardsDetailInAdRegion" = "一邊瀏覽，一邊賺取代幣，獎勵優質的內容創作者。";
-
-/* Detail text for rewards onboarding screen */
-"OBRewardsDetailInAdRegionJapan" = "一邊瀏覽，一邊賺取點數，獎勵優質的內容創作者。";
-
-/* Detail text for rewards onboarding screen */
-"OBRewardsDetailOutsideAdRegion" = "根據您的關注度來支持您喜歡的站點和創作者。";
 
 /* Title for rewards onboarding screen */
 "OBRewardsTitle" = "Brave Rewards";
@@ -129,7 +125,7 @@
 "OBShowMeButton" = "讓我看看";
 
 /* Button to show Brave Rewards. */
-"OBTurnOnButton" = "開啟";
+"OBTurnOnButton" = "開始";
 
 /* Continue button to navigate to next onboarding screen. */
 "OnboardingContinueButton" = "繼續";
@@ -160,6 +156,61 @@
 
 /* Name of folder where restored favorites are retrieved */
 "RestoredFavoritesFolderName" = "恢復的最愛";
+
+/* Displayed when Brave Rewards is disabled */
+"rewards.disabledBody" = "開啟以立即支持內容創作者";
+
+/* Displayed in the status container when rewards is disabled */
+"rewards.disabledStatusBody" = "使用 Brave Rewards 就能在瀏覽期間支持內容創作者。";
+
+/* Displayed when Brave Rewards is enabled */
+"rewards.enabledBody" = "您正在支持內容創作者";
+
+/* Displayed in the status container when rewards is enabled but you're not currently supporting any publishers (0 AC count) */
+"rewards.enabledStatusBody" = "感謝您在瀏覽期間不忘支持內容創作者！";
+
+/* No comment provided by engineer. */
+"rewards.legacyWalletTransfer" = "舊版錢包轉帳";
+
+/* No comment provided by engineer. */
+"rewards.legacyWalletTransferSubtitle" = "一次轉出現有代幣";
+
+/* No comment provided by engineer. */
+"rewards.settingsFooterMessage" = "這部裝置暫時無法轉出 Brave Rewards，請將現有錢包金額轉至桌面版錢包，以便保存。";
+
+/* No comment provided by engineer. */
+"rewards.settingsToggleMessage" = "啟用 Brave Private Ads，即可自動支持內容創作者和發佈者。Brave Private Ads 是回饋內容創作者並兼顧隱私的廣告。";
+
+/* No comment provided by engineer. */
+"rewards.settingsToggleTitle" = "啟用 Brave Rewards";
+
+/* Displayed under verified publishers */
+"rewards.supportingPublisher" = "您正在支持這樣的內容創作者。";
+
+/* Displayed next to a number representing the total number of publishers supported */
+"rewards.totalSupportedCount" = "本月您支持的內容創作者人數。";
+
+/* Displayed under unverified publishers */
+"rewards.unverifiedPublisher" = "這位創作者尚未通過驗證，不會納入您支持的創作者名單";
+
+/* Title shown above the confirmation message after completing a wallet transfer successfully */
+"rewards.walletTransferCompleteTitle" = "已轉出金額";
+
+/* Message on the alert presented if wallet transfer fails */
+"rewards.walletTransferFailureAlertMessage" = "Brave 發生故障或錯誤，無法連線。";
+
+/* Title on the alert presented if wallet transfer fails */
+"rewards.walletTransferFailureAlertTitle" = "再試一次";
+
+/* A confirmation message shown to the user after completing a wallet transfer successfully
+   Describes the steps for using wallet transfer */
+"rewards.walletTransferStepsBody" = "您可將 Brave Rewards 代幣餘額一次轉至現有 Brave Rewards 桌面版錢包。\n\n1. 在桌上型電腦上開啟 Brave 瀏覽器\n2. 瀏覽至 brave://rewards\n3. 按一下「QR 碼」\n4. 以裝置掃描 QR 碼";
+
+/* Title above the steps to use wallet transfer */
+"rewards.walletTransferStepsTitle" = "掃描一次性轉帳碼";
+
+/* Title of the legacy wallet transfer screen */
+"rewards.walletTransferTitle" = "錢包轉帳";
 
 /* No comment provided by engineer. */
 "RewardsInternalsAmount" = "金額";

@@ -646,23 +646,11 @@
 /* Placeholder example: 'You earned 42 BAT by browsing with Brave.' */
 "ntp.earningsReport" = "您使用 Brave 瀏覽期間，一共賺取了 %@。";
 
-/* No comment provided by engineer. */
-"ntp.getPaidForThisImageTurnAds" = "查看此圖片即可賺取代幣。立即啟用 Brave Ads，開始支持創作者。";
-
-/* No comment provided by engineer. */
-"ntp.getPaidForThisImageTurnRewards" = "查看此圖片即可賺取代幣。立即啟用 Brave Rewards，開始支持創作者。";
-
-/* No comment provided by engineer. */
-"ntp.getPaidToSeeThisImage" = "查看此圖片即可賺取代幣。";
-
 /* The context is to praise the user that they did a good job, to keep it up. It is used in full sentence like: 'Way to go! You earned 40 BAT last month.' */
 "ntp.goodJob" = "做得很好！";
 
 /* No comment provided by engineer. */
 "ntp.hideSponsoredImages" = "隱藏贊助圖片";
-
-/* No comment provided by engineer. */
-"ntp.learnMoreAboutBrandedImages" = "查看贊助圖片即可賺取代幣，支持創作者。啟用 Brave Ads 後，畫面顯示什麼廣告全由您掌控。";
 
 /* No comment provided by engineer. */
 "ntp.learnMoreAboutRewards" = "深入了解 Brave Rewards";
@@ -692,19 +680,10 @@
 "ntp.showMoreFavorites" = "顯示更多";
 
 /* No comment provided by engineer. */
-"ntp.supportWebCreatorsWithTokens" = "一邊瀏覽，一邊賺取代幣，獎勵優質的內容創作者。";
-
-/* No comment provided by engineer. */
-"ntp.turnOnBraveAds" = "啟用 Brave Ads";
-
-/* No comment provided by engineer. */
-"ntp.turnOnBraveRewards" = "啟用 Brave Rewards";
+"ntp.sponsoredImageDescription" = "查看這張贊助圖片，等同於支持內容創作者和發佈者。";
 
 /* The placeholder says 'Terms of Service'. So full sentence goes like: 'By turning Rewards, you agree to the Terms of Service'. */
 "ntp.turnRewardsTos" = "開啟「獎勵」即表示您同意%@。";
-
-/* No comment provided by engineer. */
-"ntp.youArePaidToSeeThisImage" = "查看此圖片立即賺取代幣。";
 
 /* Context menu item for opening all folder bookmarks */
 "OpenAllBookmarks" = "開啟全部 (%i)";

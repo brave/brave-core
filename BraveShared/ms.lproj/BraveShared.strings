@@ -646,23 +646,11 @@
 /* Placeholder example: 'You earned 42 BAT by browsing with Brave.' */
 "ntp.earningsReport" = "Anda mendapat %@ dengan menyemak lalu dengan Brave.";
 
-/* No comment provided by engineer. */
-"ntp.getPaidForThisImageTurnAds" = "Dapatkan token untuk melihat imej ini. Hidupkan Brave Ads dan mula menyokong pencipta.";
-
-/* No comment provided by engineer. */
-"ntp.getPaidForThisImageTurnRewards" = "Dapatkan token untuk melihat imej ini. Hidupkan Brave Rewards dan mula menyokong pencipta.";
-
-/* No comment provided by engineer. */
-"ntp.getPaidToSeeThisImage" = "Dapatkan token untuk melihat imej ini.";
-
 /* The context is to praise the user that they did a good job, to keep it up. It is used in full sentence like: 'Way to go! You earned 40 BAT last month.' */
 "ntp.goodJob" = "Begitu caranya!";
 
 /* No comment provided by engineer. */
 "ntp.hideSponsoredImages" = "Sembunyikan imej tajaan";
-
-/* No comment provided by engineer. */
-"ntp.learnMoreAboutBrandedImages" = "Apabila anda melihat imej yang ditaja, anda mendapat token yang boleh digunakan untuk menyokong pencipta. Dengan Brave Ads, anda sentiasa mengawal iklan yang anda lihat.";
 
 /* No comment provided by engineer. */
 "ntp.learnMoreAboutRewards" = "Ketahui lebih lanjut tentang Brave Rewards";
@@ -692,19 +680,10 @@
 "ntp.showMoreFavorites" = "Tunjukkan Lagi";
 
 /* No comment provided by engineer. */
-"ntp.supportWebCreatorsWithTokens" = "Dapatkan token dan beri ganjaran kepada pencipta untuk kandungan hebat sambil anda menyemak lalu.";
-
-/* No comment provided by engineer. */
-"ntp.turnOnBraveAds" = "Hidupkan Iklan Brave";
-
-/* No comment provided by engineer. */
-"ntp.turnOnBraveRewards" = "Hidupkan Brave Rewards";
+"ntp.sponsoredImageDescription" = "Anda menyokong pencipta dan penerbit kandungan dengan melihat imej yang ditaja ini.";
 
 /* The placeholder says 'Terms of Service'. So full sentence goes like: 'By turning Rewards, you agree to the Terms of Service'. */
 "ntp.turnRewardsTos" = "Dengan menghidupkan Ganjaran, anda bersetuju dengan %@.";
-
-/* No comment provided by engineer. */
-"ntp.youArePaidToSeeThisImage" = "Anda akan mendapat token untuk melihat imej ini.";
 
 /* Context menu item for opening all folder bookmarks */
 "OpenAllBookmarks" = "Buka Semua (%i)";

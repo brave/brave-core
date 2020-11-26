@@ -1,5 +1,4 @@
-/* The body of the screen explaining Brave Shields
-   The title of the screen explaining Brave Shields */
+/* The title of the screen explaining Brave Shields */
 "AboutBraveShields" = "Brave Shieldについて";
 
 /* No comment provided by engineer. */
@@ -90,22 +89,19 @@
 "OBPrivacyConsentYesButton" = "一回限りのクリップボードチェックを許可する";
 
 /* Detail text for rewards agreement onboarding screen */
-"OBRewardsAgreementDetail" = "Rewardsを有効にすることで以下に同意したものと見なされます: ";
+"OBRewardsAgreementDetail" = "「開始する」をタップすると以下に同意したものと見なされます: ";
 
 /* Detail text for rewards agreement onboarding screen */
 "OBRewardsAgreementDetailLink" = "利用規約";
 
 /* Title for rewards agreement onboarding screen */
-"OBRewardsAgreementTitle" = "Brave Rewards";
+"OBRewardsAgreementTitle" = "Brave Rewardsでクリエイターを支援する";
+
+/* Detail text for rewards onboarding screen */
+"OBRewardsDetail" = "ブラウジング中にプライバシーを重視した匿名広告を表示して、クリエイターの支援しませんか？";
 
 /* Detail text for rewards onboarding screen */
 "OBRewardsDetailInAdRegion" = "ブラウジング中にBATポイントを獲得し、同時にコンテンツクリエイターに還元することができます";
-
-/* Detail text for rewards onboarding screen */
-"OBRewardsDetailInAdRegionJapan" = "ブラウジング中にBATポイントを獲得し、同時にコンテンツクリエイターに還元することができます";
-
-/* Detail text for rewards onboarding screen */
-"OBRewardsDetailOutsideAdRegion" = "ウェブサーフィン中に自動的にサイトを支援したり、好きなタイミングでチップを送ることが可能です。";
 
 /* Title for rewards onboarding screen */
 "OBRewardsTitle" = "Brave Rewards";
@@ -129,7 +125,7 @@
 "OBShowMeButton" = "表示する";
 
 /* Button to show Brave Rewards. */
-"OBTurnOnButton" = "有効にする";
+"OBTurnOnButton" = "開始する";
 
 /* Continue button to navigate to next onboarding screen. */
 "OnboardingContinueButton" = "続ける";
@@ -160,6 +156,61 @@
 
 /* Name of folder where restored favorites are retrieved */
 "RestoredFavoritesFolderName" = "復元されたお気に入り";
+
+/* Displayed when Brave Rewards is disabled */
+"rewards.disabledBody" = "有効にしてことで、コンテンツクリエイターを支援することができます。";
+
+/* Displayed in the status container when rewards is disabled */
+"rewards.disabledStatusBody" = "Brave Rewardsを使うと、ブラウジングすることででクリエイターを支援";
+
+/* Displayed when Brave Rewards is enabled */
+"rewards.enabledBody" = "あなたはコンテンツクリエイターを支援中です";
+
+/* Displayed in the status container when rewards is enabled but you're not currently supporting any publishers (0 AC count) */
+"rewards.enabledStatusBody" = "ブラウジングによるクリエイターの支援をありがとうございます！";
+
+/* No comment provided by engineer. */
+"rewards.legacyWalletTransfer" = "レガシーウォレットからの移行";
+
+/* No comment provided by engineer. */
+"rewards.legacyWalletTransferSubtitle" = "既存のトークンの一度限りの移管";
+
+/* No comment provided by engineer. */
+"rewards.settingsFooterMessage" = "Brave Rewardsの支払いは現在ご利用いただけません。既存のウォレットの資金はデスクトップ版Braveウォレットに移行することで、トークンを保持することができます。";
+
+/* No comment provided by engineer. */
+"rewards.settingsToggleMessage" = "Braveのプライバシー重視型の広告を有効にすることで、コンテンツクリエイターやパブリッシャーを自動的にサポートすることができます。Brave Ads広告はプライバシーを尊重しつつコンテンツクリエイターに還元することを目指した新しい広告の仕組みです。";
+
+/* No comment provided by engineer. */
+"rewards.settingsToggleTitle" = "Brave Rewardsを有効にする";
+
+/* Displayed under verified publishers */
+"rewards.supportingPublisher" = "あなたはコンテンツクリエイターを支援中です";
+
+/* Displayed next to a number representing the total number of publishers supported */
+"rewards.totalSupportedCount" = "今月支援中のコンテンツクリエイター数";
+
+/* Displayed under unverified publishers */
+"rewards.unverifiedPublisher" = "このクリエイターは認証が完了していないため、支援対象になりません";
+
+/* Title shown above the confirmation message after completing a wallet transfer successfully */
+"rewards.walletTransferCompleteTitle" = "残高の移行が開始されました";
+
+/* Message on the alert presented if wallet transfer fails */
+"rewards.walletTransferFailureAlertMessage" = "Braveが接続に失敗した、または何らかの不具合が発生しています。";
+
+/* Title on the alert presented if wallet transfer fails */
+"rewards.walletTransferFailureAlertTitle" = "やり直す";
+
+/* A confirmation message shown to the user after completing a wallet transfer successfully
+   Describes the steps for using wallet transfer */
+"rewards.walletTransferStepsBody" = "Brave Rewardsの残高は、一度限りデスクトップ版のBraveのウォレットに移行することができます。\n\n1.   デスクトップでBraveブラウザを開く\n2.  brave://rewards に移動\n3. 「QRコード」をクリック\n4.  QRコードを端末でスキャン";
+
+/* Title above the steps to use wallet transfer */
+"rewards.walletTransferStepsTitle" = "一度限りの転送用のQRコードをスキャンする";
+
+/* Title of the legacy wallet transfer screen */
+"rewards.walletTransferTitle" = "ウォレット移行";
 
 /* No comment provided by engineer. */
 "RewardsInternalsAmount" = "総額";

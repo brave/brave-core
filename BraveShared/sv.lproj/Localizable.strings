@@ -1,5 +1,4 @@
-/* The body of the screen explaining Brave Shields
-   The title of the screen explaining Brave Shields */
+/* The title of the screen explaining Brave Shields */
 "AboutBraveShields" = "Om Brave sköldar";
 
 /* No comment provided by engineer. */
@@ -90,22 +89,19 @@
 "OBPrivacyConsentYesButton" = "Tillåt kontroll av urklipp en gång";
 
 /* Detail text for rewards agreement onboarding screen */
-"OBRewardsAgreementDetail" = "Genom att aktivera Rewards godkänner du";
+"OBRewardsAgreementDetail" = "Genom att trycka på Starta godkänner du";
 
 /* Detail text for rewards agreement onboarding screen */
 "OBRewardsAgreementDetailLink" = "Tjänstevillkor";
 
 /* Title for rewards agreement onboarding screen */
-"OBRewardsAgreementTitle" = "Brave Rewards";
+"OBRewardsAgreementTitle" = "Brave Rewards stödjer kreatörer";
+
+/* Detail text for rewards onboarding screen */
+"OBRewardsDetail" = "Börja stödja kreatörer med privata och anonymiserade annonser medan du surfar?";
 
 /* Detail text for rewards onboarding screen */
 "OBRewardsDetailInAdRegion" = "Tjäna tokens och belöna skapare för bra innehåll medan du surfar.";
-
-/* Detail text for rewards onboarding screen */
-"OBRewardsDetailInAdRegionJapan" = "Tjäna poäng och belöna skapare för bra innehåll medan du surfar.";
-
-/* Detail text for rewards onboarding screen */
-"OBRewardsDetailOutsideAdRegion" = "Stötta webbplatser och skapare baserat på hur mycket tid du ger dem.";
 
 /* Title for rewards onboarding screen */
 "OBRewardsTitle" = "Brave Rewards";
@@ -129,7 +125,7 @@
 "OBShowMeButton" = "Visa";
 
 /* Button to show Brave Rewards. */
-"OBTurnOnButton" = "Aktivera";
+"OBTurnOnButton" = "Starta";
 
 /* Continue button to navigate to next onboarding screen. */
 "OnboardingContinueButton" = "Fortsätt";
@@ -160,6 +156,61 @@
 
 /* Name of folder where restored favorites are retrieved */
 "RestoredFavoritesFolderName" = "Återställda favoriter";
+
+/* Displayed when Brave Rewards is disabled */
+"rewards.disabledBody" = "Aktivera för att stödja innehållsskapare";
+
+/* Displayed in the status container when rewards is disabled */
+"rewards.disabledStatusBody" = "Använd Brave Rewards och stöd innehållsskapare när du surfar.";
+
+/* Displayed when Brave Rewards is enabled */
+"rewards.enabledBody" = "Du hjälper till att stödja innehållsskapare";
+
+/* Displayed in the status container when rewards is enabled but you're not currently supporting any publishers (0 AC count) */
+"rewards.enabledStatusBody" = "Tack för att du stödjer innehållsskapare när du surfar!";
+
+/* No comment provided by engineer. */
+"rewards.legacyWalletTransfer" = "Äldre plånboksöverföring";
+
+/* No comment provided by engineer. */
+"rewards.legacyWalletTransferSubtitle" = "Engångsöverföring av befintliga token";
+
+/* No comment provided by engineer. */
+"rewards.settingsFooterMessage" = "Brave Rewards-utbetalningar är tillfälligt otillgängliga på den här enheten. Överför dina befintliga plånboksmedel till en skrivbordsplånbok för att behålla dina tokens.";
+
+/* No comment provided by engineer. */
+"rewards.settingsToggleMessage" = "Stöd innehållsskapare och utgivare automatiskt genom att aktivera Brave Private Ads. Brave Private Ads är annonser som respekterar din sekretess och ger tillbaka till innehållsskapare.";
+
+/* No comment provided by engineer. */
+"rewards.settingsToggleTitle" = "Aktivera Brave Rewards";
+
+/* Displayed under verified publishers */
+"rewards.supportingPublisher" = "Du hjälper stödja innehållsskapare som den här.";
+
+/* Displayed next to a number representing the total number of publishers supported */
+"rewards.totalSupportedCount" = "Antal innehållsskapare som du hjälper till med att stödja den här månaden.";
+
+/* Displayed under unverified publishers */
+"rewards.unverifiedPublisher" = "Den här kreatören har inte verifierat och kommer inte att ingå i kreatörsstödet";
+
+/* Title shown above the confirmation message after completing a wallet transfer successfully */
+"rewards.walletTransferCompleteTitle" = "Saldoöverföring har påbörjats";
+
+/* Message on the alert presented if wallet transfer fails */
+"rewards.walletTransferFailureAlertMessage" = "Brave kunde inte ansluta. Ett fel inträffade.";
+
+/* Title on the alert presented if wallet transfer fails */
+"rewards.walletTransferFailureAlertTitle" = "Försök igen";
+
+/* A confirmation message shown to the user after completing a wallet transfer successfully
+   Describes the steps for using wallet transfer */
+"rewards.walletTransferStepsBody" = "Ditt Brave Rewards-tokensaldo kan överföras till en befintlig Brave Rewards-skrivbordsplånbok en gång.\n\n1. Öppna Brave Browser på en dator\n2. Navigera till brave://rewards\n3. Klicka på \"QR-kod\"\n4. Skanna QR-koden med din enhet";
+
+/* Title above the steps to use wallet transfer */
+"rewards.walletTransferStepsTitle" = "Skanna engångskod för överföring";
+
+/* Title of the legacy wallet transfer screen */
+"rewards.walletTransferTitle" = "Plånboksöverföring";
 
 /* No comment provided by engineer. */
 "RewardsInternalsAmount" = "Belopp";
