@@ -8,6 +8,7 @@
 #include <algorithm>
 #include <utility>
 
+#include "base/feature_list.h"
 #include "base/metrics/histogram_macros.h"
 #include "base/task/post_task.h"
 #include "brave/browser/net/brave_ad_block_tp_network_delegate_helper.h"
@@ -49,6 +50,7 @@
 
 #if BUILDFLAG(IPFS_ENABLED)
 #include "brave/browser/net/ipfs_redirect_network_delegate_helper.h"
+#include "brave/components/ipfs/features.h"
 #endif
 
 static bool IsInternalScheme(std::shared_ptr<brave::BraveRequestInfo> ctx) {
@@ -92,8 +94,10 @@ void BraveRequestHandler::SetupCallbacks() {
 #endif
 
 #if BUILDFLAG(IPFS_ENABLED)
-  callback = base::BindRepeating(ipfs::OnBeforeURLRequest_IPFSRedirectWork);
-  before_url_request_callbacks_.push_back(callback);
+  if (base::FeatureList::IsEnabled(ipfs::features::kIpfsFeature)) {
+    callback = base::BindRepeating(ipfs::OnBeforeURLRequest_IPFSRedirectWork);
+    before_url_request_callbacks_.push_back(callback);
+  }
 #endif
 
   brave::OnBeforeStartTransactionCallback start_transaction_callback =
