@@ -81,7 +81,7 @@ public class NTPWidgetAdapter extends PagerAdapter {
                 });
             }
             if (ntpWidgetItem.getWidgetType().equals(NTPWidgetManager.PREF_PRIVATE_STATS)) {
-                updateBraveStats(mainView);
+                BraveStatsUtil.updateBraveStatsLayout(mainView);
             } else if (ntpWidgetItem.getWidgetType().equals(NTPWidgetManager.PREF_BINANCE)) {
                 Button connectButton = mainView.findViewById(R.id.btn_connect);
                 LinearLayout bianceDisconnectLayout =
@@ -141,42 +141,6 @@ public class NTPWidgetAdapter extends PagerAdapter {
         NTPWidgetManager.getInstance().setWidget(ntpWidgetItem.getWidgetType(), -1);
         widgetList.remove(position);
         notifyDataSetChanged();
-    }
-
-    private void updateBraveStats(View view) {
-        TextView mAdsBlockedCountTextView =
-                (TextView) view.findViewById(R.id.brave_stats_text_ads_count);
-        TextView mDataSavedValueTextView =
-                (TextView) view.findViewById(R.id.brave_stats_data_saved_value);
-        TextView mEstTimeSavedCountTextView =
-                (TextView) view.findViewById(R.id.brave_stats_text_time_count);
-        TextView mAdsBlockedCountTextTextView =
-                (TextView) view.findViewById(R.id.brave_stats_text_ads_count_text);
-        TextView mDataSavedValueTextTextView =
-                (TextView) view.findViewById(R.id.brave_stats_data_saved_value_text);
-        TextView mEstTimeSavedCountTextTextView =
-                (TextView) view.findViewById(R.id.brave_stats_text_time_count_text);
-
-        long trackersBlockedCount =
-                BravePrefServiceBridge.getInstance().getTrackersBlockedCount(mProfile);
-        long adsBlockedCount = BravePrefServiceBridge.getInstance().getAdsBlockedCount(mProfile);
-        long dataSaved = BravePrefServiceBridge.getInstance().getDataSaved(mProfile);
-        long estimatedMillisecondsSaved =
-                (trackersBlockedCount + adsBlockedCount) * BraveStatsUtil.MILLISECONDS_PER_ITEM;
-
-        Pair<String, String> adsTrackersPair =
-                BraveStatsUtil.getBraveStatsStringFormNumberPair(adsBlockedCount, false);
-        Pair<String, String> dataSavedPair =
-                BraveStatsUtil.getBraveStatsStringFormNumberPair(dataSaved, true);
-        Pair<String, String> timeSavedPair =
-                BraveStatsUtil.getBraveStatsStringFromTime(estimatedMillisecondsSaved / 1000);
-
-        mAdsBlockedCountTextView.setText(adsTrackersPair.first);
-        mDataSavedValueTextView.setText(dataSavedPair.first);
-        mEstTimeSavedCountTextView.setText(timeSavedPair.first);
-        mAdsBlockedCountTextTextView.setText(adsTrackersPair.second);
-        mDataSavedValueTextTextView.setText(dataSavedPair.second);
-        mEstTimeSavedCountTextTextView.setText(timeSavedPair.second);
     }
 
     private void showPopupMenu(Context context, View view, final int position) {

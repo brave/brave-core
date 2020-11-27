@@ -122,6 +122,8 @@ public class BraveNewTabPageLayout extends NewTabPageLayout {
     private static final String BRAVE_BINANCE = "https://brave.com/binance/";
     private static final String BRAVE_REF_URL = "https://brave.com/r/";
 
+    private View mBraveStatsViewFallBackLayout;
+
     private ImageView bgImageView;
     private Profile mProfile;
 
@@ -169,6 +171,9 @@ public class BraveNewTabPageLayout extends NewTabPageLayout {
     protected void onFinishInflate() {
         super.onFinishInflate();
 
+        // mBraveStatsViewFallBackLayout = (ViewGroup)
+        // findViewById(R.id.brave_stats_fallback_layout);
+
         ntpWidgetLayout = findViewById(R.id.ntp_widget_layout);
         indicatorLayout = findViewById(R.id.indicator_layout);
         ntpWidgetViewPager = findViewById(R.id.ntp_widget_view_pager);
@@ -197,11 +202,65 @@ public class BraveNewTabPageLayout extends NewTabPageLayout {
         showWidgetBasedOnOrder();
     }
 
+    private void showFallBackNTPLayout() {
+        if (mBraveStatsViewFallBackLayout != null
+                && mBraveStatsViewFallBackLayout.getParent() != null) {
+            ((ViewGroup) mBraveStatsViewFallBackLayout.getParent())
+                    .removeView(mBraveStatsViewFallBackLayout);
+        }
+        LayoutInflater inflater =
+                (LayoutInflater) mActivity.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        mBraveStatsViewFallBackLayout = inflater.inflate(R.layout.brave_stats_layout, null);
+
+        if (mBraveStatsViewFallBackLayout.getLayoutParams()
+                        instanceof ViewGroup.MarginLayoutParams) {
+            ViewGroup.MarginLayoutParams layoutParams =
+                    (ViewGroup.MarginLayoutParams) mBraveStatsViewFallBackLayout.getLayoutParams();
+            layoutParams.setMargins(0, dpToPx(mActivity, 16), 0, dpToPx(mActivity, 16));
+            mBraveStatsViewFallBackLayout.requestLayout();
+        }
+
+        mBraveStatsViewFallBackLayout.findViewById(R.id.brave_stats_title_layout)
+                .setVisibility(View.GONE);
+        ((TextView) mBraveStatsViewFallBackLayout.findViewById(R.id.brave_stats_text_ads))
+                .setTextColor(mActivity.getResources().getColor(R.color.shield_text_color));
+        ((TextView) mBraveStatsViewFallBackLayout.findViewById(R.id.brave_stats_data_saved_text))
+                .setTextColor(mActivity.getResources().getColor(R.color.shield_text_color));
+        ((TextView) mBraveStatsViewFallBackLayout.findViewById(R.id.brave_stats_text_time))
+                .setTextColor(mActivity.getResources().getColor(R.color.shield_text_color));
+        ((TextView) mBraveStatsViewFallBackLayout.findViewById(R.id.brave_stats_text_time_count))
+                .setTextColor(mActivity.getResources().getColor(R.color.shield_text_color));
+        ((TextView) mBraveStatsViewFallBackLayout.findViewById(
+                 R.id.brave_stats_text_time_count_text))
+                .setTextColor(mActivity.getResources().getColor(R.color.shield_text_color));
+        mBraveStatsViewFallBackLayout.setBackgroundColor(
+                mActivity.getResources().getColor(android.R.color.transparent));
+        mBraveStatsViewFallBackLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                checkForBraveStats();
+            }
+        });
+        BraveStatsUtil.updateBraveStatsLayout(mBraveStatsViewFallBackLayout);
+        if (mSiteSectionView.getParent() != null) {
+            ((ViewGroup) mSiteSectionView.getParent()).removeView(mSiteSectionView);
+        }
+        mainLayout.addView(mBraveStatsViewFallBackLayout, 0);
+        int insertionPoint = mainLayout.indexOfChild(findViewById(R.id.ntp_middle_spacer)) + 1;
+        if (!mNTPBackgroundImagesBridge.isSuperReferral()
+                || !NTPBackgroundImagesBridge.enableSponsoredImages()
+                || Build.VERSION.SDK_INT < Build.VERSION_CODES.M)
+            mainLayout.addView(mSiteSectionView, insertionPoint);
+    }
+
     private List<NTPWidgetItem> setWidgetList() {
         NTPWidgetManager ntpWidgetManager = NTPWidgetManager.getInstance();
         LayoutInflater inflater =
                 (LayoutInflater) mActivity.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         Map<Integer, NTPWidgetItem> ntpWidgetMap = new TreeMap<>();
+        if (mSiteSectionView != null && mSiteSectionView.getParent() != null) {
+            ((ViewGroup) mSiteSectionView.getParent()).removeView(mSiteSectionView);
+        }
 
         for (String widget : ntpWidgetManager.getUsedWidgets()) {
             NTPWidgetItem ntpWidgetItem = NTPWidgetManager.mWidgetsMap.get(widget);
@@ -237,9 +296,6 @@ public class BraveNewTabPageLayout extends NewTabPageLayout {
                             getTileGroup().hasReceivedData() && getTileGroup().isEmpty();
                     if (mSiteSectionView != null && !showPlaceholder) {
                         mTopsiteErrorMessage.setVisibility(View.GONE);
-                        if (mSiteSectionView.getParent() != null) {
-                            ((ViewGroup) mSiteSectionView.getParent()).removeView(mSiteSectionView);
-                        }
                         if (mSiteSectionView.getLayoutParams()
                                         instanceof ViewGroup.MarginLayoutParams) {
                             mSiteSectionView.setPadding(0, dpToPx(mActivity, 8), 0, 0);
@@ -321,8 +377,17 @@ public class BraveNewTabPageLayout extends NewTabPageLayout {
         List<NTPWidgetItem> tempList = setWidgetList();
         if (tempList.size() > 0) {
             ntpWidgetLayout.setVisibility(View.VISIBLE);
+            if (mBraveStatsViewFallBackLayout != null
+                    && mBraveStatsViewFallBackLayout.getParent() != null) {
+                ((ViewGroup) mBraveStatsViewFallBackLayout.getParent())
+                        .removeView(mBraveStatsViewFallBackLayout);
+            }
         } else {
             ntpWidgetLayout.setVisibility(View.GONE);
+            if (!UserPrefs.get(Profile.getLastUsedRegularProfile())
+                            .getBoolean(BravePref.NEW_TAB_PAGE_SHOW_BACKGROUND_IMAGE)) {
+                showFallBackNTPLayout();
+            }
         }
 
         if (ntpWidgetAdapter != null) {
@@ -357,7 +422,13 @@ public class BraveNewTabPageLayout extends NewTabPageLayout {
     }
 
     protected int getMaxRowsForMostVisitedTiles() {
-        return 1;
+        if (NTPWidgetManager.getInstance().getUsedWidgets().size() <= 0
+                && !UserPrefs.get(Profile.getLastUsedRegularProfile())
+                            .getBoolean(BravePref.NEW_TAB_PAGE_SHOW_BACKGROUND_IMAGE)) {
+            return 2;
+        } else {
+            return 1;
+        }
     }
 
     @Override
