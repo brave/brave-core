@@ -816,22 +816,22 @@ public abstract class BraveToolbarLayout extends ToolbarLayout implements OnClic
       return mIsBottomToolbarVisible && BottomToolbarVariationManager.isMenuButtonOnBottom();
   }
 
-    @Override
-    protected void initialize(ToolbarDataProvider toolbarDataProvider,
-            ToolbarTabController tabController, MenuButtonCoordinator menuButtonCoordinator) {
-        super.initialize(toolbarDataProvider, tabController, menuButtonCoordinator);
-        updateMenuButtonState();
-    }
+  @Override
+  protected void initialize(ToolbarDataProvider toolbarDataProvider,
+          ToolbarTabController tabController, MenuButtonCoordinator menuButtonCoordinator) {
+      super.initialize(toolbarDataProvider, tabController, menuButtonCoordinator);
+      BraveMenuButtonCoordinator.setMenuFromBottom(isMenuButtonOnBottom());
+  }
 
-    public void updateMenuButtonState() {
-        BraveMenuButtonCoordinator.setMenuFromBottom(isMenuButtonOnBottom());
-    }
+  public void updateMenuButtonState() {
+      BraveMenuButtonCoordinator.setMenuFromBottom(mIsBottomToolbarVisible);
+  }
 
-    @Override
-    protected void onDraw(Canvas canvas) {
-        if (this instanceof CustomTabToolbar || this instanceof ToolbarPhone) {
-            updateMenuButtonState();
-        }
-        super.onDraw(canvas);
-    }
+  @Override
+  protected void onDraw(Canvas canvas) {
+      if (this instanceof CustomTabToolbar || this instanceof ToolbarPhone) {
+          updateMenuButtonState();
+      }
+      super.onDraw(canvas);
+  }
 }
