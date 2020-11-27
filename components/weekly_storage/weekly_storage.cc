@@ -93,6 +93,9 @@ uint64_t WeeklyStorage::GetHighestValueInWeek() const {
                                      [](const auto& left, const auto& right) {
                                        return left.value < right.value;
                                      });
+  if (highest_it == last_weeks_daily_values.end()) {
+    return 0;
+  }
   return highest_it->value;
 }
 
