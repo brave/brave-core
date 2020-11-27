@@ -4,5 +4,6 @@
 // you can obtain one at http://mozilla.org/MPL/2.0/.
 
 export const enum types {
-  SET_FOREGROUND_STACK_WIDGET = '@@stack_widget/SET_FOREGROUND_STACK_WIDGET'
+  SET_FOREGROUND_STACK_WIDGET = '@@stack_widget/SET_FOREGROUND_STACK_WIDGET',
+  SAVE_WIDGET_STACK_ORDER = '@@stack_widget/SAVE_WIDGET_STACK_ORDER'
 }

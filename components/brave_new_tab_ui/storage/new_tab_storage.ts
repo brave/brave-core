@@ -67,6 +67,7 @@ export const defaultState: NewTab.State = {
   removedStackWidgets: [],
   // Order is ascending, with last entry being in the foreground
   widgetStackOrder: ['cryptoDotCom', 'binance', 'gemini', 'rewards'],
+  savedWidgetStackOrder: [],
   binanceState: {
     userTLD: 'com',
     initialFiat: 'USD',
@@ -273,7 +274,8 @@ export const debouncedSave = debounce<NewTab.State>((data: NewTab.State) => {
       geminiState: data.geminiState,
       cryptoDotComState: data.cryptoDotComState,
       removedStackWidgets: data.removedStackWidgets,
-      widgetStackOrder: data.widgetStackOrder
+      widgetStackOrder: data.widgetStackOrder,
+      savedWidgetStackOrder: data.savedWidgetStackOrder
     }
     window.localStorage.setItem(keyName, JSON.stringify(dataToSave))
   }

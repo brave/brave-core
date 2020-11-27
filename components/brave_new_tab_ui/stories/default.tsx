@@ -96,6 +96,7 @@ storiesOf('New Tab/Containers', module)
         saveShowCryptoDotCom={doNothing}
         saveBrandedWallpaperOptIn={doNothing}
         onReadBraveTodayIntroCard={dismissBraveTodayIntroCard}
+        saveSetAllStackWidgets={doNothing}
       />
     )
   })
