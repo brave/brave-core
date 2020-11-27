@@ -211,14 +211,13 @@ public class BraveNewTabPageLayout extends NewTabPageLayout {
         LayoutInflater inflater =
                 (LayoutInflater) mActivity.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         mBraveStatsViewFallBackLayout = inflater.inflate(R.layout.brave_stats_layout, null);
-
-        if (mBraveStatsViewFallBackLayout.getLayoutParams()
-                        instanceof ViewGroup.MarginLayoutParams) {
-            ViewGroup.MarginLayoutParams layoutParams =
-                    (ViewGroup.MarginLayoutParams) mBraveStatsViewFallBackLayout.getLayoutParams();
-            layoutParams.setMargins(0, dpToPx(mActivity, 16), 0, dpToPx(mActivity, 16));
-            mBraveStatsViewFallBackLayout.requestLayout();
-        }
+        LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(
+            new LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.MATCH_PARENT,
+                LinearLayout.LayoutParams.WRAP_CONTENT));
+        layoutParams.setMargins(0, dpToPx(mActivity, 16), 0, dpToPx(mActivity, 16));
+        mBraveStatsViewFallBackLayout.setLayoutParams(layoutParams);
+        mBraveStatsViewFallBackLayout.requestLayout();
 
         mBraveStatsViewFallBackLayout.findViewById(R.id.brave_stats_title_layout)
                 .setVisibility(View.GONE);
@@ -242,15 +241,13 @@ public class BraveNewTabPageLayout extends NewTabPageLayout {
             }
         });
         BraveStatsUtil.updateBraveStatsLayout(mBraveStatsViewFallBackLayout);
+        mainLayout.addView(mBraveStatsViewFallBackLayout, 0);
+
+        int insertionPoint = mainLayout.indexOfChild(findViewById(R.id.ntp_middle_spacer)) + 1;
         if (mSiteSectionView.getParent() != null) {
             ((ViewGroup) mSiteSectionView.getParent()).removeView(mSiteSectionView);
         }
-        mainLayout.addView(mBraveStatsViewFallBackLayout, 0);
-        int insertionPoint = mainLayout.indexOfChild(findViewById(R.id.ntp_middle_spacer)) + 1;
-        if (!mNTPBackgroundImagesBridge.isSuperReferral()
-                || !NTPBackgroundImagesBridge.enableSponsoredImages()
-                || Build.VERSION.SDK_INT < Build.VERSION_CODES.M)
-            mainLayout.addView(mSiteSectionView, insertionPoint);
+        mainLayout.addView(mSiteSectionView, insertionPoint);
     }
 
     private List<NTPWidgetItem> setWidgetList() {
@@ -845,7 +842,16 @@ public class BraveNewTabPageLayout extends NewTabPageLayout {
                             cryptoWidgetBottomSheetDialogFragment.dismiss();
                         }
                     }
-                    showWidgets();
+
+                    if (BraveActivity.getBraveActivity() != null 
+                        && BraveActivity.getBraveActivity().getActivityTab() != null 
+                        && !UserPrefs.get(Profile.getLastUsedRegularProfile())
+                            .getBoolean(BravePref.NEW_TAB_PAGE_SHOW_BACKGROUND_IMAGE)
+                        && NTPWidgetManager.getInstance().getUsedWidgets().size() <= 0) {
+                        BraveActivity.getBraveActivity().getActivityTab().reloadIgnoringCache();
+                    } else {
+                        showWidgets();
+                    }
                 }
 
                 @Override
