@@ -7,6 +7,7 @@
 
 #include <vector>
 
+#include "base/strings/stringprintf.h"
 #include "brave/components/ipfs/ipfs_constants.h"
 #include "brave/components/ipfs/ipfs_gateway.h"
 #include "brave/components/ipfs/translate_ipfs_uri.h"
@@ -74,8 +75,9 @@ GURL GetGatewayURL(const std::string& cid,
                    bool ipfs) {
   GURL uri(base_gateway_url);
   GURL::Replacements replacements;
-  replacements.SetHostStr(
-      (cid + (ipfs ? ".ipfs." : ".ipns.") + uri.host()).c_str());
+  std::string host = base::StringPrintf("%s.%s.%s",
+      cid.c_str(), ipfs? "ipfs" : "ipns", uri.host().c_str());
+  replacements.SetHostStr(host);
   replacements.SetPathStr(path);
   return uri.ReplaceComponents(replacements);
 }
