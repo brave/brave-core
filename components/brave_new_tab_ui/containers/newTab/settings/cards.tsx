@@ -13,7 +13,8 @@ import {
   StyledSettingsCopy,
   StyledWidgetToggle,
   SettingsWidget,
-  StyledButtonIcon,
+  StyledAddButtonIcon,
+  StyledHideButtonIcon,
   StyledWidgetSettings,
   StyledButtonLabel,
   ToggleCardsWrapper,
@@ -29,7 +30,7 @@ import geminiBanner from './assets/gemini.png'
 import cryptoDotComBanner from './assets/crypto-dot-com.png'
 import HideIcon from './assets/hide-icon'
 import { Toggle } from '../../../components/toggle'
-import AddIcon from './assets/add-icon'
+import { PlusIcon } from 'brave-ui/components/icons'
 
 import { getLocale } from '../../../../common/locale'
 
@@ -55,19 +56,18 @@ interface Props {
 class CardsSettings extends React.PureComponent<Props, {}> {
 
   renderToggleButton = (on: boolean, toggleFunc: any, float: boolean = true) => {
+    const ButtonContainer = on ? StyledHideButtonIcon : StyledAddButtonIcon
+    const ButtonIcon = on ? HideIcon : PlusIcon
+
     return (
       <StyledWidgetToggle
         isAdd={!on}
         float={float}
         onClick={toggleFunc}
       >
-        <StyledButtonIcon>
-          {
-            on
-            ? <HideIcon />
-            : <AddIcon />
-          }
-        </StyledButtonIcon>
+        <ButtonContainer>
+          <ButtonIcon />
+        </ButtonContainer>
         <StyledButtonLabel>
           {
             on
