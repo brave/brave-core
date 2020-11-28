@@ -14,29 +14,30 @@
 #include "brave/browser/ui/omnibox/brave_omnibox_client_impl.h"
 #include "brave/common/pref_names.h"
 #include "brave/components/binance/browser/buildflags/buildflags.h"
-#include "brave/components/gemini/browser/buildflags/buildflags.h"
 #include "brave/components/brave_ads/browser/ads_p2a.h"
 #include "brave/components/brave_perf_predictor/browser/buildflags.h"
+#include "brave/components/brave_rewards/common/pref_names.h"
 #include "brave/components/brave_shields/browser/brave_shields_web_contents_observer.h"
 #include "brave/components/brave_sync/brave_sync_prefs.h"
-#include "brave/components/brave_rewards/common/pref_names.h"
 #include "brave/components/brave_wallet/buildflags/buildflags.h"
 #include "brave/components/brave_wayback_machine/buildflags.h"
 #include "brave/components/brave_webtorrent/browser/buildflags/buildflags.h"
-#include "brave/components/moonpay/browser/buildflags/buildflags.h"
 #include "brave/components/crypto_dot_com/browser/buildflags/buildflags.h"
+#include "brave/components/gemini/browser/buildflags/buildflags.h"
 #include "brave/components/ipfs/buildflags/buildflags.h"
 #include "brave/components/l10n/browser/locale_helper.h"
 #include "brave/components/l10n/common/locale_util.h"
+#include "brave/components/moonpay/browser/buildflags/buildflags.h"
+#include "brave/components/search_engines/brave_prepopulated_engines.h"
 #include "brave/components/speedreader/buildflags.h"
 #include "brave/components/tor/buildflags/buildflags.h"
 #include "chrome/browser/net/prediction_options.h"
 #include "chrome/browser/prefs/session_startup_pref.h"
 #include "chrome/common/pref_names.h"
+#include "components/autofill/core/common/autofill_prefs.h"
 #include "components/content_settings/core/common/pref_names.h"
 #include "components/embedder_support/pref_names.h"
 #include "components/gcm_driver/gcm_buildflags.h"
-#include "components/autofill/core/common/autofill_prefs.h"
 #include "components/password_manager/core/common/password_manager_pref_names.h"
 #include "components/pref_registry/pref_registry_syncable.h"
 #include "components/safe_browsing/core/common/safe_browsing_prefs.h"
@@ -77,8 +78,8 @@
 #endif
 
 #if BUILDFLAG(ENABLE_BRAVE_PERF_PREDICTOR)
-#include "brave/components/brave_perf_predictor/browser/perf_predictor_tab_helper.h"
 #include "brave/components/brave_perf_predictor/browser/p3a_bandwidth_savings_tracker.h"
+#include "brave/components/brave_perf_predictor/browser/perf_predictor_tab_helper.h"
 #endif
 
 #if !BUILDFLAG(USE_GCM_FROM_PLATFORM)
@@ -134,9 +135,7 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
 
   // appearance
   registry->RegisterBooleanPref(kLocationBarIsWide, false);
-  registry->RegisterBooleanPref(
-      brave_rewards::prefs::kHideButton,
-      false);
+  registry->RegisterBooleanPref(brave_rewards::prefs::kHideButton, false);
   registry->RegisterBooleanPref(kMRUCyclingEnabled, false);
 
   brave_sync::Prefs::RegisterProfilePrefs(registry);
@@ -185,7 +184,7 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
   registry->RegisterBooleanPref(kSafetynetCheckFailed, false);
   // clear default popular sites
   registry->SetDefaultPrefValue(ntp_tiles::prefs::kPopularSitesJsonPref,
-      base::Value(base::Value::Type::LIST));
+                                base::Value(base::Value::Type::LIST));
   // Disable NTP suggestions
   registry->SetDefaultPrefValue(feed::prefs::kEnableSnippets,
                                 base::Value(false));
@@ -207,7 +206,8 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
   // 2. On upgrade users might have enabled Media Router and the pref should
   // be set correctly, so we use feature switch to set the initial value
 #if BUILDFLAG(ENABLE_EXTENSIONS)
-  registry->RegisterBooleanPref(kBraveEnabledMediaRouter,
+  registry->RegisterBooleanPref(
+      kBraveEnabledMediaRouter,
       FeatureSwitch::load_media_router_component_extension()->IsEnabled());
 #endif
 
@@ -281,7 +281,8 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
   registry->RegisterIntegerPref(kBraveWalletPrefVersion, 0);
   registry->RegisterStringPref(kBraveWalletAES256GCMSivNonce, "");
   registry->RegisterStringPref(kBraveWalletEncryptedSeed, "");
-  registry->RegisterIntegerPref(kBraveWalletWeb3Provider,
+  registry->RegisterIntegerPref(
+      kBraveWalletWeb3Provider,
       static_cast<int>(BraveWalletWeb3ProviderTypes::ASK));
   registry->RegisterBooleanPref(kLoadCryptoWalletsOnStartup, false);
   registry->RegisterBooleanPref(kOptedIntoCryptoWallets, false);
@@ -310,6 +311,11 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
       base::Value(false));
   registry->SetDefaultPrefValue(autofill::prefs::kAutofillWalletImportEnabled,
                                 base::Value(false));
+
+  // Default search engine version
+  registry->RegisterIntegerPref(
+      kBraveDefaultSearchVersion,
+      TemplateURLPrepopulateData::kBraveCurrentDataVersion);
 
 #if BUILDFLAG(ENABLE_SPEEDREADER)
   speedreader::SpeedreaderService::RegisterPrefs(registry);

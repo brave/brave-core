@@ -99,6 +99,8 @@ const char kSafetynetCheckFailed[] = "safetynetcheck.failed";
 const char kSafetynetStatus[] = "safetynet.status";
 #endif
 
+const char kBraveDefaultSearchVersion[] = "brave.search.default_version";
+
 // deprecated
 const char kBraveThemeType[] = "brave.theme.type";
 const char kUseOverriddenBraveThemeType[] =

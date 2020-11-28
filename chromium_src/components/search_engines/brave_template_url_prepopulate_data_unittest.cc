@@ -15,6 +15,7 @@
 #include "base/stl_util.h"
 #include "base/strings/utf_string_conversions.h"
 #include "base/values.h"
+#include "brave/common/pref_names.h"
 #include "brave/components/search_engines/brave_prepopulated_engines.h"
 #include "components/google/core/common/google_switches.h"
 #include "components/search_engines/search_engines_pref_names.h"
@@ -60,10 +61,18 @@ class BraveTemplateURLPrepopulateDataTest : public testing::Test {
  public:
   void SetUp() override {
     TemplateURLPrepopulateData::RegisterProfilePrefs(prefs_.registry());
+    // Real registration happens in `brave/browser/brave_profile_prefs.cc`
+    // Calling brave::RegisterProfilePrefs() causes some problems though
+    auto* registry = prefs_.registry();
+    registry->RegisterIntegerPref(
+        kBraveDefaultSearchVersion,
+        TemplateURLPrepopulateData::kBraveCurrentDataVersion);
   }
 
   void CheckForCountry(char digit1, char digit2, const std::string& expected) {
     prefs_.SetInteger(kCountryIDAtInstall, digit1 << 8 | digit2);
+    prefs_.SetInteger(kBraveDefaultSearchVersion,
+                      TemplateURLPrepopulateData::kBraveCurrentDataVersion);
     size_t default_index;
     std::vector<std::unique_ptr<TemplateURLData>> t_urls =
         TemplateURLPrepopulateData::GetPrepopulatedEngines(&prefs_,
@@ -104,12 +113,8 @@ TEST_F(BraveTemplateURLPrepopulateDataTest, OverriddenEngines) {
 // Verifies that the set of prepopulate data for each locale
 // doesn't contain entries with duplicate ids.
 TEST_F(BraveTemplateURLPrepopulateDataTest, UniqueIDs) {
-  const int kCountryIds[] = {
-    'D' << 8 | 'E',
-    'F' << 8 | 'R',
-    'U' << 8 | 'S',
-    -1
-  };
+  const int kCountryIds[] = {'D' << 8 | 'E', 'F' << 8 | 'R', 'U' << 8 | 'S',
+                             -1};
 
   for (size_t i = 0; i < base::size(kCountryIds); ++i) {
     prefs_.SetInteger(kCountryIDAtInstall, kCountryIds[i]);
@@ -169,7 +174,56 @@ TEST_F(BraveTemplateURLPrepopulateDataTest,
   CheckForCountry('N', 'Z', "DuckDuckGo");
 }
 
-TEST_F(BraveTemplateURLPrepopulateDataTest,
-       DefaultSearchProvidersForIreland) {
+TEST_F(BraveTemplateURLPrepopulateDataTest, DefaultSearchProvidersForIreland) {
   CheckForCountry('I', 'E', "DuckDuckGo");
+}
+
+TEST_F(BraveTemplateURLPrepopulateDataTest,
+       DefaultSearchProvidersForRepublicOfArmenia) {
+  CheckForCountry('A', 'M', "Yandex");
+}
+
+TEST_F(BraveTemplateURLPrepopulateDataTest,
+       DefaultSearchProvidersForRepublicOfAzerbaijan) {
+  CheckForCountry('A', 'Z', "Yandex");
+}
+
+TEST_F(BraveTemplateURLPrepopulateDataTest,
+       DefaultSearchProvidersForRepublicOfBelarus) {
+  CheckForCountry('B', 'Y', "Yandex");
+}
+
+TEST_F(BraveTemplateURLPrepopulateDataTest,
+       DefaultSearchProvidersForKyrgyzRepublic) {
+  CheckForCountry('K', 'G', "Yandex");
+}
+
+TEST_F(BraveTemplateURLPrepopulateDataTest,
+       DefaultSearchProvidersForRepublicOfKazakhstan) {
+  CheckForCountry('K', 'Z', "Yandex");
+}
+
+TEST_F(BraveTemplateURLPrepopulateDataTest,
+       DefaultSearchProvidersForRepublicOfMoldova) {
+  CheckForCountry('M', 'D', "Yandex");
+}
+
+TEST_F(BraveTemplateURLPrepopulateDataTest,
+       DefaultSearchProvidersForRussianFederation) {
+  CheckForCountry('R', 'U', "Yandex");
+}
+
+TEST_F(BraveTemplateURLPrepopulateDataTest,
+       DefaultSearchProvidersForRepublicOfTajikistan) {
+  CheckForCountry('T', 'J', "Yandex");
+}
+
+TEST_F(BraveTemplateURLPrepopulateDataTest,
+       DefaultSearchProvidersForTurkmenistan) {
+  CheckForCountry('T', 'M', "Yandex");
+}
+
+TEST_F(BraveTemplateURLPrepopulateDataTest,
+       DefaultSearchProvidersForRepublicOfUzbekistan) {
+  CheckForCountry('U', 'Z', "Yandex");
 }
