@@ -11,6 +11,8 @@
 #include "base/android/jni_android.h"
 #include "base/android/jni_string.h"
 #include "brave/browser/brave_ads/android/jni_headers/BraveAdsNativeHelper_jni.h"
+#include "brave/browser/brave_rewards/rewards_service_factory.h"
+#include "brave/components/brave_rewards/browser/rewards_service.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/profiles/profile_android.h"
 
@@ -82,13 +84,14 @@ void JNI_BraveAdsNativeHelper_SetAdsEnabled(
     JNIEnv* env,
     const base::android::JavaParamRef<jobject>& j_profile_android) {
   Profile* profile = ProfileAndroid::FromProfileAndroid(j_profile_android);
-  auto* ads_service_ = brave_ads::AdsServiceFactory::GetForProfile(profile);
-  if (!ads_service_) {
+  auto* rewards_service =
+      brave_rewards::RewardsServiceFactory::GetForProfile(profile);
+  if (!rewards_service) {
     NOTREACHED();
     return;
   }
 
-  ads_service_->SetEnabled(true);
+  rewards_service->SetAdsEnabled(true);
 }
 
 void JNI_BraveAdsNativeHelper_AdNotificationClicked(

@@ -1642,8 +1642,7 @@ void AdsServiceImpl::OnPrefsChanged(
     rewards_service_->OnAdsEnabled(IsEnabled());
 
     if (IsEnabled()) {
-      rewards_service_->CreateWallet(
-          base::BindOnce(&AdsServiceImpl::OnWalletCreated, AsWeakPtr()));
+      MaybeStart(false);
     } else {
       // Record "special value" to prevent sending this week's data to P2A
       // server. Matches INT_MAX - 1 for |kSuspendedMetricValue| in
@@ -1661,17 +1660,6 @@ void AdsServiceImpl::OnPrefsChanged(
   } else if (pref == brave_rewards::prefs::kWalletBrave) {
     OnWalletUpdated();
   }
-}
-
-void AdsServiceImpl::OnWalletCreated(
-    const ledger::type::Result result) {
-  if (result != ledger::type::Result::WALLET_CREATED) {
-    VLOG(0) << "Failed to create a wallet";
-    SetEnabled(false);
-    return;
-  }
-
-  MaybeStart(false);
 }
 
 bool AdsServiceImpl::connected() {

@@ -340,6 +340,8 @@ class RewardsServiceImpl : public RewardsService,
 
   void GetWalletPassphrase(GetWalletPassphraseCallback callback) override;
 
+  void SetAdsEnabled(const bool is_enabled) override;
+
   // Testing methods
   void SetLedgerEnvForTesting();
   void PrepareLedgerEnvForTesting();
@@ -518,6 +520,10 @@ class RewardsServiceImpl : public RewardsService,
       const ledger::type::Result result);
 
   void OnRecoverWallet(const ledger::type::Result result);
+
+  void OnStartProcessForSetAdsEnabled(const ledger::type::Result result);
+
+  void OnWalletCreatedForSetAdsEnabled(const ledger::type::Result result);
 
   // ledger::LedgerClient
   void OnReconcileComplete(

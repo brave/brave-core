@@ -1655,18 +1655,11 @@ void RewardsServiceImpl::SaveOnboardingResult(OnboardingResult result) {
   prefs->SetTime(prefs::kOnboarded, base::Time::Now());
   if (result == OnboardingResult::kOptedIn) {
     SetAutoContributeEnabled(true);
-    auto* ads_service = brave_ads::AdsServiceFactory::GetForProfile(profile_);
-    if (ads_service) {
-      ads_service->SetEnabled(true);
-    }
+    SetAdsEnabled(true);
   }
 }
 
 void RewardsServiceImpl::OnAdsEnabled(bool ads_enabled) {
-  if (ads_enabled) {
-    StartLedger(base::DoNothing());
-  }
-
   #if BUILDFLAG(ENABLE_GREASELION)
   greaselion_service_->SetFeatureEnabled(
       greaselion::ADS,
@@ -3464,6 +3457,51 @@ void RewardsServiceImpl::GetWalletPassphrase(
   }
 
   bat_ledger_->GetWalletPassphrase(callback);
+}
+
+void RewardsServiceImpl::SetAdsEnabled(const bool is_enabled) {
+  if (!is_enabled) {
+    auto* ads_service = brave_ads::AdsServiceFactory::GetForProfile(profile_);
+    if (ads_service) {
+      ads_service->SetEnabled(is_enabled);
+    }
+    return;
+  }
+
+  if (!Connected()) {
+    StartProcess(
+        base::BindOnce(
+            &RewardsServiceImpl::OnStartProcessForSetAdsEnabled,
+            AsWeakPtr()));
+    return;
+  }
+
+  CreateWallet(base::BindOnce(
+      &RewardsServiceImpl::OnWalletCreatedForSetAdsEnabled,
+      AsWeakPtr()));
+}
+
+void RewardsServiceImpl::OnStartProcessForSetAdsEnabled(
+    const ledger::type::Result result) {
+  if (result != ledger::type::Result::LEDGER_OK) {
+    BLOG(0, "Ledger process was not started successfully");
+    return;
+  }
+
+  SetAdsEnabled(true);
+}
+
+void RewardsServiceImpl::OnWalletCreatedForSetAdsEnabled(
+    const ledger::type::Result result) {
+  if (result != ledger::type::Result::WALLET_CREATED) {
+    BLOG(0,  "Failed to create a wallet");
+    return;
+  }
+
+  auto* ads_service = brave_ads::AdsServiceFactory::GetForProfile(profile_);
+  if (ads_service) {
+    ads_service->SetEnabled(true);
+  }
 }
 
 }  // namespace brave_rewards
