@@ -128,13 +128,13 @@ TEST_F(IpfsUtilsUnitTest, GetIPFSGatewayURLLocal) {
   EXPECT_EQ(
       ipfs::GetIPFSGatewayURL(
           "bafybeiemxf5abjwjbikoz4mc3a3dla6ual3jsgpdr4cjr3oz3evfyavhwq", "",
-          ipfs::GetDefaultIPFSLocalGateway(chrome::GetChannel())),
+          ipfs::GetDefaultIPFSLocalGateway(version_info::Channel::UNKNOWN)),
       GURL("http://bafybeiemxf5abjwjbikoz4mc3a3dla6ual3jsgpdr4cjr3oz3evfyavhwq."
            "ipfs.localhost:48080"));
   EXPECT_EQ(
       ipfs::GetIPFSGatewayURL(
           "bafybeiemxf5abjwjbikoz4mc3a3dla6ual3jsgpdr4cjr3oz3evfyavhwq", "",
-          ipfs::GetDefaultIPFSLocalGateway(chrome::GetChannel())),
+          ipfs::GetDefaultIPFSLocalGateway(version_info::Channel::UNKNOWN)),
       GURL("http://bafybeiemxf5abjwjbikoz4mc3a3dla6ual3jsgpdr4cjr3oz3evfyavhwq."
            "ipfs.localhost:48080"));
 }
