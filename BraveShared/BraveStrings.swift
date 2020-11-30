@@ -1650,7 +1650,7 @@ extension Strings {
             comment: "Title shown above the confirmation message after completing a wallet transfer successfully"
         )
         public static let walletTransferCompleteBody = NSLocalizedString(
-            "rewards.walletTransferStepsBody",
+            "rewards.walletTransferCompleteBody",
             bundle: .braveShared,
             value: "Your transfer has initiated. Any existing BAT balance may take several minutes to appear in your desktop Brave Rewards wallet. Check your Rewards summary on Desktop for details when transfer has completed.\n\nYou may close this window and continue using Brave as your transfer is in progress.",
             comment: "A confirmation message shown to the user after completing a wallet transfer successfully"
