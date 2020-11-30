@@ -820,6 +820,7 @@ brave_java_resources = [
   "java/res/xml/appearance_preferences.xml",
   "java/res/xml/background_images_preferences.xml",
   "java/res/xml/background_video_playback_preference.xml",
+  "java/res/xml/brave_download_preferences.xml",
   "java/res/xml/brave_license_preferences.xml",
   "java/res/xml/brave_main_preferences.xml",
   "java/res/xml/brave_privacy_preferences.xml",

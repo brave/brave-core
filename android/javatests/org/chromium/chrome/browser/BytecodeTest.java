@@ -54,6 +54,7 @@ public class BytecodeTest {
                 "org/chromium/chrome/browser/customtabs/features/toolbar/CustomTabToolbar"));
         Assert.assertTrue(
                 classExists("org/chromium/chrome/browser/suggestions/tile/SuggestionsTileView"));
+        Assert.assertTrue(classExists("org/chromium/chrome/browser/download/MimeUtils"));
     }
 
     @Test
@@ -105,6 +106,8 @@ public class BytecodeTest {
         Assert.assertTrue(
                 methodExists("org/chromium/chrome/browser/toolbar/top/TabSwitcherModeTTPhone",
                         "shouldShowIncognitoToggle"));
+        Assert.assertTrue(methodExists(
+                "org/chromium/chrome/browser/download/MimeUtils", "canAutoOpenMimeType"));
     }
 
     @Test

@@ -1537,6 +1537,9 @@ until they verify, or until 90 days have passed.
       <message name="IDS_PLEASE_CHECK_THE_CONNECTION" desc="Connection error string">
         Please check your network connection.
       </message>
+      <message name="IDS_AUTOMATICALLY_OPEN_WHEN_POSSIBLE_TITLE" desc="Title for preference that allows the user to open downloads automatically.">
+        Automatically open when possible
+      </message>
     </messages>
   </release>
 </grit>

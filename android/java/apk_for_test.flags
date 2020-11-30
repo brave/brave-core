@@ -124,3 +124,7 @@
     *** updateNewTabButtonVisibility(...);
     *** shouldShowIncognitoToggle(...);
 }
+
+-keep class org.chromium.chrome.browser.download.MimeUtils {
+    *** canAutoOpenMimeType(...);
+}
