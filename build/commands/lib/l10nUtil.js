@@ -159,8 +159,7 @@ module.exports.getEthereumRemoteClientPaths = function (extensionPath) {
   }
 
   return [
-    `${basePath}/app/_locales/en/messages.json`,
-    `${basePath}/brave/app/_locales/en/messages.json`
+    `${basePath}/app/_locales/en/messages.json`
   ]
 }
 

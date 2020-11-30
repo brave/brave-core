@@ -23,7 +23,8 @@ transifex_handled_slugs = [
     'brave_generated_resources',
     'brave_components_resources',
     'brave_extension',
-    'rewards_extension'
+    'rewards_extension',
+    'ethereum_remote_client_extension'
 ]
 # List of HTML tags that we allowed to be present inside the translated text.
 allowed_html_tags = [
@@ -50,8 +51,6 @@ def transifex_name_from_filename(source_file_path, filename):
         return 'brave_extension'
     elif 'brave_rewards' in source_file_path:
         return 'rewards_extension'
-    elif 'ethereum-remote-client/brave/app' in source_file_path:
-        return 'brave_ethereum_remote_client_extension'
     elif 'ethereum-remote-client/app' in source_file_path:
         return 'ethereum_remote_client_extension'
     assert False, ('JSON files should be mapped explicitly, this '
