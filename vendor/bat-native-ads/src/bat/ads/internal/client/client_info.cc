@@ -119,10 +119,6 @@ Result ClientInfo::FromJson(
     }
   }
 
-  if (document.HasMember("version_code")) {
-    version_code = document["version_code"].GetString();
-  }
-
   return SUCCESS;
 }
 
@@ -200,9 +196,6 @@ void SaveToJson(
     writer->EndObject();
   }
   writer->EndArray();
-
-  writer->String("version_code");
-  writer->String(state.version_code.c_str());
 
   writer->EndObject();
 }

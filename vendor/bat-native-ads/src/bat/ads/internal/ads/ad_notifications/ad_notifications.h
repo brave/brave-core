@@ -51,11 +51,6 @@ class AdNotifications {
 
   uint64_t Count() const;
 
-#if defined(OS_ANDROID)
-  void RemoveAllAfterReboot();
-  void RemoveAllAfterUpdate();
-#endif
-
  private:
   bool is_initialized_ = false;
 

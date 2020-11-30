@@ -25,11 +25,9 @@
 #include "bat/ledger/mojom_structs.h"
 #include "brave/components/brave_ads/browser/ads_service.h"
 #include "brave/components/brave_ads/browser/background_helper.h"
-#include "brave/components/brave_ads/browser/notification_helper.h"
 #include "brave/components/brave_user_model/browser/user_model_file_service.h"
 #include "brave/components/services/bat_ads/public/interfaces/bat_ads.mojom.h"
 #include "brave/components/brave_rewards/browser/rewards_notification_service_observer.h"
-#include "chrome/browser/notifications/notification_handler.h"
 #include "components/history/core/browser/history_service_observer.h"
 #include "components/prefs/pref_change_registrar.h"
 #include "mojo/public/cpp/bindings/associated_receiver.h"
@@ -41,7 +39,6 @@
 using brave_rewards::RewardsNotificationService;
 using brave_user_model::UserModelFileService;
 
-class NotificationDisplayService;
 class Profile;
 
 namespace base {
@@ -240,9 +237,6 @@ class AdsServiceImpl : public AdsService,
       const std::string& json);
   void RetryViewingAdNotification(
       const std::string& uuid);
-
-  void SetAdsServiceForNotificationHandler();
-  void ClearAdsServiceForNotificationHandler();
 
   void OpenNewTabWithUrl(
       const std::string& url);
@@ -490,7 +484,6 @@ class AdsServiceImpl : public AdsService,
 
   base::flat_set<network::SimpleURLLoader*> url_loaders_;
 
-  NotificationDisplayService* display_service_;  // NOT OWNED
   brave_rewards::RewardsService* rewards_service_;  // NOT OWNED
 
   mojo::AssociatedReceiver<bat_ads::mojom::BatAdsClient>
