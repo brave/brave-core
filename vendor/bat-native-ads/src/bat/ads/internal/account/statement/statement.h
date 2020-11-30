@@ -8,6 +8,8 @@
 
 #include <stdint.h>
 
+#include "base/time/time.h"
+
 namespace ads {
 
 class AdRewards;
@@ -27,6 +29,8 @@ class Statement {
  private:
   double GetEarningsForThisMonth() const;
   double GetEarningsForLastMonth() const;
+
+  uint64_t GetAdsReceivedThisMonth() const;
 
   AdRewards* ad_rewards_;  // NOT OWNED
 };

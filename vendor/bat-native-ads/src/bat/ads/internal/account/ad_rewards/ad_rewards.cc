@@ -115,8 +115,36 @@ uint64_t AdRewards::GetAdsReceivedThisMonth() const {
 
 uint64_t AdRewards::GetAdsReceivedForMonth(
     const base::Time& time) const {
-  const PaymentInfo payment = payments_->GetForThisMonth(time);
-  return payment.transaction_count;
+  const TransactionList transactions =
+      ConfirmationsState::Get()->get_transactions();
+
+  uint64_t ads_received_this_month = 0;
+
+  base::Time::Exploded exploded;
+  time.LocalExplode(&exploded);
+
+  for (const auto& transaction : transactions) {
+    if (transaction.timestamp == 0) {
+      // Workaround for Windows crash when passing 0 to UTCExplode
+      continue;
+    }
+
+    const base::Time transaction_time =
+        base::Time::FromDoubleT(transaction.timestamp);
+
+    base::Time::Exploded transaction_time_exploded;
+    transaction_time.LocalExplode(&transaction_time_exploded);
+
+    if (transaction_time_exploded.year == exploded.year &&
+        transaction_time_exploded.month == exploded.month &&
+        transaction.estimated_redemption_value > 0.0 &&
+        ConfirmationType(transaction.confirmation_type) ==
+            ConfirmationType::kViewed) {
+      ads_received_this_month++;
+    }
+  }
+
+  return ads_received_this_month;
 }
 
 double AdRewards::GetEarningsForThisMonth() const {

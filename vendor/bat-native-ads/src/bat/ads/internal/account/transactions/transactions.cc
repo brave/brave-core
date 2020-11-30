@@ -7,7 +7,6 @@
 
 #include <string>
 
-#include "base/time/time.h"
 #include "bat/ads/internal/confirmations/confirmation_info.h"
 #include "bat/ads/internal/confirmations/confirmations_state.h"
 #include "bat/ads/internal/logging.h"
@@ -56,6 +55,40 @@ TransactionList GetUncleared() {
       transactions.end());
 
   return tail_transactions;
+}
+
+uint64_t GetCountForMonth(
+    const base::Time& time) {
+  const TransactionList transactions =
+      ConfirmationsState::Get()->get_transactions();
+
+  uint64_t count = 0;
+
+  base::Time::Exploded exploded;
+  time.LocalExplode(&exploded);
+
+  for (const auto& transaction : transactions) {
+    if (transaction.timestamp == 0) {
+      // Workaround for Windows crash when passing 0 to UTCExplode
+      continue;
+    }
+
+    const base::Time transaction_time =
+        base::Time::FromDoubleT(transaction.timestamp);
+
+    base::Time::Exploded transaction_time_exploded;
+    transaction_time.LocalExplode(&transaction_time_exploded);
+
+    if (transaction_time_exploded.year == exploded.year &&
+        transaction_time_exploded.month == exploded.month &&
+        transaction.estimated_redemption_value > 0.0 &&
+        ConfirmationType(transaction.confirmation_type) ==
+            ConfirmationType::kViewed) {
+      count++;
+    }
+  }
+
+  return count;
 }
 
 void Add(

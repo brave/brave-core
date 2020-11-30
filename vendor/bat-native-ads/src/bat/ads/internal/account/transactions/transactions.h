@@ -8,6 +8,7 @@
 
 #include <stdint.h>
 
+#include "base/time/time.h"
 #include "bat/ads/transaction_info.h"
 
 namespace ads {
@@ -21,6 +22,9 @@ TransactionList GetCleared(
     const int64_t to_timestamp);
 
 TransactionList GetUncleared();
+
+uint64_t GetCountForMonth(
+    const base::Time& time);
 
 void Add(
     const double estimated_redemption_value,
