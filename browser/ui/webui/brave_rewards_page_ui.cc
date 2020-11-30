@@ -194,6 +194,8 @@ class RewardsDOMHandler : public WebUIMessageHandler,
 
   void GetPaymentId(const base::ListValue* args);
 
+  void OnWalletCreatedForPaymentId(ledger::type::Result result);
+
   void OnGetPaymentId(ledger::type::BraveWalletPtr wallet);
 
   void GetWalletPassphrase(const base::ListValue* args);
@@ -1892,6 +1894,15 @@ void RewardsDOMHandler::GetPaymentId(const base::ListValue* args) {
     return;
   }
 
+  // Ensure that a wallet has been created for the user before attempting
+  // to retrieve a payment ID.
+  rewards_service_->CreateWallet(
+      base::BindOnce(&RewardsDOMHandler::OnWalletCreatedForPaymentId,
+          weak_factory_.GetWeakPtr()));
+}
+
+void RewardsDOMHandler::OnWalletCreatedForPaymentId(
+    ledger::type::Result result) {
   rewards_service_->GetBraveWallet(
       base::BindOnce(&RewardsDOMHandler::OnGetPaymentId,
           weak_factory_.GetWeakPtr()));
