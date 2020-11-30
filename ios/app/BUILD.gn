@@ -33,7 +33,6 @@ source_set("app") {
     "//ios/chrome/common",
     "//ios/public/provider/chrome/browser",
     "//ios/web/public/init",
-    "//testing/gtest:ios_coverage_utils",
   ]
 
   deps += [

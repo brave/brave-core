@@ -26,7 +26,6 @@ class BraveWebMainParts : public web::WebMainParts {
 
  private:
   // web::WebMainParts implementation.
-  void PreEarlyInitialization() override;
   void PreMainMessageLoopStart() override;
   void PreCreateThreads() override;
   void PreMainMessageLoopRun() override;

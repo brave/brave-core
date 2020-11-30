@@ -57,7 +57,6 @@ ios_framework_bundle("brave_rewards_ios_framework") {
   configs += [ "//build/config/compiler:enable_arc" ]
 
   deps = [
-    "//brave/base:base",
     "//brave/ios/app",
     "//brave/vendor/bat-native-ledger",
     "//brave/vendor/bat-native-ads",
@@ -167,8 +166,6 @@ ios_framework_bundle("brave_rewards_ios_framework") {
     "Network.framework",
     "CoreImage.framework"
   ]
-
-  # bundle_deps = [ "//ios/chrome/app/resources" ]
 }
 
 bundle_data("resources") {
