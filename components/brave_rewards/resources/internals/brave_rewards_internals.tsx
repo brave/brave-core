@@ -31,6 +31,10 @@ window.cr.define('brave_rewards_internals', function () {
     return newActions
   }
 
+  function onGetAdsInternalsInfo (info: RewardsInternals.State) {
+    getActions().onGetAdsInternalsInfo(info)
+  }
+
   function onGetRewardsInternalsInfo (info: RewardsInternals.State) {
     getActions().onGetRewardsInternalsInfo(info)
   }
@@ -77,6 +81,7 @@ window.cr.define('brave_rewards_internals', function () {
 
   return {
     initialize,
+    onGetAdsInternalsInfo,
     onGetRewardsInternalsInfo,
     balance,
     contributions,

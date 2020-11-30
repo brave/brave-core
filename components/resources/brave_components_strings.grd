@@ -459,6 +459,7 @@
       <message name="IDS_BRAVE_REWARDS_INTERNALS_EVENT_LOG_TIME" desc="when event was logged">Logged at</message>
       <message name="IDS_BRAVE_REWARDS_INTERNALS_MAIN_DISCLAIMER" desc="">WARNING: Data on this page may be sensitive. Treat them as you would your wallet private keys. Be careful who you share them with.</message>
       <message name="IDS_BRAVE_REWARDS_INTERNALS_CONTRIBUTION_TYPE" desc="Contribution type">Type:</message>
+      <message name="IDS_BRAVE_REWARDS_INTERNALS_TAB_GENERAL_ADS_INFO" desc="">General Ads Info</message>
       <message name="IDS_BRAVE_REWARDS_INTERNALS_CONTRIBUTIONS" desc="">Contributions</message>
       <message name="IDS_BRAVE_REWARDS_INTERNALS_DOWNLOAD_BUTTON" desc="">Download full log</message>
       <message name="IDS_BRAVE_REWARDS_INTERNALS_EXTERNAL_WALLET" desc="">External wallet info</message>

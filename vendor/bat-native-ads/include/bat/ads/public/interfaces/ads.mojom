@@ -10,6 +10,16 @@ enum BraveAdsEnvironment {
   DEVELOPMENT
 };
 
+struct BraveAdsInternalsInfo {
+  string catalog_id;
+  string catalog_last_updated;
+  uint64 eligible_ads_count;
+  bool enabled;
+  string flagged_ads;
+  string last_filtered_ads;
+  string locale;
+};
+
 struct BraveAdsBuildChannel {
   bool is_release;
   string name;

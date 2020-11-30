@@ -10,6 +10,15 @@ declare namespace RewardsInternals {
       walletPaymentId: string
       bootStamp: number
     }
+    adsInfo: {
+      catalogId: string
+      catalogLastUpdated: string
+      eligibleAdsCount: number
+      enabled: boolean
+      flaggedAds: string
+      lastFilteredAds: string
+      locale: string
+    }
     contributions: ContributionInfo[]
     promotions: Promotion[]
     log: string

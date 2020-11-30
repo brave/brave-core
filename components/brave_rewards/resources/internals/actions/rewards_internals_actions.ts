@@ -7,6 +7,13 @@ import { action } from 'typesafe-actions'
 // Constants
 import { types } from '../constants/rewards_internals_types'
 
+export const getAdsInternalsInfo = () => action(types.GET_ADS_INTERNALS_INFO)
+
+export const onGetAdsInternalsInfo = (info: RewardsInternals.State) =>
+  action(types.ON_GET_ADS_INTERNALS_INFO, {
+    info
+  })
+
 export const getRewardsInternalsInfo = () => action(types.GET_REWARDS_INTERNALS_INFO)
 
 export const onGetRewardsInternalsInfo = (info: RewardsInternals.State) =>

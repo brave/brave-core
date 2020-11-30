@@ -163,6 +163,10 @@ class AdsImpl
       const uint64_t from_timestamp,
       const uint64_t to_timestamp) override;
 
+  void GetInternalsInfo(
+      InternalsInfoPtr info,
+      ads::InternalsInfoCallback callback) override;
+
   void GetStatement(
       GetStatementCallback callback) override;
 

@@ -58,8 +58,9 @@ static_library("bat-native-ads-standalone") {
 source_set("headers") {
   visibility = [
     ":*",
-    "//brave/components/brave_ads/test:*",
     "//brave/browser/extensions:extensions",
+    "//brave/browser/ui:ui",
+    "//brave/components/brave_ads/test:*",
     "//brave/test:*",
   ]
 
@@ -78,6 +79,7 @@ source_set("headers") {
     "include/bat/ads/confirmation_type.h",
     "include/bat/ads/database.h",
     "include/bat/ads/export.h",
+    "include/bat/ads/mojom.h",
     "include/bat/ads/new_tab_page_ad_info.h",
     "include/bat/ads/pref_names.h",
     "include/bat/ads/result.h",

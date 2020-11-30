@@ -138,6 +138,9 @@ class AdsServiceImpl : public AdsService,
   void GetStatement(
       GetStatementCallback callback) override;
 
+  void GetInternalsInfo(
+      GetInternalsInfoCallback callback) override;
+
   void ToggleAdThumbUp(
       const std::string& creative_instance_id,
       const std::string& creative_set_id,
@@ -262,6 +265,9 @@ class AdsServiceImpl : public AdsService,
   void OnGetAdsHistory(
       OnGetAdsHistoryCallback callback,
       const std::string& json);
+
+  void OnGetInternalsInfo(GetInternalsInfoCallback callback,
+      ads::InternalsInfoPtr info);
 
   void OnGetStatement(
       GetStatementCallback callback,

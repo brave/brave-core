@@ -283,6 +283,19 @@ AdsHistoryInfo AdsImpl::GetAdsHistory(
   return history::Get(filter_type, sort_type, from_timestamp, to_timestamp);
 }
 
+void AdsImpl::GetInternalsInfo(
+    InternalsInfoPtr info,
+    ads::InternalsInfoCallback callback) {
+  InternalsInfo info_ = *info;
+  info->catalog_id = AdsClientHelper::Get()->GetStringPref(prefs::kCatalogId);
+  info->catalog_last_updated = AdsClientHelper::Get()->GetInt64Pref(prefs::kCatalogLastUpdated);
+  info->enabled = IsInitialized();
+  info->eligible_ads_count = 0;
+  info->flagged_ads = "";
+  info->last_filtered_ads = "";
+  callback(std::move(info));
+}
+
 void AdsImpl::GetStatement(
     GetStatementCallback callback) {
   StatementInfo statement_of_account;

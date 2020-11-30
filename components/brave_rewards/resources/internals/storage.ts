@@ -12,6 +12,15 @@ const defaultState: RewardsInternals.State = {
     walletPaymentId: '',
     bootStamp: 0
   },
+  adsInfo: {
+    catalogId: '',
+    catalogLastUpdated: '',
+    eligibleAdsCount: -1,
+    enabled: false,
+    flaggedAds: '',
+    lastFilteredAds: '',
+    locale: ''
+  },
   contributions: [],
   promotions: [],
   log: '',

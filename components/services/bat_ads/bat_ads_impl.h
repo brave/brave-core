@@ -102,6 +102,10 @@ class BatAdsImpl :
   void GetStatement(
       GetStatementCallback callback) override;
 
+  void GetInternalsInfo(
+      ads::InternalsInfoPtr info,
+      GetInternalsInfoCallback callback) override;
+
   void ToggleAdThumbUp(
       const std::string& creative_instance_id,
       const std::string& creative_set_id,
@@ -168,6 +172,10 @@ class BatAdsImpl :
   static void OnRemoveAllHistory(
       CallbackHolder<RemoveAllHistoryCallback>* holder,
       const int32_t result);
+
+  static void OnGetInternalsInfo(
+      CallbackHolder<GetInternalsInfoCallback>* holder,
+      ads::InternalsInfoPtr info);
 
   static void OnGetStatement(
     CallbackHolder<GetStatementCallback>* holder,
