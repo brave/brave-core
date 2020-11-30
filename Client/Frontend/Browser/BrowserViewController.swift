@@ -1443,6 +1443,11 @@ class BrowserViewController: UIViewController {
         case .URL:
             guard let tab = tabManager[webView] else { break }
             
+            // Special case for "about:blank" popups, if the webView.url is nil, keep the tab url as "about:blank"
+            if tab.url?.absoluteString == "about:blank" && webView.url == nil {
+                break
+            }
+            
             // To prevent spoofing, only change the URL immediately if the new URL is on
             // the same origin as the current URL. Otherwise, do nothing and wait for
             // didCommitNavigation to confirm the page load.
@@ -2749,6 +2754,8 @@ extension BrowserViewController: WKUIDelegate {
         // IMPORTANT!!: WebKit will perform the `URLRequest` automatically!! Attempting to do
         // the request here manually leads to incorrect results!!
         let newTab = tabManager.addPopupForParentTab(parentTab, configuration: configuration)
+        
+        newTab.url = URL(string: "about:blank")
 
         return newTab.webView
     }
