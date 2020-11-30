@@ -3,11 +3,13 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
+#include "base/path_service.h"
 #include "chrome/browser/domain_reliability/service_factory.h"
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/tabs/tab_strip_model.h"
 #include "chrome/browser/ui/ui_features.h"
 #include "chrome/common/chrome_features.h"
+#include "chrome/common/chrome_paths.h"
 #include "chrome/common/chrome_switches.h"
 #include "chrome/test/base/in_process_browser_test.h"
 #include "components/autofill/core/common/autofill_features.h"
@@ -95,4 +97,14 @@ IN_PROC_BROWSER_TEST_F(BraveMainDelegateBrowserTest, EnabledFeatures) {
 
   for (const auto* feature : enabled_features)
     EXPECT_TRUE(base::FeatureList::IsEnabled(*feature));
+}
+
+IN_PROC_BROWSER_TEST_F(BraveMainDelegateBrowserTest, PathOverride) {
+#if defined(OS_POSIX) && !defined(OS_MAC)
+  base::FilePath policy_files_path;
+  EXPECT_TRUE(base::PathService::Get(chrome::DIR_POLICY_FILES,
+                                     &policy_files_path));
+  EXPECT_EQ(base::FilePath(FILE_PATH_LITERAL("/etc/brave/policies")),
+            policy_files_path);
+#endif
 }
