@@ -152,6 +152,13 @@ void BraveMainDelegate::PreSandboxStartup() {
   base::PathService::OverrideAndCreateIfNeeded(chrome::DIR_NATIVE_MESSAGING,
       native_messaging_dir, false, true);
 #endif  // defined(OS_LINUX) || defined(OS_MAC)
+
+#if defined(OS_POSIX) && !defined(OS_MAC)
+  base::PathService::Override(
+      chrome::DIR_POLICY_FILES,
+      base::FilePath(FILE_PATH_LITERAL("/etc/brave/policies")));
+#endif
+
   if (brave::SubprocessNeedsResourceBundle()) {
     brave::InitializeResourceBundle();
   }
