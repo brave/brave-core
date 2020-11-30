@@ -1622,13 +1622,13 @@ extension Strings {
         public static let walletTransferFailureAlertTitle = NSLocalizedString(
             "rewards.walletTransferFailureAlertTitle",
             bundle: .braveShared,
-            value: "Try Again",
+            value: "Connection Error",
             comment: "Title on the alert presented if wallet transfer fails"
         )
         public static let walletTransferFailureAlertMessage = NSLocalizedString(
             "rewards.walletTransferFailureAlertMessage",
             bundle: .braveShared,
-            value: "Brave couldn’t connect, something broke, or we somehow goofed.",
+            value: "The Brave Rewards server did not respond. Please try again in a moment.",
             comment: "Message on the alert presented if wallet transfer fails"
         )
         public static let walletTransferStepsTitle = NSLocalizedString(
