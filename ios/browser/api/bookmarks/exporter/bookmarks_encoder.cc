@@ -6,23 +6,21 @@
 #include "brave/ios/browser/api/bookmarks/exporter/bookmarks_encoder.h"
 
 #include <memory>
+#include <string>
 #include <vector>
 
 #include "base/values.h"
 #include "components/bookmarks/browser/bookmark_codec.h"
 #include "components/bookmarks/browser/bookmark_node.h"
 
-
 namespace ios {
 namespace bookmarks_encoder {
 std::unique_ptr<base::Value> Encode(
-      const bookmarks::BookmarkNode* bookmark_bar_node,
-      const bookmarks::BookmarkNode* other_folder_node,
-      const bookmarks::BookmarkNode* mobile_folder_node) {
-  
+    const bookmarks::BookmarkNode* bookmark_bar_node,
+    const bookmarks::BookmarkNode* other_folder_node,
+    const bookmarks::BookmarkNode* mobile_folder_node) {
   auto encoder = std::make_unique<bookmarks::BookmarkCodec>();
-  return encoder->Encode(bookmark_bar_node,
-                         other_folder_node,
+  return encoder->Encode(bookmark_bar_node, other_folder_node,
                          mobile_folder_node,
                          /*model_meta_info_map*/ nullptr,
                          /*sync_metadata_str*/ std::string());
