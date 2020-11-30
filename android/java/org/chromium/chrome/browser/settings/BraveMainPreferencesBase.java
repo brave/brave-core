@@ -56,6 +56,7 @@ public class BraveMainPreferencesBase extends BravePreferenceFragment {
     private static final String PREF_BRAVE_LANGUAGES = "brave_languages";
     private static final String PREF_RATE_BRAVE = "rate_brave";
     private static final String PREF_BRAVE_STATS = "brave_stats";
+    private static final String PREF_BRAVE_DOWNLOADS = "brave_downloads";
 
     private final HashMap<String, Preference> mRemovedPreferences = new HashMap<>();
 
@@ -91,6 +92,7 @@ public class BraveMainPreferencesBase extends BravePreferenceFragment {
         removePreferenceIfPresent(MainSettings.PREF_SYNC_AND_SERVICES);
         removePreferenceIfPresent(MainSettings.PREF_SEARCH_ENGINE);
         removePreferenceIfPresent(MainSettings.PREF_UI_THEME);
+        removePreferenceIfPresent(MainSettings.PREF_DOWNLOADS);
         removePreferenceIfPresent(PREF_LANGUAGES);
 
         updateSearchEnginePreference();
@@ -143,7 +145,7 @@ public class BraveMainPreferencesBase extends BravePreferenceFragment {
         findPreference(PREF_CONTENT_SETTINGS).setOrder(++order);
         findPreference(PREF_BRAVE_LANGUAGES).setOrder(++order);
         findPreference(MainSettings.PREF_DATA_REDUCTION).setOrder(++order);
-        findPreference(MainSettings.PREF_DOWNLOADS).setOrder(++order);
+        findPreference(PREF_BRAVE_DOWNLOADS).setOrder(++order);
         // This preference doesn't exist by default in Release mode
         if (findPreference(MainSettings.PREF_DEVELOPER) != null) {
             findPreference(MainSettings.PREF_DEVELOPER).setOrder(++order);
