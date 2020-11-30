@@ -1,0 +1,37 @@
+# Copyright (c) 2020 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at http://mozilla.org/MPL/2.0/.
+
+assert(!is_android && !is_ios)
+
+source_set("brave_app_menu_unit_test") {
+  testonly = true
+
+  public_deps = [
+    "//testing/gmock",
+    "//testing/gtest",
+  ]
+
+  sources = [
+    "//chrome/browser/ui/toolbar/recent_tabs_builder_test_helper.cc",
+    "//chrome/browser/ui/toolbar/recent_tabs_builder_test_helper.h",
+    "//chrome/browser/ui/toolbar/recent_tabs_sub_menu_model_unittest.cc",
+    "//chrome/test/base/browser_with_test_window_test.cc",
+    "//chrome/test/base/browser_with_test_window_test.h",
+    "//chrome/test/base/menu_model_test.cc",
+    "//chrome/test/base/menu_model_test.h",
+  ]
+
+  deps = [
+    "//chrome/app:command_ids",
+    "//chrome/browser/ui:ui",
+    "//chrome/test:test_support",
+    "//components/constrained_window:constrained_window",
+    "//components/sessions:test_support",
+    "//components/sync_preferences:sync_preferences",
+    "//components/sync_sessions:sync_sessions",
+    "//content/test:test_support",
+    "//ui/views:test_support",
+  ]
+}
