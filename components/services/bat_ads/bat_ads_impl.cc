@@ -171,6 +171,24 @@ void BatAdsImpl::GetAdsHistory(
   std::move(callback).Run(history.ToJson());
 }
 
+void BatAdsImpl::OnGetInternalsInfo(
+    CallbackHolder<GetInternalsInfoCallback>* holder,
+    ads::InternalsInfoPtr info) {
+  DCHECK(holder);
+  if (holder->is_valid())
+    std::move(holder->get()).Run(std::move(info));
+  delete holder;
+}
+
+void BatAdsImpl::GetInternalsInfo(
+    ads::InternalsInfoPtr info,
+    GetInternalsInfoCallback callback) {
+  auto* holder = new CallbackHolder<GetInternalsInfoCallback>(
+      AsWeakPtr(), std::move(callback));
+  ads_->GetInternalsInfo(std::move(info),
+    std::bind(BatAdsImpl::OnGetInternalsInfo, holder, _1));
+}
+
 void BatAdsImpl::GetTransactionHistory(
     GetTransactionHistoryCallback callback) {
   auto* holder = new CallbackHolder<GetTransactionHistoryCallback>(

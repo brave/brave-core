@@ -138,6 +138,9 @@ class AdsServiceImpl : public AdsService,
       const uint64_t to_timestamp,
       OnGetAdsHistoryCallback callback) override;
 
+  void GetInternalsInfo(
+      GetInternalsInfoCallback callback) override;
+
   void GetTransactionHistory(
       GetTransactionHistoryCallback callback) override;
 
@@ -268,6 +271,9 @@ class AdsServiceImpl : public AdsService,
   void OnGetAdsHistory(
       OnGetAdsHistoryCallback callback,
       const std::string& json);
+
+  void OnGetInternalsInfo(GetInternalsInfoCallback callback,
+      ads::InternalsInfoPtr info);
 
   void OnGetTransactionHistory(
       GetTransactionHistoryCallback callback,

@@ -6,12 +6,15 @@
 #ifndef BAT_ADS_MOJOM_H_
 #define BAT_ADS_MOJOM_H_
 
-#include "bat/ads/public/interfaces/ads_database.mojom.h"
-#include "bat/ads/public/interfaces/ads.mojom.h"
+#include "brave/vendor/bat-native-ads/include/bat/ads/public/interfaces/ads.mojom.h"
+#include "brave/vendor/bat-native-ads/include/bat/ads/public/interfaces/ads_database.mojom.h"
 
 namespace ads {
 
 using Environment = mojom::BraveAdsEnvironment;
+
+using InternalsInfo = mojom::BraveAdsInternalsInfo;
+using InternalsInfoPtr = mojom::BraveAdsInternalsInfoPtr;
 
 using BuildChannel = mojom::BraveAdsBuildChannel;
 using BuildChannelPtr = mojom::BraveAdsBuildChannelPtr;

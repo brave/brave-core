@@ -28,6 +28,9 @@ using ShutdownCallback = std::function<void(const Result)>;
 
 using RemoveAllHistoryCallback = std::function<void(const Result)>;
 
+using InternalsInfoCallback =
+    std::function<void(InternalsInfoPtr)>;
+
 using GetTransactionHistoryCallback =
     std::function<void(const bool, const StatementInfo&)>;
 
@@ -179,6 +182,10 @@ class ADS_EXPORT Ads {
       const AdsHistoryInfo::SortType sort_type,
       const uint64_t from_timestamp,
       const uint64_t to_timestamp) = 0;
+
+  virtual void GetInternalsInfo(
+      InternalsInfoPtr info,
+      InternalsInfoCallback callback) = 0;
 
   // Should be called to get transaction history. The callback takes one
   // argument — |StatementInfo| which contains a list of |TransactionInfo|

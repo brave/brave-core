@@ -99,6 +99,10 @@ class BatAdsImpl :
       const uint64_t to_timestamp,
       GetAdsHistoryCallback callback) override;
 
+  void GetInternalsInfo(
+      ads::InternalsInfoPtr info,
+      GetInternalsInfoCallback callback) override;
+
   void GetTransactionHistory(
       GetTransactionHistoryCallback callback) override;
 
@@ -168,6 +172,10 @@ class BatAdsImpl :
   static void OnRemoveAllHistory(
       CallbackHolder<RemoveAllHistoryCallback>* holder,
       const int32_t result);
+
+  static void OnGetInternalsInfo(
+      CallbackHolder<GetInternalsInfoCallback>* holder,
+      ads::InternalsInfoPtr info);
 
   static void OnGetTransactionHistory(
     CallbackHolder<GetTransactionHistoryCallback>* holder,

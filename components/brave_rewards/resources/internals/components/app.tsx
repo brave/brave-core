@@ -10,6 +10,7 @@ import { connect } from 'react-redux'
 import { Contributions } from './contributions'
 import { Promotions } from './promotions'
 import { General } from './general'
+import { GeneralAdsInfo } from './general_ads_info'
 import { EventLogs } from './event_logs'
 import { Log } from './log'
 import { Tabs } from 'brave-ui/components'
@@ -50,12 +51,20 @@ export class RewardsInternalsPage extends React.Component<Props, State> {
     this.actions.getExternalWallet('uphold')
   }
 
+  getGeneralAdsInfo = () => {
+    this.actions.getAdsInternalsInfo()
+  }
+
   onTabChange = (tabId: string) => {
     this.setState({ currentTabId: tabId })
 
     switch (tabId) {
       case 'generalInfo': {
         this.getGeneralInfo()
+        break
+      }
+      case 'generalAdsInfo': {
+        this.getGeneralAdsInfo()
         break
       }
       case 'promotions': {
@@ -115,6 +124,9 @@ export class RewardsInternalsPage extends React.Component<Props, State> {
         >
           <div data-key='generalInfo' data-title={getLocale('tabGeneralInfo')}>
             <General data={this.props.rewardsInternalsData} onGet={this.getGeneralInfo} />
+          </div>
+          <div data-key='generalAdsInfo' data-title={getLocale('tabGeneralAdsInfo')}>
+            <GeneralAdsInfo data={this.props.rewardsInternalsData} onGet={this.getGeneralAdsInfo} />
           </div>
           <div data-key='logs' data-title={getLocale('tabLogs')}>
             <Log

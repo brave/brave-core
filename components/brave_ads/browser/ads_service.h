@@ -14,7 +14,7 @@
 #include "base/macros.h"
 #include "base/observer_list.h"
 #include "build/build_config.h"
-#include "brave/vendor/bat-native-ads/include/bat/ads/public/interfaces/ads.mojom.h"
+#include "brave/vendor/bat-native-ads/include/bat/ads/mojom.h"
 #include "brave/components/brave_ads/browser/ads_service_observer.h"
 #include "components/keyed_service/core/keyed_service.h"
 #include "components/sessions/core/session_id.h"
@@ -36,6 +36,8 @@ namespace brave_ads {
 
 using OnGetAdsHistoryCallback =
     base::OnceCallback<void(const base::ListValue&)>;
+using GetInternalsInfoCallback =
+    base::OnceCallback<void(ads::InternalsInfoPtr info)>;
 
 using OnToggleAdThumbUpCallback =
     base::OnceCallback<void(const std::string&, int)>;
@@ -127,6 +129,9 @@ class AdsService : public KeyedService {
       const uint64_t from_timestamp,
       const uint64_t to_timestamp,
       OnGetAdsHistoryCallback callback) = 0;
+
+  virtual void GetInternalsInfo(
+    GetInternalsInfoCallback callback) = 0;
 
   virtual void GetTransactionHistory(
       GetTransactionHistoryCallback callback) = 0;

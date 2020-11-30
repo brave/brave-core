@@ -10,6 +10,8 @@
 #include <utility>
 #include <vector>
 
+#include "brave/components/brave_ads/browser/ads_service.h"
+#include "brave/components/brave_ads/browser/ads_service_factory.h"
 #include "brave/components/brave_rewards/browser/rewards_service.h"
 #include "brave/browser/brave_rewards/rewards_service_factory.h"
 #include "brave/components/brave_rewards/resources/grit/brave_rewards_internals_generated_map.h"
@@ -40,6 +42,8 @@ class RewardsInternalsDOMHandler : public content::WebUIMessageHandler {
   void RegisterMessages() override;
 
  private:
+  void HandleGetAdsInternalsInfo(const base::ListValue* args);
+  void OnGetAdsInternalsInfo(ads::InternalsInfoPtr info);
   void HandleGetRewardsInternalsInfo(const base::ListValue* args);
   void OnGetRewardsInternalsInfo(ledger::type::RewardsInternalsInfoPtr info);
   void GetBalance(const base::ListValue* args);
@@ -64,6 +68,7 @@ class RewardsInternalsDOMHandler : public content::WebUIMessageHandler {
   void OnGetEventLogs(ledger::type::EventLogs logs);
 
   brave_rewards::RewardsService* rewards_service_;  // NOT OWNED
+  brave_ads::AdsService* ads_service_;  // NOT OWNED
   Profile* profile_;
   base::WeakPtrFactory<RewardsInternalsDOMHandler> weak_ptr_factory_;
 
@@ -71,11 +76,17 @@ class RewardsInternalsDOMHandler : public content::WebUIMessageHandler {
 };
 
 RewardsInternalsDOMHandler::RewardsInternalsDOMHandler()
-    : rewards_service_(nullptr), profile_(nullptr), weak_ptr_factory_(this) {}
+    : rewards_service_(nullptr), ads_service_(nullptr), 
+      profile_(nullptr), weak_ptr_factory_(this) {}
 
 RewardsInternalsDOMHandler::~RewardsInternalsDOMHandler() {}
 
 void RewardsInternalsDOMHandler::RegisterMessages() {
+  web_ui()->RegisterMessageCallback(
+      "brave_rewards_internals.getAdsInternalsInfo",
+      base::BindRepeating(
+          &RewardsInternalsDOMHandler::HandleGetAdsInternalsInfo,
+          base::Unretained(this)));
   web_ui()->RegisterMessageCallback(
       "brave_rewards_internals.getRewardsInternalsInfo",
       base::BindRepeating(
@@ -128,6 +139,7 @@ void RewardsInternalsDOMHandler::Init() {
   rewards_service_ =
       brave_rewards::RewardsServiceFactory::GetForProfile(profile_);
   rewards_service_->StartProcess(base::DoNothing());
+  ads_service_ = brave_ads::AdsServiceFactory::GetForProfile(profile_);
 }
 
 void RewardsInternalsDOMHandler::HandleGetRewardsInternalsInfo(
@@ -135,6 +147,31 @@ void RewardsInternalsDOMHandler::HandleGetRewardsInternalsInfo(
   rewards_service_->GetRewardsInternalsInfo(
       base::BindOnce(&RewardsInternalsDOMHandler::OnGetRewardsInternalsInfo,
                      weak_ptr_factory_.GetWeakPtr()));
+}
+
+void RewardsInternalsDOMHandler::HandleGetAdsInternalsInfo(
+    const base::ListValue* args) {
+  ads_service_->GetInternalsInfo(
+      base::BindOnce(&RewardsInternalsDOMHandler::OnGetAdsInternalsInfo,
+                     weak_ptr_factory_.GetWeakPtr()));
+}
+
+void RewardsInternalsDOMHandler::OnGetAdsInternalsInfo(
+    ads::InternalsInfoPtr info) {
+  if (!web_ui()->CanCallJavascript()) {
+    return;
+  }
+
+  base::DictionaryValue info_dict;
+  info_dict.SetString("catalogId", info->catalog_id);
+  info_dict.SetString("catalogLastUpdated", info->catalog_last_updated);
+  info_dict.SetInteger("eligibleAdsCount", info->eligible_ads_count);
+  info_dict.SetBoolean("enabled", info->enabled);
+  info_dict.SetString("flaggedAds", info->flagged_ads);
+  info_dict.SetString("lastFilteredAds", info->last_filtered_ads);
+  info_dict.SetString("locale", info->locale);
+  web_ui()->CallJavascriptFunctionUnsafe(
+      "brave_rewards_internals.onGetAdsInternalsInfo", info_dict);
 }
 
 void RewardsInternalsDOMHandler::OnGetRewardsInternalsInfo(
