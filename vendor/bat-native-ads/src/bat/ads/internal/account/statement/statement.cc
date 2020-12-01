@@ -5,7 +5,6 @@
 
 #include "bat/ads/internal/account/statement/statement.h"
 
-#include "base/time/time.h"
 #include "bat/ads/internal/account/ad_rewards/ad_rewards.h"
 #include "bat/ads/internal/account/transactions/transactions.h"
 #include "bat/ads/statement_info.h"
@@ -32,7 +31,7 @@ StatementInfo Statement::Get(
 
   statement.next_payment_date = ad_rewards_->GetNextPaymentDate();
 
-  statement.ads_received_this_month = ad_rewards_->GetAdsReceivedThisMonth();
+  statement.ads_received_this_month = GetAdsReceivedThisMonth();
 
   statement.earnings_this_month = GetEarningsForThisMonth();
 
@@ -45,6 +44,8 @@ StatementInfo Statement::Get(
 
   return statement;
 }
+
+///////////////////////////////////////////////////////////////////////////////
 
 double Statement::GetEarningsForThisMonth() const {
   return ad_rewards_->GetEarningsForThisMonth();
@@ -66,6 +67,11 @@ double Statement::GetEarningsForLastMonth() const {
   DCHECK(success);
 
   return ad_rewards_->GetEarningsForMonth(last_month);
+}
+
+uint64_t Statement::GetAdsReceivedThisMonth() const {
+  const base::Time now = base::Time::Now();
+  return transactions::GetCountForMonth(now);
 }
 
 }  // namespace ads

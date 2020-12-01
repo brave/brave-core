@@ -10,8 +10,8 @@
 #include "net/http/http_status_code.h"
 #include "bat/ads/internal/account/ad_rewards/ad_rewards.h"
 #include "bat/ads/internal/account/ad_rewards/ad_rewards_delegate_mock.h"
+#include "bat/ads/internal/account/transactions/transactions.h"
 #include "bat/ads/internal/account/wallet/wallet.h"
-#include "bat/ads/internal/account/wallet/wallet_info.h"
 #include "bat/ads/internal/unittest_base.h"
 #include "bat/ads/internal/unittest_util.h"
 
@@ -43,6 +43,16 @@ class BatAdsStatementTest : public UnitTestBase {
         "x5uBvgI5MTTVY6sjGv65e9EHr8v7i+UxkFB9qVc5fP0=");
 
     return wallet.Get();
+  }
+
+  void AddTransactions(
+      const int count) {
+    for (int i = 0; i < count; i++) {
+      ConfirmationInfo confirmation;
+      confirmation.type = ConfirmationType::kViewed;
+
+      transactions::Add(0.05, confirmation);
+    }
   }
 
   std::unique_ptr<AdRewards> ad_rewards_;
@@ -94,7 +104,8 @@ TEST_F(BatAdsStatementTest,
   const WalletInfo wallet = GetWallet();
   ad_rewards_->MaybeReconcile(wallet);
 
-  AdvanceClock(TimeFromDateString("11 November 2020"));
+  AdvanceClock(TimeFromDateString("18 November 2020"));
+  AddTransactions(7);
 
   // Act
   const StatementInfo statement = statement_->Get(DistantPast(), Now());
@@ -107,8 +118,9 @@ TEST_F(BatAdsStatementTest,
   expected_statement.ads_received_this_month = 7;
   expected_statement.earnings_this_month = 0.35;
   expected_statement.earnings_last_month = 0.0;
-  expected_statement.transactions = {};
-  expected_statement.uncleared_transactions = {};
+  expected_statement.transactions =
+      transactions::GetCleared(DistantPast(), Now());
+  expected_statement.uncleared_transactions = transactions::GetUncleared();
 
   EXPECT_EQ(expected_statement, statement);
 }
@@ -140,7 +152,7 @@ TEST_F(BatAdsStatementTest,
   const WalletInfo wallet = GetWallet();
   ad_rewards_->MaybeReconcile(wallet);
 
-  AdvanceClock(TimeFromDateString("11 November 2020"));
+  AdvanceClock(TimeFromDateString("18 November 2020"));
 
   // Act
   const StatementInfo statement = statement_->Get(DistantPast(), Now());
@@ -153,8 +165,9 @@ TEST_F(BatAdsStatementTest,
   expected_statement.ads_received_this_month = 0;
   expected_statement.earnings_this_month = 0.0;
   expected_statement.earnings_last_month = 0.0;
-  expected_statement.transactions = {};
-  expected_statement.uncleared_transactions = {};
+  expected_statement.transactions =
+      transactions::GetCleared(DistantPast(), Now());
+  expected_statement.uncleared_transactions = transactions::GetUncleared();
 
   EXPECT_EQ(expected_statement, statement);
 }
@@ -186,7 +199,7 @@ TEST_F(BatAdsStatementTest,
   const WalletInfo wallet = GetWallet();
   ad_rewards_->MaybeReconcile(wallet);
 
-  AdvanceClock(TimeFromDateString("11 November 2020"));
+  AdvanceClock(TimeFromDateString("18 November 2020"));
 
   // Act
   const StatementInfo statement = statement_->Get(DistantPast(), Now());
@@ -199,8 +212,9 @@ TEST_F(BatAdsStatementTest,
   expected_statement.ads_received_this_month = 0;
   expected_statement.earnings_this_month = 0.0;
   expected_statement.earnings_last_month = 0.0;
-  expected_statement.transactions = {};
-  expected_statement.uncleared_transactions = {};
+  expected_statement.transactions =
+      transactions::GetCleared(DistantPast(), Now());
+  expected_statement.uncleared_transactions = transactions::GetUncleared();
 
   EXPECT_EQ(expected_statement, statement);
 }
@@ -249,7 +263,8 @@ TEST_F(BatAdsStatementTest,
   const WalletInfo wallet = GetWallet();
   ad_rewards_->MaybeReconcile(wallet);
 
-  AdvanceClock(TimeFromDateString("11 November 2020"));
+  AdvanceClock(TimeFromDateString("18 November 2020"));
+  AddTransactions(7);
 
   // Act
   const StatementInfo statement = statement_->Get(DistantPast(), Now());
@@ -262,8 +277,9 @@ TEST_F(BatAdsStatementTest,
   expected_statement.ads_received_this_month = 7;
   expected_statement.earnings_this_month = 0.35;
   expected_statement.earnings_last_month = 0.0;
-  expected_statement.transactions = {};
-  expected_statement.uncleared_transactions = {};
+  expected_statement.transactions =
+      transactions::GetCleared(DistantPast(), Now());
+  expected_statement.uncleared_transactions = transactions::GetUncleared();
 
   EXPECT_EQ(expected_statement, statement);
 }
@@ -312,7 +328,8 @@ TEST_F(BatAdsStatementTest,
   const WalletInfo wallet = GetWallet();
   ad_rewards_->MaybeReconcile(wallet);
 
-  AdvanceClock(TimeFromDateString("11 November 2020"));
+  AdvanceClock(TimeFromDateString("18 November 2020"));
+  AddTransactions(7);
 
   // Act
   const StatementInfo statement = statement_->Get(DistantPast(), Now());
@@ -325,8 +342,9 @@ TEST_F(BatAdsStatementTest,
   expected_statement.ads_received_this_month = 7;
   expected_statement.earnings_this_month = 0.35;
   expected_statement.earnings_last_month = 0.0;
-  expected_statement.transactions = {};
-  expected_statement.uncleared_transactions = {};
+  expected_statement.transactions =
+      transactions::GetCleared(DistantPast(), Now());
+  expected_statement.uncleared_transactions = transactions::GetUncleared();
 
   EXPECT_EQ(expected_statement, statement);
 }
@@ -380,7 +398,10 @@ TEST_F(BatAdsStatementTest,
   const WalletInfo wallet = GetWallet();
   ad_rewards_->MaybeReconcile(wallet);
 
-  AdvanceClock(TimeFromDateString("11 November 2020"));
+  AdvanceClock(TimeFromDateString("31 October 2020"));
+  AddTransactions(14);
+  AdvanceClock(TimeFromDateString("18 November 2020"));
+  AddTransactions(7);
 
   // Act
   const StatementInfo statement = statement_->Get(DistantPast(), Now());
@@ -393,8 +414,9 @@ TEST_F(BatAdsStatementTest,
   expected_statement.ads_received_this_month = 7;
   expected_statement.earnings_this_month = 0.35;
   expected_statement.earnings_last_month = 0.7;
-  expected_statement.transactions = {};
-  expected_statement.uncleared_transactions = {};
+  expected_statement.transactions =
+      transactions::GetCleared(DistantPast(), Now());
+  expected_statement.uncleared_transactions = transactions::GetUncleared();
 
   EXPECT_EQ(expected_statement, statement);
 }
@@ -448,7 +470,10 @@ TEST_F(BatAdsStatementTest,
   const WalletInfo wallet = GetWallet();
   ad_rewards_->MaybeReconcile(wallet);
 
+  AdvanceClock(TimeFromDateString("25 December 2019"));
+  AddTransactions(14);
   AdvanceClock(TimeFromDateString("1 January 2020"));
+  AddTransactions(7);
 
   // Act
   const StatementInfo statement = statement_->Get(DistantPast(), Now());
@@ -461,8 +486,9 @@ TEST_F(BatAdsStatementTest,
   expected_statement.ads_received_this_month = 7;
   expected_statement.earnings_this_month = 0.35;
   expected_statement.earnings_last_month = 0.7;
-  expected_statement.transactions = {};
-  expected_statement.uncleared_transactions = {};
+  expected_statement.transactions =
+      transactions::GetCleared(DistantPast(), Now());
+  expected_statement.uncleared_transactions = transactions::GetUncleared();
 
   EXPECT_EQ(expected_statement, statement);
 }
@@ -521,7 +547,12 @@ TEST_F(BatAdsStatementTest,
   const WalletInfo wallet = GetWallet();
   ad_rewards_->MaybeReconcile(wallet);
 
-  AdvanceClock(TimeFromDateString("11 November 2020"));
+  AdvanceClock(TimeFromDateString("12 September 2020"));
+  AddTransactions(9);
+  AdvanceClock(TimeFromDateString("31 October 2020"));
+  AddTransactions(14);
+  AdvanceClock(TimeFromDateString("18 November 2020"));
+  AddTransactions(7);
 
   // Act
   const StatementInfo statement = statement_->Get(DistantPast(), Now());
@@ -534,8 +565,9 @@ TEST_F(BatAdsStatementTest,
   expected_statement.ads_received_this_month = 7;
   expected_statement.earnings_this_month = 0.35;
   expected_statement.earnings_last_month = 0.7;
-  expected_statement.transactions = {};
-  expected_statement.uncleared_transactions = {};
+  expected_statement.transactions =
+      transactions::GetCleared(DistantPast(), Now());
+  expected_statement.uncleared_transactions = transactions::GetUncleared();
 
   EXPECT_EQ(expected_statement, statement);
 }
@@ -600,7 +632,12 @@ TEST_F(BatAdsStatementTest,
   const WalletInfo wallet = GetWallet();
   ad_rewards_->MaybeReconcile(wallet);
 
-  AdvanceClock(TimeFromDateString("11 November 2020"));
+  AdvanceClock(TimeFromDateString("12 September 2020"));
+  AddTransactions(9);
+  AdvanceClock(TimeFromDateString("31 October 2020"));
+  AddTransactions(14);
+  AdvanceClock(TimeFromDateString("18 November 2020"));
+  AddTransactions(7);
 
   // Act
   const StatementInfo statement = statement_->Get(DistantPast(), Now());
@@ -613,8 +650,9 @@ TEST_F(BatAdsStatementTest,
   expected_statement.ads_received_this_month = 7;
   expected_statement.earnings_this_month = 0.35;
   expected_statement.earnings_last_month = 0.7;
-  expected_statement.transactions = {};
-  expected_statement.uncleared_transactions = {};
+  expected_statement.transactions =
+      transactions::GetCleared(DistantPast(), Now());
+  expected_statement.uncleared_transactions = transactions::GetUncleared();
 
   EXPECT_EQ(expected_statement, statement);
 }
@@ -672,7 +710,10 @@ TEST_F(BatAdsStatementTest,
   ad_rewards_->MaybeReconcile(wallet);
   ad_rewards_->MaybeReconcile(wallet);
 
-  AdvanceClock(TimeFromDateString("11 November 2020"));
+  AdvanceClock(TimeFromDateString("31 October 2020"));
+  AddTransactions(35);
+  AdvanceClock(TimeFromDateString("18 November 2020"));
+  AddTransactions(7);
 
   // Act
   const StatementInfo statement = statement_->Get(DistantPast(), Now());
@@ -685,8 +726,9 @@ TEST_F(BatAdsStatementTest,
   expected_statement.ads_received_this_month = 7;
   expected_statement.earnings_this_month = 0.35;
   expected_statement.earnings_last_month = 1.75;
-  expected_statement.transactions = {};
-  expected_statement.uncleared_transactions = {};
+  expected_statement.transactions =
+      transactions::GetCleared(DistantPast(), Now());
+  expected_statement.uncleared_transactions = transactions::GetUncleared();
 
   EXPECT_EQ(expected_statement, statement);
 }
@@ -766,7 +808,10 @@ TEST_F(BatAdsStatementTest,
   ad_rewards_->MaybeReconcile(wallet);
   ad_rewards_->MaybeReconcile(wallet);
 
-  AdvanceClock(TimeFromDateString("11 November 2020"));
+  AdvanceClock(TimeFromDateString("31 October 2020"));
+  AddTransactions(35);
+  AdvanceClock(TimeFromDateString("18 November 2020"));
+  AddTransactions(7);
 
   // Act
   const StatementInfo statement = statement_->Get(DistantPast(), Now());
@@ -779,8 +824,9 @@ TEST_F(BatAdsStatementTest,
   expected_statement.ads_received_this_month = 7;
   expected_statement.earnings_this_month = 0.35;
   expected_statement.earnings_last_month = 1.75;
-  expected_statement.transactions = {};
-  expected_statement.uncleared_transactions = {};
+  expected_statement.transactions =
+      transactions::GetCleared(DistantPast(), Now());
+  expected_statement.uncleared_transactions = transactions::GetUncleared();
 
   EXPECT_EQ(expected_statement, statement);
 }
