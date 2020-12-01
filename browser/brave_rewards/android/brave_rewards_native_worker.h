@@ -144,6 +144,10 @@ class BraveRewardsNativeWorker : public brave_rewards::RewardsServiceObserver,
                        const base::android::JavaParamRef<jobject>& obj,
                        jint value);
 
+    void SetAutoContributionAmount(JNIEnv* env,
+                       const base::android::JavaParamRef<jobject>& obj,
+                       jdouble value);
+
     void GetExternalWallet(
         JNIEnv* env,
         const base::android::JavaParamRef<jobject>& obj);
