@@ -22,6 +22,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @class BATAdNotification, BATBraveAds, BATBraveLedger;
 
+OBJC_EXPORT
 NS_SWIFT_NAME(BraveAdsNotificationHandler)
 @protocol BATBraveAdsNotificationHandler
 @required
@@ -35,6 +36,7 @@ NS_SWIFT_NAME(BraveAdsNotificationHandler)
 - (void)clearNotificationWithIdentifier:(NSString *)identifier;
 @end
 
+OBJC_EXPORT 
 NS_SWIFT_NAME(BraveAds)
 @interface BATBraveAds : NSObject
 
