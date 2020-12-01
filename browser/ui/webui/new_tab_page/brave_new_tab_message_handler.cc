@@ -110,6 +110,9 @@ base::DictionaryValue GetPreferencesDictionary(PrefService* prefs) {
       "isBrandedWallpaperNotificationDismissed",
       prefs->GetBoolean(kBrandedWallpaperNotificationDismissed));
   pref_data.SetBoolean(
+      "isBraveTodayIntroDismissed",
+      prefs->GetBoolean(kBraveTodayIntroDismissed));
+  pref_data.SetBoolean(
       "showBinance",
       prefs->GetBoolean(kNewTabPageShowBinance));
   pref_data.SetBoolean(
@@ -449,6 +452,8 @@ void BraveNewTabMessageHandler::HandleSaveNewTabPagePref(
     settingsKey = kNewTabPageShowStats;
   } else if (settingsKeyInput == "showToday") {
     settingsKey = kNewTabPageShowToday;
+  } else if (settingsKeyInput == "isBraveTodayIntroDismissed") {
+    settingsKey = kBraveTodayIntroDismissed;
   } else if (settingsKeyInput == "showRewards") {
     settingsKey = kNewTabPageShowRewards;
   } else if (settingsKeyInput == "isBrandedWallpaperNotificationDismissed") {

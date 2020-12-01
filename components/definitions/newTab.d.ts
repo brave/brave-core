@@ -91,7 +91,20 @@ declare namespace NewTab {
     cryptoDotComState: CryptoDotComWidgetState
   }
 
-  export interface EphemeralState {
+  export type Preferences = {
+    showBackgroundImage: boolean
+    brandedWallpaperOptIn: boolean
+    showStats: boolean
+    showToday: boolean
+    showClock: boolean
+    clockFormat: string
+    showTopSites: boolean
+    showRewards: boolean
+    isBraveTodayIntroDismissed: boolean
+    isBrandedWallpaperNotificationDismissed: boolean
+  }
+
+  export type EphemeralState = Preferences & {
     initialDataLoaded: boolean
     textDirection: string
     featureFlagBraveNTPSponsoredImagesWallpaper: boolean
@@ -105,20 +118,12 @@ declare namespace NewTab {
     gridLayoutSize?: 'small'
     showGridSiteRemovedNotification?: boolean
     showBackgroundImage: boolean
-    showStats: boolean
-    showToday: boolean
-    showClock: boolean
-    clockFormat: string
-    showTopSites: boolean
     customLinksEnabled: boolean
-    showRewards: boolean
     showTogether: boolean
     showBinance: boolean
     showGemini: boolean
     showBitcoinDotCom: boolean
     showCryptoDotCom: boolean,
-    brandedWallpaperOptIn: boolean
-    isBrandedWallpaperNotificationDismissed: boolean
     stats: Stats,
     brandedWallpaperData?: BrandedWallpaper
   }

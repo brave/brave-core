@@ -27,36 +27,40 @@ interface Props {
   braveTodayData: BraveTodayState
 }
 
-class DefaultPage extends React.Component<Props, {}> {
-  render () {
-    const { newTabData, braveTodayData, gridSitesData, actions } = this.props
+function dismissBraveTodayIntroCard () {
+  PreferencesAPI.saveIsBraveTodayIntroDismissed(true)
+}
 
-    // don't render if user prefers an empty page
-    if (this.props.newTabData.showEmptyPage && !this.props.newTabData.isIncognito) {
-      return <div />
-    }
+function DefaultPage (props: Props) {
+  const { newTabData, braveTodayData, gridSitesData, actions } = props
 
-    return this.props.newTabData.isIncognito
-      ? <NewPrivateTabPage newTabData={newTabData} actions={actions} />
-      : (
-        <NewTabPage
-          newTabData={newTabData}
-          todayData={braveTodayData}
-          gridSitesData={gridSitesData}
-          actions={actions}
-          saveShowBackgroundImage={PreferencesAPI.saveShowBackgroundImage}
-          saveShowStats={PreferencesAPI.saveShowStats}
-          saveShowToday={PreferencesAPI.saveShowToday}
-          saveShowRewards={PreferencesAPI.saveShowRewards}
-          saveShowTogether={PreferencesAPI.saveShowTogether}
-          saveShowBinance={PreferencesAPI.saveShowBinance}
-          saveShowGemini={PreferencesAPI.saveShowGemini}
-          saveShowBitcoinDotCom={PreferencesAPI.saveShowBitcoinDotCom}
-          saveShowCryptoDotCom={PreferencesAPI.saveShowCryptoDotCom}
-          saveBrandedWallpaperOptIn={PreferencesAPI.saveBrandedWallpaperOptIn}
-        />
-      )
+  // don't render if user prefers an empty page
+  if (props.newTabData.showEmptyPage && !props.newTabData.isIncognito) {
+    return <div />
   }
+
+  return props.newTabData.isIncognito
+    ? <NewPrivateTabPage newTabData={newTabData} actions={actions} />
+    : (
+      <NewTabPage
+        newTabData={newTabData}
+        todayData={braveTodayData}
+        gridSitesData={gridSitesData}
+        actions={actions}
+        saveShowBackgroundImage={PreferencesAPI.saveShowBackgroundImage}
+        saveShowStats={PreferencesAPI.saveShowStats}
+        saveShowToday={PreferencesAPI.saveShowToday}
+        saveShowRewards={PreferencesAPI.saveShowRewards}
+        saveShowTogether={PreferencesAPI.saveShowTogether}
+        saveShowBinance={PreferencesAPI.saveShowBinance}
+        saveShowAddCard={PreferencesAPI.saveShowAddCard}
+        saveShowGemini={PreferencesAPI.saveShowGemini}
+        saveShowBitcoinDotCom={PreferencesAPI.saveShowBitcoinDotCom}
+        saveShowCryptoDotCom={PreferencesAPI.saveShowCryptoDotCom}
+        saveBrandedWallpaperOptIn={PreferencesAPI.saveBrandedWallpaperOptIn}
+        onReadBraveTodayIntroCard={dismissBraveTodayIntroCard}
+      />
+    )
 }
 
 const mapStateToProps = (state: ApplicationState): Partial<Props> => ({

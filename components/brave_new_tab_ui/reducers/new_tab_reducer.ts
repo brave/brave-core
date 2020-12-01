@@ -124,7 +124,7 @@ export const newTabReducer: Reducer<NewTab.State | undefined> = (state: NewTab.S
       break
 
     case types.NEW_TAB_PREFERENCES_UPDATED:
-      const preferences = payload as preferencesAPI.Preferences
+      const preferences = payload as NewTab.Preferences
       const newState = {
         ...state,
         ...preferences

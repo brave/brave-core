@@ -8,7 +8,6 @@ import { action } from 'typesafe-actions'
 
 // Constants
 import { types } from '../constants/new_tab_types'
-import { Preferences } from '../api/preferences'
 import { Stats } from '../api/stats'
 import { PrivateTabData } from '../api/privateTabData'
 import { TorTabData } from '../api/torTabData'
@@ -32,7 +31,7 @@ export const dismissBrandedWallpaperNotification = (isUserAction: boolean) =>
     isUserAction
   })
 
-export const preferencesUpdated = (preferences: Preferences) =>
+export const preferencesUpdated = (preferences: NewTab.Preferences) =>
   action(types.NEW_TAB_PREFERENCES_UPDATED, preferences)
 
 export const clockWidgetUpdated = (showClockWidget: boolean,

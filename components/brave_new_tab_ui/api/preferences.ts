@@ -10,22 +10,10 @@
 // especially string keys.
 //
 
-export type Preferences = {
-  showBackgroundImage: boolean
-  brandedWallpaperOptIn: boolean
-  showStats: boolean
-  showToday: boolean
-  showClock: boolean
-  clockFormat: string
-  showTopSites: boolean
-  showRewards: boolean
-  isBrandedWallpaperNotificationDismissed: boolean
-}
+type PreferencesUpdatedHandler = (prefData: NewTab.Preferences) => void
 
-type PreferencesUpdatedHandler = (prefData: Preferences) => void
-
-export function getPreferences (): Promise<Preferences> {
-  return window.cr.sendWithPromise<Preferences>('getNewTabPagePreferences')
+export function getPreferences (): Promise<NewTab.Preferences> {
+  return window.cr.sendWithPromise<NewTab.Preferences>('getNewTabPagePreferences')
 }
 
 function sendSavePref (key: string, value: any) {
@@ -82,6 +70,10 @@ export function saveShowBitcoinDotCom (value: boolean): void {
 
 export function saveShowCryptoDotCom (value: boolean): void {
   sendSavePref('showCryptoDotCom', value)
+}
+
+export function saveIsBraveTodayIntroDismissed (value: boolean): void {
+  sendSavePref('isBraveTodayIntroDismissed', value)
 }
 
 export function addChangeListener (listener: PreferencesUpdatedHandler): void {

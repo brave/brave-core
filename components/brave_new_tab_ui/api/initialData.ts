@@ -10,7 +10,7 @@ import * as torTabDataAPI from './torTabData'
 import * as brandedWallpaper from './brandedWallpaper'
 
 export type InitialData = {
-  preferences: preferencesAPI.Preferences
+  preferences: NewTab.Preferences
   stats: statsAPI.Stats
   privateTabData: privateTabDataAPI.PrivateTabData
   torTabData: torTabDataAPI.TorTabData
