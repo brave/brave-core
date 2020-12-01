@@ -145,6 +145,7 @@ std::shared_ptr<brave::BraveRequestInfo> BraveRequestInfo::MakeCTX(
   ctx->ipfs_gateway_url =
       local ? ipfs::GetDefaultIPFSLocalGateway(chrome::GetChannel())
             : ipfs::GetDefaultIPFSGateway(browser_context);
+  ctx->ipfs_auto_fallback = prefs->GetBoolean(kIPFSAutoRedirectGateway);
 #endif
 
   // TODO(fmarier): remove this once the hacky code in

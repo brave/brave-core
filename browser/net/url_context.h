@@ -99,6 +99,7 @@ struct BraveRequestInfo {
   BlockedBy blocked_by = kNotBlocked;
   std::string mock_data_url;
   GURL ipfs_gateway_url;
+  bool ipfs_auto_fallback = false;
 
   bool ShouldMockRequest() const {
     return !mock_data_url.empty();

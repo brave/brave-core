@@ -5,6 +5,8 @@
 
 #include "brave/browser/net/ipfs_redirect_network_delegate_helper.h"
 
+#include <string>
+
 #include "brave/components/ipfs/ipfs_gateway.h"
 #include "brave/components/ipfs/ipfs_utils.h"
 #include "brave/components/ipfs/translate_ipfs_uri.h"
@@ -49,8 +51,8 @@ int OnHeadersReceived_IPFSRedirectWork(
     const brave::ResponseCallback& next_callback,
     std::shared_ptr<brave::BraveRequestInfo> ctx) {
   std::string ipfs_path;
-
-  if (response_headers &&
+  if (ctx->ipfs_auto_fallback &&
+      response_headers &&
       response_headers->GetNormalizedHeader("x-ipfs-path", &ipfs_path) &&
       // Make sure we don't infinite redirect
       !ctx->request_url.DomainIs(ctx->ipfs_gateway_url.host())) {
