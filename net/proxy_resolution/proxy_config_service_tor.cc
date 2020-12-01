@@ -141,7 +141,7 @@ std::string ProxyConfigServiceTor::CircuitIsolationKey(const GURL& url) {
   net::NetworkIsolationKey network_isolation_key(url_origin, url_origin);
 
   const base::Optional<url::Origin>& network_isolation_key_origin =
-    network_isolation_key.GetEffectiveTopFrameOrigin();
+      network_isolation_key.GetTopFrameSite();
   DCHECK(network_isolation_key_origin.has_value());
   return network_isolation_key_origin->host();
 }
