@@ -1,0 +1,13 @@
+diff --git a/extensions/browser/events/lazy_event_dispatcher.cc b/extensions/browser/events/lazy_event_dispatcher.cc
+index e4174bdb0ba06a67b7f527346df33b104bbe2f6c..155eebb7b4fe9ab59cdbb4f1cf955301b4e86ec7 100644
+--- a/extensions/browser/events/lazy_event_dispatcher.cc
++++ b/extensions/browser/events/lazy_event_dispatcher.cc
+@@ -112,7 +112,7 @@ void LazyEventDispatcher::RecordAlreadyDispatched(
+ 
+ BrowserContext* LazyEventDispatcher::GetIncognitoContext(
+     const Extension* extension) {
+-  if (!IncognitoInfo::IsSplitMode(extension))
++  if (!IncognitoInfo::IsSplitMode(extension, browser_context_->IsTor()))
+     return nullptr;
+   ExtensionsBrowserClient* browser_client = ExtensionsBrowserClient::Get();
+   if (!browser_client->HasOffTheRecordContext(browser_context_))

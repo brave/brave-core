@@ -1,0 +1,12 @@
+diff --git a/chrome/browser/extensions/api/developer_private/developer_private_api.cc b/chrome/browser/extensions/api/developer_private/developer_private_api.cc
+index f6aa62ef25246bca0ab4e5eca1319a712e671692..636945bf0f24cb21d83b00738bc9f96c38bcc428 100644
+--- a/chrome/browser/extensions/api/developer_private/developer_private_api.cc
++++ b/chrome/browser/extensions/api/developer_private/developer_private_api.cc
+@@ -914,6 +914,7 @@ DeveloperPrivateUpdateExtensionConfigurationFunction::Run() {
+     util::SetIsIncognitoEnabled(
+         extension->id(), browser_context(), *update.incognito_access);
+   }
++  BRAVE_DEVELOPER_PRIVATE_UPDATE_EXTENSION_CONFIGURATION_FUNCTION_RUN
+   if (update.error_collection) {
+     ErrorConsole::Get(browser_context())->SetReportingAllForExtension(
+         extension->id(), *update.error_collection);

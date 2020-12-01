@@ -743,6 +743,12 @@ By installing this extension, you are agreeing to the Google Widevine Terms of U
       <message name="IDS_EXTENSIONS_BRAVE_ITEM_CHROME_WEB_STORE" desc="Label for button to visit the Web Extensions Store.">
         View in Web Extensions Store
       </message>
+      <message name="IDS_EXTENSIONS_BRAVE_ITEM_ALLOW_TOR" desc="The text next to the checkbox to enable an extension in tor mode.">
+        Allow in Tor
+      </message>
+      <message name="IDS_EXTENSIONS_BRAVE_TOR_WARNING" desc="Warns the user that Brave cannot prevent extensions from recording history in Tor mode. Displayed in extensions management UI after an extension is selected to be run in Tor mode.">
+        Warning: Brave cannot prevent extensions from recording your browsing history. To disable this extension in Tor mode, unselect this option.
+      </message>
       <!-- Brave Clear Browsing Data On Exit Settings -->
       <message name="IDS_SETTINGS_BRAVE_ON_EXIT" desc="Clear Browsing Data dialog On exit tab label">
         On exit

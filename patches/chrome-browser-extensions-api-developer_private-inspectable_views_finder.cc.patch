@@ -1,0 +1,13 @@
+diff --git a/chrome/browser/extensions/api/developer_private/inspectable_views_finder.cc b/chrome/browser/extensions/api/developer_private/inspectable_views_finder.cc
+index aecc9dc9282a9a1f3ffa3bc1dc6eb6f57dcc986b..8cbaa3141a0c32867c767cdb0a8f5945edd9be86 100644
+--- a/chrome/browser/extensions/api/developer_private/inspectable_views_finder.cc
++++ b/chrome/browser/extensions/api/developer_private/inspectable_views_finder.cc
+@@ -129,7 +129,7 @@ void InspectableViewsFinder::GetViewsForExtensionForProfile(
+   // enabled incognito or doesn't have a separate background page in incognito.
+   if (is_incognito &&
+       (!util::IsIncognitoEnabled(extension.id(), profile) ||
+-       !IncognitoInfo::IsSplitMode(&extension))) {
++       !IncognitoInfo::IsSplitMode(&extension, profile->IsTor()))) {
+     include_lazy_background = false;
+   }
+ 

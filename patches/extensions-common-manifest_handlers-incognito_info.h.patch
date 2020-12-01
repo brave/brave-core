@@ -1,0 +1,13 @@
+diff --git a/extensions/common/manifest_handlers/incognito_info.h b/extensions/common/manifest_handlers/incognito_info.h
+index 19dcd03387a35311498008a1cff42645638ac5a1..6d841bbe723dfcc6a677e841a2dc0c27cdbb425a 100644
+--- a/extensions/common/manifest_handlers/incognito_info.h
++++ b/extensions/common/manifest_handlers/incognito_info.h
+@@ -20,7 +20,7 @@ struct IncognitoInfo : public Extension::ManifestData {
+   api::incognito::IncognitoMode mode;
+ 
+   // Return whether the |extension| should run in split incognito mode.
+-  static bool IsSplitMode(const Extension* extension);
++  static bool IsSplitMode(const Extension* extension, bool is_tor);
+ 
+   // Return whether this extension can be run in incognito mode as specified
+   // in its manifest.

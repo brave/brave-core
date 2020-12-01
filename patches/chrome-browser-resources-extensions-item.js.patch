@@ -1,0 +1,12 @@
+diff --git a/chrome/browser/resources/extensions/item.js b/chrome/browser/resources/extensions/item.js
+index e5e8c74e43a71102103824a340f5e95ee7518639..272467d9baed69f9485d5416101b2f88312d71e3 100644
+--- a/chrome/browser/resources/extensions/item.js
++++ b/chrome/browser/resources/extensions/item.js
+@@ -46,6 +46,7 @@ export class ItemDelegate {
+    * @param {boolean} isAllowedIncognito
+    */
+   setItemAllowedIncognito(id, isAllowedIncognito) {}
++  setItemAllowedTor(id, isAllowedTor) {}
+ 
+   /**
+    * @param {string} id

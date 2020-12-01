@@ -1,0 +1,15 @@
+diff --git a/extensions/common/manifest_handlers/incognito_info.cc b/extensions/common/manifest_handlers/incognito_info.cc
+index 33fa96492d91a0131b9fb743fd024a88da1c140d..729a61303188d4c375144197a73c805219b792db 100644
+--- a/extensions/common/manifest_handlers/incognito_info.cc
++++ b/extensions/common/manifest_handlers/incognito_info.cc
+@@ -19,7 +19,9 @@ IncognitoInfo::IncognitoInfo(api::incognito::IncognitoMode mode) : mode(mode) {
+ IncognitoInfo::~IncognitoInfo() = default;
+ 
+ // static
+-bool IncognitoInfo::IsSplitMode(const Extension* extension) {
++bool IncognitoInfo::IsSplitMode(const Extension* extension, bool is_tor) {
++  if (is_tor)
++    return true;
+   IncognitoInfo* info = static_cast<IncognitoInfo*>(
+       extension->GetManifestData(IncognitoManifestKeys::kIncognito));
+   return info ? info->mode == api::incognito::INCOGNITO_MODE_SPLIT : false;

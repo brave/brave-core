@@ -1,0 +1,22 @@
+diff --git a/extensions/browser/api/messaging/message_service.cc b/extensions/browser/api/messaging/message_service.cc
+index 0a54cc7fcd9b9318f2dc130d05340ee24c7b5968..e443addb97734de6d86598f01c1c63ebcc68b669 100644
+--- a/extensions/browser/api/messaging/message_service.cc
++++ b/extensions/browser/api/messaging/message_service.cc
+@@ -337,7 +337,7 @@ void MessageService::OpenChannelToExtension(
+     // - Only for extensions that can't normally be enabled in incognito, since
+     //   that surface (e.g. chrome://extensions) should be the only one for
+     //   enabling in incognito. In practice this means platform apps only.
+-    if (!is_web_connection || IncognitoInfo::IsSplitMode(target_extension) ||
++    if (!is_web_connection || IncognitoInfo::IsSplitMode(target_extension, context->IsTor()) ||
+         util::CanBeIncognitoEnabled(target_extension)) {
+       OnOpenChannelAllowed(std::move(params), false);
+       return;
+@@ -803,7 +803,7 @@ bool MessageService::MaybeAddPendingLazyContextOpenChannelTask(
+   // If the extension uses spanning incognito mode, make sure we're always
+   // using the original profile since that is what the extension process
+   // will use.
+-  if (!IncognitoInfo::IsSplitMode(extension))
++  if (!IncognitoInfo::IsSplitMode(extension, context->IsTor()))
+     context = ExtensionsBrowserClient::Get()->GetOriginalContext(context);
+ 
+   const LazyContextId context_id = LazyContextIdFor(context, extension);

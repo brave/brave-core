@@ -1,0 +1,22 @@
+diff --git a/extensions/browser/process_manager.cc b/extensions/browser/process_manager.cc
+index f41d442995182188b9d1eb95eef2a322a7db4e51..5397b6961f1558a5494e716934e4f0f70d990a99 100644
+--- a/extensions/browser/process_manager.cc
++++ b/extensions/browser/process_manager.cc
+@@ -1111,7 +1111,7 @@ IncognitoProcessManager::IncognitoProcessManager(
+ 
+ bool IncognitoProcessManager::CreateBackgroundHost(const Extension* extension,
+                                                    const GURL& url) {
+-  if (IncognitoInfo::IsSplitMode(extension)) {
++  if (IncognitoInfo::IsSplitMode(extension, browser_context()->IsTor())) {
+     if (ExtensionsBrowserClient::Get()->IsExtensionIncognitoEnabled(
+             extension->id(), browser_context()))
+       return ProcessManager::CreateBackgroundHost(extension, url);
+@@ -1126,7 +1126,7 @@ scoped_refptr<content::SiteInstance>
+ IncognitoProcessManager::GetSiteInstanceForURL(const GURL& url) {
+   const Extension* extension =
+       extension_registry_->enabled_extensions().GetExtensionOrAppByURL(url);
+-  if (extension && !IncognitoInfo::IsSplitMode(extension)) {
++  if (extension && !IncognitoInfo::IsSplitMode(extension, browser_context()->IsTor())) {
+     BrowserContext* original_context =
+         ExtensionsBrowserClient::Get()->GetOriginalContext(browser_context());
+     return ProcessManager::Get(original_context)->GetSiteInstanceForURL(url);

@@ -1,0 +1,18 @@
+diff --git a/chrome/browser/resources/extensions/service.js b/chrome/browser/resources/extensions/service.js
+index df646188a53f43dc4151d96effe897b0e55e251c..ba09bb8300d716cc5dc6a451325d020e62444fe9 100644
+--- a/chrome/browser/resources/extensions/service.js
++++ b/chrome/browser/resources/extensions/service.js
+@@ -222,6 +222,13 @@ export class Service {
+       incognitoAccess: isAllowedIncognito,
+     });
+   }
++  /** @override */
++  setItemAllowedTor(id, isAllowedTor) {
++    chrome.developerPrivate.updateExtensionConfiguration({
++      extensionId: id,
++      torAccess: isAllowedTor,
++    });
++  }
+ 
+   /** @override */
+   setItemAllowedOnFileUrls(id, isAllowedOnFileUrls) {
