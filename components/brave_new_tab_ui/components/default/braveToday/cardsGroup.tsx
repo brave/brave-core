@@ -22,6 +22,7 @@ enum CardType {
   HeadlinePaired,
   CategoryGroup,
   Deals,
+  PromotedArticle,
   PublisherGroup
 }
 
@@ -30,6 +31,7 @@ const PageContentOrder = [
   CardType.Headline,
   CardType.HeadlinePaired,
   CardType.HeadlinePaired,
+  CardType.PromotedArticle,
   CardType.CategoryGroup,
   CardType.Headline,
   CardType.Deals,
@@ -83,6 +85,18 @@ function Card (props: CardProps) {
               articleToScrollTo={props.articleToScrollTo}
               onReadFeedItem={props.onReadFeedItem}
               onSetPublisherPref={props.onSetPublisherPref}
+      />
+    case CardType.PromotedArticle:
+      if (!props.content.promotedArticle) {
+        return null
+      }
+      return <CardLarge
+                isPromoted={true}
+                content={[props.content.promotedArticle]}
+                publishers={props.publishers}
+                articleToScrollTo={props.articleToScrollTo}
+                onReadFeedItem={props.onReadFeedItem}
+                onSetPublisherPref={props.onSetPublisherPref}
       />
     case CardType.CategoryGroup:
       if (!props.content.itemsByCategory) {
