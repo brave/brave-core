@@ -369,6 +369,52 @@
   return nil;
 }
 
+- (NSArray<BookmarkFolder*>*)nestedChildFoldersFiltered:(BOOL(^)(BookmarkFolder*))included {
+  DCHECK(node_);
+
+  std::vector<const bookmarks::BookmarkNode*> bookmarks = {node_};
+
+  base::stack<std::pair<const bookmarks::BookmarkNode*, std::int32_t>> stack;
+  for (const bookmarks::BookmarkNode* bookmark : base::Reversed(bookmarks)) {
+    stack.emplace(bookmark, 0);
+  }
+
+  NSMutableArray* result = [[NSMutableArray alloc] init];
+  while (!stack.empty()) {
+    const bookmarks::BookmarkNode* node = stack.top().first;
+    std::int32_t depth = stack.top().second;
+    stack.pop();
+
+    IOSBookmarkNode* ios_bookmark_node =
+        [[IOSBookmarkNode alloc] initWithNode:node model:model_];
+    BookmarkFolder* ios_bookmark_folder = [[BookmarkFolder alloc] initWithNode:ios_bookmark_node
+                                                              indentationLevel:depth];
+    
+    if (included(ios_bookmark_folder)) {
+      // Store the folder + its depth
+      [result addObject:ios_bookmark_folder];
+
+      bookmarks.clear();
+      for (const auto& child : node->children()) {
+        if (child->is_folder()) {
+          ios_bookmark_node = [[IOSBookmarkNode alloc] initWithNode:child.get() model:model_];
+          ios_bookmark_folder = [[BookmarkFolder alloc] initWithNode:ios_bookmark_node
+                                                    indentationLevel:depth + 1];
+          if (included(ios_bookmark_folder)) {
+            bookmarks.push_back(child.get());
+          }
+        }
+      }
+    }
+
+    for (const auto* bookmark : base::Reversed(bookmarks)) {
+      stack.emplace(bookmark, depth + 1);
+    }
+  }
+
+  return result;
+}
+
 - (IOSBookmarkNode*)addChildFolderWithTitle:(NSString*)title {
   DCHECK(node_);
   DCHECK(model_);
@@ -411,6 +457,11 @@
 - (NSInteger)indexOfChild:(IOSBookmarkNode*)child {
   DCHECK(node_);
   return node_->GetIndexOf(child->node_);
+}
+
+- (bool)hasAncestor:(IOSBookmarkNode*)child {
+  DCHECK(node_);
+  return node_->HasAncestor(child->node_);
 }
 
 - (void)remove {
