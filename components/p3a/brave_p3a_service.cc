@@ -274,7 +274,7 @@ void BraveP3AService::Init(
 }
 
 std::string BraveP3AService::Serialize(base::StringPiece histogram_name,
-                                       uint64_t value) const {
+                                       uint64_t value) {
   // TRACE_EVENT0("brave_p3a", "SerializeMessage");
   // TODO(iefremov): Maybe we should store it in logs and pass here?
   // We cannot directly query |base::StatisticsRecorder::FindHistogram| because
@@ -287,6 +287,7 @@ std::string BraveP3AService::Serialize(base::StringPiece histogram_name,
   //  prochlo::GenerateProchloMessage(histogram_name_hash, value, pyxis_meta_,
   //                                  &message);
 
+  UpdatePyxisMeta();
   brave_pyxis::RawP3AValue message;
   prochlo::GenerateP3AMessage(histogram_name_hash, value, pyxis_meta_,
                               &message);
@@ -348,18 +349,23 @@ void BraveP3AService::InitPyxisMeta() {
     pyxis_meta_.date_of_install = base::Time::Now();
   }
   pyxis_meta_.woi = brave_stats::GetIsoWeekNumber(pyxis_meta_.date_of_install);
-  pyxis_meta_.date_of_survey = base::Time::Now();
-  pyxis_meta_.wos = brave_stats::GetIsoWeekNumber(pyxis_meta_.date_of_survey);
 
   pyxis_meta_.country_code =
       base::ToUpperASCII(base::CountryCodeForCurrentTimezone());
   pyxis_meta_.refcode = local_state_->GetString(kReferralPromoCode);
   MaybeStripRefcodeAndCountry(&pyxis_meta_);
 
+  UpdatePyxisMeta();
+
   VLOG(2) << "Pyxis meta: " << pyxis_meta_.platform << " "
           << pyxis_meta_.channel << " " << pyxis_meta_.version << " "
           << pyxis_meta_.woi << " " << pyxis_meta_.wos << " "
           << pyxis_meta_.country_code << " " << pyxis_meta_.refcode;
+}
+
+void BraveP3AService::UpdatePyxisMeta() {
+  pyxis_meta_.date_of_survey = base::Time::Now() + base::TimeDelta::FromDays(10);
+  pyxis_meta_.wos = brave_stats::GetIsoWeekNumber(pyxis_meta_.date_of_survey);
 }
 
 void BraveP3AService::StartScheduledUpload() {

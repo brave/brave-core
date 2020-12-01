@@ -29,14 +29,14 @@ class BraveP3ALogStore : public metrics::LogStore {
    public:
     // Prepares a string representaion of an entry.
     virtual std::string Serialize(base::StringPiece histogram_name,
-                                  uint64_t value) const = 0;
+                                  uint64_t value) = 0;
     // Returns false if the metric is obsolete and should be cleaned up.
     virtual bool IsActualMetric(base::StringPiece histogram_name) const = 0;
     virtual ~Delegate() {}
   };
 
-  explicit BraveP3ALogStore(Delegate* delegate,
-                            PrefService* local_state);
+  BraveP3ALogStore(Delegate* delegate,
+                   PrefService* local_state);
 
   // TODO(iefremov): Make parent destructor virtual?
   virtual ~BraveP3ALogStore();
@@ -84,7 +84,7 @@ class BraveP3ALogStore : public metrics::LogStore {
     base::Time sent_timestamp;  // At the moment only for debugging purposes.
   };
 
-  const Delegate* const delegate_ = nullptr;  // Weak.
+  Delegate* const delegate_ = nullptr;  // Weak.
   PrefService* const local_state_ = nullptr;
 
   // TODO(iefremov): Try to replace with base::StringPiece?
