@@ -32,12 +32,15 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content">
                 
-                <include android:id="@+id/brave_rewards_opt_in_layout_id"
-                    layout="@layout/brave_rewards_opt_in_layout"/>
+                <!-- <include android:id="@+id/brave_rewards_opt_in_layout_id"
+                    layout="@layout/brave_rewards_opt_in_layout"/> -->
 
                 <include
                     android:id="@+id/header_layout"
                     layout="@layout/brave_rewards_panel_header"/>
+
+                <include android:id="@+id/brave_rewards_opt_in_layout_id"
+                    layout="@layout/brave_rewards_opt_in_layout"/>
 
             </FrameLayout>
 

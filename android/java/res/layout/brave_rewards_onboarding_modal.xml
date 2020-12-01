@@ -112,7 +112,7 @@
 	        android:layout_height="wrap_content"
 	        android:contentDescription="@null"
 	        android:layout_gravity="end|top"
-	        android:tint="@color/onboarding_text_color"
+	        android:tint="@color/brave_rewards_modal_close_button_color"
 	        android:padding="16dp"
 	        android:src="@drawable/btn_close"/>
 
