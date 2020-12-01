@@ -232,7 +232,7 @@ public class BraveStatsBottomSheetDialogFragment extends BottomSheetDialogFragme
                 Pair<String, String> dataSavedPair =
                     BraveStatsUtil.getBraveStatsStringFormNumberPair(totalSavedBandwidth, true);
                 dataSavedCountText.setText(dataSavedPair.first);
-                boolean isTablet = DeviceFormFactor.isNonMultiDisplayContextOnTablet(getActivity());
+                boolean isTablet = DeviceFormFactor.isNonMultiDisplayContextOnTablet(mContext);
                 if (isTablet) {
                     adsTrackersText.setText(
                         String.format(mContext.getResources().getString(R.string.trackers_and_ads),
