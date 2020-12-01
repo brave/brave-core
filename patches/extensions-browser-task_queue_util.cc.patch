@@ -1,0 +1,22 @@
+diff --git a/extensions/browser/task_queue_util.cc b/extensions/browser/task_queue_util.cc
+index 5ab77e6b38ed158b14f34cf8f76a7df7a3905931..299b0a99823b674ba332dfd26b97744d28f557f5 100644
+--- a/extensions/browser/task_queue_util.cc
++++ b/extensions/browser/task_queue_util.cc
+@@ -42,7 +42,7 @@ ServiceWorkerTaskQueue* GetServiceWorkerTaskQueueForExtension(
+     const Extension* extension) {
+   DCHECK(BackgroundInfo::IsServiceWorkerBased(extension));
+   return GetServiceWorkerTaskQueueForBrowserContext(
+-      browser_context, IncognitoInfo::IsSplitMode(extension));
++      browser_context, IncognitoInfo::IsSplitMode(extension, browser_context->IsTor()));
+ }
+ 
+ // Get the ServiceWorkerTaskQueue instance for the extension ID.
+@@ -85,7 +85,7 @@ void DoTaskQueueFunction(content::BrowserContext* browser_context,
+   // for any extension running in split mode.
+   if (!ExtensionsBrowserClient::Get()->HasOffTheRecordContext(
+           browser_context) ||
+-      !IncognitoInfo::IsSplitMode(extension) ||
++      !IncognitoInfo::IsSplitMode(extension, browser_context->IsTor()) ||
+       !ExtensionsBrowserClient::Get()->IsExtensionIncognitoEnabled(
+           extension->id(), browser_context)) {
+     return;

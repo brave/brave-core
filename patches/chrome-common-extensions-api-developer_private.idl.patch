@@ -1,0 +1,20 @@
+diff --git a/chrome/common/extensions/api/developer_private.idl b/chrome/common/extensions/api/developer_private.idl
+index 5b425b0cbb7da4335619acc7743f26050ca472a1..b27437c9f6bae45efbc0f6456f319d2228ddae12 100644
+--- a/chrome/common/extensions/api/developer_private.idl
++++ b/chrome/common/extensions/api/developer_private.idl
+@@ -231,6 +231,7 @@ namespace developerPrivate {
+     DOMString iconUrl;
+     DOMString id;
+     AccessModifier incognitoAccess;
++    AccessModifier torAccess;
+     DOMString[] installWarnings;
+     DOMString? launchUrl;
+     Location location;
+@@ -309,6 +310,7 @@ namespace developerPrivate {
+     DOMString extensionId;
+     boolean? fileAccess;
+     boolean? incognitoAccess;
++    boolean? torAccess;
+     boolean? errorCollection;
+     HostAccess? hostAccess;
+   };

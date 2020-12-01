@@ -1,0 +1,13 @@
+diff --git a/extensions/test/extension_background_page_waiter.cc b/extensions/test/extension_background_page_waiter.cc
+index 2dbdb4cca9db78c6559639a104b316b89af3b839..f2b408f9ce4be4a85e8155ba0e487d94d2779f34 100644
+--- a/extensions/test/extension_background_page_waiter.cc
++++ b/extensions/test/extension_background_page_waiter.cc
+@@ -26,7 +26,7 @@ ExtensionBackgroundPageWaiter::~ExtensionBackgroundPageWaiter() = default;
+ 
+ void ExtensionBackgroundPageWaiter::Wait() {
+   if (browser_context_->IsOffTheRecord() &&
+-      !IncognitoInfo::IsSplitMode(extension_.get())) {
++      !IncognitoInfo::IsSplitMode(extension_.get(), browser_context_->IsTor())) {
+     ADD_FAILURE() << "Trying to wait for an incognito background page from a "
+                   << "spanning mode extension. Use the on-the-record context.";
+   }

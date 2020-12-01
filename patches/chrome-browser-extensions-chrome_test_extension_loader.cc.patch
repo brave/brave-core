@@ -1,0 +1,13 @@
+diff --git a/chrome/browser/extensions/chrome_test_extension_loader.cc b/chrome/browser/extensions/chrome_test_extension_loader.cc
+index 1b5a749859e214f5560a30a5956fc946115050f5..37cdfc753c1d9c0666dd8445d5fe1c250581cf78 100644
+--- a/chrome/browser/extensions/chrome_test_extension_loader.cc
++++ b/chrome/browser/extensions/chrome_test_extension_loader.cc
+@@ -172,7 +172,7 @@ bool ChromeTestExtensionLoader::WaitForExtensionReady(
+     return true;
+ 
+   content::BrowserContext* context_to_use =
+-      IncognitoInfo::IsSplitMode(&extension)
++      IncognitoInfo::IsSplitMode(&extension, browser_context_->IsTor())
+           ? browser_context_
+           : Profile::FromBrowserContext(browser_context_)->GetOriginalProfile();
+   ExtensionBackgroundPageWaiter(context_to_use, extension).Wait();

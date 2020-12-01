@@ -1,0 +1,13 @@
+diff --git a/chrome/browser/extensions/extension_web_ui.cc b/chrome/browser/extensions/extension_web_ui.cc
+index e06f65dd239fdfc5e7aee3da2b5966929171bb06..e5728971257e06539bffb104bc6631e511d556a8 100644
+--- a/chrome/browser/extensions/extension_web_ui.cc
++++ b/chrome/browser/extensions/extension_web_ui.cc
+@@ -383,7 +383,7 @@ std::vector<GURL> GetOverridesForChromeURL(
+     // We can't handle chrome-extension URLs in incognito mode unless the
+     // extension uses split mode.
+     bool incognito_override_allowed =
+-        extensions::IncognitoInfo::IsSplitMode(extension) &&
++        extensions::IncognitoInfo::IsSplitMode(extension, profile->IsTor()) &&
+         extensions::util::IsIncognitoEnabled(extension->id(), profile);
+     if (profile->IsOffTheRecord() && !incognito_override_allowed) {
+       continue;

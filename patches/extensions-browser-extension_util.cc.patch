@@ -1,12 +1,21 @@
 diff --git a/extensions/browser/extension_util.cc b/extensions/browser/extension_util.cc
-index af63beaf829691d02a4139adb9eebb0ee941ccb9..d4f914dc323647c8d3c8115c70b2653466e82631 100644
+index af63beaf829691d02a4139adb9eebb0ee941ccb9..20ed58a2c7fd5560e3854c5b94d4404d337e3326 100644
 --- a/extensions/browser/extension_util.cc
 +++ b/extensions/browser/extension_util.cc
-@@ -53,6 +53,7 @@ bool IsIncognitoEnabled(const std::string& extension_id,
+@@ -49,6 +49,7 @@ bool CanBeIncognitoEnabled(const Extension* extension) {
+ 
+ bool IsIncognitoEnabled(const std::string& extension_id,
+                         content::BrowserContext* context) {
++  BRAVE_IS_INCOGNITO_ENABLED
+   const Extension* extension =
        ExtensionRegistry::Get(context)->GetExtensionById(
            extension_id, ExtensionRegistry::ENABLED);
-   if (extension) {
-+    BRAVE_IS_INCOGNITO_ENABLED
-     if (!CanBeIncognitoEnabled(extension))
-       return false;
-     // If this is an existing component extension we always allow it to
+@@ -76,7 +77,7 @@ bool CanCrossIncognito(const Extension* extension,
+   // extensions only see events for a matching profile.
+   CHECK(extension);
+   return IsIncognitoEnabled(extension->id(), context) &&
+-         !IncognitoInfo::IsSplitMode(extension);
++         !IncognitoInfo::IsSplitMode(extension, context->IsTor());
+ }
+ 
+ const std::string& GetPartitionDomainForExtension(const Extension* extension) {

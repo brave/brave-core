@@ -1,0 +1,13 @@
+diff --git a/chrome/browser/extensions/extension_util.cc b/chrome/browser/extensions/extension_util.cc
+index 901cc1629c6db365daa99b47de3f9e863a794d6a..f48112c742cd52bc5a7149c3115e1b208248f99c 100644
+--- a/chrome/browser/extensions/extension_util.cc
++++ b/chrome/browser/extensions/extension_util.cc
+@@ -164,7 +164,7 @@ bool CanLoadInIncognito(const Extension* extension,
+     return true;
+   // Packaged apps and regular extensions need to be enabled specifically for
+   // incognito (and split mode should be set).
+-  return IncognitoInfo::IsSplitMode(extension) &&
++  return IncognitoInfo::IsSplitMode(extension, context->IsTor()) &&
+          IsIncognitoEnabled(extension->id(), context);
+ }
+ 
