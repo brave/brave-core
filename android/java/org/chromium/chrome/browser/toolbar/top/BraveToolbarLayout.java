@@ -99,6 +99,8 @@ import org.chromium.content_public.browser.NavigationHandle;
 import org.chromium.ui.UiUtils;
 import org.chromium.ui.interpolators.BakedBezierInterpolator;
 import org.chromium.ui.widget.Toast;
+import org.chromium.components.embedder_support.util.UrlConstants;
+import org.chromium.chrome.browser.app.BraveActivity;
 
 import java.net.URL;
 import java.util.Calendar;
@@ -647,6 +649,8 @@ public abstract class BraveToolbarLayout extends ToolbarLayout implements OnClic
     Context context = getContext();
     if (hasFocus
         && PackageUtils.isFirstInstall(context)
+        && NewTabPage.isNTPUrl(BraveActivity.getBraveActivity().getActivityTab().getUrlString())
+        && !BraveActivity.getBraveActivity().getActivityTab().getUrlString().startsWith(UrlConstants.CHROME_SCHEME)
         && !OnboardingPrefManager.getInstance().hasSearchEngineOnboardingShown()
         && !BraveSearchEngineUtils.getDSEShortName(true).equals(OnboardingPrefManager.DUCKDUCKGO)) {
       Intent searchActivityIntent = new Intent(context, SearchActivity.class);
