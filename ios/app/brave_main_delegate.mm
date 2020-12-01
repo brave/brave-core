@@ -25,9 +25,6 @@ const char kBraveSyncServiceURL[] = BRAVE_SYNC_ENDPOINT;
 }  // namespace
 
 BraveMainDelegate::BraveMainDelegate() : brave_sync_service_url_(kBraveSyncServiceURL) {
-  // Guarantee that we have a default URL when compiling
-  static_assert(sizeof(kBraveSyncServiceURL) > 0, "Invalid Sync Service URL");
-  
   base::FilePath path;
   base::PathService::Get(base::DIR_MODULE, &path);
   base::mac::SetOverrideFrameworkBundlePath(path);
@@ -42,7 +39,7 @@ void BraveMainDelegate::SetSyncServiceURL(const std::string& url) {
 
 void BraveMainDelegate::BasicStartupComplete() {
   auto* command_line(base::CommandLine::ForCurrentProcess());
-  
+
   syncer::ModelTypeSet disabledTypes = syncer::ModelTypeSet(
     syncer::TYPED_URLS,
     // syncer::PASSWORDS,
