@@ -18,12 +18,6 @@ class IpfsServiceFactory : public BrowserContextKeyedServiceFactory {
   static IpfsService* GetForContext(content::BrowserContext* context);
   static IpfsServiceFactory* GetInstance();
 
-  // IsIpfsEnabled returns false if IPFS feature is unsupported for the given
-  // context, disabled by IPFSEnabled policy, or the feature flag.
-  static bool IsIpfsEnabled(content::BrowserContext* context);
-  static bool IsIpfsResolveMethodDisabled(content::BrowserContext* context);
-  static bool IsIpfsDisabledByPolicy();
-
  private:
   friend struct base::DefaultSingletonTraits<IpfsServiceFactory>;
 

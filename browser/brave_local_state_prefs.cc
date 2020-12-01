@@ -13,7 +13,6 @@
 #include "brave/components/brave_referrals/buildflags/buildflags.h"
 #include "brave/components/brave_shields/browser/ad_block_service.h"
 #include "brave/components/brave_shields/browser/brave_shields_p3a.h"
-#include "brave/components/ipfs/buildflags/buildflags.h"
 #include "brave/components/ntp_background_images/browser/ntp_background_images_service.h"
 #include "brave/components/ntp_background_images/browser/view_counter_service.h"
 #include "brave/components/p3a/brave_p3a_service.h"
@@ -30,10 +29,6 @@
 
 #if BUILDFLAG(ENABLE_TOR)
 #include "brave/components/tor/tor_profile_service.h"
-#endif
-
-#if BUILDFLAG(IPFS_ENABLED)
-#include "brave/components/ipfs/ipfs_service.h"
 #endif
 
 #include "brave/browser/ui/webui/new_tab_page/brave_new_tab_message_handler.h"
@@ -69,9 +64,6 @@ void RegisterLocalStatePrefs(PrefRegistrySimple* registry) {
   registry->SetDefaultPrefValue(
       metrics::prefs::kMetricsReportingEnabled,
       base::Value(GetDefaultPrefValueForMetricsReporting()));
-#if BUILDFLAG(IPFS_ENABLED)
-  ipfs::IpfsService::RegisterLocalStatePrefs(registry);
-#endif
 
 #if BUILDFLAG(BRAVE_P3A_ENABLED)
   brave::BraveP3AService::RegisterPrefs(registry,

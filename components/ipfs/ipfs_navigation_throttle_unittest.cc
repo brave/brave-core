@@ -131,11 +131,12 @@ TEST_F(IpfsNavigationThrottleUnitTest, DeferUntilIpfsProcessLaunched) {
       "/ip4/101.101.101.101/tcp/4001/p2p/"
       "QmaCpDMGvV2BGHeYERUEnRQAwe3N8SzbUtfsmvsqQLuvuJ"};
 
-  ipfs_service(profile())->SetSkipGetConnectedPeersCallbackForTest(true);
+  auto* service = ipfs_service(profile());
+  ASSERT_TRUE(service != nullptr);
+  service->SetSkipGetConnectedPeersCallbackForTest(true);
 
   content::MockNavigationHandle test_handle(web_contents());
   test_handle.set_url(GetIPFSURL());
-  auto* service = ipfs_service(profile());
   auto throttle = IpfsNavigationThrottle::MaybeCreateThrottleFor(
       &test_handle, service, locale());
   ASSERT_TRUE(throttle != nullptr);

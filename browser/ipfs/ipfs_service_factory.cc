@@ -12,6 +12,7 @@
 #include "brave/components/ipfs/features.h"
 #include "brave/components/ipfs/ipfs_constants.h"
 #include "brave/components/ipfs/ipfs_service.h"
+#include "brave/components/ipfs/ipfs_utils.h"
 #include "brave/components/ipfs/pref_names.h"
 #include "chrome/browser/profiles/incognito_helpers.h"
 #include "chrome/common/channel_info.h"
@@ -27,43 +28,6 @@
 namespace ipfs {
 
 // static
-bool IpfsServiceFactory::IsIpfsDisabledByPolicy() {
-  if (!g_brave_browser_process)
-    return false;
-
-  PrefService* local_state = g_brave_browser_process->local_state();
-
-  // Because we currently do not provide a settings switch for IPFSEnabled
-  // preference to be overwritten by users, the policy is configured that only
-  // a mandatory value can be set by admins.
-  return local_state->IsManagedPreference(kIPFSEnabled) &&
-         !local_state->GetBoolean(kIPFSEnabled);
-}
-
-// static
-bool IpfsServiceFactory::IsIpfsEnabled(content::BrowserContext* context) {
-  if (!brave::IsRegularProfile(context) || IsIpfsDisabledByPolicy() ||
-      !base::FeatureList::IsEnabled(ipfs::features::kIpfsFeature))
-    return false;
-
-  return true;
-}
-
-// static
-bool IpfsServiceFactory::IsIpfsResolveMethodDisabled(
-    content::BrowserContext* context) {
-  // Ignore the actual pref value if IPFS feature is disabled.
-  if (!IsIpfsEnabled(context)) {
-    return true;
-  }
-
-  PrefService* user_prefs = user_prefs::UserPrefs::Get(context);
-  return user_prefs->FindPreference(kIPFSResolveMethod) &&
-         user_prefs->GetInteger(kIPFSResolveMethod) ==
-             static_cast<int>(ipfs::IPFSResolveMethodTypes::IPFS_DISABLED);
-}
-
-// static
 IpfsServiceFactory* IpfsServiceFactory::GetInstance() {
   return base::Singleton<IpfsServiceFactory>::get();
 }
@@ -71,7 +35,7 @@ IpfsServiceFactory* IpfsServiceFactory::GetInstance() {
 // static
 IpfsService* IpfsServiceFactory::GetForContext(
     content::BrowserContext* context) {
-  if (!IsIpfsEnabled(context))
+  if (!brave::IsRegularProfile(context) || !IsIpfsEnabled(context))
     return nullptr;
 
   return static_cast<IpfsService*>(

@@ -22,6 +22,7 @@
 #include "brave/components/ipfs/pref_names.h"
 #include "brave/components/ipfs/ipfs_constants.h"
 #include "brave/components/ipfs/ipfs_gateway.h"
+#include "brave/components/ipfs/ipfs_utils.h"
 #include "chrome/common/channel_info.h"
 #include "components/prefs/testing_pref_service.h"
 #include "components/user_prefs/user_prefs.h"
@@ -138,6 +139,8 @@ std::shared_ptr<brave::BraveRequestInfo> BraveRequestInfo::MakeCTX(
   ctx->upload_data = GetUploadData(request);
 
 #if BUILDFLAG(IPFS_ENABLED)
+  ctx->resolve_ipfs_enabled =
+      !ipfs::IsIpfsResolveMethodDisabled(browser_context);
   auto* prefs = user_prefs::UserPrefs::Get(browser_context);
   bool local = static_cast<ipfs::IPFSResolveMethodTypes>(
       prefs->GetInteger(kIPFSResolveMethod)) ==

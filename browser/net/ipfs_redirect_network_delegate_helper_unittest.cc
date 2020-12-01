@@ -44,6 +44,7 @@ TEST(IPFSRedirectNetworkDelegateHelperTest, TranslateIPFSURIHTTPScheme) {
 TEST(IPFSRedirectNetworkDelegateHelperTest, TranslateIPFSURIIPFSSchemeLocal) {
   GURL url("ipfs://QmfM2r8seH2GiRaC4esTjeraXEachRt8ZsSeGaWTPLyMoG");
   auto brave_request_info = std::make_shared<brave::BraveRequestInfo>(url);
+  brave_request_info->resolve_ipfs_enabled = true;
   brave_request_info->ipfs_gateway_url = GetLocalGateway();
   brave_request_info->initiator_url = ipfs::GetIPFSGatewayURL(
       initiator_cid, "",
@@ -59,6 +60,7 @@ TEST(IPFSRedirectNetworkDelegateHelperTest, TranslateIPFSURIIPFSSchemeLocal) {
 TEST(IPFSRedirectNetworkDelegateHelperTest, TranslateIPFSURIIPFSScheme) {
   GURL url("ipfs://QmfM2r8seH2GiRaC4esTjeraXEachRt8ZsSeGaWTPLyMoG");
   auto brave_request_info = std::make_shared<brave::BraveRequestInfo>(url);
+  brave_request_info->resolve_ipfs_enabled = true;
   brave_request_info->ipfs_gateway_url = GetPublicGateway();
   brave_request_info->initiator_url =
       ipfs::GetIPFSGatewayURL(initiator_cid, "", ipfs::GetDefaultIPFSGateway());
@@ -73,6 +75,7 @@ TEST(IPFSRedirectNetworkDelegateHelperTest, TranslateIPFSURIIPFSScheme) {
 TEST(IPFSRedirectNetworkDelegateHelperTest, TranslateIPFSURIIPNSSchemeLocal) {
   GURL url("ipns://QmSrPmbaUKA3ZodhzPWZnpFgcPMFWF4QsxXbkWfEptTBJd");
   auto brave_request_info = std::make_shared<brave::BraveRequestInfo>(url);
+  brave_request_info->resolve_ipfs_enabled = true;
   brave_request_info->ipfs_gateway_url = GetLocalGateway();
   brave_request_info->initiator_url = ipfs::GetIPFSGatewayURL(
       initiator_cid, "",
@@ -88,6 +91,7 @@ TEST(IPFSRedirectNetworkDelegateHelperTest, TranslateIPFSURIIPNSSchemeLocal) {
 TEST(IPFSRedirectNetworkDelegateHelperTest, TranslateIPFSURIIPNSScheme) {
   GURL url("ipns://QmSrPmbaUKA3ZodhzPWZnpFgcPMFWF4QsxXbkWfEptTBJd");
   auto brave_request_info = std::make_shared<brave::BraveRequestInfo>(url);
+  brave_request_info->resolve_ipfs_enabled = true;
   brave_request_info->ipfs_gateway_url = GetPublicGateway();
   brave_request_info->initiator_url =
       ipfs::GetIPFSGatewayURL(initiator_cid, "", ipfs::GetDefaultIPFSGateway());
