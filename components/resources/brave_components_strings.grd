@@ -219,7 +219,7 @@
         Today's top stories in a completely private feed, just for you.
       </message>
       <message name="IDS_BRAVE_TODAY_INTRO_DESCRIPTION" desc="Description for introduction to Brave Today news feed section. Do not translate the title Brave Today.">
-        Brave Today matches your interests on your device so your personal information never leaves your browser. New content updated every hour.
+        Brave Today matches your interests on your device so your personal information never leaves your browser. New content updated throughout the day.
       </message>
       <message name="IDS_BRAVE_TODAY_STATUS_FETCHING" desc="Indication that the content is being downloaded...">
         Fetching…
