@@ -25,6 +25,10 @@ handler.on(Actions.todayInit.getType(), async (store, payload) => {
   await Background.send(MessageTypes.indicatingOpen)
 })
 
+handler.on(Actions.interactionBegin.getType(), async () => {
+  chrome.send('todayInteractionBegin')
+})
+
 handler.on(
   [Actions.interactionBegin.getType(), Actions.refresh.getType()],
   async (store) => {
@@ -53,15 +57,27 @@ handler.on(Actions.ensureSettingsData.getType(), async (store) => {
 handler.on<Actions.ReadFeedItemPayload>(Actions.readFeedItem.getType(), async (store, payload) => {
   const state = store.getState() as ApplicationState
   const todayPageIndex = state.today.currentPageIndex
+  chrome.send('todayOnCardVisits', [state.today.cardsVisited])
   if (!payload.openInNewTab) {
     // remember article so we can scroll to it on "back" navigation
-    storeInHistoryState({ todayArticle: payload.item, todayPageIndex })
+    // TODO(petemill): Type this history.state data and put in an API module
+    // (see `reducers/today`).
+    storeInHistoryState({
+      todayArticle: payload.item,
+      todayPageIndex,
+      todayCardsVisited: state.today.cardsVisited
+    })
     // visit article url
     // @ts-ignore
     window.location = payload.item.url
   } else {
     window.open(payload.item.url, '_blank')
   }
+})
+
+handler.on<number>(Actions.feedItemViewedCountChanged.getType(), async (store, payload) => {
+  const state = store.getState() as ApplicationState
+  chrome.send('todayOnCardViews', [state.today.cardsViewed])
 })
 
 handler.on<Actions.SetPublisherPrefPayload>(Actions.setPublisherPref.getType(), async (store, payload) => {

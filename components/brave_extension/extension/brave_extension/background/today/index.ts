@@ -7,7 +7,7 @@ import * as Background from '../../../../../common/Background'
 import * as Feed from './feed'
 import * as Publishers from './publishers'
 import * as PublisherUserPrefs from './publisher-user-prefs'
-import { getUnpaddedAsDataUrl } from './privateCDN'
+import { fetchResource, getUnpaddedAsDataUrl } from './privateCDN'
 
 const SETTINGS_KEY_SHOW_TODAY = 'brave.new_tab_page.show_brave_today'
 const ALARM_KEY_FEED_UPDATE = 'brave-today-update-feed'
@@ -128,7 +128,7 @@ Background.setListener<Messages.GetImageDataResponse, Messages.GetImageDataPaylo
   MessageTypes.getImageData,
   async function (req, sender, sendResponse) {
     // TODO: handle error
-    const blob = await fetch(req.url).then(r => r.blob())
+    const blob = await fetchResource(req.url).then(r => r.blob())
     // @ts-ignore (Blob.arrayBuffer does exist)
     const buffer = await blob.arrayBuffer()
     const dataUrl = await getUnpaddedAsDataUrl(buffer, 'image/jpg')
