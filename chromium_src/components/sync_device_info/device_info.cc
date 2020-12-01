@@ -12,22 +12,12 @@
 #undef ToValue
 
 namespace syncer {
-std::string GetMobileOSString(const std::string user_agent) {
-  if (user_agent.find("IOS") != std::string::npos) {
-    return "ios";
-  }
-
-  if (user_agent.find("android") != std::string::npos) {
-    return "android";
-  }
-  return "unknown";
-}
-
 std::unique_ptr<base::DictionaryValue> DeviceInfo::ToValue() const {
   std::unique_ptr<base::DictionaryValue> value = ToValue_ChromiumImpl();
-  if (device_type_ == sync_pb::SyncEnums_DeviceType_TYPE_PHONE ||
-      device_type_ == sync_pb::SyncEnums_DeviceType_TYPE_TABLET ) {
-    value->SetString("os", GetMobileOSString(sync_user_agent_));
+  if ((device_type_ == sync_pb::SyncEnums_DeviceType_TYPE_PHONE ||
+      device_type_ == sync_pb::SyncEnums_DeviceType_TYPE_TABLET) &&
+      sync_user_agent_.find("IOS") != std::string::npos) {
+    value->SetString("os", "ios");
   } else {
     value->SetString("os", GetOSString());
   }
