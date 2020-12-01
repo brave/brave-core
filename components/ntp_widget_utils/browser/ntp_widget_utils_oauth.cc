@@ -15,19 +15,15 @@
 namespace ntp_widget_utils {
 
 std::string GetCryptoRandomString(bool hex_encode) {
-  const size_t kSeedByteLength = 32;
+  constexpr size_t kSeedByteLength = 32;
   uint8_t random_seed_bytes[kSeedByteLength];
   crypto::RandBytes(random_seed_bytes, kSeedByteLength);
 
   if (!hex_encode) {
-    std::string encoded_string;
-    base::Base64Encode(
-      reinterpret_cast<char*>(random_seed_bytes), &encoded_string);
-    return encoded_string;
+    return base::Base64Encode(random_seed_bytes);
   }
 
-  return base::HexEncode(
-      reinterpret_cast<char*>(random_seed_bytes), kSeedByteLength);
+  return base::HexEncode(random_seed_bytes, kSeedByteLength);
 }
 
 std::string GetCodeChallenge(

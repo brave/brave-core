@@ -559,6 +559,7 @@ if (!is_android) {
       "//brave/browser/brave_content_browser_client_browsertest.cc",
       "//brave/browser/brave_profile_prefs_browsertest.cc",
       "//brave/browser/brave_resources_browsertest.cc",
+      "//brave/browser/brave_scheme_load_browsertest.cc",
       "//brave/browser/brave_shields/ad_block_service_browsertest.cc",
       "//brave/browser/brave_shields/cookie_pref_service_browsertest.cc",
       "//brave/browser/brave_stats/brave_stats_updater_browsertest.cc",
@@ -599,6 +600,7 @@ if (!is_android) {
       "//brave/browser/ui/views/tabs/brave_tab_context_menu_contents_browsertest.cc",
       "//brave/browser/ui/views/toolbar/brave_toolbar_view_browsertest.cc",
       "//brave/browser/ui/webui/brave_welcome_ui_browsertest.cc",
+      "//brave/browser/ui/webui/new_tab_page/brave_new_tab_ui_browsertest.cc",
       "//brave/chromium_src/chrome/browser/media/router/media_router_feature_browsertest.cc",
       "//brave/chromium_src/chrome/browser/profiles/profile_window_browsertest.cc",
       "//brave/chromium_src/chrome/browser/safe_browsing/download_protection/check_client_download_request_base_browsertest.cc",
@@ -631,15 +633,6 @@ if (!is_android) {
       "//chrome/browser/ui/test/test_browser_ui.h",
     ]
 
-    if (!is_asan) {
-      # Move outside the !is_asan block once
-      # https://github.com/brave/brave-browser/issues/11897
-      # https://github.com/brave/brave-browser/issues/11906 is fixed
-      sources += [
-        "//brave/browser/brave_scheme_load_browsertest.cc",
-        "//brave/browser/ui/webui/new_tab_page/brave_new_tab_ui_browsertest.cc",
-      ]
-    }
     if (is_mac) {
       sources += [
         "//chrome/browser/ui/test/test_browser_dialog_mac.h",
@@ -656,9 +649,7 @@ if (!is_android) {
       "//media:test_support",
     ]
 
-    if (enable_widevine && !is_asan) {
-      # Remove the !is_asan check once
-      # https://github.com/brave/brave-browser/issues/11901 is fixed
+    if (enable_widevine) {
       sources += [
         "//brave/browser/widevine/widevine_permission_request_browsertest.cc",
         "//brave/browser/widevine/widevine_prefs_migration_browsertest.cc",
@@ -697,7 +688,7 @@ if (!is_android) {
       ]
     }
 
-    if (binance_enabled && !is_asan) {
+    if (binance_enabled) {
       sources += [
         "//brave/components/binance/browser/binance_service_browsertest.cc",
       ]
@@ -708,7 +699,7 @@ if (!is_android) {
       ]
     }
 
-    if (gemini_enabled && !is_asan) {
+    if (gemini_enabled) {
       sources +=
           [ "//brave/components/gemini/browser/gemini_service_browsertest.cc" ]
       deps += [
@@ -744,6 +735,7 @@ if (!is_android) {
         "//brave/components/brave_rewards/browser/test/common/rewards_browsertest_response.h",
         "//brave/components/brave_rewards/browser/test/common/rewards_browsertest_util.cc",
         "//brave/components/brave_rewards/browser/test/common/rewards_browsertest_util.h",
+        "//brave/components/brave_rewards/browser/test/rewards_browsertest.cc",
         "//brave/components/brave_rewards/browser/test/rewards_contribution_browsertest.cc",
         "//brave/components/brave_rewards/browser/test/rewards_database_browsertest.cc",
         "//brave/components/brave_rewards/browser/test/rewards_flag_browsertest.cc",
@@ -752,12 +744,6 @@ if (!is_android) {
         "//brave/components/brave_rewards/browser/test/rewards_publisher_browsertest.cc",
         "//brave/components/brave_rewards/browser/test/rewards_state_browsertest.cc",
       ]
-
-      if (!is_asan) {
-        # Move this out of the !is_asan block once
-        # https://github.com/brave/brave-browser/issues/11900 is fixed
-        sources += [ "//brave/components/brave_rewards/browser/test/rewards_browsertest.cc" ]
-      }
 
       deps += [
         "//brave/components/brave_ads/browser",
