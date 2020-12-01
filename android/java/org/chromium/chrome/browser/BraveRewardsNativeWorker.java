@@ -9,6 +9,7 @@ package org.chromium.chrome.browser;
 import android.os.Handler;
 import androidx.annotation.Nullable;
 
+import org.chromium.base.Log;
 import org.chromium.base.annotations.CalledByNative;
 import org.chromium.base.annotations.JNINamespace;
 import org.chromium.chrome.browser.BraveRewardsBalance;
@@ -124,7 +125,7 @@ public class BraveRewardsNativeWorker {
     public void OnNotifyFrontTabUrlChanged(int tabId, String url) {
         boolean chromeUrl = url.startsWith(UrlConstants.CHROME_SCHEME);
         boolean newUrl = (frontTabUrl == null || !frontTabUrl.equals(url));
-        if (rewardsStatus != REWARDS_ENABLED || chromeUrl) {
+        if (chromeUrl) {
             // Don't query 'GetPublisherInfo' and post response now.
             mHandler.post(new Runnable() {
                 @Override
@@ -414,6 +415,12 @@ public class BraveRewardsNativeWorker {
         }
     }
 
+    public void SetAutoContributionAmount(double amount) {
+        synchronized(lock) {
+            nativeSetAutoContributionAmount(mNativeBraveRewardsNativeWorker, amount);
+        }
+    }
+
     @CalledByNative
     public void OnRefreshPublisher(int status, String publisherKey) {
         for (BraveRewardsObserver observer : mObservers) {
@@ -609,4 +616,5 @@ public class BraveRewardsNativeWorker {
     private native void nativeRefreshPublisher(long nativeBraveRewardsNativeWorker, String publisherKey);
     private native void nativeGetRewardsParameters(long nativeBraveRewardsNativeWorker);
     private native void nativeSetAutoContributeEnabled(long nativeBraveRewardsNativeWorker, boolean isSetAutoContributeEnabled);
+    private native void nativeSetAutoContributionAmount(long nativeBraveRewardsNativeWorker, double amount);
 }

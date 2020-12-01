@@ -8,19 +8,21 @@
       xmlns:app="http://schemas.android.com/apk/res-auto"
       android:orientation="vertical"
       android:layout_width="match_parent"
-      android:layout_height="wrap_content" >
+      android:layout_height="wrap_content"
+      android:layout_marginStart="16dp"
+      android:layout_marginEnd="16dp">
 
       <TextView
         android:id="@+id/title_view"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="24dp"
         android:layout_marginBottom="8dp"
         android:layout_gravity="center"
         android:gravity="center"
+        android:layout_marginTop="24dp"
         android:textSize="20sp"
         android:textStyle="bold"
-        android:textColor="@android:color/black"/>
+        android:textColor="@color/brave_rewards_modal_title_color"/>
 
       <TextView
         android:id="@+id/text_view"
@@ -31,13 +33,18 @@
         android:textSize="14sp"
         android:textColor="@color/brave_rewards_modal_text_color"/>
 
-      <androidx.appcompat.widget.AppCompatImageView
-        android:id="@+id/image_view"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:gravity="center"
-        android:padding="16dp"
-        android:contentDescription="@null"/>
+      <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        android:gravity="center">
+
+        <androidx.appcompat.widget.AppCompatImageView
+          android:id="@+id/image_view"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:layout_gravity="center"
+          android:contentDescription="@null"/>
+
+      </FrameLayout>
 
 </LinearLayout>

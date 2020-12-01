@@ -3,16 +3,16 @@
      Use of this source code is governed by a BSD-style license that can be
      found in the LICENSE file. -->
 
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:background="@drawable/header">
+    android:layout_height="wrap_content">
 
     <RelativeLayout
         android:layout_width="wrap_content"
         android:layout_height="fill_parent"
         android:gravity="top|center"
+        android:background="@drawable/header"
         tools:ignore="UselessParent">
 
         <GridLayout
@@ -215,4 +215,4 @@
             android:visibility="gone"/>
 
     </RelativeLayout>
-</LinearLayout>
+</FrameLayout>

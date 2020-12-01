@@ -26,6 +26,7 @@
 #include "brave/build/android/jni_headers/BraveRewardsNativeWorker_jni.h"
 
 #define DEFAULT_ADS_PER_HOUR 2
+#define DEFAULT_AUTO_CONTRIBUTION_AMOUNT 10
 
 namespace chrome {
 namespace android {
@@ -610,6 +611,15 @@ void BraveRewardsNativeWorker::SetAdsPerHour(
     return;
   }
   ads_service_->SetAdsPerHour(value);
+}
+
+void BraveRewardsNativeWorker::SetAutoContributionAmount(
+    JNIEnv* env,
+    const base::android::JavaParamRef<jobject>& obj,
+    jdouble value) {
+  if (brave_rewards_service_) {
+    brave_rewards_service_->SetAutoContributionAmount(value);
+  }
 }
 
 bool BraveRewardsNativeWorker::IsAnonWallet(JNIEnv* env,

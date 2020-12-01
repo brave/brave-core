@@ -299,7 +299,7 @@ This file contains all "about" strings.  It is set to NOT be translated, in tran
         Hide Brave Rewards Icon
       </message>
       <message name="IDS_HIDE_BRAVE_REWARDS_ICON_DESCRIPTION" desc="Description for preference that hides or shows Brave Rewards icon.">
-        Hides the Brave Rewards Icon when Brave Rewards is not enabled
+        Hides the Brave Rewards Icon
       </message>
       <message name="IDS_BOTTOM_TOOLBAR_ENABLE" desc="Menu item for enabling the bottom toolbar.">
         Enable bottom toolbar
@@ -1457,10 +1457,13 @@ until they verify, or until 90 days have passed.
         Earn Tokens &amp; Give Back
       </message>
       <message name="IDS_BRAVE_REWARDS_MODAL_TEXT" desc="Brave rewards modal text">
-        Earn tokens by viewing privacy-respecting ads and support your favorite sites and content creators automatically.
+        Earn tokens by viewing Brave Private Ads and support content creators automatically.
       </message>
       <message name="IDS_BRAVE_REWARDS_TOS_TEXT" desc="Brave rewards tos text">
         By proceeding, you agree to the <ph name="TERMS_OF_SERVICE">%1$s</ph> and <ph name="PRIVACY_POLICY">%2$s</ph>.
+      </message>
+      <message name="IDS_PRIVACY_POLICY" desc="Brave rewards tos text">
+        Privacy Policy
       </message>
       <message name="IDS_TAKE_QUICK_TOUR" desc="Brave rewards quick tour text">
         Take a quick tour
@@ -1500,6 +1503,18 @@ until they verify, or until 90 days have passed.
       </message>
       <message name="IDS_WHAT_CAN_YOU_DO_WITH_TOKENS_TEXT" desc="Brave rewards onboarding title">
         Tokens can be used beyond supporting creators. You can buy digital goods and giftcards with a cashback bonus.
+      </message>
+      <message name="IDS_BASIC_SETTINGS" desc="Brave rewards onboarding title">
+        Lastly, let’s get you set up on the basic settings
+      </message>
+      <message name="IDS_YOU_CAN_CHANGE_THIS_LATER" desc="Brave rewards onboarding text">
+        You can change this later.
+      </message>
+      <message name="IDS_HOW_OFTEN_DO_YOU_SEE_ADS" desc="Brave rewards onboarding text">
+        How often do you want to see ads?\n(Ads per hour)
+      </message>
+      <message name="IDS_HOW_MUCH_SUPPORT" desc="Brave rewards onboarding text">
+        How much support do you want to give to your favorite creators?\n(from your ads earnings)
       </message>
       <message name="IDS_YOU_ARE_DONE" desc="Brave rewards onboarding title">
         WOOOOHOOOOO!\nYou’re done.
