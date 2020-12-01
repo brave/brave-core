@@ -1,71 +1,63 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="#edf0f2"
-    android:id="@+id/brave_ads_custom_notification_popup">
-
+    android:orientation="horizontal">
     <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:orientation="vertical"
         android:padding="2dp"
-        android:orientation="horizontal"
-        >
-        <TextView
-            android:id="@+id/brave_ads_custom_notification_header"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/ads_custom_notification_border"
+        android:id="@+id/brave_ads_custom_notification_popup">
+        <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:fontFamily="@font/poppins_medium"
-            android:textColor="#000000"
-            android:textSize="12sp"
-            android:paddingStart="13dp"
-            android:paddingTop="8dp"/>
+            android:padding="2dp"
+            android:orientation="horizontal"
+            >
+            <TextView
+                android:id="@+id/brave_ads_custom_notification_header"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/poppins_medium"
+                android:textColor="#000000"
+                android:textSize="14sp"
+                android:paddingStart="13dp"
+                android:paddingTop="8dp"/>
+            <View
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_weight="1" />
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="20dp"
+                android:layout_gravity="center"
+                android:src="@drawable/bat_ads_logo_button"
+                android:paddingTop="2dp"
+                android:paddingEnd="2dp"
+                android:id="@+id/brave_ads_logo" />
 
-        <View
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:layout_weight="1" />
-
-        <ImageView
+        </LinearLayout>
+        <LinearLayout
             android:layout_width="wrap_content"
-            android:layout_height="20dp"
-            android:layout_gravity="end"
-            android:src="@drawable/bat_ads_logo_button"
-            android:paddingTop="2dp"
-            android:paddingEnd="2dp"
-            android:contentDescription="@null"
-            android:id="@+id/brave_ads_logo"
-            />
-
-        <ImageView
-            android:layout_width="20dp"
-            android:layout_height="20dp"
-            android:layout_gravity="end"
-            android:paddingTop="2dp"
-            android:paddingEnd="2dp"
-            android:contentDescription="@null"
-            android:src="@drawable/bat_ads_close_button"
-            android:id="@+id/brave_ads_custom_notification_close_button"
-            />
-    </LinearLayout>
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:padding="2dp"
-        android:orientation="horizontal"
-        >
-        <TextView
-            android:id="@+id/brave_ads_custom_notification_body"
-            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:fontFamily="@font/poppins_light"
-            android:textColor="#000000"
-            android:paddingEnd="2dp"
-            android:paddingStart="13dp"
-            android:layout_marginBottom="7dp"
-            android:textSize="11sp"
-            tools:ignore="SmallSp" />
+            android:padding="2dp"
+            android:orientation="horizontal">
+            <TextView
+                android:id="@+id/brave_ads_custom_notification_body"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/poppins_light"
+                android:textColor="#000000"
+                android:paddingEnd="2dp"
+                android:paddingStart="13dp"
+                android:layout_marginBottom="7dp"
+                android:textSize="14sp" />
+        </LinearLayout>
     </LinearLayout>
-</LinearLayout>
+</RelativeLayout>
