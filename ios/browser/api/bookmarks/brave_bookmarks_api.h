@@ -88,7 +88,7 @@ OBJC_EXPORT
 - (void)moveToParent:(nonnull IOSBookmarkNode*)parent;
 - (void)moveToParent:(nonnull IOSBookmarkNode*)parent index:(NSUInteger)index;
 - (NSInteger)indexOfChild:(nonnull IOSBookmarkNode*)child;
-- (bool)hasAncestor:(nonnull IOSBookmarkNode*)child;
+- (bool)hasAncestor:(nonnull IOSBookmarkNode*)parent;
 
 - (instancetype)initWithTitle:(NSString*)title
                            id:(int64_t)id

@@ -317,40 +317,8 @@
 }
 
 - (NSArray<BookmarkFolder*>*)nestedChildFolders {
-  DCHECK(node_);
-
-  std::vector<const bookmarks::BookmarkNode*> bookmarks = {node_};
-
-  base::stack<std::pair<const bookmarks::BookmarkNode*, std::int32_t>> stack;
-  for (const bookmarks::BookmarkNode* bookmark : base::Reversed(bookmarks)) {
-    stack.emplace(bookmark, 0);
-  }
-
-  NSMutableArray* result = [[NSMutableArray alloc] init];
-  while (!stack.empty()) {
-    const bookmarks::BookmarkNode* node = stack.top().first;
-    std::int32_t depth = stack.top().second;
-    stack.pop();
-
-    // Store the folder + its depth
-    IOSBookmarkNode* ios_bookmark_node =
-        [[IOSBookmarkNode alloc] initWithNode:node model:model_];
-    [result addObject:[[BookmarkFolder alloc] initWithNode:ios_bookmark_node
-                                          indentationLevel:depth]];
-
-    bookmarks.clear();
-    for (const auto& child : node->children()) {
-      if (child->is_folder()) {
-        bookmarks.push_back(child.get());
-      }
-    }
-
-    for (const auto* bookmark : base::Reversed(bookmarks)) {
-      stack.emplace(bookmark, depth + 1);
-    }
-  }
-
-  return result;
+  // Returns a list of ALL nested folders
+  return [self nestedChildFoldersFiltered:^{ return true; }];
 }
 
 - (NSUInteger)childCount {
@@ -369,6 +337,8 @@
   return nil;
 }
 
+// Retrieves a list of nested child folders filtered by the predicate |included|
+// iOS calls it like: `self.nestedChildFolders(where: { return some_condition })`
 - (NSArray<BookmarkFolder*>*)nestedChildFoldersFiltered:(BOOL(^)(BookmarkFolder*))included {
   DCHECK(node_);
 
@@ -459,9 +429,9 @@
   return node_->GetIndexOf(child->node_);
 }
 
-- (bool)hasAncestor:(IOSBookmarkNode*)child {
+- (bool)hasAncestor:(IOSBookmarkNode*)parent {
   DCHECK(node_);
-  return node_->HasAncestor(child->node_);
+  return node_->HasAncestor(parent->node_);
 }
 
 - (void)remove {
