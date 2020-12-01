@@ -41,7 +41,6 @@
 #include "brave/browser/profiles/profile_util.h"
 #include "brave/common/brave_channel_info.h"
 #include "brave/components/brave_ads/browser/ad_notification.h"
-#include "brave/components/brave_ads/browser/ads_notification_handler.h"
 #include "brave/components/brave_ads/browser/ads_p2a.h"
 #include "brave/components/brave_ads/common/pref_names.h"
 #include "brave/components/brave_ads/browser/prefs_util.h"
@@ -59,7 +58,6 @@
 #include "chrome/browser/browser_process.h"
 #include "brave/browser/brave_browser_process_impl.h"
 #include "brave/grit/brave_generated_resources.h"
-#include "chrome/browser/notifications/notification_display_service.h"
 #include "chrome/browser/profiles/profile_manager.h"
 #include "chrome/browser/profiles/profile.h"
 #if !defined(OS_ANDROID)
@@ -214,7 +212,6 @@ AdsServiceImpl::AdsServiceImpl(Profile* profile) :
             base::TaskShutdownBehavior::BLOCK_SHUTDOWN})),
     base_path_(profile_->GetPath().AppendASCII("ads_service")),
     last_idle_state_(ui::IdleState::IDLE_STATE_ACTIVE),
-    display_service_(NotificationDisplayService::GetForProfile(profile_)),
     rewards_service_(brave_rewards::RewardsServiceFactory::GetForProfile(
         profile_)),
     bat_ads_client_receiver_(new bat_ads::AdsClientMojoBridge(this)) {
@@ -657,8 +654,6 @@ void AdsServiceImpl::OnInitialize(
 
   is_initialized_ = true;
 
-  SetAdsServiceForNotificationHandler();
-
   MaybeViewAdNotification();
 
   StartCheckIdleStateTimer();
@@ -1008,20 +1003,6 @@ void AdsServiceImpl::RetryViewingAdNotification(
     const std::string& uuid) {
   VLOG(1) << "Retry viewing ad notification with uuid " << uuid;
   retry_viewing_ad_notification_with_uuid_ = uuid;
-}
-
-void AdsServiceImpl::SetAdsServiceForNotificationHandler() {
-  auto* unowned_ptr = static_cast<AdsNotificationHandler::UnownedPointer*>(
-      profile_->GetUserData(AdsNotificationHandler::UserDataKey()));
-  CHECK(unowned_ptr);
-  unowned_ptr->get()->SetAdsService(this);
-}
-
-void AdsServiceImpl::ClearAdsServiceForNotificationHandler() {
-  auto* unowned_ptr = static_cast<AdsNotificationHandler::UnownedPointer*>(
-      profile_->GetUserData(AdsNotificationHandler::UserDataKey()));
-  CHECK(unowned_ptr);
-  unowned_ptr->get()->SetAdsService(nullptr);
 }
 
 void AdsServiceImpl::OpenNewTabWithUrl(

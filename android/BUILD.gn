@@ -6,12 +6,6 @@ declare_args() {
   brave_android_developer_options_code = ""
 }
 
-java_cpp_enum("brave_android_java_enums_srcjar") {
-  sources = [
-    "//brave/chromium_src/chrome/browser/notifications/notification_handler.h",
-  ]
-}
-
 java_cpp_template("brave_config_java") {
   package_path = "org/chromium/chrome/browser"
   sources = [ "//brave/build/android/java/templates/BraveConfig.template" ]
