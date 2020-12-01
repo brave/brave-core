@@ -6,11 +6,19 @@
 #include "brave/components/ipfs/features.h"
 
 #include "base/feature_list.h"
+#include "brave/components/ipfs/buildflags/buildflags.h"
 
 namespace ipfs {
 namespace features {
 
-const base::Feature kIpfsFeature{"Ipfs", base::FEATURE_DISABLED_BY_DEFAULT};
+const base::Feature kIpfsFeature{
+  "Ipfs",
+#if BUILDFLAG(IPFS_ENABLED)
+      base::FEATURE_ENABLED_BY_DEFAULT
+#else
+      base::FEATURE_DISABLED_BY_DEFAULT
+#endif
+};
 
 }  // namespace features
 }  // namespace ipfs
