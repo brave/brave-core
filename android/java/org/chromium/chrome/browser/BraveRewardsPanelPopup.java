@@ -817,7 +817,7 @@ public class BraveRewardsPanelPopup implements BraveRewardsObserver, BraveReward
 
     public void showLikePopDownMenu() {
         this.showLikePopDownMenu(0, 0);
-        if (root!= null && PackageUtils.isFirstInstall(mActivity)) {
+        if (root != null && PackageUtils.isFirstInstall(mActivity)) {
             if (BraveRewardsHelper.shouldShowBraveRewardsOnboarding()) {
                 showBraveRewardsOnboarding(root);
                 BraveRewardsHelper.setShowBraveRewardsOnboarding(false);

@@ -123,8 +123,6 @@ public class BraveRewardsNativeWorker {
     }
 
     public void OnNotifyFrontTabUrlChanged(int tabId, String url) {
-
-        Log.e("NTP", "OnNotifyFrontTabUrlChanged");
         boolean chromeUrl = url.startsWith(UrlConstants.CHROME_SCHEME);
         boolean newUrl = (frontTabUrl == null || !frontTabUrl.equals(url));
         if (chromeUrl) {
@@ -136,7 +134,6 @@ public class BraveRewardsNativeWorker {
                 }
             });
         } else if (newUrl) {
-            Log.e("NTP", "GetPublisherInfo");
             GetPublisherInfo(tabId, url);
         }
 
@@ -453,8 +450,6 @@ public class BraveRewardsNativeWorker {
 
     @CalledByNative
     public void OnPublisherInfo(int tabId) {
-
-        Log.e("NTP", "OnPublisherInfo");
         @PublisherStatus int pubStatus = GetPublisherStatus(tabId);
         boolean verified = (pubStatus == BraveRewardsPublisher.CONNECTED ||
                 pubStatus == BraveRewardsPublisher.VERIFIED) ? true : false;

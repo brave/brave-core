@@ -24,8 +24,8 @@ import java.util.List;
 
 public class BraveRewardsOnboardingPagerAdapter extends PagerAdapter {
 
-    private static final int WITH_7_OPTIONS = 7;
-    private static final int WITH_8_OPTIONS = 8;
+    private static final int FEWER_OPTIONS = 7;
+    private static final int MORE_OPTIONS = 8;
     private boolean shouldShowMoreOptions;
 
     private static final List<String> mHeaders = Arrays.asList(
@@ -67,21 +67,32 @@ public class BraveRewardsOnboardingPagerAdapter extends PagerAdapter {
     public Object instantiateItem(ViewGroup collection, int position) {
         View view;
         if (shouldShowMoreOptions
-            && position == (WITH_8_OPTIONS-2)) {
+            && position == (MORE_OPTIONS-2)) {
             view = LayoutInflater.from(ContextUtils.getApplicationContext()).inflate(R.layout.brave_rewards_onboarding_ac_layout, null);
             RadioGroup hourRadioGroup = view.findViewById(R.id.hour_radio_group);
             int adsPerHour = BraveRewardsNativeWorker.getInstance().GetAdsPerHour();
-            if (adsPerHour == 1) {
-                        ((RadioButton)view.findViewById(R.id.hour_1_radio)).setChecked(true);
-                    } else if (adsPerHour == 2) {
-                        ((RadioButton)view.findViewById(R.id.hour_2_radio)).setChecked(true);
-                    } else if (adsPerHour == 3) {
-                        ((RadioButton)view.findViewById(R.id.hour_3_radio)).setChecked(true);
-                    } else if (adsPerHour == 4) {
-                        ((RadioButton)view.findViewById(R.id.hour_4_radio)).setChecked(true);
-                    } else if (adsPerHour == 5) {
-                        ((RadioButton)view.findViewById(R.id.hour_5_radio)).setChecked(true);
-                    }
+            RadioButton defaultRadioButton;
+            switch(adsPerHour) {
+                case 1:
+                defaultRadioButton = ((RadioButton)view.findViewById(R.id.hour_1_radio));
+                break;
+                case 2:
+                defaultRadioButton = ((RadioButton)view.findViewById(R.id.hour_2_radio));
+                break;
+                case 3:
+                defaultRadioButton = ((RadioButton)view.findViewById(R.id.hour_3_radio));
+                break;
+                case 4:
+                defaultRadioButton = ((RadioButton)view.findViewById(R.id.hour_4_radio));
+                break;
+                case 5:
+                defaultRadioButton = ((RadioButton)view.findViewById(R.id.hour_5_radio));
+                break;
+                default:
+                defaultRadioButton = ((RadioButton)view.findViewById(R.id.hour_1_radio));
+                break;
+            }
+            defaultRadioButton.setChecked(true);
             hourRadioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
                 @Override
                 public void onCheckedChanged(RadioGroup radioGroup, int checkedId) {
@@ -140,7 +151,7 @@ public class BraveRewardsOnboardingPagerAdapter extends PagerAdapter {
 
     @Override
     public int getCount() {
-        return shouldShowMoreOptions ? WITH_8_OPTIONS : WITH_7_OPTIONS;
+        return shouldShowMoreOptions ? MORE_OPTIONS : FEWER_OPTIONS;
     }
 
     @Override
