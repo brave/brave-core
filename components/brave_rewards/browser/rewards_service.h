@@ -369,6 +369,8 @@ class RewardsService : public KeyedService {
 
   virtual void GetWalletPassphrase(GetWalletPassphraseCallback callback) = 0;
 
+  virtual void SetAdsEnabled(const bool is_enabled) = 0;
+
  protected:
   base::ObserverList<RewardsServiceObserver> observers_;
 
