@@ -4,7 +4,6 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 #import "brave/ios/browser/api/sync/brave_sync_api.h"
-#import "brave/ios/browser/api/sync/brave_sync_worker.h"
 
 #import <CoreImage/CoreImage.h>
 #include <string>
@@ -18,6 +17,7 @@
 #include "base/strings/sys_string_conversions.h"
 #include "brave/components/brave_sync/brave_sync_prefs.h"
 #include "brave/components/brave_sync/crypto/crypto.h"
+#import "brave/ios/browser/api/sync/brave_sync_worker.h"
 #include "components/sync/driver/profile_sync_service.h"
 #include "components/sync/driver/sync_service.h"
 #include "components/sync/driver/sync_service_observer.h"
