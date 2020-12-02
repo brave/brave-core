@@ -170,7 +170,9 @@ void BraveStatsUpdater::SetStatsThresholdCallback(
 
 GURL BraveStatsUpdater::BuildStatsEndpoint(const std::string& path) {
   auto stats_updater_url = GURL(usage_server_ + path);
-  DCHECK(stats_updater_url.is_valid());
+#if defined(OFFICIAL_BUILD)
+  CHECK(stats_updater_url.is_valid());
+#endif
   return stats_updater_url;
 }
 
