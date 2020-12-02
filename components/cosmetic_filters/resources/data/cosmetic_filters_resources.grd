@@ -9,6 +9,7 @@
   <release seq="1">
     <includes>
       <include name="IDR_COSMETIC_FILTERS_SCRIPT" file="cosmetic_filters.js" type="BINDATA" />
+      <include name="IDR_COSMETIC_FILTERS_PUMP_SCRIPT" file="cosmetic_filters_pump.js" type="BINDATA" />
     </includes>
   </release>
 </grit>

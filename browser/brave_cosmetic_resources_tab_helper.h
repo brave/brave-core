@@ -22,6 +22,8 @@ class BraveCosmeticResourcesTabHelper
       public base::SupportsWeakPtr<BraveCosmeticResourcesTabHelper> {
  public:
   static std::string* observing_script_;
+  static std::string* observing_pump_script_;
+  static std::vector<std::string> vetted_search_engines_;
 
   explicit BraveCosmeticResourcesTabHelper(content::WebContents* contents);
   ~BraveCosmeticResourcesTabHelper() override;
@@ -45,17 +47,17 @@ class BraveCosmeticResourcesTabHelper
 
  private:
   void ProcessURL(content::RenderFrameHost* render_frame_host, const GURL& url,
-      const bool& main_frame);
+      const bool& do_non_scriplets);
 
   void GetUrlCosmeticResourcesOnUI(content::GlobalFrameRoutingId frame_id,
-      const std::string& url, bool main_frame,
+      const std::string& url, bool do_non_scriplets,
       std::unique_ptr<base::ListValue> resources);
   void CSSRulesRoutine(const std::string& url,
       base::DictionaryValue* resources_dict,
       content::GlobalFrameRoutingId frame_id);
 
   void GetHiddenClassIdSelectorsOnUI(
-      content::GlobalFrameRoutingId frame_id,
+      content::GlobalFrameRoutingId frame_id, const GURL& url,
       std::unique_ptr<base::ListValue> selectors);
 
   std::vector<std::string> exceptions_;

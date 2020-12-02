@@ -1,3 +1,8 @@
+/* Copyright (c) 2020 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this file,
+ * You can obtain one at http://mozilla.org/MPL/2.0/. */
+
 (function() {
   const queriedIds = new Set();
   const queriedClasses = new Set();
@@ -7,6 +12,32 @@
   if (window.cosmeticStyleSheet === undefined) {
     window.cosmeticStyleSheet = new CSSStyleSheet();
   }
+  if (window.allSelectorsToRules === undefined) {
+    window.allSelectorsToRules = new Map();
+  }
+  // All new selectors go in `firstRunQueue`
+  if (window.firstRunQueue === undefined) {
+    window.firstRunQueue = new Set();
+  }
+  // Third party matches go in the second and third queues.
+  if (window.secondRunQueue === undefined) {
+    window.secondRunQueue = new Set();
+  }
+  // Once a selector gets in to this queue, it's only evaluated for 1p content one
+  // more time.
+  if (window.finalRunQueue === undefined) {
+    window.finalRunQueue = new Set();
+  }
+  if (window.allQueues === undefined) {
+    window.allQueues = [firstRunQueue, secondRunQueue, finalRunQueue];
+  }
+  if (window.numQueues === undefined) {
+    window.numQueues = allQueues.length;
+  }
+  if (window.alreadyKnownFirstPartySubtrees === undefined) {
+    window.alreadyKnownFirstPartySubtrees = new Set();
+  }
+
   const fetchNewClassIdRules = function () {
     if ((!notYetQueriedClasses || notYetQueriedClasses.length === 0) &&
         (!notYetQueriedIds || notYetQueriedIds.length === 0)) {
@@ -75,6 +106,8 @@
   };
 
   const startObserving = () => {
+    // First queue up any classes and ids that exist before the mutation observer
+    // starts running.
     const elmWithClassOrId = document.querySelectorAll('[class],[id]');
     for (const elm of elmWithClassOrId) {
       for (const aClassName of elm.classList.values()) {
@@ -85,16 +118,22 @@
         queriedIds.add(elmId);
       }
     };
+
     notYetQueriedClasses = Array.from(queriedClasses);
     notYetQueriedIds = Array.from(queriedIds);
     fetchNewClassIdRules();
+
+    // Second, set up a mutation observer to handle any new ids or classes
+    // that are added to the document.
     cosmeticObserver = new MutationObserver(handleMutations);
     let observerConfig = {
       subtree: true,
       childList: true,
       attributeFilter: ['id', 'class']
     };
-    cosmeticObserver.observe(document.documentElement, observerConfig);
+    if (document.documentElement instanceof Node) {
+      cosmeticObserver.observe(document.documentElement, observerConfig);
+    }
   };
   startObserving();
 })();
