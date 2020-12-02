@@ -280,7 +280,7 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
   registry->RegisterStringPref(kBraveWalletEncryptedSeed, "");
   registry->RegisterIntegerPref(
       kBraveWalletWeb3Provider,
-      static_cast<int>(BraveWalletWeb3ProviderTypes::ASK));
+      static_cast<int>(BraveWalletWeb3ProviderTypes::NONE));
   registry->RegisterBooleanPref(kLoadCryptoWalletsOnStartup, false);
   registry->RegisterBooleanPref(kOptedIntoCryptoWallets, false);
 #endif

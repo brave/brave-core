@@ -105,20 +105,6 @@ function testProviderIsMetaMask() {
   ])
 }
 
-function testProviderIsAsk() {
-  chrome.test.runTests([
-    function CryptoWalletsIsProvider() {
-      chrome.braveWallet.getWeb3Provider((provider) => {
-        if (provider.length === 0) {
-          chrome.test.succeed();
-        } else {
-          chrome.test.fail();
-        }
-      })
-    }
-  ])
-}
-
 function testProviderIsNone() {
   chrome.test.runTests([
     function CryptoWalletsIsProvider() {
@@ -138,8 +124,7 @@ function testBasics() {
     function braveWalletExtensionHasAccess() {
       if (chrome.braveWallet &&
           chrome.braveWallet.shouldPromptForSetup &&
-          chrome.braveWallet.loadUI &&
-          chrome.braveWallet.promptToEnableWallet) {
+          chrome.braveWallet.loadUI) {
         chrome.test.succeed();
       } else {
         chrome.test.fail();

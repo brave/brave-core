@@ -16,31 +16,3 @@ function testBasics() {
     },
   ]);
 }
-
-function testNoDappCheck() {
-  chrome.test.runTests([
-    function testNotENabled() {
-      chrome.braveWallet.shouldCheckForDapps((dappDetection) => {
-        if (dappDetection) {
-          chrome.test.fail();
-        } else {
-          chrome.test.succeed();
-        }
-      })
-    },
-  ]);
-}
-
-function testDappCheck() {
-  chrome.test.runTests([
-    function testNotENabled() {
-      chrome.braveWallet.shouldCheckForDapps((dappDetection) => {
-        if (dappDetection) {
-          chrome.test.succeed();
-        } else {
-          chrome.test.fail();
-        }
-      })
-    },
-  ]);
-}

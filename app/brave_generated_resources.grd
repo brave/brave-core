@@ -673,9 +673,6 @@ By installing this extension, you are agreeing to the Google Widevine Terms of U
       <message name="IDS_SETTINGS_WEBTORRENT_ENABLED_DESC" desc="The description for WebTorrent switch in settings">
         Uses WebTorrent to display torrents directly in the browser. Supports torrent files and magnet links.
       </message>
-      <message name="IDS_BRAVE_WALLET_WEB3_PROVIDER_ASK" desc="Select control value for which web3 provider to use">
-        Ask
-      </message>
       <message name="IDS_BRAVE_WALLET_WEB3_PROVIDER_NONE" desc="Select control value for which web3 provider to use">
         None
       </message>
@@ -939,25 +936,6 @@ By installing this extension, you are agreeing to the Google Widevine Terms of U
       </message>
       <message name="IDS_BRAVE_P3A_ENABLE_SETTING_SUBITEM" desc="Description that shows under main toggle setting for P3A">
         This anonymous info only lets Brave estimate the overall usage of certain features.
-      </message>
-      <!-- Web3 detection -->
-      <message name="IDS_BRAVE_CRYPTO_WALLETS_LAZY_LOAD_TEXT" desc="Text that shows on the info bar when a Dapp is detected">
-        Would you like to start Crypto Wallets for Ethereum support?
-      </message>
-      <message name="IDS_BRAVE_CRYPTO_WALLETS_INFOBAR_TEXT" desc="Text that shows on the info bar when a Dapp is detected">
-        Set up Crypto Wallets to interact with this app and others like it.
-      </message>
-      <message name="IDS_BRAVE_CRYPTO_WALLETS_SETUP_CRYPTO_WALLETS" desc="Setup Crypto Wallets">
-        Setup Crypto Wallets
-      </message>
-       <message name="IDS_BRAVE_CRYPTO_WALLETS_START_AND_RELOAD" desc="Start Crypto Wallets and reload">
-        Start Crypto Wallets and reload
-      </message>
-      <message name="IDS_BRAVE_CRYPTO_WALLETS_SETTINGS" desc="Open Crypto Wallets settings">
-        Settings
-      </message>
-      <message name="IDS_BRAVE_CRYPTO_WALLETS_DONT_ASK" desc="Sets provider to none">
-        Don't ask again
       </message>
       <!-- IPFS -->
       <message name="IDS_BRAVE_IPFS_INSTALL" desc="Install IPFS daemon infobar text">

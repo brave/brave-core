@@ -9,7 +9,3 @@ require('./events/runtimeEvents')
 require('./events/webNavigationEvents')
 require('./events/cosmeticFilterEvents')
 require('./events/settingsEvents')
-// Only do detection events if the wallet API is available
-if (chrome.braveWallet) {
-  require('./events/dappDetectionEvents')
-}
