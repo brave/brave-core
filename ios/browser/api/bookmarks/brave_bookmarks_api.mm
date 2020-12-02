@@ -318,7 +318,7 @@
 
 - (NSArray<BookmarkFolder*>*)nestedChildFolders {
   // Returns a list of ALL nested folders
-  return [self nestedChildFoldersFiltered:^{ return true; }];
+  return [self nestedChildFoldersFiltered:^BOOL(BookmarkFolder*){ return true; }];
 }
 
 - (NSUInteger)childCount {
