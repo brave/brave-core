@@ -1,5 +1,5 @@
 diff --git a/chrome/android/chrome_public_apk_tmpl.gni b/chrome/android/chrome_public_apk_tmpl.gni
-index 5bd971071b54553b992bc359576a2a08eb431ae9..4682a9dc22af4e00c106f127a4d1c364b066ef6d 100644
+index 00fde4514a8ada64522943070470bbf008398d2b..d9aa12d5f6ca9032684eef0f849c3eba568acd84 100644
 --- a/chrome/android/chrome_public_apk_tmpl.gni
 +++ b/chrome/android/chrome_public_apk_tmpl.gni
 @@ -210,6 +210,7 @@ template("chrome_public_common_apk_or_module_tmpl") {
