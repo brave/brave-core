@@ -841,6 +841,9 @@ until they verify, or until 90 days have passed.
       <message name="IDS_SYNC_DEVICE_FAILURE" desc="The message for the dialog where the user notified about sync setup failure.">
         Sync could not be setup
       </message>
+      <message name="IDS_BRAVE_SYNC_ANDROID_SYNC_DISABLED" desc="The message for hint that Brave sync does not work because Android system sync is disabled and required need to open and enable">
+        We detected that you have Brave Sync enabled, however your system sync is turned off and will not allow Brave to sync. Press to open settings
+      </message>
       <message name="IDS_BRAVE_PRIVACY_NOTICE_URL" desc="URL for the Brave privacy notice" translateable="false">
         https://brave.com/privacy_android
       </message>
