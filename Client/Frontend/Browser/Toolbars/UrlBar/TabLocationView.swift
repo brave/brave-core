@@ -81,9 +81,9 @@ class TabLocationView: UIView {
         case .localHost:
             lockImageView.isHidden = true
         case .insecure:
-            lockImageView.tintColor = .red
+            lockImageView.image = #imageLiteral(resourceName: "insecure-site-icon")
         case .secure, .unknown:
-            lockImageView.tintColor = #colorLiteral(red: 0.3764705882, green: 0.3843137255, blue: 0.4, alpha: 1)
+            lockImageView.image = #imageLiteral(resourceName: "lock_verified").template
         }
     }
 
