@@ -739,7 +739,7 @@ public class BraveRewardsPanelPopup implements BraveRewardsObserver, BraveReward
 
             if (viewId == R.id.btn_skip
                 && braveRewardsOnboardingView != null) {
-                braveRewardsOnboardingView.setVisibility(View.GONE);
+                braveRewardsViewPager.setCurrentItem(braveRewardsOnboardingPagerAdapter.getCount() - 1);
             }
 
             if (viewId == R.id.btn_go_back 
