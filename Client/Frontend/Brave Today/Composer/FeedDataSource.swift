@@ -94,7 +94,7 @@ class FeedDataSource {
             components.scheme = "https"
             // TODO: At the moment these files are only available on the dev servers, eventually we will
             // change `brave.software` to `bravesoftware.com` or `brave.com` based on staging/prod
-            components.host = "\(name).bravesoftware.com"
+            components.host = "\(name).brave.com"
             components.path = "/\(path)"
             return components.url!
         }
