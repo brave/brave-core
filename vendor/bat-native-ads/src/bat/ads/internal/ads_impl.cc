@@ -478,6 +478,13 @@ void AdsImpl::InitializeStep6(
 
   callback(SUCCESS);
 
+#if defined(OS_ANDROID)
+    // Ad notifications do not sustain a reboot or update, so we should remove
+    // orphaned ad notifications
+    ad_notifications_->RemoveAllAfterReboot();
+    ad_notifications_->RemoveAllAfterUpdate();
+#endif
+
   CleanupAdEvents();
 
   account_->Reconcile();
@@ -529,7 +536,8 @@ void AdsImpl::MaybeServeAdNotificationsAtRegularIntervals() {
     return;
   }
 
-  if (TabManager::Get()->IsForegrounded()) {
+  if (TabManager::Get()->IsForegrounded() ||
+      AdsClientHelper::Get()->CanShowBackgroundNotifications()) {
     ad_notification_serving_->ServeAtRegularIntervals();
   } else {
     ad_notification_serving_->StopServing();

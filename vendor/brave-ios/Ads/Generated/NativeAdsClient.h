@@ -19,6 +19,7 @@ class NativeAdsClient : public ads::AdsClient {
 
   bool IsNetworkConnectionAvailable() const override;
   bool IsForeground() const override;
+  bool CanShowBackgroundNotifications() const override;
   void ShowNotification(const ads::AdNotificationInfo& info) override;
   bool ShouldShowNotifications() override;
   void CloseNotification(const std::string & uuid) override;

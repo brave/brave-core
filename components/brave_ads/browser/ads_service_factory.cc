@@ -19,6 +19,7 @@
 #include "brave/browser/brave_rewards/rewards_service_factory.h"
 #include "brave/components/brave_ads/browser/ads_service_impl.h"
 #include "chrome/browser/dom_distiller/dom_distiller_service_factory.h"
+#include "chrome/browser/notifications/notification_display_service_factory.h"
 #endif
 
 namespace brave_ads {
@@ -35,17 +36,6 @@ AdsService* AdsServiceFactory::GetForProfile(
 }
 
 // static
-AdsServiceImpl* AdsServiceFactory::GetImplForProfile(
-    Profile* profile) {
-  if (!brave::IsRegularProfile(profile)) {
-    return nullptr;
-  }
-
-  return static_cast<AdsServiceImpl*>(
-      GetInstance()->GetServiceForBrowserContext(profile, true));
-}
-
-// static
 AdsServiceFactory* AdsServiceFactory::GetInstance() {
   return base::Singleton<AdsServiceFactory>::get();
 }
@@ -55,6 +45,7 @@ AdsServiceFactory::AdsServiceFactory()
           "AdsService",
           BrowserContextDependencyManager::GetInstance()) {
 #if BUILDFLAG(BRAVE_ADS_ENABLED)
+  DependsOn(NotificationDisplayServiceFactory::GetInstance());
   DependsOn(dom_distiller::DomDistillerServiceFactory::GetInstance());
   DependsOn(brave_rewards::RewardsServiceFactory::GetInstance());
 #endif

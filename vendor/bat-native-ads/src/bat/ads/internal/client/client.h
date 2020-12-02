@@ -101,6 +101,10 @@ class Client {
   const ad_targeting::contextual::PageProbabilitiesList&
       GetPageProbabilitiesHistory();
 
+  std::string GetVersionCode() const;
+  void SetVersionCode(
+      const std::string& value);
+
   void RemoveAllHistory();
 
  private:

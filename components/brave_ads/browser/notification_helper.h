@@ -26,6 +26,8 @@ class NotificationHelper {
 
   virtual bool ShowMyFirstAdNotification();
 
+  virtual bool CanShowBackgroundNotifications() const;
+
  protected:
   friend struct base::DefaultSingletonTraits<NotificationHelper>;
 

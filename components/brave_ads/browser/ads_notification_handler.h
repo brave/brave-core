@@ -18,6 +18,10 @@
 #include "chrome/browser/notifications/notification_handler.h"
 #include "url/gurl.h"
 
+#if defined(OS_ANDROID)
+#include "base/timer/timer.h"
+#endif
+
 namespace content {
 class BrowserContext;
 }  // namespace content
@@ -53,6 +57,9 @@ class AdsNotificationHandler : public NotificationHandler {
       const base::Optional<int>& action_index,
       const base::Optional<base::string16>& reply,
       base::OnceClosure completed_closure) override;
+  void DisableNotifications(
+      Profile* profile,
+      const GURL& origin) override;
   void OpenSettings(
       Profile* profile,
       const GURL& origin) override;
@@ -84,6 +91,21 @@ class AdsNotificationHandler : public NotificationHandler {
   void SendPendingNotifications();
   void CloseOperationCompleted(const std::string& notification_id);
 
+#if defined(OS_ANDROID)
+  static bool IsHeadless();
+  void StartShutDownTimerIfNecessary(
+      const std::string & last_processed_notification_id);
+  void ShutdownTimerCallback();
+
+  std::string last_dismissed_notification_id_;
+  // timer to wait before shutdwon when running UI-less
+  base::OneShotTimer headless_shutdown_timer_;
+
+  // wait before shutdown if running headless
+  const int64_t kWaitBeforeShutdownWhenRunHeadless = 30;  // sec
+#endif
+
+  std::map<std::string, base::OnceClosure> pending_close_callbacks_;
   content::BrowserContext* browser_context_;
   brave_ads::AdsServiceImpl* ads_service_;
   base::queue<base::OnceClosure> pending_notifications_;

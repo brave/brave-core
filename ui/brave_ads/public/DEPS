@@ -1,4 +1,0 @@
-include_rules = [
-  "-brave/ui/brave_ads",
-  "+brave/ui/brave_ads/public",
-]

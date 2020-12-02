@@ -238,8 +238,6 @@ source_set("ui") {
     "//brave/components/vector_icons",
     "//brave/components/webcompat_reporter/browser",
     "//brave/components/weekly_storage",
-    "//brave/ui/brave_ads",
-    "//brave/ui/brave_ads/public/cpp",
     "//chrome/app:command_ids",
     "//chrome/app/vector_icons:vector_icons",
     "//chrome/common",

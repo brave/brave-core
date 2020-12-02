@@ -15,6 +15,7 @@
 - (bool)isAdsEnabled;
 - (bool)shouldAllowAdConversionTracking;
 - (bool)isForeground;
+- (bool)canShowBackgroundNotifications;
 - (bool)isNetworkConnectionAvailable;
 - (bool)shouldShowNotifications;
 - (void)loadUserModelForId:(const std::string &)id callback:(ads::LoadCallback)callback;

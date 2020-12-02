@@ -11,6 +11,11 @@
 #include "brave/components/brave_ads/browser/ads_service_impl.h"
 #include "content/public/browser/browser_context.h"
 
+#if defined(OS_ANDROID)
+#include "base/android/application_status_listener.h"
+#include "chrome/browser/lifetime/application_lifetime_android.h"
+#endif
+
 namespace brave_ads {
 
 int kUserDataKey;  // The value is not important, the address is a key.
@@ -38,6 +43,10 @@ void AdsNotificationHandler::OnShow(
     return;
   }
 
+#if defined (OS_ANDROID)
+  headless_shutdown_timer_.Stop();
+#endif
+
   ads_service_->OnShow(profile, id);
 }
 
@@ -51,6 +60,7 @@ void AdsNotificationHandler::OnClose(
   base::OnceClosure completed_closure_local =
       base::BindOnce(&AdsNotificationHandler::CloseOperationCompleted,
       base::Unretained(this), id);
+  pending_close_callbacks_.emplace(id, std::move(completed_closure));
 
   if (!ads_service_) {
     auto notification = base::BindOnce(
@@ -59,6 +69,11 @@ void AdsNotificationHandler::OnClose(
     pending_notifications_.push(std::move(notification));
     return;
   }
+
+  #if defined (OS_ANDROID)
+    last_dismissed_notification_id_ = id;
+    headless_shutdown_timer_.Stop();
+  #endif
 
   ads_service_->OnClose(profile, origin, id, by_user,
                         std::move(completed_closure_local));
@@ -80,7 +95,20 @@ void AdsNotificationHandler::OnClick(
     return;
   }
 
+#if defined (OS_ANDROID)
+  headless_shutdown_timer_.Stop();
+#endif
+
   ads_service_->ViewAdNotification(id);
+}
+
+void AdsNotificationHandler::DisableNotifications(
+    Profile* profile,
+    const GURL& origin) {
+
+#if defined (OS_ANDROID)
+  headless_shutdown_timer_.Stop();
+#endif
 }
 
 void AdsNotificationHandler::OpenSettings(
@@ -96,6 +124,10 @@ void AdsNotificationHandler::OpenSettings(
     return;
   }
 
+#if defined (OS_ANDROID)
+  headless_shutdown_timer_.Stop();
+#endif
+
   ads_service_->ViewAdNotification(id);
 }
 
@@ -105,7 +137,7 @@ void AdsNotificationHandler::SetAdsService(
     ads_service_ = ads_service;
     SendPendingNotifications();
   } else {
-    ads_service_ = nullptr;
+    ads_service = nullptr;
   }
 }
 
@@ -124,6 +156,45 @@ const void* AdsNotificationHandler::UserDataKey() {
 
 void AdsNotificationHandler::CloseOperationCompleted(
     const std::string& notification_id) {
+
+  auto iter = pending_close_callbacks_.find(notification_id);
+  if (iter != pending_close_callbacks_.end()) {
+    std::move(iter->second).Run();
+    pending_close_callbacks_.erase(iter);
+  }
+#if defined(OS_ANDROID)
+  StartShutDownTimerIfNecessary(notification_id);
+#endif
 }
 
+#if defined(OS_ANDROID)
+bool AdsNotificationHandler::IsHeadless() {
+  using base::android::ApplicationState;
+  auto state = base::android::ApplicationStatusListener::GetState();
+  bool headless = (state == ApplicationState::APPLICATION_STATE_UNKNOWN ||
+      state == ApplicationState::APPLICATION_STATE_HAS_DESTROYED_ACTIVITIES);
+  return headless;
+}
+
+void AdsNotificationHandler::StartShutDownTimerIfNecessary(
+    const std::string & last_processed_notification_id) {
+  if (IsHeadless() && last_dismissed_notification_id_ ==
+      last_processed_notification_id) {
+    last_dismissed_notification_id_ = "";
+    // wait and close the browser if running headless
+    headless_shutdown_timer_.Start(FROM_HERE,
+        base::TimeDelta::FromSeconds(kWaitBeforeShutdownWhenRunHeadless),
+        this, &AdsNotificationHandler::ShutdownTimerCallback);
+  }
+}
+
+// Check if browser is runnning without UI and close it.
+// If during shutdown a new notification event arrives-
+// timer is stopped in corresponding handler function
+void AdsNotificationHandler::ShutdownTimerCallback() {
+  if (IsHeadless()) {
+    chrome::TerminateAndroid();
+  }
+}
+#endif
 }  // namespace brave_ads

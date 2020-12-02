@@ -9,7 +9,7 @@ package org.chromium.chrome.browser;
 import org.chromium.base.annotations.JNINamespace;
 import org.chromium.chrome.browser.profiles.Profile;
 
-@JNINamespace("brave_ads")
+@JNINamespace("chrome::android")
 public class BraveAdsNativeHelper {
     private BraveAdsNativeHelper() {}
 
@@ -18,6 +18,4 @@ public class BraveAdsNativeHelper {
     public static native void nativeSetAdsEnabled(Profile profile);
     public static native boolean nativeIsNewlySupportedLocale(Profile profile);
     public static native boolean nativeIsSupportedLocale(Profile profile);
-    public static native void nativeAdNotificationClicked(Profile profile, String j_notification_id);
-    public static native void nativeAdNotificationDismissed(Profile profile, String j_notification_id, boolean j_by_user);
 }

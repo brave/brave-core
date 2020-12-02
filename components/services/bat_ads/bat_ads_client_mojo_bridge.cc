@@ -33,6 +33,15 @@ BatAdsClientMojoBridge::BatAdsClientMojoBridge(
 
 BatAdsClientMojoBridge::~BatAdsClientMojoBridge() = default;
 
+bool BatAdsClientMojoBridge::CanShowBackgroundNotifications() const {
+  if (!connected())
+    return false;
+
+  bool can_show;
+  bat_ads_client_->CanShowBackgroundNotifications(&can_show);
+  return can_show;
+}
+
 bool BatAdsClientMojoBridge::IsNetworkConnectionAvailable() const {
   if (!connected()) {
     return false;
