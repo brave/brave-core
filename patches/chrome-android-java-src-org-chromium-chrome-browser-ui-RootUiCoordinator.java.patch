@@ -1,5 +1,5 @@
 diff --git a/chrome/android/java/src/org/chromium/chrome/browser/ui/RootUiCoordinator.java b/chrome/android/java/src/org/chromium/chrome/browser/ui/RootUiCoordinator.java
-index 9b7797aa2d34c0c07d6dba304f619d7e499590e2..5f1121281a285d29d1489bc1fdf3d2b1c9a2908c 100644
+index eb8b5d5a6cff307d187f8ef911e8941c467788cc..d62f2ec2ecab58db3b96444f18960c44d95f5332 100644
 --- a/chrome/android/java/src/org/chromium/chrome/browser/ui/RootUiCoordinator.java
 +++ b/chrome/android/java/src/org/chromium/chrome/browser/ui/RootUiCoordinator.java
 @@ -601,7 +601,7 @@ public class RootUiCoordinator
