@@ -31,10 +31,12 @@
 
 #if BUILDFLAG(ENABLE_EXTENSIONS)
 #include "chrome/browser/extensions/extension_browsertest.h"
+#include "chrome/browser/extensions/extension_service.h"
 #include "extensions/browser/extension_prefs.h"
 #include "extensions/browser/extension_registry.h"
 #include "extensions/browser/extension_util.h"
 #include "extensions/common/extension_id.h"
+#include "extensions/common/manifest_handlers/incognito_info.h"
 #endif
 
 #if BUILDFLAG(IPFS_ENABLED)
@@ -258,35 +260,35 @@ class TorProfileManagerExtensionTest : public extensions::ExtensionBrowserTest {
     // Override extension data dir.
     brave::RegisterPathProvider();
     base::PathService::Get(brave::DIR_TEST_DATA, &test_data_dir_);
+    extension_path_ = test_data_dir_.AppendASCII("extensions")
+                          .AppendASCII("trivial_extension");
+    incognito_not_allowed_ext_path_ =
+        test_data_dir_.AppendASCII("extensions")
+            .AppendASCII("trivial_extension_incognito_not_allowed");
   }
 
-  const extensions::Extension* GetExtension(Profile* profile) {
-    extensions::ExtensionRegistry* registry =
-        extensions::ExtensionRegistry::Get(profile);
-    for (const scoped_refptr<const extensions::Extension>& extension :
-         registry->enabled_extensions()) {
-      if (extension->name() == "Trivial Test Extension")
-        return extension.get();
-    }
-    NOTREACHED();
-    return NULL;
+  base::FilePath extension_path() const { return extension_path_; }
+  base::FilePath incognito_not_allowed_ext_path() const {
+    return incognito_not_allowed_ext_path_;
   }
 
   TorLauncherFactory* GetTorLauncherFactory() {
     return &MockTorLauncherFactory::GetInstance();
   }
+
+ private:
+  base::FilePath extension_path_;
+  base::FilePath incognito_not_allowed_ext_path_;
 };
 
 IN_PROC_BROWSER_TEST_F(TorProfileManagerExtensionTest,
-                       SwitchToTorProfileDisableExtensions) {
-  ProfileManager* profile_manager = g_browser_process->profile_manager();
-  ASSERT_TRUE(profile_manager);
+                       SwitchToTorProfileDisableExtensionsByDefault) {
   Profile* parent_profile = ProfileManager::GetActiveUserProfile();
   ASSERT_TRUE(parent_profile);
 
   // Install an extension in parent profile and enable in incognito.
   const extensions::Extension* extension =
-      InstallExtension(test_data_dir_.AppendASCII("trivial_extension"), 1);
+      InstallExtension(extension_path(), 1);
   const std::string id = extension->id();
   extensions::ExtensionPrefs* parent_extension_prefs =
       extensions::ExtensionPrefs::Get(parent_profile);
@@ -309,5 +311,62 @@ IN_PROC_BROWSER_TEST_F(TorProfileManagerExtensionTest,
   EXPECT_EQ(parent_registry, tor_registry);
   EXPECT_TRUE(tor_registry->GetExtensionById(
       id, extensions::ExtensionRegistry::EVERYTHING));
+}
+
+IN_PROC_BROWSER_TEST_F(TorProfileManagerExtensionTest,
+                       SwitchToTorProfileAllowInTor) {
+  Profile* parent_profile = ProfileManager::GetActiveUserProfile();
+  ASSERT_TRUE(parent_profile);
+
+  const extensions::Extension* extension =
+      InstallExtension(extension_path(), 1);
+  const std::string id = extension->id();
+  extensions::ExtensionPrefs* parent_extension_prefs =
+      extensions::ExtensionPrefs::Get(parent_profile);
+  parent_extension_prefs->SetIsIncognitoEnabled(id, true);
+  parent_extension_prefs->SetIsTorEnabled(id, true);
+
+  Profile* tor_profile =
+      SwitchToTorProfile(parent_profile, GetTorLauncherFactory());
+  ASSERT_TRUE(tor_profile->IsTor());
+  EXPECT_TRUE(tor_profile->IsOffTheRecord());
+  EXPECT_EQ(tor_profile->GetOriginalProfile(), parent_profile);
+
+  Profile* primary_otr_profile = parent_profile->GetPrimaryOTRProfile();
+
+  // The installed extension should be accessible in Tor.
+  EXPECT_TRUE(extensions::util::IsIncognitoEnabled(id, primary_otr_profile));
+  EXPECT_TRUE(extensions::util::IsIncognitoEnabled(id, tor_profile));
+  EXPECT_TRUE(extensions::util::IsIncognitoEnabled(id, parent_profile));
+  // Default mode is spanning but we force it to be split in Tor
+  EXPECT_FALSE(extensions::IncognitoInfo::IsSplitMode(
+      extension, primary_otr_profile->IsTor()));
+  EXPECT_TRUE(
+      extensions::IncognitoInfo::IsSplitMode(extension, tor_profile->IsTor()));
+
+  // Allow in Tor depends on Allow in private
+  parent_extension_prefs->SetIsIncognitoEnabled(id, false);
+  EXPECT_FALSE(extensions::util::IsIncognitoEnabled(id, tor_profile));
+
+  // Component extension should always be allowed
+  extension_service()->UnloadExtension(
+      extension->id(), extensions::UnloadedExtensionReason::UNINSTALL);
+  const extensions::Extension* component_extension =
+      LoadExtensionAsComponent(extension_path());
+  ASSERT_TRUE(component_extension);
+  parent_extension_prefs->SetIsTorEnabled(component_extension->id(), false);
+  EXPECT_TRUE(extensions::util::IsIncognitoEnabled(component_extension->id(),
+                                                   tor_profile));
+
+  // "not_allowed" mode will also disable "Allow in Tor"
+  const extensions::Extension* incognito_not_allowed_ext =
+      InstallExtension(incognito_not_allowed_ext_path(), 1);
+  const std::string incognito_not_allowed_id = incognito_not_allowed_ext->id();
+  parent_extension_prefs->SetIsIncognitoEnabled(incognito_not_allowed_id, true);
+  parent_extension_prefs->SetIsTorEnabled(incognito_not_allowed_id, true);
+  EXPECT_FALSE(extensions::util::IsIncognitoEnabled(incognito_not_allowed_id,
+                                                    primary_otr_profile));
+  EXPECT_FALSE(extensions::util::IsIncognitoEnabled(incognito_not_allowed_id,
+                                                    tor_profile));
 }
 #endif
