@@ -157,9 +157,9 @@ platform :ios do
 
   desc "Updates the project's build number to be the next number acceptable by TestFlight. Takes the following arguments:"
   lane :set_build_number do |options|
-    dateFormat = "%y.%m.%d.%H"
+    dateFormat = "%y.%-m.%-d.%-H"
     # Allows minute override in case two betas within same hour are required
-    dateFormat += ".%M" if options[:minutes_in_build_number]
+    dateFormat += ".%-M" if options[:minutes_in_build_number]
     formattedBuildNumber = Time.now.getutc.strftime(dateFormat)
     sh("echo GENERATED_BUILD_ID=#{formattedBuildNumber} > #{LOCAL_PATH}/BuildId.xcconfig")
   end
