@@ -51,8 +51,11 @@ def main(args):
   previous_cwd = os.getcwd()
   os.chdir(settings.GetRoot())
 
-  # Check for clang/gn format errors.
+  # Fetch origin so that clang-format runs against the right commit
+  git_cl.RunGit(['fetch', 'origin', 'master'])
   cl = git_cl.Changelist()
+
+  # Check for clang/gn format errors.
   try:
     if HasFormatErrors():
       upstream_branch = cl.GetUpstreamBranch()
