@@ -48,7 +48,7 @@
     "description": "Title for grant section in wallet summary"
   },
   "details": {
-    "message": "Tiedot",
+    "message": "Tarkat tiedot",
     "description": "Title for grant section in wallet panel summary"
   },
   "yourBalance": {
@@ -162,7 +162,7 @@
     "description": "Title for grant section in wallet summary"
   },
   "pointGrantClaimed": {
-    "message": "Pistestipendejä lunastettu",
+    "message": "Pistestipendit lunastettu",
     "description": "Title for point grant section in wallet summary"
   },
   "earningsAds": {
@@ -170,7 +170,7 @@
     "description": "Title for ads section in wallet summary"
   },
   "rewardsContribute": {
-    "message": "Automaattinen lahjoitus",
+    "message": "Osallistu automaattisesti",
     "description": "Title for auto contribute section in wallet summary"
   },
   "oneTimeDonation": {
@@ -186,7 +186,7 @@
     "description": "Title for monthly contributions section in wallet summary"
   },
   "off": {
-    "message": "Pois päältä ",
+    "message": "Pois käytöstä",
     "description": "Label used in toggle indicating that toggle is off"
   },
   "ok": {
@@ -194,7 +194,7 @@
     "description": "Used in notification to dismiss notification"
   },
   "braveAdsLaunchMsg": {
-    "message": "Voit nyt ansaita mainoksia katsomalla.",
+    "message": "Voit nyt ansaita mainosten katselulla.",
     "description": "Message for ads launch notification"
   },
   "braveAdsTitle": {
@@ -328,7 +328,7 @@
     "description": "Text for the link that explains more about reserved amount"
   },
   "disabledPanelOff": {
-    "message": "Päältä",
+    "message": "Pois käytöstä",
     "description": "Off state text for Panel's disabled state"
   },
   "disabledPanelSettings": {
@@ -336,7 +336,7 @@
     "description": "Settings Link for Panel's disabled state"
   },
   "disabledPanelText": {
-    "message": "Et kerrytä tällä hetkellä palkintoetuja selaamisen aikana. Aseta palkinnot takaisin päälle kohteessa",
+    "message": "Et tällä hetkellä kerrytä palkintoetuja selaamisen aikana. Aseta palkinnot takaisin päälle osiosta",
     "description": "Text for Panel's disabled state"
   },
   "disabledPanelTitle": {
@@ -416,7 +416,7 @@
     "description": "BAT Points abbreviation text"
   },
   "turnOnAds": {
-    "message": "Aseta mainokset päälle",
+    "message": "Ota Ads käyttöön",
     "description": "Prompt to turn on Ads via notification"
   },
   "adsEarnings": {
@@ -462,7 +462,7 @@
     "description": "Notification text that tells user his wallet is under funded for pending contribution to complete"
   },
   "pendingContributionTitle": {
-    "message": "Odottava avustus",
+    "message": "Odottaa avustusta",
     "description": "Notification title for pending contribution type"
   },
   "grantFinishTitleUGP": {
@@ -626,5 +626,21 @@
   "walletVerificationNote3":  {
     "message": "Huomio: siirtosi näkyvät Uphold-palvelulle, kun vahvistat. He näkevät esimerkiksi vastaanottajan ja tippiesi määrän.",
     "description": "Displayed in login modal for uphold"
+  },
+  "onboardingEarnHeader": {
+    "message": "Ansaitse maksutunnuksia & osoita anteliaisuutta",
+    "description": ""
+  },
+  "onboardingEarnText": {
+    "message": "Ansaitse maksutunnuksia katsomalla tietosuojaasi kunnioittavia mainoksia sekä tukemalla suosikkisivustojasi ja -kehittäjiäsi automaattisesti.",
+    "description": ""
+  },
+  "onboardingStartUsingRewards": {
+    "message": "Aloita Brave-palkintojen käyttäminen",
+    "description": ""
+  },
+  "onboardingTerms": {
+    "message": "Jatkamalla ilmaiset hyväksyväsi $$1käyttöehdot$$2 sekä $$3tietosuojakäytännön$$4.",
+    "description": ""
   }
 }

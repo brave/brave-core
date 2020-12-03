@@ -4,7 +4,7 @@
     "description": "Title in welcome screen for the panel"
   },
   "welcomeButtonTextOne": {
-    "message": "Začnite zarábať hneď teraz!",
+    "message": "Začnite zarábať teraz!",
     "description": "CTA on welcome screen in the panel, existing users"
   },
   "welcomeButtonTextTwo": {
@@ -12,11 +12,11 @@
     "description": "CTA on welcome screen in the panel, new users"
   },
   "welcomeDescOne": {
-    "message": "Dostaňte zaplatené za pozeranie reklám a peniaze pošlite ďalej na podporu svojich obľúbených tvorcov obsahu.",
+    "message": "Dostaňte zaplatené za pozeranie reklám a peniaze posielajte ďalej na podporu svojich obľúbených tvorcov obsahu.",
     "description": "Entry text for welcome screen in the panel, existing user"
   },
   "welcomeDescTwo": {
-    "message": "Odteraz môžete získať žetóny za pozeranie reklám, ktoré rešpektujú súkromie.",
+    "message": "Odteraz môžete získať kupóny za pozeranie reklám, ktoré rešpektujú súkromie.",
     "description": "Entry text for welcome screen in the panel, new user"
   },
   "welcomeDescPoints": {
@@ -28,7 +28,7 @@
     "description": "Link in the footer (takes you to rewards settings page) for welcome screen in the panel, existing user"
   },
   "welcomeFooterTextTwo": {
-    "message": "Dozvedieť sa viac",
+    "message": "Ďalšie informácie",
     "description": "Link in the footer (takes you to rewards settings page) for welcome screen in the panel, new user"
   },
   "welcomeHeaderOne": {
@@ -48,7 +48,7 @@
     "description": "Title for grant section in wallet summary"
   },
   "details": {
-    "message": "Podrobnosti",
+    "message": "Detaily",
     "description": "Title for grant section in wallet panel summary"
   },
   "yourBalance": {
@@ -56,7 +56,7 @@
     "description": "Wallet panel title for anon wallets"
   },
   "batPoints": {
-    "message": "BAT body",
+    "message": "Body BAT",
     "description": "BAT Points text"
   },
   "batPointsMessage": {
@@ -88,7 +88,7 @@
     "description": "CTA for sending tip form site banner"
   },
   "enableTips": {
-    "message": "Povoliť dary",
+    "message": "Aktivovať tipy",
     "description": "The whole string is 'Enable tips on YouTube for like.'"
   },
   "for": {
@@ -104,7 +104,7 @@
     "description": "Month"
   },
   "monthAug": {
-    "message": "august",
+    "message": "August",
     "description": "Month"
   },
   "monthDec": {
@@ -112,7 +112,7 @@
     "description": "Month"
   },
   "monthFeb": {
-    "message": "február",
+    "message": "Február",
     "description": "Month"
   },
   "monthJan": {
@@ -120,7 +120,7 @@
     "description": "Month"
   },
   "monthJul": {
-    "message": "Júl",
+    "message": "júl",
     "description": "Month"
   },
   "monthJun": {
@@ -162,7 +162,7 @@
     "description": "Title for grant section in wallet summary"
   },
   "pointGrantClaimed": {
-    "message": "Bodové granty uplatnené",
+    "message": "Bodové granty boli nárokované",
     "description": "Title for point grant section in wallet summary"
   },
   "earningsAds": {
@@ -170,7 +170,7 @@
     "description": "Title for ads section in wallet summary"
   },
   "rewardsContribute": {
-    "message": "Automatický príspevok",
+    "message": "Automaticky prispieť",
     "description": "Title for auto contribute section in wallet summary"
   },
   "oneTimeDonation": {
@@ -178,7 +178,7 @@
     "description": "Title for one time tips section in wallet summary"
   },
   "expiresOn": {
-    "message": "platné do",
+    "message": "uplynie v ",
     "description": "Used for grant representation. Whole string is '30.0 BAT expires on 08/05/2022'"
   },
   "recurringDonations": {
@@ -186,7 +186,7 @@
     "description": "Title for monthly contributions section in wallet summary"
   },
   "off": {
-    "message": "Vypnutý",
+    "message": "Vypnuté",
     "description": "Label used in toggle indicating that toggle is off"
   },
   "ok": {
@@ -194,7 +194,7 @@
     "description": "Used in notification to dismiss notification"
   },
   "braveAdsLaunchMsg": {
-    "message": "Teraz môžete zarobiť na prehliadaných reklamách.",
+    "message": "Teraz môžete zarábať sledovaním reklám.",
     "description": "Message for ads launch notification"
   },
   "braveAdsTitle": {
@@ -380,7 +380,7 @@
     "description": "Subtitle for wallet disabled panel"
   },
   "privacyPolicy": {
-    "message": "Zásady ochrany osobných údajov",
+    "message": "Zásady ochrany osobních údajů",
     "description": "Privacy Policy"
   },
   "serviceText": {
@@ -416,7 +416,7 @@
     "description": "BAT Points abbreviation text"
   },
   "turnOnAds": {
-    "message": "Zapnúť reklamy",
+    "message": "Zapnite reklamy",
     "description": "Prompt to turn on Ads via notification"
   },
   "adsEarnings": {
@@ -484,7 +484,7 @@
     "description": "Token title on success screen"
   },
   "grantFinishPointTitleUGP": {
-    "message": "Bodový grant zadarmo",
+    "message": "Bezplatný bodový grant",
     "description": "Point title on success screen"
   },
   "grantFinishTitleAds": {
@@ -608,7 +608,7 @@
     "description": "Text for login button"
   },
   "loginMessageTitle":  {
-    "message": "Overenie peňaženky vám umožní efektívnejšie spravovať vaše finančné prostriedky.",
+    "message": "Overenie peňaženky vám umožní efektívnejšie spravovať vaše finančné prostriedky. ",
     "description": "Text for login button"
   },
   "loginMessageText":  {
@@ -624,7 +624,23 @@
     "description": "Status button that tells user that he is currently pending"
   },
   "walletVerificationNote3":  {
-    "message": "Poznámka: Po povolení budú vaše transakcie viditeľné pre Uphold. Uvidia napríklad príjemcu a množstvo vašich príspevkov.",
+    "message": "Poznámka: Po povolení budú vaše transakcie  viditeľné pre Uphold. Uvidia napríklad príjemcu a množstvo vašich príspevkov.",
     "description": "Displayed in login modal for uphold"
+  },
+  "onboardingEarnHeader": {
+    "message": "Zarábajte žetóny a dávajte späť",
+    "description": ""
+  },
+  "onboardingEarnText": {
+    "message": "Zarábajte žetóny zobrazovaním reklám rešpektujúcich súkromie a automaticky podporujte svoje obľúbené weby a tvorcov obsahu.",
+    "description": ""
+  },
+  "onboardingStartUsingRewards": {
+    "message": "Začnite používať Odmeny Brave",
+    "description": ""
+  },
+  "onboardingTerms": {
+    "message": "Pokračovaním vyjadrujete súhlas s $$1Zmluvnými podmienkami $$2 a $$3Pravidlá ochrany osobných údajov $$4.",
+    "description": ""
   }
 }

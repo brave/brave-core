@@ -12,7 +12,7 @@
     "description": "CTA on welcome screen in the panel, new users"
   },
   "welcomeDescOne": {
-    "message": "Få betalt för att titta på annonser och betala vidare för att stödja dina favorit-innehållskreatörer.",
+    "message": "Få betalt för att titta på annonser och betala vidare till dina favorit-innehållskreatörer.",
     "description": "Entry text for welcome screen in the panel, existing user"
   },
   "welcomeDescTwo": {
@@ -48,7 +48,7 @@
     "description": "Title for grant section in wallet summary"
   },
   "details": {
-    "message": "Info",
+    "message": "Detaljer",
     "description": "Title for grant section in wallet panel summary"
   },
   "yourBalance": {
@@ -96,7 +96,7 @@
     "description": "The whole string is 'Enable tips on YouTube for like.'"
   },
   "rewardsSummary": {
-    "message": "Sammanfattning av Rewards  ",
+    "message": "Sammanfattning av Rewards",
     "description": "Section title in wallet panel, which contains monthly rewards summary"
   },
   "monthApr": {
@@ -162,7 +162,7 @@
     "description": "Title for grant section in wallet summary"
   },
   "pointGrantClaimed": {
-    "message": "Poängbidrag begärda",
+    "message": "Poängbidrag reserverat",
     "description": "Title for point grant section in wallet summary"
   },
   "earningsAds": {
@@ -170,7 +170,7 @@
     "description": "Title for ads section in wallet summary"
   },
   "rewardsContribute": {
-    "message": "Auto-bidra",
+    "message": "Bidra automatiskt",
     "description": "Title for auto contribute section in wallet summary"
   },
   "oneTimeDonation": {
@@ -194,7 +194,7 @@
     "description": "Used in notification to dismiss notification"
   },
   "braveAdsLaunchMsg": {
-    "message": "Nu kan du skapa förtjänst genom att titta på annonser.",
+    "message": "Nu kan du tjäna pengar på att se annonser.",
     "description": "Message for ads launch notification"
   },
   "braveAdsTitle": {
@@ -336,7 +336,7 @@
     "description": "Settings Link for Panel's disabled state"
   },
   "disabledPanelText": {
-    "message": "Just nu samlar du inte några Rewards medan du surfar. Aktivera Rewards igen om",
+    "message": "Just nu samlar du inte på dig några Rewards medan du surfar. Aktivera Rewards igen på",
     "description": "Text for Panel's disabled state"
   },
   "disabledPanelTitle": {
@@ -368,7 +368,7 @@
     "description": "The word 'and'"
   },
   "braveRewardsSubTitle": {
-    "message": "Få belöningar för att surfa!",
+    "message": "Bli belönad för att surfa!",
     "description": "Subtitle for wallet disabled panel"
   },
   "disabledPanelTextTwo": {
@@ -462,7 +462,7 @@
     "description": "Notification text that tells user his wallet is under funded for pending contribution to complete"
   },
   "pendingContributionTitle": {
-    "message": "Väntande bidrag",
+    "message": "Pågående bidrag",
     "description": "Notification title for pending contribution type"
   },
   "grantFinishTitleUGP": {
@@ -484,11 +484,11 @@
     "description": "Token title on success screen"
   },
   "grantFinishPointTitleUGP": {
-    "message": "Gratis Poängbidrag",
+    "message": "Gratis poängbidrag",
     "description": "Point title on success screen"
   },
   "grantFinishTitleAds": {
-    "message": "Du har tjänat in en annonsbelöning!",
+    "message": "Du har tjänat ihop en annonsbelöning!",
     "description": "Cosmetic text upon captcha success for ads"
   },
   "grantFinishTextAds": {
@@ -508,7 +508,7 @@
     "description": "CTA status button"
   },
   "walletButtonUnverified":  {
-    "message": "Verifiera plånboken",
+    "message": "Verifiera plånbok",
     "description": "CTA to verify wallet in the wallet "
   },
   "walletButtonVerified":  {
@@ -520,7 +520,7 @@
     "description": "CTA to open uphold account"
   },
   "walletDisconnect":  {
-    "message": "Frånkoppla från Brave Rewards",
+    "message": "Frånkoppla Brave Rewards",
     "description": "CTA to disconnect user wallet from rewards"
   },
   "walletVerified":  {
@@ -626,5 +626,21 @@
   "walletVerificationNote3":  {
     "message": "Obs! Dina transaktioner är synliga för Uphold när du godkänner det. Till exempel kommer de att kunna se mottagaren och mängden dricks.",
     "description": "Displayed in login modal for uphold"
+  },
+  "onboardingEarnHeader": {
+    "message": "Tjäna tokens och ge tillbaka",
+    "description": ""
+  },
+  "onboardingEarnText": {
+    "message": "Tjäna tokens genom att visa annonser som respekterar din integritet och stöd dina favoritwebbplatser och innehållsskapare automatiskt.",
+    "description": ""
+  },
+  "onboardingStartUsingRewards": {
+    "message": "Börja använda Brave Rewards",
+    "description": ""
+  },
+  "onboardingTerms": {
+    "message": "Genom att fortsätta godkänner du $$1villkoren$$2 och $$3integritetspolicyn$$4.",
+    "description": ""
   }
 }

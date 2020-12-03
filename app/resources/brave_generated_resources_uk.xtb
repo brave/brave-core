@@ -8,6 +8,7 @@
 <translation id="5655621391922317800">Криптогаманці</translation>
 <translation id="2445484935443597917">Створити новий профіль</translation>
 <translation id="2666990579225592931">Відкрити вікно в режимі гостя</translation>
+<translation id="8275068909952022340">Більше…</translation>
 <translation id="120759863357279975">У Brave немає дозволу на <ph name="EXTENSION_NAME"/> extension ID "<ph name="EXTENSION_ID"/>".</translation>
 <translation id="6786747875388722282">Розширення</translation>
 <translation id="984275831282074731">Способи оплати</translation>
@@ -42,23 +43,20 @@
 <translation id="814018970995616154">Перевіряє URL-адреси за списком небезпечних сайтів, який зберігається у Brave.</translation>
 <translation id="1144810021918451336">Не захищає від небезпечних сайтів, завантажень та розширень.</translation>
 <translation id="7781069478569868053">Сторінка нової вкладки</translation>
-<translation id="1717331825806276156">Зображення тла</translation>
-<translation id="1820041496463124489">Зображення від спонсорів</translation>
-<translation id="8173998484743827990">Статистика Brave</translation>
-<translation id="5551238871320268996">Сильні разом з Brave</translation>
-<translation id="6966052266404721769">Binance</translation>
-<translation id="8533411848724153701">Gemini</translation>
-<translation id="4643117005422448078">Найкращі сайти</translation>
-<translation id="1776831331757823105">Годинник</translation>
 <translation id="1988804048511540801">Покази сторінки нової вкладки</translation>
 <translation id="2970343821770026391">Панель управління</translation>
 <translation id="3719826155360621982">Домашня сторінка</translation>
 <translation id="5448570825852364919">Порожня сторінка</translation>
+<translation id="5919424224662539292">Налаштовуйте фонові зображення та віджети, які з'являються на сторінці нової вкладки</translation>
 <translation id="7965178729203412357">Нова ідентичність Tor</translation>
 <translation id="8511502469534942133">Нове з'єднання Tor для цього сайту</translation>
-<translation id="8784924142044142231">Вийти з Tor</translation>
-<translation id="5410152065859052603">Tor</translation>
-<translation id="3696187925156352769">Відкрийте вікно Tor</translation>
+<translation id="4734294903299549345">Залишити приватне вікно в Tor</translation>
+<translation id="8612763432858587652">Залишити приватне вікно</translation>
+<translation id="8760415064721320867">Приватне вікно з Tor</translation>
+<translation id="2055363275850890030">Приватне вікно</translation>
+<translation id="8934172355414207733">Приватне з Tor</translation>
+<translation id="1970435562892104727">Це приватне вікно в Tor</translation>
+<translation id="1037341607922068025">Відкрити приватне вікно в Tor</translation>
 <translation id="1725356094208762656">Відкрити в Tor</translation>
 <translation id="1672270084584211506">Доступна Цибулина</translation>
 <translation id="1434416574322382019">Нове Приватне вікно з Tor</translation>
@@ -67,6 +65,7 @@
 <translation id="6313675821927505581">Нове приватне вікно з Tor</translation>
 <translation id="2638041073279639246">Відкрийте посилання у приватномі вікні з Tor</translation>
 <translation id="3425600262621021599">Відкрийте посилання у приватномі вікні  Brave з Tor</translation>
+<translation id="5410152065859052603">Tor</translation>
 <translation id="2515126961943087659">Сервіс реклами з використанням BAT</translation>
 <translation id="7924918279836988121">Сервіс реєстраційного журналу Bat</translation>
 <translation id="4472575034687746823">Початок роботи</translation>
@@ -234,6 +233,7 @@
 <translation id="8428213095426709021">Налаштування</translation>
 <translation id="1854270995641373652">Бажаєте увімкнути підтримку локального демона IPFS у Brave?</translation>
 <translation id="2366908098700680611">Увімкнути IPFS</translation>
+<translation id="1556882415222118816">Дізнатися більше про наслідки для конфіденційності</translation>
 <translation id="4552520379838695057">Вибачте, сторінка відсутня.</translation>
 <translation id="2609895996619941644">Бажаєте перевірити, чи є збережена версія в Архіві?</translation>
 <translation id="8053093028263274061">Вибачте, збереженої версії немає.</translation>

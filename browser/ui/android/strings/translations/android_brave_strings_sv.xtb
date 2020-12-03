@@ -31,6 +31,8 @@
 <translation id="5787084571334399599">Förhindrar webbläsaren från signaturinsamling</translation>
 <translation id="7459000603787995422">Stäng flikar vid avslut</translation>
 <translation id="1680858055899097121">Behåll inte flikarna mellan surfsessioner</translation>
+<translation id="6469509880167172749">Skicka automatiskt helt privat produktanalys till Brave</translation>
+<translation id="7090566321964540749">Denna anonyma information används endast för att Brave ska kunna uppskatta generella användningen av vissa funktioner.</translation>
 <translation id="453601949003770390">Spårare och annonser blockade</translation>
 <translation id="347604927162577559">Data\nsparat</translation>
 <translation id="9008534313521214777">Ung. tid\nsparad</translation>
@@ -50,7 +52,7 @@
 <translation id="4150201353443180367">Skärm</translation>
 <translation id="2433507940547922241">Utseende</translation>
 <translation id="2804710924397009224">Dölj Brave Rewards-ikonen</translation>
-<translation id="7358991116457217836">Döljer Brave Rewards-ikonen när Brave Rewards inte är aktiverat</translation>
+<translation id="7289740269305509613">Döljer Brave Rewards-ikonen</translation>
 <translation id="8495235435594442882">Aktivera nedre verktygsfältet</translation>
 <translation id="6587448235155023666">Dina ändringar träder i kraft nästa gång du startar om Brave</translation>
 <translation id="8701563696941209024">STARTA OM NU</translation>
@@ -67,7 +69,7 @@
 <translation id="3333887201479867589">Brave Rewards</translation>
 <translation id="5870330605209713397">Genom att titta på annonser som värnar din integritet och stödja dina favoritsajter och -skapare.</translation>
 <translation id="821707262661492716">för att se annonser som respekterar integriteten.</translation>
-<translation id="8267692331246948056">Genom att trycka på Få och ge godkänner du</translation>
+<translation id="5302488867897327287">Genom att trycka på Börja använda Brave Rewards godkänner du</translation>
 <translation id="4281844954008187215">Användarvillkor</translation>
 <translation id="6871397658902960384">Börja surfa</translation>
 <translation id="454386012157232640">Jag såg ingen annons</translation>
@@ -76,7 +78,7 @@
 <translation id="6511854390690723657">Detta är din första Brave-annons. Tryck för att läsa mer.</translation>
 <translation id="4930714375720679147">Aktivera</translation>
 <translation id="2453860139492968684">Slutför</translation>
-<translation id="7983303953939627894">Få och ge</translation>
+<translation id="2070991379950719711">Börja använda Brave Rewards</translation>
 <translation id="48520986898237073">Fortsätt till plånboken</translation>
 <translation id="3570367516044491911">Ställ in som standardwebbläsare</translation>
 <translation id="7493053924837150477">Välj Brave-webbläsaren i listan och tryck på "Alltid"</translation>
@@ -231,6 +233,10 @@ denna månad...</translation>
 <translation id="6810078320346589989">Skapa ett bokmärke</translation>
 <translation id="3396347744975515056">Brave Sync har uppgraderats och måste installeras</translation>
 <translation id="7473245612074035141">Påbörja installation</translation>
+<translation id="1872784258300710671">Brave använder helt privat produktanalys för att uppskatta den sammanlagda användningen av vissa funktioner.</translation>
+<translation id="8712637175834984815">Uppfattat</translation>
+<translation id="4394049700291259645">Inaktivera</translation>
+<translation id="8446884382197647889">Läs mer</translation>
 <translation id="597993392929850353">Brave-licens</translation>
 <translation id="6336451774241870485">Ny privat flik</translation>
 <translation id="6199596294742117349">Detta är en privat flik</translation>
@@ -257,8 +263,7 @@ denna månad...</translation>
 <translation id="8522669544471808198">Visa bakgrundsbilder</translation>
 <translation id="3870475560794762985">Visa sponsrade bilder</translation>
 <translation id="8297488609722895137">Foto: <ph name="PHOTO_BY"/></translation>
-<translation id="7952665812649667034">Jag är redo att tjäna och ge</translation>
-<translation id="5878330112719288629">Genom att trycka på Tjäna och ge godkänner du <ph name="TERMS_OF_SERVICE"/>.</translation>
+<translation id="4761229094276239865">Genom att trycka på Börja använda Brave Rewards godkänner du <ph name="TERMS_OF_SERVICE"/>.</translation>
 <translation id="3794079107601824147">Få betalt för att se denna bakgrundsbild.</translation>
 <translation id="7136586167396205364">Dölj sponsrade bilder</translation>
 <translation id="2927095357213611519">Du kan stödja skapare på webben med polletter.\nDu får polletterna när du tittar på annonser som värnar din integritet.</translation>
@@ -305,7 +310,7 @@ denna månad...</translation>
 <translation id="8851456134224363571">Toppen! Sätter du betyg på oss på Play Store?</translation>
 <translation id="8668962040900592974">Berätta hur vi kan bli bättre</translation>
 <translation id="4406937629441301400">Tjäna polletter när du tittar på denna bild, och betala till skaparna. <ph name="LEARN_MORE"/></translation>
-<translation id="8693132237667961044">Få polletter för att titta på denna bild. Slå på Tjäna och ge för att få din beskärda del.</translation>
+<translation id="1992363542751124282">Tjäna tokens för att se den här bilden. Tryck på Börja använda Brave Rewards för att få din andel.</translation>
 <translation id="6632345639591919543">Du får polletter för att du tittar på denna bild.\n<ph name="LEARN_MORE"/></translation>
 <translation id="1465733111003593696">Du får polletter för att du tittar på denna bild.</translation>
 <translation id="7877201489035217175">Läs mer om sponsrade bilder.</translation>
@@ -389,7 +394,6 @@ denna månad...</translation>
 <translation id="1383876407941801731">Sök</translation>
 <translation id="1972589975368876259">Redigera Stack</translation>
 <translation id="2490330380242414851">Ta bort widget</translation>
-<translation id="8446884382197647889">Läs mer</translation>
 <translation id="7384441892795736634">Ladda om data</translation>
 <translation id="4804818685124855865">Koppla från</translation>
 <translation id="4789438578712143420">≈ $<ph name="USD_BALANCE"/></translation>
@@ -428,4 +432,38 @@ denna månad...</translation>
 <translation id="3733576242118819803">Bekräfta (<ph name="REMAINING_TIME"/>s)</translation>
 <translation id="1627064138060308910">Konvertering misslyckades. Var god försök igen.</translation>
 <translation id="1449790603979388000"><ph name="COUNT"/> <ph name="COUNT_TEXT"/></translation>
+<translation id="7465614181960492526">Tjäna tokens och ge tillbaka</translation>
+<translation id="244362569344671266">Tjäna tokens genom att visa Brave privata annonser och stöd innehållsskapare automatiskt.</translation>
+<translation id="631124996535890460">Genom att fortsätta godkänner du <ph name="TERMS_OF_SERVICE"/> och <ph name="PRIVACY_POLICY"/>.</translation>
+<translation id="8804164990146287819">Integritetspolicy</translation>
+<translation id="6318696841371191107">Ta en snabb rundtur</translation>
+<translation id="7930505144430343145">Välkommen till Brave Rewards!</translation>
+<translation id="7909111626803226907">Brave privata annonser belönar dig med tokens för att stödja innehållsskapare, till skillnad från traditionella annonser, samtidigt som din personliga information hålls privat.</translation>
+<translation id="6973095375773523904">Var visas annonser?</translation>
+<translation id="3867028444168159102">Brave privata annonser visas som en normal avisering. Du styr hur ofta du ser dessa annonser i inställningarna.</translation>
+<translation id="5816125157889950051">När får du belöningar</translation>
+<translation id="4649471244559455723">Dina intjänade tokens från Brave ads under hela den aktuella månaden anländer den 5:e nästa månad.</translation>
+<translation id="7712287524451429139">Ge tillbaka på ett enkelt sätt</translation>
+<translation id="105037569026952831">Innehållsskapare får dina tokenbidrag automatiskt baserat på dina engagemangsnivåer som vi mäter som ‘Attention’.</translation>
+<translation id="5323267338679539010">Säg tack med dricks</translation>
+<translation id="6042317056594735519">Dricks är ett sätt att personligen uppmuntra och stödja innehåll eller skapare som du gillar. Börja dricksa!</translation>
+<translation id="7509452925943421624">Vad kan du göra med tokens?</translation>
+<translation id="7059157883171259940">Tokens kan användas utöver att stödja innehållsskapare. Du kan köpa digitala varor och presentkort med en cashback-bonus.</translation>
+<translation id="1402530520078693620">Slutligen, låt oss komma igång med grundinställningarna</translation>
+<translation id="3494356595346329740">Du kan ändra detta senare.</translation>
+<translation id="6462814326662189004">Hur ofta vill du se annonser?\n(Annonser per timme)</translation>
+<translation id="2134244432345596331">Hur mycket stöd vill du ge dina favoritinnehållsskapare?\n(från dina annonsintäkter)</translation>
+<translation id="7456161272236175794">WOOOOHOOOOO!\nDu är redo.</translation>
+<translation id="3895246934788932488">Genom att använda Brave Rewards skyddar du din integritet och hjälper till att göra webben till en bättre plats för alla. Och det är fantastiskt!</translation>
+<translation id="5705882733397021510">Gå tillbaka</translation>
+<translation id="5140321319944305531">Låt oss ta en snabb rundtur</translation>
+<translation id="3808131693704413134">När du har fått din första annonsutbetalning kan du komma tillbaka och dricksa den här innehållsskaparen!</translation>
+<translation id="207242986925259074">Snabb uppdatering</translation>
+<translation id="8342862030112839977">Din första belöningsutbetalning kommer att anlända:</translation>
+<translation id="3769645103175790584">Tjäna tokens och belöna skapare för bra innehåll medan du surfar. <ph name="QUICK_TOUR"/>.</translation>
+<translation id="6912901278692845878">Snabbtur</translation>
+<translation id="1080013038789678738">Jag är med!</translation>
+<translation id="3604285424134705930">Du konverterade <ph name="FROM_VALUE"/> <ph name="FROM_CURRENCY"/> till <ph name="TO_VALUE"/> <ph name="TO_CURRENCY"/>!</translation>
+<translation id="392587271502873865">Kontrollera din nätverksanslutning.</translation>
+<translation id="7889432931837317731">Öppna automatiskt när det är möjligt</translation>
 </translationbundle>

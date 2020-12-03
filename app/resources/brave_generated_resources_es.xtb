@@ -8,6 +8,7 @@
 <translation id="5655621391922317800">Crypto Wallets</translation>
 <translation id="2445484935443597917">Crear un nuevo perfil</translation>
 <translation id="2666990579225592931">Abrir ventana de Invitado</translation>
+<translation id="8275068909952022340">Más…</translation>
 <translation id="120759863357279975">La extensión <ph name="EXTENSION_NAME"/> (extension ID "<ph name="EXTENSION_ID"/>") no está permitida en Brave.</translation>
 <translation id="6786747875388722282">Extensiones</translation>
 <translation id="984275831282074731">Métodos de pago</translation>
@@ -43,23 +44,20 @@ Al instalar esta extensión, aceptas los Términos de uso de Google Widevine. Ac
 <translation id="814018970995616154">Comprobar las URL con una lista de sitios inseguros guardados en Brave.</translation>
 <translation id="1144810021918451336">No protege contra extensiones, descargas ni sitios web peligrosos.</translation>
 <translation id="7781069478569868053">Página Nueva pestaña</translation>
-<translation id="1717331825806276156">Imágenes de fondo</translation>
-<translation id="1820041496463124489">Imágenes patrocinadas</translation>
-<translation id="8173998484743827990">Estadísticas de Brave</translation>
-<translation id="5551238871320268996">Brave Together</translation>
-<translation id="6966052266404721769">Binance</translation>
-<translation id="8533411848724153701">Gemini</translation>
-<translation id="4643117005422448078">Sitios populares</translation>
-<translation id="1776831331757823105">Reloj</translation>
 <translation id="1988804048511540801">La nueva página de la pestaña muestra</translation>
 <translation id="2970343821770026391">Panel de control</translation>
 <translation id="3719826155360621982">Página de inicio</translation>
 <translation id="5448570825852364919">Página en blanco</translation>
+<translation id="5919424224662539292">Personalice la imagen de fondo y los widgets que aparecen en la página de la nueva pestaña</translation>
 <translation id="7965178729203412357">Nueva identidad Tor</translation>
 <translation id="8511502469534942133">Nueva Conexión Tor Para Esta Página</translation>
-<translation id="8784924142044142231">Cerrar Tor</translation>
-<translation id="5410152065859052603">Tor</translation>
-<translation id="3696187925156352769">Abrir ventana de Tor</translation>
+<translation id="4734294903299549345">Salir de la ventana privada con Tor</translation>
+<translation id="8612763432858587652">Salir de ventana privada</translation>
+<translation id="8760415064721320867">Ventana privada con Tor</translation>
+<translation id="2055363275850890030">Ventana Privada</translation>
+<translation id="8934172355414207733">En privado con Tor</translation>
+<translation id="1970435562892104727">Es una ventana privada con Tor</translation>
+<translation id="1037341607922068025">Abrir ventana privada con Tor</translation>
 <translation id="1725356094208762656">Abrir en Tor</translation>
 <translation id="1672270084584211506">Cebolla disponible</translation>
 <translation id="1434416574322382019">Nueva ventana privada con Tor</translation>
@@ -68,6 +66,7 @@ Al instalar esta extensión, aceptas los Términos de uso de Google Widevine. Ac
 <translation id="6313675821927505581">Nueva ventana privada con Tor</translation>
 <translation id="2638041073279639246">Abrir enlace en una ventana privada con Tor</translation>
 <translation id="3425600262621021599">Abrir enlace en una ventana privada con Tor</translation>
+<translation id="5410152065859052603">Tor</translation>
 <translation id="2515126961943087659">Servicio de Anuncios Bat</translation>
 <translation id="7924918279836988121">Servicio Bat Ledger</translation>
 <translation id="4472575034687746823">Empezar</translation>
@@ -235,6 +234,7 @@ Al instalar esta extensión, aceptas los Términos de uso de Google Widevine. Ac
 <translation id="8428213095426709021">Configuración</translation>
 <translation id="1854270995641373652">¿Quieres habilitar la compatibilidad con el daemon local IPFS en Brave?</translation>
 <translation id="2366908098700680611">Habilitar IPFS</translation>
+<translation id="1556882415222118816">Más información sobre las consecuencias de la privacidad</translation>
 <translation id="4552520379838695057">Lo sentimos, esta página no se ha encontrado.</translation>
 <translation id="2609895996619941644">¿Quieres comprobar si hay una versión guardada disponible en la Wayback Machine?</translation>
 <translation id="8053093028263274061">Lo sentimos, no hay una versión guardada disponible.</translation>

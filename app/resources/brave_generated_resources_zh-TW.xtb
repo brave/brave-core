@@ -8,6 +8,7 @@
 <translation id="5655621391922317800">加密錢包</translation>
 <translation id="2445484935443597917">建立新的個人資料</translation>
 <translation id="2666990579225592931">開啟訪客視窗</translation>
+<translation id="8275068909952022340">其他…</translation>
 <translation id="120759863357279975"><ph name="EXTENSION_NAME"/> (extension ID "<ph name="EXTENSION_ID"/>") 在 Brave 中是不允許的。</translation>
 <translation id="6786747875388722282">擴充功能</translation>
 <translation id="984275831282074731">付款方式</translation>
@@ -43,23 +44,20 @@
 <translation id="814018970995616154">以 Brave 中儲存的不安全網站清單檢查 URL。</translation>
 <translation id="1144810021918451336">無法協助您防護危險網站、下載和延伸套件。</translation>
 <translation id="7781069478569868053">新分頁</translation>
-<translation id="1717331825806276156">背景圖片</translation>
-<translation id="1820041496463124489">贊助圖片</translation>
-<translation id="8173998484743827990">Brave 統計</translation>
-<translation id="5551238871320268996">Brave Together</translation>
-<translation id="6966052266404721769">幣安</translation>
-<translation id="8533411848724153701">Gemini</translation>
-<translation id="4643117005422448078">熱門網站</translation>
-<translation id="1776831331757823105">時鐘</translation>
 <translation id="1988804048511540801">新的索引標籤頁顯示</translation>
 <translation id="2970343821770026391">儀表板​​</translation>
 <translation id="3719826155360621982">首頁</translation>
 <translation id="5448570825852364919">空白頁</translation>
+<translation id="5919424224662539292">自訂出現在新分頁上的背景圖片與小工具</translation>
 <translation id="7965178729203412357">新 Tor 身分</translation>
 <translation id="8511502469534942133">為此網站建立的新 Tor 連線</translation>
-<translation id="8784924142044142231">退出 Tor</translation>
-<translation id="5410152065859052603">Tor</translation>
-<translation id="3696187925156352769">打開 Tor 視窗</translation>
+<translation id="4734294903299549345">離開 Tor 的私人視窗</translation>
+<translation id="8612763432858587652">離開私人視窗</translation>
+<translation id="8760415064721320867">使用 Tor 的隱私視窗</translation>
+<translation id="2055363275850890030">隱私視窗</translation>
+<translation id="8934172355414207733">用 Tor 進行私人瀏覽</translation>
+<translation id="1970435562892104727">這是 Tor 的私人視窗</translation>
+<translation id="1037341607922068025">用 Tor 開啟私人視窗</translation>
 <translation id="1725356094208762656">在 Tor 中開啟</translation>
 <translation id="1672270084584211506">Onion 可用</translation>
 <translation id="1434416574322382019">以 Tor 開啟新私有窗口</translation>
@@ -68,6 +66,7 @@
 <translation id="6313675821927505581">新的使用 Tor 的視窗</translation>
 <translation id="2638041073279639246">在使用 Tor 的隱私視窗中開啟連結</translation>
 <translation id="3425600262621021599">在使用 Tor 的 Brave 隱私視窗中開啟連結</translation>
+<translation id="5410152065859052603">Tor</translation>
 <translation id="2515126961943087659">BAT 廣告服務</translation>
 <translation id="7924918279836988121">Bat 分類帳服務</translation>
 <translation id="4472575034687746823">開始使用</translation>
@@ -235,6 +234,7 @@
 <translation id="8428213095426709021">設定</translation>
 <translation id="1854270995641373652">您想在 Brave 中啟用 IPFS 本地常駐程式支援嗎？</translation>
 <translation id="2366908098700680611">啟用 IPFS</translation>
+<translation id="1556882415222118816">了解更多關於隱私的重要性</translation>
 <translation id="4552520379838695057">抱歉，頁面遺失。</translation>
 <translation id="2609895996619941644">您想要檢查 Wayback Machine 上是否有已儲存的版本嗎？</translation>
 <translation id="8053093028263274061">抱歉，無可用的已儲存版本。</translation>

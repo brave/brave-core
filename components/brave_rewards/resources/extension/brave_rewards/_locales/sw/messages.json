@@ -1,6 +1,6 @@
 {
   "braveRewards": {
-    "message": "Zawadi za Brave",
+    "message": "Brave Rewards",
     "description": "Title in welcome screen for the panel"
   },
   "welcomeButtonTextOne": {
@@ -40,7 +40,7 @@
     "description": "Main header title for welcome screen in the panel, new user"
   },
   "yourWallet": {
-    "message": "Waleti Yako",
+    "message": "Waleti yako",
     "description": "Title of wallet section where we display data about wallet"
   },
   "grants": {
@@ -64,7 +64,7 @@
     "description": "Text for BAT Point helper message"
   },
   "on": {
-    "message": "katika",
+    "message": "washa",
     "description": "The whole string is 'Enable tips on YouTube for like.'"
   },
   "verifiedPublisher": {
@@ -88,11 +88,11 @@
     "description": "CTA for sending tip form site banner"
   },
   "enableTips": {
-    "message": "Wezesha Vidokezo",
+    "message": "Wezesha Michango",
     "description": "The whole string is 'Enable tips on YouTube for like.'"
   },
   "for": {
-    "message": "kwa",
+    "message": "kwa ajili ya",
     "description": "The whole string is 'Enable tips on YouTube for like.'"
   },
   "rewardsSummary": {
@@ -162,7 +162,7 @@
     "description": "Title for grant section in wallet summary"
   },
   "pointGrantClaimed": {
-    "message": "Ruzuku za Pointi Zimedaiwa",
+    "message": "Umechukua Pointi za Ruzuku",
     "description": "Title for point grant section in wallet summary"
   },
   "earningsAds": {
@@ -186,7 +186,7 @@
     "description": "Title for monthly contributions section in wallet summary"
   },
   "off": {
-    "message": "Zima",
+    "message": "Kimezimwa",
     "description": "Label used in toggle indicating that toggle is off"
   },
   "ok": {
@@ -194,7 +194,7 @@
     "description": "Used in notification to dismiss notification"
   },
   "braveAdsLaunchMsg": {
-    "message": "Sasa unaweza kupata kipato kwa kutazama matangazo!",
+    "message": "Sasa unaweza kupata pesa kwa kutazama matangazo.",
     "description": "Message for ads launch notification"
   },
   "braveAdsTitle": {
@@ -292,7 +292,7 @@
     "description": "Grant expiry label"
   },
   "grantGeneralErrorButton": {
-    "message": "SAWA",
+    "message": "Sawa",
     "description": "Button text for clearing the error."
   },
   "grantGeneralErrorText": {
@@ -416,7 +416,7 @@
     "description": "BAT Points abbreviation text"
   },
   "turnOnAds": {
-    "message": "Washa Matangazo",
+    "message": "Ruhusu Matangazo",
     "description": "Prompt to turn on Ads via notification"
   },
   "adsEarnings": {
@@ -462,7 +462,7 @@
     "description": "Notification text that tells user his wallet is under funded for pending contribution to complete"
   },
   "pendingContributionTitle": {
-    "message": "Mchango ambao bado haujachangwa",
+    "message": "Mchango Unaosubiriwa",
     "description": "Notification title for pending contribution type"
   },
   "grantFinishTitleUGP": {
@@ -484,7 +484,7 @@
     "description": "Token title on success screen"
   },
   "grantFinishPointTitleUGP": {
-    "message": "Ruzuku ya Pointi Bila Malipo",
+    "message": "Ruzuku Isiyolipishwa",
     "description": "Point title on success screen"
   },
   "grantFinishTitleAds": {
@@ -626,5 +626,21 @@
   "walletVerificationNote3":  {
     "message": "Dokezo: Miamala yako itaonekana kwa Uphold mara unapoidhinisha; kwa mfano, wataweza kuona mpokeaji na kiasi cha vidokezo vyako.",
     "description": "Displayed in login modal for uphold"
+  },
+  "onboardingEarnHeader": {
+    "message": "Pata Tokeni na Utoe Shukrani",
+    "description": ""
+  },
+  "onboardingEarnText": {
+    "message": "Pata tokeni kwa kutazama matangazo yanayoheshimu faragha na ufadhili tovuti na waundaji wa maudhui unaopenda kiotomatiki.",
+    "description": ""
+  },
+  "onboardingStartUsingRewards": {
+    "message": "Anza kutumia Zawadi za Brave",
+    "description": ""
+  },
+  "onboardingTerms": {
+    "message": "Kwa kuendelea, unakubali $$1Sheria na Masharti$$2 na $$3Sera ya Faragha$$4.",
+    "description": ""
   }
 }

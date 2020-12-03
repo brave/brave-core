@@ -8,6 +8,7 @@
 <translation id="5655621391922317800">Portofele cripto</translation>
 <translation id="2445484935443597917">Creează un profil nou</translation>
 <translation id="2666990579225592931">Deschide o fereastră pentru invitați</translation>
+<translation id="8275068909952022340">Mai multe…</translation>
 <translation id="120759863357279975"><ph name="EXTENSION_NAME"/> (ID extensie "<ph name="EXTENSION_ID"/>") nu este permis în Brave.</translation>
 <translation id="6786747875388722282">Extensii</translation>
 <translation id="984275831282074731">Metode de plată</translation>
@@ -43,23 +44,20 @@ Instalând această extensie, sunteți de acord cu termenii de utilizare ai Goog
 <translation id="814018970995616154">Verifică URL într-o listă de siteuri nesigure stocată în Brave.</translation>
 <translation id="1144810021918451336">Nu te protejează de siteurile, descărcările și extensiile periculoase.</translation>
 <translation id="7781069478569868053">Pagină filă nouă</translation>
-<translation id="1717331825806276156">Imagini fundal</translation>
-<translation id="1820041496463124489">Imagini sponsorizate</translation>
-<translation id="8173998484743827990">Statistici Brave</translation>
-<translation id="5551238871320268996">Brave Împreună</translation>
-<translation id="6966052266404721769">Binance</translation>
-<translation id="8533411848724153701">Gemini</translation>
-<translation id="4643117005422448078">Site-uri de top</translation>
-<translation id="1776831331757823105">Ceas</translation>
 <translation id="1988804048511540801">Pagina nouă arată</translation>
 <translation id="2970343821770026391">Tablou de bord</translation>
 <translation id="3719826155360621982">Pagina de pornire</translation>
 <translation id="5448570825852364919">Pagină albă</translation>
+<translation id="5919424224662539292">Personalizați imaginea de fundal și widget-urile care apar pe pagina din fila nouă</translation>
 <translation id="7965178729203412357">Identitate nouă Tor</translation>
 <translation id="8511502469534942133">Conexiune Tor nouă pentru acest site</translation>
-<translation id="8784924142044142231">Ieșire din Tor</translation>
-<translation id="5410152065859052603">Tor</translation>
-<translation id="3696187925156352769">Deschide fereastră Tor</translation>
+<translation id="4734294903299549345">Ieșiți din fereastra privată cu Tor</translation>
+<translation id="8612763432858587652">Ieșiți din fereastra privată</translation>
+<translation id="8760415064721320867">Fereastră Privată cu Tor</translation>
+<translation id="2055363275850890030">Fereastră Privată</translation>
+<translation id="8934172355414207733">Privată cu Tor</translation>
+<translation id="1970435562892104727">Aceasta este o fereastră privată cu Tor</translation>
+<translation id="1037341607922068025">Deschideți o fereastră privată cu Tor</translation>
 <translation id="1725356094208762656">Deschide în Tor</translation>
 <translation id="1672270084584211506">Disponibil onion</translation>
 <translation id="1434416574322382019">Fereastră Privată nouă cu Tor</translation>
@@ -68,6 +66,7 @@ Instalând această extensie, sunteți de acord cu termenii de utilizare ai Goog
 <translation id="6313675821927505581">Fereastră privată nouă cu Tor</translation>
 <translation id="2638041073279639246">Deschideți linkul în fereastră privată cu Tor</translation>
 <translation id="3425600262621021599">Deschideți linkul în fereastră privată Brave cu Tor</translation>
+<translation id="5410152065859052603">Tor</translation>
 <translation id="2515126961943087659">Serviciu de anunțuri Bat</translation>
 <translation id="7924918279836988121">Serviciu Bat Ledger</translation>
 <translation id="4472575034687746823">Începeți</translation>
@@ -235,6 +234,7 @@ Instalând această extensie, sunteți de acord cu termenii de utilizare ai Goog
 <translation id="8428213095426709021">Setări</translation>
 <translation id="1854270995641373652">Vrei să activezi suportul daemon local IPFS în Brave?</translation>
 <translation id="2366908098700680611">Activează IPFS</translation>
+<translation id="1556882415222118816">Aflați mai multe despre consecințele confidențialității</translation>
 <translation id="4552520379838695057">Ne pare rău, pagina aceea lipsește.</translation>
 <translation id="2609895996619941644">Vreți să verificați dacă este disponibilă o versiune salvată pe Wayback Machine?</translation>
 <translation id="8053093028263274061">Ne pare rău, nu este disponibilă nicio versiune salvată.</translation>

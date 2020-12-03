@@ -8,6 +8,7 @@
 <translation id="5655621391922317800">Κρυπτο-Πορτοφόλια</translation>
 <translation id="2445484935443597917">Δημιουργία νέου προφίλ</translation>
 <translation id="2666990579225592931">Άνοιγμα παραθύρου περιήγησης επισκέπτη</translation>
+<translation id="8275068909952022340">Περισσότερα…</translation>
 <translation id="120759863357279975"><ph name="EXTENSION_NAME"/> (extension ID "<ph name="EXTENSION_ID"/>") δεν επιτρέπεται στο Brave.</translation>
 <translation id="6786747875388722282">Επεκτάσεις</translation>
 <translation id="984275831282074731">Τρόποι πληρωμής</translation>
@@ -43,23 +44,20 @@
 <translation id="814018970995616154">Ελέγχει τις διευθύνσεις URL από μια λίστα μη ασφαλών ιστότοπων που είναι αποθηκευμένη στο Brave.</translation>
 <translation id="1144810021918451336">Δεν σας προστατεύει από επικίνδυνους ιστότοπους, λήψεις και επεκτάσεις.</translation>
 <translation id="7781069478569868053">Νέα Καρτέλα Σελίδας</translation>
-<translation id="1717331825806276156">Εικόνες φόντου</translation>
-<translation id="1820041496463124489">Χορηγούμενες εικόνες</translation>
-<translation id="8173998484743827990">Στατιστικά Brave</translation>
-<translation id="5551238871320268996">Brave Together</translation>
-<translation id="6966052266404721769">Binance</translation>
-<translation id="8533411848724153701">Gemini</translation>
-<translation id="4643117005422448078">Κορυφαίοι Ιστότοποι</translation>
-<translation id="1776831331757823105">Ρολόι</translation>
 <translation id="1988804048511540801">Η νέα καρτέλα σελίδας εμφανίζει</translation>
 <translation id="2970343821770026391">Πίνακας Ελέγχου</translation>
 <translation id="3719826155360621982">Αρχική σελίδα</translation>
 <translation id="5448570825852364919">Κενή σελίδα</translation>
+<translation id="5919424224662539292">Προσαρμόστε την εικόνα του φόντου και τα γραφικά στοιχεία που εμφανίζονται στη σελίδα νέας καρτέλας</translation>
 <translation id="7965178729203412357">Νέα Ταυτότητα Tor</translation>
 <translation id="8511502469534942133">Νέα Σύνδεση Tor Γι' Αυτήν Την Ιστοσελίδα</translation>
-<translation id="8784924142044142231">Έξοδος από Tor</translation>
-<translation id="5410152065859052603">Tor</translation>
-<translation id="3696187925156352769">Άνοιγμα Παράθυρου Tor</translation>
+<translation id="4734294903299549345">Έξοδος από το ιδιωτικό παράθυρο με το Tor</translation>
+<translation id="8612763432858587652">Έξοδος από το ιδιωτικό παράθυρο</translation>
+<translation id="8760415064721320867">Ιδιωτικό Παράθυρο με Tor</translation>
+<translation id="2055363275850890030">Ιδιωτικό Παράθυρο</translation>
+<translation id="8934172355414207733">Ιδιωτικό με το Tor</translation>
+<translation id="1970435562892104727">Αυτό είναι ένα ιδιωτικό παράθυρο με το Tor</translation>
+<translation id="1037341607922068025">Ανοίξτε ιδιωτικό παράθυρο με το Tor</translation>
 <translation id="1725356094208762656">Άνοιγμα σε Tor</translation>
 <translation id="1672270084584211506">Διαθέσιμο Onion</translation>
 <translation id="1434416574322382019">Νέο Ιδιωτικό Παράθυρο με Tor</translation>
@@ -68,6 +66,7 @@
 <translation id="6313675821927505581">Νέο ιδιωτικό παράθυρο με Tor</translation>
 <translation id="2638041073279639246">Ανοίξτε σύνδεσμο σε ιδιωτικό παράθυρο με Tor</translation>
 <translation id="3425600262621021599">Ανοίξτε σύνδεσμο σε ιδιωτικό παράθυρο Brave με Tor</translation>
+<translation id="5410152065859052603">Tor</translation>
 <translation id="2515126961943087659">Υπηρεσία διαφημίσεων BAT</translation>
 <translation id="7924918279836988121">Υπηρεσία Bat Ledger</translation>
 <translation id="4472575034687746823">Έναρξη</translation>
@@ -235,6 +234,7 @@
 <translation id="8428213095426709021">Ρυθμίσεις</translation>
 <translation id="1854270995641373652">Θέλετε να ενεργοποιήσετε την τοπική υποστήριξη IPFS daemon στο Brave;</translation>
 <translation id="2366908098700680611">Ενεργοποίηση IPFS</translation>
+<translation id="1556882415222118816">Μάθετε περισσότερα σχετικά με τις συνέπειες παραβίασης του απορρήτου</translation>
 <translation id="4552520379838695057">Λυπούμαστε, αυτή η σελίδα λείπει.</translation>
 <translation id="2609895996619941644">Θέλετε να ελέγξετε αν υπάρχει μια αποθηκευμένη έκδοση στο Wayback Machine;</translation>
 <translation id="8053093028263274061">Λυπούμαστε, δεν υπάρχει καμιά διαθέσιμη αποθηκευμένη έκδοση.</translation>

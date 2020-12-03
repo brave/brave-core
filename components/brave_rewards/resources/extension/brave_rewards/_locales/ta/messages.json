@@ -348,7 +348,7 @@
     "description": "Failure title for wallet creation"
   },
   "walletFailedButton": {
-    "message": "மீண்டும் முயல்க",
+    "message": "மீண்டும் முயற்சிக்கவும்",
     "description": "Button for re-try after wallet creation failed"
   },
   "addFunds": {
@@ -626,5 +626,21 @@
   "walletVerificationNote3":  {
     "message": "Note: Your transactions will be visible to Uphold once you authorize; for instance, they will be able to see the recipient and amount of your tips.",
     "description": "Displayed in login modal for uphold"
+  },
+  "onboardingEarnHeader": {
+    "message": "Earn Tokens & Give Back",
+    "description": ""
+  },
+  "onboardingEarnText": {
+    "message": "Earn tokens by viewing privacy-respecting ads and support your favorite sites and content creators automatically.",
+    "description": ""
+  },
+  "onboardingStartUsingRewards": {
+    "message": "Start using Brave Rewards",
+    "description": ""
+  },
+  "onboardingTerms": {
+    "message": "By proceeding, you agree to the $$1Terms of Service$$2 and $$3Privacy Policy$$4.",
+    "description": ""
   }
 }

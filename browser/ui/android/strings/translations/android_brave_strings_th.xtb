@@ -31,6 +31,8 @@
 <translation id="5787084571334399599">ป้องกันเบราว์เซอร์ไม่ให้สร้างลายนิ้วมือ</translation>
 <translation id="7459000603787995422">ปิดแท็บเมื่อออกจากโปรแกรม</translation>
 <translation id="1680858055899097121">อย่าคงแท็บไว้เมื่อจบการท่องเว็บแต่ละรอบ</translation>
+<translation id="6469509880167172749">ส่งผลการวิเคราะห์ผลิตภัณฑ์แบบส่วนตัวโดยสมบูรณ์ให้ Brave โดยอัตโนมัติ</translation>
+<translation id="7090566321964540749">ข้อมูลแบบไม่ระบุตัวตนนี้จะช่วยให้ Brave คาดคะเนการใช้งานโดยรวมของฟีเจอร์บางอย่างได้เท่านั้น</translation>
 <translation id="453601949003770390">บล็อก Tracker &amp; โฆษณาแล้ว</translation>
 <translation id="347604927162577559">ประหยัด\nข้อมูล</translation>
 <translation id="9008534313521214777">เวลาที่ประหยัด\nโดยประมาณ</translation>
@@ -50,7 +52,7 @@
 <translation id="4150201353443180367">การแสดงผล</translation>
 <translation id="2433507940547922241">ลักษณะที่ปรากฏ</translation>
 <translation id="2804710924397009224">ซ่อนไอคอน Brave Rewards</translation>
-<translation id="7358991116457217836">ซ่อนไอคอน Brave Rewards เมื่อไม่ได้เปิดใช้งาน Brave Rewards</translation>
+<translation id="7289740269305509613">ซ่อนไอคอน Brave Reward</translation>
 <translation id="8495235435594442882">เปิดใช้งานแถบเครื่องมือด้านล่าง</translation>
 <translation id="6587448235155023666">การเปลี่ยนแปลงของคุณจะมีผลในครั้งถัดไปที่คุณเปิดใช้งาน Brave อีกครั้ง</translation>
 <translation id="8701563696941209024">เปิดใช้งานใหม่เลย</translation>
@@ -67,7 +69,7 @@
 <translation id="3333887201479867589">Brave Rewards</translation>
 <translation id="5870330605209713397">ด้วยการดูโฆษณาที่เคารพความเป็นส่วนตัวและสนับสนุนเว็บและครีเอเตอร์คนโปรดของคุณ</translation>
 <translation id="821707262661492716">เมื่อดูโฆษณาที่เคารพความเป็นส่วนตัว</translation>
-<translation id="8267692331246948056">ด้วยการแตะรับ &amp; มอบ คุณได้ยอมรับ</translation>
+<translation id="5302488867897327287">เมื่อแตะเริ่มต้นใช้ Brave Reward จะถือว่าคุณยอมรับใน</translation>
 <translation id="4281844954008187215">ข้อตกลงการใช้บริการ</translation>
 <translation id="6871397658902960384">เริ่มท่องเว็บ</translation>
 <translation id="454386012157232640">ฉันไม่เห็นโฆษณาเลย</translation>
@@ -76,7 +78,7 @@
 <translation id="6511854390690723657">นี่เป็นโฆษณา Brave อันแรกของคุณ แตะเพื่อเรียนรู้เพิ่มเติม</translation>
 <translation id="4930714375720679147">เปิด</translation>
 <translation id="2453860139492968684">เสร็จสิ้น</translation>
-<translation id="7983303953939627894">รับ &amp; ให้</translation>
+<translation id="2070991379950719711">เริ่มต้นใช้ Brave Reward</translation>
 <translation id="48520986898237073">ไปยังกระเป๋าเงิน</translation>
 <translation id="3570367516044491911">ตั้งเป็นเบราว์เซอร์เริ่มต้น</translation>
 <translation id="7493053924837150477">เลือก Brave Browser จากรายชื่อและแตะ "ทุกครั้ง"</translation>
@@ -231,6 +233,10 @@
 <translation id="6810078320346589989">สร้างบุ๊กมาร์ก</translation>
 <translation id="3396347744975515056">Brave Sync ได้อัปเกรดและต้องการติดตั้ง</translation>
 <translation id="7473245612074035141">เริ่มติดตั้ง</translation>
+<translation id="1872784258300710671">Brave ใช้เครื่องมือวิเคราะห์ผลิตภัณฑ์แบบส่วนตัวโดยสมบูรณ์ในการคาดคะเนการใช้งานโดยรวมของฟีเจอร์บางอย่าง</translation>
+<translation id="8712637175834984815">สำเร็จ</translation>
+<translation id="4394049700291259645">ปิดการใช้งาน</translation>
+<translation id="8446884382197647889">เรียนรู้เพิ่มเติม</translation>
 <translation id="597993392929850353">สิทธิการใช้งาน Brave</translation>
 <translation id="6336451774241870485">แท็บส่วนตัวใหม่</translation>
 <translation id="6199596294742117349">นี่คือแท็บส่วนตัว</translation>
@@ -257,8 +263,7 @@
 <translation id="8522669544471808198">แสดงรูปภาพพื้นหลัง</translation>
 <translation id="3870475560794762985">แสดงรูปภาพที่มีผู้สนับสนุน</translation>
 <translation id="8297488609722895137">ภาพถ่ายโดย <ph name="PHOTO_BY"/></translation>
-<translation id="7952665812649667034">ฉันพร้อมที่จะ Earn &amp; Give</translation>
-<translation id="5878330112719288629">ด้วยการแตะ Earn &amp; Give คุณได้ยอมรับ <ph name="TERMS_OF_SERVICE"/></translation>
+<translation id="4761229094276239865">เมื่อแตะเริ่มต้นใช้ Brave Reward จะถือว่าคุณยอมรับ <ph name="TERMS_OF_SERVICE"/></translation>
 <translation id="3794079107601824147">รับรายได้เพื่อดูรูปภาพพื้นหลังนี้</translation>
 <translation id="7136586167396205364">ซ่อนรูปภาพที่มีผู้สนับสนุน</translation>
 <translation id="2927095357213611519">คุณสามารถสนับสนุนผู้สร้างเว็บได้ด้วยโทเคน\nรับโทเคนผ่านการชมโฆษณาที่เกี่ยวข้องกับความเป็นส่วนตัว</translation>
@@ -305,7 +310,7 @@
 <translation id="8851456134224363571">เยี่ยม! คุณช่วยให้คะแนนเราบน Play Store ได้ไหม?</translation>
 <translation id="8668962040900592974">แจ้งให้เราทราบว่าควรปรับปรุงอย่างไรบ้าง</translation>
 <translation id="4406937629441301400">รับโทเคนจากการชมภาพนี้และจ่ายต่อไปยังผู้สร้าง <ph name="LEARN_MORE"/></translation>
-<translation id="8693132237667961044">รับโทเคนจากการชมภาพนี้ เปิด Earn &amp; Give เพื่อรับส่วนของคุณ</translation>
+<translation id="1992363542751124282">รับโทเค็นจากการดูรูปภาพนี้ แตะเริ่มต้นใช้ Brave Reward เพื่อรับส่วนแบ่งของคุณ</translation>
 <translation id="6632345639591919543">คุณกำลังได้รับโทเคนจากการชมภาพนี้\n<ph name="LEARN_MORE"/></translation>
 <translation id="1465733111003593696">คุณกำลังได้รับโทเคนจากการชมภาพนี้</translation>
 <translation id="7877201489035217175">เรียนรู้เพิ่มเติมเกี่ยวกับภาพสปอนเซอร์</translation>
@@ -389,7 +394,6 @@
 <translation id="1383876407941801731">ค้นหา</translation>
 <translation id="1972589975368876259">แก้ไข Stack</translation>
 <translation id="2490330380242414851">นำวิตเจ็ตออก</translation>
-<translation id="8446884382197647889">เรียนรู้เพิ่มเติม</translation>
 <translation id="7384441892795736634">รีเฟรชข้อมูล</translation>
 <translation id="4804818685124855865">ยกเลิกการเชื่อมต่อ</translation>
 <translation id="4789438578712143420">≈ $<ph name="USD_BALANCE"/></translation>
@@ -428,4 +432,38 @@
 <translation id="3733576242118819803">ยืนยัน (<ph name="REMAINING_TIME"/>s)</translation>
 <translation id="1627064138060308910">การสนทนาล้มเหลว โปรดลองอีกครั้ง</translation>
 <translation id="1449790603979388000"><ph name="COUNT"/> <ph name="COUNT_TEXT"/></translation>
+<translation id="7465614181960492526">รับโทเค็นเพื่อนำไปตอบแทน</translation>
+<translation id="244362569344671266">รับโทเค็นผ่านการดูโฆษณาส่วนตัวของ Brave เพื่อนำไปสนับสนุนผู้สร้างเนื้อหาโดยอัตโนมัติ</translation>
+<translation id="631124996535890460">หากดำเนินการต่อ จะถือว่าคุณยอมรับ <ph name="TERMS_OF_SERVICE"/> และ <ph name="PRIVACY_POLICY"/></translation>
+<translation id="8804164990146287819">นโยบายสความเป็นส่วนตัว</translation>
+<translation id="6318696841371191107">ดูการแนะนำสั้นๆ</translation>
+<translation id="7930505144430343145">ยินดีต้อนรับสู่ Brave Reward</translation>
+<translation id="7909111626803226907">โฆษณาส่วนตัวของ Brave จะให้ Reward เป็นโทเค็นสำหรับนำไปสนับสนุนผู้สร้างเนื้อหา ซึ่งจะต่างจากโฆษณาทั่วไป แต่ยังคงความเป็นส่วนตัวให้กับข้อมูลส่วนตัวของคุณเช่นเดิม</translation>
+<translation id="6973095375773523904">โฆษณาจะปรากฏที่ใด</translation>
+<translation id="3867028444168159102">โฆษณาส่วนตัวของ Brave จะปรากฏในรูปการแจ้งเตือนปกติ คุณสามารถควบคุมความถี่ในการเห็นโฆษณาเหล่านี้ได้ในการตั้งค่า</translation>
+<translation id="5816125157889950051">คุณจะได้รับ Reward เมื่อใด</translation>
+<translation id="4649471244559455723">โทเค็นที่คุณได้รับจากโฆษณาของ Brave ตลอดทั้งเดือนนี้จะเข้าบัญชีในวันที่ 5 ของเดือนถัดไป</translation>
+<translation id="7712287524451429139">การตอบแทนจะกลายเป็นเรื่องง่าย</translation>
+<translation id="105037569026952831">ผู้สร้างเนื้อหาจะได้รับโทเค็นสนับสนุนจากคุณโดยอัตโนมัติตามระดับการมีส่วนร่วมของคุณที่เราตรวจวัดได้ในรูป ‘การให้ความสนใจ’</translation>
+<translation id="5323267338679539010">ให้ทิปเป็นการขอบคุณ</translation>
+<translation id="6042317056594735519">การให้ทิปเป็นวิธีส่งกำลังใจและให้การสนับสนุนเนื้อหาหรือผู้สร้างที่คุณชื่นชอบ ไปให้ทิปกัน!</translation>
+<translation id="7509452925943421624">ใช้โทเค็นทำอะไรได้บ้าง</translation>
+<translation id="7059157883171259940">สามารถนำโทเค็นไปใช้ในรูปแบบอื่นนอกเหนือจากการสนับสนุนผู้สร้างเนื้อหา และสามารถซื้อสินค้าดิจิตอลและบัตรของขวัญได้ด้วยโบนัสเงินคืน</translation>
+<translation id="1402530520078693620">ขั้นสุดท้าย ไปตั้งค่าพื้นฐานให้เสร็จสิ้นกันดีกว่า</translation>
+<translation id="3494356595346329740">สามารถแก้ไขในภายหลังได้</translation>
+<translation id="6462814326662189004">คุณต้องการดูโฆษณาบ่อยเพียงใด\n(จำนวนโฆษณาต่อชั่วโมง)</translation>
+<translation id="2134244432345596331">คุณต้องการให้การสนับสนุนผู้สร้างเนื้อหาที่คุณชื่นชอบบ่อยเพียงใด\n(ด้วยรายได้จากโฆษณา)</translation>
+<translation id="7456161272236175794">ไชโย!\nเสร็จเรียบร้อยแล้ว</translation>
+<translation id="3895246934788932488">การใช้งาน Brave Reward จะช่วยปกป้องความเป็นส่วนตัวของคุณ และช่วยทำให้เว็บนี้เป็นพื้นที่ที่ดีขึ้นสำหรับทุกคน ซึ่งเยี่ยมสุดๆ ไปเลย</translation>
+<translation id="5705882733397021510">ย้อนกลับ</translation>
+<translation id="5140321319944305531">ดูการแนะนำสั้นๆ กันดีกว่า</translation>
+<translation id="3808131693704413134">คุณสามารถกลับมาให้ทิปแก่ผู้สร้างเนื้อหารายนี้หลังจากได้รับการจ่ายเงินจากโฆษณาเป็นครั้งแรก</translation>
+<translation id="207242986925259074">การแนะนำสั้นๆ สำหรับผู้เริ่มต้น</translation>
+<translation id="8342862030112839977">การจ่าย Reward ครั้งที่ 1 จะเข้าบัญชีภายใน:</translation>
+<translation id="3769645103175790584">รับโทเค็นเพื่อนำไปให้รางวัลแก่ผู้สร้างสำหรับเนื้อหาดีๆ ในระหว่างที่คุณเรียกดูเนื้อหา <ph name="QUICK_TOUR"/></translation>
+<translation id="6912901278692845878">การแนะนำสั้นๆ</translation>
+<translation id="1080013038789678738">ฉันขอร่วมด้วย</translation>
+<translation id="3604285424134705930">แปลง <ph name="FROM_VALUE"/> <ph name="FROM_CURRENCY"/> เป็น <ph name="TO_VALUE"/> <ph name="TO_CURRENCY"/> เรียบร้อยแล้ว</translation>
+<translation id="392587271502873865">โปรดตรวจสอบการเชื่อมต่อเครือข่าย</translation>
+<translation id="7889432931837317731">เปิดโดยอัตโนมัติเมื่อเป็นไปได้</translation>
 </translationbundle>

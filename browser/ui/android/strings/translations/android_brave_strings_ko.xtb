@@ -31,6 +31,8 @@
 <translation id="5787084571334399599">브라우저의 지문 채취를 방지</translation>
 <translation id="7459000603787995422">나갈 때 탭 닫기</translation>
 <translation id="1680858055899097121">브라우징 세션 간에 탭을 유지하지 마십시오</translation>
+<translation id="6469509880167172749">비밀이 완전히 보장되는 제품 애널리틱스를 자동으로 Brave에 전송합니다</translation>
+<translation id="7090566321964540749">이 익명 정보는 Brave가 특정 기능의 전체 사용량을 추정하는 데만 사용됩니다.</translation>
 <translation id="347604927162577559">데이터\n저장됨</translation>
 <translation id="9008534313521214777">동부 표준시\n저장됨</translation>
 <translation id="6572660632052512096">데스크톱 모드</translation>
@@ -49,7 +51,7 @@
 <translation id="4150201353443180367">디스플레이</translation>
 <translation id="2433507940547922241">모양</translation>
 <translation id="2804710924397009224">Brave Rewards 아이콘 숨기기</translation>
-<translation id="7358991116457217836">Brave Rewards를 사용하지 않을 때 Brave Rewards 아이콘 숨기기</translation>
+<translation id="7289740269305509613">Brave Rewards 아이콘 숨기기</translation>
 <translation id="8495235435594442882">하단 툴바 사용</translation>
 <translation id="6587448235155023666">변경 사항은 다음번에 Brave를 재실행할 때 적용됩니다</translation>
 <translation id="8701563696941209024">지금 재실행</translation>
@@ -220,6 +222,10 @@
 <translation id="6810078320346589989">북마크 만들기</translation>
 <translation id="3396347744975515056">Brave 동기화가 업그레이드되었고 설정이 필요합니다</translation>
 <translation id="7473245612074035141">설치 시작</translation>
+<translation id="1872784258300710671">Brave는 비밀이 완전히 보장되는 제품 애널리틱스를 사용하여 특정 기능의 전체 사용량을 추정합니다</translation>
+<translation id="8712637175834984815">확인</translation>
+<translation id="4394049700291259645">사용 중지</translation>
+<translation id="8446884382197647889">자세히 알아보기</translation>
 <translation id="597993392929850353">Brave 라이선스</translation>
 <translation id="6336451774241870485">새 비공개 탭</translation>
 <translation id="6199596294742117349">이것은 비공개 탭입니다</translation>
@@ -246,8 +252,8 @@
 <translation id="8522669544471808198">배경 이미지 표시</translation>
 <translation id="3870475560794762985">스폰서 이미지 표시</translation>
 <translation id="8297488609722895137"><ph name="PHOTO_BY"/>의 사진</translation>
-<translation id="7952665812649667034">적립 &amp; 제공 준비 완료</translation>
-<translation id="5878330112719288629">적립 &amp; 제공을 탭하면, 다음에 동의하는 것입니다 <ph name="TERMS_OF_SERVICE"/>.</translation>
+<translation id="2070991379950719711">Brave Rewards 사용 시작</translation>
+<translation id="4761229094276239865">Brave Rewards 사용 시작을 탭하면 <ph name="TERMS_OF_SERVICE"/>에 동의하는 것입니다.</translation>
 <translation id="3794079107601824147">이 배경 이미지를 보고 수익을 올리세요.</translation>
 <translation id="7136586167396205364">스폰서 이미지 숨기기</translation>
 <translation id="2927095357213611519">토큰으로 웹 제작자를 지원할 수 있습니다.\n개인정보를 보호하는 광고를 보고 토큰을 받으십시오.</translation>
@@ -294,7 +300,7 @@
 <translation id="8851456134224363571">좋습니다! Play Store에서 평가를 남겨주시겠습니까?</translation>
 <translation id="8668962040900592974">개선할 수 있는 방법을 알려주세요</translation>
 <translation id="4406937629441301400">이 이미지를 볼 수 있는 토큰을 획득하여 제작자에게 전달하세요. <ph name="LEARN_MORE"/></translation>
-<translation id="8693132237667961044">이 이미지를 볼 수 있는 토큰을 획득합니다. 적립 &amp; 제공을 켜고 자신의 몫을 청구합니다.</translation>
+<translation id="1992363542751124282">이 이미지를 보는 것에 대한 토큰을 받으세요. Brave Rewards 사용 시작을 탭하여 몫을 요청하세요.</translation>
 <translation id="6632345639591919543">이 이미지를 보기 위해 토큰을 획득하고 있습니다.\n<ph name="LEARN_MORE"/></translation>
 <translation id="1465733111003593696">이 이미지를 보기 위해 토큰을 획득하고 있습니다.</translation>
 <translation id="7877201489035217175">스폰서 이미지에 대해 자세히 알아보기</translation>
@@ -372,7 +378,6 @@
 <translation id="1383876407941801731">검색</translation>
 <translation id="1972589975368876259">스택 편집</translation>
 <translation id="2490330380242414851">위젯 제거</translation>
-<translation id="8446884382197647889">자세히 알아보기</translation>
 <translation id="7384441892795736634">데이터 새로 고침</translation>
 <translation id="4804818685124855865">연결 해제</translation>
 <translation id="4789438578712143420">≈ $<ph name="USD_BALANCE"/></translation>
@@ -411,4 +416,38 @@
 <translation id="3733576242118819803">(<ph name="REMAINING_TIME"/>s) 확인</translation>
 <translation id="1627064138060308910">환전 실패. 다시 시도하세요.</translation>
 <translation id="1449790603979388000"><ph name="COUNT"/> <ph name="COUNT_TEXT"/></translation>
+<translation id="7465614181960492526">토큰 획득 &amp; 돌려주기</translation>
+<translation id="244362569344671266">Brave Private Ads를 보고 토큰을 얻고 콘텐츠 크리에이터를 자동으로 지원하세요.</translation>
+<translation id="631124996535890460">계속하면 <ph name="TERMS_OF_SERVICE"/> and <ph name="PRIVACY_POLICY"/>에 동의하는 것입니다.</translation>
+<translation id="8804164990146287819">개인정보 보호 정책</translation>
+<translation id="6318696841371191107">빠르게 투어하기</translation>
+<translation id="7930505144430343145">Brave Rewards에 오신 것을 환영합니다!</translation>
+<translation id="7909111626803226907">Brave private ads는 기존 광고와 달리 콘텐츠 크리에이터를 지원하는 토큰으로 보상을 제공하는 동시에 개인 정보를 비공개로 유지합니다.</translation>
+<translation id="6973095375773523904">광고는 어디에 표시됩니까?</translation>
+<translation id="3867028444168159102">Brave private ads는 일반 알림으로 표시됩니다. 설정에서 이러한 광고를 보는 빈도를 제어할 수 있습니다.</translation>
+<translation id="5816125157889950051">언제 보상을 받습니까</translation>
+<translation id="4649471244559455723">이번 달 동안 Brave ads에서 얻은 토큰은 다음 달 5일에 도착합니다.</translation>
+<translation id="7712287524451429139">쉽게 돌려주기</translation>
+<translation id="105037569026952831">크리에이터는 ‘관심’으로 측정한 참여 수준에 따라 자동으로 토큰 기여금을 받습니다.</translation>
+<translation id="5323267338679539010">팁으로 감사 인사하기</translation>
+<translation id="6042317056594735519">팁은 내가 좋아하는 콘텐츠나 크리에이터를 개인적으로 격려하고 지원하는 방법입니다. 팁을 받으세요!</translation>
+<translation id="7509452925943421624">토큰으로 무엇을 할 수 있습니까?</translation>
+<translation id="7059157883171259940">토큰은 크리에이터를 지원하는 것 이상으로 사용될 수 있습니다. 캐시백 보너스로 디지털 상품과 기프트 카드를 구매할 수 있습니다.</translation>
+<translation id="1402530520078693620">마지막으로 기본 설정을 설정하겠습니다</translation>
+<translation id="3494356595346329740">나중에 변경할 수 있습니다.</translation>
+<translation id="6462814326662189004">얼마나 자주 광고를 보고 싶으십니까?\n(시간당 광고)</translation>
+<translation id="2134244432345596331">좋아하는 크리에이터에게 얼마나 많은 지원을 하고 싶으신가요?\n(광고 수익에서)</translation>
+<translation id="7456161272236175794">유후!\n끝났습니다.</translation>
+<translation id="3895246934788932488">Brave Rewards를 사용하면 개인 정보를 보호하고 웹을 모두에게 더 나은 곳으로 만드는 데 도움이 됩니다. 그리고 그것은 굉장합니다!</translation>
+<translation id="5705882733397021510">돌아가기</translation>
+<translation id="5140321319944305531">빠르게 둘러보기</translation>
+<translation id="3808131693704413134">첫 번째 광고 지급을 받으면 돌아와서 이 크리에이터에게 팁을 줄 수 있습니다!</translation>
+<translation id="207242986925259074">빠른 복습 투어</translation>
+<translation id="8342862030112839977">첫 번째 보상 지급은 다음 기간까지 도착합니다:</translation>
+<translation id="3769645103175790584">탐색하는 동안 훌륭한 콘텐츠에 대해 토큰을 획득하고 크리에이터에게 보상하세요. <ph name="QUICK_TOUR"/>.</translation>
+<translation id="6912901278692845878">빠른 투어</translation>
+<translation id="1080013038789678738">저도 낄게요!</translation>
+<translation id="3604285424134705930"><ph name="FROM_VALUE"/> <ph name="FROM_CURRENCY"/>에서 <ph name="TO_VALUE"/> <ph name="TO_CURRENCY"/>(으)로 바꿨습니다!</translation>
+<translation id="392587271502873865">네트워크 연결을 확인하세요.</translation>
+<translation id="7889432931837317731">가능한 경우 자동으로 열림</translation>
 </translationbundle>

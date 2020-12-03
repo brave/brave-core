@@ -4,7 +4,7 @@
     "description": "Title in welcome screen for the panel"
   },
   "welcomeButtonTextOne": {
-    "message": "Şimdi Kazanmaya Başlayın!",
+    "message": "Kazanmaya Başlayın!",
     "description": "CTA on welcome screen in the panel, existing users"
   },
   "welcomeButtonTextTwo": {
@@ -20,7 +20,7 @@
     "description": "Entry text for welcome screen in the panel, new user"
   },
   "welcomeDescPoints": {
-    "message": "Artık gizliliğe saygı gösteren reklamları izleyerek puan toplayabilirsiniz.",
+    "message": "Artık gizliliğe saygı duyan reklamları izleyerek puan kazanabilirsiniz.",
     "description": "Entry text for welcome screen in the panel, points"
   },
   "welcomeFooterTextOne": {
@@ -28,7 +28,7 @@
     "description": "Link in the footer (takes you to rewards settings page) for welcome screen in the panel, existing user"
   },
   "welcomeFooterTextTwo": {
-    "message": "Daha Fazlasını Öğren",
+    "message": "Daha Fazla Bilgi Edinin",
     "description": "Link in the footer (takes you to rewards settings page) for welcome screen in the panel, new user"
   },
   "welcomeHeaderOne": {
@@ -48,7 +48,7 @@
     "description": "Title for grant section in wallet summary"
   },
   "details": {
-    "message": "Ayrıntılar",
+    "message": "Detaylar",
     "description": "Title for grant section in wallet panel summary"
   },
   "yourBalance": {
@@ -64,7 +64,7 @@
     "description": "Text for BAT Point helper message"
   },
   "on": {
-    "message": "açık",
+    "message": "Açık",
     "description": "The whole string is 'Enable tips on YouTube for like.'"
   },
   "verifiedPublisher": {
@@ -162,7 +162,7 @@
     "description": "Title for grant section in wallet summary"
   },
   "pointGrantClaimed": {
-    "message": "Alınan Puan Bağışları",
+    "message": "Puan Bağışları Talep Edildi",
     "description": "Title for point grant section in wallet summary"
   },
   "earningsAds": {
@@ -170,7 +170,7 @@
     "description": "Title for ads section in wallet summary"
   },
   "rewardsContribute": {
-    "message": "Otomatik Katkı",
+    "message": "Otomatik-Katkı",
     "description": "Title for auto contribute section in wallet summary"
   },
   "oneTimeDonation": {
@@ -194,7 +194,7 @@
     "description": "Used in notification to dismiss notification"
   },
   "braveAdsLaunchMsg": {
-    "message": "Şimdi reklam izleyerek kazanabilirsin.",
+    "message": "Artık reklam görüntüleyerek kazanabilirsiniz.",
     "description": "Message for ads launch notification"
   },
   "braveAdsTitle": {
@@ -244,7 +244,7 @@
     "description": "Title for insufficient funds notification"
   },
   "braveRewardsCreatingText": {
-    "message": "Cüzdan oluşturuluyor",
+    "message": "Cüzdan oluşturmak",
     "description": "Used in a button displaying wallet creation process"
   },
   "contributeNotificationError": {
@@ -316,7 +316,7 @@
     "description": "Notice about unverified publisher."
   },
   "unVerifiedTextMore": {
-    "message": "Daha fazla bilgi edinin. ",
+    "message": "Learn more.",
     "description": "Text for the link that explains more about reserved amount"
   },
   "reservedAmountText": {
@@ -324,7 +324,7 @@
     "description": "Notification about how much BAT do you have reserved"
   },
   "reservedMoreLink": {
-    "message": "Daha fazla bilgi edinin. ",
+    "message": "Learn more.",
     "description": "Text for the link that explains more about reserved amount"
   },
   "disabledPanelOff": {
@@ -348,7 +348,7 @@
     "description": "Failure title for wallet creation"
   },
   "walletFailedButton": {
-    "message": "Tekrar dene",
+    "message": "Yeniden dene",
     "description": "Button for re-try after wallet creation failed"
   },
   "addFunds": {
@@ -380,7 +380,7 @@
     "description": "Subtitle for wallet disabled panel"
   },
   "privacyPolicy": {
-    "message": "Gizlilik Politikası",
+    "message": "Gizlilik Şartları",
     "description": "Privacy Policy"
   },
   "serviceText": {
@@ -392,7 +392,7 @@
     "description": "Terms of Service"
   },
   "welcomeBack": {
-    "message": "Tekrar Hoşgeldiniz!",
+    "message": "Welcome Back!",
     "description": "Title message for wallet disabled panel"
   },
   "tipsProcessedNotification": {
@@ -416,7 +416,7 @@
     "description": "BAT Points abbreviation text"
   },
   "turnOnAds": {
-    "message": "Reklamları aç",
+    "message": "Reklamları Etkinleştir",
     "description": "Prompt to turn on Ads via notification"
   },
   "adsEarnings": {
@@ -462,7 +462,7 @@
     "description": "Notification text that tells user his wallet is under funded for pending contribution to complete"
   },
   "pendingContributionTitle": {
-    "message": "Beklenen Destek",
+    "message": "Beklenen Katkı",
     "description": "Notification title for pending contribution type"
   },
   "grantFinishTitleUGP": {
@@ -626,5 +626,21 @@
   "walletVerificationNote3":  {
     "message": "Not: Yetki verdiğinizde işlemleriniz Uphold'a görünür olacak; örneğin, alıcıyı ve bahşişlerinizin miktarını görebilecekler.",
     "description": "Displayed in login modal for uphold"
+  },
+  "onboardingEarnHeader": {
+    "message": "Jeton Kazanın ve Geri Verin",
+    "description": ""
+  },
+  "onboardingEarnText": {
+    "message": "Gizlilik kurallarına uyan reklamları görüntüleyerek jeton kazanın ve favori sitelerinizi ve içerik üreticilerini otomatik olarak destekleyin.",
+    "description": ""
+  },
+  "onboardingStartUsingRewards": {
+    "message": "Brave Ödülleri'ni kullanmaya Başla",
+    "description": ""
+  },
+  "onboardingTerms": {
+    "message": "Devam ederek, $$1Hizmet Şartları'nı$$2 ve $$3Gizlilik Politikası'nı$$4 kabul etmiş olursunuz.",
+    "description": ""
   }
 }
