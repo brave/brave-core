@@ -22,7 +22,6 @@ class BraveCosmeticResourcesTabHelper
       public base::SupportsWeakPtr<BraveCosmeticResourcesTabHelper> {
  public:
   static std::string* observing_script_;
-  static std::string* observing_pump_script_;
   static std::vector<std::string> vetted_search_engines_;
 
   explicit BraveCosmeticResourcesTabHelper(content::WebContents* contents);

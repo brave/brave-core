@@ -46,8 +46,7 @@ std::vector<std::string>
 // (e.g., static const auto& impl = *new T(args...);).
 std::string* BraveCosmeticResourcesTabHelper::observing_script_ =
     new std::string("");
-std::string* BraveCosmeticResourcesTabHelper::observing_pump_script_ =
-    new std::string("");
+
 
 namespace {
 
@@ -171,10 +170,6 @@ BraveCosmeticResourcesTabHelper::BraveCosmeticResourcesTabHelper(
   if (BraveCosmeticResourcesTabHelper::observing_script_->empty()) {
     *BraveCosmeticResourcesTabHelper::observing_script_ =
         LoadDataResource(IDR_COSMETIC_FILTERS_SCRIPT);
-  }
-  if (BraveCosmeticResourcesTabHelper::observing_pump_script_->empty()) {
-    *BraveCosmeticResourcesTabHelper::observing_pump_script_ =
-        LoadDataResource(IDR_COSMETIC_FILTERS_PUMP_SCRIPT);
   }
 }
 
@@ -333,7 +328,7 @@ void BraveCosmeticResourcesTabHelper::CSSRulesRoutine(
       return;
     frame_host->ExecuteJavaScriptInIsolatedWorld(
         base::UTF8ToUTF16(
-            *BraveCosmeticResourcesTabHelper::observing_pump_script_),
+            *BraveCosmeticResourcesTabHelper::observing_script_),
         base::NullCallback(), ISOLATED_WORLD_ID_CHROME_INTERNAL);
   }
 }
@@ -398,7 +393,7 @@ void BraveCosmeticResourcesTabHelper::GetHiddenClassIdSelectorsOnUI(
       return;
     frame_host->ExecuteJavaScriptInIsolatedWorld(
         base::UTF8ToUTF16(
-            *BraveCosmeticResourcesTabHelper::observing_pump_script_),
+            *BraveCosmeticResourcesTabHelper::observing_script_),
         base::NullCallback(), ISOLATED_WORLD_ID_CHROME_INTERNAL);
   }
 }
