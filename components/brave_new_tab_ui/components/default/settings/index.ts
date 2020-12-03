@@ -333,6 +333,9 @@ export const SettingsWidget = styled<{}, 'div'>('div')`
   width: calc(50% - var(--widget-gap));
   margin-top: calc(20px - var(--widget-gap));
   padding: 0px 1px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
 `
 
 export const StyledWidgetSettings = styled('div')`
@@ -356,6 +359,7 @@ export const StyledBannerImage = styled<{}, 'img'>('img')`
 export const StyledSettingsInfo = styled<{}, 'div'>('div')`
   float: left;
   max-width: 250px;
+  flex-grow: 1;
 `
 
 export const StyledSettingsTitle = styled<{}, 'div'>('div')`
@@ -384,9 +388,12 @@ export const StyledWidgetToggle = styled<WidgetToggleProps, 'button'>('button')`
   float: ${p => p.float ? 'right' : 'none'};
   margin-right: ${p => p.float ? 10 : 0}px;
   border: none;
-  margin-top: 8px;
+  margin-top: 15px;
   cursor: pointer;
   background: ${p => p.isAdd ? '#FB542B' : isDarkTheme(p) ? '#5E6175' : '#212529'};
+  width: fit-content;
+  display: flex;
+  align-items: center;
 
   &:focus-visible {
     outline-style: solid;
@@ -397,17 +404,25 @@ export const StyledWidgetToggle = styled<WidgetToggleProps, 'button'>('button')`
 
 export const StyledButtonIcon = styled<{}, 'div'>('div')`
   display: inline-block;
-  vertical-align: sub;
   margin-right: 5px;
-  height: 20px;
-  width: 20px;
+  width: 19px;
+  height: 17px;
+`
+
+export const StyledAddButtonIcon = styled(StyledButtonIcon)`
+  width: 19px;
+  height: 19px;
+`
+
+export const StyledHideButtonIcon = styled(StyledButtonIcon)`
+  width: 19px;
+  height: 17px;
 `
 
 export const StyledButtonLabel = styled<{}, 'span'>('span')`
   max-width: 100px;
   text-overflow: ellipsis;
   display: inline-block;
-  overflow: hidden;
   white-space: nowrap;
 `
 
