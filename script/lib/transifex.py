@@ -214,7 +214,7 @@ def validate_tags_in_one_string(string_tag):
         string_xml = lxml.etree.fromstring('<string>' + string_text + '</string>')
     except lxml.etree.XMLSyntaxError as e:
         errors = ("\n--------------------\n"
-                  "{0}\nERROR: {1}\n").format(string_text, str(e))
+                  "{0}\nERROR: {1}\n").format(string_text.encode('utf-8'), str(e))
         print errors
         cont = raw_input('Enter C to ignore and continue. Enter anything else to exit : ')
         if cont == 'C' or cont == 'c':
