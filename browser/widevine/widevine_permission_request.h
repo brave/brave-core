@@ -17,8 +17,8 @@ class WebContents;
 
 class WidevinePermissionRequest : public permissions::PermissionRequest {
  public:
-  explicit WidevinePermissionRequest(content::WebContents* web_contents,
-                                     bool for_restart);
+  WidevinePermissionRequest(content::WebContents* web_contents,
+                            bool for_restart);
   ~WidevinePermissionRequest() override;
 
   base::string16 GetExplanatoryMessageText() const;

@@ -45,7 +45,7 @@ void ReloadIfActive(content::WebContents* web_contents) {
 }  // namespace
 
 // static
-char BraveDrmTabHelper::kWidevineComponentId[] =
+const char BraveDrmTabHelper::kWidevineComponentId[] =
     "oimompecagnajdejgnnjijobebaeigek";
 
 BraveDrmTabHelper::BraveDrmTabHelper(content::WebContents* contents)

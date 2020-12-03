@@ -43,8 +43,9 @@ void OnDeletedOldWidevineBinary(bool result) {
 
 bool DoDeleteOldWidevineBinary() {
   base::FilePath widevine_base_path;
-  CHECK(base::PathService::Get(chrome::DIR_USER_DATA,
-                               &widevine_base_path));
+  if (!base::PathService::Get(chrome::DIR_USER_DATA, &widevine_base_path))
+    return false;
+
   widevine_base_path =
       widevine_base_path.AppendASCII(kWidevineCdmBaseDirectory);
   const base::FilePath manifest_file_path =
@@ -139,9 +140,8 @@ void MigrateWidevinePrefs(Profile* profile) {
 
 void RegisterWidevineLocalstatePrefsForMigration(PrefRegistrySimple* registry) {
 #if defined(OS_LINUX)
-  registry->RegisterStringPref(
-      kWidevineInstalledVersion,
-      kWidevineInvalidVersion);
+  registry->RegisterStringPref(kWidevineInstalledVersion,
+                               kWidevineInvalidVersion);
 #endif
 }
 
