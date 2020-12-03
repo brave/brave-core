@@ -47,7 +47,6 @@ const handleWidgetPrefsChange = (state: NewTab.State, oldState: NewTab.State): N
     'binance': 'showBinance',
     'together': 'showTogether',
     'gemini': 'showGemini',
-    'bitcoinDotCom': 'showBitcoinDotCom',
     'cryptoDotCom': 'showCryptoDotCom'
   }
 

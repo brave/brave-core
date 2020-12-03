@@ -16,7 +16,6 @@ import {
   TogetherWidget as Together,
   BinanceWidget as Binance,
   GeminiWidget as Gemini,
-  BitcoinDotComWidget as BitcoinDotCom,
   CryptoDotComWidget as CryptoDotCom,
   EditCards
 } from '../../components/default'
@@ -58,7 +57,6 @@ interface Props {
   saveShowTogether: (value: boolean) => void
   saveShowBinance: (value: boolean) => void
   saveShowGemini: (value: boolean) => void
-  saveShowBitcoinDotCom: (value: boolean) => void
   saveShowCryptoDotCom: (value: boolean) => void
   saveBrandedWallpaperOptIn: (value: boolean) => void
   onReadBraveTodayIntroCard: () => any
@@ -269,10 +267,6 @@ class NewTabPage extends React.Component<Props, State> {
     }
   }
 
-  toggleShowBitcoinDotCom = () => {
-    this.props.saveShowBitcoinDotCom(!this.props.newTabData.showBitcoinDotCom)
-  }
-
   toggleShowCryptoDotCom = () => {
     this.props.saveShowCryptoDotCom(!this.props.newTabData.showCryptoDotCom)
   }
@@ -343,14 +337,6 @@ class NewTabPage extends React.Component<Props, State> {
     } else {
       window.open(`https://www.binance.com/en/buy-sell-crypto?fiat=${fiat}&crypto=${coin}&amount=${amount}&${refParams}`, '_blank', 'noopener')
     }
-  }
-
-  onBuyBitcoinDotComCrypto = () => {
-    this.props.actions.buyBitcoinDotComCrypto()
-  }
-
-  onInteractionBitcoinDotCom = () => {
-    this.props.actions.interactionBitcoinDotCom()
   }
 
   onBinanceUserTLD = (userTLD: NewTab.BinanceTLD) => {
@@ -664,9 +650,7 @@ class NewTabPage extends React.Component<Props, State> {
       showBinance,
       showTogether,
       showGemini,
-      showBitcoinDotCom,
       geminiSupported,
-      bitcoinDotComSupported,
       showCryptoDotCom,
       cryptoDotComSupported,
       binanceSupported
@@ -687,10 +671,6 @@ class NewTabPage extends React.Component<Props, State> {
       'gemini': {
         display: showGemini && geminiSupported,
         render: this.renderGeminiWidget.bind(this)
-      },
-      'bitcoinDotCom': {
-        display: showBitcoinDotCom && bitcoinDotComSupported,
-        render: this.renderBitcoinDotComWidget.bind(this)
       },
       'cryptoDotCom': {
         display: showCryptoDotCom && cryptoDotComSupported,
@@ -722,8 +702,6 @@ class NewTabPage extends React.Component<Props, State> {
       showTogether,
       geminiSupported,
       showGemini,
-      showBitcoinDotCom,
-      bitcoinDotComSupported,
       showCryptoDotCom,
       cryptoDotComSupported,
       binanceSupported
@@ -733,7 +711,6 @@ class NewTabPage extends React.Component<Props, State> {
       togetherSupported && showTogether,
       binanceSupported && showBinance,
       geminiSupported && showGemini,
-      showBitcoinDotCom && bitcoinDotComSupported,
       cryptoDotComSupported && showCryptoDotCom
     ].every((widget: boolean) => !widget)
   }
@@ -744,7 +721,6 @@ class NewTabPage extends React.Component<Props, State> {
     this.props.saveShowBinance(show)
     this.props.saveShowGemini(show)
     this.props.saveShowCryptoDotCom(show)
-    this.props.saveShowBitcoinDotCom(show)
   }
 
   renderCryptoContent () {
@@ -923,35 +899,6 @@ class NewTabPage extends React.Component<Props, State> {
         onCancelDisconnect={this.cancelGeminiDisconnect}
         onDisconnectGemini={this.disconnectGemini}
         onDismissAuthInvalid={this.dismissGeminiAuthInvalid}
-      />
-    )
-  }
-
-  renderBitcoinDotComWidget (showContent: boolean, position: number) {
-    const { newTabData } = this.props
-    const { showBitcoinDotCom, bitcoinDotComSupported, textDirection } = newTabData
-
-    if (!showBitcoinDotCom || !bitcoinDotComSupported) {
-      return null
-    }
-
-    return(
-      <BitcoinDotCom
-        isCrypto={true}
-        paddingType={'none'}
-        isCryptoTab={!showContent}
-        menuPosition={'left'}
-        widgetTitle={'Bitcoin.com'}
-        isForeground={showContent}
-        stackPosition={position}
-        textDirection={textDirection}
-        preventFocus={false}
-        hideWidget={this.toggleShowBitcoinDotCom}
-        showContent={showContent}
-        onShowContent={this.setForegroundStackWidget.bind(this, 'bitcoinDotCom')}
-        onBuyCrypto={this.onBuyBitcoinDotComCrypto}
-        onInteraction={this.onInteractionBitcoinDotCom}
-        lightWidget={showContent}
       />
     )
   }
@@ -1160,9 +1107,6 @@ class NewTabPage extends React.Component<Props, State> {
           cryptoDotComSupported={newTabData.cryptoDotComSupported}
           toggleShowCryptoDotCom={this.toggleShowCryptoDotCom}
           showGemini={newTabData.showGemini}
-          bitcoinDotComSupported={newTabData.bitcoinDotComSupported}
-          showBitcoinDotCom={newTabData.showBitcoinDotCom}
-          toggleShowBitcoinDotCom={this.toggleShowBitcoinDotCom}
           todayPublishers={this.props.todayData.publishers}
           cardsHidden={this.allWidgetsHidden()}
           toggleCards={this.toggleAllCards}

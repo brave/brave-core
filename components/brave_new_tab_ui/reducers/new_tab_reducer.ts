@@ -46,7 +46,6 @@ export const newTabReducer: Reducer<NewTab.State | undefined> = (state: NewTab.S
         ...initialDataPayload.torTabData,
         togetherSupported: initialDataPayload.togetherSupported,
         geminiSupported: initialDataPayload.geminiSupported,
-        bitcoinDotComSupported: initialDataPayload.bitcoinDotComSupported,
         cryptoDotComSupported: initialDataPayload.cryptoDotComSupported,
         binanceSupported: initialDataPayload.binanceSupported
       }

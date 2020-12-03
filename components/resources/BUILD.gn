@@ -3,7 +3,6 @@ import("//brave/components/brave_rewards/browser/buildflags/buildflags.gni")
 import("//brave/components/brave_wallet/buildflags/buildflags.gni")
 import("//brave/components/crypto_dot_com/browser/buildflags/buildflags.gni")
 import("//brave/components/ipfs/buildflags/buildflags.gni")
-import("//brave/components/moonpay/browser/buildflags/buildflags.gni")
 import("//brave/components/speedreader/buildflags.gni")
 import("//brave/components/tor/buildflags/buildflags.gni")
 import("//build/config/locales.gni")
@@ -44,7 +43,6 @@ grit("static_resources") {
     "enable_brave_perf_predictor=$enable_brave_perf_predictor",
     "enable_speedreader=$enable_speedreader",
     "ipfs_enabled=$ipfs_enabled",
-    "moonpay_enabled=$moonpay_enabled",
     "crypto_dot_com_enabled=$crypto_dot_com_enabled",
   ]
 
@@ -105,7 +103,6 @@ grit("strings") {
   defines = [
     "enable_speedreader=$enable_speedreader",
     "ipfs_enabled=$ipfs_enabled",
-    "moonpay_enabled=$moonpay_enabled",
     "crypto_dot_com_enabled=$crypto_dot_com_enabled",
     "enable_tor=$enable_tor",
   ]

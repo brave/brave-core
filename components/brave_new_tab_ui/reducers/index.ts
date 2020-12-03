@@ -12,7 +12,6 @@ import gridSitesReducer from './grid_sites_reducer'
 import binanceReducer from './binance_reducer'
 import rewardsReducer from './rewards_reducer'
 import geminiReducer from './gemini_reducer'
-import bitcoinDotComReducer from './bitcoin_dot_com_reducer'
 import cryptoDotComReducer from './cryptoDotCom_reducer'
 import { stackWidgetReducer } from './stack_widget_reducer'
 import todayReducer, { BraveTodayState } from './today'
@@ -31,7 +30,6 @@ export const newTabReducers = (state: NewTab.State | undefined, action: any) => 
   state = binanceReducer(state, action)
   state = rewardsReducer(state, action)
   state = geminiReducer(state, action)
-  state = bitcoinDotComReducer(state, action)
   state = cryptoDotComReducer(state, action)
   state = stackWidgetReducer(state, action)
 

@@ -1,5 +1,0 @@
-import("//build/config/features.gni")
-
-declare_args() {
-  moonpay_enabled = false
-}

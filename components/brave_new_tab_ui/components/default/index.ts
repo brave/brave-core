@@ -12,7 +12,6 @@ import { RewardsWidget } from './rewards'
 import { BinanceWidget } from './binance'
 import { TogetherWidget } from './together'
 import { GeminiWidget } from './gemini'
-import { BitcoinDotComWidget } from './bitcoinDotCom'
 import { CryptoDotComWidget } from './cryptoDotCom'
 import EditCards from './editCards'
 import createWidget from './widget'
@@ -36,7 +35,6 @@ export {
   TogetherWidget,
   EditCards,
   GeminiWidget,
-  BitcoinDotComWidget,
   CryptoDotComWidget,
   createWidget
 }
