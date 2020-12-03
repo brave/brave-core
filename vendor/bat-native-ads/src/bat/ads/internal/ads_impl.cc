@@ -131,19 +131,20 @@ void AdsImpl::OnAdsSubdivisionTargetingCodeHasChanged() {
 
 void AdsImpl::OnPageLoaded(
     const int32_t tab_id,
-    const std::string& original_url,
-    const std::string& url,
+    const std::vector<std::string>& redirect_chain,
     const std::string& content) {
-  DCHECK(!original_url.empty());
-  DCHECK(!url.empty());
+  DCHECK(!redirect_chain.empty());
 
   if (!IsInitialized()) {
     return;
   }
 
+  const std::string original_url = redirect_chain.front();
+  const std::string url = redirect_chain.back();
+
   ad_transfer_->MaybeTransferAd(tab_id, original_url);
 
-  conversions_->MaybeConvert(url);
+  conversions_->MaybeConvert(redirect_chain);
 
   const base::Optional<TabInfo> last_visible_tab =
       TabManager::Get()->GetLastVisible();
