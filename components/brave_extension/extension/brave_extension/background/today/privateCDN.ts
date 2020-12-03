@@ -4,8 +4,8 @@
 // you can obtain one at http://mozilla.org/MPL/2.0/.
 
 export const URLS = {
-  braveTodayFeed: 'https://brave-today-cdn.bravesoftware.com/brave-today/feed.json',
-  braveTodayPublishers: 'https://brave-today-cdn.bravesoftware.com/sources.json'
+  braveTodayFeed: 'https://brave-today-cdn.brave.com/brave-today/feed.json',
+  braveTodayPublishers: 'https://brave-today-cdn.brave.com/sources.json'
 }
 
 export async function fetchResource (url: string) {
