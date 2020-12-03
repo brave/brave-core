@@ -13,8 +13,6 @@
     android:gravity="center"
     app:cardBackgroundColor="@color/brave_rewards_opt_in_bg_color"
     android:visibility="gone"
-    app:cardElevation="10dp"
-    app:cardUseCompatPadding="true"
     app:cardCornerRadius="8dp">
 
     <FrameLayout
@@ -24,7 +22,7 @@
 	    <LinearLayout
 	        android:layout_width="match_parent"
 	        android:layout_height="wrap_content"
-	        android:padding="16dp"
+	        android:padding="12dp"
 	        android:orientation="vertical">
 
 	        <TextView
@@ -43,7 +41,7 @@
 	        	android:id="@+id/brave_rewards_opt_in_text"
 	            android:layout_width="wrap_content"
 	            android:layout_height="wrap_content"
-	            android:layout_marginBottom="16dp"
+	            android:layout_marginBottom="12dp"
 	            android:layout_gravity="center"
 	            android:gravity="start|center_vertical"
 	            android:text="@string/brave_rewards_opt_in_text"
@@ -64,7 +62,7 @@
 	            android:paddingBottom="8dp"
 	            android:paddingStart="32dp"
 	            android:paddingEnd="32dp"
-	            android:layout_marginBottom="16dp"
+	            android:layout_marginBottom="8dp"
 	            android:textColor="@color/brave_rewards_modal_theme_color"
 	            style="?android:attr/borderlessButtonStyle"/>
 
@@ -74,7 +72,6 @@
 	            android:layout_height="wrap_content"
 	            android:layout_gravity="center_horizontal"
 	            android:gravity="center"
-	            android:layout_marginBottom="16dp"
 	            android:textSize="12sp"
 	            android:textStyle="bold"
 	            android:textColor="@color/brave_rewards_tos_color"/>
@@ -87,7 +84,7 @@
 	        android:layout_height="wrap_content"
 	        android:contentDescription="@null"
 	        android:layout_gravity="end|top"
-	        android:tint="@color/onboarding_text_color"
+	        android:tint="@color/brave_rewards_modal_close_button_color"
 	        android:padding="16dp"
 	        android:src="@drawable/btn_close"/>
 
