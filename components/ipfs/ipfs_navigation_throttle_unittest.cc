@@ -132,7 +132,7 @@ TEST_F(IpfsNavigationThrottleUnitTest, DeferUntilIpfsProcessLaunched) {
       "QmaCpDMGvV2BGHeYERUEnRQAwe3N8SzbUtfsmvsqQLuvuJ"};
 
   auto* service = ipfs_service(profile());
-  ASSERT_TRUE(service != nullptr);
+  ASSERT_TRUE(service);
   service->SetSkipGetConnectedPeersCallbackForTest(true);
 
   content::MockNavigationHandle test_handle(web_contents());

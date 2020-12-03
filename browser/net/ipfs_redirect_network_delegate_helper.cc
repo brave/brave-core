@@ -15,8 +15,10 @@ namespace ipfs {
 int OnBeforeURLRequest_IPFSRedirectWork(
     const brave::ResponseCallback& next_callback,
     std::shared_ptr<brave::BraveRequestInfo> ctx) {
-  if (!ctx->resolve_ipfs_enabled)
+  if (!ctx->browser_context ||
+      IsIpfsResolveMethodDisabled(ctx->browser_context)) {
     return net::OK;
+  }
 
   GURL new_url;
   if (ipfs::TranslateIPFSURI(ctx->request_url, &new_url,
