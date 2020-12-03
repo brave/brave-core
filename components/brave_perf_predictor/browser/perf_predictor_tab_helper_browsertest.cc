@@ -81,7 +81,7 @@ IN_PROC_BROWSER_TEST_F(PerfPredictorTabHelperTest, NoBlockNoSavings) {
 
   EXPECT_EQ(true, EvalJs(contents,
                          "addImage('logo.png');"
-                         "setExpectations(0, 0, 0, 0, 1, 0);"
+                         "setExpectations(0, 0, 1, 0);"
                          "xhr('analytics.js')"));
   // Prediction triggered when web contents are closed
   contents->Close();
@@ -100,7 +100,7 @@ IN_PROC_BROWSER_TEST_F(PerfPredictorTabHelperTest, ScriptBlockHasSavings) {
 
   EXPECT_EQ(true, EvalJs(contents,
                          "addImage('logo.png');"
-                         "setExpectations(0, 0, 0, 0, 0, 1);"
+                         "setExpectations(0, 0, 0, 1);"
                          "xhr('analytics.js')"));
 
   EXPECT_EQ(getProfileAdsBlocked(browser()), 1ULL);
@@ -121,7 +121,7 @@ IN_PROC_BROWSER_TEST_F(PerfPredictorTabHelperTest, NewNavigationStoresSavings) {
 
   EXPECT_EQ(true, EvalJs(contents,
                          "addImage('logo.png');"
-                         "setExpectations(0, 0, 0, 0, 0, 1);"
+                         "setExpectations(0, 0, 0, 1);"
                          "xhr('analytics.js')"));
   EXPECT_EQ(getProfileAdsBlocked(browser()), 1ULL);
   // Prediction triggered when web contents are closed
@@ -130,7 +130,7 @@ IN_PROC_BROWSER_TEST_F(PerfPredictorTabHelperTest, NewNavigationStoresSavings) {
   ui_test_utils::NavigateToURL(browser(), second_url);
   EXPECT_EQ(true, EvalJs(contents,
                          "addImage('logo.png');"
-                         "setExpectations(0, 0, 0, 0, 0, 1);"
+                         "setExpectations(0, 0, 0, 1);"
                          "xhr('analytics.js')"));
 
   auto previous_nav_savings = getProfileBandwidthSaved(browser());
