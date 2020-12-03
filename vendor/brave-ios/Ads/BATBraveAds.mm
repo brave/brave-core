@@ -460,7 +460,7 @@ BATClassAdsBridge(BOOL, isDebug, setDebug, _is_debug)
 {
   if (![self isAdsServiceRunning]) { return; }
   const auto urlString = base::SysNSStringToUTF8(url.absoluteString);
-  ads->OnPageLoaded((int32_t)tabId, urlString, urlString, base::SysNSStringToUTF8(text));
+  ads->OnPageLoaded((int32_t)tabId, { urlString }, base::SysNSStringToUTF8(text));
 }
 
 - (void)reportMediaStartedWithTabId:(NSInteger)tabId

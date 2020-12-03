@@ -10,6 +10,7 @@
 #include <memory>
 #include <string>
 #include <utility>
+#include <vector>
 
 #include "base/memory/weak_ptr.h"
 #include "brave/components/services/bat_ads/public/interfaces/bat_ads.mojom.h"
@@ -49,8 +50,7 @@ class BatAdsImpl :
 
   void OnPageLoaded(
       const int32_t tab_id,
-      const std::string& original_url,
-      const std::string& url,
+      const std::vector<std::string>& redirect_chain,
       const std::string& content) override;
 
   void OnUnIdle() override;

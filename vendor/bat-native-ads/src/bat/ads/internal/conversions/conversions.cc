@@ -85,7 +85,7 @@ void Conversions::Initialize(
 }
 
 void Conversions::MaybeConvert(
-    const std::string& url) {
+    const std::vector<std::string>& redirect_chain) {
   DCHECK(is_initialized_);
 
   if (!ShouldAllow()) {
@@ -93,12 +93,13 @@ void Conversions::MaybeConvert(
     return;
   }
 
+  const std::string url = redirect_chain.back();
   if (!DoesUrlHaveSchemeHTTPOrHTTPS(url)) {
     BLOG(1, "URL is not supported for conversions");
     return;
   }
 
-  CheckUrl(url);
+  CheckRedirectChain(redirect_chain);
 }
 
 void Conversions::StartTimerIfReady() {
@@ -124,8 +125,8 @@ bool Conversions::ShouldAllow() const {
       prefs::kShouldAllowConversionTracking);
 }
 
-void Conversions::CheckUrl(
-    const std::string& url) {
+void Conversions::CheckRedirectChain(
+    const std::vector<std::string>& redirect_chain) {
   BLOG(1, "Checking URL for conversions");
 
   database::table::AdEvents ad_events_database_table;
@@ -152,7 +153,8 @@ void Conversions::CheckUrl(
       }
 
       // Filter conversions by url pattern
-      ConversionList filtered_conversions = FilterConversions(url, conversions);
+      ConversionList filtered_conversions =
+          FilterConversions(redirect_chain, conversions);
 
       // Sort conversions in descending order
       filtered_conversions = SortConversions(filtered_conversions);
@@ -231,13 +233,23 @@ void Conversions::Convert(
 }
 
 ConversionList Conversions::FilterConversions(
-    const std::string& url,
+    const std::vector<std::string>& redirect_chain,
     const ConversionList& conversions) {
   ConversionList filtered_conversions = conversions;
 
   const auto iter = std::remove_if(filtered_conversions.begin(),
-      filtered_conversions.end(), [&url](const ConversionInfo& conversion) {
-    return !DoesUrlMatchPattern(url, conversion.url_pattern);
+      filtered_conversions.end(), [&redirect_chain](
+          const ConversionInfo& conversion) {
+    const auto iter = std::find_if(redirect_chain.begin(), redirect_chain.end(),
+        [&conversion](const std::string& url) {
+      return DoesUrlMatchPattern(url, conversion.url_pattern);
+    });
+
+    if (iter != redirect_chain.end()) {
+      return false;
+    }
+
+    return true;
   });
 
   filtered_conversions.erase(iter, filtered_conversions.end());

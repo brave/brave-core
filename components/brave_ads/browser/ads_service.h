@@ -96,8 +96,7 @@ class AdsService : public KeyedService {
 
   virtual void OnPageLoaded(
       const SessionID& tab_id,
-      const GURL& original_url,
-      const GURL& url,
+      const std::vector<GURL>& redirect_chain,
       const std::string& content) = 0;
 
   virtual void OnMediaStart(

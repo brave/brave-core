@@ -105,8 +105,7 @@ class AdsServiceImpl : public AdsService,
 
   void OnPageLoaded(
       const SessionID& tab_id,
-      const GURL& original_url,
-      const GURL& url,
+      const std::vector<GURL>& redirect_chain,
       const std::string& content) override;
 
   void OnMediaStart(

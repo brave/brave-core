@@ -8,6 +8,7 @@
 
 #include <deque>
 #include <string>
+#include <vector>
 
 #include "base/values.h"
 #include "bat/ads/ads.h"
@@ -37,7 +38,7 @@ class Conversions {
   bool ShouldAllow() const;
 
   void MaybeConvert(
-      const std::string& url);
+      const std::vector<std::string>& redirect_chain);
 
   void StartTimerIfReady();
 
@@ -51,14 +52,14 @@ class Conversions {
 
   Timer timer_;
 
-  void CheckUrl(
-      const std::string& url);
+  void CheckRedirectChain(
+      const std::vector<std::string>& redirect_chain);
 
   void Convert(
       const AdEventInfo& ad_event);
 
   ConversionList FilterConversions(
-      const std::string& url,
+      const std::vector<std::string>& redirect_chain,
       const ConversionList& conversions);
   ConversionList SortConversions(
       const ConversionList& conversions);
