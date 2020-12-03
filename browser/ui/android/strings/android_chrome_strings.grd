@@ -2230,6 +2230,9 @@ To change this setting, <ph name="BEGIN_LINK">&lt;resetlink&gt;</ph>reset sync<p
       <message name="IDS_PAGE_INFO_PREVIEW_LOAD_ORIGINAL" desc="This text, when clicked, loads the original page from its origin without any treatments. This text is shown in the page info bubble when the currently viewed page has been modified to be a lighter and faster version of the original page.">
         <ph name="BEGIN_LINK">&lt;link&gt;</ph>Load original page<ph name="END_LINK">&lt;/link&gt;</ph> from <ph name="DOMAIN_NAME">%1$s<ex>google.com</ex></ph>
       </message>
+      <message name="IDS_PAGE_INFO_CONNECTION_PAINT_PREVIEW" desc="Message to display in the page info bubble when viewing a preview of a page.">
+        You are viewing a preview of this page
+      </message>
 
       <!-- Sad tab page -->
       <message name="IDS_SAD_TAB_SUGGESTIONS" desc="The help message displayed on the sad tab page after a tab crashes.">
@@ -2957,13 +2960,10 @@ Data from your Private session will only be cleared from Brave when you <ph name
         Add to…
       </message>
       <message name="IDS_MENU_ADD_TO_DIALOG_TITLE" desc="Menu item for opening the 'Add to' dialog which can add the page to bookmarks, downloads, home screen, etc.">
-        Add to:
+        Add to
       </message>
-      <message name="IDS_MENU_ADD_TO_BOOKMARKS" desc="Menu item to save the web page to 'Bookmarks' section. The word 'Bookmarks' should match the translation in TC ID 1792806198663410166.">
-        Add to Bookmarks
-      </message>
-      <message name="IDS_MENU_ADD_TO_DOWNLOADS" desc="Menu item to download the current web page. The word 'Downloads' should match the translation in TC ID 9040361513231775562.">
-        Add to Downloads
+      <message name="IDS_MENU_HOMESCREEN" desc="Menu item for adding a shortcut to the Home screen (default title). [CHAR-LIMIT=27]">
+        Home screen
       </message>
 
       <!-- Bookmarks strings -->
@@ -3110,8 +3110,14 @@ Data from your Private session will only be cleared from Brave when you <ph name
           =1 {<ph name="READING_LIST_UNREAD_PAGE_COUNT_ONE">%1$d<ex>1</ex></ph> unread page}
           other {<ph name="READING_LIST_UNREAD_PAGE_COUNT_MANY">%1$d<ex>8</ex></ph> unread pages}}
       </message>
+      <message name="IDS_READING_LIST_NO_UNREAD_PAGES" desc="The text as reading list folder subtitle to inform the user that there is no reading list articles.">
+        No unread pages
+      </message>
       <message name="IDS_READING_LIST_INTRO_TEXT" desc="The text on the reading list in product help bubble and other UIs to introduce the feature to the user.">
         Save this page for later and get a reminder
+      </message>
+      <message name="IDS_READING_LIST_SAVE_PAGES_FOR_LATER" desc="The text on the reading list in product help bubble to introduce the feature to the user.">
+        Save pages for later and get a reminder
       </message>
       <message name="IDS_READING_LIST_FIND_IN_BOOKMARKS" desc="The text to inform the user to find the reading list in bookmarks UI.">
         Find your reading list in Bookmarks
