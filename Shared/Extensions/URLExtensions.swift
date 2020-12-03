@@ -452,6 +452,7 @@ extension URL {
 }
 
 // Helpers to deal with Peek and Pop
+
 extension URL {
     public var eligibleForPeekAndPop: Bool {
         let ignoredSchemes = ["about"]
@@ -499,6 +500,8 @@ extension URL {
     }
 }
 
+// Helper To deal with Bookmark URLs
+
 extension URL {
     public var isBookmarklet: Bool {
         return self.absoluteString.isBookmarklet
@@ -506,6 +509,14 @@ extension URL {
     
     public var bookmarkletCodeComponent: String? {
         return self.absoluteString.bookmarkletCodeComponent
+    }
+}
+
+// Helper To deal with File URLs
+
+extension URL {
+    public var isFileScheme: Bool {
+        return self.scheme == "file"
     }
 }
 

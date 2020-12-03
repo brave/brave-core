@@ -331,6 +331,8 @@ extension BrowserViewController: WKNavigationDelegate {
             } else {
                 tab.temporaryDocument = nil
             }
+            
+            tab.mimeType = response.mimeType
         }
 
         // If none of our helpers are responsible for handling this response,

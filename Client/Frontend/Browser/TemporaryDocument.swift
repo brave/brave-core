@@ -12,6 +12,9 @@ class TemporaryDocument: NSObject {
     private let request: URLRequest
     private let filename: String
 
+    fileprivate var session: URLSession?
+
+    fileprivate var downloadTask: URLSessionDownloadTask?
     private var localFileURL: URL?
     private var pendingResult: Deferred<URL>?
 
@@ -21,9 +24,14 @@ class TemporaryDocument: NSObject {
         self.tab = tab
 
         super.init()
+        
+        self.session = URLSession(configuration: .default, delegate: self, delegateQueue: temporaryDocumentOperationQueue)
     }
 
     deinit {
+        downloadTask?.cancel()
+        downloadTask = nil
+        
         // Delete the temp file.
         if let url = localFileURL {
             try? FileManager.default.removeItem(at: url)
@@ -43,6 +51,9 @@ class TemporaryDocument: NSObject {
 
         let result = Deferred<URL>()
         pendingResult = result
+        
+        downloadTask = session?.downloadTask(with: request)
+        downloadTask?.resume()
         
         if let tab = self.tab, let url = request.url {
             ResourceDownloadManager.downloadResource(for: tab, url: url)
