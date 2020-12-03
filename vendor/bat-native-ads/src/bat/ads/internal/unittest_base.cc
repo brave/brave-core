@@ -71,6 +71,13 @@ void UnitTestBase::FastForwardClockBy(
   task_environment_.FastForwardBy(time_delta);
 }
 
+void UnitTestBase::FastForwardClockTo(
+    const base::Time& time) {
+  const base::TimeDelta time_delta = time - base::Time::Now();
+
+  FastForwardClockBy(time_delta);
+}
+
 void UnitTestBase::AdvanceClockToMidnightUTC() {
   const base::TimeDelta time_delta = base::Time::Now().LocalMidnight() +
       base::TimeDelta::FromHours(24) - base::Time::Now();
@@ -92,6 +99,10 @@ void UnitTestBase::AdvanceClock(
 
 base::TimeDelta UnitTestBase::NextPendingTaskDelay() const {
   return task_environment_.NextMainThreadPendingTaskDelay();
+}
+
+size_t UnitTestBase::GetPendingTaskCount() const {
+  return task_environment_.GetPendingMainThreadTaskCount();
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -161,6 +172,10 @@ void UnitTestBase::Initialize() {
   tab_manager_ = std::make_unique<TabManager>();
 
   user_activity_ = std::make_unique<UserActivity>();
+
+  // Fast forward until no tasks remain to ensure "EnsureSqliteInitialized"
+  // tasks have fired before running tests
+  task_environment_.FastForwardUntilNoTasksRemain();
 }
 
 void UnitTestBase::InitializeAds() {
