@@ -27,8 +27,8 @@ def main(args):
   previous_cwd = os.getcwd()
   os.chdir(settings.GetRoot())
   try:
-      cmd = ['git', 'cl', 'format', '--full'] + args
-      git_cl.RunCommand(cmd)
+      cmd = ['cl', 'format', '--full'] + args
+      git_cl.RunGit(cmd)
   except:
     e = sys.exc_info()[1]
     print('Could not run format: %s' % e.message)
