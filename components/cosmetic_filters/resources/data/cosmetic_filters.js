@@ -37,6 +37,9 @@
   if (window.alreadyKnownFirstPartySubtrees === undefined) {
     window.alreadyKnownFirstPartySubtrees = new Set();
   }
+  if (window.alreadyUnhiddenSelectors === undefined) {
+    window.alreadyUnhiddenSelectors = new Set();
+  }
 
   const fetchNewClassIdRules = function () {
     if ((!notYetQueriedClasses || notYetQueriedClasses.length === 0) &&
