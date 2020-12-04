@@ -458,7 +458,7 @@
 <translation id="3808131693704413134">የመጀመሪያዎን የ ማስታወቂያዎች ክፍያ ከተቀበሉ በኋላ ተመልሰው መጥተው ለዚህ ፈጣሪ ጠቃሚ ምክር መስጠት ይችላሉ!</translation>
 <translation id="207242986925259074">ፈጣን የማደሻ ጉብኝት</translation>
 <translation id="8342862030112839977">የእርስዎ 1ኛ ሽልማት ክፍያ በሚከተለው ይደርሳል፥</translation>
-<translation id="3769645103175790584">በሚያስሱበት ጊዜ ማስመሰያዎች ያግኙ እና ለታላቅ ይዘት ፈጣሪዎች ሽልማት ይስጡ። <ph name="ፈጣን_ጉብኝት"/>.</translation>
+<translation id="3769645103175790584">በሚያስሱበት ጊዜ ማስመሰያዎች ያግኙ እና ለታላቅ ይዘት ፈጣሪዎች ሽልማት ይስጡ። <ph name="QUICK_TOUR"/>.</translation>
 <translation id="6912901278692845878">ፈጣን ጉብኝት</translation>
 <translation id="1080013038789678738">እኔ ገብቻለው!</translation>
 <translation id="3604285424134705930">እርስዎ <ph name="FROM_VALUE"/> <ph name="FROM_CURRENCY"/> to <ph name="TO_VALUE"/> <ph name="TO_CURRENCY"/>ለውጠዋል!</translation>
