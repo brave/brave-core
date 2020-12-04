@@ -4,14 +4,18 @@
 <dict>
 	<key>aps-environment</key>
 	<string>production</string>
+	<key>com.apple.developer.associated-domains</key>
+	<array>
+		<string>applinks:vpn.brave.com</string>
+	</array>
+	<key>com.apple.developer.nfc.readersession.formats</key>
+	<array>
+		<string>NDEF</string>
+		<string>TAG</string>
+	</array>
 	<key>com.apple.security.application-groups</key>
 	<array>
 		<string>group.$(MOZ_BUNDLE_ID).unique</string>
 	</array>
-        <key>com.apple.developer.nfc.readersession.formats</key>
-        <array>
-                <string>NDEF</string>
-                <string>TAG</string>
-        </array>
 </dict>
 </plist>

@@ -1034,23 +1034,30 @@ class BrowserViewController: UIViewController {
         }
         
         popup.enableVPNTapped = { [weak self] in
-            guard let vc = BraveVPN.vpnState.enableVPNDestinationVC else { return }
-            let nav = DismissableNavigationViewController(rootViewController: vc)
-            nav.navigationBar.topItem?.leftBarButtonItem =
-                .init(barButtonSystemItem: .cancel, target: nav, action: #selector(nav.dismissViewController))
-            
-            let idiom = UIDevice.current.userInterfaceIdiom
-            if #available(iOS 13.0, *) {
-                nav.modalPresentationStyle = idiom == .phone ? .pageSheet : .formSheet
-            } else {
-                nav.modalPresentationStyle = idiom == .phone ? .fullScreen : .formSheet
-            }
-            self?.present(nav, animated: true)
+            self?.presentCorrespondingVPNViewController()
         }
         
         present(popup, animated: false)
         
         showedPopup.value = true
+    }
+    
+    /// Shows a vpn screen based on vpn state.
+    func presentCorrespondingVPNViewController() {
+        guard let vc = BraveVPN.vpnState.enableVPNDestinationVC else { return }
+        let nav = SettingsNavigationController(rootViewController: vc)
+        nav.navigationBar.topItem?.leftBarButtonItem =
+            .init(barButtonSystemItem: .cancel, target: nav, action: #selector(nav.done))
+        let idiom = UIDevice.current.userInterfaceIdiom
+        
+        UIDevice.current.forcePortraitIfIphone(for: UIApplication.shared)
+        
+        if #available(iOS 13.0, *) {
+            nav.modalPresentationStyle = idiom == .phone ? .pageSheet : .formSheet
+        } else {
+            nav.modalPresentationStyle = idiom == .phone ? .fullScreen : .formSheet
+        }
+        present(nav, animated: true)
     }
 
     // THe logic for shouldShowWhatsNewTab is as follows: If we do not have the LatestAppVersionProfileKey in
