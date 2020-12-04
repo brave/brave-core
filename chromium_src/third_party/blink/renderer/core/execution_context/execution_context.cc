@@ -184,7 +184,7 @@ BraveSessionCache::PerturbPixelsInternal(
   std::unique_ptr<blink::ImageDataBuffer> data_buffer =
       blink::ImageDataBuffer::Create(image_bitmap);
   if (!data_buffer) {
-    return image_bitmap;
+    return nullptr;
   }
   uint8_t* pixels = const_cast<uint8_t*>(data_buffer->Pixels());
   // This needs to be type size_t because we pass it to base::StringPiece
