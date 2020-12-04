@@ -15,8 +15,9 @@
 
 #include "base/time/time.h"
 #include "bat/ads/ads.h"
-#include "bat/ads/internal/ad_targeting/behavioral/purchase_intent_classifier/purchase_intent_signal_history_info.h"
-#include "bat/ads/internal/ad_targeting/contextual/page_classifier/page_classifier.h"
+#include "bat/ads/internal/ad_serving/ad_targeting/models/purchase_intent/purchase_intent_signal_history_info.h"
+#include "bat/ads/internal/ad_serving/ad_targeting/models/text_classification/text_classification_model.h"
+#include "bat/ads/internal/ad_targeting/processors/text_classification/text_classification_processor.h"
 #include "bat/ads/internal/bundle/creative_ad_notification_info.h"
 #include "bat/ads/internal/client/client_info.h"
 #include "bat/ads/internal/client/preferences/filtered_ad_info.h"
@@ -96,10 +97,11 @@ class Client {
       const base::Time& next_check_serve_ad_date);
   base::Time GetNextAdServingInterval();
 
-  void AppendPageProbabilitiesToHistory(
-      const ad_targeting::contextual::PageProbabilitiesMap& page_probabilities);
-  const ad_targeting::contextual::PageProbabilitiesList&
-      GetPageProbabilitiesHistory();
+  void AppendTextClassificationProbabilitiesToHistory(
+      const ad_targeting::processor::TextClassificationProbabilitiesMap&
+          probabilities);
+  const ad_targeting::model::TextClassificationProbabilitiesList&
+      GetTextClassificationProbabilitiesHistory();
 
   void RemoveAllHistory();
 

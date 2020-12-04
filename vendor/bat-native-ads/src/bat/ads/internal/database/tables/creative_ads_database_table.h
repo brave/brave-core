@@ -45,16 +45,7 @@ class CreativeAds : public Table {
       DBCommand* command,
       const CreativeAdList& creative_ads);
 
-  void CreateTableV3(
-      DBTransaction* transaction);
-  void CreateIndexV3(
-      DBTransaction* transaction);
-  void MigrateToV3(
-      DBTransaction* transaction);
-
   void CreateTableV6(
-      DBTransaction* transaction);
-  void CreateIndexV6(
       DBTransaction* transaction);
   void MigrateToV6(
       DBTransaction* transaction);

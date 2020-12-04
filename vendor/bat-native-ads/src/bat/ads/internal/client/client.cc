@@ -412,20 +412,22 @@ base::Time Client::GetNextAdServingInterval() {
       client_->next_ad_serving_interval_timestamp_);
 }
 
-void Client::AppendPageProbabilitiesToHistory(
-    const ad_targeting::contextual::PageProbabilitiesMap& page_probabilities) {
-  client_->page_probabilities_history.push_front(page_probabilities);
+void Client::AppendTextClassificationProbabilitiesToHistory(
+    const ad_targeting::processor::TextClassificationProbabilitiesMap&
+        probabilities) {
+  client_->text_classification_probabilities.push_front(probabilities);
+
   const size_t maximum_entries = features::GetPageProbabilitiesHistorySize();
-  if (client_->page_probabilities_history.size() > maximum_entries) {
-    client_->page_probabilities_history.resize(maximum_entries);
+  if (client_->text_classification_probabilities.size() > maximum_entries) {
+    client_->text_classification_probabilities.resize(maximum_entries);
   }
 
   Save();
 }
 
-const ad_targeting::contextual::PageProbabilitiesList&
-Client::GetPageProbabilitiesHistory() {
-  return client_->page_probabilities_history;
+const ad_targeting::model::TextClassificationProbabilitiesList&
+Client::GetTextClassificationProbabilitiesHistory() {
+  return client_->text_classification_probabilities;
 }
 
 void Client::RemoveAllHistory() {

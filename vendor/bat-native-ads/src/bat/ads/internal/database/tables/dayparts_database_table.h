@@ -47,8 +47,6 @@ class Dayparts : public Table {
 
   void CreateTableV6(
       DBTransaction* transaction);
-  void CreateIndexV6(
-      DBTransaction* transaction);
   void MigrateToV6(
       DBTransaction* transaction);
 };

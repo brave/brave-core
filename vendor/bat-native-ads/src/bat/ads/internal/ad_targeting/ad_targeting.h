@@ -9,41 +9,21 @@
 #include <string>
 #include <vector>
 
+#include "bat/ads/internal/ad_serving/ad_targeting/models/model.h"
+
 namespace ads {
-
-namespace ad_targeting {
-
-namespace contextual {
-class PageClassifier;
-}  // namespace contextual
-
-namespace behavioral {
-class PurchaseIntentClassifier;
-}  // namespace behavioral
-
-}  // namespace ad_targeting
-
-using CategoryList = std::vector<std::string>;
 
 class AdTargeting {
  public:
-  AdTargeting(
-      ad_targeting::contextual::PageClassifier* page_classifier,
-      ad_targeting::behavioral::PurchaseIntentClassifier*
-          purchase_intent_classifier);
+  AdTargeting();
 
   ~AdTargeting();
 
-  CategoryList GetCategories() const;
+  SegmentList GetSegments() const;
 
  private:
-  CategoryList GetPageClassificationCategories() const;
-
-  CategoryList GetPurchaseIntentCategories() const;
-
-  ad_targeting::contextual::PageClassifier* page_classifier_;  // NOT OWNED
-  ad_targeting::behavioral::PurchaseIntentClassifier*
-      purchase_intent_classifier_;  // NOT OWNED
+  SegmentList GetTextClassificationSegments() const;
+  SegmentList GetPurchaseIntentSegments() const;
 };
 
 }  // namespace ads

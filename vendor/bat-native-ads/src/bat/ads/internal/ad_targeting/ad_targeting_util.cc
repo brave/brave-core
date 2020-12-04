@@ -11,32 +11,32 @@ namespace ads {
 namespace ad_targeting {
 
 namespace {
-const char kCategorySeparator[] = "-";
+const char kSegmentSeparator[] = "-";
 }  // namespace
 
-std::vector<std::string> SplitCategory(
-    const std::string& category) {
-  return base::SplitString(category, kCategorySeparator, base::KEEP_WHITESPACE,
+std::vector<std::string> SplitSegment(
+    const std::string& segment) {
+  return base::SplitString(segment, kSegmentSeparator, base::KEEP_WHITESPACE,
       base::SPLIT_WANT_ALL);
 }
 
-CategoryList GetParentCategories(
-    const CategoryList& categories) {
-  CategoryList parent_categories;
+SegmentList GetParentSegments(
+    const SegmentList& segments) {
+  SegmentList parent_segments;
 
-  for (const auto& category : categories) {
-    const std::vector<std::string> components = SplitCategory(category);
+  for (const auto& segment : segments) {
+    const std::vector<std::string> components = SplitSegment(segment);
 
-    const std::string parent_category = components.front();
-    if (std::find(parent_categories.begin(), parent_categories.end(),
-        parent_category) != parent_categories.end()) {
+    const std::string parent_segment = components.front();
+    if (std::find(parent_segments.begin(), parent_segments.end(),
+        parent_segment) != parent_segments.end()) {
       continue;
     }
 
-    parent_categories.push_back(parent_category);
+    parent_segments.push_back(parent_segment);
   }
 
-  return parent_categories;
+  return parent_segments;
 }
 
 }  // namespace ad_targeting

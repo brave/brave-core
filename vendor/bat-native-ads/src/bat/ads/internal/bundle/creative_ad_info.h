@@ -33,7 +33,7 @@ struct CreativeAdInfo {
   bool conversion = false;
   unsigned int per_day = 0;
   unsigned int total_max = 0;
-  std::string category;
+  std::string segment;
   std::vector<std::string> geo_targets;
   std::string target_url;
   std::vector<CreativeDaypartInfo> dayparts;

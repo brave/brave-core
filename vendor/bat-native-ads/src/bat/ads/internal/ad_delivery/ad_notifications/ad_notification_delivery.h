@@ -27,8 +27,8 @@ class AdDelivery {
   void ShowNotification(
       const AdNotificationInfo& ad);
 
-  void RecordAdImpressionForCategory(
-      const std::string& category);
+  void RecordAdImpressionForSegment(
+      const std::string& segment);
 };
 
 }  // namespace ad_notifications

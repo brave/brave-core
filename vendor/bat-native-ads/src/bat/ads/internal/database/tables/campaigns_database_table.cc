@@ -139,13 +139,6 @@ void Campaigns::CreateTableV3(
   transaction->commands.push_back(std::move(command));
 }
 
-void Campaigns::CreateIndexV3(
-    DBTransaction* transaction) {
-  DCHECK(transaction);
-
-  util::CreateIndex(transaction, get_table_name(), "campaign_id");
-}
-
 void Campaigns::MigrateToV3(
     DBTransaction* transaction) {
   DCHECK(transaction);
@@ -153,7 +146,6 @@ void Campaigns::MigrateToV3(
   util::Drop(transaction, get_table_name());
 
   CreateTableV3(transaction);
-  CreateIndexV3(transaction);
 }
 
 }  // namespace table

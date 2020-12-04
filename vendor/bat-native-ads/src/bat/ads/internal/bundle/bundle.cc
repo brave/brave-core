@@ -17,12 +17,12 @@
 #include "bat/ads/internal/catalog/catalog.h"
 #include "bat/ads/internal/catalog/catalog_creative_set_info.h"
 #include "bat/ads/internal/database/tables/campaigns_database_table.h"
-#include "bat/ads/internal/database/tables/categories_database_table.h"
 #include "bat/ads/internal/database/tables/conversions_database_table.h"
 #include "bat/ads/internal/database/tables/creative_ad_notifications_database_table.h"
 #include "bat/ads/internal/database/tables/creative_ads_database_table.h"
 #include "bat/ads/internal/database/tables/creative_new_tab_page_ads_database_table.h"
 #include "bat/ads/internal/database/tables/geo_targets_database_table.h"
+#include "bat/ads/internal/database/tables/segments_database_table.h"
 #include "bat/ads/internal/logging.h"
 #include "bat/ads/internal/platform/platform_helper.h"
 #include "bat/ads/result.h"
@@ -178,13 +178,13 @@ BundleState Bundle::FromCatalog(
             continue;
           }
 
-          info.category = segment_name;
+          info.segment = segment_name;
           creative_ad_notifications.push_back(info);
           entries++;
 
           auto top_level_segment_name = segment_name_hierarchy.front();
           if (top_level_segment_name != segment_name) {
-            info.category = top_level_segment_name;
+            info.segment = top_level_segment_name;
             creative_ad_notifications.push_back(info);
             entries++;
           }
@@ -260,13 +260,13 @@ BundleState Bundle::FromCatalog(
             continue;
           }
 
-          info.category = segment_name;
+          info.segment = segment_name;
           creative_new_tab_page_ads.push_back(info);
           entries++;
 
           auto top_level_segment_name = segment_name_hierarchy.front();
           if (top_level_segment_name != segment_name) {
-            info.category = top_level_segment_name;
+            info.segment = top_level_segment_name;
             creative_new_tab_page_ads.push_back(info);
             entries++;
           }
@@ -298,7 +298,7 @@ void Bundle::DeleteDatabaseTables() {
   DeleteCreativeAdNotifications();
   DeleteCreativeNewTabPageAds();
   DeleteCampaigns();
-  DeleteCategories();
+  DeleteSegments();
   DeleteCreativeAds();
   DeleteDayparts();
   DeleteGeoTargets();
@@ -343,16 +343,16 @@ void Bundle::DeleteCampaigns() {
   });
 }
 
-void Bundle::DeleteCategories() {
-  database::table::Categories database_table;
+void Bundle::DeleteSegments() {
+  database::table::Segments database_table;
   database_table.Delete([](
       const Result result) {
     if (result != SUCCESS) {
-      BLOG(0, "Failed to delete categories state");
+      BLOG(0, "Failed to delete segments state");
       return;
     }
 
-    BLOG(3, "Successfully deleted categories state");
+    BLOG(3, "Successfully deleted segments state");
   });
 }
 

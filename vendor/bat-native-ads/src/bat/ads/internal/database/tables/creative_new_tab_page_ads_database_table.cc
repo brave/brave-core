@@ -34,10 +34,10 @@ const int kDefaultBatchSize = 50;
 CreativeNewTabPageAds::CreativeNewTabPageAds()
     : batch_size_(kDefaultBatchSize),
       campaigns_database_table_(std::make_unique<Campaigns>()),
-      categories_database_table_(std::make_unique<Categories>()),
       creative_ads_database_table_(std::make_unique<CreativeAds>()),
       dayparts_database_table_(std::make_unique<Dayparts>()),
-      geo_targets_database_table_(std::make_unique<GeoTargets>()) {
+      geo_targets_database_table_(std::make_unique<GeoTargets>()),
+      segments_database_table_(std::make_unique<Segments>()) {
 }
 
 CreativeNewTabPageAds::~CreativeNewTabPageAds() = default;
@@ -59,15 +59,13 @@ void CreativeNewTabPageAds::Save(
     InsertOrUpdate(transaction.get(), batch);
 
     std::vector<CreativeAdInfo> creative_ads(batch.begin(), batch.end());
-    campaigns_database_table_->InsertOrUpdate(
-        transaction.get(), creative_ads);
-    categories_database_table_->InsertOrUpdate(
-        transaction.get(), creative_ads);
+    campaigns_database_table_->InsertOrUpdate(transaction.get(), creative_ads);
     creative_ads_database_table_->InsertOrUpdate(
         transaction.get(), creative_ads);
     dayparts_database_table_->InsertOrUpdate(transaction.get(), creative_ads);
     geo_targets_database_table_->InsertOrUpdate(
         transaction.get(), creative_ads);
+    segments_database_table_->InsertOrUpdate(transaction.get(), creative_ads);
   }
 
   AdsClientHelper::Get()->RunDBTransaction(std::move(transaction),
@@ -107,7 +105,7 @@ void CreativeNewTabPageAds::GetForCreativeInstanceId(
           "ca.conversion, "
           "ca.per_day, "
           "ca.total_max, "
-          "c.category, "
+          "s.segment, "
           "gt.geo_target, "
           "ca.target_url, "
           "can.company_name, "
@@ -119,8 +117,8 @@ void CreativeNewTabPageAds::GetForCreativeInstanceId(
       "FROM %s AS can "
           "INNER JOIN campaigns AS cam "
               "ON cam.campaign_id = can.campaign_id "
-          "INNER JOIN categories AS c "
-              "ON c.creative_set_id = can.creative_set_id "
+          "INNER JOIN segments AS s "
+              "ON s.creative_set_id = can.creative_set_id "
           "INNER JOIN creative_ads AS ca "
               "ON ca.creative_instance_id = can.creative_instance_id "
           "INNER JOIN geo_targets AS gt "
@@ -147,7 +145,7 @@ void CreativeNewTabPageAds::GetForCreativeInstanceId(
     DBCommand::RecordBindingType::BOOL_TYPE,    // conversion
     DBCommand::RecordBindingType::INT_TYPE,     // per_day
     DBCommand::RecordBindingType::INT_TYPE,     // total_max
-    DBCommand::RecordBindingType::STRING_TYPE,  // category
+    DBCommand::RecordBindingType::STRING_TYPE,  // segment
     DBCommand::RecordBindingType::STRING_TYPE,  // geo_target
     DBCommand::RecordBindingType::STRING_TYPE,  // target_url
     DBCommand::RecordBindingType::STRING_TYPE,  // company_name
@@ -166,11 +164,11 @@ void CreativeNewTabPageAds::GetForCreativeInstanceId(
           std::placeholders::_1, creative_instance_id, callback));
 }
 
-void CreativeNewTabPageAds::GetForCategories(
-    const CategoryList& categories,
+void CreativeNewTabPageAds::GetForSegments(
+    const SegmentList& segments,
     GetCreativeNewTabPageAdsCallback callback) {
-  if (categories.empty()) {
-    callback(Result::SUCCESS, categories, {});
+  if (segments.empty()) {
+    callback(Result::SUCCESS, segments, {});
     return;
   }
 
@@ -187,7 +185,7 @@ void CreativeNewTabPageAds::GetForCategories(
           "ca.conversion, "
           "ca.per_day, "
           "ca.total_max, "
-          "c.category, "
+          "s.segment, "
           "gt.geo_target, "
           "ca.target_url, "
           "can.company_name, "
@@ -199,18 +197,18 @@ void CreativeNewTabPageAds::GetForCategories(
       "FROM %s AS can "
           "INNER JOIN campaigns AS cam "
               "ON cam.campaign_id = can.campaign_id "
-          "INNER JOIN categories AS c "
-              "ON c.creative_set_id = can.creative_set_id "
+          "INNER JOIN segments AS s "
+              "ON s.creative_set_id = can.creative_set_id "
           "INNER JOIN creative_ads AS ca "
               "ON ca.creative_instance_id = can.creative_instance_id "
           "INNER JOIN geo_targets AS gt "
               "ON gt.campaign_id = can.campaign_id "
           "INNER JOIN dayparts AS dp "
               "ON dp.campaign_id = can.campaign_id "
-      "WHERE c.category IN %s "
+      "WHERE s.segment IN %s "
           "AND %s BETWEEN cam.start_at_timestamp AND cam.end_at_timestamp",
       get_table_name().c_str(),
-      BuildBindingParameterPlaceholder(categories.size()).c_str(),
+      BuildBindingParameterPlaceholder(segments.size()).c_str(),
       TimeAsTimestampString(base::Time::Now()).c_str());
 
   DBCommandPtr command = DBCommand::New();
@@ -218,8 +216,8 @@ void CreativeNewTabPageAds::GetForCategories(
   command->command = query;
 
   int index = 0;
-  for (const auto& category : categories) {
-    BindString(command.get(), index, base::ToLowerASCII(category));
+  for (const auto& segment : segments) {
+    BindString(command.get(), index, base::ToLowerASCII(segment));
     index++;
   }
 
@@ -235,7 +233,7 @@ void CreativeNewTabPageAds::GetForCategories(
     DBCommand::RecordBindingType::BOOL_TYPE,    // conversion
     DBCommand::RecordBindingType::INT_TYPE,     // per_day
     DBCommand::RecordBindingType::INT_TYPE,     // total_max
-    DBCommand::RecordBindingType::STRING_TYPE,  // category
+    DBCommand::RecordBindingType::STRING_TYPE,  // segment
     DBCommand::RecordBindingType::STRING_TYPE,  // geo_target
     DBCommand::RecordBindingType::STRING_TYPE,  // target_url
     DBCommand::RecordBindingType::STRING_TYPE,  // company_name
@@ -250,8 +248,8 @@ void CreativeNewTabPageAds::GetForCategories(
   transaction->commands.push_back(std::move(command));
 
   AdsClientHelper::Get()->RunDBTransaction(std::move(transaction),
-      std::bind(&CreativeNewTabPageAds::OnGetForCategories, this,
-          std::placeholders::_1, categories, callback));
+      std::bind(&CreativeNewTabPageAds::OnGetForSegments, this,
+          std::placeholders::_1, segments, callback));
 }
 
 void CreativeNewTabPageAds::GetAll(
@@ -269,7 +267,7 @@ void CreativeNewTabPageAds::GetAll(
           "ca.conversion, "
           "ca.per_day, "
           "ca.total_max, "
-          "c.category, "
+          "s.segment, "
           "gt.geo_target, "
           "ca.target_url, "
           "can.company_name, "
@@ -281,8 +279,8 @@ void CreativeNewTabPageAds::GetAll(
       "FROM %s AS can "
           "INNER JOIN campaigns AS cam "
               "ON cam.campaign_id = can.campaign_id "
-          "INNER JOIN categories AS c "
-              "ON c.creative_set_id = can.creative_set_id "
+          "INNER JOIN segments AS s "
+              "ON s.creative_set_id = can.creative_set_id "
           "INNER JOIN creative_ads AS ca "
               "ON ca.creative_instance_id = can.creative_instance_id "
           "INNER JOIN geo_targets AS gt "
@@ -309,7 +307,7 @@ void CreativeNewTabPageAds::GetAll(
     DBCommand::RecordBindingType::BOOL_TYPE,    // conversion
     DBCommand::RecordBindingType::INT_TYPE,     // per_day
     DBCommand::RecordBindingType::INT_TYPE,     // total_max
-    DBCommand::RecordBindingType::STRING_TYPE,  // category
+    DBCommand::RecordBindingType::STRING_TYPE,  // segment
     DBCommand::RecordBindingType::STRING_TYPE,  // geo_target
     DBCommand::RecordBindingType::STRING_TYPE,  // target_url
     DBCommand::RecordBindingType::STRING_TYPE,  // company_name
@@ -436,13 +434,13 @@ void CreativeNewTabPageAds::OnGetForCreativeInstanceId(
   callback(Result::SUCCESS, creative_instance_id, creative_new_tab_page_ad);
 }
 
-void CreativeNewTabPageAds::OnGetForCategories(
+void CreativeNewTabPageAds::OnGetForSegments(
     DBCommandResponsePtr response,
-    const CategoryList& categories,
+    const SegmentList& segments,
     GetCreativeNewTabPageAdsCallback callback) {
   if (!response || response->status != DBCommandResponse::Status::RESPONSE_OK) {
     BLOG(0, "Failed to get creative new tab page ads");
-    callback(Result::FAILED, categories, {});
+    callback(Result::FAILED, segments, {});
     return;
   }
 
@@ -455,7 +453,7 @@ void CreativeNewTabPageAds::OnGetForCategories(
     creative_new_tab_page_ads.push_back(creative_new_tab_page_ad);
   }
 
-  callback(Result::SUCCESS, categories, creative_new_tab_page_ads);
+  callback(Result::SUCCESS, segments, creative_new_tab_page_ads);
 }
 
 void CreativeNewTabPageAds::OnGetAll(
@@ -469,7 +467,7 @@ void CreativeNewTabPageAds::OnGetAll(
 
   CreativeNewTabPageAdList creative_new_tab_page_ads;
 
-  CategoryList categories;
+  SegmentList segments;
 
   for (const auto& record : response->result->get_records()) {
     const CreativeNewTabPageAdInfo creative_new_tab_page_ad =
@@ -477,14 +475,14 @@ void CreativeNewTabPageAds::OnGetAll(
 
     creative_new_tab_page_ads.push_back(creative_new_tab_page_ad);
 
-    categories.push_back(creative_new_tab_page_ad.category);
+    segments.push_back(creative_new_tab_page_ad.segment);
   }
 
-  std::sort(categories.begin(), categories.end());
-  const auto iter = std::unique(categories.begin(), categories.end());
-  categories.erase(iter, categories.end());
+  std::sort(segments.begin(), segments.end());
+  const auto iter = std::unique(segments.begin(), segments.end());
+  segments.erase(iter, segments.end());
 
-  callback(Result::SUCCESS, categories, creative_new_tab_page_ads);
+  callback(Result::SUCCESS, segments, creative_new_tab_page_ads);
 }
 
 CreativeNewTabPageAdInfo CreativeNewTabPageAds::GetFromRecord(
@@ -502,7 +500,7 @@ CreativeNewTabPageAdInfo CreativeNewTabPageAds::GetFromRecord(
   creative_new_tab_page_ad.conversion = ColumnBool(record, 8);
   creative_new_tab_page_ad.per_day = ColumnInt(record, 9);
   creative_new_tab_page_ad.total_max = ColumnInt(record, 10);
-  creative_new_tab_page_ad.category = ColumnString(record, 11);
+  creative_new_tab_page_ad.segment = ColumnString(record, 11);
   creative_new_tab_page_ad.geo_targets.push_back(ColumnString(record, 12));
   creative_new_tab_page_ad.target_url = ColumnString(record, 13);
   creative_new_tab_page_ad.company_name = ColumnString(record, 14);

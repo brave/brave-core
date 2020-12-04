@@ -47,8 +47,6 @@ class Campaigns : public Table {
 
   void CreateTableV3(
       DBTransaction* transaction);
-  void CreateIndexV3(
-      DBTransaction* transaction);
   void MigrateToV3(
       DBTransaction* transaction);
 };

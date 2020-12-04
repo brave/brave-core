@@ -19,7 +19,7 @@ bool AdInfo::IsValid() const {
       creative_instance_id.empty() ||
       creative_set_id.empty() ||
       campaign_id.empty() ||
-      category.empty() ||
+      segment.empty() ||
       target_url.empty()) {
     return false;
   }

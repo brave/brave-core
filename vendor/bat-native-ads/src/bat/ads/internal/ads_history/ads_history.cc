@@ -70,7 +70,7 @@ void AddAdNotification(
   ad_history.ad_content.brand_display_url = GetHostFromUrl(ad.target_url);
   ad_history.ad_content.brand_url = ad.target_url;
   ad_history.ad_content.ad_action = confirmation_type;
-  ad_history.category_content.category = ad.category;
+  ad_history.category_content.category = ad.segment;
 
   Client::Get()->AppendAdHistoryToAdsHistory(ad_history);
 }
@@ -92,7 +92,7 @@ void AddNewTabPageAd(
   ad_history.ad_content.brand_display_url = GetHostFromUrl(ad.target_url);
   ad_history.ad_content.brand_url = ad.target_url;
   ad_history.ad_content.ad_action = confirmation_type;
-  ad_history.category_content.category = ad.category;
+  ad_history.category_content.category = ad.segment;
 
   Client::Get()->AppendAdHistoryToAdsHistory(ad_history);
 }
