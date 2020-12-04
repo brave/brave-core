@@ -1,15 +1,19 @@
 import("//tools/grit/grit_rule.gni")
 import("//tools/grit/repack.gni")
+import("//brave/components/common/typescript.gni")
 
-grit("resources_cf") {
-  source = "cosmetic_filters_resources.grd"
-
-  outputs = [
-    "grit/cosmetic_filters_resources.h",
-    "cosmetic_filters_resources.pak",
+transpile_web_ui("cosmetic_filters_resources") {
+  entry_points = [
+    ["cosmetic_filters", rebase_path("cosmetic_filters.js")]
   ]
 
-  resource_ids = "//brave/browser/resources/resource_ids"
+  resource_name = "cosmetic_filters"
+}
 
-  output_dir = "$root_gen_dir/components/cosmetic_filters/resources"
+pack_web_resources("generated_resources") {
+  resource_name = "cosmetic_filters"
+  output_dir = "$root_gen_dir/brave/components/cosmetic_filters/resources"
+  deps = [
+    ":cosmetic_filters_resources"
+  ]
 }

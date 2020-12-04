@@ -24,7 +24,7 @@
 #include "content/public/browser/global_routing_id.h"
 #include "content/public/browser/navigation_handle.h"
 #include "content/public/renderer/render_frame.h"
-#include "components/cosmetic_filters/resources/grit/cosmetic_filters_resources.h"
+#include "brave/components/cosmetic_filters/resources/grit/cosmetic_filters_generated_map.h"
 #include "ui/base/resource/resource_bundle.h"
 
 std::vector<std::string>
@@ -169,7 +169,7 @@ BraveCosmeticResourcesTabHelper::BraveCosmeticResourcesTabHelper(
     enabled_1st_party_cf_filtering_(false) {
   if (BraveCosmeticResourcesTabHelper::observing_script_->empty()) {
     *BraveCosmeticResourcesTabHelper::observing_script_ =
-        LoadDataResource(IDR_COSMETIC_FILTERS_SCRIPT);
+        LoadDataResource(kCosmeticFiltersGenerated[0].value);
   }
 }
 
