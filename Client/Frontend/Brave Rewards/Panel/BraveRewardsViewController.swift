@@ -25,7 +25,7 @@ class BraveRewardsViewController: UIViewController, Themeable, PopoverContentCom
     private var ledgerObserver: LedgerObserver?
     private var publisher: PublisherInfo? {
         didSet {
-            let isVerified = publisher?.status == .verified
+            let isVerified = publisher?.status != .notVerified
             rewardsView.publisherView.learnMoreButton.isHidden = isVerified
             rewardsView.publisherView.hostLabel.attributedText = publisher?.attributedDisplayName(fontSize: BraveRewardsPublisherView.UX.hostLabelFontSize)
             rewardsView.publisherView.bodyLabel.text = isVerified ? Strings.Rewards.supportingPublisher : Strings.Rewards.unverifiedPublisher
