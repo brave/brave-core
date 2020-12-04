@@ -3,7 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#include "brave/components/brave_ads/browser/ads_tab_helper.h"
+#include "brave/browser/brave_ads/ads_tab_helper.h"
 
 #include <memory>
 #include <utility>
@@ -17,6 +17,7 @@
 #include "content/public/browser/navigation_handle.h"
 #include "content/public/browser/render_frame_host.h"
 #include "content/public/browser/web_contents.h"
+#include "content/public/common/user_agent.h"
 #include "ui/base/resource/resource_bundle.h"
 
 #if !defined(OS_ANDROID)
@@ -27,15 +28,20 @@
 
 namespace brave_ads {
 
-AdsTabHelper::AdsTabHelper(content::WebContents* web_contents)
+namespace {
+const char kBraveUserAgent = "Brave";
+}  // namespace
+
+AdsTabHelper::AdsTabHelper(
+    content::WebContents* web_contents)
     : WebContentsObserver(web_contents),
-      tab_id_(sessions::SessionTabHelper::IdForTab(web_contents)),
+      session_id_(sessions::SessionTabHelper::IdForTab(web_contents)),
       ads_service_(nullptr),
       is_active_(false),
       is_browser_active_(true),
       run_distiller_(false),
       weak_factory_(this) {
-  if (!tab_id_.is_valid()) {
+  if (!session_id_.is_valid()) {
     return;
   }
 
@@ -47,6 +53,7 @@ AdsTabHelper::AdsTabHelper(content::WebContents* web_contents)
   BrowserList::AddObserver(this);
   OnBrowserSetLastActive(BrowserList::GetInstance()->GetLastActive());
 #endif
+
   OnVisibilityChanged(web_contents->GetVisibility());
 }
 
@@ -69,7 +76,7 @@ void AdsTabHelper::TabUpdated() {
     return;
   }
 
-  ads_service_->OnTabUpdated(tab_id_, web_contents()->GetURL(),
+  ads_service_->OnTabUpdated(session_id_, web_contents()->GetURL(),
       is_active_, is_browser_active_);
 }
 
@@ -94,14 +101,42 @@ void AdsTabHelper::OnJavaScriptResult(
   std::string content;
   value.GetAsString(&content);
 
-  ads_service_->OnPageLoaded(tab_id_, original_url, url, content);
+  ads_service_->OnPageLoaded(session_id_, original_url, url, content);
+}
+
+void AdsTabHelper::UpdateUserAgent(
+    content::NavigationHandle* navigation_handle) {
+  // TODO(tmancey): Move to UserAgentOptInTabHelper or a pre-existing TabHelper
+  // if we do not need access to the ads service
+  if (!navigation_handle) {
+    return;
+  }
+
+  content::WebContents* web_contents = navigation_handle->GetWebContents();
+  if (!web_contents) {
+    return;
+  }
+
+
+  navigation_handle->SetIsOverridingUserAgent(true);
+
+  blink::UserAgentOverride ua_override;
+  // TODO(tmancey): Agree Brave user agent string format with product
+  ua_override.ua_string_override = kBraveUserAgent;
+  web_contents->SetUserAgentOverride(ua_override,
+      true /* override_in_new_tabs */);
+}
+
+void AdsTabHelper::DidStartNavigation(
+    content::NavigationHandle* navigation_handle) {
+  UpdateUserAgent(navigation_handle);
 }
 
 void AdsTabHelper::DidFinishNavigation(
     content::NavigationHandle* navigation_handle) {
   if (!navigation_handle->IsInMainFrame() ||
       !navigation_handle->HasCommitted() ||
-      !tab_id_.is_valid()) {
+      !session_id_.is_valid()) {
     return;
   }
 
@@ -160,7 +195,7 @@ void AdsTabHelper::MediaStartedPlaying(
     return;
   }
 
-  ads_service_->OnMediaStart(tab_id_);
+  ads_service_->OnMediaStart(session_id_);
 }
 
 void AdsTabHelper::MediaStoppedPlaying(
@@ -171,10 +206,11 @@ void AdsTabHelper::MediaStoppedPlaying(
     return;
   }
 
-  ads_service_->OnMediaStop(tab_id_);
+  ads_service_->OnMediaStop(session_id_);
 }
 
-void AdsTabHelper::OnVisibilityChanged(content::Visibility visibility) {
+void AdsTabHelper::OnVisibilityChanged(
+    content::Visibility visibility) {
   bool old_active = is_active_;
   if (visibility == content::Visibility::HIDDEN) {
     is_active_ = false;
@@ -196,13 +232,14 @@ void AdsTabHelper::WebContentsDestroyed() {
     return;
   }
 
-  ads_service_->OnTabClosed(tab_id_);
+  ads_service_->OnTabClosed(session_id_);
   ads_service_ = nullptr;
 }
 
 #if !defined(OS_ANDROID)
 // components/brave_ads/browser/background_helper_android.cc handles Android
-void AdsTabHelper::OnBrowserSetLastActive(Browser* browser) {
+void AdsTabHelper::OnBrowserSetLastActive(
+    Browser* browser) {
   if (!browser) {
     return;
   }
@@ -220,7 +257,8 @@ void AdsTabHelper::OnBrowserSetLastActive(Browser* browser) {
   TabUpdated();
 }
 
-void AdsTabHelper::OnBrowserNoLongerActive(Browser* browser) {
+void AdsTabHelper::OnBrowserNoLongerActive(
+    Browser* browser) {
   bool old_active = is_browser_active_;
   if (browser->tab_strip_model()->GetIndexOfWebContents(web_contents()) !=
       TabStripModel::kNoTab) {

@@ -38,13 +38,15 @@ namespace brave_ads {
 
 class AdsService;
 
-class AdsTabHelper : public content::WebContentsObserver,
+class AdsTabHelper
+    : public content::WebContentsObserver,
+      public content::WebContentsUserData<AdsTabHelper>,
 #if !defined(OS_ANDROID)
-                     public BrowserListObserver,
+      public BrowserListObserver {
 #endif
-                     public content::WebContentsUserData<AdsTabHelper> {
  public:
-  AdsTabHelper(content::WebContents*);
+  AdsTabHelper(
+      content::WebContents*);
   ~AdsTabHelper() override;
 
   AdsTabHelper(const AdsTabHelper&) = delete;
@@ -63,28 +65,38 @@ class AdsTabHelper : public content::WebContentsObserver,
   void OnJavaScriptResult(
       base::Value value);
 
+  void UpdateUserAgent(
+      content::NavigationHandle* navigation_handle);
+
   // content::WebContentsObserver overrides
+  void DidStartNavigation(
+      content::NavigationHandle* navigation_handle) override;
   void DidFinishNavigation(
       content::NavigationHandle* navigation_handle) override;
   void DocumentOnLoadCompletedInMainFrame() override;
-  void DidFinishLoad(content::RenderFrameHost* render_frame_host,
-                     const GURL& validated_url) override;
-  void MediaStartedPlaying(const MediaPlayerInfo& video_type,
-                           const content::MediaPlayerId& id) override;
+  void DidFinishLoad(
+      content::RenderFrameHost* render_frame_host,
+      const GURL& validated_url) override;
+  void MediaStartedPlaying(
+      const MediaPlayerInfo& video_type,
+      const content::MediaPlayerId& id) override;
   void MediaStoppedPlaying(
       const MediaPlayerInfo& video_type,
       const content::MediaPlayerId& id,
       WebContentsObserver::MediaStoppedReason reason) override;
-  void OnVisibilityChanged(content::Visibility visibility) override;
+  void OnVisibilityChanged(
+      content::Visibility visibility) override;
   void WebContentsDestroyed() override;
 
 #if !defined(OS_ANDROID)
   // BrowserListObserver overrides
-  void OnBrowserSetLastActive(Browser* browser) override;
-  void OnBrowserNoLongerActive(Browser* browser) override;
+  void OnBrowserSetLastActive(
+      Browser* browser) override;
+  void OnBrowserNoLongerActive(
+      Browser* browser) override;
 #endif
 
-  SessionID tab_id_;
+  SessionID session_id_;
   AdsService* ads_service_;  // NOT OWNED
   bool is_active_;
   bool is_browser_active_;
