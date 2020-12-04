@@ -27,7 +27,12 @@ void ComponentInstaller::Register(ComponentUpdateService* cus,
       "giekcmmlnklenlaomppkphknjmnnpneh",  // Certificate Error Assistant
       "jflookgnkcckhobaglndicnbbgbonegd",  // Safety Tips
       "llkgjffcdpffmhiakmfcdcblohccpfmo",  // Origin Trials
-      "ojhpjlocmbogdgmfpkhlaaeamibhnphh"   // Zxcvbn Data Dictionaries
+      "ojhpjlocmbogdgmfpkhlaaeamibhnphh",  // Zxcvbn Data Dictionaries
+#if defined(OS_ANDROID)
+      "hfnkpimlhhgieaddgfemjhofmfblmnib",  // CRLSet
+      "lmelglejhemejginpboagddgdfbepgmp",  // Optimization Hints
+      "obedbbhbpmojnkanicioggnmelmoomoc"   // OnDeviceHeadSuggest
+#endif
   });
   std::vector<uint8_t> hash;
   installer_policy_->GetHash(&hash);
