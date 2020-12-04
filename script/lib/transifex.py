@@ -258,7 +258,7 @@ def fix_links_with_target_blank_in_ph_text(text):
         return text[:target] + ' rel="noopener noreferrer"' + text[target:]
 
     rel += 5
-    rel_end = text[rel:].find('"')
+    rel_end = rel + text[rel:].find('"')
     rel_value = text[rel:rel_end]
     rel_add = ''
     if rel_value.find('noopener') == -1:
