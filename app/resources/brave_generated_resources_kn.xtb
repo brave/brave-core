@@ -8,6 +8,7 @@
 <translation id="5655621391922317800">Crypto ವ್ಯಾಲೆಟ್‌ಗಳು</translation>
 <translation id="2445484935443597917">ಹೊಸ ಪ್ರೊಫೈಲ್ ರಚಿಸಿ</translation>
 <translation id="2666990579225592931">ಅತಿಥಿ ವಿಂಡೋವನ್ನು ತೆರೆಯಿರಿ</translation>
+<translation id="8275068909952022340">ಇನ್ನಷ್ಟು…</translation>
 <translation id="120759863357279975"><ph name="EXTENSION_NAME"/> (ವಿಸ್ತರಣೆ ID "<ph name="EXTENSION_ID"/>") , ಇದು Brave ನಲ್ಲಿ ಅನುಮತಿಸಲಾಗಿಲ್ಲ.</translation>
 <translation id="6786747875388722282">ವಿಸ್ತರಣೆಗಳು</translation>
 <translation id="984275831282074731">ಪಾವತಿ ವಿಧಾನಗಳು</translation>
@@ -43,23 +44,20 @@
 <translation id="814018970995616154">Brave ನಲ್ಲಿ ಸಂಗ್ರಹಿಸಲಾಗಿರುವ ಅಸುರಕ್ಷಿತ ಸೈಟ್‌ಗಳ ಪಟ್ಟಿಯೊಂದಿಗೆ URL ಗಳನ್ನು ಪರಿಶೀಲಿಸುತ್ತದೆ.</translation>
 <translation id="1144810021918451336">ಅಪಾಯಕಾರಿ ವೆಬ್‌ಸೈಟ್‌ಗಳು, ಡೌನ್‌ಲೋಡ್‌ಗಳು ಮತ್ತು ವಿಸ್ತರಣೆಗಳ ವಿರುದ್ಧ ನಿಮ್ಮನ್ನು ರಕ್ಷಿಸುವುದಿಲ್ಲ.</translation>
 <translation id="7781069478569868053">ಹೊಸ ಟ್ಯಾಬ್ ಪುಟ</translation>
-<translation id="1717331825806276156">ಹಿನ್ನೆಲೆ ಚಿತ್ರಗಳು</translation>
-<translation id="1820041496463124489">ಪ್ರಾಯೋಜಿತ ಚಿತ್ರಗಳು</translation>
-<translation id="8173998484743827990">Brave ಅಂಕಿಅಂಶಗಳು</translation>
-<translation id="5551238871320268996">Brave Together</translation>
-<translation id="6966052266404721769">Binance</translation>
-<translation id="8533411848724153701">ಜೆಮಿನಿ</translation>
-<translation id="4643117005422448078">ಟಾಪ್ ಸೈಟ್‌ಗಳು</translation>
-<translation id="1776831331757823105">ಗಡಿಯಾರ</translation>
 <translation id="1988804048511540801">ಹೊಸ ಟ್ಯಾಬ್ ಪುಟ ತೋರಿಸುತ್ತದೆ</translation>
 <translation id="2970343821770026391">ಡ್ಯಾಶ್‌ಬೋರ್ಡ್</translation>
 <translation id="3719826155360621982">ಮುಖಪುಟ</translation>
 <translation id="5448570825852364919">ಖಾಲಿ ಪುಟ</translation>
+<translation id="5919424224662539292">ಹೊಸ ಟ್ಯಾಬ್ ಪುಟದಲ್ಲಿ ಗೋಚರಿಸುವ ಹಿನ್ನೆಲೆ ಚಿತ್ರ ಮತ್ತು ವಿಜೆಟ್‌ಗಳನ್ನು ಕಸ್ಟಮೈಸ್ ಮಾಡಿ</translation>
 <translation id="7965178729203412357">ಹೊಸ Tor ಗುರುತಿಸುವಿಕೆ</translation>
 <translation id="8511502469534942133">ಈ ಸೈಟ್‌ಗಾಗಿ ಹೊಸ Tor ಸಂಪರ್ಕ</translation>
-<translation id="8784924142044142231">Tor ನಿಂದ ನಿರ್ಗಮಿಸಿ</translation>
-<translation id="5410152065859052603">Tor</translation>
-<translation id="3696187925156352769">Tor ವಿಂಡೋ ತೆರೆಯಿರಿ</translation>
+<translation id="4734294903299549345">Tor ‌ನೊಂದಿಗೆ ಖಾಸಗಿ ವಿಂಡೋದಿಂದ ನಿರ್ಗಮಿಸಿ</translation>
+<translation id="8612763432858587652">ಖಾಸಗಿ ವಿಂಡೋದಿಂದ ನಿರ್ಗಮಿಸಿ</translation>
+<translation id="8760415064721320867">Tor ಜೊತೆಗೆ ಖಾಸಗಿ ವಿಂಡೋ</translation>
+<translation id="2055363275850890030">ಖಾಸಗಿ ವಿಂಡೋ</translation>
+<translation id="8934172355414207733">Tor ನೊಂದಿಗೆ ಖಾಸಗಿಯಾಗಿದೆ</translation>
+<translation id="1970435562892104727">ಇದು Tor ನೊಂದಿಗಿನ ಖಾಸಗಿ ವಿಂಡೋ ಆಗಿದೆ</translation>
+<translation id="1037341607922068025">Tor ನೊಂದಿಗೆ ಖಾಸಗಿ ವಿಂಡೊ ತೆರೆಯಿರಿ</translation>
 <translation id="1725356094208762656">Tor ತೆರೆಯಿರಿ</translation>
 <translation id="1672270084584211506">Onion ಲಭ್ಯವಿದೆ</translation>
 <translation id="1434416574322382019">Tor ಜೊತೆಗೆ ಹೊಸ ಖಾಸಗಿ ವಿಂಡೋ</translation>
@@ -68,6 +66,7 @@
 <translation id="6313675821927505581">Tor ಜೊತೆಗೆ ಹೊಸ ಖಾಸಗಿ ವಿಂಡೋ</translation>
 <translation id="2638041073279639246">Tor ಮೂಲಕ ಖಾಸಗಿ ವಿಂಡೋದಲ್ಲಿ ಲಿಂಕ್ ತೆರೆಯಿರಿ</translation>
 <translation id="3425600262621021599">Tor ಮೂಲಕ Brave ಖಾಸಗಿ ವಿಂಡೋದಲ್ಲಿ ಲಿಂಕ್ ತೆರೆಯಿರಿ</translation>
+<translation id="5410152065859052603">Tor</translation>
 <translation id="2515126961943087659">Bat ಜಾಹೀರಾತುಗಳ ಸೇವೆ</translation>
 <translation id="7924918279836988121">Bat Ledger ಸೇವೆ</translation>
 <translation id="4472575034687746823">ಪ್ರಾರಂಭ</translation>
@@ -235,6 +234,7 @@
 <translation id="8428213095426709021">ಸೆಟ್ಟಿಂಗ್‌ಗಳು</translation>
 <translation id="1854270995641373652">Brave ನಲ್ಲಿ IPFS ಸ್ಥಳೀಯ ಡೇಮನ್ ಬೆಂಬಲವನ್ನು ಸಕ್ರಿಯಗೊಳಿಸಲು ನೀವು ಬಯಸುವಿರಾ?</translation>
 <translation id="2366908098700680611">IPFS ಸಕ್ರಿಯಗೊಳಿಸಿ</translation>
+<translation id="1556882415222118816">ಗೌಪ್ಯತೆ ಪರಿಣಾಮಗಳ ಕುರಿತು ಇನ್ನಷ್ಟು ತಿಳಿಯಿರಿ</translation>
 <translation id="4552520379838695057">ಕ್ಷಮಿಸಿ, ಆ ಪುಟ ಕಾಣೆಯಾಗಿದೆ.</translation>
 <translation id="2609895996619941644">ಉಳಿಸಿದ ಆವೃತ್ತಿಯು ವೇಬ್ಯಾಕ್ ಯಂತ್ರದಲ್ಲಿ ಲಭ್ಯವಿದೆಯೇ ಎಂಬುದನ್ನು ಪರಿಶೀಲಿಸಲು ಬಯಸುವಿರಾ?</translation>
 <translation id="8053093028263274061">ಕ್ಷಮಿಸಿ, ಯಾವುದೇ ಉಳಿಸಿದ ಆವೃತ್ತಿ ಲಭ್ಯವಿಲ್ಲ.</translation>

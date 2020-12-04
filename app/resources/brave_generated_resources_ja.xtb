@@ -8,6 +8,7 @@
 <translation id="5655621391922317800">仮想通貨ウォレット</translation>
 <translation id="2445484935443597917">新しいプロフィールを作成</translation>
 <translation id="2666990579225592931">ゲスト ウィンドウを開く</translation>
+<translation id="8275068909952022340">詳細…</translation>
 <translation id="120759863357279975"><ph name="EXTENSION_NAME"/> (extension ID "<ph name="EXTENSION_ID"/>") はBraveでは許可されていません。</translation>
 <translation id="6786747875388722282">拡張機能</translation>
 <translation id="984275831282074731">お支払い方法</translation>
@@ -43,23 +44,20 @@
 <translation id="814018970995616154">Braveに保存された安全でないサイトのリストを使ってURLをチェックします。</translation>
 <translation id="1144810021918451336">危険なウェブサイト、ダウンロード、拡張機能からの保護を無効にする</translation>
 <translation id="7781069478569868053">新しいタブページ</translation>
-<translation id="1717331825806276156">背景画像</translation>
-<translation id="1820041496463124489">スポンサー画像</translation>
-<translation id="8173998484743827990">Brave統計データ</translation>
-<translation id="5551238871320268996">Brave Together</translation>
-<translation id="6966052266404721769">バイナンス</translation>
-<translation id="8533411848724153701">Gemini</translation>
-<translation id="4643117005422448078">トップサイト</translation>
-<translation id="1776831331757823105">時刻表示</translation>
 <translation id="1988804048511540801">新しいタブページが表示されます</translation>
 <translation id="2970343821770026391">ダッシュボード</translation>
 <translation id="3719826155360621982">ホームページ</translation>
 <translation id="5448570825852364919">空白のページ</translation>
+<translation id="5919424224662539292">新しいタブページに表示される背景画像とウィジェットをカスタマイズ</translation>
 <translation id="7965178729203412357">新しいTorのID</translation>
 <translation id="8511502469534942133">このサイトの新たなTor接続</translation>
-<translation id="8784924142044142231">Torからログアウト</translation>
-<translation id="5410152065859052603">Tor</translation>
-<translation id="3696187925156352769">Torウィンドウを開く</translation>
+<translation id="4734294903299549345">Torを備えたプライベートウィンドウを終了</translation>
+<translation id="8612763432858587652">プライベートウィンドウを終了</translation>
+<translation id="8760415064721320867">プライベートウィンドウ+Tor</translation>
+<translation id="2055363275850890030">プライベートウィンドウ</translation>
+<translation id="8934172355414207733">Torを備えたプライベート</translation>
+<translation id="1970435562892104727">これはTorを備えたプライベートウィンドウです</translation>
+<translation id="1037341607922068025">Torを備えたプライベートウィンドウを開く</translation>
 <translation id="1725356094208762656">Torで開く</translation>
 <translation id="1672270084584211506">利用できるオニオン</translation>
 <translation id="1434416574322382019">新しいプライベートウィンドウ+Tor</translation>
@@ -68,6 +66,7 @@
 <translation id="6313675821927505581">Torで新しいプライベートウィンドウを開く</translation>
 <translation id="2638041073279639246">Torのプライベートウィンドウでリンクを開きます</translation>
 <translation id="3425600262621021599">Torのプライベートウィンドウで Brave内のリンクを開く</translation>
+<translation id="5410152065859052603">Tor</translation>
 <translation id="2515126961943087659">BAT 広告サービス</translation>
 <translation id="7924918279836988121">BAT 台帳サービス</translation>
 <translation id="4472575034687746823">Get started</translation>
@@ -236,6 +235,7 @@
 <translation id="8428213095426709021">設定</translation>
 <translation id="1854270995641373652">BraveでIPFSローカルデーモンのサポートを有効にしたいですか？</translation>
 <translation id="2366908098700680611">IPFSを有効にする</translation>
+<translation id="1556882415222118816">プライバシーへの影響についてもっと知る</translation>
 <translation id="4552520379838695057">申し訳ございません、そのページはありません。</translation>
 <translation id="2609895996619941644">ウェイバックマシンで保存されたバージョンが利用可能か確認しますか？</translation>
 <translation id="8053093028263274061">申し訳ございません、利用可能な保存されたバージョンはありません。</translation>

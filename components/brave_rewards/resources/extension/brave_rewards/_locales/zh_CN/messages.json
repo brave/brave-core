@@ -12,7 +12,7 @@
     "description": "CTA on welcome screen in the panel, new users"
   },
   "welcomeDescOne": {
-    "message": "浏览广告获取收益并提前支付给您喜爱的内容创作者。",
+    "message": "通过浏览广告获得收益并提前支付给您喜爱的内容创作者。",
     "description": "Entry text for welcome screen in the panel, existing user"
   },
   "welcomeDescTwo": {
@@ -28,7 +28,7 @@
     "description": "Link in the footer (takes you to rewards settings page) for welcome screen in the panel, existing user"
   },
   "welcomeFooterTextTwo": {
-    "message": "了解更多",
+    "message": "详细了解",
     "description": "Link in the footer (takes you to rewards settings page) for welcome screen in the panel, new user"
   },
   "welcomeHeaderOne": {
@@ -48,7 +48,7 @@
     "description": "Title for grant section in wallet summary"
   },
   "details": {
-    "message": "详情",
+    "message": "详细信息",
     "description": "Title for grant section in wallet panel summary"
   },
   "yourBalance": {
@@ -56,7 +56,7 @@
     "description": "Wallet panel title for anon wallets"
   },
   "batPoints": {
-    "message": "BAT 点数",
+    "message": "BAT 积分",
     "description": "BAT Points text"
   },
   "batPointsMessage": {
@@ -72,7 +72,7 @@
     "description": "Tells user that this particular publisher is a Brave Verified Creator"
   },
   "rewardsContributeAttentionScore": {
-    "message": "注意力",
+    "message": "精力",
     "description": "Label for auto contribute table attention for the publisher"
   },
   "donateMonthly": {
@@ -194,7 +194,7 @@
     "description": "Used in notification to dismiss notification"
   },
   "braveAdsLaunchMsg": {
-    "message": " \n现在您可以通过看广告来赚钱。",
+    "message": "现在您可以通过看广告来赚钱。",
     "description": "Message for ads launch notification"
   },
   "braveAdsTitle": {
@@ -328,7 +328,7 @@
     "description": "Text for the link that explains more about reserved amount"
   },
   "disabledPanelOff": {
-    "message": "关",
+    "message": "关闭",
     "description": "Off state text for Panel's disabled state"
   },
   "disabledPanelSettings": {
@@ -626,5 +626,21 @@
   "walletVerificationNote3":  {
     "message": "注意：授权后，您的交易将对“Uphold”可见；例如，他们将能够看到收件人和您的打赏金额。",
     "description": "Displayed in login modal for uphold"
+  },
+  "onboardingEarnHeader": {
+    "message": "赚取代币并给予回馈",
+    "description": ""
+  },
+  "onboardingEarnText": {
+    "message": "通过查看尊重隐私的广告来赚取代币和自动支持您最喜欢的网站和内容创作者。",
+    "description": ""
+  },
+  "onboardingStartUsingRewards": {
+    "message": "开始使用 Brave Rewards",
+    "description": ""
+  },
+  "onboardingTerms": {
+    "message": "继续操作即表示您同意$$1服务条款$$2 和 $$3隐私政策$$4。",
+    "description": ""
   }
 }

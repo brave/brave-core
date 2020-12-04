@@ -8,6 +8,7 @@
 <translation id="5655621391922317800">Pochi za Crypto</translation>
 <translation id="2445484935443597917">Unda Wasifu Mpya</translation>
 <translation id="2666990579225592931">Fungua Dirisha la Mgeni</translation>
+<translation id="8275068909952022340">Zaidi…</translation>
 <translation id="120759863357279975"><ph name="EXTENSION_NAME"/> (extension ID "<ph name="EXTENSION_ID"/>") is not allowed in Brave.</translation>
 <translation id="6786747875388722282">Viendelezi</translation>
 <translation id="984275831282074731">Njia za kulipa</translation>
@@ -43,23 +44,20 @@ Kwa kusanidi nyongeza hii, unakubali Masharti ya Matumizi ya Google Widevine. Un
 <translation id="814018970995616154">Hukagua URL zenye orodha za tovuti ambazo si salama zilizohifadhiwa katika Brave.</translation>
 <translation id="1144810021918451336">Haikulindi dhidi ya tovuti, vipakuliwa na viendelezi hatari.</translation>
 <translation id="7781069478569868053">Ukurasa Mpya wa Kichupo</translation>
-<translation id="1717331825806276156">Picha za mandharinyuma</translation>
-<translation id="1820041496463124489">Picha zilizolipiwa na wafadhili</translation>
-<translation id="8173998484743827990">Takwimu za Brave</translation>
-<translation id="5551238871320268996">Brave Pamoja</translation>
-<translation id="6966052266404721769">Binance</translation>
-<translation id="8533411848724153701">Gemini</translation>
-<translation id="4643117005422448078">Tovuti Maarufu</translation>
-<translation id="1776831331757823105">Saa</translation>
 <translation id="1988804048511540801">Ukurasa wa kichupo kipya unaonyesha</translation>
 <translation id="2970343821770026391">Dashibodi</translation>
 <translation id="3719826155360621982">Ukurasa wa nyumbani</translation>
 <translation id="5448570825852364919">Ukurasa mtupu</translation>
+<translation id="5919424224662539292">Fanya picha na wijeti za mandharinyuma zifae ambazo zinaonekana kwenye ukurasa mpya wa kichupo</translation>
 <translation id="7965178729203412357">Utambulisho Mpya wa Tor</translation>
 <translation id="8511502469534942133">Mpya Kwa muunganisho Wa Tovuti Hii</translation>
-<translation id="8784924142044142231">Ondoka kwenye Tor</translation>
-<translation id="5410152065859052603">Tor</translation>
-<translation id="3696187925156352769">Fungua Dirisha la Tor</translation>
+<translation id="4734294903299549345">Toka kwenye Dirisha la Faragha na Tor</translation>
+<translation id="8612763432858587652">Toka kwenye Dirisha la Faragha</translation>
+<translation id="8760415064721320867">Dirisha Binafsi na Tor</translation>
+<translation id="2055363275850890030">Dirisha Binafsi</translation>
+<translation id="8934172355414207733">Faragha na Tor</translation>
+<translation id="1970435562892104727">Hili ni dirisha la faragha na Tor</translation>
+<translation id="1037341607922068025">Fungua Dirisha la Faragha na Tor</translation>
 <translation id="1725356094208762656">Fungua katika Tor</translation>
 <translation id="1672270084584211506">Onion Inapatikana</translation>
 <translation id="1434416574322382019">Dirisha Jipya Binafsi na Tor</translation>
@@ -68,6 +66,7 @@ Kwa kusanidi nyongeza hii, unakubali Masharti ya Matumizi ya Google Widevine. Un
 <translation id="6313675821927505581">Dirisha Jipya la Binafsi na Tor</translation>
 <translation id="2638041073279639246">Fungua kiungo kwenye dirisha la binafsi na Tor</translation>
 <translation id="3425600262621021599">Fungua kiungo kwenye dirisha la binafsi la Brave na Tor</translation>
+<translation id="5410152065859052603">Tor</translation>
 <translation id="2515126961943087659">Huduma ya Matangazo ya Bat</translation>
 <translation id="7924918279836988121">Huduma ya Leja ya Bat</translation>
 <translation id="4472575034687746823">Anza</translation>
@@ -236,6 +235,7 @@ Zawadi za Avatar Paladin</translation>
 <translation id="8428213095426709021">Mipangilio</translation>
 <translation id="1854270995641373652">Je, ungependa kuwezesha matumizi ya IPFS local daemon katika Brave?</translation>
 <translation id="2366908098700680611">Wezesha IPFS</translation>
+<translation id="1556882415222118816">Pata maelezo zaidi kuhusu madhara ya faragha</translation>
 <translation id="4552520379838695057">Samahani, ukurasa huo haupo.</translation>
 <translation id="2609895996619941644">Je, unataka kuangalia ikiwa toleo lililohifadhiwa linapatikana kwenye Wayback Machine?</translation>
 <translation id="8053093028263274061">Samahani, hakuna toleo lililohifadhiwa.</translation>

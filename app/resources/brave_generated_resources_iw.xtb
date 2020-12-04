@@ -8,6 +8,7 @@
 <translation id="5655621391922317800">ארנקי קריפטו</translation>
 <translation id="2445484935443597917">יצירת פרופיל חדש</translation>
 <translation id="2666990579225592931">פתיחת חלון במצב אורח</translation>
+<translation id="8275068909952022340">עוד…</translation>
 <translation id="120759863357279975"><ph name="EXTENSION_NAME"/> (extension ID "<ph name="EXTENSION_ID"/>") לא נתמך ב-Brave.</translation>
 <translation id="6786747875388722282">תוספים</translation>
 <translation id="984275831282074731">אמצעי תשלום</translation>
@@ -43,23 +44,20 @@
 <translation id="814018970995616154">בדיקת כתובות URL באמצעות רשימה של אתרים לא בטוחים ששמורה ב-Brave.</translation>
 <translation id="1144810021918451336">אינו מגן מפני אתרים הורדות והרחבות שעלולים לסכן אותך.</translation>
 <translation id="7781069478569868053">דף כרטיסייה חדשה</translation>
-<translation id="1717331825806276156">תמונות רקע</translation>
-<translation id="1820041496463124489">תמונות ממומנות</translation>
-<translation id="8173998484743827990">נתונים סטטיסטיים של Brave</translation>
-<translation id="5551238871320268996">Brave ביחד</translation>
-<translation id="6966052266404721769">Binance</translation>
-<translation id="8533411848724153701">Gemini</translation>
-<translation id="4643117005422448078">אתרים מובילים</translation>
-<translation id="1776831331757823105">שעון</translation>
 <translation id="1988804048511540801">דף לשונית חדשה מוצג</translation>
 <translation id="2970343821770026391">דשבורד</translation>
 <translation id="3719826155360621982">דף הבית</translation>
 <translation id="5448570825852364919">עמוד ריק</translation>
+<translation id="5919424224662539292">התאם אישית את תמונת הרקע והיישומונים המופיעים בעמוד הלשונית החדשה</translation>
 <translation id="7965178729203412357">זהות Tor חדשה</translation>
 <translation id="8511502469534942133">חיבור Tor חדש עבור אתר זה</translation>
-<translation id="8784924142044142231">יציאה מ-Tor</translation>
-<translation id="5410152065859052603">Tor</translation>
-<translation id="3696187925156352769">פתחו חלון Tor</translation>
+<translation id="4734294903299549345">צא מחלון פרטי עם Tor</translation>
+<translation id="8612763432858587652">צא מחלון פרטי</translation>
+<translation id="8760415064721320867">חלון גלישה פרטי עם תור</translation>
+<translation id="2055363275850890030">חלון פרטי</translation>
+<translation id="8934172355414207733">פרטי עם Tor</translation>
+<translation id="1970435562892104727">זהו חלון פרטי עם Tor</translation>
+<translation id="1037341607922068025">פתח חלון פרטי עם Tor</translation>
 <translation id="1725356094208762656">פתח ב-Tor</translation>
 <translation id="1672270084584211506">Onion זמין</translation>
 <translation id="1434416574322382019">חלון גלישה פרטי עם תור</translation>
@@ -68,6 +66,7 @@
 <translation id="6313675821927505581">חלון פרטי חדש ב-Tor</translation>
 <translation id="2638041073279639246">פתח קישור בחלון פרטי ב-Tor</translation>
 <translation id="3425600262621021599">פתח קישור בחלון פרטי ב-Tor</translation>
+<translation id="5410152065859052603">Tor</translation>
 <translation id="2515126961943087659">שירות Bat Ads</translation>
 <translation id="7924918279836988121">שירות יומן BAT</translation>
 <translation id="4472575034687746823">תחילת העבודה</translation>
@@ -236,6 +235,7 @@
 <translation id="8428213095426709021">הגדרות</translation>
 <translation id="1854270995641373652">רוצה לאפשר ב-Brave תמיכת daemon מקומית ב-IFPS?</translation>
 <translation id="2366908098700680611">אפשר קובצי IPFS</translation>
+<translation id="1556882415222118816">למדו נוסף על השלכות על הפרטיות</translation>
 <translation id="4552520379838695057">מצטערים, עמוד זה חסר.</translation>
 <translation id="2609895996619941644">האם ברצונכם לבדוק אם גרסה שמורה זמינה ב-Wayback Machine?</translation>
 <translation id="8053093028263274061">אנו מצטערים, אין גרסה שמורה זמינה.</translation>

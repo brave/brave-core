@@ -8,6 +8,7 @@
 <translation id="5655621391922317800">Dompet Kripto</translation>
 <translation id="2445484935443597917">Buat Profil Baru</translation>
 <translation id="2666990579225592931">Buka Jendela Tamu</translation>
+<translation id="8275068909952022340">Lebih lanjut#8230;</translation>
 <translation id="120759863357279975"><ph name="EXTENSION_NAME"/> (extension ID "<ph name="EXTENSION_ID"/>") tidak diizinkan di Brave.</translation>
 <translation id="6786747875388722282">Ekstensi</translation>
 <translation id="984275831282074731">Metode pembayaran</translation>
@@ -43,23 +44,20 @@ Dengan memasang ekstensi ini, Anda menyetujui Persyaratan Penggunaan Google Wide
 <translation id="814018970995616154">Memeriksa URL dengan daftar situs yang tidak aman yang tersimpan di Brave.</translation>
 <translation id="1144810021918451336">Tidak melindungi Anda terhadap situs-situs, unduhan, dan ekstensi berbahaya.</translation>
 <translation id="7781069478569868053">Halaman Tab Baru</translation>
-<translation id="1717331825806276156">Gambar latar belakang</translation>
-<translation id="1820041496463124489">Gambar bersponsor</translation>
-<translation id="8173998484743827990">Statistik Brave</translation>
-<translation id="5551238871320268996">Brave Together</translation>
-<translation id="6966052266404721769">Binance</translation>
-<translation id="8533411848724153701">Gemini</translation>
-<translation id="4643117005422448078">Situs Teratas</translation>
-<translation id="1776831331757823105">Jam</translation>
 <translation id="1988804048511540801">Halaman tab baru ditampilkan</translation>
 <translation id="2970343821770026391">Dasbor</translation>
 <translation id="3719826155360621982">Halaman beranda</translation>
 <translation id="5448570825852364919">Halaman kosong</translation>
+<translation id="5919424224662539292">Kustomisasi gambar latar dan widget yang muncul di halaman tab baru</translation>
 <translation id="7965178729203412357">Identitas Tor Baru</translation>
 <translation id="8511502469534942133">Koneksi Tor Baru Untuk Situs Ini</translation>
-<translation id="8784924142044142231">Keluar dari Tor</translation>
-<translation id="5410152065859052603">Tor</translation>
-<translation id="3696187925156352769">Buka Jendela Tor</translation>
+<translation id="4734294903299549345">Keluar dari Jendela Pribadi dengan Tor</translation>
+<translation id="8612763432858587652">Keluar Dari Jendela Pribadi</translation>
+<translation id="8760415064721320867">Jendela Pribadi dengan Tor</translation>
+<translation id="2055363275850890030">Jendela Pribadi</translation>
+<translation id="8934172355414207733">Pribadi dengan Tor</translation>
+<translation id="1970435562892104727">Ini adalah jendela pribadi dengan Tor</translation>
+<translation id="1037341607922068025">Buka Jendela Pribadi dengan Tor</translation>
 <translation id="1725356094208762656">Buka di Tor</translation>
 <translation id="1672270084584211506">Onion Tersedia</translation>
 <translation id="1434416574322382019">Jendela Pribadi dengan Tor Baru</translation>
@@ -68,6 +66,7 @@ Dengan memasang ekstensi ini, Anda menyetujui Persyaratan Penggunaan Google Wide
 <translation id="6313675821927505581">Jendela pribadi dengan Tor baru</translation>
 <translation id="2638041073279639246">Buka tautan di jendela pribadi dengan Tor</translation>
 <translation id="3425600262621021599">Buka tautan di jendela pribadi dengan Tor Brave</translation>
+<translation id="5410152065859052603">Tor</translation>
 <translation id="2515126961943087659">Layanan Iklan Bat</translation>
 <translation id="7924918279836988121">Layanan Buku Besar BAT</translation>
 <translation id="4472575034687746823">Memulai</translation>
@@ -235,6 +234,7 @@ Dengan memasang ekstensi ini, Anda menyetujui Persyaratan Penggunaan Google Wide
 <translation id="8428213095426709021">Setelan</translation>
 <translation id="1854270995641373652">Apakah Anda ingin mengaktifkan dukungan daemon lokal IPFS di Brave?</translation>
 <translation id="2366908098700680611">Aktifkan IPFS</translation>
+<translation id="1556882415222118816">Pelajari lebih lanjut tentang konsekuensi privasi</translation>
 <translation id="4552520379838695057">Maaf, halaman tersebut tidak ditemukan.</translation>
 <translation id="2609895996619941644">Apakah Anda ingin memeriksa apabila mungkin tersedia versi disimpan di Wayback Machine?</translation>
 <translation id="8053093028263274061">Maaf, tidak tersedia versi yang telah disimpan.</translation>

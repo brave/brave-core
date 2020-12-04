@@ -8,6 +8,7 @@
 <translation id="5655621391922317800">Krypto peňaženky</translation>
 <translation id="2445484935443597917">Vytvoriť nový profil</translation>
 <translation id="2666990579225592931">Otvoriť okno hosťa</translation>
+<translation id="8275068909952022340">Viac…</translation>
 <translation id="120759863357279975"><ph name="EXTENSION_NAME"/> (extension ID "<ph name="EXTENSION_ID"/>") nie je povolené v prehliadači Brave.</translation>
 <translation id="6786747875388722282">Rozšírenia</translation>
 <translation id="984275831282074731">Spôsoby platby</translation>
@@ -43,23 +44,20 @@ Inštaláciou tohto rozšírenia súhlasíte so Zmluvnými podmienkami Google Wi
 <translation id="814018970995616154">Kontroluje adresy URL so zoznamom nebezpečných stránok uloženým v Brave.</translation>
 <translation id="1144810021918451336">Nechráni vás pred nebezpečnými webovými stránkami, stiahnutými súbormi a rozšíreniami.</translation>
 <translation id="7781069478569868053">Stránka novej karty</translation>
-<translation id="1717331825806276156">Obrázky na pozadí</translation>
-<translation id="1820041496463124489">Sponzorované obrázky</translation>
-<translation id="8173998484743827990">Štatistiky Brave</translation>
-<translation id="5551238871320268996">Brave spolu</translation>
-<translation id="6966052266404721769">Binance</translation>
-<translation id="8533411848724153701">Gemini</translation>
-<translation id="4643117005422448078">Top stránky</translation>
-<translation id="1776831331757823105">Hodiny</translation>
 <translation id="1988804048511540801">Nová karta zobrazuje</translation>
 <translation id="2970343821770026391">Prehľadový panel</translation>
 <translation id="3719826155360621982">Domovská stránka</translation>
 <translation id="5448570825852364919">Prázdna stránka</translation>
+<translation id="5919424224662539292">Prispôsobte si obrázok na pozadí a miniaplikácie, ktoré sa zobrazujú na stránke na novej karte</translation>
 <translation id="7965178729203412357">Nová identita Tor</translation>
 <translation id="8511502469534942133">Nové Tor pripojenie k tejto stránke</translation>
-<translation id="8784924142044142231">Opustiť Tor</translation>
-<translation id="5410152065859052603">Tor</translation>
-<translation id="3696187925156352769">Otvoriť okno Tor</translation>
+<translation id="4734294903299549345">Opustite súkromné okno s Tor</translation>
+<translation id="8612763432858587652">Ukončiť súkromné okno</translation>
+<translation id="8760415064721320867">Súkromné okno s Torom</translation>
+<translation id="2055363275850890030">Súkromné okno</translation>
+<translation id="8934172355414207733">Súkromné s Tor</translation>
+<translation id="1970435562892104727">Toto je súkromné okno s Tor</translation>
+<translation id="1037341607922068025">Otvorte súkromné okno s Tor</translation>
 <translation id="1725356094208762656">Otvoriť v režime Tor</translation>
 <translation id="1672270084584211506">Služba Onion dostupná</translation>
 <translation id="1434416574322382019">Nové súkromné okno s Torom</translation>
@@ -68,6 +66,7 @@ Inštaláciou tohto rozšírenia súhlasíte so Zmluvnými podmienkami Google Wi
 <translation id="6313675821927505581">Nové súkromné okno s Torom</translation>
 <translation id="2638041073279639246">Otvoriť odkaz v súkromnom okne s Torom</translation>
 <translation id="3425600262621021599">Otvoriť odkaz v súkromnom okne Brave s Torom</translation>
+<translation id="5410152065859052603">Tor</translation>
 <translation id="2515126961943087659">Reklamná služba Bat</translation>
 <translation id="7924918279836988121">Služba Bat ledger</translation>
 <translation id="4472575034687746823">Začíname</translation>
@@ -235,6 +234,7 @@ Inštaláciou tohto rozšírenia súhlasíte so Zmluvnými podmienkami Google Wi
 <translation id="8428213095426709021">Nastavenia</translation>
 <translation id="1854270995641373652">Prajete si v Brave povoliť podporu lokálneho démona IPFS?</translation>
 <translation id="2366908098700680611">Povoliť IPFS</translation>
+<translation id="1556882415222118816">Získajte viac informácií o dopadoch na ochranu osobných údajov</translation>
 <translation id="4552520379838695057">Ľutujeme, táto stránka chýba.</translation>
 <translation id="2609895996619941644">Chcete skontrolovať, či je k dispozícii uložená verzia na Wayback Machine?</translation>
 <translation id="8053093028263274061">Ľutujeme, žiadna uložená verzia nie je k dispozícii.</translation>

@@ -1,7 +1,7 @@
 <?xml version="1.0" ?>
 <!DOCTYPE translationbundle>
 <translationbundle lang="ar">
-<translation id="7307834434086582547">تمكين\تعطيل طرق حماية Brave</translation>
+<translation id="7307834434086582547">تمكين/تعطيل طرق حماية Brave</translation>
 <translation id="6303294677342628402">طرق الحماية</translation>
 <translation id="6132506775968708399">حظر ملفات تعريف الارتباط الخاصة بالجهات الخارجية</translation>
 <translation id="7835726359440951858">حجب الإعلانات والتتبع</translation>
@@ -31,6 +31,8 @@
 <translation id="5787084571334399599">يمنع المتصفح من استخدام البصمة</translation>
 <translation id="7459000603787995422">غلق علامات التبويب عند الخروج</translation>
 <translation id="1680858055899097121">لا تواصل استخدام علامات التبويب بين جلسات التصفح</translation>
+<translation id="6469509880167172749">إرسال تحليلات المنتج الخاصة بالكامل تلقائيًا إلى Brave</translation>
+<translation id="7090566321964540749">تتيح هذه المعلومات المُجهلة فقط لمتصفح Brave تقدير الاستخدام الكلي لبعض الميزات.</translation>
 <translation id="453601949003770390">تم حظر برامج التتبع &amp; الإعلانات</translation>
 <translation id="347604927162577559">البيانات\nالتي تم توفيرها</translation>
 <translation id="9008534313521214777">الوقت المقدر\nالذي تم توفيره</translation>
@@ -50,7 +52,7 @@
 <translation id="4150201353443180367">عرض</translation>
 <translation id="2433507940547922241">المظهر</translation>
 <translation id="2804710924397009224">إخفاء أيقونة مكافآت Brave</translation>
-<translation id="7358991116457217836">إخفاء أيقونة  Brave Rewards عند عدم تمكين Brave Rewards</translation>
+<translation id="7289740269305509613">يخفي أيقونة Brave Rewards</translation>
 <translation id="8495235435594442882">تمكين شريط الأدوات السفلي</translation>
 <translation id="6587448235155023666">ستسري التغييرات في المرة التالية التي تعيد فيها تشغيل متصفح Brave</translation>
 <translation id="8701563696941209024">إعادة بدء التشغيل الآن</translation>
@@ -67,7 +69,7 @@
 <translation id="3333887201479867589">مكافآت Brave</translation>
 <translation id="5870330605209713397">من خلال عرض الإعلانات التي تحترم الخصوصية ودعم مواقعك ومنشئي المحتوى المفضلين لديك بشكل افتراضي.</translation>
 <translation id="821707262661492716">لمشاهدة الإعلانات التي تحترم الخصوصية.</translation>
-<translation id="8267692331246948056">بالنقر على اربح &amp; امنح، فأنت توافق على</translation>
+<translation id="5302488867897327287">من خلال النقر على "البدء في استخدام Brave Rewards"، فإنك توافق على</translation>
 <translation id="4281844954008187215">شروط الخدمة</translation>
 <translation id="6871397658902960384">ابدأ التصفح</translation>
 <translation id="454386012157232640">لم أرى إعلان</translation>
@@ -76,7 +78,7 @@
 <translation id="6511854390690723657">هذا هو إعلانك الأول من Brave. انقر للاطلاع على المزيد.</translation>
 <translation id="4930714375720679147">تفعيل</translation>
 <translation id="2453860139492968684">اكتمل</translation>
-<translation id="7983303953939627894">اربح &amp; امنح</translation>
+<translation id="2070991379950719711">ابدأ في استخدام Brave Rewards</translation>
 <translation id="48520986898237073">الاستمرار إلى المحفظة</translation>
 <translation id="3570367516044491911">تعيين كمتصفح افتراضي</translation>
 <translation id="7493053924837150477">حدد متصفح Brave من القائمة وانقر على "دائماً"</translation>
@@ -232,6 +234,10 @@
 <translation id="6810078320346589989">إنشاء إشارة مرجعية</translation>
 <translation id="3396347744975515056">تمت ترقية Brave Sync وتتطلب الإعداد</translation>
 <translation id="7473245612074035141">بدء الإعداد</translation>
+<translation id="1872784258300710671">يستخدم Brave تحليلات المنتج الخاصة بالكامل لتقدير الاستخدام الكلي لبعض الميزات</translation>
+<translation id="8712637175834984815">تم</translation>
+<translation id="4394049700291259645">إيقاف</translation>
+<translation id="8446884382197647889">مزيد من المعلومات</translation>
 <translation id="597993392929850353">رخصة Brave</translation>
 <translation id="6336451774241870485">علامة تبويب خاصة جديدة</translation>
 <translation id="6199596294742117349">هذه علامة تبويب خاصة</translation>
@@ -258,8 +264,7 @@
 <translation id="8522669544471808198">إظهار صور الخلفية</translation>
 <translation id="3870475560794762985">إظهار صور الرعاة الدعائية</translation>
 <translation id="8297488609722895137">الصورة بعدسة <ph name="PHOTO_BY"/></translation>
-<translation id="7952665812649667034">أنا مستعد لـ Earn &amp; Give</translation>
-<translation id="5878330112719288629">بنقرك على Earn &amp; Give فإنك توافق على <ph name="TERMS_OF_SERVICE"/>.</translation>
+<translation id="4761229094276239865">من خلال النقر على "البدء في استخدام Brave Rewards"، فإنك توافق على <ph name="TERMS_OF_SERVICE"/>.</translation>
 <translation id="3794079107601824147">تقاضَ أجراً لرؤية صورة الخلفية هذه.</translation>
 <translation id="7136586167396205364">إخفاء صور الرعاة الدعائية</translation>
 <translation id="2927095357213611519">يمكنك دعم منشئي الويب باستخدام الرموز المميزة.\nاكسب رموزاً مميزة من خلال مشاهدة إعلانات مراعية للخصوصية.</translation>
@@ -306,7 +311,7 @@
 <translation id="8851456134224363571">رائع! هلّا تركت لنا تقييماً في متجر Play؟</translation>
 <translation id="8668962040900592974">أعلمنا كيف يمكننا التحسن</translation>
 <translation id="4406937629441301400">اكسب رموزاً مقابل عرض هذه الصورة وردّ الصنيع إلى منشئي المحتوى. <ph name="LEARN_MORE"/></translation>
-<translation id="8693132237667961044">اكسب رموزاً مقابل عرض هذه الصورة. قم بتشغيل Earn &amp; Give لاستلام حصتك.</translation>
+<translation id="1992363542751124282">اكسب العملات الرمزية مقابل مشاهدة هذه الصورة. انقر فوق بدء استخدام Brave Rewards للمطالبة بحصتك.</translation>
 <translation id="6632345639591919543">أنت تكسب رموزاً مقابل عرض هذه الصورة.\n<ph name="LEARN_MORE"/></translation>
 <translation id="1465733111003593696">أنت تكسب رموزاً مقابل عرض هذه الصورة.</translation>
 <translation id="7877201489035217175">تعرف على المزيد حول الصور الدعائية</translation>
@@ -390,7 +395,6 @@
 <translation id="1383876407941801731">بحث</translation>
 <translation id="1972589975368876259">تعديل الحزمة</translation>
 <translation id="2490330380242414851">إزالة الأداة الذكية</translation>
-<translation id="8446884382197647889">مزيد من المعلومات</translation>
 <translation id="7384441892795736634">إعادة تحديث البيانات</translation>
 <translation id="4804818685124855865">قطع الاتصال</translation>
 <translation id="4789438578712143420">≈ $<ph name="USD_BALANCE"/></translation>
@@ -429,4 +433,38 @@
 <translation id="3733576242118819803">تأكيد (<ph name="REMAINING_TIME"/>s)</translation>
 <translation id="1627064138060308910">فشل التحويل. يُرجى المحاولة مرة أخرى.</translation>
 <translation id="1449790603979388000"><ph name="COUNT"/><ph name="COUNT_TEXT"/></translation>
+<translation id="7465614181960492526">اكسب العملات الرمزية &amp; وأعطها مرة أخرى</translation>
+<translation id="244362569344671266">اربح العملات الرمزية من خلال عرض إعلانات Brave الخاصة وادعم منشئي المحتوى تلقائياً.</translation>
+<translation id="631124996535890460">بالمتابعة، فإنك توافق على <ph name="TERMS_OF_SERVICE"/> and <ph name="PRIVACY_POLICY"/>.</translation>
+<translation id="8804164990146287819">سياسة الخصوصية</translation>
+<translation id="6318696841371191107">قم بجولة سريعة</translation>
+<translation id="7930505144430343145">مرحباً بك في Brave Rewards!</translation>
+<translation id="7909111626803226907">تكافئك إعلانات Brave الخاصة بعملات رمزية لدعم منشئي المحتوى على عكس الإعلانات التقليدية، كل ذلك مع الحفاظ على خصوصية معلوماتك الشخصية.</translation>
+<translation id="6973095375773523904">أين تظهر الإعلانات؟</translation>
+<translation id="3867028444168159102">ستظهر إعلانات Brave الخاصة كإشعار عادي. يمكنك التحكم في عدد المرات التي تشاهد فيها هذه الإعلانات في الإعدادات.</translation>
+<translation id="5816125157889950051">متى تحصل على المكافآت</translation>
+<translation id="4649471244559455723">ستصل العملات الرمزية التي اكتسبتها من إعلانات Brave طوال الشهر الحالي في اليوم الخامس من الشهر التالي.</translation>
+<translation id="7712287524451429139">أصبح العطاء أمراً هيناً</translation>
+<translation id="105037569026952831">يتلقى منشئو المحتوى مساهماتك الرمزية تلقائياً بناءً على مستويات المشاركة التي نقيسها كـ‘انتباه’.</translation>
+<translation id="5323267338679539010">اشكر من خلال تقديم الإكراميات</translation>
+<translation id="6042317056594735519">الإكرامية هي وسيلة لتشجيع ودعم المحتوى أو المنشئين الذين تحبهم. هيا امنحهم بعضاً منها!</translation>
+<translation id="7509452925943421624">ماذا يمكنك أن تفعل بالعملات الرمزية؟</translation>
+<translation id="7059157883171259940">يمكن استخدام العملات الرمزية بخلاف دعم منشئي المحتوى. يمكنك شراء سلع رقمية وبطاقات هدايا مع مكافأة استرداد نقدي.</translation>
+<translation id="1402530520078693620">أخيراً، اسمح لـ’s بأن يساعدك على ضبط الإعدادات الأساسية</translation>
+<translation id="3494356595346329740">يمكنك تغيير هذا لاحقاً.</translation>
+<translation id="6462814326662189004">كم مرة تريد مشاهدة الإعلانات؟\n(إعلانات في الساعة)</translation>
+<translation id="2134244432345596331">ما مقدار الدعم الذي تريد أن تقدمه لمنشئي المحتوى المفضلين لديك؟ \n (من أرباح إعلاناتك)</translation>
+<translation id="7456161272236175794">مرحى!\nلقد’انتهيت</translation>
+<translation id="3895246934788932488">باستخدام Brave Rewards، فأنت تحمي خصوصيتك وتساعد في جعل الويب مكاناً أفضل للجميع. وهذا الـ’s رائعاً!</translation>
+<translation id="5705882733397021510">العودة</translation>
+<translation id="5140321319944305531">لنقم بجولة سريعة</translation>
+<translation id="3808131693704413134">بعد استلام أول عائد لإعلاناتك، يمكنك العودة وإعطاء إكرامية لمنشئ المحتوى هذا!</translation>
+<translation id="207242986925259074">جولة تنشيطية سريعة</translation>
+<translation id="8342862030112839977">سوف تصل دفعة المكافآت الأولى الخاصة بك عن طريق:</translation>
+<translation id="3769645103175790584">اربح العملات الرمزية وكافئ منشئي المحتوى مقابل المحتوى الرائع أثناء التصفح <ph name="QUICK_TOUR"/>.</translation>
+<translation id="6912901278692845878">جولة سريعة</translation>
+<translation id="1080013038789678738">سوف ’ أنضم!</translation>
+<translation id="3604285424134705930">لقد قمت بتحويل <ph name="FROM_VALUE"/> <ph name="FROM_CURRENCY"/> إلى <ph name="TO_VALUE"/> <ph name="TO_CURRENCY"/>!</translation>
+<translation id="392587271502873865">يُرجى التحقق من اتصالك بالشبكة.</translation>
+<translation id="7889432931837317731">الفتح تلقائياً عندما يكون ذلك ممكناً</translation>
 </translationbundle>

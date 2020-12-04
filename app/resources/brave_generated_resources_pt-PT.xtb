@@ -8,6 +8,7 @@
 <translation id="5655621391922317800">Crypto Wallets</translation>
 <translation id="2445484935443597917">Criar um novo perfil</translation>
 <translation id="2666990579225592931">Abrir Janela de Convidado</translation>
+<translation id="8275068909952022340">More…</translation>
 <translation id="120759863357279975"><ph name="EXTENSION_NAME"/> (extension ID "<ph name="EXTENSION_ID"/>") não é permitida no Brave.</translation>
 <translation id="6786747875388722282">Extensões</translation>
 <translation id="984275831282074731">Métodos de pagamento</translation>
@@ -43,23 +44,20 @@ Ao instalar esta extensão, está a concordar com os Termos de Utilização do G
 <translation id="814018970995616154">Verifica os URL com uma lista de sites não seguros armazenados no Brave.</translation>
 <translation id="1144810021918451336">Não o protege contra websites, transferências e extensões perigosos.</translation>
 <translation id="7781069478569868053">Nova ficha de registo</translation>
-<translation id="1717331825806276156">Imagens de fundo</translation>
-<translation id="1820041496463124489">Imagens Patrocinadas</translation>
-<translation id="8173998484743827990">Estatísticas Brave</translation>
-<translation id="5551238871320268996">Brave Together</translation>
-<translation id="6966052266404721769">Binance</translation>
-<translation id="8533411848724153701">Gemini</translation>
-<translation id="4643117005422448078">Principais Sítios</translation>
-<translation id="1776831331757823105">Relógio</translation>
 <translation id="1988804048511540801">Aspeto novo separador</translation>
 <translation id="2970343821770026391">Painel de controlo</translation>
 <translation id="3719826155360621982">Página inicial</translation>
 <translation id="5448570825852364919">Novo separador</translation>
+<translation id="5919424224662539292">Personalize a imagem de fundo e os widgets que aparecem no novo separador</translation>
 <translation id="7965178729203412357">Nova Identidade Tor</translation>
 <translation id="8511502469534942133">Nova Ligação Tor para este Site</translation>
-<translation id="8784924142044142231">Sair de Tor</translation>
-<translation id="5410152065859052603">Tor</translation>
-<translation id="3696187925156352769">Abri Janela Tor</translation>
+<translation id="4734294903299549345">Sair da Janela Privada com Tor</translation>
+<translation id="8612763432858587652">Sair da Janela Privada</translation>
+<translation id="8760415064721320867">Janela Privada com Tor</translation>
+<translation id="2055363275850890030">Janela Privada</translation>
+<translation id="8934172355414207733">Privacidade com Tor</translation>
+<translation id="1970435562892104727">Esta é uma janela privada com Tor</translation>
+<translation id="1037341607922068025">Abrir Janela Privada com Tor</translation>
 <translation id="1725356094208762656">Abrir em Tor</translation>
 <translation id="1672270084584211506">Onion Disponível</translation>
 <translation id="1434416574322382019">Nova Janela Privada com o Tor</translation>
@@ -68,6 +66,7 @@ Ao instalar esta extensão, está a concordar com os Termos de Utilização do G
 <translation id="6313675821927505581">Nova janela privada com Tor</translation>
 <translation id="2638041073279639246">Abrir ligação em janela privada com Tor</translation>
 <translation id="3425600262621021599">Abrir ligação em janela privada Brave com Tor</translation>
+<translation id="5410152065859052603">Tor</translation>
 <translation id="2515126961943087659">Serviço de anúncios BAT</translation>
 <translation id="7924918279836988121">Serviço de Ledger Bat</translation>
 <translation id="4472575034687746823">Começar</translation>
@@ -235,6 +234,7 @@ Ao instalar esta extensão, está a concordar com os Termos de Utilização do G
 <translation id="8428213095426709021">Definições</translation>
 <translation id="1854270995641373652">Gostaria de ativar o suporte do daemon local IPFS no Brave?</translation>
 <translation id="2366908098700680611">Ativar IPFS</translation>
+<translation id="1556882415222118816">Saiba mais sobre as consequências de privacidade</translation>
 <translation id="4552520379838695057">Desculpe, essa página está em falta.</translation>
 <translation id="2609895996619941644">Deseja verificar se está disponível uma versão guardada no Wayback Machine?</translation>
 <translation id="8053093028263274061">Lamentamos, não está disponível uma versão guardada.</translation>

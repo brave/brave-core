@@ -4,7 +4,7 @@
     "description": "Title in welcome screen for the panel"
   },
   "welcomeButtonTextOne": {
-    "message": "ابدأ في الربح الآن!",
+    "message": "ابدأ الربح الآن!",
     "description": "CTA on welcome screen in the panel, existing users"
   },
   "welcomeButtonTextTwo": {
@@ -12,11 +12,11 @@
     "description": "CTA on welcome screen in the panel, new users"
   },
   "welcomeDescOne": {
-    "message": "احصل على المال لقاء مشاهدة الإعلانات، وادفعه لدعم منشئي محتواك المفضل.",
+    "message": "احصل على مكافأة نظير مشاهدة الإعلانات وأعد توجيهها لدعم منشئي المحتوى المفضلين لديك.",
     "description": "Entry text for welcome screen in the panel, existing user"
   },
   "welcomeDescTwo": {
-    "message": " يمكنك الآن أن تربح الرموز من الإعلانات التي تحترم الخصوصية.",
+    "message": "يمكنك الآن كسب الرموز المميزة لمشاهدة الإعلانات التي تحترم الخصوصية.",
     "description": "Entry text for welcome screen in the panel, new user"
   },
   "welcomeDescPoints": {
@@ -28,7 +28,7 @@
     "description": "Link in the footer (takes you to rewards settings page) for welcome screen in the panel, existing user"
   },
   "welcomeFooterTextTwo": {
-    "message": "معرفة المزيد",
+    "message": "مزيد من المعلومات",
     "description": "Link in the footer (takes you to rewards settings page) for welcome screen in the panel, new user"
   },
   "welcomeHeaderOne": {
@@ -36,7 +36,7 @@
     "description": "Main header title for welcome screen in the panel, existing user"
   },
   "welcomeHeaderTwo": {
-    "message": "استعد لتجربة الإنترنت القادم.",
+    "message": "استعد لتجربة الإنترنت التالي.",
     "description": "Main header title for welcome screen in the panel, new user"
   },
   "yourWallet": {
@@ -56,7 +56,7 @@
     "description": "Wallet panel title for anon wallets"
   },
   "batPoints": {
-    "message": "نقاط الرموز الأساسية للاهتمام",
+    "message": "نقاط BAT",
     "description": "BAT Points text"
   },
   "batPointsMessage": {
@@ -92,7 +92,7 @@
     "description": "The whole string is 'Enable tips on YouTube for like.'"
   },
   "for": {
-    "message": "من أجل",
+    "message": "لمدة",
     "description": "The whole string is 'Enable tips on YouTube for like.'"
   },
   "rewardsSummary": {
@@ -162,15 +162,15 @@
     "description": "Title for grant section in wallet summary"
   },
   "pointGrantClaimed": {
-    "message": "تم تحصيل النقاط الممنوحة",
+    "message": "تم تحصيل منحة النقاط",
     "description": "Title for point grant section in wallet summary"
   },
   "earningsAds": {
-    "message": "المكاسب من الإعلانات",
+    "message": "أرباح من الإعلانات",
     "description": "Title for ads section in wallet summary"
   },
   "rewardsContribute": {
-    "message": "المساهمة التلقائية",
+    "message": "مساهمة تلقائية",
     "description": "Title for auto contribute section in wallet summary"
   },
   "oneTimeDonation": {
@@ -186,7 +186,7 @@
     "description": "Title for monthly contributions section in wallet summary"
   },
   "off": {
-    "message": "إيقاف",
+    "message": "غير مفعّل",
     "description": "Label used in toggle indicating that toggle is off"
   },
   "ok": {
@@ -194,7 +194,7 @@
     "description": "Used in notification to dismiss notification"
   },
   "braveAdsLaunchMsg": {
-    "message": "يمكنك أن تربح الآن من خلال عرض الإعلانات.",
+    "message": "يمكنك الآن كسب المال عن طريق مشاهدة الإعلانات.",
     "description": "Message for ads launch notification"
   },
   "braveAdsTitle": {
@@ -244,7 +244,7 @@
     "description": "Title for insufficient funds notification"
   },
   "braveRewardsCreatingText": {
-    "message": "جاري إنشاء محفظة",
+    "message": "إنشاء محفظة",
     "description": "Used in a button displaying wallet creation process"
   },
   "contributeNotificationError": {
@@ -292,7 +292,7 @@
     "description": "Grant expiry label"
   },
   "grantGeneralErrorButton": {
-    "message": "حسنًا",
+    "message": "موافق",
     "description": "Button text for clearing the error."
   },
   "grantGeneralErrorText": {
@@ -328,7 +328,7 @@
     "description": "Text for the link that explains more about reserved amount"
   },
   "disabledPanelOff": {
-    "message": "مقفل",
+    "message": "غير مفعّل",
     "description": "Off state text for Panel's disabled state"
   },
   "disabledPanelSettings": {
@@ -348,7 +348,7 @@
     "description": "Failure title for wallet creation"
   },
   "walletFailedButton": {
-    "message": "إعادة المحاولة",
+    "message": "أعد المحاولة",
     "description": "Button for re-try after wallet creation failed"
   },
   "addFunds": {
@@ -416,7 +416,7 @@
     "description": "BAT Points abbreviation text"
   },
   "turnOnAds": {
-    "message": "قم بتشغيل الإعلانات",
+    "message": "تشغيل الإعلانات",
     "description": "Prompt to turn on Ads via notification"
   },
   "adsEarnings": {
@@ -462,7 +462,7 @@
     "description": "Notification text that tells user his wallet is under funded for pending contribution to complete"
   },
   "pendingContributionTitle": {
-    "message": "مساهمة معلقة",
+    "message": "مساهمة قيد الانتظار",
     "description": "Notification title for pending contribution type"
   },
   "grantFinishTitleUGP": {
@@ -484,7 +484,7 @@
     "description": "Token title on success screen"
   },
   "grantFinishPointTitleUGP": {
-    "message": "نقاط ممنوحة مجانية",
+    "message": "منحة نقاط مجانية",
     "description": "Point title on success screen"
   },
   "grantFinishTitleAds": {
@@ -508,7 +508,7 @@
     "description": "CTA status button"
   },
   "walletButtonUnverified":  {
-    "message": "تحقق من المحفظة",
+    "message": "التحقق من المحفظة",
     "description": "CTA to verify wallet in the wallet "
   },
   "walletButtonVerified":  {
@@ -626,5 +626,21 @@
   "walletVerificationNote3":  {
     "message": "ملاحظة: ستكون معاملاتك مرئية لـ Uphold بمجرد منح الإذن؛ على سبيل المثال، سيتمكنون من رؤية المرسل إليه ومبالغ الإكراميات التي تدفعها.",
     "description": "Displayed in login modal for uphold"
+  },
+  "onboardingEarnHeader": {
+    "message": "اكسب العملات الرمزية وأعطها مرة أخرى",
+    "description": ""
+  },
+  "onboardingEarnText": {
+    "message": "اربح العملات الرمزية من خلال عرض الإعلانات التي تحترم الخصوصية ودعم مواقعك المفضلة ومنشئي المحتوى تلقائياً.",
+    "description": ""
+  },
+  "onboardingStartUsingRewards": {
+    "message": "ابدأ في استخدام Brave Rewards",
+    "description": ""
+  },
+  "onboardingTerms": {
+    "message": "بالمتابعة، فأنت توافق على $$1شروط الخدمة$$2 و$$3سياسة الخصوصية$$4.",
+    "description": ""
   }
 }

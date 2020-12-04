@@ -8,6 +8,7 @@
 <translation id="5655621391922317800">Kryptoplånböcker</translation>
 <translation id="2445484935443597917">Skapa en ny profil</translation>
 <translation id="2666990579225592931">Öppna ett gästfönster</translation>
+<translation id="8275068909952022340">Mer</translation>
 <translation id="120759863357279975"><ph name="EXTENSION_NAME"/> (extension ID "<ph name="EXTENSION_ID"/>") är inte tillåtet i Brave.</translation>
 <translation id="6786747875388722282">Tillägg</translation>
 <translation id="984275831282074731">Betalningsmetoder</translation>
@@ -43,23 +44,20 @@ Genom att installera detta tillägg godkänner du användarvillkoren för Google
 <translation id="814018970995616154">Kontrollerar webbadresser mot en lista över osäkra webbplatser som lagras i Brave.</translation>
 <translation id="1144810021918451336">Skyddar dig inte mot farliga webbplatser, nedladdningar eller tillägg.</translation>
 <translation id="7781069478569868053">Ny flik</translation>
-<translation id="1717331825806276156">Bakgrundsbilder</translation>
-<translation id="1820041496463124489">Sponsrade bilder</translation>
-<translation id="8173998484743827990">Brave-statistik</translation>
-<translation id="5551238871320268996">Brave tillsammans</translation>
-<translation id="6966052266404721769">Binance</translation>
-<translation id="8533411848724153701">Gemini</translation>
-<translation id="4643117005422448078">Toppsajter</translation>
-<translation id="1776831331757823105">Klocka</translation>
 <translation id="1988804048511540801">Ny fliksida visas</translation>
 <translation id="2970343821770026391">Instrumentpanel</translation>
 <translation id="3719826155360621982">Hemsida</translation>
 <translation id="5448570825852364919">Tom sida</translation>
+<translation id="5919424224662539292">Anpassa bakgrundsbilden och widgets som visas på den nya fliksidan</translation>
 <translation id="7965178729203412357">Ny Tor-identitet</translation>
 <translation id="8511502469534942133">Ny Tor-anslutning för den här webbplatsen</translation>
-<translation id="8784924142044142231">Lämna Tor</translation>
-<translation id="5410152065859052603">Tor</translation>
-<translation id="3696187925156352769">Öppna Tor-fönster</translation>
+<translation id="4734294903299549345">Avsluta privat fönster med Tor</translation>
+<translation id="8612763432858587652">Stäng privat fönster</translation>
+<translation id="8760415064721320867">Privat fönster med Tor</translation>
+<translation id="2055363275850890030">Privat fönster</translation>
+<translation id="8934172355414207733">Privat med Tor</translation>
+<translation id="1970435562892104727">Detta är ett privat fönster med Tor</translation>
+<translation id="1037341607922068025">Öppna ett privat fönster med Tor</translation>
 <translation id="1725356094208762656">Öppna i Tor</translation>
 <translation id="1672270084584211506">Onion tillgänglig</translation>
 <translation id="1434416574322382019">Nytt privat fönster med Tor</translation>
@@ -68,6 +66,7 @@ Genom att installera detta tillägg godkänner du användarvillkoren för Google
 <translation id="6313675821927505581">Nytt privat fönster med Tor</translation>
 <translation id="2638041073279639246">Öppna länk i nytt privat fönster med Tor</translation>
 <translation id="3425600262621021599">Öppna länk i Brave i ett privat fönster med Tor</translation>
+<translation id="5410152065859052603">Tor</translation>
 <translation id="2515126961943087659">BAT-annonstjänst</translation>
 <translation id="7924918279836988121">Bat huvudbokstjänst</translation>
 <translation id="4472575034687746823">Kom igång</translation>
@@ -235,6 +234,7 @@ Genom att installera detta tillägg godkänner du användarvillkoren för Google
 <translation id="8428213095426709021">Inställningar</translation>
 <translation id="1854270995641373652">Vill du aktivera stöd för IPFS lokal daemon i Brave?</translation>
 <translation id="2366908098700680611">Aktivera IPFS</translation>
+<translation id="1556882415222118816">Läs mer om integritetskonsekvenser</translation>
 <translation id="4552520379838695057">Tyvärr, den sidan saknas.</translation>
 <translation id="2609895996619941644">Vill du kolla om det finns en sparad version tillgänglig på Wayback Machine?</translation>
 <translation id="8053093028263274061">Tyvärr finns det ingen sparad version tillgänglig.</translation>

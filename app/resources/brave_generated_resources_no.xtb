@@ -8,6 +8,7 @@
 <translation id="5655621391922317800">Kryptolommebøker</translation>
 <translation id="2445484935443597917">Opprett en ny profil</translation>
 <translation id="2666990579225592931">Åpne et gjestevindu</translation>
+<translation id="8275068909952022340">Mer ...</translation>
 <translation id="120759863357279975"><ph name="EXTENSION_NAME"/> (extension ID "<ph name="EXTENSION_ID"/>") er ikke tillatt hos Brave.</translation>
 <translation id="6786747875388722282">Utvidelser</translation>
 <translation id="984275831282074731">Betalingsmåter</translation>
@@ -43,23 +44,20 @@ Ved å installere denne utvidelsen, aksepterer du Google Widevines betingelser. 
 <translation id="814018970995616154">Kontrollerer nettadresser mot en liste i Brave over utrygge nettsteder.</translation>
 <translation id="1144810021918451336">Beskytter deg ikke mot farlige nettsteder, nedlastinger eller utvidelser.</translation>
 <translation id="7781069478569868053">Ny fane-side</translation>
-<translation id="1717331825806276156">Bakgrunnsbilder</translation>
-<translation id="1820041496463124489">Sponsede bilder</translation>
-<translation id="8173998484743827990">Brave-statistikk</translation>
-<translation id="5551238871320268996">Brave Sammen</translation>
-<translation id="6966052266404721769">Binance</translation>
-<translation id="8533411848724153701">Gemini</translation>
-<translation id="4643117005422448078">Populære nettsteder</translation>
-<translation id="1776831331757823105">Klokke</translation>
 <translation id="1988804048511540801">Ny faneside vises</translation>
 <translation id="2970343821770026391">Instrumentbord</translation>
 <translation id="3719826155360621982">Startside</translation>
 <translation id="5448570825852364919">Tom side</translation>
+<translation id="5919424224662539292">Tilpass bakgrunnsbildet og widgeten som fremkommer på 'ny fane'-siden</translation>
 <translation id="7965178729203412357">Ny Tor-identitet</translation>
 <translation id="8511502469534942133">Ny Tor-tilkobling for dette nettstedet</translation>
-<translation id="8784924142044142231">Avslutt Tor</translation>
-<translation id="5410152065859052603">Tor</translation>
-<translation id="3696187925156352769">Åpne Tor-vindu</translation>
+<translation id="4734294903299549345">Gå ut av privat vindu med Tor</translation>
+<translation id="8612763432858587652">Gå ut av privat vindu</translation>
+<translation id="8760415064721320867">Privat vindu med Tor</translation>
+<translation id="2055363275850890030">inkognitovindu</translation>
+<translation id="8934172355414207733">Privat med Tor</translation>
+<translation id="1970435562892104727">Dette er et privat vindu med Tor</translation>
+<translation id="1037341607922068025">Åpne privat vindu med Tor</translation>
 <translation id="1725356094208762656">Åpne i Tor</translation>
 <translation id="1672270084584211506">Onion-tilgjengelig</translation>
 <translation id="1434416574322382019">Nytt privatvindu med Tor</translation>
@@ -68,6 +66,7 @@ Ved å installere denne utvidelsen, aksepterer du Google Widevines betingelser. 
 <translation id="6313675821927505581">Nytt privat vindu med Tor</translation>
 <translation id="2638041073279639246">Åpne lenke i privat vindu med Tor</translation>
 <translation id="3425600262621021599">Åpne lenke i Brave privat vindu med Tor</translation>
+<translation id="5410152065859052603">Tor</translation>
 <translation id="2515126961943087659">Bat Ads-tjeneste</translation>
 <translation id="7924918279836988121">Bat-reskontrotjeneste</translation>
 <translation id="4472575034687746823">Kom i gang</translation>
@@ -214,6 +213,7 @@ Ved å installere denne utvidelsen, aksepterer du Google Widevines betingelser. 
 <translation id="8428213095426709021">Innstillinger</translation>
 <translation id="1854270995641373652">Vil du slå på lokal daemon-støtte for IPFS i Brave?</translation>
 <translation id="2366908098700680611">Slå på IPFS</translation>
+<translation id="1556882415222118816">Lær mer om personvernkonsekvenser</translation>
 <translation id="4552520379838695057">Beklager, men den siden mangler.</translation>
 <translation id="2609895996619941644">Vil du se om det finnes en lagret versjon på Wayback Machine?</translation>
 <translation id="8053093028263274061">Beklager, men ingen lagret versjon er tilgjengelig.</translation>

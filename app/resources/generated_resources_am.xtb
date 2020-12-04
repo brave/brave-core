@@ -6529,7 +6529,7 @@ nil</translation>
 =0{ሁሉንም በ&amp;ማንነት የማያሳውቅ መስኮት ውስጥ ክፈት}
 =1{በ&amp;ማንነት የማያሳውቅ መስኮት ውስጥ ክፈት}
 ሌላ{ሁሉንም (#) በ&amp;ማንነት የማያሳውቅ መስኮት ውስጥ ክፈት}}</translation>
-<translation id="658539216370629794">አገናኙን በ &amp; ማንነትን በማያሳውቅ መስኮት ውስጥ ክፈት</translation>
+<translation id="658539216370629794">አገናኝን በ &amp; ማንነትን በማያሳውቅ መስኮት ውስጥ ክፈት</translation>
 <translation id="1432267168815937878">አገናኝን በ &amp; ማንነትን በማያሳውቅ መስኮት ውስጥ ክፈት</translation>
 <translation id="6516243500644829484">አዲስ &amp;ማንነትን የማያሳውቅ መስኮት</translation>
 <translation id="7973394300052703468">አዲስ &amp;ማንነትን የማያሳውቅ መስኮት</translation>
@@ -6537,15 +6537,15 @@ nil</translation>
 <translation id="203837651858678035">የሆነው ሆኖ ከእንግዳ ሁነታ ይወጣሉ?</translation>
 <translation id="7376221878517288144">የሆነው ሆኖ የእንግዳ ሁነታ ይቁም?</translation>
 <translation id="871606814707918245">አብዛኛዎቹ ሰዎች ከዚህ ጣቢያ የሚመጡ ማሳወቂያዎችን ያግዳሉ</translation>
-<translation id="5053701565089446556">እንግዳ ቅጥያ: <ph name="EXTENSION_NAME"/></translation>
-<translation id="611296870688433505">እንግዳ መተግበሪያ: <ph name="APP_NAME"/></translation>
-<translation id="9048137919253433011">እንግዳ ትር: <ph name="TAB_NAME"/></translation>
-<translation id="1799432502220762862">እንግዳ ንዑስ ክፈፍ: <ph name="SUBFRAME_SITE"/></translation>
-<translation id="3193187622878830588">ማንነት የማያሳውቁ ሁነታ፦ <ph name="SUBFRAME_SITE"/></translation>
+<translation id="5053701565089446556">የግል ቅጥያ: <ph name="EXTENSION_NAME"/></translation>
+<translation id="611296870688433505">የግል መተግበሪያ: <ph name="APP_NAME"/></translation>
+<translation id="9048137919253433011">የግል ትር: <ph name="TAB_NAME"/></translation>
+<translation id="1799432502220762862">የግል ንዑስ ክፈፍ: <ph name="SUBFRAME_SITE"/></translation>
+<translation id="3193187622878830588">የግል ሁነታ: <ph name="SUBFRAME_SITE"/></translation>
 <translation id="5097649414558628673">መሳሪያ: <ph name="PRINT_NAME"/></translation>
 <translation id="8808478386290700967">የድር  መደብር</translation>
-<translation id="8261378640211443080">ይህ ቅጥያ በ<ph name="IDS_EXTENSION_WEB_STORE_TITLE"/> ውስጥ ያልተጠቀሰ ሲሆን እርስዎ ሳያውቁት የታከለ ሊሆን ይችላል።</translation>
-<translation id="6827869674836193263"><ph name="WINDOW_TITLE"/> (ማንነትን የማያሳውቅ)</translation>
+<translation id="8261378640211443080">ይህ ቅጥያ በ <ph name="IDS_EXTENSION_WEB_STORE_TITLE"/> ውስጥ ያልተጠቀሰ ሲሆን እርስዎ ሳያውቁት የታከለ ሊሆን ይችላል።</translation>
+<translation id="6827869674836193263"><ph name="WINDOW_TITLE"/> (የግል)</translation>
 <translation id="4369414322596874629">ማንነት የማያሳውቅ መስኮት ተጠቅመው በግል ማሰስ ይችላሉ</translation>
 <translation id="3772947852642271642">ማንነት በማያሳውቅ መስኮት አማካኝነት የአሰሳ ታሪክዎን ሳያስቀምጡ ድሩን ይጠቀሙ</translation>
 <translation id="3871738366246972820">የተጋራ ኮምፒውተር ነው እየተጠቀሙ ያሉት? ማንነት የማያሳውቅ መስኮት ለመክፈት ይሞክሩ።</translation>
@@ -6562,9 +6562,9 @@ nil</translation>
 <translation id="2579188629646253712">ማንነትን ከማያሳውቅ ይውጡ</translation>
 <translation id="1001131747196960052">የግል ይዝጉ</translation>
 <translation id="7475335772460644497">{COUNT, plural,
-          =0 {Open all in &amp;private window}
-          =1 {Open in &amp;private window}
-          ሌሎች {Open all ({COUNT}) in &amp;private window}}</translation>
+=0 {ሁሉንም በዚህ ይክፈቱ &amp;Private Window}
+=1 {በዚህ &amp;Private Window}
+ሌላ {Open All ({COUNT}) በዚህ ይክፈቱ &amp;Private Window}}</translation>
 <translation id="2431625704210501303">&amp;ማንነትን በማያሳውቅ መስኮት ውስጥ ክፈት</translation>
 <translation id="4620367155626060530">&amp;የዕልባቶች አሞሌ አሳይ</translation>
 <translation id="1448315815373449655">{COUNT, plural,
@@ -6572,7 +6572,7 @@ nil</translation>
           =1 {በዚህ &amp;Private Window}
           ሌላ {Open All ({COUNT}) በዚህ ይክፈቱ &amp;Private Window}}</translation>
 <translation id="1985165269306590797">&amp;ማንነትን በማያሳውቅ መስኮት ውስጥ ክፈት</translation>
-<translation id="4680518314108745448">&amp;የዕልባቶች አሞሌን አሳይ</translation>
+<translation id="4680518314108745448">&amp;የዕልባቶች አሞሌ አሳይ</translation>
 <translation id="642436385689435488">ሁሉንም ማንነት በማያሳውቅ መስኮት ውስጥ ክፈት</translation>
 <translation id="5074021236879527611">ሁሉንም (<ph name="URL_COUNT"/>) በግል መስኮት ውስጥ ይክፈቱ</translation>
 <translation id="5463021359602611602">ማንነትን በማያሳውቅ መስኮት ክፈት</translation>
@@ -6594,9 +6594,9 @@ nil</translation>
 <translation id="4133080584509825342">መገለጫ አርትዕ, <ph name="PROFILE_NAME"/></translation>
 <translation id="4848862725510532982">መገለጫ አርትዕ, <ph name="PROFILE_NAME"/>, <ph name="USERNAME"/></translation>
 <translation id="4536111748245793305">የመገለጫ <ph name="VALUE"/></translation>
-<translation id="5828545842856466741">ሰው አክል...</translation>
+<translation id="5828545842856466741">መገለጫ አክል ...</translation>
 <translation id="2254158488150713536">ለመቀጠል እሺን ጠቅ ያድርጉ፣ ከዚያ ለኢሜይል አድራሻዎ አዲስ መገለጫ ለመፍጠር ሰው አክልን ጠቅ ያድርጉ።</translation>
-<translation id="1725743343613175327">ለመቀጠል እሺን ጠቅ ያድርጉ፣ ከዚያ ለ<ph name="DOMAIN"/> ኢሜይል አድራሻዎ አዲስ መገለጫ ለመስራት ሰው አክልን ጠቅ ያድርጉ።</translation>
+<translation id="1725743343613175327">ለመቀጠል እሺን ጠቅ ያድርጉ፣ ከዚያ ለ <ph name="DOMAIN"/> ኢሜይል አድራሻዎ አዲስ መገለጫ ለመስራት ሰው አክልን ጠቅ ያድርጉ።</translation>
 <translation id="6921634551681321094">መገለጫ አክል</translation>
 <translation id="4904061654709986277">መገለጫ አክል</translation>
 <translation id="6114945161119872228">ይህን መገለጫ አሰወግድ</translation>
@@ -6605,14 +6605,14 @@ nil</translation>
 <translation id="6912187023601892621">ክትትል የሚደረግበት መገለጫ አክል</translation>
 <translation id="8086119151297127544">እንደ እንግዳ ከማሰስዎ በፊት እባክዎ የእርስዎን መገለጫ ይክፈቱ።</translation>
 <translation id="7805701378418968629">እባክዎ መገለጫ ከማከልዎ በፊት መገለጫዎን ይክፈቱ።</translation>
-<translation id="6315812488257290136">ሰዎች</translation>
+<translation id="6315812488257290136">መገለጫዎች</translation>
 <translation id="3707212204259470604">ሌሎች መገለጫዎችን አስተዳድር</translation>
 <translation id="5840822070878669614">የድር መደብር ክፈት</translation>
 <translation id="383007806262310953">የዕልባቶች አሞሌን አሳይ</translation>
-<translation id="2890280714162339872">የአሁኑ ማንነት የማያሳውቅ ክፍለ-ጊዜ፦ <ph name="RECENT_PERMISSIONS_CHANGE_SENTENCE_START"/></translation>
-<translation id="4207277598811881727">የአሁኑ ማንነት የማያሳውቅ ክፍለ-ጊዜ፦ <ph name="RECENT_PERMISSIONS_CHANGE_SENTENCE_START"/>፣ <ph name="RECENT_PERMISSIONS_CHANGE_1"/></translation>
-<translation id="4470052247371020791">የአሁኑ ማንነት የማያሳውቅ ክፍለ-ጊዜ፦ <ph name="RECENT_PERMISSIONS_CHANGE_SENTENCE_START"/>፣ <ph name="RECENT_PERMISSIONS_CHANGE_1"/>፣ <ph name="RECENT_PERMISSIONS_CHANGE_2"/></translation>
-<translation id="4332019753717105077">የአሁኑን ማንነት የማያሳውቅ ክፍለ-ጊዜ፦ <ph name="RECENT_PERMISSIONS_CHANGE_SENTENCE_START"/>፣ <ph name="RECENT_PERMISSIONS_CHANGE_1"/>፣ <ph name="RECENT_PERMISSIONS_CHANGE_2"/> እና ተጨማሪ</translation>
+<translation id="2890280714162339872">የአሁኑ ማንነት የማያሳውቅ ክፍለ-ጊዜ: <ph name="RECENT_PERMISSIONS_CHANGE_SENTENCE_START"/></translation>
+<translation id="4207277598811881727">የአሁኑ ማንነት የማያሳውቅ ክፍለ-ጊዜ: <ph name="RECENT_PERMISSIONS_CHANGE_SENTENCE_START"/>, <ph name="RECENT_PERMISSIONS_CHANGE_1"/></translation>
+<translation id="4470052247371020791">የአሁኑ ማንነት የማያሳውቅ ክፍለ-ጊዜ: <ph name="RECENT_PERMISSIONS_CHANGE_SENTENCE_START"/>, <ph name="RECENT_PERMISSIONS_CHANGE_1"/>, <ph name="RECENT_PERMISSIONS_CHANGE_2"/></translation>
+<translation id="4332019753717105077">የአሁኑን ማንነት የማያሳውቅ ክፍለ-ጊዜ: <ph name="RECENT_PERMISSIONS_CHANGE_SENTENCE_START"/>, <ph name="RECENT_PERMISSIONS_CHANGE_1"/>, <ph name="RECENT_PERMISSIONS_CHANGE_2"/>, እና ተጨማሪ</translation>
 <translation id="8648684608605749476">ማንነትን በማያሳውቅ ሁነታ ሦስተኛ ወገን ኩኪዎች ያግዱ</translation>
 <translation id="2199515977216775204">ማንነት በማያሳውቅ ሁኔታ ላይ ሳሉ፣ ጣቢያዎች የእርስዎን ኩኪዎች በመጠቀም በተለያዩ ጣቢያዎች ለምሳሌ ማስታወቂያዎችን ግላዊነት ለማላበስ ያደረጉትን የእርስዎን የአሰሳ እንቅስቃሴ መመልከት አይችሉም። በአንዳንድ ጣቢያዎች ላይ ያሉ ባህሪያት ሊሰበሩ ይችላሉ።</translation>
 <translation id="6105125042109106861">ማንነት በማያሳውቅ ሁነታ ላይ የሦስተኛ ወገን ኩኪዎች ይታገዳሉ</translation>
