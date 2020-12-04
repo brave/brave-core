@@ -994,10 +994,6 @@
       <message name="IDS_BRAVE_WALLET_BRAVE_REWARDS" desc="">Brave Rewards</message>
       <message name="IDS_BRAVE_WALLET_DOWNLOADING" desc="">Downloading Component...</message>
       <message name="IDS_BRAVE_WALLET_DISCLOSURE_CONFIRM" desc="">I understand</message>
-      <!-- Permissions -->
-      <message name="IDS_AUTOPLAY_PERMISSION_FRAGMENT" desc="Permission request shown if the user is visiting a site that wants to autoplay media. Follows a prompt: 'This site would like to:'">
-        Autoplay media
-      </message>
       <part file="speedreader_strings.grdp" />
       <part file="ipfs_strings.grdp" />
       <part file="crypto_dot_com_strings.grdp" />
