@@ -12,6 +12,7 @@
 #include "base/files/file_util.h"
 #include "sql/statement.h"
 #include "sql/transaction.h"
+#include "third_party/sqlite/sqlite3.h"
 #include "bat/ads/internal/logging.h"
 
 namespace ads {
@@ -227,11 +228,9 @@ DBCommandResponse::Status Database::Execute(
     return DBCommandResponse::Status::INITIALIZATION_ERROR;
   }
 
-  bool result = db_.Execute(command->command.c_str());
-
-  if (!result) {
+  const int error = db_.ExecuteAndReturnErrorCode(command->command.c_str());
+  if (error != SQLITE_OK) {
     BLOG(0, "Database error: " << db_.GetErrorMessage());
-
     return DBCommandResponse::Status::COMMAND_ERROR;
   }
 
@@ -246,16 +245,18 @@ DBCommandResponse::Status Database::Run(
     return DBCommandResponse::Status::INITIALIZATION_ERROR;
   }
 
-  sql::Statement statement(db_.GetUniqueStatement(command->command.c_str()));
+  sql::Statement statement;
+  statement.Assign(db_.GetUniqueStatement(command->command.c_str()));
+  if (!statement.is_valid()) {
+    NOTREACHED();
+    return DBCommandResponse::Status::COMMAND_ERROR;
+  }
 
   for (const auto& binding : command->bindings) {
     Bind(&statement, *binding.get());
   }
 
   if (!statement.Run()) {
-    BLOG(0, "Database error: " << db_.GetErrorMessage() << " ("
-        << db_.GetErrorCode() << ")");
-
     return DBCommandResponse::Status::COMMAND_ERROR;
   }
 
@@ -272,7 +273,12 @@ DBCommandResponse::Status Database::Read(
     return DBCommandResponse::Status::INITIALIZATION_ERROR;
   }
 
-  sql::Statement statement(db_.GetUniqueStatement(command->command.c_str()));
+  sql::Statement statement;
+  statement.Assign(db_.GetUniqueStatement(command->command.c_str()));
+  if (!statement.is_valid()) {
+    NOTREACHED();
+    return DBCommandResponse::Status::COMMAND_ERROR;
+  }
 
   for (const auto& binding : command->bindings) {
     Bind(&statement, *binding.get());
@@ -307,8 +313,7 @@ DBCommandResponse::Status Database::Migrate(
 void Database::OnErrorCallback(
     const int error,
     sql::Statement* statement) {
-  DCHECK(statement);
-  BLOG(1, "Database error: " << db_.GetDiagnosticInfo(error, statement));
+  BLOG(0, "Database error: " << db_.GetDiagnosticInfo(error, statement));
 }
 
 void Database::OnMemoryPressure(
