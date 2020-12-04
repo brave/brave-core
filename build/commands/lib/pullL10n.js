@@ -23,6 +23,14 @@ const pullL10n = (options) => {
     process.exit(1)
   }
 
+  // Revert to originals before string replacement because original grd(p)s are
+  // overwritten with modified versions from ./src/brave during build.
+  const srcDir = config.srcDir
+  const targetFilesForReset = [ "*.grd", "*.grdp", "*.xtb" ]
+  targetFilesForReset.forEach((targetFile) => {
+    util.run('git', ['checkout', '--', targetFile], { cwd: srcDir })
+  })
+
   braveTopLevelPaths.forEach((sourceStringPath) => {
     if (!options.grd_path || sourceStringPath.endsWith(path.sep + options.grd_path))
       util.run('python', ['script/pull-l10n.py', '--source_string_path', sourceStringPath], cmdOptions)
