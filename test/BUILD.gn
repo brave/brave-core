@@ -22,7 +22,6 @@ import("//brave/test/testing.gni")
 import("//chrome/common/features.gni")
 import("//components/gcm_driver/config.gni")
 import("//testing/test.gni")
-import("//third_party/widevine/cdm/widevine.gni")
 
 if (is_android) {
   import("//build/config/android/rules.gni")
@@ -137,6 +136,7 @@ test("brave_unit_tests") {
     "//brave/browser/tor:unit_tests",
     "//brave/browser/translate/buildflags",
     "//brave/browser/ui",
+    "//brave/browser/widevine:unittest",
     "//brave/common:network_constants",
     "//brave/common:pref_names",
     "//brave/browser/profiles:profiles",
@@ -426,23 +426,6 @@ test("brave_unit_tests") {
     ]
   }
 
-  if (enable_widevine) {
-    if (is_win || is_mac) {
-      sources += [ "//brave/chromium_src/chrome/browser/component_updater/widevine_cdm_component_installer_unittest.cc" ]
-    }
-
-    if (is_linux) {
-      sources += [
-        "//brave/browser/widevine/brave_widevine_bundle_manager_unittest.cc",
-      ]
-    }
-    deps += [
-     "//brave/app:brave_generated_resources_grit_grit",
-     "//brave/browser/widevine",
-     "//third_party/widevine/cdm:headers",
-    ]
-  }
-
   if (enable_brave_perf_predictor) {
     sources += [
       "//brave/components/brave_perf_predictor/browser/bandwidth_linreg_unittest.cc",
@@ -646,16 +629,9 @@ if (!is_android) {
       "//brave/components/ipfs/test:brave_ipfs_browser_tests",
       "//brave/browser/farbling:browser_tests",
       "//brave/browser/ui/tabs/test:browser_tests",
+      "//brave/browser/widevine:browser_tests",
       "//media:test_support",
     ]
-
-    if (enable_widevine) {
-      sources += [
-        "//brave/browser/widevine/widevine_permission_request_browsertest.cc",
-        "//brave/browser/widevine/widevine_prefs_migration_browsertest.cc",
-      ]
-      deps += [ "//brave/browser/widevine" ]
-    }
 
     if (enable_brave_perf_predictor) {
       sources += [ "//brave/components/brave_perf_predictor/browser/perf_predictor_tab_helper_browsertest.cc" ]

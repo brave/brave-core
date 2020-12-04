@@ -25,7 +25,6 @@ extern const char kAdBlockCheckedDefaultRegion[];
 extern const char kAdBlockCustomFilters[];
 extern const char kAdBlockRegionalFilters[];
 extern const char kWidevineOptedIn[];
-extern const char kWidevineInstalledVersion[];
 extern const char kAskWidevineInstall[];
 extern const char kUseAlternativeSearchEngineProvider[];
 extern const char kAlternativeSearchEngineProviderInTor[];

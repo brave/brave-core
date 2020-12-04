@@ -44,10 +44,6 @@
 #include "services/network/public/cpp/resource_request.h"
 #include "services/network/public/cpp/shared_url_loader_factory.h"
 
-#if BUILDFLAG(BUNDLE_WIDEVINE_CDM)
-#include "brave/browser/widevine/brave_widevine_bundle_manager.h"
-#endif
-
 #if BUILDFLAG(ENABLE_BRAVE_REFERRALS)
 #include "brave/browser/brave_referrals/brave_referrals_service_factory.h"
 #include "brave/components/brave_referrals/browser/brave_referrals_service.h"
@@ -333,15 +329,6 @@ brave::BraveP3AService* BraveBrowserProcessImpl::brave_p3a_service() {
   brave_p3a_service()->InitCallbacks();
   return brave_p3a_service_.get();
 }
-
-#if BUILDFLAG(BUNDLE_WIDEVINE_CDM)
-BraveWidevineBundleManager*
-BraveBrowserProcessImpl::brave_widevine_bundle_manager() {
-  if (!brave_widevine_bundle_manager_)
-    brave_widevine_bundle_manager_.reset(new BraveWidevineBundleManager);
-  return brave_widevine_bundle_manager_.get();
-}
-#endif
 
 brave_stats::BraveStatsUpdater* BraveBrowserProcessImpl::brave_stats_updater() {
   if (!brave_stats_updater_)

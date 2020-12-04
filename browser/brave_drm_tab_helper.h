@@ -22,6 +22,10 @@ class BraveDrmTabHelper final
       public brave_drm::mojom::BraveDRM,
       public component_updater::ComponentUpdateService::Observer {
  public:
+  // Copied from widevine_cdm_component_installer.cc.
+  // There is no shared constant value.
+  static const char kWidevineComponentId[];
+
   explicit BraveDrmTabHelper(content::WebContents* contents);
   ~BraveDrmTabHelper() override;
 

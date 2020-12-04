@@ -44,6 +44,12 @@
 
 namespace brave {
 
+void RegisterLocalStatePrefsForMigration(PrefRegistrySimple* registry) {
+#if BUILDFLAG(ENABLE_WIDEVINE)
+  RegisterWidevineLocalstatePrefsForMigration(registry);
+#endif
+}
+
 void RegisterLocalStatePrefs(PrefRegistrySimple* registry) {
   brave_shields::RegisterPrefsForAdBlockService(registry);
   brave_stats::RegisterLocalStatePrefs(registry);
@@ -88,6 +94,8 @@ void RegisterLocalStatePrefs(PrefRegistrySimple* registry) {
 #if BUILDFLAG(ENABLE_WIDEVINE)
   RegisterWidevineLocalstatePrefs(registry);
 #endif
+
+  RegisterLocalStatePrefsForMigration(registry);
 }
 
 }  // namespace brave
