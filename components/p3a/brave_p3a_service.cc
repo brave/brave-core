@@ -368,7 +368,8 @@ void BraveP3AService::InitPyxisMeta() {
 }
 
 void BraveP3AService::UpdatePyxisMeta() {
-  pyxis_meta_.date_of_survey = base::Time::Now() + base::TimeDelta::FromDays(10);
+  pyxis_meta_.date_of_survey =
+      base::Time::Now() + base::TimeDelta::FromDays(10);
   pyxis_meta_.wos = brave_stats::GetIsoWeekNumber(pyxis_meta_.date_of_survey);
 }
 
