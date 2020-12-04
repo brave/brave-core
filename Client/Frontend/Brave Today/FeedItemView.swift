@@ -3,6 +3,7 @@
 // file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
 import Foundation
+import Shared
 
 /// Defines the view for displaying a specific feed item given a specific layout
 ///
@@ -45,6 +46,10 @@ class FeedItemView: UIView {
     }
     /// The branding information (if applicable)
     lazy var brandContainerView = BrandContainerView()
+    /// An optional promoted button for sponsored/partnered cards
+    lazy var promotedButton = PromotedButton().then {
+        $0.setContentHuggingPriority(.required, for: .horizontal)
+    }
     
     /// Generates the view hierarchy given a layout component
     private func view(for component: Layout.Component) -> UIView {
@@ -76,6 +81,8 @@ class FeedItemView: UIView {
             descriptionLabel.numberOfLines = configuration.numberOfLines
             descriptionLabel.font = configuration.font
             return descriptionLabel
+        case .promotedButton:
+            return promotedButton
         case .stack(let stack):
             return UIStackView().then {
                 $0.axis = stack.axis
@@ -83,7 +90,6 @@ class FeedItemView: UIView {
                 $0.layoutMargins = stack.padding
                 $0.alignment = stack.alignment
                 $0.isLayoutMarginsRelativeArrangement = true
-                $0.isUserInteractionEnabled = false
                 for child in stack.children {
                     if case .customSpace(let space) = child, let lastView = $0.arrangedSubviews.last {
                         $0.setCustomSpacing(space, after: lastView)
@@ -138,6 +144,80 @@ class FeedItemView: UIView {
 }
 
 extension FeedItemView {
+    
+    class PromotedButton: UIControl {
+        
+        private let image = UIImageView(image: UIImage(imageLiteralResourceName: "graph-up").template).then {
+            $0.setContentHuggingPriority(.required, for: .horizontal)
+            $0.setContentCompressionResistancePriority(.required, for: .horizontal)
+            $0.tintColor = UIColor(white: 1.0, alpha: 0.8)
+        }
+        private let label = UILabel().then {
+            $0.text = Strings.BraveToday.promoted
+            $0.numberOfLines = 1
+            $0.font = .systemFont(ofSize: 12)
+            $0.appearanceTextColor = UIColor(white: 1.0, alpha: 0.8)
+            $0.setContentCompressionResistancePriority(.required, for: .horizontal)
+        }
+        
+        override init(frame: CGRect) {
+            super.init(frame: frame)
+            
+            backgroundColor = UIColor(white: 0.0, alpha: 0.2)
+            layer.cornerRadius = 4
+            if #available(iOS 13, *) {
+                layer.cornerCurve = .continuous
+            }
+            
+            let stackView = UIStackView().then {
+                $0.spacing = 4
+                $0.alignment = .center
+                $0.isUserInteractionEnabled = false
+            }
+            addSubview(stackView)
+            stackView.addStackViewItems(
+                .view(image),
+                .view(label)
+            )
+            stackView.snp.makeConstraints {
+                $0.edges.equalToSuperview().inset(UIEdgeInsets(top: 3, left: 5, bottom: 3, right: 5))
+            }
+            
+            isAccessibilityElement = true
+            accessibilityTraits.insert(.button)
+        }
+        
+        override var accessibilityLabel: String? {
+            get { label.text }
+            set { assertionFailure("Accessibility label is inherited from a subview: \(String(describing: newValue)) ignored") }
+        }
+        
+        @available(*, unavailable)
+        required init(coder: NSCoder) {
+            fatalError()
+        }
+        
+        override var isHighlighted: Bool {
+            didSet {
+                UIViewPropertyAnimator(duration: 0.3, dampingRatio: 1.0) {
+                    self.backgroundColor = self.isHighlighted ?
+                        UIColor(white: 0.0, alpha: 0.6) :
+                        UIColor(white: 0.0, alpha: 0.2)
+                }
+                .startAnimation()
+            }
+        }
+        
+        override public func point(inside point: CGPoint, with event: UIEvent?) -> Bool {
+            if bounds.inset(by: UIEdgeInsets(equalInset: -8)).contains(point) {
+                return true
+            }
+            return super.point(inside: point, with: event)
+        }
+    }
+}
+
+extension FeedItemView {
     /// Defines how a single feed item may be laid out
     ///
     /// A feed item contains UI elements for displaying usually a title, date,
@@ -181,6 +261,7 @@ extension FeedItemView {
             case date(_ labelConfiguration: LabelConfiguration = .date)
             case description(_ labelConfiguration: LabelConfiguration = .description)
             case brand(viewingMode: BrandContainerView.ViewingMode = .automatic, labelConfiguration: LabelConfiguration = .brand)
+            case promotedButton
         }
         /// The root stack for a given layout
         var root: Stack
@@ -211,8 +292,9 @@ extension FeedItemView {
                     case .alwaysText:
                         return configuration.font.pointSize * (configuration.numberOfLines == 0 ? 1 : CGFloat(configuration.numberOfLines))
                     }
+                case .promotedButton:
+                    return 22.0
                 }
-                
             }
             return _height(for: .stack(root))
         }
@@ -248,6 +330,39 @@ extension FeedItemView {
                                 .date(),
                                 .flexibleSpace(minHeight: 12),
                                 .brand()
+                            ]
+                        )
+                    )
+                ]
+            )
+        )
+        
+        /// Uses the same layout as a `brandedHeadline` but includes a promoted button
+        static let partner = Layout(
+            root: .init(
+                axis: .vertical,
+                children: [
+                    .thumbnail(.aspectRatio(1.5)),
+                    .stack(
+                        .init(
+                            axis: .vertical,
+                            spacing: 4,
+                            padding: UIEdgeInsets(top: 12, left: 12, bottom: 12, right: 12),
+                            children: [
+                                .title(.init(numberOfLines: 5, font: .systemFont(ofSize: 18.0, weight: .semibold))),
+                                .date(),
+                                .flexibleSpace(minHeight: 12),
+                                .stack(
+                                    .init(
+                                        axis: .horizontal,
+                                        spacing: 10,
+                                        alignment: .bottom,
+                                        children: [
+                                            .brand(),
+                                            .promotedButton
+                                        ]
+                                    )
+                                )
                             ]
                         )
                     )

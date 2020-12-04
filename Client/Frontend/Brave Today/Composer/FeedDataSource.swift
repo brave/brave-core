@@ -503,7 +503,7 @@ class FeedDataSource {
                     item.content.imageURL != nil
                 }
                 return fillStrategy.next(from: &partners, where: imageExists).map {
-                    [.headline($0)]
+                    [.partner($0)]
                 }
             case .headline(let paired):
                 if articles.isEmpty { return nil }

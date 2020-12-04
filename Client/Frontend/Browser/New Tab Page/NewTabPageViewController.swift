@@ -479,6 +479,12 @@ class NewTabPageViewController: UIViewController, Themeable {
                 inNewTab: false,
                 switchingToPrivateMode: false
             )
+        case .bravePartnerLearnMoreTapped:
+            delegate?.navigateToInput(
+                BraveUX.braveTodayPartnersURL.absoluteString,
+                inNewTab: false,
+                switchingToPrivateMode: false
+            )
         case .itemAction(.opened(let inNewTab, let switchingToPrivateMode), let context):
             guard let url = context.item.content.url else { return }
             delegate?.navigateToInput(

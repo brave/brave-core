@@ -213,6 +213,8 @@
 		27036F9A25684F9F004EF6B6 /* AdView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27036F9525684F9F004EF6B6 /* AdView.swift */; };
 		27036F9B25684F9F004EF6B6 /* AdsNotificationHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27036F9625684F9F004EF6B6 /* AdsNotificationHandler.swift */; };
 		27036F9C25684F9F004EF6B6 /* AdContentButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27036F9725684F9F004EF6B6 /* AdContentButton.swift */; };
+		27036EA325671817004EF6B6 /* FeedCardFooterButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27036EA225671817004EF6B6 /* FeedCardFooterButton.swift */; };
+		27036EC3256718DA004EF6B6 /* PartnerCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27036EC2256718DA004EF6B6 /* PartnerCardView.swift */; };
 		2703BE8B24F4508E00CBE6CD /* CreatePDFActivity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2703BE8A24F4508E00CBE6CD /* CreatePDFActivity.swift */; };
 		270C48CC24AE243300E2A1E6 /* SDWebImage.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 7B604F9A1C4950F2006EEEC3 /* SDWebImage.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		27187808216526090006036E /* AlertPopupView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27187807216526090006036E /* AlertPopupView.swift */; };
@@ -1467,6 +1469,8 @@
 		27036F9525684F9F004EF6B6 /* AdView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AdView.swift; sourceTree = "<group>"; };
 		27036F9625684F9F004EF6B6 /* AdsNotificationHandler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AdsNotificationHandler.swift; sourceTree = "<group>"; };
 		27036F9725684F9F004EF6B6 /* AdContentButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AdContentButton.swift; sourceTree = "<group>"; };
+		27036EA225671817004EF6B6 /* FeedCardFooterButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedCardFooterButton.swift; sourceTree = "<group>"; };
+		27036EC2256718DA004EF6B6 /* PartnerCardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PartnerCardView.swift; sourceTree = "<group>"; };
 		2703BE8A24F4508E00CBE6CD /* CreatePDFActivity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreatePDFActivity.swift; sourceTree = "<group>"; };
 		27187807216526090006036E /* AlertPopupView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertPopupView.swift; sourceTree = "<group>"; };
 		27187809216526240006036E /* PopupView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PopupView.swift; sourceTree = "<group>"; };
@@ -3241,6 +3245,7 @@
 				2719D9FF249AAC2A0080AB48 /* FeedContextMenuDelegate.swift */,
 				27EA04C1249D4336004F5D2E /* FeedCardContent.swift */,
 				274398E624E483AD00E79605 /* FeedItemMenu.swift */,
+				27036EA225671817004EF6B6 /* FeedCardFooterButton.swift */,
 				27A1ABF924855C1700344503 /* Cards */,
 				27A1AC0A2485A0CC00344503 /* Composer */,
 				27EF6B7D24BF48B1005E034F /* Source List */,
@@ -3261,6 +3266,7 @@
 				27A1ABFA24855C1700344503 /* FeedGroupViews.swift */,
 				27A1AC0824859D0900344503 /* FeedHeadlineViews.swift */,
 				2719DA08249D37490080AB48 /* SponsorCardView.swift */,
+				27036EC2256718DA004EF6B6 /* PartnerCardView.swift */,
 			);
 			path = Cards;
 			sourceTree = "<group>";
@@ -6113,6 +6119,7 @@
 				4422D4F421BFFB7600BF1855 /* version_edit.cc in Sources */,
 				EB11A1062044A90E0018F749 /* ContentBlockerHelper+TabContentScript.swift in Sources */,
 				2755AB8623107DBD00F0721F /* AdsMediaReporting.swift in Sources */,
+				27036EC3256718DA004EF6B6 /* PartnerCardView.swift in Sources */,
 				0A39FE9C2486604D00290ABC /* GRDSubscriberCredential.m in Sources */,
 				FA9293D41D6580E100AC8D33 /* QRCodeViewController.swift in Sources */,
 				27448533245B5EC2001920B5 /* NTPDataSource.swift in Sources */,
@@ -6260,6 +6267,7 @@
 				0A39FEA0248660EA00290ABC /* VPNConstants.m in Sources */,
 				39455F771FC83F430088A22C /* TabEventHandler.swift in Sources */,
 				4422D4B721BFFB7600BF1855 /* filter_policy.cc in Sources */,
+				27036EA325671817004EF6B6 /* FeedCardFooterButton.swift in Sources */,
 				0AADC4D520D2A6A200FDE368 /* PreloadedFavorites.swift in Sources */,
 				0AC77602242A6AE000139377 /* BuyVPNView.swift in Sources */,
 				278C467823EDF0060083347F /* SimpleShieldsView.swift in Sources */,
