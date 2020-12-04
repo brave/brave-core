@@ -9,6 +9,7 @@
 #include <vector>
 
 #include "base/logging.h"
+#include "base/strings/string_util.h"
 #include "brave/components/brave_sync/crypto/crypto.h"
 #include "brave/components/sync/driver/brave_sync_auth_manager.h"
 #include "brave/components/sync/driver/profile_sync_service_delegate.h"
@@ -56,9 +57,11 @@ std::string BraveProfileSyncService::GetOrCreateSyncCode() {
 
 bool BraveProfileSyncService::SetSyncCode(const std::string& sync_code) {
   std::vector<uint8_t> seed;
-  if (!brave_sync::crypto::PassphraseToBytes32(sync_code, &seed))
+  std::string sync_code_trimmed;
+  base::TrimString(sync_code, " \n\t", &sync_code_trimmed);
+  if (!brave_sync::crypto::PassphraseToBytes32(sync_code_trimmed, &seed))
     return false;
-  if (!brave_sync_prefs_.SetSeed(sync_code))
+  if (!brave_sync_prefs_.SetSeed(sync_code_trimmed))
     return false;
   return true;
 }
