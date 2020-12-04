@@ -1,10 +1,10 @@
 {
   "braveRewards": {
-    "message": "Επιβραβεύσεις Brave",
+    "message": "Ανταμοιβές Brave",
     "description": "Title in welcome screen for the panel"
   },
   "welcomeButtonTextOne": {
-    "message": "Ξεκινήστε να Κερδίζετε Τώρα!",
+    "message": "Ξεκινήστε να Κερδίζετε Τώρα! ",
     "description": "CTA on welcome screen in the panel, existing users"
   },
   "welcomeButtonTextTwo": {
@@ -28,7 +28,7 @@
     "description": "Link in the footer (takes you to rewards settings page) for welcome screen in the panel, existing user"
   },
   "welcomeFooterTextTwo": {
-    "message": "Μάθετε Περισσότερα ",
+    "message": "Μάθετε περισσότερα",
     "description": "Link in the footer (takes you to rewards settings page) for welcome screen in the panel, new user"
   },
   "welcomeHeaderOne": {
@@ -36,7 +36,7 @@
     "description": "Main header title for welcome screen in the panel, existing user"
   },
   "welcomeHeaderTwo": {
-    "message": "Ετοιμάσου να βιώσεις το επόμενο διαδίκτυο.",
+    "message": "Ετοιμάσου να βιώσεις το επόμενο διαδίκτυο.·",
     "description": "Main header title for welcome screen in the panel, new user"
   },
   "yourWallet": {
@@ -104,7 +104,7 @@
     "description": "Month"
   },
   "monthAug": {
-    "message": "Αύγουστος",
+    "message": "Αύγουστος ",
     "description": "Month"
   },
   "monthDec": {
@@ -112,7 +112,7 @@
     "description": "Month"
   },
   "monthFeb": {
-    "message": "Φεβρουάριος ",
+    "message": "Φεβρουάριος",
     "description": "Month"
   },
   "monthJan": {
@@ -140,7 +140,7 @@
     "description": "Month"
   },
   "monthOct": {
-    "message": "Οκτώβριος",
+    "message": "Οκτώβριος ",
     "description": "Month"
   },
   "monthSep": {
@@ -158,11 +158,11 @@
     }
   },
   "tokenGrantClaimed": {
-    "message": "Οι Χορηγίες Τόκεν Αποκτήθηκαν",
+    "message": "Το Κέρμα Επιχορηγήσεων Αποκτήθηκε",
     "description": "Title for grant section in wallet summary"
   },
   "pointGrantClaimed": {
-    "message": "Οι Πόντοι Grants Αποκτήθηκαν",
+    "message": "Χορηγίες Πόντων που Διεκδικήθηκαν",
     "description": "Title for point grant section in wallet summary"
   },
   "earningsAds": {
@@ -170,7 +170,7 @@
     "description": "Title for ads section in wallet summary"
   },
   "rewardsContribute": {
-    "message": "Αυτόματη-Δωρεά",
+    "message": "Auto-Contribute",
     "description": "Title for auto contribute section in wallet summary"
   },
   "oneTimeDonation": {
@@ -186,7 +186,7 @@
     "description": "Title for monthly contributions section in wallet summary"
   },
   "off": {
-    "message": "Κλειστό",
+    "message": "Απενεργοποιημένη",
     "description": "Label used in toggle indicating that toggle is off"
   },
   "ok": {
@@ -194,7 +194,7 @@
     "description": "Used in notification to dismiss notification"
   },
   "braveAdsLaunchMsg": {
-    "message": "Τώρα μπορείτε να κερδίζετε βλέποντας διαφημίσεις.",
+    "message": "Τώρα μπορείτε να κερδίσετε βλέποντας διαφημίσεις.",
     "description": "Message for ads launch notification"
   },
   "braveAdsTitle": {
@@ -264,7 +264,7 @@
     "description": "Allows the user to see that there have been no transactions or other activity in their wallet"
   },
   "captchaDrag": {
-    "message": "Σύρετε το εικονίδιο BAT στο",
+    "message": "Σύρετε το εικονίδιο BAT στο\n",
     "description": "Directs the user to drag the BAT icon"
   },
   "captchaProveHuman": {
@@ -280,7 +280,7 @@
     "description": "Message upon failing captcha"
   },
   "claim": {
-    "message": "Διεκδικήστε",
+    "message": "Αποκτήστε",
     "description": "Claim text"
   },
   "newTokenGrant": {
@@ -292,7 +292,7 @@
     "description": "Grant expiry label"
   },
   "grantGeneralErrorButton": {
-    "message": "ΟΚ",
+    "message": "OK",
     "description": "Button text for clearing the error."
   },
   "grantGeneralErrorText": {
@@ -328,7 +328,7 @@
     "description": "Text for the link that explains more about reserved amount"
   },
   "disabledPanelOff": {
-    "message": "Ανενεργό",
+    "message": "Απενεργοποιημένη",
     "description": "Off state text for Panel's disabled state"
   },
   "disabledPanelSettings": {
@@ -348,7 +348,7 @@
     "description": "Failure title for wallet creation"
   },
   "walletFailedButton": {
-    "message": "Δοκιμάστε ξανά",
+    "message": "Προσπαθήστε ξανά",
     "description": "Button for re-try after wallet creation failed"
   },
   "addFunds": {
@@ -416,7 +416,7 @@
     "description": "BAT Points abbreviation text"
   },
   "turnOnAds": {
-    "message": "Ενεργοποίηση Διαφημίσεων",
+    "message": "Ενεργοποιήστε τις Διαφημίσεις",
     "description": "Prompt to turn on Ads via notification"
   },
   "adsEarnings": {
@@ -462,7 +462,7 @@
     "description": "Notification text that tells user his wallet is under funded for pending contribution to complete"
   },
   "pendingContributionTitle": {
-    "message": "Εκκρεμεί Συνεισφορά",
+    "message": "Εκκρεμής Συνεισφορά",
     "description": "Notification title for pending contribution type"
   },
   "grantFinishTitleUGP": {
@@ -484,7 +484,7 @@
     "description": "Token title on success screen"
   },
   "grantFinishPointTitleUGP": {
-    "message": "Δωρεάν Πόντος Επιχορήγησης ",
+    "message": "Χορήγηση Δωρεάν Πόντου",
     "description": "Point title on success screen"
   },
   "grantFinishTitleAds": {
@@ -578,7 +578,7 @@
     "description": "BAT Points text"
   },
   "tokenGrants":  {
-    "message": "Επιχορηγήσεις Κέρματος",
+    "message": "Κέρμα Επιχορηγήσεων",
     "description": "BAT Tokens Grant Text"
   },
   "pointGrants":  {
@@ -626,5 +626,21 @@
   "walletVerificationNote3":  {
     "message": "Σημείωση: Οι συναλλαγές σας θα είναι ορατές στο Uphold μόλις εξουσιοδοτήσετε. Για παράδειγμα, θα μπορούν να δουν τον παραλήπτη και το ποσό των φιλοδωρημάτων σας.",
     "description": "Displayed in login modal for uphold"
+  },
+  "onboardingEarnHeader": {
+    "message": "Κερδίστε μάρκες και δώστε πίσω",
+    "description": ""
+  },
+  "onboardingEarnText": {
+    "message": "Κερδίστε μάρκες προβάλλοντας διαφημίσεις που σέβονται το απόρρητο και υποστηρίξτε αυτόματα τους αγαπημένους σας ιστότοπους και δημιουργούς περιεχομένου.",
+    "description": ""
+  },
+  "onboardingStartUsingRewards": {
+    "message": "Ξεκινήστε να χρησιμοποιείτε το Brave Rewards",
+    "description": ""
+  },
+  "onboardingTerms": {
+    "message": "Συνεχίζοντας, συμφωνείτε με τους $$1Όρους χρήσης$$2 και την $$3Πολιτική απορρήτου$$4.",
+    "description": ""
   }
 }

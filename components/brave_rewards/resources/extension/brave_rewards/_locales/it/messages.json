@@ -4,7 +4,7 @@
     "description": "Title in welcome screen for the panel"
   },
   "welcomeButtonTextOne": {
-    "message": "Inizia a Guadagnare Ora!",
+    "message": "Inizia a guadagnare adesso!",
     "description": "CTA on welcome screen in the panel, existing users"
   },
   "welcomeButtonTextTwo": {
@@ -12,11 +12,11 @@
     "description": "CTA on welcome screen in the panel, new users"
   },
   "welcomeDescOne": {
-    "message": "Fatti pagare per visualizzare gli annunci pubblicitari e usa il guadagno per supportare i tuoi creatori di contenuti preferiti.",
+    "message": "Ricevi un pagamento per la visualizzazione di annunci pubblicitari e spendilo per sostenere i tuoi creatori di contenuti preferiti.",
     "description": "Entry text for welcome screen in the panel, existing user"
   },
   "welcomeDescTwo": {
-    "message": "Ora puoi guadagnare dei gettoni guardando annunci pubblicitari che rispettano la privacy.",
+    "message": "Ora puoi guadagnare gettoni guardando annunci pubblicitari che rispettano la privacy.",
     "description": "Entry text for welcome screen in the panel, new user"
   },
   "welcomeDescPoints": {
@@ -28,7 +28,7 @@
     "description": "Link in the footer (takes you to rewards settings page) for welcome screen in the panel, existing user"
   },
   "welcomeFooterTextTwo": {
-    "message": "Per saperne di più",
+    "message": "Ulteriori informazioni",
     "description": "Link in the footer (takes you to rewards settings page) for welcome screen in the panel, new user"
   },
   "welcomeHeaderOne": {
@@ -36,7 +36,7 @@
     "description": "Main header title for welcome screen in the panel, existing user"
   },
   "welcomeHeaderTwo": {
-    "message": "Preparati a vivere l'Internet del futuro.",
+    "message": "Preparati a vivere il futuro di Internet.",
     "description": "Main header title for welcome screen in the panel, new user"
   },
   "yourWallet": {
@@ -158,11 +158,11 @@
     }
   },
   "tokenGrantClaimed": {
-    "message": "Contributi in token Riscossi",
+    "message": "Contributi in Token Riscossi",
     "description": "Title for grant section in wallet summary"
   },
   "pointGrantClaimed": {
-    "message": "Donazioni di punti richieste",
+    "message": "Point Grants Richiesti",
     "description": "Title for point grant section in wallet summary"
   },
   "earningsAds": {
@@ -186,7 +186,7 @@
     "description": "Title for monthly contributions section in wallet summary"
   },
   "off": {
-    "message": "Spento",
+    "message": "Off",
     "description": "Label used in toggle indicating that toggle is off"
   },
   "ok": {
@@ -194,7 +194,7 @@
     "description": "Used in notification to dismiss notification"
   },
   "braveAdsLaunchMsg": {
-    "message": "Ora puoi guadagnare visualizzando gli annunci pubblicitari.",
+    "message": "Ora puoi guadagnare visionando pubblicità.",
     "description": "Message for ads launch notification"
   },
   "braveAdsTitle": {
@@ -202,7 +202,7 @@
     "description": "Notification title when we display info about ads"
   },
   "braveContributeTitle": {
-    "message": "Auto-contributo",
+    "message": "Contribuisci automaticamente",
     "description": "Notification title when we display info about auto contribution"
   },
   "contributeNotificationSuccess": {
@@ -244,7 +244,7 @@
     "description": "Title for insufficient funds notification"
   },
   "braveRewardsCreatingText": {
-    "message": "Creazione del wallet",
+    "message": "Creazione del portafoglio",
     "description": "Used in a button displaying wallet creation process"
   },
   "contributeNotificationError": {
@@ -288,7 +288,7 @@
     "description": "Token grant label"
   },
   "grantExpire": {
-    "message": "Data Scadenza Contributo",
+    "message": "Data di Scadenza Contributo",
     "description": "Grant expiry label"
   },
   "grantGeneralErrorButton": {
@@ -328,7 +328,7 @@
     "description": "Text for the link that explains more about reserved amount"
   },
   "disabledPanelOff": {
-    "message": "Spento",
+    "message": "Off",
     "description": "Off state text for Panel's disabled state"
   },
   "disabledPanelSettings": {
@@ -360,7 +360,7 @@
     "description": "Button for opening settings page"
   },
   "earningsClaimDefault": {
-    "message": "Le tue ricompense degli annunci sono qui!",
+    "message": "Le tue ricompense dagli Ads sono qui!",
     "description": "Panel notification text for Ads grant"
   },
   "and": {
@@ -368,7 +368,7 @@
     "description": "The word 'and'"
   },
   "braveRewardsSubTitle": {
-    "message": "Guadagna per la navigazione!",
+    "message": "Fatti ricompensare per la navigazione!",
     "description": "Subtitle for wallet disabled panel"
   },
   "disabledPanelTextTwo": {
@@ -380,7 +380,7 @@
     "description": "Subtitle for wallet disabled panel"
   },
   "privacyPolicy": {
-    "message": "Informativa sulla privacy",
+    "message": "Politica sulla Privacy",
     "description": "Privacy Policy"
   },
   "serviceText": {
@@ -416,7 +416,7 @@
     "description": "BAT Points abbreviation text"
   },
   "turnOnAds": {
-    "message": "Attiva gli Annunci Pubblicitari",
+    "message": "Attiva gli Ads",
     "description": "Prompt to turn on Ads via notification"
   },
   "adsEarnings": {
@@ -462,7 +462,7 @@
     "description": "Notification text that tells user his wallet is under funded for pending contribution to complete"
   },
   "pendingContributionTitle": {
-    "message": "Contributo in sospeso",
+    "message": "Contributi in sospeso",
     "description": "Notification title for pending contribution type"
   },
   "grantFinishTitleUGP": {
@@ -484,7 +484,7 @@
     "description": "Token title on success screen"
   },
   "grantFinishPointTitleUGP": {
-    "message": "Donazione di punti ",
+    "message": "Point Grant Gratis",
     "description": "Point title on success screen"
   },
   "grantFinishTitleAds": {
@@ -554,7 +554,7 @@
     "description": "Text shown for connected publishers that are not fully verified in the panel"
   },
   "walletGoToVerifyPage":  {
-    "message": "Completa la verifica del portafoglio",
+    "message": "Completa verifica del portafoglio",
     "description": "CTA for completing wallet verification"
   },
   "set": {
@@ -624,7 +624,23 @@
     "description": "Status button that tells user that he is currently pending"
   },
   "walletVerificationNote3":  {
-    "message": "Nota: le tue transazioni saranno visibili ad Uphold dopo la tua autorizzazione; ad esempio, saranno in grado di vedere il destinatario e l'importo delle tue donazioni.",
+    "message": "Nota: le tue transazioni saranno visibili ad Uphold dopo la tua autorizzazione; ad esempio, potranno vedere il destinatario e l'importo della tua donazione.",
     "description": "Displayed in login modal for uphold"
+  },
+  "onboardingEarnHeader": {
+    "message": "Guadagna Gettoni e dai indietro",
+    "description": ""
+  },
+  "onboardingEarnText": {
+    "message": "Guadagna gettoni visualizzando annunci che rispettano la privacy  e supporta automaticamente i creatori di contenuti..",
+    "description": ""
+  },
+  "onboardingStartUsingRewards": {
+    "message": "Inizia a usare Brave Rewards",
+    "description": ""
+  },
+  "onboardingTerms": {
+    "message": "Procedendo, accetti i $$ 1Termini di servizio $$ 2 e $$ 3Informativa sulla privacy $$ 4.",
+    "description": ""
   }
 }

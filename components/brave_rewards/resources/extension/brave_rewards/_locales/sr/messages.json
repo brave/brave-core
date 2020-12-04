@@ -1,6 +1,6 @@
 {
   "braveRewards": {
-    "message": "Brejv nagrade",
+    "message": "Brave Rewards",
     "description": "Title in welcome screen for the panel"
   },
   "welcomeButtonTextOne": {
@@ -8,7 +8,7 @@
     "description": "CTA on welcome screen in the panel, existing users"
   },
   "welcomeButtonTextTwo": {
-    "message": "Pridružite se Rewards-u",
+    "message": "Spoji nagrade",
     "description": "CTA on welcome screen in the panel, new users"
   },
   "welcomeDescOne": {
@@ -28,7 +28,7 @@
     "description": "Link in the footer (takes you to rewards settings page) for welcome screen in the panel, existing user"
   },
   "welcomeFooterTextTwo": {
-    "message": "Saznajte više",
+    "message": "Više informacija",
     "description": "Link in the footer (takes you to rewards settings page) for welcome screen in the panel, new user"
   },
   "welcomeHeaderOne": {
@@ -48,7 +48,7 @@
     "description": "Title for grant section in wallet summary"
   },
   "details": {
-    "message": "Детаљи",
+    "message": "Detalji",
     "description": "Title for grant section in wallet panel summary"
   },
   "yourBalance": {
@@ -124,7 +124,7 @@
     "description": "Month"
   },
   "monthJun": {
-    "message": "Jun",
+    "message": "jun",
     "description": "Month"
   },
   "monthMar": {
@@ -132,7 +132,7 @@
     "description": "Month"
   },
   "monthMay": {
-    "message": "Maj",
+    "message": "maj",
     "description": "Month"
   },
   "monthNov": {
@@ -144,7 +144,7 @@
     "description": "Month"
   },
   "monthSep": {
-    "message": "Septembar",
+    "message": "septembar",
     "description": "Month"
   },
   "tokenGrant": {
@@ -162,7 +162,7 @@
     "description": "Title for grant section in wallet summary"
   },
   "pointGrantClaimed": {
-    "message": "Zahtevana je dodela poena",
+    "message": "Zahtevano je odobrenje poena",
     "description": "Title for point grant section in wallet summary"
   },
   "earningsAds": {
@@ -170,7 +170,7 @@
     "description": "Title for ads section in wallet summary"
   },
   "rewardsContribute": {
-    "message": "Samo-doprinos",
+    "message": "Automatski doprinosi",
     "description": "Title for auto contribute section in wallet summary"
   },
   "oneTimeDonation": {
@@ -178,7 +178,7 @@
     "description": "Title for one time tips section in wallet summary"
   },
   "expiresOn": {
-    "message": "ističe",
+    "message": "ističe ",
     "description": "Used for grant representation. Whole string is '30.0 BAT expires on 08/05/2022'"
   },
   "recurringDonations": {
@@ -186,7 +186,7 @@
     "description": "Title for monthly contributions section in wallet summary"
   },
   "off": {
-    "message": "Isključeno",
+    "message": "Искључено",
     "description": "Label used in toggle indicating that toggle is off"
   },
   "ok": {
@@ -194,7 +194,7 @@
     "description": "Used in notification to dismiss notification"
   },
   "braveAdsLaunchMsg": {
-    "message": "Sada možete da zarađujete pregleđivanjem reklama.",
+    "message": "Sada možete zarađivati gledajući oglase.",
     "description": "Message for ads launch notification"
   },
   "braveAdsTitle": {
@@ -292,7 +292,7 @@
     "description": "Grant expiry label"
   },
   "grantGeneralErrorButton": {
-    "message": "U redu",
+    "message": "Потврди",
     "description": "Button text for clearing the error."
   },
   "grantGeneralErrorText": {
@@ -328,7 +328,7 @@
     "description": "Text for the link that explains more about reserved amount"
   },
   "disabledPanelOff": {
-    "message": "Isključi",
+    "message": "Искључено",
     "description": "Off state text for Panel's disabled state"
   },
   "disabledPanelSettings": {
@@ -340,7 +340,7 @@
     "description": "Text for Panel's disabled state"
   },
   "disabledPanelTitle": {
-    "message": "Brave nagrade je",
+    "message": "Brave  nagrade je",
     "description": "Title for Panel's disabled state"
   },
   "walletFailedTitle": {
@@ -348,7 +348,7 @@
     "description": "Failure title for wallet creation"
   },
   "walletFailedButton": {
-    "message": "Пробај поново",
+    "message": "Пробајте поново",
     "description": "Button for re-try after wallet creation failed"
   },
   "addFunds": {
@@ -412,11 +412,11 @@
     "description": "BAT text for displaying converted tip amount."
   },
   "bap": {
-    "message": "BAP protokol",
+    "message": "BAP",
     "description": "BAT Points abbreviation text"
   },
   "turnOnAds": {
-    "message": "Uključite Ads",
+    "message": "Uključi oglase",
     "description": "Prompt to turn on Ads via notification"
   },
   "adsEarnings": {
@@ -484,7 +484,7 @@
     "description": "Token title on success screen"
   },
   "grantFinishPointTitleUGP": {
-    "message": "Besplatna dodela poena",
+    "message": "Dodeljeni besplatni poeni",
     "description": "Point title on success screen"
   },
   "grantFinishTitleAds": {
@@ -624,7 +624,23 @@
     "description": "Status button that tells user that he is currently pending"
   },
   "walletVerificationNote3":  {
-    "message": "Napomena: Vaše transakcije će biti vidljive Uphold-u čim date ovlašćenje; na primer, biće vidljiv primalac i iznos Vaše napojnice.",
+    "message": "Napomena: Vaše transakcije će biti vidljive Uphold-u čim budete dali ovlašćenje; na primer, moći će da se vidi primalac i iznos napojnice.",
     "description": "Displayed in login modal for uphold"
+  },
+  "onboardingEarnHeader": {
+    "message": "Zaradi tokene & Uzvrati isto",
+    "description": ""
+  },
+  "onboardingEarnText": {
+    "message": "Zaradite tokene gledajući reklame koje poštuju privatnost i podržavajte automatski vaše omiljene veb lokacije i kreatore sadržaja.",
+    "description": ""
+  },
+  "onboardingStartUsingRewards": {
+    "message": "Počnite da koristite Brave nagrade",
+    "description": ""
+  },
+  "onboardingTerms": {
+    "message": "Nastavljajući, pristajete na $$1Uslove korišćenja$$2 i $$3Pravila o privatnosti$$4.",
+    "description": ""
   }
 }

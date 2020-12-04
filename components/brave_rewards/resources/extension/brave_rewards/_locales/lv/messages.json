@@ -28,7 +28,7 @@
     "description": "Link in the footer (takes you to rewards settings page) for welcome screen in the panel, existing user"
   },
   "welcomeFooterTextTwo": {
-    "message": "Uzzināt vairāk",
+    "message": "Uzziniet vairāk",
     "description": "Link in the footer (takes you to rewards settings page) for welcome screen in the panel, new user"
   },
   "welcomeHeaderOne": {
@@ -170,7 +170,7 @@
     "description": "Title for ads section in wallet summary"
   },
   "rewardsContribute": {
-    "message": "Automātiskā ziedošana",
+    "message": "Automātiska ziedošana",
     "description": "Title for auto contribute section in wallet summary"
   },
   "oneTimeDonation": {
@@ -182,7 +182,7 @@
     "description": "Used for grant representation. Whole string is '30.0 BAT expires on 08/05/2022'"
   },
   "recurringDonations": {
-    "message": "Ikmēneša ieguldījums",
+    "message": "Ikmēneša ziedojumi",
     "description": "Title for monthly contributions section in wallet summary"
   },
   "off": {
@@ -194,7 +194,7 @@
     "description": "Used in notification to dismiss notification"
   },
   "braveAdsLaunchMsg": {
-    "message": "Tagad Jūs varat pelnīt, skatoties reklāmas.",
+    "message": "Tagad jūs varat nopelnīt, skatoties reklāmas.",
     "description": "Message for ads launch notification"
   },
   "braveAdsTitle": {
@@ -388,7 +388,7 @@
     "description": "Terms of service main text"
   },
   "termsOfService": {
-    "message": "Pakalpojuma noteikumi",
+    "message": "Pakalpojuma noteikumiem",
     "description": "Terms of Service"
   },
   "welcomeBack": {
@@ -416,7 +416,7 @@
     "description": "BAT Points abbreviation text"
   },
   "turnOnAds": {
-    "message": "Ieslēgt reklāmas",
+    "message": "Ieslēdziet reklāmas",
     "description": "Prompt to turn on Ads via notification"
   },
   "adsEarnings": {
@@ -626,5 +626,21 @@
   "walletVerificationNote3":  {
     "message": "Piezīme: jūsu darījumi būs redzami Uphold, kad autorizēsieties; piemēram, būs redzami jūsu dzeramnaudu saņēmēji un summas.",
     "description": "Displayed in login modal for uphold"
+  },
+  "onboardingEarnHeader": {
+    "message": "Pelnīt žetonus un Atdot atpakaļ",
+    "description": ""
+  },
+  "onboardingEarnText": {
+    "message": "Nopelniet žetonus, apskatot konfidencialitāti cienošas reklāmas, un automātiski atbalstiet savas iecienītākās vietnes un veidotājus.",
+    "description": ""
+  },
+  "onboardingStartUsingRewards": {
+    "message": "Sākt izmantot Brave Rewards",
+    "description": ""
+  },
+  "onboardingTerms": {
+    "message": "Turpinot jūs piekrītat $$1Terms of Service$$2 un $$3Privacy Policy$$4.",
+    "description": ""
   }
 }

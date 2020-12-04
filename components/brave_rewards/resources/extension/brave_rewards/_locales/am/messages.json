@@ -1,26 +1,26 @@
 {
   "braveRewards": {
-    "message": "የብሬቭ ሽልማት",
+    "message": "ናይ Brave ሽልማታት",
     "description": "Title in welcome screen for the panel"
   },
   "welcomeButtonTextOne": {
-    "message": "አሁን ማግኘቶን ይጀምሩ!",
+    "message": "አሁን ገበቢ ማግኘት ይጀምሩ",
     "description": "CTA on welcome screen in the panel, existing users"
   },
   "welcomeButtonTextTwo": {
-    "message": "ሽልማት ይቀላቀሉ",
+    "message": "ወደ ሽልማት ይቀላቀሉ",
     "description": "CTA on welcome screen in the panel, new users"
   },
   "welcomeDescOne": {
-    "message": "ማስታወቅያ በማየቶ ይከፈሎት እንዲሁም የሚፈልግቱን የይዘት ፈጣሪዎች ለመደገፍ ያስተላልፉት፡፡",
+    "message": "ማስታወቅያ በመመልከት ክፍያ ያግኙ እንዲሁም ለሚወዱትን ይዘት ፈጣሪዎች ይሸልሙ፡፡",
     "description": "Entry text for welcome screen in the panel, existing user"
   },
   "welcomeDescTwo": {
-    "message": "ግላዊነት የሚያከብሩ ማስታወቅያዎችን በማየቶ ቶክን ማግኘት ይችላሉ፡፡",
+    "message": "ግላዊነት የሚያከብሩ ማስታወቅያዎችን በመመልከት ቶክን ማግኘት ይችላሉ፡፡",
     "description": "Entry text for welcome screen in the panel, new user"
   },
   "welcomeDescPoints": {
-    "message": "ግላዊነት የሚያከብሩ ማስታወቂያዎችን በማየትዎ ነጥቦችን ማግኘት ይችላሉ፡፡",
+    "message": "ግላዊነት የሚያከብሩ ማስታወቂያዎች በማየቶ ነጥቦችን ማግኘት ይችላሉ።",
     "description": "Entry text for welcome screen in the panel, points"
   },
   "welcomeFooterTextOne": {
@@ -28,7 +28,7 @@
     "description": "Link in the footer (takes you to rewards settings page) for welcome screen in the panel, existing user"
   },
   "welcomeFooterTextTwo": {
-    "message": "በተጨማሪ ይወቁ",
+    "message": "የበለጠ ይወቁ",
     "description": "Link in the footer (takes you to rewards settings page) for welcome screen in the panel, new user"
   },
   "welcomeHeaderOne": {
@@ -36,15 +36,15 @@
     "description": "Main header title for welcome screen in the panel, existing user"
   },
   "welcomeHeaderTwo": {
-    "message": "ቀጣዩን ኢንተርኔት ለማየት ይዘጋጁ፡፡",
+    "message": "ቀጣዩን ኢንተርኔት ለመጠቀም ይዘጋጁ፡፡",
     "description": "Main header title for welcome screen in the panel, new user"
   },
   "yourWallet": {
-    "message": "የእርስዎ ዋሌት",
+    "message": "ኪስዎ",
     "description": "Title of wallet section where we display data about wallet"
   },
   "grants": {
-    "message": "ስጦታ",
+    "message": "ብድሮች",
     "description": "Title for grant section in wallet summary"
   },
   "details": {
@@ -64,7 +64,7 @@
     "description": "Text for BAT Point helper message"
   },
   "on": {
-    "message": "በርቷል",
+    "message": "በ",
     "description": "The whole string is 'Enable tips on YouTube for like.'"
   },
   "verifiedPublisher": {
@@ -72,7 +72,7 @@
     "description": "Tells user that this particular publisher is a Brave Verified Creator"
   },
   "rewardsContributeAttentionScore": {
-    "message": "ያስተውሉ",
+    "message": "ትኩረት",
     "description": "Label for auto contribute table attention for the publisher"
   },
   "donateMonthly": {
@@ -80,7 +80,7 @@
     "description": "Label for drop down menu where user select amount for monthly contribution for particular publisher"
   },
   "includeInAuto": {
-    "message": "አውቶ-አስተዋጽኦ ያካቱ",
+    "message": "ራስን አስተዋጽኦ ማድረግ መጨመር",
     "description": "Label for checkbox that allows user to exclude publishers from auto contribute"
   },
   "donateNow": {
@@ -88,7 +88,7 @@
     "description": "CTA for sending tip form site banner"
   },
   "enableTips": {
-    "message": "ምክሮችን ያብሩ",
+    "message": "ቲፖችን ያብሩ",
     "description": "The whole string is 'Enable tips on YouTube for like.'"
   },
   "for": {
@@ -100,7 +100,7 @@
     "description": "Section title in wallet panel, which contains monthly rewards summary"
   },
   "monthApr": {
-    "message": "የካቲት",
+    "message": "ሚያዝያ",
     "description": "Month"
   },
   "monthAug": {
@@ -108,11 +108,11 @@
     "description": "Month"
   },
   "monthDec": {
-    "message": "ታህሳስ",
+    "message": "ዲሲምበር",
     "description": "Month"
   },
   "monthFeb": {
-    "message": "የካቲት",
+    "message": "ፌብሩዋሪ",
     "description": "Month"
   },
   "monthJan": {
@@ -136,7 +136,7 @@
     "description": "Month"
   },
   "monthNov": {
-    "message": "ሕዳር",
+    "message": "ህዳር",
     "description": "Month"
   },
   "monthOct": {
@@ -144,7 +144,7 @@
     "description": "Month"
   },
   "monthSep": {
-    "message": "መስከረም",
+    "message": "ሰፕተመበር",
     "description": "Month"
   },
   "tokenGrant": {
@@ -166,11 +166,11 @@
     "description": "Title for point grant section in wallet summary"
   },
   "earningsAds": {
-    "message": "ከማስታወቅያ ማትረፍ",
+    "message": "እባክዎ ከማስተዋቅያ ያግኙ",
     "description": "Title for ads section in wallet summary"
   },
   "rewardsContribute": {
-    "message": "አውቶ-አስተዋፅኦ",
+    "message": "የራስ-አስተዋፅዎ",
     "description": "Title for auto contribute section in wallet summary"
   },
   "oneTimeDonation": {
@@ -178,7 +178,7 @@
     "description": "Title for one time tips section in wallet summary"
   },
   "expiresOn": {
-    "message": "ቀኑ የሚያልፈው",
+    "message": "በ አገልግሎቱ ያበቃል",
     "description": "Used for grant representation. Whole string is '30.0 BAT expires on 08/05/2022'"
   },
   "recurringDonations": {
@@ -186,7 +186,7 @@
     "description": "Title for monthly contributions section in wallet summary"
   },
   "off": {
-    "message": "ጠፍቷል",
+    "message": "አጥፋ",
     "description": "Label used in toggle indicating that toggle is off"
   },
   "ok": {
@@ -248,7 +248,7 @@
     "description": "Used in a button displaying wallet creation process"
   },
   "contributeNotificationError": {
-    "message": "የእርስዎን አስተዋፅኦ በማካሄድ ላይ ችግር ነበር\n",
+    "message": "አስተዋፅ contributionዎን በማካሄድ ላይ ችግር ነበር",
     "description": "We show this string in notification when contribution fails"
   },
   "contributeNotificationNotEnoughFunds": {
@@ -348,7 +348,7 @@
     "description": "Failure title for wallet creation"
   },
   "walletFailedButton": {
-    "message": "እንደገና ሞክር",
+    "message": "እንደገና ይሞክሩ",
     "description": "Button for re-try after wallet creation failed"
   },
   "addFunds": {
@@ -392,7 +392,7 @@
     "description": "Terms of Service"
   },
   "welcomeBack": {
-    "message": "እንኳን በደህና ተመለሱ",
+    "message": "እንኳን በደህና ተመለሱ!",
     "description": "Title message for wallet disabled panel"
   },
   "tipsProcessedNotification": {
@@ -416,7 +416,7 @@
     "description": "BAT Points abbreviation text"
   },
   "turnOnAds": {
-    "message": "ማስታወቂያዎችን ያብሩ ",
+    "message": "ማስታወቂያዎችን ያብሩ",
     "description": "Prompt to turn on Ads via notification"
   },
   "adsEarnings": {
@@ -462,7 +462,7 @@
     "description": "Notification text that tells user his wallet is under funded for pending contribution to complete"
   },
   "pendingContributionTitle": {
-    "message": "በሒደት ላይ ያለ መዋጮ",
+    "message": "በመጠበቅ ላይ መዋጮ",
     "description": "Notification title for pending contribution type"
   },
   "grantFinishTitleUGP": {
@@ -492,7 +492,7 @@
     "description": "Cosmetic text upon captcha success for ads"
   },
   "grantFinishTextAds": {
-    "message": "ሽልማትዎ ወደ Brave የሽልማቶች ዋሌትዎ እየመጣ ነው።",
+    "message": "ሽልማትዎ ወደ ከ Brave የሽልማቶች ዋሌትዎ የመጣ ነው።",
     "description": "Cosmetic text indicating ads funds are on the way"
   },
   "grantFinishTokenTitleAds": {
@@ -508,7 +508,7 @@
     "description": "CTA status button"
   },
   "walletButtonUnverified":  {
-    "message": "ዋሌትን አረጋግጥ",
+    "message": "የዋሌትን ትክክለኛነት አጣራ",
     "description": "CTA to verify wallet in the wallet "
   },
   "walletButtonVerified":  {
@@ -520,7 +520,7 @@
     "description": "CTA to open uphold account"
   },
   "walletDisconnect":  {
-    "message": "ከ Brave ሽልማቶች ግንኙነትዎን ያቋርጡ",
+    "message": "ከ Brave ሽልማቶች ጋር ግንኙነትዎን ያቋርጡ",
     "description": "CTA to disconnect user wallet from rewards"
   },
   "walletVerified":  {
@@ -550,7 +550,7 @@
     "description": "Title for notification when wallet is disconnected"
   },
   "connectedText":  {
-    "message": "ይህ የ Brave የተረጋገጠ ፈጣሪ እስካሁን መለያውን ባለማዋቀሩ ምክንያት ከ Brave ተጠቃሚዎች መዋጮ ለመቀበል አይችልም። እነርሱ መለያቸውን እስከሚያረጋግጡ ድረስ ወይም 90 ቀን እስከሚያልፍ ድረስ ማሰሻዎ መዋጮ ለማድረግ መሞከሩን ይቀጥላል።",
+    "message": "የ Brave የተረጋገጠ ፈጣሪ ከ Brave ተጠቃሚዎች መዋጮዎችን ለመቀበል መለያቸውን እስካሁን አላዋቀሩም። እርስዎ የሚልኩት ማንኛውም የመረጃ ፍንጭ ይህ ሒደት እስከሚጠናቀቅ ድረስ ዋሌትዎ ውስጥ ይቆያል።",
     "description": "Text shown for connected publishers that are not fully verified in the panel"
   },
   "walletGoToVerifyPage":  {
@@ -596,7 +596,7 @@
     }
   },
   "cancel":  {
-    "message": "ይቅር",
+    "message": "አቋርጥ",
     "description": "Text for cancel button"
   },
   "changeAmount":  {
@@ -608,7 +608,7 @@
     "description": "Text for login button"
   },
   "loginMessageTitle":  {
-    "message": "ዋሌትን ማረጋገጥ ገንዘብዎን በብቃት እንዲያስተዳድሩ ይፈቅድልዎታል።",
+    "message": "የቦርሳ ማረጋገጥ ገንዘብዎን በብቃት እንዲያስተዳድሩ ይፈቅድልዎታል።",
     "description": "Text for login button"
   },
   "loginMessageText":  {
@@ -624,7 +624,23 @@
     "description": "Status button that tells user that he is currently pending"
   },
   "walletVerificationNote3":  {
-    "message": "ማስታወሻ፥ እርስዎ ከፈቀዱ በኋላ የእርስዎ ግብይቶች ለማቆየት ይታያሉ፤ ለምሳሌ የርስዎን ምክሮች ተቀባዩ እና መጠን ማየት ይችላሉ።",
+    "message": "ማስታወሻ: እርስዎ ከፈቀዱ በኋላ የእርስዎ ግብይቶች ለማቆየት ይታያሉ፤ ለምሳሌ የርስዎን ምክሮች ተቀባዩ እና መጠን ማየት ይችላሉ።",
     "description": "Displayed in login modal for uphold"
+  },
+  "onboardingEarnHeader": {
+    "message": "ማስመሰያዎች ያግኙ እና መልሶ መስጠት",
+    "description": ""
+  },
+  "onboardingEarnText": {
+    "message": "ግላዊነት ን የሚያከብሩ ማስታወቂያዎች በማየት ማስመሰያዎች ያግኙ እና የሚወዷቸውን ጣቢያዎች እና የ ይዘት ፈጣሪዎች በራስ-ሰር ይደግፉ።",
+    "description": ""
+  },
+  "onboardingStartUsingRewards": {
+    "message": "የ Brave ሽልማቶችን መጠቀም ይጀምሩ",
+    "description": ""
+  },
+  "onboardingTerms": {
+    "message": "በመቀጠል እርስዎ በ $$1አገልግሎት ሁኔታዎች$$2 and $$3Privacy Policy$$4ተስማምተዋል።",
+    "description": ""
   }
 }

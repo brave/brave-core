@@ -12,7 +12,7 @@
     "description": "CTA on welcome screen in the panel, new users"
   },
   "welcomeDescOne": {
-    "message": "Otrzymuj pieniądze za przeglądanie reklam i przekazuj środki dalej aby wspierać swoich ulubionych twórców.",
+    "message": "Zarabiaj na oglądaniu reklam a zgromadzone środki przeznaczaj na wspieranie swoich ulubionych twórców.",
     "description": "Entry text for welcome screen in the panel, existing user"
   },
   "welcomeDescTwo": {
@@ -162,7 +162,7 @@
     "description": "Title for grant section in wallet summary"
   },
   "pointGrantClaimed": {
-    "message": "Odebrane punkty",
+    "message": "Przyjęte dotacje punktów",
     "description": "Title for point grant section in wallet summary"
   },
   "earningsAds": {
@@ -182,11 +182,11 @@
     "description": "Used for grant representation. Whole string is '30.0 BAT expires on 08/05/2022'"
   },
   "recurringDonations": {
-    "message": "Miesięczne wkłady",
+    "message": "Miesięczne datki\n",
     "description": "Title for monthly contributions section in wallet summary"
   },
   "off": {
-    "message": "Wył.",
+    "message": "Wyłączone",
     "description": "Label used in toggle indicating that toggle is off"
   },
   "ok": {
@@ -194,7 +194,7 @@
     "description": "Used in notification to dismiss notification"
   },
   "braveAdsLaunchMsg": {
-    "message": "Możesz zarabiać oglądając reklamy.",
+    "message": "Teraz możesz zarabiać, oglądając reklamy.",
     "description": "Message for ads launch notification"
   },
   "braveAdsTitle": {
@@ -328,7 +328,7 @@
     "description": "Text for the link that explains more about reserved amount"
   },
   "disabledPanelOff": {
-    "message": "Wył.",
+    "message": "Wyłączone",
     "description": "Off state text for Panel's disabled state"
   },
   "disabledPanelSettings": {
@@ -336,7 +336,7 @@
     "description": "Settings Link for Panel's disabled state"
   },
   "disabledPanelText": {
-    "message": "Aktualnie nie otrzymujesz żadnych korzyści w postaci nagród za przeszukiwanie. Włącz Nagrody z powrotem.",
+    "message": "Aktualnie nie zbierasz żadnych korzyści w postaci nagród za przeszukiwanie. Włącz Nagrody z powrotem.",
     "description": "Text for Panel's disabled state"
   },
   "disabledPanelTitle": {
@@ -392,7 +392,7 @@
     "description": "Terms of Service"
   },
   "welcomeBack": {
-    "message": "Witaj ponownie!",
+    "message": "Witaj z powrotem!",
     "description": "Title message for wallet disabled panel"
   },
   "tipsProcessedNotification": {
@@ -416,7 +416,7 @@
     "description": "BAT Points abbreviation text"
   },
   "turnOnAds": {
-    "message": "Włącz reklamy",
+    "message": "Włącz reklamy\n",
     "description": "Prompt to turn on Ads via notification"
   },
   "adsEarnings": {
@@ -462,7 +462,7 @@
     "description": "Notification text that tells user his wallet is under funded for pending contribution to complete"
   },
   "pendingContributionTitle": {
-    "message": "Oczekujące wpłaty",
+    "message": "Datek oczekujący",
     "description": "Notification title for pending contribution type"
   },
   "grantFinishTitleUGP": {
@@ -484,11 +484,11 @@
     "description": "Token title on success screen"
   },
   "grantFinishPointTitleUGP": {
-    "message": "Bezpłatne punkty",
+    "message": "Dotacja darmowych punktów",
     "description": "Point title on success screen"
   },
   "grantFinishTitleAds": {
-    "message": "Zyskujesz nagrodę za reklamy!",
+    "message": "Otrzymujesz nagrodę za reklamy!",
     "description": "Cosmetic text upon captcha success for ads"
   },
   "grantFinishTextAds": {
@@ -626,5 +626,21 @@
   "walletVerificationNote3":  {
     "message": "Uwaga: Twoje transakcje będą widoczne dla platformy Uphold po autoryzacji, na przykład widoczne będą odbiorca oraz kwota napiwków.",
     "description": "Displayed in login modal for uphold"
+  },
+  "onboardingEarnHeader": {
+    "message": "Zarabiaj tokeny i obdarowuj innych",
+    "description": ""
+  },
+  "onboardingEarnText": {
+    "message": "Zarabiaj tokeny, oglądając reklamy z poszanowaniem prywatności i automatycznie wspieraj ulubione strony oraz twórców treści.",
+    "description": ""
+  },
+  "onboardingStartUsingRewards": {
+    "message": "Zacznij korzystać z nagród Brave.",
+    "description": ""
+  },
+  "onboardingTerms": {
+    "message": "Kontynuując, zgadzają się Państwo na $$1Warunki świadczenia usług$$2 i $$3Politykę prywatności$$4.",
+    "description": ""
   }
 }

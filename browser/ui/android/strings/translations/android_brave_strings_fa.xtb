@@ -7,7 +7,7 @@
 <translation id="7835726359440951858">مسدود کردن آگهی‌ها و ردگیری‌ها</translation>
 <translation id="3570081523466826008">ارتقاء اتصال‌ها به HTTPS</translation>
 <translation id="94154759592465111">مسدود کردن اسکریپت</translation>
-<translation id="7458422973722236530">محافظت دربرابر انگشت‌نگاری</translation>
+<translation id="7458422973722236530">محافظت در برابر انگشت‌نگاری</translation>
 <translation id="5709627087332022422">مسدود کردن ردیاب‌های بین سایتی</translation>
 <translation id="6754976710186182237">شیوه‌های اثرانگشت</translation>
 <translation id="2313532038420432247">به‌روزرسانی‌های HTTPS</translation>
@@ -21,22 +21,24 @@
 <translation id="1713450908129883784">کنترل‌های جداگانه</translation>
 <translation id="6302422639282249274">مدیریت پاداش‌های Brave</translation>
 <translation id="1506061864768559482">موتور جستجو</translation>
-<translation id="1468415711258933398">برگه استاندارد</translation>
-<translation id="3377025655491224618">برگه خصوصی</translation>
+<translation id="1468415711258933398">زبانه استاندارد</translation>
+<translation id="3377025655491224618">زبانه خصوصی</translation>
 <translation id="9148058034647219655">خروج</translation>
 <translation id="520895744850022668">HTTPS در همه جا</translation>
 <translation id="8710614491157212477">سایت‌های پشتیبانی‌شده را در صورت امکان به جای HTTP با HTTPS باز می‌کند.</translation>
 <translation id="8387201461264842096">مسدود کردن آگهی</translation>
 <translation id="1934885595886623674">مانع از بارگیری آگهی‌ها می‌شود</translation>
 <translation id="5787084571334399599">به مروروگر اجازه گرفتن اثر انگشت را نمی‌دهد</translation>
-<translation id="7459000603787995422">بستن برگه‌ها هنگام خروج</translation>
-<translation id="1680858055899097121">بین جلسه‌های مرور وب، برگه‌ها نگه داشته نمی‌شوند</translation>
+<translation id="7459000603787995422">بستن زبانه‌ها هنگام خروج</translation>
+<translation id="1680858055899097121">بین جلسه‌های مرور وب، زبانه‌ها نگه داشته نمی‌شوند</translation>
+<translation id="6469509880167172749">‏ارسال خودکار تجزیه‌وتحلیل کاملاً خصوصی محصول به Brave</translation>
+<translation id="7090566321964540749">این اطلاعات ناشناس فقط به Brave اجازه می‌دهد استفاده کلی از بعضی از قابلیت‌ها را تخمین بزند.</translation>
 <translation id="453601949003770390">ردیاب‌ها و آگهی‌ها مسدود شدند</translation>
 <translation id="347604927162577559">در مصرف داده\nصرفه‌جویی شد</translation>
 <translation id="9008534313521214777">زمان تخمینی ذخیره شد</translation>
 <translation id="6572660632052512096">حالت دسک‌تاپ</translation>
-<translation id="1340503115760585811">فعال کردن نمای دسک‌تاپ برای برگه‌های جدید</translation>
-<translation id="7924540991929826186">استفاده از نسخه تلفن همراه سایت‌ها برای برگه‌های جدید (توصیه می‌شود)</translation>
+<translation id="1340503115760585811">فعال کردن نمای دسک‌تاپ برای زبانه‌های جدید</translation>
+<translation id="7924540991929826186">استفاده از نسخه تلفن همراه سایت‌ها برای زبانه‌های جدید (توصیه می‌شود)</translation>
 <translation id="807636106793708118">ترجیح دادن نسخه تلفن همراه سایت‌ها</translation>
 <translation id="4479934682648362332">ترجیح دادن نسخه دسک‌تاپ سایت‌ها</translation>
 <translation id="1842747674580016420">بازپخش ویدئو در Brave</translation>
@@ -44,13 +46,13 @@
 <translation id="2645380101799517405">کنترل‌ها</translation>
 <translation id="5965081608816406060">بازپخش ویدیو در پس‌زمینه</translation>
 <translation id="6332924730165919598">بستن همه برگه‌ها Brave را می‌بندد</translation>
-<translation id="1580125697191336644">آزمایشی. وقتی که برگه فعال نباشد یا صفحه‌نمایش دستگاه خاموش باشد، پخش صدای ویدیو در پس‌زمینه را فعال می‌کند. اگر این قابلیت کار نکرد، به حالت دسک‌تاپ جابه‌جا شوید.</translation>
+<translation id="1580125697191336644">آزمایشی. وقتی که زبانه فعال نباشد یا صفحه نمایش دستگاه خاموش باشد، پخش صدای ویدیو در پس‌زمینه را فعال می‌کند. اگر این قابلیت کار نکرد، به حالت دسک‌تاپ جابه‌جا شوید.</translation>
 <translation id="59174027418879706">فعال شد</translation>
 <translation id="4176463684765177261">غیرفعال شد</translation>
-<translation id="4150201353443180367">صفحه‌نمایش</translation>
+<translation id="4150201353443180367">صفحه نمایش</translation>
 <translation id="2433507940547922241">شکل ظاهری</translation>
-<translation id="2804710924397009224">مخفی کردن آیکون پاداش‌های Brave</translation>
-<translation id="7358991116457217836">در صورت فعال نبودن «پاداش‌های Brave»، آیکون «پاداش‌های Brave» را پنهان می‌کند</translation>
+<translation id="2804710924397009224">مخفی کردن آیکون Brave Rewards</translation>
+<translation id="7289740269305509613">آیکون Brave Rewards را مخفی می‌کند</translation>
 <translation id="8495235435594442882">فعال کردن نوار ابزار پایین</translation>
 <translation id="6587448235155023666">دفعه بعدی که Brave را راه‌اندازی می‌کنید، تغییرات شما اجرایی می‌شوند.</translation>
 <translation id="8701563696941209024">اکنون مجدداً راه‌اندازی شود</translation>
@@ -62,12 +64,12 @@
 <translation id="1331593888918588693">همیشه می‌توانید بعداً در تنظیمات برنامه، تنظیمات ترجیحی خود را تغییر دهید.</translation>
 <translation id="7053983685419859001">مسدود کردن</translation>
 <translation id="5806601733251372221">سپرهای ایمنی Brave</translation>
-<translation id="2880356288762235261">آگهی‌های ناقض حریم خصوصی و ردگیرها، برای اینکه بتوانید در وب بدون ردگیری جستجو کنید.</translation>
+<translation id="2880356288762235261">آگهی‌های ناقض حریم خصوصی و ردیاب‌ها، برای اینکه بتوانید در وب بدون ردیابی جستجو کنید.</translation>
 <translation id="8537217141725709400">کسب کردن <ph name="TOKEN"/>s</translation>
-<translation id="3333887201479867589">پاداش‌های Brave</translation>
-<translation id="5870330605209713397">برای دیدن آگهی‌هایی که به حریم‌خصوصی احترام می‌گذارند و حمایت از سایت‌ها و پدیدآورندگان مورد علاقه‌تان به‌صورت پیش‌فرض.</translation>
+<translation id="3333887201479867589">Brave Rewards</translation>
+<translation id="5870330605209713397">برای دیدن آگهی‌هایی که به حریم خصوصی احترام می‌گذارند و حمایت از سایت‌ها و پدیدآورندگان مورد علاقه‌تان به‌صورت پیش‌فرض.</translation>
 <translation id="821707262661492716">برای دیدن آگهی‌هایی که به حریم شخصی احترام می‌گذارند.</translation>
-<translation id="8267692331246948056">با ضربه زدن روی Earn &amp; Give، موافقت خود را اعلام می‌کنید با</translation>
+<translation id="5302488867897327287">با ضربه زدن روی «شروع»، با استفاده از Brave Rewards موافقت خود را اعلام می‌کنید با</translation>
 <translation id="4281844954008187215">شرایط خدمات</translation>
 <translation id="6871397658902960384">شروع مرور</translation>
 <translation id="454386012157232640">هیچ‌گونه آگهی مشاهده نکردم.</translation>
@@ -76,7 +78,7 @@
 <translation id="6511854390690723657">این اولین تبلیغ از مرورگر Brave برای شما است. برای کسب اطلاعات بیشتر، ضربه بزنید.</translation>
 <translation id="4930714375720679147">روشن کردن</translation>
 <translation id="2453860139492968684">پایان</translation>
-<translation id="7983303953939627894">کسب و ارائه</translation>
+<translation id="2070991379950719711">شروع استفاده از Brave Rewards</translation>
 <translation id="48520986898237073">ادامه و رفتن به کیف پول</translation>
 <translation id="3570367516044491911">تنظیم به‌عنوان مرورگر پیش‌فرض</translation>
 <translation id="7493053924837150477">مرورگر Brave را از فهرست انتخاب کنید و روی «همیشه» ضربه بزنید</translation>
@@ -230,6 +232,10 @@
 <translation id="6810078320346589989">ایجاد نشانک</translation>
 <translation id="3396347744975515056">همگام‌سازی Brave ارتقا یافته و نیازمند راه‌اندازی است</translation>
 <translation id="7473245612074035141">شروع راه‌اندازی</translation>
+<translation id="1872784258300710671">Brave از تجزیه‌وتحلیل‌های کاملاً خصوصی محصول برای تخمین استفاده کلی از بعضی از قابلیت‌ها استفاده می‌کند.</translation>
+<translation id="8712637175834984815">متوجه شدم</translation>
+<translation id="4394049700291259645">غیر فعال کردن</translation>
+<translation id="8446884382197647889">بیشتر بدانید</translation>
 <translation id="597993392929850353">مجوز Brave</translation>
 <translation id="6336451774241870485">برگه خصوصی جدید</translation>
 <translation id="6199596294742117349">این برگه خصوصی است</translation>
@@ -256,8 +262,7 @@
 <translation id="8522669544471808198">نمایش تصاویر پس‌زمینه</translation>
 <translation id="3870475560794762985">نمایش تصاویر حمایت‌شده</translation>
 <translation id="8297488609722895137">عکس از <ph name="PHOTO_BY"/></translation>
-<translation id="7952665812649667034">آماده «کسب و ارائه» هستم</translation>
-<translation id="5878330112719288629">با ضربه زدن روی «کسب و ارائه»، موافقت خود را با <ph name="TERMS_OF_SERVICE"/> اعلام می‌کنید.</translation>
+<translation id="4761229094276239865">با ضربه زدن روی «شروع استفاده از Brave Rewards»، با <ph name="TERMS_OF_SERVICE"/> موافقت می‌کنید.</translation>
 <translation id="3794079107601824147">برای مشاهده این تصویر پس‌زمینه، پول دریافت کنید.</translation>
 <translation id="7136586167396205364">تصاویر حمایت‌شده را پنهان کنید</translation>
 <translation id="2927095357213611519">شما می‌توانید با توکن‌ها از سازندگان وب حمایت کنید.\nبا مشاهده آگهی‌های رعایت‌کننده حریم خصوصی، توکن دریافت کنید.</translation>
@@ -304,7 +309,7 @@
 <translation id="8851456134224363571">فوق‌العاده است! لطف می‌کنید در Play Store به ما رتبه بدهید؟</translation>
 <translation id="8668962040900592974">به ما بگویید که چگونه می‌توانیم پیشرفت کنیم</translation>
 <translation id="4406937629441301400">در ازای مشاهده این تصویر، توکن کسب کنید و با بازارسال آن از پدیدآورندگان حمایت کنید. <ph name="LEARN_MORE"/></translation>
-<translation id="8693132237667961044">در ازای مشاهده این تصویر توکن دریافت کنید. برای درخواست سهم خود، «کسب و ارائه» را روشن کنید.</translation>
+<translation id="1992363542751124282">برای مشاهده این تصویر، توکن کسب کنید. برای مطالبه سهم خود، روی «شروع استفاده از Brave Rewards» ضربه بزنید.</translation>
 <translation id="6632345639591919543">در ازای مشاهده این تصویر، توکن دریافت می‌کنید.\n<ph name="LEARN_MORE"/></translation>
 <translation id="1465733111003593696">در ازای مشاهده این تصویر، توکن دریافت می‌کنید.</translation>
 <translation id="7877201489035217175">کسب اطلاعات بیشتر درباره تصاویر حمایت‌شده</translation>
@@ -388,7 +393,6 @@
 <translation id="1383876407941801731">جستجو</translation>
 <translation id="1972589975368876259">ویرایش پشته</translation>
 <translation id="2490330380242414851">حذف ابزارک</translation>
-<translation id="8446884382197647889">بیشتر بدانید</translation>
 <translation id="7384441892795736634">بازخوانی داده‌ها</translation>
 <translation id="4804818685124855865">قطع اتصال</translation>
 <translation id="4789438578712143420">≈ $<ph name="USD_BALANCE"/></translation>
@@ -427,4 +431,38 @@
 <translation id="3733576242118819803">(<ph name="REMAINING_TIME"/>s) را تأیید کنید</translation>
 <translation id="1627064138060308910">تبدیل انجام نشد. لطفاً دوباره امتحان کنید.</translation>
 <translation id="1449790603979388000"><ph name="COUNT"/> <ph name="COUNT_TEXT"/></translation>
+<translation id="7465614181960492526">کسب توکن و برگرداندن</translation>
+<translation id="244362569344671266">با مشاهده «آگهی‌های خصوصی Brave»، توکن کسب کنید و به‌طور خودکار از سازندگان محتوا پشتیبانی کنید.</translation>
+<translation id="631124996535890460">با ادامه دادن، با <ph name="TERMS_OF_SERVICE"/> و <ph name="PRIVACY_POLICY"/> موافقت می‌کنید.</translation>
+<translation id="8804164990146287819">خط مشی حریم خصوصی</translation>
+<translation id="6318696841371191107">گشتی سریع بزنید</translation>
+<translation id="7930505144430343145">به Brave Rewards خوش آمدید!</translation>
+<translation id="7909111626803226907">آگهی‌های خصوصی Brave، برخلاف آگهی‌های قدیمی، با توکن‌ها به شما پاداش می‌دهند تا از سازندگان محتوا پشتیبانی کنند؛ و این کار را در حین خصوصی نگه داشتن اطلاعات شخصی شما انجام می‌دهند.</translation>
+<translation id="6973095375773523904">آگهی‌ها کجا نمایش داده می‌شوند؟</translation>
+<translation id="3867028444168159102">آگهی‌های خصوصی Brave به‌صورت اعلانی معمولی نشان داده خواهند شد. شما می‌توانید تعداد دفعات دیدن این آگهی‌ها را در تنظیمات کنترل کنید.</translation>
+<translation id="5816125157889950051">چه زمانی پاداش دریافت می‌کنید</translation>
+<translation id="4649471244559455723">توکن‌های کسب‌شده از آگهی‌های Brave در سراسر ماه فعلی در 5ام ماه بعدی دریافت خواهند شد.</translation>
+<translation id="7712287524451429139">برگرداندن بی‌دردسر شده است</translation>
+<translation id="105037569026952831">سازندگان همیاری‌های توکن شما را به‌طور خودکار بر اساس سطح مشارکتتان دریافت می‌کنند که ما آن را به‌عنوان ‘توجه’ می‌سنجیم.</translation>
+<translation id="5323267338679539010">با انعام‌ها سپاس‌گزاری خود را اعلام کنید</translation>
+<translation id="6042317056594735519">انعام دادن روشی است برای تشویق شخصی و پشتیبانی از محتوا یا سازندگان مورد علاقه‌تان. انعام بدهید!</translation>
+<translation id="7509452925943421624">با توکن‌ها چه‌کارهایی می‌توانید انجام دهید؟</translation>
+<translation id="7059157883171259940">از توکن‌ها فراتر از پشتیبانی از سازندگان می‌توان استفاده کرد. می‌توانید کارت‌های هدیه و کالاهای دیجیتال را با پاداش بازگشت نقدی خریداری کنید.</translation>
+<translation id="1402530520078693620">در پایان، بیایید تنظیمات اولیه شما را راه‌اندازی کنیم</translation>
+<translation id="3494356595346329740">بعداً می‌توانید این مورد را تغییر دهید.</translation>
+<translation id="6462814326662189004">چند وقت یک‌بار می‌خواهید آگهی ببینید؟\n(آگهی در هر ساعت)</translation>
+<translation id="2134244432345596331">تا چه‌اندازه می‌خواهید به سازندگان دلخواهتان پشتیبانی ارائه دهید؟\n(البته از آنچه از آگهی‌ها کسب کرده‌اید)</translation>
+<translation id="7456161272236175794">وووهو!\nتمام شد.</translation>
+<translation id="3895246934788932488">با استفاده از Brave Rewards، از حریم خصوصی خود محافظت می‌کنید و کمک می‌کنید وب به مکان بهتری برای همه افراد تبدیل شود. و این فوق‌العاده است!</translation>
+<translation id="5705882733397021510">برگشتن</translation>
+<translation id="5140321319944305531">بیایید گشت سریعی بزنیم</translation>
+<translation id="3808131693704413134">بعد از دریافت مبلغ قابل پرداخت اولین آگهی‌ها، می‌توانید برگردید و به این سازنده انعام دهید!</translation>
+<translation id="207242986925259074">گشت بازخوانی سریع</translation>
+<translation id="8342862030112839977">مبلغ قابل پرداخت اولین پاداش‌هایتان دریافت خواهد شد:</translation>
+<translation id="3769645103175790584">درحین مرور کردن توکن کسب کنید و به سازندگان برای محتواهای عالی پاداش دهید. <ph name="QUICK_TOUR"/>.</translation>
+<translation id="6912901278692845878">گشتی سریع</translation>
+<translation id="1080013038789678738">آماده و مشتاقم!</translation>
+<translation id="3604285424134705930">شما <ph name="FROM_VALUE"/> <ph name="FROM_CURRENCY"/> to <ph name="TO_VALUE"/> <ph name="TO_CURRENCY"/> را تبدیل کردید!</translation>
+<translation id="392587271502873865">لطفاً اتصال شبکه را بررسی کنید</translation>
+<translation id="7889432931837317731">باز کردن خودکار، در صورت امکان</translation>
 </translationbundle>

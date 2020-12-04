@@ -8,6 +8,7 @@
 <translation id="5655621391922317800">Krypto peněženky</translation>
 <translation id="2445484935443597917">Vytvořit nový profil</translation>
 <translation id="2666990579225592931">Otevřít okno hosta</translation>
+<translation id="8275068909952022340">Další...</translation>
 <translation id="120759863357279975"><ph name="EXTENSION_NAME"/> (ID rozšíření "<ph name="EXTENSION_ID"/>") není v Brave povoleno.</translation>
 <translation id="6786747875388722282">Rozšíření</translation>
 <translation id="984275831282074731">Platební metody</translation>
@@ -43,23 +44,20 @@ Instalací tohoto rozšíření souhlasíte s podmínkami použití služby Goog
 <translation id="814018970995616154">Kontroluje URL adresy pomocí seznamu nebezpečných webů, který je uložen v Brave.</translation>
 <translation id="1144810021918451336">Nechrání vás před nebezpečnými internetovými stránkami, staženými soubory a rozšířeními.</translation>
 <translation id="7781069478569868053">Stránka nové karty</translation>
-<translation id="1717331825806276156">Obrázky na pozadí</translation>
-<translation id="1820041496463124489">Sponzorované obrázky</translation>
-<translation id="8173998484743827990">Statistiky Brave</translation>
-<translation id="5551238871320268996">Brave Spolu</translation>
-<translation id="6966052266404721769">Binance</translation>
-<translation id="8533411848724153701">Gemini</translation>
-<translation id="4643117005422448078">Top weby</translation>
-<translation id="1776831331757823105">Hodiny</translation>
 <translation id="1988804048511540801">Nová karta zobrazuje</translation>
 <translation id="2970343821770026391">Ovládací panel</translation>
 <translation id="3719826155360621982">Úvodní stránka</translation>
 <translation id="5448570825852364919">Prázdná stránka</translation>
+<translation id="5919424224662539292">Přizpůsobte si obrázek na pozadí a widgety, které se zobrazí na stránce nové karty</translation>
 <translation id="7965178729203412357">Nová identita Tor</translation>
 <translation id="8511502469534942133">Nové Tor připojení pro tuto stránku</translation>
-<translation id="8784924142044142231">Opustit Tor</translation>
-<translation id="5410152065859052603">Tor</translation>
-<translation id="3696187925156352769">Otevřít okno Tor</translation>
+<translation id="4734294903299549345">Opustit Soukromé okno s Torem</translation>
+<translation id="8612763432858587652">Opustit Soukromé okno</translation>
+<translation id="8760415064721320867">Soukromé okno v prohlížeči Tor</translation>
+<translation id="2055363275850890030">Soukromé okno</translation>
+<translation id="8934172355414207733">Soukromé s Torem</translation>
+<translation id="1970435562892104727">Toto je Soukromé okno s Torem</translation>
+<translation id="1037341607922068025">Otevřít Soukromé okno s Torem</translation>
 <translation id="1725356094208762656">Otevřít v Toru</translation>
 <translation id="1672270084584211506">Cibule dostupná</translation>
 <translation id="1434416574322382019">Nové soukromé okno v prohlížeči Tor</translation>
@@ -68,6 +66,7 @@ Instalací tohoto rozšíření souhlasíte s podmínkami použití služby Goog
 <translation id="6313675821927505581">Nové soukromé okno přes Tor</translation>
 <translation id="2638041073279639246">Otevřít odkaz v soukromém okně přes Tor</translation>
 <translation id="3425600262621021599">Otevřít odkaz v soukromém okně Brave přes Tor</translation>
+<translation id="5410152065859052603">Tor</translation>
 <translation id="2515126961943087659">Služba reklam BAT</translation>
 <translation id="7924918279836988121">Služba účetní knihy Bat</translation>
 <translation id="4472575034687746823">Začít</translation>
@@ -235,6 +234,7 @@ Instalací tohoto rozšíření souhlasíte s podmínkami použití služby Goog
 <translation id="8428213095426709021">Nastavení</translation>
 <translation id="1854270995641373652">Chcete v Brave zapnout podporu lokálního IPFS daemonu?</translation>
 <translation id="2366908098700680611">Zapnout IPFS</translation>
+<translation id="1556882415222118816">Zjistěte víc o důsledcích pro soukromí</translation>
 <translation id="4552520379838695057">Je nám líto, tato stránka chybí.</translation>
 <translation id="2609895996619941644">Chcete zkontrolovat, zda je na Wayback Machine k dispozici uložená verze?</translation>
 <translation id="8053093028263274061">Litujeme, není k dispozici žádná uložená verze.</translation>

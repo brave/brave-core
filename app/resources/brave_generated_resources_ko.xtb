@@ -8,6 +8,7 @@
 <translation id="5655621391922317800">암호화폐 월렛</translation>
 <translation id="2445484935443597917">새 프로필 만들기</translation>
 <translation id="2666990579225592931">게스트 창 열기</translation>
+<translation id="8275068909952022340">더 보기…</translation>
 <translation id="120759863357279975"><ph name="EXTENSION_NAME"/> (extension ID "<ph name="EXTENSION_ID"/>")은(는) Brave에서 허용되지 않습니다.</translation>
 <translation id="6786747875388722282">확장 프로그램</translation>
 <translation id="984275831282074731">결제 수단</translation>
@@ -43,23 +44,20 @@
 <translation id="814018970995616154">Brave에 저장된 안전하지 않은 사이트 목록을 이용해 URL을 확인합니다.</translation>
 <translation id="1144810021918451336">위험한 웹사이트, 다운로드 및 확장 프로그램으로부터 사용자를 보호하지 않습니다.</translation>
 <translation id="7781069478569868053">새 탭 페이지</translation>
-<translation id="1717331825806276156">배경 이미지</translation>
-<translation id="1820041496463124489">후원된 이미지</translation>
-<translation id="8173998484743827990">Brave Stats</translation>
-<translation id="5551238871320268996">Brave 함께</translation>
-<translation id="6966052266404721769">Binance</translation>
-<translation id="8533411848724153701">제미니</translation>
-<translation id="4643117005422448078">최고의 사이트</translation>
-<translation id="1776831331757823105">시계</translation>
 <translation id="1988804048511540801">새 탭 페이지 표시</translation>
 <translation id="2970343821770026391">대시보드</translation>
 <translation id="3719826155360621982">홈페이지</translation>
 <translation id="5448570825852364919">빈 페이지</translation>
+<translation id="5919424224662539292">새 탭 페이지에 표시되는 배경 이미지와 위젯을 사용자 지정합니다</translation>
 <translation id="7965178729203412357">새로운 Tor 계정</translation>
 <translation id="8511502469534942133">이 사이트 대상 새 Tor 연결</translation>
-<translation id="8784924142044142231">Tor 나가기</translation>
-<translation id="5410152065859052603">Tor</translation>
-<translation id="3696187925156352769">Tor 창 열기</translation>
+<translation id="4734294903299549345">Tor 비공개 창 종료</translation>
+<translation id="8612763432858587652">비공개 창 종료</translation>
+<translation id="8760415064721320867">Tor와 함께하는 비공개 윈도우</translation>
+<translation id="2055363275850890030">비공개 윈도우</translation>
+<translation id="8934172355414207733">Tor 비공개</translation>
+<translation id="1970435562892104727">Tor 비공개 창입니다</translation>
+<translation id="1037341607922068025">Tor 비공개 창 열기</translation>
 <translation id="1725356094208762656">Tor에서 열기</translation>
 <translation id="1672270084584211506">양파 사용 가능</translation>
 <translation id="1434416574322382019">Tor와 함께하는 새로운 비공개 윈도우</translation>
@@ -68,6 +66,7 @@
 <translation id="6313675821927505581">Tor를 이용한 새로운 비공개 윈도우</translation>
 <translation id="2638041073279639246">Tor를 이용해 비공개 윈도우에서 링크 열기</translation>
 <translation id="3425600262621021599">Tor를 이용해 Brave 비공개 윈도우에서 링크 열기</translation>
+<translation id="5410152065859052603">Tor</translation>
 <translation id="2515126961943087659">Bat 광고 서비스</translation>
 <translation id="7924918279836988121">배트 원장 서비스</translation>
 <translation id="4472575034687746823">시작하기</translation>
@@ -214,6 +213,7 @@
 <translation id="8428213095426709021">설정</translation>
 <translation id="1854270995641373652">Brave에서 IPFS 로컬 데몬 지원을 활성화하시겠습니까?</translation>
 <translation id="2366908098700680611">IPFS 활성화</translation>
+<translation id="1556882415222118816">개인 정보 보호 결과에 대해 자세히 알아보기</translation>
 <translation id="4552520379838695057">죄송합니다. 해당 페이지가 없습니다.</translation>
 <translation id="2609895996619941644">Wayback Machine에서 저장된 버전을 사용할 수 있는지 확인하시겠습니까?</translation>
 <translation id="8053093028263274061">죄송합니다. 저장된 버전이 존재하지 않습니다.</translation>

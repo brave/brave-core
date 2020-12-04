@@ -28,7 +28,7 @@
     "description": "Link in the footer (takes you to rewards settings page) for welcome screen in the panel, existing user"
   },
   "welcomeFooterTextTwo": {
-    "message": "瞭解更多",
+    "message": "更多資訊",
     "description": "Link in the footer (takes you to rewards settings page) for welcome screen in the panel, new user"
   },
   "welcomeHeaderOne": {
@@ -162,7 +162,7 @@
     "description": "Title for grant section in wallet summary"
   },
   "pointGrantClaimed": {
-    "message": "點數經廢已領",
+    "message": "已領取贈送點數",
     "description": "Title for point grant section in wallet summary"
   },
   "earningsAds": {
@@ -194,7 +194,7 @@
     "description": "Used in notification to dismiss notification"
   },
   "braveAdsLaunchMsg": {
-    "message": "現在您可以透過檢視廣告來賺錢了。",
+    "message": "現在您可以透過觀看廣告來賺取獎勵。",
     "description": "Message for ads launch notification"
   },
   "braveAdsTitle": {
@@ -244,7 +244,7 @@
     "description": "Title for insufficient funds notification"
   },
   "braveRewardsCreatingText": {
-    "message": "建立錢包",
+    "message": "創造錢包",
     "description": "Used in a button displaying wallet creation process"
   },
   "contributeNotificationError": {
@@ -292,7 +292,7 @@
     "description": "Grant expiry label"
   },
   "grantGeneralErrorButton": {
-    "message": "OK",
+    "message": "確定",
     "description": "Button text for clearing the error."
   },
   "grantGeneralErrorText": {
@@ -328,7 +328,7 @@
     "description": "Text for the link that explains more about reserved amount"
   },
   "disabledPanelOff": {
-    "message": "關",
+    "message": "關閉",
     "description": "Off state text for Panel's disabled state"
   },
   "disabledPanelSettings": {
@@ -380,7 +380,7 @@
     "description": "Subtitle for wallet disabled panel"
   },
   "privacyPolicy": {
-    "message": "隱私權政策",
+    "message": "隱私政策",
     "description": "Privacy Policy"
   },
   "serviceText": {
@@ -392,7 +392,7 @@
     "description": "Terms of Service"
   },
   "welcomeBack": {
-    "message": "歡迎回來！",
+    "message": "歡迎回來!",
     "description": "Title message for wallet disabled panel"
   },
   "tipsProcessedNotification": {
@@ -416,7 +416,7 @@
     "description": "BAT Points abbreviation text"
   },
   "turnOnAds": {
-    "message": "開啟廣告",
+    "message": "開啟 Ads",
     "description": "Prompt to turn on Ads via notification"
   },
   "adsEarnings": {
@@ -462,7 +462,7 @@
     "description": "Notification text that tells user his wallet is under funded for pending contribution to complete"
   },
   "pendingContributionTitle": {
-    "message": "擱置中的貢獻",
+    "message": "待處理的貢獻",
     "description": "Notification title for pending contribution type"
   },
   "grantFinishTitleUGP": {
@@ -484,7 +484,7 @@
     "description": "Token title on success screen"
   },
   "grantFinishPointTitleUGP": {
-    "message": "免費點數經費",
+    "message": "免費贈送點數",
     "description": "Point title on success screen"
   },
   "grantFinishTitleAds": {
@@ -626,5 +626,21 @@
   "walletVerificationNote3":  {
     "message": "注意：在您授權後，您的交易將對 Uphold 可見；舉例來說，他們可以看見您小費的收受人與金額。",
     "description": "Displayed in login modal for uphold"
+  },
+  "onboardingEarnHeader": {
+    "message": "賺取代幣與回饋",
+    "description": ""
+  },
+  "onboardingEarnText": {
+    "message": "透過檢視尊重隱私的廣告來賺取代幣並自動支持您最愛的網站與內容創作者。",
+    "description": ""
+  },
+  "onboardingStartUsingRewards": {
+    "message": "開始使用 Brave Rewards",
+    "description": ""
+  },
+  "onboardingTerms": {
+    "message": "因繼續執行，即代表您同意 $$1服務條款$$2 與 $$3隱私權政策$$4。",
+    "description": ""
   }
 }

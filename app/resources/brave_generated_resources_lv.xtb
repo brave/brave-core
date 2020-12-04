@@ -8,6 +8,7 @@
 <translation id="5655621391922317800">Kripto maki</translation>
 <translation id="2445484935443597917">Izveidot jaunu profilu</translation>
 <translation id="2666990579225592931">Atvērt viesa režīma logu</translation>
+<translation id="8275068909952022340">Vairāk…</translation>
 <translation id="120759863357279975"><ph name="EXTENSION_NAME"/> (extension ID "<ph name="EXTENSION_ID"/>") nav atļauts Brave.</translation>
 <translation id="6786747875388722282">Paplašinājumi</translation>
 <translation id="984275831282074731">Maksājumu veidi</translation>
@@ -43,23 +44,20 @@ Instalējot šo paplašinājumu, Jūs piekrītat Google Widevine Lietošanas not
 <translation id="814018970995616154">Salīdzina URL ar Brave saglabāto nedrošo vietņu sarakstu.</translation>
 <translation id="1144810021918451336">Nepasargā jūs no bīstamām vietnēm, lejupielādēm un paplašinājumiem.</translation>
 <translation id="7781069478569868053">Jaunas cilnes lapa</translation>
-<translation id="1717331825806276156">Fona attēli</translation>
-<translation id="1820041496463124489">Sponsorētie attēli</translation>
-<translation id="8173998484743827990">Brave statistika</translation>
-<translation id="5551238871320268996">Brave Together</translation>
-<translation id="6966052266404721769">Binance</translation>
-<translation id="8533411848724153701">Gemini</translation>
-<translation id="4643117005422448078">Populāras vietnes</translation>
-<translation id="1776831331757823105">Pulkstenis</translation>
 <translation id="1988804048511540801">Jaunas cilnes lapa rāda</translation>
 <translation id="2970343821770026391">Informācijas panelis</translation>
 <translation id="3719826155360621982">Sākumlapa</translation>
 <translation id="5448570825852364919">Tukša lapa</translation>
+<translation id="5919424224662539292">Pielāgojiet fona attēlu un logrīkus, kas parādās jaunās cilnes lapā</translation>
 <translation id="7965178729203412357">Jauna Tor identitāte</translation>
 <translation id="8511502469534942133">Jauns Tor savienojums šai vietnei</translation>
-<translation id="8784924142044142231">Iziet no Tor</translation>
-<translation id="5410152065859052603">Tor</translation>
-<translation id="3696187925156352769">Atvērt Tor logu</translation>
+<translation id="4734294903299549345">Iziet no inkognito loga ar Tor</translation>
+<translation id="8612763432858587652">Iziet no inkognito loga</translation>
+<translation id="8760415064721320867">Inkognito logs ar Tor</translation>
+<translation id="2055363275850890030">Inkognito logs</translation>
+<translation id="8934172355414207733">Inkognito ar Tor</translation>
+<translation id="1970435562892104727">Šis ir inkognito logs ar Tor</translation>
+<translation id="1037341607922068025">Atvērt inkognito logu ar Tor</translation>
 <translation id="1725356094208762656">Atvērt Tor</translation>
 <translation id="1672270084584211506">Onion ir pieejams</translation>
 <translation id="1434416574322382019">Jauns inkognito logs Tor</translation>
@@ -68,6 +66,7 @@ Instalējot šo paplašinājumu, Jūs piekrītat Google Widevine Lietošanas not
 <translation id="6313675821927505581">Jauns inkognito logs, izmantojot Tor</translation>
 <translation id="2638041073279639246">Atvērt saiti inkognito logā, izmantojot Tor</translation>
 <translation id="3425600262621021599">Atvērt saiti Brave inkognito logā, izmantojot Tor</translation>
+<translation id="5410152065859052603">Tor</translation>
 <translation id="2515126961943087659">BAT reklāmu pakalpojums</translation>
 <translation id="7924918279836988121">BAT norēķinu pakalpojums</translation>
 <translation id="4472575034687746823">Sākt darbu</translation>
@@ -235,6 +234,7 @@ Instalējot šo paplašinājumu, Jūs piekrītat Google Widevine Lietošanas not
 <translation id="8428213095426709021">Iestatījumi</translation>
 <translation id="1854270995641373652">Vai vēlaties iespējot IPFS vietējā dēmona atbalstu Brave pārlūkā?</translation>
 <translation id="2366908098700680611">Iespējot IPFS</translation>
+<translation id="1556882415222118816">Uzzināt vairāk par konfidencialitātes sekām</translation>
 <translation id="4552520379838695057">Diemžēl, šī lapa nav atrodama.</translation>
 <translation id="2609895996619941644">Vai vēlaties pārbaudīt, vai Wayback Machine nav pieejama tās saglabātā versija?</translation>
 <translation id="8053093028263274061">Diemžēl, saglabātā versija nav pieejama.</translation>

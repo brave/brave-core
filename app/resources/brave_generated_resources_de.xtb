@@ -8,6 +8,7 @@
 <translation id="5655621391922317800">Krypto-Wallets</translation>
 <translation id="2445484935443597917">Neues Profil erstellen</translation>
 <translation id="2666990579225592931">Gastfenster öffnen</translation>
+<translation id="8275068909952022340">Mehr…</translation>
 <translation id="120759863357279975"><ph name="EXTENSION_NAME"/> (extension ID "<ph name="EXTENSION_ID"/>") ist in Brave nicht erlaubt.</translation>
 <translation id="6786747875388722282">Erweiterungen</translation>
 <translation id="984275831282074731">Zahlungsmethoden</translation>
@@ -43,23 +44,20 @@ Mit der Installation dieser Erweiterung erklären Sie sich mit den Google Widevi
 <translation id="814018970995616154">Überprüft URLs anhand einer Liste mit unsicheren Seiten, die in Brave gespeichert ist.</translation>
 <translation id="1144810021918451336">Schützt Sie nicht vor gefährlichen Websites, Downloads und Erweiterungen.</translation>
 <translation id="7781069478569868053">Neuer-Tab-Seite</translation>
-<translation id="1717331825806276156">Hintergrundbilder</translation>
-<translation id="1820041496463124489">Gesponserte Bilder</translation>
-<translation id="8173998484743827990">Brave-Statistiken</translation>
-<translation id="5551238871320268996">Brave Together</translation>
-<translation id="6966052266404721769">Binance</translation>
-<translation id="8533411848724153701">Gemini</translation>
-<translation id="4643117005422448078">Führende Websites</translation>
-<translation id="1776831331757823105">Uhr</translation>
 <translation id="1988804048511540801">Neue Tab-Seite zeigt</translation>
 <translation id="2970343821770026391">Dashboard</translation>
 <translation id="3719826155360621982">Startseite</translation>
 <translation id="5448570825852364919">Leere Seite</translation>
+<translation id="5919424224662539292">Gestalten Sie das Hintergrundbild und Widget, die auf der Seite im neuen Reiter erscheinen, individuell</translation>
 <translation id="7965178729203412357">Neue Tor-Identität</translation>
 <translation id="8511502469534942133">Neue Tor-Verbindung für diese Seite</translation>
-<translation id="8784924142044142231">Tor verlassen</translation>
-<translation id="5410152065859052603">Tor</translation>
-<translation id="3696187925156352769">Tor-Fenster Öffnen</translation>
+<translation id="4734294903299549345">Privates Fenster über Tor verlassen</translation>
+<translation id="8612763432858587652">Privates Fenster verlassen</translation>
+<translation id="8760415064721320867">Privates Fenster mit Tor</translation>
+<translation id="2055363275850890030">Privates Fenster</translation>
+<translation id="8934172355414207733">Privat über Tor</translation>
+<translation id="1970435562892104727">Dies ist ein privates Fenster über Tor</translation>
+<translation id="1037341607922068025">Privates Fenster über Tor öffnen</translation>
 <translation id="1725356094208762656">In Tor öffnen</translation>
 <translation id="1672270084584211506">Onion Verfügbar</translation>
 <translation id="1434416574322382019">Neues privates Fenster mit Tor</translation>
@@ -68,6 +66,7 @@ Mit der Installation dieser Erweiterung erklären Sie sich mit den Google Widevi
 <translation id="6313675821927505581">Neues privates Fenster mit Tor</translation>
 <translation id="2638041073279639246">Link in privatem Fenster mit Tor öffnen</translation>
 <translation id="3425600262621021599">Link in privatem Brave-Fenster mit Tor öffnen</translation>
+<translation id="5410152065859052603">Tor</translation>
 <translation id="2515126961943087659">Bat Ads-Service</translation>
 <translation id="7924918279836988121">Bat-Ledger-Dienst</translation>
 <translation id="4472575034687746823">Start</translation>
@@ -235,6 +234,7 @@ Mit der Installation dieser Erweiterung erklären Sie sich mit den Google Widevi
 <translation id="8428213095426709021">Einstellungen</translation>
 <translation id="1854270995641373652">Möchten Sie die Unterstützung eines lokalen IPFS-Daemons in Brave aktivieren?</translation>
 <translation id="2366908098700680611">IPFS einschalten</translation>
+<translation id="1556882415222118816">Erfahren Sie mehr über Datenschutz-Konsequenzen</translation>
 <translation id="4552520379838695057">Diese Seite fehlt leider.</translation>
 <translation id="2609895996619941644">Möchten Sie überprüfen, ob eine gespeicherte Version in der Wayback Machine verfügbar ist?</translation>
 <translation id="8053093028263274061">Leider ist keine gespeicherte Version verfügbar.</translation>

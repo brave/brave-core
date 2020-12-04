@@ -1,6 +1,6 @@
 {
   "braveRewards": {
-    "message": "Brave Rewards",
+    "message": "תגמולי Brave",
     "description": "Title in welcome screen for the panel"
   },
   "welcomeButtonTextOne": {
@@ -28,7 +28,7 @@
     "description": "Link in the footer (takes you to rewards settings page) for welcome screen in the panel, existing user"
   },
   "welcomeFooterTextTwo": {
-    "message": "לימדו עוד",
+    "message": "למידע נוסף",
     "description": "Link in the footer (takes you to rewards settings page) for welcome screen in the panel, new user"
   },
   "welcomeHeaderOne": {
@@ -88,11 +88,11 @@
     "description": "CTA for sending tip form site banner"
   },
   "enableTips": {
-    "message": "הרשאת טיפים",
+    "message": "הפעל טיפים",
     "description": "The whole string is 'Enable tips on YouTube for like.'"
   },
   "for": {
-    "message": "בשביל",
+    "message": "עבור",
     "description": "The whole string is 'Enable tips on YouTube for like.'"
   },
   "rewardsSummary": {
@@ -104,7 +104,7 @@
     "description": "Month"
   },
   "monthAug": {
-    "message": "אוגוסט",
+    "message": "אוגוסט\t",
     "description": "Month"
   },
   "monthDec": {
@@ -186,7 +186,7 @@
     "description": "Title for monthly contributions section in wallet summary"
   },
   "off": {
-    "message": "מכובה",
+    "message": "כבוי",
     "description": "Label used in toggle indicating that toggle is off"
   },
   "ok": {
@@ -194,7 +194,7 @@
     "description": "Used in notification to dismiss notification"
   },
   "braveAdsLaunchMsg": {
-    "message": "כעת באפשרותך להרוויח כסף מצפייה בפרסומות.",
+    "message": "עכשיו באפשרותך להרוויח על ידי צפייה בפרסומות.",
     "description": "Message for ads launch notification"
   },
   "braveAdsTitle": {
@@ -244,7 +244,7 @@
     "description": "Title for insufficient funds notification"
   },
   "braveRewardsCreatingText": {
-    "message": "הגדרת ארנק",
+    "message": "יצירת ארנק",
     "description": "Used in a button displaying wallet creation process"
   },
   "contributeNotificationError": {
@@ -292,7 +292,7 @@
     "description": "Grant expiry label"
   },
   "grantGeneralErrorButton": {
-    "message": "אוקיי",
+    "message": "אישור",
     "description": "Button text for clearing the error."
   },
   "grantGeneralErrorText": {
@@ -348,7 +348,7 @@
     "description": "Failure title for wallet creation"
   },
   "walletFailedButton": {
-    "message": "ניסיון חוזר",
+    "message": "נסה שוב",
     "description": "Button for re-try after wallet creation failed"
   },
   "addFunds": {
@@ -360,7 +360,7 @@
     "description": "Button for opening settings page"
   },
   "earningsClaimDefault": {
-    "message": "התגמולים שלך מ-Ads הגיעו!",
+    "message": "התגמולים שלכם מ-Ads הגיעו!",
     "description": "Panel notification text for Ads grant"
   },
   "and": {
@@ -462,7 +462,7 @@
     "description": "Notification text that tells user his wallet is under funded for pending contribution to complete"
   },
   "pendingContributionTitle": {
-    "message": "תרומה ממתינה",
+    "message": "ממתין לתרומה",
     "description": "Notification title for pending contribution type"
   },
   "grantFinishTitleUGP": {
@@ -484,11 +484,11 @@
     "description": "Token title on success screen"
   },
   "grantFinishPointTitleUGP": {
-    "message": "מענק נקודות בחינם",
+    "message": "מענק נקודות חינם",
     "description": "Point title on success screen"
   },
   "grantFinishTitleAds": {
-    "message": "זכית בתגמול על פרסומות!",
+    "message": "הרווחת תגמול פרסומות!",
     "description": "Cosmetic text upon captcha success for ads"
   },
   "grantFinishTextAds": {
@@ -626,5 +626,21 @@
   "walletVerificationNote3":  {
     "message": "תשומת לבכם: העסקאות שלכם יהיו גלויות בפני Uphold ברגע שתאשרו; למשל, הם יוכלו לראות את הנמען ואת סכום הטיפים שלכם.",
     "description": "Displayed in login modal for uphold"
+  },
+  "onboardingEarnHeader": {
+    "message": "הרוויחו טוקנים ותנו בחזרה",
+    "description": ""
+  },
+  "onboardingEarnText": {
+    "message": "הרוויחו טוקנים על ידי צפייה בפרסומות השומרות על הפרטיות ותמכו באתרים וביוצרי התוכן המועדפים עליכם באופן אוטומטי.",
+    "description": ""
+  },
+  "onboardingStartUsingRewards": {
+    "message": "התחל להשתמש ב-Brave Rewards",
+    "description": ""
+  },
+  "onboardingTerms": {
+    "message": "על ידי המשך הנך מסכימ/ה ל$$1תנאי השירות$$2 וכן $$3מדיניות הפרטיות$$4.",
+    "description": ""
   }
 }

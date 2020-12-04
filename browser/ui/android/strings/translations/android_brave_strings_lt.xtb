@@ -31,6 +31,8 @@
 <translation id="5787084571334399599">Naršyklei neleidžia naudoti kontrolinių kodų</translation>
 <translation id="7459000603787995422">Išeinant uždaryti skirtukus</translation>
 <translation id="1680858055899097121">Nepalikti skirtukų tarp naršymo seansų</translation>
+<translation id="6469509880167172749">Automatiškai siųskite visiškai privačią produktų analizę „Brave“</translation>
+<translation id="7090566321964540749">Ši anoniminė informacija leidžia „Brave“ įvertinti tik bendrą tam tikrų funkcijų naudojimą.</translation>
 <translation id="453601949003770390">Sekiklių ir reklamos blokavimas</translation>
 <translation id="347604927162577559">Duomenys\nįrašyti</translation>
 <translation id="9008534313521214777">Numatomas sutaupytas\nlaikas</translation>
@@ -50,7 +52,6 @@
 <translation id="4150201353443180367">Pateiktis</translation>
 <translation id="2433507940547922241">Išvaizda</translation>
 <translation id="2804710924397009224">Slėpti „Brave Rewards“ piktogramą</translation>
-<translation id="7358991116457217836">Jei funkcija „Brave Rewards“ neįjungta, „Brave Rewards“ piktograma paslepiama</translation>
 <translation id="8495235435594442882">Įjungti apatinę įrankių juostą</translation>
 <translation id="6587448235155023666">Pakeitimai įsigalios kitą kartą iš naujo paleidus „Brave“</translation>
 <translation id="8701563696941209024">IŠ NAUJO PALEISTI DABAR</translation>
@@ -67,7 +68,6 @@
 <translation id="3333887201479867589">„Brave Rewards“</translation>
 <translation id="5870330605209713397">žiūrėdami privatumo nepažeidžiančias reklamas ir paremkite numatytąsias mėgstamas svetaines ir kūrėjus.</translation>
 <translation id="821707262661492716">už privatumo nepažeidžiančių reklamų peržiūrą.</translation>
-<translation id="8267692331246948056">Bakstelėdami „Uždirbti ir &amp; perduoti“ jūs sutinkate su</translation>
 <translation id="4281844954008187215">Paslaugų teikimo sąlygos</translation>
 <translation id="6871397658902960384">Pradėti naršymą</translation>
 <translation id="454386012157232640">Nematau reklamos</translation>
@@ -76,7 +76,7 @@
 <translation id="6511854390690723657">Tai jūsų pirmoji „Brave“ reklama. Bakstelėkite, jei norite sužinoti daugiau.</translation>
 <translation id="4930714375720679147">Įjungti</translation>
 <translation id="2453860139492968684">Užbaigti</translation>
-<translation id="7983303953939627894">Uždirbkite ir perduokite</translation>
+<translation id="2070991379950719711">Pradėti naudotis „Brave Rewards“</translation>
 <translation id="48520986898237073">Tęsti su pinigine</translation>
 <translation id="3570367516044491911">Nustatyti kaip numatytąją naršyklę</translation>
 <translation id="7493053924837150477">Pasirinkite naršyklę „Brave“ iš sąrašo ir bakstelėkite „Visada“</translation>
@@ -227,6 +227,10 @@ dar nebuvo...</translation>
 <translation id="6810078320346589989">Kurti žymę</translation>
 <translation id="3396347744975515056">„Brave Sync“ buvo atnaujinta ir reikia atlikti sąranką</translation>
 <translation id="7473245612074035141">Pradėti sąranką</translation>
+<translation id="1872784258300710671">„Brave“ naudoja visiškai privačią produktų analizę bendram tam tikrų funkcijų naudojimui įvertinti</translation>
+<translation id="8712637175834984815">Supratau</translation>
+<translation id="4394049700291259645">Neleisti</translation>
+<translation id="8446884382197647889">Sužinokite daugiau</translation>
 <translation id="597993392929850353">„Brave“ licencija</translation>
 <translation id="6336451774241870485">Naujas inkognito skirtukas</translation>
 <translation id="6199596294742117349">Tai inkognito skirtukas</translation>
@@ -253,8 +257,7 @@ dar nebuvo...</translation>
 <translation id="8522669544471808198">Rodyti foninius vaizdus</translation>
 <translation id="3870475560794762985">Rodyti remiamus vaizdus</translation>
 <translation id="8297488609722895137">Nuotraukos autorius <ph name="PHOTO_BY"/></translation>
-<translation id="7952665812649667034">Aš pasirengęs Uždirbti ir perduoti</translation>
-<translation id="5878330112719288629">Bakstelėdami „Uždirbti ir perduoti“ jūs sutinkate su <ph name="TERMS_OF_SERVICE"/>.</translation>
+<translation id="4761229094276239865">Bakstelėdami „Pradėti naudotis „Brave Rewards“ sutinkate su <ph name="TERMS_OF_SERVICE"/>.</translation>
 <translation id="3794079107601824147">Gaukite užmokestį už šio foninio vaizdo peržiūrą.</translation>
 <translation id="7136586167396205364">Slėpti remiamus vaizdus</translation>
 <translation id="2927095357213611519">Žetonais galite paremti interneto turinio kūrėjus.\nUžsidirbkite žetonų žiūrėdami privatumo nepažeidžiančias reklamas.</translation>
@@ -301,7 +304,7 @@ dar nebuvo...</translation>
 <translation id="8851456134224363571">Šaunu! Gal galėtumėte mus įvertinti „Play Store“?</translation>
 <translation id="8668962040900592974">Pasakykite mums, ką galime daryti geriau</translation>
 <translation id="4406937629441301400">Užsidirbkite žetonų už šio vaizdo peržiūrą ir perveskite juos kūrėjams. <ph name="LEARN_MORE"/></translation>
-<translation id="8693132237667961044">Uždirbkite žetonų už šio vaizdo peržiūrą. Įjunkite funkciją „Uždirbti ir perduoti“ ir gaukite savo dalį.</translation>
+<translation id="1992363542751124282">Gaukite žetonų už šio vaizdo peržiūrą. Naudodami „Brave Rewards“ palieskite „Pradėti“ ir gaukite savo dalį.</translation>
 <translation id="6632345639591919543">Už šio vaizdo peržiūrą uždirbate žetonų.\n<ph name="LEARN_MORE"/></translation>
 <translation id="1465733111003593696">Už šio vaizdo peržiūrą uždirbate žetonų.</translation>
 <translation id="7877201489035217175">Sužinoti daugiau apie remiamus vaizdus</translation>
@@ -385,7 +388,6 @@ dar nebuvo...</translation>
 <translation id="1383876407941801731">Ieškoti</translation>
 <translation id="1972589975368876259">Redaguoti dėklą</translation>
 <translation id="2490330380242414851">Pašalinti valdiklį</translation>
-<translation id="8446884382197647889">Sužinokite daugiau</translation>
 <translation id="7384441892795736634">Atnaujinti duomenis</translation>
 <translation id="4804818685124855865">Atsijungti</translation>
 <translation id="4789438578712143420">≈ $<ph name="USD_BALANCE"/></translation>
@@ -424,4 +426,38 @@ dar nebuvo...</translation>
 <translation id="3733576242118819803">Patvirtinti (<ph name="REMAINING_TIME"/>s)</translation>
 <translation id="1627064138060308910">Konvertuoti nepavyko. Bandykite dar kartą.</translation>
 <translation id="1449790603979388000"><ph name="COUNT"/> <ph name="COUNT_TEXT"/></translation>
+<translation id="7465614181960492526">Uždirbkite žetonų ir grąžinkite</translation>
+<translation id="244362569344671266">Gaukite žetonų žiūrėdami privatumo nepažeidžiančias „Brave“ reklamas ir automatiškai paremkite turinio kūrėjus.</translation>
+<translation id="631124996535890460">Tęsdami sutinkate su <ph name="TERMS_OF_SERVICE"/> ir <ph name="PRIVACY_POLICY"/>.</translation>
+<translation id="8804164990146287819">Privatumo politika</translation>
+<translation id="6318696841371191107">Peržiūrėkite trumpą apžvalgą</translation>
+<translation id="7930505144430343145">Sveiki, tai – „Brave Rewars“!</translation>
+<translation id="7909111626803226907">Kitaip nei įprastos reklamos atveju, už privatumo nepažeidžiančias „Brave“ reklamas gaunate žetonų, kuriais galite paremti turinio kūrėjus, o jūsų asmeninė informacija liks privati.</translation>
+<translation id="6973095375773523904">Kur rodomos reklamos?</translation>
+<translation id="3867028444168159102">Privatumo nepažeidžiančios „Brave“ reklamos bus rodomos kaip įprastas pranešimas. Nuostatų dalyje galite pasirinkti, kaip dažnai norite matyti šias reklamas.</translation>
+<translation id="5816125157889950051">Kada gaunate atlygį</translation>
+<translation id="4649471244559455723">Žetonus, kuriuos uždirbote iš „Brave Ads“ šį mėnesį, gausite kito mėnesio 5 d.</translation>
+<translation id="7712287524451429139">Atsilyginti dabar paprasta</translation>
+<translation id="105037569026952831">Kūrėjai jūsų skiriamus žetonus gauna automatiškai pagal jūsų susidomėjimo lygį, kurį matuojame kaip „dėmesį“.</translation>
+<translation id="5323267338679539010">Padėkokite skirdami arbatpinigių</translation>
+<translation id="6042317056594735519">Arbatpinigių skyrimas yra būdas asmeniškai paskatinti ir paremti mėgstamą turinį arba kūrėjus. Paaukokite!</translation>
+<translation id="7509452925943421624">Ką galite daryti su žetonais?</translation>
+<translation id="7059157883171259940">Žetonus galima naudoti ne vien kūrėjams paremti. Galite pirkti skaitmenines prekes ir dovanų korteles pasinaudodami pinigų susigrąžinimo premija.</translation>
+<translation id="1402530520078693620">Galiausiai nustatykime pagrindines nuostatas</translation>
+<translation id="3494356595346329740">Tai galite pakeisti vėliau.</translation>
+<translation id="6462814326662189004">Kaip dažnai norite matyti reklamas?\n(Reklamų skaičius per valandą)</translation>
+<translation id="2134244432345596331">Kiek paramos norite skirti savo mėgstamiems kūrėjams?\n(Iš uždarbio už reklamą)</translation>
+<translation id="7456161272236175794">VALIOOOOO!\nBaigėte</translation>
+<translation id="3895246934788932488">Naudodami „Brave Rewards“, saugote savo privatumą ir padedate padaryti, kad žiniatinklis būtų geresnė vieta visiems. Juk tai puiku!</translation>
+<translation id="5705882733397021510">Grįžti</translation>
+<translation id="5140321319944305531">Peržiūrėkite trumpą apžvalgą</translation>
+<translation id="3808131693704413134">Gavę pirmąją išmoką už reklamas galite grįžti ir skirti arbatpinigių šiam kūrėjui!</translation>
+<translation id="207242986925259074">Trumpa priminimo apžvalga</translation>
+<translation id="8342862030112839977">Pirmojo atlygio išmoką gausite:</translation>
+<translation id="3769645103175790584">Naršydami gaukite žetonų ir atlyginkite kūrėjams už puikų turinį. <ph name="QUICK_TOUR"/>.</translation>
+<translation id="6912901278692845878">Trumpa apžvalga</translation>
+<translation id="1080013038789678738">Dalyvauju!</translation>
+<translation id="3604285424134705930">Konvertavote <ph name="FROM_VALUE"/> <ph name="FROM_CURRENCY"/> į <ph name="TO_VALUE"/> <ph name="TO_CURRENCY"/>!</translation>
+<translation id="392587271502873865">Patikrinkite tinklo ryšį.</translation>
+<translation id="7889432931837317731">Kai galima, atverti automatiškai</translation>
 </translationbundle>

@@ -8,6 +8,7 @@
 <translation id="5655621391922317800">Crypto novčanici</translation>
 <translation id="2445484935443597917">Направи нов профил</translation>
 <translation id="2666990579225592931">Отвори прозор госта</translation>
+<translation id="8275068909952022340">Više…</translation>
 <translation id="120759863357279975"><ph name="EXTENSION_NAME"/> (extension ID "<ph name="EXTENSION_ID"/>") nije dozvoljeno u Brejvu</translation>
 <translation id="6786747875388722282">Proširenja</translation>
 <translation id="984275831282074731">Начини плаћања</translation>
@@ -43,23 +44,20 @@ Instaliranjem ove ekstenzije, slažete se sa Google Widevine uslovima korišće
 <translation id="814018970995616154">Proverava URL adrese sa listom nebezbednih veb lokacija uskladištenih u Brave-u.</translation>
 <translation id="1144810021918451336">Ne štiti vas od opasnih veb lokacija, preuzimanja i proširenja.</translation>
 <translation id="7781069478569868053">Stranica nove kartice</translation>
-<translation id="1717331825806276156">Pozadinske slike</translation>
-<translation id="1820041496463124489">Sponzorisane slike</translation>
-<translation id="8173998484743827990">Brave statistika</translation>
-<translation id="5551238871320268996">Brave zajednica</translation>
-<translation id="6966052266404721769">Binance</translation>
-<translation id="8533411848724153701">Gemini</translation>
-<translation id="4643117005422448078">Glavne lokacije</translation>
-<translation id="1776831331757823105">Sat</translation>
 <translation id="1988804048511540801">Prikazi stranice nove kartice</translation>
 <translation id="2970343821770026391">Kontrolna tabla</translation>
 <translation id="3719826155360621982">Početna stranica</translation>
 <translation id="5448570825852364919">Prazna strana</translation>
+<translation id="5919424224662539292">Prilagodite pozadinsku sliku i vidžete koji se pojavljuju na stranici nove kartice</translation>
 <translation id="7965178729203412357">Novi Tor identitet</translation>
 <translation id="8511502469534942133">Nova Tor veza za ovaj sajt</translation>
-<translation id="8784924142044142231">Izađite iz Tor-a</translation>
-<translation id="5410152065859052603">Tor</translation>
-<translation id="3696187925156352769">Otvori Tor prozor</translation>
+<translation id="4734294903299549345">Izađite iz privatnog prozora uz pomoć Tor-a</translation>
+<translation id="8612763432858587652">Izađite iz privatnog prozora</translation>
+<translation id="8760415064721320867">Privatni prozor sa Tor-om</translation>
+<translation id="2055363275850890030">Privatni prozor</translation>
+<translation id="8934172355414207733">Privatno uz pomoć Tora</translation>
+<translation id="1970435562892104727">Ovo je privatni prozor sa Tor-om</translation>
+<translation id="1037341607922068025">Otvori privatni prozor sa Tor-om</translation>
 <translation id="1725356094208762656">Otorite u Toru</translation>
 <translation id="1672270084584211506">Onion dostupan</translation>
 <translation id="1434416574322382019">Novi privatni prozor sa Tor-om</translation>
@@ -68,6 +66,7 @@ Instaliranjem ove ekstenzije, slažete se sa Google Widevine uslovima korišće
 <translation id="6313675821927505581">Novi privatni prozor sa Tor-om</translation>
 <translation id="2638041073279639246">Otvori vezu u privatnom prozoru sa Tor-om</translation>
 <translation id="3425600262621021599">Otvori vezu u Brave privatnom prozoru sa Tor-om</translation>
+<translation id="5410152065859052603">Tor</translation>
 <translation id="2515126961943087659">Bat Ads usluga</translation>
 <translation id="7924918279836988121">Usluga knjiženja BAT</translation>
 <translation id="4472575034687746823">Започнимо</translation>
@@ -235,6 +234,7 @@ Instaliranjem ove ekstenzije, slažete se sa Google Widevine uslovima korišće
 <translation id="8428213095426709021">Подешавања</translation>
 <translation id="1854270995641373652">Da li biste želeli da omogućite lokalnu daemon IPFS podršku u Brave-u?</translation>
 <translation id="2366908098700680611">Omogući IPFS</translation>
+<translation id="1556882415222118816">Saznajte više o posledicama privatnosti</translation>
 <translation id="4552520379838695057">Žao nam je, ta stranica nedostaje.</translation>
 <translation id="2609895996619941644">Da li želite da proverite da li je sačuvana verzija dostupna u Wayback Machine arhivi?</translation>
 <translation id="8053093028263274061">Žao nam je, nisu dostupne sačuvane verzije.</translation>
