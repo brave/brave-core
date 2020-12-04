@@ -10,6 +10,7 @@
 
 #include <memory>
 #include <string>
+#include <vector>
 
 #include "bat/ads/ads.h"
 #include "bat/ads/internal/account/account_observer.h"
@@ -108,8 +109,7 @@ class AdsImpl
 
   void OnPageLoaded(
       const int32_t tab_id,
-      const std::string& original_url,
-      const std::string& url,
+      const std::vector<std::string>& redirect_chain,
       const std::string& content) override;
 
   void OnIdle() override;

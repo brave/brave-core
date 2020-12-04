@@ -483,11 +483,16 @@ BATClassAdsBridge(BOOL, isDebug, setDebug, _is_debug)
 
 #pragma mark - Reporting
 
-- (void)reportLoadedPageWithURL:(NSURL *)url innerText:(NSString *)text tabId:(NSInteger)tabId
+- (void)reportLoadedPageWithURL:(NSURL *)url redirectedFromURLs:(NSArray<NSURL *> *)redirectionURLs innerText:(NSString *)text tabId:(NSInteger)tabId
 {
   if (![self isAdsServiceRunning]) { return; }
   const auto urlString = base::SysNSStringToUTF8(url.absoluteString);
-  ads->OnPageLoaded((int32_t)tabId, urlString, urlString, base::SysNSStringToUTF8(text));
+  std::vector<std::string> urls;
+  for (NSURL *redirectURL in redirectionURLs) {
+    urls.push_back(base::SysNSStringToUTF8(redirectURL.absoluteString));
+  }
+  urls.push_back(urlString);
+  ads->OnPageLoaded((int32_t)tabId, urls, base::SysNSStringToUTF8(text));
 }
 
 - (void)reportMediaStartedWithTabId:(NSInteger)tabId

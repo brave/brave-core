@@ -156,6 +156,7 @@ base::SingleThreadTaskExecutor* g_task_executor = nullptr;
 }
 
 - (void)reportLoadedPageWithURL:(NSURL *)url
+             redirectedFromURLs:(NSArray<NSURL *> *)redirectionURLs
                      faviconURL:(nullable NSURL *)faviconURL
                           tabId:(UInt32)tabId
                            html:(NSString *)html
@@ -163,7 +164,7 @@ base::SingleThreadTaskExecutor* g_task_executor = nullptr;
 {
   [self onTabRetrieved:tabId url:url faviconURL:faviconURL html:html];
   if (adsInnerText != nil) {
-    [self.ads reportLoadedPageWithURL:url innerText:adsInnerText tabId:tabId];
+    [self.ads reportLoadedPageWithURL:url redirectedFromURLs:redirectionURLs innerText:adsInnerText tabId:tabId];
   }
   [self.ledger reportLoadedPageWithURL:url tabId:tabId];
 }
