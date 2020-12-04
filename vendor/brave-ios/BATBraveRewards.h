@@ -107,6 +107,7 @@ OBJC_EXPORT
 /// @note Send nil for `adsInnerText` if the load happened due to tabs restoring
 ///       after app launch
 - (void)reportLoadedPageWithURL:(NSURL *)url
+             redirectedFromURLs:(NSArray<NSURL *> *)redirectionURLs
                      faviconURL:(nullable NSURL *)faviconURL
                           tabId:(UInt32)tabId
                            html:(NSString *)html
