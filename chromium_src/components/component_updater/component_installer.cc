@@ -19,15 +19,15 @@ namespace component_updater {
 void ComponentInstaller::Register(ComponentUpdateService* cus,
                                   base::OnceClosure callback) {
   static std::vector<std::string> blacklisted_components({
-      "bklopemakmnopmghhmccadeonafabnal", // Legacy TLS Deprecation Config
-      "cmahhnpholdijhjokonmfdjbfmklppij", // Federated Learning of Cohorts
-      "eeigpngbgcognadeebkilcpcaedhellh", // Autofill States Data
-      "gcmjkmgdlgnkkcocmoeiminaijmmjnii", // Subresource Filter Rules
-      "ggkkehgbnfjpeggfpleeakpidbkibbmn", // Crowd Deny
-      "giekcmmlnklenlaomppkphknjmnnpneh", // Certificate Error Assistant
-      "jflookgnkcckhobaglndicnbbgbonegd", // Safety Tips
-      "llkgjffcdpffmhiakmfcdcblohccpfmo", // Origin Trials
-      "ojhpjlocmbogdgmfpkhlaaeamibhnphh"  // Zxcvbn Data Dictionaries
+      "bklopemakmnopmghhmccadeonafabnal",  // Legacy TLS Deprecation Config
+      "cmahhnpholdijhjokonmfdjbfmklppij",  // Federated Learning of Cohorts
+      "eeigpngbgcognadeebkilcpcaedhellh",  // Autofill States Data
+      "gcmjkmgdlgnkkcocmoeiminaijmmjnii",  // Subresource Filter Rules
+      "ggkkehgbnfjpeggfpleeakpidbkibbmn",  // Crowd Deny
+      "giekcmmlnklenlaomppkphknjmnnpneh",  // Certificate Error Assistant
+      "jflookgnkcckhobaglndicnbbgbonegd",  // Safety Tips
+      "llkgjffcdpffmhiakmfcdcblohccpfmo",  // Origin Trials
+      "ojhpjlocmbogdgmfpkhlaaeamibhnphh"   // Zxcvbn Data Dictionaries
   });
   std::vector<uint8_t> hash;
   installer_policy_->GetHash(&hash);
