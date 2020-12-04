@@ -711,4 +711,20 @@
 <translation id="5337526542182802976">Wspierane pary</translation>
 <translation id="1164622162816276433">Obroty 24 h</translation>
 <translation id="3155170474926428993">Oprogramowanie Tor</translation>
+<translation id="4799744519698299121">Więcej kart</translation>
+<translation id="8050847734948770789">Włącz Nagrody Brave</translation>
+<translation id="2862598513212603756">Twoja uwaga jest cenna. Zarabiaj, oglądając szanujące prywatność reklamy, i przekazuj, to co zarobisz, twórcom treści, które lubisz.</translation>
+<translation id="4942016616604700968">Włącz Nagrody Brave</translation>
+<translation id="319209088187794725">Powiadomienia o reklamach otrzymane w tym miesiącu</translation>
+<translation id="7952665812649667034">Mogę już Zarabiać i dawać</translation>
+<translation id="4342305967788502343">Klikając opcję Zarabiaj i dawaj, zgadzasz się na <ph name="LINK_BEGIN"/>Warunki świadczenia usług<ph name="LINK_END"/> i <ph name="LINK_BEGIN"/>Politykę prywatności<ph name="LINK_END"/>.</translation>
+<translation id="2148613324460538318">Dodaj kartę</translation>
+<translation id="7983303953939627894">Zyskaj i daj</translation>
+<translation id="2901715907314796027">Kupuj kryptowaluty na Bitcoin.com.</translation>
+<translation id="4065681313949497252">Waluta</translation>
+<translation id="3833315885381772739">Wprowadź kwotę</translation>
+<translation id="4011828592358027165">Pierwszy raz w świecie kryptowalut?</translation>
+<translation id="3358050091139900813">Załóż portfel tutaj, aby rozpocząć</translation>
+<translation id="3449068867189933593">Wpisana kwota musi wynosić co najmniej {{minimumAmount}} {{fiat}}</translation>
+<translation id="3105412115725259537">Bitcoin.com</translation>
 </translationbundle>

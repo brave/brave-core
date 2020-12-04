@@ -712,4 +712,20 @@ DuckDuckGo ไม่บันทึกประวัติการค้นห
 <translation id="5337526542182802976">คู่ที่ได้รับการสนับสนุน</translation>
 <translation id="1164622162816276433">ระดับช่วง 24่ชม.</translation>
 <translation id="3155170474926428993">Tor Launcher</translation>
+<translation id="4799744519698299121">บัตรอื่น ๆ</translation>
+<translation id="8050847734948770789">เปิด Brave Rewards</translation>
+<translation id="2862598513212603756">ความสนใจของคุณมีค่า รับรายได้จากการชมโฆษณาที่เคารพความเป็นส่วนตัวในขณะที่คุณเรียกดูเว็บ และส่งต่อสิ่งดีๆ ตอบแทนเพื่อสนับสนุนผู้สร้างสรรค์คอนเทนต์ที่คุณชื่นชอบ</translation>
+<translation id="4942016616604700968">เปิดการให้รางวัล</translation>
+<translation id="319209088187794725">การแจ้งเตือนโฆษณาที่ได้รับในเดือนนี้</translation>
+<translation id="7952665812649667034">ฉันพร้อมที่จะ Earn &amp; Give</translation>
+<translation id="4342305967788502343">ด้วยการคลิก รับ &amp; ให้ คุณได้ยอมรับ <ph name="LINK_BEGIN"/>เงื่อนไขการให้บริการ<ph name="LINK_END"/> และ <ph name="LINK_BEGIN"/>นโยบายความเป็นส่วนตัว<ph name="LINK_END"/>.</translation>
+<translation id="2148613324460538318">เพิ่มบัตร</translation>
+<translation id="7983303953939627894">รับ &amp; ให้</translation>
+<translation id="2901715907314796027">ซื้อเงินดิจิทัลจาก Bitcoin.com</translation>
+<translation id="4065681313949497252">สกุลเงิน</translation>
+<translation id="3833315885381772739">ใส่จำนวน</translation>
+<translation id="4011828592358027165">เพิ่งรู้จักเงินดิจิทัลใช่ไหม</translation>
+<translation id="3358050091139900813">รับวอลเล็ทที่นี่เพื่อเริ่มต้นใช้งาน</translation>
+<translation id="3449068867189933593">จำนวนที่ใส่ต้องเป็นจำนวนอย่างน้อย {{minimumAmount}} {{fiat}}</translation>
+<translation id="3105412115725259537">Bitcoin.com</translation>
 </translationbundle>
