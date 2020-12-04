@@ -60,11 +60,11 @@ void BraveTabMenuModel::Build(TabStripModel* tab_strip_model, int index) {
   const bool will_mute = !AreAllTabsMuted(*tab_strip_model, affected_indices);
 
   InsertItemAt(GetIndexOfCommandId(TabStripModel::CommandToggleSiteMuted),
-                           CommandMuteTab,
-                           will_mute ? l10n_util::GetPluralStringFUTF16(
-                                          IDS_TAB_CXMENU_MUTE_TAB, num_affected_tabs)
-                                     : l10n_util::GetPluralStringFUTF16(
-                                          IDS_TAB_CXMENU_UNMUTE_TAB, num_affected_tabs));
+               CommandMuteTab,
+               will_mute ? l10n_util::GetPluralStringFUTF16(
+                              IDS_TAB_CXMENU_MUTE_TAB, num_affected_tabs)
+                         : l10n_util::GetPluralStringFUTF16(
+                              IDS_TAB_CXMENU_UNMUTE_TAB, num_affected_tabs));
 
   AddSeparator(ui::NORMAL_SEPARATOR);
   AddItemWithStringId(CommandRestoreTab, GetRestoreTabCommandStringId());
