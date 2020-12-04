@@ -4,15 +4,15 @@
     "description": "Title in welcome screen for the panel"
   },
   "welcomeButtonTextOne": {
-    "message": "เริ่มรับเงินได้ตอนนี้!",
+    "message": "เริ่มรับเงินตอนนี้!",
     "description": "CTA on welcome screen in the panel, existing users"
   },
   "welcomeButtonTextTwo": {
-    "message": "รางวัลการเข้าร่วม",
+    "message": "รางวัลเข้าร่วม",
     "description": "CTA on welcome screen in the panel, new users"
   },
   "welcomeDescOne": {
-    "message": "ได้รับเงินจากการเข้าไปดูโฆษณาและใช้เพื่อช่วยสนับสนุนผู้สร้างสรรค์ข้อความที่คุณชื่นชอบ",
+    "message": "ได้รับเงินเป็นค่าตอบแทนการดูโฆษณา แล้วสามารถจ่ายมันต่อไปเพื่อสนับสนุนผู้สร้างสรรค์เนื้อหาที่คุณชื่นชอบ",
     "description": "Entry text for welcome screen in the panel, existing user"
   },
   "welcomeDescTwo": {
@@ -56,7 +56,7 @@
     "description": "Wallet panel title for anon wallets"
   },
   "batPoints": {
-    "message": "แต้ม BAT",
+    "message": "คะแนน BAT",
     "description": "BAT Points text"
   },
   "batPointsMessage": {
@@ -120,7 +120,7 @@
     "description": "Month"
   },
   "monthJul": {
-    "message": "กรกฏาคม",
+    "message": "กรกฎาคม",
     "description": "Month"
   },
   "monthJun": {
@@ -170,7 +170,7 @@
     "description": "Title for ads section in wallet summary"
   },
   "rewardsContribute": {
-    "message": "Auto-Contribute",
+    "message": "มีส่วนร่วมอัตโนมัติ",
     "description": "Title for auto contribute section in wallet summary"
   },
   "oneTimeDonation": {
@@ -178,7 +178,7 @@
     "description": "Title for one time tips section in wallet summary"
   },
   "expiresOn": {
-    "message": "หมดอายุใน",
+    "message": "หมดอายุวันที่",
     "description": "Used for grant representation. Whole string is '30.0 BAT expires on 08/05/2022'"
   },
   "recurringDonations": {
@@ -194,7 +194,7 @@
     "description": "Used in notification to dismiss notification"
   },
   "braveAdsLaunchMsg": {
-    "message": "รับรางวัลด้วยการชมโฆษณาได้แล้วตอนนี้",
+    "message": "คุณสามารถรับรายได้ผ่านการชมโฆษณาได้แล้วตอนนี้",
     "description": "Message for ads launch notification"
   },
   "braveAdsTitle": {
@@ -380,7 +380,7 @@
     "description": "Subtitle for wallet disabled panel"
   },
   "privacyPolicy": {
-    "message": "นโยบายความเป็นส่วนตัว",
+    "message": "นโยบายสความเป็นส่วนตัว",
     "description": "Privacy Policy"
   },
   "serviceText": {
@@ -392,7 +392,7 @@
     "description": "Terms of Service"
   },
   "welcomeBack": {
-    "message": "ยินดีต้อนรับกลับมา!",
+    "message": "Welcome Back!",
     "description": "Title message for wallet disabled panel"
   },
   "tipsProcessedNotification": {
@@ -416,7 +416,7 @@
     "description": "BAT Points abbreviation text"
   },
   "turnOnAds": {
-    "message": "เปิดโฆษณา",
+    "message": "เปิดใช้งาน Ads",
     "description": "Prompt to turn on Ads via notification"
   },
   "adsEarnings": {
@@ -462,7 +462,7 @@
     "description": "Notification text that tells user his wallet is under funded for pending contribution to complete"
   },
   "pendingContributionTitle": {
-    "message": "รอการสนับสนุน",
+    "message": "เงินสนับสนุนที่รอดำเนินการ",
     "description": "Notification title for pending contribution type"
   },
   "grantFinishTitleUGP": {
@@ -624,7 +624,23 @@
     "description": "Status button that tells user that he is currently pending"
   },
   "walletVerificationNote3":  {
-    "message": "หมายเหตุ: ธุรกรรมของคุณจะปรากฏต่อ Uphold เมื่อคุณอนุญาต ยกตัวอย่างเช่น พวกเขาจะสามารถเห็นผู้รับและจำนวนทิปของคุณได้",
+    "message": "หมายเหตุ: ธุรกรรมของคุณจะปรากฏแก่ Uphold เมื่อคุณอนุญาต ยกตัวอย่างเช่น พวกเขาจะสามารถเห็นจำนวนและผู้รับทิปได้",
     "description": "Displayed in login modal for uphold"
+  },
+  "onboardingEarnHeader": {
+    "message": "รับโทเค็นเพื่อนำไปตอบแทน",
+    "description": ""
+  },
+  "onboardingEarnText": {
+    "message": "รับโทเค็นผ่านการดูโฆษณาที่เกี่ยวข้องกับความเป็นส่วนตัวเพื่อนำไปสนับสนุนเว็บไซต์และผู้สร้างเนื้อหาที่คุณชื่นชอบโดยอัตโนมัติ",
+    "description": ""
+  },
+  "onboardingStartUsingRewards": {
+    "message": "เริ่มต้นใช้ Brave Reward",
+    "description": ""
+  },
+  "onboardingTerms": {
+    "message": "หากดำเนินการต่อ จะถือว่าคุณยอมรับ $$1เงื่อนไขการใช้บริการ$$2 และ $$3นโยบายความเป็นส่วนตัว$$4",
+    "description": ""
   }
 }

@@ -8,6 +8,7 @@
 <translation id="5655621391922317800">Криптовалютные кошельки</translation>
 <translation id="2445484935443597917">Создать профиль</translation>
 <translation id="2666990579225592931">Открыть окно в гостевом режиме</translation>
+<translation id="8275068909952022340">Ещё…</translation>
 <translation id="120759863357279975"><ph name="EXTENSION_NAME"/> (ID расширения "<ph name="EXTENSION_ID"/>") не разрешено в Brave.</translation>
 <translation id="6786747875388722282">Расширения</translation>
 <translation id="984275831282074731">Способы оплаты</translation>
@@ -43,23 +44,20 @@
 <translation id="814018970995616154">Проверяет адреса по списку опасных сайтов, сохраненному в Brave.</translation>
 <translation id="1144810021918451336">Не защищает вас от угроз на опасных веб-сайтах, в загрузках и расширениях.</translation>
 <translation id="7781069478569868053">Страница новой вкладки</translation>
-<translation id="1717331825806276156">Фоновые изображения</translation>
-<translation id="1820041496463124489">Рекламные изображения</translation>
-<translation id="8173998484743827990">Статистика Brave</translation>
-<translation id="5551238871320268996">Brave Together</translation>
-<translation id="6966052266404721769">Binance</translation>
-<translation id="8533411848724153701">Gemini</translation>
-<translation id="4643117005422448078">Лучшие сайты</translation>
-<translation id="1776831331757823105">Часы</translation>
 <translation id="1988804048511540801">Страница новой вкладки отображает</translation>
 <translation id="2970343821770026391">Информационная панель</translation>
 <translation id="3719826155360621982">Домашняя страница</translation>
 <translation id="5448570825852364919">Страница бланка</translation>
+<translation id="5919424224662539292">Настройте фоновое изображение и виджеты, которые появятся на странице при открытие новой закладки</translation>
 <translation id="7965178729203412357">Новый Tor-идентификатор</translation>
 <translation id="8511502469534942133">Новое подключение через Tor для этого сайта</translation>
-<translation id="8784924142044142231">Выйти из Tor</translation>
-<translation id="5410152065859052603">Tor</translation>
-<translation id="3696187925156352769">Откройте окно Tor</translation>
+<translation id="4734294903299549345">Выйти из приватного окна с помощью Tor.</translation>
+<translation id="8612763432858587652">Выйти из приватного окна</translation>
+<translation id="8760415064721320867">Приватное окно с Tor</translation>
+<translation id="2055363275850890030">Приватное окно</translation>
+<translation id="8934172355414207733">Приватный режим в Tor</translation>
+<translation id="1970435562892104727">Это приватное окно для Tor</translation>
+<translation id="1037341607922068025">Открыть приватное окно с помощью Tor</translation>
 <translation id="1725356094208762656">Открыть в Tor</translation>
 <translation id="1672270084584211506">Доступен Onion</translation>
 <translation id="1434416574322382019">Новое Личное Окно с Тор</translation>
@@ -68,6 +66,7 @@
 <translation id="6313675821927505581">Новое приватное окно в Tor</translation>
 <translation id="2638041073279639246">Открыть ссылку в приватном окне в Tor</translation>
 <translation id="3425600262621021599">Открыть ссылку в приватном окне Brave через Tor</translation>
+<translation id="5410152065859052603">Tor</translation>
 <translation id="2515126961943087659">Рекламный сервис BAT</translation>
 <translation id="7924918279836988121">Служба учета BAT-транзакций</translation>
 <translation id="4472575034687746823">Начало работы</translation>
@@ -235,6 +234,7 @@
 <translation id="8428213095426709021">Настройки</translation>
 <translation id="1854270995641373652">Вы хотите включить локальную службу поддержки IPFS в Brave?</translation>
 <translation id="2366908098700680611">Включить IPFS</translation>
+<translation id="1556882415222118816">Узнать больше о последствиях для конфиденциальности</translation>
 <translation id="4552520379838695057">Извините, этой страницы не существует.</translation>
 <translation id="2609895996619941644">Хотите проверить, доступна ли сохраненная версия на Wayback Machine?</translation>
 <translation id="8053093028263274061">К сожалению, сохраненной версии нет.</translation>

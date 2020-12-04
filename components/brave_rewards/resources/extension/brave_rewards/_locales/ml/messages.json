@@ -48,7 +48,7 @@
     "description": "Title for grant section in wallet summary"
   },
   "details": {
-    "message": "വിശദാംശങ്ങൾ‌",
+    "message": "വിശദാംശങ്ങൾ",
     "description": "Title for grant section in wallet panel summary"
   },
   "yourBalance": {
@@ -186,7 +186,7 @@
     "description": "Title for monthly contributions section in wallet summary"
   },
   "off": {
-    "message": "ഓഫാക്കുക",
+    "message": "ഓഫാണ്",
     "description": "Label used in toggle indicating that toggle is off"
   },
   "ok": {
@@ -328,7 +328,7 @@
     "description": "Text for the link that explains more about reserved amount"
   },
   "disabledPanelOff": {
-    "message": "ഓഫാക്കുക",
+    "message": "ഓഫാണ്",
     "description": "Off state text for Panel's disabled state"
   },
   "disabledPanelSettings": {
@@ -626,5 +626,21 @@
   "walletVerificationNote3":  {
     "message": "Note: Your transactions will be visible to Uphold once you authorize; for instance, they will be able to see the recipient and amount of your tips.",
     "description": "Displayed in login modal for uphold"
+  },
+  "onboardingEarnHeader": {
+    "message": "Earn Tokens & Give Back",
+    "description": ""
+  },
+  "onboardingEarnText": {
+    "message": "Earn tokens by viewing privacy-respecting ads and support your favorite sites and content creators automatically.",
+    "description": ""
+  },
+  "onboardingStartUsingRewards": {
+    "message": "Start using Brave Rewards",
+    "description": ""
+  },
+  "onboardingTerms": {
+    "message": "By proceeding, you agree to the $$1Terms of Service$$2 and $$3Privacy Policy$$4.",
+    "description": ""
   }
 }

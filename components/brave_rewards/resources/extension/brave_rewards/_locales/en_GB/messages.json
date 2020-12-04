@@ -162,7 +162,7 @@
     "description": "Title for grant section in wallet summary"
   },
   "pointGrantClaimed": {
-    "message": "Point Grants Claimed",
+    "message": "Point Grants claimed",
     "description": "Title for point grant section in wallet summary"
   },
   "earningsAds": {
@@ -182,7 +182,7 @@
     "description": "Used for grant representation. Whole string is '30.0 BAT expires on 08/05/2022'"
   },
   "recurringDonations": {
-    "message": "Monthly Contributions",
+    "message": "Monthly contributions",
     "description": "Title for monthly contributions section in wallet summary"
   },
   "off": {
@@ -462,7 +462,7 @@
     "description": "Notification text that tells user his wallet is under funded for pending contribution to complete"
   },
   "pendingContributionTitle": {
-    "message": "Pending Contribution",
+    "message": "Pending contribution",
     "description": "Notification title for pending contribution type"
   },
   "grantFinishTitleUGP": {
@@ -626,5 +626,21 @@
   "walletVerificationNote3":  {
     "message": "Note: Your transactions will be visible to Uphold once you authorise; for instance, they will be able to see the recipient of your tips and the amount.",
     "description": "Displayed in login modal for uphold"
+  },
+  "onboardingEarnHeader": {
+    "message": "Earn Tokens & Give Back",
+    "description": ""
+  },
+  "onboardingEarnText": {
+    "message": "Earn tokens by viewing privacy-respecting ads and support your favorite sites and content creators automatically.",
+    "description": ""
+  },
+  "onboardingStartUsingRewards": {
+    "message": "Start using Brave Rewards",
+    "description": ""
+  },
+  "onboardingTerms": {
+    "message": "By proceeding, you agree to the $$1Terms of Service$$2 and $$3Privacy Policy$$4.",
+    "description": ""
   }
 }

@@ -64,7 +64,7 @@
     "description": "Text for BAT Point helper message"
   },
   "on": {
-    "message": "–",
+    "message": "įjungti",
     "description": "The whole string is 'Enable tips on YouTube for like.'"
   },
   "verifiedPublisher": {
@@ -484,7 +484,7 @@
     "description": "Token title on success screen"
   },
   "grantFinishPointTitleUGP": {
-    "message": "Nemokamas suteiktas taškas",
+    "message": "Nemokamas suteikti taškai",
     "description": "Point title on success screen"
   },
   "grantFinishTitleAds": {
@@ -626,5 +626,21 @@
   "walletVerificationNote3":  {
     "message": "Pastaba. Jūsų operacijos „Uphold“  bus matomos tada, kai duosite leidimą; pavyzdžiui, bus matomas jūsų gavėjas ir arbatpinigių suma.",
     "description": "Displayed in login modal for uphold"
+  },
+  "onboardingEarnHeader": {
+    "message": "Gaukite žetonų ir atsilyginkite",
+    "description": ""
+  },
+  "onboardingEarnText": {
+    "message": "Gaukite žetonų žiūrėdami privatumo nepažeidžiančias reklamas ir automatiškai paremkite mėgstamas svetaines bei turinio kūrėjus.",
+    "description": ""
+  },
+  "onboardingStartUsingRewards": {
+    "message": "Pradėti naudotis „Brave Rewards“",
+    "description": ""
+  },
+  "onboardingTerms": {
+    "message": "Tęsdami sutinkate su $$1paslaugų teikimo sąlygomis$$2 ir $$3privatumo politika$$4.",
+    "description": ""
   }
 }

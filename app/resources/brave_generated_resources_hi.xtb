@@ -8,6 +8,7 @@
 <translation id="5655621391922317800">क्रिप्टो वॉलेट</translation>
 <translation id="2445484935443597917">नई प्रोफ़ाइल बनाएं</translation>
 <translation id="2666990579225592931">मेहमान विंडो खोलें</translation>
+<translation id="8275068909952022340">और…</translation>
 <translation id="120759863357279975"><ph name="EXTENSION_NAME"/> (extension ID "<ph name="EXTENSION_ID"/>") की Brave में अनुमति नहीं है।</translation>
 <translation id="6786747875388722282">एक्सटेंशन</translation>
 <translation id="984275831282074731">भुगतान के तरीके</translation>
@@ -77,23 +78,20 @@ Binance
 <translation id="814018970995616154">Brave में संग्रहीत असुरक्षित साइटों की सूची के साथ URL की जाँच करता है।</translation>
 <translation id="1144810021918451336">हानिकारक वेबसाइट, डाउनलोड और एक्सटेंशन से आपकी सुरक्षा नहीं करता है।</translation>
 <translation id="7781069478569868053">नया टैब पेज</translation>
-<translation id="1717331825806276156">पृष्ठभूमि छवियों</translation>
-<translation id="1820041496463124489">प्रायोजित चित्र</translation>
-<translation id="8173998484743827990">Brave आँकड़े</translation>
-<translation id="5551238871320268996">Brave Together</translation>
-<translation id="6966052266404721769">Binance</translation>
-<translation id="8533411848724153701">Gemini</translation>
-<translation id="4643117005422448078">शीर्ष साइट्स</translation>
-<translation id="1776831331757823105">घड़ी</translation>
 <translation id="1988804048511540801">नया टैब पेज दिखाता है</translation>
 <translation id="2970343821770026391">डैशबोर्ड</translation>
 <translation id="3719826155360621982">होमपेज</translation>
 <translation id="5448570825852364919">खाली पेज</translation>
+<translation id="5919424224662539292">नए टैब पेज़ पर दिखाई देने वाली पृष्ठभूमि छवि और विजेट को कस्टमाइज़ करें</translation>
 <translation id="7965178729203412357">नई टोर पहचान</translation>
 <translation id="8511502469534942133">इस साइट के लिए नया टो कनेक्शन</translation>
-<translation id="8784924142044142231">टॉर से बहार निकलें</translation>
-<translation id="5410152065859052603">टोर</translation>
-<translation id="3696187925156352769">टॉर विंडोज खोलें</translation>
+<translation id="4734294903299549345">टोर के साथ निजी विंडो से बाहर निकलें</translation>
+<translation id="8612763432858587652">निजी विंडो से बाहर निकलें</translation>
+<translation id="8760415064721320867">टोर के साथ प्राइवेट विंडो</translation>
+<translation id="2055363275850890030">गोपनीय विंडो</translation>
+<translation id="8934172355414207733">टोर के साथ निजी</translation>
+<translation id="1970435562892104727">यह टोर के साथ एक निजी विंडो है</translation>
+<translation id="1037341607922068025">टोर के साथ निजी विंडो खोलें</translation>
 <translation id="1725356094208762656">Tor में खोलें</translation>
 <translation id="1672270084584211506">Onion उपलब्ध है</translation>
 <translation id="1434416574322382019">टोर के साथ नया गोपनीय विंडो</translation>
@@ -102,6 +100,7 @@ Binance
 <translation id="6313675821927505581">Tor के साथ नई प्राइवेट विंडो</translation>
 <translation id="2638041073279639246">Tor के साथ प्राइवेट विंडो में लिंक खोलें</translation>
 <translation id="3425600262621021599">Tor के साथ ब्रेव प्राइवेट विंडो में लिंक खोलें</translation>
+<translation id="5410152065859052603">टोर</translation>
 <translation id="2515126961943087659">Bat विज्ञापन सेवा</translation>
 <translation id="7924918279836988121">Bat खाता सेवाएं</translation>
 <translation id="4472575034687746823">आरंभ करें</translation>
@@ -269,6 +268,7 @@ Binance
 <translation id="8428213095426709021">सेटिंग</translation>
 <translation id="1854270995641373652">क्या आप Brave में IPFS लोकल डेमन समर्थन को सक्रीय करना चाहेंगे?</translation>
 <translation id="2366908098700680611">IPFS सक्रीय करें</translation>
+<translation id="1556882415222118816">गोपनीयता के परिणामों के बारे में और जानें</translation>
 <translation id="4552520379838695057">क्षमा करें, वह पेज गायब है।</translation>
 <translation id="2609895996619941644">क्या आप जांचना चाहते हैं कि क्या वेबैक मशीन पर सेव किया गया संस्करण उपलब्ध है?</translation>
 <translation id="8053093028263274061">क्षमा करें, कोई सेव किया गया संस्करण उपलब्ध नहीं है।</translation>

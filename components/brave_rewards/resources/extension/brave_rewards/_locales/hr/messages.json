@@ -8,7 +8,7 @@
     "description": "CTA on welcome screen in the panel, existing users"
   },
   "welcomeButtonTextTwo": {
-    "message": "Pridružite se sustavu nagrada",
+    "message": "Pridružite se sustavu Rewards",
     "description": "CTA on welcome screen in the panel, new users"
   },
   "welcomeDescOne": {
@@ -48,7 +48,7 @@
     "description": "Title for grant section in wallet summary"
   },
   "details": {
-    "message": "Detalji",
+    "message": "Pojedinosti",
     "description": "Title for grant section in wallet panel summary"
   },
   "yourBalance": {
@@ -170,7 +170,7 @@
     "description": "Title for ads section in wallet summary"
   },
   "rewardsContribute": {
-    "message": "Automatski doprinosi",
+    "message": "Automatski doprinos",
     "description": "Title for auto contribute section in wallet summary"
   },
   "oneTimeDonation": {
@@ -186,7 +186,7 @@
     "description": "Title for monthly contributions section in wallet summary"
   },
   "off": {
-    "message": "isključeno",
+    "message": "Isključeno",
     "description": "Label used in toggle indicating that toggle is off"
   },
   "ok": {
@@ -228,7 +228,7 @@
     "description": "Notification button text when we ask user to backup wallet"
   },
   "backupWalletTitle": {
-    "message": "Sigurnosno kopiraj novčanik",
+    "message": "Izradi sigurnosnu kopiju novčanika",
     "description": "Notification title when we ask user to backup wallet"
   },
   "backupWalletNotification": {
@@ -292,7 +292,7 @@
     "description": "Grant expiry label"
   },
   "grantGeneralErrorButton": {
-    "message": "U REDU",
+    "message": "U redu",
     "description": "Button text for clearing the error."
   },
   "grantGeneralErrorText": {
@@ -336,7 +336,7 @@
     "description": "Settings Link for Panel's disabled state"
   },
   "disabledPanelText": {
-    "message": "Trenutačno ne upotrebljavate nikakve prednosti nijedne Nagrade tijekom pregledavanja. Uključite ponovno Nagrade u",
+    "message": "Trenutačno ne upotrebljavate nikakve prednosti nijedne Rewards tijekom pregledavanja. Uključite ponovno Rewards u",
     "description": "Text for Panel's disabled state"
   },
   "disabledPanelTitle": {
@@ -348,7 +348,7 @@
     "description": "Failure title for wallet creation"
   },
   "walletFailedButton": {
-    "message": "Pokušaj ponovo",
+    "message": "Pokušajte ponovo",
     "description": "Button for re-try after wallet creation failed"
   },
   "addFunds": {
@@ -420,7 +420,7 @@
     "description": "Prompt to turn on Ads via notification"
   },
   "adsEarnings": {
-    "message": "zarada od oglasa",
+    "message": "zarađeno od oglasa",
     "description": "Description text for ad grants in grant details"
   },
   "twitterTipsHoverText": {
@@ -626,5 +626,21 @@
   "walletVerificationNote3":  {
     "message": "Napomena: Vaše će transakcije biti vidljive usluzi Uphold nakon autorizacije; na primjer, bit će vidljiv primatelj i iznos vaših napojnica.",
     "description": "Displayed in login modal for uphold"
+  },
+  "onboardingEarnHeader": {
+    "message": "Zaradi tokene i oduži se",
+    "description": ""
+  },
+  "onboardingEarnText": {
+    "message": "Zaradite tokene pregledavanjem oglasa kojima se poštuje privatnost i automatski dajte podršku svojim omiljenim mrežnim mjestima i autorima sadržaja.",
+    "description": ""
+  },
+  "onboardingStartUsingRewards": {
+    "message": "Počni upotrebljavati uslugu Brave Rewards",
+    "description": ""
+  },
+  "onboardingTerms": {
+    "message": "Nastavkom pristajete na $$1Uvjete pružanja usluge$$2 i $$3Pravilnik o zaštiti privatnosti$$4.",
+    "description": ""
   }
 }

@@ -8,6 +8,7 @@
 <translation id="5655621391922317800">محافظ Crypto Wallets</translation>
 <translation id="2445484935443597917">إنشاء ملف شخصي جديد</translation>
 <translation id="2666990579225592931">فتح نافذة "ضيف"</translation>
+<translation id="8275068909952022340">المزيد …</translation>
 <translation id="120759863357279975"><ph name="EXTENSION_NAME"/> (extension ID "<ph name="EXTENSION_ID"/>") غير مسموح به في Brave.</translation>
 <translation id="6786747875388722282">الإضافات</translation>
 <translation id="984275831282074731">طرق الدفع</translation>
@@ -43,23 +44,20 @@
 <translation id="814018970995616154">يتحقق من عناوين URL بقائمة من المواقع غير الآمنة المخزنة في متصفّح Brave.</translation>
 <translation id="1144810021918451336">لا يحميك من مواقع الويب والتنزيلات والإضافات الخطيرة.</translation>
 <translation id="7781069478569868053">صفحة في علامة تبويب جديدة</translation>
-<translation id="1717331825806276156">صور الخلفية</translation>
-<translation id="1820041496463124489">الصور الموجودة ضمن الرعاية</translation>
-<translation id="8173998484743827990">إحصائيات Brave</translation>
-<translation id="5551238871320268996">Brave Together</translation>
-<translation id="6966052266404721769">تبادل العملات المشفرة</translation>
-<translation id="8533411848724153701">Gemini</translation>
-<translation id="4643117005422448078">المواقع الأولى</translation>
-<translation id="1776831331757823105">الساعة</translation>
 <translation id="1988804048511540801">تظهر صفحة علامة تبويب جديدة</translation>
 <translation id="2970343821770026391">لوحة التحكم</translation>
 <translation id="3719826155360621982">الصفحة الرئيسية</translation>
 <translation id="5448570825852364919">صفحة فارغة</translation>
+<translation id="5919424224662539292">قم بتخصيص صورة الخلفية وعناصر واجهة المستخدم التي تظهر في صفحة علامة التبويب الجديدة</translation>
 <translation id="7965178729203412357">هوية تور الجديدة</translation>
 <translation id="8511502469534942133">اتصال Tor جديد لهذا الموقع</translation>
-<translation id="8784924142044142231">الخروج من برنامج تور (Tor)</translation>
-<translation id="5410152065859052603">برنامج تور (Tor)</translation>
-<translation id="3696187925156352769">افتح نافذة Tor</translation>
+<translation id="4734294903299549345">الخروج من النافذة الخاصة عبر متصفح تور</translation>
+<translation id="8612763432858587652">الخروج من النافذة الخاصة</translation>
+<translation id="8760415064721320867">نافذة خاصة مع Tor</translation>
+<translation id="2055363275850890030">نافذة خاصة</translation>
+<translation id="8934172355414207733">الوضع الخاص عبر متصفح تور</translation>
+<translation id="1970435562892104727">هذه نافذة خاصة عبر متصفح تور</translation>
+<translation id="1037341607922068025">افتح نافذة خاصة من خلال متصفح تور</translation>
 <translation id="1725356094208762656">افتح في Tor</translation>
 <translation id="1672270084584211506">موقع أنيون المتاح</translation>
 <translation id="1434416574322382019">نافذة جديدة وخاصة بـTor</translation>
@@ -68,6 +66,7 @@
 <translation id="6313675821927505581">نافذة خاصة جديدة من خلال Tor</translation>
 <translation id="2638041073279639246">افتح الرابط في نافذة خاصة، باستخدام Tor</translation>
 <translation id="3425600262621021599">افتح الرابط في نافذة Brave خاصة، باستخدام Tor</translation>
+<translation id="5410152065859052603">برنامج تور (Tor)</translation>
 <translation id="2515126961943087659">خدمة إعلانات Bat</translation>
 <translation id="7924918279836988121">خدمة دفتر الأستاذ من Bat</translation>
 <translation id="4472575034687746823">الخطوات الأولى</translation>
@@ -235,6 +234,7 @@
 <translation id="8428213095426709021">الإعدادات</translation>
 <translation id="1854270995641373652">هل ترغب في تمكين دعم البرنامج الخفيّ المحلي "أي بي إف إس / IPFS" في Brave؟</translation>
 <translation id="2366908098700680611">تمكين "أي بي إف إس/ IPFS"</translation>
+<translation id="1556882415222118816">تعرف على المزيد حول عواقب الخصوصية</translation>
 <translation id="4552520379838695057">عذراً، هذه الصفحة مفقودة.</translation>
 <translation id="2609895996619941644">هل تريد التحقق مما إذا كان هناك إصدار محفوظ متاح على "واي باك مشين"؟</translation>
 <translation id="8053093028263274061">عذراً، لا توجد نسخة محفوظة متاحة.</translation>

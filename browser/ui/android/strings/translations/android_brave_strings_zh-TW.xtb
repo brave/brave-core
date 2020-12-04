@@ -31,6 +31,8 @@
 <translation id="5787084571334399599">防止瀏覽器存取指紋</translation>
 <translation id="7459000603787995422">退出時關閉分頁</translation>
 <translation id="1680858055899097121">終止瀏覽後不要保留分頁</translation>
+<translation id="6469509880167172749">自動傳送完全私密的產品分析給 Brave</translation>
+<translation id="7090566321964540749">此匿名資訊只會讓 Brave 評估特定功能的整題使用量。</translation>
 <translation id="453601949003770390">追蹤器與廣告封鎖</translation>
 <translation id="347604927162577559">資料\n節省了</translation>
 <translation id="9008534313521214777">預估時間\n節省了</translation>
@@ -50,7 +52,7 @@
 <translation id="4150201353443180367">顯示設定</translation>
 <translation id="2433507940547922241">外觀</translation>
 <translation id="2804710924397009224">隱藏 Brave 獎賞圖標</translation>
-<translation id="7358991116457217836">未啟用 Brave 獎賞時隱藏 Brave 獎賞圖標</translation>
+<translation id="7289740269305509613">隱藏 Brave 獎勵圖示</translation>
 <translation id="8495235435594442882">啟用底部工具列</translation>
 <translation id="6587448235155023666">所有變更將在你下次重啟 Brave 時生效</translation>
 <translation id="8701563696941209024">馬上重新啟動</translation>
@@ -67,7 +69,7 @@
 <translation id="3333887201479867589">Brave Rewards</translation>
 <translation id="5870330605209713397">預設透過觀看尊重隱私的廣告來支援您最愛的網站與創作者。</translation>
 <translation id="821707262661492716">因查看尊重隱私的廣告而獲得。</translation>
-<translation id="8267692331246948056">只要點擊「賺取與給予」，您即同意</translation>
+<translation id="5302488867897327287">透過點擊「開始使用 Brave Rewards」，即表示您同意</translation>
 <translation id="4281844954008187215">服務條款</translation>
 <translation id="6871397658902960384">開始瀏覽</translation>
 <translation id="454386012157232640">我沒看到任何廣告</translation>
@@ -76,7 +78,7 @@
 <translation id="6511854390690723657">這是你的首則 Brave 廣告。點按了解詳情。</translation>
 <translation id="4930714375720679147">開啟</translation>
 <translation id="2453860139492968684">結束</translation>
-<translation id="7983303953939627894">賺取與給予</translation>
+<translation id="2070991379950719711">開始使用 Brave Rewards</translation>
 <translation id="48520986898237073">繼續到錢包</translation>
 <translation id="3570367516044491911">設為預設瀏覽器</translation>
 <translation id="7493053924837150477">從列表選擇「Brave 瀏覽器」，然後點擊「始終」</translation>
@@ -227,6 +229,10 @@
 <translation id="6810078320346589989">建立書籤</translation>
 <translation id="3396347744975515056">Brave 同步已升級並需要設定</translation>
 <translation id="7473245612074035141">開始設定</translation>
+<translation id="1872784258300710671">Brave 使用完全私密的產品分析來評估特定功能的整體使用量</translation>
+<translation id="8712637175834984815">我瞭解了</translation>
+<translation id="4394049700291259645">停用</translation>
+<translation id="8446884382197647889">更多資訊</translation>
 <translation id="597993392929850353">Brave 授權條款</translation>
 <translation id="6336451774241870485">新隱私分頁</translation>
 <translation id="6199596294742117349">這是私人標籤</translation>
@@ -253,8 +259,7 @@
 <translation id="8522669544471808198">顯示背景圖片</translation>
 <translation id="3870475560794762985">顯示贊助圖片</translation>
 <translation id="8297488609722895137">攝影者：<ph name="PHOTO_BY"/></translation>
-<translation id="7952665812649667034">我已準備好要賺取 &amp; 給予</translation>
-<translation id="5878330112719288629">藉由點擊「賺取」&amp;「給予」，您同意 <ph name="TERMS_OF_SERVICE"/>.</translation>
+<translation id="4761229094276239865">透過點擊「開始使用 Brave Rewards」，即表示您同意 <ph name="TERMS_OF_SERVICE"/>.</translation>
 <translation id="3794079107601824147">在此背景圖片被觀看時獲取報酬。</translation>
 <translation id="7136586167396205364">隱藏贊助圖片</translation>
 <translation id="2927095357213611519">您可以使用代幣來支持網路創作者。\n透過觀看隱私保護的廣告來賺取代幣。</translation>
@@ -301,7 +306,7 @@
 <translation id="8851456134224363571">太棒了！您可否在 Play Store 上留下對我們的評價？</translation>
 <translation id="8668962040900592974">告訴我們如何改進</translation>
 <translation id="4406937629441301400">查看此圖像以賺取代幣，並支付給創作者。<ph name="LEARN_MORE"/></translation>
-<translation id="8693132237667961044">查看此圖像並賺取代幣。開啟賺取 &amp; 給予以索取您的頁面。</translation>
+<translation id="1992363542751124282">賺取代幣以檢視此圖片。點擊「開始使用 Brave Rewards」來領取您的那一份。</translation>
 <translation id="6632345639591919543">藉由查看這張圖像，您可以賺取代幣.\n<ph name="LEARN_MORE"/></translation>
 <translation id="1465733111003593696">藉由查看此圖像，您可以賺取代幣</translation>
 <translation id="7877201489035217175">了解更多關於受贊助圖像</translation>
@@ -385,7 +390,6 @@
 <translation id="1383876407941801731">搜尋</translation>
 <translation id="1972589975368876259">編輯堆疊</translation>
 <translation id="2490330380242414851">移除小工具</translation>
-<translation id="8446884382197647889">更多資訊</translation>
 <translation id="7384441892795736634">重新整理資料</translation>
 <translation id="4804818685124855865">解除連線</translation>
 <translation id="4789438578712143420">≈ $<ph name="USD_BALANCE"/></translation>
@@ -424,4 +428,38 @@
 <translation id="3733576242118819803">確認 (<ph name="REMAINING_TIME"/>s)</translation>
 <translation id="1627064138060308910">轉換失敗。請再試一次。</translation>
 <translation id="1449790603979388000"><ph name="COUNT"/> <ph name="COUNT_TEXT"/></translation>
+<translation id="7465614181960492526">賺取代幣與回饋</translation>
+<translation id="244362569344671266">透過檢視 Brave 的私人廣告來賺取代幣，並自動支持內容創作者。</translation>
+<translation id="631124996535890460">繼續進行操作，即表示您同意 <ph name="TERMS_OF_SERVICE"/> 與 <ph name="PRIVACY_POLICY"/>.</translation>
+<translation id="8804164990146287819">隱私政策</translation>
+<translation id="6318696841371191107">快速瀏覽</translation>
+<translation id="7930505144430343145">歡迎使用 Brave Rewards！</translation>
+<translation id="7909111626803226907">與傳統廣告不同，Brave 的私人廣告會獎勵您代幣以支持內容創作者，同時又將您的個人資訊保密。</translation>
+<translation id="6973095375773523904">廣告會在哪裡顯示？</translation>
+<translation id="3867028444168159102">Brave 私人廣告將會以一般的通知顯示。您可以在設定中控制廣告顯示的頻率。</translation>
+<translation id="5816125157889950051">您何時獲得獎勵</translation>
+<translation id="4649471244559455723">您在本月透過 Brave 廣告賺取的代幣將會在下個月的5號到達。</translation>
+<translation id="7712287524451429139">回饋毫不費力</translation>
+<translation id="105037569026952831">創作者會根據您對我們的參與程度（「關注度」）自動收到您的代幣捐款。</translation>
+<translation id="5323267338679539010">用小費說謝謝</translation>
+<translation id="6042317056594735519">給小費是一種個人鼓勵或支持您喜歡的內容或創作者的方式。取得小費！</translation>
+<translation id="7509452925943421624">您可以使用代幣做什麼？</translation>
+<translation id="7059157883171259940">代幣可用於支持創作者以外的用途。您可以購買帶有現金回饋的數位商品與禮物卡。</translation>
+<translation id="1402530520078693620">最後，讓我們協助您完成基本設定</translation>
+<translation id="3494356595346329740">您稍後可以變更此設定。</translation>
+<translation id="6462814326662189004">您想多常看到廣告？\n（每小時廣告次數）</translation>
+<translation id="2134244432345596331">您想為最喜歡的創作者提供多少支持？\n（從您的廣告收入）</translation>
+<translation id="7456161272236175794">喔喔喔喔喔喔喔！\n您完成了。</translation>
+<translation id="3895246934788932488">透過使用「Brave Rewards」，您可以保護自己的隱私並讓網路對所有人來說都變成更好的地方。太棒了！</translation>
+<translation id="5705882733397021510">返回</translation>
+<translation id="5140321319944305531">快速瀏覽</translation>
+<translation id="3808131693704413134">收到您的第一筆廣告付款後，您可以回來並給這位創作者小費！</translation>
+<translation id="207242986925259074">快速複習</translation>
+<translation id="8342862030112839977">您的第一筆獎勵將抵達：</translation>
+<translation id="3769645103175790584">瀏覽豐富的內容時賺取代幣並獎勵創作者。 <ph name="QUICK_TOUR"/>.</translation>
+<translation id="6912901278692845878">快速瀏覽</translation>
+<translation id="1080013038789678738">算我一份！</translation>
+<translation id="3604285424134705930">您已將 <ph name="FROM_VALUE"/> <ph name="FROM_CURRENCY"/> 轉換為 <ph name="TO_VALUE"/> <ph name="TO_CURRENCY"/>！</translation>
+<translation id="392587271502873865">請檢查您的網路連線。</translation>
+<translation id="7889432931837317731">可能的話自動開啟</translation>
 </translationbundle>

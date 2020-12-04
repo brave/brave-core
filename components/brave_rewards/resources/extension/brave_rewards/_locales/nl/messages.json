@@ -4,11 +4,11 @@
     "description": "Title in welcome screen for the panel"
   },
   "welcomeButtonTextOne": {
-    "message": "Begin Nu met Verdienen!",
+    "message": "Begin nu met verdienen!",
     "description": "CTA on welcome screen in the panel, existing users"
   },
   "welcomeButtonTextTwo": {
-    "message": "Word lid van Rewards",
+    "message": "Meld je aan bij Rewards",
     "description": "CTA on welcome screen in the panel, new users"
   },
   "welcomeDescOne": {
@@ -16,7 +16,7 @@
     "description": "Entry text for welcome screen in the panel, existing user"
   },
   "welcomeDescTwo": {
-    "message": "Je kunt nu een beloning krijgen voor het bekijken van advertenties die je privacy respecteren.",
+    "message": "Je kunt nu tokens verdienen door het bekijken van advertenties die je privacy respecteren.",
     "description": "Entry text for welcome screen in the panel, new user"
   },
   "welcomeDescPoints": {
@@ -44,7 +44,7 @@
     "description": "Title of wallet section where we display data about wallet"
   },
   "grants": {
-    "message": "Beurzen",
+    "message": "Donaties",
     "description": "Title for grant section in wallet summary"
   },
   "details": {
@@ -96,7 +96,7 @@
     "description": "The whole string is 'Enable tips on YouTube for like.'"
   },
   "rewardsSummary": {
-    "message": "Overzicht van Beloningen",
+    "message": "Overzicht van de Beloningen",
     "description": "Section title in wallet panel, which contains monthly rewards summary"
   },
   "monthApr": {
@@ -162,7 +162,7 @@
     "description": "Title for grant section in wallet summary"
   },
   "pointGrantClaimed": {
-    "message": "Geclaimde puntenbeurzen",
+    "message": "Puntentoekenningen geclaimd",
     "description": "Title for point grant section in wallet summary"
   },
   "earningsAds": {
@@ -182,7 +182,7 @@
     "description": "Used for grant representation. Whole string is '30.0 BAT expires on 08/05/2022'"
   },
   "recurringDonations": {
-    "message": "Maandelijkse bijdrages",
+    "message": "Maandelijkse bijdragen",
     "description": "Title for monthly contributions section in wallet summary"
   },
   "off": {
@@ -194,7 +194,7 @@
     "description": "Used in notification to dismiss notification"
   },
   "braveAdsLaunchMsg": {
-    "message": "U kunt nu verdienen door advertenties te bekijken.",
+    "message": "Nu kunt je verdienen aan het bekijken van advertenties.",
     "description": "Message for ads launch notification"
   },
   "braveAdsTitle": {
@@ -244,7 +244,7 @@
     "description": "Title for insufficient funds notification"
   },
   "braveRewardsCreatingText": {
-    "message": "Digitale Portemonnee aanmaken",
+    "message": "Wallet aanmaken",
     "description": "Used in a button displaying wallet creation process"
   },
   "contributeNotificationError": {
@@ -316,7 +316,7 @@
     "description": "Notice about unverified publisher."
   },
   "unVerifiedTextMore": {
-    "message": "Meer informatie.",
+    "message": "Meer Leren",
     "description": "Text for the link that explains more about reserved amount"
   },
   "reservedAmountText": {
@@ -324,7 +324,7 @@
     "description": "Notification about how much BAT do you have reserved"
   },
   "reservedMoreLink": {
-    "message": "Meer informatie.",
+    "message": "Meer Leren",
     "description": "Text for the link that explains more about reserved amount"
   },
   "disabledPanelOff": {
@@ -348,7 +348,7 @@
     "description": "Failure title for wallet creation"
   },
   "walletFailedButton": {
-    "message": "Opnieuw",
+    "message": "Probeer opnieuw",
     "description": "Button for re-try after wallet creation failed"
   },
   "addFunds": {
@@ -392,7 +392,7 @@
     "description": "Terms of Service"
   },
   "welcomeBack": {
-    "message": "Welkom terug!",
+    "message": "Welkom Terug!",
     "description": "Title message for wallet disabled panel"
   },
   "tipsProcessedNotification": {
@@ -416,7 +416,7 @@
     "description": "BAT Points abbreviation text"
   },
   "turnOnAds": {
-    "message": "Schakel advertenties in",
+    "message": "Advertenties inschakelen",
     "description": "Prompt to turn on Ads via notification"
   },
   "adsEarnings": {
@@ -462,7 +462,7 @@
     "description": "Notification text that tells user his wallet is under funded for pending contribution to complete"
   },
   "pendingContributionTitle": {
-    "message": "Openstaande bijdrage",
+    "message": "In afwachting van bijdrage",
     "description": "Notification title for pending contribution type"
   },
   "grantFinishTitleUGP": {
@@ -484,7 +484,7 @@
     "description": "Token title on success screen"
   },
   "grantFinishPointTitleUGP": {
-    "message": "Gratis punten-beurs",
+    "message": "Gratis puntentoekenning",
     "description": "Point title on success screen"
   },
   "grantFinishTitleAds": {
@@ -496,7 +496,7 @@
     "description": "Cosmetic text indicating ads funds are on the way"
   },
   "grantFinishTokenTitleAds": {
-    "message": "Je Reward-bedrag",
+    "message": "Je Rewards-bedrag",
     "description": "Token title on success screen for ads"
   },
   "rewardsPanelTextVerify":  {
@@ -626,5 +626,21 @@
   "walletVerificationNote3":  {
     "message": "Let op: Uw transacties zullen zichtbaar zijn voor Uphold zodra u toestemming geeft, ze zullen bijvoorbeeld de ontvanger en het bedrag van uw tips zien.",
     "description": "Displayed in login modal for uphold"
+  },
+  "onboardingEarnHeader": {
+    "message": "Tokens verdienen en ze weer terugschenken",
+    "description": ""
+  },
+  "onboardingEarnText": {
+    "message": "Verdien tokens door privacy-respecterende advertenties te bekijken en steun automatisch uw favoriete sites en makers van inhoud.",
+    "description": ""
+  },
+  "onboardingStartUsingRewards": {
+    "message": "Starten met het gebruik van Brave Rewards",
+    "description": ""
+  },
+  "onboardingTerms": {
+    "message": "Door verder te gaan, gaat u akkoord met de $$1Servicevoorwaarden$$2 en het $$3Privacybeleid$$4.",
+    "description": ""
   }
 }

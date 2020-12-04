@@ -4,7 +4,7 @@
     "description": "Title in welcome screen for the panel"
   },
   "welcomeButtonTextOne": {
-    "message": "Commencez à gagner de l'argent dès maintenant !",
+    "message": "Commencez à gagner de l'argent dès maintenant !",
     "description": "CTA on welcome screen in the panel, existing users"
   },
   "welcomeButtonTextTwo": {
@@ -12,11 +12,11 @@
     "description": "CTA on welcome screen in the panel, new users"
   },
   "welcomeDescOne": {
-    "message": "Gagnez de l'argent en visionnant des annonces, et utilisez-en pour soutenir vos créateurs de contenu préférés.",
+    "message": "Soyez payé en regardant des publicités et rémunéré vos créateurs de contenu préférés.",
     "description": "Entry text for welcome screen in the panel, existing user"
   },
   "welcomeDescTwo": {
-    "message": "Vous pouvez désormais gagner des jetons en regardant des annonces respectueuses de votre vie privée.",
+    "message": "Vous pouvez à présent gagner des jetons en visionnant des publicités respectant votre vie privée.",
     "description": "Entry text for welcome screen in the panel, new user"
   },
   "welcomeDescPoints": {
@@ -36,15 +36,15 @@
     "description": "Main header title for welcome screen in the panel, existing user"
   },
   "welcomeHeaderTwo": {
-    "message": "Apprêtez-vous à vivre Internet d'une nouvelle façon",
+    "message": "Soyez prêt à expérimenter un nouvel Internet.",
     "description": "Main header title for welcome screen in the panel, new user"
   },
   "yourWallet": {
-    "message": "Votre portefeuille",
+    "message": "Votre porte-monnaie",
     "description": "Title of wallet section where we display data about wallet"
   },
   "grants": {
-    "message": "Allocations",
+    "message": "Subventions",
     "description": "Title for grant section in wallet summary"
   },
   "details": {
@@ -76,11 +76,11 @@
     "description": "Label for auto contribute table attention for the publisher"
   },
   "donateMonthly": {
-    "message": "Contribution mensuelle\n",
+    "message": "Contribution mensuelle",
     "description": "Label for drop down menu where user select amount for monthly contribution for particular publisher"
   },
   "includeInAuto": {
-    "message": "Ajouter aux Contributions Automatiques",
+    "message": "Inclure à la Contribution Automatique",
     "description": "Label for checkbox that allows user to exclude publishers from auto contribute"
   },
   "donateNow": {
@@ -88,7 +88,7 @@
     "description": "CTA for sending tip form site banner"
   },
   "enableTips": {
-    "message": "Activer les Contributions",
+    "message": "Activer les Dons",
     "description": "The whole string is 'Enable tips on YouTube for like.'"
   },
   "for": {
@@ -96,7 +96,7 @@
     "description": "The whole string is 'Enable tips on YouTube for like.'"
   },
   "rewardsSummary": {
-    "message": "Bilan des Récompenses",
+    "message": "Résumé des récompenses",
     "description": "Section title in wallet panel, which contains monthly rewards summary"
   },
   "monthApr": {
@@ -104,47 +104,47 @@
     "description": "Month"
   },
   "monthAug": {
-    "message": "Août",
+    "message": "août",
     "description": "Month"
   },
   "monthDec": {
-    "message": "Décembre",
+    "message": "décembre",
     "description": "Month"
   },
   "monthFeb": {
-    "message": "Février",
+    "message": "février",
     "description": "Month"
   },
   "monthJan": {
-    "message": "Janvier",
+    "message": "janvier",
     "description": "Month"
   },
   "monthJul": {
-    "message": "Juillet",
+    "message": "juillet",
     "description": "Month"
   },
   "monthJun": {
-    "message": "Juin",
+    "message": "juin",
     "description": "Month"
   },
   "monthMar": {
-    "message": "Mars",
+    "message": "mars",
     "description": "Month"
   },
   "monthMay": {
-    "message": "Mai",
+    "message": "mai",
     "description": "Month"
   },
   "monthNov": {
-    "message": "Novembre",
+    "message": "novembre",
     "description": "Month"
   },
   "monthOct": {
-    "message": "Octobre",
+    "message": "octobre",
     "description": "Month"
   },
   "monthSep": {
-    "message": "Septembre",
+    "message": "septembre",
     "description": "Month"
   },
   "tokenGrant": {
@@ -158,19 +158,19 @@
     }
   },
   "tokenGrantClaimed": {
-    "message": "Allocations de jetons réclamées\n",
+    "message": "Allocations de jetons réclamées",
     "description": "Title for grant section in wallet summary"
   },
   "pointGrantClaimed": {
-    "message": "Attributions de points réclamées\n",
+    "message": "Attributions de points réclamées",
     "description": "Title for point grant section in wallet summary"
   },
   "earningsAds": {
-    "message": "Rémunération grâce aux Annonces",
+    "message": "Gains issus des Annonces",
     "description": "Title for ads section in wallet summary"
   },
   "rewardsContribute": {
-    "message": "Contribution Automatique",
+    "message": "Auto-Contribuer",
     "description": "Title for auto contribute section in wallet summary"
   },
   "oneTimeDonation": {
@@ -178,11 +178,11 @@
     "description": "Title for one time tips section in wallet summary"
   },
   "expiresOn": {
-    "message": "Expire le",
+    "message": "expire le",
     "description": "Used for grant representation. Whole string is '30.0 BAT expires on 08/05/2022'"
   },
   "recurringDonations": {
-    "message": "Contributions mensuelles\n",
+    "message": "Contributions mensuelles",
     "description": "Title for monthly contributions section in wallet summary"
   },
   "off": {
@@ -190,11 +190,11 @@
     "description": "Label used in toggle indicating that toggle is off"
   },
   "ok": {
-    "message": "OK",
+    "message": "ok",
     "description": "Used in notification to dismiss notification"
   },
   "braveAdsLaunchMsg": {
-    "message": "Vous pouvez à présent gagner de l'argent en regardant de la publicité.",
+    "message": "Vous pouvez désormais gagner de l'argent en consultant des annonces.",
     "description": "Message for ads launch notification"
   },
   "braveAdsTitle": {
@@ -228,11 +228,11 @@
     "description": "Notification button text when we ask user to backup wallet"
   },
   "backupWalletTitle": {
-    "message": "Sauvegarder portefeuille \n",
+    "message": "Sauvegarder portefeuille",
     "description": "Notification title when we ask user to backup wallet"
   },
   "backupWalletNotification": {
-    "message": "Veuillez sauvegarder votre portefeuille Brave.\n\n",
+    "message": "Veuillez sauvegarder votre portefeuille Brave.",
     "description": "Description for backup wallet notification"
   },
   "insufficientFundsNotification": {
@@ -244,7 +244,7 @@
     "description": "Title for insufficient funds notification"
   },
   "braveRewardsCreatingText": {
-    "message": "Création du portefeuille",
+    "message": "Création du porte-monnaie",
     "description": "Used in a button displaying wallet creation process"
   },
   "contributeNotificationError": {
@@ -264,11 +264,11 @@
     "description": "Allows the user to see that there have been no transactions or other activity in their wallet"
   },
   "captchaDrag": {
-    "message": "Faites glisser l'icône BAT sur le\n",
+    "message": "Faites glisser l'icône BAT sur le",
     "description": "Directs the user to drag the BAT icon"
   },
   "captchaProveHuman": {
-    "message": "Prouvez que vous êtes humain !\n",
+    "message": "Prouvez que vous êtes humain !",
     "description": "Cosmetic text for captcha prompt"
   },
   "captchaTarget": {
@@ -276,7 +276,7 @@
     "description": "Captcha Target"
   },
   "captchaMissedTarget": {
-    "message": "Hmm... pas vraiment. Essayez encore.\n",
+    "message": "Hmm... pas vraiment. Essayez encore.",
     "description": "Message upon failing captcha"
   },
   "claim": {
@@ -284,7 +284,7 @@
     "description": "Claim text"
   },
   "newTokenGrant": {
-    "message": "Allocation de jetons gratuits\n",
+    "message": "Allocation de jetons gratuits",
     "description": "Token grant label"
   },
   "grantExpire": {
@@ -296,11 +296,11 @@
     "description": "Button text for clearing the error."
   },
   "grantGeneralErrorText": {
-    "message": "Brave Récompenses a un problème. Veuillez réessayer plus tard.\n",
+    "message": "Brave Récompenses a un problème. Veuillez réessayer plus tard.",
     "description": "Error text when user is having problems claiming a grant."
   },
   "grantGeneralErrorTitle": {
-    "message": "Oups, quelque chose ne va pas. Veuillez réessayer plus tard.\n\n",
+    "message": "Oups, quelque chose ne va pas. Veuillez réessayer plus tard.",
     "description": "Error title when user is having problems claiming a grant."
   },
   "unVerifiedCheck": {
@@ -308,7 +308,7 @@
     "description": "Text of link that allows to check verified status of unverified publisher"
   },
   "unVerifiedPublisher": {
-    "message": "Pas encore vérifié\n",
+    "message": "Pas encore vérifié",
     "description": "Status of the publisher shown in the panel"
   },
   "unVerifiedText": {
@@ -328,7 +328,7 @@
     "description": "Text for the link that explains more about reserved amount"
   },
   "disabledPanelOff": {
-    "message": "Déconnecté",
+    "message": "Désactivé",
     "description": "Off state text for Panel's disabled state"
   },
   "disabledPanelSettings": {
@@ -336,7 +336,7 @@
     "description": "Settings Link for Panel's disabled state"
   },
   "disabledPanelText": {
-    "message": "Vous n'accumulez actuellement aucun avantage Récompenses pendant que vous naviguez. Remettez les récompenses en marche",
+    "message": "Vous n'accumulez actuellement aucun avantage « Récompenses » pendant que vous naviguez. Remettez les récompenses en marche",
     "description": "Text for Panel's disabled state"
   },
   "disabledPanelTitle": {
@@ -360,7 +360,7 @@
     "description": "Button for opening settings page"
   },
   "earningsClaimDefault": {
-    "message": "Vos récompenses Ads sont ici !",
+    "message": "Vos récompenses Ads sont ici !",
     "description": "Panel notification text for Ads grant"
   },
   "and": {
@@ -380,7 +380,7 @@
     "description": "Subtitle for wallet disabled panel"
   },
   "privacyPolicy": {
-    "message": "Politique de confidentialité",
+    "message": "Politique de Confidentialité",
     "description": "Privacy Policy"
   },
   "serviceText": {
@@ -392,11 +392,11 @@
     "description": "Terms of Service"
   },
   "welcomeBack": {
-    "message": "Bienvenue à nouveau !",
+    "message": "Bienvenue à nouveau !",
     "description": "Title message for wallet disabled panel"
   },
   "tipsProcessedNotification": {
-    "message": "Vos contributions mensuelles ont été traitées !",
+    "message": "Vos contributions mensuelles ont été traitées !",
     "description": "Message for monthly contributions processed notification"
   },
   "contributionTips": {
@@ -416,7 +416,7 @@
     "description": "BAT Points abbreviation text"
   },
   "turnOnAds": {
-    "message": "Activer la publicité",
+    "message": "Activer Ads",
     "description": "Prompt to turn on Ads via notification"
   },
   "adsEarnings": {
@@ -466,7 +466,7 @@
     "description": "Notification title for pending contribution type"
   },
   "grantFinishTitleUGP": {
-    "message": "C'est votre jour de chance !\n",
+    "message": "C'est votre jour de chance !",
     "description": "Cosmetic text upon captcha success"
   },
   "grantFinishTextUGP": {
@@ -480,15 +480,15 @@
     }
   },
   "grantFinishTokenTitleUGP": {
-    "message": "Allocation de jetons gratuits\n",
+    "message": "Allocation de jetons gratuits",
     "description": "Token title on success screen"
   },
   "grantFinishPointTitleUGP": {
-    "message": "Attribution gratuite de points",
+    "message": "Attribution de points gratuite",
     "description": "Point title on success screen"
   },
   "grantFinishTitleAds": {
-    "message": "Vous avez gagné une récompense Publicités !",
+    "message": "Vous avez gagné une récompense Publicités !",
     "description": "Cosmetic text upon captcha success for ads"
   },
   "grantFinishTextAds": {
@@ -528,11 +528,11 @@
     "description": "Status button that tells user that he is verified"
   },
   "walletVerifiedNotification":  {
-    "message": "Votre portefeuille est vérifié !",
+    "message": "Votre portefeuille est vérifié !",
     "description": "Title for notification when wallet becomes verified"
   },
   "walletVerifiedTextNotification":  {
-    "message": "Félicitations ! Votre portefeuille $name$ a bien été vérifié et vous pouvez y verser et retirer des fonds.",
+    "message": "Félicitations ! Votre portefeuille $name$ a bien été vérifié et vous pouvez y verser et retirer des fonds.",
     "description": "Title for notification when wallet becomes verified",
     "placeholders": {
       "name": {
@@ -612,7 +612,7 @@
     "description": "Text for login button"
   },
   "loginMessageText":  {
-    "message": "Vous devez disposer d'un minimum de 25 BAT pour créer un compte Uphold. Veuillez réessayer plus tard. \nSi vous avez déjà un compte Uphold vérifié, continuez pour vous connecter.",
+    "message": "Vous devez disposer d'un minimum de 25 BAT pour créer un compte Uphold. Veuillez réessayer plus tard. \n Si vous avez déjà un compte Uphold vérifié, continuez pour vous connecter.",
     "description": "Text for login button"
   },
   "walletConnected":  {
@@ -626,5 +626,21 @@
   "walletVerificationNote3":  {
     "message": "Remarque : vos transactions seront visibles par Uphold une fois que vous les aurez autorisées ; par exemple, le destinataire et le montant de vos contributions leur seront visibles.",
     "description": "Displayed in login modal for uphold"
+  },
+  "onboardingEarnHeader": {
+    "message": "Gagner des Jetons & Redonner",
+    "description": ""
+  },
+  "onboardingEarnText": {
+    "message": "Gagnez des jetons en visualisant des publicités plus respectueuses de la vie privée et soutenez automatiquement vos sites et créateurs de contenu préférés.",
+    "description": ""
+  },
+  "onboardingStartUsingRewards": {
+    "message": "Commencez à utiliser Brave Rewards",
+    "description": ""
+  },
+  "onboardingTerms": {
+    "message": "En procédant, vous acceptez les $$1Conditions d'utilisation$$2 et la $$3Politique de Confidentialité$$4. ",
+    "description": ""
   }
 }

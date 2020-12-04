@@ -8,6 +8,7 @@
 <translation id="5655621391922317800">Moneders Crypto</translation>
 <translation id="2445484935443597917">Crea un perfil</translation>
 <translation id="2666990579225592931">Obre la finestra de convidat</translation>
+<translation id="8275068909952022340">Més…</translation>
 <translation id="120759863357279975"><ph name="EXTENSION_NAME"/> (amb identificador d'extensió "<ph name="EXTENSION_ID"/>") no es permet a Brave.</translation>
 <translation id="6786747875388722282">Extensions</translation>
 <translation id="984275831282074731">Formes de pagament</translation>
@@ -43,23 +44,20 @@ En instal·lar aquesta extensió, accepteu les Condicions d'ús de Google Widevi
 <translation id="814018970995616154">Comprova els enllaços amb una llista de llocs no segurs emmagatzemats a Brave.</translation>
 <translation id="1144810021918451336">No us protegeix contra llocs web, descàrregues i extensions perilloses.</translation>
 <translation id="7781069478569868053">Pàgina de pestanyes nova</translation>
-<translation id="1717331825806276156">Imatges de fons</translation>
-<translation id="1820041496463124489">Imatges patrocinades</translation>
-<translation id="8173998484743827990">Estadístiques de Brave</translation>
-<translation id="5551238871320268996">Brave Junts</translation>
-<translation id="6966052266404721769">Binance</translation>
-<translation id="8533411848724153701">Gemini</translation>
-<translation id="4643117005422448078">Principals llocs</translation>
-<translation id="1776831331757823105">Rellotge</translation>
 <translation id="1988804048511540801">La nova pestanya mostra</translation>
 <translation id="2970343821770026391">Panell</translation>
 <translation id="3719826155360621982">Pàgina d'Inici</translation>
 <translation id="5448570825852364919">Pàgina en blanc</translation>
+<translation id="5919424224662539292">Personalitzeu la imatge de fons i els ginys que apareixen a la nova pestanya</translation>
 <translation id="7965178729203412357">Identitat nova de Tor</translation>
 <translation id="8511502469534942133">Nova connexió Tor per a aquest lloc.</translation>
-<translation id="8784924142044142231">Surt de Tor</translation>
-<translation id="5410152065859052603">Tor</translation>
-<translation id="3696187925156352769">Obre una finestra de Tor</translation>
+<translation id="4734294903299549345">Sortiu de la Finestra Privada amb Tor</translation>
+<translation id="8612763432858587652">Sortiu de la Finestra Privada</translation>
+<translation id="8760415064721320867">Finestra Privada amb Tor</translation>
+<translation id="2055363275850890030">Finestra privada</translation>
+<translation id="8934172355414207733">Privat amb Tor</translation>
+<translation id="1970435562892104727">Això és una finestra privada amb Tor</translation>
+<translation id="1037341607922068025">Obrir una Finestra Privada amb Tor</translation>
 <translation id="1725356094208762656">Obrir a Tor</translation>
 <translation id="1672270084584211506">Onion Disponible</translation>
 <translation id="1434416574322382019">Nova finestra privada amb Tor</translation>
@@ -68,6 +66,7 @@ En instal·lar aquesta extensió, accepteu les Condicions d'ús de Google Widevi
 <translation id="6313675821927505581">Nova finestra privada amb Tor</translation>
 <translation id="2638041073279639246">Obre l'enllaç a una finestra privada amb Tor</translation>
 <translation id="3425600262621021599">Obre l'enllaç a una finestra privada de Brave amb Tor</translation>
+<translation id="5410152065859052603">Tor</translation>
 <translation id="2515126961943087659">Servei d'anuncis de BAT</translation>
 <translation id="7924918279836988121">Servei de comptabilitat Bat</translation>
 <translation id="4472575034687746823">Comença</translation>
@@ -235,6 +234,7 @@ En instal·lar aquesta extensió, accepteu les Condicions d'ús de Google Widevi
 <translation id="8428213095426709021">Configuració</translation>
 <translation id="1854270995641373652">Voleu habilitar el suport de IPFS local daemon a Brave?</translation>
 <translation id="2366908098700680611">Activar IPFS</translation>
+<translation id="1556882415222118816">Apreneu-ne més sobre les conseqüències de privadesa</translation>
 <translation id="4552520379838695057">Ho sentim, no es pot trobar aquesta pàgina.</translation>
 <translation id="2609895996619941644">Voleu comprocar si hi ha una versió guardadad disponible a la Wayback Machine?</translation>
 <translation id="8053093028263274061">Ho sentim, no hi ha cap versió guardada disponible.</translation>

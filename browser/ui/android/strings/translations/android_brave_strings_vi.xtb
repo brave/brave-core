@@ -31,6 +31,8 @@
 <translation id="5787084571334399599">Ngăn chặn trình duyệt lấy dấu vân tay</translation>
 <translation id="7459000603787995422">Đóng tab khi thoát</translation>
 <translation id="1680858055899097121">Đừng giữ nguyên các tab giữa các phiên duyệt</translation>
+<translation id="6469509880167172749">Tự động gửi dữ liệu phân tích sản phẩm hoàn toàn riêng tư đến Brave</translation>
+<translation id="7090566321964540749">Thông tin ẩn danh này chỉ cho phép Brave ước tính mức độ sử dụng tổng thể của một số tính năng nhất định.</translation>
 <translation id="453601949003770390">Trình theo dõi &amp; Quảng cáo Đã chặn</translation>
 <translation id="347604927162577559">Dữ liệu\nTiết kiệm được</translation>
 <translation id="9008534313521214777">Thời gian Ước tính\nTiết kiệm được</translation>
@@ -50,7 +52,7 @@
 <translation id="4150201353443180367">Hiển thị</translation>
 <translation id="2433507940547922241">Hình thức</translation>
 <translation id="2804710924397009224">Ẩn Biểu tượng Phần thưởng Brave</translation>
-<translation id="7358991116457217836">Ẩn Biểu tượng Phần thưởng Brave khi Phần thưởng Brave không bật</translation>
+<translation id="7289740269305509613">Ẩn Biểu tượng Brave Rewards</translation>
 <translation id="8495235435594442882">Bật thanh công cụ ở dưới cùng</translation>
 <translation id="6587448235155023666">Các thay đổi bạn thực hiện sẽ có hiệu lực vào lần tới khi bạn khởi chạy lại Brave</translation>
 <translation id="8701563696941209024">KHỞI CHẠY LẠI NGAY</translation>
@@ -67,7 +69,7 @@
 <translation id="3333887201479867589">Phần thưởng của Brave</translation>
 <translation id="5870330605209713397">bằng cách xem quảng cáo tôn trọng quyền riêng tư và hỗ trợ các website và người sáng tạo yêu thích của bạn theo mặc định.</translation>
 <translation id="821707262661492716">nhờ xem các quảng cáo tôn trọng quyền riêng tư.</translation>
-<translation id="8267692331246948056">Bằng cách chạm vào Kiếm &amp; Tặng, bạn đồng ý với</translation>
+<translation id="5302488867897327287">Bằng cách nhấn vào Bắt đầu sử dụng Brave Rewards, bạn đồng ý với</translation>
 <translation id="4281844954008187215">Điều khoản Dịch vụ</translation>
 <translation id="6871397658902960384">Bắt đầu duyệt</translation>
 <translation id="454386012157232640">Tôi không thấy quảng cáo</translation>
@@ -76,7 +78,7 @@
 <translation id="6511854390690723657">Đây là quảng cáo Brave đầu tiên của bạn. Nhấn để tìm hiểu thêm.</translation>
 <translation id="4930714375720679147">Bật</translation>
 <translation id="2453860139492968684">Kết thúc</translation>
-<translation id="7983303953939627894">Kiếm &amp; Tặng</translation>
+<translation id="2070991379950719711">Bắt đầu sử dụng Brave Rewards</translation>
 <translation id="48520986898237073">Tiếp tục đến ví</translation>
 <translation id="3570367516044491911">Đặt thành trình duyệt mặc định</translation>
 <translation id="7493053924837150477">Chọn Trình duyệt Brave từ danh sách và nhấn "Mọi lúc"</translation>
@@ -229,6 +231,10 @@ tháng này...</translation>
 <translation id="6810078320346589989">Tạo một dấu trang</translation>
 <translation id="3396347744975515056">Brave Sync đã được nâng cấp và cần phải thiết lập</translation>
 <translation id="7473245612074035141">Bắt đầu Thiết lập</translation>
+<translation id="1872784258300710671">Brave sử dụng dữ liệu phân tích sản phẩm hoàn toàn riêng tư để ước tính mức độ sử dụng tổng thể của một số tính năng nhất định</translation>
+<translation id="8712637175834984815">Bỏ qua</translation>
+<translation id="4394049700291259645">Vô hiệu hóa</translation>
+<translation id="8446884382197647889">Tìm hiểu thêm</translation>
 <translation id="597993392929850353">Giấy phép Brave</translation>
 <translation id="6336451774241870485">Tab riêng tư mới</translation>
 <translation id="6199596294742117349">Đây là Tab riêng tư</translation>
@@ -255,8 +261,7 @@ tháng này...</translation>
 <translation id="8522669544471808198">Hiển thị Hình Nền</translation>
 <translation id="3870475560794762985">Hiển thị Hình được Tài trợ</translation>
 <translation id="8297488609722895137">Ảnh chụp bởi <ph name="PHOTO_BY"/></translation>
-<translation id="7952665812649667034">Tôi đã sẵn sàng để Kiếm và Cho</translation>
-<translation id="5878330112719288629">Bằng cách nhấn vào Kiếm và Cho, bạn đồng ý với <ph name="TERMS_OF_SERVICE"/>.</translation>
+<translation id="4761229094276239865">Bằng cách nhấn vào Bắt đầu sử dụng Brave Rewards, bạn đồng ý với the <ph name="TERMS_OF_SERVICE"/>.</translation>
 <translation id="3794079107601824147">Nhận tiền thưởng để xem hình nền này.</translation>
 <translation id="7136586167396205364">Ẩn các Hình được Tài trợ</translation>
 <translation id="2927095357213611519">Bạn có thể hỗ trợ các nhà sáng tạo nội dung web bằng token.\nKiếm token bằng cách xem các quảng cáo tôn trọng quyền riêng tư.</translation>
@@ -303,7 +308,7 @@ tháng này...</translation>
 <translation id="8851456134224363571">Tuyệt vời! Bạn có thể đánh giá chúng tôi trên Play Store không?</translation>
 <translation id="8668962040900592974">Hãy cho chúng tôi biết cách chúng tôi có thể cải thiện</translation>
 <translation id="4406937629441301400">Kiếm token khi xem hình ảnh này và gửi đến người sáng tạo. <ph name="LEARN_MORE"/></translation>
-<translation id="8693132237667961044">Kiếm token khi xem hình ảnh này. Bật Kiếm và Cho để nhận phần token của bạn.</translation>
+<translation id="1992363542751124282">Kiếm token để xem hình ảnh này. Bấm vào Bắt đầu sử dụng Brave Rewards để nhận phần token của bạn.</translation>
 <translation id="6632345639591919543">Bạn đang kiếm được token khi xem hình ảnh này.\n<ph name="LEARN_MORE"/></translation>
 <translation id="1465733111003593696">Bạn đang kiếm được token khi xem hình ảnh này.</translation>
 <translation id="7877201489035217175">Tìm hiểu thêm về hình ảnh được tài trợ</translation>
@@ -387,7 +392,6 @@ tháng này...</translation>
 <translation id="1383876407941801731">Tìm kiếm</translation>
 <translation id="1972589975368876259">Chỉnh sửa Ngăn xếp</translation>
 <translation id="2490330380242414851">Xóa Tiện ích</translation>
-<translation id="8446884382197647889">Tìm hiểu thêm</translation>
 <translation id="7384441892795736634">Làm mới Dữ liệu</translation>
 <translation id="4804818685124855865">Ngắt kết nối</translation>
 <translation id="4789438578712143420">≈ $<ph name="USD_BALANCE"/></translation>
@@ -426,4 +430,38 @@ tháng này...</translation>
 <translation id="3733576242118819803">Xác nhận (<ph name="REMAINING_TIME"/>s)</translation>
 <translation id="1627064138060308910">Chuyển đổi Không thành công. Xin vui lòng thử lại.</translation>
 <translation id="1449790603979388000"><ph name="COUNT"/> <ph name="COUNT_TEXT"/></translation>
+<translation id="7465614181960492526">Kiếm Token &amp; Tặng Lại</translation>
+<translation id="244362569344671266">Kiếm token bằng cách xem Brave Private Ads và tự động hỗ trợ người sáng tạo nội dung.</translation>
+<translation id="631124996535890460">Bằng cách tiếp tục, bạn đồng ý với <ph name="TERMS_OF_SERVICE"/> và <ph name="PRIVACY_POLICY"/>.</translation>
+<translation id="8804164990146287819">Privacy Policy</translation>
+<translation id="6318696841371191107">Xem giới thiệu nhanh</translation>
+<translation id="7930505144430343145">Chào mừng bạn đến với Brave Rewards!</translation>
+<translation id="7909111626803226907">Brave Private Ads thưởng cho bạn token để hỗ trợ người sáng tạo nội dung không giống như quảng cáo truyền thống, đồng thời đảm bảo thông tin cá nhân của bạn được riêng tư.</translation>
+<translation id="6973095375773523904">Quảng cáo hiển thị ở đâu?</translation>
+<translation id="3867028444168159102">Brave Private Ads sẽ xuất hiện như một thông báo bình thường. Bạn kiểm soát tần suất xuất hiện những quảng cáo này trong phần cài đặt.</translation>
+<translation id="5816125157889950051">Khi nào bạn nhận được phần thưởng</translation>
+<translation id="4649471244559455723">Bạn sẽ nhận được các token kiếm được từ Brave Ads trong tháng hiện tại vào ngày 5 của tháng tiếp theo.</translation>
+<translation id="7712287524451429139">Tặng lại một cách dễ dàng</translation>
+<translation id="105037569026952831">Người sáng tạo tự động nhận được các khoản đóng góp token của bạn dựa trên mức độ tương tác của bạn mà chúng tôi đo lường là "Sự chú ý".</translation>
+<translation id="5323267338679539010">Cảm ơn bằng cách tặng tiền</translation>
+<translation id="6042317056594735519">Tặng tiền là một cách để bạn đích thân khuyến khích và hỗ trợ cho nội dung hoặc người sáng tạo mà bạn yêu thích. Bắt đầu tặng tiền!</translation>
+<translation id="7509452925943421624">Bạn có thể làm gì với token?</translation>
+<translation id="7059157883171259940">Ngoài việc hỗ trợ người sáng tạo, bạn có thể sử dụng token cho việc khác. Bạn có thể mua hàng hóa kỹ thuật số và thẻ quà tặng với phần thưởng hoàn tiền.</translation>
+<translation id="1402530520078693620">Cuối cùng, bạn hãy thiết lập các cài đặt cơ bản</translation>
+<translation id="3494356595346329740">Bạn có thể thay đổi điều này sau.</translation>
+<translation id="6462814326662189004">Bạn muốn xem quảng cáo bao lâu một lần?\n(Quảng cáo mỗi giờ)</translation>
+<translation id="2134244432345596331">Bạn muốn hỗ trợ bao nhiêu cho những người sáng tạo mà bạn yêu thích?\n(từ thu nhập xem quảng cáo của bạn)</translation>
+<translation id="7456161272236175794">TUYỆT VỜI!\nBạn đã đăng ký xong.</translation>
+<translation id="3895246934788932488">Bằng cách sử dụng Brave Rewards, bạn đang bảo vệ quyền riêng tư của mình, đồng thời giúp cho mạng toàn cầu trở thành một nơi tốt hơn cho mọi người. Và điều đó thật tuyệt vời!</translation>
+<translation id="5705882733397021510">Quay Lại</translation>
+<translation id="5140321319944305531">Hãy Xem Giới thiệu Nhanh</translation>
+<translation id="3808131693704413134">Sau khi nhận được khoản thanh toán quảng cáo đầu tiên, bạn có thể quay lại và tặng tiền cho người sáng tạo này!</translation>
+<translation id="207242986925259074">Giới thiệu nhanh</translation>
+<translation id="8342862030112839977">Bạn sẽ nhận được khoản thanh toán phần thưởng đầu tiên của mình vào:</translation>
+<translation id="3769645103175790584">Kiếm token và tặng cho những người sáng tạo có nội dung tuyệt vời khi bạn duyệt web. <ph name="QUICK_TOUR"/>.</translation>
+<translation id="6912901278692845878">Giới thiệu nhanh</translation>
+<translation id="1080013038789678738">Tôi Tham gia!</translation>
+<translation id="3604285424134705930">Bạn đã chuyển đổi <ph name="FROM_VALUE"/> <ph name="FROM_CURRENCY"/> thành <ph name="TO_VALUE"/> <ph name="TO_CURRENCY"/>!</translation>
+<translation id="392587271502873865">Xin vui lòng kiểm tra kết nối mạng của bạn.</translation>
+<translation id="7889432931837317731">Tự động mở khi có thể</translation>
 </translationbundle>

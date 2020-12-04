@@ -8,6 +8,7 @@
 <translation id="5655621391922317800">Dompet Crypto</translation>
 <translation id="2445484935443597917">Buat Profil Baharu</translation>
 <translation id="2666990579225592931">Buka Tetingkap Tetamu</translation>
+<translation id="8275068909952022340">Lebih banyak…</translation>
 <translation id="120759863357279975"><ph name="EXTENSION_NAME"/> (extension ID "<ph name="EXTENSION_ID"/>") tidak dibenarkan dalam Brave.</translation>
 <translation id="6786747875388722282">Sambungan</translation>
 <translation id="984275831282074731">Kaedah pembayaran</translation>
@@ -43,23 +44,20 @@ Dengan memasang sambungan, anda bersetuju dengan Terma Penggunaan Google Widevin
 <translation id="814018970995616154">Menyemak URL dengan senarai laman web tidak selamat yang disimpan dalam Brave.</translation>
 <translation id="1144810021918451336">Tidak melindungi anda daripada laman web, muat turun, dan sambungan berbahaya.</translation>
 <translation id="7781069478569868053">Halaman Tab Baharu</translation>
-<translation id="1717331825806276156">Imej latar belakang</translation>
-<translation id="1820041496463124489">Imej tajaan</translation>
-<translation id="8173998484743827990">Statistik Brave</translation>
-<translation id="5551238871320268996">Brave Bersama</translation>
-<translation id="6966052266404721769">Binance</translation>
-<translation id="8533411848724153701">Gemini</translation>
-<translation id="4643117005422448078">Laman Popular</translation>
-<translation id="1776831331757823105">Jam</translation>
 <translation id="1988804048511540801">Paparan halaman tab baru</translation>
 <translation id="2970343821770026391">Papan Pemuka</translation>
 <translation id="3719826155360621982">Laman Utama</translation>
 <translation id="5448570825852364919">Halaman kosong</translation>
+<translation id="5919424224662539292">Suaikan imej latar belakang dan widget yang muncul di halaman tab baharu</translation>
 <translation id="7965178729203412357">Identiti Tor Baharu</translation>
 <translation id="8511502469534942133">Sambungan Tor baru Untuk Tapak Ini</translation>
-<translation id="8784924142044142231">Keluar Tor</translation>
-<translation id="5410152065859052603">Tor</translation>
-<translation id="3696187925156352769">Buka Tetingkap Tor</translation>
+<translation id="4734294903299549345">Keluar dari Tetingkap Peribadi dengan Tor</translation>
+<translation id="8612763432858587652">Keluar Dari Tetingkap Peribadi</translation>
+<translation id="8760415064721320867">Tetingkap Peribadi dengan Tor</translation>
+<translation id="2055363275850890030">Tetingkap Peribadi</translation>
+<translation id="8934172355414207733">Peribadi dengan Tor</translation>
+<translation id="1970435562892104727">Ini tetingkap peribadi dengan Tor</translation>
+<translation id="1037341607922068025">Buka Tetingkap Peribadi dengan Tor</translation>
 <translation id="1725356094208762656">Buka dalam Tor</translation>
 <translation id="1672270084584211506">Onion Tersedia</translation>
 <translation id="1434416574322382019">Tetingkap Peribadi baru dengan Tor</translation>
@@ -68,6 +66,7 @@ Dengan memasang sambungan, anda bersetuju dengan Terma Penggunaan Google Widevin
 <translation id="6313675821927505581">Tetingkap persendirian baharu dengan Tor</translation>
 <translation id="2638041073279639246">Buka pautan dalam tetingkap persendirian dengan Tor</translation>
 <translation id="3425600262621021599">Buka pautan dalam tetingkap persendirian Brave dengan Tor</translation>
+<translation id="5410152065859052603">Tor</translation>
 <translation id="2515126961943087659">Perkhidmatan Bat Ads</translation>
 <translation id="7924918279836988121">Perkhidmatan Lejar BAT</translation>
 <translation id="4472575034687746823">Bermula</translation>
@@ -235,6 +234,7 @@ Dengan memasang sambungan, anda bersetuju dengan Terma Penggunaan Google Widevin
 <translation id="8428213095426709021">Tetapan</translation>
 <translation id="1854270995641373652">Adakah anda ingin mendayakan sokongan daemon setempat IPFS dalam Brave?</translation>
 <translation id="2366908098700680611">Dayakan IPFS</translation>
+<translation id="1556882415222118816">Ketahui selanjutnya mengenai akibat privasi</translation>
 <translation id="4552520379838695057">Maaf, laman tiada.</translation>
 <translation id="2609895996619941644">Adakah anda ingin memeriksa jika ada versi tersimpan di Wayback Machine?</translation>
 <translation id="8053093028263274061">Maaf, tiada versi tersimpan tersedia.</translation>
