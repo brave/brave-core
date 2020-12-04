@@ -24,6 +24,8 @@ enum FeedCard: Equatable {
     case sponsor(_ feed: FeedItem)
     /// A group of deals/offers displayed horizontally
     case deals(_ feeds: [FeedItem], title: String)
+    /// A brave partner item
+    case partner(_ feed: FeedItem)
     /// A single item displayed prompinently with an image
     case headline(_ feed: FeedItem)
     /// A pair of `headline` items that should be displayed side by side horizontally with equal sizes
@@ -40,6 +42,8 @@ enum FeedCard: Equatable {
             return FeedItemView.Layout.bannerThumbnail.estimatedHeight(for: width)
         case .headline:
             return FeedItemView.Layout.brandedHeadline.estimatedHeight(for: width)
+        case .partner:
+            return FeedItemView.Layout.partner.estimatedHeight(for: width)
         case .headlinePair:
             return 300
         case .group, .numbered, .deals:
@@ -50,7 +54,7 @@ enum FeedCard: Equatable {
     /// A list of feed items that are present in the card
     var items: [FeedItem] {
         switch self {
-        case .headline(let item), .sponsor(let item):
+        case .headline(let item), .sponsor(let item), .partner(let item):
             return [item]
         case .headlinePair(let pair):
             return [pair.first, pair.second]
@@ -93,6 +97,8 @@ enum FeedCard: Equatable {
                 return .deals(feeds, title: title)
             }
             return self
+        case .partner:
+            return .partner(replacementItem)
         }
     }
 }

@@ -1487,6 +1487,12 @@ extension Strings {
             value: "More Brave Offers",
             comment: "'Brave Offers' is a product name"
         )
+        public static let promoted = NSLocalizedString(
+            "today.promoted",
+            bundle: .braveShared,
+            value: "Promoted",
+            comment: "A button title that is placed on promoted cards"
+        )
     }
 }
 

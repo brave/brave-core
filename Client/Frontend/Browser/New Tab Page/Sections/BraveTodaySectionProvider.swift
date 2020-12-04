@@ -30,6 +30,8 @@ class BraveTodaySectionProvider: NSObject, NTPObservableSectionProvider {
         case errorCardTappedRefresh
         /// The user tapped to show more brave offers on one of the deal cards
         case moreBraveOffersTapped
+        /// The user tapped to learn more about brave partners
+        case bravePartnerLearnMoreTapped
         /// The user performed an action on a feed item
         case itemAction(FeedItemAction, context: FeedItemActionContext)
     }
@@ -57,6 +59,7 @@ class BraveTodaySectionProvider: NSObject, NTPObservableSectionProvider {
         collectionView.register(FeedCardCell<DealsFeedGroupView>.self)
         collectionView.register(FeedCardCell<NumberedFeedGroupView>.self)
         collectionView.register(FeedCardCell<SponsorCardView>.self)
+        collectionView.register(FeedCardCell<PartnerCardView>.self)
     }
     
     var landscapeBehavior: NTPLandscapeSizingBehavior {
@@ -197,6 +200,15 @@ class BraveTodaySectionProvider: NSObject, NTPObservableSectionProvider {
             cell.content.feedView.setupWithItem(item)
             cell.content.actionHandler = handler(for: item, card: card, indexPath: indexPath)
             cell.content.contextMenu = contextMenu(for: item, card: card, indexPath: indexPath)
+            return cell
+        case .partner(let item):
+            let cell = collectionView.dequeueReusableCell(for: indexPath) as FeedCardCell<PartnerCardView>
+            cell.content.feedView.setupWithItem(item)
+            cell.content.actionHandler = handler(for: item, card: card, indexPath: indexPath)
+            cell.content.contextMenu = contextMenu(for: item, card: card, indexPath: indexPath)
+            cell.content.promotedButtonTapped = { [weak self] in
+                self?.actionHandler(.bravePartnerLearnMoreTapped)
+            }
             return cell
         case .headlinePair(let pair):
             let cell = collectionView.dequeueReusableCell(for: indexPath) as FeedCardCell<SmallHeadlinePairCardView>

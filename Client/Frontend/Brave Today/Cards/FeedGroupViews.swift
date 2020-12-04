@@ -159,7 +159,8 @@ class DealsFeedGroupView: FeedGroupView, FeedCardContent {
                 $0.isUserInteractionEnabled = false
                 $0.isAccessibilityElement = false
             }),
-            .view(MoreOffersButton().then {
+            .view(FeedCardFooterButton().then {
+                $0.label.text = Strings.BraveToday.moreBraveOffers
                 $0.addTarget(self, action: #selector(tappedMoreOffers), for: .touchUpInside)
             })
         )
@@ -167,53 +168,6 @@ class DealsFeedGroupView: FeedGroupView, FeedCardContent {
     
     @objc private func tappedMoreOffers() {
         moreOffersButtonTapped?()
-    }
-    
-    private class MoreOffersButton: UIControl {
-        private let label = UILabel().then {
-            $0.appearanceTextColor = .white
-            $0.text = Strings.BraveToday.moreBraveOffers
-            $0.font = .systemFont(ofSize: 14, weight: .semibold)
-            $0.isAccessibilityElement = false
-        }
-        private let disclosureIcon = UIImageView(image: UIImage(imageLiteralResourceName: "disclosure-arrow").template).then {
-            $0.tintColor = .white
-            $0.setContentHuggingPriority(.required, for: .horizontal)
-        }
-        
-        override init(frame: CGRect) {
-            super.init(frame: frame)
-            
-            let stackView = UIStackView(arrangedSubviews: [label, disclosureIcon])
-            stackView.alignment = .center
-            stackView.isUserInteractionEnabled = false
-            addSubview(stackView)
-            stackView.snp.makeConstraints {
-                $0.edges.equalToSuperview().inset(UIEdgeInsets(top: 0, left: 20, bottom: 0, right: 20))
-            }
-            snp.makeConstraints {
-                $0.height.equalTo(44)
-            }
-            accessibilityLabel = label.text
-            accessibilityTraits.insert(.button)
-            isAccessibilityElement = true
-        }
-        
-        @available(*, unavailable)
-        required init(coder: NSCoder) {
-            fatalError()
-        }
-        
-        override var isHighlighted: Bool {
-            didSet {
-                UIViewPropertyAnimator(duration: 0.3, dampingRatio: 1.0) {
-                    self.backgroundColor = self.isHighlighted ?
-                        UIColor(white: 1.0, alpha: 0.1) :
-                        UIColor.clear
-                }
-                .startAnimation()
-            }
-        }
     }
 }
 
