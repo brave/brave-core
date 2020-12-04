@@ -18,6 +18,7 @@
 #include "components/prefs/pref_service.h"
 #include "content/public/browser/notification_types.h"
 #include "content/public/browser/render_frame_host.h"
+#include "content/public/browser/storage_partition.h"
 #include "content/public/browser/web_contents.h"
 #include "content/public/test/browser_test.h"
 #include "content/public/test/test_navigation_observer.h"
@@ -448,4 +449,57 @@ IN_PROC_BROWSER_TEST_F(EphemeralStorageBrowserTest,
   EXPECT_EQ("", private_values.main_frame.cookies);
   EXPECT_EQ("", private_values.iframe_1.cookies);
   EXPECT_EQ("", private_values.iframe_2.cookies);
+}
+
+IN_PROC_BROWSER_TEST_F(EphemeralStorageBrowserTest,
+                       NavigationCookiesArePartitioned) {
+  AllowAllCookies();
+
+  GURL a_site_set_cookie_url = https_server_.GetURL(
+      "a.com", "/set-cookie?name=acom;path=/;SameSite=None;Secure");
+  GURL b_site_set_cookie_url = https_server_.GetURL(
+      "b.com", "/set-cookie?name=bcom;path=/;SameSite=None;Secure");
+
+  ui_test_utils::NavigateToURL(browser(), a_site_set_cookie_url);
+  ui_test_utils::NavigateToURL(browser(), b_site_set_cookie_url);
+  ui_test_utils::NavigateToURL(browser(), a_site_ephemeral_storage_url_);
+
+  std::string a_cookie =
+      content::GetCookies(browser()->profile(), GURL("https://a.com/"));
+  std::string b_cookie =
+      content::GetCookies(browser()->profile(), GURL("https://b.com/"));
+  EXPECT_EQ("name=acom", a_cookie);
+  EXPECT_EQ("name=bcom", b_cookie);
+
+  // The third-party iframe should not have the b.com cookie that was set on the
+  // main frame.
+  auto* web_contents = browser()->tab_strip_model()->GetActiveWebContents();
+  RenderFrameHost* main_frame = web_contents->GetMainFrame();
+  RenderFrameHost* iframe_a = content::ChildFrameAt(main_frame, 0);
+  RenderFrameHost* iframe_b = content::ChildFrameAt(main_frame, 0);
+  ASSERT_EQ("", GetCookiesInFrame(iframe_a));
+  ASSERT_EQ("", GetCookiesInFrame(iframe_b));
+
+  // Setting the cookie directly on the third-party iframe should only set the
+  // cookie in the ephemeral storage area for that frame.
+  GURL b_site_set_ephemeral_cookie_url = https_server_.GetURL(
+      "b.com", "/set-cookie?name=bcom_ephemeral;path=/;SameSite=None;Secure");
+  NavigateIframeToURL(web_contents, "third_party_iframe_a",
+                      b_site_set_ephemeral_cookie_url);
+  ASSERT_EQ("name=bcom_ephemeral", GetCookiesInFrame(iframe_a));
+  ASSERT_EQ("name=bcom_ephemeral", GetCookiesInFrame(iframe_b));
+
+  // The cookie set in the ephemeral area should not visible in the main
+  // cookie storage.
+  b_cookie = content::GetCookies(browser()->profile(), GURL("https://b.com/"));
+  EXPECT_EQ("name=bcom", b_cookie);
+
+  // Navigating to a new TLD should clear all ephemeral cookies.
+  ui_test_utils::NavigateToURL(browser(), b_site_ephemeral_storage_url_);
+  ui_test_utils::NavigateToURL(browser(), a_site_ephemeral_storage_url_);
+
+  ValuesFromFrames values_after = GetValuesFromFrames(web_contents);
+  EXPECT_EQ("name=acom", values_after.main_frame.cookies);
+  EXPECT_EQ("", values_after.iframe_1.cookies);
+  EXPECT_EQ("", values_after.iframe_2.cookies);
 }
