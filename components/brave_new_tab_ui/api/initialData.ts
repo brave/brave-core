@@ -71,9 +71,6 @@ export async function getInitialData (): Promise<InitialData> {
         })
       }),
       new Promise((resolve) => {
-        resolve(false)
-      }),
-      new Promise((resolve) => {
         chrome.cryptoDotCom.isSupported((supported: boolean) => {
           resolve(supported)
         })

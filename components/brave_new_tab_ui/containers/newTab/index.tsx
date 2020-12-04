@@ -678,7 +678,13 @@ class NewTabPage extends React.Component<Props, State> {
       }
     }
 
-    const widgetList = widgetStackOrder.filter((widget: NewTab.StackWidget) => lookup[widget].display)
+    const widgetList = widgetStackOrder.filter((widget: NewTab.StackWidget) => {
+      if (!lookup.hasOwnProperty(widget)) {
+        return false
+      }
+
+      return lookup[widget].display
+    })
 
     return (
       <>
