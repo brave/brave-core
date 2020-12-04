@@ -12,6 +12,7 @@
 #include "chrome/browser/ui/tabs/tab_strip_model.h"
 #include "chrome/grit/generated_resources.h"
 #include "components/sessions/core/tab_restore_service.h"
+#include "ui/base/l10n/l10n_util.h"
 
 BraveTabMenuModel::BraveTabMenuModel(ui::SimpleMenuModel::Delegate* delegate,
                                      TabStripModel* tab_strip_model,
@@ -24,7 +25,7 @@ BraveTabMenuModel::BraveTabMenuModel(ui::SimpleMenuModel::Delegate* delegate,
         TabRestoreServiceFactory::GetForProfile(browser->profile());
   }
 
-  Build();
+  Build(tab_strip_model, index);
 }
 
 BraveTabMenuModel::~BraveTabMenuModel() {
@@ -50,8 +51,32 @@ int BraveTabMenuModel::GetRestoreTabCommandStringId() const {
   return id;
 }
 
-void BraveTabMenuModel::Build() {
+void BraveTabMenuModel::Build(TabStripModel* tab_strip_model, int index) {
+  std::vector<int> affected_indices =
+      tab_strip_model->IsTabSelected(index)
+          ? tab_strip_model->selection_model().selected_indices()
+          : std::vector<int>{index};
+  int num_affected_tabs = affected_indices.size();
+  const bool will_mute = !AreAllTabsMuted(*tab_strip_model, affected_indices);
+
+  InsertItemAt(GetIndexOfCommandId(TabStripModel::CommandToggleSiteMuted),
+                           CommandMuteTab,
+                           will_mute ? l10n_util::GetPluralStringFUTF16(
+                                          IDS_TAB_CXMENU_MUTE_TAB, num_affected_tabs)
+                                     : l10n_util::GetPluralStringFUTF16(
+                                          IDS_TAB_CXMENU_UNMUTE_TAB, num_affected_tabs));
+
   AddSeparator(ui::NORMAL_SEPARATOR);
   AddItemWithStringId(CommandRestoreTab, GetRestoreTabCommandStringId());
   AddItemWithStringId(CommandBookmarkAllTabs, IDS_TAB_CXMENU_BOOKMARK_ALL_TABS);
+
+}
+
+bool BraveTabMenuModel::AreAllTabsMuted(const TabStripModel& tab_strip_model,
+                                        const std::vector<int>& indices) const {
+  for (int tab_index : indices) {
+    if (!tab_strip_model.GetWebContentsAt(tab_index)->IsAudioMuted())
+      return false;
+  }
+  return true;
 }

@@ -22,7 +22,8 @@ BraveTabContextMenuContents::BraveTabContextMenuContents(
     int index)
     : tab_(tab),
       browser_(const_cast<Browser*>(controller->browser())),
-      controller_(controller) {
+      controller_(controller),
+      index_(index) {
   model_ = std::make_unique<BraveTabMenuModel>(
       this, controller->model(), index);
   restore_service_ =
@@ -97,6 +98,8 @@ bool BraveTabContextMenuContents::IsBraveCommandIdEnabled(
                chrome::CanBookmarkAllTabs(browser_);
       }
       break;
+    case BraveTabMenuModel::CommandMuteTab:
+      return true;
     default:
       NOTREACHED();
       break;
@@ -113,6 +116,21 @@ void BraveTabContextMenuContents::ExecuteBraveCommand(int command_id) {
     case BraveTabMenuModel::CommandBookmarkAllTabs:
       chrome::BookmarkAllTabs(browser_);
       return;
+    case BraveTabMenuModel::CommandMuteTab: {
+      const auto* tab_strip_model = browser_->tab_strip_model();
+      std::vector<int> affected_indices = tab_strip_model->IsTabSelected(index_)
+          ? tab_strip_model->selection_model().selected_indices()
+          : std::vector<int>{index_};
+      const bool mute = !model_->AreAllTabsMuted(*tab_strip_model, affected_indices);
+
+      for (int tab_index : affected_indices) {
+        chrome::SetTabAudioMuted(tab_strip_model->GetWebContentsAt(tab_index),
+                                 mute,
+                                 TabMutedReason::CONTEXT_MENU,
+                                 std::string());
+      }
+      return;
+    }
     default:
       NOTREACHED();
       return;

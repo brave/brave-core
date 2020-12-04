@@ -23,6 +23,7 @@ class BraveTabMenuModel : public TabMenuModel {
     CommandStart = TabStripModel::CommandLast,
     CommandRestoreTab,
     CommandBookmarkAllTabs,
+    CommandMuteTab,
     CommandLast,
   };
 
@@ -31,8 +32,10 @@ class BraveTabMenuModel : public TabMenuModel {
                     int index);
   ~BraveTabMenuModel() override;
 
+  bool AreAllTabsMuted(const TabStripModel& tab_strip_model, const std::vector<int>& indices) const;
+  
  private:
-  void Build();
+  void Build(TabStripModel* tab_strip_model, int index);
   int GetRestoreTabCommandStringId() const;
 
   content::WebContents* web_contents_;
