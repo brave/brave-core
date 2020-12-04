@@ -7,19 +7,22 @@
 <translation id="1036727731225946849">Inaongeza <ph name="WEBAPK_NAME"/>...</translation>
 <translation id="1041308826830691739">Kutoka kwenye tovuti</translation>
 <translation id="1045899828449635435">Utafuta data kwenye tovuti hizi?</translation>
+<translation id="586375142137960011">Brave imeshindwa kuthibitisha maelezo yako</translation>
+<translation id="1049743911850919806">Kichupo fiche</translation>
 <translation id="10614374240317010">Haijahifadhiwa kamwe</translation>
 <translation id="5428209950370661546">Huduma zingine za Brave</translation>
-<translation id="1068672505746868501">Usiwahi kutafsiri kurasa katika lugha ya <ph name="SOURCE_LANGUAGE"/></translation>
 <translation id="107147699690128016">Ukibadilisha kiendelezi cha faili, faili inaweza kufunguka katika programu tofauti na huenda ikawa hatari kwa kifaa chako.</translation>
 <translation id="1100066534610197918">Fungua katika kichupo kipya cha kikundi</translation>
 <translation id="1105960400813249514">Piga Picha ya Skrini</translation>
 <translation id="1111673857033749125">Alamisho zilizohifadhiwa katika vifaa vyako vingine zitaonekana hapa.</translation>
 <translation id="1113597929977215864">Onyesha mwonekano rahisi</translation>
-<translation id="1122278879166832009">Gusa hapa ili ufikie ukurasa wako wa kwanza ukiwa kwenye programu yoyote</translation>
+<translation id="1295971429974142731">Haikulindi dhidi ya tovuti, viendelezi na faili hatari zinazopakuliwa. Bado utapata ulinzi wa kipengele cha Kuvinjari Salama, kinapopatikana, katika huduma nyingine za Brave kama vile Gmail na Tafuta na Brave.</translation>
 <translation id="1129510026454351943">Maelezo: <ph name="ERROR_DESCRIPTION"/></translation>
 <translation id="1141800923049248244">{FILE_COUNT,plural, =1{Inasubiri kupakua faili 1.}other{Inasubiri kupakua faili #.}}</translation>
+<translation id="1142732900304639782">Usionyeshe chaguo la kutafsiri tovuti hizi</translation>
 <translation id="1145536944570833626">Futa data iliyopo.</translation>
 <translation id="1146678959555564648">Tumia hali ya VR</translation>
+<translation id="1154704303112745282">Ukurasa haupatikani nje ya mtandao: <ph name="VIOLATED_URL"/></translation>
 <translation id="116280672541001035">Imetumika</translation>
 <translation id="1171770572613082465">Ona tovuti maarufu kwa kugusa kitufe cha "Tovuti maarufu"</translation>
 <translation id="1173894706177603556">Ipe jina jipya</translation>
@@ -34,23 +37,24 @@
 <translation id="1229399675748764149">Fanya ukurasa huu uwe ukurasa wako wa kwanza</translation>
 <translation id="1231733316453485619">Ungependa kuwasha usawazishaji?</translation>
 <translation id="123724288017357924">Pakia upya ukurasa wa sasa, puuza maudhui ya akiba</translation>
-<translation id="124116460088058876">Lugha zaidi</translation>
 <translation id="124678866338384709">Funga kichupo kilichofunguka</translation>
 <translation id="1996480094660735607">Brave doodle: <ph name="DOODLE_DESCRIPTION"/></translation>
-<translation id="1260236875608242557">Tafuta na ugundue</translation>
+<translation id="1263231323834454256">Orodha ya kusoma</translation>
 <translation id="1266864766717917324">Imeshindwa kushiriki <ph name="CONTENT_TYPE"/></translation>
 <translation id="1283039547216852943">Gusa ili upanue</translation>
-<translation id="1285320974508926690">Kamwe usitafsiri tovuti hii</translation>
+<translation id="1285310382777185058">Badilisha lugha</translation>
 <translation id="1291207594882862231">Futa historia, vidakuzi, data ya tovuti, akiba…</translation>
 <translation id="129553762522093515">Vilivyofungwa hivi karibuni</translation>
 <translation id="1298077576058087471">Okoa hadi asilimia 60 ya data, soma habari za leo</translation>
 <translation id="1303339473099049190">Imeshindwa kupata nenosiri hilo. Angalia maendelezo yako kisha ujaribu tena.</translation>
 <translation id="1303507811548703290"><ph name="DOMAIN"/> - Imetumwa kutoka <ph name="DEVICE_NAME"/></translation>
+<translation id="1307205233980126133">Samahani, tumeshindwa kuthibitisha kitambulisho chako</translation>
 <translation id="1310482092992808703">Weka vichupo pamoja</translation>
 <translation id="1311657260431405215">Msimbo huu wa QR si URL: <ph name="QRCODEVALUE"/></translation>
 <translation id="1327257854815634930">Historia ya uelekezaji imefunguliwa</translation>
 <translation id="6773423637732432200">Brave haiwezi kusasisha. Chaguo zaidi</translation>
 <translation id="3169981355900570544">Njia za mikato za vipengele vya Brave</translation>
+<translation id="133857033449832692">Inapakua <ph name="LANG"/>…</translation>
 <translation id="1347468774581902829">Dhibiti shughuli</translation>
 <translation id="1360432990279830238">Utaondoka na uzime usawazishaji?</translation>
 <translation id="1373696734384179344">Hakuna hifadhi ya kutosha ya kupakua maudhui yaliyochaguliwa.</translation>
@@ -77,8 +81,8 @@
 <translation id="1705567146636171298">Sasisha Brave</translation>
 <translation id="1569387923882100876">Kifaa Kilichounganishwa</translation>
 <translation id="1571304935088121812">Nakili jina la mtumiaji</translation>
+<translation id="1592864538817356322">Ulinzi wa kawaida:</translation>
 <translation id="852740676285943527">Brave inahitaji idhini ya kufikia mahali ili itafute vifaa. Kipengele cha kufikia mahali <ph name="BEGIN_LINK"/>kimezimwa kwenye kifaa hiki<ph name="END_LINK"/>.</translation>
-<translation id="1620510694547887537">Kamera</translation>
 <translation id="1628019612362412531">{NUM_SELECTED,plural, =1{Ondoa kipengee 1 kilichochaguliwa}other{Ondoa vipengee # vilivyochaguliwa}}</translation>
 <translation id="1641113438599504367">Kuvinjari Salama</translation>
 <translation id="164269334534774161">Hii ni nakala ya nje ya mtandao ya ukurasa huu ya terehe <ph name="CREATION_TIME"/></translation>
@@ -87,13 +91,13 @@
 <translation id="1671236975893690980">Inasubiri kupakua...</translation>
 <translation id="1672586136351118594">Usionyeshe tena</translation>
 <translation id="297583746595929792">Nunua picha kupitia Lenzi ya Brave <ph name="BEGIN_NEW"/>Mpya<ph name="END_NEW"/></translation>
+<translation id="1682195225331129001">Jaribu sasa</translation>
 <translation id="1692118695553449118">Usawazishajii umewashwa</translation>
 <translation id="1718835860248848330">Saa iliyopita</translation>
 <translation id="1736419249208073774">Gundua</translation>
 <translation id="1749561566933687563">Sawazisha alamisho zako</translation>
 <translation id="17513872634828108">Vichupo vilivyo wazi</translation>
 <translation id="1754404134430936718">Maandishi Yamenakiliwa</translation>
-<translation id="1779089405699405702">Kisimbuaji cha picha</translation>
 <translation id="1782483593938241562">Tarehe ya mwisho <ph name="DATE"/></translation>
 <translation id="1791662854739702043">Imesakinishwa</translation>
 <translation id="1792959175193046959">Badilisha sehemu chaguomsingi ya kupakua wakati wowote</translation>
@@ -101,12 +105,17 @@
 <translation id="1807246157184219062">Mwangaza</translation>
 <translation id="1810845389119482123">Haijakamilisha Kuweka mipangilio ya mwanzo ya usawazishaji</translation>
 <translation id="1821253160463689938">Hutumia vidakuzi kukumbuka mapendeleo yako, hata usipotembelea kurasa hizo</translation>
-<translation id="1826516787628120939">Inakagua</translation>
 <translation id="1829244130665387512">Tafuta katika ukurasa</translation>
+<translation id="1830550083491357902">Haijaingiwa</translation>
+<translation id="4056661250746096955">Ili kupata tafsiri bora, ruhusu kipengele cha Tafuta na Brave kitumie ukurasa wa sasa</translation>
+<translation id="1853692000353488670">Kichupo fiche kipya</translation>
 <translation id="1856325424225101786">Je, ungependa kubadilisha mipangilio ya Hali nyepesi?</translation>
 <translation id="5817715962196959877">Sasa Brave inapakua faili haraka zaidi</translation>
+<translation id="5173820533850252773">Toleo hili la Brave limepitwa na wakati</translation>
 <translation id="1883903952484604915">Faili Zangu</translation>
-<translation id="1919950603503897840">Chagua anwani</translation>
+<translation id="189358972401248634">Lugha zingine</translation>
+<translation id="7021823858304886493">Ruhusu kuingia katika akaunti ya Brave</translation>
+<translation id="1922362554271624559">Lugha zinazopendekezwa</translation>
 <translation id="1925021887439448749">Weka anwani maalum ya wavuti</translation>
 <translation id="1928696683969751773">Usasishaji</translation>
 <translation id="1875543012935658554">Fungua Brave Upya.</translation>
@@ -114,23 +123,27 @@
 <translation id="1943432128510653496">Hifadhi manenosiri</translation>
 <translation id="1952172573699511566">Tovuti zitaonyesha maandishi katika lugha unayopendelea, panapowezekana.</translation>
 <translation id="3968054912784331254">Masasisho ya Brave hayatumiki tena kwa toleo hili la Android</translation>
+<translation id="1963976881984600709">Ulinzi wa kawaida</translation>
 <translation id="1966710179511230534">Tafadhali sasisha maelezo yako ya kuingia katika akaunti.</translation>
 <translation id="1974060860693918893">Mipangilio ya kina</translation>
+<translation id="1984417487208496350">Hamna ulinzi (haipendekezwi)</translation>
 <translation id="714362445477979774">Sawazisha data yako kwenye Brave</translation>
 <translation id="1986685561493779662">Jina tayari lipo</translation>
 <translation id="1987739130650180037">Kitufe cha <ph name="MESSAGE"/> <ph name="LINK_NAME"/></translation>
-<translation id="1989112275319619282">Vinjari</translation>
 <translation id="1993768208584545658"><ph name="SITE"/> inataka kuoanisha</translation>
 <translation id="2000419248597011803">Hutuma baadhi ya vidakuzi na utafutaji kutoka kwenye sehemu ya anwani na kisanduku cha kutafutia kwenye mtambo wako chaguomsingi wa kutafuta</translation>
 <translation id="1320169905922104972">Kadi za mikopo na anwani zinazotumia Brave Pay</translation>
+<translation id="2010780124464321179">Imeshindwa kuweka kiungo cha maandishi. Shiriki kiungo cha ukurasa.</translation>
 <translation id="2013642289801508067">{FILE_COUNT,plural, =1{Faili #}other{Faili #}}</translation>
 <translation id="2017836877785168846">Hufuta historia na ujazaji kiotomatiki katika sehemu ya anwani.</translation>
 <translation id="2021896219286479412">Vidhibiti vya tovuti vya skrini nzima</translation>
 <translation id="2038563949887743358">Washa Omba Tovuti ya Eneo-kazi</translation>
 <translation id="7675869148432102528"><ph name="APP_NAME"/> pia ina data katika Brave</translation>
 <translation id="2049574241039454490"><ph name="FILE_SIZE_OF_TOTAL"/> <ph name="SEPARATOR"/> <ph name="DESCRIPTION"/></translation>
+<translation id="2052422354554967744">Kutafuta kwenye intaneti</translation>
 <translation id="2056878612599315956">Tovuti imesimamishwa</translation>
 <translation id="2067805253194386918">maandishi</translation>
+<translation id="2068748236079642969">Tazama video inayofuata</translation>
 <translation id="2082238445998314030">Tokeo <ph name="RESULT_NUMBER"/> kati ya <ph name="TOTAL_RESULTS"/></translation>
 <translation id="2096012225669085171">Sawazisha na uweke mapendeleo kwenye vifaa vyote</translation>
 <translation id="2100273922101894616">Ingia katika Akaunti Kiotomatiki</translation>
@@ -148,14 +161,16 @@ Gusa neno lolote ili utafute. Ili uchuje utafutaji wako, gusa na ushikilie ili u
 <translation id="2154710561487035718">Nakili UR:</translation>
 <translation id="2156074688469523661">Tovuti zilizosalia (<ph name="NUMBER_OF_SITES"/>)</translation>
 <translation id="6162454065885854378">Ili ushiriki kitu kutoka simu yako hadi kifaa kingine, washa usawazishaji katika mipangilio ya Brave kwenye vifaa vyote viwili</translation>
+<translation id="4162910516440006395">Brave imeshindwa kukagua manenosiri yote</translation>
 <translation id="2169830938017475061">Sasa</translation>
 <translation id="2175927920773552910">Msimbo wa QR</translation>
 <translation id="218608176142494674">Inashiriki</translation>
+<translation id="3842811252050200766">Pata usalama thabiti zaidi kutoka Brave</translation>
 <translation id="2227444325776770048">Endelea ukitumia <ph name="USER_FULL_NAME"/></translation>
 <translation id="7956662517480676674">Huduma za Brave na usawazishaji</translation>
 <translation id="2239812875700136898">Dhibiti taarifa zako kutoka kwenye kitufe cha Chaguo za Dokezo</translation>
 <translation id="2259659629660284697">Hamisha manenosiri…</translation>
-<translation id="2268044343513325586">Chuja</translation>
+<translation id="781982477617612877">Ingia katika akaunti yako ya Brave ili uangalie manenosiri yako</translation>
 <translation id="2286841657746966508">Anwani ya kutoza</translation>
 <translation id="230115972905494466">Haikupata vifaa vyovyote vinavyooana</translation>
 <translation id="2318045970523081853">Gusa ili upige simu</translation>
@@ -168,7 +183,7 @@ Gusa neno lolote ili utafute. Ili uchuje utafutaji wako, gusa na ushikilie ili u
 <translation id="3587672679800759167">Jumla ya data iliyotumiwa na Brave, ikiwa ni pamoja na akaunti, alamisho na mipangilio iliyohifadhiwa</translation>
 <translation id="2353636109065292463">Inaangalia muunganisho wako wa intaneti</translation>
 <translation id="2359808026110333948">Endelea</translation>
-<translation id="2369533728426058518">vichupo vilivyo wazi</translation>
+<translation id="2369533728426058518">vichupo vilivyofunguliwa</translation>
 <translation id="2387895666653383613">Upimaji wa maandishi</translation>
 <translation id="2394602618534698961">Faili unazopakua zinaonekana hapa</translation>
 <translation id="801672626447970525">Ukiingia katika Akaunti ya Brave, kipengele hiki kitawashwa</translation>
@@ -182,11 +197,14 @@ Gusa neno lolote ili utafute. Ili uchuje utafutaji wako, gusa na ushikilie ili u
 
 Gusa na ushikilie neno lolote ili utafute. Ili uchuje utafutaji wako, chagua maneno mengi au machache. Ili ubadilishe utafutaji wako, fungua kidirisha, gusa aikoni ili ufungue katika kichupo kipya na ufanye mabadiliko ambayo ungependa kwenye kisanduku cha kutafutia.</translation>
 <translation id="246532703174860178">Shiriki</translation>
+<translation id="2478076885740497414">Sakinisha programu</translation>
 <translation id="2479148705183875116">Nenda kwenye Mipangilio</translation>
 <translation id="2482878487686419369">Arifa</translation>
 <translation id="6361779936989026201">Mratibu wa Brave katika Brave</translation>
 <translation id="2496180316473517155">Historia ya kuvinjari</translation>
 <translation id="2497852260688568942">Usawazishaji umezimwa na msimamizi wako</translation>
+<translation id="7229462727772664332">Utaona hali yako ya kuingia katika akaunti ya <ph name="SITE_NAME"/>, data ya kuvinjari na data ya tovuti katika Brave</translation>
+<translation id="2512164632052122970">Lugha za maudhui</translation>
 <translation id="7222718784508482526">Ili upate mipangilio zaidi inayohusiana na faragha, usalama na ukusanyaji wa data, angalia <ph name="BEGIN_LINK"/>Usawazishaji na huduma za Brave<ph name="END_LINK"/></translation>
 <translation id="2517472476991765520">Tafuta</translation>
 <translation id="7340390500800578919">Katika Hali Nyepesi, Brave hupakia kurasa haraka zaidi na huokoa hadi asilimia 60 ya data. Ili kuboresha kurasa unazotembelea, Brave hutumia Brave data ya tovuti unazotembelea. <ph name="BEGIN_LINK"/>Pata maelezo zaidi<ph name="END_LINK"/></translation>
@@ -197,7 +215,7 @@ Gusa na ushikilie neno lolote ili utafute. Ili uchuje utafutaji wako, chagua man
 <translation id="2537178555904266562">Hitilafu imetokea wakati wa kusawazisha manenosiri</translation>
 <translation id="2546283357679194313">Data ya vidakuzi na tovuti</translation>
 <translation id="2567385386134582609">PICHA</translation>
-<translation id="257088987046510401">Mandhari</translation>
+<translation id="5079947353572974060">Onyesha chaguo la kutuma kurasa zilizo katika lugha zingine kwenye Brave Tafsiri</translation>
 <translation id="2324920234469020158">Hatua hii itafuta vidakuzi, akiba na data nyingine ya tovuti ambazo Brave haidhani kuwa muhimu.</translation>
 <translation id="2587052924345400782">Toleo jipya linapatikana.</translation>
 <translation id="2593272815202181319">Nafasi moja</translation>
@@ -208,15 +226,18 @@ Gusa na ushikilie neno lolote ili utafute. Ili uchuje utafutaji wako, chagua man
 <translation id="2650751991977523696">Ungependa kupakua faili tena?</translation>
 <translation id="2651091186440431324">{FILE_COUNT,plural, =1{Faili # ya sauti}other{Faili # za sauti}}</translation>
 <translation id="2656405586795711023">Programu za wavuti</translation>
-<translation id="2677748264148917807">Ondoka</translation>
 <translation id="4550860619133710557">Kwa kutumia Brave, unakubali <ph name="BEGIN_LINK1"/>Sheria na Masharti ya Brave<ph name="END_LINK1"/> na <ph name="BEGIN_LINK2"/>Sheria na Masharti ya Ziada ya Brave na Mfumo wa Uendeshaji wa Brave<ph name="END_LINK2"/>. <ph name="BEGIN_LINK3"/>Ilani ya Faragha ya Akaunti za Brave Zinazodhibitiwa na Family Link<ph name="END_LINK3"/> inatumika pia.</translation>
+<translation id="2704606927547763573">Imenakiliwa</translation>
 <translation id="2707726405694321444">Onyesha upya ukurasa</translation>
 <translation id="2709516037105925701">Kujaza Kiotomatiki</translation>
-<translation id="2717722538473713889">Anwani za barua pepe</translation>
+<translation id="2718352093833049315">Kwenye Wi-Fi pekee</translation>
+<translation id="2718846868787000099">Tovuti unazotembelea zinaweza kuona mapendeleo yako ili zikuonyeshe maudhui katika lugha unazopendelea</translation>
+<translation id="2723001399770238859">sauti</translation>
 <translation id="2728754400939377704">Panga kulingana na tovuti</translation>
 <translation id="2744248271121720757">Gusa neno ili utafute papo hapo au uone vitendo vinavyohusiana</translation>
 <translation id="2760989362628427051">Washa hali ya mandhari meusi wakati umewasha kipengele cha mandhari meusi au Kiokoa Betri cha kifaa chako</translation>
 <translation id="2762000892062317888">sasa hivi tu</translation>
+<translation id="8312774691909088652">Ili upate mipangilio zaidi inayohusiana na faragha, usalama na ukusanyaji wa data, angalia <ph name="BEGIN_LINK"/>huduma za Brave<ph name="END_LINK"/></translation>
 <translation id="2777555524387840389">Zimesalia sekunde <ph name="SECONDS"/></translation>
 <translation id="2779651927720337254">imeshindwa</translation>
 <translation id="2781151931089541271">Imesalia sekunde 1</translation>
@@ -225,6 +246,7 @@ Gusa na ushikilie neno lolote ili utafute. Ili uchuje utafutaji wako, chagua man
 <translation id="7068873021383263704">Angalia na udhibiti manenosiri yaliyohifadhiwa kwenye <ph name="BEGIN_LINK"/>Akaunti yako ya Brave<ph name="END_LINK"/></translation>
 <translation id="2818669890320396765">Ingia katika akaunti na uwashe kipengele cha usawazishaji ili upate alamisho zako kwenye vifaa vyako vyote</translation>
 <translation id="2827278682606527653">Menyu ya kadi ya mipasho inaonekana kiasi</translation>
+<translation id="2841216154655874070">{NUM_DAYS,plural, =1{Ilikaguliwa siku moja iliyopita}other{Ilikaguliwa siku # zilizopita}}</translation>
 <translation id="2842985007712546952">Folda kuu</translation>
 <translation id="2860954141821109167">Hakikisha kuwa programu ya simu imewashwa kwenye kifaa hiki</translation>
 <translation id="2870560284913253234">Tovuti</translation>
@@ -235,16 +257,16 @@ Gusa na ushikilie neno lolote ili utafute. Ili uchuje utafutaji wako, chagua man
 <translation id="4013614219085422040">Brave inaweza kutumia historia yako ili kuweka mapendeleo kwenye huduma ya Tafuta na Brave na huduma nyingine za Brave.</translation>
 <translation id="2898264748040935573">Badilisha nenosiri lililohifadhiwa</translation>
 <translation id="2900528713135656174">Ongeza tukio jipya</translation>
-<translation id="2903493209154104877">Anwani</translation>
-<translation id="290376772003165898">Je, ukurasa huu haupo katika <ph name="LANGUAGE"/>?</translation>
+<translation id="2901411048554510387">Inaonyesha mapendekezo ya <ph name="WEBSITE_TITLE"/></translation>
 <translation id="2904414404539560095">Orodha ya vifaa vinavyoweza kutumia kichupo pamoja imefunguliwa kwenye skrini nzima.</translation>
+<translation id="2905036901251765993">Ili ushiriki na watu walio karibu, waruhusu wachanganue msimbo huu wa QR</translation>
 <translation id="7339921667754113786">Mfumo wa Arifa za Brave</translation>
 <translation id="2923908459366352541">Jina si sahihi</translation>
-<translation id="2927707377793151377">Chagua mtoa huduma mwingine:</translation>
 <translation id="6355102470683871794">Hifadhi ya Brave <ph name="APP_NAME"/></translation>
 <translation id="2942036813789421260">Kichupo cha kukagua kwanza kimefungwa</translation>
 <translation id="2956410042958133412">Akaunti hii inadhibitiwa na <ph name="PARENT_NAME_1"/> na <ph name="PARENT_NAME_2"/>.</translation>
-<translation id="2968755619301702150">Kitazamaji vyeti</translation>
+<translation id="2962095958535813455">Inabadilisha kwenda vichupo fiche</translation>
+<translation id="2979025552038692506">Kichupo Fiche Kilichochaguliwa</translation>
 <translation id="2987620471460279764">Maandishi yaliyoshirikiwa kutoka kifaa kingine</translation>
 <translation id="2989523299700148168">Ulizotembelea hivi karibuni</translation>
 <translation id="2996291259634659425">Unda kauli ya siri</translation>
@@ -255,31 +277,34 @@ Gusa na ushikilie neno lolote ili utafute. Ili uchuje utafutaji wako, chagua man
 <translation id="3036750288708366620"><ph name="BEGIN_LINK"/>Pata usaidizi<ph name="END_LINK"/></translation>
 <translation id="305593374596241526">Kipengele cha mahali kimezimwa; kiwashe katika <ph name="BEGIN_LINK"/>Mipangilio ya Android<ph name="END_LINK"/>.</translation>
 <translation id="3058498974290601450">Unaweza kuwasha kipengele cha kusawazisha wakati wowote katika mipangilio</translation>
-<translation id="7006260220514217183">Kipengele cha Kuvinjari Salama kimezimwa. Brave inapendekeza ukiwashe.</translation>
 <translation id="3060635849835183725">{BOOKMARKS_COUNT,plural, =1{Alamisho <ph name="BOOKMARKS_COUNT_ONE"/>}other{Alamisho <ph name="BOOKMARKS_COUNT_MANY"/>}}</translation>
 <translation id="6153252609477956632">Makala ya yanayokuvutia kwenye Brave</translation>
-<translation id="3114012059975132928">Kicheza video</translation>
+<translation id="3089395242580810162">Fungua katika kichupo fiche</translation>
 <translation id="3114507951000454849">Soma habari za leo <ph name="NEWS_ICON"/></translation>
 <translation id="3123734510202723619">Matangazo</translation>
+<translation id="3137521801621304719">Ondoka kwenye hali fiche</translation>
 <translation id="3143515551205905069">Ghairi usawazishaji</translation>
 <translation id="5063487983358782016">Ukurasa wa kwanza wa Brave</translation>
 <translation id="3157842584138209013">Ona kiasi cha data ulichookoa kwa kubofya kitufe cha Chaguo Zaidi</translation>
 <translation id="3166827708714933426">Njia za mikato ya vichupo na vidirisha</translation>
 <translation id="3169472444629675720">Gundua</translation>
-<translation id="3201899458094819285">Kuvinjari Salama (hukulinda wewe na kifaa chako dhidi ya tovuti hatari)</translation>
+<translation id="3181954750937456830">Kuvinjari Salama (hukulinda wewe na kifaa chako dhidi ya tovuti hatari)</translation>
 <translation id="3205824638308738187">Inakaribia kumaliza!</translation>
 <translation id="3207960819495026254">Imealamishwa</translation>
 <translation id="3208584281581115441">Angalia sasa</translation>
 <translation id="3211426585530211793">Umefuta <ph name="ITEM_TITLE"/></translation>
+<translation id="3211503082155944789">Kurasa <ph name="READING_LIST_COUNT"/> ambazo hujasoma</translation>
 <translation id="321773570071367578">Ikiwa umesahau kauli yako ya siri au ungependa kubadilisha mipangilio hii, <ph name="BEGIN_LINK"/>fanya usawazishaji upya<ph name="END_LINK"/></translation>
 <translation id="3232754137068452469">Programu ya Wavuti</translation>
 <translation id="3236059992281584593">Imesalia dakika 1</translation>
 <translation id="3244271242291266297">MW</translation>
 <translation id="3254409185687681395">Alamisha ukurasa huu</translation>
 <translation id="3259831549858767975">Fanya kila kitu kwenye ukurasa kiwe kidogo zaidi</translation>
+<translation id="3264124641674805320">Jinsi ya kupakua maudhui ili uyaangalie baadaye</translation>
 <translation id="3269093882174072735">Pakia picha</translation>
 <translation id="3269956123044984603">Ili upate vichupo vyako kutoka kwenye vifaa vyako vingine, washa kipengele cha "Kusawazisha data kiotomatiki" katika mipangilio ya akaunti ya Android.</translation>
 <translation id="82609232232243542">Ingia katika Brave</translation>
+<translation id="1793814306828610181">Video kuhusu jinsi ya kutumia Brave</translation>
 <translation id="3288003805934695103">Kupakia upya ukurasa</translation>
 <translation id="32895400574683172">Arifa zinaruhusiwa</translation>
 <translation id="3295530008794733555">Vinjari haraka. Tumia data chache.</translation>
@@ -288,9 +313,9 @@ Gusa na ushikilie neno lolote ili utafute. Ili uchuje utafutaji wako, chagua man
 <translation id="919933208285147476">Programu hii inatumika katika Brave</translation>
 <translation id="5294439808117722387">Kwa sasa, unaweka mapendeleo kwenye mipangilio ya Usawazishaji na huduma ya Brave. Ili ukamilishe kuwasha usawazishaji, gusa kitufe cha 'Thibitisha' kwenye sehemu ya chini ya skrini. Sogeza juu</translation>
 <translation id="3328801116991980348">Maelezo ya tovuti</translation>
-<translation id="3333961966071413176">Anwani zote</translation>
 <translation id="3334729583274622784">Ungependa kubadilisha kiendelezi cha faili?</translation>
 <translation id="3341058695485821946">Ona kiasi cha data ulichookoa</translation>
+<translation id="3350687908700087792">Funga vichupo vyote fiche</translation>
 <translation id="8134317863207426198">Ukurasa mwepesi umetolewa na Brave. Gusa kitufe cha pakia halisi ili upakie ukurasa halisi.</translation>
 <translation id="3359667936385849800">Tumia mtoa huduma wako wa sasa</translation>
 <translation id="3367813778245106622">Ingia tena katika akaunti ili uanze kusawazisha</translation>
@@ -304,38 +329,44 @@ Gusa na ushikilie neno lolote ili utafute. Ili uchuje utafutaji wako, chagua man
 <translation id="3414952576877147120">Ukubwa:</translation>
 <translation id="3443221991560634068">Pakia upya ukurasa wa sasa</translation>
 <translation id="3478363558367712427">Unaweza kuchagua mtambo wako wa kutafuta</translation>
+<translation id="3492207499832628349">Kichupo fiche kipya</translation>
 <translation id="3493531032208478708"><ph name="BEGIN_LINK"/>Pata maelezo zaidi<ph name="END_LINK"/> kuhusu maudhui yaliyopendekezwa</translation>
 <translation id="3499246418971111862">chrome_qrcode_<ph name="CURRENT_TIMESTAMP_MS"/></translation>
 <translation id="3507132249039706973">Kipengele cha Ulinzi wa Kawaida kimewashwa</translation>
+<translation id="8669829441518807650">Nje ya mtandao. Brave imeshindwa kukagua kama kuna masasisho.</translation>
 <translation id="3513704683820682405">Uhalisia Ulioboreshwa</translation>
 <translation id="3518985090088779359">Kubali na uendelee</translation>
 <translation id="3522247891732774234">Kuna toleo jipya. Chaguo zaidi</translation>
 <translation id="3524138585025253783">Kiolesura cha Msanidi Programu</translation>
 <translation id="3527085408025491307">Folda</translation>
-<translation id="9078804073692109646">Hakuna manenosiri yaliyohifadhiwa. Brave inaweza kukagua manenosiri yako unapoyahifadhi.</translation>
 <translation id="3542235761944717775">KB <ph name="KILOBYTES"/> zinapatikana</translation>
 <translation id="3549657413697417275">Tafuta katika historia yako</translation>
 <translation id="3557336313807607643">Ongeza kwenye anwani</translation>
 <translation id="1908301351964700579">Brave bado inasubiri Uhalisia Pepe. Zima kisha uwashe Brave baadaye</translation>
 <translation id="3568688522516854065">Ingia katika akaunti na uwashe kipengele cha usawazishaji ili upate vichupo vyako kutoka vifaa vyako vingine</translation>
 <translation id="3587482841069643663">Zote</translation>
-<translation id="9205995714227143200">Hifadhi ya tovuti ambayo Brave haidhani ni muhimu (k.m. tovuti ambazo hazina mipangilio iliyohifadhiwa au ambazo hutembelei sana)</translation>
-<translation id="3594780231884063836">Zima video</translation>
+<translation id="3587596251841506391">Tusaidie kuboresha usalama kwenye wavuti</translation>
+<translation id="3598653140581545904">Tumia Hali fiche kuingia katika akaunti</translation>
 <translation id="3551285888947169900">Hufuta historia kwenye vifaa vyote ulivyotumia kuingia katika akaunti. Huenda Akaunti yako ya Brave ikawa na aina nyingine za historia ya kuvinjari kwenye <ph name="BEGIN_LINK"/>myactivity.google.com<ph name="END_LINK"/>.</translation>
+<translation id="3602290021589620013">Hakiki</translation>
 <translation id="3616113530831147358">Sauti</translation>
 <translation id="3631987586758005671">Inashiriki kwenye <ph name="DEVICE_NAME"/></translation>
 <translation id="3632295766818638029">Onyesha nenosiri</translation>
 <translation id="363596933471559332">Ingia katika tovuti kiotomatiki kwa kutumia kitambulisho kilichohifadhiwa. Kipengele kikiwa kimezimwa, utaombwa kuthibitisha kila wakati kabla ya kuingia katika tovuti.</translation>
+<translation id="3653111872753786013"><ph name="WEBSITE_TITLE"/>: <ph name="WEBSITE_URL"/></translation>
 <translation id="3658159451045945436">Hatua ya kuweka upya hufuta historia ya uokoaji wa data, ikiwa ni pamoja na orodha ya tovuti unazotembelea.</translation>
 <translation id="3692944402865947621">Imeshindwa kupakua <ph name="FILE_NAME"/> kwa sababu haikupata eneo la kuhifadhi.</translation>
 <translation id="3701167022068948696">Rekebisha sasa</translation>
+<translation id="371230970611282515">Hutabiri na kukuonya kuhusu matukio hatari yanapotendeka.</translation>
 <translation id="3714981814255182093">Fungua Upau wa Kutafuta</translation>
 <translation id="5805364706385912897">Ukurasa huu unatumia hifadhi kubwa zaidi, kwa hivyo Brave imeusitisha.</translation>
+<translation id="8397843425685839889">Wewe na Brave</translation>
+<translation id="3737319253362202215">Mipangilio ya tafsiri</translation>
 <translation id="3738139272394829648">Gusa ili Utafute</translation>
 <translation id="3739899004075612870">Imealamishwa katika <ph name="PRODUCT_NAME"/></translation>
 <translation id="3749259744154402564">Haitumiki</translation>
-<translation id="3763247130972274048">Gusa mara mbili kushoto au kulia kwenye video ili uruke kwa sekunde 10</translation>
 <translation id="3771001275138982843">Imeshindwa kupakua sasisho</translation>
+<translation id="3771033907050503522">Vichupo Fiche</translation>
 <translation id="3771290962915251154">Mipangilio hii imezimwa kwa sababu vidhibiti vya wazazi vimewashwa</translation>
 <translation id="1138681184697033370">Sheria na Masharti ya Brave</translation>
 <translation id="3773755127849930740"><ph name="BEGIN_LINK"/>Washa Bluetooth<ph name="END_LINK"/> ili uruhusu kuoanisha</translation>
@@ -344,21 +375,25 @@ Gusa na ushikilie neno lolote ili utafute. Ili uchuje utafutaji wako, chagua man
 <translation id="3789841737615482174">Sakinisha</translation>
 <translation id="3810838688059735925">Video</translation>
 <translation id="3810973564298564668">Dhibiti</translation>
-<translation id="381841723434055211">Nambari za simu</translation>
 <translation id="3819178904835489326">Vipakuliwa <ph name="NUMBER_OF_DOWNLOADS"/> vimefutwa</translation>
 <translation id="3856096718352044181">Tafadhali thibitisha kuwa huyu ni mtoa huduma sahihi au ujaribu tena baadaye</translation>
-<translation id="388596076286380598">Pata makala, video na maudhui mengine kutoka tovuti unazopenda, hata ikiwa uko nje ya mtandao au muunganisho wako ni dhaifu.</translation>
+<translation id="3861633093716975811">Video maarufu</translation>
 <translation id="3892148308691398805">Nakili maandishi</translation>
 <translation id="3894427358181296146">Ongeza folda</translation>
 <translation id="3895926599014793903">Lazimisha kuwasha ukuzaji</translation>
+<translation id="3908308510347173149">Sasisha <ph name="PRODUCT_NAME"/></translation>
+<translation id="3909763690984331376">Angalizo la usalama <ph name="BEGIN_NEW"/>Mpya<ph name="END_NEW"/></translation>
 <translation id="3912508018559818924">Inatafuta maudhui bora zaidi kwenye wavuti…</translation>
+<translation id="3924911262913579434"><ph name="SAFE_BROWSING_MODE"/> imewashwa</translation>
 <translation id="3927692899758076493">Sans Serif</translation>
 <translation id="3928666092801078803">Unganisha data yangu</translation>
 <translation id="393697183122708255">Hakuna kutafuta kwa kutamka kulikowashwa</translation>
+<translation id="6208931723626310729">Onyesha vidokezo vya kuingia katika akaunti vya Brave unapoingia katika Akaunti yako ya Brave</translation>
 <translation id="395206256282351086">Mapendekezo ya utafutaji na tovuti yamezimwa</translation>
 <translation id="6945986954012067786">{NUM_IN_PROGRESS,plural, =1{Brave itapakia ukurasa wako ukiwa tayari}other{Brave itapakia kurasa zako zikiwa tayari}}</translation>
 <translation id="8997474919031554666">Usimbaji fiche kwa kutumia kauli ya siri haujumuishi njia za kulipa na anwani kutoka Brave Pay. Mtu aliye na kauli yako ya siri pekee ndiye anayeweza kusoma data yako iliyosimbwa kwa njia fiche. Kauli ya siri haitumwi kwa au kuhifadhiwa na Brave. Ukisahau kauli yako ya siri au utake kubadilisha mipangilio hii, utahitaji kufanya usawazishaji upya. <ph name="BEGIN_LINK"/>Pata maelezo zaidi<ph name="END_LINK"/></translation>
 <translation id="3967822245660637423">Faili imekamilika kupakuliwa</translation>
+<translation id="1453002554835005700">Brave imeshindwa kukagua manenosiri yako</translation>
 <translation id="7961941514656597723"><ph name="APP_NAME"/> itafunguka kwenye Brave. Kwa kuendelea, unakubali <ph name="BEGIN_LINK1"/>Sheria na Masharti ya Brave<ph name="END_LINK1"/> na <ph name="BEGIN_LINK2"/>Sheria na Masharti ya Ziada ya Brave na Mfumo wa Uendeshaji wa Brave<ph name="END_LINK2"/>. <ph name="BEGIN_LINK3"/>Ilani ya Faragha ya Akaunti za Brave Zinazodhibitiwa na Family Link<ph name="END_LINK3"/> inatumika pia.</translation>
 <translation id="397583555483684758">Usawazishaji umeacha kufanya kazi</translation>
 <translation id="3976396876660209797">Ondoa na uunde upya njia hii ya mkato</translation>
@@ -366,7 +401,6 @@ Gusa na ushikilie neno lolote ili utafute. Ili uchuje utafutaji wako, chagua man
 <translation id="3987993985790029246">Nakili kiungo</translation>
 <translation id="3988213473815854515">Mahali panaruhusiwa</translation>
 <translation id="3988466920954086464">Angalia matokeo ya utafutaji wa moja kwa moja katika kidirisha hiki</translation>
-<translation id="3997476611815694295">Hifadhi ambayo si muhimu</translation>
 <translation id="4000212216660919741">Skrini ya Kwanza, Nje ya Mtandao</translation>
 <translation id="4034817413553209278">{HOURS,plural, =1{Saa #}other{Saa #}}</translation>
 <translation id="4056223980640387499">Sepia</translation>
@@ -376,8 +410,10 @@ Gusa na ushikilie neno lolote ili utafute. Ili uchuje utafutaji wako, chagua man
 <translation id="4521874409998847950">Kutoka <ph name="PUBLISHER_ORIGIN"/> – <ph name="BEGIN_DEEMPHASIZED"/>imesafirishwa na Brave<ph name="END_DEEMPHASIZED"/></translation>
 <translation id="4095146165863963773">Ungependa kufuta data ya programu?</translation>
 <translation id="673197144963363525">Saidia kuboresha Brave kwa kutumia Brave takwimu za matumizi na ripoti wakati wowote kivinjari hiki kinapoacha kufanya kazi.</translation>
+<translation id="4108998448622696017">Hutambua na kukuonya kuhusu matukio hatari yanapotendeka.</translation>
 <translation id="4116038641877404294">Pakua kurasa uzitumie nje ya mtandao</translation>
 <translation id="4135200667068010335">Orodha ya vifaa vinavyoweza kutumia kichupo pamoja imefungwa.</translation>
+<translation id="4159350418181625094">Jifunze kuhusu Brave</translation>
 <translation id="4149994727733219643">Mwonekano uliorahisishwa kwa ajili ya kurasa za wavuti</translation>
 <translation id="4170011742729630528">Huduma haipatikani; jaribu tena baadaye.</translation>
 <translation id="4179980317383591987"><ph name="AMOUNT"/> imetumika</translation>
@@ -385,7 +421,6 @@ Gusa na ushikilie neno lolote ili utafute. Ili uchuje utafutaji wako, chagua man
 <translation id="3845332215609790146">Tafuta na Lenzi ya Brave <ph name="BEGIN_NEW"/>Mpya<ph name="END_NEW"/></translation>
 <translation id="4195643157523330669">Fungua katika kichupo kipya</translation>
 <translation id="4198423547019359126">Hakuna maeneno ya upakuaji</translation>
-<translation id="4628143400597876607">Brave inaweza kuangalia iwapo mipangilio yako inakulinda dhidi ya:</translation>
 <translation id="6003646045106347985">Washa kipengele cha usawazishaji ili Brave ikupendekezee maudhui yanayokufaa</translation>
 <translation id="7810580217418711046">Simba data iliyosawazishwa kwa njia fiche ukitumia nenosiri la Brave lililokuwepo <ph name="TIME"/></translation>
 <translation id="4242533952199664413">Fungua mipangilio</translation>
@@ -399,14 +434,16 @@ Gusa na ushikilie neno lolote ili utafute. Ili uchuje utafutaji wako, chagua man
 <translation id="4314815835985389558">Dhibiti usawazishaji</translation>
 <translation id="4320177379694898372">Hakuna muunganisho wa intaneti</translation>
 <translation id="4321739720395210191">Imeshindwa kufungua kamera yako. Zima kisha uwashe kifaa chako halafu ujaribu tena.</translation>
+<translation id="4335835283689002019">Kipengele cha Kuvinjari Salama kimezimwa</translation>
 <translation id="4351244548802238354">Funga kidirisha</translation>
 <translation id="4378154925671717803">Simu</translation>
+<translation id="5543146597494022157">Tumia kama lugha ya Brave</translation>
 <translation id="4384468725000734951">Unatumia Sogou kutafuta</translation>
 <translation id="4404568932422911380">Hakuna alamisho</translation>
 <translation id="4405224443901389797">Hamishia kwenye…</translation>
 <translation id="4411535500181276704">Hali nyepesi</translation>
 <translation id="5749788945734786627">Dhibiti Akaunti yako ya Brave</translation>
-<translation id="4432792777822557199">Kurasa za <ph name="SOURCE_LANGUAGE"/> zitatafsiriwa katika <ph name="TARGET_LANGUAGE"/> kuanzia sasa</translation>
+<translation id="4427306783828095590">Kipengele cha ulinzi wa hali ya juu hufanya mengi zaidi ili kuzuia programu hasidi na wizi wa data binafsi</translation>
 <translation id="8856898588039823173">Ukurasa mwepesi umetolewa na Brave. Gusa ili upakie ukurasa halisi.</translation>
 <translation id="4452411734226507615">Funga kichupo cha <ph name="TAB_TITLE"/></translation>
 <translation id="4452548195519783679">Imetia alamishwa kwenye <ph name="FOLDER_NAME"/></translation>
@@ -416,6 +453,7 @@ Gusa na ushikilie neno lolote ili utafute. Ili uchuje utafutaji wako, chagua man
 <translation id="53119194224775367">Data yote ya programu ya Brave itafutwa kabisa. Hii ni pamoja na faili, mipangilio, akaunti, hifadhidata zote, n.k.</translation>
 <translation id="4493497663118223949">Umewasha Hali nyepesi</translation>
 <translation id="4508528996305412043">Menyu ya kadi ya mipasho imefunguliwa</translation>
+<translation id="4508642716788467538">Chagua lugha yako</translation>
 <translation id="4513387527876475750">{DAYS,plural, =1{Siku # iliyopita}other{Siku # zilizopita}}</translation>
 <translation id="451872707440238414">Tafuta alamisho zako</translation>
 <translation id="1664855196866195614">Data uliyochagua imeondolewa kwenye Brave na kwenye vifaa vyako vilivyosawazishwa. 
@@ -434,10 +472,14 @@ Huenda akaunti yako ya Brave ina aina nyingine za historia ya kuvinjari kama vil
 <translation id="4605958867780575332">Kipengee kilichoondolewa: <ph name="ITEM_TITLE"/></translation>
 <translation id="4616150815774728855">Fungua <ph name="WEBAPK_NAME"/></translation>
 <translation id="4634124774493850572">Tumia nenosiri</translation>
+<translation id="4640331037679501949">{NUM_PASSWORDS,plural, =1{Nenosiri moja limeathiriwa}other{Manenosiri # yameathiriwa}}</translation>
 <translation id="4650364565596261010">Mipangilio chaguomsingi ya mfumo</translation>
+<translation id="465657074423018424">Kipengele cha Kuvinjari Salama hukulinda dhidi ya tovuti zinazopotosha. Ukikizima, kuwa makini zaidi unapovinjari hasa kabla ya kuweka manenosiri.</translation>
 <translation id="4662373422909645029">Jina la kuwakilisha halipaswi kuwa na nambari</translation>
+<translation id="4663499661119906179">Angalia tovuti na habari maarufu unazopendekezewa</translation>
 <translation id="4663756553811254707">Alamisho <ph name="NUMBER_OF_BOOKMARKS"/> zimefutwa</translation>
 <translation id="4665282149850138822"><ph name="NAME"/> iliongezwa kwenye Skrini yako ya kwanza</translation>
+<translation id="4668347365065281350">Data yote inayohifadhiwa na tovuti, ikiwa ni pamoja na vidakuzi na data nyingine inayohifadhiwa kwenye kifaa</translation>
 <translation id="4684427112815847243">Sawazisha kila kitu</translation>
 <translation id="4695891336199304370">{SHIPPING_OPTIONS,plural, =1{<ph name="SHIPPING_OPTION_PREVIEW"/>\u2026 na <ph name="NUMBER_OF_ADDITIONAL_SHIPPING_OPTIONS"/> zaidi}other{<ph name="SHIPPING_OPTION_PREVIEW"/>\u2026 na <ph name="NUMBER_OF_ADDITIONAL_SHIPPING_OPTIONS"/> zaidi}}</translation>
 <translation id="4696983787092045100">Tuma maandishi kwenye Vifaa Vyako</translation>
@@ -447,23 +489,29 @@ Huenda akaunti yako ya Brave ina aina nyingine za historia ya kuvinjari kama vil
 <translation id="4719927025381752090">Jitolee kutafsiri</translation>
 <translation id="4720023427747327413">Fungua katika <ph name="PRODUCT_NAME"/></translation>
 <translation id="4939482511480190003">Tusaidie kuboresha Brave.<ph name="BEGIN_LINK"/>Shiriki katika utafiti<ph name="END_LINK"/></translation>
+<translation id="47217992755561375">Angalia tovuti zako maarufu</translation>
 <translation id="4732120983431207637">Kiondoaji cha Rafu</translation>
 <translation id="473775607612524610">Sasisha</translation>
 <translation id="4738836084190194332">Kilisawazishwa mara ya mwisho: <ph name="WHEN"/></translation>
 <translation id="4749960740855309258">Fungua kichupo kipya</translation>
 <translation id="4759238208242260848">Vipakuliwa</translation>
+<translation id="4763480195061959176">video</translation>
 <translation id="4763829664323285145">{FILE_COUNT,plural, =1{Imemaliza kupakua faili 1.}other{Imemaliza kupakua faili #.}}</translation>
+<translation id="4766678251456904326">Ongeza akaunti kwenye kifaa</translation>
 <translation id="4767937498890654900">{FILE_COUNT,plural, =1{Faili moja imeratibiwa kupakuliwa.}other{Faili # zimeratibiwa kupakuliwa.}}</translation>
-<translation id="1533987887228911109">Utaona hali yako ya kuingia katika akaunti ya <ph name="SITE_NAME"/>, data ya kuvinjari na data ya tovuti katika Brave.</translation>
 <translation id="5149495116300586333">Usimbaji fiche kwa kutumia kauli ya siri haujumuishi njia za kulipa na anwani kutoka Brave Pay.
 
 Ili ubadilishe mipangilio hii, <ph name="BEGIN_LINK"/>fanya usawazishaji upya<ph name="END_LINK"/></translation>
 <translation id="4807098396393229769">Jina kwenye kadi</translation>
+<translation id="4818017973810341238">Mchakato wa kuthibitisha viungo vya vipengele dijitali haujakamilika kwenye <ph name="VIOLATED_URL"/></translation>
 <translation id="4824958205181053313">Ungependa kughairi usawazishaji?</translation>
+<translation id="4831037795716408498">Kupakua maudhui</translation>
 <translation id="2593289874938379417">Brave haina idhini ya kufikia rasilimali uliyoomba.</translation>
 <translation id="4837753911714442426">Fungua chaguo za kuchapisha ukurasa</translation>
 <translation id="4842092870884894799">Inaonyesha dirisha ibukizi la uundaji wa nenosiri</translation>
 <translation id="4860895144060829044">Piga simu</translation>
+<translation id="4864369630010738180">Unaingia katika akaunti...</translation>
+<translation id="4865987431642283918">Lugha chaguomsingi ya kifaa</translation>
 <translation id="5131234170665854056">Imeshindwa kusakinisha <ph name="MODULE"/> kwenye Brave</translation>
 <translation id="4875775213178255010">Mapendekezo ya Maudhui</translation>
 <translation id="4878404682131129617">Imeshindwa kuanzisha mkondo kupitia seva mbadala</translation>
@@ -478,16 +526,17 @@ Ili ubadilishe mipangilio hii, <ph name="BEGIN_LINK"/>fanya usawazishaji upya<ph
 <translation id="4913169188695071480">Acha kuonyesha upya</translation>
 <translation id="4915549754973153784"><ph name="BEGIN_LINK"/>Pata usaidizi<ph name="END_LINK"/> huku ukitafuta vifaa...</translation>
 <translation id="4921180162323349895">{FILE_COUNT,plural, =1{Ukurasa #}other{Kurasa #}}</translation>
+<translation id="4925120120285606924">Picha ya skrini <ph name="CURRENT_DATE_ISO"/></translation>
 <translation id="49268022542405662">Manenosiri yako yatatumwa na kupakuliwa katika muundo wa faili ya maandishi. Programu na mtu yeyote aliye na uwezo wa kufikia folda atayaona.</translation>
 <translation id="1955495299630319741">Kwa sababu unaondoka katika akaunti inayodhibitiwa na <ph name="DOMAIN_NAME"/>, data yako ya Brave itafutwa kwenye kifaa hiki. Itabaki katika Akaunti yako ya Brave.</translation>
 <translation id="4943703118917034429">Uhalisia Pepe</translation>
 <translation id="4943872375798546930">Hakuna matokeo yoyote yaliyopatikana</translation>
 <translation id="4961107849584082341">Tafsiri ukurasa huu katika lugha yoyote</translation>
 <translation id="4970824347203572753">Hakipatikani mahali ulipo</translation>
+<translation id="7307583170263691471">Ulinzi wa haraka na wa mapema dhidi ya tovuti, vipakuliwa na viendelezi hatari. Hukuonya kuhusu matukio ya ufichuzi haramu wa manenosiri yako. Inahitaji data ya kuvinjari itumwe kwa Brave.</translation>
 <translation id="497421865427891073">Nenda mbele</translation>
 <translation id="4988210275050210843">Inapakua faili (<ph name="MEGABYTES"/>).</translation>
 <translation id="4988526792673242964">Kurasa</translation>
-<translation id="4994033804516042629">Hakuna anwani zilizopatikana</translation>
 <translation id="6447211988989208781">Vidhibiti vya shughuli za Brave</translation>
 <translation id="5005498671520578047">Nakili nenosiri</translation>
 <translation id="5011311129201317034"><ph name="SITE"/> inataka kuunganisha</translation>
@@ -498,8 +547,8 @@ Ili ubadilishe mipangilio hii, <ph name="BEGIN_LINK"/>fanya usawazishaji upya<ph
 <translation id="5087580092889165836">Ongeza kadi</translation>
 <translation id="509429900233858213">Hitilafu fulani imetokea.</translation>
 <translation id="510275257476243843">Imesalia saa 1</translation>
+<translation id="5123685120097942451">Kichupo fiche</translation>
 <translation id="5127805178023152808">Usawazishaji umezimwa</translation>
-<translation id="5129038482087801250">Sakinisha programu ya wavuti</translation>
 <translation id="5132942445612118989">Sawazisha historia, manenosiri na mambo yako mengine kwenye vifaa vyote</translation>
 <translation id="5136035049889637840">Nunua bidhaa zinazofanana <ph name="BEGIN_NEW"/>Mpya<ph name="END_NEW"/></translation>
 <translation id="5139940364318403933">Pata maelezo ya jinsi ya kutumia Google Drive</translation>
@@ -509,15 +558,15 @@ Ili ubadilishe mipangilio hii, <ph name="BEGIN_LINK"/>fanya usawazishaji upya<ph
 <translation id="5170568018924773124">Onyesha katika folda</translation>
 <translation id="8445059357334030806">Fungulia katika Brave</translation>
 <translation id="5193988420012215838">Imenakiliwa kwenye ubao wa kunakili</translation>
-<translation id="5197729504361054390">Anwani unazochagua zitashirikiwa na <ph name="BEGIN_BOLD"/><ph name="SITE"/><ph name="END_BOLD"/>.</translation>
 <translation id="5199929503336119739">Wasifu wa kazini</translation>
 <translation id="5210286577605176222">Rudi kwenye kichupo cha awali</translation>
 <translation id="5210365745912300556">Funga kichupo</translation>
+<translation id="5213672942202814946">Kutafuta kwa kutamka</translation>
+<translation id="5222676887888702881">Ondoka</translation>
 <translation id="5230560987958996918"><ph name="SITE"/> inataka kutafuta vifaa vya Bluetooth vilivyo karibu. Vifaa vifuatavyo vimepatikana:</translation>
 <translation id="5233638681132016545">Kichupo kipya</translation>
 <translation id="526421993248218238">Imeshindwa kupakia ukurasa huu</translation>
 <translation id="5271967389191913893">Kifaa hakiwezi kufungua maudhui yanayopaswa kupakuliwa.</translation>
-<translation id="528192093759286357">Buruta kutoka juu na uguse kitufe cha kurudi nyuma ili uondoke kwenye skrini nzima.</translation>
 <translation id="5292796745632149097">Tuma kwenye</translation>
 <translation id="5304593522240415983">Sehemu hii haiwezi kuwa tupu</translation>
 <translation id="5308380583665731573">Unganisha</translation>
@@ -529,8 +578,6 @@ Ili ubadilishe mipangilio hii, <ph name="BEGIN_LINK"/>fanya usawazishaji upya<ph
 <translation id="5355191726083956201">Umewasha Kipengele cha Ulinzi Ulioboreshwa</translation>
 <translation id="5357811892247919462">Umepokea kichupo</translation>
 <translation id="5368958499335451666">{OPEN_TABS,plural, =1{Umefungua kichupo <ph name="OPEN_TABS_ONE"/>, gusa ili ubadilishe vichupo}other{Umefungua vichupo <ph name="OPEN_TABS_MANY"/>, gusa ili ubadilishe vichupo}}</translation>
-<translation id="5394307150471348411">{DETAIL_COUNT,plural, =1{(+ 1 zaidi)}other{(+ # zaidi)}}</translation>
-<translation id="5403592356182871684">Majina</translation>
 <translation id="5403644198645076998">Ruhusu tovuti maalum pekee</translation>
 <translation id="5414836363063783498">Inathibitisha...</translation>
 <translation id="5423934151118863508">Kurasa zako zilizotembelewa sana zitaonekana hapa</translation>
@@ -538,14 +585,15 @@ Ili ubadilishe mipangilio hii, <ph name="BEGIN_LINK"/>fanya usawazishaji upya<ph
 <translation id="543338862236136125">Badilisha nenosiri</translation>
 <translation id="5433691172869980887">Jina la mtumiaji limenakiliwa</translation>
 <translation id="543509235395288790">Inapakua faili <ph name="COUNT"/> (<ph name="MEGABYTES"/>).</translation>
+<translation id="5441466871879044658">Tafsiri katika lugha hii</translation>
 <translation id="5441522332038954058">Rudi kwenye sehemu ya anwani</translation>
-<translation id="5447201525962359567">Hifadhi yote ya tovuti, ikiwa ni pamoja na vidakuzi na data nyingine iliyohifadhiwa ndani</translation>
-<translation id="5447765697759493033">Tovuti hii haitatafsiriwa</translation>
+<translation id="544776284582297024">Ili ufungue vichupo na utembelee kurasa mbalimbali kwa wakati mmoja, gusa kitufe cha 'vichupo vilivyofunguliwa'</translation>
 <translation id="545042621069398927">Inaongeza kasi ya kupakua faili yako.</translation>
 <translation id="5456381639095306749">Pakua ukurasa</translation>
 <translation id="548278423535722844">Fungua katika programu ya ramani</translation>
+<translation id="7176798998723526245">Kutumia Brave</translation>
 <translation id="5487521232677179737">Futa data</translation>
-<translation id="5489227211564503167">Muda uliopita ni <ph name="ELAPSED_TIME"/> kati ya <ph name="TOTAL_TIME"/>.</translation>
+<translation id="549025011754480756">Jinsi ya kutafuta kwa kutumia sauti yako</translation>
 <translation id="5500777121964041360">Huenda haipatikani mahali uliko</translation>
 <translation id="5512137114520586844">Akaunti hii inadhibitiwa na <ph name="PARENT_NAME"/></translation>
 <translation id="5514904542973294328">Imezimwa na msimamizi wa kifaa hiki</translation>
@@ -553,13 +601,16 @@ Ili ubadilishe mipangilio hii, <ph name="BEGIN_LINK"/>fanya usawazishaji upya<ph
 <translation id="5517095782334947753">Una alamisho, historia, manenosiri na mipangilio mingine kutoka <ph name="FROM_ACCOUNT"/>.</translation>
 <translation id="5524843473235508879">Imezuia shughuli ya kuelekeza kwingine.</translation>
 <translation id="2367014990350929709">Brave inahitaji idhini ya kufikia mahali ili itafute vifaa. <ph name="BEGIN_LINK1"/>Badilisha ruhusa<ph name="END_LINK1"/>. Kipengele cha idhini ya kufikia mahali pia <ph name="BEGIN_LINK2"/>kimezimwa kwenye kifaa hiki<ph name="END_LINK2"/>.</translation>
+<translation id="5530766185686772672">Funga vichupo fiche</translation>
 <translation id="5534640966246046842">Tovuti imenakiliwa</translation>
-<translation id="5548606607480005320">Angalizo la usalama</translation>
+<translation id="5556459405103347317">Pakia upya</translation>
 <translation id="5561549206367097665">Inasubiri intaneti…</translation>
 <translation id="55737423895878184">Vipengele vya mahali na arifa vinaruhusiwa</translation>
 <translation id="5578795271662203820">Tafuta picha hii kwenye <ph name="SEARCH_ENGINE"/></translation>
 <translation id="5581519193887989363">Unaweza kuchagua utakachosawazisha wakati wowote katika <ph name="BEGIN_LINK1"/>mipangilio<ph name="END_LINK1"/>.</translation>
 <translation id="5595485650161345191">Badilisha anwani</translation>
+<translation id="5599455543593328020">Hali fiche</translation>
+<translation id="5620163320393916465">Hakuna manenosiri yaliyohifadhiwa</translation>
 <translation id="5620928963363755975">Tafuta faili na kurasa zako katika Vipakuliwa kwenye kitufe cha Chaguo Nyingine</translation>
 <translation id="5626134646977739690">Jina:</translation>
 <translation id="5639724618331995626">Ruhusu tovuti zote</translation>
@@ -568,55 +619,68 @@ Ili ubadilishe mipangilio hii, <ph name="BEGIN_LINK"/>fanya usawazishaji upya<ph
 <translation id="5659593005791499971">Barua pepe</translation>
 <translation id="5665379678064389456">Unda tukio katika <ph name="APP_NAME"/></translation>
 <translation id="5668404140385795438">Batilisha ombi la tovuti ili kuzuia kuvuta karibu</translation>
-<translation id="5684874026226664614">Lo!  Ukurasa huu haukuweza kutafsiriwa.</translation>
+<translation id="5668833306439455813">Brave imeshindwa kukagua kama kuna masasisho</translation>
 <translation id="5686790454216892815">Jina la faili ni ndefu mno</translation>
-<translation id="5694049548840660018">Rudi kwenye ukurasa wa kwanza kwa urahisi</translation>
+<translation id="5687809546194252819"><ph name="APP_NAME"/> itatumia <ph name="LANGUAGE"/> utakapozima kisha uwashe.</translation>
+<translation id="5691211010013816086">Una kurasa <ph name="READING_LIST_COUNT"/></translation>
 <translation id="569536719314091526">Tafsiri ukurasa huu katika lugha yoyote kutoka kitufe cha Chaguo zaidi</translation>
+<translation id="2320748512701464301">Brave inaweza kukusaidia ulinde akaunti yako dhidi ya ufichuzi haramu wa data, tovuti ambazo si salama na zaidi</translation>
 <translation id="5697688514913266141">Faili yako itahifadhiwa kwenye <ph name="BEGIN_BOLD"/><ph name="DIRECTORY"/><ph name="END_BOLD"/>. <ph name="BEGIN_LINK2"/>Badilisha<ph name="END_LINK2"/>.</translation>
 <translation id="570347048394355941">Nenda Kwenye Kichupo</translation>
-<translation id="572328651809341494">Vichupo vya hivi majuzi</translation>
+<translation id="572328651809341494">Vichupo vya hivi punde</translation>
 <translation id="5723735397759933332">Hali nyepesi sasa inaokoa data yako zaidi kwa kuboresha picha kwenye kurasa za HTTPS.</translation>
 <translation id="5726692708398506830">Fanya kila kitu kwenye ukurasa kiwe kikubwa zaidi</translation>
 <translation id="5732819098735351888">Itaanza kupakua kupitia Wi-Fi.</translation>
 <translation id="5733983706093266635">Imeshindwa kutunga msimbo wa QR. URL imepitisha herufi <ph name="CHARACTER_LIMIT"/>.</translation>
 <translation id="5748802427693696783">Imebadilisha kwenda vichupo muundo-msingi</translation>
 <translation id="3088191967551450609">Brave inahitaji idhini ya kufikia hifadhi ili ipakue faili.</translation>
+<translation id="5749237766298580851">Imezimwa <ph name="SEPARATOR"/> Haipendekezwi</translation>
+<translation id="5754350196967618083">Imeshindwa kuonyesha upya kipengele cha Dokezo</translation>
+<translation id="5763382633136178763">Vichupo fiche</translation>
 <translation id="5763514718066511291">Gusa ili unakili URL ya programu hii</translation>
 <translation id="5765780083710877561">Maelezo:</translation>
+<translation id="5776970333778123608">Data ambayo si muhimu</translation>
 <translation id="5793665092639000975">Inatumia <ph name="SPACE_USED"/> kati ya <ph name="SPACE_AVAILABLE"/></translation>
 <translation id="5795872532621730126">Tafuta na uvinjari</translation>
 <translation id="5736731321935944068">Brave inaweza kutumia historia yako ili kuweka mapendeleo kwenye huduma ya Tafuta na Brave, matangazo na huduma nyingine za Brave</translation>
 <translation id="5809361687334836369">{HOURS,plural, =1{Saa # iliyopita}other{Saa # zilizopita}}</translation>
 <translation id="5311273890481188673">Hakimiliki <ph name="YEAR"/> Brave LLC. Haki zote zimehifadhiwa.</translation>
+<translation id="5814131985548525293">Andika hapa au uguse aikoni ya maikrofoni ili uanze</translation>
 <translation id="5817918615728894473">Oanisha</translation>
 <translation id="583281660410589416">Haijulikani</translation>
 <translation id="5833984609253377421">Shiriki kiungo</translation>
 <translation id="3888648114124182147">Inapakua Sasisho la Brave…</translation>
-<translation id="584120177693484274">Hujachagua</translation>
 <translation id="5853623416121554550">imesitishwa</translation>
 <translation id="5854790677617711513">Iliyohifadhiwa kwa zaidi ya siku 30</translation>
+<translation id="5855546874025048181">Chuja: <ph name="REFINE_TEXT"/></translation>
 <translation id="998321811308652668">Brave imeshindwa kuwasha adapta ya Bluetooth</translation>
 <translation id="5860491529813859533">Washa</translation>
 <translation id="5862731021271217234">Washa kipengele cha usawazishaji ili upate vichupo kutoka kwenye vifaa vyako vingine</translation>
 <translation id="5864174910718532887">Maelezo: Imepangwa kulingana na jina la tovuti</translation>
 <translation id="5864419784173784555">Inasubiri kipakuliwa kingine…</translation>
 <translation id="5869522115854928033">Manenosiri yaliyohifadhiwa</translation>
-<translation id="5876056640971328065">Sitisha video</translation>
 <translation id="9037412730408024068">Ili tukusaidie ukamilishe majukumu, Brave itapokea URL na maudhui ya tovuti ambako unatumia programu ya Mratibu na pia maelezo unayotuma kupitia programu ya Mratibu</translation>
 <translation id="5919204609460789179">Sasisha <ph name="PRODUCT_NAME"/> ili uanze kusawazisha</translation>
 <translation id="5937580074298050696">Imeokoa <ph name="AMOUNT"/></translation>
 <translation id="5939518447894949180">Weka upya</translation>
 <translation id="6103327872225198548">Unatumia Brave kutafuta</translation>
+<translation id="5951119116059277034">Unaangalia ukurasa wa moja kwa moja</translation>
+<translation id="5951615825629292797">Lugha iko tayari, funga kisha ufungue <ph name="APP_NAME"/></translation>
 <translation id="8109318360573330108">Hutuma URL ya ukurasa unaojaribu kufikia kwa Brave</translation>
 <translation id="305870044889644984">Fungua Kituo cha Usaidizi cha Brave katika kichupo kipya</translation>
+<translation id="5957442310066583693">Ili uone tovuti zako maarufu, gusa kitufe cha Ukurasa wa mwanzo</translation>
 <translation id="5958275228015807058">Tafuta faili na kurasa zako katika Vipakuliwa</translation>
 <translation id="5962718611393537961">Gusa ili ukunje</translation>
 <translation id="7760665516427405230">Ili ushiriki ukurasa huu kwenye kifaa kingine, washa usawazishaji katika mipangilio ya Brave</translation>
+<translation id="5964869237734432770">Komesha maelezo ya picha</translation>
 <translation id="5979084224081478209">Kagua manenosiri</translation>
+<translation id="5982307838673692400">Fungua kichupo Fiche</translation>
 <translation id="6456271171669383967">Endelea Kutumia Brave</translation>
 <translation id="6005538289190791541">Nenosiri linalopendekezwa</translation>
+<translation id="6014293228235665243">Ambazo Hujasoma</translation>
 <translation id="6036057147555329831">ICU ya Ziada</translation>
 <translation id="6039379616847168523">Nenda kwenye kichupo kinachofuata</translation>
+<translation id="6040143037577758943">Funga</translation>
 <translation id="604124094241169006">Otomatiki</translation>
 <translation id="6042308850641462728">Zaidi</translation>
 <translation id="604996488070107836">Kipakuliwa cha <ph name="FILE_NAME"/> hakijafaulu kwa sababu ya hitilafu isiyojulikana.</translation>
@@ -627,26 +691,34 @@ Ili ubadilishe mipangilio hii, <ph name="BEGIN_LINK"/>fanya usawazishaji upya<ph
 <translation id="6108923351542677676">Usanidi unaendelea...</translation>
 <translation id="6111020039983847643">data iliyotumiwa</translation>
 <translation id="6112702117600201073">Inaonyesha upya ukurasa</translation>
+<translation id="6122831415929794347">Ungependa kuzima kipengele cha Kuvinjari Salama?</translation>
 <translation id="6127379762771434464">Kipengee kimeondolewa</translation>
+<translation id="6137022273846704445">Lugha inayotumika kwenye <ph name="APP_NAME"/></translation>
+<translation id="6140709049082532940">Ulinzi ulioboreshwa:</translation>
 <translation id="6140912465461743537">Nchi/Eneo</translation>
 <translation id="614940544461990577">Jaribu:</translation>
 <translation id="6154478581116148741">Washa kipengele cha kufunga skrini katika Mipangilio ili uhamishe manenosiri yako kutoka kwenye kifaa hiki</translation>
 <translation id="6157392216611456285">Chagua <ph name="APP_NAME"/></translation>
 <translation id="6159335304067198720"><ph name="PERCENT"/> ya data imeokolewa</translation>
-<translation id="6201345951596836663">Kiungo Kimenakiliwa</translation>
+<translation id="6186394685773237175">Hatukupata manenosiri yaliyoathiriwa</translation>
+<translation id="6192907950379606605">Pata maelezo ya picha</translation>
 <translation id="6206830853671714236">Chagua wakati wa kupakua</translation>
 <translation id="6210748933810148297">Wewe si <ph name="EMAIL"/>?</translation>
+<translation id="6211386937064921208">Unaangalia onyesho la kukagua ukurasa huu</translation>
 <translation id="6218096829563201111">Tafuta bidhaa zinazofafana <ph name="BEGIN_NEW"/>Mpya<ph name="END_NEW"/></translation>
 <translation id="6221633008163990886">Fungua ili uhamishe manenosiri yako</translation>
 <translation id="6232535412751077445">Kuwasha ‘Usifuatilie’ kunamaanisha kuwa ombi litajumuishwa pamoja na maelezo yako mengine ya kuvinjari. Athari yoyote itategemea ikiwa tovuti inajibu ombi, na namna ombi litakavyofasiriwa.
 
 Kwa mfano, baadhi ya tovuti zinaweza kujibu ombi hili kwa kukuonyesha matangazo ambayo hayalingani na tovuti nyingine ulizotembelea. Tovuti nyingi bado zitakusanya na kutumia data yako ya kuvinjari — kwa mfano ili kuboresha usalama, kutoa maudhui, matangazo na mapendekezo, na kuzalisha takwimu za kuripoti.</translation>
+<translation id="6243852395147506234">Unaweza kuzisoma ukiwa nje ya mtandao</translation>
 <translation id="624789221780392884">Sasisho iko tayari</translation>
 <translation id="6255999984061454636">Mapendekezo ya maudhui</translation>
 <translation id="6277522088822131679">Kulikuwa na tatizo katika kuchapisha ukurasa. Tafadhali jaribu tena.</translation>
+<translation id="6278428485366576908">Mandhari</translation>
 <translation id="7766792282581704663">Kwa kutumia Brave, unakubali <ph name="BEGIN_LINK1"/>Sheria na Masharti ya Brave<ph name="END_LINK1"/> na <ph name="BEGIN_LINK2"/>Sheria na Masharti ya Ziada ya Brave na Mfumo wa Uendeshaji wa Brave<ph name="END_LINK2"/>.</translation>
 <translation id="629730747756840877">Akaunti</translation>
 <translation id="6297765934698848803">Shirika linalosimamia kifaa chako limezima kamera yako.</translation>
+<translation id="6301525844455696527">Fuatilia orodha yako ya kusoma</translation>
 <translation id="6303969859164067831">Ondoka kwenye akaunti na uzime usawazishaji</translation>
 <translation id="6312687380483398334">Programu za wavuti (tuli)</translation>
 <translation id="6316139424528454185">Haiwezi kutumia toleo la Android</translation>
@@ -656,17 +728,19 @@ Kwa mfano, baadhi ya tovuti zinaweza kujibu ombi hili kwa kukuonyesha matangazo 
 <translation id="6341580099087024258">Iulize ambapo itahifadhi faili</translation>
 <translation id="6342069812937806050">Sasa hivi tu</translation>
 <translation id="6343495912647200061">{SHIPPING_ADDRESS,plural, =1{<ph name="SHIPPING_ADDRESS_PREVIEW"/>\u2026 na <ph name="NUMBER_OF_ADDITIONAL_ADDRESSES"/> zaidi}other{<ph name="SHIPPING_ADDRESS_PREVIEW"/>\u2026 na <ph name="NUMBER_OF_ADDITIONAL_ADDRESSES"/> zaidi}}</translation>
+<translation id="6345878117466430440">Tia alama kuwa umesoma</translation>
 <translation id="6364438453358674297">Je, ungependa kuondoa pendekezo kwenye historia?</translation>
 <translation id="6366047038980456022"><ph name="APP_NAME"/> ina kasi na vipengele mahiri unavyohitaji ili kufanya kazi, kubuni na kugundua maudhui mtandaoni kwa usalama</translation>
-<translation id="6369229450655021117">Ukiwa hapa, unaweza kutafuta kwenye wavuti, kushiriki na marafiki na kuona kurasa ambazo zimefunguliwa</translation>
 <translation id="6378173571450987352">Maelezo: Imepangwa kulingana na kiasi cha data inayotumiwa</translation>
 <translation id="4993481112200507346"><ph name="APP_NAME"/> itafunguka kwenye Brave. Kwa kuendelea, unakubali <ph name="BEGIN_LINK1"/>Sheria na Masharti ya Brave<ph name="END_LINK1"/> na <ph name="BEGIN_LINK2"/>Sheria na Masharti ya Ziada ya Brave na Mfumo wa Uendeshaji wa Brave<ph name="END_LINK2"/>.</translation>
 <translation id="6381421346744604172">Fanya tovuti kuwa nyeusi</translation>
 <translation id="6395288395575013217">KIUNGO</translation>
 <translation id="6397616442223433927">Imerudi mtandaoni</translation>
-<translation id="6398765197997659313">Ondoka kwenye Skrini nzima</translation>
+<translation id="6402652558933147609"><ph name="ERROR_CODE"/> <ph name="VIOLATED_URL"/></translation>
 <translation id="6404511346730675251">Badilisha alamisho</translation>
 <translation id="6406506848690869874">Sawazisha</translation>
+<translation id="6410883413783534063">Fungua vichupo ili utembelee kurasa mbalimbali kwa wakati mmoja</translation>
+<translation id="7810992039564280750">Hukagua URL zilizo na orodha ya tovuti zisizo salama zinazohifadhiwa kwenye Brave. Iwapo tovuti inajaribu kuiba nenosiri lako au unapopakua faili hatari, Brave inaweza pia kutuma URL, ikiwa ni pamoja na sehemu za maudhui ya ukurasa, kwenye kipengele cha Kuvinjari Salama.</translation>
 <translation id="641643625718530986">Chapisha...</translation>
 <translation id="6427112570124116297">Tafsiri Wavuti</translation>
 <translation id="6433501201775827830">Chagua mtambo wako wa kutafuta</translation>
@@ -685,6 +759,7 @@ Kwa mfano, baadhi ya tovuti zinaweza kujibu ombi hili kwa kukuonyesha matangazo 
 <translation id="708829030563435351">Haitaonyesha tovuti unazotembelea katika Brave. Itafuta vipima muda vyote kwenye tovuti.</translation>
 <translation id="7723158744459952869">Brave imechukua muda mrefu kujibu</translation>
 <translation id="6539092367496845964">Hitilafu fulani imetokea. Jaribu tena baadaye.</translation>
+<translation id="6541983376925655882">{NUM_HOURS,plural, =1{Ilikaguliwa saa moja iliyopita}other{Ilikaguliwa saa # zilizopita}}</translation>
 <translation id="6545017243486555795">Futa Data Yote</translation>
 <translation id="6560414384669816528">Tafuta kwa kutumia Sogou</translation>
 <translation id="656065428026159829">Angalia zaidi</translation>
@@ -694,11 +769,15 @@ Kwa mfano, baadhi ya tovuti zinaweza kujibu ombi hili kwa kukuonyesha matangazo 
 <translation id="6583199322650523874">Wekea alamisho kwenye ukurasa uliofungua</translation>
 <translation id="6588043302623806746">Tumia DNS salama</translation>
 <translation id="6590471736817333463">Okoa hadi asilimia 60 ya data</translation>
+<translation id="6590680911007613645">Hakikisha kwamba nenosiri unalohifadhi linalingana na nenosiri lako kwenye <ph name="SITE"/></translation>
 <translation id="6593061639179217415">Tovuti ya kompyuta ya mezani</translation>
+<translation id="2466982615210189224">Picha hutumwa kwa Brave ili kuboresha maelezo unayopata.</translation>
 <translation id="6597891566292541626">Weka QR/msimbopau katika fremu hii.</translation>
 <translation id="663059986967017181">Imenakiliwa kwenye Brave</translation>
-<translation id="662080504995468778">Usiondoke</translation>
+<translation id="661266467055912436">Huboresha usalama wako na wa kila mtu kwenye wavuti.</translation>
+<translation id="6618554661997243500">Ili uone tovuti na taarifa maarufu unazopendekezewa, gusa kitufe cha Ukurasa wa mwanzo</translation>
 <translation id="6627583120233659107">Badilisha folda</translation>
+<translation id="2259649928554669581">Ili upate mipangilio zaidi inayohusiana na faragha, usalama na ukusanyaji wa data, angalia <ph name="BEGIN_LINK1"/>Usawazishaji<ph name="END_LINK1"/> na <ph name="BEGIN_LINK2"/>huduma za Brave<ph name="END_LINK2"/></translation>
 <translation id="6643016212128521049">Futa</translation>
 <translation id="6643649862576733715">Panga kulingana na kiasi cha data kilichookolewa</translation>
 <translation id="6648977384226967773">{CONTACT,plural, =1{<ph name="CONTACT_PREVIEW"/>\u2026 na <ph name="NUMBER_OF_ADDITIONAL_CONTACTS"/> zaidi}other{<ph name="CONTACT_PREVIEW"/>\u2026 na <ph name="NUMBER_OF_ADDITIONAL_CONTACTS"/> zaidi}}</translation>
@@ -706,23 +785,23 @@ Kwa mfano, baadhi ya tovuti zinaweza kujibu ombi hili kwa kukuonyesha matangazo 
 <translation id="8428644385678426438">Brave inahitaji idhini ya kufikia mahali ili ichanganue vifaa. <ph name="BEGIN_LINK"/>Ruhusa za sasisho<ph name="END_LINK"/></translation>
 <translation id="6657585470893396449">Nenosiri</translation>
 <translation id="6659594942844771486">Kichupo</translation>
+<translation id="6663079968236414793">Unganisha kwenye maandishi</translation>
 <translation id="666731172850799929">Fungua katika <ph name="APP_NAME"/></translation>
 <translation id="7392539049993970338">Ilani ya Faragha ya Brave</translation>
 <translation id="6671495933530132209">Nakili picha</translation>
 <translation id="8581481290581777242">Ungependa kufuta data yako yote ya Brave kwenye kifaa hiki?</translation>
-<translation id="6689172468748959065">Picha za wasifu</translation>
 <translation id="6691888250440401212">1. Chagua <ph name="APP_NAME"/>\n2. Gusa “Weka iwe chaguomsingi”</translation>
 <translation id="6697492270171225480">Onyesha mapendekezo ya kurasa zinazofanana na ukurasa huu wakati haupatikani</translation>
 <translation id="6698801883190606802">Dhibiti data iliyosawazishwa</translation>
 <translation id="1006927014032731288">Seva za Brave zitaboresha kurasa unazotembelea.</translation>
-<translation id="6710213216561001401">Iliyotangulia</translation>
+<translation id="670498945988402717">Ilikaguliwa jana</translation>
+<translation id="6710213216561001401">Iliyopita</translation>
 <translation id="671481426037969117">Kipindi cha kipima muda cha <ph name="FQDN"/> kimeisha. Kitaanza tena kesho.</translation>
 <translation id="6738867403308150051">Inapakua...</translation>
-<translation id="6741063444351041466"><ph name="BEGIN_LINK"/>Msimamizi wako<ph name="END_LINK"/> amezima mipangilio ya Kuvinjari Salama</translation>
 <translation id="6767294960381293877">Orodha ya vifaa vinavyoweza kutumia kichupo pamoja imefunguliwa kwenye nusu ya skrini.</translation>
+<translation id="6783942555455976443">Hifadhi ukurasa huu ili uusome baadaye na upate kikumbusho</translation>
 <translation id="6811034713472274749">Unaweza kuona ukurasa</translation>
 <translation id="6820686453637990663">CVC</translation>
-<translation id="6831043979455480757">Tafsiri</translation>
 <translation id="4991384657077828949">Tusaidie kuboresha usalama wa Brave</translation>
 <translation id="6846298663435243399">Inapakia…</translation>
 <translation id="6850409657436465440">Bado inapakua faili</translation>
@@ -730,11 +809,13 @@ Kwa mfano, baadhi ya tovuti zinaweza kujibu ombi hili kwa kukuonyesha matangazo 
 <translation id="4046835482356054431">Dokezo kutoka Brave - imezimwa</translation>
 <translation id="6864459304226931083">Pakua picha</translation>
 <translation id="6865313869410766144">Data ya fomu ya Kujaza Kiotomatiki</translation>
-<translation id="6884306546558072722">Endelea kupitia ukiwa nje ya mtandao</translation>
+<translation id="6882836635272038266">Ulinzi wa kawaida dhidi ya tovuti, vipakuliwa na viendelezi vinavyojulikana kuwa hatari.</translation>
 <translation id="688738109438487280">Ongeza data iliyopo kwenye <ph name="TO_ACCOUNT"/>.</translation>
 <translation id="6891726759199484455">Fungua ili unakili nenosiri lako</translation>
 <translation id="6896758677409633944">Nakili</translation>
+<translation id="6900532703269623216">Ulinzi ulioboreshwa</translation>
 <translation id="6903907808598579934">Washa kipengele cha kusawazisha</translation>
+<translation id="6929699136511445623">Washa usawazishaji wa mfumo wa Android</translation>
 <translation id="6942665639005891494">Badilisha sehemu chaguomsingi ya kupakua wakati wowote ukitumia chaguo la menyu ya Mipangilio</translation>
 <translation id="6945221475159498467">Chagua</translation>
 <translation id="6955535239952325894">Mipangilio hii imezimwa kwenye vivinjari vinavyodhibitiwa</translation>
@@ -749,10 +830,15 @@ Kwa mfano, baadhi ya tovuti zinaweza kujibu ombi hili kwa kukuonyesha matangazo 
 <translation id="702463548815491781">Inapendekezwa wakati umewasha TalkBack au kipengele cha Kufikia Kupitia Swichi</translation>
 <translation id="7029809446516969842">Manenosiri</translation>
 <translation id="703523980599857277">Badilisha ukurasa wa kwanza</translation>
+<translation id="7054588988317389591">Ungependa kupata maelezo ya picha?</translation>
 <translation id="7055152154916055070">Imezuiwa kuelekeza kwingine:</translation>
 <translation id="7063006564040364415">Haikuweza kuunganisha kwenye seva ya usawazishaji.</translation>
 <translation id="7071521146534760487">Dhibiti akaunti</translation>
+<translation id="707155805709242880">Chagua unachotaka kusawazisha hapo chini</translation>
 <translation id="7077143737582773186">Kadi ya SD</translation>
+<translation id="2374582967527009647">Hutuma URL kwenye kipengele cha Kuvinjari Salama ili zikaguliwe. Hutuma pia sampuli ndogo ya kurasa, vipakuliwa, shughuli za viendelezi na maelezo ya mfumo ili kusaidia kugundua matukio mapya hatari. Huunganisha data hii kwenye Akaunti yako ya Brave kwa muda mfupi ukiwa umeingia katika akaunti, ili kukulinda kwenye programu zote za Brave.</translation>
+<translation id="8208853227947884571">Brave imesasishwa</translation>
+<translation id="7106762743910369165">Kivinjari chako kinadhibitiwa na shirika lako</translation>
 <translation id="1968157943459987269">Hufuta historia na ukamilishaji kiotomatiki kwenye sehemu ya anwani. Huenda Akaunti yako ya Brave ikawa na aina nyingine za historia ya kuvinjari kwenye <ph name="BEGIN_LINK"/>myactivity.google.com<ph name="END_LINK"/>.</translation>
 <translation id="7128355412245153445">Angalia tovuti zako kuu na taarifa za hivi punde unapogusa kitufe cha Ukurasa wa Mwanzo</translation>
 <translation id="7138678301420049075">Nyingine</translation>
@@ -762,21 +848,25 @@ Kwa mfano, baadhi ya tovuti zinaweza kujibu ombi hili kwa kukuonyesha matangazo 
 <translation id="7173114856073700355">Fungua Mipangilio</translation>
 <translation id="7177466738963138057">Unaweza kubadilisha hii baadaye katika Mipangilio</translation>
 <translation id="7180611975245234373">Onyesha upya</translation>
+<translation id="8355565210555500987">Hulinda usalama wako kwenye Brave na inaweza kutumiwa kuboresha usalama wako kwenye programu nyingine za Brave ukiwa umeingia katika akaunti.</translation>
 <translation id="7189372733857464326">Inasubiri Huduma za Google Play ili kukamilisha kusasisha</translation>
 <translation id="7191430249889272776">Kichupo kimefunguliwa chini chini.</translation>
-<translation id="723171743924126238">Chagua picha</translation>
 <translation id="3512968675351418494">Ili uone tovuti katika lugha unayotumia, pata toleo jipya la Brave</translation>
-<translation id="7243308994586599757">Chaguo zinapatikana karibu na sehemu ya chini ya skrini</translation>
 <translation id="8287068819750208230">Hakikisha kuwa umewasha kipengele cha usawazishaji katika <ph name="TARGET_DEVICE_NAME"/> kwenye Brave</translation>
 <translation id="7274013316676448362">Tovuti imezuiwa</translation>
+<translation id="7286572596625053347">Ungependa kubadilisha <ph name="LANGUAGE"/>?</translation>
 <translation id="7290209999329137901">Huwezi kubadilisha jina</translation>
 <translation id="7291387454912369099">Ulipaji Unaoanzishwa na Mratibu</translation>
 <translation id="2997266899014181325">Ili uanze kusawazisha, washa mipangilio ya "Sawazisha data yako kwenye Brave".</translation>
+<translation id="7293429513719260019">Chagua lugha</translation>
 <translation id="729975465115245577">Kifaa chako hakina programu ya kuhifadhi faili ya manenosiri.</translation>
 <translation id="7302081693174882195">Maelezo: Imepangwa kulingana na kiasi cha data kilichookolewa</translation>
+<translation id="1382596880054356475">Nje ya mtandao. Brave imeshindwa kukagua manenosiri yako.</translation>
+<translation id="7313188324932846546">Gusa ili uweke mipangilio ya usawazishaji</translation>
 <translation id="3252158532344029638">Katika Hali nyepesi, Brave hupakia kurasa haraka zaidi na huokoa data kwa hadi asilimia 60.</translation>
 <translation id="7333031090786104871">Bado inaongeza tovuti ya awali</translation>
 <translation id="7340958967809483333">Chaguo za Dokezo</translation>
+<translation id="7352651011704765696">Hitilafu fulani imetokea</translation>
 <translation id="7352939065658542140">VIDEO</translation>
 <translation id="7353894246028566792">{NUM_SELECTED,plural, =1{Shiriki kipengee 1 kilichochaguliwa}other{Shiriki vipengee # vilivyochaguliwa}}</translation>
 <translation id="7359002509206457351">Ufikiaji wa njia za kulipa</translation>
@@ -787,6 +877,7 @@ Kwa mfano, baadhi ya tovuti zinaweza kujibu ombi hili kwa kukuonyesha matangazo 
 <translation id="741204030948306876">Ndiyo, ninakubali</translation>
 <translation id="7413229368719586778">Tarehe ya kuanza <ph name="DATE"/></translation>
 <translation id="7431991332293347422">Dhibiti namna historia yako ya kuvinjari inavyotumika kuweka mapendeleo kwenye huduma ya Tafuta na Brave na zaidi</translation>
+<translation id="7435356471928173109">Kimezimwa na msimamizi wako</translation>
 <translation id="6234515504547364178">Ondoka kwenye Brave</translation>
 <translation id="7444811645081526538">Aina zingine</translation>
 <translation id="3699067418237091329">Hukuondoa kwenye akaunti za tovuti nyingi. Hutaondolewa kwenye Akaunti ya Brave.</translation>
@@ -830,7 +921,7 @@ Kwa mfano, baadhi ya tovuti zinaweza kujibu ombi hili kwa kukuonyesha matangazo 
 <translation id="7698359219371678927">Tunga barua pepe katika <ph name="APP_NAME"/></translation>
 <translation id="7704317875155739195">Jaza kiotomatiki URL na hoja za utafutaji</translation>
 <translation id="7725024127233776428">Kurasa unazoalamisha zitaonekana hapa</translation>
-<translation id="773466115871691567">Zitafsiri kurasa katika <ph name="SOURCE_LANGUAGE"/> wakati wote</translation>
+<translation id="7735637452482172701">Fungua kwa kutumia kipengele cha Kufunga Skrini</translation>
 <translation id="1943176487615318915">Ili kutambua programu na tovuti hatari, Brave hutuma URL za baadhi ya kurasa unazotembelea. maelezo machache ya mfumo na maudhui ya ukurasa kwa Brave</translation>
 <translation id="7757787379047923882">Maandishi yameshirikiwa kutoka <ph name="DEVICE_NAME"/></translation>
 <translation id="7761849928583394409">Chagua tarehe na saa</translation>
@@ -839,11 +930,12 @@ Kwa mfano, baadhi ya tovuti zinaweza kujibu ombi hili kwa kukuonyesha matangazo 
 <translation id="7772032839648071052">Thibitisha kaulisiri</translation>
 <translation id="7772375229873196092">Funga <ph name="APP_NAME"/></translation>
 <translation id="7774809984919390718">{PAYMENT_METHOD,plural, =1{<ph name="PAYMENT_METHOD_PREVIEW"/>\u2026 na <ph name="NUMBER_OF_ADDITIONAL_PAYMENT_METHODS"/> zaidi}other{<ph name="PAYMENT_METHOD_PREVIEW"/>\u2026 na <ph name="NUMBER_OF_ADDITIONAL_PAYMENT_METHODS"/> zaidi}}</translation>
+<translation id="7778840695157240389">Angalia tena baadaye ili upate taarifa mpya</translation>
 <translation id="7791543448312431591">Ongeza</translation>
 <translation id="780301667611848630">Hapana</translation>
 <translation id="7810647596859435254">Fungua ukitumia...</translation>
 <translation id="7821588508402923572">Data unayookoa itaonekana hapa</translation>
-<translation id="783819812427904514">Rejesha sauti ya video</translation>
+<translation id="7844171778363018843">Hujachagua data yoyote ya kusawazisha</translation>
 <translation id="7068829570137757602">Huduma za Brave</translation>
 <translation id="784934925303690534">Muda</translation>
 <translation id="7851858861565204677">Vifaa vingine</translation>
@@ -852,18 +944,21 @@ Kwa mfano, baadhi ya tovuti zinaweza kujibu ombi hili kwa kukuonyesha matangazo 
 <translation id="7876243839304621966">Ondoa yote</translation>
 <translation id="7882131421121961860">Hakuna historia iliyopatikana</translation>
 <translation id="6143689084714664628">Umefunguka katika Brave</translation>
+<translation id="5570166585033664196">Jinsi ya kutumia Brave</translation>
+<translation id="7919123827536834358">Tafsiri lugha hizi kiotomatiki</translation>
 <translation id="7925590027513907933">{FILE_COUNT,plural, =1{Inapakua faili.}other{Inapakua faili #.}}</translation>
 <translation id="7926975587469166629">Jina la kuwakilisha kadi</translation>
 <translation id="7929962904089429003">Fungua menyu</translation>
+<translation id="7930998711684428189">Hukuonya iwapo manenosiri yamefichuliwa katika tukio la ufichuzi haramu wa data.</translation>
 <translation id="7942131818088350342"><ph name="PRODUCT_NAME"/> imepitwa na wakati.</translation>
 <translation id="7947953824732555851">Kubali na uingie</translation>
+<translation id="7961926449547174351">Umezuia Nafasi ya hifadhi isifikiwe, tafadhali nenda kwenye Mipangilio ili uruhusu.</translation>
 <translation id="7963646190083259054">Mchuuzi:</translation>
 <translation id="5149323899804758325">Ili uchanganue msimbo wa QR, badilisha mipangilio yako ili Brave iweze kutumia kamera yako</translation>
 <translation id="7971136598759319605">Ilitumika siku 1 iliyopita</translation>
 <translation id="7975379999046275268">Kagua ukurasa kwanza <ph name="BEGIN_NEW"/>Mpya<ph name="END_NEW"/></translation>
 <translation id="7981313251711023384">Pakia mapema kurasa ili upate huduma ya haraka ya kuvinjari na kutafuta</translation>
 <translation id="79859296434321399">Sakinisha ARCore ili uangalie maudhui ya uhalisia ulioboreshwa</translation>
-<translation id="7986741934819883144">Chagua anwani</translation>
 <translation id="7998918019931843664">Fungua tena kichupo kilichofungwa</translation>
 <translation id="8004582292198964060">Kivinjari</translation>
 <translation id="3325020657155065477">Pia, futa data yako ya Brave kwenye kifaa hiki</translation>
@@ -872,16 +967,17 @@ Kwa mfano, baadhi ya tovuti zinaweza kujibu ombi hili kwa kukuonyesha matangazo 
 <translation id="8027863900915310177">Chagua ambako utahifadhi faili ya kupakuliwa</translation>
 <translation id="8035133914807600019">Folda mpya…</translation>
 <translation id="8037750541064988519">Zimesalia siku <ph name="DAYS"/></translation>
+<translation id="8037801708772278989">Imekaguliwa sasa hivi</translation>
 <translation id="804335162455518893">Kadi ya SD haikupatikana</translation>
 <translation id="805047784848435650">Kulingana na historia yako ya kuvinjari</translation>
 <translation id="8051695050440594747">MB <ph name="MEGABYTES"/> zinapatikana</translation>
 <translation id="2317945146070194624">Fungua katika kichupo kipya cha Brave</translation>
 <translation id="8063895661287329888">Haikuweza kuongeza alamisho.</translation>
 <translation id="806745655614357130">Weka data yangu katika sehemu tofauti</translation>
-<translation id="8067883171444229417">Cheza video</translation>
 <translation id="8073388330009372546">Fungua picha katika kichupo kipya</translation>
 <translation id="8076492880354921740">Vichupo</translation>
 <translation id="8084114998886531721">Nenosiri lililohifadhiwa</translation>
+<translation id="8103578431304235997">Kichupo Fiche</translation>
 <translation id="8105893657415066307"><ph name="DESCRIPTION"/> <ph name="SEPARATOR"/> <ph name="FILE_SIZE"/></translation>
 <translation id="8109613176066109935">Washa kipengele cha usawazishaji ili upate alamisho kwenye vifaa vyako vyote</translation>
 <translation id="4565206163201411670">Ungependa kuonyesha shughuli zako za Brave katika mpango wa Nidhamu Dijitali?</translation>
@@ -895,6 +991,7 @@ Kwa mfano, baadhi ya tovuti zinaweza kujibu ombi hili kwa kukuonyesha matangazo 
 <translation id="8190358571722158785">Imesalia siku 1</translation>
 <translation id="8200772114523450471">Endelea</translation>
 <translation id="8209050860603202033">Fungua picha</translation>
+<translation id="8216351761227087153">Tazama</translation>
 <translation id="8218052821161047641">Ukurasa wa haraka</translation>
 <translation id="8218622182176210845">Dhibiti akaunti yako</translation>
 <translation id="8223642481677794647">Menyu ya kadi ya mipasho</translation>
@@ -911,10 +1008,10 @@ Kwa mfano, baadhi ya tovuti zinaweza kujibu ombi hili kwa kukuonyesha matangazo 
 <translation id="8310344678080805313">Vichupo muundo-msingi</translation>
 <translation id="8316092324682955408"><ph name="DOMAIN_NAME"/> na tovuti zingine</translation>
 <translation id="6195417478702700398">Ili upate hali bora zaidi ya kuvinjari, fungua na usasishe Brave</translation>
-<translation id="8339163506404995330">Kurasa za <ph name="LANGUAGE"/> hazitatafsiriwa</translation>
 <translation id="8349013245300336738">Panga kulingana na kiasi cha data kilichotumika</translation>
 <translation id="8364299278605033898">Ona tovuti maarufu</translation>
 <translation id="8368027906805972958">Kifaa kisichojulikana au kisichotumika (<ph name="DEVICE_ID"/>)</translation>
+<translation id="8372925856448695381"><ph name="LANG"/> iko tayari.</translation>
 <translation id="8393700583063109961">Tuma ujumbe</translation>
 <translation id="8407396331882458341">1. Chagua <ph name="APP_NAME"/>\n2. Gusa “Kila mara”</translation>
 <translation id="8413126021676339697">Onyesha historia kamili</translation>
@@ -922,6 +1019,7 @@ Kwa mfano, baadhi ya tovuti zinaweza kujibu ombi hili kwa kukuonyesha matangazo 
 <translation id="8427875596167638501">Kichupo cha kukagua kwanza kimefunguliwa nusu</translation>
 <translation id="8428213095426709021">Mipangilio</translation>
 <translation id="8438566539970814960">Boresha utafutaji na kuvinjari</translation>
+<translation id="8442258441309440798">Hakuna taarifa zinazopatikana</translation>
 <translation id="4058091506841967397">Brave haiwezi kusasisha</translation>
 <translation id="8445448999790540984">Haiwezi kuhamisha manenosiri</translation>
 <translation id="8461694314515752532">Simba data iliyosawazishwa kwa njia fiche ukitumia kauli yako ya siri ya usawazishaji</translation>
@@ -934,18 +1032,20 @@ Kwa mfano, baadhi ya tovuti zinaweza kujibu ombi hili kwa kukuonyesha matangazo 
 <translation id="230699814587342492">Manenosiri ya Brave</translation>
 <translation id="8503813439785031346">Jina la mtumiaji</translation>
 <translation id="133012818630824069">Tuma manenosiri yaliyohifadhiwa kwenye Brave</translation>
+<translation id="8514577642972634246">Ingia kwenye hali fiche</translation>
 <translation id="8516012719330875537">Kihariri cha Picha</translation>
 <translation id="8523928698583292556">Futa manenosiri yaliyohifadhiwa</translation>
-<translation id="8525306231823319788">Skrini nzima</translation>
 <translation id="8540136935098276800">Weka URL yenye muundo sahihi</translation>
 <translation id="854522910157234410">Fungua ukurasa huu</translation>
 <translation id="8555836665334561807">Kwenye Wi-Fi</translation>
 <translation id="8558485628462305855">Sasisha ARCore ili uangalie maudhui ya uhalisia ulioboreshwa</translation>
 <translation id="8559990750235505898">Jitolee kutafsiri kurasa katika lugha zingine</translation>
+<translation id="8560602726703398413">Pata orodha yako ya kusoma katika alamisho</translation>
 <translation id="8561196567344536112">1. Nenda kwenye Mipangilio\n2. Gusa “Programu ya Kivinjari”\n3. Chagua <ph name="APP_NAME"/></translation>
 <translation id="8562452229998620586">Manenosiri yaliyohifadhiwa yataonekana hapa.</translation>
 <translation id="8569404424186215731">tangu <ph name="DATE"/></translation>
 <translation id="8571213806525832805">Wiki 4 zilizopita</translation>
+<translation id="8572344201470131220">Picha Imenakiliwa</translation>
 <translation id="8583805026567836021">Inafuta data ya akaunti</translation>
 <translation id="860043288473659153">Jina la mmiliki wa kadi</translation>
 <translation id="5784514951651328424">Huenda Akaunti yako ya Brave ikawa na aina nyingine za historia ya kuvinjari kwenye <ph name="BEGIN_LINK"/>myactivity.google.com<ph name="END_LINK"/>.</translation>
@@ -953,29 +1053,33 @@ Kwa mfano, baadhi ya tovuti zinaweza kujibu ombi hili kwa kukuonyesha matangazo 
 <translation id="8636825310635137004">Ili upate vichupo kutoka kwenye vifaa vyako vingine, washa kipengele cha usawazishaji.</translation>
 <translation id="8641930654639604085">Jaribu kuzuia tovuti zilizo na maudhui ya watu wazima</translation>
 <translation id="2734140769649165081">Unaweza kufuta data hii katika Mipangilio ya Brave</translation>
-<translation id="8655599981421006542">Gusa hapa ili utengeneze vichupo vipya na urudi kwenye vichupo vya awali</translation>
+<translation id="6482272021231898750">Ingia katika tovuti hii na Brave ukitumia Akaunti yako ya Brave. Unaweza kuwasha kipengele cha kusawazisha baadaye.</translation>
+<translation id="6464188276370426100">Jinsi ya kutafuta kwa kutumia Brave</translation>
 <translation id="8662811608048051533">Hukuondoa kwenye tovuti nyingi.</translation>
 <translation id="8664979001105139458">Jina la faili tayari lipo</translation>
+<translation id="8683039184091909753">picha</translation>
 <translation id="8687353297350450808">{N_BARS,plural, =1{Kiwango cha Udhibiti wa Mawimbi: upau #}other{Kiwango cha Udhibiti wa Mawimbi: pau #}}</translation>
-<translation id="868929229000858085">Tafuta kwenye anwani zako</translation>
 <translation id="869891660844655955">Muda wake unakwisha tarehe</translation>
+<translation id="8699120352855309748">Usionyeshe chaguo la kutafsiri lugha hizi</translation>
 <translation id="8712637175834984815">Nimeelewa</translation>
+<translation id="8725066075913043281">Jaribu tena</translation>
 <translation id="8748850008226585750">Maudhui yamefichwa</translation>
-<translation id="8751914237388039244">Chagua picha</translation>
-<translation id="8758557275681689734">Angalia vichupo vyote ulivyofungua</translation>
 <translation id="8788265440806329501">Historia ya uelekezaji imezimwa</translation>
 <translation id="8788968922598763114">Fungua tena kichupo kilichofungwa mwisho</translation>
+<translation id="8798449543960971550">Ulizosoma</translation>
 <translation id="8812260976093120287">Kwenye baadhi ya tovuti, unaweza kulipa kwa programu za malipo zinazotumika zilizo hapo juu kwenye kifaa chako.</translation>
 <translation id="8820817407110198400">Alamisho</translation>
 <translation id="883806473910249246">Hitilafu imetokea wakati wa kupakua maudhui.</translation>
 <translation id="8840953339110955557">Ukurasa huu huenda ukatofautiana na toleo la mtandaoni.</translation>
 <translation id="8853345339104747198"><ph name="TAB_TITLE"/>, kichupo</translation>
 <translation id="8854223127042600341">Angalia faili zako za nje ya mtandao</translation>
+<translation id="8856607253650333758">Pata maelezo</translation>
+<translation id="8873817150012960745">Gusa hapa ili uanze</translation>
 <translation id="6084271560289605378">Nenda kwenye mipangilio ya Brave</translation>
+<translation id="1984646864943401749">Hutuma URL za baadhi ya kurasa unazotembelea, maelezo machache ya mfumo na baadhi ya maudhui ya kurasa kwa Brave, ili kusaidia kugundua na kuzuia vitisho vipya na kulinda kila mtu kwenye wavuti.</translation>
 <translation id="8909135823018751308">Shiriki...</translation>
 <translation id="2684652081942622950">Akaunti ya Brave</translation>
 <translation id="8920114477895755567">Tunasubiri maelezo ya wazazi.</translation>
-<translation id="8921772741368021346"><ph name="POSITION"/> / <ph name="DURATION"/></translation>
 <translation id="8922289737868596582">Pakua kurasa kwenye kitufe cha Chaguo zaidi ili uzitumie nje ya mtandao</translation>
 <translation id="1174893863889683998">Ungependa kuondoa Shughuli zako za Brave kwenye mpango wa Nidhamu Dijitali?</translation>
 <translation id="8942627711005830162">Fungua katika dirisha jingine</translation>
@@ -985,13 +1089,19 @@ Kwa mfano, baadhi ya tovuti zinaweza kujibu ombi hili kwa kukuonyesha matangazo 
 <translation id="8972098258593396643">Ungependa kupakua kwenye folda chaguomsingi?</translation>
 <translation id="8988028529677883095">Tumia simu kama ufunguo wa usalama</translation>
 <translation id="8990209962746788689">Imeshindwa kutunga msimbo wa QR</translation>
+<translation id="8993760627012879038">Fungua kichupo kipya katika Hali fiche</translation>
+<translation id="8996847606757455498">Chagua mtoa huduma mwingine</translation>
 <translation id="3275122921244685452">Unaingia kwa kutumia akaunti inayodhibitiwa na <ph name="MANAGED_DOMAIN"/> na kumpa msimamizi wa kikoa hicho udhibiti wa data yako ya Brave. Data yako ya Brave itahusishwa na akaunti hii daima. Kuondoka kwenye Brave kutafuta data yako kwenye kifaa hiki, lakini itaendelea kuhifadhiwa katika Akaunti yako ya Brave.</translation>
+<translation id="9022774213089566801">Unazotembelea mara kwa mara</translation>
 <translation id="9028914725102941583">Washa usawazishaji ili ushiriki kwenye vifaa vyote</translation>
 <translation id="9040142327097499898">Arifa zinaruhusiwa. Kipengele cha mahali kimezimwa kwenye kifaa hiki.</translation>
 <translation id="9041669420854607037">{FILE_COUNT,plural, =1{Video #}other{Video #}}</translation>
+<translation id="9042893549633094279">Faragha na usalama</translation>
 <translation id="9050666287014529139">Kaulisiri</translation>
 <translation id="9063523880881406963">Zima Omba Tovuti ya Eneo-kazi</translation>
 <translation id="9065203028668620118">Badilisha</translation>
+<translation id="5496925146144075335">Data iliyohifadhiwa ambayo Brave haioni kuwa ni muhimu (k.m. tovuti ambazo hazina mipangilio iliyohifadhiwa au ambazo hutembelei sana)</translation>
+<translation id="9069543557624799859">Itaanza kupakua <ph name="TIME"/>.</translation>
 <translation id="9070377983101773829">Anza kutafuta kwa kutamka</translation>
 <translation id="8494430740943879273">Ingia katika akaunti na uwashe kipengee cha usawazishaji ili upate maudhui yanayokufaa unayopendekezewa na Brave</translation>
 <translation id="9086302186042011942">Inasawazisha</translation>
@@ -1005,8 +1115,10 @@ Kwa mfano, baadhi ya tovuti zinaweza kujibu ombi hili kwa kukuonyesha matangazo 
 <translation id="9133397713400217035">Pitia Ukiwa Nje ya Mtandao</translation>
 <translation id="9133703968756164531"><ph name="ITEM_NAME"/> (<ph name="ITEM_ID"/>)</translation>
 <translation id="9137013805542155359">Onyesha asili</translation>
+<translation id="9148126808321036104">Ingia tena</translation>
 <translation id="9155898266292537608">Unaweza pia kutafuta kwa kugusa haraka kwenye neno</translation>
 <translation id="9169507124922466868">Historia ya uelekezaji imefunguliwa nusu</translation>
+<translation id="9199368092038462496">{NUM_MINS,plural, =1{Imekaguliwa dakika moja iliyopita}other{Imekaguliwa dakika # zilizopita}}</translation>
 <translation id="9204836675896933765">Imesalia faili 1</translation>
 <translation id="9206873250291191720">A</translation>
 <translation id="9209888181064652401">Imeshindwa kupiga simu</translation>
@@ -1016,6 +1128,7 @@ Kwa mfano, baadhi ya tovuti zinaweza kujibu ombi hili kwa kukuonyesha matangazo 
 <translation id="932327136139879170">Mwanzo</translation>
 <translation id="93753284658583800">Ukurasa wa kwanza umebadilishwa</translation>
 <translation id="938850635132480979">Hitilafu: <ph name="ERROR_CODE"/></translation>
+<translation id="939598580284253335">Ingiza kaulisiri</translation>
 <translation id="5406914950576900927">Brave inaweza kutumia <ph name="BEGIN_BOLD"/>Sogou<ph name="END_BOLD"/> kutafuta nchini Uchina. Unaweza kuibadilisha katika <ph name="BEGIN_LINK"/>MipangilioE<ph name="END_LINK"/>.</translation>
 <translation id="968900484120156207">Kurasa unazotembelea zitaonekana hapa</translation>
 <translation id="970715775301869095">Zimesalia dakika <ph name="MINUTES"/></translation>
@@ -1024,9 +1137,6 @@ Kwa mfano, baadhi ya tovuti zinaweza kujibu ombi hili kwa kukuonyesha matangazo 
 <translation id="983192555821071799">Funga vichupo vyote</translation>
 <translation id="987264212798334818">Jumla</translation>
 <translation id="996149300115483134">Menyu ya kadi ya mipasho imefungwa</translation>
-<translation id="4540437243849625078">Tovuti hii inaelekea kushiriki maelezo na programu nje ya hali ya faragha.</translation>
-<translation id="1227836882233136433">Ungependa kuondoka kwenye hali ya faragha?</translation>
-<translation id="21023559487771014">Nenda kwenye hali ya Faragha</translation>
 <translation id="5186185447130319458">Faragha</translation>
 <translation id="9063160602596686558">Hutuma kiotomatiki takwimu za matumizi na ripoti za programu kuacha kufanya kazi kwa Brave Software</translation>
 <translation id="1438581767753657407">Wakati hali ya Lite imewashwa, Brave hutumia seva za Brave kuwezesha kurasa kupakia haraka. Hali ya Lite huandika upya kurasa zinazopakia polepole sana zipakie maudhui muhimu tu. Hali ya Lite haitumiki kwa vichupo vya Faragha.</translation>
