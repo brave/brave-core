@@ -84,6 +84,7 @@ struct BraveRequestInfo {
   uint64_t request_identifier = 0;
   size_t next_url_request_index = 0;
 
+  content::BrowserContext* browser_context = nullptr;
   net::HttpRequestHeaders* headers = nullptr;
   // The following two sets are populated by |OnBeforeStartTransactionCallback|.
   // |set_headers| contains headers which values were added or modified.

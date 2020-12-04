@@ -137,6 +137,7 @@ std::shared_ptr<brave::BraveRequestInfo> BraveRequestInfo::MakeCTX(
                                              ctx->redirect_source);
   ctx->upload_data = GetUploadData(request);
 
+  ctx->browser_context = browser_context;
 #if BUILDFLAG(IPFS_ENABLED)
   auto* prefs = user_prefs::UserPrefs::Get(browser_context);
   bool local = static_cast<ipfs::IPFSResolveMethodTypes>(

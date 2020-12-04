@@ -8,9 +8,19 @@
 
 #include <string>
 
+namespace content {
+class BrowserContext;
+}  // namespace content
+
 class GURL;
 
 namespace ipfs {
+
+// IsIpfsEnabled returns false if IPFS feature is unsupported for the given
+// context, disabled by IPFSEnabled policy, or the feature flag.
+bool IsIpfsEnabled(content::BrowserContext* context);
+bool IsIpfsResolveMethodDisabled(content::BrowserContext* context);
+bool IsIpfsDisabledByPolicy(content::BrowserContext* context);
 
 bool HasIPFSPath(const GURL& url);
 bool IsDefaultGatewayURL(const GURL& url);
