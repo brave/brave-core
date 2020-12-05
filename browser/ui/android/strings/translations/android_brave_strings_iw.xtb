@@ -31,6 +31,8 @@
 <translation id="5787084571334399599">מונע מהדפדפן ליצור טביעת אצבע</translation>
 <translation id="7459000603787995422">סגור כרטיסיות ביציאה</translation>
 <translation id="1680858055899097121">אל תשמר כרטיסיות בין הפעלות גלישה</translation>
+<translation id="6469509880167172749">שלח באופן אוטומטי אנליטיקות מוצר פרטיות לחלוטין אל Brave</translation>
+<translation id="7090566321964540749">מידע אנונימי זה רק מאפשר ל-Brave להעריך את השימוש הכולל בתכונות מסוימות.</translation>
 <translation id="453601949003770390">עוקבים &amp; פרסומות חסומים</translation>
 <translation id="347604927162577559">מידע\nנשמר</translation>
 <translation id="9008534313521214777">זמן מוערך\nשנחסך</translation>
@@ -50,7 +52,7 @@
 <translation id="4150201353443180367">תצוגה</translation>
 <translation id="2433507940547922241">מראה</translation>
 <translation id="2804710924397009224">הסתר את אייקון Brave Rewards</translation>
-<translation id="7358991116457217836">מסתיר את אייקון Brave Rewards כאשר Brave Rewards אינו מופעל</translation>
+<translation id="7289740269305509613">מסתיר את סמל Brave Rewards</translation>
 <translation id="8495235435594442882">הפעל סרגל כלים תחתון</translation>
 <translation id="6587448235155023666">השינויים שלך ייכנסו לתוקף בפעם הבאה שתפעיל/י מחדש את Brave</translation>
 <translation id="8701563696941209024">הפעל שנית עכשיו</translation>
@@ -67,7 +69,7 @@
 <translation id="3333887201479867589">תגמולי Brave</translation>
 <translation id="5870330605209713397">על ידי צפייה בפרסומות השומרות על הפרטיות ותמיכה באתרים והיוצרים המועדפים עליך כברירת מחדל.</translation>
 <translation id="821707262661492716">עבור צפייה במודעות השומרות על הפרטיות.</translation>
-<translation id="8267692331246948056">על ידי לחיצה על הרווח/י &amp; ותנ/י, הנך מסכימ/ה ל-</translation>
+<translation id="5302488867897327287">על ידי לחיצה על התחל להשתמש ב-Brave Rewards, הנך מסכימ/ה ל-</translation>
 <translation id="4281844954008187215">תנאי שירות</translation>
 <translation id="6871397658902960384">התחל גלישה</translation>
 <translation id="454386012157232640">לא ראיתי מודעת פרסומות</translation>
@@ -76,7 +78,7 @@
 <translation id="6511854390690723657">זה פרסומת Brave הראשון שלך. נא להקיש כדי ללמוד עוד.</translation>
 <translation id="4930714375720679147">הפעלה</translation>
 <translation id="2453860139492968684">סיום</translation>
-<translation id="7983303953939627894">הרווח/י &amp; ותנ/י</translation>
+<translation id="2070991379950719711">התחל להשתמש ב-Brave Rewards</translation>
 <translation id="48520986898237073">המשך לארנק</translation>
 <translation id="3570367516044491911">הגדר כדפדפן ברירת המחדל</translation>
 <translation id="7493053924837150477">יש לבחור את דפדפן Brave מהרשימה וללחוץ על 'תמיד'</translation>
@@ -230,6 +232,10 @@
 <translation id="6810078320346589989">צור סימניה</translation>
 <translation id="3396347744975515056">Brave Sync שודרג ודורש התקנה</translation>
 <translation id="7473245612074035141">התחל התקנה</translation>
+<translation id="1872784258300710671">Brave משתמש באנליטיקות מוצר פרטיות לחלוטין כדי להעריך את השימוש הכולל בתכונות מסוימות</translation>
+<translation id="8712637175834984815">הבנתי</translation>
+<translation id="4394049700291259645">השבת</translation>
+<translation id="8446884382197647889">למידע נוסף</translation>
 <translation id="597993392929850353">רישיון Brave</translation>
 <translation id="6336451774241870485">כרטיסייה פרטית חדשה</translation>
 <translation id="6199596294742117349">זוהי כרטיסייה פרטית</translation>
@@ -256,8 +262,7 @@
 <translation id="8522669544471808198">הצג תמונות רקע</translation>
 <translation id="3870475560794762985">הצג תמונות ממומנות</translation>
 <translation id="8297488609722895137">תמונה מאת <ph name="PHOTO_BY"/></translation>
-<translation id="7952665812649667034">אני מוכנ/ה ל-Earn &amp; Give</translation>
-<translation id="5878330112719288629">על ידי לחיצה על Earn &amp; Give, הנך מאשר/ת את  <ph name="TERMS_OF_SERVICE"/>.</translation>
+<translation id="4761229094276239865">על ידי לחיצה על התחל להשתמש ב-Brave Rewards, הנך מסכימ/ה ל<ph name="TERMS_OF_SERVICE"/>.</translation>
 <translation id="3794079107601824147">קבל/י תשלום כדי לצפות בתמונת רקע זו.</translation>
 <translation id="7136586167396205364">הסתר תמונות ממומנות</translation>
 <translation id="2927095357213611519">באפשרותך לתמוך ביוצרי רשת באמצעות טוקנים.\n הרווח/י טוקנים על ידי צפייה בפרסומות השומרות על הפרטיות.</translation>
@@ -304,7 +309,7 @@
 <translation id="8851456134224363571">נהדר! האם אכפת לך להשאיר לנו דירוג ב-Play Store?</translation>
 <translation id="8668962040900592974">יידעו אותנו כיצד נוכל להשתפר</translation>
 <translation id="4406937629441301400">הרווח/י טוקנים עבור צפייה בתמונה זו ושלמ/י זאת הלאה ליוצרים. <ph name="LEARN_MORE"/></translation>
-<translation id="8693132237667961044">הרווח/י טוקנים עבור צפייה בתמונה זו. הפעל/י את Earn &amp; Give כדי לתבוע את חלקך.</translation>
+<translation id="1992363542751124282">הרוויחו טוקנים עבור צפייה בתמונה זו. לחצו על התחל להשתמש ב-Brave Rewards כדי לתבוע את חלקכם.</translation>
 <translation id="6632345639591919543">הנך מרוויח/ה טוקנים עבור צפייה בתמונה זו. \n<ph name="LEARN_MORE"/></translation>
 <translation id="1465733111003593696">הנך מרוויח/ה טוקנים עבור צפייה בתמונה זו.</translation>
 <translation id="7877201489035217175">למד/י עוד על תמונות ממומנות</translation>
@@ -388,7 +393,6 @@
 <translation id="1383876407941801731">חיפוש</translation>
 <translation id="1972589975368876259">ערוך ערימה</translation>
 <translation id="2490330380242414851">הסר ווידג'ט</translation>
-<translation id="8446884382197647889">למידע נוסף</translation>
 <translation id="7384441892795736634">רענון נתונים</translation>
 <translation id="4804818685124855865">התנתקות</translation>
 <translation id="4789438578712143420">≈ $<ph name="USD_BALANCE"/></translation>
@@ -427,4 +431,38 @@
 <translation id="3733576242118819803">אישור  (<ph name="REMAINING_TIME"/>s)</translation>
 <translation id="1627064138060308910">המרה נכשלה. נא לנסות שוב.</translation>
 <translation id="1449790603979388000"><ph name="COUNT"/> <ph name="COUNT_TEXT"/></translation>
+<translation id="7465614181960492526">הרוויחו טוקנים &amp; ותנו בחזרה</translation>
+<translation id="244362569344671266">הרוויחו טוקנים על ידי צפייה בפרסומות Brave פרטיות ותמכו ביוצרי תוכן באופן אוטומטי.</translation>
+<translation id="631124996535890460">על ידי המשך הנך מסכימ/ה ל<ph name="TERMS_OF_SERVICE"/> וכן <ph name="PRIVACY_POLICY"/>.</translation>
+<translation id="8804164990146287819">מדיניות הפרטיות</translation>
+<translation id="6318696841371191107">צא לסיור מהיר</translation>
+<translation id="7930505144430343145">ברוכים הבאים ל-Brave Rewards!</translation>
+<translation id="7909111626803226907">פרסומות Brave פרטיות מתגמלות אתכם בטוקנים כדי לתמוך ביוצרי תוכן, בשונה מפרסומות מסורתיות, כל זאת תוך שמירה על פרטיות המידע האישי שלכם.</translation>
+<translation id="6973095375773523904">היכן מוצגות פרסומות?</translation>
+<translation id="3867028444168159102">פרסומות Brave פרטיות יופיעו כהודעה רגילה. אתם שולטים באיזו תדירות אתם רואים פרסומות אלה דרך ההגדרות.</translation>
+<translation id="5816125157889950051">מתי אתם מקבלים תגמולים</translation>
+<translation id="4649471244559455723">הטוקנים שהרווחתם מפרסומות Brave במהלך החודש הנוכחי יגיעו ב-5 לחודש הבא.</translation>
+<translation id="7712287524451429139">נתינה בחזרה הפכה לקלה</translation>
+<translation id="105037569026952831">היוצרים מקבלים את תרומות הטוקנים שלכם באופן אוטומטי על סמך רמות המעורבות שלכם שאנו מודדים ‘כתשומת לב’.</translation>
+<translation id="5323267338679539010">תגידו תודה באמצעות טיפים</translation>
+<translation id="6042317056594735519">מתן טיפים היא דרך לעודד ולתמוך באופן אישי בתכנים או ביוצרים שאתם אוהבים. התחילו לתת טיפים!</translation>
+<translation id="7509452925943421624">מה באפשרותכם לעשות עם טוקנים?</translation>
+<translation id="7059157883171259940">ניתן להשתמש בטוקנים לא רק לתמיכה ביוצרים. באפשרותכם לקנות מוצרים דיגיטליים וכרטיסי מתנה עם בונוס cashback.</translation>
+<translation id="1402530520078693620">לבסוף, בואו’ נקבע את ההגדרות הבסיסיות</translation>
+<translation id="3494356595346329740">תוכלו לשנות זאת בהמשך.</translation>
+<translation id="6462814326662189004">באיזו תדירות ברצונך לראות פרסומות?\n(פרסומות לשעה)</translation>
+<translation id="2134244432345596331">כמה תמיכה תרצו לתת ליוצרים האהובים עליכם?\n(מהרווחים שלכם מפרסומות)</translation>
+<translation id="7456161272236175794">ווהווו!\nסיימתם’.</translation>
+<translation id="3895246934788932488">באמצעות שימוש ב- Brave Rewards אתם מגנים על פרטיותכם ועוזרים להפוך את האינטרנט למקום טוב יותר עבור כולם. וזה’ מדהים!</translation>
+<translation id="5705882733397021510">חזור</translation>
+<translation id="5140321319944305531">בואו נעשה סיור מהיר</translation>
+<translation id="3808131693704413134">לאחר שתקבלו את תשלום הפרסומות הראשון שלכם תוכלו לחזור ולתת טיפ ליוצר זה!</translation>
+<translation id="207242986925259074">סיור רענון מהיר</translation>
+<translation id="8342862030112839977">תשלום התגמול הראשון שלכם יגיע עד:</translation>
+<translation id="3769645103175790584">הרוויחו טוקנים ותגמלו יוצרים עבור תוכן נהדר בזמן שאתם גולשים. <ph name="QUICK_TOUR"/>.</translation>
+<translation id="6912901278692845878">סיור מהיר</translation>
+<translation id="1080013038789678738">אני’ בפנים!</translation>
+<translation id="3604285424134705930">המרתם <ph name="FROM_VALUE"/> <ph name="FROM_CURRENCY"/> ל- <ph name="TO_VALUE"/> <ph name="TO_CURRENCY"/>!</translation>
+<translation id="392587271502873865">נא לבדוק את חיבור הרשת שלכם.</translation>
+<translation id="7889432931837317731">פתח אוטומטית כאשר ניתן</translation>
 </translationbundle>

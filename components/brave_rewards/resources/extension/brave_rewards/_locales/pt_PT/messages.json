@@ -4,7 +4,7 @@
     "description": "Title in welcome screen for the panel"
   },
   "welcomeButtonTextOne": {
-    "message": "Comece a Ganhar Agora!",
+    "message": "Comece a Ganhar Já!",
     "description": "CTA on welcome screen in the panel, existing users"
   },
   "welcomeButtonTextTwo": {
@@ -12,15 +12,15 @@
     "description": "CTA on welcome screen in the panel, new users"
   },
   "welcomeDescOne": {
-    "message": "Seja pago por visualizar anúncios e pague para apoiar os seus criadores de conteúdo favoritos.",
+    "message": "Seja pago para visualizar anúncios e pague para apoiar os seus criadores de conteúdo favoritos.",
     "description": "Entry text for welcome screen in the panel, existing user"
   },
   "welcomeDescTwo": {
-    "message": "Agora pode ganhar tokens por ver anúncios que respeitam a sua privacidade.",
+    "message": "Agora pode ganhar tokens por assistir a anúncios que respeitam a privacidade.",
     "description": "Entry text for welcome screen in the panel, new user"
   },
   "welcomeDescPoints": {
-    "message": "É-lhe agora possível obter pontos ao assistir a anúncios que respeitam a privacidade. ",
+    "message": "Presentemente, pode conseguir pontos ao assistir a anúncios que respeitam a privacidade.",
     "description": "Entry text for welcome screen in the panel, points"
   },
   "welcomeFooterTextOne": {
@@ -28,7 +28,7 @@
     "description": "Link in the footer (takes you to rewards settings page) for welcome screen in the panel, existing user"
   },
   "welcomeFooterTextTwo": {
-    "message": "Saber mais",
+    "message": "Obter mais informações",
     "description": "Link in the footer (takes you to rewards settings page) for welcome screen in the panel, new user"
   },
   "welcomeHeaderOne": {
@@ -36,7 +36,7 @@
     "description": "Main header title for welcome screen in the panel, existing user"
   },
   "welcomeHeaderTwo": {
-    "message": "Prepare-se para conhecer a próxima Internet.",
+    "message": "Prepare-se para experimentar a internet do futuro.",
     "description": "Main header title for welcome screen in the panel, new user"
   },
   "yourWallet": {
@@ -44,7 +44,7 @@
     "description": "Title of wallet section where we display data about wallet"
   },
   "grants": {
-    "message": "Concessões",
+    "message": "Concessão",
     "description": "Title for grant section in wallet summary"
   },
   "details": {
@@ -64,7 +64,7 @@
     "description": "Text for BAT Point helper message"
   },
   "on": {
-    "message": "em",
+    "message": "ligar",
     "description": "The whole string is 'Enable tips on YouTube for like.'"
   },
   "verifiedPublisher": {
@@ -96,7 +96,7 @@
     "description": "The whole string is 'Enable tips on YouTube for like.'"
   },
   "rewardsSummary": {
-    "message": "Resumo das Recompensas",
+    "message": "Resumo de Recompensas",
     "description": "Section title in wallet panel, which contains monthly rewards summary"
   },
   "monthApr": {
@@ -162,7 +162,7 @@
     "description": "Title for grant section in wallet summary"
   },
   "pointGrantClaimed": {
-    "message": "Subsídios Concedidos Reivindicados",
+    "message": "Atribuições de pontos reivindicadas",
     "description": "Title for point grant section in wallet summary"
   },
   "earningsAds": {
@@ -170,7 +170,7 @@
     "description": "Title for ads section in wallet summary"
   },
   "rewardsContribute": {
-    "message": "Auto-Contribua",
+    "message": "Contribuição Automática",
     "description": "Title for auto contribute section in wallet summary"
   },
   "oneTimeDonation": {
@@ -182,11 +182,11 @@
     "description": "Used for grant representation. Whole string is '30.0 BAT expires on 08/05/2022'"
   },
   "recurringDonations": {
-    "message": "Contribuições Mensais",
+    "message": "Contribuições mensais",
     "description": "Title for monthly contributions section in wallet summary"
   },
   "off": {
-    "message": "Desligado",
+    "message": "Desativada",
     "description": "Label used in toggle indicating that toggle is off"
   },
   "ok": {
@@ -244,7 +244,7 @@
     "description": "Title for insufficient funds notification"
   },
   "braveRewardsCreatingText": {
-    "message": "A criar carteira",
+    "message": "A criar uma carteira",
     "description": "Used in a button displaying wallet creation process"
   },
   "contributeNotificationError": {
@@ -296,7 +296,7 @@
     "description": "Button text for clearing the error."
   },
   "grantGeneralErrorText": {
-    "message": "A Brave Rewards está a ter um problema. Por favor, tente novamente mais tarde.",
+    "message": "Recompensas Brave está a ter um problema. Por favor, tente novamente mais tarde.",
     "description": "Error text when user is having problems claiming a grant."
   },
   "grantGeneralErrorTitle": {
@@ -328,7 +328,7 @@
     "description": "Text for the link that explains more about reserved amount"
   },
   "disabledPanelOff": {
-    "message": "Desativado",
+    "message": "Desativada",
     "description": "Off state text for Panel's disabled state"
   },
   "disabledPanelSettings": {
@@ -340,7 +340,7 @@
     "description": "Text for Panel's disabled state"
   },
   "disabledPanelTitle": {
-    "message": "As Recompensas Brave estão",
+    "message": "Recompensas Brave está",
     "description": "Title for Panel's disabled state"
   },
   "walletFailedTitle": {
@@ -360,7 +360,7 @@
     "description": "Button for opening settings page"
   },
   "earningsClaimDefault": {
-    "message": "Eis as suas recompensas dos Anúncios!",
+    "message": "Eis as suas recompensas decorrentes de Anúncios!",
     "description": "Panel notification text for Ads grant"
   },
   "and": {
@@ -388,7 +388,7 @@
     "description": "Terms of service main text"
   },
   "termsOfService": {
-    "message": "Termos de Serviço",
+    "message": "termos de serviço",
     "description": "Terms of Service"
   },
   "welcomeBack": {
@@ -416,11 +416,11 @@
     "description": "BAT Points abbreviation text"
   },
   "turnOnAds": {
-    "message": "Ativar Ads",
+    "message": "Ative os anúncios",
     "description": "Prompt to turn on Ads via notification"
   },
   "adsEarnings": {
-    "message": "ganhos de publicidade",
+    "message": "ganhos de anúncios",
     "description": "Description text for ad grants in grant details"
   },
   "twitterTipsHoverText": {
@@ -462,7 +462,7 @@
     "description": "Notification text that tells user his wallet is under funded for pending contribution to complete"
   },
   "pendingContributionTitle": {
-    "message": "Contribuição Pendente",
+    "message": "Contribuição pendente",
     "description": "Notification title for pending contribution type"
   },
   "grantFinishTitleUGP": {
@@ -484,7 +484,7 @@
     "description": "Token title on success screen"
   },
   "grantFinishPointTitleUGP": {
-    "message": "Subsídios Livres Pontuais ",
+    "message": "Atribuição de pontos gratuita",
     "description": "Point title on success screen"
   },
   "grantFinishTitleAds": {
@@ -504,7 +504,7 @@
     "description": "CTA in the footer to verify"
   },
   "walletButtonDisconnected":  {
-    "message": "Desligado",
+    "message": "Desconectada",
     "description": "CTA status button"
   },
   "walletButtonUnverified":  {
@@ -516,7 +516,7 @@
     "description": "Displayed in wallet that tells users that he is verified"
   },
   "walletGoToUphold":  {
-    "message": "Aceder à minha conta Uphold",
+    "message": "Aceder à minha conta Upload",
     "description": "CTA to open uphold account"
   },
   "walletDisconnect":  {
@@ -570,7 +570,7 @@
     "description": "BAT Point text"
   },
   "token":  {
-    "message": "Símbolo",
+    "message": "Símbolo ",
     "description": "BAT Token text"
   },
   "points":  {
@@ -582,7 +582,7 @@
     "description": "BAT Tokens Grant Text"
   },
   "pointGrants":  {
-    "message": "Subsídios Concedidos",
+    "message": "Subsídios Pontuais",
     "description": "BAT Points Grant Text"
   },
   "greetingsVerified":  {
@@ -624,7 +624,23 @@
     "description": "Status button that tells user that he is currently pending"
   },
   "walletVerificationNote3":  {
-    "message": "Nota: As suas transações ficarão visíveis na Uphold assim que autorizar; por exemplo, conseguirão ver o recipiente e o montante das suas gratificações.",
+    "message": "Nota: As suas transações serão visíveis para a Uphold assim que autorizar; poderão, por exemplo, ver o destinatário e o valor das suas contribuições.",
     "description": "Displayed in login modal for uphold"
+  },
+  "onboardingEarnHeader": {
+    "message": "Ganhe Tokens & Contribua",
+    "description": ""
+  },
+  "onboardingEarnText": {
+    "message": "Ganhe tokens ao visualizar anúncios que respeitam a sua privacidade e apoie os seus sites preferidos e os criadores de conteúdo automaticamente. ",
+    "description": ""
+  },
+  "onboardingStartUsingRewards": {
+    "message": "Comece a usar o Brave Rewards",
+    "description": ""
+  },
+  "onboardingTerms": {
+    "message": "Ao continuar, concorda com os $$1Termos de Serviço$$2 e a $$3Política de Privacidade$$4.",
+    "description": ""
   }
 }

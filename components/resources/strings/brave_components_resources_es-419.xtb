@@ -40,19 +40,31 @@
 <translation id="3446024864193919737">Mostrar recompensas de Brave</translation>
 <translation id="6274899614137380422">Mostrar Binance</translation>
 <translation id="5551238871320268996">Brave Together</translation>
-<translation id="4799744519698299121">Más tarjetas</translation>
+<translation id="5585019845078534178">Tarjetas</translation>
 <translation id="3870475560794762985">Mostrar las imágenes patrocinadas</translation>
 <translation id="2875302873837723333">sitios populares</translation>
 <translation id="8173998484743827990">Estadísticas de Brave</translation>
 <translation id="383680190590774040">reloj</translation>
 <translation id="3333887201479867589">Recompensas Brave</translation>
 <translation id="3159285901314605198">Imagen de fondo</translation>
+<translation id="385051799172605136">Atrás</translation>
+<translation id="7415602225677446066">Las mejores noticias de hoy en un feed completamente privado, solo para ti.</translation>
+<translation id="8607689491789524900">Brave Today coteja tus intereses en tu dispositivo para que tu información personal nunca salga de tu navegador. Nuevo contenido actualizado a lo largo del día.</translation>
+<translation id="9164544612367905452">Buscando…</translation>
+<translation id="1276592121036104130">Cargar contenido nuevo</translation>
+<translation id="4210987321913275328">Desplázate para ver Brave Today</translation>
+<translation id="3122595178900736207">Restablecer fuentes de Brave Today</translation>
+<translation id="2197023915568148978">¿Deseas restablecer todas las opciones del editor de Brave Today a sus valores predeterminados?</translation>
+<translation id="954001034349395856">Todas las fuentes</translation>
+<translation id="8890516388109605451">Fuentes</translation>
+<translation id="5158129253322921540">Desactivar contenido de <ph name="PUBLISHER_NAME"/></translation>
 <translation id="1776831331757823105">Reloj</translation>
 <translation id="4643117005422448078">Sitios populares</translation>
 <translation id="7791543448312431591">Agregar</translation>
 <translation id="7679334366167089823">Gana tokens por ver anuncios que respetan la privacidad.</translation>
 <translation id="1531133232292396145">Opera con criptomonedas en Binance directamente en tu navegador.</translation>
 <translation id="2166494527623220386">Opera con criptomonedas en Gemini directamente en tu navegador.</translation>
+<translation id="7191394989411626168">Al desactivar Tarjetas, se ocultarán todas las tarjetas actualmente visibles. Sin embargo, es posible que continúes recibiendo notificaciones de nuevas tarjetas.</translation>
 <translation id="6165508094623778733">Más información</translation>
 <translation id="8730621377337864115">Listo</translation>
 <translation id="6248988683584659830">Buscar en configuración</translation>
@@ -92,9 +104,8 @@
 <translation id="2974339193389078578">Disfrute de una nueva Internet con Brave</translation>
 <translation id="7735138632831241257">Prepárese para disfrutar de una experiencia de navegación más rápida y segura con un navegador diseñado para proteger su privacidad.</translation>
 <translation id="6001839398155993679">Vamos</translation>
-<translation id="8050847734948770789">Activar las Recompensas Brave</translation>
-<translation id="2862598513212603756">Su atención es valiosa. Gane mirando publicidades que respetan la privacidad y pague para apoyar a los creadores que le encantan.</translation>
-<translation id="4942016616604700968">Activar Recompensas</translation>
+<translation id="2835162985889791522">Gana tokens por ver anuncios que respetan la privacidad y apoya a tus sitios y creadores de contenido favoritos de forma predeterminada.</translation>
+<translation id="2070991379950719711">Comenzar a utilizar Recompensas Brave</translation>
 <translation id="3958088479270651626">Importar favoritos y configuración</translation>
 <translation id="2609701960545338618">Configura tu entorno de navegación habitual importando favoritos y ajustes de tu navegador anterior. Las opciones de importación avanzada se encuentran en Configuración.</translation>
 <translation id="8275038454117074363">Importar</translation>
@@ -118,7 +129,7 @@
 <translation id="3742599705619405136">Una forma automática de apoyar a quienes publican y crean contenido. Configura un pago mensual y navega como siempre. Los sitios verificados de Brave que visitas reciben contribuciones de manera automática en función de tu atención, que mide Brave.</translation>
 <translation id="20281847067919078">Recompensas pendientes estimadas</translation>
 <translation id="8593551638387217772">Próxima fecha de pago</translation>
-<translation id="319209088187794725">Notificaciones de anuncios recibidas este mes</translation>
+<translation id="4428871418618312983">Anuncios recibidos este mes</translation>
 <translation id="4229016885653790965">Lo sentimos. Todavía no hay anuncios disponibles en tu región.</translation>
 <translation id="2539279826042558064">Brave Rewards y Brave Ads no están disponibles en este momento en tu dispositivo.</translation>
 <translation id="5421369907811917952">Otros ajustes</translation>
@@ -291,11 +302,14 @@
 <translation id="1723857724166389190">Tu contribución mensual a este creador se ha cancelado.</translation>
 <translation id="534368327994110883">Actualmente estás apoyando a este creador</translation>
 <translation id="2621124276654521177">Contribución mensual actual</translation>
-<translation id="3084276630953238154">Vaya, ha ocurrido un error.</translation>
+<translation id="3084276630953238154">Un error salvaje ha aparecido.</translation>
+<translation id="3263379510325043678">Error de conexión del servidor</translation>
+<translation id="8994556588732085585">Cierra el banner de propinas, ábrelo otra vez e inténtalo de nuevo.</translation>
 <translation id="4371618764691059036">Se ha establecido la contribución mensual.</translation>
 <translation id="6356822617569064293">Fecha de la próxima contribución:</translation>
 <translation id="4622723187300249546">Propina por única vez</translation>
 <translation id="5268142130226208198">Importe de propina por única vez:</translation>
+<translation id="3669086939205397942">Espera, todavía no puedes dar propinas.</translation>
 <translation id="1142440886533556131">Publicación de {{user}}</translation>
 <translation id="3489551030916418665">Tuit de {{user}}</translation>
 <translation id="5531915212947569943">Lamentamos que te vayas…</translation>
@@ -305,6 +319,12 @@
 <translation id="379596083010863211">Tu propina única se ha enviado.</translation>
 <translation id="5096821444729034955">por su publicación</translation>
 <translation id="2978223787436054634">Tuit sobre tu ayuda</translation>
+<translation id="1543259266592091784">Agregar fondos</translation>
+<translation id="7465614181960492526">Gana tokens y retribuye</translation>
+<translation id="2731539192954672606">Gana tokens por ver anuncios que respetan la privacidad y apoya a tus sitios y creadores de contenido favoritos de forma automática.</translation>
+<translation id="1275213816424141989">Tal vez luego</translation>
+<translation id="2404165674840145940">Da propinas con recompensas de Brave</translation>
+<translation id="5820285701794581330">Al utilizar las recompensas de Brave, comenzarás a ganar BAT que podrás emplear para dar propinas a creadores.</translation>
 <translation id="5094577350232361255">acerca de</translation>
 <translation id="4918086044614829423">Aceptar</translation>
 <translation id="5916290544882167205">Brave Software. Brave es una marca registrada de Brave Software. Los nombres de los sitios pueden ser marcas comerciales o marcas registradas de los propietarios de los sitios.</translation>
@@ -505,7 +525,6 @@
 <translation id="1193434225710679930">Donaciones de puntos</translation>
 <translation id="4395099108822007284">Cargando imagen...</translation>
 <translation id="3535654229833214438">Transacciones</translation>
-<translation id="7952665812649667034">Todo listo para Ganar y otorgar</translation>
 <translation id="2623808496299703826">Gana tokens por ver anuncios que respetan la privacidad y apoya a tus creadores de contenido web favoritos de forma predeterminada.</translation>
 <translation id="8987812599455325915">Esto activa tanto las publicidades como las contribuciones automáticas. Puedes activarlas o desactivarlas por separado en cualquier momento.</translation>
 <translation id="1485484147452131556">Activar recompensas</translation>
@@ -575,7 +594,7 @@
 <translation id="7840362246306242214">Hay acciones de EE. UU. disponibles en Uphold</translation>
 <translation id="3345432088196080137">Invierte solo $1 en acciones y fondos cotizados en bolsa, como AAPL, TSLA o AMZN</translation>
 <translation id="4360054110030715117"><ph name="LINK_BEGIN"/>Obtén más información<ph name="LINK_END"/> acerca de Brave Rewards</translation>
-<translation id="4342305967788502343">Al hacer clic en Ganar y donar, aceptas las <ph name="LINK_BEGIN"/>condiciones del servicio<ph name="LINK_END"/> y la <ph name="LINK_BEGIN"/>política de privacidad<ph name="LINK_END"/>.</translation>
+<translation id="629521674505004728">Al hacer clic en Comenzar a utilizar Recompensas Brave, aceptas las <ph name="LINK_BEGIN"/>Condiciones del servicio<ph name="LINK_END"/> y la <ph name="LINK_BEGIN"/>Política de privacidad<ph name="LINK_END"/>.</translation>
 <translation id="8344084848798035850">Ingresos estimados en lo que va de mes</translation>
 <translation id="5235444069025581717">Propinas y contribuciones de este mes</translation>
 <translation id="1210965535849006928">Reclamar mis recompensas</translation>
@@ -587,9 +606,8 @@
 <translation id="6759185676704303656">Estás ganando dinero por ver esta imagen de fondo.</translation>
 <translation id="1749232564087138444"><ph name="LINK_BEGIN"/>Obtén más información<ph name="LINK_END"/> acerca de las imágenes patrocinadas en Brave Rewards.</translation>
 <translation id="6113004497629356998">Ocultar las imágenes patrocinadas</translation>
-<translation id="2148613324460538318">Agregar tarjeta</translation>
+<translation id="3787061634640932557">Editar Tarjetas</translation>
 <translation id="4925543565930352284">Al hacer clic en {{title}}, aceptas las <ph name="BEGIN_LINK1"/>condiciones del servicio<ph name="END_LINK1"/> y la <ph name="BEGIN_LINK2"/>política de privacidad<ph name="END_LINK2"/>.</translation>
-<translation id="7983303953939627894">Ganar y otorgar</translation>
 <translation id="5977237145327845546">Inicia una videollamada privada con tus amigos y colegas.</translation>
 <translation id="5850325887346946383">Iniciar videollamada</translation>
 <translation id="3651550649176056334">Acerca de tus datos</translation>
@@ -682,13 +700,6 @@
 <translation id="1974060860693918893">Configuración avanzada</translation>
 <translation id="9096577886148726047">Ocultar opciones avanzadas</translation>
 <translation id="6334164481400727517">No podemos conectarnos al contenido solicitado mediante el nodo local IPFS porque el nodo local no se inició o porque no hay peers conectados en este momento. Si continúas, iremos automáticamente a la puerta de enlace pública predeterminada en el futuro cuando no podamos conectarnos al contenido IPFS mediante el nodo local IPFS. Esto se puede desactivar más adelante en la configuración.</translation>
-<translation id="2901715907314796027">Comprar criptomonedas en Bitcoin.com</translation>
-<translation id="4065681313949497252">Moneda</translation>
-<translation id="3833315885381772739">Ingresar el importe</translation>
-<translation id="4011828592358027165">¿Eres nuevo en esto de las criptomonedas?</translation>
-<translation id="3358050091139900813">Consigue la billetera aquí para empezar</translation>
-<translation id="3449068867189933593">El importe ingresado debe ser de al menos {{minimumAmount}} {{fiat}}</translation>
-<translation id="3105412115725259537">Bitcoin.com</translation>
 <translation id="2880025073956220119">Crypto.com</translation>
 <translation id="8237504256665975959">Ver mercados y comprar criptomonedas de crypto.com.</translation>
 <translation id="4292334826913000023">Mostrar precio</translation>
@@ -700,4 +711,20 @@
 <translation id="5337526542182802976">Pares compatibles</translation>
 <translation id="1164622162816276433">Volumen de 24 h</translation>
 <translation id="3155170474926428993">Selector de Tor</translation>
+<translation id="4799744519698299121">Más tarjetas</translation>
+<translation id="8050847734948770789">Activar las Recompensas Brave</translation>
+<translation id="2862598513212603756">Su atención es valiosa. Gane mirando publicidades que respetan la privacidad y pague para apoyar a los creadores que le encantan.</translation>
+<translation id="4942016616604700968">Activar Recompensas</translation>
+<translation id="319209088187794725">Notificaciones de anuncios recibidas este mes</translation>
+<translation id="7952665812649667034">Todo listo para Ganar y otorgar</translation>
+<translation id="4342305967788502343">Al hacer clic en Ganar y donar, aceptas las <ph name="LINK_BEGIN"/>condiciones del servicio<ph name="LINK_END"/> y la <ph name="LINK_BEGIN"/>política de privacidad<ph name="LINK_END"/>.</translation>
+<translation id="2148613324460538318">Agregar tarjeta</translation>
+<translation id="7983303953939627894">Ganar y otorgar</translation>
+<translation id="2901715907314796027">Comprar criptomonedas en Bitcoin.com</translation>
+<translation id="4065681313949497252">Moneda</translation>
+<translation id="3833315885381772739">Ingresar el importe</translation>
+<translation id="4011828592358027165">¿Eres nuevo en esto de las criptomonedas?</translation>
+<translation id="3358050091139900813">Consigue la billetera aquí para empezar</translation>
+<translation id="3449068867189933593">El importe ingresado debe ser de al menos {{minimumAmount}} {{fiat}}</translation>
+<translation id="3105412115725259537">Bitcoin.com</translation>
 </translationbundle>

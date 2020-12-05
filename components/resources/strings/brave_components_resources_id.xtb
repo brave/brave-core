@@ -40,19 +40,31 @@
 <translation id="3446024864193919737">Tampilkan Brave Rewards</translation>
 <translation id="6274899614137380422">Tampilkan Binance</translation>
 <translation id="5551238871320268996">Brave Together</translation>
-<translation id="4799744519698299121">Kartu lainnya</translation>
+<translation id="5585019845078534178">Kartu</translation>
 <translation id="3870475560794762985">Tampilkan gambar bersponsor</translation>
 <translation id="2875302873837723333">situs teratas</translation>
 <translation id="8173998484743827990">Statistik Brave</translation>
 <translation id="383680190590774040">jam</translation>
 <translation id="3333887201479867589">Brave Rewards</translation>
 <translation id="3159285901314605198">Gambar Latar</translation>
+<translation id="385051799172605136">Mundur</translation>
+<translation id="7415602225677446066">Berita utama hari ini di linimasa yang sepenuhnya pribadi, hanya untuk Anda.</translation>
+<translation id="8607689491789524900">Brave Hari Ini disesuaikan dengan minat Anda pada perangkat Anda sehingga informasi pribadi Anda tidak pernah keluar dari peramban. Konten baru diperbarui sepanjang hari.</translation>
+<translation id="9164544612367905452">Mengambil#8230;</translation>
+<translation id="1276592121036104130">Muat konten baru</translation>
+<translation id="4210987321913275328">Gulirkan Layar untuk melihat Brave Hari Ini</translation>
+<translation id="3122595178900736207">Reset sumber Brave Hari Ini</translation>
+<translation id="2197023915568148978">Reset semua pilihan penerbit Brave Hari Ini jadi setelan baku?</translation>
+<translation id="954001034349395856">Semua sumber</translation>
+<translation id="8890516388109605451">Sumber</translation>
+<translation id="5158129253322921540">Nonaktifkan konten dari <ph name="PUBLISHER_NAME"/></translation>
 <translation id="1776831331757823105">Jam</translation>
 <translation id="4643117005422448078">Situs Teratas</translation>
 <translation id="7791543448312431591">Tambahkan</translation>
 <translation id="7679334366167089823">Dapatkan token dengan menyaksikan iklan yang menghormati privasi.</translation>
 <translation id="1531133232292396145">Berdagang Kripto di Binance langsung di peramban Anda.</translation>
 <translation id="2166494527623220386">Perdagangkan Kripto di Gemini di peramban Anda.</translation>
+<translation id="7191394989411626168">Dengan mematikan Kartu, semua kartu yang saat ini terlihat akan disembunyikan. Namun, Anda mungkin masih mendapat notifikasi tentang kartu baru.</translation>
 <translation id="6165508094623778733">Pelajari lebih lanjut</translation>
 <translation id="8730621377337864115">Selesai</translation>
 <translation id="6248988683584659830">Setelan pencarian</translation>
@@ -92,9 +104,8 @@
 <translation id="2974339193389078578">Brave, Internet baru</translation>
 <translation id="7735138632831241257">Bersiaplah untuk menikmati pengalaman penjelajahan yang lebih cepat dan lebih aman menggunakan peramban yang diciptakan untuk melindungi privasi.</translation>
 <translation id="6001839398155993679">Mulai</translation>
-<translation id="8050847734948770789">Aktifkan Brave Rewards</translation>
-<translation id="2862598513212603756">Atensi Anda sangat berharga. Dapatkan penghasilan dengan melihat iklan yang menghormati privasi sewaktu melakukan penjelajahan, dan gunakan kembali untuk mendukung pembuat konten yang Anda sukai.</translation>
-<translation id="4942016616604700968">Aktifkan Rewards</translation>
+<translation id="2835162985889791522">Dapatkan token dengan melihat iklan yang menghormati privasi dan dukung situs dan pembuat konten favorit Anda secara otomatis.</translation>
+<translation id="2070991379950719711">Mulai Gunakan Brave Rewards</translation>
 <translation id="3958088479270651626">Impor markah dan setelan</translation>
 <translation id="2609701960545338618">Tata lingkungan perambanan biasa Anda dengan mengimpor markah dan pengaturan dari peramban lama. Opsi impor lanjutan dapat ditemukan dalam Pengaturan.</translation>
 <translation id="8275038454117074363">Impor</translation>
@@ -118,7 +129,7 @@
 <translation id="3742599705619405136">Sebuah cara otomatis untuk mendukung penerbit dan kreator konten. Atur pembayaran bulanan dan ramban seperti biasa. Situs Brave Verified yang Anda kunjungi akan menerima kontribusi Anda secara otomatis, berdasarkan atensi Anda sebagaimana diukur oleh Brave.</translation>
 <translation id="20281847067919078">Estimasi reward tertunda</translation>
 <translation id="8593551638387217772">Tanggal pembayaran berikutnya</translation>
-<translation id="319209088187794725">Pemberitahuan iklan yang diterima bulan ini</translation>
+<translation id="4428871418618312983">Iklan yang diterima bulan ini</translation>
 <translation id="4229016885653790965">Maaf! Iklan belum tersedia di wilayah Anda.</translation>
 <translation id="2539279826042558064">Brave Rewards dan Iklan saat ini tidak tersedia di perangkat Anda.</translation>
 <translation id="5421369907811917952">Pengaturan lainnya</translation>
@@ -291,11 +302,14 @@
 <translation id="1723857724166389190">Kontribusi bulanan Anda untuk kreator ini telah dibatalkan.</translation>
 <translation id="534368327994110883">Anda saat ini mendukung kreator ini</translation>
 <translation id="2621124276654521177">Kontribusi bulanan terkini</translation>
-<translation id="3084276630953238154">Duh - telah terjadi kesalahan.</translation>
+<translation id="3084276630953238154">Muncul sebuah bug liar</translation>
+<translation id="3263379510325043678">Masalah koneksi server</translation>
+<translation id="8994556588732085585">Harap tutup dan buka kembali spanduk tip untuk mencoba lagi.</translation>
 <translation id="4371618764691059036">Kontribusi bulanan telah ditetapkan.</translation>
 <translation id="6356822617569064293">Tanggal kontribusi berikutnya:</translation>
 <translation id="4622723187300249546">Tip Satu Kali</translation>
 <translation id="5268142130226208198">Jumlah tip satu kali:</translation>
+<translation id="3669086939205397942">Tunggu, Anda belum bisa memberi tip</translation>
 <translation id="1142440886533556131">postingan {{pengguna}}’</translation>
 <translation id="3489551030916418665">Tweet {{pengguna}}’</translation>
 <translation id="5531915212947569943">Sedih rasanya melihat Anda pergi…</translation>
@@ -305,6 +319,12 @@
 <translation id="379596083010863211">Tip satu kali Anda telah terkirim.</translation>
 <translation id="5096821444729034955">untuk postingan mereka</translation>
 <translation id="2978223787436054634">Tweet tentang dukungan Anda</translation>
+<translation id="1543259266592091784">Tambah dana</translation>
+<translation id="7465614181960492526">Dapatkan Token &amp; Berikan Balik</translation>
+<translation id="2731539192954672606">Dapatkan token dengan melihat iklan yang menghormati privasi dan dukung situs dan pembuat konten favorit Anda secara otomatis.</translation>
+<translation id="1275213816424141989">Mungkin Nanti</translation>
+<translation id="2404165674840145940">Beri Tip dengan Brave Rewards</translation>
+<translation id="5820285701794581330">Dengan menggunakan Brave Rewards, Anda akan mulai mendapatkan BAT yang dapat Anda gunakan untuk memberi tip kepada pembuat konten.</translation>
 <translation id="5094577350232361255">sekitar</translation>
 <translation id="4918086044614829423">Terima</translation>
 <translation id="5916290544882167205">Brave Software. Brave adalah merek dagang dari Brave Software. Nama situs mungkin merk dagang atau merek terdaftar dari pemilik situs.</translation>
@@ -505,7 +525,6 @@
 <translation id="1193434225710679930">Hibah Poin</translation>
 <translation id="4395099108822007284">Memuat gambar...</translation>
 <translation id="3535654229833214438">Transaksi</translation>
-<translation id="7952665812649667034">Saya siap untuk Hasilkan &amp; Beri</translation>
 <translation id="2623808496299703826">Dapatkan token dengan melihat iklan yang menghargai privasi dan dukung kreator konten web favorit Anda secara default.</translation>
 <translation id="8987812599455325915">Ini mengaktifkan iklan serta kontribusi otomatis. Anda dapat mengaktifkan atau menonaktifkannya secara terpisah kapan saja.</translation>
 <translation id="1485484147452131556">Aktifkan Rewards</translation>
@@ -575,7 +594,7 @@
 <translation id="7840362246306242214">Perdagangan ekuitas AS tersedia di Uphold</translation>
 <translation id="3345432088196080137">Investasikan walau hanya $1 dalam saham populer dan dana yang diperdagangkan di bursa seperti AAPL, TSLA atau AMZN</translation>
 <translation id="4360054110030715117"><ph name="LINK_BEGIN"/>Pelajari lebih lanjut<ph name="LINK_END"/> tentang Brave Rewards</translation>
-<translation id="4342305967788502343">Dengan mengeklik Dapatkan &amp; Berikan, Anda setuju dengan <ph name="LINK_BEGIN"/>Syarat Layanan<ph name="LINK_END"/> dan <ph name="LINK_BEGIN"/>Kebijakan Privasi<ph name="LINK_END"/>.</translation>
+<translation id="629521674505004728">Dengan mengklik Mulai Gunakan Brave Rewards, Anda menyetujui <ph name="LINK_BEGIN"/>Ketentuan Layanan<ph name="LINK_END"/> dan <ph name="LINK_BEGIN"/>Kebijakan Privasi<ph name="LINK_END"/>.</translation>
 <translation id="8344084848798035850">Perkiraan penghasilan sejauh ini pada bulan berjalan</translation>
 <translation id="5235444069025581717">Tip dan kontribusi bulan ini</translation>
 <translation id="1210965535849006928">Ambil Reward saya</translation>
@@ -587,9 +606,8 @@
 <translation id="6759185676704303656">Anda mendapat imbalan untuk melihat gambar latar belakang ini.</translation>
 <translation id="1749232564087138444"><ph name="LINK_BEGIN"/>Pelajari lebih lanjut<ph name="LINK_END"/> tentang gambar bersponsor di Brave Rewards.</translation>
 <translation id="6113004497629356998">Sembunyikan gambar bersponsor</translation>
-<translation id="2148613324460538318">Tambahkan Kartu</translation>
+<translation id="3787061634640932557">Sunting Kartu</translation>
 <translation id="4925543565930352284">Dengan mengeklik {{title}}, Anda setuju dengan <ph name="BEGIN_LINK1"/>Syarat Layanan<ph name="END_LINK1"/> dan <ph name="BEGIN_LINK2"/>Kebijakan Pribadi<ph name="END_LINK2"/>.</translation>
-<translation id="7983303953939627894">Hasilkan &amp; Beri</translation>
 <translation id="5977237145327845546">Mulai panggilan video privat bersama teman dan kolega Anda.</translation>
 <translation id="5850325887346946383">Mulai panggilan video</translation>
 <translation id="3651550649176056334">Seputar data Anda</translation>
@@ -682,13 +700,6 @@
 <translation id="1974060860693918893">Lanjutan</translation>
 <translation id="9096577886148726047">Sembunyikan Tingkat Lanjut</translation>
 <translation id="6334164481400727517">Kami tidak dapat terhubung ke konten yang diminta menggunakan node IPFS lokal karena node lokal tidak memulai atau karena tidak ada rekan terhubung yang tersedia saat ini. Dengan melanjutkan, kami akan otomatis fallback ke gateway default publik di masa yang akan datang bila kami tidak dapat terhubung ke konten IPFS menggunakan node IPFS lokal. Ini bisa dinonaktifkan nanti di pengaturan.</translation>
-<translation id="2901715907314796027">Beli kripto dari Bitcoin.com.</translation>
-<translation id="4065681313949497252">Mata uang</translation>
-<translation id="3833315885381772739">Masukkan jumlah</translation>
-<translation id="4011828592358027165">Baru mengenal kripto?</translation>
-<translation id="3358050091139900813">Dapatkan dompet di sini untuk memulai</translation>
-<translation id="3449068867189933593">Jumlah yang dimasukkan harus sekurangnya  {{minimumAmount}} {{fiat}}</translation>
-<translation id="3105412115725259537">Bitcoin.com</translation>
 <translation id="2880025073956220119">Crypto.com</translation>
 <translation id="8237504256665975959">Lihat bursa dan beli crypto dari crypto.com</translation>
 <translation id="4292334826913000023">Tampilkan Harga</translation>
@@ -700,4 +711,20 @@
 <translation id="5337526542182802976">Pasangan yang Didukung</translation>
 <translation id="1164622162816276433">Volume 24 JAM</translation>
 <translation id="3155170474926428993">Peluncur Tor</translation>
+<translation id="4799744519698299121">Kartu lainnya</translation>
+<translation id="8050847734948770789">Aktifkan Brave Rewards</translation>
+<translation id="2862598513212603756">Atensi Anda sangat berharga. Dapatkan penghasilan dengan melihat iklan yang menghormati privasi sewaktu melakukan penjelajahan, dan gunakan kembali untuk mendukung pembuat konten yang Anda sukai.</translation>
+<translation id="4942016616604700968">Aktifkan Rewards</translation>
+<translation id="319209088187794725">Pemberitahuan iklan yang diterima bulan ini</translation>
+<translation id="7952665812649667034">Saya siap untuk Hasilkan &amp; Beri</translation>
+<translation id="4342305967788502343">Dengan mengeklik Dapatkan &amp; Berikan, Anda setuju dengan <ph name="LINK_BEGIN"/>Syarat Layanan<ph name="LINK_END"/> dan <ph name="LINK_BEGIN"/>Kebijakan Privasi<ph name="LINK_END"/>.</translation>
+<translation id="2148613324460538318">Tambahkan Kartu</translation>
+<translation id="7983303953939627894">Hasilkan &amp; Beri</translation>
+<translation id="2901715907314796027">Beli kripto dari Bitcoin.com.</translation>
+<translation id="4065681313949497252">Mata uang</translation>
+<translation id="3833315885381772739">Masukkan jumlah</translation>
+<translation id="4011828592358027165">Baru mengenal kripto?</translation>
+<translation id="3358050091139900813">Dapatkan dompet di sini untuk memulai</translation>
+<translation id="3449068867189933593">Jumlah yang dimasukkan harus sekurangnya  {{minimumAmount}} {{fiat}}</translation>
+<translation id="3105412115725259537">Bitcoin.com</translation>
 </translationbundle>

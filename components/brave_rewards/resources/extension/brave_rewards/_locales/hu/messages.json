@@ -12,7 +12,7 @@
     "description": "CTA on welcome screen in the panel, new users"
   },
   "welcomeDescOne": {
-    "message": "Keress pénzt hirdetések nézésével, és továbbítsd támogatás formájában kedvenc tartalomkészítőidenk.",
+    "message": "Keress pénzt hirdetések nézésével, és továbbítsd támogatásként kedvenc tartalomkészítőidnek.",
     "description": "Entry text for welcome screen in the panel, existing user"
   },
   "welcomeDescTwo": {
@@ -28,7 +28,7 @@
     "description": "Link in the footer (takes you to rewards settings page) for welcome screen in the panel, existing user"
   },
   "welcomeFooterTextTwo": {
-    "message": "Tudjon meg többet",
+    "message": "További információ",
     "description": "Link in the footer (takes you to rewards settings page) for welcome screen in the panel, new user"
   },
   "welcomeHeaderOne": {
@@ -44,7 +44,7 @@
     "description": "Title of wallet section where we display data about wallet"
   },
   "grants": {
-    "message": "ADományok",
+    "message": "Adományok",
     "description": "Title for grant section in wallet summary"
   },
   "details": {
@@ -162,7 +162,7 @@
     "description": "Title for grant section in wallet summary"
   },
   "pointGrantClaimed": {
-    "message": "Pontjóváírások igényelve",
+    "message": "Pontok begyűjtve",
     "description": "Title for point grant section in wallet summary"
   },
   "earningsAds": {
@@ -170,7 +170,7 @@
     "description": "Title for ads section in wallet summary"
   },
   "rewardsContribute": {
-    "message": "Automatikus hozzájárulás",
+    "message": "Automatikus támogatás",
     "description": "Title for auto contribute section in wallet summary"
   },
   "oneTimeDonation": {
@@ -194,7 +194,7 @@
     "description": "Used in notification to dismiss notification"
   },
   "braveAdsLaunchMsg": {
-    "message": "Most már pontokat szerezhetsz reklámok megtekintésével.",
+    "message": "Most már elkezdhet pénzt gyűjteni hirdetések megtekintésével.",
     "description": "Message for ads launch notification"
   },
   "braveAdsTitle": {
@@ -202,7 +202,7 @@
     "description": "Notification title when we display info about ads"
   },
   "braveContributeTitle": {
-    "message": "Automatikus Támogatás",
+    "message": "Automatikus támogatás",
     "description": "Notification title when we display info about auto contribution"
   },
   "contributeNotificationSuccess": {
@@ -292,7 +292,7 @@
     "description": "Grant expiry label"
   },
   "grantGeneralErrorButton": {
-    "message": "Rendben",
+    "message": "OK",
     "description": "Button text for clearing the error."
   },
   "grantGeneralErrorText": {
@@ -316,7 +316,7 @@
     "description": "Notice about unverified publisher."
   },
   "unVerifiedTextMore": {
-    "message": "Bővebb információk",
+    "message": "Bővebb információk.",
     "description": "Text for the link that explains more about reserved amount"
   },
   "reservedAmountText": {
@@ -324,7 +324,7 @@
     "description": "Notification about how much BAT do you have reserved"
   },
   "reservedMoreLink": {
-    "message": "Bővebb információk",
+    "message": "Bővebb információk.",
     "description": "Text for the link that explains more about reserved amount"
   },
   "disabledPanelOff": {
@@ -336,7 +336,7 @@
     "description": "Settings Link for Panel's disabled state"
   },
   "disabledPanelText": {
-    "message": "Jelenleg semmilyen Jutalom előnyt nem élvezel böngészés közben. ",
+    "message": "Jelenleg semmilyen Jutalom előnyeit nem élvezed böngészés közben. Kapcsold be újra a Jutalmakat.",
     "description": "Text for Panel's disabled state"
   },
   "disabledPanelTitle": {
@@ -348,7 +348,7 @@
     "description": "Failure title for wallet creation"
   },
   "walletFailedButton": {
-    "message": "Újra",
+    "message": "Újrapróbálás",
     "description": "Button for re-try after wallet creation failed"
   },
   "addFunds": {
@@ -364,7 +364,7 @@
     "description": "Panel notification text for Ads grant"
   },
   "and": {
-    "message": "és ",
+    "message": "és",
     "description": "The word 'and'"
   },
   "braveRewardsSubTitle": {
@@ -416,11 +416,11 @@
     "description": "BAT Points abbreviation text"
   },
   "turnOnAds": {
-    "message": "Reklámok bekapcsolása",
+    "message": "Hirdetések bekapcsolása",
     "description": "Prompt to turn on Ads via notification"
   },
   "adsEarnings": {
-    "message": "reklámokból szerezve:",
+    "message": "reklámokból begyűjtve:",
     "description": "Description text for ad grants in grant details"
   },
   "twitterTipsHoverText": {
@@ -462,7 +462,7 @@
     "description": "Notification text that tells user his wallet is under funded for pending contribution to complete"
   },
   "pendingContributionTitle": {
-    "message": "Függőben lévő hozzájárulás",
+    "message": "Függő hozzájárulás",
     "description": "Notification title for pending contribution type"
   },
   "grantFinishTitleUGP": {
@@ -484,7 +484,7 @@
     "description": "Token title on success screen"
   },
   "grantFinishPointTitleUGP": {
-    "message": "Ingyenes pontjóváírás",
+    "message": "Ingyenes pontok",
     "description": "Point title on success screen"
   },
   "grantFinishTitleAds": {
@@ -524,7 +524,7 @@
     "description": "CTA to disconnect user wallet from rewards"
   },
   "walletVerified":  {
-    "message": "Ellenőrizve",
+    "message": "Ellenőrzött",
     "description": "Status button that tells user that he is verified"
   },
   "walletVerifiedNotification":  {
@@ -626,5 +626,21 @@
   "walletVerificationNote3":  {
     "message": "Figyelem: Tranzakcióid az engedélyezés után láthatók lesznek az Uphold számára; például látni fogják a címzettet és a borravalóid mértékét.",
     "description": "Displayed in login modal for uphold"
+  },
+  "onboardingEarnHeader": {
+    "message": "Szerezzen tokeneket és adjon vissza",
+    "description": ""
+  },
+  "onboardingEarnText": {
+    "message": "Szerezzen tokeneket adatvédelmet tiszteletben tartó hirdetések nézésével, és támogassa automatikusan kedvenc oldalait és tartalomkészítőit.",
+    "description": ""
+  },
+  "onboardingStartUsingRewards": {
+    "message": "Használja a Brave Rewardsot",
+    "description": ""
+  },
+  "onboardingTerms": {
+    "message": "A folytatással elfogadja a $$1Szolgáltatás feltételeit$$2 és az $$3Adatvédelmi szabályzatot$$4.",
+    "description": ""
   }
 }

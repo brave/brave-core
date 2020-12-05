@@ -40,19 +40,31 @@
 <translation id="3446024864193919737">הצג את Brave Rewards</translation>
 <translation id="6274899614137380422">הצג את Binance</translation>
 <translation id="5551238871320268996">Brave ביחד</translation>
-<translation id="4799744519698299121">עוד כרטיסים</translation>
+<translation id="5585019845078534178">כרטיסים</translation>
 <translation id="3870475560794762985">הצג תמונות ממומנות</translation>
 <translation id="2875302873837723333">אתרים מובילים</translation>
 <translation id="8173998484743827990">נתונים סטטיסטיים של Brave</translation>
 <translation id="383680190590774040">שעון</translation>
 <translation id="3333887201479867589">תגמולי Brave</translation>
 <translation id="3159285901314605198">תמונת רקע</translation>
+<translation id="385051799172605136">חזרה</translation>
+<translation id="7415602225677446066">הסיפורים המובילים של היום בפיד פרטי לחלוטין, בדיוק בשבילכם.</translation>
+<translation id="8607689491789524900">Brave Today תואם את תחומי העניין שלכם במכשיר שלכם, כך שהמידע האישי שלכם לעולם לא עוזב את הדפדפן שלכם. תוכן חדש מעודכן לאורך כל היום.</translation>
+<translation id="9164544612367905452">מביא…</translation>
+<translation id="1276592121036104130">טען תוכן חדש</translation>
+<translation id="4210987321913275328">יש לגלול מטה עבור Brave Today</translation>
+<translation id="3122595178900736207">אפס את מקורות Brave Today</translation>
+<translation id="2197023915568148978">האם לאפס את כל אפשרויות מפרסם Brave Today לברירת המחדל שלהן?</translation>
+<translation id="954001034349395856">כל המקורות</translation>
+<translation id="8890516388109605451">מקורות</translation>
+<translation id="5158129253322921540">השבת תוכן מאת <ph name="PUBLISHER_NAME"/></translation>
 <translation id="1776831331757823105">שעון</translation>
 <translation id="4643117005422448078">אתרים מובילים</translation>
 <translation id="7791543448312431591">הוספה</translation>
 <translation id="7679334366167089823">הרוויחו טוקנים עבור צפייה בפרסומות השומרות על הפרטיות.</translation>
 <translation id="1531133232292396145">סחרו בקריפטו ב-Binance ישירות בדפדפן שלכם.</translation>
 <translation id="2166494527623220386">סחר בקריפטו ב-Gemini ישירות בדפדפן שלכם.</translation>
+<translation id="7191394989411626168">על ידי כיבוי כרטיסים, כל הכרטיסים שכרגע גלויים יוסתרו. עם זאת, ייתכן שעדיין תקבלו הודעה על כרטיסים חדשים.</translation>
 <translation id="6165508094623778733">למדו עוד</translation>
 <translation id="8730621377337864115">סיום</translation>
 <translation id="6248988683584659830">הגדרות חיפוש</translation>
@@ -92,9 +104,8 @@
 <translation id="2974339193389078578">ברוכים הבאים לדפדפן Brave</translation>
 <translation id="7735138632831241257">תתכוננו ליהנות מחוויית גלישה מהירה יותר ומאובטחת יותר עם דפדפן הבנוי להגן על הפרטיות שלכם.</translation>
 <translation id="6001839398155993679">בואו נתחיל</translation>
-<translation id="8050847734948770789">הפעל תגמולי גלישה</translation>
-<translation id="2862598513212603756">תשומת הלב שלכם מוערכת. הרוויחו על ידי צפייה במודעות מכבדות פרטיות, ותמכו ביוצרי התוכן המועדפים עליכם.</translation>
-<translation id="4942016616604700968">אפשרו תגמולים</translation>
+<translation id="2835162985889791522">הרוויחו טוקנים על ידי צפייה בפרסומות השומרות על הפרטיות ותמכו באתרים וביוצרי התוכן המועדפים עליכם כברירת מחדל.</translation>
+<translation id="2070991379950719711">התחל להשתמש ב-Brave Rewards</translation>
 <translation id="3958088479270651626">יבא סימניות והגדרות</translation>
 <translation id="2609701960545338618">הגדר/י את סביבת הגלישה הרגילה שלך על ידי ייבוא סימניות והגדרות מהדפדפן הישן שלך. ניתן למצוא אפשרויות ייבוא מתקדמות תחת הגדרות.</translation>
 <translation id="8275038454117074363">יבוא</translation>
@@ -118,7 +129,7 @@
 <translation id="3742599705619405136">שיטה אוטומטית לתמיכה במו"לים וביוצרי תוכן. הגדר/י תשלום חודשים והמשך/י לגלוש כרגיל. האתרים המאומתים ע"י Brave שביקרת בהם יקבלו את התרומות שלך באופן אוטומטי, על פי מידת העניין שלך שנמדדת על ידי Brave.</translation>
 <translation id="20281847067919078">תגמולים מוערכים שממתינים</translation>
 <translation id="8593551638387217772">תאריך התשלום הבא</translation>
-<translation id="319209088187794725">התראות פרסומות שהתקבלו החודש</translation>
+<translation id="4428871418618312983">פרסומות שהתקבלו החודש</translation>
 <translation id="4229016885653790965">סליחה! פרסומות אינן זמינות עדיין באזור שלך.</translation>
 <translation id="2539279826042558064">Brave Rewards ו-Ads אינם זמינים במכשירך כרגע.</translation>
 <translation id="5421369907811917952">הגדרות אחרות</translation>
@@ -291,11 +302,14 @@
 <translation id="1723857724166389190">התרומה החודשית שלך ליוצר זה בוטלה.</translation>
 <translation id="534368327994110883">אתם’ תומכים כרגע ביוצר זה</translation>
 <translation id="2621124276654521177">תרומה חודשית נוכחית</translation>
-<translation id="3084276630953238154">אופס - אירעה שגיאה.</translation>
+<translation id="3084276630953238154">באג פראי הופיע</translation>
+<translation id="3263379510325043678">שגיאת חיבור שרת</translation>
+<translation id="8994556588732085585">נא לסגור ולפתוח מחדש את באנר הטיפים כדי לנסות שוב.</translation>
 <translation id="4371618764691059036">נקבעה תרומה חודשית.</translation>
 <translation id="6356822617569064293">תאריך התרומה הבא:</translation>
 <translation id="4622723187300249546">טיפ חד פעמי</translation>
 <translation id="5268142130226208198">סכום טיפ חד פעמי:</translation>
+<translation id="3669086939205397942">נא להמתין, אין באפשרותך’ לתת טיפ עדיין</translation>
 <translation id="1142440886533556131">פוסט ’של {{user}}</translation>
 <translation id="3489551030916418665">ציוץ ’ של {{user}}</translation>
 <translation id="5531915212947569943">אנו מצטערים לראות אתכם הולכים…</translation>
@@ -305,6 +319,12 @@
 <translation id="379596083010863211">הטיפ החד פעמי שלך נשלח.</translation>
 <translation id="5096821444729034955">עבור הפוסט שלהם</translation>
 <translation id="2978223787436054634">צייצו לגבי התמיכה שלכם</translation>
+<translation id="1543259266592091784">הוסף/י כסף</translation>
+<translation id="7465614181960492526">הרוויחו טוקנים &amp; תנו בחזרה</translation>
+<translation id="2731539192954672606">הרוויחו טוקנים על ידי צפייה בפרסומות השומרות על הפרטיות ותמכו באתרים וביוצרי התוכן המועדפים עליכם באופן אוטומטי.</translation>
+<translation id="1275213816424141989">אולי אחר כך</translation>
+<translation id="2404165674840145940">תנו טיפים עם Brave Rewards</translation>
+<translation id="5820285701794581330">באמצעות תגמולי Brave, תתחילו להרוויח BAT בהם תוכלו להשתמש כדי לתת טיפים ליוצרים.</translation>
 <translation id="5094577350232361255">אודות</translation>
 <translation id="4918086044614829423">אשר</translation>
 <translation id="5916290544882167205">Brave .Brave Software הוא סימן מסחרי רשום של Brave Software. שמות אתרים עשויים להיות סימנים מסחריים או סימנים מסחריים רשומים של בעל האתר.</translation>
@@ -505,7 +525,6 @@
 <translation id="1193434225710679930">מענקי נקודות</translation>
 <translation id="4395099108822007284">טוען תמונה...</translation>
 <translation id="3535654229833214438">העברות</translation>
-<translation id="7952665812649667034">אני מוכנ/ה ל-Earn &amp; Give</translation>
 <translation id="2623808496299703826">הרוויחו טוקנים על ידי צפייה במודעות השומרות על הפרטיות ותמכו ביוצרי תוכן האינטרנט המועדפים עליכם כברירת מחדל.</translation>
 <translation id="8987812599455325915">פעולה זו מאפשרת הן פרסומות והן תרומות אוטומטיות. ניתן להפעיל או לכבות אפשרויות אלו בנפרד בכל עת.</translation>
 <translation id="1485484147452131556">הפעלת Rewards</translation>
@@ -575,7 +594,7 @@
 <translation id="7840362246306242214">מסחר במניות בארה"ב זמין ב- Uphold</translation>
 <translation id="3345432088196080137">השקיעו החל מ-$1 בלבד במניות פופולריות וקרנות הנסחרות בבורסה כמו AAPL, TSLA או AMZN</translation>
 <translation id="4360054110030715117"><ph name="LINK_BEGIN"/>Learn more<ph name="LINK_END"/> אודות Brave Rewards</translation>
-<translation id="4342305967788502343">על ידי לחיצה על Earn &amp; Give, הנך מסכימ/ה ל-<ph name="LINK_BEGIN"/>תנאי השירות<ph name="LINK_END"/> ו-<ph name="LINK_BEGIN"/>מדיניות הפרטיות<ph name="LINK_END"/>.</translation>
+<translation id="629521674505004728">על ידי לחיצה על התחל להשתמש ב-Brave Rewards הנך מסכימ/ה ל<ph name="LINK_BEGIN"/>תנאי השירות<ph name="LINK_END"/> וכן <ph name="LINK_BEGIN"/>מדיניות הפרטיות<ph name="LINK_END"/>.</translation>
 <translation id="8344084848798035850">רווחים משוערים עד כה לחודש זה</translation>
 <translation id="5235444069025581717">טיפים ותרומות לחודש זה</translation>
 <translation id="1210965535849006928">תבע את התגמולים שלי</translation>
@@ -587,9 +606,8 @@
 <translation id="6759185676704303656">הנכם #8217; מקבלים תשלום עבור צפייה בתמונת רקע זו.</translation>
 <translation id="1749232564087138444"><ph name="LINK_BEGIN"/>למדו עוד<ph name="LINK_END"/> על אודות תמונות ממומנות ב-Brave Rewards.</translation>
 <translation id="6113004497629356998">הסתר תמונות ממומנות</translation>
-<translation id="2148613324460538318">הוסף כרטיס</translation>
+<translation id="3787061634640932557">ערוך כרטיסים</translation>
 <translation id="4925543565930352284">על ידי לחיצה על {{title}}, הנך מסכימ/ה ל-<ph name="BEGIN_LINK1"/>תנאי השירות<ph name="END_LINK1"/> ו-<ph name="BEGIN_LINK2"/>מדיניות הפרטיות<ph name="END_LINK2"/>.</translation>
-<translation id="7983303953939627894">הרווח/י &amp; ותנ/י</translation>
 <translation id="5977237145327845546">התחל שיחת וידאו פרטית עם חבריך ועמיתיך.</translation>
 <translation id="5850325887346946383">התחל שיחת וידאו</translation>
 <translation id="3651550649176056334">לגבי הנתונים שלך</translation>
@@ -682,13 +700,6 @@
 <translation id="1974060860693918893">מתקדם</translation>
 <translation id="9096577886148726047">הסתר מתקדם</translation>
 <translation id="6334164481400727517">איננו יכולים להתחבר לתוכן המבוקש באמצעות צומת ה-IPFS המקומי מכיוון שהצומת המקומי לא הופעל או מכיוון שאין כרגע עמיתים מחוברים זמינים. על ידי המשך, בעתיד אנו נשתמש אוטומטית בשער הציבורי המוגדר כברירת מחדל כאשר איננו יכולים להתחבר לתוכן IPFS באמצעות צומת ה-IPFS המקומי. ניתן לבטל זאת מאוחר יותר דרך ההגדרות.</translation>
-<translation id="2901715907314796027">רכישת קריפטו מ-Bitcoin.com.</translation>
-<translation id="4065681313949497252">מטבע</translation>
-<translation id="3833315885381772739">הזן/י סכום</translation>
-<translation id="4011828592358027165">חדש/ה בקריפטו?</translation>
-<translation id="3358050091139900813">הבא/י לכאן את הארנק והתחל/י</translation>
-<translation id="3449068867189933593">הסכום המוזן חייב להיות לפחות {{minimumAmount}} {{fiat}}</translation>
-<translation id="3105412115725259537">Bitcoin.com</translation>
 <translation id="2880025073956220119">Crypto.com</translation>
 <translation id="8237504256665975959">צפו בשווקים וקנו קריפטו מ- crypto.com.</translation>
 <translation id="4292334826913000023">הצג מחיר</translation>
@@ -700,4 +711,20 @@
 <translation id="5337526542182802976">צמדים נתמכים</translation>
 <translation id="1164622162816276433">נפח של 24 שעות</translation>
 <translation id="3155170474926428993">דפדפן Tor</translation>
+<translation id="4799744519698299121">עוד כרטיסים</translation>
+<translation id="8050847734948770789">הפעל תגמולי גלישה</translation>
+<translation id="2862598513212603756">תשומת הלב שלכם מוערכת. הרוויחו על ידי צפייה במודעות מכבדות פרטיות, ותמכו ביוצרי התוכן המועדפים עליכם.</translation>
+<translation id="4942016616604700968">אפשרו תגמולים</translation>
+<translation id="319209088187794725">התראות פרסומות שהתקבלו החודש</translation>
+<translation id="7952665812649667034">אני מוכנ/ה ל-Earn &amp; Give</translation>
+<translation id="4342305967788502343">על ידי לחיצה על Earn &amp; Give, הנך מסכימ/ה ל-<ph name="LINK_BEGIN"/>תנאי השירות<ph name="LINK_END"/> ו-<ph name="LINK_BEGIN"/>מדיניות הפרטיות<ph name="LINK_END"/>.</translation>
+<translation id="2148613324460538318">הוסף כרטיס</translation>
+<translation id="7983303953939627894">הרווח/י &amp; ותנ/י</translation>
+<translation id="2901715907314796027">רכישת קריפטו מ-Bitcoin.com.</translation>
+<translation id="4065681313949497252">מטבע</translation>
+<translation id="3833315885381772739">הזן/י סכום</translation>
+<translation id="4011828592358027165">חדש/ה בקריפטו?</translation>
+<translation id="3358050091139900813">הבא/י לכאן את הארנק והתחל/י</translation>
+<translation id="3449068867189933593">הסכום המוזן חייב להיות לפחות {{minimumAmount}} {{fiat}}</translation>
+<translation id="3105412115725259537">Bitcoin.com</translation>
 </translationbundle>

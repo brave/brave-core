@@ -40,12 +40,23 @@
 <translation id="3446024864193919737">Brave (브레이브) 리워드 표시</translation>
 <translation id="6274899614137380422">Binance 표시</translation>
 <translation id="5551238871320268996">Brave 함께</translation>
-<translation id="4799744519698299121">더 많은 카드</translation>
+<translation id="5585019845078534178">카드</translation>
 <translation id="3870475560794762985">스폰 이미지 표시</translation>
 <translation id="2875302873837723333">최고의 사이트</translation>
 <translation id="8173998484743827990">Brave Stats</translation>
 <translation id="383680190590774040">시계</translation>
 <translation id="3333887201479867589">Brave Rewards</translation>
+<translation id="385051799172605136">뒤로</translation>
+<translation id="7415602225677446066">나만을 위한 완벽한 비공개 피드의 오늘의 주요 스토리입니다.</translation>
+<translation id="8607689491789524900">Brave Today는 개인 정보가 브라우저에서 떠나지 않도록 장치에 대한 관심사를 일치시킵니다. 하루 종일 새로운 콘텐츠가 업데이트됩니다.</translation>
+<translation id="9164544612367905452">가져 오는 중…</translation>
+<translation id="1276592121036104130">새 콘텐츠 로드하기</translation>
+<translation id="4210987321913275328">Brave Today 스크롤</translation>
+<translation id="3122595178900736207">Brave Today 소스 재설정</translation>
+<translation id="2197023915568148978">모든 Brave Today 게시자 선택을 기본값으로 재설정하시겠습니까?</translation>
+<translation id="954001034349395856">모든 소스</translation>
+<translation id="8890516388109605451">소스</translation>
+<translation id="5158129253322921540"><ph name="PUBLISHER_NAME"/> 콘텐츠 비활성화</translation>
 <translation id="1776831331757823105">시계</translation>
 <translation id="4643117005422448078">최고의 사이트</translation>
 <translation id="3159285901314605198">배경 이미지</translation>
@@ -53,6 +64,7 @@
 <translation id="7679334366167089823">개인정보 존중 광고를 시청하여 토큰을 획득하십시오.</translation>
 <translation id="1531133232292396145">브라우저의 바이낸스에서 크립토를 직접 거래하십시오.</translation>
 <translation id="2166494527623220386">브라우저의 제미니에서 크립토를 직접 거래하십시오.</translation>
+<translation id="7191394989411626168">카드를 끄면, 현재 보이는 모든 카드가 숨겨집니다. 그러나 새 카드에 대한 알림은 계속받을 수 있습니다.</translation>
 <translation id="6165508094623778733">더 알아보기</translation>
 <translation id="8730621377337864115">완료</translation>
 <translation id="6248988683584659830">검색 설정</translation>
@@ -92,9 +104,8 @@
 <translation id="2974339193389078578">새로운 인터넷 세상, Brave</translation>
 <translation id="7735138632831241257">개인정보 보호에 최적화된 브라우저로 더욱 빠르고 안전한 검색을 즐겨보세요.</translation>
 <translation id="6001839398155993679">시작</translation>
-<translation id="8050847734948770789">Brave 리워드 사용</translation>
-<translation id="2862598513212603756">귀하의 관심은 소중합니다. 검색 중 개인 정보를 존중하는 광고를 시청해서 보상을 받고 선행을 베풀어 귀하가 사랑하는 콘텐츠 제작자를 지원해 보세요.</translation>
-<translation id="4942016616604700968">리워드 사용</translation>
+<translation id="2835162985889791522">기본적으로 개인 정보를 존중하는 광고를 보고 토큰을 얻고 즐겨 찾는 사이트와 크리에이터를 지원하세요.</translation>
+<translation id="2070991379950719711">Brave Rewards 사용 시작</translation>
 <translation id="3958088479270651626">북마크 및 설정 가져오기</translation>
 <translation id="2609701960545338618">귀하의 예전 브라우저에서 북마크 및 설정을 가져와서 귀하의 일상적인 브라우징 환경을 설정하세요. 설정에서 고급 가져오기 옵션을 이용하실 수 있습니다.</translation>
 <translation id="8275038454117074363">가져오기</translation>
@@ -118,7 +129,7 @@
 <translation id="3742599705619405136">발행자 및 콘텐츠 제작자를 자동으로 후원하는 방법입니다. 월별 지불 금액을 설정하고 평소와 같이 탐색하세요. Brave가 측정하는 귀하의 관심에 기반하여, 방문하시는 Brave 인증 사이트가 자동으로 귀하의 기부금을 받게 됩니다.</translation>
 <translation id="20281847067919078">보류 중인 예상 보상금</translation>
 <translation id="8593551638387217772">다음 결제일</translation>
-<translation id="319209088187794725">이번 달에 받은 광고 알림</translation>
+<translation id="4428871418618312983">이번 달에 받은 광고</translation>
 <translation id="4229016885653790965">죄송합니다! 귀하의 지역에서는 아직 광고가 제공되지 않습니다.</translation>
 <translation id="2539279826042558064">지금 귀하의 장치에서 Brave (브레이브) 리워드 및 광고를 사용할 수 없습니다.</translation>
 <translation id="5421369907811917952">기타 설정</translation>
@@ -265,11 +276,14 @@
 <translation id="1723857724166389190">이 작성자에 대한 월간 기부가 취소되었습니다.</translation>
 <translation id="534368327994110883">현재 이 작성자를 지원하고 있습니다</translation>
 <translation id="2621124276654521177">현재 월간 기부</translation>
-<translation id="3084276630953238154">죄송하지만 오류가 발생했습니다.</translation>
+<translation id="3084276630953238154">야생 버그가 나타났습니다</translation>
+<translation id="3263379510325043678">서버 연결 오류</translation>
+<translation id="8994556588732085585">다시 시도하려면 팁 배너를 닫았다가 다시 여세요.</translation>
 <translation id="4371618764691059036">월간 기부가 설정되었습니다.</translation>
 <translation id="6356822617569064293">다음 기부 날짜:</translation>
 <translation id="4622723187300249546">일회성 팁</translation>
 <translation id="5268142130226208198">일회성 팁 액수:</translation>
+<translation id="3669086939205397942">잠깐만요, 아직 팁을 줄 수 없습니다</translation>
 <translation id="1142440886533556131">{{user}}의 게시물</translation>
 <translation id="3489551030916418665">{{user}}의 트윗</translation>
 <translation id="5531915212947569943">떠나신다니 안타깝습니다...</translation>
@@ -279,6 +293,12 @@
 <translation id="379596083010863211">일회성 팁이 전송되었습니다.</translation>
 <translation id="5096821444729034955">그들의 게시물에 대해</translation>
 <translation id="2978223787436054634">사용자의 지원에 대한 트윗</translation>
+<translation id="1543259266592091784">자금 추가</translation>
+<translation id="7465614181960492526">토큰 획득 &amp; 돌려주기</translation>
+<translation id="2731539192954672606">개인 정보를 존중하는 광고를 보고 토큰을 얻고 즐겨 찾는 사이트와 콘텐츠 크리에이터를 자동으로 지원하세요.</translation>
+<translation id="1275213816424141989">나중에</translation>
+<translation id="2404165674840145940">Brave Rewards 팁</translation>
+<translation id="5820285701794581330">Brave rewards를 사용하면 크리에이터에게 팁을 주는 데 사용할 수 있는 BAT를 얻을 수 있습니다.</translation>
 <translation id="5094577350232361255">대하여</translation>
 <translation id="4918086044614829423">수락</translation>
 <translation id="5916290544882167205">Brave Software. Brave는 Brave Software의 등록 상표입니다. 사이트 이름은 사이트 소유자의 상표 또는 등록 상표일 수 있습니다.</translation>
@@ -470,7 +490,6 @@
 <translation id="1193434225710679930">포인트 보조금</translation>
 <translation id="4395099108822007284">이미지 로드 중...</translation>
 <translation id="3535654229833214438">트랜잭션</translation>
-<translation id="7952665812649667034">적립 &amp; 제공 준비 완료</translation>
 <translation id="2623808496299703826">개인 정보를 존중하는 광고를 보고 토큰을 획득하여  기본적으로 즐겨찾는 웹 콘텐츠 작성자를 지원하세요.</translation>
 <translation id="8987812599455325915">이것은 광고와 자동 기부를 모두 활성화합니다. 언제든지 이 기능을 따로 켜거나 끌 수 있습니다.</translation>
 <translation id="1485484147452131556">Rewards 활성화</translation>
@@ -540,7 +559,7 @@
 <translation id="7840362246306242214">미국 주식 거래 Uphold에서 가능</translation>
 <translation id="3345432088196080137">AAPL, TSLA 또는 AMZN 같은 인기 주식 및 상장지수펀드에 1달러만 투자하세요</translation>
 <translation id="4360054110030715117">Brave 상금에 대한 <ph name="LINK_BEGIN"/>자세한 정보 보기<ph name="LINK_END"/></translation>
-<translation id="4342305967788502343">획득 및 기부를 클릭함으로써, 사용자는 <ph name="LINK_BEGIN"/>이용약관<ph name="LINK_END"/> 및 <ph name="LINK_BEGIN"/>개인정보처리방침<ph name="LINK_END"/>에 동의하게 됩니다.</translation>
+<translation id="629521674505004728">Brave Rewards 사용 시작을 클릭하면 <ph name="LINK_BEGIN"/>서비스 약관<ph name="LINK_END"/> 및 <ph name="LINK_BEGIN"/>개인 정보 보호 정책<ph name="LINK_END"/>에 동의하는 것입니다.</translation>
 <translation id="8344084848798035850">이번 달까지의 예상 수익</translation>
 <translation id="5235444069025581717">이번 달 팁과 기부</translation>
 <translation id="1210965535849006928">내 리워드 청구</translation>
@@ -552,9 +571,8 @@
 <translation id="6759185676704303656">이 배경 이미지를 보고 있는 동안 상금이 지급됩니다.</translation>
 <translation id="1749232564087138444">Brave 상금의 스폰서 이미지에 대한 <ph name="LINK_BEGIN"/>자세한 정보 보기<ph name="LINK_END"/></translation>
 <translation id="6113004497629356998">스폰서 이미지 숨기기</translation>
-<translation id="2148613324460538318">카드 추가</translation>
+<translation id="3787061634640932557">카드 편집</translation>
 <translation id="4925543565930352284">{{title}}을/를 켬으로써, 사용자는 <ph name="BEGIN_LINK1"/>이용약관<ph name="END_LINK1"/> 및 <ph name="BEGIN_LINK2"/>개인정보처리방침<ph name="END_LINK2"/>에 동의하게 됩니다.</translation>
-<translation id="7983303953939627894">획득 및 기부</translation>
 <translation id="5977237145327845546">친구 및 동료와 비공개 화상 통화를 시작하세요.</translation>
 <translation id="5850325887346946383">화상 통화 시작</translation>
 <translation id="3651550649176056334">귀하의 데이터 정보</translation>
@@ -646,13 +664,6 @@
 <translation id="1974060860693918893">고급</translation>
 <translation id="9096577886148726047">세부 정보 숨기기</translation>
 <translation id="6334164481400727517">로컬 노드가 시작되지 않았거나 현재 사용할 수 있는 연결된 피어가 없기 때문에 로컬 IPFS 노드를 사용하여 요청한 콘텐츠에 연결할 수 없습니다. 계속 진행함으로써 로컬 IPFS 노드를 사용하여 IPFS 콘텐츠에 연결할 수 없는 경우, 향후에 기본 공용 게이트웨이로 자동 대체합니다. 이 기능은 나중에 설정에서 끌 수 있습니다.</translation>
-<translation id="2901715907314796027">Bitcoin.com에서 암호 화폐를 구매하세요.</translation>
-<translation id="4065681313949497252">통화</translation>
-<translation id="3833315885381772739">금액 입력</translation>
-<translation id="4011828592358027165">암호 화폐가 처음이신가요?</translation>
-<translation id="3358050091139900813">여기에서 지갑을 받고 시작하세요</translation>
-<translation id="3449068867189933593">입력된 금액은 {{minimumAmount}} 이상이어야 함  {{fiat}}</translation>
-<translation id="3105412115725259537">Bitcoin.com</translation>
 <translation id="2880025073956220119">Crypto.com</translation>
 <translation id="8237504256665975959">crypto.com에서 시장을 보고 암호화폐를 구매하세요.</translation>
 <translation id="4292334826913000023">가격 표시</translation>
@@ -664,4 +675,20 @@
 <translation id="5337526542182802976">지원되는 페어</translation>
 <translation id="1164622162816276433">24시간 거래량</translation>
 <translation id="3155170474926428993">Tor 런처</translation>
+<translation id="4799744519698299121">더 많은 카드</translation>
+<translation id="8050847734948770789">Brave 리워드 사용</translation>
+<translation id="2862598513212603756">귀하의 관심은 소중합니다. 검색 중 개인 정보를 존중하는 광고를 시청해서 보상을 받고 선행을 베풀어 귀하가 사랑하는 콘텐츠 제작자를 지원해 보세요.</translation>
+<translation id="4942016616604700968">리워드 사용</translation>
+<translation id="319209088187794725">이번 달에 받은 광고 알림</translation>
+<translation id="7952665812649667034">적립 &amp; 제공 준비 완료</translation>
+<translation id="4342305967788502343">획득 및 기부를 클릭함으로써, 사용자는 <ph name="LINK_BEGIN"/>이용약관<ph name="LINK_END"/> 및 <ph name="LINK_BEGIN"/>개인정보처리방침<ph name="LINK_END"/>에 동의하게 됩니다.</translation>
+<translation id="2148613324460538318">카드 추가</translation>
+<translation id="7983303953939627894">획득 및 기부</translation>
+<translation id="2901715907314796027">Bitcoin.com에서 암호 화폐를 구매하세요.</translation>
+<translation id="4065681313949497252">통화</translation>
+<translation id="3833315885381772739">금액 입력</translation>
+<translation id="4011828592358027165">암호 화폐가 처음이신가요?</translation>
+<translation id="3358050091139900813">여기에서 지갑을 받고 시작하세요</translation>
+<translation id="3449068867189933593">입력된 금액은 {{minimumAmount}} 이상이어야 함  {{fiat}}</translation>
+<translation id="3105412115725259537">Bitcoin.com</translation>
 </translationbundle>

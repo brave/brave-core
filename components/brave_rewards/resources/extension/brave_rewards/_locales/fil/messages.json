@@ -56,7 +56,7 @@
     "description": "Wallet panel title for anon wallets"
   },
   "batPoints": {
-    "message": "BAT Points",
+    "message": "Mga Puntos sa BAT",
     "description": "BAT Points text"
   },
   "batPointsMessage": {
@@ -162,7 +162,7 @@
     "description": "Title for grant section in wallet summary"
   },
   "pointGrantClaimed": {
-    "message": "Na-claim na ang Grant para sa Puntos",
+    "message": "Na-claim na ang Mga Grant para sa Puntos",
     "description": "Title for point grant section in wallet summary"
   },
   "earningsAds": {
@@ -170,7 +170,7 @@
     "description": "Title for ads section in wallet summary"
   },
   "rewardsContribute": {
-    "message": "Awtomatikong Pag-ambag",
+    "message": "Awtomatikong Mag-ambag",
     "description": "Title for auto contribute section in wallet summary"
   },
   "oneTimeDonation": {
@@ -348,7 +348,7 @@
     "description": "Failure title for wallet creation"
   },
   "walletFailedButton": {
-    "message": "Subukang muli",
+    "message": "Muling subukan",
     "description": "Button for re-try after wallet creation failed"
   },
   "addFunds": {
@@ -416,7 +416,7 @@
     "description": "BAT Points abbreviation text"
   },
   "turnOnAds": {
-    "message": "I-on ang Ads",
+    "message": "I-on ang Mga Ad",
     "description": "Prompt to turn on Ads via notification"
   },
   "adsEarnings": {
@@ -504,7 +504,7 @@
     "description": "CTA in the footer to verify"
   },
   "walletButtonDisconnected":  {
-    "message": "Nakadiskonekta",
+    "message": "Nadiskonekta",
     "description": "CTA status button"
   },
   "walletButtonUnverified":  {
@@ -574,7 +574,7 @@
     "description": "BAT Token text"
   },
   "points":  {
-    "message": "puntos",
+    "message": "mga puntos",
     "description": "BAT Points text"
   },
   "tokenGrants":  {
@@ -626,5 +626,21 @@
   "walletVerificationNote3":  {
     "message": "Tandaan: Makikita ang iyong mga transaksyon sa Uphold kapag nagbigay ka ng pahintulot; halimbawa, makikita nila ang recipient at halaga ng mga tip mo.",
     "description": "Displayed in login modal for uphold"
+  },
+  "onboardingEarnHeader": {
+    "message": "Makakuha ng Mga Token at Gumanti ng Tulong",
+    "description": ""
+  },
+  "onboardingEarnText": {
+    "message": "Makakuha ng mga token sa pamamagitan ng pagtingin sa mga ad na gumagalang sa privacy at awtomatikong suportahan ang iyong mga paboritong site at creator ng content.",
+    "description": ""
+  },
+  "onboardingStartUsingRewards": {
+    "message": "Simulang gamitin ang Brave Rewards",
+    "description": ""
+  },
+  "onboardingTerms": {
+    "message": "Sa pamamagitan ng pagpapatuloy, sumasang-ayon ka sa $$1Mga Tuntunin ng Serbisyo$$2 at $$3Patakaran sa Privacy$$4.",
+    "description": ""
   }
 }

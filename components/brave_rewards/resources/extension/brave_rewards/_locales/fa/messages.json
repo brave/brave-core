@@ -28,7 +28,7 @@
     "description": "Link in the footer (takes you to rewards settings page) for welcome screen in the panel, existing user"
   },
   "welcomeFooterTextTwo": {
-    "message": "بیشتر بیاموزید",
+    "message": "بیشتر بدانید",
     "description": "Link in the footer (takes you to rewards settings page) for welcome screen in the panel, new user"
   },
   "welcomeHeaderOne": {
@@ -292,7 +292,7 @@
     "description": "Grant expiry label"
   },
   "grantGeneralErrorButton": {
-    "message": "تأیید",
+    "message": "قبول",
     "description": "Button text for clearing the error."
   },
   "grantGeneralErrorText": {
@@ -304,7 +304,7 @@
     "description": "Error title when user is having problems claiming a grant."
   },
   "unVerifiedCheck": {
-    "message": "بازخوانی وضعیت",
+    "message": "تازه‌سازی وضعیت",
     "description": "Text of link that allows to check verified status of unverified publisher"
   },
   "unVerifiedPublisher": {
@@ -348,7 +348,7 @@
     "description": "Failure title for wallet creation"
   },
   "walletFailedButton": {
-    "message": "امتحان مجدد",
+    "message": "سعی مجدد",
     "description": "Button for re-try after wallet creation failed"
   },
   "addFunds": {
@@ -380,7 +380,7 @@
     "description": "Subtitle for wallet disabled panel"
   },
   "privacyPolicy": {
-    "message": "خط‌مشی رازداری",
+    "message": "خط‌مشی حریم‌خصوصی",
     "description": "Privacy Policy"
   },
   "serviceText": {
@@ -462,7 +462,7 @@
     "description": "Notification text that tells user his wallet is under funded for pending contribution to complete"
   },
   "pendingContributionTitle": {
-    "message": "مشارکت معلق",
+    "message": "مشارکت در حال انتظار",
     "description": "Notification title for pending contribution type"
   },
   "grantFinishTitleUGP": {
@@ -484,7 +484,7 @@
     "description": "Token title on success screen"
   },
   "grantFinishPointTitleUGP": {
-    "message": "هدیه امتیاز رایگان",
+    "message": "امتیاز هدیه رایگان",
     "description": "Point title on success screen"
   },
   "grantFinishTitleAds": {
@@ -570,7 +570,7 @@
     "description": "BAT Point text"
   },
   "token":  {
-    "message": "رمزیاب",
+    "message": "توکن",
     "description": "BAT Token text"
   },
   "points":  {
@@ -626,5 +626,21 @@
   "walletVerificationNote3":  {
     "message": "توجه: تراکنش‌های شما به‌محض این‌که اجازه دهید برای Uphold قابل‌مشاهده خواهد بود؛ برای مثال، آن‌ها قادر به دیدن گیرنده و مقدار انعام‌های شما خواهند بود.",
     "description": "Displayed in login modal for uphold"
+  },
+  "onboardingEarnHeader": {
+    "message": "کسب توکن و برگرداندن",
+    "description": ""
+  },
+  "onboardingEarnText": {
+    "message": "با مشاهده آگهی‌هایی که به حریم خصوصی احترام می‌گذارند، توکن کسب کنید و به‌طور خودکار از سایت‌ها و سازندگان محتوای دلخواهتان پشتیبانی کنید.",
+    "description": ""
+  },
+  "onboardingStartUsingRewards": {
+    "message": "شروع استفاده از Brave Rewards",
+    "description": ""
+  },
+  "onboardingTerms": {
+    "message": "با ادامه دادن، با $$1شرایط خدمات$$2 و $$3خط مشی رازداری$$4 موافقت می‌کنید.",
+    "description": ""
   }
 }

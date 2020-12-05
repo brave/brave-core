@@ -16,11 +16,11 @@
     "description": "Entry text for welcome screen in the panel, existing user"
   },
   "welcomeDescTwo": {
-    "message": "Du kan nu tjene tokens ved at se reklamer der respekterer dit privatliv.",
+    "message": "Du kan nu optjene tokens ved at se anonymitetsrespekterende reklamer.",
     "description": "Entry text for welcome screen in the panel, new user"
   },
   "welcomeDescPoints": {
-    "message": "Du kan nu optjene point ved at se reklamer der respekterer dit privatliv",
+    "message": "Du kan nu optjene point ved at se privatlivs-respekterende reklamer",
     "description": "Entry text for welcome screen in the panel, points"
   },
   "welcomeFooterTextOne": {
@@ -44,11 +44,11 @@
     "description": "Title of wallet section where we display data about wallet"
   },
   "grants": {
-    "message": "Tilskud",
+    "message": "Bevillinger",
     "description": "Title for grant section in wallet summary"
   },
   "details": {
-    "message": "Detaljer",
+    "message": "Detaljer ",
     "description": "Title for grant section in wallet panel summary"
   },
   "yourBalance": {
@@ -56,7 +56,7 @@
     "description": "Wallet panel title for anon wallets"
   },
   "batPoints": {
-    "message": "BAT Points",
+    "message": "BAT points ",
     "description": "BAT Points text"
   },
   "batPointsMessage": {
@@ -88,7 +88,7 @@
     "description": "CTA for sending tip form site banner"
   },
   "enableTips": {
-    "message": "Aktiver drikkepenge",
+    "message": "Aktiver Tips",
     "description": "The whole string is 'Enable tips on YouTube for like.'"
   },
   "for": {
@@ -136,7 +136,7 @@
     "description": "Month"
   },
   "monthNov": {
-    "message": "November ",
+    "message": "November",
     "description": "Month"
   },
   "monthOct": {
@@ -162,15 +162,15 @@
     "description": "Title for grant section in wallet summary"
   },
   "pointGrantClaimed": {
-    "message": "Pointbevilling anmodet",
+    "message": "Points-tilskud indløst ",
     "description": "Title for point grant section in wallet summary"
   },
   "earningsAds": {
-    "message": "Indtjening fra Reklamer",
+    "message": "Indtjening fra reklamer",
     "description": "Title for ads section in wallet summary"
   },
   "rewardsContribute": {
-    "message": "Auto-Bidrag ",
+    "message": "Auto-Bidrag",
     "description": "Title for auto contribute section in wallet summary"
   },
   "oneTimeDonation": {
@@ -182,11 +182,11 @@
     "description": "Used for grant representation. Whole string is '30.0 BAT expires on 08/05/2022'"
   },
   "recurringDonations": {
-    "message": "Månedlige bidrag",
+    "message": "Månedlige bidrag ",
     "description": "Title for monthly contributions section in wallet summary"
   },
   "off": {
-    "message": "Slukket ",
+    "message": "Fra",
     "description": "Label used in toggle indicating that toggle is off"
   },
   "ok": {
@@ -194,7 +194,7 @@
     "description": "Used in notification to dismiss notification"
   },
   "braveAdsLaunchMsg": {
-    "message": "Nu kan du tjene ved at se reklamer.",
+    "message": "Nu kan du tjene penge på at se reklamer. ",
     "description": "Message for ads launch notification"
   },
   "braveAdsTitle": {
@@ -292,7 +292,7 @@
     "description": "Grant expiry label"
   },
   "grantGeneralErrorButton": {
-    "message": "OK ",
+    "message": "OK",
     "description": "Button text for clearing the error."
   },
   "grantGeneralErrorText": {
@@ -328,7 +328,7 @@
     "description": "Text for the link that explains more about reserved amount"
   },
   "disabledPanelOff": {
-    "message": "Fra ",
+    "message": "Fra",
     "description": "Off state text for Panel's disabled state"
   },
   "disabledPanelSettings": {
@@ -348,7 +348,7 @@
     "description": "Failure title for wallet creation"
   },
   "walletFailedButton": {
-    "message": "Prøv igen",
+    "message": "Forsøg igen",
     "description": "Button for re-try after wallet creation failed"
   },
   "addFunds": {
@@ -412,11 +412,11 @@
     "description": "BAT text for displaying converted tip amount."
   },
   "bap": {
-    "message": "BAP",
+    "message": "BAP ",
     "description": "BAT Points abbreviation text"
   },
   "turnOnAds": {
-    "message": "Slå reklamer til",
+    "message": "Slå reklamer til ",
     "description": "Prompt to turn on Ads via notification"
   },
   "adsEarnings": {
@@ -462,7 +462,7 @@
     "description": "Notification text that tells user his wallet is under funded for pending contribution to complete"
   },
   "pendingContributionTitle": {
-    "message": "Afventer bidrag",
+    "message": "Afventende bidrag ",
     "description": "Notification title for pending contribution type"
   },
   "grantFinishTitleUGP": {
@@ -484,7 +484,7 @@
     "description": "Token title on success screen"
   },
   "grantFinishPointTitleUGP": {
-    "message": "Gratis pointbevillig",
+    "message": "Gratis point-tilskud",
     "description": "Point title on success screen"
   },
   "grantFinishTitleAds": {
@@ -508,7 +508,7 @@
     "description": "CTA status button"
   },
   "walletButtonUnverified":  {
-    "message": "Bekræft tegnebogen",
+    "message": "Bekræft Tegnebog",
     "description": "CTA to verify wallet in the wallet "
   },
   "walletButtonVerified":  {
@@ -520,7 +520,7 @@
     "description": "CTA to open uphold account"
   },
   "walletDisconnect":  {
-    "message": "Afbryd fra Brave Belønninger",
+    "message": "Afbryd forbindelsen fra Brave Belønninger",
     "description": "CTA to disconnect user wallet from rewards"
   },
   "walletVerified":  {
@@ -582,7 +582,7 @@
     "description": "BAT Tokens Grant Text"
   },
   "pointGrants":  {
-    "message": "Pointbevillig",
+    "message": "Pointbevillinger",
     "description": "BAT Points Grant Text"
   },
   "greetingsVerified":  {
@@ -624,7 +624,23 @@
     "description": "Status button that tells user that he is currently pending"
   },
   "walletVerificationNote3":  {
-    "message": "Bemærk: Dine transaktioner vil være synlige for Uphold, når du har godkendt det. Eksempelvis vil de kunne se modtageren og beløbet på dine drikkepenge.",
+    "message": "Bemærk: Dine transaktioner vil være synlige for Uphold, når du har godkendt det. De vil eksempelvis kunne se modtageren og beløbet på dine drikkepenge.",
     "description": "Displayed in login modal for uphold"
+  },
+  "onboardingEarnHeader": {
+    "message": "Optjen tokens og giv tilbage",
+    "description": ""
+  },
+  "onboardingEarnText": {
+    "message": "Optjen tokens ved at se annoncer, der respekterer dine persondata, og støt automatisk dine foretrukne hjemmesider og indholdsskabere.",
+    "description": ""
+  },
+  "onboardingStartUsingRewards": {
+    "message": "Begynd at bruge Brave Rewards",
+    "description": ""
+  },
+  "onboardingTerms": {
+    "message": "Ved at fortsætte accepterer du $$1Servicevilkårene $$2 og $$Politikken om beskyttelse af persondata$$4.",
+    "description": ""
   }
 }

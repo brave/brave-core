@@ -4,19 +4,19 @@
     "description": "Title in welcome screen for the panel"
   },
   "welcomeButtonTextOne": {
-    "message": "ಈಗ ಗಳಿಕೆಯನ್ನು ಪ್ರಾರಂಭಿಸಿ!",
+    "message": "ಈಗಲೇ ಸಂಪಾದನೆಯನ್ನು ಪ್ರಾರಂಭಿಸಿ!",
     "description": "CTA on welcome screen in the panel, existing users"
   },
   "welcomeButtonTextTwo": {
-    "message": "ಪುರಸ್ಕಾರಗಳಿಗೆ ಸೇರಿ",
+    "message": "ಪುರಸ್ಕಾರಗಳಲ್ಲಿ ಸೇರಿಕೊಳ್ಳಿ",
     "description": "CTA on welcome screen in the panel, new users"
   },
   "welcomeDescOne": {
-    "message": "ಜಾಹೀರಾತುಗಳನ್ನು ವೀಕ್ಷಿಸುವ ಮೂಲಕ ಹಣಗಳಿಸಿ ಮತ್ತು ನಿಮ್ಮ ಮೆಚ್ಚಿನ ವಿಷಯ ರಚನೆಕಾರರನ್ನು ಬೆಂಬಲಿಸಲು ಅದನ್ನು ಮುಂದಕ್ಕೆ ಫಾರ್ವರ್ಡ್ ಮಾಡಿ.",
+    "message": "ಜಾಹೀರಾತುಗಳನ್ನು ವೀಕ್ಷಿಸಿ, ಹಣ ಪಡೆಯಿರಿ ಮತ್ತು ನಿಮ್ಮ ಮೆಚ್ಚಿನ ವಿಷಯ ರಚನೆಕಾರರನ್ನು ಬೆಂಬಲಿಸಲು ಅದನ್ನು ಮುಂದಕ್ಕೆ ಪಾವತಿಸಿ.",
     "description": "Entry text for welcome screen in the panel, existing user"
   },
   "welcomeDescTwo": {
-    "message": "ಗೌಪ್ಯತೆಯನ್ನು-ಗೌರವಿಸುವ ಜಾಹೀರಾತುಗಳನ್ನು ವೀಕ್ಷಿಸುವ ಮೂಲಕ ನೀವು ಇದೀಗ ಟೋಕನ್‌ಗಳನ್ನು ಸಂಪಾದಿಸಬಹುದು.",
+    "message": "ಗೌಪ್ಯತೆ-ಗೌರವಿಸುವ ಜಾಹೀರಾತುಗಳನ್ನು ವೀಕ್ಷಿಸುವ ಮೂಲಕ ನೀವು ಇದೀಗ ಟೋಕನ್‌ಗಳನ್ನು ಸಂಪಾದಿಸಬಹುದು.",
     "description": "Entry text for welcome screen in the panel, new user"
   },
   "welcomeDescPoints": {
@@ -56,7 +56,7 @@
     "description": "Wallet panel title for anon wallets"
   },
   "batPoints": {
-    "message": "BAT ಪಾಯಿಂಟ್‍ಗಳು",
+    "message": "BAT ಪಾಯಿಂಟ್‌‌ಗಳು",
     "description": "BAT Points text"
   },
   "batPointsMessage": {
@@ -72,7 +72,7 @@
     "description": "Tells user that this particular publisher is a Brave Verified Creator"
   },
   "rewardsContributeAttentionScore": {
-    "message": "ಗಮನಿಸಿ",
+    "message": "ಗಮನ",
     "description": "Label for auto contribute table attention for the publisher"
   },
   "donateMonthly": {
@@ -80,7 +80,7 @@
     "description": "Label for drop down menu where user select amount for monthly contribution for particular publisher"
   },
   "includeInAuto": {
-    "message": "ಸ್ವಯಂ-ಕೊಡುಗೆಯಲ್ಲಿ ಸೇರಿಕೊಳ್ಳಿ",
+    "message": "ಸ್ವಯಂ-ಕೊಡುಗೆಯಲ್ಲಿ ಸೇರಿ",
     "description": "Label for checkbox that allows user to exclude publishers from auto contribute"
   },
   "donateNow": {
@@ -92,7 +92,7 @@
     "description": "The whole string is 'Enable tips on YouTube for like.'"
   },
   "for": {
-    "message": "ಇದಕ್ಕಾಗಿ",
+    "message": "ಇದಕ್ಕೆ",
     "description": "The whole string is 'Enable tips on YouTube for like.'"
   },
   "rewardsSummary": {
@@ -194,7 +194,7 @@
     "description": "Used in notification to dismiss notification"
   },
   "braveAdsLaunchMsg": {
-    "message": "ಈಗ ನೀವು ಜಾಹೀರಾತುಗಳನ್ನು ವೀಕ್ಷಿಸುವ ಮೂಲಕ ಗಳಿಸಬಹುದು.",
+    "message": "ನೀವು ಈಗ ಜಾಹೀರಾತುಗಳನ್ನು ನೋಡುವ ಮೂಲಕ ಗಳಿಸಬಹುದು.",
     "description": "Message for ads launch notification"
   },
   "braveAdsTitle": {
@@ -348,7 +348,7 @@
     "description": "Failure title for wallet creation"
   },
   "walletFailedButton": {
-    "message": "ಪುನಃ ಪ್ರಯತ್ನಿಸಿ",
+    "message": "ಮತ್ತೆ ಪ್ರಯತ್ನಿಸಿ",
     "description": "Button for re-try after wallet creation failed"
   },
   "addFunds": {
@@ -462,7 +462,7 @@
     "description": "Notification text that tells user his wallet is under funded for pending contribution to complete"
   },
   "pendingContributionTitle": {
-    "message": "ಬಾಕಿಯಿರುವ ಕೊಡುಗೆ",
+    "message": "ಕೊಡುಗೆ ಬಾಕಿ ಉಳಿದಿದೆ",
     "description": "Notification title for pending contribution type"
   },
   "grantFinishTitleUGP": {
@@ -554,7 +554,7 @@
     "description": "Text shown for connected publishers that are not fully verified in the panel"
   },
   "walletGoToVerifyPage":  {
-    "message": "ಸಂಪೂರ್ಣ ವ್ಯಾಲೆಟ್ ಪರಿಶೀಲನೆ",
+    "message": "ವ್ಯಾಲೆಟ್ ಪರಿಶೀಲನೆ ಪೂರ್ಣಗೊಳಿಸಿ",
     "description": "CTA for completing wallet verification"
   },
   "set": {
@@ -626,5 +626,21 @@
   "walletVerificationNote3":  {
     "message": "ಗಮನಿಸಿ: ಒಮ್ಮೆ ನೀವು ದೃಢೀಕರಿಸಿದಾಗ ನಿಮ್ಮ ವಹಿವಾಟು Uphold ಗೆ ಲಭ್ಯವಿರುತ್ತದೆ; ಉದಾಹರಣೆಗೆ, ಸ್ವೀಕೃತದಾರರನ್ನು ಮತ್ತು ನಿಮ್ಮ ಸಲಹೆಗಳ ಮೊತ್ತವನ್ನು ನೋಡಲು ಅವುಗಳಿಗೆ ಸಾಧ್ಯವಾಗುತ್ತದೆ.",
     "description": "Displayed in login modal for uphold"
+  },
+  "onboardingEarnHeader": {
+    "message": "ಟೋಕನ್‌ಗಳನ್ನು ಸಂಪಾದಿಸಿ ಮತ್ತು ಹಿಂತಿರುಗಿ",
+    "description": ""
+  },
+  "onboardingEarnText": {
+    "message": "ಗೌಪ್ಯತೆ-ಗೌರವಿಸುವ ಜಾಹೀರಾತುಗಳನ್ನು ನೋಡುವ ಮೂಲಕ ಟೋಕನ್‌ಗಳನ್ನು ಸಂಪಾದಿಸಿ ಮತ್ತು ನಿಮ್ಮ ನೆಚ್ಚಿನ ಸೈಟ್‌ಗಳು ಮತ್ತು ವಿಷಯ ರಚನೆಕಾರರನ್ನು ಸ್ವಯಂಚಾಲಿತವಾಗಿ ಬೆಂಬಲಿಸಿ.",
+    "description": ""
+  },
+  "onboardingStartUsingRewards": {
+    "message": "Brave Rewards ಬಳಸಲು ಪ್ರಾರಂಭಿಸಿ",
+    "description": ""
+  },
+  "onboardingTerms": {
+    "message": "ಮುಂದುವರಿಯುವ ಮೂಲಕ, ನೀವು $$1ಸೇವಾ ನಿಯಮಗಳು$$2 ಮತ್ತು $$3ಗೌಪ್ಯತೆ ನೀತಿ$$4 ಗೆ ಸಮ್ಮತಿಸುತ್ತೀರಿ.",
+    "description": ""
   }
 }

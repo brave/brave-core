@@ -36,7 +36,7 @@
     "description": "Main header title for welcome screen in the panel, existing user"
   },
   "welcomeHeaderTwo": {
-    "message": "পরবর্তী ইন্টার্নেটের অভিজ্ঞতা করতে প্রস্তুত হন|",
+    "message": "পরবর্তী ইন্টারনেটের অভিজ্ঞতা করতে প্রস্তুত হন|",
     "description": "Main header title for welcome screen in the panel, new user"
   },
   "yourWallet": {
@@ -48,7 +48,7 @@
     "description": "Title for grant section in wallet summary"
   },
   "details": {
-    "message": "বিশদ বিবরণ",
+    "message": "বিস্তারিত বিবরণগুলি",
     "description": "Title for grant section in wallet panel summary"
   },
   "yourBalance": {
@@ -56,7 +56,7 @@
     "description": "Wallet panel title for anon wallets"
   },
   "batPoints": {
-    "message": "BAT পয়েন্ট",
+    "message": "BAT পয়েন্টগুলি",
     "description": "BAT Points text"
   },
   "batPointsMessage": {
@@ -72,7 +72,7 @@
     "description": "Tells user that this particular publisher is a Brave Verified Creator"
   },
   "rewardsContributeAttentionScore": {
-    "message": "মনোযোগ দিন",
+    "message": "মনোযোগ",
     "description": "Label for auto contribute table attention for the publisher"
   },
   "donateMonthly": {
@@ -162,15 +162,15 @@
     "description": "Title for grant section in wallet summary"
   },
   "pointGrantClaimed": {
-    "message": "পয়েন্ট অনুদান দাবি করা হয়েছে",
+    "message": "অনুদানজনিত পয়েন্ট দাবি করা হয়েছে",
     "description": "Title for point grant section in wallet summary"
   },
   "earningsAds": {
-    "message": "বিজ্ঞাপন থেকে করা উপার্জন",
+    "message": "Brave বিজ্ঞাপন থেকে করা উপার্জন",
     "description": "Title for ads section in wallet summary"
   },
   "rewardsContribute": {
-    "message": "স্বয়ংক্রিয়ভাবে অবদান রাখুন",
+    "message": "স্বতঃ-প্রদান",
     "description": "Title for auto contribute section in wallet summary"
   },
   "oneTimeDonation": {
@@ -186,7 +186,7 @@
     "description": "Title for monthly contributions section in wallet summary"
   },
   "off": {
-    "message": "বন্ধ",
+    "message": "বন্ধ করুন",
     "description": "Label used in toggle indicating that toggle is off"
   },
   "ok": {
@@ -194,7 +194,7 @@
     "description": "Used in notification to dismiss notification"
   },
   "braveAdsLaunchMsg": {
-    "message": "আপনি ব্রেভ বিজ্ঞাপন থেকে টোকেন উপার্জন করতে পারেন|",
+    "message": "এখন আপনি বিজ্ঞাপন দেখে উপার্জন করতে পারেন।",
     "description": "Message for ads launch notification"
   },
   "braveAdsTitle": {
@@ -328,7 +328,7 @@
     "description": "Text for the link that explains more about reserved amount"
   },
   "disabledPanelOff": {
-    "message": "বন্ধ",
+    "message": "বন্ধ করুন",
     "description": "Off state text for Panel's disabled state"
   },
   "disabledPanelSettings": {
@@ -348,7 +348,7 @@
     "description": "Failure title for wallet creation"
   },
   "walletFailedButton": {
-    "message": "আবার করুন",
+    "message": "আবার চেষ্টা করুন",
     "description": "Button for re-try after wallet creation failed"
   },
   "addFunds": {
@@ -416,7 +416,7 @@
     "description": "BAT Points abbreviation text"
   },
   "turnOnAds": {
-    "message": "চালু করুন",
+    "message": "বিজ্ঞাপনগুলি চালু করুন",
     "description": "Prompt to turn on Ads via notification"
   },
   "adsEarnings": {
@@ -462,7 +462,7 @@
     "description": "Notification text that tells user his wallet is under funded for pending contribution to complete"
   },
   "pendingContributionTitle": {
-    "message": "বাকি থাকা অবদান",
+    "message": "অবদান মুলতুবি রয়েছে",
     "description": "Notification title for pending contribution type"
   },
   "grantFinishTitleUGP": {
@@ -484,7 +484,7 @@
     "description": "Token title on success screen"
   },
   "grantFinishPointTitleUGP": {
-    "message": "বিনামূল্যের পয়েন্ট অনুদান",
+    "message": "অনুদানজনিত পয়েন্ট বিনামূল্যে",
     "description": "Point title on success screen"
   },
   "grantFinishTitleAds": {
@@ -626,5 +626,21 @@
   "walletVerificationNote3":  {
     "message": "নোট: আপনি একবার অনুমোদন করলে আপনার লেনদেনগুলি Uphold এ দেখা যাবে; উদাহরণস্বরূপ, সেগুলি আপনার পরামর্শের প্রাপক এবং অর্থরাশি দেখতে পাবেন।",
     "description": "Displayed in login modal for uphold"
+  },
+  "onboardingEarnHeader": {
+    "message": "টোকেন উপার্জন করুন এবং ফিরিয়ে দিন",
+    "description": ""
+  },
+  "onboardingEarnText": {
+    "message": "গোপনীয়তা-সম্মানজনক বিজ্ঞাপনগুলি দেখে টোকেনগুলি উপার্জন করুন এবং আপনার পছন্দসই সাইট এবং সামগ্রী নির্মাতাকে স্বয়ংক্রিয়ভাবে সমর্থন করুন।",
+    "description": ""
+  },
+  "onboardingStartUsingRewards": {
+    "message": "Brave Rewards ব্যবহার শুরু করা হল ",
+    "description": ""
+  },
+  "onboardingTerms": {
+    "message": "এগিয়ে চলার মাধ্যমে, আপনি$$1পরিষেবার শর্তাদি $$2 এবং $$3 গোপনীয়তা নীতি $$4 এর সাথে সম্মত হন।",
+    "description": ""
   }
 }

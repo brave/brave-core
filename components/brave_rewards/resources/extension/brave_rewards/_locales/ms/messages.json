@@ -1,6 +1,6 @@
 {
   "braveRewards": {
-    "message": "Ganjaran Brave",
+    "message": "Brave Rewards",
     "description": "Title in welcome screen for the panel"
   },
   "welcomeButtonTextOne": {
@@ -8,15 +8,15 @@
     "description": "CTA on welcome screen in the panel, existing users"
   },
   "welcomeButtonTextTwo": {
-    "message": "Ganjaran Penyertaan",
+    "message": "Sertai Rewards",
     "description": "CTA on welcome screen in the panel, new users"
   },
   "welcomeDescOne": {
-    "message": "Peroleh bayaran untuk melihat iklan dan bayar untuk menyokong pencipta kandungan kegemaran anda.",
+    "message": "Dapatkan bayaran dengan melihat iklan dan bayar untuk menyokong pencipta kandungan kegemaran anda.",
     "description": "Entry text for welcome screen in the panel, existing user"
   },
   "welcomeDescTwo": {
-    "message": "Sekarang anda boleh memperoleh token dengan menonton iklan yang menghormati privasi.",
+    "message": "Anda sekarang boleh memperoleh token dengan menonton iklan yang menghormati privasi",
     "description": "Entry text for welcome screen in the panel, new user"
   },
   "welcomeDescPoints": {
@@ -28,7 +28,7 @@
     "description": "Link in the footer (takes you to rewards settings page) for welcome screen in the panel, existing user"
   },
   "welcomeFooterTextTwo": {
-    "message": "Ketahui lebih lanjut",
+    "message": "Ketahui Lebih Lanjut",
     "description": "Link in the footer (takes you to rewards settings page) for welcome screen in the panel, new user"
   },
   "welcomeHeaderOne": {
@@ -36,7 +36,7 @@
     "description": "Main header title for welcome screen in the panel, existing user"
   },
   "welcomeHeaderTwo": {
-    "message": "Bersedia untuk merasai pengalaman Internet seterusnya.",
+    "message": "Bersiap sedia untuk merasai pengalaman Internet seterusnya.",
     "description": "Main header title for welcome screen in the panel, new user"
   },
   "yourWallet": {
@@ -44,7 +44,7 @@
     "description": "Title of wallet section where we display data about wallet"
   },
   "grants": {
-    "message": "Geran",
+    "message": "Pemberian",
     "description": "Title for grant section in wallet summary"
   },
   "details": {
@@ -88,7 +88,7 @@
     "description": "CTA for sending tip form site banner"
   },
   "enableTips": {
-    "message": "Dayakan Tip",
+    "message": "Aktifkan Tip",
     "description": "The whole string is 'Enable tips on YouTube for like.'"
   },
   "for": {
@@ -162,7 +162,7 @@
     "description": "Title for grant section in wallet summary"
   },
   "pointGrantClaimed": {
-    "message": "Geran Mata Dituntut",
+    "message": "Pemberian Mata Telah Dituntut",
     "description": "Title for point grant section in wallet summary"
   },
   "earningsAds": {
@@ -170,7 +170,7 @@
     "description": "Title for ads section in wallet summary"
   },
   "rewardsContribute": {
-    "message": "Sumbangan Automatik",
+    "message": "Auto-Sumbang",
     "description": "Title for auto contribute section in wallet summary"
   },
   "oneTimeDonation": {
@@ -178,7 +178,7 @@
     "description": "Title for one time tips section in wallet summary"
   },
   "expiresOn": {
-    "message": "luput pada",
+    "message": "tamat tempoh pada",
     "description": "Used for grant representation. Whole string is '30.0 BAT expires on 08/05/2022'"
   },
   "recurringDonations": {
@@ -186,7 +186,7 @@
     "description": "Title for monthly contributions section in wallet summary"
   },
   "off": {
-    "message": "Padam",
+    "message": "Dimatikan",
     "description": "Label used in toggle indicating that toggle is off"
   },
   "ok": {
@@ -194,7 +194,7 @@
     "description": "Used in notification to dismiss notification"
   },
   "braveAdsLaunchMsg": {
-    "message": "Kini anda boleh menjana pendapatan dengan melihat iklan.",
+    "message": "Kini anda boleh mendapatkan bayaran dengan menonton iklan.",
     "description": "Message for ads launch notification"
   },
   "braveAdsTitle": {
@@ -244,7 +244,7 @@
     "description": "Title for insufficient funds notification"
   },
   "braveRewardsCreatingText": {
-    "message": "Menghasilkan dompet",
+    "message": "Mencipta dompet",
     "description": "Used in a button displaying wallet creation process"
   },
   "contributeNotificationError": {
@@ -462,7 +462,7 @@
     "description": "Notification text that tells user his wallet is under funded for pending contribution to complete"
   },
   "pendingContributionTitle": {
-    "message": "Sumbangan Menunggu",
+    "message": "Sumbangan Yang Belum Selesai",
     "description": "Notification title for pending contribution type"
   },
   "grantFinishTitleUGP": {
@@ -484,7 +484,7 @@
     "description": "Token title on success screen"
   },
   "grantFinishPointTitleUGP": {
-    "message": "Geran Mata Percuma",
+    "message": "Pemberian Mata Percuma",
     "description": "Point title on success screen"
   },
   "grantFinishTitleAds": {
@@ -520,7 +520,7 @@
     "description": "CTA to open uphold account"
   },
   "walletDisconnect":  {
-    "message": "Memutuskan daripada Brave Rewards",
+    "message": "Putuskan daripada Brave Rewards",
     "description": "CTA to disconnect user wallet from rewards"
   },
   "walletVerified":  {
@@ -626,5 +626,21 @@
   "walletVerificationNote3":  {
     "message": "Nota: Transaksi anda akan tertera di Uphold sebaik sahaja anda beri keizinan; contohnya, mereka boleh melihat penerima dan jumlah tip anda.",
     "description": "Displayed in login modal for uphold"
+  },
+  "onboardingEarnHeader": {
+    "message": "Dapatkan Token & Beri Balik",
+    "description": ""
+  },
+  "onboardingEarnText": {
+    "message": "Dapatkan token dengan melihat iklan yang menghormati privasi dan sokong laman dan pencipta kandungan kegemaran anda secara automatik.",
+    "description": ""
+  },
+  "onboardingStartUsingRewards": {
+    "message": "Mula menggunakan Ganjaran Brave",
+    "description": ""
+  },
+  "onboardingTerms": {
+    "message": "Dengan meneruskan, anda bersetuju dengan $$1Syarat Perkhidmatan$$2 dan $$3Dasar Privasi$$4.",
+    "description": ""
   }
 }

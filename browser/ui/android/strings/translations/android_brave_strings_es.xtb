@@ -31,6 +31,8 @@
 <translation id="5787084571334399599">Evita que el navegador tome tu huella digital</translation>
 <translation id="7459000603787995422">Cerrar pestañas al salir</translation>
 <translation id="1680858055899097121">No guardar las pestañas entre sesiones de navegación</translation>
+<translation id="6469509880167172749">Enviar automáticamente los análisis de productos de manera completamente privada a Brave</translation>
+<translation id="7090566321964540749">Esta información anónima solo le permite a Brave estimar el uso general de ciertas funciones.</translation>
 <translation id="453601949003770390">Rastreadores y anuncios bloqueados</translation>
 <translation id="347604927162577559">Datos\nahorrados</translation>
 <translation id="9008534313521214777">Estimación de tiempo\nahorrado</translation>
@@ -50,7 +52,7 @@
 <translation id="4150201353443180367">Pantalla</translation>
 <translation id="2433507940547922241">Apariencia</translation>
 <translation id="2804710924397009224">Ocultar Icono de Brave Rewards</translation>
-<translation id="7358991116457217836">Oculta el icono de Brave Rewards cuando Brave Rewards está deshabilitado</translation>
+<translation id="7289740269305509613">Oculta el icono de Brave Rewards</translation>
 <translation id="8495235435594442882">Activar la barra de herramientas inferior</translation>
 <translation id="6587448235155023666">Tus cambios entrarán en efecto la próxima vez que vuelvas a abrir Brave</translation>
 <translation id="8701563696941209024">RELANZAR AHORA</translation>
@@ -67,7 +69,7 @@
 <translation id="3333887201479867589">Brave Rewards</translation>
 <translation id="5870330605209713397">para ver anuncios que respeten la privacidad y apoyar sus sitios y creadores favoritos de forma predeterminada.</translation>
 <translation id="821707262661492716">por ver anuncios que respetan la privacidad.</translation>
-<translation id="8267692331246948056">Al pulsar Ganar y dar, acepta los</translation>
+<translation id="5302488867897327287">Al tocar Empezar a utilizar Brave Rewards, acepta las</translation>
 <translation id="4281844954008187215">Términos del Servicio</translation>
 <translation id="6871397658902960384">Empezar a navegar</translation>
 <translation id="454386012157232640">No vi ningún anuncio</translation>
@@ -76,7 +78,7 @@
 <translation id="6511854390690723657">Este es tu primer anuncio de Brave. Pulsa para obtener más información.</translation>
 <translation id="4930714375720679147">Activar</translation>
 <translation id="2453860139492968684">Finalizar</translation>
-<translation id="7983303953939627894">Ganar y dar</translation>
+<translation id="2070991379950719711">Empezar a utilizar Brave Rewards</translation>
 <translation id="48520986898237073">Continuar con el monedero</translation>
 <translation id="3570367516044491911">Establecer como navegador predeterminado</translation>
 <translation id="7493053924837150477">Selecciona el navegador de Brave de la lista y pulsa 'Siempre'.</translation>
@@ -231,6 +233,10 @@ para apoyarlos.</translation>
 <translation id="6810078320346589989">Crear un marcador</translation>
 <translation id="3396347744975515056">Brave Sync ha sido actualizado y requiere configuración</translation>
 <translation id="7473245612074035141">Iniciar la configuración</translation>
+<translation id="1872784258300710671">Brave utiliza análisis de productos de manera completamente privada para estimar el uso general de ciertas funciones</translation>
+<translation id="8712637175834984815">Listo</translation>
+<translation id="4394049700291259645">Deshabilitar</translation>
+<translation id="8446884382197647889">Más información</translation>
 <translation id="597993392929850353">Licencia de Brave</translation>
 <translation id="6336451774241870485">Nueva pestaña privada</translation>
 <translation id="6199596294742117349">Esta es una Pestaña Privada</translation>
@@ -257,8 +263,7 @@ para apoyarlos.</translation>
 <translation id="8522669544471808198">Mostrar imágenes de fondo</translation>
 <translation id="3870475560794762985">Mostrar imágenes patrocinadas</translation>
 <translation id="8297488609722895137">Fotografía de <ph name="PHOTO_BY"/></translation>
-<translation id="7952665812649667034">Estoy listo para ganar y dar</translation>
-<translation id="5878330112719288629">Al pulsar en “Ganar y dar”, acepta las <ph name="TERMS_OF_SERVICE"/>.</translation>
+<translation id="4761229094276239865">Al tocar en Empezar a utilizar Brave Rewards, acepta las <ph name="TERMS_OF_SERVICE"/>.</translation>
 <translation id="3794079107601824147">Recibes pagos por visualizar esta imagen de fondo.</translation>
 <translation id="7136586167396205364">Ocultar las imágenes patrocinadas</translation>
 <translation id="2927095357213611519">Puedes apoyar a los creadores de la web con tokens.\nRecibe tokens por visualizar anuncios respetuosos con la privacidad.</translation>
@@ -305,7 +310,7 @@ para apoyarlos.</translation>
 <translation id="8851456134224363571">¡Fantástico! ¿Le importaría darnos una calificación en Play Store?</translation>
 <translation id="8668962040900592974">Díganos qué podemos hacer para mejorar</translation>
 <translation id="4406937629441301400">Gane vales por ver esta imagen y pague a los creadores por adelantado. <ph name="LEARN_MORE"/></translation>
-<translation id="8693132237667961044">Gane vales por ver esta imagen. Active “Ganar y dar” para reclamar su parte.</translation>
+<translation id="1992363542751124282">Gane tokens por ver esta imagen. Toque Empezar a utilizar Brave Rewards para reclamar su parte.</translation>
 <translation id="6632345639591919543">Está ganando vales por ver esta imagen.\n<ph name="LEARN_MORE"/></translation>
 <translation id="1465733111003593696">Estás ganando tokens por ver esta imagen.</translation>
 <translation id="7877201489035217175">Obtener más información sobre las imágenes patrocinadas</translation>
@@ -389,7 +394,6 @@ para apoyarlos.</translation>
 <translation id="1383876407941801731">Búsqueda</translation>
 <translation id="1972589975368876259">Editar Stack</translation>
 <translation id="2490330380242414851">Eliminar el widget</translation>
-<translation id="8446884382197647889">Más información</translation>
 <translation id="7384441892795736634">Actualizar datos</translation>
 <translation id="4804818685124855865">Desconectarse</translation>
 <translation id="4789438578712143420">≈ $<ph name="USD_BALANCE"/></translation>
@@ -428,4 +432,38 @@ para apoyarlos.</translation>
 <translation id="3733576242118819803">Confirma (<ph name="REMAINING_TIME"/>s)</translation>
 <translation id="1627064138060308910">La conversión falló. Inténtalo de nuevo.</translation>
 <translation id="1449790603979388000"><ph name="COUNT"/> <ph name="COUNT_TEXT"/></translation>
+<translation id="7465614181960492526">Gane tokens y retribuya algo</translation>
+<translation id="244362569344671266">Gane tokens por ver Brave Ads privados y apoye a los creadores de contenido automáticamente.</translation>
+<translation id="631124996535890460">Al continuar, acepta las <ph name="TERMS_OF_SERVICE"/> y la <ph name="PRIVACY_POLICY"/>.</translation>
+<translation id="8804164990146287819">Política de Privacidad</translation>
+<translation id="6318696841371191107">Haga una visita rápida</translation>
+<translation id="7930505144430343145">¡Bienvenido/a a Brave Rewards!</translation>
+<translation id="7909111626803226907">Los Brave Ads privados le recompensan con tokens para apoyar a creadores de contenido, a diferencia de los anuncios tradicionales, todo mientras mantiene la privacidad de su información personal.</translation>
+<translation id="6973095375773523904">¿Dónde se muestran los anuncios?</translation>
+<translation id="3867028444168159102">Los Brave Ads privados aparecerán como una notificación normal. Controlará la frecuencia de estos anuncios en los ajustes.</translation>
+<translation id="5816125157889950051">¿Cuándo recibe recompensas?</translation>
+<translation id="4649471244559455723">Los tokens de Brave Ads que ha ganado durante este mes llegarán el día 5 del mes siguiente.</translation>
+<translation id="7712287524451429139">Retribuir es facilísimo</translation>
+<translation id="105037569026952831">Los creadores reciben sus contribuciones de tokens automáticamente en función del nivel de participación que usted tanga. Ese nivel lo medimos como ‘Atención’.</translation>
+<translation id="5323267338679539010">Dé las gracias con las propinas</translation>
+<translation id="6042317056594735519">La propina es una forma de animar y apoyar el contenido o los creadores que le gustan. Dé propina.</translation>
+<translation id="7509452925943421624">¿Qué puede hacer con los tokens?</translation>
+<translation id="7059157883171259940">Los tokens no solo pueden utilizarse para apoyar a los creadores. Puede comprar productos digitales y tarjetas regalo con una bonificación de devolución.</translation>
+<translation id="1402530520078693620">Por último, empecemos a configurar los ajustes básicos</translation>
+<translation id="3494356595346329740">Podrá cambiarlo más adelante.</translation>
+<translation id="6462814326662189004">¿Con qué frecuencia desea ver estos anuncios?\n(Anuncios por hora)</translation>
+<translation id="2134244432345596331">¿Cuánto apoyo quiere darles a sus creadores favoritos?\n(de sus ganancias por anuncios)</translation>
+<translation id="7456161272236175794">¡YUUUUJUUUUU!\nHa terminado.</translation>
+<translation id="3895246934788932488">Al utilizar Brave Rewards, protege su privacidad y ayuda a que la web sea un lugar mejor para todos. ¡Y eso es estupendo!</translation>
+<translation id="5705882733397021510">Volver</translation>
+<translation id="5140321319944305531">Hagamos una visita rápida</translation>
+<translation id="3808131693704413134">Tras recibir su primer pago por anuncios, podrá volver y dar propina a este creador.</translation>
+<translation id="207242986925259074">Visita rápida de repaso</translation>
+<translation id="8342862030112839977">Su primer pago de recompensas llegará antes del:</translation>
+<translation id="3769645103175790584">Gane tokens y recompense a los creadores por ver un gran contenido mientras navega. <ph name="QUICK_TOUR"/>.</translation>
+<translation id="6912901278692845878">Visita rápida</translation>
+<translation id="1080013038789678738">¡Me apunto!</translation>
+<translation id="3604285424134705930">Ha convertido <ph name="FROM_VALUE"/> <ph name="FROM_CURRENCY"/> en <ph name="TO_VALUE"/> <ph name="TO_CURRENCY"/>!</translation>
+<translation id="392587271502873865">Compruebe su conexión de red.</translation>
+<translation id="7889432931837317731">Abrir automáticamente cuando sea posible</translation>
 </translationbundle>

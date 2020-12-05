@@ -40,19 +40,31 @@
 <translation id="3446024864193919737">Ukázat odměny Brave</translation>
 <translation id="6274899614137380422">Ukázat Binance</translation>
 <translation id="5551238871320268996">Brave společně</translation>
-<translation id="4799744519698299121">Více karet</translation>
+<translation id="5585019845078534178">Karty</translation>
 <translation id="3870475560794762985">Ukázat sponzorované obrázky</translation>
 <translation id="2875302873837723333">top weby</translation>
 <translation id="8173998484743827990">Statistiky Brave</translation>
 <translation id="383680190590774040">hodiny</translation>
 <translation id="3333887201479867589">Odměny Brave</translation>
 <translation id="3159285901314605198">Obrázek na pozadí</translation>
+<translation id="385051799172605136">Zpět</translation>
+<translation id="7415602225677446066">Nejdůležitější příběhy dnešního dne v naprosto soukromém kanálu, pouze pro vás.</translation>
+<translation id="8607689491789524900">Brave Today se přizpůsobuje podle zájmů zadaných na vašem zařízení, takže se vaše osobní informace nikdy nedostanou dál, než za hranici prohlížeče. K aktualizacím obsahu dochází v průběhu celého dne.</translation>
+<translation id="9164544612367905452">Načítání...</translation>
+<translation id="1276592121036104130">Načíst nový obsah</translation>
+<translation id="4210987321913275328">Posunutím zobrazíte Brave Today</translation>
+<translation id="3122595178900736207">Obnovit zdroje Brave Today</translation>
+<translation id="2197023915568148978">Obnovit u Brave Today všechny vaše volby vydavatelů na výchozí?</translation>
+<translation id="954001034349395856">Všechny zdroje</translation>
+<translation id="8890516388109605451">Zdroje</translation>
+<translation id="5158129253322921540">Vypnout odběr obsahu od <ph name="PUBLISHER_NAME"/></translation>
 <translation id="1776831331757823105">Hodiny</translation>
 <translation id="4643117005422448078">Top weby</translation>
 <translation id="7791543448312431591">Přidat</translation>
 <translation id="7679334366167089823">Vydělávejte žetony za sledování reklam, které respektují vaše soukromí.</translation>
 <translation id="1531133232292396145">Obchodujte s kryptoměnami na burze Binance přímo v prohlížeči.</translation>
 <translation id="2166494527623220386">Obchodujte s kryptoměnami na burze Gemini přímo v prohlížeči.</translation>
+<translation id="7191394989411626168">Vypnutím Karet dojde ke skrytí všech aktuálně viditelných karet. Můžete ale stále dostávat oznámení o nových kartách.</translation>
 <translation id="6165508094623778733">Zjistit více</translation>
 <translation id="8730621377337864115">Hotovo</translation>
 <translation id="6248988683584659830">Nastavení vyhledávání</translation>
@@ -92,9 +104,8 @@
 <translation id="2974339193389078578">Odvážně brázděte internet s prohlížečem Brave</translation>
 <translation id="7735138632831241257">Připravte se na rychlejší a bezpečnější pohyb internetem s prohlížečem postaveným tak, aby chránil vaše soukromí.</translation>
 <translation id="6001839398155993679">Jdeme na to</translation>
-<translation id="8050847734948770789">Povolit Brave Rewards</translation>
-<translation id="2862598513212603756">Vaše pozornost má reálnou hodnotu. Vydělávejte zobrazováním reklam, zachovávajících vaše soukromí a přispějte těmito prostředky tvůrcům, kteří jsou vám blízcí.</translation>
-<translation id="4942016616604700968">Povolit Rewards</translation>
+<translation id="2835162985889791522">Vydělejte si za prohlížení reklam respektujících soukromí tokeny a podporujte automaticky své oblíbené weby a tvůrce.</translation>
+<translation id="2070991379950719711">Začněte používat Brave Rewards</translation>
 <translation id="3958088479270651626">Nahrát záložky a nastavení</translation>
 <translation id="2609701960545338618">Nastavte si prostředí, na něž jste zvyklí, importováním záložek a nastavení z vašeho starého prohlížeče. Pokročilé možnosti importu naleznete v Nastavení.</translation>
 <translation id="8275038454117074363">Nahrát</translation>
@@ -118,7 +129,7 @@
 <translation id="3742599705619405136">Automatický způsob podpory vydavatelů a tvůrců obsahu. Nastavte měsíční platbu a procházejte jako obvykle. Ověřené internetové stránky Brave, které navštívíte, obdrží vaše příspěvky automaticky na základě vaší pozornosti měřené prohlížečem Brave.</translation>
 <translation id="20281847067919078">Odhadované nevyřízené odměny</translation>
 <translation id="8593551638387217772">Další datum platby</translation>
-<translation id="319209088187794725">Upozornění reklam obdržená v tomto měsíci</translation>
+<translation id="4428871418618312983">Reklamy přijaté tento měsíc</translation>
 <translation id="4229016885653790965">Pardon! Reklamy nejsou ve vašem kraji k dispozici.</translation>
 <translation id="2539279826042558064">Odměny Brave a reklama nejsou pro toto zařízení nyní dostupné.</translation>
 <translation id="5421369907811917952">Další nastavení</translation>
@@ -291,11 +302,14 @@
 <translation id="1723857724166389190">Váš měsíční příspěvek pro tohoto tvůrce byl zrušen.</translation>
 <translation id="534368327994110883">Tohoto tvůrce momentálně podporujete</translation>
 <translation id="2621124276654521177">Aktuální měsíční příspěvek</translation>
-<translation id="3084276630953238154">Jejda – došlo k chybě.</translation>
+<translation id="3084276630953238154">Vyskytla se nezkrotná chyba</translation>
+<translation id="3263379510325043678">Chyba připojení k serveru</translation>
+<translation id="8994556588732085585">Abyste mohli provést opětovný pokus, tak prosím zavřete a znovu otevřete banner pro přispívání.</translation>
 <translation id="4371618764691059036">Měsíční příspěvek byl nastaven.</translation>
 <translation id="6356822617569064293">Datum příštího příspěvku:</translation>
 <translation id="4622723187300249546">Jednorázový příspěvek</translation>
 <translation id="5268142130226208198">Částka jednorázového příspěvku:</translation>
+<translation id="3669086939205397942">Vydržte, ještě nemůžete přispívat</translation>
 <translation id="1142440886533556131">Příspěvek od: {{user}}</translation>
 <translation id="3489551030916418665">Zpráva od: {{user}}</translation>
 <translation id="5531915212947569943">Je nám líto, že se musíme rozloučit…</translation>
@@ -305,6 +319,12 @@
 <translation id="379596083010863211">Váš jednorázový příspěvek byl odeslán.</translation>
 <translation id="5096821444729034955">pro jejich příspěvek</translation>
 <translation id="2978223787436054634">Vyslat zprávu o vaší podpoře</translation>
+<translation id="1543259266592091784">Přidat prostředky</translation>
+<translation id="7465614181960492526">Vydělejte tokeny a odvděčte se</translation>
+<translation id="2731539192954672606">Vydělávejte zobrazováním reklam respektujících soukromí tokeny a podporujte automaticky své oblíbené weby a tvůrce obsahu.</translation>
+<translation id="1275213816424141989">Možná později</translation>
+<translation id="2404165674840145940">Posílejte příspěvky s Brave Rewards</translation>
+<translation id="5820285701794581330">Používáním Brave Rewards začnete vydělávat BAT, které můžete použít na příspěvky pro tvůrce.</translation>
 <translation id="5094577350232361255">o nás</translation>
 <translation id="4918086044614829423">Přijmout</translation>
 <translation id="5916290544882167205">Brave Software. Brave je registrovanou ochrannou známkou Brave Software. Názvy webů mohou být ochrannými známkami nebo registrovanými ochrannými známkami vlastníků webů.</translation>
@@ -505,7 +525,6 @@
 <translation id="1193434225710679930">Udělení bodů</translation>
 <translation id="4395099108822007284">Načítání obrázku...</translation>
 <translation id="3535654229833214438">Transakce</translation>
-<translation id="7952665812649667034">Jsem připraven vydělávat &amp; Give</translation>
 <translation id="2623808496299703826">Vydělejte si žetony prohlížením reklam respektujících soukromí a podporujte automaticky své oblíbené tvůrce internetového obsahu.</translation>
 <translation id="8987812599455325915">Tímto umožníte reklamy i automatické příspěvky. Můžete je kdykoliv jednotlivě zapnout či vypnout.</translation>
 <translation id="1485484147452131556">Zapnout Odměny</translation>
@@ -575,7 +594,7 @@
 <translation id="7840362246306242214">Na Uphold můžete obchodovat s americkými akciemi</translation>
 <translation id="3345432088196080137">Investujte klidně jen 1 USD do populárních akcií a burzovně obchodovaných fondů jako AAPL, TSLA nebo AMZN</translation>
 <translation id="4360054110030715117"><ph name="LINK_BEGIN"/>Zjistěte více<ph name="LINK_END"/> o Odměnách Brave</translation>
-<translation id="4342305967788502343">Klepnutím na Vydělat a darovat souhlasíte s <ph name="LINK_BEGIN"/>Podmínkami služby<ph name="LINK_END"/> a <ph name="LINK_BEGIN"/>Ochranou soukromí<ph name="LINK_END"/>.</translation>
+<translation id="629521674505004728">Kliknutím na Začít používat Brave Rewards souhlasíte s <ph name="LINK_BEGIN"/>Podmínkami služby<ph name="LINK_END"/> a <ph name="LINK_BEGIN"/>Ochranou soukromí<ph name="LINK_END"/>.</translation>
 <translation id="8344084848798035850">Přibližný dosavadní výdělek za tento měsíc</translation>
 <translation id="5235444069025581717">Dary a příspěvky tohoto měsíce</translation>
 <translation id="1210965535849006928">Nárokovat moje odměny</translation>
@@ -587,9 +606,8 @@
 <translation id="6759185676704303656">Dostáváte zaplaceno za zobrazení tohoto obrázku pozadí.</translation>
 <translation id="1749232564087138444"><ph name="LINK_BEGIN"/>Zjistěte více<ph name="LINK_END"/> o sponzorovaných obrázcích v Brave Rewards.</translation>
 <translation id="6113004497629356998">Skrýt sponzorované obrázky</translation>
-<translation id="2148613324460538318">Přidat kartu</translation>
+<translation id="3787061634640932557">Upravit Karty</translation>
 <translation id="4925543565930352284">Klepnutím na {{title}} souhlasíte s <ph name="BEGIN_LINK1"/>Podmínkami služby<ph name="END_LINK1"/> a <ph name="BEGIN_LINK2"/>Ochranou soukromí<ph name="END_LINK2"/>.</translation>
-<translation id="7983303953939627894">Vydělat &amp; Darovat</translation>
 <translation id="5977237145327845546">Zahajte soukromý videohovor s vašimi přáteli a kolegy.</translation>
 <translation id="5850325887346946383">Začít videohovor</translation>
 <translation id="3651550649176056334">O vašich údajích</translation>
@@ -682,13 +700,6 @@
 <translation id="1974060860693918893">Rozšířená nastavení</translation>
 <translation id="9096577886148726047">Skrýt pokročilé</translation>
 <translation id="6334164481400727517">Nemůžeme se připojit k požadovanému obsahu pomocí lokálního uzlu IPFS, protože se lokální uzel nespustil nebo v tuto chvíli nejsou k dispozici žádné připojené peery. Když budete pokračovat, tak se v budoucnu při nemožnosti připojení k obsahu IPFS přes lokální IPFS uzel automaticky připojíme přes výchozí veřejnou bránu. To lze později vypnout v nastavení.</translation>
-<translation id="2901715907314796027">Nakupte si kryptoměny na Bitcoin.com.</translation>
-<translation id="4065681313949497252">Měna</translation>
-<translation id="3833315885381772739">Zadejte částku</translation>
-<translation id="4011828592358027165">Jste v kryptoměnách nováčkem?</translation>
-<translation id="3358050091139900813">Tady si opatřete peněženku a můžete začít</translation>
-<translation id="3449068867189933593">Zadaná částka musí být alespoň {{minimumAmount}} {{fiat}}</translation>
-<translation id="3105412115725259537">Bitcoin.com</translation>
 <translation id="2880025073956220119">Crypto.com</translation>
 <translation id="8237504256665975959">Prohlédněte si trhy na crypto.com a nakupte zde kryptoměny.</translation>
 <translation id="4292334826913000023">Ukázat cenu</translation>
@@ -700,4 +711,20 @@
 <translation id="5337526542182802976">Podporované páry</translation>
 <translation id="1164622162816276433">Objem za 24 h</translation>
 <translation id="3155170474926428993">Tor Launcher</translation>
+<translation id="4799744519698299121">Více karet</translation>
+<translation id="8050847734948770789">Povolit Brave Rewards</translation>
+<translation id="2862598513212603756">Vaše pozornost má reálnou hodnotu. Vydělávejte zobrazováním reklam, zachovávajících vaše soukromí a přispějte těmito prostředky tvůrcům, kteří jsou vám blízcí.</translation>
+<translation id="4942016616604700968">Povolit Rewards</translation>
+<translation id="319209088187794725">Upozornění reklam obdržená v tomto měsíci</translation>
+<translation id="7952665812649667034">Jsem připraven vydělávat &amp; Give</translation>
+<translation id="4342305967788502343">Klepnutím na Vydělat a darovat souhlasíte s <ph name="LINK_BEGIN"/>Podmínkami služby<ph name="LINK_END"/> a <ph name="LINK_BEGIN"/>Ochranou soukromí<ph name="LINK_END"/>.</translation>
+<translation id="2148613324460538318">Přidat kartu</translation>
+<translation id="7983303953939627894">Vydělat &amp; Darovat</translation>
+<translation id="2901715907314796027">Nakupte si kryptoměny na Bitcoin.com.</translation>
+<translation id="4065681313949497252">Měna</translation>
+<translation id="3833315885381772739">Zadejte částku</translation>
+<translation id="4011828592358027165">Jste v kryptoměnách nováčkem?</translation>
+<translation id="3358050091139900813">Tady si opatřete peněženku a můžete začít</translation>
+<translation id="3449068867189933593">Zadaná částka musí být alespoň {{minimumAmount}} {{fiat}}</translation>
+<translation id="3105412115725259537">Bitcoin.com</translation>
 </translationbundle>

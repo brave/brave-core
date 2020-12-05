@@ -40,12 +40,23 @@
 <translation id="3446024864193919737">Vis Brave Rewards</translation>
 <translation id="6274899614137380422">Vis Binance</translation>
 <translation id="5551238871320268996">Brave Sammen</translation>
-<translation id="4799744519698299121">Flere kort.</translation>
+<translation id="5585019845078534178">Kort</translation>
 <translation id="3870475560794762985">Vis sponsede bilder</translation>
 <translation id="2875302873837723333">populære nettsteder</translation>
 <translation id="8173998484743827990">Brave-statistikk</translation>
 <translation id="383680190590774040">klokke</translation>
 <translation id="3333887201479867589">Brave-belønninger</translation>
+<translation id="385051799172605136">Tilbake</translation>
+<translation id="7415602225677446066">Dagens topphistorier i en helt privat strøm, bare for deg.</translation>
+<translation id="8607689491789524900">Brave Today matcher interessene dine på enheten din slik at personopplysningene dine aldri forlater nettleseren din. Nytt innhold oppdateres gjennom hele dagen.</translation>
+<translation id="9164544612367905452">Henter ...</translation>
+<translation id="1276592121036104130">Last inn nytt innhold</translation>
+<translation id="4210987321913275328">Skroll for Brave Today</translation>
+<translation id="3122595178900736207">Resett Brave Today-kilder</translation>
+<translation id="2197023915568148978">Still alle Brave Today-utgiveranbefalinger tilbake til sine standardverdier?</translation>
+<translation id="954001034349395856">Alle kilder</translation>
+<translation id="8890516388109605451">Kilder</translation>
+<translation id="5158129253322921540">Deaktiver innhold fra <ph name="PUBLISHER_NAME"/></translation>
 <translation id="1776831331757823105">Klokke</translation>
 <translation id="4643117005422448078">Populære nettsteder</translation>
 <translation id="3159285901314605198">Bakgrunnsbilde</translation>
@@ -53,6 +64,7 @@
 <translation id="7679334366167089823">Tjen polletter på å se annonser som respekterer personvernet ditt.</translation>
 <translation id="1531133232292396145">Handle krypto på Binance, direkte i nettleseren din.</translation>
 <translation id="2166494527623220386">Trade i krypto på Gemini, direkte i nettleseren din.</translation>
+<translation id="7191394989411626168">Ved å slå av kort vil alle kort som vises nå bli skjulte. Du kan likevel bli varslet om nye kort.</translation>
 <translation id="6165508094623778733">Lær mer</translation>
 <translation id="8730621377337864115">Ferdig</translation>
 <translation id="6248988683584659830">Søkeinnstillinger</translation>
@@ -92,9 +104,8 @@
 <translation id="2974339193389078578">Brave – velkommen til det nye Internett</translation>
 <translation id="7735138632831241257">Gjør deg klar til en raskere og sikrere nettleseropplevelse med nettleseren som er skapt med ditt personvern i tankene.</translation>
 <translation id="6001839398155993679">La oss begynne</translation>
-<translation id="8050847734948770789">Aktiver Brave-belønninger</translation>
-<translation id="2862598513212603756">Din oppmerksomhet er verdifull. Tjen ved å se annonser som støtter personvern mens du surfer, og send den videre for å støtte skaperene du elsker.</translation>
-<translation id="4942016616604700968">Aktiver belønninger</translation>
+<translation id="2835162985889791522">Tjen tokener ved å se på personvern-respekterende annonser og støtt favorittnettstedene og innholdsprodusentene dine som standardvalg.</translation>
+<translation id="2070991379950719711">Begynn å bruke Brave Rewards</translation>
 <translation id="3958088479270651626">Importér bokmerker og innstillinger</translation>
 <translation id="2609701960545338618">Sett opp ditt vante surfemiljø ved å importere bokmerker og innstillinger fra den gamle nettleseren. Avanserte importeringsalternativer finner du i innstillingene.</translation>
 <translation id="8275038454117074363">Importer</translation>
@@ -118,7 +129,7 @@
 <translation id="3742599705619405136">En automatisk måte å støtte utgivere og innholdsskapere på. Angi en månedlig betaling, og surf som normalt. De Brave-verifiserte nettstedene du besøker, mottar bidragene dine automatisk, basert på oppmerksomheten som måles av Brave.</translation>
 <translation id="20281847067919078">Estimert ventende belønninger</translation>
 <translation id="8593551638387217772">Neste betalingsdato</translation>
-<translation id="319209088187794725">Annonsevarsler mottatt denne måneden</translation>
+<translation id="4428871418618312983">Annonser mottatt denne måneden</translation>
 <translation id="4229016885653790965">Beklager! Annonser er ikke tilgjengelig i regionen din ennå.</translation>
 <translation id="2539279826042558064">Brave Rewards og Ads er for tiden ikke tilgjengelig på enheten din.</translation>
 <translation id="5421369907811917952">Andre innstillinger</translation>
@@ -265,11 +276,14 @@
 <translation id="1723857724166389190">Ditt månedlige bidrag til denne skaperen er kansellert.</translation>
 <translation id="534368327994110883">Du støtter denne skaperen</translation>
 <translation id="2621124276654521177">Nåværende månedlig bidrag</translation>
-<translation id="3084276630953238154">Ops – det har oppstått en feil.</translation>
+<translation id="3084276630953238154">En vill programvarefeil har oppstått</translation>
+<translation id="3263379510325043678">Tjener-tilkoblingsfeil</translation>
+<translation id="8994556588732085585">Vennligst lukk og gjenåpne tipsebanneret for å prøve på nytt.</translation>
 <translation id="4371618764691059036">Månedlig bidrag er angitt.</translation>
 <translation id="6356822617569064293">Neste bidragsdato:</translation>
 <translation id="4622723187300249546">Engangstips</translation>
 <translation id="5268142130226208198">Engangs tipsbeløp:</translation>
+<translation id="3669086939205397942">Vent litt, du kan ikke tipse enda</translation>
 <translation id="1142440886533556131">{{user}}’s innlegg</translation>
 <translation id="3489551030916418665">{{user}}’s tweet</translation>
 <translation id="5531915212947569943">Det er leit at du forlater oss…</translation>
@@ -279,6 +293,12 @@
 <translation id="379596083010863211">Engangstipset ditt er sendt.</translation>
 <translation id="5096821444729034955">for innlegget deres</translation>
 <translation id="2978223787436054634">Tweet om støtten din</translation>
+<translation id="1543259266592091784">Legg til midler</translation>
+<translation id="7465614181960492526">Tjen tokener og gi tilbake</translation>
+<translation id="2731539192954672606">Tjen tokener ved å se på personvern-respekterende annonser og støtt favorittnettstedene og innholdsprodusentene dine automatisk.</translation>
+<translation id="1275213816424141989">Kanskje senere</translation>
+<translation id="2404165674840145940">Tips med Brave Rewards</translation>
+<translation id="5820285701794581330">Ved å bruke Brave Rewards begynner du å opptjene BAT-er som du kan bruke til å tipse produsenter.</translation>
 <translation id="5094577350232361255">om</translation>
 <translation id="4918086044614829423">Aksepter</translation>
 <translation id="5916290544882167205">Brave Software. Brave er et registrert varemerke for Brave Software. Navn på nettsteder kan være varemerker eller registrerte varemerker for eieren av det aktuelle nettstedet.</translation>
@@ -470,7 +490,6 @@
 <translation id="1193434225710679930">Poengtildelinger</translation>
 <translation id="4395099108822007284">Laster inn bilde …</translation>
 <translation id="3535654229833214438">Transaksjoner</translation>
-<translation id="7952665812649667034">Jeg er klar for å tjene &amp; Gi</translation>
 <translation id="2623808496299703826">Tjen tokener ved å se annonser som respekterer personvern og støtt skaperne av ditt favorittwebinnhold som standard.</translation>
 <translation id="8987812599455325915">Dette aktiverer både reklame og auto-bidrag. Du kan til enhver tid slå de av og på separat.</translation>
 <translation id="1485484147452131556">Aktiver belønninger</translation>
@@ -540,7 +559,7 @@
 <translation id="7840362246306242214">Aksjehandel i USA er tilgjengelig på Uphold</translation>
 <translation id="3345432088196080137">Invester så lite som én dollar i populære aksjer og børsnoterte fond som AAPL, TSLA eller AMZN</translation>
 <translation id="4360054110030715117"><ph name="LINK_BEGIN"/>Les mer<ph name="LINK_END"/> om Brave Rewards</translation>
-<translation id="4342305967788502343">Ved å klikke på Tjen &amp; gi, godtar du <ph name="LINK_BEGIN"/>vilkårene for bruk<ph name="LINK_END"/> og <ph name="LINK_BEGIN"/>personvernerklæringen<ph name="LINK_END"/>.</translation>
+<translation id="629521674505004728">Ved å klikke på 'Begynn å bruke Brave Rewards' samtykker du til <ph name="LINK_BEGIN"/>Tjenestevilkårene<ph name="LINK_END"/> og <ph name="LINK_BEGIN"/>Personvernpolicyen<ph name="LINK_END"/>.</translation>
 <translation id="8344084848798035850">Beregnet fortjeneste så langt denne måneden</translation>
 <translation id="5235444069025581717">Tips og bidrag denne måneden</translation>
 <translation id="1210965535849006928">Gjør krav på mine Rewards</translation>
@@ -552,9 +571,8 @@
 <translation id="6759185676704303656">Du får betalt for å se på dette bakgrunnsbildet.</translation>
 <translation id="1749232564087138444"><ph name="LINK_BEGIN"/>Få mer informasjon<ph name="LINK_END"/> om sponsede bilder i Brave Rewards.</translation>
 <translation id="6113004497629356998">Skjul sponsede bilder</translation>
-<translation id="2148613324460538318">Legg til kort</translation>
+<translation id="3787061634640932557">Rediger kort</translation>
 <translation id="4925543565930352284">Ved å klikke på {{title}}, godtar du <ph name="BEGIN_LINK1"/>vilkårene for bruk<ph name="END_LINK1"/> og <ph name="BEGIN_LINK2"/>personvernerklæringen<ph name="END_LINK2"/>.</translation>
-<translation id="7983303953939627894">Tjen &amp; Gi</translation>
 <translation id="5977237145327845546">Start en privat videosamtale med dine venner og kolleger.</translation>
 <translation id="5850325887346946383">Start videosamtale</translation>
 <translation id="3651550649176056334">Om dine data</translation>
@@ -646,13 +664,6 @@
 <translation id="1974060860693918893">Avansert</translation>
 <translation id="9096577886148726047">Skjul avansert</translation>
 <translation id="6334164481400727517">Vi kan ikke koble til det forespurte innholdet ved hjelp av den lokale IPFS-noden fordi den lokale noden ikke startet, eller fordi det ikke er noen tilkoblede motparter som er tilgjengelige for øyeblikket. Ved å fortsette, faller vi automatisk tilbake til standard offentlig gateway i fremtiden når vi ikke kan koble til IPFS-innhold ved hjelp av den lokale IPFS-noden. Dette kan slås av senere i innstillingene.</translation>
-<translation id="2901715907314796027">Kjøp krypto fra Bitcoin.com.</translation>
-<translation id="4065681313949497252">Valuta</translation>
-<translation id="3833315885381772739">Oppgi beløp</translation>
-<translation id="4011828592358027165">Er krypto nytt for deg?</translation>
-<translation id="3358050091139900813">Få lommeboken her for å komme i gang</translation>
-<translation id="3449068867189933593">Angitt beløp må være minst {{minimumAmount}} {{fiat}}</translation>
-<translation id="3105412115725259537">Bitcoin.com</translation>
 <translation id="2880025073956220119">Crypto.com</translation>
 <translation id="8237504256665975959">Vis markeder og kjøp kryptovaluta fra crypto.com.</translation>
 <translation id="4292334826913000023">Vis pris</translation>
@@ -664,4 +675,20 @@
 <translation id="5337526542182802976">Støttede par</translation>
 <translation id="1164622162816276433">24-timers volum</translation>
 <translation id="3155170474926428993">Tor-starter</translation>
+<translation id="4799744519698299121">Flere kort.</translation>
+<translation id="8050847734948770789">Aktiver Brave-belønninger</translation>
+<translation id="2862598513212603756">Din oppmerksomhet er verdifull. Tjen ved å se annonser som støtter personvern mens du surfer, og send den videre for å støtte skaperene du elsker.</translation>
+<translation id="4942016616604700968">Aktiver belønninger</translation>
+<translation id="319209088187794725">Annonsevarsler mottatt denne måneden</translation>
+<translation id="7952665812649667034">Jeg er klar for å tjene &amp; Gi</translation>
+<translation id="4342305967788502343">Ved å klikke på Tjen &amp; gi, godtar du <ph name="LINK_BEGIN"/>vilkårene for bruk<ph name="LINK_END"/> og <ph name="LINK_BEGIN"/>personvernerklæringen<ph name="LINK_END"/>.</translation>
+<translation id="2148613324460538318">Legg til kort</translation>
+<translation id="7983303953939627894">Tjen &amp; Gi</translation>
+<translation id="2901715907314796027">Kjøp krypto fra Bitcoin.com.</translation>
+<translation id="4065681313949497252">Valuta</translation>
+<translation id="3833315885381772739">Oppgi beløp</translation>
+<translation id="4011828592358027165">Er krypto nytt for deg?</translation>
+<translation id="3358050091139900813">Få lommeboken her for å komme i gang</translation>
+<translation id="3449068867189933593">Angitt beløp må være minst {{minimumAmount}} {{fiat}}</translation>
+<translation id="3105412115725259537">Bitcoin.com</translation>
 </translationbundle>
