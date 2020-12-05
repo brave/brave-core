@@ -9,7 +9,18 @@ import { Actions } from '../../types/actions/index'
 export default function dappDetectionReducer (state = {}, action: Actions) {
   switch (action.type) {
     case webNavigationTypes.ON_COMMITTED: {
-      if (chrome.braveWallet && action.isMainFrame && isHttpOrHttps(action.url)) {
+      let blacklistedHost
+      try {
+        // The Dapp detection will be gone soon, but this will remove some false positives.
+        const host = new URL(action.url).host
+        blacklistedHost = ['google.com', 'nytimes.com']
+            .reduce((accumulator, currentValue) => accumulator || host.endsWith(currentValue), false)
+      } catch (e) {
+        blacklistedHost = true
+      }
+
+      if (chrome.braveWallet && action.isMainFrame && isHttpOrHttps(action.url) &&
+          !blacklistedHost) {
         chrome.braveWallet.shouldCheckForDapps((dappDetection) => {
           if (!dappDetection) {
             return
