@@ -19,7 +19,6 @@ source_set("app") {
   deps = [
     "//base",
     "//brave/common:pref_names",
-    "//brave/components/brave_sync:constants",
     "//brave/ios/browser",
     "//components/browser_sync",
     "//components/sync/driver",

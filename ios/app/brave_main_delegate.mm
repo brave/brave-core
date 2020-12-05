@@ -21,7 +21,17 @@
 #endif
 
 namespace {
-const char kBraveSyncServiceURL[] = BRAVE_SYNC_ENDPOINT;
+
+#if defined(OFFICIAL_BUILD)
+// production
+const char kBraveSyncServiceURL[] = "https://sync-v2.brave.com/v2";
+#else
+// For local server development "http://localhost:8295/v2 can also be overriden
+// by switches::kSyncServiceURL
+// dev
+const char kBraveSyncServiceURL[] = "https://sync-v2.brave.software/v2";
+#endif
+
 }  // namespace
 
 BraveMainDelegate::BraveMainDelegate() : brave_sync_service_url_(kBraveSyncServiceURL) {

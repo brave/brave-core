@@ -57,6 +57,7 @@ ios_framework_bundle("brave_rewards_ios_framework") {
   configs += [ "//build/config/compiler:enable_arc" ]
 
   deps = [
+    "//brave/base:base",
     "//brave/ios/app",
     "//brave/vendor/bat-native-ledger",
     "//brave/vendor/bat-native-ads",

@@ -24,6 +24,7 @@
 #import "base/strings/sys_string_conversions.h"
 #include "base/task/post_task.h"
 #include "base/task_runner_util.h"
+#import "brave/base/containers/utils.h"
 #import "base/base64.h"
 
 #import "RewardsLogging.h"
