@@ -7,6 +7,7 @@
 
 #include "base/compiler_specific.h"
 #include "base/containers/adapters.h"
+#include "base/guid.h"
 #include "base/strings/sys_string_conversions.h"
 #include "brave/ios/browser/api/bookmarks/brave_bookmarks_observer.h"
 #include "components/bookmarks/browser/bookmark_model.h"
@@ -31,20 +32,22 @@
 #error "This file requires ARC support."
 #endif
 
+// Used from the iOS/Swift side only..
 @implementation BookmarkFolder
 - (instancetype)initWithNode:(IOSBookmarkNode*)node
-                       indentationLevel:(NSInteger)indentationLevel {
+            indentationLevel:(NSInteger)indentationLevel {
   if ((self = [super init])) {
-    self->_bookmarkNode = node;
-    self->_indentationLevel = indentationLevel;
+    _bookmarkNode = node;
+    _indentationLevel = indentationLevel;
   }
   return self;
 }
 @end
 
 @interface IOSBookmarkNode () {
-  const bookmarks::BookmarkNode* node_;  // UNOWNED
-  bookmarks::BookmarkModel* model_;      // UNOWNED
+  const bookmarks::BookmarkNode* node_;
+  bookmarks::BookmarkModel* model_;  // UNOWNED
+  bool owned_;
 }
 @end
 
@@ -53,15 +56,74 @@
 - (instancetype)initWithNode:(const bookmarks::BookmarkNode*)node
                        model:(bookmarks::BookmarkModel*)model {
   if ((self = [super init])) {
-    self->node_ = node;
-    self->model_ = model;
+    node_ = node;
+    model_ = model;
+    owned_ = false;
+  }
+  return self;
+}
+
+- (instancetype)initWithTitle:(NSString*)title
+                           id:(int64_t)id
+                         guid:(NSString*)guid
+                          url:(NSURL*)url
+                    dateAdded:(NSDate*)dateAdded
+                 dateModified:(NSDate*)dateModified
+                     children:(NSArray<IOSBookmarkNode*>*)children {
+  if ((self = [super init])) {
+    // Only in a NEWER version of Chromium, they have `base::GUID`
+    std::string guid_;  // base::GUID guid_ = base::GUID();
+    int64_t id_ = static_cast<int64_t>(id);
+
+    if ([guid length] > 0) {
+      DCHECK(base::IsValidGUID(base::SysNSStringToUTF16(guid)));
+      guid_ = [guid UTF8String];
+    } else {
+      guid_ = base::GenerateGUID();
+    }
+
+    GURL gurl_ = net::GURLWithNSURL(url);
+    bookmarks::BookmarkNode* node =
+        new bookmarks::BookmarkNode(id_, guid_, gurl_);
+    node->SetTitle(base::SysNSStringToUTF16(title));
+
+    if (dateAdded) {
+      node->set_date_added(
+          base::Time::FromDoubleT([dateAdded timeIntervalSince1970]));
+    }
+
+    if (dateModified) {
+      node->set_date_folder_modified(
+          base::Time::FromDoubleT([dateModified timeIntervalSince1970]));
+    }
+
+    for (IOSBookmarkNode* child : children) {
+      DCHECK(child->owned_);  // Bookmark must be owned and non-const. IE:
+                              // Allocated from iOS/Swift.
+      child->owned_ = false;
+      child->node_ = node->Add(std::unique_ptr<bookmarks::BookmarkNode>(
+          const_cast<bookmarks::BookmarkNode*>(child->node_)));
+    }
+
+    node_ = node;
+    model_ = nil;
+    owned_ = true;
   }
   return self;
 }
 
 - (void)dealloc {
-  self->node_ = nullptr;
-  self->model_ = nullptr;
+  if (owned_) {
+    // All Objective-C++ class pointers are reference counted.
+    // No need for copy or move constructor & assignment operators.
+    // They're automatic RAII.. So we can safely delete an owned raw pointer
+    // here.
+    delete node_;
+    node_ = nullptr;
+    owned_ = false;
+  }
+  node_ = nullptr;
+  model_ = nullptr;
 }
 
 + (NSString*)rootNodeGuid {
@@ -93,6 +155,7 @@
 
 - (void)setTitle:(NSString*)title {
   DCHECK(node_);
+  DCHECK(model_);
   model_->SetTitle(node_, base::SysNSStringToUTF16(title));
 }
 
@@ -113,6 +176,7 @@
 
 - (void)setUrl:(NSURL*)url {
   DCHECK(node_);
+  DCHECK(model_);
   model_->SetURL(node_, net::GURLWithNSURL(url));
 }
 
@@ -124,6 +188,7 @@
 
 - (UIImage*)icon {
   DCHECK(node_);
+  DCHECK(model_);
   gfx::Image icon = model_->GetFavicon(node_);
   return icon.IsEmpty() ? nullptr : icon.ToUIImage();
 }
@@ -152,6 +217,7 @@
 
 - (void)setDateAdded:(NSDate*)date {
   DCHECK(node_);
+  DCHECK(model_);
   model_->SetDateAdded(node_,
                        base::Time::FromDoubleT([date timeIntervalSince1970]));
 }
@@ -164,6 +230,7 @@
 
 - (void)setDateFolderModified:(NSDate*)date {
   DCHECK(node_);
+  DCHECK(model_);
   model_->SetDateFolderModified(
       node_, base::Time::FromDoubleT([date timeIntervalSince1970]));
 }
@@ -209,12 +276,14 @@
 
 - (void)setMetaInfo:(NSString*)key value:(NSString*)value {
   DCHECK(node_);
+  DCHECK(model_);
   model_->SetNodeMetaInfo(node_, base::SysNSStringToUTF8(key),
                           base::SysNSStringToUTF8(value));
 }
 
 - (void)deleteMetaInfo:(NSString*)key {
   DCHECK(node_);
+  DCHECK(model_);
   return model_->DeleteNodeMetaInfo(node_, base::SysNSStringToUTF8(key));
 }
 
@@ -248,42 +317,8 @@
 }
 
 - (NSArray<BookmarkFolder*>*)nestedChildFolders {
-  DCHECK(node_);
-  
-  std::vector<const bookmarks::BookmarkNode*> bookmarks = {
-    node_
-  };
-
-  base::stack<std::pair<const bookmarks::BookmarkNode*, std::int32_t>> stack;
-  for (const bookmarks::BookmarkNode* bookmark : base::Reversed(bookmarks)) {
-    stack.emplace(bookmark, 0);
-  }
-
-  NSMutableArray* result = [[NSMutableArray alloc] init];
-  while (!stack.empty()) {
-    const bookmarks::BookmarkNode* node = stack.top().first;
-    std::int32_t depth = stack.top().second;
-    stack.pop();
-    
-    // Store the folder + its depth
-    IOSBookmarkNode* ios_bookmark_node =
-        [[IOSBookmarkNode alloc] initWithNode:node model:model_];
-    [result addObject: [[BookmarkFolder alloc] initWithNode:ios_bookmark_node
-                                           indentationLevel:depth]];
-
-    bookmarks.clear();
-    for (const auto& child : node->children()) {
-      if (child->is_folder()) {
-        bookmarks.push_back(child.get());
-      }
-    }
-    
-    for (const auto* bookmark : base::Reversed(bookmarks)) {
-      stack.emplace(bookmark, depth + 1);
-    }
-  }
-
-  return result;
+  // Returns a list of ALL nested folders
+  return [self nestedChildFoldersFiltered:^{ return true; }];
 }
 
 - (NSUInteger)childCount {
@@ -295,13 +330,64 @@
   DCHECK(node_);
   const auto& children = node_->children();
   if (static_cast<std::size_t>(index) < children.size()) {
-    return [[IOSBookmarkNode alloc] initWithNode:children[index].get() model:model_];;
+    return [[IOSBookmarkNode alloc] initWithNode:children[index].get()
+                                           model:model_];
+    ;
   }
   return nil;
 }
 
+// Retrieves a list of nested child folders filtered by the predicate |included|
+// iOS calls it like: `self.nestedChildFolders(where: { return some_condition })`
+- (NSArray<BookmarkFolder*>*)nestedChildFoldersFiltered:(BOOL(^)(BookmarkFolder*))included {
+  DCHECK(node_);
+
+  std::vector<const bookmarks::BookmarkNode*> bookmarks = {node_};
+
+  base::stack<std::pair<const bookmarks::BookmarkNode*, std::int32_t>> stack;
+  for (const bookmarks::BookmarkNode* bookmark : base::Reversed(bookmarks)) {
+    stack.emplace(bookmark, 0);
+  }
+
+  NSMutableArray* result = [[NSMutableArray alloc] init];
+  while (!stack.empty()) {
+    const bookmarks::BookmarkNode* node = stack.top().first;
+    std::int32_t depth = stack.top().second;
+    stack.pop();
+
+    IOSBookmarkNode* ios_bookmark_node =
+        [[IOSBookmarkNode alloc] initWithNode:node model:model_];
+    BookmarkFolder* ios_bookmark_folder = [[BookmarkFolder alloc] initWithNode:ios_bookmark_node
+                                                              indentationLevel:depth];
+    
+    if (included(ios_bookmark_folder)) {
+      // Store the folder + its depth
+      [result addObject:ios_bookmark_folder];
+
+      bookmarks.clear();
+      for (const auto& child : node->children()) {
+        if (child->is_folder()) {
+          ios_bookmark_node = [[IOSBookmarkNode alloc] initWithNode:child.get() model:model_];
+          ios_bookmark_folder = [[BookmarkFolder alloc] initWithNode:ios_bookmark_node
+                                                    indentationLevel:depth + 1];
+          if (included(ios_bookmark_folder)) {
+            bookmarks.push_back(child.get());
+          }
+        }
+      }
+    }
+
+    for (const auto* bookmark : base::Reversed(bookmarks)) {
+      stack.emplace(bookmark, depth + 1);
+    }
+  }
+
+  return result;
+}
+
 - (IOSBookmarkNode*)addChildFolderWithTitle:(NSString*)title {
   DCHECK(node_);
+  DCHECK(model_);
   if ([self isFolder]) {
     const bookmarks::BookmarkNode* node = model_->AddFolder(
         node_, node_->children().size(), base::SysNSStringToUTF16(title));
@@ -312,6 +398,7 @@
 
 - (IOSBookmarkNode*)addChildBookmarkWithTitle:(NSString*)title url:(NSURL*)url {
   DCHECK(node_);
+  DCHECK(model_);
   if ([self isFolder]) {
     const bookmarks::BookmarkNode* node = model_->AddURL(
         node_, node_->children().size(), base::SysNSStringToUTF16(title),
@@ -323,6 +410,7 @@
 
 - (void)moveToParent:(IOSBookmarkNode*)parent {
   DCHECK(node_);
+  DCHECK(model_);
   if ([parent isFolder]) {
     model_->Move(node_, parent->node_, parent->node_->children().size());
   }
@@ -330,6 +418,7 @@
 
 - (void)moveToParent:(IOSBookmarkNode*)parent index:(NSUInteger)index {
   DCHECK(node_);
+  DCHECK(model_);
   if ([parent isFolder]) {
     model_->Move(node_, parent->node_, index);
   }
@@ -340,21 +429,34 @@
   return node_->GetIndexOf(child->node_);
 }
 
+- (bool)hasAncestor:(IOSBookmarkNode*)parent {
+  DCHECK(node_);
+  return node_->HasAncestor(parent->node_);
+}
+
 - (void)remove {
   DCHECK(node_);
+  DCHECK(model_);
   model_->Remove(node_);
   node_ = nil;
   model_ = nil;
 }
 
 - (const bookmarks::BookmarkNode*)getNode {
-  return self->node_;
+  return node_;
+}
+
+- (void)setNativeParent:(bookmarks::BookmarkNode*)parent {
+  DCHECK(owned_);
+  owned_ = false;
+  node_ = parent->Add(std::unique_ptr<bookmarks::BookmarkNode>(
+      const_cast<bookmarks::BookmarkNode*>(node_)));
 }
 
 @end
 
 @interface BraveBookmarksAPI () {
-  bookmarks::BookmarkModel* bookmark_model_;   // NOT OWNED
+  bookmarks::BookmarkModel* bookmark_model_;    // NOT OWNED
   BookmarkUndoService* bookmark_undo_service_;  // NOT OWNED
 }
 @end
@@ -463,11 +565,12 @@
   DCHECK(parent);
   const bookmarks::BookmarkNode* defaultFolder = [parent getNode];
 
-  const bookmarks::BookmarkNode* new_node =
-      bookmark_model_->AddFolder(defaultFolder, defaultFolder->children().size(),
-                                base::SysNSStringToUTF16(title));
+  const bookmarks::BookmarkNode* new_node = bookmark_model_->AddFolder(
+      defaultFolder, defaultFolder->children().size(),
+      base::SysNSStringToUTF16(title));
   if (new_node) {
-    return [[IOSBookmarkNode alloc] initWithNode:new_node model:bookmark_model_];
+    return [[IOSBookmarkNode alloc] initWithNode:new_node
+                                           model:bookmark_model_];
   }
   return nil;
 }
@@ -493,16 +596,16 @@
       defaultFolder, defaultFolder->children().size(),
       base::SysNSStringToUTF16(title), net::GURLWithNSURL(url));
   if (new_node) {
-    return [[IOSBookmarkNode alloc] initWithNode:new_node model:bookmark_model_];
+    return [[IOSBookmarkNode alloc] initWithNode:new_node
+                                           model:bookmark_model_];
   }
   return nil;
 }
 
 - (IOSBookmarkNode*)getNodeById:(NSInteger)nodeId {
   DCHECK_CURRENTLY_ON(web::WebThread::UI);
-  const bookmarks::BookmarkNode* node =
-      bookmarks::GetBookmarkNodeByID(bookmark_model_,
-                                     static_cast<std::int64_t>(nodeId));
+  const bookmarks::BookmarkNode* node = bookmarks::GetBookmarkNodeByID(
+      bookmark_model_, static_cast<std::int64_t>(nodeId));
   if (node) {
     return [[IOSBookmarkNode alloc] initWithNode:node model:bookmark_model_];
   }
@@ -532,8 +635,8 @@
 
   NSMutableArray<IOSBookmarkNode*>* nodes = [[NSMutableArray alloc] init];
   for (const bookmarks::BookmarkNode* bookmark : results) {
-    IOSBookmarkNode* node = [[IOSBookmarkNode alloc] initWithNode:bookmark
-                                                            model:bookmark_model_];
+    IOSBookmarkNode* node =
+        [[IOSBookmarkNode alloc] initWithNode:bookmark model:bookmark_model_];
     [nodes addObject:node];
   }
   return nodes;

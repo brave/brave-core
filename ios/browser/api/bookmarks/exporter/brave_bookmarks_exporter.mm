@@ -4,6 +4,7 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 #include "brave/ios/browser/api/bookmarks/exporter/brave_bookmarks_exporter.h"
+#include "brave/ios/browser/api/bookmarks/brave_bookmarks_api.h"
 
 #include <functional>
 #include <vector>
@@ -22,13 +23,15 @@
 #include "base/values.h"
 #include "brave/ios/browser/api/bookmarks/exporter/bookmark_html_writer.h"
 #include "brave/ios/browser/api/bookmarks/exporter/bookmarks_encoder.h"
-#include "brave/ios/browser/api/bookmarks/exporter/exported_bookmark_entry.h"
+#include "components/bookmarks/browser/bookmark_node.h"
+#include "components/strings/grit/components_strings.h"
 #include "ios/chrome/browser/application_context.h"
 #include "ios/chrome/browser/browser_state/chrome_browser_state.h"
 #include "ios/chrome/browser/browser_state/chrome_browser_state_manager.h"
 #include "ios/web/public/thread/web_task_traits.h"
 #include "ios/web/public/thread/web_thread.h"
 #import "net/base/mac/url_conversions.h"
+#include "ui/base/l10n/l10n_util.h"
 #include "url/gurl.h"
 
 #if !defined(__has_feature) || !__has_feature(objc_arc)
@@ -65,70 +68,8 @@ void BraveBookmarksExportObserver::OnExportFinished(Result result) {
   delete this;
 }
 
-@implementation BraveExportedBookmark
-- (instancetype)initWithTitle:(NSString*)title
-                           id:(int64_t)id
-                         guid:(NSString*)guid
-                          url:(NSURL* _Nullable)url
-                    dateAdded:(NSDate*)dateAdded
-                 dateModified:(NSDate*)dateModified
-                     children:
-                         (NSArray<BraveExportedBookmark*>* _Nullable)children {
-  if ((self = [super init])) {
-    _title = title;
-    _id = id;
-    _guid = guid;
-    _url = url;
-    _dateAdded = dateAdded;
-    _dateModified = dateModified;
-    _children = children;
-  }
-  return self;
-}
-
-- (instancetype)initFromChromiumExportedBookmark:
-    (const ExportedBookmarkEntry*)entry {
-  if ((self = [super init])) {
-    DCHECK(entry);
-
-    _title = base::SysUTF16ToNSString(entry->GetTitle());
-    _id = entry->id();
-    _guid = base::SysUTF8ToNSString(entry->guid());
-    _url = entry->url().is_empty() ? nil : net::NSURLWithGURL(entry->url());
-    _dateAdded =
-        [NSDate dateWithTimeIntervalSince1970:entry->date_added().ToDoubleT()];
-    _dateModified =
-        [NSDate dateWithTimeIntervalSince1970:entry->date_folder_modified()
-                                                  .ToDoubleT()];
-    _isFolder = entry->is_folder();
-    _children = [[NSMutableArray alloc] init];
-
-    if (!entry->children().empty()) {
-      for (const auto& child : entry->children()) {
-        [(NSMutableArray*)_children
-            addObject:[[BraveExportedBookmark alloc]
-                          initFromChromiumExportedBookmark:child.get()]];
-      }
-    }
-  }
-  return self;
-}
-
-- (std::unique_ptr<ExportedBookmarkEntry>)toChromiumExportedBookmark {
-  auto entry = std::make_unique<ExportedBookmarkEntry>(
-      self.id, base::SysNSStringToUTF8(self.guid),
-      self.url ? net::GURLWithNSURL(self.url) : GURL());
-  entry->SetTitle(base::SysNSStringToUTF16(self.title));
-  entry->set_date_added(
-      base::Time::FromDoubleT([self.dateAdded timeIntervalSince1970]));
-  entry->set_date_folder_modified(
-      base::Time::FromDoubleT([self.dateModified timeIntervalSince1970]));
-
-  for (BraveExportedBookmark* child in self.children) {
-    entry->Add([child toChromiumExportedBookmark]);
-  }
-  return entry;
-}
+@interface IOSBookmarkNode(BookmarksExporter)
+- (void)setNativeParent:(bookmarks::BookmarkNode*)parent;
 @end
 
 @interface BraveBookmarksExporter ()
@@ -181,7 +122,7 @@ void BraveBookmarksExportObserver::OnExportFinished(Result result) {
 }
 
 - (void)exportToFile:(NSString*)filePath
-           bookmarks:(NSArray<BraveExportedBookmark*>*)bookmarks
+           bookmarks:(NSArray<IOSBookmarkNode*>*)bookmarks
         withListener:(void (^)(BraveBookmarksExporterState))listener {
   if ([bookmarks count] == 0) {
     listener(BraveBookmarksExporterStateStarted);
@@ -191,7 +132,7 @@ void BraveBookmarksExportObserver::OnExportFinished(Result result) {
 
   auto start_export =
       [](BraveBookmarksExporter* weak_exporter, NSString* filePath,
-         NSArray<BraveExportedBookmark*>* bookmarks,
+         NSArray<IOSBookmarkNode*>* bookmarks,
          std::function<void(BraveBookmarksExporterState)> listener) {
         // Export cancelled as the exporter has been deallocated
         __strong BraveBookmarksExporter* exporter = weak_exporter;
@@ -204,16 +145,21 @@ void BraveBookmarksExportObserver::OnExportFinished(Result result) {
         listener(BraveBookmarksExporterStateStarted);
         base::FilePath destination_file_path =
             base::mac::NSStringToFilePath(filePath);
-        std::unique_ptr<ExportedRootBookmarkEntry> root_node =
-            ExportedBookmarkEntry::get_root_node();
-        for (auto& bookmark :
-             [exporter convertToChromiumExportedBookmarks:bookmarks]) {
+        
+        // Create artificial nodes
+        auto bookmark_bar_node = [exporter getBookmarksBarNode];
+        auto other_folder_node = [exporter getOtherBookmarksNode];
+        auto mobile_folder_node = [exporter getMobileBookmarksNode];
+
+        for (IOSBookmarkNode* bookmark : bookmarks) {
           // We export as the |mobile_bookmarks_node| by default.
-          root_node->mobile_bookmarks_node()->Add(std::move(bookmark));
+          [bookmark setNativeParent:mobile_folder_node.get()];
         }
 
         auto encoded_bookmarks =
-            ios::bookmarks_encoder::EncodeBookmarks(std::move(root_node));
+            ios::bookmarks_encoder::Encode(bookmark_bar_node.get(),
+                                           other_folder_node.get(),
+                                           mobile_folder_node.get());
         bookmark_html_writer::WriteBookmarks(
             std::move(encoded_bookmarks), destination_file_path,
             new BraveBookmarksExportObserver(listener));
@@ -227,27 +173,35 @@ void BraveBookmarksExportObserver::OnExportFinished(Result result) {
       base::BindOnce(start_export, weakSelf, filePath, bookmarks, listener));
 }
 
-// Converts an array of Chromium imported bookmarks to iOS exported bookmarks.
-- (NSArray<BraveExportedBookmark*>*)convertToIOSExportedBookmarks:
-    (const std::vector<ExportedBookmarkEntry>&)bookmarks {
-  NSMutableArray<BraveExportedBookmark*>* results =
-      [[NSMutableArray alloc] init];
-  for (const auto& bookmark : bookmarks) {
-    BraveExportedBookmark* imported_bookmark = [[BraveExportedBookmark alloc]
-        initFromChromiumExportedBookmark:&bookmark];
-    [results addObject:imported_bookmark];
-  }
-  return results;
+// MARK: - Internal artificial nodes used for exporting arbitrary bookmarks to a file
+
+- (std::unique_ptr<bookmarks::BookmarkNode>)getRootNode {
+  return std::make_unique<bookmarks::BookmarkNode>(/*id=*/0,
+                                                   bookmarks::BookmarkNode::kRootNodeGuid,
+                                                   GURL());
 }
 
-// Converts an array of iOS exported bookmarks to Chromium imported bookmarks.
-- (std::vector<std::unique_ptr<ExportedBookmarkEntry>>)
-    convertToChromiumExportedBookmarks:
-        (NSArray<BraveExportedBookmark*>*)bookmarks {
-  std::vector<std::unique_ptr<ExportedBookmarkEntry>> results;
-  for (BraveExportedBookmark* bookmark in bookmarks) {
-    results.push_back([bookmark toChromiumExportedBookmark]);
-  }
-  return results;
+- (std::unique_ptr<bookmarks::BookmarkNode>)getBookmarksBarNode {
+  auto node = std::make_unique<bookmarks::BookmarkNode>(/*id=*/1,
+                                                        bookmarks::BookmarkNode::kBookmarkBarNodeGuid,
+                                                        GURL());
+  node->SetTitle(l10n_util::GetStringUTF16(IDS_BOOKMARK_BAR_FOLDER_NAME));
+  return node;
+}
+
+- (std::unique_ptr<bookmarks::BookmarkNode>)getOtherBookmarksNode {
+  auto node = std::make_unique<bookmarks::BookmarkNode>(/*id=*/2,
+                                                        bookmarks::BookmarkNode::kOtherBookmarksNodeGuid,
+                                                        GURL());
+  node->SetTitle(l10n_util::GetStringUTF16(IDS_BOOKMARK_BAR_OTHER_FOLDER_NAME));
+  return node;
+}
+
+- (std::unique_ptr<bookmarks::BookmarkNode>)getMobileBookmarksNode {
+  auto node = std::make_unique<bookmarks::BookmarkNode>(/*id=*/3,
+                                                   bookmarks::BookmarkNode::kMobileBookmarksNodeGuid,
+                                                   GURL());
+  node->SetTitle(l10n_util::GetStringUTF16(IDS_BOOKMARK_BAR_MOBILE_FOLDER_NAME));
+  return node;
 }
 @end

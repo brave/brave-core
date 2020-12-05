@@ -73,6 +73,8 @@ OBJC_EXPORT
 @property(nonatomic, readonly) NSUInteger childCount;
 
 - (nullable IOSBookmarkNode*)childAtIndex:(NSUInteger)index;
+- (NSArray<BookmarkFolder*>*)nestedChildFoldersFiltered:(BOOL(^)(BookmarkFolder*))included
+                                                NS_SWIFT_NAME(nestedChildFolders(where:));
 
 - (void)setTitle:(NSString*)title;
 - (bool)getMetaInfo:(NSString*)key value:(NSString* _Nonnull* _Nullable)value;
@@ -86,6 +88,16 @@ OBJC_EXPORT
 - (void)moveToParent:(nonnull IOSBookmarkNode*)parent;
 - (void)moveToParent:(nonnull IOSBookmarkNode*)parent index:(NSUInteger)index;
 - (NSInteger)indexOfChild:(nonnull IOSBookmarkNode*)child;
+- (bool)hasAncestor:(nonnull IOSBookmarkNode*)parent;
+
+- (instancetype)initWithTitle:(NSString*)title
+                           id:(int64_t)id
+                         guid:(NSString* _Nullable)guid
+                          url:(NSURL* _Nullable)url
+                    dateAdded:(NSDate* _Nullable)dateAdded
+                 dateModified:(NSDate* _Nullable)dateModified
+                     children:
+                         (NSArray<IOSBookmarkNode*>* _Nullable)children;
 @end
 
 NS_SWIFT_NAME(BraveBookmarksAPI)

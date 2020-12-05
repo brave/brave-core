@@ -19,6 +19,7 @@ source_set("app") {
   deps = [
     "//base",
     "//brave/common:pref_names",
+    "//brave/components/brave_sync:constants",
     "//brave/ios/browser",
     "//components/browser_sync",
     "//components/sync/driver",
@@ -33,7 +34,6 @@ source_set("app") {
     "//ios/chrome/common",
     "//ios/public/provider/chrome/browser",
     "//ios/web/public/init",
-    "//testing/gtest:ios_coverage_utils",
   ]
 
   deps += [

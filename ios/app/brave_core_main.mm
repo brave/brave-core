@@ -51,9 +51,6 @@
                name:UIApplicationWillTerminateNotification
              object:nil];
 
-
-
-
     // Register all providers before calling any Chromium code.
     [ProviderRegistration registerProviders];
 
